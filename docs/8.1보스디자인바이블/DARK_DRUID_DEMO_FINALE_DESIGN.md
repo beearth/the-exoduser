@@ -40,7 +40,7 @@
 | 독늪 시각 | `_drawDruidFinalePool` (코드 재확인): ① `_drawDruidPoolClip`(풀 클립 아틀라스, R=lp.r×1.12, 내부 테두리 alpha×.55) → 미준비 시 ② `_drawDruidGroundRing` 순으로 alpha 예고 .36/활성 .72(×fade). 둘 다 실패하면 ③ 기존 aoe4×2 시트를 반경150 원에 내접하는 정사각 박스(반변 lp.r×√½, 한 변≈212.13px)에 alpha 예고 .10/활성 .24(×fade). 이어 경계 원 alpha .38×fade·선폭1.5px(예고 `#d4f7a8`/활성 `#8bdd45`), 예고 중 진행호 선폭1.5px, 원/호48선분. 별도 바닥 fill 없음. 마지막60f fade. WebGL clip은 no-op이므로 의존하지 않음. 비피날레 si0/si3도 풀 클립→그라운드 링→aoe 시트(R=lp.r×1.4) 순 |
 | 스프라이트 | 기존 walk/attack/transform/beast/dive/aoe 사용. 전용 volley 상태는 attack 시트150ms/frame 사용. 신규 bitmap/캐릭터 없음 |
 | 검증 URL | `http://127.0.0.1:3333/game.html?demo&bosstest=3` (`?bic&bosstest=3`도 동일 전투 프로필). 기존 테스트 패널은 공용 기술 카탈로그를 표시하며 자연 AI의5종 목록과 구분 |
-| 종료 UI | 데모 마지막 stage·hell0에서 출구 클리어 시 clearSub=`썩은 숲을 정복했습니다. / You conquered the Rotten Forest.`, nextBtn=`데모 종료 / End of Demo`. 클릭은 `_showNextDiffPop`을 생략하고 `nextStage()`의 기존 demoEnd로 연결. 일반 stage/정식 모드는 기존 난이도 선택 유지 |
+| 종료 UI | 데모 마지막 stage·hell0에서 출구 클리어 시 clearSub=`썩은 숲은 아직 끝나지 않았다. / The Rotten Forest is not finished yet.`, nextBtn=`데모 종료 / End of Demo`. 클릭은 `_showNextDiffPop`을 생략하고 `nextStage()`의 기존 demoEnd로 연결. 일반 stage/정식 모드는 기존 난이도 선택 유지 |
 
 ### 반복 검수 기록
 

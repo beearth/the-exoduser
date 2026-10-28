@@ -1520,7 +1520,7 @@ const _IT={
 '사슬이 살을 뚫었어. 끌고 와.':'L\'Catena ha trafitto la carne. Trascina.',
 '…풀차지군. 멀리 던져버려.':'…Carica piena. Lancia lontano.',
 '…빈틈을 그대로 빠져나갔다.':'…Scivolato proprio attraverso la falla.',
-'…일반 잡몹이 아니야. 모디파이어 붙었군.':'…Non è un mostro normale. Ha un modificatore.',
+"…보통 놈이 아니야. 악의가 덧씌워졌군.":"…Non è uno comune. La malizia gli si è attaccata addosso.",
 '엘리트 하나 처리.':'Elite abbattuto.',
 '…큰 놈이다. 일반 잡몹 정리부터.':'…Un pezzo grosso. Prima elimina i normali.',
 '미니보스 처리. 다음 길로.':'Mini-boss abbattuto. Avanti.',
@@ -1531,7 +1531,7 @@ const _IT={
 '…죽었다 살아났네. 여신은 너를 포기 안 했어.':'…Morto e tornato. La dea non ti ha abbandonato.',
 '…또야? 패턴 좀 외워!':'…Ancora? Impara il pattern!',
 '…한 번도 안 죽고. 그건 진짜 실력이야.':'…Mai morto. Questa è vera abilità.',
-'…ACT1을 끝냈다. 진짜 시작은 여기서부터야.':'…ATTO1 completato. Il vero inizio è qui.',
+"…네 층을 넘었다. 진짜 시작은 여기서부터야.":"…Quattro strati alle nostre spalle. Il vero inizio è qui.",
 '모든 보스를 무너뜨렸다. 너는 지옥의 일부야.':'Tutti i boss caduti. Sei parte dell\'inferno.',
 '…30초. 너 진짜 미쳤구나.':'…30 secondi. Sei davvero pazzo.',
 '…빠르군. 효율적이야.':'…Veloce. Efficiente.',
@@ -1561,7 +1561,7 @@ const _IT={
 '50명! 학살자야!':'50 nemici! Sei un massacratore!',
 '5단!! 진짜 게이머 인증!':'Diff 5!! Vero gamer certificato!',
 '7단!! 다른 사람들 이 정도 못 와!':'Diff 7!! Gli altri non arrivano così lontano!',
-'ACT1 완주! 우리가 진짜 해냈어!':'ACT1 completato! Ce l\'abbiamo davvero fatta!',
+"네 층 돌파! 우리가 진짜 해냈어!":"Quattro strati superati! Ce l'abbiamo fatta davvero!",
 'Ctrl 얼음보주로 탈출하라.':'Ctrl — scappa con l\'Orbe di Ghiaccio.',
 'Ctrl 유령걸음으로 탈출하라.':'Ctrl — scappa con il Passo Fantasma.',
 'J키! 패시브 강해져!':'Tasto C! I passivi diventano più forti!',
@@ -1598,11 +1598,11 @@ const _IT={
 '다음엔 죽지 마!':'Non morire la prossima volta!',
 '소환수 왔어! 먼저 처리해야 해!':'Evocazioni in arrivo! Eliminale prima!',
 '스킬 없으면 방향키 연타뿐이야.':'Nessuna abilità? Tieni premuti i tasti direzionali.',
-'신기록!! 스트리머한테 보내!':'Nuovo record!! Mandalo a uno streamer!',
+"신기록!! 이건 기억해 둬야 해!":"Nuovo record!! Questo va ricordato!",
 '아이템 넘쳐! 우리가 주워줄게!':'Borsa piena! Raccoglieremo le cose per te!',
 '안 죽고 깼어! 진짜 천재 맞네!':'Completato senza morire! Vero genio!',
 '앞으로 가자~':'Andiamo avanti~',
-'우리가 해냈어! 다음 챕터 가자!':'Ce l\'abbiamo fatta! Al prossimo capitolo!','핵터 니가 진짜 해냈구나, 여왕님이 기뻐하시겠어!':'Hector, ce l\'hai fatta davvero! La Regina sarà compiaciuta!',
+'우리가 해냈어! 다음 챕터 가자!':'Ce l\'abbiamo fatta! Al prossimo capitolo!',"해냈어! 여신님이 기뻐하시겠어!":"Ce l'hai fatta! La dea sarà contenta!",
 '일반 모드! 편하게 즐기자!':'Modalità normale! Godiamocela tranquilli!',
 '자원이 반이다. F키로 회복해.':'Risorse a metà. Premi F per recuperare.',
 '잡힌다! 옆으로 빠져!':'Sto per essere afferrato! Muoviti di lato!',
@@ -2670,7 +2670,7 @@ const _IT={
 '그렇게 잘하다가!! 아까워 죽겠어!':"Con quanto stavi andando bene!! Che spreco, mi rode!",
 '…지옥에 망자 하나 더 늘릴 셈이야?':"…Hai intenzione di aggiungere un altro cadavere all'Inferno?",
 '그런 소리 마! 얜 아직 안 죽었어! 일어나!':"Non dirlo! Questo qui non è ancora morto! Alzati!",
-'…여왕님이 실망하시겠군.':"…La Regina ne sarà delusa.",
+"…여신님이 실망하시겠군.":"…La dea resterà delusa.",
 '실망은 무슨! 다시 일어나면 되잖아, 얼른!':"Delusa un corno! Basta che ti rialzi, forza!",
 '잠은 집에 가서 자. …일어나.':"A dormire ci pensi a casa. …Alzati.",
 '여기서 자면 진짜 집 못 가! 얼른 일어나!':"Se ti addormenti qui a casa non ci torni più! Alzati subito!",
@@ -2848,6 +2848,8 @@ Object.assign(_IT,{"…달아났다. 숲 깊은 곳으로.":"…È fuggito. Nel 
 Object.assign(_IT,{"구르기 (방향키 +)":"Rotolata (frecce +)","방향키+Space 구르기":"frecce+Space Rotolata","방향키+Space! 굴러서 탈출해!":"frecce+Space! Rotola e scappa!","구르기는 키보드 키로 지정하세요.":"Assegna la rotolata a un tasto della tastiera.","전격이동은 구르기(방향키 + Space)로 바뀌었습니다. 투자한 스킬 포인트는 환급됩니다.":"Passo Fulmine è stato sostituito da Rotolata (frecce + Space). I punti abilità investiti vengono rimborsati."});
 // [ROLL] u_n02 경로 약화 문구에 구르기 추가 (번역대상 No.3377)
 Object.assign(_IT,{"구르기·전격이동 경로의 적에게 약화 — 받는 피해 +{p}% (5초)":"Indebolisce i nemici sul percorso della Rotolata e del Passo Lampo — danni subiti +{p}% (5s)"});
+// [STY-14] 대사 정본 정합 묶음 A (번역대상 No.3473~3482 신규분)
+Object.assign(_IT,{"썩은 숲은 아직 끝나지 않았다.":"La Foresta Marcia non è ancora finita.","…썩은 숲을 벗어났다. 위는 더 지독할 거다.":"…Ci siamo lasciati alle spalle la Foresta Marcia. Più in alto sarà peggio.","살았어! 반이나 올라왔어!":"Ce l'abbiamo fatta! Siamo a metà salita!"," 돌파!":" superato!","킬루":"Killu","화염의 군주야. 빙결 무기로 꺼 버려.":"Il signore delle fiamme. Spegnilo con un'arma di gelo.","…마지막이다. 여신도 더는 도와줄 수 없어.":"…È l'ultimo. Neanche la dea può più aiutarci.","…새 한 마리 안 우네. 숲이 다 먹었어.":"…Nemmeno un uccello. La foresta li ha divorati tutti.","위층이 기다린다...":"Lo strato sopra ci aspetta...","위층으로 ▶":"Sali ▶"});
 // [I18N-FILL] lang 전수 감사 — 누락·한글 잔존 보충 (2026-10-28, 번역대상 No.3389~3468)
 Object.assign(_IT,{"속성방어결정":"Cristallo DEF elem.","🔨 불꽃칼날!":"🔨 Lama di Fiamma!","⚡불꽃칼날!":"⚡Lama di Fiamma!","🗡 불꽃칼날!":"🗡 Lama di Fiamma!","네임드":"Nominato","맵과 움직임 준비 중...":"Preparazione di mappa e movimento...","시작 화면 준비 중...":"Preparazione della schermata iniziale...","미장착":"Non equipaggiato","홈 ":"Incavo ","호환되지 않음":"Incompatibile","장비 부위":"Equipaggiamento","장착 ":"Incastonato ","장착 중: ":"Equipaggiato: ","장착할 빈 홈 선택":"Scegli un incavo vuoto","장착 중인 장비에 호환되는 빈 홈이 없습니다.":"Il tuo equipaggiamento non ha incavi vuoti compatibili.","빈 홈":"Incavo vuoto","호환":"Adatto","포탈 A 설치 — 다른 곳에서 P를 눌러 포탈 B 설치":"Portale A piazzato — premi P altrove per piazzare il Portale B","포탈 간격이 너무 가깝습니다":"I portali sono troppo vicini","포탈 B 설치 완료 — 가까이서 R을 눌러 이동":"Portale B pronto — avvicinati e premi R per viaggiare","포탈 이동":"Viaggio nel portale","물리탄 차징 · E로 패링":"CARICA PROIETTILE FISICO · PARA CON E","⚡ 다시 눌러 궤적 추격!":"⚡ Premi di nuovo per inseguire!","⚡ 추적전격!":"⚡ Inseguimento della Lama!","쿵!":"PESTONE!","해제 — 가방으로 이동":"rimosso — riportato nella borsa","전투 기록 · 스킬 해석":"REGISTRO DI COMBATTIMENTO · CODICE DELLE ABILITÀ","합체 설계도":"SCHEMI DI FUSIONE","스킬을 선택하면 상세 효과와 연결된 합체식을 볼 수 있습니다. 아래 목록에서 재료 스킬을 바로 찾을 수 있습니다.":"Seleziona un'abilità per vedere i suoi effetti e le ricette di fusione. Scegli un ingrediente qui sotto per individuarlo.","연결된 합체":"FUSIONI COLLEGATE","합체 도감":"CODICE DELLE FUSIONI","연결된 합체가 없습니다.":"Nessuna fusione collegata.","재료 확인":"INGREDIENTI","추적전격 [합체]":"Inseguimento della Lama [Fusione]","추적칼날 종료 후 0.5초 안에 같은 스킬 키를 다시 누르면 칼날 궤적을 따라 전격이동. 경로의 적마다 칼날 피해를 1회 추가. 재입력은 자원 소모 없음.":"Premi di nuovo lo stesso tasto abilità entro 0.5s dalla fine della lama inseguitrice per eseguire un Passo Fulmine lungo la sua traiettoria. Ogni nemico sul percorso subisce di nuovo i danni della lama. La ripetizione non consuma risorse.","리플레이 보기":"Vedi replay","벤치 미실시":"Bench non eseguito","유골함 정보":"Informazioni sull'ossario","아이템 또는 유골에 마우스를 올려 정보를 확인하세요":"Passa il mouse su un oggetto o un osso per vederne i dettagli","휠: 상세 스크롤":"Rotella: scorri i dettagli","장착 아이템 비교":"Confronto equipaggiamento","옵션 비교":"Confronta effetti","현재 장착 아이템":"Oggetto attualmente equipaggiato","수치 차이 전체 보기":"Vedi tutte le differenze di statistiche","가방 아이템":"Oggetto della borsa","선택한 가방 아이템":"Oggetto della borsa selezionato","장비 기록":"REGISTRO DELL'EQUIPAGGIAMENTO","현재 전투 구성":"Configurazione attuale","장비나 가방 아이템을 가리키면 이곳에서 옵션과 비교 정보를 확인합니다.":"Passa il mouse su un equipaggiamento o un oggetto della borsa per vederne qui effetti e confronti.","추가 효과":"Extra","장착 목록":"OGGETTI EQUIPAGGIATI","빈 칸":"Vuoto","치명 · 위력":"Critico · Potenza","공격 위력":"Potenza d'attacco","크기 · 이동속도":"Dimensione · Velocità movimento","선대의 유골":"Osso ancestrale","위력 ":"Potenza ","우클릭하면 가방으로 해제됩니다.":"Clic destro per riportarlo nella borsa.","유골을 획득하면 이 부위에 등록됩니다.":"Ottieni un osso per registrare questa parte.","선대의 유골 콜렉션":"Collezione di Ossa Ancestrali","수집 ":"Raccolti ","소환 해금":"Evocazione sbloccata","유골함 장착 필요":"Equipaggiare ossario","유골 수집 중":"Raccolta di ossa","전대 소환 스킬로 불러낼 수 있습니다.":"Usa Evocazione degli Antenati per chiamare l'antenato.","네 부위를 모두 모으면 소환이 해금됩니다.":"Raccogli tutte e quattro le parti per sbloccare l'evocazione.","부위를 선택하면 등급과 성장 효과를 확인할 수 있습니다.":"Seleziona un osso per vederne la rarità e l'effetto di crescita.","첫 유골 획득 시 유골함 자동 지급":"Un ossario viene concesso con il tuo primo osso","선택 유골 해제":"Rimuovi osso selezionato","유골함 해제":"Rimuovi ossario","유골 우클릭 또는 선택 후 해제 · 해제한 유골은 가방으로 이동":"Clic destro su un osso o seleziona Rimuovi · L'osso torna nella borsa","전대 소환 스킬로 전장에 강림합니다.":"Usa Evocazione degli Antenati per chiamare questo antenato.","네 부위를 모으면 전대 소환이 해금됩니다.":"Raccogli tutte e quattro le ossa per sbloccare questo antenato.","혈안탄 예고 · 물리탄 · E 패링":"AVVISO OCCHIO SANGUIGNO · FISICO · PARA CON E","스킬 합성 랩 — 저장되지 않습니다 (새로고침하면 처음 상태)":"Laboratorio della Forgia delle abilità — nulla viene salvato (ricarica per reimpostare)"});
 // [I18N-FILL] lang 전수 감사 2차 — 유물·능력치·추천빌드·스킬 설명 쌍 보충 (2026-10-28, 번역대상 No.3500~3587)

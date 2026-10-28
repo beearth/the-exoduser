@@ -1079,7 +1079,7 @@
 '사슬이 살을 뚫었어. 끌고 와.':'Die Kette hat Fleisch durchbohrt. Zieh heran.',
 '…풀차지군. 멀리 던져버려.':'…Voll geladen. Wirf es weit.',
 '…빈틈을 그대로 빠져나갔다.':'…Schlüpfte direkt durch die Lücke.',
-'…일반 잡몹이 아니야. 모디파이어 붙었군.':'…Kein normaler Gegner. Hat einen Modifikator.',
+"…보통 놈이 아니야. 악의가 덧씌워졌군.":"…Kein gewöhnlicher Gegner. Bosheit haftet an ihm.",
 '엘리트 하나 처리.':'Ein Elite erledigt.',
 '…큰 놈이다. 일반 잡몹 정리부터.':'…Großer. Erst normale Gegner aufräumen.',
 '미니보스 처리. 다음 길로.':'Mini-Boss erledigt. Weiter.',
@@ -1090,7 +1090,7 @@
 '…죽었다 살아났네. 여신은 너를 포기 안 했어.':'…Gestorben und zurück. Die Göttin hat nicht aufgegeben.',
 '…또야? 패턴 좀 외워!':'…Schon wieder? Lern das Muster!',
 '…한 번도 안 죽고. 그건 진짜 실력이야.':'…Kein einziger Tod. Das ist echtes Können.',
-'…ACT1을 끝냈다. 진짜 시작은 여기서부터야.':'…AKT1 beendet. Der echte Start beginnt hier.',
+"…네 층을 넘었다. 진짜 시작은 여기서부터야.":"…Vier Ebenen liegen hinter uns. Der echte Anfang ist hier.",
 '모든 보스를 무너뜨렸다. 너는 지옥의 일부야.':'Alle Bosse gefallen. Du bist nun Teil der Hölle.',
 '…30초. 너 진짜 미쳤구나.':'…30 Sekunden. Du bist wirklich wahnsinnig.',
 '…빠르군. 효율적이야.':'…Schnell. Effizient.',
@@ -1120,7 +1120,7 @@
 '50명! 학살자야!':'50 Abschüsse! Du bist ein Schlächter!',
 '5단!! 진짜 게이머 인증!':'Schw. 5!! Echter Gamer bestätigt!',
 '7단!! 다른 사람들 이 정도 못 와!':'Schw. 7!! Andere kommen nicht so weit!',
-'ACT1 완주! 우리가 진짜 해냈어!':'ACT1 abgeschlossen! Wir haben es wirklich geschafft!',
+"네 층 돌파! 우리가 진짜 해냈어!":"Vier Ebenen geschafft! Wir haben es wirklich getan!",
 'Ctrl 얼음보주로 탈출하라.':'Strg — entkommen mit der Eiskugel.',
 'Ctrl 유령걸음으로 탈출하라.':'Strg — entkommen mit dem Geisterschritt.',
 'J키! 패시브 강해져!':'J-Taste! Passive werden stärker!',
@@ -1157,11 +1157,11 @@
 '다음엔 죽지 마!':'Stirb beim nächsten Mal nicht!',
 '소환수 왔어! 먼저 처리해야 해!':'Beschwörungen kommen! Erst eliminieren!',
 '스킬 없으면 방향키 연타뿐이야.':'Keine Fähigkeit? Einfach die Richtungstasten spammen.',
-'신기록!! 스트리머한테 보내!':'Neuer Rekord!! Schick es einem Streamer!',
+"신기록!! 이건 기억해 둬야 해!":"Neuer Rekord!! Den merken wir uns!",
 '아이템 넘쳐! 우리가 주워줄게!':'Tasche voll! Wir sammeln die Sachen für dich auf!',
 '안 죽고 깼어! 진짜 천재 맞네!':'Ohne zu sterben abgeschlossen! Echtes Genie!',
 '앞으로 가자~':'Vorwärts~',
-'우리가 해냈어! 다음 챕터 가자!':'Wir haben es geschafft! Zum nächsten Kapitel!','핵터 니가 진짜 해냈구나, 여왕님이 기뻐하시겠어!':'Hector, du hast es wirklich geschafft! Die Königin wird sich freuen!',
+'우리가 해냈어! 다음 챕터 가자!':'Wir haben es geschafft! Zum nächsten Kapitel!',"해냈어! 여신님이 기뻐하시겠어!":"Du hast es geschafft! Die Göttin wird erfreut sein!",
 '일반 모드! 편하게 즐기자!':'Normalmodus! Genießen wir es entspannt!',
 '자원이 반이다. F키로 회복해.':'Ressourcen bei der Hälfte. F drücken um zu erholen.',
 '잡힌다! 옆으로 빠져!':'Werde gegriffen! Zur Seite bewegen!',
@@ -2245,7 +2245,7 @@
 '그렇게 잘하다가!! 아까워 죽겠어!':"Du warst so gut dabei!! So schade drum!",
 '…지옥에 망자 하나 더 늘릴 셈이야?':"…Willst du der Hölle noch eine Leiche schenken?",
 '그런 소리 마! 얜 아직 안 죽었어! 일어나!':"Sag das nicht! Der hier ist noch nicht tot! Steh auf!",
-'…여왕님이 실망하시겠군.':"…Die Königin wird enttäuscht sein.",
+"…여신님이 실망하시겠군.":"…Die Göttin wird enttäuscht sein.",
 '실망은 무슨! 다시 일어나면 되잖아, 얼른!':"Enttäuscht, von wegen! Steh einfach wieder auf – los!",
 '잠은 집에 가서 자. …일어나.':"Schlaf, wenn du zu Hause bist. …Steh auf.",
 '여기서 자면 진짜 집 못 가! 얼른 일어나!':"Schläfst du hier ein, kommst du nie heim! Steh auf!",
@@ -3425,6 +3425,8 @@ Object.assign(_DE,{"…달아났다. 숲 깊은 곳으로.":"…Er ist geflohen.
 Object.assign(_DE,{"구르기 (방향키 +)":"Rolle (Pfeiltasten +)","방향키+Space 구르기":"Pfeiltasten+Space Rolle","방향키+Space! 굴러서 탈출해!":"Pfeiltasten+Space! Roll dich raus!","구르기는 키보드 키로 지정하세요.":"Lege die Rolle auf eine Tastaturtaste.","전격이동은 구르기(방향키 + Space)로 바뀌었습니다. 투자한 스킬 포인트는 환급됩니다.":"Plötzliche Bewegung wurde durch Rolle (Pfeiltasten + Space) ersetzt. Investierte Fertigkeitspunkte werden erstattet."});
 // [ROLL] u_n02 경로 약화 문구에 구르기 추가 (번역대상 No.3377)
 Object.assign(_DE,{"구르기·전격이동 경로의 적에게 약화 — 받는 피해 +{p}% (5초)":"Schwächt Gegner im Pfad von Rolle und Blitzschritt — erlittener Schaden +{p}% (5s)"});
+// [STY-14] 대사 정본 정합 묶음 A (번역대상 No.3473~3482 신규분)
+Object.assign(_DE,{"썩은 숲은 아직 끝나지 않았다.":"Der Faulige Wald ist noch nicht zu Ende.","…썩은 숲을 벗어났다. 위는 더 지독할 거다.":"…Wir haben den Fauligen Wald hinter uns. Weiter oben wird es schlimmer.","살았어! 반이나 올라왔어!":"Geschafft! Halbwegs oben!"," 돌파!":" durchbrochen!","킬루":"Killu","화염의 군주야. 빙결 무기로 꺼 버려.":"Der Herr der Flammen. Lösch ihn mit Frost.","…마지막이다. 여신도 더는 도와줄 수 없어.":"…Das ist der letzte. Selbst die Göttin kann jetzt nicht mehr helfen.","…새 한 마리 안 우네. 숲이 다 먹었어.":"…Kein einziger Vogel. Der Wald hat sie alle gefressen.","위층이 기다린다...":"Die Ebene darüber wartet...","위층으로 ▶":"Aufsteigen ▶"});
 // [I18N-FILL] lang 전수 감사 — 누락·한글 잔존 보충 (2026-10-28, 번역대상 No.3389~3468)
 Object.assign(_DE,{"속성방어결정":"Elem.-Vert.-Kristall","🔨 불꽃칼날!":"🔨 Flammenklinge!","⚡불꽃칼날!":"⚡Flammenklinge!","🗡 불꽃칼날!":"🗡 Flammenklinge!","네임드":"Benannt","맵과 움직임 준비 중...":"Karte und Bewegung werden vorbereitet...","시작 화면 준비 중...":"Startansicht wird vorbereitet...","미장착":"Nicht angelegt","홈 ":"Sockel ","호환되지 않음":"Inkompatibel","장비 부위":"Ausrüstung","장착 ":"Eingesetzt ","장착 중: ":"Angelegt: ","장착할 빈 홈 선택":"Leeren Sockel wählen","장착 중인 장비에 호환되는 빈 홈이 없습니다.":"Deine Ausrüstung hat keine kompatiblen leeren Sockel.","빈 홈":"Leerer Sockel","호환":"Passt","포탈 A 설치 — 다른 곳에서 P를 눌러 포탈 B 설치":"Portal A platziert — drücke P an anderer Stelle, um Portal B zu platzieren","포탈 간격이 너무 가깝습니다":"Die Portale sind zu nah beieinander","포탈 B 설치 완료 — 가까이서 R을 눌러 이동":"Portal B bereit — nähere dich und drücke R zum Reisen","포탈 이동":"Portalreise","물리탄 차징 · E로 패링":"PHYSISCHES GESCHOSS LÄDT · PARIERE MIT E","⚡ 다시 눌러 궤적 추격!":"⚡ Erneut drücken zum Verfolgen!","⚡ 추적전격!":"⚡ Klingenjagd!","쿵!":"STAMPF!","해제 — 가방으로 이동":"entfernt — zurück in den Rucksack","전투 기록 · 스킬 해석":"KAMPFPROTOKOLL · FERTIGKEITENKODEX","합체 설계도":"FUSIONSPLÄNE","스킬을 선택하면 상세 효과와 연결된 합체식을 볼 수 있습니다. 아래 목록에서 재료 스킬을 바로 찾을 수 있습니다.":"Wähle eine Fertigkeit, um ihre Effekte und Fusionsrezepte zu sehen. Wähle unten eine Zutat, um sie zu finden.","연결된 합체":"VERWANDTE FUSIONEN","합체 도감":"FUSIONSKODEX","연결된 합체가 없습니다.":"Keine verknüpfte Fusion.","재료 확인":"ZUTATEN","추적전격 [합체]":"Klingenjagd [Fusion]","추적칼날 종료 후 0.5초 안에 같은 스킬 키를 다시 누르면 칼날 궤적을 따라 전격이동. 경로의 적마다 칼날 피해를 1회 추가. 재입력은 자원 소모 없음.":"Drückst du dieselbe Fertigkeitstaste innerhalb von 0.5s nach dem Ende der Verfolgerklinge erneut, führst du einen Blitzschritt entlang ihrer Flugbahn aus. Jeder Gegner auf dem Weg erleidet einmal zusätzlich Klingenschaden. Die erneute Eingabe kostet keine Ressourcen.","리플레이 보기":"Wiederholung ansehen","벤치 미실시":"Bench übersprungen","유골함 정보":"Informationen zur Knochenurne","아이템 또는 유골에 마우스를 올려 정보를 확인하세요":"Fahre mit der Maus über einen Gegenstand oder ein Gebein, um Details zu sehen","휠: 상세 스크롤":"Mausrad: Details scrollen","장착 아이템 비교":"Ausrüstungsvergleich","옵션 비교":"Effekte vergleichen","현재 장착 아이템":"Aktuell angelegter Gegenstand","수치 차이 전체 보기":"Alle Wertunterschiede anzeigen","가방 아이템":"Rucksack-Gegenstand","선택한 가방 아이템":"Ausgewählter Rucksack-Gegenstand","장비 기록":"AUSRÜSTUNGSPROTOKOLL","현재 전투 구성":"Aktuelles Loadout","장비나 가방 아이템을 가리키면 이곳에서 옵션과 비교 정보를 확인합니다.":"Fahre mit der Maus über Ausrüstung oder einen Rucksack-Gegenstand, um hier Effekte und Vergleiche zu sehen.","추가 효과":"Extra","장착 목록":"ANGELEGTE GEGENSTÄNDE","빈 칸":"Leer","치명 · 위력":"Kritisch · Kraft","공격 위력":"Angriffskraft","크기 · 이동속도":"Größe · Bewegungsgeschw.","선대의 유골":"Ahnen-Gebein","위력 ":"Kraft ","우클릭하면 가방으로 해제됩니다.":"Rechtsklick, um es zurück in den Rucksack zu legen.","유골을 획득하면 이 부위에 등록됩니다.":"Sammle ein Gebein, um dieses Teil zu registrieren.","선대의 유골 콜렉션":"Ahnen-Gebeinsammlung","수집 ":"Gesammelt ","소환 해금":"Beschwörung freigeschaltet","유골함 장착 필요":"Knochenurne anlegen","유골 수집 중":"Gebeine werden gesammelt","전대 소환 스킬로 불러낼 수 있습니다.":"Nutze die Ahnenbeschwörung, um den Ahnen zu rufen.","네 부위를 모두 모으면 소환이 해금됩니다.":"Sammle alle vier Teile, um die Beschwörung freizuschalten.","부위를 선택하면 등급과 성장 효과를 확인할 수 있습니다.":"Wähle ein Gebein, um Seltenheit und Wachstumseffekt zu sehen.","첫 유골 획득 시 유골함 자동 지급":"Mit deinem ersten Gebein erhältst du eine Knochenurne","선택 유골 해제":"Ausgewähltes Gebein entfernen","유골함 해제":"Knochenurne ablegen","유골 우클릭 또는 선택 후 해제 · 해제한 유골은 가방으로 이동":"Rechtsklick auf ein Gebein oder Entfernen wählen · Das Gebein kommt zurück in den Rucksack","전대 소환 스킬로 전장에 강림합니다.":"Nutze die Ahnenbeschwörung, um diesen Ahnen zu rufen.","네 부위를 모으면 전대 소환이 해금됩니다.":"Sammle alle vier Gebeine, um diesen Ahnen freizuschalten.","혈안탄 예고 · 물리탄 · E 패링":"BLUTAUGEN-WARNUNG · PHYSISCH · PARIERE MIT E","스킬 합성 랩 — 저장되지 않습니다 (새로고침하면 처음 상태)":"Fertigkeitsschmiede-Labor — nichts wird gespeichert (zum Zurücksetzen neu laden)","보조무기":"Nebenhand"});
 // [I18N-FILL] lang 전수 감사 2차 — 유물·능력치·추천빌드·스킬 설명 쌍 보충 (2026-10-28, 번역대상 No.3500~3587)

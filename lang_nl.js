@@ -1126,7 +1126,7 @@ const _NL={
 '사슬이 살을 뚫었어. 끌고 와.':'Het Ketting drong door het vlees. Trek het naar binnen.',
 '…풀차지군. 멀리 던져버려.':'…Volledig opgeladen. Gooi het ver weg.',
 '…빈틈을 그대로 빠져나갔다.':'…Gleed direct door de opening.',
-'…일반 잡몹이 아니야. 모디파이어 붙었군.':'…Geen gewone vijand. Het heeft een modifier.',
+"…보통 놈이 아니야. 악의가 덧씌워졌군.":"…Geen gewone. Kwaadaardigheid kleeft aan hem.",
 '엘리트 하나 처리.':'Elite neer.',
 '…큰 놈이다. 일반 잡몹 정리부터.':'…Een grote. Ruim de gewone vijanden eerst op.',
 '미니보스 처리. 다음 길로.':'Mini-boss neer. Op naar het volgende pad.',
@@ -1137,7 +1137,7 @@ const _NL={
 '…죽었다 살아났네. 여신은 너를 포기 안 했어.':'…Gestorven en teruggekeerd. De godin gaf je niet op.',
 '…또야? 패턴 좀 외워!':'…Weer? Leer het patroon!',
 '…한 번도 안 죽고. 그건 진짜 실력이야.':'…Geen enkele keer gestorven. Dat is echte vaardigheid.',
-'…ACT1을 끝냈다. 진짜 시작은 여기서부터야.':'…ACT1 klaar. De echte start is hier.',
+"…네 층을 넘었다. 진짜 시작은 여기서부터야.":"…Vier lagen achter ons. De echte start is hier.",
 '모든 보스를 무너뜨렸다. 너는 지옥의 일부야.':'Alle bazen gevallen. Je bent een deel van de hel.',
 '…30초. 너 진짜 미쳤구나.':'…30 seconden. Je bent echt gek.',
 '…빠르군. 효율적이야.':'…Snel. Efficiënt.',
@@ -1167,7 +1167,7 @@ const _NL={
 '50명! 학살자야!':'50 kills! Slachter!',
 '5단!! 진짜 게이머 인증!':'Moeilijkheid 5!! Echte gamer gecertificeerd!',
 '7단!! 다른 사람들 이 정도 못 와!':'Moeilijkheid 7!! Anderen komen niet zo ver!',
-'ACT1 완주! 우리가 진짜 해냈어!':'ACT 1 voltooid! We hebben het echt gedaan!',
+"네 층 돌파! 우리가 진짜 해냈어!":"Vier lagen gehaald! We hebben het echt gedaan!",
 'Ctrl 얼음보주로 탈출하라.':'Ctrl — ontsnap met IJsbol.',
 'Ctrl 유령걸음으로 탈출하라.':'Ctrl — ontsnap met Geestenstap.',
 'J키! 패시브 강해져!':'Toets C! Passives worden sterker!',
@@ -1204,11 +1204,11 @@ const _NL={
 '다음엔 죽지 마!':'Stier de volgende keer niet!',
 '소환수 왔어! 먼저 처리해야 해!':'Oproepen! Ruim ze eerst op!',
 '스킬 없으면 방향키 연타뿐이야.':'Geen vaardigheden? Spam gewoon pijltjestoetsen.',
-'신기록!! 스트리머한테 보내!':'Nieuw record!! Stuur naar streamer!',
+"신기록!! 이건 기억해 둬야 해!":"Nieuw record!! Deze moeten we onthouden!",
 '아이템 넘쳐! 우리가 주워줄게!':'Tas vol! Wij rapen voor jou op!',
 '안 죽고 깼어! 진짜 천재 맞네!':'Geen dood clear! Echte genie!',
 '앞으로 가자~':'Vooruit~',
-'우리가 해냈어! 다음 챕터 가자!':'We hebben het gedaan! Volgend hoofdstuk!','핵터 니가 진짜 해냈구나, 여왕님이 기뻐하시겠어!':'Hector, het is je echt gelukt! De Koningin zal blij zijn!',
+'우리가 해냈어! 다음 챕터 가자!':'We hebben het gedaan! Volgend hoofdstuk!',"해냈어! 여신님이 기뻐하시겠어!":"Je hebt het gedaan! De godin zal blij zijn!",
 '일반 모드! 편하게 즐기자!':'Normale modus! Geniet rustig!',
 '자원이 반이다. F키로 회복해.':'Middelen half. F om te herstellen.',
 '잡힌다! 옆으로 빠져!':'Gegrepen! Ontwijken opzij!',
@@ -2276,7 +2276,7 @@ const _NL={
 '그렇게 잘하다가!! 아까워 죽겠어!':"Je deed het zo goed!! Wat zonde!",
 '…지옥에 망자 하나 더 늘릴 셈이야?':"…Wil je de hel nog een lijk schenken?",
 '그런 소리 마! 얜 아직 안 죽었어! 일어나!':"Zeg dat niet! Deze is nog niet dood! Sta op!",
-'…여왕님이 실망하시겠군.':"…De Koningin zal teleurgesteld zijn.",
+"…여신님이 실망하시겠군.":"…De godin zal teleurgesteld zijn.",
 '실망은 무슨! 다시 일어나면 되잖아, 얼른!':"Teleurgesteld, welnee! Sta gewoon weer op – kom op!",
 '잠은 집에 가서 자. …일어나.':"Slaap maar als je thuis bent. …Sta op.",
 '여기서 자면 진짜 집 못 가! 얼른 일어나!':"Val je hier in slaap, dan kom je nooit thuis! Sta op!",
@@ -3977,6 +3977,8 @@ Object.assign(_NL,{"…달아났다. 숲 깊은 곳으로.":"…Hij is gevlucht.
 Object.assign(_NL,{"구르기 (방향키 +)":"Rol (pijltjestoetsen +)","방향키+Space 구르기":"pijltjestoetsen+Space Rol","방향키+Space! 굴러서 탈출해!":"pijltjestoetsen+Space! Rol eruit!","구르기는 키보드 키로 지정하세요.":"Wijs Rol toe aan een toetsenbordtoets.","전격이동은 구르기(방향키 + Space)로 바뀌었습니다. 투자한 스킬 포인트는 환급됩니다.":"Bliksembeweging is vervangen door Rol (pijltjestoetsen + Space). Geïnvesteerde vaardigheidspunten worden terugbetaald."});
 // [ROLL] u_n02 경로 약화 문구에 구르기 추가 (번역대상 No.3377)
 Object.assign(_NL,{"구르기·전격이동 경로의 적에게 약화 — 받는 피해 +{p}% (5초)":"Verzwakt vijanden op het pad van Rol en Bliksemstap — ontvangen schade +{p}% (5s)"});
+// [STY-14] 대사 정본 정합 묶음 A (번역대상 No.3473~3482 신규분)
+Object.assign(_NL,{"썩은 숲은 아직 끝나지 않았다.":"Het Verrotte Bos is nog niet voorbij.","…썩은 숲을 벗어났다. 위는 더 지독할 거다.":"…We hebben het Verrotte Bos achter ons gelaten. Hoger wordt het erger.","살았어! 반이나 올라왔어!":"We hebben het gehaald! Halverwege omhoog!"," 돌파!":" doorbroken!","킬루":"Killu","화염의 군주야. 빙결 무기로 꺼 버려.":"De heer van de vlammen. Blus hem met vorst.","…마지막이다. 여신도 더는 도와줄 수 없어.":"…Dit is de laatste. Zelfs de godin kan nu niet meer helpen.","…새 한 마리 안 우네. 숲이 다 먹었어.":"…Geen enkele vogel. Het bos heeft ze allemaal opgegeten.","위층이 기다린다...":"De laag erboven wacht...","위층으로 ▶":"Omhoog ▶"});
 // [I18N-FILL] lang 전수 감사 — 누락·한글 잔존 보충 (2026-10-28, 번역대상 No.3389~3468)
 Object.assign(_NL,{"속성방어결정":"Elem. DEF Kristal","🔨 불꽃칼날!":"🔨 Vlammenkling!","⚡불꽃칼날!":"⚡Vlammenkling!","🗡 불꽃칼날!":"🗡 Vlammenkling!","네임드":"Genoemd","맵과 움직임 준비 중...":"Kaart en beweging voorbereiden...","시작 화면 준비 중...":"Startscherm voorbereiden...","미장착":"Niet uitgerust","홈 ":"Vatting ","호환되지 않음":"Incompatibel","장비 부위":"Uitrusting","장착 ":"Geplaatst ","장착 중: ":"Uitgerust: ","장착할 빈 홈 선택":"Kies een lege vatting","장착 중인 장비에 호환되는 빈 홈이 없습니다.":"Je uitrusting heeft geen compatibele lege vattingen.","빈 홈":"Lege vatting","호환":"Past","포탈 A 설치 — 다른 곳에서 P를 눌러 포탈 B 설치":"Portal A geplaatst — druk elders op P om Portal B te plaatsen","포탈 간격이 너무 가깝습니다":"De portals staan te dicht bij elkaar","포탈 B 설치 완료 — 가까이서 R을 눌러 이동":"Portal B klaar — ga erheen en druk op R om te reizen","포탈 이동":"Portalreis","물리탄 차징 · E로 패링":"FYSIEK PROJECTIEL LAADT OP · PAREER MET E","⚡ 다시 눌러 궤적 추격!":"⚡ Druk opnieuw om te volgen!","⚡ 추적전격!":"⚡ Klingjacht!","쿵!":"STAMP!","해제 — 가방으로 이동":"verwijderd — teruggestuurd naar de tas","전투 기록 · 스킬 해석":"GEVECHTSLOGBOEK · VAARDIGHEDENCODEX","합체 설계도":"FUSIEBLAUWDRUKKEN","스킬을 선택하면 상세 효과와 연결된 합체식을 볼 수 있습니다. 아래 목록에서 재료 스킬을 바로 찾을 수 있습니다.":"Kies een vaardigheid om de effecten en fusierecepten te bekijken. Kies hieronder een ingrediënt om het te vinden.","연결된 합체":"GERELATEERDE FUSIES","합체 도감":"FUSIECODEX","연결된 합체가 없습니다.":"Geen gekoppelde fusie.","재료 확인":"INGREDIËNTEN","추적전격 [합체]":"Klingjacht [Fusie]","추적칼날 종료 후 0.5초 안에 같은 스킬 키를 다시 누르면 칼날 궤적을 따라 전격이동. 경로의 적마다 칼날 피해를 1회 추가. 재입력은 자원 소모 없음.":"Druk binnen 0.5s nadat de achtervolgende kling eindigt opnieuw op dezelfde vaardigheidstoets om een Bliksemdash langs zijn pad uit te voeren. Elke vijand op het pad krijgt nog één keer klingschade. Herhalen kost geen middelen.","리플레이 보기":"Herhaling bekijken","벤치 미실시":"Bench overgeslagen","유골함 정보":"Informatie over de beenderurn","아이템 또는 유골에 마우스를 올려 정보를 확인하세요":"Beweeg de muis over een item of been voor details","휠: 상세 스크롤":"Scrollwiel: details scrollen","장착 아이템 비교":"Uitrustingsvergelijking","옵션 비교":"Effecten vergelijken","현재 장착 아이템":"Momenteel uitgerust item","수치 차이 전체 보기":"Alle statistiekverschillen bekijken","가방 아이템":"Tas-item","선택한 가방 아이템":"Geselecteerd tas-item","장비 기록":"UITRUSTINGSLOGBOEK","현재 전투 구성":"Huidige loadout","장비나 가방 아이템을 가리키면 이곳에서 옵션과 비교 정보를 확인합니다.":"Beweeg de muis over uitrusting of een tas-item om hier effecten en vergelijkingen te zien.","추가 효과":"Extra","장착 목록":"UITGERUSTE ITEMS","빈 칸":"Leeg","치명 · 위력":"Kritisch · Kracht","공격 위력":"Aanvalskracht","크기 · 이동속도":"Grootte · Bewegingssnelheid","선대의 유골":"Voorouderlijk been","위력 ":"Kracht ","우클릭하면 가방으로 해제됩니다.":"Rechtsklik om het terug in je tas te doen.","유골을 획득하면 이 부위에 등록됩니다.":"Verzamel een been om dit deel te registreren.","선대의 유골 콜렉션":"Collectie Voorouderlijke Beenderen","수집 ":"Verzameld ","소환 해금":"Oproep ontgrendeld","유골함 장착 필요":"Beenderurn uitrusten","유골 수집 중":"Beenderen verzamelen","전대 소환 스킬로 불러낼 수 있습니다.":"Gebruik Voorouder-oproep om de voorouder op te roepen.","네 부위를 모두 모으면 소환이 해금됩니다.":"Verzamel alle vier delen om de oproep te ontgrendelen.","부위를 선택하면 등급과 성장 효과를 확인할 수 있습니다.":"Selecteer een been om de zeldzaamheid en het groeieffect te bekijken.","첫 유골 획득 시 유골함 자동 지급":"Je krijgt een beenderurn bij je eerste been","선택 유골 해제":"Geselecteerd been verwijderen","유골함 해제":"Beenderurn verwijderen","유골 우클릭 또는 선택 후 해제 · 해제한 유골은 가방으로 이동":"Rechtsklik op een been of kies Verwijderen · Het been gaat terug naar je tas","전대 소환 스킬로 전장에 강림합니다.":"Gebruik Voorouder-oproep om deze voorouder op te roepen.","네 부위를 모으면 전대 소환이 해금됩니다.":"Verzamel alle vier beenderen om deze voorouder te ontgrendelen.","혈안탄 예고 · 물리탄 · E 패링":"BLOEDOOG-WAARSCHUWING · FYSIEK · PAREER MET E","스킬 합성 랩 — 저장되지 않습니다 (새로고침하면 처음 상태)":"Vaardighedensmidse-lab — er wordt niets opgeslagen (herlaad om te resetten)","보조무기":"Secundair wapen"});
 // [I18N-FILL] lang 전수 감사 2차 — 유물·능력치·추천빌드·스킬 설명 쌍 보충 (2026-10-28, 번역대상 No.3500~3587)

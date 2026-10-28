@@ -1125,7 +1125,7 @@ const _DA={
 '사슬이 살을 뚫었어. 끌고 와.':'Kædeen trængte gennem kødet. Træk den ind.',
 '…풀차지군. 멀리 던져버려.':'…Fuldt opladet. Kast den langt.',
 '…빈틈을 그대로 빠져나갔다.':'…Smuttede direkte igennem åbningen.',
-'…일반 잡몹이 아니야. 모디파이어 붙었군.':'…Ikke en normal fjende. Den har en modifikator.',
+"…보통 놈이 아니야. 악의가 덧씌워졌군.":"…Ikke en almindelig en. Ondskab klistrer til den.",
 '엘리트 하나 처리.':'Elite ned.',
 '…큰 놈이다. 일반 잡몹 정리부터.':'…Stor en. Ryd de normale fjender først.',
 '미니보스 처리. 다음 길로.':'Mini-boss ned. Videre til næste vej.',
@@ -1136,7 +1136,7 @@ const _DA={
 '…죽었다 살아났네. 여신은 너를 포기 안 했어.':'…Døde og kom tilbage. Gudinden opgav dig ikke.',
 '…또야? 패턴 좀 외워!':'…Igen? Lær mønsteret!',
 '…한 번도 안 죽고. 그건 진짜 실력이야.':'…Ikke død én gang. Det er rigtig dygtighed.',
-'…ACT1을 끝냈다. 진짜 시작은 여기서부터야.':'…ACT1 færdig. Den rigtige start er herfra.',
+"…네 층을 넘었다. 진짜 시작은 여기서부터야.":"…Fire lag er bag os. Den rigtige start er herfra.",
 '모든 보스를 무너뜨렸다. 너는 지옥의 일부야.':'Alle bosser nedlagt. Du er en del af helvede.',
 '…30초. 너 진짜 미쳤구나.':'…30 sekunder. Du er virkelig sindssyg.',
 '…빠르군. 효율적이야.':'…Hurtig. Effektiv.',
@@ -1166,7 +1166,7 @@ const _DA={
 '50명! 학살자야!':'50 kills! Slagter!',
 '5단!! 진짜 게이머 인증!':'Sværhedsgrad 5!! Ægte gamer certificeret!',
 '7단!! 다른 사람들 이 정도 못 와!':'Sværhedsgrad 7!! Andre når ikke så langt!',
-'ACT1 완주! 우리가 진짜 해냈어!':'AKT 1 gennemført! Vi gjorde det virkelig!',
+"네 층 돌파! 우리가 진짜 해냈어!":"Fire lag overstået! Vi gjorde det virkelig!",
 'Ctrl 얼음보주로 탈출하라.':'Ctrl — flygt med Iskugle.',
 'Ctrl 유령걸음으로 탈출하라.':'Ctrl — flygt med Spøgelsesvandring.',
 'J키! 패시브 강해져!':'Tast J! Passive bliver stærkere!',
@@ -1203,11 +1203,11 @@ const _DA={
 '다음엔 죽지 마!':'Dø ikke næste gang!',
 '소환수 왔어! 먼저 처리해야 해!':'Besværgelser! Ryd dem først!',
 '스킬 없으면 방향키 연타뿐이야.':'Ingen færdigheder? Bare spam piletaster.',
-'신기록!! 스트리머한테 보내!':'Ny rekord!! Send til streamer!',
+"신기록!! 이건 기억해 둬야 해!":"Ny rekord!! Den her skal vi huske!",
 '아이템 넘쳐! 우리가 주워줄게!':'Tasken fuld! Vi samler op for dig!',
 '안 죽고 깼어! 진짜 천재 맞네!':'Klaret uden dødsfald! Ægte geni!',
 '앞으로 가자~':'Fremad~',
-'우리가 해냈어! 다음 챕터 가자!':'Vi klarede det! Næste kapitel!','핵터 니가 진짜 해냈구나, 여왕님이 기뻐하시겠어!':'Hector, du klarede det virkelig! Dronningen vil blive glad!',
+'우리가 해냈어! 다음 챕터 가자!':'Vi klarede det! Næste kapitel!',"해냈어! 여신님이 기뻐하시겠어!":"Du klarede det! Gudinden vil blive glad!",
 '일반 모드! 편하게 즐기자!':'Normal tilstand! Tag det roligt!',
 '자원이 반이다. F키로 회복해.':'Ressourcer halvt. Tryk F for at komme dig.',
 '잡힌다! 옆으로 빠져!':'Fanges! Undvig til siden!',
@@ -2276,7 +2276,7 @@ const _DA={
 '그렇게 잘하다가!! 아까워 죽겠어!':"Du gik jo så godt!! Sikke spild!",
 '…지옥에 망자 하나 더 늘릴 셈이야?':"…Vil du skænke helvede endnu et lig?",
 '그런 소리 마! 얜 아직 안 죽었어! 일어나!':"Sig ikke det! Den her er ikke død endnu! Rejs dig!",
-'…여왕님이 실망하시겠군.':"…Dronningen bliver skuffet.",
+"…여신님이 실망하시겠군.":"…Gudinden vil blive skuffet.",
 '실망은 무슨! 다시 일어나면 되잖아, 얼른!':"Skuffet, vås! Rejs dig bare igen – kom nu!",
 '잠은 집에 가서 자. …일어나.':"Sov, når du kommer hjem. …Rejs dig.",
 '여기서 자면 진짜 집 못 가! 얼른 일어나!':"Falder du i søvn her, kommer du aldrig hjem! Rejs dig!",
@@ -3972,6 +3972,8 @@ Object.assign(_DA,{"…달아났다. 숲 깊은 곳으로.":"…Den flygtede. Dy
 Object.assign(_DA,{"구르기 (방향키 +)":"Rul (piletaster +)","방향키+Space 구르기":"piletaster+Space Rul","방향키+Space! 굴러서 탈출해!":"piletaster+Space! Rul væk!","구르기는 키보드 키로 지정하세요.":"Tildel Rul til en tast på tastaturet.","전격이동은 구르기(방향키 + Space)로 바뀌었습니다. 투자한 스킬 포인트는 환급됩니다.":"Lynbevægelse er erstattet af Rul (piletaster + Space). Investerede færdighedspoint refunderes."});
 // [ROLL] u_n02 경로 약화 문구에 구르기 추가 (번역대상 No.3377)
 Object.assign(_DA,{"구르기·전격이동 경로의 적에게 약화 — 받는 피해 +{p}% (5초)":"Svækker fjender i banen for Rul og Lynskridt — modtaget skade +{p}% (5s)"});
+// [STY-14] 대사 정본 정합 묶음 A (번역대상 No.3473~3482 신규분)
+Object.assign(_DA,{"썩은 숲은 아직 끝나지 않았다.":"Den Rådne Skov er ikke slut endnu.","…썩은 숲을 벗어났다. 위는 더 지독할 거다.":"…Vi forlod den Rådne Skov. Det bliver værre længere oppe.","살았어! 반이나 올라왔어!":"Vi klarede det! Halvvejs op!"," 돌파!":" gennembrudt!","킬루":"Killu","화염의 군주야. 빙결 무기로 꺼 버려.":"Flammens herre. Sluk den med frost.","…마지막이다. 여신도 더는 도와줄 수 없어.":"…Det her er den sidste. Selv Gudinden kan ikke hjælpe nu.","…새 한 마리 안 우네. 숲이 다 먹었어.":"…Ikke en eneste fugl. Skoven har ædt dem alle.","위층이 기다린다...":"Laget ovenfor venter...","위층으로 ▶":"Opad ▶"});
 // [I18N-FILL] lang 전수 감사 — 누락·한글 잔존 보충 (2026-10-28, 번역대상 No.3389~3468)
 Object.assign(_DA,{"속성방어결정":"Elementforsvar Krystal","🔨 불꽃칼날!":"🔨 Flammeklinge!","⚡불꽃칼날!":"⚡Flammeklinge!","🗡 불꽃칼날!":"🗡 Flammeklinge!","네임드":"Navngiven","맵과 움직임 준비 중...":"Forbereder kort og bevægelse...","시작 화면 준비 중...":"Forbereder startskærmen...","미장착":"Ikke udrustet","홈 ":"Sokkel ","호환되지 않음":"Inkompatibel","장비 부위":"Udstyrspladser","장착 ":"Indsat ","장착 중: ":"Udrustet: ","장착할 빈 홈 선택":"Vælg en tom sokkel","장착 중인 장비에 호환되는 빈 홈이 없습니다.":"Dit udrustede udstyr har ingen kompatible tomme sokler.","빈 홈":"Tom sokkel","호환":"Passer","포탈 A 설치 — 다른 곳에서 P를 눌러 포탈 B 설치":"Portal A placeret — tryk P et andet sted for at placere Portal B","포탈 간격이 너무 가깝습니다":"Portalerne er for tæt på hinanden","포탈 B 설치 완료 — 가까이서 R을 눌러 이동":"Portal B klar — gå tæt på og tryk R for at rejse","포탈 이동":"Portalrejse","물리탄 차징 · E로 패링":"OPLADER FYSISK PROJEKTIL · PARÉR MED E","⚡ 다시 눌러 궤적 추격!":"⚡ Tryk igen for at forfølge!","⚡ 추적전격!":"⚡ Klingejagt!","쿵!":"STAMP!","해제 — 가방으로 이동":"fjernet — returneret til tasken","전투 기록 · 스킬 해석":"KAMPLOG · FÆRDIGHEDSKODEKS","합체 설계도":"FUSIONSPLANER","스킬을 선택하면 상세 효과와 연결된 합체식을 볼 수 있습니다. 아래 목록에서 재료 스킬을 바로 찾을 수 있습니다.":"Vælg en færdighed for at se dens effekter og fusionsopskrifter. Vælg en ingrediens nedenfor for at finde den.","연결된 합체":"RELATEREDE FUSIONER","합체 도감":"FUSIONSKODEKS","연결된 합체가 없습니다.":"Ingen tilknyttet fusion.","재료 확인":"INGREDIENSER","추적전격 [합체]":"Klingejagt [Fusion]","추적칼날 종료 후 0.5초 안에 같은 스킬 키를 다시 누르면 칼날 궤적을 따라 전격이동. 경로의 적마다 칼날 피해를 1회 추가. 재입력은 자원 소모 없음.":"Tryk på samme færdighedstast igen inden for 0.5s efter at sporingsklingen er slut for at bruge Lynstep langs dens bane. Hver fjende på banen tager klingeskade endnu en gang. Ingen ekstra ressourceomkostning.","리플레이 보기":"Se gentagelse","벤치 미실시":"Benchmark sprunget over","유골함 정보":"Knogleurne-information","아이템 또는 유골에 마우스를 올려 정보를 확인하세요":"Hold musen over en genstand eller knogle for at se detaljer.","휠: 상세 스크롤":"Hjul: rul detaljer","장착 아이템 비교":"Udstyrssammenligning","옵션 비교":"Sammenlign effekter","현재 장착 아이템":"Nuværende udrustet genstand","수치 차이 전체 보기":"Se alle statforskelle","가방 아이템":"Taskegenstand","선택한 가방 아이템":"Valgt taskegenstand","장비 기록":"UDSTYRSLOG","현재 전투 구성":"Nuværende opsætning","장비나 가방 아이템을 가리키면 이곳에서 옵션과 비교 정보를 확인합니다.":"Hold musen over udstyr eller en taskegenstand for at se effekter og sammenligninger her.","추가 효과":"Ekstra","장착 목록":"UDRUSTEDE GENSTANDE","빈 칸":"Tom","치명 · 위력":"Kritisk · Kraft","공격 위력":"Angrebskraft","크기 · 이동속도":"Størrelse · Bevægelseshastighed","선대의 유골":"Forfædrenes knogler","위력 ":"Kraft ","우클릭하면 가방으로 해제됩니다.":"Højreklik for at lægge den tilbage i tasken.","유골을 획득하면 이 부위에 등록됩니다.":"Saml en knogle for at registrere denne del.","선대의 유골 콜렉션":"Forfædrenes Knoglesamling","수집 ":"Samlet ","소환 해금":"Påkaldelse låst op","유골함 장착 필요":"Udrust knogleurne","유골 수집 중":"Samler knogler","전대 소환 스킬로 불러낼 수 있습니다.":"Brug Forfader-påkaldelse til at kalde forfaderen frem.","네 부위를 모두 모으면 소환이 해금됩니다.":"Saml alle fire dele for at låse påkaldelsen op.","부위를 선택하면 등급과 성장 효과를 확인할 수 있습니다.":"Vælg en del for at se dens sjældenhed og vækstvirkning.","첫 유골 획득 시 유골함 자동 지급":"Du får en knogleurne med din første knogle","선택 유골 해제":"Fjern valgt knogle","유골함 해제":"Fjern knogleurne","유골 우클릭 또는 선택 후 해제 · 해제한 유골은 가방으로 이동":"Højreklik på en knogle eller vælg Fjern · Knoglen lægges tilbage i tasken","전대 소환 스킬로 전장에 강림합니다.":"Brug Forfader-påkaldelse til at kalde denne forfader frem.","네 부위를 모으면 전대 소환이 해금됩니다.":"Saml alle fire knogler for at låse denne forfader op.","혈안탄 예고 · 물리탄 · E 패링":"ADVARSEL: BLODØJE · FYSISK · PARÉR MED E","스킬 합성 랩 — 저장되지 않습니다 (새로고침하면 처음 상태)":"Færdighedssmedje-lab — intet gemmes (genindlæs for at nulstille)","보조무기":"Sekundært våben"});
 // [I18N-FILL] lang 전수 감사 2차 — 유물·능력치·추천빌드·스킬 설명 쌍 보충 (2026-10-28, 번역대상 No.3500~3587)

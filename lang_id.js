@@ -1498,7 +1498,7 @@ const _ID={
 '사슬이 살을 뚫었어. 끌고 와.':'Rantai menembus daging. Tarik masuk.',
 '…풀차지군. 멀리 던져버려.':'…Penuh charge. Lempar jauh.',
 '…빈틈을 그대로 빠져나갔다.':'…Lolos melewati celah.',
-'…일반 잡몹이 아니야. 모디파이어 붙었군.':'…Bukan monster biasa. Ada modifier.',
+"…보통 놈이 아니야. 악의가 덧씌워졌군.":"…Bukan yang biasa. Kebencian menempel padanya.",
 '엘리트 하나 처리.':'Satu elite dikalahkan.',
 '…큰 놈이다. 일반 잡몹 정리부터.':'…Yang besar itu. Bersihkan yang biasa dulu.',
 '미니보스 처리. 다음 길로.':'Mini-bos dikalahkan. Lanjut jalan.',
@@ -1509,7 +1509,7 @@ const _ID={
 '…죽었다 살아났네. 여신은 너를 포기 안 했어.':'…Mati dan kembali. Dewi tidak menyerah padamu.',
 '…또야? 패턴 좀 외워!':'…Lagi? Hafalkan polanya!',
 '…한 번도 안 죽고. 그건 진짜 실력이야.':'…Tidak pernah mati. Itu kemampuan sejati.',
-'…ACT1을 끝냈다. 진짜 시작은 여기서부터야.':'…ACT1 selesai. Awal yang sebenarnya di sini.',
+"…네 층을 넘었다. 진짜 시작은 여기서부터야.":"…Empat lapisan sudah terlewati. Awal yang sebenarnya dari sini.",
 '모든 보스를 무너뜨렸다. 너는 지옥의 일부야.':'Semua bos jatuh. Kamu adalah bagian dari Neraka.',
 '…30초. 너 진짜 미쳤구나.':'…30 detik. Kamu benar-benar gila.',
 '…빠르군. 효율적이야.':'…Cepat. Efisien.',
@@ -1539,7 +1539,7 @@ const _ID={
 '50명! 학살자야!':'50 korban! Pembantai!',
 '5단!! 진짜 게이머 인증!':'Kesulitan 5!! Gamer sejati tersertifikasi!',
 '7단!! 다른 사람들 이 정도 못 와!':'Kesulitan 7!! Yang lain tidak sampai sejauh ini!',
-'ACT1 완주! 우리가 진짜 해냈어!':'ACT1 selesai! Kita benar-benar berhasil!',
+"네 층 돌파! 우리가 진짜 해냈어!":"Empat lapisan terlewati! Kita benar-benar berhasil!",
 'Ctrl 얼음보주로 탈출하라.':'Ctrl — kabur dengan Ice Orb.',
 'Ctrl 유령걸음으로 탈출하라.':'Ctrl — kabur dengan Ghost Walk.',
 'J키! 패시브 강해져!':'Tombol C! Pasif makin kuat!',
@@ -1576,11 +1576,11 @@ const _ID={
 '다음엔 죽지 마!':'Jangan mati lagi!',
 '소환수 왔어! 먼저 처리해야 해!':'Monster dipanggil! Bereskan mereka dulu!',
 '스킬 없으면 방향키 연타뿐이야.':'Tanpa skill? Spam tombol panah saja.',
-'신기록!! 스트리머한테 보내!':'Rekor baru!! Kirim ke streamer!',
+"신기록!! 이건 기억해 둬야 해!":"Rekor baru!! Yang ini harus diingat!",
 '아이템 넘쳐! 우리가 주워줄게!':'Tas penuh! Kami yang akan memungut!',
 '안 죽고 깼어! 진짜 천재 맞네!':'Selesai tanpa mati! Jenius sejati!',
 '앞으로 가자~':'Ayo maju~',
-'우리가 해냈어! 다음 챕터 가자!':'Kita berhasil! Chapter berikutnya!','핵터 니가 진짜 해냈구나, 여왕님이 기뻐하시겠어!':'Hector, kau benar-benar berhasil! Sang Ratu pasti senang!',
+'우리가 해냈어! 다음 챕터 가자!':'Kita berhasil! Chapter berikutnya!',"해냈어! 여신님이 기뻐하시겠어!":"Kau berhasil! Dewi akan senang!",
 '일반 모드! 편하게 즐기자!':'Mode normal! Santai saja!',
 '자원이 반이다. F키로 회복해.':'Sumber daya setengah. Tekan F untuk pulih.',
 '잡힌다! 옆으로 빠져!':'Tertangkap! Hindari ke samping!',
@@ -2652,7 +2652,7 @@ const _ID={
 '그렇게 잘하다가!! 아까워 죽겠어!':"Padahal tadi hebat banget!! Sayang banget!",
 '…지옥에 망자 하나 더 늘릴 셈이야?':"...Mau menambah satu mayat lagi di Neraka?",
 '그런 소리 마! 얜 아직 안 죽었어! 일어나!':"Jangan bilang gitu! Dia belum mati! Bangun!",
-'…여왕님이 실망하시겠군.':"...Sang Ratu pasti kecewa.",
+"…여신님이 실망하시겠군.":"…Dewi akan kecewa.",
 '실망은 무슨! 다시 일어나면 되잖아, 얼른!':"Kecewa apanya! Tinggal bangkit lagi, ayo cepat!",
 '잠은 집에 가서 자. …일어나.':"Kalau mau tidur, pulang saja. ...Bangun.",
 '여기서 자면 진짜 집 못 가! 얼른 일어나!':"Ketiduran di sini, kau takkan pernah pulang! Cepat bangun!",
@@ -2825,6 +2825,8 @@ Object.assign(_ID,{"…달아났다. 숲 깊은 곳으로.":"…Dia kabur. Ke da
 Object.assign(_ID,{"구르기 (방향키 +)":"Berguling (tombol panah +)","방향키+Space 구르기":"tombol panah+Space Berguling","방향키+Space! 굴러서 탈출해!":"tombol panah+Space! Berguling untuk kabur!","구르기는 키보드 키로 지정하세요.":"Tetapkan Berguling ke tombol keyboard.","전격이동은 구르기(방향키 + Space)로 바뀌었습니다. 투자한 스킬 포인트는 환급됩니다.":"Langkah Kilat diganti dengan Berguling (tombol panah + Space). Poin skill yang diinvestasikan dikembalikan."});
 // [ROLL] u_n02 경로 약화 문구에 구르기 추가 (번역대상 No.3377)
 Object.assign(_ID,{"구르기·전격이동 경로의 적에게 약화 — 받는 피해 +{p}% (5초)":"Melemahkan musuh di jalur Berguling dan Langkah Kilat — damage diterima +{p}% (5d)"});
+// [STY-14] 대사 정본 정합 묶음 A (번역대상 No.3473~3482 신규분)
+Object.assign(_ID,{"썩은 숲은 아직 끝나지 않았다.":"Hutan Busuk belum berakhir.","…썩은 숲을 벗어났다. 위는 더 지독할 거다.":"…Kita keluar dari Hutan Busuk. Di atas akan lebih buruk.","살았어! 반이나 올라왔어!":"Kita selamat! Sudah setengah jalan naik!"," 돌파!":" ditembus!","킬루":"Killu","화염의 군주야. 빙결 무기로 꺼 버려.":"Penguasa api. Padamkan dengan senjata es.","…마지막이다. 여신도 더는 도와줄 수 없어.":"…Ini yang terakhir. Dewi pun tak bisa membantu lagi.","…새 한 마리 안 우네. 숲이 다 먹었어.":"…Tak ada satu burung pun. Hutan melahap semuanya.","위층이 기다린다...":"Lapisan di atas menunggu...","위층으로 ▶":"Naik ▶"});
 // [I18N-FILL] lang 전수 감사 — 누락·한글 잔존 보충 (2026-10-28, 번역대상 No.3389~3468)
 Object.assign(_ID,{"속성방어결정":"Kristal DEF Elemen","🔨 불꽃칼날!":"🔨 Bilah Api!","⚡불꽃칼날!":"⚡Bilah Api!","🗡 불꽃칼날!":"🗡 Bilah Api!","네임드":"Bernama","맵과 움직임 준비 중...":"Menyiapkan peta dan gerakan...","시작 화면 준비 중...":"Menyiapkan layar awal...","미장착":"Tidak terpasang","홈 ":"Soket ","호환되지 않음":"Tidak cocok","장비 부위":"Bagian Perlengkapan","장착 ":"Terpasang ","장착 중: ":"Terpasang: ","장착할 빈 홈 선택":"Pilih soket kosong untuk dipasang","장착 중인 장비에 호환되는 빈 홈이 없습니다.":"Perlengkapan yang dipakai tidak punya soket kosong yang cocok.","빈 홈":"Soket kosong","호환":"Cocok","포탈 A 설치 — 다른 곳에서 P를 눌러 포탈 B 설치":"Portal A dipasang — tekan P di tempat lain untuk memasang Portal B","포탈 간격이 너무 가깝습니다":"Portal terlalu dekat","포탈 B 설치 완료 — 가까이서 R을 눌러 이동":"Portal B siap — dekati dan tekan R untuk berpindah","포탈 이동":"Perjalanan portal","물리탄 차징 · E로 패링":"PROYEKTIL FISIK DIISI · TANGKIS DENGAN E","⚡ 다시 눌러 궤적 추격!":"⚡ Tekan lagi untuk mengejar!","⚡ 추적전격!":"⚡ Kilat Pengejar!","쿵!":"DUM!","해제 — 가방으로 이동":"dilepas — dipindah ke tas","전투 기록 · 스킬 해석":"CATATAN TEMPUR · KODEKS KEAHLIAN","합체 설계도":"CETAK BIRU FUSI","스킬을 선택하면 상세 효과와 연결된 합체식을 볼 수 있습니다. 아래 목록에서 재료 스킬을 바로 찾을 수 있습니다.":"Pilih keahlian untuk melihat efek detail dan resep fusi terkait. Temukan keahlian bahan langsung dari daftar di bawah.","연결된 합체":"FUSI TERKAIT","합체 도감":"KODEKS FUSI","연결된 합체가 없습니다.":"Tidak ada fusi terkait.","재료 확인":"BAHAN","추적전격 [합체]":"Kilat Pengejar [Fusi]","추적칼날 종료 후 0.5초 안에 같은 스킬 키를 다시 누르면 칼날 궤적을 따라 전격이동. 경로의 적마다 칼날 피해를 1회 추가. 재입력은 자원 소모 없음.":"Tekan lagi tombol keahlian yang sama dalam 0.5 detik setelah bilah pengejar berakhir untuk Langkah Kilat menyusuri lintasan bilah. Setiap musuh di jalur menerima satu kali lagi damage bilah. Input ulang tidak memakai sumber daya.","리플레이 보기":"Lihat ulang","벤치 미실시":"Benchmark dilewati","유골함 정보":"Informasi guci tulang","아이템 또는 유골에 마우스를 올려 정보를 확인하세요":"Arahkan kursor ke item atau tulang untuk melihat info","휠: 상세 스크롤":"Roda: gulir detail","장착 아이템 비교":"Perbandingan perlengkapan","옵션 비교":"Bandingkan efek","현재 장착 아이템":"Item yang sedang dipakai","수치 차이 전체 보기":"Lihat semua perbedaan nilai","가방 아이템":"Item di tas","선택한 가방 아이템":"Item tas yang dipilih","장비 기록":"CATATAN PERLENGKAPAN","현재 전투 구성":"Susunan tempur saat ini","장비나 가방 아이템을 가리키면 이곳에서 옵션과 비교 정보를 확인합니다.":"Arahkan kursor ke perlengkapan atau item tas untuk melihat efek dan perbandingan di sini.","추가 효과":"Tambahan","장착 목록":"ITEM TERPASANG","빈 칸":"Kosong","치명 · 위력":"Kritis · Kekuatan","공격 위력":"Kekuatan serangan","크기 · 이동속도":"Ukuran · Kecepatan gerak","선대의 유골":"Tulang leluhur","위력 ":"Kekuatan ","우클릭하면 가방으로 해제됩니다.":"Klik kanan untuk mengembalikannya ke tas.","유골을 획득하면 이 부위에 등록됩니다.":"Kumpulkan tulang untuk mencatat bagian ini.","선대의 유골 콜렉션":"Koleksi Tulang Leluhur","수집 ":"Terkumpul ","소환 해금":"Pemanggilan terbuka","유골함 장착 필요":"Pasang guci tulang","유골 수집 중":"Mengumpulkan tulang","전대 소환 스킬로 불러낼 수 있습니다.":"Panggil leluhur dengan keahlian Pemanggilan Leluhur.","네 부위를 모두 모으면 소환이 해금됩니다.":"Kumpulkan keempat bagian untuk membuka pemanggilan.","부위를 선택하면 등급과 성장 효과를 확인할 수 있습니다.":"Pilih bagian untuk melihat tingkat dan efek pertumbuhan.","첫 유골 획득 시 유골함 자동 지급":"Guci tulang diberikan otomatis saat tulang pertama didapat","선택 유골 해제":"Lepas tulang terpilih","유골함 해제":"Lepas guci tulang","유골 우클릭 또는 선택 후 해제 · 해제한 유골은 가방으로 이동":"Klik kanan tulang atau pilih lalu lepas · Tulang yang dilepas pindah ke tas","전대 소환 스킬로 전장에 강림합니다.":"Turun ke medan perang lewat keahlian Pemanggilan Leluhur.","네 부위를 모으면 전대 소환이 해금됩니다.":"Kumpulkan keempat bagian untuk membuka Pemanggilan Leluhur.","혈안탄 예고 · 물리탄 · E 패링":"PERINGATAN PROYEKTIL MATA BERDARAH · FISIK · TANGKIS E","스킬 합성 랩 — 저장되지 않습니다 (새로고침하면 처음 상태)":"Lab Tempa Keahlian — tidak disimpan (muat ulang untuk mengatur ulang)"});
 // [I18N-FILL] lang 전수 감사 2차 — 유물·능력치·추천빌드·스킬 설명 쌍 보충 (2026-10-28, 번역대상 No.3500~3587)

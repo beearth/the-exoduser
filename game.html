@@ -8080,7 +8080,6 @@ const _EN={
 '50명! 학살자야!':'50 kills! You\'re a slaughterer!',
 '5단!! 진짜 게이머 인증!':'Diff 5!! True gamer certified!',
 '7단!! 다른 사람들 이 정도 못 와!':'Diff 7!! Others can\'t get this far!',
-'ACT1 완주! 우리가 진짜 해냈어!':'ACT1 complete! We really did it!',
 'Ctrl 얼음보주로 탈출하라.':'Ctrl — escape with Ice Orb.',
 'Ctrl 유령걸음으로 탈출하라.':'Ctrl — escape with Ghost Walk.',
 'J키! 패시브 강해져!':'J key! Passives get stronger!',
@@ -8118,12 +8117,10 @@ const _EN={
 '더블탭 or Shift+방향키! 전격이동으로 탈출해!':'Double-tap or Shift+Dir! Dash to escape!',
 '소환수 왔어! 먼저 처리해야 해!':'Summons incoming! Clear them first!',
 '스킬 없으면 방향키 연타뿐이야.':'No skill? Just spam the arrow keys.',
-'신기록!! 스트리머한테 보내!':'New record!! Send it to a streamer!',
 '아이템 넘쳐! 우리가 주워줄게!':'Bag full! We\'ll pick stuff up for you!',
 '안 죽고 깼어! 진짜 천재 맞네!':'Cleared without dying! Actual genius!',
 '앞으로 가자~':'Let\'s move forward~',
-'우리가 해냈어! 다음 챕터 가자!':'We did it! On to the next chapter!','핵터 니가 진짜 해냈구나, 여왕님이 기뻐하시겠어!':'Hector, you really did it! The Queen will be pleased!',
-'일반 모드! 편하게 즐기자!':'Normal mode! Let\'s take it easy!',
+'우리가 해냈어! 다음 챕터 가자!':'We did it! On to the next chapter!','일반 모드! 편하게 즐기자!':'Normal mode! Let\'s take it easy!',
 '자원이 반이다. F키로 회복해.':'Resources at half. Press F to recover.',
 '잡힌다! 옆으로 빠져!':'Getting grabbed! Step to the side!',
 '장비 분해해! 쓰레기도 악의!':'Dismantle gear! Even junk gives malice!',
@@ -8271,7 +8268,6 @@ const _EN={
 '…풀차지군. 멀리 던져버려.':'...Full charge. Throw it far.',
 '…빈틈을 그대로 빠져나갔다.':'...Slipped right through the gap.',
 // --- Pet dialogue: enemy/elite comments ---
-'…일반 잡몹이 아니야. 모디파이어 붙었군.':'...Not a regular mob. It has a modifier.',
 '엘리트 하나 처리.':'Elite down.',
 '…큰 놈이다. 일반 잡몹 정리부터.':'...Big one. Clear the regular mobs first.',
 '미니보스 처리. 다음 길로.':'Mini-boss down. On to the next path.',
@@ -8310,7 +8306,6 @@ const _EN={
 '그렇게 잘하다가!! 아까워 죽겠어!':'You were doing so well!! It\'s such a waste!',
 '…지옥에 망자 하나 더 늘릴 셈이야?':'...Planning to add one more corpse to Hell?',
 '그런 소리 마! 얜 아직 안 죽었어! 일어나!':'Don\'t say that! This one isn\'t dead yet! Get up!',
-'…여왕님이 실망하시겠군.':'...The Queen will be disappointed.',
 '실망은 무슨! 다시 일어나면 되잖아, 얼른!':'Disappointed nothing! Just get back up—come on!',
 '잠은 집에 가서 자. …일어나.':'Sleep when you get home. ...Get up.',
 '여기서 자면 진짜 집 못 가! 얼른 일어나!':'Fall asleep here and you\'ll never get home! Get up!',
@@ -8342,7 +8337,6 @@ const _EN={
 '최종장이야! 여기서 무너지면 안 돼!':'It\'s the final chapter! You can\'t fall apart here!',
 // --- Pet dialogue: records ---
 '…한 번도 안 죽고. 그건 진짜 실력이야.':'...Not once dead. That\'s real skill.',
-'…ACT1을 끝냈다. 진짜 시작은 여기서부터야.':'...ACT1 done. The real start is here.',
 '모든 보스를 무너뜨렸다. 너는 지옥의 일부야.':'All bosses fallen. You are part of Hell now.',
 '…30초. 너 진짜 미쳤구나.':'...30 seconds. You\'re genuinely insane.',
 '…빠르군. 효율적이야.':'...Fast. Efficient.',
@@ -9703,7 +9697,7 @@ function _checkPetDialogue(){
   // ══ [9] 챕터 환경 멘트 (진입 30초 후, v4) — 7종 (보스전 중 차단) ══
   if(!_petStageEnv[_ch]){_petStageEnvT+=_dtSp;
     if(!G.bossAlive&&_petStageEnvT>60*30){_petStageEnv[_ch]=true;
-      const _envDlg=[['crow','…새 한 마리 안 우네. 죽은 숲이야.',4,'cat','나무들이 우릴 보고 있는 것 같아…',4],['crow','…발밑이 움직이고 있다.',4,'cat','으으! 뭔가 기어다녀! 빨리 가자!',4],['crow','입김이 얼어. 오래 있으면 못 나간다.',4,'cat','손가락 안 움직여… 빨리 끝내!',4],['crow','공기가 타. 숨도 데인다.',4,'cat','살이 익는 거 같아! 뜨거워!',4],['crow','…수가 끝이 없어. 길을 뚫어.',4,'cat','끝이 안 보여! 한꺼번에 쓸어!',4],['crow','…벽 너머에서 보고 있어.',4,'cat','누가 우릴 지켜보고 있어… 무서워.',4],['crow','여기서 죽어도 돌아갈 곳은 없어.',4,'cat','마지막이야… 끝까지 가자.',4]];
+      const _envDlg=[['crow','…새 한 마리 안 우네. 숲이 다 먹었어.',4,'cat','나무들이 우릴 보고 있는 것 같아…',4],['crow','…발밑이 움직이고 있다.',4,'cat','으으! 뭔가 기어다녀! 빨리 가자!',4],['crow','입김이 얼어. 오래 있으면 못 나간다.',4,'cat','손가락 안 움직여… 빨리 끝내!',4],['crow','공기가 타. 숨도 데인다.',4,'cat','살이 익는 거 같아! 뜨거워!',4],['crow','…수가 끝이 없어. 길을 뚫어.',4,'cat','끝이 안 보여! 한꺼번에 쓸어!',4],['crow','…벽 너머에서 보고 있어.',4,'cat','누가 우릴 지켜보고 있어… 무서워.',4],['crow','여기서 죽어도 돌아갈 곳은 없어.',4,'cat','마지막이야… 끝까지 가자.',4]];
       if(_envDlg[_ch])_petBidCD('env_ch'+_ch,_envDlg[_ch][0],_envDlg[_ch][1],_envDlg[_ch][2],99999,_envDlg[_ch][3],_envDlg[_ch][4],_envDlg[_ch][5]);
     }
   }
@@ -9718,7 +9712,7 @@ function _checkPetDialogue(){
     if(!_petBossPhase.p4&&_bHpR<.15){_petBossPhase.p4=true;_petBidCD('boss_p4','cat','마지막이야! 끝장내!',4,9999,'crow','…빈틈을 노려.',3)}
   }
   // 보스 킬 — 기존 대사 강제 종료 후 처치 대사 무조건 재생
-  if(_petBossAliveLast&&!G.bossAlive){_petBubble.t=0;_petBubble.pair=null;_petBubble._uid=null;delete _petDlgCD['boss_kill'];if(G._druidFled&&G.stage===0)_petSay('boss_kill','crow','…달아났다. 숲 깊은 곳으로.',4,'cat','도망갔어! 그래도 우리가 이긴 거 맞지?',4);else _petSay('boss_kill','crow','…끝났다. 다음으로.',4,'cat','핵터 니가 진짜 해냈구나, 여왕님이 기뻐하시겠어!',4);_petBossPhase.p2=false;_petBossPhase.p3=false;_petBossPhase.p4=false}
+  if(_petBossAliveLast&&!G.bossAlive){_petBubble.t=0;_petBubble.pair=null;_petBubble._uid=null;delete _petDlgCD['boss_kill'];if(G._druidFled&&G.stage===0)_petSay('boss_kill','crow','…달아났다. 숲 깊은 곳으로.',4,'cat','도망갔어! 그래도 우리가 이긴 거 맞지?',4);else _petSay('boss_kill','crow','…끝났다. 다음으로.',4,'cat','해냈어! 여신님이 기뻐하시겠어!',4);_petBossPhase.p2=false;_petBossPhase.p3=false;_petBossPhase.p4=false}
   _petBossAliveLast=G.bossAlive;
   // 스테이지 클리어
   {let _ac=0;for(let i=0;i<ens.length;i++){if(ens[i].alive)_ac++}
@@ -9733,7 +9727,7 @@ function _checkPetDialogue(){
   _petBossPrevAlive=G.bossAlive;
   if(G.bossAlive&&G._bossRef&&G._bossRef.alive&&!_petBossIntroSeen[_ch]){
     _petBossIntroSeen[_ch]=true;
-    const _bi=[['crow','…첫 번째다. 부담 갖지 마. 죽어도 다시 와.',5,'cat','첫 보스! 우리 같이 잡자!',4],['crow','벌레의 왕이다. 꺼림칙하게 생겼군.',5,'cat','으으! 큰 벌레야! 진짜 끔찍해!',4],['crow','…빙결 마법을 쓴다. 화염 무기로 가.',5,'cat','얼음 보스! 화염 칼 꺼내!',4],['crow','화염의 군주야. 빙결 무기로 맞불 놔.',5,'cat','불 보스! 얼음 무기 꺼내라구!',4],['crow','군단의 우두머리다. 잡몹부터 정리해.',5,'cat','부하 먼저! 안 그럼 끝없이 나와!',4],['crow','…사도다. 패턴이 복잡해. 집중해.',5,'cat','사도 보스 진짜 강해! 정신 똑바로 차려!',4],['crow','…최종 보스. 여신도 더는 도와줄 수 없어.',5,'cat','마지막!! 우리 다 같이 끝내자!!',4]];
+    const _bi=[['crow','…첫 번째다. 부담 갖지 마. 죽어도 다시 와.',5,'cat','첫 보스! 우리 같이 잡자!',4],['crow','벌레의 왕이다. 꺼림칙하게 생겼군.',5,'cat','으으! 큰 벌레야! 진짜 끔찍해!',4],['crow','…빙결 마법을 쓴다. 화염 무기로 가.',5,'cat','얼음 보스! 화염 칼 꺼내!',4],['crow','화염의 군주야. 빙결 무기로 꺼 버려.',5,'cat','불 보스! 얼음 무기 꺼내라구!',4],['crow','군단의 우두머리다. 잡몹부터 정리해.',5,'cat','부하 먼저! 안 그럼 끝없이 나와!',4],['crow','…사도다. 패턴이 복잡해. 집중해.',5,'cat','사도 보스 진짜 강해! 정신 똑바로 차려!',4],['crow','…마지막이다. 여신도 더는 도와줄 수 없어.',5,'cat','마지막!! 우리 다 같이 끝내자!!',4]];
     if(_bi[_ch])_petBidCD('boss_intro_ch'+_ch,_bi[_ch][0],_bi[_ch][1],_bi[_ch][2],99999,_bi[_ch][3],_bi[_ch][4],_bi[_ch][5]);
   }
 
@@ -9811,7 +9805,7 @@ function _petOnChainTier3(){_petSayCD('cd_tier3','crow','…풀차지군. 멀리
 // [11] CD 무적 중 보스 공격 회피
 function _petOnChainDodge(){_petSayCD('cd_invul_dodge','crow','…빈틈을 그대로 빠져나갔다.',4,240,'cat','위험했어! 사슬무적 없었으면 죽었어!',4)}
 // [12] 엘리트 첫 조우
-function _petOnEliteFirst(){if(!_petEliteFirst){_petEliteFirst=true;_petSayCD('elite_first','crow','…일반 잡몹이 아니야. 모디파이어 붙었군.',4,9999,'cat','엘리트야! 색깔 봐! 강해진 거야!',4)}}
+function _petOnEliteFirst(){if(!_petEliteFirst){_petEliteFirst=true;_petSayCD('elite_first','crow','…보통 놈이 아니야. 악의가 덧씌워졌군.',4,9999,'cat','엘리트야! 색깔 봐! 강해진 거야!',4)}}
 // [12] 엘리트 처치
 function _petOnEliteKill(){_petSayCD('elite_kill','crow','엘리트 하나 처리.',4,120,'cat','엘리트 잡았어! 좋은 거 떨어진다!',4)}
 // [12] 미니보스 등장
@@ -9835,14 +9829,14 @@ function _petOnDeath(){_petDeathCount++;_petCurrentChapterDeaths++;
 // [13] 챕터 클리어 — 외부에서 호출
 function _petOnChapterClear(ch){
   if(_petChapterCleared[ch])return;_petChapterCleared[ch]=true;
-  const _cc=[['crow','썩은 숲을 벗어났다. 다음은 더 깊은 곳이야.',5,'cat','첫 챕터 클리어! 우린 살아있어!',4],['crow','…벌레굴을 빠져나왔어. 발에 뭐 묻은 거 같다.',5,'cat','으으, 진짜 끔찍했어!',4],['crow','얼음을 깨고 나왔다. 다음은… 불이야.',5,'cat','손가락 다시 움직여!',4],['crow','화염을 통과했다. 절반 왔어.',5,'cat','살았어! ACT1 절반 클리어!',4],['crow','군단을 무너뜨렸어. …수가 줄긴 했군.',5,'cat','진짜 끝없었어! 한꺼번에 쓸었어!',4],['crow','사도들의 영역을 지났다. 마지막이 가까워.',5,'cat','거의 다 왔어! 마지막 한 장!',4],['crow','…지옥성을 무너뜨렸어. 끝이야.',5,'cat','우리가 해냈어! 진짜 끝났어!!',4]];
+  const _cc=[['crow','…썩은 숲을 벗어났다. 위는 더 지독할 거다.',5,'cat','첫 챕터 클리어! 우린 살아있어!',4],['crow','…벌레굴을 빠져나왔어. 발에 뭐 묻은 거 같다.',5,'cat','으으, 진짜 끔찍했어!',4],['crow','얼음을 깨고 나왔다. 다음은… 불이야.',5,'cat','손가락 다시 움직여!',4],['crow','화염을 통과했다. 절반 왔어.',5,'cat','살았어! 반이나 올라왔어!',4],['crow','군단을 무너뜨렸어. …수가 줄긴 했군.',5,'cat','진짜 끝없었어! 한꺼번에 쓸었어!',4],['crow','사도들의 영역을 지났다. 마지막이 가까워.',5,'cat','거의 다 왔어! 마지막 한 장!',4],['crow','…지옥성을 무너뜨렸어. 끝이야.',5,'cat','우리가 해냈어! 진짜 끝났어!!',4]];
   if(_cc[ch])_petSayCD('chapter_clear_'+ch,_cc[ch][0],_cc[ch][1],_cc[ch][2],9999,_cc[ch][3],_cc[ch][4],_cc[ch][5]);
   // [20] 트로피: 사망 0 클리어
   if(_petCurrentChapterDeaths===0)_petSayCD('trophy_no_death_run','crow','…한 번도 안 죽고. 그건 진짜 실력이야.',5,9999,'cat','안 죽고 깼어! 진짜 천재 맞네!',4);
   _petCurrentChapterDeaths=0;
   _petBossEngage[ch]=0; // 보스 처치 → 재도전 카운트 리셋 (v7)
   // ACT1 완주 (0~3 클리어)
-  if(!_petTrophy_act1&&_petChapterCleared[0]&&_petChapterCleared[1]&&_petChapterCleared[2]&&_petChapterCleared[3]){_petTrophy_act1=true;_petSayCD('trophy_act1_clear','crow','…ACT1을 끝냈다. 진짜 시작은 여기서부터야.',5,9999,'cat','ACT1 완주! 우리가 진짜 해냈어!',4)}
+  if(!_petTrophy_act1&&_petChapterCleared[0]&&_petChapterCleared[1]&&_petChapterCleared[2]&&_petChapterCleared[3]){_petTrophy_act1=true;_petSayCD('trophy_act1_clear','crow','…네 층을 넘었다. 진짜 시작은 여기서부터야.',5,9999,'cat','네 층 돌파! 우리가 진짜 해냈어!',4)}
   // 전보스 처치
   if(!_petTrophy_fullExplore){let _all=true;for(let c=0;c<=6;c++){if(!_petChapterCleared[c])_all=false}if(_all){_petTrophy_fullExplore=true;_petSayCD('trophy_full_explore','crow','모든 보스를 무너뜨렸다. 너는 지옥의 일부야.',5,9999,'cat','전부 다 잡았어! 우리가 지옥의 왕이야!',4)}}
 }
@@ -9852,7 +9846,7 @@ function _petOnStageClear(stageId){
   const _elapsed=(G.frame-_petStageStartT)/60;
   if(_elapsed<=30)_petSayCD('speed_stage_30s','crow','…30초. 너 진짜 미쳤구나.',4,600,'cat','30초!! 스피드런 가능해!',4);
   else if(_elapsed<=60)_petSayCD('speed_stage_60s','crow','…빠르군. 효율적이야.',4,600,'cat','1분 안에 클리어! 빠르네!',4);
-  if(!_petStageRecord[stageId]||_elapsed<_petStageRecord[stageId]){_petStageRecord[stageId]=_elapsed;_petSayCD('speed_record','crow','신기록이다.',3,60,'cat','신기록!! 스트리머한테 보내!',3)}
+  if(!_petStageRecord[stageId]||_elapsed<_petStageRecord[stageId]){_petStageRecord[stageId]=_elapsed;_petSayCD('speed_record','crow','신기록이다.',3,60,'cat','신기록!! 이건 기억해 둬야 해!',3)}
 }
 
 // ═══════════════════════════════════════
@@ -10951,6 +10945,8 @@ function _drawDruidGroundRing(ctx,x,y,r,alpha,angle=0,innerFraction=0){
 // ── [STY-12] 1장 보스 한 줄 대사 자막 (번역대상 No.3343~3347) — 부활 판정이 있는 보스는 마지막 사망 때만. 펫 말풍선(_petSay)과 별개 UI(#bossLine)
 const _BOSS_LINES={intro0:'새 거름이 떨어졌군.',sink0:'숲은 아직 배고프다. 둥지에서 보자.',die1:'…아직 거둘 때가 아닌데.',die2:'…밥 먹을 시간인데.',die3:'…죽기 싫었을 뿐이다.'};
 Object.assign(_EN,{'다크드루이드':'Dark Druid',"…달아났다. 숲 깊은 곳으로.":"…It fled. Deeper into the forest.","도망갔어! 그래도 우리가 이긴 거 맞지?":"It ran away! We still won, right?",'새 거름이 떨어졌군.':'Fresh compost has fallen.','숲은 아직 배고프다. 둥지에서 보자.':'The forest is still hungry. See you at the nest.','…아직 거둘 때가 아닌데.':"…It isn't harvest time yet.",'…밥 먹을 시간인데.':"…It's time to eat.",'…죽기 싫었을 뿐이다.':"…I just didn't want to die."});
+// [STY-14] 대사 정본 정합 묶음 A (번역대상 No.3473~3482 + 옛 No.0874/0912/0989/1000/2905/2938 교체)
+Object.assign(_EN,{"썩은 숲은 아직 끝나지 않았다.":"The Rotten Forest is not finished yet.","…썩은 숲을 벗어났다. 위는 더 지독할 거다.":"...We left the Rotten Forest. It gets worse above.","살았어! 반이나 올라왔어!":"We made it! Halfway up!","…네 층을 넘었다. 진짜 시작은 여기서부터야.":"...Four layers behind us. The real start is here.","네 층 돌파! 우리가 진짜 해냈어!":"Four layers cleared! We really did it!","해냈어! 여신님이 기뻐하시겠어!":"You did it! The Goddess will be pleased!","…여신님이 실망하시겠군.":"...The Goddess will be disappointed."," 돌파!":" Broken Through!","킬루":"Killu","…보통 놈이 아니야. 악의가 덧씌워졌군.":"...Not a regular one. Malice clings to it.","신기록!! 이건 기억해 둬야 해!":"New record!! Remember this one!","화염의 군주야. 빙결 무기로 꺼 버려.":"Lord of flame. Douse it with frost.","…마지막이다. 여신도 더는 도와줄 수 없어.":"...This is the last. Even the Goddess can't help now.","…새 한 마리 안 우네. 숲이 다 먹었어.":"...Not a single bird. The forest ate them all.","위층이 기다린다...":"The layer above awaits...","위층으로 ▶":"Ascend ▶"});
 // [ROLL] 전사 구르기·키 설정 (2026-10-27, 번역대상 No.3372~3376)
 Object.assign(_EN,{"구르기 (방향키 +)":"Roll (Arrow Keys +)","방향키+Space 구르기":"Arrow Key+Space Roll","방향키+Space! 굴러서 탈출해!":"Arrow Key+Space! Roll out of it!","구르기는 키보드 키로 지정하세요.":"Bind Roll to a keyboard key.","전격이동은 구르기(방향키 + Space)로 바뀌었습니다. 투자한 스킬 포인트는 환급됩니다.":"Flash Step has been replaced by Roll (Arrow Keys + Space). Invested skill points are refunded."});
 Object.assign(_EN,{'구르기·전격이동 경로의 적에게 약화 — 받는 피해 +{p}% (5초)':'Enemies in the Roll / Flash Step path are weakened — damage taken +{p}% (5s)'});
@@ -16873,7 +16869,7 @@ const HELL_BOSSES=[
   ['화염 악마','불기둥 수호자','용암의 심장','화염 전사','화염 쌍두','불벌레 군주','화염 감옥지기'],
   ['전쟁의 잔해','뼈산의 왕','악마 사령관','철벽 기사단장','군단 지휘관'],
   ['살점의 수호자','인간뼈 감시자','뒤틀린 자','촉수의 어미','불완전 사도','대사도'],
-  ['검은 성의 수호자','Killu','지옥 군주'],
+  ['검은 성의 수호자','킬루','지옥 군주'],
 ];
 const STG=[];
 for(const ch of CHAPTER_STAGES){
@@ -42183,13 +42179,13 @@ function checkRooms(){
             const hellIdx=cur.hell;
             if(!G.hellCleared)G.hellCleared=[];
             G.hellCleared[hellIdx]=true;
-            showPH(_T(HELL_NAMES[hellIdx])+_L(' 탈출!',' Escaped!'),'#44ffaa');
-            addTxt(P.x,P.y-50,'🔓 '+_T(HELL_NAMES[hellIdx])+_L(' 탈출!',' Escaped!'),'#44ffaa',100);
+            showPH(_T(HELL_NAMES[hellIdx])+_L(' 돌파!',' Broken Through!'),'#44ffaa');
+            addTxt(P.x,P.y-50,_T(HELL_NAMES[hellIdx])+_L(' 돌파!',' Broken Through!'),'#44ffaa',100);
             SFX.victory();G.shake=15*OPT.shake/100;
-            $('clearTitle').innerHTML=_glyph('lock','#d8b778',16)+' '+_T(HELL_NAMES[hellIdx])+_L(' 탈출!',' Escaped!');
-            {const _cte=$('clearTitleEn');if(_cte)_cte.textContent='HELL ESCAPED'} // areaTitle 관례의 영문 장식줄 (항상 영어)
-            $('clearSub').textContent=_L('다음 소지옥이 기다리고 있다...','The next sub-hell awaits...');
-            $('nextBtn').textContent=_L('다음 소지옥으로 ▶','Next Sub-hell ▶');
+            $('clearTitle').innerHTML=_glyph('lock','#d8b778',16)+' '+_T(HELL_NAMES[hellIdx])+_L(' 돌파!',' Broken Through!');
+            {const _cte=$('clearTitleEn');if(_cte)_cte.textContent='LAYER BROKEN'} // areaTitle 관례의 영문 장식줄 (항상 영어)
+            $('clearSub').textContent=_L('위층이 기다린다...','The layer above awaits...');
+            $('nextBtn').textContent=_L('위층으로 ▶','Ascend ▶');
             $('stageClear').style.opacity='1';$('stageClear').style.pointerEvents='all';$('nextBtn').disabled=false;$('nextBtn').style.opacity='1';
           }else{
             $('clearTitle').textContent=_L('구역 클리어!','Area Clear!');
@@ -42199,7 +42195,7 @@ function checkRooms(){
             $('stageClear').style.opacity='1';$('stageClear').style.pointerEvents='all';$('nextBtn').disabled=false;$('nextBtn').style.opacity='1';
           }
           if(_DEMO_MODE&&G.stage===_DEMO_LAST_STAGE&&SI_TO_HELL[G.stage]===0){
-            $('clearSub').textContent=_L('썩은 숲을 정복했습니다.','You conquered the Rotten Forest.');
+            $('clearSub').textContent=_L('썩은 숲은 아직 끝나지 않았다.','The Rotten Forest is not finished yet.');
             $('nextBtn').textContent=_T('데모 종료');
           }
           if(_dbReady)dbSave(); // 클리어 보상·기록은 다음 자동저장 전에 확정
@@ -43977,7 +43973,7 @@ const _DD_LINES={
   dd_highcombo:['잘 나가다 한 방에. …끝까지 방심 마.','그렇게 잘하다가!! 아까워 죽겠어!'],
   // B. 냉소·독려 (로테이션 풀)
   dd_corpse:['…지옥에 망자 하나 더 늘릴 셈이야?','그런 소리 마! 얜 아직 안 죽었어! 일어나!'],
-  dd_queen:['…여왕님이 실망하시겠군.','실망은 무슨! 다시 일어나면 되잖아, 얼른!'],
+  dd_queen:['…여신님이 실망하시겠군.','실망은 무슨! 다시 일어나면 되잖아, 얼른!'],
   dd_sleep:['잠은 집에 가서 자. …일어나.','여기서 자면 진짜 집 못 가! 얼른 일어나!'],
   // C. 사명·각오 (로테이션 풀, 복수 결)
   dd_purpose:['여기서 포기하면… 누가 가족의 원수를 갚지?','우리가 있잖아! 다시 일어나 끝까지 가!'],

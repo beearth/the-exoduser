@@ -802,7 +802,7 @@ const HUD_ICON = {
 - **2열 행**: 라벨 --font-hell ls.2em #c2b6a9 / 수치 Cinzel #e6d6b9(점수 1.18rem 강조), 기준(par) #8d7c65 소자.
 - **breakdown**: 2열 그리드, 항목별 라벨 좌(#9a8a72 명조)/수치 우(Cinzel #c9bda6, 감점 −표기 #a8776a), 점선 리더(rgba(164,147,115,.16)). 항목: 처치/지역 정화/보스 처치/시간 보너스/(무사망)/(무피격)/최대콤보/(사망 감점).
 - **베스트 행**: 상단 헤어라인 구분, `베스트 t · s · r`(랭크 레터는 랭크색 제목체). **신기록 씰**: 금 보더 소형 태그(rgba(216,183,120,.6) 보더, #d8b778, ls.2em) — 이모지 아님.
-- **[4차] 헤더/버튼**: `#clearTitle` #areaTitle 계열(제목체 1.3rem+금 헤어라인)+`#clearTitleEn`(Cinzel 영문 장식줄 ZONE CLEARED/HELL ESCAPED, 항상 영어), `#clearSub` 명조 뼈-은은, `#nextBtn` UI_COMPOSITION 표준 암적색 행동 버튼 마감(min 44px, 기능·id·리스너 무변). 본행/breakdown/베스트 라벨 13px(#cfc3b0/#c5b8a3), par 12px, 타임 1.12rem/점수 1.3rem.
+- **[4차] 헤더/버튼**: `#clearTitle` #areaTitle 계열(제목체 1.3rem+금 헤어라인)+`#clearTitleEn`(Cinzel 영문 장식줄 ZONE CLEARED/LAYER BROKEN, 항상 영어), `#clearSub` 명조 뼈-은은, `#nextBtn` UI_COMPOSITION 표준 암적색 행동 버튼 마감(min 44px, 기능·id·리스너 무변). 본행/breakdown/베스트 라벨 13px(#cfc3b0/#c5b8a3), par 12px, 타임 1.12rem/점수 1.3rem.
 - **하위 `#clearStats`**: 이모지·원색 제거, 명조 #9a8a72/#bcab90 저채도 톤 + `·` 구분자(데이터·의미 무변, 뱃지 텍스트만 유지).
 클리어 타임=보스 사망 시점 `G.stageTime` 스냅샷(일시정지/튜토리얼/시네마틱 자동 제외). DOM 안전: 전용 리프 innerHTML만. 데모에선 demoEnd 이전에 표시. nextBtn 진행 흐름 무변경.
 

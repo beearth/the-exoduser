@@ -1120,7 +1120,7 @@
 '사슬이 살을 뚫었어. 끌고 와.':'O Corrente perfurou a carne. Puxa.',
 '…풀차지군. 멀리 던져버려.':'…Carga total. Joga longe.',
 '…빈틈을 그대로 빠져나갔다.':'…Passou direto pela brecha.',
-'…일반 잡몹이 아니야. 모디파이어 붙었군.':'…Não é inimigo comum. Tem modificador.',
+"…보통 놈이 아니야. 악의가 덧씌워졌군.":"…Não é um comum. A malícia se agarrou a ele.",
 '엘리트 하나 처리.':'Um elite eliminado.',
 '…큰 놈이다. 일반 잡몹 정리부터.':'…Grande. Limpa os comuns primeiro.',
 '미니보스 처리. 다음 길로.':'Mini-boss eliminado. Próximo caminho.',
@@ -1160,7 +1160,7 @@
 '50명! 학살자야!':'50 mortes! Você é um massacrador!',
 '5단!! 진짜 게이머 인증!':'Dif 5!! Gamer de verdade certificado!',
 '7단!! 다른 사람들 이 정도 못 와!':'Dif 7!! Os outros não chegam tão longe!',
-'ACT1 완주! 우리가 진짜 해냈어!':'ACT1 completo! A gente realmente conseguiu!',
+"네 층 돌파! 우리가 진짜 해냈어!":"Quatro camadas vencidas! A gente realmente conseguiu!",
 'Ctrl 얼음보주로 탈출하라.':'Ctrl — escape com o Orbe de Gelo.',
 'Ctrl 유령걸음으로 탈출하라.':'Ctrl — escape com o Passo Fantasma.',
 'J키! 패시브 강해져!':'Tecla C! As passivas ficam mais fortes!',
@@ -1197,11 +1197,11 @@
 '다음엔 죽지 마!':'Não morra na próxima vez!',
 '소환수 왔어! 먼저 처리해야 해!':'Invocações chegando! Elimine-as primeiro!',
 '스킬 없으면 방향키 연타뿐이야.':'Sem habilidade? Só spam nas teclas de direção.',
-'신기록!! 스트리머한테 보내!':'Novo recorde!! Manda para um streamer!',
+"신기록!! 이건 기억해 둬야 해!":"Novo recorde!! Esse a gente precisa lembrar!",
 '아이템 넘쳐! 우리가 주워줄게!':'Bolsa cheia! Nós vamos pegar as coisas para você!',
 '안 죽고 깼어! 진짜 천재 맞네!':'Completou sem morrer! Gênio de verdade!',
 '앞으로 가자~':'Vamos em frente~',
-'우리가 해냈어! 다음 챕터 가자!':'Conseguimos! Para o próximo capítulo!','핵터 니가 진짜 해냈구나, 여왕님이 기뻐하시겠어!':'Hector, você conseguiu mesmo! A Rainha vai ficar contente!',
+'우리가 해냈어! 다음 챕터 가자!':'Conseguimos! Para o próximo capítulo!',"해냈어! 여신님이 기뻐하시겠어!":"Você conseguiu! A deusa vai ficar contente!",
 '일반 모드! 편하게 즐기자!':'Modo normal! Vamos aproveitar tranquilos!',
 '자원이 반이다. F키로 회복해.':'Recursos na metade. Pressione F para recuperar.',
 '잡힌다! 옆으로 빠져!':'Sendo agarrado! Mova para o lado!',
@@ -1217,7 +1217,7 @@
 '한 방이면 죽어! 도망쳐!!':'Um golpe mata! Corra!!',
 '화염엔 빙결! 암전엔 암흑!':'Fogo → gelo! Vazio → sombra!',
 '기절! ':'Atordoado! ',
-'…ACT1을 끝냈다. 진짜 시작은 여기서부터야.':'…ACT1 concluído. O verdadeiro começo começa aqui.',
+"…네 층을 넘었다. 진짜 시작은 여기서부터야.":"…Quatro camadas ficaram para trás. O verdadeiro começo é aqui.",
 '⏳⚡ 시간걸음!':'⏳⚡ Passo Temporal!',
 '블룸 효과':'Efeito Bloom',
 '잔상 트레일':'Rastro residual',
@@ -2265,7 +2265,7 @@
 '그렇게 잘하다가!! 아까워 죽겠어!':"Com você indo tão bem!! Que desperdício, dá raiva!",
 '…지옥에 망자 하나 더 늘릴 셈이야?':"…Pretende deixar mais um cadáver no Inferno?",
 '그런 소리 마! 얜 아직 안 죽었어! 일어나!':"Não fala isso! Esse aqui ainda não morreu! Levanta!",
-'…여왕님이 실망하시겠군.':"…A Rainha vai se decepcionar.",
+"…여신님이 실망하시겠군.":"…A deusa vai ficar decepcionada.",
 '실망은 무슨! 다시 일어나면 되잖아, 얼른!':"Decepção coisa nenhuma! É só levantar de novo, anda!",
 '잠은 집에 가서 자. …일어나.':"Dorme quando chegar em casa. …Levanta.",
 '여기서 자면 진짜 집 못 가! 얼른 일어나!':"Se dormir aqui, não volta pra casa nunca! Levanta logo!",
@@ -3970,6 +3970,8 @@ Object.assign(_PTBR,{"…달아났다. 숲 깊은 곳으로.":"…Fugiu. Para o 
 Object.assign(_PTBR,{"구르기 (방향키 +)":"Rolamento (setas +)","방향키+Space 구르기":"setas+Space Rolamento","방향키+Space! 굴러서 탈출해!":"setas+Space! Role para escapar!","구르기는 키보드 키로 지정하세요.":"Atribua o Rolamento a uma tecla do teclado.","전격이동은 구르기(방향키 + Space)로 바뀌었습니다. 투자한 스킬 포인트는 환급됩니다.":"Movimento Relâmpago foi substituído por Rolamento (setas + Space). Os pontos de habilidade investidos são devolvidos."});
 // [ROLL] u_n02 경로 약화 문구에 구르기 추가 (번역대상 No.3377)
 Object.assign(_PTBR,{"구르기·전격이동 경로의 적에게 약화 — 받는 피해 +{p}% (5초)":"Enfraquece inimigos na rota do Rolamento e do Avanço Relâmpago — dano recebido +{p}% (5s)"});
+// [STY-14] 대사 정본 정합 묶음 A (번역대상 No.3473~3482 신규분)
+Object.assign(_PTBR,{"썩은 숲은 아직 끝나지 않았다.":"A Floresta Apodrecida ainda não acabou.","…썩은 숲을 벗어났다. 위는 더 지독할 거다.":"…Deixamos a Floresta Apodrecida para trás. Lá em cima é pior.","살았어! 반이나 올라왔어!":"Sobrevivemos! Já subimos metade!"," 돌파!":" rompido!","킬루":"Killu","화염의 군주야. 빙결 무기로 꺼 버려.":"É o senhor das chamas. Apague-o com uma arma de gelo.","…마지막이다. 여신도 더는 도와줄 수 없어.":"…Este é o último. Nem a deusa pode mais ajudar.","…새 한 마리 안 우네. 숲이 다 먹었어.":"…Nem um único pássaro. A floresta devorou todos.","위층이 기다린다...":"A camada de cima aguarda...","위층으로 ▶":"Subir ▶"});
 // [I18N-FILL] lang 전수 감사 — 누락·한글 잔존 보충 (2026-10-28, 번역대상 No.3389~3468)
 Object.assign(_PTBR,{"속성방어결정":"Cristal de DEF elem.","🔨 불꽃칼날!":"🔨 Lâmina Flamejante!","⚡불꽃칼날!":"⚡Lâmina Flamejante!","🗡 불꽃칼날!":"🗡 Lâmina Flamejante!","네임드":"Nomeado","맵과 움직임 준비 중...":"Preparando mapa e movimento...","시작 화면 준비 중...":"Preparando a tela inicial...","미장착":"Não equipado","홈 ":"Encaixe ","호환되지 않음":"Incompatível","장비 부위":"Equipamento","장착 ":"Encaixado ","장착 중: ":"Equipado: ","장착할 빈 홈 선택":"Escolha um encaixe vazio","장착 중인 장비에 호환되는 빈 홈이 없습니다.":"Seu equipamento não tem encaixes vazios compatíveis.","빈 홈":"Encaixe vazio","호환":"Apto","포탈 A 설치 — 다른 곳에서 P를 눌러 포탈 B 설치":"Portal A colocado — pressione P em outro lugar para colocar o Portal B","포탈 간격이 너무 가깝습니다":"Os portais estão muito próximos","포탈 B 설치 완료 — 가까이서 R을 눌러 이동":"Portal B pronto — aproxime-se e pressione R para viajar","포탈 이동":"Viagem por portal","물리탄 차징 · E로 패링":"CARREGANDO PROJÉTIL FÍSICO · APARE COM E","⚡ 다시 눌러 궤적 추격!":"⚡ Pressione de novo para perseguir!","⚡ 추적전격!":"⚡ Perseguição da Lâmina!","쿵!":"PISÃO!","해제 — 가방으로 이동":"removido — devolvido à bolsa","전투 기록 · 스킬 해석":"REGISTRO DE COMBATE · CÓDICE DE HABILIDADES","합체 설계도":"PROJETOS DE FUSÃO","스킬을 선택하면 상세 효과와 연결된 합체식을 볼 수 있습니다. 아래 목록에서 재료 스킬을 바로 찾을 수 있습니다.":"Selecione uma habilidade para ver seus efeitos e receitas de fusão. Escolha um ingrediente abaixo para localizá-lo.","연결된 합체":"FUSÕES RELACIONADAS","합체 도감":"CÓDICE DE FUSÕES","연결된 합체가 없습니다.":"Nenhuma fusão vinculada.","재료 확인":"INGREDIENTES","추적전격 [합체]":"Perseguição da Lâmina [Fusão]","추적칼날 종료 후 0.5초 안에 같은 스킬 키를 다시 누르면 칼날 궤적을 따라 전격이동. 경로의 적마다 칼날 피해를 1회 추가. 재입력은 자원 소모 없음.":"Pressione a mesma tecla de habilidade novamente em até 0.5s após o fim da lâmina rastreadora para fazer um Avanço Relâmpago pela trajetória. Cada inimigo no caminho sofre dano da lâmina mais uma vez. A repetição não gasta recursos.","리플레이 보기":"Ver replay","벤치 미실시":"Bench não executado","유골함 정보":"Informações do Ossuário","아이템 또는 유골에 마우스를 올려 정보를 확인하세요":"Passe o mouse sobre um item ou osso para ver os detalhes","휠: 상세 스크롤":"Roda: rolar detalhes","장착 아이템 비교":"Comparação de equipamento","옵션 비교":"Comparar efeitos","현재 장착 아이템":"Item equipado atualmente","수치 차이 전체 보기":"Ver todas as diferenças de atributos","가방 아이템":"Item da bolsa","선택한 가방 아이템":"Item da bolsa selecionado","장비 기록":"REGISTRO DE EQUIPAMENTO","현재 전투 구성":"Configuração atual","장비나 가방 아이템을 가리키면 이곳에서 옵션과 비교 정보를 확인합니다.":"Passe o mouse sobre um equipamento ou item da bolsa para ver aqui seus efeitos e comparações.","추가 효과":"Extra","장착 목록":"ITENS EQUIPADOS","빈 칸":"Vazio","치명 · 위력":"Crítico · Poder","공격 위력":"Poder de ataque","크기 · 이동속도":"Tamanho · Vel. movimento","선대의 유골":"Osso ancestral","위력 ":"Poder ","우클릭하면 가방으로 해제됩니다.":"Clique com o botão direito para devolvê-lo à bolsa.","유골을 획득하면 이 부위에 등록됩니다.":"Obtenha um osso para registrar esta parte.","선대의 유골 콜렉션":"Coleção de Ossos Ancestrais","수집 ":"Coletados ","소환 해금":"Invocação desbloqueada","유골함 장착 필요":"Equipar ossuário","유골 수집 중":"Coletando ossos","전대 소환 스킬로 불러낼 수 있습니다.":"Use Invocação de Ancestrais para chamar o ancestral.","네 부위를 모두 모으면 소환이 해금됩니다.":"Reúna as quatro partes para desbloquear a invocação.","부위를 선택하면 등급과 성장 효과를 확인할 수 있습니다.":"Selecione um osso para ver sua raridade e efeito de crescimento.","첫 유골 획득 시 유골함 자동 지급":"Um ossuário é concedido com seu primeiro osso","선택 유골 해제":"Remover osso selecionado","유골함 해제":"Desequipar ossuário","유골 우클릭 또는 선택 후 해제 · 해제한 유골은 가방으로 이동":"Clique com o botão direito em um osso ou selecione Remover · O osso volta para a bolsa","전대 소환 스킬로 전장에 강림합니다.":"Use Invocação de Ancestrais para chamar este ancestral.","네 부위를 모으면 전대 소환이 해금됩니다.":"Reúna os quatro ossos para desbloquear este ancestral.","혈안탄 예고 · 물리탄 · E 패링":"AVISO: OLHO SANGRENTO · FÍSICO · APARE COM E","스킬 합성 랩 — 저장되지 않습니다 (새로고침하면 처음 상태)":"Laboratório da Forja de habilidades — nada é salvo (recarregue para reiniciar)","보조무기":"Arma secundária"});
 // [I18N-FILL] lang 전수 감사 2차 — 유물·능력치·추천빌드·스킬 설명 쌍 보충 (2026-10-28, 번역대상 No.3500~3587)

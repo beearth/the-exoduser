@@ -1497,7 +1497,7 @@ const _FI={
 '사슬이 살을 뚫었어. 끌고 와.':'Harpuuni lävisti lihan. Vedä se sisään.',
 '…풀차지군. 멀리 던져버려.':'…Täyteen ladattu. Heitä kauas.',
 '…빈틈을 그대로 빠져나갔다.':'…Liukui suoraan aukon läpi.',
-'…일반 잡몹이 아니야. 모디파이어 붙었군.':'…Ei tavallinen vihollinen. Sillä on modifikaattori.',
+"…보통 놈이 아니야. 악의가 덧씌워졌군.":"…Ei tavallinen. Pahuus tarttuu siihen.",
 '엘리트 하나 처리.':'Eliitti alas.',
 '…큰 놈이다. 일반 잡몹 정리부터.':'…Iso yksi. Siivoa tavalliset viholliset ensin.',
 '미니보스 처리. 다음 길로.':'Mini-bossi alas. Seuraavalle tielle.',
@@ -1508,7 +1508,7 @@ const _FI={
 '…죽었다 살아났네. 여신은 너를 포기 안 했어.':'…Kuoli ja palasi. Jumalatar ei luovuttanut sinusta.',
 '…또야? 패턴 좀 외워!':'…Taas? Opettele kaava!',
 '…한 번도 안 죽고. 그건 진짜 실력이야.':'…Ei kertaakaan kuollut. Se on todellista taitoa.',
-'…ACT1을 끝냈다. 진짜 시작은 여기서부터야.':'…ACT1 valmis. Todellinen alku on täältä.',
+"…네 층을 넘었다. 진짜 시작은 여기서부터야.":"…Neljä kerrosta on takana. Todellinen alku on täältä.",
 '모든 보스를 무너뜨렸다. 너는 지옥의 일부야.':'Kaikki bossit kaatuivat. Olet osa helvettiä.',
 '…30초. 너 진짜 미쳤구나.':'…30 sekuntia. Olet todella hullu.',
 '…빠르군. 효율적이야.':'…Nopea. Tehokas.',
@@ -1538,7 +1538,7 @@ const _FI={
 '50명! 학살자야!':'50 tappoa! Teurastaja!',
 '5단!! 진짜 게이머 인증!':'Vaikeus 5!! Aito pelaaja sertifioitu!',
 '7단!! 다른 사람들 이 정도 못 와!':'Vaikeus 7!! Muut eivät pääse näin pitkälle!',
-'ACT1 완주! 우리가 진짜 해냈어!':'AKT 1 valmis! Me todella teimme sen!',
+"네 층 돌파! 우리가 진짜 해냈어!":"Neljä kerrosta läpi! Me todella teimme sen!",
 'Ctrl 얼음보주로 탈출하라.':'Ctrl — pakene Jääkuulalla.',
 'Ctrl 유령걸음으로 탈출하라.':'Ctrl — pakene Aavekävelyllä.',
 'J키! 패시브 강해져!':'C-näppäin! Passiiviset vahvistuvat!',
@@ -1575,11 +1575,11 @@ const _FI={
 '다음엔 죽지 마!':'Älä kuole seuraavalla kerralla!',
 '소환수 왔어! 먼저 처리해야 해!':'Kutsutut! Selvitä ne ensin!',
 '스킬 없으면 방향키 연타뿐이야.':'Ei taitoja? Vain spämmää nuolinäppäimiä.',
-'신기록!! 스트리머한테 보내!':'Uusi ennätys!! Lähetä striimaajaalle!',
+"신기록!! 이건 기억해 둬야 해!":"Uusi ennätys!! Tämä pitää muistaa!",
 '아이템 넘쳐! 우리가 주워줄게!':'Laukku täynnä! Me poimimme sinulle!',
 '안 죽고 깼어! 진짜 천재 맞네!':'Läpäisty ilman kuolemia! Aito nero!',
 '앞으로 가자~':'Mennään eteenpäin~',
-'우리가 해냈어! 다음 챕터 가자!':'Me teimme sen! Seuraava luku!','핵터 니가 진짜 해냈구나, 여왕님이 기뻐하시겠어!':'Hector, sinä todella teit sen! Kuningatar on tyytyväinen!',
+'우리가 해냈어! 다음 챕터 가자!':'Me teimme sen! Seuraava luku!',"해냈어! 여신님이 기뻐하시겠어!":"Teit sen! Jumalatar ilahtuu!",
 '일반 모드! 편하게 즐기자!':'Normaali tila! Nauti rauhassa!',
 '자원이 반이다. F키로 회복해.':'Resurssit puoliksi. Paina F palautuaksesi.',
 '잡힌다! 옆으로 빠져!':'Otetaan kiinni! Väistä sivulle!',
@@ -2649,7 +2649,7 @@ const _FI={
 '그렇게 잘하다가!! 아까워 죽겠어!':"Sinä pärjäsit niin hyvin!! Ihan sääli!",
 '…지옥에 망자 하나 더 늘릴 셈이야?':"…Aiotko lisätä Helvettiin vielä yhden ruumiin?",
 '그런 소리 마! 얜 아직 안 죽었어! 일어나!':"Älä sano noin! Tämä ei ole vielä kuollut! Nouse ylös!",
-'…여왕님이 실망하시겠군.':"…Kuningatar pettyy sinuun.",
+"…여신님이 실망하시겠군.":"…Jumalatar pettyy.",
 '실망은 무슨! 다시 일어나면 되잖아, 얼른!':"Mitä pettymystä! Nouset vain takaisin ylös — vauhtia!",
 '잠은 집에 가서 자. …일어나.':"Nuku kotona. …Nouse ylös.",
 '여기서 자면 진짜 집 못 가! 얼른 일어나!':"Jos nukahdat tänne, et ikinä pääse kotiin! Nouse ylös!",
@@ -2825,6 +2825,8 @@ Object.assign(_FI,{"…달아났다. 숲 깊은 곳으로.":"…Se pakeni. Mets�
 Object.assign(_FI,{"구르기 (방향키 +)":"Kierto (nuolinäppäimet +)","방향키+Space 구르기":"nuolinäppäimet+Space Kierto","방향키+Space! 굴러서 탈출해!":"nuolinäppäimet+Space! Kierähdä pakoon!","구르기는 키보드 키로 지정하세요.":"Määritä Kierto näppäimistön näppäimelle.","전격이동은 구르기(방향키 + Space)로 바뀌었습니다. 투자한 스킬 포인트는 환급됩니다.":"Välähdysaskel on korvattu: Kierto (nuolinäppäimet + Space). Sijoitetut taitopisteet palautetaan."});
 // [ROLL] u_n02 경로 약화 문구에 구르기 추가 (번역대상 No.3377)
 Object.assign(_FI,{"구르기·전격이동 경로의 적에게 약화 — 받는 피해 +{p}% (5초)":"Heikentää vihollisia Kierron ja Salama-askeleen reitillä — saatu vahinko +{p}% (5s)"});
+// [STY-14] 대사 정본 정합 묶음 A (번역대상 No.3473~3482 신규분)
+Object.assign(_FI,{"썩은 숲은 아직 끝나지 않았다.":"Mätä Metsä ei ole vielä ohi.","…썩은 숲을 벗어났다. 위는 더 지독할 거다.":"…Jätimme Mädän Metsän taakse. Ylempänä on pahempaa.","살았어! 반이나 올라왔어!":"Selvisimme! Puolet matkasta ylöspäin!"," 돌파!":" murrettu!","킬루":"Killu","화염의 군주야. 빙결 무기로 꺼 버려.":"Liekin herra. Sammuta se pakkasaseella.","…마지막이다. 여신도 더는 도와줄 수 없어.":"…Tämä on viimeinen. Jumalatarkaan ei voi enää auttaa.","…새 한 마리 안 우네. 숲이 다 먹었어.":"…Ei yhtään lintua. Metsä söi ne kaikki.","위층이 기다린다...":"Yläkerros odottaa...","위층으로 ▶":"Ylöspäin ▶"});
 // [I18N-FILL] lang 전수 감사 — 누락·한글 잔존 보충 (2026-10-28, 번역대상 No.3389~3468)
 Object.assign(_FI,{"속성방어결정":"Elementtipuolustus Kristalli","🔨 불꽃칼날!":"🔨 Liekkiterä!","⚡불꽃칼날!":"⚡Liekkiterä!","🗡 불꽃칼날!":"🗡 Liekkiterä!","네임드":"Nimetty","맵과 움직임 준비 중...":"Valmistellaan karttaa ja liikettä...","시작 화면 준비 중...":"Valmistellaan aloitusnäkymää...","미장착":"Ei varustettu","홈 ":"Istukka ","호환되지 않음":"Ei yhteensopiva","장비 부위":"Varustepaikat","장착 ":"Kiinnitetty ","장착 중: ":"Varustettu: ","장착할 빈 홈 선택":"Valitse tyhjä istukka","장착 중인 장비에 호환되는 빈 홈이 없습니다.":"Varustamissasi esineissä ei ole yhteensopivia tyhjiä istukoita.","빈 홈":"Tyhjä istukka","호환":"Sopii","포탈 A 설치 — 다른 곳에서 P를 눌러 포탈 B 설치":"Portaali A asetettu — paina P toisaalla asettaaksesi portaalin B","포탈 간격이 너무 가깝습니다":"Portaalit ovat liian lähellä toisiaan","포탈 B 설치 완료 — 가까이서 R을 눌러 이동":"Portaali B valmis — mene lähelle ja paina R matkustaaksesi","포탈 이동":"Portaalimatka","물리탄 차징 · E로 패링":"FYYSINEN AMMUS LATAUTUU · TORJU PAINAMALLA E","⚡ 다시 눌러 궤적 추격!":"⚡ Paina uudelleen takaa-ajoon!","⚡ 추적전격!":"⚡ Terän takaa-ajo!","쿵!":"POLJAHDUS!","해제 — 가방으로 이동":"poistettu — palautettu laukkuun","전투 기록 · 스킬 해석":"TAISTELULOGI · TAITOKOODEKSI","합체 설계도":"YHDISTÄMISPIIRUSTUKSET","스킬을 선택하면 상세 효과와 연결된 합체식을 볼 수 있습니다. 아래 목록에서 재료 스킬을 바로 찾을 수 있습니다.":"Valitse taito nähdäksesi sen vaikutukset ja yhdistelmäreseptit. Valitse alta ainesosa löytääksesi sen.","연결된 합체":"LIITTYVÄT YHDISTELMÄT","합체 도감":"YHDISTELMÄKOODEKSI","연결된 합체가 없습니다.":"Ei liittyvää yhdistelmää.","재료 확인":"AINESOSAT","추적전격 [합체]":"Terän takaa-ajo [Yhdistä]","추적칼날 종료 후 0.5초 안에 같은 스킬 키를 다시 누르면 칼날 궤적을 따라 전격이동. 경로의 적마다 칼날 피해를 1회 추가. 재입력은 자원 소모 없음.":"Paina samaa taitonäppäintä uudelleen 0.5s kuluessa jäljittävän terän päätyttyä käyttääksesi Välähdysaskelta sen reittiä pitkin. Jokainen reitillä oleva vihollinen ottaa terävahinkoa vielä kerran. Ei lisäresurssikustannusta.","리플레이 보기":"Katso toisto","벤치 미실시":"Vertailu ohitettu","유골함 정보":"Luu-uurnan tiedot","아이템 또는 유골에 마우스를 올려 정보를 확인하세요":"Vie hiiri esineen tai luun päälle nähdäksesi tiedot.","휠: 상세 스크롤":"Rulla: selaa tietoja","장착 아이템 비교":"Varustevertailu","옵션 비교":"Vertaa vaikutuksia","현재 장착 아이템":"Tällä hetkellä varustettu esine","수치 차이 전체 보기":"Näytä kaikki tilastoerot","가방 아이템":"Laukun esine","선택한 가방 아이템":"Valittu laukun esine","장비 기록":"VARUSTEKIRJAUS","현재 전투 구성":"Nykyinen kokoonpano","장비나 가방 아이템을 가리키면 이곳에서 옵션과 비교 정보를 확인합니다.":"Vie hiiri varusteen tai laukun esineen päälle nähdäksesi sen vaikutukset ja vertailut tässä.","추가 효과":"Lisä","장착 목록":"VARUSTETUT ESINEET","빈 칸":"Tyhjä","치명 · 위력":"Kriittinen · Voima","공격 위력":"Hyökkäysvoima","크기 · 이동속도":"Koko · Liikenopeus","선대의 유골":"Esi-isien luut","위력 ":"Voima ","우클릭하면 가방으로 해제됩니다.":"Napsauta hiiren oikealla palauttaaksesi sen laukkuun.","유골을 획득하면 이 부위에 등록됩니다.":"Kerää luu rekisteröidäksesi tämän osan.","선대의 유골 콜렉션":"Esi-isien luukokoelma","수집 ":"Kerätty ","소환 해금":"Kutsu avattu","유골함 장착 필요":"Varusta luu-uurna","유골 수집 중":"Kerätään luita","전대 소환 스킬로 불러낼 수 있습니다.":"Käytä Esi-isien kutsua kutsuaksesi esi-isän.","네 부위를 모두 모으면 소환이 해금됩니다.":"Kerää kaikki neljä osaa avataksesi kutsun.","부위를 선택하면 등급과 성장 효과를 확인할 수 있습니다.":"Valitse osa nähdäksesi sen harvinaisuuden ja kasvuvaikutuksen.","첫 유골 획득 시 유골함 자동 지급":"Saat luu-uurnan ensimmäisen luun mukana","선택 유골 해제":"Poista valittu luu","유골함 해제":"Riisu luu-uurna","유골 우클릭 또는 선택 후 해제 · 해제한 유골은 가방으로 이동":"Napsauta luuta oikealla tai valitse Poista · Luu palaa laukkuun","전대 소환 스킬로 전장에 강림합니다.":"Käytä Esi-isien kutsua kutsuaksesi tämän esi-isän.","네 부위를 모으면 전대 소환이 해금됩니다.":"Kerää kaikki neljä luuta avataksesi tämän esi-isän.","혈안탄 예고 · 물리탄 · E 패링":"VAROITUS: VERISILMÄ · FYYSINEN · TORJU PAINAMALLA E","스킬 합성 랩 — 저장되지 않습니다 (새로고침하면 처음 상태)":"Taitopajan laboratorio — mitään ei tallenneta (lataa uudelleen nollataksesi)"});
 // [I18N-FILL] lang 전수 감사 2차 — 유물·능력치·추천빌드·스킬 설명 쌍 보충 (2026-10-28, 번역대상 No.3500~3587)

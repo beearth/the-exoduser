@@ -1498,7 +1498,7 @@ const _VI={
 '사슬이 살을 뚫었어. 끌고 와.':'Móc câu xuyên thịt rồi. Kéo vào.',
 '…풀차지군. 멀리 던져버려.':'…Đầy sức mạnh. Ném đi thật xa.',
 '…빈틈을 그대로 빠져나갔다.':'…Trượt qua khe hở.',
-'…일반 잡몹이 아니야. 모디파이어 붙었군.':'…Không phải quái thường. Có modifier rồi.',
+"…보통 놈이 아니야. 악의가 덧씌워졌군.":"…Không phải loại thường. Ác ý bám đầy nó.",
 '엘리트 하나 처리.':'Hạ được một elite.',
 '…큰 놈이다. 일반 잡몹 정리부터.':'…Con lớn đó. Dọn quái thường trước.',
 '미니보스 처리. 다음 길로.':'Hạ mini-boss. Tiếp tục.',
@@ -1509,7 +1509,7 @@ const _VI={
 '…죽었다 살아났네. 여신은 너를 포기 안 했어.':'…Chết rồi sống lại. Nữ thần không từ bỏ bạn.',
 '…또야? 패턴 좀 외워!':'…Lại nữa? Học thuộc mẫu đi!',
 '…한 번도 안 죽고. 그건 진짜 실력이야.':'…Chưa chết lần nào. Đó là kỹ năng thật sự.',
-'…ACT1을 끝냈다. 진짜 시작은 여기서부터야.':'…Hoàn thành HỒI1. Khởi đầu thật sự là ở đây.',
+"…네 층을 넘었다. 진짜 시작은 여기서부터야.":"…Bốn tầng đã ở phía sau. Khởi đầu thật sự là từ đây.",
 '모든 보스를 무너뜨렸다. 너는 지옥의 일부야.':'Tất cả trùm đã ngã. Bạn là một phần của Địa Ngục.',
 '…30초. 너 진짜 미쳤구나.':'…30 giây. Bạn thật sự điên rồi.',
 '…빠르군. 효율적이야.':'…Nhanh. Hiệu quả.',
@@ -1539,7 +1539,7 @@ const _VI={
 '50명! 학살자야!':'50 mạng! Kẻ tàn sát!',
 '5단!! 진짜 게이머 인증!':'Độ khó 5!! Game thủ thực thụ!',
 '7단!! 다른 사람들 이 정도 못 와!':'Độ khó 7!! Người khác không đến được đây!',
-'ACT1 완주! 우리가 진짜 해냈어!':'ACT1 hoàn thành! Chúng ta thực sự làm được!',
+"네 층 돌파! 우리가 진짜 해냈어!":"Vượt bốn tầng! Chúng ta thật sự làm được!",
 'Ctrl 얼음보주로 탈출하라.':'Ctrl — thoát bằng Cầu Băng.',
 'Ctrl 유령걸음으로 탈출하라.':'Ctrl — thoát bằng Bước Ma.',
 'J키! 패시브 강해져!':'Phím C! Bị động mạnh hơn!',
@@ -1576,11 +1576,11 @@ const _VI={
 '다음엔 죽지 마!':'Lần sau đừng chết!',
 '소환수 왔어! 먼저 처리해야 해!':'Quái triệu hồi! Xử lý chúng trước!',
 '스킬 없으면 방향키 연타뿐이야.':'Không kỹ năng? Chỉ spam phím mũi tên.',
-'신기록!! 스트리머한테 보내!':'Kỷ lục mới!! Gửi cho streamer!',
+"신기록!! 이건 기억해 둬야 해!":"Kỷ lục mới!! Phải nhớ lấy cái này!",
 '아이템 넘쳐! 우리가 주워줄게!':'Túi đầy! Chúng tôi sẽ nhặt hộ!',
 '안 죽고 깼어! 진짜 천재 맞네!':'Qua màn không chết! Thiên tài thật sự!',
 '앞으로 가자~':'Tiến lên thôi~',
-'우리가 해냈어! 다음 챕터 가자!':'Chúng ta làm được rồi! Chương tiếp theo!','핵터 니가 진짜 해냈구나, 여왕님이 기뻐하시겠어!':'Hector, cậu thực sự đã làm được! Nữ hoàng sẽ hài lòng đấy!',
+'우리가 해냈어! 다음 챕터 가자!':'Chúng ta làm được rồi! Chương tiếp theo!',"해냈어! 여신님이 기뻐하시겠어!":"Cậu làm được rồi! Nữ thần sẽ vui lắm!",
 '일반 모드! 편하게 즐기자!':'Chế độ thường! Thoải mái chơi!',
 '자원이 반이다. F키로 회복해.':'Tài nguyên còn nửa. F để hồi phục.',
 '잡힌다! 옆으로 빠져!':'Bị bắt rồi! Né sang bên!',
@@ -2650,7 +2650,7 @@ const _VI={
 '그렇게 잘하다가!! 아까워 죽겠어!':"Đang làm tốt vậy mà!! Tiếc ơi là tiếc!",
 '…지옥에 망자 하나 더 늘릴 셈이야?':"...Định thêm một xác nữa vào Địa Ngục à?",
 '그런 소리 마! 얜 아직 안 죽었어! 일어나!':"Đừng nói vậy chứ! Cậu ấy chưa chết đâu! Đứng dậy!",
-'…여왕님이 실망하시겠군.':"...Nữ hoàng sẽ thất vọng đấy.",
+"…여신님이 실망하시겠군.":"…Nữ thần sẽ thất vọng.",
 '실망은 무슨! 다시 일어나면 되잖아, 얼른!':"Thất vọng gì chứ! Đứng dậy lại là được mà, mau lên!",
 '잠은 집에 가서 자. …일어나.':"Muốn ngủ thì về nhà mà ngủ. ...Đứng dậy.",
 '여기서 자면 진짜 집 못 가! 얼른 일어나!':"Ngủ ở đây thì đừng hòng về nhà! Mau đứng dậy!",
@@ -2826,6 +2826,8 @@ Object.assign(_VI,{"…달아났다. 숲 깊은 곳으로.":"…Nó đã chạy 
 Object.assign(_VI,{"구르기 (방향키 +)":"Lăn (phím mũi tên +)","방향키+Space 구르기":"phím mũi tên+Space Lăn","방향키+Space! 굴러서 탈출해!":"phím mũi tên+Space! Lăn đi để thoát!","구르기는 키보드 키로 지정하세요.":"Hãy gán Lăn cho một phím bàn phím.","전격이동은 구르기(방향키 + Space)로 바뀌었습니다. 투자한 스킬 포인트는 환급됩니다.":"Bước Chớp đã được thay bằng Lăn (phím mũi tên + Space). Điểm kỹ năng đã đầu tư được hoàn lại."});
 // [ROLL] u_n02 경로 약화 문구에 구르기 추가 (번역대상 No.3377)
 Object.assign(_VI,{"구르기·전격이동 경로의 적에게 약화 — 받는 피해 +{p}% (5초)":"Làm suy yếu kẻ địch trên đường Lăn và Bước Chớp — sát thương phải chịu +{p}% (5s)"});
+// [STY-14] 대사 정본 정합 묶음 A (번역대상 No.3473~3482 신규분)
+Object.assign(_VI,{"썩은 숲은 아직 끝나지 않았다.":"Rừng Mục Nát vẫn chưa kết thúc.","…썩은 숲을 벗어났다. 위는 더 지독할 거다.":"…Ta đã rời khỏi Rừng Mục Nát. Phía trên còn tệ hơn.","살았어! 반이나 올라왔어!":"Sống rồi! Đã lên được nửa đường!"," 돌파!":" vượt qua!","킬루":"Killu","화염의 군주야. 빙결 무기로 꺼 버려.":"Chúa tể ngọn lửa. Dập nó bằng vũ khí băng.","…마지막이다. 여신도 더는 도와줄 수 없어.":"…Đây là kẻ cuối cùng. Ngay cả Nữ thần cũng không giúp được nữa.","…새 한 마리 안 우네. 숲이 다 먹었어.":"…Không một con chim nào. Khu rừng đã nuốt chúng hết.","위층이 기다린다...":"Tầng phía trên đang chờ...","위층으로 ▶":"Lên tầng ▶"});
 // [I18N-FILL] lang 전수 감사 — 누락·한글 잔존 보충 (2026-10-28, 번역대상 No.3389~3468)
 Object.assign(_VI,{"속성방어결정":"Pha Lê DEF Nguyên Tố","🔨 불꽃칼날!":"🔨 Lưỡi Kiếm Lửa!","⚡불꽃칼날!":"⚡Lưỡi Kiếm Lửa!","🗡 불꽃칼날!":"🗡 Lưỡi Kiếm Lửa!","네임드":"Có Tên","맵과 움직임 준비 중...":"Đang chuẩn bị bản đồ và chuyển động...","시작 화면 준비 중...":"Đang chuẩn bị màn hình bắt đầu...","미장착":"Chưa trang bị","홈 ":"Ổ ","호환되지 않음":"Không tương thích","장비 부위":"Vị trí trang bị","장착 ":"Đã gắn ","장착 중: ":"Đã trang bị: ","장착할 빈 홈 선택":"Chọn ổ trống để gắn","장착 중인 장비에 호환되는 빈 홈이 없습니다.":"Trang bị đang mặc không có ổ trống tương thích.","빈 홈":"Ổ trống","호환":"Hợp","포탈 A 설치 — 다른 곳에서 P를 눌러 포탈 B 설치":"Đã đặt Cổng A — nhấn P ở nơi khác để đặt Cổng B","포탈 간격이 너무 가깝습니다":"Hai cổng quá gần nhau","포탈 B 설치 완료 — 가까이서 R을 눌러 이동":"Cổng B đã sẵn sàng — lại gần và nhấn R để di chuyển","포탈 이동":"Dịch chuyển qua cổng","물리탄 차징 · E로 패링":"ĐANG NẠP ĐẠN VẬT LÝ · NHẤN E ĐỂ ĐỠ ĐÒN","⚡ 다시 눌러 궤적 추격!":"⚡ Nhấn lại để truy đuổi!","⚡ 추적전격!":"⚡ Chớp Truy Đuổi!","쿵!":"RẦM!","해제 — 가방으로 이동":"đã gỡ — chuyển vào túi","전투 기록 · 스킬 해석":"GHI CHÉP CHIẾN ĐẤU · GIẢI MÃ KỸ NĂNG","합체 설계도":"BẢN THIẾT KẾ HỢP THỂ","스킬을 선택하면 상세 효과와 연결된 합체식을 볼 수 있습니다. 아래 목록에서 재료 스킬을 바로 찾을 수 있습니다.":"Chọn một kỹ năng để xem hiệu ứng chi tiết và công thức hợp thể liên quan. Bạn có thể tìm nhanh kỹ năng nguyên liệu trong danh sách bên dưới.","연결된 합체":"HỢP THỂ LIÊN QUAN","합체 도감":"SỔ TAY HỢP THỂ","연결된 합체가 없습니다.":"Không có hợp thể liên quan.","재료 확인":"NGUYÊN LIỆU","추적전격 [합체]":"Chớp Truy Đuổi [Hợp Thể]","추적칼날 종료 후 0.5초 안에 같은 스킬 키를 다시 누르면 칼날 궤적을 따라 전격이동. 경로의 적마다 칼날 피해를 1회 추가. 재입력은 자원 소모 없음.":"Nhấn lại cùng phím kỹ năng trong 0.5 giây sau khi lưỡi truy đuổi kết thúc để Bước Chớp dọc theo quỹ đạo lưỡi. Mỗi kẻ địch trên đường đi chịu thêm 1 lần sát thương lưỡi. Nhấn lại không tốn tài nguyên.","리플레이 보기":"Xem lại","벤치 미실시":"Chưa chạy benchmark","유골함 정보":"Thông tin bình hài cốt","아이템 또는 유골에 마우스를 올려 정보를 확인하세요":"Rê chuột lên vật phẩm hoặc hài cốt để xem thông tin","휠: 상세 스크롤":"Con lăn: cuộn chi tiết","장착 아이템 비교":"So sánh trang bị","옵션 비교":"So sánh hiệu ứng","현재 장착 아이템":"Vật phẩm đang trang bị","수치 차이 전체 보기":"Xem toàn bộ chênh lệch chỉ số","가방 아이템":"Vật phẩm trong túi","선택한 가방 아이템":"Vật phẩm túi đã chọn","장비 기록":"GHI CHÉP TRANG BỊ","현재 전투 구성":"Cấu hình chiến đấu hiện tại","장비나 가방 아이템을 가리키면 이곳에서 옵션과 비교 정보를 확인합니다.":"Rê chuột lên trang bị hoặc vật phẩm trong túi để xem hiệu ứng và thông tin so sánh tại đây.","추가 효과":"Thêm","장착 목록":"DANH SÁCH TRANG BỊ","빈 칸":"Trống","치명 · 위력":"Bạo Kích · Sức mạnh","공격 위력":"Sức mạnh tấn công","크기 · 이동속도":"Kích thước · Tốc độ di chuyển","선대의 유골":"Hài cốt tổ tiên","위력 ":"Sức mạnh ","우클릭하면 가방으로 해제됩니다.":"Nhấp chuột phải để trả về túi.","유골을 획득하면 이 부위에 등록됩니다.":"Thu thập hài cốt để ghi vào bộ phận này.","선대의 유골 콜렉션":"Bộ sưu tập hài cốt tổ tiên","수집 ":"Đã thu thập ","소환 해금":"Đã mở khóa triệu hồi","유골함 장착 필요":"Cần trang bị bình hài cốt","유골 수집 중":"Đang thu thập hài cốt","전대 소환 스킬로 불러낼 수 있습니다.":"Dùng kỹ năng Triệu Hồi Tổ Tiên để gọi tổ tiên.","네 부위를 모두 모으면 소환이 해금됩니다.":"Thu thập đủ cả bốn bộ phận để mở khóa triệu hồi.","부위를 선택하면 등급과 성장 효과를 확인할 수 있습니다.":"Chọn một bộ phận để xem phẩm cấp và hiệu ứng trưởng thành.","첫 유골 획득 시 유골함 자동 지급":"Nhận bình hài cốt tự động khi có hài cốt đầu tiên","선택 유골 해제":"Gỡ hài cốt đã chọn","유골함 해제":"Gỡ bình hài cốt","유골 우클릭 또는 선택 후 해제 · 해제한 유골은 가방으로 이동":"Nhấp chuột phải vào hài cốt hoặc chọn rồi gỡ · Hài cốt đã gỡ được chuyển vào túi","전대 소환 스킬로 전장에 강림합니다.":"Giáng lâm chiến trường bằng kỹ năng Triệu Hồi Tổ Tiên.","네 부위를 모으면 전대 소환이 해금됩니다.":"Thu thập đủ bốn bộ phận để mở khóa Triệu Hồi Tổ Tiên.","혈안탄 예고 · 물리탄 · E 패링":"BÁO TRƯỚC ĐẠN MẮT MÁU · VẬT LÝ · E ĐỠ ĐÒN","스킬 합성 랩 — 저장되지 않습니다 (새로고침하면 처음 상태)":"Phòng thí nghiệm Lò rèn kỹ năng — không được lưu (tải lại để đặt lại)","연쇄돌격강화":"Tăng Xung Phong Liên Hoàn","연쇄돌격뎀+":"Sát Thương Xung Phong Liên Hoàn+"});
 // [I18N-FILL] lang 전수 감사 2차 — 유물·능력치·추천빌드·스킬 설명 쌍 보충 (2026-10-28, 번역대상 No.3500~3587)

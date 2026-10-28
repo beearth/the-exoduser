@@ -1497,7 +1497,7 @@ const _RO={
 '사슬이 살을 뚫었어. 끌고 와.':'Harpoane a perforat carnea. Trage-l înăuntru.',
 '…풀차지군. 멀리 던져버려.':'…Complet încărcat. Aruncă-l departe.',
 '…빈틈을 그대로 빠져나갔다.':'…S-a strecurat direct prin spărtură.',
-'…일반 잡몹이 아니야. 모디파이어 붙었군.':'…Nu e un inamic obișnuit. Are un modificator.',
+"…보통 놈이 아니야. 악의가 덧씌워졌군.":"…Nu e unul obișnuit. Răutatea s-a agățat de el.",
 '엘리트 하나 처리.':'Un elite eliminat.',
 '…큰 놈이다. 일반 잡몹 정리부터.':'…E mare. Curăță inamicii obișnuiți mai întâi.',
 '미니보스 처리. 다음 길로.':'Mini-boss eliminat. La următorul drum.',
@@ -1508,7 +1508,7 @@ const _RO={
 '…죽었다 살아났네. 여신은 너를 포기 안 했어.':'…A murit și s-a întors. Zeița nu a renunțat la tine.',
 '…또야? 패턴 좀 외워!':'…Din nou? Învață modelul!',
 '…한 번도 안 죽고. 그건 진짜 실력이야.':'…Niciodată mort. Aceasta e abilitate adevărată.',
-'…ACT1을 끝냈다. 진짜 시작은 여기서부터야.':'…ACT1 terminat. Adevăratul început e de aici.',
+"…네 층을 넘었다. 진짜 시작은 여기서부터야.":"…Patru straturi sunt în urma noastră. Adevăratul început e de aici.",
 '모든 보스를 무너뜨렸다. 너는 지옥의 일부야.':'Toți bosii au căzut. Ești parte din iad.',
 '…30초. 너 진짜 미쳤구나.':'…30 secunde. Ești cu adevărat nebun.',
 '…빠르군. 효율적이야.':'…Rapid. Eficient.',
@@ -1538,7 +1538,7 @@ const _RO={
 '50명! 학살자야!':'50 uciși! Măcelar!',
 '5단!! 진짜 게이머 인증!':'Dificultate 5!! Gamer adevărat certificat!',
 '7단!! 다른 사람들 이 정도 못 와!':'Dificultate 7!! Alții nu ajung atât de departe!',
-'ACT1 완주! 우리가 진짜 해냈어!':'ACT1 complet! Chiar am reușit!',
+"네 층 돌파! 우리가 진짜 해냈어!":"Patru straturi trecute! Chiar am reușit!",
 'Ctrl 얼음보주로 탈출하라.':'Ctrl — scapă cu Ice Orb.',
 'Ctrl 유령걸음으로 탈출하라.':'Ctrl — scapă cu Ghost Walk.',
 'J키! 패시브 강해져!':'Tasta J! Pasivele devin mai puternice!',
@@ -1575,11 +1575,11 @@ const _RO={
 '다음엔 죽지 마!':'Nu mai muri data viitoare!',
 '소환수 왔어! 먼저 처리해야 해!':'Monștri invocați! Elimină-i mai întâi!',
 '스킬 없으면 방향키 연타뿐이야.':'Fără abilități? Apasă continuu săgețile.',
-'신기록!! 스트리머한테 보내!':'Record nou!! Trimite streamerului!',
+"신기록!! 이건 기억해 둬야 해!":"Record nou!! Pe asta trebuie să ne-o amintim!",
 '아이템 넘쳐! 우리가 주워줄게!':'Geanta plină! Noi culegem pentru tine!',
 '안 죽고 깼어! 진짜 천재 맞네!':'Finalizat fără moarte! Geniu adevărat!',
 '앞으로 가자~':'Să mergem înainte~',
-'우리가 해냈어! 다음 챕터 가자!':'Am reușit! Capitolul următor!','핵터 니가 진짜 해냈구나, 여왕님이 기뻐하시겠어!':'Hector, chiar ai reușit! Regina va fi încântată!',
+'우리가 해냈어! 다음 챕터 가자!':'Am reușit! Capitolul următor!',"해냈어! 여신님이 기뻐하시겠어!":"Ai reușit! Zeița va fi mulțumită!",
 '일반 모드! 편하게 즐기자!':'Modul normal! Bucură-te relaxat!',
 '자원이 반이다. F키로 회복해.':'Resurse la jumătate. F pentru recuperare.',
 '잡힌다! 옆으로 빠져!':'Te prind! Evadează lateral!',
@@ -2649,7 +2649,7 @@ const _RO={
 '그렇게 잘하다가!! 아까워 죽겠어!':"Te descurcai atât de bine!! Ce păcat!",
 '…지옥에 망자 하나 더 늘릴 셈이야?':"…Vrei să mai adaugi un cadavru în Iad?",
 '그런 소리 마! 얜 아직 안 죽었어! 일어나!':"Nu spune asta! Ăsta încă n-a murit! Ridică-te!",
-'…여왕님이 실망하시겠군.':"…Regina va fi dezamăgită.",
+"…여신님이 실망하시겠군.":"…Zeița va fi dezamăgită.",
 '실망은 무슨! 다시 일어나면 되잖아, 얼른!':"Ce dezamăgire! Doar ridică-te la loc — haide!",
 '잠은 집에 가서 자. …일어나.':"Dormi acasă. …Ridică-te.",
 '여기서 자면 진짜 집 못 가! 얼른 일어나!':"Dacă adormi aici, nu mai ajungi acasă! Ridică-te!",
@@ -2830,6 +2830,8 @@ Object.assign(_RO,{"…달아났다. 숲 깊은 곳으로.":"…A fugit. În ad�
 Object.assign(_RO,{"구르기 (방향키 +)":"Rostogolire (săgeți +)","방향키+Space 구르기":"săgeți+Space Rostogolire","방향키+Space! 굴러서 탈출해!":"săgeți+Space! Rostogolește-te și scapă!","구르기는 키보드 키로 지정하세요.":"Atribuie Rostogolirea unei taste de tastatură.","전격이동은 구르기(방향키 + Space)로 바뀌었습니다. 투자한 스킬 포인트는 환급됩니다.":"Pas Fulger a fost înlocuit cu Rostogolire (săgeți + Space). Punctele de abilitate investite sunt rambursate."});
 // [ROLL] u_n02 경로 약화 문구에 구르기 추가 (번역대상 No.3377)
 Object.assign(_RO,{"구르기·전격이동 경로의 적에게 약화 — 받는 피해 +{p}% (5초)":"Slăbește inamicii de pe traseul Rostogolirii și al Pasului Fulger — daune primite +{p}% (5s)"});
+// [STY-14] 대사 정본 정합 묶음 A (번역대상 No.3473~3482 신규분)
+Object.assign(_RO,{"썩은 숲은 아직 끝나지 않았다.":"Pădurea Putredă nu s-a terminat încă.","…썩은 숲을 벗어났다. 위는 더 지독할 거다.":"…Am lăsat în urmă Pădurea Putredă. Mai sus e și mai rău.","살았어! 반이나 올라왔어!":"Am scăpat! Am urcat jumătate!"," 돌파!":" străpuns!","킬루":"Killu","화염의 군주야. 빙결 무기로 꺼 버려.":"Stăpânul flăcărilor. Stinge-l cu o armă de gheață.","…마지막이다. 여신도 더는 도와줄 수 없어.":"…Acesta e ultimul. Nici Zeița nu ne mai poate ajuta.","…새 한 마리 안 우네. 숲이 다 먹었어.":"…Nici măcar o pasăre. Pădurea le-a mâncat pe toate.","위층이 기다린다...":"Stratul de deasupra așteaptă...","위층으로 ▶":"Urcă ▶"});
 // [I18N-FILL] lang 전수 감사 — 누락·한글 잔존 보충 (2026-10-28, 번역대상 No.3389~3468)
 Object.assign(_RO,{"속성방어결정":"Cristal DEF elem.","🔨 불꽃칼날!":"🔨 Lamă de Flacără!","⚡불꽃칼날!":"⚡Lamă de Flacără!","🗡 불꽃칼날!":"🗡 Lamă de Flacără!","네임드":"Numit","맵과 움직임 준비 중...":"Se pregătesc harta și mișcarea...","시작 화면 준비 중...":"Se pregătește ecranul de start...","미장착":"Neechipat","홈 ":"Soclu ","호환되지 않음":"Incompatibil","장비 부위":"Echipament","장착 ":"Montat ","장착 중: ":"Echipat: ","장착할 빈 홈 선택":"Alege un soclu gol","장착 중인 장비에 호환되는 빈 홈이 없습니다.":"Echipamentul tău nu are socluri goale compatibile.","빈 홈":"Soclu gol","호환":"Potriv.","포탈 A 설치 — 다른 곳에서 P를 눌러 포탈 B 설치":"Portal A plasat — apasă P în altă parte pentru a plasa Portalul B","포탈 간격이 너무 가깝습니다":"Portalurile sunt prea apropiate","포탈 B 설치 완료 — 가까이서 R을 눌러 이동":"Portal B gata — apropie-te și apasă R pentru a călători","포탈 이동":"Călătorie prin portal","물리탄 차징 · E로 패링":"PROIECTIL FIZIC SE ÎNCARCĂ · PAREAZĂ CU E","⚡ 다시 눌러 궤적 추격!":"⚡ Apasă din nou pentru urmărire!","⚡ 추적전격!":"⚡ Urmărirea Lamei!","쿵!":"TROPĂIT!","해제 — 가방으로 이동":"scos — returnat în geantă","전투 기록 · 스킬 해석":"JURNAL DE LUPTĂ · CODEX AL ABILITĂȚILOR","합체 설계도":"PLANURI DE FUZIUNE","스킬을 선택하면 상세 효과와 연결된 합체식을 볼 수 있습니다. 아래 목록에서 재료 스킬을 바로 찾을 수 있습니다.":"Selectează o abilitate pentru a vedea efectele și rețetele de fuziune. Alege un ingredient de mai jos pentru a-l localiza.","연결된 합체":"FUZIUNI CONEXE","합체 도감":"CODEXUL FUZIUNILOR","연결된 합체가 없습니다.":"Nicio fuziune conexă.","재료 확인":"INGREDIENTE","추적전격 [합체]":"Urmărirea Lamei [Fuziune]","추적칼날 종료 후 0.5초 안에 같은 스킬 키를 다시 누르면 칼날 궤적을 따라 전격이동. 경로의 적마다 칼날 피해를 1회 추가. 재입력은 자원 소모 없음.":"Apasă din nou aceeași tastă de abilitate în 0.5s după ce lama urmăritoare dispare pentru a executa un Pas Fulger de-a lungul traiectoriei ei. Fiecare inamic de pe traseu primește încă o dată daunele lamei. Reapăsarea nu consumă resurse.","리플레이 보기":"Vezi reluarea","벤치 미실시":"Bench neefectuat","유골함 정보":"Informații despre osuar","아이템 또는 유골에 마우스를 올려 정보를 확인하세요":"Poziționează cursorul peste un obiect sau un os pentru a vedea detaliile","휠: 상세 스크롤":"Rotiță: derulează detaliile","장착 아이템 비교":"Comparare echipament","옵션 비교":"Compară efectele","현재 장착 아이템":"Obiect echipat în prezent","수치 차이 전체 보기":"Vezi toate diferențele de statistici","가방 아이템":"Obiect din geantă","선택한 가방 아이템":"Obiect selectat din geantă","장비 기록":"REGISTRU DE ECHIPAMENT","현재 전투 구성":"Configurația curentă","장비나 가방 아이템을 가리키면 이곳에서 옵션과 비교 정보를 확인합니다.":"Poziționează cursorul peste un echipament sau un obiect din geantă pentru a vedea aici efectele și comparațiile.","추가 효과":"Extra","장착 목록":"OBIECTE ECHIPATE","빈 칸":"Gol","치명 · 위력":"Critic · Putere","공격 위력":"Putere de atac","크기 · 이동속도":"Mărime · Viteză mișcare","선대의 유골":"Osul strămoșilor","위력 ":"Putere ","우클릭하면 가방으로 해제됩니다.":"Click dreapta pentru a-l returna în geantă.","유골을 획득하면 이 부위에 등록됩니다.":"Obține un os pentru a înregistra această parte.","선대의 유골 콜렉션":"Colecția de Oase ale Strămoșilor","수집 ":"Colectate ","소환 해금":"Invocare deblocată","유골함 장착 필요":"Echipează osuarul","유골 수집 중":"Se colectează oase","전대 소환 스킬로 불러낼 수 있습니다.":"Folosește Invocarea strămoșilor pentru a chema strămoșul.","네 부위를 모두 모으면 소환이 해금됩니다.":"Colectează toate cele patru părți pentru a debloca invocarea.","부위를 선택하면 등급과 성장 효과를 확인할 수 있습니다.":"Selectează un os pentru a vedea raritatea și efectul de creștere.","첫 유골 획득 시 유골함 자동 지급":"Primești un osuar odată cu primul os","선택 유골 해제":"Scoate osul selectat","유골함 해제":"Dezechipează osuarul","유골 우클릭 또는 선택 후 해제 · 해제한 유골은 가방으로 이동":"Click dreapta pe un os sau selectează Scoate · Osul revine în geantă","전대 소환 스킬로 전장에 강림합니다.":"Folosește Invocarea strămoșilor pentru a chema acest strămoș.","네 부위를 모으면 전대 소환이 해금됩니다.":"Colectează toate cele patru oase pentru a debloca acest strămoș.","혈안탄 예고 · 물리탄 · E 패링":"AVERTISMENT OCHI SÂNGEROS · FIZIC · PAREAZĂ CU E","스킬 합성 랩 — 저장되지 않습니다 (새로고침하면 처음 상태)":"Laboratorul Forjei abilităților — nu se salvează nimic (reîncarcă pentru resetare)"});
 // [I18N-FILL] lang 전수 감사 2차 — 유물·능력치·추천빌드·스킬 설명 쌍 보충 (2026-10-28, 번역대상 No.3500~3587)

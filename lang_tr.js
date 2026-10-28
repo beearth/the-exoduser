@@ -1516,7 +1516,7 @@ const _TR={
 '사슬이 살을 뚫었어. 끌고 와.':'Zincir eti deldi. Çek.',
 '…풀차지군. 멀리 던져버려.':'…Tam şarj. Uzağa fırlat.',
 '…빈틈을 그대로 빠져나갔다.':'…Boşluktan kayarak çıktı.',
-'…일반 잡몹이 아니야. 모디파이어 붙었군.':'…Normal düşman değil. Değiştirici var.',
+"…보통 놈이 아니야. 악의가 덧씌워졌군.":"…Sıradan biri değil. Kötülük ona yapışmış.",
 '엘리트 하나 처리.':'Bir elit indi.',
 '…큰 놈이다. 일반 잡몹 정리부터.':'…Büyük biri. Önce normalleri temizle.',
 '미니보스 처리. 다음 길로.':'Mini patron indi. Sonraki yola.',
@@ -1527,7 +1527,7 @@ const _TR={
 '…죽었다 살아났네. 여신은 너를 포기 안 했어.':'…Öldün ve döndün. Tanrıça senden vazgeçmedi.',
 '…또야? 패턴 좀 외워!':'…Yine mi? Deseni öğren!',
 '…한 번도 안 죽고. 그건 진짜 실력이야.':'…Hiç ölmeden. Bu gerçek beceri.',
-'…ACT1을 끝냈다. 진짜 시작은 여기서부터야.':'…AKT1 bitti. Gerçek başlangıç burada.',
+"…네 층을 넘었다. 진짜 시작은 여기서부터야.":"…Dört katman geride kaldı. Gerçek başlangıç burada.",
 '모든 보스를 무너뜨렸다. 너는 지옥의 일부야.':'Tüm patronlar devrildi. Cehennemin bir parçasısın.',
 '…30초. 너 진짜 미쳤구나.':'…30 saniye. Gerçekten delirdin.',
 '…빠르군. 효율적이야.':'…Hızlı. Verimli.',
@@ -1557,7 +1557,7 @@ const _TR={
 '50명! 학살자야!':'50 öldürme! Katliamcı!',
 '5단!! 진짜 게이머 인증!':'Zorluk 5!! Gerçek oyuncu onaylandı!',
 '7단!! 다른 사람들 이 정도 못 와!':'Zorluk 7!! Diğerleri bu kadar gelemez!',
-'ACT1 완주! 우리가 진짜 해냈어!':'ACT1 tamamlandı! Gerçekten başardık!',
+"네 층 돌파! 우리가 진짜 해냈어!":"Dört katman aşıldı! Gerçekten başardık!",
 'Ctrl 얼음보주로 탈출하라.':'Ctrl — Buz Küresiyle kaç.',
 'Ctrl 유령걸음으로 탈출하라.':'Ctrl — Hayalet Yürüyüşüyle kaç.',
 'J키! 패시브 강해져!':'J tuşu! Pasifler güçleniyor!',
@@ -1594,11 +1594,11 @@ const _TR={
 '다음엔 죽지 마!':'Bir daha ölme!',
 '소환수 왔어! 먼저 처리해야 해!':'Çağrılanlar geldi! Önce onları temizle!',
 '스킬 없으면 방향키 연타뿐이야.':'Beceri yok? Sadece ok tuşlarına bas.',
-'신기록!! 스트리머한테 보내!':'Yeni rekor!! Yayıncıya gönder!',
+"신기록!! 이건 기억해 둬야 해!":"Yeni rekor!! Bunu aklımızda tutmalıyız!",
 '아이템 넘쳐! 우리가 주워줄게!':'Çanta dolu! Biz toplayacağız!',
 '안 죽고 깼어! 진짜 천재 맞네!':'Ölmeden temizle! Gerçek dahi!',
 '앞으로 가자~':'Hadi ileri gidelim~',
-'우리가 해냈어! 다음 챕터 가자!':'Başardık! Sonraki bölüme!','핵터 니가 진짜 해냈구나, 여왕님이 기뻐하시겠어!':'Hector, gerçekten başardın! Kraliçe çok memnun olacak!',
+'우리가 해냈어! 다음 챕터 가자!':'Başardık! Sonraki bölüme!',"해냈어! 여신님이 기뻐하시겠어!":"Başardın! Tanrıça memnun olacak!",
 '일반 모드! 편하게 즐기자!':'Normal mod! Rahat oyna!',
 '자원이 반이다. F키로 회복해.':'Kaynaklar yarı. F ile geri kazan.',
 '잡힌다! 옆으로 빠져!':'Yakalanıyorsun! Yana çekil!',
@@ -2667,7 +2667,7 @@ const _TR={
 '그렇게 잘하다가!! 아까워 죽겠어!':"O kadar iyi gidiyordun ki!! Çok yazık!",
 '…지옥에 망자 하나 더 늘릴 셈이야?':"…Cehennem'e bir ceset daha mı katacaksın?",
 '그런 소리 마! 얜 아직 안 죽었어! 일어나!':"Öyle deme! Bu daha ölmedi! Kalk!",
-'…여왕님이 실망하시겠군.':"…Kraliçe hayal kırıklığına uğrayacak.",
+"…여신님이 실망하시겠군.":"…Tanrıça hayal kırıklığına uğrayacak.",
 '실망은 무슨! 다시 일어나면 되잖아, 얼른!':"Ne hayal kırıklığı! Sadece yeniden kalk — hadi!",
 '잠은 집에 가서 자. …일어나.':"Uykunu evde uyu. …Kalk.",
 '여기서 자면 진짜 집 못 가! 얼른 일어나!':"Burada uyuyakalırsan bir daha eve dönemezsin! Kalk!",
@@ -2843,6 +2843,8 @@ Object.assign(_TR,{"…달아났다. 숲 깊은 곳으로.":"…Kaçtı. Ormanı
 Object.assign(_TR,{"구르기 (방향키 +)":"Yuvarlanma (ok tuşları +)","방향키+Space 구르기":"ok tuşları+Space Yuvarlanma","방향키+Space! 굴러서 탈출해!":"ok tuşları+Space! Yuvarlan ve kaç!","구르기는 키보드 키로 지정하세요.":"Yuvarlanmayı bir klavye tuşuna ata.","전격이동은 구르기(방향키 + Space)로 바뀌었습니다. 투자한 스킬 포인트는 환급됩니다.":"Işık Adımı yerine Yuvarlanma geldi (ok tuşları + Space). Harcanan beceri puanları iade edilir."});
 // [ROLL] u_n02 경로 약화 문구에 구르기 추가 (번역대상 No.3377)
 Object.assign(_TR,{"구르기·전격이동 경로의 적에게 약화 — 받는 피해 +{p}% (5초)":"Yuvarlanma ve Şimşek Adım yolundaki düşmanları zayıflatır — alınan hasar +{p}% (5sn)"});
+// [STY-14] 대사 정본 정합 묶음 A (번역대상 No.3473~3482 신규분)
+Object.assign(_TR,{"썩은 숲은 아직 끝나지 않았다.":"Çürük Orman daha bitmedi.","…썩은 숲을 벗어났다. 위는 더 지독할 거다.":"…Çürük Orman'ı geride bıraktık. Yukarısı daha kötü olacak.","살았어! 반이나 올라왔어!":"Başardık! Yolun yarısını çıktık!"," 돌파!":" aşıldı!","킬루":"Killu","화염의 군주야. 빙결 무기로 꺼 버려.":"Alevlerin efendisi. Onu buz silahıyla söndür.","…마지막이다. 여신도 더는 도와줄 수 없어.":"…Bu sonuncusu. Tanrıça bile artık yardım edemez.","…새 한 마리 안 우네. 숲이 다 먹었어.":"…Tek bir kuş bile yok. Orman hepsini yedi.","위층이 기다린다...":"Üstteki katman bekliyor...","위층으로 ▶":"Yukarı ▶"});
 // [I18N-FILL] lang 전수 감사 — 누락·한글 잔존 보충 (2026-10-28, 번역대상 No.3389~3468)
 Object.assign(_TR,{"속성방어결정":"Element Savunma Kristal","🔨 불꽃칼날!":"🔨 Alev Kılıcı!","⚡불꽃칼날!":"⚡Alev Kılıcı!","🗡 불꽃칼날!":"🗡 Alev Kılıcı!","네임드":"Adlı","맵과 움직임 준비 중...":"Harita ve hareket hazırlanıyor...","시작 화면 준비 중...":"Başlangıç ekranı hazırlanıyor...","미장착":"Kuşanılmadı","홈 ":"Yuva ","호환되지 않음":"Uyumsuz","장비 부위":"Ekipman bölümleri","장착 ":"Takılı ","장착 중: ":"Kuşanıldı: ","장착할 빈 홈 선택":"Boş bir yuva seç","장착 중인 장비에 호환되는 빈 홈이 없습니다.":"Kuşandığın ekipmanda uyumlu boş yuva yok.","빈 홈":"Boş yuva","호환":"Uyum","포탈 A 설치 — 다른 곳에서 P를 눌러 포탈 B 설치":"Portal A kuruldu — Portal B'yi kurmak için başka bir yerde P'ye bas","포탈 간격이 너무 가깝습니다":"Portallar birbirine çok yakın","포탈 B 설치 완료 — 가까이서 R을 눌러 이동":"Portal B hazır — yaklaş ve gitmek için R'ye bas","포탈 이동":"Portal yolculuğu","물리탄 차징 · E로 패링":"FİZİKSEL MERMİ DOLDURULUYOR · E İLE SAVUŞTUR","⚡ 다시 눌러 궤적 추격!":"⚡ Takip için tekrar bas!","⚡ 추적전격!":"⚡ Bıçak Takibi!","쿵!":"GÜM!","해제 — 가방으로 이동":"çıkarıldı — çantaya geri döndü","전투 기록 · 스킬 해석":"SAVAŞ KAYDI · YETENEK KODEKSİ","합체 설계도":"BİRLEŞTİRME PLANLARI","스킬을 선택하면 상세 효과와 연결된 합체식을 볼 수 있습니다. 아래 목록에서 재료 스킬을 바로 찾을 수 있습니다.":"Etkilerini ve birleştirme tariflerini görmek için bir yetenek seç. Bulmak için aşağıdan bir malzeme seç.","연결된 합체":"İLGİLİ BİRLEŞTİRMELER","합체 도감":"BİRLEŞTİRME KODEKSİ","연결된 합체가 없습니다.":"Bağlı birleştirme yok.","재료 확인":"MALZEMELER","추적전격 [합체]":"Bıçak Takibi [Birleştir]","추적칼날 종료 후 0.5초 안에 같은 스킬 키를 다시 누르면 칼날 궤적을 따라 전격이동. 경로의 적마다 칼날 피해를 1회 추가. 재입력은 자원 소모 없음.":"İzleyen bıçak bittikten sonra 0.5s içinde aynı yetenek tuşuna tekrar basarak yol boyunca Işık Adımı at. Yoldaki her düşman bir kez daha bıçak hasarı alır. Ek kaynak maliyeti yok.","리플레이 보기":"Tekrarı izle","벤치 미실시":"Kıyaslama atlandı","유골함 정보":"Kemiklik bilgisi","아이템 또는 유골에 마우스를 올려 정보를 확인하세요":"Ayrıntıları görmek için bir eşyanın veya kemiğin üzerine gel.","휠: 상세 스크롤":"Tekerlek: ayrıntıları kaydır","장착 아이템 비교":"Ekipman karşılaştırması","옵션 비교":"Etkileri karşılaştır","현재 장착 아이템":"Şu an kuşanılan eşya","수치 차이 전체 보기":"Tüm istatistik farklarını göster","가방 아이템":"Çanta eşyası","선택한 가방 아이템":"Seçili çanta eşyası","장비 기록":"EKİPMAN KAYDI","현재 전투 구성":"Mevcut donanım","장비나 가방 아이템을 가리키면 이곳에서 옵션과 비교 정보를 확인합니다.":"Etkileri ve karşılaştırmaları burada görmek için bir ekipmanın veya çanta eşyasının üzerine gel.","추가 효과":"Ekstra","장착 목록":"KUŞANILAN EŞYALAR","빈 칸":"Boş","치명 · 위력":"Kritik · Güç","공격 위력":"Saldırı gücü","크기 · 이동속도":"Boyut · Hareket hızı","선대의 유골":"Ataların Kemikleri","위력 ":"Güç ","우클릭하면 가방으로 해제됩니다.":"Çantana geri döndürmek için sağ tıkla.","유골을 획득하면 이 부위에 등록됩니다.":"Bu parçayı kaydetmek için bir kemik topla.","선대의 유골 콜렉션":"Ataların Kemik Koleksiyonu","수집 ":"Toplanan ","소환 해금":"Çağırma açıldı","유골함 장착 필요":"Kemiklik kuşan","유골 수집 중":"Kemikler toplanıyor","전대 소환 스킬로 불러낼 수 있습니다.":"Atayı çağırmak için Ata Çağırma'yı kullan.","네 부위를 모두 모으면 소환이 해금됩니다.":"Çağırmayı açmak için dört parçayı da topla.","부위를 선택하면 등급과 성장 효과를 확인할 수 있습니다.":"Nadirliğini ve gelişim etkisini görmek için bir parça seç.","첫 유골 획득 시 유골함 자동 지급":"İlk kemiğinle birlikte bir kemiklik verilir","선택 유골 해제":"Seçili kemiği çıkar","유골함 해제":"Kemikliği bırak","유골 우클릭 또는 선택 후 해제 · 해제한 유골은 가방으로 이동":"Kemiğe sağ tıkla veya seçip çıkar · Kemik çantana döner","전대 소환 스킬로 전장에 강림합니다.":"Bu atayı çağırmak için Ata Çağırma'yı kullan.","네 부위를 모으면 전대 소환이 해금됩니다.":"Bu atayı açmak için dört kemiği de topla.","혈안탄 예고 · 물리탄 · E 패링":"KANLI GÖZ UYARISI · FİZİKSEL · E İLE SAVUŞTUR","스킬 합성 랩 — 저장되지 않습니다 (새로고침하면 처음 상태)":"Yetenek Ocağı Laboratuvarı — hiçbir şey kaydedilmez (sıfırlamak için yeniden yükle)"});
 // [I18N-FILL] lang 전수 감사 2차 — 유물·능력치·추천빌드·스킬 설명 쌍 보충 (2026-10-28, 번역대상 No.3500~3587)
