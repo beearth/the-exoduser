@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../Assets/Exoduser/Runtime/Core/BossArena.cs" Link="BossArena.cs" />
+    <Compile Include="../../Assets/Exoduser/Runtime/Core/EnemyTables.cs" Link="EnemyTables.cs" />
+    <Compile Include="../../Assets/Exoduser/Remodel/BossArenas/ArenaChannelPlan.cs" Link="ArenaChannelPlan.cs" Condition="Exists('../../Assets/Exoduser/Remodel/BossArenas/ArenaChannelPlan.cs')" />
+  </ItemGroup>
+</Project>
