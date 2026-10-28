@@ -40,7 +40,7 @@
 | 원점 | Core px (0, 0) = 월드 (0, 0, 0) = 웹 맵 격자 좌상단 모서리. 이동·회전·스케일 없음 |
 | 축 | **x_월드 = px_x / 100**, **z_월드 = −px_y / 100**, y_월드 = 높이. 웹 y(아래쪽 = 남쪽)가 커지면 z가 작아진다. +z = 북 = 화면 위, −z = 남 = 카메라 쪽 |
 | 단위 | 1px = 0.01u, **1타일 = 40px = 0.4u**. 타일 (tx, ty)의 좌상단 모서리 = `(tx·0.4, y, −ty·0.4)`, 중심 = `((tx+0.5)·0.4, y, −(ty+0.5)·0.4)`. 타일 인덱스 = floor(px/40) |
-| 씬 루트 | 루트 오브젝트 `World`(위치 0, 회전 없음, 스케일 1) 아래에 `Terrain`·`Toxic`·`Blockout`·`Background Cards`·`Decals`·`NavWalk`. 씬 루트에 `Lights`(`Pools`·`Shafts`)·`Key Light`(방향광)·`Global Volume`·`Main Camera`(`Foreground Cards` 자식)·`Player Marker`·`CM LOOK-001`. 모두 월드 좌표 그대로라 오프셋·회전 보정은 필요 없다 |
+| 씬 루트 | 루트 오브젝트 `World`(위치 0, 회전 없음, 스케일 1) 아래에 `Terrain`·`Toxic`·`Blockout`·`Background Cards`·`Decals`·`NavWalk`. 씬 루트에 `Lights`(`Pools`·`Shafts`)·`Key Light`(방향광)·`Global Volume`, 그리고 카메라 리그 `RM1_CameraRig`(`Main Camera`(`Foreground Cards` 자식)·`Player Marker`·`CM LOOK-001`, 재생성 뒤. 저장된 씬은 아직 이 셋이 루트에 따로 있음). 모두 월드 좌표 그대로라 오프셋·회전 보정은 필요 없다 |
 | 지형 배치 | `Terrain` 위치 = `(48·0.4, −0.5, −200·0.4)` = **(19.2, −0.5, −80.0)** = 타일 x48·y200(남서쪽 모서리) 기준. 크기 `(41.6, 4, 29.6)`u = 타일 104×74. 즉 지형은 **타일 x 48~152 · y 126~200 (px x 1920~6080 · y 5040~8000)** 창만 덮는다. 걷기·막힘·덩어리·수로 데이터는 이 안의 슬라이스 창 타일 x 60~140 · y 138~192만 정식(나머지는 패딩) |
 | 지형 높이 | 높이맵 1025×1025, 행 i = 남쪽(ty=200)에서 북쪽으로, 열 j = 서쪽(tx=48)에서 동쪽으로. 월드 높이 = −0.5 + h·4, 범위 −0.5~3.5 |
 | 높이 샘플 | `Terrain.SampleHeight(new Vector3(wx, 0, wz)) + terrain.transform.position.y` (빌더의 `GroundY`). 캐릭터·적·드랍은 이 값 위에 얹는다(마커 스프라이트는 `Player Marker` 위 +0.75u). 창 밖 위치의 `SampleHeight` 동작은 확인하지 않았다 → 연결 쪽에서 창 안으로 클램프해서 부르는 것을 권장 |
@@ -51,7 +51,7 @@
 - 원근, 피치 **0.85rad = 48.70°**(회전 `Euler(48.70, 0, 0)`), 거리 **14u**(= 1400px). 카메라 위치 = 대상 위치 + `(0, sin0.85·14, −cos0.85·14)` = 대상 + **(0, 10.52, −9.24)**. 댐핑 0, 월드 좌표 추적(`CinemachineFollow`).
 - 세로 FOV = `2·atan(H / (2·1400))`. 슬라이스 캡처는 H=900(1600×900)이라 **35.65°**. 게임 기준 1920×1080(H=1080)이면 **42.17°**. 현재 이식 게임 카메라는 정사영 5.4(화면 높이 10.8u = 1080px). 평면 거리 14u에서 H=1080 FOV를 쓰면 대상 평면에서의 보이는 높이가 10.8u로 같다. 어느 값을 쓸지는 연결 쪽 결정.
 - 스프라이트 빌보드: 마커 스프라이트 회전 `Euler(48.70, 0, 0)`(카메라 피치와 같은 기울임), 쉐이더 `Rendering/Sandbox/SpriteLit3D.mat`.
-- 같은 씬에 카메라 리그(`Main Camera`·`AudioListener`·`CinemachineBrain`·`CM LOOK-001`·`Player Marker`)가 들어 있어 additive 로드하면 `NativeGame`의 `Camera.main`·오디오 리스너와 겹친다. 연결 쪽에서 로드 직후 이 오브젝트를 이름으로 끄거나 `NativeGame` 카메라가 CM에 따르게 해야 한다. 원하면 맵 쪽에서 카메라 리그를 `RM1_CameraRig` 루트 하나로 묶는 빌더 수정을 하겠다(씬 재생성은 Unity 실행 순번 필요).
+- 같은 씬에 카메라 리그(`Main Camera`·`AudioListener`·`CinemachineBrain`·`CM LOOK-001`·`Player Marker`)가 들어 있어 additive 로드하면 `NativeGame`의 `Camera.main`·오디오 리스너와 겹친다. 연결 쪽에서 로드 직후 이 오브젝트를 이름으로 끄거나 `NativeGame` 카메라가 CM에 따르게 해야 한다. **빌더는 이미 고쳤다(맵 총괄 승인 10-28)**: `Main Camera`(+`Foreground Cards`·`AudioListener`·`CinemachineBrain`)·`CM LOOK-001`·`Player Marker`를 루트 `RM1_CameraRig`(위치 0·회전 없음·스케일 1) 하나로 묶는다. additive 로드 뒤 이 루트 하나만 `SetActive(false)`하면 된다. **저장된 `RM1_Slice.unity`는 아직 다시 굽지 않아 예전 배치(리그가 씬 루트에 흩어짐)다** — 재생성은 Unity 실행 순번을 받은 뒤라 그때까지는 이름으로 끈다.
 
 ### 보스 아레나 A1 (`RM1_Arena.unity`, 아직 안 만듦)
 - 같은 변환: 원점 = 아레나 격자 좌상단 (0,0), x = px/100, z = −py/100, 격자 5120×4320px = 51.2×43.2u. **Core 아레나 중심 (2560, 2160)px = 월드 (25.60, −21.60)**, 걷는 바닥 y = 0 평면(지형 없음 → 높이 샘플은 0 고정).
