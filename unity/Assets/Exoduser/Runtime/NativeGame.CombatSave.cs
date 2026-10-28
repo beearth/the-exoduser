@@ -96,7 +96,7 @@ namespace Exoduser.UnityPort
 
   // Called by gameplay events (level up, equipment change, pause, ...) and by the 30 s timer; coalesced to one write per 5 s.
   public void RequestCombatSave(){if(combatKey.Length>0)combatPending=true;}
-  bool CombatSaveAllowed(){return combatKey.Length>0&&!combatBlocked&&Simulation!=null&&firstPractice==null&&lobby!=null&&!lobby.IsBlocking;}
+  bool CombatSaveAllowed(){return combatKey.Length>0&&!NativeReviewArgs.Any&&!combatBlocked&&Simulation!=null&&firstPractice==null&&lobby!=null&&!lobby.IsBlocking;}
   public bool SaveCombatNow()
   {
    if(!CombatSaveAllowed())return false;
