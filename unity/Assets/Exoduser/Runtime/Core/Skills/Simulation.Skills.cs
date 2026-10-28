@@ -255,6 +255,7 @@ namespace Exoduser.UnityPort.Core
                     if (e.Web != null) e.Web.stunned = e.Stunned;
                 }
             }
+            HurtFieldMobs(Player.X, Player.Y, range, dmg, null);   // _gSlamHit ends with _hurtFieldMobs(P.x, P.y, range, dmg) (web 46824)
             HurtShake(18);
         }
 

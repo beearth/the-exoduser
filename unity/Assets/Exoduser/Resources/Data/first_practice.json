@@ -276,6 +276,121 @@
       "id": "notPorted",
       "ko": "이식 예정",
       "en": "Not ported yet"
+    },
+    {
+      "id": "parryTitle0",
+      "ko": "마법탄을 패링해 몬스터를 처치하세요",
+      "en": "Parry magic projectiles to defeat the monster"
+    },
+    {
+      "id": "parryTitle1",
+      "ko": "물리탄을 패링해 몬스터를 처치하세요",
+      "en": "Parry physical projectiles to defeat the monster"
+    },
+    {
+      "id": "parryTitle2",
+      "ko": "보호막을 펼쳐라",
+      "en": "Raise your shield"
+    },
+    {
+      "id": "parryTitle3",
+      "ko": "힘을 모아 쳐내라",
+      "en": "Charge and deflect"
+    },
+    {
+      "id": "parryTitle6",
+      "ko": "패링으로 분노를 채워라",
+      "en": "Build Rage by parrying"
+    },
+    {
+      "id": "parryHintRing",
+      "ko": "몬스터 주위의 링이 완성되면 탄이 발사됩니다. 링 색으로 탄 종류를 미리 예측하세요. 흰색 링은 물리탄(E), 속성색 링은 마법탄(Q)입니다. ",
+      "en": "The monster fires when the ring around it fills. The ring color previews the projectile type: white means physical (E); an elemental color means magic (Q). "
+    },
+    {
+      "id": "parryHint0a",
+      "ko": "이번 보라색 링은 암흑 마법탄입니다. 탄이 가까워지면 [{p0}]로 패링하세요.",
+      "en": "This purple ring signals a dark magic projectile. When it approaches, press [{p0}] to parry."
+    },
+    {
+      "id": "parryHint1a",
+      "ko": "이번 흰색 링은 물리탄입니다. 탄이 가까워지면 [{p0}]를 짧게 눌렀다 떼어 패링하세요.",
+      "en": "This white ring signals a physical projectile. When it approaches, briefly press [{p0}] and release to parry."
+    },
+    {
+      "id": "parryHintDone",
+      "ko": "패링 성공! 반사탄으로 발사한 몬스터를 처치하면 완료됩니다.",
+      "en": "Parry successful! Defeat the shooter with the reflected projectile to complete this step."
+    },
+    {
+      "id": "parryHintTry",
+      "ko": "패링으로 탄을 되돌려 발사한 몬스터까지 처치하세요.",
+      "en": "Reflect the projectile and defeat the monster that fired it."
+    },
+    {
+      "id": "parryHint2",
+      "ko": "[{p0}]를 2초 동안 누르세요. 화염·물·암흑·번개·무지개탄을 보고 키를 떼어 한 번에 3발 이상 패링하세요. 홀딩 중 보호막은 피해를 일부 흡수하고 그로기를 막습니다. 피해를 완전히 막는 무적은 아닙니다.",
+      "en": "Hold [{p0}] for 2 seconds. Watch the fire, water, dark, lightning and rainbow projectiles, then release the key to parry at least 3 at once. While held, the shield absorbs some damage and prevents Groggy. It does not make you invulnerable."
+    },
+    {
+      "id": "parryHint3",
+      "ko": "[{p0}]를 누른 채 탄 쪽을 바라보세요. 이빨입탄·혈안탄·관통탄·물리 검기파·물리 환영검이 함께 날아옵니다. 3단계 충전 후 키를 떼어 5종 중 3발 이상 한 번에 쳐내세요. 풀차지 자동 발동도 인정합니다.",
+      "en": "Hold [{p0}] while facing the incoming projectiles. Tooth-mouth, blood-eye, piercing, physical sword-wave and physical phantom-sword projectiles arrive together. Charge to tier 3, then release to deflect at least 3 of the 5 at once. Automatic release at full charge also counts."
+    },
+    {
+      "id": "parryHint6",
+      "ko": "Q를 2초 동안 누른 뒤, 함께 날아오는 마법탄 10발이 가까워지면 떼세요. 한 번에 여러 발을 패링해 분노 100%를 채워보세요.",
+      "en": "Hold Q for 2 seconds, then release it as the 10 incoming magic projectiles approach. Parry several at once to fill Rage to 100%."
+    },
+    {
+      "id": "rageBox",
+      "ko": "패링으로 축적한 분노 · {p0}%",
+      "en": "Rage gained by parrying · {p0}%"
+    },
+    {
+      "id": "holdTry",
+      "ko": "키를 길게 눌러보세요",
+      "en": "Try holding the key"
+    },
+    {
+      "id": "holdCharge",
+      "ko": "충전 {p0}% · 한 번에 3발 이상",
+      "en": "Charge {p0}% · At least 3 at once"
+    },
+    {
+      "id": "holdNow",
+      "ko": "지금 키를 떼세요 · 3발 이상 패링",
+      "en": "Release now · Parry at least 3 projectiles"
+    },
+    {
+      "id": "holdParried",
+      "ko": "한 번에 패링 · {p0}/3발",
+      "en": "Parried in one release · {p0}/3 projectiles"
+    },
+    {
+      "id": "holdRetry",
+      "ko": "다시 시도 · 한 번의 해제로 3발 이상",
+      "en": "Try again · At least 3 in one release"
+    },
+    {
+      "id": "missHint",
+      "ko": "패링 실패! 탄에 맞았습니다. 체력을 회복하고 다시 연습합니다.",
+      "en": "Parry failed! The projectile hit you. Your health will recover before you try again."
+    },
+    {
+      "id": "doneTitle",
+      "ko": "전투 준비 완료",
+      "en": "Ready for combat"
+    },
+    {
+      "id": "doneSub",
+      "ko": "전투 기본 조작을 모두 익혔습니다.",
+      "en": "You have learned the basic combat controls."
+    },
+    {
+      "id": "doneHint",
+      "ko": "모든 연습 성공! 잠시 후 1-1 전투로 이어집니다.",
+      "en": "All exercises complete! Combat in 1-1 will resume shortly."
     }
   ],
   "plaqueSource": "/Users/fordeargamers/Projects/exoduser-migration-20261001/assets/ui/tutorial/parry-plaque-v1.png",
