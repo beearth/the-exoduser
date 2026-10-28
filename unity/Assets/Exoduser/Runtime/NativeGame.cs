@@ -389,7 +389,7 @@ namespace Exoduser.UnityPort
             float hudWidth=Screen.width/hudScale,statusX=hudWidth-316;
             if(lobby.DiagnosticUiEnabled&&lobby.ActiveCharacterName.Length>0){Panel(new Rect(16,12,420,50));GUI.Label(new Rect(28,20,396,40),lobby.ActiveCharacterName+" · "+(lobby.Language=="ko"?"미리보기":"Preview"),characterBadge);}
             // Web #mmLvl objective panel (game.html 2576-2586): level / experience / area kills / malice from Unity state; Unity has no area-kill total (shown as 미이식).
-            if(firstPractice==null)objective.Draw(hudWidth,new NativeObjectivePanel.Info{level=p.Level,exp=p.Experience,maxExp=p.MaxExperience,materials=Simulation.Materials,areaKills=Simulation.Kills,areaTotal=Simulation.Stage!=null&&Simulation.Stage.TotalSpawned>0?(int?)Simulation.Stage.TotalSpawned:null,english=lobby.Language!="ko"});
+            if(firstPractice==null){int areaK,areaT;Simulation.AreaKills(regionHud.CurIdx,out areaK,out areaT);objective.Draw(hudWidth,new NativeObjectivePanel.Info{level=p.Level,exp=p.Experience,maxExp=p.MaxExperience,materials=Simulation.Materials,areaKills=areaK,areaTotal=areaT,english=lobby.Language!="ko"});}   // LT-5: "지역 처치" = current region min(kills,total)/total, else G._stageKills/G._totalSpawned (web 60584-60586), not G.kills
             DrawFieldHud(hudWidth);
             hud.Draw(hudWidth,Screen.height/hudScale,Simulation.Config.ActiveAttack,Simulation);DrawFirstPractice(hudWidth);GUI.matrix=baseMatrix;
             // game.html drawEn 54054: a 4 px bar (r*2+6 wide, r+16 above the centre) once the mob is hurt or its shield is down: black 60%, red hp, the blue shield laid over it

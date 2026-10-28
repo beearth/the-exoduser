@@ -69,7 +69,10 @@ namespace Exoduser.UnityPort.Core
         public BossArenaLayout Arena;
         public EnemyState Boss;            // G._bossRef
 
-        public int StageKills { get { return sim.Kills + SurvivorKills; } }
+        // G._stageKills: initStage (31750) sets it to 0 while G.kills runs on through the save, and every web kill site raises both (34557 34623 37623 39872 40231
+        // 40620 42702 42901), so it is the kills since InitializeField (the Unity initStage hook, after the save restored Kills) plus the arena survivors (30940).
+        public int StageKills { get { return sim.Kills - killsAtFieldStart + SurvivorKills; } }
+        private int killsAtFieldStart;
 
         private Func<float, float, float, bool> fieldCanMove; private Func<float, float, float, float, bool> fieldLos; private Func<float, float, bool> fieldWall;
 
@@ -86,7 +89,7 @@ namespace Exoduser.UnityPort.Core
             HasFieldGate = gY >= 0; GateGuard = null; GateGuardKilled = false;
             if (gY >= 0) { fieldBossCx = (gMinX + gMaxX) / 2; fieldGateY = gY; }
             Exits.AddRange(fieldExits);
-            InArena = false; BossAlive = true; BossUnlocked = false; StageCleared = false; LoadPhase = 0; LoadT = 0; LoadFade = 0; CheckT = 0; SurvivorKills = 0; Arena = null; Boss = null;
+            InArena = false; BossAlive = true; BossUnlocked = false; StageCleared = false; LoadPhase = 0; LoadT = 0; LoadFade = 0; CheckT = 0; SurvivorKills = 0; killsAtFieldStart = sim.Kills; Arena = null; Boss = null;
         }
 
         private void Raise(StageEventKind kind, float x = 0, float y = 0, int percent = 0, bool regions = false)
