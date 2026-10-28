@@ -587,14 +587,14 @@
 @media(max-width:560px){:is(#settings,#invPanel,#skillPanel).panel .pbox .ptitle{font-size:22px!important;}}
 /* Engraved background: subdued rose-window tracery in the empty margins. */
 :is(#settings,#invPanel,#skillPanel).panel .pbox{
- --info-sigil:url('img/ui/blackiron/sigil.png');
+ --info-sigil:url('img/ui/silver_hell/eye_crest_20261028.png');
  background:linear-gradient(#141315d9,#09090af2),var(--info-sigil) center -150px/620px 620px no-repeat,var(--ui-surface) center/320px!important;
 }
 #invPanel.panel .pbox .inv-equip:not(#invCenter){
  background:linear-gradient(#0c0b0dc9,#111012dc),var(--info-sigil) center/760px 760px no-repeat,var(--ui-surface) center/480px!important;
 }
 /* Unified menu finish: all six windows, lobby, and character information. */
-:root{--menu-plate:url('img/ui/iron_covenant_20260924/button.webp');--menu-rail:url('img/ui/iron_covenant_20260924/frame.webp');--menu-sigil:url('img/ui/blackiron/sigil.png');--menu-heading:url('img/ui/blackiron/header.png');}
+:root{--menu-plate:url('img/ui/iron_covenant_20260924/button.webp');--menu-rail:url('img/ui/iron_covenant_20260924/frame.webp');--menu-sigil:url('img/ui/silver_hell/eye_crest_20261028.png');--menu-heading:url('img/ui/blackiron/header.png');}
 :is(#forge,#storagePanel,#statPanel).panel .pbox{
  background:linear-gradient(#141315d9,#09090af2),var(--menu-sigil) center -150px/620px 620px no-repeat,var(--ui-surface) center/320px!important;
 }
