@@ -369,6 +369,21 @@ canvas{display:block;position:fixed;inset:0}
 #nextBtn{min-height:44px;min-width:220px;padding:9px 28px;border:1px solid #895346;border-radius:1px;background:linear-gradient(#4b211c,#210e0b);color:#e8aca8;font:600 14px 'Noto Sans KR',sans-serif;letter-spacing:.14em;box-shadow:inset 0 0 0 2px #0b0d09,0 3px 10px rgba(0,0,0,.5);cursor:pointer;transition:filter .2s,opacity .3s}
 #nextBtn:hover{filter:brightness(1.18)}
 #nextBtn:focus-visible{outline:2px solid #c2bfb9;outline-offset:2px}
+/* 데모 종료 화면 — 실버 헬(2026-10-28): 은빛 제목·M3 가시 끝 헤어라인·흑철 버튼, 위시리스트만 지옥의 눈 진홍 강조 */
+#demoEnd .de-title{color:#e6e3dc;font-family:var(--font-hell-title);font-size:clamp(1.8rem,2.6vw,2.6rem);font-weight:700;letter-spacing:.22em;text-shadow:0 2px 8px #000,0 0 26px rgba(188,185,179,.22)}
+#demoEnd .de-rule{position:relative;width:min(420px,70vw);height:1px;margin:-6px 0 4px;background:linear-gradient(90deg,transparent,#9b9e9e 22%,#9b9e9e 78%,transparent)}
+#demoEnd .de-rule::before,#demoEnd .de-rule::after{content:'';position:absolute;top:-3px;width:7px;height:7px;border-top:1px solid #9b9e9e;border-right:1px solid #9b9e9e}
+#demoEnd .de-rule::before{left:6%;transform:rotate(-135deg)}
+#demoEnd .de-rule::after{right:6%;transform:rotate(45deg)}
+#demoEnd .de-rule i{position:absolute;left:50%;top:-5px;width:9px;height:9px;margin-left:-5px;transform:rotate(45deg);background:#0b0d0d;border:1px solid #c9c7c3}
+#demoEnd .de-rule i::after{content:'';position:absolute;left:2px;top:2px;width:3px;height:3px;background:#c21a10}
+#demoEnd .de-msg{max-width:540px;color:#c5c2bc;font-family:var(--font-hell);font-size:1.12rem;line-height:1.8}
+#demoEnd .de-support{color:#8f9292;font-family:var(--font-hell);font-size:.95rem;letter-spacing:.06em}
+#demoEnd .de-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+#demoEnd .de-btn{min-height:46px;min-width:240px;padding:10px 30px;border:1px solid #5e6161;border-radius:1px;background:linear-gradient(#2b2e2e,#111414);color:#e6e3dc;font:700 15px var(--font-hell);letter-spacing:.14em;box-shadow:inset 0 0 0 2px #0b0d0d,inset 0 1px 0 rgba(230,227,220,.12),0 3px 12px rgba(0,0,0,.55);cursor:pointer;transition:filter .2s,opacity .3s}
+#demoEnd .de-btn.primary{border-color:#7a1410;background:linear-gradient(#3d1210,#150605);box-shadow:inset 0 0 0 2px #0b0d0d,inset 0 1px 0 rgba(230,227,220,.12),0 0 18px rgba(194,26,16,.28),0 3px 12px rgba(0,0,0,.55)}
+#demoEnd .de-btn:hover{filter:brightness(1.18)}
+#demoEnd .de-btn:focus-visible{outline:2px solid #c2bfb9;outline-offset:2px}
 #stageClock{position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 7px * var(--ui-scale));left:50%;z-index:20;width:170px;pointer-events:none;opacity:0;transform:translateX(-50%) scale(var(--ui-scale));transform-origin:top center;text-align:center;font-family:'Cinzel',var(--font-hell);transition:opacity .5s}
 #stageClock.on,.hud-top.on~#stageClock{opacity:.57}
 #stageTimerHud{color:rgba(210,207,201,.78);font-size:.68rem;letter-spacing:.14em;text-shadow:0 1px 3px rgba(0,0,0,.95)}
@@ -3220,11 +3235,14 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 </div>
 <!-- 데모 종료 화면 -->
 <div id="demoEnd" style="position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.92);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:20px">
-  <div style="font-size:2rem;color:#d0cdc7;font-weight:900;letter-spacing:.1em">✦ <span id="demoEndTitle">데모 종료</span> ✦</div>
-  <div id="demoEndMsg" style="font-size:1.1rem;color:#c5c2bc;max-width:520px;line-height:1.8">여기까지 데모입니다. 정식 출시를 기대해주세요!</div>
-  <div id="demoEndSupport" style="font-size:.95rem;color:#ccaa77">STEAM 위시리스트로 응원해 주세요!</div>
-  <button id="demoEndWishlist" onclick="openWishlist()" style="padding:10px 32px;background:rgba(23,26,33,.85);border:2px solid #4c6b8a;color:#66c0f4;font-family:'Noto Sans KR';font-weight:700;font-size:1rem;cursor:pointer;letter-spacing:.1em;transition:opacity .3s">STEAM 위시리스트</button>
-  <button id="demoEndLobby" onclick="goToLobby()" style="padding:10px 32px;background:rgba(159,162,162,.15);border:2px solid #e3291c;color:#d0cdc7;font-family:'Noto Sans KR';font-weight:700;font-size:1rem;cursor:pointer;letter-spacing:.15em;transition:opacity .3s">로비로 돌아가기</button>
+  <div class="de-title"><span id="demoEndTitle">데모 종료</span></div>
+  <div class="de-rule" aria-hidden="true"><i></i></div>
+  <div id="demoEndMsg" class="de-msg">여기까지 데모입니다. 정식 출시를 기대해주세요!</div>
+  <div id="demoEndSupport" class="de-support">STEAM 위시리스트로 응원해 주세요!</div>
+  <div class="de-btns">
+  <button id="demoEndWishlist" class="de-btn primary" onclick="openWishlist()">STEAM 위시리스트</button>
+  <button id="demoEndLobby" class="de-btn" onclick="goToLobby()">로비로 돌아가기</button>
+  </div>
 </div>
 <!-- 다음 난관 난이도 선택 팝업 -->
 <div id="nextDiffPop" style="position:fixed;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.85);opacity:0;pointer-events:none;transition:opacity .4s">
