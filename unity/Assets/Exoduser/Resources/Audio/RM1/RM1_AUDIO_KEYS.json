@@ -655,6 +655,22 @@
    "startVolume": 0.55,
    "source": "SND-09 2차 _preview_druid2/druid_whip_v3a_proc.mp3 (G:/exoduser-wt/_out/sfx_forge/)",
    "note": "사용자 청음 채택 2026-10-28(v3a 한 개). 시작 음량은 임시"
+  },
+  {
+   "key": "druid_spore",
+   "file": "Audio/RM1/druid_spore",
+   "use": "L4: 기술 5 독포자 부채(fan)가 발사되는 순간 1회, rate ±5%",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음"
+   },
+   "startVolume": 0.55,
+   "source": "SND-09 3차 _preview_r3/druid_spore_r3a_proc.mp3 (G:/exoduser-wt/_out/sfx_forge/), 원본 웹 sfx/pickup/pickup_rummage2.mp3 35Hz HPF→-1dBTP",
+   "note": "사용자 청음 채택 2026-10-28. 시작 음량은 임시. 같은 원본이 웹에서는 아이템 줍기 소리 — Unity 줍기 소리에 같은 파일을 넣으면 사운드 총괄에 알릴 것"
   }
  ]
 }

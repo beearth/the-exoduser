@@ -176,3 +176,6 @@ BGM 되감김이 사라져 음악이 제대로 깔려서 이 표의 그룹 RMS�
 - 변경은 어댑터(`NativeFeedbackAudio`)와 `RM1_AUDIO_KEYS.json`·mp3뿐이고 Core는 바뀌지 않았다.
 - `druid_sink`: Core 알림은 어댑터가 무시하고, `NativeGame.BossSinkDraw`가 침강 구멍이 보이는 첫 틱(`SinkHoleTick` = 37)에 `PlaySinkHole`을 호출한다. 녹음 하니스는 `BossDeath` 틱 + 37에 같은 행을 넣는다(`051af9033`).
 - 확인 상태: Roslyn(Core + 어댑터) 오류 0. Unity 플레이어 빌드 오류 0은 **빌드 미확인**.
+
+- 3차 채택 `druid_spore`: `Audio/RM1/druid_spore.mp3` ← `_preview_r3/druid_spore_r3a_proc.mp3`(웹 `pickup_rummage2.mp3` 가공본). 기술 5 독포자 부채(fan): Core의 `#5 fan telegraph` 알림을 신호로 발사 시점(텔레그래프 38틱 뒤)에 1회, rate ±5 %, Skill 그룹, 시작 음량 .55.
+- `druid_spore` 원본이 웹에서는 아이템 줍기 소리다. Unity에 줍기 소리를 넣을 때 같은 파일이 들어가면 사운드 총괄에 알린다. `druid_slam`은 가공본을 다시 고르는 중이라 소리를 그대로 둔다.
