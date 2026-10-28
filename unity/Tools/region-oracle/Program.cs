@@ -151,6 +151,17 @@ static class P
             Check(s.Kills - kills0 == I(t, "kills") && s.Kills - kills0 == I(t, "stageKills"), what + " kills web " + I(t, "kills") + " cs " + (s.Kills - kills0));
         }
 
+        // ---- HUD "지역 처치" row (#mmLvl killCnt, 60584~60586): Simulation.AreaKills with the HUD's G._regCurIdx (LT-5) ----
+        n = 0;
+        foreach (var t in Cases(root, "hudKills"))
+        {
+            var s = new Simulation(new SimulationConfig { StageIndex = 0, EnemyAiEnabled = false });
+            if (!Null(t, "regions")) s.Regions = t.GetProperty("regions").EnumerateArray().Select(r => new RegionState { Id = I(r, "id"), Total = I(r, "total"), Kills = I(r, "kills"), Cleared = B(r, "cleared") }).ToArray();
+            s.Kills = Null(t, "stageKills") ? 0 : I(t, "stageKills"); s.Stage.TotalSpawned = Null(t, "totalSpawned") ? 0 : I(t, "totalSpawned");   // G._stageKills||0, G._totalSpawned||0
+            int k, tot; s.AreaKills(I(t, "curIdx"), out k, out tot);
+            Check(k == I(t, "k") && tot == I(t, "t"), "hud#" + n++ + " cur " + I(t, "curIdx") + " web " + I(t, "k") + "/" + I(t, "t") + " cs " + k + "/" + tot);
+        }
+
         Console.WriteLine("REGION_RESULT " + checks + " checks / " + bad + " failures");
         foreach (var kv in perSection) Console.WriteLine("  " + kv.Key + ": " + kv.Value[0] + " checks, " + kv.Value[1] + " failures");
         foreach (var f in firstFailures) Console.WriteLine("FAIL " + f);

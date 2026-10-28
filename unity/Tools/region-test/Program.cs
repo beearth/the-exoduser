@@ -329,6 +329,23 @@ class Program
             else Check(false, "tick context for the stuck-in-wall check");
         }
 
+        // ---- 9. LT-5: the HUD "지역 처치" row (#mmLvl killCnt, 60584~60586) and G._stageKills. The start enemies (guard, escorts, 다안 육괴) are born in a region
+        //         but are not part of its hole total, so a region's kills can pass its total: the row is capped (web Math.min), never "17 / 14".
+        //         G._stageKills is 0 at initStage (31750) while G.kills runs on through the save: kills made before InitializeField are not stage kills ----
+        {
+            var s = Make(45); int gi = s.RegGateIdx, tot = s.Regions[gi].Total;
+            int k, t; s.AreaKills(gi, out k, out t);
+            Check(k == s.Regions[gi].Kills && t == tot, RegionNames[gi] + " row " + k + " / " + t + " = region kills / region total");
+            s.Regions[gi].Kills = tot + 3; s.AreaKills(gi, out k, out t);
+            Check(k == tot && t == tot, RegionNames[gi] + " kills " + (tot + 3) + " of " + tot + ": row capped " + k + " / " + t);
+            s.AreaKills(-1, out k, out t);
+            Check(k == s.Stage.StageKills && t == s.Stage.TotalSpawned, "no current region (G._regCurIdx -1): stage-wide " + k + " / " + t);
+            var s2 = Make(46); s2.Kills = 120; s2.Stage.InitializeField(data.tiles, data.width);   // a save restored G.kills 120 before initStage
+            Check(s2.Stage.StageKills == 0 && s2.Kills == 120, "initStage after a restored G.kills 120: stage kills " + s2.Stage.StageKills + ", G.kills " + s2.Kills);
+            KillBornIn(s2, 2, 3);
+            Check(s2.Stage.StageKills == 3 && s2.Kills == 123, "three kills: stage kills " + s2.Stage.StageKills + ", G.kills " + s2.Kills);
+        }
+
         var result = JsonSerializer.Serialize(new { scope = "standalone_dotnet_real_ch1_map_not_Unity_runtime", passed = failed == 0, failed, log = Log, checks = Rows }, new JsonSerializerOptions { WriteIndented = true });
         if (args.Length > 1) File.WriteAllText(args[1], result);
         Console.WriteLine("REGION_REAL_MAP " + Rows.Count + " checks / " + failed + " failures"); return failed == 0 ? 0 : 2;
