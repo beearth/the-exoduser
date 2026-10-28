@@ -39,6 +39,7 @@ namespace Exoduser.UnityPort
         {
             UpdateViews(); yield return new WaitForSecondsRealtime(.15f); yield return new WaitForEndOfFrame();
             m1Overlays[name] = M1Overlay();
+            if (playerView != null) Debug.Log("[M1CAP] " + name + " player.enabled=" + playerView.enabled + " active=" + playerView.gameObject.activeInHierarchy + " sprite=" + (playerView.sprite != null) + " visibleToCamera=" + playerView.isVisible + " sort=" + playerView.sortingOrder + " pos=" + playerView.transform.position + " cam=" + view.transform.position + " alpha=" + playerView.color.a + " state=" + (Simulation != null ? Simulation.Player.State : "?") + " inArena=" + (Simulation != null && Simulation.Stage.InArena) + " focus=" + Application.isFocused + " guiRepaints=" + m1GuiRepaints);
             if (!m1Headless) { ScreenCapture.CaptureScreenshot(Path.Combine(m1Caps, name + ".png")); yield return null; yield break; }
             const int w = 1600, h = 900;
             var rt = RenderTexture.GetTemporary(w, h, 24, RenderTextureFormat.ARGB32);
@@ -78,8 +79,8 @@ namespace Exoduser.UnityPort
             m1Caps = Path.Combine(output, "caps"); Directory.CreateDirectory(m1Caps);
             m1 = new M1Receipt { scope = "real NativeGame; lobby/story/practice through the lobby API, gameplay through Simulation.Tick (not OS input)" };
             m1.headless = m1Headless; m1.device = SystemInfo.graphicsDeviceName; m1.deviceType = SystemInfo.graphicsDeviceType.ToString(); m1.captureMode = m1Headless ? "headless-rendertexture-1600x900" : "screen-capture";
-            if (m1Headless) { var probe = gameObject.AddComponent<M1GuiProbe>(); probe.game = this; }
-            else Screen.SetResolution(1920, 1080, FullScreenMode.Windowed);
+            { var probe = gameObject.AddComponent<M1GuiProbe>(); probe.game = this; }   // counts IMGUI Repaint events in every mode (guiRepaints in m1-check.json)
+            if (!m1Headless) Screen.SetResolution(1920, 1080, FullScreenMode.Windowed);
             yield return new WaitForSecondsRealtime(.5f);
             float deadline;
 
