@@ -31,7 +31,7 @@ namespace Exoduser.UnityPort.Vfx
         {
             p = default;
             if (t == null || t.Kind != DruidTeleKind.GroundDecal) return false;
-            p.Center = new Vector2((float)t.X * PxToM, -(float)t.Y * PxToM);
+            p.Center = VfxWorld.ToPlanar(t.X, t.Y);
             p.Dir = -(float)t.Dir;
             p.Progress = t.Total > 0 ? Mathf.Clamp01((float)(t.Elapsed / t.Total)) : 1f;
             p.Flash = t.Live ? 0f : (t.Remaining > 0 && t.Remaining <= FlashLeadTicks ? 1f : 0f);
@@ -219,7 +219,7 @@ namespace Exoduser.UnityPort.Vfx
             Apply(fx, Get(v), dir, scale);
             VFXEventAttribute a;
             if (!attrs.TryGetValue(fx, out a) || a == null) { a = fx.CreateVFXEventAttribute(); attrs[fx] = a; }
-            if (a.HasVector3("position")) a.SetVector3("position", new Vector3(pos.x, Lift, pos.y));
+            if (a.HasVector3("position")) a.SetVector3("position", VfxWorld.ToWorldMetres(pos, Lift));
             if (a.HasVector3("direction")) a.SetVector3("direction", new Vector3(dir.x, 0f, dir.y));
             fx.SendEvent(EventName, a);
             return true;
@@ -261,7 +261,7 @@ namespace Exoduser.UnityPort.Vfx
             SetF(s.Mat, "_EdgeGlow", 0.25f);
             SetCol(s.Mat, "_EdgeColor", p.StainEdge); SetCol(s.Mat, "_FillColor", p.StainFill);
             s.Proj.size = new Vector3(box, box, 2f); s.Proj.fadeFactor = 1f;
-            s.Go.transform.position = new Vector3(pos.x, 0f, pos.y);
+            s.Go.transform.position = VfxWorld.ToWorldMetres(pos);
             s.Go.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
             s.Age = 0; s.Life = p.StainTicks; s.Go.SetActive(true);
             live.Add(s); return true;
@@ -365,7 +365,7 @@ namespace Exoduser.UnityPort.Vfx
             var st = Stains; if (st != null) st.Spawn(v, pos, scale);
         }
 
-        static Vector2 PxToWorld(double x, double y) { return new Vector2((float)x * DecalParams.PxToM, -(float)y * DecalParams.PxToM); }
+        static Vector2 PxToWorld(double x, double y) { return VfxWorld.ToPlanar(x, y); }
 
         void PumpPoison()
         {
@@ -430,7 +430,7 @@ namespace Exoduser.UnityPort.Vfx
             h.Frame = frame;
             p.Apply(h.Mat);
             var tr = h.Go.transform;
-            tr.position = new Vector3(p.Center.x, 0f, p.Center.y);        // ground plane XZ; the RM-1 scene rule decides Z (see spec 3.3: "3D layer Z is the RM-1 scene rule")
+            tr.position = VfxWorld.ToWorldMetres(p.Center);
             tr.rotation = Quaternion.Euler(90f, 0f, 0f) * Quaternion.Euler(0f, 0f, p.Dir * Mathf.Rad2Deg);
         }
 
@@ -440,7 +440,7 @@ namespace Exoduser.UnityPort.Vfx
             if (t.Elapsed < 2 || t.Elapsed >= 3) return;
             long k = Key(t); if (!glinted.Add(k)) return;
             if (glinted.Count > 256) glinted.Clear();
-            var pos = new Vector2((float)t.TipX * DecalParams.PxToM, -(float)t.TipY * DecalParams.PxToM);
+            var pos = VfxWorld.ToPlanar(t.TipX, t.TipY);
             if (!Budget.TryTake(GraphGlint, pos)) return;
             LastGlints++; Send(GlintFx, "OnGlint", pos, new Vector2(Mathf.Cos(-(float)t.Dir), Mathf.Sin(-(float)t.Dir)), 0.25f, 0);
         }
@@ -448,7 +448,7 @@ namespace Exoduser.UnityPort.Vfx
         void PumpGrab(DruidTelegraph t)
         {
             long k = Key(t) ^ 0x5A5A; if (!glinted.Add(k)) return;       // one start event per grab; the graph runs for the whole 60 f itself
-            var pos = new Vector2((float)t.X * DecalParams.PxToM, -(float)t.Y * DecalParams.PxToM);
+            var pos = VfxWorld.ToPlanar(t.X, t.Y);
             if (!Budget.TryTake(GraphGrab, pos)) return;
             LastGrabs++; Send(GrabFx, "OnGrab", pos, new Vector2(Mathf.Cos(-(float)t.Dir), Mathf.Sin(-(float)t.Dir)), 1f, 0);
         }
@@ -457,7 +457,7 @@ namespace Exoduser.UnityPort.Vfx
         {
             if (fx == null) return;
             var a = fx.CreateVFXEventAttribute();
-            a.SetVector3("position", new Vector3(pos.x, 0f, pos.y)); a.SetVector3("direction", new Vector3(dir.x, 0f, dir.y));
+            a.SetVector3("position", VfxWorld.ToWorldMetres(pos)); a.SetVector3("direction", new Vector3(dir.x, 0f, dir.y));
             a.SetFloat("size", size); a.SetInt("tier", tier);
             fx.SendEvent(evt, a);
         }
