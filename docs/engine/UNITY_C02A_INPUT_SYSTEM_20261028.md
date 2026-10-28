@@ -14,6 +14,8 @@
 | `VerticalRaw()` | 위/W +1, 아래/S -1, 패드 왼스틱·십자 Y | 디지털 키와 Y 임계값 0.5, 충돌은 0 |
 | `CompositionString` | IME 미확정 조합 문자열 | 현재 키보드의 `onIMECompositionChange` 최신 값; 빈 조합 또는 확정 문자 이벤트에서 빈 문자열 |
 
+첫 Unity 컴파일에서 `IMECompositionString` 형식 조회가 CS0246으로 실패했다. Input System 1.20.1 패키지 선언(`InputSystem/Runtime/Events/IMECompositionEvent.cs`)의 실제 네임스페이스는 `UnityEngine.InputSystem.LowLevel`이므로 `ExoInput.cs`에 해당 using 한 줄을 추가했다. 수정 뒤 컴파일·가상 장치 검증은 별도 재실행 결과로 판정한다.
+
 `NativeKeyBindInput`의 웹 코드↔`KeyCode` 107개 표는 유지했다. 새 파사드는 이 107개를 `InputSystem.Key`로 매핑하고, 매핑 없는 키는 false 및 `KeyCode`당 경고 1회로 처리한다. 로비에 직접 쓰인 `JoystickButton0/1/7/9`는 각각 Gamepad South/East/Start/RightStick 버튼에 연결했다. `CodeDown`/`CodeHeld`와 그 위의 주·보조 바인딩은 파사드를 거친다. Core 게임 규칙, 입력 바인딩 저장 포맷, `activeInputHandler: 2`, 패키지 버전은 변경하지 않았다.
 
 ## 검증 경계
