@@ -696,7 +696,7 @@ namespace Exoduser
         // ---------------------------------------------------------------- FPS: same START view, 3D layer (World root) on vs off, 1600x900, 240 frames each
         public static void Fps()
         {
-            var args = Environment.GetCommandLineArgs(); string Arg(string k, string d) { int i = Array.IndexOf(args, k); return i >= 0 ? args[i + 1] : d; }
+            var args = Exoduser.DevTools.ExoArgs.Get(); string Arg(string k, string d) { int i = Array.IndexOf(args, k); return i >= 0 ? args[i + 1] : d; }
             var outJson = Arg("-out", "rm1-fps.json"); Load(); EditorSceneManager.OpenScene(ScenePath);
             var marker = GameObject.Find("Player Marker").transform; var cam = Camera.main; var brain = UnityEngine.Object.FindFirstObjectByType<CinemachineBrain>(); terrain = UnityEngine.Object.FindFirstObjectByType<Terrain>();
             var w0 = W(100f, 185f); marker.position = new Vector3(w0.x, GroundY(w0.x, w0.z), w0.z); brain.ManualUpdate();
@@ -902,7 +902,7 @@ namespace Exoduser
         // ---------------------------------------------------------------- capture
         public static void Capture()
         {
-            var args = Environment.GetCommandLineArgs(); string Arg(string k, string d) { int i = Array.IndexOf(args, k); return i >= 0 ? args[i + 1] : d; }
+            var args = Exoduser.DevTools.ExoArgs.Get(); string Arg(string k, string d) { int i = Array.IndexOf(args, k); return i >= 0 ? args[i + 1] : d; }
             var outDir = Arg("-outDir", "rm1-cuts"); Directory.CreateDirectory(outDir);
             var cuts = Arg("-cuts", "start,r2,river").Split(',');
             Load(); EditorSceneManager.OpenScene(ScenePath);

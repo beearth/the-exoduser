@@ -885,7 +885,7 @@ namespace Exoduser
         }
 
         // ---------------------------------------------------------------- capture / fps
-        static string[] Args() { return Environment.GetCommandLineArgs(); }
+        static string[] Args() { return Exoduser.DevTools.ExoArgs.Get(); }
         static string Arg(string k, string d) { var a = Args(); int i = Array.IndexOf(a, k); return i >= 0 && i + 1 < a.Length ? a[i + 1] : d; }
         public static void Fps()
         {
