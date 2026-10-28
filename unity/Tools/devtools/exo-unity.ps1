@@ -23,6 +23,7 @@ param(
     [int]$KillAfterSec = 0,
     [switch]$KeepReservation,
     [switch]$AllowPlayer,
+    [switch]$DryRun,
     [ValidateSet("hidden", "batch")][string]$Desktop = "hidden",
     [string]$NodeModules = 'G:\exoduser\node_modules'
 )
@@ -533,9 +534,20 @@ function Ensure-LobbyMedia([string]$wt) {
     Say '필수 영상 확인 완료'
 }
 
+# build: Resolve-JobArgs 로 먼저 쪼갠 뒤 -buildTarget Win64 를 앞에 붙인다(쉼표 문자열·배열·-ArgsJson 모두 같은 결과).
+# 쪼개기 전에 앞에 붙이면 "요소 1개 + 쉼표" 조건이 깨져 쉼표 문자열이 통째로 넘어간다(O-1 결함).
+function Prepare-BuildArgs {
+    $a = @(Resolve-JobArgs)
+    if ($a -notcontains '-buildTarget') { $a = @('-buildTarget', 'Win64') + $a }
+    return @($a)
+}
+
+function Format-ArgList($list) { return '[' + ((@($list) | ForEach-Object { '"' + $_ + '"' }) -join ',') + ']' }
+
 function Cmd-Run {
     if ([string]::IsNullOrWhiteSpace($Method)) { throw '-Method 가 필요합니다.' }
     $wt = Norm-Worktree $Worktree
+    if ($DryRun) { Write-Output ('[dryrun] run method=' + $Method + ' args=' + (Format-ArgList (Resolve-JobArgs))); exit 0 }
     if ($Method -eq 'PortVerification.Build') { Ensure-LobbyMedia $wt }
     $qd = Get-QueueDir $wt
     $argList = Resolve-JobArgs
@@ -926,6 +938,7 @@ function Cmd-Player {
         }
     }
     if ($lower -contains '-nographics') { Reject '-nographics 는 GPU 를 끄므로 허용되지 않음 (GPU 캡처가 목적이면 -batchmode 만 사용)' }
+    if ($DryRun) { Write-Output ('[dryrun] player exe=' + $exeFull + ' desktop=' + $Desktop + ' args=' + (Format-ArgList $user)); exit 0 }
     $id = [Guid]::NewGuid().ToString('N').Substring(0, 8)
     New-Item -ItemType Directory -Force -Path (Join-Path $ExecDir 'logs') | Out-Null
     $log = Join-Path $ExecDir ('logs\player-' + $id + '.log')
@@ -1020,7 +1033,7 @@ Test-HaltGate
 switch ($Command.ToLower()) {
     'start'     { Cmd-Start }
     'run'       { Cmd-Run }
-    'build'     { if (-not $Method) { $Method = 'PortVerification.Build' }; if (-not ($JobArgs -contains '-buildTarget')) { $JobArgs = @('-buildTarget', 'Win64') + @($JobArgs) }; Cmd-Run }
+    'build'     { if (-not $Method) { $Method = 'PortVerification.Build' }; $JobArgs = @(Prepare-BuildArgs); $ArgsJson = $null; Cmd-Run }
     'status'    { Cmd-Status }
     'stop'      { Cmd-Stop }
     'reap'      { Cmd-Reap }
