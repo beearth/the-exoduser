@@ -1,5 +1,6 @@
-# 다크드루이드(1-1 si0 · 1-4 si3) 디자인 고정 — DESIGN LOCK v0.3
+# 다크드루이드(1-1 si0 · 1-4 si3) 디자인 고정 — DESIGN LOCK v0.4
 
+> 2026-10-29 사용자 체형 교정이 최우선이며 §16이 이전 PASS보다 우선한다.
 > 작성: 2026-10-28, 보스 3D 제작 세션(보스전 총괄 지시, 보스 보드 §8.3 ⓪). **디자인총괄 조건부 PASS(2026-10-28, 수정 1건 반영해 v0.2).** ① 시트 진행 가능.
 > 목적: Unity 3D 리메이크(RM-B1·RM-B4)의 모델·시트·리깅·애니메이션이 모두 같은 인물을 만들도록 외형을 한 곳에 고정한다.
 > 규칙(CLAUDE.md 작업물 퀄리티 7·8항): 같은 캐릭터는 모든 이미지에서 얼굴 문양·장신구·갑옷·머리가 동일하다. **점(잔점·점묘·디더링·반짝이 점)과 네온은 어디에도 없다.**
@@ -11,7 +12,7 @@
 | D1 | **지팡이 쥐는 법** | **한 손(캐릭터 왼손). 오른손은 비워 둔다** | §3 |
 | D2 | 인물 | 늙은 숲지기. **사슴 두개골 가면** 아래로 늙은 남자의 아래 얼굴(턱수염·얇은 입)과 눈이 보인다 | §1, 메모 "악역도 매력적으로" |
 | D3 | 얼굴 문양 | 가면 이마 정중앙 **"매듭 인장" 1개**(고리 + 뿌리 세 갈래). 그 외 얼굴 문양 없음 | §2 |
-| D4 | 비율 | 머리 가면 기준 7.9등신, 정수리 2.20m / 뿔 끝 2.70m. **Meshy 인간형 리그 호환 설계**(손가락 뼈 없음) | §4 |
+| D4 | 비율 | **현행: 정수리 2.30m / 뿔 끝 2.70m, 가면 기준 9.2등신, 좁고 꺼진 몸통.** 2026-10-28의 7.9등신·넓은 어깨는 §16 사용자 교정으로 폐기. Humanoid 리그 호환은 유지 | §4, §16 |
 | D5 | 발광 | 두 군데뿐: 지팡이 랜턴, 가슴뼈 틈. **색상각 55~68°(병든 황록)**, 웹의 순연두(≈90°)는 쓰지 않는다 | §5 |
 | D6 | 목숨별 몸 | 같은 모델 한 벌. 100/85/70%는 코드 스케일. 지팡이도 같이 스케일 | §7 |
 | D7 | 키 값 | `height_meters` = **2.70**(뿔 끝 포함 바운딩 박스 기준) | §4, §9 |
@@ -43,8 +44,8 @@
 
 | 항목 | 고정값 | 프롬프트 문구 |
 |---|---|---|
-| **어깨 덮개(망토)** | **깃털 망토.** 크고 납작한 **잎 모양 큰 깃털**(깃털 하나 6cm 이상, 청흑색 #1c2024에 청동 갈색 가장자리 #6b4a2a), 어깨 덮개에서 **종아리 중간까지** 내려온다(바닥에 닿지 않음, 바닥에서 25cm 이상 위). 앞은 열려 있고 뒷판은 하나로 늘어진다. 가시·톱니 견갑 금지 | `raven-feather mantle of large flat leaf-shaped feathers, blue-black with bronze-brown edges, ends mid-calf, open at the front, no spikes` |
-| **가슴** | 앞이 열려 **갈비뼈가 보이는 마른 몸통**, 나무껍질 판이 갈비뼈 사이를 덮음. **가슴뼈 중앙에 손바닥 크기의 틈 1개**(약한 황록 발광, §5) | `bark-plated ribcage open at the front, one palm-sized sternum slit with faint sickly olive glow` |
+| **어깨 덮개(망토)** | 깃털 망토는 **좁고 아래로 축 늘어진 썩은 외투**처럼 몸을 감싼다. 어깨 위로 솟는 견갑·갑옷 같은 폭·영웅형 V자 테이퍼 금지. 큰 납작한 잎 모양 깃털(6cm 이상), 청흑색 `#1c2024`와 청동 갈색 가장자리 `#6b4a2a`를 유지한다. 종아리 중간에서 끝나며 바닥에서 25cm 이상 띄우고 앞은 열어 다리를 드러낸다 | `narrow drooping raven-feather shroud, rotten and uneven, no heroic shoulder pads or V-taper, open front, ends mid-calf` |
+| **가슴** | 앞이 열려 **꺼진 흉곽과 튀어나온 갈비뼈**가 보인다. 큰 가슴근·판금 흉갑·삼각형 전사 체형 금지. 나무껍질은 얇은 늑골 사이를 따라 붙고 가슴뼈 중앙에 손바닥 크기 틈 1개(약한 황록 발광, §5) | `sunken gaunt ribcage with protruding ribs, thin bark grown between bones, no pectoral mass or breastplate, one faint olive sternum slit` |
 | **허리** | 가죽 허리띠 + **작은 사슴 두개골 1개**(허리띠 정중앙) + 왼쪽 엉덩이에서 늘어진 **뼈구슬 사슬 3알** | `leather belt with one small deer skull at the center, bone-bead chain of three at the left hip` |
 | **앞 자락** | 허리띠 아래 **어두운 천 앞자락 1장**(폭 22cm, 무릎까지). 위쪽에 얼굴과 **같은 매듭 인장**(음각 느낌 자수) 1개, 세로 룬 한 줄. 인장은 얼굴·앞자락 **두 곳뿐** | `dark cloth front panel to the knee with the same knot-sigil near the top and one vertical rune line` |
 | **왼팔(지팡이 쪽)** | 넓은 소매가 손목까지, 아래팔에 **나무껍질 보호대** | `left arm in a wide sleeve to the wrist with a bark bracer` |
@@ -55,7 +56,7 @@
 
 ### 2.3 한눈에 구분되는 실루엣 3가지 (1x에서 읽혀야 함)
 
-1. **가지뿔 + 사슴 두개골** 머리. 2. **종 모양으로 퍼진 깃털 망토.** 3. **한 손에 쥔 머리 큰 지팡이**(랜턴 불빛이 지팡이 끝에만).
+1. **가지뿔 + 사슴 두개골** 머리. 2. **좁고 길게 내려앉은 썩은 깃털 수의**. 3. **한 손에 쥔 머리 큰 지팡이**(랜턴 불빛은 지팡이 끝에만). 몸통 자체는 꺼진 갈비뼈·긴 팔다리로 읽히고 전사형 어깨가 되면 실패.
 
 ## 3. 지팡이 — 한 손 (D1)
 
@@ -88,11 +89,11 @@ Meshy 인간형 리그(뼈 24개, **손가락 뼈 없음**)에 맞게 **형태 �
 
 | 항목 | 값 |
 |---|---|
-| 정수리(가면 위) 높이 | **2.20m**. 뿔 끝까지 **2.70m**(= `height_meters`) |
-| 등신 | 가면 높이 0.28m, 정수리까지 **7.9등신** |
-| 어깨 폭 | 몸통 0.62m, 깃털 어깨 덮개 포함 0.90m |
-| 팔 길이 | 선 자세에서 손끝이 허벅지 중간 |
-| 자세(시트) | **A포즈**: 똑바로 서서 팔을 몸에서 40° 벌려 내림, 다리 어깨너비. **구부정함은 애니메이션이 만든다(모델은 곧게)** |
+| 정수리(가면 위) 높이 | **2.30m**. 뿔 끝까지 **2.70m**(= `height_meters`; 전투 충돌·연출 계약 유지). 뿔은 기존의 같은 가지뿔을 세로 0.40m 안에 맞춰 비율을 조정 |
+| 등신 | 가면 높이 **0.25m**, 정수리까지 **9.2등신**. 긴 목·마른 상체·긴 정강이로 키를 분배 |
+| 어깨 폭 | 몸통 **0.44m**, 축 늘어진 깃털 망토 포함 **0.70m**. 어깨선은 아래로 처지고 수평 견갑·전사형 V자 상체 금지 |
+| 팔 길이 | 긴 전완과 갈고리 손. 선 자세 손끝이 **무릎 위 5~10cm**에 닿고 팔뚝 근육 덩어리가 없어야 함 |
+| 자세(시트) | 리그용 A포즈는 팔을 몸에서 40° 벌리고 두 다리를 분리하되, 기본 모델은 **목을 앞으로 빼고 등 윗부분이 살짝 굽은 비대칭 골격**. idle에서는 무게가 한쪽 다리로 꺾이고 머리가 숙여져야 하며 위풍당당한 직립·양어깨 대칭 금지 |
 | 손 | 양손 모두 **손가락이 갈라지지 않은 한 덩어리**(왼손 = 반쯤 쥔 덩어리, 오른손 = 갈고리). 손가락 사이 틈 금지 |
 | 다리 분리 | 망토 자락이 **두 다리 사이를 가리지 않는다.** 앞 자락(22cm)은 허벅지 사이 틈을 막지 않고 무릎 위에서 끝낸다 |
 | 팔-몸통 간격 | A포즈에서 팔과 몸통 사이 최소 12cm, 손과 허벅지 사이 최소 10cm |
@@ -149,22 +150,25 @@ Meshy 인간형 리그(뼈 24개, **손가락 뼈 없음**)에 맞게 **형태 �
 | 항목 | 값 |
 |---|---|
 | 서비스 | OpenAI `gpt-image-2.5-sunburst` `/v1/images/edits`, 1536×1024 high |
-| 상한 | **6장 · 약 $0.36**(사용자 승인 [결정-보스-2]). 반려 2회면 멈춘다 |
-| 계획 | S1 body 4뷰(정면·3/4·측면·뒤, 빈손 A포즈) / S2 머리 4뷰(가면·인장·눈·수염 확인) / S3 지팡이 소품 시트(정면·측면·머리 확대·밑동) / **S4~S6 = 재생성 여유**(필요할 때만) |
-| 레퍼런스 | Image 1 = `assets/sprites/boss/boss_dark_druid_8dir_v3.png` 정면 셀(회색 #808080 배경으로 합성, **640×360 + 블러 5로 뭉개 구도만**) / Image 2 = `boss_dark_druid_portrait.png`에서 **얼굴·가면·수염 크롭**(표정은 문구로 중립 지정) / Image 3(지팡이 시트만) = 포트레이트의 지팡이 머리 크롭 |
+| 상한 | 과거 [결정-보스-2] 시트 6장·약 $0.36(4장 사용)의 기록. **2026-10-29 체형 교정 차수에서는 추가 유료 생성 0**; 남은 호출을 자동 집행하지 않음 |
+| 계획 | 2026-10-28 S1/S2b/S3는 제작 이력으로 보존. 새 마른 본체 시트는 §16 실루엣으로 별도 판정하고 통과 전 Meshy에 투입하지 않음 |
+| 레퍼런스 | 기존 `boss_dark_druid_8dir_v3.png`와 S1은 사슴 가면·가지뿔·깃털 재질·지팡이 정체성 참고만. **넓은 어깨·근육·부츠·체형은 복사 금지**. 얼굴 근접 참고는 `boss_dark_druid_portrait.png`, 지팡이 머리는 S3 |
 | 배경·조명 | 회색 #808080, 평면 조명, 그림자·바닥·림라이트 없음. 직교, 뷰 사이 빈 회색 간격 |
 | 공통 문구 | `Painterly realistic dark fantasy, Berserk ink density with FromSoftware material and form, muted dark palette, matte materials. Strictly NO speckles, NO dots, NO dithering, NO sparkle points, NO glints, NO noise grain, NO stippling anywhere.` (gen.py COMMON 그대로) |
 | 소품 시트 | `Game prop design sheet, prop only, empty scene, nobody in the picture` 문구 사용. weapon/blade/gun 단어는 모더레이션에 걸리므로 쓰지 않는다 |
-| 합격 기준 | §2 고정 사양과 일치(가면·인장 위치·수염 고리·뿔 모양·망토 길이·발광 색), 손가락 갈라짐 없음, 1x 확대에 점 없음, 뷰 사이 겹침 없음, **정수리 2.20m : 뿔 끝 2.70m 비율** |
-| Meshy 입력 | 정면→측면→뒤 3뷰를 1024²로 분할(첫 장 = 정면). 시트 원본은 `E:/exoduser-wt/_out/unity-charsheet/dark_druid/` |
+| 합격 기준 | §2·§16 현행 고정 사양과 일치(가면·인장 위치·수염 고리·뿔 모양·좁고 마른 몸통·망토 길이·발광 색), 손가락 갈라짐 없음, 1x 확대에 점 없음, 뷰 사이 겹침 없음, **정수리 2.30m : 뿔 끝 2.70m 비율**. 2026-10-28 S1 시트는 이 체형 기준에 실패 |
+| Meshy 입력 | **§16 새 체형 시트의 디자인 PASS 이후에만** 정면→측면→뒤 3뷰를 1024²로 분할해 입력한다. 과거 S1 시트 재입력 금지 |
 
 핵심 문구(body 시트, 영어 — 이미지 모델 입력용):
 
 ```
-Character model sheet for building a 3D game model. The same single character shown four times side by side, left to right: FRONT, FRONT THREE-QUARTER, exact SIDE PROFILE facing right, BACK. Neutral A-pose, feet shoulder-width apart, arms held out and down about 40 degrees from the body, relaxed hands with fingers together, no fingers separated. Full body from antler tips to soles with margin.
-Keep this character from Image 1 (body, cloak, staff-free) and the face/mask from Image 2, but with a calm neutral expression, mouth closed.
-An aged forest-keeper: weathered deer-skull mask covering forehead to nose bridge with one small carved knot-sigil (a ring pierced by a three-pronged root) at the forehead center, gaunt aged man's lower face with thin closed lips, narrow calm eyes with faint dull olive glow, long ash-grey beard tied with one bone ring, long lank ash-black hair, one set of thick dry bark-brown branching antlers span 1.3 m.
-Raven-feather mantle of large flat leaf-shaped feathers, blue-black with bronze-brown edges, ending mid-calf, open at the front, no spikes. Bark-plated open ribcage with one palm-sized sternum slit, faint sickly olive glow. Leather belt with one small deer skull and a chain of three bone beads at the left hip. Dark cloth front panel to the knee with the same knot-sigil. Left arm: wide sleeve and bark bracer. Right arm: bare gaunt bark-grain arm, long clawed fingers fused into one curved mass. Bark greaves, bird-claw boots with three toe claws fused into the boot. EMPTY HANDS: no staff, no weapon anywhere in this sheet.
+Character model sheet for a 3D game boss. The SAME cursed druid in four orthographic views: FRONT, FRONT THREE-QUARTER, exact SIDE, BACK. Full body, antler tips and feet visible with margin. Rig-friendly A-pose with connected fingers, but the spine is slightly bent, the neck leans forward and one shoulder hangs lower.
+
+He is an elongated, starved, cursed forest keeper, a monster rather than a warrior. Total height including antlers 2.70 m; crown 2.30 m; small 0.25 m deer-skull mask, roughly 9.2 heads to the crown. Narrow 0.44 m body, drooping feather shroud no wider than 0.70 m; the antlers remain about 1.3 m wide, making the head unnaturally dominant. Hollow abdomen, sunken sternum and sharply protruding ribs; thin bark grown BETWEEN the ribs. Long twig-like forearms and fused hooked fingers hang to just above the knees. Stick-thin uneven shins and small fused bird-claw feet. The body looks barely held together by roots and borrowed life.
+
+Weathered deer-skull mask over the brow and nose; gaunt old man lower face and thin shut lips visible underneath. One carved forehead knot-sigil: a closed ring pierced by a three-pronged root, no glow. Long ash-black hair and tied beard with one bone ring. Raven feathers hang down in a narrow, uneven, rotting shroud from sloping shoulders to mid-calf, open at the front. No proud shoulder mantle. One small deer skull at the belt, three bone beads, one narrow front cloth panel with the same knot-sigil. Left arm has a frayed sleeve and thin bark bracer; right arm is bare bark-grain skin. One faint sickly olive glow in the sternum slit, otherwise matte dark blue-black and dead brown.
+
+EMPTY HANDS: no staff in this body sheet. Absolutely no heroic V-taper, broad shoulders, pectorals, biceps, thick thighs, armor plates, large boots, knight stance, polished metal, gold, dots, speckles, grain or sparkling particles.
 ```
 
 ## 9. 리깅 값 (③ 단계용)
@@ -196,10 +200,11 @@ Raven-feather mantle of large flat leaf-shaped feathers, blue-black with bronze-
 | 2026-10-28 | v0.1a: 보스전 총괄 보충 반영 — 127은 Humanoid Mirror(§3), 뿔 Head 가중치 확인(§9), 지팡이 Unity 직접 모델링(§10-4 해소). 디자인 사양 변경 없음 |
 | 2026-10-28 | **v0.2: 디자인총괄 조건부 PASS 반영** — GLOW `#a8a23a`(실제 ≈57°) → `#9ea83a`(≈65.5°) 정정, §10 판정 기록. 재판정 불필요, 시트 결과물은 1x로 다시 본다. ① 시트 진행 가능 |
 | 2026-10-28 | **v0.3: ① 시트 PASS 반영(§13)** — 인장 정본은 §2.1 유지(트리퀘트라는 생성 오차), 정본은 ④·⑤에서 디칼로 삽입, 발광은 Emission `#9ea83a`·텍스처 발광부는 중립 올리브·구슬 금빛 테 제거, 이끼 굵은 덩어리 6가닥 이하. 시트 4호출 $0.1985 |
+| 2026-10-29 | **v0.4: 사용자 체형 교정** — S1 본체·Meshy 본체/리그의 넓은 전사형 실루엣 VISUAL FAIL. 정수리 2.30m/가면 0.25m(9.2등신), 몸통 0.44m·망토 0.70m, 긴 전완·꺼진 흉곽·처진 어깨로 §4·§16 재고정. 기존 자산은 참고용 보존, 새 유료 생성 0 |
 
 ## 13. 시트 판정과 기준 이미지
 
-**① 시트 판정 = PASS (디자인총괄, 2026-10-28, 1x 확인).** 대상: `E:/exoduser-wt/_out/unity-charsheet/dark_druid/` 의 `S1_body.png`(4뷰)·`S2b_head.png`(머리 4뷰)·`S3_staff.png`(지팡이). 가면+아래 얼굴·수염 뼈고리·가지뿔·깃털 망토·벨트 해골·뼈구슬·앞자락·왼소매·오른 맨팔·새발 장화·지팡이 구성 모두 LOCK 일치, 점·잔노이즈 없음, 세 장 사이 인물 일관성 양호. ② Meshy는 S1의 정면→측면→뒤(1024²)로 진행한다.
+**① 시트 과거 판정 = PASS (디자인총괄, 2026-10-28, 1x 확인).** 대상: `E:/exoduser-wt/_out/unity-charsheet/dark_druid/` 의 `S1_body.png`(4뷰)·`S2b_head.png`(머리 4뷰)·`S3_staff.png`(지팡이). 가면+아래 얼굴·수염 뼈고리·가지뿔·깃털 망토·벨트 해골·뼈구슬·앞자락·왼소매·오른 맨팔·새발 장화·지팡이 구성 모두 LOCK 일치, 점·잔노이즈 없음, 세 장 사이 인물 일관성 양호. ② Meshy는 S1의 정면→측면→뒤(1024²)로 진행한다.
 
 | 판정 항목 | 결정 |
 |---|---|
@@ -224,7 +229,7 @@ Raven-feather mantle of large flat leaf-shaped feathers, blue-black with bronze-
 
 ## 15. 디자인총괄 ②③ 정적 실물 판정 (2026-10-29)
 
-**판정: RETOUCH (제작 후보).** §13의 승인 시트 `S1_body.png`·`S2b_head.png`·`S3_staff.png`와 보관된 본체 GLB 및 보행 GLB를 대조했다. 저장소의 Three.js r160으로 1200×1200, pixel ratio 1, 정면·좌·후·우·위 55°의 독립 스튜디오 렌더를 만들고 보행 1.0667초 클립의 0·25·50·75% 프레임을 열어 보았다. 캡처는 `I:/EXODUSER-Storage/codex-takeover/design/druid_review/`의 `body_*.png`, `walking_*.png`이다. 이 렌더는 Unity 보스방의 카메라·조명·실제 화면 크기가 아니므로 게임 1x 판정으로 세지 않는다.
+**2026-10-29 사용자 교정: 현행 체형 VISUAL FAIL, 아래 과거 판정은 철회. §16 우선.** **판정: RETOUCH (제작 후보).** §13의 승인 시트 `S1_body.png`·`S2b_head.png`·`S3_staff.png`와 보관된 본체 GLB 및 보행 GLB를 대조했다. 저장소의 Three.js r160으로 1200×1200, pixel ratio 1, 정면·좌·후·우·위 55°의 독립 스튜디오 렌더를 만들고 보행 1.0667초 클립의 0·25·50·75% 프레임을 열어 보았다. 캡처는 `I:/EXODUSER-Storage/codex-takeover/design/druid_review/`의 `body_*.png`, `walking_*.png`이다. 이 렌더는 Unity 보스방의 카메라·조명·실제 화면 크기가 아니므로 게임 1x 판정으로 세지 않는다.
 
 | 항목 | 정적 실물 관찰 | ④·⑤ 수정·검수 기준 |
 |---|---|---|
@@ -234,4 +239,20 @@ Raven-feather mantle of large flat leaf-shaped feathers, blue-black with bronze-
 | 지팡이·발광 | 본체·보행 GLB에는 지팡이가 없다(§10의 Unity 직접 제작 계약). 흉부 균열의 황녹색은 현재 텍스처 표현이다 | 왼손 `StaffSocket_L`에 2.30m 지팡이를 연결하고 뿌리 케이지·구슬을 포함해 실루엣 확인. 흉부·눈·구슬 Emission은 `#9ea83a`, 텍스처 발광부는 어두운 중립 올리브. 금빛 테 제거 |
 | 보행·망토 | 기본 보행 클립 4자세에서 팔·다리의 큰 파열은 보이지 않는다. 전면 장식과 뿔은 유지된다 | Unity의 실제 idle·walk·좌우 반전 127 slam에서 발 접지, 손과 지팡이 결합, 망토의 몸·다리 관통, 뿔 흔들림, 타격 접촉 프레임을 연속 재생으로 확인. 정적 4프레임은 이 판정을 대신하지 않음 |
 
-추가 Meshy 생성·리깅 없이 현재 GLB를 ④ 임포트 후보로 유지한다. 위의 두 인장 교체와 실제 1x idle·walk·slam 판정이 끝나기 전에는 런타임 아트 채택 PASS가 아니다. RM-B4는 이 본체의 얼굴·가면·인장·장신구·지팡이 일관성을 재사용한 뒤 별도 L4 심장 융합 형태를 판정한다.
+**현행 결정(2026-10-29): §16 사용자 교정에 따라 이 GLB는 ④ 임포트 후보에서 제외한다.** 보관본은 기존 작업의 기술 참고로만 쓰고, 새 마른 체형 메시와 리그를 별도 검수한다.
+
+## 16. 사용자 체형 교정 — 마르고 길쭉한 저주받은 괴물 드루이드 (2026-10-29, 현행 우선)
+
+사용자 직접 판정: 현재 결과는 **근육질 전사처럼 보인다**. 의도는 **길쭉하고 마른, 저주받은 괴물 드루이드**다. 이 판정은 §13의 S1 본체 시트 PASS와 §15의 본체·보행 GLB RETOUCH를 **체형에 한해 철회**한다. `S1_body.png`·현행 Meshy 본체·리그는 **VISUAL FAIL / 현재 런타임 채택 불가**다. 사슴 두개골 가면, 가지뿔, 깃털 색과 재질, 왼손 지팡이의 정체성은 재작업의 참고 자료로만 남긴다. 원본 파일과 SHA는 보존한다.
+이 방향은 `docs/engine/FDG_CHARACTER_ASSETS.md`의 2026-10-12 `USER_REJECTED_HEROIC_DESIGN` 기록과도 일치한다. 이전 영웅형 후보·현재 근육질 후보를 승인 악마형 본체로 간주하지 않는다.
+
+| 현행 문제 | 새 실루엣 계약 |
+|---|---|
+| 수평으로 부푼 깃털 어깨와 전사형 V자 상체 | 어깨를 아래로 떨어뜨리고 망토를 몸에 붙은 썩은 수의처럼 세로로 늘어뜨린다. §4 목표: 몸통 폭 0.44m, 망토 포함 0.70m. 뿔의 1.3m 폭은 머리 위의 비정상적인 초점으로 남긴다 |
+| 두꺼운 팔뚝·허벅지·발과 큰 흉부 판 | 골반·복부를 꺼뜨리고 늑골 윤곽이 튀어나오게 한다. 팔은 가지 같은 뼈대와 긴 전완, 손끝은 무릎 위 5~10cm. 종아리·발은 지탱이 불안해 보일 만큼 가늘고 비대칭이다. 두꺼운 장화·판금 흉갑·근육 볼륨 금지 |
+| 정중앙 직립과 대칭적인 전사 자세 | 긴 목을 앞으로 빼고 등을 약하게 굽힌다. 한쪽 어깨가 낮고, idle 체중이 한 다리에 기울며 지팡이는 의식용 버팀목으로 쓴다. 보행은 느리고 불편해 보이되 타격 예고와 발 접지는 읽혀야 한다 |
+| 갑옷처럼 보이는 정돈된 깃털·장식 | 큰 깃털은 유지하되 끝을 닳고 불규칙하게 정리하고 목·흉곽·관절 사이에 빈 공간을 만든다. 저주에 잠식된 나무껍질·비대칭 신체가 주인공이고 깃털은 체형을 감추지 않는다 |
+
+**비용 0 비율 시안:** 원본 GLB(SHA-256 `2651aaeb1af39851f296630266e176740addb210027dee71600a6763ac328a7b`)을 보존하고, 상체 폭×0.69·깊이×0.78·세로×1.13의 연속 변형을 정적 메시 복사본에 적용했다. 보관 프록시 `I:/EXODUSER-Storage/codex-takeover/design/druid_review/cursed_lean_PROPORTION_ONLY.glb`(SHA-256 `0954efc7edc66373cc7b232650956bf0dfff0c5b6d8bdaeb1281dd4a2ea202f6`), 렌더 `cursed_lean_glb_front.png`·`cursed_lean_glb_game.png`·`cursed_lean_glb_left.png`. 새 조형·UV·스킨·Animator가 없는 **비율 실험**이다. 시안에도 대칭 외투·견고한 장화가 남아 괴물성은 미완이다. 프록시를 원본 리그에 자동 적용하거나 최종 비율로 확정하지 않는다.
+
+**다음 제작 게이트:** §4의 2.70m 전체 바운딩과 전투 충돌·공격 위치 계약을 유지하면서 본체 메시를 다시 조형하고, 새 실루엣에 맞춰 가중치/리그를 검수한다. 먼저 무채색 55° 게임 카메라의 idle·walk·slam에서 지팡이 없이도 ‘마른 저주받은 존재’로 읽히고 전사형 V자가 사라져야 한다. 그 뒤 가면·인장·지팡이·Emission을 더한다. 현행 GLB를 ④ 임포트 기준으로 밀어 넣지 않는다. 새 유료 생성·리깅은 기존 승인 상한에 없으므로 이 교정 차수에서는 실행하지 않는다.
