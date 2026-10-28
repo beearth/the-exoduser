@@ -180,3 +180,15 @@ BGM 되감김이 사라져 음악이 제대로 깔려서 이 표의 그룹 RMS�
 - 3차 채택 `druid_spore`: `Audio/RM1/druid_spore.mp3` ← `_preview_r3/druid_spore_r3a_proc.mp3`(웹 `pickup_rummage2.mp3` 가공본). 기술 5 독포자 부채(fan): Core의 `#5 fan telegraph` 알림을 신호로 발사 시점(텔레그래프 38틱 뒤)에 1회, rate ±5 %, Skill 그룹, 시작 음량 .55.
 - `druid_spore` 원본이 웹에서는 아이템 줍기 소리다. Unity에 줍기 소리를 넣을 때 같은 파일이 들어가면 사운드 총괄에 알린다. `druid_slam`은 가공본을 다시 고르는 중이라 소리를 그대로 둔다.
 - 4차 `druid_slam`(`Audio/RM1/druid_slam.mp3` ← `_preview_r4/druid_slam_r4e2_proc.mp3`, 3차 선택 r3d에 음량 상향·중간 메아리 약 0.22초를 반영한 추천안 e2, **사용자 컨펌 전 선반영(pick_r4)** — 다른 후보를 고르면 파일 교체 커밋 하나만 바꾼다): 거름 내려찍기(기술 2) 착지 순간 1회. Core의 `#2 slam telegraph` 알림을 신호로 텔레그래프(기술 데이터 48) + SlamActive(6) = 54틱 뒤에 재생, Skill 그룹, 음량 .7, rate ±4 %.
+
+### 6.5 신규 오디오 메타 추적 (2026-10-28)
+
+`acf2fb948`에는 아래 채택 MP3의 Unity `.meta` 5개가 추적되지 않았다. 전용 브랜치에서 기존 RM1 오디오와 동일한 `AudioImporter` 설정으로 메타를 추가했다. 소리 파일·재생 키·음량·Core 규칙은 바꾸지 않았다. `druid_slam`의 e2는 위 §6.4대로 사용자 청음 확인 전 선반영 상태다.
+
+| 파일 | 메타 GUID | 적용 위치 |
+|---|---|---|
+| `druid_hit.mp3` | `7b3d4c810eaa4a69a4d3a58b8b1345f0` | `Audio/RM1` 보스 일반 피격 |
+| `druid_hit_heavy.mp3` | `87fd6f8327224c3b89dfeb94624df2f5` | `Audio/RM1` 보스 치명타 |
+| `druid_slam.mp3` | `309cae39b15a49bca3b5966814f8d7ab` | `Audio/RM1` 기술 2 착지 |
+| `druid_spore.mp3` | `199527322ffb4f959a119648d81e5d4a` | `Audio/RM1` 기술 5 발사 |
+| `druid_whip.mp3` | `6eb1775ab7c04ed7ad61a518861a10fe` | `Audio/RM1` 기술 1 3타 |
