@@ -23,7 +23,6 @@ param(
     [int]$KillAfterSec = 0,
     [switch]$KeepReservation,
     [switch]$AllowPlayer,
-    [ValidateSet("default", "proposed")][string]$Profile = "default",
     [string]$NodeModules = 'G:\exoduser\node_modules'
 )
 
@@ -364,9 +363,9 @@ function Try-TakeoverFrom($lock) {
 function Acquire-Slot([string]$Role, [string]$wt, [int]$ownerPid, [string]$queueDir, [double]$MinFreeGB = 0) {
     $script:LockToken = [Guid]::NewGuid().ToString("N")
     New-Item -ItemType Directory -Force -Path $Root | Out-Null
-    # 기본: 20GB(Library 없음 30GB). -Profile proposed: 12GB / 20GB(실측 근거 제안값, 유니티 총괄과 합의 전)
+    # 시작 조건(유니티 총괄 승인 10-28): 에디터 Library 있음 12GB / Library 없음 20GB / 플레이어 10GB, 동시 실행 1(잠금)
     $hasLib = Test-Path -LiteralPath (Join-Path $wt 'unity\Library')
-    if ($Profile -eq 'proposed') { $needGB = 12; if (-not $hasLib) { $needGB = 20 } } else { $needGB = 20; if (-not $hasLib) { $needGB = 30 } }
+    $needGB = 12; if (-not $hasLib) { $needGB = 20 }
     if ($MinFreeGB -gt 0) { $needGB = $MinFreeGB }
     $deadline = (Get-Date).AddMinutes($WaitMin)
     $lastMsg = ''
@@ -685,6 +684,10 @@ function Cmd-Status {
     foreach ($pr in $procs) { Write-Output ('Unity 프로세스: pid={0} ws={1:N0}MB start={2}' -f $pr.Id, ($pr.WorkingSet64 / 1MB), $pr.StartTime) }
     $ci = Get-CommitInfo
     Write-Output ('PC 커밋: 사용 {0}GB / 한도 {1}GB / 여유 {2}GB' -f $ci.used, $ci.limit, $ci.free)
+    Write-Output '시작 조건(커밋 여유): 에디터 Library 있음 12GB / Library 없음 20GB / 플레이어 10GB, 동시 실행 1(잠금)'
+    $needNow = 12; if ($Worktree -and -not (Test-Path -LiteralPath (Join-Path $Worktree 'unity\Library'))) { $needNow = 20 }
+    $okNow = 'OK'; if ($ci.free -lt $needNow) { $okNow = '부족' }
+    Write-Output ('  현재 여유 {0}GB / 에디터 필요 {1}GB → {2}' -f $ci.free, $needNow, $okNow)
     $wh = -1
     try { $wh = @(Get-WinEvent -FilterHashtable @{ LogName = 'System'; ProviderName = 'Microsoft-Windows-WHEA-Logger'; StartTime = (Get-Date).AddHours(-1) } -ErrorAction Stop).Count } catch { if ($_.FullyQualifiedErrorId -like 'NoMatchingEventsFound*') { $wh = 0 } }
     if ($wh -ge 0) { Write-Output ('WHEA-Logger 최근 1시간: {0}건 (읽기만)' -f $wh) } else { Write-Output 'WHEA-Logger 최근 1시간: 조회 불가' }
@@ -914,8 +917,7 @@ function Cmd-Player {
     if ($lower -notcontains '--unity-mute') { $ia += '--unity-mute' }
     $sbx = New-Sandbox $id; if ($lower -notcontains '--unity-qa-sandbox') { $ia += @('--unity-qa-sandbox', (Q $sbx)) }
     foreach ($u in $user) { if ($u.ToLower() -ne '-batchmode') { $ia += (Q $u) } }
-    $plGB = 8; if ($Profile -eq 'proposed') { $plGB = 10 }
-    Acquire-Slot 'devtools-player' (Split-Path $exeFull -Parent) $PID $ExecDir $plGB
+    Acquire-Slot 'devtools-player' (Split-Path $exeFull -Parent) $PID $ExecDir 10
     $script:SaveBefore = Get-UserSaveSnapshot
     try {
         $g = $null; $crashCause = $null; $logsUsed = @($log); $t0c = Get-Date
