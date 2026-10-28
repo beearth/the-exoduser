@@ -231,3 +231,6 @@
 
 로비 검수: 같은 테스트 캐릭터 2명(브라우저 저장 슬롯), 1920·1600 한국어, 1280 영어 `tmp/design-review/20261028_ui_apply/2_lobby/`(before = 패키지 CSS를 끈 같은 화면, after, 오른쪽 1x). Hahmlet 300·400 로딩, 선택·입장 활성 정상, pageerror 0. 메인 이미지 비중 약 68% → 약 78%(오른쪽 어둠 띠 포함). 판정: 통과.
 - 사고 기록: 작업 사본이 sparse checkout이라 커밋한 새 파일(`silver-hell-ui-kit.css`·`fonts/`)이 디스크에서 빠져 첫 로비 캡처가 키트 없이 찍힘 → `git sparse-checkout add`로 복구 후 다시 찍음. 실제 저장소·DEMO·EA에는 영향 없음(커밋본에서 꺼내 동기화).
+| 3단계 · 시작 화면 | `index.html` 타이틀 메뉴: 로고 760 → 520px(왼쪽 위), 버튼 440×52 → 패키지 규격 248×40(`_buildTitleMenu` W·H, SVG 판 그대로 축소), 글자 Hahmlet 400 15px, 아래 장식선 `#splashTitleRule` 숨김, 판권·버전 Cinzel 11px. 긴 번역 맞춤(`_fitTitleLabels`) 상한 390 → 210px(자간 → 13px → 12px). 메뉴 항목·조작은 그대로 |
+
+시작 화면 검수: 1920·1600 한국어, 1280 영어 `tmp/design-review/20261028_ui_apply/3_title/`(before = 직전 커밋 index.html, after, 메뉴 1x). 키아트 비중 약 84% → 약 90%. 영어 "ADD TO STEAM WISHLIST"도 버튼 안. pageerror 0. 판정: 통과.

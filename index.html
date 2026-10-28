@@ -497,11 +497,11 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
     linear-gradient(0deg,rgba(2,5,5,.7) 0%,rgba(2,5,5,0) 26%),
     radial-gradient(ellipse 120% 100% at 50% 50%,rgba(0,0,0,0) 62%,rgba(0,0,0,.55) 100%)}
 #splashTitleStage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
-#splashTitleLogo{position:absolute;left:92px;top:118px;width:760px;height:auto;user-select:none;
+#splashTitleLogo{position:absolute;left:96px;top:96px;width:520px;height:auto;user-select:none;
   filter:drop-shadow(0 10px 26px rgba(0,0,0,.8)) drop-shadow(0 0 2px rgba(0,0,0,.6))}
-#splashTitleMenu{position:absolute;left:252px;top:548px;width:440px;display:flex;flex-direction:column;gap:9px;margin:0;padding:0;list-style:none}
-#splashTitleMenu .stm-btn{position:relative;height:52px;display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:auto;
-  font:500 20px/1 'Nanum Myeongjo','Noto Serif KR','Noto Serif',serif;letter-spacing:.16em;color:#e6e3dd;white-space:nowrap;
+#splashTitleMenu{position:absolute;left:232px;top:436px;width:248px;display:flex;flex-direction:column;gap:12px;margin:0;padding:0;list-style:none}
+#splashTitleMenu .stm-btn{position:relative;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:auto;
+  font:400 15px/1 'Hahmlet','Nanum Myeongjo','Noto Serif KR','Noto Serif',serif;letter-spacing:.16em;color:#d6d3cd;white-space:nowrap;
   text-shadow:0 1px 0 rgba(0,0,0,.9),0 0 10px rgba(0,0,0,.7);transition:color .18s;outline:none}
 #splashTitleMenu .stm-btn svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
 #splashTitleMenu .stm-plate{fill:rgba(13,13,15,.82);stroke:rgba(138,139,136,.75);stroke-width:1;transition:stroke .18s}
@@ -514,8 +514,8 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 #splashTitleMenu .stm-btn.sel .stm-inner{stroke:rgba(248,245,239,.3)}
 #splashTitleMenu .stm-btn.sel .stm-tip{fill:#c21a10;stroke:#f8f5ef}
 #splashTitleMenu .stm-btn.sel .stm-glow{opacity:1}
-#splashTitleRule{position:absolute;left:252px;width:440px;height:20px}
-#splashTitleBuild{position:absolute;right:44px;bottom:34px;text-align:right;font:500 12px/1.7 'Cinzel',serif;letter-spacing:.22em;
+#splashTitleRule{position:absolute;left:232px;width:248px;height:20px;display:none} /* 실버 헬 패키지: 장식선 없음 */
+#splashTitleBuild{position:absolute;right:36px;bottom:26px;text-align:right;font:600 11px/1.7 'Cinzel',serif;letter-spacing:.28em;
   color:rgba(230,227,221,.6);text-shadow:0 1px 3px #000,0 0 10px rgba(0,0,0,.9);pointer-events:none}
 </style>
 <link rel="stylesheet" href="localization.css?v=20260909">
@@ -4585,7 +4585,7 @@ function showCharGate(charId,storySeen=false){
     ];
     if(_LOBBY_BUILD==='demo')defs.push({label:'STEAM 위시리스트 추가',act:()=>openWishlist()});
     if(window.nw?.App?.quit||window.electronAPI?.quitApp)defs.push({label:'게임 종료',act:_titleQuit});
-    const W=440,H=52;
+    const W=248,H=40; // 실버 헬 UI 패키지 버튼 규격(2026-10-28 승인)
     const plate=`M14 .5H${W-14}L${W-.5} ${H/2}L${W-14} ${H-.5}H14L.5 ${H/2}Z`;
     const inner=`M16.5 4.5H${W-16.5}L${W-6} ${H/2}L${W-16.5} ${H-4.5}H16.5L6 ${H/2}Z`;
     const tipL=`M-9 ${H/2}L-3 ${H/2-6}L3 ${H/2}L-3 ${H/2+6}Z`,tipR=`M${W+9} ${H/2}L${W+3} ${H/2-6}L${W-3} ${H/2}L${W+3} ${H/2+6}Z`;
@@ -4599,7 +4599,7 @@ function showCharGate(charId,storySeen=false){
       _titleMenu.appendChild(li);
       return {li,label,act:d.act};
     });
-    document.getElementById('splashTitleRule').style.top=(548+defs.length*(H+9)+12)+'px';
+    document.getElementById('splashTitleRule').style.top=(436+defs.length*(H+12)+12)+'px';
     const r=window.EXODUSER_RELEASE;
     document.getElementById('splashTitleBuild').innerHTML=`${_LOBBY_VER_LABEL[_LOBBY_BUILD]||''}${r&&r.version?' · v'+r.version:''}<br>FOR DEAR GAMERS`;
     _selectTitleItem(0);
@@ -4611,9 +4611,10 @@ function showCharGate(charId,storySeen=false){
     if(_titleUI.style.display!=='block')return;
     _titleItems.forEach(({label})=>{
       label.style.letterSpacing='';label.style.paddingLeft='';label.style.fontSize='';
-      if(label.offsetWidth>390){label.style.letterSpacing='.04em';label.style.paddingLeft='.04em';}
-      if(label.offsetWidth>390)label.style.fontSize='17px';
-      if(label.offsetWidth>390)label.style.fontSize='15px';
+      // 버튼 248px(실버 헬 패키지) 안쪽 글자 폭 상한 210px — 긴 번역은 자간 → 크기 순서로 줄인다
+      if(label.offsetWidth>210){label.style.letterSpacing='.04em';label.style.paddingLeft='.04em';}
+      if(label.offsetWidth>210)label.style.fontSize='13px';
+      if(label.offsetWidth>210)label.style.fontSize='12px';
     });
   }
   function _selectTitleItem(i){
