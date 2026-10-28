@@ -185,7 +185,7 @@ function Get-UserSaveSnapshot {
     if (-not (Test-Path -LiteralPath $root)) { return $h }
     $sha = [Security.Cryptography.SHA256]::Create()
     foreach ($f in [IO.Directory]::EnumerateFiles($root, '*', [IO.SearchOption]::AllDirectories)) {
-        if ($f -match '[\/]Unity[\/]local\.[0-9a-f]+[\/]Editor[\/]') { continue }   # 에디터 자체 상태(Analytics 등)는 세이브가 아님 - 에디터를 띄우면 항상 갱신됨
+        if ($f -match '[\\/]Unity[\\/]local\.[0-9a-f]+[\\/]Editor[\\/]') { continue }   # editor internal state (Analytics etc.) is not a save - always touched when the editor runs
         try {
             $fi = New-Object IO.FileInfo $f
             $hash = ''
