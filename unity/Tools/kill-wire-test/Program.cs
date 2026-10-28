@@ -96,6 +96,15 @@ class Program
         for (int i = 0; i < 181; i++) s.Tick(0, 0, s.Player.X + 100, s.Player.Y, false, false);
         Check(s.KillChainTicks == 0, "kill-chain timer runs out after 180 f");
 
+        // ---- 11. chain-dash pass-through hit (game.html 32474-32505, STR branch): the pulled player hits every enemy within r + 20 once per cast, with poise x2 and +25 knock-back ----
+        s = Make(); e = Spawn(s, 40, 0); e.Shield = 0; e.Hp = e.MaxHp = 100000; e.Poise = e.MaxPoise = 400; s.DashHits.Clear();
+        float hp11 = e.Hp, poise11 = e.Poise; s.HarpActive = true; s.DashActive = true; s.DashVx = 20; s.DashVy = 0; s.DashLeft = 400; s.Player.Facing = 0;
+        s.Tick(0, 0, s.Player.X + 100, s.Player.Y, false, false);
+        Check(s.DashHits.Count == 1 && e.Hp < hp11, "dash pass-through hit lands once (hits " + s.DashHits.Count + ", hp " + hp11 + " -> " + e.Hp + ")");
+        float hpAfter = e.Hp; for (int i = 0; i < 4; i++) s.Tick(0, 0, s.Player.X + 100, s.Player.Y, false, false);
+        Check(s.DashHits.Count == 1 && e.Hp == hpAfter, "the same enemy is not hit again by the same cast (hp " + hpAfter + " -> " + e.Hp + ")");
+        Check(s.ShakeAmount > 0, "G.shake = 4 * OPT.shake / 100 on a pass-through hit (" + s.ShakeAmount + ")");
+        s.DashHits.Clear(); s.DashActive = false; s.HarpActive = false;
         var result = JsonSerializer.Serialize(new { scope = "standalone_dotnet_simulation_wire_not_Unity_runtime", passed = failed == 0, failed, checks = Rows }, new JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
         if (args.Length > 0) File.WriteAllText(args[0], result);
         Console.WriteLine("KILL_WIRE " + Rows.Count + " checks / " + failed + " failures");
