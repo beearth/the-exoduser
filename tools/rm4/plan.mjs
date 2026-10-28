@@ -63,20 +63,39 @@ const toxicPools = [
 ];
 
 // ---- 빛 웅덩이: 26타일 지터 격자. 한 화면(1600x900, LOOK-001 ≈ 40x30타일)에 진홍 1~2 + 독액 0~2 = 2~4개(L-1·L-2). 서로 10타일(400px) 이상, 사이는 어둡게(W7) ----
-const pools = []; let ph = 0, pt = 0;
+const gridPools = []; let ph = 0, pt = 0;
 for (let gy = 44; gy <= 196; gy += 26) for (let gx = 10; gx <= 192; gx += 26) {
   const x = Math.round(gx + (rnd() - .5) * 10), y = Math.round(gy + (rnd() - .5) * 10);
   if (inBoss(x, y) || y < 34) continue;
-  if (pools.some(p => Math.hypot(p.x - x, p.y - y) < 10)) continue;
+  if (gridPools.some(p => Math.hypot(p.x - x, p.y - y) < 10)) continue;
   const nearToxic = toxicPools.some(t => Math.hypot(x - (t.bbox[0] + t.bbox[2]) / 2, y - (t.bbox[1] + t.bbox[3]) / 2) < 12) || x < 14 || x > 186;
   const kind = nearToxic ? 'toxic' : 'hell';
   const r = kind === 'hell' ? +(5 + rnd() * 2).toFixed(1) : +(3 + rnd() * 1.5).toFixed(1); // 타일. 진홍 200~280u(5~7타일), 독액 120~180u(3~4.5타일)
   const xx = kind === 'toxic' && (x < 14 || x > 186) ? (x < 100 ? 3 : 196) : x;
-  if (pools.some(p => Math.hypot(p.x - xx, p.y - y) < 10)) continue;
-  pools.push({ kind, x: xx, y, r, label: kind === 'hell' ? 'H' + (++ph) : 'T' + (++pt) });
+  if (gridPools.some(p => Math.hypot(p.x - xx, p.y - y) < 10)) continue;
+  gridPools.push({ kind, x: xx, y, r, label: kind === 'hell' ? 'H' + (++ph) : 'T' + (++pt) });
 }
-// 랜드마크 고정 웅덩이(진홍 1~2 = 큰 반경·느린 숨, L-2 위계 ①)
-pools.push({ kind: 'hell', x: 100, y: 68, r: 8, label: 'HL1', anchor: 'L1 심장 남쪽 앞' }, { kind: 'hell', x: 52, y: 66, r: 7, label: 'HL2', anchor: 'L2 아치 동쪽' }, { kind: 'toxic', x: 150, y: 64, r: 4.5, label: 'TL3', anchor: 'L3 늪 서쪽 기슭' });
+const pools = gridPools.filter(p => p.kind === 'toxic'); // 독액 13개: 외곽 띠·섬 쪽, P0 그대로
+// P0 판정 조건 1(맵 총괄 10-28): 진홍은 주 동선(START→보스문)과 랜드마크 접근로를 따라 무리 짓고, 먼 들판은 어둡게 비운다. 총 20개 안팎.
+// 동선은 x=100 중심선을 따라 ±8 지그재그(진홍 반경 5~7타일), 접근로는 동선에서 갈라지는 길을 따라 1~2개씩. 독액과는 10타일 이상.
+const hellSpec = [
+  // 주 동선 START(100,185) → R1 → 대장간(100,120) → 심장 L1(100,60) → 보스문 앞(100,34)
+  ['H1', 92, 181, 6], ['H2', 108, 165, 5.5], ['H3', 93, 149, 6.5], ['H4', 108, 133, 5.5], ['H5', 92, 117, 6], ['H6', 108, 101, 6], ['H7', 92, 85, 6.5],
+  ['HL1', 100, 69, 8, 'L1 심장 남쪽 앞(큰 반경·느린 숨, 대표 컷)'], ['H8', 109, 49, 6], ['H9', 91, 41, 6], ['H10', 103, 35, 5],
+  // 랜드마크 접근로
+  ['HL2', 53, 66, 7, 'L2 아치 동쪽'], ['H11', 74, 83, 5.5], ['H12', 136, 74, 6], ['H13', 121, 92, 5.5],
+  ['HL4', 61, 168, 6.5, 'L4 거목 동쪽'], ['H14', 78, 157, 5.5],
+  ['H15', 147, 150, 6], ['H16', 126, 176, 5.5], ['H17', 172, 100, 5.5],
+];
+for (const [label, x, y, r, anchor] of hellSpec) pools.push({ kind: 'hell', x, y, r, label, ...(anchor ? { anchor } : {}) });
+pools.push({ kind: 'toxic', x: 150, y: 64, r: 4.5, label: 'TL3', anchor: 'L3 늪 서쪽 기슭' });
+const poolSepViolations = []; for (let i = 0; i < pools.length; i++) for (let j = i + 1; j < pools.length; j++) { const d = Math.hypot(pools[i].x - pools[j].x, pools[i].y - pools[j].y); if (d < 10) poolSepViolations.push([pools[i].label, pools[j].label, +d.toFixed(1)]); }
+// 화면(40x30타일) 창 안 웅덩이 수: 동선 창(중심 x85~115) / 먼 들판 창 분포
+const winCount = (cx, cy) => pools.filter(p => Math.abs(p.x - cx) <= 20 && Math.abs(p.y - cy) <= 15).length;
+const hist = (list) => { const h = {}; for (const [cx, cy] of list) { const n = winCount(cx, cy); h[n] = (h[n] || 0) + 1; } return h; };
+const routeWins = [], farWins = [];
+for (let cy = 48; cy <= 184; cy += 4) for (let cx = 20; cx <= 180; cx += 4) { if (blocked(cx, cy)) continue; (cx >= 85 && cx <= 115 ? routeWins : farWins).push([cx, cy]); }
+const lightWindowHist = { route: hist(routeWins), far: hist(farWins), routeWindows: routeWins.length, farWindows: farWins.length };
 
 // ---- 붉은 빛줄기(L-2·D12): 뿌리 지붕 틈 ----
 const shafts = [
@@ -102,13 +121,69 @@ const occlusion = [
   ...masses.filter(m => m.kind !== 'knot').map(m => ({ id: 'O_' + (m.kind === 'landmark' ? landmarks.find(l => l.bbox === m.bbox).id : m.bbox.join('_')), x0: m.bbox[0], y0: m.bbox[1], x1: m.bbox[2], y1: m.bbox[3], note: m.kind })),
 ];
 
+// ---- P1 창(맵 총괄 승인 ①): 지형 x0~199 × y32~199 + 지도 밖 띠 16타일. y<32는 이번 슬라이스 밖(보스방 연출은 보스전 총괄과 맞춘다) ----
+const P1 = { x0: 0, y0: 32, x1: 199, y1: 199, rimTiles: MARGIN, note: 'y<32(보스방·게이트·북쪽 필드·L5)는 이번 슬라이스 밖. 북쪽 가장자리 y32는 FOG-LOW로 사라지게 처리' };
+
+// ---- 뿌리 흐름선·등줄기 (P0 판정 조건 2) ----
+// 모든 뿌리가 북쪽 심장(L1)으로 모이고, 심장에서 보스문 앞(100,34)으로 굵은 줄기가 이어진다. 굵기·밀도는 북쪽일수록 커진다.
+// 흐름선 = 바닥 데칼 곡선(시각 전용, 걷기 칸 위 메시 없음). 등줄기 = 그중 굵은 7줄, 지형 높이 0.10u 이하의 낮은 둔덕(충돌·덩어리 아님, 시선 쐐기 이내).
+const HEART = [100.5, 60.5], HEART_R = 4.6, GATE_FRONT = [100.5, 34];
+const bez = (p0, p1, p2, t) => [(1 - t) * (1 - t) * p0[0] + 2 * (1 - t) * t * p1[0] + t * t * p2[0], (1 - t) * (1 - t) * p0[1] + 2 * (1 - t) * t * p1[1] + t * t * p2[1]];
+const flowLines = [];
+const starts = [];
+for (let x = 6; x <= 194; x += 15) starts.push([x + (rnd() - .5) * 6, 197 + rnd() * 1.5]);          // 남쪽 가장자리 13
+for (let y = 74; y <= 182; y += 18) { starts.push([2 + rnd() * 2, y + (rnd() - .5) * 6]); starts.push([196 + rnd() * 2, y + (rnd() - .5) * 6]); } // 서·동 가장자리 14
+starts.push([100, 196], [96, 195], [104, 195]); // START에서 곧게 올라오는 줄기 3
+for (const st of starts) {
+  const dx = HEART[0] - st[0], dy = HEART[1] - st[1], L = Math.hypot(dx, dy);
+  const ang = Math.atan2(dy, dx), ex = [HEART[0] - Math.cos(ang) * HEART_R, HEART[1] - Math.sin(ang) * HEART_R]; // 심장 둘레에서 끝난다
+  const side = (st[0] < 100 ? -1 : 1) * (rnd() < .5 ? 1 : .6), bend = L * (0.10 + rnd() * 0.14) * side;
+  const mid = [(st[0] + ex[0]) / 2 + (-dy / L) * bend * -1, (st[1] + ex[1]) / 2 + (dx / L) * bend * -1];
+  const pts = []; for (let k = 0; k <= 16; k++) pts.push(bez(st, mid, ex, k / 16).map(v => +v.toFixed(2)));
+  flowLines.push({ id: 'F' + flowLines.length, pts, w0: +(0.30 + rnd() * 0.15).toFixed(2), w1: +(0.9 + rnd() * 0.4).toFixed(2), ridge: false });
+}
+// 굵은 등줄기 7: 서·남서·남·남동·동 방향에서 심장으로
+const ridgeFrom = [[4, 120], [22, 190], [70, 197], [100, 196], [130, 197], [178, 190], [196, 120]];
+for (const st of ridgeFrom) {
+  const dx = HEART[0] - st[0], dy = HEART[1] - st[1], L = Math.hypot(dx, dy), ang = Math.atan2(dy, dx), ex = [HEART[0] - Math.cos(ang) * HEART_R, HEART[1] - Math.sin(ang) * HEART_R];
+  const side = st[0] < 100 ? -1 : (st[0] > 100 ? 1 : 0), bend = L * 0.12 * side;
+  const mid = [(st[0] + ex[0]) / 2 + (dy / L) * bend, (st[1] + ex[1]) / 2 - (dx / L) * bend];
+  const pts = []; for (let k = 0; k <= 20; k++) pts.push(bez(st, mid, ex, k / 20).map(v => +v.toFixed(2)));
+  flowLines.push({ id: 'R' + flowLines.filter(l => l.ridge).length, pts, w0: 0.8, w1: 1.7, ridge: true, hMaxU: 0.10 });
+}
+// 심장 → 보스문 앞 줄기(5가닥, 위로 갈수록 한 점으로 모인다)
+for (const k of [-2, -1, 0, 1, 2]) {
+  const p0 = [HEART[0] + k * 1.1, HEART[1] - HEART_R], p2 = [GATE_FRONT[0] + k * 0.45, GATE_FRONT[1]], p1 = [HEART[0] + k * 1.6 * (k < 0 ? 1 : 1), (p0[1] + p2[1]) / 2];
+  const pts = []; for (let t = 0; t <= 12; t++) pts.push(bez(p0, p1, p2, t / 12).map(v => +v.toFixed(2)));
+  flowLines.push({ id: 'T' + (k + 2), pts, w0: 1.0, w1: 1.5, ridge: k === 0, hMaxU: k === 0 ? 0.10 : undefined, trunk: true });
+}
+// 수렴 지표: 각 선의 표본점에서 선 방향이 가장 가까운 끌개(심장/보스문)를 향하는 정도
+const attractorOf = (y) => (y > HEART[1] ? HEART : GATE_FRONT);
+let alignSum = 0, alignN = 0, aligned60 = 0;
+for (const l of flowLines) for (let k = 0; k + 1 < l.pts.length; k++) {
+  const a = l.pts[k], b = l.pts[k + 1], tgt = attractorOf(a[1]), vx = b[0] - a[0], vy = b[1] - a[1], tx = tgt[0] - a[0], ty = tgt[1] - a[1];
+  const c = (vx * tx + vy * ty) / ((Math.hypot(vx, vy) * Math.hypot(tx, ty)) || 1); alignSum += c; alignN++; if (c >= 0.5) aligned60++; // cos>=0.5 = 60도 이내
+}
+const endNearAttractor = flowLines.filter(l => { const e = l.pts[l.pts.length - 1]; return Math.hypot(e[0] - HEART[0], e[1] - HEART[1]) <= HEART_R + 1.5 || Math.hypot(e[0] - GATE_FRONT[0], e[1] - GATE_FRONT[1]) <= 3; }).length;
+const rootFlow = { note: '흐름선=바닥 데칼(시각 전용). ridge=낮은 뿌리 둔덕(Terrain 높이 <=0.10u, 충돌·덩어리 아님). trunk=심장→보스문 앞 5가닥', heart: HEART, heartR: HEART_R, gateFront: GATE_FRONT, lines: flowLines,
+  convergence: { lines: flowLines.length, ridges: flowLines.filter(l => l.ridge).length, endNearAttractor, meanCosToAttractor: +(alignSum / alignN).toFixed(3), segmentsWithin60deg: +(aligned60 / alignN).toFixed(3) } };
+
+// ---- 시선 쐐기(맵 총괄 공통 규칙): h <= 0.9 + tan(0.85)*D. D = 덩어리 북쪽 끝에서 북쪽 가장 가까운 걷기 칸 중심까지(u, 1칸=0.4u) ----
+const TAN_PITCH = Math.tan(0.85), TILE_U = 0.4;
+for (const m of masses) {
+  const [x0, y0, x1] = m.bbox; let best = Infinity;
+  for (let x = x0; x <= x1; x++) { let topY = null; for (let y = m.bbox[1]; y <= m.bbox[3]; y++) if (blocked(x, y)) { topY = y; break; } if (topY === null) continue; for (let y = topY - 1; y >= Math.max(0, topY - 40); y--) if (!blocked(x, y)) { best = Math.min(best, topY - (y + 0.5)); break; } }
+  m.D_u = +(best === Infinity ? 99 : best * TILE_U).toFixed(2); m.hMax_u = +(0.9 + TAN_PITCH * (m.D_u >= 99 ? 0 : m.D_u)).toFixed(2);
+}
+const hMaxSet = {}; for (const m of masses) hMaxSet[m.hMax_u] = (hMaxSet[m.hMax_u] || 0) + 1;
+
 const plan = {
   si: 3, stage: '1-4', margin: MARGIN, generatedBy: 'tools/rm4/plan.mjs', seed: 1104,
   identity: '기생수의 둥지 = 숲의 심장. 사방이 트인 넓은 둥지 바닥을 뿌리가 덮고, 모든 뿌리가 북쪽 보스문으로 모인다',
-  bossZone, rim, toxicRibbons: [riverW, riverE], heartSink, falls, toxicPools,
-  landmarks, masses: masses.map(m => ({ kind: m.kind, bbox: m.bbox, size: m.size, webType: m.webType, tiles: m.tiles })), skippedIslands: skipped,
-  lightPools: pools, shafts, story, occlusion,
+  P1, rootFlow, hMaxSet, bossZone, rim, toxicRibbons: [riverW, riverE], heartSink, falls, toxicPools,
+  landmarks, masses: masses.map(m => ({ kind: m.kind, bbox: m.bbox, size: m.size, webType: m.webType, D_u: m.D_u, hMax_u: m.hMax_u, tiles: m.tiles })), skippedIslands: skipped,
+  lightPools: pools, poolSepViolations, lightWindowHist, shafts, story, occlusion,
   counts: { islands: isl.length, massIslands: masses.length, landmarks: landmarks.length, skippedBoss: skipped.length, massTiles, massTilesSouthOfWalk, lightPools: pools.length, hell: pools.filter(p => p.kind === 'hell').length, toxic: pools.filter(p => p.kind === 'toxic').length },
 };
 fs.writeFileSync(path.join(D, 'ch1_4_plan.json'), JSON.stringify(plan));
-console.log(JSON.stringify({ counts: plan.counts, landmarks: landmarks.map(l => [l.id, l.x, l.y, l.r, l.webType]), skipped, toxicPools: toxicPools.map(t => [t.id, t.body, t.shore]) }, null, 1));
+console.log(JSON.stringify({ counts: plan.counts, conv: rootFlow.convergence, hMaxSet, lightWindowHist, poolSepViolations, landmarks: landmarks.map(l => [l.id, l.x, l.y, l.r, l.webType]), skipped, toxicPools: toxicPools.map(t => [t.id, t.body, t.shore]) }, null, 1));

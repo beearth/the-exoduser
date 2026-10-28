@@ -31,6 +31,15 @@ const outline = (x0, y0, x1, y1, c) => { line(x0, y0, x1 + 1, y0, c, 0); line(x0
 const F = { 0: '111101101101111', 1: '010110010010111', 2: '111001111100111', 3: '111001111001111', 4: '101101111001001', 5: '111100111001111', 6: '111100111101111', 7: '111001001001001', 8: '111101111101111', 9: '111101111001111', L: '100100100100111', T: '111010010010010', H: '101101111101101', P: '111101111100100', S: '111100111001111', E: '111100111100111', X: '101101010101101', B: '110101110101110', G: '111100101101111', R: '110101110101101', O: '111101101101111', C: '111100100100111', A: '010101111101101', M: '101111111101101', W: '101101111111101', F: '111100110100100' };
 const text = (s, x, y, c, sc = 2) => { let ox = x * S - O * S * 0; for (const ch of String(s)) { const g = F[ch]; if (g) for (let r = 0; r < 5; r++) for (let q = 0; q < 3; q++) if (g[r * 3 + q] === '1') for (let j = 0; j < sc; j++) for (let i = 0; i < sc; i++) { put(ox + q * sc + i + 1, y * S + r * sc + j + 1, [0, 0, 0]); put(ox + q * sc + i, y * S + r * sc + j, c); } ox += 4 * sc; } };
 const COL = { mass: [120, 90, 160], landmark: [230, 120, 60], toxic: [150, 140, 40], toxicRiver: [120, 112, 30], hell: [210, 40, 30], shaft: [255, 110, 90], occl: [80, 160, 220], story: [240, 220, 170], fg: [140, 200, 140] };
+// 뿌리 흐름선(얇은 뼈색) · 낮은 등줄기(굵은 주황) · 심장→보스문 줄기. 굵기는 w0→w1(타일)로 북쪽(끝)일수록 커진다.
+const FLOWC = [196, 182, 140], RIDGEC = [235, 150, 70];
+if (plan.rootFlow) for (const l of plan.rootFlow.lines) for (let k = 0; k + 1 < l.pts.length; k++) {
+  const t = k / (l.pts.length - 1), w = (l.w0 + (l.w1 - l.w0) * t) * S / 2, c = l.ridge ? RIDGEC : FLOWC;
+  line(l.pts[k][0], l.pts[k][1], l.pts[k + 1][0], l.pts[k + 1][1], c, Math.max(0, Math.round(w) - (l.ridge ? 0 : 1)));
+}
+if (plan.rootFlow) { const h = plan.rootFlow.heart; ring(h[0], h[1], plan.rootFlow.heartR, [255, 240, 200]); const g = plan.rootFlow.gateFront; disc(g[0], g[1], 1.2, [255, 240, 200], .9); text('HEART', h[0] + 6, h[1] - 8, [255, 240, 200]); text('GATE', g[0] + 3, g[1] - 4, [255, 240, 200]); }
+// P1 창 경계(y32 북쪽은 이번 슬라이스 밖)
+if (plan.P1) { const w = plan.P1; for (let x = w.x0; x <= w.x1 + 1; x += 2) put(x * S, w.y0 * S, [255, 255, 255]); text('P1', 4, w.y0 + 1, [255, 255, 255]); }
 for (const o of plan.occlusion || []) { rect(o.x0, o.y0, o.x1, o.y1, COL.occl, .22); outline(o.x0, o.y0, o.x1, o.y1, COL.occl); }
 for (const r of plan.toxicRibbons || []) for (let k = 0; k + 1 < r.pts.length; k++) line(r.pts[k][0], r.pts[k][1], r.pts[k + 1][0], r.pts[k + 1][1], COL.toxicRiver, Math.max(1, Math.round((r.w || 1) * S / 2)));
 for (const t of plan.toxicPools || []) for (const [x, y] of t.tiles || []) rect(x, y, x, y, COL.toxic, .85);
