@@ -25,3 +25,12 @@
 
 ## 판정 규칙 고치기
 `smoke-rules.json`의 `ignore`/`fail`/`knownIssues`만 고친다. 결함을 고치면 해당 `knownIssues` 항목을 지워 다시 "실패"로 잡히게 한다.
+
+## 추가 규칙 (2026-10-28)
+- **사용자 세이브 보호**: 스모크는 `--unity-qa-sandbox <runDir>\smoke\sandbox`로 roster·combat-save·native-settings 경로를 격리한다(`NativeQaSandbox.cs`, m1-check+batchmode는 인자 없어도 `persistentDataPath\qa\<시각>-<pid>`로 자동 격리). 실행 전후 `LocalLow\ForDearGamers` 스냅샷(크기·시각·SHA256, Unity Analytics 제외)을 비교해 `USER_SAVE changed=N`을 상태판에 쓰고 N>0이면 FAIL. 사용자 파일은 읽기만 한다.
+- **필수 영상**: 빌드 전에 복원 스크립트 2개를 돌리고 `smoke-rules.json`의 `requiredMedia`(StreamingAssets\Lobby 영상 9개, 최소 1MB)를 확인한다. 하나라도 없으면 빌드 실패, 상태판에 "필수 영상 누락".
+- **크래시 정지**: 에디터·플레이어 종료코드 -1073741819(0xC0000005)이거나 로그에 `access violation`/`crash has been intercepted`가 있으면 1회 재시도, 또 크래시면 `I:\EXODUSER-Storage\unity-jobs\HALT`(시각·원인·로그·크래시 폴더)를 쓰고 멈춘다. HALT가 있으면 `run`은 실행되지 않는다(지우는 건 사람).
+- **검은 캡처**: batchmode에서 `ScreenCapture`는 검은 PNG를 쓴다. 캡처의 20%(최소 4장) 넘게 검으면 FAIL — 무창 캡처를 지원하는 빌드(이 브랜치의 M1Check)만 통과한다.
+- **메모리**: 실행 중 `unity-jobs\memlog.csv`에 한 줄씩 기록(열 = 시각, 커밋 사용, 한도, 여유, Unity·claude·node 수), 상태판에 최근 24시간 커밋 여유 SVG 그래프(20/30GB 점선).
+- **컴파일 검사**: `compile-check.ps1` — Unity 없이 csc로 Assembly-CSharp 컴파일(약 6초). 런타임 C# 변경 전 먼저 돌린다.
+- 알려진 한계: batchmode에서는 IMGUI(OnGUI)가 호출되지 않아 캡처에 HUD/UI가 없다(`guiRepaints=0`). UI 판정은 별도 방식이 필요하다.
