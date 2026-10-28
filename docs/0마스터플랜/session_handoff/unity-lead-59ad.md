@@ -42,3 +42,11 @@
 - 기존 `unity-lead-rmint` 검증 프로세스(PID 47292)가 실제로 같은 후보 빌드·`m1-check`를 기다리는 것을 확인했다. 중복 실행을 중단했고, 그 프로세스·예약은 건드리지 않았다. 결과 위치는 `I:/EXODUSER-Storage/lead-runs/rmint-verify/`다.
 - 공용 실행기의 두 순서 계층이 현재 맞물렸다. 첫 임시 티켓은 `unity-core-oracle-lt8`(PID 68684), 첫 예약은 `custom-c02`다. `Cmd-Run`은 첫 티켓만 잠금 신청으로 보내고 `Acquire-Slot`은 첫 예약자만 허용하므로 실제 작업이 진행되지 않는다. 타인 티켓·예약·프로세스는 보존했다. 증거와 병합 보류표는 `I:/EXODUSER-Storage/codex-takeover/unity-integrator/REPORT.md`에 기록했다.
 - `I:/EXODUSER-Storage/unity-latest/update_unity_latest.ps1`은 Unity 직접 실행 및 기존 빌드 삭제 교체를 하므로, 현 공통 규칙의 공용 실행기·보존 조건을 충족하도록 안전 절차가 마련되기 전에는 실행하지 않는다. 따라서 최신 바로가기 빌드 갱신도 미완료다.
+
+## Codex 2차 통합 결과 — 2026-10-28 23:35 KST
+
+- 위 22:30의 보류 이후, 공용 실행기 교착이 풀린 상태에서 RM-INT `34bae665b`를 정확한 SHA로 빌드·검증하고 `unity/main`에 비강제 반영했다. 이어 VFX-D19 `e505a211e`를 병합한 `f334935d0`, 실행기 runner2 `2aa218bcd`를 병합·숨은 Player 판정 오류를 수정한 `f61bbcaf5`까지 각각 정확한 SHA로 Unity 6000.6.7f1 빌드 오류 0, M1 22/22, RM-INT 2D·3D 1800틱 로그 해시 `11640a5da4a88c94` 일치를 확인한 뒤 비강제 push했다. 마지막 원격 `unity/main`은 `f61bbcaf5baa60b1dc0ec7fd9e10a86c3b480424`다.
+- 실행기 runner2는 인자 자체 시험 14/14를 통과했다. 첫 숨은 Player M1은 실제 단계 22개를 기록했으나 실행기가 별도 데스크톱 창을 사용자 창으로 오인하고 종료 코드를 `null`로 읽었다. 해당 두 판정 경로만 수정하고 같은 설치 Player로 한 번 재검증해 종료 코드 0·사용자 창 감지 0·잔존 프로세스 0·세이브 변경 0을 확인했다. 정확한 `f61bbcaf5` 빌드의 숨은 Player M1과 RM-INT 2D·3D도 통과했다.
+- `I:/EXODUSER-Storage/unity-latest/build`는 안전한 I: 사본 복사·전 파일 SHA-256 대조 뒤 `f61bbcaf5`로 교체했다. 앞선 `b0f9a0c52`, `34bae665b`, `f334935d0` 실행본은 I:의 별도 이전 빌드로 보존했다. 설치 경로에서 M1 22/22, AMD Radeon RX 9070 XT, 사용자 창 0, 세이브 변경 0을 재확인했다. 원본 `update_unity_latest.ps1`은 직접 Unity 실행·기존 빌드 삭제 동작 때문에 사용하지 않았다.
+- 1600×900 시작·클리어 UI 캡처는 확인했다. 기능 스모크는 PASS이나 맵 외곽의 검은 영역·어두운 톤·작은 결과 문구로 시각 판정은 `RETOUCH`다. M1은 실제 조작이 아닌 스크립트 `Simulation.Tick`이며 보스 게이트를 강제 개방하므로 LT-10 자연 개방 검증이 남는다. Unity 빌드 뒤 Editor가 `ProjectSettings`와 `.meta`를 자동 변경한 사본은 I: 패치로 보존하고 통합 소스에서는 제거했다. PC·Mac 각 실제 체크아웃의 조상/바이트 대조와 손 조작 Player 검수는 아직 확인되지 않았다.
+- sound, buildloop3, tools, RM0/RM2/RM3/RM4, arena, VFX graph, character 후보는 `I:/EXODUSER-Storage/codex-takeover/MERGE_QUEUE.md`의 미충족 검수·시각 판정·선택 조건 때문에 `unity/main`에 넣지 않았다. 상세 영수증과 남은 일은 `I:/EXODUSER-Storage/codex-takeover/integrator-final/REPORT.md`를 따른다.
