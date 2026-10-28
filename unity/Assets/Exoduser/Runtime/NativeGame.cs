@@ -106,6 +106,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-language-menu-smoke")>=0){lobbySmoke=true;lobby.AutomatedInput=true;StartCoroutine(LanguageMenuSmoke());}
             else if(Array.IndexOf(args,"--unity-canonical-world-smoke")>=0){lobbySmoke=true;lobby.AutomatedInput=true;StartCoroutine(CanonicalWorldSmoke());}
             else if(Array.IndexOf(args,"--unity-lobby-controls-smoke")>=0){lobbySmoke=true;lobbyControlsSmoke=true;lobby.AutomatedInput=true;StartCoroutine(LobbyControlsSmoke());}
+            else if(Array.IndexOf(args,"--unity-quit-during-video")>=0){StartQuitDuringVideo();}else if(Array.IndexOf(args,"--unity-missing-movie-check")>=0){StartMissingMovieCheck();}   // DBT-5 repro
             else if(Array.IndexOf(args,"--unity-lobby-smoke")>=0){lobbySmoke=true;lobby.AutomatedInput=true;StartCoroutine(LobbySmoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-b05-smoke")>=0){dropSmoke=true;menu=false;Running=false;StartCoroutine(B05Smoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-b07-smoke")>=0){dropSmoke=true;menu=false;Running=false;StartCoroutine(B07Smoke());}
@@ -570,6 +571,8 @@ namespace Exoduser.UnityPort
             }
             File.WriteAllText(Path.Combine(output,"hud-smoke.json"),JsonUtility.ToJson(new HudSmokeReceipt{scope="actual_native_player_controlled_HUD_fixture",activeSkill=hud.ActiveSkill,iconResource="Art/ui/skill_icons/kiSlash",iconDrawn=hud.IconDrawn,cases=cases.ToArray()},true));
             hudSmoke=false;ResetRun();menu=true;Running=false;
+            // DBT-6: this smoke never quit (the receipt was written, then the pause menu stayed up until the caller killed the player). Unattended -batchmode runs end themselves; a windowed manual run is unchanged.
+            if(Application.isBatchMode)Application.Quit(0);
         }
         void SetInventory(bool open){
             if(open&&firstPractice!=null)return;

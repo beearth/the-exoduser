@@ -19,6 +19,12 @@
 - 인증 실패 시 기존 공식 credential helper 또는 승인된 GitHub connector로 정상 부모/expected SHA를 보존한다. 토큰·비밀키 노출·호스트 검증 해제·새 자동화 우회는 하지 않는다.
 - 상세 현황·실행법: docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md. 기존 실행창이 자동으로 최신화됐다고 간주하지 않는다.
 
+### 2026-10-28 사용자 확정 보충 — PC·GitHub·Mac 상시 동기화
+
+- Unity 공통 줄기는 GitHub `unity/main`이고 웹 본편 `main`은 별도다. 매 개발 단위 시작에 fetch하고 실제 소유 checkout·실행 source 경로·원격 SHA·branch/HEAD·tracked INDEX/WORK·미추적 파일을 확인한다.
+- 자기 코드와 관련 docs만 정상 commit한 뒤 최신 공통 원격을 정상 merge하고 비강제 push한다. 반대편 소유자가 fetch·정상 반영한 다음 각 실제 checkout에서 공통 checkpoint의 조상 관계와 필요한 파일의 byte 일치를 확인해야 PC·GitHub·Mac 소스 동기화 완료다. 작업 브랜치 push만으로 완료라 하지 않는다.
+- PC 실제 checkout이 확인되지 않으면 `PC pending`으로 기록한다. 타인 WIP가 있으면 보존하고 담당자와 조율한다. 소스 동기화와 Editor·Player·실행 앱 검증은 구분하며 통과 검사 반복, 자동 서버 재시작·앱 교체, 새 자동화·새 팀 생성은 하지 않는다.
+
 
 ## Claude 모델 기준 — 2026-10-17 사용자 확정
 
