@@ -43,3 +43,11 @@
 - 판정 회신함: 다크드루이드 LOCK v0.1 조건부 PASS(GLOW #9ea83a), ① 시트 PASS(트리퀘트라 인장은 정본 아님 → Unity 디칼로 LOCK 모양, Emission #9ea83a, 지팡이 금빛 테 덮기).
 - 다음: 타이틀 메뉴 배경 움직임(구름·안개·핏빛 강·태양 맥동, 무료 덧그림 층, 인물 마스크 제외) — 구현은 codex exec 브리프. CTO 지시: Claude 주간 94%, 판정·검수·커밋만, 진행 알림 금지.
 - logo-c-apply(local_b5335432) 보관 가능 통보함.
+
+## 2026-10-28 Codex 인수 진행 — 타이틀 배경 모션
+
+- 소스 브랜치 `codex/pc-design-title-motion-20261028` 원격 tip `79c1ad392`(기능 커밋 `fa8dfe37d`): `index.html`에 왼쪽 하늘 구름 3층·절벽 안개 2층·강 반사 9줄·태양 약한 맥동을 `splashCanvas`로 합성. 16초 루프, 최대 30fps, 숨김 화면 정지, 동작 줄이기 시 영상 정지·원화 표시. 유료 생성 0.
+- 5120×1440 실화면에서 기존 cover가 인물 머리·태양을 자르는 문제를 확인해 화면비 >2는 중앙 contain + 정지 원화의 어두운 블러 측면 확장으로 수정. 1600×900·5120×1440 일반 모드 영상 재생/readyState 4·pageerror 0, 1600×900 동작 줄이기 모드 영상 정지/정지 원화·pageerror 0. 직접 본 캡처와 스크립트는 `I:/EXODUSER-Storage/codex-takeover/design/`. 관련 SSOT는 `docs/3.1 ui hud 디자인/스플래시_인트로_시퀀스.md`와 `UI_COMPOSITION_20260925.md`에 동기화.
+- 병합 경계: H5 `index.html` 변경이므로 자기 브랜치까지만 push. `I:/EXODUSER-Storage/codex-takeover/MERGE_QUEUE.md`에 대기열 추가. DEMO·EA 동기화 및 실제 NW.js 실기 확인은 main 반영 이후 진행한다. 이 브랜치의 캡처를 main/배포 검증으로 세지 않는다.
+- RM0-LIGHT-L은 이 인계의 d6d17bab2 대기보다 진도가 나갔다. 맵 총괄 인계는 Neutral/postExposure 1.30 `dc929d682` 맵 판정을 PASS로 기록하며, 공용 MERGE_QUEUE는 아직 실제 RM-1 기준 옆 1x 톤·컴파일·oracle·m1-check·Player 영수증을 통합 게이트로 남긴다. 본 인수에서 중복 판정이나 Unity 병합은 하지 않았다.
+- 다음 디자인 작업: 실버 헬 §6.3 잔여 중 성장 나무 원화의 청동색과 스킬 제단 각인부터 실화면·레퍼런스 공통 원칙으로 조사·시안화. 맵·캐릭터의 새 캡처가 오면 각 SSOT에 묶어 1x 판정. `CLAUDE.md`의 금빛 헤어라인 문구 변경은 기존 사용자 확인 대기 상태를 유지.
