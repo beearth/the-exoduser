@@ -2,12 +2,14 @@
 
 ## Codex 인수 갱신 — 2026-10-28 23:07 KST
 
+**23:09 결과 정정:** 수정본 재실행은 `verify-fix/exoinput/exo-input-verification.json`에서 `passed:false`, `mappedCodes:107`, `checks:109`, `W press frame`로 exit 2다. CS0246은 해소돼 컴파일 오류 0이지만 가상 W 입력 검증은 실패했다. 이 스크립트는 fail-fast로 Core presence·FrontendPad·Win 빌드를 실행하지 않았다. 원본 실패 뒤 1회 재실행 한도에 도달했으므로 추가 실행 없이 C-02a·C-02b 병합과 구현을 보류한다. `W press frame`의 세 부분값은 영수증에 없어 아직 원인 미분리다. 다음 담당은 실행 한도/새 검수 단위를 정식 인수한 뒤 가상 `Keyboard.current`·`wasPressedThisFrame`·`isPressed`·`anyKey` 값을 개별 기록해 원인을 좁힌다.
+
 - 전용 작업 트리 `E:\exoduser-wt\codex-custom`, 브랜치 `codex/pc-custom-c02b-20261028`. C-02a의 기존 두 커밋 `d5da207ad`·`97807cf8c` 위에서 작업한다. 다른 작업 트리와 `G:\exoduser`는 읽기만 했다.
 - C-01은 `claude/unity-pc-c01-asmdef-20261028` @ `6f1637b02` 그대로다. 병합 순번과 GPU m1 스모크 조건은 유지하며, 이 역할이 `unity/main`에 병합하지 않는다.
 - 기존 C-02a 검증 `I:\EXODUSER-Storage\custom\c02\verify\verify.log`는 23:03 `DONE`이지만 네 실행 모두 exit 1이다. 첫 컴파일에서 `ExoInput.cs:175`의 `IMECompositionString` CS0246이 재현됐다. Input System 1.20.1 패키지 선언의 `UnityEngine.InputSystem.LowLevel` using 누락이 원인이다.
-- 수정 한 줄과 보고서 갱신은 `59307eb80`에 커밋했다. 수정본 검증은 `I:\EXODUSER-Storage\custom\c02\verify_c02a_fix.ps1` → `verify-fix/`로 23:06 제출했으며, 실행기 커밋 여유 12GB 기준 대기 중이다. **이 시점에는 수정본 컴파일·가상 장치·빌드 PASS가 없다.**
+- 수정 한 줄과 보고서 갱신은 `59307eb80`에 커밋했다. 수정본 검증은 `I:\EXODUSER-Storage\custom\c02\verify_c02a_fix.ps1` → `verify-fix/`로 23:06 제출해 23:09 exit 2로 끝났다. 컴파일 오류 0·매핑 107개 뒤 `W press frame`에서 실패했으며 Win 빌드·Player PASS는 없다.
 - C-02b 웹 패드 계약은 `docs/engine/UNITY_C02B_GAMEPAD_20261028.md`로 정리해 main `273a609a`까지 반영했다. 웹 원본은 원격 main `game.html` blob `d676c50e`를 기준으로 했다. 가상 패드 RED 검증 코드는 브랜치 `584c3a59d`에 보존했으나 아직 실행하지 않았고 C-02b 제품 코드는 없다.
-- 재개 첫 행동: `verify-fix/verify.log`와 JSON·빌드 영수증을 확인한다. 성공한 검증만 C-02a 결과로 기록한다. 실패하면 한 원인만 조사하고 공통 규칙의 재실행 한도를 지킨다. 그다음 `C02bGamepadVerification.Run`의 RED를 확인하고 C-02b 제품 입력을 구현한다. 병합 전까지 `MERGE_QUEUE.md`에는 검증되지 않은 PASS를 적지 않는다.
+- 재개 첫 행동: 새 검수 단위를 정식 인수해 `W press frame`의 부분값을 분리한다. 현재 재실행 한도에 도달했고 C-02a는 병합 보류다. 해당 게이트가 풀리면 `C02bGamepadVerification.Run`의 RED를 확인하고 C-02b 제품 입력을 구현한다. `MERGE_QUEUE.md`에는 검증되지 않은 PASS를 적지 않는다.
 
 
 - 세션 `local_143f9249` / Opus / 역할: Unity 기능 전부 활용·엔진 커스텀(asmdef·자체 패키지·URP 확장)·기능 사용 표준·패키지 승인. 사용자 지정(10-28).

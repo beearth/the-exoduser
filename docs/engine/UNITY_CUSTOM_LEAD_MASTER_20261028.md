@@ -124,6 +124,8 @@ C-01 결과(10-28, 브랜치 `claude/unity-pc-c01-asmdef-20261028` @ 6f1637b02, 
 
 C-02b의 웹 인덱스→신형 명명 control 표, 연결/해제·UI 차단·LT 조합·가상 장치/실물 패드 검수 경계는 [`UNITY_C02B_GAMEPAD_20261028.md`](UNITY_C02B_GAMEPAD_20261028.md)를 따른다. 10-28 인수 시점에는 **명세만 완료**되었고 C-02a 공용 Unity 검증은 대기 중이다.
 
+Codex 인수 재실행(10-28 23:09): C-02a의 `IMECompositionString` 네임스페이스 누락은 한 줄 수정으로 컴파일 오류 0까지 확인했다. 웹 코드 매핑 107개 뒤 가상 키보드 `W press frame` 결합 단언이 exit 2로 실패했다. Core presence·FrontendPad·Win 빌드·Player는 수정본에서 미실행이다. 첫 실패 뒤 1회 재실행 한도에 도달해 추가 실행을 중단하고 C-02a 병합을 보류한다. 자세한 영수증은 [`UNITY_C02A_INPUT_SYSTEM_20261028.md`](UNITY_C02A_INPUT_SYSTEM_20261028.md)를 따른다. C-02b 제품 코드는 이 게이트 전에는 착수하지 않는다.
+
 C-02a 검증: 컴파일 0 · `ExoInputVerification`(웹 코드 전부 `Key`로 변환됨, 가상 키보드·마우스로 Down은 누른 프레임에만·Held는 누르는 동안·AnyKeyDown·`NativeKeyBindInput.Down("weapon")`=mouse0) · `PortVerification.CheckCorePresence` · `FrontendPadVerification.Run` · Win 빌드 · (플레이어 보류가 풀린 뒤) 1-1 직접 조작 판정.
 실행: 구현 = PC `codex exec`(worktree `E:\exoduser-wt\pc-unity-c02-input`, 브랜치 `claude/unity-pc-c02-input-20261028`, **C-01 브랜치 6f1637b02 기준** — asmdef 참조를 추가해야 하므로). Unity 검증·커밋·push는 커스텀 총괄이 `exo-unity.ps1`로 한다. 병합 순번은 C-01 다음이다.
 
