@@ -1,5 +1,12 @@
 # 유니티 커스텀 총괄 인계 — 2026-10-28 22:05
 
+## Codex 새 진단 단위 — 2026-10-29 KST
+
+- 소유: `Runtime/Input/ExoInput.cs`, `Editor/ExoInputVerification.cs`, C-02 관련 `docs/engine`와 이 인계. 실행기 `exo-unity.ps1`은 기존 Owner 소유로 수정하지 않았다.
+- `I:\EXODUSER-Storage\custom\c02\diagnostic-20261029\exo-input-verification.json`: 가상 키보드가 현재 장치, W `isPressed=true`·`wasPressedThisFrame=false`, 합성 `anyKey.isPressed=true`·`wasPressedThisFrame=false`, 파사드 W Down=false/held=true/AnyDown=false. 107개 매핑 뒤 같은 단언 exit 2.
+- 버튼 사전 등록과 `AnyKeyDown` 개별 키 조회 후보를 적용한 `fix-20261029`도 컴파일 오류 0·동일 W 누름 실패(exit 2). 이번 새 단위의 진단 1회/수정본 1회가 모두 실패해 실행 중단. Core presence·FrontendPad·Win 빌드·Player는 미실행. C-02b RED와 제품 코드는 여전히 미실행/미구현이며 병합 큐에 넣지 않는다.
+- 다음 인수는 Editor 수동 update의 `device.wasUpdatedThisFrame`, update type, 이전 프레임 버퍼를 분리하는 **새 원인 분석 단위**가 필요하다. 현 후보를 PASS로 간주하지 않는다. 자세한 근거는 `docs/engine/UNITY_C02A_INPUT_SYSTEM_20261028.md`와 기존 `I:\EXODUSER-Storage\codex-takeover\custom\REPORT.md`에 기록했다.
+
 ## Codex 인수 갱신 — 2026-10-28 23:07 KST
 
 **23:09 결과 정정:** 수정본 재실행은 `verify-fix/exoinput/exo-input-verification.json`에서 `passed:false`, `mappedCodes:107`, `checks:109`, `W press frame`로 exit 2다. CS0246은 해소돼 컴파일 오류 0이지만 가상 W 입력 검증은 실패했다. 이 스크립트는 fail-fast로 Core presence·FrontendPad·Win 빌드를 실행하지 않았다. 원본 실패 뒤 1회 재실행 한도에 도달했으므로 추가 실행 없이 C-02a·C-02b 병합과 구현을 보류한다. `W press frame`의 세 부분값은 영수증에 없어 아직 원인 미분리다. 다음 담당은 실행 한도/새 검수 단위를 정식 인수한 뒤 가상 `Keyboard.current`·`wasPressedThisFrame`·`isPressed`·`anyKey` 값을 개별 기록해 원인을 좁힌다.
