@@ -20,6 +20,6 @@
 |---|---|---|
 | `unity/Tools/devtools/selftest/exo-codex-tests.ps1` | 종료 0, 구문·입력 거부·숨김 CLI 버전 조회·DryRun·잠금·동시 상한·백그라운드 DryRun 통과 | 실행기 자체 검사. 실제 Codex 작업·타임아웃·Unity 실행 미검증 |
 | `I:\EXODUSER-Storage\codex-runs\20261028-220413_selftest-e2e\meta.json` | **종료 코드 1**. `result.md`와 시험 파일 생성만 확인 | CLI 로그에 PowerShell 시작 거부·명령 오류가 있어 종단 시험 성공으로 판정하지 않음 |
-| `codex/pc-devtools-tools-20261028` `465bb875e` | Unity 도구·README를 별도 브랜치에 커밋·원격 push | `unity/main` 미병합, 실제 Codex 작업 안정성 미확인 |
+| `codex/pc-devtools-tools-20261028` `33ef33763` | Unity 도구·README를 별도 브랜치에 커밋·원격 push(`465bb875e` 최초 인수, 뒤이어 정리 도구 보정 2건) | `unity/main` 미병합, 실제 Codex 작업 안정성 미확인 |
 
 원본 미커밋 작업은 `E:\exoduser-wt\pc-unity-devtools-codex`에 보존했다. 인수 브랜치의 출처가 원본 워크트리임을 커밋 본문에 기록했다.
