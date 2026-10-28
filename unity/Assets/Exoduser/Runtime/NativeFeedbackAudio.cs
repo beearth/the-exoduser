@@ -142,12 +142,18 @@ namespace Exoduser.UnityPort
             lastHeavyTick=e.Tick;
             var r=Make("druid_hit_heavy",.6f,Jitter(1,.05f),World(e),e);r.note="file ok (adopted "+AdoptedSource("druid_hit_heavy")+")";Queue(r);
         }
-        // SND-09 round 2 druid_whip: the third swing of move #1 (slashCombo hit 3). The Core's hit-3 telegraph event is the cue; the whip sounds when the swing lands (telegraph + link tele + swing check)
-        void WhipOnThirdSwing(FeedbackEvent e)
+        // SND-09 round 2 druid_whip: every swing of move #1 (slashCombo hits 1-3). The Core's telegraph event of each hit is the cue; the whip sounds when the swing lands.
+        // Hits 2 and 3: telegraph + link tele (24) + swing check (2) = exact. Hit 1: the first telegraph length is the move data (32) + 2; the Core does not pass the phase-scaled length, so hit 1 is an estimate.
+        // Same file for the three: the rate climbs 0.97 / 1.00 / 1.06 (+-3 %) so the combo rises.
+        void WhipOnSwing(FeedbackEvent e)
         {
-            if(e.Source==null||!e.Source.EndsWith("slashCombo hit 3 telegraph",StringComparison.Ordinal)||!HasClip("druid_whip"))return;
-            int after=DruidRemodelData.SlashLinkTele+(DruidRemodelData.SlashActive-DruidRemodelData.SlashHitAt);
-            var r=Make("druid_whip",.55f,Jitter(1,.05f),World(e),e);r.logical="druid_whip";r.group="Skill";r.priority=PriSkill;r.delay=after/60f;r.tick=e.Tick+after;r.source="#1 slashCombo hit 3 swing (telegraph +"+after+" f)";r.note="file ok (adopted "+AdoptedSource("druid_whip")+")";
+            if(e.Source==null||!HasClip("druid_whip"))return;
+            int hit,after;float centre;
+            if(e.Source=="#1 slashCombo telegraph"){hit=1;centre=.97f;after=Array.Find(DruidRemodelData.Moves,m=>m.Id=="slashCombo").Tele+(DruidRemodelData.SlashActive-DruidRemodelData.SlashHitAt);}
+            else if(e.Source.EndsWith("slashCombo hit 2 telegraph",StringComparison.Ordinal)){hit=2;centre=1f;after=DruidRemodelData.SlashLinkTele+(DruidRemodelData.SlashActive-DruidRemodelData.SlashHitAt);}
+            else if(e.Source.EndsWith("slashCombo hit 3 telegraph",StringComparison.Ordinal)){hit=3;centre=1.06f;after=DruidRemodelData.SlashLinkTele+(DruidRemodelData.SlashActive-DruidRemodelData.SlashHitAt);}
+            else return;
+            var r=Make("druid_whip",.55f,Jitter(centre,.03f),World(e),e);r.logical="druid_whip";r.group="Skill";r.priority=PriSkill;r.delay=after/60f;r.tick=e.Tick+after;r.source="#1 slashCombo hit "+hit+" swing (telegraph +"+after+" f)";r.note="file ok (adopted "+AdoptedSource("druid_whip")+")";
             Receipt.requested++;direct.Add(r);
         }
         // _hitSfxForEtype: Core names the category (EnemySoundTables.Hit) and the base pitch; the variant is drawn here, never in the Core
@@ -204,7 +210,7 @@ namespace Exoduser.UnityPort
             string[] files;if(!LogicalFiles.TryGetValue(e.SampleKey,out files))files=new[]{e.SampleKey};
             float volume;if(e.Volume>0)volume=e.Volume;else if(!StartVolume.TryGetValue(e.SampleKey,out volume))volume=.5f;
             string adopted=AdoptedSource(e.SampleKey);string note=files.Length==0?"no file yet (3rd-round pending, left empty)":(files[0]!=e.SampleKey?"temporary file "+string.Join("+",files):"file ok"+(adopted!=null?" (adopted "+adopted+")":""));
-            WhipOnThirdSwing(e);
+            WhipOnSwing(e);
             var pos=World(e);bool tell=e.SampleKey.StartsWith("tell_",StringComparison.Ordinal);bool druid=e.SampleKey.StartsWith("druid_",StringComparison.Ordinal);
             if(tell){
                 int last;if(lastTellTick.TryGetValue(e.SampleKey,out last)&&e.Tick-last<8){Receipt.dropped++;Lines.Add(Line(e.Tick,e.SampleKey,e.Source,"Tell",volume,"DROPPED same key within 120 ms"));return;}

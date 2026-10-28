@@ -170,7 +170,7 @@ BGM 되감김이 사라져 음악이 제대로 깔려서 이 표의 그룹 RMS�
 |---|---|---|---|---|
 | `druid_hit` | `druid_hit.mp3` | `_preview_druid2/druid_hit_v3d_proc.mp3` | 보스 피격(`BossHit`)에서 `boss_hit` 대신. 변형 1개(a~c 사용 안 함), rate ±6 %(중심 1.0), 연타 감쇠(0.6초 안 ×0.85, 바닥 ×0.55), 8틱 쿨다운 그대로 | Core 전달값 .3 |
 | `druid_hit_heavy` | `druid_hit_heavy.mp3` | `_preview_druid2/druid_hit_heavy_v3d_proc.mp3` | 보스에 대한 치명타(`EnemyCrit`)에서 `crit_heavy` 대신, 쿨다운 30틱, rate ±5 %. 휘청임(poise) 알림은 Core에 없어 연결하지 않음 | .6 |
-| `druid_whip` | `druid_whip.mp3` | `_preview_druid2/druid_whip_v3a_proc.mp3` | 기술 1(slashCombo) 3타: Core의 `#1 slashCombo hit 3 telegraph` 알림을 신호로, 타격 시점(텔레그래프 + SlashLinkTele 24 + 스윙 확인 2 = 26틱 뒤)에 재생. rate ±5 %, Skill 그룹 | .55 |
+| `druid_whip` | `druid_whip.mp3` | `_preview_druid2/druid_whip_v3a_proc.mp3` | 기술 1(slashCombo) 1·2·3타 모두(사운드 총괄 정정): Core의 각 타 텔레그래프 알림(`#1 slashCombo telegraph`, `… hit 2 telegraph`, `… hit 3 telegraph`)을 신호로, 타격 시점에 재생. 2·3타는 텔레그래프 + SlashLinkTele 24 + 스윙 확인 2 = 26틱 뒤(정확), 1타는 기술 데이터 텔레그래프 32 + 2 = 34틱 뒤(Core가 위상 보정 길이를 알리지 않아 추정). 같은 파일, rate 1타 .97 · 2타 1.00 · 3타 1.06 (±3 %), Skill 그룹 | .55 |
 
 - `druid_slam`·`druid_spore`는 3차 제작 중이라 소리를 그대로 둔다. 키별 음량은 임시값이고 실제 플레이 판정 때 조정한다.
 - 변경은 어댑터(`NativeFeedbackAudio`)와 `RM1_AUDIO_KEYS.json`·mp3뿐이고 Core는 바뀌지 않았다.
