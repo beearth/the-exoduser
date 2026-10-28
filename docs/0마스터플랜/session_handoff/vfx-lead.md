@@ -38,3 +38,7 @@
 1. get_usage(self). vfx-simple 보고·RM-INT 회신·유니티 총괄 순번 알림이 와 있으면 처리.
 2. RM-INT 좌표 함수 이름 → vfx-simple 전달.
 3. vfx-simple의 Unity 없는 단계 보고 → 검토 → 순번 요청.
+
+## 추가 (10:3x, 비우기 직전)
+- **RM-INT 좌표 API 확정**: 브랜치 `claude/unity-pc-rm-int-20261028` `6f2497a01`, `Runtime/NativeRemodel3D.cs`(Exoduser.UnityPort). `RemodelWorld.ToWorld(x,y)`(x=px/100, z=−py/100, y=지형 높이)·`ToWorld(x,y,height)`·`GroundHeight`·`GroundNormal`·`ToCore`·`Active`. 3D 카메라 = `NativeGame.Remodel3DCamera`(Camera.main은 2D 논리 카메라와 태그 겹침). 순서 합의: RemodelWorld가 RM-INT 1단계 병합으로 unity/main에 먼저 → VFX가 unity/main 합쳐 VfxWorld를 RemodelWorld로 바꾼 뒤 병합 요청 → RM-INT가 연결 줄(1~5). VFX 브랜치에 RM-INT 브랜치 merge 금지. VFX 클래스가 unity/main에 들어가면 RM-INT(`local_b01f8fea-01cc-4c3d-b238-14752c64cb47`)에 알린다.
+- **vfx-simple 상태**: 컨텍스트 283K로 새 작업 미착수. 인계 `session_handoff/vfx-simple.md` 로컬 커밋 `2e5620685`(sparse worktree `G:/exoduser-wt/_vfxhandoff`) — 좌표 API 문단을 새 커밋으로 덧붙여 push하라고 지시함(전달 대기). **재개 후 확인**: origin/main에 vfx-simple.md 갱신이 올라왔는지 → 올라왔으면 vfx-simple을 비우게(방식 A: 그 세션이 스스로 `clear_session` self) 하고 재개 지시(통합 브랜치·기검참·VfxCheck, 인계 문서 기준). 안 올라왔으면 push부터 다시 지시.
