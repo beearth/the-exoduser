@@ -322,10 +322,10 @@ namespace Exoduser.UnityPort
             bool regionKillsReached = sim.Regions != null;
             if (sim.Regions != null) for (int regionId = 0; regionId < sim.Regions.Length; regionId++)
             {
-                var region = sim.Regions[regionId]; int required = (int)Math.Ceiling(region.Total * Simulation.RegionClearRatio - 1e-9); int attempts = 0;
-                while (region.Kills < required && attempts++ < required * 40)
+                var region = sim.Regions[regionId]; int required = (int)Math.Ceiling(region.Total * Simulation.RegionClearRatio - 1e-9); int gateAttempts = 0;
+                while (region.Kills < required && gateAttempts++ < required * 40)
                 {
-                    float x = spots[regionId][0] + (attempts % 8) * 37, y = spots[regionId][1] + (attempts / 8 % 5) * 37;
+                    float x = spots[regionId][0] + (gateAttempts % 8) * 37, y = spots[regionId][1] + (gateAttempts / 8 % 5) * 37;
                     var enemy = sim.SpawnEnemy(x, y, 0, null, false);
                     if (enemy == null) continue;
                     if (sim.RegionIdxAt(enemy.HomeX, enemy.HomeY) != regionId) { enemy.Alive = false; sim.Enemies.Remove(enemy); continue; }
