@@ -490,9 +490,53 @@ function Result-ExitCode($r) {
     return 1
 }
 
+# ------------------------------------------------------------------ 빌드 전 필수 영상 (DT-15 buildloop 의 requiredMedia 와 같은 규칙)
+# PortVerification.Build 를 돌리기 전에 restore-lobby-media.cjs / restore-warrior-story.cjs 를 자동 실행하고,
+# StreamingAssets\Lobby 필수 영상(각 1MB 이상)이 하나라도 없으면 Unity 를 띄우지 않고 실패(종료 코드 6)한다.
+function Get-RequiredMedia([string]$wt) {
+    $rulesPath = Join-Path $wt 'unity\Tools\devtools\buildloop\smoke-rules.json'
+    if (Test-Path -LiteralPath $rulesPath) {
+        try {
+            $r = [IO.File]::ReadAllText($rulesPath) | ConvertFrom-Json
+            if ($r.requiredMedia) { return @($r.requiredMedia | ForEach-Object { [pscustomobject]@{ path = [string]$_.path; minBytes = [long]$_.minBytes } }) }
+        } catch { }
+    }
+    $names = 'cs_idle_silvertail_4k', 'cs_idle_warrior_cs3_4k', 'fdg_intro', 'intro', 'lobby_varkan_crypt_loop_v2_unity', 'title_motion_20260929', 'title_motion_hd_20260929', 'warrior_story_v23_clean', 'world_intro_v22b_steam'
+    return @($names | ForEach-Object { [pscustomobject]@{ path = ('Assets/StreamingAssets/Lobby/' + $_ + '.mp4'); minBytes = 1000000 } })
+}
+
+function Ensure-LobbyMedia([string]$wt) {
+    $proj = Join-Path $wt 'unity'
+    $node = Resolve-NodeExe
+    $failed = @()
+    foreach ($s in 'restore-lobby-media.cjs', 'restore-warrior-story.cjs') {
+        $sp = Join-Path $proj ('Tools\' + $s)
+        if (-not (Test-Path -LiteralPath $sp)) { continue }
+        & $node $sp --project $proj | Out-Null
+        if ($LASTEXITCODE -ne 0) { $failed += ($s + '(exit ' + $LASTEXITCODE + ')') }
+        Say ($s + ' 종료코드 ' + $LASTEXITCODE)
+    }
+    $missing = @()
+    foreach ($m in (Get-RequiredMedia $wt)) {
+        $f = Join-Path $proj ($m.path -replace '/', '\')
+        if (-not (Test-Path -LiteralPath $f)) { $missing += ([IO.Path]::GetFileName($m.path) + ' (없음)'); continue }
+        $len = (Get-Item -LiteralPath $f).Length
+        if ($len -lt $m.minBytes) { $missing += ([IO.Path]::GetFileName($m.path) + " ($len 바이트 < $($m.minBytes))") }
+    }
+    if ($missing.Count -gt 0 -or $failed.Count -gt 0) {
+        $why = '필수 영상 누락: ' + ($missing -join ', ')
+        if ($failed.Count -gt 0) { $why += ' / 복원 스크립트 실패: ' + ($failed -join ', ') }
+        Say $why
+        Write-Output ('[result] ok=False exit=6 note: ' + $why)
+        exit 6
+    }
+    Say '필수 영상 확인 완료'
+}
+
 function Cmd-Run {
     if ([string]::IsNullOrWhiteSpace($Method)) { throw '-Method 가 필요합니다.' }
     $wt = Norm-Worktree $Worktree
+    if ($Method -eq 'PortVerification.Build') { Ensure-LobbyMedia $wt }
     $qd = Get-QueueDir $wt
     $argList = Resolve-JobArgs
     $id = [Guid]::NewGuid().ToString('N').Substring(0, 8)
@@ -948,6 +992,7 @@ Test-HaltGate
 switch ($Command.ToLower()) {
     'start'     { Cmd-Start }
     'run'       { Cmd-Run }
+    'build'     { if (-not $Method) { $Method = 'PortVerification.Build' }; if (-not ($JobArgs -contains '-buildTarget')) { $JobArgs = @('-buildTarget', 'Win64') + @($JobArgs) }; Cmd-Run }
     'status'    { Cmd-Status }
     'stop'      { Cmd-Stop }
     'reap'      { Cmd-Reap }
@@ -957,5 +1002,5 @@ switch ($Command.ToLower()) {
     'player'    { Cmd-Player }
     'browser'   { Cmd-Browser }
     'nw'        { Cmd-Nw }
-    default     { throw "알 수 없는 명령: $Command (start|run|status|stop|reap|reserve|unreserve|queue|player|browser|nw)" }
+    default     { throw "알 수 없는 명령: $Command (start|run|build|status|stop|reap|reserve|unreserve|queue|player|browser|nw)" }
 }
