@@ -43,6 +43,8 @@
 3. `exo-unity.ps1`로 Editor 가상 장치 검사, Core presence, FrontendPadVerification, 컴파일 오류 0, Windows 빌드와 격리 1-1 Player 스모크를 확인한다. 가상 장치 PASS는 실물 컨트롤러의 기종별 매핑이나 1-1 직접 조작 PASS로 쓰지 않는다.
 4. 1600×900 화면에서 패드 힌트·UI 포커스·전투 커서를 웹과 비교한다. A 무기, 좌스틱 이동, B+방향 구르기, 장치 해제, 포커스 이탈, 키보드 복귀를 실물 패드에서 확인해야 C-02b 최종 판정이다.
 
+검증 준비: `Editor/C02bGamepadVerification.cs`는 가상 Gamepad의 A 공격·좌스틱 이동·B+방향 구르기·UI 전투 차단·장치 제거 해제를 영수증으로 확인한다. 현재 제품에는 `NativeKeyBindInput.GameplayPadEnabled` 게이트가 없으므로 첫 RED는 `gameplay pad gate missing`이어야 한다. **아직 실행하지 않았고 제품 코드는 C-02b에 대해 변경하지 않았다.**
+
 ## 4. 현재 보류
 
 - C-02a Editor/빌드 검증은 공용 Unity 실행 대기 중이며 C-02b 코드 착수 전 기준 영수증을 확인한다.
