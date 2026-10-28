@@ -38,3 +38,12 @@ origin/main 기준 sparse worktree(`MSYS_NO_PATHCONV=1`, 자기 경로 + `/tools
 1. 이 문서와 MEMORY.md 읽기 → 3399 서버 응답 확인(꺼져 있으면 띄움) → `_submitted/` 감시 다시 걸기
 2. `_submitted/`에 남은 파일이 있으면 결과를 CTO에 보고하고 반영
 3. sound 브랜치 빌드 담당·결과 확인 → ⑥ 판정 준비
+
+## 2026-10-28 22:33 KST Codex 인수 갱신
+
+- 기준: `origin/main`의 이전 인계와 `sound-simple.md`를 읽고, 공용 Unity/웹 소스를 분리해 전용 워크트리 `E:/exoduser-wt/codex-sound`에서 작업했다. 메인 사용자 체크아웃과 RM-0의 미커밋 441개는 건드리지 않았다.
+- Unity 전용 브랜치 `codex/pc-sound-takeover-20261028`: `acf2fb948` 위에 빠진 RM-1 오디오 `.meta` 5개를 `35347e5ad`로 추가했다. 이어 `picks_rm1.json`의 사용자 3차 선택 `druid_burrow` s3d를 실제 MP3·`.meta`·키 목록·어댑터·문서에 `9a9067b295a050580cdb0d0321e137f2a16ceab9`로 연결했다. 두 커밋 모두 브랜치 push 완료. `unity/main` 병합은 통합 담당 몫이며 아직 하지 않았다.
+- 첫 일인 `I:/EXODUSER-Storage/sound-build/20261028_acf2fb948/`는 `run.log`에 필수 미디어 복원 성공과 공용 Unity 선행 티켓 대기만 있다. `receipt.json`·빌드 출력은 없다. 22:33 KST `exo-unity.ps1 status`: 잠금 없음·Unity 프로세스 0·커밋 여유 27.7GB, 예약 선두 `custom-c02` 만료 **10-29 01:03 KST**. 선행 FIFO 티켓과 예약 소유자가 달라 실행 순번이 멈춰 있다. 타 담당 예약·티켓을 제거하지 않았다. 컴파일·oracle·m1-check·Player 검증은 전부 미확인이다. `MERGE_QUEUE.md`에 병합 금지와 최신 SHA를 추가했다.
+- `pick_r4.html`은 3399에서 200, 4후보와 장면 오디오도 HTTP 200. 22:33 KST `/api/picks?set=r4`는 `{}`이므로 사용자 청음 선택 전이다. Unity의 `druid_slam` e2는 기존 선반영 후보일 뿐 최종 채택이 아니다. `USER_CONFIRM.md`에 청음 게이트를 기록했다. `picks_rm1.json`에서 `tell_parry`·`roll_body`·`druid_staff_tap`·`druid_root_pierce`는 여전히 `none`이다.
+- main 문서만 비강제 push: `_startLoop` 중복 정적 실사 `6b7c73120`(오디오 헬퍼 호출 0, 지금은 재생 결함 근거 없음), 1-1 SND-04 오디오 디렉터 계약 초안 `d2d1431fe`, 2~7장 SND-06 BGM 10슬롯 계획 `3622a222b`. 두 계획은 설계 완료이며 전 장 구현·유료 생성·사용자 청음은 미완이다.
+- 다음 행동: 공용 Unity 큐가 정상 해소되면 **최신 `9a9067b29` 기준**으로 허용된 `exo-unity.ps1`의 빌드·oracle·m1-check 영수증을 받고, 실패 원인 수정 후 1회만 재실행한다. 통합 담당이 병합한 다음 통합 빌드·GPU/Player 실제 청음·unity-latest 여부를 별도 확인한다. 사용자가 `pick_r4`를 제출하면 선택 파일을 확인해 드루이드 slam만 별도 교체한다. 웹 UI 분해·장착 실패·탭 일부 실제 클릭과 게임 안 청음, AD2 3단계, pageerror 재현 대조는 별도 미완이다.
