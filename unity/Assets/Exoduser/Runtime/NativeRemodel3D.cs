@@ -34,4 +34,34 @@ namespace Exoduser.UnityPort
             return Ground.SampleHeight(new Vector3(cx, 0, cz)) + tp.y;
         }
     }
+
+    /// <summary>
+    /// Public world mapping for presentation code that lives on the remodel 3D layer (VFX, boss views). One definition: the same numbers the actor views use (Rm1SliceBuilder.W()).
+    /// Independent of the switch: it always answers in the 3D convention (x = px / 100, z = -py / 100, y = terrain height; 0 without a loaded terrain). Use <see cref="Active"/> to know whether the 3D layer is on.
+    /// </summary>
+    public static class RemodelWorld
+    {
+        public static bool Active { get { return NativeRemodel3D.Active; } }
+
+        /// <summary>Core point (px, py) -> world position on the ground.</summary>
+        public static Vector3 ToWorld(float x, float y) { return ToWorld(x, y, 0f); }
+        /// <summary>Core point -> world position, `height` units above the ground (the Core z stays 0; this is presentation height only).</summary>
+        public static Vector3 ToWorld(float x, float y, float height)
+        {
+            float wx = x / 100f, wz = -y / 100f;
+            return new Vector3(wx, NativeRemodel3D.GroundY(wx, wz) + height, wz);
+        }
+        /// <summary>Ground height (world y) under a Core point; the terrain window clamps the query.</summary>
+        public static float GroundHeight(float x, float y) { return NativeRemodel3D.GroundY(x / 100f, -y / 100f); }
+        /// <summary>Ground normal under a Core point (up without a terrain).</summary>
+        public static Vector3 GroundNormal(float x, float y)
+        {
+            var g = NativeRemodel3D.Ground; if (g == null) return Vector3.up;
+            var tp = g.transform.position; var sz = g.terrainData.size;
+            float wx = Mathf.Clamp(x / 100f, tp.x, tp.x + sz.x), wz = Mathf.Clamp(-y / 100f, tp.z, tp.z + sz.z);
+            return g.terrainData.GetInterpolatedNormal((wx - tp.x) / sz.x, (wz - tp.z) / sz.z);
+        }
+        /// <summary>World position -> Core point (inverse of ToWorld on the x / z plane).</summary>
+        public static Vector2 ToCore(Vector3 world) { return new Vector2(world.x * 100f, -world.z * 100f); }
+    }
 }
