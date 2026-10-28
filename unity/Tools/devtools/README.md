@@ -33,7 +33,7 @@ $codex = Join-Path $wt 'unity\Tools\devtools\exo-codex.ps1'
 
 ## 워크트리 정리(exo-worktree-clean.ps1)
 
-`scan`은 Git에 등록된 워크트리와 E:/G:의 작업 폴더를 대조해 JSON·Markdown 보고서를 만든다. Git 미등록 폴더와 링크인 루트는 `keep`으로 기록하고 내부를 순회하지 않는다(크기 미측정). 후보는 **① Git 변경·미추적·재생성 불가 무시 파일 없음, ② HEAD와 로컬 브랜치의 모든 커밋이 원격에 보존됨, ③ 지정 시간 동안 파일 변경 없음, ④ 프로세스·Unity/Codex 잠금·예약에서 사용 중이지 않음, ⑤ 보호 목록·활성 세션·사용자 체크아웃이 아님**을 모두 만족해야 한다. 하나라도 어긋나거나 검사가 실패하면 `keep`이다. 캐시는 Unity Library/Temp/Logs/obj/UserSettings, node_modules, 빌드 출력, `.vs`, 생성된 csproj/sln으로 한정한다.
+`scan`은 Git에 등록된 워크트리와 E:/G:의 작업 폴더를 대조해 JSON·Markdown 보고서를 만든다. Git 미등록 폴더와 링크인 루트는 `keep`으로 기록하고 내부를 순회하지 않는다(크기 미측정). 접근 불가한 사용자 전역 ignore 파일 때문에 조회가 실패하지 않도록 Git 호출에서 그 ignore 파일만 비활성화한다. 그 결과 새로 드러난 미추적 파일은 보수적으로 `keep`으로 판정한다. 후보는 **① Git 변경·미추적·재생성 불가 무시 파일 없음, ② HEAD와 로컬 브랜치의 모든 커밋이 원격에 보존됨, ③ 지정 시간 동안 파일 변경 없음, ④ 프로세스·Unity/Codex 잠금·예약에서 사용 중이지 않음, ⑤ 보호 목록·활성 세션·사용자 체크아웃이 아님**을 모두 만족해야 한다. 하나라도 어긋나거나 검사가 실패하면 `keep`이다. 캐시는 Unity Library/Temp/Logs/obj/UserSettings, node_modules, 빌드 출력, `.vs`, 생성된 csproj/sln으로 한정한다.
 
 링크(junction·symlink)는 대상과 함께 보고한다. 사람이 `apply`할 때는 후보를 다시 검사한 다음 **링크 자체만 먼저 제거 → 링크 0개 재확인 → force 없는 `git worktree remove`** 순서로 처리한다. 실패한 항목은 건너뛰고 로그에 남긴다. 공통 규칙에 따라 `git worktree prune`은 실행하지 않는다. `apply`는 자동 세션에서 실행하지 않는다.
 

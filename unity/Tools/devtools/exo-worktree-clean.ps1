@@ -35,7 +35,9 @@ function ReadJson([string]$Path) {
     return ([IO.File]::ReadAllText($Path) | ConvertFrom-Json)
 }
 function Git([string]$At, [string[]]$Arguments) {
-    $lines = @(& git.exe -c ('safe.directory=' + $At) -c 'core.quotePath=false' -C $At @Arguments 2>$null)
+    # 접근 불가한 사용자 전역 excludes로 Git이 실패할 수 있다. 비활성화하면 그 파일은 미추적으로 잡혀 keep된다.
+    $ErrorActionPreference = 'Continue'
+    $lines = @(& git.exe -c ('safe.directory=' + $At) -c 'core.quotePath=false' -c 'core.excludesFile=' -C $At @Arguments 2>$null)
     return [pscustomobject]@{ code = $LASTEXITCODE; text = (($lines | Out-String).TrimEnd()); lines = $lines }
 }
 function GitOk([string]$At, [string[]]$Arguments) {
@@ -246,6 +248,7 @@ function Assess([string]$Path, $Context) {
             }
         } catch { $reasons.Add('Git 검사 실패: ' + $_.Exception.Message) }
     }
+    if ($Context.busy.processUnknown) { $reasons.Add('프로세스 조회 실패') }
     if (IsBusy $Path $Context.busy) { $reasons.Add('프로세스 또는 작업 잠금 사용 중') }
     $facts = $null
     if ($registered -and -not $rootIsLink) {
@@ -297,7 +300,8 @@ function Scan {
     $report = [ordered]@{
         schema = 1; createdAt = [DateTime]::UtcNow.ToString('o'); confirmCode = (Get-Random -Minimum 100000 -Maximum 1000000).ToString()
         repoRoot = $context.repo; roots = $context.roots; idleHours = $IdleHours; keepFile = $KeepFile; activeJson = $ActiveJson
-        notes = @($context.protected.notes) + @('원격 ref는 로컬 보유값이며 scan은 fetch하지 않았습니다.')
+        notes = @($context.protected.notes) + @('원격 ref는 로컬 보유값이며 scan은 fetch하지 않았습니다.') +
+            $(if ($context.busy.processUnknown) { @('Win32_Process 조회 실패: 후보 판정 보류') } else { @() })
         summary = [ordered]@{ candidates = $candidates.Count; reclaimBytes = $reclaim; keep = ($rows.Count - $candidates.Count)
             reasons = $reasons; links = $linkCount; freeEGB = (DriveFree 'E'); freeGGB = (DriveFree 'G') }
         worktrees = $rows.ToArray()
