@@ -18,7 +18,7 @@ namespace Exoduser.UnityPort
    foreach(string arg in args)if(arg.StartsWith("--unity-",StringComparison.Ordinal)&&arg.EndsWith("-smoke",StringComparison.Ordinal))fixture=true;
    if(fixture&&Array.IndexOf(args,"--unity-character-store-smoke")<0)return;
    if(fixture||review){int at=Array.IndexOf(args,"-output");if(at<0||at+1>=args.Length||string.IsNullOrWhiteSpace(args[at+1])||args[at+1].StartsWith("-",StringComparison.Ordinal)){characterWritesAllowed=false;characterStoreProblem=true;CharacterStoreState=CharacterStoreStatus.IoError;return;}CharacterStoreDirectory=Path.Combine(Path.GetFullPath(args[at+1]),"character-roster-v1");}
-   else CharacterStoreDirectory=Path.Combine(Application.persistentDataPath,"character-roster-v1");
+   else CharacterStoreDirectory=Path.Combine(NativeQaSandbox.Resolve(Application.persistentDataPath),"character-roster-v1");
    characterStore=new CharacterRosterStore(CharacterStoreDirectory,value=>JsonUtility.ToJson(value,true),json=>JsonUtility.FromJson<CharacterRosterSnapshot>(json));
    bool loaded=characterStore.TryLoad(out var snapshot,out var status);CharacterStoreState=status;
    if(!loaded||snapshot==null||!Characters.TryRestore(snapshot.names,snapshot.selectedIndex)){characterWritesAllowed=false;characterStoreProblem=true;return;}

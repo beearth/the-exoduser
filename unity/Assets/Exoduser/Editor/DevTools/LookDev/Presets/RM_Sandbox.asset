@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6852c2b443ff42ebfe7c287a240aea2, type: 3}
+  m_Name: RM_Sandbox
+  m_EditorClassIdentifier: Assembly-CSharp-Editor::Exoduser.DevTools.LookDev.LookDevShot
+  shotName: RM_Sandbox
+  scenePath: Assets/Exoduser/Scenes/RM_Sandbox.unity
+  resolution: {x: 1600, y: 900}
+  msaa: 1
+  warmupRenders: 0
+  cameraMode: 1
+  cameraGround: 1
+  nearClip: 0.3
+  farClip: 100
+  targetObject: 
+  targetPoint: 
+  points: []
+  targetPos: {x: 0, y: 0, z: 0}
+  capsule: 0
+  capsuleGround: 0
+  pitchRad: 0.85
+  distanceU: 14
+  viewDistancePx: 1400
+  orthoCenterXZ: {x: 0, y: 0}
+  orthoHeight: 11
+  orthoSize: 5.4
+  position: {x: 0, y: 10, z: -10}
+  euler: {x: 45, y: 0, z: 0}
+  explicitOrthographic: 0
+  explicitFov: 35.65
+  explicitOrthoSize: 5.4
+  orbitDistance: 6
+  orbitPitchDeg: 15
+  orbitFov: 30
+  orbitTargetHeight: 0.9
+  orbitYawsDeg:
+  - 0
+  - 90
+  - 180
+  patches:
+  - name: right_bottom
+    fx: 0.7
+    fy: 0.72
+    w: 120
+    h: 90
+  - name: left_top
+    fx: 0.12
+    fy: 0.1
+    w: 120
+    h: 90
+  - name: right_top
+    fx: 0.72
+    fy: 0.12
+    w: 120
+    h: 90
+  darkMedianThreshold: 12
+  baselines:
+  - metric: screen_median
+    value: 25.8
+    tolerance: 1
+    note: "RM0-LIGHT-L \uD45C postExposure 1.85: \uD654\uBA74 \uC911\uC559\uAC12 25.8"
+  - metric: sandbox_floor_luma_median
+    value: 23.8
+    tolerance: 1
+    note: "RM0-LIGHT-L \uD45C: \uC0CC\uB4DC\uBC15\uC2A4 \uBC14\uB2E5 23.8"
+  - metric: 'sandbox_floor_RG[0]'
+    value: 1.6
+    tolerance: 0.1
+    note: "right_bottom \uBC14\uB2E5 R/G"
+  - metric: 'sandbox_floor_RG[1]'
+    value: 1.6
+    tolerance: 0.1
+    note: "left_top \uBC14\uB2E5 R/G"
+  - metric: 'sandbox_floor_RG[2]'
+    value: 1.57
+    tolerance: 0.1
+    note: "right_top \uBC14\uB2E5 R/G"
+  referenceImage: E:/exoduser-wt/_out/rm0-light/sandbox_B.png
+  cropA:
+    x: 480
+    y: 420
+    w: 480
+    h: 270
+  cropB:
+    x: 950
+    y: 250
+    w: 480
+    h: 270
+  expectColorSpace: Linear
+  expectCameraPostProcessing: 1
+  expectRendererPostProcessData: 1
+  checkPostExposure: 1
+  expectPostExposure: 1.85
+  expectTonemapping: ACES
