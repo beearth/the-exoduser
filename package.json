@@ -1,7 +1,7 @@
 {
   "name": "hell-exoduser-release",
   "private": true,
-  "version": "0.7.8",
+  "version": "0.7.9",
   "type": "module",
   "main": "nw-boot.html",
   "node-main": "node-main.js",
