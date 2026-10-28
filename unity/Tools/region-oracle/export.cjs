@@ -1,6 +1,6 @@
 // M1-REGION R-A oracle exporter: runs the ORIGINAL web code in a Node VM and writes oracle.json; Program.cs (.NET 8) compares Simulation.Regions.cs / StageFlow.cs with it.
 // Original pieces: _spawnHoleCount, _regionInit, _regionIdxAt, _regKill, _regionRatio, _regionClearedCount, _regionFbAlive, _regionCheckClears, _regionTick
-// and the Hell Gate unlock block of checkRooms with G._regions present. No expected value is typed by hand.
+// the Hell Gate unlock block of checkRooms with G._regions present and the HUD "지역 처치" row (60585~60586). No expected value is typed by hand.
 // usage: node export.cjs --source <web game.html (origin/main)> [--out oracle.json]
 const fs = require('node:fs'), path = require('node:path'), vm = require('node:vm'), crypto = require('node:crypto');
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i < 0 ? d : process.argv[i + 1]; };
@@ -173,6 +173,21 @@ function buildG(c) {
   sections.cap = out;
 }
 
+// ---- HUD "지역 처치" row (#mmLvl killCnt, 60584~60586): the current region min(kills, total) / total, else G._stageKills / G._totalSpawned (LT-5) ----
+{
+  const a = at('  const _regCur=(G._regions&&G._regCurIdx>=0)?'), hudSrc = record(a, a + 1, 'hud killCnt');
+  const out = [];
+  for (let k = 0; k < 400; k++) {
+    const regions = rnd() < .75 ? [0, 1, 2, 3].map(i => ({ id: i, total: pick([0, 1, 14, 30, 47, 60]), kills: pick([0, 1, 5, 13, 14, 15, 17, 18, 47, 60, 61]), cleared: rnd() < .3, fbIdx: -1 })) : null;
+    const G = { _regions: regions, _regCurIdx: pick([-1, 0, 1, 2, 3]), _stageKills: pick([undefined, 0, 3, 17, 120]), _totalSpawned: pick([undefined, 0, 14, 168]) };
+    const el = {}, ctx = vm.createContext({ Math, G, $: () => el, _hudPulse: noop, _hudReadableNumber: v => String(v) });
+    vm.runInContext('function __hk(){' + hudSrc + 'return {k:_stageK,t:_killTotal}}', ctx);
+    const r = vm.runInContext('__hk()', ctx);
+    out.push(J({ regions, curIdx: G._regCurIdx, stageKills: G._stageKills, totalSpawned: G._totalSpawned, k: r.k, t: r.t, text: el.textContent }));
+  }
+  sections.hudKills = out;
+}
+
 const result = { source: { file: path.basename(SRC), sha256: sha(text), note: 'web game.html [REGION] block + checkRooms Hell Gate unlock' }, blocks, sections };
 fs.writeFileSync(OUT, JSON.stringify(result));
-console.log(JSON.stringify({ out: OUT, blocks: blocks.length, holeCount: sections.holeCount.length, init: sections.init.length, sequence: sections.sequence.length, unlock: sections.unlock.length, cap: sections.cap.length }));
+console.log(JSON.stringify({ out: OUT, blocks: blocks.length, holeCount: sections.holeCount.length, init: sections.init.length, sequence: sections.sequence.length, unlock: sections.unlock.length, cap: sections.cap.length, hudKills: sections.hudKills.length }));
