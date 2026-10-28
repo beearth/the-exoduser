@@ -36,7 +36,7 @@ namespace Exoduser.UnityPort
         public void Hide() { main.enabled = false; glow.enabled = false; hole.enabled = false; }
         public void Dispose() { if (main != null) UnityEngine.Object.Destroy(main.gameObject); if (glow != null) UnityEngine.Object.Destroy(glow.gameObject); if (hole != null) UnityEngine.Object.Destroy(hole.gameObject); }
 
-        static Vector3 Point(float x, float y) { return new Vector3(x / 100, -y / 100, 0); }
+        static Vector3 Point(float x, float y) { return NativeRemodel3D.Point(x, y); }
 
         // _stage1CodexBossMotionKey
         static string MotionKey(EnemyState e, DruidData d)

@@ -75,7 +75,7 @@ namespace Exoduser.UnityPort
             return Sprite.Create(t, new Rect(0, 0, n, n), new Vector2(.5f, .5f), 100, 0, SpriteMeshType.FullRect);
         }
 
-        static Vector3 Point(float x, float y) { return new Vector3(x / 100, -y / 100, 0); }
+        static Vector3 Point(float x, float y) { return NativeRemodel3D.Point(x, y); }
         SpriteRenderer NewRenderer(Item item, string name, Sprite sprite, Material material, int order)
         {
             var go = new GameObject(name); go.transform.SetParent(item != null ? item.go.transform : parent, false);
