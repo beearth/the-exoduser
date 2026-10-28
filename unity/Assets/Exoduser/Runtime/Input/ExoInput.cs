@@ -134,7 +134,15 @@ namespace Exoduser.UnityPort
    return false;
   }
   public static bool AnyKey{get{var keyboard=Keyboard.current;return keyboard!=null&&keyboard.anyKey.isPressed||AnyButton(false);}}
-  public static bool AnyKeyDown{get{var keyboard=Keyboard.current;return keyboard!=null&&keyboard.anyKey.wasPressedThisFrame||AnyButton(true);}}
+  public static bool AnyKeyDown
+  {
+   get
+   {
+    var keyboard=Keyboard.current;
+    if(keyboard!=null)foreach(var key in keyboard.allKeys)if(key.wasPressedThisFrame)return true;
+    return AnyButton(true);
+   }
+  }
   public static bool PadConnected{get{return Gamepad.all.Count>0||Joystick.all.Count>0;}}
   public static float VerticalRaw()
   {

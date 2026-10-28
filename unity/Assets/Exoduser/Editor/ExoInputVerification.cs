@@ -8,7 +8,15 @@ using UnityEngine.InputSystem.LowLevel;
 
 public static class ExoInputVerification
 {
- [Serializable] sealed class Receipt { public bool passed; public int mappedCodes; public int checks; public string error; }
+ [Serializable] sealed class Receipt
+ {
+  public bool passed; public int mappedCodes; public int checks; public string error;
+  public bool currentIsVirtualKeyboard;
+  public bool virtualWDown; public bool virtualWHeld;
+  public bool currentWDown; public bool currentWHeld;
+  public bool currentAnyDown; public bool currentAnyHeld;
+  public bool facadeWDown; public bool facadeWHeld; public bool facadeAnyDown;
+ }
  static void Check(bool condition, string message, Receipt receipt)
  {
   receipt.checks++;
@@ -45,9 +53,22 @@ public static class ExoInputVerification
    InputSystem.settings.updateMode=InputSettings.UpdateMode.ProcessEventsManually;
    keyboard=InputSystem.AddDevice<Keyboard>();
    mouse=InputSystem.AddDevice<Mouse>();
+   Check(!keyboard.wKey.wasPressedThisFrame,"virtual W starts released",receipt);
+   Check(!mouse.leftButton.wasPressedThisFrame,"virtual mouse starts released",receipt);
    InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.W));
    InputSystem.Update();
-   Check(ExoInput.KeyDown(KeyCode.W)&&ExoInput.Key(KeyCode.W)&&ExoInput.AnyKeyDown,"W press frame",receipt);
+   var current=Keyboard.current;
+   receipt.currentIsVirtualKeyboard=current==keyboard;
+   receipt.virtualWDown=keyboard.wKey.wasPressedThisFrame;
+   receipt.virtualWHeld=keyboard.wKey.isPressed;
+   receipt.currentWDown=current!=null&&current.wKey.wasPressedThisFrame;
+   receipt.currentWHeld=current!=null&&current.wKey.isPressed;
+   receipt.currentAnyDown=current!=null&&current.anyKey.wasPressedThisFrame;
+   receipt.currentAnyHeld=current!=null&&current.anyKey.isPressed;
+   receipt.facadeWDown=ExoInput.KeyDown(KeyCode.W);
+   receipt.facadeWHeld=ExoInput.Key(KeyCode.W);
+   receipt.facadeAnyDown=ExoInput.AnyKeyDown;
+   Check(receipt.facadeWDown&&receipt.facadeWHeld&&receipt.facadeAnyDown,"W press frame",receipt);
    InputSystem.Update();
    Check(!ExoInput.KeyDown(KeyCode.W)&&ExoInput.Key(KeyCode.W)&&!ExoInput.AnyKeyDown,"W held frame",receipt);
    InputSystem.QueueStateEvent(keyboard,new KeyboardState());
@@ -58,6 +79,7 @@ public static class ExoInputVerification
    Check(ExoInput.MouseDown(0)&&NativeKeyBindInput.Down("weapon")&&ExoInput.AnyKeyDown,"mouse left press frame",receipt);
    Check(ExoInput.MousePosition==new Vector3(321,456,0),"mouse screen position",receipt);
    gamepad=InputSystem.AddDevice<Gamepad>();
+   Check(!gamepad.buttonSouth.wasPressedThisFrame,"virtual gamepad South starts released",receipt);
    InputSystem.QueueStateEvent(gamepad,new GamepadState(GamepadButton.South));
    InputSystem.Update();
    Check(ExoInput.PadConnected&&ExoInput.KeyDown(KeyCode.JoystickButton0)&&ExoInput.AnyKeyDown,"gamepad South press frame",receipt);
