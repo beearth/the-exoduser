@@ -49,10 +49,10 @@ UI 전용으로 `_sampleFiles`에 등록된 샘플은 **`ui_button_hover`, `ui_b
 | A-01 | 인벤토리·대장간·스킬·능력치·설정 | 단축키(TAB/G/K/J/ESC/F10)로 열기 | `ui_panel_open` .22 (2026-10-28 SND-10 2단계 이후. 조사 당시 `togglePanel` 44256, `openPanel` 44257 — 소리 호출 0) | **있음**(조사 당시 무음) | 키 입력이라 위임 리스너 해당 없음. 열릴 때 `G.paused=true`만 |
 | A-02 | 위 패널들 | ESC·마우스 뒤로(button 3)로 닫기/한 단계 뒤로 | `ui_panel_close` .22 (2026-10-28 SND-10 2단계 이후. 패널을 닫는 경로 `closePanel`·`closeAllPanels`. 조사 당시 `_panelBack` 44265, `closeAllPanels` 44286, 13594 — 무음. 서브 상태만 닫을 때는 여전히 무음) | **있음**(패널 닫을 때만) | 서브 상태(확인창→유물 주머니→슬롯 팝업→스킬 펼침→합체 선택→패널) 순으로 빠져나옴, 어느 단계도 무음 |
 | A-03 | 닫기 버튼 5종 | `invClose`(50671, 2948행 `<button>`), `fgClose`(51461), `statClose`(51462), `setClose`, `skBackBtn`(`_panelBack`) | [호버][확정] | **위임만** | 같은 "닫기"가 키로는 무음, 버튼으로는 확정음 |
-| A-04 | 패널 상단 탭(설정/인벤토리/대장간/스킬/능력치) | 클릭으로 패널 전환 | 없음 (`div.panel-nav-tab` 44245, `onclick=openPanel`) | **무음** | `<div>`라 위임이 닿지 않음. 전환 시 `closeAllPanels`→`openPanel` |
-| A-05 | 인벤토리 페이지 탭(장비/유골함/창고) | 탭 전환 | 확인 못 함 — `$('inventory-tab-storage')?.click()`(44262)로만 확인. 탭 DOM 생성 코드는 못 찾음 | 확인 못 함 | 창고 토글 `div.inv-storage-toggle`(2975→`toggleInvStorage` 49771)은 `<div>`·무음 |
-| A-06 | 대장간 탭 | 탭 클릭 | 없음 (`div`, 50823) | **무음** | |
-| A-07 | 스킬 카테고리 탭 | 탭 클릭 | 없음 (`div.skill-category-tab`, 47651) | **무음** | 호버는 색 변경만 |
+| A-04 | 패널 상단 탭(설정/인벤토리/대장간/스킬/능력치) | 클릭으로 패널 전환 | `ui_tab`(.22) — 2026-10-28 SND-10 `ui_tab` 반영: `openPanel(id,true)`로 `ui_tab`만, `ui_panel_open`은 생략 (조사 당시 없음: `div.panel-nav-tab`, `onclick=openPanel`) | **있음**(반영 후) | `<div>`라 위임이 닿지 않음. 전환 시 `closeAllPanels(true)`→`openPanel`. 이미 활성인 탭 클릭은 무음 |
+| A-05 | 인벤토리 페이지 탭(장비/유골함/창고) | 탭 전환 | 확인 못 함 — `$('inventory-tab-storage')?.click()`(44262)로만 확인. 탭 DOM 생성 코드는 못 찾음 | 확인 못 함 | 창고 토글 `div.inv-storage-toggle`(2975→`toggleInvStorage` 49771)은 `<div>`·조사 당시 무음 → 2026-10-28 `ui_tab`(.22) 반영 |
+| A-06 | 대장간 탭 | 탭 클릭 | `ui_tab`(.22) — 2026-10-28 반영: `div.fg-tab` onclick(다른 탭일 때만), 결정 서브탭도 같음 (조사 당시 없음: `div`, 50823) | **있음**(반영 후) | |
+| A-07 | 스킬 카테고리 탭 | 탭 클릭 | `ui_tab`(.22) — 2026-10-28 반영: 구 카드형 창의 `div.skill-category-tab` onclick(다른 탭일 때만). 기본 3D 합성 창(`SkillForge`)은 이 탭이 안 그려지고 내부 탭은 미반영 (조사 당시 없음: 47651) | **부분**(반영 후) | 호버는 색 변경만 |
 | A-08 | 확인/취소 대화상자 `gameConfirm` | 열림 | 없음 (3416) | **무음** | 8곳에서 호출(분해·쓰레기 분해·능력치 초기화·리셋 등) |
 | A-09 | 〃 | 확인 / 취소 클릭 | [호버][확정] — **확인과 취소가 같은 소리** | **위임만** | 확인 쪽은 뒤따르는 처리기(분해 `SFX.pickup` 등)가 이어서 소리를 내면 확정음은 생략(microtask라 시각이 클릭 이후) |
 

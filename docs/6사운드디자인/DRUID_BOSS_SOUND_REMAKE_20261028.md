@@ -106,6 +106,30 @@
 - 2회 연속 불채택인 `druid_slam`·`druid_spore`는 같은 방향으로 세 번째 생성하지 않는다. 방향 전환은 총괄 결정 사항이다.
 - 반영(Unity 브랜치에 채택 3키 추가·녹음 v4)은 지시를 받아 진행한다. 이 절은 기록만 한다.
 
+### 6.2 3차 결과 (2026-10-28, `pick_r3.html` 제출 01:44 UTC, 3/3, 백업 `_picks_backup/`)
+
+| 키 | 채택 | 사용자 메모 | 처리 |
+|---|---|---|---|
+| `druid_slam` | **r3d** (ElevenLabs 새 생성, 거대한 나무 둥치가 땅을 내려쳐 땅이 울림) | "이거 볼륨을 키우고 에코같은걸 주면쓸수있을듯" | 4차: 가공본 e1~e3 → 아래 §6.3 |
+| `druid_spore` | **r3a** (웹 기존 소리 `pickup_rummage2.mp3`, 35Hz HPF→−1dBTP) | 없음 | 채택. 신규 파일 없이 웹 기존 `pickup_rummage2` 가공본을 쓴다(반영은 Unity 연결 단계, 총괄 지시 대기) |
+| `ui_tab` | r3c | 없음 | 웹 `sfx/ui/tab.mp3` 반영 완료([6사운드디자인.md](6사운드디자인.md) 「ui_tab 반영」) |
+
+### 6.3 4차 — `druid_slam` 가공본 (2026-10-28, 생성 없이 r3d 가공만, 아직 청음 전)
+
+원본 `_preview_r3/druid_slam_r3d_proc.mp3`(0.484초, 최대 −1.7dBTP, 평균 −21.9dB). 사용자 메모(볼륨↑, 에코)를 그대로 반영한 3안, 에코만 다르다.
+
+| 후보 | 에코 | 길이 | 꼬리(원본 끝 이후 −50dB까지) | dry RMS 증가 | 최대(dBTP) |
+|---|---|---|---|---|---|
+| 원본 d | 없음 | 0.48초 | — | 0 | −1.72 |
+| e1 짧게 | 120ms, 피드백 .30, 3회, 잔향 없음 | 0.56초 | 0.005초(0.6초 안에 모두 소멸) | +3.5dB | −1.65 |
+| e2 중간 | 220ms, 피드백 .50, 3회 + 숲 공간 잔향(RT .55초) | 0.92초 | 0.36초 | +3.57dB | −1.62 |
+| e3 길게 | 350ms, 피드백 .58, 5회 + 넓은 잔향(RT 1.3초) | 1.99초 | 1.44초(약 1.5초) | +3.55dB | −1.59 |
+
+- 음량: 사전 이득 +8.5dB → look-ahead 리미터(천장 .85, 2ms)로 앞 타격 피크를 눌러 뒤쪽을 올린 뒤 최종 −1dBTP로 맞췄다(최대 크기는 원본과 같은 급, 평균은 +3.5dB). 에코를 합친 최종 파일 기준으로 목표를 맞췄다(합성 전 목표만 맞추면 합산 피크 때문에 평균이 +1.8dB에 그쳤다).
+- 에코 경로에만 150Hz 하이패스, 합산 뒤 35Hz 하이패스. 반복마다 4.5kHz 로우패스로 어두워진다. 무음 꼬리(−55dB 아래)는 잘랐다.
+- 고르기 `pick_r4.html`(1카드·4후보, 장면은 BGM B와 아레나 앰비언스 위, `tell_boss`→후보→`player_hit1`), 서버 `serve.cjs` PICKSETS `r4`(`picks_r4.json`, 서버 재시작은 사운드 총괄). 스크립트 `_analysis/r4_proc.py`·`_druid/mk_pick_r4.py`(저장소 밖).
+- 한계: 에코·잔향 길이는 수치 기준이며 귀로는 확인하지 않았다. `warn` 0건.
+
 ## 5. 기록
 | 날짜 | 내용 |
 |---|---|
@@ -116,3 +140,4 @@
 | 2026-10-28 | sound-simple 2차 제작: "다시" 5키(`druid_hit`·`druid_hit_heavy`·`druid_whip`·`druid_slam`·`druid_spore`) x §6 2차 방향 4해석 = 20후보(`<key>_v3a~d`, 카탈로그 `tools/sfx_forge_catalog_druid_v3.json`, 1차와 겹치지 않게 피격=살·젖은 천·속 빈 고목+금속 없음 / 채찍=생가지 휙+젖은 찰싹 / 내려찍기=흙덩이·썩은 둥치 착지+진흙 튐 / 포자=마른 꼬투리 푸슉). 가공은 1차와 같되 **35Hz 하이패스(4차)를 먼저 건다**: 생성 원본의 에너지 대부분이 40Hz 아래(예: `druid_hit_v3a` 94%)라 들리지 않는 성분이 −1dBTP 천장을 먹어 들리는 부분이 약 4~10dB 작았다(후보별)(HPF 뒤 피크 −1.7→−9.1dBFS). 고르기 페이지 `pick_druid2.html`(PICKSETS `druid2`, 제출 버튼, 장면=BGM B+채택 아레나 앰비언스), `druid_hit` 4후보 계열 측정은 카드에 표시. 서버 재시작 전이라 `?set=druid2`는 아직 400 |
 | 2026-10-28 | 2차 고르기 결과 기록(§6.1): `druid_hit`=v3d(1개만 채택 → 변형 순환 없이 rate ±6%·연타 감쇠로 감)·`druid_hit_heavy`=v3d·`druid_whip`=v3a 채택, `druid_slam`·`druid_spore`는 2회 연속 전부 안 맞음. a·b 등 나머지는 미사용 |
 | 2026-10-28 | 3차 후보 생성(sound-simple, 사운드 총괄 지시): `druid_slam`(2회 연속 불채택)·`druid_spore`(2회 연속 불채택)·`ui_tab`(UI 4후보 불채택) 각 4후보. slam·spore의 a·b는 웹에 이미 있는 소리(slam: `skillsound/slam/heavy_hit.mp3`·`scarecrow_boom.mp3`, spore: `pickup/pickup_rummage2.mp3`·`pickup_rummage1.mp3` — 파일 이름·`volumedetect`·스펙트럼 측정으로 골랐고 청음은 아직), c·d는 ElevenLabs 새 생성(1·2차와 다른 해석: slam="거대한 나무 둥치가 땅을 내려쳐 땅이 울림", spore="축축한 버섯갓이 터지며 쉭 퍼짐"). `ui_tab`의 a·b는 기존 채택 `ui_button_confirm` 앞 0.19초 음정 +25%·`ui_button_hover` 음정 −20%(둘 다 0.15초), c·d는 새로 생성(조약돌 틱·거친 천 스침). 가공: 새 소리와 웹 기존 소리 모두 35Hz HPF(4차) → −1dBTP(새 소리는 뒤 무음 정리도, `ui_tab` 새 소리는 0.15초 컷). 카탈로그 `tools/sfx_forge_catalog_druid_r3.json`(키 `<key>_r3c`·`_r3d`). 고르기 `pick_r3.html`(3카드·12후보, 추천 표시 없음, `?set=r3`, 서버 PICKSETS `r3` 추가 — **실행 중인 서버 재시작 전에는 400**). 헤드리스 점검: 오디오 12개 모두 로드, 라디오 3/3 선택·자동 저장 POST 모의, 장면 12개 오류 없음, pageerror 0. 청음 전 |
+| 2026-10-28 | 3차 결과 기록(§6.2): `druid_slam`=r3d(메모 "볼륨 키우고 에코")·`druid_spore`=r3a(웹 `pickup_rummage2`)·`ui_tab`=r3c 채택. `ui_tab` 웹 반영 완료. `druid_slam` 가공본 e1~e3 4차 제작(§6.3, `pick_r4.html`, 청음 전) |
