@@ -53,6 +53,9 @@
 #lobby #lobbyQuitBtn{border-color:rgba(155,158,158,.3)!important;background:transparent!important}
 #lobby #replayCinBtn:hover,#lobby .lobby-steam-link:hover{color:var(--sh-text)!important}
 #lobby .ll-version-txt{font:600 11px var(--sh-latin)!important;letter-spacing:.2em;color:#6f7272!important}
+#lobby #lobbyVersionTxt{appearance:none;background:none;border:0;padding:8px 6px;min-height:32px;cursor:pointer}
+#lobby #lobbyVersionTxt:hover{color:var(--sh-text)!important}
+#lobby #lobbyVersionTxt:focus-visible{outline:1px solid var(--sh-line-hi);outline-offset:4px;color:var(--sh-text)!important}
 
 /* 선대 이름(무대 아래 가운데): 칭호·이름 2단 */
 #lobby .char-disp-sub{font:600 11px var(--sh-latin)!important;letter-spacing:.32em}

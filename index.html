@@ -515,7 +515,7 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 <link rel="stylesheet" href="ui-foundation.css?v=20260927-enter-responsive">
 <link rel="stylesheet" href="ui-refinement.css?v=20261028-eye-crest">
 <link rel="stylesheet" href="silver-hell-ui-kit.css?v=20261029-frame">
-<link rel="stylesheet" href="lobby-silver-hell.css?v=20261029-enter">
+<link rel="stylesheet" href="lobby-silver-hell.css?v=20261029-patch-notes">
 <link rel="stylesheet" href="charselect-silver-hell.css?v=20261028-v1">
 <link rel="stylesheet" href="lobby-ancestor-art.css?v=20260929-slotart3">
 <script src="lobby-ancestor-sprite.js?v=20260929-slotart2" defer></script>
@@ -852,7 +852,7 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
     <div class="status" id="lobbyStatus" role="status" aria-live="polite" style="font-size:.75rem;min-height:0;flex-shrink:0"></div>
     <div class="lobby-bottom-actions" style="display:flex;justify-content:space-between;align-items:center;padding:4px 0 2px;flex-shrink:0;gap:12px">
       <button type="button" id="replayCinBtn" onclick="_goCinematic()">▶ 시네마틱</button><button type="button" class="lobby-steam-link" id="lobbySteamLink" onclick="openWishlist()">STEAM 위시리스트 추가</button>
-      <div class="lobby-corner-actions" id="lobbyCornerActions"><span class="ll-version-txt" id="lobbyVersionTxt"></span><button type="button" id="lobbyQuitBtn" onclick="_showLobbyQuit()" onkeydown="_lobbyQuitKeydown(event)" aria-label="게임 종료" title="게임 종료"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 3v9M6.3 5.7a8 8 0 1 0 11.4 0"/></svg></button></div>
+      <div class="lobby-corner-actions" id="lobbyCornerActions"><button type="button" class="ll-version-txt" id="lobbyVersionTxt" aria-haspopup="dialog" aria-controls="patchNotesPanel" aria-expanded="false"></button><button type="button" id="lobbyQuitBtn" onclick="_showLobbyQuit()" onkeydown="_lobbyQuitKeydown(event)" aria-label="게임 종료" title="게임 종료"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 3v9M6.3 5.7a8 8 0 1 0 11.4 0"/></svg></button></div>
     </div>
   </div>
 </div>
@@ -3787,13 +3787,15 @@ function _swapLobbyBg(stage){
   }
 })();
 
-// ── 패치노트 패널 (버전 오버레이 클릭/Enter) — 데이터: patch-notes.js(window.EXODUSER_PATCH_NOTES) ──
+// ── 패치노트 패널 (로비 버전 버튼) — 데이터: patch-notes.js(window.EXODUSER_PATCH_NOTES) ──
 (function _initPatchNotes(){
-  const overlay=$('lobbyVerOverlay'),panel=$('patchNotesPanel'),backdrop=$('patchNotesBackdrop'),
+  const overlay=$('lobbyVerOverlay'),versionBtn=$('lobbyVersionTxt'),panel=$('patchNotesPanel'),backdrop=$('patchNotesBackdrop'),
         titleEl=$('pnTitle'),body=$('pnBody'),closeBtn=$('pnClose');
-  if(!overlay||!panel||!backdrop||!titleEl||!body||!closeBtn)return;
+  if(!overlay||!versionBtn||!panel||!backdrop||!titleEl||!body||!closeBtn)return;
   let _pnOpen=false,_lastFocus=null;
   overlay.title=_TL('패치 노트');
+  versionBtn.title=versionBtn.textContent+' · '+_TL('패치 노트');
+  versionBtn.setAttribute('aria-label',_TL('패치 노트')+' · '+versionBtn.textContent);
   function _render(){
     const list=Array.isArray(window.EXODUSER_PATCH_NOTES)?window.EXODUSER_PATCH_NOTES:[];
     const lang=_lobbyLang()==='ko'?'ko':'en'; // KO 외 언어는 EN 표시
@@ -3818,10 +3820,11 @@ function _swapLobbyBg(stage){
     });
     body.scrollTop=0;
   }
-  function _open(){_lastFocus=document.activeElement;_render();backdrop.style.display='block';panel.style.display='flex';_pnOpen=true;closeBtn.focus();}
-  function _close(){backdrop.style.display='none';panel.style.display='none';_pnOpen=false;if(_lastFocus&&_lastFocus.focus){try{_lastFocus.focus()}catch(e){}}}
+  function _open(){_lastFocus=document.activeElement;_render();backdrop.style.display='block';panel.style.display='flex';versionBtn.setAttribute('aria-expanded','true');_pnOpen=true;closeBtn.focus();}
+  function _close(){backdrop.style.display='none';panel.style.display='none';versionBtn.setAttribute('aria-expanded','false');_pnOpen=false;if(_lastFocus&&_lastFocus.focus){try{_lastFocus.focus()}catch(e){}}}
   overlay.addEventListener('click',_open);
   overlay.addEventListener('keydown',e=>{if(e.code==='Enter'||e.code==='Space'){e.preventDefault();_open();}});
+  versionBtn.addEventListener('click',_open);
   closeBtn.addEventListener('click',_close);
   backdrop.addEventListener('click',_close);
   document.addEventListener('keydown',e=>{if(_pnOpen&&e.code==='Escape'){e.stopPropagation();_close();}},true);
