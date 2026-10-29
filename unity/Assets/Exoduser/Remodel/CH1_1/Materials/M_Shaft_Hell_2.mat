@@ -25,7 +25,7 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _Intensity: 0.34
+    - _Intensity: 0.028
     - _Phase: 2.1
     m_Colors:
     - _Color: {r: 0.6901961, g: 0.15686275, b: 0.10980392, a: 1}

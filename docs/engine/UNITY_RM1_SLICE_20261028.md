@@ -57,3 +57,22 @@
 - 같은 변환: 원점 = 아레나 격자 좌상단 (0,0), x = px/100, z = −py/100, 격자 5120×4320px = 51.2×43.2u. **Core 아레나 중심 (2560, 2160)px = 월드 (25.60, −21.60)**, 걷는 바닥 y = 0 평면(지형 없음 → 높이 샘플은 0 고정).
 - 필드 창(x 19.2~60.8, z −80.0~−50.4)과 아레나(x 0~51.2, z −43.2~0)는 월드 좌표가 겹치지 않아 한 번에 로드돼도 충돌하지 않는다.
 - 수로 원 중심은 타일 원 중심 (2580, 2180)px = (25.80, −21.80)이고 기둥은 Core 중심 기준이다(`UNITY_RM1_ARENA_20261028.md` §4.1).
+
+## 2026-10-29 웹 화면 비교 수정 후보
+
+인계서 `unity-visual-brief2.md`의 6건을 담당 `codex/pc-unity-visual-ntfs-20261029`에서 처리한다. 웹 기준 game.html blob `1439fadd79e75034ce1e5286a3b885fc67e69c6f`, 검수 해상도 1600×900. 아래는 구현 계약이며 최종 시각 판정은 같은 후보 Player 캡처 뒤에 기록한다.
+
+| 항목 | 현재 후보 값·동작 | 적용 위치 |
+|---|---|---|
+| 빛줄기 | Hell 1/2 강도 0.035/0.028, 셰이더 상한 0.05, 가로 감쇠 제곱, 세로 0~0.75 진입·0.75~1 퇴장 smoothstep. 바닥 끝 사각형 단절 제거 | 빌더·두 재질·LightShaft.shader |
+| 카메라 | 실제 화면 높이 H로 2·atan(H/2800), 900p 35.65도. 거리 14u·피치 .85rad·Core 카메라/판정은 유지 | NativeGame.Remodel3DViewport |
+| 필드 톤 | RM-1 로드 뒤 Volume 프로필 사본의 노출 +0.25EV, 채도 -18, 색 필터 (0.82,0.90,1). 공통 렌더 자산은 변경하지 않음 | NativeGame.Remodel3DLoad |
+| 피부 결 | 기존 웹 컬러맵 4260×3031의 회색조→blur sigma1→중앙 차분×6, nx=-dx/길이·ny=dy/길이·nz=1/길이를 RGB로 인코딩한 normal. 최대4096, TerrainLayer Colormap normalScale .55 | Ground/ch1_1_r1r2_normal.png, TL_Colormap, 빌더 |
+| 피격막 | 원본 색 알파 .25×Core ScreenFlashAlpha. 처음 유효 알파 .0625, Core 감쇠 불변 | NativeGame.OnGUI, B07 정본 |
+| 보스 바닥·외곽 | 토양 Bilinear, 시각용 바깥 여백32타일, 점유 한 타일 확장 후 Px8 기준 반경10의 가로·세로 box blur3회로 벽 알파 감쇠. 원래 충돌·걷기·출구는 그대로 | NativeArenaView |
+| 피해·상태 문자 | 하나의 화면 배치 공유. 피해 font24, 검정 그림자(1,2), 측정 폭+12, 숫자 높이32/상태36, 간격4, 화면 x8~1912/y120~936 안에서 위→좌우로 배치. 512시도 초과 시 해당 프레임 숨김 | NativeFloatingTextLayout, NativeGame, NativeReviveHud |
+| 결과 화면 | s=min(1,화면폭/1280,화면높이/900), 중앙 정렬·하단80×s 고정. 1600×900에서 원래 21px 제목·368px 결과폭 유지 | NativeStageClearOverlay |
+
+- 문자 배치 회귀: 변경 전 두 번째 문자에서 중첩 실패, 변경 후 40개 밀집 문자·HUD 경계·프레임 초기화·화면 밖 클램프 통과. `unity/Tools/visual-parity-tests`.
+- 기준 빌드 `f4642f85` 오류0, 숨은 D3D11 M1 `3c4f97a5` 23/23·종료0·창0·잔여0·USER_SAVE 변경0. 이 증거는 수정 전 기준이며 위 수정 후보의 검수로 재사용하지 않는다.
+- 출력: `I:/EXODUSER-Storage/unity-visual/ntfs-20261029/`. 최종 빌드·비교·통합은 진행 중이다.

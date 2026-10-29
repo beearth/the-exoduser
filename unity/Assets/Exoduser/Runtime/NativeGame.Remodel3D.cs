@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Unity.Cinemachine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using Exoduser.UnityPort.Core;
 
 namespace Exoduser.UnityPort
@@ -54,7 +56,11 @@ namespace Exoduser.UnityPort
             var listener = camT.GetComponent<AudioListener>(); if (listener != null) listener.enabled = false;   // the game's own camera keeps the listener
             var markerSprite = markerT.Find("Marker Sprite"); if (markerSprite != null) markerSprite.gameObject.SetActive(false);   // the slice's stand-in sprite: the game's player sprite replaces it
             r3Cam.depth = view.depth + 10;
-            if (r3Vcam != null) { var lens = r3Vcam.Lens; lens.FieldOfView = 2f * Mathf.Atan(1080f / (2f * 1400f)) * Mathf.Rad2Deg; r3Vcam.Lens = lens; }   // 1920x1080 layout: vertical FOV 42.17 deg (LOOK-001, H = 1080)
+            Remodel3DViewport();
+            // 원본 피부 결을 지우던 +1.3 EV 노출과 붉은 색조를 이 필드의 프로필 사본에서만 조정한다.
+            foreach (var root in r3Roots) foreach (var volume in root.GetComponentsInChildren<Volume>(true))
+                if (volume.profile != null && volume.profile.TryGet<ColorAdjustments>(out var tone))
+                { tone.postExposure.Override(.25f); tone.saturation.Override(-18f); tone.colorFilter.Override(new Color(.82f,.9f,1f)); }
             r3Loaded = true; r3Loading = false;
             Remodel3DSetActive(!Simulation.Stage.InArena);
         }
@@ -86,10 +92,20 @@ namespace Exoduser.UnityPort
             bool hidden = view.cullingMask == 0;   // the lobby / startup hides the world through the 2D camera mask: mirror it
             view.cullingMask = 0;                  // the 2D camera only clears the frame while the 3D one draws
             r3Cam.enabled = !hidden;
+            Remodel3DViewport();
             var p = Simulation.Player; r3Marker.position = NativeRemodel3D.Point(p.X, p.Y);   // CM LOOK-001 follows the marker (offset 0, 10.52, -9.24, no damping)
             foreach (var r in props) if (r != null) r.enabled = false;
             foreach (var c in chunks.Values) if (c.renderer != null) c.renderer.enabled = false;
             Remodel3DBillboards();
+        }
+
+        void Remodel3DViewport()
+        {
+            // 웹의 월드 1px : 화면 1px 기준. 논리 카메라와 전투 판정은 그대로 유지한다.
+            if (r3Vcam == null) return;
+            var lens = r3Vcam.Lens;
+            float fov = 2f * Mathf.Atan(Screen.height / (2f * 1400f)) * Mathf.Rad2Deg;
+            if (Mathf.Abs(lens.FieldOfView - fov) > .01f) { lens.FieldOfView = fov; r3Vcam.Lens = lens; }
         }
 
         // Every sprite of the game stands upright facing the LOOK-001 camera (same tilt as the slice's Marker Sprite: Euler(pitch, 0, 0)), feet on the terrain point it was placed at.

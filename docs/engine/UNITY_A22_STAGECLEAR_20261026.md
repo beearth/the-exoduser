@@ -85,3 +85,7 @@ clear.ForcedAge                                          // 검증용
 - 인수. 1x 결과 블록·전체 배치가 웹 정식판(`#clearResult`)과 같다(`docs/engine/unity_pc_win_refs/clear_a22_t1500.jpg`).
 - 비교 캡처의 점수 7,110·랭크 S·보스 처치 1,000 등은 **웹 정식 값(5처치·4초)을 넣은 공식 검증용 테스트 값**이다. 게임 상태 표시가 아니다. 실제 게임에서는 Unity에 클리어·보스·구역 이탈 이벤트가 없어 patch 11(A22)이 `Show`를 호출하지 않는다("이벤트 없음") — 이벤트가 생기면 그때 연결.
 - 정식 빌드 문구 확인 방법: Playwright `ctx.route('**/build-target.js')`로 응답만 바꿔 정식(full) 캡처. 원본 `G:/exoduser/build-target.js`는 수정하지 않았다(git 변경 0 확인).
+
+## 2026-10-29 900p 글자 크기 보정
+
+결과 패널은 1920×1080 설계 좌표를 유지하되 `s=min(1,Screen.width/1280,Screen.height/900)`으로 그린다. 가로 중앙, 세로 이동 `Screen.height-1080*s`이며 버튼 하단은 실제 화면 하단에서 `80*s` 위다. 1600×900에서 제목21px·결과폭368px을 유지해 웹 CSS 고정 크기와 맞춘다. 점수·랭크·통계·전환 수명은 그대로다. 검수와 영수증은 RM-1 슬라이스 문서의 2026-10-29 절과 unity-visual REPORT를 참조한다.

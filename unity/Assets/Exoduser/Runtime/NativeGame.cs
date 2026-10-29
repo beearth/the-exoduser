@@ -32,6 +32,7 @@ namespace Exoduser.UnityPort
         readonly Dictionary<int,EnemyView> enemies=new Dictionary<int,EnemyView>();
         readonly List<SpriteRenderer> props=new List<SpriteRenderer>();
         readonly List<DamageText> damage=new List<DamageText>();
+        readonly NativeFloatingTextLayout floatingTextLayout=new NativeFloatingTextLayout();
         readonly string[] directions={"south","south-east","east","north-east","north","north-west","west","south-west"};
         readonly string[] enemyDirections={"east","south_east","south","south_west","west","north_west","north","north_east"};
         float walkDistance,lastX,lastY;int renderedTick=-1;bool playerMoving;
@@ -420,9 +421,10 @@ namespace Exoduser.UnityPort
             foreach(var e in Simulation.Enemies){if(!e.Alive||e.IsBoss||!(e.Hp<e.MaxHp||e.MaxShield>0&&e.Shield<e.MaxShield))continue;float ebw=e.Radius*2+6;var ebA=ToGUI(e.X-ebw/2,e.Y-e.Radius-16);var ebB=ToGUI(e.X+ebw/2,e.Y-e.Radius-16);float ebWid=ebB.x-ebA.x,ebHgt=Mathf.Max(2,4*ebWid/ebw);
                 Fill(new Rect(ebA.x,ebA.y,ebWid,ebHgt),new Color(0,0,0,.6f));Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Clamp01((float)e.Hp/e.MaxHp),ebHgt),new Color(.8f,0,0));if(e.MaxShield>0&&e.Shield>0)Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Min(1,e.Shield/e.MaxShield),ebHgt),new Color(.267f,.667f,1f));}
             DrawFieldBossBars();
-            foreach(var d in damage){var pt=ToGUI(d.x,d.y);var keep=center.normal.textColor;if(d.shield)center.normal.textColor=new Color(.4f,.87f,1f);GUI.Label(new Rect(pt.x-60,pt.y-100-(1-(d.until-Time.unscaledTime))*30,120,40),d.amount.ToString(),center);center.normal.textColor=keep;}
+            floatingTextLayout.Clear();
+            foreach(var d in damage){var pt=ToGUI(d.x,d.y);var keep=center.normal.textColor;int keepSize=center.fontSize;center.fontSize=24;string text=d.amount.ToString();var size=center.CalcSize(new GUIContent(text));var box=floatingTextLayout.Place(pt.x,pt.y-100-(1-(d.until-Time.unscaledTime))*30,size.x+12,32);if(box.Width<=0){center.fontSize=keepSize;continue;}var rect=new Rect(box.X,box.Y,box.Width,box.Height);center.normal.textColor=new Color(0,0,0,.9f);GUI.Label(new Rect(rect.x+1,rect.y+2,rect.width,rect.height),text,center);center.normal.textColor=d.shield?new Color(.4f,.87f,1f):keep;GUI.Label(rect,text,center);center.normal.textColor=keep;center.fontSize=keepSize;}
             DrawPracticeShots();
-            revive.Font=font;revive.English=lobby.Language!="ko";revive.DrawFloaters(ToGUI,center);
+            revive.Font=font;revive.English=lobby.Language!="ko";revive.DrawFloaters(ToGUI,center,floatingTextLayout);
             if(Time.unscaledTime<noticeUntil)GUI.Label(new Rect(560,180,800,45),notice,center);
             if(levelUp.Active){var lp=HudCamera.WorldToScreenPoint(Point(p.X,p.Y));levelUp.Draw(new Vector2(lp.x,Screen.height-lp.y));}
             // Stage-clear panel: Unity has no stage-clear / boss / exit event yet, so nothing calls stageClear.Show(); once an event exists it is drawn here.

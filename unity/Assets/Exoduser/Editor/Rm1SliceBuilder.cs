@@ -179,8 +179,8 @@ namespace Exoduser
             mats.FgRoots = Mat(Root + "/Materials/M_FgRoots.mat", cardSh, m => { m.SetTexture("_MainTex", fgTex); m.SetColor("_Color", new Color(.045f, .028f, .022f, .80f)); });
             mats.BgTree = Mat(Root + "/Materials/M_BgTree.mat", cardSh, m => { m.SetTexture("_MainTex", bgTex); m.SetColor("_Color", new Color(.20f, .17f, .19f, .55f)); });   // FOG_FAR-tinted, so far silhouettes sink into the haze
             var shaft = Shader.Find("EXODUSER/LightShaft");
-            mats.Shaft1 = Mat(Root + "/Materials/M_Shaft_Hell_1.mat", shaft, m => { m.SetColor("_Color", LightHell); m.SetFloat("_Intensity", 0.42f); m.SetFloat("_Phase", 0.4f); });
-            mats.Shaft2 = Mat(Root + "/Materials/M_Shaft_Hell_2.mat", shaft, m => { m.SetColor("_Color", LightHell); m.SetFloat("_Intensity", 0.34f); m.SetFloat("_Phase", 2.1f); });
+            mats.Shaft1 = Mat(Root + "/Materials/M_Shaft_Hell_1.mat", shaft, m => { m.SetColor("_Color", LightHell); m.SetFloat("_Intensity", 0.035f); m.SetFloat("_Phase", 0.4f); });
+            mats.Shaft2 = Mat(Root + "/Materials/M_Shaft_Hell_2.mat", shaft, m => { m.SetColor("_Color", LightHell); m.SetFloat("_Intensity", 0.028f); m.SetFloat("_Phase", 2.1f); });
             EnsureWetTexture();
             var decal = Shader.Find("EXODUSER/GroundDecal");
             foreach (var n in new[] { "blood", "blood_cracked", "blood_drag", "blood_drops", "root", "root_branch", "root_tangle", "bone", "bone_ribs", "bone_skull", "wet" })
@@ -215,7 +215,9 @@ namespace Exoduser
             {
                 var path = GenDir + "/TL_" + name + ".terrainlayer"; var l = AssetDatabase.LoadAssetAtPath<TerrainLayer>(path);
                 if (l == null) { l = new TerrainLayer(); AssetDatabase.CreateAsset(l, path); }
-                l.diffuseTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(tex); l.tileSize = size; l.tileOffset = Vector2.zero; l.smoothness = 0f; l.metallic = 0f; EditorUtility.SetDirty(l); return l;
+                l.diffuseTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(tex); l.tileSize = size; l.tileOffset = Vector2.zero; l.smoothness = 0f; l.metallic = 0f;
+                if (name == "Colormap") { l.normalMapTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(Root + "/Materials/Ground/ch1_1_r1r2_normal.png"); l.normalScale = .55f; }
+                EditorUtility.SetDirty(l); return l;
             }
             float sx = (TX1 - TX0) * T, sz = (TY1 - TY0) * T;
             layers.Add(TL("Colormap", cm, new Vector2(sx, sz)));

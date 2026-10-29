@@ -135,8 +135,9 @@ namespace Exoduser.UnityPort {
    var old=GUI.matrix;var color=GUI.color;bool enabled=GUI.enabled;
    try {
     float age=Age;float a=Mathf.Clamp01(age/defs.timing.fade);a=a*a*(3-2*a);   // transition: opacity .5s (CSS ease)
-    float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
-    GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
+    // 웹 CSS 글자는 1600×900에서도 원래 크기다. 900p 이상에서는 1배, 좁은 화면에서만 축소한다.
+    float s=Mathf.Min(1f,Mathf.Min(Screen.width/1280f,Screen.height/900f));
+    GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,Screen.height-1080*s,0),Quaternion.identity,Vector3.one*s);
     Layout(a);
    } finally {GUI.matrix=old;GUI.color=color;GUI.enabled=enabled;}
   }

@@ -44,7 +44,7 @@ namespace Exoduser.UnityPort
             return b.ToString().Trim();
         }
 
-        public void DrawFloaters(Func<float, float, Vector2> toGui, GUIStyle style)
+        public void DrawFloaters(Func<float, float, Vector2> toGui, GUIStyle style, NativeFloatingTextLayout layout = null)
         {
             floaters.RemoveAll(f => Time.unscaledTime - f.born > f.life);
             var old = GUI.color;
@@ -53,6 +53,7 @@ namespace Exoduser.UnityPort
                 float age = (Time.unscaledTime - f.born) / f.life, alpha = Mathf.Clamp01((1 - age) * 3);
                 var pt = toGui(f.x, f.y); var r = new Rect(pt.x - 260, pt.y - 22 - age * 26, 520, 36);
                 style.alignment = TextAnchor.MiddleCenter; int keepSize = style.fontSize; style.fontSize = 24;
+                if (layout != null) { var size = style.CalcSize(new GUIContent(f.text)); var box = layout.Place(pt.x, r.y, size.x + 12, 36); r = new Rect(box.X, box.Y, box.Width, box.Height); if (box.Width <= 0) { style.fontSize = keepSize; continue; } }
                 var shade = new Color(0, 0, 0, alpha * .85f);
                 style.normal.textColor = shade;
                 foreach (var o in new[] { new Vector2(-2, 0), new Vector2(2, 0), new Vector2(0, -2), new Vector2(0, 2) }) GUI.Label(new Rect(r.x + o.x, r.y + o.y, r.width, r.height), f.text, style);

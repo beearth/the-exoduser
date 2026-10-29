@@ -21,3 +21,5 @@
 - G: 작업본의 노빌드 startup `f8eca84f`: Unity 6000.6.7f1 종료 0, `ExoProbe.Run` 도달, 전체 스크립트 컴파일 오류 0, USER_SAVE 변경 0. UPM IPC 시작·패키지 resolve 200 확인. Library는 G:, 소유 호출의 UPM 캐시는 E:로 지정했다.
 - 실제 호출은 CMD→Node→숨김 PowerShell이며 APPDATA·LOCALAPPDATA·COMSPEC을 포함한 기존 환경을 상속했다. 과거 제한 환경과도 차이가 있어 exFAT 단독 원인 확정은 아니다. `TagManager.asset` 파서 오류가 별도로 남아 빌드 검수 전 수정할 대상이다.
 - 근거: `I:/EXODUSER-Storage/unity-visual/ntfs-20261029/`의 `preflight.stdout.log`, `actual-child-boundary.json`, `upm.log`, `startup-result.json`; 실행기 원본 로그 `unity-jobs/codex-unity-visual/logs/f8eca84f.log`. Win 빌드·Player·시각 검수는 이 startup의 증거에 포함하지 않는다.
+
+- startup에서 발견한 `TagManager.asset`의 빈 레이어 항목(`-` 단독)을 명시적 빈 문자열(`- ''`)로 정규화한다. 32개 레이어 이름·인덱스·Default sorting layer의 값은 보존하며 Unity YAML 파서 오류의 제거는 다음 빌드 로그로 확인한다.
