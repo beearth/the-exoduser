@@ -28,6 +28,19 @@ Unity 첫 임포트가 기존 `.meta` 432개와 `.asset` 1개를 다시 썼다. 
 
 `foot_positions.csv`는 본 기준이다. 원본 bind의 좌/우 발 본 Y=0.202/0.208m, walk 0/15/30f는 0.352/0.219, 0.219/0.416, 0.402/0.216m다. slam127 53f는 0.338/0.299m로 두 발이 같이 상승한다. 발 메시 바닥과 동일한 값은 아니지만, 55° 1x 및 측면 정지 사진에서 53f의 공중 쏠림과 일치한다. Root Y는 모든 표본에서 0이다. 127 원형은 48/6/70 재타이밍·왼손 Mirror·접촉 키 보정 전이다.
 
+## 2026-10-29 I: 독립 조형 연구
+
+사용자가 E: 작업 폴더를 I:로 이동한 뒤, 원래 `codex-boss` 작업본은 미추적 한글 정규화 차이의 BGM 파일과 브랜치 전환이 충돌해 그대로 보존했다. 새 sparse 작업본 `I:/exoduser-wt/codex-boss-sculpt`는 `unity`와 `docs/engine`만 체크아웃하여 본 브랜치 `codex/pc-boss-takeover-20261028`에서 작업한다. 이 연구는 제품 아레나와 분리되어 있다.
+
+| 단위 | 제작 파일·실측 | 1x 판정·적용 경계 |
+|---|---|---|
+| 연속 표면 본체 시험 | `I:/EXODUSER-Storage/boss/sculpt-20261029/build_silhouette.py` → `dark_druid_silhouette_v1.obj`(35,106정점, 70,188삼각형), 정면/55°/측/후 PNG | 원본 정점 변형이나 리그 부품 조립이 아닌 새 SDF 표면. 정면의 긴 직선 팔·다리, 단순 V 뿔, 인형 같은 관절·망토 형태가 남아 **VISUAL FAIL**. Unity/게임에 넣지 않음. 같은 방식의 미세 비율 수정은 중단 |
+| 왼손 지팡이 독립 후보 | `unity/Tools/boss/build_druid_staff.py` → `Studies/dark_druid_staff_v1.obj`·`.mtl`(22,418정점, 44,256삼각형). 전체 높이 2.300m, 감개 중심 0.85m/길이 0.20m, 나무뿌리 축 지름 약 0.04m, 새 두개골 1개, 여섯 뿌리의 0.40m 케이지·지름 0.16m 구슬, 뼈 마개. `I:/EXODUSER-Storage/boss/sculpt-20261029/staff_game55.png` 1600×900과 정면/케이지 확대 렌더 | §3의 소품 치수·구성에 맞는 **독립 소품 연구**. 자체 렌더 1x에서 큰 구조는 읽히나 케이지 뿌리가 규칙적이고 표면·발광이 단순해 **RETOUCH**. 소품 시트 `S3_staff.png` 동일 크기 대조, Unity 실제 화면, 왼손 소켓·127 접촉·Player 검수 전. 본체가 FAIL인 동안 아레나에는 연결하지 않음 |
+
+구슬의 기본색은 중립 올리브, `.mtl` Ke 및 Unity 검사 머티리얼 Emission은 LOCK §3/§5의 `#9ea83a`로 지정했다. 자체 렌더 색은 Unity 재질 검수 근거가 아니다. `DarkDruidStaffStudyBuilder.Capture`는 OBJ 임포트·1600×900 Unity 분리 캡처를 위한 검사 코드이며 게임 표시 연결은 없다. OBJ 정적 검사: 정점 22,418/삼각형 44,256/재질 6개, 모든 face 인덱스 유효; 버전 관리본 소스와 I: 출력본의 SHA-256 동일.
+
+Unity 검사 실행 `7947e789`는 새 sparse 작업본에 Library가 없어 UPM `resolve-packages`에서 8분간 응답이 없었고, 에셋 임포트·컴파일·Capture 호출 전에 **자기 Unity PID만 종료**했다. 실행기 `ok=false`, `refresh=compile=exec=0ms`, 사용자 세이브 변경 0, 로그 `I:/EXODUSER-Storage/unity-jobs/codex-boss-sculpt/logs/7947e789.log`와 `I:/exoduser-wt/codex-boss-sculpt/unity/Logs/upm.log`. 따라서 C# 컴파일·Unity OBJ/MTL 임포트·실제 조명/Emission·1600×900 Unity 캡처는 **미검증**이다. 같은 멈춘 실행을 반복하지 않았다.
+
 ## 다음 제작 경계
 
 1. §16에 맞춰 **새 본체를 원형부터 조형하고 UV/텍스처·스킨을 다시 만든다.** 목표는 정수리 2.30m/뿔 끝 2.70m, 몸통 폭 0.44m/망토 포함 0.70m, 처진 비대칭 어깨, 꺼진 흉곽, 긴 전완, 가는 종아리와 작은 발이다. 기존 FBX·비율 시안·실패한 절차 조형은 참고/실패 증거만 남긴다. 폭 축소·기존 메시 정점 밀기·원시형 리그 조립을 반복하지 않는다. 새 유료 생성·리깅은 승인 상한 밖이라 이 차수 0회. 55° bind/walk/slam의 무채색 1x에서 전사형 V와 부위 이음새가 사라지는 것을 먼저 검수한다.

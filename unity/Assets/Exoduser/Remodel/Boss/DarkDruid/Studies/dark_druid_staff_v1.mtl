@@ -1,0 +1,36 @@
+newmtl charred_root
+Ka 0.08 0.08 0.08
+Kd 0.2706 0.2235 0.1686
+Ns 24
+illum 2
+
+newmtl raised_bark
+Ka 0.08 0.08 0.08
+Kd 0.4588 0.3569 0.2471
+Ns 18
+illum 2
+
+newmtl recess
+Ka 0.08 0.08 0.08
+Kd 0.1490 0.1333 0.1059
+Ns 8
+illum 2
+
+newmtl leather
+Ka 0.08 0.08 0.08
+Kd 0.2941 0.1647 0.1216
+Ns 20
+illum 2
+
+newmtl bone
+Ka 0.08 0.08 0.08
+Kd 0.7137 0.6471 0.4941
+Ns 36
+illum 2
+
+newmtl orb
+Ka 0.08 0.08 0.08
+Kd 0.2784 0.2980 0.1451
+Ke 0.6196 0.6588 0.2275
+Ns 64
+illum 2
