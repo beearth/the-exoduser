@@ -168,3 +168,9 @@ Mac 일반앱의 첫Metal표시대기실패를 보존했으며, 렌더링옵션�
 최신 대비 후보의 사용자 검토 실행기는 `_out/UNITY-MAC-META-CONTRAST-20261029/launch-current-mac-review.command`다. 같은 폴더의 `review-manifest.json`이 소스 커밋 `9ed30495b050ac877e62b3989d775b41663fe95d`, 관련 6개 소스 blob, 위 ARM64 앱, 영수증 SHA-256 `73ad4323f660692ddbdbab6cda81168039d7216a260bc5a6d81aa88b3f85d6a2`, 실행 파일 SHA-256 `60fc40fa9ed2cacec72abf912f493e6533ea596227bc3309183092ed53ee1bef`를 고정한다. 실행기는 앱·영수증·manifest hash와 Settings QA 신원을 검사하고, 새 marker가 있는 `_out/UNITY-MAC-A05-IO-LOBBY-META-HUMAN-20261029/qa-sandbox`에만 I/O를 연결한다. 기존 실습 실행기와 저장 root는 그대로 둔다.
 
 `zsh -n`과 실행 권한·manifest 경로를 확인했다. 실제 첫 실행의 단일 PID `67045` argv에서 앱·`-output`·`--unity-qa-sandbox`·1280×720을 확인했고, 첫 화면은 새 빈 profile의 제목 화면이었다. 실행 중 두 번째 호출은 종료 코드 3으로 거절됐고, 첫 PID만 정상 종료했다. 이 실행기 smoke는 기존 1280/1600 로비 화면·키보드 증거를 대체하지 않는다. **기술 실행 PASS / 전체 로비 VISUAL VERDICT: RETOUCH / 물리 마우스 hit: HOLD.** 다음 Mac 미완료는 웹 메타 대비 정본 확정 후 동기화와 실제 마우스 열기/닫기 확인이다.
+
+### 2026-10-29 최신 웹 로비 표시 계약 재확인
+
+원격 웹 `main:df17dbe914d8178d904377dc738fcb60efccab09`의 `index.html` 세 곳에는 여전히 일반 `rgba(131,134,134,.5)`·limits `rgba(132,135,135,.5)`가 있으나, 사용자 승인 실버 헬 UI의 `lobby-silver-hell.css`는 `#lobby #lobbyVerOverlay{display:none!important}`로 개발 정보를 출시 로비에서 숨긴다. 최신 웹 소스와 CSS를 격리 localhost:3334에서 실행한 1600×900 데모 빈 로비에서 실제 화면과 DOM 계산값 `display:none`을 확인했다. 이 화면은 Mac의 5/5·A04QA4 로비와 같은 상태가 아니며 일부 영상 자산은 QA staging에서 누락되어 전체 웹·Mac 디자인 비교 근거로 쓰지 않는다.
+
+따라서 웹의 세 alpha를 `.9`로 바꿔도 현재 화면에는 변화가 없다. 해당 웹 코드 변경 후보는 채택하지 않았고 `main`·`unity/main` 제품 코드는 유지했다. Mac `.9` 후보의 좌상단 네 줄은 기존 1280/1600 실제 1x에서 `.5`보다 잘 읽히지만, **최신 웹은 그 요소 자체를 숨긴다.** 남은 차이는 색 동기화가 아니라 로비 표시·패치 노트 진입 계약이다. 다음 담당은 최신 웹 로비의 패치 노트 접근 경로를 확인해 Mac에 맞추고 실제 1280/1600 화면과 물리 마우스 입력을 재검수해야 한다. **웹 후보 색 변경 0 / 전체 로비 VISUAL VERDICT: RETOUCH / 물리 마우스 hit: HOLD.**
