@@ -79,3 +79,25 @@ Core(`Runtime/Core`)는 바꾸지 않았다.
 - 지형 높이 샘플 검증 후 맵의 0.04u 제한 해제는 맵 총괄 결정.
 - 조명 받는 스프라이트 재질, 그림자, 가림, 적 표시 높이 세부 조정, 성능(`FindObjectsByType<SpriteRenderer>`는 매 프레임이라 1단계 한정, 이후 목록 캐시).
 - 3D 영웅 교체는 캐릭터 총괄 트랙.
+
+
+## 2026-10-30 Steam 키샷 조명 작업 — 검수 중
+
+브리프 `I:/EXODUSER-Storage/codex-takeover/steam-keyshot-brief.md`, 전용 브랜치 `codex/pc-unity-steam-keyshot-20261030`. 현재 카메라·조명 변경은 제작/검수 중이며 Steam 합격·통합 완료가 아니다. Core·기존 UI 규칙은 변경하지 않는다.
+
+| 항목 | 구현값·범위 |
+|---|---|
+| 3D 카메라 | 피치48.70도·거리14u 유지, 세로FOV24.5도 고정. 논리2D 카메라·판정은 유지 |
+| 비교 기준 | 검수 인자 `--unity-keyshot-baseline`이면 기존 해상도별FOV와 기존 조명 유지. 일반 실행은 `--remodel3d`에서만 새 필드 조명 |
+| 키라이트·지옥불 | 차가운 키라이트0.7, 기존지옥불5광원 색(1,.32,.075)·강도11·반경4.7u·소프트그림자. 붉은Shafts 비활성 |
+| 영웅 림광 | 색(.53,.72,1)·강도3.2·반경3.5u, 마커를 따라감. 실제영웅·일반적은 기존SpriteLit3D·그림자 |
+| 톤 | ACES·노출-.15EV·대비16·채도-8·차가운그림자/따뜻한하이라이트·Bloom.16/threshold1.1·비네트.13·그레인없음 |
+| 재질 | 기존원화/노멀 유지, TerrainLayer 런타임사본의 노멀.8·smoothness.32/.22. 원본 TerrainLayer 파일은 수정하지 않음 |
+| 광원 기구 | 기존 `assets/map/ch1/diablo_field_torch_base_v1.png`·`diablo_field_torch_flame_v1.png`를 동일byte Resources/Art/map/hell_lighting에 인수. 불꽃4열2행8프레임·12fps, 신규 이미지 생성/지출0 |
+| 검수 | `--unity-steam-keyshot --unity-boss-direct 0 --remodel3d -output <폴더>`, 1920×1080 실제 Player·직접입장·생존보조·스크립트입력. 적/탄 직접주입0. 불투명 몸체 높이는 스프라이트 알파경계로 측정하며 투명 셀 전체 bounds와 구분 |
+
+실제 캡처·비교·최종 판정은 `I:/EXODUSER-Storage/steam-keyshot/REPORT.md`에 모은다. 기존 보스 아레나 2D 전환·아트 품질 한계는 현재 유지되며 새 조명으로 전체 보스 리마스터 완료를 주장하지 않는다.
+
+보스전 조명 추가 검수: 기존 2D 아레나·논리 카메라·Core 판정은 유지하고 별도 표현 카메라만 직교크기×.53/북쪽1u로 조정한다. HUD/조준은 실제 표현 카메라를 사용한다. 기존 흙 원화에 3texel 간격 높이기울기 노멀·반사광(지수40/강도.22)을 적용하는 ArenaSoilLit, 국소광3개(강도9/7/3·반경7u)를 연결했다. 기존 보스 스프라이트를 교체한 3D 리모델은 아니며 미검수 상태다.
+
+현재 실행 차단: 기존 Player 3개(일반1·미리보기2)가 이 작업 소유가 아니어서 안전 실행기가 후보 빌드를 시작하지 않았다. C# 독립 컴파일 오류0, 새 GPU/셰이더/1080p 후보·M1은 미검증. 종료 허용/직접 종료를 요청한 상태이며 소스 복구 checkpoint만 보존한다. SSAO·높이/볼류메트릭안개·최종시각판정·공통줄기/바로가기는 미완료다.

@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort
         readonly Dictionary<SpriteRenderer, R3Base> r3Base = new Dictionary<SpriteRenderer, R3Base>();
 
         // Camera that shows the world: the scene's LOOK-001 camera while the 3D field is on, the 2D camera otherwise (HUD anchors, level-up burst).
-        Camera HudCamera { get { return NativeRemodel3D.Active && r3Cam != null && r3Cam.enabled ? r3Cam : view; } }
+        Camera HudCamera { get { return hellArenaCamera != null && hellArenaCamera.isActiveAndEnabled ? hellArenaCamera : NativeRemodel3D.Active && r3Cam != null && r3Cam.enabled ? r3Cam : view; } }
 
         // Called from StageFlowSyncViews every UpdateViews.
         void Remodel3DSync()
@@ -61,6 +61,7 @@ namespace Exoduser.UnityPort
             foreach (var root in r3Roots) foreach (var volume in root.GetComponentsInChildren<Volume>(true))
                 if (volume.profile != null && volume.profile.TryGet<ColorAdjustments>(out var tone))
                 { tone.postExposure.Override(1f); tone.saturation.Override(-18f); tone.colorFilter.Override(new Color(.82f,.9f,1f)); }
+            if (System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "--unity-keyshot-baseline") < 0) HellLightingSetup();
             r3Loaded = true; r3Loading = false;
             Remodel3DSetActive(!Simulation.Stage.InArena);
         }
@@ -81,6 +82,7 @@ namespace Exoduser.UnityPort
         void Remodel3DSetActive(bool on)
         {
             NativeRemodel3D.Active = on;
+            if (hellActorMaterial != null) HellLightingActive(on);
             if (r3Roots != null) foreach (var root in r3Roots) if (root != null) root.SetActive(on);
             if (!on) { r3Base.Clear(); view.cullingMask = worldMask; }   // back to the 2D camera: Update() re-applies the lobby / world mask next frame
         }
@@ -88,6 +90,7 @@ namespace Exoduser.UnityPort
         // LateUpdate: after every 2D view wrote its transforms for this frame.
         void Remodel3DLate()
         {
+            HellArenaLate();
             if (!NativeRemodel3D.Active || r3Cam == null || Simulation == null) return;
             bool hidden = view.cullingMask == 0;   // the lobby / startup hides the world through the 2D camera mask: mirror it
             view.cullingMask = 0;                  // the 2D camera only clears the frame while the 3D one draws
@@ -97,6 +100,7 @@ namespace Exoduser.UnityPort
             foreach (var r in props) if (r != null) r.enabled = false;
             foreach (var c in chunks.Values) if (c.renderer != null) c.renderer.enabled = false;
             Remodel3DBillboards();
+            HellLightingLate();
         }
 
         void Remodel3DViewport()
@@ -104,7 +108,8 @@ namespace Exoduser.UnityPort
             // 웹의 월드 1px : 화면 1px 기준. 논리 카메라와 전투 판정은 그대로 유지한다.
             if (r3Vcam == null) return;
             var lens = r3Vcam.Lens;
-            float fov = 2f * Mathf.Atan(Screen.height / (2f * 1400f)) * Mathf.Rad2Deg;
+            float fov = System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "--unity-keyshot-baseline") >= 0
+                ? 2f * Mathf.Atan(Screen.height / (2f * 1400f)) * Mathf.Rad2Deg : 24.5f;
             if (Mathf.Abs(lens.FieldOfView - fov) > .01f) { lens.FieldOfView = fov; r3Vcam.Lens = lens; }
         }
 
@@ -132,6 +137,7 @@ namespace Exoduser.UnityPort
         // Mouse aim in world units of the old 2D mapping (x, -py / 100): through the ground plane of the player when the 3D camera draws.
         Vector3 AimWorld()
         {
+            if (hellArenaCamera != null && hellArenaCamera.isActiveAndEnabled) return hellArenaCamera.ScreenToWorldPoint(Input.mousePosition);
             if (NativeRemodel3D.Active && r3Cam != null && r3Cam.enabled && r3Marker != null)
             {
                 var ray = r3Cam.ScreenPointToRay(Input.mousePosition); var plane = new Plane(Vector3.up, r3Marker.position); float d;

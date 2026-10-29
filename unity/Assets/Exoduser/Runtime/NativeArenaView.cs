@@ -98,6 +98,8 @@ namespace Exoduser.UnityPort
             return new Color(Mathf.Clamp01(1.16f * d + .16f), Mathf.Clamp01(.54f * d + .08f), Mathf.Clamp01(.18f * d + .04f), .5f);
         }
 
+        public void SetLightingMaterial(Material material) { if (floor != null) floor.sharedMaterial = material; }
+
         public void Dispose()
         {
             if (renderer != null) UnityEngine.Object.Destroy(renderer.gameObject);
