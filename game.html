@@ -58226,6 +58226,10 @@ function drawP(){
   if(G._seekerMines&&G._seekerMines.length>0){
     for(let mi=0;mi<G._seekerMines.length;mi++){
       const sm=G._seekerMines[mi];const _armed=sm.t>sm.armT;
+      // 2026-10-29 사용자 "모든지뢰는 어둠지뢰 저걸로 바꿔라 디자인을 일단": 추적지뢰(드루이드 포함)도 어둠 지뢰와 같은 진홍 결계진(_mineTrapWardSheet 왼쪽 칸). 판정·이동은 그대로, 외형만
+      if(_mineTrapWardSheet.complete&&_mineTrapWardSheet.naturalWidth>0){const _sw=_mineTrapWardSheet.naturalWidth/2,_sh=_mineTrapWardSheet.naturalHeight,_sz=sm.r*2,_mp=.5+Math.sin(_now*.015)*.5;
+        X.save();X.translate(sm.x,sm.y);X.rotate(_now*.00035);X.globalCompositeOperation='screen';X.globalAlpha=_armed?.78+_mp*.18:.46;
+        X.drawImage(_mineTrapWardSheet,0,0,_sw,_sh,-_sz/2,-_sz/2,_sz,_sz);X.restore();X.globalAlpha=1;X.globalCompositeOperation='source-over';continue;}
       if(sm._druidMine){_drawDruidPoisonShot(sm,_armed?1:.65);continue;}
       const _pulse=_armed?(.6+Math.sin(_now*.015)*.4):.45;
       X.save();X.globalCompositeOperation='lighter';
