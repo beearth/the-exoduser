@@ -1460,3 +1460,5 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | 2 / 정상 연결 | Main._ready의 world.set_player 뒤에 Player.bind_native_armor_inventory(Callable(source_state, read_current_inventory))를 연결한다. 실패하면 기존 _stop_source_player_startup 경로로 중단한다. source State/INV를 새로 만들거나 복원하지 않는다. |
 | 3 / 원 상수 | EL P=0/F=1/I=2/D=3/L=4/H=5/E=6. F→I, I→F, D→L, L→D, D→H, H→D, E→L, L→E는2. 동일 속성은 P0 제외0.5, 나머지는1. 기존 원 elMul/producer 분기·수치 변경0. |
 | 4 / 현재 완료 범위 | 실제 제품 entry의 SourceState→Player→기존 projectile 배율 consumer 연결까지. full inventory/equip UI·affix·저장/장비복원·보상·전체 bootstrap·모든 탄/보스·시각/청감·240FPS·최신 전체게임 완료는 아니다. 기존 HOLD/2_3·MAP/ART/STORY/rig/native3387/NativeHUD 등 보호 불변. |
+
+> **2026-10-29 사용자 지시 "모든지뢰는 어둠지뢰 저걸로 바꿔라 디자인을 일단":** 지뢰 외형을 탄막 시험장 "어둠 지뢰"(진홍 결계진, `img/vfx/mine_trap_ward_sheet.png` 왼쪽 칸)로 통일했다. `p.mine` 탄(보스 지뢰 설치 포함)은 원래 이 외형이고, 이번에 **추적지뢰 `G._seekerMines`**(일반 보스의 주황 원 + 드루이드 si0/si3의 녹색 독 구슬)도 같은 결계진(지름 = 폭발 반경 r×2, 무장 전 불투명도 .46·무장 뒤 .78~.96 맥동, 0.00035rad/ms 회전)으로 그린다. 위 "드루이드 독탄 녹색 통일" 계약 중 **추적지뢰만 예외**로 바뀐다(이동탄 독탄은 그대로). 판정·이동·피해는 변경 없음. 코드 `game.html` "추적지뢰 렌더". 검수 `tmp/design-review/20261029_mines/mines_1600.png`.
