@@ -55467,3 +55467,12 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 범위 | `docs/engine/ctx/`에 이동·Q/E·분노·스킬·성장·INV·물약·forge·save·적AI·드루이드·필드보스·사망/부활·demo·HUD/사운드 15 pack과 README를 추가했다. 제품 코드/Godot 실행 변경0. |
 | 원본 | R `game.html` 65,692행 / SHA256 `4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4` 기준 행을 기록하고, 상세 수치/전수표는 기존 `FDG_SOURCE_TRACE_*`를 재사용했다. |
 | 경계 | 각 pack은 origin/main Godot의 실제 경로와 gap의 연결 상태를 분리한다. 2_3 Q/E·돌진/방패, 저장 형식, PC 전투 핵심은 보호이며 module 존재를 전체 이식 완료로 승격하지 않는다. |
+
+## 2026-10-29 22시 — PC Unity 작업·캐시 NTFS 정책 정합성
+
+| 항목 | 동기화 내용·검수 경계 |
+|---|---|
+| 변경 | AGENTS.md·CLAUDE.md의 저장 정책과 기존 WORK_MANUAL·WORK_QUALITY_STANDARD·BUILD_BACKUP_POLICY·PC_CODEX_EXECUTION을 정정. Unity 작업본·Library·DOTNET_CLI_HOME·UPM 캐시는 NTFS(G:/exoduser-wt 우선·확인한 E: 차선), H5/docs·산출물·보관은 I: 유지 |
+| 보존 | G:/exoduser 사용자 파일 readonly, 승인된 별도 G:/exoduser-wt 쓰기 허용. 기존 I: 트리·에셋·과거 영수증 경로·실패 카운터·중단 이력·FAIL 비채택·같은 제작법 중단·통합/배포 권한·Mac 독립 작업 유지 |
+| 근거 | COMMON_RULES 마지막 NTFS 정책·CLAUDE_REVIEW §4-보완과 중앙 CTO 위임을 대조. 담당 Get-Volume 조회에서 G:/E: NTFS·I: exFAT 확인. 원인 가설과 root가 인수한 UPM IPC 200을 구분하며 컴파일·빌드·실게임 품질 PASS로 확대하지 않음 |
+| 비실행 | 코드·모델·사용자 전역 설정·CTO_STATE·자동화 변경, 기존 작업본 이동·삭제·전체 복제, Unity 실행·빌드·새 비용·배포 0. safe.directory는 자기 정확 경로의 명령 범위만 사용 |
