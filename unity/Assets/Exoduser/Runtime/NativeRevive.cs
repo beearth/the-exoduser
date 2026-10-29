@@ -10,55 +10,43 @@ namespace Exoduser.UnityPort
     // dark vignette, centre panel with the revive power and the countdown seconds, gauge at the bottom). Drawn in the 1920x1080 GUI space.
     public sealed class NativeReviveHud
     {
-        sealed class Floater { public float x, y, born, life; public string text; public Color col; }
-        readonly List<Floater> floaters = new List<Floater>();
+        readonly NativeFloatingTextLayout.Buffer floaters = new NativeFloatingTextLayout.Buffer();
         public Font Font; public bool English;
-
-        public void Reset() { floaters.Clear(); }
-        public int Count { get { return floaters.Count; } }
-        public IEnumerable<string> Texts { get { foreach (var f in floaters) yield return f.text; } }
-
-        // `ReviveText.Life` is a web frame count (60 per second)
-        public void Add(ReviveText t)
-        {
-            Color c; if (!ColorUtility.TryParseHtmlString(t.Color ?? "#ffffff", out c)) c = Color.white;
-            string s = Clean(English ? t.En : t.Ko);
-            if (s.Length == 0) return;
-            float x = (float)t.X, y = (float)t.Y;
-            // 같은 근접 지점에서 120ms 안에 반복되는 동일 문구는 한 자리에서 갱신한다.
-            // 기존 월드 16px 누적 이동은 화면 배치와 충돌하므로 화면의 공용 레이아웃에 맡긴다.
-            foreach (var f in floaters)
-                if (f.text == s && f.col == c && Time.unscaledTime - f.born < .12f && Mathf.Abs(f.x - x) < 130 && Mathf.Abs(f.y - y) < 80)
-                { f.born = Time.unscaledTime; return; }
-            floaters.Add(new Floater { x = x, y = y, born = Time.unscaledTime, life = Math.Max(.9f, t.Life / 60f), text = s, col = c });
+        public void Reset(){floaters.Clear();}
+        public int Count{get{return floaters.Live(Time.unscaledTime).Count;}}
+        public int SourceEvents{get{return floaters.InputEvents;}}
+        public IEnumerable<string> Texts{get{foreach(var f in floaters.Live(Time.unscaledTime))yield return f.DisplayText;}}
+        public void Add(ReviveText t){
+            string text=Clean(English?t.En:t.Ko);if(text.Length==0)return;
+            long value;bool numeric=long.TryParse(text,System.Globalization.NumberStyles.AllowLeadingSign,System.Globalization.CultureInfo.InvariantCulture,out value);
+            string color=t.Color??"#ffffff";
+            floaters.Add((float)t.X,(float)t.Y,text,color,"state:"+color+(numeric?(value<0?":loss":":gain"):text),numeric?1:NativeFloatingTextLayout.PriorityFor(text),Time.unscaledTime,t.Life>0?t.Life/60f:35f/60f,numeric,value);
         }
-
-        // The game font has no emoji / dingbat glyphs: decoration characters it cannot draw are dropped (the Korean/English words stay).
-        string Clean(string s)
-        {
-            if (string.IsNullOrEmpty(s)) return "";
-            var b = new StringBuilder();
-            foreach (char ch in s) { if (char.IsSurrogate(ch)) continue; if (Font != null && !Font.HasCharacter(ch) && ch != ' ') continue; b.Append(ch); }
-            return b.ToString().Trim();
+        string Clean(string s){
+            if(string.IsNullOrEmpty(s))return "";var b=new StringBuilder();
+            foreach(char ch in s){if(char.IsSurrogate(ch))continue;if(Font!=null&&!Font.HasCharacter(ch)&&ch!=' ')continue;b.Append(ch);}return b.ToString().Trim();
         }
-
-        public void DrawFloaters(Func<float, float, Vector2> toGui, GUIStyle style, NativeFloatingTextLayout layout = null)
-        {
-            floaters.RemoveAll(f => Time.unscaledTime - f.born > f.life);
-            var old = GUI.color;
-            foreach (var f in floaters)
-            {
-                float age = (Time.unscaledTime - f.born) / f.life, alpha = Mathf.Clamp01((1 - age) * 3);
-                var pt = toGui(f.x, f.y); var r = new Rect(pt.x - 260, pt.y - 22 - age * 26, 520, 36);
-                style.alignment = TextAnchor.MiddleCenter; int keepSize = style.fontSize; style.fontSize = 24;
-                if (layout != null) { var size = style.CalcSize(new GUIContent(f.text)); var box = layout.Place(pt.x, r.y, size.x + 12, 36); r = new Rect(box.X, box.Y, box.Width, box.Height); if (box.Width <= 0) { style.fontSize = keepSize; continue; } }
-                var shade = new Color(0, 0, 0, alpha * .85f);
-                style.normal.textColor = shade;
-                foreach (var o in new[] { new Vector2(-2, 0), new Vector2(2, 0), new Vector2(0, -2), new Vector2(0, 2) }) GUI.Label(new Rect(r.x + o.x, r.y + o.y, r.width, r.height), f.text, style);
-                style.normal.textColor = new Color(f.col.r, f.col.g, f.col.b, alpha);
-                GUI.Label(r, f.text, style); style.fontSize = keepSize;
-            }
-            GUI.color = old;
+        public void CollectFloaters(Func<float,float,Vector2> toGui,GUIStyle style,NativeFloatingTextLayout layout){
+            foreach(var f in floaters.Live(Time.unscaledTime)){var p=toGui(f.X,f.Y);Offer(layout,f,p,style);}
+        }
+        public static void Offer(NativeFloatingTextLayout layout,NativeFloatingTextLayout.Notice f,Vector2 p,GUIStyle style){
+            int old=style.fontSize;var oldStyle=style.fontStyle;style.fontSize=f.Priority>=3?26:24;style.fontStyle=FontStyle.Bold;var size=style.CalcSize(new GUIContent(f.DisplayText));style.fontSize=old;style.fontStyle=oldStyle;
+            layout.Offer(f,p.x,p.y,Mathf.Min(312,size.x+12),Mathf.Min(68,Mathf.Max(32,Mathf.Ceil(size.x/300)*32)));
+        }
+        public static void DrawRequests(NativeFloatingTextLayout layout,GUIStyle style){
+            var color=GUI.color;var textColor=style.normal.textColor;int size=style.fontSize;var alignment=style.alignment;var fontStyle=style.fontStyle;bool wrap=style.wordWrap;
+            try{GUI.color=Color.white;style.alignment=TextAnchor.MiddleCenter;style.fontStyle=FontStyle.Bold;style.wordWrap=true;
+                foreach(var r in layout.Requests){if(r.Box.Width<=0)continue;var f=r.Notice;float age=(Time.unscaledTime-f.Last)/f.Life,alpha=age<.8f?1:Mathf.Clamp01((1-age)*5);
+                    style.fontSize=f.Priority>=3?26:24;var rect=new Rect(r.Box.X,r.Box.Y,r.Box.Width,r.Box.Height);
+                    style.normal.textColor=new Color(0,0,0,alpha);
+                    foreach(var o in new[]{new Vector2(-2,0),new Vector2(2,0),new Vector2(0,-2),new Vector2(0,2),new Vector2(-1,-1),new Vector2(1,1)})GUI.Label(new Rect(rect.x+o.x,rect.y+o.y,rect.width,rect.height),f.DisplayText,style);
+                    Color ink=Color.white;if(f.Numeric){Color raw;if(!ColorUtility.TryParseHtmlString(f.Color,out raw))raw=Color.white;ink=Color.Lerp(raw,Color.white,.55f);}else if(f.Priority>=3)ink=new Color(1,.96f,.78f);
+                    ink.a=alpha;style.normal.textColor=ink;GUI.Label(rect,f.DisplayText,style);
+                }
+            }finally{GUI.color=color;style.normal.textColor=textColor;style.fontSize=size;style.alignment=alignment;style.fontStyle=fontStyle;style.wordWrap=wrap;}
+        }
+        public void DrawFloaters(Func<float,float,Vector2> toGui,GUIStyle style,NativeFloatingTextLayout layout=null){
+            if(layout==null){layout=new NativeFloatingTextLayout();layout.BeginFrame(Time.unscaledTime);}CollectFloaters(toGui,style,layout);layout.Resolve();DrawRequests(layout,style);
         }
 
         Texture2D vignette;

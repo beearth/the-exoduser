@@ -41,7 +41,8 @@ namespace Exoduser.UnityPort
         public static NativeGame Instance {get;private set;}
         sealed class ChunkView {public SpriteRenderer renderer;public string path;}
         sealed class EnemyView {public SpriteRenderer body,walk,arc;public float distance,lastX,lastY;public int skin,hp;public float shield;public bool moving;}
-        sealed class DamageText {public float x,y,until;public int amount;public bool shield;}
+        sealed class DamageText {public float x,y,until;public int amount;public bool shield,submitted;}
+        readonly NativeFloatingTextLayout.Buffer damageFloaters=new NativeFloatingTextLayout.Buffer();
         readonly NativeReviveHud revive=new NativeReviveHud(); // B08: revive/shield floaters + fallen countdown
         bool PlayerDown{get{var q=Simulation.Player;return q.State=="dead"||(q.Hp<=0&&q.State!="fallen");}} // fallen = 5 s revive countdown, not dead yet
 
@@ -82,7 +83,7 @@ namespace Exoduser.UnityPort
             pauseMenu.OptionChanged=OnSettingsOptionChanged;pauseMenu.LanguagePicked=code=>{lobby.SetLanguage(code);QueueSettingsSave();};pauseMenu.DiagLine=SettingsDiagLine;
             UpdateSettingsPersistenceNotice();
             var args=Environment.GetCommandLineArgs();
-            bool legacyFixture=Array.IndexOf(args,"--unity-exp-capture")>=0||Array.IndexOf(args,A15DirectArgument)>=0||Array.IndexOf(args,IntroSilenceFlag)>=0||Array.IndexOf(args,NativeSettingsStorageScope.FixtureArgument)>=0||Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0||Array.IndexOf(args,"--unity-pause-smoke")>=0||Array.IndexOf(args,"--unity-character-story-smoke")>=0||Array.IndexOf(args,"--unity-character-store-smoke")>=0||Array.IndexOf(args,"--unity-character-smoke")>=0||Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-hud-blend-smoke")>=0||Array.IndexOf(args,"--unity-drop-smoke")>=0||Array.IndexOf(args,"--unity-revive-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
+            bool legacyFixture=Array.IndexOf(args,"--unity-boss-text-smoke")>=0||Array.IndexOf(args,"--unity-exp-capture")>=0||Array.IndexOf(args,A15DirectArgument)>=0||Array.IndexOf(args,IntroSilenceFlag)>=0||Array.IndexOf(args,NativeSettingsStorageScope.FixtureArgument)>=0||Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0||Array.IndexOf(args,"--unity-pause-smoke")>=0||Array.IndexOf(args,"--unity-character-story-smoke")>=0||Array.IndexOf(args,"--unity-character-store-smoke")>=0||Array.IndexOf(args,"--unity-character-smoke")>=0||Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-hud-blend-smoke")>=0||Array.IndexOf(args,"--unity-drop-smoke")>=0||Array.IndexOf(args,"--unity-revive-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
             if(!legacyFixture){Running=false;if(cinSeen)lobby.ShowLobby();else lobby.Begin();}
             if(Array.IndexOf(args,"--unity-exp-capture")>=0){menu=false;Running=true;}
             else if(Array.IndexOf(args,A15DirectArgument)>=0){BeginA15DirectReview(args);}
@@ -93,6 +94,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-startup-capture")>=0){Running=false;StartCoroutine(StartupCapture());}
             else if(Array.IndexOf(args,CombatSaveCaptureFlag)>=0){Running=false;StartCoroutine(CombatSaveCapture());}
             else if(Array.IndexOf(args,"--unity-c04-dump")>=0){Running=false;StartCoroutine(C04Dump());}
+            else if(Array.IndexOf(args,"--unity-boss-text-smoke")>=0){Running=false;pauseSmoke=true;StartCoroutine(BossTextLocalityCapture());}
             else if(Array.IndexOf(args,"--unity-m1-check")>=0){Running=false;StartCoroutine(M1Check());}
             else if(Array.IndexOf(args,"--unity-review-args-capture")>=0){Running=false;StartCoroutine(ReviewArgsCapture());}
             else if(Array.IndexOf(args,"--unity-field-compare")>=0){Running=false;StartCoroutine(FieldCompare());}
@@ -126,7 +128,7 @@ namespace Exoduser.UnityPort
         {
             ResetFirstPractice();
             startupResetCount++;
-            foreach(var e in enemies.Values){Destroy(e.body.gameObject);Destroy(e.walk.gameObject);}enemies.Clear();damage.Clear();ResetFieldBossViews();
+            foreach(var e in enemies.Values){Destroy(e.body.gameObject);Destroy(e.walk.gameObject);}enemies.Clear();damage.Clear();damageFloaters.Clear();ResetFieldBossViews();
             kiView?.Reset();boltView?.Reset();impacts?.Reset();skillView?.Reset();sound?.Reset();
             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;if(settings!=null)config.DifficultyIndex=settings.Options.Get("diff");if(BuildFlavor.Current.DemoMode)config.LevelCap=BuildFlavor.Current.LevelCap;CombatBeginRun(config);
             Simulation=new Simulation(config,SourceStarterFixture.Seed);revive.Reset();Simulation.ReviveTextRaised+=revive.Add;Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;Simulation.LevelledUp+=OnLevelledUp;ReviewArgsApply();ApplySettingsOptions();
@@ -421,11 +423,14 @@ namespace Exoduser.UnityPort
             foreach(var e in Simulation.Enemies){if(!e.Alive||e.IsBoss||!(e.Hp<e.MaxHp||e.MaxShield>0&&e.Shield<e.MaxShield))continue;float ebw=e.Radius*2+6;var ebA=ToGUI(e.X-ebw/2,e.Y-e.Radius-16);var ebB=ToGUI(e.X+ebw/2,e.Y-e.Radius-16);float ebWid=ebB.x-ebA.x,ebHgt=Mathf.Max(2,4*ebWid/ebw);
                 Fill(new Rect(ebA.x,ebA.y,ebWid,ebHgt),new Color(0,0,0,.6f));Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Clamp01((float)e.Hp/e.MaxHp),ebHgt),new Color(.8f,0,0));if(e.MaxShield>0&&e.Shield>0)Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Min(1,e.Shield/e.MaxShield),ebHgt),new Color(.267f,.667f,1f));}
             DrawFieldBossBars();
-            floatingTextLayout.Clear();
+            floatingTextLayout.BeginFrame(Time.unscaledTime);
+            floatingTextLayout.Reserve(new NativeFloatingTextLayout.Box(0,0,160,176));floatingTextLayout.Reserve(new NativeFloatingTextLayout.Box(1600,0,320,190));
             if(Simulation.Stage.InArena&&druidBody!=null&&druidBody.Visible){var bounds=druidBody.Bounds;var a=HudCamera.WorldToScreenPoint(new Vector3(bounds.min.x,bounds.max.y,bounds.center.z));var b=HudCamera.WorldToScreenPoint(new Vector3(bounds.max.x,bounds.min.y,bounds.center.z));floatingTextLayout.Reserve(new NativeFloatingTextLayout.Box(a.x*1920/Screen.width,(Screen.height-a.y)*1080/Screen.height,(b.x-a.x)*1920/Screen.width,(a.y-b.y)*1080/Screen.height));}
-            foreach(var d in damage){var pt=ToGUI(d.x,d.y);var keep=center.normal.textColor;int keepSize=center.fontSize;center.fontSize=24;string text=d.amount.ToString();var size=center.CalcSize(new GUIContent(text));var box=floatingTextLayout.Place(pt.x,pt.y-100-(1-(d.until-Time.unscaledTime))*30,size.x+12,32);if(box.Width<=0){center.fontSize=keepSize;continue;}var rect=new Rect(box.X,box.Y,box.Width,box.Height);center.normal.textColor=new Color(0,0,0,.9f);GUI.Label(new Rect(rect.x+1,rect.y+2,rect.width,rect.height),text,center);center.normal.textColor=d.shield?new Color(.4f,.87f,1f):keep;GUI.Label(rect,text,center);center.normal.textColor=keep;center.fontSize=keepSize;}
+            foreach(var d in damage)if(!d.submitted){d.submitted=true;damageFloaters.Add(d.x,d.y,d.amount.ToString(),d.shield?"#66ddff":"#ead7ac",d.shield?"enemy-shield":"enemy-hp",1,d.until-1,1,true,d.amount);}
+            foreach(var n in damageFloaters.Live(Time.unscaledTime))NativeReviveHud.Offer(floatingTextLayout,n,ToGUI(n.X,n.Y),center);
             DrawPracticeShots();
-            revive.Font=font;revive.English=lobby.Language!="ko";revive.DrawFloaters(ToGUI,center,floatingTextLayout);
+            revive.Font=font;revive.English=lobby.Language!="ko";revive.CollectFloaters(ToGUI,center,floatingTextLayout);
+            floatingTextLayout.Resolve();NativeReviveHud.DrawRequests(floatingTextLayout,center);
             if(Time.unscaledTime<noticeUntil)GUI.Label(new Rect(560,180,800,45),notice,center);
             if(levelUp.Active){var lp=HudCamera.WorldToScreenPoint(Point(p.X,p.Y));levelUp.Draw(new Vector2(lp.x,Screen.height-lp.y));}
             // Stage-clear panel: Unity has no stage-clear / boss / exit event yet, so nothing calls stageClear.Show(); once an event exists it is drawn here.
@@ -634,5 +639,50 @@ namespace Exoduser.UnityPort
         [Serializable] sealed class SmokeReceipt{public bool moved,webViewUsed,charged,released;public float initialX,finalX,maximumCharge;public int originalMapChunks,loadedChunks,enemyActors,maximumProjectiles,kills,totalDamage;public FeedbackAudioReceipt feedbackAudio;public ImpactReceipt feedbackVisual;}
         [Serializable] sealed class HudSmokeReceipt{public string scope,activeSkill,iconResource;public bool iconDrawn;public HudPixelProbe[] cases;}
         void OnDestroy(){NativePanelTabBar.Requested-=OnPanelRequested;kiView?.Dispose();boltView?.Dispose();impacts?.Dispose();skillView?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();music?.Dispose();ambient?.Dispose();if(Instance==this)Instance=null;}
+        [Serializable] sealed class TextReviewLabel {public string text;public int count,priority;public long value;public float originX,originY,x,y,width,height,distance;}
+        [Serializable] sealed class TextReviewShot {public string name,kind,note;public int tick,visible,deferred,stateEvents,damageEvents;public float realSeconds;public List<TextReviewLabel> labels=new List<TextReviewLabel>();}
+        readonly List<TextReviewShot> textReviewShots=new List<TextReviewShot>();float textReviewStart;
+        IEnumerator TextReviewShotSave(string output,string name,string kind,string note){
+            yield return new WaitForEndOfFrame();
+            var r=new TextReviewShot{name=name,kind=kind,note=note,tick=Simulation.TickCount,realSeconds=Time.unscaledTime-textReviewStart,stateEvents=revive.SourceEvents,damageEvents=damageFloaters.InputEvents};
+            foreach(var q in floatingTextLayout.Requests){var b=q.Box;if(b.Width>0)r.visible++;else r.deferred++;r.labels.Add(new TextReviewLabel{text=q.Notice.DisplayText,count=q.Notice.Count,priority=q.Notice.Priority,value=q.Notice.Value,originX=q.X,originY=q.Y,x=b.X,y=b.Y,width=b.Width,height=b.Height,distance=b.Width>0?Vector2.Distance(new Vector2(q.X,q.Y),new Vector2(b.X+b.Width/2,b.Y+b.Height/2)):0});}
+            textReviewShots.Add(r);ScreenCapture.CaptureScreenshot(Path.Combine(output,name+".png"));yield return null;
+            File.WriteAllText(Path.Combine(output,name+".json"),JsonUtility.ToJson(r,true));
+        }
+        // 이번 문자 재작업의 선택 실행 QA. 일반 실행/M1에는 들어가지 않는다.
+        IEnumerator BossTextLocalityCapture(){
+            string output=Argument("-output");
+            if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))||!NativeReviewArgs.BossDirect){Debug.LogError("문자 QA는 명시적 출력·격리저장·boss-direct 인자가 필요");Application.Quit(2);yield break;}
+            Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;smokeActive=true;pauseSmoke=true;
+            lobby.ShowLobby();lobby.SelectPreview();if(!lobby.EnterNativeTest()){Application.Quit(2);yield break;}menu=false;Running=false;frontendEntryInputFence=false;EndFirstPractice(true);BossDirectEnter();
+            Screen.SetResolution(1600,900,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
+            var sim=Simulation;var p=sim.Player;int entry=0;
+            while((!sim.Stage.InArena||sim.Stage.LoadPhase!=0)&&entry++<900){StepInput(0,0,p.X+100,p.Y,false,false);yield return null;}
+            var boss=sim.Stage.FindBoss();if(boss==null){Debug.LogError("문자 QA 아레나 진입 실패");Application.Quit(2);yield break;}
+            p.X=boss.X+260;p.Y=boss.Y;sim.Config.EnemyAiEnabled=true;damage.Clear();damageFloaters.Clear();revive.Reset();textReviewStart=Time.unscaledTime;
+            bool low=false,medium=false;var cadence=new WaitForFixedUpdate();
+            for(int tick=0;tick<1500;tick++){
+                p.Hp=p.MaxHp;p.Shield=p.MaxShield; // 관찰용 생존 보조. 피해 이벤트/AI/수치 규칙은 실제 경로.
+                StepInput(0,0,boss.X,boss.Y,tick%150<100,false);yield return cadence;
+                int count=0;foreach(var q in floatingTextLayout.Requests)if(q.Box.Width>0)count++;
+                if(!low&&tick>90&&count>=1&&count<=2){low=true;yield return TextReviewShotSave(output,"natural-low","실제 AI·실시간 입력 저밀도","직접 보스 진입·매틱 생존자원 보조. 문자 직접주입0, 약60틱/초의 StepInput 공격 입력");}
+                if(!medium&&tick>180&&count>=3){medium=true;yield return TextReviewShotSave(output,"natural-medium","실제 AI·실시간 입력 중밀도","문자 직접주입0. 실제 사건이 3개 이상 함께 표시된 프레임");}
+                if(low&&medium&&tick>360)break;
+            }
+            if(!medium)yield return TextReviewShotSave(output,"natural-observed","실제 AI·관측 밀도","중밀도3개 동시표시 조건이 관측되지 않음. 이 장면을 중밀도 PASS로 세지 않음");
+            sim.Config.EnemyAiEnabled=false;damage.Clear();damageFloaters.Clear();revive.Reset();
+            float bx=boss.X,by=boss.Y;
+            for(int i=0;i<40;i++)damage.Add(new DamageText{x=bx,y=by,amount=12,until=Time.unscaledTime+1});
+            string[] words={"휘두르기!","충격파!","강타!","잡기!","돌진!","맹독!","기포 폭풍!","지속 피해!","연속 베기!","독안개!"};
+            foreach(var word in words)revive.Add(new ReviveText{X=bx,Y=by,Ko=word,En=word,Color="#44aaff",Life=60});
+            revive.Add(new ReviveText{X=bx,Y=by,Ko="Q!",En="Q!",Color="#44ff44",Life=60});revive.Add(new ReviveText{X=bx,Y=by,Ko="쉴드 파괴!",En="Shield Break!",Color="#4488ff",Life=60});
+            yield return null;yield return TextReviewShotSave(output,"synthetic-high","별도 합성 고밀도","피해12×40=480 + 서로다른 예고10 + Q/쉴드파괴2 직접주입. 자연플레이 아님");
+            for(int i=0;i<12;i++){StepInput(1,0,boss.X,boss.Y,false,false);yield return cadence;}
+            yield return TextReviewShotSave(output,"synthetic-moving","합성 사건·실제 이동 입력","12틱 오른쪽 이동으로 카메라/사건 앵커가 이동. 전역 재배치 떨림·몸 가림 확인");
+            File.WriteAllText(Path.Combine(output,"text-review.json"),JsonUtility.ToJson(new TextReviewSummary{naturalLow=low,naturalMedium=medium,shots=textReviewShots},true));
+            yield return new WaitForSecondsRealtime(.4f);Application.Quit(low&&medium?0:3);
+        }
+        [Serializable] sealed class TextReviewSummary {public string scope="보스 문자 근거리 표시 QA, 손 조작/자연 입장 종단검수 아님";public bool naturalLow,naturalMedium;public List<TextReviewShot> shots;}
+
     }
 }
