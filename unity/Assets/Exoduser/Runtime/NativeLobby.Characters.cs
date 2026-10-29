@@ -155,10 +155,7 @@ namespace Exoduser.UnityPort
   }
   void DrawSelectedCharacter()
   {
-   if(Characters.SelectedIndex<0){DrawAncestor();return;}
-   Image(new Rect(290,220,700,760),warriorArt);
-   Label(new Rect(250,910,790,68),Characters.SelectedName,characterTitle,TextAnchor.MiddleCenter);
-   Label(new Rect(250,982,790,40),K("전사 · 플레이 미리보기","Warrior · Play preview"),characterSmall,TextAnchor.MiddleCenter);
+   SilverStyles();if(Characters.SelectedIndex<0){DrawAncestor();return;}EnsureSilverVisual();DrawSilverScene(new Rect(0,0,1360,1080),0);Label(new Rect(383,950,500,60),Characters.SelectedName,silverName,TextAnchor.MiddleCenter);Label(new Rect(383,1010,500,24),K("전사","WARRIOR"),silverMicro,TextAnchor.MiddleCenter);
   }
   void DrawCharacterModal()
   {

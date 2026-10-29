@@ -83,6 +83,7 @@ namespace Exoduser.UnityPort
   void CloseCharacterPresentationVideo(){if(characterPresentationPlayback!=null&&characterPresentationPlayback.Video!=null)characterPresentationPlayback.Video.Close();presentationVideoVisual=-1;}
   void DrawCharacterVisualPresentation()
   {
+   if(Screen.width>=1100){DrawSilverCharacterVisual();return;}
    CharacterStyles();float w=Screen.width,h=Screen.height;int i=Mathf.Clamp(characterVisual,0,4);bool locked=i!=0;
    float px=Mathf.Min(w*.04f,64),side=Mathf.Min(w*.26f,340),gap=Mathf.Min(w*.02f,28);
    float bodyY=Mathf.LerpUnclamped(128.467f,143.992f,(h-720f)/360f),actionY=h-Mathf.Min(h*.03f,30)-46.5f;

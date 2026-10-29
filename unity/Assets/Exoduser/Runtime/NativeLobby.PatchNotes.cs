@@ -96,7 +96,8 @@ namespace Exoduser.UnityPort
   void DrawPatchNotesLauncher()
   {
    LoadPatchNotes();
-   Rect rect=NativeLobbyBuildLabels.OverlayBounds();
+   Rect rect=new Rect(1744,866,60,42);
+   Label(rect,BuildFlavor.Current.Label,silverMicro??lobbyMicro,TextAnchor.MiddleCenter);
    // LT-3: the web has ONE top-left overlay (#lobbyVerOverlay, drawn by NativeLobbyBuildLabels) and it is also the patch-notes opener; this launcher only owns the click area / focus ring.
    // It used to draw its own "vX / OFFLINE" text from the first patch-notes entry on top of that overlay (two shifted copies, an old version).
    GUI.SetNextControlName("patch-notes-open");

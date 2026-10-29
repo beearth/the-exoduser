@@ -177,10 +177,10 @@ namespace Exoduser.UnityPort
    EnsureStartupGradients();GUI.DrawTexture(new Rect(0,0,sw,sh),startupGuideGradient);
    int step=startup.Page==FrontendEntryPage.Curtain?Mathf.Clamp(guidePhysicalStep,0,3):startup.GuideStep;if(guidePhysicalStep!=step){guidePhysicalStep=step;guideScroll=Vector2.zero;}
    bool pad=ExoInput.PadConnected;
-   float panelW=Mathf.Min(720,Mathf.Max(120,sw-96)),w=panelW-24,keyW=Mathf.Max(160,w*.38f),descW=Mathf.Max(20,w-keyW-20);
+   float panelW=Mathf.Min(720,Mathf.Max(120,sw-96)),w=panelW-104,keyW=Mathf.Max(160,w*.38f),descW=Mathf.Max(20,w-keyW-20);
    float dialogueFont=GuideClamp(28.8f,sw*.026f,41.6f),titleFont=GuideClamp(20.8f,sw*.018f,28),bodyFont=GuideClamp(16,sw*.0135f,20.8f),keyFont=bodyFont*.86f;
    float dialogueH=dialogueFont*1.25f,titleH=titleFont*(31/23.04f),lineH=bodyFont*1.65f;
-   var serif=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular")??guideText.font;
+   var serif=NativeSilverHellUi.Font(true)??Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular")??guideText.font;
    foreach(var st in new[]{guideDialogue,guideTitle,guideText,guideKey,guideProgress,guideAction}){st.padding=new RectOffset();st.margin=new RectOffset();st.alignment=TextAnchor.UpperLeft;st.wordWrap=false;}
    guideText.font=serif;guideKey.font=serif;guideTitle.font=serif;guideDialogue.font=serif;
    var keys=new List<string>();var descriptions=new List<string>();var heights=new List<float>();float bodyH=0;
@@ -189,21 +189,22 @@ namespace Exoduser.UnityPort
    string note=K("물약은 자동 사용","Potions activate automatically"),hint=pad?K("A · 다음 / Start · 건너뛰기","A · Next / Start · Skip"):K("클릭 / Enter / Space · 다음    Space 길게 / ESC · 건너뛰기","Click / Enter / Space · Next    Hold Space / ESC · Skip");
    float noteH=step==3?GuidePhysicalLines(note,guideText,15.2f,0,w).Count*20.52f:0,hintH=GuidePhysicalLines(hint,guideText,13.6f,.544f,w).Count*17;
    // Source normal line boxes: progress16; empty English line still contributes margin-top10.
-   float total=20+16+12+dialogueH+10+24+22+titleH+14+bodyH+(step==3?16+noteH:0)+20+hintH+22+45+20;
+   float total=34+16+12+dialogueH+10+24+22+titleH+14+bodyH+(step==3?16+noteH:0)+20+hintH+22+46+40;
    float visibleH=Mathf.Min(total,Mathf.Max(80,sh-48)),left=(sw-panelW)/2,top=(sh-visibleH)/2;
+   NativeSilverHellUi.Panel(new Rect(left,top,panelW,visibleH));
    guideScroll=GUI.BeginScrollView(new Rect(left,top,panelW,visibleH),guideScroll,new Rect(0,0,panelW-(total>visibleH?16:0),total),false,total>visibleH);
-   float x=12,y=20;GuidePhysicalText(new Rect(x,y,w,16),(step+1)+" / 4",guideProgress,12,3,16);y+=28;
+   float x=52,y=34;GuidePhysicalText(new Rect(x,y,w,16),(step+1)+" / 4",guideProgress,12,3,16);y+=28;
    GuidePhysicalText(new Rect(x,y,w,dialogueH),K(GuideDialogue[step][0],GuideDialogue[step][1]),guideDialogue,dialogueFont,dialogueFont*.12f,dialogueH);y+=dialogueH+10+24;
    Fill(new Rect(x,y-6,64,1),new Color(.651f,.561f,.404f,.62f*startupGuideOpacity));y+=22;
    GuidePhysicalText(new Rect(x,y,w,titleH),K(GuideTitles[step][0],GuideTitles[step][1]),guideTitle,titleFont,titleFont*.14f,titleH);y+=titleH+14;
    for(int i=0;i<keys.Count;i++){GuidePhysicalText(new Rect(x,y,keyW,heights[i]),keys[i],guideKey,keyFont,keyFont*.08f,lineH);GuidePhysicalText(new Rect(x+keyW+20,y,descW,heights[i]),descriptions[i],guideText,bodyFont,bodyFont*.04f,lineH);y+=heights[i]+(i+1<keys.Count?9:0);}
    if(step==3){y+=16;GuidePhysicalText(new Rect(x,y,w,noteH),note,guideText,15.2f,0,20.52f);y+=noteH;}
    y+=20;GuidePhysicalText(new Rect(x,y,w,hintH),hint,guideProgress,13.6f,.544f,17);y+=hintH+22;
-   Rect skip=new Rect(x,y,120,45),next=new Rect(x+w-120,y,120,45);DrawGuideButton(skip,K("건너뛰기","Skip"),guideSkipFocus);DrawGuideButton(next,step==3?K("시작","Start"):K("다음","Next"),!guideSkipFocus);
+   Rect skip=new Rect(x,y,168,46),next=new Rect(x+w-168,y,168,46);DrawGuideButton(skip,K("건너뛰기","Skip"),guideSkipFocus);DrawGuideButton(next,step==3?K("시작","Start"):K("다음","Next"),!guideSkipFocus);
    Fill(new Rect(skip.x,skip.y,skip.width*(float)startup.HoldProgress,skip.height),new Color(.8f,.718f,.537f,.25f*startupGuideOpacity));
    var e=Event.current;if(!startupInputFence&&e.type==EventType.MouseDown&&e.button==0){if(skip.Contains(e.mousePosition))startup.Skip();else startup.Advance();e.Use();}
    GUI.EndScrollView();
   }
-  void DrawGuideButton(Rect r,string text,bool focus){bool hover=r.Contains(Event.current.mousePosition);Fill(r,focus||hover?new Color(.161f,.125f,.078f,startupGuideOpacity):new Color(.082f,.067f,.051f,startupGuideOpacity));Border(r,focus?new Color(.773f,.671f,.486f,startupGuideOpacity):new Color(.392f,.337f,.267f,startupGuideOpacity),1);guideAction.fontSize=16;guideAction.alignment=TextAnchor.MiddleCenter;Label(r,text,guideAction,TextAnchor.MiddleCenter);}
+  void DrawGuideButton(Rect r,string text,bool focus){bool hover=r.Contains(Event.current.mousePosition);var old=GUI.color;if(focus||hover)GUI.color=new Color(old.r*1.18f,old.g*1.18f,old.b*1.18f,old.a);NativeSilverHellUi.Button(r);GUI.color=old;guideAction.font=NativeSilverHellUi.Font(true)??guideText.font;guideAction.fontStyle=FontStyle.Normal;guideAction.fontSize=16;guideAction.normal.textColor=NativeSilverHellUi.Text;GuidePhysicalText(r,text,guideAction,16,16*.24f,46);}
  }
 }
