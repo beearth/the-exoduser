@@ -426,7 +426,7 @@ namespace Exoduser.UnityPort
             floatingTextLayout.BeginFrame(Time.unscaledTime);
             floatingTextLayout.Reserve(new NativeFloatingTextLayout.Box(0,0,160,176));floatingTextLayout.Reserve(new NativeFloatingTextLayout.Box(1600,0,320,190));
             if(Simulation.Stage.InArena&&druidBody!=null&&druidBody.Visible){var bounds=druidBody.Bounds;var a=HudCamera.WorldToScreenPoint(new Vector3(bounds.min.x,bounds.max.y,bounds.center.z));var b=HudCamera.WorldToScreenPoint(new Vector3(bounds.max.x,bounds.min.y,bounds.center.z));floatingTextLayout.Reserve(new NativeFloatingTextLayout.Box(a.x*1920/Screen.width,(Screen.height-a.y)*1080/Screen.height,(b.x-a.x)*1920/Screen.width,(a.y-b.y)*1080/Screen.height));}
-            foreach(var d in damage)if(!d.submitted){d.submitted=true;damageFloaters.Add(d.x,d.y,d.amount.ToString(),d.shield?"#66ddff":"#ead7ac",d.shield?"enemy-shield":"enemy-hp",1,d.until-1,1,true,d.amount);}
+            foreach(var d in damage)if(!d.submitted){d.submitted=true;damageFloaters.Add(d.x,d.y,d.amount.ToString(),d.shield?"#66ddff":"#ead7ac",d.shield?"enemy-shield":"enemy-hp",NativeFloatingTextLayout.DamagePriority,d.until-1,1,true,d.amount);}
             foreach(var n in damageFloaters.Live(Time.unscaledTime))NativeReviveHud.Offer(floatingTextLayout,n,ToGUI(n.X,n.Y),center);
             DrawPracticeShots();
             revive.Font=font;revive.English=lobby.Language!="ko";revive.CollectFloaters(ToGUI,center,floatingTextLayout);

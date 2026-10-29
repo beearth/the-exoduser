@@ -20,7 +20,7 @@ namespace Exoduser.UnityPort
             string text=Clean(English?t.En:t.Ko);if(text.Length==0)return;
             long value;bool numeric=long.TryParse(text,System.Globalization.NumberStyles.AllowLeadingSign,System.Globalization.CultureInfo.InvariantCulture,out value);
             string color=t.Color??"#ffffff";
-            floaters.Add((float)t.X,(float)t.Y,text,color,"state:"+color+(numeric?(value<0?":loss":":gain"):text),numeric?1:NativeFloatingTextLayout.PriorityFor(text),Time.unscaledTime,t.Life>0?t.Life/60f:35f/60f,numeric,value);
+            floaters.Add((float)t.X,(float)t.Y,text,color,"state:"+color+(numeric?(value<0?":loss":":gain"):text),numeric?NativeFloatingTextLayout.DamagePriority:NativeFloatingTextLayout.PriorityFor(text),Time.unscaledTime,t.Life>0?t.Life/60f:35f/60f,numeric,value);
         }
         string Clean(string s){
             if(string.IsNullOrEmpty(s))return "";var b=new StringBuilder();

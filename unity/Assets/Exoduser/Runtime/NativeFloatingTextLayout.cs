@@ -7,6 +7,7 @@ namespace Exoduser.UnityPort
     // 표현 전용: 수치 합계와 상태 원문을 보존하고 사건 근처에만 배치한다.
     public sealed class NativeFloatingTextLayout
     {
+        public const int DamagePriority=2, WarningPriority=1;
         public const float MergeSeconds = .18f, MergeX = 96, MergeY = 72;
         public struct Box {
             public float X,Y,Width,Height;
@@ -31,7 +32,7 @@ namespace Exoduser.UnityPort
                     }
                 }
                 // 같은 사건 지점의 일반 예고는 현재 두 개만. 치명 경고/패링/쉴드 파괴는 이 교체 대상이 아니다.
-                if(priority==2||priority==0){int cap=priority==2?2:1,count=0;foreach(var n in live)if(n.Priority==priority&&!n.Numeric&&Math.Abs(n.X-x)<=MergeX&&Math.Abs(n.Y-y)<=MergeY)count++;
+                if(priority==WarningPriority||priority==0){int cap=priority==WarningPriority?2:1,count=0;foreach(var n in live)if(n.Priority==priority&&!n.Numeric&&Math.Abs(n.X-x)<=MergeX&&Math.Abs(n.Y-y)<=MergeY)count++;
                     while(count>=cap){int oldest=-1;for(int i=0;i<live.Count;i++){var n=live[i];if(n.Priority==priority&&!n.Numeric&&Math.Abs(n.X-x)<=MergeX&&Math.Abs(n.Y-y)<=MergeY&&(oldest<0||n.Last<live[oldest].Last))oldest=i;}if(oldest<0)break;live.RemoveAt(oldest);Superseded++;count--;}}
                 live.Add(new Notice{Id=++nextId,X=x,Y=y,Text=text,Color=color,Channel=channel,Priority=priority,Born=now,Last=now,Life=Math.Max(.1f,life),Numeric=numeric,Value=value});
             }
@@ -39,7 +40,7 @@ namespace Exoduser.UnityPort
         public static int PriorityFor(string text){
             string[] urgent={"파괴","패링","PARRY","Q!","E!","사망","부활","구울","쓰러","집중","보호막","Break","Parry","Revive","Dead","Fallen"};
             foreach(string word in urgent)if(text.IndexOf(word,StringComparison.OrdinalIgnoreCase)>=0)return 3;
-            return text.IndexOf('!')>=0?2:0;
+            return text.IndexOf('!')>=0?WarningPriority:0;
         }
         public sealed class Request {public Notice Notice;public float X,Y,Width,Height;public Box Box;}
         sealed class Slot {public float DX,DY,Seen;}
@@ -49,14 +50,14 @@ namespace Exoduser.UnityPort
         public void BeginFrame(float time){now=time;occupied.Clear();requests.Clear();var dead=new List<long>();foreach(var s in slots)if(time-s.Value.Seen>2)dead.Add(s.Key);foreach(var id in dead)slots.Remove(id);}
         public void Reserve(Box box){if(box.Width>0&&box.Height>0)occupied.Add(box);}
         public void Offer(Notice n,float x,float y,float width,float height){requests.Add(new Request{Notice=n,X=x,Y=y,Width=Math.Min(312,width),Height=Math.Min(68,height)});}
-        public void Resolve(){requests.Sort((a,b)=>{int p=b.Notice.Priority.CompareTo(a.Notice.Priority);if(p!=0)return p;p=b.Notice.Last.CompareTo(a.Notice.Last);return p!=0?p:a.Notice.Id.CompareTo(b.Notice.Id);});foreach(var r in requests)r.Box=Place(r.Notice.Id,r.X,r.Y,r.Width,r.Height,r.Notice.Priority);}
-        public static float Radius(int priority){return priority>=3?208:priority==2?176:144;}
+        public void Resolve(){requests.Sort((a,b)=>{int p=b.Notice.Priority.CompareTo(a.Notice.Priority);if(p!=0)return p;if(a.Notice.Numeric&&b.Notice.Numeric){p=b.Notice.Count.CompareTo(a.Notice.Count);if(p!=0)return p;}p=b.Notice.Last.CompareTo(a.Notice.Last);return p!=0?p:a.Notice.Id.CompareTo(b.Notice.Id);});foreach(var r in requests)r.Box=Place(r.Notice.Id,r.X,r.Y,r.Width,r.Height,r.Notice.Priority);}
+        public static float Radius(int priority){return priority>=3?208:priority==DamagePriority?144:priority==WarningPriority?176:144;}
         bool Fits(Box box,float x,float y,float radius){
             float dx=box.X+box.Width/2-x,dy=box.Y+box.Height/2-y;if(dx*dx+dy*dy>radius*radius+.1f)return false;
             foreach(var o in occupied)if(new Box(box.X-2,box.Y-2,box.Width+4,box.Height+4).Overlaps(o))return false;return true;
         }
         Box At(float x,float y,float width,float height){return new Box(Math.Max(8,Math.Min(1912-width,x-width/2)),Math.Max(128,Math.Min(864-height,y-height/2)),width,height);}
-        public Box Place(long id,float x,float y,float width,float height,int priority=1){
+        public Box Place(long id,float x,float y,float width,float height,int priority=DamagePriority){
             width=Math.Min(312,Math.Max(1,width));height=Math.Min(68,Math.Max(1,height));float radius=Radius(priority);Slot keep;
             if(slots.TryGetValue(id,out keep)){var held=At(x+keep.DX,y+keep.DY,width,height);if(Fits(held,x,y,radius)){occupied.Add(held);keep.Seen=now;return held;}}
             var choices=new List<Box>{At(x,y-30,width,height),At(x,y+30,width,height)};
