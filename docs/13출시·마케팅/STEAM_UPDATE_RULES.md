@@ -75,7 +75,7 @@
 | `docs/13출시·마케팅/patch_notes/v<version>.md` | frontmatter `version/date/status(draft\|final)` + `## KO`/`## EN` + `### 분류`(새 기능/개선/버그 수정/밸런스 · New/Improved/Fixed/Balance) + `- 항목` |
 | `tools/patch-notes.mjs` | `draft --from <tag> --version X.Y.Z`(태그 없으면 `--since <날짜>`) — 커밋 제목 수집, docs/chore/test/qa/guard/tools/refactor/내부 커밋 제외, 해시·트래커ID 제거 후 분류별 초안(`status: draft`) 생성. `build [--include-draft]` — `status: final` 노트(옵션 시 최신 초안 포함)를 최신순 5개로 `patch-notes.js` 생성 |
 | `patch-notes.js` (생성물, 커밋함) | `window.EXODUSER_PATCH_NOTES=[{version,date,ko:{sections},en:{sections}},…]` |
-| 게임 내 표시 | 로비 좌상단 버전 오버레이(`#lobbyVerOverlay`, 키보드 Enter/Space 가능) 클릭 → Hell Gothic 패치노트 패널(`#patchNotesPanel`). KO/EN은 해당 언어, 그 외 언어는 EN 폴백. 닫기 버튼·Esc·배경 클릭으로 닫힘 |
+| 게임 내 표시 | 로비 우하단의 보이는 버전 버튼(`#lobbyVersionTxt`) 클릭·Enter/Space → Hell Gothic 패치노트 패널(`#patchNotesPanel`). 좌상단 개발 정보(`#lobbyVerOverlay`)는 출시 CSS에서 숨김. KO/EN은 해당 언어, 그 외 언어는 EN 폴백. 닫기 버튼·Esc·배경 클릭으로 닫히고 버전 버튼으로 포커스 복귀 |
 | 테스트 | `test/releaseVersion.test.js` — bump/check/노트 파싱/빌드 정렬/커밋 필터 8케이스 |
 
 ### 7.3 매일 09:00 자동 파이프라인
