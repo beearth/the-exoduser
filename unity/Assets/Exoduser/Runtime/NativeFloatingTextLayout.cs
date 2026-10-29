@@ -14,6 +14,7 @@ namespace Exoduser.UnityPort
         }
         readonly List<Box> placed = new List<Box>();
         public void Clear() { placed.Clear(); }
+        public void Reserve(Box box) { placed.Add(box); }
         public Box Place(float centerX, float top, float width, float height)
         {
             width = Math.Min(1904, Math.Max(1, width));

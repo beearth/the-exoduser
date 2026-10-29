@@ -25,13 +25,11 @@ namespace Exoduser.UnityPort
             string s = Clean(English ? t.En : t.Ko);
             if (s.Length == 0) return;
             float x = (float)t.X, y = (float)t.Y;
-            // the web stacks several addTxt lines on one spot; keep them readable by lifting a line that would sit on a live one (~22 screen px apart)
-            for (int guard = 0; guard < 8; guard++)
-            {
-                bool hit = false;
-                foreach (var f in floaters) if (Time.unscaledTime - f.born < f.life * .8f && Mathf.Abs(f.x - x) < 130 && Mathf.Abs(f.y - y) < 16) { y = f.y - 16; hit = true; break; }
-                if (!hit) break;
-            }
+            // 같은 근접 지점에서 120ms 안에 반복되는 동일 문구는 한 자리에서 갱신한다.
+            // 기존 월드 16px 누적 이동은 화면 배치와 충돌하므로 화면의 공용 레이아웃에 맡긴다.
+            foreach (var f in floaters)
+                if (f.text == s && f.col == c && Time.unscaledTime - f.born < .12f && Mathf.Abs(f.x - x) < 130 && Mathf.Abs(f.y - y) < 80)
+                { f.born = Time.unscaledTime; return; }
             floaters.Add(new Floater { x = x, y = y, born = Time.unscaledTime, life = Math.Max(.9f, t.Life / 60f), text = s, col = c });
         }
 

@@ -60,7 +60,7 @@ namespace Exoduser.UnityPort
             // 원본 피부 결을 지우던 +1.3 EV 노출과 붉은 색조를 이 필드의 프로필 사본에서만 조정한다.
             foreach (var root in r3Roots) foreach (var volume in root.GetComponentsInChildren<Volume>(true))
                 if (volume.profile != null && volume.profile.TryGet<ColorAdjustments>(out var tone))
-                { tone.postExposure.Override(.25f); tone.saturation.Override(-18f); tone.colorFilter.Override(new Color(.82f,.9f,1f)); }
+                { tone.postExposure.Override(1f); tone.saturation.Override(-18f); tone.colorFilter.Override(new Color(.82f,.9f,1f)); }
             r3Loaded = true; r3Loading = false;
             Remodel3DSetActive(!Simulation.Stage.InArena);
         }

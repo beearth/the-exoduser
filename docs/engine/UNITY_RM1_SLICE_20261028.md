@@ -66,13 +66,15 @@
 |---|---|---|
 | 빛줄기 | Hell 1/2 강도 0.035/0.028, 셰이더 상한 0.05, 가로 감쇠 제곱, 세로 0~0.75 진입·0.75~1 퇴장 smoothstep. 바닥 끝 사각형 단절 제거 | 빌더·두 재질·LightShaft.shader |
 | 카메라 | 실제 화면 높이 H로 2·atan(H/2800), 900p 35.65도. 거리 14u·피치 .85rad·Core 카메라/판정은 유지 | NativeGame.Remodel3DViewport |
-| 필드 톤 | RM-1 로드 뒤 Volume 프로필 사본의 노출 +0.25EV, 채도 -18, 색 필터 (0.82,0.90,1). 공통 렌더 자산은 변경하지 않음 | NativeGame.Remodel3DLoad |
+| 필드 톤 | RM-1 로드 뒤 Volume 프로필 사본의 노출 +1.0EV, 채도 -18, 색 필터 (0.82,0.90,1). 공통 렌더 자산은 변경하지 않음 | NativeGame.Remodel3DLoad |
 | 피부 결 | 기존 웹 컬러맵 4260×3031의 회색조→blur sigma1→중앙 차분×6, nx=-dx/길이·ny=dy/길이·nz=1/길이를 RGB로 인코딩한 normal. 최대4096, TerrainLayer Colormap normalScale .55 | Ground/ch1_1_r1r2_normal.png, TL_Colormap, 빌더 |
 | 피격막 | 원본 색 알파 .25×Core ScreenFlashAlpha. 처음 유효 알파 .0625, Core 감쇠 불변 | NativeGame.OnGUI, B07 정본 |
 | 보스 바닥·외곽 | 토양 Bilinear, 시각용 바깥 여백32타일, 점유 한 타일 확장 후 Px8 기준 반경10의 가로·세로 box blur3회로 벽 알파 감쇠. 원래 충돌·걷기·출구는 그대로 | NativeArenaView |
-| 피해·상태 문자 | 하나의 화면 배치 공유. 피해 font24, 검정 그림자(1,2), 측정 폭+12, 숫자 높이32/상태36, 간격4, 화면 x8~1912/y120~936 안에서 위→좌우로 배치. 512시도 초과 시 해당 프레임 숨김 | NativeFloatingTextLayout, NativeGame, NativeReviveHud |
+| 피해·상태 문자 | 하나의 화면 배치 공유. 피해 font24, 검정 그림자(1,2), 측정 폭+12, 숫자 높이32/상태36, 간격4, 화면 x8~1912/y120~936 안에서 위→좌우로 배치. 실제 보스 SpriteRenderer 경계를 예약해 몸 위 표시를 피함. 512시도 초과 시 해당 프레임 숨김 | NativeFloatingTextLayout, NativeGame, NativeReviveHud |
 | 결과 화면 | s=min(1,화면폭/1280,화면높이/900), 중앙 정렬·하단80×s 고정. 1600×900에서 원래 21px 제목·368px 결과폭 유지 | NativeStageClearOverlay |
 
 - 문자 배치 회귀: 변경 전 두 번째 문자에서 중첩 실패, 변경 후 40개 밀집 문자·HUD 경계·프레임 초기화·화면 밖 클램프 통과. `unity/Tools/visual-parity-tests`.
 - 기준 빌드 `f4642f85` 오류0, 숨은 D3D11 M1 `3c4f97a5` 23/23·종료0·창0·잔여0·USER_SAVE 변경0. 이 증거는 수정 전 기준이며 위 수정 후보의 검수로 재사용하지 않는다.
 - 출력: `I:/EXODUSER-Storage/unity-visual/ntfs-20261029/`. 최종 빌드·비교·통합은 진행 중이다.
+
+- 첫 후보 5a340b469의 Win 빌드 69e759cd·M1 bcad8039는 23/23·세이브 변경0. 직접 본 화면에서 노출+.25EV는 피부 결이 지나치게 어두워 시각 반려했고 +1.0EV로 수정한다. 반복 문구는 같은 색/내용·세계거리 x130/y80 이내·120ms 안이면 생성을 합치고 출현 시각만 갱신한다. Core 텍스트 이벤트·값·수명은 바꾸지 않으며, 실제 보스 몸 경계는 화면 배치 금지 영역으로 등록한다. 최종 검수는 다음 후보 영수증으로 구분한다.

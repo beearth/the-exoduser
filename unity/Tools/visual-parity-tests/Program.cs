@@ -21,6 +21,10 @@ static class Program
         Require(first.X == 924 && first.Y == 500, "프레임 초기화 뒤 잔여 배치");
         var edge = layout.Place(-100, -20, 170, 30);
         Require(edge.X >= 8 && edge.Y >= 120, "화면 밖 문구 클램프");
+        layout.Clear();
+        var actor = new NativeFloatingTextLayout.Box(760, 90, 400, 500);
+        layout.Reserve(actor);
+        for (int i = 0; i < 20; i++) Require(!layout.Place(960, 450, 90, 32).Overlaps(actor), "보스 실루엣 침범");
         Console.WriteLine("통과: 밀집 문자 40개 비중첩, HUD 보호, 프레임 초기화, 경계 클램프");
         return 0;
     }
