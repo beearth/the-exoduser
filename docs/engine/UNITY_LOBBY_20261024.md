@@ -129,8 +129,23 @@ Mac 일반앱의 첫Metal표시대기실패를 보존했으며, 렌더링옵션�
 | 우측 자막·메뉴·선택 안내 | `NativeLobby.UpdateLobbyTextScale`; `lobbyMicro=round(12/fit)` | 12px | 웹 보조 텍스트 12px 수준. 1920에서는 기존 12px 유지 |
 | 우측 OFFLINE·Steam 안내 | `lobbyMode=max(11,round(11.5/fit))`, `lobbyPromo=max(14,round(12/fit))`, `lobbyPromoDetail=max(11,round(12/fit))` | 약 12px | 3줄 Steam 문구의 행 높이를 57→67, 아래 보조 y653→660, 배너 y674→686으로 옮겨 겹침 방지 |
 | 슬롯 문구·전사 요약 | `lobbyText=max(15,round(12/fit))`, `characterSmall=max(20,round(16/fit))` | 각각 최소 12px·16px | 5/5 용량·직업/로컬 저장 캡션 읽기 |
-| 패치 노트 버튼 | `DrawPatchNotesLauncher`의 14,12,370×102 hit area 유지, 별도 버전·OFFLINE 텍스트 제거 | 중복 라벨 0 | 웹식 빌드 라벨 단일 caller와 패치 노트 접근 유지 |
+| 패치 노트 버튼 | `DrawPatchNotesLauncher`의 기존 14,12,370×102 hit area, 별도 버전·OFFLINE 텍스트 제거 | 중복 라벨 0 | 웹식 빌드 라벨 단일 caller와 패치 노트 접근 유지. hit area는 아래 후속에서 수정 |
 
 최종 Settings QA ARM64 Player의 실제 1280×720 및 1600×900 창, 전체/1x 화면과 `build-receipt-final.json`은 `_out/UNITY-MAC-LOBBY-READABILITY-20261029/`에 보존한다. 실행 파일 SHA-256 `2122a3706cebb29367200ec16d0f9ce8f0bb9a1ff165b8ce19ee1b9697efdc56`, 빌드 `Succeeded`/오류0. 최종 전체 캡처는 `final-canonical-1280-full.jpg`/`final-canonical-1600-full.jpg`, 각 해상도의 `top-left-1x`/`right-1x`가 실제 픽셀 크롭이다. 타이틀 막대가 64px 추가되므로 이미지 외곽 크기는 1280×784, 1600×964이다. 동일 격리 roster 파일 SHA-256 `67fa35976c91adaa5cce4fac107f4f1035f5c483bbf36abf8ccc6dde607dcf5a`로 A04 종료값과 같다.
 
 **VISUAL VERDICT: RETOUCH (Mac 로비 글자 가독성 범위).** 5/5 슬롯·우측 언어/안내/Steam 문구는 두 크기의 실제 창에서 물리 글자가 커지고 겹침이 없음을 확인했다. 좌상단의 패치노트 별도 문구를 제거해 버전/OFFLINE 이중 출력도 해소했다. 최신 웹 CSS 색을 그대로 적용한 좌상단 50% 회색 메타는 석재 배경 위에서 1x 판독 대비가 여전히 약하다. 다음 산출물은 로비 UI 디자인 담당이 웹 `#lobbyVerOverlay`의 명도 대비 토큰을 실제 5슬롯 화면에서 확정하고, Mac 담당이 같은 값을 정의 JSON에 동기화한 1280/1600 전체·1x 재검수본이다. 현재 웹 DOM 동일 5슬롯 실시간 대조는 브라우저 보안 정책 때문에 미검증이다. 전체 로비 아트·모든 언어·기타 해상도·hover/마우스 전환의 디자인 PASS는 주장하지 않는다.
+
+### 2026-10-29 표시·패치노트 hit/focus 범위 정합
+
+`NativeLobbyBuildLabels.OverlayBounds(offline)`가 좌상단 표시와 클릭·포커스 테두리의 공통 Rect를 계산한다. `fit=min(Screen.width/1920,Screen.height/1080)`, `unit=1/max(.1,fit)`, `size=round(12×unit)`, `letterSpacing=1.8×unit`이다. x/y는 웹 기준 (14,12)×unit, 너비는 현재 라벨·버전·OFFLINE/ONLINE·한도 문자열의 실제 glyph 폭 최대값+4×unit, 높이는 표시 행 수(3/4)×19.2×unit이다. 글자는 이 Rect의 x와 y+unit에서 각 행에 그린다. 버튼·키보드 초점 테두리는 같은 Rect를 사용하고 다른 UI/배경으로 확장하지 않는다. `NativeLobby.PatchNotes.cs`의 별도 라벨은 계속 0이다.
+
+첫 1280 실창에서 Tab은 좌상단 포커스를 잡지 못하고 Return이 선택 캐릭터 입장으로 갔다. `HandlePatchNotesKeys`에 다른 모달/언어창이 없고 초점 이름이 빈 경우 첫 Tab을 `patch-notes-open`에 지정하는 경로를 추가했다. 최종 Settings QA ARM64 Player는 `build-receipt-v2.json`의 `Succeeded`/오류0, 실행 파일 SHA-256 `723461b3a6199019e8720b2c56f48018a070266f4f4bc78809b29ecc960693e9`이다.
+
+| 실제 화면·입력 | 결과 |
+|---|---|
+| 1280×720 전체/1x | `1280-focus-restored.jpg`/`1280-focus-1x.jpg`: 첫 Tab으로 좌상단 네 줄을 감싼 테두리, 기존 370×102 고정 폭 없음. Return은 v0.7.9 패치 노트 모달을 열었고 `1280-modal-open.jpg`에 본문 표시. 모달에서 N은 뒤 캐릭터 창을 열지 않았고 Esc로 닫은 뒤 같은 좌상단 포커스 테두리 복귀. |
+| 1600×900 전체/1x | `1600-focus-v2.jpg`/`1600-focus-1x.jpg`: 첫 Tab의 테두리가 같은 물리 글자 범위에 맞고 하단 limits 줄 잘림·이중 글자 없음. |
+| 상태 보존 | 격리 로스터 `characters.v1.json` SHA-256 `67fa35976c91adaa5cce4fac107f4f1035f5c483bbf36abf8ccc6dde607dcf5a`로 이전 A04 값과 동일. |
+| 미검증 | CUA 좌표 클릭은 첫 후보에서 포인터만 이동하고 모달을 열지 않아 최종 버튼의 실제 마우스 hit는 확인하지 못했다. 동일 클릭 반복 없이 보류한다. 1600에서 모달 열기·Esc 경로는 별도 실행하지 않았다. |
+
+**VISUAL VERDICT: RETOUCH.** 표시와 포커스 범위 정합 및 1280 키보드 경로는 실제 화면에서 확인했다. 현재 웹 CSS와 같은 좌상단 50% 회색 메타 대비는 여전히 약하고, 마우스 열기는 미검증이다. 다음 Mac 미완료 1건은 로비 UI 담당의 웹 메타 대비 확정값을 Unity 정의에 동기화해 실제 마우스 hit까지 확인한 1280/1600 전체·1x 검수본이다.

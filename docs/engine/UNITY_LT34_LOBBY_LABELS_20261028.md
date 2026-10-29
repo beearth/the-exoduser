@@ -9,6 +9,8 @@
 | 로비가 같은 자리에 두 번 그렸다: `NativeLobbyBuildLabels.Draw`(웹 `#lobbyVerOverlay` 이식: 라벨 / 버전 / 모드 / 한도)와 `DrawPatchNotesLauncher`가 패치노트 첫 항목에서 만든 `vX · 날짜 / OFFLINE` 글자 | 웹의 왼쪽 위 오버레이는 하나이고 그것이 패치노트 여는 버튼도 겸한다. 런처는 글자를 그리지 않고 클릭 영역·포커스 링만 소유한다(`NativeLobby.PatchNotes.cs`) |
 | 버전이 웹 v0.7.9와 다른 옛 값(v0.7.5) | `Resources/Data/release_web.json`을 main `release-version.json`(0.7.9 · 2026-10-28 · ea-full)으로, `Resources/Data/patch_notes.json`을 main `patch-notes.js`(0.7.9 · 0.7.8 · 0.7.0)로 동기화했다. 항목 구조는 같다(0.7.0 항목이 바이트 단위로 같음을 확인) |
 
+2026-10-29 Mac 후속: LT-3의 글자 중복 제거 뒤 1280/1600에서 보존된 14,12,370×102 버튼은 역스케일된 좌상단 4줄의 실제 표시 범위와 어긋났다. `NativeLobbyBuildLabels.OverlayBounds`를 표시·hit·focus 공통 Rect로 사용하도록 좁게 수정했다. 수치·검수 근거는 [로비 문서](UNITY_LOBBY_20261024.md#2026-10-29-표시패치노트-hitfocus-범위-정합)에 둔다.
+
 ## LT-4 "이 Mac에 저장"
 
 | 원인 | 수정 |

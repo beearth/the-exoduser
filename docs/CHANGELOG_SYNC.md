@@ -1,3 +1,5 @@
+2026-10-29 Mac 로비 패치노트 hit/focus 정합: 좌상단 3/4줄의 실제 glyph 폭·행 높이를 공통 `OverlayBounds`로 계산해 표시·클릭·키보드 초점 테두리에 사용. 빈 초점의 첫 Tab을 패치노트 버튼에 연결. ARM64 Settings QA build Succeeded/오류0, 1280에서 Tab→Return 열기·N 뒤입력 차단·Esc 닫기/초점 복귀, 1600에서 표시·테두리 정합을 실제 확인. 마우스 hit 미검증·기존 메타 대비 RETOUCH 유지. [로비 문서](engine/UNITY_LOBBY_20261024.md#2026-10-29-표시패치노트-hitfocus-범위-정합).
+
 2026-10-29 Mac A04 5슬롯 로비 가독성 RETOUCH: 1280·1600 실제 Settings QA 화면에서 축소된 보조 글자를 웹 CSS 픽셀 수준으로 보정하고 좌상단 버전/OFFLINE의 이중 출력을 제거했다. 좌상단 색상은 최신 웹의 회색 반투명 정의로 동기화했다. 최종 빌드 Succeeded/오류0, 우측 겹침0, 로스터 SHA 불변. 좌상단 메타 대비는 정본 CSS 그대로여서 RETOUCH 유지. 캐릭터·로스터·프레임·미디어 변경0. [수치·근거·판정 경계](engine/UNITY_LOBBY_20261024.md#2026-10-29-mac-a04-5슬롯-로비-글자-가독성-후속).
 
 2026-10-29 Mac 첫 연습 마우스 버튼 브리지: 웹 `mouse2`(오른쪽)/`mouse1`(가운데)와 Unity 버튼 1(오른쪽)/2(가운데)을 입력 및 바인딩 캡처 양쪽에서 변환. ARM64 Settings QA build Succeeded/errors0; 실제 오른쪽 클릭 마법 처치 5/5, 첫 연습 1~9단계 PASS. 방향+Space 구르기 0/5는 CUA 동시 일반키 입력 제한으로 HOLD, 일반 몹·드롭 미검증. 같은 날 정식 보조키 UI 재시도에서 조작 탭 키보드 진입 PASS, 구르기 보조 버튼 CUA 클릭은 대기 상태 미진입·격리 설정 SHA 불변으로 HOLD. SHA 고정 Finder 검토 실행기는 별도 빈 marker root의 첫 로비와 중복 거부를 확인했다. 제품·기본키 변경 없음. [번호표·증거](engine/UNITY_MAC_PRACTICE_MOUSE_BRIDGE_20261029.md).

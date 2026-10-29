@@ -90,12 +90,13 @@ namespace Exoduser.UnityPort
     if(e.keyCode==KeyCode.Tab){GUI.FocusControl("patch-notes-close");e.Use();return;}
     e.Use();return;
    }
+   if(!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen&&e.keyCode==KeyCode.Tab&&string.IsNullOrEmpty(GUI.GetNameOfFocusedControl())){GUI.FocusControl("patch-notes-open");e.Use();return;}
    if(!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen&&GUI.GetNameOfFocusedControl()=="patch-notes-open"&&(e.keyCode==KeyCode.Return||e.keyCode==KeyCode.KeypadEnter||e.keyCode==KeyCode.Space)){OpenPatchNotes();e.Use();}
   }
   void DrawPatchNotesLauncher()
   {
    LoadPatchNotes();
-   Rect rect=new Rect(14,12,370,102);
+   Rect rect=NativeLobbyBuildLabels.OverlayBounds();
    // LT-3: the web has ONE top-left overlay (#lobbyVerOverlay, drawn by NativeLobbyBuildLabels) and it is also the patch-notes opener; this launcher only owns the click area / focus ring.
    // It used to draw its own "vX / OFFLINE" text from the first patch-notes entry on top of that overlay (two shifted copies, an old version).
    GUI.SetNextControlName("patch-notes-open");

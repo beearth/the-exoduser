@@ -18,13 +18,22 @@ namespace Exoduser.UnityPort {
    return xx-x;
   }
   public static float Width(string text,int size,float ls){var st=Style(size);float w=0;foreach(char ch in text)w+=st.CalcSize(new GUIContent(ch.ToString())).x+ls;return w;}
+  public static Rect OverlayBounds(bool offline=true){
+   var f=BuildFlavor.Current;var s=BuildFlavor.LobbyStyle;
+   float fit=Mathf.Min(Screen.width/1920f,Screen.height/1080f),unit=1/Mathf.Max(.1f,fit),ls=s.ls*unit;
+   int size=Mathf.RoundToInt(s.fontSize*unit);
+   float width=Mathf.Max(Width(f.Label,size,ls),Width(BuildFlavor.VersionLine,size,ls),Width(offline?s.modeOffline:s.modeOnline,size,ls));
+   if(!string.IsNullOrEmpty(f.Limits))width=Mathf.Max(width,Width(f.Limits,size,ls));
+   int rows=string.IsNullOrEmpty(f.Limits)?3:4;
+   return new Rect(s.overlayX*unit,s.overlayY*unit,width+4*unit,rows*s.lineHeight*unit);
+  }
   // powerCenterY = vertical centre of the quit button in the lobby layout; the corner label is centred on it (web: both 36px flex items, align-items:center)
   public static void Draw(float powerCenterY,bool offline=true){
    var f=BuildFlavor.Current;var s=BuildFlavor.LobbyStyle;
    float fit=Mathf.Min(Screen.width/1920f,Screen.height/1080f),unit=1/Mathf.Max(.1f,fit);
    int size=Mathf.RoundToInt(s.fontSize*unit);
    // top-left overlay: label / version / mode / limits, line-height 19.2px, text box 17px tall inside each line
-   float x=s.overlayX*unit,y=(s.overlayY+1f)*unit,lh=s.lineHeight*unit,ls=s.ls*unit;
+   Rect bounds=OverlayBounds(offline);float x=bounds.x,y=bounds.y+unit,lh=s.lineHeight*unit,ls=s.ls*unit;
    Text(x,y,17*unit,f.Label,size,s.color,ls);y+=lh;
    Text(x,y,17*unit,BuildFlavor.VersionLine,size,s.color,ls);y+=lh;
    Text(x,y,17*unit,offline?s.modeOffline:s.modeOnline,size,s.color,ls);y+=lh;
