@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Collections.Generic;
 using UnityEngine;
 using Exoduser.UnityPort.Core;
 
@@ -93,22 +94,43 @@ namespace Exoduser.UnityPort
    if(showLanguages||lobbyQuitPrompt||CharacterModalOpen)return;
    string focused=GUI.GetNameOfFocusedControl();
    if(e.keyCode==KeyCode.Tab){
-    string[] order={"character-create-card","lobby-enter","lobby-cinematic","lobby-steam","patch-notes-open","lobby-quit"};
-    int at=Array.IndexOf(order,focused),step=e.shift?-1:1;
-    for(int i=0;i<order.Length;i++){
-     at=at<0?(e.shift?order.Length-1:0):(at+step+order.Length)%order.Length;
-     if((order[at]!="lobby-enter"||Characters.SelectedIndex>=0)&&(order[at]!="character-create-card"||characterWritesAllowed&&Characters.Count<CharacterRoster.Capacity))break;
-    }
+    var order=LobbyFocusOrder();
+    int at=order.IndexOf(focused),step=e.shift?-1:1;
+    at=at<0?(e.shift?order.Count-1:0):(at+step+order.Count)%order.Count;
     GUI.FocusControl(order[at]);e.Use();return;
    }
    if(e.keyCode!=KeyCode.Return&&e.keyCode!=KeyCode.KeypadEnter&&e.keyCode!=KeyCode.Space)return;
-   if(focused=="patch-notes-open")OpenPatchNotes();
+   if(focused=="lobby-language")ToggleLanguages();
+   else if(focused=="lobby-scroll-up")characterScroll=Mathf.Max(0,characterScroll-1);
+   else if(focused=="lobby-scroll-down")characterScroll=Mathf.Min(Mathf.Max(0,Characters.Count-2),characterScroll+1);
+   else if(focused.StartsWith("lobby-card-",StringComparison.Ordinal)){
+    int index;if(!int.TryParse(focused.Substring("lobby-card-".Length),out index)||index<characterScroll||index>=Mathf.Min(characterScroll+2,Characters.Count))return;
+    SelectCharacter(index);
+   }
+   else if(focused.StartsWith("lobby-delete-",StringComparison.Ordinal)){
+    int index;if(!int.TryParse(focused.Substring("lobby-delete-".Length),out index)||index<characterScroll||index>=Mathf.Min(characterScroll+2,Characters.Count))return;
+    RequestCharacterDelete(index);
+   }
+   else if(focused=="patch-notes-open")OpenPatchNotes();
    else if(focused=="lobby-cinematic")ReplayIntro();
    else if(focused=="lobby-steam")Application.OpenURL("https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/");
    else if(focused=="lobby-quit")lobbyQuitPrompt=true;
    else if(focused=="lobby-enter"&&e.keyCode==KeyCode.Space)EnterSelectedCharacter();
    else return;
    e.Use();
+  }
+  List<string> LobbyFocusOrder()
+  {
+   var order=new List<string>{"lobby-language"};
+   if(characterScroll>0)order.Add("lobby-scroll-up");
+   if(characterScroll+2<Characters.Count)order.Add("lobby-scroll-down");
+   for(int index=characterScroll;index<Mathf.Min(characterScroll+2,Characters.Count);index++){
+    order.Add("lobby-card-"+index);order.Add("lobby-delete-"+index);
+   }
+   if(characterWritesAllowed&&Characters.Count<CharacterRoster.Capacity)order.Add("character-create-card");
+   if(Characters.SelectedIndex>=0)order.Add("lobby-enter");
+   order.Add("lobby-cinematic");order.Add("lobby-steam");order.Add("patch-notes-open");order.Add("lobby-quit");
+   return order;
   }
   void DrawPatchNotesLauncher()
   {

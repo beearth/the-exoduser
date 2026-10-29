@@ -143,13 +143,13 @@ namespace Exoduser.UnityPort
   void DrawCharacterSlots()
   {
    Label(new Rect(1392,277,330,32),K("캐릭터 ","Characters ")+Characters.Count+" / 5",lobbyText,TextAnchor.MiddleLeft);
-   bool enabled=GUI.enabled;GUI.enabled=enabled&&characterScroll>0;if(GUI.Button(new Rect(1770,277,44,32),"▲",characterButton))characterScroll--;
-   GUI.enabled=enabled&&characterScroll+2<Characters.Count;if(GUI.Button(new Rect(1822,277,44,32),"▼",characterButton))characterScroll++;GUI.enabled=enabled;
+   bool enabled=GUI.enabled;GUI.enabled=enabled&&characterScroll>0;GUI.SetNextControlName("lobby-scroll-up");if(GUI.Button(new Rect(1770,277,44,32),"▲",characterButton))characterScroll--;
+   GUI.enabled=enabled&&characterScroll+2<Characters.Count;GUI.SetNextControlName("lobby-scroll-down");if(GUI.Button(new Rect(1822,277,44,32),"▼",characterButton))characterScroll++;GUI.enabled=enabled;
    for(int i=0;i<2;i++){
     int index=characterScroll+i;string name=Characters.NameAt(index);bool filled=name.Length>0,selected=index==Characters.SelectedIndex;
     Rect card=new Rect(1392,315+i*94,470,84);Fill(card,new Color(.12f,.105f,.11f,filled?.92f:.1f));
     if(selected)Border(card,new Color(.75f,.57f,.34f),2);else DashedBorder(card,new Color(.43f,.33f,.25f,filled?.7f:.15f));
-    if(filled){Image(new Rect(1404,327+i*94,60,60),warriorPortrait,ScaleMode.ScaleAndCrop);Label(new Rect(1483,325+i*94,320,34),name,characterSmall,TextAnchor.MiddleLeft);Label(new Rect(1483,361+i*94,320,24),CharacterSlotCaption(),lobbyText,TextAnchor.MiddleLeft);if(GUI.Button(new Rect(1814,337+i*94,36,36),new GUIContent("×",K("캐릭터 삭제","Delete character")),characterDeleteButton))RequestCharacterDelete(index);if(GUI.Button(new Rect(card.x,card.y,410,card.height),"",GUIStyle.none))SelectCharacter(index);}
+    if(filled){Image(new Rect(1404,327+i*94,60,60),warriorPortrait,ScaleMode.ScaleAndCrop);Label(new Rect(1483,325+i*94,320,34),name,characterSmall,TextAnchor.MiddleLeft);Label(new Rect(1483,361+i*94,320,24),CharacterSlotCaption(),lobbyText,TextAnchor.MiddleLeft);GUI.SetNextControlName("lobby-delete-"+index);if(GUI.Button(new Rect(1814,337+i*94,36,36),new GUIContent("×",K("캐릭터 삭제","Delete character")),characterDeleteButton))RequestCharacterDelete(index);GUI.SetNextControlName("lobby-card-"+index);if(GUI.Button(new Rect(card.x,card.y,410,card.height),"",GUIStyle.none))SelectCharacter(index);if(GUI.GetNameOfFocusedControl()=="lobby-card-"+index)Border(new Rect(card.x,card.y,410,card.height),new Color(.84f,.69f,.48f,.8f),1);if(GUI.GetNameOfFocusedControl()=="lobby-delete-"+index)Border(new Rect(1814,337+i*94,36,36),new Color(.84f,.69f,.48f,.8f),1);}
     else Label(card,"—",lobbyMode,TextAnchor.MiddleCenter);
    }
   }

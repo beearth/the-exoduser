@@ -187,7 +187,8 @@ namespace Exoduser.UnityPort
    // Source full/offline layout at1920x1080; only the dedicated Unity roster is read.
    Fill(new Rect(1388,151.5f,140,27),new Color(.039f,.024f,.008f,.8f));Border(new Rect(1388,151.5f,140,27),new Color(.471f,.314f,.157f,.4f),1);
    Label(new Rect(1399,151.5f,115,27),K("자막: 한국어","Subtitles: "+Language.ToUpperInvariant()),lobbyMicro,TextAnchor.MiddleLeft);var chevron=new Color(.722f,.639f,.525f);Line(new Vector2(1504,162),new Vector2(1508,166),chevron,1.5f);Line(new Vector2(1508,166),new Vector2(1512,162),chevron,1.5f);
-   if(GUI.Button(new Rect(1388,151.5f,140,27),"",GUIStyle.none))ToggleLanguages();
+   GUI.SetNextControlName("lobby-language");if(GUI.Button(new Rect(1388,151.5f,140,27),"",GUIStyle.none))ToggleLanguages();
+   if(GUI.GetNameOfFocusedControl()=="lobby-language")Border(new Rect(1388,151.5f,140,27),new Color(.84f,.69f,.48f,.8f),1);
    Label(new Rect(1544,151.5f,230,27),K("메뉴: 한국어 · L: 자막","Menu: English · L: subtitles"),lobbyMicro,TextAnchor.MiddleLeft);
    GUI.enabled=previousEnabled&&!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen;
    Label(new Rect(1536,157,340,16),"OFFLINE",lobbyMode,TextAnchor.MiddleRight);

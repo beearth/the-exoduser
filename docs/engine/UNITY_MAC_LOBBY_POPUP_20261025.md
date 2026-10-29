@@ -28,3 +28,5 @@
 
 
 2026-10-25 시네마틱 후속: 로비와29개 이름/2열 키보드 목록을 공유. 실제 EN 자막 선택, 목록 Esc6초의 skip 차단, 키 해제 후 정상 skip·KO 로비복귀 확인. 일반 build errors0. 전체29자막 글꼴/RTL·정밀 마우스와 구분. [검수](UNITY_MAC_CINEMATIC_LANGUAGE_20261025.md).
+
+2026-10-29 패치 노트 버튼 통합 전 Tab 계약: 로비에서 빈 초점의 첫 Tab은 이름 붙인 `lobby-language` selector로 이동하며 Return/Space로 기존 29언어 팝업을 연다. 팝업을 연 뒤의 방향키·Tab·Esc 처리와 언어 데이터는 기존 `ProcessLanguageMenuKey` 그대로다. 1280×720 ARM64 Settings QA 5/5 격리 Player에서 첫 Tab 테두리와 Return 목록 열기를 확인했다. [조건별 순환과 증거](UNITY_LOBBY_20261024.md#2026-10-29-통합-전-tab-포커스-계약-표적-수정).

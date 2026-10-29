@@ -204,7 +204,7 @@ Mac `unity/main:9ed30495b050ac877e62b3989d775b41663fe95d`의 기존 실제 1280 
 | 표시 라벨 | `BuildFlavor.Current.Label` 그대로, `NativeLobbyBuildLabels.Draw(913f)`가 `cornerRight - Width(Label)`에서 표시. 로비 좌상단 버전/모드/한도 출력 0줄 |
 | 클릭·포커스 | `NativeLobbyBuildLabels.CornerBounds(913f)` = `(1844 - 표시 폭 - 6×unit, 913 - 16×unit, 표시 폭 + 12×unit, 32×unit)`; `unit = 1 / max(.1, min(Screen.width/1920, Screen.height/1080))`. `NativeLobby.PatchNotes.cs`의 `patch-notes-open` 버튼과 focus border가 같은 Rect 사용 |
 | 색 | 기본 `buildflavor_web.json:lobby.corner.color=[111,114,114,1.0]`; hover/포커스 `(.78,.8,.78,1)`, focus border `(.84,.69,.48,.8)` 1px |
-| Tab·활성화 | 빈 초점에서 캐릭터 만들기(불가 시 건너뜀)→입장(선택 없으면 건너뜀)→시네마틱→Steam→패치 노트→종료 순환, Shift+Tab 역방향. 우하단 포커스 Return/KeypadEnter/Space로 열기. 다른 하단 버튼의 Return/Space도 해당 버튼 동작으로 처리해 캐릭터 입장 오동작 방지 |
+| Tab·활성화 | 아래 통합 전 표적 수정 후 첫 대상은 언어 선택이다. 현재 보이는 스크롤·캐릭터 카드·삭제 버튼→생성 가능 시 만들기→선택 캐릭터가 있으면 입장→시네마틱→Steam→패치 노트→종료 순환, Shift+Tab 역방향. 우하단 포커스 Return/KeypadEnter/Space로 열기. 하단 버튼 Return/Space는 해당 동작으로 처리해 캐릭터 입장 오동작 방지 |
 | 모달·복귀 | 열 때 close 포커스, Esc/Return/Space/닫기 버튼/패널 바깥 click으로 닫고 `patch-notes-open`으로 포커스 복귀. 기존 언어·종료·캐릭터 모달 중에는 열지 않음 |
 | 변경 범위 | `NativeLobbyBuildLabels.cs`, `NativeLobby.PatchNotes.cs`, `NativeLobby.cs`, `Resources/Data/buildflavor_web.json`; 데이터·번역·버전·Steam URL·기타 로비 화면·사용자 저장 root 변경 없음 |
 
@@ -213,9 +213,26 @@ Mac `unity/main:9ed30495b050ac877e62b3989d775b41663fe95d`의 기존 실제 1280 
 | 새 검수 항목 | 결과 |
 |---|---|
 | 빌드 | 격리 프로젝트 복사본의 Unity 6000.6.7f1 `PortVerification.Build`, Settings QA ARM64, `build-receipt.json`의 `passed=true`, `result=Succeeded`, `errors=0`. 실행 파일 SHA-256 `e0a9265aff19e4eed569773a419e8e46c5d009b752ec8fc5f09759810427614a` |
-| 실제 1280×720 | `_out/UNITY-MAC-PATCHNOTES-20261029/1280-full.png`: 5/5 로스터에서 좌상단 개발 표기 없음, 우하단 `OFFICIAL` 하나만 표시. 첫 Tab부터 4회로 우하단 포커스, Return으로 패치 노트 열림(`1280-modal.png`), 모달에서 N은 캐릭터 창을 열지 않음, Esc 닫기 뒤 우하단 포커스 복귀(`1280-focus-return.png`), Space 재열기 확인 |
+| 최초 1280×720 후보 `041d387f1` | `_out/UNITY-MAC-PATCHNOTES-20261029/1280-full.png`: 5/5 로스터에서 좌상단 개발 표기 없음, 우하단 `OFFICIAL` 하나만 표시. 당시 첫 Tab부터 4회로 우하단 포커스, Return으로 패치 노트 열림(`1280-modal.png`), 모달에서 N 차단, Esc 닫기 뒤 우하단 포커스 복귀(`1280-focus-return.png`), Space 재열기 확인. 이 Tab 횟수는 아래 수정 전 이력이다 |
 | 실제 1600×900 | 같은 빌드의 `1600-full.png`, `1600-focus.png`, `1600-modal.png`: 좌상단 숨김, 우하단 글자·포커스 테두리 정합, Return 열기, Esc 닫기, Tab으로 종료 이동 후 Shift+Tab으로 우하단 복귀 확인 |
 | 로스터·로그 | 격리 복사 로스터 `characters.v1.json` SHA-256 `67fa35976c91adaa5cce4fac107f4f1035f5c483bbf36abf8ccc6dde607dcf5a` 그대로. 1280/1600 Player 로그에서 Error/Exception 없음. QA Player 두 PID만 종료, 기존 사용자 앱은 건드리지 않음 |
 | 마우스·모달 밖 | CUA 클릭 호출은 `noWindowsAvailable`로 입력 전달 전에 실패했다. 따라서 우하단 물리 마우스 hit, 닫기 버튼 click, 배경 click은 실제 Player 입력 PASS로 판정하지 않는다. 해당 처리 코드는 기존 `GUI.Button`/`DismissOutside` 경로를 유지하며 정적 확인만 했다 |
 
 **VISUAL VERDICT: RETOUCH (전체 로비).** 채택 웹의 좌상단 숨김·우하단 버튼 위치와 1280/1600 글자·포커스 표시는 실제 Mac Player에서 일치한다. 패치 노트 키보드 열기·닫기·초점 복귀도 PASS다. 물리 마우스 hit와 동일 상태 웹/Mac 전체 화면 대조는 HOLD이며, 전체 로비 디자인 PASS 근거는 아니다. 이 후보는 전용 브랜치에만 두고 `unity/main` 제품 배포에는 반영하지 않는다.
+
+### 2026-10-29 통합 전 Tab 포커스 계약 표적 수정
+
+`041d387f1` 소스의 `HandlePatchNotesKeys`는 로비의 모든 Tab을 6개 고정 목록에서 소비했다. `DrawLobby`는 `EventType.Used`일 때 뒤의 `HandleCharacterKeys`·`HandleLanguagePopupKeys`를 건너뛴다. 당시 목록에는 언어 선택, 캐릭터 카드·삭제, 스크롤이 없었다. 채택 웹 `main:41777b450`은 언어 `<select>`가 첫 Tab 대상이고, 로컬 카드의 `.char-select`와 `.char-del`, 활성 스크롤 버튼도 키보드 대상이다. 이전 Mac `13c23929e`는 첫 Tab만 좌상단 패치 노트로 강제하고 이후 IMGUI에 맡겼으나, 실제 1280 기존 Player에서 두 번째 Tab 뒤에도 좌상단 포커스가 남아 언어 Tab 접근 PASS를 주장할 수 없었다. **원인 판정: 이전 동작의 확정 회귀는 아님; 채택 웹 계약의 누락은 확정.** 사용할 수 있는 `systematic-debugging` 스킬 파일은 현재 스킬 목록과 로컬 스킬 경로에서 발견되지 않아 관련 UI 문서·소스·격리 Player를 직접 대조했다.
+
+수정은 `NativeLobby.PatchNotes.cs`의 Tab 순환을 현재 보이는 항목으로 구성하고, `NativeLobby.cs`의 언어 버튼 및 `NativeLobby.Characters.cs`의 스크롤·카드·삭제 버튼에 이름을 붙였다. Return/KeypadEnter/Space는 해당 컨트롤의 동작을 실행한다. 캐릭터 생성·입장 모달 내부의 기존 키 처리, 번역·버전·저장 로직은 바꾸지 않았다.
+
+| 상태 | Tab 목록의 앞부분과 건너뛰는 항목 | 공통 뒷부분 |
+|---|---|---|
+| 빈 슬롯 0/5 | 언어 → 생성. 스크롤·카드·삭제·입장 제외 | 시네마틱 → Steam → 패치 노트 → 종료 |
+| 일부 1/5 | 언어 → 보이는 카드0 → 삭제0 → 생성 → 선택된 경우 입장. 1/5에는 스크롤 제외 | 동일 |
+| 일부 3/5 | 언어 → 활성 스크롤(위/아래는 `characterScroll`에 따름) → 현재 보이는 카드·삭제 각2개 → 생성 → 선택된 경우 입장 | 동일 |
+| 가득 참 5/5 | 언어 → 활성 스크롤 → 현재 보이는 카드·삭제 각2개 → 선택된 경우 입장. 생성 제외 | 동일 |
+
+새 ARM64 Settings QA 빌드 `_out/UNITY-MAC-PATCHNOTES-FOCUS-20261029/build-receipt.json`은 Unity 6000.6.7f1, `Succeeded`, 오류0이고 실행 파일 SHA-256은 `84b7e2b402aff39b756b2ecfd6be4b103fc68b9a4a2dae26abeee02dddf5c8c6`이다. 1280×720 실제 5/5 격리 Player에서 첫 Tab 언어 포커스(`full-language-focus.png`)→Return 목록 열기(`full-language-open.png`), 카드 포커스→Return 선택, 다음 삭제 버튼 Return→확인창(`full-delete-confirm.png`)→Esc 취소를 확인했다. 격리 로스터는 이름 5개 그대로, 선택 인덱스만 3→2로 바뀌었고 삭제·새 캐릭터 작성은 없었다. Shift+Tab으로 우하단 패치 노트 포커스→Return 모달 열기도 확인했다. 빈/일부 슬롯의 건너뛰기 표는 위 조건식의 정적 판정이며 별도 Player PASS로 확대하지 않는다. CUA 클릭을 다시 시도하지 않았고 물리 마우스 hit는 HOLD다. 두 번 실패 시 중단 규칙을 적용해, 카드 다음 삭제를 시험한 첫 키 시퀀스는 팝업 닫기 뒤 초점이 초기화되어 카드 선택으로 끝난 것으로 기록했다. 현재 카드 포커스를 확인한 뒤 한 번 더 진행해 삭제 확인창을 열었으며 실제 삭제는 하지 않았다.
+
+검수 중 CUA의 `getApp` 경로 선택이 동일 bundle ID의 인자 없는 두 번째 QA 프로세스를 한 번 시작했다. 해당 PID는 화면 관찰만 하고 즉시 종료했으며, 의도한 격리 PID는 `-output`·`--unity-qa-sandbox` 인자를 확인해 검수를 계속했다. 인자 없는 프로세스에서 사용자 저장 조작 명령은 실행하지 않았다. 이후 두 PID 모두 종료했다. **표적 키보드 계약 PASS / 전체 로비 VISUAL VERDICT: RETOUCH / 물리 마우스 hit HOLD / `unity/main` 미반영.**
