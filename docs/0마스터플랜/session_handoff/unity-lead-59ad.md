@@ -77,3 +77,13 @@
 - 두 임포터와 `Art/Characters/Warrior/`는 `E:/exoduser-wt/pc-unity-rm0`의 미추적 WIP다. 원격 통합 브랜치에는 없다. 미인수 WIP이므로 읽기만 했고 복사·stage·삭제하지 않았다. 다음 단위는 소유권 인수 뒤 컴파일을 검수해야 한다.
 - 다음 빌드는 `-remodel-scenes,1`을 반드시 전달해야 RM1_Slice가 포함된다. 기본 빌드는 FirstPlayable만 넣는다. RM2·RM3·RM4와 3D 영웅의 실제 동선 연결은 소스 포함과 별도다.
 - EXE·M1·로비/3D/전투/보스/HUD 캡처·격자·미리보기 바로가기는 미완료다. 기존 Unity 바로가기는 `unity-latest/build/EXODUSER-Unity.exe` 대상을 보존했다. 상세 원장 `docs/engine/UNITY_PC_PREVIEW_ALL_20261029.md`, 원본 보고·영수증 `I:/EXODUSER-Storage/unity-preview/REPORT.md`와 `resume-assembly/`. 코드 수정·보고 모두 미리보기 브랜치에 비강제 push했다.
+
+
+## 2026-10-29 brief2 전체 미리보기 제작 완료
+
+- 미리보기 브랜치 `codex/pc-preview-all-20261029` 최종 보고 체크포인트 `11d0fc5d0570992d37f97a35645bdff3e583443d`, 코드 `1c8a8798195c841f6f8b884460b1a37cd9a5e831`. 원작성자 캐릭터 총괄의 pc-unity-char 미커밋 전사 임포터 2개+.meta를 동일 byte 인수했고 원본은 보존했다.
+- `23271fa4` Win 빌드 오류 0·RM1 씬 포함. 기존 kill-wire 31/0. 최종 batch M1 `a7774943` 23/23·정상 exit 0·창/잔존/세이브 변경 0. 3D `fb7ad923` 1800틱·4지점 캡처·정상 종료 통과.
+- 바탕화면 `지옥의 길 (Unity 미리보기).lnk` 생성. 대상 `I:/EXODUSER-Storage/unity-preview/build/brief2-final/EXODUSER-Unity.exe`, D3D11·remodel3d·독립 play-save. 기존 Unity 바로가기 보존.
+- UI 포함 1600×900 원본 32장과 한국어 6장 격자는 `I:/EXODUSER-Storage/unity-preview/resume-brief2/주요장면-격자.png`. 직접 시각 RETOUCH: 지형 경계·빈 외곽·문자 겹침·클리어 저대비. 실제3D는 RM1 필드 일부, 나머지 후보 전체 연결 완료 아님.
+- 숨은 데스크톱 M1은 기능23/23 뒤 종료 지연이 두 번 있어 추가 반복 중단. UI 캡처는 그 모드, 정상 종료와 기능 통과는 batch 영수증으로 구분. 일반 사용자창 손 조작·종료·청음·Mac은 미검수.
+- unity/main 변경 없음. E 19.24GiB 차단은 소유 sparse checkout으로35.48GiB 확보해 해소. 자동 .meta/URP/씬450개는 I에 보존하며 소스 커밋과 분리. 관련 SSOT `docs/engine/UNITY_PC_PREVIEW_ALL_20261029.md`, 외부 `I:/EXODUSER-Storage/unity-preview/REPORT.md`.

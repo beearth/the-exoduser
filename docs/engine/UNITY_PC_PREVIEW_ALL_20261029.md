@@ -1,15 +1,104 @@
-# Unity 전체 미리보기 통합 보고 — 2026-10-29 재개 결과
+# Unity 전체 미리보기 통합 보고 — 2026-10-29 완료
 
 ## 현재 판정
 
-**미완료: 후보 16개 소스 포함은 확인했으나 컴파일 0 오류·Windows 빌드·M1·캡처·미리보기 바로가기를 완료하지 못했다.**
+**요청한 통합 미리보기의 컴파일·Windows 빌드·무창 M1·주요 화면 캡처·격자·바탕화면 바로가기 제작을 완료했다. 시각 판정은 RETOUCH이며, Unity 게임 전체 완성·16개 후보의 모든 런타임 연결 완료를 뜻하지 않는다.**
 
-- 소유 경로: `E:/exoduser-wt/codex-unity-integrator`.
-- 브랜치: `codex/pc-preview-all-20261029`.
-- 현재 코드 SHA: `6da76bcce70607a2d95098b803f7874c1d4439fc`. 비강제 push 후 같은 원격 SHA 확인.
-- `unity/main`은 변경·병합·push하지 않았다. 시작·최종 조회 모두 `1ae7366a3d17272db4ff8871ff9fc180a21c13b7`.
-- 2026-10-29 08:53 KST의 두 번째 Unity 실행 `41bfcae6`은 Editor의 미제출 전사 임포터 참조 3곳에서 실패했다. 성공 EXE와 빌드 영수증이 없다.
-- [공통 규칙](../codex-takeover/COMMON_RULES.md)의 “테스트 실패는 원인 수정 후 1회 재실행, 2번 실패면 멈추고 기록”에 따라 추가 Unity·Player 실행을 중단했다. 재개 전 두 번의 컴파일 실패도 별도 이력으로 보존한다.
+- 소유 경로: `E:/exoduser-wt/codex-unity-integrator`. 브랜치: `codex/pc-preview-all-20261029`. 최종 코드 체크포인트: `1c8a8798195c841f6f8b884460b1a37cd9a5e831`.
+- 실행 파일: `I:/EXODUSER-Storage/unity-preview/build/brief2-final/EXODUSER-Unity.exe`. 이전 실패 실행 파일은 상위 `build/`에 보존했고 새 바로가기는 검증된 하위 출력에 연결했다.
+- 바탕화면: **지옥의 길 (Unity 미리보기).lnk**. `-force-d3d11 --remodel3d`, 독립 세이브 `I:/EXODUSER-Storage/unity-preview/play-save`. 사용자는 새 캐릭터를 만들고 입장하면 된다.
+- 기존 **지옥의 길 (Unity).lnk**의 대상·인자·SHA-256은 이전과 같다. `unity/main`은 작업 시작 SHA `1ae7366a3d17272db4ff8871ff9fc180a21c13b7`에서 변경하지 않았다.
+- 최종 원격 SHA·문서 반영 증거는 `resume-brief2/최종-원격증거.json`에 기록한다. Mac 실제 반영·손 조작·청음·Steam은 이번 검수 범위가 아니다.
+
+## 수정과 인수
+
+| 커밋·대상 | 실제 변경·근거 |
+|---|---|
+| `3df5318e3` | `pc-unity-char` 미커밋 원본, 원작성자 **캐릭터 총괄**의 `WarriorImport.cs`·`WeaponImport.cs`와 각 `.meta`를 같은 경로에 동일 바이트로 인수. 추가 C# 의존성 없음. 원본과 복사본 네 파일의 종료 SHA-256도 일치 |
+| `1c8a87981` | 보스 즉시 부활에서 `DeathHead`가 정상 반환하는 null을 침강 정리 코드가 역참조하던 결함에 `head != null` 한 줄 추가. 기존 kill-wire-test에서 수정 전 같은 예외 재현 → 수정 후 **31검사 / 0실패** |
+| 기존 인수 계약 | 전사 프리팹 `Assets/Exoduser/Art/Characters/Warrior/Warrior.prefab`, 대검 프리팹 `Assets/Exoduser/Art/Characters/Warrior/Weapon/Warrior_Greatsword.prefab`, 대검 길이 `1.60f`. 이번에는 컴파일 의존성만 인수했으며 전사 원화·모델·임포터 실행·자산 채택을 추가하지 않음 |
+
+부활 확률·게임 수치·난수 소비·웹 oracle 함수는 바꾸지 않았다. 실제 최종 침강의 위험요소 정리는 유지한다. 더미 클래스·검수 코드 삭제로 우회하지 않았다.
+
+## 최종 검증 영수증
+
+| 항목 | 결과·증거 |
+|---|---|
+| 컴파일·Windows x64 | **통과**. Unity `6000.6.7f1`, `23271fa4`, `Succeeded`, 오류 **0**, `compileErrors=[]`, 빌드 약 2.79GB. `-remodel-scenes 1` 적용 |
+| 처치·부활 연결 회귀 | **31 / 0**. `kill-wire-red.log`의 143행 예외 → `kill-wire-green.json` 통과. 기존 보스 즉시 부활·최종 침강 검사 포함 |
+| 최종 무창 M1 | **23 / 23 통과**. `a7774943`, D3D11 batch, **exit 0**, 강제 종료 없음, 창 노출 **0**, 잔존 **0**, 사용자 세이브 변경 **0** |
+| 3D 런타임 | **통과**. `fb7ad923`, 1,800틱, `active=true`·`sceneReady=true`, start·mid·north·east 4지점과 지형 제외 진단 1장, **exit 0**, 창 **0**·잔존 **0**·세이브 변경 **0** |
+| 실제 GPU | AMD Radeon RX 9070 XT, Direct3D11. Null 그래픽 장치 사용 없음 |
+| UI 포함 캡처 | `m1-d3d11/caps/`의 원본 **32장**, 모두 **1600×900**. 숨은 데스크톱의 실제 화면 캡처이며 HUD·로비 포함. `캡처-목록.json`에 규격·SHA-256 보존 |
+| 주요 장면 격자 | `resume-brief2/주요장면-격자.png`, 1600×1476, 한국어 장면별 판정. 원본은 축소·수정하지 않음 |
+| 3D 네 지점 격자 | `resume-brief2/3D-4지점-격자.png`, 1600×900. 이것은 월드 전용 검수이며 HUD 판정에 사용하지 않음 |
+| 실행 코드 증거 | `Exoduser.Runtime.dll` SHA-256 `3e1a2f9cfac006dd908bd5015b86b2047758aa89eda1539b23e6cfe484cd8ca8`. 이 빌드에는 `Assembly-CSharp.dll`이 없음. 전체 목록 `최종-바이너리.json` |
+
+최종 batch M1은 GUI 재그리기 0이므로 해당 PNG를 HUD 완료 근거로 쓰지 않았다. HUD 판정에는 별도로 확보한 숨은 데스크톱 캡처를 사용했다.
+
+### M1 단계별 결과
+
+검수는 실제 NativeGame·로비 API와 Simulation.Tick 입력 경로를 스크립트로 구동했다. 실제 키보드·패드 손 조작이나 필드 전체 도보 이동을 증명하지 않는다.
+
+| 단계 | 확인 내용 | 결과 |
+|---|---|---|
+| 01 | 로비·새 전사 생성·1-1 입장 | 통과 |
+| 02 | 첫 실습 진입 | 통과 |
+| 02b | 고정 시작 적 | 통과 |
+| 03 | 이동 | 통과 |
+| 03b | 앵글러 네 마리 | 통과 |
+| 04 | 기본 공격 | 통과 |
+| 05 | 구르기 | 통과 |
+| 06 | Q 패링·E 방패 타격 | 통과 |
+| 07 | 일반 적 처치 | 통과 |
+| 07b | 피격·쉴드·넘어짐 | 통과 |
+| 07c | 소환굴·적 AI | 통과 |
+| 07d | 앵글러 기상 | 통과 |
+| 07e | 필드 탄종 표시 | 통과 |
+| 08 | 드랍 줍기·장착 | 통과 |
+| 09 | 레벨업 | 통과 |
+| 09b | 네 가지 스킬 | 통과 |
+| 09c | 네 지역·지옥문 자연 개방 | 통과 |
+| 10 | 보스 아레나 진입 | 통과 |
+| 11 | 드루이드 보스전 | 통과 |
+| 12 | 보스 부활·최종 침강·출구 | 통과 |
+| 13 | 스테이지 클리어 | 통과 |
+| 14 | 저장 후 이어하기 | 통과 |
+| 99 | 일시정지 패널 겹침 없음 | 통과 |
+
+## 장면별 직접 시각 판정
+
+Hell Gothic의 흑철·뼈색 문자·어두운 생체 지옥 기준으로 원본 1x와 격자를 직접 확인했다. 웹과 실시간 나란히 비교한 새 검수는 아니며 기존 UI SSOT·자산 구성과 대조했다.
+
+| 장면 | 한 줄 판정 |
+|---|---|
+| 로비 | **PASS** — 전사 원화·고딕 배경·오른쪽 캐릭터 목록·입장 구성이 표시된다. 작은 안내 글자의 대비는 추가 개선 대상 |
+| 1-1 3D | **RETOUCH** — 지면·빛·소품·플레이어가 실제 3D로 보이나, 하단 지형 끝·빈 외곽·반복 소품·청록 부채꼴 표시가 남음 |
+| 전투·피격 | **RETOUCH** — 피격·실드·전리품·붉은 피드백은 표시되지만 캐릭터 주변 문자가 겹침 |
+| 보스 | **RETOUCH** — 보스·체력바·초록 탄종은 읽히나 글자가 보스와 플레이어를 가림. 현재 아레나는 2D 표현 |
+| HUD·스킬 | **RETOUCH** — 흑철 프레임·HP/MP/ST·키 슬롯과 우측 정보는 유지. 스킬 이펙트·부유 문자와 월드 표시의 가독성 보강 필요 |
+| 클리어 | **RETOUCH** — 결과 패널·다음 버튼은 표시되나 저대비, 레벨업 연출 겹침, 일부 ‘미이식’ 항목이 남음 |
+
+## 종료 문제와 검수 한계
+
+1. 최초 빌드 `aa04356f`는 성공했으나 M1 `8628b9b7`에서 위 보스 부활 예외가 발생했다. 수정 전 로그·빌드·캡처를 보존했다.
+2. 수정본 숨은 데스크톱 M1은 D3D12 `a7ade06a`, D3D11 `01c1d96f` 모두 기능 **23/23**·캡처 32장을 끝낸 뒤 엔진 종료 단계에서 지연됐다. 두 번 확인 후 같은 모드의 반복을 중단했다. 자기 소유 프로세스만 정리했고 다른 실행본은 종료하지 않았다. D3D11만으로 이 문제가 해결됐다고 주장하지 않는다.
+3. 숨은 모드 실행기 정리 과정에서는 강제 종료 후 unsigned 종료코드 변환 또는 로그 파일 공유 잠금 오류도 발생해 최종 실행기 통과 영수증이 없다. 해당 모드의 사용자 세이브 비교 완료를 주장하지 않는다.
+4. 대체한 **D3D11 batch** M1은 위 최종 영수증처럼 정상 exit 0·23/23·USER_SAVE 0이다. UI 캡처와 기능·정상 종료 증거를 분리했다. 일반 사용자 데스크톱 창의 직접 조작·종료는 이번에 자동 실행하지 않았다.
+5. 빌드 실행기 `errorLogs=2`는 컴파일·빌드 오류 2건이라는 뜻이 아니다. 실제 `compileErrors=[]`·빌드 errors 0이다. 로그에는 라이선스 토큰 갱신 경고·패키지 어셈블리 참조 메시지 등이 남는다.
+
+## 실제 적용 범위와 후속
+
+- 16개 후보는 아래 고정 SHA까지 **소스 포함**됐다. 현재 실제 3D 동선 연결은 **RM1_Slice의 1-1 필드 일부**이며, 보스 아레나는 기존 2D로 전환한다. RM2·RM3·RM4·A1 및 3D 영웅 전체 연결 완료로 확대하지 않는다.
+- 1-2로 이어지는 전체 콘텐츠, 맵 8방향 전체 카메라 보드·전구간 충돌·성능·청음은 미검수다. 시각 RETOUCH는 다음 표현 작업이며 이 빌드를 최종 아트 승인안으로 채택하지 않는다.
+- 이 요청의 실행 가능한 미리보기 결과는 제공 완료다. 숨은 데스크톱 종료 안정화·맵 외곽·전투 문자·클리어 패널은 후속 결함으로 남긴다. 새 유료 생성·Steam·외부 게시·시스템 설정 변경은 하지 않았다.
+
+## 저장 공간·WIP 보존
+
+- 처음 E: 여유 **19.24GiB**로 30GiB 게이트가 Unity 시작 전에 차단했다. 자기 체크아웃만 `.githooks/docs/tools/unity` sparse checkout으로 축소해 **35.48GiB**를 확보한 뒤 실행했다. Git HEAD·INDEX와 기존 baseline WIP·미추적 파일은 보존했다. 사용자 추가 조치는 필요 없다.
+- Unity 임포트·빌드가 자동 기록한 `.meta` 447개와 URP 설정 2개·FirstPlayable 씬 1개, 합계 **450개**는 `자동생성-빌드입력/`에 파일·SHA-256 목록과 함께 보존했다. 좁은 소스 수정 커밋에 섞지 않았고 되돌리지 않았다. 따라서 체크아웃 전체 clean이라고 보고하지 않는다.
+- 기존 `tools/guard.baseline.json` WIP는 보존했다. 원본 캐릭터 총괄 작업 폴더·사용자 세이브·기존 바로가기·기존 플레이본은 변경하지 않았다. 빌드·로그·백업·캡처는 I:에 저장했다.
+- 최종 코드와 보고 문서는 미리보기 브랜치에 비강제 push하며, H5 main에는 관련 문서만 별도 정상 반영한다. `unity/main`과 Mac 소스 동기화는 이번 작업에 포함하지 않는다.
 
 ## 포함 브랜치와 SHA
 
@@ -34,97 +123,23 @@ fetch 후 아래 원격 끝점을 고정했다. 16개 모두 현재 코드 체�
 | `claude/unity-pc-rmb1-20261027` | `00353dda915a640f5ba77487e6f556090ea3e9e8` | 충돌 해결 병합 |
 | `claude/unity-pc-sound-rm1-20261027` | `acf2fb948edd17c739169f002346c9c57615f897` | 이미 포함 |
 
-## 충돌 처리
 
-| 파일 | 선택 이유 |
-|---|---|
-| `NativeGame.cs` | 최신 공통 줄기의 `AimWorld()` 3D 바닥 투영을 보존하고 자동 병합된 `ExoInput` 전환을 유지했다. |
-| `NativeKeyBindInput.cs` | 10-29 `4d7b82a0b`의 웹 마우스 번호 변환을 우선했다. 웹 1=중간·2=오른쪽을 Unity 번호로 바꾸고, 후보의 `ExoInput.MouseDown/Mouse/KeyDown/Key`로 읽도록 결합했다. |
-| `NativeGame.BossView.cs`(보스 후보) | 최신 RB1-3 예고 뷰 초기화·해제를 채택하고 기존 침강 소리용 `sinkSounded.Clear()`도 보존했다. |
-| `Rm1SliceBuilder.cs` | 공용 job 서버의 `ExoArgs.Get()`를 보존하고 최신 RM-1의 `AudioListener.volume=0f`를 FPS·캡처 진입부에 결합했다. |
-| `NativeGame.BossView.cs`(RM-B1 중복) | 앞서 통합한 동일 예고 구현과 침강 소리 초기화가 모두 있는 현재 통합본을 보존했다. |
-
-원래 충돌 파일은 `conflict-original/`, 병합 기록은 `merge.log`, 병합 커밋별 원장은 `integration.json`에 있다.
-
-
-## 이번 재개에서 수정한 것
-
-| 커밋 | 변경 | 실제 검증·한계 |
-|---|---|---|
-| `dc2a83856c5139866d17aaa46427103722928cd7` | `Remodel/Exoduser.Runtime.asmref`와 .meta. Remodel의 C# 3개를 기존 Runtime으로 귀속. 관련 C-01·커스텀·미리보기 docs 동기화 | `41bfcae6`에서 기존 `Rm4PoolLightCuller` 오류가 사라지고 Runtime 컴파일이 진행됨. 전체 Editor·Player 빌드 성공은 아님 |
-| `6da76bcce70607a2d95098b803f7874c1d4439fc` | M1 비 batch 검수의 강제 1920×1080을 1600×900으로 통일. batch RenderTexture 1600×900은 보존 | 원본 캡처 규격 변경. 빌드 실패로 실제 PNG 해상도·UI 캡처는 미검증 |
-
-어셈블리 변경은 파일 이동·기존 스크립트 GUID·게임 수치·Core 규칙·장면 배치를 바꾸지 않는다. 대상은 `BossArenas/ArenaChannelPlan.cs`, `CH1_3/Rm3PoolLightCuller.cs`, `CH1_4/Rm4PoolLightCuller.cs`다. 기본 어셈블리 역참조·임시 타입·stub을 추가하지 않았다.
-
-## 컴파일·빌드 영수증
-
-| 구분 | 실행·결과 | 원인·처치 |
-|---|---|---|
-| 재개 전 1 | `a734042a`, exit 1 | Runtime Cinemachine 참조 누락. 기존 `c36431bc7`에서 보완 |
-| 재개 전 2 | `930e5a24`, exit 1 | Editor가 기본 어셈블리의 `Rm4PoolLightCuller`를 참조하지 못함. 이번 `dc2a83856`에서 asmref 보완 |
-| 이번 제출 전 환경 오류 | `resume-assembly/build.console.log`, Unity 미시작 | 상속 PATHEXT가 사실상 없어 PowerShell이 Node EXE를 문서로 분류. 작업 자식 환경의 확장자 인식만 보완 |
-| 이번 Unity 1 | `a5d1e9f0`, exit 1, 컴파일 미시작 | UPM IPC 30초 연결 실패. Node 도구 자식 환경에 APPDATA·ProgramFiles·ProgramData·ComSpec 등이 누락됨을 확인. 레지스트리/.NET 읽기 조회값을 이 작업 자식 환경에만 보완 |
-| 이번 Unity 2 | `41bfcae6`, exit 1 | 이전 Remodel 오류 해소. `Rm0LightCapture.cs:169,196,218`의 `WeaponImport`·`WarriorImport` CS0103 세 곳에서 실패. 로그에는 같은 세 오류가 컴파일 단계별로 반복되어 9건 기록됨 |
-
-이번 두 Unity 실행 모두 공용 `exo-unity.ps1`·Unity 6000.6.7f1·격리 세이브를 사용했다. 필수 로비·전사 영상 복원과 9개 영상 검사는 통과했다. 실행기 영수증의 사용자 세이브 변경은 모두 0이다. 최종 상태 조회에서 Unity 0개·잠금 없음·예약 없음이다.
-
-환경 보완은 `run-job-resume.cjs`가 만든 자식 프로세스에만 적용된다. 시스템·사용자 영구 환경, 인증·권한·백신 설정, 공용 실행기 소스는 변경하지 않았다. 원본 로그와 실행기 JSON은 `resume-assembly/a5d1e9f0.log/json`, `resume-assembly/41bfcae6.log/json`에 있다.
-
-## 남은 컴파일 원인의 소유권
-
-`Rm0LightCapture.cs`는 `using Exoduser.CharacterLab`를 이미 갖고 있다. 이름공간 문제가 아니라 참조하는 전사 임포터 소스가 원격 후보에 없다. Git 전체 이력에서 해당 임포터 클래스의 커밋을 찾지 못했다.
-
-| 필요한 파일·자산 | 실제 상태 | 처리 |
-|---|---|---|
-| `Editor/CharacterLab/WarriorImport.cs` | `E:/exoduser-wt/pc-unity-rm0`에서 미추적 | 읽기만 확인. 미인수 타 팀 WIP이므로 복사·stage하지 않음 |
-| `Editor/CharacterLab/WeaponImport.cs` | 같은 소유 작업 폴더에서 미추적 | 위와 같음 |
-| `Art/Characters/Warrior/` | 같은 폴더 전체가 미추적이며 이 통합 브랜치에는 없음 | 임포터만 가져오면 실제 RM0 검수 자산도 빠질 수 있으므로 함께 소유권·필수 자산 인수가 필요 |
-
-위 소스에서 확인한 기존 계약은 전사 프리팹 `Assets/Exoduser/Art/Characters/Warrior/Warrior.prefab`, 대검 프리팹 `Assets/Exoduser/Art/Characters/Warrior/Weapon/Warrior_Greatsword.prefab`, 대검 길이 1.60f다. 이는 미추적 소스의 관찰값이며 채택·런타임 승인값으로 보고하지 않는다. 원래 검수 도구를 삭제하거나 더미 클래스로 컴파일을 우회하지 않았다.
-
-## 다음 실행 시 필요한 빌드 인자와 범위
-
-`PortVerification.Build`는 기본적으로 FirstPlayable만 넣고, `-remodel-scenes 1`일 때만 RM1_Slice를 포함한다. 이번 실패 제출에는 해당 인자가 없었으므로, 다음 성공 빌드는 반드시 다음 인자를 써야 1-1 3D를 검수할 수 있다.
-
-`-output,I:/EXODUSER-Storage/unity-preview/build,-receipt,I:/EXODUSER-Storage/unity-preview/build-receipt.json,-remodel-scenes,1`
-
-현재 RM-INT 런타임은 1-1의 RM1_Slice만 연결하고 보스 아레나에서 2D 표현으로 돌아간다. RM2·RM3·RM4·arena·3D 영웅 후보가 소스에 포함됐다는 사실만으로 실제 플레이 동선 연결을 완료했다고 보지 않는다. 사운드 청음·후보 채택도 별도다. H5 브랜치와 웹 코드는 추가하지 않았다.
-
-## 빠진 결과와 이유
-
-| 요구 결과 | 현재 상태 |
-|---|---|
-| 컴파일 0 오류·Windows EXE | 미완료: 미제출 임포터 의존성 세 곳 |
-| 무창 M1 스모크 | 미실행: 실행할 이번 Player 없음 |
-| 로비·1-1 3D·전투·보스·HUD 원본 1600×900 PNG | 전부 미생성·시각 미검수 |
-| 캡처 격자·장면별 시각 판정 | 미생성: 이번 캡처 없음. 과거 화면으로 대체하지 않음 |
-| `지옥의 길 (Unity 미리보기).lnk` | 미생성: 존재하지 않는 EXE를 대상으로 만들지 않음 |
-| 기존 `지옥의 길 (Unity).lnk` | 보존. 대상 `I:/EXODUSER-Storage/unity-latest/build/EXODUSER-Unity.exe`, 인자 없음. SHA-256 `5802346D9ED491C5E50331E75F25ECD329720E9DA2D28D687A31C1A0AC681D06` |
-| 손 조작·청음·Mac 실제 동기화·Steam | 이번 작업에서 미확인·미실행 |
-
-## Git·보존·디스크
-
-- 이번 fetch 후 원격 16개 끝점은 인수 전과 같고, 모두 코드 `6da76bcce`의 조상이다. `resume-assembly/branch-proof.json`에서 각 SHA·동일 여부·포함 여부를 확인했다.
-- 코드 수정 두 커밋 모두 미리보기 전용 브랜치에 비강제 push하고 원격 SHA를 대조했다. 최종 문서 커밋·main docs 반영 증거는 `remote-proof.json`에서 확인한다.
-- E: 여유는 재개 약 48.11GiB, 두 번째 Unity 시작 전 47.55GiB, 종료 확인 46.52GiB다. 30GiB 미만 중단 조건은 발생하지 않았다. 로그·백업·진단 산출물은 I:에만 뒀다.
-- 기존 `tools/guard.baseline.json`의 미스테이징 변경과 기존 Unity 생성 미추적 .meta는 보존했다. 이 작업 커밋에 넣지 않았다. 미인수 전사 소스·에셋도 보존했다.
-- 원본 보고는 `resume-assembly/REPORT-재개전.md`, 이번 소스 증거는 `resume-assembly/source-proof.json`, 바로가기 조회는 `resume-assembly/shortcuts.json`에 있다.
 
 ================= MAP PRODUCTION REPORT =================
 
-STAGE: 1-1 미리보기 후보 통합. 맵 제작·배치 변경 없음.
-MASTER: silhouette·regions·main route·side spaces = 기존 후보 보존, 실행 검수 미완료.
-OUTER MASS: LEFT·RIGHT·TOP·SOUTH·major holes = 캡처 없어 미검수.
-LARGE: source assets·composites·overlap·repeated silhouette = 후보 소스 포함만 확인.
-MEDIUM: connections·remaining holes = 미검수.
-GROUND: shadow·contamination·structure integration = 미검수.
-PLAYABLE: main arenas·travel·breathing·threat space·combat readability = Player 부재로 미검수.
-LANDMARK: primary·secondary·tertiary = 미검수.
-CAMERA QA: START·EARLY·ARENA·SIDE L·SIDE R·LANDMARK·LATE·EXIT = 전부 미검수.
-TECH QA: route·collision·seam·loading·performance = 미검수. pageerror·404 = 브라우저 미실행. Unity compile = 실패.
-FILES: stage-owned = asmref+.meta·M1 캡처 규격·관련 docs; concurrent touched = 없음; unrelated touched = 기존 baseline 보존.
-GIT: staged = 자기 경로만; commit = 미리보기 전용; push = 비강제; deploy = 없음.
-VISUAL VERDICT: FAIL — 미리보기 검수 산출물 부재에 따른 검수 차단. 아트 자체의 시각 판정은 미실행.
-NEXT PASS: 전사 임포터·필수 자산 소유권 인수 → 새 검수 단위에서 컴파일 0 → RM1 씬 포함 빌드 → 숨은 M1·3D 캡처·격자·바로가기.
+STAGE: 기존 통합 후보 미리보기 검수. 맵 제작·배치 변경 없음.
+MASTER: 기존 실루엣·지역·경로 보존. 전체맵 설계·완성 승인 아님.
+OUTER MASS: 좌우·하단의 단절·빈 외곽 관측. 상단 외곽 전체 미검수.
+LARGE: 기존 바위·나무 소품 반복 노출. 대형 복합 실루엣은 다듬기 필요.
+MEDIUM: 소품·지면의 접합과 큰 빈 공간 개선 필요.
+GROUND: 지면 질감·붉은 조명은 표시. 하단 지형 끝과 반복이 남음.
+PLAYABLE: M1 이동·전투·피격·관문·보스·클리어 23/23. 전체 도보 경로·실제 키 조작 증거 아님. 문자·VFX 겹침은 가독성 RETOUCH.
+LANDMARK: 기존 후보 보존. 주·부 랜드마크의 전체 위계 미검수.
+CAMERA QA: START·EARLY·north·east 네 고정 지점 직접 확인. ARENA·EXIT는 M1의 2D 캡처. SIDE L/R·LANDMARK·LATE 전체 전용 8컷 보드 미완료.
+TECH QA: 컴파일 0·Win 빌드·batch M1·3D 1800틱 통과. 전체 충돌·seam·성능 미측정. pageerror·404는 Unity 검수에 해당 없음.
+FILES: 임포터 2개+.meta·부활 연결 1줄·관련 docs. 자동 생성 입력은 별도 보존. 타 팀 WIP 원본 변경 없음.
+GIT: 자기 경로만 stage·commit·비강제 push. unity/main 변경·배포 없음.
+VISUAL VERDICT: RETOUCH — 미리보기 제작은 완료, 최종 맵·아트 완성 승인은 아님.
+NEXT PASS: 외곽·문자 가독성·클리어 패널·숨은 데스크톱 종료 안정화는 후속.
 
 ================= 끝 =================

@@ -43,3 +43,8 @@
 - DT-01이 먼저 병합되면 `Editor/DevTools/**`는 `Exoduser.Editor`에 그대로 들어간다(MapLint가 쓰는 URP·RP Core 참조 포함). 병합 때 컴파일로 한 번 더 확인.
 - 기존 결함 후보: Verify `A15 SFX right must step by one and write once`(unity/main).
 - 산출: `I:\EXODUSER-Storage\qa\c01\` (로그 `base-*.log`·`c01-*.log`·`verify-gpu-*.log`, `build-commit.json`).
+
+
+## 2026-10-29 brief2 최종 검증
+
+미리보기 전용 인수·보스 부활 null 역참조 수정 후 Unity 6000.6.7f1 Win 빌드 `23271fa4` 컴파일·빌드 오류 0, 최종 D3D11 batch M1 `a7774943` **23/23·exit 0·창 0·잔존 0·세이브 변경 0**를 확인했다. 3D `fb7ad923` 1,800틱·네 지점 캡처·정상 종료도 통과했다. 이전 컴파일 실패는 해결 이력이며 unity/main 반영을 뜻하지 않는다. UI 포함 캡처는 숨은 모드에서 별도 확보했으며 그 모드의 종료 지연은 미해결로 기록했다. 세부·시각 RETOUCH·바로가기는 `UNITY_PC_PREVIEW_ALL_20261029.md`를 따른다.

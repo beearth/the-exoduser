@@ -226,3 +226,8 @@ C-02a 검증: 컴파일 0 · `ExoInputVerification`(웹 코드 전부 `Key`로 �
 - worktree **94개**: 깨끗하고 원격에 들어간 것 26개(Steam `rel-0.7.1~0.7.7`·Godot 시절 `codex-*`·`docs-merge` 등), 더러움 표시 66개(Unity worktree 다수는 `.meta` 400여 개 — 에디터가 연 흔적일 가능성, 실제 작업 여부는 소유자 확인 필요), 디스크에 없는 등록 1개(`G:/exoduser-wt/snd10-ui`), C 드라이브 worktree 1개(`C:\Users\심도진\.codex\worktrees\5615`). 삭제는 사용자 승인 사항.
 - git: gc 꺼짐(10-27 팩 손상 대응, 유지), 팩 24개 21.8GB, 느슨한 객체 3.97GB. 공유 폴더 main은 로컬 19 / 원격 246 갈라짐(각 세션이 다른 SHA로 원격 반영 중).
 - PATH 25항목·938자 정상, `DOTNET_ADD_GLOBAL_TOOLS_TO_PATH=false` 유지. REPL 감시기 23:30까지 실행 중. API 실행기 키 파일 없음. `python -` 루프 0개.
+
+
+## 2026-10-29 brief2 최종 검증
+
+미리보기 전용 인수·보스 부활 null 역참조 수정 후 Unity 6000.6.7f1 Win 빌드 `23271fa4` 컴파일·빌드 오류 0, 최종 D3D11 batch M1 `a7774943` **23/23·exit 0·창 0·잔존 0·세이브 변경 0**를 확인했다. 3D `fb7ad923` 1,800틱·네 지점 캡처·정상 종료도 통과했다. 이전 컴파일 실패는 해결 이력이며 unity/main 반영을 뜻하지 않는다. UI 포함 캡처는 숨은 모드에서 별도 확보했으며 그 모드의 종료 지연은 미해결로 기록했다. 세부·시각 RETOUCH·바로가기는 `UNITY_PC_PREVIEW_ALL_20261029.md`를 따른다.
