@@ -9,29 +9,49 @@ namespace Exoduser
     // Independent geometry review. This does not attach the staff to a boss or arena.
     public static class DarkDruidStaffStudyBuilder
     {
-        const string Obj = "Assets/Exoduser/Remodel/Boss/DarkDruid/Studies/dark_druid_staff_v1.obj";
-        const string Output = @"I:\EXODUSER-Storage\boss\sculpt-20261029\unity-staff-review";
+        const string V1Obj = "Assets/Exoduser/Remodel/Boss/DarkDruid/Studies/dark_druid_staff_v1.obj";
+        const string V2Obj = "Assets/Exoduser/Remodel/Boss/DarkDruid/Studies/dark_druid_staff_v2.obj";
+        const string BarkTexture = "Assets/Exoduser/Remodel/Boss/DarkDruid/Source/Druid_BaseColor.jpg";
+        const string V1Output = @"I:\EXODUSER-Storage\boss\sculpt-20261029\unity-staff-review";
+        const string V2Output = @"I:\EXODUSER-Storage\boss\sculpt-20261029\unity-staff-v2-review";
 
         public static void Capture()
         {
-            AssetDatabase.ImportAsset(Obj, ImportAssetOptions.ForceSynchronousImport);
-            var model = AssetDatabase.LoadAssetAtPath<GameObject>(Obj);
+            CaptureStudy(V1Obj, V1Output, false);
+        }
+
+        public static void CaptureV2()
+        {
+            CaptureStudy(V2Obj, V2Output, true);
+        }
+
+        static void CaptureStudy(string obj, string output, bool useBarkTexture)
+        {
+            AssetDatabase.ImportAsset(obj, ImportAssetOptions.ForceSynchronousImport);
+            var model = AssetDatabase.LoadAssetAtPath<GameObject>(obj);
             if (model == null) throw new InvalidOperationException("Staff OBJ import failed");
             var instance = UnityEngine.Object.Instantiate(model);
             instance.name = "DarkDruid_Staff_Study_Only";
             var renderers = instance.GetComponentsInChildren<MeshRenderer>();
             if (renderers.Length == 0) throw new InvalidOperationException("Staff has no mesh renderer");
-            var colors = new[] { "#45392B", "#755B3F", "#4B2A1F", "#26221B", "#B6A57E", "#474C25" };
-            var names = new[] { "charred_root", "raised_bark", "leather", "recess", "bone", "orb" };
+            var colors = useBarkTexture
+                ? new[] { "#F3E9D7", "#E9D8BE", "#4B2A1F", "#26221B", "#B6A57E", "#333A16", "#272A12" }
+                : new[] { "#45392B", "#755B3F", "#4B2A1F", "#26221B", "#B6A57E", "#474C25" };
+            var names = useBarkTexture
+                ? new[] { "charred_root", "raised_bark", "leather", "recess", "bone", "orb", "orb_vein" }
+                : new[] { "charred_root", "raised_bark", "leather", "recess", "bone", "orb" };
             var mats = new Material[colors.Length];
             var shader = Shader.Find("Universal Render Pipeline/Lit");
             if (shader == null) throw new InvalidOperationException("URP Lit missing");
+            var bark = useBarkTexture ? AssetDatabase.LoadAssetAtPath<Texture2D>(BarkTexture) : null;
+            if (useBarkTexture && bark == null) throw new InvalidOperationException("Existing bark atlas missing");
             for (int i = 0; i < mats.Length; i++)
             {
                 mats[i] = new Material(shader) { name = "Study_" + i };
                 ColorUtility.TryParseHtmlString(colors[i], out var c);
                 mats[i].SetColor("_BaseColor", c);
                 mats[i].SetFloat("_Smoothness", i == 5 ? 0.42f : 0.17f);
+                if (useBarkTexture && i < 2) mats[i].SetTexture("_BaseMap", bark);
                 if (i == 5)
                 {
                     mats[i].EnableKeyword("_EMISSION");
@@ -50,7 +70,9 @@ namespace Exoduser
                 for (int i = 0; i < count; i++)
                 {
                     var sourceName = i < imported.Length && imported[i] != null ? imported[i].name : "";
-                    var materialIndex = Array.FindIndex(names, n => sourceName.IndexOf(n, StringComparison.OrdinalIgnoreCase) >= 0);
+                    var materialIndex = Array.FindIndex(names, n =>
+                        sourceName.IndexOf(n, StringComparison.OrdinalIgnoreCase) >= 0 &&
+                        (n != "orb" || sourceName.IndexOf("orb_vein", StringComparison.OrdinalIgnoreCase) < 0));
                     if (materialIndex < 0)
                         throw new InvalidOperationException("Unrecognized OBJ material: " + sourceName);
                     assigned[i] = mats[materialIndex];
@@ -58,11 +80,13 @@ namespace Exoduser
                 r.sharedMaterials = assigned;
             }
             Debug.Log($"[DruidStaffStudy] renderers={renderers.Length} submeshes={totalSubmeshes}");
-            Directory.CreateDirectory(Output);
+            Directory.CreateDirectory(output);
             var lightObject = new GameObject("StaffStudy_KeyLight");
             var light = lightObject.AddComponent<Light>();
             light.type = LightType.Directional; light.intensity = 2.5f;
-            lightObject.transform.rotation = Quaternion.Euler(48, -34, 0);
+            lightObject.transform.rotation = useBarkTexture
+                ? Quaternion.Euler(48, 145, 0)
+                : Quaternion.Euler(48, -34, 0);
             var cameraObject = new GameObject("StaffStudy_Camera");
             var camera = cameraObject.AddComponent<Camera>();
             camera.backgroundColor = new Color(.075f, .072f, .067f);
@@ -72,8 +96,14 @@ namespace Exoduser
             var target = new Vector3(0, 1.15f, 0);
             try
             {
-                CaptureView(camera, target + new Vector3(0, 0, 5), target, "front");
-                CaptureView(camera, target + new Vector3(2.3f, 4.1f, 3.3f), target, "game55");
+                CaptureView(camera, target + new Vector3(0, 0, 5), target, "front", output);
+                CaptureView(camera, target + new Vector3(2.3f, 4.1f, 3.3f), target, "game55", output);
+                if (useBarkTexture)
+                {
+                    camera.orthographicSize = .34f;
+                    var cageTarget = new Vector3(.03f, 2.08f, 0);
+                    CaptureView(camera, cageTarget + new Vector3(0, .35f, 3), cageTarget, "cage_detail", output);
+                }
             }
             finally
             {
@@ -85,7 +115,7 @@ namespace Exoduser
             }
         }
 
-        static void CaptureView(Camera camera, Vector3 position, Vector3 target, string name)
+        static void CaptureView(Camera camera, Vector3 position, Vector3 target, string name, string output)
         {
             camera.transform.position = position;
             camera.transform.LookAt(target);
@@ -96,7 +126,7 @@ namespace Exoduser
             var image = new Texture2D(1600, 900, TextureFormat.RGB24, false);
             image.ReadPixels(new Rect(0, 0, 1600, 900), 0, 0);
             image.Apply();
-            File.WriteAllBytes(Path.Combine(Output, name + ".png"), image.EncodeToPNG());
+            File.WriteAllBytes(Path.Combine(output, name + ".png"), image.EncodeToPNG());
             RenderTexture.active = null;
             camera.targetTexture = null;
             UnityEngine.Object.DestroyImmediate(image);

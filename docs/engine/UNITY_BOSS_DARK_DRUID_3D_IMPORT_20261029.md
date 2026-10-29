@@ -36,6 +36,7 @@ Unity 첫 임포트가 기존 `.meta` 432개와 `.asset` 1개를 다시 썼다. 
 |---|---|---|
 | 연속 표면 본체 시험 | `I:/EXODUSER-Storage/boss/sculpt-20261029/build_silhouette.py` → `dark_druid_silhouette_v1.obj`(35,106정점, 70,188삼각형), 정면/55°/측/후 PNG | 원본 정점 변형이나 리그 부품 조립이 아닌 새 SDF 표면. 정면의 긴 직선 팔·다리, 단순 V 뿔, 인형 같은 관절·망토 형태가 남아 **VISUAL FAIL**. Unity/게임에 넣지 않음. 같은 방식의 미세 비율 수정은 중단 |
 | 왼손 지팡이 독립 후보 | `unity/Tools/boss/build_druid_staff.py` → `Studies/dark_druid_staff_v1.obj`·`.mtl`(22,418정점, 44,256삼각형). 전체 높이 2.300m, 감개 중심 0.85m/길이 0.20m, 나무뿌리 축 지름 약 0.04m, 새 두개골 1개, 여섯 뿌리의 0.40m 케이지·지름 0.16m 구슬, 뼈 마개. `I:/EXODUSER-Storage/boss/sculpt-20261029/staff_game55.png` 1600×900과 정면/케이지 확대 렌더 | §3의 소품 치수·구성에 맞는 **독립 소품 연구**. 자체 렌더 1x에서 큰 구조는 읽히나 케이지 뿌리가 규칙적이고 표면·발광이 단순해 **RETOUCH**. 소품 시트 `S3_staff.png` 동일 크기 대조, Unity 실제 화면, 왼손 소켓·127 접촉·Player 검수 전. 본체가 FAIL인 동안 아레나에는 연결하지 않음 |
+| S3 지팡이 독립 재조형 v2 | `unity/Tools/boss/build_druid_staff_v2.py` → `Studies/dark_druid_staff_v2.obj`·`.mtl`. v1을 보존한 별도 후보. 총 높이 2.300m, 손잡이 0.75–0.95m(중심 0.85m), 4cm 범위의 세 갈래 꼬인 축, 1.90–2.30m의 비대칭 6근 케이지와 교차 가지, 16cm 구슬·분할 껍질, 새 두개골·뼈 마개, 이끼 2가닥. OBJ 정점/UV 각 21,332, 삼각형 41,828, 재질 7종, 유효하지 않은 인덱스 0. 뿌리 UV는 기존 `Source/Druid_BaseColor.jpg`의 나무껍질 부분을 참조하며 원본 이미지는 수정하지 않음 | S3 원화의 대각선 뿌리 흐름과 코어 표면을 **독립 연구**로 구현. Unity `CaptureV2` 정면/55°/케이지 확대 1x **RETOUCH**. 보스 본체 FAIL로 제품 아레나·Player·왼손 소켓에는 미연결 |
 
 구슬의 기본색은 중립 올리브, `.mtl` Ke 및 Unity 검사 머티리얼 Emission은 LOCK §3/§5의 `#9ea83a`로 지정했다. 자체 렌더 색은 Unity 재질 검수 근거가 아니다. `DarkDruidStaffStudyBuilder.Capture`는 OBJ 임포트·1600×900 Unity 분리 캡처를 위한 검사 코드이며 게임 표시 연결은 없다. OBJ 정적 검사: 정점 22,418/삼각형 44,256/재질 6개, 모든 face 인덱스 유효; 버전 관리본 소스와 I: 출력본의 SHA-256 동일.
 
@@ -46,6 +47,19 @@ Unity 검사 실행 `7947e789`는 새 sparse 작업본에 Library가 없어 UPM 
 **Unity 직접 1x 판정: RETOUCH.** 지팡이·새 두개골·케이지·구슬은 분리 장면에서 읽히지만 55°에서 소품이 작고, 뿌리 6개의 반복 형태와 구슬/껍질의 평평한 단색이 드러난다. 자체 소프트웨어 렌더를 Unity 시각 검수로 대신하지 않았다. S3 원화 시트의 동일 크기 나란히 비교, 실제 보스 왼손 소켓·127 접촉/Emission·전투 화면·Player는 아직 없다. 본체 VISUAL FAIL 때문에 아레나 런타임 채택 금지.
 
 첫 임포트가 재작성한 기존 tracked 440경로는 `I:/EXODUSER-Storage/codex-takeover/boss/unity-autoimport-staff-20261029.patch`와 정확 경로 NUL 목록으로 보존한 뒤 HEAD로 원복했다. 새로 생긴 관련 없는 `.meta` 8개도 `unity-autoimport-staff-untracked-20261029/`로 정확 경로 보관했다. 후보 OBJ/MTL/검사 코드의 버전 관리본은 변경되지 않았고 tracked·미추적 작업본은 깨끗하다.
+
+### S3 지팡이 v2 독립 재검수
+
+S3 기준 원본은 `I:/EXODUSER-Storage/archive/E/exoduser-wt/_out/unity-charsheet/dark_druid/S3_staff.png`로 보존되어 있다. 원본을 직접 열어 기존 v1 및 v2 Unity 캡처와 비교했다. v2는 축의 세 갈래 꼬임, 여섯 비대칭 주뿌리와 교차 가지, 코어의 분할 껍질·솟은 정맥을 추가했다. 기존 `Druid_BaseColor.jpg`의 어두운 나무껍질 영역만 UV로 재사용하며 이미지 원본·v1 후보는 변경하지 않았다. `DarkDruidStaffStudyBuilder.CaptureV2`의 재질/검사 조명은 v1 검사와 분리했다.
+
+| 검증 | 실제 근거 | 판정 |
+|---|---|---|
+| 정적 OBJ/UV | Y 0.000–2.300m, 정점·UV 각 21,332, 삼각형 41,828, 재질 7종, face/UV 인덱스 오류 0. 손잡이 중심 0.85m/길이 0.20m, 구슬 지름 0.16m, 케이지 높이 0.40m | LOCK 치수 연구 범위 충족. 왼손 소켓 적합은 미검증 |
+| Unity 6000.6.7f1 최종 `b94a2e43` | `exo-unity.ps1` 무창 실행기 `ok=true`, 종료 0, 컴파일 오류 0, errorLogs 0, 사용자 세이브 변경 0. OBJ 임포트 렌더러 1/서브메시 7. `I:/EXODUSER-Storage/boss/sculpt-20261029/unity-staff-v2-review/`의 `front.png`, `game55.png`, `cage_detail.png` 각 1600×900 직접 확인 | 분리 검사 장면의 1x **RETOUCH**. 게임 아레나/Player 검증 아님 |
+
+S3는 굵고 뒤틀린 줄기가 케이지에 연속해 흘러가고, 구슬에는 내부 깊이와 국소적인 올리브빛이 보인다. v2는 v1보다 교차 흐름과 껍질 질감이 뚜렷하지만 55° 전체 크기에서 축이 아직 평평한 막대처럼 읽히고, 확대 화면에서는 교차 뿌리의 절차적 곡선과 코어의 밝은 단색 면이 드러난다. **VISUAL VERDICT: RETOUCH.** 다음 제작 담당은 축과 케이지의 연속 조형, 코어의 층별 깊이/발광 마스크를 실제 저작 도구에서 다시 만들고 같은 55°·확대 장면을 비교해야 한다. 본체가 VISUAL FAIL이므로 지팡이를 런타임 보스·1-4에 채택하지 않는다. 신규 유료 생성 0.
+
+Unity 자동 임포트가 수정·삭제한 무관한 tracked 439경로는 `I:/EXODUSER-Storage/codex-takeover/boss/unity-autoimport-staff-v2-20261029/all-unity-diff.patch`와 정확 경로 NUL 목록에 보존한 뒤 해당 경로만 HEAD에서 복원했다. 새로 생성된 무관한 `.meta` 8개는 동일 폴더의 `untracked/`에 바이트 확인 후 보관했다. v2 자기 변경 4경로만 후속 커밋 대상으로 남겼다.
 
 ## 다음 제작 경계
 
