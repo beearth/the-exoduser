@@ -226,3 +226,20 @@ Unity자동임포트450파일은 I에 보관·SHA 확인 후 승인 입력 byte�
 이것은 native960 시각실패1회 뒤의 원인수정1회이며 다음후보의같은핵심결함이반복되면중단/HOLD한다. 사전첫합성반려·dotnet실행준비오류·의도된red검사·제품native실패를분리해보존한다. 새출력candidate2-build/candidate2-caps로실행하고이전산출물삭제0.
 
 - 수정후 빌드7d668727/Player9e671e00는35/35·8프레임·창0/잔여0/USER_SAVE0. 960 1x에서가로띠가사라지고원래장식/접합을직접확인했다. 새원화/색/행개수를바꾸지않은공유픽셀경계/UV역보정의단일수정이다. 이전candidate3의960원본은1/168·16초·SP10·지역0이므로, 값이다른137/168·88초와같은값이라고표시하지않는다. **표시전용QA helper에만 pair선택 인자**를추가해그기존실측값의1600/960 두프레임을추가한다. 새출력candidate3-build/paired-caps, 렌더/배치helper/원화/게임데이터코드byte는수정후후보와동일. 기존35/번역/1775/1240/M1/oracle반복0, 추가2프레임·필요입력경계만새증거. 최종Runtime과그앞수정후Runtime의35검사는해시/범위로구분한다.
+
+### 최종 재질 제작후보 실행·1x 판정
+
+| 경계 | 최종 근거 |
+|---|---|
+| 실제 빌드 입력 | `881c1e17737ceefd1e785c3918e58411cb2bbeaf`, Unity tree `8c9c45ac9b0d63f2027b68c617a70cf4b245a41f`, 새Win64빌드 **5b891d6a** 오류0. 출력 `stageclear-material-20261030/candidate3-build/EXODUSER-Unity.exe`. 최종후속은검수문서만 |
+| 정확 새 Runtime | SHA256 `d13a3619ddf0cd55decf3e5856ec871ca3af271d93e51818ce8b85eb7045dcc8`, Core `e6d89a07efae6882c3062ac6b9d9fe1d8acdb00340d3a671ba175282a2ab65c5` 불변. launcher9806해시는이전과같아단독식별0 |
+| 최종 같은값 캡처 | **193a42a4**, 새Runtime의동일값전용11/11·2프레임·D3D11/RX9070XT·정상종료0·창0/잔여0/USER_SAVE0. 이전candidate3 실제QA의1/168·16초·SP10·지역/물약/사망0과visible전체동일확인. 1600/960원본모두동일값전후/1x비교완료 |
+| 새 재질/긴번역 근거 | 직전수정후빌드7d668727/Player9e671e00의35/35·8프레임·960 ko/en/el/da/ja/ms/ar(영문폴백)·각본문/버튼/새프레임경계0. Runtime `c6949aeabce173ebe31b29f0984a062110f89f0685fd5fc87cb0852f0c30ce50`는최종Runtime과다르다. 최종은pair QA선택만추가, Overlay/MaterialLayout/Presentation **3렌더소스 blob 동일**임을대조하여재질·번역증거만재사용, 최종Runtime의35검사라고소급하지않음 |
+| 입력/세이브 | 원래공유ButtonScreenRect/GUI.Button/Next게이트·생산콜백그대로. 새표적의결과닫기/로비/중복거부통과. 표시전용리뷰는실제저장차단; 실제저장성공을새검증했다는주장0. 정상경로Save/Core byte불변·기존47961226 M1재사용아님. USER_SAVE는실행기전후0 |
+| 원화/다른창 | forge/iron PNG·meta SHA가착수전과동일. 글로벌Texture/Importer/다른창소스변경0. 새원화/이미지생성·shader·비용0, 검수크롭/합성/캡처만추가. 다른창새실화면검사반복0 |
+
+제작자가 최종193a42a4의1600/960원본과 `전후_동일값_1600.png`·`전후_동일값_960.png`·`1x_프레임_전후.png`, 수정후9e671e00의그리스어긴제목/덴마크어긴버튼/일본어·말레이어장문을직접열었다. 평면갈색면대신원화의어두운미세재질·금속모서리·마모테가연결되고시간→처치→SP→로비순서/본문대비/버튼접근이유지됨을확인했다. 960의가로띠는단일샘플링수정후사라졌다. **제작자판정: 재질·프레임국소개선확인후보 / 전체RETOUCH·root독립검수대기.** 기존2D원화RGB의UI재사용이며새PBR/동적금속조명/전체AAA완성아님. 30영문폴백·점수/등급/기록수집·아랍어RTL/다음1-2·보스/맵잔여·장시간/손조작/Mac은그대로남긴다.
+
+모든새화면은QA정지/값주입이다. 이전1600/960은실제CoreQA완료프레임, 후는같은값의표시전용QA로 **같은사건/자연클리어/손조작E2E 아님**. 새최종Runtime전체M1은미실행, 기존c122실행본47961226의23/23을소급하지않는다. 이전30/170/번역전체/M1/Coreoracle/웹QA반복0.
+
+증거폴더 `I:/EXODUSER-Storage/unity-visual/stageclear-material-20261030/`: `paired-caps/`(최종2원본), `candidate2-caps/`(직전수정후8원본), `전후_동일값_1600/960.png`, `1x_프레임_전후.png`, `첫native_960_모서리1x.png`/`수정native_960_모서리1x.png`, `시도-실패이력.json`, `원화-입력보존.json`, `자동임포트-보존복구.json`, `후보-제출영수증.json`. Unity자동임포트450파일은보관/SHA대조후승인입력byte보존, INDEX비어있음/WORKguard만. 과거실패·동일실패2회/HOLD·7공백예외·guard/oldI/MP4·구실행본/바로가기/세이브보존. 이번private후보제출만, unity/main/바로가기교체/타큐인수/새팀·writer·worktree·비용/삭제·권한/OS·배포·서버재시작·CTO_STATE쓰기0.
