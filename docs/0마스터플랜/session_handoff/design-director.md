@@ -85,3 +85,4 @@
 
 - 다른 게임의 참고 화면을 직접 열고 캐릭터 우선 조명·배경 대비·재질 구분·접지·절제된 발광을 판단 기준으로 추렸다. 원본 이미지는 게임 자산이나 UI 명세로 복사하지 않았다. 보관 Meshy GLB의 55° 독립 렌더와 과거 웹/Unity 2D 전투 1x는 확인했으나, 보스 제작자의 Unity 3D 임포트는 머티리얼 생성 예외에서 멈춰 **현재 3D 게임 시점 PNG가 없다**. 따라서 현행 체형 VISUAL FAIL을 유지하고 3D 화면 품질은 미검증이다.
 - 기존 `I:/EXODUSER-Storage/codex-takeover/design/REPORT.md`의 “품질 참고 대조와 현행 3D 후보 검수” 절에 빌더 코드 위치별 수정값(재질 roughness·발광 범위·그림자·캡처 확대), 얼굴/지팡이 시선, 무VFX/전투VFX 실제 1600×900 idle·walk·slam 재검수 조건을 표로 남겼다. 보스 보드 §8에 이 근거를 연결했다. DESIGN LOCK v0.4, 보스 제품 파일, 유료 생성은 변경하지 않았다.
+- 공통 품질 규칙을 적용해 원본 GLB의 **비파괴 정적 체형 시안 v2**(`I:/EXODUSER-Storage/codex-takeover/design/druid_review/gaunt_v2_STATIC_STUDY.glb`, SHA-256 `56630206b90d4a19c313be75485ea89aed3b50e836e4bb7b2474b5457b9e4097`)를 만들고 전·측·후·55° 독립 렌더를 직접 봤다. 어깨·몸통·발 폭과 긴 팔 비율은 전사형 인상을 줄였지만, 망토와 자세의 대칭, 지팡이 부재, 리그·게임 시점 부재가 남는다. **VISUAL VERDICT: RETOUCH (방향 시안 한정)**; 기존 본체의 VISUAL FAIL은 철회하지 않는다. 제품 모델은 보스 제작 담당이 새 체형으로 재조형하고 실제 3D 보스방 1x·연속 동작에서 재검수한다.
