@@ -253,7 +253,7 @@ Git은 §1의 원본·common-dir·이동 범위 확인과 현재 승인 뒤에 �
 
 중앙 운영 담당은 **Codex CTO 채팅 `01a18340-4120-76a3-ab5d-f828415d6825`**다. root는 native `automation_update`의 create 성공 결과로 **`exoduser-cto`·ACTIVE·20분·현재 root 채팅 대상** 등록을 확인했다. canonical 상태파일은 **`I:/EXODUSER-Storage/codex-takeover/CTO_STATE.json`**, schema 1이다. 단일 writer는 root이며 담당들은 자기 REPORT·기존 보드·MERGE_QUEUE에 근거를 남긴다. 문서 담당은 상태JSON·등록을 수정하지 않는다.
 
-등록과 첫 예약 실행은 별도다. 첫 예약 실행은 미검증이다. root의 수동 제어 영수증 `I:/EXODUSER-Storage/codex-takeover/cto-manual-20261029/CONTROL_PASS_RECEIPT.json`은 등록·상태파일 저장과 수동 절차 점검의 증거이며 예약 실행 증거가 아니다. 매뉴얼 담당의 기존 실제 도구 실행·I: 연결/추적 파일 clean 관측을 확인했다. Unity visual은 idle 관측 뒤 재개 전송이 active writer로 거절돼 **미전달·재시도 0·별도 writer 0·재개 미확인**으로 남긴다. PC 총괄 후속은 수신과 새 도구 `exec-9bddcea7-056e-41cf-bfd1-6ee252f08628`을 확인해 RUNNING이다. 새 감독 작업은 active/pending·dispatchKey로 중복 지시를 방지한다. 과거 `exoduser`·`exoduser-20`의 현재 등록 여부는 조회 결과만으로 확정하지 못했으므로 전체 중복 해소 완료라고 쓰지 않는다.
+등록과 첫 예약 실행은 별도다. 아래는 **2026-10-29 13:35 KST 수동시험 당시의 관측 이력**이다. root의 `I:/EXODUSER-Storage/codex-takeover/cto-manual-20261029/CONTROL_PASS_RECEIPT.json`은 등록·상태파일 저장과 수동 절차 점검을 확인하고 첫 예약 실행은 미검증으로 기록했다. 매뉴얼 담당의 기존 실제 도구 실행·I: 연결/추적 파일 clean을 관측했고, Unity visual 재개는 active writer 거절로 미전달·재시도 0·별도 writer 0·재개 미확인이었다. PC 총괄은 수신과 새 도구 `exec-9bddcea7-056e-41cf-bfd1-6ee252f08628` 확인으로 **그 시험 시점에 RUNNING**이었다. 이는 현재 상태 표시가 아니다. **현재 작업·대기·완료 상태는 canonical CTO_STATE.json과 기존 보드를 참조**하며 매 주기 이 문서의 시험 이력을 수정하지 않는다. 새 감독 작업은 active/pending·dispatchKey로 중복 지시를 방지한다. 과거 `exoduser`·`exoduser-20`은 등록 확인이 불충분했으므로 전체 중복 해소 완료라고 쓰지 않는다.
 
 ### 상태와 품질 게이트를 분리한다
 
@@ -296,7 +296,7 @@ local heartbeat는 PC와 앱이 실행 가능한 상태이고 연결·권한·�
 | 기준 초안 | 매뉴얼 `543ae3830`, 화면 품질 `7e0113fe4` | 기존 분야별 흐름을 보존하고 매뉴얼=순서/자동화, WORK_QUALITY=시각판정, AAA=합격선, 기존보드=상태로 역할 분리 | root 품질 초안은 명시적 인수 후 기존 품질 문서에 반영. 루트/AAA/COMMON_RULES는 기존 소유 유지 |
 | 경로·Git | 초기 원본 이전 불명으로 G: 메타데이터 전체 보류 | Claude 실제 회신과 root 확인으로 G: 원본 보존·E 작업 폴더의 I: 이동으로 정정. G: 작업 파일 readonly·정확 I: 경로 Git 허용 | 전역 Git 중단 해제. 깨진 I: 링크·이동 불명 E:만 해당 쓰기 보류. 이전 초안의 전역 보류는 폐기된 판단 이력 |
 | 소유·H5 | 초안의 G: 고정 편집·인수 규칙의 자기 브랜치 | 최신 승인·호스트·정확 경로 소유표로 구분. 일괄 브랜치 복사·타인 WIP 반입 금지 | PC 실행 계약의 과거 E:/G: 허용 경로·커밋 담당 규칙은 실행기 담당이 실제 버전과 대조 |
-| 자동화·idle | 작성된 매뉴얼을 실제 운영으로 연결 | `exoduser-cto` ACTIVE·20분 등록, canonical CTO_STATE schema 1·root 단일 writer. native 메시지 우선·cursor/dispatchKey·실제 도구 착수 증거 | 첫 예약 실행 미검증. Unity visual 재개는 active writer 거절로 미전달, PC 총괄은 새 도구 확인으로 RUNNING. 과거 자동화의 현재 등록/중복 해소 완료는 미확정 |
+| 자동화·idle | 작성된 매뉴얼을 실제 운영으로 연결 | `exoduser-cto` ACTIVE·20분 등록, canonical CTO_STATE schema 1·root 단일 writer. native 메시지 우선·cursor/dispatchKey·실제 도구 착수 증거 | 2026-10-29 13:35 KST 시험 당시 첫 예약 미검증·Unity visual 미전달·PC 총괄 RUNNING 관측. 현재 상태는 JSON/기존 보드 참조. 과거 자동화의 등록/중복 해소 완료는 미확정 |
 | 품질·통합 | 큰 차이 0까지 제출, RETOUCH 기능 통합 허용 | 최종 제출과 결함 보고를 분리. 핵심 FAIL 아트 통합 금지, RETOUCH 기능 통합·후속 재작업 유지 | 교차 검수·자체 판정은 실제 검수자·후보 증거로 구분 |
 | 실패·연속 작업 | 테스트 두 번 실패 시 중단, 후보 품질 재작업 | 테스트 단위 재실행 한도와 같은 제작법 두 후보 FAIL을 별도 카운터로 관리. 영향받는 단위만 중단 | 독립 후속은 기존 승인·소유·선행조건 확인 뒤 진행 |
 | 비용·메시지·배포 | 브리프·CTO 보고·기존 승인 절차 | 기승인 비용·허용행위를 브리프에 명시. 메시지·새 지출·배포 권한을 heartbeat로 확대하지 않음 | 필수 사용자 결정은 해당 범위만 WAIT_USER |

@@ -502,9 +502,11 @@ Claude CTO의 실제 회신 `I:/EXODUSER-Storage/codex-takeover/cto-manual-20261
 | 중앙 자동화 등록 | root의 native automation_update create 성공: `exoduser-cto`, ACTIVE, 20분, 현재 root 채팅 대상 | **첫 예약 실행 미검증**. 등록·ACTIVE·예정 시각으로 실제 실행을 선언하지 않음 |
 | 상태·중복 방지 | canonical `I:/EXODUSER-Storage/codex-takeover/CTO_STATE.json`, schema 1, root 단일 writer. actor별 task/host/path/approvedNext/cursor/dispatchKey/pending/evidence/gates | 새 감독은 active/pending·동일 dispatchKey로 중복 방지. 과거 `exoduser`·`exoduser-20`의 현재 등록은 미확정이므로 전체 중복 해소 완료는 아님 |
 | 기존 OS 자동 실행 | root 읽기 감사: AutoGit Disabled·대상 스크립트 없음, AutoLoop Ready/startup·매칭 process 0·LOCK 2026-08-28, ClaudeCleanup Ready/30분 단순 msg, DailySteam 유지 | AutoLoop 재가동 0. heartbeat 자동 commit/push/merge 없음. 기존 Steam 작업 유지는 Set Live 승인 아님 |
-| 수동 제어 점검 | `I:/EXODUSER-Storage/codex-takeover/cto-manual-20261029/CONTROL_PASS_RECEIPT.json` 저장. 등록/상태파일 존재 검증과 기존 매뉴얼 담당 도구·I: 연결/추적 파일 clean 관측. PC 총괄 후속은 수신+새 도구 `exec-9bddcea7-056e-41cf-bfd1-6ee252f08628` 확인으로 RUNNING | **첫 예약 실행 미검증**. Unity visual 재개는 active writer 거절로 미전달·재시도/별도 writer 0이며 재개 미확인. 수신을 실제 착수로 세지 않음 |
+| 수동 제어 점검 — 2026-10-29 13:35 KST 이력 | `I:/EXODUSER-Storage/codex-takeover/cto-manual-20261029/CONTROL_PASS_RECEIPT.json` 저장. 등록/상태파일 존재·기존 매뉴얼 담당 도구·I: 연결/추적 파일 clean 관측. PC 총괄 후속은 수신+새 도구 `exec-9bddcea7-056e-41cf-bfd1-6ee252f08628` 확인으로 **시험 당시 RUNNING** | 시험 당시 첫 예약 미검증·Unity visual active writer 거절로 미전달·재시도/별도 writer 0. 현재 상태는 CTO_STATE/기존 보드 참조. 시험 이력을 매 주기 현재 상태로 다시 쓰지 않음 |
 | 품질 범위·게이트 | 웹 이식 UI/HUD/게임 규칙/이식 VFX 계약과 승인된 맵·보스·캐릭터 3D 리모델을 분리. FAIL 아트 통합 금지, RETOUCH 기능 통합은 기존 규칙 유지 | 전체 보스 리마스터·3D 리모델 범위를 개별 버그 검사로 축소하지 않음. 실제 게임 품질 개선·전체 보스 완료는 미완료 |
 | 품질 참고 자료 | 사용자 보존 스크린샷을 품질 보드에 연결하고 문서 담당이 13:36 KST에 직접 열어 확인. 구도·초점·재질·조명·정보 계층 참고 | Elden Ring·NRFTW 메모리 키만 있는 자료는 실제 자료/출처/확인 시점 미연결로 미확인. 제작자 본인의 직접 열람·대조 필수, 외부 이미지 Git 삽입 0 |
 | 문서 검수·원격 반영 | 세 문서의 상대 링크·정합성·diff check·필수 hook을 확인하고 정확 경로만 정상 commit·main 비강제 반영 후 원격 SHA를 대조 | 실제 최종 SHA는 문서 담당의 commit·push·ls-remote 결과로 인계. 문서 반영을 예약 실행·게임 품질 완료로 확대하지 않음 |
 
 native `send_message_to_thread`가 지원되는 승인된 전달은 그 도구를 우선하며 CLI resume 창을 추가로 열지 않는다. 모든 단계는 전송·수신·실제 도구 착수·검수·통합·실행본을 구분한다. 과거 전역 중단·웹 외형 1:1·자동화 등록=실행이라는 추론은 현재 운영 기준으로 사용하지 않는다.
+
+root의 같은 날 후속 읽기 점검은 해당 작업 범위 완료로 기록됐지만 게임 실행본 최신화 완료가 아니다. root 보고상 원격 `unity/main`의 `97ff57883`과 바로가기 코드 기록 `1c8a87981`이 달라 최신 동일성은 미검증이며 Unity 프로세스/잠금은 0이었다. 이 역시 시점이 있는 점검 근거다. 살아 있는 actor 상태·후속 배정·cursor는 root 단일 writer의 CTO_STATE와 기존 보드가 관리한다.
