@@ -30,6 +30,24 @@ namespace Exoduser.UnityPort
             checks.Add((ok?"PASS ":"FAIL ")+name);
             if(!ok)failures++;
         }
+        [Serializable]sealed class FontRow{public string code,key,font;public bool covered;}
+        [Serializable]sealed class FontRows{public List<FontRow> rows=new List<FontRow>();}
+        [Serializable]sealed class Labels{public LanguageRow[] entries;}
+        [Serializable]sealed class LanguageRow{public string code;public LabelRow[] labels;}
+        [Serializable]sealed class LabelRow{public string key,text;}
+        IEnumerator CheckFonts()
+        {
+            var rows=new FontRows();var source=Resources.Load<TextAsset>("Data/visual_select_labels");var data=JsonUtility.FromJson<Labels>(source.text);int missing=0;
+            foreach(var language in data.entries)
+            {
+                foreach(var label in language.labels)
+                {
+                    var font=NativeSilverHellUi.TextFont(NativeSilverHellUi.Font(),label.text);bool ok=NativeSilverHellUi.Covers(font,label.text);if(!ok)missing++;rows.rows.Add(new FontRow{code=language.code,key=label.key,font=font==null?"":font.name,covered=ok});
+                }
+                yield return null;
+            }
+            File.WriteAllText(Path.Combine(output,"서체_문자검사.json"),JsonUtility.ToJson(rows,true));Check(missing==0,"현재 지원 언어의 직업 문구 누락 글리프 0 (문자 지원 검사, 조판·번역 품질과 구분)");
+        }
         IEnumerator Start()
         {
             AudioListener.volume=0;
@@ -54,6 +72,7 @@ namespace Exoduser.UnityPort
             lobby.SetPlaybackFocus(true);
             Screen.SetResolution(1920,1080,FullScreenMode.Windowed);
             yield return new WaitForSecondsRealtime(.5f);
+            yield return CheckFonts();
             lobby.ReplayIntro();
             yield return new WaitForSecondsRealtime(1.5f);
             yield return Shot("Unity_인장_등장_1920");
@@ -89,7 +108,8 @@ namespace Exoduser.UnityPort
             yield return new WaitForSecondsRealtime(.6f);
             yield return Shot("Unity_캐릭터선택_동작2_1920");
             Check(lobby.GetComponent<NativeCharacterPresentationPlayback>().Video.Frame>=0,"기존 캐릭터 대기 영상 실제 디코드");
-            lobby.CloseCharacterCreation();
+            for(int visual=1;visual<5;visual++){lobby.GetComponent<NativeCharacterPresentationPlayback>().Video.SetPlaybackAllowed(false);Check(lobby.ChooseCharacterVisual(visual),"잠긴 직업 UI 선택 "+visual);yield return new WaitForSecondsRealtime(.3f);yield return Shot("Unity_캐릭터선택_"+(visual+1)+"_1920");var clip=lobby.GetComponent<NativeCharacterPresentationPlayback>().Video;clip.SetPlaybackAllowed(true);float deadline=Time.realtimeSinceStartup+5;while(clip.Frame<0&&clip.Error.Length==0&&Time.realtimeSinceStartup<deadline)yield return null;Check(clip.Error.Length==0&&clip.Frame>=0,"잠긴 직업 기존 영상 디코드 "+visual);}
+            lobby.CloseCharacterCreation();lobby.GetComponent<NativeCharacterPresentationPlayback>().Video.SetPlaybackAllowed(true);
             lobby.SelectCharacter(0);
             yield return new WaitForSecondsRealtime(1);
             yield return Shot("Unity_선택로비_1920");

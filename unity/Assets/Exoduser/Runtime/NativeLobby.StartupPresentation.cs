@@ -44,7 +44,7 @@ namespace Exoduser.UnityPort
    if(lines==null||lines.Length==0){characterError=K("입장 이야기 자료를 읽지 못했습니다.","Entry story data could not be loaded.");return false;}
    if(nemesisArt==null){nemesisArt=new Texture2D[21];for(int i=0;i<21;i++)nemesisArt[i]=Resources.Load<Texture2D>("Art/Startup/Nemesis/"+i.ToString("00"));loadingLogo=Resources.Load<Texture2D>("Art/Startup/loading_logo");}
    keepStartupStageMusic=false;StartupGameplayPrepared=false;
-   if(!loadingAlreadyShown)PlayStartupEnter();CancelCharacterStory();movie.Close();StopMusic();
+   if(!loadingAlreadyShown)PlayStartupEnter();CloseCharacterPresentationVideo();CancelCharacterStory();movie.Close();StopMusic();
    startup.Begin(lines,loadingAlreadyShown);startupShown=FrontendEntryPage.Idle;startupLine=-1;guideSkipFocus=false;startupInputFence=true;frontendPad.Reset();nemesisMusicDelay=-1;stageMusicDelay=-1;EnsureStartupMedia();return true;
   }
   void StartStartupMusic(string key,float gain){StopMusic();music.clip=Resources.Load<AudioClip>("Audio/Startup/"+key);MusicGain(gain);if(music.clip!=null)music.Play();}

@@ -72,5 +72,61 @@
     "lobby_enter_disabled: grayscale(1) brightness(.5)",
     "잠금 직업 emblem_*_disabled: grayscale(1) brightness(.62)",
     "Cinzel-400/600: 원본 가변 글꼴 wght 고정, 새 글꼴 디자인 0, 내부 이름 EXODUSER Latin Serif"
+  ],
+  "직업원화추가": [
+    {
+      "원본": "assets/charselect/poster_idle_hellgunner.jpg",
+      "Unity": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/poster_idle_hellgunner.jpg",
+      "sha256": "656c6220a4864bad3f2db44c238f4ec203f5a118787724ad1615dd9e22c46429",
+      "방식": "동일 바이트"
+    },
+    {
+      "원본": "assets/charselect/portrait_hellgunner.jpg",
+      "Unity": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/portrait_hellgunner.jpg",
+      "sha256": "8551ac0003e6783f9c685f1e9385dd4b156fdde326af4090569a70239ca3f529",
+      "방식": "동일 바이트"
+    },
+    {
+      "원본": "assets/charselect/idle_hellgunner.mp4",
+      "Unity": "unity/Assets/StreamingAssets/Lobby/cs_idle_hellgunner.mp4",
+      "sha256": "105c56a5b3a535f21099a51f999831ffd63469872e0856fc28054c025ce716ff",
+      "방식": "동일 바이트"
+    },
+    {
+      "원본": "assets/charselect/poster_idle_transmuter.jpg",
+      "Unity": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/poster_idle_transmuter.jpg",
+      "sha256": "9826156cf8ce8b746605eee34f85a6cb33146fc6261bfcf924a9acd2cb206bd6",
+      "방식": "동일 바이트"
+    },
+    {
+      "원본": "assets/charselect/portrait_transmuter.jpg",
+      "Unity": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/portrait_transmuter.jpg",
+      "sha256": "bb368100b763809332990bb32a45710c970bfe2fc0f36801be4cc2969251693c",
+      "방식": "동일 바이트"
+    },
+    {
+      "원본": "assets/charselect/idle_transmuter.mp4",
+      "Unity": "unity/Assets/StreamingAssets/Lobby/cs_idle_transmuter.mp4",
+      "sha256": "8d4e38f0e75757e28130709fe7ff858da056dc52b29e04aadf85fe124e9e34d7",
+      "방식": "동일 바이트"
+    },
+    {
+      "원본": "assets/charselect/poster_idle_spearmage.jpg",
+      "Unity": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/poster_idle_spearmage.jpg",
+      "sha256": "a97d989ac5af65adfe667063961434072bba3a957d5177fce37dd35de1edf7ff",
+      "방식": "동일 바이트"
+    },
+    {
+      "원본": "assets/charselect/portrait_spearmage.jpg",
+      "Unity": "unity/Assets/Exoduser/Resources/Art/CharacterSelect/portrait_spearmage.jpg",
+      "sha256": "514ca2f16c7d088240d59c455f542d8071bd0cac9ea67e22be661ffadfc97d5f",
+      "방식": "동일 바이트"
+    },
+    {
+      "원본": "assets/charselect/idle_spearmage.mp4",
+      "Unity": "unity/Assets/StreamingAssets/Lobby/cs_idle_spearmage.mp4",
+      "sha256": "0bba78ef3e3322adbc8f152eeac8b225eccef7efb1d5d0a4a5361022f14dcf26",
+      "방식": "동일 바이트"
+    }
   ]
 }

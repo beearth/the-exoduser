@@ -4,7 +4,7 @@ namespace Exoduser.UnityPort
     public sealed partial class NativeLobby
     {
         Texture2D silverCornerTop,silverCornerBottom,silverVisualCancel,silverVisualCreate,silverVisualDisabled;
-        Texture2D[] silverEmblems;
+        Texture2D[] silverEmblems,silverPosters;
         GUIStyle silverVisualTitle,silverVisualName,silverVisualDescription,silverVisualCaption,silverVisualAction,silverVisualTraitTitle,silverVisualTraitBody;
         Texture2D silverVisualVignette,silverHeadingLine;
         void EnsureSilverVisual()
@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort
             silverCornerTop=Resources.Load<Texture2D>("Art/ui/silver_hell/panel_corner_0");
             silverCornerBottom=Resources.Load<Texture2D>("Art/ui/silver_hell/panel_corner_1");
             presentationTraitGlyphs=Resources.Load<Texture2D>("Art/ui/silver_hell/trait_silver")??presentationTraitGlyphs;
-            silverEmblems=new Texture2D[5];
+            silverPosters=new Texture2D[5];string[] posterNames={"poster_idle_warrior_cs3_4k","poster_idle_silvertail_4k","poster_idle_hellgunner","poster_idle_transmuter","poster_idle_spearmage"};for(int p=0;p<5;p++)silverPosters[p]=Resources.Load<Texture2D>("Art/CharacterSelect/"+posterNames[p]);silverEmblems=new Texture2D[5];
             string[] names=
             {
                 "warrior","silvertail","hellgunner","transmuter","spearmage"
@@ -69,12 +69,12 @@ namespace Exoduser.UnityPort
         void DrawSilverScene(Rect box,int i)
         {
             var playback=characterPresentationPlayback==null?null:characterPresentationPlayback.Video;
-            Texture src=i==0?presentationWarriorPoster:i==1?presentationSilvertailPoster:presentationCutouts[i];
-            if(i<2&&playback!=null)
+            Texture src=silverPosters[i]??presentationCutouts[i];
+            if(playback!=null)
             {
                 if(presentationVideoVisual!=i)
                 {
-                    playback.Open(i==0?"cs_idle_warrior_cs3_4k.mp4":"cs_idle_silvertail_4k.mp4",true,true,false);
+                    string[] files={"cs_idle_warrior_cs3_4k.mp4","cs_idle_silvertail_4k.mp4","cs_idle_hellgunner.mp4","cs_idle_transmuter.mp4","cs_idle_spearmage.mp4"};playback.Open(files[i],true,true,false);
                     presentationVideoVisual=i;
                     presentationVideoStartedAt=Time.unscaledTime;
                 }
@@ -101,7 +101,7 @@ namespace Exoduser.UnityPort
             GUI.DrawTextureWithTexCoords(new Rect((w+headingWidth)/2+18,45,220,1),silverHeadingLine,new Rect(1,0,-1,1),true);
             var info=new Rect(x,bodyY,380,shortScreen?132:148.5f);
             SilverCornerPanel(info);
-            Label(new Rect(x+28,bodyY+26,324,16),VisualSelectionLabel(presentationJobs[i],new[]
+            SilverLabel(new Rect(x+28,bodyY+26,324,16),VisualSelectionLabel(presentationJobs[i],new[]
             {
                 "WARRIOR","BLADE DANCER","HELLGUNNER","TRANSMUTER","SPEARMAGE"
             }
@@ -111,22 +111,22 @@ namespace Exoduser.UnityPort
                 "Exoduser Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"
             }
             [i]),silverVisualName.font,28,3.36f,NativeSilverHellUi.Bright,true);
-            Label(new Rect(x+28,bodyY+100,324,38),VisualSelectionLabel(presentationDescriptions[i],new[]
+            SilverLabel(new Rect(x+28,bodyY+100,324,38),VisualSelectionLabel(presentationDescriptions[i],new[]
             {
                 "A black-iron warrior wielding a greatsword.","One spinning sword; her dance is annihilation.","A blood-moon marksman who uses her own blood as ammunition.","A hunter who transmutes core flame into bow, scythe, spear and sword.","A herald of the void who seals space with runes."
             }
             [i]),silverVisualDescription,TextAnchor.UpperLeft);
             var traits=new Rect(x+8,top+16,364,shortScreen?214:284.4f);
             SilverCornerPanel(traits);
-            Label(new Rect(x+34,traits.y+22,312,28),VisualSelectionLabel("플레이 방식","PLAYSTYLE"),silverVisualTitle,TextAnchor.MiddleCenter);
+            SilverLabel(new Rect(x+34,traits.y+22,312,28),VisualSelectionLabel("플레이 방식","PLAYSTYLE"),silverVisualTitle,TextAnchor.MiddleCenter);
             Fill(new Rect(x+34,traits.y+58,312,1),new Color(.61f,.62f,.62f,.18f));
             for(int n=0;n<3;n++)
             {
                 float y=traits.y+72+n*(shortScreen?44:68.5f);
                 string[] bits=presentationTraits[i,n].Split('|');
                 DrawGlyph(new Rect(x+36,y+7,22,22),i*3+n,Color.white);
-                Label(new Rect(x+68,y,276,27),VisualSelectionLabel(bits[1],TraitEnglish(i,n)),silverVisualTraitTitle,TextAnchor.MiddleLeft);
-                if(!shortScreen)Label(new Rect(x+68,y+27,276,35),VisualSelectionLabel(bits[2],TraitEnglishBody(i,n)),silverVisualTraitBody,TextAnchor.UpperLeft);
+                SilverLabel(new Rect(x+68,y,276,27),VisualSelectionLabel(bits[1],TraitEnglish(i,n)),silverVisualTraitTitle,TextAnchor.MiddleLeft);
+                if(!shortScreen)SilverLabel(new Rect(x+68,y+27,276,35),VisualSelectionLabel(bits[2],TraitEnglishBody(i,n)),silverVisualTraitBody,TextAnchor.UpperLeft);
                 if(n<2)Fill(new Rect(x+34,y+(shortScreen?43:66),312,1),new Color(.61f,.62f,.62f,.12f));
             }
             GUI.SetNextControlName("visual-info-left");
@@ -151,12 +151,12 @@ namespace Exoduser.UnityPort
                 }
                 Border(r,n==i?NativeSilverHellUi.Bright:new Color(.61f,.62f,.62f,.62f),1);
                 if(n==i)Border(new Rect(r.x-3,r.y-3,size+6,size+6),NativeSilverHellUi.Text,1);
-                Label(new Rect(r.x-10,r.yMax+7,size+20,20),VisualSelectionLabel(labels[n],new[]
+                SilverLabel(new Rect(r.x-10,r.yMax+7,size+20,20),VisualSelectionLabel(labels[n],new[]
                 {
                     "Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"
                 }
                 [n]),silverBody,TextAnchor.MiddleCenter);
-                if(n>0)Label(new Rect(r.x-10,r.yMax+30,size+20,20),VisualSelectionLabel("출시 준비 중","Coming soon"),silverVisualCaption,TextAnchor.MiddleCenter);
+                if(n>0)SilverLabel(new Rect(r.x-10,r.yMax+30,size+20,20),VisualSelectionLabel("출시 준비 중","Coming soon"),silverVisualCaption,TextAnchor.MiddleCenter);
                 GUI.SetNextControlName("visual-icon-"+n);
                 if(GUI.Button(new Rect(r.x-4,r.y-4,size+8,size+58),"",GUIStyle.none))
                 {

@@ -124,6 +124,7 @@ namespace Exoduser.UnityPort
         // text with CSS letter-spacing: the font's own advances plus `spacing` px after every glyph
         static float SpacedWidth(Font font, int size, string text, float spacing)
         {
+            font = NativeSilverHellUi.TextFont(font,text);
             if (font == null) return 0; font.RequestCharactersInTexture(text, size); float w = 0;
             foreach (char ch in text) { CharacterInfo info; if (font.GetCharacterInfo(ch, out info, size)) w += info.advance + spacing; }
             return w;
@@ -131,6 +132,7 @@ namespace Exoduser.UnityPort
 
         void DrawSpaced(float x, float y, float height, string text, Font font, int size, float spacing, Color color, bool shadow)
         {
+            font = NativeSilverHellUi.TextFont(font,text);
             if (font == null) return;
             var st = new GUIStyle(GUI.skin.label) { font = font, fontSize = size, alignment = TextAnchor.MiddleLeft, wordWrap = false, clipping = TextClipping.Overflow, padding = new RectOffset(0, 0, 0, 0) };
             font.RequestCharactersInTexture(text, size); var prev = GUI.color; float cx = x;

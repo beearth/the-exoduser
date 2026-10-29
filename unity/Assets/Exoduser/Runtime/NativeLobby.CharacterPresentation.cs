@@ -34,14 +34,14 @@ namespace Exoduser.UnityPort
   string presentationTraitScrollLanguage="";
   GUIStyle presentationHeading,presentationKoHeading,presentationSubtitle,presentationJob,presentationKoJob,presentationName,presentationDescription,presentationTraitTitle,presentationTraitBody,presentationRail,presentationRailFooter,presentationReleaseLabel,presentationAction,presentationCreateAction,presentationInput,presentationNameTitle,presentationKoNameTitle,presentationNameDescription,presentationNameLabel,presentationNameError,presentationNameButton;
   GUIStyle presentationTraitTitleMeasure,presentationTraitBodyMeasure,presentationRailMeasure;
-  readonly string[] presentationJobs={"전사","블레이드 댄서","혈월 사수","변성술사","공허 창술사"};
+  readonly string[] presentationJobs={"전사","블레이드 댄서","창포수","사신","공허 창술사"};
   readonly string[] presentationNames={"엑소듀서 전사","실버테일","헬거너","변성술사","창법사"};
-  readonly string[] presentationDescriptions={"거대검을 휘두르는 흑철의 전사","회전하는 단 하나의 검, 그녀의 춤은 파멸","자신의 피를 탄환 삼는 혈월의 사수","코어의 청염을 활·낫·창·검으로 변성하는 사냥꾼","룬으로 공간을 봉인하는 공허의 전령"};
+  readonly string[] presentationDescriptions={"거대검을 휘두르는 흑철의 전사","회전하는 단 하나의 검, 그녀의 춤은 파멸","자신의 피를 탄환 삼는 혈월의 창포수","베어낸 영혼을 먹고 자라는 청염의 낫","룬으로 공간을 봉인하는 공허의 전령"};
   readonly string[,] presentationTraits={
    {"⚔|근접 화신|거대검을 휘두르는 정면 돌파형 전투가입니다.","🛡|흑철의 방어|검은 갑옷으로 적의 공세를 견디고 되받아칩니다.","💥|파멸의 일격|느리지만 치명적인 광역 참격을 내리꽂습니다."},
-   {"🌀|검무의 화신|회전대검으로 사방의 적을 동시에 베어냅니다.","🗡|쌍단검 기동|빠르고 민첩한 연속 공격으로 파고듭니다.","✨|무희의 춤|화려한 회피와 폭발적인 딜을 오가는 곡예입니다."},
-   {"🩸|혈탄 장전|체력을 소모해 충전한 관통탄을 발사합니다.","🎯|관통 사격|리볼버형 라이플로 일직선상의 적을 꿰뚫습니다.","💨|역추진 도약|사격 반동을 이용해 뒤로 도약합니다."},
-   {"🌙|반월참|낫을 크게 휘둘러 전방 반원을 베어냅니다.","👻|영혼 수확|처치한 적의 영혼을 거둬 청염 무기를 강화합니다.","🌀|망령 걸음|청염으로 흩어졌다 원하는 곳에 다시 나타납니다."},
+   {"🌀|검무의 화신|회전대검으로 사방의 적을 동시에 베어냅니다.","🗡|멈추지 않는 기동|쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.","✨|무희의 춤|화려한 회피와 폭발적인 딜을 오가는 곡예입니다."},
+   {"🩸|혈탄 장전|체력을 소모해 충전한 관통탄을 발사합니다.","🎯|관통 창격|창포로 일직선상의 적을 모두 꿰뚫습니다.","💨|역추진 도약|사격 반동을 이용해 뒤로 도약합니다."},
+   {"🌙|반월참|낫을 크게 휘둘러 전방 반원을 베어냅니다.","👻|영혼 수확|처치한 적의 영혼을 거둬 낫을 강화합니다.","🌀|망령 걸음|청염으로 흩어졌다 원하는 곳에 다시 나타납니다."},
    {"🔮|공허 투창|공허창을 던져 관통시킨 뒤 다시 회수합니다.","✴|룬 각인|지면에 봉인 룬을 새겨 적을 묶습니다.","🌌|균열 이동|공간을 찢고 룬이 있는 곳으로 이동합니다."}
   };
   void InitializeCharacterPresentation()

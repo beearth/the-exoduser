@@ -14,6 +14,24 @@ namespace Exoduser.UnityPort
             if(regular==null)regular=Resources.Load<Font>("Art/fonts/Hahmlet-400-ko");
             return body?regular:light;
         }
+        static Font[] fallbackFonts;
+        internal static bool Covers(Font font,string text)
+        {
+            if(font==null)return false;
+            foreach(char ch in text)
+            {
+                if(char.IsControl(ch)||char.IsWhiteSpace(ch)||char.GetUnicodeCategory(ch)==System.Globalization.UnicodeCategory.Format)continue;
+                if(!font.HasCharacter(ch))return false;
+            }
+            return true;
+        }
+        internal static Font TextFont(Font preferred,string text)
+        {
+            if(Covers(preferred,text))return preferred;
+            if(fallbackFonts==null)fallbackFonts=new[]{Font(true),Resources.Load<Font>("Art/fonts/NativeCaptionNotoSerif"),Resources.Load<Font>("Art/fonts/NotoSerifCJKsc-Regular"),Resources.Load<Font>("Art/fonts/NotoSerifCJKtc-Regular"),Resources.Load<Font>("Art/fonts/NotoSerifCJKjp-Regular"),Resources.Load<Font>("Art/fonts/NotoSerifThai-Regular"),Resources.Load<Font>("Art/fonts/NotoNaskhArabic-Regular")};
+            foreach(var font in fallbackFonts)if(Covers(font,text))return font;
+            return preferred;
+        }
         internal static Texture2D Effect(int w,int h,Func<float,float,Color> sample)
         {
             var tex=new Texture2D(w,h,TextureFormat.RGBA32,false)
@@ -71,6 +89,12 @@ namespace Exoduser.UnityPort
         bool silverArtLoaded;
         Texture2D gateSigil,gateLogo,gateEnterLine,gateHalo,gateEnterShade,lobbySilverEnter,lobbySilverDisabled,lobbySilverShade;
         Font silverLatin;
+        void SilverLabel(Rect rect,string text,GUIStyle style,TextAnchor alignment)
+        {
+            var previous=style.font;
+            try{style.font=NativeSilverHellUi.TextFont(previous,text);Label(rect,text,style,alignment);}
+            finally{style.font=previous;}
+        }
         void EnsureSilverArt()
         {
             if(silverArtLoaded)return;
