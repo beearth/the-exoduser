@@ -416,7 +416,7 @@ function Acquire-Slot([string]$Role, [string]$wt, [int]$ownerPid, [string]$queue
 # ------------------------------------------------------------------ start
 function Set-DotnetEnv {
     $env:DOTNET_ADD_GLOBAL_TOOLS_TO_PATH = 'false'; $env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE = '1'
-    $env:DOTNET_NOLOGO = '1'; $env:DOTNET_CLI_HOME = 'E:/exoduser-wt/_dotnet-home'
+    $env:DOTNET_NOLOGO = '1'; $env:DOTNET_CLI_HOME = 'I:/EXODUSER-Storage/dotnet-cli-home'
 }
 
 function Q([string]$s) { if ($s -match '\s') { return '"' + $s + '"' } return $s }

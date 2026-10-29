@@ -9,6 +9,7 @@
 | 숨은 데스크톱 | `HiddenDesktop.psm1`의 별도 Windows 데스크톱, 종료 시 핸들 닫기 | `exo-unity.ps1`, `buildloop/desktop-probe.ps1` |
 | 기본 해상도 | 숨은 Player에서 별도 지정이 없으면 1600×900, 전체 화면 0 | `exo-unity.ps1` |
 | 빌드 인자 | 쉼표 문자열·배열·JSON을 먼저 분해한 뒤 `-buildTarget Win64` 추가 | `exo-unity.ps1` |
+| .NET CLI 홈 기본 경로 (2026-10-29 저장 정책) | `I:/EXODUSER-Storage/dotnet-cli-home` — `start`·`run`에서 자식 환경의 `DOTNET_CLI_HOME`으로 지정. 과거 E: 경로는 당시 검증 기록에만 남긴다 | `exo-unity.ps1`의 `Set-DotnetEnv` |
 
 인자 해석 자체 시험 `selftest/args-test.ps1`은 run·build·player의 14개 입력 형식에서 14개 통과했다. 첫 숨은 Player M1에서 게임 단계 자체는 22개 통과했으나 실행기 판정은 실패했다. 원인은 별도 데스크톱의 정상 창을 `MainWindowHandle` 검사로 사용자 창으로 오인한 것과 `Get-Process` 객체에서 종료 코드를 읽어 `null`이 된 것이다. 숨은 모드에서는 별도 데스크톱의 창을 위반 목록에서 제외하고, 해당 프로세스 핸들에서 종료 코드를 읽도록 수정했다.
 
