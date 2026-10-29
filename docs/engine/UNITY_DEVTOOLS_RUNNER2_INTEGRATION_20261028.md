@@ -23,3 +23,25 @@
 - 근거: `I:/EXODUSER-Storage/unity-visual/ntfs-20261029/`의 `preflight.stdout.log`, `actual-child-boundary.json`, `upm.log`, `startup-result.json`; 실행기 원본 로그 `unity-jobs/codex-unity-visual/logs/f8eca84f.log`. Win 빌드·Player·시각 검수는 이 startup의 증거에 포함하지 않는다.
 
 - startup에서 발견한 `TagManager.asset`의 빈 레이어 항목(`-` 단독)을 명시적 빈 문자열(`- ''`)로 정규화한다. 32개 레이어 이름·인덱스·Default sorting layer의 값은 보존하며 Unity YAML 파서 오류의 제거는 다음 빌드 로그로 확인한다.
+
+
+## 2026-10-29 22시 중앙 CTO 정책·인수 안내 수신 후 결과 회수
+
+새 작업/새 Unity 시작 지시로 해석하지 않고 기존 승인 단위의 결과를 회수했다. 이 확인에서 Unity·브라우저·빌드·Player 새 실행0, 새 worktree0, 비용·삭제·OS 설정·배포0, CTO_STATE 쓰기0이다.
+
+| 구분 | 회수·보존 판정 |
+|---|---|
+| 현재 소유 | G:/exoduser-wt/codex-unity-visual, codex/pc-unity-visual-ntfs-20261029, 확인 시 HEAD e87453039, INDEX 비어 있음. 사용자 G:/exoduser는 읽기만 |
+| 실행/배경 | policy-audit.stdout.log의 13:58:47Z 조회에서 Unity/UnityPackageManager/EXODUSER-Unity 프로세스0, queue/_tickets 비어 있음. 다른 Node/PowerShell 프로세스는 종료하거나 소유를 단정하지 않음 |
+| 자원 조회 | G/E NTFS, I exFAT. 조회 시 커밋여유29.24GiB, G676152524800/E1173196222464바이트 여유. 새 실행을 위한 예약/보장 수치로 사용하지 않음 |
+| NTFS 실제 입력 | 기존 actual-child-boundary.json: 프로젝트·Library G, DOTNET_CLI_HOME E:/exoduser-wt/_dotnet-home, UPM_CACHE_ROOT E:/exoduser-wt/_upm-cache. I는 산출물·로그·보관 |
+| UPM | 기존 upm.log 13:01:25.044Z IPC 시작, 13:01:37.462Z list-packages200, 13:01:51.716Z resolve-packages200. 환경 상속도 바뀌었으므로 exFAT 단독 원인 확정0 |
+| 이후 독립 게이트 | 기존 Win 빌드8e05c001 컴파일0/빌드오류0, Player1dbb47b3 정상종료/M1 23/23, RM-INT16b5187b 해시동일을 회수. startup만으로 이 단계를 대체하지 않음 |
+| 시각 | 기존 최종 후보의6개 compare 이미지와1x 판정 유지. 6건 큰차이 해소 범위 PASS / 전체맵 RETOUCH / 독립총괄검수 미실행 |
+| 두 MP4.meta | world_intro_v22b_steam.mp4.meta와 warrior_story_v23_clean.mp4.meta는 현재HEAD·착수입력 바이트동일. 자동임포트 재작성본은 import-generated에 별도 보관, 두-MP4메타-인수확인.json에 원본/사본 SHA. 동영상 본체 변경0 |
+| runner/docs | NTFS 기본홈 복원은 이미2eba4c2e8에 소유 코드+관련docs로 커밋됨. 이번 확인 시 두 경로의 미커밋diff0. 당시 TagManager 별도 파서 문제는8b6dafd6f에서 명시적 빈 레이어로 수정한 뒤 최종빌드 재발0 |
+| guard/old I | 현재 G와 old I 모두 tools/guard.baseline.json WORK 변경을 보존. old I HEAD2897a54bc/기존 webparity 브랜치, 정확 대상만 --no-optional-locks로 읽음. old I 변경·인덱스갱신·이동·삭제0 |
+| 이전 실패 | alpha-20261029의 실패 로그/카운터/영수증 유지. NTFS단계는 별도 경로·실행id로 기록하며 과거실패를 없애거나 같은원인 재시도 명칭만 바꾸지 않음 |
+| 통합·실행본 | 지정 unity-integrator 게이트 유지. 이번 안내를 통합역할 지정으로 간주하지 않으며 직접 unity/main push·바로가기변경0. 새 비용/삭제/OS설정/배포0 |
+
+근거: I:/EXODUSER-Storage/unity-visual/ntfs-20261029의 policy-audit.stdout.log, 두-MP4메타-인수확인.json, old-I-인수시점-읽기전용상태.json, actual-child-boundary.json, upm.log, 최종-검수영수증.json 및 기존 _exec/done/1dbb47b3.json·16b5187b.json. 이 절은 기존 결과 회수 기록이며 새 실행 영수증이 아니다.
