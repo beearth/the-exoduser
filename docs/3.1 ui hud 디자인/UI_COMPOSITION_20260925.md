@@ -3078,3 +3078,15 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 - 로비: 캐릭터 선택 제목·선택 아이콘·특성 메달 은빛, 캐릭터 특성 아이콘 = 은빛 선 SVG(`_TRAIT_SVG`), 선대 이름 은빛 + 진홍 빛무리, 언어 선택·가상 키보드·게임패드 초점 테두리 은빛.
 - 글꼴: 레벨업 제목·로딩 장 이름 = `var(--font-hell-title)`.
 - 변환 범위·보존 목록·검수 판정 전체: `DESIGN_CONCEPT_SILVER_HELL_20261028.md` §6.3.
+
+## 2026-10-29 — 실버 헬 원화 UI 1차 (사용자 "손그림이냐", "그림판으로 만든거냐", "퀄리티는 항상 최상")
+
+CSS 선·도형으로 그린 판·버튼을 생성 원화로 교체했다. 모두 gpt-image-2.5-sunburst images/edits(참조 = 눈알 로고 A·첫 화면 인장), 은빛 단조강 + 진홍 보석, 점·금·보라 없음, 1x 확인.
+
+| 자산 | 크기 | 쓰는 곳 | 방식 |
+|---|---|---|---|
+| `assets/lobby/lobby_enter_btn_silver_20261029.png` | 1536×576 | 로비 `#enterGameBtn` img | 원래 보라 ENTER 원화를 같은 형태로 리마스터(육망성 → 일곱 고리·끊어진 사슬 인장). 바탕만 투명(가장자리 연결 검정 플러드 키), 비활성 = 흑백·어둡게, 호버 = 밝기 1.14 + 진홍 번짐 |
+| `img/ui/silver_hell/panel_frame_20261029.png` | 1024×768 | `.sh-panel.sh-framed` (첫 적용: 튜토리얼 `#introKeys .intro-key-panel`) | 9-slice `150 / 75px / 24px stretch`, 검정 휘도 키(색 보정 포함). 4:3 근처 창용 |
+| `img/ui/silver_hell/btn_plaque_20261029.png` | 1024×198 | 튜토리얼 건너뛰기·다음 | 3-slice `0 174 fill / 0 40px`, 글자 Hahmlet 400 16px 뼈색 자간 .24em |
+
+다음: 같은 프레임·버튼판을 공통 창(설정·인벤·대장간 등)과 로비 패널로 넓힌다. 창 비율이 4:3에서 멀면 가운데 장식이 늘어나므로 가로형 프레임을 따로 만든다.

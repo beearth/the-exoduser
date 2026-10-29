@@ -60,3 +60,12 @@
  clip-path:polygon(18px 0,calc(100% - 18px) 0,100% 50%,calc(100% - 18px) 100%,18px 100%,0 50%);font:400 14px var(--sh-font);letter-spacing:.2em;color:var(--sh-text)}
 .sh-prompt::before{content:'';position:absolute;inset:1px;background:rgba(8,9,10,.78);clip-path:inherit}
 .sh-prompt>span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:1}
+
+/* ── 원화 프레임 (2026-10-29 사용자 "프레임 디자인좀 디테일좀 살려라 무슨 그림판으로 만든거냐") ──
+   얇은 사각선 + 모서리 마름모(CSS) 대신 생성 원화 9-slice. img/ui/silver_hell/panel_frame_20261029.png 1024×768,
+   은빛 단조강 이중 레일 + 가시 모서리 + 진홍 보석, 위 가운데 지옥의 눈 문장(gpt-image-2.5-sunburst edits, 참조=로고 A).
+   slice 150 → 화면 75px, outset 24px(레일이 판 가장자리에 걸치게). 레일 사이 장식 간격이 있어 4:3 근처 창에 쓴다. */
+.sh-panel.sh-framed{border:1px solid transparent;box-shadow:0 18px 50px rgba(0,0,0,.55);
+ background:linear-gradient(180deg,rgba(16,15,15,.95),rgba(8,8,9,.97)) padding-box;
+ border-image:url(img/ui/silver_hell/panel_frame_20261029.png) 150 / 75px / 24px stretch}
+.sh-panel.sh-framed>.k{display:none}

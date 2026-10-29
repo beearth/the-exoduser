@@ -673,6 +673,10 @@ canvas{display:block;position:fixed;inset:0}
 .intro-key-actions{display:flex;justify-content:space-between;gap:24px;margin-top:22px}
 .intro-key-actions button{min-width:120px;padding:10px 20px;border:1px solid #565959;background:#101313;color:#d2cfc9;font:inherit;cursor:pointer}
 .intro-key-actions button:hover,.intro-key-actions button:focus-visible{outline:1px solid #abaeae;background:#1f2222}
+/* 2026-10-29 사용자 "그림판으로 만든거냐": 버튼도 원화 판(img/ui/silver_hell/btn_plaque_20261029.png 1024×198, 양끝 가시 캡 174px·진홍 보석, 가운데 흑철 판 늘임) + 명조 글자 */
+#introKeys .intro-key-panel.sh-framed{padding:34px 52px 40px}
+#introKeys .intro-key-actions button{height:46px;min-width:168px;padding:0 50px;border:0;outline:0;background:none;border-image:url(img/ui/silver_hell/btn_plaque_20261029.png) 0 174 fill / 0 40px / 0 14px stretch;font:400 16px var(--sh-font,'Hahmlet'),serif;letter-spacing:.24em;padding-left:calc(50px + .24em);color:#dfd6c2;text-shadow:0 1px 3px #000;transition:filter .2s ease}
+#introKeys .intro-key-actions button:hover,#introKeys .intro-key-actions button:focus-visible{outline:0;background:none;filter:brightness(1.18) drop-shadow(0 0 10px rgba(194,26,16,.45));color:#f2ede2}
 @keyframes guideBreath{0%,100%{opacity:.38}50%{opacity:.82}}
 #introDiff{justify-content:center;padding-left:0;background:rgba(0,0,0,.88)}
 #introDiff>div{width:min(31vw,420px);min-width:310px;padding:18px 0 20px 22px;border-left:1px solid rgba(132,135,135,.58);background:linear-gradient(90deg,rgba(7,10,10,.3),transparent 82%);text-align:left}
@@ -2588,7 +2592,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <link rel="stylesheet" href="localization.css?v=20260909">
 <link rel="stylesheet" href="ui-foundation.css?v=20260930-lesson-translucent">
 <link rel="stylesheet" href="ui-refinement.css?v=20261028-eye-crest">
-<link rel="stylesheet" href="silver-hell-ui-kit.css?v=20261028-v1">
+<link rel="stylesheet" href="silver-hell-ui-kit.css?v=20261029-frame">
 <link rel="stylesheet" href="growth-tree-detail.css?v=20260927-body-art3">
 <link rel="stylesheet" href="knight-portrait.css?v=20260928-equipment-cutout3">
 <script defer src="inventory-paperdoll.js?v=20260928-equipment-cutout3"></script>
@@ -3214,7 +3218,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 
 <!-- 시작 대사 + 키 안내 (4컷) -->
 <div id="introKeys" role="dialog" aria-modal="true" aria-labelledby="introTextKr">
-  <div class="intro-key-panel sh-panel"><span class="k tl"></span><span class="k tr"></span><span class="k bl"></span><span class="k br"></span>
+  <div class="intro-key-panel sh-panel sh-framed"><span class="k tl"></span><span class="k tr"></span><span class="k bl"></span><span class="k br"></span>
     <div id="ikProgress"></div>
     <div id="introTextPanel">
       <div id="introTextKr"></div>

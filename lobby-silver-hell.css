@@ -66,3 +66,12 @@
  #lobby .lobby-bottom-actions{gap:14px!important}
  #lobby #replayCinBtn,#lobby .lobby-steam-link,#lobby .ll-version-txt{letter-spacing:.1em!important;font-size:10px!important}
 }
+
+/* 입장 2차 (2026-10-29 사용자 "우측 엔터버튼은 그대로 써도 되는 거 아니냐 / 입장 저거 손그림이냐 퀄리티"):
+   CSS로 그린 판 대신 원래 ENTER 원화(assets/lobby/lobby_enter_btn.png)를 은빛 단조강·진홍으로 리마스터한 원화를 쓴다.
+   보라·육망성(현실 상징) → 진홍 보석 + 첫 화면과 같은 일곱 고리·끊어진 사슬 인장. gpt-image-2.5-sunburst edits, 바탕만 투명 키. */
+#lobby #enterGameBtn{max-width:440px;height:auto!important;aspect-ratio:1536/576;background:none!important;clip-path:none!important;filter:drop-shadow(0 8px 16px rgba(0,0,0,.75))!important;transition:filter .25s ease}
+#lobby #enterGameBtn img{display:block!important;width:100%;height:100%;object-fit:contain;pointer-events:none}
+#lobby #enterGameBtn::before,#lobby #enterGameBtn::after{content:none!important;display:none!important}
+#lobby #enterGameBtn:disabled{background:none!important;filter:grayscale(1) brightness(.5)!important}
+#lobby #enterGameBtn:not(:disabled):hover{filter:brightness(1.14) drop-shadow(0 0 18px rgba(194,26,16,.45)) drop-shadow(0 8px 16px rgba(0,0,0,.75))!important}
