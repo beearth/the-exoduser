@@ -259,3 +259,5 @@ root가 candidate2-caps/natural-medium.png·synthetic-high.png·synthetic-moving
 ## 2026-10-30 클리어 재질·프레임 마감 제작 후보
 
 기존원화 forge/window_base의바깥금속모서리/마모테와inventory/iron_480본문을직접열고A22의WORK_QUALITY§1.1기획을먼저기록했다. 첫사전실물의불투명사각모서리/본문입자경쟁을반려하고2px행UV클립·균일축소/한구간crop·본문iron단일cover로수정한두번째1x를확인했다. 전체forge/기사/원형문양/기능칸내용·반복tile·새이미지생성0. 본문560×546/원화외곽592×578, screen scale=min(1,(W-32)/592,(H-32)/578), 시간→처치→SP→로비·실제데이터/콜백유지. 원화/다른창byte불변. 세부UV/명암/소유/탈락조건/새최소캡처는A22최신절. 이단위는private제작후보만, unity/main/바로가기교체0·전체RETOUCH유지. I산출물 `I:/EXODUSER-Storage/unity-visual/stageclear-material-20261030/`.
+
+- 첫 재질native5512bc8f는35경계검사통과라도960모서리가로줄무늬로시각반려. 2px행→1.381117화면px의소수배율에서공유픽셀경계/UV역보정경로로한번수정하고1240연속성검사통과. 원화/색/코너크기/행개수만바꾸는변형아님. 다음실화면에서같은결함이면HOLD. 기존실패/프레임보존, 최종시각판정은후속새실행영수증과구분.

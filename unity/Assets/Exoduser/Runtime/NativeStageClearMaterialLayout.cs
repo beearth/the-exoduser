@@ -30,6 +30,14 @@ namespace Exoduser.UnityPort {
    Add(p,"버튼우측",false,true,ix+iw-n,iy+n,n,bh-2*n,bx+bw-n,by+n,n,bh-2*n);
    return p;
   }
+  // 소수 GUI 배율에서 각 행의 좌표/높이를 따로 정수화하면 가로띠가 생긴다.
+  // 공유 경계를 먼저 반올림하고, 샘플링할 원화 UV를 같은 affine mapping으로 역보정한다.
+  public static Patch PixelAligned(Patch p,float tx,float ty,float scale){
+   float ox=tx+p.X*scale,oy=ty+p.Y*scale,ow=p.W*scale,oh=p.H*scale;
+   float x=(float)Math.Floor(ox+.5001f),y=(float)Math.Floor(oy+.5001f),right=(float)Math.Floor(ox+ow+.5001f),bottom=(float)Math.Floor(oy+oh+.5001f);
+   return new Patch{Name=p.Name,Iron=p.Iron,Button=p.Button,Tint=p.Tint,X=x,Y=y,W=right-x,H=bottom-y,Sx=p.Sx+(x-ox)*p.Sw/ow,Sy=p.Sy+(y-oy)*p.Sh/oh,Sw=(right-x)*p.Sw/ow,Sh=(bottom-y)*p.Sh/oh};
+  }
+
   static void Cover(List<Patch> p,string name,bool button,float x,float y,float w,float h,float tint){float s=Math.Max(w/480,h/480),sw=w/s,sh=h/s;Add(p,name,true,button,(480-sw)/2,(480-sh)/2,sw,sh,x,y,w,h,tint);}
   static void Add(List<Patch> p,string name,bool iron,bool button,float sx,float sy,float sw,float sh,float x,float y,float w,float h,float tint=1){p.Add(new Patch{Name=name,Iron=iron,Button=button,Sx=sx,Sy=sy,Sw=sw,Sh=sh,X=x,Y=y,W=w,H=h,Tint=tint});}
  }

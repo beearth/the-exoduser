@@ -216,3 +216,11 @@ Unity자동임포트450파일은 I에 보관·SHA 확인 후 승인 입력 byte�
 | 새 표적 캡처 | `--unity-stageclear-material-capture`+격리저장+boss-direct0. 실제아레나렌더에정지한QA표시, 기존M1확인값137/168·88초·SP10·지역4 주입. 1600/960한국어·960 en/el/da/ja/ms/ar의새프레임/본문/버튼경계만검사. 리뷰진입은세이브차단, USER_SAVE는실행기전후대조. 새Core/전체M1/자연완료/손조작E2E 아님 |
 
 새제한컴파일은오류0(기존외부경고15유지). .NET 최초run은지정출력과실행경로가달라검사시작전실패했고기존build+DLL직접실행으로수정했다. 그뒤빈plan의의도된실패→구현후통과로구분하며제품실패카운터로바꾸지않는다. 최종새Runtime/1x실화면판정은실행후영수증에서만확정한다.
+
+### 첫 native 실화면 반려와 소수 배율 샘플링 수정
+
+첫 빌드 `0aceca19` 오류0, 재질전용Player `5512bc8f` 내부35/35·8프레임·창0/잔여0/USER_SAVE0. **그런데 960 모서리의 가로 줄무늬를 제작자가 직접 보고 시각 반려했다.** 1600 모서리/본문/버튼은 사전실물과 연결됐으나 960에서 원래2px행이1.381117 화면px로 변한다. `첫native_1600_모서리1x.png`/`첫native_960_모서리1x.png`에 실제차이를 보존했다. 내부경계검사를시각PASS로대체하지않는다.
+
+[Unity 공개 C# GUI 참조](https://github.com/Unity-Technologies/UnityCsReference/blob/master/Modules/IMGUI/GUI.cs)는 화면Rect/UVRect를 Native Graphics에 넘기는 경로다. 설치버전 Native 내부의 정수화 구현을 단정하지 않는다. 실물 차이와 소수 destination을 근거로 **각행의 크기를 따로 픽셀화하면서 UV가 어긋난다는 가설**을 세웠다. 기존 경로의 소수 destination에서 실패하는 검사를 먼저 확인했다. 수정은 색/원화/코너 크기/행개수를바꾸지않고, 공유 픽셀경계를 반올림한 뒤 같은원화위치를읽도록 UV를역보정하고 해당모서리만 identity GUI좌표로그린다. 인접행의빈띠/겹침알파띠·수평/수직샘플연속성·동일배율 **1240개 새 불변식검사** 통과. 기존1775/30/170/M1/oracle 재실행0.
+
+이것은 native960 시각실패1회 뒤의 원인수정1회이며 다음후보의같은핵심결함이반복되면중단/HOLD한다. 사전첫합성반려·dotnet실행준비오류·의도된red검사·제품native실패를분리해보존한다. 새출력candidate2-build/candidate2-caps로실행하고이전산출물삭제0.

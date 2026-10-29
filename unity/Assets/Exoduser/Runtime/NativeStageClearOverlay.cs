@@ -140,7 +140,15 @@ namespace Exoduser.UnityPort {
   List<NativeStageClearMaterialLayout.Patch> materialPlanCache;float materialPlanHeight=-1;
   public bool MaterialReady{get{return materialForge!=null&&materialIron!=null&&materialForge.width==980&&materialForge.height==1056&&materialIron.width==480&&materialIron.height==480;}}
   public int MaterialPieces{get;private set;}public Rect MaterialFrameScreenRect{get;private set;}
-  void DrawMaterial(List<NativeStageClearMaterialLayout.Patch> patches,bool button,bool hover,float alpha){var oldColor=GUI.color;foreach(var p in patches){if(p.Button!=button)continue;var t=p.Iron?materialIron:materialForge;float tint=p.Tint*(hover&&button?1.2f:1f);GUI.color=new Color(tint,tint,tint,alpha);GUI.DrawTextureWithTexCoords(new Rect(p.X,p.Y,p.W,p.H),t,new Rect(p.Sx/t.width,1-(p.Sy+p.Sh)/t.height,p.Sw/t.width,p.Sh/t.height));}GUI.color=oldColor;}
+  void DrawMaterial(List<NativeStageClearMaterialLayout.Patch> patches,bool button,bool hover,float alpha){
+   var oldColor=GUI.color;var matrix=GUI.matrix;
+   try{foreach(var original in patches){if(original.Button!=button)continue;var p=original;
+    if(p.Name.StartsWith("모서리",StringComparison.Ordinal)){p=NativeStageClearMaterialLayout.PixelAligned(p,matrix.m03,matrix.m13,matrix.m00);GUI.matrix=Matrix4x4.identity;}else GUI.matrix=matrix;
+    if(p.W<=0||p.H<=0)continue;var t=p.Iron?materialIron:materialForge;float tint=p.Tint*(hover&&button?1.2f:1f);GUI.color=new Color(tint,tint,tint,alpha);
+    GUI.DrawTextureWithTexCoords(new Rect(p.X,p.Y,p.W,p.H),t,new Rect(p.Sx/t.width,1-(p.Sy+p.Sh)/t.height,p.Sw/t.width,p.Sh/t.height));
+   }}finally{GUI.matrix=matrix;GUI.color=oldColor;}
+  }
+
 
   // ---- window ----
   [Serializable] sealed class LocaleRow {public string code,title,hellTitle,sub,time,kills,reward,sp,regions,potions,deaths,score,next,demoSub,demoNext;}
