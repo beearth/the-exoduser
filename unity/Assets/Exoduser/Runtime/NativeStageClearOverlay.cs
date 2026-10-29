@@ -25,7 +25,7 @@ namespace Exoduser.UnityPort {
   [Serializable] sealed class Defs {public Variant zone,hell,demo;public Labels labels;public Stats stats;public string[] badges;public Formula formula;public Timing timing;public Tok[] atlas;}
   const string NotPorted="미이식";
   readonly Defs defs;readonly Dictionary<string,Tok> tok=new Dictionary<string,Tok>();
-  Texture2D atlas,radial,diamond;Font nanum,sansSemi,cinzelDec;bool ready;readonly Dictionary<(Font,int,bool),GUIStyle> styles=new Dictionary<(Font,int,bool),GUIStyle>();
+  Texture2D atlas,radial,diamond,materialForge,materialIron;Font nanum,sansSemi,cinzelDec;bool ready;readonly Dictionary<(Font,int,bool),GUIStyle> styles=new Dictionary<(Font,int,bool),GUIStyle>();
   Input input;bool active;float start;public float? ForcedAge;public Action OnNext;
   public bool Active{get{return active;}}
   public Input CurrentInput{get{return input;}}
@@ -81,6 +81,7 @@ namespace Exoduser.UnityPort {
    if(ready)return;ready=true;
    atlas=Resources.Load<Texture2D>("Art/ui/clear/clear_atlas");nanum=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular");
    sansSemi=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold")??Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular");cinzelDec=Resources.Load<Font>("Art/fonts/CinzelDecorative-Bold")??nanum;
+   materialForge=Resources.Load<Texture2D>("Art/ui/forge/window_base");materialIron=Resources.Load<Texture2D>("Art/ui/inventory/iron_480");
    const int n=128;radial=new Texture2D(n,n,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};var px=new Color[n*n];
    for(int y=0;y<n;y++)for(int x=0;x<n;x++){float dx=(x+.5f)/n*2-1,dy=(y+.5f)/n*2-1;px[y*n+x]=new Color(1,1,1,Mathf.Clamp01(1-Mathf.Sqrt(dx*dx+dy*dy)));}
    radial.SetPixels(px);radial.Apply(false,true);
@@ -136,6 +137,11 @@ namespace Exoduser.UnityPort {
   static string MS(int sec){sec=Math.Max(0,sec);return (sec/60)+":"+(sec%60<10?"0":"")+(sec%60);}
   Color RankColor(string r){switch(r){case "S":return C(227,194,122);case "A":return C(169,200,164);case "B":return C(157,184,204);case "C":return C(194,182,169);default:return C(141,124,101);}}
 
+  List<NativeStageClearMaterialLayout.Patch> materialPlanCache;float materialPlanHeight=-1;
+  public bool MaterialReady{get{return materialForge!=null&&materialIron!=null&&materialForge.width==980&&materialForge.height==1056&&materialIron.width==480&&materialIron.height==480;}}
+  public int MaterialPieces{get;private set;}public Rect MaterialFrameScreenRect{get;private set;}
+  void DrawMaterial(List<NativeStageClearMaterialLayout.Patch> patches,bool button,bool hover,float alpha){var oldColor=GUI.color;foreach(var p in patches){if(p.Button!=button)continue;var t=p.Iron?materialIron:materialForge;float tint=p.Tint*(hover&&button?1.2f:1f);GUI.color=new Color(tint,tint,tint,alpha);GUI.DrawTextureWithTexCoords(new Rect(p.X,p.Y,p.W,p.H),t,new Rect(p.Sx/t.width,1-(p.Sy+p.Sh)/t.height,p.Sw/t.width,p.Sh/t.height));}GUI.color=oldColor;}
+
   // ---- window ----
   [Serializable] sealed class LocaleRow {public string code,title,hellTitle,sub,time,kills,reward,sp,regions,potions,deaths,score,next,demoSub,demoNext;}
   [Serializable] sealed class LocaleBundle {public LocaleRow[] entries;}
@@ -171,10 +177,12 @@ namespace Exoduser.UnityPort {
     var m=PresentationModel();var l=NativeStageClearPresentation.Arrange(Screen.width,Screen.height,m);LastLayout=l;var labels=CurrentLabels();var body=BodyFont();
     Fill(new Rect(0,0,Screen.width,Screen.height),new Color(0,0,0,.68f*a));
     GUI.matrix=Matrix4x4.TRS(new Vector3(l.Panel.X,l.Panel.Y,0),Quaternion.identity,Vector3.one*l.Scale);
-    GUI.color=new Color(1,1,1,a);Grad(new Rect(0,0,560,l.LogicalHeight),C(20,14,11,.96f),C(8,6,5,.98f));GUI.color=Color.white;
-    Border(new Rect(0,0,560,l.LogicalHeight),C(128,109,78,.65f*a));
-    Grad(new Rect(50,14,230,1),C(164,147,115,0),C(164,147,115,.65f*a),true);Grad(new Rect(280,14,230,1),C(164,147,115,.65f*a),C(164,147,115,0),true);
-    string title=input.kind==Kind.HellEscape?(EffectiveLocale=="ko"&&input.hellIndex>=0&&input.hellIndex<defs.hell.names.Length?defs.hell.names[input.hellIndex]+defs.hell.titleSuffix:labels.hellTitle):labels.title;
+    float materialButtonY=(l.Next.Y-l.Panel.Y)/l.Scale;
+     if(materialPlanCache==null||materialPlanHeight!=l.LogicalHeight){materialPlanCache=NativeStageClearMaterialLayout.Plan(560,l.LogicalHeight,new NativeStageClearPresentation.Area(28,materialButtonY,504,56));materialPlanHeight=l.LogicalHeight;}var materialPlan=materialPlanCache;
+     MaterialPieces=MaterialReady?materialPlan.Count:0;var materialBounds=l.ToScreen(-16,-16,592,l.LogicalHeight+32);MaterialFrameScreenRect=new Rect(materialBounds.X,materialBounds.Y,materialBounds.Width,materialBounds.Height);
+     if(MaterialReady)DrawMaterial(materialPlan,false,false,a);
+     else{GUI.color=new Color(1,1,1,a);Grad(new Rect(0,0,560,l.LogicalHeight),C(20,14,11,.96f),C(8,6,5,.98f));GUI.color=Color.white;Border(new Rect(0,0,560,l.LogicalHeight),C(128,109,78,.65f*a));}
+     string title=input.kind==Kind.HellEscape?(EffectiveLocale=="ko"&&input.hellIndex>=0&&input.hellIndex<defs.hell.names.Length?defs.hell.names[input.hellIndex]+defs.hell.titleSuffix:labels.hellTitle):labels.title;
     string caption=input.kind==Kind.HellEscape?defs.hell.titleEn:defs.zone.titleEn;
      if(!string.Equals(caption,title,StringComparison.OrdinalIgnoreCase))Paint(new Rect(28,26,504,22),caption,cinzelDec,12,C(177,157,120,a));
     Paint(new Rect(28,55,504,56),title,body,34,C(236,222,197,a),TextAnchor.MiddleCenter,true);
@@ -186,8 +194,8 @@ namespace Exoduser.UnityPort {
     if(m.Score!=null){Paint(new Rect(40,l.ScoreY+2,240,38),labels.score,body,17,C(190,174,147,a),TextAnchor.MiddleLeft);Paint(new Rect(282,l.ScoreY+2,238,38),m.Score+"  ·  "+m.Rank,cinzelDec,24,C(227,194,122,a),TextAnchor.MiddleRight);}
     for(int k=0;k<m.Details.Count;k++){var row=m.Details[k];float y=l.DetailY+k*30;Paint(new Rect(40,y,350,28),RowLabel(labels,row.Key),body,16,C(181,168,146,a),TextAnchor.MiddleLeft);Paint(new Rect(410,y,110,28),row.Value,cinzelDec,18,C(221,208,184,a),TextAnchor.MiddleRight);}
     float nextY=(l.Next.Y-l.Panel.Y)/l.Scale;var buttonRect=new Rect(28,nextY,504,56);bool hover=buttonRect.Contains(Event.current.mousePosition);
-    GUI.color=new Color(1,1,1,a);Grad(buttonRect,hover?C(95,44,32):C(73,33,25),C(29,12,9));GUI.color=Color.white;Border(buttonRect,C(164,111,73,a));Border(new Rect(30,nextY+2,500,52),C(22,13,10,a));
-    Paint(new Rect(46,nextY+4,468,48),input.kind==Kind.DemoEnd?labels.demoNext:labels.next,body,20,C(239,216,184,a),TextAnchor.MiddleCenter,true);
+    if(MaterialReady)DrawMaterial(materialPlan,true,hover,a);else{GUI.color=new Color(1,1,1,a);Grad(buttonRect,hover?C(95,44,32):C(73,33,25),C(29,12,9));GUI.color=Color.white;Border(buttonRect,C(164,111,73,a));}
+     Paint(new Rect(46,nextY+4,468,48),input.kind==Kind.DemoEnd?labels.demoNext:labels.next,body,20,C(239,216,184,a),TextAnchor.MiddleCenter,true);
     if(!ExoInput.Key(KeyCode.Return)&&!ExoInput.Key(KeyCode.KeypadEnter)&&!ExoInput.Key(KeyCode.Space))keyboardReady=true;
     GUI.enabled=enabled&&Age>=.5f&&OnNext!=null;
     if(GUI.Button(buttonRect,GUIContent.none,GUIStyle.none))RequestNext();

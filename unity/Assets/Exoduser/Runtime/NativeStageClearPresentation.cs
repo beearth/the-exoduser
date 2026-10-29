@@ -55,7 +55,7 @@ namespace Exoduser.UnityPort
             l.ScoreY=y;if(model.Score!=null)y+=56;
             l.DetailY=y;y+=model.Details.Count*30;
             float buttonY=y+22;l.LogicalHeight=buttonY+56+28;
-            l.Scale=Math.Min(1,Math.Min(Math.Max(1,screenWidth-32)/560,Math.Max(1,screenHeight-32)/l.LogicalHeight));
+            l.Scale=Math.Min(1,Math.Min(Math.Max(1,screenWidth-32)/(560+32),Math.Max(1,screenHeight-32)/(l.LogicalHeight+32)));
             l.Panel=new Area((screenWidth-560*l.Scale)/2,(screenHeight-l.LogicalHeight*l.Scale)/2,560*l.Scale,l.LogicalHeight*l.Scale);
             l.Next=l.ToScreen(28,buttonY,504,56);return l;
         }

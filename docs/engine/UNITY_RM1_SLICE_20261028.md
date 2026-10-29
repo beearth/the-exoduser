@@ -255,3 +255,7 @@ root가 candidate2-caps/natural-medium.png·synthetic-high.png·synthetic-moving
 중앙 root가 제품후보 `5f2996dccdd7d5b4dea732ea71d224db1970447a`의 소스·170검사·143c1383·1600/960/긴번역1x를 독립 인수했다. root 판정은 **기술 RETOUCH**: 중복/미이식표시·버튼좌표 개선 인수, 패널재질/완성도·30영문폴백·점수/등급 미구현 잔여. 보스리마스터/문자계층/외곽접합 등 전체RETOUCH 유지. 실제빌드입력2376c5858/Unity tree02a7af43 불변, 정확candidate3-build Runtime89440bab/Coree6d89a07을 대조했다.
 
 이번 변경Runtime 최초전체M1 **47961226 23/23**·D3D11 RX9070XT·정상종료0·창0/잔여0/USER_SAVE0, 실제13은137/168·88초·지역4·SP10. Simulation.Tick/API 가속 하네스로 손조작E2E 아님. 이전M1소급/기통과표적QA·번역·빌드/Coreoracle 반복0. expected unity/main a2f5058652a91b10ca1357f4a9c39db99a0cbadf를 다시 대조한 이번 지정integrator만 후보+필요docs 비강제 반영·일반바로가기 고유백업후candidate3 연결을 진행한다. 최종소스/연결readback은 `I:/EXODUSER-Storage/unity-visual/stageclear-20261030/통합-최종영수증.json`, A22의 지정통합절과 `통합-새M1-단계영수증.json`에 연결. root 수신의 failed키 혼동은 실제 failures=0/170 확인으로 정정, 제품실패/카운터증가0. 기존실패·7공백예외/WIP·guard·oldI·MP4/구실행본·세이브 보존, 전체PASS0.
+
+## 2026-10-30 클리어 재질·프레임 마감 제작 후보
+
+기존원화 forge/window_base의바깥금속모서리/마모테와inventory/iron_480본문을직접열고A22의WORK_QUALITY§1.1기획을먼저기록했다. 첫사전실물의불투명사각모서리/본문입자경쟁을반려하고2px행UV클립·균일축소/한구간crop·본문iron단일cover로수정한두번째1x를확인했다. 전체forge/기사/원형문양/기능칸내용·반복tile·새이미지생성0. 본문560×546/원화외곽592×578, screen scale=min(1,(W-32)/592,(H-32)/578), 시간→처치→SP→로비·실제데이터/콜백유지. 원화/다른창byte불변. 세부UV/명암/소유/탈락조건/새최소캡처는A22최신절. 이단위는private제작후보만, unity/main/바로가기교체0·전체RETOUCH유지. I산출물 `I:/EXODUSER-Storage/unity-visual/stageclear-material-20261030/`.
