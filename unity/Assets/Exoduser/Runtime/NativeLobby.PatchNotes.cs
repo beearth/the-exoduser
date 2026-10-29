@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using UnityEngine;
+using Exoduser.UnityPort.Core;
 
 namespace Exoduser.UnityPort
 {
@@ -18,7 +19,6 @@ namespace Exoduser.UnityPort
   bool patchNotesLoaded,patchNotesOpen,patchNotesFocusClose,patchNotesRestoreFocus;
   bool patchNotesQaChecked,patchNotesQaEnabled;
   int patchNotesQaRosterCount,patchNotesQaSelectedIndex;
-  string patchNotesPreviousFocus;
   Vector2 patchNotesScroll;
   GUIStyle patchNotesTitle,patchNotesVersion,patchNotesSection,patchNotesItem,patchNotesEmpty,patchNotesClose;
 
@@ -57,7 +57,7 @@ namespace Exoduser.UnityPort
   void OpenPatchNotes()
   {
    if(patchNotesOpen||showLanguages||lobbyQuitPrompt||CharacterModalOpen)return;
-   LoadPatchNotes();patchNotesPreviousFocus=GUI.GetNameOfFocusedControl();patchNotesScroll=Vector2.zero;
+   LoadPatchNotes();patchNotesScroll=Vector2.zero;
    patchNotesOpen=true;patchNotesFocusClose=true;patchNotesRestoreFocus=false;
   }
   void OpenPatchNotesForQaOnce()
@@ -90,19 +90,34 @@ namespace Exoduser.UnityPort
     if(e.keyCode==KeyCode.Tab){GUI.FocusControl("patch-notes-close");e.Use();return;}
     e.Use();return;
    }
-   if(!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen&&e.keyCode==KeyCode.Tab&&string.IsNullOrEmpty(GUI.GetNameOfFocusedControl())){GUI.FocusControl("patch-notes-open");e.Use();return;}
-   if(!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen&&GUI.GetNameOfFocusedControl()=="patch-notes-open"&&(e.keyCode==KeyCode.Return||e.keyCode==KeyCode.KeypadEnter||e.keyCode==KeyCode.Space)){OpenPatchNotes();e.Use();}
+   if(showLanguages||lobbyQuitPrompt||CharacterModalOpen)return;
+   string focused=GUI.GetNameOfFocusedControl();
+   if(e.keyCode==KeyCode.Tab){
+    string[] order={"character-create-card","lobby-enter","lobby-cinematic","lobby-steam","patch-notes-open","lobby-quit"};
+    int at=Array.IndexOf(order,focused),step=e.shift?-1:1;
+    for(int i=0;i<order.Length;i++){
+     at=at<0?(e.shift?order.Length-1:0):(at+step+order.Length)%order.Length;
+     if((order[at]!="lobby-enter"||Characters.SelectedIndex>=0)&&(order[at]!="character-create-card"||characterWritesAllowed&&Characters.Count<CharacterRoster.Capacity))break;
+    }
+    GUI.FocusControl(order[at]);e.Use();return;
+   }
+   if(e.keyCode!=KeyCode.Return&&e.keyCode!=KeyCode.KeypadEnter&&e.keyCode!=KeyCode.Space)return;
+   if(focused=="patch-notes-open")OpenPatchNotes();
+   else if(focused=="lobby-cinematic")ReplayIntro();
+   else if(focused=="lobby-steam")Application.OpenURL("https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/");
+   else if(focused=="lobby-quit")lobbyQuitPrompt=true;
+   else if(focused=="lobby-enter"&&e.keyCode==KeyCode.Space)EnterSelectedCharacter();
+   else return;
+   e.Use();
   }
   void DrawPatchNotesLauncher()
   {
-   LoadPatchNotes();
-   Rect rect=NativeLobbyBuildLabels.OverlayBounds();
-   // LT-3: the web has ONE top-left overlay (#lobbyVerOverlay, drawn by NativeLobbyBuildLabels) and it is also the patch-notes opener; this launcher only owns the click area / focus ring.
-   // It used to draw its own "vX / OFFLINE" text from the first patch-notes entry on top of that overlay (two shifted copies, an old version).
+   Rect rect=NativeLobbyBuildLabels.CornerBounds(913f);
    GUI.SetNextControlName("patch-notes-open");
    if(GUI.Button(rect,"",GUIStyle.none))OpenPatchNotes();
-   if(patchNotesRestoreFocus&&Event.current.type==EventType.Repaint){GUI.FocusControl(string.IsNullOrEmpty(patchNotesPreviousFocus)?"patch-notes-open":patchNotesPreviousFocus);patchNotesRestoreFocus=false;}
+   if(patchNotesRestoreFocus&&Event.current.type==EventType.Repaint){GUI.FocusControl("patch-notes-open");patchNotesRestoreFocus=false;}
    if(!patchNotesOpen&&GUI.GetNameOfFocusedControl()=="patch-notes-open")Border(rect,new Color(.84f,.69f,.48f,.8f),1);
+   NativeLobbyBuildLabels.Draw(913f,rect.Contains(Event.current.mousePosition)||GUI.GetNameOfFocusedControl()=="patch-notes-open");
   }
   void PatchNotesStyles()
   {

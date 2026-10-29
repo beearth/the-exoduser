@@ -194,3 +194,28 @@ Mac `unity/main:9ed30495b050ac877e62b3989d775b41663fe95d`의 기존 실제 1280 
 | 모달 | 버튼에서 열 때 close로 초점 이동, Esc/닫기 버튼/배경으로 닫고 우하단 버튼에 초점 복귀 | 좌상단에서 열어 close로 초점 이동, Esc/Return/Space/닫기 버튼/바깥 click으로 닫고 이전 초점(없으면 좌상단)에 복귀. 기존 1280 키보드 실검수 PASS, 물리 마우스 HOLD |
 
 후보가 웹 `main`에 정식 채택된 뒤 필요한 **Mac 최소 수정 위치**는 `NativeLobbyBuildLabels.cs`의 좌상단 표시 호출·우하단 라벨 Rect, `NativeLobby.PatchNotes.cs`의 `DrawPatchNotesLauncher`와 `HandlePatchNotesKeys`·닫기 초점 복귀, `NativeLobby.cs`의 버튼 그리기 순서, `buildflavor_web.json`의 좌상단 표시 계약 및 관련 docs다. 기존 첫 Tab→Return/Esc 검증 경로는 후보 채택 전까지 보존한다. 이번 단위는 비교 기록만 하며 Mac 제품 변경·새 빌드·Player 실행 0, 전체 로비 VISUAL VERDICT: RETOUCH, 물리 마우스 hit: HOLD다.
+
+### 2026-10-29 채택된 우하단 패치 노트 버튼 Mac 이식
+
+웹 `main:41777b450966ec29b120fc56dd1fc71ca63497b4`의 `index.html` blob `1d7373951fd6b48347db9257e47cb4d8be56f839`와 `lobby-silver-hell.css` blob `a4031d8f9da39cc5ccd0bf58cacf93268d734cfe`는 위 후보 `43e4eb2690cba1d4ef1c7666bf874cd716f1e77a`의 두 blob과 각각 동일하다. 이 채택본을 기준으로 Mac `NativeLobbyBuildLabels.Draw`의 좌상단 3/4줄 표시를 중단하고 기존 flavor별 우하단 `f.Label`만 표시한다. 우하단 라벨은 Noto Sans KR 자산, 10.24px 정의, 2.8672px 자간, 우측 기준 x1844와 중심 y913을 유지한다. 기본 색은 현 웹 `.ll-version-txt` `#6f7272`와 같은 `rgba(111,114,114,1)`로 변경한다. 좌상단 overlay 정의의 위치·수치·flavor 텍스트는 보존하되 현재 로비에서 그리지 않는다.
+
+| 항목 | Mac 구현값·적용 위치 |
+|---|---|
+| 표시 라벨 | `BuildFlavor.Current.Label` 그대로, `NativeLobbyBuildLabels.Draw(913f)`가 `cornerRight - Width(Label)`에서 표시. 로비 좌상단 버전/모드/한도 출력 0줄 |
+| 클릭·포커스 | `NativeLobbyBuildLabels.CornerBounds(913f)` = `(1844 - 표시 폭 - 6×unit, 913 - 16×unit, 표시 폭 + 12×unit, 32×unit)`; `unit = 1 / max(.1, min(Screen.width/1920, Screen.height/1080))`. `NativeLobby.PatchNotes.cs`의 `patch-notes-open` 버튼과 focus border가 같은 Rect 사용 |
+| 색 | 기본 `buildflavor_web.json:lobby.corner.color=[111,114,114,1.0]`; hover/포커스 `(.78,.8,.78,1)`, focus border `(.84,.69,.48,.8)` 1px |
+| Tab·활성화 | 빈 초점에서 캐릭터 만들기(불가 시 건너뜀)→입장(선택 없으면 건너뜀)→시네마틱→Steam→패치 노트→종료 순환, Shift+Tab 역방향. 우하단 포커스 Return/KeypadEnter/Space로 열기. 다른 하단 버튼의 Return/Space도 해당 버튼 동작으로 처리해 캐릭터 입장 오동작 방지 |
+| 모달·복귀 | 열 때 close 포커스, Esc/Return/Space/닫기 버튼/패널 바깥 click으로 닫고 `patch-notes-open`으로 포커스 복귀. 기존 언어·종료·캐릭터 모달 중에는 열지 않음 |
+| 변경 범위 | `NativeLobbyBuildLabels.cs`, `NativeLobby.PatchNotes.cs`, `NativeLobby.cs`, `Resources/Data/buildflavor_web.json`; 데이터·번역·버전·Steam URL·기타 로비 화면·사용자 저장 root 변경 없음 |
+
+이전 좌상단 가독성·첫 Tab 검수 기록과 위 미채택 후보 표는 당시 상태의 이력이다.
+
+| 새 검수 항목 | 결과 |
+|---|---|
+| 빌드 | 격리 프로젝트 복사본의 Unity 6000.6.7f1 `PortVerification.Build`, Settings QA ARM64, `build-receipt.json`의 `passed=true`, `result=Succeeded`, `errors=0`. 실행 파일 SHA-256 `e0a9265aff19e4eed569773a419e8e46c5d009b752ec8fc5f09759810427614a` |
+| 실제 1280×720 | `_out/UNITY-MAC-PATCHNOTES-20261029/1280-full.png`: 5/5 로스터에서 좌상단 개발 표기 없음, 우하단 `OFFICIAL` 하나만 표시. 첫 Tab부터 4회로 우하단 포커스, Return으로 패치 노트 열림(`1280-modal.png`), 모달에서 N은 캐릭터 창을 열지 않음, Esc 닫기 뒤 우하단 포커스 복귀(`1280-focus-return.png`), Space 재열기 확인 |
+| 실제 1600×900 | 같은 빌드의 `1600-full.png`, `1600-focus.png`, `1600-modal.png`: 좌상단 숨김, 우하단 글자·포커스 테두리 정합, Return 열기, Esc 닫기, Tab으로 종료 이동 후 Shift+Tab으로 우하단 복귀 확인 |
+| 로스터·로그 | 격리 복사 로스터 `characters.v1.json` SHA-256 `67fa35976c91adaa5cce4fac107f4f1035f5c483bbf36abf8ccc6dde607dcf5a` 그대로. 1280/1600 Player 로그에서 Error/Exception 없음. QA Player 두 PID만 종료, 기존 사용자 앱은 건드리지 않음 |
+| 마우스·모달 밖 | CUA 클릭 호출은 `noWindowsAvailable`로 입력 전달 전에 실패했다. 따라서 우하단 물리 마우스 hit, 닫기 버튼 click, 배경 click은 실제 Player 입력 PASS로 판정하지 않는다. 해당 처리 코드는 기존 `GUI.Button`/`DismissOutside` 경로를 유지하며 정적 확인만 했다 |
+
+**VISUAL VERDICT: RETOUCH (전체 로비).** 채택 웹의 좌상단 숨김·우하단 버튼 위치와 1280/1600 글자·포커스 표시는 실제 Mac Player에서 일치한다. 패치 노트 키보드 열기·닫기·초점 복귀도 PASS다. 물리 마우스 hit와 동일 상태 웹/Mac 전체 화면 대조는 HOLD이며, 전체 로비 디자인 PASS 근거는 아니다. 이 후보는 전용 브랜치에만 두고 `unity/main` 제품 배포에는 반영하지 않는다.
