@@ -17,6 +17,8 @@ namespace Exoduser.UnityPort
         readonly MaterialPropertyBlock block = new MaterialPropertyBlock();
         float lastX, lastY; bool haveLast;
         public int Stamp;
+        public bool Visible { get { return main != null && main.enabled; } }
+        public Bounds Bounds { get { return main.bounds; } }
 
         public NativeDruidBody(Transform parent, Sprite discSprite)
         {

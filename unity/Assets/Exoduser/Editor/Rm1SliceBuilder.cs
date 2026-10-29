@@ -159,7 +159,7 @@ namespace Exoduser
             if (clamp && imp.wrapMode != TextureWrapMode.Clamp) { imp.wrapMode = TextureWrapMode.Clamp; dirty = true; }
             if (imp.maxTextureSize != max) { imp.maxTextureSize = max; dirty = true; }
             if (alpha && !imp.alphaIsTransparency) { imp.alphaIsTransparency = true; dirty = true; }
-            if (imp.textureCompression == TextureImporterCompression.CompressedHQ) { imp.textureCompression = TextureImporterCompression.Compressed; dirty = true; }
+            if (max < 8192 && imp.textureCompression == TextureImporterCompression.CompressedHQ) { imp.textureCompression = TextureImporterCompression.Compressed; dirty = true; }
             if (dirty) imp.SaveAndReimport();
         }
         static Mats MakeMaterials()
@@ -210,6 +210,8 @@ namespace Exoduser
         static TerrainData BuildTerrainData()
         {
             var cm = Root + "/Materials/Ground/ch1_1_r1r2_colormap_wide.png"; TexSettings(cm, true, 8192, false);
+            var cmImporter = AssetImporter.GetAtPath(cm) as TextureImporter;
+            if (cmImporter != null) { cmImporter.npotScale = TextureImporterNPOTScale.None; cmImporter.filterMode = FilterMode.Trilinear; cmImporter.anisoLevel = 8; cmImporter.textureCompression = TextureImporterCompression.CompressedHQ; cmImporter.SaveAndReimport(); }
             var layers = new List<TerrainLayer>();
             TerrainLayer TL(string name, string tex, Vector2 size)
             {
@@ -312,12 +314,28 @@ namespace Exoduser
                     float X = TX0 + (TX1 - TX0) * (j / (float)(ARes - 1)), Y = TY1 - (TY1 - TY0) * (i / (float)(ARes - 1));
                     float d = DistToSegs(segs, X, Y); float wet = Smooth(6f, 2f, d);
                     float n1 = Mathf.PerlinNoise(X * .17f, Y * .17f), n2 = Mathf.PerlinNoise(X * .29f + 40f, Y * .29f + 17f);
-                    float detail = 0.17f;                                   // W1: detail layers stay a low share on top of the one hand-painted colour map
+                    float detail = 0f; // 웹 피부의 주름·혈관을 다른 흙 무늬로 희석하지 않는다.
                     float w1 = detail * n1 * (1 - wet * .5f), w2 = detail * n2 * (1 - wet * .5f), w3 = detail * (0.25f + wet * 1.2f);
                     float w0 = 1f;
                     float s = w0 + w1 + w2 + w3; a[i, j, 0] = w0 / s; a[i, j, 1] = w1 / s; a[i, j, 2] = w2 / s; a[i, j, 3] = w3 / s;
                 }
             return a;
+        }
+
+        // 기존 지형·배치의 재생성 없이 피부 재질의 가중치만 보정한다.
+        public static void WebSkinSurface()
+        {
+            var td = AssetDatabase.LoadAssetAtPath<TerrainData>(GenDir + "/RM1_Terrain.asset");
+            var before = td.GetHeights(0, 0, td.heightmapResolution, td.heightmapResolution);
+            var alpha = new float[td.alphamapHeight, td.alphamapWidth, td.alphamapLayers];
+            for (int y = 0; y < td.alphamapHeight; y++) for (int x = 0; x < td.alphamapWidth; x++) alpha[y, x, 0] = 1f;
+            td.SetAlphamaps(0, 0, alpha);
+            var after = td.GetHeights(0, 0, td.heightmapResolution, td.heightmapResolution);
+            for (int y = 0; y < td.heightmapResolution; y++) for (int x = 0; x < td.heightmapResolution; x++)
+                if (before[y, x] != after[y, x]) throw new InvalidOperationException("피부 보정 중 지형 높이 변경");
+            EditorUtility.SetDirty(td); AssetDatabase.SaveAssets();
+            var texture = td.terrainLayers[0].diffuseTexture;
+            Debug.Log("[피부 검수] 컬러맵 " + texture.width + "x" + texture.height + ", 가중치 1, 지형 높이 변경 0");
         }
         static float GroundY(float wx, float wz) { return terrain.SampleHeight(new Vector3(wx, 0, wz)) + terrain.transform.position.y; }
 

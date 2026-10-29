@@ -78,3 +78,6 @@
 - 출력: `I:/EXODUSER-Storage/unity-visual/ntfs-20261029/`. 최종 빌드·비교·통합은 진행 중이다.
 
 - 첫 후보 5a340b469의 Win 빌드 69e759cd·M1 bcad8039는 23/23·세이브 변경0. 직접 본 화면에서 노출+.25EV는 피부 결이 지나치게 어두워 시각 반려했고 +1.0EV로 수정한다. 반복 문구는 같은 색/내용·세계거리 x130/y80 이내·120ms 안이면 생성을 합치고 출현 시각만 갱신한다. Core 텍스트 이벤트·값·수명은 바꾸지 않으며, 실제 보스 몸 경계는 화면 배치 금지 영역으로 등록한다. 최종 검수는 다음 후보 영수증으로 구분한다.
+
+- 두 번째 1x 대조에서 피부가 여전히 흐려 기존 색 조정 반복을 중단했다. 컬러맵의 기본 최대2048/NPOT 변환·anisotropic1과 일반 흙 혼합이 원본 주름을 약화시키는 입력으로 확인했다. 컬러맵 최대8192·NPOT 없음·Trilinear·anisotropic8·고품질 압축, 주 레이어 가중치1/추가 흙0으로 바꾼다. WebSkinSurface는 기존 TerrainData의 알파만 수정하고 전체 높이값 전후 동일을 검사한다. normalScale.55와 카메라·노출+1.0은 유지한다.
+- 보스의 실제 그림은 generic EnemyView가 아니라 NativeDruidBody.main이었다. 기존 예약 조건은 disabled generic body라 동작하지 않아 현재 NativeDruidBody.Visible/Bounds를 직접 읽도록 수정했다. 소스 값·애니메이션·판정은 그대로다. 다음 Player 실화면에서 이 경로의 글자 가림을 확인한다.
