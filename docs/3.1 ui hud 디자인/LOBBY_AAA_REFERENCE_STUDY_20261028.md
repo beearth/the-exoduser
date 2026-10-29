@@ -227,7 +227,7 @@ BG3·토치라이트 공통 "깔끔함" 5원칙: ① 장면이 화면 대부분 
 
 시안: `tmp/design-review/20261028_ui_package/compare_menu_web_A_B.jpg`(현재 웹 / A 반영본 / B), 32:9 확인 `tmp/design-review/20261028_ui_apply/ultrawide/`.
 
-2026-10-29 보충: 위 32:9 잘림은 main `41777b450`의 cover 상태에서 재현됐다. 별도 `codex/h5-title-wide-framing-20261029` 후보는 기존 원화의 중앙 세로 맞춤과 어두운 정적 측면 확장만으로 인물 머리·태양·전경을 화면 안에 보이게 했다(`I:/EXODUSER-Storage/design/title-wide-layout-20261029/`의 1600×900·5120×1440 전후 캡처). **부분 구도 PASS 후보, 전체 타이틀 RETOUCH**이며 I1의 진짜 32:9 배경 아트·기존 대기 모션은 아직 채택/제작 완료가 아니다. 새 이미지·유료 생성 0, main 반영 대기.
+2026-10-29 보충: 위 32:9 잘림은 당시 main `41777b450`의 cover 상태에서 재현됐다. `codex/h5-title-wide-framing-20261029` 후보 `866887a500edcfef7ebf6143f51aab616355068b`의 기존 원화 중앙 세로 맞춤과 어두운 정적 측면 확장이 인물 머리·태양·전경을 화면 안에 보이게 했다(`I:/EXODUSER-Storage/design/title-wide-layout-20261029/`의 1600×900·5120×1440 전후 캡처). CTO 검수 인수 후 H5 main 소스에 반영된 **부분 구도 PASS / 전체 타이틀 RETOUCH**이며 I1의 진짜 32:9 배경 아트·기존 대기 모션은 아직 채택/제작 완료가 아니다. 새 이미지·유료 생성 0, 실제 실행본 검수는 별도다.
 
 ## 14. 이미지 교체 계획 (승인 대기 · 유료 생성은 승인 전 시작 금지)
 
