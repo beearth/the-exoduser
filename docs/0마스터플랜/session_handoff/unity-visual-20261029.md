@@ -75,3 +75,27 @@ root가 compare_04/02/05/06과 accepted-m1/caps의03-move·11a-druid-volley·13-
 이 단위의 source 통합과 로컬 바로가기 연결은 완료했다. 손 조작 Player 종단검수·Mac 반영/실행·전체 맵/보스 리마스터 완성은 별도이며 이번 증거로 완료 처리하지 않는다. MAP PRODUCTION REPORT의 최종 VISUAL VERDICT는 **RETOUCH**다. 위 남은 결함은 후속 담당의 다음 패스이며 이 한 건 결과 제출 후 대기한다.
 
 실제 근거: I:/EXODUSER-Storage/unity-visual/ntfs-20261029의 지정통합-선행확인.json, 지정통합-소스반영.json, 통합-바로가기-선행확인.json, shortcut-after.json, root-intake-cosmetic-exception.json, 지정통합-최종영수증.json. 제품소스 반영 SHA와 그 뒤 문서 전용 SHA를 최종 영수증에서 분리한다.
+
+
+## 2026-10-30 보스 문자 지정 통합·변경 Runtime 최초 M1 인수
+
+작업ID `unity-boss-text-reviewed-gate-integration-20261030T000030KST`. 중앙 CTO가 기존 동일NTFS 담당을 이한건 unity-integrator로지정했다. 위제작단위의제출/통합대기기록은그당시상태이며, 현재게이트는아래로갱신한다. 새세션/작업본/CLI writer 추가0.
+
+| 게이트 | 최종 확인 |
+|---|---|
+| 정확한 소스 | expected unity/main14bcb6eff2b3770dfa8d8da5c1d3e6b84f607120을fetch/원격조회/조상검사하고 제품후보f4d8af17bd80f70dc846ea3cb281d4ba99bf6fd1로정상비강제fast-forward. 다른Mac/runner/보스후보추가0 |
+| 빌드 입력 | 실제빌드입력21a66acad50c4e42d7527887ec41310d3af727c8·후보f4의Unity tree9f61da18c54056f7674b30cfd78a221cbcb201ff 동일. 후속은검수문서만이며최종원격SHA는최종영수증에서분리 |
+| 새 필수 회귀 | 동일candidate2-build의변경Runtime에대한최초전체M1 b3e441ca,23/23·첫막힘없음·정상종료0·D3D11/RX9070XT·창0·잔여0·USER_SAVE0. 실제실행경로는아래candidate2-build. 단계별기록은통합-새M1-단계영수증.json. 이전accepted M1을이번후보에소급하지않음 |
+| 실행 전 조건 | 15:05:37Z Unity/UPM/Player0·잠금없음·큐/티켓0·커밋여유26.67GiB·G/E NTFS·E여유1267025588224바이트. 프로젝트/Library G·DOTNET/UPM E·출력I. 이조회값은그시점값이며향후예약보장아님 |
+| 후보 증거 묶음 | I:/EXODUSER-Storage/unity-visual/boss-text-20261029/candidate2-build/EXODUSER-Unity.exe + 빌드37de2a1e영수증오류0 + Unity트리 + Runtime DLL a66d17270d9bdb6db740bd1ca6c6e5abf6e098eabd7ad2206d7cf56102d6b5a1 + Core DLL e6d89a07efae6882c3062ac6b9d9fe1d8acdb00340d3a671ba175282a2ab65c5. Launcher exe의9806abde해시는이전과같으므로단독후보증거로쓰지않음 |
+| 일반 바로가기 | 기존14b의accepted-build target/args/workdir/icon일치확인후고유백업을만들고 candidate2-build/EXODUSER-Unity.exe, 인자 -force-d3d11 --remodel3d, 시작candidate2-build, 아이콘같은exe,0으로연결. 저장후네속성·Managed해시·원격f4 readback일치 |
+| 고유 백업·보존 | boss-text-20261029/지옥의 길 (Unity)-보스문자통합전-20261030T000030KST.lnk, SHA b735d94faefaee76170d8f617b81640fede0bc15cb81a8c5c307f10153b7cc6e. 미리보기SHA ac9a0cf88cee2739e33c195ed84cd361daf079b9ee529cacc092f9254e4560d0 전후동일. accepted-build/구unity-latest·사용자창/세이브·oldI/양쪽guard·MP4원본/자동사본·과거실패/7공백예외보존 |
+| 반복/제외 | 새빌드0·기통과표적캡처/40검사/Coreoracle/웹QA반복0. 이번새M1은변경후보최초통합회귀로서이전성공검사의동일바이트재실행이아님. 사용자앱자동실행/구updater/이전빌드삭제/비용/권한·신뢰·OS예약/외부배포·Steam·SetLive/자동서버재시작/CTO_STATE쓰기0 |
+
+### root 독립 시각 인수 — RETOUCH
+
+root가 candidate2-caps/natural-medium.png·synthetic-high.png·synthetic-moving.png를실제1600×900로직접봤다. 긴전역열제거·480 ×40(40건합480)+Q/쉴드파괴동시표시·가까운사건위치·대비·이동앵커유지의국소개선을인수했다. 문자는여전히보스발아래작은묶음으로모이며중요도별크기/시각계층의추가다듬기가남아있다. **최종 RETOUCH 기술 통합, 전체맵/보스리마스터/AAA PASS0·신규FAIL아트채택0**이다.
+
+기존전은가속M1, 후는직접보스입장·생존보조·StepInput 실제AI/분리한합성이다. 같은사건전후·손조작E2E로부르지않는다. 새전체M1통과도이시각판정을PASS로올리지않는다. 기존05후보고밀도숫자대기실패→실제치수실패재현→유형우선순위수정→40검사/표적전투성공이력은그대로보존한다.
+
+최종소스통합·일반바로가기연결·문서인계만완료하고이한건결과제출뒤대기한다. 손조작/장시간/전언어·전체리모델·Mac반영/실행은별도미검증이다. 근거는동일boss-text-20261029폴더의 통합-소스선행확인.json, 통합-새M1-단계영수증.json, 통합-원격제품반영.json, 통합-바로가기-변경전/후.json, 통합-최종연결확인.json, 통합-최종영수증.json. 전체기존7공백예외를포함한diff-check PASS를주장하지않으며이번문서경로검사와구분한다.
