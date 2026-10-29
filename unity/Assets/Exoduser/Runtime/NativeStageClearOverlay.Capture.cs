@@ -94,7 +94,7 @@ namespace Exoduser.UnityPort
             yield return new WaitForEndOfFrame();var rect=stageClear.ButtonScreenRect;var l=stageClear.LastLayout;
             bool inside=rect.x>=0&&rect.y>=0&&rect.xMax<=Screen.width&&rect.yMax<=Screen.height&&l!=null&&l.Panel.Contains(rect.x,rect.y)&&l.Panel.Contains(rect.xMax,rect.yMax);
             var snapshot=stageClear.CurrentInput;var f=new ClearReviewFrame{kills=snapshot.stageKills??-1,totalSpawned=snapshot.totalSpawned??-1,clearSeconds=snapshot.clearSeconds??-1,rewardSP=snapshot.statPointsAwarded??-1,balanceSP=snapshot.statPointsBalance??-1,regions=snapshot.regionsCleared??-1,potions=snapshot.potions??-1,deaths=snapshot.deaths??-1,hasScore=stageClear.PresentationModel().Score!=null,name=name,scope=scope,locale=lobby.Language,width=Screen.width,height=Screen.height,overflow=stageClear.LayoutOverflowCount,missingGlyphs=stageClear.MissingGlyphs,buttonInside=inside,button=rect,visible=stageClear.VisibleTexts.ToArray()};
-            clearReview.frames.Add(f);ClearCheck(inside,name+" 결과/버튼이 화면과 패널 안");ClearCheck(f.overflow==0,name+" 문구 높이 넘침0");ClearCheck(f.missingGlyphs==0,name+" 사용 글꼴 누락0");ClearCheck(!Array.Exists(f.visible,s=>s.Contains("미이식")),name+" 일반화면에 내부구현문구0");
+            clearReview.frames.Add(f);ClearCheck(inside,name+" 결과/버튼이 화면과 패널 안");ClearCheck(f.overflow==0,name+" 문구 높이 넘침0");ClearCheck(f.missingGlyphs==0,name+" 사용 글꼴 누락0");ClearCheck(!Array.Exists(f.visible,s=>s.Contains("미이식")),name+" 일반화면에 내부구현문구0");ClearCheck(Array.FindAll(f.visible,s=>s=="ZONE CLEARED").Length<=1,name+" 동일 영문제목 중복0");
             ScreenCapture.CaptureScreenshot(Path.Combine(clearReviewOutput,name+".png"));yield return null;
         }
         internal IEnumerator StageClearPresentationReview(){

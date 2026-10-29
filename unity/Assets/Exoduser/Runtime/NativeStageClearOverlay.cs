@@ -29,7 +29,7 @@ namespace Exoduser.UnityPort {
   Input input;bool active;float start;public float? ForcedAge;public Action OnNext;
   public bool Active{get{return active;}}
   public Input CurrentInput{get{return input;}}
-  public string LocaleCode="ko";public bool DiagnosticDetails;public int LayoutOverflowCount{get;private set;}
+  public string LocaleCode="ko";public bool DiagnosticDetails=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-ui-diagnostics")>=0;public int LayoutOverflowCount{get;private set;}
   readonly NativeStageClearPresentation.NextAction nextAction=new NativeStageClearPresentation.NextAction();
   bool keyboardReady;
   public NativeStageClearPresentation.Layout LastLayout{get;private set;}
@@ -175,7 +175,8 @@ namespace Exoduser.UnityPort {
     Border(new Rect(0,0,560,l.LogicalHeight),C(128,109,78,.65f*a));
     Grad(new Rect(50,14,230,1),C(164,147,115,0),C(164,147,115,.65f*a),true);Grad(new Rect(280,14,230,1),C(164,147,115,.65f*a),C(164,147,115,0),true);
     string title=input.kind==Kind.HellEscape?(EffectiveLocale=="ko"&&input.hellIndex>=0&&input.hellIndex<defs.hell.names.Length?defs.hell.names[input.hellIndex]+defs.hell.titleSuffix:labels.hellTitle):labels.title;
-    Paint(new Rect(28,26,504,22),input.kind==Kind.HellEscape?defs.hell.titleEn:defs.zone.titleEn,cinzelDec,12,C(177,157,120,a));
+    string caption=input.kind==Kind.HellEscape?defs.hell.titleEn:defs.zone.titleEn;
+     if(!string.Equals(caption,title,StringComparison.OrdinalIgnoreCase))Paint(new Rect(28,26,504,22),caption,cinzelDec,12,C(177,157,120,a));
     Paint(new Rect(28,55,504,56),title,body,34,C(236,222,197,a),TextAnchor.MiddleCenter,true);
     Paint(new Rect(40,115,480,38),input.kind==Kind.DemoEnd?labels.demoSub:labels.sub,body,16,C(187,174,153,a));
     int metricCount=Math.Max(1,m.Metrics.Count);float metricWidth=504f/metricCount;
