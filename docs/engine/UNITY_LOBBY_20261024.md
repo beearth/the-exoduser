@@ -162,3 +162,9 @@ Mac 일반앱의 첫Metal표시대기실패를 보존했으며, 렌더링옵션�
 | 마우스 | 직전 동일 입력 코드 후보에서 CUA 400ms 좌상단 클릭은 포인터가 Rect 내부로 움직였으나 모달이 열리지 않았다. 짧은 클릭과 다른 길이로도 결과가 같아 재시도하지 않았다. CUA→Unity IMGUI의 MouseUp 전달 여부는 확인되지 않아 실제 물리 마우스 hit는 HOLD. |
 
 **VISUAL VERDICT: RETOUCH (전체 로비).** Mac 좌상단 대비·글자/포커스 정합은 실제 1280/1600 화면에서 개선 확인. 웹 정본의 `.5`가 아직 `.9`로 바뀌지 않았고, 물리 마우스 열기·동일 상태 웹 실창 대조는 미검증이다. 다음 담당 산출물은 웹 UI 담당의 위 세 위치 alpha 동기화와 실제 마우스 패치 노트 열기/닫기 증거다. 그 전에는 웹·Mac 완전 동등이나 전체 로비 디자인 PASS를 선언하지 않는다.
+
+### 2026-10-29 최신 Mac 검토 실행기 인수
+
+최신 대비 후보의 사용자 검토 실행기는 `_out/UNITY-MAC-META-CONTRAST-20261029/launch-current-mac-review.command`다. 같은 폴더의 `review-manifest.json`이 소스 커밋 `9ed30495b050ac877e62b3989d775b41663fe95d`, 관련 6개 소스 blob, 위 ARM64 앱, 영수증 SHA-256 `73ad4323f660692ddbdbab6cda81168039d7216a260bc5a6d81aa88b3f85d6a2`, 실행 파일 SHA-256 `60fc40fa9ed2cacec72abf912f493e6533ea596227bc3309183092ed53ee1bef`를 고정한다. 실행기는 앱·영수증·manifest hash와 Settings QA 신원을 검사하고, 새 marker가 있는 `_out/UNITY-MAC-A05-IO-LOBBY-META-HUMAN-20261029/qa-sandbox`에만 I/O를 연결한다. 기존 실습 실행기와 저장 root는 그대로 둔다.
+
+`zsh -n`과 실행 권한·manifest 경로를 확인했다. 실제 첫 실행의 단일 PID `67045` argv에서 앱·`-output`·`--unity-qa-sandbox`·1280×720을 확인했고, 첫 화면은 새 빈 profile의 제목 화면이었다. 실행 중 두 번째 호출은 종료 코드 3으로 거절됐고, 첫 PID만 정상 종료했다. 이 실행기 smoke는 기존 1280/1600 로비 화면·키보드 증거를 대체하지 않는다. **기술 실행 PASS / 전체 로비 VISUAL VERDICT: RETOUCH / 물리 마우스 hit: HOLD.** 다음 Mac 미완료는 웹 메타 대비 정본 확정 후 동기화와 실제 마우스 열기/닫기 확인이다.
