@@ -23,6 +23,14 @@
 
 **최신 판정(2026-10-29):** 앞 문단은 첫 실행 차수의 기록이다. 새 차수 `d48c4898`에서 생성 순서 수정본이 성공했고 55° 1x 검수까지 진행했다. 최신 `DARK_DRUID_DESIGN_LOCK.md` §16의 사용자 직접 판정에 따라 과거 Meshy 본체/리그는 **VISUAL FAIL·런타임 채택 금지**다. 본 스케일 시안 두 개도 FAIL. 제작법을 바꾼 회색 형상은 관절이 떨어지고, 원본 고해상도 정점 조형은 복부 UV가 늘어나며 전사형 표면이 남아 FAIL이다. 제품 브랜치에는 이 두 실패 시안을 넣지 않았다. 실제 게임 씬·Win 빌드·m1 스모크·Player·독립 디자인 PASS는 없다. 본체 실패 상태로 통합 큐에 올리지 않는다. Unity 자동 임포트 439 tracked 경로는 `I:/EXODUSER-Storage/codex-takeover/boss/unity-autoimport-sculpt-20261029.patch`에 보존 후 원복했고, 산출물/실험 소스는 I:에 보관했다. 네 실행 모두 `userSaveChanged=0`, 신규 유료 호출 0이다.
 
+### 2026-10-29 S3 지팡이 v2 후속 검수
+
+- 기존 승인 S3 소품 시트 `I:/EXODUSER-Storage/archive/E/exoduser-wt/_out/unity-charsheet/dark_druid/S3_staff.png`를 직접 열고 v1 Unity 정면/55°와 대조했다. v1의 균등한 케이지·평평한 축/구슬을 고치기 위해 별도 v2 OBJ/MTL/재생성 소스를 제작했다. v1과 원본 이미지는 보존했다.
+- v2는 높이 2.300m, 잡는 위치 0.85m/감개 0.20m, 4cm 축, 0.40m 케이지의 주뿌리 6개, 지름 0.16m 구슬을 유지한다. 세 갈래 줄기·비대칭 교차 케이지·분할 코어 표면·이끼 2가닥을 구현하고 기존 `Druid_BaseColor.jpg`를 UV로 재사용했다. 정점/UV 각 21,332, 삼각형 41,828, 재질 7개, 인덱스 오류 0.
+- Unity 6000.6.7f1 분리 검사 최종 `b94a2e43`: 컴파일 오류/에러 로그 0, 렌더러 1·서브메시 7, 사용자 세이브 변경 0. `I:/EXODUSER-Storage/boss/sculpt-20261029/unity-staff-v2-review/` 정면·55°·케이지 확대 PNG 각 1600×900을 직접 봤다. S3와 비교하면 교차 뿌리/나무껍질 질감은 나아졌지만 축은 실제 크기에서 평평하고 코어는 밝은 단색 면이 남아 **VISUAL RETOUCH**다. 디자인 PASS나 보스 게임 씬/Player 검증이 아니다.
+- 코드·관련 docs `codex/pc-boss-takeover-20261028` `418fc296b9c4082600934bfadba16ce5388325c9` 비강제 push·원격 SHA 대조 완료. Unity 자동 임포트 tracked 439경로와 새 `.meta` 8개는 `I:/EXODUSER-Storage/codex-takeover/boss/unity-autoimport-staff-v2-20261029/`에 패치·정확 경로로 보존한 뒤 자기 작업본에서만 원복했다. 추가 유료 호출 0, `MERGE_QUEUE` 등록/런타임 채택 0.
+- 다음 담당은 절차적 곡선 대신 축에서 케이지까지 이어지는 유기 조형과 코어 층별 발광 마스크를 다시 제작하고 같은 55°/확대 화면으로 비교한다. 본체 VISUAL FAIL이므로 새 본체 원형·UV·스킨의 1x 통과 후 왼손 소켓/127 접촉과 제품 전투 검증으로 진행한다. 기존 `USER_CONFIRM.md` 유료 승인 요청은 중복 작성하지 않았다.
+
 ## 진행 중·대기
 
 1. **RB1-3 표현 검증:** 과거 `E:/exoduser-wt/codex-boss`에서 공용 `unity/Tools/devtools/exo-unity.ps1`로 임포트 작업 2회 실행했지만 후속 검증은 완료되지 않았다(위 영수증). 현재 새 작업 위치는 I:이며 과거 E: 실행 창·캐시가 자동 이전됐다고 보지 않는다. Win64 빌드 오류 0, `--unity-review-args-capture --unity-druid-remodel --unity-boss-direct 0`, 예고 PNG 1x 판정과 현재 후보 SHA의 m1-check는 새로 필요하다. 이 근거 전에는 통합 큐에 넣지 않는다.
