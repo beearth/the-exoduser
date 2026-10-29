@@ -1,0 +1,1499 @@
+{
+ "note": "웹 1-2 스폰 정답. holesRuntime = G.spawnHoles(count=_spawnHoleCount). enemies = initStage 직후 ens[] — fixedAcrossAllRuns는 5회 모두 같은 etype·타일.",
+ "holesRuntime": [
+  {
+   "tx": 84,
+   "ty": 168,
+   "px": [
+    3380,
+    6740
+   ],
+   "size": 0.5,
+   "count": 100,
+   "room": 1,
+   "geomRoom": -1,
+   "blocked": 0
+  },
+  {
+   "tx": 136,
+   "ty": 151,
+   "px": [
+    5460,
+    6060
+   ],
+   "size": 0.3,
+   "count": 50,
+   "room": 1,
+   "geomRoom": -1,
+   "blocked": 0
+  },
+  {
+   "tx": 44,
+   "ty": 151,
+   "px": [
+    1780,
+    6060
+   ],
+   "size": 0.5,
+   "count": 100,
+   "room": 1,
+   "geomRoom": -1,
+   "blocked": 0
+  },
+  {
+   "tx": 145,
+   "ty": 142,
+   "px": [
+    5820,
+    5700
+   ],
+   "size": 0.3,
+   "count": 50,
+   "room": 1,
+   "geomRoom": -1,
+   "blocked": 0
+  },
+  {
+   "tx": 69,
+   "ty": 95,
+   "px": [
+    2780,
+    3820
+   ],
+   "size": 0.5,
+   "count": 100,
+   "room": 1,
+   "geomRoom": -1,
+   "blocked": 0
+  },
+  {
+   "tx": 114,
+   "ty": 64,
+   "px": [
+    4580,
+    2580
+   ],
+   "size": 0.5,
+   "count": 100,
+   "room": 1,
+   "geomRoom": -1,
+   "blocked": 0
+  },
+  {
+   "tx": 59,
+   "ty": 69,
+   "px": [
+    2380,
+    2780
+   ],
+   "size": 0.3,
+   "count": 50,
+   "room": 1,
+   "geomRoom": -1,
+   "blocked": 0
+  },
+  {
+   "tx": 121,
+   "ty": 96,
+   "px": [
+    4860,
+    3860
+   ],
+   "size": 0.5,
+   "count": 100,
+   "room": 1,
+   "geomRoom": -1,
+   "blocked": 0
+  },
+  {
+   "tx": 94,
+   "ty": 155,
+   "px": [
+    3780,
+    6220
+   ],
+   "size": 0.3,
+   "count": 50,
+   "room": 1,
+   "geomRoom": 1,
+   "blocked": 0
+  },
+  {
+   "tx": 84,
+   "ty": 85,
+   "px": [
+    3380,
+    3420
+   ],
+   "size": 0.55,
+   "count": 100,
+   "room": 1,
+   "geomRoom": 3,
+   "blocked": 1
+  },
+  {
+   "tx": 120,
+   "ty": 47,
+   "px": [
+    4820,
+    1900
+   ],
+   "size": 0.8,
+   "count": 100,
+   "room": 1,
+   "geomRoom": 4,
+   "blocked": 0
+  },
+  {
+   "tx": 100,
+   "ty": 138,
+   "px": [
+    4020,
+    5540
+   ],
+   "size": 0.3,
+   "count": 50,
+   "room": -1,
+   "geomRoom": -1,
+   "blocked": 0
+  },
+  {
+   "tx": 100,
+   "ty": 103,
+   "px": [
+    4020,
+    4140
+   ],
+   "size": 0.3,
+   "count": 50,
+   "room": -1,
+   "geomRoom": -1,
+   "blocked": 0
+  }
+ ],
+ "holesDefinition": [
+  {
+   "src": "tmpl.spawnHoles",
+   "tx": 84,
+   "ty": 168,
+   "type": "M",
+   "nearestRuntimeHole": {
+    "index": 0,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "tmpl.spawnHoles",
+   "tx": 136,
+   "ty": 151,
+   "type": "S",
+   "nearestRuntimeHole": {
+    "index": 1,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "tmpl.spawnHoles",
+   "tx": 44,
+   "ty": 151,
+   "type": "M",
+   "nearestRuntimeHole": {
+    "index": 2,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "tmpl.spawnHoles",
+   "tx": 145,
+   "ty": 142,
+   "type": "S",
+   "nearestRuntimeHole": {
+    "index": 3,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "tmpl.spawnHoles",
+   "tx": 69,
+   "ty": 95,
+   "type": "M",
+   "nearestRuntimeHole": {
+    "index": 4,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "tmpl.spawnHoles",
+   "tx": 114,
+   "ty": 64,
+   "type": "M",
+   "nearestRuntimeHole": {
+    "index": 5,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "tmpl.spawnHoles",
+   "tx": 55,
+   "ty": 66,
+   "type": "S",
+   "nearestRuntimeHole": {
+    "index": 6,
+    "distTiles": 5
+   }
+  },
+  {
+   "src": "tmpl.spawnHoles",
+   "tx": 146,
+   "ty": 61,
+   "type": "M",
+   "nearestRuntimeHole": {
+    "index": 10,
+    "distTiles": 29.53
+   }
+  },
+  {
+   "src": "tmpl.spawnHoles",
+   "tx": 95,
+   "ty": 18,
+   "type": "L",
+   "nearestRuntimeHole": {
+    "index": 10,
+    "distTiles": 38.29
+   }
+  },
+  {
+   "src": "rooms[r1].spawns",
+   "tx": 94,
+   "ty": 155,
+   "grade": 0,
+   "room": "r1",
+   "nearestRuntimeHole": {
+    "index": 8,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "rooms[r1].spawns",
+   "tx": 106,
+   "ty": 155,
+   "grade": 0,
+   "room": "r1",
+   "nearestRuntimeHole": {
+    "index": 8,
+    "distTiles": 12
+   }
+  },
+  {
+   "src": "rooms[r2].spawns",
+   "tx": 76,
+   "ty": 85,
+   "grade": 1,
+   "room": "r2",
+   "nearestRuntimeHole": {
+    "index": 9,
+    "distTiles": 8
+   }
+  },
+  {
+   "src": "rooms[r2].spawns",
+   "tx": 84,
+   "ty": 85,
+   "grade": 1,
+   "room": "r2",
+   "nearestRuntimeHole": {
+    "index": 9,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "rooms[r3].spawns",
+   "tx": 120,
+   "ty": 47,
+   "grade": 2,
+   "room": "r3",
+   "nearestRuntimeHole": {
+    "index": 10,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "rooms[r3].spawns",
+   "tx": 120,
+   "ty": 53,
+   "grade": 2,
+   "room": "r3",
+   "nearestRuntimeHole": {
+    "index": 10,
+    "distTiles": 6
+   }
+  },
+  {
+   "src": "rooms[r3].spawns",
+   "tx": 115,
+   "ty": 50,
+   "grade": 2,
+   "room": "r3",
+   "nearestRuntimeHole": {
+    "index": 10,
+    "distTiles": 5.83
+   }
+  },
+  {
+   "src": "corridorSpawns",
+   "tx": 100,
+   "ty": 138,
+   "grade": 0,
+   "nearestRuntimeHole": {
+    "index": 11,
+    "distTiles": 0
+   }
+  },
+  {
+   "src": "corridorSpawns",
+   "tx": 100,
+   "ty": 103,
+   "grade": 0,
+   "nearestRuntimeHole": {
+    "index": 12,
+    "distTiles": 0
+   }
+  }
+ ],
+ "enemies": {
+  "perRun": [
+   [
+    {
+     "tx": 100,
+     "ty": 34,
+     "px": [
+      4020,
+      1380
+     ],
+     "etype": 29,
+     "elite": 1,
+     "lv": 1,
+     "r": 57,
+     "hp": 3568,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 101,
+     "ty": 34,
+     "px": [
+      4075,
+      1380
+     ],
+     "etype": 2,
+     "elite": 1,
+     "lv": 1,
+     "r": 26.545469460515758,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 101,
+     "ty": 35,
+     "px": [
+      4048,
+      1428
+     ],
+     "etype": 7,
+     "elite": 1,
+     "lv": 1,
+     "r": 21.677347760300613,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 99,
+     "ty": 35,
+     "px": [
+      3993,
+      1428
+     ],
+     "etype": 9,
+     "elite": 1,
+     "lv": 1,
+     "r": 20.35955392641928,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 99,
+     "ty": 34,
+     "px": [
+      3965,
+      1380
+     ],
+     "etype": 1,
+     "elite": 1,
+     "lv": 1,
+     "r": 23.146893323967635,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 99,
+     "ty": 33,
+     "px": [
+      3993,
+      1332
+     ],
+     "etype": 23,
+     "elite": 1,
+     "lv": 1,
+     "r": 21.44879652445853,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 101,
+     "ty": 33,
+     "px": [
+      4048,
+      1332
+     ],
+     "etype": 0,
+     "elite": 1,
+     "lv": 1,
+     "r": 22.233592386041508,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 104,
+     "ty": 34,
+     "px": [
+      4177,
+      1380
+     ],
+     "etype": 6,
+     "elite": 0,
+     "lv": 1,
+     "r": 26.33310592104435,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 103,
+     "ty": 37,
+     "px": [
+      4129,
+      1489
+     ],
+     "etype": 8,
+     "elite": 0,
+     "lv": 1,
+     "r": 23.316150002109943,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 100,
+     "ty": 37,
+     "px": [
+      4020,
+      1512
+     ],
+     "etype": 2,
+     "elite": 0,
+     "lv": 1,
+     "r": 26.990980124536254,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 98,
+     "ty": 36,
+     "px": [
+      3945,
+      1455
+     ],
+     "etype": 1,
+     "elite": 0,
+     "lv": 1,
+     "r": 20.02937687172983,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 96,
+     "ty": 34,
+     "px": [
+      3866,
+      1380
+     ],
+     "etype": 0,
+     "elite": 0,
+     "lv": 1,
+     "r": 23.752036431431303,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 98,
+     "ty": 32,
+     "px": [
+      3924,
+      1284
+     ],
+     "etype": 22,
+     "elite": 0,
+     "lv": 1,
+     "r": 20.739491657146687,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 102,
+     "ty": 32,
+     "px": [
+      4115,
+      1285
+     ],
+     "etype": 26,
+     "elite": 0,
+     "lv": 1,
+     "r": 20.674600300163924,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    }
+   ],
+   [
+    {
+     "tx": 100,
+     "ty": 34,
+     "px": [
+      4020,
+      1380
+     ],
+     "etype": 29,
+     "elite": 1,
+     "lv": 1,
+     "r": 57,
+     "hp": 3568,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 101,
+     "ty": 34,
+     "px": [
+      4075,
+      1380
+     ],
+     "etype": 12,
+     "elite": 1,
+     "lv": 1,
+     "r": 39.57893745721868,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 100,
+     "ty": 35,
+     "px": [
+      4020,
+      1435
+     ],
+     "etype": 17,
+     "elite": 1,
+     "lv": 1,
+     "r": 42.45490485859899,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 99,
+     "ty": 34,
+     "px": [
+      3965,
+      1380
+     ],
+     "etype": 16,
+     "elite": 1,
+     "lv": 1,
+     "r": 20.41764179367633,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 100,
+     "ty": 33,
+     "px": [
+      4020,
+      1325
+     ],
+     "etype": 8,
+     "elite": 1,
+     "lv": 1,
+     "r": 21.150387041961306,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 104,
+     "ty": 34,
+     "px": [
+      4166,
+      1380
+     ],
+     "etype": 1,
+     "elite": 0,
+     "lv": 1,
+     "r": 20.648176507947134,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 102,
+     "ty": 35,
+     "px": [
+      4110,
+      1438
+     ],
+     "etype": 12,
+     "elite": 0,
+     "lv": 1,
+     "r": 38.56282275061084,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 102,
+     "ty": 38,
+     "px": [
+      4086,
+      1524
+     ],
+     "etype": 10,
+     "elite": 0,
+     "lv": 1,
+     "r": 23.98064776036008,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 99,
+     "ty": 38,
+     "px": [
+      3995,
+      1554
+     ],
+     "etype": 47,
+     "elite": 0,
+     "lv": 1,
+     "r": 25.78040552754409,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 98,
+     "ty": 36,
+     "px": [
+      3954,
+      1456
+     ],
+     "etype": 20,
+     "elite": 0,
+     "lv": 1,
+     "r": 21.628587330869475,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 97,
+     "ty": 35,
+     "px": [
+      3899,
+      1415
+     ],
+     "etype": 7,
+     "elite": 1,
+     "lv": 1,
+     "r": 22.22326975318556,
+     "hp": 1786,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 97,
+     "ty": 33,
+     "px": [
+      3899,
+      1344
+     ],
+     "etype": 26,
+     "elite": 0,
+     "lv": 1,
+     "r": 20.804948445582493,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 98,
+     "ty": 31,
+     "px": [
+      3922,
+      1267
+     ],
+     "etype": 16,
+     "elite": 0,
+     "lv": 1,
+     "r": 23.205646003830267,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 103,
+     "ty": 32,
+     "px": [
+      4144,
+      1301
+     ],
+     "etype": 8,
+     "elite": 0,
+     "lv": 1,
+     "r": 20.772837477686146,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    }
+   ],
+   [
+    {
+     "tx": 100,
+     "ty": 34,
+     "px": [
+      4020,
+      1380
+     ],
+     "etype": 29,
+     "elite": 1,
+     "lv": 1,
+     "r": 57,
+     "hp": 3568,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 101,
+     "ty": 34,
+     "px": [
+      4075,
+      1380
+     ],
+     "etype": 9,
+     "elite": 1,
+     "lv": 1,
+     "r": 20.836074702270338,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 100,
+     "ty": 35,
+     "px": [
+      4037,
+      1432
+     ],
+     "etype": 21,
+     "elite": 1,
+     "lv": 1,
+     "r": 22.922410467182065,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 99,
+     "ty": 35,
+     "px": [
+      3976,
+      1412
+     ],
+     "etype": 6,
+     "elite": 1,
+     "lv": 1,
+     "r": 27.86025470363237,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 99,
+     "ty": 33,
+     "px": [
+      3976,
+      1348
+     ],
+     "etype": 10,
+     "elite": 1,
+     "lv": 1,
+     "r": 21.874876420673473,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 100,
+     "ty": 33,
+     "px": [
+      4037,
+      1328
+     ],
+     "etype": 5,
+     "elite": 1,
+     "lv": 1,
+     "r": 20.375663575739935,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 104,
+     "ty": 34,
+     "px": [
+      4165,
+      1380
+     ],
+     "etype": 16,
+     "elite": 0,
+     "lv": 1,
+     "r": 20.822547835280943,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 103,
+     "ty": 36,
+     "px": [
+      4139,
+      1457
+     ],
+     "etype": 4,
+     "elite": 0,
+     "lv": 1,
+     "r": 34.7564099894323,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 101,
+     "ty": 37,
+     "px": [
+      4072,
+      1495
+     ],
+     "etype": 47,
+     "elite": 0,
+     "lv": 1,
+     "r": 24.962596424623413,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 99,
+     "ty": 38,
+     "px": [
+      3999,
+      1528
+     ],
+     "etype": 47,
+     "elite": 0,
+     "lv": 1,
+     "r": 25.07083484177809,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 98,
+     "ty": 36,
+     "px": [
+      3941,
+      1471
+     ],
+     "etype": 21,
+     "elite": 0,
+     "lv": 1,
+     "r": 22.698110570714096,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 97,
+     "ty": 35,
+     "px": [
+      3906,
+      1413
+     ],
+     "etype": 7,
+     "elite": 0,
+     "lv": 1,
+     "r": 20.57732193452877,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 97,
+     "ty": 33,
+     "px": [
+      3896,
+      1344
+     ],
+     "etype": 7,
+     "elite": 0,
+     "lv": 1,
+     "r": 21.716091488318945,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 98,
+     "ty": 32,
+     "px": [
+      3942,
+      1290
+     ],
+     "etype": 8,
+     "elite": 0,
+     "lv": 1,
+     "r": 20.628693650610558,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 103,
+     "ty": 32,
+     "px": [
+      4143,
+      1301
+     ],
+     "etype": 17,
+     "elite": 0,
+     "lv": 1,
+     "r": 41.96275588209182,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    }
+   ],
+   [
+    {
+     "tx": 100,
+     "ty": 34,
+     "px": [
+      4020,
+      1380
+     ],
+     "etype": 29,
+     "elite": 1,
+     "lv": 1,
+     "r": 61,
+     "hp": 3568,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 101,
+     "ty": 34,
+     "px": [
+      4075,
+      1380
+     ],
+     "etype": 2,
+     "elite": 1,
+     "lv": 1,
+     "r": 24.7206829233698,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 100,
+     "ty": 35,
+     "px": [
+      4037,
+      1432
+     ],
+     "etype": 9,
+     "elite": 1,
+     "lv": 1,
+     "r": 20.92594020731606,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 99,
+     "ty": 35,
+     "px": [
+      3976,
+      1412
+     ],
+     "etype": 7,
+     "elite": 1,
+     "lv": 1,
+     "r": 21.17489102169931,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 99,
+     "ty": 33,
+     "px": [
+      3976,
+      1348
+     ],
+     "etype": 4,
+     "elite": 1,
+     "lv": 1,
+     "r": 35.38739891212721,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 100,
+     "ty": 33,
+     "px": [
+      4037,
+      1328
+     ],
+     "etype": 26,
+     "elite": 1,
+     "lv": 1,
+     "r": 21.312453733092106,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 104,
+     "ty": 34,
+     "px": [
+      4183,
+      1380
+     ],
+     "etype": 0,
+     "elite": 0,
+     "lv": 1,
+     "r": 22.86312154363359,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 102,
+     "ty": 36,
+     "px": [
+      4095,
+      1455
+     ],
+     "etype": 11,
+     "elite": 0,
+     "lv": 1,
+     "r": 25.337801575853064,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 100,
+     "ty": 37,
+     "px": [
+      4020,
+      1482
+     ],
+     "etype": 9,
+     "elite": 0,
+     "lv": 1,
+     "r": 20.75937238914242,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 97,
+     "ty": 37,
+     "px": [
+      3906,
+      1494
+     ],
+     "etype": 22,
+     "elite": 0,
+     "lv": 1,
+     "r": 20.77056222085614,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 97,
+     "ty": 34,
+     "px": [
+      3884,
+      1380
+     ],
+     "etype": 7,
+     "elite": 0,
+     "lv": 1,
+     "r": 23.210366613359,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 98,
+     "ty": 32,
+     "px": [
+      3941,
+      1301
+     ],
+     "etype": 2,
+     "elite": 0,
+     "lv": 1,
+     "r": 24.0087137256472,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 103,
+     "ty": 31,
+     "px": [
+      4144,
+      1256
+     ],
+     "etype": 7,
+     "elite": 0,
+     "lv": 1,
+     "r": 20.60577959885623,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    }
+   ],
+   [
+    {
+     "tx": 100,
+     "ty": 34,
+     "px": [
+      4020,
+      1380
+     ],
+     "etype": 29,
+     "elite": 1,
+     "lv": 1,
+     "r": 60,
+     "hp": 3568,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 101,
+     "ty": 34,
+     "px": [
+      4075,
+      1380
+     ],
+     "etype": 25,
+     "elite": 1,
+     "lv": 1,
+     "r": 20.058628553323103,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 101,
+     "ty": 35,
+     "px": [
+      4048,
+      1428
+     ],
+     "etype": 12,
+     "elite": 1,
+     "lv": 1,
+     "r": 39.364039944854134,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 99,
+     "ty": 35,
+     "px": [
+      3993,
+      1428
+     ],
+     "etype": 7,
+     "elite": 1,
+     "lv": 1,
+     "r": 22.70877759510641,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 99,
+     "ty": 34,
+     "px": [
+      3965,
+      1380
+     ],
+     "etype": 7,
+     "elite": 1,
+     "lv": 1,
+     "r": 21.044285009689027,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 99,
+     "ty": 33,
+     "px": [
+      3993,
+      1332
+     ],
+     "etype": 12,
+     "elite": 1,
+     "lv": 1,
+     "r": 38.17074474040226,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 101,
+     "ty": 33,
+     "px": [
+      4048,
+      1332
+     ],
+     "etype": 16,
+     "elite": 1,
+     "lv": 1,
+     "r": 23.34850988959456,
+     "hp": 2230,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 104,
+     "ty": 34,
+     "px": [
+      4200,
+      1380
+     ],
+     "etype": 47,
+     "elite": 0,
+     "lv": 1,
+     "r": 24.437839192013236,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 103,
+     "ty": 36,
+     "px": [
+      4142,
+      1468
+     ],
+     "etype": 1,
+     "elite": 0,
+     "lv": 1,
+     "r": 21.672631498196814,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 101,
+     "ty": 37,
+     "px": [
+      4057,
+      1494
+     ],
+     "etype": 0,
+     "elite": 0,
+     "lv": 1,
+     "r": 23.075262180373862,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 99,
+     "ty": 37,
+     "px": [
+      3984,
+      1490
+     ],
+     "etype": 29,
+     "elite": 0,
+     "lv": 1,
+     "r": 42.093959342046844,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 98,
+     "ty": 36,
+     "px": [
+      3929,
+      1446
+     ],
+     "etype": 13,
+     "elite": 0,
+     "lv": 1,
+     "r": 20.42141840356492,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 97,
+     "ty": 34,
+     "px": [
+      3916,
+      1380
+     ],
+     "etype": 1,
+     "elite": 0,
+     "lv": 1,
+     "r": 23.089391968898294,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 97,
+     "ty": 32,
+     "px": [
+      3898,
+      1291
+     ],
+     "etype": 0,
+     "elite": 0,
+     "lv": 1,
+     "r": 23.831460585943383,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    },
+    {
+     "tx": 103,
+     "ty": 32,
+     "px": [
+      4141,
+      1292
+     ],
+     "etype": 0,
+     "elite": 0,
+     "lv": 1,
+     "r": 21.481490549197,
+     "hp": 892,
+     "geomRoom": -1,
+     "blocked": 0
+    }
+   ]
+  ],
+  "fixedAcrossAllRuns": [
+   {
+    "etype": 29,
+    "tx": 100,
+    "ty": 34,
+    "px": [
+     4020,
+     1380
+    ],
+    "geomRoom": -1
+   }
+  ],
+  "roomCountRange": {
+   "-1": {
+    "min": 13,
+    "max": 15,
+    "perRun": [
+     14,
+     14,
+     15,
+     13,
+     15
+    ]
+   }
+  },
+  "totalRange": [
+   13,
+   15
+  ]
+ },
+ "regionTotals": [
+  {
+   "id": 0,
+   "total": 250
+  },
+  {
+   "id": 1,
+   "total": 300
+  },
+  {
+   "id": 2,
+   "total": 250
+  },
+  {
+   "id": 3,
+   "total": 200
+  }
+ ],
+ "blocked": {
+  "holes": 1,
+  "enemiesPerRun": [
+   0,
+   0,
+   0,
+   0,
+   0
+  ]
+ }
+}

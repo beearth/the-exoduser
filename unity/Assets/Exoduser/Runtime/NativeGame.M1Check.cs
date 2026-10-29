@@ -80,7 +80,7 @@ namespace Exoduser.UnityPort
             m1 = new M1Receipt { scope = "real NativeGame; lobby/story/practice through the lobby API, gameplay through Simulation.Tick (not OS input)" };
             m1.headless = m1Headless; m1.device = SystemInfo.graphicsDeviceName; m1.deviceType = SystemInfo.graphicsDeviceType.ToString(); m1.captureMode = m1Headless ? "headless-rendertexture-1600x900" : "screen-capture";
             { var probe = gameObject.AddComponent<M1GuiProbe>(); probe.game = this; }   // counts IMGUI Repaint events in every mode (guiRepaints in m1-check.json)
-            if (!m1Headless) Screen.SetResolution(1920, 1080, FullScreenMode.Windowed);
+            if (!m1Headless) Screen.SetResolution(1600, 900, FullScreenMode.Windowed);
             yield return new WaitForSecondsRealtime(.5f);
             float deadline;
 

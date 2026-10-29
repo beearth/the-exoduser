@@ -44,7 +44,7 @@ namespace Exoduser.UnityPort {
   public void SelectTab(string id){foreach(var t in defs.tabs)if(t.id==id){Tab=id;listScroll=0;potionSelected=false;potionNotice=null;return;}}   // web: tab switch clears _forgeSel
   // Web: clicking the already selected equipment chip keeps it; selecting a chip fills the AI row.
   public void SelectChip(string slot){SelectedChip=slot;}
-  public void HandleKeys(Action close){if(NativeKeyBindInput.Down("forge")||Input.GetKeyDown(KeyCode.Escape))close();}   // A16: web BINDS.forge (ESC = fixed back key)
+  public void HandleKeys(Action close){if(NativeKeyBindInput.Down("forge")||ExoInput.KeyDown(KeyCode.Escape))close();}   // A16: web BINDS.forge (ESC = fixed back key)
 
   // ---- resources / primitives ----
   static Color C(int r,int g,int b,float a=1f){return new Color(r/255f,g/255f,b/255f,a);}

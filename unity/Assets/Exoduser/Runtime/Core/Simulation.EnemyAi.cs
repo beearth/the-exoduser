@@ -80,7 +80,9 @@ namespace Exoduser.UnityPort.Core
         {
             double d;
             if (EnemyTick.UpdateHead(tickCtx, e, sp, out d)) return;
+            string stateBefore = e.s;
             EnemyAi.UpdateBody(aiHost, e, sp, d);
+            if (e.s == "windup" && stateBefore != "windup") QueueLogicalSound("tell_melee", "melee wind-up entry", e.x, e.y);   // RM-1 sound: AD3 stage 2
         }
 
         // EnemyState <-> web object around the loop (fields both sides know; everything else lives on Web)
@@ -277,7 +279,7 @@ namespace Exoduser.UnityPort.Core
             {
                 ShotWarning w = null;
                 foreach (var x in s.shotWarnings) if (x.Owner == e && x.T == 60) { w = x; break; }   // same-frame warning of the owner: all shots of one frame share one ring
-                if (w == null) { w = new ShotWarning { Owner = e, Dead = !e.alive, X = e.x, Y = e.y }; s.shotWarnings.Add(w); }
+                if (w == null) { w = new ShotWarning { Owner = e, Dead = !e.alive, X = e.x, Y = e.y }; s.shotWarnings.Add(w); s.QueueLogicalSound("tell_ranged", "ranged 60f attack ring", e.x, e.y); }
                 w.Shots.Add(shot);
             }
             public void Proj(EnemySpawn e, ProjSpec shot) { s.SpawnFieldProjectile(shot); }

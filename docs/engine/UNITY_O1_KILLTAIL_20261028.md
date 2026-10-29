@@ -114,3 +114,16 @@ O-1판(1332dcc96)은 m1 19/20(09b 가시덫 실패), 기준판(c7b497131, 새 de
 - **후속 보강 후보(이번 병합 조건 아님)**: rage-malice oracle에 DOT 처치 경로(hurtE `{dot:true}` → 42699 사망 분기 → 43307 `G.mats+=4`)를 넣는다. 지금은 enemy-hurt-oracle CH4 dot 케이스만 이 경로를 대조한다.
 - 승인(유니티 총괄 10-28): Core 수정 없이 09b 기대값만 고친다. 검증은 수정본 빌드 1회 + m1 1회.
 - **병합 전 검증(완료 규칙 ①, 10-28 10:19~10:21)**: 09b 수정 eb6b0f46a에 origin/unity/main 26a11fd2f(RM-3)·4ceb18b51(M1 지역 HUD)를 차례로 merge(rebase 없음, 충돌 0) → cf266944a. `_pc_lock.json` 잠금 아래 빌드 1회(오류 0, 66초) + batchmode m1-check 1회 = **20/20**. 09b 메모 "malice 5, DOT, kills in window 1"(이번에도 창 안 DOT 처치가 있었고 비용 판정은 통과). Unity 빌드 영수증에는 커밋 필드가 없어, 검증 스크립트가 빌드 전후 HEAD 동일을 대조하고 영수증 옆 `build-commit.json`에 commit cf266944a·parents를 남겼다. 산출: `I:\EXODUSER-Storage\qa\o1-killtail\diag-o1fix\`.
+
+
+## 2026-10-29 미리보기 통합 중 보스 부활 예외 수정
+
+| 항목 | 확인·변경 |
+|---|---|
+| 실패 근거 | M1 `player-8628b9b7.log`에서 보스 사망 시 `RunWebDeath` NullReferenceException. 기존 kill-wire-test도 `Simulation.Death.cs:143`에서 동일 실패 |
+| 원인 | `EnemyHurt.DeathHead`는 BossRevive·Decoy·Doppelganger 조기 반환 시 `null`을 돌려준다. 침강 위험요소 제거 분기가 반환값을 무조건 역참조했다 |
+| 최소 수정 | `head != null`일 때만 `_sinkDruid`를 읽고 `Druid.ClearSinkHazards()`를 호출한다. 실제 침강 시 정리는 보존하고 부활 판정·난수·수치는 바꾸지 않는다 |
+| 회귀 | 기존 `kill-wire-test` 수정 전 예외 재현 → 수정 후 **31검사 / 0실패**. 보스 즉시 부활·최종 침강·보상·사망 꼬리 연결 검사 포함 |
+| 범위 | 미리보기 전용 브랜치. Unity 재빌드·최종 M1 결과는 `UNITY_PC_PREVIEW_ALL_20261029.md`에서 갱신한다 |
+
+증거: `I:/EXODUSER-Storage/unity-preview/resume-brief2/kill-wire-red.log`, `kill-wire-green.log/json`.

@@ -1,0 +1,709 @@
+{
+ "about": "RM-1 사운드 채택 11키 — 사용자 청음 채택(picks_rm1.json, 2026-10-27, 명세 docs/6사운드디자인/UNITY_RM1_SOUND_SLICE_20261027.md §6.4·§6.5). 파일은 SFX Forge 2차(_s2) 후보의 −1dBTP 가공본. 코드는 바꾸지 않은 데이터 전달용이며 트랙 A(믹서 구조)는 RM-0 병합 뒤 유니티 총괄 배정. 음량·쿨다운은 웹 1차값(시작값)이고 최종값은 녹음을 듣고 정한다.",
+ "mixer": {
+  "asset": "Exoduser.mixer(트랙 A에서 생성)",
+  "groups": "Master > Music·Ambience·SFX, SFX > Tell·PlayerHit·Skill·Voice·EnemyHit·Death·Step·UI",
+  "duck": "Tell 그룹 Send → EnemyHit·Ambience Duck Volume −4dB, attack 10ms, release 250ms"
+ },
+ "priorityTable": {
+  "TELL": 12,
+  "SKILL": 10,
+  "VOICE": 9,
+  "PLAYER_HIT": 8,
+  "DEATH": 4,
+  "STEP": 3,
+  "HIT": 2,
+  "PROJ": 1,
+  "AMB": 0
+ },
+ "keys": [
+  {
+   "key": "tell_melee",
+   "file": "Audio/RM1/tell_melee",
+   "use": "일반 근접몹 windup 진입(AD3 2단계)",
+   "mixerGroup": "SFX/Tell",
+   "category": "TELL",
+   "priority": 12,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음(명세 §2 공간음)"
+   },
+   "startVolume": 0.45,
+   "durationSeconds": 0.394,
+   "bytes": 7566,
+   "truePeakDbTP": -1.5,
+   "source": "s2 v3 (hit/tell_melee_s2/v3)",
+   "cooldownMs": 120,
+   "skipOffscreen": true,
+   "note": "주의 6kHz 이상 뒤 3.3% — 사용자 선택, 그대로"
+  },
+  {
+   "key": "tell_ranged",
+   "file": "Audio/RM1/tell_ranged",
+   "use": "원거리 몹 60f 공격링 시작",
+   "mixerGroup": "SFX/Tell",
+   "category": "TELL",
+   "priority": 12,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음(명세 §2 공간음)"
+   },
+   "startVolume": 0.45,
+   "durationSeconds": 0.529,
+   "bytes": 9656,
+   "truePeakDbTP": -1.6,
+   "source": "s2 v3 (skill/tell_ranged_s2/v3)",
+   "cooldownMs": 120,
+   "skipOffscreen": true
+  },
+  {
+   "key": "tell_boss",
+   "file": "Audio/RM1/tell_boss",
+   "use": "드루이드 범위 기술 전조(RM-B1 기술 4·5·7·8·9·11·12 및 2·3의 범위 쪽). 웹은 드루이드 전조에만 사용",
+   "mixerGroup": "SFX/Tell",
+   "category": "TELL",
+   "priority": 12,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음(명세 §2 공간음)"
+   },
+   "startVolume": 0.45,
+   "durationSeconds": 0.703,
+   "bytes": 12163,
+   "truePeakDbTP": -1.6,
+   "source": "s2 v3 (skill/tell_boss_s2/v3)",
+   "cooldownMs": 120,
+   "skipOffscreen": true
+  },
+  {
+   "key": "tell_grab",
+   "file": "Audio/RM1/tell_grab",
+   "use": "드루이드 잡기 전조(RM-B1 기술 6, 60f)",
+   "mixerGroup": "SFX/Tell",
+   "category": "TELL",
+   "priority": 12,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음(명세 §2 공간음)"
+   },
+   "startVolume": 0.45,
+   "durationSeconds": 0.838,
+   "bytes": 14671,
+   "truePeakDbTP": -1.4,
+   "source": "s2 v4 (skill/tell_grab_s2/v4)",
+   "cooldownMs": 120,
+   "skipOffscreen": true,
+   "note": "주의 6kHz 이상 뒤 37.6% — 사용자 선택 우선. 녹음에서 거슬리면 꼬리만 LP"
+  },
+  {
+   "key": "druid_erupt",
+   "file": "Audio/RM1/druid_erupt",
+   "use": "드루이드 굴파기 분출",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음(명세 §2 공간음)"
+   },
+   "startVolume": 0.5,
+   "durationSeconds": 0.479,
+   "bytes": 8820,
+   "truePeakDbTP": -1.7,
+   "source": "s2 v4 (skill/druid_erupt_s2/v4)"
+  },
+  {
+   "key": "druid_sink",
+   "file": "Audio/RM1/druid_sink",
+   "use": "1-1 마지막 사망 침강 도주(STY-D9), 대사 \"숲은 아직 배고프다…\" 앞",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음(명세 §2 공간음)"
+   },
+   "startVolume": 0.55,
+   "durationSeconds": 2.22,
+   "bytes": 36405,
+   "truePeakDbTP": -1.6,
+   "source": "s2 v3 (skill/druid_sink_s2/v3)",
+   "note": "2.22초"
+  },
+  {
+   "key": "druid_tide",
+   "file": "Audio/RM1/druid_tide",
+   "use": "드루이드 독액 해일(P3 기술 10)",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음(명세 §2 공간음)"
+   },
+   "startVolume": 0.5,
+   "durationSeconds": 0.938,
+   "bytes": 15925,
+   "truePeakDbTP": -1.6,
+   "source": "s2 v1 (skill/druid_tide_s2/v1)"
+  },
+  {
+   "key": "druid_roots_rise",
+   "file": "Audio/RM1/druid_roots_rise",
+   "use": "뿌리 기둥 4개 솟음(P1 진입). Unity 전용(웹에 대응 장면 없음)",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음(명세 §2 공간음)"
+   },
+   "startVolume": 0.5,
+   "durationSeconds": 0.978,
+   "bytes": 16761,
+   "truePeakDbTP": -1.9,
+   "source": "s2 v4 (skill/druid_roots_rise_s2/v4)",
+   "note": "주의 6kHz 이상 뒤 29.4% — 사용자 선택 우선"
+  },
+  {
+   "key": "druid_heartbeat",
+   "file": "Audio/RM1/druid_heartbeat",
+   "use": "P3 숲의 심장 박동. 박동 1회 = 1번 재생(3박, 박마다 45f). Unity 전용",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음(명세 §2 공간음)"
+   },
+   "startVolume": 0.5,
+   "durationSeconds": 0.738,
+   "bytes": 12999,
+   "truePeakDbTP": -1.6,
+   "source": "s2 v4 (skill/druid_heartbeat_s2/v4)",
+   "playPerBeat": true,
+   "beatFrames": 45
+  },
+  {
+   "key": "druid_burrow",
+   "file": "Audio/RM1/druid_burrow",
+   "use": "드루이드 기술 7 땅속 잠행 전조. burrowStrike 텔레그래프 시작 알림에 재생",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 거리 감쇠 없음"
+   },
+   "startVolume": 0.45,
+   "durationSeconds": 0.554,
+   "bytes": 10074,
+   "source": "SND-09 3차 사용자 선택 _preview_s3/druid_burrow_s3d_proc.mp3"
+  },
+  {
+   "key": "amb_toxic_river",
+   "file": "Audio/RM1/amb_toxic_river",
+   "use": "1-1 양 사이드 독성 강 흐름(A8). 강 스플라인을 따라 12m 간격 루프 소스",
+   "mixerGroup": "Ambience",
+   "category": "AMB",
+   "priority": 0,
+   "spatial": {
+    "spatialBlend": 1.0,
+    "rolloff": "Logarithmic",
+    "minDistance": 4,
+    "maxDistance": 30
+   },
+   "startVolume": 0.15,
+   "durationSeconds": 6.5,
+   "bytes": 104950,
+   "truePeakDbTP": -2.0,
+   "source": "s2 v1 (ambient/amb_toxic_river_s2/v1) + 등전력 크로스페이드 1.5초(루프 6.5초, 이음매 RMS 차 3.7→0.4dB, 음색 변경 없음)",
+   "loop": true,
+   "sourceSpacingMeters": 12,
+   "note": "웹에는 없음"
+  },
+  {
+   "key": "toxic_bubble",
+   "file": "Audio/RM1/toxic_bubble",
+   "use": "독성 늪·수로 표면 기포 터짐(A8). 늪마다 원샷을 무작위 2~6초 간격으로",
+   "mixerGroup": "Ambience",
+   "category": "AMB",
+   "priority": 0,
+   "spatial": {
+    "spatialBlend": 1.0,
+    "rolloff": "Logarithmic",
+    "minDistance": 4,
+    "maxDistance": 30
+   },
+   "startVolume": 0.3,
+   "durationSeconds": 0.334,
+   "bytes": 6312,
+   "truePeakDbTP": -1.6,
+   "source": "s2 v4 (hit/toxic_bubble_s2/v4)",
+   "oneShotIntervalSeconds": [
+    2,
+    6
+   ],
+   "note": "웹에는 없음"
+  },
+  {
+   "key": "fireball",
+   "file": "Audio/fireball",
+   "use": "플레이어 E 마법 시전(UI 세션이 unity/main 40256751b에 추가한 키, 웹 E 마법 시전과 같은 값)",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.0,
+    "note": "플레이어 소리라 2D"
+   },
+   "startVolume": 0.9,
+   "rate": {
+    "center": 0.7,
+    "spread": 0.1
+   },
+   "note": "파일·키 이름은 UI 세션 그대로(RM1 폴더로 옮기지 않음)"
+  },
+  {
+   "key": "q_parry",
+   "file": "Audio/SFX/q_parry",
+   "use": "Q 패링 성공",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.0,
+    "note": "플레이어 소리라 2D"
+   },
+   "startVolume": 0.9,
+   "rate": {
+    "center": 1.0,
+    "spread": 0.08
+   },
+   "note": "웹 doParry(game.html 38667)와 같은 값. 파일은 웹 sfx에서 그대로"
+  },
+  {
+   "key": "sword_back",
+   "file": "Audio/SFX/sword_back",
+   "use": "Q 아닌 패링 성공 뒤 3종 중 하나",
+   "mixerGroup": "SFX/PlayerHit",
+   "category": "HIT",
+   "priority": 2,
+   "spatial": {
+    "spatialBlend": 0.0,
+    "note": "플레이어 소리라 2D"
+   },
+   "startVolume": 0.5,
+   "rate": {
+    "center": 1.1,
+    "spread": 0.1
+   },
+   "note": "웹 doParry(game.html 38667)와 같은 값. 파일은 웹 sfx에서 그대로"
+  },
+  {
+   "key": "sword_back2",
+   "file": "Audio/SFX/sword_back2",
+   "use": "Q 아닌 패링 성공 뒤 3종 중 하나",
+   "mixerGroup": "SFX/PlayerHit",
+   "category": "HIT",
+   "priority": 2,
+   "spatial": {
+    "spatialBlend": 0.0,
+    "note": "플레이어 소리라 2D"
+   },
+   "startVolume": 0.5,
+   "rate": {
+    "center": 1.1,
+    "spread": 0.1
+   },
+   "note": "웹 doParry(game.html 38667)와 같은 값. 파일은 웹 sfx에서 그대로"
+  },
+  {
+   "key": "sword_back3",
+   "file": "Audio/SFX/sword_back3",
+   "use": "Q 아닌 패링 성공 뒤 3종 중 하나",
+   "mixerGroup": "SFX/PlayerHit",
+   "category": "HIT",
+   "priority": 2,
+   "spatial": {
+    "spatialBlend": 0.0,
+    "note": "플레이어 소리라 2D"
+   },
+   "startVolume": 0.5,
+   "rate": {
+    "center": 1.1,
+    "spread": 0.1
+   },
+   "note": "웹 doParry(game.html 38667)와 같은 값. 파일은 웹 sfx에서 그대로"
+  },
+  {
+   "key": "voice_parry1",
+   "file": "Audio/SFX/voice_parry1",
+   "use": "패링 성공 보이스(50%) 4종 중 하나. 웹은 voice_parry4가 voice_parry3.mp3",
+   "mixerGroup": "SFX/Voice",
+   "category": "VOICE",
+   "priority": 9,
+   "spatial": {
+    "spatialBlend": 0.0,
+    "note": "플레이어 소리라 2D"
+   },
+   "startVolume": 1.0,
+   "rate": {
+    "center": 1.0,
+    "spread": 0.03
+   },
+   "note": "웹 doParry(game.html 38667)와 같은 값. 파일은 웹 sfx에서 그대로"
+  },
+  {
+   "key": "voice_parry2",
+   "file": "Audio/SFX/voice_parry2",
+   "use": "패링 성공 보이스(50%) 4종 중 하나. 웹은 voice_parry4가 voice_parry3.mp3",
+   "mixerGroup": "SFX/Voice",
+   "category": "VOICE",
+   "priority": 9,
+   "spatial": {
+    "spatialBlend": 0.0,
+    "note": "플레이어 소리라 2D"
+   },
+   "startVolume": 1.0,
+   "rate": {
+    "center": 1.0,
+    "spread": 0.03
+   },
+   "note": "웹 doParry(game.html 38667)와 같은 값. 파일은 웹 sfx에서 그대로"
+  },
+  {
+   "key": "voice_parry3",
+   "file": "Audio/SFX/voice_parry3",
+   "use": "패링 성공 보이스(50%) 4종 중 하나. 웹은 voice_parry4가 voice_parry3.mp3",
+   "mixerGroup": "SFX/Voice",
+   "category": "VOICE",
+   "priority": 9,
+   "spatial": {
+    "spatialBlend": 0.0,
+    "note": "플레이어 소리라 2D"
+   },
+   "startVolume": 1.0,
+   "rate": {
+    "center": 1.0,
+    "spread": 0.03
+   },
+   "note": "웹 doParry(game.html 38667)와 같은 값. 파일은 웹 sfx에서 그대로"
+  },
+  {
+   "key": "voice_parry4",
+   "file": "Audio/SFX/voice_parry4",
+   "use": "패링 성공 보이스(50%) 4종 중 하나. 웹은 voice_parry4가 voice_parry3.mp3",
+   "mixerGroup": "SFX/Voice",
+   "category": "VOICE",
+   "priority": 9,
+   "spatial": {
+    "spatialBlend": 0.0,
+    "note": "플레이어 소리라 2D"
+   },
+   "startVolume": 1.0,
+   "rate": {
+    "center": 1.0,
+    "spread": 0.03
+   },
+   "note": "웹 doParry(game.html 38667)와 같은 값. 파일은 웹 sfx에서 그대로"
+  },
+  {
+   "key": "sword_parry",
+   "file": "Audio/sword_parry",
+   "use": "Q 아닌 패링 성공(기존 파일 Audio/sword_parry, 키 재등록)",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.0,
+    "note": "플레이어 소리라 2D"
+   },
+   "startVolume": 1.0,
+   "rate": {
+    "center": 1.0,
+    "spread": 0.1
+   },
+   "note": "웹 doParry(game.html 38667)와 같은 값. 파일은 웹 sfx에서 그대로"
+  },
+  {
+   "key": "male_grunt",
+   "file": "Audio/male_grunt",
+   "use": "패링 성공 보이스(나머지 50%, 기존 파일 Audio/male_grunt)",
+   "mixerGroup": "SFX/Voice",
+   "category": "VOICE",
+   "priority": 9,
+   "spatial": {
+    "spatialBlend": 0.0,
+    "note": "플레이어 소리라 2D"
+   },
+   "startVolume": 1.0,
+   "rate": {
+    "center": 1.0,
+    "spread": 0.15
+   },
+   "note": "웹 doParry(game.html 38667)와 같은 값. 파일은 웹 sfx에서 그대로"
+  },
+  {
+   "key": "druid_vo_pain",
+   "file": "Audio/RM1/druid_vo_pain",
+   "use": "L2 목소리: 드루이드 HP 8%마다 쉰 신음(최소 3초 간격, rate ±5%)",
+   "mixerGroup": "SFX/Voice",
+   "category": "VOICE",
+   "priority": 9,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음"
+   },
+   "startVolume": 0.6,
+   "source": "SND-09 _preview_druid/druid_vo_pain_v2a_proc.mp3 (G:/exoduser-wt/_out/sfx_forge/)",
+   "note": "채택본 사용자 청음 2026-10-28. 시작 음량은 임시, 청음 뒤 조정"
+  },
+  {
+   "key": "druid_vo_attack",
+   "file": "Audio/RM1/druid_vo_attack",
+   "use": "L2: 큰 기술(내려찍기·돌진·해일) 시전 기합, 같은 기술 연속이면 생략(rate ±5%)",
+   "mixerGroup": "SFX/Voice",
+   "category": "VOICE",
+   "priority": 9,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음"
+   },
+   "startVolume": 0.7,
+   "source": "SND-09 _preview_druid/druid_vo_attack_v2a_proc.mp3 (G:/exoduser-wt/_out/sfx_forge/)",
+   "note": "채택본 사용자 청음 2026-10-28. 시작 음량은 임시, 청음 뒤 조정"
+  },
+  {
+   "key": "druid_vo_phase",
+   "file": "Audio/RM1/druid_vo_phase",
+   "use": "L2: 페이즈 시작(P1 인트로·P2·P3) 주문 섞인 포효, boss_howl 대체",
+   "mixerGroup": "SFX/Voice",
+   "category": "VOICE",
+   "priority": 9,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음"
+   },
+   "startVolume": 1.0,
+   "source": "SND-09 _preview_druid/druid_vo_phase_v2c_proc.mp3 (G:/exoduser-wt/_out/sfx_forge/)",
+   "note": "채택본 사용자 청음 2026-10-28. 시작 음량은 임시, 청음 뒤 조정"
+  },
+  {
+   "key": "druid_vo_fall",
+   "file": "Audio/RM1/druid_vo_fall",
+   "use": "L2: P1·P2 끝 쓰러져 무릎 꿇는 신음(druid_root_pierce 직전)",
+   "mixerGroup": "SFX/Voice",
+   "category": "VOICE",
+   "priority": 9,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음"
+   },
+   "startVolume": 0.7,
+   "source": "SND-09 _preview_druid/druid_vo_fall_v2a_proc.mp3 (G:/exoduser-wt/_out/sfx_forge/)",
+   "note": "채택본 사용자 청음 2026-10-28. 시작 음량은 임시, 청음 뒤 조정"
+  },
+  {
+   "key": "druid_vo_last",
+   "file": "Audio/RM1/druid_vo_last",
+   "use": "L2: 마지막 침강 직전 숨(BossDeath), death_boss 대체",
+   "mixerGroup": "SFX/Voice",
+   "category": "VOICE",
+   "priority": 9,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음"
+   },
+   "startVolume": 0.75,
+   "source": "SND-09 _preview_druid/druid_vo_last_v2a_proc.mp3 (G:/exoduser-wt/_out/sfx_forge/)",
+   "note": "채택본 사용자 청음 2026-10-28. 시작 음량은 임시, 청음 뒤 조정"
+  },
+  {
+   "key": "druid_drag",
+   "file": "Audio/RM1/druid_drag",
+   "use": "L4: 기술 3 뿌리 끌기 돌진 시작 땅 긁힘",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음"
+   },
+   "startVolume": 0.6,
+   "source": "SND-09 _preview_druid/druid_drag_v2a_proc.mp3 (G:/exoduser-wt/_out/sfx_forge/)",
+   "note": "채택본 사용자 청음 2026-10-28. 시작 음량은 임시, 청음 뒤 조정"
+  },
+  {
+   "key": "druid_fissure",
+   "file": "Audio/RM1/druid_fissure",
+   "use": "L4: 기술 4 가시 뿌리 줄기 균열이 달려감",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음"
+   },
+   "startVolume": 0.6,
+   "source": "SND-09 _preview_druid/druid_fissure_v2b_proc.mp3 (G:/exoduser-wt/_out/sfx_forge/)",
+   "note": "채택본 사용자 청음 2026-10-28. 시작 음량은 임시, 청음 뒤 조정"
+  },
+  {
+   "key": "druid_pod",
+   "file": "Audio/RM1/druid_pod",
+   "use": "L4: 기술 11 포자 꼬투리 터짐",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음"
+   },
+   "startVolume": 0.5,
+   "source": "SND-09 _preview_druid/druid_pod_v2d_proc.mp3 (G:/exoduser-wt/_out/sfx_forge/)",
+   "note": "채택본 사용자 청음 2026-10-28. 시작 음량은 임시, 청음 뒤 조정"
+  },
+  {
+   "key": "druid_summon",
+   "file": "Audio/RM1/druid_summon",
+   "use": "L4: 기술 9 바닥 시체가 일어남",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음"
+   },
+   "startVolume": 0.6,
+   "source": "SND-09 _preview_druid/druid_summon_v2c_proc.mp3 (G:/exoduser-wt/_out/sfx_forge/)",
+   "note": "채택본 사용자 청음 2026-10-28. 시작 음량은 임시, 청음 뒤 조정"
+  },
+  {
+   "key": "amb_druid_arena",
+   "file": "Audio/RM1/amb_druid_arena",
+   "use": "L5 보스 아레나 바닥음 10초 루프(보스 BGM 동안 숲 바닥음 대신)",
+   "mixerGroup": "Ambience",
+   "category": "AMB",
+   "priority": 0,
+   "spatial": {
+    "spatialBlend": 0.0,
+    "note": "2D, 화면 전체에 깔림"
+   },
+   "startVolume": 0.15,
+   "loop": true,
+   "source": "SND-09 _preview_druid/amb_druid_arena_v2d_proc.mp3 (G:/exoduser-wt/_out/sfx_forge/)",
+   "note": "숲 바닥음과 같은 .15 x SFX 설정, 보스 스냅샷 Ambience -8dB 적용"
+  },
+  {
+   "key": "bgm_druid_boss",
+   "file": "Audio/Bgm/bgm_druid_boss",
+   "use": "L6 드루이드전 BGM(장송곡 ~70bpm), 보스 아레나 동안 웹 boss 트랙 대신",
+   "mixerGroup": "Music",
+   "category": "BGM",
+   "startVolume": 0.6,
+   "loop": true,
+   "source": "SND-09 music/druid_bgm_b.mp3, 게인 -3.4dB 후 192k mp3 재인코딩(원본 피크 -0.8dBFS), CompressedInMemory",
+   "note": "NativeGameMusic이 key \"boss\"를 이 파일로 연다(1-1 슬라이스의 보스=드루이드)"
+  },
+  {
+   "key": "druid_hit",
+   "file": "Audio/RM1/druid_hit",
+   "use": "L1: 플레이어 무기가 드루이드 몸을 침, boss_hit 대체(변형 1개, rate ±6%·연타 감쇠·8틱 쿨다운)",
+   "mixerGroup": "SFX/EnemyHit",
+   "category": "HIT",
+   "priority": 2,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음"
+   },
+   "startVolume": 0.3,
+   "source": "SND-09 2차 _preview_druid2/druid_hit_v3d_proc.mp3 (G:/exoduser-wt/_out/sfx_forge/)",
+   "note": "사용자 청음 채택 2026-10-28(v3d 한 개). 시작 음량은 임시, 실제 플레이 판정 때 조정"
+  },
+  {
+   "key": "druid_hit_heavy",
+   "file": "Audio/RM1/druid_hit_heavy",
+   "use": "L1: 치명타(EnemyCrit)로 드루이드가 휘청임, 쿨다운 30틱",
+   "mixerGroup": "SFX/EnemyHit",
+   "category": "HIT",
+   "priority": 2,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음"
+   },
+   "startVolume": 0.6,
+   "source": "SND-09 2차 _preview_druid2/druid_hit_heavy_v3d_proc.mp3 (G:/exoduser-wt/_out/sfx_forge/)",
+   "note": "사용자 청음 채택 2026-10-28. 휘청임(poise) 이벤트는 Core에 없어 치명타만 연결"
+  },
+  {
+   "key": "druid_whip",
+   "file": "Audio/RM1/druid_whip",
+   "use": "L4: 가지 채찍 기술 1(slashCombo)의 3타가 맞는 순간, rate ±5%",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음"
+   },
+   "startVolume": 0.55,
+   "source": "SND-09 2차 _preview_druid2/druid_whip_v3a_proc.mp3 (G:/exoduser-wt/_out/sfx_forge/)",
+   "note": "사용자 청음 채택 2026-10-28(v3a 한 개). 시작 음량은 임시"
+  },
+  {
+   "key": "druid_spore",
+   "file": "Audio/RM1/druid_spore",
+   "use": "L4: 기술 5 독포자 부채(fan)가 발사되는 순간 1회, rate ±5%",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음"
+   },
+   "startVolume": 0.55,
+   "source": "SND-09 3차 _preview_r3/druid_spore_r3a_proc.mp3 (G:/exoduser-wt/_out/sfx_forge/), 원본 웹 sfx/pickup/pickup_rummage2.mp3 35Hz HPF→-1dBTP",
+   "note": "사용자 청음 채택 2026-10-28. 시작 음량은 임시. 같은 원본이 웹에서는 아이템 줍기 소리 — Unity 줍기 소리에 같은 파일을 넣으면 사운드 총괄에 알릴 것"
+  },
+  {
+   "key": "druid_slam",
+   "file": "Audio/RM1/druid_slam",
+   "use": "L4: 기술 2 거름 내려찍기 착지 순간 1회, rate ±4%",
+   "mixerGroup": "SFX/Skill",
+   "category": "SKILL",
+   "priority": 10,
+   "spatial": {
+    "spatialBlend": 0.5,
+    "rolloff": "none",
+    "note": "방향감만, 멀어져도 작아지지 않음"
+   },
+   "startVolume": 0.7,
+   "source": "SND-09 4차 _preview_r4/druid_slam_r4e2_proc.mp3 (G:/exoduser-wt/_out/sfx_forge/), 3차 선택 r3d에 음량 상향·중간 메아리 약 0.22초 반영(추천안 e2)",
+   "note": "사용자 컨펌 전 선반영(pick_r4). 사용자가 다른 후보를 고르면 이 항목의 파일만 교체. 시작 음량은 임시"
+  }
+ ]
+}

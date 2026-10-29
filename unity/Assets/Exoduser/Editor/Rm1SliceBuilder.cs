@@ -120,7 +120,7 @@ namespace Exoduser
 
         public static void Run()
         {
-            Directory.CreateDirectory(GenDir); AssetDatabase.Refresh();
+            AudioListener.volume = 0f; Directory.CreateDirectory(GenDir); AssetDatabase.Refresh();
             Load(); fps.Clear(); ribbonQuads.Clear();
             var mats = MakeMaterials();
             var td = BuildTerrainData();
@@ -697,7 +697,7 @@ namespace Exoduser
         public static void Fps()
         {
             var args = Exoduser.DevTools.ExoArgs.Get(); string Arg(string k, string d) { int i = Array.IndexOf(args, k); return i >= 0 ? args[i + 1] : d; }
-            var outJson = Arg("-out", "rm1-fps.json"); Load(); EditorSceneManager.OpenScene(ScenePath);
+            AudioListener.volume = 0f; var outJson = Arg("-out", "rm1-fps.json"); Load(); EditorSceneManager.OpenScene(ScenePath);
             var marker = GameObject.Find("Player Marker").transform; var cam = Camera.main; var brain = UnityEngine.Object.FindFirstObjectByType<CinemachineBrain>(); terrain = UnityEngine.Object.FindFirstObjectByType<Terrain>();
             var w0 = W(100f, 185f); marker.position = new Vector3(w0.x, GroundY(w0.x, w0.z), w0.z); brain.ManualUpdate();
             var world = GameObject.Find("World"); var rt = new RenderTexture(1600, 900, 24, RenderTextureFormat.ARGB32) { antiAliasing = 4 }; cam.targetTexture = rt;
@@ -828,7 +828,9 @@ namespace Exoduser
         static Material FgMat;
         static Transform BuildCamera()
         {
-            var camGo = new GameObject("Main Camera") { tag = "MainCamera" }; var cam = camGo.AddComponent<Camera>();
+            // everything that would collide with the game's own camera / listener when this scene is loaded additively sits under one root, so the runtime bridge switches off one object (identity transform: children keep their world positions)
+            var rig = new GameObject("RM1_CameraRig").transform;
+            var camGo = new GameObject("Main Camera") { tag = "MainCamera" }; camGo.transform.SetParent(rig, false); var cam = camGo.AddComponent<Camera>();
             cam.orthographic = false; cam.clearFlags = CameraClearFlags.SolidColor; cam.backgroundColor = Hex("#060403"); cam.nearClipPlane = 0.3f; cam.farClipPlane = 160f;
             float fov = 2f * Mathf.Atan(900f / (2f * 1400f)) * Mathf.Rad2Deg; cam.fieldOfView = fov;
             var offset = new Vector3(0, Mathf.Sin(Pitch), -Mathf.Cos(Pitch)) * DistU; var start = W(100f, 185f);
@@ -844,12 +846,12 @@ namespace Exoduser
             }
             camGo.AddComponent<CinemachineBrain>().DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Styles.Cut, 0); camGo.AddComponent<AudioListener>();
 
-            var marker = new GameObject("Player Marker"); marker.transform.position = new Vector3(start.x, GroundY(start.x, start.z), start.z);
+            var marker = new GameObject("Player Marker"); marker.transform.SetParent(rig, false); marker.transform.position = new Vector3(start.x, GroundY(start.x, start.z), start.z);
             var actor = new GameObject("Marker Sprite"); actor.transform.SetParent(marker.transform, false); actor.transform.localPosition = new Vector3(0, 0.75f, 0); actor.transform.rotation = Quaternion.Euler(Pitch * Mathf.Rad2Deg, 0, 0);
             var sp = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Exoduser/Rendering/Sandbox/test_sprite.png");
             if (sp != null) { var sr = actor.AddComponent<SpriteRenderer>(); sr.sprite = sp; sr.sharedMaterial = AssetDatabase.LoadAssetAtPath<Material>("Assets/Exoduser/Rendering/Sandbox/SpriteLit3D.mat"); sr.shadowCastingMode = ShadowCastingMode.On; }
 
-            var vcamGo = new GameObject("CM LOOK-001"); var vcam = vcamGo.AddComponent<CinemachineCamera>();
+            var vcamGo = new GameObject("CM LOOK-001"); vcamGo.transform.SetParent(rig, false); var vcam = vcamGo.AddComponent<CinemachineCamera>();
             vcam.Lens = new LensSettings { FieldOfView = fov, ModeOverride = LensSettings.OverrideModes.Perspective, NearClipPlane = 0.3f, FarClipPlane = 160f };
             vcamGo.transform.SetPositionAndRotation(start + offset, Quaternion.Euler(Pitch * Mathf.Rad2Deg, 0, 0));
             var follow = vcamGo.AddComponent<CinemachineFollow>(); follow.FollowOffset = offset;
@@ -903,7 +905,7 @@ namespace Exoduser
         public static void Capture()
         {
             var args = Exoduser.DevTools.ExoArgs.Get(); string Arg(string k, string d) { int i = Array.IndexOf(args, k); return i >= 0 ? args[i + 1] : d; }
-            var outDir = Arg("-outDir", "rm1-cuts"); Directory.CreateDirectory(outDir);
+            AudioListener.volume = 0f; var outDir = Arg("-outDir", "rm1-cuts"); Directory.CreateDirectory(outDir);
             var cuts = Arg("-cuts", "start,r2,river").Split(',');
             Load(); EditorSceneManager.OpenScene(ScenePath);
             var marker = GameObject.Find("Player Marker").transform; var cam = Camera.main; var brain = UnityEngine.Object.FindFirstObjectByType<CinemachineBrain>();

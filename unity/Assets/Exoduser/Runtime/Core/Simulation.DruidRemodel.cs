@@ -77,6 +77,7 @@ namespace Exoduser.UnityPort.Core
                 return true;
             }
             st.Collapsing = true; st.CollapseTicks = st.Set.CollapseTicks; st.RootHits = 0; st.Blocking = false;
+            if (Config.StageIndex == 0) { QueueLogicalSound("druid_vo_fall", "P" + (st.Life + 1) + " down: he kneels", e.X, e.Y); scheduledSounds.Add(new KeyValuePair<int, string[]>(TickCount + 40, new[] { "druid_root_pierce", "P" + (st.Life + 2) + " entry: root pierces the back" })); }   // RM-1 sound SND-09
             e.Hp = 1; e.Shield = 0; e.ReviveIframes = 90;                 // swallowed hits are the root hits (EnemyHurt takes 1 off reviveIframes per hit)
             Druid.BeginCollapse(e);
             if (st.Set.CollapseVulnerable)
@@ -142,7 +143,7 @@ namespace Exoduser.UnityPort.Core
             int sh = (int)Math.Round(mx * st.Set.ShieldFraction[st.Life]); e.MaxShield = sh; e.Shield = sh;
             e.Radius = (float)Math.Max(10, Math.Round(st.OrigR * st.Set.BodyScale[st.Life]));
             e.ReviveIframes = 0; e.Poise = e.MaxPoise;
-            Druid.BeginLife(e, st.Life);
+            Druid.BeginLife(e, st.Life); if (Config.StageIndex == 0) QueueLogicalSound("druid_vo_phase", "P" + (st.Life + 1) + " start", e.X, e.Y);   // RM-1 sound SND-09
             RemodelEvent("life", e, st, note);
             RemodelHook(st.Set.Hooks.OnLife, e, st);
         }

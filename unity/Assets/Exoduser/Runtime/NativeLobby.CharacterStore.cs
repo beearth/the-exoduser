@@ -40,9 +40,9 @@ namespace Exoduser.UnityPort
   {
    if(characterStoreProblem)return CharacterStoreError();
    if(characterStore!=null&&CharacterStoreState==CharacterStoreStatus.RecoveredFromBackup)return K("백업에서 캐릭터 목록을 복원했습니다.\n전투 진행은 저장되지 않습니다.","The character list was recovered from backup.\nBattle progress is not saved.");
-   return characterStore==null?K("미리보기의 진행 상황은 저장되지 않습니다.","Preview progress is not saved."):K("캐릭터 목록은 이 Mac에 저장됩니다.\n전투 진행은 저장되지 않습니다.","The character list is saved on this Mac.\nBattle progress is not saved.");
+   return characterStore==null?K("미리보기의 진행 상황은 저장되지 않습니다.","Preview progress is not saved."):K("캐릭터 목록은 "+NativePlatformLabel.Ko+"에 저장됩니다.\n전투 진행은 저장되지 않습니다.","The character list is saved on "+NativePlatformLabel.En+".\nBattle progress is not saved.");
   }
-  string CharacterCreationNote(){return characterStore==null?K("이번 실행에서만 유지되는 캐릭터입니다.\n입장할 때 새 전투가 시작되며 진행은 저장되지 않습니다.","Characters last for this app session.\nEach entry starts a new battle; progress is not saved."):K("캐릭터 이름과 슬롯은 이 Mac에 저장됩니다.\n전투 진행은 저장되지 않으며 입장할 때 새 전투가 시작됩니다.","Character names and slots are saved on this Mac.\nEach entry starts a new battle; battle progress is not saved.");}
-  string CharacterSlotCaption(){return characterStore==null?K("전사 · 이번 실행에서만 유지","Warrior · This session only"):K("전사 · 이 Mac에 저장","Warrior · Saved on this Mac");}
+  string CharacterCreationNote(){return characterStore==null?K("이번 실행에서만 유지되는 캐릭터입니다.\n입장할 때 새 전투가 시작되며 진행은 저장되지 않습니다.","Characters last for this app session.\nEach entry starts a new battle; progress is not saved."):K("캐릭터 이름과 슬롯은 "+NativePlatformLabel.Ko+"에 저장됩니다.\n전투 진행은 저장되지 않으며 입장할 때 새 전투가 시작됩니다.","Character names and slots are saved on "+NativePlatformLabel.En+".\nEach entry starts a new battle; battle progress is not saved.");}
+  string CharacterSlotCaption(){return characterStore==null?K("전사 · 이번 실행에서만 유지","Warrior · This session only"):K("전사 · "+NativePlatformLabel.Ko+"에 저장","Warrior · Saved on "+NativePlatformLabel.En);}
  }
 }

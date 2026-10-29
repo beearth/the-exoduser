@@ -1,0 +1,120 @@
+{
+ "extractedAt": "2026-10-27T18:06:08.571Z",
+ "si": 3,
+ "mainRef": "origin/main",
+ "mainSha": "6d18a815bbb000b1fdc417f514daf4a3075384f3",
+ "mainRepo": "G:/exoduser",
+ "gameHtmlSha256": "cfb0a739454f330733547c7a15a58301461b68193197ca04a824d83815b88122",
+ "mapsDataJsSha256": "01e74466ea797227d555288592edc959545cb2e44e64e607bf181e7d64c2870e",
+ "usedSource": "committed blobs via Playwright route",
+ "functions": {
+  "isW": 31894,
+  "_rebuildColObjs": 31869,
+  "_cloneField11": 30225,
+  "_MAP_COMPOSE": 18299,
+  "initStage": 31716,
+  "genFromTemplate": 30401
+ },
+ "bootSequence": "G._cutsceneDone=true; if(!P)P=mkP(); G.stage=3; initStage(3); if(!_bgInitDone)_tickBgInit(9999); 걷기 격자는 4x4 타일 칸별 충돌물 부분집합으로 isW 호출(무작위 2000점 전체목록 검산) — 새 페이지 5회, headless Chrome --mute-audio",
+ "bgInit": [
+  {
+   "before": {
+    "done": false,
+    "idx": 0,
+    "n": 6,
+    "objs": 1
+   },
+   "after": {
+    "done": true,
+    "idx": 6,
+    "objs": 288
+   }
+  },
+  {
+   "before": {
+    "done": false,
+    "idx": 0,
+    "n": 6,
+    "objs": 1
+   },
+   "after": {
+    "done": true,
+    "idx": 6,
+    "objs": 288
+   }
+  },
+  {
+   "before": {
+    "done": false,
+    "idx": 0,
+    "n": 6,
+    "objs": 1
+   },
+   "after": {
+    "done": true,
+    "idx": 6,
+    "objs": 288
+   }
+  },
+  {
+   "before": {
+    "done": false,
+    "idx": 0,
+    "n": 6,
+    "objs": 1
+   },
+   "after": {
+    "done": true,
+    "idx": 6,
+    "objs": 288
+   }
+  },
+  {
+   "before": {
+    "done": false,
+    "idx": 0,
+    "n": 6,
+    "objs": 1
+   },
+   "after": {
+    "done": true,
+    "idx": 6,
+    "objs": 288
+   }
+  }
+ ],
+ "colObjCount": [
+  52,
+  52,
+  52,
+  52,
+  52
+ ],
+ "accelMismatch": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "determinism": {
+  "runs": 5,
+  "tileHash": true,
+  "walk": true,
+  "partial": true,
+  "colObjs": true,
+  "mapObjs": true,
+  "spawnHolePositions": true,
+  "exits": true,
+  "start": true
+ },
+ "variableWalkTiles": 0,
+ "pageErrors": [
+  [],
+  [],
+  [],
+  [],
+  []
+ ],
+ "collisionPng": "I:\\EXODUSER-Storage\\rm4\\ch1_4_collision.png"
+}

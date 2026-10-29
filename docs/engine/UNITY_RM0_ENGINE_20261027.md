@@ -16,7 +16,7 @@
 | com.unity.timeline | 6.6.0 | 연출 |
 | com.unity.modules.terrain / terrainphysics / physics / ai | 1.0.0 | 지형·3D 물리·NavMesh |
 
-- 샌드박스 씬: `Assets/Exoduser/Scenes/RM_Sandbox.unity` — XZ 지면 위 Terrain 1·ProBuilder 블록·NavMesh Surface·VFX Graph 샘플·Timeline·Cinemachine(정사영 5.4, 수직 하향)·Global Volume(`Rendering/GlobalVolume_Hell`: ACES·블룸·어두운 붉은 톤 보정·비네트). 재생성: `Unity -batchmode -executeMethod Exoduser.Rm0EngineSetup.Run`, 렌더 캡처: `-executeMethod Exoduser.Rm0EngineSetup.Capture -output <png>`.
+- 샌드박스 씬: `Assets/Exoduser/Scenes/RM_Sandbox.unity` — XZ 지면 위 Terrain 1·ProBuilder 블록·NavMesh Surface·VFX Graph 샘플·Timeline·Cinemachine(정사영 5.4, 수직 하향)·Global Volume(`Rendering/GlobalVolume_Hell`: Neutral(톤매핑)·블룸·어두운 붉은 톤 보정·비네트). 재생성: `Unity -batchmode -executeMethod Exoduser.Rm0EngineSetup.Run`, 렌더 캡처: `-executeMethod Exoduser.Rm0EngineSetup.Capture -output <png>`.
 - 스프라이트 3D 라이팅: `Resources/Shaders/SpriteLit3D.shader`(URP HLSL — 메인·추가 라이트, 그림자 수신·투사; Shader Graph 아님). 기존 커스텀 셰이더 5종(CG 언릿)·`Sprites/Default`는 URP에서 그대로 동작해 변환 불필요. 샌드박스 스프라이트는 라이트 과노출 — RM-1에서 `_Ambient`·조명 세기 조정 필요.
 - Mac(ARM64): Mac 빌드는 이번에 미검증. VFX Graph(컴퓨트/Metal)·Burst·Input System은 Apple Silicon 지원 패키지. `URP_Mac_Balanced` = MSAA 2x·그림자 32m·추가광 6.
 - 주의: 게임 씬(코드 생성)은 아직 URP Lit·Volume을 쓰지 않는다. 월드 3D화·카메라 교체는 RM-1 이후.
@@ -49,3 +49,60 @@
 | 소유 | RM-0 (엔진 기반) |
 | 빌드 경로 정정 | `PortVerification.MakeScene`에서 남아 있던 `PlayerSettings.colorSpace=ColorSpace.Gamma` 강제 할당을 제거한다. 기존 빌드 진입 시 소스의 Linear 1이 Gamma 0으로 변경돼 Player 캡처가 현재 색공간 결정을 반영하지 못했다. 이후 빌드는 `ProjectSettings.asset`의 Linear 1을 유지해야 한다. 2026-10-28 Unity 2차 통합에서 발견·정정. |
 | 되돌리기 | 이 커밋만 revert |
+
+## RM0-LIGHT-L — Linear·후처리 기준 재조정 (2026-10-28)
+
+기준: origin/unity/main `c7b497131`(Linear `m_ActiveColorSpace: 1`, 렌더러 `postProcessData` 연결). 명세 `E:/exoduser-wt/_out/rm0-light/SPEC.md` §7.
+
+**후처리가 실제로 적용되는지(켬/끔 1쌍, 같은 구도·postExposure −0.15):** 화면 중앙값 4.1(켬) vs 36.8(끔)로 크게 다르다 → ACES·색보정·블룸이 화면에 그려진다. 이전 Gamma 값(Gamma B안)은 후처리가 꺼진 화면의 값이었다.
+
+**Gamma B안 기준값(내 측정법, 같은 캡처):** 화면 중앙값 22.0(임펙트 총괄 측정 23.7과 방법 차이, 목표는 23.7 이상) · 샌드박스 바닥 luma 21.9 · 캐릭터 샷 바닥 luma 27.8 · 웅덩이 바닥 색상각 8.6° · 날 상위 5% 채도 7.3 % · 갑옷 R/G 1.23 · 바닥 R/G 1.74/1.74/1.67(B≤G 충족).
+
+**postExposure 스윕(한 번의 batch, −0.15~3.00, 0.25 간격):** luma는 sRGB 값의 휘도(0~255), 바닥 R/G는 샌드박스 3개 패치.
+
+| 단계 | 화면 중앙값 | 샌드박스 바닥 | 캐릭터 샷 바닥 | 웅덩이 색상각 | 날 채도 | 갑옷 R/G | 바닥 R/G | B≤G |
+|---|---|---|---|---|---|---|---|---|
+| postExposure -0.15 | 4.1 | 3.9 | 3.8 | 8.9° | 10.6% | 1.500 | 2.25/2.00/2.33 | O |
+| postExposure -0.15_ppoff | 36.8 | 36.5 | 38.8 | 9.9° | 5.2% | 1.156 | 1.35/1.31/1.33 | O |
+| postExposure 0.10 | 5.3 | 5.1 | 5.0 | 9.6° | 9.6% | 1.500 | 2.20/2.67/2.25 | O |
+| postExposure 0.35 | 7.2 | 6.3 | 6.9 | 10.9° | 9.3% | 1.429 | 2.17/2.00/2.20 | O |
+| postExposure 0.60 | 8.7 | 7.8 | 8.4 | 11.5° | 8.7% | 1.400 | 2.12/2.00/2.17 | X |
+| postExposure 0.85 | 11.2 | 10.5 | 10.6 | 11.8° | 8.2% | 1.385 | 1.82/1.88/1.78 | O |
+| postExposure 1.10 | 14.3 | 12.9 | 13.7 | 11.7° | 7.6% | 1.357 | 1.71/1.90/1.82 | O |
+| postExposure 1.35 | 17.6 | 16.1 | 16.9 | 11.5° | 7.1% | 1.333 | 1.65/1.77/1.71 | O |
+| postExposure 1.60 | 21.5 | 19.6 | 20.4 | 11.5° | 6.7% | 1.308 | 1.62/1.69/1.65 | X |
+| postExposure 1.85 | 25.8 | 23.8 | 24.5 | 10.6° | 6.2% | 1.294 | 1.60/1.60/1.57 | X |
+| postExposure 2.10 | 30.6 | 28.5 | 29.7 | 9.9° | 5.8% | 1.281 | 1.57/1.54/1.50 | O |
+| postExposure 2.35 | 36.3 | 33.8 | 35.3 | 11.3° | 5.3% | 1.269 | 1.57/1.57/1.53 | X |
+| postExposure 2.60 | 42.5 | 39.6 | 41.0 | 14.4° | 4.9% | 1.259 | 1.54/1.53/1.50 | O |
+| postExposure 2.85 | 50.0 | 46.1 | 47.6 | 13.8° | 4.6% | 1.250 | 1.46/1.54/1.50 | O |
+| postExposure 3.00 | 56.0 | 51.4 | 53.9 | 13.7° | 4.4% | 1.237 | 1.43/1.51/1.45 | O |
+
+**선택: postExposure 1.85.** 목표에 가장 가까운 값이다 — 화면 중앙값 25.8(≥ 23.7) · 샌드박스 바닥 23.8(Gamma B 21.9의 +9 %, ±15 % 안, FLOOR-HI 50 미만) · 캐릭터 샷 바닥 24.5(−12 %) · 웅덩이 색상각 10.6°(350~12° 안) · 날 채도 6.2 %(≤ 15 %) · 바닥 R/G 1.57~1.60(1.5~1.8). 가장자리는 부드럽게 어두워질 뿐 검게 먹히지 않아 vignette은 조정하지 않았다. 웅덩이 색상각이 12° 안이라 Tonemapping Neutral 비교 컷은 만들지 않았다.
+
+**기준을 못 맞춘 두 항목(8비트 어두운 값의 양자화 근처):**
+- 갑옷 R/G 1.294(기준 ≤ 1.25): 가슴 중앙값 RGB (27, 21, 19).
+- 바닥 `B ≤ G`: 오른쪽 위 패치 한 곳이 (33, 21, 22)로 B가 G보다 1단계 높다.
+- colorFilter를 한 번 조정해 봤다((0.98, 1.0, 0.95), 단일 시도): 갑옷 R/G 1.18·B≤G는 맞았지만 웅덩이 색상각 17.5°(>12°)·바닥 R/G 1.41~1.48(<1.5)로 더 나빠져 **채택하지 않고 기존 colorFilter (1, .98, .97)를 유지**했다. 항목당 한 번 규칙에 따라 colorFilter는 더 조정하지 않았다. 남은 선택지: ① 두 항목을 8비트 양자화 오차로 보고 수용 ② colorFilter를 더 약하게(예 (.99, 1, .97)) ③ 광원값(Sun·Trilight) 조정 — 맵 총괄 결정.
+
+**반영:** `Rm0EngineSetup.PostExposure = 1.85f` 상수로 올리고 `ApplyLight`로 `GlobalVolume_Hell.asset`의 postExposure만 −0.15 → 1.85로 바꿨다(다른 값·씬·렌더러 변화 없음, 씬 해시 동일).
+
+### 톤매핑 Neutral (디자인총괄 2차 PASS 조건, 2026-10-28)
+
+- 디자인총괄이 postExposure 1.85를 2차 PASS로 확정하면서 **톤매핑을 Neutral로 바꾸는 조건**을 붙였다. `Rm0EngineSetup.CreateVolumeProfile`의 `TonemappingMode.ACES` → `TonemappingMode.Neutral`, `GlobalVolume_Hell.asset`의 Tonemapping `mode` m_Value 2(ACES) → 1(Neutral). 다른 값(노출 1.85·대비 10·채도 −8·colorFilter·블룸·비네트)은 그대로다.
+- 위의 "웅덩이 색상각이 12° 안이라 Neutral 비교 컷은 만들지 않았다"는 ACES 기준의 판정이었다. Neutral은 색상 곡선이 달라 **웅덩이 색상각(350~12°)·화면 중앙값(≥ 23.7)·바닥 R/G(1.5~1.8)·날 채도(≤ 15 %)를 다시 재야 한다.** 재측정은 맵 총괄이 하며, 캡처는 같은 구도(`Rm0LightCapture` 스윕 하니스)로 낸다.
+- 확인 상태: 값 변경만 했고 **재측정·플레이어 빌드 미확인**.
+
+### Neutral 톤매핑 노출 재선택 (맵 총괄 규칙, 2026-10-28)
+
+톤매핑을 Neutral로 바꾸면 같은 노출이 ACES보다 밝아진다(1.85에서 샌드박스 바닥 휘도 32.0, Gamma B 21.9의 +46 %). 맵 총괄이 노출 1.3 / 1.4 / 1.5 / 1.6을 같은 하니스(`Rm0LightCapture.Sweep`, 에디터 batch + GPU RenderTexture, `measure_L.py`)로 재측정하도록 했고, 선택 규칙은 ① 샌드박스 바닥 18.6~25.2(Gamma B 21.9042 ±15 % = 18.619~25.190) ② 화면 중앙값 ≥ 23.7 ③ 색 기준 전부 유지(웅덩이 350~12°, 날 채도 ≤ 15 %, 갑옷 R/G ≤ 1.25, 바닥 R/G 1.5~1.8, B ≤ G)를 모두 만족하는 값 중 가장 밝은 것이다.
+
+| postExposure (Neutral) | 화면 중앙값 | 바닥 휘도 | 캐릭터 샷 바닥 | 웅덩이 색상각 | 날 채도 | 갑옷 R/G | 바닥 R/G | B ≤ G |
+|---|---|---|---|---|---|---|---|---|
+| 1.30 | 27.3 | **25.189** | 31.5 | 8.7° | 9.9 % | 1.235 | 1.72/1.76/1.73 | O |
+| 1.40 | 28.5 | 26.3 (밖) | 32.7 | 9.0° | 9.2 % | 1.240 | 1.73/1.77/1.70 | O |
+| 1.50 | 29.8 | 27.5 (밖) | 33.9 | 8.8° | 9.1 % | 1.240 | 1.68/1.78/1.71 | O |
+| 1.60 | 31.2 | 28.7 (밖) | 35.8 | 9.1° | 9.0 % | 1.238 | 1.69/1.75/1.72 | O |
+| 1.85 (참고) | 34.7 | 32.0 (밖) | 39.3 | 10.1° | 9.3 % | 1.234 | 1.72/1.74/1.71 | O |
+
+**선택: postExposure 1.30.** 규칙 ①②③을 모두 만족하는 격자 값은 1.30 하나다. 바닥 휘도 25.189는 상한 25.190에 0.001 차이로 붙은 값이라 여유가 없다(여유가 필요하면 1.25 등 더 낮은 값을 한 번 더 재면 된다). `Rm0EngineSetup.PostExposure = 1.3f`, `GlobalVolume_Hell.asset`의 postExposure 1.85 → 1.3 (톤매핑 Neutral은 앞 절). 캡처 하니스의 `CinemachineBrain.ManualUpdate` 오류(`UpdateMethod`가 ManualUpdate가 아닐 때 호출)는 캡처 직전에 `UpdateMethod = ManualUpdate`로 두어 없앴다(씬은 저장하지 않음, 새 스윕 로그 0건).

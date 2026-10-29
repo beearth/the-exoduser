@@ -56,9 +56,9 @@ namespace Exoduser.UnityPort {
   }
   void DrawSkillSlots(NativeHudDockLayout dock,float width,float height,Simulation simulation){
    if(TracePointerEvents&&(Event.current.type==EventType.MouseDown||Event.current.type==EventType.MouseUp)){
-    int eventHit=-1,screenHit=-1;Vector2 guiPoint=Event.current.mousePosition;float scale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);Vector2 screenPoint=new Vector2(Input.mousePosition.x/scale,(Screen.height-Input.mousePosition.y)/scale);
+    int eventHit=-1,screenHit=-1;Vector2 guiPoint=Event.current.mousePosition;float scale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);Vector2 screenPoint=new Vector2(ExoInput.MousePosition.x/scale,(Screen.height-ExoInput.MousePosition.y)/scale);
     for(int i=0;i<13;i++){var r=SkillSlotRect(dock,i);if(eventHit<0&&r.Contains(guiPoint))eventHit=i;if(screenHit<0&&r.Contains(screenPoint))screenHit=i;}
-    Debug.Log("[HUD POINTER TRACE] type="+Event.current.type+" button="+Event.current.button+" eventPos="+guiPoint+" inputScreen="+Input.mousePosition+" screenAsGui="+screenPoint+" eventSlot="+eventHit+" screenSlot="+screenHit+" screen="+Screen.width+"x"+Screen.height+" matrix="+GUI.matrix+" enabled="+GUI.enabled+" depth="+GUI.depth);
+    Debug.Log("[HUD POINTER TRACE] type="+Event.current.type+" button="+Event.current.button+" eventPos="+guiPoint+" inputScreen="+ExoInput.MousePosition+" screenAsGui="+screenPoint+" eventSlot="+eventHit+" screenSlot="+screenHit+" screen="+Screen.width+"x"+Screen.height+" matrix="+GUI.matrix+" enabled="+GUI.enabled+" depth="+GUI.depth);
    }
    for(int i=0;i<13;i++){
     var rect=SkillSlotRect(dock,i);

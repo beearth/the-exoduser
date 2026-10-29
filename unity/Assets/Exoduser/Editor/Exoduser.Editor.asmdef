@@ -1,0 +1,30 @@
+{
+    "name": "Exoduser.Editor",
+    "rootNamespace": "",
+    "references": [
+        "Exoduser.Core",
+        "Exoduser.Runtime",
+        "Unity.InputSystem",
+        "Unity.RenderPipelines.Universal.Runtime",
+        "Unity.RenderPipelines.Universal.Editor",
+        "Unity.RenderPipelines.Core.Runtime",
+        "Unity.RenderPipelines.Core.Editor",
+        "Unity.Cinemachine",
+        "Unity.AI.Navigation",
+        "Unity.ProBuilder",
+        "Unity.VisualEffectGraph.Runtime",
+        "Unity.VisualEffectGraph.Editor",
+        "Unity.Timeline"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

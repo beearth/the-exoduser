@@ -140,6 +140,7 @@ namespace Exoduser.UnityPort.Core
             double oldX = enemy.X, oldY = enemy.Y, oldR = enemy.Radius;
             bool guardBefore = Stage.GateGuardKilled;
             var head = EnemyHurt.DeathHead(c, w, ang, true, opts, body, out var exit);
+            if (head != null && head._sinkDruid == true && Druid != null) Druid.ClearSinkHazards(); // LT-8: _druidSinkStart clears hazards at the death event, before the next world tick
             DeathFromWeb(enemy, w);
             if (exit == DeathExit.Continue)
             {
@@ -177,6 +178,7 @@ namespace Exoduser.UnityPort.Core
             if (P._freezeSlow.HasValue && !double.IsNaN(P._freezeSlow.Value)) PlayerFreezeSlow = (float)P._freezeSlow.Value;
             foreach (var o in touched) if (o != w) DeathOtherFromWeb(o);
             foreach (var o in c.Ens) if (o != w && o._twPartnerDead == w) DeathOtherFromWeb(o);
+            if (!enemy.Alive) Feedback.Enqueue(new FeedbackEvent { Kind = enemy.IsBoss ? FeedbackKind.BossDeath : FeedbackKind.EnemyDeath, Tick = TickCount, X = enemy.X, Y = enemy.Y, Etype = enemy.Etype, Size = enemy.Radius, IsBoss = enemy.IsBoss });   // RM-1 sound: notification only
             if (exit == DeathExit.BossRevive)
             {
                 double deaths = enemy.Deaths;

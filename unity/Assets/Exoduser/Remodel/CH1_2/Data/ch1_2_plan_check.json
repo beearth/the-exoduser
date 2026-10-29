@@ -1,0 +1,356 @@
+{
+ "landmarks": [
+  {
+   "id": "LM1",
+   "tiles": 169,
+   "onWalk": 0,
+   "tallInCamSide": 0,
+   "tall": false,
+   "camSideTiles": 169
+  },
+  {
+   "id": "LM2",
+   "tiles": 53,
+   "onWalk": 0,
+   "tallInCamSide": 0,
+   "tall": false,
+   "camSideTiles": 53
+  },
+  {
+   "id": "LM3",
+   "tiles": 98,
+   "onWalk": 0,
+   "tallInCamSide": 0,
+   "tall": true,
+   "camSideTiles": 0
+  },
+  {
+   "id": "LM4",
+   "tiles": 459,
+   "onWalk": 0,
+   "tallInCamSide": 0,
+   "tall": true,
+   "camSideTiles": 0
+  },
+  {
+   "id": "LM5",
+   "tiles": 81,
+   "onWalk": 0,
+   "tallInCamSide": 0,
+   "tall": true,
+   "camSideTiles": 0
+  }
+ ],
+ "toxic": [
+  {
+   "id": "TX1",
+   "tiles": 312,
+   "onWalk": 0,
+   "tallInCamSide": 0
+  },
+  {
+   "id": "TX2",
+   "tiles": 65,
+   "onWalk": 0,
+   "tallInCamSide": 0
+  },
+  {
+   "id": "TX3",
+   "tiles": 69,
+   "onWalk": 0,
+   "tallInCamSide": 0
+  },
+  {
+   "id": "TX4",
+   "tiles": 13,
+   "onWalk": 0,
+   "tallInCamSide": 0
+  },
+  {
+   "id": "DRY",
+   "tiles": 286,
+   "onWalk": 0,
+   "tallInCamSide": 0
+  }
+ ],
+ "pools": [
+  {
+   "id": "Pool_Hell_1",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_2",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_3",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_4",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_5",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_6",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_7",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_8",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_9",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_10",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_11",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_12",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_13",
+   "onWalk": true
+  },
+  {
+   "id": "Pool_Hell_14",
+   "onWalk": true
+  }
+ ],
+ "cuts": [
+  {
+   "id": "START",
+   "c": [
+    100,
+    185
+   ],
+   "hellPools": [
+    "Pool_Hell_1",
+    "Pool_Hell_2"
+   ],
+   "toxicLights": [],
+   "shafts": 1
+  },
+  {
+   "id": "REP-A 서쪽 분지·막힌 물길",
+   "c": [
+    62,
+    160
+   ],
+   "hellPools": [
+    "Pool_Hell_3",
+    "Pool_Hell_4"
+   ],
+   "toxicLights": [
+    "TX1",
+    "TX4"
+   ],
+   "shafts": 0
+  },
+  {
+   "id": "REP-B 분지 북서·쌍둥이 고목",
+   "c": [
+    82,
+    68
+   ],
+   "hellPools": [
+    "Pool_Hell_8",
+    "Pool_Hell_9"
+   ],
+   "toxicLights": [],
+   "shafts": 1
+  },
+  {
+   "id": "REP-C 갈림길 목·혀 웅덩이",
+   "c": [
+    116,
+    106
+   ],
+   "hellPools": [
+    "Pool_Hell_7",
+    "Pool_Hell_14"
+   ],
+   "toxicLights": [
+    "TX2"
+   ],
+   "shafts": 0
+  }
+ ],
+ "fills": [
+  {
+   "id": "F1",
+   "tiles": 1,
+   "onWalk": 0,
+   "tallInCamSide": 0,
+   "camSideTiles": 1
+  },
+  {
+   "id": "F2",
+   "tiles": 21,
+   "onWalk": 0,
+   "tallInCamSide": 0,
+   "camSideTiles": 21
+  },
+  {
+   "id": "F3",
+   "tiles": 17,
+   "onWalk": 0,
+   "tallInCamSide": 0,
+   "camSideTiles": 17
+  },
+  {
+   "id": "F4",
+   "tiles": 9,
+   "onWalk": 0,
+   "tallInCamSide": 0,
+   "camSideTiles": 9
+  },
+  {
+   "id": "F5",
+   "tiles": 16,
+   "onWalk": 0,
+   "tallInCamSide": 0,
+   "camSideTiles": 16
+  },
+  {
+   "id": "F6",
+   "tiles": 36,
+   "onWalk": 0,
+   "tallInCamSide": 0,
+   "camSideTiles": 36
+  }
+ ],
+ "islands": [
+  {
+   "bbox": [
+    74,
+    75,
+    92,
+    85
+   ],
+   "tiles": 169,
+   "covered": 169
+  },
+  {
+   "bbox": [
+    149,
+    89,
+    153,
+    93
+   ],
+   "tiles": 21,
+   "covered": 21
+  },
+  {
+   "bbox": [
+    46,
+    121,
+    52,
+    123
+   ],
+   "tiles": 17,
+   "covered": 17
+  },
+  {
+   "bbox": [
+    98,
+    28,
+    102,
+    31
+   ],
+   "tiles": 16,
+   "covered": 16
+  },
+  {
+   "bbox": [
+    47,
+    149,
+    51,
+    153
+   ],
+   "tiles": 13,
+   "covered": 13
+  },
+  {
+   "bbox": [
+    90,
+    13,
+    92,
+    15
+   ],
+   "tiles": 9,
+   "covered": 9
+  },
+  {
+   "bbox": [
+    110,
+    13,
+    112,
+    15
+   ],
+   "tiles": 9,
+   "covered": 9
+  },
+  {
+   "bbox": [
+    90,
+    23,
+    92,
+    25
+   ],
+   "tiles": 9,
+   "covered": 9
+  },
+  {
+   "bbox": [
+    110,
+    23,
+    112,
+    25
+   ],
+   "tiles": 9,
+   "covered": 9
+  },
+  {
+   "bbox": [
+    150,
+    135,
+    152,
+    137
+   ],
+   "tiles": 9,
+   "covered": 9
+  },
+  {
+   "bbox": [
+    106,
+    133,
+    106,
+    133
+   ],
+   "tiles": 1,
+   "covered": 1
+  }
+ ],
+ "zones": {
+  "blocked": 25835,
+  "cameraSideLow": 5748,
+  "tallAllowed": 20087,
+  "rule": "막힘 칸 중 북쪽 16칸·좌우 5칸 안에 걷기 칸이 있으면 카메라 쪽(높이 0.9u 이하), RM-1 Rm1SliceBuilder.SouthOfWalk와 같은 규칙"
+ },
+ "ok": true
+}

@@ -1,0 +1,61 @@
+{
+ "node": {
+  "m_SGVersion": 0,
+  "m_Type": "UnityEditor.ShaderGraph.NormalVectorNode",
+  "m_ObjectId": "5908847d4ec34efeb0cb6731a8d61d24",
+  "m_Group": {
+   "m_Id": ""
+  },
+  "m_Name": "Normal Vector",
+  "m_DrawState": {
+   "m_Expanded": true,
+   "m_Position": {
+    "serializedVersion": "2",
+    "x": -4642.66650390625,
+    "y": 62.66655731201172,
+    "width": 207.3330078125,
+    "height": 134.6666259765625
+   }
+  },
+  "m_Slots": [
+   {
+    "m_Id": "011d860198de43a2bf134119d3261554"
+   }
+  ],
+  "synonyms": [
+   "surface direction"
+  ],
+  "m_Precision": 0,
+  "m_PreviewExpanded": false,
+  "m_DismissedVersion": 0,
+  "m_PreviewMode": 2,
+  "m_CustomColors": {
+   "m_SerializableColors": []
+  },
+  "m_Space": 0
+ },
+ "slots": [
+  {
+   "m_SGVersion": 0,
+   "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
+   "m_ObjectId": "011d860198de43a2bf134119d3261554",
+   "m_Id": 0,
+   "m_DisplayName": "Out",
+   "m_SlotType": 1,
+   "m_Hidden": false,
+   "m_ShaderOutputName": "Out",
+   "m_StageCapability": 3,
+   "m_Value": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 1.0
+   },
+   "m_DefaultValue": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+   },
+   "m_Labels": []
+  }
+ ]
+}

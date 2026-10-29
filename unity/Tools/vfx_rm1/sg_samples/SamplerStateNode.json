@@ -1,0 +1,51 @@
+{
+ "node": {
+  "m_SGVersion": 0,
+  "m_Type": "UnityEditor.ShaderGraph.SamplerStateNode",
+  "m_ObjectId": "91d344b522074b8e9715fe092d51f9ec",
+  "m_Group": {
+   "m_Id": "aa0b93297a204b59b2d1cdf9fbd64a58"
+  },
+  "m_Name": "Sampler State",
+  "m_DrawState": {
+   "m_Expanded": true,
+   "m_Position": {
+    "serializedVersion": "2",
+    "x": -1474.0001220703125,
+    "y": 464.0000305175781,
+    "width": 147.333251953125,
+    "height": 138.66665649414062
+   }
+  },
+  "m_Slots": [
+   {
+    "m_Id": "d32fbed1866e4d52a88197e2feeeaf24"
+   }
+  ],
+  "synonyms": [],
+  "m_Precision": 0,
+  "m_PreviewExpanded": true,
+  "m_DismissedVersion": 0,
+  "m_PreviewMode": 0,
+  "m_CustomColors": {
+   "m_SerializableColors": []
+  },
+  "m_filter": 0,
+  "m_wrap": 1,
+  "m_aniso": 0
+ },
+ "slots": [
+  {
+   "m_SGVersion": 0,
+   "m_Type": "UnityEditor.ShaderGraph.SamplerStateMaterialSlot",
+   "m_ObjectId": "d32fbed1866e4d52a88197e2feeeaf24",
+   "m_Id": 0,
+   "m_DisplayName": "Out",
+   "m_SlotType": 1,
+   "m_Hidden": false,
+   "m_ShaderOutputName": "Out",
+   "m_StageCapability": 3,
+   "m_BareResource": false
+  }
+ ]
+}

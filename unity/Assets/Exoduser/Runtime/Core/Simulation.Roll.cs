@@ -64,6 +64,7 @@ namespace Exoduser.UnityPort.Core
             if (Player.State != "sDraw" && Player.State != "kiGather" && !Player.KiChargeActive) { Player.State = "bladeDash"; Player.StateTicks = RollRules.Frames; }
             Player.Facing = (float)ang;
             Player.Iframes = Math.Max(Player.Iframes, RollRules.Iframes);
+            Feedback.Enqueue(new FeedbackEvent { Kind = FeedbackKind.Roll, Tick = TickCount, X = Player.X, Y = Player.Y, Angle = (float)ang });   // RM-1 sound
         }
 
         // _tickBladeDash(sp = 1): ease-out 175 px over 18 frames (_rollStepDist), stops on a wall
@@ -85,6 +86,7 @@ namespace Exoduser.UnityPort.Core
             if (Player.State == "bladeDash") Player.State = preRollState == "sBlock" && combatQHeld && Player.Mana > 0 ? "sBlock" : "idle";
             if (Player.State == "sBlock") Player.StateTicks = 999;
             RollMoveT = 0; RollActive = false; preRollState = null;
+            Feedback.Enqueue(new FeedbackEvent { Kind = FeedbackKind.Roll, Step = 1, Tick = TickCount, X = Player.X, Y = Player.Y });   // RM-1 sound: web _finishRoll plays footstep2 here (start event = Step 0)
         }
 
         // the web addTxt floaters of the player combat states go through the same text channel as the revive floaters

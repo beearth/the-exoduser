@@ -16,6 +16,7 @@ namespace Exoduser.UnityPort.Core
         {
             d.AtkParryable = (Remodel ? Set.Parryable : Parryable).Contains(mv.Id);
             int tele = I(mv.Tele * Ph(phase).TeleM) + extraDelay;
+            if (!d.RmFire) { RmTell(mv, d, dist); d.PrevMove = d.CurMove; d.CurMove = mv.Id; }   // RM-1 sound: one telegraph = one tell sound, on the frame the telegraph starts
             double px = host.PX, py = host.PY;
             if (Remodel)
             {
@@ -86,6 +87,7 @@ namespace Exoduser.UnityPort.Core
                     }
                 case "groundFissure":
                     {
+                        host.Sound("druid_fissure", "#4 groundFissure: the crack runs", d.X, d.Y);
                         if (!Remodel) d.Facing = Atan2(py - d.Y, px - d.X);
                         int gfPh = d.BossPhase; int n = Remodel ? 1 : gfPh >= 3 ? 3 : gfPh >= 1 ? 2 : 1;   // remodel: one straight line
                         for (int fi = 0; fi < n; fi++)
@@ -103,10 +105,11 @@ namespace Exoduser.UnityPort.Core
                             double gap = Remodel ? d.RmGap : R() * Math.PI * 2;   // remodel: drawn when the move started (one ring, ti == 0)
                             TideWaves.Add(new TideWave { X = d.X, Y = d.Y, Rad = 20 + ti * 8, MaxR = 1750, Spd = Remodel ? 15 * DruidRemodelData.TideSpeedMul : 15, T = 0, MaxT = 120, GapAng = gap, GapSize = .8, W = 60, Dmg = I(d.Atk * 1.5), HitT = 0, Druid = e.IsBoss && DruidStage, Serial = TeleSerial });
                         }
-                        RmText(d.X, d.Y - 30, "🌊 파동!", "#a9cc63", 50); Recover(d, 35); break;
+                        RmText(d.X, d.Y - 30, "🌊 파동!", "#a9cc63", 50); host.Sound("druid_tide", "#10 tideWave ring rises", d.X, d.Y); AttackVoice(d, "tideWave"); Recover(d, 35); break;
                     }
                 case "seekerMines":
                     {
+                        host.Sound("druid_pod", "#11 seekerMines: spore pods burst", d.X, d.Y);
                         int n = Remodel ? 3 : 3 + Math.Min(d.BossPhase, 2);   // remodel: three mines (spec #11)
                         for (int mi = 0; mi < n; mi++)
                         {
@@ -223,7 +226,7 @@ namespace Exoduser.UnityPort.Core
                     break;
                 case "bossChargeWind":
                     if (!DruidStage || d.St2 > (Remodel ? Set.AimFixTicks : 18)) d.Facing = Face(d, Atan2(py - d.Y, px - d.X));
-                    if (d.St2 <= 0) { d.S = "bossCharge"; d.St2 = Remodel ? DruidRemodelData.ChargeTicks : 50; d.EchDx = Cos(d.Facing); d.EchDy = Sin(d.Facing); }
+                    if (d.St2 <= 0) { AttackVoice(d, "charge"); host.Sound("druid_drag", "#3 charge: roots drag over the ground", d.X, d.Y); d.S = "bossCharge"; d.St2 = Remodel ? DruidRemodelData.ChargeTicks : 50; d.EchDx = Cos(d.Facing); d.EchDy = Sin(d.Facing); }
                     break;
                 case "bossCharge":
                     {
@@ -273,6 +276,7 @@ namespace Exoduser.UnityPort.Core
                 case "bossSummonWind":
                     if (d.St2 <= 0)
                     {
+                        host.Sound("druid_summon", "#9 summon: the corpses stir", d.X, d.Y);
                         int cnt = 3 + I(stage * .5);
                         if (Remodel) { cnt = 2 + I(R() * 2); cnt = Math.Min(cnt, Set.SummonMax - AliveMinions(d)); }   // spec #9: 2-3 mobs, at most 3 alive at once
                         int[] etypes = { 0, 2, 3, 3, 3 };
@@ -400,7 +404,7 @@ namespace Exoduser.UnityPort.Core
                         BurrowTarget(d, d.DiveTx, d.DiveTy, out bux, out buy);   // RB1-3: he comes up at a root pillar (the marker itself without pillars)
                         d.X = d.TeleOx + (bux - d.TeleOx) * up; d.Y = d.TeleOy + (buy - d.TeleOy) * up;
                         d.Iframes = Math.Max(d.Iframes, 5);
-                        if (d.St2 <= 0) { d.X = bux; d.Y = buy; host.Fx("druidDust", d.X, d.Y, d.R * 1.3); d.S = "bossDruidErupt"; d.St2 = Remodel ? DruidRemodelData.BurrowEruptWarn + DruidRemodelData.BurrowEruptPost : 40; d.EruptMax = d.St2; d.EruptHit = false; RmText(d.X, d.Y - 40, "🌿💥", "#66dd22", 60); host.Shake(12); }
+                        if (d.St2 <= 0) { d.X = bux; d.Y = buy; host.Fx("druidDust", d.X, d.Y, d.R * 1.3); host.Sound("druid_erupt", "#7 burrowStrike erupt", d.X, d.Y); d.S = "bossDruidErupt"; d.St2 = Remodel ? DruidRemodelData.BurrowEruptWarn + DruidRemodelData.BurrowEruptPost : 40; d.EruptMax = d.St2; d.EruptHit = false; RmText(d.X, d.Y - 40, "🌿💥", "#66dd22", 60); host.Shake(12); }
                         break;
                     }
                 case "bossDruidErupt":
@@ -441,7 +445,7 @@ namespace Exoduser.UnityPort.Core
                             d.SlashIdx++;
                             if (d.SlashIdx < d.SlashCnt)
                             {
-                                if (Remodel) { d.S = "bossSlashWind"; d.St2 = DruidRemodelData.SlashLinkTele; }   // hits 2 and 3 get their own 24 f telegraph (the aim still turns 2 deg per tick until 12 f before)
+                                if (Remodel) { host.Sound(d.SlashIdx == 1 ? "tell_parry" : "tell_boss", "#1 slashCombo hit " + (d.SlashIdx + 1) + " telegraph", d.X, d.Y); d.S = "bossSlashWind"; d.St2 = DruidRemodelData.SlashLinkTele; }   // hits 2 and 3 get their own 24 f telegraph (the aim still turns 2 deg per tick until 12 f before)
                                 else { d.Facing = Atan2(py - d.Y, px - d.X); d.S = "bossSlash"; d.St2 = 8 + I(R() * 4); }
                                 d.WeaponAng = -.8; host.Shake(3);
                             }
@@ -454,7 +458,7 @@ namespace Exoduser.UnityPort.Core
                         d.Facing = Face(d, Atan2(py - d.Y, px - d.X)); d.WeaponAng = -1.2 + Sin(d.St2 * .15) * .2;
                         double smx = Cos(d.Facing) * 1.5, smy = Sin(d.Facing) * 1.5;
                         if (!Remodel && Dst(px, py, d.X, d.Y) > 50 && host.CanMove(d.X + smx, d.Y + smy, d.R)) { d.X += smx; d.Y += smy; }   // remodel: the boss stands while he winds up
-                        if (d.St2 <= 0) { d.S = "bossSlam"; d.St2 = Remodel ? DruidRemodelData.SlamActive : 8; }
+                        if (d.St2 <= 0) { AttackVoice(d, "slam"); d.S = "bossSlam"; d.St2 = Remodel ? DruidRemodelData.SlamActive : 8; }
                         break;
                     }
                 case "bossSlam":

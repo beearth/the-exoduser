@@ -73,6 +73,7 @@ namespace Exoduser.UnityPort.Core
             if (!Finite(moveX) || !Finite(moveY) || !Finite(aimX) || !Finite(aimY)) throw new ArgumentException("Non-finite input");
             if (Stage.Enabled && Stage.LoadPhase > 0) { moveX = 0; moveY = 0; attack = false; pickup = false; }   // C07: the boss-arena load screen freezes the player (web 43568, 61395)
             TickCount++;
+            if (hitSfxCd > 0) hitSfxCd--; TickScheduledSounds();   // RM-1 sound cooldowns (web _hitSfxCd / _critSfxCd)
             LastHitDamage = 0;
             if (ComboTicks > 0) { ComboTicks--; if (ComboTicks <= 0) Combo = 0; }
             TickDeathFrameStart();   // O-1: _sfxFrameReset (_critSfxCd)
@@ -232,12 +233,16 @@ namespace Exoduser.UnityPort.Core
             var opts = new EnemyHurtOpts { dot = dot ? (bool?)true : null, shieldHit = shieldHit ? (bool?)true : null, poiseHit = poiseHit ? (bool?)true : null, kbMult = knockbackMultiplier, noImpact = true, maxDist = arrow ? (double?)1 : null, iceBlade = iceBlade ? (bool?)true : null, blueBean = blueBean ? (bool?)true : null, parryBlueBean = parryBlueBean ? (bool?)true : null, magic = magicHit ? (bool?)true : null, poiseMult = poiseMult };
             if (live) { enemy.Hp = ToIntClamped(web.hp); enemy.Shield = (float)web.eShield; }
             double hpBefore = enemy.Hp, shieldBefore = enemy.Shield;
+            hurtSfxEnemy = enemy;   // RM-1 sound: the hurt context reports hit / crit sounds for this enemy
             var head = EnemyHurt.Head(context, web, damage, angle, true, opts, atkEl);
+            hitSfxCd = (int)context.HitSfxCd; hurtSfxEnemy = null;
             if (head == null) { critSfxCd = context.CritSfxCd; SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player); return; }   // revive iframes swallowed it / parry lesson
+            hurtSfxEnemy = enemy;
             var body = EnemyHurt.Body(context, web, angle, true, opts, head); critSfxCd = context.CritSfxCd;
+            hitSfxCd = (int)context.HitSfxCd; hurtSfxEnemy = null;
             SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player);
             int total = (int)((shieldBefore - enemy.Shield) + (hpBefore - enemy.Hp));
-            LastHitDamage = total; TotalDamage += total;
+            LastHitDamage = total; TotalDamage += total; BossPainCheck(enemy);
             if (enemy.Hp <= 0) OnEnemyZeroHp(enemy, context, web, angle, opts, body);
             if (live) { web.alive = enemy.Alive; web.hp = enemy.Hp; }
         }
@@ -367,7 +372,7 @@ namespace Exoduser.UnityPort.Core
             // Ranged/protected projectile classes are not silently replaced by
             // melee or invented bullets. Preserve their source charge countdown.
             if (enemy.ProjectileChargeTicks > 0) enemy.ProjectileChargeTicks--;
-            else { enemy.ProjectileTicks--; if (enemy.ProjectileTicks <= 0 && d < 400) { enemy.ProjectileTicks = 240; enemy.ProjectileChargeTicks = 60; } }
+            else { enemy.ProjectileTicks--; if (enemy.ProjectileTicks <= 0 && d < 400) { enemy.ProjectileTicks = 240; enemy.ProjectileChargeTicks = 60; QueueLogicalSound("tell_ranged", "ranged 60f attack ring", enemy.X, enemy.Y); } }
         }
 
         private void MoveEnemyFallback(EnemyState enemy, float speedMultiplier = 1)

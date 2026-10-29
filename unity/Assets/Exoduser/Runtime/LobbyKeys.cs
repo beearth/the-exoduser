@@ -19,18 +19,18 @@ namespace Exoduser.UnityPort
 
         public static bool Down(KeyCode key)
         {
-            if (Input.GetKeyDown(key)) return true;
+            if (ExoInput.KeyDown(key)) return true;
             int frame; if (!pressed.TryGetValue(key, out frame)) return false;
             pressed.Remove(key); return Time.frameCount - frame <= 2;
         }
 
-        public static bool Held(KeyCode key) { return Input.GetKey(key) || held.Contains(key); }
+        public static bool Held(KeyCode key) { return ExoInput.Key(key) || held.Contains(key); }
 
         public static bool AnyDown
         {
             get
             {
-                if (Input.anyKeyDown) return true;
+                if (ExoInput.AnyKeyDown) return true;
                 if (!anyPending) return false;
                 anyPending = false; bool fresh = Time.frameCount - anyFrame <= 2; pressed.Clear(); return fresh;   // one physical press is one frame: the key-down the splash consumed is not seen again by the next page
             }

@@ -29,9 +29,9 @@ namespace Exoduser.UnityPort {
   }
   bool HandleA15DirectKeys(){
    if(pauseMenu.KeyCaptureActive)return false;
-   if(Input.GetKeyDown(KeyCode.F6)){pauseMenu.Navigation.SelectTab(3);pauseMenu.BeginEmbeddedKeyCaptureForQa("up",false);Debug.Log("A15_QA_REARM up");return true;}
-   if(Input.GetKeyDown(KeyCode.F7)){pauseMenu.Navigation.SelectTab(2);pauseMenu.Navigation.PointAt(4);Debug.Log("A15_QA_AUDIO sfx="+settings.SfxPercent+" up="+NativeKeyBindInput.Bindings.Primary("up"));return true;}
-   if(Input.GetKeyDown(KeyCode.F8)){a15QaLocaleIndex=(a15QaLocaleIndex+1)%A15QaLocales.Length;lobby.SetLanguage(A15QaLocales[a15QaLocaleIndex]);Debug.Log("A15_QA_LOCALE code="+lobby.Language+" title="+NativeA15SettingsLabels.Get("settings.title",lobby.Language,"설정","Settings")+" keyUp="+NativeA15SettingsLabels.GetKeyByKo("위로 이동",lobby.Language,lobby.Language=="ko"?"위로 이동":"Move Up"));return true;}
+   if(ExoInput.KeyDown(KeyCode.F6)){pauseMenu.Navigation.SelectTab(3);pauseMenu.BeginEmbeddedKeyCaptureForQa("up",false);Debug.Log("A15_QA_REARM up");return true;}
+   if(ExoInput.KeyDown(KeyCode.F7)){pauseMenu.Navigation.SelectTab(2);pauseMenu.Navigation.PointAt(4);Debug.Log("A15_QA_AUDIO sfx="+settings.SfxPercent+" up="+NativeKeyBindInput.Bindings.Primary("up"));return true;}
+   if(ExoInput.KeyDown(KeyCode.F8)){a15QaLocaleIndex=(a15QaLocaleIndex+1)%A15QaLocales.Length;lobby.SetLanguage(A15QaLocales[a15QaLocaleIndex]);Debug.Log("A15_QA_LOCALE code="+lobby.Language+" title="+NativeA15SettingsLabels.Get("settings.title",lobby.Language,"설정","Settings")+" keyUp="+NativeA15SettingsLabels.GetKeyByKo("위로 이동",lobby.Language,lobby.Language=="ko"?"위로 이동":"Move Up"));return true;}
    return false;
   }
   void PauseTestKey(PauseKey key){pauseMenu.Navigation.ObserveReleased(false);ApplyPauseCommand(pauseMenu.HandleKey(key,Simulation.Player.Hp<=0,Screen.fullScreen));}

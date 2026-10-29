@@ -12,7 +12,7 @@ namespace Exoduser.UnityPort
   static readonly KeyCode[] menuKeys={KeyCode.Escape,KeyCode.Return,KeyCode.KeypadEnter,KeyCode.Space,KeyCode.Tab,KeyCode.UpArrow,KeyCode.DownArrow,KeyCode.LeftArrow,KeyCode.RightArrow,KeyCode.Home,KeyCode.End};
   public PauseMenuCommand PollKeys(bool dead,bool fullscreen)
   {
-   bool held=Input.GetMouseButton(0);foreach(var key in menuKeys)held|=Input.GetKey(key);navigation.ObserveReleased(held);
+   bool held=ExoInput.Mouse(0);foreach(var key in menuKeys)held|=ExoInput.Key(key);navigation.ObserveReleased(held);
    if(!navigation.Focused||navigation.WaitingForRelease)return PauseMenuCommand.None;
    if(openSelect>=0){A15PopupKeys();return PauseMenuCommand.None;}
    // OnGUI may finish capture before Update polls this same OS key. Keep it out of menu navigation.
@@ -20,22 +20,22 @@ namespace Exoduser.UnityPort
    // The embedded binding list receives KeyDown in OnGUI before menu navigation may use it.
    if(page==PausePage.Settings&&tab==3&&keyList!=null&&keyList.Listening)return PauseMenuCommand.None;
    // A16: the key-binding page owns the keyboard: while a key is waiting nothing else reacts, otherwise ESC closes the page.
-   if(keyPage){if(keyList!=null&&keyList.Listening)return PauseMenuCommand.None;if(Input.GetKeyDown(KeyCode.Escape))keyPage=false;return PauseMenuCommand.None;}
+   if(keyPage){if(keyList!=null&&keyList.Listening)return PauseMenuCommand.None;if(ExoInput.KeyDown(KeyCode.Escape))keyPage=false;return PauseMenuCommand.None;}
    // Web togglePanel: another window's key switches straight to that window (menu items move with the arrow keys only).
-   if(Input.GetKeyDown(KeyCode.Tab)){
+   if(ExoInput.KeyDown(KeyCode.Tab)){
     if(page==PausePage.Settings)return HandleKey(PauseKey.Next,dead,fullscreen);
     NativePanelTabBar.Request("invPanel");return PauseMenuCommand.None;
    }
-   if(Input.GetKeyDown(KeyCode.K)){NativePanelTabBar.Request("skillPanel");return PauseMenuCommand.None;}
+   if(ExoInput.KeyDown(KeyCode.K)){NativePanelTabBar.Request("skillPanel");return PauseMenuCommand.None;}
    PauseKey? input=null;
-   if(Input.GetKeyDown(KeyCode.Escape))input=PauseKey.Back;
-   else if(Input.GetKeyDown(KeyCode.UpArrow))input=PauseKey.Up;
-   else if(Input.GetKeyDown(KeyCode.DownArrow))input=PauseKey.Down;
-   else if(Input.GetKeyDown(KeyCode.LeftArrow))input=PauseKey.Left;
-   else if(Input.GetKeyDown(KeyCode.RightArrow))input=PauseKey.Right;
-   else if(Input.GetKeyDown(KeyCode.Home))input=PauseKey.Home;
-   else if(Input.GetKeyDown(KeyCode.End))input=PauseKey.End;
-   else if(Input.GetKeyDown(KeyCode.Return)||Input.GetKeyDown(KeyCode.KeypadEnter)||Input.GetKeyDown(KeyCode.Space))input=PauseKey.Accept;
+   if(ExoInput.KeyDown(KeyCode.Escape))input=PauseKey.Back;
+   else if(ExoInput.KeyDown(KeyCode.UpArrow))input=PauseKey.Up;
+   else if(ExoInput.KeyDown(KeyCode.DownArrow))input=PauseKey.Down;
+   else if(ExoInput.KeyDown(KeyCode.LeftArrow))input=PauseKey.Left;
+   else if(ExoInput.KeyDown(KeyCode.RightArrow))input=PauseKey.Right;
+   else if(ExoInput.KeyDown(KeyCode.Home))input=PauseKey.Home;
+   else if(ExoInput.KeyDown(KeyCode.End))input=PauseKey.End;
+   else if(ExoInput.KeyDown(KeyCode.Return)||ExoInput.KeyDown(KeyCode.KeypadEnter)||ExoInput.KeyDown(KeyCode.Space))input=PauseKey.Accept;
    return input.HasValue?HandleKey(input.Value,dead,fullscreen):PauseMenuCommand.None;
   }
   public PauseMenuCommand HandleKey(PauseKey input,bool dead,bool fullscreen)

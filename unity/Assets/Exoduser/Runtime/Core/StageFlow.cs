@@ -143,7 +143,7 @@ namespace Exoduser.UnityPort.Core
                     if (LoadT < 2)
                     {
                         var b = FindBoss();
-                        if (b != null) { b.Stunned = 90; b.ReviveIframes = 110; Raise(StageEventKind.BossIntro, b.X, b.Y); }
+                        if (b != null) { b.Stunned = 90; b.ReviveIframes = 110; Raise(StageEventKind.BossIntro, b.X, b.Y); sim.ScheduleDruidIntroSounds(); }
                     }
                     if (LoadT >= 100) { LoadPhase = 0; LoadT = 0; LoadFade = 0; }
                 }

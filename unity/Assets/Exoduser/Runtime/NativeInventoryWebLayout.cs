@@ -155,13 +155,17 @@ namespace Exoduser.UnityPort {
             float s=575f/h;                                  // design px per source px (contain inside 395x575)
             const int padX=40,padT=40,padB=56;
             int cw=w+2*padX,ch=h+padT+padB;
-            var rt=RenderTexture.GetTemporary(w,h,0,RenderTextureFormat.ARGB32,RenderTextureReadWrite.Default);
-            var prev=RenderTexture.active;
-            Graphics.Blit(knight,rt);RenderTexture.active=rt;
-            var tmp=new Texture2D(w,h,TextureFormat.RGBA32,false);
-            tmp.ReadPixels(new Rect(0,0,w,h),0,0,false);
-            RenderTexture.active=prev;RenderTexture.ReleaseTemporary(rt);
-            var src=tmp.GetPixels32();UnityEngine.Object.Destroy(tmp);
+            Color32[] src;
+            if(NativeCpuPixels.UseCpu(knight))src=knight.GetPixels32();   // web: no synchronous RenderTexture readback; desktop keeps the Blit path below
+            else{
+                var rt=RenderTexture.GetTemporary(w,h,0,RenderTextureFormat.ARGB32,RenderTextureReadWrite.Default);
+                var prev=RenderTexture.active;
+                Graphics.Blit(knight,rt);RenderTexture.active=rt;
+                var tmp=new Texture2D(w,h,TextureFormat.RGBA32,false);
+                tmp.ReadPixels(new Rect(0,0,w,h),0,0,false);
+                RenderTexture.active=prev;RenderTexture.ReleaseTemporary(rt);
+                src=tmp.GetPixels32();UnityEngine.Object.Destroy(tmp);
+            }
             // Half resolution alpha for the shadow blur (sigma 6 css px).
             int hw=(cw+1)/2,hh=(ch+1)/2;var half=new float[hw*hh];
             for(int y=0;y<ch;y++){

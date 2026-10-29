@@ -8,8 +8,8 @@ namespace Exoduser.UnityPort {
  public sealed partial class NativeGame {
   bool inventoryKeysSmoke,traceInventoryKeys;string inventoryTraceState="";
   void TraceInventoryKeys(){
-   string state="app="+Application.isFocused+" host="+gameFocused+" menu="+menu+" open="+inventory.Open+" nav="+inventory.Navigation.Focused+" fence="+inventory.Navigation.WaitingForRelease+" mouse="+Input.GetMouseButton(0)+","+Input.GetMouseButton(1)+" test="+inventoryKeysSmoke+" hp="+Simulation.Player.Hp;
-   if(state!=inventoryTraceState||Input.anyKeyDown){string held="";foreach(KeyCode key in new[]{KeyCode.Return,KeyCode.Tab,KeyCode.Escape,KeyCode.C,KeyCode.G,KeyCode.LeftArrow,KeyCode.RightArrow})if(Input.GetKey(key))held+=key+",";Debug.Log("INVENTORY_KEYS "+state+" held="+held);inventoryTraceState=state;}
+   string state="app="+Application.isFocused+" host="+gameFocused+" menu="+menu+" open="+inventory.Open+" nav="+inventory.Navigation.Focused+" fence="+inventory.Navigation.WaitingForRelease+" mouse="+ExoInput.Mouse(0)+","+ExoInput.Mouse(1)+" test="+inventoryKeysSmoke+" hp="+Simulation.Player.Hp;
+   if(state!=inventoryTraceState||ExoInput.AnyKeyDown){string held="";foreach(KeyCode key in new[]{KeyCode.Return,KeyCode.Tab,KeyCode.Escape,KeyCode.C,KeyCode.G,KeyCode.LeftArrow,KeyCode.RightArrow})if(ExoInput.Key(key))held+=key+",";Debug.Log("INVENTORY_KEYS "+state+" held="+held);inventoryTraceState=state;}
   }
   void InventoryTestKey(InventoryKey key){inventory.Navigation.ObserveReleased(false);if(inventory.HandleKey(key,Simulation.Player.Level))SetInventory(false);}
   IEnumerator InventoryKeysSmoke(){

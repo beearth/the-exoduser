@@ -10,8 +10,22 @@ class Program
  static void Check(bool ok,string name){Rows.Add(new {name,passed=ok});if(!ok){failed++;Console.WriteLine("FAIL "+name);}}
  static bool Near(double x,double y,double eps=.0001){return Math.Abs(x-y)<=eps;}
  static Simulation Make(){var s=new Simulation(new SimulationConfig{EnemyAiEnabled=false});s.Random01=()=>.5;return s;}
+ static int SinkHazardChecks()
+ {
+  var s=new Simulation(new SimulationConfig{StageIndex=0,EnemyAiEnabled=false});s.Random01=()=>.5;s.AttachDruidBoss();
+  var boss=new EnemyState{IsBoss=true,Etype=0,Hp=1,MaxHp=1,Attack=1,BaseAttack=1,Level=1,Radius=22,X=100,Y=100};s.Enemies.Add(boss);
+  var poison=new BossProjectile{DruidPoison=true};var reflected=new BossProjectile{DruidPoison=true,Friendly=true};var other=new BossProjectile();
+  s.Druid.Projectiles.Add(poison);s.Druid.Projectiles.Add(reflected);s.Druid.Projectiles.Add(other);
+  s.Druid.LavaPools.Add(new LavaPool());s.Druid.Orbs.Add(new DruidOrb());
+  s.HarnessKill(boss);
+  Check(s.DruidFled&&boss.SinkDruid,"LT-8 stage-0 druid death starts sink");
+  Check(!s.Druid.Projectiles.Contains(poison)&&s.Druid.Projectiles.Contains(reflected)&&s.Druid.Projectiles.Contains(other),"LT-8 sink removes only hostile druid poison projectiles");
+  Check(s.Druid.LavaPools.Count==0&&s.Druid.Orbs.Count==0,"LT-8 sink clears lava pools and orbs immediately");
+  Console.WriteLine("SINK_RESULT "+Rows.Count+" checks / "+failed+" failures");return failed==0?0:2;
+ }
  static int Main(string[] args)
  {
+  if(args.Length>0&&args[0]=="--sink-only")return SinkHazardChecks();
   var s=Make();var e=s.SpawnNormalEnemy(40,0);
   Check(e.Hp==875&&Near(e.Shield,875)&&e.Attack==31,"source lv1 etype0 HP875 shield875 attack31");
   Check(Near(e.Speed,.645)&&Near(e.Radius,22),"source .5 random movement/radius");

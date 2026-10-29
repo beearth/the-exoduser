@@ -16,7 +16,7 @@ namespace Exoduser.UnityPort
         public int LoadedChunks {get {return chunks.Count;}}
         public int RenderedEnemyCount {get {return enemies.Count;}}
         Camera view; SpriteRenderer playerView; Font font; KiSlashView kiView;NativeBoltView boltView;
-        KiImpactView impacts; NativeSkillView skillView; NativeFeedbackAudio sound; bool smokeActive;
+        KiImpactView impacts; NativeSkillView skillView; NativeFeedbackAudio sound; NativeGameMusic music; NativeAmbientSources ambient; bool smokeActive;
         NativeHud hud;bool hudSmoke;NativeInventory inventory;bool inventorySmoke,inventoryWasRunning;
         NativePauseMenu pauseMenu;NativeSettingsState settings;NativeSkills skills;NativeStatPanel stats;bool skillsWasRunning,statsWasRunning,skillInputFence;
         NativeLobby lobby;bool lobbySmoke,lobbyControlsSmoke;int worldMask;
@@ -68,6 +68,9 @@ namespace Exoduser.UnityPort
             impacts=new KiImpactView(transform,f=>SpriteFor("Art/vfx/ki_slash_hit_silver_sheet",f%2*627,f/2*627,627,627,new Vector2(.5f,.5f)));
             skillView=new NativeSkillView(transform);   // B03 skill effects
             sound=new NativeFeedbackAudio(transform,view);
+            music=new NativeGameMusic(transform,sound.Bus);ambient=new NativeAmbientSources(transform,sound.Bus);   // RM-1 sound: BGM bus, forest bed, 3D environment sources
+            sound.ListenerAt=ambient.ListenerAt=()=>Simulation!=null?Point(Simulation.Player.X,Simulation.Player.Y):Vector3.zero;   // the AudioListener sits on the player
+            sound.OnScreen=world=>{var v=view.WorldToViewportPoint(world);return v.x>-.05f&&v.x<1.05f&&v.y>-.05f&&v.y<1.05f;};
             ResetRun();
             worldMask=view.cullingMask;lobby=gameObject.AddComponent<NativeLobby>();
             lobby.Initialize(EnterFromLobby);lobby.HasCombatSave=HasCombatSave;lobby.CharacterDeleted=DeleteCombatSave;lobby.StartupGameplayPrepare=PrepareStartupGameplay;lobby.CinematicCompleted=MarkCinematicSeen;
@@ -156,8 +159,8 @@ namespace Exoduser.UnityPort
             UpdateSettingsPersistence();UpdateCombatSave();
             lobby.AutomatedInput=lobbySmoke&&!introKeysSmoke;
             if(lobbySmoke&&!lobbyControlsSmoke)lobby.SetPlaybackFocus(true); // Natural-playback fixture only; controls fixture owns focus transitions.
-            if(lobby!=null&&lobby.IsBlocking){if(firstPractice!=null)EndFirstPractice(true);Running=false;view.cullingMask=lobby.StartupWorldVisible?worldMask:0;return;}
-            view.cullingMask=worldMask;
+            if(lobby!=null&&lobby.IsBlocking){if(firstPractice!=null)EndFirstPractice(true);Running=false;view.cullingMask=lobby.StartupWorldVisible?worldMask:0;UpdateGameMusic();return;}
+            view.cullingMask=worldMask;UpdateGameMusic();
             // Web _showHudAreaTitle (game.html 60243, called from the HUD slow path when the stage changes): Unity has no stage-change event and only stage 0, so the title is shown once per run when play starts (never inside --unity-* verification fixtures).
             if(!areaTitleShown&&areaTitleAllowed){areaTitleShown=true;areaTitle.Show(0,lobby.Language!="ko");}
             // Web addExp (game.html 43226-43242): the level-up overlay is raised by Simulation.LevelledUp (OnLevelledUp); this only keeps the seen level in step for state resets.
@@ -174,7 +177,7 @@ namespace Exoduser.UnityPort
             if(HandlePanelHotkeys())return;
             // Web stat window: ESC blurs the search box first, then closes; K/TAB switch straight to skills/inventory (not while typing).
             if(stats.Open){
-                if(Input.GetKeyDown(KeyCode.Escape)){if(stats.TextInputActive)stats.BlurSearch();else SetStats(false);}
+                if(ExoInput.KeyDown(KeyCode.Escape)){if(stats.TextInputActive)stats.BlurSearch();else SetStats(false);}
                 else if(!stats.TextInputActive&&NativeKeyBindInput.Down("skill"))OnPanelRequested("skillPanel");
                 else if(!stats.TextInputActive&&NativeKeyBindInput.Down("inventory"))OnPanelRequested("invPanel");
                 else stats.HandleKeys(()=>SetStats(false));
@@ -186,7 +189,7 @@ namespace Exoduser.UnityPort
             }
             // Web forge window (#forge): G toggles it in HandlePanelHotkeys; ESC closes (_panelBack); K / TAB switch directly to that window.
             if(forge.Open){
-                if(Input.GetKeyDown(KeyCode.Escape)){SetForge(false);return;}
+                if(ExoInput.KeyDown(KeyCode.Escape)){SetForge(false);return;}
                 if(NativeKeyBindInput.Down("skill")){OnPanelRequested("skillPanel");return;}
                 if(NativeKeyBindInput.Down("inventory")){OnPanelRequested("invPanel");return;}
                 UpdateViews();return;
@@ -194,8 +197,8 @@ namespace Exoduser.UnityPort
             // Web togglePanel: pressing another window's key while a window is open switches directly to that window.
             if(inventory.Open&&!inventoryKeysSmoke&&NativeKeyBindInput.Down("skill")){OnPanelRequested("skillPanel");return;}
             if(inventory.Open){if(!inventoryKeysSmoke&&inventory.PollKeys(Simulation.Player.Level))SetInventory(false);UpdateViews();return;}
-            if(skillInputFence&&!Input.GetMouseButton(0))skillInputFence=false;
-            if(Input.GetKeyDown(KeyCode.Escape)||NativeKeyBindInput.Down("settings")){
+            if(skillInputFence&&!ExoInput.Mouse(0))skillInputFence=false;
+            if(ExoInput.KeyDown(KeyCode.Escape)||NativeKeyBindInput.Down("settings")){
                 if(skills.Open){SetSkills(false);return;}
                 if(inventory.Open)SetInventory(false);
                 else {menu=true;pauseMenu.OpenSettingsDirect();Running=false;}
@@ -205,7 +208,7 @@ namespace Exoduser.UnityPort
             if(skills.Open){skills.HandleKeys(()=>SetSkills(false),EquipSelectedSkill);return;}
             if(!menu&&!inventory.Open&&Simulation.Player.Hp>0&&NativeKeyBindInput.Down("skill")){SetSkills(true);return;}
             if(!menu&&Simulation.Player.Hp>0&&NativeKeyBindInput.Down("inventory"))SetInventory(!inventory.Open);
-            if(!menu&&!inventory.Open&&Running&&Simulation.Player.Hp>0&&Input.GetKeyDown(KeyCode.T))ToggleCrossbow();   // web keydown KeyT (not repeat), G.on && !G.paused
+            if(!menu&&!inventory.Open&&Running&&Simulation.Player.Hp>0&&ExoInput.KeyDown(KeyCode.T))ToggleCrossbow();   // web keydown KeyT (not repeat), G.on && !G.paused
             if(!menu&&!inventory.Open&&!Simulation.PlayerCombatWired&&(NativeKeyBindInput.Down("parry")||NativeKeyBindInput.Down("shield")))Toast("패링·방패 기능은 아직 사용할 수 없습니다");
             UpdateViews();
             if(smokeActive)sound?.Probe();
@@ -216,8 +219,8 @@ namespace Exoduser.UnityPort
             var p=Simulation.Player;var aim=AimWorld();
             float x=(NativeKeyBindInput.Held("right")?1:0)-(NativeKeyBindInput.Held("left")?1:0);
             float y=(NativeKeyBindInput.Held("down")?1:0)-(NativeKeyBindInput.Held("up")?1:0);
-            if(firstPractice!=null){x+=(Input.GetKey(KeyCode.RightArrow)?1:0)-(Input.GetKey(KeyCode.LeftArrow)?1:0);y+=(Input.GetKey(KeyCode.DownArrow)?1:0)-(Input.GetKey(KeyCode.UpArrow)?1:0);}
-            bool attack=SkillUiState.AttackHeld(NativeKeyBindInput.Held("weapon"),skillInputFence,NativeHud.PointerOverSlots(Input.mousePosition)||PointerOverStageClear(),p.KiChargeActive);
+            if(firstPractice!=null){x+=(ExoInput.Key(KeyCode.RightArrow)?1:0)-(ExoInput.Key(KeyCode.LeftArrow)?1:0);y+=(ExoInput.Key(KeyCode.DownArrow)?1:0)-(ExoInput.Key(KeyCode.UpArrow)?1:0);}
+            bool attack=SkillUiState.AttackHeld(NativeKeyBindInput.Held("weapon"),skillInputFence,NativeHud.PointerOverSlots(ExoInput.MousePosition)||PointerOverStageClear(),p.KiChargeActive);
             Simulation.Stage.Enabled=firstPractice==null;
             if(firstPractice==null){   // the first-practice tick sets these once per tick itself (the combat / roll inputs detect edges against the previous call)
             Simulation.SetPlayerCombatInput(NativeKeyBindInput.Held("parry"),NativeKeyBindInput.Held("shield"),NativeKeyBindInput.Held("charge"));
@@ -230,8 +233,26 @@ namespace Exoduser.UnityPort
         }
         public void StepInput(float x,float y,float aimX,float aimY,bool attack,bool pickup)
         {Simulation.Stage.Enabled=firstPractice==null;Simulation.Tick(x,y,aimX,aimY,attack,pickup);StageFlowPump();DispatchFeedback();UpdateViews();}
+        // RM-1 sound A1/A2: web BGM.play(key) -- hell<N> while exploring, boss in the arena, victory after the boss, death when the player is down; silent in the lobby
+        string DesiredMusic()
+        {
+            if(Simulation==null||menu||lobby!=null&&lobby.IsBlocking)return "";
+            if(PlayerDown)return "death";
+            var flow=Simulation.Stage;
+            if(flow.InArena)return flow.BossAlive?"boss":"victory";
+            return "hell"+((int)EnemyTables.SiToHell[Math.Min(Simulation.Config.StageIndex,EnemyTables.SiToHell.Length-1)]+1);
+        }
+        void UpdateGameMusic()
+        {
+            if(music==null)return;
+            string key=DesiredMusic();
+            if(key.Length>0&&music.Wanted.Length==0)lobby?.StopStageMusic();   // the lobby's startup stage music hands over to the game BGM
+            music.Sync(key);music.Tick(Time.unscaledDeltaTime);ambient.Tick(Time.unscaledDeltaTime);
+        }
+        // sounds the host owes the Core's fight timeline: P1 entry (staff taps, root pillars rise), spaced in ticks after the boss intro
         void DispatchFeedback()
         {
+            sound.CurrentTick=Simulation.TickCount;
             while(Simulation.Feedback.Count>0){var e=Simulation.Feedback.Dequeue();impacts.Handle(e);sound.Handle(e);}
             sound.Flush();
         }
@@ -356,8 +377,8 @@ namespace Exoduser.UnityPort
             string bow=NativeKeyBindInput.Bindings.Primary("bow"),roll=NativeKeyBindInput.Bindings.Primary("roll");
             if(menu||skills.Open||inventory.Open||stats.Open||forge.Open){Simulation.SetSkillInput(false,false,false,false,false,false,false,false);Simulation.SetMagicInput(false);return;}   // the panels use the digit keys themselves
             Simulation.SetMagicInput(NativeKeyBindInput.Held("beam"));   // B03b: E-slot malice orb (web 'beam' action, default mouse2)
-            Simulation.SetSkillInput(Input.GetKey(KeyCode.Alpha1),Input.GetKey(KeyCode.Alpha2),Input.GetKey(KeyCode.Alpha3),Input.GetKey(KeyCode.Alpha4),
-                NativeKeyBindInput.Held("bow"),Input.GetKey(KeyCode.F),Input.GetKey(KeyCode.LeftControl),Input.GetKey(KeyCode.Z),bow!=null&&bow==roll);
+            Simulation.SetSkillInput(ExoInput.Key(KeyCode.Alpha1),ExoInput.Key(KeyCode.Alpha2),ExoInput.Key(KeyCode.Alpha3),ExoInput.Key(KeyCode.Alpha4),
+                NativeKeyBindInput.Held("bow"),ExoInput.Key(KeyCode.F),ExoInput.Key(KeyCode.LeftControl),ExoInput.Key(KeyCode.Z),bow!=null&&bow==roll);
         }
         // Web: _xbowEquipped toggle + showPH('석궁 자동발사 ON/OFF'). OPT.xbowAuto persistence belongs to the settings owner and is not wired here.
         public void ToggleCrossbow(){Toast(Simulation.ToggleCrossbowAuto()?"석궁 자동발사 ON":"석궁 자동발사 OFF");}
@@ -494,7 +515,7 @@ namespace Exoduser.UnityPort
             if(Simulation==null||Simulation.Player.Hp<=0||firstPractice!=null||stats.TextInputActive||pauseMenu.KeyCaptureActive)return false;   // A16: a key waiting in the binding page must not open windows
             if(NativeKeyBindInput.Down("forge")){OnPanelRequested("forge");return true;}
             if(NativeKeyBindInput.Down("stats")){OnPanelRequested("statPanel");return true;}
-            if(Input.GetKeyDown(KeyCode.F10)){
+            if(ExoInput.KeyDown(KeyCode.F10)){
                 if(menu){if(gameFocused){menu=false;skillInputFence=true;Running=true;}}   // togglePanel('settings') while settings is open closes it
                 else OnPanelRequested("settings");
                 return true;
@@ -504,8 +525,8 @@ namespace Exoduser.UnityPort
         // Death screen 'retry' button = the pause menu's Restart command.
         void RetryFromDeath(){if(gameFocused){if(RetryInsideArena())return;ResetRun();skillInputFence=true;menu=false;Running=true;}}
         void EquipSelectedSkill(){if(SkillUiState.TryEquipKiSlash(Simulation,skills.SelectedSlot))basicWeaponMode=false;}
-        void SetSfxPercent(int percent){settings.SetSfxPercent(percent);sound.SetVolumePercent(settings.SfxPercent);lobby?.SetStartupSfxPercent(settings.SfxPercent);QueueSettingsSave();}
-        void SetBgmPercent(int percent){settings.SetBgmPercent(percent);lobby.SetBgmPercent(settings.BgmPercent);QueueSettingsSave();}
+        void SetSfxPercent(int percent){settings.SetSfxPercent(percent);sound.SetVolumePercent(settings.SfxPercent);music.SetPercents(settings.SfxPercent,settings.BgmPercent);lobby?.SetStartupSfxPercent(settings.SfxPercent);QueueSettingsSave();}
+        void SetBgmPercent(int percent){settings.SetBgmPercent(percent);lobby.SetBgmPercent(settings.BgmPercent);music.SetPercents(settings.SfxPercent,settings.BgmPercent);QueueSettingsSave();}
         void SetFrameCap(int cap){if(settings.TrySetFrameCap(cap)){ApplyFrameCap(cap);QueueSettingsSave();}}
         void ApplyFrameCap(int cap){QualitySettings.vSyncCount=0;Application.targetFrameRate=cap==0?-1:cap;}
         void ApplyPauseCommand(PauseMenuCommand command){
@@ -608,6 +629,6 @@ namespace Exoduser.UnityPort
         public static string Argument(string key){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,key);return i>=0&&i+1<a.Length?a[i+1]:"";}
         [Serializable] sealed class SmokeReceipt{public bool moved,webViewUsed,charged,released;public float initialX,finalX,maximumCharge;public int originalMapChunks,loadedChunks,enemyActors,maximumProjectiles,kills,totalDamage;public FeedbackAudioReceipt feedbackAudio;public ImpactReceipt feedbackVisual;}
         [Serializable] sealed class HudSmokeReceipt{public string scope,activeSkill,iconResource;public bool iconDrawn;public HudPixelProbe[] cases;}
-        void OnDestroy(){NativePanelTabBar.Requested-=OnPanelRequested;kiView?.Dispose();boltView?.Dispose();impacts?.Dispose();skillView?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();if(Instance==this)Instance=null;}
+        void OnDestroy(){NativePanelTabBar.Requested-=OnPanelRequested;kiView?.Dispose();boltView?.Dispose();impacts?.Dispose();skillView?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();music?.Dispose();ambient?.Dispose();if(Instance==this)Instance=null;}
     }
 }

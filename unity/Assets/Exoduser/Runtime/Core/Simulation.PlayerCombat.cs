@@ -196,6 +196,8 @@ namespace Exoduser.UnityPort.Core
             });
             Player.Iframes = (float)r.Iframes; Player.Hp = (float)r.Hp; Player.Stamina = (float)r.St; Player.Mana = (float)r.Mp; Player.Poise = (float)r.Poise; HarpGauge = r.HarpGauge; AddMalice((int)r.Mats - Materials); SetRage(r.Rage);
             ParryCount++; LastParryHp = r.Hp;
+            // RM-1 sound: web doParry plays q_parry for a Q parry (_forceQ || sBlock || peaceShield || _sbParryT>0) and sword_parry + sword_back otherwise (Step 1 = Q parry)
+            Feedback.Enqueue(new FeedbackEvent { Kind = FeedbackKind.Parry, Step = (qParry || Player.State == "sBlock" || Player.State == "peaceShield" || SbParryT > 0) ? 1 : 0, Tick = TickCount, X = Player.X, Y = Player.Y });
             RaisePlayerText(Player.X, Player.Y - 42, "PARRY!", "#ffdd00", 45);   // web '⚡PARRY!' (addTxt 45f)
         }
 

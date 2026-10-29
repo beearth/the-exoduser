@@ -158,7 +158,7 @@ namespace Exoduser.UnityPort
    if(keyList==null)keyList=new NativeKeyBindList(NativeKeyBindInput.Bindings);
    keyList.English=English;keyList.LocaleCode=LocaleCode;
    if(SettingsPersistenceProblem){keyList.SaveNote="키 설정을 저장하지 못했습니다 · 이번 실행의 값은 유지됩니다";keyList.SaveNoteEn="Key bindings could not be saved · current session values remain";}
-   else if(SettingsPersistenceEnabled){keyList.SaveNote="키 설정 변경은 이 Mac에 자동 저장됩니다";keyList.SaveNoteEn="Key binding changes are saved on this Mac";}
+   else if(SettingsPersistenceEnabled){keyList.SaveNote="키 설정 변경은 "+NativePlatformLabel.Ko+"에 자동 저장됩니다";keyList.SaveNoteEn="Key binding changes are saved on "+NativePlatformLabel.En+"";}
    else{keyList.SaveNote="검수 실행의 키 설정은 저장하지 않습니다";keyList.SaveNoteEn="Key bindings are not saved during this QA run";}
    float max=Mathf.Max(0,keyList.ContentHeight+28-content.height);
    if(Event.current.type==EventType.ScrollWheel&&content.Contains(Event.current.mousePosition)){keyScroll=Mathf.Clamp(keyScroll+Event.current.delta.y*40f,0,max);Event.current.Use();}
@@ -185,8 +185,8 @@ namespace Exoduser.UnityPort
    if(SettingsHostApplyFailed)return T("화면 변경을 적용하지 못했습니다. 현재 화면을 유지합니다.","Display change failed. The current display is retained.");
    if(SettingsPersistenceProblem)return T("설정 저장에 문제가 있습니다. 이번 실행의 값은 유지됩니다.","Settings could not be saved. Current session values are retained.");
    if(!SettingsPersistenceEnabled)return T("검수 실행의 설정은 저장하지 않습니다.","Settings are not saved during this QA run.");
-   if(SettingsPersistenceRecovered)return T("설정 백업을 복원했습니다. 변경은 이 Mac에 저장됩니다.","Settings backup restored. Changes are saved on this Mac.");
-   return T("설정은 이 Mac에 저장되어 다음 실행에도 적용됩니다.","Settings are saved on this Mac for the next launch.");
+   if(SettingsPersistenceRecovered)return T("설정 백업을 복원했습니다. 변경은 "+NativePlatformLabel.Ko+"에 저장됩니다.","Settings backup restored. Changes are saved on "+NativePlatformLabel.En+".");
+   return T("설정은 "+NativePlatformLabel.Ko+"에 저장되어 다음 실행에도 적용됩니다.","Settings are saved on "+NativePlatformLabel.En+" for the next launch.");
   }
   void DrawDisplay(bool fullscreen)
   {
@@ -241,7 +241,7 @@ namespace Exoduser.UnityPort
    float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
    keyList.English=English;keyList.LocaleCode=LocaleCode;
    if(SettingsPersistenceProblem){keyList.SaveNote="키 설정을 저장하지 못했습니다 · 이번 실행의 값은 유지됩니다";keyList.SaveNoteEn="Key bindings could not be saved · current session values remain";}
-   else if(SettingsPersistenceEnabled){keyList.SaveNote="키 설정 변경은 이 Mac에 자동 저장됩니다";keyList.SaveNoteEn="Key binding changes are saved on this Mac";}
+   else if(SettingsPersistenceEnabled){keyList.SaveNote="키 설정 변경은 "+NativePlatformLabel.Ko+"에 자동 저장됩니다";keyList.SaveNoteEn="Key binding changes are saved on "+NativePlatformLabel.En+"";}
    else{keyList.SaveNote="검수 실행의 키 설정은 저장하지 않습니다";keyList.SaveNoteEn="Key bindings are not saved during this QA run";}
    var pane=new Rect(45,60,1830,880);
    Fill(pane,new Color(.04f,.04f,.045f,.97f));Border(pane,new Color(.48f,.36f,.23f,.6f));

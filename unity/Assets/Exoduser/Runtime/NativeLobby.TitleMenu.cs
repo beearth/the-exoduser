@@ -54,7 +54,7 @@ namespace Exoduser.UnityPort
             for (int i = 0; i < titleRows.Count; i++) titleRows[i].Sel = Mathf.MoveTowards(titleRows[i].Sel, i == titleSel ? 1 : 0, dt / (i == titleSel ? .25f : .18f));   // background .25 s, colour .18 s
             if (AutomatedInput) return;
             if (Time.frameCount == inputFence) return;
-            float stick = 0; try { stick = Input.GetAxisRaw("Vertical"); } catch (ArgumentException) { }
+            float stick = ExoInput.VerticalRaw();
             bool keyUp = LobbyKeys.Down(KeyCode.UpArrow) || LobbyKeys.Down(KeyCode.W), keyDown = LobbyKeys.Down(KeyCode.DownArrow) || LobbyKeys.Down(KeyCode.S);
             bool keyboardHeld = LobbyKeys.Held(KeyCode.UpArrow) || LobbyKeys.Held(KeyCode.DownArrow) || LobbyKeys.Held(KeyCode.W) || LobbyKeys.Held(KeyCode.S);
             bool padUp = !keyboardHeld && stick > .5f && padStickPrev <= .5f, padDown = !keyboardHeld && stick < -.5f && padStickPrev >= -.5f;   // the legacy Vertical axis is + up
