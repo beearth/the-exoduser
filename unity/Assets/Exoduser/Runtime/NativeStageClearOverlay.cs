@@ -9,7 +9,7 @@ namespace Exoduser.UnityPort {
  // 누락 통계의 내부 구현 문구와 초기 원본 재현은 명시적 --unity-ui-diagnostics에서만 그린다.
  public sealed class NativeStageClearOverlay {
   public enum Kind {Zone,HellEscape,DemoEnd}
-  [Serializable] public struct Input {
+  public struct Input {
    public Kind kind;public int hellIndex;public int? stageIndex;   // stageIndex: lets the build flavor turn the last stage's zone clear into the demo-end panel (web 42003)
    public int? clearSeconds,totalSpawned,stageKills,regionsCleared,deaths,dmgTaken,comboMax,dmgDealt,crits,parries,potions,maxHit,dashCount,dashMeters,walkMeters;
    public bool? bossKilled;
@@ -25,7 +25,7 @@ namespace Exoduser.UnityPort {
   [Serializable] sealed class Defs {public Variant zone,hell,demo;public Labels labels;public Stats stats;public string[] badges;public Formula formula;public Timing timing;public Tok[] atlas;}
   const string NotPorted="미이식";
   readonly Defs defs;readonly Dictionary<string,Tok> tok=new Dictionary<string,Tok>();
-  Texture2D atlas,radial,diamond;Font nanum,sansSemi,cinzelDec;bool ready;readonly Dictionary<long,GUIStyle> styles=new Dictionary<long,GUIStyle>();
+  Texture2D atlas,radial,diamond;Font nanum,sansSemi,cinzelDec;bool ready;readonly Dictionary<(Font,int,bool),GUIStyle> styles=new Dictionary<(Font,int,bool),GUIStyle>();
   Input input;bool active;float start;public float? ForcedAge;public Action OnNext;
   public bool Active{get{return active;}}
   public Input CurrentInput{get{return input;}}
@@ -101,7 +101,7 @@ namespace Exoduser.UnityPort {
    if(!gradients.TryGetValue(key,out var t)){t=Gradient(a,b,horizontal);gradients[key]=t;}GUI.DrawTexture(r,t);
   }
   GUIStyle Style(Font f,int size,bool bold){
-   long key=((long)f.GetInstanceID()<<16)|((long)size<<1)|(bold?1L:0L);
+   var key=(f,size,bold);
    if(!styles.TryGetValue(key,out var s)){s=new GUIStyle(GUI.skin.label){font=f,fontSize=size,fontStyle=bold?FontStyle.Bold:FontStyle.Normal,alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};styles[key]=s;}
    return s;
   }
@@ -142,7 +142,7 @@ namespace Exoduser.UnityPort {
   readonly Dictionary<string,LocaleRow> localeRows=new Dictionary<string,LocaleRow>();Font japanese,latin;
   public bool AuditText;public int MissingGlyphs{get;private set;}public readonly List<string> VisibleTexts=new List<string>();
   string EffectiveLocale{get{string c=Exoduser.UnityPort.Core.LobbyLanguage.Normalize(LocaleCode);return c=="ar"?"en":c;}}
-  LocaleRow Labels(){
+  LocaleRow CurrentLabels(){
    if(localeRows.Count==0){var asset=Resources.Load<TextAsset>("Data/stageclear_labels");if(asset!=null){var b=JsonUtility.FromJson<LocaleBundle>(asset.text);foreach(var e in b.entries)localeRows[e.code]=e;}}
    LocaleRow row;if(localeRows.TryGetValue(EffectiveLocale,out row))return row;if(localeRows.TryGetValue("en",out row))return row;
    return new LocaleRow{title="ZONE CLEARED",hellTitle="HELL ESCAPED",sub="Prepare, then continue",time="Clear time",kills="Kills",reward="Reward",sp="Stat points",regions="Regions cleared",potions="Potions",deaths="Deaths",score="Score",next="Return to lobby",demoSub="You conquered the Rotten Forest.",demoNext="End demo"};
@@ -168,7 +168,7 @@ namespace Exoduser.UnityPort {
      float ds=Mathf.Min(1f,Mathf.Min(Screen.width/1280f,Screen.height/900f));GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*ds)/2,Screen.height-1080*ds,0),Quaternion.identity,Vector3.one*ds);Layout(a);GUI.matrix=Matrix4x4.identity;
      Paint(new Rect(16,16,Mathf.Max(1,Screen.width-32),32),"진단 모드 · 원본 점수/통계 입력 상태",BodyFont(),16,C(255,190,120),TextAnchor.MiddleLeft);return;
     }
-    var m=PresentationModel();var l=NativeStageClearPresentation.Arrange(Screen.width,Screen.height,m);LastLayout=l;var labels=Labels();var body=BodyFont();
+    var m=PresentationModel();var l=NativeStageClearPresentation.Arrange(Screen.width,Screen.height,m);LastLayout=l;var labels=CurrentLabels();var body=BodyFont();
     Fill(new Rect(0,0,Screen.width,Screen.height),new Color(0,0,0,.68f*a));
     GUI.matrix=Matrix4x4.TRS(new Vector3(l.Panel.X,l.Panel.Y,0),Quaternion.identity,Vector3.one*l.Scale);
     GUI.color=new Color(1,1,1,a);Grad(new Rect(0,0,560,l.LogicalHeight),C(20,14,11,.96f),C(8,6,5,.98f));GUI.color=Color.white;

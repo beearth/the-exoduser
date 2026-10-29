@@ -136,3 +136,5 @@ clear.ForcedAge                                          // 검증용
 순수 표시 모델·경계·공유 입력 좌표·실측0/null 구분·보상·부분점수 금지·중복버튼 검사 **30/30 통과**, `unity/Tools/stageclear-presentation-tests`. 증거 `I:/EXODUSER-Storage/unity-visual/stageclear-20261030/표시-데이터-버튼검사.json`.
 
 새 표적 캡처 `--unity-stageclear-presentation-capture`는 격리 신규 캐릭터의 기존 진입 API 후 QA 직접 아레나 진입·강제 처치/출구 이동으로 **실제 Core 완료 이벤트와 SP 변화**를 확인한다. 자연 M1/손조작 E2E가 아니다. 1600×900/960×540, 29언어, 생산 버튼의 실제 격리 저장/로비 이동을 확인한다. 별도 `qa-snapshot`은 이전 M1의 확인된 137/168·88초·SP10 등을 화면에 복사하며 현재 시뮬레이션 결과가 아니다. 새 후보 빌드·실화면·제작자 1x 판정은 아래 최종 영수증에서만 확정한다. 전체 품질 RETOUCH와 다른 보스/맵 잔여는 유지한다.
+
+- 빌드 준비 이력: 최초 Unity 실행 `25297d24`는 `Labels` 타입/메서드 이름 충돌(CS0102)로 실패. 메서드를 `CurrentLabels`로 변경했다. 기존 Unity 응답파일의 제한 C# 컴파일에서 신규 `GetInstanceID` 사용의 CS0619를 확인해 캐시 키를 `(Font,크기,굵기)` 타입 참조로 수정했다. 두 원인은 각각 1회이며 같은 원인 2회 반복하지 않았다. 두 번째 제한 컴파일 exit0, 기존 외부 경고15건 보존. Player/시각 통과로 간주하지 않는다.
