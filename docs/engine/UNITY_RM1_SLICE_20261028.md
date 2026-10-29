@@ -71,7 +71,7 @@
 | 피격막 | 원본 색 알파 .25×Core ScreenFlashAlpha. 처음 유효 알파 .0625, Core 감쇠 불변 | NativeGame.OnGUI, B07 정본 |
 | 보스 바닥·외곽 | 토양 Bilinear, 시각용 바깥 여백32타일, 점유 한 타일 확장 후 Px8 기준 반경10의 가로·세로 box blur3회로 벽 알파 감쇠. 원래 충돌·걷기·출구는 그대로 | NativeArenaView |
 | 피해·상태 문자 | 아래 보스 문자 근거리 재작업 계약으로 교체. 실제몸 예약·유형별거리144/176/208·.18초합계/횟수·필수경고3→수치2→일반예고1→반복0·이동오프셋 유지 | NativeFloatingTextLayout, NativeGame, NativeReviveHud |
-| 결과 화면 | s=min(1,화면폭/1280,화면높이/900), 중앙 정렬·하단80×s 고정. 1600×900에서 원래 21px 제목·368px 결과폭 유지 | NativeStageClearOverlay |
+| 결과 화면 | 2026-10-30 제작 후보: 실제 시간/처치→보상→측정 통계→저장·로비 행동. 폭560/실제 일반 높이546, 화면여백32 적응 중앙 패널, 표시/포인터 좌표 공유. A22 현행 계약 참조 | NativeStageClearOverlay / NativeStageClearPresentation |
 
 - 문자 배치 회귀: 변경 전 두 번째 문자에서 중첩 실패, 변경 후 40개 밀집 문자·HUD 경계·프레임 초기화·화면 밖 클램프 통과. `unity/Tools/visual-parity-tests`.
 - 기준 빌드 `f4642f85` 오류0, 숨은 D3D11 M1 `3c4f97a5` 23/23·종료0·창0·잔여0·USER_SAVE 변경0. 이 증거는 수정 전 기준이며 위 수정 후보의 검수로 재사용하지 않는다.

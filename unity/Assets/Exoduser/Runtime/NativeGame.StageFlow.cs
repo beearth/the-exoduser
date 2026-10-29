@@ -37,7 +37,7 @@ namespace Exoduser.UnityPort
         }
 
         // Called after every Simulation.Tick (FixedUpdate and the harness StepInput).
-        void StageFlowPump()
+        void StageFlowPump(int statPointsBeforeTick)
         {
             var flow = Simulation.Stage; var p = Simulation.Player;
             while (flow.Events.Count > 0)
@@ -67,10 +67,11 @@ namespace Exoduser.UnityPort
                     case StageEventKind.ExitOpened:
                         Toast("보스 처치 · 출구가 열렸다"); break;
                     case StageEventKind.StageCleared:
-                        WorldTextAdd(p.X, p.Y - 60, "+10 SP", "+10 SP", new Color(.27f, 1f, .67f), 2f);
+                        // 완료 보상은 아래 실제 이벤트 틱의 SP 변화로 한 번 표시한다.
                         stageClear.Show(NativeStageClearOverlay.WithAutoPotion(new NativeStageClearOverlay.Input {
                             kind = NativeStageClearOverlay.Kind.Zone, hellIndex = 0, stageIndex = Simulation.Config.StageIndex,
-                            clearSeconds = flow.BossClearSeconds, totalSpawned = flow.TotalSpawned, stageKills = flow.StageKills, deaths = deathCount, bossKilled = true
+                            clearSeconds = flow.BossClearSeconds, totalSpawned = flow.TotalSpawned, stageKills = flow.StageKills, deaths = deathCount, bossKilled = true,
+                            regionsCleared=Simulation.RegionClearedCount(),statPointsAwarded=Math.Max(0,p.StatPoints-statPointsBeforeTick),statPointsBalance=p.StatPoints
                         }, Simulation.PotionState));
                         RequestCombatSave(); break;
                     case StageEventKind.FieldRestored:
@@ -174,15 +175,13 @@ namespace Exoduser.UnityPort
         // "다음 구역으로 ▶": the next area (1-2) is not ported, so the run is saved and the player returns to the lobby.
         void StageClearNext()
         {
-            stageClear.Hide(); Toast("다음 구역은 아직 이식되지 않았습니다 — 저장하고 로비로 돌아갑니다");
+            stageClear.Hide(); if(lobby.DiagnosticUiEnabled)Toast("다음 구역은 아직 이식되지 않았습니다 — 저장하고 로비로 돌아갑니다");
             SaveCombatNow(); Running = false; menu = true; sound.Reset(); pauseMenu.Reset(); lobby.ShowLobby();
         }
         bool PointerOverStageClear()
         {
             if (!stageClear.Active) return false;
-            float s = Mathf.Min(Screen.width / 1920f, Screen.height / 1080f);
-            float x0 = (Screen.width - 1920 * s) / 2 + 850 * s, y0 = (Screen.height - 1080 * s) / 2 + 956 * s; var m = ExoInput.MousePosition;
-            return m.x >= x0 && m.x <= x0 + 220 * s && Screen.height - m.y >= y0 && Screen.height - m.y <= y0 + 44 * s;
+            var r=stageClear.ButtonScreenRect;var m=ExoInput.MousePosition;return r.Contains(new Vector2(m.x,Screen.height-m.y));
         }
 
         // Death retry inside the arena (web retryBtn): back to the field gate with full resources; the field is not regenerated.

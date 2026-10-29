@@ -229,13 +229,14 @@ namespace Exoduser.UnityPort
             Simulation.SetPlayerCombatInput(NativeKeyBindInput.Held("parry"),NativeKeyBindInput.Held("shield"),NativeKeyBindInput.Held("charge"));
             SetSkillKeys();
             Simulation.SetRollInput(NativeKeyBindInput.Held("up"),NativeKeyBindInput.Held("down"),NativeKeyBindInput.Held("left"),NativeKeyBindInput.Held("right"),NativeKeyBindInput.HeldKeyboard("roll"));}
+            int statPointsBeforeTick=Simulation.Player.StatPoints;
             if(!HandleFirstPracticeTick(x,y,aim.x*100,-aim.y*100,attack,PointerOverPractice()))Simulation.Tick(x,y,aim.x*100,-aim.y*100,attack,NativeKeyBindInput.Held("interact"));
-            StageFlowPump();DispatchFeedback();
+            StageFlowPump(statPointsBeforeTick);DispatchFeedback();
             if(PlayerDown){Running=false;Toast("쓰러졌습니다");}
             if(Simulation.Kills>lastKillCount){lastKillCount=Simulation.Kills;Toast("처치 · 악의 +4");}
         }
         public void StepInput(float x,float y,float aimX,float aimY,bool attack,bool pickup)
-        {Simulation.Stage.Enabled=firstPractice==null;Simulation.Tick(x,y,aimX,aimY,attack,pickup);StageFlowPump();DispatchFeedback();UpdateViews();}
+        {Simulation.Stage.Enabled=firstPractice==null;int statPointsBeforeTick=Simulation.Player.StatPoints;Simulation.Tick(x,y,aimX,aimY,attack,pickup);StageFlowPump(statPointsBeforeTick);DispatchFeedback();UpdateViews();}
         // RM-1 sound A1/A2: web BGM.play(key) -- hell<N> while exploring, boss in the arena, victory after the boss, death when the player is down; silent in the lobby
         string DesiredMusic()
         {
@@ -400,6 +401,7 @@ namespace Exoduser.UnityPort
         {
             if(Simulation==null)return;
             if(lobby!=null&&lobby.IsBlocking){if(lobby.StartupHudVisible)DrawStartupWorldHud();return;}
+            if(stageClear.Active){stageClear.LocaleCode=lobby.Language;stageClear.DiagnosticDetails=lobby.DiagnosticUiEnabled;stageClear.Draw();return;}
             if(stats.Open){stats.Draw(()=>SetStats(false));return;}
             if(forge.Open){forge.Draw(Simulation,inventory.State,()=>SetForge(false));return;}
             if(skills.Open){skills.Draw(Simulation,()=>SetSkills(false),EquipSelectedSkill);return;}
@@ -433,8 +435,6 @@ namespace Exoduser.UnityPort
             floatingTextLayout.Resolve();NativeReviveHud.DrawRequests(floatingTextLayout,center);
             if(Time.unscaledTime<noticeUntil)GUI.Label(new Rect(560,180,800,45),notice,center);
             if(levelUp.Active){var lp=HudCamera.WorldToScreenPoint(Point(p.X,p.Y));levelUp.Draw(new Vector2(lp.x,Screen.height-lp.y));}
-            // Stage-clear panel: Unity has no stage-clear / boss / exit event yet, so nothing calls stageClear.Show(); once an event exists it is drawn here.
-            if(stageClear.Active)stageClear.Draw();
             if(areaTitle.Active)areaTitle.Draw();
             DrawRegionHud();   // M1 region HUD: entry/purge banner + direction arrow
             // Boss bar: Unity has no boss actor / boss-entry event yet, so nothing calls bossBar.Show(); once one exists it passes name (BossNameForStage), hp, poise, groggy/immune state and status chips each frame.

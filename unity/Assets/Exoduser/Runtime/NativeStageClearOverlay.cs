@@ -5,15 +5,15 @@ using UnityEngine;
 
 namespace Exoduser.UnityPort {
  // Web stage-clear panel (#stageClear, game.html markup 3203-3210, CSS 356-364, flow 41925-42035, result block _showClearResult 42059-42130) in the 1920x1080
- // design space, anchored 80px above the bottom edge. Definitions (copy, formulas, colours, variants) come from Data/stageclear_web.json. Every value
- // shown (kills, time, deaths, damage ...) is passed in by the caller from Unity state; a value that is null is drawn as "미이식" and anything derived
- // from it (score, rank, some rows) is "미이식" too. Full-build copy is the default; the demo copy is a variant kept as definition only.
+ // 초기 웹 정의/공식은 보존한다. 일반 완료 화면은 실제 측정값만 공유 반응형 레이아웃에 표시한다.
+ // 누락 통계의 내부 구현 문구와 초기 원본 재현은 명시적 --unity-ui-diagnostics에서만 그린다.
  public sealed class NativeStageClearOverlay {
   public enum Kind {Zone,HellEscape,DemoEnd}
-  public struct Input {
+  [Serializable] public struct Input {
    public Kind kind;public int hellIndex;public int? stageIndex;   // stageIndex: lets the build flavor turn the last stage's zone clear into the demo-end panel (web 42003)
    public int? clearSeconds,totalSpawned,stageKills,regionsCleared,deaths,dmgTaken,comboMax,dmgDealt,crits,parries,potions,maxHit,dashCount,dashMeters,walkMeters;
    public bool? bossKilled;
+   public int? statPointsAwarded,statPointsBalance; // 완료 이벤트 틱의 실제 SP 변화/현재 보유량. 저장 스키마 아님
    public int? bestSeconds,bestScore;public string bestRank;   // previous best record; null = none (first clear: best = this run)
   }
   [Serializable] sealed class Tok {public string n;public float x,y,w,h,adv,pad,cy;}
@@ -28,6 +28,13 @@ namespace Exoduser.UnityPort {
   Texture2D atlas,radial,diamond;Font nanum,sansSemi,cinzelDec;bool ready;readonly Dictionary<long,GUIStyle> styles=new Dictionary<long,GUIStyle>();
   Input input;bool active;float start;public float? ForcedAge;public Action OnNext;
   public bool Active{get{return active;}}
+  public Input CurrentInput{get{return input;}}
+  public string LocaleCode="ko";public bool DiagnosticDetails;public int LayoutOverflowCount{get;private set;}
+  readonly NativeStageClearPresentation.NextAction nextAction=new NativeStageClearPresentation.NextAction();
+  bool keyboardReady;
+  public NativeStageClearPresentation.Layout LastLayout{get;private set;}
+  public Rect ButtonScreenRect{get{if(DiagnosticDetails){float ds=Mathf.Min(1f,Mathf.Min(Screen.width/1280f,Screen.height/900f));return new Rect((Screen.width-1920*ds)/2+850*ds,Screen.height-1080*ds+956*ds,220*ds,44*ds);}var l=NativeStageClearPresentation.Arrange(Screen.width,Screen.height,PresentationModel());return new Rect(l.Next.X,l.Next.Y,l.Next.Width,l.Next.Height);}}
+  public bool RequestNext(){return nextAction.Request(active,Age,OnNext);}
   public Kind ShownKind{get{return input.kind;}}
   // B11: the "물약 N회" stat is G._sStats.potions = AutoPotionState.PotionsUsed (Unity value; null stays 미이식 for callers without a potion state)
   public static Input WithAutoPotion(Input input,Exoduser.UnityPort.Core.AutoPotionState potion){if(potion!=null)input.potions=potion.PotionsUsed;return input;}
@@ -41,7 +48,7 @@ namespace Exoduser.UnityPort {
   public void Show(Input value){
    // web: _DEMO_MODE && G.stage===_DEMO_LAST_STAGE -> demo-end sub/button (BuildFlavor holds the definition; full/ea keep the zone texts)
    if(value.kind==Kind.Zone&&value.stageIndex.HasValue&&BuildFlavor.Current.DemoEndAtStage(value.stageIndex.Value))value.kind=Kind.DemoEnd;
-   input=value;active=true;start=Now;
+   input=value;active=true;start=Now;nextAction.Reset();keyboardReady=false;
   }
   public void Hide(){active=false;}
 
@@ -94,8 +101,8 @@ namespace Exoduser.UnityPort {
    if(!gradients.TryGetValue(key,out var t)){t=Gradient(a,b,horizontal);gradients[key]=t;}GUI.DrawTexture(r,t);
   }
   GUIStyle Style(Font f,int size,bool bold){
-   long key=(((long)(f==nanum?1:f==sansSemi?2:3)*1000+size)*2)+(bold?1:0);
-   if(!styles.TryGetValue(key,out var s)){s=new GUIStyle(GUI.skin.label){font=f,fontSize=size,fontStyle=bold&&f==nanum?FontStyle.Bold:FontStyle.Normal,alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};styles[key]=s;}
+   long key=((long)f.GetInstanceID()<<16)|((long)size<<1)|(bold?1L:0L);
+   if(!styles.TryGetValue(key,out var s)){s=new GUIStyle(GUI.skin.label){font=f,fontSize=size,fontStyle=bold?FontStyle.Bold:FontStyle.Normal,alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};styles[key]=s;}
    return s;
   }
   float Width(Font f,int size,string text,float ls,bool bold=false){var st=Style(f,size,bold);float w=0;foreach(char ch in text)w+=st.CalcSize(new GUIContent(ch.ToString())).x+ls;return w;}
@@ -130,16 +137,61 @@ namespace Exoduser.UnityPort {
   Color RankColor(string r){switch(r){case "S":return C(227,194,122);case "A":return C(169,200,164);case "B":return C(157,184,204);case "C":return C(194,182,169);default:return C(141,124,101);}}
 
   // ---- window ----
+  [Serializable] sealed class LocaleRow {public string code,title,hellTitle,sub,time,kills,reward,sp,regions,potions,deaths,score,next,demoSub,demoNext;}
+  [Serializable] sealed class LocaleBundle {public LocaleRow[] entries;}
+  readonly Dictionary<string,LocaleRow> localeRows=new Dictionary<string,LocaleRow>();Font japanese,latin;
+  public bool AuditText;public int MissingGlyphs{get;private set;}public readonly List<string> VisibleTexts=new List<string>();
+  string EffectiveLocale{get{string c=Exoduser.UnityPort.Core.LobbyLanguage.Normalize(LocaleCode);return c=="ar"?"en":c;}}
+  LocaleRow Labels(){
+   if(localeRows.Count==0){var asset=Resources.Load<TextAsset>("Data/stageclear_labels");if(asset!=null){var b=JsonUtility.FromJson<LocaleBundle>(asset.text);foreach(var e in b.entries)localeRows[e.code]=e;}}
+   LocaleRow row;if(localeRows.TryGetValue(EffectiveLocale,out row))return row;if(localeRows.TryGetValue("en",out row))return row;
+   return new LocaleRow{title="ZONE CLEARED",hellTitle="HELL ESCAPED",sub="Prepare, then continue",time="Clear time",kills="Kills",reward="Reward",sp="Stat points",regions="Regions cleared",potions="Potions",deaths="Deaths",score="Score",next="Return to lobby",demoSub="You conquered the Rotten Forest.",demoNext="End demo"};
+  }
+  Font BodyFont(){if(EffectiveLocale=="ja"){if(japanese==null)japanese=Resources.Load<Font>("Art/fonts/NotoSerifCJKjp-Regular");return japanese??nanum;}if(EffectiveLocale=="ko"||EffectiveLocale=="en")return nanum;if(latin==null)latin=Resources.Load<Font>("Art/fonts/NativeCaptionNotoSerif");return NativeA15SettingsLabels.FontForLocale(EffectiveLocale,latin??nanum);}
+  public NativeStageClearPresentation.Model PresentationModel(){
+   int? par=input.totalSpawned.HasValue?ParSeconds(input.totalSpawned.Value):(int?)null;var score=Compute(input,par);string rank=null;
+   if(score.total.HasValue&&input.clearSeconds.HasValue&&par.HasValue&&input.deaths.HasValue&&input.totalSpawned.HasValue)rank=Rank(input.clearSeconds.Value,par.Value,score.total.Value,ParScore(input.totalSpawned.Value),input.deaths.Value);
+   return NativeStageClearPresentation.Build(new NativeStageClearPresentation.Summary{Kills=input.stageKills,Total=input.totalSpawned,Seconds=input.clearSeconds,SpAwarded=input.statPointsAwarded,SpBalance=input.statPointsBalance,Regions=input.regionsCleared,Potions=input.potions,Deaths=input.deaths,Score=score.total,Rank=rank});
+  }
+  void Paint(Rect r,string text,Font f,int size,Color color,TextAnchor align=TextAnchor.MiddleCenter,bool bold=false){
+   if(string.IsNullOrEmpty(text))return;if(AuditText){VisibleTexts.Add(text);foreach(char ch in text)if(!char.IsWhiteSpace(ch)&&!f.HasCharacter(ch))MissingGlyphs++;}GUIStyle s=null;int current=size;
+   while(current>=12){s=Style(f,current,bold);s.wordWrap=true;s.alignment=align;if(s.CalcHeight(new GUIContent(text),r.width)<=r.height+.5f)break;current--;}
+   if(s.CalcHeight(new GUIContent(text),r.width)>r.height+.5f)LayoutOverflowCount++;
+   s.normal.textColor=new Color(0,0,0,color.a*.8f);GUI.Label(new Rect(r.x,r.y+1,r.width,r.height),text,s);s.normal.textColor=color;GUI.Label(r,text,s);
+  }
+  static string RowLabel(LocaleRow l,string key){switch(key){case "time":return l.time;case "kills":return l.kills;case "reward":return l.reward;case "sp":return l.sp;case "regions":return l.regions;case "potions":return l.potions;case "deaths":return l.deaths;default:return l.score;}}
   public void Draw(){
-   if(!active)return;Init();
-   var old=GUI.matrix;var color=GUI.color;bool enabled=GUI.enabled;
-   try {
-    float age=Age;float a=Mathf.Clamp01(age/defs.timing.fade);a=a*a*(3-2*a);   // transition: opacity .5s (CSS ease)
-    // 웹 CSS 글자는 1600×900에서도 원래 크기다. 900p 이상에서는 1배, 좁은 화면에서만 축소한다.
-    float s=Mathf.Min(1f,Mathf.Min(Screen.width/1280f,Screen.height/900f));
-    GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,Screen.height-1080*s,0),Quaternion.identity,Vector3.one*s);
-    Layout(a);
-   } finally {GUI.matrix=old;GUI.color=color;GUI.enabled=enabled;}
+   if(!active)return;Init();var old=GUI.matrix;var color=GUI.color;bool enabled=GUI.enabled;
+   try{
+    float a=Mathf.SmoothStep(0,1,Mathf.Clamp01(Age/defs.timing.fade));GUI.matrix=Matrix4x4.identity;GUI.color=Color.white;LayoutOverflowCount=0;MissingGlyphs=0;VisibleTexts.Clear();
+    if(DiagnosticDetails){
+     float ds=Mathf.Min(1f,Mathf.Min(Screen.width/1280f,Screen.height/900f));GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*ds)/2,Screen.height-1080*ds,0),Quaternion.identity,Vector3.one*ds);Layout(a);GUI.matrix=Matrix4x4.identity;
+     Paint(new Rect(16,16,Mathf.Max(1,Screen.width-32),32),"진단 모드 · 원본 점수/통계 입력 상태",BodyFont(),16,C(255,190,120),TextAnchor.MiddleLeft);return;
+    }
+    var m=PresentationModel();var l=NativeStageClearPresentation.Arrange(Screen.width,Screen.height,m);LastLayout=l;var labels=Labels();var body=BodyFont();
+    Fill(new Rect(0,0,Screen.width,Screen.height),new Color(0,0,0,.68f*a));
+    GUI.matrix=Matrix4x4.TRS(new Vector3(l.Panel.X,l.Panel.Y,0),Quaternion.identity,Vector3.one*l.Scale);
+    GUI.color=new Color(1,1,1,a);Grad(new Rect(0,0,560,l.LogicalHeight),C(20,14,11,.96f),C(8,6,5,.98f));GUI.color=Color.white;
+    Border(new Rect(0,0,560,l.LogicalHeight),C(128,109,78,.65f*a));
+    Grad(new Rect(50,14,230,1),C(164,147,115,0),C(164,147,115,.65f*a),true);Grad(new Rect(280,14,230,1),C(164,147,115,.65f*a),C(164,147,115,0),true);
+    string title=input.kind==Kind.HellEscape?(EffectiveLocale=="ko"&&input.hellIndex>=0&&input.hellIndex<defs.hell.names.Length?defs.hell.names[input.hellIndex]+defs.hell.titleSuffix:labels.hellTitle):labels.title;
+    Paint(new Rect(28,26,504,22),input.kind==Kind.HellEscape?defs.hell.titleEn:defs.zone.titleEn,cinzelDec,12,C(177,157,120,a));
+    Paint(new Rect(28,55,504,56),title,body,34,C(236,222,197,a),TextAnchor.MiddleCenter,true);
+    Paint(new Rect(40,115,480,38),input.kind==Kind.DemoEnd?labels.demoSub:labels.sub,body,16,C(187,174,153,a));
+    int metricCount=Math.Max(1,m.Metrics.Count);float metricWidth=504f/metricCount;
+    for(int k=0;k<m.Metrics.Count;k++){var metric=m.Metrics[k];float x=28+k*metricWidth;Paint(new Rect(x,169,metricWidth,24),RowLabel(labels,metric.Key),body,16,C(182,165,137,a));Paint(new Rect(x,198,metricWidth,58),metric.Value,cinzelDec,metric.Key=="time"?44:34,C(236,222,197,a),TextAnchor.MiddleCenter,true);}
+    Fill(new Rect(28,267,504,1),C(128,109,78,.4f*a));
+    if(m.Reward!=null){Paint(new Rect(40,l.RewardY+8,250,32),RowLabel(labels,m.Reward.Key),body,19,C(208,190,156,a),TextAnchor.MiddleLeft);Paint(new Rect(286,l.RewardY+3,234,48),m.Reward.Value,cinzelDec,34,C(227,194,122,a),TextAnchor.MiddleRight,true);}
+    if(m.Score!=null){Paint(new Rect(40,l.ScoreY+2,240,38),labels.score,body,17,C(190,174,147,a),TextAnchor.MiddleLeft);Paint(new Rect(282,l.ScoreY+2,238,38),m.Score+"  ·  "+m.Rank,cinzelDec,24,C(227,194,122,a),TextAnchor.MiddleRight);}
+    for(int k=0;k<m.Details.Count;k++){var row=m.Details[k];float y=l.DetailY+k*30;Paint(new Rect(40,y,350,28),RowLabel(labels,row.Key),body,16,C(181,168,146,a),TextAnchor.MiddleLeft);Paint(new Rect(410,y,110,28),row.Value,cinzelDec,18,C(221,208,184,a),TextAnchor.MiddleRight);}
+    float nextY=(l.Next.Y-l.Panel.Y)/l.Scale;var buttonRect=new Rect(28,nextY,504,56);bool hover=buttonRect.Contains(Event.current.mousePosition);
+    GUI.color=new Color(1,1,1,a);Grad(buttonRect,hover?C(95,44,32):C(73,33,25),C(29,12,9));GUI.color=Color.white;Border(buttonRect,C(164,111,73,a));Border(new Rect(30,nextY+2,500,52),C(22,13,10,a));
+    Paint(new Rect(46,nextY+4,468,48),input.kind==Kind.DemoEnd?labels.demoNext:labels.next,body,20,C(239,216,184,a),TextAnchor.MiddleCenter,true);
+    if(!ExoInput.Key(KeyCode.Return)&&!ExoInput.Key(KeyCode.KeypadEnter)&&!ExoInput.Key(KeyCode.Space))keyboardReady=true;
+    GUI.enabled=enabled&&Age>=.5f&&OnNext!=null;
+    if(GUI.Button(buttonRect,GUIContent.none,GUIStyle.none))RequestNext();
+    if(GUI.enabled&&keyboardReady&&Event.current.type==EventType.KeyDown&&(Event.current.keyCode==KeyCode.Return||Event.current.keyCode==KeyCode.KeypadEnter||Event.current.keyCode==KeyCode.Space)){Event.current.Use();RequestNext();}
+   }finally{GUI.matrix=old;GUI.color=color;GUI.enabled=enabled;}
   }
 
   void Layout(float a){
@@ -293,7 +345,7 @@ namespace Exoduser.UnityPort {
    int gi=label.IndexOf('▶');string pre=gi>=0?label.Substring(0,gi):label;float adv=gi>=0?GlyphAdv("g:▶")+1.96f:0;
    float w=Width(sansSemi,14,pre,1.96f)+adv;float x=960-w/2f;
    x+=Text(x,r.y,r.height,pre,sansSemi,14,col,1.96f);if(gi>=0)Glyph("g:▶",x,r.y+22,col);
-   if(GUI.Button(r,GUIContent.none,GUIStyle.none)&&OnNext!=null)OnNext();
+   if(GUI.Button(r,GUIContent.none,GUIStyle.none))RequestNext();
   }
  }
 }
