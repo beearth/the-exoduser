@@ -218,7 +218,7 @@ namespace Exoduser
                 var path = GenDir + "/TL_" + name + ".terrainlayer"; var l = AssetDatabase.LoadAssetAtPath<TerrainLayer>(path);
                 if (l == null) { l = new TerrainLayer(); AssetDatabase.CreateAsset(l, path); }
                 l.diffuseTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(tex); l.tileSize = size; l.tileOffset = Vector2.zero; l.smoothness = 0f; l.metallic = 0f;
-                if (name == "Colormap") { l.normalMapTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(Root + "/Materials/Ground/ch1_1_r1r2_normal.png"); l.normalScale = .55f; }
+                if (name == "Colormap") { l.normalMapTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(Root + "/Materials/Ground/ch1_1_r1r2_normal.png"); l.normalScale = .55f; l.smoothness = .08f; var settings = new SerializedObject(l); settings.FindProperty("m_SmoothnessSource").intValue = 2; settings.ApplyModifiedPropertiesWithoutUndo(); }
                 EditorUtility.SetDirty(l); return l;
             }
             float sx = (TX1 - TX0) * T, sz = (TY1 - TY0) * T;

@@ -81,3 +81,5 @@
 
 - 두 번째 1x 대조에서 피부가 여전히 흐려 기존 색 조정 반복을 중단했다. 컬러맵의 기본 최대2048/NPOT 변환·anisotropic1과 일반 흙 혼합이 원본 주름을 약화시키는 입력으로 확인했다. 컬러맵 최대8192·NPOT 없음·Trilinear·anisotropic8·고품질 압축, 주 레이어 가중치1/추가 흙0으로 바꾼다. WebSkinSurface는 기존 TerrainData의 알파만 수정하고 전체 높이값 전후 동일을 검사한다. normalScale.55와 카메라·노출+1.0은 유지한다.
 - 보스의 실제 그림은 generic EnemyView가 아니라 NativeDruidBody.main이었다. 기존 예약 조건은 disabled generic body라 동작하지 않아 현재 NativeDruidBody.Visible/Bounds를 직접 읽도록 수정했다. 소스 값·애니메이션·판정은 그대로다. 다음 Player 실화면에서 이 경로의 글자 가림을 확인한다.
+
+- 원본 피부 단독 가중치 후보 fa3d2e990은 실제 화면에서 거울 같은 점반사가 발생해 반려했다. 설치된 URP17.6 TerrainLitPasses.hlsl 177~194행을 읽어 기존 m_SmoothnessSource=1이 smoothness0을 무시하고 불투명 diffuse alpha1을 표면 매끄러움1로 쓰는 직접 원인을 확인했다. 주 피부 레이어는 m_SmoothnessSource=2(상수), smoothness .08로 고정하고 빌더에도 같은 값을 지정한다. 조명/노출을 다시 돌려서 감추지 않고 재질 입력을 바로잡는다.
