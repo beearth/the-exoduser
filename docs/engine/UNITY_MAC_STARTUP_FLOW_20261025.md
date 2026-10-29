@@ -117,4 +117,4 @@ GUI depth 경계: `DrawStartupEntry`는 진입 당시 `GUI.depth`를 저장하�
 
 ## 2026-10-30 PC 안내 원화 반영 후보
 
-기존4단계·문구·입장transaction은유지한다. 안내판은웹원화 `panel_frame_20261029.png`(150slice→75px/outset24),버튼은 `btn_plaque_20261029.png`(174slice→40px/outset14),Hahmlet400으로교체했다. 폭720상한·좌우padding52·버튼168×46. [현재계약·검수](UNITY_UI_ASSETS_20261030.md). PC실제비교진행중이며Mac반영·전체튜토리얼완료를뜻하지않는다.
+기존4단계·문구·입장transaction은유지한다. 안내판은웹원화 `panel_frame_20261029.png`(150slice→75px/outset24),버튼은 `btn_plaque_20261029.png`(174slice→40px/outset14),본문·제목의 기존 Nanum Myeongjo는 유지하고 버튼을 Hahmlet 400으로 연결했다. 폭720상한·좌우padding52·버튼168×46. [현재계약·검수](UNITY_UI_ASSETS_20261030.md). PC실제비교진행중이며Mac반영·전체튜토리얼완료를뜻하지않는다.

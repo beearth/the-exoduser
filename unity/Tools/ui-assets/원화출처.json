@@ -1,0 +1,76 @@
+{
+  "웹SHA": "3c645fa2170abdde1fd4f2cc6cea7850a383ed5f",
+  "자산": [
+    {
+      "웹원본": "img/ui/silver_hell/gate_sigil_20261028.jpg",
+      "Unity": "Art/ui/silver_hell/gate_sigil_20261028.jpg",
+      "sha256": "5921126c84d1430d34457c205aa5a90357aa45c0f1426977b2c03b2c16cbfb10",
+      "방식": "동일 바이트"
+    },
+    {
+      "웹원본": "img/ui/silver_hell/panel_frame_20261029.png",
+      "Unity": "Art/ui/silver_hell/panel_frame_20261029.png",
+      "sha256": "b848af1c98d8ac5067f717667f09b6bcbf6957d45693dbef6fe4699937280665",
+      "방식": "동일 바이트"
+    },
+    {
+      "웹원본": "img/ui/silver_hell/btn_plaque_20261029.png",
+      "Unity": "Art/ui/silver_hell/btn_plaque_20261029.png",
+      "sha256": "14f27237f7997f335308df624ecc551e85ba054dfd61bfe7c5f6aa575f661f9d",
+      "방식": "동일 바이트"
+    },
+    {
+      "웹원본": "assets/lobby/lobby_enter_btn_silver_20261029.png",
+      "Unity": "Art/ui/silver_hell/lobby_enter_btn_silver_20261029.png",
+      "sha256": "e795cad5232cb122a3cf4d8f626ed7bf7ca93d4c56bfef93d771fa74f2a63ace",
+      "방식": "동일 바이트"
+    },
+    {
+      "웹원본": "fonts/hahmlet/Hahmlet-300-ko.ttf",
+      "Unity": "Art/fonts/Hahmlet-300-ko.ttf",
+      "sha256": "ab5e401eb048ea74afbbee400f417c1fb0c034d0b8f16924c1932642e6fbeb36",
+      "방식": "동일 바이트"
+    },
+    {
+      "웹원본": "fonts/hahmlet/Hahmlet-400-ko.ttf",
+      "Unity": "Art/fonts/Hahmlet-400-ko.ttf",
+      "sha256": "bc580949093c2b84db102db646f23681ec338b5daf8bf4b1972ab4ae51bf1342",
+      "방식": "동일 바이트"
+    },
+    {
+      "웹원본": "fonts/hahmlet/OFL.txt",
+      "Unity": "Art/fonts/Hahmlet-OFL.txt",
+      "sha256": "ddadb10d28a303e3ef3b1f7ec55d3027903b9ec566d2f87d3ee03f3c87c91711",
+      "방식": "동일 바이트"
+    },
+    {
+      "웹원본": "cin-enter-engraved.css",
+      "Unity": "Art/ui/silver_hell/gate_enter_line.png",
+      "방식": "120×9 원본 SVG 래스터",
+      "CSS_SHA256": "026b3c0dfbe03f3a09094bcf4aaccad9a15764c28364a24e254e2033f0a11e23"
+    },
+    {
+      "웹원본": "charselect-silver-hell.css",
+      "Unity": "Art/ui/silver_hell/panel_corner_{0,1}.png",
+      "방식": "120×80 원본 SVG 래스터",
+      "CSS_SHA256": "5e61fb7b0a60021c959b09f974c8435eee37168bf5858a9e7d1fadb192ba66fe"
+    },
+    {
+      "웹원본": "index.html _TRAIT_SVG",
+      "Unity": "Art/ui/silver_hell/trait_silver.png",
+      "방식": "원본 SVG 15칸, 5열×4행, 셀32×32, 마지막행4칸미사용",
+      "소스_SHA256": "ff725b242d8e80b02bf2439e7df59489afd60965dc3eb58d80075db72a6e5ae6"
+    },
+    {
+      "웹원본": "charselect-silver-hell.css #visual{Cancel,Create}Btn",
+      "Unity": "Art/ui/silver_hell/visual_{cancel,create,disabled}.png",
+      "방식": "실제 웹 버튼의 글자 제외 투명 래스터, 180×44",
+      "CSS_SHA256": "5e61fb7b0a60021c959b09f974c8435eee37168bf5858a9e7d1fadb192ba66fe"
+    }
+  ],
+  "파생": [
+    "lobby_enter_disabled: grayscale(1) brightness(.5)",
+    "잠금 직업 emblem_*_disabled: grayscale(1) brightness(.62)",
+    "Cinzel-400/600: 원본 가변 글꼴 wght 고정, 새 글꼴 디자인 0, 내부 이름 EXODUSER Latin Serif"
+  ]
+}

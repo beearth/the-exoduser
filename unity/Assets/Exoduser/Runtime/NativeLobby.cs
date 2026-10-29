@@ -38,7 +38,7 @@ namespace Exoduser.UnityPort
   Texture2D Art(string path){return Resources.Load<Texture2D>("Art/lobby/"+path);}
   public void Begin(){CancelStartupEntry();CancelCharacterStory();if(!ready)Initialize(null);active=true;WorldEndedNaturally=false;Flow=new LobbyFlow();splash=1;since=0;fdgWatchdog.Reset();StopMusic();movie.Open("fdg_intro.mp4",false,true,false);movie.Volume(1);}
   public void AdvanceSplash(){inputFence=Time.frameCount;if(splash==1){splash=2;since=0;titleSdFallback=false;titleRowsBuiltFor=-1;titleRows.Clear();movie.Open(TitleMovie,true,true,false);}else if(splash==2){splash=0;OpenForPage();}}
-  public void StartGate(){if(splash!=0||Flow.Page!=LobbyPage.Title||Time.frameCount==inputFence)return;PlayStartupEnter();Flow.EnterGate();OpenForPage();}
+  public void StartGate(){if(splash!=0||Flow.Page!=LobbyPage.Title||Time.frameCount==inputFence)return;PlayStartupEnter();StartMusic(tracks[UnityEngine.Random.Range(0,tracks.Length)],.6f);Flow.EnterGate();OpenForPage();}
   public void FinishIntro(bool manualLastCue=false){var before=Flow.Page;bool videoError=movie==null||movie.Error.Length>0;splash=0;Flow.FinishIntro();if(IntroCompletionWasEarned(before,Flow.Page,false,videoError,manualLastCue))CinematicCompleted?.Invoke();OpenForPage();}
   public void ShowLobby(){CancelStartupEntry();CancelCharacterStory();active=true;splash=0;Flow.ShowLobby();OpenForPage();}
   public void ReplayIntro(){CancelStartupEntry();CancelCharacterStory();WorldEndedNaturally=false;active=true;splash=0;Flow.Replay();OpenForPage();}
@@ -164,8 +164,8 @@ namespace Exoduser.UnityPort
    lobbyPromoDetail=new GUIStyle(lobbyMicro){fontSize=11};lobbyPromoDetail.normal.textColor=new Color(.722f,.686f,.624f);
    lobbyMode=new GUIStyle(lobbyPromo){fontSize=11};lobbyMode.normal.textColor=new Color(.706f,.549f,.431f,.55f);
    lobbyFooter=new GUIStyle(lobbyMicro){fontSize=10};lobbyFooter.normal.textColor=new Color(.49f,.392f,.275f,.32f);
-   lobbyTitle=new GUIStyle(lobbyMicro){font=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular"),fontSize=45,fontStyle=FontStyle.Normal};lobbyTitle.normal.textColor=new Color(.863f,.431f,.314f,.78f);
-   lobbySub=new GUIStyle(lobbyTitle){fontSize=13};lobbySub.normal.textColor=new Color(.82f,.745f,.627f);
+   lobbyTitle=new GUIStyle(lobbyMicro){font=NativeSilverHellUi.Font()??Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular"),fontSize=45,fontStyle=FontStyle.Normal};lobbyTitle.normal.textColor=NativeSilverHellUi.Text;
+   lobbySub=new GUIStyle(lobbyTitle){fontSize=13};lobbySub.normal.textColor=NativeSilverHellUi.Dim;
    lobbyPlus=new GUIStyle(lobbyMicro){fontSize=25};lobbyPlus.normal.textColor=new Color(.706f,.549f,.431f,.4f);
   }
   void UpdateLobbyTextScale()
@@ -236,6 +236,6 @@ namespace Exoduser.UnityPort
    foreach(char ch in text){float w=style.CalcSize(new GUIContent(ch.ToString())).x;Label(new Rect(x,y,w,height),ch.ToString(),style,TextAnchor.MiddleCenter);x+=w+spacing;}
   }
 
-  void DrawAncestor(){float scale=Mathf.Max(1920f/1920,1080f/1088),footY=Mathf.Min(1080*.89f,Mathf.Max(1080*.76f,1088*scale*.84f+(1080-1088*scale)*.75f));float h=Mathf.Min(1080*.8f,footY-28),w=h*384/624,footX=Mathf.Max(w*.52f+12,Mathf.Min(1920*.65f-w*.48f-12,1920*scale*.33f+(1920-1920*scale)*.5f));Rect r=new Rect(footX-182.43863f/384*w,footY-603.68209f/624*h,w,h);if(ancestor!=null){int frame=(int)(Time.unscaledTime*24)%96;GUI.DrawTextureWithTexCoords(r,ancestor,new Rect(frame%8/8f,1-(frame/8+1)/12f,1/8f,1/12f),true);OriginalArtDrawn=true;}else Image(r,ancestorFirst);var oldColor=lobbyMicro.normal.textColor;TrackedLabel(new Rect(footX-350,935.6f,700,18.2f),K("선대 소환체","ANCESTRAL SUMMON"),lobbySub,2);TrackedLabel(new Rect(footX-350,957.8f,700,69),K("묘왕 바르칸","Varkan, the Tomb King"),lobbyTitle,Language=="ko"?11.2f:3);lobbyMicro.normal.textColor=new Color(.706f,.671f,.612f);TrackedLabel(new Rect(footX-350,1030.8f,700,16.8f),K("플레이어가 소환하는 선대의 영체","A spirit summoned by the player."),lobbyMicro,.4f);lobbyMicro.normal.textColor=oldColor;}
+  void DrawAncestor(){float scale=Mathf.Max(1920f/1920,1080f/1088),footY=Mathf.Min(1080*.89f,Mathf.Max(1080*.76f,1088*scale*.84f+(1080-1088*scale)*.75f));float h=Mathf.Min(1080*.8f,footY-28),w=h*384/624,footX=Mathf.Max(w*.52f+12,Mathf.Min(1920*.65f-w*.48f-12,1920*scale*.33f+(1920-1920*scale)*.5f));Rect r=new Rect(footX-182.43863f/384*w,footY-603.68209f/624*h,w,h);if(ancestor!=null){int frame=(int)(Time.unscaledTime*24)%96;GUI.DrawTextureWithTexCoords(r,ancestor,new Rect(frame%8/8f,1-(frame/8+1)/12f,1/8f,1/12f),true);OriginalArtDrawn=true;}else Image(r,ancestorFirst);var oldColor=lobbyMicro.normal.textColor;TrackedLabel(new Rect(footX-350,935.6f,700,18.2f),K("선대 소환체","ANCESTRAL SUMMON"),lobbySub,2);TrackedLabel(new Rect(footX-350,957.8f,700,69),K("묘왕 바르칸","Varkan, the Tomb King"),lobbyTitle,Language=="ko"?11.2f:3);lobbyMicro.normal.textColor=NativeSilverHellUi.Dim;TrackedLabel(new Rect(footX-350,1030.8f,700,16.8f),K("플레이어가 소환하는 선대의 영체","A spirit summoned by the player."),lobbyMicro,.4f);lobbyMicro.normal.textColor=oldColor;}
  }
 }

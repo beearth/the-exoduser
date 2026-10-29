@@ -180,9 +180,9 @@ namespace Exoduser.UnityPort
    float panelW=Mathf.Min(720,Mathf.Max(120,sw-96)),w=panelW-104,keyW=Mathf.Max(160,w*.38f),descW=Mathf.Max(20,w-keyW-20);
    float dialogueFont=GuideClamp(28.8f,sw*.026f,41.6f),titleFont=GuideClamp(20.8f,sw*.018f,28),bodyFont=GuideClamp(16,sw*.0135f,20.8f),keyFont=bodyFont*.86f;
    float dialogueH=dialogueFont*1.25f,titleH=titleFont*(31/23.04f),lineH=bodyFont*1.65f;
-   var serif=NativeSilverHellUi.Font(true)??Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular")??guideText.font;
+   var serif=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular")??guideText.font;
    foreach(var st in new[]{guideDialogue,guideTitle,guideText,guideKey,guideProgress,guideAction}){st.padding=new RectOffset();st.margin=new RectOffset();st.alignment=TextAnchor.UpperLeft;st.wordWrap=false;}
-   guideText.font=serif;guideKey.font=serif;guideTitle.font=serif;guideDialogue.font=serif;
+   guideText.font=serif;guideKey.font=serif;guideTitle.font=serif;guideDialogue.font=serif;guideText.normal.textColor=new Color(188/255f,185/255f,179/255f,.82f);guideKey.normal.textColor=new Color(170/255f,173/255f,173/255f,.86f);guideTitle.normal.textColor=new Color(215/255f,212/255f,206/255f,.91f);guideDialogue.normal.textColor=new Color(213/255f,210/255f,204/255f,.94f);guideProgress.font=Resources.Load<Font>("Art/fonts/Cinzel-400")??serif;guideProgress.normal.textColor=new Color(141/255f,144/255f,144/255f);
    var keys=new List<string>();var descriptions=new List<string>();var heights=new List<float>();float bodyH=0;
    foreach(var row in GuideRows[step]){if(pad&&row[1]==null)continue;string key=pad?row[1]:Language!="ko"&&row[0]=="좌클릭"?"LMB":Language!="ko"&&row[0]=="우클릭"?"RMB":row[0],desc=K(row[2],row[3]);float h=Mathf.Max(GuidePhysicalLines(key,guideKey,keyFont,keyFont*.08f,keyW).Count*lineH,GuidePhysicalLines(desc,guideText,bodyFont,bodyFont*.04f,descW).Count*lineH);keys.Add(key);descriptions.Add(desc);heights.Add(h);bodyH+=h;}
    bodyH+=Mathf.Max(0,heights.Count-1)*9;
@@ -195,7 +195,7 @@ namespace Exoduser.UnityPort
    guideScroll=GUI.BeginScrollView(new Rect(left,top,panelW,visibleH),guideScroll,new Rect(0,0,panelW-(total>visibleH?16:0),total),false,total>visibleH);
    float x=52,y=34;GuidePhysicalText(new Rect(x,y,w,16),(step+1)+" / 4",guideProgress,12,3,16);y+=28;
    GuidePhysicalText(new Rect(x,y,w,dialogueH),K(GuideDialogue[step][0],GuideDialogue[step][1]),guideDialogue,dialogueFont,dialogueFont*.12f,dialogueH);y+=dialogueH+10+24;
-   Fill(new Rect(x,y-6,64,1),new Color(.651f,.561f,.404f,.62f*startupGuideOpacity));y+=22;
+   Fill(new Rect(x,y-6,64,1),new Color(143/255f,146/255f,146/255f,.62f*startupGuideOpacity));y+=22;
    GuidePhysicalText(new Rect(x,y,w,titleH),K(GuideTitles[step][0],GuideTitles[step][1]),guideTitle,titleFont,titleFont*.14f,titleH);y+=titleH+14;
    for(int i=0;i<keys.Count;i++){GuidePhysicalText(new Rect(x,y,keyW,heights[i]),keys[i],guideKey,keyFont,keyFont*.08f,lineH);GuidePhysicalText(new Rect(x+keyW+20,y,descW,heights[i]),descriptions[i],guideText,bodyFont,bodyFont*.04f,lineH);y+=heights[i]+(i+1<keys.Count?9:0);}
    if(step==3){y+=16;GuidePhysicalText(new Rect(x,y,w,noteH),note,guideText,15.2f,0,20.52f);y+=noteH;}
@@ -205,6 +205,6 @@ namespace Exoduser.UnityPort
    var e=Event.current;if(!startupInputFence&&e.type==EventType.MouseDown&&e.button==0){if(skip.Contains(e.mousePosition))startup.Skip();else startup.Advance();e.Use();}
    GUI.EndScrollView();
   }
-  void DrawGuideButton(Rect r,string text,bool focus){bool hover=r.Contains(Event.current.mousePosition);var old=GUI.color;if(focus||hover)GUI.color=new Color(old.r*1.18f,old.g*1.18f,old.b*1.18f,old.a);NativeSilverHellUi.Button(r);GUI.color=old;guideAction.font=NativeSilverHellUi.Font(true)??guideText.font;guideAction.fontStyle=FontStyle.Normal;guideAction.fontSize=16;guideAction.normal.textColor=NativeSilverHellUi.Text;GuidePhysicalText(r,text,guideAction,16,16*.24f,46);}
+  void DrawGuideButton(Rect r,string text,bool focus){bool hover=r.Contains(Event.current.mousePosition);var old=GUI.color;if(focus||hover)GUI.color=new Color(old.r*1.18f,old.g*1.18f,old.b*1.18f,old.a);NativeSilverHellUi.Button(r);GUI.color=old;var f=NativeSilverHellUi.Font(true)??guideText.font;float spacing=16*.24f,width=SpacedWidth(f,16,text,spacing)-spacing;DrawSpaced(r.center.x-width/2,r.y,r.height,text,f,16,spacing,NativeSilverHellUi.Text,true);}
  }
 }
