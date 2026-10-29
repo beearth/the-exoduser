@@ -87,6 +87,8 @@ namespace Exoduser.UnityPort
         [Serializable]sealed class ClearReviewFrame{public string name,scope,locale;public int width,height,overflow,missingGlyphs,kills,totalSpawned,clearSeconds,rewardSP,balanceSP,regions,potions,deaths;public bool buttonInside,hasScore;public Rect button;public string[] visible;}
         [Serializable]sealed class ClearReviewReceipt{public string scope="실제 Core 완료 이벤트의 QA 직접 진입·강제 보스 처치와 별도 기존M1스냅샷 표시. 자연M1/손조작E2E 아님";public bool passed;public int failures;public List<string> checks=new List<string>();public List<ClearReviewFrame> frames=new List<ClearReviewFrame>();public string saveDirectory;public long revisionBefore,revisionAfter;}
         ClearReviewReceipt clearReview;string clearReviewOutput;
+        void ClearReviewStep(float aimX,float aimY){var p=Simulation.Player;p.Hp=p.MaxHp;p.Shield=p.MaxShield;p.Iframes=99999;StepInput(0,0,aimX,aimY,false,false);}
+        string ClearReviewState(){var p=Simulation.Player;var f=Simulation.Stage;return "tick="+Simulation.TickCount+" state="+p.State+" hp="+p.Hp+" xy="+p.X+","+p.Y+" arena="+f.InArena+" phase="+f.LoadPhase+" bossAlive="+f.BossAlive+" exits="+f.Exits.Count+" cleared="+f.StageCleared;}
         void ClearCheck(bool ok,string text){clearReview.checks.Add((ok?"통과 ":"실패 ")+text);if(!ok)clearReview.failures++;}
         IEnumerator ClearReviewFrameSave(string name,string scope){
             yield return new WaitForEndOfFrame();var rect=stageClear.ButtonScreenRect;var l=stageClear.LastLayout;
@@ -108,16 +110,17 @@ namespace Exoduser.UnityPort
             ClearCheck(created&&entered&&!lobby.IsBlocking,"격리 신규캐릭터가 실제 진입 API로 게임 도달");
             if(lobby.IsBlocking){yield return ClearReviewFinish();yield break;}
             EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;var sim=Simulation;var p=sim.Player;var flow=sim.Stage;
+            ClearCheck(!PlayerDown,"아레나 QA 시작 전 생존: "+ClearReviewState());if(PlayerDown){yield return ClearReviewFinish();yield break;}
             sim.Config.EnemyAiEnabled=false;sim.Enemies.Clear();sim.Loot.Clear();flow.FieldBossDone=true;flow.ForceUnlock();var gate=flow.Exits[1];p.X=(gate.X+.5f)*40;p.Y=(gate.Y+.5f)*40;p.Iframes=99999;
-            int load=0;while((!flow.InArena||flow.LoadPhase!=0)&&load++<1000){StepInput(0,0,p.X+100,p.Y,false,false);if(load%30==0)yield return null;}
+            int load=0;while((!flow.InArena||flow.LoadPhase!=0)&&load++<1000){ClearReviewStep(p.X+100,p.Y);if(load%30==0)yield return null;}
             var boss=flow.FindBoss();ClearCheck(boss!=null&&flow.InArena,"QA 직접 진입으로 실제 보스 아레나 도달");if(boss==null){yield return ClearReviewFinish();yield break;}
-            for(int i=0;i<300;i++)StepInput(0,0,boss.X,boss.Y,false,false);
-            int kill=0;while(flow.BossAlive&&kill++<4000){p.Hp=p.MaxHp;if(boss.Alive)sim.HurtEnemy(boss,boss.MaxHp*4);StepInput(0,0,boss.X,boss.Y,false,false);if(kill%30==0)yield return null;}
-            for(int i=0;i<100;i++)StepInput(0,0,boss.X,boss.Y,false,false);
+            for(int i=0;i<300;i++)ClearReviewStep(boss.X,boss.Y);
+            int kill=0;while(flow.BossAlive&&kill++<4000){p.Hp=p.MaxHp;if(boss.Alive)sim.HurtEnemy(boss,boss.MaxHp*4);ClearReviewStep(boss.X,boss.Y);if(kill%30==0)yield return null;}
+            for(int i=0;i<100;i++)ClearReviewStep(boss.X,boss.Y);
             p.X=(flow.Arena.ExitX+.5f)*40;p.Y=(flow.Arena.ExitY+.5f)*40;int beforeSp=p.StatPoints,ct=0;
-            while(!flow.StageCleared&&ct++<150)StepInput(0,0,p.X,p.Y-100,false,false);
+            while(!flow.StageCleared&&ct++<150)ClearReviewStep(p.X,p.Y-100);
             var actual=stageClear.CurrentInput;
-            ClearCheck(flow.StageCleared&&stageClear.Active,"실제 출구 Core 이벤트로 결과 활성화");ClearCheck(p.StatPoints-beforeSp==10&&actual.statPointsAwarded==p.StatPoints-beforeSp,"실제SP증가10과표시보상일치");ClearCheck(actual.stageKills==flow.StageKills&&actual.clearSeconds==flow.BossClearSeconds,"처치·시간이현재Core스냅샷과일치");ClearCheck(stageClear.PresentationModel().Score==null,"일반실행의미지원점수/등급생성0");
+            ClearCheck(flow.StageCleared&&stageClear.Active,"실제 출구 Core 이벤트로 결과 활성화: "+ClearReviewState());if(!flow.StageCleared||!stageClear.Active){yield return ClearReviewFinish();yield break;}ClearCheck(p.StatPoints-beforeSp==10&&actual.statPointsAwarded==p.StatPoints-beforeSp,"실제SP증가10과표시보상일치");ClearCheck(actual.stageKills==flow.StageKills&&actual.clearSeconds==flow.BossClearSeconds,"처치·시간이현재Core스냅샷과일치");ClearCheck(stageClear.PresentationModel().Score==null,"일반실행의미지원점수/등급생성0");
             stageClear.AuditText=true;stageClear.ForcedAge=1.5f;lobby.SetLanguage("ko");Screen.SetResolution(1600,900,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);
             yield return ClearReviewFrameSave("event-result-1600-ko","QA직접진입/강제보스처치, 결과는실제Core이벤트·현재데이터. 자연M1아님");
             Screen.SetResolution(960,540,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.25f);yield return ClearReviewFrameSave("event-result-960-ko","동일실제Core결과의작은창");
