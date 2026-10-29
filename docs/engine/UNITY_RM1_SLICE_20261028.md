@@ -249,3 +249,9 @@ root가 candidate2-caps/natural-medium.png·synthetic-high.png·synthetic-moving
 작업ID `unity-stageclear-presentation-rework-20261030T002030KST`. 정확한 제품 후보/실제 빌드 입력 `2376c58584281c4fa74352da75f45311bddbd466`, Unity tree `02a7af43c255640ce5cf547e54b33956946762bd`. A22 SSOT의 현행 데이터·배치·언어/진단·최종 영수증을 따른다. 제목/실제 시간·처치/실제SP/측정통계/저장·로비 행동을 한 패널로 정리하고 완료 중 HUD/LV/SP/타이머 중첩과 내부 미이식/중복줄을 제거했다. Core/점수공식/경제/저장/맵·카메라·보스아트 불변.
 
 새빌드 d8684b11 오류0, 최종표적 Player143c1383 D3D11/RX9070XT·170/170·32프레임·창0/잔여0/USER_SAVE0. 실제 Core 이벤트는 QA 직접진입/생존보조/강제처치로 1/168·16초·SP10, 별도137/168·88초는 기존M1확인값복사 화면이다. 자연M1/손조작/같은사건 전후 아님. 1600원본과960작은창·긴언어1x직접판정은 **클리어 국소개선 확인 / 전체RETOUCH·root독립검수대기**. 새 Runtime 전체M1은 미실행, 이전23/23 소급0. 원본웹/기통과Coreoracle/M1 반복0. 기존 첫 QA5실패/컴파일원인·7공백예외·보스문자추가다듬기/전체리마스터/외곽접합 잔여를 보존한다. 최종 비교·영수증: `I:/EXODUSER-Storage/unity-visual/stageclear-20261030/최종_전후_같은표시값_1600.png`, `후보-제출영수증.json`. 이번 private 제출만, 통합/바로가기갱신0.
+
+## 2026-10-30 클리어 표시 지정 통합 게이트
+
+중앙 root가 제품후보 `5f2996dccdd7d5b4dea732ea71d224db1970447a`의 소스·170검사·143c1383·1600/960/긴번역1x를 독립 인수했다. root 판정은 **기술 RETOUCH**: 중복/미이식표시·버튼좌표 개선 인수, 패널재질/완성도·30영문폴백·점수/등급 미구현 잔여. 보스리마스터/문자계층/외곽접합 등 전체RETOUCH 유지. 실제빌드입력2376c5858/Unity tree02a7af43 불변, 정확candidate3-build Runtime89440bab/Coree6d89a07을 대조했다.
+
+이번 변경Runtime 최초전체M1 **47961226 23/23**·D3D11 RX9070XT·정상종료0·창0/잔여0/USER_SAVE0, 실제13은137/168·88초·지역4·SP10. Simulation.Tick/API 가속 하네스로 손조작E2E 아님. 이전M1소급/기통과표적QA·번역·빌드/Coreoracle 반복0. expected unity/main a2f5058652a91b10ca1357f4a9c39db99a0cbadf를 다시 대조한 이번 지정integrator만 후보+필요docs 비강제 반영·일반바로가기 고유백업후candidate3 연결을 진행한다. 최종소스/연결readback은 `I:/EXODUSER-Storage/unity-visual/stageclear-20261030/통합-최종영수증.json`, A22의 지정통합절과 `통합-새M1-단계영수증.json`에 연결. root 수신의 failed키 혼동은 실제 failures=0/170 확인으로 정정, 제품실패/카운터증가0. 기존실패·7공백예외/WIP·guard·oldI·MP4/구실행본·세이브 보존, 전체PASS0.

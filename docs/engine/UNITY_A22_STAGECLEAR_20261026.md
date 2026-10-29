@@ -170,3 +170,20 @@ clear.ForcedAge                                          // 검증용
 | 데이터·실행·보존 | `candidate3-caps/stageclear-presentation-review.json`, `candidate3-build-receipt.json`, `시도-실패이력.json`, `자동임포트-최종보존복구.json`, `후보-제출영수증.json` |
 
 Unity자동임포트450파일은 I에 보관·SHA 확인 후 승인 입력 byte로 보존했다. 보호된 guard만 WORK에 남기며 INDEX는 비운다. oldI/MP4원본·자동메타/구 실행본/사용자 세이브/과거 실패·7공백 예외를 보존한다. 전체 diff-check PASS로 꾸미지 않으며 이번 정확12파일의 diff 검사와 구분한다. **private 후보 제출만**, unity/main push·바로가기 교체·다른 큐 인수·자동 사용자 앱 실행·새 팀/작업본/writer·비용/삭제/배포·CTO_STATE 쓰기0. 이번 한 건 제출 후 대기한다.
+
+## 2026-10-30 지정 통합 게이트 인수 — 클리어 표시 RETOUCH
+
+중앙 CTO가 후보 `5f2996dccdd7d5b4dea732ea71d224db1970447a`의 소스·최종 표적170검사·143c1383·실제1600/960/긴번역1x를 독립 인수하고 기존 동일 NTFS 담당을 이번 한 건 unity-integrator로 지정했다. 이전 제작후보의 ‘전체 M1 미실행/독립검수대기/통합권한없음’은 제출 당시 이력이며, 이번 게이트는 아래로 갱신한다.
+
+| 경계 | 이번 확인 |
+|---|---|
+| 제품 입력 | 실제 빌드입력 `2376c58584281c4fa74352da75f45311bddbd466`와 후보5f2996dcc의 Unity tree `02a7af43c255640ce5cf547e54b33956946762bd` 동일. Runtime `89440bab113c92835d802fd791d6506942490d147abda7f916ef677b63529efc`, Core `e6d89a07efae6882c3062ac6b9d9fe1d8acdb00340d3a671ba175282a2ab65c5` 실제 파일 SHA 대조. launcher9806해시만으로 새 후보를 증명하지 않음 |
+| 최초 전체 M1 | **47961226,23/23**. 정확 `I:/EXODUSER-Storage/unity-visual/stageclear-20261030/candidate3-build/EXODUSER-Unity.exe`의 변경 Runtime 최초 전체M1을 안전 실행기로 1회. D3D11/RX9070XT·무창/무음/격리저장·정상종료0·창0·잔여0·USER_SAVE0. 기존23/23 소급 아님 |
+| 단계·장면 | 출입/연습종료·이동·전투·회피/QE·스킬·지역/아레나·보스·클리어·저장/이어하기·캡처32장 pause없음 등23단계 통과. 새13-stage-clear는 실제M1완료137/168·88초·지역4·SP10을 직접 열어 확인. Simulation.Tick/API 가속 하네스이며 손조작E2E·전영상 자연재생은 아님 |
+| 원격·소유 | fetch 후 expected unity/main `a2f5058652a91b10ca1357f4a9c39db99a0cbadf` 유지, 후보조상/정확12파일·INDEX비어있음/WORK보호guard만 확인. 이번 제품+필요검수docs만 정상 비강제 fast-forward 대상. 타 큐/다른 후보 포함0 |
+| 실행 전 안전 | 16:25:40Z Unity/UPM/Player0·잠금없음·큐/티켓0·커밋여유22.73GiB·G/E NTFS·E여유1362734583808바이트. 프로젝트/Library G, DOTNET/UPM E, 출력I |
+| 반복·보존 | 새빌드/기통과표적QA·번역/30표시검사/Coreoracle 반복0. 기존 제작법/조건별 컴파일·첫QA5실패/이전후보·7공백예외/oldI/guard/MP4/구실행본/세이브 보존. root 수신검증의 failed키 혼동은 실제 **failures=0,170검사**로 정정했으며 제품실패/카운터증가 아님 |
+
+**root 독립 판정: 중복/미이식 표시·버튼좌표 개선은 기술 RETOUCH 인수.** 패널 재질/완성도·30영문폴백·점수/등급/기록 수집 미구현은 남긴다. 아랍어RTL 영문폴백·다음1-2·장시간/손조작/Mac 실행은 미완료/미검증이며 보스 전체리마스터·문자계층·외곽접합 잔여도 유지한다. 전체6항목/보스아트/AAA PASS0·신규FAIL아트채택0. WORK_QUALITY§1.1의 제작법·가장이른실물판정·동일실패2회/HOLD 규칙을 유지하며 이번은 새 제작/재설계가 아니다.
+
+기존 일반 Unity 바로가기의 연결 대상은 위 candidate3-build와 `-force-d3d11 --remodel3d`이다. 현재값이 기존 boss-text candidate2 연결과 일치할 때만 고유 변경전백업을 만들고 연결한다. 미리보기/accepted-build/기존boss-text/old unity-latest·사용자창/세이브는 보존하며 자동 사용자 앱 실행0. **최종 source 원격SHA·네속성·Managed/백업/미리보기 해시 readback은 같은 폴더의 `통합-최종영수증.json`과 `통합-최종연결확인.json`에서 분리 확정한다.** M1 단계 근거는 `통합-새M1-단계영수증.json`, 실제 전체프레임은 `integration-m1-20261030/caps/`. 이 한 건 후 대기하며 새 팀/작업본/writer·비용/삭제·OS/권한/신뢰·외부배포/Steam/SetLive·서버재시작·CTO_STATE쓰기0.
