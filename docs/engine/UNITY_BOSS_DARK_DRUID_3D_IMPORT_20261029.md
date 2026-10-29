@@ -39,7 +39,13 @@ Unity 첫 임포트가 기존 `.meta` 432개와 `.asset` 1개를 다시 썼다. 
 
 구슬의 기본색은 중립 올리브, `.mtl` Ke 및 Unity 검사 머티리얼 Emission은 LOCK §3/§5의 `#9ea83a`로 지정했다. 자체 렌더 색은 Unity 재질 검수 근거가 아니다. `DarkDruidStaffStudyBuilder.Capture`는 OBJ 임포트·1600×900 Unity 분리 캡처를 위한 검사 코드이며 게임 표시 연결은 없다. OBJ 정적 검사: 정점 22,418/삼각형 44,256/재질 6개, 모든 face 인덱스 유효; 버전 관리본 소스와 I: 출력본의 SHA-256 동일.
 
-Unity 검사 실행 `7947e789`는 새 sparse 작업본에 Library가 없어 UPM `resolve-packages`에서 8분간 응답이 없었고, 에셋 임포트·컴파일·Capture 호출 전에 **자기 Unity PID만 종료**했다. 실행기 `ok=false`, `refresh=compile=exec=0ms`, 사용자 세이브 변경 0, 로그 `I:/EXODUSER-Storage/unity-jobs/codex-boss-sculpt/logs/7947e789.log`와 `I:/exoduser-wt/codex-boss-sculpt/unity/Logs/upm.log`. 따라서 C# 컴파일·Unity OBJ/MTL 임포트·실제 조명/Emission·1600×900 Unity 캡처는 **미검증**이다. 같은 멈춘 실행을 반복하지 않았다.
+Unity 검사 실행 `7947e789`는 새 sparse 작업본에 Library가 없어 UPM `resolve-packages`에서 8분간 응답이 없었고, 에셋 임포트·컴파일·Capture 호출 전에 **자기 Unity PID만 종료**했다. 실행기 `ok=false`, `refresh=compile=exec=0ms`, 사용자 세이브 변경 0, 로그 `I:/EXODUSER-Storage/unity-jobs/codex-boss-sculpt/logs/7947e789.log`와 `I:/exoduser-wt/codex-boss-sculpt/unity/Logs/upm.log`. 이 첫 실행만으로는 C# 컴파일·Unity OBJ/MTL 임포트·실제 조명/Emission·Unity 캡처 근거가 없었다. 같은 캐시 상태로 반복하지 않았다.
+
+새 작업본 캐시의 URP Core·URP·ShaderGraph·VFX Graph 네 패키지 폴더만 기존 I: Library에서 읽기 전용 복사하고 파일 수를 각각 대조한 뒤, 실행 `3ec80df6`에서 UPM 해석이 2.36초로 완료됐다. Unity 6000.6.7f1 첫 Refresh 279,989ms·컴파일 107,345ms, 컴파일 오류 0, 메서드 로그 `renderers=1 submeshes=6`, 분리 캡처 `I:/EXODUSER-Storage/boss/sculpt-20261029/unity-staff-review/front.png`·`game55.png` 각 1600×900, 실행기 `ok=true`, 사용자 세이브 변경 0. `errorLogs=1`은 LicenseClient access-token 갱신 경고이며 라이선스 연결/실행은 성공했다. OBJ에는 노멀이 없어 Unity가 재계산했다. `TagManager.asset` 파서 경고와 로비 영상 `.meta` 누락 경고도 첫 새 Library 임포트에서 관찰됐으나 이 소품 검사 완료를 막지는 않았다.
+
+**Unity 직접 1x 판정: RETOUCH.** 지팡이·새 두개골·케이지·구슬은 분리 장면에서 읽히지만 55°에서 소품이 작고, 뿌리 6개의 반복 형태와 구슬/껍질의 평평한 단색이 드러난다. 자체 소프트웨어 렌더를 Unity 시각 검수로 대신하지 않았다. S3 원화 시트의 동일 크기 나란히 비교, 실제 보스 왼손 소켓·127 접촉/Emission·전투 화면·Player는 아직 없다. 본체 VISUAL FAIL 때문에 아레나 런타임 채택 금지.
+
+첫 임포트가 재작성한 기존 tracked 440경로는 `I:/EXODUSER-Storage/codex-takeover/boss/unity-autoimport-staff-20261029.patch`와 정확 경로 NUL 목록으로 보존한 뒤 HEAD로 원복했다. 새로 생긴 관련 없는 `.meta` 8개도 `unity-autoimport-staff-untracked-20261029/`로 정확 경로 보관했다. 후보 OBJ/MTL/검사 코드의 버전 관리본은 변경되지 않았고 tracked·미추적 작업본은 깨끗하다.
 
 ## 다음 제작 경계
 
