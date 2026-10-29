@@ -647,8 +647,17 @@ function Cmd-Run {
 function Parse-BatchLog([string]$log, [string]$id, [string]$method, [int]$exit, [bool]$finished, [long]$durMs) {
     $refreshMs = 0; $compileMs = 0; $errs = @(); $note = ''
     $crash = $false; $failed = $false; $errLogs = 0
-    if (Test-Path -LiteralPath $log) {
-        $txt = [IO.File]::ReadAllText($log)
+    $txt = $null; $logFailure = ''; $readErrorType = ''; $readErrorMessage = ''
+    try {
+        if (Test-Path -LiteralPath $log) {
+            $txt = [IO.File]::ReadAllText($log)
+        } else { $logFailure = '로그 파일이 없음' }
+    } catch {
+        $readErrorType = $_.Exception.GetType().Name
+        $readErrorMessage = $_.Exception.Message
+        $logFailure = '로그 읽기 실패(' + $readErrorType + '): ' + $readErrorMessage
+    }
+    if ($null -ne $txt) {
         $m = [regex]::Match($txt, 'Total: ([0-9.]+) seconds - Initiated by InitialRefreshV2')
         if ($m.Success) { $refreshMs = [long]([double]::Parse($m.Groups[1].Value, [Globalization.CultureInfo]::InvariantCulture) * 1000) }
         $m2 = [regex]::Match($txt, 'compile time=([0-9.]+)')
@@ -657,15 +666,16 @@ function Parse-BatchLog([string]$log, [string]$id, [string]$method, [int]$exit, 
         if ($txt.Contains('crash has been intercepted')) { $crash = $true }
         foreach ($mm in [regex]::Matches($txt, '(?m)^.*error CS\d+.*$')) { $errs += $mm.Value.Trim() }
         $errLogs = ([regex]::Matches($txt, '(?m)^.*(Exception|error)\b.*$')).Count
-    } else { $note = '로그 파일이 없음' }
+    }
     if ($failed) { $note = '컴파일 오류(Scripts have compiler errors)' }
     if ($crash) { $note = '크래시 감지(crash has been intercepted)' }
     if (-not $finished) { $note = "시간 초과($TimeoutSec 초)로 종료시킴" }
-    $ok = ($exit -eq 0) -and (-not $failed) -and (-not $crash) -and $finished
+    if ($logFailure) { $note = (($note + '; ' + $logFailure).Trim('; ')) }
+    $ok = ($exit -eq 0) -and (-not $failed) -and (-not $crash) -and $finished -and ($null -ne $txt)
     return [ordered]@{
         id = $id; method = $method; ok = $ok; exitCode = $exit; startedAt = (NowIso); durMs = $durMs
         refreshMs = $refreshMs; compileMs = $compileMs; execMs = 0
-        exception = [ordered]@{ type = ''; message = ''; stack = '' }
+        exception = [ordered]@{ type = $readErrorType; message = $readErrorMessage; stack = '' }
         compileErrors = @($errs | Select-Object -First 30); logFile = $log; errorLogs = $errLogs; domainReloads = 0; note = $note; mode = 'batch'
     }
 }
