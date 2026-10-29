@@ -224,3 +224,5 @@ Unity자동임포트450파일은 I에 보관·SHA 확인 후 승인 입력 byte�
 [Unity 공개 C# GUI 참조](https://github.com/Unity-Technologies/UnityCsReference/blob/master/Modules/IMGUI/GUI.cs)는 화면Rect/UVRect를 Native Graphics에 넘기는 경로다. 설치버전 Native 내부의 정수화 구현을 단정하지 않는다. 실물 차이와 소수 destination을 근거로 **각행의 크기를 따로 픽셀화하면서 UV가 어긋난다는 가설**을 세웠다. 기존 경로의 소수 destination에서 실패하는 검사를 먼저 확인했다. 수정은 색/원화/코너 크기/행개수를바꾸지않고, 공유 픽셀경계를 반올림한 뒤 같은원화위치를읽도록 UV를역보정하고 해당모서리만 identity GUI좌표로그린다. 인접행의빈띠/겹침알파띠·수평/수직샘플연속성·동일배율 **1240개 새 불변식검사** 통과. 기존1775/30/170/M1/oracle 재실행0.
 
 이것은 native960 시각실패1회 뒤의 원인수정1회이며 다음후보의같은핵심결함이반복되면중단/HOLD한다. 사전첫합성반려·dotnet실행준비오류·의도된red검사·제품native실패를분리해보존한다. 새출력candidate2-build/candidate2-caps로실행하고이전산출물삭제0.
+
+- 수정후 빌드7d668727/Player9e671e00는35/35·8프레임·창0/잔여0/USER_SAVE0. 960 1x에서가로띠가사라지고원래장식/접합을직접확인했다. 새원화/색/행개수를바꾸지않은공유픽셀경계/UV역보정의단일수정이다. 이전candidate3의960원본은1/168·16초·SP10·지역0이므로, 값이다른137/168·88초와같은값이라고표시하지않는다. **표시전용QA helper에만 pair선택 인자**를추가해그기존실측값의1600/960 두프레임을추가한다. 새출력candidate3-build/paired-caps, 렌더/배치helper/원화/게임데이터코드byte는수정후후보와동일. 기존35/번역/1775/1240/M1/oracle반복0, 추가2프레임·필요입력경계만새증거. 최종Runtime과그앞수정후Runtime의35검사는해시/범위로구분한다.
