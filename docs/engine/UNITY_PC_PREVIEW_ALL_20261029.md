@@ -128,3 +128,15 @@ VISUAL VERDICT: FAIL — 미리보기 검수 산출물 부재에 따른 검수 �
 NEXT PASS: 전사 임포터·필수 자산 소유권 인수 → 새 검수 단위에서 컴파일 0 → RM1 씬 포함 빌드 → 숨은 M1·3D 캡처·격자·바로가기.
 
 ================= 끝 =================
+
+
+## 09시 후속 인수 — brief2 승인 범위
+
+`unity-preview-brief2.md`의 명시 인수 지시에 따라 캐릭터 총괄의 `pc-unity-char` 미커밋 원본을 같은 경로에 동일 바이트로 복사했다. 원본 폴더는 수정하지 않았다.
+
+| 인수 파일 | 의존성·계약 | 상태 |
+|---|---|---|
+| `Editor/CharacterLab/WarriorImport.cs` + `.meta` | UnityEditor·UnityEngine·표준 라이브러리만 참조. 프리팹 `Assets/Exoduser/Art/Characters/Warrior/Warrior.prefab` | 컴파일 의존성 인수, 임포터 실행·전사 자산 채택 아님 |
+| `Editor/CharacterLab/WeaponImport.cs` + `.meta` | UnityEditor·UnityEngine·표준 라이브러리만 참조. 대검 길이 `1.60f`, 프리팹 `Assets/Exoduser/Art/Characters/Warrior/Weapon/Warrior_Greatsword.prefab` | 위와 같음 |
+
+같은 폴더의 추가 `.cs` 의존성은 없다. 직전 실패 `41bfcae6`의 CS0103 세 곳이 수정 전 실패 근거이며, 후속 Win 빌드에서 실제 컴파일 해소를 검증한다. 원본·대상 SHA-256은 `I:/EXODUSER-Storage/unity-preview/resume-brief2/인수-증거.json`에 보존했다. `unity/main`은 변경하지 않는다.
