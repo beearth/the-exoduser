@@ -1,3 +1,5 @@
+2026-10-29 Mac 로비 메타 대비 후보: 최신 웹 `main:7e0113fe4`의 좌상단 회색 alpha `.5`는 실제 1280/1600 1x에서 석재 배경 위 판독이 약했다. Mac 정의 JSON의 일반·한도 alpha만 `.9`로 변경, ARM64 Settings QA build Succeeded/오류0, 5/5 실제 화면·Tab/Return/Esc 유지·로스터 SHA 불변. 웹 세 위치 동기화와 물리 마우스 hit는 HOLD, 전체 VISUAL VERDICT RETOUCH. [수치·화면·후속](engine/UNITY_LOBBY_20261024.md#2026-10-29-좌상단-메타-대비-후보--mac-범위).
+
 2026-10-29 Mac 로비 패치노트 hit/focus 정합: 좌상단 3/4줄의 실제 glyph 폭·행 높이를 공통 `OverlayBounds`로 계산해 표시·클릭·키보드 초점 테두리에 사용. 빈 초점의 첫 Tab을 패치노트 버튼에 연결. ARM64 Settings QA build Succeeded/오류0, 1280에서 Tab→Return 열기·N 뒤입력 차단·Esc 닫기/초점 복귀, 1600에서 표시·테두리 정합을 실제 확인. 마우스 hit 미검증·기존 메타 대비 RETOUCH 유지. [로비 문서](engine/UNITY_LOBBY_20261024.md#2026-10-29-표시패치노트-hitfocus-범위-정합).
 
 2026-10-29 Mac A04 5슬롯 로비 가독성 RETOUCH: 1280·1600 실제 Settings QA 화면에서 축소된 보조 글자를 웹 CSS 픽셀 수준으로 보정하고 좌상단 버전/OFFLINE의 이중 출력을 제거했다. 좌상단 색상은 최신 웹의 회색 반투명 정의로 동기화했다. 최종 빌드 Succeeded/오류0, 우측 겹침0, 로스터 SHA 불변. 좌상단 메타 대비는 정본 CSS 그대로여서 RETOUCH 유지. 캐릭터·로스터·프레임·미디어 변경0. [수치·근거·판정 경계](engine/UNITY_LOBBY_20261024.md#2026-10-29-mac-a04-5슬롯-로비-글자-가독성-후속).
