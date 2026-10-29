@@ -7,6 +7,7 @@ namespace Exoduser.UnityPort
 {
     public sealed partial class NativeGame
     {
+        public static bool HellAtmosphereEnabled { get; private set; }
         Material hellActorMaterial; Light hellHeroRim;
         readonly List<SpriteRenderer> hellFlames=new List<SpriteRenderer>();
         Sprite[] hellFlameFrames;
@@ -28,7 +29,7 @@ namespace Exoduser.UnityPort
                     if(profile.TryGet<Vignette>(out var vignette)){vignette.color.Override(new Color(.008f,.012f,.018f));vignette.intensity.Override(.13f);vignette.smoothness.Override(.65f);}
                     if(profile.TryGet<FilmGrain>(out var grain))grain.active=false;
                 }
-                foreach(var t in root.GetComponentsInChildren<Transform>(true))if(t.name=="Shafts")t.gameObject.SetActive(false);
+                foreach(var t in root.GetComponentsInChildren<Transform>(true))if(t.name=="Shafts"||t.name=="Foreground Cards")t.gameObject.SetActive(false);
                 foreach(var l in root.GetComponentsInChildren<Light>(true))
                 {
                     if(l.type==LightType.Directional){l.color=new Color(.61f,.74f,1f);l.intensity=.7f;l.shadows=LightShadows.Soft;l.shadowStrength=.85f;}
@@ -41,6 +42,7 @@ namespace Exoduser.UnityPort
             {
                 var layers=g.terrainData.terrainLayers;for(int i=0;i<layers.Length;i++){layers[i]=Instantiate(layers[i]);layers[i].normalScale=.8f;layers[i].smoothness=i==0?.32f:.22f;layers[i].specular=new Color(.12f,.12f,.12f);}
                 g.terrainData.terrainLayers=layers;
+                HellGroundSetup(g);
             }
             hellActorMaterial=new Material(Shader.Find("EXODUSER/SpriteLit3D"));hellActorMaterial.SetFloat("_Ambient",.22f);hellActorMaterial.SetFloat("_NormalTilt",.4f);
             var rim=new GameObject("영웅 차가운 림광");rim.transform.SetParent(r3Marker,false);rim.transform.localPosition=new Vector3(-.3f,1.8f,.6f);
@@ -64,6 +66,7 @@ namespace Exoduser.UnityPort
         }
         void HellLightingActive(bool on)
         {
+            HellAtmosphereEnabled=on;
             RenderSettings.ambientMode=on?AmbientMode.Trilight:hellOldAmbient;
             RenderSettings.ambientSkyColor=on?new Color(.10f,.14f,.21f):hellOldSky;RenderSettings.ambientEquatorColor=on?new Color(.065f,.085f,.12f):hellOldEquator;RenderSettings.ambientGroundColor=on?new Color(.025f,.032f,.045f):hellOldGround;
             RenderSettings.fog=on||hellOldFogOn;RenderSettings.fogMode=on?FogMode.ExponentialSquared:hellOldFogMode;RenderSettings.fogColor=on?new Color(.035f,.065f,.085f):hellOldFog;RenderSettings.fogDensity=on?.023f:hellOldFogDensity;
