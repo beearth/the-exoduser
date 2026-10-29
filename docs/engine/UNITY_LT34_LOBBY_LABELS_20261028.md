@@ -11,6 +11,8 @@
 
 2026-10-29 Mac 후속: LT-3의 글자 중복 제거 뒤 1280/1600에서 보존된 14,12,370×102 버튼은 역스케일된 좌상단 4줄의 실제 표시 범위와 어긋났다. `NativeLobbyBuildLabels.OverlayBounds`를 표시·hit·focus 공통 Rect로 사용하도록 좁게 수정했다. 수치·검수 근거는 [로비 문서](UNITY_LOBBY_20261024.md#2026-10-29-표시패치노트-hitfocus-범위-정합)에 둔다.
 
+2026-10-29 최신 웹 계약 정정: 위 LT-3의 웹 오버레이 표시·진입 설명은 당시 구현의 역사다. 현재 사용자 승인 실버 헬 `lobby-silver-hell.css`는 `#lobby #lobbyVerOverlay{display:none!important}`이고, 웹 패치 노트의 유일한 click/Enter/Space 핸들러는 이 숨겨진 요소에 남아 있다. Mac은 기존 첫 Tab→Return·Esc 경로를 유지한다. [실제 웹 접근성 확인과 미검증 범위](UNITY_LOBBY_20261024.md#2026-10-29-패치-노트-진입-계약-후속-확인).
+
 ## LT-4 "이 Mac에 저장"
 
 | 원인 | 수정 |

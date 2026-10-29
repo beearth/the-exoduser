@@ -174,3 +174,11 @@ Mac 일반앱의 첫Metal표시대기실패를 보존했으며, 렌더링옵션�
 원격 웹 `main:df17dbe914d8178d904377dc738fcb60efccab09`의 `index.html` 세 곳에는 여전히 일반 `rgba(131,134,134,.5)`·limits `rgba(132,135,135,.5)`가 있으나, 사용자 승인 실버 헬 UI의 `lobby-silver-hell.css`는 `#lobby #lobbyVerOverlay{display:none!important}`로 개발 정보를 출시 로비에서 숨긴다. 최신 웹 소스와 CSS를 격리 localhost:3334에서 실행한 1600×900 데모 빈 로비에서 실제 화면과 DOM 계산값 `display:none`을 확인했다. 이 화면은 Mac의 5/5·A04QA4 로비와 같은 상태가 아니며 일부 영상 자산은 QA staging에서 누락되어 전체 웹·Mac 디자인 비교 근거로 쓰지 않는다.
 
 따라서 웹의 세 alpha를 `.9`로 바꿔도 현재 화면에는 변화가 없다. 해당 웹 코드 변경 후보는 채택하지 않았고 `main`·`unity/main` 제품 코드는 유지했다. Mac `.9` 후보의 좌상단 네 줄은 기존 1280/1600 실제 1x에서 `.5`보다 잘 읽히지만, **최신 웹은 그 요소 자체를 숨긴다.** 남은 차이는 색 동기화가 아니라 로비 표시·패치 노트 진입 계약이다. 다음 담당은 최신 웹 로비의 패치 노트 접근 경로를 확인해 Mac에 맞추고 실제 1280/1600 화면과 물리 마우스 입력을 재검수해야 한다. **웹 후보 색 변경 0 / 전체 로비 VISUAL VERDICT: RETOUCH / 물리 마우스 hit: HOLD.**
+
+### 2026-10-29 패치 노트 진입 계약 후속 확인
+
+웹 `main:adb287e698738606d12d4a810796efb9493ce7c4`의 `index.html` blob `8d7538a5df36c2c49e39d0f6e9511659f9dbf0da`와 `lobby-silver-hell.css` blob `3928f5b6fcc51195a6383973d0a4897c0a1ab8ec`를 확인했다. 웹 스크립트의 패치 노트 열기 이벤트는 `#lobbyVerOverlay`의 click·Enter·Space에만 연결되고, 닫기는 패널 버튼·배경 click·Esc로 구현되어 있다. 승인된 실버 헬 CSS가 그 유일한 진입 요소를 `display:none!important`로 숨긴다.
+
+격리된 localhost:3335에서 위 정확한 웹 파일로 1600×900 데모 빈 로비를 열었다. 실제 DOM 계산값은 overlay `display:none`, 패널 `display:none`이었다. Tab 8회 순환은 언어 선택→새 캐릭터→시네마틱→Steam→종료→body 순서로 반복되며 overlay로 가지 않았다. 좌상단 좌표 click 후에도 패널은 `display:none`이었다. 열 수 없으므로 닫기·Esc·초점 복귀는 웹 런타임 **미검증**이고, 해당 핸들러의 존재만 정적으로 확인했다. QA staging의 일부 영상 자산이 없어 이 화면으로 전체 로비 디자인을 판정하지 않는다.
+
+Mac `unity/main:9ed30495b050ac877e62b3989d775b41663fe95d`의 기존 실제 1280 증거는 첫 Tab→Return으로 패널 열기, 뒤 캐릭터 입력 차단, Esc 닫기·초점 복귀가 PASS다. Mac의 물리 마우스 hit는 여전히 HOLD다. 웹의 현재 숨김 계약을 Mac에 곧바로 적용하면 검증된 패치 노트 진입 경로가 사라지므로 Mac 제품 변경은 하지 않았다. **기술 판정: 웹 현재 진입 경로 결함 확인 / Mac 기존 키보드 경로 PASS / 웹 닫기·Mac 물리 마우스 HOLD / 전체 로비 VISUAL VERDICT: RETOUCH.** 웹 UI 담당이 승인된 디자인 안에서 보이는 패치 노트 진입 위치와 포커스 계약을 확정·검수하면, Mac 담당이 같은 위치·입력을 이식해 실제 1280/1600 화면을 재검수한다.

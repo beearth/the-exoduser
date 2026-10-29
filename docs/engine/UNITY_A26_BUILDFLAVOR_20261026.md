@@ -99,4 +99,6 @@ NativeLobbyBuildLabels.Draw(float quitButtonCenterY, bool offline=true)   // 192
 
 2026-10-29 후속 정정: 위 표의 좌상단 갈색 `rgba(160,130,90,.5)`·제한 줄 `rgba(200,120,80,.5)`는 당시 웹 캡처의 역사값이다. 최신 `main:77e92a44`의 `index.html#lobbyVerOverlay`는 각각 `rgba(131,134,134,.5)`·`rgba(132,135,135,.5)`이며 Mac Unity `buildflavor_web.json`의 두 배열을 그 값으로 동기화했다. 폰트 12px·자간1.8px·행간19.2px 및 우하단 라벨은 그대로다.
 
+2026-10-29 최신 표시 상태 정정: 웹 `main:adb287e698738606d12d4a810796efb9493ce7c4`의 인라인 alpha는 위 `.5`로 남아 있지만 승인된 `lobby-silver-hell.css`가 좌상단 `#lobbyVerOverlay`를 `display:none!important`로 숨긴다. 따라서 위 표의 4줄은 현재 웹 출시 로비에서 표시되지 않는다. Mac은 별도 `.9` 후보를 표시하므로 현재 시각 계약이 다르다. [실제 화면·패치 노트 경로 판정](UNITY_LOBBY_20261024.md#2026-10-29-패치-노트-진입-계약-후속-확인).
+
 2026-10-29 Mac 후속 대비 후보: 위 `.5` 동기화는 당시 상태다. Mac 실제 1280/1600 1x 판독을 위해 `buildflavor_web.json`의 일반·제한 alpha만 `.9`로 높였다. 현재 웹 `main:7e0113fe4`는 `.5`이므로 색상 완전 동등은 **미완료**다. 정확한 웹 동기화 대상과 실창 판정은 [로비 문서](UNITY_LOBBY_20261024.md#2026-10-29-좌상단-메타-대비-후보--mac-범위)를 따른다.
