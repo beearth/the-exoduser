@@ -1133,7 +1133,7 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 <script src="world-intro-player.js?v=20260907-v12-fullscene-newvoice"></script>
 <script src="world-intro-subtitles-data.js?v=20260907-v13-exodus-ko-escape"></script>
 <script src="world-intro-subtitles.js?v=20260907-v6-cinema-size"></script>
-<link rel="stylesheet" href="cin-enter-engraved.css?v=20261028-gate-sigil">
+<link rel="stylesheet" href="cin-enter-engraved.css?v=20261029-enter2">
 <script>
 // ═══ 글로벌 게임패드 매니저 (전 화면 공통) ═══
 const _GP = {
@@ -2547,6 +2547,8 @@ function playCinematic(){
     try{_stopHover();}catch(e){}
     try{playEnterSFX();}catch(e){} // ENTER 클릭 사운드 — 로비 입장버튼과 동일 (2026-08-11)
     setTimeout(()=>{prompt.style.display='none'},1200);
+    // 2026-10-29 사용자 "세계관 인트로 왜 구버전연결돼있냐": 인장 첫 화면에서는 옛 문 열림 영상(video/intro.mp4, 2026-07 판화)을 건너뛰고 현행 세계관 인트로로 바로 간다. 근거 LOBBY_AAA_REFERENCE_STUDY §17-2
+    if(document.getElementById('gateLock')){window._introVoiceUnlocked=true;startCinBgm();skipBtn.classList.add('show');_cinReady=true;startWorldIntro();return;}
     vid.muted=false; // 영상 자체 사운드(문 열림) 재생
     vid.volume=0.6;
     vid.style.display='';vid.style.opacity='1';

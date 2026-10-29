@@ -143,3 +143,17 @@
 #cinClickPrompt{transition:background-color 1.2s ease}
 #cinClickPrompt:has(#gateLock):has(.cin-hell-frame:not(.dissolve)){background:#000!important}
 #cinClickPrompt:has(#gateLock)::before{display:none} /* 옛 문 비네트(푸른 기 검정 rgba(5,6,7)) — 인장 화면에선 끔 */
+/* ENTER 2차 (2026-10-29 사용자 "엔터 디자인도 엉성하고 중앙정렬도 틀어졌다")
+   - 정렬: 옛 문틈 기준 left:53.5%가 남아 있었음 → 인장·로고와 같은 화면 중심 50%
+   - 디자인: 상자 띠·가로줄 제거. 로고 "— HELL LORD —" 장식선과 같은 은빛 헤어라인 + 안쪽 끝 마름모를 글자 양옆에 두고,
+     글자 뒤엔 가로로 길게 번지는 어둠 + 아주 옅은 진홍 열기만. 글자는 뼈색, 4.2초 주기로 은은하게 숨쉰다. */
+.cin-hell-frame .cin-enter-btn{left:50%;top:88%;height:56px;padding:0 40px;border:0;-webkit-mask-image:none;mask-image:none;
+ background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(150,18,10,.20),transparent 70%),radial-gradient(ellipse 50% 50% at 50% 50%,rgba(0,0,0,.85),transparent 80%)}
+.cin-hell-frame .cin-enter-btn:hover{transform:translate(-50%,-50%)}
+.cin-hell-frame .cin-enter-btn span{display:flex;align-items:center;gap:22px;font:400 21px 'Cinzel','Hahmlet',serif;letter-spacing:.55em;padding-left:0;color:#dfd6c2;
+ text-shadow:0 0 10px rgba(194,26,16,.35),0 1px 4px #000;animation:glEnterBreath 4.2s ease-in-out 3.8s infinite}
+.cin-hell-frame .cin-enter-btn span::before,.cin-hell-frame .cin-enter-btn span::after{content:'';display:block;width:120px;height:9px;flex:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='9' viewBox='0 0 120 9'%3E%3Cdefs%3E%3ClinearGradient id='g'%3E%3Cstop offset='0' stop-color='%23d6d0c4' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23d6d0c4' stop-opacity='.6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='0' y='4' width='109' height='1' fill='url(%23g)'/%3E%3Cpath d='M114.5 0.5 L119 4.5 L114.5 8.5 L110 4.5Z' fill='%23d6d0c4' fill-opacity='.85'/%3E%3C/svg%3E") center/120px 9px no-repeat}
+.cin-hell-frame .cin-enter-btn span::before{margin-right:.55em}.cin-hell-frame .cin-enter-btn span::after{transform:scaleX(-1)}
+.cin-hell-frame .cin-enter-btn:hover span{color:#f2ede2;text-shadow:0 0 14px rgba(214,40,24,.6),0 1px 4px #000}
+@keyframes glEnterBreath{0%,100%{opacity:1}50%{opacity:.72}}
+@media(prefers-reduced-motion:reduce){.cin-hell-frame .cin-enter-btn span{animation:none}}
