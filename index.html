@@ -4570,6 +4570,7 @@ function showCharGate(charId,storySeen=false){
   // ── SCREEN 3: 타이틀 키아트 (여캐 고정, 클릭/키 입력 시 진행) ──
   const _titleArt=new Image();
   _titleArt.src='img/title_bg_20261028.jpg';
+  let _titleWideBackdrop=null;
   const _titleVideo=document.getElementById('splashTitleVideo');
   const _titleUI=document.getElementById('splashTitleUI'),_titleStage=document.getElementById('splashTitleStage');
   const _titleMenu=document.getElementById('splashTitleMenu');
@@ -4738,7 +4739,10 @@ function showCharGate(charId,storySeen=false){
         if(uiReady&&_titleUI.style.display!=='block'){_titleUI.style.display='block';_fitTitleLabels();}
         else if(!uiReady)_titleUI.style.display='none';
         _titleUI.style.opacity=String(fadeIn);
-        if(elapsed>1000&&frame>=0&&frame===lastTitleFrame&&w===lastTitleW&&h===lastTitleH){rafId=requestAnimationFrame(titleLoop);return;}
+        if(elapsed>1000&&frame>=0&&frame===lastTitleFrame&&w===lastTitleW&&h===lastTitleH&&
+           !(w/h>2&&!_titleWideBackdrop&&_titleArt.complete&&_titleArt.naturalWidth>0)){
+          rafId=requestAnimationFrame(titleLoop);return;
+        }
         lastTitleFrame=frame;lastTitleW=w;lastTitleH=h;
         cx.clearRect(0,0,w,h);cx.fillStyle='#000';cx.fillRect(0,0,w,h);
         cx.save();cx.globalAlpha=fadeIn;
@@ -4746,10 +4750,25 @@ function showCharGate(charId,storySeen=false){
         const titleWidth=titleSource.videoWidth||titleSource.naturalWidth;
         const titleHeight=titleSource.videoHeight||titleSource.naturalHeight;
         if(titleWidth&&titleHeight){
-          // 16:9 전체 화면 그림을 cover로 채운다. 좁은 화면은 오른쪽 인물을 살리도록 가로 62% 기준으로 자른다.
-          const k=Math.max(w/titleWidth,h/titleHeight);
+          // 화면비 2:1 초과에서는 위아래가 잘리지 않도록 원화를 세로 기준으로 맞춘다.
+          const wide=w/h>2;
+          if(wide&&_titleArt.complete&&_titleArt.naturalWidth&&_titleArt.naturalHeight){
+            const bw=Math.ceil(w),bh=Math.ceil(h);
+            if(!_titleWideBackdrop||_titleWideBackdrop.width!==bw||_titleWideBackdrop.height!==bh){
+              _titleWideBackdrop=document.createElement('canvas');
+              _titleWideBackdrop.width=bw;_titleWideBackdrop.height=bh;
+              const bc=_titleWideBackdrop.getContext('2d');
+              const bk=Math.max(w/_titleArt.naturalWidth,h/_titleArt.naturalHeight);
+              bc.filter='blur(48px) brightness(.38)';
+              bc.drawImage(_titleArt,(w-_titleArt.naturalWidth*bk)/2,(h-_titleArt.naturalHeight*bk)/2,
+                _titleArt.naturalWidth*bk,_titleArt.naturalHeight*bk);
+            }
+            cx.drawImage(_titleWideBackdrop,0,0,w,h);
+          }
+          // 화면비 2:1 이하는 기존 cover와 오른쪽 인물을 살리는 62% 가로 포커스를 유지한다.
+          const k=wide?Math.min(w/titleWidth,h/titleHeight):Math.max(w/titleWidth,h/titleHeight);
           const dw=titleWidth*k,dh=titleHeight*k;
-          const dx=Math.min(0,Math.max(w-dw,(w-dw)*0.62)),dy=(h-dh)/2;
+          const dx=wide?(w-dw)/2:Math.min(0,Math.max(w-dw,(w-dw)*0.62)),dy=(h-dh)/2;
           cx.drawImage(titleSource,dx,dy,dw,dh);
         }else{
           cx.textAlign='center';cx.textBaseline='middle';

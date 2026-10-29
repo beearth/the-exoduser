@@ -92,3 +92,8 @@
 - 승인된 로비 CSS가 좌상단 개발용 `#lobbyVerOverlay`를 숨겨 패치노트 열기 경로가 사라진 원인을 재현했다. 기존 우하단 `#lobbyVersionTxt`를 같은 위치의 버튼으로 바꾸고 기존 `#patchNotesPanel` 열기 함수에 연결했다. 숨은 개발 정보와 패널 내용·번역 키·레이아웃은 늘리지 않았다.
 - 후보 제작 당시 격리 `server.cjs`, 1600×900, 무창·무음 Playwright에서 클릭·Tab→Enter/Space·Esc·닫기 버튼·배경 클릭·포커스 복귀·`aria-expanded` 및 pageerror 0을 확인했다. 증거: `I:/EXODUSER-Storage/design/patch-notes-20261029/after_result.json`, `after_lobby_1600.png`, `after_open_1600.png`. 이는 당시 로컬 웹 소스 검수이며 DEMO/EA/NW.js 반영 증거는 아니다.
 - H5 검수 인수: 후보 `43e4eb2690cba1d4ef1c7666bf874cd716f1e77a`의 두 코드 파일과 관련 네 문서를 원격 main `04582cd03a253c800507537dfc54fce4af86de4e` 위에 정확 경로로 이식했다. 두 코드 파일은 후보와 동일 byte이고 인계·디자인 문서는 통합 상태만 보강했다. 새 base의 변경은 보스 인계 문서뿐이었다. 통합 트리의 격리 1600×900 재검수도 입력·포커스·pageerror 0이며 캡처는 `I:/EXODUSER-Storage/design/patch-notes-20261029/integration-04582cd0/`. 원격 main 반영 SHA·실행본과의 차이는 외부 `design/REPORT.md`와 `MERGE_QUEUE.md`에 기록한다. 전체 로비 품질 판정은 RETOUCH, NW.js/DEMO/EA/사용자 실행본은 별도다.
+
+## 2026-10-29 타이틀 32:9 구도만 분리한 제작 후보
+
+- 기준 main `41777b450`: 5120×1440 cover가 `x=0,y=-720,w=5120,h=2880`으로 그려 인물 머리·태양이 잘렸다. 새 `codex/h5-title-wide-framing-20261029` 후보는 화면비 >2에서만 본 영상/원화를 중앙 세로 맞춤 `(1280,0,2560,1440)`으로 두고, 같은 원화의 어두운 블러 캐시를 양옆에 깐다. 1600×900 cover `(0,0,1600,900)`와 메뉴·패치노트·영상 src/루프/입력은 유지했다.
+- `I:/EXODUSER-Storage/design/title-wide-layout-20261029/`의 before/after 1600×900·5120×1440 화면을 직접 보고, 영상 readyState 4·시간 증가·탭 숨김 pause/복귀 play·영상 요청 실패 정지 원화 폴백·resize cache·pageerror 0을 확인했다. 32:9 잘림 **부분 구도 PASS 후보**. 전체 타이틀은 RETOUCH, 구름/강/태양 모션은 이전 대기 브랜치 `79c1ad392`에만 있고 이번 후보에는 없다. 실제 32:9 모니터·NW.js·DEMO/EA·사용자 실행본·main 통합은 미검증/미반영. 유료 생성·원본 에셋 변경 0.
