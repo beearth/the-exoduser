@@ -182,3 +182,15 @@ Mac 일반앱의 첫Metal표시대기실패를 보존했으며, 렌더링옵션�
 격리된 localhost:3335에서 위 정확한 웹 파일로 1600×900 데모 빈 로비를 열었다. 실제 DOM 계산값은 overlay `display:none`, 패널 `display:none`이었다. Tab 8회 순환은 언어 선택→새 캐릭터→시네마틱→Steam→종료→body 순서로 반복되며 overlay로 가지 않았다. 좌상단 좌표 click 후에도 패널은 `display:none`이었다. 열 수 없으므로 닫기·Esc·초점 복귀는 웹 런타임 **미검증**이고, 해당 핸들러의 존재만 정적으로 확인했다. QA staging의 일부 영상 자산이 없어 이 화면으로 전체 로비 디자인을 판정하지 않는다.
 
 Mac `unity/main:9ed30495b050ac877e62b3989d775b41663fe95d`의 기존 실제 1280 증거는 첫 Tab→Return으로 패널 열기, 뒤 캐릭터 입력 차단, Esc 닫기·초점 복귀가 PASS다. Mac의 물리 마우스 hit는 여전히 HOLD다. 웹의 현재 숨김 계약을 Mac에 곧바로 적용하면 검증된 패치 노트 진입 경로가 사라지므로 Mac 제품 변경은 하지 않았다. **기술 판정: 웹 현재 진입 경로 결함 확인 / Mac 기존 키보드 경로 PASS / 웹 닫기·Mac 물리 마우스 HOLD / 전체 로비 VISUAL VERDICT: RETOUCH.** 웹 UI 담당이 승인된 디자인 안에서 보이는 패치 노트 진입 위치와 포커스 계약을 확정·검수하면, Mac 담당이 같은 위치·입력을 이식해 실제 1280/1600 화면을 재검수한다.
+
+### 2026-10-29 웹 우하단 패치 노트 후보와 Mac 소스 대조
+
+웹 `main:04582cd03a253c800507537dfc54fce4af86de4e`에는 아직 패치 노트 진입 수정이 없다. 별도 **미채택** 원격 후보 `codex/pc-design-boss-quality-review-20261029:43e4eb2690cba1d4ef1c7666bf874cd716f1e77a`의 `index.html`·`lobby-silver-hell.css` diff만 읽었다. 후보의 `#lobbyVerOverlay` 숨김은 유지되고, 이미 표시되던 우하단 `#lobbyVersionTxt`가 `button`으로 바뀐다. 버튼은 기존 라벨 문구를 표시하고 `aria-haspopup=dialog`·`aria-controls=patchNotesPanel`·`aria-expanded=false/true`, 최소 높이32px·좌우 padding6px·hover/focus 표시를 갖는다. click 및 네이티브 Enter/Space로 열고 닫기 버튼·배경 click·Esc로 닫으며 마지막 초점으로 복귀하는 웹 코드다. 후보의 별도 1600×900 실행 영수증은 상위 검토자가 확인했으며, **Mac 담당의 독립 웹 런타임 재검수는 이 단위에서 하지 않았다.**
+
+| 계약 | 미채택 웹 후보 | 현 Mac `unity/main:967bddf474d739c3b34b18bf164f019d620b88b3` 소스 |
+|---|---|---|
+| 표시·진입 | 좌상단 개발 정보 숨김, 우하단 기존 라벨이 버튼 | `NativeLobbyBuildLabels.Draw`가 좌상단 3/4줄과 우하단 `f.Label`을 모두 그림. `NativeLobby.PatchNotes.cs:DrawPatchNotesLauncher`는 좌상단 `OverlayBounds()`만 hit/focus로 사용하고 우하단 라벨은 표시 전용 |
+| 버튼 범위·순서 | 우하단 라벨에 최소 높이32px·padding6px; 시네마틱·Steam 뒤, 종료 앞의 Tab 순서 | 우하단 글자는 `cornerRight=1844`, 중심 y913의 높이15px; hit 영역 없음. `HandlePatchNotesKeys`가 첫 Tab을 좌상단 `patch-notes-open`으로 강제 |
+| 모달 | 버튼에서 열 때 close로 초점 이동, Esc/닫기 버튼/배경으로 닫고 우하단 버튼에 초점 복귀 | 좌상단에서 열어 close로 초점 이동, Esc/Return/Space/닫기 버튼/바깥 click으로 닫고 이전 초점(없으면 좌상단)에 복귀. 기존 1280 키보드 실검수 PASS, 물리 마우스 HOLD |
+
+후보가 웹 `main`에 정식 채택된 뒤 필요한 **Mac 최소 수정 위치**는 `NativeLobbyBuildLabels.cs`의 좌상단 표시 호출·우하단 라벨 Rect, `NativeLobby.PatchNotes.cs`의 `DrawPatchNotesLauncher`와 `HandlePatchNotesKeys`·닫기 초점 복귀, `NativeLobby.cs`의 버튼 그리기 순서, `buildflavor_web.json`의 좌상단 표시 계약 및 관련 docs다. 기존 첫 Tab→Return/Esc 검증 경로는 후보 채택 전까지 보존한다. 이번 단위는 비교 기록만 하며 Mac 제품 변경·새 빌드·Player 실행 0, 전체 로비 VISUAL VERDICT: RETOUCH, 물리 마우스 hit: HOLD다.
