@@ -39,6 +39,13 @@
 - 재생성/비교 소스와 관련 기록은 `codex/pc-boss-takeover-20261028` `906661e1c050e2a24af5ae75215271cc596e5755` 비강제 push·원격 SHA 확인. 실패 OBJ/MTL과 이미지 출력은 I: 연구 보관소에만 두고 제품 `Studies`·통합 큐·런타임에는 넣지 않았다. Unity/UPM·빌드·Player·M1, 신규 유료 호출은 모두 0. 기존 유료 승인 요청은 중복하지 않았다.
 - 다음 제작은 같은 체적 경로의 수치 조정 반복을 멈추고, 실제 조형 가능한 원본 소스 또는 수작업 저작 환경에서 줄기·케이지·코어를 함께 조형하고 UV/표면을 검수해야 한다. 본체 VISUAL FAIL과 왼손 소켓/127·실제 전투 미검증은 그대로다.
 
+### 2026-10-29 S3 지팡이 Blender 편집 원본 시험 (최신)
+
+- 공식 Blender 5.2.3 LTS Windows x64 portable ZIP 405,839,452바이트를 I: 전용 폴더에 받았고 공식 SHA-256 `723F08A4401502561EB763CDEACF8745B31E5F3F154D287D3830D97CF75DC2FB`와 일치했다. I:의 전용 프로필·TEMP와 factory 설정에서만 실행했다. 설치·사용자 설정 변경·신규 유료 호출 0.
+- `unity/Tools/boss/author_druid_staff_blender.py`에서 기존 하부 손잡이/새 두개골/뼈 마개를 보존하고 편집 가능한 Blender 단면 메시 8개를 기본 voxel remesh로 합쳐 목과 큰 뿌리 후보를 만들었다. 결과 `.blend` `I:/EXODUSER-Storage/boss/local-authoring-20261029/dark_druid_staff_S3_blender_authoring.blend`를 재열기 확인했다. SHA-256 `6161F4E0CEC79483D4B706EF78E5459688F405915E7AFF98828A1BF52175D67A`. 원화/atlas는 외부 경로 참조다.
+- `review/`에 v2·직전 FAIL·새 후보 각각 정면/55°/측면과 목 3방향 확대, 같은 카메라·조명·크기 1600×900 총 18장을 출력해 S3 원본과 직접 비교했다. 목의 단절은 줄었지만 큰 형태는 규칙적인 갈퀴이고 수피 부조·코어 깊이가 부족하다. **제품 VISUAL FAIL 유지, 채택 0.** 편집 원본 확보를 디자인 통과로 세지 않는다. 단면 경로 자동 생성을 더 반복하지 않고 실제 손 조형으로 바꿔야 한다.
+- 코드+관련 docs `codex/pc-boss-takeover-20261028` `d6d8ad1ad2e7b4f63705862ab8f6fe47a4b5d5bc` 비강제 push·원격 SHA 확인. `.blend`와 PNG는 I: 연구 보관소에만 있고 제품 `Studies`·런타임·통합 큐에는 없다. Unity/UPM/빌드/M1/Player 0. 본체 VISUAL FAIL, 왼손 소켓/127·보스방/전투 미검증 유지. 상세는 코드 브랜치 `docs/engine/UNITY_BOSS_DARK_DRUID_3D_IMPORT_20261029.md`.
+
 ## 진행 중·대기
 
 1. **RB1-3 표현 검증:** 과거 `E:/exoduser-wt/codex-boss`에서 공용 `unity/Tools/devtools/exo-unity.ps1`로 임포트 작업 2회 실행했지만 후속 검증은 완료되지 않았다(위 영수증). 현재 새 작업 위치는 I:이며 과거 E: 실행 창·캐시가 자동 이전됐다고 보지 않는다. Win64 빌드 오류 0, `--unity-review-args-capture --unity-druid-remodel --unity-boss-direct 0`, 예고 PNG 1x 판정과 현재 후보 SHA의 m1-check는 새로 필요하다. 이 근거 전에는 통합 큐에 넣지 않는다.
