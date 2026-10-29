@@ -99,3 +99,20 @@ root가 candidate2-caps/natural-medium.png·synthetic-high.png·synthetic-moving
 기존전은가속M1, 후는직접보스입장·생존보조·StepInput 실제AI/분리한합성이다. 같은사건전후·손조작E2E로부르지않는다. 새전체M1통과도이시각판정을PASS로올리지않는다. 기존05후보고밀도숫자대기실패→실제치수실패재현→유형우선순위수정→40검사/표적전투성공이력은그대로보존한다.
 
 최종소스통합·일반바로가기연결·문서인계만완료하고이한건결과제출뒤대기한다. 손조작/장시간/전언어·전체리모델·Mac반영/실행은별도미검증이다. 근거는동일boss-text-20261029폴더의 통합-소스선행확인.json, 통합-새M1-단계영수증.json, 통합-원격제품반영.json, 통합-바로가기-변경전/후.json, 통합-최종연결확인.json, 통합-최종영수증.json. 전체기존7공백예외를포함한diff-check PASS를주장하지않으며이번문서경로검사와구분한다.
+
+## 2026-10-30 클리어 표시 지정 통합 완료 — 기술 RETOUCH
+
+중앙 CTO가 기존 동일 세션을 이번 한 건 unity-integrator로 지정했다. 제품 후보 `5f2996dccdd7d5b4dea732ea71d224db1970447a`의 소스·170검사·Player143c1383·실제1600/960/긴번역1x는 root가 독립 인수했다. 제작 후보 당시 통합대기/전체M1미실행 상태는 아래 새 증거로 갱신한다.
+
+| 경계 | 최종 확인 |
+|---|---|
+| 소스/원격 | expected unity/main `a2f5058652a91b10ca1357f4a9c39db99a0cbadf`를 fetch/원격/조상 재대조하고 정확 후보+필요 A22/RM1 2SSOT 후속 `c122746b9858a2ccb50d97dccf276140c155383f`로 정상 비강제 fast-forward. private/원격 동일. 다른 큐/후보 추가0 |
+| 빌드 입력 | `2376c58584281c4fa74352da75f45311bddbd466`/제품5f/최종공통의 Unity tree `02a7af43c255640ce5cf547e54b33956946762bd` 동일. 새 빌드0, 기존d8684b11 영수증오류0 재사용. Runtime `89440bab113c92835d802fd791d6506942490d147abda7f916ef677b63529efc`·Core `e6d89a07efae6882c3062ac6b9d9fe1d8acdb00340d3a671ba175282a2ab65c5` 실제 byte 대조. launcher9806해시 단독식별0 |
+| 필수 새 회귀 | 정확 `I:/EXODUSER-Storage/unity-visual/stageclear-20261030/candidate3-build/EXODUSER-Unity.exe`의 변경 Runtime 최초 전체M1 **47961226 23/23**·D3D11/RX9070XT·정상종료0·창0/잔여0/USER_SAVE0. 실제클리어137/168·88초·지역4·SP10, 저장/이어하기 통과. 가속 Simulation.Tick/API 하네스이며 손조작E2E 아님 |
+| 일반 바로가기 | 기존 boss-text candidate2 네속성/미리보기/기존백업 일치 확인 후 고유백업을 만들고 candidate3-build exe, `-force-d3d11 --remodel3d`, 시작candidate3-build, 아이콘같은exe,0으로 연결. 저장후 네속성·Managed·원격SHA 독립readback 일치. 사용자 앱 자동 실행0 |
+| 고유 변경전 백업 | `지옥의 길 (Unity)-클리어통합전-20261030T012915KST.lnk`, SHA `82483213b4e85d805305facee2fe9f84afcf1de90678076e74367b8c91805ab7`. 미리보기SHA `ac9a0cf88cee2739e33c195ed84cd361daf079b9ee529cacc092f9254e4560d0` 전후동일. 기존 accepted-build/boss-text/old unity-latest/이전백업·사용자창/세이브·oldI/양쪽guard/MP4 보존 |
+| 반복·실패 경계 | 이번은 변경Runtime 최초전체M1 1회. 기통과 표적QA/번역/빌드/Coreoracle 반복0. 기존 제작법/조건별실패·7공백예외/동일실패2회/HOLD 유지. root 수신검증의 failed키 혼동은 실제 failures=0/170 확인으로 정정했으며 제품실패/카운터증가 아님 |
+
+**root 최종 인수는 기술 RETOUCH**: 중복/미이식 표시·버튼좌표 개선만 인수. 패널 재질/완성도·30영문폴백·점수/등급/기록 수집 미구현, 아랍어RTL·다음1-2·장시간/손조작/Mac 실행은 남긴다. 전체보스리마스터·문자 중요도계층/외곽접합도 미완성 유지. 전체6항목/AAA/보스아트 PASS0·신규FAIL아트채택0. WORK_QUALITY§1.1의 목표/제작법/가장이른실물판정 규칙은 후속제작에도 유지하며 이번은 검수된 기술개선의 지정통합이다.
+
+프로젝트/Library G·DOTNET/UPM E NTFS, 출력/로그/보관I. 새팀/작업본/writer/비용/삭제/reset/stash/force/권한·신뢰·OS예약/외부배포·Steam·SetLive/서버재시작/CTO_STATE쓰기0. 이번 한 건의 소스 반영·일반바로가기 연결·인계를 완료하고 대기한다. 근거는 `I:/EXODUSER-Storage/unity-visual/stageclear-20261030/`의 `통합-소스선행확인.json`, `통합-새M1-단계영수증.json`, `통합-원격제품반영.json`, `통합-바로가기-변경전/후.json`, `통합-최종연결확인.json`, `통합-최종영수증.json`. 전체7공백예외를포함한diff-check PASS를주장하지않고 자기 정확문서경로 검사와 구분한다.
