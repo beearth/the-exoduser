@@ -55476,3 +55476,12 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 보존 | G:/exoduser 사용자 파일 readonly, 승인된 별도 G:/exoduser-wt 쓰기 허용. 기존 I: 트리·에셋·과거 영수증 경로·실패 카운터·중단 이력·FAIL 비채택·같은 제작법 중단·통합/배포 권한·Mac 독립 작업 유지 |
 | 근거 | COMMON_RULES 마지막 NTFS 정책·CLAUDE_REVIEW §4-보완과 중앙 CTO 위임을 대조. 담당 Get-Volume 조회에서 G:/E: NTFS·I: exFAT 확인. 원인 가설과 root가 인수한 UPM IPC 200을 구분하며 컴파일·빌드·실게임 품질 PASS로 확대하지 않음 |
 | 비실행 | 코드·모델·사용자 전역 설정·CTO_STATE·자동화 변경, 기존 작업본 이동·삭제·전체 복제, Unity 실행·빌드·새 비용·배포 0. safe.directory는 자기 정확 경로의 명령 범위만 사용 |
+
+## 2026-10-30 — 기획부터 최상 품질·노레위 맵/임팩트 실물 학습
+
+| 항목 | 변경·검증 범위 |
+|---|---|
+| 현행 지침 | AGENTS·CLAUDE·WORK_MANUAL을 기존 WORK_QUALITY_STANDARD §1.1에 연결. 직접 본 기준·완성 장면/경험·현재 차이·제작 방법·조기 실물 판정·합격/방법 변경/중단 조건을 기존 브리프에 구체화. 목적 없는 저품질 양산·동일 실패·계획/보고 반복 금지 |
+| 실제 자료 | 공식 Steam 스크린샷 21장과 공식 트레일러 4편을 I:/EXODUSER-Storage/codex-takeover/quality-reference-20261030/에 보존. 전체 개요 보드·스크린샷 4개 원본·임팩트 6구간 216표본 프레임을 직접 확인. 출처/해시/확인 범위는 manifest.json, 배운 특징과 EXODUSER 적용/탈락 조건은 기존 품질 기준 §1.2 |
+| 적용 경계 | 참고작의 자산·좁은 전투·색·판정 수치를 복제하지 않음. 맵 가이드 전체·CH1-1 피부/동맥/부패 생체나무·VFX 마스터의 기존 수치·Q/E·FAIL/RETOUCH·실패 카운터·NTFS·Mac·단일 writer·승인 경계 보존. 영상 편집 컷/시네마틱/검정 화면과 실제 플레이를 구분 |
+| 완료 경계 | 자료 수집·분석·지침 반영이며 게임 코드/에셋·실행본·게임 시각 품질 개선 완료는 아님. 외부 미디어 Git 반입·Unity 실행·새 비용·배포 0 |
