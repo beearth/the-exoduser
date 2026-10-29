@@ -168,9 +168,20 @@ namespace Exoduser.UnityPort
    lobbySub=new GUIStyle(lobbyTitle){fontSize=13};lobbySub.normal.textColor=new Color(.82f,.745f,.627f);
    lobbyPlus=new GUIStyle(lobbyMicro){fontSize=25};lobbyPlus.normal.textColor=new Color(.706f,.549f,.431f,.4f);
   }
+  void UpdateLobbyTextScale()
+  {
+   // Web lobby text stays in CSS pixels. Keep small IMGUI labels readable when the 1920 design is fitted to a smaller window.
+   float fit=Mathf.Min(Screen.width/1920f,Screen.height/1080f),unit=1/Mathf.Max(.1f,fit);
+   lobbyText.fontSize=Mathf.RoundToInt(Mathf.Max(15,12*unit));
+   lobbyMicro.fontSize=Mathf.RoundToInt(12*unit);
+   lobbyMode.fontSize=Mathf.RoundToInt(Mathf.Max(11,11.5f*unit));
+   lobbyPromo.fontSize=Mathf.RoundToInt(Mathf.Max(14,12*unit));
+   lobbyPromoDetail.fontSize=Mathf.RoundToInt(Mathf.Max(11,12*unit));
+   characterSmall.fontSize=Mathf.RoundToInt(Mathf.Max(20,16*unit));
+  }
   void DrawLobby()
   {
-   LobbyStyles();CharacterStyles();OpenPatchNotesForQaOnce();HandlePatchNotesKeys();if(!patchNotesOpen&&Event.current.type!=EventType.Used){HandleCharacterKeys();HandleLanguagePopupKeys();}bool priorEnabled=GUI.enabled,previousEnabled=priorEnabled&&!patchNotesOpen;GUI.enabled=previousEnabled&&!lobbyQuitPrompt&&!CharacterModalOpen;DrawLobbyBackground();DrawSelectedCharacter();
+   LobbyStyles();CharacterStyles();UpdateLobbyTextScale();OpenPatchNotesForQaOnce();HandlePatchNotesKeys();if(!patchNotesOpen&&Event.current.type!=EventType.Used){HandleCharacterKeys();HandleLanguagePopupKeys();}bool priorEnabled=GUI.enabled,previousEnabled=priorEnabled&&!patchNotesOpen;GUI.enabled=previousEnabled&&!lobbyQuitPrompt&&!CharacterModalOpen;DrawLobbyBackground();DrawSelectedCharacter();
    DrawPatchNotesLauncher();
    if(lobbyPanel!=null)Image(new Rect(1360,0,560,1080),lobbyPanel,ScaleMode.StretchToFill);
    else Fill(new Rect(1360,0,560,1080),new Color(.063f,.051f,.055f));
@@ -187,9 +198,9 @@ namespace Exoduser.UnityPort
    Border(new Rect(1409,515,40,40),new Color(.47f,.38f,.26f),1);Label(new Rect(1409,515,40,40),"+",lobbyPlus,TextAnchor.MiddleCenter);Label(new Rect(1461,515,395,40),(Characters.Count<5?K("새 캐릭터 · N","New character · N"):K("슬롯 가득참 · 5 / 5","All slots occupied · 5 / 5")),lobbyText,TextAnchor.MiddleLeft);
    GUI.enabled=GUI.enabled&&characterWritesAllowed&&Characters.Count<CharacterRoster.Capacity;GUI.SetNextControlName("character-create-card");if(GUI.Button(create,"",GUIStyle.none))OpenCharacterCreation();if(characterRestoreCreateFocus&&Event.current.type==EventType.Repaint){if(GUI.enabled)GUI.FocusControl("character-create-card");characterRestoreCreateFocus=false;}GUI.enabled=previousEnabled&&!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen;
    Label(new Rect(1392,570,480,18),K("↑↓ 선택 · Enter 입장 · Delete 삭제","↑↓ Select · Enter play · Delete remove"),lobbyMicro,TextAnchor.MiddleCenter);
-   Label(new Rect(1392,591,480,57),K("여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다","Every Steam wishlist helps\nEXODUSER: HELL LORD\nbegin its next journey"),lobbyPromo,TextAnchor.MiddleCenter);
-   Label(new Rect(1392,653,480,16),K("공식 출시 소식을 가장 먼저 받아보세요","Be the first to hear about the official release"),lobbyPromoDetail,TextAnchor.MiddleCenter);
-   Image(new Rect(1532,674,200,44),lobbyBanner);if(GUI.Button(new Rect(1532,674,200,44),"",GUIStyle.none))Application.OpenURL("https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/");
+   Label(new Rect(1392,591,480,67),K("여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다","Every Steam wishlist helps\nEXODUSER: HELL LORD\nbegin its next journey"),lobbyPromo,TextAnchor.MiddleCenter);
+   Label(new Rect(1392,660,480,20),K("공식 출시 소식을 가장 먼저 받아보세요","Be the first to hear about the official release"),lobbyPromoDetail,TextAnchor.MiddleCenter);
+   Image(new Rect(1532,686,200,44),lobbyBanner);if(GUI.Button(new Rect(1532,686,200,44),"",GUIStyle.none))Application.OpenURL("https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/");
    Fill(new Rect(1388,740,504,1),new Color(.588f,.443f,.306f,.333f));
    var tint=GUI.color;if(Characters.SelectedIndex>=0)Image(new Rect(1392,751,496,132),enterButton);else if(disabledEnter!=null)Image(new Rect(1392,751,496,132),disabledEnter);else{GUI.color=new Color(.45f,.45f,.45f);Image(new Rect(1392,751,496,132),enterButton);GUI.color=tint;}
    GUI.enabled=GUI.enabled&&Characters.SelectedIndex>=0;if(GUI.Button(new Rect(1392,751,496,132),"",GUIStyle.none))EnterSelectedCharacter();GUI.enabled=previousEnabled&&!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen;

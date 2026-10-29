@@ -1,3 +1,5 @@
+2026-10-29 Mac A04 5슬롯 로비 가독성 RETOUCH: 1280·1600 실제 Settings QA 화면에서 축소된 보조 글자를 웹 CSS 픽셀 수준으로 보정하고 좌상단 버전/OFFLINE의 이중 출력을 제거했다. 좌상단 색상은 최신 웹의 회색 반투명 정의로 동기화했다. 최종 빌드 Succeeded/오류0, 우측 겹침0, 로스터 SHA 불변. 좌상단 메타 대비는 정본 CSS 그대로여서 RETOUCH 유지. 캐릭터·로스터·프레임·미디어 변경0. [수치·근거·판정 경계](engine/UNITY_LOBBY_20261024.md#2026-10-29-mac-a04-5슬롯-로비-글자-가독성-후속).
+
 2026-10-29 Mac 첫 연습 마우스 버튼 브리지: 웹 `mouse2`(오른쪽)/`mouse1`(가운데)와 Unity 버튼 1(오른쪽)/2(가운데)을 입력 및 바인딩 캡처 양쪽에서 변환. ARM64 Settings QA build Succeeded/errors0; 실제 오른쪽 클릭 마법 처치 5/5, 첫 연습 1~9단계 PASS. 방향+Space 구르기 0/5는 CUA 동시 일반키 입력 제한으로 HOLD, 일반 몹·드롭 미검증. 같은 날 정식 보조키 UI 재시도에서 조작 탭 키보드 진입 PASS, 구르기 보조 버튼 CUA 클릭은 대기 상태 미진입·격리 설정 SHA 불변으로 HOLD. SHA 고정 Finder 검토 실행기는 별도 빈 marker root의 첫 로비와 중복 거부를 확인했다. 제품·기본키 변경 없음. [번호표·증거](engine/UNITY_MAC_PRACTICE_MOUSE_BRIDGE_20261029.md).
 
 2026-10-27 Mac A15 설정 4탭 후보/Player 후속: 게임/화면/사운드/조작 구조와 지원된 FPS/fullscreen/SFX/BGM·기존 key list 연결. 설정 비대기 Tab은 메뉴 초점 이동, 루트 Tab 인벤토리와 대기 중 Tab 바인딩은 기존 분기. Navigation42/42·최종 ARM64 QA Player 빌드 Succeeded/오류0. 격리 PID의 720p 4탭·SFX60→61% 키 입력과 1080p 화면/사운드 2열 확인; 좁은 1열·실제 key capture/청취/재시작은 HOLD. [계약·귀속](engine/UNITY_MAC_A15_4TAB_20261027.md).

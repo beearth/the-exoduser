@@ -95,11 +95,8 @@ namespace Exoduser.UnityPort
   void DrawPatchNotesLauncher()
   {
    LoadPatchNotes();
-   string version="",date="";
-   if(patchNotesCatalog!=null&&patchNotesCatalog.notes!=null&&patchNotesCatalog.notes.Length>0){version=patchNotesCatalog.notes[0].version;date=patchNotesCatalog.notes[0].date;}
    Rect rect=new Rect(14,12,370,102);
-   string label=(version.Length>0?"v"+version+" · "+date.Replace("-",""):"")+"\nOFFLINE";
-   Label(rect,label,lobbyMicro,TextAnchor.UpperLeft);
+   // Build labels are drawn once by NativeLobbyBuildLabels; this transparent hit area opens patch notes.
    GUI.SetNextControlName("patch-notes-open");
    if(GUI.Button(rect,"",GUIStyle.none))OpenPatchNotes();
    if(patchNotesRestoreFocus&&Event.current.type==EventType.Repaint){GUI.FocusControl(string.IsNullOrEmpty(patchNotesPreviousFocus)?"patch-notes-open":patchNotesPreviousFocus);patchNotesRestoreFocus=false;}

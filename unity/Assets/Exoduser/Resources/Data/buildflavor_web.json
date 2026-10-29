@@ -164,15 +164,15 @@
    "letterSpacing": 1.8,
    "lineHeight": 19.2,
    "color": [
-    160,
-    130,
-    90,
+    131,
+    134,
+    134,
     0.5
    ],
    "limitsColor": [
-    200,
-    120,
-    80,
+    132,
+    135,
+    135,
     0.5
    ],
    "modeOffline": "OFFLINE",

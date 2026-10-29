@@ -20,15 +20,17 @@ namespace Exoduser.UnityPort {
   public static float Width(string text,int size,float ls){var st=Style(size);float w=0;foreach(char ch in text)w+=st.CalcSize(new GUIContent(ch.ToString())).x+ls;return w;}
   // powerCenterY = vertical centre of the quit button in the lobby layout; the corner label is centred on it (web: both 36px flex items, align-items:center)
   public static void Draw(float powerCenterY,bool offline=true){
-   var f=BuildFlavor.Current;var s=BuildFlavor.LobbyStyle;int size=Mathf.RoundToInt(s.fontSize);
+   var f=BuildFlavor.Current;var s=BuildFlavor.LobbyStyle;
+   float fit=Mathf.Min(Screen.width/1920f,Screen.height/1080f),unit=1/Mathf.Max(.1f,fit);
+   int size=Mathf.RoundToInt(s.fontSize*unit);
    // top-left overlay: label / version / mode / limits, line-height 19.2px, text box 17px tall inside each line
-   float y=s.overlayY+1f;
-   Text(s.overlayX,y,17,f.Label,size,s.color,s.ls);y+=s.lineHeight;
-   Text(s.overlayX,y,17,BuildFlavor.VersionLine,size,s.color,s.ls);y+=s.lineHeight;
-   Text(s.overlayX,y,17,offline?s.modeOffline:s.modeOnline,size,s.color,s.ls);y+=s.lineHeight;
-   if(!string.IsNullOrEmpty(f.Limits))Text(s.overlayX,y,17,f.Limits,size,s.limitsColor,s.ls);
+   float x=s.overlayX*unit,y=(s.overlayY+1f)*unit,lh=s.lineHeight*unit,ls=s.ls*unit;
+   Text(x,y,17*unit,f.Label,size,s.color,ls);y+=lh;
+   Text(x,y,17*unit,BuildFlavor.VersionLine,size,s.color,ls);y+=lh;
+   Text(x,y,17*unit,offline?s.modeOffline:s.modeOnline,size,s.color,ls);y+=lh;
+   if(!string.IsNullOrEmpty(f.Limits))Text(x,y,17*unit,f.Limits,size,s.limitsColor,ls);
    // corner label: right-aligned to the gap before the quit button
-   int csize=Mathf.RoundToInt(s.cornerSize);float w=Width(f.Label,csize,s.cornerLs);Text(s.cornerRight-w,powerCenterY-7.5f,15,f.Label,csize,s.cornerColor,s.cornerLs);
+   int csize=Mathf.RoundToInt(s.cornerSize*unit);float cls=s.cornerLs*unit,w=Width(f.Label,csize,cls);Text(s.cornerRight-w,powerCenterY-7.5f*unit,15*unit,f.Label,csize,s.cornerColor,cls);
   }
  }
 }

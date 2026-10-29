@@ -118,3 +118,19 @@ Mac 일반앱의 첫Metal표시대기실패를 보존했으며, 렌더링옵션�
 
 
 2026-10-25 Mac 캐릭터 후속: 생성/선택의 세션 UI와 native preview 이름 전달을 연결했다. 원본 전사만 생성·최대5슬롯·이름 규칙 유지. 영속 저장/기존 슬롯/계정은 미연결. 최신 범위와 검수는 [UNITY_MAC_CHARACTER_UI_20261025](UNITY_MAC_CHARACTER_UI_20261025.md)를 따른다.
+
+## 2026-10-29 Mac A04 5슬롯 로비 글자 가독성 후속
+
+기준은 웹 `index.html`의 로비 CSS와 보존된 1920×1080 웹 캡처다. 브라우저의 로컬 파일 URL은 보안 정책으로 거절되어 웹 동일 5슬롯 상태의 실시간 화면 대조는 수행하지 못했다. 이번 수정은 Unity 로비 글자와 패치노트 실행 버튼의 중복 문구에 한정한다. 로스터·프레임·캐릭터 위치·미디어·텍스트 내용은 변경하지 않았다.
+
+| 표시 위치 | Unity 코드·수치 | 1280×720에서 의도한 물리 글자 | 적용 근거 |
+|---|---|---|---|
+| 좌상단 빌드 라벨 | `NativeLobbyBuildLabels.Draw`; 웹 정본 12px·행간19.2px·자간1.8px을 `fit=min(width/1920,height/1080)`의 역수로 보정. 웹 현행 `rgba(131,134,134,.5)`/limits `rgba(132,135,135,.5)`를 `buildflavor_web.json`에 동기화 | 12px, 행간19.2px | 좌상단 버전·OFFLINE·limits의 물리 크기와 웹 색상 일치 |
+| 우측 자막·메뉴·선택 안내 | `NativeLobby.UpdateLobbyTextScale`; `lobbyMicro=round(12/fit)` | 12px | 웹 보조 텍스트 12px 수준. 1920에서는 기존 12px 유지 |
+| 우측 OFFLINE·Steam 안내 | `lobbyMode=max(11,round(11.5/fit))`, `lobbyPromo=max(14,round(12/fit))`, `lobbyPromoDetail=max(11,round(12/fit))` | 약 12px | 3줄 Steam 문구의 행 높이를 57→67, 아래 보조 y653→660, 배너 y674→686으로 옮겨 겹침 방지 |
+| 슬롯 문구·전사 요약 | `lobbyText=max(15,round(12/fit))`, `characterSmall=max(20,round(16/fit))` | 각각 최소 12px·16px | 5/5 용량·직업/로컬 저장 캡션 읽기 |
+| 패치 노트 버튼 | `DrawPatchNotesLauncher`의 14,12,370×102 hit area 유지, 별도 버전·OFFLINE 텍스트 제거 | 중복 라벨 0 | 웹식 빌드 라벨 단일 caller와 패치 노트 접근 유지 |
+
+최종 Settings QA ARM64 Player의 실제 1280×720 및 1600×900 창, 전체/1x 화면과 `build-receipt-final.json`은 `_out/UNITY-MAC-LOBBY-READABILITY-20261029/`에 보존한다. 실행 파일 SHA-256 `2122a3706cebb29367200ec16d0f9ce8f0bb9a1ff165b8ce19ee1b9697efdc56`, 빌드 `Succeeded`/오류0. 최종 전체 캡처는 `final-canonical-1280-full.jpg`/`final-canonical-1600-full.jpg`, 각 해상도의 `top-left-1x`/`right-1x`가 실제 픽셀 크롭이다. 타이틀 막대가 64px 추가되므로 이미지 외곽 크기는 1280×784, 1600×964이다. 동일 격리 roster 파일 SHA-256 `67fa35976c91adaa5cce4fac107f4f1035f5c483bbf36abf8ccc6dde607dcf5a`로 A04 종료값과 같다.
+
+**VISUAL VERDICT: RETOUCH (Mac 로비 글자 가독성 범위).** 5/5 슬롯·우측 언어/안내/Steam 문구는 두 크기의 실제 창에서 물리 글자가 커지고 겹침이 없음을 확인했다. 좌상단의 패치노트 별도 문구를 제거해 버전/OFFLINE 이중 출력도 해소했다. 최신 웹 CSS 색을 그대로 적용한 좌상단 50% 회색 메타는 석재 배경 위에서 1x 판독 대비가 여전히 약하다. 다음 산출물은 로비 UI 디자인 담당이 웹 `#lobbyVerOverlay`의 명도 대비 토큰을 실제 5슬롯 화면에서 확정하고, Mac 담당이 같은 값을 정의 JSON에 동기화한 1280/1600 전체·1x 재검수본이다. 현재 웹 DOM 동일 5슬롯 실시간 대조는 브라우저 보안 정책 때문에 미검증이다. 전체 로비 아트·모든 언어·기타 해상도·hover/마우스 전환의 디자인 PASS는 주장하지 않는다.

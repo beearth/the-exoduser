@@ -96,3 +96,5 @@ NativeLobbyBuildLabels.Draw(float quitButtonCenterY, bool offline=true)   // 192
 
 - 인수 순서대로 번호를 정한다: **14 `A26_nativelobby_buildlabels`(NativeLobby.cs) → 15 `A26_portverification_flavor`(Editor/PortVerification.cs)**. 진행 중인 A16 키 바인딩 patch(NativePauseMenu·NativeGame)는 그 뒤 16·17이 된다. 세 단위가 고치는 파일이 겹치지 않아 순서를 바꿔도 적용 결과는 같다.
 - 웹 쪽 발견(`_BIC` 읽는 곳 없음, CLAUDE.md의 DEMO/EA sed 절차가 현행 `build-target.js` 방식과 달라 치환 대상이 없음)은 Unity 이식 범위 밖이라 웹 파일·CLAUDE.md는 고치지 않았다. 처리 여부는 전체총괄/사용자 판단.
+
+2026-10-29 후속 정정: 위 표의 좌상단 갈색 `rgba(160,130,90,.5)`·제한 줄 `rgba(200,120,80,.5)`는 당시 웹 캡처의 역사값이다. 최신 `main:77e92a44`의 `index.html#lobbyVerOverlay`는 각각 `rgba(131,134,134,.5)`·`rgba(132,135,135,.5)`이며 Mac Unity `buildflavor_web.json`의 두 배열을 그 값으로 동기화했다. 폰트 12px·자간1.8px·행간19.2px 및 우하단 라벨은 그대로다.
