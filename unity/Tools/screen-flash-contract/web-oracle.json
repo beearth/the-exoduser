@@ -1,0 +1,8 @@
+{
+  "웹기준": "50676e5938d07acff63ffefb63e8afcdf15d2fc9",
+  "원본blob": "1439fadd79e75034ce1e5286a3b885fc67e69c6f",
+  "원본SHA256": "38e5b2ce0f35d4d9303457211e7d4107e611c3f9a13f011039b09a8a51c33706",
+  "설정문": "scrFlash='rgba(200,0,0,.25)';scrFlashA=.25;",
+  "그리기문": "  if(scrFlashA>0){X.globalAlpha=scrFlashA;X.fillStyle=scrFlash;X.fillRect(0,0,C.width,C.height);X.globalAlpha=1;scrFlashA-=.018*_dtSp;if(scrFlashA<0)scrFlashA=0}",
+  "주의": "원본 발췌 실행 기반 알파 계약. 실제 웹 게임 전체 화면이나 Unity GPU 캡처를 대신하지 않음."
+}
