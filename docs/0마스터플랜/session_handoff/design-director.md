@@ -98,3 +98,9 @@
 - 기준 main `41777b450`: 5120×1440 cover가 `x=0,y=-720,w=5120,h=2880`으로 그려 인물 머리·태양이 잘렸다. 새 `codex/h5-title-wide-framing-20261029` 후보는 화면비 >2에서만 본 영상/원화를 중앙 세로 맞춤 `(1280,0,2560,1440)`으로 두고, 같은 원화의 어두운 블러 캐시를 양옆에 깐다. 1600×900 cover `(0,0,1600,900)`와 메뉴·패치노트·영상 src/루프/입력은 유지했다.
 - 후보 제작 당시 `I:/EXODUSER-Storage/design/title-wide-layout-20261029/`의 before/after 1600×900·5120×1440 화면을 직접 보고, 영상 readyState 4·시간 증가·탭 숨김 pause/복귀 play·영상 요청 실패 정지 원화 폴백·resize cache·pageerror 0을 확인했다. 32:9 잘림 **부분 구도 PASS 후보**. 전체 타이틀은 RETOUCH, 구름/강/태양 모션은 이전 대기 브랜치 `79c1ad392`에만 있고 이번 후보에는 없다. 그때는 main 통합 전이었으며 실제 32:9 모니터·NW.js·DEMO/EA·사용자 실행본도 미검증이었다. 유료 생성·원본 에셋 변경 0.
 - CTO가 후보 `866887a500edcfef7ebf6143f51aab616355068b`의 소스·1600×900/5120×1440 전후 화면과 영상/폴백/visibility/cache 영수증을 검수 인수해 **32:9 부분 구도 PASS**로 판정했다. 원격 main `41777b450966ec29b120fc56dd1fc71ca63497b4`의 직접 자식 후보를 정상 비강제 fast-forward로 H5 main에 반영한다. 코드 byte는 후보와 동일하게 유지하고 이 인계·SSOT에는 당시 후보 상태와 현재 소스 채택을 구분했다. 최종 원격 main SHA는 외부 `design/REPORT.md`·`MERGE_QUEUE.md`에 기록하며 실제 32:9 모니터·NW.js·DEMO/EA·사용자 실행본·배포는 별도다. 전체 타이틀 RETOUCH 및 기존 모션 HOLD는 유지한다.
+
+## 2026-10-30 사용자 최우선 Unity 타이틀 전달
+
+- 메뉴 글자 매몰(GUI.color 구분선 알파0.1 잔류)·붉은 띠/점을 수정해 Hahmlet300·고대비 글자·16×1 은빛 헤어라인 적용. Unity 제품7eacb120b/공통 6a196f4840e574c4dce55f0d1c3bdf7b932ff19b 정상 비강제반영·원격 확인, 일반 바탕화면 지옥의 길 (Unity).lnk는 정확 검수본에 연결·네속성/Managed 해시 readback했다. 기존 미리보기·실행창·세이브 보존.
+- 빌드510c4322 오류0, 첫인상790d5292 21/21, 정확Runtime 전체M1 53970f75 23/23·32프레임, 실제키8211c6e7 인장→현행세계관영상→5초skip→Lobby. 전부D3D11 RX9070XT·창/잔여/USER_SAVE0. 1920/1x 직접판정 메뉴핵심결함 해소·큰차이0, 글리프/선택70ms 미세차이·전체게임/실시간3D무대 RETOUCH는 유지.
+- H5 동일CSS후보 d22ce8bd1은 별도 브랜치/코드반영대기. 최신보고·실행본·비교·정확DLL 영수증 I:/EXODUSER-Storage/demo-art/unity-ui/title-priority-2026-10-30T01-19-03-079Z/. 26폴더표·미채택4격자와USER_CONFIRM 유지, 전체시안/3D/Mac/손조작/배포 PASS 아님. 상세 [Unity UI 원화](../../engine/UNITY_UI_ASSETS_20261030.md).
