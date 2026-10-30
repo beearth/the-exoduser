@@ -4,10 +4,10 @@
 
 | 항목 | 현재 코드·입력 계약 |
 |---|---|
-| 선행 통합 | 숲4c2797c7f + 공통642e31d2e → e82431e0d, 전사R5 공통a861d0303 → 1b7c0edd9, UI 최종공통fd83657f3 → 2e85ade2e. 기동·공통카메라·입력·UI 보존 |
-| 활성화 | --remodel3d --unity-a2-forest에서만 조립. 일반 실행 채택0 |
+| 선행 통합 | R3 b9ffca060 인수 및 전사R5·UI최종·조작 수정 공통 보존. 공통968f2a324의 MCP Player 제외/빌드/M1 검증분까지 정상 병합한 기준90af40f9. 이후 A2 수로 구조와 접지·미니맵·Editor Terrain 보호만 제작 중. 현재 source의 실제 GPU/M1은 미검증 |
+| 활성화 | --remodel3d --unity-a2-forest에서만 조립. 일반 실행 채택0. A2 옵션은 일반 진입의 지역명 배너를 숨기는 테스트 인자로 세지 않음. steam-keyshot/M1/QA 자체의 배너 억제는 유지 |
 | MCP Editor 미리보기 | 공식 실행기의 자기 Editor 프로세스에만 EXO_A2_EDITOR_PREVIEW=1, isEditor 및 --unity-qa-sandbox 동시조건으로 A2와 NativeRemodel3D 활성화. 일반 Player는 이 환경값을 무시한다. 해당 Editor fixture는 진입영상 없이 시작하여 MCP로 실제게임 배치/조명 검수. Player 캡처·M1 대체 아님 |
-| Editor Terrain 보호 | HellLightingSetup의 TerrainLayer 조정 전에 Editor에서만 TerrainData를 Instantiate하여 런타임 사본으로 사용. Player 동작과 높이 데이터는 그대로. 이전 Editor 원본 에셋 재작성은 I:에 보존 후 정확 원본으로 복원하며 다음 Editor에서 비에셋 사본/원본 보존을 확인한다 |
+| Editor Terrain 보호 | HellLightingSetup의 TerrainLayer 조정 전에 Editor에서만 TerrainData를 Instantiate하여 런타임 사본으로 사용. Player 동작과 높이 데이터는 그대로. 이전 Editor 재작성은 terrain-preview-before.asset에 보존 후 HEAD 필터 실제 byte로 복원(SHA5cc0a5619e3687e9b81fcb9a185d1607370b9a070567456c5c0cdfdf2b44770b). 다음 Editor에서 비에셋 사본/원본 보존 확인 예정 |
 | 자산 | R3 sourceb9ffca060의17FBX·종속재질/텍스처185파일만 Resources/Art/map/a2/r3에 동일byte 인수. R3 정적RETOUCH 유지, R4 HOLD 인수0. r1 Foam_Bank만 거품 보조로 재사용 |
 | 큰 질량 | 주간4·고목3·후경거목3층×5·먼카드2. R3 거목단위.45/고목.8, 전경목질2·그루터기1. 주간에 판근5개씩/길이3.8~5.2u/폭.95→.06u/높이1.7×(1−t)^3+.07u. 낮은 낙엽/잔돌12접합점은 간격2u 이상. 수면의 비섬 낙엽/이끼는 생략하고 덤불은 높이−1.2u에 접지. 판근·작은 접합은 실제 GPU 미검증 |
 | 다리 | 중심(43.2,−71.8)u/yaw+24°/scale(1,.55,1)×.75. A2ForestLayout의 Along/Across 좌표로 다리 보행 |Along|≤4.45u·|Across|≤1.25u. 실제 원본 ch1_map은 보존하고 A2 질의에만 수로 경계를 추가. 접지·동작 미검증 |
@@ -25,7 +25,7 @@
 | 촬영 | --unity-steam-keyshot+A2는 기존NativeGame fixture. batch/hidden 모두 GPU 월드RT1920×1080/HUD제외. A2 출발4200:7460, 같은 장소에서 실제 AI·스크립트 입력·생존보조. 적/탄 직접주입0. 일반입장/손조작/HUD 검수와 구분 |
 | 영웅 크기 | R5가 있으면 실제 SkinnedMeshRenderer.BakeMesh 정점 투영으로 측정. 숨긴2D스프라이트 높이를 실제전사 크기로 인용하지 않음. 원래8~11% 촬영검사 유지 |
 | 미니맵 경계 | SourceMap.DisplayTile(tx,ty)는 추가 경계가 차단한 타일 중심을1로 반환하고 나머지는 원본 Data.tiles 값을 그대로 반환. NativeFieldHud는 이 값으로 기존 미니맵을 그린다. A2 수로/다리/비A2 표시3검사PASS, UI 모양·원본 맵 데이터 변경0. 미니맵-수정전-FAIL.json에 수정 전 불일치 보존 |
-| 보행 교차 회귀 | 새 단일 수로 경계와 실제 SourceMap/ch1_map으로152693개 수면 표본 검사: 수정전33266보행겹침·4FAIL → 수정후겹침0·14검사PASS. 다리 중심101점/반경15px·출발4200:7460·중심4320:7180 보행true. 출발점에서14951타일/필드출구3곳 모두 도달. 출발점에서14951타일/필드출구3곳 모두 도달. 출발점에서14951타일/필드출구3곳 모두 도달. 추가 경계는 SourceMap.Blocked에서 보행/직선시야/투사체 공통 적용. 원본 맵 데이터·Core 변경0. layout-check/수정전-FAIL.json, 현재결과.json. 종전 shore-check는 이전 외곽 수면 후보의 이력 |
+| 보행 교차 회귀 | 실제 SourceMap/ch1_map의152693개 수면 표본: 수정전33266보행겹침·4FAIL→수정후겹침0. 다리 중심101점/반경15px·촬영출발4200:7460·일반출발4020:7420·중심4320:7180 보행true. 촬영 출발점에서14951타일과 필드출구3곳 모두 도달. 미니맵3검사·일반 출발점을 포함해15검사PASS. SourceMap.Blocked에서 보행/직선시야/투사체 공통 적용, 원본 맵 데이터·Core 변경0. layout-check/현재결과.json·수정전-FAIL.json·미니맵-수정전-FAIL.json. 종전 shore-check는 이전 외곽 수면 후보 이력 |
 | 종료 | 미디어닫기·효과음정리·1초배출. 보스1100tick 제한 마지막 촬영 분기1099로 교정 |
 | 검증 | Editor 첫 실제 화면 FAIL: 다리 아래 강 부재·수면 지형 가림·중복화로·받침 고리그림자·원근 부족. 원인분리 후 수로/카메라/광원 제작 방법을 변경했다. 최신 독립Core/C#0, 경계14검사PASS. 현재 소스의 Unity컴파일/GPU/실제Player/M1/최종통합/바로가기 미검증. 제작 도중 전사 순번에 정상 반환. 사용자 세이브/guard WIP 보존 |
 
