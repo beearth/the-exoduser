@@ -111,9 +111,9 @@ namespace Exoduser.UnityPort
             if (r3Vcam == null) return;
             var lens = r3Vcam.Lens;
             float fov = NativeRemodelCamera.FieldOfView;
-            r3Vcam.transform.rotation = A2Requested ? Quaternion.Euler(38,0,0) : NativeRemodelCamera.Rotation;
+            r3Vcam.transform.rotation = A2Requested ? Quaternion.Euler(NativeRemodel3D.Pitch*Mathf.Rad2Deg,0,0) : NativeRemodelCamera.Rotation;
             var follow = r3Vcam.GetComponent<CinemachineFollow>();
-            if (follow != null) follow.FollowOffset = A2Requested ? new Vector3(0,Mathf.Sin(38*Mathf.Deg2Rad)*18,-Mathf.Cos(38*Mathf.Deg2Rad)*18) : NativeRemodelCamera.FollowOffset;
+            if (follow != null) follow.FollowOffset = A2Requested ? new Vector3(0,Mathf.Sin(NativeRemodel3D.Pitch)*NativeRemodel3D.DistU,-Mathf.Cos(NativeRemodel3D.Pitch)*NativeRemodel3D.DistU) : NativeRemodelCamera.FollowOffset;
             if (Mathf.Abs(lens.FieldOfView - fov) > .01f) { lens.FieldOfView = fov; r3Vcam.Lens = lens; }
         }
 

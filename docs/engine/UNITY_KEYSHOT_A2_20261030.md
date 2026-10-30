@@ -11,7 +11,7 @@
 | 자산 | R3 sourceb9ffca060의17FBX·종속재질/텍스처185파일만 Resources/Art/map/a2/r3에 동일byte 인수. R3 정적RETOUCH 유지, R4 HOLD 인수0. r1 Foam_Bank 현재 사용0 |
 | 큰 질량 | 주간4/후경15+19 위치·거목 충돌 유지. 주간 밑동의 고목3개+그루터기 조합은 큰 접합 차이가 남아 폐기. 새 CC0 Pine Roots A/B 각16324/16213삼각형·원본UV, 주간마다 scale(3.2,4.3,4)로1개 배치하고 실제 GroundY에 정점 접합. 큰 그루터기1은 유지. 나무 tint(.95,.8,.6), 이끼(.65,.60,.40)/ShadowOff, 덤불(.95,.75,.5), 균류(.65,.55,.4). 낙엽 기존12+12×12후보/2.4u 간격±.22u, 수면·길중심Across2.6u 제외. 낙엽만 지면+.01+lift, 정점별 접합. 새 GPU 미검증 |
 | 다리 | 중심(43.2,−71.8)u/yaw+24°/scale(.96,.55,.85)×.75. A2ForestLayout 다리 보행 |Along|≤4.45u·|Across|≤1.7u. 원본 JSON은 보존하고 A2 질의에만 수로·거목 경계 적용. 새 폭/배율은 실제 메시 높이7.24%였던21u 후보에서 카메라와 함께 수정. 현재 발 접지·동작 GPU 미검증 |
-| 카메라 구도 | 비A2 LOOK-001 그대로. A2만 pitch38°/distance18u/FOV46.9453°, 공통TargetOffset+(3,0,.6)u. SMAA High 추가. 논리 카메라/전투 범위는 그대로이고 조준은 실제 3D카메라 역투영. 실제 current source GPU 미검증 |
+| 카메라 구도 | 비A2 LOOK-001 그대로. A2만 pitch34°/distance16.5u/FOV46.9453°, 공통TargetOffset+(3,0,.6)u. SMAA High 추가. 논리 카메라/전투 범위는 그대로이고 조준은 실제 3D카메라 역투영. 실제 current source GPU 미검증 |
 | 독액 | A2ToxicRiver: linear RGB(.40,.32,.035), 거품(.45,.44,.16), emission.1. 저주파 사인속도.12/.08, 법선.035/.025, smoothness.62→거품.16, 접촉깊이.025~.28u. 수면Y−1.25는 A2ForestLayout.WaterLevel SSOT |
 | 접촉 거품 깊이 | 기존 URP_PC_High/Mac_Balanced의 m_RequireDepthTexture=0 확인. A2 카메라에 requiresDepthTexture=true, 수면은 Transparent 큐/ZWrite On/alpha1로 불투명 지형 깊이 복사 후 샘플. 실제 거품 표현 미검증 |
 | 수로 | Water: z(−94,−30),동쪽 x>Shore(z)와 둥근 지류 BranchDistance<0의 합집합. Shore=48+1.4sin((z+72)×.22)+34×smoothstep(−66,−56,z)−28×smoothstep(−52,−42,z)로 북동쪽에 굽어 빠짐. 남동 앵글러(148,150) 접근을 수로가 덮던 실제 회귀 FAIL을 고쳐 고정 위치/전투 규칙 보존. 수위−1.25, 연속 수면 x−30~110/z−100~70. 실제 수로 접점에만 수직 강둑. 암반9·말뚝5·강둑13접합/지류 접합. 기존 River_/Pool_만 숨김·r1거품 미사용 |
@@ -73,7 +73,7 @@ A2CaptureFrame이 정상 LateUpdate 이후 Remodel3DLate를 다시 불러 이미
 | 자연 보스 순간 | 로딩완료후 실제boss+260/−150px에플레이어1회배치. 촬영직전순간이동제거. AI가중심600px 내에있고적탄6이상인자연순간선택, 적/탄/AI위치주입0. 최종1099fallback유지. 보스AI/NativeBossView/3D모델변경0 |
 | A2 보스 카메라 | 기존의.53배줌인대신view.orthographicSize×.9=기본4.86u(A2만). 실제3D영웅8~11%재측정필수. 보스PresentationScale.72/물리/전투불변. 현재2D보스,3D모델인수0 |
 | A2 보스 지면 | Clamp rock_face 대신 기존Repeat rock_ground Diffuse/Normal을기존ArenaSoilLit worldXY/4u에연결. NativeArenaView/충돌/벽마스크수정0 |
-| A2 보스 낮은 프레임 | 실제Room중심 주위 PineRoots14개/타원8.5×6.2u/scale1.8,1.2,2.2, yaw137°간격. 짝수암반7개/scale.16,.12,.18. 횃불2개×.45,중심±6/±2.5u/pitch−52°·불꽃8프레임12fps·앞오프셋z−1/y+.7/scale.12. 기존두warm광원을같은위치z−1.3으로옮김. 전부장식Collider0·신규보스모델0 |
+| A2 보스 낮은 프레임 | 전체 흙바닥이 포함된 PineRoots14개는 검은 패드 결함으로 제거. 실제Room중심 타원8.5×6.2u의 작은 암반7개/scale(.16,.12,.18)만 유지. 횃불2개×.45/중심±6,±2.5u/pitch−52°·불꽃8프레임12fps/scale.12·기존국소광3 유지. 추가 directional은 금빛 과장/문제 미해결로 제거. 장식Collider0·보스모델/AI변경0 |
 | 전경·빛 | 빛기둥은기존4개depthfade메시를가산합성alpha.18로교정. 실제볼류메트릭안개가아님. Linear안개14~54u. 입체뿌리/낙엽이현재Player에서누락됐으므로개선완료라부르지않음 |
 
 ### 먼 수로의 원근 연결
@@ -129,9 +129,23 @@ A2CaptureFrame이 정상 LateUpdate 이후 Remodel3DLate를 다시 불러 이미
 |---|---|
 | 원본 | [Poly Haven Tree Stump 01](https://polyhaven.com/a/tree_stump_01), Rob Tuytel/CC0/Powered by Poly Haven. 공식2k glTF5파일11375163B 전부 MD5 확인·SHA256 원장. 원본·API메타·변환은 I:/EXODUSER-Storage/steam-keyshot/a2/scanned-stump-source 및 scanned-stump-export. 결제0/생성크레딧0 |
 | 메시 | 원본41046→20523삼각형/원본UV 유지·decimate.5. Blender 축 크기(1.425737,1.590188,.572362)m, 중앙/최저점 원점. Traceback0/의미성공표식 확인. 정적 변환 성공을 실게임PASS로 보지 않음 |
-| 현재 배치 | Resources/Art/map/a2/stump의1FBX/1재질/3텍스처. 기존4주간에 scale(3.2,4,3.2)/yaw각주간/lift−.18, PineRoots를 유지하고 큰 밑동을 추가. 지면/수면 정점 접합은 같은 GroundY/WaterLevel−.18. 장식·충돌/Core변경0 |
+| 현재 배치 | Resources/Art/map/a2/stump의1FBX/1재질/3텍스처. 기존4주간에 scale(3.2,2.8,3.2)/yaw각주간/lift−.18, tint(.85,.78,.65)/PineRoots를 유지하고 큰 밑동을 추가. 지면/수면 정점 접합은 같은 GroundY/WaterLevel−.18. 장식·충돌/Core변경0 |
 | 재질/임포트 | 원본2k Diffuse/NormalGL 동일byte, ARM의 R을Unity AO_G·1−G를smoothness_A·Metal_R0으로 포장. URP Lit/normal.65/occlusion.65. SourceTextureImporter v3의A2규칙으로sRGB색·linearNormal/Mask·mipmap/Trilinear/aniso8/max2048/Clamp. A2GroundCoverImporter v2는 정확4모델만읽기true |
 | 다음 실제검수 | 큰 밑동의 접합·컷면 노출·실루엣·카메라 거리16/18u 및 왼쪽거목 회전 대조. 이끼 카드의 검은 암부는 실제 Unlit 분리로 먼저 진단. 현재 GPU/Player미검증/아트FAIL 유지 |
 
 ### 동일 순간 일반 화면 진단과 시작점 장식
 이전 source1e0a748e8 M1의 일반 시작화면에서 빛기둥이 키샷보다 밝았다. 위치4020:7420/4200:7460 및 화면1600×900/1920×1080도 달라 아직 촬영 경로를 원인으로 확정하지 않는다. 현재 A2 비batch 키샷은 KeyshotSave의 같은 EndOfFrame에서 ScreenCapture.CaptureScreenshotAsTexture로 `_일반화면_HUD포함.png`3장을 추가 보존한다. receipt.frame.screenWidth/Height/screenLuminance로 실제 표시 해상도·밝기를 기록하며 기존 월드 RT 촬영과 직접 비교한다. HUD포함 진단을 최종 키샷으로 바꿔 부르지 않는다. 일반 시작점의 전사가 횃불과 겹치던 실제화면을 고치기 위해 장식 Along±3.65는 유지하고 Across±1.95→±2.5u. 원본 시작점/보행/Core/세이브 변경0. 이끼 BaseColor 알파검사:2048²/완전투명3904442·부분51281·불투명238581픽셀, 마스크 누락으로 단정하지 않음. 현재 독립Core/C#0, 실제 새후보 미검증.
+
+## 2026-10-31 04:50 KST 실제 MCP 분리 판정과 제작 단계 복귀
+
+| 항목 | 직접 본 결과·현재 처리 |
+|---|---|
+| 새 스캔 밑동 | A2_스캔밑동_ed331fab6.png에서 실존/접합 확인. 첫4배높이는 밝은 암반처럼 보여 FAIL. 높이2.8/tint(.85,.78,.65) 시안으로 낮춰 목질/접합을 보완했으나 큰 줄기/속빈 형태 부족은 남음. 현재소스에 이값 반영, 아트FAIL 유지 |
+| 촬영 경로 분리 | 같은 위치/1920×1080의 자동 카메라RT 읽기 A2_자동렌더_RT.png와 수동요청 스캔밑동 화면은 같은 표현. M1 시작점/키샷 차이만으로 촬영버그라 확정하지 않음. 다음Player 같은순간 HUD포함 추가진단 유지 |
+| 카메라 | 기존38°/18u,38°/16u,32°/16u 및34°/16.5u 실제 정지게임 시안 대조. 34°/16.5u 선택. 거리/Pitch를 NativeRemodel3D 단일값으로 두고 Cinemachine pose/follow 및 횃불 정렬이 같은값을 사용. 예상 필드높이 약9.7/10.8%, 실제활성스킨 측정은 새Player 필요 |
+| 거목 방향 | 기존25°/145°/265° 비교. 방향 변경만으로 속빈 큰형태 해결 불가, 기존25° 유지. 기존Boolean2실패 방식 재시도0. 새 방식은 구멍을 Boolean으로 뚫는 대신 안/밖 표면과 뿌리 플레어를 이어 만드는 줄기 모델 후보 제작 |
+| 이끼 | 기존Lit/Unlit 분리에서 투명마스크는정상·조명 암부 영향 확인. Unlit을 최종 채택하지 않음. 기존자산의 긴 가닥UV/양면 조명 검토를 새모델큰형태 뒤 진행. 현재영구소스는기존Lit 유지 |
+| 독액 | RGB(.5,.32,.025)/emission.16 시안은 갈색 과장으로 미채택. 영구값(.4,.32,.035)/.1 유지 |
+| 보스 검은 덩어리 | 실제MeshRenderer이름/UV/Unlit 분리로 MossRock이 아니라 PineRoots의 넓은 스캔 흙바닥14개임을 확정. 3.5cm/11.5cm 높이 절단2시안은 패드/파편으로 FAIL, 방식 중단·소스인수0. 보스방PineRoots 배치 제거, 필드원본자산보존. 전용directional과flat환경광 시안도 해결0/과장으로 미채택 |
+| 실제 아레나 한계 | Editor 640×480 시점의 ortho6.075u를 1920 Player의4.86u 증거로 인용하지 않음. 원래1e0 Player7.36%→현재×.9배율은새Player 재측정필수. 보스는기존2D/3D담당checkpoint0 유지 |
+| 실행과 다음 | 자기Editor34952 공식stop/예약반환·타프로세스변경0. 큰거목 제작은오프라인에서진행, 타담당정식QA와장시간렌더안겹침. 현재 독립Core/C#0, 새Player/M1/통합/Desktop 미완료 |

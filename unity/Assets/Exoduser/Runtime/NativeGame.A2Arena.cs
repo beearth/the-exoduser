@@ -12,16 +12,12 @@ namespace Exoduser.UnityPort
         {
             if(!A2Requested||arena==null)return;
             if(a2ArenaRoot!=null)Destroy(a2ArenaRoot);a2ArenaFlames.Clear();
-            a2ArenaRoot=new GameObject("A2 보스방 낮은 목질·암반 연결");a2ArenaRoot.transform.SetParent(hellArenaRig.transform,false);
-            // 필드 주광이 꺼진 XY 아레나에서도 실제 3D 소품의 수피·노멀을 읽을 수 있게 한다.
-            var key=new GameObject("A2 보스방 차가운 주광");key.transform.SetParent(a2ArenaRoot.transform,false);key.transform.localRotation=Quaternion.Euler(25,-25,0);
-            var moon=key.AddComponent<Light>();moon.type=LightType.Directional;moon.color=new Color(.6f,.7f,.85f);moon.intensity=.9f;moon.shadows=LightShadows.None;
+            a2ArenaRoot=new GameObject("A2 보스방 조명·낮은 외곽 장식");a2ArenaRoot.transform.SetParent(hellArenaRig.transform,false);
             var center=new Vector2((arena.RoomCx+.5f)*.4f,-(arena.RoomCy+.5f)*.4f);
-            for(int i=0;i<14;i++)
+            for(int i=0;i<7;i++)
             {
-                float a=i*Mathf.PI*2/14,x=center.x+Mathf.Cos(a)*8.5f,y=center.y+Mathf.Sin(a)*6.2f;
-                A2ArenaModule("Art/map/a2/roots/Models/A2_PineRoots_"+(i%2==0?"A":"B"),x,y,1.8f,1.2f,2.2f,i*137);
-                if(i%2==0)A2ArenaModule("Art/map/a2/r3/Models/RF3_Moss_Rock_"+(i%3+1),x+.4f,y+.25f,.16f,.12f,.18f,i*73);
+                float a=i*Mathf.PI*2/7,x=center.x+Mathf.Cos(a)*8.5f,y=center.y+Mathf.Sin(a)*6.2f;
+                A2ArenaModule("Art/map/a2/r3/Models/RF3_Moss_Rock_"+(i%3+1),x+.4f,y+.25f,.16f,.12f,.18f,i*73);
             }
             foreach(int side in new[]{-1,1})
             {

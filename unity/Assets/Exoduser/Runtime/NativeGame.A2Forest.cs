@@ -137,7 +137,7 @@ namespace Exoduser.UnityPort
             var holder=Instantiate(source,a2Root.transform);holder.name="A2 다리 끝 횃불";holder.transform.position=pos;holder.transform.localScale=Vector3.one*.5f;
             // 불꽃을 둘러싼 얇은 철창이 커다란 고리 그림자로 확대되지 않게 받침만 투사 제외한다.
             foreach(var r in holder.GetComponentsInChildren<Renderer>())r.shadowCastingMode=ShadowCastingMode.Off;
-            var flame=new GameObject("A2 횃불 불꽃");flame.transform.SetParent(a2Root.transform,false);flame.transform.position=pos+Vector3.up*1.24f;flame.transform.rotation=Quaternion.Euler(38,0,0);flame.transform.localScale=Vector3.one*.14f;
+            var flame=new GameObject("A2 횃불 불꽃");flame.transform.SetParent(a2Root.transform,false);flame.transform.position=pos+Vector3.up*1.24f;flame.transform.rotation=Quaternion.Euler(NativeRemodel3D.Pitch*Mathf.Rad2Deg,0,0);flame.transform.localScale=Vector3.one*.14f;
             var sprite=flame.AddComponent<SpriteRenderer>();sprite.sprite=hellFlameFrames[0];sprite.color=new Color(1.8f,1.15f,.65f,1);hellFlames.Add(sprite);
             var light=flame.AddComponent<Light>();light.type=LightType.Point;light.color=new Color(1,.55f,.19f);light.range=5;light.intensity=7;light.shadows=LightShadows.Soft;light.shadowBias=.04f;light.shadowNormalBias=.1f;
         }
@@ -199,6 +199,7 @@ namespace Exoduser.UnityPort
                 if(id=="Withered_Shrub"){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.95f,.75f,.50f,1));r.SetPropertyBlock(block);}
                 if(id=="Ancient_Rotten_Tree"){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.95f,.80f,.60f,1));block.SetFloat("_BumpScale",.9f);block.SetFloat("_OcclusionStrength",.9f);r.SetPropertyBlock(block);}
                 if(id=="Fungal_Colony"){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.65f,.55f,.40f,1));r.SetPropertyBlock(block);}
+                if(stump){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.85f,.78f,.65f,1));r.SetPropertyBlock(block);}
             }
             return go;
         }
@@ -207,7 +208,7 @@ namespace Exoduser.UnityPort
             var tree=A2Module("Ancient_Rotten_Tree",x,z,sx,sy,sz,yaw);if(tree==null)return;
             // 고목을 방사형으로 붙이는 방법도 원화의 뿌리 접합이 되지 않아 실제 뿌리 스캔으로 교체한다.
             A2Module(x>40?"PineRoots_B":"PineRoots_A",x,z,3.2f,4.3f,4,yaw,-.02f);
-            A2Module("Scanned_Stump",x,z,3.2f,4,3.2f,yaw,-.18f);
+            A2Module("Scanned_Stump",x,z,3.2f,2.8f,3.2f,yaw,-.18f);
         }
         void A2River(Terrain ground)
         {
