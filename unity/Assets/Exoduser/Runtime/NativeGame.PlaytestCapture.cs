@@ -32,6 +32,8 @@ namespace Exoduser.UnityPort {
      bool moving=control.StartsWith("Move",StringComparison.Ordinal);string action=moving?control.Substring(4):control.Split('-')[0];bool directional=control.Contains("-");
      ResetRun();if(firstPractice!=null)EndFirstPractice(true);menu=false;frontendEntryInputFence=false;SetGameFocus(true);Running=false;
      var s=Simulation;var p=s.Player;s.Config.EnemyAiEnabled=false;s.Enemies.Clear();s.SpawnHoles=null;s.CrossbowAuto=false;s.Materials=1000;p.Iframes=100000;
+     // 웹 이동 비교 하니스도 매 사례 시작에 자원을 가득 채운다. 실제 신규 게임의 장착·clamp 정책은 바꾸지 않는다.
+     if(moving){p.Hp=p.MaxHp;p.Mana=p.MaxMana;p.Stamina=p.MaxStamina;p.Shield=p.MaxShield;}
      if(control=="RMB-lv3")s.Skills.Levels["fireball"]=3;
      // 맵 충돌을 끄지 않고 시작점의 열린 방향을 선택한다.
      float dx=1,dy=0;bool free=false;float[][] dirs={new[]{1f,0f},new[]{-1f,0f},new[]{0f,-1f},new[]{0f,1f}};
