@@ -51,7 +51,9 @@ namespace Exoduser.UnityPort
                 for(int i=0;i<vertices.Length;i++)
                 {
                     var p=filter.transform.TransformPoint(vertices[i])-horizontalCenter;float bed=A2ForestLayout.Water(p.x,p.z)&&!A2ForestLayout.Island(p.x,p.z)?A2ForestLayout.WaterLevel-.18f:NativeRemodel3D.GroundY(p.x,p.z);
-                    p.y+=bed-baseY;vertices[i]=filter.transform.InverseTransformPoint(p);
+                    float lift=p.y-baseY;
+                    if(useRaised)lift=A2RootHeightProfile.Height(lift,p.x-placement.x,p.z-placement.y,placementIndex);
+                    p.y=bed+lift;vertices[i]=filter.transform.InverseTransformPoint(p);
                 }
                 mesh.vertices=vertices;mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();filter.sharedMesh=mesh;
                 foreach(var renderer in go.GetComponentsInChildren<MeshRenderer>()){renderer.sharedMaterial=material;renderer.shadowCastingMode=ShadowCastingMode.On;renderer.receiveShadows=true;}
