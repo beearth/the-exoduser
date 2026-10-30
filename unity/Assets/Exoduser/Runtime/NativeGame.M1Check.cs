@@ -464,7 +464,9 @@ namespace Exoduser.UnityPort
                 M1Add("99", "captures free of the pause menu", paused.Count == 0 ? "ok" : "fail", m1Overlays.Count + " captures, " + (paused.Count == 0 ? "none under the pause menu" : "pause menu over: " + string.Join(", ", paused.ToArray())), "");
             }
             File.WriteAllText(Path.Combine(output, "m1-check.json"), JsonUtility.ToJson(m1, true), new UTF8Encoding(false));
-            yield return null; Application.Quit(0);
+            // UI 캡처와 동일하게 영상 컴포넌트의 지연 파괴를 먼저 끝낸다.
+            lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);
+            Debug.Log("QA_MEDIA_DRAIN_COMPLETE M1");Application.Quit(0);
         }
     }
 }

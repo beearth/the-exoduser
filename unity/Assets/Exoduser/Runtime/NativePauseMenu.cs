@@ -39,7 +39,7 @@ namespace Exoduser.UnityPort
                          Action<int> bgmChanged,Action<int> frameCapChanged,Action<bool> fullscreenChanged)
   {
    if(settings==null)throw new ArgumentNullException("settings");
-   this.font=font;this.settings=settings;this.sfxChanged=sfxChanged;
+   this.font=NativeSilverHellUi.Font()??font;this.settings=settings;this.sfxChanged=sfxChanged;
    this.bgmChanged=bgmChanged;this.frameCapChanged=frameCapChanged;this.fullscreenChanged=fullscreenChanged;
    navigation.SettingsRows=A15NavRows();
   }
@@ -65,13 +65,13 @@ namespace Exoduser.UnityPort
    if(ready)return;ready=true;
    body=new GUIStyle(GUI.skin.label){font=font,fontSize=20,wordWrap=true};
    body.normal.textColor=new Color(226/255f,223/255f,217/255f);
-   title=new GUIStyle(body){fontSize=32,fontStyle=FontStyle.Bold,alignment=TextAnchor.MiddleCenter};
+   title=new GUIStyle(body){fontSize=32,fontStyle=FontStyle.Normal,alignment=TextAnchor.MiddleCenter};
    muted=new GUIStyle(body){fontSize=16};muted.normal.textColor=new Color(157/255f,160/255f,160/255f);
    button=new GUIStyle(GUI.skin.button){font=font,fontSize=20,padding=new RectOffset(12,12,8,8)};
    tabButton=new GUIStyle(button){fontSize=18};
-   activeTab=new GUIStyle(tabButton);activeTab.normal.textColor=new Color(.95f,.77f,.43f);
+   activeTab=new GUIStyle(tabButton);activeTab.normal.textColor=NativeSilverHellUi.Bright;
    fpsButton=new GUIStyle(tabButton){fontSize=16,padding=new RectOffset(4,4,8,8)};
-   activeFpsButton=new GUIStyle(fpsButton);activeFpsButton.normal.textColor=new Color(.95f,.77f,.43f);
+   activeFpsButton=new GUIStyle(fpsButton);activeFpsButton.normal.textColor=NativeSilverHellUi.Bright;
   }
   static void Fill(Rect rect,Color color)
   {
@@ -97,15 +97,14 @@ namespace Exoduser.UnityPort
     {float s1=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s1)/2,(Screen.height-1080*s1)/2,0),Quaternion.identity,Vector3.one*s1);NativePanelTabBar.Draw(NativePanelTabBar.Preset.Settings,"settings");GUI.matrix=Matrix4x4.identity;}
     float scale=Mathf.Min(Screen.width/1280f,Screen.height/720f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1280*scale)/2,(Screen.height-720*scale)/2,0),Quaternion.identity,Vector3.one*scale);
-    var panel=new Rect(300,72,680,576);Fill(panel,new Color(10/255f,13/255f,13/255f,.98f));
-    Border(panel,new Color(94/255f,97/255f,97/255f));Fill(new Rect(328,151,624,1),new Color(94/255f,97/255f,97/255f,.65f));
+    var panel=new Rect(300,72,680,576);NativeSilverHellUi.Panel(panel,36,12);
     if(page==PausePage.Settings){DrawSettings(fullscreen);return PauseMenuCommand.None;}
     if(page==PausePage.Quit)return DrawQuit();
     NativeSilverHellUi.Label(new Rect(336,98,608,48),dead?T("쓰러졌습니다","You have fallen"):T("일시정지","Paused"),title);
-    if(MenuButton(new Rect(388,196,504,58),dead?T("다시 시작","Restart"):T("계속하기","Resume"),0,button))return dead?PauseMenuCommand.Restart:PauseMenuCommand.Resume;
-    if(MenuButton(new Rect(388,272,504,58),T("설정","Settings"),1,button))page=PausePage.Settings;
-    if(MenuButton(new Rect(388,348,504,58),T("로비로 돌아가기","Return to lobby"),2,button))return PauseMenuCommand.ReturnLobby;
-    if(MenuButton(new Rect(388,424,504,58),T("게임 종료","Quit game"),3,button))page=PausePage.Quit;
+    if(MenuButton(new Rect(388,184,504,68),dead?T("다시 시작","Restart"):T("계속하기","Resume"),0,button))return dead?PauseMenuCommand.Restart:PauseMenuCommand.Resume;
+    if(MenuButton(new Rect(412,272,456,58),T("설정","Settings"),1,button))page=PausePage.Settings;
+    if(MenuButton(new Rect(412,348,456,58),T("로비로 돌아가기","Return to lobby"),2,button))return PauseMenuCommand.ReturnLobby;
+    if(MenuButton(new Rect(412,424,456,58),T("게임 종료","Quit game"),3,button))page=PausePage.Quit;
     NativeSilverHellUi.Label(new Rect(364,524,552,58),T("미리보기의 진행 상황은 저장되지 않습니다.","Progress in this preview is not saved."),muted);
     NativeSilverHellUi.Label(new Rect(364,600,552,28),dead?T("다시 시작하거나 로비로 돌아갈 수 있습니다.","Restart or return to the lobby."):T("↑↓ 선택 · Enter 확인 · ESC 뒤로 · TAB 인벤토리","↑↓ Select · Enter Confirm · ESC Back · TAB Inventory"),muted);
     return PauseMenuCommand.None;
@@ -244,18 +243,18 @@ namespace Exoduser.UnityPort
    else if(SettingsPersistenceEnabled){keyList.SaveNote="키 설정 변경은 "+NativePlatformLabel.Ko+"에 자동 저장됩니다";keyList.SaveNoteEn="Key binding changes are saved on "+NativePlatformLabel.En+"";}
    else{keyList.SaveNote="검수 실행의 키 설정은 저장하지 않습니다";keyList.SaveNoteEn="Key bindings are not saved during this QA run";}
    var pane=new Rect(45,60,1830,880);
-   Fill(pane,new Color(.04f,.04f,.045f,.97f));Border(pane,new Color(94/255f,97/255f,97/255f,.6f));
+   NativeSilverHellUi.Panel(pane,28,8);
    float max=Mathf.Max(0,keyList.ContentHeight+51+32-pane.height);
    if(Event.current.type==EventType.ScrollWheel&&pane.Contains(Event.current.mousePosition)){keyScroll=Mathf.Clamp(keyScroll+Event.current.delta.y*40f,0,max);Event.current.Use();}
    keyScroll=Mathf.Clamp(keyScroll,0,max);
    GUI.BeginGroup(pane);
    // web `#settings-page-controls .set-label` computed style: Noto Sans KR 600 16px, letter-spacing .64px, rgb(200,181,143), left aligned, box 1736x39 (padding 4/0/10), hairline rgb(73,65,54) below, list 12px under it
-   if(keyLabelStyle==null){keyLabelStyle=new GUIStyle(GUI.skin.label){font=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold")??font,fontSize=16,alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset()};keyLabelStyle.normal.textColor=new Color(200/255f,181/255f,143/255f);}
+   if(keyLabelStyle==null){keyLabelStyle=new GUIStyle(GUI.skin.label){font=font,fontStyle=FontStyle.Normal,fontSize=16,alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset()};keyLabelStyle.normal.textColor=NativeSilverHellUi.Text;}
    {float lx=42,ly=14-keyScroll+4;foreach(char ch in T("조작 키 설정 (클릭하여 변경)","Key bindings (click to change)")){string g=ch.ToString();NativeSilverHellUi.Label(new Rect(lx,ly,40,24),g,keyLabelStyle);lx+=keyLabelStyle.CalcSize(new GUIContent(g)).x+.64f;}
-    Fill(new Rect(42,14-keyScroll+38,1736,1),new Color(73/255f,65/255f,54/255f));}
+    Fill(new Rect(42,14-keyScroll+38,1736,1),new Color(94/255f,97/255f,97/255f));}
    keyList.Draw(new Vector2(42,14+51-keyScroll),new Rect(0,0,pane.width,pane.height));GUI.EndGroup();
    keyList.DrawToasts();
-   if(NativeSilverHellUi.Button(new Rect(860,984,200,44),T("뒤로","Back"),button)&&!keyList.Listening)keyPage=false;
+   if(MetalAction(new Rect(860,984,200,44),T("뒤로","Back"),false,false,button)&&!keyList.Listening)keyPage=false;
   }
   void RestoreDefaults()
   {

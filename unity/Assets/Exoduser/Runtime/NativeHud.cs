@@ -38,7 +38,7 @@ namespace Exoduser.UnityPort
         public NativeHud()
         {
             hpFrame=Required<Texture2D>("Art/ui/ui_globe_hp");mpFrame=Required<Texture2D>("Art/ui/ui_globe_mp");bar=Required<Texture2D>("Art/ui/ui_bar_only");
-            icon=Required<Texture2D>("Art/ui/skill_icons/kiSlash");textFont=Required<Font>("Art/fonts/NanumMyeongjo-Regular");numberFont=Required<Font>("Art/fonts/CinzelDecorative-Bold");
+            icon=Required<Texture2D>("Art/ui/skill_icons/kiSlash");textFont=NativeSilverHellUi.Font()??Required<Font>("Art/fonts/NanumMyeongjo-Regular");numberFont=Required<Font>("Art/fonts/CinzelDecorative-Bold");
             material=new Material(Required<Shader>("Shaders/HudOrb"));
             hp=Target("HP liquid");mana=Target("MP ST liquid");shield=Target("Shield ring");eye=Target("Poise eye");
             Blit(eye,3);
@@ -74,7 +74,7 @@ namespace Exoduser.UnityPort
             if(hpNumber!=null)return;
             hpNumber=new GUIStyle(GUI.skin.label){font=numberFont,fontSize=24,alignment=TextAnchor.MiddleCenter};hpNumber.normal.textColor=Color.white;
             maximum=new GUIStyle(hpNumber){fontSize=18};resourceNumber=new GUIStyle(hpNumber){fontSize=17};resourceLabel=new GUIStyle(hpNumber){fontSize=14};
-            keyLabel=new GUIStyle(GUI.skin.label){font=Required<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold"),fontSize=15,alignment=TextAnchor.MiddleCenter,wordWrap=false,clipping=TextClipping.Clip,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};keyLabel.normal.textColor=new Color(192/255f,189/255f,183/255f);
+            keyLabel=new GUIStyle(GUI.skin.label){font=textFont,fontStyle=FontStyle.Normal,fontSize=15,alignment=TextAnchor.MiddleCenter,wordWrap=false,clipping=TextClipping.Clip,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};keyLabel.normal.textColor=new Color(192/255f,189/255f,183/255f);
             tooltip=new GUIStyle(GUI.skin.box){font=textFont,fontSize=20,alignment=TextAnchor.MiddleCenter};tooltip.normal.textColor=new Color(219/255f,216/255f,210/255f);
         }
         public void Draw(float width,float height,string activeAttack,Simulation simulation=null)
@@ -83,7 +83,6 @@ namespace Exoduser.UnityPort
             const float scale=NativeHudDockLayout.ArtScale;
             var dock=NativeHudDockLayout.Create(width,height);
             Rect slotBar=dock.SlotBar;
-            DrawDockFoundation(dock,width,height);
             // Source bar includes Cinzel key labels; erase only those glyph pixels in a runtime copy.
             // The original imported PNG stays byte-identical and the common labels are drawn below.
             if(labelCleanBar==null)labelCleanBar=BuildLabelCleanBar();
@@ -187,6 +186,6 @@ namespace Exoduser.UnityPort
             }finally{Release(h);Release(m);}
         }
         static void Release(UnityEngine.Object value){if(Application.isPlaying)UnityEngine.Object.Destroy(value);else UnityEngine.Object.DestroyImmediate(value);}
-        public void Dispose(){foreach(var rt in new[]{hp,mana,shield,eye}){rt.Release();Release(rt);}ReleaseDockSurface();Release(labelCleanBar);Release(material);}
+        public void Dispose(){foreach(var rt in new[]{hp,mana,shield,eye}){rt.Release();Release(rt);}Release(labelCleanBar);Release(material);}
     }
 }

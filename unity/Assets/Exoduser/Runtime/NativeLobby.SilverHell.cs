@@ -84,13 +84,14 @@ namespace Exoduser.UnityPort
                 GUI.DrawTextureWithTexCoords(new Rect(dx[x],dy[y],dw,dh),tex,new Rect(sx[x]/tex.width,1-sy[y+1]/tex.height,(sx[x+1]-sx[x])/tex.width,(sy[y+1]-sy[y])/tex.height),true);
             }
         }
-        internal static void Panel(Rect box,float edge=75,float outset=24)
+        internal static void Panel(Rect box,float edge=75,float outset=24,bool textured=true)
         {
             if(frame==null)frame=Resources.Load<Texture2D>("Art/ui/silver_hell/panel_frame_20261029");
             if(panelBackground==null)panelBackground=Effect(1,64,(u,v)=>Color.Lerp(new Color(16/255f,15/255f,15/255f,.95f),new Color(8/255f,8/255f,9/255f,.97f),v));
-            GUI.DrawTexture(box,panelBackground);
+            if(textured)GUI.DrawTexture(box,panelBackground);
+            else{var c=GUI.color;GUI.color=new Color(0,0,0,c.a);GUI.DrawTexture(box,Texture2D.whiteTexture);GUI.color=c;}
             if(panelIron==null)panelIron=Resources.Load<Texture2D>("Art/ui/inventory/iron_480");
-            if(panelIron!=null){var c=GUI.color;GUI.color=new Color(c.r,c.g,c.b,c.a*.14f);GUI.DrawTexture(box,panelIron,ScaleMode.StretchToFill,true);GUI.color=c;}
+            if(textured&&panelIron!=null){var c=GUI.color;GUI.color=new Color(c.r,c.g,c.b,c.a*.14f);GUI.DrawTexture(box,panelIron,ScaleMode.StretchToFill,true);GUI.color=c;}
             Slice(new Rect(box.x-outset,box.y-outset,box.width+outset*2,box.height+outset*2),frame,150,150,edge,edge,false);
         }
         internal static void Button(Rect box)
