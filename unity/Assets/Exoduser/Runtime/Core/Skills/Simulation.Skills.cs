@@ -52,6 +52,7 @@ namespace Exoduser.UnityPort.Core
         // start state of a new character (game.html 62632-62640 / 62334-62336 + the Ctrl iceOrb that is always granted): giantSlam -> Space, holyDome -> F, spikeTrap -> 1, iceOrb -> Ctrl
         public void InitStartingSkills()
         {
+            Skills.Levels["kiSlash"] = Math.Max(1, Config.KiSlashLevel);
             Skills.Levels["giantSlam"] = 1; Skills.Slots[SkillRules.SlotSpace] = "giantSlam";
             Skills.Levels["holyDome"] = 1; Skills.Slots[SkillRules.SlotF] = "holyDome";
             Skills.Levels["spikeTrap"] = 1; Skills.Slots[0] = "spikeTrap";
@@ -61,11 +62,11 @@ namespace Exoduser.UnityPort.Core
         }
 
         // ---- save (web `skills`, `skillSlots`, `ultSlot`, `activeCtSk`): only the skills this executor runs are owned by Unity ----
-        public static readonly string[] PortedSkillIds = { "spikeTrap", "giantSlam", "holyDome", "iceOrb", "fireball", "maliceSwipe", "shieldThrow" };
+        public static readonly string[] PortedSkillIds = { "kiSlash", "spikeTrap", "giantSlam", "holyDome", "iceOrb", "fireball", "maliceSwipe", "shieldThrow" };
         static bool IsPorted(string id) { return id != null && Array.IndexOf(PortedSkillIds, id) >= 0; }
         public void CaptureSkills(out Dictionary<string, double> skills, out string[] slots, out string ult, out string ct)
         {
-            skills = new Dictionary<string, double>(); foreach (var id in PortedSkillIds) skills[id] = Skills.Level(id);
+            skills = new Dictionary<string, double>(); foreach (var id in PortedSkillIds) skills[id] = id == "kiSlash" ? Math.Max(1, Config.KiSlashLevel) : Skills.Level(id);
             slots = new string[SkillRules.SlotCount]; for (int i = 0; i < slots.Length; i++) slots[i] = IsPorted(Skills.Slots[i]) ? Skills.Slots[i] : null;
             ult = null; ct = Skills.CtSkill;
         }
@@ -73,8 +74,9 @@ namespace Exoduser.UnityPort.Core
         public void RestoreSkills(Dictionary<string, double> skills, string[] slots, string ult, string ct)
         {
             if (skills == null) return;
-            foreach (var id in PortedSkillIds) { double v; skills.TryGetValue(id, out v); if ((id == "fireball"||id=="maliceSwipe"||id=="shieldThrow") && v < 1) v = 1; if (v >= 1) Skills.Levels[id] = (int)v; else Skills.Levels.Remove(id); }
+            foreach (var id in PortedSkillIds) { double v; skills.TryGetValue(id, out v); if ((id == "kiSlash"||id == "fireball"||id=="maliceSwipe"||id=="shieldThrow") && v < 1) v = 1; if (v >= 1) Skills.Levels[id] = (int)v; else Skills.Levels.Remove(id); }
             for (int i = 0; i < SkillRules.SlotCount; i++) Skills.Slots[i] = slots != null && i < slots.Length && IsPorted(slots[i]) && Skills.Learned(slots[i]) ? slots[i] : null;
+            Config.KiSlashLevel = Math.Max(1, Skills.Level("kiSlash"));
             MaliceSwipeLevel=Skills.Level("maliceSwipe");ShieldThrowLevel=Skills.Level("shieldThrow");
             Skills.CtSkill = IsPorted(ct) && Skills.Learned(ct) ? ct : (Skills.Learned("iceOrb") ? "iceOrb" : null);
         }
@@ -113,11 +115,32 @@ namespace Exoduser.UnityPort.Core
         public int SkillMpCost(string key, string skillId) { return SkillRules.MpCost(key, Skills.Level(skillId), MagicCostMultiplier()); }
 
         // ---- level up (_skCtx / _skLearnUp upgrade branch): SP is Player.StatPoints ----
-        public bool CanUpgradeSkill(string id) { return SkillRules.CanUpgrade(Skills.Learned(id), Skills.Level(id), Player.StatPoints, Player.Level); }
+        private bool IsShieldFusionUpgrade(string id) { return id == "maliceSwipe" && ShieldFuse && Skills.Learned("maliceSwipe") && Skills.Learned("shieldThrow"); }
+        public int SkillUpgradeSpCost(string id)
+        {
+            if (IsShieldFusionUpgrade(id)) return Math.Min(Skills.Level("maliceSwipe"), Skills.Level("shieldThrow")) >= 9 ? 6 : 2;
+            return SkillRules.UpgradeSpCost;
+        }
+        public bool CanUpgradeSkill(string id)
+        {
+            int level = id == "kiSlash" ? Math.Max(1, Config.KiSlashLevel) : Skills.Level(id);
+            return Skills.Learned(id) && level < SkillRules.MaxSkillLevel && level < SkillRules.SkillLevelLock(Player.Level) && Player.StatPoints >= SkillUpgradeSpCost(id);
+        }
         public bool UpgradeSkill(string id)
         {
             if (!CanUpgradeSkill(id)) return false;
-            Player.StatPoints -= SkillRules.UpgradeSpCost; Skills.Levels[id] = Skills.Level(id) + 1; if(id=="maliceSwipe")MaliceSwipeLevel=Skills.Level(id);if(id=="shieldThrow")ShieldThrowLevel=Skills.Level(id);return true;
+            int cost = SkillUpgradeSpCost(id);
+            if (IsShieldFusionUpgrade(id))
+            {
+                int next = Math.Min(Skills.Level("maliceSwipe"), Skills.Level("shieldThrow")) + 1;
+                Skills.Levels["maliceSwipe"] = Math.Max(Skills.Level("maliceSwipe"), next);
+                Skills.Levels["shieldThrow"] = Math.Max(Skills.Level("shieldThrow"), next);
+            }
+            else if (id == "kiSlash") { Config.KiSlashLevel = Math.Max(1, Config.KiSlashLevel) + 1; Skills.Levels[id] = Config.KiSlashLevel; }
+            else Skills.Levels[id] = Skills.Level(id) + 1;
+            Player.StatPoints -= cost;
+            MaliceSwipeLevel = Skills.Level("maliceSwipe"); ShieldThrowLevel = Skills.Level("shieldThrow");
+            return true;
         }
 
         // HUD cooldown sweep: remaining frames and the full length of the skill's last cooldown

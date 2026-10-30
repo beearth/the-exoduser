@@ -596,3 +596,5 @@ SV primitive의 `web_ack` 성공 시각 계산과 기존 `source_save_lifecycle_
 ## DEMO11-06c 연결 보충 (2026-10-21)
 
 06b의 PC 대기 경계는 PC a28117c1(main0138c5bb에 포함)의 보호 handoff3종과 restore resources8필드로 연결했다. 각 source flow 보호 경계 `_handoff` 검증을 그대로 사용한다. State의 직접 8자원 writer는 삭제하고 PC raw writer만 호출, 실제 completed pre-Tree dispatcher→로드 commit→runtime apply_stats→기존 initStage31567 refill→최종 부팅/시작·저장 gate 순서다. loaded 신규 지급·슬롯 덮어쓰기·fresh intro0. G3618–3621/G3867–3879/G3513·3483–3490/G62509–62517/G31567 근거. 실제 자료와 미확인은 [06c 보고서](orders/reports/demo11-06c_REPORT.md). 06b 당시 PC 대기는 과거 상태다.
+
+2026-10-31 Unity 현재 변경: Q/E 기본 무료 불꽃칼날과 기검참 성장·저장 소유 경계는 [원본 대조 문서](UNITY_QE_BASE_FUSION_20261031.md)를 따른다. 합체 두 구성원 동시 강화 SP2/6, 기검참 일반 강화 SP1 및 skills.kiSlash 왕복을 추가했다. 기존 Godot 추적/미이식 목록의 역사적 상태를 덮어쓰지 않는다. 정식 Player·M1 전달은 해당 문서의 최신 검수 상태를 확인한다.

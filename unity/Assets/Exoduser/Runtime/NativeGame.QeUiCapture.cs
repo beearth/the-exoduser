@@ -30,6 +30,16 @@ namespace Exoduser.UnityPort
     }
    }
    binds.TrySet("beam",oldMagic,false,out reject);binds.TrySet("shield",oldShield,false,out reject);
+   Simulation.Player.Level=100;Simulation.Player.StatPoints=4;
+   check(Simulation.UpgradeSkill("maliceSwipe")&&Simulation.Skills.Level("maliceSwipe")==2&&Simulation.Skills.Level("shieldThrow")==2&&Simulation.Player.StatPoints==2,"원본 합체 두 구성원 동시2렙·SP2 차감");
+   check(Simulation.UpgradeSkill("kiSlash")&&Simulation.Config.KiSlashLevel==2&&Simulation.Player.StatPoints==1,"실제 기검 강화2렙·SP1 차감");
+   foreach(int dock in new[]{9,6})
+   {
+    menu=false;hud.SlotSelected?.Invoke(dock);Running=false;yield return new WaitForSecondsRealtime(.2f);yield return new WaitForEndOfFrame();
+    string id=equipped.Invoke(skills,new object[]{skills.SelectedSlot}) as string;
+    check(skills.Open&&id==(dock==9?"maliceSwipe":"kiSlash"),"강화 후 선택 스킬 일치 "+id);check(Simulation.TickCount==tick&&Simulation.Player.Hp==hp,"강화 화면 동안 월드틱·HP 보존");
+    var texture=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(Path.Combine(output,dock==9?"강화2렙-칼등.png":"강화2렙-기검.png"),texture.EncodeToPNG());Destroy(texture);SetSkills(false);Running=false;
+   }
    File.WriteAllText(Path.Combine(output,"Q-E-스킬창-검수.json"),JsonUtility.ToJson(new QeUiReceipt{passed=failed==0,failures=failed,checks=checks.ToArray()},true));
    lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);Application.Quit(failed==0?0:2);
   }
