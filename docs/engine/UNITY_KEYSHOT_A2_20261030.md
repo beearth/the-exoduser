@@ -316,3 +316,25 @@ GP 원작성자 edf12c419의 exo-unity.ps1·devtools/README·UNITY_DEVTOOLS_SHAR
 | 물가 시험 제외 | 동일 스캔목질7개를 지면/수면에 맞춘 Editor 시험 shore-scan-timber-first.png은 가늘게 잠긴 가지처럼 보여 큰형태 개선 FAIL. 소스에 채택0/새빌드에 포함0. 카메라28도 임시 변경은 기존LateUpdate가34도로 복원해 유효 후보 촬영이 아니며 카메라 변경0 |
 | 보스 겹침 방지 | 자연전투 입력의 목표 보스거리400Core단위(기존일반전투 기본300 유지), 가시성 최소거리260. 실제영웅 활성 SkinnedMeshRenderer bounds합집합(누락시playerView.bounds)과 druidBody.Bounds의8꼭짓점을 카메라 투영. 영웅 Rect 사방.01 확장 후 Overlaps=false가 필수. 03선택과최종passed에 heroBossSeparated 추가/영수증 기록. 적·탄·Core·AI패턴·강제보스포즈 변경0. 새실제Player 미검증 |
 | 남은 필수 게이트 | 새소스 빌드/동일빌드 정상종료M1/최종Player3장/원화·PoE2·노레위6장 동크기·1x/전체시각판정/통합담당인수/unity main/일반Desktop. HID제품명조회 종료대기는 별도 미해결. 새덤프·취소실험·장치·권한·입력backend 변경0 |
+
+## 2026-10-31 08:08 KST 높은 스캔 뿌리 제작 후보
+
+| 항목 | 현재 계약·미검증 경계 |
+|---|---|
+| 방법 변경 | 가늘게 잠긴 물가목질 시험 미채택. 원본 root_cluster_01 스캔을 다시 제작해 낮은 부조의 평평한 큰형태를 수정하는 후보. 제작과 정적2장 RETOUCH/게임 PASS 아님 |
+| 제작 | 동일 CC0 원본·원본 UV/원본3맵 유지. decimate .16/18181정점·36040삼각형. 국소바닥반경 .24→.8m/바닥분위 .10→.05, 부조 상한 .36→1.1m, 실제높이 .986387312m. 기하높이=국소돌출높이+원본양수높이×.015, 경계 .45m smoothstep/경계높이0. vertex R=경계완화×smoothstep(.035,.215,돌출높이), G=경계완화/B=돌출높이÷1.1. 원본면연속보존/UV재베이크0 |
+| 새 자산 | Art/map/a2/raisedroots/Models/A2_Raised_Root_Cluster.fbx. 기존 rootrelief 재질·3사진 재사용/새사진0. exact 임포터 8개·GetVersion3 유지/읽기1 |
+| 적용 범위 | A2RootRelief의 첫4개 주거목 고정좌표·scale·yaw는 유지하고 높은 메시만 선택. 물가의 기존 낮은부조10개 보존. 높은 메시 누락은 오류+기존낮은부조 폴백. 기존 per-vertex GroundY/수면bed-.18/Collider0 유지 |
+| 검수 경계 | 정적2장 뿌리실루엣 개선 확인. 게임 접합·중앙 통로·그림자·Player·M1 미검증. 전체 VISUAL VERDICT: FAIL 유지. 현재검수중인 edeac86cc 바이너리에는 이 후보 포함0 |
+
+## 2026-10-31 08:12 KST 실행 메모리 차단과 후보 보존
+
+| 항목 | 새 증거·현재 상태 |
+|---|---|
+| 마지막 실제 빌드 | edeac86cc6fc8ad6b8177543456caaabeb20fa58 입력/cec13920 오류0/100604ms/3803100766B. MCP파일·ASCII참조0/212파일160DLL. EXE SHA9806abde4a406ed68647e9505852c49f6aa72a372f4f084e2aa2821affea57a2, Runtime68e5e790acbcb383a215500260bdfe87c554c1a74916c31bf6fb742f4240a529, Core9242c48064da01340a1e6eff2ffaf0f696674a90ceedad8faa0187c5fcc404f4 |
+| 같은 빌드 M1 | dac59de0 내용23/23·32PNG/106442ms timeout·exit-1·ok=false. 창0/세이브0/공식잔여0/hiddenDesktopClosed=true. 실제 정상종료 FAIL. 아직 이 빌드의 최종3장 촬영 전 |
+| 공식 무창 비교 | exo-unity -Desktop batch는 GPU유지/-batchmode 추가만이며 -nographics 금지. 동일binary의 비교 호출은 커밋 여유9.3~9.8GB<필수10GB라 Player 자식0/미실행. 기준완화0. 자기 대기PS54728/부모37484/생성23:06:22.474593UTC/정확스크립트/자식0/잠금0/여유9.714710GB 재확인 후23:09:47 회수. 공식M1영수증0/성공처리0 |
+| 메모리 읽기 진단 | 23:08:02.870670UTC 시스템commit93675835392/103910297600B/물리여유11633MB. 자기A2 종료대기7개 PID58420,40420,55600,55824,60216,56412,55128는 각스레드1/HasExited=true이나 PrivateBytes2907127808,2974109696,4474871808,3025747968,4498862080,3122757632,4551380992 보유. HasExited만으로 자원정상반환이라 하지않음. 새Player10GB/기존Library Editor12GB 조건 둘다차단 |
+| 보존·중단 경계 | 종료대기 Unity·타인프로세스 추가kill/새취소/덤프/장치·권한·입력backend·메모리기준 변경0. 미시작 자기대기PS만회수. 사용자에게 키보드·마우스/USB허브·패드·앰프 목록을 메모리차단근거와함께질문. 외부상태변화전 새GPU실행 쌓지않음 |
+| 높은 뿌리 검증 | 2장 정적 직접판정 RETOUCH/Blender traceback0·기하경계높이0·UV/유한값검사완료. 현재소스 독립Core/C#0/0. 새Unity import·실제Player접합·M1·시각비교 미검증. 이 후보를 edeac86cc 실행결과로 소급검증하지않음 |
+| 품질·반영 | 전체 VISUAL VERDICT: FAIL/미완료. A2 common인수·일반Desktop갱신0. 실제3장·정상M1·큰형태/원근/수면 교정이 남음. 자기원격 후보보존만 진행 |

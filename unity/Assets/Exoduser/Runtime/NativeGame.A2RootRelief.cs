@@ -8,6 +8,8 @@ namespace Exoduser.UnityPort
         void A2RootRelief(Terrain ground)
         {
             var source=Resources.Load<GameObject>("Art/map/a2/rootrelief/Models/A2_Root_Cluster_Patch");
+            var raised=Resources.Load<GameObject>("Art/map/a2/raisedroots/Models/A2_Raised_Root_Cluster");
+            if(raised==null)Debug.LogError("[A2] 높은 스캔 뿌리 누락. 기존 낮은 부조 유지");
             var template=Resources.Load<Material>("Art/map/a2/rootrelief/Materials/A2_Root_Cluster_Patch");
             Material field=null;
             foreach(var renderer in ground.GetComponentsInChildren<MeshRenderer>())if(renderer.name=="지옥 바닥 PBR 표면")field=renderer.sharedMaterial;
@@ -33,11 +35,12 @@ namespace Exoduser.UnityPort
                 if(A2ForestLayout.Water(x,z)||A2ForestLayout.Trunk(x,z)||A2ForestLayout.Bridge(x,z))continue;
                 placements.Add(new Vector4(x,z,.8f+.1f*(j%3),24+side*20+j*47));
             }
-            int placed=0;
-            foreach(var placement in placements)
+            int placed=0,raisedPlaced=0;
+            for(int placementIndex=0;placementIndex<placements.Count;placementIndex++)
             {
+                var placement=placements[placementIndex];bool useRaised=placementIndex<4&&raised!=null;
                 float baseY=NativeRemodel3D.GroundY(placement.x,placement.y);
-                var go=Instantiate(source,a2Root.transform);go.name="A2 연속 뿌리 부조";
+                var go=Instantiate(useRaised?raised:source,a2Root.transform);go.name=useRaised?"A2 거목 높은 스캔 뿌리":"A2 연속 뿌리 부조";
                 go.transform.SetPositionAndRotation(new Vector3(placement.x,baseY,placement.y),Quaternion.Euler(0,placement.w,0));go.transform.localScale=Vector3.one*placement.z;
                 var filters=go.GetComponentsInChildren<MeshFilter>();
                 if(filters.Length!=1||!filters[0].sharedMesh.isReadable||filters[0].sharedMesh.colors.Length!=filters[0].sharedMesh.vertexCount)
@@ -52,9 +55,9 @@ namespace Exoduser.UnityPort
                 }
                 mesh.vertices=vertices;mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();filter.sharedMesh=mesh;
                 foreach(var renderer in go.GetComponentsInChildren<MeshRenderer>()){renderer.sharedMaterial=material;renderer.shadowCastingMode=ShadowCastingMode.On;renderer.receiveShadows=true;}
-                placed++;
+                placed++;if(useRaised)raisedPlaced++;
             }
-            Debug.Log("[A2] 연속 뿌리 부조 "+placed+"개. 원본면·UV 보존/Collider 추가0");
+            Debug.Log("[A2] 연속 뿌리 부조 "+placed+"개/높은 거목 연결 "+raisedPlaced+"개. 원본면·UV 보존/Collider 추가0");
         }
     }
 }
