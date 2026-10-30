@@ -298,3 +298,21 @@ GP 원작성자 edf12c419의 exo-unity.ps1·devtools/README·UNITY_DEVTOOLS_SHAR
 | 아레나 지면 | 비A2 ArenaSoilLit 보존/A2ArenaSoilLit만추가. 기존rock5.5u/새숲흙3.2u·뿌리2.5u 사진과법선4맵, 넓은저주파혼합(root가중최대.55)/젖은암화최대.18. 법선.25/.45/.5, 기존실제국소광3·원본floor알파 유지. 누락은기존암반폴백+오류. 실제Editor 반복무늬완화확인/Player미검증 |
 | 실패 소품 제외 | 아레나FallenLog8개 URPLit검은가지시안FAIL. 바닥과같은XY국소광전용셰이더시안도군데군데놓은소품으로보여FAIL. 두이미지·셰이더원본SHA를I:arena-wood-failed-candidate 보존후런타임에서8개및미사용셰이더제외. 원래횃불2·광원3 유지. 보스담당신규3D는NOT_READY/인수0 |
 | 현재 경계 | 새소스독립Core/C#0/0·수면/부조/아레나셰이더지원true·컴파일메시지0. Editor의private카메라접근진단코드1회실패는reflection으로교정/게임소스컴파일실패아님. D3D12 Editor는반사폴백이므로실제D3D11명암/반영대체아님. 전체VISUAL VERDICT: FAIL, 새Player/M1·통합·일반Desktop미완료 |
+
+## 2026-10-31 08:00 KST 실제 3f25 Player 검수와 스캔 전경 후보
+
+| 항목 | 정확 입력·결과·현재 계약 |
+|---|---|
+| 직전 실제 입력 | 3f25cca7904e76f07dc21a02491f123086ba3840. 실제 빌드01a326b3/103941ms/exit0/3784630622B/오류0. 212파일·160DLL/MCP파일·ASCII참조0. Core SHA256 9242c48064da01340a1e6eff2ffaf0f696674a90ceedad8faa0187c5fcc404f4, Runtime SHA256 409a4d3e1ab810c392d32633b1baf513f52e9c910700bb4e59747215b3d56130 |
+| 동일 빌드 M1 | fe8afcf4의23/23 내용검사·caps 하위32PNG. 106263ms/timedOut=true/exit-1/ok=false라 정상종료 FAIL. 창0/세이브변경0/공식잔여목록0/hiddenDesktopClosed=true. 과거1e0a 정상M1은 현재 소스 근거가 아님 |
+| 실제 Player 3장 | d0825d97의shore-motion-caps 01탐험·02전투·03드루이드/HUD포함1920×1080/Unity오류0. 91142ms/timedOut/exit-1/ok=false. bossVisible=true로 잠복 본체 누락은 해결했으나 영웅과 보스가 겹치는 실제 결함 발견. 내용passed=true와 시각 FAIL/종료 FAIL을 분리 |
+| 시각 판정 | 실제3장 직접 확인·A2 동크기/1x 보존. 수면 반영 개선은 보이나 광택 노란 접촉띠·단순한 물가·빈 지면·원화 대비 큰 형태와 원근 차이 잔존. 전체 VISUAL VERDICT: FAIL. common/일반Desktop 채택0 |
+| 새 전경 출처 | Poly Haven dead_tree_trunk_02, CC0, Jenelle van Heerden(촬영)/Rico Cilliers(처리). 기존R3 원본5파일13351323B를 이번 공식 files API MD5와 전부 대조. 로컬 gltf 이름은 dead_tree_trunk_02.gltf, 공식 2k descriptor는 dead_tree_trunk_02_2k.gltf인 명명 차이를 명시적으로 매핑. 첫 파일명 조회 실패를 원본 변조로 판단하지 않음. 비용0/기존원본 수정0. I:foreground-log-source/출처-영수증.json |
+| 새 전경 제작 | Blender CPU2, decimate .55, 원본UV1/원본2k BaseColor·Normal·ARM 유지/재베이크0. Blender27064정점·45719삼각형·4.051744×1.055865×1.055913m. Unity 실제27151정점·45719삼각형·readable=true/vertex R min=max1. 동일 RootSurface 셰이더로 스캔사진만 사용, _ScanColor(.55,.50,.36), 새Collider0. 정적2장·실제EditorRT는 Player/Steam PASS 근거가 아님 |
+| 경로·임포터 | Art/map/a2/foreground/Models/A2_Scanned_Foreground_Log.fbx, Materials 동명.mat, Textures 동명_BaseColor.jpg/_Normal.jpg/_ARM.jpg. A2GroundCoverImporter exact whitelist 7개/GetVersion3 유지. 기존6개 계약 보존/메시 정점읽기 사용 |
+| 전경 배치 | A2Foreground는 강·부조 조립 후 실행. 바깥 Hollow거목 (31,-84), scale(.75,1.15,.75),yaw-25/lift-.2. 스캔목질 (36.7,-81.5),scale(2.2,2,1.4),yaw-20/lift-.25 후+Y2.2; (33.4,-81),scale(1.75,1.7,1.4),yaw62/lift-.25 후+Y1. 전체렌더bounds.maxZ가 -80.05보다 크면 prefab 전체를 뒤로 이동. 실제거목maxZ-80.17403/목질2개각-80.05/플레이영역침범0 |
+| 전경 수염 | 각 목질 localX -1.2/-.2/.8의 실제 읽기정점 중 world normal.y>=.25, score=dx²+dz²-.05×worldY 최솟값에 상단 부착. Hanging_Moss scale(.55,.7,.5),yaw목질+90,상단bounds중심=hit-Y.02,tint(.65,.62,.48). 부착후maxZ>-80.05이면 그 이끼 제외. 실제6개모두경계밖/maxZ -82.73594,-81.94946,-81.18107,-81.338,-82.84054,-84.42946. 주거목24+다리10+전경6=40그룹 |
+| 실제 Editor 확인 | Runtime MVID53fe7d57-19a6-450a-8dbb-dbda21e731c3/오류0. foreground-surface-moss 실제자동RT1920×1080·동크기/1x 보존. 전경 목질·접합은 후보 RETOUCH, 전체 FAIL. D3D12 Editor 반사 폴백을 최종 D3D11 반영 증거로 쓰지 않음 |
+| 물가 시험 제외 | 동일 스캔목질7개를 지면/수면에 맞춘 Editor 시험 shore-scan-timber-first.png은 가늘게 잠긴 가지처럼 보여 큰형태 개선 FAIL. 소스에 채택0/새빌드에 포함0. 카메라28도 임시 변경은 기존LateUpdate가34도로 복원해 유효 후보 촬영이 아니며 카메라 변경0 |
+| 보스 겹침 방지 | 자연전투 입력의 목표 보스거리400Core단위(기존일반전투 기본300 유지), 가시성 최소거리260. 실제영웅 활성 SkinnedMeshRenderer bounds합집합(누락시playerView.bounds)과 druidBody.Bounds의8꼭짓점을 카메라 투영. 영웅 Rect 사방.01 확장 후 Overlaps=false가 필수. 03선택과최종passed에 heroBossSeparated 추가/영수증 기록. 적·탄·Core·AI패턴·강제보스포즈 변경0. 새실제Player 미검증 |
+| 남은 필수 게이트 | 새소스 빌드/동일빌드 정상종료M1/최종Player3장/원화·PoE2·노레위6장 동크기·1x/전체시각판정/통합담당인수/unity main/일반Desktop. HID제품명조회 종료대기는 별도 미해결. 새덤프·취소실험·장치·권한·입력backend 변경0 |

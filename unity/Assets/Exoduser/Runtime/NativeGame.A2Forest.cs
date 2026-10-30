@@ -108,6 +108,7 @@ namespace Exoduser.UnityPort
             A2BridgeMoss();
             A2River(ground);
             A2RootRelief(ground);
+            A2Foreground();
             Debug.Log("[A2 초기화] 수로·외곽 완료 "+timer.ElapsedMilliseconds+"ms");
             // 통행로를 막지 않는 낮은 낙엽·잔돌. 2u 이상 간격의 정해진 접합점만 쓴다.
             var patches=new[]{new Vector2(35.8f,-78.5f),new Vector2(38,-79),new Vector2(40.2f,-80),new Vector2(33.4f,-77.2f),new Vector2(37.4f,-76.6f),new Vector2(36.2f,-66.5f),new Vector2(38.5f,-65.3f),new Vector2(41,-64.8f),new Vector2(43.4f,-64),new Vector2(45.8f,-62.6f),new Vector2(48.2f,-60.8f),new Vector2(32,-69.4f)};
@@ -186,7 +187,8 @@ namespace Exoduser.UnityPort
             bool roots=id.StartsWith("PineRoots_",StringComparison.Ordinal);
             bool stump=id=="Scanned_Stump";
             bool hollow=id=="Hollow_Loft_Tree";
-            var prefab=Resources.Load<GameObject>(hollow?"Art/map/a2/hollow/Models/A2_Hollow_Loft_Tree":stump?"Art/map/a2/stump/Models/A2_Scanned_Stump":roots?"Art/map/a2/roots/Models/A2_"+id:id=="Foam_Bank"?"Art/map/a2/Models/RF_Foam_Bank":"Art/map/a2/r3/Models/RF3_"+source);
+            bool foreground=id=="Scanned_Foreground_Log";
+            var prefab=Resources.Load<GameObject>(foreground?"Art/map/a2/foreground/Models/A2_Scanned_Foreground_Log":hollow?"Art/map/a2/hollow/Models/A2_Hollow_Loft_Tree":stump?"Art/map/a2/stump/Models/A2_Scanned_Stump":roots?"Art/map/a2/roots/Models/A2_"+id:id=="Foam_Bank"?"Art/map/a2/Models/RF_Foam_Bank":"Art/map/a2/r3/Models/RF3_"+source);
             if(prefab==null){Debug.LogError("[A2] 모듈 누락 "+id);return null;}
             float placementGround=NativeRemodel3D.GroundY(x,z);
             float height=placementGround+lift+(id=="Dead_Leaf_Litter"?.01f:-.08f);
