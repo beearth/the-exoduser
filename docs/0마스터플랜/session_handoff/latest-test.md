@@ -71,3 +71,13 @@
 - 사용자 `C:/Users/심도진/Desktop/지옥의 길 (Unity).lnk` → I:/EXODUSER-Storage/demo-art/playtest-fix/final-build/EXODUSER-Unity.exe. 인자 `-force-d3d11 --remodel3d`, 작업폴더/아이콘 포함네속성·Runtime SHA c40dc42c502aa5ba22936712bec354cce7a310ff83bb8fc4dd567aa132e73183 확인. 기존settings-r4링크는 backup/desktop-before-20261030-071103.lnk 보존. 자동기동0.
 - 영수증 desktop-delivery.json / final-candidate.json / MERGE_QUEUE.md. 제작자직접비교 완료, 독립총괄시각검수·Mac반영은미확인이다. 소스공통반영·PC바로가기전달과 전체아트PASS는 별개다.
 - 브리프의 기술수정·컴파일/oracle·M1·전수연속비교·대기열·공통통합·Desktop전달은 완료. 남은 품질은 A2환경/3D영웅·VFX아트 RETOUCH, 기존hidden종료/웹촬영종료·임시로그잠금은 위실행제약으로 명시했다.
+
+
+## 2026-10-30 바탕화면 진입 복구 전달 완료
+
+- Unity 공통10c49850f85dca6365cbf67b8067e6fa749b026d(제품6623d4bc1/Unity treef89621c27195a2fa945441dda3c84dc05072a0b2), 비강제 반영·원격SHA 확인. UI2584e36e4/007568f94+스킬ef75f883e 모두 포함.
+- 기본실행은 cinSeen과 무관하게 FDG→타이틀메뉴→인장ENTER→현행세계관→로비. 명시 --unity-quick-start만직행, 옛문영상은현행SSOT상제거되어복원하지않음.
+- 빌드fee06a3f오류0·실제90장7d564908 전단계/영상오류0·초기분기6/6·M1c2af5c8d23/23 정상exit0. 실제1600/1x·동일크기인장·HUD24PNG/8검사 직접확인. 창/잔여/USER_SAVE0. 자동LobbyKeys/격리marker사본이며 OS손조작·전체세계관자연종료·청음아님.
+- 바탕화면 지옥의 길(Unity).lnk→I:/EXODUSER-Storage/demo-art/entry-flow/build/EXODUSER-Unity.exe, 인자 -force-d3d11 --remodel3d. 네속성/Runtime b5bfe912ccec2a1df294be8db777678354d255b7a28aabbf98163b119409d49a 확인·기존링크I백업·사용자앱자동기동0.
+- 추가일시정지캡처는메모리10GiB게이트미달로미실행(자기대기만취소). 전체UI/환경RETOUCH·Mac미확인. 숨은desktop촬영은명시expectedKill이며 기존종료지연해결/정상Quit PASS아님.
+- 근거 I:/EXODUSER-Storage/demo-art/entry-flow/REPORT.md·grid_after.png·검수.html·공통-반영.json·desktop-delivery.json.
