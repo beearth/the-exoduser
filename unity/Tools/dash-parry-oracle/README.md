@@ -16,7 +16,7 @@
 ## 래퍼 (원문을 실행하기 위한 최소 전역)
 
 각 섹션은 `with(scope)` 안에서 원문을 실행한다. `scope`에 선언된 이름만 값을 돌려주고, 선언되지 않은 이름은 함수 스코프(원문이 선언한 `var`/`function`)에서 찾으며 없으면 `ReferenceError`로 실패한다 — **숨은 스텁 없음**. 아래 이름만 “아무 일도 안 하는 함수”(오디오·텍스트·파티클·펫/유니크 훅)로 허용했다(`oracle.json.wrapper.noops`에도 기록):
-`_T`, `_addBoom`, `_addSkProf`, `_autoShieldThrow`, `_cancelProjCharge`, `_dark02Impact`, `_gpVibrate`, `_petOnParry`, `_petSayCD`, `_playSwordBack`, `_r`, `_rainbowImpact`, `_startSilvertailAttackMotion`, `addParts`, `addTxt`, `doHitFlash`, `playSample`, `poolPart`, `showPH` (+ `SFX.*` 호출 전부 무동작 Proxy).
+`_addBoom`, `_addSkProf`, `_autoShieldThrow`, `_cancelProjCharge`, `_dark02Impact`, `_gpVibrate`, `_petOnParry`, `_petSayCD`, `_playSwordBack`, `_r`, `_rainbowImpact`, `_startSilvertailAttackMotion`, `addParts`, `addTxt`, `doHitFlash`, `playSample`, `poolPart`, `showPH` (+ `SFX.*` 호출 전부 무동작 Proxy).
 
 섹션별 선언 값(입력으로 받는 것): `P`(상태 객체), `PASSIVES`, `_eqAffix(k)`/`_lEq(k)`(어픽스 값 테이블), `sh()`/`wp()`/`ar()`/`bt()`(장비 필드), `window._parryLesson`, `G`/`OPT`(hitStop·shake·mats), `EL`(원문 줄을 그대로 실행), `_HS`·`_HARP_*`(원문 상수 줄을 그대로 실행), `_rageMax()`·`_HARP_GAUGE_MAX`·`_harpGauge`(입력값). 장비·패시브 조회(`_eqAffix`, `PASSIVES`)는 흉내 내지 않고 **값 테이블을 인자로 주입**한다.
 
@@ -39,3 +39,6 @@
 - `green-02.json`: 146,580검사 중 867 실패. 원인은 C#이 아니라 **oracle 래퍼** 2건(수정 전): ① 칼등 포이즈 양 섹션이 원문의 `amt`를 읽지 않고 호출 스텁 값을 비교(`poiseAmount`), ② kiGather 불발 줄을 `else{addTxt(...불발...)` 접두어로 찾다 파일 앞쪽의 다른 줄을 잡음(`kiGather`) → 앵커를 “release 줄의 다음 줄 + `else{addTxt(P.x,P.y-30,_T(` 검증”으로 교체.
 - `green-03.json`: **146,580 checks / 0 failures**.
 - `mutation-poise-or4.json`: C#에서 웹 특이사항 `(P.poise||4)-1`을 `P.poise-1`로 바꾸면 440 실패 → 검사가 민감함을 확인(바꾼 코드는 되돌림).
+
+
+2026-10-31: `_T`는 문자열 그대로 반환하고, 인자 치환은 같은 원본 묶음의 `localization-runtime.js`를 실제 실행한다. 무반환 텍스트 스텁으로 최신 `format` 호출을 막지 않는다. 기절 탈출 입력은 최신 `_canMobility`/`activateMobility`에 연결하며 기존 오라클 입력 필드명은 호환 유지한다. 최신 원본 187,165검사/불일치0.
