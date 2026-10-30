@@ -194,8 +194,9 @@ namespace Exoduser.UnityPort.Core
 
         private void TickChainDash()
         {
-            HarpGauge = ChainDash.RegenGauge(HarpGauge, HarpGaugeMax, ChargeBoostLevel, PCharge, 1, DashHold, HarpActive, DashActive, false, false);
-            if (DashHold && combatShiftHeld && DashHoldF < ChainDash.HoldFramesCap)
+            bool chainHoldBlocked = Player.State == "pStun";
+            HarpGauge = ChainDash.RegenGauge(HarpGauge, HarpGaugeMax, ChargeBoostLevel, PCharge, 1, DashHold, HarpActive, DashActive, chainHoldBlocked, false);
+            if (!chainHoldBlocked && DashHold && combatShiftHeld && DashHoldF < ChainDash.HoldFramesCap)
             {
                 DashHoldF++;
                 if (DashHoldF >= ChainDash.TierHoldFrames[3] && !HarpActive && !DashActive) FireChain(3);

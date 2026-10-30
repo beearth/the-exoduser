@@ -85,7 +85,7 @@ namespace Exoduser.UnityPort.Core
             if (PlayerCombatWired) UpdateChainInputEvents();
             if (SkillsWired) DispatchSkillKeys();
             if (Player.State != "pStun") ConsumeRollTrigger(); // 원본 일반 기동 발동은 재생·무적 감소보다 앞선다.
-            if (PlayerCombatWired && Player.State != "pStun") TickChainDash();
+            if (PlayerCombatWired) TickChainDash(); // 기절은 새 홀드·재생만 막고 이미 날아간 사슬은 계속 진행한다.
             float regenMul = ApplySkillRegen();
             float regenDivisor = Player.State == "idle" ? 8 : 16;
             Player.Hp = Math.Min(Player.MaxHp, Player.Hp + Config.PlayerHpRegen * regenMul / regenDivisor);
