@@ -41,7 +41,7 @@ namespace Exoduser.UnityPort
    if(settings.Options.Check("showFps")){
     float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
     var st=new GUIStyle(GUI.skin.label){fontSize=16,fontStyle=FontStyle.Bold};st.normal.textColor=new Color(.53f,1f,.53f);
-    GUI.Label(new Rect(14,10,200,24),"FPS "+fpsShown.ToString("0"),st);
+    NativeUiAudit.Label(new Rect(14,10,200,24),"FPS "+fpsShown.ToString("0"),st);
    }
    GUI.matrix=old;
   }

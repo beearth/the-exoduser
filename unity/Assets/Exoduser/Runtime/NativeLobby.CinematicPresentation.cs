@@ -38,9 +38,9 @@ namespace Exoduser.UnityPort {
     }
     invitationShade.Apply(false,true);
    }
-   GUI.DrawTexture(new Rect(0,0,1920,1080),gateShade);
+   NativeUiAudit.DrawTexture(new Rect(0,0,1920,1080),gateShade);
    float w=1851.4286f*.52f,h=logo==null?300:w*logo.height/logo.width,cx=34.2857f+1851.4286f*.533f;
-   GUI.DrawTexture(new Rect(cx-w*.7f,1080*.37f-h/2,w*1.4f,h),invitationShade);
+   NativeUiAudit.DrawTexture(new Rect(cx-w*.7f,1080*.37f-h/2,w*1.4f,h),invitationShade);
   }
   void CinematicStyles(){
    if(cinematicMicro!=null)return;LobbyStyles();
@@ -54,7 +54,7 @@ namespace Exoduser.UnityPort {
    Line(new Vector2(rect.x,rect.y),new Vector2(rect.x,rect.yMax),border,1);Line(new Vector2(rect.xMax,rect.y),new Vector2(rect.xMax,rect.yMax),border,1);
    cinematicLanguage.normal.textColor=new Color(1,1,1,.7f);Label(new Rect(rect.x+12,rect.y,130,29),LobbyLanguageLabel(Language),cinematicLanguage,TextAnchor.MiddleLeft);
    Line(new Vector2(rect.xMax-16,rect.y+12),new Vector2(rect.xMax-12,rect.y+16),new Color(1,1,1,.7f),1);Line(new Vector2(rect.xMax-12,rect.y+16),new Vector2(rect.xMax-8,rect.y+12),new Color(1,1,1,.7f),1);
-   if(GUI.Button(rect,"",GUIStyle.none))ToggleLanguages();
+   if(NativeUiAudit.Button(rect,"",GUIStyle.none))ToggleLanguages();
   }
   void DrawCinematicSkip(){
    CinematicStyles();float a=holdDelta>0?1:.5f;var center=new Vector2(1830,990);

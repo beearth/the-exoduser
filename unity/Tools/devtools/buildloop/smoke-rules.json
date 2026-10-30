@@ -146,6 +146,14 @@
     "pattern": "Version:\\s+Direct3D 1[12]",
     "rendererPattern": "Renderer:\\s+(.+)$"
   },
+  "uiOverlap": {
+    "required": true,
+    "command": "unity/Tools/ui-overlap/check.ps1 -OverlapOnly",
+    "receipt": "ui-check/overlap/overlap-report.json",
+    "maxIssues": 0,
+    "resolutions": [[1920, 1080], [1600, 900]],
+    "languages": "ko, de, 실제 서체 폭으로 선정한 설정/직업선택 최장 언어"
+  },
   "m1": {
     "failStatuses": [
       "fail",

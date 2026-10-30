@@ -50,7 +50,7 @@ namespace Exoduser.UnityPort {
    languageRow.fontSize=Mathf.RoundToInt(14*unit);
    if(revealLanguage){float top=languageCursor*row;if(top<languageScroll.y)languageScroll.y=top;else if(top+row>languageScroll.y+height-2*pad)languageScroll.y=top+row-height+2*pad;revealLanguage=false;}
    var viewport=new Rect(panel.x,panel.y+pad,panel.width,panel.height-2*pad);
-   languageScroll=GUI.BeginScrollView(viewport,languageScroll,new Rect(0,0,width-18*unit,LobbyLanguage.Count*row),false,true);
+   languageScroll=NativeUiAudit.BeginScrollView(viewport,languageScroll,new Rect(0,0,width-18*unit,LobbyLanguage.Count*row),false,true);
    for(int i=0;i<LobbyLanguage.Count;i++){
     var rect=new Rect(0,i*row,width-18*unit,row);string code=LobbyLanguage.GetCode(i);
     var e=Event.current;
@@ -61,9 +61,9 @@ namespace Exoduser.UnityPort {
     if(i==languageCursor){Fill(rect,new Color(1,150/255f,80/255f,.2f));Border(rect,new Color(201/255f,169/255f,97/255f),1);}
     languageRow.normal.textColor=code==Language?new Color(1,.8f,.267f):new Color(.8f,.667f,.533f);
     Label(new Rect(16*unit,rect.y,rect.width-20*unit,rect.height),LobbyLanguageLabel(code),languageRow,TextAnchor.MiddleLeft);
-    if(GUI.Button(rect,"",GUIStyle.none)){languageCursor=i;SetLanguage(code);CloseLanguageMenu();}
+    if(NativeUiAudit.Button(rect,"",GUIStyle.none)){languageCursor=i;SetLanguage(code);CloseLanguageMenu();}
    }
-   GUI.EndScrollView();
+   NativeUiAudit.EndScrollView();
   }
  }
 }

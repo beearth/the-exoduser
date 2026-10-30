@@ -20,11 +20,11 @@ namespace Exoduser.UnityPort {
    double rage=simulation.Rage;if(!(rage>0))return;
    if(rageText==null){rageText=new GUIStyle(keyLabel){fontSize=13,fontStyle=FontStyle.Normal,alignment=TextAnchor.UpperCenter};}
    var old=GUI.color;float fill=RageFill(rage,simulation.RageMaximum);
-   GUI.color=new Color(1f,.078f,0,.45f);GUI.DrawTexture(new Rect(slot.x,slot.yMax-slot.height*fill,slot.width,slot.height*fill),Texture2D.whiteTexture);
+   GUI.color=new Color(1f,.078f,0,.45f);NativeUiAudit.DrawTexture(new Rect(slot.x,slot.yMax-slot.height*fill,slot.width,slot.height*fill),Texture2D.whiteTexture);
    GUI.color=RageBorder(rage);const float b=2;
-   GUI.DrawTexture(new Rect(slot.x,slot.y,slot.width,b),Texture2D.whiteTexture);GUI.DrawTexture(new Rect(slot.x,slot.yMax-b,slot.width,b),Texture2D.whiteTexture);
-   GUI.DrawTexture(new Rect(slot.x,slot.y,b,slot.height),Texture2D.whiteTexture);GUI.DrawTexture(new Rect(slot.xMax-b,slot.y,b,slot.height),Texture2D.whiteTexture);
-   if(rage>=100){GUI.color=new Color(1f,.118f,0,.6f);const float g=5;GUI.DrawTexture(new Rect(slot.x+b,slot.y+b,slot.width-2*b,g),Texture2D.whiteTexture);GUI.DrawTexture(new Rect(slot.x+b,slot.yMax-b-g,slot.width-2*b,g),Texture2D.whiteTexture);}
+   NativeUiAudit.DrawTexture(new Rect(slot.x,slot.y,slot.width,b),Texture2D.whiteTexture);NativeUiAudit.DrawTexture(new Rect(slot.x,slot.yMax-b,slot.width,b),Texture2D.whiteTexture);
+   NativeUiAudit.DrawTexture(new Rect(slot.x,slot.y,b,slot.height),Texture2D.whiteTexture);NativeUiAudit.DrawTexture(new Rect(slot.xMax-b,slot.y,b,slot.height),Texture2D.whiteTexture);
+   if(rage>=100){GUI.color=new Color(1f,.118f,0,.6f);const float g=5;NativeUiAudit.DrawTexture(new Rect(slot.x+b,slot.y+b,slot.width-2*b,g),Texture2D.whiteTexture);NativeUiAudit.DrawTexture(new Rect(slot.x+b,slot.yMax-b-g,slot.width-2*b,g),Texture2D.whiteTexture);}
    string label=Math.Truncate(rage).ToString("0")+"%";
    GUI.color=new Color(.4f,0,0,.9f);NativeSilverHellUi.Label(new Rect(slot.x+1,slot.y+3,slot.width,slot.height),label,rageText);
    GUI.color=Color.white;NativeSilverHellUi.Label(new Rect(slot.x,slot.y+2,slot.width,slot.height),label,rageText);
@@ -40,10 +40,10 @@ namespace Exoduser.UnityPort {
   void DrawSlotSkill(Rect slot,string id,Simulation s){
    Texture2D tex;if(!slotIcons.TryGetValue(id,out tex)){tex=Resources.Load<Texture2D>("Art/ui/skill_icons/orb/"+id);slotIcons[id]=tex;}
    const float scale=NativeHudDockLayout.ArtScale;
-   if(tex!=null){var inset=new Rect(slot.x+3*scale,slot.y+3*scale,slot.width-6*scale,slot.height-6*scale);GUI.DrawTexture(inset,tex,ScaleMode.ScaleToFit,true);}
+   if(tex!=null){var inset=new Rect(slot.x+3*scale,slot.y+3*scale,slot.width-6*scale,slot.height-6*scale);NativeUiAudit.DrawTexture(inset,tex,ScaleMode.ScaleToFit,true);}
    float total;float cd=s.SkillCooldown(id,out total);
    if(cd>0&&total>0){
-    var old=GUI.color;float frac=Mathf.Clamp01(cd/total);GUI.color=new Color(0,0,0,.62f);GUI.DrawTexture(new Rect(slot.x,slot.yMax-slot.height*frac,slot.width,slot.height*frac),Texture2D.whiteTexture);
+    var old=GUI.color;float frac=Mathf.Clamp01(cd/total);GUI.color=new Color(0,0,0,.62f);NativeUiAudit.DrawTexture(new Rect(slot.x,slot.yMax-slot.height*frac,slot.width,slot.height*frac),Texture2D.whiteTexture);
     if(cooldownText==null){cooldownText=new GUIStyle(keyLabel){fontSize=15,fontStyle=FontStyle.Normal,alignment=TextAnchor.MiddleCenter};}
     GUI.color=new Color(217/255f,214/255f,208/255f,1f);NativeSilverHellUi.Label(slot,Mathf.CeilToInt(cd/60f).ToString(),cooldownText);GUI.color=old;
    }
@@ -52,7 +52,7 @@ namespace Exoduser.UnityPort {
   public static Color ChainGaugeColor(double pct){return pct>=1?new Color(.267f,1f,.667f):pct>=.5f?new Color(.533f,.8f,1f):new Color(1f,.533f,.267f);}
   void DrawChainGauge(Rect slot,Simulation s){
    double max=s.HarpGaugeMax;if(!(max>0))return;float pct=(float)Math.Min(1,s.HarpGauge/max);
-   var old=GUI.color;GUI.color=ChainGaugeColor(pct);GUI.DrawTexture(new Rect(slot.x,slot.yMax-3*NativeHudDockLayout.ArtScale,slot.width*pct,3*NativeHudDockLayout.ArtScale),Texture2D.whiteTexture);GUI.color=old;
+   var old=GUI.color;GUI.color=ChainGaugeColor(pct);NativeUiAudit.DrawTexture(new Rect(slot.x,slot.yMax-3*NativeHudDockLayout.ArtScale,slot.width*pct,3*NativeHudDockLayout.ArtScale),Texture2D.whiteTexture);GUI.color=old;
   }
   void DrawSkillSlots(NativeHudDockLayout dock,float width,float height,Simulation simulation){
    if(TracePointerEvents&&(Event.current.type==EventType.MouseDown||Event.current.type==EventType.MouseUp)){
@@ -80,7 +80,7 @@ namespace Exoduser.UnityPort {
     float fitWidth=Mathf.Max(360,skillStatus.CalcSize(new GUIContent(statusText)).x+12);statusRect.x=width*.5f-fitWidth*.5f;statusRect.width=fitWidth;
     NativeSilverHellUi.ActionPlate(new Rect(statusRect.x-10,statusRect.y-8,statusRect.width+20,36),false,0,false,20,4);
     NativeSilverHellUi.Label(statusRect,statusText,skillStatus);
-    if(simulation.Player.KiChargeActive){var chargeRect=new Rect(width*.5f-80,statusRect.y-4,160,2);GUI.color=new Color(.18f,.20f,.21f,.8f);GUI.DrawTexture(chargeRect,Texture2D.whiteTexture);GUI.color=new Color(.55f,.72f,.78f,.9f);GUI.DrawTexture(new Rect(chargeRect.x,chargeRect.y,chargeRect.width*Mathf.Clamp01(simulation.Player.KiChargeTicks/120),chargeRect.height),Texture2D.whiteTexture);}
+    if(simulation.Player.KiChargeActive){var chargeRect=new Rect(width*.5f-80,statusRect.y-4,160,2);GUI.color=new Color(.18f,.20f,.21f,.8f);NativeUiAudit.DrawTexture(chargeRect,Texture2D.whiteTexture);GUI.color=new Color(.55f,.72f,.78f,.9f);NativeUiAudit.DrawTexture(new Rect(chargeRect.x,chargeRect.y,chargeRect.width*Mathf.Clamp01(simulation.Player.KiChargeTicks/120),chargeRect.height),Texture2D.whiteTexture);}
    }
    GUI.color=oldColor;
   }

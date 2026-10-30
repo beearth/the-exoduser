@@ -23,7 +23,7 @@ namespace Exoduser.UnityPort {
    expTex=new Texture2D(32,1,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
    for(int i=0;i<32;i++)expTex.SetPixel(i,0,Color.Lerp(C(96,99,99,.55f),C(196,199,199,.85f),i/31f));expTex.Apply(false,true);
   }
-  static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
+  static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
   GUIStyle Style(int size,bool bold){
    long key=size*2L+(bold?1:0);
    if(!styles.TryGetValue(key,out var s)){s=new GUIStyle(GUI.skin.label){font=nanum,fontSize=size,fontStyle=FontStyle.Normal,alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};styles[key]=s;}
@@ -73,7 +73,7 @@ namespace Exoduser.UnityPort {
    Fill(new Rect(L,y0+68.39f,186,1),C(130,133,133,.48f));
    var bar=new Rect(L,y0+78.39f,186,3);Fill(bar,C(0,0,0,.5f));
    float pct=info.maxExp>0?Mathf.Clamp01((float)info.exp/info.maxExp):0;
-   if(pct>0){var old=GUI.color;GUI.color=Color.white;GUI.DrawTexture(new Rect(bar.x,bar.y,bar.width*pct,3),expTex);GUI.color=old;}
+   if(pct>0){var old=GUI.color;GUI.color=Color.white;NativeUiAudit.DrawTexture(new Rect(bar.x,bar.y,bar.width*pct,3),expTex);GUI.color=old;}
    Text(L,y0+91.55f,17.69f,W[2],13,false,C(192,189,183),0);
    RightText(R,y0+91.55f,17.69f,kill,13,false,C(226,223,217),0,PulseAge(killT));
    Text(L,y0+118.55f,17.69f,W[3],13,false,C(192,189,183),0);
