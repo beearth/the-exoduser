@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "unit": "AD2-ui-tab-missing-asset-and-request",
+  "created_kst": "2026-10-31T00:44:02.528036+09:00",
+  "source_main": "0d42e0cbcd86ba2ecb82e6fce2944dec82f89bf5",
+  "source_unity": "a861d03037ead23aa022b9be4ae7f9d83156d09c",
+  "worktree_head": "9a9067b295a050580cdb0d0321e137f2a16ceab9",
+  "selection": {
+    "pick_file": "G:\\exoduser-wt\\_out\\sfx_forge\\picks_r3.json",
+    "pick_file_sha256": "1a9d5130b4214aadfca1165fccbdebd6016020ce9439c56514dbf1493339e3b4",
+    "submitted": "2026-10-28T01:44:57.297Z",
+    "pick": "_preview_r3/ui_tab_r3c_proc.mp3"
+  },
+  "source": {
+    "path": "sfx/ui/tab.mp3",
+    "sha256": "3a693839af04190e6255f3098c92528d95812fa5b4a84e4be1a01a5bf66a1a4b",
+    "bytes": 3386
+  },
+  "delivery": {
+    "file": "sound-delivery/night8h-20261031/ui_tab.mp3",
+    "sha256": "3a693839af04190e6255f3098c92528d95812fa5b4a84e4be1a01a5bf66a1a4b",
+    "processing": "none; approved bytes preserved",
+    "samples": 7200,
+    "seconds": 0.15,
+    "peak_dbfs": -4.868148604728468,
+    "rms_dbfs": -24.665215207365666,
+    "clipped_samples": 0,
+    "join_step": 4.030499258078635e-05,
+    "join_step_dbfs": -87.89282308909353,
+    "internal_step_p99": 0.1373113989830017,
+    "internal_step_max": 0.2949877679347992,
+    "head_100ms_rms_dbfs": -22.935352619564213,
+    "tail_100ms_rms_dbfs": -34.99428188656108
+  },
+  "runtime_owner": "existing Unity UI writer; review and integrate in its own worktree",
+  "proposed_import": "unity/Assets/Exoduser/Resources/Audio/UI/ui_tab.mp3",
+  "event": {
+    "key": "ui_tab",
+    "gain": 0.22,
+    "pitch": 1,
+    "spatial_blend": 0,
+    "loop": false,
+    "bus": "SFX/UI",
+    "integration_requirements": [
+      "Import only the approved bytes at Audio/UI/ui_tab and include Audio/UI in clip loading, or use the UI owner's existing dedicated UI source.",
+      "The current NativeFeedbackAudio.Classify defaults unknown keys to EnemyHit/spatialBlend .5. Explicitly route ui_tab to UI/2D; do not merely call PlayNow on an unregistered key.",
+      "Emit only after an accepted visible panel change, not directly from Requested: that event also has shortcut callers and can be rejected by firstPractice/death guards.",
+      "Do not change input bindings, selected panel state, saves, Core, or scene ownership as part of the audio handoff."
+    ],
+    "trigger": "one successful transition between two already-open panel tabs",
+    "exclude": [
+      "same active tab",
+      "dead player",
+      "firstPractice gate",
+      "unknown panel id",
+      "failed open",
+      "initial open by shortcut",
+      "repaint/layout"
+    ]
+  },
+  "exact_runtime_sources": {
+    "unity/Assets/Exoduser/Runtime/NativePanelTabBar.cs": {
+      "sha256": "cd28085409320f5a2527bbd4fb43c29f5f0086b36fb2830dd5311d2e03875593",
+      "bytes": 5996
+    },
+    "unity/Assets/Exoduser/Runtime/NativeGame.cs": {
+      "sha256": "7971c8f613ad2c6b5e6057cacb826838a4a26c81d642e49fe06903aa4be0478e",
+      "bytes": 69484
+    },
+    "unity/Assets/Exoduser/Runtime/NativeFeedbackAudio.cs": {
+      "sha256": "2268fcd74c7357b0fdad4e206977406b527372284b45cf5e9d4ee6ff10c9debb",
+      "bytes": 29923
+    }
+  },
+  "verification": {
+    "decode_errors": 0,
+    "approved_bytes_equal": true,
+    "missing_key_static": true,
+    "missing_asset_static": true,
+    "unity_started": false,
+    "player_input_tested": false,
+    "hearing_verified": false,
+    "runtime_integrated": false
+  },
+  "status": "ASSET_AND_MANIFEST_READY; RUNTIME_INTEGRATION_PENDING"
+}
