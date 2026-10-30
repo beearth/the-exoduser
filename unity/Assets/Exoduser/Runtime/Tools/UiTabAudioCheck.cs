@@ -16,7 +16,7 @@ namespace Exoduser.UnityPort.Tools
  {
   const string Flag="--unity-ui-tab-audio-check";
   [Serializable] sealed class Check {public string id,detail;public bool passed;}
-  [Serializable] sealed class Receipt {public string scope="실제 Player의 Requested/확정함수/InputSystem F10·오디오 소스 설정. 자기 숨은 창 WM 마우스·가상 키보드 이벤트. 사용자 손조작·청음은 미검증",runtimeSha,coreSha,sandbox,device;public int mouseDownEvents,mouseUpEvents,layoutEvents,repaintEvents;public bool passed;public List<Check> checks=new List<Check>();public List<string> lines=new List<string>();}
+  [Serializable] sealed class Receipt {public string scope="실제 Player의 Requested/확정함수/InputSystem F10·오디오 소스 설정. Windows 자기 숨은 창 WM 마우스·가상 키보드 이벤트. 사용자 손조작·청음은 미검증",runtimeSha,coreSha,sandbox,device,status;public int mouseDownEvents,mouseUpEvents,layoutEvents,repaintEvents;public bool passed,supportedPassed;public List<Check> checks=new List<Check>();public List<string> unsupported=new List<string>();public List<string> lines=new List<string>();}
   static bool Has(string k){return Array.IndexOf(Environment.GetCommandLineArgs(),k)>=0;}
   static string Arg(string k){var a=Environment.GetCommandLineArgs();int n=Array.IndexOf(a,k);return n>=0&&n+1<a.Length?a[n+1]:null;}
   [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)] static void Mute(){if(Has(Flag)){AudioListener.volume=0;AudioListener.pause=true;}}
@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort.Tools
   static object Call(object o,string k,params object[] a){return o.GetType().GetMethod(k,BindingFlags.Instance|BindingFlags.NonPublic).Invoke(o,a);}
   static string Hash(string p){using(var h=SHA256.Create())using(var f=File.OpenRead(p))return BitConverter.ToString(h.ComputeHash(f)).Replace("-","").ToLowerInvariant();}
   void CheckThat(string id,bool ok,string detail=""){receipt.checks.Add(new Check{id=id,passed=ok,detail=detail});if(!ok)throw new InvalidOperationException(id+" "+detail);}
-  void Save(){receipt.passed=receipt.checks.Count>0&&receipt.checks.TrueForAll(c=>c.passed);receipt.lines=new List<string>(sound?.Lines??new List<string>());File.WriteAllText(Path.Combine(output,"Player_오디오_회귀.json"),JsonUtility.ToJson(receipt,true));}
+  void Save(){receipt.supportedPassed=receipt.checks.Count>0&&receipt.checks.TrueForAll(c=>c.passed);receipt.passed=receipt.supportedPassed&&receipt.unsupported.Count==0;receipt.status=!receipt.supportedPassed?"failed":receipt.unsupported.Count>0?"partial-unsupported":"pass";receipt.lines=new List<string>(sound?.Lines??new List<string>());File.WriteAllText(Path.Combine(output,"Player_오디오_회귀.json"),JsonUtility.ToJson(receipt,true));}
   IEnumerator Start(){output=Arg("-output");if(!NativeQaSandbox.Active||string.IsNullOrEmpty(output)||!Path.IsPathRooted(output)){Debug.LogError("UI audio check requires explicit sandbox/output");Application.Quit(3);yield break;}Directory.CreateDirectory(output);yield return Guard(Run());}
   IEnumerator Guard(IEnumerator run){while(true){bool more=false;object current=null;Exception error=null;try{more=run.MoveNext();if(more)current=run.Current;}catch(Exception e){error=e;}if(error!=null){failed=true;receipt.checks.Add(new Check{id="검수예외",passed=false,detail=error.ToString()});Save();Cleanup();Debug.LogError("UI_TAB_AUDIO_FAILED "+error);Application.Quit(2);yield break;}if(!more)yield break;if(current is IEnumerator nested){yield return Guard(nested);if(failed)yield break;}else yield return current;}}
   void Request(string id,int expected,string label){int n=sound.Receipt.played;NativePanelTabBar.Request(id);CheckThat(label,sound.Receipt.played-n==expected,"delta="+(sound.Receipt.played-n));}
@@ -45,10 +45,27 @@ namespace Exoduser.UnityPort.Tools
    int tick=sim.TickCount,characters=lobby.Characters.Count;var inv=(NativeInventory)Get(game,"inventory");string state=JsonUtility.ToJson(inv.State),binds=JsonUtility.ToJson(NativeKeyBindInput.Bindings);
    // 기존 F10 입력 경로. OS 키 전송 없이 이 격리 Player에만 가상 장치를 추가한다.
    CloseAll();Request("invPanel",0,"키보드준비최초0");previousKeyboard=Keyboard.current;keyboard=InputSystem.AddDevice<Keyboard>();keyboard.MakeCurrent();InputSystem.QueueStateEvent(keyboard,new KeyboardState());InputSystem.Update();before=sound.Receipt.played;game.enabled=true;InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.F10));yield return null;game.enabled=false;CheckThat("F10실제Update열림",(bool)Get(game,"menu")&&!inv.Open);CheckThat("키보드전환1",sound.Receipt.played==before+1);CheckThat("키보드입력fence",(bool)Get(game,"skillInputFence")&&!game.Running);InputSystem.QueueStateEvent(keyboard,new KeyboardState());InputSystem.Update();Cleanup();
-   Request("invPanel",1,"마우스준비인벤1");yield return MouseClick(200,65,"settings",1,"마우스_인벤에서설정");yield return MouseClick(200,52,"settings",0,"마우스_활성탭무음");yield return MouseClick(585,52,"invPanel",1,"마우스_설정에서인벤");Request("settings",1,"반복검수설정1");
+   Request("invPanel",1,"마우스준비인벤1");
+#if UNITY_STANDALONE_OSX
+   // Windows WM은 Mac에 없으며 창 없는 Mac Player의 GUI 이벤트도 검증하지 않는다.
+   receipt.unsupported.Add("Mac: Windows 자기창 WM 마우스 클릭 3쌍 및 실제 GUI 이벤트 미지원");
+#else
+   yield return MouseClick(200,65,"settings",1,"마우스_인벤에서설정");yield return MouseClick(200,52,"settings",0,"마우스_활성탭무음");yield return MouseClick(585,52,"invPanel",1,"마우스_설정에서인벤");
+#endif
+   Request("settings",1,"반복검수설정1");
    before=sound.Receipt.played;Set(game,"gameFocused",false);game.enabled=true;for(int n=0;n<4;n++)yield return null;game.enabled=false;Set(game,"gameFocused",true);CheckThat("LayoutRepaint추가0",sound.Receipt.played==before);CheckThat("입력선택전투불변",sim.TickCount==tick&&lobby.Characters.Count==characters&&JsonUtility.ToJson(inv.State)==state&&JsonUtility.ToJson(NativeKeyBindInput.Bindings)==binds);
    foreach(int percent in new[]{0,60,100}){Call(game,"SetSfxPercent",percent);CheckThat("실제설정값 "+percent,((Core.NativeSettingsState)Get(game,"settings")).SfxPercent==percent);var bus=(NativeAudioMixer)Get(sound,"bus");float db;CheckThat("실제SFX버스 "+percent,bus.Mixer.GetFloat("SfxVol",out db)&&Mathf.Abs(db-NativeAudioMixer.ToDb(percent/100f))<.001f,"db="+db);before=sound.Receipt.played;Request("invPanel",1,"설정→인벤 "+percent);var voices=(IEnumerable)Get(sound,"voices");AudioSource src=null;float raw=0;foreach(var voice in voices){var t=voice.GetType();var s=(AudioSource)t.GetField("source").GetValue(voice);if(s.clip==clip){src=s;raw=(float)t.GetField("rawVolume").GetValue(voice);}}CheckThat("실제Source계약 "+percent,src!=null&&src.outputAudioMixerGroup==bus.Group("UI")&&src.spatialBlend==0&&!src.loop&&src.pitch==1&&Mathf.Abs(raw-.22f)<.00001f&&Mathf.Abs(src.volume-.22f*percent/100f)<.00001f);sound.Flush();CheckThat("Flush중복0 "+percent,sound.Receipt.played==before+1);Request("settings",1,"인벤→설정 "+percent);}
-   Call(game,"SetSfxPercent",60);Screen.SetResolution(1600,900,FullScreenMode.Windowed);game.enabled=true;yield return new WaitForSecondsRealtime(.4f);yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,"1600-settings.png"));yield return null;game.enabled=false;CheckThat("LayoutRepaint실제수신",receipt.layoutEvents>0&&receipt.repaintEvents>0);CheckThat("종료전무음",AudioListener.volume==0&&AudioListener.pause);Save();Cleanup();lobby.CloseStartupCaptureMedia();AudioListener.volume=0;AudioListener.pause=true;Debug.Log("UI_TAB_AUDIO_COMPLETE "+receipt.checks.Count);Application.Quit(0);
+   Call(game,"SetSfxPercent",60);Screen.SetResolution(1600,900,FullScreenMode.Windowed);game.enabled=true;yield return new WaitForSecondsRealtime(.4f);yield return new WaitForEndOfFrame();
+#if UNITY_STANDALONE_OSX
+   receipt.unsupported.Add("Mac 무창 Player: GUI Layout/Repaint 및 1600-settings.png 화면 검증 미지원");
+#else
+   ScreenCapture.CaptureScreenshot(Path.Combine(output,"1600-settings.png"));
+#endif
+   yield return null;game.enabled=false;
+#if !UNITY_STANDALONE_OSX
+   CheckThat("LayoutRepaint실제수신",receipt.layoutEvents>0&&receipt.repaintEvents>0);
+#endif
+   CheckThat("종료전무음",AudioListener.volume==0&&AudioListener.pause);Save();Cleanup();lobby.CloseStartupCaptureMedia();AudioListener.volume=0;AudioListener.pause=true;Debug.Log("UI_TAB_AUDIO_COMPLETE "+receipt.status+" "+receipt.checks.Count);Application.Quit(receipt.passed?0:receipt.supportedPassed?4:2);
   }
 
   // 자기 숨은 Player 창만 대상으로 메시지를 보낸다. 전역 포인터/SendInput은 사용하지 않는다.
