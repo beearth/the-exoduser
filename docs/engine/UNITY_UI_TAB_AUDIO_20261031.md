@@ -38,3 +38,7 @@
 기존 MCP NTFS 작업본을 단위 검증 호스트로 재사용한다. expected `018ce33f20987648f661a6ca26d54b18ba05ca5d` 위 승인 오디오 12경로만 적용한 후보 `4dfafe42e711906739952293a6ee3d14b1988386`의 실제 tree가 `c18fd725a8b41b0b558502684d732ec8e45c0ef1`와 동일하다. 원본 부모의 중단3D는 인수하지 않았다. 추가 변경은 이 문서와 Runtime/Tools/UiTabAudioCheck.cs의 입력 증거 보강뿐이며 제품 NativeGame/NativeFeedbackAudio는 승인 blob 그대로다. 기존 1176case/2364검사/0fail은 재실행하지 않는다.
 
 FirstPlayable 포함 실제 입력3240파일1891758208bytes를 I:실물 복사·SHA대조했다. 검수 hook 변경도 빌드 전 별도 byte백업한다. 현재 순번 대기 전 준비 단계이며 정식 Unity·Player·M1·청음 PASS를 선언하지 않는다. 증거: `I:/EXODUSER-Storage/demo-art/unity-ui/ui-tab-audio-20261031/mcp-verification/`.
+
+### 첫 정식 컴파일 실패 보존
+
+61b5c45d는 검수 Tools의 NativeSettingsState 한정 이름 누락(CS0246)으로 빌드 전 컴파일 실패했다. 실제 선언은 Exoduser.UnityPort.Core이므로 검수 타입만 Core.NativeSettingsState로 지정한다. 제품 전환/오디오 본문은 불변이며 세이브 변경0·Unity 종료 확인·FirstPlayable 변경0이다. 실제 단위 실패1을 유지하고 원인 수정 뒤 1회만 재실행한다. 로그와 실패카운터는 mcp-verification에 보존한다.
