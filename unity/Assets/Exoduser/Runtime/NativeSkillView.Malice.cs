@@ -107,13 +107,13 @@ namespace Exoduser.UnityPort
             if (maliceBursts.Count >= 12) return;
             var item = NewItem("악의구 원본 폭발"); item.go.transform.position = MalicePosition(orb.X, orb.Y);
             var burst = new MaliceBurst { item = item, start = maliceSim.TickCount, x = orb.X, y = orb.Y, scale = Mathf.Clamp(Mathf.Sqrt(orb.ExplR / 80f), .8f, 2.5f), layers = new SpriteRenderer[3], sparks = new MaliceSpark[12] };
-            for (int i = 0; i < 3; i++) { burst.layers[i] = NewRenderer(item, "웹 폭발 층 " + i, maliceBurstFrames[i][0], malice, (int)orb.Y + 4); centeredMaliceSprites.Add(burst.layers[i]); }
+            for (int i = 0; i < 3; i++) { burst.layers[i] = NewRenderer(item, "웹 폭발 층 " + i, maliceBurstFrames[i][0], malice, (int)orb.Y + 4 + i); centeredMaliceSprites.Add(burst.layers[i]); }
             // 표시 전용 난수. 게임의 RNG 순서·피해 판정을 소비하지 않는다.
             var random = new System.Random(unchecked(orb.Id * 397 ^ maliceSim.TickCount));
             for (int i = 0; i < 12; i++)
             {
                 float angle = Mathf.PI * 2 * i / 12;
-                var spark = new MaliceSpark { renderer = NewRenderer(item, "웹 폭발 잔불 " + i, maliceSquare, malice, (int)orb.Y + 5), velocity = new Vector2(Mathf.Cos(angle) * (4 + (float)random.NextDouble() * 3), Mathf.Sin(angle) * (4 + (float)random.NextDouble() * 3)), size = 3 + (float)random.NextDouble() * 3, life = 12 + (float)random.NextDouble() * 6 };
+                var spark = new MaliceSpark { renderer = NewRenderer(item, "웹 폭발 잔불 " + i, maliceSquare, malice, (int)orb.Y + 3), velocity = new Vector2(Mathf.Cos(angle) * (4 + (float)random.NextDouble() * 3), Mathf.Sin(angle) * (4 + (float)random.NextDouble() * 3)), size = 3 + (float)random.NextDouble() * 3, life = 12 + (float)random.NextDouble() * 6 };
                 burst.sparks[i] = spark; centeredMaliceSprites.Add(spark.renderer);
             }
             maliceBursts.Add(burst);
