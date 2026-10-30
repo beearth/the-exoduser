@@ -42,7 +42,7 @@ namespace Exoduser.UnityPort
             var mo = Resources.Load<Texture2D>("Art/vfx/skill_malice_orb_sheet");
             for (int i = 0; i < 20; i++) maliceFrames[i] = Sprite.Create(mo, new Rect(i % 7 * 171, mo.height - (i / 7 + 1) * 171, 171, 171), new Vector2(.5f, .5f), 100, 0, SpriteMeshType.FullRect);
             shard = BuildShard(); disc = BuildDisc();
-            LoadMaliceBursts();
+            LoadMaliceBursts(); LoadQeVisuals();
         }
         static Sprite Whole(string path)
         {
@@ -106,7 +106,7 @@ namespace Exoduser.UnityPort
 
         public void Update(Simulation sim, float time)
         {
-            BindMaliceBursts(sim); UpdateMaliceBursts(sim.TickCount);
+            BindMaliceBursts(sim); UpdateMaliceBursts(sim.TickCount); UpdateQeVisuals(sim,time);
             ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0; var p = sim.Player;
             // ---- ground zones ----
             stale.Clear(); foreach (var k in zones.Keys) stale.Add(k);
@@ -139,6 +139,7 @@ namespace Exoduser.UnityPort
             {
                 stale.Remove(w.Id); Item it; if (!waves.TryGetValue(w.Id, out it)) { it = NewItem("slam" + w.Id); waves[w.Id] = it; it.a = NewRenderer(it, "wave", slamFrames[0], addFlat == null ? add : add, -18900); it.b = NewRenderer(it, "flash", disc, alpha, -18890); }
                 ActiveWaves++; it.go.transform.position = Point(w.X, w.Y);
+                if(w.Bash){UpdateBashWave(it,w);continue;}
                 float wp = w.T / (float)w.MaxT, fadeA = wp < .62f ? 1f : Mathf.Max(0, (1 - wp) / .38f);
                 int frame = Mathf.Min(3, Mathf.FloorToInt(Mathf.Pow(wp, .6f) * 4)); it.a.sprite = slamFrames[frame];
                 float size = w.MaxR * .9f * (.72f + .28f * Mathf.Min(1, wp * 3.5f)); Fit(it.a, size, slamFrames[frame].rect.width); it.a.color = w.Bash ? new Color(.4f, .667f, .867f, fadeA) : new Color(1, 1, 1, fadeA);   // E strike: web col #66aadd
@@ -203,14 +204,14 @@ namespace Exoduser.UnityPort
 
         public void Reset()
         {
-            ResetMaliceBursts();
+            ResetMaliceBursts(); ResetQeVisuals();
             foreach (var m in new[] { zones, waves, blades, orbs }) { foreach (var it in m.Values) { ForgetMaliceSprites(it); UnityEngine.Object.Destroy(it.go); } m.Clear(); }
             if (orb != null) orb.go.SetActive(false);
             orbTrails.Clear(); ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0;
         }
         public void Dispose()
         {
-            Reset(); DisposeMaliceVisuals(); if (orb != null) UnityEngine.Object.Destroy(orb.go);
+            Reset(); DisposeMaliceVisuals(); DisposeQeVisuals(); if (orb != null) UnityEngine.Object.Destroy(orb.go);
             UnityEngine.Object.Destroy(add); UnityEngine.Object.Destroy(addFlat); UnityEngine.Object.Destroy(alpha); UnityEngine.Object.Destroy(malice);
         }
     }

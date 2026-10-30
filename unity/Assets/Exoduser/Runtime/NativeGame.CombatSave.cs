@@ -64,7 +64,7 @@ namespace Exoduser.UnityPort
     inventory.Restore(pendingInventory);
     p.Level=(int)m.Lv;p.Experience=(int)m.Exp;p.MaxExperience=(int)m.MaxExp;p.StatPoints=(int)m.Sp;p.PassivePoints=(int)m.Ap;p.TransDate=m.TransLvDate;p.TransCount=(int)m.TransLvCount;
     Simulation.Materials=(int)pendingMats;Simulation.Kills=(int)m.Kills;Simulation.PotionState.PotLv=(int)m.PotLvHp;
-    Simulation.RestoreSkills(m.Skills,m.SkillSlots,m.UltSlot,m.ActiveCtSk);   // B03
+    Simulation.RestoreSkills(m.Skills,m.SkillSlots,m.UltSlot,m.ActiveCtSk); Simulation.ShieldFuse=true; // 원본 _ensureBaseWingStrike는 기존 저장에도 무료 기본 합체 보장   // B03
    }
    else if(combatKey.Length>0&&!combatBlocked){var store=CombatStore();if(store!=null&&store.HasSharedMats)Simulation.Materials=(int)Math.Min(store.LoadSharedMats(),int.MaxValue);}   // account-shared malice, also for a new character
   }
@@ -89,7 +89,7 @@ namespace Exoduser.UnityPort
    m.Bag.AddRange(inventory.State.Bag);
    m.Stage=Simulation.Config.StageIndex;m.Kills=Simulation.Kills;m.PotLvHp=Simulation.PotionState.PotLv;m.BagMax=InventoryState.BagMax;
    Simulation.CaptureSkills(out m.Skills,out m.SkillSlots,out m.UltSlot,out m.ActiveCtSk);   // B03
-   m.Raw=combatLastRaw;
+   m.ShieldFuse=Simulation.ShieldFuse;m.ActiveRmbSkill="maliceSwipe"; m.Raw=combatLastRaw;
    return m;
   }
   JsonValue combatLastRaw;

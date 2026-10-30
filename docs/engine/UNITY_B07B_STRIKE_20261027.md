@@ -34,3 +34,7 @@ B07 Core(`UNITY_B07_CORE_20261026.md` §6 "구현하지 않은 것")의 후속. 
 | 머리 위 게이지 숫자(홀드·비행·대시 중)와 갑옷 슬롯 원형 쿨 오버레이 | HUD 갑옷 슬롯 없음(월드 텍스트 뷰 미연결). Shift 슬롯 막대만 이식 |
 | 스탯 뱅크 소비처(`detonate`/`whirlDet` 폭발) | 해당 스킬 미이식 — 값(`ParryBank`)만 쌓음 |
 | 타격 SFX/파편 입자 | 뷰/오디오 소관(수치에 영향 없음) |
+
+## 2026-10-31 무료 기본 불꽃칼날 후속
+
+현재 _ensureBaseWingStrike·_autoShieldThrow·합체 파동·Q/E 원본 표시의 후속 구현과 검수 경계는 [UNITY_QE_BASE_FUSION_20261031.md](UNITY_QE_BASE_FUSION_20261031.md)를 따른다. 이 문서의 과거 미이식 표기는 해당 새 게이트에서만 대체한다. 무지개탄 Q 전용 규칙은 유지한다.

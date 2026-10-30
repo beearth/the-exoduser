@@ -18,7 +18,7 @@ namespace Exoduser.UnityPort.Core
     }
 
     public sealed class FireZone { public int Id; public string Type; public float X, Y, R, TickTimer; public int T, MaxT, Lv, Dmg; }
-    public sealed class SlamWave { public int Id; public float X, Y, MaxR; public int T, MaxT; public bool Bash; }   // Bash: the E strike wave (blue-grey, web col #66aadd)
+    public sealed class SlamWave { public int Id; public float X, Y, MaxR; public int T, MaxT; public bool Bash, Flame; }   // Bash: the E strike wave (blue-grey, web col #66aadd)
     public sealed class SkillBlade
     {
         public int Id, Dmg, Pierced; public bool Active; public float X, Y, Vx, Vy, Dist, MaxDist, Radius;
@@ -56,11 +56,12 @@ namespace Exoduser.UnityPort.Core
             Skills.Levels["holyDome"] = 1; Skills.Slots[SkillRules.SlotF] = "holyDome";
             Skills.Levels["spikeTrap"] = 1; Skills.Slots[0] = "spikeTrap";
             Skills.Levels["iceOrb"] = 1; Skills.CtSkill = "iceOrb";
+            Skills.Levels["maliceSwipe"] = 1; Skills.Levels["shieldThrow"] = 1; MaliceSwipeLevel=1; ShieldThrowLevel=1;
             Skills.Levels["fireball"] = 1; Skills.MagicSkill = "fireball";   // E: P.skills.fireball||1 is always usable (default skill)
         }
 
         // ---- save (web `skills`, `skillSlots`, `ultSlot`, `activeCtSk`): only the skills this executor runs are owned by Unity ----
-        public static readonly string[] PortedSkillIds = { "spikeTrap", "giantSlam", "holyDome", "iceOrb", "fireball" };
+        public static readonly string[] PortedSkillIds = { "spikeTrap", "giantSlam", "holyDome", "iceOrb", "fireball", "maliceSwipe", "shieldThrow" };
         static bool IsPorted(string id) { return id != null && Array.IndexOf(PortedSkillIds, id) >= 0; }
         public void CaptureSkills(out Dictionary<string, double> skills, out string[] slots, out string ult, out string ct)
         {
@@ -72,8 +73,9 @@ namespace Exoduser.UnityPort.Core
         public void RestoreSkills(Dictionary<string, double> skills, string[] slots, string ult, string ct)
         {
             if (skills == null) return;
-            foreach (var id in PortedSkillIds) { double v; skills.TryGetValue(id, out v); if (id == "fireball" && v < 1) v = 1; if (v >= 1) Skills.Levels[id] = (int)v; else Skills.Levels.Remove(id); }
+            foreach (var id in PortedSkillIds) { double v; skills.TryGetValue(id, out v); if ((id == "fireball"||id=="maliceSwipe"||id=="shieldThrow") && v < 1) v = 1; if (v >= 1) Skills.Levels[id] = (int)v; else Skills.Levels.Remove(id); }
             for (int i = 0; i < SkillRules.SlotCount; i++) Skills.Slots[i] = slots != null && i < slots.Length && IsPorted(slots[i]) && Skills.Learned(slots[i]) ? slots[i] : null;
+            MaliceSwipeLevel=Skills.Level("maliceSwipe");ShieldThrowLevel=Skills.Level("shieldThrow");
             Skills.CtSkill = IsPorted(ct) && Skills.Learned(ct) ? ct : (Skills.Learned("iceOrb") ? "iceOrb" : null);
         }
 
@@ -115,7 +117,7 @@ namespace Exoduser.UnityPort.Core
         public bool UpgradeSkill(string id)
         {
             if (!CanUpgradeSkill(id)) return false;
-            Player.StatPoints -= SkillRules.UpgradeSpCost; Skills.Levels[id] = Skills.Level(id) + 1; return true;
+            Player.StatPoints -= SkillRules.UpgradeSpCost; Skills.Levels[id] = Skills.Level(id) + 1; if(id=="maliceSwipe")MaliceSwipeLevel=Skills.Level(id);if(id=="shieldThrow")ShieldThrowLevel=Skills.Level(id);return true;
         }
 
         // HUD cooldown sweep: remaining frames and the full length of the skill's last cooldown

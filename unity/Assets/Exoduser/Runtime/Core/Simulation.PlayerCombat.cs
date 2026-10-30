@@ -79,7 +79,7 @@ namespace Exoduser.UnityPort.Core
                 {
                     MovePlayerAction(0);
                     var f = ParryRules.SBashFire(Player.Stamina, MaliceSwipeLevel, Player.State, SBashChgMul, 0);
-                    if (f.Fired) { Player.Stamina = (float)f.St; attackBonus = (int)f.AtkBon; Player.State = "sBash"; Player.StateTicks = ParryRules.SBashTicks; SBashChgMul = 1; } else Player.State = "idle";
+                    if (f.Fired) { Player.Stamina = (float)f.St; attackBonus = (int)f.AtkBon; Player.State = "sBash"; Player.StateTicks = ParryRules.SBashTicks; SBashChgMul = 1; AutoShieldThrow(); } else Player.State = "idle";
                 }
                 else MovePlayerAction(.5f, false, false);
             }
@@ -87,15 +87,15 @@ namespace Exoduser.UnityPort.Core
             {
                 MovePlayerAction(.18f, false, false);
                 KgChg += 2;
-                if (ParryRules.KiGatherAutoRelease(KgChg)) { SBashChgMul = ParryRules.ClampChargeMul(3); Player.State = "sBash"; Player.StateTicks = ParryRules.SBashTicks; KgChg = 0; }
+                if (ParryRules.KiGatherAutoRelease(KgChg)) { SBashChgMul = ParryRules.ClampChargeMul(3); Player.State = "sBash"; Player.StateTicks = ParryRules.SBashTicks; KgChg = 0; AutoShieldThrow(); }
                 else if (!combatEHeld)
                 {
                     if (ParryRules.KiGatherFizzles(KgChg)) { Player.State = "idle"; KgChg = 0; }
-                    else { SBashChgMul = ParryRules.ClampChargeMul(ParryRules.KiGatherReleaseMultiplier(KgChg)); Player.State = "sBash"; Player.StateTicks = ParryRules.SBashTicks; KgChg = 0; }
+                    else { SBashChgMul = ParryRules.ClampChargeMul(ParryRules.KiGatherReleaseMultiplier(KgChg)); Player.State = "sBash"; Player.StateTicks = ParryRules.SBashTicks; KgChg = 0; AutoShieldThrow(); }
                 }
             }
             else if (Player.State == "sBash" && Player.StateTicks <= 0) { Player.State = "sRecover"; Player.StateTicks = ParryRules.SRecoverTicks(PParry); }
-            else if (Player.State == "sRecover" && Player.StateTicks <= 0) { Player.State = "idle"; SBashChgMul = 1; }
+            else if (Player.State == "sRecover" && Player.StateTicks <= 0) { Player.State = "idle"; SBashChgMul = 1; ShieldWingTicks = 0; }
             // ---- Shift: chain move ----
             TickChainDash();
             // stun natural end: the web restores poise 4 and grants 60 frames of invulnerability
@@ -202,6 +202,7 @@ namespace Exoduser.UnityPort.Core
                 Rage = Rage, RageMax = RageMaximum, Mats = Materials, HarpGauge = HarpGauge, HarpGaugeMax = HarpGaugeMax,
             });
             Player.Iframes = (float)r.Iframes; Player.Hp = (float)r.Hp; Player.Stamina = (float)r.St; Player.Mana = (float)r.Mp; Player.Poise = (float)r.Poise; HarpGauge = r.HarpGauge; AddMalice((int)r.Mats - Materials); SetRage(r.Rage);
+            if(resourceMul==3)GiantSlamCd=Math.Max(0,GiantSlamCd-30); // 원본 물리탄1발마다 분노 스킬 쿨30f 회복
             ParryCount++; LastParryHp = r.Hp;
             // RM-1 sound: web doParry plays q_parry for a Q parry (_forceQ || sBlock || peaceShield || _sbParryT>0) and sword_parry + sword_back otherwise (Step 1 = Q parry)
             Feedback.Enqueue(new FeedbackEvent { Kind = FeedbackKind.Parry, Step = (qParry || Player.State == "sBlock" || Player.State == "peaceShield" || SbParryT > 0) ? 1 : 0, Tick = TickCount, X = Player.X, Y = Player.Y });

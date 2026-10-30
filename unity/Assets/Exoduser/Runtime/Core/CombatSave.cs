@@ -18,6 +18,7 @@ namespace Exoduser.UnityPort.Core
   public JsonValue Raw;   // loaded `data` root (unmodeled sections), null for a first save
   // B03: the skill sections the Unity skill executor owns (web `skills` {id:Lv}, `skillSlots`[6], `ultSlot`, `activeCtSk`). null = never saved / not loaded:
   // entries of skills Unity cannot run yet stay as the raw save has them, so a web import after a Unity autosave still finds them.
+  public bool? ShieldFuse;public string ActiveRmbSkill;
   public Dictionary<string,double> Skills;public string[] SkillSlots;public string UltSlot,ActiveCtSk;
  }
 
@@ -63,6 +64,8 @@ namespace Exoduser.UnityPort.Core
      case "skills":if(m.Skills!=null)root.Set(key,EncodeSkills(m,Raw(m,key)));else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;
      case "skillSlots":if(m.SkillSlots!=null)root.Set(key,EncodeSlots(m,Raw(m,key)));else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;
      case "ultSlot":if(m.Skills!=null)root.Set(key,m.UltSlot!=null?JsonValue.Of(m.UltSlot):JsonValue.Null);else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;
+     case "activeRMBSk":if(m.ActiveRmbSkill!=null)root.Set(key,JsonValue.Of(m.ActiveRmbSkill));else{var raw=Raw(m,key);if(raw!=null)root.Set(key,raw);}break;
+     case "fused":if(m.ShieldFuse.HasValue){var f=Obj();var raw=Raw(m,key);if(raw!=null&&raw.Kind==JsonKind.Object)foreach(var kv in raw.Members)f.Set(kv.Key,kv.Value);f.Set("shieldFuse",JsonValue.Of(m.ShieldFuse.Value));root.Set(key,f);}else{var raw=Raw(m,key);if(raw!=null)root.Set(key,raw);}break;
      case "activeCtSk":if(m.ActiveCtSk!=null)root.Set(key,JsonValue.Of(m.ActiveCtSk));else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;
      default:{var raw=Raw(m,key);if(raw!=null)root.Set(key,raw);break;}
     }
@@ -146,6 +149,7 @@ namespace Exoduser.UnityPort.Core
    m.BagMax=bm!=null&&bm.Kind==JsonKind.Number?Or(bm.Number,300):300;
    var pot=data.Get("potLv");
    if(Valid(pot,JsonKind.Object))m.PotLvHp=Number(pot,"hp",0);
+   var fused=data.Get("fused");if(Valid(fused,JsonKind.Object)){var sf=fused.Get("shieldFuse");if(sf!=null&&sf.Kind==JsonKind.Bool)m.ShieldFuse=sf.Bool;}
    var sk=data.Get("skills");
    if(Valid(sk,JsonKind.Object))
    {

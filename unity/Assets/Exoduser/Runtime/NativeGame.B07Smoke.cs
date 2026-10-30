@@ -110,7 +110,7 @@ namespace Exoduser.UnityPort
             check(p.Hp >= hpS && p.Shield < shS, "shield absorbs before hp (B08): shield " + shS + " -> " + p.Shield + " hp " + hpS + " -> " + p.Hp);
 
             rec.checks = n; rec.failures = string.Join(" | ", fails.ToArray()); rec.passed = fails.Count == 0;
-            rec.notes = "dust trail on the roll not drawn; sBlock / sBash have no dedicated sprite yet (state only)";
+            rec.notes = "구르기 먼지 후속; Q 오라·E 기본 합체/모델 모션은 현재 Player 실화면 검수와 구분";
             File.WriteAllText(Path.Combine(output, "b07-smoke.json"), JsonUtility.ToJson(rec, true));
             Application.Quit(rec.passed ? 0 : 2);
         }

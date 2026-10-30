@@ -167,6 +167,7 @@ namespace Exoduser.UnityPort.Core
             TickKiTimers();
             // Web update() auto potion block (game.html 35895-35911): runs once per frame after the enemy loop.
             TickAutoPotion();
+            TickShieldThrow(); // 원본 _stCd/_stWingT/_stProjs, 적 탄환 이동 뒤 실행
             if (pickup) { if (pickupHoldTicks == 0 || pickupHoldTicks >= 9) { PickSourcePriorityLoot(); pickupHoldTicks = 0; } pickupHoldTicks++; }
             else pickupHoldTicks = 0;
             CapEnemies();   // web 34540: ens hard cap 800 -> 700

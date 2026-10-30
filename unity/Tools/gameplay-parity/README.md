@@ -17,3 +17,7 @@ C:/nvm4w/nodejs/node.exe unity/Tools/gameplay-parity/export-movement.cjs --sourc
 ```
 
 실제 입력·현재 결과·전체 48개 스킬의 미완료 경계는 docs/engine/UNITY_GAMEPLAY_PARITY_20261031.md와 I:/EXODUSER-Storage/demo-art/gameplay-parity/를 따른다. 숫자 대조 통과를 전체 이식·실게임·시각 합격으로 올리지 않는다.
+
+## Q/E 무료 기본 합체 대조
+
+export-qe.cjs는 현재 웹 _autoShieldThrow와 파동 판정 식을 직접 실행한다. --qe-oracle <oracle.json> <결과.json>은192조합·6336검사를 대조하고, --qe-boundary <결과.json>은 실제 E 제어·파동·반사 예외11개를 검사한다. 각도 입력은 양쪽 float로 같게 주고 원본 경계의 엄격한 부등호를 유지한다. 상세수치·실제 Player 게이트는 docs/engine/UNITY_QE_BASE_FUSION_20261031.md다.

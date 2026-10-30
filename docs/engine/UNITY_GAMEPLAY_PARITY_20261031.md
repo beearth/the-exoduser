@@ -109,3 +109,7 @@
 ## 첫 묶음 공통·일반 Desktop 전달
 
 2026-10-30T16:17Z: unity/main 97bb5bc36f020c257df16d178101f4fd53e4ae14 비강제 반영·원격readback 일치. 공통/검수 Unity tree bec594fb9 동일하므로 검수 빌드499fd68d와 M1/Player 증거를 재사용하며 새 통합 빌드나 추가 M1로 표시하지 않는다. 일반 지옥의 길 (Unity).lnk는 gameplay-parity/final-build/EXODUSER-Unity.exe, 인자 -force-d3d11 --remodel3d다. 대상·시작위치·인자·아이콘 및 실제 Core/Runtime/EXE SHA를 재조회했고 이전 UI 링크를 I:에 동일byte 백업했다. 기존 실행본 덮어쓰기·사용자 앱 자동 기동·사용자 세이브 변경0. 이는 첫 수정 묶음 전달 완료이며 전체 브리프는 계속 진행 중이다. 영수증 desktop-delivery.json.
+
+## 후속 Q/E 조사
+
+Q 오라와 E 불꽃 호 누락의 원인은 표시뿐 아니라 무료 기본 불꽃칼날 합체 상태·파동 실행 누락이었다. 후속 구현·현재 숫자·미검증 게이트는 UNITY_QE_BASE_FUSION_20261031.md를 따른다. 첫 전달 후보97bb와 새 미검수 후보를 혼동하지 않는다.
