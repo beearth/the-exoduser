@@ -1,11 +1,12 @@
 # 유니티 캐릭터 총괄 인계 — 2026-10-28 09:xx KST
 
-## 2026-10-31 전사 R4 철회·R5 접점 보정 인계
+## 2026-10-31 전사 R5 데모 v0 전달 인계
 
-- 전사 R4는 기능29/M123·공통a62·링크갱신을 수행했으나, 최종SSOT감사에서 지옥강타 시각접점 약233ms 지연 **FAIL**을 발견해 최종확정을 철회했다. 자기R4 링크 SHA를 확인하고 이전검증 skill-fix 링크를 동일byte 복구했다. b981 전달완료 문서는 공통에 추가FF하지 않는다. 기존 실패/전달/철회 영수증은 보존한다.
-- 현재 후보는 `G:/exoduser-wt/codex-hero`, `codex/pc-hero-quality-20261030`의 `d8adbb744`. Core/웹 즉시피해는 유지하고 시전 첫틱을 칼아래접점·앞체중으로 맞춘다. 기존10/10/12틱은 압축·반동안정·복귀이며 두번째내려침을 만들지 않는다. 실제메시 팁캐시/첫state1cm보정·후반연속해제로 root/yaw/다른동작은유지한다.
-- 순수341검사·정확Core독립11검사(첫tick HP−461/wave1/heavy_hit1) 통과. 실제Player 첫틱 실제팁±3cm·경계연속/영상/M1·통합·재전달은 **미검증/미완료**다. 상태 관측만으로 통과시키지 않는다.
-- 최신 SSOT는 `docs/engine/UNITY_HERO_RUNTIME_20261030.md`·`UNITY_HERO_MOTION_20261030.md`; 근거 `I:/EXODUSER-Storage/demo-art/hero/`, 보고 `I:/EXODUSER-Storage/codex-takeover/hero/REPORT.md`. 기존모델45개는 인수시동일byte·원본수정0, 신규생성/지출0. UCH-05/06·유료생성·다른백로그는 새로 시작하지 않는다.
+- 제품 `d8adbb744`, 공통 `a861d03037ead23aa022b9be4ae7f9d83156d09c`(기존통합담당 정상FF/원격확인). 빌드7fa69146·Player59091cbc30/30·579PNG·대기스킨9.3854%·영상→무창M1e4bd2cc223/23. 컴파일/셰이더0·정상exit0·창/잔여/세이브변경0.
+- R4강타233ms 지연 FAIL은 철회하고 이전skill-fix링크를 복구한 뒤 R5로 고쳤다. R5 첫틱827 피해461/wave1/실제칼끝1.019cm/dot−.77794, 압축→반동 표본 차이.63mm. 제작자·독립 검토가 현재1x/원본에서 하향접점/앞체중/회복·구르기/파지 회귀없음을 확인했다. 정확Core187275재사용·독립접점11·순수341PASS. 음향은무음이며heavy_hit이벤트만검증.
+- 일반 Desktop은 `I:\EXODUSER-Storage\demo-art\hero\r5\build\EXODUSER-Unity.exe`, `-force-d3d11 --remodel3d`. 네속성/Runtime·Core·EXE SHA 별도프로세스 readback, 이전링크I:백업·자동기동0. 검수/공통Unity tree·바이너리동일로 기존유효검수재사용, 새통합빌드/추가M1반복0.
+- **전체 시각 RETOUCH** 유지. 후속전사담당=판금큰면/1·2타하체/2D발밑, VFX담당=임팩트파지/견갑가림·사각경계. 전체AAA·OS손조작·Mac실제반영/실행·모든경사/장시간 미검증. 이 기술전달을 디자인완성으로 올리지 않는다.
+- 최신SSOT `docs/engine/UNITY_HERO_RUNTIME_20261030.md`·`UNITY_HERO_MOTION_20261030.md`, 산출물 `I:/EXODUSER-Storage/demo-art/hero/r5/`, 보고 `I:/EXODUSER-Storage/codex-takeover/hero/REPORT.md`. R4이력보존, 원자산45개인수시동일byte·원본0변경·새생성/지출0. 자기정확경로만커밋·INDEX0, Unity파생522WORK보존. UCH-05/06·유료생성·다른백로그시작0.
 
 - 세션 id `local_7de36273…`(유니티 캐릭터 총괄), 모델 Opus. 역할: 플레이어 영웅 3D 외형을 시트 → 메시 → 리깅 → Animator → 인게임 순으로 맡는다. 총괄은 명세·판정만 하고 실행은 Sonnet에 맡긴다.
 - 기준 문서(SSOT): `docs/engine/UNITY_CHARACTER_BOARD_20261027.md`. §3-1은 영웅·보스 공용 제작 경로·품질 기준이다. 메모리 `unity-character-lead-role.md`.

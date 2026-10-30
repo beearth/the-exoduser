@@ -1,17 +1,21 @@
 # Unity 캐릭터 총괄 보드 (2026-10-27~)
 
-## 2026-10-31 지옥강타 정합 감사·R4 전달 철회
+## 2026-10-31 전사 R5 실제 검수·공통 반영·Desktop 전달
 
-**현재 전사 지옥강타 접점은 R4 FAIL·R5 실물 검수 대기**다. 기존 기능29/M123 및 일반모션 RETOUCH가 시각 접점 결함을 상쇄하지 않는다. Core/웹은 시전 첫틱에 피해·파동·heavy_hit를 내지만 R4 모션은 약14틱(233ms) 늦었다. 통합a62는 이 결함이 남은 상태이며, 새 R5 정상보정 검수/반영 전까지 완료라 하지 않는다.
+**데모 v0 전사3D 기술 전달 완료, 전체 시각 RETOUCH**다. R4 지옥강타233ms 시각지연 FAIL은 철회·바로가기 복구 후 R5에서 수정했다. 제작자와 독립 검수자는 현재 첫 피해 프레임과1x 연속판을 직접 확인했으며 기능검사로 디자인PASS를 대신하지 않는다.
 
-| 항목 | 실제 상태 |
+| 항목 | 확인한 결과 |
 |---|---|
-| Desktop | 자기R4 링크 SHA대조 후 이전 검증 skill-fix 일반링크를 동일byte 복구. 앱자동기동/세이브쓰기0. `hero/desktop-withdrawal.json` |
-| R5 후보 | `codex/pc-hero-quality-20261030` 제품 `d8adbb744`, Core0변경. 첫틱접점/압축10·반동안정10·복귀12·실제팁1cm 평면보정/연속해제. 세부 SSOT는 아래 Runtime/Motion 문서 |
-| 사전검수 | 순수341검사·C#0오류0경고, 정확Core b2acc241…571189 독립11검사: 첫tick HP−461·파동1·heavy_hit1, 대조군0. 실제소켓/칼끝±3cm/새Player영상/M1은 미검증 |
-| 기존 개선 | 전사3D·대검·망토·접힌구르기·사망가림해소·Core틱기본공격 연결. 일반아트는 RETOUCH이며 전체AAA PASS0 |
-| 남은 게이트 | R5실제 첫틱 피해·팁접점/경계연속·영상/M1→통합담당 정상반영→검증실행본/일반Desktop 재전달. 담당=전사 제작자 |
-| 근거 | `UNITY_HERO_RUNTIME_20261030.md`·`UNITY_HERO_MOTION_20261030.md`, `I:/EXODUSER-Storage/codex-takeover/hero/REPORT.md` |
+| 소스 | 제품 `d8adbb7442f181896490492d929923565e865b18`, 공통 `a861d03037ead23aa022b9be4ae7f9d83156d09c`, Unity tree `39985bcde2d3356413c7026146e60fdbd8a5c266`. 기존 통합 담당만 정상FF·원격readback |
+| 현재 빌드/실물 | `7fa69146` 컴파일·셰이더오류0, Player `59091cbc`30/30·579PNG·대기 스킨9.3854%, 첫틱827 피해461·파동1·실제칼끝1.019cm·하향내적−.77794 |
+| 모션·검수 | 전사/대검/망토3D 연결·8방향·대기/달리기/구르기/3타/시전/피격/사망, Core틱·기존ef75이동조준 보존. 현재실제/노레위비교영상 생성→같은빌드 무창M1 `e4bd2cc2`23/23. 정확Core187275검사 재사용·접점독립11·순수341PASS |
+| 안전 | D3D11 RX9070XT·정상exit0·창/잔여/USER_SAVE변경0, 신규이미지/유료지출0. 자기예약 공식해제, 타WIP/공용INDEX 보존 |
+| Desktop | `I:\EXODUSER-Storage\demo-art\hero\r5\build\EXODUSER-Unity.exe`, 인자 `-force-d3d11 --remodel3d`, 작업폴더EXE부모·아이콘EXE,0. 별도프로세스 네속성+Runtime/Core/EXE SHA readback. 이전링크I:백업, 자동기동0 |
+| 입력 재사용 | 검수제품/공통 Unity tree와 실제3바이너리SHA 동일, 차이는docs뿐. COMMON_RULES 유효검수재사용 적용, **새 통합빌드·추가M1반복0**을 명시 |
+| 잔여·담당 | 전사: 큰판금 명암 묶음·1/2타하체·2D발밑대비. VFX: E/시전 임팩트 파지/견갑가림·일부사각경계. 자연사망/실시간OS손조작/Mac/장시간/모든경사지접지 미검증. 전체AAA PASS0 |
+| 근거 | `I:/EXODUSER-Storage/demo-art/hero/r5/gate-evidence.json`·`판정.md`·`독립검수.md`·`검수.html`, root의 전달/readback/adoption영수증, `I:/EXODUSER-Storage/codex-takeover/hero/REPORT.md` |
+
+R4 전달·철회 이력은 `hero/r4/delivery-history/`와 `desktop-withdrawal.json`에 보존했다. 실패/미검증을 숨기거나 R4의29검사를 R5의접점증거로 재사용하지 않았다. PC 실제자기checkout·GitHub는 확인, Mac 실제반영/실행은 pending이다.
 
 - 총괄: PC Claude 세션 "유니티 캐릭터 총괄"(Opus). 2026-10-27 사용자가 이 역할을 지정했다.
 - 맡는 일: Unity 리모델링에서 플레이어 영웅의 3D 외형을 만든다. 범위는 캐릭터 시트 → 3D 메시 → 리깅 → Animator → 인게임 판정이다. 명세·판정은 총괄이 하고, 실행은 Sonnet이 한다.
@@ -22,7 +26,7 @@
 
 | id | 캐릭터 | 원화 상태 | Unity 단계 |
 |---|---|---|---|
-| warrior | 대검전사 | LOCK 확정(앵커) | R4강타접점FAIL/전달철회·R5실물검수대기, 일반아트RETOUCH |
+| warrior | 대검전사 | LOCK 확정(앵커) | R5첫틱접점수정·공통/실행본전달, 전체아트RETOUCH |
 | silvertail | 실버테일 | LOCK v1.2(단검 1·왼쪽 허벅지) | UCH-01 시트 |
 | ivan | 아이반(검은 연기) | T8 r4 확정 | UCH-01 시트 |
 | spearmage | 창법사 | 원화 RETOUCH 중 | 원화 채택 뒤 |
@@ -41,11 +45,11 @@
 | UCH-03d | Hero Light(캐릭터 전용 보조광, 바이블 §8 L-9 캐릭터 총괄 소유)·웅덩이 림광·RM-0 확정 조명(unity/main b280ddf6) 재촬영 | **완료** (Hero 0.6 PASS, L-4 테두리 색 미해결, 디자인총괄 2차 판정 대기) |
 | UCH-03e | 웅덩이 테두리광 재설계: 림 Point 재배치 1회 → 안 되면 웅덩이 색 Fresnel(Shader Graph). 이번 단위는 구조만(세기는 Linear 뒤) | **완료** (림 Point 반려, Fresnel 구조 PASS, 세기·지표는 03f) |
 | UCH-03f | VFX 병합(Linear·후처리) + RM0-LIGHT-L 뒤 재조정: Hero·Fresnel 세기 확정, ACES 색 밀림(350~12°)·블룸 번짐 확인, Hero Light 브랜치 merge·재캡처·병합 요청 | 대기 |
-| UCH-03c | Animator 기본과 Core틱 전투·피격·사망 모션 | 데모v0 실제Player 기능검수 완료·시각RETOUCH(상단 최신 영수증) |
+| UCH-03c | Animator 기본과 Core틱 전투·피격·사망 모션 | R5실제30/30·즉발접점수정·M1/공통/전달, 시각RETOUCH |
 | UCH-05 | 실버테일 Meshy body 3D·리깅(1.72m)·단검 3D 각 1건 → Unity 임포트·캡처 | 진행 (Meshy 3건 완료 65cr, Unity는 메모리 여유 대기) |
 | UCH-06 | 아이반 Meshy body 3D·리깅(1.85m)·총 3D 각 1건 → Unity 임포트·캡처 | 진행 (Meshy 3건 완료 65cr, Unity는 메모리 여유 대기) |
 | UCH-A1 | 애니메이션 공급원 비교 시범(보스전 총괄 공동): 무료 1단계 = 문서 조사·Unity 수동 키 "내려찍기"(예비 48f·발동 6f·회복 70f), 유료 2단계는 사용자 확인 후 | 공급원 결정 완료(§3 10-28). 다음 = 전사 TM-A 원형을 Unity에서 재타이밍·IK 손질(UCH-03c 공격 1과 함께, Unity 순번 필요) |
-| UCH-04 | 인게임 판정: 1-1 맵·1x·원화/장르 레퍼런스 비교 | 전사1600×900 실제Player·1x/독립검토 RETOUCH, 실버테일 대기 |
+| UCH-04 | 인게임 판정: 1-1 맵·1x·원화/장르 레퍼런스 비교 | 전사R5 1600×900 실제Player·1x/독립검토·전달 RETOUCH, 실버테일 대기 |
 
 ## 3. 결정 기록
 
