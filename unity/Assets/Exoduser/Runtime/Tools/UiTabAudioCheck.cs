@@ -36,7 +36,7 @@ namespace Exoduser.UnityPort.Tools
   IEnumerator Run(){float until=Time.realtimeSinceStartup+30;while(NativeGame.Instance==null&&Time.realtimeSinceStartup<until)yield return null;game=NativeGame.Instance;CheckThat("NativeGame",game!=null);yield return null;
    lobby=game.GetComponent<NativeLobby>();lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();yield return null;game.enabled=false;game.ResetRun();CloseAll();Set(game,"gameFocused",true);Set(game,"frontendEntryInputFence",false);
    sound=(NativeFeedbackAudio)Get(game,"sound");receipt.runtimeSha=Hash(typeof(NativeGame).Assembly.Location);receipt.coreSha=Hash(typeof(Core.Simulation).Assembly.Location);receipt.sandbox=NativeQaSandbox.Root;receipt.device=SystemInfo.graphicsDeviceName;
-   lobby.ShowLobby();Request("settings",0,"로비가림0");lobby.SelectPreview();CheckThat("로비후테스트진입",lobby.EnterNativeTest());yield return null;game.enabled=false;game.ResetRun();CloseAll();Set(game,"gameFocused",true);Set(game,"frontendEntryInputFence",false);
+   Request("invPanel",0,"로비검수최초0");lobby.ShowLobby();Request("settings",0,"로비가림0");lobby.SelectPreview();CheckThat("로비후테스트진입",lobby.EnterNativeTest());yield return null;game.enabled=false;game.ResetRun();CloseAll();Set(game,"gameFocused",true);Set(game,"frontendEntryInputFence",false);
    CheckThat("무음격리",AudioListener.volume==0&&AudioListener.pause&&NativeQaSandbox.Active);CheckThat("선택원본UI로드",sound.HasClip("ui_tab"));var clip=sound.Clip("ui_tab");var samples=new float[clip.samples*clip.channels];CheckThat("실제디코드",clip.GetData(samples,0)&&Array.Exists(samples,x=>Mathf.Abs(x)>.001f),clip.samples+"/"+clip.channels+"/"+clip.frequency);
    Request("invPanel",0,"최초열기0");Request("invPanel",0,"활성탭0");Request("skillPanel",1,"인벤→스킬1");Request("forge",1,"스킬→대장간1");Request("statPanel",1,"대장간→능력치1");Request("settings",1,"능력치→설정1");Request("unknown",0,"미지원0");Request(null,0,"null0");
    int before=sound.Receipt.played;float hp=game.Simulation.Player.Hp;game.Simulation.Player.Hp=0;Request("invPanel",0,"죽음0");game.Simulation.Player.Hp=hp;
@@ -56,8 +56,9 @@ namespace Exoduser.UnityPort.Tools
   [DllImport("user32.dll")] static extern bool EnumWindows(WindowCallback callback,IntPtr state);
   [DllImport("user32.dll")] static extern uint GetWindowThreadProcessId(IntPtr window,out uint process);
   [DllImport("user32.dll")] static extern bool PostMessageW(IntPtr window,uint message,IntPtr w,IntPtr l);
+  [DllImport("user32.dll",CharSet=CharSet.Unicode)] static extern int GetClassNameW(IntPtr window,System.Text.StringBuilder name,int size);
   [DllImport("kernel32.dll")] static extern uint GetCurrentProcessId();
-  IntPtr OwnWindow(){IntPtr found=IntPtr.Zero;uint own=GetCurrentProcessId();EnumWindows((w,s)=>{GetWindowThreadProcessId(w,out uint pid);if(pid==own){found=w;return false;}return true;},IntPtr.Zero);return found;}
+  IntPtr OwnWindow(){IntPtr found=IntPtr.Zero;uint own=GetCurrentProcessId();EnumWindows((w,s)=>{GetWindowThreadProcessId(w,out uint pid);var name=new System.Text.StringBuilder(128);GetClassNameW(w,name,128);if(pid==own&&name.ToString()=="UnityWndClass"){found=w;return false;}return true;},IntPtr.Zero);return found;}
   void OnGUI(){if(Event.current==null)return;switch(Event.current.rawType){case EventType.MouseDown:receipt.mouseDownEvents++;break;case EventType.MouseUp:receipt.mouseUpEvents++;break;case EventType.Layout:receipt.layoutEvents++;break;case EventType.Repaint:receipt.repaintEvents++;break;}}
   IEnumerator MouseClick(float x,float y,string target,int expected,string label){
    IntPtr window=OwnWindow();CheckThat(label+" 자기창",window!=IntPtr.Zero);GetWindowThreadProcessId(window,out uint pid);CheckThat(label+" PID",pid==GetCurrentProcessId());
