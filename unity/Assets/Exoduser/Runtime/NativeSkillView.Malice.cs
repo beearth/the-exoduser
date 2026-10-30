@@ -70,7 +70,7 @@ namespace Exoduser.UnityPort
                 line.positionCount = count; line.SetPosition(0, Vector3.zero);
                 for (int j = 1; j < count; j++) line.SetPosition(j, history[history.Count - j] - head);
                 line.widthMultiplier = 1f;
-                line.widthCurve = AnimationCurve.Linear(0, (radius * trailWidth[layer] + trailEnd[layer]) / 100f, 1, trailEnd[layer] / 100f);
+                line.startWidth = (radius * trailWidth[layer] + trailEnd[layer]) / 100f; line.endWidth = trailEnd[layer] / 100f;
                 line.sortingOrder = order;
             }
         }
