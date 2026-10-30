@@ -7,6 +7,7 @@
 | 검토 진입 | --unity-character-stage-preview 및 명시적 --unity-qa-sandbox 절대 경로. 기본 실행은 기존 영상/UI |
 | 자동 검수 | --unity-character-stage-check -output 절대 경로. 한국어/독일어/프랑스어 ×1920×1080/1600×900, 5직업·이름창·기존 IMGUI 키보드/마우스 주입·36개 대기 연속 프레임 |
 | 소스/훅 | 신규 NativeLobby.CharacterStage.cs·Tools/CharacterStagePreviewCapture.cs. 기존 SilverCharacter.DrawSilverScene에 조건부 배경 연결 1줄 |
+| 검수 도구 | 자기 Tools/character-stage-preview/analyze.cjs로 새36화면의 실제 가림/글자 교차·GPU알파 대조군 검사, review.cjs로 1920/1600 같은크기 참고 비교4장과 UI/무대1x72장 생성. 정적 Blender 비교를 새 Player로 표시하지 않음 |
 | 원본 | I:/EXODUSER-Storage/demo-art/charselect/charselect_stage_geometry.glb SHA82ca46ab1e708a220eee8b1f5ede8d596d7b7bfbeb5e28e62c4a75477349b7e9 읽기 전용. Blender·원본 영웅·타인 작업본 수정0 |
 | 기하 | 520개 원본 노드, 5재질 그룹, 176994정점/103124삼각형. 오른손→Unity Z반사·삼각 순서 반전·법선 역전치·UV V반전. 문 72/-58도, 뒤막12.6m, 후실 관문11.72m·안쪽 벽·턱·첨두 리브 추가 |
 | 재질 | 보유 CC0 수도원 석재·산화철 6내장 이미지. URP/Lit, BaseColor·GL Normal·금속B/매끄러움1−G×roughness. 원본 텍스처 바이트 보존 |
