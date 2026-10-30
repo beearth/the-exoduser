@@ -20,8 +20,14 @@ namespace Exoduser.UnityPort
         public static bool Water(float x,float z)
         {
             if(z<=-94||z>=-30)return false;
-            float u=Along(x,z),w=Across(x,z);
-            return x>Shore(z)||(Math.Abs(u)<2.75f&&w>-8.5f&&w<20);
+            return x>Shore(z)||BranchDistance(x,z)<0;
+        }
+        public static float BranchDistance(float x,float z)
+        {
+            float w=Across(x,z),u=Along(x,z)-.35f*(float)Math.Sin(w*.45f);
+            float end=w-Math.Max(-5.75f,Math.Min(17.25f,w));
+            float width=2.75f+.20f*(float)Math.Sin(w*.73f)+.12f*(float)Math.Cos(w*1.6f);
+            return (float)Math.Sqrt(u*u+end*end)-width;
         }
         public static bool Bridge(float x,float z) { return Math.Abs(Along(x,z))<=4.45f&&Math.Abs(Across(x,z))<=1.7f; }
         public static bool Trunk(float x,float z)
@@ -54,10 +60,7 @@ namespace Exoduser.UnityPort
             // 굽은 강에서 X축 간격은 실제 물가 거리가 아니다. 접선의 법선 방향 폭으로 보정한다.
             float slope=(Shore(z+.05f)-Shore(z-.05f))/.1f;
             float d=(Shore(z)-x)/(float)Math.Sqrt(1+slope*slope);
-            float u=Math.Abs(Along(x,z))-2.75f,w=Across(x,z);
-            float end=Math.Max(-8.5f-w,w-20);
-            float branch=(float)Math.Sqrt(Math.Max(0,u)*Math.Max(0,u)+Math.Max(0,end)*Math.Max(0,end))+Math.Min(Math.Max(u,end),0);
-            d=Math.Min(d,branch);
+            d=Math.Min(d,BranchDistance(x,z));
             float t=Math.Max(0,Math.Min(1,d/2));t=t*t*(3-2*t);
             return (WaterLevel+.22f)*(1-t)+ground*t;
         }
