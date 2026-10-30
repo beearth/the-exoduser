@@ -85,6 +85,7 @@ namespace Exoduser.UnityPort {
    check(!playerView.enabled,"3D 생성 성공 시 기존 플레이어 빌보드 숨김");
    foreach(string kind in new[]{"Idle","Run","Roll","Swing","Recover","Charge","SlamWindup","SlamStrike","SlamRecover","Hurt","Dead"})check(motions.Contains(kind),"실제 상태 샘플 "+kind);
    report.passed=ok;File.WriteAllText(Path.Combine(output,"hero-review.json"),JsonUtility.ToJson(report,true));
+   lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();
    yield return new WaitForSecondsRealtime(.8f);Application.Quit(ok?0:2);
   }
  }
