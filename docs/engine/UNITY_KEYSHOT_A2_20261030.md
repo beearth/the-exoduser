@@ -57,3 +57,6 @@
 | 침식 높이 | A2ForestLayout.BankHeight는 비수면/비다리에서 주수로·지류까지 거리2u 이내를 smoothstep으로 수면+.22u~원본높이 연결. 수면/다리·강둑밖 높이 보존. NativeGroundY/원본높이맵메시 정점/외곽/배우·소품이 같은 높이. 새 실제 GPU 접지 미검증 |
 | 새 뿌리 출처 | [Poly Haven Pine Roots](https://polyhaven.com/a/pine_roots), Rob Tuytel, CC0. Powered by Poly Haven. 공식2k glTF 원본8파일26720681B MD5확인. Blender5.1에서 원본UV 유지/decimate.2, A16324/B16213삼각형. AO를MaskG, 1−rough를MaskA/MetalR0으로 포장, NormalGL/BaseColor 동일byte. 유료0/R4인수0. 원본·변환·영수증 I:/EXODUSER-Storage/steam-keyshot/a2/pine-roots-* |
 | 실패 보존 | 수면시야-침식-수정전-FAIL.json 4실패→현재25검사/0실패. 이전 캡처 검정3장은 coherent-caps에 그대로 보존. 검정 이미지와 비교보드는 시각 검수 불가/FAIL |
+
+### 2026-10-31 검정 촬영의 직접 원인
+A2CaptureFrame이 정상 LateUpdate 이후 Remodel3DLate를 다시 불러 이미0으로 비운 view mask를 로비 숨김으로 오독했다. r3Cam을 끄고 HudCamera가 mask0인2D카메라로 폴백하여 검정3장이 저장됐다. 두 번째 Late 호출을 제거하고 실제 활성3D 경로는 r3Cam을 직접 선택한다. URP SingleCameraRequest/휘도>.01 검증도 함께 적용한다. 현재 독립Core/C#0이며 실제 새Player 재검수 전이다.

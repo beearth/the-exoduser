@@ -328,9 +328,9 @@ namespace Exoduser.UnityPort
         }
         float A2CaptureFrame(string path)
         {
-            var brain=r3Cam.GetComponent<Unity.Cinemachine.CinemachineBrain>();
-            Remodel3DLate();brain.ManualUpdate();
-            var camera=HudCamera;var old=camera.targetTexture;var active=RenderTexture.active;
+            // LateUpdate를 두 번 호출하면 이미0으로 비운 2D mask를 로비 숨김으로 읽어 3D카메라를 꺼 버린다.
+            // 촬영은 완료된 실제 프레임의 카메라를 그대로 사용한다.
+            var camera=NativeRemodel3D.Active&&r3Cam!=null?r3Cam:HudCamera;var old=camera.targetTexture;var active=RenderTexture.active;
             var rt=RenderTexture.GetTemporary(1920,1080,24,RenderTextureFormat.ARGB32);
             Texture2D pixels=null;
             try
@@ -339,7 +339,9 @@ namespace Exoduser.UnityPort
                 UnityEngine.Rendering.RenderPipeline.SubmitRenderRequest(camera,new UnityEngine.Rendering.Universal.UniversalRenderPipeline.SingleCameraRequest{destination=rt});
                 RenderTexture.active=rt;pixels=new Texture2D(1920,1080,TextureFormat.RGB24,false);pixels.ReadPixels(new Rect(0,0,1920,1080),0,0);pixels.Apply();System.IO.File.WriteAllBytes(path,pixels.EncodeToPNG());
                 var values=pixels.GetPixels32();double sum=0;for(int i=0;i<values.Length;i+=16)sum+=.2126*values[i].r+.7152*values[i].g+.0722*values[i].b;
-                return (float)(sum/((values.Length+15)/16)/255);
+                float luminance=(float)(sum/((values.Length+15)/16)/255);
+                Debug.Log("[A2 촬영] "+camera.name+" mask="+camera.cullingMask+" 밝기="+luminance);
+                return luminance;
             }
             finally{camera.targetTexture=old;RenderTexture.active=active;RenderTexture.ReleaseTemporary(rt);if(pixels!=null)Destroy(pixels);}
         }
