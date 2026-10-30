@@ -137,3 +137,10 @@ QA 전용 `--unity-keyshot-material-probe`는 동일 장면을 원래 재질→�
 위 도주 초안은 Player710b8046에서 왼쪽 벽에 갇혀 실패했다(전투 실탄1·보스 변신/가림 순간, 전체수치exit3). 현행 QA만 수정: 실제 SW 앵글러 인근(2750,6320) 시작, 목표점(2750,6320)/(2950,6100)/(2950,6570)/(2620,6700). 400px 안 적이 있으면24방향에서 원본 CanMove의25/110px 앞을 통과하는 방향만 평가하고 미래 적거리+목표방향×5000으로 선택. 앵글러 여유100px 반영, 일반 스폰/발사/AI 직접주입0. 보스 최대1500tick에서 실제탄6개 이상+몸체높이3.2u 초과인 순간을 찾고 저장 시 bounds의뷰포트 x.04~.96/y.15~.88를 확인한다. bossState/bossPresented를 기록하며 본체 미표시면 수치검수도 FAIL. 실제 화면의 최종판정은 별도다.
 
 Player5a5e70be는 필드 실탄13개/보스5개·크기조건/본체표시 통과지만 필드 영웅이 적에 가려진 fallback사진, 보스는 charge 변신 이미지였다. 이 수치PASS를 Steam PASS로 올리지 않는다. 현행 QA는 넓힌 시야에서 시작(3150,6320), 목표점(3150,6320)/(3350,6100)/(3350,6570)/(3020,6700), 최대3600tick, 공격 tick%360<120/촬영휴식 tick%360>240. 실제 EndOfFrame 뒤 영웅 불투명Rect와 앞쪽 적 스프라이트Rect의 겹침8% 이하를 추가한다. combatFramed/heroClear를 기록하고 fallback은 passed=false다. 보스는 volley/volleyWind/idle/recover/eWalk/eApproach 중 본체가 나온 순간만 선택한다. 일반 게임 입력/AI/공격 수치 변경0.
+
+
+### keyshot2 후보6 검수와 UI 우선 대기 — 2026-10-30
+
+독립keyshot2 source02624e2efffa9aa62bed8a023dc83e9b541eb9f0의 빌드f06f6dd8 컴파일/빌드오류0, Player13689739 실제1080p3장·창/잔여/USER_SAVE0. 필드9.54/9.21%·실탄5개·가림검사/보스8.11%·recover/실탄5개 촬영조건 통과. 임포터 수정7개 재검사 통과. 직접시각FAIL: 반복타원암반/검은목질·전투상단검은단절·저밀도접합·보스평면/큰어두운영역. 같은암반배치법 중단하고 LARGE OUTER MASS로 복귀한다. 사진 수치passed는Steam합격이 아니다.
+
+MERGE_QUEUE09:4x/CTO_STATE01:09:28Z UI우선 대기를 늦게 확인하여 후보6까지 실행된 사실 보존. 발견 이후 추가Unity/Player/M1/빌드0. UI unity/main·Desktop 영수증 전 재개하지 않음. 현재M1/통합/바로가기 미완료. 원작업본/타인WIP 보존, 자기자동변경452개 I:SHA보존/미원복. 상세·MAP PRODUCTION REPORT·원본·구도차이표시비교: I:/EXODUSER-Storage/steam-keyshot/keyshot2/REPORT.md 및 후보6-제출영수증.json.
