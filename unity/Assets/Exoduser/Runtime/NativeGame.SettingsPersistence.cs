@@ -72,6 +72,6 @@ namespace Exoduser.UnityPort
    // Persist the observed host, never a stale requested bool. Menu also reads Screen.fullScreen.
    if(save)QueueSettingsSave();UpdateSettingsPersistenceNotice();
   }
-  void OnApplicationQuit(){if(settingsSavePending)FlushNativeSettings();FlushCombatSave();}
+  void OnApplicationQuit(){NativeShutdownTrace.Record("NativeGame.OnApplicationQuit 시작");if(settingsSavePending)FlushNativeSettings();FlushCombatSave();NativeShutdownTrace.Record("NativeGame.OnApplicationQuit 완료");}
  }
 }

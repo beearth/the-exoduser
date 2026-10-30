@@ -29,7 +29,7 @@ namespace Exoduser.UnityPort {
   Texture2D windowBase,altarLmb,discEmptySel,discLmb,discLmbSel,plate;
   readonly Dictionary<string,Texture2D> orbIcons=new Dictionary<string,Texture2D>(),procedural=new Dictionary<string,Texture2D>();
   readonly Dictionary<long,GUIStyle> styles=new Dictionary<long,GUIStyle>();
-  string selectedOrb;bool ready;
+   string selectedOrb,pendingReset;bool ready;Action skillChanged;
   Texture2D discEmpty;Simulation cur;
   // B03 ports: these skills run in the Simulation (Skills/*.cs); everything else stays "미이식"
   static bool Ported(string id){return id=="kiSlash"||Array.IndexOf(Simulation.PortedSkillIds,id)>=0;}
@@ -48,9 +48,10 @@ namespace Exoduser.UnityPort {
    foreach(var s in defs.skills)skillById[s.id]=s;
   }
   static int RequestedSlot(){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,"--unity-skill-slot");return i>=0&&i+1<a.Length&&int.TryParse(a[i+1],out var n)?Mathf.Clamp(n,0,12):-1;}
-  public void SetOpen(bool value,int slot=6){Open=value;if(value){int req=RequestedSlot();Select(req>=0?req:slot);}}
+   public void SetOpen(bool value,int slot=6){Open=value;pendingReset=null;if(value){int req=RequestedSlot();Select(req>=0?req:slot);}}
   public void Select(int slot){SelectedSlot=Mathf.Clamp(slot,0,12);selectedOrb=null;}
   public void HandleKeys(Action close,Action equip){
+    if(pendingReset!=null){if(ExoInput.KeyDown(KeyCode.Escape))pendingReset=null;else if(ExoInput.KeyDown(KeyCode.Return))ConfirmReset();return;}
    if(NativeKeyBindInput.Down("skill")){close();return;}   // A16: web BINDS.skill
    if(ExoInput.KeyDown(KeyCode.LeftArrow))Select(SelectedSlot-1);
    if(ExoInput.KeyDown(KeyCode.RightArrow))Select(SelectedSlot+1);
@@ -168,13 +169,13 @@ namespace Exoduser.UnityPort {
   }
 
   // ---- window ----
-  public void Draw(Simulation sim,Action close,Action equip){
+   public void Draw(Simulation sim,Action close,Action equip,Action changed=null){
    if(!Open)return;Init();var old=GUI.matrix;var color=GUI.color;bool enabled=GUI.enabled;
    try {
     GUI.matrix=Matrix4x4.identity;Fill(new Rect(0,0,Screen.width,Screen.height),C(0,0,0,.53f));
     float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
-    cur=sim;bool lmb=sim.Config.ActiveAttack=="kiSlash";int level=Math.Max(1,sim.Config.KiSlashLevel);
+    cur=sim;skillChanged=changed;bool lmb=sim.Config.ActiveAttack=="kiSlash";int level=Math.Max(1,sim.Config.KiSlashLevel);if(pendingReset!=null)GUI.enabled=false;
     NativeUiAudit.DrawTexture(WindowRect,windowBase,ScaleMode.StretchToFill,false);
     NativePanelTabBar.Draw(NativePanelTabBar.Preset.Skill,"skillPanel");
     DrawSlots(lmb);
@@ -182,6 +183,7 @@ namespace Exoduser.UnityPort {
     DrawAltar(lmb,level);
     DrawRoad(lmb);
     DrawBottom(close);
+    if(pendingReset!=null){GUI.enabled=enabled;DrawResetConfirmation();}
    } finally {GUI.matrix=old;GUI.color=color;GUI.enabled=enabled;}
   }
 
@@ -211,11 +213,25 @@ namespace Exoduser.UnityPort {
    var ic=new Vector2(102,344.64f);Disc(ic,28,C(75,78,78));var tex=OrbIcon(id,false);if(tex!=null)NativeUiAudit.DrawTexture(new Rect(74,316.64f,56,56),tex);
    Text(new Rect(144,316.84f,214,33.6f),ki?data.skill.name:SkillName(id),serif,28,C(222,219,213),FontStyle.Bold,.56f);Text(new Rect(144,354.44f,214,18),ki?"Lv "+level+" / 20":learned?"Lv "+slv+" / 20":ported?"미습득":"Lv "+NotPorted,latinFont,13,C(165,168,168),FontStyle.Normal,.78f);
    Fill(new Rect(74,384.64f,284,1),C(146,149,149,.5f));Paragraph(new Rect(74,399.64f,284,112),ki?data.skill.description:def.desc,serif,16,C(217,214,208),28);
-   Text(new Rect(76,536.64f,140,19),learned?"강화 SP "+sim.SkillUpgradeSpCost(id):"강화 "+NotPorted,serif,15,C(165,168,168));Text(new Rect(216,536.64f,140,19),learned&&slv>=SkillRules.SkillLevelLock(sim.Player.Level)&&slv<SkillRules.MaxSkillLevel?"Lv"+(SkillRules.SkillLevelLock(sim.Player.Level)*50)+" 도달 시 해금":"",serif,15,C(201,163,154),FontStyle.Normal,0,TextAnchor.MiddleRight);
-   bool canUp=learned&&sim.CanUpgradeSkill(id);if(WebButton(new Rect(74,582.64f,87,40),"강화 +",canUp?C(70,34,26):C(28,31,31),canUp?C(38,18,14):C(18,21,21),canUp?C(100,103,103):C(51,54,54),canUp?C(222,219,213):C(138,141,141),canUp))sim.UpgradeSkill(id);
-   WebButton(new Rect(171,582.64f,86.44f,40),"강화 −",C(22,25,25),C(14,17,17),C(49,52,52),C(115,110,100));WebButton(new Rect(267.44f,582.64f,72.41f,40),"리셋",C(0,0,0,0),C(0,0,0,0),C(89,92,92),C(170,173,173));
-   float y=638.64f;if(ki&&SelectedSlot==SkillUiState.LmbSlot&&!lmb){if(WebButton(new Rect(74,y,240,40),"이 슬롯에 장착 [LMB]",C(33,36,36),C(16,19,19),C(89,92,92),C(217,214,208),true))equip();y+=52;}DrawInfoResources(sim,y);
+    string cost=learned?"강화 SP "+sim.SkillUpgradeSpCost(id):ported?"습득 SP 10 · 악의 "+sim.MaliceCost(sim.SkillLearnMalice(id)):"강화 "+NotPorted;
+    Text(new Rect(76,536.64f,284,19),cost,serif,15,C(165,168,168));Text(new Rect(216,558,140,19),learned&&slv>=SkillRules.SkillLevelLock(sim.Player.Level)&&slv<SkillRules.MaxSkillLevel?"Lv"+(SkillRules.SkillLevelLock(sim.Player.Level)*50)+" 도달 시 해금":"",serif,13,C(201,163,154),FontStyle.Normal,0,TextAnchor.MiddleRight);
+    bool canUp=learned?sim.CanUpgradeSkill(id):ported&&sim.CanLearnSkill(id);if(WebButton(new Rect(74,582.64f,87,40),learned?"강화 +":"습득",canUp?C(70,34,26):C(28,31,31),canUp?C(38,18,14):C(18,21,21),canUp?C(100,103,103):C(51,54,54),canUp?C(222,219,213):C(138,141,141),canUp)){if(learned?sim.UpgradeSkill(id):sim.LearnSkill(id))skillChanged?.Invoke();}
+    if(learned){
+     bool canDown=sim.CanLowerSkillLevel(id);if(WebButton(new Rect(171,582.64f,86.44f,40),"강화 −",C(22,25,25),C(14,17,17),canDown?C(89,92,92):C(49,52,52),canDown?C(217,214,208):C(115,110,100),canDown)&&sim.LowerSkillLevel(id))skillChanged?.Invoke();
+     bool canReset=sim.SkillResetRefund(id)>0;if(WebButton(new Rect(267.44f,582.64f,72.41f,40),"리셋",C(0,0,0,0),C(0,0,0,0),canReset?C(89,92,92):C(49,52,52),canReset?C(217,214,208):C(115,110,100),canReset))pendingReset=id;
+    }
+    float y=638.64f;if(EquippedId(SelectedSlot)!=id&&sim.CanEquipSkill(SelectedSlot,id)){if(WebButton(new Rect(74,y,284,40),"이 슬롯에 장착 ["+SkillDockBinding.KeyForWindow(SelectedSlot,NativeKeyBindInput.Bindings)+"]",C(33,36,36),C(16,19,19),C(89,92,92),C(217,214,208),true)&&sim.EquipSkill(SelectedSlot,id))skillChanged?.Invoke();y+=52;}DrawInfoResources(sim,y);
   }
+   void ConfirmReset(){string id=pendingReset;pendingReset=null;if(id!=null&&cur!=null&&cur.ResetSkill(id,true)){selectedOrb=id;skillChanged?.Invoke();}}
+   void DrawResetConfirmation(){
+    Fill(new Rect(0,0,1920,1080),C(0,0,0,.72f));var box=new Rect(600,390,720,300);Grad(box,C(31,29,30),C(13,15,16));Border(box,C(139,142,142));Fill(new Rect(602,392,716,2),C(214,184,134,.7f));
+    Text(new Rect(632,414,656,38),SkillName(pendingReset)+" 리셋",serif,25,C(222,219,213),FontStyle.Bold);
+    bool fused=cur.ShieldFuse&&(pendingReset=="maliceSwipe"||pendingReset=="shieldThrow");bool free=pendingReset=="kiSlash"||pendingReset=="fireball"||pendingReset=="spikeTrap";
+    string message=fused?"합체 강화 단계를 초기화하고 SP "+cur.SkillResetRefund(pendingReset)+"을 돌려받습니다. 무료 기본 합체는 유지됩니다.":"SP "+cur.SkillResetRefund(pendingReset)+"을 돌려받습니다. "+(free?"기본 스킬은 1레벨로 유지되며 선택 슬롯은 비워집니다.":"습득이 해제되고 장착 슬롯이 비워집니다. 악의는 환급되지 않습니다.");
+    Paragraph(new Rect(632,472,656,90),message,serif,17,C(194,191,185),29);
+    if(Plate(new Rect(804,612,220,44),"취소 [ESC]",C(194,191,185)))pendingReset=null;
+    if(Plate(new Rect(1044,612,244,44),"리셋 확인 [ENTER]",C(234,211,172)))ConfirmReset();
+   }
   bool WebButton(Rect r,string label,Color top,Color bottom,Color border,Color text,bool active=false){if(top.a>0)Grad(r,top,bottom);if(active&&GUI.enabled&&r.Contains(Event.current.mousePosition))Fill(r,new Color(1,1,1,.06f));Border(r,border);Fill(new Rect(r.x+1,r.y+1,r.width-2,1),new Color(1,1,1,.07f));Text(r,label,serif,16,text,FontStyle.Bold,0,TextAnchor.MiddleCenter);return NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none)&&active;}
   void DrawInfoResources(Simulation sim,float y){Fill(new Rect(74,y,284,1),C(146,149,149,.5f));string malice=sim.Materials.ToString("N0",System.Globalization.CultureInfo.InvariantCulture);Mixed(new Rect(74,y+8,284,23),"SP "+sim.Player.StatPoints+"  ·  악의 "+malice+"  ·  LV "+sim.Player.Level,13,C(165,168,168),.78f,TextAnchor.MiddleLeft);}
 

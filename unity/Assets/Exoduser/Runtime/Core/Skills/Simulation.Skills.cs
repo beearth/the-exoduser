@@ -28,6 +28,8 @@ namespace Exoduser.UnityPort.Core
     public sealed partial class Simulation
     {
         public readonly SkillBook Skills = new SkillBook();
+        // 미이식이지만 습득된 저장 선택은 시스템 기본 보정으로 지우지 않는다. 실제 슬롯 편집 때만 해제한다.
+        string preservedLoadedCtSkill;
         public readonly List<FireZone> FireZones = new List<FireZone>();
         public readonly List<SlamWave> SlamWaves = new List<SlamWave>();
         public readonly List<SkillBlade> SkillBlades = new List<SkillBlade>();
@@ -81,17 +83,29 @@ namespace Exoduser.UnityPort.Core
         {
             skills = new Dictionary<string, double>(); foreach (var id in PortedSkillIds) skills[id] = id == "kiSlash" ? Math.Max(1, Config.KiSlashLevel) : Skills.Level(id);
             slots = new string[SkillRules.SlotCount]; for (int i = 0; i < slots.Length; i++) slots[i] = IsPorted(Skills.Slots[i]) ? Skills.Slots[i] : null;
-            ult = null; ct = Skills.CtSkill;
+            ult = Skills.UltSlot; ct = preservedLoadedCtSkill ?? Skills.CtSkill;
         }
         // m.Skills == null (a save from before the skills were stored) keeps the new-character start state
         public void RestoreSkills(Dictionary<string, double> skills, string[] slots, string ult, string ct)
         {
             if (skills == null) return;
-            foreach (var id in PortedSkillIds) { double v; skills.TryGetValue(id, out v); if ((id == "kiSlash"||id == "fireball"||id=="maliceSwipe"||id=="shieldThrow") && v < 1) v = 1; if (v >= 1) Skills.Levels[id] = (int)v; else Skills.Levels.Remove(id); }
-            for (int i = 0; i < SkillRules.SlotCount; i++) Skills.Slots[i] = slots != null && i < slots.Length && IsPorted(slots[i]) && Skills.Learned(slots[i]) ? slots[i] : null;
+            foreach (var id in PortedSkillIds) { double v; skills.TryGetValue(id, out v); if ((id == "kiSlash"||id == "fireball"||id=="maliceSwipe"||id=="shieldThrow"||id=="spikeTrap"||id=="giantSlam"||id=="holyDome") && v < 1) v = 1; if (v >= 1) Skills.Levels[id] = (int)v; else Skills.Levels.Remove(id); }
+            var reservedRawSlots = new bool[SkillRules.SlotCount];
+            for (int i = 0; i < SkillRules.SlotCount; i++)
+            {
+                string id = slots != null && i < slots.Length ? slots[i] : null;
+                reservedRawSlots[i] = id != null && !IsPorted(id);
+                Skills.Slots[i] = IsPorted(id) && Skills.Learned(id) ? id : null;
+            }
+            RepairRestoredSkillSlots(reservedRawSlots);
             Config.KiSlashLevel = Math.Max(1, Skills.Level("kiSlash"));
             MaliceSwipeLevel=Skills.Level("maliceSwipe");ShieldThrowLevel=Skills.Level("shieldThrow");
-            Skills.CtSkill = IsPorted(ct) && Skills.Learned(ct) ? ct : (Skills.Learned("iceOrb") ? "iceOrb" : null);
+            // 원문 dbRestore는 고정 슬롯 후보를 미습득이어도 보존한다. 미이식 선택값의 보존은 실행 소유권을 늘리지 않는다.
+            double savedLevel;
+            bool ctLearned = ct != null && skills.TryGetValue(ct, out savedLevel) && savedLevel >= 1;
+            Skills.CtSkill = ct == "ghostWalk" || ct == "iceOrb" || ct == "timeWarp" || ctLearned ? ct : "ghostWalk";
+            preservedLoadedCtSkill = ctLearned && !IsPorted(ct) ? ct : null;
+            Skills.UltSlot = ult != null && skills.TryGetValue(ult, out savedLevel) && savedLevel >= 1 ? ult : null;
         }
 
         // held states of 1..4, Space (rage burst key), F, Ctrl and Z, once per tick before Tick(); spaceIsRollKey: the Space key also rolls (a direction held => roll, no slam)

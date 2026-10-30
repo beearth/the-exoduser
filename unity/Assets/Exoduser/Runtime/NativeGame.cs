@@ -411,7 +411,7 @@ namespace Exoduser.UnityPort
             if(stageClear.Active){stageClear.LocaleCode=lobby.Language;stageClear.DiagnosticDetails=lobby.DiagnosticUiEnabled;stageClear.Draw();return;}
             if(stats.Open){stats.Draw(()=>SetStats(false));return;}
             if(forge.Open){forge.Draw(Simulation,inventory.State,()=>SetForge(false));return;}
-            if(skills.Open){skills.Draw(Simulation,()=>SetSkills(false),EquipSelectedSkill);return;}
+            if(skills.Open){skills.Draw(Simulation,()=>SetSkills(false),EquipSelectedSkill,()=>{if(Simulation.Config.ActiveAttack=="kiSlash")basicWeaponMode=false;RequestCombatSave();});return;}
             if(inventory.Open){inventory.Draw(Simulation.Player.Level,Simulation.Player,()=>SetInventory(false));return;}
             if(menu&&!hudSmoke&&!inventorySmoke)
             {
@@ -553,7 +553,7 @@ namespace Exoduser.UnityPort
         }
         // Death screen 'retry' button = the pause menu's Restart command.
         void RetryFromDeath(){if(gameFocused){if(RetryInsideArena())return;ResetRun();skillInputFence=true;menu=false;Running=true;}}
-        void EquipSelectedSkill(){if(SkillUiState.TryEquipKiSlash(Simulation,skills.SelectedSlot))basicWeaponMode=false;}
+        void EquipSelectedSkill(){if(SkillUiState.TryEquipKiSlash(Simulation,skills.SelectedSlot)){basicWeaponMode=false;RequestCombatSave();}}
         void SetSfxPercent(int percent){settings.SetSfxPercent(percent);sound.SetVolumePercent(settings.SfxPercent);music.SetPercents(settings.SfxPercent,settings.BgmPercent);lobby?.SetStartupSfxPercent(settings.SfxPercent);QueueSettingsSave();}
         void SetBgmPercent(int percent){settings.SetBgmPercent(percent);lobby.SetBgmPercent(settings.BgmPercent);music.SetPercents(settings.SfxPercent,settings.BgmPercent);QueueSettingsSave();}
         void SetFrameCap(int cap){if(settings.TrySetFrameCap(cap)){ApplyFrameCap(cap);QueueSettingsSave();}}
@@ -658,7 +658,19 @@ namespace Exoduser.UnityPort
         public static string Argument(string key){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,key);return i>=0&&i+1<a.Length?a[i+1]:"";}
         [Serializable] sealed class SmokeReceipt{public bool moved,webViewUsed,charged,released;public float initialX,finalX,maximumCharge;public int originalMapChunks,loadedChunks,enemyActors,maximumProjectiles,kills,totalDamage;public FeedbackAudioReceipt feedbackAudio;public ImpactReceipt feedbackVisual;}
         [Serializable] sealed class HudSmokeReceipt{public string scope,activeSkill,iconResource;public bool iconDrawn;public HudPixelProbe[] cases;}
-        void OnDestroy(){NativePanelTabBar.Requested-=OnPanelRequested;kiView?.Dispose();boltView?.Dispose();impacts?.Dispose();skillView?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();music?.Dispose();ambient?.Dispose();if(Instance==this)Instance=null;}
+        void OnDestroy(){
+            NativeShutdownTrace.Record("NativeGame.OnDestroy 시작");
+            NativePanelTabBar.Requested-=OnPanelRequested;
+            kiView?.Dispose();NativeShutdownTrace.Record("기검 표시 정리 완료");
+            boltView?.Dispose();NativeShutdownTrace.Record("석궁 표시 정리 완료");
+            impacts?.Dispose();NativeShutdownTrace.Record("피격 표시 정리 완료");
+            skillView?.Dispose();NativeShutdownTrace.Record("스킬 표시 정리 완료");
+            sound?.Dispose();NativeShutdownTrace.Record("효과음 정리 완료");
+            hud?.Dispose();NativeShutdownTrace.Record("HUD 정리 완료");
+            foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();
+            music?.Dispose();ambient?.Dispose();if(Instance==this)Instance=null;
+            NativeShutdownTrace.Record("NativeGame.OnDestroy 완료");
+        }
         [Serializable] sealed class TextReviewLabel {public string text;public int count,priority;public long value;public float originX,originY,x,y,width,height,distance;}
         [Serializable] sealed class TextReviewShot {public string name,kind,note;public int tick,visible,deferred,stateEvents,damageEvents;public float realSeconds;public List<TextReviewLabel> labels=new List<TextReviewLabel>();}
         readonly List<TextReviewShot> textReviewShots=new List<TextReviewShot>();float textReviewStart;
