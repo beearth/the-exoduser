@@ -51,7 +51,9 @@ namespace Exoduser.UnityPort
         public static float BankHeight(float x,float z,float ground)
         {
             if(z<=-94||z>=-30||Water(x,z)||Bridge(x,z))return ground;
-            float d=Shore(z)-x;
+            // 굽은 강에서 X축 간격은 실제 물가 거리가 아니다. 접선의 법선 방향 폭으로 보정한다.
+            float slope=(Shore(z+.05f)-Shore(z-.05f))/.1f;
+            float d=(Shore(z)-x)/(float)Math.Sqrt(1+slope*slope);
             float u=Math.Abs(Along(x,z))-2.75f,w=Across(x,z);
             float end=Math.Max(-8.5f-w,w-20);
             float branch=(float)Math.Sqrt(Math.Max(0,u)*Math.Max(0,u)+Math.Max(0,end)*Math.Max(0,end))+Math.Min(Math.Max(u,end),0);
