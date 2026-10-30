@@ -38,7 +38,7 @@ Core(`Runtime/Core`)는 바꾸지 않았다.
 |---|---|
 | 변환(한 곳) | `NativeRemodel3D.Point`: x_월드 = px/100, z_월드 = −py/100, y = 지형 높이. 1타일 = 40px = 0.4u. 씬 루트는 이동·회전·스케일 없음 |
 | 높이 | `Terrain.SampleHeight(wx,0,wz) + terrain.transform.position.y`. 지형은 타일 x48~152·y126~200 창만 덮어서 질의를 그 창 안으로 클램프한다(창 밖은 가장자리 높이). Core의 z는 0 그대로 |
-| 카메라 | 씬의 `Main Camera` + `CinemachineBrain` + `CM LOOK-001`(CinemachineFollow, 월드 공간 추적, 댐핑 0, 오프셋 (0, 10.52, −9.24), 피치 0.85rad = 48.70°, 거리 14u). 추적 대상 `Player Marker`를 매 프레임 플레이어의 지형 위 점으로 옮긴다. 세로 FOV는 매 프레임 실제 `Screen.height`로 `2·atan(Screen.height/(2·1400))`를 계산한다. 1600×900은 **35.65°**, 1920×1080은 **42.17°**이며 논리 2D 카메라 값은 그대로다 |
+| 카메라 | 씬의 `Main Camera` + `CinemachineBrain` + `CM LOOK-001`(CinemachineFollow, 월드 공간 추적, 댐핑 0, 오프셋 (0, 10.52, −9.24), 피치 0.85rad = 48.70°, 거리 14u). 추적 대상 `Player Marker`를 매 프레임 플레이어의 지형 위 점으로 옮긴다. 과거 세로 FOV는 매 프레임 실제 `Screen.height`로 `2·atan(Screen.height/(2·1400))`를 계산한다. 1600×900은 **35.65°**, 1920×1080은 **42.17°**이며 논리 2D 카메라 값은 그대로다 |
 | 리그 이름 | 구운 씬(루트에 `Main Camera`·`Player Marker`·`CM LOOK-001` 따로) 과 다시 구운 씬(`RM1_CameraRig` 아래)을 모두 이름으로 찾는다. 씬 안 `AudioListener`와 `Marker Sprite`(대역 스프라이트)는 끈다 |
 | 2D 카메라 `view` | 지우지 않는다. 카메라 클램프·보스 줌·`FieldEnemyCanShoot`(Core 콜백) 같은 **논리 카메라**로 그대로 갱신되고, 3D가 켜진 동안 컬링 마스크 0으로 화면만 지우는 역할을 한다. 로비가 월드를 숨기는 마스크는 3D 카메라가 따라 한다 |
 | HUD 앵커 | `ToGUI`와 레벨업 폭발은 3D가 켜져 있으면 씬 카메라로 변환 |
@@ -81,41 +81,31 @@ Core(`Runtime/Core`)는 바꾸지 않았다.
 - 3D 영웅 교체는 캐릭터 총괄 트랙.
 
 
-## 2026-10-30 Steam 키샷 조명 작업 — 검수 중
+## 8. 사용자 기준 Steam 키샷 조명 후보 — 2026-10-30
 
-브리프 `I:/EXODUSER-Storage/codex-takeover/steam-keyshot-brief.md`, 전용 브랜치 `codex/pc-unity-steam-keyshot-20261030`. 현재 카메라·조명 변경은 제작/검수 중이며 Steam 합격·통합 완료가 아니다. Core·기존 UI 규칙은 변경하지 않는다.
+전 기준: I:/EXODUSER-Storage/steam-keyshot/user_baseline_20261030.webp(1913×1055), USER_BASELINE_CRITIQUE.md. 새 캡처는 사건/좌표가 다르므로 동일 플레이 사건 A/B라고 주장하지 않는다. 현재 소스는 최종 빌드·M1·직접 시각 검수 전 후보다. 결과는 REPORT.md와 영수증으로 확정한다.
 
-| 항목 | 구현값·범위 |
+| 항목 | 현재 구현·수치 |
 |---|---|
-| 3D 카메라 | 피치48.70도·거리14u 유지, 세로FOV24.5도 고정. 논리2D 카메라·판정은 유지 |
-| 비교 기준 | 검수 인자 `--unity-keyshot-baseline`이면 기존 해상도별FOV와 기존 조명 유지. 일반 실행은 `--remodel3d`에서만 새 필드 조명 |
-| 키라이트·지옥불 | 차가운 키라이트0.7, 기존지옥불5광원 색(1,.32,.075)·강도11·반경4.7u·소프트그림자. 붉은Shafts 비활성 |
-| 영웅 림광 | 색(.53,.72,1)·강도3.2·반경3.5u, 마커를 따라감. 실제영웅·일반적은 기존SpriteLit3D·그림자 |
-| 톤 | ACES·노출-.15EV·대비16·채도-8·차가운그림자/따뜻한하이라이트·Bloom.16/threshold1.1·비네트.13·그레인없음 |
-| 재질 | 기존원화/노멀 유지, TerrainLayer 런타임사본의 노멀.8·smoothness.32/.22. 원본 TerrainLayer 파일은 수정하지 않음 |
-| 광원 기구 | 기존 `assets/map/ch1/diablo_field_torch_base_v1.png`·`diablo_field_torch_flame_v1.png`를 동일byte Resources/Art/map/hell_lighting에 인수. 불꽃4열2행8프레임·12fps, 신규 이미지 생성/지출0 |
-| 검수 | `--unity-steam-keyshot --unity-boss-direct 0 --remodel3d -output <폴더>`, 1920×1080 실제 Player·직접입장·생존보조·스크립트입력. 적/탄 직접주입0. 불투명 몸체 높이는 스프라이트 알파경계로 측정하며 투명 셀 전체 bounds와 구분 |
+| 1 바닥 | 원본 Terrain 높이1025의2칸 간격513×513 표면 메시,524288삼각형. 충돌/높이 질의/Core는 원본 Terrain 유지. Terrain.drawHeightmap/foliage=false. 피부 컬러맵/노멀(.45)+CC0 돌·재6u 혼합. 돌8~34%,재6~18%,나머지피부. 넓은 삼각함수 가중치,랜덤/디더 없음 |
+| PBR | HellGroundPBR·URP UniversalFragmentPBR. 돌 디퓨즈(.55,.56,.58),돌노멀.3,smoothness=.50-.25×rough,피부.24,금속0/AO1. CC0텍스처 Trilinear/mipBias2/aniso8. ShadowCaster/DepthOnly/DepthNormals |
+| 2 빛줄기 | Shafts·Foreground Cards·Background Cards 런타임 인스턴스 폐기. 원본 씬/아트 보존 |
+| 3 영웅 | 필드FOV24.5°/피치48.7°/거리14u. 영웅점광(.68,.8,1)/강도2.2/반경3.5u/로컬(-.3,1.8,.6). SpriteLit3D ambient.3/normalTilt.4. 기존 UI 수치/배치 유지 |
+| 4 광원 | 지옥불 점광5개(1,.60,.28)/강도5/반경4.7u/soft그림자.8/bias.025/normalBias.1. 방향광(.85,.89,1)/강도1/그림자.85/회전(62,35,0). PC추가광그림자 atlas4096 |
+| 광원 위치 | 타일(95,183),(109,174),(100,156),(112,142),(80.5,152.5). 월드 x=.4×tx,z=-.4×ty. 기존 torch_base/torch_flame 재사용. 받침높이1.6u,불꽃오프셋 up.93+right.34,스케일.14,RGB(1.5,1.2,1),4×2시트8프레임12fps |
+| 기본조명 | Trilight sky(.18,.20,.24)/equator(.09,.115,.15)/ground(.04,.045,.055). 지수안개밀도.023/RGB(.035,.065,.085) |
+| Volume | ACES/postExposure+.25EV/contrast16/saturation-8. Split shadow(.43,.48,.54)/highlight(.55,.51,.46)/balance-12. Bloom.16/threshold1.1/scatter.48. Vignette.13/smoothness.65. FilmGrain 비활성 |
+| 높이산란 | HellFogFeature/HellHeightFog:16고정샘플/density.065/height falloff1.8/기준.4u. 차가운산란(.06,.12,.16)+5개불빛산란(.6,.35,.15). 산란 shadow ray는 없으므로 그림자까지 계산한 볼류메트릭이라고 주장하지 않는다 |
+| SSAO | HellSsaoFeature·URP기반/전체해상도/Intensity.6/Radius.18/DirectLightingStrength.12/DepthNormals/High샘플·High bilateral. 필드 표현카메라만 적용. 로비/기본2D/보스 새필드패스 미적용 |
+| 5 검은실루엣 | 카드제거+화면밖 메시중심(x.05~.95,y.12~.95,z>0 밖)의 shadowCasting Off. 화면안 메시/영웅/적/화로 그림자 유지. 표면메시는 이 제외 규칙 대상 아님 |
+| 보스구도 | 기존2D아레나/논리카메라/Core 유지. 별도표현카메라 max(논리직교크기×.53,합친bounds높이×.63+.3u),중심y-.15. 드루이드 표현크기.72,반경/공격판정/AI불변. HUD/조준은 실제 표현카메라 사용 |
+| 보스바닥 | ArenaSoilLit:흙20%+CC0돌80%/월드6u/3texel기울기×.15/ambient(.62,.67,.73). 국소광3개9/7/3·반경7·warm(1,.6,.3)/cool(.55,.68,.85). 마지막광원 영웅추적. 보스/영웅 접촉음영2.2×.45u/.48×.12u·알파.32. 실제3D보스 리모델 완료 아님 |
 
-실제 캡처·비교·최종 판정은 `I:/EXODUSER-Storage/steam-keyshot/REPORT.md`에 모은다. 기존 보스 아레나 2D 전환·아트 품질 한계는 현재 유지되며 새 조명으로 전체 보스 리마스터 완료를 주장하지 않는다.
+### 검수·소유 경계
 
-보스전 조명 추가 검수: 기존 2D 아레나·논리 카메라·Core 판정은 유지하고 별도 표현 카메라만 직교크기×.53/북쪽1u로 조정한다. HUD/조준은 실제 표현 카메라를 사용한다. 기존 흙 원화에 3texel 간격 높이기울기 노멀·반사광(지수40/강도.22)을 적용하는 ArenaSoilLit, 국소광3개(강도9/7/3·반경7u)를 연결했다. 기존 보스 스프라이트를 교체한 3D 리모델은 아니며 미검수 상태다.
-
-현재 실행 차단: 기존 Player 3개(일반1·미리보기2)가 이 작업 소유가 아니어서 안전 실행기가 후보 빌드를 시작하지 않았다. C# 독립 컴파일 오류0, 새 GPU/셰이더/1080p 후보·M1은 미검증. 종료 허용/직접 종료를 요청한 상태이며 소스 복구 checkpoint만 보존한다. SSAO·높이/볼류메트릭안개·최종시각판정·공통줄기/바로가기는 미완료다.
-
-## 사용자 바탕화면 기준 1~5 재작업 — 2026-10-30
-
-전 기준은 사용자 제공 I:/EXODUSER-Storage/steam-keyshot/user_baseline_20261030.webp(1913×1055)와 USER_BASELINE_CRITIQUE.md다. 사용자 프레임과 새 촬영은 플레이 상태가 다르므로 같은 사건 A/B라고 주장하지 않는다.
-
-| 번호 | 구현·검수 대상 | 현재 상태 |
-|---|---|---|
-| 1 | 원본 피부에 돌18~60%·탄화토12~35%를 넓은 사인장으로 혼합. TerrainData 런타임사본, 높이/충돌 불변. 텍스처6개·2048², 타일3u/4u, 노멀.75/.45. smoothness 돌=.72-.60×rough·탄화토=.28-.23×rough. diffuse remap(.48,.49,.50), 금속0·AO1 | 소스 구현·GPU 미검증 |
-| 2 | Shaft 루트 비활성. 대각선 막 대신 지옥불5개·국소광원/기구 | 소스 구현·GPU 미검증 |
-| 3 | 3/4 피치 유지·FOV24.5도·림광. 불투명 몸체 알파경계로 화면높이8~10% 확인 | 소스 구현·실측 대기 |
-| 4 | 점광원5개 소프트그림자·차가운그늘/뜨거운불빛·높이산란16샘플. 밀도.065·높이감쇠1.8·기준.4u. 전체해상도SSAO 강도.6·반경.18·직광영향.12·High샘플/블러 | 설정/소스 구현·Unity/GPU 미검증 |
-| 5 | 카메라 Foreground Cards 비활성. 메시 없는 나무 그림자형 카드 제거 | 소스 구현·GPU 미검증 |
-
-무료재질 출처: [Rock Ground](https://polyhaven.com/a/rock_ground)·[Burned Ground 01](https://polyhaven.com/a/burned_ground_01), 제작자 Rob Tuytel, [CC0](https://polyhaven.com/license). 원본6개는 I: pbr-source와 PBR-원본출처.json의 URL/MD5/SHA256 대조 후 실제 Resources만 SSD에 인수. 제품은 API에 연결하지 않음. 비용/크레딧0·신규 이미지생성0.
-
-Exoduser.KeyshotRenderSetup.Run은 기존 PC 렌더러에 HellSsaoFeature/HellFogFeature와 높이안개 재질을 추가한다. 실제3D카메라+새조명 활성 조건에서만 실행하고 baseline/2D/로비에는 새패스를 넣지 않는다. 안개는 깊이복원광선의 고정16위치에서 높이밀도·국소불빛을 적분하며 랜덤 디더링/필름그레인/점노이즈 없음. 그림자광선적분은 없어 그림자있는 볼류메트릭으로 확대하지 않는다.
-
-렌더러 설정 실실행 40d8203b: Unity6000.6.7f1 오류로그0·정상종료0·세이브격리, SSAO/안개 자산 생성 및 셰이더 오류검사 통과. 이것은 Player 화면/성능/Steam시각합격과 별도다.
+- --unity-steam-keyshot --unity-boss-direct 0 --remodel3d -output <폴더>: 실제 NativeGame·격리세이브·직접입장·생존보조·스크립트입력. 적/탄 직접주입0. 탐험/실제AI탄막/드루이드1920×1080. 알파>64 불투명 몸체높이8~10%가 수치조건이며 시각합격과 별개다.
+- 전투1100tick상한/90tick마다 사각이동/160tick이전만공격(tick%120<60). 280tick이후 화면내실탄3개/가장가까운적100px초과때촬영. 보스촬영 플레이어는 보스(+260,-150)px,자연UI대기2.8초. AI/공격수치 불변.
+- QA전용 --unity-keyshot-diagnostic는 메시/스프라이트/지형/안개/AO/풀/인스턴싱/그림자를 순차분리한다. 필터 기본0. --unity-keyshot-location X:Y는 탐험위치 선택. --unity-keyshot-baseline만 과거 해상도별FOV를 사용한다.
+- 최초PBR점무늬는 재질혼합OFF때소실(AO/그림자OFF로는유지). 필터·노멀·반사·가중치 재작업. 하단가로줄은 Terrain만남겨도유지·TerrainOFF때소실. 일반메시6c8ee055/Player2b619f69에서 같은구도 가로줄소실. Unity/드라이버 내부원인 미확정. 진단01bc0c75는 폐기루트 null참조로시간초과,해당루프 null검사수정. 해당진단을PASS로기록하지않음.
+- 원본·후보·비교·기록: I:/EXODUSER-Storage/steam-keyshot/. CC0출처·SHA는 PBR-원본출처.json. https://polyhaven.com/a/rock_ground / https://polyhaven.com/a/burned_ground_01 / https://polyhaven.com/license . 신규지출0. 미사용 탄화토normal/rough2종은 unused-source로hash대조이관.
+- 기존 codex-unity-visual의 공유WIP보호:09fe65b8840에서 G:/exoduser-wt/codex-unity-keyshot-final·codex/pc-unity-keyshot-final-20261030으로분리. 자기입력11경로 byte보존이송. 인수미확인 HellEnvironment모듈/호출은 독립후보에서제외. 기존guard WIP원위치보존.

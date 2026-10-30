@@ -31,7 +31,7 @@ Shader "EXODUSER/HellHeightFog"
                     float3 p=_WorldSpaceCameraPos+ray*((j+.5)/16.0);
                     float density=.065*exp(-max(p.y-.4,0)*1.8);float a=1-exp(-density*stepLength);
                     float fire=localFire(p,float2(38,-73.2))+localFire(p,float2(43.6,-69.6))+localFire(p,float2(40,-62.4))+localFire(p,float2(44.8,-56.8))+localFire(p,float2(32.2,-61));
-                    float3 light=float3(.06,.12,.16)+fire*float3(.6,.17,.025);scatter+=trans*a*light;trans*=1-a;
+                    float3 light=float3(.06,.12,.16)+fire*float3(.6,.35,.15);scatter+=trans*a*light;trans*=1-a;
                 }
                 return half4(source.rgb*trans+scatter,source.a);
             }
