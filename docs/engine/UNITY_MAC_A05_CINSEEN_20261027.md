@@ -58,3 +58,7 @@ QA 진입 후보는 기존 **고유 Settings QA 앱**의 product `EXODUSER Setti
 2026-10-27 A15 저장 보존 회귀: 위 A05 **QA 전용** v2 파일을 새로운 marker 루트에 복사하고 중첩 unknown sentinel을 추가했다. 실제 Player 조작 키/SFX 저장으로 revision3→5가 된 뒤에도 `cinSeen:true` boolean, `gpKeyMap.pad0.buttons=[1,2]`, sentinel, 보조 `up=KeyX`가 동일했다. 재시작한 QA 직접 진입 화면에서 주 `up=Tab`과 SFX36을 확인했다. 직접 진입이므로 자연 시작→로비 분기·패드 동작을 다시 PASS로 계상하지 않는다. [실행표](UNITY_MAC_A15_4TAB_20261027.md#2026-10-27-a15-저장-시-a05미지원-데이터-보존-회귀).
 
 따라서 **Mac Player 자연 완료→저장→동일 profile 재시작 로비 직행 PASS**. 오류 뒤 수동 마지막 cue는 격리 Editor 정책 검사 PASS이며 실제 Player에서 오류를 인위적으로 발생시키지 않았다. 다른 `--unity-frontend-review`의 설정 I/O와 일반 사용자 Player 경로 검수로 확대 해석하지 않는다. Unity 빌드가 재작성한 Resources `.meta` 411개·새 `.meta` 1개·Scene/ProjectSettings 생성물은 백업한 뒤 HEAD bytes로 복원했다.
+
+## 2026-10-30 PC 진입 누락 재현 진행
+
+사용자 바탕화면 빌드642e31d2e는 설정의 cinSeen:true 때문에 FDG·타이틀·인장을 모두 건너뛴다. 사용자 설정은 읽기만 하고 I:/EXODUSER-Storage/demo-art/entry-flow/before-sandbox에 복사했다. 일반 QA는 설정 I/O를 끄므로 --unity-entry-flow-capture는 명시 격리 사본을 실제 codec/store로 읽고 초기 분기 직전에 완료 표식만 공급한다. 1600×900·1초 간격90장, --entry-flow-keys에서만 10초 이후 메뉴 Enter·25초 이후 인장 Enter·65초 이후 Escape 홀드를 주입한다. OS 손조작 검수와 구분한다. 현재 커밋은 재현 수집기이며 기존 시작 분기를 유지한다. 결과·수정·전달 상태는 같은 출력의 REPORT.md로 연결한다.
