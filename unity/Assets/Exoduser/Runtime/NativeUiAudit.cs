@@ -55,6 +55,12 @@ namespace Exoduser.UnityPort
             if(frame==null)throw new InvalidOperationException("실제 GUI Repaint 없음");
             frame.page=page;frame.language=language;File.WriteAllText(path,JsonUtility.ToJson(frame,true));
         }
+        internal static void ImageText(Rect rect,Texture texture)
+        {
+            if(!Active||texture==null)return;
+            // 기존 고정 한국어 버튼 원화의 글자 영역. 번역을 덧그리면 일반 글자와 동일하게 충돌 검출한다.
+            if(texture.name=="name_cancel"||texture.name=="name_create")Region(new Rect(rect.center.x-15*rect.width/173,rect.y+14*rect.height/47,30*rect.width/173,18*rect.height/47),"text",texture.name=="name_cancel"?"취소":"생성","고정 글자 원화:"+texture.name);
+        }
         static string Source(string file,int line)=>Path.GetFileName(file)+":"+line;
         internal static void Label(Rect r,string s,GUIStyle style,[CallerFilePath]string file="",[CallerLineNumber]int line=0){if(Active)Text(r,new GUIContent(s),style,Source(file,line));GUI.Label(r,s,style);}
         internal static void Label(Rect r,GUIContent s,GUIStyle style,[CallerFilePath]string file="",[CallerLineNumber]int line=0){Text(r,s,style,Source(file,line));GUI.Label(r,s,style);}
