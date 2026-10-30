@@ -15,7 +15,7 @@ namespace Exoduser.UnityPort
         public bool Running {get; private set;}
         public int LoadedChunks {get {return chunks.Count;}}
         public int RenderedEnemyCount {get {return enemies.Count;}}
-        Camera view; SpriteRenderer playerView; Font font; KiSlashView kiView;NativeBoltView boltView;
+        Camera view; SpriteRenderer playerView; NativeHeroView heroView; Font font; KiSlashView kiView;NativeBoltView boltView;
         KiImpactView impacts; NativeSkillView skillView; NativeFeedbackAudio sound; NativeGameMusic music; NativeAmbientSources ambient; bool smokeActive;
         NativeHud hud;bool hudSmoke;NativeInventory inventory;bool inventorySmoke,inventoryWasRunning;
         NativePauseMenu pauseMenu;NativeSettingsState settings;NativeSkills skills;NativeStatPanel stats;bool skillsWasRunning,statsWasRunning,skillInputFence;
@@ -84,7 +84,9 @@ namespace Exoduser.UnityPort
             UpdateSettingsPersistenceNotice();
             var args=Environment.GetCommandLineArgs();
             bool legacyFixture=(A2Requested&&Array.IndexOf(args,"--unity-steam-keyshot")>=0)||Array.IndexOf(args,"--unity-playtest-capture")>=0||Array.IndexOf(args,"--unity-boss-text-smoke")>=0||Array.IndexOf(args,"--unity-exp-capture")>=0||Array.IndexOf(args,A15DirectArgument)>=0||Array.IndexOf(args,IntroSilenceFlag)>=0||Array.IndexOf(args,NativeSettingsStorageScope.FixtureArgument)>=0||Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0||Array.IndexOf(args,"--unity-pause-smoke")>=0||Array.IndexOf(args,"--unity-character-story-smoke")>=0||Array.IndexOf(args,"--unity-character-store-smoke")>=0||Array.IndexOf(args,"--unity-character-smoke")>=0||Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-hud-blend-smoke")>=0||Array.IndexOf(args,"--unity-drop-smoke")>=0||Array.IndexOf(args,"--unity-revive-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
-            if(!legacyFixture){Running=false;if(cinSeen)lobby.ShowLobby();else lobby.Begin();}
+            InitializeEntryFlowCapture(args);
+            if(!legacyFixture){Running=false;if(Array.IndexOf(args,"--unity-quick-start")>=0)lobby.ShowLobby();else lobby.Begin();}
+            if(Array.IndexOf(args,"--unity-entry-flow-capture")>=0)StartCoroutine(EntryFlowCapture());
             if(Array.IndexOf(args,"--unity-exp-capture")>=0){menu=false;Running=true;}
             else if(Array.IndexOf(args,A15DirectArgument)>=0){BeginA15DirectReview(args);}
             else if(Array.IndexOf(args,IntroSilenceFlag)>=0){Running=false;StartCoroutine(IntroSilenceCapture());}
@@ -97,6 +99,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-boss-text-smoke")>=0){Running=false;pauseSmoke=true;StartCoroutine(BossTextLocalityCapture());}
             else if(Array.IndexOf(args,"--unity-steam-keyshot")>=0){Running=false;pauseSmoke=true;StartCoroutine(SteamKeyshotCapture());}
             else if(Array.IndexOf(args,"--unity-playtest-capture")>=0){Running=false;StartCoroutine(PlaytestCapture());}
+            else if(Array.IndexOf(args,"--unity-hero-review")>=0){Running=false;StartCoroutine(HeroCapture());}
             else if(Array.IndexOf(args,"--unity-m1-check")>=0){Running=false;StartCoroutine(M1Check());}
             else if(Array.IndexOf(args,"--unity-review-args-capture")>=0){Running=false;StartCoroutine(ReviewArgsCapture());}
             else if(Array.IndexOf(args,"--unity-field-compare")>=0){Running=false;StartCoroutine(FieldCompare());}
@@ -139,6 +142,7 @@ namespace Exoduser.UnityPort
             // D01: mkItem drops are real; R picks the highest rarity on screen (web 32936) into the bag. Persistent saves stay unimplemented.
             Simulation.TryCollectLoot=CollectLoot;ClearDropViews();
             if(playerView==null)playerView=CreateRenderer("Player");
+            if(heroView==null)heroView=new NativeHeroView(transform);
             lastX=config.StartX;lastY=config.StartY;walkDistance=0;lastKillCount=0;renderedTick=-1;playerMoving=false;
             hud.Refresh(Simulation.Player,Simulation.TickCount,true);
             StageFlowAttach();   // C07: gate/exit tiles, arena flow reset for this run
@@ -300,6 +304,7 @@ namespace Exoduser.UnityPort
             playerView.transform.position=Point(p.X,p.Y);playerView.transform.localScale=Vector3.one*2*(NativeRemodel3D.Active?NativeRemodelCamera.HeroScale:1);playerView.sortingOrder=(int)p.Y;
             // web roll: the body curls up and turns once (360 degrees) over the 18 frames, dust trail
             playerView.transform.rotation=Simulation.RollActive?Quaternion.Euler(0,0,-360f*(1f-(float)Simulation.RollMoveT/RollRules.Frames)):Quaternion.identity;
+            heroView?.Sync(Simulation,playerMoving);playerView.enabled=heroView==null||!heroView.Ready;
             foreach(var e in Simulation.Enemies)
             {
                 if(Simulation.IsRemodelProp(e)){if(enemies.TryGetValue(e.Id,out var pv)){pv.body.enabled=false;pv.walk.enabled=false;if(pv.arc!=null)pv.arc.enabled=false;}continue;}   // RM-B0b: a boss prop (sprout, cord knot) is no enemy: the boss presentation draws it from Simulation.RemodelProps
@@ -423,6 +428,8 @@ namespace Exoduser.UnityPort
             if(firstPractice==null){int areaK,areaT;Simulation.AreaKills(regionHud.CurIdx,out areaK,out areaT);objective.Draw(hudWidth,new NativeObjectivePanel.Info{level=p.Level,exp=p.Experience,maxExp=p.MaxExperience,materials=Simulation.Materials,areaKills=areaK,areaTotal=areaT,english=lobby.Language!="ko"});}   // LT-5: "지역 처치" = current region min(kills,total)/total, else G._stageKills/G._totalSpawned (web 60584-60586), not G.kills
             DrawFieldHud(hudWidth);
             hud.Draw(hudWidth,Screen.height/hudScale,Simulation.Config.ActiveAttack,Simulation);DrawFirstPractice(hudWidth);GUI.matrix=baseMatrix;
+            // 전환 중 전투 안내·지역 제목·레벨업이 중앙 명패를 덮지 않게 한다. 자원 HUD는 유지한다.
+            if(Simulation.Stage.LoadPhase>0){GUI.matrix=old;return;}
             // game.html drawEn 54054: a 4 px bar (r*2+6 wide, r+16 above the centre) once the mob is hurt or its shield is down: black 60%, red hp, the blue shield laid over it
             foreach(var e in Simulation.Enemies){if(!e.Alive||e.IsBoss||!(e.Hp<e.MaxHp||e.MaxShield>0&&e.Shield<e.MaxShield))continue;float ebw=e.Radius*2+6;var ebA=ToGUI(e.X-ebw/2,e.Y-e.Radius-16);var ebB=ToGUI(e.X+ebw/2,e.Y-e.Radius-16);float ebWid=ebB.x-ebA.x,ebHgt=Mathf.Max(2,4*ebWid/ebw);
                 Fill(new Rect(ebA.x,ebA.y,ebWid,ebHgt),new Color(0,0,0,.6f));Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Clamp01((float)e.Hp/e.MaxHp),ebHgt),new Color(.8f,0,0));if(e.MaxShield>0&&e.Shield>0)Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Min(1,e.Shield/e.MaxShield),ebHgt),new Color(.267f,.667f,1f));}
@@ -443,8 +450,8 @@ namespace Exoduser.UnityPort
             if(bossBar.Active)bossBar.Draw();
             StageFlowDrawWorld();
             if(p.State=="fallen"&&!death.Active)revive.DrawFallen(p,label);
-            if(death.Active&&PlayerDown){death.Draw();}
-            else if((menu||PlayerDown)&&!hudSmoke&&!inventorySmoke){
+            if(death.Active&&PlayerDown&&!heroReviewActive){death.Draw();}
+            else if((menu||PlayerDown)&&!hudSmoke&&!inventorySmoke&&!heroReviewActive){
                 pauseMenu.English=lobby.Language!="ko";
                 pauseMenu.LocaleCode=lobby.Language;
                 TraceA15HitRoot("before");

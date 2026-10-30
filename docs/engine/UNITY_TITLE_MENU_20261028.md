@@ -82,3 +82,9 @@
 | 검수 | I:/EXODUSER-Storage/demo-art/unity-ui/phase2/, 빌드·Player·M1·1x·통합·바로가기 모두 새 영수증 전 미완료 |
 
 새 이미지 생성·새 원화 반입0. 기존 원화 합성만 사용하며 다른 담당의 3D 무대는 수정하지 않는다.
+
+## 2026-10-30 앱 재실행 첫 화면 복구
+
+일반 실행은 cinSeen과 무관하게 FDG→타이틀 메뉴→인장 ENTER→canonical WorldMovie→로비다. 세계관 재생 중 명시 홀드5초/기존 수동 컷 이동은 유지한다. 옛 intro.mp4 단계는 복원하지 않는다. 로비 직행은 --unity-quick-start 정확 인자에서만 허용하며 바탕화면 기본 인자에는 넣지 않는다. UI2584e36e4·007568f94와 스킬ef75f883e를 정상 병합한 후보의 실제90초·1x·M1·바로가기 영수증은 I:/EXODUSER-Storage/demo-art/entry-flow/REPORT.md를 따른다.
+
+진입 복구6623d4bc1의 실제90장/6회귀/M123단계 통과·영상오류0·1600/1x 직접판정은 위 출력 REPORT.md 참조. 일반 바로가기에는 --unity-quick-start/QA 인자를 넣지 않는다.

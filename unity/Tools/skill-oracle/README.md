@@ -1,22 +1,24 @@
-# skill-oracle (PC-B03)
+# 스킬 원본 오라클
 
-Compares `Runtime/Core/Skills/SkillRules.cs` with the **original game.html functions**: `export.cjs` runs the web source in a Node VM (no hand-typed expected values) and writes `oracle.json`; `Program.cs` (.NET 8) recomputes every value with the C# rules and compares bit for bit.
+`export.cjs`가 실제 웹 `game.html`의 함수·발사 본문을 실행해 오라클을 만든다. `Program.cs`는 현재 C# 공식과 각 값을 비교한다. 예상 숫자를 별도로 베껴 적지 않는다. 반드시 현재 원본으로 추출한 뒤 검사한다.
 
-| section | web source | C# |
-|---|---|---|
-| skMul | `_SK_MUL`, `_skMul` (37 ids x Lv1..20) | `SkillRules.SkMul` |
-| cost | `stCost('giantSlam')`, `mpCost('iceOrb')` with `pAtkCost / pMeleeStCost / pMagicCost` | `StCost`, `MpCost`, `PAtkCost`, `PMeleeStCost`, `PMagicCost` |
-| spikeTrap | `activateSpikeTrap`, `_spikeTrapSlowPct` | radius / damage / cooldown / slow, malice gate |
-| giantSlam | `activateGiantSlam` (call arguments of `_gSlamHit`, cooldown, malice, rage 0..100 x pRage x rageDmg through `RageMalice.Slam`) | `GiantSlam*` |
-| slamHit | `_gSlamHit` (damage, mini stun 60, full stun, boss poise 25 %) | `GiantSlamHitDamage`, `GiantSlamFullStun` |
-| holyDome | `activateHolyDome`, the per-frame regeneration line | `HolyDome*` |
-| iceOrb | `activateIceOrb` + `activateIceShatter` (bonus, blades, damage, radius, cooldown) | `IceOrb*` |
-| level | `_skillUpSpCost`, `_skLvLock` | `UpgradeSpCost`, `SkillLevelLock` |
+| 범위 | 원본 실행과 C# 비교 |
+|---|---|
+| 스킬 배율 | `_SK_MUL`·`_skMul`, 스킬별 Lv1~20 |
+| 비용 | ST/MP와 패시브·장비 비용 배율 |
+| 가시덫 | 발동·반경·피해·쿨다운·악의 비용·감속 |
+| 지옥강타 | 발동·격노 배율·파동·피격·미니/전체 스턴·보스 포이즈 |
+| 회복의 영역 | 반경·지속·쿨다운·프레임당 회복 |
+| 얼음보주 | 발동·비용·파쇄·파편 수/피해/반경·쿨다운 |
+| 악의구 | `_execMagicE`와 실제 폴백 발사 본문. Lv1~20·마력·INT·배율·MP보너스·사거리보너스·시전속도·방향400사례 |
+| 강화 | SP 비용과 레벨 잠금 |
 
+```text
+C:/nvm4w/nodejs/node.exe export.cjs --source <원본 game.html> --out <오라클.json>
 ```
-node export.cjs --source <game.html>     # regenerate oracle.json (--check = fail on source drift)
-node run.cjs --project <unity dir> --label green
-```
 
-`unity/Tools/skill-sim-test` checks the Simulation side on top of these rules (input edges, costs, cooldowns, zones, slam / orb states, upgrade, save round trip).
-Not covered by the oracle: the unified-pierce roll of the ice blades (random), the draw code (view layers follow the web render code by reading).
+출력 오라클 경로를 `SkillTests <결과.json> <오라클.json>`에 전달한다. 기본 `run.cjs --project <unity 경로> --out <산출물 경로> --label <이름>`은 이 도구 폴더의 `oracle.json`을 사용하므로 먼저 같은 경로로 추출해야 한다. `--check`는 기록된 원본 블록 해시가 달라지면 실패한다.
+
+기존 수치는 double 비트 일치로 비교한다. 악의구 좌표/속도4항목은 실제 Core의 float32 저장 형식에서 비트 일치로 비교한다. JS와 .NET 삼각함수의 double1ULP 차이를 임의 오차 범위로 덮지 않는다. 2026-10-30 원본99d07be2 검사:13216·불일치0.
+
+실제 실행기 입력·비용·쿨다운·시전 방향 잠금·저장 왕복은 `unity/Tools/skill-sim-test`에서 별도로 검사한다. 렌더·시각·Player·M1 검수는 이 숫자 오라클의 합격 범위에 포함되지 않는다.

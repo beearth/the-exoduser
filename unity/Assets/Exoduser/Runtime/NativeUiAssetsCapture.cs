@@ -13,9 +13,10 @@ namespace Exoduser.UnityPort
         string output;
         readonly List<string> checks=new List<string>();
         int failures;
-        bool calibration;Texture2D srgbProbe,linearProbe;
+        bool calibration,buttonStates;Texture2D srgbProbe,linearProbe;
         void OnGUI()
         {
+            if(buttonStates){GUI.depth=-10000;GUI.matrix=Matrix4x4.identity;GUI.enabled=true;GUI.color=Color.black;GUI.DrawTexture(new Rect(0,0,1920,1080),Texture2D.whiteTexture);GUI.color=Color.white;var stateLabel=new GUIStyle{font=NativeSilverHellUi.Font(),fontSize=22,alignment=TextAnchor.MiddleCenter};stateLabel.normal.textColor=NativeSilverHellUi.Bright;for(int n=0;n<4;n++){float y=180+n*180;var c=GUI.color;if(n==3)GUI.color=new Color(1,1,1,.38f);NativeSilverHellUi.ActionPlate(new Rect(180,y,400,68),false,n==0||n==3?0:1,n==2);NativeSilverHellUi.ActionPlate(new Rect(760,y,400,68),n!=3,n==0||n==3?0:1,n==2);GUI.color=c;NativeSilverHellUi.Label(new Rect(180,y+80,400,40),new[]{"기본","호버·선택","눌림","비활성"}[n],stateLabel);}return;}
             if(!calibration)return;GUI.depth=-10000;GUI.matrix=Matrix4x4.identity;GUI.enabled=true;GUI.color=Color.black;GUI.DrawTexture(new Rect(0,0,1920,1080),Texture2D.whiteTexture);
             if(srgbProbe==null){srgbProbe=new Texture2D(1,1,TextureFormat.RGBA32,false,false);linearProbe=new Texture2D(1,1,TextureFormat.RGBA32,false,true);srgbProbe.SetPixel(0,0,new Color(.5f,.5f,.5f,1));linearProbe.SetPixel(0,0,new Color(.5f,.5f,.5f,1));srgbProbe.Apply();linearProbe.Apply();}
             GUI.color=new Color(.5f,.5f,.5f,1);GUI.DrawTexture(new Rect(100,100,200,200),Texture2D.whiteTexture);GUI.color=Color.white;GUI.DrawTexture(new Rect(400,100,200,200),srgbProbe);GUI.DrawTexture(new Rect(700,100,200,200),linearProbe);
@@ -86,6 +87,10 @@ namespace Exoduser.UnityPort
             File.WriteAllText(Path.Combine(output,"색공간_진단.json"),JsonUtility.ToJson(new ColorProbe{space=QualitySettings.activeColorSpace.ToString(),guiColor=GUI.color.ToString(),contentColor=GUI.contentColor.ToString(),enabled=GUI.enabled},true));
             calibration=true;yield return Shot("Unity_색공간_진단");calibration=false;
             yield return CheckFonts();
+            buttonStates=true;yield return new WaitForEndOfFrame();
+            var pixels=new Texture2D(Screen.width,Screen.height,TextureFormat.RGB24,false);pixels.ReadPixels(new Rect(0,0,Screen.width,Screen.height),0,0);pixels.Apply();
+            Color normal=pixels.GetPixel(280,Screen.height-214),hover=pixels.GetPixel(280,Screen.height-394),pressed=pixels.GetPixel(280,Screen.height-574),disabled=pixels.GetPixel(280,Screen.height-754),red=pixels.GetPixel(860,Screen.height-214);
+            Check(pixels.GetPixel(1400,800).maxColorComponent<.01f,"버튼 상태 검수의 불투명 검정 바탕");Check(hover.grayscale>normal.grayscale&&pressed.grayscale<hover.grayscale&&disabled.grayscale<normal.grayscale,"금속 원화 실제 GPU 호버·눌림·비활성 명도");Check(red.r>red.g*1.8f,"주 행동 원화의 실제 진홍 표면");Destroy(pixels);yield return Shot("Unity_버튼상태_1920");buttonStates=false;
             lobby.Begin();lobby.AdvanceSplash();lobby.CurrentVideo.SetPlaybackAllowed(false);yield return new WaitForSecondsRealtime(1.2f);yield return Shot("Unity_타이틀_1920");lobby.CurrentVideo.SetPlaybackAllowed(true);
             lobby.ReplayIntro();
             yield return new WaitForSecondsRealtime(1.5f);
@@ -127,8 +132,11 @@ namespace Exoduser.UnityPort
             lobby.SelectCharacter(0);
             yield return new WaitForSecondsRealtime(1);
             yield return Shot("Unity_선택로비_1920");
+            // 종료를 실행하지 않고 기존 확인 모달의 KO/EN 실제 렌더만 기록한다.
+            var quitField=typeof(NativeLobby).GetField("lobbyQuitPrompt",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);quitField.SetValue(lobby,true);yield return Shot("Unity_로비종료확인_ko_1920");lobby.SetLanguage("en");yield return Shot("Unity_로비종료확인_en_1920");lobby.SetLanguage("ko");quitField.SetValue(lobby,false);
             lobby.AutomatedInput=false;
             Check(lobby.BeginCharacterEntry(false),"실제 신규 입장 API");
+            Check(lobby.StartupCaptureState.Page==FrontendEntryPage.Loading,"실제 입장 로딩 상태");yield return Shot("Unity_로딩_1920");
             float until=Time.realtimeSinceStartup+10;
             while(lobby.StartupCaptureState.Page!=FrontendEntryPage.Nemesis&&Time.realtimeSinceStartup<until)yield return null;
             lobby.StartupCaptureState.Skip();
@@ -148,7 +156,9 @@ namespace Exoduser.UnityPort
             {
                 passed=failures==0,failures=failures,scope="실제 Player 렌더·API/격리 메모리 슬롯. OS 입력·수동 플레이 검증과 구분.",checks=checks.ToArray()
             },true));
-            Application.Quit(failures==0?0:2);
+            // 기존 설정 저장 QA와 같은 1초 배출: 지연 Destroy를 엔진 종료 전에 완료한다.
+            lobby.enabled=false;lobby.CloseStartupCaptureMedia();yield return new WaitForSecondsRealtime(1);
+            Debug.Log("QA_MEDIA_DRAIN_COMPLETE UI");Application.Quit(failures==0?0:2);
         }
         IEnumerator Shot(string name)
         {

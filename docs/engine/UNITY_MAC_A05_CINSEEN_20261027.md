@@ -10,7 +10,8 @@ PC 검토 `571a08648a31c5d409fda312bcba20671ccc0e3b`의 `docs/engine/ui_handoff/
 |---|---|---|
 | `cinSeen` | schema v2 상위 **JSON boolean `true`**. 선택 필드이며 부재 또는 `false`는 첫 방문. 문자열 `"true"`는 완료로 읽지 않음 | `NativeSettingsStore.TrySave`, `NativeGame.SettingsPersistence` |
 | v1·기존 v2 | v1과 marker 없는 v2는 인트로 진입. 기존 경로, revision, backup/lock, 설정 4값, `binds`·`binds2` 각 20동작, 알 수 없는 상위 JSON(`gpKeyMap` 포함)을 유지 | `NativeSettingsStore`, 기존 codec |
-| 정상 앱 시작 | 저장을 성공적으로 읽어 `cinSeen:true`면 곧바로 `ShowLobby()`; 부재·false·읽기 실패면 `Begin()`으로 FDG→제목→문→세계관 순서 | `NativeGame` 초기 진입 |
+| 정상 앱 시작 (2026-10-30 정정) | 완료 표식과 무관하게 `Begin()`으로 FDG→타이틀 메뉴→인장 ENTER→현행 세계관 영상→로비. 옛 문 영상은 재생하지 않음 | `NativeGame` 초기 진입 |
+| 명시 빠른 시작 | `--unity-quick-start` 정확한 인자에서만 `ShowLobby()`; `--remodel3d`·완료 표식·QA 저장 격리는 직행 근거가 아님 | `NativeGame` 초기 진입 |
 | 인게임 로비 복귀 | 기존 `ReturnLobby`가 직접 `ShowLobby()`; 완료 표식을 만들거나 지우지 않음 | `NativeGame` 일시정지 처리 |
 | 로비의 다시 보기 | 기존 `ReplayIntro()`는 제목부터 재생; 이미 저장된 완료 표식은 그대로 둠 | `NativeLobby` |
 | 자연 완료 | `WorldIntro→Lobby`에서 영상 자연 종료와 오류 없음이 함께 확인될 때 완료 콜백 | `NativeLobby.Update` → `FinishIntro(false)` |
@@ -58,3 +59,11 @@ QA 진입 후보는 기존 **고유 Settings QA 앱**의 product `EXODUSER Setti
 2026-10-27 A15 저장 보존 회귀: 위 A05 **QA 전용** v2 파일을 새로운 marker 루트에 복사하고 중첩 unknown sentinel을 추가했다. 실제 Player 조작 키/SFX 저장으로 revision3→5가 된 뒤에도 `cinSeen:true` boolean, `gpKeyMap.pad0.buttons=[1,2]`, sentinel, 보조 `up=KeyX`가 동일했다. 재시작한 QA 직접 진입 화면에서 주 `up=Tab`과 SFX36을 확인했다. 직접 진입이므로 자연 시작→로비 분기·패드 동작을 다시 PASS로 계상하지 않는다. [실행표](UNITY_MAC_A15_4TAB_20261027.md#2026-10-27-a15-저장-시-a05미지원-데이터-보존-회귀).
 
 따라서 **Mac Player 자연 완료→저장→동일 profile 재시작 로비 직행 PASS**. 오류 뒤 수동 마지막 cue는 격리 Editor 정책 검사 PASS이며 실제 Player에서 오류를 인위적으로 발생시키지 않았다. 다른 `--unity-frontend-review`의 설정 I/O와 일반 사용자 Player 경로 검수로 확대 해석하지 않는다. Unity 빌드가 재작성한 Resources `.meta` 411개·새 `.meta` 1개·Scene/ProjectSettings 생성물은 백업한 뒤 HEAD bytes로 복원했다.
+
+## 2026-10-30 PC 진입 누락 재현 진행
+
+사용자 바탕화면 빌드642e31d2e는 설정의 cinSeen:true 때문에 FDG·타이틀·인장을 모두 건너뛴다. 사용자 설정은 읽기만 하고 I:/EXODUSER-Storage/demo-art/entry-flow/before-sandbox에 복사했다. 일반 QA는 설정 I/O를 끄므로 --unity-entry-flow-capture는 명시 격리 사본을 실제 codec/store로 읽고 초기 분기 직전에 완료 표식만 공급한다. 1600×900·1초 간격90장, --entry-flow-keys에서만 10초 이후 메뉴 Enter·25초 이후 인장 Enter·65초 이후 Escape 홀드를 주입한다. OS 손조작 검수와 구분한다. 재현 수집기 커밋 efb364ad2는 기존 시작 분기를 유지한다. 후속 수정은 일반 시작에서 완료 표식을 무시하고 명시 --unity-quick-start만 로비 직행을 허용한다. 실제 초기 분기를 독립 C#로 컴파일해 재방문·신규·명시 직행·유사 문자열·격리 인자6개를 검사했고 수정 전4FAIL→수정 후6PASS다. 결과·수정·전달 상태는 같은 출력의 REPORT.md로 연결한다.
+
+## 2026-10-30 PC 진입 복구 검수
+
+제품6623d4bc1/Unity treef89621c27195a2fa945441dda3c84dc05072a0b2. 빌드fee06a3f/errors0, 재방문true의 실제90장7d564908에서 FDG0~4→타이틀5~10→인장11~25→세계관26~69→로비70~89초·영상오류0. 회귀6/6, M1c2af5c8d23/23·정상exit0, 두 실행 창/잔여/USER_SAVE0. 실제전체/1x·동일크기 인장 비교를 직접 확인해 진입 누락 복구 범위PASS. 촬영은LobbyKeys 주입·격리사본이며 OS손조작/세계관 전체 자연종료·청음·Mac 검수와 구분한다. I:/EXODUSER-Storage/demo-art/entry-flow/REPORT.md·grid_after.png·인장_웹_Unity_동일크기.png.
