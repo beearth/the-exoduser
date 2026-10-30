@@ -40,6 +40,6 @@ partial class Program {
     trace.Add(new{key=name,frame,x=p.X,y=p.Y,hp=p.Hp,shield=p.Shield,state=p.State,st2=p.StateTicks,enemy=new{x=e.X,y=e.Y,hp=e.Hp,shield=e.Shield,state=e.State,st2=e.StateTicks,alive=e.Alive}});
    }
   }
-  File.WriteAllText(args[2],JsonSerializer.Serialize(new{범위="웹 실제 update 대 실제 Simulation, 단일적·열린지형·난수.5·탄막타이머제외",checks,failed,failures,trace},new JsonSerializerOptions{WriteIndented=true}));Console.WriteLine($"적 연속 대조 {checks}, 차이 {failed}");return failed==0?0:2;
+   File.WriteAllText(args[2],JsonSerializer.Serialize(new{범위="웹 실제 update 대 실제 Simulation, 단일 적·열린 지형·난수.5·기록된 AI/석궁 위상. 일반 탄막 타이머는 원문처럼 진행",checks,failed,failures,trace},new JsonSerializerOptions{WriteIndented=true}));Console.WriteLine($"적 연속 대조 {checks}, 차이 {failed}");return failed==0?0:2;
  }
 }

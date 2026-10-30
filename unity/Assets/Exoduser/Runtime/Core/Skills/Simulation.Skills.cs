@@ -40,6 +40,7 @@ namespace Exoduser.UnityPort.Core
         // outcome counters for the presentation layer / smoke
         public int SkillCastCount, SkillDeniedCount; public string LastSkill, LastSkillDenied;
         public event Action<string> SkillCast;   // id of the skill that was just started
+        public event Action<float,float,float> IceShattered; // 중심X/Y와 원문 시트 표시 지름px
 
         private bool skD1, skD2, skD3, skD4, skSpace, skF, skCtrl, skZ, skP1, skP2, skP3, skP4, skPSpace, skPF, skPCtrl, skPZ;
         private bool skSuppressSpace;
@@ -377,9 +378,11 @@ namespace Exoduser.UnityPort.Core
                     ApplyEnemyDamage(e, shatterDmg, (float)Math.Atan2(e.Y - cy, e.X - cx), false, 1, false, false, 0, 0, false, 2);
             }
             RaisePlayerText(cx, cy - 30, "❄ 파쇄!", "#aaeeff", 50); HurtShake(10);
+            IceOrbT = 0;
             Player.State = "idle";
             IceOrbCd = SkillRules.IceOrbCooldown(slv);
             SkillSample("ice_storm", .5, 1.4);
+            IceShattered?.Invoke(cx,cy,(float)(spawnR*6.6));
         }
 
         private void TickSkillBlades()

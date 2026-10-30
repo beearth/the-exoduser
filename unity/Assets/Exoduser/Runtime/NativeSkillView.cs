@@ -119,7 +119,7 @@ namespace Exoduser.UnityPort
             // 중심형 효과는 Canvas의 전체 영역을 보존하고, 지면 장판은 XZ면에 놓는다.
             int depth=NativeRemodel3D.Active?(int)UnityEngine.Rendering.CompareFunction.Always:(int)UnityEngine.Rendering.CompareFunction.LessEqual;
             add.SetInt("_DepthTest",depth); addFlat.SetInt("_DepthTest",depth); alpha.SetInt("_DepthTest",depth);
-            BindMaliceBursts(sim); UpdateMaliceBursts(sim.TickCount); UpdateQeVisuals(sim,time);
+            BindMaliceBursts(sim); UpdateMaliceBursts(sim.TickCount); BindIceShatter(sim); UpdateIceShatter(sim.TickCount); UpdateQeVisuals(sim,time);
             ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0; var p = sim.Player;
             // ---- ground zones ----
             stale.Clear(); foreach (var k in zones.Keys) stale.Add(k);
@@ -225,6 +225,7 @@ namespace Exoduser.UnityPort
             foreach(var w in sim.SlamWaves)if(waves.TryGetValue(w.Id,out var wave)){sample(wave.a,Point(w.X,w.Y),false);sample(wave.b,Point(w.X,w.Y),false);}
             foreach(var b in sim.SkillBlades)if(b.Active&&blades.TryGetValue(b.Id,out var blade))sample(blade.a,Point(b.X,b.Y),false);
             if(sim.IceOrbActive&&orb!=null){var expected=Point(sim.IceOrbX,sim.IceOrbY);sample(orb.a,expected,false);sample(orb.b,expected,false);sample(glow0,expected,false);sample(glow1,expected,false);}
+            if(iceShatter!=null&&iceShatter.go.activeSelf){var expected=Point(iceShatterX,iceShatterY);sample(iceShatter.a,expected,false);sample(iceShatter.b,expected,false);}
             centerError=center;groundTiltError=tilt;depthFailures=depth;checkedSprites=count;
         }
         void Drop(Dictionary<int, Item> map, List<int> ids)
@@ -234,14 +235,14 @@ namespace Exoduser.UnityPort
 
         public void Reset()
         {
-            ResetMaliceBursts(); ResetQeVisuals();
+            ResetMaliceBursts(); ResetIceShatter(); ResetQeVisuals();
             foreach (var m in new[] { zones, waves, blades, orbs }) { foreach (var it in m.Values) { ForgetMaliceSprites(it); ForgetCenteredSlamSprites(it); ForgetSkillSprites(it); UnityEngine.Object.Destroy(it.go); } m.Clear(); }
             if (orb != null) orb.go.SetActive(false);
             orbTrails.Clear(); ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0;
         }
         public void Dispose()
         {
-            Reset(); DisposeMaliceVisuals(); DisposeQeVisuals(); if (orb != null) { ForgetSkillSprites(orb); UnityEngine.Object.Destroy(orb.go); }
+            Reset(); DisposeMaliceVisuals(); DisposeIceShatter(); DisposeQeVisuals(); if (orb != null) { ForgetSkillSprites(orb); UnityEngine.Object.Destroy(orb.go); }
             UnityEngine.Object.Destroy(add); UnityEngine.Object.Destroy(addFlat); UnityEngine.Object.Destroy(alpha); UnityEngine.Object.Destroy(malice);
         }
     }

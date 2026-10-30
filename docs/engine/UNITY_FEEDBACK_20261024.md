@@ -81,3 +81,10 @@ Godot 보존·Unity 비교 시험의 독립 단위 UNITY-FEEDBACK-01이다. 최�
 | 지면 장판 | holyDome/spikeTrap은 3D XZ 지면에 +.025u, billboard 대상 제외. 돔 링72점은 각 지형 높이에 +.03u. 2D XY 경로 유지 | 범위·지속·피해·재생·색/알파/크기는 유지. 새 실제 시각 검수 전 |
 
 근거 폴더: `I:/EXODUSER-Storage/demo-art/gameplay-parity/`의 `starting-final/`, `combat-source-before/`, `combat-product-gates/`, `combat-product-independent-compile/`, `combat-source-oracle/`, `enemy-optional-red/`, `전투-장판-문서전체검색.log`. A2 기존 작업자가 단일PC GPU를 사용하는 동안 본 담당은 오프라인 코드·원문 회귀만 진행한다. 원본55개 중 현재 실행 소유8개 이외의 스킬, 성장 UI, 사슬 경계, 자연 전투·진행·저장 전체 검수는 계속 미완료이며 이 묶음으로 전수 완료/전체 아트 PASS를 선언하지 않는다.
+
+
+### 2026-10-31 04:53 파쇄 수명·설정 복원 검수 보강
+
+실제 웹 Ctrl120/144 PNG는 보주 비활성 후에도 별도 `ice_orb` 파쇄 시트를 표시한다. Unity d7c2d1f8은 파편만 표시하여 해당 연출이 누락됐다. 원문47117–47124/54891에 맞춰 `IceShattered` 출력 이벤트와 전용 표시를 연결한다. 직경=(플레이어반경+32)×(1+(Lv−1)×.1)×6.6px, 셀0→8·셀당13물리틱·총117틱, 이웃 셀 보간, 알파=1−floor(경과틱/13)/9×.3이며 Core 중심을 유지한다. 파쇄 시 IceOrbT=0으로 원문과 일치시킨다. 전용 표시의 구독·Reset·Dispose를 정리하며 일반 입력·쿨다운·피해·자원은 바꾸지 않는다.
+
+Player 검수에 `-playtest-ticks 1..600` 명시적 길이 인자와 현재 파쇄 셀을 추가해 Ctrl260틱에서 시전→자동 파쇄→117틱 후 소멸까지 대조한다. 기존1350틱/영상은 이전 입력 증거로 보존한다. Settings QA의 기존 별도 제품·식별자 및 격리 출력 경로를 그대로 사용하며 write/read 별도 프로세스에서 설정ON→T OFF→디스크저장→재시작OFF를 확인하도록 보강했다. 일반 실행 저장 경로/격리 규칙은 바꾸지 않는다. 기존 HUD 검수는 무창 Player에서도 `--quit-after-hud-smoke`를 명시하면 종료한다. 코드후 전체docs 검색 근거는 `파쇄-설정-문서전체검색.log`, 새 독립 컴파일은 `ice-settings-independent-compile/`이다. 현재 새 실제 Player/영상·공통/바탕화면은 아직 미완료다.
