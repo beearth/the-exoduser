@@ -6,11 +6,11 @@ using UnityEngine;
 namespace Exoduser.UnityPort {
  public sealed partial class NativeGame {
   [Serializable] sealed class HeroFrame {
-   public int frame,tick,combo;public string section,state,motion;public float phase,x,y,footError,screenHeight;public bool spriteVisible;public Vector3 root;
+   public int frame,tick,combo;public string section,state,motion;public float phase,x,y,footError,screenHeight,screenX,screenY;public bool spriteVisible;public Vector3 root;
   }
   [Serializable] sealed class HeroReview {
    public string scope="실제 Player·격리 세이브·Core 입력과 별도 피격/사망 fixture, OS 손조작 아님. PNG 연속프레임을30fps 영상으로 조립";
-   public string device;public bool passed,world3D;public List<string> checks=new List<string>();public List<HeroFrame> frames=new List<HeroFrame>();
+   public string device;public bool passed,world3D;public float idleMeshHeight;public List<string> checks=new List<string>();public List<HeroFrame> frames=new List<HeroFrame>();
   }
   IEnumerator HeroCapture(){
    string output=Argument("-output");
@@ -53,11 +53,19 @@ namespace Exoduser.UnityPort {
      var motion=heroView.Motion;motions.Add(motion.MotionKind.ToString());sectionMotions.Add(motion.MotionKind.ToString());
      if(motion.MotionKind==HeroMotionKind.Swing)sectionCombos.Add(motion.ComboStep);
      if(f%2==0){
+      if(section=="대기"&&f==30){
+       float meshLow=float.MaxValue,meshHigh=float.MinValue;
+       foreach(var r in heroView.Model.GetComponentsInChildren<SkinnedMeshRenderer>()){
+        var mesh=new Mesh();r.BakeMesh(mesh);foreach(var vertex in mesh.vertices){var v=HudCamera.WorldToViewportPoint(r.transform.TransformPoint(vertex));meshLow=Mathf.Min(meshLow,v.y);meshHigh=Mathf.Max(meshHigh,v.y);}Destroy(mesh);
+       }
+       report.idleMeshHeight=meshHigh-meshLow;check(report.idleMeshHeight>=.08f&&report.idleMeshHeight<=.10f,"대기 실제 스킨 메시 높이8~10%: "+(report.idleMeshHeight*100).ToString("F2")+"%");
+      }
       float low=float.MaxValue,high=float.MinValue;
       foreach(var r in heroView.Model.GetComponentsInChildren<SkinnedMeshRenderer>()){
        var b=r.bounds;for(int a=0;a<8;a++){var v=b.center+Vector3.Scale(b.extents,new Vector3((a&1)==0?-1:1,(a&2)==0?-1:1,(a&4)==0?-1:1));var screen=HudCamera.WorldToViewportPoint(v);low=Mathf.Min(low,screen.y);high=Mathf.Max(high,screen.y);}
       }
-      report.frames.Add(new HeroFrame{frame=frame,tick=sim.TickCount,section=section,state=p.State,motion=motion.MotionKind.ToString(),phase=motion.MotionPhase,combo=motion.ComboStep,x=p.X,y=p.Y,footError=heroView.FootError(),screenHeight=high-low,spriteVisible=playerView.enabled,root=heroView.Model.transform.parent.position});
+      var anchor=HudCamera.WorldToScreenPoint(heroView.Model.transform.parent.position);
+      report.frames.Add(new HeroFrame{frame=frame,tick=sim.TickCount,section=section,state=p.State,motion=motion.MotionKind.ToString(),phase=motion.MotionPhase,combo=motion.ComboStep,x=p.X,y=p.Y,footError=heroView.FootError(),screenHeight=high-low,screenX=anchor.x,screenY=Screen.height-anchor.y,spriteVisible=playerView.enabled,root=heroView.Model.transform.parent.position});
       ScreenCapture.CaptureScreenshot(Path.Combine(output,"frames","hero-"+(shot++).ToString("0000")+".png"));
      }
     }
