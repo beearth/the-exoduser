@@ -40,21 +40,24 @@ namespace Exoduser.UnityPort
                 Application.Quit(0);yield break;
             }
             sim.Config.EnemyAiEnabled=true;if(string.IsNullOrEmpty(loc)){p.X=4020;p.Y=6880;}
-            int best=0;
+            File.WriteAllText(Path.Combine(output,"실제-촬영설정.json"),JsonUtility.ToJson(sim.Config,true));
+            var combatCenter=new Vector2(p.X,p.Y);int best=0;
             for(int tick=0;tick<1800;tick++)
             {
                 p.Hp=p.MaxHp;p.Shield=p.MaxShield;p.Iframes=600;
                 int phase=(tick/90)%4;float mx=phase==0?1:phase==2?-1:0,my=phase==1?1:phase==3?-1:0;float ax=p.X+280,ay=p.Y-40,nearest=1e8f;
                 foreach(var e in sim.Enemies)if(e.Alive){float d=(e.X-p.X)*(e.X-p.X)+(e.Y-p.Y)*(e.Y-p.Y);if(d<nearest){nearest=d;ax=e.X;ay=e.Y;}}
+                var move=KeyshotDistanceInput(sim,combatCenter);mx=move.x;my=move.y;
                 StepInput(mx,my,ax,ay,tick%240<30,false);
                 if(tick%3==0)yield return null;
                 int count=sim.Druid.Projectiles.Count;
                 if(count>best&&tick>100){best=count;}
                 int visible=0;foreach(var shot in sim.Druid.Projectiles)if(shot.Active){var v=HudCamera.WorldToViewportPoint(NativeRemodel3D.Point(shot.X,shot.Y));if(v.x>.08f&&v.x<.92f&&v.y>.15f&&v.y<.88f)visible++;}
+                if(tick%60==0)File.AppendAllText(Path.Combine(output,"실제-입력추적.txt"),tick+"|"+p.X+"|"+p.Y+"|탄="+count+"|가시="+visible+"|최근접="+Mathf.Sqrt(nearest)+"\n");
                 if(tick>180&&tick%240>75&&visible>=3&&nearest>10000){yield return KeyshotSave(output,"02-전투",receipt);break;}
                 if(tick==1799)yield return KeyshotSave(output,"02-전투",receipt);
             }
-            BossDirectEnter();int entry=0;bool arenaPositioned=false;
+            sim.Config.EnemyAiEnabled=false;BossDirectEnter();int entry=0;bool arenaPositioned=false;
             while((!sim.Stage.InArena||sim.Stage.LoadPhase!=0)&&entry++<1000)
             {
                 if(sim.Stage.InArena&&!arenaPositioned&&sim.Stage.Arena!=null)
@@ -63,7 +66,7 @@ namespace Exoduser.UnityPort
                 }
                 p.Hp=p.MaxHp;p.Iframes=600;StepInput(0,0,p.X+100,p.Y,false,false);if(entry%10==0)yield return null;
             }
-            var boss=sim.Stage.FindBoss();
+            sim.Config.EnemyAiEnabled=true;var boss=sim.Stage.FindBoss();
             if(boss!=null)
             {
                 if(!arenaPositioned){p.X=boss.X+260;p.Y=boss.Y-150;}
@@ -72,13 +75,28 @@ namespace Exoduser.UnityPort
                     p.Hp=p.MaxHp;p.Shield=p.MaxShield;p.Iframes=600;
                     StepInput(0,0,boss.X,boss.Y,false,false);
                     if(tick%3==0)yield return null;
-                    if(tick>180&&sim.Druid.Projectiles.Count>=6){yield return KeyshotSave(output,"03-드루이드",receipt);break;}
+                    if(tick>180&&KeyshotActiveShots(true)>=6){yield return KeyshotSave(output,"03-드루이드",receipt);break;}
                     if(tick==1799)yield return KeyshotSave(output,"03-드루이드",receipt);
                 }
             }
             receipt.passed=receipt.frames.Count==3&&receipt.frames.TrueForAll(f=>f.heroHeight01>=.08f&&f.heroHeight01<=.11f)&&receipt.frames[1].projectiles>=3&&receipt.frames[2].projectiles>=6;
             File.WriteAllText(Path.Combine(output,"검수.json"),JsonUtility.ToJson(receipt,true));
             Application.Quit(receipt.passed?0:3);
+        }
+        int KeyshotActiveShots(bool boss)
+        {int count=0;foreach(var shot in Simulation.Druid.Projectiles)if(shot.Active&&!shot.Friendly&&(!boss||shot.DruidPoison))count++;return count;}
+        Vector2 KeyshotDistanceInput(Simulation sim,Vector2 centre)
+        {
+            var p=sim.Player;var result=Vector2.zero;double best=double.NegativeInfinity;
+            for(int direction=0;direction<8;direction++)
+            {
+                double angle=direction*Math.PI/4;float vx=(float)Math.Cos(angle),vy=(float)Math.Sin(angle),nx=p.X+vx*80,ny=p.Y+vy*80;
+                if(!sim.CanMove(nx,ny,15)||!sim.CanMove(p.X+vx*40,p.Y+vy*40,15))continue;
+                double clearance=1e9;foreach(var e in sim.Enemies)if(e.Alive)clearance=Math.Min(clearance,Math.Sqrt((e.X-nx)*(e.X-nx)+(e.Y-ny)*(e.Y-ny)));
+                double score=-Math.Abs(clearance-300)-.1*Math.Sqrt((nx-centre.x)*(nx-centre.x)+(ny-centre.y)*(ny-centre.y));
+                if(score>best){best=score;result=new Vector2(vx,vy);}
+            }
+            return result;
         }
         IEnumerator KeyshotSave(string output,string name,KeyshotReceipt receipt)
         {
@@ -93,7 +111,7 @@ namespace Exoduser.UnityPort
                 var pixels=tex.GetPixels32();int y0=tex.height,y1=0;for(int y=0;y<tex.height;y++)for(int x=0;x<tex.width;x++)if(pixels[y*tex.width+x].a>64){y0=Math.Min(y0,y);y1=Math.Max(y1,y);}
                 var low=playerView.transform.TransformPoint(new Vector3(0,(y0-s.pivot.y)/s.pixelsPerUnit,0));var high=playerView.transform.TransformPoint(new Vector3(0,(y1+1-s.pivot.y)/s.pixelsPerUnit,0));h=Mathf.Abs(camera.WorldToViewportPoint(high).y-camera.WorldToViewportPoint(low).y);Destroy(tex);
             }
-            receipt.frames.Add(new KeyshotFrame{name=name,tick=Simulation.TickCount,enemies=Simulation.Enemies.Count,projectiles=Simulation.Stage.InArena?Simulation.Druid.Projectiles.Count:Simulation.Druid.Projectiles.Count,arena=Simulation.Stage.InArena,remodel=NativeRemodel3D.Active,heroHeight01=h,cameraFov=camera.fieldOfView,heroWorld=playerView.transform.position,cameraWorld=camera.transform.position,bossCenter=druidBody!=null?druidBody.Bounds.center:Vector3.zero,bossSize=druidBody!=null?druidBody.Bounds.size:Vector3.zero});
+            receipt.frames.Add(new KeyshotFrame{name=name,tick=Simulation.TickCount,enemies=Simulation.Enemies.Count,projectiles=KeyshotActiveShots(Simulation.Stage.InArena),arena=Simulation.Stage.InArena,remodel=NativeRemodel3D.Active,heroHeight01=h,cameraFov=camera.fieldOfView,heroWorld=playerView.transform.position,cameraWorld=camera.transform.position,bossCenter=druidBody!=null?druidBody.Bounds.center:Vector3.zero,bossSize=druidBody!=null?druidBody.Bounds.size:Vector3.zero});
             ScreenCapture.CaptureScreenshot(Path.Combine(output,name+".png"));yield return null;yield return new WaitForSecondsRealtime(.4f);
         }
     }

@@ -54,20 +54,20 @@ namespace Exoduser.UnityPort
             var spot=heroSpot.AddComponent<Light>();spot.type=LightType.Spot;spot.color=new Color(.72f,.84f,1);spot.intensity=14;spot.range=7;spot.spotAngle=58;spot.innerSpotAngle=40;spot.shadows=LightShadows.Soft;spot.shadowStrength=.65f;spot.shadowNormalBias=.1f;
             var sheet=Resources.Load<Texture2D>("Art/map/hell_lighting/torch_flame");
             if(sheet!=null){hellFlameFrames=new Sprite[8];for(int i=0;i<8;i++)hellFlameFrames[i]=Sprite.Create(sheet,new Rect(i%4*(sheet.width/4),(1-i/4)*(sheet.height/2),sheet.width/4,sheet.height/2),new Vector2(.5f,.12f),100);}
-            var baseTex=Resources.Load<Texture2D>("Art/map/hell_lighting/torch_base");
-            if(baseTex!=null&&hellFlameFrames!=null)
+            var brazier=Resources.Load<GameObject>("Art/map/keyshot/brazier");
+            if(brazier!=null&&hellFlameFrames!=null&&g!=null)
             {
-                var root=new GameObject("지옥불 광원 기구");UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(root,r3Scene);root.transform.SetParent(g.transform.parent,true);
-                var baseSprite=Sprite.Create(baseTex,new Rect(0,0,baseTex.width,baseTex.height),new Vector2(.5f,.05f),100);
+                var root=new GameObject("실제 철제 지옥불 화로");UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(root,r3Scene);root.transform.SetParent(g.transform.parent,true);
+                var iron=new Material(Shader.Find("Universal Render Pipeline/Lit"));iron.SetColor("_BaseColor",new Color(.15f,.17f,.20f));iron.SetFloat("_Metallic",.8f);iron.SetFloat("_Smoothness",.45f);
                 foreach(var tile in new[]{new Vector2(95,183),new Vector2(109,174),new Vector2(100,156),new Vector2(112,142),new Vector2(80.5f,152.5f)})
                 {
                     float x=tile.x*.4f,z=-tile.y*.4f;var pos=new Vector3(x,NativeRemodel3D.GroundY(x,z),z);
-                    var holder=new GameObject("지옥불 받침");holder.transform.SetParent(root.transform,false);holder.transform.SetPositionAndRotation(pos,Quaternion.Euler(NativeRemodel3D.Pitch*Mathf.Rad2Deg,0,0));holder.transform.localScale=Vector3.one*(1.6f/(baseTex.height/100f));
-                    var sr=holder.AddComponent<SpriteRenderer>();sr.sprite=baseSprite;sr.sharedMaterial=hellActorMaterial;sr.shadowCastingMode=ShadowCastingMode.On;sr.receiveShadows=true;
-                    var flame=new GameObject("지옥불");flame.transform.SetParent(root.transform,false);flame.transform.SetPositionAndRotation(pos+holder.transform.up*.93f+Vector3.right*.34f,holder.transform.rotation);flame.transform.localScale=Vector3.one*.14f;
-                    var fr=flame.AddComponent<SpriteRenderer>();fr.sprite=hellFlameFrames[0];fr.color=new Color(1.5f,1.2f,1f,1);hellFlames.Add(fr);
+                    var holder=Instantiate(brazier,root.transform);holder.transform.SetPositionAndRotation(pos,Quaternion.identity);
+                    foreach(var sr in holder.GetComponentsInChildren<MeshRenderer>()){sr.sharedMaterial=iron;sr.shadowCastingMode=ShadowCastingMode.On;sr.receiveShadows=true;}
+                    var flame=new GameObject("지옥불");flame.transform.SetParent(root.transform,false);flame.transform.SetPositionAndRotation(pos+Vector3.up*.74f,Quaternion.Euler(NativeRemodel3D.Pitch*Mathf.Rad2Deg,0,0));flame.transform.localScale=Vector3.one*.14f;
+                    var fr=flame.AddComponent<SpriteRenderer>();fr.sprite=hellFlameFrames[0];fr.color=new Color(1.5f,1.2f,1,1);hellFlames.Add(fr);
                 }
-            }
+            }else Debug.LogError("[키샷] 실제 화로 리소스 누락");
         }
         void HellLightingActive(bool on)
         {
