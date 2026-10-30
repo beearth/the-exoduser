@@ -10,7 +10,8 @@ PC 검토 `571a08648a31c5d409fda312bcba20671ccc0e3b`의 `docs/engine/ui_handoff/
 |---|---|---|
 | `cinSeen` | schema v2 상위 **JSON boolean `true`**. 선택 필드이며 부재 또는 `false`는 첫 방문. 문자열 `"true"`는 완료로 읽지 않음 | `NativeSettingsStore.TrySave`, `NativeGame.SettingsPersistence` |
 | v1·기존 v2 | v1과 marker 없는 v2는 인트로 진입. 기존 경로, revision, backup/lock, 설정 4값, `binds`·`binds2` 각 20동작, 알 수 없는 상위 JSON(`gpKeyMap` 포함)을 유지 | `NativeSettingsStore`, 기존 codec |
-| 정상 앱 시작 | 저장을 성공적으로 읽어 `cinSeen:true`면 곧바로 `ShowLobby()`; 부재·false·읽기 실패면 `Begin()`으로 FDG→제목→문→세계관 순서 | `NativeGame` 초기 진입 |
+| 정상 앱 시작 (2026-10-30 정정) | 완료 표식과 무관하게 `Begin()`으로 FDG→타이틀 메뉴→인장 ENTER→현행 세계관 영상→로비. 옛 문 영상은 재생하지 않음 | `NativeGame` 초기 진입 |
+| 명시 빠른 시작 | `--unity-quick-start` 정확한 인자에서만 `ShowLobby()`; `--remodel3d`·완료 표식·QA 저장 격리는 직행 근거가 아님 | `NativeGame` 초기 진입 |
 | 인게임 로비 복귀 | 기존 `ReturnLobby`가 직접 `ShowLobby()`; 완료 표식을 만들거나 지우지 않음 | `NativeGame` 일시정지 처리 |
 | 로비의 다시 보기 | 기존 `ReplayIntro()`는 제목부터 재생; 이미 저장된 완료 표식은 그대로 둠 | `NativeLobby` |
 | 자연 완료 | `WorldIntro→Lobby`에서 영상 자연 종료와 오류 없음이 함께 확인될 때 완료 콜백 | `NativeLobby.Update` → `FinishIntro(false)` |
@@ -61,4 +62,4 @@ QA 진입 후보는 기존 **고유 Settings QA 앱**의 product `EXODUSER Setti
 
 ## 2026-10-30 PC 진입 누락 재현 진행
 
-사용자 바탕화면 빌드642e31d2e는 설정의 cinSeen:true 때문에 FDG·타이틀·인장을 모두 건너뛴다. 사용자 설정은 읽기만 하고 I:/EXODUSER-Storage/demo-art/entry-flow/before-sandbox에 복사했다. 일반 QA는 설정 I/O를 끄므로 --unity-entry-flow-capture는 명시 격리 사본을 실제 codec/store로 읽고 초기 분기 직전에 완료 표식만 공급한다. 1600×900·1초 간격90장, --entry-flow-keys에서만 10초 이후 메뉴 Enter·25초 이후 인장 Enter·65초 이후 Escape 홀드를 주입한다. OS 손조작 검수와 구분한다. 현재 커밋은 재현 수집기이며 기존 시작 분기를 유지한다. 결과·수정·전달 상태는 같은 출력의 REPORT.md로 연결한다.
+사용자 바탕화면 빌드642e31d2e는 설정의 cinSeen:true 때문에 FDG·타이틀·인장을 모두 건너뛴다. 사용자 설정은 읽기만 하고 I:/EXODUSER-Storage/demo-art/entry-flow/before-sandbox에 복사했다. 일반 QA는 설정 I/O를 끄므로 --unity-entry-flow-capture는 명시 격리 사본을 실제 codec/store로 읽고 초기 분기 직전에 완료 표식만 공급한다. 1600×900·1초 간격90장, --entry-flow-keys에서만 10초 이후 메뉴 Enter·25초 이후 인장 Enter·65초 이후 Escape 홀드를 주입한다. OS 손조작 검수와 구분한다. 재현 수집기 커밋 efb364ad2는 기존 시작 분기를 유지한다. 후속 수정은 일반 시작에서 완료 표식을 무시하고 명시 --unity-quick-start만 로비 직행을 허용한다. 실제 초기 분기를 독립 C#로 컴파일해 재방문·신규·명시 직행·유사 문자열·격리 인자6개를 검사했고 수정 전4FAIL→수정 후6PASS다. 결과·수정·전달 상태는 같은 출력의 REPORT.md로 연결한다.
