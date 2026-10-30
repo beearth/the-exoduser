@@ -26,9 +26,15 @@
 |---|---|
 | 승인원본 SHA·별도audio diff | 준비 |
 | 생산본문 독립행동 | 부분증거 PASS, native장치/패널은 대체 |
-| 최신공통+audio만 독립컴파일 | 준비 중 |
+| 최신공통+audio만 독립컴파일 | Core114/Runtime163(총277 C#) 오류0. tree c18fd725a8b41b0b558502684d732ec8e45c0ef1 |
 | 실제순수입력 Unity6000.6.7f1 / 공식Player / 동일새빌드M1 | 미검증 |
 | 야간 청음 / 사용자 청음 | 야간시도0 / 사용자미검증 |
 | 제품·unity/main·Desktop | 반영0 |
 
 기존3D 실패2는 해제하지 않는다. 이 단위도 실제 같은 실패2이면 중단한다. TDD의 계획된 RED 누락 재현과 실제 Unity/Player 실패 카운터를 섞지 않는다. 자세한 SHA/실행/의존성은 I:REPORT에 기록한다.
+
+## 순수 실행 입력 인수 의존성 — 03:50 KST
+
+오디오 단일커밋6526b57f56de4ba0fe86fb49dddd7f150acadff6(부모857995b0b)·patch SHA5ae9db6737616abe0583b327ff4a213424a5633280d3bb6ce295344aa064d0b9를 원격보존했다. 지정통합담당도 공통018ce33f2+patch12경로를 독립임시INDEX에서 대조하여 순수tree c18fd725a8b41b0b558502684d732ec8e45c0ef1 및 모든blob byte 일치를 확인했다. 새commit/실제실행checkout 확보를 뜻하지 않는다.
+
+통합담당의 기존작업본은 HEAD11d0fc5d0570992d37f97a35645bdff3e583443d·INDEX0·trackedWORK451이므로 겹쳐반영하지않았다. 현재 UI작업본은중단3D를포함한다. 사용자 새작업본0 조건을 지켜 추가materialize·예약·Unity/Player/M1·공통/Desktop반영0으로 **NOT_READY 인계**한다. 원본/manifest/선택·기존WIP654파일·중단무대보고/실패카운터 동일SHA를 확인했다. integrator-input-proof.json이 독립근거다. 중앙 직접메시지는active writer로거절돼 수신미확인, MERGE_QUEUE에정확의존성을기록한다. 새로운야간단위/자동재개0.
