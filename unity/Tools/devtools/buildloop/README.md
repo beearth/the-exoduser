@@ -25,7 +25,7 @@
 
 ## UI 겹침 상시 검사
 
-M1 뒤에는 `unity/Tools/ui-overlap/check.ps1 -OverlapOnly`를 필수 실행한다. `exo-unity.ps1`의 숨김 데스크톱·무음·격리 저장·공통 잠금을 사용한다. 기존 빌드 고리의 잠금은 검사 앞뒤에 정상 양도/재획득한다. 1920×1080·1600×900의 한국어·독일어와 실제 서체 폭으로 고른 최장 언어에서 필수27화면의 실제 Repaint·PNG를 확인하고, 글자-글자/글자-버튼/글자-판 침범이0이어야 한다. 영수증·화면 누락, 실제 PNG 크기 불일치, 겹침은 교체 판정 FAIL이다.
+M1 뒤에는 `unity/Tools/ui-overlap/check.ps1 -OverlapOnly`를 필수 실행한다. `exo-unity.ps1`의 숨김 데스크톱·무음·격리 저장·공통 잠금을 사용한다. 기존 빌드 고리의 잠금은 검사 앞뒤에 정상 양도/재획득한다. 1920×1080·1600×900의 한국어·독일어와 실제 서체 폭으로 고른 최장 언어에서 필수28화면의 실제 Repaint·PNG를 확인하고, 글자-글자/글자-버튼/글자-판 침범이0이어야 한다. 영수증·화면 누락, 실제 PNG 크기 불일치, 겹침은 교체 판정 FAIL이다.
 
 단독 검수: `unity/Tools/ui-overlap/check.ps1 -Exe <실행파일> -Output <I:검수경로> -Worktree <소유작업본>`. M1과 UI 검사를 연속 실행하며 `m1/m1-check.json`, `overlap/overlap-report.json`, `overlap/겹침_검사.md`를 남긴다. 정지 UI 검수와 자연 플레이·동작의 판정을 구분한다.
 

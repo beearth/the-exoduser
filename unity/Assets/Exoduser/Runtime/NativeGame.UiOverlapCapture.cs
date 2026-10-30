@@ -82,7 +82,7 @@ namespace Exoduser.UnityPort
                 menu=false;Running=false;pauseMenu.Reset();stageClear.Hide();
                 lobby.ReplayIntro();typeof(NativeLobby).GetField("since",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(lobby,16f);
                 yield return UiOverlapShot("첫화면");
-                lobby.Begin();lobby.AdvanceSplash();yield return new WaitForSecondsRealtime(1.1f);yield return UiOverlapShot("메뉴");
+                lobby.Begin();yield return UiOverlapShot("브랜드인트로");lobby.AdvanceSplash();yield return new WaitForSecondsRealtime(1.1f);yield return UiOverlapShot("메뉴");
                 lobby.ShowLobby();lobby.Characters.TryRestore(new[]{"검수"+overlapCoverage.frames.Count.ToString("000")},0);yield return UiOverlapShot("로비");
                 lobby.OpenCharacterCreation();
                 for(int n=0;n<5;n++){lobby.ChooseCharacterVisual(n);yield return UiOverlapShot("캐릭터선택"+n);}
