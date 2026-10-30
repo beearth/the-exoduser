@@ -8,12 +8,12 @@ namespace Exoduser.UnityPort
     // PC-B03 presentation of the starting skills: spike trap / holy dome ground zones, the giant slam shock wave, the ice orb and its blades. The textures are the web's own
     // sheets (sprites/spike_trap/spike_thorn.png, sprites/holy_dome.png, assets/vfx/vfx_ice_orb.png, assets/vfx/inferno_slam_impact_sheet.png); the layer rules follow the
     // web draw code (G._fireZones render, _gSlamWave render, ICE ORB render, iceBlade projectile polygons). 'lighter' / 'screen' layers use EXODUSER/SkillAdditive.
-    public sealed class NativeSkillView : IDisposable
+    public sealed partial class NativeSkillView : IDisposable
     {
-        sealed class Item { public GameObject go; public SpriteRenderer a, b; public LineRenderer[] rings; }
+        sealed class Item { public GameObject go; public SpriteRenderer a, b; public LineRenderer[] rings; public SpriteRenderer[] embers; }
         readonly Transform parent; readonly Material add, addFlat, alpha;
         readonly Dictionary<int, Item> zones = new Dictionary<int, Item>(), waves = new Dictionary<int, Item>(), blades = new Dictionary<int, Item>(), orbs = new Dictionary<int, Item>();
-        readonly Dictionary<int, List<Vector3>> orbTrails = new Dictionary<int, List<Vector3>>();   // web p._trail: the last 14 positions of a malice orb
+        readonly Dictionary<int, List<Vector3>> orbTrails = new Dictionary<int, List<Vector3>>();
         readonly List<int> stale = new List<int>();
         // The web draws fire zones in the world layer, then the dynamic lighting pass (game.html _renderLighting, line 55344) darkens them; Unity has no such overlay. Factor measured web|Unity capture 2026-10-28.
         const float WebLitHolyDome = .11f;
@@ -38,6 +38,7 @@ namespace Exoduser.UnityPort
             var mo = Resources.Load<Texture2D>("Art/vfx/skill_malice_orb_sheet");
             for (int i = 0; i < 20; i++) maliceFrames[i] = Sprite.Create(mo, new Rect(i % 7 * 171, mo.height - (i / 7 + 1) * 171, 171, 171), new Vector2(.5f, .5f), 100, 0, SpriteMeshType.FullRect);
             shard = BuildShard(); disc = BuildDisc();
+            LoadMaliceBursts();
         }
         static Sprite Whole(string path)
         {
@@ -101,6 +102,8 @@ namespace Exoduser.UnityPort
 
         public void Update(Simulation sim, float time)
         {
+            BindMaliceBursts(sim); UpdateMaliceBursts(sim.TickCount);
+            bool newTick = lastTick != sim.TickCount; lastTick = sim.TickCount;
             ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0; var p = sim.Player;
             // ---- ground zones ----
             stale.Clear(); foreach (var k in zones.Keys) stale.Add(k);
@@ -154,15 +157,13 @@ namespace Exoduser.UnityPort
             foreach (var o in sim.MaliceOrbs)
             {
                 if (!o.Active) continue; stale.Remove(o.Id); Item it; List<Vector3> trail;
-                if (!orbs.TryGetValue(o.Id, out it)) { it = NewItem("malice" + o.Id); orbs[o.Id] = it; it.a = NewRenderer(it, "orb", maliceFrames[0], add, 0); it.rings = new[] { NewTrail(it) }; orbTrails[o.Id] = new List<Vector3>(); }
+                if (!orbs.TryGetValue(o.Id, out it)) { it = NewItem("malice" + o.Id); orbs[o.Id] = it; it.a = NewRenderer(it, "orb", maliceFrames[0], add, 0); centeredMaliceSprites.Add(it.a); it.rings = NewMaliceTrail(it); orbTrails[o.Id] = new List<Vector3>(); }
                 trail = orbTrails[o.Id]; ActiveMaliceOrbs++;
-                var pos = Point(o.X, o.Y); it.go.transform.position = pos; it.a.sortingOrder = (int)o.Y + 3;
+                var pos = MalicePosition(o.X, o.Y); it.go.transform.position = pos; it.a.sortingOrder = (int)o.Y + 3;
                 int fr = (int)(time * 1000f * .12f + o.X * .1f); it.a.sprite = maliceFrames[((fr % 20) + 20) % 20];
                 Fit(it.a, o.R * 5f, 171); it.a.color = new Color(1, 1, 1, .85f);
-                trail.Add(pos); if (trail.Count > 14) trail.RemoveAt(0);
-                var line = it.rings[0]; line.positionCount = trail.Count;
-                for (int ti = 0; ti < trail.Count; ti++) line.SetPosition(ti, trail[trail.Count - 1 - ti] - pos);
-                line.widthMultiplier = Mathf.Max(4, o.R) * 2f / 100f; line.sortingOrder = (int)o.Y + 2;
+                if (newTick) { trail.Add(pos); if (trail.Count > 14) trail.RemoveAt(0); }
+                UpdateMaliceTrail(it.rings, trail, pos, Mathf.Max(4, o.R), (int)o.Y + 2); UpdateMaliceEmbers(it, trail, pos, Mathf.Max(4, o.R), time * 1000, o.X);
             }
             foreach (int id in stale) orbTrails.Remove(id);
             Drop(orbs, stale);
@@ -186,16 +187,6 @@ namespace Exoduser.UnityPort
         {
             r.sprite = orbFrames[Mathf.Clamp(frame, 0, 8)]; Fit(r, drawPx, r.sprite.rect.width); r.color = c; r.sortingOrder = order; r.enabled = c.a > 0.001f;
         }
-        // web _drawMaliceOrbTrail: a dark smoke ribbon under an additive violet / ember ribbon that thins out to the tail
-        LineRenderer NewTrail(Item item)
-        {
-            var go = new GameObject("trail"); go.transform.SetParent(item.go.transform, false);
-            var l = go.AddComponent<LineRenderer>(); l.useWorldSpace = false; l.numCapVertices = 4; l.sharedMaterial = add;
-            l.widthCurve = new AnimationCurve(new Keyframe(0, .55f), new Keyframe(1, 0));
-            var g = new Gradient(); g.SetKeys(new[] { new GradientColorKey(new Color(.86f, .55f, 1f), 0), new GradientColorKey(new Color(.55f, .18f, .8f), .5f), new GradientColorKey(new Color(.25f, .05f, .4f), 1) },
-                new[] { new GradientAlphaKey(.55f, 0), new GradientAlphaKey(.3f, .5f), new GradientAlphaKey(0, 1) });
-            l.colorGradient = g; return l;
-        }
         void BuildZone(Item it, FireZone z)
         {
             if (z.Type == "spikeTrap") { it.a = NewRenderer(it, "thorn", spike, add, -19000); return; }
@@ -204,12 +195,13 @@ namespace Exoduser.UnityPort
         }
         void Drop(Dictionary<int, Item> map, List<int> ids)
         {
-            foreach (int id in ids) { UnityEngine.Object.Destroy(map[id].go); map.Remove(id); }
+            foreach (int id in ids) { ForgetMaliceSprites(map[id]); UnityEngine.Object.Destroy(map[id].go); map.Remove(id); }
         }
 
         public void Reset()
         {
-            foreach (var m in new[] { zones, waves, blades, orbs }) { foreach (var it in m.Values) UnityEngine.Object.Destroy(it.go); m.Clear(); }
+            ResetMaliceBursts(); lastTick = -1;
+            foreach (var m in new[] { zones, waves, blades, orbs }) { foreach (var it in m.Values) { ForgetMaliceSprites(it); UnityEngine.Object.Destroy(it.go); } m.Clear(); }
             if (orb != null) orb.go.SetActive(false);
             orbTrails.Clear(); ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0;
         }

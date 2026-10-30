@@ -20,7 +20,7 @@
 | 후딜 | `magicRecover` 12f, 홀드 중이면 즉시 재시전 | `TickMagicStates` |
 
 ## 표시
-- 투사체: 웹 `vfx_magic_orb.png`(171px 셀 7×3, 20프레임, `lighter`, 크기 `r×5`)를 `Resources/Art/vfx/skill_malice_orb_sheet.png`로 복사, 프레임 `~~(ms×.12+x×.1)%20`. 꼬리 = 14점 가산 리본(웹 `_drawMaliceOrbTrail`의 연기+불꽃+코어 3겹은 단순화: **디자인 미검수**).
+- 투사체: 웹 `vfx_magic_orb.png`(171px 셀 7×3, 20프레임, `lighter`, 크기 `r×5`)를 `Resources/Art/vfx/skill_malice_orb_sheet.png`로 복사, 프레임 `~~(ms×.12+x×.1)%20`. 꼬리는 아래 2026-10-30 수정 계약을 따른다. 실제 Player·웹 대조 전 시각 미검증.
 - HUD 슬롯: RMB 칼등 처내기·Shift 사슬 이동·E 악의구·Q 패링 아이콘을 웹 `_slotSkId`(28775~28784)처럼 상시 표시. RMB·Shift·Q는 표시만(실행은 B07 범위).
 - 스킬창: `Ported("fireball")`=true → E 슬롯 Lv 표시·강화 가능(SP 1, 레벨 제한 `min(20,⌊LV/50⌋+1)`).
 
@@ -36,3 +36,23 @@
 - `unity/Tools/skill-sim-test` 58 checks / 0 failures (악의구 13건 추가: 시작 상태, 입력→시전→발사 7f, MP 10, 폭발 피해·중독 1스택·악의 약화 1스택, 후딜 12f, MP 부족, 홀드 연사, 사거리 끝 폭발, 무기 공격 우선, Lv3 반경/사거리, 세이브 왕복, 구세이브 Lv1 보정).
 - `Runtime/**/*.cs` 전체를 PC 에디터(6000.4.8f1)의 UnityEngine DLL로 csc 컴파일 → 오류 0. 6000.6.7f1 import·compile은 PC에 에디터가 없어 **미실행**(맥 확인 필요).
 - 실플레이 화면(투사체·HUD 아이콘) 캡처는 미수행.
+
+
+## 2026-10-30 악의구 조준·표현 후속
+
+| 항목 | 현행 계약과 검증 상태 |
+|---|---|
+| 기준 | 작업 기준 unity/main `10c49850f85dca6365cbf67b8067e6fa749b026d`, 웹 origin/main `99d07be2b5c3003f501f9b9ecbf066656ed7d126` |
+| 실제 기본 키 | 최신 웹 BINDS와 Unity KeyBindings 모두 악의구 `beam=mouse2`(우클릭), 칼등 처내기 `shield=KeyE`. E라는 기존 설명은 논리 마법 슬롯 이름과 혼재한 이력이다. 사용자 키 재설정·저장값을 임의 변경하지 않는다 |
+| 발사각 | 웹 `_execMagicE`의 `P.atkArc=P.facing`처럼 시전 시작에 `magicCastAngle` 저장, 발사 때 사용. 홀드의 다음 시전에서 새 조준을 저장 |
+| 방향 회귀 | 실제 Simulation 8방향에서 시전 중 90도 조준 변경. 수정 전 시작각 검사8실패/83검사, 수정 뒤0실패/83검사. 다음 연사 새 방향16항목 포함 |
+| 구체 원본 | 현행 전사 웹의 `assets/vfx/vfx_magic_orb.png`와 기존 `skill_malice_orb_sheet.png`가 동일 바이트(SHA256 `1739bdac122135e02032be5502db055977bc81f5c658a9cb82373617a06a256f`). 은꼬리 전용 초승달 시트를 전사에 덮어쓰지 않는다 |
+| 꼬리 | 실제 새 틱에서만14점 기록. 일반합성 흑자색 연기(#14061f/.38/폭2.8r+2), 가산 보라 불길(#7a2cff/.2/1.7r+1·.66길이1.5r+1·.38길이1.3r+1/.22), 가산 심(#e3c6ff/.42/.5길이/.5r+.6), 잔불(#b46bff/.55f) |
+| 중심 앵커 | 구체·폭발·잔불은 중심형 표시 레지스트리에 등록, 기존 발끝 기준 billboard lift 제외. 3D는 지면+.25u, 2D는 원래 중심. 구체 반경에 따라 화면 위치가 뜨지 않음 |
+| 폭발 전달 | `Simulation.MaliceOrbExploded` 이벤트로 각 구체의 좌표·ExplR을 읽어 표시. 같은 틱 동시 폭발도 각각 전달. 판정·피해·중독·속도·유도·사거리 공식 변경0 |
+| 폭발 원본 | 웹 `Dark_DarkSmoke_FBF_4x4.png`·`Arcane_Arcane_FBF_6x6.png`·`Dark_BasicImpact.png` 동일바이트 Resources 시트3개. 4×4/6×6/3×3, 배율1.8/1.4/.8, 지연0/1/0, 프레임속도3/3/2. 반경배율 clamp(sqrt(ExplR/80),.8,2.5), 알파.7·후반40% 감쇠, 크기1+.4p |
+| 현행 웹 중복 패스 | 현재 웹 draw가 TVFX2를 두 번 진행·그리므로 같은 틱의 두 샘플을 표시. 임의로 속도나 밝기를 정상화하지 않음. 동시 폭발 표시 상한12 |
+| 전수 하네스 | `--unity-playtest-capture -malice-directions 1`은 기존14입력+LMB/RMB 각8방향+시전중 조준변경. 충돌을 끄지 않고 시작점·발사속도·조준·중심오차·연속PNG 기록 |
+| 완료 게이트 | 독립 Simulation 통과는 Player 증거가 아님. Unity 컴파일·원본 oracle·무창 M1·웹/Unity 연속 비교·MERGE_QUEUE·unity/main 정상반영·바탕화면 갱신은 현재 후속 검증 단계 |
+
+산출물: `I:/EXODUSER-Storage/demo-art/skill-fix/`. 실제 사용자 Player(PID13912, entry-flow/build)가 실행 중임을 확인하여 동시 Unity 실행을 하지 않았다. 사용자 창·세이브·타팀WIP를 보존한다.

@@ -21,7 +21,9 @@ namespace Exoduser.UnityPort.Core
     {
         public readonly List<MaliceOrb> MaliceOrbs = new List<MaliceOrb>();
         public int MaliceOrbShots, MaliceOrbBlasts; public float MaliceOrbLastX, MaliceOrbLastY;
+        public event Action<MaliceOrb> MaliceOrbExploded;
         private bool magicHeld; private int magicMpBonus, nextOrbId = 1; private bool attackHeldForMagic;
+        private float magicCastAngle; // 웹 P.atkArc: 시전 시작 때 고정하며 다음 연사 시작 때 갱신한다.
 
         // once per tick before Tick(): the held state of the web 'beam' action (default mouse2)
         public void SetMagicInput(bool beamHeld) { magicHeld = beamHeld; }
@@ -49,6 +51,7 @@ namespace Exoduser.UnityPort.Core
         {
             float before = Player.Mana; Player.Mana = Math.Max(0, Player.Mana - MagicMpCost());
             magicMpBonus = (int)((before - Player.Mana) * 2);
+            magicCastAngle = Player.Facing;
             Player.State = "magicCast"; Player.StateTicks = Js.Int(14 / MagicCastSpeed());
         }
 
@@ -74,7 +77,7 @@ namespace Exoduser.UnityPort.Core
             int lv = Math.Max(1, Skills.Level("fireball"));
             double scale = SkillRules.FireballScale(lv);
             int dmg = SkillRules.FireballDamage(MagicReference(), 1, MagicDamageMultiplier(), lv) + magicMpBonus; magicMpBonus = 0;
-            double dx = Math.Cos(Player.Facing), dy = Math.Sin(Player.Facing);
+            double dx = Math.Cos(magicCastAngle), dy = Math.Sin(magicCastAngle);
             var o = new MaliceOrb
             {
                 Id = nextOrbId++, Active = true, X = Player.X + (float)(dx * 14), Y = Player.Y + (float)(dy * 14),
@@ -157,6 +160,7 @@ namespace Exoduser.UnityPort.Core
         private void OrbExplode(MaliceOrb p)
         {
             MaliceOrbBlasts++; MaliceOrbLastX = p.X; MaliceOrbLastY = p.Y;
+            MaliceOrbExploded?.Invoke(p); // 표시 소비자는 좌표·반경만 읽는다. 동시 폭발도 각각 전달한다.
             double r = p.ExplR > 0 ? p.ExplR : 80; int dmg = p.ExplDmg;
             foreach (var e in ShQuery(p.X, p.Y, r + 20, true))
             {

@@ -152,6 +152,20 @@ class Program
             Check(first >= 0, "enemy contact hits the player " + (used ? "after" : "without") + " skill use (first hit tick " + first + ")");
         }
 
+        // 시전 시작 방향은 시전 중 조준을 바꿔도 유지하고 다음 연사는 새 조준을 사용한다.
+        for (int di = 0; di < 8; di++)
+        {
+            s = Make(); s.Enemies.Clear(); s.IsProjectileWall = (x, y) => false;
+            double aim = di * Math.PI / 4, switched = aim + Math.PI / 2;
+            s.SetMagicInput(true); s.Tick(0, 0, (float)Math.Cos(aim) * 300, (float)Math.Sin(aim) * 300, false, false);
+            for (int f = 0; f < 8 && s.MaliceOrbShots == 0; f++) s.Tick(0, 0, (float)Math.Cos(switched) * 300, (float)Math.Sin(switched) * 300, false, false);
+            var shot = s.MaliceOrbs[0];
+            Check(Math.Abs(shot.Vx - Math.Cos(aim) * 5.5) < .0001 && Math.Abs(shot.Vy - Math.Sin(aim) * 5.5) < .0001, "악의구 8방향 시전 시작각 유지 " + di);
+            for (int f = 0; f < 30 && s.MaliceOrbShots < 2; f++) s.Tick(0, 0, (float)Math.Cos(switched) * 300, (float)Math.Sin(switched) * 300, false, false);
+            shot = s.MaliceOrbs[s.MaliceOrbs.Count - 1];
+            Check(Math.Abs(shot.Vx - Math.Cos(switched) * 5.5) < .0001 && Math.Abs(shot.Vy - Math.Sin(switched) * 5.5) < .0001, "악의구 다음 연사에서 새 조준 반영 " + di);
+        }
+
         // ---- save round trip ----
         s = Make(); s.Skills.Levels["spikeTrap"] = 3;
         s.CaptureSkills(out sk, out slots, out ult, out ct);
