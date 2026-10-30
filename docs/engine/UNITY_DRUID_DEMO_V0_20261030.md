@@ -1,13 +1,13 @@
 # 데모 v0 드루이드 표현 후보 — 2026-10-30
 
-브리프: `I:/EXODUSER-Storage/codex-takeover/boss-druid-brief.md`. 착수 소스 `10c49850f85dca6365cbf67b8067e6fa749b026d`, 공통 악의구 색 보정 `f27c9d1f9`와 전사 R4 `a62b515d6`를 정상 병합해 원작성 변경을 보존했다. 후속 치명타 관찰 신호 보강으로 자기 변경의 Core 파일 수정은 `Simulation.cs` 1개이며, 게임 규칙·피해·쿨다운·공유 난수 변경은 0이다. 전사 R4의 후속 접점 FAIL은 보스 담당이 되돌리지 않으며, 전사 R5의 정식 검수·공통 반영 전에는 일반 Desktop 최종 인도를 보류한다. 모델은 DESIGN LOCK v0.4 §16 형태 게이트 **FAIL**이며, 이번 독립 탄막 개선과 선택형 연결을 전체 보스 리마스터 완료로 세지 않는다. 모델 실패 실물은 [기존 임포트 기록](UNITY_BOSS_DARK_DRUID_3D_IMPORT_20261029.md)의 최신 절에 있다.
+브리프: `I:/EXODUSER-Storage/codex-takeover/boss-druid-brief.md`. 착수 소스 `10c49850f85dca6365cbf67b8067e6fa749b026d`, 공통 악의구 색 보정 `f27c9d1f9`와 전사 R4 `a62b515d6`를 정상 병합해 원작성 변경을 보존했다. 후속 치명타 관찰 신호 보강으로 자기 변경의 Core 파일 수정은 `Simulation.cs` 1개이며, 게임 규칙·피해·쿨다운·공유 난수 변경은 0이다. 전사 R4의 후속 접점 FAIL은 보스 담당이 되돌리지 않으며, 전사 R5는 후속 f916 소스에 정상 병합했으며 현재는 사용자 UI 최우선 지시로 보스 Unity 재예약·최종 인도를 보류한다. 모델은 DESIGN LOCK v0.4 §16 형태 게이트 **FAIL**이며, 이번 독립 탄막 개선과 선택형 연결을 전체 보스 리마스터 완료로 세지 않는다. 모델 실패 실물은 [기존 임포트 기록](UNITY_BOSS_DARK_DRUID_3D_IMPORT_20261029.md)의 최신 절에 있다.
 
 | 항목 | 구현·수치 | 검수 경계 |
 |---|---|---|
 | 기본 탄막 | `NativeBossView.DruidProjectile.cs`와 `Resources/Shaders/DruidProjectile.shader`. 드루이드 `DruidPoison`·`Orbs`만 새 표현. 물리=수피 핵 `(0.24,0.12,0.055)`·뼈빛 능선 `(0.78,0.72,0.56)`·국소 황록 테 `(0.58,0.72,0.12)`, 마법=녹색 독방울, Friendly/BlueBean/ParryBlueBean=청색. 좌표·속도·R·faction·ParryClass 읽기 전용. 지뢰·다른 필드탄은 기존 경로 | 실제 GPU·1x 판정은 아래 영수증으로 구분 |
 | 핵 지름 | `max(2R,min(대형64/일반28,max(12,Sz×14)))`px. 물리 가시는 `max(위 값,18,4R)`. 쿼드는 핵 지름×2 | 큰 실제 판정원을 지름 상한으로 줄이지 않음. 이 값은 Core 충돌값이 아님 |
 | 외형 재작업 2 | 물리=비대칭 목질 절단면·뒤쪽 삼각 가시 3개·수피 홈 2줄, 마법=기운 독 씨앗·붙은 짧은 꼬리/부리. 물리 중심 핵 `.255−r`, 마법 `.505−r`를 합쳐 실제 판정 반경의 최소 1.02/1.01배를 보존 | 첫 GPU의 녹색 큰 테·구슬은 **FAIL**. 소스5b9b/빌드3471c368 실제1600×900에서 R2는 큰 링 제거·탄 사이 공간 개선, 밝은 가시 판면과 건강한 녹색 잎 재질로 **RETOUCH**. 제작자·독립 검수자 같은 판정 |
-| 내부 부피 재작업 3 | 외곽·쿼드·Core R은 R2와 동일. 가시 정규 `normalize(−.18,crossY,sqrt(max(.06,1−crossY²)))`, crossY는 능선 기준 단면 ±.96, 단면폭 `max(.13,.32×(.96−x)/1.64)`, 위/아래 면 배율1.12/.48. 씨앗 정규 q=`((x−.05)/.65,(y−.025+.12x)/.57)`, z=`sqrt(max(.045,1−dot(q,q)))`. 정규를 `UnityObjectToWorldDir`로 변환한 뒤 고정 월드 광원 `normalize(−.42,.64,.76)`, 명암 `.24+.82×saturate(dot(N,L))` | 평면 가시/잎 결함을 고치는 후보이며 새 GPU·1x 판정 전 |
+| 내부 부피 재작업 3 | 외곽·쿼드·Core R은 R2와 동일. 가시 정규 `normalize(−.18,crossY,sqrt(max(.06,1−crossY²)))`, crossY는 능선 기준 단면 ±.96, 단면폭 `max(.13,.32×(.96−x)/1.64)`, 위/아래 면 배율1.12/.48. 씨앗 정규 q=`((x−.05)/.65,(y−.025+.12x)/.57)`, z=`sqrt(max(.045,1−dot(q,q)))`. 정규를 `UnityObjectToWorldDir`로 변환한 뒤 고정 월드 광원 `normalize(−.42,.64,.76)`, 명암 `.24+.82×saturate(dot(N,L))` | 후속7be 빌드의 실제GPU/1x에서 부피 개선·작은 판형 가시 잔존으로 RETOUCH(아래 영수증) |
 | 독껍질·독액 | 마법탄의 중앙 줄기·분기 잎맥 제거. 껍질은 `lerp(dark,light,.08+.17×saturate(1−dot(q,q)))`. 독액 중심 (−.07,.06)/( .15,−.065), 타원반경(.18,.15)/(.12,.10), `saturate(exp(−1.8dot(a,a))+.58exp(−2.1dot(b,b)))`, 황록(.60,.78,.055)×.86. 반사탄 독액은 청색(.20,.70,1) | 병든 국소 독코어 후보. 외곽 팽창·후광 확대 없음 |
 | 광량·표면 | `halo=max(0,1-r/0.80)²×(물리 .006/마법 .025)`, `rim=exp(−65×abs(edge))×(.035/.10)`, 최종 rim 기여 `.35`. 물리 독맥 `.13`, 마법 독맥0(분기 잎맥 제거), 젖은 반사광 `.10/.42`는 같은 월드 정규·고정 광원의 반벡터 `normalize(L+(0,0,1))`에서 `pow(saturate(dot(N,H)),물리24/마법48)`로 계산, AA `max(.006,fwidth(edge)×.7)`, shader target3.0. 긴 입자·넓은 링·난수 잔점 없음 | 밀집 탄·회복 장판과 겹친 실제 화면 확인 필요. 반경 R을 덮는 중심부와 더 긴 가시/꼬리 외곽의 차이를 제품 판정에 포함 |
 | 같은 빌드 비교 | `--unity-original-druid-projectiles`이면 과거 독탄·오브 표현. `NativeReviewArgs.Any`에 포함해 전투 세이브 쓰기를 차단하고 검수 중 지역명 표시 허용 | 새 표현은 모델 공급과 독립 |
@@ -35,7 +35,7 @@
 | 슬램 접촉 | 매틱 기본 `bossSlam→recover` 또는 리모델 `bossSlam→bossRec` 전환에서 한 번만 폭72px/8틱 접점광·배우 자세4틱. 접점은 공개 예고 계약 `Facing+WeaponAng`, `R+DruidBoss.StaffReachExtra(70)`를 그대로 계산. 예비 동작 종료에서는 터뜨리지 않음 | 일반 피격과 같은 틱이면 자세 정지는 큰 값4틱. 실제 지팡이 그림과 접점 정렬은 GPU 검수 필요 |
 | 카메라 | 일반2px/치명타·슬램 보조4px, 틱마다 `.86` 감쇠·8틱 종료. `max(기존 ShakeAmount,보조)×OptionShakeScale`로 사용자 옵션 한 번 적용. 기존 슬램14px·플레이어 피격4~16px를 중복 합산하지 않음 | `shake=0`에서 추가 흔들림0. Core ShakeAmount에 되쓰지 않음 |
 | 진단 읽기값 | `LastContact`/`LastContactTick`은 실제 Hit/Slam을 Finish에서 처음 확정할 때만 갱신. 무접점·중복 틱은 덮지 않고 Reset은 default/−1로 초기화 | 기존 제품 행동을 바꾸지 않는 읽기값. QA는 피해 감소와 같은 틱의 새 사건·강도 필드를 함께 확인 |
-| 실제 입력 검수 경로 | `--unity-playtest-capture --unity-druid-impact-capture --unity-boss-direct 0 --unity-basic-weapon -output <I:>` + 실행기의 격리 저장 필수. 정지 AI·기본검 `StepInput` 120틱×일반/치명 확률0/100, 단계 사이 해제12틱. 실제 충돌·피드백에서 피해 감소와 같은 새 틱의 일반/치명 강도·접점광·held 동시 관측 필수. 240 GPU PNG·`접점검사.json` | 별도 검수 하니스이며 효과 사건 직접 주입0. 일반 실행·M1 영향0. OS 손조작·자연 종주가 아니며 GPU 실행은 아직 미검증 |
+| 실제 입력 검수 경로 | `--unity-playtest-capture --unity-druid-impact-capture --unity-boss-direct 0 --unity-basic-weapon -output <I:>` + 실행기의 격리 저장 필수. 정지 AI·기본검 `StepInput` 120틱×일반/치명 확률0/100, 단계 사이 해제12틱. 실제 충돌·피드백에서 피해 감소와 같은 새 틱의 일반/치명 강도·접점광·held 동시 관측 필수. 240 GPU PNG·`접점검사.json` | 별도 검수 하니스이며 효과 사건 직접 주입0. 일반 실행·M1 영향0. OS 손조작·자연 종주가 아님. 후속 실제GPU 재검수 d50f1d9c 실패0, 상세는 아래 영수증 |
 | 증거·한계 | 누락 구현·기본 recover 누락·슬램 중첩·새 배우/방향/사건 식별 API RED 확인 뒤 순수 표현 검사90/0 × 두 옵션. `I:/EXODUSER-Storage/demo-art/boss-druid/impact-tests-green/검사결과.json` | Unity/GPU/실제 동작·가독성은 부모 최종 빌드 검수 전. M1의 틱 밖 합성 HurtEnemy는 다음틱까지 큐에 남을 수 있으므로 실제 공격 입력 또는 같은틱 배출 검수와 구분 |
 
 접점 QA는 현행 `NativeGame.Remodel3D.cs`의 보스방 2D 복귀 계약을 따른다. `--remodel3d` 요청과 실제 보스방의 `bossArena2d`를 별도로 기록하며, 보스방에서 3D Active를 기다리거나 필수로 요구하지 않는다. 비배치 `ScreenCapture`는 요청 뒤 다음 렌더 프레임까지 기다려 기록한 Core 틱과 PNG를 맞추며, 배치는 동기 `RmIntShot`을 쓴다. 이 캡처는 실제 3D 아레나 검증이 아니다.
@@ -57,3 +57,18 @@
 | 제품 반영 | 자기 후보 브랜치만. `unity/main`·바탕화면 미반영, 새 유료 호출 0 |
 
 탄막을 실제 검수하기 전 PASS로 올리지 않는다. 전체 브리프에는 마른 본체의 재조형·얼굴/음각·리깅/8동작·지팡이 접촉·임팩트 실게임 판정·실제 3D 보스전·지정 통합/바탕화면 갱신이 남아 있다.
+
+## 2026-10-31 실제 후속 검수·사용자 UI 최우선 보류
+
+제품 소스 `a5414b8d3` 위에 공통 전사 R5 `a861d03037ead23aa022b9be4ae7f9d83156d09c`를 정상 병합한 입력은 `f9163914b7f36e57b52ba0150c62ab4609f919b1`이다. 원격 후보 브랜치 동일 SHA를 재조회했다. 아래 검수는 이 입력과 같은 EXE에만 유효하다.
+
+| 게이트 | 실제 결과·증거 |
+|---|---|
+| Unity 빌드 | `7be17151`, Unity6000.6.7f1 Win64 x64, Succeeded·컴파일/셰이더/빌드 오류0, 3,097,623,839바이트. 로그의 errorLogs2는 기존 두 Exception.cs 에셋 파일명 오탐만 확인. `build-crit-r3.json` |
+| 정상 M1 | `99f15c23`, 23/23·firstBlocked 없음, D3D11 RX9070XT·실제 GUI Repaint1503·360 PNG/12초. exit0·공개 창0·잔여0·USER_SAVE 변경0·격리 데스크톱 닫힘. `player-new-crit-r3/m1-check.json` |
+| 실제 입력 접점 재검수 | `d50f1d9c`, 실패0·exit0·240 PNG. 실제 피해12회 중 새 강도 일치10회(일반4/치명6), 접점65프레임·자세 유지29프레임. 일반48px/6틱/2틱, 치명72px/8틱/4틱 확인. 일반 피격 사건에는 기존8틱 알림 제한이 있어 모든 피해를 새 광으로 주장하지 않음. 공개 창/잔여/USER_SAVE 변경0. `player-impact-crit-r3/접점검사.json` |
+| R3 시각 | 위 M1의 `caps/art-a-idle-volley.png`·`11a-druid-volley.png`를1600×900/1x 직접 확인. 건강한 흰 잎맥이 사라지고 독껍질/국소 코어의 둥근 부피가 읽힘. 가시는 작은 크기에서 판형 인상이 남고 반복 재질이 단순해 **RETOUCH**. 전체 모델/리마스터 PASS 아님 |
+| 실행 요청 이상 | 첫 `-Command` 호출은 Player 로그/영수증 없이 종료. 저장 스냅샷 및 숨은 데스크톱 생성/닫기 진단은 정상. 상태 전파를 보강하고 공식 실행기를 `-File`·명시적 인수 배열로 호출한 위 두 검수는 정상. 중단의 정확한 원인은 미확정. 같은 EXE 원본탄 비교 후속 요청도 완료 영수증이 없어 미완료이며 재실행하지 않음 |
+| 사용자 최우선 보류 | UI CLI5388 제품통합·Desktop 전달 확인 전 **새 보스 Unity 예약/FIFO 생성 금지**. 실제 자기 예약 `20261030T150949028_codex-boss-druid.json`은 공식 unreserve, 자기 죽은 실행기45400만 사전 소유/PID/서버0 확인 뒤 공식 reap. 재조회: 자기 예약/FIFO/Unity·Player0, 잠금 없음, UI 첫 순번. 타인 예약·티켓·잠금 직접 변경/강제종료0 |
+
+순번 반환 영수증은 `I:/EXODUSER-Storage/demo-art/boss-druid/ui-priority-release-20261031.json`이다. 후보·실패·입력·소스는 보존한다. 승인된 비Unity 작업만 자원 조건 안에서 진행하며 새 writer/작업본·자동 통합을 만들지 않는다. 최종 원본/변경 같은 빌드 비교영상, MERGE_QUEUE 준비 영수증, 공통/바탕화면 반영은 아직 없다. 기존 3471의 원본 영상으로 최신 입력의 비교 완료를 대체하지 않는다.
