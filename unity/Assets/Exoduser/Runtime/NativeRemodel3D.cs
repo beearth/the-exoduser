@@ -8,11 +8,13 @@ namespace Exoduser.UnityPort
     // (1 tile = 40 px = 0.4 u). Off, every Point() is byte-for-byte the old 2D mapping (x / 100, -y / 100, 0), so the 2D path and its oracles are unchanged.
     public static class NativeRemodel3D
     {
-        public static readonly bool Requested = Array.IndexOf(Environment.GetCommandLineArgs(), "--remodel3d") >= 0;
+        public static readonly bool Requested = Array.IndexOf(Environment.GetCommandLineArgs(), "--remodel3d") >= 0 ||
+            (Application.isEditor && Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-qa-sandbox")>=0 && Environment.GetEnvironmentVariable("EXO_A2_EDITOR_PREVIEW")=="1");
         public static bool Active;            // the RM-1 scene is loaded and the field is shown in 3D right now (false in the boss arena / before the scene is ready)
         public static Terrain Ground;         // the scene's Terrain (window of tiles x48..152 / y126..200)
-        public static float Pitch { get { return NativeRemodelCamera.Pitch; } }     // LOOK-001: elevation 0.85 rad = 48.70 deg
-        public static float DistU { get { return NativeRemodelCamera.Distance; } }       // LOOK-001: 1400 px
+        public static bool ForestA2;          // A2 승인 구도만 원근을 넓힌다. 비A2 LOOK-001은 보존한다.
+        public static float Pitch { get { return ForestA2 ? 34*Mathf.Deg2Rad : NativeRemodelCamera.Pitch; } }
+        public static float DistU { get { return ForestA2 ? 16.5f : NativeRemodelCamera.Distance; } }
 
         /// <summary>The 2D mapping the whole port was written against (also what Core-feeding callbacks must keep using, whatever the presentation does).</summary>
         public static Vector3 Point2D(double px, double py) { return new Vector3((float)px / 100, -(float)py / 100, 0); }
@@ -29,9 +31,57 @@ namespace Exoduser.UnityPort
         public static float GroundY(float wx, float wz)
         {
             if (Ground == null) return 0f;
+            if(ForestA2&&Ground==forestHeightGround&&forestHeights!=null)
+                return ForestHeight(wx,wz,ForestSample(wx,wz),forestOrigin,forestSize);
             var tp = Ground.transform.position; var sz = Ground.terrainData.size;
             float cx = Mathf.Clamp(wx, tp.x, tp.x + sz.x), cz = Mathf.Clamp(wz, tp.z, tp.z + sz.z);
-            return Ground.SampleHeight(new Vector3(cx, 0, cz)) + tp.y;
+            float height=Ground.SampleHeight(new Vector3(cx, 0, cz)) + tp.y;
+            return ForestA2?ForestHeight(wx,wz,height,tp,sz):height;
+        }
+        static Terrain forestHeightGround;
+        static float[,] forestHeights;
+        static Vector3 forestOrigin,forestSize;
+        // 수십만 정점마다 native Terrain.SampleHeight를 호출하지 않도록 원본 표본을 한 번 읽는다.
+        // 현재 Terrain의 native 질의256점과 먼저 대조하고 오차가 크면 기존 경로로 폴백한다.
+        public static void PrepareForestHeightCache()
+        {
+            forestHeightGround=Ground;forestHeights=null;if(Ground==null)return;
+            forestOrigin=Ground.transform.position;var data=Ground.terrainData;forestSize=data.size;
+            forestHeights=data.GetHeights(0,0,data.heightmapResolution,data.heightmapResolution);
+            float maxError=0;
+            for(int i=0;i<256;i++)
+            {
+                float x=forestOrigin.x+forestSize.x*((i*73%257)/256f),z=forestOrigin.z+forestSize.z*((i*151%257)/256f);
+                float native=Ground.SampleHeight(new Vector3(x,0,z))+forestOrigin.y;
+                maxError=Mathf.Max(maxError,Mathf.Abs(native-ForestSample(x,z)));
+            }
+            if(maxError>.0005f){forestHeights=null;Debug.LogWarning("[A2 높이 캐시] 원본 대조 오차="+maxError+". native 높이 유지");}
+            else Debug.Log("[A2 높이 캐시] 원본256점 최대오차="+maxError+"u");
+        }
+        static float ForestSample(float x,float z)
+        {
+            int n=forestHeights.GetLength(0)-1;
+            float u=Mathf.Clamp01((x-forestOrigin.x)/forestSize.x)*n,v=Mathf.Clamp01((z-forestOrigin.z)/forestSize.z)*n;
+            int ix=Mathf.Min((int)u,n-1),iz=Mathf.Min((int)v,n-1);float fx=u-ix,fz=v-iz;
+            return forestOrigin.y+forestSize.y*Mathf.Lerp(Mathf.Lerp(forestHeights[iz,ix],forestHeights[iz,ix+1],fx),Mathf.Lerp(forestHeights[iz+1,ix],forestHeights[iz+1,ix+1],fx),fz);
+        }
+        // 원본 높이 표본은 호출자가 재사용할 수 있다. 배우와 생성 메시가 같은 수식을 공유한다.
+        public static float ForestHeight(float wx,float wz,float height,Vector3 origin,Vector3 size)
+        {
+            // 기존 블록아웃의 직선 테두리 융기를 A2 연속 숲에 투영하지 않는다.
+            // 안쪽 1.6u 표본으로 경계 높이를 잇고 배우·소품·지면에 같은 수식을 쓴다.
+            const float inset=1.6f;
+            float inside=Mathf.Min(Mathf.Min(wx-origin.x,origin.x+size.x-wx),Mathf.Min(wz-origin.z,origin.z+size.z-wz));
+            if(inside<inset&&Ground!=null)
+            {
+                float x=Mathf.Clamp(wx,origin.x+inset,origin.x+size.x-inset),z=Mathf.Clamp(wz,origin.z+inset,origin.z+size.z-inset);
+                float inner=Ground==forestHeightGround&&forestHeights!=null?ForestSample(x,z):Ground.SampleHeight(new Vector3(x,0,z))+origin.y;
+                height=Mathf.Lerp(inner,height,Mathf.SmoothStep(0,1,Mathf.Clamp01(inside/inset)));
+            }
+            float outside=Mathf.Max(Mathf.Max(origin.x-wx,wx-origin.x-size.x),Mathf.Max(origin.z-wz,wz-origin.z-size.z));
+            height+=Mathf.SmoothStep(0,1,Mathf.Max(0,outside)/4)*(.35f*Mathf.Sin(wx*.31f)+.28f*Mathf.Cos(wz*.27f));
+            height=A2ForestLayout.BankHeight(wx,wz,height);
+            return A2ForestLayout.IslandHeight(wx,wz,height);
         }
     }
 

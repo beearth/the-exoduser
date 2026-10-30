@@ -1,0 +1,42 @@
+fileFormatVersion: 2
+guid: fd390143b55f73a5615a767177fb23b7
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: RF3_Fungal_Colony_Baked
+    second: {fileID: 2100000, guid: b45232419fc2bbb9ec69b6e9f25d5648, type: 2}
+  materials:
+    materialImportMode: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  meshes:
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 1
+    importCameras: 0
+    importLights: 0
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 1
+    weldVertices: 1
+    indexFormat: 0
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  animationType: 0
+  importAnimation: 0
+  userData: Blender_R3_정적검수후보_Unity실게임미검증
+  assetBundleName:
+  assetBundleVariant:

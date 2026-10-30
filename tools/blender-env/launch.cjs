@@ -1,0 +1,11 @@
+const fs=require('fs'),cp=require('child_process');
+const dir='I:/EXODUSER-Storage/demo-art/blender-env';
+const script=process.argv[2]||'make_kit.py';
+const env={...process.env,APPDATA:process.env.APPDATA||'C:/Users/심도진/AppData/Roaming',LOCALAPPDATA:process.env.LOCALAPPDATA||'C:/Users/심도진/AppData/Local',COMSPEC:'C:/Windows/System32/cmd.exe',SystemRoot:'C:/Windows',WINDIR:'C:/Windows',ProgramData:'C:/ProgramData',PATHEXT:'.COM;.EXE;.BAT;.CMD',TEMP:dir+'/temp',TMP:dir+'/temp'};
+fs.mkdirSync(env.TEMP,{recursive:true});
+const logPath=dir+'/'+script+'.'+new Date().toISOString().replace(/[:.]/g,'-')+'.log';
+const log=fs.openSync(logPath,'w');
+const child=cp.spawn('G:/blander/blender.exe',['-b','-t','12','-P',dir+'/'+script,...process.argv.slice(3)],{cwd:dir,env,windowsHide:true,stdio:['ignore',log,log]});
+fs.writeFileSync(dir+'/active-job.json',JSON.stringify({pid:child.pid,script,logPath,start:new Date().toISOString()},null,2));
+console.log('Blender 작업 시작',child.pid,script);
+child.on('exit',(code)=>{fs.closeSync(log);const pythonError=/Traceback \(most recent call last\):|SyntaxError:/.test(fs.readFileSync(logPath,'utf8'));const effectiveCode=pythonError?1:(code||0);fs.writeFileSync(dir+'/'+script+'.exit.json',JSON.stringify({code,effectiveCode,pythonError,logPath,finished:new Date().toISOString()},null,2));console.log('Blender 종료',effectiveCode);process.exitCode=effectiveCode;});
