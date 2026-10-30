@@ -15,6 +15,8 @@ namespace Exoduser.UnityPort
     {
         [Serializable] sealed class M1Stage { public string id, name, status, note, capture, overlay; }
         [Serializable] sealed class M1Receipt { public string scope; public List<M1Stage> stages = new List<M1Stage>(); public string firstBlocked; public string device, deviceType, captureMode; public bool headless; public int guiRepaints, guiBridged; }
+        [Serializable] sealed class BossFilmFrame { public int frame, tick, bullets; public string state; }
+        [Serializable] sealed class BossFilmReceipt { public string scope = "실제 Player의 M1 보스 AI, 2 Core틱마다 1장. 체력 보조·직접 입장·합성 장판이 포함된 검수 영상이며 OS 손조작/3D 모델 동작 검수가 아님"; public int fps = 30, requestedTicks = 720; public bool originalProjectiles, headless; public List<BossFilmFrame> frames = new List<BossFilmFrame>(); }
         M1Receipt m1; string m1Caps; int m1Index;
 
         // BX art: a stray OS key (ESC / TAB) during the unattended run must not leave the pause menu / a window over the comparison scenes
@@ -392,6 +394,9 @@ namespace Exoduser.UnityPort
 
             // ---- 11 druid boss fight (BX-02/03/05): the real 23-move AI runs; the player stands in the open and is healed every tick so the fight can be observed ----
             sim.Config.EnemyAiEnabled = true; var druid = sim.Druid; var moveStates = new HashSet<string>(); int maxPhase = 0, maxShots = 0, fightHurt0 = sim.HurtCount, shotCaptures = 0, hazardCaptures = 0, poolCaptures = 0, fightTicks = 0;
+            bool filmRequested = Array.IndexOf(Environment.GetCommandLineArgs(), "--unity-m1-boss-film") >= 0;
+            var film = filmRequested ? new BossFilmReceipt { originalProjectiles = NativeReviewArgs.OriginalDruidProjectiles, headless = m1Headless } : null;
+            string filmDir = Path.Combine(output, "film"); if (filmRequested) Directory.CreateDirectory(filmDir);
             float hpBefore = bossActor != null ? bossActor.Hp : 0; float shieldBefore = bossActor != null ? bossActor.Shield : 0; bool deathNoted = false;
             if (bossActor != null) { p.X = bossActor.X + 260; p.Y = bossActor.Y; }
             while (druid != null && bossActor != null && fightTicks++ < 2600 && bossActor.Alive)
@@ -412,10 +417,19 @@ namespace Exoduser.UnityPort
                     druid.LavaPools.Clear(); druid.PoisonPools.Clear();
                 }
                 if (fightTicks % 170 == 0) sim.HurtEnemy(bossActor, (int)Math.Max(1, bossActor.MaxShield * .22f + bossActor.MaxHp * .06f));   // walk the HP phases
+                if (film != null && fightTicks <= film.requestedTicks && fightTicks % 2 == 0)
+                {
+                    string state = druid.Data.TryGetValue(bossActor, out var filmData) ? filmData.S : "없음";
+                    string filmFrameName = "frame-" + film.frames.Count.ToString("0000");
+                    if (m1Headless) { string savedCaps = m1Caps; try { m1Caps = filmDir; yield return M1Shot(filmFrameName); } finally { m1Caps = savedCaps; } }
+                    else { yield return new WaitForEndOfFrame(); ScreenCapture.CaptureScreenshot(Path.Combine(filmDir, filmFrameName + ".png")); yield return null; }
+                    film.frames.Add(new BossFilmFrame { frame = film.frames.Count, tick = sim.TickCount, bullets = shots, state = state });
+                }
                 if (maxPhase >= 3 && fightTicks > 900 && shotCaptures > 0 && hazardCaptures > 0 && (poolCaptures > 0 || fightTicks > 2000)) break;
                 if (fightTicks % 30 == 0) yield return null;
             }
             bool fightOk = druid != null && moveStates.Count >= 6 && maxPhase >= 2 && maxShots >= 4 && sim.HurtCount > fightHurt0;
+            if (film != null) File.WriteAllText(Path.Combine(filmDir, "film.json"), JsonUtility.ToJson(film, true), new UTF8Encoding(false));
             M1Add("11", "druid boss fight", fightOk ? "ok" : "fail", "real 23-move druid AI (BX-02/03/05): " + moveStates.Count + " distinct move states [" + string.Join(",", moveStates) + "], hp phase " + maxPhase + ", bullets in flight up to " + maxShots + ", the player was hit " + (sim.HurtCount - fightHurt0) + "x (hp " + hpBefore + " shield " + shieldBefore + " -> " + (bossActor != null ? bossActor.Hp + " / " + bossActor.Shield : "-") + "), " + druid.Spawned + " bullets spawned, " + druid.Dropped + " dropped by the 1/3 rule; moves are oracle-checked (unity/Tools/druid-boss-oracle)", "11a-druid-volley.png");
 
             // ---- 12 kill + sink: the final death of the 1-1 druid is a sink into the ground; the exit opens after the judged revive timer ----

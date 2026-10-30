@@ -9,18 +9,24 @@ namespace Exoduser.UnityPort
     public sealed partial class NativeGame
     {
         NativeBossView bossView; NativeDruidBody druidBody; NativeDruidTelegraphView teleView; readonly Dictionary<int, int> sinkStart = new Dictionary<int, int>();
+        NativeDruidModelView druidModel;
         public const int SinkBodyTicks = 66, SinkHoldTicks = 18, SinkFadeTicks = 18;
         public const int SinkHoleTick = (int)(SinkBodyTicks * .55f) + 1;   // first tick NativeDruidBody.DrawSink shows the hole (t > bodyTicks * .55); the sink sound plays here
         readonly HashSet<int> sinkSounded = new HashSet<int>();
 
         void BossViewAttach()
         {
-            if (bossView != null) bossView.Dispose();
-            if (druidBody != null) druidBody.Dispose();
-            if (teleView != null) teleView.Dispose();
+            BossViewDispose();
             bossView = new NativeBossView(transform); teleView = new NativeDruidTelegraphView(transform); sinkStart.Clear(); sinkSounded.Clear();
             druidBody = new NativeDruidBody(transform, DiscSprite());
+            druidModel = new NativeDruidModelView(transform, DiscSprite());
             Simulation.AttachDruidBoss();
+        }
+
+        void BossViewDispose()
+        {
+            bossView?.Dispose(); druidBody?.Dispose(); teleView?.Dispose(); druidModel?.Dispose();
+            bossView = null; druidBody = null; teleView = null; druidModel = null;
         }
 
         // web camera: zoom target 0.80 while a boss is alive (1.0 otherwise), eased zoom += (target - zoom) * (1 - .94^dt); orthographicSize 5.4 is zoom 1
@@ -37,7 +43,15 @@ namespace Exoduser.UnityPort
             if (bossView != null) bossView.Update(Simulation);
             if (teleView != null) teleView.Update(Simulation, view);   // RB1-3: reads Simulation.DruidTelegraphs only (remodel off = empty list = nothing drawn)
             if (druidBody != null && druidBody.Stamp != Time.frameCount) druidBody.Hide();   // nobody drew the druid this frame (gone / not on this stage)
+            if (druidModel != null && druidModel.Stamp != Time.frameCount) druidModel.Hide();
             foreach (var e in Simulation.Enemies) if (e.Alive && e.IsBoss && sinkStart.Count > 0) { sinkStart.Remove(e.Id); sinkSounded.Remove(e.Id); }
+        }
+
+        bool BossVisibleBounds(out Bounds bounds)
+        {
+            if (druidModel != null && druidModel.Visible) { bounds = druidModel.Bounds; return true; }
+            if (druidBody != null && druidBody.Visible) { bounds = druidBody.Bounds; return true; }
+            bounds = new Bounds(); return false;
         }
 
         // dead 1-1 druid (SinkDruid): the body sinks, holds on the last frame, then fades. Returns true while the sink is still on screen.
@@ -53,6 +67,8 @@ namespace Exoduser.UnityPort
         {
             if (!e.IsBoss || druidBody == null || Simulation.Druid == null) return false;
             DruidData dd; if (!Simulation.Druid.Data.TryGetValue(e, out dd)) return false;
+            if (druidModel != null && druidModel.Draw(e, dd, Simulation.TickCount, ev.moving))
+            { druidBody.Hide(); ev.body.enabled = false; ev.walk.enabled = false; return true; }
             if (!druidBody.Draw(e, dd, newTick)) return false;
             druidBody.Stamp = Time.frameCount; ev.body.enabled = false; ev.walk.enabled = false;
             return true;
@@ -82,6 +98,8 @@ namespace Exoduser.UnityPort
             if (t >= SinkHoleTick && sound != null && sinkSounded.Add(e.Id)) sound.PlaySinkHole(e.X, e.Y, Simulation.TickCount);
             ev.body.enabled = false; ev.walk.enabled = false;
             if (t >= SinkBodyTicks + SinkHoldTicks + SinkFadeTicks) return;
+            if (druidModel != null && druidModel.DrawSink(e, Simulation.TickCount, t, SinkBodyTicks, SinkHoldTicks, SinkFadeTicks))
+            { druidBody.Hide(); return; }
             druidBody.DrawSink(e, t, SinkBodyTicks, SinkHoldTicks, SinkFadeTicks); druidBody.Stamp = Time.frameCount;
         }
     }
