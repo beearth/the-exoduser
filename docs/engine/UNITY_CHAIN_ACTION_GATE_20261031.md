@@ -18,3 +18,7 @@
 고정입력 chain-action-final-cpu의31묶음·5,471,726비교단위0, 설치참조 Core/Runtime 오류0(기존경고2/17)이다. 기존 화염30회귀·기검·이동·구르기·Q CD·E경계 포함. 근거는 사슬중-전체시작행동-원문.json, chain-full-action-red/, chain-full-action-green/, chain-action-final-cpu/, chain-action-independent-compile/다.
 
 입력 설정은 Both2로 유지했다. 새InputSystem만 선택하면 설치1.20.1의 런타임 IMGUI 미지원 제약에 걸린다. 장치/서비스/권한 변경이나 같은 HID 종료 방법의 M1 재시도는 하지 않았다.
+
+### 2026-10-31 실제 조작 입력 소비 후속
+
+[현행 계약](UNITY_SOURCE_INPUT_CONSUMPTION_20261031.md)에 K/KH/MB/MBjust 분리·조건부 just 소비·착지 literal 입력clear·실제 조작 한틱 공급자를 기록했다. 원문53,512값0, 기동파괴 홀드176,112값 RED144→0. 고정43묶음9,107,540단위0·설치참조0. Core11/미이식44 유지, 실제Player/M1/입력장치/OS반복/UI/영상/공통/Desktop은 미검증 NOT_READY다. HID 종료 문제의 해결 증거가 아니다.

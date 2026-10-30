@@ -136,7 +136,7 @@ namespace Exoduser.UnityPort
             foreach(var e in enemies.Values){Destroy(e.body.gameObject);Destroy(e.walk.gameObject);}enemies.Clear();damage.Clear();damageFloaters.Clear();ResetFieldBossViews();
             kiView?.Reset();boltView?.Reset();impacts?.Reset();skillView?.Reset();sound?.Reset();
             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;if(settings!=null)config.DifficultyIndex=settings.Options.Get("diff");if(BuildFlavor.Current.DemoMode)config.LevelCap=BuildFlavor.Current.LevelCap;CombatBeginRun(config);
-            Simulation=new Simulation(config,SourceStarterFixture.Seed);revive.Reset();Simulation.ReviveTextRaised+=revive.Add;Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;Simulation.LevelledUp+=OnLevelledUp;ReviewArgsApply();ApplySettingsOptions();
+            NativeKeyBindInput.ResetSourceState();Simulation=new Simulation(config,SourceStarterFixture.Seed);revive.Reset();Simulation.ReviveTextRaised+=revive.Add;Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;Simulation.LevelledUp+=OnLevelledUp;ReviewArgsApply();ApplySettingsOptions();
             inventory.Reset();CombatRestoreState();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;death.Hide();deathShown=false;stageClear.Hide();bossBar.Hide();areaTitle.Hide();areaTitleShown=false;skillInputFence=false;Simulation.ApplyEquipment(inventory.State);CombatRestoreResources();Simulation.EnableCrossbowPet();
             Simulation.IsLootOnScreen=l=>{var p=view.WorldToViewportPoint(NativeRemodel3D.Point2D(l.X,l.Y));return p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1;};   // RM-INT: Core callback, always the 2D logic camera
             // D01: mkItem drops are real; R picks the highest rarity on screen (web 32936) into the bag. Persistent saves stay unimplemented.
@@ -229,15 +229,17 @@ namespace Exoduser.UnityPort
             float x=(NativeKeyBindInput.Held("right")?1:0)-(NativeKeyBindInput.Held("left")?1:0);
             float y=(NativeKeyBindInput.Held("down")?1:0)-(NativeKeyBindInput.Held("up")?1:0);
             if(firstPractice!=null){x+=(ExoInput.Key(KeyCode.RightArrow)?1:0)-(ExoInput.Key(KeyCode.LeftArrow)?1:0);y+=(ExoInput.Key(KeyCode.DownArrow)?1:0)-(ExoInput.Key(KeyCode.UpArrow)?1:0);}
-            bool attack=SkillUiState.AttackHeld(NativeKeyBindInput.Held("weapon"),skillInputFence,NativeHud.PointerOverSlots(ExoInput.MousePosition)||PointerOverStageClear(),p.KiChargeActive);
+            bool attack=SkillUiState.AttackHeld(NativeKeyBindInput.SourceAct("weapon"),skillInputFence,NativeHud.PointerOverSlots(ExoInput.MousePosition)||PointerOverStageClear(),p.KiChargeActive);
             Simulation.Stage.Enabled=firstPractice==null;
             if(firstPractice==null){   // the first-practice tick sets these once per tick itself (the combat / roll inputs detect edges against the previous call)
-            Simulation.SetPlayerCombatInput(NativeKeyBindInput.Held("parry"),NativeKeyBindInput.Held("shield"),NativeKeyBindInput.Held("charge"));
+            Simulation.SetPlayerCombatInput(NativeKeyBindInput.SourceHeld("parry"),NativeKeyBindInput.SourceHeld("shield"),NativeKeyBindInput.SourceHeld("charge"));
             Simulation.SetChainLandingInput(attack && NativeKeyBindInput.Down("weapon"), !skillInputFence && NativeKeyBindInput.Down("shield"));
             Simulation.SetRollInput(NativeKeyBindInput.Held("up"),NativeKeyBindInput.Held("down"),NativeKeyBindInput.Held("left"),NativeKeyBindInput.Held("right"),NativeKeyBindInput.HeldKeyboard("roll"));
             SetSkillKeys();}
             int statPointsBeforeTick=Simulation.Player.StatPoints;
-            if(!HandleFirstPracticeTick(x,y,aim.x*100,-aim.y*100,attack,PointerOverPractice()))Simulation.Tick(x,y,aim.x*100,-aim.y*100,attack,NativeKeyBindInput.Held("interact"));
+            bool sourceInput=firstPractice==null;if(sourceInput)AttachSourceInputs();
+            try{if(!HandleFirstPracticeTick(x,y,aim.x*100,-aim.y*100,attack,PointerOverPractice()))Simulation.Tick(x,y,aim.x*100,-aim.y*100,attack,NativeKeyBindInput.Held("interact"));}
+            finally{if(sourceInput){DetachSourceInputs();NativeKeyBindInput.EndSourceTick();}}
             StageFlowPump(statPointsBeforeTick);DispatchFeedback();
             if(PlayerDown){Running=false;Toast("쓰러졌습니다");}
             if(Simulation.Kills>lastKillCount){lastKillCount=Simulation.Kills;Toast("처치 · 악의 +4");}
@@ -388,7 +390,7 @@ namespace Exoduser.UnityPort
         {
             string bow=NativeKeyBindInput.Bindings.Primary("bow"),roll=NativeKeyBindInput.Bindings.Primary("roll");
             if(menu||skills.Open||inventory.Open||stats.Open||forge.Open){Simulation.SetSkillInput(false,false,false,false,false,false,false,false);Simulation.SetMagicInput(false);return;}   // the panels use the digit keys themselves
-            Simulation.SetMagicInput(NativeKeyBindInput.Held("beam"));   // B03b: E-slot malice orb (web 'beam' action, default mouse2)
+            Simulation.SetMagicInput(NativeKeyBindInput.SourceHeld("beam"));   // B03b: E-slot malice orb (web 'beam' action, default mouse2)
             Simulation.SetSkillInput(ExoInput.Key(KeyCode.Alpha1),ExoInput.Key(KeyCode.Alpha2),ExoInput.Key(KeyCode.Alpha3),ExoInput.Key(KeyCode.Alpha4),
                 NativeKeyBindInput.Held("bow"),ExoInput.Key(KeyCode.F),ExoInput.Key(KeyCode.LeftControl),ExoInput.Key(KeyCode.Z),bow!=null&&bow==roll);
         }

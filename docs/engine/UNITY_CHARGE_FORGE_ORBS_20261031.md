@@ -21,3 +21,7 @@
 RestoreSkills는 미소유 레벨만 사본으로 보관해 SkillDisplayLevel에 제공한다. 원본 Dictionary의 후속 변경은 표시 사본에 영향을 주지 않는다. 소유 레벨은 항상 현재 실행북/기검 Config를 우선한다. CaptureSkills의 소유 목록·실제 저장 원문 보존·슬롯 예약은 그대로다.
 
 고정41묶음 **8,877,916비교단위 불일치0**, 설치 Unity 참조 Core/Runtime 오류0(기존경고2/17). 근거: 사슬제단-구슬모델-원문.json, 제단6구슬-배치탐색.json, charge-orbits-green-r3/, charge-orbits-final-cpu/, charge-orbits-independent-compile-r1/. 모델 API 부재와 미소유 표시 API 부재를 각각 RED로 확인한 뒤 연결했다. 실제 클릭·학습·리셋·저장3단계·같은 화면1x는 아직 미검증이다. 현재 시스템 메모리 여유가 공식10GB보다 작아 신규 GPU/Player 실행0이다. 같은 HID 실패 방식을 반복하지 않는다.
+
+### 2026-10-31 실제 조작 입력 소비 후속
+
+[현행 계약](UNITY_SOURCE_INPUT_CONSUMPTION_20261031.md)에 K/KH/MB/MBjust 분리·조건부 just 소비·착지 literal 입력clear·실제 조작 한틱 공급자를 기록했다. 원문53,512값0, 기동파괴 홀드176,112값 RED144→0. 고정43묶음9,107,540단위0·설치참조0. Core11/미이식44 유지, 실제Player/M1/입력장치/OS반복/UI/영상/공통/Desktop은 미검증 NOT_READY다. HID 종료 문제의 해결 증거가 아니다.

@@ -77,7 +77,7 @@ namespace Exoduser.UnityPort.Core
             if ((Player.State == "sBash" && Player.StateTicks <= 14 || Player.State == "sRecover" || Player.State == "bowRecover") && TryLateChainMove(false)) return;
             if (Player.State == "bowRecover" && Player.StateTicks <= 0) Player.State = "idle";
             // ---- E: shield strike (tap = sBash, hold = charge) ----
-            if (Player.State == "idle" && eDown && !playerActionBranchConsumed && !HarpActive && !DashActive) { MovePlayerAction(1, true); Player.State = "sDraw"; SdHold = 0; }
+            if (Player.State == "idle" && !playerActionBranchConsumed && !HarpActive && !DashActive && (SourceJustInput != null ? SourceJustInput("shield") : eDown)) { MovePlayerAction(1, true); Player.State = "sDraw"; SdHold = 0; }
             else if (Player.State == "sDraw")
             {
                 SdHold++;

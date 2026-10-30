@@ -30,7 +30,7 @@ namespace Exoduser.UnityPort.Core
         }
         void TickChainSlamInput()
         {
-            if (ChainSkillDelay <= 0 && (HarpActive || DashActive) && Skills.Learned("chainSlam") && (chainWeaponJust || chainShieldJust) && !ChainSlamReady && !ChainAssaultReady)
+            if (ChainSkillDelay <= 0 && (HarpActive || DashActive) && Skills.Learned("chainSlam") && (ChainJust("shield") || ChainJust("weapon")) && !ChainSlamReady && !ChainAssaultReady)
             {
                 int cost = ChainSlamRules.StaminaCost(Skills.Level("chainSlam"));
                 if (Player.Stamina >= cost)
@@ -51,7 +51,8 @@ namespace Exoduser.UnityPort.Core
             ChainSlamWaves.Add(new ChainSlamWave { Id = nextZoneId++, X = Player.X, Y = Player.Y, Angle = ChainSlamAngle,
                 MaxR = ChainSlamRules.Range(lv), HalfWidth = ChainSlamRules.HalfWidth(lv), Element = weapon != null ? weapon.el : 0,
                 Damage = ChainSlamRules.Damage(MeleeReference(), lv, Config.DamageMultiplier, EquippedInventory != null ? EquippedInventory.AffixTotal("skillBoost") : 0, HarpTier) });
-            SbCd = Math.Max(SbCd, 30); combatEHeld = false;
+            SbCd = Math.Max(SbCd, 30); combatEPrev = combatEHeld; // K['KeyE']만 소비하며 KH 홀드는 유지한다.
+            ClearSourceCode("mouse2"); ClearSourceCode("KeyE");
             ReflectChainSlam();
             // 기동불꽃 폭발은 해당 장판 생산자 이식과 함께 검증한다.
         }

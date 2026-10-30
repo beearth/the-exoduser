@@ -6,7 +6,7 @@ using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort {
  // Bridge between the web key-binding state (Core/KeyBindings, web key codes) and Unity input. One shared KeyBindings instance (web: the global BINDS / BINDS2).
  // Unity KeyCode <-> web `event.code` table; Down/Held read the primary and the alternate key of an action (web: _chkJust(BINDS[a]) || _chkJust(BINDS2[a])).
- public static class NativeKeyBindInput {
+ public static partial class NativeKeyBindInput {
   public static readonly KeyBindings Bindings=new KeyBindings();
   static readonly Dictionary<string,KeyCode> toUnity=new Dictionary<string,KeyCode>();
   static readonly Dictionary<KeyCode,string> toWeb=new Dictionary<KeyCode,string>();
