@@ -68,3 +68,14 @@ E 활성값을 maliceSwipe로 정규화하는 것은 원문 `_ensureBaseWingStri
 최종 설치 Unity 참조 독립 컴파일 Core/Runtime 오류0(기존 경고2/17). 관리 변경 뒤 현재 Core로 다시 실행한 save oracle2604/0·skill oracle13216/0, 시작스킬1350·이동540·기검1040·구르기80·적전투900·Q쿨다운20·E경계14 모두0, 기존 SkillSim107/0이다. 의미 있는 새 데이터/원문 회귀와 실제 Player 증거는 구분한다. 근거 management-final-independent-compile, management-product-gates, management-source-oracle, management-legacy-skill-sim. 새 관리 UI 검수기의 최초 독립 컴파일은 private Running setter 접근2건으로 실패했고 기존 접근 제한을 보존한 검수 전용 reflection으로 수정해 오류0을 확인했다.
 
 미습득 정보판은 원문과 같이 습득 버튼만 표시하며 강화 감소·리셋 버튼을 숨긴다. 기존 부분 후보의 수치/영상은 새 소스의 실제 Player 합격 증거로 재사용하지 않는다. 종료 지연은 현재 Native 한 후보와 독립 보스 후보에서도 보고됐다. WCT 읽기는 자기 종료중3개 모두 단일 blocked 노드/순환false였으나 원인 객체는 식별하지 못했다. 권한 토큰/드라이버/시스템 설정/종료 방식 변경0, 새 상시 gfx 플래그 채택0이다. 다음 정상 실행 경계에서 기존 고정 EXE의 GPU batch 대조1회로 숨은 창 경로와 구분할 계획이며 아직 실행하지 않았다.
+
+
+## 2026-10-31 종료 실패 로그의 공유 읽기
+
+`Read-RunLogShared`는 자기 Editor/Player 로그를 Open/Read·FileShare.ReadWrite·UTF-8 BOM 감지로 읽는다. 기존 writer가 열린 상태의 ReadAllText 공유 위반 때문에 종료 실패 영수증 생성까지 중단되는 문제를 분리한다. 파일 쓰기·권한 변경·새 실행·종료 방식은 바꾸지 않으며 성공 조건을 완화하지 않는다. 시간초과/비정상 종료/사용자창/세이브 변경은 기존 그대로 실패이며, 로그를 읽었다고 Player 정상 종료가 되지 않는다.
+
+쓰기 핸들을 유지한 독립 대조군은 기존 읽기 실패→현재 공유 읽기 통과였다. 실제 과거 실패 로그 f3ea160c를 새 실행 없이 재조회했고, 합성 시간초과/잔존 입력의 Finish-Guarded 결과가 ok=false·timedOut=true·exit=-1·잔존1임을 I: 전용 selftest 폴더에서 확인했다. 합성 결과는 전역 unity-jobs/done에 만들지 않았으며 실제 Player/GPU 검수로 세지 않는다. 근거 I:/EXODUSER-Storage/demo-art/gameplay-parity/player-log-share-red, player-log-share-green, player-log-timeout-verdict.
+
+별도로 05:43 GPU batch 시작은 OS PowerShell Operational4100에서 Start-Process Access is denied로 확인됐다. Player 생성0·빈 로그이며 이 reader 수정으로 실행 거부가 해결되는 것은 아니다. 권한 변경·다른 실행 API/경로 재시도는 하지 않는다. 해당 시도는 엔진 batch 동작 판정에 사용할 수 없고, 기존 Native InputShutdown 이후 종료 지연과 구분한다. 근거 combat-final-r2/배치-시작실패-OS이벤트.json·배치-시작후-프로세스.json.
+
+GPU 파서에는 별도로 기존 결함을 정정했다. 파일이 없거나 Renderer 이름이 없으면 메모만 남기고 extraOk=true였던2조건을 false로 바꿨다. 실제 현재 Cmd-Player 파서 블록만 추출한4대조군(파일없음/이름없음/Null/이름있음)은2실패→0이다. 실제 GPU 실행이 아니며, 기존처럼 Null GPU·시간초과·비정상 종료는 실패다. 근거 player-gpu-parser-red/green.

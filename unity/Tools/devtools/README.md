@@ -85,3 +85,14 @@ $wt = 'E:\exoduser-wt\<내 워크트리>'
 - 시작 조건(유니티 총괄 승인 10-28, 실측 근거는 `I:\EXODUSER-Storage\devtools\dt01\RESULT.md`): 커밋 여유 에디터 Library 있음 12GB / Library 없음 20GB / 플레이어 10GB, 동시 실행 1(잠금). `status` 가 이 값과 현재 여유를 함께 출력한다. 프로세스 종료 정리는 자손 + 생성 시각이 같은 프로세스만 한다(pid 재사용으로 남의 프로세스를 건드리지 않음).
 - 빌드 전 필수 영상: `run -Method PortVerification.Build` 또는 `build -Worktree <wt> -Args '-output,<dir>,-receipt,<file>'`(자동으로 `-buildTarget Win64` 추가) 는 Unity 를 띄우기 전에 `restore-lobby-media.cjs`·`restore-warrior-story.cjs` 를 실행하고, `StreamingAssets\Lobby` 필수 영상 9개(각 1MB 이상, buildloop `smoke-rules.json` 의 `requiredMedia` 가 있으면 그 목록)가 하나라도 없으면 실패한다(종료 코드 6, `필수 영상 누락`).
 - 인자 해석 점검: `-DryRun` 은 잠금·Unity·영상 복원 없이 해석된 method/args 만 출력하고 끝난다. 단위 시험: `powershell -File unity\Tools\devtools\selftest\args-test.ps1` (run·player·build × 쉼표/배열/-ArgsJson/-File 14건). `build` 는 인자를 먼저 쪼갠 뒤 `-buildTarget Win64` 를 붙인다(쉼표 형식 `-Args '-output,X,-receipt,Y'` 지원).
+
+
+## 2026-10-31 종료 실패 로그의 공유 읽기
+
+`Read-RunLogShared`는 자기 Editor/Player 로그를 Open/Read·FileShare.ReadWrite·UTF-8 BOM 감지로 읽는다. 기존 writer가 열린 상태의 ReadAllText 공유 위반 때문에 종료 실패 영수증 생성까지 중단되는 문제를 분리한다. 파일 쓰기·권한 변경·새 실행·종료 방식은 바꾸지 않으며 성공 조건을 완화하지 않는다. 시간초과/비정상 종료/사용자창/세이브 변경은 기존 그대로 실패이며, 로그를 읽었다고 Player 정상 종료가 되지 않는다.
+
+쓰기 핸들을 유지한 독립 대조군은 기존 읽기 실패→현재 공유 읽기 통과였다. 실제 과거 실패 로그 f3ea160c를 새 실행 없이 재조회했고, 합성 시간초과/잔존 입력의 Finish-Guarded 결과가 ok=false·timedOut=true·exit=-1·잔존1임을 I: 전용 selftest 폴더에서 확인했다. 합성 결과는 전역 unity-jobs/done에 만들지 않았으며 실제 Player/GPU 검수로 세지 않는다. 근거 I:/EXODUSER-Storage/demo-art/gameplay-parity/player-log-share-red, player-log-share-green, player-log-timeout-verdict.
+
+별도로 05:43 GPU batch 시작은 OS PowerShell Operational4100에서 Start-Process Access is denied로 확인됐다. Player 생성0·빈 로그이며 이 reader 수정으로 실행 거부가 해결되는 것은 아니다. 권한 변경·다른 실행 API/경로 재시도는 하지 않는다. 해당 시도는 엔진 batch 동작 판정에 사용할 수 없고, 기존 Native InputShutdown 이후 종료 지연과 구분한다. 근거 combat-final-r2/배치-시작실패-OS이벤트.json·배치-시작후-프로세스.json.
+
+GPU 파서에는 별도로 기존 결함을 정정했다. 파일이 없거나 Renderer 이름이 없으면 메모만 남기고 extraOk=true였던2조건을 false로 바꿨다. 실제 현재 Cmd-Player 파서 블록만 추출한4대조군(파일없음/이름없음/Null/이름있음)은2실패→0이다. 실제 GPU 실행이 아니며, 기존처럼 Null GPU·시간초과·비정상 종료는 실패다. 근거 player-gpu-parser-red/green.
