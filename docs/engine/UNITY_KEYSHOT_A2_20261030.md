@@ -13,19 +13,19 @@
 | 카메라 구도 | 비A2 LOOK-001 그대로. A2만 pitch38°/distance21u/FOV46.9453°, 공통TargetOffset+(3,0,1.05)u. 3D 표현·조준 역투영은 실제 카메라를 쓰고 Core 논리 카메라는 보존. 실제 현재 구도 미검증 |
 | 독액 | A2ToxicRiver: linear RGB(.30,.32,.045), 거품(.45,.44,.16), emission.1. 저주파 사인속도.12/.08, 법선.035/.025, smoothness.62→거품.16. 접촉깊이.025~.28u. 실제 Editor 분리검사에서 종전 지형 가림·과암부 확정, 개선 후보 GPU 미검증 |
 | 접촉 거품 깊이 | 기존 URP_PC_High/Mac_Balanced의 m_RequireDepthTexture=0 확인. A2 카메라에 requiresDepthTexture=true, 수면은 Transparent 큐/ZWrite On/alpha1로 불투명 지형 깊이 복사 후 샘플. 실제 거품 표현 미검증 |
-| 수로 | A2ForestLayout.Water 단일 경계: z(−94,−30), 동쪽 x>48+1.4sin((z+72)×.22), 지류 |Along|<2.75u·Across(−8.5,20)u의 합집합. 수위−1.25u, 연속 수면 x−30~110/z−100~70u. 바닥 메시에서 수로 삼각형 제거, 잔여 경계 edge를 수위−.3까지 닫은 양면 강둑. 기존 River_/Pool_ 렌더러만 A2에서 숨김. 물가암반9·말뚝5·지류 목질/덤불 연결, r1 Foam_Bank 미사용 |
-| 반영 | Realtime ReflectionProbe/OnAwake/256²×6면·위치(50,GroundY(50,−72)+1,−72)/크기100×50×100u/boxProjection/강도.55/far150u. 실제 GPU 반영 미검증 |
+| 수로 | A2ForestLayout.Water 단일 경계: z(−94,−30), 동쪽 x>48+1.4sin((z+72)×.22), 지류 |Along|<2.75u·Across(−8.5,20)u의 합집합. 수위−1.25u, 연속 수면 x−30~110/z−100~70u. 바닥 메시에서 수로 삼각형 제거, 잔여 경계 edge를 수위−.3까지 닫은 양면 강둑. 기존 River_/Pool_ 렌더러만 A2에서 숨김. 물가암반9·말뚝5·지류 목질/덤불 연결. 전경 거목(53.3,−77)에 반경3.4u/5고리×48분할 침식 섬을 추가, 비보행 수면 차단은 유지. r1 Foam_Bank 미사용 |
+| 반영 | Realtime ReflectionProbe/OnAwake/256²×6면·위치(50,GroundY(50,−72)+1,−72)/크기180×80×260u/boxProjection/강도.55/importance100/far150u. 실제 GPU 반영 미검증 |
 | 횃불 | R3 Bridge_Torch_Holder×.5·8프레임 불꽃/높이1.24u, 위치(40.8,−75.4)/(45.4,−68.2)u. RGB(1,.55,.19)/강도7/반경5u/soft shadow/bias.04/normalBias.1. 받침대만 shadowCastingOff, 과대 고리 그림자 원인분리 확인. 기존 화로 루트 비활성·Pool_Hell광원0 |
-| 분위기 | A2 배경/안개(.15,.18,.21)/Exp²밀도.035/far240u. 환경광 sky(.31,.34,.36)/equator(.20,.22,.20)/ground(.075,.07,.05). 주광2.1/RGB(.77,.83,.88)/회전(54,−32,0)/그림자강도.55. 국소 달빛기둥3개/alpha.065/깊이·가장자리 감쇠. 랜덤 노이즈0 |
+| 분위기 | A2 배경/안개(.15,.18,.21)/Exp²밀도.035/far240u. 환경광 sky(.31,.34,.36)/equator(.20,.22,.20)/ground(.075,.07,.05). 주광2.1/RGB(.77,.83,.88)/회전(54,−32,0)/그림자강도.55. A2 Volume만 노출+.9EV/대비8, 기존ACES·블룸.16 유지. 국소 달빛기둥4개/alpha.12/깊이·가장자리 감쇠. 랜덤 노이즈0 |
 | 임포트 | SourceTextureImporter v3. 기존 keyshot2 진단의 정확7종PBR은 Repeat/mipmap/Trilinear/aniso8/normal·linear. A2는 같은 색공간과Clamp. 공통UI분기 보존 |
 | 기존 바닥 셰이더 | 작업 시작부터 실제 사용 중인 HellGroundPBR.shader가 미추적이고 .meta만 Git에 있음을 확인. 해당 원본 byte를 보존해 필수 런타임 소스로 함께 체크포인트하며 새 시각합격으로 세지 않음 |
 | A2 바닥 | HellGroundPBR._ForestBlend 기본0/A2만1. 기존CC0 토양·돌만 사용. forest=lerp(soil×.9,stone×.6,.28+.2×sweep)×RGB(.75,.65,.48), 표면normal=돌normal, smoothness=.36−.16×rough. 기존skin/비A2 경로와 Core·충돌 불변. 실제 현재 바닥 시각 미검증 |
 | 검은 무늬 | A2에서 이름이 Decals_blood로 시작하는 기존 메시 렌더러만 비활성. 이전 분리진단의 원인 수정이며 원본/충돌 불변 |
 | 촬영 | --unity-steam-keyshot+A2는 기존NativeGame fixture. batch/hidden 모두 GPU 월드RT1920×1080/HUD제외. A2 출발4200:7460, 같은 장소에서 실제 AI·스크립트 입력·생존보조. 적/탄 직접주입0. 일반입장/손조작/HUD 검수와 구분 |
 | 영웅 크기 | R5가 있으면 실제 SkinnedMeshRenderer.BakeMesh 정점 투영으로 측정. 숨긴2D스프라이트 높이를 실제전사 크기로 인용하지 않음. 원래8~11% 촬영검사 유지 |
-| 보행 교차 회귀 | 새 단일 수로 경계와 실제 SourceMap/ch1_map으로152693개 수면 표본 검사: 수정전33266보행겹침·4FAIL → 수정후겹침0·10검사PASS. 다리 중심101점/반경15px·출발4200:7460·중심4320:7180 보행true. 추가 경계는 SourceMap.Blocked에서 보행/직선시야/투사체 공통 적용. 원본 맵 데이터·Core 변경0. layout-check/수정전-FAIL.json, 현재결과.json. 종전 shore-check는 이전 외곽 수면 후보의 이력 |
+| 보행 교차 회귀 | 새 단일 수로 경계와 실제 SourceMap/ch1_map으로152693개 수면 표본 검사: 수정전33266보행겹침·4FAIL → 수정후겹침0·11검사PASS. 다리 중심101점/반경15px·출발4200:7460·중심4320:7180 보행true. 출발점에서14951타일/필드출구3곳 모두 도달. 추가 경계는 SourceMap.Blocked에서 보행/직선시야/투사체 공통 적용. 원본 맵 데이터·Core 변경0. layout-check/수정전-FAIL.json, 현재결과.json. 종전 shore-check는 이전 외곽 수면 후보의 이력 |
 | 종료 | 미디어닫기·효과음정리·1초배출. 보스1100tick 제한 마지막 촬영 분기1099로 교정 |
-| 검증 | Editor 첫 실제 화면 FAIL: 다리 아래 강 부재·수면 지형 가림·중복화로·받침 고리그림자·원근 부족. 원인분리 후 수로/카메라/광원 제작 방법을 변경했다. 최신 독립Core/C#0, 경계10검사PASS. 현재 소스의 Unity컴파일/GPU/실제Player/M1/최종통합/바로가기 미검증. 제작 도중 전사 순번에 정상 반환. 사용자 세이브/guard WIP 보존 |
+| 검증 | Editor 첫 실제 화면 FAIL: 다리 아래 강 부재·수면 지형 가림·중복화로·받침 고리그림자·원근 부족. 원인분리 후 수로/카메라/광원 제작 방법을 변경했다. 최신 독립Core/C#0, 경계11검사PASS. 현재 소스의 Unity컴파일/GPU/실제Player/M1/최종통합/바로가기 미검증. 제작 도중 전사 순번에 정상 반환. 사용자 세이브/guard WIP 보존 |
 
 ## MAP PRODUCTION REPORT
 

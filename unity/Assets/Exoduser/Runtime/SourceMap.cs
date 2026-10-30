@@ -23,7 +23,8 @@ namespace Exoduser.UnityPort
     {
         public readonly MapData Data;
         readonly Func<float,float,bool> additionalBlocked;
-        public SourceMap(MapData data,Func<float,float,bool> additionalBlocked=null)
+        public SourceMap(MapData data):this(data,null) { }
+        public SourceMap(MapData data,Func<float,float,bool> additionalBlocked)
         {
             if(data==null || data.width<=0 || data.height<=0 || data.tileSize<=0 ||
                data.tiles==null || data.tiles.Length!=data.width*data.height)

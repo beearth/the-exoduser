@@ -20,6 +20,11 @@ namespace Exoduser.UnityPort
         {
             if (!A2Requested) return;
             NativeRemodel3D.ForestA2=true;
+            foreach(var root in r3Roots)foreach(var volume in root.GetComponentsInChildren<UnityEngine.Rendering.Volume>(true))
+            {
+                var profile=volume.profile;if(profile==null)continue;
+                UnityEngine.Rendering.Universal.ColorAdjustments tone;if(profile.TryGet<UnityEngine.Rendering.Universal.ColorAdjustments>(out tone)){tone.postExposure.Override(.9f);tone.contrast.Override(8);}
+            }
             foreach(var r in ground.GetComponentsInChildren<MeshRenderer>())
                 if(r.name=="지옥 바닥 PBR 표면")r.sharedMaterial.SetFloat("_ForestBlend",1);
             if (hellEnvironment != null) hellEnvironment.SetActive(false);
@@ -73,7 +78,7 @@ namespace Exoduser.UnityPort
             var reflection=new GameObject("A2 독액 숲 반영");reflection.transform.SetParent(a2Root.transform,false);
             reflection.transform.position=new Vector3(50,NativeRemodel3D.GroundY(50,-72)+1,-72);
             var probe=reflection.AddComponent<ReflectionProbe>();probe.mode=ReflectionProbeMode.Realtime;probe.refreshMode=ReflectionProbeRefreshMode.OnAwake;
-            probe.resolution=256;probe.size=new Vector3(100,50,100);probe.boxProjection=true;probe.intensity=.55f;
+            probe.resolution=256;probe.size=new Vector3(180,80,260);probe.boxProjection=true;probe.intensity=.55f;probe.importance=100;
             probe.clearFlags=ReflectionProbeClearFlags.SolidColor;probe.backgroundColor=new Color(.085f,.115f,.14f);probe.farClipPlane=150;
             RenderSettings.ambientMode=AmbientMode.Trilight;RenderSettings.ambientSkyColor=new Color(.31f,.34f,.36f);
             RenderSettings.ambientEquatorColor=new Color(.20f,.22f,.20f);RenderSettings.ambientGroundColor=new Color(.075f,.07f,.05f);
@@ -98,7 +103,7 @@ namespace Exoduser.UnityPort
         void A2Atmosphere()
         {
             var shader=Shader.Find("EXODUSER/A2Atmosphere");
-            foreach(var p in new[]{new Vector3(34,0,-67),new Vector3(40.5f,0,-61),new Vector3(48,0,-59)})
+            foreach(var p in new[]{new Vector3(37,0,-73),new Vector3(34,0,-67),new Vector3(40.5f,0,-61),new Vector3(48,0,-59)})
             {
                 var ground=p;ground.y=NativeRemodel3D.GroundY(p.x,p.z);var top=ground+new Vector3(-4,13,4.5f);
                 var side=Vector3.Cross((top-ground).normalized,new Vector3(0,Mathf.Sin(NativeRemodel3D.Pitch),-Mathf.Cos(NativeRemodel3D.Pitch))).normalized;
@@ -169,6 +174,7 @@ namespace Exoduser.UnityPort
             mesh.uv=new[]{Vector2.zero,Vector2.right,Vector2.up,Vector2.one};mesh.triangles=new[]{0,2,1,1,2,3};mesh.RecalculateNormals();mesh.RecalculateBounds();
             var river=new GameObject("A2 먼 숲 독액 강");river.transform.SetParent(a2Root.transform,false);river.AddComponent<MeshFilter>().sharedMesh=mesh;
             var rr=river.AddComponent<MeshRenderer>();rr.sharedMaterial=a2Water;rr.shadowCastingMode=ShadowCastingMode.Off;
+            A2Island(ground,53.3f,-77,3.4f,waterHeight);
             for(int i=0;i<9;i++)
             {
                 float z=-79+i*2.6f,x=A2ForestLayout.Shore(z);
@@ -185,6 +191,23 @@ namespace Exoduser.UnityPort
                 A2Module("Moss_Cushion",x+.3f,z,.85f,.8f,.85f,j*47,-.1f);
                 A2Module("Withered_Shrub",x-.4f,z-.2f,.85f,.85f,.85f,j*61);
             }
+        }
+        void A2Island(Terrain ground,float x,float z,float radius,float waterHeight)
+        {
+            // 전경 거목의 비보행 섬. 수면 차단은 그대로여서 장식 섬에 진입할 수 없다.
+            const int rings=5,segments=48;var v=new Vector3[(rings+1)*(segments+1)];var t=new int[rings*segments*6];
+            for(int ring=0;ring<=rings;ring++)for(int col=0;col<=segments;col++)
+            {
+                float u=ring/(float)rings,a=col*Mathf.PI*2/segments,r=radius*u*(1+.10f*Mathf.Sin(a*3)+.08f*Mathf.Cos(a*5));
+                float px=x+Mathf.Cos(a)*r,pz=z+Mathf.Sin(a)*r;
+                float y=Mathf.Lerp(NativeRemodel3D.GroundY(px,pz)-.16f,waterHeight-.25f,Mathf.Pow(u,3));
+                v[ring*(segments+1)+col]=new Vector3(px,y,pz);
+                if(ring==rings||col==segments)continue;int n=ring*(segments+1)+col,k=(ring*segments+col)*6;
+                t[k]=n;t[k+1]=n+1;t[k+2]=n+segments+1;t[k+3]=n+1;t[k+4]=n+segments+2;t[k+5]=n+segments+1;
+            }
+            var mesh=new Mesh{name="A2 거목 아래 침식된 섬"};mesh.vertices=v;mesh.triangles=t;mesh.RecalculateNormals();mesh.RecalculateBounds();
+            var go=new GameObject("A2 전경 거목 접지 섬");go.transform.SetParent(a2Root.transform,false);go.AddComponent<MeshFilter>().sharedMesh=mesh;
+            foreach(var renderer in ground.GetComponentsInChildren<MeshRenderer>())if(renderer.name=="지옥 바닥 PBR 표면"){go.AddComponent<MeshRenderer>().sharedMaterial=renderer.sharedMaterial;break;}
         }
         void A2CutGround(Terrain ground,float waterHeight)
         {
