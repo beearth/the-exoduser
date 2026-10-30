@@ -22,6 +22,12 @@ namespace Exoduser.UnityPort
         public HeroBodyWeight(float side,float forward,float drop,float pelvisYaw,float chestYaw,float chestPitch)
         {Active=true;Side=side;Forward=forward;Drop=drop;PelvisYaw=pelvisYaw;ChestYaw=chestYaw;ChestPitch=chestPitch;}
     }
+    public struct HeroSlamPose
+    {
+        public float HandX,HandY,HandZ,BladeX,BladeY,BladeZ,Lower;
+        public HeroSlamPose(float handX,float handY,float handZ,float bladeX,float bladeY,float bladeZ,float lower)
+        {HandX=handX;HandY=handY;HandZ=handZ;BladeX=bladeX;BladeY=bladeY;BladeZ=bladeZ;Lower=lower;}
+    }
     public sealed class NativeHeroMotionClock
     {
         int lastTick=-1,enteredTick,deathTick,skillTick=-1000,hurtTick=-1000,lastCast,basicCombo;
@@ -96,20 +102,46 @@ namespace Exoduser.UnityPort
         public static HeroBodyWeight BodyWeight(HeroMotionSample sample)
         {
             float t=Clamp(sample.Phase);var zero=new HeroBodyWeight(0,0,0,0,0,0);
-            var slamStart=new HeroBodyWeight(.015f,-.065f,.015f,-3,-3,-18);
-            var slamHit=new HeroBodyWeight(0,.09f,.025f,0,0,22);
-            var slamEnd=new HeroBodyWeight(0,.055f,.020f,1,1,12);
+            var slamImpact=new HeroBodyWeight(0,.09f,.025f,0,0,22);
+            var slamCompressed=new HeroBodyWeight(0,.095f,.030f,1,1,25);
+            var slamRebound=new HeroBodyWeight(0,.04f,.010f,1,1,8);
             switch(sample.Kind)
             {
                 case HeroMotionKind.Swing:return SwingWeight(sample.Combo,t,Clamp(sample.ContactPhase));
                 case HeroMotionKind.Recover:return WeightLerp(SwingWeight(sample.Combo,1,Clamp(sample.ContactPhase)),zero,t);
                 case HeroMotionKind.Bash:return BashWeight(t);
                 case HeroMotionKind.BashRecover:return WeightLerp(BashWeight(1),zero,t);
-                case HeroMotionKind.SlamWindup:return WeightLerp(zero,slamStart,t);
-                case HeroMotionKind.SlamStrike:return t<.35f?WeightLerp(slamStart,slamHit,t/.35f):WeightLerp(slamHit,slamEnd,(t-.35f)/.65f);
-                case HeroMotionKind.SlamRecover:return WeightLerp(slamEnd,zero,t);
+                case HeroMotionKind.SlamWindup:return WeightLerp(slamImpact,slamCompressed,t);
+                case HeroMotionKind.SlamStrike:return WeightLerp(slamCompressed,slamRebound,t);
+                case HeroMotionKind.SlamRecover:return WeightLerp(slamRebound,zero,t);
                 default:return default(HeroBodyWeight);
             }
+        }
+        static HeroSlamPose SlamLerp(HeroSlamPose a,HeroSlamPose b,float t)
+        {
+            t=Smooth(t);float Mix(float x,float y){return x+(y-x)*t;}
+            return new HeroSlamPose(Mix(a.HandX,b.HandX),Mix(a.HandY,b.HandY),Mix(a.HandZ,b.HandZ),Mix(a.BladeX,b.BladeX),Mix(a.BladeY,b.BladeY),Mix(a.BladeZ,b.BladeZ),Mix(a.Lower,b.Lower));
+        }
+        public static HeroSlamPose SlamPose(HeroMotionSample sample)
+        {
+            // Core는 gSlamWindup 진입과 동시에 피해·타격음·파동을 낸다. 상태 이름은 예비 동작이 아니다.
+            var impact=new HeroSlamPose(.04f,1.20f,.38f,0,-.78f,.63f,.10f);
+            var compressed=new HeroSlamPose(.04f,1.17f,.40f,0,-.80f,.60f,.12f);
+            var rebound=new HeroSlamPose(.08f,1.30f,.30f,.04f,-.38f,.92f,.04f);
+            var readyPose=new HeroSlamPose(.24f,1.18f,.23f,.20f,.28f,.94f,0);
+            switch(sample.Kind)
+            {
+                case HeroMotionKind.SlamWindup:return SlamLerp(impact,compressed,sample.Phase);
+                case HeroMotionKind.SlamStrike:return SlamLerp(compressed,rebound,sample.Phase);
+                case HeroMotionKind.SlamRecover:return SlamLerp(rebound,readyPose,sample.Phase);
+                default:return default(HeroSlamPose);
+            }
+        }
+        public static float BladeContactLift(HeroMotionKind kind,float tipHeight,float phase=0)
+        {
+            if(kind!=HeroMotionKind.SlamWindup||float.IsNaN(tipHeight)||float.IsInfinity(tipHeight))return 0;
+            float strength=1-Smooth((Clamp(phase)-.25f)/.75f);
+            return (.01f-tipHeight)*strength;
         }
         public HeroMotionSample Evaluate(HeroMotionInput q)
         {
@@ -141,9 +173,9 @@ namespace Exoduser.UnityPort
                 case "sRecover":s.Kind=HeroMotionKind.BashRecover;s.Phase=Clamp(1-q.RemainingTicks/recoveryLength);break;
                 case "sBash":s.Kind=HeroMotionKind.Bash;s.Phase=Clamp(1-q.RemainingTicks/20f);s.ContactPhase=.4f;break;
                 case "wWindup":case "kiGather":case "sDraw":s.Kind=HeroMotionKind.Charge;s.Phase=Clamp(q.Charge/120f);break;
-                case "gSlamWindup":s.Kind=HeroMotionKind.SlamWindup;s.Phase=Clamp(1-q.RemainingTicks/10f);break;
-                case "gSlam1":s.Kind=HeroMotionKind.SlamStrike;s.Phase=Clamp(1-q.RemainingTicks/10f);break;
-                case "gSlamRecover":s.Kind=HeroMotionKind.SlamRecover;s.Phase=Clamp(1-q.RemainingTicks/12f);break;
+                case "gSlamWindup":s.Kind=HeroMotionKind.SlamWindup;s.Phase=Clamp(1-q.RemainingTicks/10f);s.ContactPhase=0;break;
+                case "gSlam1":s.Kind=HeroMotionKind.SlamStrike;s.Phase=Clamp(1-q.RemainingTicks/10f);s.ContactPhase=0;break;
+                case "gSlamRecover":s.Kind=HeroMotionKind.SlamRecover;s.Phase=Clamp(1-q.RemainingTicks/12f);s.ContactPhase=0;break;
                 case "stagger":case "pStun":s.Kind=HeroMotionKind.Hurt;s.Phase=Clamp((q.Tick-enteredTick)/18f);break;
                 case "sBlock":case "peaceShield":s.Kind=HeroMotionKind.Guard;break;
                 case "iceOrb":s.Kind=HeroMotionKind.Cast;s.Phase=Clamp((q.Tick-enteredTick)/18f);break;
@@ -168,6 +200,8 @@ namespace Exoduser.UnityPort
         HumanPose pose;
         Simulation observedSimulation;
         Transform rightUpper,rightFore,rightHand,leftUpper,leftFore,leftHand,socket;
+        Transform bladeTipTransform;
+        Vector3 bladeTipLocal;
         Transform hips,chest,head,leftThigh,leftShin,leftFoot,rightThigh,rightShin,rightFoot;
         SkinnedMeshRenderer bodyRenderer;
         Mesh rollBakeMesh;
@@ -187,6 +221,11 @@ namespace Exoduser.UnityPort
         public HeroMotionKind MotionKind {get{return current.Kind;}}
         public float MotionPhase {get{return current.Phase;}}
         public int ComboStep {get{return current.Combo;}}
+        public bool TryGetBladeTip(out Vector3 world)
+        {
+            if(bladeTipTransform==null){world=Vector3.zero;return false;}
+            world=bladeTipTransform.TransformPoint(bladeTipLocal);return true;
+        }
 
         void Awake(){Bind();}
         void Bind()
@@ -213,8 +252,26 @@ namespace Exoduser.UnityPort
             poseHandler=new HumanPoseHandler(animator.avatar,animator.transform);
             poseHandler.GetHumanPose(ref pose);
             spineBend=Muscle("Spine Front-Back");chestBend=Muscle("Chest Front-Back");spineTwist=Muscle("Spine Twist Left-Right");chestTwist=Muscle("Chest Twist Left-Right");
+            CacheBladeTip();
             PrepareRollContact();
             ready=true;
+        }
+        void CacheBladeTip()
+        {
+            bladeTipTransform=null;
+            Vector3 axis=-socket.up,origin=socket.position;float furthest=0;
+            foreach(var filter in socket.GetComponentsInChildren<MeshFilter>(true))
+            {
+                var mesh=filter.sharedMesh;if(mesh==null||!mesh.isReadable)continue;
+                var localToWorld=filter.transform.localToWorldMatrix;
+                var vertices=mesh.vertices; // 바인딩 때 한 번만 읽고 실제 끝 정점·Transform만 보존한다.
+                foreach(var vertex in vertices)
+                {
+                    float distance=Vector3.Dot(localToWorld.MultiplyPoint3x4(vertex)-origin,axis);
+                    if(float.IsNaN(distance)||float.IsInfinity(distance)||distance<=furthest)continue;
+                    furthest=distance;bladeTipTransform=filter.transform;bladeTipLocal=vertex;
+                }
+            }
         }
         void PrepareRollContact()
         {
@@ -307,6 +364,11 @@ namespace Exoduser.UnityPort
             var end=new GripPose(new Vector3(.08f,1.14f,.50f),new Vector3(-.12f,.08f,.99f),-.26f,.18f,.06f);
             return progress<.4f?Lerp(start,contact,progress/.4f):Lerp(contact,end,(progress-.4f)/.6f);
         }
+        static GripPose SlamGrip(HeroMotionSample sample)
+        {
+            var key=NativeHeroMotionClock.SlamPose(sample);
+            return new GripPose(new Vector3(key.HandX,key.HandY,key.HandZ),new Vector3(key.BladeX,key.BladeY,key.BladeZ),0,0,key.Lower);
+        }
 
         void LateUpdate()
         {
@@ -332,9 +394,7 @@ namespace Exoduser.UnityPort
                 case HeroMotionKind.Bash:grip=BashPose(t);break;
                 case HeroMotionKind.BashRecover:grip=Lerp(BashPose(1),ReadyPose(),t);break;
                 case HeroMotionKind.Charge:grip=Lerp(ReadyPose(),new GripPose(new Vector3(.08f,1.62f,.02f),new Vector3(.05f,.94f,-.32f),.12f,-.10f,.03f),Mathf.Min(1,.5f+t));break;
-                case HeroMotionKind.SlamWindup:grip=Lerp(ReadyPose(),new GripPose(new Vector3(.05f,1.68f,.08f),new Vector3(0,.96f,-.28f),.18f,0,.025f),t);break;
-                case HeroMotionKind.SlamStrike:grip=Lerp(new GripPose(new Vector3(.05f,1.68f,.08f),new Vector3(0,.96f,-.28f),.18f),new GripPose(new Vector3(.04f,1.25f,.38f),new Vector3(0,-.72f,.69f),-.44f,0,.10f),Mathf.Min(1,t/.35f));break;
-                case HeroMotionKind.SlamRecover:grip=Lerp(new GripPose(new Vector3(.04f,1.25f,.38f),new Vector3(0,-.72f,.69f),-.44f,0,.10f),ReadyPose(),t);break;
+                case HeroMotionKind.SlamWindup:case HeroMotionKind.SlamStrike:case HeroMotionKind.SlamRecover:grip=SlamGrip(current);break;
                 case HeroMotionKind.Guard:grip=new GripPose(new Vector3(.14f,1.25f,.30f),new Vector3(-.18f,.88f,.43f),-.15f,-.12f,.025f);break;
                 case HeroMotionKind.Cast:grip=Lerp(ReadyPose(),new GripPose(new Vector3(.32f,1.20f,.15f),new Vector3(.7f,-.38f,.6f),-.15f,.12f),Mathf.Sin(t*Mathf.PI));twoHands=false;break;
                 case HeroMotionKind.Hurt:grip=Lerp(new GripPose(new Vector3(.20f,1.12f,.18f),new Vector3(.55f,-.40f,.73f),.32f,-.15f,.06f),ReadyPose(),t);break;
@@ -372,6 +432,14 @@ namespace Exoduser.UnityPort
             SolveArm(rightUpper,rightFore,rightHand,desiredHand,transform.right+transform.forward*.25f);
             var desiredBlade=transform.TransformDirection(grip.Blade.normalized);
             rightHand.rotation=Quaternion.FromToRotation(-socket.up,desiredBlade)*rightHand.rotation;
+            if(current.Kind==HeroMotionKind.SlamWindup&&TryGetBladeTip(out var bladeTip))
+            {
+                // 첫10틱의 접점만 실제 칼끝으로 맞춘다. 원래 손 목표에서 매번 재계산하여 누적하지 않는다.
+                float height=Vector3.Dot(bladeTip-transform.position,transform.up);
+                desiredHand+=transform.up*NativeHeroMotionClock.BladeContactLift(current.Kind,height,current.Phase);
+                SolveArm(rightUpper,rightFore,rightHand,desiredHand,transform.right+transform.forward*.25f);
+                rightHand.rotation=Quaternion.FromToRotation(-socket.up,desiredBlade)*rightHand.rotation;
+            }
             BlendArm(rightUpper,rightFore,rightHand,rightBaseUpper,rightBaseFore,rightBaseHand,weight);
             var leftBaseUpper=leftUpper.localRotation;var leftBaseFore=leftFore.localRotation;var leftBaseHand=leftHand.localRotation;
             if(twoHands)
