@@ -128,3 +128,20 @@
 ## 2026-10-30 사용자 최우선 수정 — 타이틀 메뉴
 
 메뉴 글자가 거의 보이지 않던 원인은 GUI.color에 남은 구분선 알파0.1이며, 각 글자 직전에 Color.white 복원·Linear 글자 채널 보정을 적용한다. 로고 그림자 뒤 복원도 유지한다. Hahmlet300·18px·자간2.52px·(116,436)·380×48 배치는 그대로다. 선택은 붉은 배경/발광점 대신 (행왼쪽+13,중심y−0.5)의16×1px 은빛 #e6e3dc/알파0.6 헤어라인과 밝은 문자 #f2f0ec만 사용한다. 웹 index.html도 같은 규칙의 별도 제작 후보를 만든다. 웹 현행 §17-2에 따라 인장 ENTER는 옛 intro.mp4를 건너뛰고 canonical WorldMovie로 직결하며 오래된 문 영상 단계로 되돌리지 않는다. 최신 실제 빌드·1920/1x·M1·바탕화면 결과는 I:/EXODUSER-Storage/demo-art/unity-ui/title-priority-2026-10-30T01-19-03-079Z/REPORT.md에 기록한다. 코드 생성만으로 완료로 세지 않는다.
+
+### 최우선 타이틀 실제 마감 근거
+
+| 항목 | 정확 후보·결과 |
+|---|---|
+| 제품 입력 | 7eacb120b016008b219a039588ce396dc5f917e8, Unity tree a3e6ed33bfd313c5b8fa78103fea14ee1cbdadd3 |
+| 빌드 | 510c4322,6000.6.7f1 Win64 x64,Succeeded/errors0 |
+| 첫인상 | 790d5292,21/21,일반판3행·5직업·안내4단계·인장1920/3840 |
+| 전체M1 | 53970f75,23/23·32프레임,실제 NativeGame/API·가속 Simulation.Tick이며 OS손조작 아님 |
+| 키·첫 흐름 | 8211c6e7,Up/Down/W/S 순환·기타키무시·Enter→인장→WorldIntro·Escape5초→Lobby. 자연 영상 끝까지 시청과 별개 |
+| 실행 안전 | 세 Player 모두D3D11 RX9070XT·정상종료0·사용자창0·잔여0·USER_SAVE0 |
+| Runtime SHA256 | 3b3c61e4f9e45ab5108295437e4f60e20bb2d128bc9ed721f7c17bd344724742 |
+| Core SHA256 | b3f0374290192fee3d81339641f7d4e5e1014bd47c7201548a40d8316cf228ce |
+| 웹 비교 | d22ce8bd1 제작 후보에 동일 은빛 수정만 적용. 일반판 빌드타깃을 맞춘1920 원본+1x,레이아웃/원화 변경 없는 QA 타이틀 노출 훅. 페이지 오류0 |
+| 직접 판정 | 메뉴 글자 매몰·붉은 띠/점 핵심 결함 해소. 같은 크기 구도/행/서체/색의 큰 차이0, 글리프 래스터/70ms 선택시간 등 미세 차이는 남음. 전체게임/실시간3D무대는 RETOUCH 유지 |
+
+근거 폴더: I:/EXODUSER-Storage/demo-art/unity-ui/title-priority-2026-10-30T01-19-03-079Z/. 타이틀 title_lobby_compare_title_1920.png·title_lobby_compare_menu_1x.png를 직접 확인했다. H5 코드 후보는 main 게시와 구분하며 정상 공통 소스·일반 바로가기 최종 readback은 같은 폴더의 전달 영수증으로 확인한다.
