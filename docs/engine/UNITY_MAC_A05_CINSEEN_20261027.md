@@ -63,3 +63,7 @@ QA 진입 후보는 기존 **고유 Settings QA 앱**의 product `EXODUSER Setti
 ## 2026-10-30 PC 진입 누락 재현 진행
 
 사용자 바탕화면 빌드642e31d2e는 설정의 cinSeen:true 때문에 FDG·타이틀·인장을 모두 건너뛴다. 사용자 설정은 읽기만 하고 I:/EXODUSER-Storage/demo-art/entry-flow/before-sandbox에 복사했다. 일반 QA는 설정 I/O를 끄므로 --unity-entry-flow-capture는 명시 격리 사본을 실제 codec/store로 읽고 초기 분기 직전에 완료 표식만 공급한다. 1600×900·1초 간격90장, --entry-flow-keys에서만 10초 이후 메뉴 Enter·25초 이후 인장 Enter·65초 이후 Escape 홀드를 주입한다. OS 손조작 검수와 구분한다. 재현 수집기 커밋 efb364ad2는 기존 시작 분기를 유지한다. 후속 수정은 일반 시작에서 완료 표식을 무시하고 명시 --unity-quick-start만 로비 직행을 허용한다. 실제 초기 분기를 독립 C#로 컴파일해 재방문·신규·명시 직행·유사 문자열·격리 인자6개를 검사했고 수정 전4FAIL→수정 후6PASS다. 결과·수정·전달 상태는 같은 출력의 REPORT.md로 연결한다.
+
+## 2026-10-30 PC 진입 복구 검수
+
+제품6623d4bc1/Unity treef89621c27195a2fa945441dda3c84dc05072a0b2. 빌드fee06a3f/errors0, 재방문true의 실제90장7d564908에서 FDG0~4→타이틀5~10→인장11~25→세계관26~69→로비70~89초·영상오류0. 회귀6/6, M1c2af5c8d23/23·정상exit0, 두 실행 창/잔여/USER_SAVE0. 실제전체/1x·동일크기 인장 비교를 직접 확인해 진입 누락 복구 범위PASS. 촬영은LobbyKeys 주입·격리사본이며 OS손조작/세계관 전체 자연종료·청음·Mac 검수와 구분한다. I:/EXODUSER-Storage/demo-art/entry-flow/REPORT.md·grid_after.png·인장_웹_Unity_동일크기.png.

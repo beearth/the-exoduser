@@ -175,3 +175,7 @@ HUD의 미착수 빌드 대기 한 건만 취소하고(타팀 잠금 보존), �
 독립컴파일 판정 정정: 최초 PS 반환0에는 실제 DLL이 없어 성공 근거로 인정하지 않는다. Unity SDK Roslyn4.10을 직접 호출해 같은 Player RSP를 컴파일, 기존 경고만 있고 오류0·출력DLL1125376바이트를 확인했다(phase2/최종후보-독립컴파일/실제출력_영수증.json). 정식Player7ed4d7c1 오류0 근거와 분리한다.
 
 현재 마감 경계: 최신1cac2ed24/Runtime8d1326d5… 정식빌드7ed4d7c1 오류0·batch ae4294bf M123/23 정상종료. hidden -force-gfx-st는 실제NonThreaded 적용됐지만 player-74731c77.log 공유 IOException/exit1. HUD/일시정지 실화면/1x 미검증으로 전체 RETOUCH/HOLD, 일반 검수 창 허용 응답 대기. 정상 바로가기 누락을 발견해 검증된 settings-r4/source2584e36e4/Runtime0c808de4…로만 복구·4속성 확인. 새 후보 채택/자동게임실행0. 상세 한국어보고 phase2/REPORT.md 및 승인대기검수초안.
+
+## 2026-10-30 진입 복구 후보의 후속 통합 검수
+
+007568f94를593c6fde5에서 정상 병합해 기존2584e36e4·스킬ef75f883e를 함께 포함했다. 최종 제품6623d4bc1/빌드fee06a3f 오류0, 실제 첫90초·동일크기 인장·메뉴1x·M1c2af5c8d23/23 정상종료·창/잔여/USER_SAVE0. HUD/상태판은 실제24PNG(1920/1600),검사8/8·1x 직접 확인, 실행기4a8a5e58 창/잔여/USER_SAVE0. 진입 누락 복구 범위PASS, 전체UI/환경RETOUCH 유지. 추가 일시정지 캡처는 실행 전 커밋 여유6→3.4GiB로10GiB게이트 미달, 자기대기만취소·타인종료0·기준완화0이므로 미검증이다. 사용자브리프의 최신UI포함·필수진입/M1게이트와 기존RETOUCH기술통합 정책에 따른 인수이며 일시정지 시각PASS로 올리지 않는다. 근거 I:/EXODUSER-Storage/demo-art/entry-flow/REPORT.md.
