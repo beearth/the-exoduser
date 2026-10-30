@@ -96,7 +96,7 @@
 
 산출물 REPORT.md와 원본-보조자료-영향검증.json에 보조 자료의 적용 범위·실행별 차이를 기록한다. 자동 입력/격리 전투 상태의 비교이며 OS 손조작·자연 전체 플레이·Mac·전체 게임 아트 합격을 주장하지 않는다.
 
-### 최종 후보 판정
+### 이전 정렬 보정 후보 판정
 
 | 항목 | 근거 |
 |---|---|
@@ -106,3 +106,21 @@
 직접1x판정:8방향의 조준·비행·중심 앵커, 시전중 조준변경, Lv3 성장과 폭발 전층 생성·소멸을 확인했다. 원본 시트/꼬리/폭발 연결 및 동작 결함 해소 확인. **VISUAL VERDICT: RETOUCH** — 웹2D와 현행 Unity3D의 투영·후처리에 따른 구체/폭발의 화면 크기·밝기·색 차이는 남는다. 픽셀 동일·전체 VFX/맵/캐릭터 AAA 아트 PASS로 확대하지 않는다. 밀집 적탄 가독성·자연 손조작·Mac은 이번 격리 입력 시험의 검증 범위가 아니다. 기존3D공통 상태를 보존하며 기능 반영과 시각 완성을 구분한다.
 
 비교 산출물: `악의구-전수-비교.html`(입력별1x·20fps), `웹-Unity-악의구-32입력-비교.mp4`(3200×948, 각 월드1600×900·상단표제48px·20fps·1470프레임·73.5초). 웹3사례 보완 영수증을 구분하며 영상 인코딩 종료0·ffprobe 규격을 확인했다.
+
+### 악의구 꼬리 색 공간 명시 후속
+
+Unity LineRenderer는 applyActiveColorSpace 옵션으로 Linear 렌더링 때 GPU 전달 색을 변환한다([공식 API](https://docs.unity.com/ko-kr/engine/6000.3/script-reference/unityengine/linerenderer), [공식 Inspector 소스](https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/Inspector/LineRendererEditor.cs)). 악의구는 이미 colors[i].linear를 전달하므로 이 옵션을 false로 명시해 이중 변환 가능성을 제거한다. 실제 새 컴포넌트의 기본 옵션은 Player 영수증 maliceTrailDefaultColorSpace로 기록한다. 다른 스킬 LineRenderer·전역 색 공간·톤매핑은 변경하지 않는다. 4fedb6a3f 공통은 앞선 검수본이고 일반 바로가기는 아직 entry-flow를 유지한다. 취소 조회 때는 자기 래퍼42148만 보였으나 그 뒤 Unity가 시작되어 취소 가드가 거부했다. 반환값 확인 전에 소스 편집을 이어간 실수로8a90970a는 Editor/Player 클래스 구조 불일치(exit2) 실패했다. 이 출력은 채택/전달하지 않는다. 소스 고정 후 새 출력에서 검수하며 타인 티켓/Unity·기존 일반 바로가기는 변경0.
+
+### 최종 색 공간 보정 검수
+
+| 항목 | 최종 근거 |
+|---|---|
+| 고정 후보 |제품a20c48665·문서정정0ccf6db905c6954e7cfd44ce21c0a6c3de49521f, Unity tree56ddb39f9eb2d8f00d088e8e53429ac99cc8f72e |
+| 컴파일/빌드 |독립Runtime 오류0·정식3bee61cf Succeeded/컴파일0오류. 고정 소스 이후 Player/M1 종료까지 runtime 수정0 |
+| 실제 색 변환 |4cf51f92 영수증의 새 LineRenderer 기본 applyActiveColorSpace=true 확인. 명시적 .linear와 겹치던 변환을 악의구 전용에서 false로 고정해 한 번만 변환. 원본/전/후1x 꼬리에서 파란 기운→원본 보라색 복귀 확인 |
+| 실제 입력 |4cf51f92 D3D11 RX9070XT,32사례129/129·4390틱·1470PNG·정상exit0·창/잔여/USER_SAVE0, 원본좌표대조32사례차이0 |
+| 실제 M1 |3bbd8569 같은 DLL·23/23·정상exit0·창/잔여/USER_SAVE0. 두 최종Player 로그 예외/셰이더오류0 |
+| 식별 |Runtime6a6ce52d982cbfbc29107fec264a24b239b0ac8e1c0e97e5bf1696074a021bbc, Coreadf65e41bfa315c1cbdfb208c1e449459d3d90c3d543561905b0916d5e3b2fba |
+| 최종 비교 |player-color 기준 HTML·1x8방향·시전회전·성장·폭발 직접확인. 새 동일크기 영상20fps/1470프레임/73.5초, 이전609 영상별도보존. 꼬리-색공간-1x.png에 원본/전/후를1배율로 보존 |
+
+시전 방향·원본 꼬리/구체/폭발 연결과 파란 꼬리 결함은 해소 확인. 원본20프레임 구체의 샘플 위상과 웹2D/Unity3D 투영·후처리는 같지 않으며 전체VFX/맵/캐릭터 시각은 RETOUCH로 유지한다. 공통 반영·통합빌드·일반 바로가기 전달은 같은 Unity tree/DLL과 별도 완료 영수증으로 확인한다.

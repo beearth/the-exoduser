@@ -14,6 +14,7 @@ namespace Exoduser.UnityPort
         public static Vector3 MalicePosition(float x, float y) { return Point(x, y) + (NativeRemodel3D.Active ? Vector3.up * .25f : Vector3.zero); }
         readonly Sprite[][] maliceBurstFrames = new Sprite[3][];
         readonly List<MaliceBurst> maliceBursts = new List<MaliceBurst>();
+        public static bool MaliceTrailDefaultColorSpace { get; private set; }
         readonly Dictionary<long, int> maliceSparkCells = new Dictionary<long, int>();
         Simulation maliceSim;
         public int ActiveMaliceBursts { get { return maliceBursts.Count; } }
@@ -34,6 +35,8 @@ namespace Exoduser.UnityPort
             {
                 var go = new GameObject("웹 악의구 리본 " + i); go.transform.SetParent(item.go.transform, false);
                 var line = go.AddComponent<LineRenderer>(); lines[i] = line;
+                MaliceTrailDefaultColorSpace = line.applyActiveColorSpace;
+                line.applyActiveColorSpace = false; // colors[i].linear로 한 번만 변환한다.
                 line.useWorldSpace = false; line.numCapVertices = 0; line.numCornerVertices = 0;
                 line.sharedMaterial = malice; line.startColor = line.endColor = colors[i].linear;
             }
