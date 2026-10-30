@@ -15,6 +15,10 @@ namespace Exoduser.UnityPort
         readonly Dictionary<int, Item> zones = new Dictionary<int, Item>(), waves = new Dictionary<int, Item>(), blades = new Dictionary<int, Item>(), orbs = new Dictionary<int, Item>();
         readonly Dictionary<int, List<Vector3>> orbTrails = new Dictionary<int, List<Vector3>>();
         readonly List<int> stale = new List<int>();
+        // 웹 강타 wave/flash는 Core 점을 중심으로 그린다. 캐릭터용 발끝 lift 대상이 아니다.
+        static readonly HashSet<SpriteRenderer> centeredSlamSprites = new HashSet<SpriteRenderer>();
+        public static bool IsCenteredSkillSprite(SpriteRenderer sprite) { return IsCenteredMaliceSprite(sprite) || centeredSlamSprites.Contains(sprite); }
+        static void ForgetCenteredSlamSprites(Item item) { centeredSlamSprites.Remove(item.a); centeredSlamSprites.Remove(item.b); }
         // The web draws fire zones in the world layer, then the dynamic lighting pass (game.html _renderLighting, line 55344) darkens them; Unity has no such overlay. Factor measured web|Unity capture 2026-10-28.
         const float WebLitHolyDome = .11f;
         // Web lighting presses the ring band (.62~.90 r) down to almost 0, so the two rings are practically invisible there (web|Unity capture 10-28).
@@ -137,7 +141,7 @@ namespace Exoduser.UnityPort
             stale.Clear(); foreach (var k in waves.Keys) stale.Add(k);
             foreach (var w in sim.SlamWaves)
             {
-                stale.Remove(w.Id); Item it; if (!waves.TryGetValue(w.Id, out it)) { it = NewItem("slam" + w.Id); waves[w.Id] = it; it.a = NewRenderer(it, "wave", slamFrames[0], addFlat == null ? add : add, -18900); it.b = NewRenderer(it, "flash", disc, alpha, -18890); }
+                stale.Remove(w.Id); Item it; if (!waves.TryGetValue(w.Id, out it)) { it = NewItem("slam" + w.Id); waves[w.Id] = it; it.a = NewRenderer(it, "wave", slamFrames[0], addFlat == null ? add : add, -18900); it.b = NewRenderer(it, "flash", disc, alpha, -18890); centeredSlamSprites.Add(it.a); centeredSlamSprites.Add(it.b); }
                 ActiveWaves++; it.go.transform.position = Point(w.X, w.Y);
                 if(w.Bash){UpdateBashWave(it,w);continue;}
                 float wp = w.T / (float)w.MaxT, fadeA = wp < .62f ? 1f : Mathf.Max(0, (1 - wp) / .38f);
@@ -199,13 +203,13 @@ namespace Exoduser.UnityPort
         }
         void Drop(Dictionary<int, Item> map, List<int> ids)
         {
-            foreach (int id in ids) { ForgetMaliceSprites(map[id]); UnityEngine.Object.Destroy(map[id].go); map.Remove(id); }
+            foreach (int id in ids) { ForgetMaliceSprites(map[id]); ForgetCenteredSlamSprites(map[id]); UnityEngine.Object.Destroy(map[id].go); map.Remove(id); }
         }
 
         public void Reset()
         {
             ResetMaliceBursts(); ResetQeVisuals();
-            foreach (var m in new[] { zones, waves, blades, orbs }) { foreach (var it in m.Values) { ForgetMaliceSprites(it); UnityEngine.Object.Destroy(it.go); } m.Clear(); }
+            foreach (var m in new[] { zones, waves, blades, orbs }) { foreach (var it in m.Values) { ForgetMaliceSprites(it); ForgetCenteredSlamSprites(it); UnityEngine.Object.Destroy(it.go); } m.Clear(); }
             if (orb != null) orb.go.SetActive(false);
             orbTrails.Clear(); ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0;
         }
