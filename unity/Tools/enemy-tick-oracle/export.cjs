@@ -88,6 +88,7 @@ function updateE(e,sp){__rec('updateE',e,sp);}
 function _T(s){__rec('T',s);return s;}
 function addTxt(x,y,s,c,l){__rec('addTxt',x,y,s,c,l);}function addParts(x,y,c,n){__rec('addParts',x,y,c,n);}
 var SFX={block:function(){__rec('sfxBlock');}};function shake(n){__rec('shake',n);}
+function _playTell(){} // 예고음은 상태/수치 하니스의 음향 범위 밖이다.
 function playSample(n,v,r){__rec('playSample',n,v,r);}function _r(a,b){__rec('r',a,b);return a+b*0.5;}
 var performance={now:function(){__rec('now');if(__ci>=__clock.length)throw new Error('clock exhausted');return __clock[__ci++];}};`,ctx);
 for(const b of blocks)vm.runInContext(b,ctx);

@@ -26,7 +26,7 @@ namespace Exoduser.UnityPort {
         }
 
         void DrawCrystalsPage(int level,CombatPower power){
-            GUI.DrawTexture(new Rect(42,182,1836,858),crBase,ScaleMode.StretchToFill,false);
+            NativeUiAudit.DrawTexture(new Rect(42,182,1836,858),crBase,ScaleMode.StretchToFill,false);
             HandleCrystalsInput();
             DrawCrEquipment();
             DrawCrTexts();
@@ -41,27 +41,27 @@ namespace Exoduser.UnityPort {
         void DrawCrEquipment(){
             float top=CrList.y+4-crScroll;
             // web overflow:auto clips the list (untransformed quads only: IMGUI groups are fine without rotation)
-            GUI.BeginGroup(CrList);float ox=-CrList.x,oy=-CrList.y;   // group-local coordinates
+            NativeUiAudit.BeginGroup(CrList);float ox=-CrList.x,oy=-CrList.y;   // group-local coordinates
             // portrait spans columns 1-3 and rows 1-5 of the grid, below the cards
-            GUI.DrawTexture(new Rect(1165.8f+ox,top+(497.2f-329.4f)+oy,504.4f,834.1f),crPortrait,ScaleMode.StretchToFill,true);
+            NativeUiAudit.DrawTexture(new Rect(1165.8f+ox,top+(497.2f-329.4f)+oy,504.4f,834.1f),crPortrait,ScaleMode.StretchToFill,true);
             for(int i=0;i<State.Equipped.Length&&i<crCol.Length;i++){
                 var it=State.Equipped[i];
                 float x=995+crCol[i]*CrColPitch,y=top+crRow[i]*CrRowPitch;
                 if(y>CrList.yMax||y+CrCard<CrList.y)continue;
                 x+=ox;y+=oy;
                 // frame stills carry a 14px margin (card + shadow)
-                GUI.DrawTexture(new Rect(x-14,y-14,190,194),it!=null?crCardItem:crCardEmpty,ScaleMode.StretchToFill,true);
+                NativeUiAudit.DrawTexture(new Rect(x-14,y-14,190,194),it!=null?crCardItem:crCardEmpty,ScaleMode.StretchToFill,true);
                 var icon=new Rect(x+2,y+2,158.8f,158.8f);
                 if(it!=null){
                     // .inv-cr-equipment-icon filter brightness(.62) saturate(.85) x item skin brightness(1.15)
-                    var tex=i==15?crOssSkin:IconFor(it);var old=GUI.color;GUI.color=new Color(.71f,.69f,.66f,1f);GUI.DrawTexture(icon,tex,ScaleMode.ScaleToFit,true);GUI.color=old;
+                    var tex=i==15?crOssSkin:IconFor(it);var old=GUI.color;GUI.color=new Color(.71f,.69f,.66f,1f);NativeUiAudit.DrawTexture(icon,tex,ScaleMode.ScaleToFit,true);GUI.color=old;
                     SkinFrame(icon,it.rarity);
                 }else{
                     Serif(new Rect(x,y,CrCard,CrCard),"—",11,C(158,161,161,.35f),false,0,TextAnchor.MiddleCenter);
                 }
                 Serif(new Rect(x+1,y+3,CrCard-2,13),crSlotNames[i],11,it!=null?C(208,205,199):C(208,205,199,.35f),false,.275f,TextAnchor.MiddleCenter,true);
             }
-            GUI.EndGroup();
+            NativeUiAudit.EndGroup();
             DrawCrScrollbar();
         }
 

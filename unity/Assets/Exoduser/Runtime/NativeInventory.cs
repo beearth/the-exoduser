@@ -59,7 +59,7 @@ namespace Exoduser.UnityPort {
             if(ok){changed();if(Open)AfterOwnershipChange();}return ok;
         }
         void Init(){if(ready)return;ready=true;InitDockStyles();}
-        static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
+        static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
         static void Border(Rect r,Color c){Fill(new Rect(r.x,r.y,r.width,1),c);Fill(new Rect(r.x,r.yMax-1,r.width,1),c);Fill(new Rect(r.x,r.y,1,r.height),c);Fill(new Rect(r.xMax-1,r.y,1,r.height),c);}
         public void Draw(int level,PlayerState player,Action close){
             if(!Open)return;Init();bool enabled=GUI.enabled;try{if(Event.current.isKey)Event.current.Use();GUI.enabled=enabled&&Navigation.Focused&&!Navigation.WaitingForRelease;DrawDock(level,player,close);}finally{GUI.enabled=enabled;}

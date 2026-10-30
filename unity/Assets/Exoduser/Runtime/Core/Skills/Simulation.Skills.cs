@@ -430,7 +430,7 @@ namespace Exoduser.UnityPort.Core
                     double len = Math.Sqrt(moveX * moveX + moveY * moveY);
                     if (len > 0)
                     {
-                        float ms = Player.Speed * .35f;
+                        float ms = (Player.Speed + BootMoveSpeed) * .35f;
                         float nx = Player.X + (float)(moveX / len) * ms, ny = Player.Y + (float)(moveY / len) * ms;
                         if (Pass(nx, Player.Y, Player.Radius)) Player.X = nx; if (Pass(Player.X, ny, Player.Radius)) Player.Y = ny;
                     }

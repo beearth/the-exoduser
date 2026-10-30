@@ -165,6 +165,7 @@ namespace Exoduser.UnityPort.Core
         {
             d = 0;
             if (Truthy(e._lessonEnemy) && c.ParryLessonActive) return true;
+            e._tellS = e.s; // 음향 재생은 주입 계층 소유, 상태 마커는 원본과 같은 틱에 기록한다.
             // telegraph timer
             if (Gt0(e._telegraphT)) { e._telegraphT -= sp; e._telegraphR = e.r + 20; }
             // push out of a wall

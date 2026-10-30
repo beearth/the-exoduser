@@ -300,8 +300,8 @@ namespace Exoduser.UnityPort.Core
             bool sinkDruid = IsSi0DruidSink(c, e) && !(Gt0(e._reviveTimer) && Truthy(e._bossRevived) && (e._bossRevRoll ?? 1) < Or(e._bossRevChance, 0));
             // _druidSinkStart(e): since web 05d519db7 / 2c3c380ec it also plays the sink sound (_playDruidSfx = playSample with a _r pitch), sets G._druidFled and says the sink0 line
             if (sinkDruid) { c.PlaySample("druid_sink", .55, Rnd(c, 1, .04)); e._sinkDruid = true; c.DruidFled = true; e._corpseSpawned = true; c.DruidSink = new EnemyDruidSink { x = e.x, y = e.y, r = e.r, t = 0 }; c.BossLine("sink0"); }
-            // [STY-12] si1~3 보스 마지막 사망 한 줄 (web 481482e72, after the fce195067 port)
-            else if (e.ib && !Truthy(e._fmKind) && c.Stage >= 1 && c.Stage <= 3 && !IsDruidFinale(c, e) && !(Gt0(e._reviveTimer) && Truthy(e._bossRevived) && (e._bossRevRoll ?? 1) < Or(e._bossRevChance, 0)))
+            // 최신 원본은 스테이지 범위를 제한하지 않고 대사 키가 있는 보스를 표시한다.
+            else if (e.ib && !Truthy(e._fmKind) && !IsDruidFinale(c, e) && !(Gt0(e._reviveTimer) && Truthy(e._bossRevived) && (e._bossRevRoll ?? 1) < Or(e._bossRevChance, 0)))
                 c.BossLine("die" + JsNumber(c.Stage));
             // 버스트루프 광역 사망음 카운터
             bool isBurnT = Truthy(isBurnDeath);

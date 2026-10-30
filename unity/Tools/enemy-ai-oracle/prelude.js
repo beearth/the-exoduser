@@ -27,3 +27,6 @@ function _spawnBossProjectile(e,p){if(e&&!e.ib&&!p.friendly&&(p.vx||p.vy)){__rec
  __rec('zone',p.x,p.y,p.life,p.sz,p.dmg,p.web?'web':p.trap?'trap':p.iceZone?'iceZone':p.blizzard?'blizzard':'?',p.el);return null;}
 function _druidFinaleUpdate(){return false;}function _bossPhaseCheck(){}function _bossIdleMove(){}function _bossAI(){}function _recycleProj(){}
 function playVFXAng(){}function _isKiCharging(){return false;}function _isFused(){return false;}function pDotDur(){return 1}function pDotDmg(){return 1}
+
+// 예고음은 기존 playSample처럼 이 전투 상태 하니스의 음향 범위 밖이다.
+function _playTell(){}

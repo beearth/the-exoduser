@@ -39,9 +39,9 @@ namespace Exoduser.UnityPort
                 foreach(var r in layout.Requests){if(r.Box.Width<=0)continue;var f=r.Notice;float age=(Time.unscaledTime-f.Last)/f.Life,alpha=age<.8f?1:Mathf.Clamp01((1-age)*5);
                     style.fontSize=f.Priority>=3?26:24;var rect=new Rect(r.Box.X,r.Box.Y,r.Box.Width,r.Box.Height);
                     style.normal.textColor=new Color(0,0,0,alpha);
-                    foreach(var o in new[]{new Vector2(-2,0),new Vector2(2,0),new Vector2(0,-2),new Vector2(0,2),new Vector2(-1,-1),new Vector2(1,1)})GUI.Label(new Rect(rect.x+o.x,rect.y+o.y,rect.width,rect.height),f.DisplayText,style);
+                    foreach(var o in new[]{new Vector2(-2,0),new Vector2(2,0),new Vector2(0,-2),new Vector2(0,2),new Vector2(-1,-1),new Vector2(1,1)})NativeUiAudit.Label(new Rect(rect.x+o.x,rect.y+o.y,rect.width,rect.height),f.DisplayText,style);
                     Color ink=Color.white;if(f.Numeric){Color raw;if(!ColorUtility.TryParseHtmlString(f.Color,out raw))raw=Color.white;ink=Color.Lerp(raw,Color.white,.55f);}else if(f.Priority>=3)ink=new Color(1,.96f,.78f);
-                    ink.a=alpha;style.normal.textColor=ink;GUI.Label(rect,f.DisplayText,style);
+                    ink.a=alpha;style.normal.textColor=ink;NativeUiAudit.Label(rect,f.DisplayText,style);
                 }
             }finally{GUI.color=color;style.normal.textColor=textColor;style.fontSize=size;style.alignment=alignment;style.fontStyle=fontStyle;style.wordWrap=wrap;}
         }
@@ -62,7 +62,7 @@ namespace Exoduser.UnityPort
             }
             t.SetPixels32(px); t.Apply(); vignette = t; return t;
         }
-        static void Fill(Rect r, Color c) { var old = GUI.color; GUI.color = c; GUI.DrawTexture(r, Texture2D.whiteTexture); GUI.color = old; }
+        static void Fill(Rect r, Color c) { var old = GUI.color; GUI.color = c; NativeUiAudit.DrawTexture(r, Texture2D.whiteTexture); GUI.color = old; }
 
         // P.s === 'fallen': st2 counts 300 -> 0. Called with the GUI matrix of the 1920x1080 design space.
         GUIStyle labelStyle, bigStyle;
@@ -73,7 +73,7 @@ namespace Exoduser.UnityPort
             float prog = Mathf.Clamp01(p.StateTicks / 300f), dead = 1 - prog, pulse = .5f + Mathf.Sin(Time.unscaledTime * 8f * .5f) * .5f;
             int sec = Mathf.CeilToInt(Mathf.Max(0, p.StateTicks) / 60f);
             Fill(new Rect(0, 0, 1920, 1080), new Color(.067f, 0, 0, .25f + dead * .35f));
-            { var old = GUI.color; GUI.color = new Color(.5f, 0, 0, Mathf.Clamp01(.4f + dead * .45f + pulse * .08f)); GUI.DrawTexture(new Rect(0, 0, 1920, 1080), Vignette(), ScaleMode.StretchToFill); GUI.color = old; } // radial vignette, edges darker red
+            { var old = GUI.color; GUI.color = new Color(.5f, 0, 0, Mathf.Clamp01(.4f + dead * .45f + pulse * .08f)); NativeUiAudit.DrawTexture(new Rect(0, 0, 1920, 1080), Vignette(), ScaleMode.StretchToFill); GUI.color = old; } // radial vignette, edges darker red
             Fill(new Rect(0, 0, 1920, 1080), new Color(.67f, 0, 0, (.04f + dead * .1f) * pulse));
             float cx = 960, cy = 1080 * .42f; var panel = new Rect(cx - 140, cy - 52, 280, 88);
             Fill(panel, new Color(0, 0, 0, .78f));
@@ -82,11 +82,11 @@ namespace Exoduser.UnityPort
             label.alignment = TextAnchor.MiddleCenter; big.alignment = TextAnchor.MiddleCenter;
             label.fontSize = 22; label.normal.textColor = new Color(1f, .8f, .67f, .9f);
             string power = p.FallenCanRevive ? (English ? "Revive Power " : "부활력 ") + Fmt(p.FallenReviveChance) + "%" : (English ? "Cannot Revive" : "부활 불가");
-            GUI.Label(new Rect(cx - 140, cy - 46, 280, 30), power, label);
+            NativeUiAudit.Label(new Rect(cx - 140, cy - 46, 280, 30), power, label);
             big.fontSize = 56; big.normal.textColor = sec <= 1 ? new Color(1, .2f, .2f) : sec <= 2 ? new Color(1, .47f, .27f) : new Color(1, .8f, .27f);
-            GUI.Label(new Rect(cx - 140, cy - 20, 280, 64), sec + "s", big);
+            NativeUiAudit.Label(new Rect(cx - 140, cy - 20, 280, 64), sec + "s", big);
             label.fontSize = 18; label.normal.textColor = new Color(.8f, .53f, .4f, .5f + pulse * .2f);
-            GUI.Label(new Rect(cx - 140, cy + 14, 280, 22), English ? "Fallen..." : "쓰러짐...", label);
+            NativeUiAudit.Label(new Rect(cx - 140, cy + 14, 280, 22), English ? "Fallen..." : "쓰러짐...", label);
             float bw = 480, bx = cx - bw / 2, by = 1080 * .85f;
             Fill(new Rect(bx, by, bw, 8), new Color(.13f, 0, 0, .7f));
             Fill(new Rect(bx, by, bw * prog, 8), sec <= 1 ? new Color(1, .13f, .13f, .85f) : new Color(1, .4f, .27f, .85f));

@@ -25,8 +25,8 @@ namespace Exoduser.UnityPort {
     if(list==null||!show)return;GUI.depth=-1000;
     var old=GUI.matrix;float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
-    GUI.color=new Color(.04f,.04f,.045f,1f);GUI.DrawTexture(Pane,Texture2D.whiteTexture);GUI.color=Color.white;
-    GUI.BeginGroup(Pane);list.Draw(new Vector2(ListX-Pane.x,ListY-scroll-Pane.y),new Rect(0,0,Pane.width,Pane.height));GUI.EndGroup();
+    GUI.color=new Color(.04f,.04f,.045f,1f);NativeUiAudit.DrawTexture(Pane,Texture2D.whiteTexture);GUI.color=Color.white;
+    NativeUiAudit.BeginGroup(Pane);list.Draw(new Vector2(ListX-Pane.x,ListY-scroll-Pane.y),new Rect(0,0,Pane.width,Pane.height));NativeUiAudit.EndGroup();
     list.DrawToasts();
     GUI.matrix=old;
    }
