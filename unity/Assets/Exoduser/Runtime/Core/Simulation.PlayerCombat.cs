@@ -42,11 +42,13 @@ namespace Exoduser.UnityPort.Core
             bool qDown = combatQHeld && !combatQPrev, eDown = combatEHeld && !combatEPrev;
             if (SbCd > 0) SbCd--;
             if (SbParryT > 0 && Player.State != "sBlock") SbParryT--;   // release window counts down by itself (12 frames)
+            // 원본 _tryKiSlashQCancel: 기검 3타 자세는 Q 홀드로도 즉시 취소하며 그 틱은 이동하지 않는다.
+            bool kiCancel = Config.ActiveAttack == "kiSlash" && (Player.State == "wWindup" || Player.State == "wSwing" || Player.State == "wRecover") && combatQHeld;
             // ---- Q: shield / parry ----
-            if ((Player.State == "idle" || Player.State == "sRecover") && qDown && SbCd <= 0)   // web sRecover: Q cancels the recovery into the shield
+            if (((Player.State == "idle" || Player.State == "sRecover") && qDown || kiCancel) && SbCd <= 0)   // web sRecover: Q cancels the recovery into the shield
             {
                 var s = new ParryRules.SBlockState { Mp = Player.Mana, Mmp = Player.MaxMana, S = Player.State };
-                if (ParryRules.SBlockEnter(ref s, CapeParry, ShieldCdRed)) { MovePlayerAction(Player.State == "idle" ? 1 : 0, true); Player.Mana = (float)s.Mp; Player.State = "sBlock"; Player.StateTicks = 999; SbParryT = s.SbParryT; SbHoldT = 0; SbReleaseR = 0; SbCd = s.SbCd; }
+                if (ParryRules.SBlockEnter(ref s, CapeParry, ShieldCdRed)) { if (kiCancel && Player.KiChargeActive) CancelKiCharge(); MovePlayerAction(Player.State == "idle" ? 1 : 0, true); Player.Mana = (float)s.Mp; Player.State = "sBlock"; Player.StateTicks = 999; SbParryT = s.SbParryT; SbHoldT = 0; SbReleaseR = 0; SbCd = s.SbCd; }
             }
             else if (Player.State == "sBlock")
             {

@@ -27,3 +27,11 @@ export-qe.cjs는 현재 웹 _autoShieldThrow와 파동 판정 식을 직접 실�
 원문 e.boss/ib 구분 검사까지 현재 실제 실행 경계는14개다. 보통 ib 보스에 e.boss의 포이즈30 분기를 임의 적용하지 않는다.
 
 export-hud-bindings.cjs는 현재 웹 CSS의13개 위치와 _slotSkId를 그대로 실행한다. --hud-bindings <oracle.json> <결과.json>은 아이콘·실제키·클릭 의미창·E쿨다운18검사를 수행한다.
+
+| 추가 검사 | 실제 원본·입력 |
+|---|---|
+| --qe-upgrade 원본JSON 출력JSON | export-qe-upgrade.cjs의 원본 _skCtx/_skLearnUp 실행1,470사례, 합체 강화 가능·구성원·SP |
+| --ki-growth 원본JSON 출력JSON | export-ki-upgrade.cjs의 원본210사례, 강화·실제 실행레벨·저장 Codec 왕복1,470검사 |
+| --combo-trace 웹JSON 장비JSON 출력JSON | capture-web-combo.cjs의 실제 웹 update1,040틱, 3타 홀드119/159/210틱·110틱째 Q취소. 자세/타이머/자원/충전/콤보/검기피해·수명·반경 정확, 위치 .05px/자원 .005 허용 |
+
+capture-web-combo.cjs는 현재 브리프의 고정 원본 로컬서버3344와 I:기준 원문 묶음, readonly 실제 미디어를 사용한다. node로 서버를 별도 격리 저장 디렉터리에서 실행하고 HTTP game.html SHA를 확인한 뒤 exo-unity.ps1 browser로만 실행한다. headless·mute·SwiftShader, 실제 게임 loop를 멈춘 통제 update이며 자연 전투/OS 손조작이 아니다. -combo-parity 1 Player는 기존 FixedUpdate에 같은 Input System 장치를 주고260틱×4 입력과 각3틱마다348장을 남긴다.

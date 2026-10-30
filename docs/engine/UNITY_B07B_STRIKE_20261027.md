@@ -38,3 +38,5 @@ B07 Core(`UNITY_B07_CORE_20261026.md` §6 "구현하지 않은 것")의 후속. 
 ## 2026-10-31 무료 기본 불꽃칼날 후속
 
 현재 _ensureBaseWingStrike·_autoShieldThrow·합체 파동·Q/E 원본 표시의 후속 구현과 검수 경계는 [UNITY_QE_BASE_FUSION_20261031.md](UNITY_QE_BASE_FUSION_20261031.md)를 따른다. 이 문서의 과거 미이식 표기는 해당 새 게이트에서만 대체한다. 무지개탄 Q 전용 규칙은 유지한다.
+
+2026-10-31 정정: 현재 기검3타 자세의 Q홀드 취소도 원본 _tryKiSlashQCancel에 연결했다. wWindup/wSwing/wRecover·MP10·Q쿨0에서 그 틱 이동 없이 sBlock 진입, 충전 중이면 충전/콤보0이다. 원본 실제 update와1,040틱 차이0. 상세 근거와 같은 Player 게이트는 [Q/E·기검 정합](UNITY_QE_BASE_FUSION_20261031.md)을 따른다.
