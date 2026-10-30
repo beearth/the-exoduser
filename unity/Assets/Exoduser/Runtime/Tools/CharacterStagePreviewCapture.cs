@@ -34,7 +34,7 @@ namespace Exoduser.UnityPort.Tools
    {
     language=code;lobby.SetLanguage(code);Screen.SetResolution(width,width*9/16,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.45f);
     lobby.CloseCharacterCreation();yield return null;Add("생성열기 "+width+code,lobby.OpenCharacterCreation());
-    for(int visual=0;visual<5;visual++){Add("선택 "+width+code+visual,lobby.ChooseCharacterVisual(visual));yield return Shot("캐릭터선택"+visual);var stage=lobby.CharacterStage;Add("실제RT "+width+code+visual,stage!=null&&stage.Ready&&stage.Output!=null&&stage.RenderedFrames>0,stage?.Error??"무대 없음");Add("전사1명/잠금 "+width+code+visual,stage.HeroVisible==(visual==0));if(visual>0)Add("잠금 생성차단 "+width+code+visual,!lobby.ConfirmCharacterVisual()&&lobby.CharacterStageStep==1);}
+    for(int visual=0;visual<5;visual++){Add("선택 "+width+code+visual,lobby.ChooseCharacterVisual(visual));yield return Shot("캐릭터선택"+visual);var stage=lobby.CharacterStage;Add("실제RT "+width+code+visual,stage!=null&&stage.Ready&&stage.Output!=null&&stage.RenderedFrames>0,stage?.Error??"무대 없음");Add("전사1명/잠금 "+width+code+visual,stage.HeroVisible==(visual==0));if(visual==0){var pose=stage.Measure();Add("실제 신체높이 "+width+code,Mathf.Abs(pose.bodyHeight-1.85f)<.04f,pose.bodyHeight.ToString());Add("실제 전면축 "+width+code,pose.frontalDot>.9f,pose.frontalDot.ToString());}if(visual>0)Add("잠금 생성차단 "+width+code+visual,!lobby.ConfirmCharacterVisual()&&lobby.CharacterStageStep==1);}
     lobby.ChooseCharacterVisual(0);yield return new WaitForSecondsRealtime(.2f);
     // 기존 키보드 이동/Tab/Enter와 Escape 경로를 실제 핸들러에 전달한다.
     yield return Key(KeyCode.RightArrow,"visual-icon-0");Add("키보드 다음직업 "+width+code,lobby.CharacterStageVisual==1);

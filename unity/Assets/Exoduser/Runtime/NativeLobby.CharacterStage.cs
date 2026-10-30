@@ -53,7 +53,7 @@ namespace Exoduser.UnityPort
   const int Layer=28;
   [Serializable] public sealed class MaterialSpec {public string name;public float[] color,emission;public float metallic,roughness,normalScale;public int albedo,normal,metalRough;}
   [Serializable] public sealed class StageSpec {public int schema,sourceNodes,meshGroups,triangles,vertices;public string sourceSha256;public MaterialSpec[] materials;}
-  [Serializable] public sealed class PoseSample {public float time,leftSole,rightSole;public Vector3 leftFoot,rightFoot,bladeTip,heroPosition;public bool bladePresent;public string motion;}
+  [Serializable] public sealed class PoseSample {public float time,leftSole,rightSole,bodyHeight,frontalDot;public Vector3 leftFoot,rightFoot,bladeTip,heroPosition;public bool bladePresent;public string motion;}
   public NativeLobby Owner {get;private set;}
   public bool Ready {get;private set;}
   public string Error {get;private set;}="";
@@ -67,7 +67,7 @@ namespace Exoduser.UnityPort
   readonly Dictionary<int,Texture2D> textures=new Dictionary<int,Texture2D>();
   readonly List<Light> lights=new List<Light>();
   GameObject stageRoot;Material[] materials;NativeHeroMotion motion;Animator animator;Simulation idle;
-  Transform footL,footR,heroPivot,breathingChest;Mesh baked;int poseWarmup;bool fitted;float started;
+  Transform footL,footR,heroPivot,breathingChest;Mesh baked;int poseWarmup;bool fitted,oriented;float started;
   public Vector3 Origin {get{return new Vector3(10000,0,10000);}}
   public void Initialize(NativeLobby owner)
   {
@@ -196,17 +196,20 @@ namespace Exoduser.UnityPort
    if(breathingChest!=null)breathingChest.localRotation*=Quaternion.Euler(Mathf.Sin((Time.unscaledTime-started)*1.5f)*.8f,0,0);
    if(!fitted&&poseWarmup++>=2){float low=100,high=-100;foreach(var r in Hero.GetComponentsInChildren<SkinnedMeshRenderer>(true)){r.BakeMesh(baked);foreach(var p in baked.vertices){float y=r.transform.TransformPoint(p).y;low=Mathf.Min(low,y);high=Mathf.Max(high,y);}}
     float height=high-low;if(height<.5f||height>5)throw new InvalidDataException("실제 전사 높이 범위 "+height);heroPivot.localScale*=1.85f/height;fitted=true;}
+   if(fitted&&!oriented){Vector3 front=BodyForward();var hips=animator.GetBoneTransform(HumanBodyBones.Hips);Vector3 toward=StageCamera.transform.position-hips.position;toward.y=0;toward=Quaternion.Euler(0,-12,0)*toward;
+    if(front.sqrMagnitude<.01f||toward.sqrMagnitude<.01f)throw new InvalidDataException("전사 전면 축 미충족");heroPivot.rotation=Quaternion.FromToRotation(front.normalized,toward.normalized)*heroPivot.rotation;oriented=true;}
    var pose=Measure();float sole=Mathf.Min(pose.leftSole,pose.rightSole);if(sole> -2&&sole<3)heroPivot.position+=Vector3.up*(.48f-sole);
   }
   void OnRendered(ScriptableRenderContext context,Camera camera){if(camera==StageCamera)RenderedFrames++;}
+  Vector3 BodyForward(){var r=animator.GetBoneTransform(HumanBodyBones.RightUpperArm);var l=animator.GetBoneTransform(HumanBodyBones.LeftUpperArm);var h=animator.GetBoneTransform(HumanBodyBones.Head);var hip=animator.GetBoneTransform(HumanBodyBones.Hips);Vector3 f=Vector3.Cross(r.position-l.position,h.position-hip.position);f.y=0;return f.normalized;}
   public PoseSample Measure()
   {
    var row=new PoseSample{time=Time.unscaledTime-started,heroPosition=Hero==null?Vector3.zero:Hero.transform.position-Origin,motion=motion==null?"":motion.MotionKind.ToString()};if(Hero==null||footL==null||footR==null)return row;
-   row.leftFoot=footL.position-Origin;row.rightFoot=footR.position-Origin;row.leftSole=row.rightSole=100;
-   foreach(var r in Hero.GetComponentsInChildren<SkinnedMeshRenderer>(true)){if(!r.enabled)continue;r.BakeMesh(baked);foreach(var p in baked.vertices){var w=r.transform.TransformPoint(p)-Origin;
+   row.leftFoot=footL.position-Origin;row.rightFoot=footR.position-Origin;row.leftSole=row.rightSole=100;float low=100,high=-100;var target=StageCamera==null?Vector3.forward:StageCamera.transform.position-animator.GetBoneTransform(HumanBodyBones.Hips).position;target.y=0;row.frontalDot=Vector3.Dot(BodyForward(),target.normalized);
+   foreach(var r in Hero.GetComponentsInChildren<SkinnedMeshRenderer>(true)){if(!r.enabled)continue;r.BakeMesh(baked);foreach(var p in baked.vertices){var w=r.transform.TransformPoint(p)-Origin;low=Mathf.Min(low,w.y);high=Mathf.Max(high,w.y);
     if(new Vector2(w.x-row.leftFoot.x,w.z-row.leftFoot.z).sqrMagnitude<.04f&&w.y<row.leftFoot.y+.05f)row.leftSole=Mathf.Min(row.leftSole,w.y);
     if(new Vector2(w.x-row.rightFoot.x,w.z-row.rightFoot.z).sqrMagnitude<.04f&&w.y<row.rightFoot.y+.05f)row.rightSole=Mathf.Min(row.rightSole,w.y);
-   }}row.bladePresent=motion.TryGetBladeTip(out var tip);row.bladeTip=tip-Origin;return row;
+   }}row.bodyHeight=high-low;row.bladePresent=motion.TryGetBladeTip(out var tip);row.bladeTip=tip-Origin;return row;
   }
   void OnDisable(){if(stageRoot!=null)stageRoot.SetActive(false);}
   void OnDestroy(){RenderPipelineManager.beginCameraRendering-=PrepareHero;RenderPipelineManager.endCameraRendering-=OnRendered;if(Output!=null){Output.Release();Destroy(Output);}if(stageRoot!=null)Destroy(stageRoot);foreach(var o in owned)if(o!=null)Destroy(o);}
