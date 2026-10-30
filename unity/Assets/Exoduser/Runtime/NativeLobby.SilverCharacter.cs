@@ -62,9 +62,7 @@ namespace Exoduser.UnityPort
         }
         void SilverCornerPanel(Rect r)
         {
-            Fill(r,new Color(8/255f,9/255f,10/255f,.88f));
-            Image(new Rect(r.x,r.y,120,80),silverCornerTop,ScaleMode.StretchToFill);
-            Image(new Rect(r.xMax-120,r.yMax-80,120,80),silverCornerBottom,ScaleMode.StretchToFill);
+            NativeSilverHellUi.Panel(r,28,8);
         }
         void DrawSilverScene(Rect box,int i)
         {
@@ -166,8 +164,11 @@ namespace Exoduser.UnityPort
             }
             bool prior=GUI.enabled;
             Rect cancel=new Rect(x,h-84,180,44),create=new Rect(x+200,h-84,180,44);
-            Image(cancel,silverVisualCancel,ScaleMode.StretchToFill);
-            Image(create,locked?silverVisualDisabled:silverVisualCreate,ScaleMode.StretchToFill);
+            var cancelPlate=new Rect(cancel.x+8,cancel.y,cancel.width-16,cancel.height);
+            var createPlate=new Rect(create.x+8,create.y,create.width-16,create.height);
+            NativeSilverHellUi.ActionPlate(cancelPlate,false,cancel.Contains(Event.current.mousePosition)?1:0,!AutomatedInput&&cancel.Contains(Event.current.mousePosition)&&ExoInput.Mouse(0));
+            var actionTint=GUI.color;if(locked)GUI.color=new Color(actionTint.r*.45f,actionTint.g*.45f,actionTint.b*.45f,actionTint.a);
+            NativeSilverHellUi.ActionPlate(createPlate,!locked,create.Contains(Event.current.mousePosition)&&!locked?1:0,!AutomatedInput&&create.Contains(Event.current.mousePosition)&&ExoInput.Mouse(0));GUI.color=actionTint;
             GUI.SetNextControlName("visual-cancel");
             SilverLabel(cancel,CharacterDialogLabel("cancel",K("취소","CANCEL")),silverVisualAction,TextAnchor.MiddleCenter);if(GUI.Button(cancel,"",GUIStyle.none))CloseCharacterCreation();
             GUI.enabled=prior&&!locked;
