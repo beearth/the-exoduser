@@ -43,5 +43,18 @@ namespace Exoduser.UnityPort
             return (ground-.16f)*(1-u*u*u)+(WaterLevel-.25f)*(u*u*u);
         }
         public static bool BlockedCore(float x,float y) { float wx=x/100,wz=-y/100;return Water(wx,wz)&&!Bridge(wx,wz)||Trunk(wx,wz); }
+        public static bool SolidCore(float x,float y) { return Trunk(x/100,-y/100); }
+        // 물가의 높은 수직 단면을 침식 경사로 잇는다. 통행 다리의 기존 높이는 보존한다.
+        public static float BankHeight(float x,float z,float ground)
+        {
+            if(z<=-94||z>=-30||Water(x,z)||Bridge(x,z))return ground;
+            float d=Shore(z)-x;
+            float u=Math.Abs(Along(x,z))-2.75f,w=Across(x,z);
+            float end=Math.Max(-8.5f-w,w-20);
+            float branch=(float)Math.Sqrt(Math.Max(0,u)*Math.Max(0,u)+Math.Max(0,end)*Math.Max(0,end))+Math.Min(Math.Max(u,end),0);
+            d=Math.Min(d,branch);
+            float t=Math.Max(0,Math.Min(1,d/2));t=t*t*(3-2*t);
+            return (WaterLevel+.22f)*(1-t)+ground*t;
+        }
     }
 }

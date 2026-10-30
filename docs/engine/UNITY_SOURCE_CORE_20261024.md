@@ -1,6 +1,6 @@
 # Unity 원본 기반 기본 무기·기검참 코어 — 2026-10-24
 
-> 2026-10-31 A2 표현 경로 보충: 기존 `SourceMap(MapData)` 생성자를 보존하고 `SourceMap(MapData, Func<float,float,bool> additionalBlocked)`를 추가했다. 선택 경계는 `Blocked` 입구에서 검사하며 비A2는 null로 기존 질의를 보존한다. A2만 승인 다리 아래 수로와 새 거목을 `A2ForestLayout.BlockedCore`로 보행·시야·투사체에 같이 적용하며, 원본 JSON과 Core 전투 코드는 변경하지 않는다. 경계 수치·회귀·실제 화면 상태는 `UNITY_KEYSHOT_A2_20261030.md`를 따른다. 수치 회귀 통과를 시각·Player 검수 통과로 해석하지 않는다.
+> 2026-10-31 A2 표현 경로 보충: 기존 `SourceMap(MapData)` 생성자를 보존하고 `SourceMap(MapData, Func<float,float,bool> additionalBlocked)`를 추가했다. 선택 경계는 `Blocked` 입구에서 검사하며 비A2는 null로 기존 질의를 보존한다. A2만 `A2ForestLayout.BlockedCore`로 수로/다리/거목 보행을, 세 번째 콜백 `SolidCore`로 거목 시야/투사체 경계를 적용하며, 원본 JSON과 Core 전투 코드는 변경하지 않는다. 경계 수치·회귀·실제 화면 상태는 `UNITY_KEYSHOT_A2_20261030.md`를 따른다. 수치 회귀 통과를 시각·Player 검수 통과로 해석하지 않는다.
 
 사용자 최신 지시에 따라 Godot를 보존하고 Unity도 비교 시험한다. 최종 엔진 선택은 미확정이다. 이 문서는 Unity용 순수 C# 코어의 실제 구현 범위와 검증을 기록한다. Godot 파일, 웹 게임 코드, 세이브는 수정하지 않았다. 초기 license 차단 뒤 부모가 실제 Editor import/compile/asset 검사를 통과했다. Windows Player/시각/수동 플레이는 별도 게이트다. 아래 .NET 검사와 전체 이식 완료를 혼동하지 않는다.
 
@@ -99,3 +99,6 @@ Unity 이식 후보의 원본 기본 공격 모드는 `SourceStarterFixture.Crea
 ### 2026-10-31 선택 지형의 미니맵 일치
 
 SourceMap.DisplayTile(x,y)는 원본 타일을 반환하며, 선택적 additionalBlocked가 타일 중심을 차단할 때만1(비보행)로 표시한다. NativeFieldHud의 기존 원형 미니맵은 이 값을 사용한다. 비A2의 원본 타일 색/모양은 그대로이며 A2 수면을 길로 표시하던 불일치를 고쳤다. 수로/다리/비A2 표시 회귀3검사 통과, 원본 MapData와 JSON 변경0.
+
+### 2026-10-31 A2 촬영·낮은 수로 회귀
+A2 SourceMap3인수 생성자에서 보행 경계와 투사체 경계를 분리한다. 기존1/2인수 계약은 보존. ProjectileBlocked는 기본JSON/타일/언덕/타원+추가실벽을 조회하며 LineOfSight와 Simulation.IsProjectileWall이 사용한다. 수면은 이동만 차단, 거목은 이동·시야·탄 모두 차단. Core 전투/JSON 변경0. 25경계/높이/출구/앵글러 회귀PASS.

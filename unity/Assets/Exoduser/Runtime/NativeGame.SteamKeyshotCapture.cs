@@ -8,7 +8,7 @@ namespace Exoduser.UnityPort
 {
     public sealed partial class NativeGame
     {
-        [Serializable] sealed class KeyshotFrame { public string name; public int tick, enemies, projectiles; public bool arena, remodel; public float heroHeight01, cameraFov; public Vector3 heroWorld,cameraWorld,bossCenter,bossSize; }
+        [Serializable] sealed class KeyshotFrame { public string name; public int tick, enemies, projectiles; public bool arena, remodel; public float heroHeight01, cameraFov,luminance=-1; public Vector3 heroWorld,cameraWorld,bossCenter,bossSize; }
         [Serializable] sealed class KeyshotReceipt { public string scope="실제 NativeGame·격리 세이브·직접 입장·생존 보조·스크립트 입력. 적/탄 직접 주입 없음. 손 조작 검수와 구분"; public List<KeyshotFrame> frames=new List<KeyshotFrame>(); public bool passed; }
         IEnumerator SteamKeyshotCapture()
         {
@@ -80,7 +80,7 @@ namespace Exoduser.UnityPort
                     if(tick==1099)yield return KeyshotSave(output,"03-드루이드",receipt);
                 }
             }
-            receipt.passed=receipt.frames.Count==3&&receipt.frames.TrueForAll(f=>f.heroHeight01>=.08f&&f.heroHeight01<=.11f)&&receipt.frames[1].projectiles>=3&&receipt.frames[2].projectiles>=6;
+            receipt.passed=receipt.frames.Count==3&&receipt.frames.TrueForAll(f=>f.heroHeight01>=.08f&&f.heroHeight01<=.11f&&(!A2Requested||f.luminance>.01f))&&receipt.frames[1].projectiles>=3&&receipt.frames[2].projectiles>=6;
             File.WriteAllText(Path.Combine(output,"검수.json"),JsonUtility.ToJson(receipt,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);
             Application.Quit(receipt.passed?0:3);
@@ -114,7 +114,7 @@ namespace Exoduser.UnityPort
                 var low=playerView.transform.TransformPoint(new Vector3(0,(y0-s.pivot.y)/s.pixelsPerUnit,0));var high=playerView.transform.TransformPoint(new Vector3(0,(y1+1-s.pivot.y)/s.pixelsPerUnit,0));h=Mathf.Abs(camera.WorldToViewportPoint(high).y-camera.WorldToViewportPoint(low).y);Destroy(tex);
             }
             // 전사 R5 이후 숨긴 2D 스프라이트가 아닌 실제 현재 스킨 메시로 높이를 판정한다.
-            if(heroView!=null&&heroView.Ready&&camera!=null)
+            if(NativeRemodel3D.Active&&heroView!=null&&heroView.Ready&&camera!=null)
             {
                 float low=float.MaxValue,high=float.MinValue;
                 foreach(var renderer in heroView.Model.GetComponentsInChildren<SkinnedMeshRenderer>())
@@ -126,7 +126,7 @@ namespace Exoduser.UnityPort
                 if(high>=low)h=high-low;
             }
             receipt.frames.Add(new KeyshotFrame{name=name,tick=Simulation.TickCount,enemies=Simulation.Enemies.Count,projectiles=KeyshotActiveShots(Simulation.Stage.InArena),arena=Simulation.Stage.InArena,remodel=NativeRemodel3D.Active,heroHeight01=h,cameraFov=camera.fieldOfView,heroWorld=playerView.transform.position,cameraWorld=camera.transform.position,bossCenter=druidBody!=null?druidBody.Bounds.center:Vector3.zero,bossSize=druidBody!=null?druidBody.Bounds.size:Vector3.zero});
-            if(Application.isBatchMode||A2Requested)A2CaptureFrame(Path.Combine(output,name+".png"));else ScreenCapture.CaptureScreenshot(Path.Combine(output,name+".png"));yield return null;yield return new WaitForSecondsRealtime(.4f);
+            if(Application.isBatchMode||A2Requested)receipt.frames[receipt.frames.Count-1].luminance=A2CaptureFrame(Path.Combine(output,name+".png"));else ScreenCapture.CaptureScreenshot(Path.Combine(output,name+".png"));yield return null;yield return new WaitForSecondsRealtime(.4f);
         }
     }
 }

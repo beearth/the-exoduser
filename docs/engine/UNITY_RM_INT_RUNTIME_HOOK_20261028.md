@@ -402,7 +402,7 @@ VISUAL VERDICT: RETOUCH — 독립 조립 시연, 실제 게임 미검증. 회�
 
 ## 2026-10-31 A2 수로 구조 재작업
 
-A2에서만 SourceMap 생성 시 선택적 additionalBlocked= A2ForestLayout.BlockedCore를 전달한다. Blocked·CanMove·LineOfSight 및 기존 투사체 벽 delegate가 같은 수로 경계를 쓰며, 원본 ch1_map byte와 비A2 생성자 호출의 동작은 보존한다. Core 변경은 없다. 수면·다리 수치와152693표본/101점 회귀 근거는 UNITY_KEYSHOT_A2_20261030.md가 SSOT다. A2 카메라만38°/18u/TargetOffset+(3,0,.6), 비A2 LOOK-001 그대로다. Editor 첫 화면은 FAIL이며 새 구조의 Player/GPU/M1은 미검증이다.
+A2에서만 SourceMap 생성 시 선택적 additionalBlocked= A2ForestLayout.BlockedCore를 전달한다. Blocked·CanMove는 수로/거목, LineOfSight·ProjectileBlocked는 세 번째 SolidCore 콜백의 거목 경계를 쓰며, 원본 ch1_map byte와 비A2 생성자 호출의 동작은 보존한다. Core 변경은 없다. 수면·다리 수치와99910표본/101점 회귀 근거는 UNITY_KEYSHOT_A2_20261030.md가 SSOT다. A2 카메라만38°/18u/TargetOffset+(3,0,.6), 비A2 LOOK-001 그대로다. Editor 첫 화면은 FAIL이며 새 구조의 Player/GPU/M1은 미검증이다.
 
 ## R5 전달 이후 야간 한 건 — 중심형 강타 앵커
 
@@ -411,3 +411,6 @@ A2에서만 SourceMap 생성 시 선택적 additionalBlocked= A2ForestLayout.Blo
 ### A2 원본 진행 경로 보호
 
 수로는 북동쪽으로 굽어 남동 고정앵글러(148,150)를 덮지 않는다. 기존 위치/전투/원본MapData는 유지하고, 새 수로/거목 경계만 SourceMap 선택 콜백으로 반영한다. 단순 출구 BFS에 더해 네 앵글러 모두300px 내 도달/시야를 검사했으며 현재20검사PASS다. 상세식·숫자·실제 현재화면 판정은 A2 SSOT를 따른다.
+
+### 2026-10-31 A2 촬영·낮은 수로 회귀
+A2 이전824b67a99 실제빌드599c790b/M1dab0f945 23단계 통과, 촬영adc6e95f 검정3장FAIL. 현재 URP SingleCameraRequest 촬영/평균휘도>.01 검정방지, 비활성스킨 측정 제외, 침식BankHeight2u/수면+.22u, 실제CC0PineRoots2종 및 지면접합 낙엽, Linear안개14~64u로 재작업. 현재 GPU/M1 증거로 이전빌드를 재사용하지 않음.

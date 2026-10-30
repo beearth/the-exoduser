@@ -23,14 +23,17 @@ namespace Exoduser.UnityPort
     {
         public readonly MapData Data;
         readonly Func<float,float,bool> additionalBlocked;
+        readonly Func<float,float,bool> additionalProjectileBlocked;
         public SourceMap(MapData data):this(data,null) { }
-        public SourceMap(MapData data,Func<float,float,bool> additionalBlocked)
+        public SourceMap(MapData data,Func<float,float,bool> additionalBlocked):this(data,additionalBlocked,additionalBlocked) { }
+        public SourceMap(MapData data,Func<float,float,bool> additionalBlocked,Func<float,float,bool> additionalProjectileBlocked)
         {
             if(data==null || data.width<=0 || data.height<=0 || data.tileSize<=0 ||
                data.tiles==null || data.tiles.Length!=data.width*data.height)
                 throw new ArgumentException("Invalid original map data");
             Data=data;
             this.additionalBlocked=additionalBlocked;
+            this.additionalProjectileBlocked=additionalProjectileBlocked;
         }
         public bool CanMove(float x,float y,float radius)
         {
@@ -49,13 +52,17 @@ namespace Exoduser.UnityPort
             if(!Finite(x0)||!Finite(y0)||!Finite(x1)||!Finite(y1))return false;
             double dx=x1-x0,dy=y1-y0;
             int steps=Math.Max(1,(int)(Math.Sqrt(dx*dx+dy*dy)/16));
-            for(int i=1;i<steps;i++) if(Blocked(x0+(x1-x0)*i/steps,y0+(y1-y0)*i/steps)) return false;
+            for(int i=1;i<steps;i++) if(ProjectileBlocked(x0+(x1-x0)*i/steps,y0+(y1-y0)*i/steps)) return false;
             return true;
         }
         public bool Blocked(float x,float y)
+        { return BlockedWith(x,y,additionalBlocked); }
+        public bool ProjectileBlocked(float x,float y)
+        { return BlockedWith(x,y,additionalProjectileBlocked); }
+        bool BlockedWith(float x,float y,Func<float,float,bool> extra)
         {
             if(!Finite(x)||!Finite(y)||x<0||y<0||x>=Data.width*Data.tileSize||y>=Data.height*Data.tileSize)return true;
-            if(additionalBlocked!=null&&additionalBlocked(x,y))return true;
+            if(extra!=null&&extra(x,y))return true;
             int tx=(int)Math.Floor(x/Data.tileSize),ty=(int)Math.Floor(y/Data.tileSize);
             {int tv=Data.tiles[ty*Data.width+tx];if(tv==1||tv==3)return true;}   // 3 = boss gate tile: the web blocks it with boss_gate_col (C04-2)
             var h=Data.hill;

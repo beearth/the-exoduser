@@ -12,11 +12,12 @@ namespace Exoduser.UnityPort
         Material hellActorMaterial; Light hellHeroRim;
         readonly List<SpriteRenderer> hellFlames=new List<SpriteRenderer>();
         Sprite[] hellFlameFrames;
-        AmbientMode hellOldAmbient; Color hellOldSky,hellOldEquator,hellOldGround,hellOldFog; bool hellOldFogOn; float hellOldFogDensity; FogMode hellOldFogMode;
+        AmbientMode hellOldAmbient; Color hellOldSky,hellOldEquator,hellOldGround,hellOldFog; bool hellOldFogOn; float hellOldFogDensity,hellOldFogStart,hellOldFogEnd; FogMode hellOldFogMode;
         void HellLightingSetup()
         {
             hellOldAmbient=RenderSettings.ambientMode;hellOldSky=RenderSettings.ambientSkyColor;hellOldEquator=RenderSettings.ambientEquatorColor;hellOldGround=RenderSettings.ambientGroundColor;
             hellOldFogOn=RenderSettings.fog;hellOldFog=RenderSettings.fogColor;hellOldFogDensity=RenderSettings.fogDensity;hellOldFogMode=RenderSettings.fogMode;
+            hellOldFogStart=RenderSettings.fogStartDistance;hellOldFogEnd=RenderSettings.fogEndDistance;
             foreach(var root in r3Roots)
             {
                 foreach(var v in root.GetComponentsInChildren<Volume>(true))
@@ -79,10 +80,11 @@ namespace Exoduser.UnityPort
             RenderSettings.ambientMode=on?AmbientMode.Trilight:hellOldAmbient;
             RenderSettings.ambientSkyColor=on?new Color(.18f,.20f,.24f):hellOldSky;RenderSettings.ambientEquatorColor=on?new Color(.09f,.115f,.15f):hellOldEquator;RenderSettings.ambientGroundColor=on?new Color(.04f,.045f,.055f):hellOldGround;
             RenderSettings.fog=on||hellOldFogOn;RenderSettings.fogMode=on?FogMode.ExponentialSquared:hellOldFogMode;RenderSettings.fogColor=on?new Color(.035f,.065f,.085f):hellOldFog;RenderSettings.fogDensity=on?.023f:hellOldFogDensity;
+            RenderSettings.fogStartDistance=hellOldFogStart;RenderSettings.fogEndDistance=hellOldFogEnd;
             if(on&&A2Requested)
             {
                 RenderSettings.ambientSkyColor=new Color(.31f,.34f,.36f);RenderSettings.ambientEquatorColor=new Color(.20f,.22f,.20f);RenderSettings.ambientGroundColor=new Color(.075f,.07f,.05f);
-                RenderSettings.fogColor=new Color(.15f,.18f,.21f);RenderSettings.fogDensity=.02f;
+                RenderSettings.fogColor=new Color(.15f,.18f,.21f);RenderSettings.fogMode=FogMode.Linear;RenderSettings.fogStartDistance=14;RenderSettings.fogEndDistance=64;
             }
         }
         void HellLightingLate()

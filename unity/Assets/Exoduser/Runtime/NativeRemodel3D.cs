@@ -38,6 +38,7 @@ namespace Exoduser.UnityPort
             {
                 float outside=Mathf.Max(Mathf.Max(tp.x-wx,wx-tp.x-sz.x),Mathf.Max(tp.z-wz,wz-tp.z-sz.z));
                 height+=Mathf.SmoothStep(0,1,Mathf.Max(0,outside)/4)*(.35f*Mathf.Sin(wx*.31f)+.28f*Mathf.Cos(wz*.27f));
+                height=A2ForestLayout.BankHeight(wx,wz,height);
                 height=A2ForestLayout.IslandHeight(wx,wz,height);
             }
             return height;

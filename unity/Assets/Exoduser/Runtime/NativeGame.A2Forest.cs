@@ -19,6 +19,7 @@ namespace Exoduser.UnityPort
         void A2ForestSetup(Terrain ground)
         {
             if (!A2Requested) return;
+            var timer=System.Diagnostics.Stopwatch.StartNew();Debug.Log("[A2 초기화] 숲 조립 시작");
             NativeRemodel3D.ForestA2=true;
             foreach(var root in r3Roots)foreach(var volume in root.GetComponentsInChildren<UnityEngine.Rendering.Volume>(true))
             {
@@ -89,12 +90,19 @@ namespace Exoduser.UnityPort
                 }
             }
             A2River(ground);
+            Debug.Log("[A2 초기화] 수로·외곽 완료 "+timer.ElapsedMilliseconds+"ms");
             // 통행로를 막지 않는 낮은 낙엽·잔돌. 2u 이상 간격의 정해진 접합점만 쓴다.
             var patches=new[]{new Vector2(35.8f,-78.5f),new Vector2(38,-79),new Vector2(40.2f,-80),new Vector2(33.4f,-77.2f),new Vector2(37.4f,-76.6f),new Vector2(36.2f,-66.5f),new Vector2(38.5f,-65.3f),new Vector2(41,-64.8f),new Vector2(43.4f,-64),new Vector2(45.8f,-62.6f),new Vector2(48.2f,-60.8f),new Vector2(32,-69.4f)};
             for(int i=0;i<patches.Length;i++)
             {
                 var p=patches[i];A2Module("Dead_Leaf_Litter",p.x,p.y,.85f,.7f,.85f,i*137,.012f);
                 A2Module("Moss_Rock_"+(i%3+1),p.x+.35f,p.y-.2f,.12f,.10f,.15f,i*73,-.04f);
+            }
+            for(int row=0;row<12;row++)for(int col=0;col<12;col++)
+            {
+                float x=30+col*2.4f+Mathf.Sin(row*13+col*7)*.22f,z=-84+row*2.4f+Mathf.Cos(row*11+col*17)*.22f;
+                if(A2ForestLayout.Water(x,z)||Mathf.Abs(A2ForestLayout.Across(x,z))<2.6f)continue;
+                A2Module("Dead_Leaf_Litter",x,z,1.3f,1,1.3f,row*137+col*73,.015f);
             }
             foreach(float side in new[]{-1f,1f})
             {
@@ -114,7 +122,7 @@ namespace Exoduser.UnityPort
             // 기존 검은 배경색을 실제로 이어지는 먼 숲의 안개색으로 연결한다.
             r3Cam.backgroundColor=new Color(.15f,.18f,.21f);
             r3Cam.farClipPlane=240;
-            Debug.Log("[A2] R3 스캔 자산 조립 후보. R4 HOLD 인수0·Core/원본맵 변경0·A2 수로/거목 경계 적용");
+            Debug.Log("[A2] R3 스캔 자산 조립 후보. R4 HOLD 인수0·Core/원본맵 변경0·A2 수로/거목 경계 적용 "+timer.ElapsedMilliseconds+"ms");
         }
         void A2Torch(float x,float z)
         {
@@ -149,9 +157,11 @@ namespace Exoduser.UnityPort
             else if(id=="Rotten_Wood_Bridge")units=.75f;
             else if(id=="Fallen_Log")units=.8f;
             else if(id=="Corroded_Riverbank"){source="Moss_Rock_1";units=1.2f;}
-            var prefab=Resources.Load<GameObject>(id=="Foam_Bank"?"Art/map/a2/Models/RF_Foam_Bank":"Art/map/a2/r3/Models/RF3_"+source);
+            bool roots=id.StartsWith("PineRoots_",StringComparison.Ordinal);
+            var prefab=Resources.Load<GameObject>(roots?"Art/map/a2/roots/Models/A2_"+id:id=="Foam_Bank"?"Art/map/a2/Models/RF_Foam_Bank":"Art/map/a2/r3/Models/RF3_"+source);
             if(prefab==null){Debug.LogError("[A2] 모듈 누락 "+id);return null;}
-            float height=NativeRemodel3D.GroundY(x,z)+lift-.08f;
+            float placementGround=NativeRemodel3D.GroundY(x,z);
+            float height=placementGround+lift+(id=="Dead_Leaf_Litter"?.01f:-.08f);
             bool island=A2ForestLayout.Island(x,z);
             if(A2ForestLayout.Water(x,z)&&!island)
             {
@@ -164,24 +174,27 @@ namespace Exoduser.UnityPort
             var go=Instantiate(prefab,a2Root.transform);go.name="A2_"+id;
             go.transform.SetPositionAndRotation(new Vector3(x,height,z),Quaternion.Euler(0,yaw,0));
             go.transform.localScale=new Vector3(sx,sy,sz)*units;
+            if(roots||id=="Dead_Leaf_Litter")foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
+            {
+                var mesh=Instantiate(mf.sharedMesh);var points=mesh.vertices;
+                for(int i=0;i<points.Length;i++){var p=mf.transform.TransformPoint(points[i]);p.y+=NativeRemodel3D.GroundY(p.x,p.z)-placementGround;points[i]=mf.transform.InverseTransformPoint(p);}
+                mesh.vertices=points;mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();mf.sharedMesh=mesh;
+            }
             foreach(var r in go.GetComponentsInChildren<MeshRenderer>())
             {
                 r.shadowCastingMode=id=="Forest_Vista_Card"||id=="Hanging_Moss"?ShadowCastingMode.Off:ShadowCastingMode.On;r.receiveShadows=true;
-                if(id=="Hanging_Moss"){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.48f,.52f,.3f,1));r.SetPropertyBlock(block);}
-                if(id=="Withered_Shrub"){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.65f,.4f,.22f,1));r.SetPropertyBlock(block);}
+                if(id=="Hanging_Moss"){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.95f,.85f,.55f,1));r.SetPropertyBlock(block);}
+                if(id=="Withered_Shrub"){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.95f,.75f,.50f,1));r.SetPropertyBlock(block);}
+                if(id=="Ancient_Rotten_Tree"){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.95f,.80f,.60f,1));r.SetPropertyBlock(block);}
+                if(id=="Fungal_Colony"){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.65f,.55f,.40f,1));r.SetPropertyBlock(block);}
             }
             return go;
         }
         void A2RootedTree(float x,float z,float sx,float sy,float sz,float yaw)
         {
             var tree=A2Module("Ancient_Rotten_Tree",x,z,sx,sy,sz,yaw);if(tree==null)return;
-            A2Module("Root_Stump",x,z,.8f,.35f,.85f,yaw+73,-.25f);
-            // 두 번 FAIL한 절차식 판근은 폐기하고 원본 UV를 가진 실제 스캔 고목으로 접합한다.
-            for(int root=0;root<3;root++)
-            {
-                float direction=yaw+root*113,angle=direction*Mathf.Deg2Rad;
-                A2Module("Fallen_Log",x+Mathf.Sin(angle)*1.15f,z+Mathf.Cos(angle)*1.15f,.45f,.32f,.65f,direction,-.22f);
-            }
+            // 고목을 방사형으로 붙이는 방법도 원화의 뿌리 접합이 되지 않아 실제 뿌리 스캔으로 교체한다.
+            A2Module(x>40?"PineRoots_B":"PineRoots_A",x,z,3.2f,1.4f,4,yaw,-.02f);
         }
         void A2River(Terrain ground)
         {
@@ -249,6 +262,7 @@ namespace Exoduser.UnityPort
             {
                 if(renderer.name!="지옥 바닥 PBR 표면")continue;
                 var filter=renderer.GetComponent<MeshFilter>();var source=filter.sharedMesh;var vertices=source.vertices;var triangles=source.triangles;
+                for(int j=0;j<vertices.Length;j++){var world=filter.transform.TransformPoint(vertices[j]);world.y=NativeRemodel3D.GroundY(world.x,world.z);vertices[j]=filter.transform.InverseTransformPoint(world);}
                 var kept=new System.Collections.Generic.List<int>();var edges=new System.Collections.Generic.Dictionary<long,int>();
                 for(int i=0;i<triangles.Length;i+=3)
                 {
@@ -256,7 +270,7 @@ namespace Exoduser.UnityPort
                     if(A2ForestLayout.Water(p.x,p.z))continue;
                     kept.Add(a);kept.Add(b);kept.Add(c);A2Edge(edges,a,b);A2Edge(edges,b,c);A2Edge(edges,c,a);
                 }
-                var cut=Instantiate(source);cut.name="A2 수로와 맞물린 지형";cut.triangles=kept.ToArray();cut.RecalculateBounds();filter.sharedMesh=cut;
+                var cut=Instantiate(source);cut.name="A2 수로와 맞물린 지형";cut.vertices=vertices;cut.triangles=kept.ToArray();cut.RecalculateNormals();cut.RecalculateTangents();cut.RecalculateBounds();filter.sharedMesh=cut;
                 var bankV=new System.Collections.Generic.List<Vector3>();var bankUV=new System.Collections.Generic.List<Vector2>();var bankT=new System.Collections.Generic.List<int>();
                 foreach(var edge in edges)if(edge.Value==1)
                 {
@@ -312,14 +326,21 @@ namespace Exoduser.UnityPort
             for(float p=start+length+.8f;p<=max+.001f;p+=.8f)axis.Add(p);
             return axis;
         }
-        void A2CaptureFrame(string path)
+        float A2CaptureFrame(string path)
         {
             var brain=r3Cam.GetComponent<Unity.Cinemachine.CinemachineBrain>();
             Remodel3DLate();brain.ManualUpdate();
             var camera=HudCamera;var old=camera.targetTexture;var active=RenderTexture.active;
             var rt=RenderTexture.GetTemporary(1920,1080,24,RenderTextureFormat.ARGB32);
             Texture2D pixels=null;
-            try{camera.targetTexture=rt;camera.Render();RenderTexture.active=rt;pixels=new Texture2D(1920,1080,TextureFormat.RGB24,false);pixels.ReadPixels(new Rect(0,0,1920,1080),0,0);pixels.Apply();System.IO.File.WriteAllBytes(path,pixels.EncodeToPNG());}
+            try
+            {
+                camera.targetTexture=rt;
+                UnityEngine.Rendering.RenderPipeline.SubmitRenderRequest(camera,new UnityEngine.Rendering.Universal.UniversalRenderPipeline.SingleCameraRequest{destination=rt});
+                RenderTexture.active=rt;pixels=new Texture2D(1920,1080,TextureFormat.RGB24,false);pixels.ReadPixels(new Rect(0,0,1920,1080),0,0);pixels.Apply();System.IO.File.WriteAllBytes(path,pixels.EncodeToPNG());
+                var values=pixels.GetPixels32();double sum=0;for(int i=0;i<values.Length;i+=16)sum+=.2126*values[i].r+.7152*values[i].g+.0722*values[i].b;
+                return (float)(sum/((values.Length+15)/16)/255);
+            }
             finally{camera.targetTexture=old;RenderTexture.active=active;RenderTexture.ReleaseTemporary(rt);if(pixels!=null)Destroy(pixels);}
         }
     }
