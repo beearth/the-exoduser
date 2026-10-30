@@ -24,6 +24,8 @@ namespace Exoduser.UnityPort
             while(!Remodel3DReady&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
             yield return new WaitForSecondsRealtime(1);
             yield return KeyshotSave(output,"01-탐험",receipt);
+            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-keyshot-material-probe")>=0)
+            {yield return HellMaterialProbe(output,receipt);Application.Quit(0);yield break;}
             if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-keyshot-diagnostic")>=0)
             {
                 hellDiagnosticFilter=1;yield return KeyshotSave(output,"분리1-메시끔",receipt);

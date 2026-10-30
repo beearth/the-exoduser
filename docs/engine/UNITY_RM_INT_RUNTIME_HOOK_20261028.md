@@ -123,3 +123,7 @@ Core(`Runtime/Core`)는 바꾸지 않았다.
 | 심연 재질 | 메시 vertex color R=하강 비율. .015~.15에서 기존피부/돌/재를 돌×.5로 전이. 기존 높이안개·지수안개와 깊이를 연결. 디더링·그레인·랜덤 점무늬 없음 |
 | 수피 | Poly Haven bark_brown_02, Rob Tuytel, CC0. Diffuse/GL normal/Rough 각2K, 기존 출처영수증 SHA256과 byte 대조 후 런타임 인수. 돌/수피/뼈색 재질 분리·월드 트라이플래너. roughness를 smoothness에 반영 |
 | 범위 | 지형 표현만 변경. 영웅·보스 기존 2D 표현을 3D 리모델 완료로 보고하지 않음. 검수 결과는 I:/EXODUSER-Storage/steam-keyshot/keyshot2/REPORT.md에 기록 |
+
+첫 후보1157fc966: Win64 빌드b4fb463e errors0·정상종료·USER_SAVE변경0, 로그오류2개는 누락 TEMP의 사전예열 실패와 기존 라이선스 access-token 갱신 메시지이며 빌드 실패가 아니다. Player e075eacb/D3D11·실제1080p3장·정상종료·사용자창0·잔여0·USER_SAVE변경0. 몸체높이 필드9.54%/보스8.11%지만 **Steam 시각FAIL**: 검은 기존 기둥, 평평한 새 모듈, 외곽 깊이 연결 부족, 전투 실탄1개·영웅 가림, 기존2D보스/밋밋한 바닥. 수치검사의 passed를 시각PASS로 인용하지 않는다.
+
+QA 전용 `--unity-keyshot-material-probe`는 동일 장면을 원래 재질→표준회색 Lit→텍스처 Unlit→표준텍스처 Lit로 분리한다. 새 모듈의 실제 월드 bounds·법선Y범위·로드된 컬러/노멀 이름을 기록하고 종료한다. 일반 실행에는 분리 재질을 적용하지 않는다. 원인을 확인한 뒤 본 제작 후보를 수정한다.

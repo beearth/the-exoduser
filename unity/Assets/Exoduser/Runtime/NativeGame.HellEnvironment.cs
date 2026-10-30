@@ -47,5 +47,31 @@ namespace Exoduser.UnityPort
             float tiles=hellOuterDistance[8+y*hellOuterWidth+x]/16f;
             return Mathf.SmoothStep(0,1,Mathf.Clamp01((tiles-2f)/10f));
         }
+        System.Collections.IEnumerator HellMaterialProbe(string output,KeyshotReceipt receipt)
+        {
+            var renderers=hellEnvironment.GetComponentsInChildren<MeshRenderer>();
+            var originals=new Material[renderers.Length];
+            var diagnostics=new System.Collections.Generic.List<string>();
+            for(int i=0;i<renderers.Length;i++)
+            {
+                var r=renderers[i];originals[i]=r.sharedMaterial;
+                var mesh=r.GetComponent<MeshFilter>().sharedMesh;float ny0=1,ny1=-1;
+                foreach(var n in mesh.normals){var w=r.transform.TransformDirection(n);ny0=Mathf.Min(ny0,w.y);ny1=Mathf.Max(ny1,w.y);}
+                diagnostics.Add(r.name+"|bounds="+r.bounds+"|normalY="+ny0+":"+ny1+"|tex="+r.sharedMaterial.GetTexture("_BaseMap")+"|normal="+r.sharedMaterial.GetTexture("_BumpMap"));
+                var mat=new Material(Shader.Find("Universal Render Pipeline/Lit"));mat.SetColor("_BaseColor",new Color(.5f,.5f,.5f));mat.SetFloat("_Smoothness",.2f);r.sharedMaterial=mat;
+            }
+            System.IO.File.WriteAllLines(System.IO.Path.Combine(output,"재질-실물진단.txt"),diagnostics);
+            yield return KeyshotSave(output,"진단1-표준회색",receipt);
+            for(int i=0;i<renderers.Length;i++)
+            {
+                var mat=new Material(Shader.Find("Universal Render Pipeline/Unlit"));mat.SetTexture("_BaseMap",originals[i].GetTexture("_BaseMap"));mat.SetColor("_BaseColor",Color.white);renderers[i].sharedMaterial=mat;
+            }
+            yield return KeyshotSave(output,"진단2-텍스처직접",receipt);
+            for(int i=0;i<renderers.Length;i++)
+            {
+                var mat=new Material(Shader.Find("Universal Render Pipeline/Lit"));mat.SetTexture("_BaseMap",originals[i].GetTexture("_BaseMap"));mat.SetTexture("_BumpMap",originals[i].GetTexture("_BumpMap"));mat.EnableKeyword("_NORMALMAP");mat.SetFloat("_BumpScale",.3f);mat.SetColor("_BaseColor",Color.white);mat.SetFloat("_Smoothness",.2f);renderers[i].sharedMaterial=mat;
+            }
+            yield return KeyshotSave(output,"진단3-표준재질",receipt);
+        }
     }
 }
