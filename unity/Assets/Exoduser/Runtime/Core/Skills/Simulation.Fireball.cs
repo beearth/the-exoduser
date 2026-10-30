@@ -13,6 +13,9 @@ namespace Exoduser.UnityPort.Core
     {
         public int Id, Dmg, ExplDmg, Bounces; public bool Active;
         public float X, Y, Vx, Vy, Dist, MaxDist, R, R0, RMax, ExplR, BounceCool;
+        // 웹 p._trail: 이동 전 위치를 매 실제 틱에14점 순환 기록한다. 렌더 빈도와 무관한 표시 자료다.
+        public readonly float[] TrailX = new float[14], TrailY = new float[14];
+        public int TrailHead, TrailCount;
         internal readonly HashSet<FieldBossState> HitFieldMobs = new HashSet<FieldBossState>();
         internal readonly Dictionary<EnemyState, double> WeakMul = new Dictionary<EnemyState, double>();   // p._mwMul: the direct hit + the blast stack once per orb
     }
@@ -21,7 +24,9 @@ namespace Exoduser.UnityPort.Core
     {
         public readonly List<MaliceOrb> MaliceOrbs = new List<MaliceOrb>();
         public int MaliceOrbShots, MaliceOrbBlasts; public float MaliceOrbLastX, MaliceOrbLastY;
+        public event Action<MaliceOrb> MaliceOrbExploded;
         private bool magicHeld; private int magicMpBonus, nextOrbId = 1; private bool attackHeldForMagic;
+        private float magicCastAngle; // 웹 P.atkArc: 시전 시작 때 고정하며 다음 연사 시작 때 갱신한다.
 
         // once per tick before Tick(): the held state of the web 'beam' action (default mouse2)
         public void SetMagicInput(bool beamHeld) { magicHeld = beamHeld; }
@@ -49,6 +54,7 @@ namespace Exoduser.UnityPort.Core
         {
             float before = Player.Mana; Player.Mana = Math.Max(0, Player.Mana - MagicMpCost());
             magicMpBonus = (int)((before - Player.Mana) * 2);
+            magicCastAngle = Player.Facing;
             Player.State = "magicCast"; Player.StateTicks = Js.Int(14 / MagicCastSpeed());
         }
 
@@ -74,7 +80,7 @@ namespace Exoduser.UnityPort.Core
             int lv = Math.Max(1, Skills.Level("fireball"));
             double scale = SkillRules.FireballScale(lv);
             int dmg = SkillRules.FireballDamage(MagicReference(), 1, MagicDamageMultiplier(), lv) + magicMpBonus; magicMpBonus = 0;
-            double dx = Math.Cos(Player.Facing), dy = Math.Sin(Player.Facing);
+            double dx = Math.Cos(magicCastAngle), dy = Math.Sin(magicCastAngle);
             var o = new MaliceOrb
             {
                 Id = nextOrbId++, Active = true, X = Player.X + (float)(dx * 14), Y = Player.Y + (float)(dy * 14),
@@ -94,6 +100,8 @@ namespace Exoduser.UnityPort.Core
             for (int i = 0; i < MaliceOrbs.Count; i++)
             {
                 var p = MaliceOrbs[i];
+                p.TrailX[p.TrailHead] = p.X; p.TrailY[p.TrailHead] = p.Y;
+                p.TrailHead = (p.TrailHead + 1) % 14; p.TrailCount = Math.Min(14, p.TrailCount + 1);
                 if (p.BounceCool > 0) p.BounceCool -= 1;
                 double spd = Math.Sqrt(p.Vx * p.Vx + p.Vy * p.Vy);
                 // homing: every 4th frame, nearest enemy inside 280 px, turn limited to 0.35 rad
@@ -157,6 +165,7 @@ namespace Exoduser.UnityPort.Core
         private void OrbExplode(MaliceOrb p)
         {
             MaliceOrbBlasts++; MaliceOrbLastX = p.X; MaliceOrbLastY = p.Y;
+            MaliceOrbExploded?.Invoke(p); // 표시 소비자는 좌표·반경만 읽는다. 동시 폭발도 각각 전달한다.
             double r = p.ExplR > 0 ? p.ExplR : 80; int dmg = p.ExplDmg;
             foreach (var e in ShQuery(p.X, p.Y, r + 20, true))
             {

@@ -198,6 +198,25 @@ const range = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => a + i);
   sections.level = J({ cost, locks });
 }
 
+// 악의구는 시전 시작각과 실제 폴백 발사 본문을 그대로 실행한다. 예상 수치를 손으로 적지 않는다.
+{
+  const spawn = span('// ── 악의구 (기본 폴백) ──', "_addSkProf('fireball')");
+  const src = [span('const _SK_MUL={', '};', { inclusive: true }), fn('function _skMul('), fn('function _execMagicE('),
+    'function probe(){' + spawn + '\nreturn pProjs[0];}'].join('\n');
+  const ctx = {}, P = { x: 100, y: 200, skills: {}, activeMagicSk: 'fireball' }, pProjs = [];
+  const base = { P, pProjs, Math, EL: { D: 3 }, _MAGIC_E_HANDLERS: {}, _gpActive: false,
+    useMp: () => ctx.bonus / 2, pMagicSpd: () => ctx.castSpeed, magicRef: () => ctx.magicRef, statInt: () => ctx.statInt,
+    pMagicMul: () => ctx.mul, _fuseMul: () => 1, hm: () => ({ bonusRange: ctx.bonusRange }), _getPProj: () => ({}) };
+  const ns = load(src, base, ['_execMagicE', 'probe']);
+  const cases = [];
+  for (const c of grid({ lv: range(1, 20), magicRef: [10, 100.5, 1234.7], statInt: [1, 1.2], mul: [1, 1.4, 2.8], bonus: [0, 20, 50], bonusRange: [0, 2, 5], castSpeed: [2, 2.8, 4], angle: [0, Math.PI / 4, Math.PI, -Math.PI / 2] }, 400)) {
+    Object.assign(ctx, c); P.skills.fireball = c.lv; P.facing = c.angle; pProjs.length = 0;
+    ns._execMagicE(); const castTicks = P.st2; P.facing += Math.PI / 2;
+    cases.push({ ...c, castTicks, out: ns.probe() });
+  }
+  sections.fireball = J({ cases });
+}
+
 const outObj = { generated: 'node export.cjs', source: path.basename(SRC), sourceSha256: sha(text), noopUsed: [...noopUsed].sort(), blocks, sections };
 if (CHECK) {
   const old = JSON.parse(fs.readFileSync(OUT, 'utf8')); const drift = [];
