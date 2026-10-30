@@ -23,7 +23,7 @@ function analyze(frame){
   if(!e.rect||e.rect.width<=0||e.rect.height<=0)continue;
   if(e.hasClip){if(!e.clipRect)continue;e.rect=intersection(e.rect,e.clipRect);if(!positive(e.rect))continue;}
   // 같은 문자열의 1px 외곽선/그림자만 통합한다. 다른 내용은 제외하지 않는다.
-  const duplicate=elements.findIndex(p=>p.kind==='text'&&e.kind==='text'&&p.text===e.text&&(p.shadow||e.shadow)&&p.depth===e.depth&&JSON.stringify(p.clipRect)===JSON.stringify(e.clipRect)&&!elements.some(s=>s.kind==='surface'&&above(s,p)&&opaque(s))&&['x','y','width','height'].every(k=>Math.abs(p.rect[k]-e.rect[k])<=3.1));
+  const duplicate=elements.findIndex(p=>p.kind==='text'&&e.kind==='text'&&p.text===e.text&&(p.shadow||e.shadow)&&p.depth===e.depth&&JSON.stringify(p.clipRect)===JSON.stringify(e.clipRect)&&!elements.some(s=>s.kind==='surface'&&s.order>p.order&&s.order<e.order&&above(s,p)&&geometry.valid(geometry.intersect(shape(s),shape(p))))&&['x','y','width','height'].every(k=>Math.abs(p.rect[k]-e.rect[k])<=3.1));
   if(duplicate>=0){if(elements[duplicate].shadow&&!e.shadow)elements[duplicate]=e;continue;}
   elements.push(e);
  }
@@ -39,10 +39,10 @@ function analyze(frame){
   if(a.visibleRects.some(r=>!inside(r,screen)))issues.push({type:'화면 이탈',a});
   for(let j=0;j<visible.length;j++){
    if(i===j)continue;const b=visible[j];const intersectionPolygons=a.visiblePolygons.flatMap(ar=>b.visiblePolygons.map(br=>geometry.intersect(ar,br))).filter(geometry.valid).filter(p=>{const r=geometry.bounds(p);return r.width>.5&&r.height>.5;});const intersections=intersectionPolygons.map(geometry.bounds);if(!intersections.length)continue;
-   if(b.kind==='text'){if(j>i)issues.push({type:'글자-글자',a,b,intersections});}
-   else if(b.kind==='button'&&!(inside(a.rect,b.rect)&&above(a,b)))issues.push({type:'글자-버튼',a,b,intersections});
-   else if(b.kind==='panel'&&!inside(a.rect,b.rect))issues.push({type:'글자-판',a,b,intersections});
-   else if(b.kind==='control')issues.push({type:'글자-조작부',a,b,intersections});
+   if(b.kind==='text'){if(j>i)issues.push({type:'글자-글자',a,b,intersections,intersectionPolygons});}
+   else if(b.kind==='button'&&!(inside(a.rect,b.rect)&&above(a,b)))issues.push({type:'글자-버튼',a,b,intersections,intersectionPolygons});
+   else if(b.kind==='panel'&&!inside(a.rect,b.rect))issues.push({type:'글자-판',a,b,intersections,intersectionPolygons});
+   else if(b.kind==='control')issues.push({type:'글자-조작부',a,b,intersections,intersectionPolygons});
   }
  }
  const auditWarnings=[];
