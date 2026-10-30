@@ -432,6 +432,31 @@
       "Unity": "Art/ui/stat/stat_base.png",
       "sha256": "dd00f57b7f07f6294736f5d501d36f73bfe66cf65dd71fb2ee41a491c986ad80",
       "근거": "현행 실제 웹 렌더에서 기존 텍스트 제외 CSS 재사용, 새 원화0"
+    },
+    {
+      "Unity": "Art/ui/inventory/crystals/crystals_base.png",
+      "sha256": "098b5c227460a0f7d1bfec62cce9feea4cdcb14db4c69dec69987f6e18d2835e",
+      "근거": "현행 실제 웹 유물판·기존 static 숨김 CSS 재사용. 부화면추출근거.json"
+    }
+  ],
+  "HUD원화": [
+    {
+      "웹원본": "img/mm_frame_ring_20261028.png",
+      "Unity": "Art/ui/mm_frame_ring_20261028.png",
+      "방식": "동일 바이트",
+      "sha256": "913e377e6643ae132733b2227c0e380c9472e3aed0382d1e7bc96e70081e888a"
+    },
+    {
+      "웹원본": "img/ui/minimap_warrior.png",
+      "Unity": "Art/ui/minimap_warrior.png",
+      "방식": "동일 바이트",
+      "sha256": "2d232830d07385fa55cfe71a73d687b3a57185b6ebec500e2c4f0b8c224a3c57"
+    },
+    {
+      "웹원본": "img/ui/minimap_silvertail.png",
+      "Unity": "Art/ui/minimap_silvertail.png",
+      "방식": "동일 바이트",
+      "sha256": "ad9a279ccf6d88c19e3a1c1528e86c21dbe1b944688f1430c2e9325dbd47158e"
     }
   ]
 }
