@@ -192,7 +192,7 @@ namespace Exoduser.UnityPort
         {
             if (!Simulation.Stage.InArena) return false;
             var p = Simulation.Player; Simulation.Stage.LeaveArenaToField();
-            p.Hp = p.MaxHp; p.Mana = p.MaxMana; p.Stamina = p.MaxStamina; p.Shield = p.MaxShield; p.State = "idle"; p.StateTicks = 0; p.Iframes = 120;
+            Simulation.RefillAfterDeathRetry(); p.StateTicks = 0;
             death.Hide(); deathShown = false; bossBar.Hide(); BossBarShown = false; skillInputFence = true; menu = false; Running = true;
             return true;
         }

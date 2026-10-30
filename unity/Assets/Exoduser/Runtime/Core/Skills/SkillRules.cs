@@ -31,8 +31,8 @@ namespace Exoduser.UnityPort.Core.Skills
         }
 
         // ---- costs (31986-31998): _COST_BASE x _dpsCostMul (1+(Lv-1)*scale) x discount; ST capped at 90 % of the maximum ----
-        public static double CostBase(string key) { switch (key) { case "giantSlam": return 50; case "iceOrb": return 50; case "mortar": return 50; case "magic": return 10; case "weapon": return 10; default: return 5; } }
-        static double DpsScale(string key) { switch (key) { case "giantSlam": return .45; case "iceOrb": return .35; case "mortar": return .35; default: return .10; } }
+        public static double CostBase(string key) { switch (key) { case "giantSlam": case "charge": return 50; case "iceOrb": return 50; case "mortar": return 50; case "magic": return 10; case "weapon": return 10; default: return 5; } }
+        static double DpsScale(string key) { switch (key) { case "giantSlam": case "charge": return .45; case "iceOrb": return .35; case "mortar": return .35; default: return .10; } }
         public static double DpsCostMul(string key, int skillLv) { return 1 + (Math.Max(1, skillLv) - 1) * DpsScale(key); }
         // stDisc = pAtkCost * pMeleeStCost * (1 + min(0, stCostRed))
         public static int StCost(string key, int skillLv, double maxStamina, double pAtkCost, double pMeleeStCost, double stCostRed)

@@ -46,6 +46,7 @@ namespace Exoduser.UnityPort.Core
         // 창의13개 의미 슬롯. 숫자 장착은 같은 스킬의 다른 숫자 슬롯을 먼저 비운다(skill-forge.js equip).
         public bool CanEquipSkill(int windowSlot, string id)
         {
+            if (windowSlot == 8 && id == "charge") return true;
             if (!IsPorted(id)) return false;
             if (windowSlot == 6) return id == "kiSlash";
             if (windowSlot == 9) return id == "fireball";
@@ -67,6 +68,7 @@ namespace Exoduser.UnityPort.Core
             }
             else if (windowSlot == 6) Config.ActiveAttack = "kiSlash";
             else if (windowSlot == 9) Skills.MagicSkill = id;
+            else if (windowSlot == 8) Skills.ChargeSkill = id;
             else if (windowSlot == 11) { Skills.CtSkill = id; preservedLoadedCtSkill = null; }
             return true;
         }
@@ -80,6 +82,7 @@ namespace Exoduser.UnityPort.Core
                 case "giantSlam": return 120;
                 case "holyDome": return 90;
                 case "iceOrb": return 100;
+                case "chargeBoost": return 100;
                 default: return 80;
             }
         }
@@ -176,6 +179,7 @@ namespace Exoduser.UnityPort.Core
                 for (int i = 0; i < Skills.Slots.Length; i++) if (Skills.Slots[i] == id) Skills.Slots[i] = null;
                 if (Skills.UltSlot == id) Skills.UltSlot = null;
                 if (Skills.CtSkill == id) { Skills.CtSkill = "ghostWalk"; preservedLoadedCtSkill = null; }
+                if (Skills.ChargeSkill == id) Skills.ChargeSkill = "charge";
             }
             MaliceSwipeLevel = Skills.Level("maliceSwipe"); ShieldThrowLevel = Skills.Level("shieldThrow");
             return true;

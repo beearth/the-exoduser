@@ -18,7 +18,7 @@ namespace Exoduser.UnityPort.Core
   public JsonValue Raw;   // loaded `data` root (unmodeled sections), null for a first save
   // B03: the skill sections the Unity skill executor owns (web `skills` {id:Lv}, `skillSlots`[6], `ultSlot`, `activeCtSk`). null = never saved / not loaded:
   // entries of skills Unity cannot run yet stay as the raw save has them, so a web import after a Unity autosave still finds them.
-  public bool? ShieldFuse;public string ActiveRmbSkill;
+   public bool? ShieldFuse;public string ActiveRmbSkill, ActiveChargeSk;
   public Dictionary<string,double> Skills;public string[] SkillSlots;public string UltSlot,ActiveCtSk;
  }
 
@@ -65,6 +65,7 @@ namespace Exoduser.UnityPort.Core
      case "skillSlots":if(m.SkillSlots!=null)root.Set(key,EncodeSlots(m,Raw(m,key)));else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;
      case "ultSlot":if(m.Skills!=null)root.Set(key,m.UltSlot!=null?JsonValue.Of(m.UltSlot):JsonValue.Null);else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;
      case "activeRMBSk":if(m.ActiveRmbSkill!=null)root.Set(key,JsonValue.Of(m.ActiveRmbSkill));else{var raw=Raw(m,key);if(raw!=null)root.Set(key,raw);}break;
+      case "activeChargeSk":if(m.ActiveChargeSk!=null)root.Set(key,JsonValue.Of(m.ActiveChargeSk));else{var raw=Raw(m,key);if(raw!=null)root.Set(key,raw);}break;
      case "fused":if(m.ShieldFuse.HasValue){var f=Obj();var raw=Raw(m,key);if(raw!=null&&raw.Kind==JsonKind.Object)foreach(var kv in raw.Members)f.Set(kv.Key,kv.Value);f.Set("shieldFuse",JsonValue.Of(m.ShieldFuse.Value));root.Set(key,f);}else{var raw=Raw(m,key);if(raw!=null)root.Set(key,raw);}break;
      case "activeCtSk":if(m.ActiveCtSk!=null)root.Set(key,JsonValue.Of(m.ActiveCtSk));else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;
      default:{var raw=Raw(m,key);if(raw!=null)root.Set(key,raw);break;}
@@ -144,6 +145,7 @@ namespace Exoduser.UnityPort.Core
     }
    }
    var game=data.Get("game");
+    var activeCharge=data.Get("activeChargeSk");m.ActiveChargeSk=activeCharge!=null&&activeCharge.Kind==JsonKind.String?activeCharge.Text:null;
    if(Valid(game,JsonKind.Object)){m.Stage=Or(Number(game,"stage",0),0);m.Kills=Or(Number(game,"kills",0),0);}
    var bm=data.Get("bagMax");
    m.BagMax=bm!=null&&bm.Kind==JsonKind.Number?Or(bm.Number,300):300;

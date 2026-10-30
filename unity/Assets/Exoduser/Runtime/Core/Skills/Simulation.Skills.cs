@@ -12,7 +12,7 @@ namespace Exoduser.UnityPort.Core
     {
         public readonly Dictionary<string, int> Levels = new Dictionary<string, int>();
         public readonly string[] Slots = new string[SkillRules.SlotCount];   // SKILL_SLOTS: 1,2,3,4,Space,F
-        public string UltSlot, CtSkill = "iceOrb", MagicSkill = "fireball";  // ULT_SLOT, P.activeCtSk, P.activeMagicSk (E slot; fireball is the only ported one)
+        public string UltSlot, CtSkill = "iceOrb", MagicSkill = "fireball", ChargeSkill = "charge";  // ULT_SLOT, P.activeCtSk, P.activeMagicSk, P.activeChargeSk
         public int Level(string id) { int v; return id != null && Levels.TryGetValue(id, out v) ? v : 0; }
         public bool Learned(string id) { return Level(id) >= 1; }
     }
@@ -77,7 +77,7 @@ namespace Exoduser.UnityPort.Core
         }
 
         // ---- save (web `skills`, `skillSlots`, `ultSlot`, `activeCtSk`): only the skills this executor runs are owned by Unity ----
-        public static readonly string[] PortedSkillIds = { "kiSlash", "spikeTrap", "giantSlam", "holyDome", "iceOrb", "fireball", "maliceSwipe", "shieldThrow" };
+        public static readonly string[] PortedSkillIds = { "kiSlash", "spikeTrap", "giantSlam", "holyDome", "iceOrb", "fireball", "maliceSwipe", "shieldThrow", "chargeBoost" };
         static bool IsPorted(string id) { return id != null && Array.IndexOf(PortedSkillIds, id) >= 0; }
         public void CaptureSkills(out Dictionary<string, double> skills, out string[] slots, out string ult, out string ct)
         {
@@ -106,6 +106,12 @@ namespace Exoduser.UnityPort.Core
             Skills.CtSkill = ct == "ghostWalk" || ct == "iceOrb" || ct == "timeWarp" || ctLearned ? ct : "ghostWalk";
             preservedLoadedCtSkill = ctLearned && !IsPorted(ct) ? ct : null;
             Skills.UltSlot = ult != null && skills.TryGetValue(ult, out savedLevel) && savedLevel >= 1 ? ult : null;
+        }
+
+        public void RestoreChargeSkill(string id, Dictionary<string, double> savedSkills)
+        {
+            double level;
+            Skills.ChargeSkill = id != null && id != "quakeStride" && id != "galeSlash" && (id == "charge" || savedSkills != null && savedSkills.TryGetValue(id, out level) && level >= 1) ? id : "charge";
         }
 
         // held states of 1..4, Space (rage burst key), F, Ctrl and Z, once per tick before Tick(); spaceIsRollKey: the Space key also rolls (a direction held => roll, no slam)

@@ -156,7 +156,8 @@ namespace Exoduser.UnityPort {
   }
 
   Texture2D OrbIcon(string id,bool dim){
-   string path="Art/ui/skill_icons/orb/"+id+(dim?"_dim":"");
+   if(id=="chargeBoost")id="charge"; // 원문 SKILL_ICONS의 charge/chargeBoost는 같은 이미지
+    string path="Art/ui/skill_icons/orb/"+id+(dim?"_dim":"");
    if(!orbIcons.TryGetValue(path,out var t)){t=Resources.Load<Texture2D>(path);orbIcons[path]=t;}
    return t;
   }
@@ -209,10 +210,14 @@ namespace Exoduser.UnityPort {
   }
 
   void DrawInfo(Simulation sim,bool lmb,int level,Action equip){
-   string id=selectedOrb??EquippedId(SelectedSlot);if(id==null||!skillById.TryGetValue(id,out var def)){Text(new Rect(74,316.64f,284,28),"비어 있음",serif,16,C(129,132,132));DrawInfoResources(sim,638.64f);return;}bool ki=id=="kiSlash",ported=Ported(id);int slv=ported?SkillLevelOf(id):0;bool learned=ported&&slv>=1;
+   string id=selectedOrb??SkillDockBinding.ForgeHostForWindow(cur,SelectedSlot);if(id==null||!skillById.TryGetValue(id,out var def)){Text(new Rect(74,316.64f,284,28),"비어 있음",serif,16,C(129,132,132));DrawInfoResources(sim,638.64f);return;}bool ki=id=="kiSlash",ported=Ported(id);int slv=ported?SkillLevelOf(id):0;bool learned=ported&&slv>=1;
    var ic=new Vector2(102,344.64f);Disc(ic,28,C(75,78,78));var tex=OrbIcon(id,false);if(tex!=null)NativeUiAudit.DrawTexture(new Rect(74,316.64f,56,56),tex);
-   Text(new Rect(144,316.84f,214,33.6f),ki?data.skill.name:SkillName(id),serif,28,C(222,219,213),FontStyle.Bold,.56f);Text(new Rect(144,354.44f,214,18),ki?"Lv "+level+" / 20":learned?"Lv "+slv+" / 20":ported?"미습득":"Lv "+NotPorted,latinFont,13,C(165,168,168),FontStyle.Normal,.78f);
+   Text(new Rect(144,316.84f,214,33.6f),ki?data.skill.name:SkillName(id),serif,28,C(222,219,213),FontStyle.Bold,.56f);if(id!="charge"&&id!="parry")Text(new Rect(144,354.44f,214,18),ki?"Lv "+level+" / 20":learned?"Lv "+slv+" / 20":ported?"미습득":"Lv "+NotPorted,latinFont,13,C(165,168,168),FontStyle.Normal,.78f);
    Fill(new Rect(74,384.64f,284,1),C(146,149,149,.5f));Paragraph(new Rect(74,399.64f,284,112),ki?data.skill.description:def.desc,serif,16,C(217,214,208),28);
+     // 기본 사슬/보호막은 원문에서도 스킬 레벨·습득/강화 버튼이 없는 기본 동작이다.
+     if(id=="charge"||id=="parry"){
+      float baseY=638.64f;if(EquippedId(SelectedSlot)!=id&&sim.CanEquipSkill(SelectedSlot,id)){if(WebButton(new Rect(74,baseY,284,40),"이 슬롯에 장착 ["+SkillDockBinding.KeyForWindow(SelectedSlot,NativeKeyBindInput.Bindings)+"]",C(33,36,36),C(16,19,19),C(89,92,92),C(217,214,208),true)&&sim.EquipSkill(SelectedSlot,id))skillChanged?.Invoke();baseY+=52;}DrawInfoResources(sim,baseY);return;
+     }
     string cost=learned?"강화 SP "+sim.SkillUpgradeSpCost(id):ported?"습득 SP 10 · 악의 "+sim.MaliceCost(sim.SkillLearnMalice(id)):"강화 "+NotPorted;
     Text(new Rect(76,536.64f,284,19),cost,serif,15,C(165,168,168));Text(new Rect(216,558,140,19),learned&&slv>=SkillRules.SkillLevelLock(sim.Player.Level)&&slv<SkillRules.MaxSkillLevel?"Lv"+(SkillRules.SkillLevelLock(sim.Player.Level)*50)+" 도달 시 해금":"",serif,13,C(201,163,154),FontStyle.Normal,0,TextAnchor.MiddleRight);
     bool canUp=learned?sim.CanUpgradeSkill(id):ported&&sim.CanLearnSkill(id);if(WebButton(new Rect(74,582.64f,87,40),learned?"강화 +":"습득",canUp?C(70,34,26):C(28,31,31),canUp?C(38,18,14):C(18,21,21),canUp?C(100,103,103):C(51,54,54),canUp?C(222,219,213):C(138,141,141),canUp)){if(learned?sim.UpgradeSkill(id):sim.LearnSkill(id))skillChanged?.Invoke();}
@@ -239,7 +244,7 @@ namespace Exoduser.UnityPort {
    var slot=defs.slots[SelectedSlot];bool equipped=SelectedSlot==SkillUiState.LmbSlot&&lmb;
    if(equipped)NativeUiAudit.DrawTexture(AltarImageRect,altarLmb,ScaleMode.StretchToFill,false);
    // core name box (top left of the altar): 22px, 2px fire border-left, gradient to transparent
-   string equippedId=EquippedId(SelectedSlot);string coreName=equipped?data.skill.name:equippedId!=null&&Ported(equippedId)&&skillById.ContainsKey(equippedId)?SkillName(equippedId):NotPorted;
+   string equippedId=SkillDockBinding.ForgeHostForWindow(cur,SelectedSlot);string coreName=equipped?data.skill.name:equippedId!=null&&Ported(equippedId)&&skillById.ContainsKey(equippedId)?SkillName(equippedId):NotPorted;
    var cn=R(slot.coreNameRect);float cw=Width(serif,22,FontStyle.Bold,coreName,1.32f)+28;var box=new Rect(cn.x,cn.y,cw,cn.height);
    Grad(box,C(6,9,9,.88f),C(6,9,9,0),90);Fill(new Rect(box.x,box.y,2,box.height),C(236,121,88));
    Text(new Rect(box.x+12,box.y+3,cw,box.height-7),coreName,serif,22,C(217,214,208),FontStyle.Bold,1.32f,TextAnchor.MiddleLeft,true);

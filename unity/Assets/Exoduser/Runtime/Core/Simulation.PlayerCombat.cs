@@ -7,15 +7,17 @@ namespace Exoduser.UnityPort.Core
 {
     // PC-B07 player dash / parry / shield / E-strike state machine on top of the web calculations in ParryRules / ParryRewards / ChainDash / PlayerPoise (wired:
     // PlayerCombatWired). B07b added the E strike hit (Simulation.BashStrike.cs: _gSlamHit circle, damage, stun, poise), parryBank, Q cancel of sRecover and the Shift gauge
-    // bar. NOT YET IMPLEMENTED (docs/engine/UNITY_B07B_STRIKE_20261027.md): projectile reflection (the friendly blue-bean pipeline), the sBash / sRecover Shift cancel
-    // and the sRecover -> sDraw re-entry, silvertail lunge parry, unique hooks (_uKiPrecharge ...), the overhead gauge text, melee parry points other than the ones the
+    // bar. 사슬 후반 스톡 이동과 sRecover의 E 홀드 재진입은 현재 원문 순서로 연결했다.
+    // NOT YET IMPLEMENTED: projectile reflection (the friendly blue-bean pipeline), silvertail lunge parry, unique hooks (_uKiPrecharge ...), the overhead gauge text, melee parry points other than the ones the
     // ported enemy AI / druid boss already call (Parry / TryParry).
     public sealed partial class Simulation
     {
         public static readonly bool PlayerCombatWired = true;   // static readonly (not const): the guarded branches must not produce CS0162
 
         // equipment / passive inputs (0 until the inventory layer feeds them)
-        public double CapeParry, ShieldCdRed, CcRes, StunRes, ParryBonus, PParry, PRegen, PGuard, ShieldBlockDR, MaliceSwipeLevel, ShieldThrowLevel, ChargeBoostLevel, PCharge;
+        public double CapeParry, ShieldCdRed, CcRes, StunRes, ParryBonus, PParry, PRegen, PGuard, ShieldBlockDR, MaliceSwipeLevel, ShieldThrowLevel, PCharge;
+        // 습득·강화·저장 레벨이 사슬 계산의 한 입력이다. 기존 공개 입력의 대입도 스킬북에 반영한다.
+        public double ChargeBoostLevel { get { return Skills.Level("chargeBoost"); } set { if (value >= 1) Skills.Levels["chargeBoost"] = (int)value; else Skills.Levels.Remove("chargeBoost"); } }
         // player combat state (web P._sbParryT, P._sbHoldT, P._sbReleaseR, P._sbCd, P._sdHold, P._kgChg, P._sBashChgMul, _harpGauge ...)
         public double SbParryT, SbHoldT, SbReleaseR, SbCd, SdHold, KgChg, SBashChgMul = 1, HarpGauge = 225, HarpGaugeMax = 225;
         // chain dash (web _dashHold/_dashHoldF/_harpActive/_dashActive)
@@ -65,8 +67,11 @@ namespace Exoduser.UnityPort.Core
                 else MovePlayerAction(.35f, false, false);
             }
             // ---- E strike moment (st2 crosses 12): the circular hit of _gSlamHit ----
-            if (Player.State == "sBash" || Player.State == "sRecover") MovePlayerAction(.8f);
+            if (Player.State == "sBash" || Player.State == "sRecover" || Player.State == "bowRecover") MovePlayerAction(.8f);
             if (BashStrikeMoment) BashStrike();
+            // 원문의 후반 자세 취소는 일반 홀드 발사와 달리 게이지 대신 스톡·ST를 쓴다.
+            if ((Player.State == "sBash" && Player.StateTicks <= 14 || Player.State == "sRecover" || Player.State == "bowRecover") && TryLateChainMove(false)) return;
+            if (Player.State == "bowRecover" && Player.StateTicks <= 0) Player.State = "idle";
             // ---- E: shield strike (tap = sBash, hold = charge) ----
             if (Player.State == "idle" && eDown && !playerActionBranchConsumed) { MovePlayerAction(1, true); Player.State = "sDraw"; SdHold = 0; }
             else if (Player.State == "sDraw")
@@ -88,6 +93,7 @@ namespace Exoduser.UnityPort.Core
             }
             else if (Player.State == "kiGather")
             {
+                TryLateChainMove(true); // E 자세·충전량을 유지하고 같은 틱의 충전도 계속한다.
                 MovePlayerAction(.18f, false, false);
                 KgChg += 2;
                 if (ParryRules.KiGatherAutoRelease(KgChg)) { SBashChgMul = ParryRules.ClampChargeMul(3); Player.State = "sBash"; Player.StateTicks = ParryRules.SBashTicks; KgChg = 0; AutoShieldThrow(); }
@@ -98,7 +104,7 @@ namespace Exoduser.UnityPort.Core
                 }
             }
             else if (Player.State == "sBash" && Player.StateTicks <= 0) { Player.State = "sRecover"; Player.StateTicks = ParryRules.SRecoverTicks(PParry); }
-            else if (Player.State == "sRecover" && Player.StateTicks <= 0) { Player.State = "idle"; SBashChgMul = 1; ShieldWingTicks = 0; }
+            else if (Player.State == "sRecover" && Player.StateTicks <= 0) { Player.State = combatEHeld ? "sDraw" : "idle"; if (combatEHeld) SdHold = 0; SBashChgMul = 1; ShieldWingTicks = 0; }
             // ---- Shift: chain move ----
             // 사슬은 원문 update의 재생 앞 단계에서 실행한다.
             // 기절 자연 종료·Shift 탈출은 Simulation의 후반 자세 분기에서 처리한다.
@@ -106,6 +112,21 @@ namespace Exoduser.UnityPort.Core
 
         /// <summary>The enemies already hit by the current chain pull (web _harpHits): each is hit once per cast.</summary>
         public readonly List<EnemyState> DashHits = new List<EnemyState>();
+
+        private bool TryLateChainMove(bool gathering)
+        {
+            if (!combatShiftHeld || Player.ChargeStocks <= 0 || HarpActive || gathering && DashActive || Skills.ChargeSkill != "charge") return false;
+            int cost = SkillStCost("charge", "chargeBoost");
+            if (cost <= 0 || Player.Stamina < cost) return false;
+            Player.Stamina -= cost; Player.ChargeStocks--;
+            if (Player.ChargeStocks < Player.MaxChargeStocks && Player.ChargeCd <= 0) Player.ChargeCd = 300;
+            DashHold = false; DashHoldF = 0; HarpTier = ChainDash.CancelTier(ChargeBoostLevel);
+            HarpActive = true; HarpDist = 0; HarpMaxDist = ChainDash.DistanceOfTier(HarpTier, ChargeBoostLevel, 0, PCharge);
+            double direction = actionMoveX != 0 || actionMoveY != 0 ? Math.Atan2(actionMoveY, actionMoveX) : Player.Facing;
+            HarpDirX = (float)Math.Cos(direction); HarpDirY = (float)Math.Sin(direction);
+            HarpX = Player.X; HarpY = Player.Y; DashHits.Clear();
+            return true;
+        }
 
         // `_dashActive` pass-through hit loop (game.html 32474-32505, STR branch): after the pull step every living enemy within r + 20 of the player that is not in _harpHits is hit.
         // The web asks shQuery(P, 40) first; the existing shQuery port (NearbyWebs) is the exact radius r + other.r, which contains the r + 20 reach, so the candidate set is the same here.
@@ -199,6 +220,40 @@ namespace Exoduser.UnityPort.Core
                     if (combatShiftHeld) FireChain(3);
                 }
             }
+        }
+
+        // 원문33008: 사슬 갱신과 무적 감소 뒤, 후반 자세 처리 앞에서 최대 게이지·스톡을 갱신한다.
+        private void TickChainStocks()
+        {
+            var armor = EquippedInventory != null ? EquippedInventory.GetEquipped("armor") : null;
+            var boots = EquippedInventory != null ? EquippedInventory.GetEquipped("boots") : null;
+            double extra = EquippedInventory != null ? EquippedInventory.AffixTotal("extraST") : 0;
+            var maximum = ChainDash.ComputeGaugeMax(false, false, false, ChargeBoostLevel, 0, extra, armor != null ? armor.bonusChargeStock : 0, boots != null ? boots.bonusChargeStock : 0);
+            Player.MaxChargeStocks = maximum.MaxStocks;
+            HarpGaugeMax = maximum.Max; HarpGauge = Math.Min(HarpGauge, HarpGaugeMax);
+            if (Player.ChargeStocks < Player.MaxChargeStocks)
+            {
+                if (Player.ChargeCd > 0) Player.ChargeCd--;
+                else { Player.ChargeStocks++; if (Player.ChargeStocks < Player.MaxChargeStocks) Player.ChargeCd = Js.Int(maximum.CdBase * (1 + (EquippedInventory != null ? EquippedInventory.AffixTotal("dashCooldown") : 0))); }
+            }
+        }
+
+        // 사망 재시도 끝의 원문 _refillRespawnResources 중 사슬 자원 경계.
+        // 일반 저장 복원은 이 호출로 채우지 않으며 Native의 실제 사망 경로에서만 호출한다.
+        public void RefillChainAfterRespawn()
+        {
+            TickChainStocks();
+            Player.ChargeStocks = Player.MaxChargeStocks; Player.ChargeCd = 0;
+            HarpGauge = HarpGaugeMax;
+        }
+
+        // 원문 리트라이 공통 대입 + _refillRespawnResources. 사망 경로 전용이며 저장 로드는 제외한다.
+        public void RefillAfterDeathRetry()
+        {
+            Player.Hp = Player.MaxHp; Player.Mana = Player.MaxMana; Player.Stamina = Player.MaxStamina; Player.Shield = Player.MaxShield;
+            Player.State = "idle"; Player.Iframes = 300; Player.KnockbackX = Player.KnockbackY = 0;
+            PlayerPoison = PlayerWebSlow = PlayerTrapSlow = PlayerFreezeSlow = 0;
+            RefillChainAfterRespawn();
         }
 
         // what the sBlock / peaceShield branch of hurtP did to a non-parried hit (rate text, knock-back, shake, flash are applied by HurtPlayer in the web's order)

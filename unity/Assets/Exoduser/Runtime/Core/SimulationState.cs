@@ -51,6 +51,7 @@ namespace Exoduser.UnityPort.Core
         public float X, Y, Radius = 15, Hp, MaxHp, Stamina, MaxStamina, Mana, MaxMana;
         public float Shield, MaxShield, Speed, Facing, StateTicks, SwingProgress;
         public float KnockbackX, KnockbackY, Iframes, Poise = 4;
+        public int ChargeStocks = 1, MaxChargeStocks = 1; public double ChargeCd;
         public bool KiChargeActive;
         public float KiChargeTicks;
         public int Level = 1, Experience, MaxExperience = 15, StatPoints, PassivePoints;

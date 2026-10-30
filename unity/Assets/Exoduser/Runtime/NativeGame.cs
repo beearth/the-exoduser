@@ -552,7 +552,7 @@ namespace Exoduser.UnityPort
             return false;
         }
         // Death screen 'retry' button = the pause menu's Restart command.
-        void RetryFromDeath(){if(gameFocused){if(RetryInsideArena())return;ResetRun();skillInputFence=true;menu=false;Running=true;}}
+        void RetryFromDeath(){if(gameFocused){if(RetryInsideArena())return;ResetRun();Simulation.RefillAfterDeathRetry();skillInputFence=true;menu=false;Running=true;}}
         void EquipSelectedSkill(){if(SkillUiState.TryEquipKiSlash(Simulation,skills.SelectedSlot)){basicWeaponMode=false;RequestCombatSave();}}
         void SetSfxPercent(int percent){settings.SetSfxPercent(percent);sound.SetVolumePercent(settings.SfxPercent);music.SetPercents(settings.SfxPercent,settings.BgmPercent);lobby?.SetStartupSfxPercent(settings.SfxPercent);QueueSettingsSave();}
         void SetBgmPercent(int percent){settings.SetBgmPercent(percent);lobby.SetBgmPercent(settings.BgmPercent);music.SetPercents(settings.SfxPercent,settings.BgmPercent);QueueSettingsSave();}
