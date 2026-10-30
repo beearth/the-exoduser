@@ -63,7 +63,7 @@ namespace Exoduser.UnityPort
                 Fill(new Rect(a.x, a.y, w, h), new Color(.251f, .145f, .169f));
                 Fill(new Rect(a.x, a.y, w * Mathf.Clamp01((float)(fb.Hp / fb.MaxHp)), h), col);
                 var keep = center.normal.textColor; center.normal.textColor = new Color(.867f, 1f, 1f);
-                GUI.Label(new Rect(a.x + w / 2 - 100, a.y - 26, 200, 22), lobby.Language != "ko" ? "Abyssal Angler" : "심연의 앵글러", center);
+                NativeUiAudit.Label(new Rect(a.x + w / 2 - 100, a.y - 26, 200, 22), lobby.Language != "ko" ? "Abyssal Angler" : "심연의 앵글러", center);
                 center.normal.textColor = keep;
             }
         }

@@ -33,7 +33,7 @@ namespace Exoduser.UnityPort {
         static readonly Dictionary<string,Texture2D> gradients=new Dictionary<string,Texture2D>();
         static readonly Dictionary<int,GUIStyle> styles=new Dictionary<int,GUIStyle>();
 
-        static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
+        static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
         // Vertical CSS linear-gradient(a, b) as a 1x32 strip.
         static Texture2D Gradient(Color a,Color b){
             string key=ColorUtility.ToHtmlStringRGBA(a)+ColorUtility.ToHtmlStringRGBA(b);
@@ -63,11 +63,12 @@ namespace Exoduser.UnityPort {
             var s=Get(preset);string clicked=null;
             for(int i=0;i<Ids.Length;i++){
                 var r=new Rect(s.x+i*(s.tabW+s.gap),s.y,s.tabW,s.tabH);bool active=Ids[i]==activeId;
+                NativeUiAudit.Region(r,"button");
                 // .panel-nav-tab: gradient over the iron plate (100% 100%) over #232225; .active: red gradient, no colour, inset 0 -2px #7f8282.
                 if(!active)Fill(r,C(35,34,37));
-                if(plate!=null)GUI.DrawTexture(r,plate,ScaleMode.StretchToFill);
-                if(active){GUI.DrawTexture(r,Gradient(C(87,23,12,.6f),C(38,9,7,.72f)));Fill(new Rect(r.x,r.yMax-2,r.width,2),C(127,130,130));}
-                else GUI.DrawTexture(r,Gradient(C(21,20,23,.51f),C(11,10,12,.675f)));
+                if(plate!=null)NativeUiAudit.DrawTexture(r,plate,ScaleMode.StretchToFill);
+                if(active){NativeUiAudit.DrawTexture(r,Gradient(C(87,23,12,.6f),C(38,9,7,.72f)));Fill(new Rect(r.x,r.yMax-2,r.width,2),C(127,130,130));}
+                else NativeUiAudit.DrawTexture(r,Gradient(C(21,20,23,.51f),C(11,10,12,.675f)));
                 // :hover{filter:brightness(1.16)}
                 if(GUI.enabled&&r.Contains(Event.current.mousePosition))Fill(r,new Color(1,1,1,.05f));
                 Label(r,Labels[i],(int)s.size,s.spacing,active?C(244,230,203):C(194,191,185));

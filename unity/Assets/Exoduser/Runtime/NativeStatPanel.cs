@@ -64,7 +64,7 @@ namespace Exoduser.UnityPort {
    sans=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular");sansSemi=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold")??sans;
    baseTex=Tex("stat_base");plate=Resources.Load<Texture2D>("Art/ui/inventory/plate");
   }
-  static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
+  static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
   static void Border(Rect r,Color c,float w=1){Fill(new Rect(r.x,r.y,r.width,w),c);Fill(new Rect(r.x,r.yMax-w,r.width,w),c);Fill(new Rect(r.x,r.y+w,w,r.height-2*w),c);Fill(new Rect(r.xMax-w,r.y+w,w,r.height-2*w),c);}
   Texture2D Make(string key,int n,Func<float,float,Color> f){
    Texture2D t;if(procedural.TryGetValue(key,out t))return t;
@@ -82,10 +82,10 @@ namespace Exoduser.UnityPort {
    for(int iy=0;iy<n;iy++)for(int ix=0;ix<n;ix++){float sx=(ix+.5f)/n-.5f,sy=((n-1-iy)+.5f)/n-.5f;px[iy*n+ix]=Color.Lerp(a,b,Mathf.Clamp01(.5f+(sx*dx+sy*dy)/len));}
    t.SetPixels(px);t.Apply(false,true);procedural[key]=t;return t;
   }
-  void Grad(Rect r,Color a,Color b,float angle=180f){GUI.DrawTexture(r,Gradient(a,b,angle));}
-  void Disc(Vector2 c,float r,Color col){var old=GUI.color;GUI.color=col;GUI.DrawTexture(new Rect(c.x-r,c.y-r,r*2,r*2),DiscTex());GUI.color=old;}
-  void Glow(Vector2 c,float r,Color col){var old=GUI.color;GUI.color=col;GUI.DrawTexture(new Rect(c.x-r,c.y-r,r*2,r*2),Radial());GUI.color=old;}
-  void Diamond(Vector2 c,float w,float h,Color col){var old=GUI.color;GUI.color=col;GUI.DrawTexture(new Rect(c.x-w/2,c.y-h/2,w,h),DiamondTex());GUI.color=old;}
+  void Grad(Rect r,Color a,Color b,float angle=180f){NativeUiAudit.DrawTexture(r,Gradient(a,b,angle));}
+  void Disc(Vector2 c,float r,Color col){var old=GUI.color;GUI.color=col;NativeUiAudit.DrawTexture(new Rect(c.x-r,c.y-r,r*2,r*2),DiscTex());GUI.color=old;}
+  void Glow(Vector2 c,float r,Color col){var old=GUI.color;GUI.color=col;NativeUiAudit.DrawTexture(new Rect(c.x-r,c.y-r,r*2,r*2),Radial());GUI.color=old;}
+  void Diamond(Vector2 c,float w,float h,Color col){var old=GUI.color;GUI.color=col;NativeUiAudit.DrawTexture(new Rect(c.x-w/2,c.y-h/2,w,h),DiamondTex());GUI.color=old;}
   // Straight segment of width w between two points (a rotated 1px quad; the rotation is applied locally so groups/scales stay correct).
   void Line(Vector2 a,Vector2 b,float w,Color col){
    var d=b-a;float len=d.magnitude;if(len<.01f)return;var old=GUI.matrix;
@@ -94,7 +94,7 @@ namespace Exoduser.UnityPort {
   }
   // Four-pointed star (web "✦"): two crossed diamonds.
   void Spark(Vector2 c,float size,Color col){Diamond(c,size*.46f,size,col);Diamond(c,size,size*.46f,col);}
-  void Glyph(string key,Rect r,Color col){var t=Tex("glyph_"+key);if(t==null)return;var old=GUI.color;GUI.color=col;GUI.DrawTexture(r,t,ScaleMode.StretchToFill);GUI.color=old;}
+  void Glyph(string key,Rect r,Color col){var t=Tex("glyph_"+key);if(t==null)return;var old=GUI.color;GUI.color=col;NativeUiAudit.DrawTexture(r,t,ScaleMode.StretchToFill);GUI.color=old;}
 
   // ---- text ----
   GUIStyle Style(Font f,int size,FontStyle fs){
@@ -186,7 +186,7 @@ namespace Exoduser.UnityPort {
     GUI.matrix=Matrix4x4.identity;Fill(new Rect(0,0,Screen.width,Screen.height),Color.black);
     float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
-    GUI.DrawTexture(new Rect(0,0,1920,1080),baseTex,ScaleMode.StretchToFill,false);
+    NativeUiAudit.DrawTexture(new Rect(0,0,1920,1080),baseTex,ScaleMode.StretchToFill,false);
     ClampPan();
     HandleTreeInput();
     // The tree is drawn straight over the still and the still is then re-drawn around the viewport (IMGUI groups break rotated quads).
@@ -197,7 +197,7 @@ namespace Exoduser.UnityPort {
   }
 
   // Re-draws the window still in a rect (cuts off anything drawn there before).
-  void CoverRect(Rect r){if(r.width<=0||r.height<=0)return;GUI.DrawTextureWithTexCoords(r,baseTex,new Rect(r.x/1920f,1f-r.yMax/1080f,r.width/1920f,r.height/1080f),false);}
+  void CoverRect(Rect r){if(r.width<=0||r.height<=0)return;NativeUiAudit.DrawTextureWithTexCoords(r,baseTex,new Rect(r.x/1920f,1f-r.yMax/1080f,r.width/1920f,r.height/1080f),false);}
   void CoverAround(Rect hole){
    CoverRect(new Rect(0,0,1920,hole.y));CoverRect(new Rect(0,hole.yMax,1920,1080-hole.yMax));
    CoverRect(new Rect(0,hole.y,hole.x,hole.height));CoverRect(new Rect(hole.xMax,hole.y,1920-hole.xMax,hole.height));
@@ -338,7 +338,7 @@ namespace Exoduser.UnityPort {
    string frame="node_"+(stat?"stat":n.major?"major":"passive")+"_"+(sel?"selected":"base");var t=Tex(frame);
    // The frame stills are 140 css px wide at the web default scale (node = 33.66 / 41.31 css px).
    float f=size/(n.major?41.31f:33.66f);float sprite=140f*f*(n.major?1f:1f);
-   if(t!=null)GUI.DrawTexture(new Rect(c.x-sprite/2,c.y-sprite/2,sprite,sprite),t,ScaleMode.StretchToFill);
+   if(t!=null)NativeUiAudit.DrawTexture(new Rect(c.x-sprite/2,c.y-sprite/2,sprite,sprite),t,ScaleMode.StretchToFill);
    float gs=size*.52f;Color gc=sel?C(255,223,164):C(201,198,192);
    if(stat){gc.a=.13f;Glyph(n.glyph,new Rect(c.x-gs/2,c.y-gs/2,gs,gs),gc);Text(new Rect(c.x-30*sc,c.y-10*sc,60*sc,20*sc),n.statLabel,serif,14*sc,C(217,214,208),FontStyle.Bold,0,TextAnchor.MiddleCenter,true);}
    else Glyph(n.glyph,new Rect(c.x-gs/2,c.y-gs/2,gs,gs),gc);
@@ -446,7 +446,7 @@ namespace Exoduser.UnityPort {
    CoverRect(new Rect(1466,318,418,61));CoverRect(new Rect(1466,rect.yMax,418,992-rect.yMax));
    DrawDetailScrollbar(rect);
    // the still carries the passive title: blank it with a plain patch of the same panel, then draw the current one
-   GUI.DrawTextureWithTexCoords(new Rect(1489,336,160,30),baseTex,new Rect(1689f/1920f,1f-366f/1080f,160f/1920f,30f/1080f),false);
+   NativeUiAudit.DrawTextureWithTexCoords(new Rect(1489,336,160,30),baseTex,new Rect(1689f/1920f,1f-366f/1080f,160f/1920f,30f/1080f),false);
    Text(new Rect(1489,339,372,24),isStat?"능력치 분석":"패시브 분석",sans,16,C(199,196,190),FontStyle.Normal,2.56f);
    DrawActions(isStat);
   }

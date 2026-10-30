@@ -101,7 +101,7 @@ namespace Exoduser.UnityPort
    // LT-3: the web has ONE top-left overlay (#lobbyVerOverlay, drawn by NativeLobbyBuildLabels) and it is also the patch-notes opener; this launcher only owns the click area / focus ring.
    // It used to draw its own "vX / OFFLINE" text from the first patch-notes entry on top of that overlay (two shifted copies, an old version).
    GUI.SetNextControlName("patch-notes-open");
-   if(GUI.Button(rect,"",GUIStyle.none))OpenPatchNotes();
+   if(NativeUiAudit.Button(rect,"",GUIStyle.none))OpenPatchNotes();
    if(patchNotesRestoreFocus&&Event.current.type==EventType.Repaint){GUI.FocusControl(string.IsNullOrEmpty(patchNotesPreviousFocus)?"patch-notes-open":patchNotesPreviousFocus);patchNotesRestoreFocus=false;}
    if(!patchNotesOpen&&GUI.GetNameOfFocusedControl()=="patch-notes-open")Border(rect,new Color(.84f,.69f,.48f,.8f),1);
   }
@@ -127,11 +127,11 @@ namespace Exoduser.UnityPort
    Label(new Rect(710,229,500,34),PatchNotesUiLabel("title"),patchNotesTitle,TextAnchor.MiddleCenter);
    Fill(new Rect(716,274,488,1),new Color(.643f,.576f,.451f,.55f));
    float contentHeight=MeasurePatchNotesBody(body.width-22);
-   patchNotesScroll=GUI.BeginScrollView(body,patchNotesScroll,new Rect(0,0,body.width-18,Mathf.Max(body.height,contentHeight)),false,true);
+   patchNotesScroll=NativeUiAudit.BeginScrollView(body,patchNotesScroll,new Rect(0,0,body.width-18,Mathf.Max(body.height,contentHeight)),false,true);
    DrawPatchNotesBody(body.width-22);
-   GUI.EndScrollView();
+   NativeUiAudit.EndScrollView();
    Rect close=new Rect(894,810,132,38);Fill(close,new Color(.114f,.078f,.075f));Border(close,new Color(.643f,.576f,.451f,.5f),1);
-   GUI.SetNextControlName("patch-notes-close");if(GUI.Button(close,PatchNotesUiLabel("close"),patchNotesClose))ClosePatchNotes();
+   GUI.SetNextControlName("patch-notes-close");if(NativeUiAudit.Button(close,PatchNotesUiLabel("close"),patchNotesClose))ClosePatchNotes();
    if(patchNotesFocusClose&&Event.current.type==EventType.Repaint){GUI.FocusControl("patch-notes-close");patchNotesFocusClose=false;}
    if(GUI.GetNameOfFocusedControl()=="patch-notes-close")Border(close,new Color(.84f,.47f,.28f),2);
   }

@@ -86,12 +86,12 @@ namespace Exoduser.UnityPort
             // Source bar includes Cinzel key labels; erase only those glyph pixels in a runtime copy.
             // The original imported PNG stays byte-identical and the common labels are drawn below.
             if(labelCleanBar==null)labelCleanBar=BuildLabelCleanBar();
-            var oldColor=GUI.color;GUI.color=new Color(.8f,.8f,.8f);GUI.DrawTexture(slotBar,labelCleanBar??bar,ScaleMode.StretchToFill,true);GUI.color=oldColor;
+            var oldColor=GUI.color;GUI.color=new Color(.8f,.8f,.8f);NativeUiAudit.DrawTexture(slotBar,labelCleanBar??bar,ScaleMode.StretchToFill,true);GUI.color=oldColor;
             Globe(dock.LeftLiquid,dock.LeftFrame,false);Globe(dock.RightLiquid,dock.RightFrame,true);
             Rect lmb=dock.ActiveSlot;
             if(activeAttack=="kiSlash"){
                 var insetIcon=new Rect(lmb.x+3*scale,lmb.y+3*scale,lmb.width-6*scale,lmb.height-6*scale);
-                GUI.DrawTexture(insetIcon,icon,ScaleMode.ScaleToFit,true);if(Event.current.type==EventType.Repaint)IconDrawn=true;
+                NativeUiAudit.DrawTexture(insetIcon,icon,ScaleMode.ScaleToFit,true);if(Event.current.type==EventType.Repaint)IconDrawn=true;
 
             }
             DrawKeyLabels(slotBar,height);
@@ -133,13 +133,13 @@ namespace Exoduser.UnityPort
         void Globe(Rect wrap,Rect frame,bool right)
         {
             const float s=NativeHudDockLayout.ArtScale;
-            GUI.DrawTexture(wrap,right?mana:hp,ScaleMode.StretchToFill,true);
-            GUI.DrawTexture(frame,right?mpFrame:hpFrame,ScaleMode.StretchToFill,true);
-            if(!right)GUI.DrawTexture(new Rect(wrap.x+11*s,wrap.y+18.65f*s,153*s,153*s),shield,ScaleMode.StretchToFill,true);
+            NativeUiAudit.DrawTexture(wrap,right?mana:hp,ScaleMode.StretchToFill,true);
+            NativeUiAudit.DrawTexture(frame,right?mpFrame:hpFrame,ScaleMode.StretchToFill,true);
+            if(!right)NativeUiAudit.DrawTexture(new Rect(wrap.x+11*s,wrap.y+18.65f*s,153*s,153*s),shield,ScaleMode.StretchToFill,true);
             int index=right?2:0;
             for(int i=0;i<2;i++)if(eyes[index+i]){
                 float ex=wrap.x+(i==0?76.5f:93.5f)*s;
-                GUI.DrawTexture(new Rect(ex-4*s,wrap.y-13*s,15*s,15*s),eye,ScaleMode.StretchToFill,true);
+                NativeUiAudit.DrawTexture(new Rect(ex-4*s,wrap.y-13*s,15*s,15*s),eye,ScaleMode.StretchToFill,true);
             }
             if(!right){if(values.HpValid){Text(new Rect(wrap.x,wrap.y+62*s,wrap.width,30*s),values.HpCurrentText,hpNumber,Color.white);Text(new Rect(wrap.x,wrap.y+90*s,wrap.width,20*s),values.HpMaximumText,maximum,new Color(1,1,1,.6f));}}
             else {

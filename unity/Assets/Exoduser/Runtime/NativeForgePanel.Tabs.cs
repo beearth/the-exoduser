@@ -139,7 +139,7 @@ namespace Exoduser.UnityPort {
    // item list (own scroll area, 2 columns, gap 4)
    var view=new Rect(CX,549.4f,CW,320);int n=inv.Bag.Count;int rows=(n+1)/2;float contentH=rows==0?60:rows*72.8f+(rows-1)*4;bool overflow=contentH>320;
    float colW=overflow?318:323;
-   var outerOff=off;GUI.BeginGroup(Off(view));off=new Vector2(view.x,view.y+listScroll);
+   var outerOff=off;NativeUiAudit.BeginGroup(Off(view));off=new Vector2(view.x,view.y+listScroll);
    if(n==0)Txt(new Rect(CX,549.4f,CW,60),s.empty,F.NM,15.2f,C(68,71,71),false,TextAnchor.MiddleCenter);
    for(int i=0;i<n;i++){
     var it=inv.Bag[i];var r=new Rect(CX+(i%2)*(colW+4),549.4f+(i/2)*76.8f,colW,72.8f);
@@ -150,7 +150,7 @@ namespace Exoduser.UnityPort {
     int rar=ForgeFormulas.EconomyRarity(it.rarity);
     Txt(new Rect(tx,r.y+39.4f,colW-30,20.4f),defs.rarityNames[Mathf.Clamp(it.rarity,0,5)]+" T"+it.tier+" "+s.arrowLabel+" "+s.costLabel+" "+ForgeFormulas.SalvageValue(it,s.valueTable),F.Sans,12,C(183,180,174));
    }
-   off=outerOff;GUI.EndGroup();
+   off=outerOff;NativeUiAudit.EndGroup();
    if(overflow)ScrollBar(2,new Rect(view.xMax-10,view.y,10,view.height),view.height,contentH,ref listScroll);
    // summary (selection is not ported: 0 selected)
    var sum=new Rect(CX,883.4f,CW,46);Fill(new Rect(sum.x,sum.y,sum.width,1),C(34,37,37));
@@ -169,7 +169,7 @@ namespace Exoduser.UnityPort {
    Txt(new Rect(CX,CY,CW,21),r0.header.Replace("{cost}",r0.rerollCost.ToString()),F.NM,16,C(68,204,255),true,TextAnchor.MiddleCenter,1.6f);
    var view=new Rect(CX,433.4f,CW,280);float contentH=defs.slots.Length*39-4+1;bool overflow=true;
    float rowW=overflow?640:650;
-   var outerOff=off;GUI.BeginGroup(Off(view));off=new Vector2(view.x,view.y+listScroll);
+   var outerOff=off;NativeUiAudit.BeginGroup(Off(view));off=new Vector2(view.x,view.y+listScroll);
    // Slot order of the web list is SLOT_NAMES (the Unity equipment order)
    for(int i=0;i<InventoryState.Slots.Length;i++){
     var it=inv.Equipped[i];var r=new Rect(CX,433.4f+39*i,rowW,35);bool can=it!=null&&it.rarity>=1;float a=can?1f:.4f;
@@ -190,7 +190,7 @@ namespace Exoduser.UnityPort {
      Txt(new Rect(tx+20,r.y+7,400,21),defs.slotKr[i]+" — "+r0.empty,F.NM,16,C(51,54,54),false,TextAnchor.MiddleLeft,0,a);
     }
    }
-   off=outerOff;GUI.EndGroup();
+   off=outerOff;NativeUiAudit.EndGroup();
    ScrollBar(3,new Rect(view.xMax-10,view.y,10,view.height),view.height,contentH,ref listScroll);
   }
 
