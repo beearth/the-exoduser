@@ -10,8 +10,8 @@ function half(p,a,b,sign,inside){
   if(si)out.push(s);if(si!==ei){const t=ds/(ds-de);out.push({x:s.x+(e.x-s.x)*t,y:s.y+(e.y-s.y)*t});}
  }return clean(out);
 }
-function intersect(a,b){let p=a;const sign=Math.sign(area(b));for(let i=0;i<b.length&&valid(p);i++)p=half(p,b[i],b[(i+1)%b.length],sign,true);return valid(p)?p:[];}
-function subtract(a,b){let remainder=a;const out=[],sign=Math.sign(area(b));for(let i=0;i<b.length&&valid(remainder);i++){
+function intersect(a,b){if(!valid(a)||!valid(b))return [];let p=a;const sign=Math.sign(area(b));for(let i=0;i<b.length&&valid(p);i++)p=half(p,b[i],b[(i+1)%b.length],sign,true);return valid(p)?p:[];}
+function subtract(a,b){if(!valid(a))return [];if(!valid(b))return [a];let remainder=a;const out=[],sign=Math.sign(area(b));for(let i=0;i<b.length&&valid(remainder);i++){
  const outside=half(remainder,b[i],b[(i+1)%b.length],sign,false);if(valid(outside))out.push(outside);
  remainder=half(remainder,b[i],b[(i+1)%b.length],sign,true);
  }return out;

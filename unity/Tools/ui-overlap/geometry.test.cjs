@@ -21,3 +21,10 @@ test('실제 회전 내부의 뒤 글자만 가리고 클립 밖 잔여는 남�
  assert.equal(analyze({schemaVersion:2,width:40,height:40,elements:[text('뒤',15,15,0),surface,text('앞',16,16,2)]}).issues.length,0);
  assert.equal(analyze({schemaVersion:2,width:40,height:40,elements:[text('뒤',15,15,0),{...surface,hasClip:true,clipRect:{x:20,y:0,width:20,height:40}},text('앞',16,16,2)]}).issues.length,1);
 });
+test('빈 교집합 마스크는 다른 글자 조각을 삭제하지 않는다',()=>{
+ const empty=g.intersect(diamond,r(0,0,2,2));assert.equal(empty.length,0);const subject=r(10,10,4,4);
+ assert.deepEqual(g.subtract(subject,empty),[subject]);assert.deepEqual(g.intersect(subject,empty),[]);
+});
+test('클립이 회전 외접 상자의 빈 모서리만 남기면 가림0으로 처리한다',()=>{
+ const out=analyze({schemaVersion:2,width:40,height:40,elements:[text('뒤',10,10,0),{...surface,hasClip:true,clipRect:{x:0,y:0,width:2,height:2}},text('앞',11,11,2)]});assert.equal(out.issues.length,1);
+});
