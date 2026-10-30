@@ -117,7 +117,8 @@ class Program
         // ---- E strike (B07b): sDraw -> sBash 20 f -> the circular hit at the 8th frame (st2 12), damage + knock-back + mini stun, then sRecover ----
         {
             Action<Simulation, bool> eKey = (sim, down) => { sim.SetPlayerCombatInput(false, down, false); sim.Tick(0, 0, 100, 0, false, false); };
-            s = Make(); var near = s.SpawnNormalEnemy(60, 0); var far2 = s.SpawnNormalEnemy(160, 0); float nh = near.Hp + near.Shield, fh = far2.Hp + far2.Shield;
+            // 기존 기본 원형 타격만 격리한다. 실제 신규 캐릭터의 무료 합체 파동은 gameplay-parity 14경계에서 별도 검증한다.
+            s = Make(); s.Skills.Levels["shieldThrow"]=0; var near = s.SpawnNormalEnemy(60, 0); var far2 = s.SpawnNormalEnemy(160, 0); float nh = near.Hp + near.Shield, fh = far2.Hp + far2.Shield;
             eKey(s, true); eKey(s, false);
             Check(s.Player.State == "sBash", "E tap enters sBash");
             int tk = 0; while (s.Player.State == "sBash" && s.BashStrikeCount == 0 && tk++ < 30) eKey(s, false);

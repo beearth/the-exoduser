@@ -32,10 +32,10 @@ namespace Exoduser.UnityPort {
   string selectedOrb;bool ready;
   Texture2D discEmpty;Simulation cur;
   // B03 ports: these skills run in the Simulation (Skills/*.cs); everything else stays "미이식"
-  static bool Ported(string id){return id=="kiSlash"||id=="spikeTrap"||id=="giantSlam"||id=="holyDome"||id=="iceOrb"||id=="fireball";}
+  static bool Ported(string id){return id=="kiSlash"||Array.IndexOf(Simulation.PortedSkillIds,id)>=0;}
   string EquippedId(int slot){
     if(slot==SkillUiState.LmbSlot)return cur.Config.ActiveAttack=="kiSlash"?"kiSlash":null;
-    return NativeHud.SlotSkillId(cur,slot);
+    return NativeHud.SlotSkillId(cur,SkillDockBinding.DockIndexForWindow(slot));
   }
   int SkillLevelOf(string id){return id=="kiSlash"?Math.Max(1,cur.Config.KiSlashLevel):cur.Skills.Level(id);}
 
@@ -197,7 +197,7 @@ namespace Exoduser.UnityPort {
     else if(sel)NativeUiAudit.DrawTexture(sprite,discEmptySel);
     var key=R(d.keyRect);var name=R(d.nameRect);var button=R(d.button);
     // .sf-slot-key 11px Cinzel ls .08em gold; .sf-slot-name 11px (empty = dim, on = bone).
-    Text(new Rect(button.x,key.y,button.width,key.height),d.key.ToUpperInvariant(),latinFont,11,C(167,170,170),FontStyle.Normal,.88f,TextAnchor.MiddleCenter);
+    Text(new Rect(button.x,key.y,button.width,key.height),SkillDockBinding.KeyForWindow(i,NativeKeyBindInput.Bindings).ToUpperInvariant(),latinFont,11,C(167,170,170),FontStyle.Normal,.88f,TextAnchor.MiddleCenter);
     string label=equipped?data.skill.name:slotSkill!=null&&skillById.ContainsKey(slotSkill)?skillById[slotSkill].name:"비어 있음";
     Color col=sel?C(217,214,208):equipped?C(170,173,173):C(113,116,116);
     Text(new Rect(button.x-6,name.y,button.width+12,name.height),label,serif,11,col,FontStyle.Normal,0,TextAnchor.MiddleCenter);
@@ -222,17 +222,17 @@ namespace Exoduser.UnityPort {
    var slot=defs.slots[SelectedSlot];bool equipped=SelectedSlot==SkillUiState.LmbSlot&&lmb;
    if(equipped)NativeUiAudit.DrawTexture(AltarImageRect,altarLmb,ScaleMode.StretchToFill,false);
    // core name box (top left of the altar): 22px, 2px fire border-left, gradient to transparent
-   string coreName=equipped?data.skill.name:NotPorted;
+   string equippedId=EquippedId(SelectedSlot);string coreName=equipped?data.skill.name:equippedId!=null&&Ported(equippedId)&&skillById.ContainsKey(equippedId)?skillById[equippedId].name:NotPorted;
    var cn=R(slot.coreNameRect);float cw=Width(serif,22,FontStyle.Bold,coreName,1.32f)+28;var box=new Rect(cn.x,cn.y,cw,cn.height);
    Grad(box,C(6,9,9,.88f),C(6,9,9,0),90);Fill(new Rect(box.x,box.y,2,box.height),C(236,121,88));
    Text(new Rect(box.x+12,box.y+3,cw,box.height-7),coreName,serif,22,C(217,214,208),FontStyle.Bold,1.32f,TextAnchor.MiddleLeft,true);
    // field head (top right): title + sub, 2px fire border-right
    var fh=R(slot.fieldRect);Grad(fh,C(6,9,9,.88f),C(6,9,9,0),270);Fill(new Rect(fh.xMax-2,fh.y,2,fh.height),C(236,121,88));
    var ft=R(slot.fieldTitleRect);var fs=R(slot.fieldSubRect);
-   Mixed(new Rect(ft.x-24,ft.y,ft.width+24,ft.height),slot.fieldTitle,18,C(217,214,208),1.08f,TextAnchor.MiddleRight,FontStyle.Bold,true);
+   Mixed(new Rect(ft.x-24,ft.y,ft.width+24,ft.height),slot.fieldTitle.Replace("["+slot.key+"]","["+SkillDockBinding.KeyForWindow(SelectedSlot,NativeKeyBindInput.Bindings)+"]"),18,C(217,214,208),1.08f,TextAnchor.MiddleRight,FontStyle.Bold,true);
    Text(new Rect(fs.x-24,fs.y,fs.width+24,fs.height),slot.fieldSub,serif,11,C(170,173,173),FontStyle.Normal,0,TextAnchor.MiddleRight,true);
    // hint under the disc
-   string hint=equipped?"이 스킬은 합성 계열이 없습니다":NotPorted;float hw=Mathf.Max(Width(serif,13,FontStyle.Normal,hint,0)+30,60);
+   string hint=equipped?"이 스킬은 합성 계열이 없습니다":equippedId=="maliceSwipe"&&cur.ShieldFuse?"기본 합체: 불꽃칼날":NotPorted;float hw=Mathf.Max(Width(serif,13,FontStyle.Normal,hint,0)+30,60);
    var hr=R(slot.hintRect);var hb=new Rect(960-hw/2,hr.y,hw,hr.height);
    Grad(new Rect(hb.x,hb.y,hb.width*.12f,hb.height),C(6,9,9,0),C(6,9,9,.82f),90);Fill(new Rect(hb.x+hb.width*.12f,hb.y,hb.width*.76f,hb.height),C(6,9,9,.82f));Grad(new Rect(hb.x+hb.width*.88f,hb.y,hb.width*.12f,hb.height),C(6,9,9,.82f),C(6,9,9,0),90);
    Border(hb,C(89,92,92,.333f));
@@ -266,7 +266,7 @@ namespace Exoduser.UnityPort {
    if(NativeSilverHellUi.Button(new Rect(c.x-r-4,c.y-r-4,o.o+8,o.o+8),GUIContent.none,GUIStyle.none))selectedOrb=o.id;
   }
 
-  void DrawRoad(bool lmb){Mixed(new Rect(1562,316.64f,284,21),"합성 로드맵",15,C(165,168,168),1.2f,TextAnchor.MiddleLeft,FontStyle.Bold);Fill(new Rect(1562,344.64f,284,1),C(146,149,149,.5f));bool equipped=SelectedSlot==SkillUiState.LmbSlot&&lmb;Text(new Rect(1562,353.64f,284,30),equipped?"이 스킬은 합성 계열이 없습니다":NotPorted,serif,14,C(129,132,132));}
+  void DrawRoad(bool lmb){Mixed(new Rect(1562,316.64f,284,21),"합성 로드맵",15,C(165,168,168),1.2f,TextAnchor.MiddleLeft,FontStyle.Bold);Fill(new Rect(1562,344.64f,284,1),C(146,149,149,.5f));bool equipped=SelectedSlot==SkillUiState.LmbSlot&&lmb;Text(new Rect(1562,353.64f,284,30),equipped?"이 스킬은 합성 계열이 없습니다":EquippedId(SelectedSlot)=="maliceSwipe"&&cur.ShieldFuse?"기본 합체: 불꽃칼날":NotPorted,serif,14,C(129,132,132));}
 
   void DrawBottom(Action close){
    // The three .pclose buttons sit under the window frame's bottom bar (frame is painted after them).

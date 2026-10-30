@@ -130,6 +130,7 @@ namespace Exoduser.UnityPort.Core
                 case "giantSlam": total = SkillRules.GiantSlamCooldown(GiantSlamLevel > 0 ? GiantSlamLevel : lv, CooldownReduction); return GiantSlamCd;
                 case "holyDome": total = SkillRules.HolyDomeCooldown; return HolyDomeCd;
                 case "iceOrb": total = SkillRules.IceOrbCooldown(lv); return IceOrbCd;
+                case "maliceSwipe":case "shieldThrow":total=ShieldFuse?Math.Max(120,720-Math.Max(1,Math.Min(Skills.Level("maliceSwipe"),Skills.Level("shieldThrow")))*15):720;return (float)ShieldThrowCd;
             }
             return 0;
         }

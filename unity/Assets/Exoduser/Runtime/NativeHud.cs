@@ -18,6 +18,7 @@ namespace Exoduser.UnityPort
         Texture2D labelCleanBar;
         readonly Font textFont,numberFont;
         GUIStyle hpNumber,maximum,resourceNumber,resourceLabel,tooltip,keyLabel;
+        readonly string[] hudBindingKeys=new string[13];int hudBindingVersion=-1;
         HudValues values;int tick=-1,slowTick=-1;bool[] eyes=new bool[4];
         readonly Transition hpLevel=new Transition(.6f),manaLevel=new Transition(.5f),staminaLevel=new Transition(.5f);
         sealed class Transition
@@ -100,7 +101,7 @@ namespace Exoduser.UnityPort
         }
         void DrawKeyLabels(Rect barRect,float height)
         {
-            string[] keys=NativeHudDockLayout.KeyNames;
+            if(hudBindingVersion!=NativeKeyBindInput.Bindings.Version){for(int k=0;k<hudBindingKeys.Length;k++)hudBindingKeys[k]=SkillDockBinding.KeyForDock(k,NativeKeyBindInput.Bindings);hudBindingVersion=NativeKeyBindInput.Bindings.Version;}string[] keys=hudBindingKeys;
             for(int i=0;i<keys.Length;i++){
                 var rect=NativeHudDockLayout.KeyLabelRect(barRect,height,i);
                 var content=new Rect(rect.x+3,rect.y,rect.width-6,rect.height);

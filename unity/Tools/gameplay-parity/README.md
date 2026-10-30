@@ -25,3 +25,5 @@ export-qe.cjs는 현재 웹 _autoShieldThrow와 파동 판정 식을 직접 실�
 추가 실행 경계는 물리탄 패링 쿨30틱 회복과 회복영역 종료틱 보너스까지13검사다. --qe-boundary는 원본600틱 초기 무적을0으로 통제한다. 정식 Player 촬영은 사용자 세이브와 별도이며 동작 검수 표시 플래그·파동 좌표도 남긴다.
 
 원문 e.boss/ib 구분 검사까지 현재 실제 실행 경계는14개다. 보통 ib 보스에 e.boss의 포이즈30 분기를 임의 적용하지 않는다.
+
+export-hud-bindings.cjs는 현재 웹 CSS의13개 위치와 _slotSkId를 그대로 실행한다. --hud-bindings <oracle.json> <결과.json>은 아이콘·실제키·클릭 의미창·E쿨다운18검사를 수행한다.

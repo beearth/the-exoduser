@@ -30,9 +30,9 @@ namespace Exoduser.UnityPort {
    GUI.color=Color.white;NativeSilverHellUi.Label(new Rect(slot.x,slot.y+2,slot.width,slot.height),label,rageText);
    GUI.color=old;
   }
-  // B03: dock slot -> equipped skill (0..3 = keys 1-4, 4 = F, 5 = Z, 7 = RMB, 8 = Shift, 9 = E, 10 = Q, 11 = Ctrl, 12 = Space; web _slotSkId: RMB maliceSwipe / Shift charge / Q parry are fixed unless re-slotted); the LMB slot keeps its own kiSlash drawing
+  // B03: dock slot -> equipped skill (0..3 = keys 1-4, 4 = F, 5 = Z, 7 = 마법/RMB, 8 = Shift, 9 = 칼등/E, 10 = Q, 11 = Ctrl, 12 = Space; web _slotSkId: RMB maliceSwipe / Shift charge / Q parry are fixed unless re-slotted); the LMB slot keeps its own kiSlash drawing
   public static string SlotSkillId(Simulation s,int index){
-   switch(index){case 0:case 1:case 2:case 3:return s.Skills.Slots[index];case 4:return s.Skills.Slots[5];case 5:return s.Skills.UltSlot;case 7:return "maliceSwipe";case 8:return "charge";case 9:return s.Skills.MagicSkill;case 10:return "parry";case 11:return s.Skills.CtSkill;case 12:return s.Skills.Slots[4];default:return null;}
+   return SkillDockBinding.SkillForDock(s,index);
   }
   readonly System.Collections.Generic.Dictionary<string,Texture2D> slotIcons=new System.Collections.Generic.Dictionary<string,Texture2D>();
   GUIStyle cooldownText;

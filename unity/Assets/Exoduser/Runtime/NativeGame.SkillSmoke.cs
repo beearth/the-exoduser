@@ -7,6 +7,7 @@ using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort {
  public sealed partial class NativeGame {
   IEnumerator SkillSmoke(){
+   if(Argument("-qe-ui")=="1"){yield return QeUiCapture();yield break;}
    string output=Argument("-output");if(string.IsNullOrEmpty(output))yield break;Directory.CreateDirectory(output);var checks=new List<string>();int failures=0;Action<bool,string> check=(ok,name)=>{checks.Add((ok?"PASS ":"FAIL ")+name);if(!ok)failures++;};
    Screen.SetResolution(1280,720,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
    Running=true;SetSkills(true);int tick=Simulation.TickCount;float hpBefore=Simulation.Player.Hp;int matsBefore=Simulation.Materials;
