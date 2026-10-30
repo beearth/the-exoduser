@@ -36,8 +36,12 @@ namespace Exoduser.UnityPort
                     var color=Resources.Load<Texture2D>("Art/map/a2/ground/A2_ForestFloor_BaseColor");
                     var normal=Resources.Load<Texture2D>("Art/map/a2/ground/A2_ForestFloor_Normal");
                     var rough=Resources.Load<Texture2D>("Art/map/a2/ground/A2_ForestFloor_Roughness");
-                    if(color!=null&&normal!=null&&rough!=null){m.SetTexture("_ForestMap",color);m.SetTexture("_ForestNormal",normal);m.SetTexture("_ForestRough",rough);m.SetFloat("_ForestTextureMix",.7f);}
+                    if(color!=null&&normal!=null&&rough!=null){m.SetTexture("_ForestMap",color);m.SetTexture("_ForestNormal",normal);m.SetTexture("_ForestRough",rough);m.SetFloat("_ForestTextureMix",.35f);}
                     else Debug.LogWarning("[A2] 낙엽 PBR 누락. 기존 숲 흙 재질 폴백");
+                    bool soilMapsReady=true;
+                    foreach(var pair in new[]{new[]{"_SoilMap","A2_ForestSoil_BaseColor"},new[]{"_SoilNormal","A2_ForestSoil_Normal"},new[]{"_SoilRough","A2_ForestSoil_Roughness"},new[]{"_RootMap","A2_ExposedRoots_BaseColor"},new[]{"_RootNormal","A2_ExposedRoots_Normal"},new[]{"_RootRough","A2_ExposedRoots_Roughness"}})
+                    {var tex=Resources.Load<Texture2D>("Art/map/a2/ground/"+pair[1]);if(tex!=null)m.SetTexture(pair[0],tex);else {soilMapsReady=false;Debug.LogError("[A2] 스캔 지면 누락 "+pair[1]);}}
+                    m.SetFloat("_SoilTextureMix",soilMapsReady?1:0);
                 }
             var aa=UnityEngine.Rendering.Universal.CameraExtensions.GetUniversalAdditionalCameraData(r3Cam);aa.antialiasing=UnityEngine.Rendering.Universal.AntialiasingMode.SubpixelMorphologicalAntiAliasing;aa.antialiasingQuality=UnityEngine.Rendering.Universal.AntialiasingQuality.High;
             if (hellEnvironment != null) hellEnvironment.SetActive(false);
@@ -57,7 +61,7 @@ namespace Exoduser.UnityPort
             A2Module("Fallen_Log", 46,-68.2f,.65f,.7f,.7f,38);
             A2Module("Fallen_Log", 51.3f,-73.5f,.9f,.8f,.75f,135);
             A2Module("Rotten_Wood_Bridge", 43.2f,-71.8f,.96f,.55f,.85f,24);
-            A2Module("Root_Stump",47.6f,-67.2f,.8f,.6f,.8f,35,-.25f);
+            A2Module("Scanned_Stump",47.6f,-67.2f,2,1.2f,2,35,-.12f);
             A2Module("Foreground_Branch_Frame",34,-79.5f,1.4f,.9f,1.2f,-35);
             A2Module("Foreground_Branch_Frame",51,-80.8f,1.6f,.9f,1.2f,-32);
             // BACK는 3개 깊이 층으로 이어진 숲. 서로 겹치되 전투 중심에 세로 질량을 넣지 않는다.
@@ -65,7 +69,8 @@ namespace Exoduser.UnityPort
                 for(int j=0;j<5;j++)
                 {
                     float x=22+j*9.5f+layer*2.3f,z=-57+layer*8.5f;
-                    A2Module("Ancient_Rotten_Tree",x,z,.9f+layer*.2f,1.4f+layer*.25f,1,31+j*83+layer*47);
+                    if((j+layer)%3==0)A2Module("Hollow_Loft_Tree",x,z,.45f+layer*.06f,1.05f+layer*.15f,.48f,75+j*83+layer*47);
+                    else A2Module("Ancient_Rotten_Tree",x,z,(.9f+layer*.2f)*(.85f+.15f*Mathf.Sin(j*7.3f)),1.3f+layer*.25f+.2f*Mathf.Sin(j*5.1f),1,31+j*83+layer*47);
                 }
             for(int layer=0;layer<3;layer++)for(int j=0;j<7;j++)
             {
@@ -76,6 +81,12 @@ namespace Exoduser.UnityPort
             }
             A2Module("Forest_Vista_Card",24,-39,1.8f,2.4f,1,0);
             A2Module("Forest_Vista_Card",55,-27,2.4f,3,1,15);
+            for(int row=0;row<4;row++)for(int col=0;col<9;col++)
+            {
+                float x=30+col*3.5f+Mathf.Sin(row*17+col*13)*.4f,z=-65+row*3.7f+Mathf.Sin(col*11+row*7)*.35f;
+                if(A2ForestLayout.Water(x,z)||Mathf.Abs(A2ForestLayout.Across(x,z))<3.2f)continue;
+                A2Module("Withered_Shrub",x,z,1.1f,.8f,1.1f,row*73+col*137,-.03f);
+            }
             foreach(var p in new[]{new Vector3(34.8f,-70.5f,45),new Vector3(49,-64.8f,165),new Vector3(52,-77,240),new Vector3(30,-64,15)})
             {
                 A2Module("Hanging_Moss",p.x,p.y,.8f,1.05f,.8f,p.z,2.5f);
@@ -121,7 +132,7 @@ namespace Exoduser.UnityPort
             foreach(var light in UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None))if(light.type==LightType.Directional)
             {light.intensity=2.1f;light.color=new Color(.8f,.87f,1);light.shadowStrength=.65f;light.transform.rotation=Quaternion.Euler(54,-32,0);}
             // 기존 검은 배경색을 실제로 이어지는 먼 숲의 안개색으로 연결한다.
-            r3Cam.backgroundColor=new Color(.15f,.18f,.21f);
+            r3Cam.backgroundColor=new Color(.23f,.29f,.35f);
             r3Cam.farClipPlane=240;
             Debug.Log("[A2] R3 스캔 자산 조립 후보. R4 HOLD 인수0·Core/원본맵 변경0·A2 수로/거목 경계 적용 "+timer.ElapsedMilliseconds+"ms");
         }
@@ -162,14 +173,15 @@ namespace Exoduser.UnityPort
         GameObject A2Module(string id,float x,float z,float sx,float sy,float sz,float yaw,float lift=0)
         {
             string source=id;float units=1;
-            if(id=="Ancient_Rotten_Tree"){source=x>40?"Ancient_Tree_B":"Ancient_Tree_A";units=.45f;}
+            if(id=="Ancient_Rotten_Tree"){source=Mathf.Sin(x*7.13f+z*3.17f)>0?"Ancient_Tree_B":"Ancient_Tree_A";units=.45f;}
             else if(id=="Rotten_Wood_Bridge")units=.75f;
             else if(id=="Fallen_Log")units=.8f;
             else if(id=="Corroded_Riverbank"){source="Moss_Rock_1";units=1.2f;}
             else if(id=="Dead_Leaf_Litter")units=.45f;
             bool roots=id.StartsWith("PineRoots_",StringComparison.Ordinal);
             bool stump=id=="Scanned_Stump";
-            var prefab=Resources.Load<GameObject>(stump?"Art/map/a2/stump/Models/A2_Scanned_Stump":roots?"Art/map/a2/roots/Models/A2_"+id:id=="Foam_Bank"?"Art/map/a2/Models/RF_Foam_Bank":"Art/map/a2/r3/Models/RF3_"+source);
+            bool hollow=id=="Hollow_Loft_Tree";
+            var prefab=Resources.Load<GameObject>(hollow?"Art/map/a2/hollow/Models/A2_Hollow_Loft_Tree":stump?"Art/map/a2/stump/Models/A2_Scanned_Stump":roots?"Art/map/a2/roots/Models/A2_"+id:id=="Foam_Bank"?"Art/map/a2/Models/RF_Foam_Bank":"Art/map/a2/r3/Models/RF3_"+source);
             if(prefab==null){Debug.LogError("[A2] 모듈 누락 "+id);return null;}
             float placementGround=NativeRemodel3D.GroundY(x,z);
             float height=placementGround+lift+(id=="Dead_Leaf_Litter"?.01f:-.08f);
@@ -185,11 +197,11 @@ namespace Exoduser.UnityPort
             var go=Instantiate(prefab,a2Root.transform);go.name="A2_"+id;
             go.transform.SetPositionAndRotation(new Vector3(x,height,z),Quaternion.Euler(0,yaw,0));
             go.transform.localScale=new Vector3(sx,sy,sz)*units;
-            if(roots||stump||id=="Dead_Leaf_Litter")foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
+            if(roots||stump||hollow||id=="Dead_Leaf_Litter")foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
             {
                 if(!mf.sharedMesh.isReadable){if(a2UnreadableMeshes.Add(id))Debug.LogError("[A2] 지면 접합 정점읽기 누락. 원본 메시 유지: "+id);continue;}
                 var mesh=Instantiate(mf.sharedMesh);var points=mesh.vertices;
-                for(int i=0;i<points.Length;i++){var p=mf.transform.TransformPoint(points[i]);float groundY=A2ForestLayout.Water(p.x,p.z)&&!A2ForestLayout.Island(p.x,p.z)?A2ForestLayout.WaterLevel-.18f:NativeRemodel3D.GroundY(p.x,p.z);p.y+=groundY-placementGround;points[i]=mf.transform.InverseTransformPoint(p);}
+                for(int i=0;i<points.Length;i++){var p=mf.transform.TransformPoint(points[i]);float groundY=A2ForestLayout.Water(p.x,p.z)&&!A2ForestLayout.Island(p.x,p.z)?A2ForestLayout.WaterLevel-.18f:NativeRemodel3D.GroundY(p.x,p.z);float weight=hollow?1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(1,3,p.y-height)):1;p.y+=(groundY-placementGround)*weight;points[i]=mf.transform.InverseTransformPoint(p);}
                 mesh.vertices=points;mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();mf.sharedMesh=mesh;
             }
             foreach(var r in go.GetComponentsInChildren<MeshRenderer>())
@@ -210,10 +222,43 @@ namespace Exoduser.UnityPort
         }
         void A2RootedTree(float x,float z,float sx,float sy,float sz,float yaw)
         {
+            // 주거목은 연속된 속빈 줄기로 접합하고 자산 누락 시 기존 조립 경로를 유지한다.
+            float scale=x<40?(x>32?1:.78f):.74f;
+            float angle=x<40?(x>32?-25:85):x<51?23:137;
+            if(A2Module("Hollow_Loft_Tree",x,z,scale,x<32?1:x>51?.85f:1.05f,scale,angle,-.02f)!=null)
+            {A2RootWeb(x,z,scale,angle);return;}
             var tree=A2Module("Ancient_Rotten_Tree",x,z,sx,sy,sz,yaw);if(tree==null)return;
             // 고목을 방사형으로 붙이는 방법도 원화의 뿌리 접합이 되지 않아 실제 뿌리 스캔으로 교체한다.
             A2Module(x>40?"PineRoots_B":"PineRoots_A",x,z,3.2f,4.3f,4,yaw,-.02f);
             A2Module("Scanned_Stump",x,z,3.2f,2.8f,3.2f,yaw,-.18f);
+        }
+        void A2RootWeb(float x,float z,float scale,float yaw)
+        {
+            var material=Resources.Load<Material>("Art/map/a2/hollow/Materials/A2_Loft_Bark");if(material==null)return;
+            var points=new System.Collections.Generic.List<Vector3>();var uv=new System.Collections.Generic.List<Vector2>();var indices=new System.Collections.Generic.List<int>();
+            // 뿌리는 낮은 장식이다. 수로·다리 보행 및 투사체 경계에는 참여하지 않는다.
+            for(int root=0;root<8;root++)
+            {
+                float angle=(yaw+root*46+Mathf.Sin(root*7.3f)*13)*Mathf.Deg2Rad;
+                float length=(3.5f+.9f*Mathf.Sin(root*2.7f))*scale;
+                var direction=new Vector3(Mathf.Cos(angle),0,Mathf.Sin(angle));var side=Vector3.Cross(Vector3.up,direction);
+                int start=points.Count;
+                for(int ring=0;ring<=12;ring++)
+                {
+                    float u=ring/12f;var p=new Vector3(x,0,z)+direction*(.7f*scale+length*u)+side*(Mathf.Sin(u*Mathf.PI)*(.35f+.18f*Mathf.Sin(root*3.1f)));
+                    float ground=A2ForestLayout.Water(p.x,p.z)&&!A2ForestLayout.Island(p.x,p.z)?A2ForestLayout.WaterLevel-.23f:NativeRemodel3D.GroundY(p.x,p.z);
+                    float radius=Mathf.Lerp(.38f,.025f,Mathf.Pow(u,.7f))*scale;
+                    p.y=ground+.045f+radius*.3f+Mathf.Pow(1-u,3)*.45f*scale;
+                    for(int step=0;step<8;step++)
+                    {
+                        float a=step*Mathf.PI/4;float rib=1+.16f*Mathf.Sin(step*2.4f+u*5+root);
+                        points.Add(p+side*(Mathf.Cos(a)*radius*rib)+Vector3.up*(Mathf.Sin(a)*radius*.63f));uv.Add(new Vector2(step/8f,u*length*.65f));
+                        if(ring<12){int v=start+ring*8+step,n=start+ring*8+(step+1)%8;indices.Add(v);indices.Add(n);indices.Add(v+8);indices.Add(n);indices.Add(n+8);indices.Add(v+8);}
+                    }
+                }
+            }
+            var mesh=new Mesh{name="거목에서 흙으로 이어지는 굽은 뿌리"};mesh.SetVertices(points);mesh.SetUVs(0,uv);mesh.SetTriangles(indices,0);mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();
+            var go=new GameObject("A2 낮은 뿌리 접합");go.transform.SetParent(a2Root.transform,false);go.AddComponent<MeshFilter>().sharedMesh=mesh;go.AddComponent<MeshRenderer>().sharedMaterial=material;
         }
         void A2River(Terrain ground)
         {

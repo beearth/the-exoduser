@@ -84,7 +84,7 @@ namespace Exoduser.UnityPort
             if(on&&A2Requested)
             {
                 A2Ambient();
-                RenderSettings.fogColor=new Color(.15f,.18f,.21f);RenderSettings.fogMode=FogMode.Linear;RenderSettings.fogStartDistance=14;RenderSettings.fogEndDistance=54;
+                RenderSettings.fogColor=new Color(.23f,.29f,.35f);RenderSettings.fogMode=FogMode.Linear;RenderSettings.fogStartDistance=16;RenderSettings.fogEndDistance=40;
             }
         }
         void HellLightingLate()
