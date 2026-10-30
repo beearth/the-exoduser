@@ -63,6 +63,8 @@ $wt = 'E:\exoduser-wt\<내 워크트리>'
 - 잠금의 pid 는 Unity 를 띄우고 끝까지 기다리는 이 실행기의 `$PID` 다(서버는 서버 Unity pid). 삭제는 pid·token 이 자기일 때만 한다. pid 가 죽었어도 Unity 가 돌고 있고 잠금이 15분 안쪽이면 보유 중으로 본다.
 - 예약을 여러 단계에 걸쳐 쥐고 싶으면 `-Owner 이름 -KeepReservation`(획득해도 예약이 남음), 끝나면 `unreserve`.
 
+- headless 브라우저의 자식 프로세스가 사용자 데스크톱에 빈 창 핸들을 만드는 경우 `browser -BrowserDesktopIsolation -Script <경로>`로 기존 HiddenDesktop 모듈 안에서 전체 자손을 격리한다. 기본 브라우저 경로는 유지하며 `headless:false`·`--headed` 거부도 그대로다. 영수증의 desktop=hidden·사용자창0·leftovers0·desktopClosed=true를 확인한다. 숨은 데스크톱 정리 실패는 실패로 판정한다.
+
 ## job json (직접 넣을 때)
 `{"id":"x1","method":"Exoduser.Rm0EngineSetup.Capture","args":["-output","I:/x.png"],"refresh":true,"timeoutSec":600}`
 메서드는 `static ()` 또는 `static (string[])`. `()`일 때 `Exoduser.DevTools.ExoArgs.Get()`이 job 인자를 돌려준다(앞에 자리 하나). int를 반환하면 exitCode.

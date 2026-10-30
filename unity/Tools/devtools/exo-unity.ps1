@@ -23,6 +23,7 @@ param(
     [int]$KillAfterSec = 0,
     [switch]$KeepReservation,
     [switch]$AllowPlayer,
+    [switch]$BrowserDesktopIsolation,
     [switch]$DryRun,
     [ValidateSet("hidden", "batch")][string]$Desktop = "hidden",
     [string]$NodeModules = 'G:\exoduser\node_modules'
@@ -1018,11 +1019,14 @@ function Cmd-Browser {
     # Start-Process 는 한 프로세스의 출력만 리다이렉트하므로 cmd 로 감싸 로그 파일에 쓴다
     $cmdline = '/c ""{0}" {1} > "{2}" 2> "{3}""' -f $node, ($ia -join ' '), $out, $err
     $script:SaveBefore = Get-UserSaveSnapshot
-    $g = Invoke-Guarded 'cmd.exe' @($cmdline) (Split-Path $scr -Parent) $TimeoutSec $KillAfterSec @($scr, $guard)
+    if ($BrowserDesktopIsolation) { Import-Module (Join-Path $PSScriptRoot 'HiddenDesktop.psm1') -Force -DisableNameChecking }
+    $g = Invoke-Guarded 'cmd.exe' @($cmdline) (Split-Path $scr -Parent) $TimeoutSec $KillAfterSec @($scr, $guard) ([bool]$BrowserDesktopIsolation)
     $fail = ''; $extraOk = $true; $rejected = $false
     foreach ($f in @($out, $err)) { if ((Test-Path -LiteralPath $f) -and ([IO.File]::ReadAllText($f)).Contains('EXO_REJECT')) { $rejected = $true } }
     if ($rejected) { $extraOk = $false; $fail = '가드가 headless:false/--headed 를 거부함(EXO_REJECT)' }
-    Finish-Guarded 'browser' $id $g ([ordered]@{ script = $scr; args = @($user); log = $out; errLog = $err; guard = $guard }) $extraOk $fail
+    if ($BrowserDesktopIsolation -and -not $g.desktopClosed) { $extraOk = $false; $fail = '숨은 브라우저 데스크톱 정리 실패' }
+    $browserDesktop = 'current-headless'; if ($BrowserDesktopIsolation) { $browserDesktop = 'hidden' }
+    Finish-Guarded 'browser' $id $g ([ordered]@{ script = $scr; args = @($user); log = $out; errLog = $err; guard = $guard; desktop = $browserDesktop; hiddenWindows = $g.hiddenWindows; hiddenTitles = @($g.hiddenTitles); desktopClosed = $g.desktopClosed }) $extraOk $fail
     if ($rejected) { $script:ExitRc = 2 }
     exit $script:ExitRc
 }

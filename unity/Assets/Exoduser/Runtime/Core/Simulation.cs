@@ -81,6 +81,7 @@ namespace Exoduser.UnityPort.Core
             TickDeathFrameStart();   // O-1: _sfxFrameReset (_critSfxCd)
             if (Player.Hp <= 0 || Player.State == "dead" || Player.State == "fallen") { TickFallen(); UpdateKiProjectiles(); UpdateBolts(); TickKiTimers(); TickHurtFx(); return; }
             if (!RollActive) Player.Facing = (float)Math.Atan2(aimY - Player.Y, aimX - Player.X);
+            if (Player.State != "pStun") ConsumeRollTrigger(); // 원본 일반 기동 발동은 재생·무적 감소보다 앞선다.
             float regenDivisor = Player.State == "idle" ? 8 : 16;
             Player.Hp = Math.Min(Player.MaxHp, Player.Hp + Config.PlayerHpRegen / regenDivisor);
             Player.Stamina = Math.Min(Player.MaxStamina, Player.Stamina + Config.PlayerStaminaRegen / regenDivisor);
@@ -90,7 +91,7 @@ namespace Exoduser.UnityPort.Core
             attackHeldForMagic = attack;
             actionMoveX = moveX; actionMoveY = moveY; playerActionBranchConsumed = false;
             TickPlayerShieldAndRevive();
-            ConsumeRollTrigger();
+            if (Player.State == "pStun") ConsumeRollTrigger(); // 기절 탈출은 원본의 뒤쪽 상태 분기다.
             TickPlayerCombat();
             TickRoll();
             TickSkills();   // B03: skill keys, cooldowns, zones, ice orb
