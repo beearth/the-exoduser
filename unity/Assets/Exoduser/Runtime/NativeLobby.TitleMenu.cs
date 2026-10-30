@@ -13,7 +13,7 @@ namespace Exoduser.UnityPort
         sealed class TitleRow { public string Label; public Action Act; public float Sel; }
         readonly List<TitleRow> titleRows = new List<TitleRow>();
         int titleSel, titleRowsBuiltFor = -1; float titleStart = -1;
-        Texture2D titleVeil, titleSelBand, titleDot; Texture titleLogo, titleBg; bool titleArtLoaded;
+        Texture2D titleVeil; Texture titleLogo, titleBg; bool titleArtLoaded;
         Font titleMenuFont, titleBuildFont; float padStickPrev;
         const string SteamWishlistUrl = "https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/";
         public const string TitleMovie = "title_motion_20261028.mp4";
@@ -70,7 +70,7 @@ namespace Exoduser.UnityPort
             if (titleArtLoaded) return; titleArtLoaded = true;
             titleLogo = Resources.Load<Texture2D>("Art/lobby/logo_exoduser"); titleBg = Resources.Load<Texture2D>("Art/lobby/title_bg_20261028");
             titleMenuFont = NativeSilverHellUi.Font() ?? Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular"); titleBuildFont = Resources.Load<Font>("Art/fonts/Cinzel-VariableFont_wght");
-            titleVeil = BakeTitleVeil(); titleSelBand = BakeSelBand(); titleDot = BakeDot();
+            titleVeil = BakeTitleVeil();
         }
 
         // #splashTitleUI background: four layers, the first listed is on top. Baked at 192 x 108 and stretched (smooth gradients).
@@ -97,29 +97,6 @@ namespace Exoduser.UnityPort
         }
         static float Sq(float v) { return v * v; }
         static float Ramp(float t, float t0, float v0, float t1, float v1) { if (t <= t0) return v0; if (t >= t1) return v1; return v0 + (v1 - v0) * (t - t0) / (t1 - t0); }
-
-        // .stm-btn.sel background: linear-gradient(90deg, rgba(194,26,16,.48), rgba(194,26,16,.16) 55%, rgba(194,26,16,0))
-        static Texture2D BakeSelBand()
-        {
-            const int w = 128; var px = new Color32[w];
-            for (int x = 0; x < w; x++) { float t = (x + .5f) / w; float a = t < .55f ? Ramp(t, 0, .48f, .55f, .16f) : Ramp(t, .55f, .16f, 1, 0); px[x] = new Color32(194, 26, 16, (byte)(a * 255)); }
-            var tex = new Texture2D(w, 1, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp }; tex.SetPixels32(px); tex.Apply(false, true); return tex;
-        }
-
-        // .stm-dot: 7 px #ff6a50 disc with box-shadow 0 0 8px 2px rgba(255,80,50,.8)
-        static Texture2D BakeDot()
-        {
-            const int n = 32; var px = new Color32[n * n]; float c = (n - 1) / 2f, scale = 15f / c;   // 15 px of stage space across the radius
-            for (int y = 0; y < n; y++) for (int x = 0; x < n; x++)
-            {
-                float r = Mathf.Sqrt(Sq(x - c) + Sq(y - c)) * scale; float core = Mathf.Clamp01((3.5f - r) / .8f + .5f);
-                float glow = r < 5.5f ? .8f : Mathf.Clamp01(1 - (r - 5.5f) / 8f) * .8f; glow *= glow / .8f;   // soft falloff of the 8 px blur
-                float a = Mathf.Max(core, glow);
-                var col = core > .5f ? new Color32(255, 106, 80, 255) : new Color32(255, 80, 50, 255);
-                px[y * n + x] = new Color32(col.r, col.g, col.b, (byte)(a * 255));
-            }
-            var tex = new Texture2D(n, n, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp }; tex.SetPixels32(px); tex.Apply(false, true); return tex;
-        }
 
         // text with CSS letter-spacing: the font's own advances plus `spacing` px after every glyph
         static float SpacedWidth(Font font, int size, string text, float spacing)
@@ -170,7 +147,7 @@ namespace Exoduser.UnityPort
                 if (e.type == EventType.MouseMove || e.type == EventType.Repaint) { if (rect.Contains(e.mousePosition) && e.type == EventType.MouseMove && !AutomatedInput && i != titleSel) SelectTitleRow(i); }
                 if (e.type == EventType.MouseDown && e.button == 0 && rect.Contains(e.mousePosition) && !AutomatedInput) { ActivateTitleRow(i); e.Use(); return; }
                 var row = titleRows[i]; float s = row.Sel;
-                if (s > 0) { GUI.color = new Color(1, 1, 1, s * fade); GUI.DrawTexture(rect, titleSelBand, ScaleMode.StretchToFill, true); GUI.DrawTexture(new Rect(left + 13 - 15 + 3.5f, rect.center.y - 15, 30, 30), titleDot, ScaleMode.StretchToFill, true); }
+                if (s > 0) { GUI.color = new Color(230f / 255, 227f / 255, 220f / 255, .6f * s * fade); GUI.DrawTexture(new Rect(left + 13, rect.center.y - .5f, 16, 1), Texture2D.whiteTexture); }
                 GUI.color = line; GUI.DrawTexture(new Rect(left, rect.yMax - 1, width, 1), Texture2D.whiteTexture);
                 Color txt = Color.Lerp(new Color(201f / 255, 199f / 255, 195f / 255), new Color(242f / 255, 240f / 255, 236f / 255), s); txt.a = fade;
                 GUI.color = Color.white; DrawSpaced(left + 36 + 18 * .16f, rect.y, rowH, row.Label, titleMenuFont, 18, 18 * .14f, txt, true);
