@@ -52,7 +52,7 @@ namespace Exoduser.UnityPort.Core
             // 원본 _tryKiSlashQCancel: 기검 3타 자세는 Q 홀드로도 즉시 취소하며 그 틱은 이동하지 않는다.
             bool kiCancel = Config.ActiveAttack == "kiSlash" && (Player.State == "wWindup" || Player.State == "wSwing" || Player.State == "wRecover") && combatQHeld;
             // ---- Q: shield / parry ----
-            if (((Player.State == "idle" || Player.State == "sRecover") && qDown || kiCancel) && SbCd <= 0)   // web sRecover: Q cancels the recovery into the shield
+            if ((Player.State == "idle" && combatQHeld && !HarpActive && !DashActive || Player.State == "sRecover" && qDown || kiCancel) && SbCd <= 0)   // 사슬 중 idle 시작 행동 차단, 계속 누른 Q는 착지 뒤 허용
             {
                 var s = new ParryRules.SBlockState { Mp = Player.Mana, Mmp = Player.MaxMana, S = Player.State };
                 if (ParryRules.SBlockEnter(ref s, CapeParry, ShieldCdRed)) { if (kiCancel && Player.KiChargeActive) CancelKiCharge(); MovePlayerAction(Player.State == "idle" ? 1 : 0, true); Player.Mana = (float)s.Mp; Player.State = "sBlock"; Player.StateTicks = 999; SbParryT = s.SbParryT; SbHoldT = 0; SbReleaseR = 0; SbCd = s.SbCd; }
@@ -77,7 +77,7 @@ namespace Exoduser.UnityPort.Core
             if ((Player.State == "sBash" && Player.StateTicks <= 14 || Player.State == "sRecover" || Player.State == "bowRecover") && TryLateChainMove(false)) return;
             if (Player.State == "bowRecover" && Player.StateTicks <= 0) Player.State = "idle";
             // ---- E: shield strike (tap = sBash, hold = charge) ----
-            if (Player.State == "idle" && eDown && !playerActionBranchConsumed) { MovePlayerAction(1, true); Player.State = "sDraw"; SdHold = 0; }
+            if (Player.State == "idle" && eDown && !playerActionBranchConsumed && !HarpActive && !DashActive) { MovePlayerAction(1, true); Player.State = "sDraw"; SdHold = 0; }
             else if (Player.State == "sDraw")
             {
                 SdHold++;

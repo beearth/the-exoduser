@@ -119,7 +119,7 @@ namespace Exoduser.UnityPort.Core
                 MovePlayer(moveX, moveY, Player.State == "idle" ? 1 : .8f, Player.State == "idle");
                 if (Player.State == "idle") {
                     float cost = Config.ActiveAttack == "kiSlash" ? 10 + (Math.Max(1, Config.KiSlashLevel) - 1) * 2 : 5;
-                    if (attack && Player.Stamina >= cost) {
+                    if (attack && Player.Stamina >= cost && !HarpActive && !DashActive) {
                         Player.Stamina -= cost; attackBonus = (int)(cost * 1.5);
                         attackAngle = Player.Facing;
                         if (Config.ActiveAttack == "kiSlash" && KiComboStep == 2 && KiComboTicks > 0) {
