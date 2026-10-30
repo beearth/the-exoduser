@@ -254,3 +254,20 @@ Unity가 직접 기록한 FBX 원본 회전0/scale1과 실제경계로 축·단�
 | NEXT PASS | UI 공통 SHA/바탕화면 실제 갱신 영수증 → 최신unity/main 정상merge → 조명 인계의 혈흔/회복프레임/현행oracle 정확 인수 → 새 후보4 실제검수 → 외곽 원근감 제작·동크기비교 → 정확실행본 전체M1 → 지정통합/바로가기 |
 
 외곽 원근감의 다음 제작 단위는 임의 소품 추가가 아니다. 보행과 연결된 바닥은 유지하고, 바깥과 연결된 비보행 구역만 시각 표면을 낮추는 절벽/하부 질량, 먼 덩어리, 깊이에 따른 안개층을 실제 카메라 구도로 설계한다. Core 권위·TerrainCollider·플레이어 높이 질의는 지키며, 고립된 충돌 소품 영역을 심연으로 오인하지 않도록 별도 분류해야 한다. 아직 구현하지 않았고 UI 이전에 새 제작/빌드를 시작하지 않는다.
+
+
+## 2026-10-30 Blender 독립 환경 키트 — Unity 실행 없는 인계
+
+blender-env-brief의 독립 제작 범위: 전용 브랜치 codex/pc-blender-env-20261030, I:/EXODUSER-Storage/demo-art/blender-env/REPORT.md. Unity/Player/기존 layout·Core·UI 변경0.
+
+| 항목 | 현재 산출·계약 |
+|---|---|
+| 자산 | 절리 암반/절벽/접합/스캔 고목/낮은 뿌리/석벽/기둥/뼈/사슬/재·자갈/먼 아치 11FBX, 총31735tri. delivery/Assets/Exoduser/Art/Environment/CH1_1, 11재질·77PNG·메타 포함202파일 |
+| 베이크 | BaseColor/Normal/AO/Curvature/Roughness/Metallic/MetallicSmoothness. 큰 질량4종2048²·나머지1024², R=metallic/A=1-roughness. 큰 면·저채도·곡률/AO, 점/그레인 생성0 |
+| 출처 | Poly Haven CC0 Rock Face/Bark Brown02/Burned Ground01. 고목은 기존 map/r2 packed 스캔을 읽기만 하여 휜 형태/UV/8071tri/2048 베이크 재구성. 출처-실물대조.json·고목-스캔전환.json SHA |
+| 임포트 | 기존 URP/Lit GUID 대조, _BumpScale .7/_OcclusionStrength .6, mipmap/Trilinear/aniso8·BaseColor sRGB/Normal·마스크 linear. FBX재질 외부 remap·GUID 정적 연결, Collider0 |
+| 피벗 | Blender Z-up/meter, FBX -Z/Y. 고목·재는 지면 피벗, 음수 하부를 묻음. Unity 실제 고도·축·바닥 접합은 미검증 |
+| 증거 | 동일52°/같은광원 1600×1000 정면·측면22장, 노레위 나란히 비교11장. 최신11FBX SHA 재수입·퇴화면/고립정점/UV 오류0, GUID 중복/유실0 |
+| 한계 | 모듈 정적 검수와 실게임 PASS 분리. 조립 시연 RETOUCH, 실제8카메라/탄/충돌/성능/M1 미검증. UI 완료 뒤 키샷 담당 인수. 현재 runtime에 자동 연결하지 않음 |
+
+세부 ID·삼각형·맵·원본·실패/수정·MAP PRODUCTION REPORT는 위 REPORT와 source/모듈명세.json. 레시피는 tools/blender-env, 실체는 I: code-checkpoint(junction/SHA검증). 같은 퇴화면 실패를 구 영수증으로 오인한 절차 오류는 보존하고, 최종은 실제 면 수정 뒤 최신 SHA 11개 재수입만 근거로 쓴다. Steam 합격·unity/main 반영·PC/Mac 동기화로 확대하지 않는다.
