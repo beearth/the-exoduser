@@ -6,7 +6,14 @@ namespace Exoduser.UnityPort
     public sealed partial class NativeGame
     {
         // 승인 원화 구도 제작 후보. 시각·보행 검수 전에는 일반 실행에 채택하지 않는다.
-        static bool A2Requested { get { return Array.IndexOf(Environment.GetCommandLineArgs(), "--unity-a2-forest") >= 0; } }
+        static bool A2Requested
+        {
+            get
+            {
+                var args=Environment.GetCommandLineArgs();
+                return Array.IndexOf(args,"--unity-a2-forest")>=0 || (Application.isEditor&&Array.IndexOf(args,"--unity-qa-sandbox")>=0&&Environment.GetEnvironmentVariable("EXO_A2_EDITOR_PREVIEW")=="1");
+            }
+        }
         GameObject a2Root;
         Material a2Water;
         void A2ForestSetup(Terrain ground)

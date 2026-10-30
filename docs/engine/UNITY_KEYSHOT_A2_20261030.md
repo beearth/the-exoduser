@@ -4,8 +4,9 @@
 
 | 항목 | 현재 코드·입력 계약 |
 |---|---|
-| 선행 통합 | 숲4c2797c7f + 공통642e31d2e → e82431e0d. 충돌은 기동 분기·양쪽 문서 보존, 공통 카메라·입력 수정 유지 |
+| 선행 통합 | 숲4c2797c7f + 공통642e31d2e → e82431e0d, 전사R5 공통a861d0303 → 1b7c0edd9, UI 최종공통fd83657f3 → 2e85ade2e. 기동·공통카메라·입력·UI 보존 |
 | 활성화 | --remodel3d --unity-a2-forest에서만 조립. 일반 실행 채택0 |
+| MCP Editor 미리보기 | 공식 실행기의 자기 Editor 프로세스에만 EXO_A2_EDITOR_PREVIEW=1, isEditor 및 --unity-qa-sandbox 동시조건으로 A2와 NativeRemodel3D 활성화. 일반 Player는 이 환경값을 무시한다. 해당 Editor fixture는 진입영상 없이 시작하여 MCP로 실제게임 배치/조명 검수. Player 캡처·M1 대체 아님 |
 | 자산 | R3 sourceb9ffca060의17FBX·종속재질/텍스처185파일만 Resources/Art/map/a2/r3에 동일byte 인수. R3 정적RETOUCH 유지, R4 HOLD 인수0. r1 Foam_Bank만 거품 보조로 재사용 |
 | 큰 질량 | 주간4·고목3·후경거목3층×5·먼카드2. R3 거목단위.45/고목.8, 전경목질2·그루터기1. 주간4접합에 추가 이끼/덤불/낙엽 각5. 실제 가림·반복·보행 미검증 |
 | 다리 | 중심(43.2,-71.8)u/yaw+24°/scale(1,.55,1)×.75, R3 원본길이11.616874u. 원본 지형·충돌 유지, 발 접지·동선 미검증 |
@@ -40,7 +41,7 @@
 | TECH QA | 독립C#0오류. Unity/GPU/route/collision/seam/loading/performance/M1 미실행 |
 | FILES / GIT | 자기A2코드/셰이더/r1런타임/임포터·촬영/관련docs만. 공용WIP보존. 원격·채택 상태는 I:영수증 기준 |
 | VISUAL VERDICT | 미검증 |
-| NEXT PASS | 사용자 실행창 종료 허용/직접종료 뒤 공용실행기로 실제1920·1x·같은장소전투·원화비교→큰결함수정→같은후보M1→영수증/정상통합/바로가기 |
+| NEXT PASS | 기존MCP 예약 반환 뒤 자기 공식서버/MCP로 자산축·게임배치·조명 확인→실제Player1920·1x·같은장소전투·원화비교→큰결함수정→같은후보M1→영수증/정상통합/바로가기 |
 
 ## 2026-10-31 재개
 최신 공통 a861d0303의 진입 흐름·UI·전사 R5를 정상 병합했다. 기동 충돌은 공통의 일반 진입/명시적 빠른시작을 보존하고 A2 촬영 fixture 조건만 병존시켰다. 이번 소스의 GPU/시각/M1은 아직 미검증이다. PowerShell 호스트 시작 오류5는 CMD와 Node의 숨김 자식 PowerShell 경로로 작업을 계속했으며 전역 설정 변경0이다.
