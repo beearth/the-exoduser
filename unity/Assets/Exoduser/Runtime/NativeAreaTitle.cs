@@ -78,7 +78,7 @@ namespace Exoduser.UnityPort {
    var st=Style(nanumSize);var old=GUI.color;float xx=x+off.x;
    foreach(var c in cells){
     if(c.glyph){var t=tok[c.token];GUI.color=col;GUI.DrawTextureWithTexCoords(new Rect(xx-t.pad,cy+off.y-t.cy,t.w,t.h),atlas,new Rect(t.x/atlas.width,1f-(t.y+t.h)/atlas.height,t.w/atlas.width,t.h/atlas.height));}
-    else{st.normal.textColor=col;GUI.Label(new Rect(xx,cy+off.y-20,70,40),c.text,st);}
+    else{st.normal.textColor=col;NativeUiAudit.Label(new Rect(xx,cy+off.y-20,70,40),c.text,st);}
     xx+=c.adv;
    }
    GUI.color=old;

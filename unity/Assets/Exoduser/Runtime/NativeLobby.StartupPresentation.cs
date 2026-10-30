@@ -161,7 +161,7 @@ namespace Exoduser.UnityPort
    // GUIStyle uses integer font sizes; never scale GUI.matrix inside a clipped group.
    style.fontSize=Mathf.RoundToInt(px);
    var sourceColor=style.normal.textColor;style.normal.textColor=NativeSilverHellUi.TextColor(sourceColor);
-   try{foreach(var line in lines){float x=r.x;foreach(char ch in line){float cw=style.CalcSize(new GUIContent(ch.ToString())).x;GUI.Label(new Rect(x,y,cw+4,lineHeight+4),ch.ToString(),style);x+=cw+spacing;}y+=lineHeight;}}finally{style.normal.textColor=sourceColor;}
+   try{foreach(var line in lines){float x=r.x;foreach(char ch in line){float cw=style.CalcSize(new GUIContent(ch.ToString())).x;NativeUiAudit.Label(new Rect(x,y,cw+4,lineHeight+4),ch.ToString(),style);x+=cw+spacing;}y+=lineHeight;}}finally{style.normal.textColor=sourceColor;}
   }
   float startupGuideOpacity=1;bool startupGuideDrawBarrier=true;
   void DrawStartupGuide(float opacity=1,bool drawBarrier=true)
@@ -193,7 +193,7 @@ namespace Exoduser.UnityPort
    float total=2+34+16+12+dialogueH+10+24+22+titleH+14+bodyH+(step==3?16+noteH:0)+20+hintH+22+46+40;
    float visibleH=Mathf.Min(total,Mathf.Max(80,sh-48)),left=(sw-panelW)/2,top=(sh-visibleH)/2;
    NativeSilverHellUi.Panel(new Rect(left,top,panelW,visibleH));
-   guideScroll=GUI.BeginScrollView(new Rect(left,top,panelW,visibleH),guideScroll,new Rect(0,0,panelW-(total>visibleH?16:0),total),false,total>visibleH);
+   guideScroll=NativeUiAudit.BeginScrollView(new Rect(left,top,panelW,visibleH),guideScroll,new Rect(0,0,panelW-(total>visibleH?16:0),total),false,total>visibleH);
    var hintStyle=new GUIStyle(guideText){font=serif};hintStyle.normal.textColor=new Color(141/255f,144/255f,144/255f);
    float x=53,y=35;GuidePhysicalText(new Rect(x,y,w,16),(step+1)+" / 4",guideProgress,12,3,16);y+=28;
    GuidePhysicalText(new Rect(x,y+10,w,dialogueH),K(GuideDialogue[step][0],GuideDialogue[step][1]),guideDialogue,dialogueFont,dialogueFont*.12f,dialogueH);y+=dialogueH+10+24;
@@ -205,7 +205,7 @@ namespace Exoduser.UnityPort
    Rect skip=new Rect(x,y,Language=="ko"?178.72f:168,46),next=new Rect(x+w-192,y,192,52);DrawGuideButton(skip,K("건너뛰기","Skip"),guideSkipFocus);DrawGuideButton(next,step==3?K("시작","Start"):K("다음","Next"),!guideSkipFocus,true);
    Fill(new Rect(skip.x,skip.y,skip.width*(float)startup.HoldProgress,skip.height),new Color(.72f,.74f,.74f,.20f*startupGuideOpacity));
    var e=Event.current;if(!startupInputFence&&e.type==EventType.MouseDown&&e.button==0){if(skip.Contains(e.mousePosition))startup.Skip();else startup.Advance();e.Use();}
-   GUI.EndScrollView();
+   NativeUiAudit.EndScrollView();
   }
   void DrawGuideButton(Rect r,string text,bool focus,bool primary=false){bool hover=r.Contains(Event.current.mousePosition);var old=GUI.color;if(focus||hover)NativeSilverHellUi.ButtonFocus(r);NativeSilverHellUi.ActionPlate(r,primary,focus||hover?1:0,!AutomatedInput&&hover&&ExoInput.Mouse(0));GUI.color=old;var f=NativeSilverHellUi.Font()??guideText.font;float spacing=16*.24f,width=SpacedWidth(f,16,text,spacing)-spacing;DrawSpaced(r.center.x-width/2,r.y,r.height,text,f,16,spacing,(focus||hover)?new Color(242/255f,237/255f,226/255f):new Color(223/255f,214/255f,194/255f),true);}
  }

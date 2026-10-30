@@ -96,10 +96,10 @@ namespace Exoduser.UnityPort {
    foreach(char ch in text){
     var g=ch.ToString();float cw=st.CalcSize(new GUIContent(g)).x;
     if(shadowAlpha>0){
-     st.normal.textColor=new Color(0,0,0,shadowAlpha*c.a);GUI.Label(new Rect(x+w,y+shadowY,60,h),g,st);
-     if(shadowSpread>0)foreach(var d in new[]{new Vector2(-1,0),new Vector2(1,0),new Vector2(0,-1),new Vector2(0,1)}){st.normal.textColor=new Color(0,0,0,shadowAlpha*.35f*c.a);GUI.Label(new Rect(x+w+d.x*shadowSpread,y+shadowY+d.y*shadowSpread,60,h),g,st);}
+     st.normal.textColor=new Color(0,0,0,shadowAlpha*c.a);NativeUiAudit.Label(new Rect(x+w,y+shadowY,60,h),g,st);
+     if(shadowSpread>0)foreach(var d in new[]{new Vector2(-1,0),new Vector2(1,0),new Vector2(0,-1),new Vector2(0,1)}){st.normal.textColor=new Color(0,0,0,shadowAlpha*.35f*c.a);NativeUiAudit.Label(new Rect(x+w+d.x*shadowSpread,y+shadowY+d.y*shadowSpread,60,h),g,st);}
     }
-    st.normal.textColor=c;GUI.Label(new Rect(x+w,y,60,h),g,st);w+=cw+ls;
+    st.normal.textColor=c;NativeUiAudit.Label(new Rect(x+w,y,60,h),g,st);w+=cw+ls;
    }
    return w;
   }
@@ -179,7 +179,7 @@ namespace Exoduser.UnityPort {
    if(hover){bg=C(79,53,34,.34f);border=C(183,166,129,.8f);text=C(232,223,202,.96f);}
    Fill(r,new Color(bg.r,bg.g,bg.b,bg.a*fade));Border(r,new Color(border.r,border.g,border.b,border.a*fade));
    Text(r.x+37,r.y,r.height,label,nanum,size,new Color(text.r,text.g,text.b,text.a*fade),ls,.95f*fade,1,0,true);
-   if(GUI.Button(r,GUIContent.none,GUIStyle.none)&&click!=null)click();
+   if(NativeUiAudit.Button(r,GUIContent.none,GUIStyle.none)&&click!=null)click();
   }
   // Pet dialogue: portraits 720x480 at (231,580) and (969,580), one line each, fade .25s, rotates every 10s (opacity 0 -> swap after .2s -> 1)
   void DrawPets(float age,float fade){
@@ -197,8 +197,8 @@ namespace Exoduser.UnityPort {
    const int size=22;const float lh=22.08f*1.25f;var st=Style(sansBold,size);var lines=Wrap(text,box.width,st);
    float y=box.y+(box.height-lines.Count*lh)/2f;
    foreach(var line in lines){
-    st.normal.textColor=new Color(0,0,0,.95f*a);foreach(var d in new[]{new Vector2(0,1.5f),new Vector2(-2,0),new Vector2(2,0),new Vector2(0,-1),new Vector2(0,3)})GUI.Label(new Rect(box.x+d.x,y+d.y,box.width+8,lh),line,st);
-    st.normal.textColor=new Color(1,1,1,a);GUI.Label(new Rect(box.x,y,box.width+8,lh),line,st);y+=lh;
+    st.normal.textColor=new Color(0,0,0,.95f*a);foreach(var d in new[]{new Vector2(0,1.5f),new Vector2(-2,0),new Vector2(2,0),new Vector2(0,-1),new Vector2(0,3)})NativeUiAudit.Label(new Rect(box.x+d.x,y+d.y,box.width+8,lh),line,st);
+    st.normal.textColor=new Color(1,1,1,a);NativeUiAudit.Label(new Rect(box.x,y,box.width+8,lh),line,st);y+=lh;
    }
   }
   static bool Hangul(char c){return c>=0xAC00&&c<=0xD7A3;}
@@ -227,16 +227,16 @@ namespace Exoduser.UnityPort {
   void DrawDamageLog(float fade){
    var st=Style(sans,15);
    if(info.damageLog==null){
-    float w=st.CalcSize(new GUIContent(NotPorted)).x;st.normal.textColor=new Color(170/255f,136/255f,102/255f,fade);GUI.Label(new Rect(1896-w,540-15,w+8,30),NotPorted,st);return;
+    float w=st.CalcSize(new GUIContent(NotPorted)).x;st.normal.textColor=new Color(170/255f,136/255f,102/255f,fade);NativeUiAudit.Label(new Rect(1896-w,540-15,w+8,30),NotPorted,st);return;
    }
    int n=info.damageLog.Length;float lh=30.4f;float total=(n+(n>0?1.2f:0))*lh;float y=540-total/2f;
    for(int i=0;i<n;i++){
     bool last=i==n-1;string a="-"+info.damageLog[i].amount;string src=" "+info.damageLog[i].source;
     var big=Style(sansBold,last?21:15);var small=Style(sans,13);float wa=big.CalcSize(new GUIContent(a)).x,ws=small.CalcSize(new GUIContent(src)).x;
-    float x=1896-wa-ws;big.normal.textColor=last?new Color(1,34/255f,34/255f,fade):new Color(204/255f,102/255f,68/255f,fade);GUI.Label(new Rect(x,y,wa+8,lh),a,big);
-    small.normal.textColor=new Color(136/255f,119/255f,102/255f,fade);GUI.Label(new Rect(x+wa,y,ws+8,lh),src,small);y+=lh;
+    float x=1896-wa-ws;big.normal.textColor=last?new Color(1,34/255f,34/255f,fade):new Color(204/255f,102/255f,68/255f,fade);NativeUiAudit.Label(new Rect(x,y,wa+8,lh),a,big);
+    small.normal.textColor=new Color(136/255f,119/255f,102/255f,fade);NativeUiAudit.Label(new Rect(x+wa,y,ws+8,lh),src,small);y+=lh;
    }
-   if(n>0){var f=Style(sans,13);string t=defs.dmgLogDead;float w=f.CalcSize(new GUIContent(t)).x;Fill(new Rect(1896-w,y+4,w,1),new Color(68/255f,34/255f,17/255f,fade));f.normal.textColor=new Color(136/255f,102/255f,68/255f,fade);GUI.Label(new Rect(1896-w,y+6,w+8,lh),t,f);}
+   if(n>0){var f=Style(sans,13);string t=defs.dmgLogDead;float w=f.CalcSize(new GUIContent(t)).x;Fill(new Rect(1896-w,y+4,w,1),new Color(68/255f,34/255f,17/255f,fade));f.normal.textColor=new Color(136/255f,102/255f,68/255f,fade);NativeUiAudit.Label(new Rect(1896-w,y+6,w+8,lh),t,f);}
   }
 
   // ---- death replay screen (#deathReplay, CSS 649-656): shape only, there is no recording in Unity ----

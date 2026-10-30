@@ -54,7 +54,7 @@ namespace Exoduser.UnityPort {
    Line(new Vector2(rect.x,rect.y),new Vector2(rect.x,rect.yMax),border,1);Line(new Vector2(rect.xMax,rect.y),new Vector2(rect.xMax,rect.yMax),border,1);
    cinematicLanguage.normal.textColor=new Color(1,1,1,.7f);Label(new Rect(rect.x+12,rect.y,130,29),LobbyLanguageLabel(Language),cinematicLanguage,TextAnchor.MiddleLeft);
    Line(new Vector2(rect.xMax-16,rect.y+12),new Vector2(rect.xMax-12,rect.y+16),new Color(1,1,1,.7f),1);Line(new Vector2(rect.xMax-12,rect.y+16),new Vector2(rect.xMax-8,rect.y+12),new Color(1,1,1,.7f),1);
-   if(GUI.Button(rect,"",GUIStyle.none))ToggleLanguages();
+   if(NativeUiAudit.Button(rect,"",GUIStyle.none))ToggleLanguages();
   }
   void DrawCinematicSkip(){
    CinematicStyles();float a=holdDelta>0?1:.5f;var center=new Vector2(1830,990);

@@ -96,7 +96,7 @@ namespace Exoduser.UnityPort {
             IronTile(pbox,iron320,320);
             if(sigil){
                 // ossuary page: linear-gradient(#141315d9,#09090af2), sigil center -150px / 620px, iron (ui-refinement.css:591).
-                GUI.BeginGroup(pbox);GUI.DrawTexture(new Rect(pbox.width/2f-310,-150,620,620),ossSigil);GUI.EndGroup();
+                NativeUiAudit.BeginGroup(pbox);GUI.DrawTexture(new Rect(pbox.width/2f-310,-150,620,620),ossSigil);NativeUiAudit.EndGroup();
                 Grad(pbox,C(20,19,21,.851f),C(9,9,10,.949f));
             }else Grad(pbox,C(23,23,25,.933f),C(8,11,13,.96f));
             Border(pbox,C(93,96,96));Border(new Rect(pbox.x+3,pbox.y+3,pbox.width-6,pbox.height-6),C(52,53,48));
@@ -186,7 +186,7 @@ namespace Exoduser.UnityPort {
         void DrawEquipPanel(int level,CombatPower power){
             var pane=new Rect(43,183,709,800);
             IronTile(pane,iron480,480);Grad(pane,C(12,11,13,.867f),C(16,16,18,.91f));
-            GUI.BeginGroup(pane);Glow(pane.width*.5f,pane.height*.58f,pane.width*.452f,pane.height*.525f,C(81,84,84,.19f));GUI.EndGroup();
+            NativeUiAudit.BeginGroup(pane);Glow(pane.width*.5f,pane.height*.58f,pane.width*.452f,pane.height*.525f,C(81,84,84,.19f));NativeUiAudit.EndGroup();
             Rail(pane,6,41);
             TxtSp(new Rect(62,192,671,28),"장착 중",12,C(197,194,188),500,3f);   // web glyph rows 200-212, letter-spacing 3px
             Fill(new Rect(62,226,671,1),C(116,119,119,.3f));
@@ -267,7 +267,7 @@ namespace Exoduser.UnityPort {
             Fill(viewport,C(8,9,10));
             float gridW=GridCell*InventoryState.Columns,total=InventoryState.Rows*GridCell;
             bool bagPointerInside=viewport.Contains(Event.current.mousePosition);
-            scroll=GUI.BeginScrollView(viewport,scroll,new Rect(0,0,gridW,total),false,false,GUIStyle.none,GUIStyle.none);
+            scroll=NativeUiAudit.BeginScrollView(viewport,scroll,new Rect(0,0,gridW,total),false,false,GUIStyle.none,GUIStyle.none);
             int first=Mathf.Max(0,(int)(scroll.y/GridCell)),last=Mathf.Min(InventoryState.Rows,first+Mathf.CeilToInt(GridViewH/GridCell)+1);
             var cellA=C(39,36,37,.565f);var cellB=C(18,17,20,.85f);
             for(int y=first;y<last;y++)for(int x=0;x<InventoryState.Columns;x++){
@@ -300,7 +300,7 @@ namespace Exoduser.UnityPort {
                 if(dragging)DropAt(drag,e.mousePosition.x/GridCell,e.mousePosition.y/GridCell);
                 drag=null;dragging=false;e.Use();
             }
-            GUI.EndScrollView();
+            NativeUiAudit.EndScrollView();
             if(Event.current.type==EventType.MouseUp){drag=null;dragging=false;}
             // Web '#invPanel #invGrid{scrollbar-width:thin;scrollbar-color:#6e7171 #121113}' + 'scrollbar-gutter:stable' (ui-refinement.css:460):
             // a 10px thin scrollbar (track #121113, 6px rounded thumb #6e7171, arrow buttons) shown whenever the grid overflows.
@@ -329,7 +329,7 @@ namespace Exoduser.UnityPort {
         void DrawRightPanel(int level,CombatPower power){
             var pane=new Rect(1395,183,482,800);
             Grad(pane,C(21,27,31,.94f),C(10,12,14,.96f),145);
-            GUI.BeginGroup(pane);Glow(pane.width*.75f,0,245,543,C(96,99,99,.16f));GUI.EndGroup();
+            NativeUiAudit.BeginGroup(pane);Glow(pane.width*.75f,0,245,543,C(96,99,99,.16f));NativeUiAudit.EndGroup();
             Border(pane,C(98,101,101));
             // hover preview wins over the selection while the pointer is on an item (web _invHover / _invRestoreSelectedActions)
             panelItem=hoverItem??State.Selected;panelPreview=hoverItem!=null;

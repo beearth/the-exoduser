@@ -41,7 +41,7 @@ namespace Exoduser.UnityPort {
         void DrawCrEquipment(){
             float top=CrList.y+4-crScroll;
             // web overflow:auto clips the list (untransformed quads only: IMGUI groups are fine without rotation)
-            GUI.BeginGroup(CrList);float ox=-CrList.x,oy=-CrList.y;   // group-local coordinates
+            NativeUiAudit.BeginGroup(CrList);float ox=-CrList.x,oy=-CrList.y;   // group-local coordinates
             // portrait spans columns 1-3 and rows 1-5 of the grid, below the cards
             GUI.DrawTexture(new Rect(1165.8f+ox,top+(497.2f-329.4f)+oy,504.4f,834.1f),crPortrait,ScaleMode.StretchToFill,true);
             for(int i=0;i<State.Equipped.Length&&i<crCol.Length;i++){
@@ -61,7 +61,7 @@ namespace Exoduser.UnityPort {
                 }
                 Serif(new Rect(x+1,y+3,CrCard-2,13),crSlotNames[i],11,it!=null?C(208,205,199):C(208,205,199,.35f),false,.275f,TextAnchor.MiddleCenter,true);
             }
-            GUI.EndGroup();
+            NativeUiAudit.EndGroup();
             DrawCrScrollbar();
         }
 

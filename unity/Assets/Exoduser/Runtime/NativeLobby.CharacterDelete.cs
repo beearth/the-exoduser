@@ -50,8 +50,8 @@ namespace Exoduser.UnityPort
    var confirm=new Rect(784,562,170,46);var cancel=new Rect(966,562,170,46);
    Fill(confirm,new Color(.22f,.035f,.035f));Border(confirm,new Color(.533f,0,0),1);
    Fill(cancel,new Color(.063f,.055f,.047f));Border(cancel,new Color(.333f,.267f,.2f),1);
-   GUI.SetNextControlName("character-delete-confirm");if(GUI.Button(confirm,"",GUIStyle.none))ConfirmCharacterDelete();
-   GUI.SetNextControlName("character-delete-cancel");if(GUI.Button(cancel,"",GUIStyle.none))CloseCharacterCreation();
+   GUI.SetNextControlName("character-delete-confirm");if(NativeUiAudit.Button(confirm,"",GUIStyle.none))ConfirmCharacterDelete();
+   GUI.SetNextControlName("character-delete-cancel");if(NativeUiAudit.Button(cancel,"",GUIStyle.none))CloseCharacterCreation();
    Label(confirm,CharacterDialogLabel("confirm",K("확인","Confirm")),deleteConfirmStyle,TextAnchor.MiddleCenter);
    Label(cancel,CharacterDialogLabel("cancel",K("취소","Cancel")),deleteCancelStyle,TextAnchor.MiddleCenter);
    Border(deleteSelected?confirm:cancel,new Color(.788f,.663f,.38f),2);

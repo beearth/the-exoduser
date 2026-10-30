@@ -110,8 +110,8 @@ namespace Exoduser.UnityPort {
    var st=Style(f,size,bold);float w=0;
    foreach(char ch in text){
     var g=ch.ToString();float cw=st.CalcSize(new GUIContent(g)).x;
-    if(shadow>0){st.normal.textColor=new Color(0,0,0,shadow*c.a);GUI.Label(new Rect(x+w,y+1,60,h),g,st);}
-    st.normal.textColor=c;GUI.Label(new Rect(x+w,y,60,h),g,st);w+=cw+ls;
+    if(shadow>0){st.normal.textColor=new Color(0,0,0,shadow*c.a);NativeUiAudit.Label(new Rect(x+w,y+1,60,h),g,st);}
+    st.normal.textColor=c;NativeUiAudit.Label(new Rect(x+w,y,60,h),g,st);w+=cw+ls;
    }
    return w;
   }
@@ -157,7 +157,7 @@ namespace Exoduser.UnityPort {
    if(string.IsNullOrEmpty(text))return;if(AuditText){VisibleTexts.Add(text);foreach(char ch in text)if(!char.IsWhiteSpace(ch)&&!f.HasCharacter(ch))MissingGlyphs++;}GUIStyle s=null;int current=size;
    while(current>=12){s=Style(f,current,bold);s.wordWrap=true;s.alignment=align;if(s.CalcHeight(new GUIContent(text),r.width)<=r.height+.5f)break;current--;}
    if(s.CalcHeight(new GUIContent(text),r.width)>r.height+.5f)LayoutOverflowCount++;
-   s.normal.textColor=new Color(0,0,0,color.a*.8f);GUI.Label(new Rect(r.x,r.y+1,r.width,r.height),text,s);s.normal.textColor=color;GUI.Label(r,text,s);
+   s.normal.textColor=new Color(0,0,0,color.a*.8f);NativeUiAudit.Label(new Rect(r.x,r.y+1,r.width,r.height),text,s);s.normal.textColor=color;NativeUiAudit.Label(r,text,s);
   }
   static string RowLabel(LocaleRow l,string key){switch(key){case "time":return l.time;case "kills":return l.kills;case "reward":return l.reward;case "sp":return l.sp;case "regions":return l.regions;case "potions":return l.potions;case "deaths":return l.deaths;default:return l.score;}}
   public void Draw(){
@@ -190,7 +190,7 @@ namespace Exoduser.UnityPort {
     Paint(new Rect(46,nextY+4,468,48),input.kind==Kind.DemoEnd?labels.demoNext:labels.next,body,20,C(239,216,184,a),TextAnchor.MiddleCenter,true);
     if(!ExoInput.Key(KeyCode.Return)&&!ExoInput.Key(KeyCode.KeypadEnter)&&!ExoInput.Key(KeyCode.Space))keyboardReady=true;
     GUI.enabled=enabled&&Age>=.5f&&OnNext!=null;
-    if(GUI.Button(buttonRect,GUIContent.none,GUIStyle.none))RequestNext();
+    if(NativeUiAudit.Button(buttonRect,GUIContent.none,GUIStyle.none))RequestNext();
     if(GUI.enabled&&keyboardReady&&Event.current.type==EventType.KeyDown&&(Event.current.keyCode==KeyCode.Return||Event.current.keyCode==KeyCode.KeypadEnter||Event.current.keyCode==KeyCode.Space)){Event.current.Use();RequestNext();}
    }finally{GUI.matrix=old;GUI.color=color;GUI.enabled=enabled;}
   }
@@ -247,7 +247,7 @@ namespace Exoduser.UnityPort {
    var rc=rank!=null?RankColor(rank):C(141,124,101);
    Diamond(new Vector2(833,cy0+34),35.355f,C(164,147,115,.6f*a),C(34,22,15,.92f*a),C(10,7,5,.95f*a));
    Diamond(new Vector2(833,cy0+34),28.284f,C(66,52,38,.85f*a),Color.clear,Color.clear);
-   if(rank!=null){var st=Style(cinzelDec,30,false);st.normal.textColor=new Color(rc.r,rc.g,rc.b,a);float rw=st.CalcSize(new GUIContent(rank)).x;GUI.Label(new Rect(833-rw/2f,cy0+34-15,rw+8,30),rank,st);}
+   if(rank!=null){var st=Style(cinzelDec,30,false);st.normal.textColor=new Color(rc.r,rc.g,rc.b,a);float rw=st.CalcSize(new GUIContent(rank)).x;NativeUiAudit.Label(new Rect(833-rw/2f,cy0+34-15,rw+8,30),rank,st);}
    else CenterText(833,cy0+34-9,18,NotPorted,nanum,11,C(141,124,101,a),0);
    // clear time + par, score
    var L=defs.labels;float tx=891,ty=y+30.5f;
@@ -280,7 +280,7 @@ namespace Exoduser.UnityPort {
    bx+=12;bx+=Text(bx,by+7,16,"·",nanum,13,C(164,147,115,.5f*a),0)+12;
    if(bs.HasValue)bx+=Cinzel(13,bScore,bx,by+16,C(201,189,166,a));else bx+=Text(bx,by+7,16,bScore,nanum,13,C(201,189,166,a),0);
    bx+=12;bx+=Text(bx,by+7,16,"·",nanum,13,C(164,147,115,.5f*a),0)+12;
-   if(br!=null){var st=Style(cinzelDec,13,false);var c=RankColor(br);st.normal.textColor=new Color(c.r,c.g,c.b,a);GUI.Label(new Rect(bx,by+7,40,16),bRank,st);}else Text(bx,by+7,16,bRank,nanum,13,C(201,189,166,a),0);
+   if(br!=null){var st=Style(cinzelDec,13,false);var c=RankColor(br);st.normal.textColor=new Color(c.r,c.g,c.b,a);NativeUiAudit.Label(new Rect(bx,by+7,40,16),bRank,st);}else Text(bx,by+7,16,bRank,nanum,13,C(201,189,166,a),0);
   }
   void Diamond(Vector2 center,float half,Color border,Color fill1,Color fill2){
    float s=half*2;var rect=new Rect(center.x-half,center.y-half,s,s);var old=GUI.color;
@@ -346,7 +346,7 @@ namespace Exoduser.UnityPort {
    int gi=label.IndexOf('▶');string pre=gi>=0?label.Substring(0,gi):label;float adv=gi>=0?GlyphAdv("g:▶")+1.96f:0;
    float w=Width(sansSemi,14,pre,1.96f)+adv;float x=960-w/2f;
    x+=Text(x,r.y,r.height,pre,sansSemi,14,col,1.96f);if(gi>=0)Glyph("g:▶",x,r.y+22,col);
-   if(GUI.Button(r,GUIContent.none,GUIStyle.none))RequestNext();
+   if(NativeUiAudit.Button(r,GUIContent.none,GUIStyle.none))RequestNext();
   }
  }
 }

@@ -127,22 +127,22 @@ namespace Exoduser.UnityPort
   void OnGUI(){if(AutomatedInput&&(Event.current.isKey||Event.current.isMouse||Event.current.type==EventType.ScrollWheel))Event.current.Use();Draw();}
   string K(string ko,string en){return Language=="ko"?ko:en;}
   static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
-  static void Label(Rect r,string text,GUIStyle style,TextAnchor alignment){var old=style.alignment;var color=style.normal.textColor;try{style.alignment=alignment;style.normal.textColor=NativeSilverHellUi.TextColor(color);GUI.Label(r,text,style);}finally{style.alignment=old;style.normal.textColor=color;}}
+  static void Label(Rect r,string text,GUIStyle style,TextAnchor alignment){var old=style.alignment;var color=style.normal.textColor;try{style.alignment=alignment;style.normal.textColor=NativeSilverHellUi.TextColor(color);NativeUiAudit.Label(r,text,style);}finally{style.alignment=old;style.normal.textColor=color;}}
   void Image(Rect r,Texture t,ScaleMode mode=ScaleMode.ScaleToFit){if(t==null)return;GUI.DrawTexture(r,t,mode,true);OriginalArtDrawn=true;}
   void DrawMovie(Rect box,Texture fallback,bool cover){var texture=movie.Error.Length==0&&movie.Prepared&&movie.Frame>=0?movie.Texture:fallback;Image(box,texture,cover?ScaleMode.ScaleAndCrop:ScaleMode.ScaleToFit);}
-  void DrawGate(){var frame=new Rect(34.2857f,0,1851.4286f,1080);float titleWidth=frame.width*.52f;float height=logo==null?300:titleWidth*logo.height/logo.width;Image(new Rect(frame.x+frame.width*.533f-titleWidth/2,1080*.37f-height/2,titleWidth,height),logo);var r=new Rect(frame.x+frame.width*.533f-120,1080*.8f-80,240,160);Image(r,enterArt);if(GUI.Button(r,"",GUIStyle.none))StartGate();if(enterArt==null)Label(r,"ENTER",heading,TextAnchor.MiddleCenter);}
+  void DrawGate(){var frame=new Rect(34.2857f,0,1851.4286f,1080);float titleWidth=frame.width*.52f;float height=logo==null?300:titleWidth*logo.height/logo.width;Image(new Rect(frame.x+frame.width*.533f-titleWidth/2,1080*.37f-height/2,titleWidth,height),logo);var r=new Rect(frame.x+frame.width*.533f-120,1080*.8f-80,240,160);Image(r,enterArt);if(NativeUiAudit.Button(r,"",GUIStyle.none))StartGate();if(enterArt==null)Label(r,"ENTER",heading,TextAnchor.MiddleCenter);}
   void DrawSplash(){Texture tex=movie.Error.Length==0&&movie.Prepared&&movie.Frame>=0?movie.Texture:splashTitle;if(tex==null)return;bool video=tex==movie.Texture;float sy=video?78f/768:80f/793,sh=video?616f/768:636f/793;float dw=1080f*tex.width/(tex.height*sh),dx=Mathf.Max((1920-dw)/2,-dw*.1f);GUI.DrawTextureWithTexCoords(new Rect(dx,0,dw,1080),tex,new Rect(0,1-sy-sh,1,sh),true);OriginalArtDrawn=true;if(splashBrand!=null)Image(new Rect(dx,-80f/636*1080,dw,dw*793/1983),splashBrand);}
   void DrawWorldIntro()
   {
    LobbyStyles();bool popupWasOpen=showLanguages;HandleLanguagePopupKeys();bool previousEnabled=GUI.enabled;
    var captionStyle=CaptionStyleForLanguage();var shadowStyle=CaptionShadowForLanguage();float h=captionStyle.CalcHeight(new GUIContent(SubtitleText),1612);Rect r=new Rect(154,940-h,1612,h);
-   if(SubtitleText.Length>0&&!(Language=="ar"&&arabicCaptionOverlay!=null&&arabicCaptionOverlay.Ready)){for(int dx=-2;dx<=2;dx+=2)for(int dy=-2;dy<=2;dy+=2)GUI.Label(new Rect(r.x+dx,r.y+dy,r.width,r.height),SubtitleText,shadowStyle);GUI.Label(r,SubtitleText,captionStyle);CaptionVisible=true;}
+   if(SubtitleText.Length>0&&!(Language=="ar"&&arabicCaptionOverlay!=null&&arabicCaptionOverlay.Ready)){for(int dx=-2;dx<=2;dx+=2)for(int dy=-2;dy<=2;dy+=2)NativeUiAudit.Label(new Rect(r.x+dx,r.y+dy,r.width,r.height),SubtitleText,shadowStyle);NativeUiAudit.Label(r,SubtitleText,captionStyle);CaptionVisible=true;}
    if(SubtitleText.Length>0&&Language=="ar"&&arabicCaptionOverlay!=null&&arabicCaptionOverlay.Ready){arabicCaptionOverlay.DrawComposite(new Rect(0,0,1920,1080));CaptionVisible=true;}
    DrawCinematicLanguage();
    GUI.enabled=previousEnabled&&!showLanguages;
    // Source hides worldIntroMix during normal playback; show recovery only when paused/error.
    bool playing=movie.Prepared&&movie.Player!=null&&movie.Player.isPlaying;
-   if((VideoError.Length>0||(movie.Prepared&&!playing))&&GUI.Button(new Rect(28,26,240,48),VideoError.Length>0?K("재생 / 재시도","Play / retry"):playing?K("일시정지","Pause"):K("재생","Play"),button))TogglePlayback();
+   if((VideoError.Length>0||(movie.Prepared&&!playing))&&NativeUiAudit.Button(new Rect(28,26,240,48),VideoError.Length>0?K("재생 / 재시도","Play / retry"):playing?K("일시정지","Pause"):K("재생","Play"),button))TogglePlayback();
    if(VideoError.Length>0)Label(new Rect(28,86,1300,100),K("영상 재생 실패 — 재시도하거나 ESC를 길게 눌러 나가세요.","Video playback failed — retry or hold ESC to continue."),normal,TextAnchor.UpperLeft);
    GUI.enabled=previousEnabled;
    if(showLanguages){
@@ -207,7 +207,7 @@ namespace Exoduser.UnityPort
    bool hover=r.Contains(Event.current.mousePosition),pressed=!AutomatedInput&&hover&&ExoInput.Mouse(0);
    if(hover&&!pressed)NativeSilverHellUi.ButtonFocus(r);NativeSilverHellUi.ActionPlate(r,primary,hover?1:0,pressed,28,6);
    var label=new GUIStyle(normal){font=NativeSilverHellUi.Font()??normal.font,fontSize=18,fontStyle=FontStyle.Normal};label.normal.textColor=NativeSilverHellUi.Bright;Label(r,text,label,TextAnchor.MiddleCenter);
-   return GUI.Button(r,GUIContent.none,GUIStyle.none);
+   return NativeUiAudit.Button(r,GUIContent.none,GUIStyle.none);
   }
   string LobbyLanguageLabel(string code)
   {
@@ -225,10 +225,10 @@ namespace Exoduser.UnityPort
   }
   static bool DismissOutside(Rect popup)
   {
-   bool dismiss=GUI.Button(new Rect(0,0,1920,popup.yMin),"",GUIStyle.none);
-   dismiss|=GUI.Button(new Rect(0,popup.yMax,1920,1080-popup.yMax),"",GUIStyle.none);
-   dismiss|=GUI.Button(new Rect(0,popup.yMin,popup.xMin,popup.height),"",GUIStyle.none);
-   dismiss|=GUI.Button(new Rect(popup.xMax,popup.yMin,1920-popup.xMax,popup.height),"",GUIStyle.none);
+   bool dismiss=NativeUiAudit.Button(new Rect(0,0,1920,popup.yMin),"",GUIStyle.none);
+   dismiss|=NativeUiAudit.Button(new Rect(0,popup.yMax,1920,1080-popup.yMax),"",GUIStyle.none);
+   dismiss|=NativeUiAudit.Button(new Rect(0,popup.yMin,popup.xMin,popup.height),"",GUIStyle.none);
+   dismiss|=NativeUiAudit.Button(new Rect(popup.xMax,popup.yMin,1920-popup.xMax,popup.height),"",GUIStyle.none);
    return dismiss;
   }
   void DrawLobbyBackground()

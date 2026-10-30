@@ -39,9 +39,9 @@ namespace Exoduser.UnityPort
                 foreach(var r in layout.Requests){if(r.Box.Width<=0)continue;var f=r.Notice;float age=(Time.unscaledTime-f.Last)/f.Life,alpha=age<.8f?1:Mathf.Clamp01((1-age)*5);
                     style.fontSize=f.Priority>=3?26:24;var rect=new Rect(r.Box.X,r.Box.Y,r.Box.Width,r.Box.Height);
                     style.normal.textColor=new Color(0,0,0,alpha);
-                    foreach(var o in new[]{new Vector2(-2,0),new Vector2(2,0),new Vector2(0,-2),new Vector2(0,2),new Vector2(-1,-1),new Vector2(1,1)})GUI.Label(new Rect(rect.x+o.x,rect.y+o.y,rect.width,rect.height),f.DisplayText,style);
+                    foreach(var o in new[]{new Vector2(-2,0),new Vector2(2,0),new Vector2(0,-2),new Vector2(0,2),new Vector2(-1,-1),new Vector2(1,1)})NativeUiAudit.Label(new Rect(rect.x+o.x,rect.y+o.y,rect.width,rect.height),f.DisplayText,style);
                     Color ink=Color.white;if(f.Numeric){Color raw;if(!ColorUtility.TryParseHtmlString(f.Color,out raw))raw=Color.white;ink=Color.Lerp(raw,Color.white,.55f);}else if(f.Priority>=3)ink=new Color(1,.96f,.78f);
-                    ink.a=alpha;style.normal.textColor=ink;GUI.Label(rect,f.DisplayText,style);
+                    ink.a=alpha;style.normal.textColor=ink;NativeUiAudit.Label(rect,f.DisplayText,style);
                 }
             }finally{GUI.color=color;style.normal.textColor=textColor;style.fontSize=size;style.alignment=alignment;style.fontStyle=fontStyle;style.wordWrap=wrap;}
         }
@@ -82,11 +82,11 @@ namespace Exoduser.UnityPort
             label.alignment = TextAnchor.MiddleCenter; big.alignment = TextAnchor.MiddleCenter;
             label.fontSize = 22; label.normal.textColor = new Color(1f, .8f, .67f, .9f);
             string power = p.FallenCanRevive ? (English ? "Revive Power " : "부활력 ") + Fmt(p.FallenReviveChance) + "%" : (English ? "Cannot Revive" : "부활 불가");
-            GUI.Label(new Rect(cx - 140, cy - 46, 280, 30), power, label);
+            NativeUiAudit.Label(new Rect(cx - 140, cy - 46, 280, 30), power, label);
             big.fontSize = 56; big.normal.textColor = sec <= 1 ? new Color(1, .2f, .2f) : sec <= 2 ? new Color(1, .47f, .27f) : new Color(1, .8f, .27f);
-            GUI.Label(new Rect(cx - 140, cy - 20, 280, 64), sec + "s", big);
+            NativeUiAudit.Label(new Rect(cx - 140, cy - 20, 280, 64), sec + "s", big);
             label.fontSize = 18; label.normal.textColor = new Color(.8f, .53f, .4f, .5f + pulse * .2f);
-            GUI.Label(new Rect(cx - 140, cy + 14, 280, 22), English ? "Fallen..." : "쓰러짐...", label);
+            NativeUiAudit.Label(new Rect(cx - 140, cy + 14, 280, 22), English ? "Fallen..." : "쓰러짐...", label);
             float bw = 480, bx = cx - bw / 2, by = 1080 * .85f;
             Fill(new Rect(bx, by, bw, 8), new Color(.13f, 0, 0, .7f));
             Fill(new Rect(bx, by, bw * prog, 8), sec <= 1 ? new Color(1, .13f, .13f, .85f) : new Color(1, .4f, .27f, .85f));

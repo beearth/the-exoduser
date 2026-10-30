@@ -134,14 +134,14 @@ namespace Exoduser.UnityPort
             {
                 var pt = ToGUI(t.x, t.y); float a = Mathf.Clamp01((t.until - Time.unscaledTime) / .5f);
                 var c = t.color; c.a = a; var st = center; var keep = st.normal.textColor;
-                st.normal.textColor = new Color(0, 0, 0, .85f * a); GUI.Label(new Rect(pt.x - 301, pt.y - 49, 600, 40), t.text, st);
-                st.normal.textColor = c; GUI.Label(new Rect(pt.x - 300, pt.y - 50, 600, 40), t.text, st); st.normal.textColor = keep;
+                st.normal.textColor = new Color(0, 0, 0, .85f * a); NativeUiAudit.Label(new Rect(pt.x - 301, pt.y - 49, 600, 40), t.text, st);
+                st.normal.textColor = c; NativeUiAudit.Label(new Rect(pt.x - 300, pt.y - 50, 600, 40), t.text, st); st.normal.textColor = keep;
             }
             if (flow.InArena && flow.Exits.Count > 0 && !flow.StageCleared)
             {
                 var ex = flow.Exits[0]; var pt = ToGUI((ex.X + .5f) * 40, (ex.Y + .5f) * 40 - 34);
                 var keep = center.normal.textColor; center.normal.textColor = new Color(.85f, .55f, .3f, .95f);
-                GUI.Label(new Rect(pt.x - 60, pt.y - 20, 120, 40), English ? "EXIT" : "출구", center); center.normal.textColor = keep;
+                NativeUiAudit.Label(new Rect(pt.x - 60, pt.y - 20, 120, 40), English ? "EXIT" : "출구", center); center.normal.textColor = keep;
             }
         }
         void StageFlowDrawLoad()
@@ -161,7 +161,7 @@ namespace Exoduser.UnityPort
                     GUI.color=tint;
                     string name = bossBar.BossNameForStage(Simulation.Config.StageIndex) ?? "???";
                     var st = new GUIStyle(GUI.skin.label) { font = stageFontNanum, fontSize = 40, fontStyle = FontStyle.Normal, alignment = TextAnchor.MiddleCenter };
-                    st.normal.textColor = new Color(0, 0, 0, .8f * nt); GUI.Label(new Rect(580,552,760,60), name, st);
+                    st.normal.textColor = new Color(0, 0, 0, .8f * nt); NativeUiAudit.Label(new Rect(580,552,760,60), name, st);
                     st.normal.textColor = new Color(242/255f,240/255f,236/255f,nt);NativeSilverHellUi.Label(new Rect(580,550,760,60),name,st);
                     var sub = new GUIStyle(st) { fontSize = 15, fontStyle = FontStyle.Normal };
                     sub.normal.textColor = new Color(138/255f,141/255f,141/255f,nt);NativeSilverHellUi.Label(new Rect(580,650,760,24),StageSubtitle(Simulation.Config.StageIndex),sub);

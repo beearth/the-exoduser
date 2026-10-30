@@ -102,7 +102,7 @@ namespace Exoduser.UnityPort {
   }
   void Text(float x,float cy,string text,Color c,float spacing){
    style.normal.textColor=c;
-   foreach(char ch in text){var g=ch.ToString();GUI.Label(new Rect(x,cy-20.5f,60,41),g,style);x+=style.CalcSize(new GUIContent(g)).x+spacing;}
+   foreach(char ch in text){var g=ch.ToString();NativeUiAudit.Label(new Rect(x,cy-20.5f,60,41),g,style);x+=style.CalcSize(new GUIContent(g)).x+spacing;}
   }
  }
 }

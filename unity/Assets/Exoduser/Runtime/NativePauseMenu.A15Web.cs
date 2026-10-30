@@ -213,9 +213,9 @@ namespace Exoduser.UnityPort
    if(navigation.Focused&&navigation.Cursor>=4)EnsureVisible(items,max);
    float sy=a15Scroll[tab];
    bool popup=openSelect>=0;bool wasEnabled=GUI.enabled;if(popup)GUI.enabled=false;
-   GUI.BeginGroup(pages);
+   NativeUiAudit.BeginGroup(pages);
    foreach(var it in items)DrawItem(it,sy,fullscreen);
-   GUI.EndGroup();
+   NativeUiAudit.EndGroup();
    GUI.enabled=wasEnabled;
    if(max>0&&sy<max-1)Fill(new Rect(PagesX,PagesY+PagesH-24,PagesW,24),new Color32(16,19,19,200));
    // Footer: autosave note + close.
@@ -351,7 +351,7 @@ namespace Exoduser.UnityPort
    if(e.type==EventType.ScrollWheel&&box.Contains(e.mousePosition)){popupScroll=Mathf.Clamp(popupScroll+e.delta.y*34f,0,max);e.Use();}
    popupScroll=Mathf.Clamp(popupScroll,0,max);
    Fill(box,new Color32(10,13,13,250));Border(box,BoxLine);
-   GUI.BeginGroup(box);
+   NativeUiAudit.BeginGroup(box);
    for(int i=0;i<labels.Count;i++)
    {
     var row=new Rect(2,2+i*34-popupScroll,box.width-4,34);if(row.yMax<0||row.y>box.height)continue;
@@ -360,7 +360,7 @@ namespace Exoduser.UnityPort
     Txt(new Rect(row.x+12,row.y,row.width-16,34),labels[i],15,i==current?Title:Bone);
     if(NativeSilverHellUi.Button(row,GUIContent.none,GUIStyle.none)){ApplySelect(it,i,values);openSelect=-1;navigation.Fence();}
    }
-   GUI.EndGroup();
+   NativeUiAudit.EndGroup();
    if(e.type==EventType.MouseDown&&!box.Contains(e.mousePosition)){openSelect=-1;e.Use();}
    if(e.type==EventType.KeyDown&&e.keyCode==KeyCode.Escape){openSelect=-1;e.Use();}
   }

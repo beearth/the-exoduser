@@ -88,7 +88,22 @@ namespace Exoduser.UnityPort
             float w=Screen.width,h=Screen.height;
             int i=Mathf.Clamp(characterVisual,0,4);
             bool locked=i!=0,shortScreen=h<=940;
-            float x=w-420,bodyY=62,top=bodyY+(shortScreen?190:300),railY=h-(shortScreen?174:222),size=shortScreen?54:64;
+            float x=w-420,bodyY=62,top=bodyY+(shortScreen?190:300),size=shortScreen?54:64;
+            string[] railLabels={"전사","실버테일","헬거너","변성술사","창법사"};
+            string[] railEnglish={"Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"};
+            var railName=new GUIStyle(silverBody){wordWrap=true,alignment=TextAnchor.UpperCenter};
+            var railSoon=new GUIStyle(silverVisualCaption){wordWrap=true,alignment=TextAnchor.UpperCenter};
+            const float labelWidth=76,labelGap=9,footerGap=9,actionGap=18;
+            float nameHeight=0,soonHeight=0;
+            for(int n=0;n<5;n++)
+            {
+                string text=VisualSelectionLabel(railLabels[n],railEnglish[n]);railName.font=NativeSilverHellUi.TextFont(silverBody.font,text);
+                nameHeight=Mathf.Max(nameHeight,railName.CalcHeight(new GUIContent(text),labelWidth));
+            }
+            string soon=VisualSelectionLabel("출시 준비 중","Coming soon");railSoon.font=NativeSilverHellUi.TextFont(silverVisualCaption.font,soon);
+            soonHeight=railSoon.CalcHeight(new GUIContent(soon),labelWidth);
+            float railY=h-84-actionGap-size-labelGap-nameHeight-footerGap-soonHeight;
+            NativeUiAudit.Region(new Rect(0,0,w,h),"panel");
             Fill(new Rect(0,0,w,h),Color.black);
             DrawSilverScene(new Rect(0,0,w,h),i);
             Image(new Rect(0,0,w,h),silverVisualVignette,ScaleMode.StretchToFill);
@@ -97,7 +112,7 @@ namespace Exoduser.UnityPort
             DrawSpaced((w-headingWidth)/2,30,26,headingText,silverVisualTitle.font,18,3.6f,NativeSilverHellUi.Text,true);
             Image(new Rect((w-headingWidth)/2-238,45,220,1),silverHeadingLine,ScaleMode.StretchToFill);
             GUI.DrawTextureWithTexCoords(new Rect((w+headingWidth)/2+18,45,220,1),silverHeadingLine,new Rect(1,0,-1,1),true);
-            var info=new Rect(x,bodyY,380,shortScreen?132:148.5f);
+            var info=new Rect(x,bodyY,380,shortScreen?156:148.5f);
             SilverCornerPanel(info);
             SilverLabel(new Rect(x+28,bodyY+26,324,16),VisualSelectionLabel(presentationJobs[i],new[]
             {
@@ -128,9 +143,9 @@ namespace Exoduser.UnityPort
                 if(n<2)Fill(new Rect(x+34,y+(shortScreen?43:66),312,1),new Color(.61f,.62f,.62f,.12f));
             }
             GUI.SetNextControlName("visual-info-left");
-            if(GUI.Button(info,"",GUIStyle.none))GUI.FocusControl("visual-info-left");
+            if(NativeUiAudit.Button(info,"",GUIStyle.none))GUI.FocusControl("visual-info-left");
             GUI.SetNextControlName("visual-info-right");
-            if(GUI.Button(traits,"",GUIStyle.none))GUI.FocusControl("visual-info-right");
+            if(NativeUiAudit.Button(traits,"",GUIStyle.none))GUI.FocusControl("visual-info-right");
             string[] labels=
             {
                 "전사","실버테일","헬거너","변성술사","창법사"
@@ -140,23 +155,14 @@ namespace Exoduser.UnityPort
                 var r=new Rect(x+n*(380-size)/4,railY,size,size);
                 Fill(r,new Color(.035f,.039f,.043f,.84f));
                 Image(new Rect(r.x+3,r.y+3,size-6,size-6),silverEmblems[n]??presentationBusts[n],ScaleMode.ScaleAndCrop);
-                if(n>0)
-                {
-                    var c=GUI.color;
-                    GUI.color=new Color(c.r,c.g,c.b,c.a*.68f);
-                    Image(r,presentationChains);
-                    GUI.color=c;
-                }
+                if(n>0)DrawSilverClassLock(r);
                 Border(r,n==i?NativeSilverHellUi.Bright:new Color(.61f,.62f,.62f,.62f),1);
                 if(n==i)Border(new Rect(r.x-3,r.y-3,size+6,size+6),NativeSilverHellUi.Text,1);
-                SilverLabel(new Rect(r.x-10,r.yMax+7,size+20,20),VisualSelectionLabel(labels[n],new[]
-                {
-                    "Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"
-                }
-                [n]),silverBody,TextAnchor.MiddleCenter);
-                if(n>0)SilverLabel(new Rect(r.x-10,r.yMax+30,size+20,20),VisualSelectionLabel("출시 준비 중","Coming soon"),silverVisualCaption,TextAnchor.MiddleCenter);
+                float labelX=r.center.x-labelWidth/2;
+                SilverLabel(new Rect(labelX,r.yMax+labelGap,labelWidth,nameHeight),VisualSelectionLabel(labels[n],railEnglish[n]),railName,TextAnchor.UpperCenter);
+                if(n>0)SilverLabel(new Rect(labelX,r.yMax+labelGap+nameHeight+footerGap,labelWidth,soonHeight),soon,railSoon,TextAnchor.UpperCenter);
                 GUI.SetNextControlName("visual-icon-"+n);
-                if(GUI.Button(new Rect(r.x-4,r.y-4,size+8,size+58),"",GUIStyle.none))
+                if(NativeUiAudit.Button(new Rect(r.x-4,r.y-4,size+8,size+labelGap+nameHeight+footerGap+soonHeight+4),"",GUIStyle.none))
                 {
                     ChooseCharacterVisual(n);
                     GUI.FocusControl("visual-icon-"+n);
@@ -170,16 +176,25 @@ namespace Exoduser.UnityPort
             var actionTint=GUI.color;if(locked)GUI.color=new Color(actionTint.r*.45f,actionTint.g*.45f,actionTint.b*.45f,actionTint.a);
             NativeSilverHellUi.ActionPlate(createPlate,!locked,create.Contains(Event.current.mousePosition)&&!locked?1:0,!AutomatedInput&&create.Contains(Event.current.mousePosition)&&ExoInput.Mouse(0));GUI.color=actionTint;
             GUI.SetNextControlName("visual-cancel");
-            SilverLabel(cancel,CharacterDialogLabel("cancel",K("취소","CANCEL")),silverVisualAction,TextAnchor.MiddleCenter);if(GUI.Button(cancel,"",GUIStyle.none))CloseCharacterCreation();
+            SilverLabel(cancel,CharacterDialogLabel("cancel",K("취소","CANCEL")),silverVisualAction,TextAnchor.MiddleCenter);if(NativeUiAudit.Button(cancel,"",GUIStyle.none))CloseCharacterCreation();
             GUI.enabled=prior&&!locked;
             GUI.SetNextControlName("visual-create");
-            SilverLabel(create,locked?CharacterDialogLabel("comingSoon",K("출시 준비 중","COMING SOON")):CharacterDialogLabel("create",K("생성","CREATE")),silverVisualAction,TextAnchor.MiddleCenter);if(GUI.Button(create,"",GUIStyle.none))ConfirmCharacterVisual();
+            SilverLabel(create,locked?CharacterDialogLabel("comingSoon",K("출시 준비 중","COMING SOON")):CharacterDialogLabel("create",K("생성","CREATE")),silverVisualAction,TextAnchor.MiddleCenter);if(NativeUiAudit.Button(create,"",GUIStyle.none))ConfirmCharacterVisual();
             GUI.enabled=prior;
             if(characterVisualFocusPending&&Event.current.type==EventType.Repaint)
             {
                 GUI.FocusControl("visual-icon-"+i);
                 characterVisualFocusPending=false;
             }
+        }
+        // 이모지/대각선 사슬 대신 원화 문장을 보존하고 작은 금속 자물쇠를 표시한다.
+        void DrawSilverClassLock(Rect icon)
+        {
+            var c=GUI.color;float s=14;Rect body=new Rect(icon.center.x-s/2,icon.yMax-18,s,11);
+            Fill(new Rect(body.x+3,body.y-6,8,7),new Color(.035f,.039f,.043f,.96f));
+            Border(new Rect(body.x+3,body.y-6,8,8),new Color(.57f,.58f,.56f,.95f),1);
+            Fill(body,new Color(.055f,.059f,.061f,.98f));Border(body,new Color(.62f,.63f,.60f,.98f),1);
+            Fill(new Rect(body.center.x-.7f,body.y+3,1.4f,4),NativeSilverHellUi.Text);GUI.color=c;
         }
     }
 }

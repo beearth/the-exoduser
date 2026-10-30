@@ -184,11 +184,11 @@ namespace Exoduser.UnityPort {
    float contentH=SingleLayout(area.width,it,rows,source,0,true);
    float boxH=Mathf.Min(contentH,area.yMax-y);cardScrollMax=Mathf.Max(0,contentH-boxH);
    var box=new Rect(area.x,y,area.width,boxH);
-   GUI.BeginGroup(box);
+   NativeUiAudit.BeginGroup(box);
    IronTile(new Rect(0,0,box.width,boxH),iron320,320);Grad(new Rect(0,0,box.width,boxH),C(25,22,25,.96f),C(13,12,15,.976f));
    SingleLayout(area.width,it,rows,source,-Mathf.Clamp(detailScroll.y,0,cardScrollMax),false);
    Border(new Rect(0,0,box.width,boxH),C(118,121,121));
-   GUI.EndGroup();
+   NativeUiAudit.EndGroup();
   }
   // Returns the content height; draws when !measure (coordinates relative to the card, top = scroll offset).
   float SingleLayout(float w,InventoryItem it,List<CRow> rows,string source,float top,bool measure){
@@ -318,26 +318,26 @@ namespace Exoduser.UnityPort {
    float detY=966-(29.4f+bodyH);float pairY=240.8f,pairH=detY-9.9f-pairY;
    float cw=212.9f;
    var pair=new Rect(area.x,pairY,area.width,pairH);
-   GUI.BeginGroup(pair);
+   NativeUiAudit.BeginGroup(pair);
    var curCard=new Rect(0,0,cw,pairH);var candCard=new Rect(cw+8,0,cw,pairH);
    float bc=DrawPairCard(candCard,it,true,dex,level,0,true),bo=DrawPairCard(curCard,cur,false,dex,level,0,true);
    cardScrollMax=Mathf.Max(0,Mathf.Max(bc,bo)+14-pairH);
    float sc=Mathf.Clamp(detailScroll.y,0,cardScrollMax);
    DrawPairCard(curCard,cur,false,dex,level,sc,false,bo);DrawPairCard(candCard,it,true,dex,level,sc,false,bc);
-   GUI.EndGroup();
+   NativeUiAudit.EndGroup();
    var det=new Rect(area.x,detY,area.width,29.4f+bodyH);
    Fill(det,C(10,14,17));Border(det,C(69,72,72));
    var sum=new Rect(det.x+1,det.y+1,det.width-2,27.4f);
    Txt(new Rect(sum.x+8,sum.y,sum.width-8,sum.height),(compareMoreOpen?"▼ ":"▶ ")+"수치 차이 전체 보기",11,C(174,177,177),600);
    if(NativeSilverHellUi.Button(sum,GUIContent.none,GUIStyle.none))compareMoreOpen=!compareMoreOpen;
    if(compareMoreOpen){
-    GUI.BeginGroup(new Rect(det.x+1,sum.yMax,det.width-2,bodyH));
+    NativeUiAudit.BeginGroup(new Rect(det.x+1,sum.yMax,det.width-2,bodyH));
     float y=0;
     Serif(new Rect(8,y,400,16),"베이스 스탯 비교 (강화 수치 제외)",12,C(102,102,102));y+=22;
     Serif(new Rect(8,y,400,19),"스탯 변화",14,C(112,115,115),true,1.36f);y+=25;
     var box=new Rect(8,y,det.width-18,Mathf.Max(20,diffs.Count*17.5f+16));Fill(box,C(0,0,0,.2f));Border(box,C(34,37,37));
     float ly=y+8;foreach(var l in diffs){if(ly>bodyH-4)break;Serif(new Rect(16,ly,box.width-16,17),l.text,l.size,l.col,l.bold);ly+=17.5f;}
-    GUI.EndGroup();
+    NativeUiAudit.EndGroup();
    }
   }
  }

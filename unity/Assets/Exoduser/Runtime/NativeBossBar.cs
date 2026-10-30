@@ -240,7 +240,7 @@ namespace Exoduser.UnityPort {
     var old=GUI.color;GUI.color=new Color(1,1,1,a);GUI.DrawTextureWithTexCoords(rect,glyphTex,AtlasUv(gt,at.glyphPx));GUI.color=old;
    }
    x+=L.glyph+ChipTextGap;var st=Style(14);float scale=L.chipFont/14f;var col=new Color(c.col.r,c.col.g,c.col.b,a);
-   foreach(char ch in c.text){string g=ch.ToString();float w=st.CalcSize(new GUIContent(g)).x*scale;st.normal.textColor=col;GUI.Label(new Rect(x,r.y,40,r.height),g,st);x+=w;}
+   foreach(char ch in c.text){string g=ch.ToString();float w=st.CalcSize(new GUIContent(g)).x*scale;st.normal.textColor=col;NativeUiAudit.Label(new Rect(x,r.y,40,r.height),g,st);x+=w;}
   }
  }
 }

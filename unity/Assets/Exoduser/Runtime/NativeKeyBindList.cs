@@ -131,8 +131,8 @@ namespace Exoduser.UnityPort {
     }
     float adv=st.CalcSize(new GUIContent(g)).x*(css/px);
     if(g!=" "){
-     if(shadow>0){st.normal.textColor=new Color(0,0,0,shadow*col.a*curA);GUI.Label(new Rect(x+w,cy-16+1,60,32),g,st);}
-     st.normal.textColor=NativeSilverHellUi.TextColor(new Color(col.r,col.g,col.b,col.a*curA));GUI.Label(new Rect(x+w,cy-16,60,32),g,st);
+     if(shadow>0){st.normal.textColor=new Color(0,0,0,shadow*col.a*curA);NativeUiAudit.Label(new Rect(x+w,cy-16+1,60,32),g,st);}
+     st.normal.textColor=NativeSilverHellUi.TextColor(new Color(col.r,col.g,col.b,col.a*curA));NativeUiAudit.Label(new Rect(x+w,cy-16,60,32),g,st);
     }
     w+=adv+ls;
    }
@@ -140,6 +140,7 @@ namespace Exoduser.UnityPort {
   }
   float RunCentered(float cx,float cy,string text,Font f,int px,float css,float ls,Color col,float shadow=0,int ctx=0){float w=Width(text,f,px,css,ls,ctx);Run(cx-w/2f,cy,text,f,px,css,ls,col,shadow,ctx);return w;}
   void DrawGlyph(GlyphTok t,float x,float cy,Color c,bool tint){
+   NativeUiAudit.Region(new Rect(x,cy-t.lineH/2,t.adv,t.lineH),"text",t.text,"키 글리프 아틀라스");
    float s=gl.scale;var r=new Rect(x-gl.origin,cy-t.lineH/2f-gl.origin,t.w/s,t.h/s);var old=GUI.color;
    GUI.color=tint?new Color(c.r,c.g,c.b,c.a*curA):new Color(1,1,1,curA);
    GUI.DrawTextureWithTexCoords(r,glyphTex,new Rect((float)t.x/gl.atlasW,1f-(float)(t.y+t.h)/gl.atlasH,(float)t.w/gl.atlasW,(float)t.h/gl.atlasH));GUI.color=old;

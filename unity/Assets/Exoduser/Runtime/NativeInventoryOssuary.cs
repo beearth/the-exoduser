@@ -77,7 +77,7 @@ namespace Exoduser.UnityPort {
         // CSS "at X% Y%" radial-gradient(ellipse, color, transparent stop) on a box, drawn clipped to it.
         void BoxGlow(Rect box,float px,float py,float stop,Color c){
             float dx=Mathf.Max(px,1f-px)*box.width,dy=Mathf.Max(py,1f-py)*box.height;
-            GUI.BeginGroup(box);Glow(px*box.width,py*box.height,dx*1.41421356f*stop,dy*1.41421356f*stop,c);GUI.EndGroup();
+            NativeUiAudit.BeginGroup(box);Glow(px*box.width,py*box.height,dx*1.41421356f*stop,dy*1.41421356f*stop,c);NativeUiAudit.EndGroup();
         }
         void InsetRing(Rect r,float w,Color c){
             Fill(new Rect(r.x,r.y,r.width,w),c);Fill(new Rect(r.x,r.yMax-w,r.width,w),c);Fill(new Rect(r.x,r.y+w,w,r.height-2*w),c);Fill(new Rect(r.xMax-w,r.y+w,w,r.height-2*w),c);
@@ -119,14 +119,14 @@ namespace Exoduser.UnityPort {
         void DrawOssGrid(){
             const float cell=37f,gx=569,gy=290,gw=382,gh=361;int rows=InventoryState.Rows;float total=rows*cell;
             var viewport=new Rect(gx,gy,gw,gh);Fill(viewport,C(8,9,10));
-            ossScroll=GUI.BeginScrollView(viewport,ossScroll,new Rect(0,0,cell*10,total),false,false,GUIStyle.none,GUIStyle.none);
+            ossScroll=NativeUiAudit.BeginScrollView(viewport,ossScroll,new Rect(0,0,cell*10,total),false,false,GUIStyle.none,GUIStyle.none);
             int first=Mathf.Max(0,(int)(ossScroll.y/cell)),last=Mathf.Min(rows,first+Mathf.CeilToInt(gh/cell)+1);
             var a=C(39,36,37,.565f);var b=C(18,17,20,.85f);
             for(int y=first;y<last;y++)for(int x=0;x<10;x++){
                 var r=new Rect(x*cell,y*cell,cell,cell);
                 IronTile(r,iron320,240);Grad(r,a,b,145);Border(r,C(56,54,56));DiamondOutline(r.center,9f,C(139,142,142,.125f));
             }
-            GUI.EndScrollView();
+            NativeUiAudit.EndScrollView();
             float maxScroll=total-gh;
             var track=new Rect(gx+gw-11,gy,10,gh);
             float inner=gh-24f,thumbH=Mathf.Max(20f,inner*gh/total),travel=inner-thumbH;

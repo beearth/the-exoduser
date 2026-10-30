@@ -118,8 +118,8 @@ namespace Exoduser.UnityPort
                 CharacterInfo info; if (!font.GetCharacterInfo(ch, out info, size)) continue; string s = ch.ToString();
                 if (ch != ' ')
                 {
-                    if (shadow) { st.normal.textColor = new Color(0, 0, 0, .9f * color.a); GUI.Label(new Rect(cx, y + 1, 80, height), s, st); st.normal.textColor = new Color(0, 0, 0, .3f * color.a); GUI.Label(new Rect(cx + .5f, y + 3, 80, height), s, st); GUI.Label(new Rect(cx - .5f, y + 3, 80, height), s, st); }
-                    st.normal.textColor = NativeSilverHellUi.TextColor(color); GUI.Label(new Rect(cx, y, 80, height), s, st);
+                    if (shadow) { st.normal.textColor = new Color(0, 0, 0, .9f * color.a); NativeUiAudit.Label(new Rect(cx, y + 1, 80, height), s, st); st.normal.textColor = new Color(0, 0, 0, .3f * color.a); NativeUiAudit.Label(new Rect(cx + .5f, y + 3, 80, height), s, st); NativeUiAudit.Label(new Rect(cx - .5f, y + 3, 80, height), s, st); }
+                    st.normal.textColor = NativeSilverHellUi.TextColor(color); NativeUiAudit.Label(new Rect(cx, y, 80, height), s, st);
                 }
                 cx += info.advance + spacing;
             }
