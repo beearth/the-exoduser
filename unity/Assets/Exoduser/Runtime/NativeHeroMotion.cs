@@ -28,6 +28,10 @@ namespace Exoduser.UnityPort
         public HeroSlamPose(float handX,float handY,float handZ,float bladeX,float bladeY,float bladeZ,float lower)
         {HandX=handX;HandY=handY;HandZ=handZ;BladeX=bladeX;BladeY=bladeY;BladeZ=bladeZ;Lower=lower;}
     }
+    public struct HeroFootwork
+    {
+        public float LeftPitch,LeftYaw,RightPitch,RightYaw;
+    }
     public sealed class NativeHeroMotionClock
     {
         int lastTick=-1,enteredTick,deathTick,skillTick=-1000,hurtTick=-1000,lastCast,basicCombo;
@@ -117,6 +121,20 @@ namespace Exoduser.UnityPort
                 default:return default(HeroBodyWeight);
             }
         }
+        public static HeroFootwork Footwork(HeroMotionSample sample,bool moving)
+        {
+            if(moving||(sample.Combo!=1&&sample.Combo!=2))return default(HeroFootwork);
+            float t=Clamp(sample.Phase),amount;
+            if(sample.Kind==HeroMotionKind.Swing)
+            {
+                float contact=Clamp(sample.ContactPhase);
+                amount=contact>0&&t<contact?Smooth(t/contact):1-.35f*Smooth((t-contact)/Math.Max(.01f,1-contact));
+            }
+            else if(sample.Kind==HeroMotionKind.Recover)amount=.65f*(1-Smooth(t));
+            else return default(HeroFootwork);
+            // 첫 베기는 왼발, 되베기는 오른발로 지지한다. 뒷발의 발끝을 고정한 작은 회전만 허용한다.
+            return sample.Combo==1?new HeroFootwork{RightPitch=12*amount,RightYaw=-16*amount}:new HeroFootwork{LeftPitch=12*amount,LeftYaw=16*amount};
+        }
         static HeroSlamPose SlamLerp(HeroSlamPose a,HeroSlamPose b,float t)
         {
             t=Smooth(t);float Mix(float x,float y){return x+(y-x)*t;}
@@ -202,7 +220,7 @@ namespace Exoduser.UnityPort
         Transform rightUpper,rightFore,rightHand,leftUpper,leftFore,leftHand,socket;
         Transform bladeTipTransform;
         Vector3 bladeTipLocal;
-        Transform hips,chest,head,leftThigh,leftShin,leftFoot,rightThigh,rightShin,rightFoot;
+        Transform hips,chest,head,leftThigh,leftShin,leftFoot,leftToes,rightThigh,rightShin,rightFoot,rightToes;
         SkinnedMeshRenderer bodyRenderer;
         Mesh rollBakeMesh;
         readonly List<Vector3> rollVertices=new List<Vector3>();
@@ -221,6 +239,8 @@ namespace Exoduser.UnityPort
         public HeroMotionKind MotionKind {get{return current.Kind;}}
         public float MotionPhase {get{return current.Phase;}}
         public int ComboStep {get{return current.Combo;}}
+        public float FootPlantError {get;private set;}
+        public bool FootPivotActive {get;private set;}
         public bool TryGetBladeTip(out Vector3 world)
         {
             if(bladeTipTransform==null){world=Vector3.zero;return false;}
@@ -246,6 +266,7 @@ namespace Exoduser.UnityPort
             hips=animator.GetBoneTransform(HumanBodyBones.Hips);chest=animator.GetBoneTransform(HumanBodyBones.Chest)??animator.GetBoneTransform(HumanBodyBones.Spine);head=animator.GetBoneTransform(HumanBodyBones.Head);
             leftThigh=animator.GetBoneTransform(HumanBodyBones.LeftUpperLeg);leftShin=animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg);leftFoot=animator.GetBoneTransform(HumanBodyBones.LeftFoot);
             rightThigh=animator.GetBoneTransform(HumanBodyBones.RightUpperLeg);rightShin=animator.GetBoneTransform(HumanBodyBones.RightLowerLeg);rightFoot=animator.GetBoneTransform(HumanBodyBones.RightFoot);
+            leftToes=animator.GetBoneTransform(HumanBodyBones.LeftToes);rightToes=animator.GetBoneTransform(HumanBodyBones.RightToes);
             foreach(var t in GetComponentsInChildren<Transform>(true))if(t.name=="Socket_Weapon_R"){socket=t;break;}
             if(rightHand==null||leftHand==null||socket==null)return;
             leftGripRelative=Quaternion.Inverse(rightHand.rotation)*leftHand.rotation;
@@ -373,9 +394,12 @@ namespace Exoduser.UnityPort
         void LateUpdate()
         {
             if(!ready||observedSimulation==null)return;
+            FootPlantError=0;
+            FootPivotActive=false;
             SampleLocomotion();
             var leftFootPosition=leftFoot!=null?leftFoot.position:Vector3.zero;var rightFootPosition=rightFoot!=null?rightFoot.position:Vector3.zero;
             var leftFootRotation=leftFoot!=null?leftFoot.rotation:Quaternion.identity;var rightFootRotation=rightFoot!=null?rightFoot.rotation:Quaternion.identity;
+            var leftToePosition=leftToes!=null?leftToes.position:leftFootPosition;var rightToePosition=rightToes!=null?rightToes.position:rightFootPosition;
             // 이 Core tick의 기본포즈 위에 절대 자세를 덮는다. Core와 이동 루트에는 쓰지 않는다.
             poseHandler.GetHumanPose(ref pose);
             float t=current.Phase;
@@ -422,10 +446,18 @@ namespace Exoduser.UnityPort
             }
             if(lowering>.00001f||bodyWeight.Active)
             {
-                // 골반 하강은 발목을 내리는 대신 무릎 굽힘으로 받는다. 이동의 원 Animator 발 위치는 보존한다.
+                // 정지 1·2타의 뒷발만 실제 발가락 본을 축으로 굴린다. 지지발과 이동 보행은 원 포즈를 보존한다.
+                var footwork=NativeHeroMotionClock.Footwork(current,observed.Moving);
+                bool leftPivot=leftToes!=null&&PivotFoot(ref leftFootPosition,ref leftFootRotation,leftToePosition,footwork.LeftPitch,footwork.LeftYaw);
+                bool rightPivot=rightToes!=null&&PivotFoot(ref rightFootPosition,ref rightFootRotation,rightToePosition,footwork.RightPitch,footwork.RightYaw);
                 SolveArm(leftThigh,leftShin,leftFoot,leftFootPosition,transform.forward-transform.right*.12f);
                 SolveArm(rightThigh,rightShin,rightFoot,rightFootPosition,transform.forward+transform.right*.12f);
                 if(leftFoot!=null)leftFoot.rotation=leftFootRotation;if(rightFoot!=null)rightFoot.rotation=rightFootRotation;
+                if(leftToes!=null&&rightToes!=null&&(leftPivot||rightPivot))
+                {
+                    FootPivotActive=true;
+                    FootPlantError=Mathf.Max(Vector3.Distance(leftToes.position,leftToePosition),Vector3.Distance(rightToes.position,rightToePosition));
+                }
             }
             var rightBaseUpper=rightUpper.localRotation;var rightBaseFore=rightFore.localRotation;var rightBaseHand=rightHand.localRotation;
             var desiredHand=transform.TransformPoint(grip.Hand);
@@ -454,6 +486,16 @@ namespace Exoduser.UnityPort
                 SolveArm(leftUpper,leftFore,leftHand,transform.TransformPoint(new Vector3(-.18f,1.26f,.48f)),-transform.right);
             }
             BlendArm(leftUpper,leftFore,leftHand,leftBaseUpper,leftBaseFore,leftBaseHand,weight);
+        }
+
+        bool PivotFoot(ref Vector3 ankle,ref Quaternion rotation,Vector3 toe,float pitch,float yaw)
+        {
+            if(pitch==0&&yaw==0)return false;
+            var forward=Vector3.ProjectOnPlane(toe-ankle,transform.up);
+            if(forward.sqrMagnitude<.000001f)return false;
+            var axis=Vector3.Cross(transform.up,forward.normalized);
+            var turn=Quaternion.AngleAxis(yaw,transform.up)*Quaternion.AngleAxis(pitch,axis);
+            ankle=toe+turn*(ankle-toe);rotation=turn*rotation;return true;
         }
 
         void ApplyRollTuck(float phase)

@@ -1,6 +1,6 @@
 # 데모 v0 전사 3D 런타임 — 2026-10-30
 
-전사 LOCK은 `origin/main:docs/11내러티브·로어디자인/WARRIOR_DESIGN_LOCK.md`, 제작 현황은 `UNITY_CHARACTER_BOARD_20261027.md`를 따른다. **현재 R4 지옥강타 접점 FAIL 발견으로 전달 확정 철회·R5 재작업 중**이다. 기능29/M123·일반모션 RETOUCH가 이 결함을 상쇄하지 않는다. 자기 R4 링크를 SHA 확인 후 이전 검증 skill-fix 링크로 동일byte 복구했고, Core 변경 없이 즉발 접점 계약으로 보정한다. 아래 R4 전달 표는 당시 이력이다.
+전사 LOCK은 `origin/main:docs/11내러티브·로어디자인/WARRIOR_DESIGN_LOCK.md`, 제작 현황은 `UNITY_CHARACTER_BOARD_20261027.md`를 따른다. 기존 R4 접점 FAIL은 철회 뒤 R5·중심 앵커에서 수정·전달했으며 전체 아트는 RETOUCH다. **2026-10-31 R6 정지1·2타 발 회전은 자기 브랜치의 미검증 후보**다. 순수482·설치API C# 오류/경고0·기존 Player 입력 기반 Runtime C# 오류0/타경로경고15만 확인했고, 정식 Editor/셰이더·새 빌드·Player1x/영상·M1·공통 병합·Desktop 전달은 미완료다. 공식 메모리 게이트9.1GB<Editor12GB/Player10GB로 실행을 시작하지 않았으며, 기존검수 재사용으로 새 후보 PASS를 주장하지 않는다. 현재 WORK522개는 이번 수정 전에 I:에 전 파일 바이트 백업·SHA 대조했다(과거 첫씬 원본4a97… 미확보 이력은 유지). 근거 `I:/EXODUSER-Storage/demo-art/hero/20261031-takeover/`. 아래 R4/R5 표와 전달은 당시 이력으로 보존한다.
 
 | 항목 | 소유·현재 값 |
 |---|---|
@@ -15,7 +15,7 @@
 | 기존 2D 아레나 | 같은 Core 발밑 앵커, 모델 앞쪽 깊이 -3, 바닥 기준 X 회전 -35도, 배율 0.80. R3fix M1 원본에서0.65가 약7% 높이로 작게 읽혀 보강. 아레나 자체의 3D화는 별도 |
 | 보조광 | 전사 layer30·렌더링 마스크3, Point 전사 마스크2. 중성 `(1,.97,.94)` 강도6 범위5, 차가운 가장자리 `(.62,.75,.86)` 강도1.6 범위4. 그림자 없는 보조광이며 주광·카메라·Core는 변경하지 않음 |
 | 재질 보강 | 본체 normal강도0.35·smoothness0.68, 대검 normal강도0.55·smoothness0.75. 전사 전용 그래프는 `albedo *= 1 - 0.75*sqrt(metallicMap.R)`: 금속 마스크0인 피부·천의 원본 색을 보존하고 금속만0.25~1배로 낮춘다. 기존 PBR·노멀·직접광·그림자는 유지, 기존 풀 림 발광 연결은0. 원본 ShaderGraph·비트맵 수정/새 생성0. R4 현재1x 제작자·독립 판정은 RETOUCH |
-| 모션 | `NativeHeroMotion.Sync(Simulation,bool)`, 실행순서90→기존 `CapeSpring`100. 상세 상태·타이밍·수치는 `UNITY_HERO_MOTION_20261030.md` |
+| 모션 | `NativeHeroMotion.Sync(Simulation,bool)`, 실행순서90→기존 `CapeSpring`100. R6 정지1·2타 뒷발12°/∓16° 회전·실제발가락3mm 진단 후보, 다른 동작/이동 보행 불변. 상세 상태·타이밍·수치는 `UNITY_HERO_MOTION_20261030.md` |
 | 실제 Player 검수 | `--unity-hero-review -output <고유경로>`·필수 `--unity-qa-sandbox`. 대기60·방향160(8방향×20틱)·달리기90·구르기36·대검3타180·검기3타180·E충전강타120·시전90·보조시전60·패링45·피격45·사망90틱, 2틱마다 1600×900 PNG. 적 AI/자연 소환을 끄고 이동 충돌을 유지한 제어 검수. E 두 번째 입력을70틱 누른 뒤 해제하며 Charge/Bash/BashRecover를 해당 구간에서 검사. heroReviewActive는 이 fixture의 사망/일시정지 메뉴 그리기만 분리하며 일반 실행은 불변. 피격은 HurtPlayer(80), 사망은 별도 상태주입이므로 자연 플레이로 세지 않음 |
 | 기존 수정 보존 | 이동·조준 `ef75f883e`는 시작 HEAD의 조상. Core 파일 변경0 |
 | 빌드 준비 파생 입력 | Unity 첫 임포트/빌드 준비로 생긴 자기64개 밖 변경522개는 `r2/import-meta.json`에 경로·SHA·diff를 보존. 메타만이 아니라 생성 Main씬·URP 프리필터·guard 기준도 포함한다. 자동 인수/일괄스테이징/원복하지 않으며 자기64개 WORK 변경0을 별도로 검사 |
