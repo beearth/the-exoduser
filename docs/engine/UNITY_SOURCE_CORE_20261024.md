@@ -95,3 +95,7 @@ Unity 이식 후보의 원본 기본 공격 모드는 `SourceStarterFixture.Crea
 | 실제 엔진 후속 | 부모가 Editor 검사·Windows build 및 Player 자동이동/120f차지/해제·4처치·PNG4종을 확인. 수동 플레이/전체 게임 검증과 구분 | `UNITY_PORT_20261024.md`의 실제 산출물 표 |
 
 변경 소유권은 Core C# 4파일, `Tools/ki-slash-oracle/`, 이 문서다. 다른 작업자의 SourceMap·에디터·렌더러·Resources·공용 Git index는 수정하지 않는다. 이 Tools의 실체는 I: Junction이다.
+
+### 2026-10-31 선택 지형의 미니맵 일치
+
+SourceMap.DisplayTile(x,y)는 원본 타일을 반환하며, 선택적 additionalBlocked가 타일 중심을 차단할 때만1(비보행)로 표시한다. NativeFieldHud의 기존 원형 미니맵은 이 값을 사용한다. 비A2의 원본 타일 색/모양은 그대로이며 A2 수면을 길로 표시하던 불일치를 고쳤다. 수로/다리/비A2 표시 회귀3검사 통과, 원본 MapData와 JSON 변경0.

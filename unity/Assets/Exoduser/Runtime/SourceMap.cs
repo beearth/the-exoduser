@@ -38,6 +38,12 @@ namespace Exoduser.UnityPort
             return !Blocked(x-radius,y-radius) && !Blocked(x+radius,y-radius) &&
                    !Blocked(x-radius,y+radius) && !Blocked(x+radius,y+radius);
         }
+        public int DisplayTile(int x,int y)
+        {
+            if(x<0||y<0||x>=Data.width||y>=Data.height)return 1;
+            if(additionalBlocked!=null&&additionalBlocked((x+.5f)*Data.tileSize,(y+.5f)*Data.tileSize))return 1;
+            return Data.tiles[y*Data.width+x];
+        }
         public bool LineOfSight(float x0,float y0,float x1,float y1)
         {
             if(!Finite(x0)||!Finite(y0)||!Finite(x1)||!Finite(y1))return false;
