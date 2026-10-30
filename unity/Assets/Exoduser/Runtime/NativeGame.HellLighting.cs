@@ -45,6 +45,7 @@ namespace Exoduser.UnityPort
                 var layers=g.terrainData.terrainLayers;for(int i=0;i<layers.Length;i++){layers[i]=Instantiate(layers[i]);layers[i].normalScale=.55f;layers[i].smoothness=i==0?.24f:.22f;layers[i].specular=new Color(.12f,.12f,.12f);}
                 g.terrainData.terrainLayers=layers;
                 HellGroundSetup(g);
+                HellEnvironmentSetup(g);
             }
             foreach(var root in r3Roots)if(root!=null)foreach(var renderer in root.GetComponentsInChildren<MeshRenderer>(true))if(renderer.shadowCastingMode==ShadowCastingMode.On&&renderer.name!="지옥 바닥 PBR 표면")hellSceneShadowCasters.Add(renderer);
             hellActorMaterial=new Material(Shader.Find("EXODUSER/SpriteLit3D"));hellActorMaterial.SetFloat("_Ambient",.3f);hellActorMaterial.SetFloat("_NormalTilt",.4f);

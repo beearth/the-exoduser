@@ -24,9 +24,9 @@ Shader "EXODUSER/HellGroundPBR"
    CBUFFER_START(UnityPerMaterial)
    float4 _BaseMap_ST;half4 _BaseColor;half _Cutoff,_Smoothness,_Metallic;
    CBUFFER_END
-   struct A {float4 positionOS:POSITION;float3 normalOS:NORMAL;float4 tangentOS:TANGENT;float2 uv:TEXCOORD0;};
-   struct V {float4 positionCS:SV_POSITION;float3 world:TEXCOORD0;float3 normal:TEXCOORD1;float4 tangent:TEXCOORD2;float2 uv:TEXCOORD3;half fog:TEXCOORD4;};
-   V vert(A v){V o;o.world=TransformObjectToWorld(v.positionOS.xyz);o.positionCS=TransformWorldToHClip(o.world);o.normal=TransformObjectToWorldNormal(v.normalOS);o.tangent=float4(TransformObjectToWorldDir(v.tangentOS.xyz),v.tangentOS.w*GetOddNegativeScale());o.uv=v.uv;o.fog=ComputeFogFactor(o.positionCS.z);return o;}
+   struct A {float4 positionOS:POSITION;float3 normalOS:NORMAL;float4 tangentOS:TANGENT;float2 uv:TEXCOORD0;half4 color:COLOR;};
+   struct V {float4 positionCS:SV_POSITION;float3 world:TEXCOORD0;float3 normal:TEXCOORD1;float4 tangent:TEXCOORD2;float2 uv:TEXCOORD3;half fog:TEXCOORD4;half depth:TEXCOORD5;};
+   V vert(A v){V o;o.world=TransformObjectToWorld(v.positionOS.xyz);o.positionCS=TransformWorldToHClip(o.world);o.normal=TransformObjectToWorldNormal(v.normalOS);o.tangent=float4(TransformObjectToWorldDir(v.tangentOS.xyz),v.tangentOS.w*GetOddNegativeScale());o.uv=v.uv;o.fog=ComputeFogFactor(o.positionCS.z);o.depth=v.color.r;return o;}
    half4 frag(V i):SV_Target
    {
     float2 tile=i.world.xz/6;float sweep=smoothstep(0,1,(sin(i.world.x*.7+i.world.z*.29)+sin(i.world.z*.51-i.world.x*.17)+2)*.25);
@@ -35,6 +35,7 @@ Shader "EXODUSER/HellGroundPBR"
     half3 stone=SAMPLE_TEXTURE2D(_RockMap,sampler_RockMap,tile).rgb*half3(.55,.56,.58);
     half3 soil=SAMPLE_TEXTURE2D(_AshMap,sampler_AshMap,tile).rgb*half3(.55,.56,.58);
     half3 a=skin*(1-rock-ash)+stone*rock+soil*ash;
+    a=lerp(a,stone*.5,smoothstep(.015,.15,i.depth));
     half3 ns=UnpackNormalScale(SAMPLE_TEXTURE2D(_BumpMap,sampler_BumpMap,i.uv),.45);
     half3 nr=UnpackNormalScale(SAMPLE_TEXTURE2D(_RockNormal,sampler_RockNormal,tile),.3);
     half3 nt=normalize(lerp(ns,nr,rock));float3 n=normalize(i.normal),t=normalize(i.tangent.xyz),b=cross(n,t)*i.tangent.w;

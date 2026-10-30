@@ -109,3 +109,17 @@ Core(`Runtime/Core`)는 바꾸지 않았다.
 - 최초PBR점무늬는 재질혼합OFF때소실(AO/그림자OFF로는유지). 필터·노멀·반사·가중치 재작업. 하단가로줄은 Terrain만남겨도유지·TerrainOFF때소실. 일반메시6c8ee055/Player2b619f69에서 같은구도 가로줄소실. Unity/드라이버 내부원인 미확정. 진단01bc0c75는 폐기루트 null참조로시간초과,해당루프 null검사수정. 해당진단을PASS로기록하지않음.
 - 원본·후보·비교·기록: I:/EXODUSER-Storage/steam-keyshot/. CC0출처·SHA는 PBR-원본출처.json. https://polyhaven.com/a/rock_ground / https://polyhaven.com/a/burned_ground_01 / https://polyhaven.com/license . 신규지출0. 미사용 탄화토normal/rough2종은 unused-source로hash대조이관.
 - 기존 codex-unity-visual의 공유WIP보호:09fe65b8840에서 G:/exoduser-wt/codex-unity-keyshot-final·codex/pc-unity-keyshot-final-20261030으로분리. 자기입력11경로 byte보존이송. 인수미확인 HellEnvironment모듈/호출은 독립후보에서제외. 기존guard WIP원위치보존.
+
+### 외곽 깊이·지형 밀도 인수 후보 — keyshot2
+
+최신 브리프의 동시 편집 분리 지시에 따라 `G:/exoduser-wt/codex-keyshot2`, `codex/pc-unity-steam-keyshot2-20261030`을 생성했다. 09fe65b8840에서 분기하고 가로줄 수정 checkpoint caa503755를 정상 fast-forward했다. 원 작업본·인덱스·WIP를 변경하지 않는다. 보존된 environment-draft의 Blender 10종을 독립 작업본에 인수했으며 새 유료 생성·구매는 없다. **아래는 제작 후보이며 실게임 미검증이다.**
+
+| 항목 | 구현 계약·현재 검증 |
+|---|---|
+| 외곽 암반·목질 | 기존 차단 셀의 좌우 경계에서 3층. 암반4종·속 빈 부패목3종·쓰러진 뿌리·돌 잔해·갈비뼈. 원본 Blender/명세는 I:/EXODUSER-Storage/steam-keyshot/blender, 실제 FBX는 Resources/Art/map/keyshot |
+| 배치 | layout.json 72개. 외곽 후보는 높이0.12u 초과 OBB 전체를 0.1u 간격으로 기존 보행 셀과 검사해 교차0. 최초106개 초안에서39개 교차를 확인한 뒤 배치 방식 수정. 0.12u 이하 접합은 낮은 시각 디테일이며 Collider 추가0 |
+| 먼 층 | layer0/1/2: 기본높이 오프셋 -.14/-2.8/-8.5u, 먼 암반 스케일1/1.65/2.8, 세로1.6/3.2/4.5. 가까운층 그림자만 유지. 실제 연속질량·가림·반복은 새 Player에서 확인 |
+| 심연 표면 | 원본200×200 보행 덤프에서 최근접 보행 거리, 셀당1/16tile byte·헤더8byte, 총40008byte. 보행 셀값0 전수검사. 거리2tile 이하는 표면 변형0, 2~12tile에서 smoothstep으로 최대10u 하강. TerrainCollider·GroundY·Core는 원본 불변 |
+| 심연 재질 | 메시 vertex color R=하강 비율. .015~.15에서 기존피부/돌/재를 돌×.5로 전이. 기존 높이안개·지수안개와 깊이를 연결. 디더링·그레인·랜덤 점무늬 없음 |
+| 수피 | Poly Haven bark_brown_02, Rob Tuytel, CC0. Diffuse/GL normal/Rough 각2K, 기존 출처영수증 SHA256과 byte 대조 후 런타임 인수. 돌/수피/뼈색 재질 분리·월드 트라이플래너. roughness를 smoothness에 반영 |
+| 범위 | 지형 표현만 변경. 영웅·보스 기존 2D 표현을 3D 리모델 완료로 보고하지 않음. 검수 결과는 I:/EXODUSER-Storage/steam-keyshot/keyshot2/REPORT.md에 기록 |
