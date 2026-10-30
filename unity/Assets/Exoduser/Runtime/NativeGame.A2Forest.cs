@@ -108,7 +108,7 @@ namespace Exoduser.UnityPort
             }
             foreach(float side in new[]{-1f,1f})
             {
-                float u=side*3.65f,w=side*1.95f;
+                float u=side*3.65f,w=side*2.5f;
                 A2Torch(43.2f+u*A2ForestLayout.SinYaw+w*A2ForestLayout.CosYaw,-71.8f+u*A2ForestLayout.CosYaw-w*A2ForestLayout.SinYaw);
             }
             A2Atmosphere();

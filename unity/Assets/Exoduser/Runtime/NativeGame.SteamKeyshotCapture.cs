@@ -8,7 +8,7 @@ namespace Exoduser.UnityPort
 {
     public sealed partial class NativeGame
     {
-        [Serializable] sealed class KeyshotFrame { public string name; public int tick, enemies, projectiles; public bool arena, remodel; public float heroHeight01, cameraFov,luminance=-1; public Vector3 heroWorld,cameraWorld,bossCenter,bossSize; }
+        [Serializable] sealed class KeyshotFrame { public string name; public int tick, enemies, projectiles,screenWidth,screenHeight; public bool arena, remodel; public float heroHeight01, cameraFov,luminance=-1,screenLuminance=-1; public Vector3 heroWorld,cameraWorld,bossCenter,bossSize; }
         [Serializable] sealed class KeyshotReceipt { public string scope="실제 NativeGame·격리 세이브·직접 입장·생존 보조·스크립트 입력. 적/탄 직접 주입 없음. 손 조작 검수와 구분"; public List<KeyshotFrame> frames=new List<KeyshotFrame>(); public bool passed;public int unityErrors; }
         int keyshotErrors;
         void KeyshotLog(string text,string stack,LogType type){if(type==LogType.Error||type==LogType.Exception||type==LogType.Assert)keyshotErrors++;}
@@ -131,6 +131,15 @@ namespace Exoduser.UnityPort
                 if(high>=low)h=high-low;
             }
             receipt.frames.Add(new KeyshotFrame{name=name,tick=Simulation.TickCount,enemies=Simulation.Enemies.Count,projectiles=KeyshotActiveShots(Simulation.Stage.InArena),arena=Simulation.Stage.InArena,remodel=NativeRemodel3D.Active,heroHeight01=h,cameraFov=camera.fieldOfView,heroWorld=playerView.transform.position,cameraWorld=camera.transform.position,bossCenter=druidBody!=null?druidBody.Bounds.center:Vector3.zero,bossSize=druidBody!=null?druidBody.Bounds.size:Vector3.zero});
+            if(A2Requested&&!Application.isBatchMode)
+            {
+                // 동일 위치·동일 순간의 일반 화면도 남겨 별도 카메라 요청과 실제 표시의 차이를 진단한다.
+                var screen=ScreenCapture.CaptureScreenshotAsTexture();
+                File.WriteAllBytes(Path.Combine(output,name+"_일반화면_HUD포함.png"),screen.EncodeToPNG());
+                var frame=receipt.frames[receipt.frames.Count-1];frame.screenWidth=screen.width;frame.screenHeight=screen.height;
+                var values=screen.GetPixels32();double sum=0;for(int i=0;i<values.Length;i+=16)sum+=.2126*values[i].r+.7152*values[i].g+.0722*values[i].b;
+                frame.screenLuminance=(float)(sum/((values.Length+15)/16)/255);Destroy(screen);
+            }
             if(Application.isBatchMode||A2Requested)receipt.frames[receipt.frames.Count-1].luminance=A2CaptureFrame(Path.Combine(output,name+".png"));else ScreenCapture.CaptureScreenshot(Path.Combine(output,name+".png"));yield return null;yield return new WaitForSecondsRealtime(.4f);
         }
     }
