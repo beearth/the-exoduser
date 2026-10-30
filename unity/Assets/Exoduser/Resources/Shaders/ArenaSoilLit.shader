@@ -1,6 +1,6 @@
 Shader "EXODUSER/ArenaSoilLit"
 {
-    Properties { [PerRendererData] _MainTex("기존 흙 원화",2D)="white" {} _RockTex("돌 재질",2D)="white" {} _Color("색",Color)=(1,1,1,1) }
+    Properties { [PerRendererData] _MainTex("기존 흙 원화",2D)="white" {} _RockTex("돌 재질",2D)="white" {} _RockNormal("돌 노멀",2D)="bump" {} _Color("색",Color)=(1,1,1,1) }
     SubShader
     {
         Tags { "RenderPipeline"="UniversalPipeline" "Queue"="Transparent" "RenderType"="Transparent" "CanUseSpriteAtlas"="True" }
@@ -15,14 +15,13 @@ Shader "EXODUSER/ArenaSoilLit"
             #pragma multi_compile_fog
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
-            TEXTURE2D(_RockTex);SAMPLER(sampler_RockTex);TEXTURE2D(_MainTex);SAMPLER(sampler_MainTex);float4 _MainTex_TexelSize;float4 _HellArenaLight0,_HellArenaLight1,_HellArenaLight2;
+            TEXTURE2D(_RockNormal);SAMPLER(sampler_RockNormal);TEXTURE2D(_RockTex);SAMPLER(sampler_RockTex);TEXTURE2D(_MainTex);SAMPLER(sampler_MainTex);float4 _MainTex_TexelSize;float4 _HellArenaLight0,_HellArenaLight1,_HellArenaLight2;
             CBUFFER_START(UnityPerMaterial)
             half4 _Color;
             CBUFFER_END
             struct A {float4 positionOS:POSITION;float2 uv:TEXCOORD0;half4 color:COLOR;};
             struct V {float4 positionCS:SV_POSITION;float2 uv:TEXCOORD0;half4 color:COLOR;float3 world:TEXCOORD1;half fog:TEXCOORD2;};
             V vert(A i){V o;o.world=TransformObjectToWorld(i.positionOS.xyz);o.positionCS=TransformWorldToHClip(o.world);o.uv=i.uv;o.color=i.color*_Color;o.fog=ComputeFogFactor(o.positionCS.z);return o;}
-            half height(float2 uv){half3 c=SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,uv).rgb;return dot(c,half3(.21,.72,.07));}
             half3 lit(Light l,float3 n,float3 v,half3 albedo)
             {
                 half d=saturate(dot(n,l.direction));half s=pow(saturate(dot(n,normalize(l.direction+v))),40)*.22;
@@ -37,9 +36,8 @@ Shader "EXODUSER/ArenaSoilLit"
             {
                 half4 c=SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,i.uv)*i.color;
                 half3 rock=SAMPLE_TEXTURE2D(_RockTex,sampler_RockTex,i.world.xy/6).rgb;
-                c.rgb=lerp(c.rgb,rock*half3(.58,.62,.68),.8);
-                float2 t=_MainTex_TexelSize.xy*3;float dx=height(i.uv-float2(t.x,0))-height(i.uv+float2(t.x,0));float dy=height(i.uv-float2(0,t.y))-height(i.uv+float2(0,t.y));
-                float3 n=normalize(float3(dx*.15,dy*.15,-1));float3 v=normalize(_WorldSpaceCameraPos-i.world);
+                c.rgb=rock*half3(.58,.62,.68);
+                half3 rockNormal=UnpackNormalScale(SAMPLE_TEXTURE2D(_RockNormal,sampler_RockNormal,i.world.xy/6),.2);float3 n=normalize(float3(rockNormal.xy,-rockNormal.z));float3 v=normalize(_WorldSpaceCameraPos-i.world);
                 half3 color=c.rgb*half3(.62,.67,.73);
                 color+=pool(_HellArenaLight0,half3(1,.6,.3),i.world,n,c.rgb)+pool(_HellArenaLight1,half3(1,.6,.3),i.world,n,c.rgb)+pool(_HellArenaLight2,half3(.55,.68,.85),i.world,n,c.rgb);
                 #if defined(_ADDITIONAL_LIGHTS)
