@@ -14,3 +14,12 @@ for(const ridge of [0,.5,1]){
   assert(reflected.body[2]>reflected.body[1]&&reflected.body[1]>reflected.body[0],'반사탄은 물리 속성보다 청색 구분이 우선');checks++;
 }
 console.log('셰이더 색 검사='+checks+' 실패=0');
+// 실제 젖은 표면 식을 격자에서 실행한다. HLSL pow의 음수 밑수는 NaN이다.
+const wetBlock=shader.slice(shader.lastIndexOf('float2 wetUV=' )>=0?shader.lastIndexOf('float2 wetUV='):shader.indexOf('float wet='),shader.indexOf('float veinStrength='));
+const wetExecutable=wetBlock.replace(/float2\s+|float\s+/g,'let ').replace(/float2\(/g,'V(')+'\nwet;';
+let surfaceChecks=0;
+for(let x=-1;x<=1.001;x+=.1)for(let y=-1;y<=1.001;y+=.1){
+ const p={x,y};const wet=vm.runInNewContext(wetExecutable,{p,V:(...v)=>v,dot:(a,b)=>a.reduce((s,n,i)=>s+n*b[i],0),exp:Math.exp,pow:(a,b)=>a<0?NaN:Math.pow(a,b)});
+ assert(Number.isFinite(wet)&&wet>=0&&wet<=1,'표면 반사광은 전체 UV에서 유한한 [0,1]');surfaceChecks++;
+}
+console.log('셰이더 표면 유한값 검사='+surfaceChecks+' 실패=0');

@@ -6,7 +6,8 @@
 |---|---|---|
 | 기본 탄막 | `NativeBossView.DruidProjectile.cs`와 `Resources/Shaders/DruidProjectile.shader`. 드루이드 `DruidPoison`·`Orbs`만 새 표현. 물리=수피 핵 `(0.24,0.12,0.055)`·뼈빛 능선 `(0.78,0.72,0.56)`·국소 황록 테 `(0.58,0.72,0.12)`, 마법=녹색 독방울, Friendly/BlueBean/ParryBlueBean=청색. 좌표·속도·R·faction·ParryClass 읽기 전용. 지뢰·다른 필드탄은 기존 경로 | 실제 GPU·1x 판정은 아래 영수증으로 구분 |
 | 핵 지름 | `max(2R,min(대형64/일반28,max(12,Sz×14)))`px. 물리 가시는 `max(위 값,18,4R)`. 쿼드는 핵 지름×2 | 큰 실제 판정원을 지름 상한으로 줄이지 않음. 이 값은 Core 충돌값이 아님 |
-| 광량 | 정규반경 0.88 안. `halo=max(0,1-r/0.88)²×0.24`. 긴 입자·넓은 링 없음 | 밀집 탄·회복 장판과 겹친 실제 화면 확인 필요 |
+| 형태 재작업 2 | 물리=비대칭 목질 절단면·뒤쪽 삼각 가시 3개·수피 홈 2줄, 마법=기운 독 씨앗·붙은 짧은 꼬리/부리·분기 독맥 3줄. 물리 중심 핵 `.255−r`, 마법 `.505−r`를 합쳐 실제 판정 반경의 최소 1.02/1.01배를 보존 | 첫 GPU 후보의 녹색 테가 목질 색을 압도하고 마법탄이 구슬로 보인 결함은 **FAIL**. 이번 변경은 새 GPU 판정 전 |
+| 광량·표면 | `halo=max(0,1-r/0.80)²×(물리 .006/마법 .025)`, `rim=exp(−65×abs(edge))×(.035/.10)`, 최종 rim 기여 `.35`. 독맥 `.13/.52`, 젖은 반사광 `.10/.34`, AA `max(.006,fwidth(edge)×.7)`, shader target 3.0. 긴 입자·넓은 링·난수 잔점 없음 | 밀집 탄·회복 장판과 겹친 실제 화면 확인 필요 |
 | 같은 빌드 비교 | `--unity-original-druid-projectiles`이면 과거 독탄·오브 표현. `NativeReviewArgs.Any`에 포함해 전투 세이브 쓰기를 차단하고 검수 중 지역명 표시 허용 | 새 표현은 모델 공급과 독립 |
 | 모델 연결 | `--unity-druid-3d` 기본 꺼짐. `Resources/Art/boss/dark_druid_3d/DarkDruid_Runtime.prefab`와 Idle·Walk·CastThorn·CastPoison·CastRoot·Slam·Hit·Death가 전부 유효할 때만 활성화. 현재 프리팹·새 모델 공급 없음 | 필수 자료가 없으면 기존 2D 시트 유지, 동일 누락 경고는 프로세스당 1회. 모델/리깅/동작의 채택 증거 없음 |
 | 리그 입력 검증 | Instantiate 전에 활성 계층 Animator·유효 Generic Avatar(`isValid && !isHuman`), 면/정점 있는 스킨·동수의 본/바인드행렬, 모든 본의 같은 Animator 계층 소속, 유한·가역 행렬, 활성 스킨을 검사. 클립은 길이>0·비어 있지 않은 Generic 동작(`!legacy && !isHumanMotion && !empty`)이어야 함 | 메타데이터 검사이며 실제 변형 검수와 다름. 생성이 모두 끝나야 Ready, Dispose 즉시 Ready=false |
@@ -21,9 +22,10 @@
 
 | 검사 | 현재 증거 |
 |---|---|
-| 순수 표현·입력 검사 | 누락 구현·방향 오류·패링 회복 되감김·피격 중 경과 누락 RED 확인 후 모션/방향/리그 메타데이터 44/0 × 3D 옵션·원본 탄막 옵션. `C:/nvm4w/nodejs/node.exe unity/Tools/druid-presentation/run.cjs`. `I:/EXODUSER-Storage/demo-art/boss-druid/presentation-tests/검사결과.json`. 실제 셰이더 색 분기 검사 `shader-color-check.cjs` 12/0(기존 녹색 가시에서 RED 확인), GPU 판정과 별도 |
+| 순수 표현·입력 검사 | 누락 구현·방향 오류·패링 회복 되감김·피격 중 경과 누락 RED 확인 후 모션/방향/리그 메타데이터 44/0 × 3D 옵션·원본 탄막 옵션. `C:/nvm4w/nodejs/node.exe unity/Tools/druid-presentation/run.cjs`. `I:/EXODUSER-Storage/demo-art/boss-druid/presentation-tests/검사결과.json`. 실제 셰이더 색 분기 검사 `shader-color-check.cjs` 12/0(기존 녹색 가시에서 RED 확인). 젖은 반사광은 HLSL 음수 밑수 `pow` NaN을 재현한 뒤 `exp(-dot(wetUV,wetUV))`로 수정, 실제 식 UV 격자 441/0. GPU 판정과 별도 |
 | 독립 C# 컴파일 | 설치 Unity 6000.6.7f1 DLL·현재 Core 전체 소스로 Core/Runtime 오류 0, 기존 경고 존재. 영상 도구 변수 이름 충돌 1건 수정 후 재검사 통과. Unity 전체·셰이더·Player 검사와 별도 |
-| Unity 빌드·GPU·M1·시각 | 미검증. 순번과 PC 동시 실행 1개·`exo-unity.ps1`·무창/무음·격리 저장을 적용해 실제 영수증을 추가한다 |
+| 첫 Unity 빌드 | 소스 `42b4b7982e108243f454a5ef03b811ec0296e32e`, `04afadd2`, Unity 6000.6.7f1 Win64, 컴파일·빌드 오류 0, 3,054,287,003바이트. 로그의 errorLogs=2는 빌드 목록의 `UnifiedRayTracingException.cs`·`PointOnEdgeException.cs` 파일명 오탐이며 실제 예외 아님. 새 셰이더 재작업 2는 이 빌드에 없음 |
+| 첫 GPU·M1·시각 | Player `fc6cc177`, RX 9070 XT D3D11, exit 0·무창·격리 세이브 변경 0. 360장/12초 실영상 확보. **M1 22/23**: 검수 옵션 `--unity-druid-3d`가 의도대로 저장을 막아 저장/계속 단계가 실패했다. 필수 프리팹 누락은 1회 경고 후 기존 2D 폴백. 전체 M1 PASS 아님. 최종 소스에서 검수 저장차단 옵션 없이 다시 검사한다. 탄막 시각은 위 결함으로 FAIL |
 | 제품 반영 | 자기 후보 브랜치만. `unity/main`·바탕화면 미반영, 새 유료 호출 0 |
 
 탄막을 실제 검수하기 전 PASS로 올리지 않는다. 전체 브리프에는 마른 본체의 재조형·얼굴/음각·리깅/8동작·지팡이 접촉·임팩트 연출·실제 3D 보스전·지정 통합/바탕화면 갱신이 남아 있다.
