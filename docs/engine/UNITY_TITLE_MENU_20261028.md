@@ -76,7 +76,7 @@
 | 주 행동 | 게임 시작400×68, Hahmlet300 22px·자간3.08px, 중앙 정렬 |
 | 보조 행동 | 폭368·높이48, y520+(i−1)×62, Hahmlet300 18px·자간2.52px |
 | 표면 | 기존 btn_plaque_20261029 3-slice, 원본174px→40px, 좌우outset14. 금속 테·양끝 조각 유지 |
-| 주 행동 색 | 기존 name_create의 글자 없는 UV(.04,.20,.15,.60)를 금속판 안쪽(x+40,y+높이×.32,폭−80,높이×.36)에 합성. 새 원화0. 실제 Player 재검수 전 RETOUCH |
+| 주 행동 색 | btn_primary_composed: 기존 btn_plaque의 중앙 연결 암부만 진홍 재질로 변환. 원본 금속 테·알파 보존. 같은 3-slice, 실제 Player 재검수 전 RETOUCH |
 | 상태 | 선택 명도.78→1.18, 눌림.74. 기존 선택.25초·해제.18초, 고대비 글자·그림자 유지 |
 | 입력·흐름 | 기존 키/패드/호버/클릭·항목 조건·인장→canonical 영상 계약 유지 |
 | 검수 | I:/EXODUSER-Storage/demo-art/unity-ui/phase2/, 빌드·Player·M1·1x·통합·바로가기 모두 새 영수증 전 미완료 |
