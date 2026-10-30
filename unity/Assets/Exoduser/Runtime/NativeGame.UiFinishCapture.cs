@@ -33,12 +33,12 @@ namespace Exoduser.UnityPort
   {
    menu=true;Running=false;pauseMenu.Reset();pauseMenu.ShowSettings();
    for(int tab=0;tab<4;tab++){pauseMenu.Navigation.SelectTab(tab);pauseMenu.Navigation.ObserveReleased(false);yield return UiCapture(output,"unity-settings-"+tab+"-"+tag);}
-   pauseMenu.Navigation.SelectTab(3);pauseMenu.A15SetScrollForQa(9999);yield return UiCapture(output,"unity-settings-3-scrolled-"+tag);
+   pauseMenu.Navigation.SelectTab(3);pauseMenu.Navigation.ObserveReleased(false);pauseMenu.A15SetScrollForQa(9999);yield return UiCapture(output,"unity-settings-3-scrolled-"+tag);
    var offsets=(float[])typeof(NativePauseMenu).GetField("a15Scroll",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(pauseMenu);
    float expectedKeyY=253-offsets[3]+NativeKeyBindList.QRowsTop+11;var rects=pauseMenu.KeyListForTest.LastKeyRects;
    bool scrollDrawn=rects.Count>0&&Mathf.Abs(rects[0].y-expectedKeyY)<.1f;if(!scrollDrawn)uiArtFailures++;
    log.Add((scrollDrawn?"PASS ":"FAIL ")+"조작 스크롤 끝의 실제 키 목록 그리기 "+tag);pauseMenu.A15SetScrollForQa(0);
-   pauseMenu.Navigation.SelectTab(2);pauseMenu.A15OpenSelectForQa("optBgmTrack");yield return UiCapture(output,"unity-settings-2-popup-"+tag);
+   pauseMenu.Navigation.SelectTab(2);pauseMenu.Navigation.ObserveReleased(false);pauseMenu.A15OpenSelectForQa("optBgmTrack");yield return UiCapture(output,"unity-settings-2-popup-"+tag);
    log.Add("opt="+settings.Options.Encode()+" sfx="+settings.SfxPercent+" bgm="+settings.BgmPercent+" fps="+settings.FrameCap);
    // keyboard rows: cursor onto the first Display row (Shake) and step it right.
    pauseMenu.Reset();pauseMenu.ShowSettings();pauseMenu.Navigation.SelectTab(1);pauseMenu.Navigation.PointAt(4);int shakeBefore=settings.Options.Get("shake");
