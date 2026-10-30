@@ -97,7 +97,7 @@ namespace Exoduser.UnityPort
    if(startup.Page==FrontendEntryPage.Guide){DrawStartupGuide();return;}
    if(startup.Page==FrontendEntryPage.Curtain){var matrix=GUI.matrix;try{GUI.matrix=Matrix4x4.identity;DrawStartupBarrier();}finally{GUI.matrix=matrix;}if(startup.Elapsed<.4)DrawStartupGuide(Mathf.Clamp01(1-(float)startup.Elapsed/.4f),false);}
   }
-  void DrawEntryLoadingLogo(){if(loadingLogo==null)loadingLogo=Resources.Load<Texture2D>("Art/Startup/loading_logo");Fill(new Rect(0,0,1920,1080),Color.black);Image(new Rect(0,0,1920,1080),loadingLogo);}
+  void DrawEntryLoadingLogo(){EnsureSilverArt();if(loadingLogo==null)loadingLogo=Resources.Load<Texture2D>("Art/Startup/loading_logo");Fill(new Rect(0,0,1920,1080),Color.black);NativeSilverHellUi.Panel(new Rect(600,250,720,540),36,12,false);Image(new Rect(660,280,600,337.5f),gateSigil??loadingLogo);var st=new GUIStyle(startupBody){font=NativeSilverHellUi.Font()??startupBody.font,fontSize=22,fontStyle=FontStyle.Normal};st.normal.textColor=NativeSilverHellUi.Bright;SilverLabel(new Rect(640,680,640,40),K("불러오는 중","LOADING"),st,TextAnchor.MiddleCenter);}
   void DrawNemesis()
   {
    Fill(new Rect(0,0,1920,1080),Color.black);var l=startup.Line;if(l==null)return;float elapsed=(float)startup.Elapsed*1000;
