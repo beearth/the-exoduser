@@ -117,7 +117,8 @@ namespace Exoduser.UnityPort
             if (Mathf.Abs(lens.FieldOfView - fov) > .01f) { lens.FieldOfView = fov; r3Vcam.Lens = lens; }
         }
 
-        // Every sprite of the game stands upright facing the LOOK-001 camera (same tilt as the slice's Marker Sprite: Euler(pitch, 0, 0)), feet on the terrain point it was placed at.
+        // 캐릭터 스프라이트는 LOOK-001 카메라를 향해 세우고 발을 지면에 둔다.
+        // 명시적 중심형 스킬(악의구·강타 wave/flash)은 같은 tilt를 쓰되 Core 중심에 pivot을 유지한다.
         // The 2D code still places sprites by their pivot at the Core point; here the sprite's lower edge is moved onto that point (along the sprite's own up axis).
         // 표현 보정은 다음 writer 실행 전에 원래 로컬 자세로 되돌린다.
         // 부모만 이동하는 악의구·얼음 파편도 이전 프레임의 lift를 다시 더하지 않는다.
@@ -141,7 +142,7 @@ namespace Exoduser.UnityPort
                 var tr = sr.transform;
                 r3Base[sr] = new R3Base { localPosition = tr.localPosition, localRotation = tr.localRotation };
                 float roll = tr.rotation.eulerAngles.z;
-                float below = NativeSkillView.IsCenteredMaliceSprite(sr) ? 0 : (sr == playerView ? NativeRemodelCamera.HeroFootLift(sr.sprite) : sr.sprite.pivot.y / sr.sprite.pixelsPerUnit) * Mathf.Abs(tr.lossyScale.y);
+                float below = NativeSkillView.IsCenteredSkillSprite(sr) ? 0 : (sr == playerView ? NativeRemodelCamera.HeroFootLift(sr.sprite) : sr.sprite.pivot.y / sr.sprite.pixelsPerUnit) * Mathf.Abs(tr.lossyScale.y);
                 tr.SetPositionAndRotation(tr.position + new Vector3(0, below * cos, below * sin), tilt * Quaternion.Euler(0, 0, roll));
                 r3Projected.Add(sr);
             }
