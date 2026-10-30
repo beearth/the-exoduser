@@ -69,7 +69,7 @@ namespace Exoduser.UnityPort
    if(diamondTex==null){const int n=32;diamondTex=new Texture2D(n,n,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};var px=new Color[n*n];
     for(int y=0;y<n;y++)for(int x=0;x<n;x++){float d=Mathf.Abs((x+.5f)/n-.5f)+Mathf.Abs((y+.5f)/n-.5f);px[y*n+x]=new Color(1,1,1,Mathf.Clamp01((.5f-d)*n*.7f));}
     diamondTex.SetPixels(px);diamondTex.Apply(false,true);}
-   var oc=GUI.color;GUI.color=c;float h=size*1.42f;GUI.DrawTexture(new Rect(cx-h/2,cy-h/2,h,h),diamondTex);GUI.color=oc;
+   var oc=GUI.color;GUI.color=c;float h=size*1.42f;NativeUiAudit.DrawTexture(new Rect(cx-h/2,cy-h/2,h,h),diamondTex);GUI.color=oc;
   }
   string FmtCap(int cap){return cap==0?W("v.unlimited","Unlimited"):cap.ToString();}
   int GetVal(OptionDef d)
@@ -183,7 +183,7 @@ namespace Exoduser.UnityPort
   {
    a15Command=PauseMenuCommand.None;
    if(windowBase==null)windowBase=Resources.Load<Texture2D>("Art/ui/settings/window_base");
-   Texture2D tex=windowBase;if(tex!=null)GUI.DrawTexture(new Rect(0,0,1920,1080),tex,ScaleMode.StretchToFill,true);
+   Texture2D tex=windowBase;if(tex!=null)NativeUiAudit.DrawTexture(new Rect(0,0,1920,1080),tex,ScaleMode.StretchToFill,true);
    NativePanelTabBar.Draw(NativePanelTabBar.Preset.Settings,"settings");
    // Title block: SETTINGS (Cinzel) over the serif title, hairline 120% of the title width.
    Spaced(new Rect(96,111,300,16),"SETTINGS",13,Sub,1.8f,FontStyle.Bold,true);
@@ -425,7 +425,7 @@ namespace Exoduser.UnityPort
    {
     string[] parts=W("char."+idx,"").Split('\u0002');
     Texture2D sprite=Resources.Load<Texture2D>("Art/ui/settings/char_"+idx);
-    if(sprite!=null){sprite.filterMode=FilterMode.Point;GUI.DrawTexture(new Rect(r.x+r.width/2-44,r.y+14,88,88),sprite,ScaleMode.ScaleToFit,true);}
+    if(sprite!=null){sprite.filterMode=FilterMode.Point;NativeUiAudit.DrawTexture(new Rect(r.x+r.width/2-44,r.y+14,88,88),sprite,ScaleMode.ScaleToFit,true);}
     Txt(new Rect(r.x+8,r.y+118,r.width-16,24),parts.Length>0?parts[0]:"",16,sel?Title:Bone,TextAnchor.MiddleCenter,FontStyle.Bold);
     var desc=St(13,FontStyle.Normal,Dim,TextAnchor.UpperCenter);desc.wordWrap=true;
     NativeSilverHellUi.Label(new Rect(r.x+14,r.y+146,r.width-28,48),parts.Length>1?parts[1]:"",desc);
@@ -435,7 +435,7 @@ namespace Exoduser.UnityPort
    {
     string[] names=NativeOptionText.List("cursor",LocaleCode);
     Texture2D art=Resources.Load<Texture2D>("Art/ui/settings/cursor_"+idx);
-    if(art!=null)GUI.DrawTexture(new Rect(r.center.x-24,r.y+14,48,48),art,ScaleMode.ScaleToFit,true);
+    if(art!=null)NativeUiAudit.DrawTexture(new Rect(r.center.x-24,r.y+14,48,48),art,ScaleMode.ScaleToFit,true);
     else Diamond(r.center.x,r.y+34,26,idx==0?new Color32(176,40,28,255):new Color32(120,86,190,255));
     Txt(new Rect(r.x+8,r.y+66,r.width-16,28),idx<names.Length?names[idx]:"",13,sel?Title:Bone,TextAnchor.MiddleCenter,FontStyle.Bold);
    }

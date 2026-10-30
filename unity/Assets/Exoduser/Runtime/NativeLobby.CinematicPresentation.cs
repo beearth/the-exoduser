@@ -38,9 +38,9 @@ namespace Exoduser.UnityPort {
     }
     invitationShade.Apply(false,true);
    }
-   GUI.DrawTexture(new Rect(0,0,1920,1080),gateShade);
+   NativeUiAudit.DrawTexture(new Rect(0,0,1920,1080),gateShade);
    float w=1851.4286f*.52f,h=logo==null?300:w*logo.height/logo.width,cx=34.2857f+1851.4286f*.533f;
-   GUI.DrawTexture(new Rect(cx-w*.7f,1080*.37f-h/2,w*1.4f,h),invitationShade);
+   NativeUiAudit.DrawTexture(new Rect(cx-w*.7f,1080*.37f-h/2,w*1.4f,h),invitationShade);
   }
   void CinematicStyles(){
    if(cinematicMicro!=null)return;LobbyStyles();

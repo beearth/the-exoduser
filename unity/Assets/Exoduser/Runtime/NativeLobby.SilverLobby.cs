@@ -42,7 +42,7 @@ namespace Exoduser.UnityPort
         void DrawSilverLobbyBody(bool enabled)
         {
             SilverStyles();
-            GUI.DrawTexture(new Rect(1360,0,560,1080),lobbySilverShade);
+            NativeUiAudit.DrawTexture(new Rect(1360,0,560,1080),lobbySilverShade);
             var lang=new Rect(1424,188,140,36);
             SilverLabel(lang,LobbyLanguageLabel(Language),silverMicro,TextAnchor.MiddleLeft);
             Fill(new Rect(1424,217,140,1),new Color(.61f,.62f,.62f,.3f));

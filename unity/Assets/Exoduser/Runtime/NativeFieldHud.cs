@@ -13,7 +13,7 @@ namespace Exoduser.UnityPort
   Texture2D frame,mapTex,portrait,markerRing,markerArrow;Font font;SourceMap texFor;float mapSc;int mapW,mapH;
   readonly Dictionary<string,GUIStyle> styles=new Dictionary<string,GUIStyle>();
   static Color C(int r,int g,int b,float a=1f){return new Color(r/255f,g/255f,b/255f,a);}
-  static void Fill(Rect r,Color c){var o=GUI.color;GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=o;}
+  static void Fill(Rect r,Color c){var o=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=o;}
   GUIStyle St(int size,TextAnchor a,Color c,bool bold=false)
   {
    string k=size+"|"+a+"|"+ColorUtility.ToHtmlStringRGBA(c)+bold;GUIStyle s;if(styles.TryGetValue(k,out s))return s;
@@ -69,7 +69,7 @@ namespace Exoduser.UnityPort
    var old=GUI.color;
    var canvas=new Rect(23.3f,23.3f,110.5f,110.5f);const float k=.85f;
    float ox=(130-mapW)/2f,oy=4,sourceH=mapH+8,ys=130f/sourceH;
-   GUI.color=new Color(1,1,1,.94f);GUI.DrawTexture(canvas,mapTex);GUI.color=old;
+   GUI.color=new Color(1,1,1,.94f);NativeUiAudit.DrawTexture(canvas,mapTex);GUI.color=old;
    var sim=info.sim;int T=info.map.Data.tileSize;if(T<=0)T=64;int shown=0;
    foreach(var e in sim.Enemies){
     if(!e.Alive||sim.IsRemodelProp(e))continue;if(shown++>=60)break;float ex=ox+e.X/T*mapSc,ey=(oy+e.Y/T*mapSc)*ys;
@@ -80,11 +80,11 @@ namespace Exoduser.UnityPort
    var p=sim.Player;float px=ox+p.X/T*mapSc,py=(oy+p.Y/T*mapSc)*ys,cx=canvas.x+px*k,cy=canvas.y+py*k;
    if(Vector2.Distance(new Vector2(px,py),new Vector2(65,65))<56){
     GUI.color=new Color(1,1,1,.94f);var m=GUI.matrix;RotateLocal(new Vector2(cx,cy),-p.Facing*Mathf.Rad2Deg);
-    GUI.DrawTexture(new Rect(cx+7*k,cy-5*k,12*k,10*k),markerArrow);GUI.matrix=m;
-    if(portrait!=null)GUI.DrawTexture(new Rect(cx-7*k,cy-7*k,14*k,14*k),portrait);
-    GUI.DrawTexture(new Rect(cx-9*k,cy-9*k,18*k,18*k),markerRing);GUI.color=old;
+    NativeUiAudit.DrawTexture(new Rect(cx+7*k,cy-5*k,12*k,10*k),markerArrow);GUI.matrix=m;
+    if(portrait!=null)NativeUiAudit.DrawTexture(new Rect(cx-7*k,cy-7*k,14*k,14*k),portrait);
+    NativeUiAudit.DrawTexture(new Rect(cx-9*k,cy-9*k,18*k,18*k),markerRing);GUI.color=old;
    }
-   if(frame!=null){GUI.color=new Color(1.05f,1.05f,1.05f,.94f);GUI.DrawTexture(new Rect(8,8,141.1f,141.1f),frame,ScaleMode.StretchToFill,true);GUI.color=old;}
+   if(frame!=null){GUI.color=new Color(1.05f,1.05f,1.05f,.94f);NativeUiAudit.DrawTexture(new Rect(8,8,141.1f,141.1f),frame,ScaleMode.StretchToFill,true);GUI.color=old;}
   }
 
   // Rotation about a point in the current (scaled) GUI space; RotateAroundPivot assumes an unscaled matrix.
@@ -117,7 +117,7 @@ namespace Exoduser.UnityPort
    var bar=new Rect(x+12,44,146,2);Fill(new Rect(bar.x-1,bar.y+1,bar.width+2,2),new Color(0,0,0,.28f*a));Fill(bar,new Color(0,0,0,.45f*a));
    float w=bar.width*ProgressShown(Mathf.Clamp01(info.progress));
    if(w>0){if(fillGrad==null){fillGrad=new Texture2D(3,1,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};fillGrad.SetPixel(0,0,C(96,99,99,.34f));fillGrad.SetPixel(1,0,C(165,168,168,.8f));fillGrad.SetPixel(2,0,C(96,99,99,.34f));fillGrad.Apply(false,true);}
-    var oc=GUI.color;GUI.color=new Color(1,1,1,a);GUI.DrawTexture(new Rect(bar.x,bar.y,w,2),fillGrad);GUI.color=oc;}
+    var oc=GUI.color;GUI.color=new Color(1,1,1,a);NativeUiAudit.DrawTexture(new Rect(bar.x,bar.y,w,2),fillGrad);GUI.color=oc;}
   }
   Texture2D fillGrad;float progFrom,progTo,progStart=-10;bool progInit;
   static float EaseOut(float x){x=Mathf.Clamp01(x);float lo=0,hi=1,t=x;for(int i=0;i<24;i++){t=(lo+hi)/2;float bx=3*(1-t)*t*t*.58f+t*t*t;if(bx<x)lo=t;else hi=t;}return 3*(1-t)*t*t*1+t*t*t;}   // cubic-bezier(0,0,.58,1)

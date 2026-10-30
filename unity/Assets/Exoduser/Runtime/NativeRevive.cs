@@ -62,7 +62,7 @@ namespace Exoduser.UnityPort
             }
             t.SetPixels32(px); t.Apply(); vignette = t; return t;
         }
-        static void Fill(Rect r, Color c) { var old = GUI.color; GUI.color = c; GUI.DrawTexture(r, Texture2D.whiteTexture); GUI.color = old; }
+        static void Fill(Rect r, Color c) { var old = GUI.color; GUI.color = c; NativeUiAudit.DrawTexture(r, Texture2D.whiteTexture); GUI.color = old; }
 
         // P.s === 'fallen': st2 counts 300 -> 0. Called with the GUI matrix of the 1920x1080 design space.
         GUIStyle labelStyle, bigStyle;
@@ -73,7 +73,7 @@ namespace Exoduser.UnityPort
             float prog = Mathf.Clamp01(p.StateTicks / 300f), dead = 1 - prog, pulse = .5f + Mathf.Sin(Time.unscaledTime * 8f * .5f) * .5f;
             int sec = Mathf.CeilToInt(Mathf.Max(0, p.StateTicks) / 60f);
             Fill(new Rect(0, 0, 1920, 1080), new Color(.067f, 0, 0, .25f + dead * .35f));
-            { var old = GUI.color; GUI.color = new Color(.5f, 0, 0, Mathf.Clamp01(.4f + dead * .45f + pulse * .08f)); GUI.DrawTexture(new Rect(0, 0, 1920, 1080), Vignette(), ScaleMode.StretchToFill); GUI.color = old; } // radial vignette, edges darker red
+            { var old = GUI.color; GUI.color = new Color(.5f, 0, 0, Mathf.Clamp01(.4f + dead * .45f + pulse * .08f)); NativeUiAudit.DrawTexture(new Rect(0, 0, 1920, 1080), Vignette(), ScaleMode.StretchToFill); GUI.color = old; } // radial vignette, edges darker red
             Fill(new Rect(0, 0, 1920, 1080), new Color(.67f, 0, 0, (.04f + dead * .1f) * pulse));
             float cx = 960, cy = 1080 * .42f; var panel = new Rect(cx - 140, cy - 52, 280, 88);
             Fill(panel, new Color(0, 0, 0, .78f));

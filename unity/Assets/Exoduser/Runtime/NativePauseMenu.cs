@@ -75,7 +75,7 @@ namespace Exoduser.UnityPort
   }
   static void Fill(Rect rect,Color color)
   {
-   Color old=GUI.color;GUI.color=color;GUI.DrawTexture(rect,Texture2D.whiteTexture);GUI.color=old;
+   Color old=GUI.color;GUI.color=color;NativeUiAudit.DrawTexture(rect,Texture2D.whiteTexture);GUI.color=old;
   }
   static void Border(Rect r,Color c)
   {

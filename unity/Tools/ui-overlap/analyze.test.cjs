@@ -31,7 +31,8 @@ test('그림자가 아닌 같은 글자의 실제 중복도 충돌로 남긴다'
  assert.equal(analyze({width:100,height:100,elements:[text('안내',10,10,20,10),text('안내',11,11,20,10)]}).issues.length,1);
 });
 test('나중 전체 배경이 덮은 기존 버튼도 가림 처리한다',{skip:!analyze},()=>{
- const out=analyze({width:100,height:100,elements:[{...button('이전 삭제',20,0,20,20),order:0},{id:'배경',kind:'panel',rect:{x:0,y:0,width:100,height:100},order:1},{...text('새 안내',10,10,20,10),order:2}]});
+ // 기존 8번 의도는 유지하되, 가림에는 실제 불투명도/깊이 증명을 명시한다.
+ const out=analyze({width:100,height:100,elements:[{...button('이전 삭제',20,0,20,20),order:0,depth:0},{id:'배경',kind:'panel',rect:{x:0,y:0,width:100,height:100},order:1,depth:0,clipKnown:true,axisAligned:true,opacityKnown:true,effectiveOpacity:1,opacityProof:'단색 알파 1'},{...text('새 안내',10,10,20,10),order:2,depth:0}]});
  assert.equal(out.issues.length,0);
 });
 test('긴 설정 이름이 슬라이더 조작부를 침범하면 검출한다',{skip:!analyze},()=>{

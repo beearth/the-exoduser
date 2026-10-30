@@ -73,7 +73,7 @@ namespace Exoduser.UnityPort
                 if(NativeUiAudit.Button(fb,GUIContent.none,GUIStyle.none))EndFirstPractice(true);
                 return;
             }
-            var rect=PracticePanel(width);GUI.DrawTexture(rect,lessonBase,ScaleMode.StretchToFill,true);
+            var rect=PracticePanel(width);NativeUiAudit.DrawTexture(rect,lessonBase,ScaleMode.StretchToFill,true);
             var step=firstPractice.Step;int webStep=WebStepNumber(step);var phase=firstPractice.Phase;bool done=phase==FirstPracticePhase.Done,intro=phase==FirstPracticePhase.Intro;
             bool magic=webStep%2==0;Color accent=done||phase==FirstPracticePhase.Success?Hex(0xb2d6ac):magic?Hex(0xc5a4f2):Hex(0xe0c18b);
             float x=rect.x+24,w=348,y=rect.y+68;

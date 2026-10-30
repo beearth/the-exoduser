@@ -157,7 +157,7 @@ namespace Exoduser.UnityPort
                     if(stageLoadSigil==null)stageLoadSigil=Resources.Load<Texture2D>("Art/ui/silver_hell/gate_sigil_20261028");
                     var tint=GUI.color;GUI.color=new Color(tint.r,tint.g,tint.b,tint.a*nt);
                     NativeSilverHellUi.Panel(new Rect(560,290,800,500),36,12,false);
-                    if(stageLoadSigil!=null)GUI.DrawTexture(new Rect(760,310,400,225),stageLoadSigil,ScaleMode.StretchToFill,true);
+                    if(stageLoadSigil!=null)NativeUiAudit.DrawTexture(new Rect(760,310,400,225),stageLoadSigil,ScaleMode.StretchToFill,true);
                     GUI.color=tint;
                     string name = bossBar.BossNameForStage(Simulation.Config.StageIndex) ?? "???";
                     var st = new GUIStyle(GUI.skin.label) { font = stageFontNanum, fontSize = 40, fontStyle = FontStyle.Normal, alignment = TextAnchor.MiddleCenter };

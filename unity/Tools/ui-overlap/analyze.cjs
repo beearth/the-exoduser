@@ -3,46 +3,69 @@ const requiredPages=['첫화면','브랜드인트로','메뉴','로비',...Array
 const right=r=>r.x+r.width,bottom=r=>r.y+r.height;
 const inside=(a,b,t=.5)=>a.x>=b.x-t&&a.y>=b.y-t&&right(a)<=right(b)+t&&bottom(a)<=bottom(b)+t;
 const intersects=(a,b)=>Math.min(right(a),right(b))-Math.max(a.x,b.x)>.5&&Math.min(bottom(a),bottom(b))-Math.max(a.y,b.y)>.5;
+const intersection=(a,b)=>{const x=Math.max(a.x,b.x),y=Math.max(a.y,b.y);return {x,y,width:Math.max(0,Math.min(right(a),right(b))-x),height:Math.max(0,Math.min(bottom(a),bottom(b))-y)};};
+const positive=r=>r&&r.width>0&&r.height>0;
+const above=(a,b)=>Number.isFinite(a.depth)&&Number.isFinite(b.depth)?a.depth<b.depth||(a.depth===b.depth&&a.order>b.order):a.order>b.order;
+// 가림 차집합에는 충돌 허용오차를 쓰지 않는다. 0.5px 미만의 남은 조각도 보존한다.
+function subtract(a,b){
+ const cut=intersection(a,b);if(!positive(cut))return [a];
+ return [{x:a.x,y:a.y,width:a.width,height:cut.y-a.y},{x:a.x,y:bottom(cut),width:a.width,height:bottom(a)-bottom(cut)},
+  {x:a.x,y:cut.y,width:cut.x-a.x,height:cut.height},{x:right(cut),y:cut.y,width:right(a)-right(cut),height:cut.height}].filter(positive);
+}
+const opaque=e=>e.opacityKnown===true&&e.effectiveOpacity===1&&!!e.opacityProof&&Number.isFinite(e.depth)&&e.orderKnown&&e.clipKnown===true&&e.axisAligned===true;
 function analyze(frame){
  const elements=[];
- for(const e of frame.elements||[]){
+ for(const input of frame.elements||[]){
+  const e={...input,order:input.order??elements.length,orderKnown:Number.isFinite(input.order)};
   if(!e.rect||e.rect.width<=0||e.rect.height<=0)continue;
+  if(e.hasClip){if(!e.clipRect)continue;e.rect=intersection(e.rect,e.clipRect);if(!positive(e.rect))continue;}
   // 같은 문자열의 1px 외곽선/그림자만 통합한다. 다른 내용은 제외하지 않는다.
-  const duplicate=elements.findIndex(p=>p.kind===e.kind&&p.text===e.text&&(e.kind!=='text'||p.shadow||e.shadow)&&['x','y','width','height'].every(k=>Math.abs(p.rect[k]-e.rect[k])<=3.1));
+  const duplicate=elements.findIndex(p=>p.kind==='text'&&e.kind==='text'&&p.text===e.text&&(p.shadow||e.shadow)&&p.depth===e.depth&&JSON.stringify(p.clipRect)===JSON.stringify(e.clipRect)&&!elements.some(s=>s.kind==='surface'&&above(s,p)&&opaque(s))&&['x','y','width','height'].every(k=>Math.abs(p.rect[k]-e.rect[k])<=3.1));
   if(duplicate>=0){if(elements[duplicate].shadow&&!e.shadow)elements[duplicate]=e;continue;}
   elements.push(e);
  }
- const visible=elements.filter(e=>!elements.some(p=>p.kind==='panel'&&p.order>e.order&&inside(e.rect,p.rect)));
+ const masks=elements.filter(e=>(e.kind==='surface'||e.kind==='panel')&&opaque(e));
+ const visible=elements.filter(e=>e.kind!=='surface').map(e=>{
+  let visibleRects=[e.rect];
+  for(const p of masks)if(p!==e&&above(p,e)&&p.ownerId!==e.id)visibleRects=visibleRects.flatMap(r=>subtract(r,p.rect));
+  return {...e,visibleRects};
+ }).filter(e=>e.visibleRects.length);
  const issues=[],screen={x:0,y:0,width:frame.width,height:frame.height};
  for(let i=0;i<visible.length;i++){
   const a=visible[i];if(a.kind!=='text')continue;
-  if(!inside(a.rect,screen))issues.push({type:'화면 이탈',a});
+  if(a.visibleRects.some(r=>!inside(r,screen)))issues.push({type:'화면 이탈',a});
   for(let j=0;j<visible.length;j++){
-   if(i===j)continue;const b=visible[j];if(!intersects(a.rect,b.rect))continue;
-   if(b.kind==='text'){if(j>i)issues.push({type:'글자-글자',a,b});}
-   else if(b.kind==='button'&&!(inside(a.rect,b.rect)&&a.order>b.order))issues.push({type:'글자-버튼',a,b});
-   else if(b.kind==='panel'&&!inside(a.rect,b.rect))issues.push({type:'글자-판',a,b});
-   else if(b.kind==='control')issues.push({type:'글자-조작부',a,b});
+   if(i===j)continue;const b=visible[j];const intersections=a.visibleRects.flatMap(ar=>b.visibleRects.filter(br=>intersects(ar,br)).map(br=>intersection(ar,br)));if(!intersections.length)continue;
+   if(b.kind==='text'){if(j>i)issues.push({type:'글자-글자',a,b,intersections});}
+   else if(b.kind==='button'&&!(inside(a.rect,b.rect)&&above(a,b)))issues.push({type:'글자-버튼',a,b,intersections});
+   else if(b.kind==='panel'&&!inside(a.rect,b.rect))issues.push({type:'글자-판',a,b,intersections});
+   else if(b.kind==='control')issues.push({type:'글자-조작부',a,b,intersections});
   }
  }
- return {...frame,elements:visible,issues};
+ const auditWarnings=[];
+ if(frame.schemaVersion!==2)auditWarnings.push('구 스키마: 실제 가림 정보 미충족');
+ for(const e of elements){
+  if(!Number.isFinite(e.depth)||!e.orderKnown||e.clipKnown!==true)auditWarnings.push(e.id+': 깊이/순서/클립 미충족');
+  if(e.kind==='surface'&&(!e.opacityKnown||!e.opacityProof||e.axisAligned!==true))auditWarnings.push(e.id+': 불투명도 또는 축 정렬 증명 불명');
+ }
+ return {...frame,elements:visible,surfaces:elements.filter(e=>e.kind==='surface'),issues,auditWarnings,visibilityComplete:auditWarnings.length===0};
 }
 function run(dir){
  const manifest=JSON.parse(fs.readFileSync(path.join(dir,'coverage.json'),'utf8'));
  const frames=manifest.frames.map(name=>analyze(JSON.parse(fs.readFileSync(path.join(dir,name+'.json'),'utf8'))));
  const missing=[];
- if(manifest.schemaVersion!==1||!/^[0-9a-f]{64}$/.test(manifest.runtimeSha256)||!manifest.device||manifest.deviceType==='Null')missing.push('계측 스키마/실제 Runtime SHA/GPU 영수증 누락');
+ if(manifest.schemaVersion!==2||!/^[0-9a-f]{64}$/.test(manifest.runtimeSha256)||!manifest.device||manifest.deviceType==='Null')missing.push('계측 스키마/실제 Runtime SHA/GPU 영수증 누락');
  const languages=new Set(['ko','de',...manifest.languages]);
  const languagePath=path.join(dir,'최장언어_실측.json');
  if(!fs.existsSync(languagePath))missing.push('최장 언어의 실제 서체 폭 측정 없음');
  else {const scores=JSON.parse(fs.readFileSync(languagePath,'utf8')).scores;for(const category of ['설정','직업선택']){const rows=scores.filter(s=>s.category===category).sort((a,b)=>b.measuredWidth-a.measuredWidth);if(rows.length<28)missing.push(category+' 언어 폭 표 누락');else languages.add(rows[0].code);}}
  for(const width of [1920,1600])for(const lang of languages)for(const page of requiredPages)
   if(!frames.some(f=>f.width===width&&f.language===lang&&f.page===page&&f.repaintFrames>0&&f.elements.some(e=>e.kind==='text')))missing.push(`${width}/${lang}/${page}`);
- for(const f of frames){if(f.schemaVersion!==1)missing.push('계측 스키마 불일치 '+f.page);const png=path.join(dir,`${f.width}-${f.language}-${f.page}.png`);if(!fs.existsSync(png)){missing.push('PNG 누락 '+path.basename(png));continue;}const bytes=fs.readFileSync(png);if(bytes.readUInt32BE(16)!==f.width||bytes.readUInt32BE(20)!==f.height)missing.push('실제 PNG 해상도 불일치 '+path.basename(png));}
+ for(const f of frames){if(!f.visibilityComplete)missing.push(`${f.width}/${f.language}/${f.page}: 가림 계측 미충족 (${f.auditWarnings.join(', ')})`);const png=path.join(dir,`${f.width}-${f.language}-${f.page}.png`);if(!fs.existsSync(png)){missing.push('PNG 누락 '+path.basename(png));continue;}const bytes=fs.readFileSync(png);if(bytes.readUInt32BE(16)!==f.width||bytes.readUInt32BE(20)!==f.height)missing.push('실제 PNG 해상도 불일치 '+path.basename(png));}
  const result={passed:missing.length===0&&frames.every(f=>f.issues.length===0),frameCount:frames.length,issueCount:frames.reduce((s,f)=>s+f.issues.length,0),missing,frames};
  fs.writeFileSync(path.join(dir,'overlap-report.json'),JSON.stringify(result,null,2));
  const rows=frames.flatMap(f=>f.issues.map(i=>`|${f.page}|${f.width}×${f.height}|${f.language}|${i.type}|${(i.a.text||'').replaceAll('|','/')}|${i.b?.text||i.b?.kind||''}|${i.a.source||''}|`));
- fs.writeFileSync(path.join(dir,'겹침_검사.md'),`# 전 화면 겹침 검사\n\n판정: ${result.passed?'PASS':'FAIL'}, ${frames.length}장, 겹침 ${result.issueCount}건, 누락 ${missing.length}건.\n\n실제 Repaint에서 수집한 글자 측정 사각형·버튼·판의 경계 검사다. 판/버튼 안의 자기 글자와 뒤 판에 가려진 글자는 정상 포함/가림으로 처리한다. 다른 문자열 충돌은 제외하지 않는다.\n\n|화면|해상도|언어|종류|글자|상대|그리기 위치|\n|---|---|---|---|---|---|---|\n${rows.join('\n')}\n${missing.join('\n')}\n`);
+  fs.writeFileSync(path.join(dir,'겹침_검사.md'),`# 전 화면 겹침 검사\n\n판정: ${result.passed?'PASS':'FAIL'}, ${frames.length}장, 교차 후보 ${result.issueCount}건, 누락 ${missing.length}건.\n\n실제 Repaint의 깊이·그리기 순서·클립과 증명된 유효 불투명도 1인 영역만 가림으로 쓴다. 부분 가림의 남은 조각을 검사하며, 불명 가림은 적용하지 않고 완료 판정을 차단한다. 교차 후보는 PNG 1x 검수가 필요하다.\n\n|화면|해상도|언어|종류|글자|상대|그리기 위치|\n|---|---|---|---|---|---|---|\n${rows.join('\n')}\n${missing.join('\n')}\n`);
  console.log(JSON.stringify({passed:result.passed,frames:frames.length,issues:result.issueCount,missing}));return result.passed;
 }
 module.exports={analyze,run};if(require.main===module)process.exitCode=run(process.argv[2])?0:2;

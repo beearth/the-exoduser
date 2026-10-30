@@ -59,7 +59,7 @@ namespace Exoduser.UnityPort {
   // Inside a scrolling group every primitive subtracts `off` (group origin + scroll): callers keep using window coordinates.
   Vector2 off;
   Rect Off(Rect r){r.x-=off.x;r.y-=off.y;return r;}
-  void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;GUI.DrawTexture(Off(r),Texture2D.whiteTexture);GUI.color=old;}
+  void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(Off(r),Texture2D.whiteTexture);GUI.color=old;}
   void Border(Rect r,Color c,float w=1){Fill(new Rect(r.x,r.y,r.width,w),c);Fill(new Rect(r.x,r.yMax-w,r.width,w),c);Fill(new Rect(r.x,r.y+w,w,r.height-2*w),c);Fill(new Rect(r.xMax-w,r.y+w,w,r.height-2*w),c);}
   bool Hit(Rect r){return NativeSilverHellUi.Button(Off(r),GUIContent.none,GUIStyle.none);}
   bool Over(Rect r){return GUI.enabled&&Off(r).Contains(Event.current.mousePosition);}
@@ -71,8 +71,8 @@ namespace Exoduser.UnityPort {
    for(int iy=0;iy<n;iy++)for(int ix=0;ix<n;ix++){float sx=(ix+.5f)/n-.5f,sy=((n-1-iy)+.5f)/n-.5f;px[iy*n+ix]=Color.Lerp(a,b,Mathf.Clamp01(.5f+(sx*dx+sy*dy)/len));}
    t.SetPixels(px);t.Apply(false,true);procedural[key]=t;return t;
   }
-  void Grad(Rect r,Color a,Color b,float angle=180f){GUI.DrawTexture(Off(r),Gradient(a,b,angle));}
-  void IronTile(Rect r,float size){if(iron==null)return;float w=r.width/size,h=r.height/size;GUI.DrawTextureWithTexCoords(Off(r),iron,new Rect(.5f-w/2,.5f-h/2,w,h));}
+  void Grad(Rect r,Color a,Color b,float angle=180f){NativeUiAudit.DrawTexture(Off(r),Gradient(a,b,angle));}
+  void IronTile(Rect r,float size){if(iron==null)return;float w=r.width/size,h=r.height/size;NativeUiAudit.DrawTextureWithTexCoords(Off(r),iron,new Rect(.5f-w/2,.5f-h/2,w,h));}
   // CSS border-radius for the small controls: the four corner pixels are punched out by redrawing nothing; kept square (radius <= 6px).
 
   // ---- text ----
@@ -107,7 +107,7 @@ namespace Exoduser.UnityPort {
   float Spr(string name,float x,float lineTop,float alpha=1f,Color? tint=null){
    if(!glyphs.TryGetValue(Key(name),out var g))return 0;
    var old=GUI.color;GUI.color=tint.HasValue?new Color(tint.Value.r,tint.Value.g,tint.Value.b,tint.Value.a*alpha):new Color(1,1,1,alpha);
-   GUI.DrawTextureWithTexCoords(new Rect(x+g.ox-off.x,lineTop+g.oy-off.y,g.w,g.h),atlas,new Rect((float)g.x/atlas.width,1f-(float)(g.y+g.h)/atlas.height,(float)g.w/atlas.width,(float)g.h/atlas.height));
+   NativeUiAudit.DrawTextureWithTexCoords(new Rect(x+g.ox-off.x,lineTop+g.oy-off.y,g.w,g.h),atlas,new Rect((float)g.x/atlas.width,1f-(float)(g.y+g.h)/atlas.height,(float)g.w/atlas.width,(float)g.h/atlas.height));
    GUI.color=old;return g.adv;
   }
   float Adv(string name){return glyphs.TryGetValue(Key(name),out var g)?g.adv:0;}
@@ -119,10 +119,10 @@ namespace Exoduser.UnityPort {
   public void Draw(Simulation sim,InventoryState inv,Action close){
    if(!Open)return;Init();var old=GUI.matrix;var color=GUI.color;bool enabled=GUI.enabled;
    try {
-    GUI.matrix=Matrix4x4.identity;GUI.DrawTexture(new Rect(0,0,Screen.width,Screen.height),Gradient(C(0,0,0,.533f),C(0,0,0,.2f),90));
+    GUI.matrix=Matrix4x4.identity;NativeUiAudit.DrawTexture(new Rect(0,0,Screen.width,Screen.height),Gradient(C(0,0,0,.533f),C(0,0,0,.2f),90));
     float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
-    GUI.DrawTexture(WinRect,windowBase,ScaleMode.StretchToFill,false);
+    NativeUiAudit.DrawTexture(WinRect,windowBase,ScaleMode.StretchToFill,false);
     NativePanelTabBar.Draw(NativePanelTabBar.Preset.Forge,"forge");
     DrawHeader(sim);
     DrawLeftTabs();
@@ -145,7 +145,7 @@ namespace Exoduser.UnityPort {
   }
 
   void PlateFace(Rect r,bool active,bool leftBar){
-   Fill(r,C(35,34,37));if(plate!=null)GUI.DrawTexture(r,plate,ScaleMode.StretchToFill);
+   Fill(r,C(35,34,37));if(plate!=null)NativeUiAudit.DrawTexture(r,plate,ScaleMode.StretchToFill);
    if(active){Grad(r,C(87,23,12,.6f),C(38,9,7,.72f));if(leftBar)Fill(new Rect(r.x,r.y,3,r.height),C(127,130,130));else Fill(new Rect(r.x,r.yMax-2,r.width,2),C(127,130,130));}
    else Grad(r,C(21,20,23,.51f),C(11,10,12,.675f));
    if(!active&&Over(r))Fill(r,new Color(1,1,1,.05f));

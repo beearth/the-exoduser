@@ -96,7 +96,7 @@ namespace Exoduser.UnityPort {
             IronTile(pbox,iron320,320);
             if(sigil){
                 // ossuary page: linear-gradient(#141315d9,#09090af2), sigil center -150px / 620px, iron (ui-refinement.css:591).
-                NativeUiAudit.BeginGroup(pbox);GUI.DrawTexture(new Rect(pbox.width/2f-310,-150,620,620),ossSigil);NativeUiAudit.EndGroup();
+                NativeUiAudit.BeginGroup(pbox);NativeUiAudit.DrawTexture(new Rect(pbox.width/2f-310,-150,620,620),ossSigil);NativeUiAudit.EndGroup();
                 Grad(pbox,C(20,19,21,.851f),C(9,9,10,.949f));
             }else Grad(pbox,C(23,23,25,.933f),C(8,11,13,.96f));
             Border(pbox,C(93,96,96));Border(new Rect(pbox.x+3,pbox.y+3,pbox.width-6,pbox.height-6),C(52,53,48));
@@ -194,7 +194,7 @@ namespace Exoduser.UnityPort {
             Glow(388.8f,817.3f,102,13,C(144,147,147,.19f));
             for(int dx=-101;dx<=101;dx++){float yb=13f*Mathf.Sqrt(Mathf.Max(0,1-(dx/102f)*(dx/102f)));Fill(new Rect(388.8f+dx,817.3f+yb,1,1),C(186,183,177,.133f));}
             // Knight (filter brightness(1.65) contrast(1.02) drop-shadow baked into knightLit), contain inside (200,279,395,575).
-            GUI.DrawTexture(knightRect,knightLit,ScaleMode.StretchToFill,true);
+            NativeUiAudit.DrawTexture(knightRect,knightLit,ScaleMode.StretchToFill,true);
             int[] order=InventoryNavigation.EquipmentOrder;
             for(int cell=0;cell<order.Length;cell++){
                 int i=order[cell];var it=State.Equipped[i];
@@ -217,11 +217,11 @@ namespace Exoduser.UnityPort {
         void DrawSlot(Rect slot,InventoryItem it,string label){
             var center=slot.center;var tint=GUI.color;
             GUI.color=it!=null?Color.white:new Color(1,1,1,.62f);
-            GUI.DrawTexture(new Rect(center.x-66,center.y-66,132,132),socket,ScaleMode.ScaleToFit,true);GUI.color=tint;
+            NativeUiAudit.DrawTexture(new Rect(center.x-66,center.y-66,132,132),socket,ScaleMode.ScaleToFit,true);GUI.color=tint;
             // Socket window (measured on the web render): inner dark face under the icon.
             var window=new Rect(slot.x+19,slot.y+13,60,71);
             Grad(window,C(39,36,39,.30f),C(11,11,13,.35f),145);
-            if(it!=null)GUI.DrawTexture(new Rect(slot.x+17,slot.y+12,64,64),IconFor(it),ScaleMode.ScaleToFit,true);
+            if(it!=null)NativeUiAudit.DrawTexture(new Rect(slot.x+17,slot.y+12,64,64),IconFor(it),ScaleMode.ScaleToFit,true);
             else{var g=C(111,106,96,.8f);Fill(new Rect(slot.x+41,slot.y+46,17,6),g);Fill(new Rect(slot.x+47,slot.y+45,5,8),g);}
             Diamond(new Vector2(center.x,slot.y+91),4.2f,C(151,154,154));
             var band=new Rect(slot.x+19,slot.y+73,60,13);
@@ -284,7 +284,7 @@ namespace Exoduser.UnityPort {
                 // so the rarity shows in .iskin.rN (frame), the .rarity-dot and the name colour.
                 Border(rect,C(47,50,50));
                 SkinFrame(new Rect(rect.x+8,rect.y+3,96,93),it.rarity);
-                GUI.DrawTexture(new Rect(rect.x+8,rect.y+2,96,96),IconFor(it),ScaleMode.ScaleToFit,true);
+                NativeUiAudit.DrawTexture(new Rect(rect.x+8,rect.y+2,96,96),IconFor(it),ScaleMode.ScaleToFit,true);
                 var dot=new Vector2(rect.x+8.5f,rect.y+7.5f);
                 Diamond(dot,3.5f,C(9,9,9));Diamond(dot,2.5f,rc);
                 TxtSerif(new Rect(rect.x,rect.y+99,rect.width,12),it.name,10,RarityNameColor(it.rarity),TextAnchor.MiddleCenter);

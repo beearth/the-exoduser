@@ -89,7 +89,7 @@ namespace Exoduser.UnityPort {
    for(int y=0;y<m;y++)for(int x=0;x<m;x++){float u=(Mathf.Abs(x+.5f-m/2f)+Mathf.Abs(y+.5f-m/2f))/(m/2f);dp[y*m+x]=new Color(1,1,1,Mathf.Clamp01((1f-u)*m*.35f+.5f));}
    diamond.SetPixels(dp);diamond.Apply(false,true);
   }
-  static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
+  static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
   static void Border(Rect r,Color c){Fill(new Rect(r.x,r.y,r.width,1),c);Fill(new Rect(r.x,r.yMax-1,r.width,1),c);Fill(new Rect(r.x,r.y+1,1,r.height-2),c);Fill(new Rect(r.xMax-1,r.y+1,1,r.height-2),c);}
   Texture2D Gradient(Color a,Color b,bool horizontal){
    var t=new Texture2D(horizontal?32:1,horizontal?1:32,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
@@ -98,7 +98,7 @@ namespace Exoduser.UnityPort {
   readonly Dictionary<string,Texture2D> gradients=new Dictionary<string,Texture2D>();
   void Grad(Rect r,Color a,Color b,bool horizontal=false){
    string key=ColorUtility.ToHtmlStringRGBA(a)+ColorUtility.ToHtmlStringRGBA(b)+(horizontal?"h":"v");
-   if(!gradients.TryGetValue(key,out var t)){t=Gradient(a,b,horizontal);gradients[key]=t;}GUI.DrawTexture(r,t);
+   if(!gradients.TryGetValue(key,out var t)){t=Gradient(a,b,horizontal);gradients[key]=t;}NativeUiAudit.DrawTexture(r,t);
   }
   GUIStyle Style(Font f,int size,bool bold){
    var key=(f,size,bold);
@@ -124,12 +124,12 @@ namespace Exoduser.UnityPort {
    var old=GUI.color;float w=0;
    foreach(char ch in text){
     if(!tok.TryGetValue("c"+size+":"+ch,out var t))continue;
-    GUI.color=c;GUI.DrawTextureWithTexCoords(new Rect(x+w-t.pad,cy-t.cy,t.w,t.h),atlas,new Rect(t.x/atlas.width,1f-(t.y+t.h)/atlas.height,t.w/atlas.width,t.h/atlas.height));w+=t.adv+ls;
+    GUI.color=c;NativeUiAudit.DrawTextureWithTexCoords(new Rect(x+w-t.pad,cy-t.cy,t.w,t.h),atlas,new Rect(t.x/atlas.width,1f-(t.y+t.h)/atlas.height,t.w/atlas.width,t.h/atlas.height));w+=t.adv+ls;
    }
    GUI.color=old;return w;
   }
   void Glyph(string name,float x,float cy,Color c){
-   if(!tok.TryGetValue(name,out var t))return;var old=GUI.color;GUI.color=c;GUI.DrawTextureWithTexCoords(new Rect(x-t.pad,cy-t.cy,t.w,t.h),atlas,new Rect(t.x/atlas.width,1f-(t.y+t.h)/atlas.height,t.w/atlas.width,t.h/atlas.height));GUI.color=old;
+   if(!tok.TryGetValue(name,out var t))return;var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTextureWithTexCoords(new Rect(x-t.pad,cy-t.cy,t.w,t.h),atlas,new Rect(t.x/atlas.width,1f-(t.y+t.h)/atlas.height,t.w/atlas.width,t.h/atlas.height));GUI.color=old;
   }
   float GlyphAdv(string name){return tok.TryGetValue(name,out var t)?t.adv:0;}
   static string Num(int n){return Math.Max(0,n).ToString("N0",CultureInfo.InvariantCulture);}
@@ -235,7 +235,7 @@ namespace Exoduser.UnityPort {
   void DrawResult(float y,float h,float a,Input i,Score sc,int? par,List<KeyValuePair<string,KeyValuePair<string,bool>>> rows,int gridRows){
    var r=new Rect(776,y,368,h);
    // background gradient, 1px border rgba(102,94,80,.5), inset glow, drop shadow
-   GUI.color=new Color(0,0,0,.35f*a);GUI.DrawTexture(new Rect(r.x-14,r.y-6,r.width+28,r.height+30),radial);GUI.color=Color.white;
+   GUI.color=new Color(0,0,0,.35f*a);NativeUiAudit.DrawTexture(new Rect(r.x-14,r.y-6,r.width+28,r.height+30),radial);GUI.color=Color.white;
    GUI.color=new Color(1,1,1,a);Grad(r,C(18,11,8,.92f),C(8,5,4,.94f));GUI.color=Color.white;
    Border(r,C(102,94,80,.5f*a));
    GUI.color=new Color(0,0,0,.30f*a);Fill(new Rect(r.x+1,r.y+1,r.width-2,14),new Color(0,0,0,.18f*a));GUI.color=Color.white;
@@ -260,7 +260,7 @@ namespace Exoduser.UnityPort {
    float gy=y+103;
    for(int k=0;k<rows.Count;k++){
     float rx=k%2==0?818.31f:974f;float ry=gy+(k/2)*24;float cw=127.69f;
-    GUI.color=new Color(164/255f,147/255f,115/255f,.16f*a);for(float dx=0;dx<cw;dx+=3)GUI.DrawTexture(new Rect(rx+dx,ry+21,1,1),Texture2D.whiteTexture);GUI.color=Color.white;
+    GUI.color=new Color(164/255f,147/255f,115/255f,.16f*a);for(float dx=0;dx<cw;dx+=3)NativeUiAudit.DrawTexture(new Rect(rx+dx,ry+21,1,1),Texture2D.whiteTexture);GUI.color=Color.white;
     Text(rx,ry+1.5f,18,rows[k].Key,nanum,13,C(197,184,163,a),1.04f);
     var val=rows[k].Value;var vcol=val.Value?C(168,119,106,a):C(201,189,166,a);
     if(val.Key==NotPorted){float w=Width(nanum,13,NotPorted,0);Text(rx+cw-w,ry+1.5f,18,NotPorted,nanum,13,vcol,0);}
@@ -284,8 +284,8 @@ namespace Exoduser.UnityPort {
   }
   void Diamond(Vector2 center,float half,Color border,Color fill1,Color fill2){
    float s=half*2;var rect=new Rect(center.x-half,center.y-half,s,s);var old=GUI.color;
-   if(fill1.a>0){GUI.color=border;GUI.DrawTexture(rect,diamond);float inner=s-3f;GUI.color=Color.Lerp(fill1,fill2,.5f);GUI.DrawTexture(new Rect(center.x-inner/2,center.y-inner/2,inner,inner),diamond);}
-   else{GUI.color=border;GUI.DrawTexture(rect,diamond);float inner=s-3f;GUI.color=new Color(10/255f,7/255f,5/255f,.95f*border.a);GUI.DrawTexture(new Rect(center.x-inner/2,center.y-inner/2,inner,inner),diamond);}
+   if(fill1.a>0){GUI.color=border;NativeUiAudit.DrawTexture(rect,diamond);float inner=s-3f;GUI.color=Color.Lerp(fill1,fill2,.5f);NativeUiAudit.DrawTexture(new Rect(center.x-inner/2,center.y-inner/2,inner,inner),diamond);}
+   else{GUI.color=border;NativeUiAudit.DrawTexture(rect,diamond);float inner=s-3f;GUI.color=new Color(10/255f,7/255f,5/255f,.95f*border.a);NativeUiAudit.DrawTexture(new Rect(center.x-inner/2,center.y-inner/2,inner,inner),diamond);}
    GUI.color=old;
   }
 
@@ -337,7 +337,7 @@ namespace Exoduser.UnityPort {
   void DrawButton(Rect r,string label,float a){
    bool hover=GUI.enabled&&r.Contains(Event.current.mousePosition);float k=hover?1.18f:1f;
    // #nextBtn: gradient #4b211c -> #210e0b, 1px #895346, inset 2px #0b0d09 ring, drop shadow
-   GUI.color=new Color(0,0,0,.5f*a);GUI.DrawTexture(new Rect(r.x-8,r.y-2,r.width+16,r.height+14),radial);GUI.color=Color.white;
+   GUI.color=new Color(0,0,0,.5f*a);NativeUiAudit.DrawTexture(new Rect(r.x-8,r.y-2,r.width+16,r.height+14),radial);GUI.color=Color.white;
    GUI.color=new Color(Mathf.Min(1,k),Mathf.Min(1,k),Mathf.Min(1,k),a);Grad(r,C(75,33,28),C(33,14,11));GUI.color=Color.white;
    Border(r,new Color(137/255f*k,83/255f*k,70/255f*k,a));
    var ring=new Color(11/255f,13/255f,9/255f,a);Border(new Rect(r.x+1,r.y+1,r.width-2,r.height-2),ring);Border(new Rect(r.x+2,r.y+2,r.width-4,r.height-4),ring);

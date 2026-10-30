@@ -88,7 +88,7 @@ namespace Exoduser.UnityPort {
    glow.SetPixels(px);glow.Apply(false,true);
   }
   static float Erfc(float x){float z=Mathf.Abs(x),t=1/(1+.5f*z);float r=t*Mathf.Exp(-z*z-1.26551223f+t*(1.00002368f+t*(.37409196f+t*(.09678418f+t*(-.18628806f+t*(.27886807f+t*(-1.13520398f+t*(1.48851587f+t*(-.82215223f+t*.17087277f)))))))));return x>=0?r:2-r;}
-  static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
+  static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
   Texture2D Gradient(string key,Color[] cols,float[] stops,bool horizontal){
    if(gradients.TryGetValue(key,out var t))return t;
    int n=64;t=new Texture2D(horizontal?n:1,horizontal?1:n,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
@@ -115,11 +115,11 @@ namespace Exoduser.UnityPort {
    float x0=fill.x,x1=fill.xMax;float capL=p.x+R,capR=p.xMax-R;
    void Seg(float a,float b,bool cap){
     if(b<=a)return;
-    if(!cap){GUI.DrawTextureWithTexCoords(new Rect(a,fill.y,b-a,fill.height),tex,horizontal?new Rect((a-fill.x)/fill.width,0,(b-a)/fill.width,1):new Rect(0,0,1,1));return;}
+    if(!cap){NativeUiAudit.DrawTextureWithTexCoords(new Rect(a,fill.y,b-a,fill.height),tex,horizontal?new Rect((a-fill.x)/fill.width,0,(b-a)/fill.width,1):new Rect(0,0,1,1));return;}
     for(float cx=a;cx<b;cx+=1){
      float w=Mathf.Min(1,b-cx);float half=PillHalf(p,R,cx+w/2f);float cyc=p.y+p.height/2f;float ya=Mathf.Max(fill.y,cyc-half),yb=Mathf.Min(fill.yMax,cyc+half);if(yb<=ya)continue;
      Rect uv=horizontal?new Rect((cx+w/2f-fill.x)/fill.width,0,w/fill.width,1):new Rect(0,1f-(yb-fill.y)/fill.height,1,(yb-ya)/fill.height);
-     GUI.DrawTextureWithTexCoords(new Rect(cx,ya,w,yb-ya),tex,uv);
+     NativeUiAudit.DrawTextureWithTexCoords(new Rect(cx,ya,w,yb-ya),tex,uv);
     }
    }
    Seg(x0,Mathf.Min(x1,capL),true);Seg(Mathf.Max(x0,capL),Mathf.Min(x1,capR),false);Seg(Mathf.Max(x0,capR),x1,true);
@@ -130,8 +130,8 @@ namespace Exoduser.UnityPort {
    var inner=new Rect(outer.x+inset,outer.y+inset,outer.width-2*inset,outer.height-2*inset);float Ro=outer.height/2f,Ri=inner.height/2f;float cyc=outer.y+outer.height/2f;var old=GUI.color;GUI.color=c;
    for(float cx=outer.x;cx<outer.xMax;cx+=1){
     float w=Mathf.Min(1,outer.xMax-cx);float mid=cx+w/2f;float eo=PillHalf(outer,Ro,mid);float ei=mid>=inner.x&&mid<=inner.xMax?PillHalf(inner,Ri,mid):0;
-    if(ei<=0){GUI.DrawTexture(new Rect(cx,cyc-eo,w,eo*2),Texture2D.whiteTexture);continue;}
-    GUI.DrawTexture(new Rect(cx,cyc-eo,w,eo-ei),Texture2D.whiteTexture);GUI.DrawTexture(new Rect(cx,cyc+ei,w,eo-ei),Texture2D.whiteTexture);
+    if(ei<=0){NativeUiAudit.DrawTexture(new Rect(cx,cyc-eo,w,eo*2),Texture2D.whiteTexture);continue;}
+    NativeUiAudit.DrawTexture(new Rect(cx,cyc-eo,w,eo-ei),Texture2D.whiteTexture);NativeUiAudit.DrawTexture(new Rect(cx,cyc+ei,w,eo-ei),Texture2D.whiteTexture);
    }
    GUI.color=old;
   }
@@ -163,7 +163,7 @@ namespace Exoduser.UnityPort {
    if(sx>.002f){
     var m=GUI.matrix;GUI.matrix=m*Matrix4x4.TRS(new Vector3(cx,0,0),Quaternion.identity,new Vector3(sx,1,1))*Matrix4x4.TRS(new Vector3(-cx,0,0),Quaternion.identity,Vector3.one);
     float ha=a*hpA;var outer=new Rect(L.barX,hpY,L.barW,L.hpH);var inner=new Rect(outer.x+1,outer.y+1,outer.width-2,outer.height-2);
-    GUI.color=new Color(1,1,1,ha);GUI.DrawTexture(new Rect(outer.x-36,outer.y-36,outer.width+72,outer.height+72),glow);GUI.color=Color.white;
+    GUI.color=new Color(1,1,1,ha);NativeUiAudit.DrawTexture(new Rect(outer.x-36,outer.y-36,outer.width+72,outer.height+72),glow);GUI.color=Color.white;
     var bg=Gradient("hpbg",new[]{C(20,7,7,.9f),C(9,5,6,.96f)},new[]{0f,1f},false);
     FillInPill(outer,outer,bg,false,ha);
     float frac=Mathf.Clamp01(age<T.cineSeconds&&!hiding?Mathf.Min(1,age/T.introFillSeconds):input.hp01);   // web: _bossCine.active -> _introFill ramp (90 ticks), then the real HP
@@ -183,10 +183,10 @@ namespace Exoduser.UnityPort {
    }
    border.a*=a;
    var pbg=Gradient("poisebg",new[]{C(18,12,11,.82f),C(8,6,6,.92f)},new[]{0f,1f},false);
-   GUI.color=new Color(1,1,1,a);GUI.DrawTexture(pw,pbg);GUI.color=Color.white;
+   GUI.color=new Color(1,1,1,a);NativeUiAudit.DrawTexture(pw,pbg);GUI.color=Color.white;
    Fill(new Rect(pw.x,pw.y,pw.width,1),border);Fill(new Rect(pw.x,pw.yMax-1,pw.width,1),border);Fill(new Rect(pw.x,pw.y+1,1,pw.height-2),border);Fill(new Rect(pw.xMax-1,pw.y+1,1,pw.height-2),border);
    float pwid=Mathf.Round((pw.width-2)*pfrac*100)/100f;
-   if(pwid>0){var old=GUI.color;GUI.color=new Color(1,1,1,a);GUI.DrawTextureWithTexCoords(new Rect(pw.x+1,pw.y+1,pwid,pw.height-2),HGrad("poise"+g0+g1,g0,g1),new Rect(0,0,1,1));GUI.color=old;}
+   if(pwid>0){var old=GUI.color;GUI.color=new Color(1,1,1,a);NativeUiAudit.DrawTextureWithTexCoords(new Rect(pw.x+1,pw.y+1,pwid,pw.height-2),HGrad("poise"+g0+g1,g0,g1),new Rect(0,0,1,1));GUI.color=old;}
    // ---- status chips (#bossStatus .bst-i: 24px, gap 6, padding 1px 6px, 1px border colour@.333, bg rgba(0,0,0,.6), radius 3, 13.6px text + 13px glyph) ----
    LastChipWidths.Clear();var chips=BuildChips();
    if(chips.Count>0){
@@ -207,8 +207,8 @@ namespace Exoduser.UnityPort {
     var t=list[i];
     if(t!=null){
      var r=new Rect(x-a.cellOrigin,y-a.cellOrigin,a.sharpPx.cellW/(float)a.sharpPx.scale,a.sharpPx.cellH/(float)a.sharpPx.scale);
-     if(blurW<1){GUI.color=new Color(1,1,1,alpha*(1-blurW));GUI.DrawTextureWithTexCoords(r,sharpTex,AtlasUv(t,a.sharpPx));}
-     if(blurW>0&&blur.TryGetValue(t.c,out var bt)){GUI.color=new Color(1,1,1,alpha*blurW);GUI.DrawTextureWithTexCoords(r,blurTex,AtlasUv(bt,a.blurPx));}
+     if(blurW<1){GUI.color=new Color(1,1,1,alpha*(1-blurW));NativeUiAudit.DrawTextureWithTexCoords(r,sharpTex,AtlasUv(t,a.sharpPx));}
+     if(blurW>0&&blur.TryGetValue(t.c,out var bt)){GUI.color=new Color(1,1,1,alpha*blurW);NativeUiAudit.DrawTextureWithTexCoords(r,blurTex,AtlasUv(bt,a.blurPx));}
     }
     x+=advs[i]+spacing;
    }
@@ -237,7 +237,7 @@ namespace Exoduser.UnityPort {
    float x=r.x+1+L.chipPadX;var at=defs.atlas;
    if(glyph.TryGetValue(c.glyphId,out var gt)){
     var rect=new Rect(x-at.glyphOrigin,r.y+r.height/2f-L.glyph/2f-at.glyphOrigin,at.glyphPx.cellW/(float)at.glyphPx.scale,at.glyphPx.cellH/(float)at.glyphPx.scale);
-    var old=GUI.color;GUI.color=new Color(1,1,1,a);GUI.DrawTextureWithTexCoords(rect,glyphTex,AtlasUv(gt,at.glyphPx));GUI.color=old;
+    var old=GUI.color;GUI.color=new Color(1,1,1,a);NativeUiAudit.DrawTextureWithTexCoords(rect,glyphTex,AtlasUv(gt,at.glyphPx));GUI.color=old;
    }
    x+=L.glyph+ChipTextGap;var st=Style(14);float scale=L.chipFont/14f;var col=new Color(c.col.r,c.col.g,c.col.b,a);
    foreach(char ch in c.text){string g=ch.ToString();float w=st.CalcSize(new GUIContent(g)).x*scale;st.normal.textColor=col;NativeUiAudit.Label(new Rect(x,r.y,40,r.height),g,st);x+=w;}

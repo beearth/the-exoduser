@@ -68,7 +68,7 @@ namespace Exoduser.UnityPort {
    for(int y=0;y<n;y++)for(int x=0;x<n;x++){float dx=(x+.5f)/n*2-1,dy=(y+.5f)/n*2-1;px[y*n+x]=new Color(1,1,1,Mathf.Clamp01(1-Mathf.Sqrt(dx*dx+dy*dy)));}
    radial.SetPixels(px);radial.Apply(false,true);
   }
-  static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
+  static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
   static void Border(Rect r,Color c){Fill(new Rect(r.x,r.y,r.width,1),c);Fill(new Rect(r.x,r.yMax-1,r.width,1),c);Fill(new Rect(r.x,r.y+1,1,r.height-2),c);Fill(new Rect(r.xMax-1,r.y+1,1,r.height-2),c);}
   GUIStyle Style(Font f,int size,bool bold=false){
    long key=(((long)(f==nanum?1:f==sansBold?2:3)*1000+size)*2)+(bold?1:0);
@@ -107,7 +107,7 @@ namespace Exoduser.UnityPort {
    float w=Width(f,size,text,ls,bold);Text(cx-w/2f,y,h,text,f,size,c,ls,shadowAlpha,1,shadowSpread,bold);
   }
   void Sprite(Tok t,float x,float cy,Color c){
-   var old=GUI.color;GUI.color=c;GUI.DrawTextureWithTexCoords(new Rect(x-t.pad,cy-t.cy,t.w,t.h),atlas,new Rect(t.x/atlas.width,1f-(t.y+t.h)/atlas.height,t.w/atlas.width,t.h/atlas.height));GUI.color=old;
+   var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTextureWithTexCoords(new Rect(x-t.pad,cy-t.cy,t.w,t.h),atlas,new Rect(t.x/atlas.width,1f-(t.y+t.h)/atlas.height,t.w/atlas.width,t.h/atlas.height));GUI.color=old;
   }
 
   // ---- window ----
@@ -119,7 +119,7 @@ namespace Exoduser.UnityPort {
     GUI.matrix=Matrix4x4.identity;
     // background: "url(cin_remember_wide) center/cover" over the viewport; the dark radial gradient behind it is fully covered
     float sc=Mathf.Max(Screen.width/(float)bg.width,Screen.height/(float)bg.height);float iw=bg.width*sc,ih=bg.height*sc;
-    GUI.color=new Color(1,1,1,fade);GUI.DrawTexture(new Rect((Screen.width-iw)/2,(Screen.height-ih)/2,iw,ih),bg,ScaleMode.StretchToFill,false);
+    GUI.color=new Color(1,1,1,fade);NativeUiAudit.DrawTexture(new Rect((Screen.width-iw)/2,(Screen.height-ih)/2,iw,ih),bg,ScaleMode.StretchToFill,false);
     float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
     DrawLight(age,fade);
@@ -137,7 +137,7 @@ namespace Exoduser.UnityPort {
   void DrawLight(float age,float fade){
    // #death::before: 400px -> 40px radial glow, opacity 1 -> 0 over 4s (CSS ease), centred
    float p=Mathf.Clamp01(age/defs.timing.lightAnim);float e=EaseOut(p);float size=Mathf.Lerp(400,40,e);float op=1-e;
-   GUI.color=new Color(180/255f,140/255f,100/255f,.08f*op*fade);GUI.DrawTexture(new Rect(960-size/2,540-size/2,size,size),radial);GUI.color=Color.white;
+   GUI.color=new Color(180/255f,140/255f,100/255f,.08f*op*fade);NativeUiAudit.DrawTexture(new Rect(960-size/2,540-size/2,size,size),radial);GUI.color=Color.white;
   }
   void DrawTexts(float age,float fade){
    float pulse=TitlePulse(age);
@@ -188,7 +188,7 @@ namespace Exoduser.UnityPort {
    else{float p=Mathf.Repeat(age,T.petRotate);bool first=age<T.petRotate;a=first?Mathf.Clamp01((age-T.petDelay)/T.petFade):(p<T.petDelay?1-p/T.petFade:Mathf.Clamp01((p-T.petDelay)/T.petFade));}
    a*=fade;if(a<=.002f)return;
    GUI.color=new Color(1,1,1,a);
-   GUI.DrawTexture(new Rect(231,580,720,480),crow,ScaleMode.StretchToFill,true);GUI.DrawTexture(new Rect(969,580,720,480),cat,ScaleMode.StretchToFill,true);
+   NativeUiAudit.DrawTexture(new Rect(231,580,720,480),crow,ScaleMode.StretchToFill,true);NativeUiAudit.DrawTexture(new Rect(969,580,720,480),cat,ScaleMode.StretchToFill,true);
    GUI.color=Color.white;
    PetText(new Rect(369,935.5f,459,76.5f),CrowLine,a);PetText(new Rect(1152,955,285,63),CatLine,a);
   }
@@ -248,14 +248,14 @@ namespace Exoduser.UnityPort {
     // #drLabel: "☠ 사망 리플레이" 25.6px/700, ls .4em, #cc4444, glow
     var red=C(204,68,68);var skull=tok["g:☠"];string label=defs.replayScreen.label;
     float gap=10.24f+Width(sansBold,26," ",10.24f);float w=skull.adv+gap+Width(sansBold,26,label,10.24f);float x=960-w/2f;
-    var glow=C(200,50,50,.08f);GUI.color=glow;GUI.DrawTexture(new Rect(960-w/2-20,18-8,w+40,37+16),radial);GUI.color=Color.white;
+    var glow=C(200,50,50,.08f);GUI.color=glow;NativeUiAudit.DrawTexture(new Rect(960-w/2-20,18-8,w+40,37+16),radial);GUI.color=Color.white;
     Sprite(skull,x,18+18.5f,red);x+=skull.adv+gap;Text(x,18,37,label,sansBold,26,red,10.24f,.8f,2,0,false);
     // #drTime: Courier New 17.6px, ls .1em, rgba(200,160,120,.8); fixed advance
     string time="-"+remainingSeconds.ToString("0.0")+"s  "+defs.replayScreen.skipText;float cw=10.56f+1.76f;float tw=0;foreach(char ch in time)tw+=Hangul(ch)?Width(nanum,18,ch.ToString(),1.76f):cw;
     float tx=960-tw/2f;foreach(char ch in time){if(Hangul(ch)){tx+=Text(tx,1020,24,ch.ToString(),nanum,18,C(200,160,120,.8f),1.76f,.8f);}else{Text(tx,1020,24,ch.ToString(),sans,18,C(200,160,120,.8f),0,.8f);tx+=cw;}}
     // #drBar: left 10%, width 80%, 4px, fill gradient #cc4444 -> #ff6644
     Fill(new Rect(192,1056,1536,4),C(100,60,40,.4f));
-    float fw=1536*Mathf.Clamp01(progress01);var top=Gradient(C(204,68,68),C(255,102,68));GUI.DrawTexture(new Rect(192,1056,fw,4),top);
+    float fw=1536*Mathf.Clamp01(progress01);var top=Gradient(C(204,68,68),C(255,102,68));NativeUiAudit.DrawTexture(new Rect(192,1056,fw,4),top);
    } finally {GUI.matrix=old;GUI.color=color;}
   }
   Texture2D grad;Color gradA,gradB;

@@ -79,7 +79,7 @@ namespace Exoduser.UnityPort {
    regular=NativeSilverHellUi.Font()??Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular");semi=regular;bold=regular;
    serif=regular;
   }
-  void Fill(Rect r,Color c){var old=GUI.color;GUI.color=new Color(c.r,c.g,c.b,c.a*curA);GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
+  void Fill(Rect r,Color c){var old=GUI.color;GUI.color=new Color(c.r,c.g,c.b,c.a*curA);NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
   void Border(Rect r,Color c,float top=1,float right=1,float bottom=1,float left=1){
    Fill(new Rect(r.x,r.y,r.width,top),c);Fill(new Rect(r.x,r.yMax-bottom,r.width,bottom),c);Fill(new Rect(r.x,r.y+top,left,r.height-top-bottom),c);Fill(new Rect(r.xMax-right,r.y+top,right,r.height-top-bottom),c);
   }
@@ -89,7 +89,7 @@ namespace Exoduser.UnityPort {
     t=new Texture2D(horizontal?32:1,horizontal?1:32,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
     for(int i=0;i<32;i++)t.SetPixel(horizontal?i:0,horizontal?0:31-i,Color.Lerp(a,b,i/31f));t.Apply(false,true);gradients[key]=t;
    }
-   var old=GUI.color;GUI.color=new Color(1,1,1,curA);GUI.DrawTexture(r,t);GUI.color=old;
+   var old=GUI.color;GUI.color=new Color(1,1,1,curA);NativeUiAudit.DrawTexture(r,t);GUI.color=old;
   }
   GUIStyle Style(Font f,int px){
    var key=(f,px);
@@ -143,7 +143,7 @@ namespace Exoduser.UnityPort {
    NativeUiAudit.Region(new Rect(x,cy-t.lineH/2,t.adv,t.lineH),"text",t.text,"키 글리프 아틀라스",tint&&c.r<.001f&&c.g<.001f&&c.b<.001f);
    float s=gl.scale;var r=new Rect(x-gl.origin,cy-t.lineH/2f-gl.origin,t.w/s,t.h/s);var old=GUI.color;
    GUI.color=tint?new Color(c.r,c.g,c.b,c.a*curA):new Color(1,1,1,curA);
-   GUI.DrawTextureWithTexCoords(r,glyphTex,new Rect((float)t.x/gl.atlasW,1f-(float)(t.y+t.h)/gl.atlasH,(float)t.w/gl.atlasW,(float)t.h/gl.atlasH));GUI.color=old;
+   NativeUiAudit.DrawTextureWithTexCoords(r,glyphTex,new Rect((float)t.x/gl.atlasW,1f-(float)(t.y+t.h)/gl.atlasH,(float)t.w/gl.atlasW,(float)t.h/gl.atlasH));GUI.color=old;
   }
 
   // ---- input ----

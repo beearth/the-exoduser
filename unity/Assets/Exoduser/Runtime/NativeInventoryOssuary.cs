@@ -71,8 +71,8 @@ namespace Exoduser.UnityPort {
             }
             t.SetPixels(px);t.Apply(false,true);procedural[key]=t;return t;
         }
-        void Disc(Vector2 c,float r,Color col){var old=GUI.color;GUI.color=col;GUI.DrawTexture(new Rect(c.x-r,c.y-r,r*2,r*2),DiscTexture(0));GUI.color=old;}
-        void Ring(Vector2 c,float r,float thickness,Color col){var old=GUI.color;GUI.color=col;GUI.DrawTexture(new Rect(c.x-r,c.y-r,r*2,r*2),DiscTexture(Mathf.Clamp(Mathf.RoundToInt(thickness/r*1000f),1,1000)));GUI.color=old;}
+        void Disc(Vector2 c,float r,Color col){var old=GUI.color;GUI.color=col;NativeUiAudit.DrawTexture(new Rect(c.x-r,c.y-r,r*2,r*2),DiscTexture(0));GUI.color=old;}
+        void Ring(Vector2 c,float r,float thickness,Color col){var old=GUI.color;GUI.color=col;NativeUiAudit.DrawTexture(new Rect(c.x-r,c.y-r,r*2,r*2),DiscTexture(Mathf.Clamp(Mathf.RoundToInt(thickness/r*1000f),1,1000)));GUI.color=old;}
 
         // CSS "at X% Y%" radial-gradient(ellipse, color, transparent stop) on a box, drawn clipped to it.
         void BoxGlow(Rect box,float px,float py,float stop,Color c){
@@ -174,16 +174,16 @@ namespace Exoduser.UnityPort {
             Serif(chip,"수집 미이식",11,C(186,183,177),true,0,TextAnchor.MiddleCenter);
             Fill(new Rect(999,236,462,1),C(96,99,99,.44f));
             // ritual ring + centre + four bone nodes (everything uncollected)
-            GUI.DrawTexture(new Rect(990,316,480,480),ossRing);
-            GUI.DrawTexture(new Rect(1120,431.5f,220,250),ossCenter);
-            GUI.DrawTexture(new Rect(1191-20,512-20,ossUrn.width,ossUrn.height),ossUrn);
+            NativeUiAudit.DrawTexture(new Rect(990,316,480,480),ossRing);
+            NativeUiAudit.DrawTexture(new Rect(1120,431.5f,220,250),ossCenter);
+            NativeUiAudit.DrawTexture(new Rect(1191-20,512-20,ossUrn.width,ossUrn.height),ossUrn);
             var lab=new Rect(1189,593,81,30);
             Grad(new Rect(lab.x,lab.y,lab.width*.18f,lab.height),C(0,0,0,0),C(11,13,15,.93f),90);Fill(new Rect(lab.x+lab.width*.18f,lab.y,lab.width*.64f,lab.height),C(11,13,15,.93f));Grad(new Rect(lab.x+lab.width*.82f,lab.y,lab.width*.18f,lab.height),C(11,13,15,.93f),C(0,0,0,0),90);
             Serif(lab,"유골함",16,C(209,206,200),true,2.6f,TextAnchor.MiddleCenter,true);
             for(int i=0;i<4;i++){
                 var n=boneNodes[i];
-                GUI.DrawTexture(new Rect(n.x-100,n.y-100,200,200),ossNode);
-                GUI.DrawTexture(boneImageRects[i],ossBone[i]);
+                NativeUiAudit.DrawTexture(new Rect(n.x-100,n.y-100,200,200),ossNode);
+                NativeUiAudit.DrawTexture(boneImageRects[i],ossBone[i]);
                 Serif(boneNameRects[i],bonePartNames[i],15,C(210,207,201),true,.89f,TextAnchor.MiddleCenter,true);
                 Txt(boneGradeRects[i],"미이식",15,C(138,141,141),600,TextAnchor.MiddleCenter,true);
             }
@@ -221,7 +221,7 @@ namespace Exoduser.UnityPort {
             Fill(new Rect(1502,225,362,1),C(96,99,99,.44f));
             var stage=new Rect(1502,226,362,481);
             BoxGlow(stage,.5f,.66f,.6f,C(81,84,84,.23f));
-            GUI.DrawTexture(new Rect(1503,227,360,479),ossPortrait,ScaleMode.StretchToFill,false);
+            NativeUiAudit.DrawTexture(new Rect(1503,227,360,479),ossPortrait,ScaleMode.StretchToFill,false);
             Border(stage,C(115,118,118,.25f));
             var shade=new Rect(stage.x+stage.width*.1f,stage.yMax-4-stage.height*.22f,stage.width*.8f,stage.height*.22f);
             Grad(shade,C(11,13,14,0),C(11,13,14,1));

@@ -1,0 +1,225 @@
+{
+  "scope": "원본 측정 JSON의 지정 글자 발췌. 새 런타임 계측 증거가 아님",
+  "cases": [
+    {
+      "name": "1600-ko-캐릭터선택4",
+      "sha256": "aae53bbe861f8532932a260e180deb8d5fd0a18525f5910405977c184b2668c0",
+      "width": 1600,
+      "height": 900,
+      "elements": [
+        {
+          "id": "99",
+          "kind": "text",
+          "text": "출시 준비 중",
+          "source": "NativeLobby.cs:130",
+          "rect": {
+            "serializedVersion": "2",
+            "x": 1258.2449951171875,
+            "y": 811.9650268554688,
+            "width": 60.510009765625,
+            "height": 16.07000732421875
+          },
+          "order": 99
+        },
+        {
+          "id": "101",
+          "kind": "text",
+          "text": "출시 준비 중",
+          "source": "NativeLobby.cs:130",
+          "rect": {
+            "serializedVersion": "2",
+            "x": 1339.7449951171875,
+            "y": 811.9650268554688,
+            "width": 60.510009765625,
+            "height": 16.07000732421875
+          },
+          "order": 101
+        },
+        {
+          "id": "103",
+          "kind": "text",
+          "text": "출시 준비 중",
+          "source": "NativeLobby.cs:130",
+          "rect": {
+            "serializedVersion": "2",
+            "x": 1421.2449951171875,
+            "y": 811.9650268554688,
+            "width": 60.510009765625,
+            "height": 16.07000732421875
+          },
+          "order": 103
+        },
+        {
+          "id": "105",
+          "kind": "text",
+          "text": "출시 준비 중",
+          "source": "NativeLobby.cs:130",
+          "rect": {
+            "serializedVersion": "2",
+            "x": 1502.7449951171875,
+            "y": 811.9650268554688,
+            "width": 60.510009765625,
+            "height": 16.07000732421875
+          },
+          "order": 105
+        },
+        {
+          "id": "108",
+          "kind": "text",
+          "text": "취소",
+          "source": "NativeLobby.cs:130",
+          "rect": {
+            "serializedVersion": "2",
+            "x": 1256.0450439453125,
+            "y": 827.135009765625,
+            "width": 27.9100341796875,
+            "height": 21.72998046875
+          },
+          "order": 108
+        },
+        {
+          "id": "109",
+          "kind": "text",
+          "text": "출시 준비 중",
+          "source": "NativeLobby.cs:130",
+          "rect": {
+            "serializedVersion": "2",
+            "x": 1431.4000244140625,
+            "y": 827.135009765625,
+            "width": 77.199951171875,
+            "height": 21.72998046875
+          },
+          "order": 109
+        }
+      ]
+    },
+    {
+      "name": "1920-ko-캐릭터선택4",
+      "sha256": "5660809599f77419d4972f33dc0a4c28376307b3a6fc6f6362e922e8518e3691",
+      "width": 1920,
+      "height": 1080,
+      "elements": [
+        {
+          "id": "102",
+          "kind": "text",
+          "text": "출시 준비 중",
+          "source": "NativeLobby.cs:130",
+          "rect": {
+            "serializedVersion": "2",
+            "x": 1580.7449951171875,
+            "y": 953.9650268554688,
+            "width": 60.510009765625,
+            "height": 16.07000732421875
+          },
+          "order": 102
+        },
+        {
+          "id": "104",
+          "kind": "text",
+          "text": "출시 준비 중",
+          "source": "NativeLobby.cs:130",
+          "rect": {
+            "serializedVersion": "2",
+            "x": 1659.7449951171875,
+            "y": 953.9650268554688,
+            "width": 60.510009765625,
+            "height": 16.07000732421875
+          },
+          "order": 104
+        },
+        {
+          "id": "106",
+          "kind": "text",
+          "text": "출시 준비 중",
+          "source": "NativeLobby.cs:130",
+          "rect": {
+            "serializedVersion": "2",
+            "x": 1738.7449951171875,
+            "y": 953.9650268554688,
+            "width": 60.510009765625,
+            "height": 16.07000732421875
+          },
+          "order": 106
+        },
+        {
+          "id": "108",
+          "kind": "text",
+          "text": "출시 준비 중",
+          "source": "NativeLobby.cs:130",
+          "rect": {
+            "serializedVersion": "2",
+            "x": 1817.7449951171875,
+            "y": 953.9650268554688,
+            "width": 60.510009765625,
+            "height": 16.07000732421875
+          },
+          "order": 108
+        },
+        {
+          "id": "111",
+          "kind": "text",
+          "text": "취소",
+          "source": "NativeLobby.cs:130",
+          "rect": {
+            "serializedVersion": "2",
+            "x": 1576.0450439453125,
+            "y": 1007.135009765625,
+            "width": 27.9100341796875,
+            "height": 21.72998046875
+          },
+          "order": 111
+        },
+        {
+          "id": "112",
+          "kind": "text",
+          "text": "출시 준비 중",
+          "source": "NativeLobby.cs:130",
+          "rect": {
+            "serializedVersion": "2",
+            "x": 1751.4000244140625,
+            "y": 1007.135009765625,
+            "width": 77.199951171875,
+            "height": 21.72998046875
+          },
+          "order": 112
+        }
+      ]
+    },
+    {
+      "name": "1920-de-설정3",
+      "sha256": "5e9886de952780ebeeba74a7689b90769d59b126f2a9b72800db519c874fbc91",
+      "width": 1920,
+      "height": 1080,
+      "elements": [
+        {
+          "id": "1",
+          "kind": "text",
+          "text": "L",
+          "source": "NativeLobby.SilverHell.cs:11",
+          "rect": {
+            "serializedVersion": "2",
+            "x": 1699,
+            "y": 32.79999923706055,
+            "width": 8.550048828125,
+            "height": 16.799999237060547
+          },
+          "order": 1
+        },
+        {
+          "id": "189",
+          "kind": "text",
+          "text": "치",
+          "source": "NativeLobby.SilverHell.cs:11",
+          "rect": {
+            "serializedVersion": "2",
+            "x": 1693.7801513671875,
+            "y": 42.86000061035156,
+            "width": 12.8800048828125,
+            "height": 20.279998779296875
+          },
+          "order": 189
+        }
+      ]
+    }
+  ]
+}

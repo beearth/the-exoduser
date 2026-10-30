@@ -10,7 +10,7 @@ namespace Exoduser.UnityPort
 {
     public sealed partial class NativeGame
     {
-        [Serializable] sealed class UiOverlapCoverage {public int schemaVersion=1;public string runtimeSha256,unityVersion,device,deviceType;public string scope="실제 Player OnGUI·원본 API 상태 전환, OS 입력/자연 클리어와 구분";public string[] languages={"ko","de"};public List<string> pages=new List<string>(),frames=new List<string>();}
+        [Serializable] sealed class UiOverlapCoverage {public int schemaVersion=2;public string runtimeSha256,unityVersion,device,deviceType;public string scope="실제 Player OnGUI·원본 API 상태 전환, OS 입력/자연 클리어와 구분";public string[] languages={"ko","de"};public List<string> pages=new List<string>(),frames=new List<string>();}
         UiOverlapCoverage overlapCoverage;
         string overlapOutput,overlapLanguage;
         [Serializable] sealed class OverlapOptionBundle {public string[] codes;public OverlapOptionEntry[] entries;}

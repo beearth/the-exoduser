@@ -133,11 +133,11 @@ namespace Exoduser.UnityPort
             Texture src = movie.Error.Length == 0 && movie.Prepared && movie.Frame >= 0 ? (Texture)movie.Texture : titleBg;   // a failed movie falls back to the still art (_titleArt)
             if (src == null) return;
             float tw = src.width, th = src.height, k = Mathf.Max(1920f / tw, 1080f / th), dw = tw * k, dh = th * k, dx = Mathf.Min(0, Mathf.Max(1920 - dw, (1920 - dw) * .62f)), dy = (1080 - dh) / 2;
-            GUI.DrawTexture(new Rect(dx, dy, dw, dh), src, ScaleMode.StretchToFill, false); OriginalArtDrawn = true;
+            NativeUiAudit.DrawTexture(new Rect(dx, dy, dw, dh), src, ScaleMode.StretchToFill, false); OriginalArtDrawn = true;
             if (titleRowsBuiltFor != splash || titleRows.Count == 0) return;   // the menu is built by the first Update of this splash
             float fade = Mathf.Clamp01((Time.unscaledTime - titleStart) / 1f); var prev = GUI.color;
-            GUI.color = new Color(1, 1, 1, fade); GUI.DrawTexture(new Rect(0, 0, 1920, 1080), titleVeil, ScaleMode.StretchToFill, true);
-            if (titleLogo != null) { float lw = 520, lh = lw * titleLogo.height / titleLogo.width; GUI.color = new Color(0, 0, 0, .5f * fade); GUI.DrawTexture(new Rect(96, 106, lw, lh), titleLogo, ScaleMode.StretchToFill, true); GUI.color = new Color(1, 1, 1, fade); GUI.DrawTexture(new Rect(96, 96, lw, lh), titleLogo, ScaleMode.StretchToFill, true); }
+            GUI.color = new Color(1, 1, 1, fade); NativeUiAudit.DrawTexture(new Rect(0, 0, 1920, 1080), titleVeil, ScaleMode.StretchToFill, true);
+            if (titleLogo != null) { float lw = 520, lh = lw * titleLogo.height / titleLogo.width; GUI.color = new Color(0, 0, 0, .5f * fade); NativeUiAudit.DrawTexture(new Rect(96, 106, lw, lh), titleLogo, ScaleMode.StretchToFill, true); GUI.color = new Color(1, 1, 1, fade); NativeUiAudit.DrawTexture(new Rect(96, 96, lw, lh), titleLogo, ScaleMode.StretchToFill, true); }
             const float left = 116, top = 436, width = 400;
             var e = Event.current;
             for (int i = 0; i < titleRows.Count; i++)

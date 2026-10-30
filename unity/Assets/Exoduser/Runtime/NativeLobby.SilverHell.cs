@@ -20,7 +20,7 @@ namespace Exoduser.UnityPort
         internal static string TextField(Rect rect,string text,int max,GUIStyle style){var n=style.normal.textColor;var f=style.focused.textColor;try{style.normal.textColor=TextColor(n);style.focused.textColor=TextColor(f);return max<0?NativeUiAudit.TextField(rect,text,style):NativeUiAudit.TextField(rect,text,max,style);}finally{style.normal.textColor=n;style.focused.textColor=f;}}
         static Font light,regular;
         static Texture2D frame,plaque,panelBackground,buttonGlow,primaryPlaque,panelIron;
-        internal static void ButtonFocus(Rect box){if(buttonGlow==null)buttonGlow=Resources.Load<Texture2D>("Art/ui/silver_hell/guide_button_glow");if(buttonGlow!=null)GUI.DrawTexture(new Rect(box.x-34,box.y-20,box.width+68,box.height+40),buttonGlow); }
+        internal static void ButtonFocus(Rect box){if(buttonGlow==null)buttonGlow=Resources.Load<Texture2D>("Art/ui/silver_hell/guide_button_glow");if(buttonGlow!=null)NativeUiAudit.DrawTexture(new Rect(box.x-34,box.y-20,box.width+68,box.height+40),buttonGlow); }
         internal static Font Font(bool body=false)
         {
             if(light==null)light=Resources.Load<Font>("Art/fonts/Hahmlet-300-ko");
@@ -81,7 +81,7 @@ namespace Exoduser.UnityPort
                 if(!center&&x==1&&y==1)continue;
                 float dw=dx[x+1]-dx[x],dh=dy[y+1]-dy[y];
                 if(dw<=0||dh<=0)continue;
-                GUI.DrawTextureWithTexCoords(new Rect(dx[x],dy[y],dw,dh),tex,new Rect(sx[x]/tex.width,1-sy[y+1]/tex.height,(sx[x+1]-sx[x])/tex.width,(sy[y+1]-sy[y])/tex.height),true);
+                NativeUiAudit.DrawTextureWithTexCoords(new Rect(dx[x],dy[y],dw,dh),tex,new Rect(sx[x]/tex.width,1-sy[y+1]/tex.height,(sx[x+1]-sx[x])/tex.width,(sy[y+1]-sy[y])/tex.height),true);
             }
         }
         internal static void Panel(Rect box,float edge=75,float outset=24,bool textured=true)
@@ -89,10 +89,10 @@ namespace Exoduser.UnityPort
             NativeUiAudit.Region(box,"panel");
             if(frame==null)frame=Resources.Load<Texture2D>("Art/ui/silver_hell/panel_frame_20261029");
             if(panelBackground==null)panelBackground=Effect(1,64,(u,v)=>Color.Lerp(new Color(16/255f,15/255f,15/255f,.95f),new Color(8/255f,8/255f,9/255f,.97f),v));
-            if(textured)GUI.DrawTexture(box,panelBackground);
-            else{var c=GUI.color;GUI.color=new Color(0,0,0,c.a);GUI.DrawTexture(box,Texture2D.whiteTexture);GUI.color=c;}
+            if(textured)NativeUiAudit.DrawTexture(box,panelBackground);
+            else{var c=GUI.color;GUI.color=new Color(0,0,0,c.a);NativeUiAudit.DrawTexture(box,Texture2D.whiteTexture);GUI.color=c;}
             if(panelIron==null)panelIron=Resources.Load<Texture2D>("Art/ui/inventory/iron_480");
-            if(textured&&panelIron!=null){var c=GUI.color;GUI.color=new Color(c.r,c.g,c.b,c.a*.14f);GUI.DrawTexture(box,panelIron,ScaleMode.StretchToFill,true);GUI.color=c;}
+            if(textured&&panelIron!=null){var c=GUI.color;GUI.color=new Color(c.r,c.g,c.b,c.a*.14f);NativeUiAudit.DrawTexture(box,panelIron,ScaleMode.StretchToFill,true);GUI.color=c;}
             Slice(new Rect(box.x-outset,box.y-outset,box.width+outset*2,box.height+outset*2),frame,150,150,edge,edge,false);
         }
         internal static void Button(Rect box)
@@ -152,7 +152,7 @@ namespace Exoduser.UnityPort
             GUI.color=new Color(c.r,c.g,c.b,c.a*reveal*breath);
             Image(new Rect(960-fw*scale/2,540-fh*scale/2,fw*scale,fh*scale),gateSigil);
             GUI.color=new Color(c.r,c.g,c.b,c.a*Mathf.Clamp01((t-.8f)/2));
-            GUI.DrawTexture(new Rect(fx+fw*.18f,fy+fh*.36f,fw*.64f,fh*.44f),gateHalo);
+            NativeUiAudit.DrawTexture(new Rect(fx+fw*.18f,fy+fh*.36f,fw*.64f,fh*.44f),gateHalo);
             float fade=Mathf.Clamp01((t-1.1f)/1.8f);
             GUI.color=new Color(c.r,c.g,c.b,c.a*fade);
             float lw=fw*.573f,lh=gateLogo==null?525:lw*gateLogo.height/gateLogo.width;
@@ -161,13 +161,13 @@ namespace Exoduser.UnityPort
             if(t>3.8f)enterFade*=Mathf.Lerp(.72f,1,.5f+.5f*Mathf.Cos((t-3.8f)*Mathf.PI*2/4.2f));
             GUI.color=new Color(c.r,c.g,c.b,c.a*enterFade);
             var r=new Rect(650,922.4f,620,56);
-            GUI.DrawTexture(r,gateEnterShade);
+            NativeUiAudit.DrawTexture(r,gateEnterShade);
             float spacing=21*.55f,tw=SpacedWidth(silverLatin,21,"ENTER",spacing)-spacing;
             DrawSpaced(960-tw/2,r.y,r.height,"ENTER",silverLatin,21,spacing,new Color(223/255f,214/255f,194/255f),true);
             if(gateEnterLine!=null)
             {
-                GUI.DrawTexture(new Rect(960-tw/2-22-120,945.9f,120,9),gateEnterLine);
-                GUI.DrawTextureWithTexCoords(new Rect(960+tw/2+22,945.9f,120,9),gateEnterLine,new Rect(1,0,-1,1),true);
+                NativeUiAudit.DrawTexture(new Rect(960-tw/2-22-120,945.9f,120,9),gateEnterLine);
+                NativeUiAudit.DrawTextureWithTexCoords(new Rect(960+tw/2+22,945.9f,120,9),gateEnterLine,new Rect(1,0,-1,1),true);
             }
             GUI.color=c;
             if(NativeUiAudit.Button(r,"",GUIStyle.none))StartGate();
