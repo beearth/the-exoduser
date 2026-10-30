@@ -267,7 +267,7 @@ namespace Exoduser.UnityPort
                 var filter=renderer.GetComponent<MeshFilter>();var source=filter.sharedMesh;var vertices=source.vertices;var triangles=source.triangles;
                 var origin=ground.transform.position;var size=ground.terrainData.size;
                 for(int j=0;j<vertices.Length;j++){var world=filter.transform.TransformPoint(vertices[j]);world.y=A2ForestLayout.CutHeight(world.x,world.z,NativeRemodel3D.ForestHeight(world.x,world.z,world.y,origin,size));vertices[j]=filter.transform.InverseTransformPoint(world);}
-                var kept=new System.Collections.Generic.List<int>();var edges=new System.Collections.Generic.Dictionary<long,int>();
+                var kept=new System.Collections.Generic.List<int>();var edges=new System.Collections.Generic.Dictionary<long,int>(new A2MeshEdgeComparer());
                 for(int i=0;i<triangles.Length;i+=3)
                 {
                     int a=triangles[i],b=triangles[i+1],c=triangles[i+2];var p=filter.transform.TransformPoint((vertices[a]+vertices[b]+vertices[c])/3);

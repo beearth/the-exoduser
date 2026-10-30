@@ -429,3 +429,6 @@ A2CaptureFrame이 정상 LateUpdate 이후 Remodel3DLate를 다시 불러 이미
 
 ### A2 먼 수로 재연결
 Shore는 고정앵글러 주변을 피한 후 z−52~−42에서 다시28u 굽어 먼 오른쪽 강을 잇는다. 현재28경계/침수/출구/앵글러검사PASS, source와수치SSOT는UNITY_KEYSHOT_A2_20261030.md. 새Player/GPU는미검증이다.
+
+### A2 해시 성능·D3D12 회피
+현재높이캐시원본오차2.384186E−07u를실제Editor에서확인했으나조립100831ms는남았다. 그리드변long해시편중을49,408변에서614ms→2ms로재현·교정했다. A2MeshEdgeComparer는변동등성/경계512보존. 실제Unity속도는재검수전이다. D3D12 SubmitRenderRequest nativeRT크래시를관측해해당backend만환경반사폴백, D3D11실제반사는유지한다. Shader/프리팹/사용자세이브변경0. 자세한증거/범위는A2 SSOT.

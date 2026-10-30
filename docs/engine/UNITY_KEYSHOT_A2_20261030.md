@@ -81,3 +81,13 @@ A2CaptureFrame이 정상 LateUpdate 이후 Remodel3DLate를 다시 불러 이미
 
 ### 신규 아레나 스크립트 메타 교정
 18:44UTC Editor 기동은 NativeGame.A2Arena.cs.meta GUID33자로 파일이무시되어 CS0103두곳으로실패했다. 자기신규GUID를32자로교정하고신규메타15개형식검사0오류. 수동독립C#0은Unity자산임포트완료의증거가아님을확인했다. 로그 server-20261030T184452621.log를보존하고수정입력으로1회재기동한다.
+
+## 2026-10-31 조립 병목과 D3D12 반사 크래시
+
+| 항목 | 관측·수정·남은 검수 |
+|---|---|
+| 실제 edb526c73 Editor | 1920화면 A2_침수접합_edb526c73-1.png. 정확3모델Importer 읽기true, 뿌리/낙엽 실존·톱니제거 확인. 높이캐시256점 오차최대2.384186E−07u. 조립은100831ms로 남아 높이재사용만을 성능해결로 세지 않음. 큰 원화 차이로 아트FAIL 유지 |
+| 실제 병목 재현 | 기존 long키 기본해시 high^low가128²그리드49408변을78해시에 몰고 최대동일해시8256개,614ms. edge-check/기존-long-해시-FAIL.json 보존. A2MeshEdgeComparer가 양쪽uint정점을 각73856093/19349663으로 섞음. 같은49408변/49408해시·최대1/외곽512개·2ms PASS. 변 동등성·위상은 그대로. 실제513²Unity조립시간 재검수필수 |
+| 실제 엔진 크래시 | server-20261030T184746855.log의 RenderSurfaceD3D12::CreateTextureD3D12Internal→CameraScripting::SubmitRenderRequests→A2RiverReflection.LateUpdate46. Windows/드라이버 전체 결함으로 일반화하지 않음 |
+| 백엔드 회피 | D3D12에서만 평면반사 component를 꺼 환경반사/기본수면으로 폴백·경고1회. D3D11에서는 실제반사 유지, 반사카메라 targetTexture도 자기960×540 RT로 명시. 관측된Player는 모두 force-d3d11. 새Editor 안정성/새Player반사·M1은미검증 |
+| 조명 시안 | 어두운명암/두꺼운뿌리/작은낙엽/밝은빛기둥 메모리A/B는 크래시뒤MCP연결없음으로 미실행. 시안개선/PASS로 세지 않음. 현재소스 조명값은 위계약 유지 |
