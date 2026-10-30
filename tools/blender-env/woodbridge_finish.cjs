@@ -1,7 +1,7 @@
 // 원 베이크를 별도로 보존하고 넓은 AO·곡률만 합성한다. 점 노이즈 생성 없음.
 const fs=require('fs'),sharp=require('G:/exoduser/node_modules/sharp'),crypto=require('crypto');
 const root='I:/EXODUSER-Storage/demo-art/blender-env/woodbridge-r2',tx=root+'/delivery/Assets/Exoduser/Art/Environment/CH1_1_RottenForest/Textures';
-const changed=['RF_Ancient_Rotten_Tree','RF_Rotten_Wood_Bridge','RF_Fallen_Log','RF_Hanging_Moss','RF_Fungal_Colony','RF_Foreground_Roots','RF_River_Stake_Cluster','RF_Bridge_Torch_Holder','RF_Fractured_Stump','RF_Gnarled_Split_Trunk','RF_Foreground_Branch_Frame','RF_Withered_Shrub'];
+const changed=['RF_Ancient_Rotten_Tree','RF_Rotten_Wood_Bridge','RF_Fallen_Log','RF_Hanging_Moss','RF_Fungal_Colony','RF_Foreground_Roots','RF_River_Stake_Cluster','RF_Bridge_Torch_Holder','RF_Fractured_Stump','RF_Gnarled_Split_Trunk','RF_Foreground_Branch_Frame','RF_Withered_Shrub','RF_Corroded_Riverbank'];
 const sha=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 (async()=>{
  const stats=[];fs.mkdirSync(root+'/source/원베이크',{recursive:true});
@@ -10,6 +10,8 @@ const sha=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex'
  const newBake=!previous||previous.베이크시각!==bakeTime;
  const history=root+'/source/원베이크이력/'+new Date().toISOString().replace(/[:.]/g,'-');
  for(const id of changed){
+  if(id==='RF_Hanging_Moss'&&fs.existsSync(root+'/source/이끼알파완료.json'))continue;
+  if(id==='RF_Withered_Shrub'&&fs.existsSync(root+'/source/덤불알파완료.json'))continue;
   const p=tx+'/'+id+'_BaseColor.png',backup=root+'/source/원베이크/'+id+'_BaseColor.png';
   if(!fs.existsSync(p))continue;
   if(newBake||!fs.existsSync(backup)||process.argv.slice(2).includes(id)){if(fs.existsSync(backup)){fs.mkdirSync(history,{recursive:true});fs.copyFileSync(backup,history+'/'+id+'_BaseColor.png');}fs.copyFileSync(p,backup);}
