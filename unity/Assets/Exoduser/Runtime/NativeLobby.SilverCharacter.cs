@@ -66,6 +66,7 @@ namespace Exoduser.UnityPort
         }
         void DrawSilverScene(Rect box,int i)
         {
+            if(TryDrawCharacterStagePreview(box,i))return;
             var playback=characterPresentationPlayback==null?null:characterPresentationPlayback.Video;
             Texture src=silverPosters[i]??silverPortraits[i]??presentationCutouts[i];
             if(playback!=null)
