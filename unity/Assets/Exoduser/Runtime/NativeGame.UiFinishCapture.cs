@@ -27,7 +27,8 @@ namespace Exoduser.UnityPort
     if(phase=="pause")yield return UiFinishPause(output,tag,log);
    }
    File.WriteAllText(Path.Combine(output,"ui-finish-"+phase+".json"),"{\"phase\":\""+phase+"\",\"passed\":"+(uiArtFailures==0?"true":"false")+",\"failures\":"+uiArtFailures+",\"log\":["+string.Join(",",log.ConvertAll(x=>"\""+x.Replace("\"","'")+"\""))+"]}");
-   Application.Quit(uiArtFailures==0?0:2);
+   lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);
+   Debug.Log("QA_MEDIA_DRAIN_COMPLETE UI_FINISH");Application.Quit(uiArtFailures==0?0:2);
   }
   IEnumerator UiFinishSettings(string output,string tag,System.Collections.Generic.List<string> log)
   {
@@ -85,6 +86,7 @@ namespace Exoduser.UnityPort
    // 기존 실제 창 진입 함수를 사용한다. 플레이·저장 품질을 이 정지 화면으로 판정하지 않는다.
    if(!NativeQaSandbox.Active)yield break;smokeActive=true;menu=false;Running=false;pauseMenu.Reset();
    yield return UiCapture(output,"Unity_HUD_"+tag);string colorDetail;bool colorOk=hud.VerifySourceColor(out colorDetail);if(!colorOk)uiArtFailures++;log.Add((colorOk?"PASS ":"FAIL ")+colorDetail);
+   var statusField=typeof(NativeHud).GetField("statusSelectionUntil",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);float statusBefore=(float)statusField.GetValue(hud);statusField.SetValue(hud,Time.unscaledTime+30);int statusTick=Simulation.TickCount;double statusHp=Simulation.Player.Hp;yield return UiCapture(output,"Unity_HUD_상태_"+tag);statusField.SetValue(hud,statusBefore);bool statusStill=Simulation.TickCount==statusTick&&Simulation.Player.Hp==statusHp;if(!statusStill)uiArtFailures++;log.Add((statusStill?"PASS ":"FAIL ")+"HUD 상태판 강제 정지 캡처의 Core틱·HP 보존 "+tag);
    SetInventory(true);inventory.Navigation.ObserveReleased(false);yield return UiCapture(output,"Unity_인벤토리_"+tag);for(int page=1;page<4;page++){typeof(NativeInventory).GetMethod("SetPage",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(inventory,new object[]{page});yield return UiCapture(output,"Unity_인벤토리_부화면"+page+"_"+tag);}SetInventory(false);Running=false;
    SetSkills(true,6);yield return UiCapture(output,"Unity_스킬_"+tag);SetSkills(false);Running=false;
    SetStats(true);yield return UiCapture(output,"Unity_능력치_"+tag);SetStats(false);Running=false;

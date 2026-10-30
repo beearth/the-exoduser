@@ -250,3 +250,5 @@ UI 2단계 안내 캡처 정정: 기존.2초 대기는 실제250ms 단계 전환
 ### 종료 지연에 대한 검수 경로 수정
 
 두 실행이 결과 파일 작성 뒤 InputSystem Shutdown에서 멈춰 안전 영수증은 실패/미작성이다. 자기 QA만 정리했으며 게임 검수 PASS로 소급하지 않는다. 기존 SettingsPersistenceCapture는 미디어 Close 뒤1초를 기다리지만 UI/M1은 곧바로 Quit해 지연 Destroy의 완료를 기다리지 않았다. 또한 CloseStartupCaptureMedia는 별도 캐릭터 대기 디코더를 닫지 않았다. 검수 종료 시 lobby.enabled=false로 재생성 경로를 멈추고 기존 CloseStartupCaptureMedia(캐릭터 디코더 포함)·M1 sound.Reset 뒤1초 기다린다. 정상 게임·메뉴 입력/저장/전환기간은 불변. 이것은 발견한 수명 공백에 대한 보정이며 실제 새 빌드의 정상 종료 전 원인 해결을 단정하지 않는다. HUD 후보는 SHA 대조 보존 후 해당 단위까지 미반영 상태로 두었다.
+
+HUD 후보를 보존본 SHA 대조 후 복원했다. 새 제품에는 검수 종료의 캐릭터/로비 미디어 Close·sound.Reset·1초 배출도 동일 적용한다. 이 단계부터 HUD 표의 사양이 실제 작업 소스에 존재하며 아직 캡처/M1 전이다.

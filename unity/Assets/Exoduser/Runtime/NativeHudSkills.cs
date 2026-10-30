@@ -18,7 +18,7 @@ namespace Exoduser.UnityPort {
   public static float RageFill(double rage,double max){return max>0?(float)Math.Min(100,rage*100/max)/100f:0;}
   void DrawRageSlot(Rect slot,Simulation simulation){
    double rage=simulation.Rage;if(!(rage>0))return;
-   if(rageText==null){rageText=new GUIStyle(keyLabel){fontSize=13,fontStyle=FontStyle.Bold,alignment=TextAnchor.UpperCenter};}
+   if(rageText==null){rageText=new GUIStyle(keyLabel){fontSize=13,fontStyle=FontStyle.Normal,alignment=TextAnchor.UpperCenter};}
    var old=GUI.color;float fill=RageFill(rage,simulation.RageMaximum);
    GUI.color=new Color(1f,.078f,0,.45f);GUI.DrawTexture(new Rect(slot.x,slot.yMax-slot.height*fill,slot.width,slot.height*fill),Texture2D.whiteTexture);
    GUI.color=RageBorder(rage);const float b=2;
@@ -44,7 +44,7 @@ namespace Exoduser.UnityPort {
    float total;float cd=s.SkillCooldown(id,out total);
    if(cd>0&&total>0){
     var old=GUI.color;float frac=Mathf.Clamp01(cd/total);GUI.color=new Color(0,0,0,.62f);GUI.DrawTexture(new Rect(slot.x,slot.yMax-slot.height*frac,slot.width,slot.height*frac),Texture2D.whiteTexture);
-    if(cooldownText==null){cooldownText=new GUIStyle(keyLabel){fontSize=15,fontStyle=FontStyle.Bold,alignment=TextAnchor.MiddleCenter};}
+    if(cooldownText==null){cooldownText=new GUIStyle(keyLabel){fontSize=15,fontStyle=FontStyle.Normal,alignment=TextAnchor.MiddleCenter};}
     GUI.color=new Color(217/255f,214/255f,208/255f,1f);NativeSilverHellUi.Label(slot,Mathf.CeilToInt(cd/60f).ToString(),cooldownText);GUI.color=old;
    }
   }
@@ -78,6 +78,7 @@ namespace Exoduser.UnityPort {
    if(showStatus){
     string statusText=name+" · ST "+SkillUiState.StaminaCost(simulation)+" · "+SkillUiState.Status(simulation)+" [K]";
     float fitWidth=Mathf.Max(360,skillStatus.CalcSize(new GUIContent(statusText)).x+12);statusRect.x=width*.5f-fitWidth*.5f;statusRect.width=fitWidth;
+    NativeSilverHellUi.ActionPlate(new Rect(statusRect.x-10,statusRect.y-8,statusRect.width+20,36),false,0,false,20,4);
     NativeSilverHellUi.Label(statusRect,statusText,skillStatus);
     if(simulation.Player.KiChargeActive){var chargeRect=new Rect(width*.5f-80,statusRect.y-4,160,2);GUI.color=new Color(.18f,.20f,.21f,.8f);GUI.DrawTexture(chargeRect,Texture2D.whiteTexture);GUI.color=new Color(.55f,.72f,.78f,.9f);GUI.DrawTexture(new Rect(chargeRect.x,chargeRect.y,chargeRect.width*Mathf.Clamp01(simulation.Player.KiChargeTicks/120),chargeRect.height),Texture2D.whiteTexture);}
    }

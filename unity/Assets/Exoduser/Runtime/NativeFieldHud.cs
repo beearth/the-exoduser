@@ -10,21 +10,20 @@ namespace Exoduser.UnityPort
  public sealed class NativeFieldHud
  {
   public struct Info { public SourceMap map;public Simulation sim;public int statPoints,passivePoints,combatPower;public float progress;public bool english; }
-  Texture2D frame,mapTex,grad,portrait,markerRing,markerArrow;Font font;SourceMap texFor;float mapSc;int mapW,mapH;
+  Texture2D frame,mapTex,portrait,markerRing,markerArrow;Font font;SourceMap texFor;float mapSc;int mapW,mapH;
   readonly Dictionary<string,GUIStyle> styles=new Dictionary<string,GUIStyle>();
   static Color C(int r,int g,int b,float a=1f){return new Color(r/255f,g/255f,b/255f,a);}
   static void Fill(Rect r,Color c){var o=GUI.color;GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=o;}
   GUIStyle St(int size,TextAnchor a,Color c,bool bold=false)
   {
    string k=size+"|"+a+"|"+ColorUtility.ToHtmlStringRGBA(c)+bold;GUIStyle s;if(styles.TryGetValue(k,out s))return s;
-   s=new GUIStyle(GUI.skin.label){font=font,fontSize=size,alignment=a,fontStyle=bold?FontStyle.Bold:FontStyle.Normal,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset()};s.normal.textColor=c;styles[k]=s;return s;
+   s=new GUIStyle(GUI.skin.label){font=font,fontSize=size,alignment=a,fontStyle=FontStyle.Normal,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset()};s.normal.textColor=c;styles[k]=s;return s;
   }
   void Init()
   {
    if(font!=null)return;
-   font=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular");frame=Resources.Load<Texture2D>("Art/ui/mm_frame_ring_20261028");portrait=Resources.Load<Texture2D>("Art/ui/minimap_warrior");InitMarker();
-   grad=new Texture2D(1,16,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
-   for(int i=0;i<16;i++)grad.SetPixel(0,15-i,new Color(12/255f,13/255f,16/255f,.72f*(1f-i/15f)));grad.Apply(false,true);
+   font=NativeSilverHellUi.Font()??Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular");frame=Resources.Load<Texture2D>("Art/ui/mm_frame_ring_20261028");portrait=Resources.Load<Texture2D>("Art/ui/minimap_warrior");InitMarker();
+
   }
   // _mmTickBuild: tile 1 is skipped, 2 #777a7a, 4 #443355, everything else #555858; one sc-sized square per tile.
   void BuildMap(SourceMap map)
@@ -90,33 +89,24 @@ namespace Exoduser.UnityPort
 
   // Rotation about a point in the current (scaled) GUI space; RotateAroundPivot assumes an unscaled matrix.
   static void RotateLocal(Vector2 pivot,float deg){GUI.matrix=GUI.matrix*Matrix4x4.TRS(pivot,Quaternion.Euler(0,0,deg),Vector3.one)*Matrix4x4.TRS(-pivot,Quaternion.identity,Vector3.one);}
-  void Star(float cx,float cy,float s,Color c)
-  {
-   var m=GUI.matrix;Fill(new Rect(cx-s,cy-.9f,s*2,1.8f),c);Fill(new Rect(cx-.9f,cy-s,1.8f,s*2),c);RotateLocal(new Vector2(cx,cy),45);Fill(new Rect(cx-s*.6f,cy-.7f,s*1.2f,1.4f),c);Fill(new Rect(cx-.7f,cy-s*.6f,1.4f,s*1.2f),c);GUI.matrix=m;
-  }
-  void Lozenge(float cx,float cy,float s,Color c)
-  {
-   var m=GUI.matrix;RotateLocal(new Vector2(cx,cy),45);var r=new Rect(cx-s*.7f,cy-s*.7f,s*1.4f,s*1.4f);Fill(new Rect(r.x,r.y,r.width,1),c);Fill(new Rect(r.x,r.yMax-1,r.width,1),c);Fill(new Rect(r.x,r.y,1,r.height),c);Fill(new Rect(r.xMax-1,r.y,1,r.height),c);GUI.matrix=m;
-  }
   static string Compact(double n){return n>=1e9?(n/1e9).ToString("0.00")+"B":n>=1e6?(n/1e6).ToString("0.00")+"M":n>=1e3?(n/1e3).ToString("0.0")+"K":((int)n).ToString();}
   void DrawCorner(Info info)
   {
    var box=new Rect(16,188,108,58.3f);float a=.94f;
-   Fill(box,C(21,19,18,.9f*a));Fill(new Rect(box.x,box.y,box.width,1),C(142,145,145,.4f*a));Fill(new Rect(box.x,box.y,2,box.height),C(144,147,147,.64f*a));
+   NativeSilverHellUi.Panel(box,10,0);
    var tc=C(226,223,217,.93f*a);
-   Star(36,205,5,tc);
+   NativeSilverHellUi.Label(new Rect(24,196,22,18),"SP",St(10,TextAnchor.MiddleLeft,tc));
    string sp=info.statPoints.ToString()+(info.passivePoints>0?" +"+info.passivePoints:"");
    NativeSilverHellUi.Label(new Rect(46,196,70,17.7f),sp,St(13,TextAnchor.MiddleLeft,tc));
    Fill(new Rect(28,216.7f,86,1),C(130,133,133,.2f*a));
-   Lozenge(36,229,4.5f,tc);
+   NativeSilverHellUi.Label(new Rect(24,219,22,22),"CP",St(10,TextAnchor.MiddleLeft,tc));
    string cp=info.combatPower>=100000?Compact(info.combatPower):info.combatPower.ToString("N0",System.Globalization.CultureInfo.InvariantCulture);
    NativeSilverHellUi.Label(new Rect(46,219,70,21.7f),cp,St(13,TextAnchor.MiddleLeft,tc));
   }
   void DrawClock(float hudWidth,Info info)
   {
    float a=1f,x=hudWidth/2-85;var box=new Rect(x,17,170,37);
-   var o=GUI.color;GUI.color=new Color(1,1,1,a);GUI.DrawTexture(box,grad);GUI.color=o;
-   Fill(new Rect(box.x,box.y,box.width,1),C(145,148,148,.38f*a));
+   NativeSilverHellUi.ActionPlate(box,false,0,false,12,0);
    int sec=Mathf.Max(0,info.sim.TickCount/60);string t=(sec/60).ToString("00")+":"+(sec%60).ToString("00");
    var st=St(12,TextAnchor.MiddleCenter,C(230,227,221,.92f*a),true);
    // letter-spacing .14em

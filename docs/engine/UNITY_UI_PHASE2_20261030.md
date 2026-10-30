@@ -145,3 +145,9 @@
 ### 종료 지연에 대한 검수 경로 수정
 
 두 실행이 결과 파일 작성 뒤 InputSystem Shutdown에서 멈춰 안전 영수증은 실패/미작성이다. 자기 QA만 정리했으며 게임 검수 PASS로 소급하지 않는다. 기존 SettingsPersistenceCapture는 미디어 Close 뒤1초를 기다리지만 UI/M1은 곧바로 Quit해 지연 Destroy의 완료를 기다리지 않았다. 또한 CloseStartupCaptureMedia는 별도 캐릭터 대기 디코더를 닫지 않았다. 검수 종료 시 lobby.enabled=false로 재생성 경로를 멈추고 기존 CloseStartupCaptureMedia(캐릭터 디코더 포함)·M1 sound.Reset 뒤1초 기다린다. 정상 게임·메뉴 입력/저장/전환기간은 불변. 이것은 발견한 수명 공백에 대한 보정이며 실제 새 빌드의 정상 종료 전 원인 해결을 단정하지 않는다. HUD 후보는 SHA 대조 보존 후 해당 단위까지 미반영 상태로 두었다.
+
+후보5도 QA_MEDIA_DRAIN_COMPLETE 뒤 엔진 종료 지연이 재현되어 1초 배출로 해결됐다고 하지 않는다. 같은 숨김 데스크톱 경로 재시도는 중단한다. 기존 exo의 Desktop=batch 및 기존 M1의 headless-rendertexture 실제 GPU 경로로 원인을 분리한다. nographics 미사용·GPU/실제 Repaint 수·자원/전투/저장23단계·정상 종료를 별도 확인하며, World만 나온 캡처는 UI 근거로 사용하지 않는다.
+
+종료 보정 결과: loading-r5/ad91f26af도 UI30/30·QA_MEDIA_DRAIN_COMPLETE UI 뒤 종료가 지연됐고 wrapper ReadAllText(player-1d6008ca.log) 공유 IOException/exit1. 개선 증거로 보지 않는다. 같은 hidden 경로 재시도0. 다음 담당38880 빌드로 기존 잠금이 정상 양도됐으며 사용자/타인 앱 종료0. 기존 batch GPU M1 한 건으로 표시 경로를 분리한다.
+
+HUD 후보를 보존본 SHA 대조 후 복원했다. 새 제품에는 검수 종료의 캐릭터/로비 미디어 Close·sound.Reset·1초 배출도 동일 적용한다. 이 단계부터 HUD 표의 사양이 실제 작업 소스에 존재하며 아직 캡처/M1 전이다.
