@@ -97,3 +97,22 @@ r1 실패 검수는 자기 Player만 경로/로그/PID 확인 후 중단했다. 
 API 대조 근거는 Unity 공식 [그리기/비율 계산 소스](https://github.com/Unity-Technologies/UnityCsReference/blob/master/Modules/IMGUI/GUI.cs)와 [실제 GUIClip 바인딩](https://github.com/Unity-Technologies/UnityCsReference/blob/master/Modules/IMGUI/GUIClip.bindings.cs)이다. 로컬 Unity6000.6.7f1 참조를 사용한 독립 컴파일과, 향후 실제 수집 확인은 별도다.
 
 **오프라인 보완 완료 / 전체 UI는 HOLD·최종 시각 미검증**. 이전 r1 실패·r2 교차·독립 검수4실패·RETOUCH 이력은 초기화하지 않는다. 정상 예약 반환 요청은 소유 담당에게 이미 단회큐 `01a18cb9-759a-7030-808f-5bfc0d4e8619`로 수락됐으며 실제 해제는 미확인이다. 추가 질문/해제/잠금 변경0. 입력이 바뀌었으므로 d500725c의 과거 r3 지시는 폐기하고 이 새 소스/해시로 고정한다. 예약 반환과 실행 안전 조건 확인 후 실제 가림 계측→168장/M1/같은 후보1x→정상 통합→Desktop 순서는 같은 기존 UI 완료 게이트로 남긴다.
+
+## 실행 직전 재확인 — 2026-10-30 21:54 KST
+
+사용자가 기존 스킬 예약 소비 작업의 정상종료와 잠금 반환을 확인해 같은 UI 최종 게이트 재개를 지시했다. 담당이 실행 직전 다시 확인한 결과 다른 담당의 현존/새 예약2건이 있어 **빌드 시작 전 HOLD**했다. 타인 예약이 이미 있으면 현재 사실만 남기라는 최신 지시를 적용했으며 공식 실행기 build/player 호출·예약/잠금 직접 변경·타인 종료·세이브/실행본/바로가기 변경·테스트 반복 모두0이다. 이번 보류는 실행 실패나 같은 원인2실패 카운터의 새 실행으로 세지 않으며 기존 실패/RETOUCH 이력은 유지한다.
+
+| 항목 | 직접 확인한 현재 사실 |
+|---|---|
+| 확인 시각 | 2026-10-30T12:54:05.7825818Z, 원격·입력 재확인12:54:27.889Z |
+| 소유 | 공식 CLI5388·기록01a18c95-7cee-7322-88d1-047d754e88d9·같은 경로/브랜치. 새 writer/세션/작업본0 |
+| UI 입력 | HEAD/작업 원격4787e09a932d319016e95c13704cce1cb49c4006 일치. INDEX 비어 있음·자기 Runtime/분석기 WORK 깨끗함. NativeUiAudit/분석기 SHA는 위654cf76d…/316cedf7… 그대로 |
+| 실제 예약1 | 20261030T124618982_codex-boss-druid.json. 소유codex-boss-druid, 생성12:46:18.983Z, 기록 만료14:46:18.979Z. 드루이드 탄막 후보 빌드·M1·동일빌드 A/B 캡처 |
+| 실제 예약2 | 20261030T125346805_codex-skill-fix.json. 소유codex-skill-fix, 생성12:53:46.806Z, 기록 만료14:53:46.802Z. 공통4fedb6a3f 통합빌드·설치본 확인·Desktop 전달. 이전 반환된 예약과 다른 새 예약 |
+| 잠금/실행 | _pc_lock.json 없음·HALT 없음·Unity/Player CIM0. 빈 잠금/프로세스만으로 예약 우선순위를 무시하지 않음 |
+| 여유 | 커밋 여유49.28GiB, E: 여유1520.17GiB |
+| 최신 공통 원격 | unity/main=4fedb6a3f22a9cc601f0e2df7731823f190985ee. 과거10c49850f expected를 재사용하지 않음. UI에 통합하지 않았으며 이후 Unity 입력 변경 시 필요한 검증은 별도 |
+| 실제 바로가기4속성 | target=I:/EXODUSER-Storage/demo-art/entry-flow/build/EXODUSER-Unity.exe; arguments=-force-d3d11 --remodel3d; workingDirectory=같은entry-flow/build; icon=같은exe,0. 변경0 |
+| 인도 전 SHA | 바로가기ac3c966fa11a9ffa837446a72428ed7718e20caabf4588303d6afc642bfa568b; Runtime b5bfe912ccec2a1df294be8db777678354d255b7a28aabbf98163b119409d49a; Core c63a59cd26ba349f73a6084fed8aa4770fc8eb062eb1ed1f12ac64a56fd165cf |
+
+근거는 `overlap/final4787/실행전_현황.json`과 `입력과_중단근거.json`이다. 원본 예약2개의 내용과 SHA도 기록했다. 이는 실제 UI 빌드/실게임 PASS가 아니다. 현재 미완료는 동일하게 새 입력의 정식 빌드→실제 가림 메타데이터 완전성→168장/M1→같은 후보 동일크기·1x→MERGE_QUEUE 준비→최신 공통 정상통합과 필요한 재검증→실제 Desktop 전달이다. 다른 담당 예약을 건드리거나 과거 d500/r3 결과를 재사용하지 않았다.
