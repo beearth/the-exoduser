@@ -11,6 +11,7 @@ const walk=p=>fs.readdirSync(p,{withFileTypes:true}).flatMap(x=>x.isDirectory()?
  for(const row of rows){
   const id=row.id,model=kit+'/Models/'+id+'.fbx';if(!reimport.find(x=>x.id===id&&x.FBX_SHA256===sha(model)&&x.삼각형===row.삼각형))throw Error('현재FBX SHA 재수입 누락 '+id);
   const stamp=JSON.parse(fs.readFileSync(r+'/renders/입력_'+id+'.json','utf8'));if(stamp.입력.FBX_SHA256!==sha(model))throw Error('이전 FBX 렌더 '+id);
+  if(stamp.검수정규화?.최대크기m!==8||stamp.검수정규화?.실제FBX단위보존!==true)throw Error('검수 조명 범위/단위 정규화 누락 '+id);
   for(const k of ['BaseColor','Normal','AO','Curvature','Roughness','Metallic','MetallicSmoothness']){
    const p=kit+'/Textures/'+id+'_'+k+'.png',meta=fs.readFileSync(p+'.meta','utf8'),md=await sharp(p).metadata();if(md.width!==row.텍스처해상도||md.height!==(row.텍스처높이||row.텍스처해상도))throw Error('텍스처 규격 '+p);
    if(!meta.includes('sRGBTexture: '+(k==='BaseColor'?1:0)))throw Error('색공간 '+p);

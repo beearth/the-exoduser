@@ -36,13 +36,15 @@ if '--modules' in sys.argv:
  for r in rows:
   if '--only' in sys.argv and r['id'] not in sys.argv[sys.argv.index('--only')+1:]:continue
   o=bpy.data.objects[r['id']];o.hide_render=False;o.hide_set(False)
-  floor.location.z=0 if r['id'] in ['RF_Ancient_Rotten_Tree','RF_Withered_Shrub','RF_Fungal_Colony','RF_Foreground_Roots'] else r['범위XYZ최소최대'][2]-.025
+  # 24m 거목이 고정 광원15~18m 위로 벗어나지 않도록 검수에서만 같은8m 크기로 맞춘다.
+  # FBX/실제 메시 좌표/단위는 바꾸지 않는다.
+  minimum=Vector([min(v.co[k] for v in o.data.vertices) for k in range(3)]);maximum=Vector([max(v.co[k] for v in o.data.vertices) for k in range(3)]);factor=8/max(maximum-minimum);old_location=o.location.copy();old_scale=o.scale.copy();o.scale=(factor,)*3;o.location=(-(minimum.x+maximum.x)*.5*factor,-(minimum.y+maximum.y)*.5*factor,-minimum.z*factor);floor.location.z=-.025
   for side in [0,1]:
    o.rotation_euler.z=side*math.pi/2;bpy.context.view_layer.update();points=[o.matrix_world@v.co for v in o.data.vertices];mn=Vector([min(p[k] for p in points) for k in range(3)]);mx=Vector([max(p[k] for p in points) for k in range(3)]);c=(mn+mx)*.5
    cam.location=c+Vector((9,-13,math.hypot(9,13)*math.tan(math.radians(52))));aim(cam,c);bpy.context.view_layer.update();ps=[cam.matrix_world.inverted()@p for p in points];cam.data.ortho_scale=max(2.5,max(abs(p.x) for p in ps)*2.4,max(abs(p.y) for p in ps)*3.84)
    S.render.filepath=str(R/'renders'/(r['id']+('_side' if side else '')+'.png'));bpy.ops.render.render(write_still=True)
-  (R/'renders'/('입력_'+r['id']+'.json')).write_text(json.dumps({'id':r['id'],'입력':inputs(r['id']),'렌더':{suffix:sha(R/'renders'/(r['id']+suffix+'.png')) for suffix in ['','_side']},'카메라각':52,'조명':'모든 모듈 동일3광원·세계광','레시피SHA':sha(Path(__file__))},ensure_ascii=False,indent=2),encoding='utf8')
-  o.rotation_euler.z=0;o.hide_render=True;o.hide_set(True)
+  (R/'renders'/('입력_'+r['id']+'.json')).write_text(json.dumps({'id':r['id'],'입력':inputs(r['id']),'렌더':{suffix:sha(R/'renders'/(r['id']+suffix+'.png')) for suffix in ['','_side']},'카메라각':52,'조명':'모든 모듈 동일3광원·세계광','검수정규화':{'최대크기m':8,'배율':factor,'실제FBX단위보존':True},'레시피SHA':sha(Path(__file__))},ensure_ascii=False,indent=2),encoding='utf8')
+  o.rotation_euler.z=0;o.location=old_location;o.scale=old_scale;o.hide_render=True;o.hide_set(True)
  print('동일52도 모듈 정면·측면 완료',flush=True);sys.exit(0)
 
 def simplemat(name,col,rough=.8,emission=0):
@@ -106,6 +108,7 @@ for x,y,sc,yaw in [(-7.6,-6.3,1.38,5),(-10,4,1.15,88),(-11,14,1.3,155),(6,13,1.3
   for dx,dy,sz,ry in [(-1.7,-.5,.95,15),(.8,-1.6,1.15,115),(1.8,.9,.8,235)]:place('RF_Withered_Shrub',(x+dx*sc,y+dy*sc,.52),sc*sz,ry+yaw)
 for x,y,yaw,sc in [(-6,-9,25,1),(-7,8,15,1.1),(7,9,140,1),(10,-7,100,1.1),(13,4,50,.9),(-12,18,150,1),(-6,-13,15,1.2)]:place('RF_Fallen_Log',(x,y,-.4 if -5<y<6 else .65),sc,yaw)
 place('RF_Fractured_Stump',(7,1.4,.48),.80,12);place('RF_Fungal_Colony',(7.5,.1,.5),.60,32.7);place('RF_Hanging_Moss',(7.4,-.4,1.25),.55,32.7)
+place('RF_Foreground_Roots',(7,1.4,.05),.62,15);place('RF_Foreground_Roots',(-7.6,-6.3,.35),1.1,5)
 for x,y,yaw,sc in [(5.2,2.7,15,.8),(7.9,3.1,145,1.1),(8.7,1.8,250,.7)]:place('RF_Withered_Shrub',(x,y,.28),sc,yaw)
 place('RF_Foreground_Branch_Frame',(-3,-10,1.0),1.3,20)
 # 그루터기 받침은 위 강둑의 연속된 반도로 만든다. 별도 원형 지면 판을 사용하지 않는다.
@@ -158,7 +161,7 @@ for o in S.objects:
     if hit:v.co.z=max(v.co.z,hit.z-.025)
   if sign>0:
    # 오른쪽 지류와 독립 그루터기 섬. 큰 직사각 강둑으로 수로를 막지 않는다.
-   x,y=p.x,p.y;bank=4.3+.12*max(y,0)+1.1*math.sin(y*.23)-x;island=2.5*(1-math.sqrt(((x-7)/2.5)**2+((y-1.4)/3.0)**2));treefoot=2.0*(1-math.sqrt(((x-6)/2.4)**2+((y-13)/2.8)**2));d=max(bank,island,treefoot);fac=max(0,min(1,(d+.6)/1.2));v.co.z=-1.1+(v.co.z+1.1)*fac
+   x,y=p.x,p.y;bank=4.3+.12*max(y,0)+1.1*math.sin(y*.23)-x;a=math.atan2(y-1.4,x-7);island=2.5*(1-math.sqrt(((x-7)/2.5)**2+((y-1.4)/3.0)**2)*(1+.16*math.sin(a*3+.6)+.10*math.sin(a*7-.3)));treefoot=2.0*(1-math.sqrt(((x-6)/2.4)**2+((y-13)/2.8)**2));d=max(bank,island,treefoot);fac=max(0,min(1,(d+.6)/1.2));v.co.z=-1.1+(v.co.z+1.1)*fac
  o.data.update()
 # 저층 식생의 기부는 최종 강둑 표면에 붙인다. 목질 자체를 흙으로 덮지 않는다.
 terrain=[o for o in S.objects if o.name.startswith('검수_연결된강둑')];v_all=[];f_all=[]
@@ -175,6 +178,7 @@ bpy.ops.mesh.primitive_cube_add(size=2,location=(0,7,13));air=bpy.context.object
 for pos,target,energy,size in [((-2,8,28),(-3,-4,0),35000,.18),((4,19,27),(1,6,0),26000,.13)]:
  d=bpy.data.lights.new('검수_차가운빛기둥','SPOT');d.energy=energy;d.color=(.67,.77,.93);d.spot_size=size;d.spot_blend=.62;ob=bpy.data.objects.new(d.name,d);S.collection.objects.link(ob);ob.location=pos;aim(ob,target)
 light('검수_길넓은반사',(0,11,12),2200,(.83,.72,.54),9,(0,10,0))
+light('검수_전경목질_약한회색반사',(-6,-11,10),700,(.78,.76,.68),6,(-7,-5,3));light('검수_우측이끼_습한반사',(3,5,9),1200,(.65,.72,.77),6,(6,13,3))
 # 카메라에서 읽히는 부드러운 체적 광선. 연출용 비납품이며 게임 광원 구현과 구분한다.
 for origin,target in [(Vector((-3,8,28)),Vector((-5,-4,0))),(Vector((3,20,27)),Vector((0,6,0)))]:
  axis=origin-target;center=(origin+target)/2;bpy.ops.mesh.primitive_cone_add(vertices=48,radius1=1.2,radius2=.25,depth=axis.length,location=center);ob=bpy.context.object;ob.name='검수_연출체적빛_비납품';ob.rotation_euler=axis.to_track_quat('Z','Y').to_euler();m=bpy.data.materials.new(ob.name);m.use_nodes=True;nn=m.node_tree.nodes;nn.clear();ll=m.node_tree.links;out=nn.new('ShaderNodeOutputMaterial');vol=nn.new('ShaderNodeVolumePrincipled');vol.inputs['Color'].default_value=(.57,.66,.76,1);vol.inputs['Anisotropy'].default_value=.25;vol.inputs['Emission Color'].default_value=(.24,.31,.40,1);co=nn.new('ShaderNodeTexCoord');sep=nn.new('ShaderNodeSeparateXYZ');ll.new(co.outputs['Generated'],sep.inputs[0]);comb=nn.new('ShaderNodeCombineXYZ')

@@ -28,12 +28,12 @@ for id in ['RF_Foreground_Roots']:
  select(highpieces,highpieces[0]);bpy.ops.object.join();high=highpieces[0];high.name=id+'_High';select(pieces,pieces[0]);bpy.ops.object.join();low=pieces[0];low.name=id;low.hide_render=True;low.hide_set(True);high.hide_render=True;high.hide_set(True);prepared.append((id,low,high))
 for id in ['RF_Ancient_Rotten_Tree','RF_Gnarled_Split_Trunk','RF_Fractured_Stump']:
  for suff in ['', '_High']:
-  o=bpy.data.objects[id+suff];o.hide_set(False)
+  o=bpy.data.objects[id+suff];o.hide_set(False);before_bounds=[min(v.co[k] for v in o.data.vertices) for k in range(3)]+[max(v.co[k] for v in o.data.vertices) for k in range(3)]
   if suff:
    m=bpy.data.materials.new(id+'_썩은내벽');m.use_nodes=True;bs=next(n for n in m.node_tree.nodes if n.type=='BSDF_PRINCIPLED');bs.inputs['Base Color'].default_value=(.048,.026,.011,1);bs.inputs['Roughness'].default_value=.95;o.data.materials.append(m)
   so=o.modifiers.new('실제목질두께','SOLIDIFY');so.thickness=.20;so.offset=-1;so.use_even_offset=False;so.use_quality_normals=True;so.thickness_clamp=.4;so.use_thickness_angle_clamp=True
   if suff:so.material_offset=len(o.data.materials)-1;so.material_offset_rim=len(o.data.materials)-1
-  apply(o,so);o.hide_render=True;o.hide_set(True)
+  apply(o,so);after_bounds=[min(v.co[k] for v in o.data.vertices) for k in range(3)]+[max(v.co[k] for v in o.data.vertices) for k in range(3)];assert max(abs(a-b) for a,b in zip(before_bounds,after_bounds))<=.25,('예각 가시 재발',id+suff);o.hide_render=True;o.hide_set(True)
  prepared.append((id,bpy.data.objects[id],bpy.data.objects[id+'_High']))
 rows=json.loads((R/'source/모듈명세.json').read_text(encoding='utf8'));code=Path(__file__).with_name('woodbridge_natural_roots.py').read_text(encoding='utf8');code=code[code.index('for id,low,high in prepared:'):];code=code.replace("'큰 속빈 줄기 보존·CC0 실제 얽힌 뿌리 접합' if id=='RF_Ancient_Rotten_Tree' else 'CC0 실제 뿌리 군락·부패 목질과 지면 연결'","'실제 CC0 파단 목질을 굽힌 비대칭7갈래 노출 뿌리' if id=='RF_Foreground_Roots' else '실제 CC0 목질·20cm 두께·썩은 내벽이 있는 거목/파단 밑동'").replace('기존 큰 줄기 UV 보존+Poly Haven Root Cluster01 high→low normal/AO/curvature/PBR 2048; 원본 MD5/SHA 일치','실제 CC0 목질·정점 리모델링 또는20cm 목질 두께 high→low normal/AO/curvature/PBR 2048; 바닥링/종잇장 후보 FAIL 후 제작법 변경');exec(compile(code,str(Path(__file__)),'exec'))
 (R/'source/목질두께뿌리완료.json').write_text(json.dumps({'이전판정':'평평한 바닥링/얇은 껍질 FAIL','실제목질두께':.2,'뿌리갈래':7,'원본':'기존 CC0 dead_tree_trunk_02 파단 목질 UV 유지 변형','최종기하':'실제 표면/부피를 다시6맵 베이크'},ensure_ascii=False,indent=2),encoding='utf8')

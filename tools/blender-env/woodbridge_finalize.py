@@ -1,4 +1,4 @@
-import bpy,json
+import bpy,json,sys
 from pathlib import Path
 R=Path('I:/EXODUSER-Storage/demo-art/blender-env/woodbridge-r2');P=R/'delivery/Assets/Exoduser/Art/Environment/CH1_1_RottenForest'
 bpy.ops.wm.open_mainfile(filepath=str(R/'source/숲_베이크.blend'))
@@ -14,7 +14,7 @@ for r in rows:
     if n.image.packed_file:n.image.unpack(method='REMOVE')
     n.image.filepath=str(p);n.image.reload()
  bpy.ops.object.select_all(action='DESELECT');o.hide_set(False);o.select_set(True);bpy.context.view_layer.objects.active=o
- bpy.ops.export_scene.fbx(filepath=str(P/'Models'/(r['id']+'.fbx')),use_selection=True,object_types={'MESH'},axis_forward='-Z',axis_up='Y',bake_anim=False,path_mode='STRIP',add_leaf_bones=False)
+ if '--only' not in sys.argv or r['id'] in sys.argv[sys.argv.index('--only')+1:]:bpy.ops.export_scene.fbx(filepath=str(P/'Models'/(r['id']+'.fbx')),use_selection=True,object_types={'MESH'},axis_forward='-Z',axis_up='Y',bake_anim=False,path_mode='STRIP',add_leaf_bones=False)
  o.hide_set(True);o.hide_render=True
 bpy.ops.file.pack_all();bpy.ops.wm.save_as_mainfile(filepath=str(R/'source/숲_베이크.blend'))
 print('실제FBX 재질명 정규화·최종 PNG 패킹 완료',len(rows),flush=True)
