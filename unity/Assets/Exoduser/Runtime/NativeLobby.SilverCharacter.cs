@@ -98,7 +98,8 @@ namespace Exoduser.UnityPort
             for(int n=0;n<5;n++)
             {
                 string text=VisualSelectionLabel(railLabels[n],railEnglish[n]);railName.font=NativeSilverHellUi.TextFont(silverBody.font,text);
-                nameHeight=Mathf.Max(nameHeight,railName.CalcHeight(new GUIContent(text),labelWidth));
+                railEnglish[n]=SilverRailName(text,railName,labelWidth);
+                nameHeight=Mathf.Max(nameHeight,railName.CalcHeight(new GUIContent(railEnglish[n]),labelWidth));
             }
             string soon=VisualSelectionLabel("출시 준비 중","Coming soon");railSoon.font=NativeSilverHellUi.TextFont(silverVisualCaption.font,soon);
             soonHeight=railSoon.CalcHeight(new GUIContent(soon),labelWidth);
@@ -129,27 +130,32 @@ namespace Exoduser.UnityPort
                 "A black-iron warrior wielding a greatsword.","One spinning sword; her dance is annihilation.","A blood-moon marksman who uses her own blood as ammunition.","A hunter who transmutes core flame into bow, scythe, spear and sword.","A herald of the void who seals space with runes."
             }
             [i]),silverVisualDescription,TextAnchor.UpperLeft);
-            var traits=new Rect(x+8,top+16,364,shortScreen?214:284.4f);
+            var traitTitles=new string[3];var traitBodies=new string[3];var traitHeights=new float[3];float traitContentHeight=72;
+            for(int n=0;n<3;n++)
+            {
+                string[] bits=presentationTraits[i,n].Split('|');traitTitles[n]=VisualSelectionLabel(bits[1],TraitEnglish(i,n));traitBodies[n]=VisualSelectionLabel(bits[2],TraitEnglishBody(i,n));
+                var measure=new GUIStyle(silverVisualTraitBody){font=NativeSilverHellUi.TextFont(silverVisualTraitBody.font,traitBodies[n])};
+                traitHeights[n]=shortScreen?44:27+Mathf.Max(35,measure.CalcHeight(new GUIContent(traitBodies[n]),276))+12;
+                traitContentHeight+=traitHeights[n];
+            }
+            var traits=new Rect(x+8,top+16,364,shortScreen?214:Mathf.Max(284.4f,traitContentHeight+8));
             SilverCornerPanel(traits);
             var playstyle=VisualSelectionLabel("플레이 방식","PLAYSTYLE");float playWidth=SpacedWidth(silverVisualTitle.font,18,playstyle,3.6f)-3.6f;DrawSpaced(x+190-playWidth/2,traits.y+22,28,playstyle,silverVisualTitle.font,18,3.6f,NativeSilverHellUi.Text,false);
             Fill(new Rect(x+34,traits.y+58,312,1),new Color(.61f,.62f,.62f,.18f));
+            float traitY=traits.y+72;
             for(int n=0;n<3;n++)
             {
-                float y=traits.y+72+n*(shortScreen?44:68.5f);
-                string[] bits=presentationTraits[i,n].Split('|');
+                float y=traitY;
                 DrawGlyph(new Rect(x+36,y+7,22,22),i*3+n,Color.white);
-                SilverLabel(new Rect(x+68,y,276,27),VisualSelectionLabel(bits[1],TraitEnglish(i,n)),silverVisualTraitTitle,TextAnchor.MiddleLeft);
-                if(!shortScreen)SilverLabel(new Rect(x+68,y+27,276,35),VisualSelectionLabel(bits[2],TraitEnglishBody(i,n)),silverVisualTraitBody,TextAnchor.UpperLeft);
-                if(n<2)Fill(new Rect(x+34,y+(shortScreen?43:66),312,1),new Color(.61f,.62f,.62f,.12f));
+                SilverLabel(new Rect(x+68,y,276,27),traitTitles[n],silverVisualTraitTitle,TextAnchor.MiddleLeft);
+                if(!shortScreen)SilverLabel(new Rect(x+68,y+27,276,traitHeights[n]-39),traitBodies[n],silverVisualTraitBody,TextAnchor.UpperLeft);
+                if(n<2)Fill(new Rect(x+34,y+traitHeights[n]-3,312,1),new Color(.61f,.62f,.62f,.12f));
+                traitY+=traitHeights[n];
             }
             GUI.SetNextControlName("visual-info-left");
             if(NativeUiAudit.Button(info,"",GUIStyle.none))GUI.FocusControl("visual-info-left");
             GUI.SetNextControlName("visual-info-right");
             if(NativeUiAudit.Button(traits,"",GUIStyle.none))GUI.FocusControl("visual-info-right");
-            string[] labels=
-            {
-                "전사","실버테일","헬거너","변성술사","창법사"
-            };
             for(int n=0;n<5;n++)
             {
                 var r=new Rect(x+n*(380-size)/4,railY,size,size);
@@ -159,7 +165,7 @@ namespace Exoduser.UnityPort
                 Border(r,n==i?NativeSilverHellUi.Bright:new Color(.61f,.62f,.62f,.62f),1);
                 if(n==i)Border(new Rect(r.x-3,r.y-3,size+6,size+6),NativeSilverHellUi.Text,1);
                 float labelX=r.center.x-labelWidth/2;
-                SilverLabel(new Rect(labelX,r.yMax+labelGap,labelWidth,nameHeight),VisualSelectionLabel(labels[n],railEnglish[n]),railName,TextAnchor.UpperCenter);
+                SilverLabel(new Rect(labelX,r.yMax+labelGap,labelWidth,nameHeight),railEnglish[n],railName,TextAnchor.UpperCenter);
                 if(n>0)SilverLabel(new Rect(labelX,r.yMax+labelGap+nameHeight+footerGap,labelWidth,soonHeight),soon,railSoon,TextAnchor.UpperCenter);
                 GUI.SetNextControlName("visual-icon-"+n);
                 if(NativeUiAudit.Button(new Rect(r.x-4,r.y-4,size+8,size+labelGap+nameHeight+footerGap+soonHeight+4),"",GUIStyle.none))
@@ -188,6 +194,18 @@ namespace Exoduser.UnityPort
             }
         }
         // 이모지/대각선 사슬 대신 원화 문장을 보존하고 작은 금속 자물쇠를 표시한다.
+        static string SilverRailName(string text,GUIStyle style,float width)
+        {
+            if(text.IndexOf(' ')>=0||style.CalcSize(new GUIContent(text)).x<=width)return text;
+            // 한 글자만 다음 행에 남지 않도록 실제 두 행 폭의 최대값이 가장 작은 분할점을 사용한다.
+            int split=-1;float best=float.MaxValue;
+            for(int n=2;n<text.Length-1;n++)
+            {
+                float first=style.CalcSize(new GUIContent(text.Substring(0,n))).x,last=style.CalcSize(new GUIContent(text.Substring(n))).x;
+                float larger=Mathf.Max(first,last);if(larger<=width&&larger<best){split=n;best=larger;}
+            }
+            return split<0?text:text.Substring(0,split)+"\n"+text.Substring(split);
+        }
         void DrawSilverClassLock(Rect icon)
         {
             var c=GUI.color;float s=14;Rect body=new Rect(icon.center.x-s/2,icon.yMax-18,s,11);

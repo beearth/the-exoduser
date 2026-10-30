@@ -1,4 +1,5 @@
 const fs=require('node:fs'),path=require('node:path');
+const requiredPages=['첫화면','메뉴','로비',...Array.from({length:5},(_,i)=>'캐릭터선택'+i),'이름입력','로딩',...Array.from({length:4},(_,i)=>'튜토리얼'+i),'HUD','일시정지','종료확인',...Array.from({length:4},(_,i)=>'설정'+i),...Array.from({length:4},(_,i)=>'설정스크롤'+i),'설정목록','클리어'];
 const right=r=>r.x+r.width,bottom=r=>r.y+r.height;
 const inside=(a,b,t=.5)=>a.x>=b.x-t&&a.y>=b.y-t&&right(a)<=right(b)+t&&bottom(a)<=bottom(b)+t;
 const intersects=(a,b)=>Math.min(right(a),right(b))-Math.max(a.x,b.x)>.5&&Math.min(bottom(a),bottom(b))-Math.max(a.y,b.y)>.5;
@@ -10,7 +11,7 @@ function analyze(frame){
   if(elements.some(p=>p.kind===e.kind&&p.text===e.text&&['x','y','width','height'].every(k=>Math.abs(p.rect[k]-e.rect[k])<=3.1)))continue;
   elements.push(e);
  }
- const visible=elements.filter(e=>e.kind!=='text'||!elements.some(p=>p.kind==='panel'&&p.order>e.order&&inside(e.rect,p.rect)));
+ const visible=elements.filter(e=>!elements.some(p=>p.kind==='panel'&&p.order>e.order&&inside(e.rect,p.rect)));
  const issues=[],screen={x:0,y:0,width:frame.width,height:frame.height};
  for(let i=0;i<visible.length;i++){
   const a=visible[i];if(a.kind!=='text')continue;
@@ -28,8 +29,13 @@ function run(dir){
  const manifest=JSON.parse(fs.readFileSync(path.join(dir,'coverage.json'),'utf8'));
  const frames=manifest.frames.map(name=>analyze(JSON.parse(fs.readFileSync(path.join(dir,name+'.json'),'utf8'))));
  const missing=[];
- for(const width of [1920,1600])for(const lang of manifest.languages)for(const page of manifest.pages)
+ const languages=new Set(['ko','de',...manifest.languages]);
+ const languagePath=path.join(dir,'최장언어_실측.json');
+ if(!fs.existsSync(languagePath))missing.push('최장 언어의 실제 서체 폭 측정 없음');
+ else {const scores=JSON.parse(fs.readFileSync(languagePath,'utf8')).scores;for(const category of ['설정','직업선택']){const rows=scores.filter(s=>s.category===category).sort((a,b)=>b.measuredWidth-a.measuredWidth);if(rows.length<28)missing.push(category+' 언어 폭 표 누락');else languages.add(rows[0].code);}}
+ for(const width of [1920,1600])for(const lang of languages)for(const page of requiredPages)
   if(!frames.some(f=>f.width===width&&f.language===lang&&f.page===page&&f.repaintFrames>0&&f.elements.some(e=>e.kind==='text')))missing.push(`${width}/${lang}/${page}`);
+ for(const f of frames){const png=path.join(dir,`${f.width}-${f.language}-${f.page}.png`);if(!fs.existsSync(png)){missing.push('PNG 누락 '+path.basename(png));continue;}const bytes=fs.readFileSync(png);if(bytes.readUInt32BE(16)!==f.width||bytes.readUInt32BE(20)!==f.height)missing.push('실제 PNG 해상도 불일치 '+path.basename(png));}
  const result={passed:missing.length===0&&frames.every(f=>f.issues.length===0),frameCount:frames.length,issueCount:frames.reduce((s,f)=>s+f.issues.length,0),missing,frames};
  fs.writeFileSync(path.join(dir,'overlap-report.json'),JSON.stringify(result,null,2));
  const rows=frames.flatMap(f=>f.issues.map(i=>`|${f.page}|${f.width}×${f.height}|${f.language}|${i.type}|${(i.a.text||'').replaceAll('|','/')}|${i.b?.text||i.b?.kind||''}|${i.a.source||''}|`));

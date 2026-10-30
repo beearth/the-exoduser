@@ -54,6 +54,19 @@ namespace Exoduser.UnityPort
         }
         IEnumerator UiOverlapCapture()
         {
+            var pending=new Stack<IEnumerator>();pending.Push(UiOverlapCaptureBody());
+            while(pending.Count>0)
+            {
+                object current=null;bool more=false;Exception error=null;
+                try{more=pending.Peek().MoveNext();if(more)current=pending.Peek().Current;}catch(Exception caught){error=caught;}
+                if(error!=null){Debug.LogError("UI_OVERLAP_FAILED "+error);Application.Quit(2);yield break;}
+                if(!more){pending.Pop();continue;}
+                if(current is IEnumerator child){pending.Push(child);continue;}
+                yield return current;
+            }
+        }
+        IEnumerator UiOverlapCaptureBody()
+        {
             overlapOutput=Argument("-output");
             if(!NativeQaSandbox.Active||string.IsNullOrEmpty(overlapOutput)||!Path.IsPathRooted(overlapOutput)){Debug.LogError("겹침 검사는 격리 저장·절대 출력 경로 필요");Application.Quit(3);yield break;}
             Directory.CreateDirectory(overlapOutput);overlapCoverage=new UiOverlapCoverage();SelectOverlapLanguages();
@@ -68,11 +81,13 @@ namespace Exoduser.UnityPort
                 lobby.ReplayIntro();typeof(NativeLobby).GetField("since",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(lobby,16f);
                 yield return UiOverlapShot("첫화면");
                 lobby.Begin();lobby.AdvanceSplash();yield return new WaitForSecondsRealtime(1.1f);yield return UiOverlapShot("메뉴");
-                lobby.ShowLobby();lobby.Characters.TryRestore(new[]{"겹침검수"},0);yield return UiOverlapShot("로비");
+                lobby.ShowLobby();lobby.Characters.TryRestore(new[]{"검수"+overlapCoverage.frames.Count.ToString("000")},0);yield return UiOverlapShot("로비");
                 lobby.OpenCharacterCreation();
                 for(int n=0;n<5;n++){lobby.ChooseCharacterVisual(n);yield return UiOverlapShot("캐릭터선택"+n);}
                 lobby.ChooseCharacterVisual(0);lobby.ConfirmCharacterVisual();yield return UiOverlapShot("이름입력");lobby.CloseCharacterCreation();
-                lobby.BeginCharacterEntry(false);yield return UiOverlapShot("로딩");
+                lobby.AutomatedInput=false;
+                if(!lobby.BeginCharacterEntry(false)||lobby.StartupCaptureState.Page!=FrontendEntryPage.Loading)throw new InvalidOperationException("실제 신규 캐릭터 로딩 진입 누락");
+                yield return UiOverlapShot("로딩");
                 float deadline=Time.realtimeSinceStartup+12;while(lobby.StartupCaptureState.Page!=FrontendEntryPage.Nemesis&&Time.realtimeSinceStartup<deadline)yield return null;
                 lobby.StartupCaptureState.Skip();yield return null;
                 for(int n=0;n<4;n++){yield return new WaitForSecondsRealtime(.3f);if(lobby.StartupCaptureState.Page!=FrontendEntryPage.Guide||lobby.StartupCaptureState.GuideStep!=n)throw new InvalidOperationException("튜토리얼 상태 누락 "+n);yield return UiOverlapShot("튜토리얼"+n);lobby.StartupCaptureState.Advance();}

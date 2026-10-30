@@ -412,8 +412,9 @@ namespace Exoduser.UnityPort
             if(inventory.Open){inventory.Draw(Simulation.Player.Level,Simulation.Player,()=>SetInventory(false));return;}
             if(menu&&!hudSmoke&&!inventorySmoke)
             {
+                InitGUI();
                 pauseMenu.English=lobby.Language!="ko";pauseMenu.LocaleCode=lobby.Language;
-                ApplyPauseCommand(pauseMenu.Draw(PlayerDown,Screen.fullScreen));DrawSettingsOverlays();return;
+                TraceA15HitRoot("before");ApplyPauseCommand(pauseMenu.Draw(PlayerDown,Screen.fullScreen));TraceA15HitRoot("after");DrawSettingsOverlays();return;
             }
             InitGUI();var old=GUI.matrix;GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(Screen.width/1920f,Screen.height/1080f,1));
             var p=Simulation.Player;

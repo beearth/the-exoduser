@@ -39,9 +39,10 @@ namespace Exoduser.UnityPort
             if(!Active||frame==null||content==null||string.IsNullOrWhiteSpace(content.text)||GUI.color.a*GUI.contentColor.a*style.normal.textColor.a<.01f)return;
             // 레이아웃 상자 대신 실제 서체의 조판 폭과 높이를 사용한다.
             Vector2 measured=style.CalcSize(content);float available=Mathf.Max(1,rect.width-style.padding.horizontal);
-            float width=Mathf.Min(available,measured.x-style.padding.horizontal);
+            bool overflow=style.clipping==TextClipping.Overflow;
+            float width=overflow&&!style.wordWrap?measured.x-style.padding.horizontal:Mathf.Min(available,measured.x-style.padding.horizontal);
             float height=(style.wordWrap?style.CalcHeight(content,rect.width):measured.y)-style.padding.vertical;
-            height=Mathf.Min(Mathf.Max(0,height),Mathf.Max(0,rect.height-style.padding.vertical));
+            height=overflow?Mathf.Max(0,height):Mathf.Min(Mathf.Max(0,height),Mathf.Max(0,rect.height-style.padding.vertical));
             int align=(int)style.alignment;
             float x=rect.x+style.padding.left+(align%3==1?(available-width)/2:align%3==2?available-width:0);
             float innerH=rect.height-style.padding.vertical;
