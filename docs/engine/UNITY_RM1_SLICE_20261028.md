@@ -49,7 +49,7 @@
 
 ### 카메라 LOOK-001 (슬라이스 값)
 - 원근, 피치 **0.85rad = 48.70°**(회전 `Euler(48.70, 0, 0)`), 거리 **14u**(= 1400px). 카메라 위치 = 대상 위치 + `(0, sin0.85·14, −cos0.85·14)` = 대상 + **(0, 10.52, −9.24)**. 댐핑 0, 월드 좌표 추적(`CinemachineFollow`).
-- 세로 FOV = `2·atan(H / (2·1400))`. 슬라이스 캡처는 H=900(1600×900)이라 **35.65°**. 게임 기준 1920×1080(H=1080)이면 **42.17°**. 현재 이식 게임 카메라는 정사영 5.4(화면 높이 10.8u = 1080px). 평면 거리 14u에서 H=1080 FOV를 쓰면 대상 평면에서의 보이는 높이가 10.8u로 같다. 어느 값을 쓸지는 연결 쪽 결정.
+- 현행 빌더·런타임 카메라 수치는 `Resources/Data/remodel_camera.json` 하나다: 세로FOV46.9453° 고정, 피치48.7014126°·거리14u, 영웅2배·북쪽전방1.45u. 기존 저장 씬은 로드 후 공통값으로 덮어쓰며 다시 굽는 빌더도 같은 값을 읽는다. 이전 H/2800 FOV와 900p35.65°/1080p42.17°는 과거 검수 기록이다.
 - 스프라이트 빌보드: 마커 스프라이트 회전 `Euler(48.70, 0, 0)`(카메라 피치와 같은 기울임), 쉐이더 `Rendering/Sandbox/SpriteLit3D.mat`.
 - 같은 씬에 카메라 리그(`Main Camera`·`AudioListener`·`CinemachineBrain`·`CM LOOK-001`·`Player Marker`)가 들어 있어 additive 로드하면 `NativeGame`의 `Camera.main`·오디오 리스너와 겹친다. 연결 쪽에서 로드 직후 이 오브젝트를 이름으로 끄거나 `NativeGame` 카메라가 CM에 따르게 해야 한다. **빌더는 이미 고쳤다(맵 총괄 승인 10-28)**: `Main Camera`(+`Foreground Cards`·`AudioListener`·`CinemachineBrain`)·`CM LOOK-001`·`Player Marker`를 루트 `RM1_CameraRig`(위치 0·회전 없음·스케일 1) 하나로 묶는다. additive 로드 뒤 이 루트 하나만 `SetActive(false)`하면 된다. **저장된 `RM1_Slice.unity`는 아직 다시 굽지 않아 예전 배치(리그가 씬 루트에 흩어짐)다** — 재생성은 Unity 실행 순번을 받은 뒤라 그때까지는 이름으로 끈다.
 
@@ -65,7 +65,7 @@
 | 항목 | 현재 후보 값·동작 | 적용 위치 |
 |---|---|---|
 | 빛줄기 | Hell 1/2 강도 0.035/0.028, 셰이더 상한 0.05, 가로 감쇠 제곱, 세로 0~0.75 진입·0.75~1 퇴장 smoothstep. 바닥 끝 사각형 단절 제거 | 빌더·두 재질·LightShaft.shader |
-| 카메라 | 실제 화면 높이 H로 2·atan(H/2800), 900p 35.65도. 거리 14u·피치 .85rad·Core 카메라/판정은 유지 | NativeGame.Remodel3DViewport |
+| 카메라 | 공통 JSON: FOV46.9453°·피치48.7014126°·거리14u·영웅2배·전방1.45u. Core 카메라/판정은 유지. 발끝은 원본240프레임 알파>64 측정값 | NativeRemodelCamera / NativeGame.Remodel3DViewport / Rm1SliceBuilder |
 | 필드 톤 | RM-1 로드 뒤 Volume 프로필 사본의 노출 +1.0EV, 채도 -18, 색 필터 (0.82,0.90,1). 공통 렌더 자산은 변경하지 않음 | NativeGame.Remodel3DLoad |
 | 피부 결 | 기존 웹 컬러맵 4260×3031의 회색조→blur sigma1→중앙 차분×6, nx=-dx/길이·ny=dy/길이·nz=1/길이를 RGB로 인코딩한 normal. 최대4096, TerrainLayer Colormap normalScale .55 | Ground/ch1_1_r1r2_normal.png, TL_Colormap, 빌더 |
 | 피격막 | 원본 색 알파 .25×Core ScreenFlashAlpha. 처음 유효 알파 .0625, Core 감쇠 불변 | NativeGame.OnGUI, B07 정본 |

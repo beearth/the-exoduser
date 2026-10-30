@@ -95,7 +95,7 @@ namespace Exoduser.UnityPort
             view.cullingMask = 0;                  // the 2D camera only clears the frame while the 3D one draws
             r3Cam.enabled = !hidden;
             Remodel3DViewport();
-            var p = Simulation.Player; r3Marker.position = NativeRemodel3D.Point(p.X, p.Y);   // CM LOOK-001 follows the marker (offset 0, 10.52, -9.24, no damping)
+            var p = Simulation.Player; r3Marker.position = NativeRemodel3D.Point(p.X, p.Y) + NativeRemodelCamera.TargetOffset;   // CM LOOK-001 follows the marker (offset 0, 10.52, -9.24, no damping)
             foreach (var r in props) if (r != null) r.enabled = false;
             foreach (var c in chunks.Values) if (c.renderer != null) c.renderer.enabled = false;
             Remodel3DBillboards();
@@ -106,7 +106,10 @@ namespace Exoduser.UnityPort
             // 웹의 월드 1px : 화면 1px 기준. 논리 카메라와 전투 판정은 그대로 유지한다.
             if (r3Vcam == null) return;
             var lens = r3Vcam.Lens;
-            float fov = 2f * Mathf.Atan(Screen.height / (2f * 1400f)) * Mathf.Rad2Deg;
+            float fov = NativeRemodelCamera.FieldOfView;
+            r3Vcam.transform.rotation = NativeRemodelCamera.Rotation;
+            var follow = r3Vcam.GetComponent<CinemachineFollow>();
+            if (follow != null) follow.FollowOffset = NativeRemodelCamera.FollowOffset;
             if (Mathf.Abs(lens.FieldOfView - fov) > .01f) { lens.FieldOfView = fov; r3Vcam.Lens = lens; }
         }
 
@@ -134,7 +137,7 @@ namespace Exoduser.UnityPort
                 var tr = sr.transform;
                 r3Base[sr] = new R3Base { localPosition = tr.localPosition, localRotation = tr.localRotation };
                 float roll = tr.rotation.eulerAngles.z;
-                float below = sr.sprite.pivot.y / sr.sprite.pixelsPerUnit * Mathf.Abs(tr.lossyScale.y);
+                float below = (sr == playerView ? NativeRemodelCamera.HeroFootLift(sr.sprite) : sr.sprite.pivot.y / sr.sprite.pixelsPerUnit) * Mathf.Abs(tr.lossyScale.y);
                 tr.SetPositionAndRotation(tr.position + new Vector3(0, below * cos, below * sin), tilt * Quaternion.Euler(0, 0, roll));
                 r3Projected.Add(sr);
             }
