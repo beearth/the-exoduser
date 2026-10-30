@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort
         public int MineSpritesDrawn{get;private set;}
         public int MineArtFallbacks{get;private set;}
         static Sprite mineFlashRing;
-        static Sprite MineFlashRing(){if(mineFlashRing!=null)return mineFlashRing;const int n=256;var tex=new Texture2D(n,n,TextureFormat.RGBA32,false);var px=new Color[n*n];for(int y=0;y<n;y++)for(int x=0;x<n;x++){float r=Vector2.Distance(new Vector2(x+.5f,y+.5f),new Vector2(n/2f,n/2f))/(n/2f);float a=Mathf.Min(Mathf.Clamp01((1-r)*n/2+.5f),Mathf.Clamp01((r-51f/53)*n/2+.5f));px[y*n+x]=new Color(1,1,1,a);}tex.SetPixels(px);tex.Apply(false,true);mineFlashRing=Sprite.Create(tex,new Rect(0,0,n,n),new Vector2(.5f,.5f),100,0,SpriteMeshType.FullRect);return mineFlashRing;}
+        static Sprite MineFlashRing(){if(mineFlashRing!=null)return mineFlashRing;const int n=256;var tex=new Texture2D(n,n,TextureFormat.RGBA32,false);var px=new Color[n*n];for(int y=0;y<n;y++)for(int x=0;x<n;x++){float r=Vector2.Distance(new Vector2(x+.5f,y+.5f),new Vector2(n/2f,n/2f))/(n/2f);float a=Mathf.Min(Mathf.Clamp01((1-r)*n/2+.5f),Mathf.Clamp01((r-51f/53)*n/2+.5f));px[y*n+x]=new Color(1,216/255f,74/255f,a);}tex.SetPixels(px);tex.Apply(false,true);mineFlashRing=Sprite.Create(tex,new Rect(0,0,n,n),new Vector2(.5f,.5f),100,0,SpriteMeshType.FullRect);return mineFlashRing;}
         // game.html draws the pool rim as arc(r) + reversed arc(r-1.2) fill; its GPU canvas proxy fills that as a whole disc (#a9d76a at .55 of the clip alpha). Boss lead / design lead decision (10-27): keep the 1.2 px hairline the code means; true reproduces the web's disc.
         const bool PoolRimAsWebProxyDisc = false;
         readonly MaterialPropertyBlock block = new MaterialPropertyBlock();

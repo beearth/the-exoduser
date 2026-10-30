@@ -20,10 +20,11 @@ Shader "EXODUSER/SourceHudOrb"
                 if(h<.7)return float4(lerp(mid,high,(h-.3)/.4)/255,1);
                 return float4(high/255,h<.9?lerp(1,.3,(h-.7)/.2):lerp(.3,0,saturate((h-.9)/.1)));
             }
+            float SourceLinear(float value){return value<=.04045?value/12.92:pow((value+.055)/1.055,2.4);}
             float4 SourceOutput(float4 color)
             {
                 #ifndef UNITY_COLORSPACE_GAMMA
-                color.rgb=GammaToLinearSpace(color.rgb);
+                color.rgb=float3(SourceLinear(color.r),SourceLinear(color.g),SourceLinear(color.b));
                 #endif
                 return color;
             }
