@@ -449,8 +449,8 @@ namespace Exoduser.UnityPort
             if(bossBar.Active)bossBar.Draw();
             StageFlowDrawWorld();
             if(p.State=="fallen"&&!death.Active)revive.DrawFallen(p,label);
-            if(death.Active&&PlayerDown){death.Draw();}
-            else if((menu||PlayerDown)&&!hudSmoke&&!inventorySmoke){
+            if(death.Active&&PlayerDown&&!heroReviewActive){death.Draw();}
+            else if((menu||PlayerDown)&&!hudSmoke&&!inventorySmoke&&!heroReviewActive){
                 pauseMenu.English=lobby.Language!="ko";
                 pauseMenu.LocaleCode=lobby.Language;
                 TraceA15HitRoot("before");

@@ -1,5 +1,6 @@
 using System;
 #if UNITY_5_3_OR_NEWER
+using System.Collections.Generic;
 using UnityEngine;
 using Exoduser.UnityPort.Core;
 #endif
@@ -44,6 +45,15 @@ namespace Exoduser.UnityPort
         {
             if(!moving||coreTick<=0||float.IsNaN(clipSeconds)||float.IsInfinity(clipSeconds)||clipSeconds<=0)return 0;
             return (float)((coreTick/(60d*clipSeconds))%1d);
+        }
+        public static float RollTuckWeight(float phase)
+        {
+            float t=Clamp(phase);return Smooth(t/.15f)*Smooth((1-t)/.15f);
+        }
+        public static void TuckFootOffset(float legLength,out float down,out float back)
+        {
+            float length=float.IsNaN(legLength)||float.IsInfinity(legLength)?0:Math.Max(0,legLength);
+            down=length*.20f;back=length*.10f;
         }
         public HeroMotionSample Evaluate(HeroMotionInput q)
         {
@@ -102,6 +112,13 @@ namespace Exoduser.UnityPort
         HumanPose pose;
         Simulation observedSimulation;
         Transform rightUpper,rightFore,rightHand,leftUpper,leftFore,leftHand,socket;
+        Transform hips,chest,head,leftThigh,leftShin,leftFoot,rightThigh,rightShin,rightFoot;
+        SkinnedMeshRenderer bodyRenderer;
+        Mesh rollBakeMesh;
+        readonly List<Vector3> rollVertices=new List<Vector3>();
+        int[] rollBodyIndices;
+        int rollGroundTick=-1;
+        float rollGroundPhase=-1,rollGroundShift;
         Quaternion leftGripRelative;
         int speedHash=Animator.StringToHash("Speed");
         readonly int runStateHash=Animator.StringToHash("Base Layer.Run"),idleStateHash=Animator.StringToHash("Base Layer.Idle"),holdStateHash=Animator.StringToHash("ArmR_HoldWeapon.HoldWeapon");
@@ -131,23 +148,48 @@ namespace Exoduser.UnityPort
             }
             rightUpper=animator.GetBoneTransform(HumanBodyBones.RightUpperArm);rightFore=animator.GetBoneTransform(HumanBodyBones.RightLowerArm);rightHand=animator.GetBoneTransform(HumanBodyBones.RightHand);
             leftUpper=animator.GetBoneTransform(HumanBodyBones.LeftUpperArm);leftFore=animator.GetBoneTransform(HumanBodyBones.LeftLowerArm);leftHand=animator.GetBoneTransform(HumanBodyBones.LeftHand);
+            hips=animator.GetBoneTransform(HumanBodyBones.Hips);chest=animator.GetBoneTransform(HumanBodyBones.Chest)??animator.GetBoneTransform(HumanBodyBones.Spine);head=animator.GetBoneTransform(HumanBodyBones.Head);
+            leftThigh=animator.GetBoneTransform(HumanBodyBones.LeftUpperLeg);leftShin=animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg);leftFoot=animator.GetBoneTransform(HumanBodyBones.LeftFoot);
+            rightThigh=animator.GetBoneTransform(HumanBodyBones.RightUpperLeg);rightShin=animator.GetBoneTransform(HumanBodyBones.RightLowerLeg);rightFoot=animator.GetBoneTransform(HumanBodyBones.RightFoot);
             foreach(var t in GetComponentsInChildren<Transform>(true))if(t.name=="Socket_Weapon_R"){socket=t;break;}
             if(rightHand==null||leftHand==null||socket==null)return;
             leftGripRelative=Quaternion.Inverse(rightHand.rotation)*leftHand.rotation;
             poseHandler=new HumanPoseHandler(animator.avatar,animator.transform);
             poseHandler.GetHumanPose(ref pose);
             spineBend=Muscle("Spine Front-Back");chestBend=Muscle("Chest Front-Back");spineTwist=Muscle("Spine Twist Left-Right");chestTwist=Muscle("Chest Twist Left-Right");
+            PrepareRollContact();
             ready=true;
+        }
+        void PrepareRollContact()
+        {
+            foreach(var renderer in GetComponentsInChildren<SkinnedMeshRenderer>(true))
+                if(renderer.sharedMesh!=null&&(bodyRenderer==null||renderer.sharedMesh.vertexCount>bodyRenderer.sharedMesh.vertexCount))bodyRenderer=renderer;
+            if(bodyRenderer==null)return;
+            var mesh=bodyRenderer.sharedMesh;var bones=bodyRenderer.bones;
+            var cape=new bool[bones.Length];for(int i=0;i<bones.Length;i++)cape[i]=bones[i]!=null&&bones[i].name.StartsWith("Cape_",StringComparison.Ordinal);
+            var weights=mesh.isReadable?mesh.boneWeights:null;var indices=new List<int>(mesh.vertexCount);
+            bool IsCape(int index,float weight){return weight>0&&index>=0&&index<cape.Length&&cape[index];}
+            for(int i=0;i<mesh.vertexCount;i++)
+            {
+                if(weights!=null&&i<weights.Length)
+                {
+                    var w=weights[i];
+                    if(IsCape(w.boneIndex0,w.weight0)||IsCape(w.boneIndex1,w.weight1)||IsCape(w.boneIndex2,w.weight2)||IsCape(w.boneIndex3,w.weight3))continue;
+                }
+                indices.Add(i);
+            }
+            rollBodyIndices=indices.ToArray();rollVertices.Capacity=mesh.vertexCount;
+            rollBakeMesh=new Mesh{name="Hero roll body contact",hideFlags=HideFlags.HideAndDontSave};rollBakeMesh.MarkDynamic();
         }
         static int Muscle(string name){return Array.IndexOf(HumanTrait.MuscleName,name);}
         void SetMuscle(int index,float value){if(index>=0)pose.muscles[index]=Mathf.Clamp(value,-1,1);}
         void BlendMuscle(int index,float value,float weight){if(index>=0)pose.muscles[index]=Mathf.Lerp(pose.muscles[index],Mathf.Clamp(value,-1,1),weight);}
-        void OnDestroy(){poseHandler?.Dispose();poseHandler=null;}
+        void OnDestroy(){poseHandler?.Dispose();poseHandler=null;if(rollBakeMesh!=null){if(Application.isPlaying)Destroy(rollBakeMesh);else DestroyImmediate(rollBakeMesh);}}
 
         public void Sync(Simulation sim,bool moving)
         {
             if(sim==null)return;
-            if(!ReferenceEquals(observedSimulation,sim)){clock.Reset();observedSimulation=sim;}
+            if(!ReferenceEquals(observedSimulation,sim)){clock.Reset();observedSimulation=sim;rollGroundTick=-1;rollGroundPhase=-1;}
             if(!ready)Bind();
             var p=sim.Player;
             observed=new HeroMotionInput {State=p.State,Tick=sim.TickCount,RemainingTicks=p.StateTicks,RollRemaining=(float)sim.RollMoveT,Rolling=sim.RollActive,Moving=moving,EffectiveHealth=p.Hp+p.Shield,Combo=sim.KiComboStep,KiAttack=sim.Config.ActiveAttack=="kiSlash",Charge=p.KiChargeActive?p.KiChargeTicks:(float)sim.KgChg,SkillCastCount=sim.SkillCastCount};
@@ -214,6 +256,8 @@ namespace Exoduser.UnityPort
         {
             if(!ready||observedSimulation==null)return;
             SampleLocomotion();
+            var leftFootPosition=leftFoot!=null?leftFoot.position:Vector3.zero;var rightFootPosition=rightFoot!=null?rightFoot.position:Vector3.zero;
+            var leftFootRotation=leftFoot!=null?leftFoot.rotation:Quaternion.identity;var rightFootRotation=rightFoot!=null?rightFoot.rotation:Quaternion.identity;
             // 이 Core tick의 기본포즈 위에 절대 자세를 덮는다. Core와 이동 루트에는 쓰지 않는다.
             poseHandler.GetHumanPose(ref pose);
             float t=current.Phase;
@@ -248,7 +292,15 @@ namespace Exoduser.UnityPort
             float lowering=current.Kind==HeroMotionKind.Roll?grip.Lower:grip.Lower*weight;
             pose.bodyPosition+=Vector3.down*(lowering/Mathf.Max(.1f,animator.humanScale));
             poseHandler.SetHumanPose(ref pose);
-            if(current.Kind==HeroMotionKind.Roll||current.Kind==HeroMotionKind.Dead)return;
+            if(current.Kind==HeroMotionKind.Roll){ApplyRollTuck(t);FitRollBodyToFloor(t);return;}
+            if(current.Kind==HeroMotionKind.Dead)return;
+            if(lowering>.00001f)
+            {
+                // 골반 하강은 발목을 내리는 대신 무릎 굽힘으로 받는다. 이동의 원 Animator 발 위치는 보존한다.
+                SolveArm(leftThigh,leftShin,leftFoot,leftFootPosition,transform.forward-transform.right*.12f);
+                SolveArm(rightThigh,rightShin,rightFoot,rightFootPosition,transform.forward+transform.right*.12f);
+                if(leftFoot!=null)leftFoot.rotation=leftFootRotation;if(rightFoot!=null)rightFoot.rotation=rightFootRotation;
+            }
             var rightBaseUpper=rightUpper.localRotation;var rightBaseFore=rightFore.localRotation;var rightBaseHand=rightHand.localRotation;
             var desiredHand=transform.TransformPoint(grip.Hand);
             SolveArm(rightUpper,rightFore,rightHand,desiredHand,transform.right+transform.forward*.25f);
@@ -268,6 +320,47 @@ namespace Exoduser.UnityPort
                 SolveArm(leftUpper,leftFore,leftHand,transform.TransformPoint(new Vector3(-.18f,1.26f,.48f)),-transform.right);
             }
             BlendArm(leftUpper,leftFore,leftHand,leftBaseUpper,leftBaseFore,leftBaseHand,weight);
+        }
+
+        void ApplyRollTuck(float phase)
+        {
+            if(hips==null)return;
+            float tuck=NativeHeroMotionClock.RollTuckWeight(phase);
+            var rolling=transform.rotation*Quaternion.Euler(360*Ease(phase),0,0);
+            if(chest!=null)chest.rotation=Quaternion.AngleAxis(50*tuck,transform.right)*chest.rotation;
+            if(head!=null)head.rotation=Quaternion.AngleAxis(20*tuck,transform.right)*head.rotation;
+            TuckLeg(leftThigh,leftShin,leftFoot,rolling,tuck);TuckLeg(rightThigh,rightShin,rightFoot,rolling,tuck);
+            var r0=rightUpper.localRotation;var r1=rightFore.localRotation;var r2=rightHand.localRotation;
+            SolveArm(rightUpper,rightFore,rightHand,hips.position+rolling*new Vector3(.14f,.14f,.12f),rolling*(Vector3.right+Vector3.forward*.20f));
+            // 긴 대검은 바닥에 가까운 진행축을 유지하고, 파지점과 팔꿈치만 몸 가까이 묶는다.
+            rightHand.rotation=Quaternion.FromToRotation(-socket.up,transform.TransformDirection(new Vector3(.10f,.10f,-.99f).normalized))*rightHand.rotation;
+            BlendArm(rightUpper,rightFore,rightHand,r0,r1,r2,tuck);
+            var l0=leftUpper.localRotation;var l1=leftFore.localRotation;var l2=leftHand.localRotation;
+            SolveArm(leftUpper,leftFore,leftHand,socket.position+socket.up*.09f,rolling*(-Vector3.right+Vector3.forward*.20f));
+            leftHand.rotation=rightHand.rotation*leftGripRelative;BlendArm(leftUpper,leftFore,leftHand,l0,l1,l2,tuck);
+        }
+        static void TuckLeg(Transform thigh,Transform shin,Transform foot,Quaternion rolling,float tuck)
+        {
+            if(thigh==null||shin==null||foot==null)return;
+            float length=Vector3.Distance(thigh.position,shin.position)+Vector3.Distance(shin.position,foot.position);
+            NativeHeroMotionClock.TuckFootOffset(length,out float down,out float back);
+            var target=Vector3.Lerp(foot.position,thigh.position+rolling*new Vector3(0,-down,-back),tuck);
+            var rotation=foot.rotation;SolveArm(thigh,shin,foot,target,rolling*Vector3.forward);foot.rotation=rotation;
+        }
+        void FitRollBodyToFloor(float phase)
+        {
+            if(bodyRenderer==null||rollBakeMesh==null||rollBodyIndices==null||rollBodyIndices.Length==0||hips==null)return;
+            if(rollGroundTick!=observed.Tick||rollGroundPhase!=phase)
+            {
+                bodyRenderer.BakeMesh(rollBakeMesh,false);rollBakeMesh.GetVertices(rollVertices);
+                var toModel=transform.worldToLocalMatrix*bodyRenderer.transform.localToWorldMatrix;
+                float min=float.MaxValue;foreach(int index in rollBodyIndices)if(index<rollVertices.Count)min=Mathf.Min(min,toModel.MultiplyPoint3x4(rollVertices[index]).y);
+                float clearance=.03f*NativeHeroMotionClock.RollTuckWeight(phase);
+                rollGroundShift=min<float.MaxValue?clearance-min:0;
+                rollGroundTick=observed.Tick;rollGroundPhase=phase;
+            }
+            // 모델/게임 루트는 건드리지 않는다. 양끝 clearance0으로 기립 복귀의 새 높이 팝을 피한다.
+            hips.position+=transform.TransformVector(Vector3.up*rollGroundShift);
         }
 
         static void BlendArm(Transform upper,Transform fore,Transform hand,Quaternion baseUpper,Quaternion baseFore,Quaternion baseHand,float weight)
