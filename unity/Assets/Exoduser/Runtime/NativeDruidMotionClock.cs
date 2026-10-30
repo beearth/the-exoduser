@@ -13,8 +13,9 @@ namespace Exoduser.UnityPort
         }
 
         string previousState, previousClip, attackClip = "CastThorn";
-        double budget;
-        int entered;
+        double budget, recoveryProgress, recoveryRemaining;
+        int entered, hitEntered;
+        bool hitActive;
         static double Clamp(double value) { return Math.Max(0, Math.Min(1, value)); }
         static bool Has(string value, string token) { return value.IndexOf(token, StringComparison.OrdinalIgnoreCase) >= 0; }
 
@@ -30,25 +31,49 @@ namespace Exoduser.UnityPort
         public Pose Sample(int tick, string state, string move, double remaining, double teleTotal, bool moving, bool hit, bool dead)
         {
             state = state ?? "idle";
-            string phase = dead ? "death" : hit ? "hit" : state;
+            // 피격은 잠시 덮는 표현이다. 공격/회복의 진입 시각·남은 프레임을 새 상태로 덮지 않는다.
+            if (hit && !dead)
+            {
+                if (!hitActive) hitEntered = tick;
+                hitActive = true;
+                if (state != "eHit" && state != "eStagger" && state != "eKB")
+                    SamplePhase(tick, state, move, remaining, teleTotal, moving, false);
+                return new Pose("Hit", Clamp((tick - hitEntered) / 24.0));
+            }
+            hitActive = false;
+            return SamplePhase(tick, state, move, remaining, teleTotal, moving, dead);
+        }
+
+        Pose SamplePhase(int tick, string state, string move, double remaining, double teleTotal, bool moving, bool dead)
+        {
+            string phase = dead ? "death" : state;
             bool recover = state == "bossRec" || state == "recover" || state == "bossHeartPause";
             bool idle = state == "idle" || state == "eWalk" || state == "eChase" || state == "eApproach";
             bool wind = Has(state, "Wind") || Has(state, "Aim") || Has(state, "Hold") || state == "bossDruidDive";
-            string clip = dead ? "Death" : hit ? "Hit" : idle ? (moving ? "Walk" : "Idle") : recover ? attackClip : Cast(state, move ?? "");
+            string clip = dead ? "Death" : idle ? (moving ? "Walk" : "Idle") : recover ? attackClip : Cast(state, move ?? "");
             if (phase != previousState || clip != previousClip)
             {
                 entered = tick;
                 budget = Math.Max(1, wind && teleTotal > 0 ? teleTotal : remaining);
+                recoveryProgress = 0; recoveryRemaining = Math.Max(0, remaining);
                 previousState = phase; previousClip = clip;
             }
-            if (!dead && !hit && !idle && !recover) attackClip = clip;
+            if (!dead && !idle && !recover) attackClip = clip;
             if (dead) return new Pose(clip, Clamp((tick - entered) / 90.0));
-            if (hit) return new Pose(clip, Clamp((tick - entered) / 24.0));
             if (idle) return new Pose(clip, Math.Max(0, tick - entered) % (moving ? 96.0 : 180.0) / (moving ? 96.0 : 180.0));
             double contact = clip == "Slam" ? 48.0 / 124 : .4;
             double recovery = clip == "Slam" ? 54.0 / 124 : .48;
+            if (recover)
+            {
+                double left = Math.Max(0, remaining);
+                // 패링 등으로 회복이 늘어나면 현재 자세를 유지하고 이후 남은 구간만 늘어난 시간에 나눈다.
+                if (left < recoveryRemaining && recoveryRemaining > 0)
+                    recoveryProgress = Clamp(1 - (1 - recoveryProgress) * left / recoveryRemaining);
+                recoveryRemaining = left;
+                return new Pose(clip, recovery + recoveryProgress * (1 - recovery));
+            }
             double progress = Clamp((budget - Math.Max(0, remaining)) / budget);
-            return new Pose(clip, recover ? recovery + progress * (1 - recovery) : wind ? progress * contact : contact + progress * (recovery - contact));
+            return new Pose(clip, wind ? progress * contact : contact + progress * (recovery - contact));
         }
 
         // 핵은 실제 판정 원을 덮고, 작은 탄도 화면에서 읽히도록 최소 12px를 확보한다.

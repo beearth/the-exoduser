@@ -37,6 +37,6 @@ Unity 첫 임포트가 기존 `.meta` 432개와 `.asset` 1개를 다시 썼다. 
 |---|---|---|
 | 레퍼런스 | 키프레임 B, 노레위 `launch-boss-timeline.jpg`의 실제 81~84초 연속 프레임, LOCK v0.4, 기존 본체·지팡이·Cloth 실패 기록을 직접 확인 | 모델 → 동작 → 연출 → Unity 순서 유지. 유료 호출 0 |
 | 본체 재작업 | 기존 Meshy 머리·사지·수의를 남기고 넓은 흉부 면을 절제한 뒤 늑골·쇄골·목 표면을 별도 재저작. Blender 5.2.3 무창 렌더. `I:/EXODUSER-Storage/demo-art/boss-druid/rebuild_anatomy.py`, `anatomy-review/Druid_Anatomy_Rebuild.blend` | **형태 FAIL**. 늑골이 인위적인 패널로 읽히고 목·몸 경계가 부자연스러우며 기존 깃털 어깨도 남음. 실제 수작업 조형 또는 품질이 검증된 본체 원형이 필요. 같은 자동 표면 재구성 반복 중단 |
-| 증거 경계 | `anatomy-review/front.png`, `side.png`, `game55.png`, `game_size.png`, `material_front.png`는 1600×900 Blender 정적 연구. 앞·옆 근접 렌더는 전신 상하가 잘렸고, `game_size.png`에서 전신 확인 | Unity 실게임·리깅/동작·아트 PASS 증거가 아님. 원본 부모 스케일 0.01을 놓친 첫 실행은 `anatomy-rebuild/`에 별도 보존하고 판정에서 제외 |
+| 증거 경계 | `anatomy-review/*.png`는 1600×900 Blender 정적 연구. 근접 렌더의 상하 잘림을 저장된 같은 후보의 카메라만 재설정해 바로잡음. `shape-comparison/동일시점_비교_1x.png`는 원형/재구성 정면·55°를 패널당 1600×900으로 비교하며 직접 열어 FAIL 재확인 | Unity 실게임·리깅/동작·아트 PASS 증거가 아님. 원본 부모 스케일 0.01을 놓친 첫 실행은 `anatomy-rebuild/`에 별도 보존하고 판정에서 제외 |
 | 런타임 채택 | 새 모델·프리팹·애니메이션을 Resources에 넣지 않음 | 모델 게이트 미통과이므로 이 후보의 후속 리깅·127 재타이밍·제품 통합·바탕화면 반영 없음 |
-| 독립 표현 작업 | 기존 2D 보스에 적용 가능한 독·가시 탄과, 유효 프리팹이 없으면 기존 시트를 유지하는 선택형 3D 연결을 별도 제작 중 | 기능·빌드·Player 검수 결과는 후속 영수증으로 구분. 전체 3D 리마스터 완료 아님 |
+| 독립 표현 작업 | 기존 2D 보스의 독·가시 탄과 선택형 3D 연결 후보 구현. 유효 프리팹·스킨·Generic 리그·8클립이 없으면 기존 시트 유지. [표현 SSOT](UNITY_DRUID_DEMO_V0_20261030.md)에 정확 수치·44개 기초 검사와 실행 단계 기록 | 빌드·Player·실제 탄막 가독성은 별도 영수증. 전체 3D 리마스터 완료 아님 |
