@@ -13,7 +13,7 @@ namespace Exoduser.UnityPort {
         GUIStyle text,small,heading,itemName,button; Vector2 scroll,detailScroll; InventoryItem detailItem; InventoryItem drag; bool dragging;
         string message=""; bool ready;
         readonly string[] names={"무기","견갑","신발","갑옷","투구","활","장갑","바지","허리띠","목걸이","반지 I","반지 II","망토","팔찌","귀걸이 I","봉안함","귀걸이 II"};
-        static readonly Color gold=new Color(.76f,.62f,.39f),ink=new Color(.045f,.043f,.04f),line=new Color(.30f,.26f,.19f);
+        static readonly Color gold=new Color(159/255f,162/255f,162/255f),ink=new Color(.045f,.043f,.04f),line=new Color(65/255f,68/255f,68/255f);
         [Serializable] sealed class Icon {public string slot,wtype,btype,resource;public int el;}
         [Serializable] sealed class IconData {public Icon[] icons;}
         [Serializable] sealed class AffixLabel {public string id,name,unit;}
@@ -34,6 +34,8 @@ namespace Exoduser.UnityPort {
         public bool Move(InventoryItem item,int x,int y){bool ok=State.TryMove(item,x,y);message=ok?"가방 위치를 옮겼습니다":"그 위치에는 놓을 수 없습니다";return ok;}
         public void Sort(){State.Sort();message="장비 등급·아이템 위력 순으로 정리했습니다";}
         Texture2D IconFor(InventoryItem it){
+            // 현재 웹처럼 유니크 고유 원화를 슬롯 공통 원화보다 먼저 사용한다. 누락 시 기존 폴백을 유지한다.
+            if(!string.IsNullOrEmpty(it.uniqueArt)){string resource="Art/ui/inventory/unique/"+it.uniqueArt+"_cut";if(textures.TryGetValue(resource,out var unique))return unique;unique=Resources.Load<Texture2D>(resource);if(unique!=null){textures.Add(resource,unique);return unique;}}
             foreach(var i in icons)if(i.slot==it.slot&&i.el==it.el&&(i.wtype??"")== (it.wtype??"")&&(i.btype??"")== (it.btype??"")){
                 if(!textures.TryGetValue(i.resource,out var t)){t=Load(i.resource);textures.Add(i.resource,t);}return t;
             }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using Exoduser.UnityPort.Core;
@@ -9,6 +10,7 @@ namespace Exoduser.UnityPort
  // Real Player handlers only; writes PNGs at 1920x1080 and 1600x900 plus a receipt of the values it observed.
  public sealed partial class NativeGame
  {
+  int uiArtFailures;
   IEnumerator UiFinishCapture()
   {
    string output=Argument("-output"),phase=Argument("-ui-phase");if(string.IsNullOrEmpty(output))yield break;
@@ -19,12 +21,13 @@ namespace Exoduser.UnityPort
    {
     Screen.SetResolution(size.x,size.y,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.5f);
     string tag=size.x.ToString();
+    if(phase=="art")yield return UiFinishArt(output,tag,log);
     if(phase=="settings")yield return UiFinishSettings(output,tag,log);
     if(phase=="hud")yield return UiFinishHud(output,tag,log);
     if(phase=="pause")yield return UiFinishPause(output,tag,log);
    }
-   File.WriteAllText(Path.Combine(output,"ui-finish-"+phase+".json"),"{\"phase\":\""+phase+"\",\"log\":["+string.Join(",",log.ConvertAll(x=>"\""+x.Replace("\"","'")+"\""))+"]}");
-   Application.Quit();
+   File.WriteAllText(Path.Combine(output,"ui-finish-"+phase+".json"),"{\"phase\":\""+phase+"\",\"passed\":"+(uiArtFailures==0?"true":"false")+",\"failures\":"+uiArtFailures+",\"log\":["+string.Join(",",log.ConvertAll(x=>"\""+x.Replace("\"","'")+"\""))+"]}");
+   Application.Quit(uiArtFailures==0?0:2);
   }
   IEnumerator UiFinishSettings(string output,string tag,System.Collections.Generic.List<string> log)
   {
@@ -67,5 +70,20 @@ namespace Exoduser.UnityPort
    pauseMenu.Navigation.ObserveReleased(false);ApplyPauseCommand(pauseMenu.HandleKey(PauseKey.Back,false,false));
    log.Add("esc again -> menu="+menu+" running="+Running);
   }
+  IEnumerator UiFinishArt(string output,string tag,System.Collections.Generic.List<string> log)
+  {
+   // 기존 실제 창 진입 함수를 사용한다. 플레이·저장 품질을 이 정지 화면으로 판정하지 않는다.
+   if(!NativeQaSandbox.Active)yield break;smokeActive=true;menu=false;Running=false;pauseMenu.Reset();
+   yield return UiCapture(output,"Unity_HUD_"+tag);string colorDetail;bool colorOk=hud.VerifySourceColor(out colorDetail);if(!colorOk)uiArtFailures++;log.Add((colorOk?"PASS ":"FAIL ")+colorDetail);
+   SetInventory(true);inventory.Navigation.ObserveReleased(false);yield return UiCapture(output,"Unity_인벤토리_"+tag);for(int page=1;page<4;page++){typeof(NativeInventory).GetMethod("SetPage",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(inventory,new object[]{page});yield return UiCapture(output,"Unity_인벤토리_부화면"+page+"_"+tag);}SetInventory(false);Running=false;
+   SetSkills(true,6);yield return UiCapture(output,"Unity_스킬_"+tag);SetSkills(false);Running=false;
+   SetStats(true);yield return UiCapture(output,"Unity_능력치_"+tag);SetStats(false);Running=false;
+   SetForge(true);yield return UiCapture(output,"Unity_대장간_"+tag);SetForge(false);Running=false;
+   menu=true;pauseMenu.OpenSettingsDirect();pauseMenu.Navigation.ObserveReleased(false);yield return UiCapture(output,"Unity_설정_"+tag);pauseMenu.Reset();menu=false;Running=false;
+   int present=0;for(int i=1;i<=27;i++)if(Resources.Load<Texture2D>("Art/ui/inventory/unique/ui-"+i.ToString("00")+"_cut")!=null)present++;bool uniqueOk=present==27;for(int i=1;i<=27&&uniqueOk;i++){string id="ui-"+i.ToString("00");uniqueOk=inventory.IconTexture(new InventoryItem{slot="cape",uniqueArt=id}).name==id+"_cut";}if(!uniqueOk)uiArtFailures++;log.Add((uniqueOk?"PASS ":"FAIL ")+"유니크 원화 우선 반환 "+present+"/27, 화면 "+tag);
+   var pants=inventory.State.GetEquipped("pants");if(pants!=null){string prior=pants.uniqueArt;pants.uniqueArt="ui-23";SetInventory(true);inventory.Navigation.ObserveReleased(false);typeof(NativeInventory).GetMethod("SetPage",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(inventory,new object[]{0});yield return UiCapture(output,"Unity_유니크원화_"+tag);SetInventory(false);pants.uniqueArt=prior;Running=false;}
+   var d=Simulation.Druid;if(d!=null){var priorMines=new List<SeekerMine>(d.SeekerMines);var priorShots=new List<BossProjectile>(d.Projectiles);d.SeekerMines.Clear();d.Projectiles.Clear();var p=Simulation.Player;int tick=Simulation.TickCount;var hp=p.Hp;d.SeekerMines.Add(new SeekerMine{X=p.X-180,Y=p.Y-80,R=56,T=0,ArmT=60,MaxT=9999});d.SeekerMines.Add(new SeekerMine{X=p.X+180,Y=p.Y-80,R=56,T=61,ArmT=60,MaxT=9999,DruidMine=true});d.Projectiles.Add(new BossProjectile{X=p.X-180,Y=p.Y+100,Mine=true,Life=120,Ml=180,Active=true});d.Projectiles.Add(new BossProjectile{X=p.X+180,Y=p.Y+100,Mine=true,Life=20,Ml=180,Active=true});BossViewUpdate();yield return UiCapture(output,"Unity_어둠지뢰_"+tag);bool mineOk=bossView.MineSpritesDrawn==4&&bossView.MineArtFallbacks==0&&Simulation.TickCount==tick&&p.Hp==hp;if(!mineOk)uiArtFailures++;log.Add((mineOk?"PASS ":"FAIL ")+"추적/드루이드/탄/임박 지뢰 원화4, Core틱·HP 불변. 강제 상태 정지 비교, 자연 전투 아님.");d.SeekerMines.Clear();d.SeekerMines.AddRange(priorMines);d.Projectiles.Clear();d.Projectiles.AddRange(priorShots);BossViewUpdate();}else{uiArtFailures++;log.Add("FAIL 지뢰 실제 렌더 객체 없음");}
+  }
+
  }
 }

@@ -54,19 +54,11 @@ namespace Exoduser.UnityPort
             }
             b0 = lobby.StageName; double tTitle = lobby.CurrentVideo.Time; LobbyKeys.Press(KeyCode.Return); yield return null; yield return null; yield return new WaitForSecondsRealtime(.3f);
             add("title menu: Enter on the selected row (start game)", b0, lobby.StageName, tTitle, lobby.CurrentVideo.Time);
-            // 3. title page: Enter -> gate (door video)
-            limit = Now() + 10; while ((!lobby.CurrentVideo.Prepared || lobby.CurrentVideo.Frame < 0) && Now() < limit) yield return null;
+            // 인장에서 ENTER → 현행 세계관 영상. 옛 문을 기다리지 않는다.
             yield return new WaitForSecondsRealtime(.5f);
-            b0 = lobby.StageName; LobbyKeys.Press(KeyCode.Return); yield return null; yield return null; yield return new WaitForSecondsRealtime(.3f);
-            add("title: Enter", b0, lobby.StageName, 0, 0);
-            // 4. gate (door video): Enter / Space must NOT skip it (web: _cinReady only after the door video ended); record what happens
-            limit = Now() + 20; while ((lobby.Flow.Page != LobbyPage.Gate || !lobby.CurrentVideo.Prepared || lobby.CurrentVideo.Time < 1) && Now() < limit) yield return null;
-            b0 = lobby.StageName; double t0 = lobby.CurrentVideo.Time;
-            LobbyKeys.Press(KeyCode.Return); yield return null; yield return null; yield return new WaitForSecondsRealtime(.3f);
-            add("gate door video: Enter", b0, lobby.StageName, t0, lobby.CurrentVideo.Time);
-            b0 = lobby.StageName; t0 = lobby.CurrentVideo.Time;
-            LobbyKeys.Press(KeyCode.Space); yield return null; yield return null; yield return new WaitForSecondsRealtime(.3f);
-            add("gate door video: Space", b0, lobby.StageName, t0, lobby.CurrentVideo.Time);
+            b0=lobby.StageName;LobbyKeys.Press(KeyCode.Return);yield return null;yield return null;
+            add("인장 ENTER 직결",b0,lobby.StageName,0,lobby.CurrentVideo.Time);
+            double t0=0;
             // 5. world intro: wait for it to play
             limit = Now() + 40; while ((lobby.Flow.Page != LobbyPage.WorldIntro || !lobby.CurrentVideo.Prepared || lobby.CurrentVideo.Time < 1.5) && Now() < limit) yield return null;
             string[] names = { "world intro: Enter", "world intro: Space", "world intro: RightArrow" }; KeyCode[] keys = { KeyCode.Return, KeyCode.Space, KeyCode.RightArrow };

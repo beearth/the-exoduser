@@ -113,3 +113,8 @@ GUI depth 경계: `DrawStartupEntry`는 진입 당시 `GUI.depth`를 저장하�
 | gradient 보정 | 다수 translucent strip의1px 겹침 제거. subtitle256pixel/guide512pixel bilinear clamp texture 각각 단1회draw. 동적 texture는 OnDestroy에서 모두 해제 |
 
 2026-10-25 최종 안내 표현 경계: source `_startIntro`의 적 비표시→안내 종료 후 표시를 맞추기 위해 NativeGame.StartupFlow의 LateUpdate에서 Guide 동안 enemy body/walk SpriteRenderer만 숨긴다. 각 renderer의 기존 enabled 값을 저장하고 Curtain 첫 렌더 전에 복원한다. Simulation의 기존5spawn·좌표·HP·계산·ResetRun1회·플레이어/props/HUD는 변경하지 않는다. 기존20검사 재실행 없이 총괄이 변경 guide→curtain PNG를 재인수한다.
+
+
+## 2026-10-30 PC 안내 원화 반영 후보
+
+기존4단계·문구·입장transaction은유지한다. 안내판은웹원화 `panel_frame_20261029.png`(150slice→75px/outset24),버튼은 `btn_plaque_20261029.png`(174slice→40px/outset14),본문·제목의 기존 Nanum Myeongjo는 유지하고 버튼을 Hahmlet 400으로 연결했다. 폭720상한·좌우padding52·버튼168×46. [현재계약·검수](UNITY_UI_ASSETS_20261030.md). PC실제비교진행중이며Mac반영·전체튜토리얼완료를뜻하지않는다.

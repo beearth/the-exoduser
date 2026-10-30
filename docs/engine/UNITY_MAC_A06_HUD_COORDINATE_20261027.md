@@ -30,3 +30,5 @@ Unity 6000.6.7f1 `PortVerification.Build -a03a04UiQa true` 1회 ARM64 빌드는 
 기존 `PortVerification.VerifyUiComposition`의 `VisibleFrame.yMax<=height−4`, frame bounding box 대칭, 전체 폭 `<=1100`은 새 웹 좌표와 충돌한다. A06에서는 frame 끝 `height+29.6`, bbox 중심 `mid−3.6`, 외곽 폭 약 1118.7이므로 이 구형 Editor assertion은 실패 예상이다. 배경 art의 의도된 clipping과 실제 액체/슬롯 hit 범위를 분리해 판단한다. 해당 검사 삭제·완화로 PASS 처리하지 않았고, 웹 oracle에 맞춘 QA 계약 갱신은 별도 작업이다.
 
 `grep -r -n -E 'ArtScale|SkillSlotRect|HUD frame clipped|slot bar|슬롯 바' docs/` 검색 결과를 `_out/UNITY-MAC-A06-20261027/docs-keyword-grep.txt`에 보관했다. `UNITY_HUD_INTEGRATED_20261025.md`와 `UNITY_MAC_HUD_BLEND_20261026.md`의 옛 좌표는 해당 날짜의 이력이며 이 문서의 현행 표와 구분한다.
+
+2026-10-30 PC 후속: 실버 헬 미니맵 원형 원화·구슬 sRGB 출력 정정의 현행 계약과 검수는 [UI 원화 반영](UNITY_UI_ASSETS_20261030.md)을 따른다. 위 날짜의 검수 이력은 보존한다.

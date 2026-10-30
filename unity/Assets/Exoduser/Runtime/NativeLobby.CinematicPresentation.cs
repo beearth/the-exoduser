@@ -8,12 +8,14 @@ namespace Exoduser.UnityPort {
   public float GateMovieOpacity {get{return Flow.Page!=LobbyPage.Gate||movie.Duration<=0?1:Mathf.SmoothStep(0,1,(float)((movie.Duration-movie.Time)/1.5));}}
   public bool UsesGatePoster {get{return Flow.Page==LobbyPage.Title||Flow.Page==LobbyPage.Gate;}}
   void DrawCinematicMovie(){
+   if(Flow.Page==LobbyPage.Title){DrawSilverGate();return;}
    var color=GUI.color;GUI.color=new Color(color.r,color.g,color.b,color.a*GateMovieOpacity);
    // The next decoder is preparing: keep black, never flash the closed door.
    DrawMovie(new Rect(0,0,1920,1080),UsesGatePoster?gatePoster:null,false);GUI.color=color;
   }
   Texture2D gateShade,invitationShade;GUIStyle cinematicMicro,cinematicTiny,cinematicLanguage;
   void DrawGatePresentation(){
+   if(Flow.Page==LobbyPage.Title)return;
    float opacity=GateInvitationOpacity;if(opacity<=0)return;
    var color=GUI.color;bool enabled=GUI.enabled;GUI.color=new Color(color.r,color.g,color.b,color.a*opacity);
    DrawGateShading();GUI.enabled=enabled&&Flow.Page==LobbyPage.Title;DrawGate();GUI.enabled=enabled;GUI.color=color;

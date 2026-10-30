@@ -57,9 +57,9 @@ namespace Exoduser.UnityPort {
                     var tex=i==15?crOssSkin:IconFor(it);var old=GUI.color;GUI.color=new Color(.71f,.69f,.66f,1f);GUI.DrawTexture(icon,tex,ScaleMode.ScaleToFit,true);GUI.color=old;
                     SkinFrame(icon,it.rarity);
                 }else{
-                    Serif(new Rect(x,y,CrCard,CrCard),"—",11,C(169,159,141,.35f),false,0,TextAnchor.MiddleCenter);
+                    Serif(new Rect(x,y,CrCard,CrCard),"—",11,C(158,161,161,.35f),false,0,TextAnchor.MiddleCenter);
                 }
-                Serif(new Rect(x+1,y+3,CrCard-2,13),crSlotNames[i],11,it!=null?C(216,204,183):C(216,204,183,.35f),false,.275f,TextAnchor.MiddleCenter,true);
+                Serif(new Rect(x+1,y+3,CrCard-2,13),crSlotNames[i],11,it!=null?C(208,205,199):C(208,205,199,.35f),false,.275f,TextAnchor.MiddleCenter,true);
             }
             GUI.EndGroup();
             DrawCrScrollbar();
@@ -70,7 +70,7 @@ namespace Exoduser.UnityPort {
             float total=CrContentHeight,view=CrList.height,maxScroll=total-view;
             var track=new Rect(1846,CrList.y,10,view);
             float inner=view-24f,thumbH=Mathf.Max(20f,inner*view/total),travel=inner-thumbH;
-            float thumbY=track.y+12+travel*Mathf.Clamp01(crScroll/maxScroll);var thumbCol=C(124,111,88);
+            float thumbY=track.y+12+travel*Mathf.Clamp01(crScroll/maxScroll);var thumbCol=C(110,113,113);
             Fill(track,C(18,17,19));
             Fill(new Rect(track.x+2,thumbY+1.5f,6,thumbH-3),thumbCol);Fill(new Rect(track.x+3,thumbY,4,thumbH),thumbCol);
             float[] aw={2,4,4,6};
@@ -88,13 +88,13 @@ namespace Exoduser.UnityPort {
 
         // State-dependent texts of the still. Unity has no relic / stone / dust state: dash or 미이식.
         void DrawCrTexts(){
-            Serif(new Rect(1765.8f,204.5f,90.3f,28.5f),"보유 – / 9999",11,C(200,182,150),false,0,TextAnchor.MiddleCenter);
-            Serif(new Rect(75,363.4f,853,73.4f),"미이식",13,C(169,158,142),false,0,TextAnchor.MiddleCenter);
-            Serif(new Rect(893.9f,609.9f,45.1f,19),"보유 –",10,C(167,154,130),false,0,TextAnchor.MiddleCenter);
+            Serif(new Rect(1765.8f,204.5f,90.3f,28.5f),"보유 – / 9999",11,C(187,184,178),false,0,TextAnchor.MiddleCenter);
+            Serif(new Rect(75,363.4f,853,73.4f),"미이식",13,C(157,160,160),false,0,TextAnchor.MiddleCenter);
+            Serif(new Rect(893.9f,609.9f,45.1f,19),"보유 –",10,C(153,156,156),false,0,TextAnchor.MiddleCenter);
             Txt(new Rect(74,635.9f,300,16.5f),"미이식",10,C(141,137,125),400);
             SocketCounts(out int filled,out int total);
             Serif(new Rect(1791.5f,266.5f,64.5f,25.4f),"장착 "+filled+" / "+total,11,C(173,186,154),false,0,TextAnchor.MiddleCenter);
-            Serif(new Rect(1797.4f,1004,90,24),"유물 가루 –",12,C(204,186,147),false,0,TextAnchor.MiddleLeft);
+            Serif(new Rect(1797.4f,1004,90,24),"유물 가루 –",12,C(190,187,181),false,0,TextAnchor.MiddleLeft);
         }
 
         // .inv-cr-filter buttons (전체/공격/방어/자원): the filter changes only the (empty) list.
@@ -103,13 +103,13 @@ namespace Exoduser.UnityPort {
             for(int i=0;i<4;i++){
                 var r=new Rect(xs[i],294.1f,217.5f,30);bool on=crFilter==keys[i];
                 if(on){
-                    Grad(r,C(128,99,58,.4f),C(49,38,26,.533f));Border(r,C(180,151,93));Fill(new Rect(r.x+1,r.yMax-3,r.width-2,2),C(198,162,104));
+                    Grad(r,C(100,103,103,.4f),C(37,40,40,.533f));Border(r,C(151,154,154));Fill(new Rect(r.x+1,r.yMax-3,r.width-2,2),C(163,166,166));
                 }else{
-                    Grad(r,C(29,35,40),C(12,17,22));Border(r,C(118,98,70,.333f));
-                    Fill(new Rect(r.x+1,r.y+1,r.width-2,1),C(181,160,121,.125f));Fill(new Rect(r.x+1,r.yMax-3,r.width-2,2),C(0,0,0,.533f));
+                    Grad(r,C(29,35,40),C(12,17,22));Border(r,C(98,101,101,.333f));
+                    Fill(new Rect(r.x+1,r.y+1,r.width-2,1),C(160,163,163,.125f));Fill(new Rect(r.x+1,r.yMax-3,r.width-2,2),C(0,0,0,.533f));
                 }
-                Serif(r,labels[i],11,on?C(240,223,184):C(182,174,156),false,0,TextAnchor.MiddleCenter);
-                if(GUI.Button(r,GUIContent.none,GUIStyle.none))crFilter=keys[i];
+                Serif(r,labels[i],11,on?C(240,223,184):C(172,175,175),false,0,TextAnchor.MiddleCenter);
+                if(NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none))crFilter=keys[i];
             }
         }
     }

@@ -40,8 +40,8 @@ namespace Exoduser.UnityPort {
    try{
     lobby.SetPlaybackFocus(true);yield return null;lobby.AdvanceSplash();yield return null;lobby.AdvanceSplash();yield return null;
     double limit=LobbyNow+15;
-    while((!lobby.CurrentVideo.Prepared||lobby.CurrentVideo.Frame<0)&&LobbyNow<limit)yield return null;
-    check("gate_prepared",lobby.CurrentVideo.Prepared&&lobby.CurrentVideo.Frame>=0);
+    yield return new WaitForEndOfFrame();
+    check("sigil_ready_without_legacy_door",lobby.Flow.Page==LobbyPage.Title&&lobby.OriginalArtDrawn);
     if(!result.checks[0].passed)yield break;
     lobby.StartGate();limit=LobbyNow+25;
     while((lobby.Flow.Page!=LobbyPage.WorldIntro||!lobby.CurrentVideo.Prepared||lobby.CurrentVideo.Time<2)&&LobbyNow<limit)yield return null;
@@ -81,9 +81,9 @@ namespace Exoduser.UnityPort {
     double limit=LobbyNow+20;while(lobby.StageName=="FDG"&&LobbyNow<limit){ProbeLobbyAudio();yield return null;}
     yield return CaptureLobbyMovie("splash",1.5,output);lobbyReceipt.originalArtDrawn=lobby.OriginalArtDrawn;
     lobby.AdvanceSplash();yield return null;
-    limit=LobbyNow+15;while((!lobby.CurrentVideo.Prepared||lobby.CurrentVideo.Frame<0)&&LobbyNow<limit){ProbeLobbyAudio();yield return null;}
+    yield return new WaitForSecondsRealtime(3.9f);
     yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,"unity-lobby-enter.png"));yield return null;
-    lobby.StartGate();yield return CaptureLobbyMovie("gate",.8,output);
+    lobby.StartGate();yield return null;
     limit=LobbyNow+20;while(lobby.Flow.Page==LobbyPage.Gate&&LobbyNow<limit){ProbeLobbyAudio();yield return null;}
     BeginLobbyWorldObservation();yield return CaptureLobbyMovie("world",probe?2:6,output);
     lobbyReceipt.captionVisible=lobby.CaptionVisible;limit=LobbyNow+(probe?10:145);

@@ -54,8 +54,8 @@ namespace Exoduser.UnityPort {
             if(anchor==TextAnchor.MiddleCenter||anchor==TextAnchor.UpperCenter)x=r.x+(r.width-total)/2f;else if(anchor==TextAnchor.MiddleRight)x=r.xMax-total;
             for(int pass=shadow?0:1;pass<2;pass++){
                 float px=x;st.normal.textColor=pass==0?new Color(0,0,0,.8f):c;float oy=pass==0?1.5f:0;
-                if(spacing==0){GUI.Label(new Rect(px,r.y+oy,r.width+total,r.height),s,st);continue;}
-                foreach(char ch in s){var g=ch.ToString();GUI.Label(new Rect(px,r.y+oy,40,r.height),g,st);px+=st.CalcSize(new GUIContent(g)).x+spacing;}
+                if(spacing==0){NativeSilverHellUi.Label(new Rect(px,r.y+oy,r.width+total,r.height),s,st);continue;}
+                foreach(char ch in s){var g=ch.ToString();NativeSilverHellUi.Label(new Rect(px,r.y+oy,40,r.height),g,st);px+=st.CalcSize(new GUIContent(g)).x+spacing;}
             }
         }
 
@@ -95,23 +95,23 @@ namespace Exoduser.UnityPort {
             IronTile(pane,iron480,480);Grad(pane,C(12,11,13,.867f),C(16,16,18,.91f));Rail(pane,6,41);
             var head=new Rect(565,197,390,41);
             IronTile(head,iron320,320);Grad(head,C(25,22,25,.30f),C(17,16,21,.45f));
-            Fill(new Rect(head.x,head.y,head.width,1),C(98,88,70));Fill(new Rect(head.x,head.yMax-1,head.width,1),C(98,88,70));
+            Fill(new Rect(head.x,head.y,head.width,1),C(87,90,90));Fill(new Rect(head.x,head.yMax-1,head.width,1),C(87,90,90));
             // Ossuary-category items only (bone parts are not collected yet): 0 / 300.
             float x=573;string count=State.Bag.FindAll(i=>i.slot=="ossuary").Count.ToString();   // ossuary-category items in the bag (Unity admits none)
-            Txt(new Rect(x,204,300,23),"가방 (",14,C(222,212,192),500);x+=TextWidth("가방 (",14,500);
+            Txt(new Rect(x,204,300,23),"가방 (",14,C(216,213,207),500);x+=TextWidth("가방 (",14,500);
             Serif(new Rect(x,204,300,23),count,14,C(240,223,189),true);x+=SerifWidth(count,14,true,0);
-            Txt(new Rect(x,204,300,23),"/",14,C(222,212,192),500);x+=TextWidth("/",14,500);
-            Serif(new Rect(x,204,300,23),InventoryState.BagMax.ToString(),14,C(169,157,135),false);x+=SerifWidth("300",14,false,0);
-            Txt(new Rect(x,204,300,23),")",14,C(222,212,192),500);
+            Txt(new Rect(x,204,300,23),"/",14,C(216,213,207),500);x+=TextWidth("/",14,500);
+            Serif(new Rect(x,204,300,23),InventoryState.BagMax.ToString(),14,C(156,159,159),false);x+=SerifWidth("300",14,false,0);
+            Txt(new Rect(x,204,300,23),")",14,C(216,213,207),500);
             var sort=new Rect(836,201,66,28);
             PlateFace(sort,false);
-            Txt(sort,"↕ 정렬",12,C(199,190,173),500,TextAnchor.MiddleCenter,true);
-            Fill(new Rect(906,207,1,17),C(117,98,71,.4f));
-            Serif(new Rect(915,207,30,17),"최대",11,C(184,170,145),false);
+            Txt(sort,"↕ 정렬",12,C(194,191,185),500,TextAnchor.MiddleCenter,true);
+            Fill(new Rect(906,207,1,17),C(98,101,101,.4f));
+            Serif(new Rect(915,207,30,17),"최대",11,C(169,172,172),false);
             var filter=new Rect(565,246,390,32);
-            Grad(filter,C(65,50,34,.314f),C(20,17,21,.533f),90);Border(filter,C(81,70,56));
-            var chev=C(170,150,115);Line(new Vector2(578,257),new Vector2(583,262),1.4f,chev);Line(new Vector2(583,262),new Vector2(578,267),1.4f,chev);
-            Txt(new Rect(591,246,300,32),"아이템 필터",12,C(195,181,155),400);
+            Grad(filter,C(50,53,53,.314f),C(20,17,21,.533f),90);Border(filter,C(69,72,72));
+            var chev=C(150,153,153);Line(new Vector2(578,257),new Vector2(583,262),1.4f,chev);Line(new Vector2(583,262),new Vector2(578,267),1.4f,chev);
+            Txt(new Rect(591,246,300,32),"아이템 필터",12,C(185,182,176),400);
             DrawOssGrid();
             DrawOssInfo();
         }
@@ -124,13 +124,13 @@ namespace Exoduser.UnityPort {
             var a=C(39,36,37,.565f);var b=C(18,17,20,.85f);
             for(int y=first;y<last;y++)for(int x=0;x<10;x++){
                 var r=new Rect(x*cell,y*cell,cell,cell);
-                IronTile(r,iron320,240);Grad(r,a,b,145);Border(r,C(56,54,56));DiamondOutline(r.center,9f,C(157,141,99,.125f));
+                IronTile(r,iron320,240);Grad(r,a,b,145);Border(r,C(56,54,56));DiamondOutline(r.center,9f,C(139,142,142,.125f));
             }
             GUI.EndScrollView();
             float maxScroll=total-gh;
             var track=new Rect(gx+gw-11,gy,10,gh);
             float inner=gh-24f,thumbH=Mathf.Max(20f,inner*gh/total),travel=inner-thumbH;
-            float thumbY=track.y+12+travel*Mathf.Clamp01(ossScroll.y/maxScroll);var thumbCol=C(124,111,88);
+            float thumbY=track.y+12+travel*Mathf.Clamp01(ossScroll.y/maxScroll);var thumbCol=C(110,113,113);
             Fill(track,C(18,17,19));
             Fill(new Rect(track.x+2,thumbY+1.5f,6,thumbH-3),thumbCol);Fill(new Rect(track.x+3,thumbY,4,thumbH),thumbCol);
             float[] aw={2,4,4,6};
@@ -150,94 +150,94 @@ namespace Exoduser.UnityPort {
         void DrawOssInfo(){
             var box=new Rect(565,661,390,363);
             IronTile(box,iron480,480);Grad(box,C(23,32,38,.93f),C(11,16,20,.96f),145);
-            BoxGlow(box,.22f,.6f,.48f,C(81,65,50,.15f));
+            BoxGlow(box,.22f,.6f,.48f,C(65,68,68,.15f));
             InsetRing(new Rect(box.x+1,box.y+1,box.width-2,box.height-2),3,C(9,13,15));
-            Border(box,C(128,104,70));
+            Border(box,C(105,108,108));
             var c=new Vector2(614,842);
-            Disc(c,33,C(140,114,75,.07f));
-            Glow(c.x,c.y,28,28,C(115,94,57,.13f));
-            Ring(c,28,1,C(140,114,75,.333f));
-            DiamondOutline(c,10f,C(172,141,91));DiamondOutline(c,9.2f,C(172,141,91,.6f));
-            Serif(new Rect(662,820,200,21),"유골함 정보",15,C(229,207,165),true,.9f);
-            Serif(new Rect(662,846,300,17),"아이템 또는 유골에 마우스를 올려 정보를 확인하세요",11,C(180,165,141));
+            Disc(c,33,C(115,118,118,.07f));
+            Glow(c.x,c.y,28,28,C(94,97,97,.13f));
+            Ring(c,28,1,C(115,118,118,.333f));
+            DiamondOutline(c,10f,C(142,145,145));DiamondOutline(c,9.2f,C(142,145,145,.6f));
+            Serif(new Rect(662,820,200,21),"유골함 정보",15,C(212,209,203),true,.9f);
+            Serif(new Rect(662,846,300,17),"아이템 또는 유골에 마우스를 올려 정보를 확인하세요",11,C(164,167,167));
         }
 
         void DrawOssAltar(){
             var pane=new Rect(981,183,498,856);
             IronTile(pane,iron480,480);Grad(pane,C(12,14,16,.72f),C(12,13,15,.918f));
-            BoxGlow(pane,.5f,.42f,.7f,C(68,53,35,.27f));
+            BoxGlow(pane,.5f,.42f,.7f,C(53,56,56,.27f));
             Rail(pane,6,41);
             // head
-            Serif(new Rect(999,204,300,21),"선대의 유골 콜렉션",14,C(224,206,176),true,.98f,TextAnchor.MiddleLeft,true);
+            Serif(new Rect(999,204,300,21),"선대의 유골 콜렉션",14,C(211,208,202),true,.98f,TextAnchor.MiddleLeft,true);
             var chip=new Rect(1394,201,67,27);
-            Fill(chip,C(9,11,14,.5f));Border(chip,C(111,88,59,.44f));Fill(new Rect(chip.x+1,chip.y+1,chip.width-2,2),C(0,0,0,.35f));
-            Serif(chip,"수집 미이식",11,C(201,181,147),true,0,TextAnchor.MiddleCenter);
-            Fill(new Rect(999,236,462,1),C(117,96,68,.44f));
+            Fill(chip,C(9,11,14,.5f));Border(chip,C(89,92,92,.44f));Fill(new Rect(chip.x+1,chip.y+1,chip.width-2,2),C(0,0,0,.35f));
+            Serif(chip,"수집 미이식",11,C(186,183,177),true,0,TextAnchor.MiddleCenter);
+            Fill(new Rect(999,236,462,1),C(96,99,99,.44f));
             // ritual ring + centre + four bone nodes (everything uncollected)
             GUI.DrawTexture(new Rect(990,316,480,480),ossRing);
             GUI.DrawTexture(new Rect(1120,431.5f,220,250),ossCenter);
             GUI.DrawTexture(new Rect(1191-20,512-20,ossUrn.width,ossUrn.height),ossUrn);
             var lab=new Rect(1189,593,81,30);
             Grad(new Rect(lab.x,lab.y,lab.width*.18f,lab.height),C(0,0,0,0),C(11,13,15,.93f),90);Fill(new Rect(lab.x+lab.width*.18f,lab.y,lab.width*.64f,lab.height),C(11,13,15,.93f));Grad(new Rect(lab.x+lab.width*.82f,lab.y,lab.width*.18f,lab.height),C(11,13,15,.93f),C(0,0,0,0),90);
-            Serif(lab,"유골함",16,C(223,205,165),true,2.6f,TextAnchor.MiddleCenter,true);
+            Serif(lab,"유골함",16,C(209,206,200),true,2.6f,TextAnchor.MiddleCenter,true);
             for(int i=0;i<4;i++){
                 var n=boneNodes[i];
                 GUI.DrawTexture(new Rect(n.x-100,n.y-100,200,200),ossNode);
                 GUI.DrawTexture(boneImageRects[i],ossBone[i]);
-                Serif(boneNameRects[i],bonePartNames[i],15,C(221,206,180),true,.89f,TextAnchor.MiddleCenter,true);
-                Txt(boneGradeRects[i],"미이식",15,C(147,140,126),600,TextAnchor.MiddleCenter,true);
+                Serif(boneNameRects[i],bonePartNames[i],15,C(210,207,201),true,.89f,TextAnchor.MiddleCenter,true);
+                Txt(boneGradeRects[i],"미이식",15,C(138,141,141),600,TextAnchor.MiddleCenter,true);
             }
             // footer
             var foot=new Rect(999,876,462,38);
-            Grad(new Rect(foot.x,foot.y,foot.width/2f,foot.height),C(139,112,71,0),C(139,112,71,.1f),90);Grad(new Rect(foot.center.x,foot.y,foot.width/2f,foot.height),C(139,112,71,.1f),C(139,112,71,0),90);
-            Fill(new Rect(foot.x,foot.y,foot.width,1),C(117,96,68,.44f));
-            Serif(new Rect(1154,885,100,23),"철갑 전대",15,C(224,205,174),true,1.5f,TextAnchor.MiddleLeft,true);
+            Grad(new Rect(foot.x,foot.y,foot.width/2f,foot.height),C(113,116,116,0),C(113,116,116,.1f),90);Grad(new Rect(foot.center.x,foot.y,foot.width/2f,foot.height),C(113,116,116,.1f),C(113,116,116,0),90);
+            Fill(new Rect(foot.x,foot.y,foot.width,1),C(96,99,99,.44f));
+            Serif(new Rect(1154,885,100,23),"철갑 전대",15,C(210,207,201),true,1.5f,TextAnchor.MiddleLeft,true);
             var state=new Rect(1237,885,69,23);
-            Fill(state,C(11,13,15,.6f));Border(state,C(116,96,61,.4f));
-            Serif(state,"미이식",10,C(170,158,133),false,0,TextAnchor.MiddleCenter);
+            Fill(state,C(11,13,15,.6f));Border(state,C(96,99,99,.4f));
+            Serif(state,"미이식",10,C(157,160,160),false,0,TextAnchor.MiddleCenter);
             var detail=new Rect(999,918,462,42);
-            Fill(detail,C(8,10,11,.61f));Border(detail,C(117,96,68,.25f));
-            Txt(detail,"부위를 선택하면 등급과 성장 효과를 확인할 수 있습니다.",11,C(192,179,155),400,TextAnchor.MiddleCenter);
-            Txt(new Rect(999,968,462,15),"유골 우클릭 또는 선택 후 해제 · 해제한 유골은 가방으로 이동",10,C(150,137,116),400,TextAnchor.MiddleCenter);
+            Fill(detail,C(8,10,11,.61f));Border(detail,C(96,99,99,.25f));
+            Txt(detail,"부위를 선택하면 등급과 성장 효과를 확인할 수 있습니다.",11,C(183,180,174),400,TextAnchor.MiddleCenter);
+            Txt(new Rect(999,968,462,15),"유골 우클릭 또는 선택 후 해제 · 해제한 유골은 가방으로 이동",10,C(136,139,139),400,TextAnchor.MiddleCenter);
             // Web buttons; withdraw is disabled (nothing selected), unequip/re-equip is not ported -> draws like the web, does nothing.
             OssButton(new Rect(1142,993,91,30),"선택 유골 해제",.48f);
             OssButton(new Rect(1241,993,77,30),"유골함 해제",1f);
         }
 
         void OssButton(Rect r,string label,float alpha){
-            Fill(r,C(24,21,19,alpha));Border(r,C(117,96,68,alpha));
-            Serif(r,label,11,C(223,205,165,alpha),false,0,TextAnchor.MiddleCenter);
+            Fill(r,C(19,22,22,alpha));Border(r,C(96,99,99,alpha));
+            Serif(r,label,11,C(209,206,200,alpha),false,0,TextAnchor.MiddleCenter);
         }
 
         void DrawOssAncestor(){
             var pane=new Rect(1489,183,388,679);
             IronTile(pane,iron480,480);Grad(pane,C(20,22,25,.91f),C(9,11,13,.92f));
-            BoxGlow(pane,.5f,.3f,.68f,C(86,70,47,.294f));
+            BoxGlow(pane,.5f,.3f,.68f,C(70,73,73,.294f));
             InsetRing(new Rect(pane.x+1,pane.y+1,pane.width-2,pane.height-2),5,C(9,11,12,.5f));
-            Fill(new Rect(pane.x+1,pane.y+1,pane.width-2,1),C(203,180,137,.14f));
-            Border(pane,C(98,83,62));
-            Serif(new Rect(1504,196,200,21),"소환 전대",14,C(224,206,176),true,1.4f,TextAnchor.MiddleLeft,true);
-            Serif(new Rect(1792,199,70,15),"1 / 1",10,C(161,138,102),true,1.8f,TextAnchor.MiddleRight);
-            Fill(new Rect(1502,225,362,1),C(117,96,68,.44f));
+            Fill(new Rect(pane.x+1,pane.y+1,pane.width-2,1),C(185,182,176,.14f));
+            Border(pane,C(83,86,86));
+            Serif(new Rect(1504,196,200,21),"소환 전대",14,C(211,208,202),true,1.4f,TextAnchor.MiddleLeft,true);
+            Serif(new Rect(1792,199,70,15),"1 / 1",10,C(138,141,141),true,1.8f,TextAnchor.MiddleRight);
+            Fill(new Rect(1502,225,362,1),C(96,99,99,.44f));
             var stage=new Rect(1502,226,362,481);
-            BoxGlow(stage,.5f,.66f,.6f,C(101,80,54,.23f));
+            BoxGlow(stage,.5f,.66f,.6f,C(81,84,84,.23f));
             GUI.DrawTexture(new Rect(1503,227,360,479),ossPortrait,ScaleMode.StretchToFill,false);
-            Border(stage,C(142,114,70,.25f));
+            Border(stage,C(115,118,118,.25f));
             var shade=new Rect(stage.x+stage.width*.1f,stage.yMax-4-stage.height*.22f,stage.width*.8f,stage.height*.22f);
             Grad(shade,C(11,13,14,0),C(11,13,14,1));
             var frame=new Rect(stage.x+8,stage.y+11,stage.width-16,stage.height-18);
-            InsetRing(frame,4,C(9,11,11,.61f));Border(frame,C(142,114,70,.25f));
+            InsetRing(frame,4,C(9,11,11,.61f));Border(frame,C(115,118,118,.25f));
             // caption
             var cap=new Rect(1502,707,362,84);
-            Grad(cap,C(128,103,67,.09f),C(0,0,0,0),90);Fill(new Rect(cap.x,cap.y,cap.width,1),C(117,96,68,.44f));
-            Serif(new Rect(1507,719,200,13),"ANCESTOR · 01",9,C(184,156,104),true,1.8f);
+            Grad(cap,C(104,107,107,.09f),C(0,0,0,0),90);Fill(new Rect(cap.x,cap.y,cap.width,1),C(96,99,99,.44f));
+            Serif(new Rect(1507,719,200,13),"ANCESTOR · 01",9,C(156,159,159),true,1.8f);
             Serif(new Rect(1507,733,300,29),"철갑 전대",22,C(240,215,173),true,1.76f,TextAnchor.MiddleLeft,true);
-            Serif(new Rect(1507,764,200,17),"미이식",11,C(170,157,135));
-            Serif(new Rect(1507,799,200,15),"유골 수집",11,C(188,174,149));
-            Serif(new Rect(1762,799,97,15),"미이식",11,C(232,210,168),true,0,TextAnchor.MiddleRight);
+            Serif(new Rect(1507,764,200,17),"미이식",11,C(156,159,159));
+            Serif(new Rect(1507,799,200,15),"유골 수집",11,C(173,176,176));
+            Serif(new Rect(1762,799,97,15),"미이식",11,C(215,212,206),true,0,TextAnchor.MiddleRight);
             var track=new Rect(1507,820,352,4);
-            Fill(track,C(6,8,8));InsetRing(track,1,C(106,86,54,.376f));
-            Txt(new Rect(1507,834,352,15),"네 부위를 모으면 전대 소환이 해금됩니다.",10,C(150,141,124),400);
+            Fill(track,C(6,8,8));InsetRing(track,1,C(86,89,89,.376f));
+            Txt(new Rect(1507,834,352,15),"네 부위를 모으면 전대 소환이 해금됩니다.",10,C(140,143,143),400);
         }
     }
 }

@@ -67,15 +67,15 @@ namespace Exoduser.UnityPort
         }
         static void Text(Rect rect,string text,GUIStyle style,Color color)
         {
-            var old=GUI.color;GUI.color=Color.black;GUI.Label(new Rect(rect.x+1,rect.y+2,rect.width,rect.height),text,style);GUI.color=color;GUI.Label(rect,text,style);GUI.color=old;
+            var old=GUI.color;GUI.color=Color.black;NativeSilverHellUi.Label(new Rect(rect.x+1,rect.y+2,rect.width,rect.height),text,style);GUI.color=color;NativeSilverHellUi.Label(rect,text,style);GUI.color=old;
         }
         void Styles()
         {
             if(hpNumber!=null)return;
             hpNumber=new GUIStyle(GUI.skin.label){font=numberFont,fontSize=24,alignment=TextAnchor.MiddleCenter};hpNumber.normal.textColor=Color.white;
             maximum=new GUIStyle(hpNumber){fontSize=18};resourceNumber=new GUIStyle(hpNumber){fontSize=17};resourceLabel=new GUIStyle(hpNumber){fontSize=14};
-            keyLabel=new GUIStyle(GUI.skin.label){font=Required<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold"),fontSize=15,alignment=TextAnchor.MiddleCenter,wordWrap=false,clipping=TextClipping.Clip,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};keyLabel.normal.textColor=new Color(.78f,.74f,.66f);
-            tooltip=new GUIStyle(GUI.skin.box){font=textFont,fontSize=20,alignment=TextAnchor.MiddleCenter};tooltip.normal.textColor=new Color(.92f,.84f,.68f);
+            keyLabel=new GUIStyle(GUI.skin.label){font=Required<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold"),fontSize=15,alignment=TextAnchor.MiddleCenter,wordWrap=false,clipping=TextClipping.Clip,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};keyLabel.normal.textColor=new Color(192/255f,189/255f,183/255f);
+            tooltip=new GUIStyle(GUI.skin.box){font=textFont,fontSize=20,alignment=TextAnchor.MiddleCenter};tooltip.normal.textColor=new Color(219/255f,216/255f,210/255f);
         }
         public void Draw(float width,float height,string activeAttack,Simulation simulation=null)
         {
@@ -109,7 +109,7 @@ namespace Exoduser.UnityPort
                 float natural=keyLabel.CalcSize(new GUIContent(keys[i])).x;
                 float squeeze=Mathf.Min(1,content.width/Mathf.Max(1,natural));var matrix=GUI.matrix;
                 GUI.matrix=matrix*Matrix4x4.TRS(new Vector3(content.x,content.y,0),Quaternion.identity,new Vector3(squeeze,1,1));
-                GUI.Label(new Rect(0,0,content.width/squeeze,content.height),keys[i],keyLabel);GUI.matrix=matrix;
+                NativeSilverHellUi.Label(new Rect(0,0,content.width/squeeze,content.height),keys[i],keyLabel);GUI.matrix=matrix;
             }
         }
         Texture2D BuildLabelCleanBar()
@@ -161,9 +161,17 @@ namespace Exoduser.UnityPort
         static Color ProbeColor(Texture2D image,int x,int y)
         {
             var c=image.GetPixel(x,y);
-            // ARGB32 readback is sRGB-encoded in a Linear project; compare shader-space RGB in both project color spaces.
-            if(QualitySettings.activeColorSpace==ColorSpace.Linear){c.r=Mathf.GammaToLinearSpace(c.r);c.g=Mathf.GammaToLinearSpace(c.g);c.b=Mathf.GammaToLinearSpace(c.b);}
+            // SourceHudOrb는 웹 sRGB 상수를 출력 직전에 선형화한다. ReadPixels의 sRGB 값을 웹 값과 직접 비교한다.
             return c;
+        }
+        public bool VerifySourceColor(out string detail)
+        {
+            var image=Pixels(hp);try{
+                float top=1-128.5f/256,r=Vector2.Distance(new Vector2((128.5f/256-.5f)*.70710678f,(top-material.GetFloat("_HpTranslate")-.4f)*1.1785113f),Vector2.zero);
+                Color expected=top<material.GetFloat("_HpTranslate")?new Color(8/255f,8/255f,8/255f):r<.5f?Color.Lerp(new Color(107/255f,16/255f,32/255f),new Color(61/255f,10/255f,18/255f),r*2):Color.Lerp(new Color(61/255f,10/255f,18/255f),new Color(30/255f,5/255f,10/255f),Mathf.Clamp01((r-.5f)*2));
+                var actual=image.GetPixel(128,128);float error=Mathf.Max(Mathf.Abs(actual.r-expected.r),Mathf.Abs(actual.g-expected.g),Mathf.Abs(actual.b-expected.b))*255;
+                detail="HP 원본 sRGB GPU 오차 "+error.ToString("0.00")+"/255, 실제 "+ColorUtility.ToHtmlStringRGB(actual)+", 기준 "+ColorUtility.ToHtmlStringRGB(expected);return error<=3;
+            }finally{Release(image);}
         }
         public HudPixelProbe Probe(string name)
         {

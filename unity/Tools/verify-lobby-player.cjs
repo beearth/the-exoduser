@@ -2,7 +2,8 @@ const fs=require('fs'),path=require('path');const dir=process.argv[2];if(!dir)th
 let r;try{r=JSON.parse(fs.readFileSync(dir+'/lobby-smoke.json','utf8'));}catch{}
 const checks=[],check=(name,passed)=>checks.push({name,passed:!!passed});
 check('native_frontend_receipt',r?.scope==='actual_native_player_frontend_fixture');
-for(const s of ['fdg','splash','gate','world','lobby']){const row=r?.samples?.find(x=>x.stage===s);check('native_video_decode_'+s,row?.prepared&&row?.stageMatched&&row?.frameChanges>0&&row?.timeAdvanced>.01&&row?.nonBlack&&!row?.error);check('rendered_'+s,fs.existsSync(path.join(dir,'unity-lobby-'+s+'.png')));}
+for(const s of ['fdg','splash','world','lobby']){const row=r?.samples?.find(x=>x.stage===s);check('native_video_decode_'+s,row?.prepared&&row?.stageMatched&&row?.frameChanges>0&&row?.timeAdvanced>.01&&row?.nonBlack&&!row?.error);check('rendered_'+s,fs.existsSync(path.join(dir,'unity-lobby-'+s+'.png')));}
+check('sigil_rendered_without_door_movie',fs.existsSync(path.join(dir,'unity-lobby-enter.png'))&&!r?.samples?.some(x=>x.stage==='gate'));
 check('natural_movie_end_reaches_lobby',r?.worldCompletedNaturally);
 const world=r?.worldPlayback,finite=x=>typeof x==='number'&&Number.isFinite(x);
 check('world_movie_113_seconds_at_normal_speed',world?.endedEvent&&finite(world.duration)&&Math.abs(world.duration-113.291667)<.2&&finite(world.wallElapsed)&&world.wallElapsed>=world.duration*.95-2&&world.wallElapsed<=world.duration*1.05+2&&world.lastVideoTime>=world.duration-.3&&world.firstVideoTime<=1&&world.frameChanges>100&&Math.abs(world.minimumSpeed-1)<.001&&Math.abs(world.maximumSpeed-1)<.001);

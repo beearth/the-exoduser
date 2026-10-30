@@ -56,7 +56,7 @@ namespace Exoduser.UnityPort {
 
   // ---- card rows (_invCardFields) ----
   struct CRow {public string l,v;public Color lc,vc;public int kind;}   // kind 0 row, 1 type header, 2 full-width text, 3 implicit
-  static readonly Color defL=C(179,140,115),defV=C(239,208,168);
+  static readonly Color defL=C(144,147,147),defV=C(239,208,168);
   static string F(double d){return d.ToString("0.####",CultureInfo.InvariantCulture);}
   static string Sg(double d){return (d>=0?"+":"")+F(d);}
   static void AddRow(List<CRow> r,string l,string v,Color? lc=null,Color? vc=null){r.Add(new CRow{l=l,v=v,lc=lc??defL,vc=vc??defV,kind=0});}
@@ -80,14 +80,14 @@ namespace Exoduser.UnityPort {
    if(it.itemLv>0)r.Add(new CRow{l="아이템 Lv."+it.itemLv,lc=C(170,170,170),kind=2});
    if(it.reqLv>0){bool ok=level>=it.reqLv;r.Add(new CRow{l="요구 Lv."+it.reqLv+(ok?"":" ✘"),lc=ok?C(136,204,136):C(255,68,68),kind=2});}
    CardTypeDef t;
-   if(!string.IsNullOrEmpty(it.wtype))r.Add(new CRow{l=cardW.TryGetValue(it.wtype,out t)?t.name:it.wtype,lc=C(204,170,119),kind=1});
-   if(!string.IsNullOrEmpty(it.btype))r.Add(new CRow{l=cardB.TryGetValue(it.btype,out t)?t.name:it.btype,lc=C(204,170,119),kind=1});
+   if(!string.IsNullOrEmpty(it.wtype))r.Add(new CRow{l=cardW.TryGetValue(it.wtype,out t)?t.name:it.wtype,lc=C(172,175,175),kind=1});
+   if(!string.IsNullOrEmpty(it.btype))r.Add(new CRow{l=cardB.TryGetValue(it.btype,out t)?t.name:it.btype,lc=C(172,175,175),kind=1});
    if(it.atk!=0)AddRow(r,"ATK:",F(it.atk));
    double dps=Dps(it,dex);if(!double.IsNaN(dps))AddRow(r,"DPS:",dps.ToString("0.0",CultureInfo.InvariantCulture),C(255,102,68),C(255,170,102));
    if(it.def!=0)AddRow(r,"물리DEF:",F(it.def));
    if(it.eDef!=0)AddRow(r,"에너지DEF:",F(it.eDef));
    if(!string.IsNullOrEmpty(it.wtype)||!string.IsNullOrEmpty(it.btype))AddRow(r,"SPD:",Sg(it.spd));
-   if(it.wStCost!=0)AddRow(r,"ST소모:",F(it.wStCost),null,C(204,136,68));
+   if(it.wStCost!=0)AddRow(r,"ST소모:",F(it.wStCost),null,C(144,147,147));
    if(it.wRange!=0)AddRow(r,"무기사거리:",F(it.wRange));
    if(it.wArcW!=0)AddRow(r,"공격범위:",F(it.wArcW));
    if(it.wStagger!=0)AddRow(r,"경직력:",F(it.wStagger));
@@ -102,7 +102,7 @@ namespace Exoduser.UnityPort {
    if(it.chargeAoE!=0)AddRow(r,"광역범위:",F(it.chargeAoE),C(255,136,68));
    if(it.bonusChargeDist!=0)AddRow(r,"돌진거리+:","+"+F(it.bonusChargeDist),C(136,204,255));
    if(it.chargeCharge!=0)AddRow(r,"돌진충전:","-"+F(it.chargeCharge)+"초",C(68,255,170));
-   if(it.shieldWt!=0)AddRow(r,"무게:",F(it.shieldWt),C(170,136,102));
+   if(it.shieldWt!=0)AddRow(r,"무게:",F(it.shieldWt),C(139,142,142));
    if(it.bonusSt!=0)AddRow(r,"ST총량:","+"+F(it.bonusSt),C(68,221,170));
    if(it.stRegen!=0)AddRow(r,"ST회복:","+"+F(it.stRegen)+"/f",C(102,221,68));
    if(it.mpRegen!=0)AddRow(r,"MP회복:","+"+F(it.mpRegen)+"/f",C(102,170,255));
@@ -140,12 +140,12 @@ namespace Exoduser.UnityPort {
   static readonly CardM Large=new CardM{fs=13,implFs=15,affFs=15,rowH=30.8f,hdrH=28.8f,implH=35.4f,affPitch=31.2f,affBase=13.1f};
   // Stat block: rows, implicit line, affix box. Returns the bottom y.
   float DrawStatBlock(float x,float y,float w,float rowW,InventoryItem it,List<CRow> rows,CardM m){
-   Fill(new Rect(x,y,w,1),C(117,98,71,.333f));float cy=y+11;
+   Fill(new Rect(x,y,w,1),C(98,101,101,.333f));float cy=y+11;
    for(int i=0;i<rows.Count;i++){
     var r=rows[i];float h=r.kind==1?m.hdrH:m.rowH;var rect=new Rect(x,cy,rowW,h);
     if(r.kind==0||r.kind==2||r.kind==4){
-     if(i%2==1)Grad(rect,C(155,128,80,.05f),C(155,128,80,.1f),90);
-     Fill(new Rect(x,rect.yMax-1,rowW,1),C(140,118,84,.08f));
+     if(i%2==1)Grad(rect,C(128,131,131,.05f),C(128,131,131,.1f),90);
+     Fill(new Rect(x,rect.yMax-1,rowW,1),C(118,121,121,.08f));
     }
     if(r.kind==4){Disc(new Vector2(x+13,cy+h/2f),m.fs*.55f,r.lc);Serif(new Rect(x+28,cy,rowW-30,h),r.l,m.fs+1,r.lc);}
     else if(r.kind==1)Serif(new Rect(x,cy,rowW,h),r.l,m.fs,r.lc,true);
@@ -162,7 +162,7 @@ namespace Exoduser.UnityPort {
    }
    if(it.affixes!=null&&it.affixes.Length>0){
     float bh=m.affBase+m.affPitch*it.affixes.Length;var box=new Rect(x,cy,rowW,bh);
-    Grad(box,C(81,64,43,.133f),C(0,0,0,0),90);Border(box,C(117,98,71,.4f));
+    Grad(box,C(64,67,67,.133f),C(0,0,0,0),90);Border(box,C(98,101,101,.4f));
     float ly=cy+9;
     foreach(var a in it.affixes){
      string nm;if(!affName.TryGetValue(a.id,out nm))nm=a.id;string ds;affDesc.TryGetValue(a.id,out ds);int ty;affType.TryGetValue(a.id,out ty);
@@ -177,8 +177,8 @@ namespace Exoduser.UnityPort {
   void DrawSingleDetail(Rect area,InventoryItem it,string source,bool preview,double dex,int level){
    float y=area.y;
    if(preview){
-    var hint=new Rect(area.x,y,area.width,25.5f);Fill(hint,C(24,20,23));Fill(new Rect(hint.x,hint.yMax-1,hint.width,1),C(117,98,71,.4f));
-    Serif(new Rect(hint.x+6,hint.y,hint.width-12,hint.height),"휠: 상세 스크롤",11,C(201,189,167));y+=33.5f;
+    var hint=new Rect(area.x,y,area.width,25.5f);Fill(hint,C(24,20,23));Fill(new Rect(hint.x,hint.yMax-1,hint.width,1),C(98,101,101,.4f));
+    Serif(new Rect(hint.x+6,hint.y,hint.width-12,hint.height),"휠: 상세 스크롤",11,C(193,190,184));y+=33.5f;
    }
    var rows=CardRows(it,dex,level);
    float contentH=SingleLayout(area.width,it,rows,source,0,true);
@@ -187,7 +187,7 @@ namespace Exoduser.UnityPort {
    GUI.BeginGroup(box);
    IronTile(new Rect(0,0,box.width,boxH),iron320,320);Grad(new Rect(0,0,box.width,boxH),C(25,22,25,.96f),C(13,12,15,.976f));
    SingleLayout(area.width,it,rows,source,-Mathf.Clamp(detailScroll.y,0,cardScrollMax),false);
-   Border(new Rect(0,0,box.width,boxH),C(140,118,84));
+   Border(new Rect(0,0,box.width,boxH),C(118,121,121));
    GUI.EndGroup();
   }
   // Returns the content height; draws when !measure (coordinates relative to the card, top = scroll offset).
@@ -197,13 +197,13 @@ namespace Exoduser.UnityPort {
    cy+=11;
    if(!string.IsNullOrEmpty(source)){
     float cw=TextWidth(source,11,500)+16;
-    if(!measure){var chip=new Rect(15,cy,cw,24.5f);Fill(chip,C(50,39,25,.4f));Border(chip,C(117,98,71,.4f));Txt(chip,source,11,C(187,170,141),500,TextAnchor.MiddleCenter);}
+    if(!measure){var chip=new Rect(15,cy,cw,24.5f);Fill(chip,C(38,41,41,.4f));Border(chip,C(98,101,101,.4f));Txt(chip,source,11,C(170,173,173),500,TextAnchor.MiddleCenter);}
     cy+=24.5f+4.5f;
    }
    if(!measure)Serif(new Rect(15,cy,w-30,28),it.name,20,C(240,213,183),true);
    cy+=38;
    float end=measure?DrawStatBlockM(15,cy,w-30,w-36,it,rows,Large,true):DrawStatBlock(15,cy,w-30,w-36,it,rows,Large);
-   if(!measure){Fill(new Rect(15,end+4,w-30,1),C(51,34,17));Serif(new Rect(15,end+8,w-30,16),"좌클릭: 선택 | 우클릭: 장착 | Space: 쓰레기 | F: 잠금",11,C(85,85,85));}
+   if(!measure){Fill(new Rect(15,end+4,w-30,1),C(34,37,37));Serif(new Rect(15,end+8,w-30,16),"좌클릭: 선택 | 우클릭: 장착 | Space: 쓰레기 | F: 잠금",11,C(85,85,85));}
    return end+34-top;
   }
   float DrawStatBlockM(float x,float y,float w,float rowW,InventoryItem it,List<CRow> rows,CardM m,bool measure){
@@ -219,20 +219,20 @@ namespace Exoduser.UnityPort {
    var rows=CardRows(it,dex,level);var rc=RarityColor(it.rarity);float sy=-scroll;float bottom;
    if(candidate){
     float x=card.x+9,w=card.width-18;
-    if(!measure){Fill(card,C(8,13,17,.81f));Border(card,C(165,125,72));InsetRing(new Rect(card.x+1,card.y+1,card.width-2,card.height-2),1,C(189,138,59,.2f));}
+    if(!measure){Fill(card,C(8,13,17,.81f));Border(card,C(128,131,131));InsetRing(new Rect(card.x+1,card.y+1,card.width-2,card.height-2),1,C(141,144,144,.2f));}
     float cy=card.y+10+sy;
     if(!measure){var det=new Rect(x,cy,w,Mathf.Max(60,known-6-10));IronTile(det,iron320,320);Grad(det,C(25,22,25,.96f),C(13,12,15,.976f));Fill(new Rect(x,cy,w,3),rc);}
     cy+=9;
-    float cw=TextWidth("가방 아이템",11,500)+16;if(!measure){var chip=new Rect(x,cy,cw,24.5f);Fill(chip,C(50,39,25,.4f));Border(chip,C(117,98,71,.4f));Txt(chip,"가방 아이템",11,C(187,170,141),500,TextAnchor.MiddleCenter);}
+    float cw=TextWidth("가방 아이템",11,500)+16;if(!measure){var chip=new Rect(x,cy,cw,24.5f);Fill(chip,C(38,41,41,.4f));Border(chip,C(98,101,101,.4f));Txt(chip,"가방 아이템",11,C(170,173,173),500,TextAnchor.MiddleCenter);}
     cy+=29.5f;
     if(!measure)Serif(new Rect(x,cy,w,18.2f),it.name,13,C(240,213,183),true);
     cy+=28.1f;
     bottom=measure?DrawStatBlockM(x,cy,w,w-6,it,rows,Small,true):DrawStatBlock(x,cy,w,w-6,it,rows,Small);
    }else{
     float x=card.x+9,w=card.width-18;
-    if(!measure){Fill(card,C(8,13,17,.81f));Border(card,C(98,85,62));}
+    if(!measure){Fill(card,C(8,13,17,.81f));Border(card,C(84,87,87));}
     float cy=card.y+10+sy;
-    if(!measure){var inner=new Rect(x,cy,w,Mathf.Max(60,known-5));Fill(inner,C(0,0,0,.2f));Border(inner,C(51,34,17));Fill(new Rect(inner.x+1,cy+1,inner.width-2,3),rc);}
+    if(!measure){var inner=new Rect(x,cy,w,Mathf.Max(60,known-5));Fill(inner,C(0,0,0,.2f));Border(inner,C(34,37,37));Fill(new Rect(inner.x+1,cy+1,inner.width-2,3),rc);}
     if(!measure)Serif(new Rect(x+9,cy+10,w-18,15),"현재 장착",12,C(102,102,102));
     if(!measure)Serif(new Rect(x+9,cy+25,w-18,19),it.name,15,rc,true);
     float bx=x+9,bw=w-18;
@@ -310,9 +310,9 @@ namespace Exoduser.UnityPort {
    if(!bag||cur==null||detailOnly){DrawSingleDetail(area,it,bag?"":"장착 중",preview,dex,level);return;}
    // side compare: head + pair + details
    string cpText;Color cpCol;var diffs=BuildDiffs(it,cur,level,power,dex,out cpText,out cpCol);
-   Txt(new Rect(area.x,200,300,20.3f),"장착 아이템 비교",15,C(230,208,167),700);
-   Serif(new Rect(area.x,202,area.width,18.8f),cpText??"옵션 비교",15,cpText!=null?cpCol:C(221,197,173),true,0,TextAnchor.MiddleRight);
-   Fill(new Rect(area.x,230.8f,area.width,1),C(103,86,58));
+   Txt(new Rect(area.x,200,300,20.3f),"장착 아이템 비교",15,C(213,210,204),700);
+   Serif(new Rect(area.x,202,area.width,18.8f),cpText??"옵션 비교",15,cpText!=null?cpCol:C(203,200,194),true,0,TextAnchor.MiddleRight);
+   Fill(new Rect(area.x,230.8f,area.width,1),C(86,89,89));
    float bodyH=0;
    if(compareMoreOpen){bodyH=48+diffs.Count*17.5f+16;bodyH=Mathf.Min(bodyH,300);}
    float detY=966-(29.4f+bodyH);float pairY=240.8f,pairH=detY-9.9f-pairY;
@@ -326,16 +326,16 @@ namespace Exoduser.UnityPort {
    DrawPairCard(curCard,cur,false,dex,level,sc,false,bo);DrawPairCard(candCard,it,true,dex,level,sc,false,bc);
    GUI.EndGroup();
    var det=new Rect(area.x,detY,area.width,29.4f+bodyH);
-   Fill(det,C(10,14,17));Border(det,C(81,70,49));
+   Fill(det,C(10,14,17));Border(det,C(69,72,72));
    var sum=new Rect(det.x+1,det.y+1,det.width-2,27.4f);
-   Txt(new Rect(sum.x+8,sum.y,sum.width-8,sum.height),(compareMoreOpen?"▼ ":"▶ ")+"수치 차이 전체 보기",11,C(199,174,131),600);
-   if(GUI.Button(sum,GUIContent.none,GUIStyle.none))compareMoreOpen=!compareMoreOpen;
+   Txt(new Rect(sum.x+8,sum.y,sum.width-8,sum.height),(compareMoreOpen?"▼ ":"▶ ")+"수치 차이 전체 보기",11,C(174,177,177),600);
+   if(NativeSilverHellUi.Button(sum,GUIContent.none,GUIStyle.none))compareMoreOpen=!compareMoreOpen;
    if(compareMoreOpen){
     GUI.BeginGroup(new Rect(det.x+1,sum.yMax,det.width-2,bodyH));
     float y=0;
     Serif(new Rect(8,y,400,16),"베이스 스탯 비교 (강화 수치 제외)",12,C(102,102,102));y+=22;
-    Serif(new Rect(8,y,400,19),"스탯 변화",14,C(170,102,68),true,1.36f);y+=25;
-    var box=new Rect(8,y,det.width-18,Mathf.Max(20,diffs.Count*17.5f+16));Fill(box,C(0,0,0,.2f));Border(box,C(51,34,17));
+    Serif(new Rect(8,y,400,19),"스탯 변화",14,C(112,115,115),true,1.36f);y+=25;
+    var box=new Rect(8,y,det.width-18,Mathf.Max(20,diffs.Count*17.5f+16));Fill(box,C(0,0,0,.2f));Border(box,C(34,37,37));
     float ly=y+8;foreach(var l in diffs){if(ly>bodyH-4)break;Serif(new Rect(16,ly,box.width-16,17),l.text,l.size,l.col,l.bold);ly+=17.5f;}
     GUI.EndGroup();
    }
