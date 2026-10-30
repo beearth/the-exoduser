@@ -4,7 +4,7 @@
 
 ## 발견
 
-웹 시작 캐릭터는 maliceSwipe1/shieldThrow1/shieldFuse=true다. _ensureBaseWingStrike는 기존 저장에서도 두 스킬을 최소1렙, 합체true, activeRMBSk=maliceSwipe로 보장한다. Unity는 이 시작 상태와 _autoShieldThrow 전체가 빠져 E가 기본 원형 타격만 실행했다. 1배율 화면에서 Q 오라·E 불꽃 호 누락도 확인했다. 초기 경계 검사11개 중 핵심5개가 실패했으며 구현 뒤11개 모두 통과했다. 이프레임 검사의 초기 무적600을0으로 통제한 이유는 원본이 기존 무적을 감소시키지 않고 max(기존,40)을 적용하기 때문이다.
+웹 시작 캐릭터는 maliceSwipe1/shieldThrow1/shieldFuse=true다. _ensureBaseWingStrike는 기존 저장에서도 두 스킬을 최소1렙, 합체true, activeRMBSk=maliceSwipe로 보장한다. Unity는 이 시작 상태와 _autoShieldThrow 전체가 빠져 E가 기본 원형 타격만 실행했다. 1배율 화면에서 Q 오라·E 불꽃 호 누락도 확인했다. 최초 실행 경계7개 중 핵심5개가 실패했다. 이후 반사·중복 타격·쿨 보상·원본 마커 경계를 추가했으며 현재14개 모두 확인한다. 이프레임 검사의 초기 무적600을0으로 통제한 이유는 원본이 기존 무적을 감소시키지 않고 max(기존,40)을 적용하기 때문이다.
 
 ## 원본 수치와 소유
 
@@ -20,7 +20,7 @@
 | 합체 사거리/판정 | M=(1+(합체렙-1)×.05)×clamp(충전,1,3); 사거리210M, 길이r=50M, 폭95M | InShieldWave |
 | 판정 경계 | along>-r, along<r+20, abs(perp)<폭/2+적반경; 벽 무시, dist>=maxDist이면 소멸 | TickShieldThrow |
 | 합체 피해 | trunc((견갑atk 또는3 + baseAtk×.3 +10)×(1+(shieldThrow렙-1)×.12)×10×(1.5+(합체렙-1)×.12)×합체배율) | 원본 _autoShieldThrow |
-| 파동 피격 | 적당1회, 진행방향 넉백30+shieldThrow렙×3, 보스 포이즈30 차감, 일반 _groggy=true/groggyT90/state hit | 적 현재 상태/원본 마커 |
+| 파동 피격 | 적당1회, 진행방향 넉백30+shieldThrow렙×3, 원본 e.boss=true면 포이즈30 차감, 그 외 _groggy=true/groggyT90/state hit | 적 현재 상태/원본 마커 |
 | 비합체 | 견갑 없으면 미발동. 피해trunc((atk+baseAtk×.3+10)×shieldThrow렙×10×3×배율), 범위180+(렙-1)×20 즉시 원형 피해 | 기존 _gSlamHit 원형·속성·포이즈 계약 |
 | 반사 | 일반 적탄→유도 블루콩, 대상600px, 대상 없으면 속도×-2, 수명120, 피해trunc(pParryProjDmg(원피해,true)×1.5), 물리 자원3배 | 기존 ParryRules·Druid.Projectiles |
 | 반사 제외 | 무지개탄 blackBean은 Q 전용. 리모델 보스 고유 반사 금지 계약 보존 | 원본 금지/리모델 SSOT |
@@ -43,7 +43,7 @@
 ## 검수
 
 - 실제 웹 _autoShieldThrow 함수와 파동 판정 식을 추출한192조합/경계4704점, 총6336검사 불일치0. 입력 각도를 양쪽 float로 통일했다. 최초608건은 Core float facing과 웹 double facing을 다른 입력으로 준 정확 경계의 차이였고 초기 실패 파일을 보존했다.
-- 실제 Simulation E 경계11/11: 신규보유·기존상태진입·무적·쿨다운·강화·생성·소멸·무지개탄 제외·블루콩수명·한번피격·그로기.
+- 실제 Simulation E 경계14개: 신규보유·기존상태진입·무적·쿨다운·강화·생성·소멸·무지개탄 제외·블루콩수명·한번피격·그로기.
 - save2604/0, dash-parry187165/0, skill13216/0 및 저장경계6 통과.
 - 현재 전체 Runtime277개 C# 독립컴파일 오류0. 과거 응답파일에서 최신 UI NativeUiAudit를 빠뜨린 실패는 보존하고 현재 파일목록으로 다시 생성했다. 정식 Unity 컴파일 근거와 구분한다.
 - 정식 빌드·실제3D Player Q/E 표시·새로운 Core/DLL의 M1·비교영상·1배율 판정·공통/바탕화면 전달 전까지 미검증 유지.
@@ -53,3 +53,5 @@ E의 색 지정 충격파도 지옥강타 화염 시트의 재착색에서 원�
 추가 실제 제어 검사에서 물리 패링1발당 지옥강타 쿨30틱 회복 누락을 재현했다. Simulation.ApplyParrySuccess에서 resourceMul==3일 때 max(0,GiantSlamCd-30)을 적용한다. 쿨100에서 일반1틱감소99 뒤 패링69를 확인하는 RED→GREEN 검사다. 천공쇄기·유니크 프레임별 추가 쿨 회복은 해당 미이식 경계로 남긴다.
 
 회복영역 종료 경계의 원문은 영역 수명 갱신 전 보너스를 계산한다. 현재 프레임의 영역 참조를 보존해 새 E 쿨다운에도 마지막 틱 보너스를 유지했다. 쿨705→703, 영역 소멸을 함께 검사한다. 추가 후 실제 실행 경계는13검사다.
+
+원문 엄격 보존 정정: 파동은 일반 보스 표식 ib가 아니라 e.boss를 검사한다. 현재 웹 mkEn은 boss를 부여하지 않으므로 보통 ib 보스도 _groggy 마커 쪽을 탄다. IsBoss로 임의 치환하면 포이즈30을 추가로 깎는 차이가 생겨 RED로 재현했으며, 별도 원본 boss 필드로 보존했다. 앞 표의 보스30 설명은 boss=true일 때만 해당한다. 기존 그로기 마커를90틱 실제 스턴으로 해석하지 않는다. 현재 실행 경계14개다.
