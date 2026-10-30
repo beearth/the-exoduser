@@ -222,3 +222,7 @@ A2CaptureFrame이 정상 LateUpdate 이후 Remodel3DLate를 다시 불러 이미
 | 보스 소품 | 실제03-드루이드에서작은암반7개도검은파편처럼보여해당시각배치제거. 기존횃불2/광원3/지면/보행/AI/2D보스유지. 3D보스인수0 |
 | 종료 실패 | 공식240초경계뒤ReadAllText IOException/실행기종료1. 자기58420/parent49392 HasExited=true·창0·thread1·CIM잔존. 로그InputShutdown까지. 실제검사JSON passed=true여도정상종료PASS아님. 같은빌드M1미실행/연속GPU중단/예약정상반환. 기존GP담당의종료경계진단과조율, 타인종료·권한변경·거부우회0 |
 | 품질·인수 | VISUAL VERDICT: FAIL. 판처럼얇은뿌리·검은내부·원경·물가·수면차이잔여. MERGE_QUEUE채택요청0/unity/main미반영/Desktop갱신0. 후속은최종표시·안개검증후근경제작방식보완 |
+
+## 2026-10-31 06:14 KST 검증된 로그 읽기 변경분 한정 인수
+
+GP 원작성자 edf12c419의 exo-unity.ps1·devtools/README·UNITY_DEVTOOLS_SHARED_LOG 정확3파일 변경분만 정상 패치 통합했다. 원작성자의 Read-RunLogShared 함수는 동일byte이며 패치 역방향check로 전체변경분 적용을 확인했다. 원작성자 전체파일에는 이 브랜치에 없는 BrowserDesktopIsolation 선행기능이 있어 전체Git blob동일검사는 실패했고, 해당 미인수기능을 끼워넣지 않고 현재 브라우저분기를 보존했다. 공유읽기 FileShare.ReadWrite와 GPU이름미확인실패만 인수/게임·Core·Runtime·Assets·다른GP문서0. 시간초과·잔존은 계속실패다. 자기실행잠금0에서만교체·원본I:보존. 기존e271 빌드게임입력byte동일, 검수도구변경을게임재빌드로세지않는다.
