@@ -34,3 +34,21 @@
 상세 보고·맵 제작 가이드 §23 항목·재현·기각 후보 정리는 I:/EXODUSER-Storage/demo-art/charselect/REPORT.md에 있다. ARTIFACTS.json에 제출 28파일 해시, cleanup-receipt.json에 자기 기각/중복 사본 10개 삭제를 기록했다. 원본·타 팀 WIP·세이브 삭제 0이다. 관련 키워드로 전체 docs 88문서 매칭을 조사했으며 제품 수치 변경은 없다.
 
 이 커밋은 인계 문서만 백업한다. 대형 blend/glb는 I: 보존이며 GitHub 업로드가 아니다. unity/main 병합·Mac 인수·기존 실행 앱 변경·빌드·배포 0. 사용자 채택 승인 뒤 별도 Unity 실행 단위에서 영웅 대기/무기/천·실제 UI·Player·1x·성능을 검수한다. 준비 산출물 완료를 사용자 채택·게임 아트 PASS로 올리지 않는다.
+
+
+## 후속 한 건 — 1920×1080 후면 깊이 마감
+
+사용자/총괄의 승인된 후속 1건을 같은 checkout/branch에서 수행했다. 원본 charselect_stage.blend SHA-256 6e43c5a8b82a67b18cc4faa199fabdf8080c84faa065179675bf35fef3135dbd는 보존했고, 산출은 I:/EXODUSER-Storage/demo-art/charselect/depth-finish/에 분리했다.
+
+| 항목 | 실제 결과 |
+|---|---|
+| 편집 B | B_depth_finish.blend / SHA-256 b235ef43a4d940345d0f45cd3540402d8ba982b25f873d0eec5fdd60229406a1 |
+| 실제 공간 | 주 아치 Y=4.10m → 후실 관문 Y=11.72m(7.62m). 좌/우 문 72°/-58° 개방, 안쪽 면·2단·주춧돌·별도 후실·0.24m 오목 첨두 패널 |
+| 조명·재질 | 기존 광원·카메라·영웅·원본 PBR·월드·노출 유지. 보유 PBR의 문 전용 사본과 후실 150/55/80W 3광원만 마감 |
+| 직접 본 증거 | A_1920.png / B_1920.png / AB_1920.png / AB_DETAIL_1X.png / REFERENCE_COMPARISON_1920.png. A/B 같은 해상도·렌더 설정, 1x crop, 참고 비율 차이 표시 |
+| 기술 | 새 Blender A/B 재개방 12/0. 기존 이미지 바이트·재질 노드·영웅·카메라·광원 보존 및 새 깊이/UV/가로보 부착 검사 |
+| 판정 | VISUAL VERDICT: RETOUCH. 실제 열린 문–바닥–먼 관문의 깊이와 가림은 성립. 재질 변화/중간 디테일·공기감은 참고보다 단순하고 후실 아치 상부는 고정 카메라 밖으로 잘림 |
+| 검수자 | 제작 Codex 자체 정적 판정. 이번 B의 CTO 독립 판정·사용자 채택·Unity PASS 없음 |
+| 보존·종료 | 첫 밝은 후실 FAIL 자료와 기술 보정 자료 보존, 삭제 0. 최종 B는 RETOUCH이며 새 후보를 자동 제작하지 않고 대기 |
+
+상세 변경·큰 남은 차이·맵 제작 보고 변경분은 기존 I: REPORT.md의 이번 절, 정확 해시는 depth-finish/SHA_MANIFEST.json·VERDICT.json을 따른다. Unity/Player/빌드/제품 통합·unity/main·바탕화면·유료·삭제 0. 무기/리그/새 영웅/잠금은 이 한 건 밖이며 수정하지 않았다.
