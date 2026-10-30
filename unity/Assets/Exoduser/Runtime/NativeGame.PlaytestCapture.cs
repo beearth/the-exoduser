@@ -10,7 +10,7 @@ using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort {
  public sealed partial class NativeGame {
   [Serializable] sealed class PlaytestFrame { public string key; public int frame,tick; public float x,y,facing,aimError,maxSpriteError; public string state; public List<Vector2> ki=new List<Vector2>(),magic=new List<Vector2>(),magicVelocity=new List<Vector2>(),blades=new List<Vector2>(); public float harpX,harpY; public bool harp,dash; public int zones,waves,blasts,burstViews; }
-  [Serializable] sealed class PlaytestResult { public string scope="실제 Player, 가상 Input System 장치 → 기존 FixedUpdate → Core → LateUpdate. OS 손조작 아님"; public bool passed,remodel3d;public float fieldOfView,heroScale,pitchDegrees,distance,lookAhead; public int failures; public List<string> checks=new List<string>(); public List<PlaytestFrame> frames=new List<PlaytestFrame>(); }
+  [Serializable] sealed class PlaytestResult { public string scope="실제 Player, 가상 Input System 장치 → 기존 FixedUpdate → Core → LateUpdate. OS 손조작 아님"; public bool passed,remodel3d;public float fieldOfView,heroScale,pitchDegrees,distance,lookAhead,baselineHp,baselineMana,baselineStamina,baselineSpeed,baselineCastSpeed; public int failures; public List<string> checks=new List<string>(); public List<PlaytestFrame> frames=new List<PlaytestFrame>(); }
   IEnumerator PlaytestCapture() {
    string output=Argument("-output"); if(string.IsNullOrEmpty(output)){Application.Quit(2);yield break;} Directory.CreateDirectory(output);
    AudioListener.volume=0;AudioListener.pause=true;smokeActive=true;dropSmoke=true;Running=false;
@@ -18,7 +18,7 @@ namespace Exoduser.UnityPort {
    if(firstPractice!=null)EndFirstPractice(true);frontendEntryInputFence=false;menu=false;SetGameFocus(true);Running=false;
    yield return new WaitForSecondsRealtime(.5f);
    float deadline=Time.realtimeSinceStartup+40;while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
-   var result=new PlaytestResult{remodel3d=NativeRemodel3D.Active,fieldOfView=NativeRemodelCamera.FieldOfView,heroScale=NativeRemodelCamera.HeroScale,pitchDegrees=NativeRemodelCamera.Pitch*Mathf.Rad2Deg,distance=NativeRemodelCamera.Distance,lookAhead=NativeRemodelCamera.TargetOffset.z};
+   var result=new PlaytestResult{remodel3d=NativeRemodel3D.Active,fieldOfView=NativeRemodelCamera.FieldOfView,heroScale=NativeRemodelCamera.HeroScale,pitchDegrees=NativeRemodelCamera.Pitch*Mathf.Rad2Deg,distance=NativeRemodelCamera.Distance,lookAhead=NativeRemodelCamera.TargetOffset.z,baselineHp=Simulation.Player.MaxHp,baselineMana=Simulation.Player.MaxMana,baselineStamina=Simulation.Player.MaxStamina,baselineSpeed=Simulation.Player.Speed,baselineCastSpeed=(float)Simulation.MagicCastSpeed()};
    Action<bool,string> check=(ok,label)=>{result.checks.Add((ok?"통과 ":"실패 ")+label);if(!ok)result.failures++;};
    check(!NativeRemodel3D.Requested||NativeRemodel3D.Active,"요청된 3D 필드 로드");
    var manualBrain=NativeRemodel3D.Active&&r3Cam!=null?r3Cam.GetComponent<CinemachineBrain>():null;var oldCameraUpdate=manualBrain!=null?manualBrain.UpdateMethod:CinemachineBrain.UpdateMethods.SmartUpdate;if(Application.isBatchMode&&manualBrain!=null){r3Late.enabled=false;manualBrain.UpdateMethod=CinemachineBrain.UpdateMethods.ManualUpdate;}
@@ -42,7 +42,7 @@ namespace Exoduser.UnityPort {
      check(free,control+" 열린 발사 시작점");float x0=p.X,y0=p.Y,aimX=p.X+dx*300,aimY=p.Y+dy*300;
      UpdateViews();yield return null;if(Application.isBatchMode&&NativeRemodel3D.Active){Remodel3DLate();manualBrain?.ManualUpdate();}else if(!Application.isBatchMode)yield return new WaitForEndOfFrame();
      float maxMotion=0,maxError=0,maxAimError=0;bool spawned=false,zone=false,orb=false,blades=false,block=false,wave=false,burstSeen=false;int cast0=s.SkillCastCount;
-     for(int f=0;f<(action=="RMB"?180:control=="Ctrl"?150:80);f++) {
+     for(int f=0;f<(action=="RMB"?240:control=="Ctrl"?150:80);f++) {
       if(control=="RMB-sweep"&&f==1){aimX=x0;aimY=y0+300;}
       bool held=f<(action=="E"||action=="Roll"?1:14);var keys=new List<Key>();if(held){switch(action){case "Roll":keys.Add(Key.Space);keys.Add(dx>0?Key.D:dx<0?Key.A:dy>0?Key.S:Key.W);break;case "Shift":keys.Add(Key.LeftShift);break;case "E":keys.Add(Key.E);break;case "Q":keys.Add(Key.Q);break;case "Ctrl":keys.Add(Key.LeftCtrl);break;case "Space":keys.Add(Key.Space);break;case "1":keys.Add(Key.Digit1);break;case "2":keys.Add(Key.Digit2);break;case "3":keys.Add(Key.Digit3);break;case "4":keys.Add(Key.Digit4);break;case "F":keys.Add(Key.F);break;case "Z":keys.Add(Key.Z);break;}}
       keyboard.MakeCurrent();mouse.MakeCurrent();InputState.Change(keyboard,new KeyboardState(keys.ToArray()));

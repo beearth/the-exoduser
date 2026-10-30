@@ -160,9 +160,12 @@ class Program
             s.SetMagicInput(true); s.Tick(0, 0, (float)Math.Cos(aim) * 300, (float)Math.Sin(aim) * 300, false, false);
             for (int f = 0; f < 8 && s.MaliceOrbShots == 0; f++) s.Tick(0, 0, (float)Math.Cos(switched) * 300, (float)Math.Sin(switched) * 300, false, false);
             var shot = s.MaliceOrbs[0];
+            Check(shot.TrailCount == 1, "악의구 첫 이동의 꼬리 표본1 " + di);
+            Check(Math.Abs(shot.TrailX[0] - (s.Player.X + Math.Cos(aim) * 14)) < .0001 && Math.Abs(shot.TrailY[0] - (s.Player.Y + Math.Sin(aim) * 14)) < .0001, "악의구 꼬리가 이동 전 위치를 기록 " + di);
             Check(Math.Abs(shot.Vx - Math.Cos(aim) * 5.5) < .0001 && Math.Abs(shot.Vy - Math.Sin(aim) * 5.5) < .0001, "악의구 8방향 시전 시작각 유지 " + di);
             for (int f = 0; f < 30 && s.MaliceOrbShots < 2; f++) s.Tick(0, 0, (float)Math.Cos(switched) * 300, (float)Math.Sin(switched) * 300, false, false);
             shot = s.MaliceOrbs[s.MaliceOrbs.Count - 1];
+            Check(s.MaliceOrbs[0].TrailCount == 14, "악의구 꼬리 순환 표본 상한14 " + di);
             Check(Math.Abs(shot.Vx - Math.Cos(switched) * 5.5) < .0001 && Math.Abs(shot.Vy - Math.Sin(switched) * 5.5) < .0001, "악의구 다음 연사에서 새 조준 반영 " + di);
         }
 

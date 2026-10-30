@@ -13,6 +13,9 @@ namespace Exoduser.UnityPort.Core
     {
         public int Id, Dmg, ExplDmg, Bounces; public bool Active;
         public float X, Y, Vx, Vy, Dist, MaxDist, R, R0, RMax, ExplR, BounceCool;
+        // 웹 p._trail: 이동 전 위치를 매 실제 틱에14점 순환 기록한다. 렌더 빈도와 무관한 표시 자료다.
+        public readonly float[] TrailX = new float[14], TrailY = new float[14];
+        public int TrailHead, TrailCount;
         internal readonly HashSet<FieldBossState> HitFieldMobs = new HashSet<FieldBossState>();
         internal readonly Dictionary<EnemyState, double> WeakMul = new Dictionary<EnemyState, double>();   // p._mwMul: the direct hit + the blast stack once per orb
     }
@@ -97,6 +100,8 @@ namespace Exoduser.UnityPort.Core
             for (int i = 0; i < MaliceOrbs.Count; i++)
             {
                 var p = MaliceOrbs[i];
+                p.TrailX[p.TrailHead] = p.X; p.TrailY[p.TrailHead] = p.Y;
+                p.TrailHead = (p.TrailHead + 1) % 14; p.TrailCount = Math.Min(14, p.TrailCount + 1);
                 if (p.BounceCool > 0) p.BounceCool -= 1;
                 double spd = Math.Sqrt(p.Vx * p.Vx + p.Vy * p.Vy);
                 // homing: every 4th frame, nearest enemy inside 280 px, turn limited to 0.35 rad

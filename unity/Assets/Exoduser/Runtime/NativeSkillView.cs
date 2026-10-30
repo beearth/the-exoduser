@@ -20,7 +20,7 @@ namespace Exoduser.UnityPort
         // Web lighting presses the ring band (.62~.90 r) down to almost 0, so the two rings are practically invisible there (web|Unity capture 10-28).
         const float WebLitHolyDomeRing = .03f;
         Sprite spike, dome, shard, disc; readonly Sprite[] slamFrames = new Sprite[4], orbFrames = new Sprite[9], maliceFrames = new Sprite[20];
-        Item orb; int lastTick = -1;
+        Item orb;
         public int ActiveZones, ActiveWaves, ActiveBlades, ActiveMaliceOrbs; public bool OrbShown;
 
         public NativeSkillView(Transform parent)
@@ -107,7 +107,6 @@ namespace Exoduser.UnityPort
         public void Update(Simulation sim, float time)
         {
             BindMaliceBursts(sim); UpdateMaliceBursts(sim.TickCount);
-            bool newTick = lastTick != sim.TickCount; lastTick = sim.TickCount;
             ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0; var p = sim.Player;
             // ---- ground zones ----
             stale.Clear(); foreach (var k in zones.Keys) stale.Add(k);
@@ -166,7 +165,7 @@ namespace Exoduser.UnityPort
                 var pos = MalicePosition(o.X, o.Y); it.go.transform.position = pos; it.a.sortingOrder = (int)o.Y + 3;
                 int fr = (int)(time * 1000f * .12f + o.X * .1f); it.a.sprite = maliceFrames[((fr % 20) + 20) % 20];
                 Fit(it.a, o.R * 5f, 171); it.a.color = new Color(1, 1, 1, .85f);
-                if (newTick) { trail.Add(pos); if (trail.Count > 14) trail.RemoveAt(0); }
+                trail.Clear();for(int ti=o.TrailCount;ti>0;ti--){int index=(o.TrailHead-ti+14)%14;trail.Add(MalicePosition(o.TrailX[index],o.TrailY[index]));}
                 UpdateMaliceTrail(it.rings, trail, pos, Mathf.Max(4, o.R), (int)o.Y + 2); UpdateMaliceEmbers(it, trail, pos, Mathf.Max(4, o.R), time * 1000, o.X);
             }
             foreach (int id in stale) orbTrails.Remove(id);
@@ -204,14 +203,14 @@ namespace Exoduser.UnityPort
 
         public void Reset()
         {
-            ResetMaliceBursts(); lastTick = -1;
+            ResetMaliceBursts();
             foreach (var m in new[] { zones, waves, blades, orbs }) { foreach (var it in m.Values) { ForgetMaliceSprites(it); UnityEngine.Object.Destroy(it.go); } m.Clear(); }
             if (orb != null) orb.go.SetActive(false);
             orbTrails.Clear(); ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0;
         }
         public void Dispose()
         {
-            Reset(); if (orb != null) UnityEngine.Object.Destroy(orb.go);
+            Reset(); DisposeMaliceVisuals(); if (orb != null) UnityEngine.Object.Destroy(orb.go);
             UnityEngine.Object.Destroy(add); UnityEngine.Object.Destroy(addFlat); UnityEngine.Object.Destroy(alpha); UnityEngine.Object.Destroy(malice);
         }
     }
