@@ -19,7 +19,7 @@ namespace Exoduser.UnityPort
         internal static string TextField(Rect rect,string text,GUIStyle style){return TextField(rect,text,-1,style);}
         internal static string TextField(Rect rect,string text,int max,GUIStyle style){var n=style.normal.textColor;var f=style.focused.textColor;try{style.normal.textColor=TextColor(n);style.focused.textColor=TextColor(f);return max<0?GUI.TextField(rect,text,style):GUI.TextField(rect,text,max,style);}finally{style.normal.textColor=n;style.focused.textColor=f;}}
         static Font light,regular;
-        static Texture2D frame,plaque,panelBackground,buttonGlow;
+        static Texture2D frame,plaque,panelBackground,buttonGlow,redPlate;
         internal static void ButtonFocus(Rect box){if(buttonGlow==null)buttonGlow=Resources.Load<Texture2D>("Art/ui/silver_hell/guide_button_glow");if(buttonGlow!=null)GUI.DrawTexture(new Rect(box.x-34,box.y-20,box.width+68,box.height+40),buttonGlow); }
         internal static Font Font(bool body=false)
         {
@@ -105,8 +105,13 @@ namespace Exoduser.UnityPort
             Button(box);
             if(primary&&plaque!=null)
             {
-                GUI.color=new Color(3.6f*light,.48f*light,.35f*light,previous.a);
-                GUI.DrawTextureWithTexCoords(new Rect(box.x+40,box.y+box.height*.32f,box.width-80,box.height*.36f),plaque,new Rect(.22f,.35f,.56f,.30f),true);
+                if(redPlate==null)redPlate=Resources.Load<Texture2D>("Art/ui/silver_hell/name_create");
+                if(redPlate!=null)
+                {
+                    GUI.color=new Color(light,light,light,previous.a);
+                    // 같은 웹 생성 버튼의 글자 없는 왼쪽 재질 조각. 금속 레일 안에만 합성한다.
+                    GUI.DrawTextureWithTexCoords(new Rect(box.x+40,box.y+box.height*.32f,box.width-80,box.height*.36f),redPlate,new Rect(.04f,.20f,.15f,.60f),true);
+                }
             }
             GUI.color=previous;
         }

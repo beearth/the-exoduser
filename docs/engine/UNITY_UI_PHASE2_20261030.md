@@ -14,3 +14,5 @@
 |8|일시정지|미착수|
 
 화면별 동일 크기·1x 비교 → 컴파일 → 무창 M1 → MERGE_QUEUE → 공통 정상 병합 → 일반 바로가기 갱신 순서. 자산 원본·다른 WIP·사용자 세이브 보존. 산출물은 I:/EXODUSER-Storage/demo-art/unity-ui/phase2/. 전체 상태 RETOUCH.
+
+메뉴 후보1 ef16aec92: 빌드035dd81f Succeeded·compileErrors0·USER_SAVE0, 실제 GPU3bb3ce63 첫인상21/21·창0·잔여0. 직접1920 판정에서 붉은 표면이 너무 어두워 RETOUCH, 기존 name_create 재질 조합으로 후보2 재작업. 이전 후보를 최종 PASS로 소급하지 않는다.

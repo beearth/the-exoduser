@@ -148,7 +148,7 @@ namespace Exoduser.UnityPort
                 if (e.type == EventType.MouseDown && e.button == 0 && rect.Contains(e.mousePosition) && !AutomatedInput) { ActivateTitleRow(i); e.Use(); return; }
                 var row = titleRows[i]; float s = row.Sel;
                 GUI.color=new Color(1,1,1,fade);
-                NativeSilverHellUi.ActionPlate(rect,i==0,s,rect.Contains(e.mousePosition)&&Input.GetMouseButton(0));
+                NativeSilverHellUi.ActionPlate(rect,i==0,s,!AutomatedInput&&rect.Contains(e.mousePosition)&&ExoInput.Mouse(0));
                 Color txt = Color.Lerp(new Color(201f / 255, 199f / 255, 195f / 255), new Color(242f / 255, 240f / 255, 236f / 255), s); txt.a = fade;
                 int size=i==0?22:18;float spacing=size*.14f;
                 float labelWidth=SpacedWidth(titleMenuFont,size,row.Label,spacing)-spacing;
