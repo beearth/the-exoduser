@@ -15,6 +15,8 @@ namespace Exoduser.UnityPort
         readonly SpriteRenderer main, glow, hole;
         readonly Sprite disc;
         readonly MaterialPropertyBlock block = new MaterialPropertyBlock();
+        readonly NativeDruidPoseHold<NativeDruidSheetPose> impactPose = new NativeDruidPoseHold<NativeDruidSheetPose>();
+        int actorId = -1;
         float lastX, lastY; bool haveLast;
         public int Stamp;
         public bool Visible { get { return main != null && main.enabled; } }
@@ -35,7 +37,7 @@ namespace Exoduser.UnityPort
             var r = go.AddComponent<SpriteRenderer>(); if (m != null) r.sharedMaterial = m; return r;
         }
 
-        public void Hide() { main.enabled = false; glow.enabled = false; hole.enabled = false; }
+        public void Hide() { impactPose.Clear(); main.enabled = false; glow.enabled = false; hole.enabled = false; }
         public void Dispose() { if (main != null) UnityEngine.Object.Destroy(main.gameObject); if (glow != null) UnityEngine.Object.Destroy(glow.gameObject); if (hole != null) UnityEngine.Object.Destroy(hole.gameObject); }
 
         static Vector3 Point(float x, float y) { return NativeRemodel3D.Point(x, y); }
@@ -73,8 +75,9 @@ namespace Exoduser.UnityPort
         }
 
         // returns true when the druid body was drawn (alive, art present)
-        public bool Draw(EnemyState e, DruidData d, bool newTick)
+        public bool Draw(EnemyState e, DruidData d, bool newTick, int tick, bool holdPose)
         {
+            if (actorId != e.Id) { actorId = e.Id; haveLast = false; impactPose.Clear(); }
             float r = d.R > 0 ? (float)d.R : e.Radius;
             string s = d.S ?? "", key = MotionKey(e, d);
             double nowMs = Time.unscaledTime * 1000.0;
@@ -82,6 +85,7 @@ namespace Exoduser.UnityPort
             if (newTick || !haveLast) { lastX = e.X; lastY = e.Y; haveLast = true; }
             if (s == "bossDruidUnder")
             {
+                impactPose.Clear();
                 // fully underground: no sprite, just the soil mound that travels (procedural in the web, drawn here with the same flattened discs)
                 float mr = r * 5.5f;
                 hole.enabled = true; hole.sprite = disc; hole.sortingOrder = (int)e.Y - 2; hole.transform.position = Point(e.X, e.Y + mr * .13f);
@@ -119,18 +123,23 @@ namespace Exoduser.UnityPort
             else if (key == "walk") { sheet = "walk"; cols = 4; rows = 8; frame = (int)(nowMs / 150) % 4; col = frame; row = dir; }
             else { sheet = "base8"; cols = 4; rows = 2; frame = dir; col = dir % 4; row = dir / 4; }
 
-            string res = NativeDruidArt.BodyDir + (sheet == "base8" ? "base8_v3" : sheet);
-                        Sprite sprite = sheet == "emerge" ? NativeDruidArt.EmergeCell(frame) : NativeDruidArt.SheetCell(res, cols, rows, col, row, Pivot);
+            // 기저 시트/셀은 매번 현재 상태로 계산한다. 유지하는 것은 그림 자세뿐이며 이동·스케일·정렬은 현재 Core를 따른다.
+            var underlying = new NativeDruidSheetPose { Sheet = sheet, Frame = frame, Columns = cols, Rows = rows,
+                DirectionRow = sheet == "walk" || sheet == "attack", DirectionCell = sheet == "base8" || sheet == "beast", Base = sheet == "base8", Box = boxScaled,
+                Breath = sheet == "base8" ? (float)Math.Sin(nowMs * .003) * 2 : 0 };
+            var drawn = impactPose.Select(tick, underlying, holdPose, e.Hp <= 0 || s == "eDeath", e.Id);
+            drawn.Cell(dir, out col, out row);
+            string res = NativeDruidArt.BodyDir + (drawn.Sheet == "base8" ? "base8_v3" : drawn.Sheet);
+            Sprite sprite = drawn.Sheet == "emerge" ? NativeDruidArt.EmergeCell(drawn.Frame) : NativeDruidArt.SheetCell(res, drawn.Columns, drawn.Rows, col, row, Pivot);
             float cw = sprite.rect.width, ch = sprite.rect.height;
             float dh = r * SpecDh, dw = r * SpecDw;
-            if (sheet == "base8") dw = dh * cw / ch;
-            if (boxScaled) dw = dh * (cw / ch) * 1.12f;
-            float breath = sheet == "base8" ? (float)Math.Sin(nowMs * .003) * 2 : 0;
-            float ay = e.Y + BtScale * (-6 + breath);
+            if (drawn.Base) dw = dh * cw / ch;
+            if (drawn.Box) dw = dh * (cw / ch) * 1.12f;
+            float ay = e.Y + BtScale * (-6 + drawn.Breath);
             int order = (int)e.Y;
             Put(main, sprite, e.X, ay, dw, dh, order, 1f);
             hole.enabled = false;
-            if (sheet != "base8")
+            if (!drawn.Base)
             {
                 // two 'lighter' passes at alpha .42 (self-lighten so the boss reads in the dark arena)
                 Put(glow, sprite, e.X, ay, dw, dh, order + 1, 1f);
@@ -143,6 +152,7 @@ namespace Exoduser.UnityPort
         // _drawDruidSink: the dead druid sinks through the emerge sheet (8 cells over the body ticks), holds on the last cell, then fades 1 -> 0 while sinking a little more
         public void DrawSink(EnemyState e, int t, int bodyTicks, int holdTicks, int fadeTicks)
         {
+            impactPose.Clear();
             float r = e.Radius, dh = r * SpecDh, dw = r * SpecDw;
             int frame = Math.Min(7, (int)(t / (bodyTicks / 8f)));
             float fadeP = Mathf.Clamp01((t - bodyTicks - holdTicks) / (float)fadeTicks);

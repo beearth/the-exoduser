@@ -21,6 +21,7 @@ namespace Exoduser.UnityPort
         // game.html draws the pool rim as arc(r) + reversed arc(r-1.2) fill; its GPU canvas proxy fills that as a whole disc (#a9d76a at .55 of the clip alpha). Boss lead / design lead decision (10-27): keep the 1.2 px hairline the code means; true reproduces the web's disc.
         const bool PoolRimAsWebProxyDisc = false;
         readonly MaterialPropertyBlock block = new MaterialPropertyBlock();
+        Material defaultSpriteMaterial;
         static readonly Color Poison = new Color(.40f, .87f, .13f), Root = new Color(.52f, .66f, .24f), Mine = new Color(.37f, .06f, .66f), RimGreen = new Color(.663f, .843f, .416f);
 
         // atlas clips: resource, columns, rows, frames, fps (loop = hazard T/60 seconds)
@@ -49,6 +50,8 @@ namespace Exoduser.UnityPort
         public void Dispose()
         {
             if (bound != null) bound.BossFx -= OnFx;
+            druidContacts.Clear();
+            DisposeDruidProjectileArt();
             if (root != null) UnityEngine.Object.Destroy(root.gameObject);
         }
 
@@ -74,7 +77,8 @@ namespace Exoduser.UnityPort
         SpriteRenderer Next()
         {
             if (used >= pool.Count) { var go = new GameObject("fx"); go.transform.SetParent(root, false); pool.Add(go.AddComponent<SpriteRenderer>()); }
-            var r = pool[used++]; r.enabled = true; return r;
+            var r = pool[used++]; if (defaultSpriteMaterial == null) defaultSpriteMaterial = r.sharedMaterial;
+            r.sharedMaterial = defaultSpriteMaterial; r.SetPropertyBlock(null); r.enabled = true; return r;
         }
 
         SpriteRenderer NextAdd()
@@ -142,6 +146,7 @@ namespace Exoduser.UnityPort
 
         public void Update(Simulation sim)
         {
+            bool newDruidProjectiles = !NativeReviewArgs.OriginalDruidProjectiles;
             used = 0; addUsed = 0; MineSpritesDrawn = 0; MineArtFallbacks = 0; FieldMouthsDrawn = 0; FieldCometsDrawn = 0; FieldOrbsDrawn = 0; FieldBulletFallbacks = 0;
             if (bound != sim) { if (bound != null) bound.BossFx -= OnFx; bound = sim; sim.BossFx += OnFx; }
             DrawFieldZones(sim);
@@ -221,6 +226,7 @@ namespace Exoduser.UnityPort
             }
             foreach (var o in druid.Orbs)
             {
+                if (newDruidProjectiles && DrawDruidProjectile(o.X, o.Y, o.Vx, o.Vy, o.R, 1, false, false)) continue;
                 double R = o.R * 2.4;   // _drawDruidOrbClip: o.t/60 s into the looping clip, 2.4 r
                 PutBox(ClipSprite(OrbClip, LoopFrame(OrbClip, o.T)), o.X, o.Y, R * 2, R * 2, Color.white, (int)o.Y + 4);
             }
@@ -230,6 +236,7 @@ namespace Exoduser.UnityPort
                 if(p.Mine){if(HasArt(WardSheet)){double mp=p.Life/(p.Ml==0?180:p.Ml),pulse=.5+Math.Sin(nowMs/(80+mp*100))*.5;bool blink=mp<.35;PutAdd(NativeDruidArt.ClipFrame(WardSheet,2,1,0),p.X,p.Y,112,112,(float)((blink?.84:.76)+pulse*.18),(int)p.Y,nowMs*.00035);if(blink)PutAdd(MineFlashRing(),p.X,p.Y,106,106,(float)(.3+pulse*.2),(int)p.Y+1,0,new Color(1,216/255f,74/255f));MineSpritesDrawn++;}else{Put(disc,p.X,p.Y,18,Mine,(int)p.Y);MineArtFallbacks++;}continue;}
                 if (p.DruidPoison)
                 {
+                    if (newDruidProjectiles && DrawDruidProjectile(p.X, p.Y, p.Vx, p.Vy, p.R, p.Sz, p.ParryClass == "physical", p.ElemBall, p.Friendly || p.BlueBean || p.ParryBlueBean)) continue;
                     // _drawDruidPoisonShot: 16-frame orb at 70 ms/frame, 96..180 px by Sz (240 for mines / element balls), doubled for physical-parry shots
                     double size = (p.Mine || p.ElemBall ? 240 : Math.Max(96, Math.Min(180, p.Sz * 24))) * (p.ParryClass == "physical" ? 2 : 1);
                     PutBox(NativeDruidArt.PoisonShot((int)(nowMs / 70) % 16), p.X, p.Y, size, size, Color.white, (int)p.Y + 6);
@@ -246,6 +253,7 @@ namespace Exoduser.UnityPort
                 PutAdd(ClipSprite(v.Clip, frame), v.X, v.Y, v.W, v.H, 1f - (float)legacy / v.MaxFrames * .3f, (int)v.Y + 20);
                 i++;
             }
+            DrawDruidContacts(t);
             Finish();
         }
 

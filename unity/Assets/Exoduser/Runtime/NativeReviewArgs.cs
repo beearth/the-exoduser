@@ -13,10 +13,12 @@ namespace Exoduser.UnityPort
     {
         public const string DruidRemodelArgument = "--unity-druid-remodel";
         public const string BossDirectArgument = "--unity-boss-direct";
+        public const string OriginalDruidProjectilesArgument = "--unity-original-druid-projectiles";
 
         public static bool DruidRemodel { get { return Array.IndexOf(Environment.GetCommandLineArgs(), DruidRemodelArgument) >= 0; } }
         public static bool BossDirect { get { return Array.IndexOf(Environment.GetCommandLineArgs(), BossDirectArgument) >= 0; } }
-        public static bool Any { get { return DruidRemodel || BossDirect; } }
+        public static bool OriginalDruidProjectiles { get { return Array.IndexOf(Environment.GetCommandLineArgs(), OriginalDruidProjectilesArgument) >= 0; } }
+        public static bool Any { get { return DruidRemodel || BossDirect || OriginalDruidProjectiles; } }
 
         public static bool TryBossDirect(out int stage)
         {
@@ -29,6 +31,6 @@ namespace Exoduser.UnityPort
         }
 
         // arguments that must not turn the area title off (every other --unity- argument is a test fixture)
-        public static bool IsReviewArgument(string a) { return a == DruidRemodelArgument || a == BossDirectArgument; }
+        public static bool IsReviewArgument(string a) { return a == DruidRemodelArgument || a == BossDirectArgument || a == OriginalDruidProjectilesArgument; }
     }
 }

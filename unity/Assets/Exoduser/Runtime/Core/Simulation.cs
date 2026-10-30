@@ -256,6 +256,9 @@ namespace Exoduser.UnityPort.Core
             SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player);
             int total = (int)((shieldBefore - enemy.Shield) + (hpBefore - enemy.Hp));
             LastHitDamage = total; TotalDamage += total; BossPainCheck(enemy);
+            // 이미 계산된 치명타의 표현 관찰 신호. noSound·쿨다운·공유 난수는 그대로 둔다.
+            if (!dot && head._isCrit && total > 0 && Config.StageIndex == 0 && Stage.InArena && enemy.IsBoss && Druid != null && ReferenceEquals(Druid.Boss, enemy))
+                QueueEnemySound(FeedbackKind.EnemyCrit, enemy, "crit_heavy", .45, 1);
             if (enemy.Hp <= 0) OnEnemyZeroHp(enemy, context, web, angle, opts, body);
             if (live) { web.alive = enemy.Alive; web.hp = enemy.Hp; }
         }
