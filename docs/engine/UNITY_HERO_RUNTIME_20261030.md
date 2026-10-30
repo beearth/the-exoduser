@@ -1,6 +1,6 @@
 # 데모 v0 전사 3D 런타임 — 2026-10-30
 
-전사 LOCK은 `origin/main:docs/11내러티브·로어디자인/WARRIOR_DESIGN_LOCK.md`, 제작 현황은 `UNITY_CHARACTER_BOARD_20261027.md`를 따른다. 본 단위는 기존 전사 메시·망토 본·대검을 실제 Player에 연결한다. 아래는 제작 중 계약이며, 컴파일·Player·실게임 디자인 판정은 영수증이 생기기 전까지 **미검증**이다.
+전사 LOCK은 `origin/main:docs/11내러티브·로어디자인/WARRIOR_DESIGN_LOCK.md`, 제작 현황은 `UNITY_CHARACTER_BOARD_20261027.md`를 따른다. 기존 전사 메시·망토 본·대검을 실제 Player에 연결하고 기능 검수·공통 반영·일반 Desktop 전달을 확인했다. **시각 판정은 RETOUCH**이며 전체 게임용 AAA 아트 완료로 올리지 않는다.
 
 | 항목 | 소유·현재 값 |
 |---|---|
@@ -14,7 +14,7 @@
 | 3D 필드 | Core 픽셀→`NativeRemodel3D.Point`, yaw=`atan2(cos(Facing),-sin(Facing))`, 모델 배율 0.87. R1 0.90/10.57%, R2 0.81/8.36%, R3 0.81/7.98%의 실제 스킨·천 실측을 보존하며 화면 높이8~10% 안에 여유를 주는 R3 수정 후보 |
 | 기존 2D 아레나 | 같은 Core 발밑 앵커, 모델 앞쪽 깊이 -3, 바닥 기준 X 회전 -35도, 배율 0.80. R3fix M1 원본에서0.65가 약7% 높이로 작게 읽혀 보강. 아레나 자체의 3D화는 별도 |
 | 보조광 | 전사 layer30·렌더링 마스크3, Point 전사 마스크2. 중성 `(1,.97,.94)` 강도6 범위5, 차가운 가장자리 `(.62,.75,.86)` 강도1.6 범위4. 그림자 없는 보조광이며 주광·카메라·Core는 변경하지 않음 |
-| 재질 보강 | 본체 normal강도0.35·smoothness0.68, 대검 normal강도0.55·smoothness0.75. R3 전사 전용 그래프는 `albedo *= 1 - 0.75*sqrt(metallicMap.R)`: 금속 마스크0인 피부·천의 원본 색을 보존하고 금속만0.25~1배로 낮춘다. 기존 PBR·노멀·직접광·그림자는 유지, 기존 풀 림 발광 연결은0. 원본 ShaderGraph·비트맵 수정/새 생성0. R3 실제 프레임 판정 필요 |
+| 재질 보강 | 본체 normal강도0.35·smoothness0.68, 대검 normal강도0.55·smoothness0.75. 전사 전용 그래프는 `albedo *= 1 - 0.75*sqrt(metallicMap.R)`: 금속 마스크0인 피부·천의 원본 색을 보존하고 금속만0.25~1배로 낮춘다. 기존 PBR·노멀·직접광·그림자는 유지, 기존 풀 림 발광 연결은0. 원본 ShaderGraph·비트맵 수정/새 생성0. R4 현재1x 제작자·독립 판정은 RETOUCH |
 | 모션 | `NativeHeroMotion.Sync(Simulation,bool)`, 실행순서90→기존 `CapeSpring`100. 상세 상태·타이밍·수치는 `UNITY_HERO_MOTION_20261030.md` |
 | 실제 Player 검수 | `--unity-hero-review -output <고유경로>`·필수 `--unity-qa-sandbox`. 대기60·방향160(8방향×20틱)·달리기90·구르기36·대검3타180·검기3타180·E충전강타120·시전90·보조시전60·패링45·피격45·사망90틱, 2틱마다 1600×900 PNG. 적 AI/자연 소환을 끄고 이동 충돌을 유지한 제어 검수. E 두 번째 입력을70틱 누른 뒤 해제하며 Charge/Bash/BashRecover를 해당 구간에서 검사. heroReviewActive는 이 fixture의 사망/일시정지 메뉴 그리기만 분리하며 일반 실행은 불변. 피격은 HurtPlayer(80), 사망은 별도 상태주입이므로 자연 플레이로 세지 않음 |
 | 기존 수정 보존 | 이동·조준 `ef75f883e`는 시작 HEAD의 조상. Core 파일 변경0 |
@@ -43,9 +43,9 @@ R3 수정 검수부터 `Time.captureDeltaTime=1/60`을 이 전용 fixture에만 
 | 실제 Core 시퀀스 | `capture-tests/capture-receipt.json`, 996틱·17검사 통과·오류0. 기존 Core 미사용변수 경고2는 별도. Unity/IK/충돌 증거가 아님 |
 | Unity 임포트·표현 경계 | `995071d3`, 6000.6.7f1, 컴파일 오류없음·exit0·USER_SAVE변경0, `HERO_RESOURCE_AVATAR_SKIN_WEAPON_CAPE_PASS`. 실제 리소스·Humanoid·무기·망토·셰이더 및 Sync의 Player/Core 비변경 통과. 라이선스 토큰 갱신 오류 로그1이 있으나 기존 라이선스로 작업 정상 종료 |
 | 최초 Unity 실행 | `b3d23370`은 첫 자산 스캔 뒤 HeroCapture 파일을 추가한 시점 문제로 CS0103. 파일 구성을 마친 뒤 `995071d3` 갱신에서 해소. 성공·실패 로그를 구분해 보존 |
-| Player/시각 | R1은 아래 FAIL·RETOUCH, R2 기능29/29·시각RETOUCH, R3 실제 검수 대기. 에디터 자산 계약 통과를 실게임 디자인 완료로 세지 않음 |
+| Player/시각 | 최종 R4 기능29/29·M1 23/23·시각RETOUCH. 이전 후보 실패와 재작업은 아래에 분리 보존. 에디터 자산 계약 통과를 실게임 디자인 완료로 세지 않음 |
 
-## R1 실제 Player 판정 — 재작업 중
+## R1 실제 Player 판정과 재작업 이력
 
 - 소스 `e0b279059b7880036643439cfb339f73309645b8`, 빌드 `e58c27ec` Succeeded·오류0. 실제 D3D11 RX9070XT 검수 `895ade06`은 exit2(크기 검사1건 실패)·창/잔여/USER_SAVE변경0, 499PNG. `r1/review/hero-review.json`.
 - 화면 높이10.57%로8~10% 계약 초과. 구르기는 팔·다리를 편 공중제비여서 **동작 FAIL**, 무릎을 접은 tuck과 발목 IK로 재작업한다. 첫 사망 구간은 실제 메뉴가 몸을 가렸으므로 **시각 미검증**이며 상태 관측 성공을 시각 통과로 세지 않는다.
@@ -81,4 +81,16 @@ R3 수정 검수부터 `Time.captureDeltaTime=1/60`을 이 전용 fixture에만 
 
 최초 R4 실행기 호출은 게임 로그 없이 exit1이었다. Unity/Player잔여0을 확인했으나 원인은 미확정이다. 표준 환경은 모두 존재했으며 전역 변경0. 진단 wrapper의 잘못된 위치 인수는 명명 인수로 고쳤고, 같은 공식 exo 실행기에서 위 실제 Player/M1을 정상 완료했다. 실패 trace·빈 최초로그·환경 존재값을 보존하며 환경의 영구 복구로 적지 않는다.
 
-현재 단계는 검수 완료 후 MERGE_QUEUE·공통 반영·통합 빌드·바탕화면 갱신이다. 기술 검수 통과와 위 시각 RETOUCH를 구분한다.
+## 공통 반영·실행본 채택·Desktop 전달
+
+| 항목 | 확인한 결과 |
+|---|---|
+| 공통 반영 | 기존 통합 담당이 expected `f27c9d1f9`→`a62b515d66a23c59bd9f2acb60555fbb6a669e90` 정상 fast-forward·원격 SHA readback. 다른 후보/preview/WIP 변경0 |
+| 입력 동일성 | 검수제품 b46c3d6c2와 채택공통 a62b515d6의 Unity tree `ca59a1d73157b1f5bac06d5d2ef85e61c1e8318e` 완전동일. 이후 차이는 이 Runtime 문서1개뿐, 자기66개 WORK/INDEX 변경0·실제 Runtime/Core/EXE SHA 동일 |
+| 검수 재사용 | COMMON_RULES 동일 SHA 입력·조건의 유효검수 재사용 규칙 적용. 검증한 R4 실행본·Player/M1 채택, **새 통합 빌드와 추가 M1 반복은 실행하지 않음**. 새 실행으로 보고하지 않는다. `validated-build-adoption.json` |
+| 일반 바로가기 | `C:/Users/심도진/Desktop/지옥의 길 (Unity).lnk`→`I:/EXODUSER-Storage/demo-art/hero/r4/build/EXODUSER-Unity.exe` |
+| 네 속성 | Target 위EXE, Arguments `-force-d3d11 --remodel3d`, WorkingDirectory `.../hero/r4/build`, IconLocation `위EXE,0`. QA/빠른시작 인자없음 |
+| 독립 확인 | 별도 PowerShell 프로세스에서 실제 링크 네 속성·Runtime/Core/EXE SHA 다시 읽어 일치. 이전 skill-fix 링크는 I:에 동일byte 백업(SHA `e90cacc1…ead33e`), 앱 자동기동0·사용자세이브쓰기0 |
+| 최종 근거 | `desktop-delivery.json`·`desktop-readback.json`·`validated-build-adoption.json`, `I:/EXODUSER-Storage/codex-takeover/hero/REPORT.md`. 자기 예약은 공식 해제·새 Unity 실행0 |
+
+이 단위의 제작·검수·공통 반영·전달 범위를 마감한다. 시각 RETOUCH와 전사/VFX 담당의 위 잔여 수정 항목, Mac·OS손조작·자연 사망/실시간 체감 미검증은 유지한다. 첫 Desktop 도구 호출은 JSON 기본인코딩 오류로 쓰기 전 실패했고 UTF-8 명시 후 정상 완료했다. 검증 실패를 누락하거나 디자인 PASS로 올리지 않는다.
