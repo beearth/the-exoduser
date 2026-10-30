@@ -96,6 +96,20 @@ namespace Exoduser.UnityPort
             if(plaque==null)plaque=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_plaque_20261029");
             Slice(new Rect(box.x-14,box.y,box.width+28,box.height),plaque,174,0,40,0,true);
         }
+        // 기존 금속 원화의 안쪽 표면만 착색한다. 테와 양끝 조각은 원본 은빛을 유지한다.
+        internal static void ActionPlate(Rect box,bool primary,float selection,bool pressed)
+        {
+            var previous=GUI.color;
+            float light=pressed?.74f:Mathf.Lerp(.78f,1.18f,selection);
+            GUI.color=new Color(light,light,light,previous.a);
+            Button(box);
+            if(primary&&plaque!=null)
+            {
+                GUI.color=new Color(3.6f*light,.48f*light,.35f*light,previous.a);
+                GUI.DrawTextureWithTexCoords(new Rect(box.x+40,box.y+box.height*.32f,box.width-80,box.height*.36f),plaque,new Rect(.22f,.35f,.56f,.30f),true);
+            }
+            GUI.color=previous;
+        }
     }
     public sealed partial class NativeLobby
     {
