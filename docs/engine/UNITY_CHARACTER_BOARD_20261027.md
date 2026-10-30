@@ -1,5 +1,15 @@
 # Unity 캐릭터 총괄 보드 (2026-10-27~)
 
+## 2026-10-31 R5 후속 중심형 강타 앵커 한 건 마감
+
+- 전사 담당 최소수정: wave/flash에명시적중심registry를두어캐릭터발끝lift에서제외했다. 웹중심계약 RED7실패→GREEN14/14, 악의구중심·일반캐릭터발끝·2D·히트/기간/피해·크기/알파/밝기·카메라불변이다.
+- 제품ccde13cb9, 공통bf9b2d25c28a44d4a90e8f2017a27f8d5f657394(지정담당정상FF/원격확인). 새빌드b970760a, 실제전후/대조30/30·579PNG·각39표본, 정확새Core독립11/11, 같은빌드M1aaf2078e23/23. 구R5완료M1재사용아님.
+- 같은틱1600×900/1x직접판정: **중심앵커/머리·견갑개선PASS / 전체아트RETOUCH**. 3종×8=정지탄24(위치·속도0·실제틱고정)에서형태가독성확인. 자연밀집전투/움직이는탄막PASS아님. VFX담당후속=바닥경계수평잘림·강한화염명암·기존흰arc파지가림. 독립검수자PASS·AAA완성으로올리지않는다.
+- 일반Desktop `I:/EXODUSER-Storage/demo-art/hero/night-anchor-20261031/build/EXODUSER-Unity.exe`, 인자-force-d3d11 --remodel3d. 이전게임대조링크I동일byte백업→CAS전달→별도프로세스네속성/3SHAreadback, 앱자동기동0. 동일Unitytree/정확바이너리검수재사용으로새통합빌드·추가M1반복0. 자기예약공식반환·타잠금/예약변경0.
+- 보존제약: 기존파생522중521byte동일, 빌드재생성씬1변경. 이전씬byte백업누락으로정확복구미완료, 현재씬/diff/전후SHA를I:에보존하고추정복구·전체초기화·씬커밋하지않음. 최초current무로그실행실패와최초control정리잔여2는원본보존·재검증성공만채택했다.
+- 근거 `I:/EXODUSER-Storage/demo-art/hero/night-anchor-20261031/`의새입력-게이트.json·판정.md·comparison/검수.html·desktop-readback.json·생성씬-보존/영수증.json, 한국어총괄보고hero/REPORT.md. Mac실제반영/실행pending.08:34KST이후새야간단위0.
+
+
 ## 2026-10-31 전사 R5 실제 검수·공통 반영·Desktop 전달
 
 **데모 v0 전사3D 기술 전달 완료, 전체 시각 RETOUCH**다. R4 지옥강타233ms 시각지연 FAIL은 철회·바로가기 복구 후 R5에서 수정했다. 제작자와 독립 검수자는 현재 첫 피해 프레임과1x 연속판을 직접 확인했으며 기능검사로 디자인PASS를 대신하지 않는다.
