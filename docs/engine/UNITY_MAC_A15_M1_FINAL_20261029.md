@@ -67,3 +67,11 @@ Mac 실제 작업본 `/Users/fordeargamers/exoduser-wt/UNITY-MAC-20261024`의 �
 | FILES / GIT | 맵 geometry/아트/배치/코드 수정0. Unity Editor가 만든 520개 tracked import 변경과 56개 새 메타/설정 파일은 `_out/UNITY-MAC-R5-20261031/editor-generated-final-*`에 복구 패치·목록·tar로 보존했고 정확히 해당 생성분만 원래 작업본 상태로 되돌렸다. private UI 브랜치 보존. docs의 이 검수 기록 외 제품 수정0. |
 
 **VISUAL VERDICT: RETOUCH** — 검수한 전사 3D 시작/강타 장면의 가림·발밑 대비와 목표 패널 UI 겹침이 남는다. 기존 CH1-1 맵 전체 시각 등급을 새 PASS로 갱신하지 않는다. **NEXT PASS:** 공용 지역 유도 화살표/라벨의 회전 후 표시 범위와 목표 패널 Rect 회피를 웹·Unity 소유자와 정합해 수정하고, 같은 1600×900 장면과 1x에서 겹침 제거를 확인한다.
+
+### 우상단 SafeZone 호출부 재확인 — 제품 수정 0
+
+`NativeGame.OnGUI`는 `hudScale=min(Screen.width/1920, Screen.height/1080)`, `hudWidth=Screen.width/hudScale`을 `NativeObjectivePanel.Draw(hudWidth)`와 `NativeFieldHud.Draw(hudWidth)` 양쪽에 전달한다. 이번 1600×900은 `hudScale=5/6`, `hudWidth=1920`이다. 따라서 실제 목표 패널의 `Draw` Rect `(hudWidth−216−20,16,216,153.39)=(1684,16,216,153.39)`와 `RegionHudSafeZone()`이 공급한 Rect는 **정확히 일치**한다. 시계도 실제 `NativeFieldHud.DrawClock`의 `(hudWidth/2−85,17,170,37)`과 공급값 `(875,17,170,37)`이 일치하며, 미니맵 프레임은 양쪽 모두 `(8,8,141.1,141.1)`이다. `NativeHudDockLayout.Create(1920,1080)`의 하단 제한도 이번 화면의 HUD 설계 크기와 같다. 따라서 이번 겹침은 Mac caller의 목표 패널 위치 계산 오류가 아니다.
+
+`NativeRegionHud.DrawArrow`는 목표 패널에 12px을 더한 `(1672,4)..(1912,181.39)` 안에 **기준점**이 들어오면 가장 가까운 한 변으로 옮긴 뒤, 다시 허용 화면 Rect로 clamp한다. 이 화면에서 허용 x의 최댓값은 `1896`이므로 오른쪽 변 `1912`로 밀어도 다시 목표 패널 내부가 된다. 시계 회피로 허용 y의 최솟값이 `66`이므로 위쪽 변 `4`로 밀어도 다시 내부가 된다. 설령 기준점이 블록 밖에 남더라도 회전 화살표 96px·글로우·68px 뒤 라벨의 실제 표시 bounds는 검사하지 않는다. `hero-0413-objective-1x.png`의 겹침은 이 경로와 일치한다. 블록을 임의로 크게 하거나 문구를 숨기고 줄이는 caller 수리는 정확한 예약 영역을 훼손하며 다른 방향/화면에서 무겹침을 보장하지 못한다.
+
+**공용 renderer 수정 제안:** `DrawArrow`의 자연 후보 위치와 화면 제한을 계산한 뒤, 회전 화살표·글로우와 두 줄 라벨의 실제 표시 bounds를 하나의 후보 footprint로 평가한다. 시계/미니맵/목표 패널/하단 HUD와 교차하지 않는 화면 내 후보를 선택하고, 마지막 clamp 후에도 동일한 교차 검사를 수행한다. 1600×900의 목표 방향과 다른 8방향/화면비를 확인하고, 웹 `_drawRegionArrow`와 동작을 맞춘다. 이 제안은 PC 공용 renderer 소유 범위이며 이번 Mac checkpoint의 제품 코드는 변경하지 않았다.
