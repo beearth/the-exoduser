@@ -40,7 +40,7 @@ namespace Exoduser.UnityPort {
    var floor=world3D?Quaternion.identity:Quaternion.Euler(-35,0,0);
    float yaw=Mathf.Atan2(Mathf.Cos(p.Facing),-Mathf.Sin(p.Facing))*Mathf.Rad2Deg;
    root.transform.SetPositionAndRotation(ground,floor*Quaternion.Euler(0,yaw,0));
-   root.transform.localScale=Vector3.one*(world3D?.87f:.65f);
+   root.transform.localScale=Vector3.one*(world3D?.87f:.80f);
    if(!ReferenceEquals(previousSimulation,simulation)||previousWorld3D!=world3D||Vector3.Distance(previousGround,ground)>2f)cape?.ResetState();
    previousSimulation=simulation;previousWorld3D=world3D;previousGround=ground;
    motion.Sync(simulation,moving);
