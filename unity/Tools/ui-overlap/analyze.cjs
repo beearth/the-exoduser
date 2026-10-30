@@ -22,6 +22,7 @@ function analyze(frame){
    if(b.kind==='text'){if(j>i)issues.push({type:'글자-글자',a,b});}
    else if(b.kind==='button'&&!(inside(a.rect,b.rect)&&a.order>b.order))issues.push({type:'글자-버튼',a,b});
    else if(b.kind==='panel'&&!inside(a.rect,b.rect))issues.push({type:'글자-판',a,b});
+   else if(b.kind==='control')issues.push({type:'글자-조작부',a,b});
   }
  }
  return {...frame,elements:visible,issues};

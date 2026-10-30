@@ -287,9 +287,10 @@ namespace Exoduser.UnityPort
   }
   void DrawRange(It it,Rect r,int cursor)
   {
-   var d=it.def;DrawRowFrame(it,r,cursor,230);
-   int v=GetVal(d);float valW=Mathf.Clamp(TW(Fmt(d,v),15,FontStyle.Bold)+8,112,r.width*.34f),ctlW=r.width-250-valW-20;
-   var ctl=new Rect(r.x+250,r.y+13.5f,ctlW,20);
+   float nameW=Mathf.Max(230,TW(RowName(it),17,FontStyle.Normal)+12),controlX=Mathf.Min(r.width*.5f,nameW+20);
+   var d=it.def;DrawRowFrame(it,r,cursor,nameW);
+   int v=GetVal(d);float valW=Mathf.Clamp(TW(Fmt(d,v),15,FontStyle.Bold)+8,112,r.width*.34f),ctlW=r.width-controlX-valW-20;
+   var ctl=new Rect(r.x+controlX,r.y+13.5f,ctlW,20);NativeUiAudit.Region(ctl,"control");
    Txt(new Rect(r.xMax-valW,r.y+13,valW,21),Fmt(d,v),15,ValueColor(d,v),TextAnchor.MiddleRight,FontStyle.Bold,false);
    float t=(v-d.Min)/(float)(d.Max-d.Min);
    Fill(new Rect(ctl.x,ctl.y+9.5f,ctl.width,1),new Color32(146,149,149,90));
@@ -308,6 +309,7 @@ namespace Exoduser.UnityPort
   {
    var d=it.def;DrawRowFrame(it,r,cursor,r.width-18-20);
    var box=new Rect(r.xMax-18,r.y+14.5f,18,18);bool on=GetVal(d)!=0;
+    NativeUiAudit.Region(box,"control");
    Fill(box,new Color32(10,13,13,255));Border(box,on?new Color32(217,214,208,200):BoxLine);
    if(on)Diamond(box.center.x,box.center.y,6,Brass);
    var hit=new Rect(r.x,r.y,r.width,47);
@@ -334,6 +336,7 @@ namespace Exoduser.UnityPort
    float selW=it.id=="optAtmos"?160:280;
    DrawRowFrame(it,r,cursor,r.width-selW-20);
    var box=new Rect(r.xMax-selW,r.y+4.5f,selW,38);
+    NativeUiAudit.Region(box,"button");
    Fill(box,new Color32(10,13,13,255));Border(box,Line);
    string label=current<labels.Count?labels[current]:"";
    Txt(new Rect(box.x+14,box.y,selW-48,38),label,16,Bone);
@@ -350,7 +353,7 @@ namespace Exoduser.UnityPort
    Event e=Event.current;float max=Mathf.Max(0,34*labels.Count+4-box.height);
    if(e.type==EventType.ScrollWheel&&box.Contains(e.mousePosition)){popupScroll=Mathf.Clamp(popupScroll+e.delta.y*34f,0,max);e.Use();}
    popupScroll=Mathf.Clamp(popupScroll,0,max);
-   Fill(box,new Color32(10,13,13,250));Border(box,BoxLine);
+   NativeUiAudit.Region(box,"panel");Fill(box,new Color32(10,13,13,250));Border(box,BoxLine);
    NativeUiAudit.BeginGroup(box);
    for(int i=0;i<labels.Count;i++)
    {

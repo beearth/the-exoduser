@@ -34,3 +34,7 @@ test('나중 전체 배경이 덮은 기존 버튼도 가림 처리한다',{skip
  const out=analyze({width:100,height:100,elements:[{...button('이전 삭제',20,0,20,20),order:0},{id:'배경',kind:'panel',rect:{x:0,y:0,width:100,height:100},order:1},{...text('새 안내',10,10,20,10),order:2}]});
  assert.equal(out.issues.length,0);
 });
+test('긴 설정 이름이 슬라이더 조작부를 침범하면 검출한다',{skip:!analyze},()=>{
+ const out=analyze({width:818,height:48,elements:[text('Grade Minimum de Ramassage',0,12,258,24),{id:'슬라이더',kind:'control',rect:{x:250,y:13.5,width:436,height:20}}]});
+ assert.equal(out.issues[0]?.type,'글자-조작부');
+});

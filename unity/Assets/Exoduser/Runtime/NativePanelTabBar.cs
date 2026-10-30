@@ -63,6 +63,7 @@ namespace Exoduser.UnityPort {
             var s=Get(preset);string clicked=null;
             for(int i=0;i<Ids.Length;i++){
                 var r=new Rect(s.x+i*(s.tabW+s.gap),s.y,s.tabW,s.tabH);bool active=Ids[i]==activeId;
+                NativeUiAudit.Region(r,"button");
                 // .panel-nav-tab: gradient over the iron plate (100% 100%) over #232225; .active: red gradient, no colour, inset 0 -2px #7f8282.
                 if(!active)Fill(r,C(35,34,37));
                 if(plate!=null)GUI.DrawTexture(r,plate,ScaleMode.StretchToFill);
