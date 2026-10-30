@@ -68,6 +68,7 @@ namespace Exoduser.UnityPort
                     var fr=flame.AddComponent<SpriteRenderer>();fr.sprite=hellFlameFrames[0];fr.color=new Color(1.5f,1.2f,1,1);hellFlames.Add(fr);
                 }
             }else Debug.LogError("[키샷] 실제 화로 리소스 누락");
+            A2ForestSetup(g);
         }
         void HellLightingActive(bool on)
         {
@@ -76,6 +77,7 @@ namespace Exoduser.UnityPort
             RenderSettings.ambientMode=on?AmbientMode.Trilight:hellOldAmbient;
             RenderSettings.ambientSkyColor=on?new Color(.18f,.20f,.24f):hellOldSky;RenderSettings.ambientEquatorColor=on?new Color(.09f,.115f,.15f):hellOldEquator;RenderSettings.ambientGroundColor=on?new Color(.04f,.045f,.055f):hellOldGround;
             RenderSettings.fog=on||hellOldFogOn;RenderSettings.fogMode=on?FogMode.ExponentialSquared:hellOldFogMode;RenderSettings.fogColor=on?new Color(.035f,.065f,.085f):hellOldFog;RenderSettings.fogDensity=on?.023f:hellOldFogDensity;
+            if(on&&A2Requested){RenderSettings.fogColor=new Color(.085f,.115f,.14f);RenderSettings.fogDensity=.028f;}
         }
         void HellLightingLate()
         {

@@ -16,7 +16,8 @@ namespace Exoduser.UnityPort
             if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))){Application.Quit(2);yield break;}
             Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;smokeActive=true;pauseSmoke=true;
             Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
-            lobby.ShowLobby();lobby.SelectPreview();if(!lobby.EnterNativeTest()){Application.Quit(2);yield break;}
+            if(A2Requested){lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();if(!lobby.Flow.EnterTest()){Application.Quit(2);yield break;}}
+            else{lobby.ShowLobby();lobby.SelectPreview();if(!lobby.EnterNativeTest()){Application.Quit(2);yield break;}}
             EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;gameFocused=true;
             var sim=Simulation;var p=sim.Player;var receipt=new KeyshotReceipt();
             p.X=3920;p.Y=7300;var loc=Argument("--unity-keyshot-location");if(!string.IsNullOrEmpty(loc)){var xy=loc.Split(':');if(xy.Length==2&&float.TryParse(xy[0],out var lx)&&float.TryParse(xy[1],out var ly)){p.X=lx;p.Y=ly;}}sim.Config.EnemyAiEnabled=false;
@@ -76,11 +77,12 @@ namespace Exoduser.UnityPort
                     StepInput(0,0,boss.X,boss.Y,false,false);
                     if(tick%3==0)yield return null;
                     if(tick>180&&KeyshotActiveShots(true)>=6){yield return KeyshotSave(output,"03-드루이드",receipt);break;}
-                    if(tick==1799)yield return KeyshotSave(output,"03-드루이드",receipt);
+                    if(tick==1099)yield return KeyshotSave(output,"03-드루이드",receipt);
                 }
             }
             receipt.passed=receipt.frames.Count==3&&receipt.frames.TrueForAll(f=>f.heroHeight01>=.08f&&f.heroHeight01<=.11f)&&receipt.frames[1].projectiles>=3&&receipt.frames[2].projectiles>=6;
             File.WriteAllText(Path.Combine(output,"검수.json"),JsonUtility.ToJson(receipt,true));
+            lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);
             Application.Quit(receipt.passed?0:3);
         }
         int KeyshotActiveShots(bool boss)
@@ -101,7 +103,7 @@ namespace Exoduser.UnityPort
         IEnumerator KeyshotSave(string output,string name,KeyshotReceipt receipt)
         {
             if(Simulation.Stage.InArena){var b=Simulation.Stage.FindBoss();if(b!=null){Simulation.Player.X=b.X+260;Simulation.Player.Y=b.Y-150;lastX=Simulation.Player.X;lastY=Simulation.Player.Y;}}
-            menu=false;Running=false;gameFocused=true;UpdateViews();yield return new WaitForSecondsRealtime(Simulation.Stage.InArena?2.8f:.35f);UpdateViews();yield return new WaitForEndOfFrame();
+            menu=false;Running=false;gameFocused=true;UpdateViews();yield return new WaitForSecondsRealtime(Simulation.Stage.InArena?2.8f:.35f);UpdateViews();if(!Application.isBatchMode)yield return new WaitForEndOfFrame();
             var camera=HudCamera;float h=0;
             if(name=="01-탐험"){var objects=new List<string>();foreach(var renderer in FindObjectsByType<Renderer>(FindObjectsInactive.Include,FindObjectsSortMode.None))objects.Add(renderer.gameObject.scene.name+"|"+renderer.name+"|"+renderer.enabled+"|"+renderer.gameObject.activeInHierarchy+"|"+(renderer.sharedMaterial!=null?renderer.sharedMaterial.name:"없음"));var terrain=NativeRemodel3D.Ground;objects.Add("지형|"+terrain.terrainData.size+"|"+terrain.transform.position+"|"+terrain.drawInstanced+"|"+terrain.detailObjectDistance+"|"+terrain.materialTemplate);foreach(var l in FindObjectsByType<Light>(FindObjectsSortMode.None))objects.Add("광원|"+l.name+"|"+l.type+"|"+l.shadows);foreach(var cam in FindObjectsByType<Camera>(FindObjectsSortMode.None))objects.Add("카메라|"+cam.name+"|"+cam.enabled+"|"+cam.cullingMask+"|"+cam.depth);File.WriteAllLines(Path.Combine(output,"필드-렌더러.txt"),objects); }
             if(playerView!=null&&playerView.sprite!=null&&camera!=null)
@@ -112,7 +114,7 @@ namespace Exoduser.UnityPort
                 var low=playerView.transform.TransformPoint(new Vector3(0,(y0-s.pivot.y)/s.pixelsPerUnit,0));var high=playerView.transform.TransformPoint(new Vector3(0,(y1+1-s.pivot.y)/s.pixelsPerUnit,0));h=Mathf.Abs(camera.WorldToViewportPoint(high).y-camera.WorldToViewportPoint(low).y);Destroy(tex);
             }
             receipt.frames.Add(new KeyshotFrame{name=name,tick=Simulation.TickCount,enemies=Simulation.Enemies.Count,projectiles=KeyshotActiveShots(Simulation.Stage.InArena),arena=Simulation.Stage.InArena,remodel=NativeRemodel3D.Active,heroHeight01=h,cameraFov=camera.fieldOfView,heroWorld=playerView.transform.position,cameraWorld=camera.transform.position,bossCenter=druidBody!=null?druidBody.Bounds.center:Vector3.zero,bossSize=druidBody!=null?druidBody.Bounds.size:Vector3.zero});
-            ScreenCapture.CaptureScreenshot(Path.Combine(output,name+".png"));yield return null;yield return new WaitForSecondsRealtime(.4f);
+            if(Application.isBatchMode)A2CaptureFrame(Path.Combine(output,name+".png"));else ScreenCapture.CaptureScreenshot(Path.Combine(output,name+".png"));yield return null;yield return new WaitForSecondsRealtime(.4f);
         }
     }
 }
