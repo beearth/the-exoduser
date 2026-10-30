@@ -59,6 +59,10 @@ Unity 첫 임포트가 기존 `.meta` 432개와 `.asset` 1개를 다시 썼다. 
 | CC0 인체 피부 흉곽 | `I:/EXODUSER-Storage/demo-art/boss-druid/anatomy-base-sculpt-r3/REPORT.md` | R3/R3b 모두 둥근 흉근·복부 덩어리·목 연결 FAIL. 실제 Sculpt로 같은 인체 표면을 더 파는 방법 중단 |
 | 실제 CC0 늑골+얇은 피부막 | `anatomical-rib-skin-r4/REPORT.md`, `r4b/` | 실제 늑골 원형의 구조는 확인했으나 R4/R4b는 피부막의 판형 밴드·계단 홈과 목 단절 FAIL2. R4b의 노년 얼굴에는 점상 파편도 발생. 부모가 정면·흉곽·얼굴 실물을 직접 확인했고 제작자도 정면/측면/55°/근접 모두 FAIL. 같은 방법의 추가 후보 제작 중단 |
 | 얼굴 원형 | `face-study-r1/`, `face-study-r2/`, `aged-face-base-r3/` | 기본 인체 부착 2회는 젊은 얼굴·떠 있는 목·평면 수염 FAIL. 별도 CC0 Ellis의 실제 노년 볼/입/턱 원형은 읽히지만 연결 조형·가면 교차·수염·인장이 미완. 완성 후보 아님 |
-| 지팡이 | `staff-native-sculpt-r1/REPORT.md`, `staff-explicit-surface-r2/` | Grab API 오류 2회로 그 실행 단위 중단. 별도 정점 편집+성공한 Draw/Smooth 경로의 실물은 규칙적 케이지·축의 과밀 표면·광택 구슬 결함으로 재작업 중. 아직 채택 없음 |
+| 지팡이 | `staff-native-sculpt-r1/REPORT.md`, `staff-explicit-surface-r2/`, `staff-explicit-surface-r2b/` | Grab API 오류 2회로 그 실행 단위 중단. 별도 정점 편집+확인된 Draw/Smooth 경로의 R2/R2b도 규칙적 포크·띠 가로대·V형 접합 뭉침과 축 중하부의 검은 잔표면으로 FAIL2. S3·LOCK과 무채색/재질 정면·측면·55도·근접 총20장을 제작자와 독립 검수자가 확인. 같은 방법 추가 제작 중단, 제품 채택 없음 |
 
 R4b 최종 피부는 935,504정점/937,696면이며 편집 원형의 기술 수치일 뿐 게임용 최적화 결과가 아니다. `DarkDruid_R4b_AgedFace_Neck_Union_Clean.blend` SHA-256 `643bd4381454e120c6c6ea6e7208dfc24e825a931137c3e58102bc59ccf1bb3f`. 보존 파일 27/27 재해시 일치. 원본 Meshy·CC0 자료·이전 후보·24뼈를 보존했고 Unity 모델/리깅/8동작 공급은 0이다. 따라서 전체 브리프와 실제 3D 보스전은 **미완료**다.
+
+지팡이 R2b의 전체 높이는 2.29999995m, 랜턴 지름은 0.16m, 목질은 310,724정점/312,152면이다. R2의 열린 변0·비다양체 변0·모디파이어0은 자기 면 교차 없음의 증명이 아니다. 옛 홈 기하를 제외한 R2b에서도 축 결함이 남아 해당 원인 가설은 기각했다. 흰 반사점 감소는 부분 개선이며 구조 판정을 바꾸지 않는다. 파일별 SHA-256은 R2 17/17, R2b 15/15 일치했다.
+
+다음 제작 단계는 목·쇄골·늑골·복부의 연속 원형 조형 및 리토폴로지, 노년 아래 얼굴·턱·목·수염 연결, 지팡이 케이지·축·뿌리 분기 접합의 큰 구조 재제작이다. 같은 자동 좌표/브러시 조정 후보를 더 만들지 않는다. 직접 뷰포트 편집 사본 `I:/EXODUSER-Storage/demo-art/boss-druid/direct-sculpt-viewport/DarkDruid_DirectSculpt.blend`을 보존했으며, 공통 규칙의 창 금지 예외에 대한 사용자 응답 전에는 Blender 창을 열지 않는다. 기존 2D 보스의 탄막·피격 표현 검수는 이 모델 FAIL과 분리한다.

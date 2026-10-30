@@ -32,7 +32,8 @@
 | 종류 | 위치 | 비고 |
 |---|---|---|
 | `EnemyHit` / `BossHit` | `hurtE` 컨텍스트의 `PlaySample`/`HitSfxForEtype` 연결 | 웹 `_hitSfxCd` 8f 쿨다운, 변형 선택은 어댑터 |
-| `EnemyCrit` | `EnemyHurtContext.OnCrit` | `crit_heavy` .45, 12f 쿨다운 |
+| `EnemyCrit` 기존 음성 분기 | `EnemyHurt.Head→PlaySample→QueueHurtSample` | 비DOT·`!noSound`인 경로의 `crit_heavy` .45·12틱 쿨다운·원본 rate 난수. 현행 `Simulation.ApplyEnemyDamage`는 Head/Body를 `noSound=true`로 호출하므로 이 분기는 해당 피해 경로에서 발행되지 않음 |
+| si0 등록 드루이드 실제 치명타 관찰 | `Simulation.ApplyEnemyDamage`, 실제 총피해 계산 후·사망 처리 전 | 비DOT·실제 `head._isCrit`·총피해>0·아레나·`IsBoss`·등록 `Druid.Boss` 참조가 모두 일치할 때 `EnemyCrit`/`crit_heavy` .45/pitch1만 추가. Core 쿨다운·상태·공유 난수는 바꾸지 않음. 호스트 `druid_hit_heavy`는 기존30틱 제한, 동일 틱 시각 효과는 치명타 하나로 통합. [표현 SSOT](UNITY_DRUID_DEMO_V0_20261030.md) |
 | `EnemyDeath` / `BossDeath` | `KillEnemy` | 사망 묶음·버스트는 어댑터 |
 | `Roll` | `StartRollAngle` | 임시 `footstep`(.55, 1.15±.1) + `footstep2`(.5, +80 ms) |
 | 논리 키 `tell_melee` | 일반몹 `windup` 진입(`UpdateEnemyBody`) | AD3 2단계 |

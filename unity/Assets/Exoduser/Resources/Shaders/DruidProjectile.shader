@@ -77,20 +77,42 @@ Shader "EXODUSER/DruidProjectile"
                 float3 glow=_Friendly>.5?float3(.2,.7,1):_Thorn>.5?float3(.58,.72,.12):float3(.58,.85,.15);
                 float alpha=saturate(core+rim*.35+halo);
                 body*=(_Thorn>.5?1-grain*.38:.70+grain*.30);
+                // 현재 외곽 안의 부피만 보강한다. 넓은 후광으로 판정 크기를 암시하지 않는다.
+                float3 surfaceNormal;
+                float pulp=0;
+                if (_Thorn>.5)
+                {
+                    float seam=.035+.035*sin(p.x*4);
+                    float crossWidth=max(.13,.32*(.96-p.x)/1.64);
+                    float crossY=clamp((p.y-seam)/crossWidth,-.96,.96);
+                    surfaceNormal=normalize(float3(-.18,crossY,sqrt(max(.06,1-crossY*crossY))));
+                    float facet=p.y>seam?1.12:.48;
+                    body*=facet;
+                }
+                else
+                {
+                    float2 q=float2((p.x-.05)/.65,(p.y-.025+.12*p.x)/.57);
+                    float q2=dot(q,q);
+                    surfaceNormal=normalize(float3(q,sqrt(max(.045,1-q2))));
+                    // 병든 껍질 안의 작은 독액 주머니. 잎의 중앙 줄기/분기 맥은 사용하지 않는다.
+                    float2 a=(p-float2(-.07,.06))/float2(.18,.15);
+                    float2 b=(p-float2(.15,-.065))/float2(.12,.10);
+                    pulp=saturate(exp(-dot(a,a)*1.8)+exp(-dot(b,b)*2.1)*.58);
+                    body=lerp(dark,light,.08+.17*saturate(1-q2));
+                }
+                float3 screenNormal=UnityObjectToWorldDir(surfaceNormal);
+                float diffuse=saturate(dot(screenNormal,normalize(float3(-.42,.64,.76))));
+                body*=.24+diffuse*.82;
                 float trunk=.035+.065*sin(p.x*4);
                 float trunkMask=smoothstep(-.60,-.38,p.x)*(1-smoothstep(.30,.62,p.x));
                 float vein=exp(-abs(p.y-trunk)*95)*trunkMask;
-                if (_Thorn<.5)
-                {
-                    float upper=exp(-abs(p.y-trunk-max(0,p.x+.15)*.65)*85)*smoothstep(-.17,-.06,p.x)*(1-smoothstep(.22,.43,p.x));
-                    float lower=exp(-abs(p.y-trunk+max(0,.25-p.x)*.55)*85)*smoothstep(-.34,-.20,p.x)*(1-smoothstep(.20,.30,p.x));
-                    vein=max(vein,max(upper,lower));
-                }
-                float2 wetUV=float2((p.x-.22)/.24,(p.y-.24+.12*p.x)/.045);
-                float wet=exp(-dot(wetUV,wetUV));
+                if (_Thorn<.5) vein=0;
+                float specAngle=dot(screenNormal,normalize(normalize(float3(-.42,.64,.76))+float3(0,0,1)));
+                float wet=pow(saturate(specAngle),_Thorn>.5?24:48);
                 float veinStrength=_Thorn>.5?.13:.52;
                 float3 wetColor=_Friendly>.5?float3(.48,.84,1):_Thorn>.5?float3(.78,.72,.56):float3(.65,.78,.32);
-                float3 rgb=(body+glow*vein*veinStrength+wetColor*wet*(_Thorn>.5?.10:.34))*core+glow*(rim*.35+halo);
+                float3 poisonCore=_Friendly>.5?float3(.20,.70,1):float3(.60,.78,.055);
+                float3 rgb=(body+glow*vein*veinStrength+poisonCore*pulp*.86+wetColor*wet*(_Thorn>.5?.10:.42))*core+glow*(rim*.35+halo);
                 return float4(rgb,alpha);
             }
             ENDCG
