@@ -77,7 +77,11 @@ namespace Exoduser.UnityPort
             RenderSettings.ambientMode=on?AmbientMode.Trilight:hellOldAmbient;
             RenderSettings.ambientSkyColor=on?new Color(.18f,.20f,.24f):hellOldSky;RenderSettings.ambientEquatorColor=on?new Color(.09f,.115f,.15f):hellOldEquator;RenderSettings.ambientGroundColor=on?new Color(.04f,.045f,.055f):hellOldGround;
             RenderSettings.fog=on||hellOldFogOn;RenderSettings.fogMode=on?FogMode.ExponentialSquared:hellOldFogMode;RenderSettings.fogColor=on?new Color(.035f,.065f,.085f):hellOldFog;RenderSettings.fogDensity=on?.023f:hellOldFogDensity;
-            if(on&&A2Requested){RenderSettings.fogColor=new Color(.085f,.115f,.14f);RenderSettings.fogDensity=.028f;}
+            if(on&&A2Requested)
+            {
+                RenderSettings.ambientSkyColor=new Color(.31f,.34f,.36f);RenderSettings.ambientEquatorColor=new Color(.20f,.22f,.20f);RenderSettings.ambientGroundColor=new Color(.075f,.07f,.05f);
+                RenderSettings.fogColor=new Color(.15f,.18f,.21f);RenderSettings.fogDensity=.035f;
+            }
         }
         void HellLightingLate()
         {

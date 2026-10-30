@@ -1,5 +1,7 @@
 # Unity 원본 기반 기본 무기·기검참 코어 — 2026-10-24
 
+> 2026-10-31 A2 표현 경로 보충: `SourceMap(MapData, Func<float,float,bool> additionalBlocked=null)`의 선택 경계는 `Blocked` 입구에서 검사한다. 비A2는 null로 기존 질의를 보존한다. A2만 승인 다리 아래 수로를 `A2ForestLayout.BlockedCore`로 보행·시야·투사체에 같이 적용하며, 원본 JSON과 Core 전투 코드는 변경하지 않는다. 경계 수치·회귀·실제 화면 상태는 `UNITY_KEYSHOT_A2_20261030.md`를 따른다. 수치 회귀 통과를 시각·Player 검수 통과로 해석하지 않는다.
+
 사용자 최신 지시에 따라 Godot를 보존하고 Unity도 비교 시험한다. 최종 엔진 선택은 미확정이다. 이 문서는 Unity용 순수 C# 코어의 실제 구현 범위와 검증을 기록한다. Godot 파일, 웹 게임 코드, 세이브는 수정하지 않았다. 초기 license 차단 뒤 부모가 실제 Editor import/compile/asset 검사를 통과했다. Windows Player/시각/수동 플레이는 별도 게이트다. 아래 .NET 검사와 전체 이식 완료를 혼동하지 않는다.
 
 ## 소스와 프로필

@@ -98,7 +98,7 @@ namespace Exoduser.UnityPort
             view.cullingMask = 0;                  // the 2D camera only clears the frame while the 3D one draws
             r3Cam.enabled = !hidden;
             Remodel3DViewport();
-            var p = Simulation.Player; r3Marker.position = NativeRemodel3D.Point(p.X, p.Y) + NativeRemodelCamera.TargetOffset + (A2Requested ? new Vector3(2.4f,0,0) : Vector3.zero);   // A2 원화의 왼쪽 영웅·오른쪽 강 구도. 논리 카메라와 조준 좌표는 불변.
+            var p = Simulation.Player; r3Marker.position = NativeRemodel3D.Point(p.X, p.Y) + NativeRemodelCamera.TargetOffset + (A2Requested ? new Vector3(3,0,1.05f) : Vector3.zero);   // A2 원화의 왼쪽 영웅·오른쪽 강 구도. 논리 카메라와 조준 좌표는 불변.
             foreach (var r in props) if (r != null) r.enabled = false;
             foreach (var c in chunks.Values) if (c.renderer != null) c.renderer.enabled = false;
             Remodel3DBillboards();
@@ -111,9 +111,9 @@ namespace Exoduser.UnityPort
             if (r3Vcam == null) return;
             var lens = r3Vcam.Lens;
             float fov = NativeRemodelCamera.FieldOfView;
-            r3Vcam.transform.rotation = NativeRemodelCamera.Rotation;
+            r3Vcam.transform.rotation = A2Requested ? Quaternion.Euler(38,0,0) : NativeRemodelCamera.Rotation;
             var follow = r3Vcam.GetComponent<CinemachineFollow>();
-            if (follow != null) follow.FollowOffset = NativeRemodelCamera.FollowOffset;
+            if (follow != null) follow.FollowOffset = A2Requested ? new Vector3(0,Mathf.Sin(38*Mathf.Deg2Rad)*21,-Mathf.Cos(38*Mathf.Deg2Rad)*21) : NativeRemodelCamera.FollowOffset;
             if (Mathf.Abs(lens.FieldOfView - fov) > .01f) { lens.FieldOfView = fov; r3Vcam.Lens = lens; }
         }
 

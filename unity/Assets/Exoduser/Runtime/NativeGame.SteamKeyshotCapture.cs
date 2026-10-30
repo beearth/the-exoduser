@@ -20,7 +20,7 @@ namespace Exoduser.UnityPort
             else{lobby.ShowLobby();lobby.SelectPreview();if(!lobby.EnterNativeTest()){Application.Quit(2);yield break;}}
             EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;gameFocused=true;
             var sim=Simulation;var p=sim.Player;var receipt=new KeyshotReceipt();
-            p.X=3920;p.Y=7300;var loc=Argument("--unity-keyshot-location");if(!string.IsNullOrEmpty(loc)){var xy=loc.Split(':');if(xy.Length==2&&float.TryParse(xy[0],out var lx)&&float.TryParse(xy[1],out var ly)){p.X=lx;p.Y=ly;}}sim.Config.EnemyAiEnabled=false;
+            p.X=A2Requested?4200:3920;p.Y=A2Requested?7460:7300;var loc=Argument("--unity-keyshot-location");if(!string.IsNullOrEmpty(loc)){var xy=loc.Split(':');if(xy.Length==2&&float.TryParse(xy[0],out var lx)&&float.TryParse(xy[1],out var ly)){p.X=lx;p.Y=ly;}}sim.Config.EnemyAiEnabled=false;
             float deadline=Time.realtimeSinceStartup+35;
             while(!Remodel3DReady&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
             yield return new WaitForSecondsRealtime(1);
@@ -40,7 +40,7 @@ namespace Exoduser.UnityPort
                 UnityEngine.Rendering.Universal.CameraExtensions.GetUniversalAdditionalCameraData(r3Cam).renderPostProcessing=false;yield return KeyshotSave(output,"진단4-후처리끔",receipt);
                 Application.Quit(0);yield break;
             }
-            sim.Config.EnemyAiEnabled=true;if(string.IsNullOrEmpty(loc)){p.X=4020;p.Y=6880;}
+            sim.Config.EnemyAiEnabled=true;if(string.IsNullOrEmpty(loc)&&!A2Requested){p.X=4020;p.Y=6880;}
             File.WriteAllText(Path.Combine(output,"실제-촬영설정.json"),JsonUtility.ToJson(sim.Config,true));
             var combatCenter=new Vector2(p.X,p.Y);int best=0;
             for(int tick=0;tick<1800;tick++)
@@ -126,7 +126,7 @@ namespace Exoduser.UnityPort
                 if(high>=low)h=high-low;
             }
             receipt.frames.Add(new KeyshotFrame{name=name,tick=Simulation.TickCount,enemies=Simulation.Enemies.Count,projectiles=KeyshotActiveShots(Simulation.Stage.InArena),arena=Simulation.Stage.InArena,remodel=NativeRemodel3D.Active,heroHeight01=h,cameraFov=camera.fieldOfView,heroWorld=playerView.transform.position,cameraWorld=camera.transform.position,bossCenter=druidBody!=null?druidBody.Bounds.center:Vector3.zero,bossSize=druidBody!=null?druidBody.Bounds.size:Vector3.zero});
-            if(Application.isBatchMode)A2CaptureFrame(Path.Combine(output,name+".png"));else ScreenCapture.CaptureScreenshot(Path.Combine(output,name+".png"));yield return null;yield return new WaitForSecondsRealtime(.4f);
+            if(Application.isBatchMode||A2Requested)A2CaptureFrame(Path.Combine(output,name+".png"));else ScreenCapture.CaptureScreenshot(Path.Combine(output,name+".png"));yield return null;yield return new WaitForSecondsRealtime(.4f);
         }
     }
 }

@@ -12,8 +12,9 @@ namespace Exoduser.UnityPort
             (Application.isEditor && Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-qa-sandbox")>=0 && Environment.GetEnvironmentVariable("EXO_A2_EDITOR_PREVIEW")=="1");
         public static bool Active;            // the RM-1 scene is loaded and the field is shown in 3D right now (false in the boss arena / before the scene is ready)
         public static Terrain Ground;         // the scene's Terrain (window of tiles x48..152 / y126..200)
-        public static float Pitch { get { return NativeRemodelCamera.Pitch; } }     // LOOK-001: elevation 0.85 rad = 48.70 deg
-        public static float DistU { get { return NativeRemodelCamera.Distance; } }       // LOOK-001: 1400 px
+        public static bool ForestA2;          // A2 승인 구도만 원근을 넓힌다. 비A2 LOOK-001은 보존한다.
+        public static float Pitch { get { return ForestA2 ? 38*Mathf.Deg2Rad : NativeRemodelCamera.Pitch; } }
+        public static float DistU { get { return ForestA2 ? 21 : NativeRemodelCamera.Distance; } }
 
         /// <summary>The 2D mapping the whole port was written against (also what Core-feeding callbacks must keep using, whatever the presentation does).</summary>
         public static Vector3 Point2D(double px, double py) { return new Vector3((float)px / 100, -(float)py / 100, 0); }

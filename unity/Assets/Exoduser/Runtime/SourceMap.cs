@@ -22,12 +22,14 @@ namespace Exoduser.UnityPort
     public sealed class SourceMap
     {
         public readonly MapData Data;
-        public SourceMap(MapData data)
+        readonly Func<float,float,bool> additionalBlocked;
+        public SourceMap(MapData data,Func<float,float,bool> additionalBlocked=null)
         {
             if(data==null || data.width<=0 || data.height<=0 || data.tileSize<=0 ||
                data.tiles==null || data.tiles.Length!=data.width*data.height)
                 throw new ArgumentException("Invalid original map data");
             Data=data;
+            this.additionalBlocked=additionalBlocked;
         }
         public bool CanMove(float x,float y,float radius)
         {
@@ -46,6 +48,7 @@ namespace Exoduser.UnityPort
         public bool Blocked(float x,float y)
         {
             if(!Finite(x)||!Finite(y)||x<0||y<0||x>=Data.width*Data.tileSize||y>=Data.height*Data.tileSize)return true;
+            if(additionalBlocked!=null&&additionalBlocked(x,y))return true;
             int tx=(int)Math.Floor(x/Data.tileSize),ty=(int)Math.Floor(y/Data.tileSize);
             {int tv=Data.tiles[ty*Data.width+tx];if(tv==1||tv==3)return true;}   // 3 = boss gate tile: the web blocks it with boss_gate_col (C04-2)
             var h=Data.hill;

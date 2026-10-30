@@ -1,6 +1,6 @@
 Shader "EXODUSER/A2ToxicRiver"
 {
- Properties { _BaseColor("탁한 녹황",Color)=(.075,.080,.023,1) _FoamColor("오염 거품",Color)=(.22,.24,.10,1) _Emission("은은한 자체발광",Range(0,.1))=.012 }
+ Properties { _BaseColor("탁한 녹황",Color)=(.30,.32,.045,1) _FoamColor("오염 거품",Color)=(.45,.44,.16,1) _Emission("은은한 자체발광",Range(0,.1))=.1 }
  SubShader
  {
   // 물가 거품은 불투명 지형 깊이가 복사된 뒤 샘플한다. 표면은 불투명하게 쓰되 그리기 순서만 뒤로 둔다.

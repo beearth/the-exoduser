@@ -55,7 +55,7 @@ namespace Exoduser.UnityPort
             UnityEngine.Rendering.Universal.CameraExtensions.GetUniversalAdditionalCameraData(view).renderPostProcessing=true; // RM-1 VFX V0: HDR core + Bloom
             view.transform.position=new Vector3(40.2f,-74.2f,-10);
             var resource=Resources.Load<TextAsset>("Data/ch1_map");if(resource==null)throw new InvalidOperationException("Original map resource is missing");
-            Map=new SourceMap(JsonUtility.FromJson<MapData>(resource.text));
+            Map=new SourceMap(JsonUtility.FromJson<MapData>(resource.text),A2Requested ? (Func<float,float,bool>)A2ForestLayout.BlockedCore : null);
             font=Resources.Load<Font>("Art/fonts/NotoSansKR");
             hud=new NativeHud();skills=new NativeSkills();stats=new NativeStatPanel();hud.SlotSelected=slot=>{if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected callback slot="+slot+" before menu="+menu+" hp="+Simulation.Player.Hp+" skillsOpen="+skills.Open);if(!menu&&Simulation.Player.Hp>0){SetSkills(true,slot);if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected result skillsOpen="+skills.Open+" menu="+menu);}};
             NativePanelTabBar.Requested+=OnPanelRequested;forge=new NativeForgePanel();levelUp=new NativeLevelUpOverlay();death=new NativeDeathOverlay();death.OnRetry=RetryFromDeath;stageClear=new NativeStageClearOverlay();bossBar=new NativeBossBar();areaTitle=new NativeAreaTitle();objective=new NativeObjectivePanel();areaTitleAllowed=!Array.Exists(Environment.GetCommandLineArgs(),a=>a.StartsWith("--unity-",StringComparison.Ordinal)&&a!="--unity-world-3d"&&!NativeReviewArgs.IsReviewArgument(a));
