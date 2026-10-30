@@ -22,9 +22,12 @@ PC 전체 Unity/Player는 한 개다. status의 실제 worktree·잠금 소유�
 
 ## 시작과 연결
 
-UPM 캐시·DOTNET_CLI_HOME은 이미 승인된 NTFS 경로를 재사용한다. 제한된 자식 환경에서 APPDATA/ComSpec 등이 빠졌던 초기 실패가 있었으므로, 그 경우만 아래처럼 누락된 표준 값을 채운다. 전역 환경·인증·캐시·권한은 변경하지 않는다.
+UPM 캐시·DOTNET_CLI_HOME은 이미 승인된 NTFS 경로를 재사용한다. 아래 캐시는 현재 PC의 공용 경로이며 checkout 경로가 아니다. 기존 환경값이 있으면 보존하고, 누락됐을 때만 실제 존재하는 공용 캐시를 사용한다. 제한된 자식 환경에서 APPDATA/ComSpec 등이 빠졌던 초기 실패가 있었으므로, 그 경우만 아래처럼 누락된 표준 값을 채운다. 전역 환경·인증·캐시·권한은 변경하지 않는다.
 
 ```powershell
+if (-not $env:UPM_CACHE_ROOT) { $env:UPM_CACHE_ROOT = 'E:/exoduser-wt/_upm-cache' }
+if (-not $env:DOTNET_CLI_HOME) { $env:DOTNET_CLI_HOME = 'E:/exoduser-wt/_dotnet-home' }
+if (-not (Test-Path -LiteralPath $env:UPM_CACHE_ROOT)) { throw '승인된 NTFS UPM 캐시 경로를 확인해야 합니다.' }
 if (-not $env:APPDATA) { $env:APPDATA = [Environment]::GetFolderPath('ApplicationData') }
 if (-not $env:LOCALAPPDATA) { $env:LOCALAPPDATA = [Environment]::GetFolderPath('LocalApplicationData') }
 if (-not $env:USERPROFILE) { $env:USERPROFILE = [Environment]::GetFolderPath('UserProfile') }
@@ -45,7 +48,7 @@ if ($LASTEXITCODE -ne 0) { throw 'MCP 연결 부팅 실패: 로그를 확인합�
 
 `codex mcp get unityMCP`로 기존 stdio 등록을 확인한다. 기존 서버 소스는 `G:/exoduser-tools/unity-mcp-v10.3.0/Server`이며 프로젝트 checkout과 별도인 공용 실행 런타임이다. 서버와 Editor의 `UNITY_MCP_STATUS_DIR`가 같아야 한다. 위 경로는 현재 등록에 맞춘 공용 발견 디렉터리이고 소유자/프로젝트 고정값이 아니다. 디렉터리 안 파일명은 프로젝트별 hash로 구분한다. 기존 MCP 설정 원문을 덮어쓰거나 전역 설정을 추가로 바꾸지 않는다.
 
-MCP 도구에서 `mcpforunity://instances`를 읽어 `projectRoot`가 `$wt/unity`인지 확인하고, 그 응답의 hash로 `set_active_instance`를 호출한다. 예전 instance hash를 복사하지 않는다. 도구 목록이 보이지 않을 때만 클라이언트 MCP 연결을 새로고침한다. 새 세션 생성 자체는 Editor 조작 성공 증거가 아니다.
+MCP 도구에서 `mcpforunity://instances`를 읽어 `instances[].path`가 `$wt/unity`인지 확인하고, 그 응답의 hash로 `set_active_instance`를 호출한다. 예전 instance hash를 복사하지 않는다. 도구 목록이 보이지 않을 때만 클라이언트 MCP 연결을 새로고침한다. 새 세션 생성 자체는 Editor 조작 성공 증거가 아니다.
 
 ## 장면·조명·배치
 
