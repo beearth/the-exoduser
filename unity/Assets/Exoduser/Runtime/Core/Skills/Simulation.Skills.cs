@@ -147,7 +147,7 @@ namespace Exoduser.UnityPort.Core
             TickSkillCooldowns();
             if (IceOrbActive) TickIceOrb();
             TickMagicIdle(); TickMagicStates();
-            TickFireZones();
+            CaptureShieldDomeFrame(); TickFireZones();
             TickSkillBlades(); TickMaliceOrbs();
             for (int i = SlamWaves.Count - 1; i >= 0; i--) { var w = SlamWaves[i]; w.T++; if (w.T >= w.MaxT) SlamWaves.RemoveAt(i); }
         }

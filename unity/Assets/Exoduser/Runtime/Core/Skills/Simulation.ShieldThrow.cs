@@ -14,6 +14,8 @@ namespace Exoduser.UnityPort.Core
   public double ShieldThrowCd,ShieldWingTicks;
   public double ShieldThrowFusionMultiplier{get{return (ShieldFuse?1.2:1)*(1+(EquippedInventory!=null?EquippedInventory.AffixTotal("skillBoost"):0));}}
   public readonly List<ShieldWave> ShieldWaves=new List<ShieldWave>();
+  readonly List<FireZone> shieldDomeFrame=new List<FireZone>();
+  void CaptureShieldDomeFrame(){shieldDomeFrame.Clear();foreach(var z in FireZones)if(z.Type=="holyDome")shieldDomeFrame.Add(z);}
   public int ShieldThrowCount,ShieldWaveHits,ShieldWaveReflections;public double LastShieldThrowDamage;
   // 현행 웹 _autoShieldThrow. 신규 전사는 maliceSwipe1/shieldThrow1/shieldFuse=true다.
   public bool AutoShieldThrow()
@@ -57,8 +59,8 @@ namespace Exoduser.UnityPort.Core
   }
   void TickShieldThrow()
   {
-   double bonus=0;foreach(var z in FireZones)if(z.Type=="holyDome"&&Distance(Player.X,Player.Y,z.X,z.Y)<z.R){bonus=1;break;}
-   if(ShieldThrowCd>0)ShieldThrowCd-=1+bonus;if(ShieldWingTicks>0)ShieldWingTicks--;
+   double bonus=0;foreach(var z in shieldDomeFrame)if(Distance(Player.X,Player.Y,z.X,z.Y)<z.R){bonus=1;break;}
+   shieldDomeFrame.Clear();if(ShieldThrowCd>0)ShieldThrowCd-=1+bonus;if(ShieldWingTicks>0)ShieldWingTicks--;
    for(int i=0;i<ShieldWaves.Count;)
    {
     var w=ShieldWaves[i];w.X+=w.Vx;w.Y+=w.Vy;w.Dist+=Math.Sqrt(w.Vx*w.Vx+w.Vy*w.Vy);w.Age++;
