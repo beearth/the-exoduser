@@ -1,6 +1,6 @@
 # Q·E 무료 기본 합체와 원본 표시 대조 — 2026-10-31
 
-상태: 야간 HOLD(08:00 KST 이후 재개), 구현·오프라인 검사 완료. 최신 정식 Unity 빌드·같은 Player·M1·영상은 미완료. 전체 게임 동작 일치 완료가 아니다. 선행 전달은 UNITY_GAMEPLAY_PARITY_20261031.md 및 gameplay-parity/desktop-delivery.json이다.
+상태: 재개 후 빌드165d02f2·동일 Player/M1·영상은 완료했으나 최종1x에서 기존 기검3타 중심 앵커 결함을 발견해 전달 보류했다. 중심 앵커를 수정한 새 후보의 정식 빌드·같은 Player/M1·영상이 남아 있다. 전체 게임 동작 일치 완료가 아니다. 선행 전달은 UNITY_GAMEPLAY_PARITY_20261031.md 및 gameplay-parity/desktop-delivery.json이다.
 
 ## 발견
 
@@ -101,3 +101,7 @@ I:/EXODUSER-Storage/codex-takeover/NIGHT_ROSTER_20261031.md의 00:5x 사용자 �
 일반 Desktop은 현재 전사 담당이 검수·전달한 hero/night-anchor-20261031/build이며 -force-d3d11 --remodel3d와 시작폴더/아이콘을 읽어 확인했다. 이 Q/E 후보로 교체하지 않았다. 전체 게임 동작 정합·미이식39스킬·전체 아트 완료가 아니다. 08:00 이후 기존 담당 재개 시 입력05f/동일 Unity tree를 먼저 확인하고 고유 빌드 경로에서 나머지 게이트를 순서대로 진행한다. 새예약·자동화·별도 담당은 만들지 않는다.
 
 야간 마감 추가: 원본3타 촬영은 cf026001로 정상 종료했다. 1,040틱·동작348장/부팅1장, 기존 숫자 전용 로그와1,040행 차이0·페이지오류/누락0·창/잔여0이다. 자기3344 서버도 소유 확인 후 종료했다. 기존 미추적55/55 SHA256 동일. 새 Player와 비교한 영상은 아직 없다.
+
+## 재개 시점 확인
+
+2026-10-31 02:26 KST: origin/unity/main 최신을 fetch·merge 확인했으며 이미 현재 HEAD의 조상이다. HEAD21a983c63/Unity tree c0f477c27/Core tree7aa7929f5는 위 검수 입력과 같다. origin/main6264ba37e의 game.html·index.html·localization-runtime.js도 기존 웹 기준0d42e0cb와 동일 Git blob이다. 관련 원문 검수는 같은 입력의 유효 결과를 재사용하며 새 실행으로 계산하지 않는다. tracked INDEX/WORK는 모두 비어 있었고 기존 미추적56개는 재개-착수보존.json에 SHA256을 기록했다. 기존 A2 잠금·예약 뒤 같은 담당 gameplay-parity로 정식 빌드와 후속 Player 검수 순번을 신청했다. 현재 산출물은 gameplay-parity/재개-QE-정식빌드.log다. 과거 야간 HOLD는 이 재개 시점의 현재 상태가 아니다.

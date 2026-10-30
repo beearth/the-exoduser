@@ -63,3 +63,5 @@ UI 최종 Desktop 완료 전 Unity/Player/빌드/선예약0. 완료 후 최신�
 지정 통합 담당이 expected968f2a324에서 bf9b2d25c28a44d4a90e8f2017a27f8d5f657394로 비강제FF했고원격SHA를읽어대조했다. 제품ccde13cb9와공통Unity tree동일, 새빌드b970760a·M1aaf2078e/실제3바이너리동일로 COMMON_RULES의유효검수재사용을적용했다. 새통합빌드/추가M1반복0이다.
 
 일반Desktop은 `I:/EXODUSER-Storage/demo-art/hero/night-anchor-20261031/build/EXODUSER-Unity.exe`, 인자 `-force-d3d11 --remodel3d`, 작업폴더는EXE부모·아이콘EXE,0이다. 이전게임대조소스bce000073이현재제품조상임을확인한뒤현재링크SHA를CAS검사하고이전링크동일byteI백업→전달→별도PowerShell프로세스4속성/Runtime·Core·EXE SHAreadback을완료했다. 앱자동기동/사용자세이브쓰기0. 근거 night-anchor-20261031/validated-adoption.json·desktop-delivery.json·desktop-readback.json. Mac실제반영/실행은pending, 전체아트RETOUCH및위생성씬이전byte복구미완료는유지한다.
+
+2026-10-31 게임대조 후속은 같은 billboard의 기검·충전층에도 중심 계약을 적용한다. 기존 강타 registry·악의구·캐릭터 발끝 계약은 보존하며 기존 오프라인14검사를 통과했다. 새 기검 후보의 실제 검수·전달 상태는 [게임 동작 대조](UNITY_GAMEPLAY_PARITY_20261031.md)의 최신 절이며 위 전사 빌드 영수증을 새 기검 후보의 근거로 쓰지 않는다.

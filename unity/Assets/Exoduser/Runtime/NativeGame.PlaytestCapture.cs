@@ -10,7 +10,7 @@ using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort {
  public sealed partial class NativeGame {
   [Serializable] sealed class PlaytestKi {public float x,y,life,r;public int dmg,step;}
-  [Serializable] sealed class PlaytestFrame { public bool charging;public float charge,combo,kiCd;public int step;public List<PlaytestKi> kiDetails=new List<PlaytestKi>(); public string key; public int frame,tick; public float x,y,facing,aimError,maxSpriteError,stateTicks,stamina,mana; public string state; public List<Vector2> ki=new List<Vector2>(),magic=new List<Vector2>(),magicVelocity=new List<Vector2>(),blades=new List<Vector2>(); public float harpX,harpY; public bool harp,dash; public int zones,waves,blasts,burstViews,shieldWaves; public bool shieldAura,flameArc;public List<Vector2> shieldWavePositions=new List<Vector2>();public float shieldRange;public double shieldCd,wingTicks; }
+   [Serializable] sealed class PlaytestFrame { public bool charging;public float charge,combo,kiCd;public int step;public List<PlaytestKi> kiDetails=new List<PlaytestKi>(); public string key; public int frame,tick; public float x,y,facing,aimError,maxSpriteError,maxKiSpriteError,stateTicks,stamina,mana; public string state; public List<Vector2> ki=new List<Vector2>(),magic=new List<Vector2>(),magicVelocity=new List<Vector2>(),blades=new List<Vector2>(); public float harpX,harpY; public bool harp,dash; public int zones,waves,blasts,burstViews,shieldWaves; public bool shieldAura,flameArc;public List<Vector2> shieldWavePositions=new List<Vector2>();public float shieldRange;public double shieldCd,wingTicks; }
   [Serializable] sealed class PlaytestResult { public string scope="실제 Player, 가상 Input System 장치 → 기존 FixedUpdate → Core → LateUpdate. OS 손조작 아님"; public bool passed,remodel3d,maliceTrailDefaultColorSpace;public float fieldOfView,heroScale,pitchDegrees,distance,lookAhead,baselineHp,baselineMana,baselineStamina,baselineSpeed,baselineCastSpeed; public int failures; public List<string> checks=new List<string>(); public List<PlaytestFrame> frames=new List<PlaytestFrame>(); }
   IEnumerator PlaytestCapture() {
    string output=Argument("-output"); if(string.IsNullOrEmpty(output)){Application.Quit(2);yield break;} Directory.CreateDirectory(output);
@@ -46,7 +46,7 @@ namespace Exoduser.UnityPort {
       free=Map.CanMove(p.X+dx*25,p.Y+dy*25,p.Radius);}
      check(free,control+" 열린 발사 시작점");float x0=p.X,y0=p.Y,aimX=p.X+dx*300,aimY=p.Y+dy*300;
      UpdateViews();yield return null;if(Application.isBatchMode&&NativeRemodel3D.Active){Remodel3DLate();manualBrain?.ManualUpdate();}else if(!Application.isBatchMode)yield return new WaitForEndOfFrame();
-     float maxMotion=0,maxError=0,maxAimError=0;bool spawned=false,zone=false,orb=false,blades=false,block=false,wave=false,burstSeen=false,guardSeen=false,flameSeen=false;int cast0=s.SkillCastCount;
+      float maxMotion=0,maxError=0,maxKiError=0,maxAimError=0;bool spawned=false,zone=false,orb=false,blades=false,block=false,wave=false,burstSeen=false,guardSeen=false,flameSeen=false;int cast0=s.SkillCastCount;
      for(int f=0;f<(comboCase?260:moving?90:action=="RMB"?240:control=="Ctrl"?150:80);f++) {
       if(control=="RMB-sweep"&&f==1){aimX=x0;aimY=y0+300;}
       if(comboCase){aimX=p.X+dx*300;aimY=p.Y+dy*300;}
@@ -60,7 +60,8 @@ namespace Exoduser.UnityPort {
       yield return null;if(Application.isBatchMode&&NativeRemodel3D.Active){Remodel3DLate();manualBrain?.ManualUpdate();}else if(!Application.isBatchMode)yield return new WaitForEndOfFrame();
       var row=new PlaytestFrame{charging=p.KiChargeActive,charge=p.KiChargeTicks,step=s.KiComboStep,combo=s.KiComboTicks,kiCd=s.KiCooldownTicks,key=control,frame=f,tick=s.TickCount,x=p.X,y=p.Y,facing=p.Facing,state=p.State,stateTicks=p.StateTicks,stamina=p.Stamina,mana=p.Mana,aimError=aimError,harp=(s.HarpActive),dash=s.DashActive,harpX=(float)s.HarpX,harpY=(float)s.HarpY,zones=s.FireZones.Count,waves=s.SlamWaves.Count,blasts=s.MaliceOrbBlasts,burstViews=skillView.ActiveMaliceBursts,shieldWaves=s.ShieldWaves.Count,shieldCd=s.ShieldThrowCd,wingTicks=s.ShieldWingTicks,shieldAura=skillView.ShieldAuraShown,flameArc=skillView.FlameArcShown,shieldRange=skillView.ShieldRangeShown};guardSeen|=row.shieldAura;flameSeen|=row.flameArc;burstSeen|=row.burstViews>0;
       maxMotion=Mathf.Max(maxMotion,Vector2.Distance(new Vector2(p.X,p.Y),new Vector2(x0,y0)));
-      foreach(var b in s.Projectiles)if(b.Active){row.ki.Add(new Vector2(b.X,b.Y));row.kiDetails.Add(new PlaytestKi{x=b.X,y=b.Y,dmg=b.Damage,step=b.Step,life=b.Life,r=b.Radius});spawned=true;maxMotion=Mathf.Max(maxMotion,Vector2.Distance(new Vector2(b.X,b.Y),new Vector2(x0,y0)));}
+      foreach(var b in s.Projectiles)if(b.Active){row.ki.Add(new Vector2(b.X,b.Y));row.kiDetails.Add(new PlaytestKi{x=b.X,y=b.Y,dmg=b.Damage,step=b.Step,life=b.Life,r=b.Radius});spawned=true;maxMotion=Mathf.Max(maxMotion,Vector2.Distance(new Vector2(b.X,b.Y),new Vector2(x0,y0)));if(NativeRemodel3D.Active){var go=GameObject.Find("Ki crescent "+b.Id+" layer 4");row.maxKiSpriteError=Mathf.Max(row.maxKiSpriteError,go!=null?Vector3.Distance(go.transform.position,NativeRemodel3D.Point(b.X,b.Y)):1000);}}
+      if(p.KiChargeActive&&NativeRemodel3D.Active){var go=GameObject.Find("Ki third charge 1");row.maxKiSpriteError=Mathf.Max(row.maxKiSpriteError,go!=null?Vector3.Distance(go.transform.position,NativeRemodel3D.Point(p.X,p.Y)):1000);}maxKiError=Mathf.Max(maxKiError,row.maxKiSpriteError);
       foreach(var b in s.MaliceOrbs)if(b.Active){row.magic.Add(new Vector2(b.X,b.Y));row.magicVelocity.Add(new Vector2(b.Vx,b.Vy));spawned=true;maxMotion=Mathf.Max(maxMotion,Vector2.Distance(new Vector2(b.X,b.Y),new Vector2(x0,y0)));if(NativeRemodel3D.Active){var go=GameObject.Find("malice"+b.Id);if(go!=null){var sr=go.transform.Find("orb").GetComponent<SpriteRenderer>();var expected=NativeSkillView.MalicePosition(b.X,b.Y);row.maxSpriteError=Mathf.Max(row.maxSpriteError,Vector3.Distance(sr.transform.position,expected));}}}
       foreach(var w in s.ShieldWaves)row.shieldWavePositions.Add(new Vector2((float)w.X,(float)w.Y));
       foreach(var b in s.SkillBlades)if(b.Active)row.blades.Add(new Vector2(b.X,b.Y));zone|=s.FireZones.Count>0;orb|=s.IceOrbActive;blades|=row.blades.Count>0;block|=p.State=="sBlock";wave|=row.waves>0;maxError=Mathf.Max(maxError,row.maxSpriteError);result.frames.Add(row);
@@ -68,7 +69,8 @@ namespace Exoduser.UnityPort {
      }
      check(maxAimError<1,control+" 조준 오차 "+maxAimError.ToString("F2")+"px");
      if(action=="LMB"||action=="RMB")check(spawned&&maxMotion>100,control+" 투사체 전진 "+maxMotion.ToString("F1")+"px");
-     if(action=="RMB"&&NativeRemodel3D.Active)check(maxError<.02f,"악의구 Core→화면 위치 오차 "+maxError.ToString("F3")+"u");
+      if(action=="RMB"&&NativeRemodel3D.Active)check(maxError<.02f,"악의구 Core→화면 위치 오차 "+maxError.ToString("F3")+"u");
+      if(action=="LMB"&&NativeRemodel3D.Active)check(maxKiError<.02f,"기검·충전 Core→화면 중심 오차 "+maxKiError.ToString("F3")+"u");
      if(action=="RMB"&&directional){var first=result.frames.Find(r=>r.key==control&&r.magicVelocity.Count>0);check(first!=null&&Vector2.Distance(first.magicVelocity[0],new Vector2(dx*5.5f,dy*5.5f))<.01f,control+" 시전 시작 방향·속도5.5px");}
      if(action=="RMB"&&!moving)check(s.MaliceOrbBlasts==1&&burstSeen&&skillView.ActiveMaliceBursts==0,control+" 실제 폭발1회·원본 표시·수명 종료");
      if(control=="ComboQ110"){var canceled=result.frames.Find(r=>r.key==control&&r.frame==110);check(canceled!=null&&canceled.state=="sBlock"&&!canceled.charging&&canceled.step==0,"기검3타 Q 취소 순간 자세·충전·콤보 초기화");}

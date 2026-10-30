@@ -8,6 +8,9 @@ namespace Exoduser.UnityPort
     // Source _drawRadiantKiSlash / _drawKiSlashCharge; no generated replacement art.
     public sealed class KiSlashView : IDisposable
     {
+        static readonly HashSet<SpriteRenderer> centeredSprites=new HashSet<SpriteRenderer>();
+        public static bool IsCenteredSprite(SpriteRenderer sprite) { return centeredSprites.Contains(sprite); }
+        static void DestroyRenderer(SpriteRenderer renderer) { centeredSprites.Remove(renderer); UnityEngine.Object.Destroy(renderer.gameObject); }
         readonly Transform parent;
         readonly Func<int,Sprite> frame;
         readonly Material additive,ink;
@@ -36,11 +39,11 @@ namespace Exoduser.UnityPort
         SpriteRenderer Renderer(string name,Material material,int order)
         {
             var go=new GameObject(name);go.transform.SetParent(parent);
-            var r=go.AddComponent<SpriteRenderer>();if(material!=null)r.sharedMaterial=material;r.sortingOrder=order;return r;
+            var r=go.AddComponent<SpriteRenderer>();if(material!=null)r.sharedMaterial=material;r.sortingOrder=order;centeredSprites.Add(r);return r;
         }
         public void Reset()
         {
-            foreach(var layers in projectiles.Values)foreach(var r in layers)UnityEngine.Object.Destroy(r.gameObject);
+            foreach(var layers in projectiles.Values)foreach(var r in layers)DestroyRenderer(r);
             projectiles.Clear();foreach(var r in charge)r.enabled=false;foreach(var r in tiers)r.enabled=false;
         }
         public void Update(Simulation simulation)
@@ -67,7 +70,7 @@ namespace Exoduser.UnityPort
                 Set(layers[4],cell,p.X,p.Y,p.Angle,size,size,alpha);
             }
             var remove=new List<int>();foreach(var id in projectiles.Keys)if(!active.Contains(id))remove.Add(id);
-            foreach(int id in remove){foreach(var r in projectiles[id])UnityEngine.Object.Destroy(r.gameObject);projectiles.Remove(id);}
+            foreach(int id in remove){foreach(var r in projectiles[id])DestroyRenderer(r);projectiles.Remove(id);}
             var player=simulation.Player;
             foreach(var r in charge)r.enabled=player.KiChargeActive;foreach(var r in tiers)r.enabled=player.KiChargeActive;
             if(!player.KiChargeActive)return;
@@ -96,6 +99,6 @@ namespace Exoduser.UnityPort
             r.GetPropertyBlock(properties);properties.SetFloat(Opacity,alpha);r.SetPropertyBlock(properties);
         }
         static Vector3 Point(float x,float y){return NativeRemodel3D.Point(x,y);}
-        public void Dispose(){Reset();foreach(var r in charge)UnityEngine.Object.Destroy(r.gameObject);foreach(var r in tiers)UnityEngine.Object.Destroy(r.gameObject);UnityEngine.Object.Destroy(line);UnityEngine.Object.Destroy(additive);UnityEngine.Object.Destroy(ink);}
+        public void Dispose(){Reset();foreach(var r in charge)DestroyRenderer(r);foreach(var r in tiers)DestroyRenderer(r);UnityEngine.Object.Destroy(line);UnityEngine.Object.Destroy(additive);UnityEngine.Object.Destroy(ink);}
     }
 }

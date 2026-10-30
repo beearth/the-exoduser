@@ -34,3 +34,5 @@ Godot 보존·Unity 비교 시험의 독립 단위 UNITY-FEEDBACK-01이다. 최�
 위 상대 영수증 경로의 기준은 `I:/EXODUSER-Storage/qa/unity-port-20261024/`다. actual build input은 `feedback-project-2026-10-24T07-48-57-399Z/SOURCE-COPY.json`의334파일/183916879bytes를 source-before/after/destination SHA256으로 확인한 독립 복사본이다(중복 source receipt 항목 합계와 고유 파일 합계는 다름). 사용자 Editor PID34780을 유지했다. 코드 checkpoint와 원격 expected-SHA fast-forward 및 동일 tree 대조 뒤 build를 실행했다. 최종 로컬/원격 SHA·아티팩트 전체 hash는 외부 `UNITY-FEEDBACK-01_DONE.json`에 기록한다. 사용자 runtime 검사창은 새 시작 메뉴로 돌아온 상태로 유지한다.
 
 시각 판정은 기존 **RETOUCH** 유지. HUD fill/아이콘·원본1x·카메라/자연 플레이·전체 기능은 남아 있다. 문서·검수·백업은 I: Junction 또는 I: QA 폴더, 실제 런타임은 E:에 둔다.
+
+2026-10-31 후속: 실제3D 기검3타 영상의 중심이 위로 뜨는 결함은 캐릭터용 billboard 반높이 보정이 원인이었다. KiSlashView의 검기·충전·단계 renderer를 중심형으로 분류하고 생성/파괴 수명에 맞춰 registry를 관리한다. 크기·프레임·색·알파·Core 수치는 그대로다. 오프라인8/8·기존 강타 회귀14/14이며 새 Player 검수는 [게임 동작 대조](UNITY_GAMEPLAY_PARITY_20261031.md)의 최신 절을 따른다. 이전 빌드의 수치 통과를 새 표시 검수로 재사용하지 않는다.
