@@ -72,6 +72,13 @@ namespace Exoduser.UnityPort
                 }
             }
             A2River(ground);
+            // 통행로를 막지 않는 낮은 낙엽·잔돌. 2u 이상 간격의 정해진 접합점만 쓴다.
+            var patches=new[]{new Vector2(35.8f,-78.5f),new Vector2(38,-79),new Vector2(40.2f,-80),new Vector2(33.4f,-77.2f),new Vector2(37.4f,-76.6f),new Vector2(36.2f,-66.5f),new Vector2(38.5f,-65.3f),new Vector2(41,-64.8f),new Vector2(43.4f,-64),new Vector2(45.8f,-62.6f),new Vector2(48.2f,-60.8f),new Vector2(32,-69.4f)};
+            for(int i=0;i<patches.Length;i++)
+            {
+                var p=patches[i];A2Module("Dead_Leaf_Litter",p.x,p.y,.85f,.7f,.85f,i*137,.012f);
+                A2Module("Moss_Rock_"+(i%3+1),p.x+.35f,p.y-.2f,.12f,.10f,.15f,i*73,-.04f);
+            }
             A2Torch(40.8f,-75.4f);
             A2Torch(45.4f,-68.2f);
             A2Atmosphere();
@@ -124,8 +131,15 @@ namespace Exoduser.UnityPort
             else if(id=="Corroded_Riverbank"){source="Moss_Rock_1";units=1.2f;}
             var prefab=Resources.Load<GameObject>(id=="Foam_Bank"?"Art/map/a2/Models/RF_Foam_Bank":"Art/map/a2/r3/Models/RF3_"+source);
             if(prefab==null){Debug.LogError("[A2] 모듈 누락 "+id);return null;}
+            float height=NativeRemodel3D.GroundY(x,z)+lift-.08f;
+            bool island=(x-53.3f)*(x-53.3f)+(z+77)*(z+77)<9;
+            if(A2ForestLayout.Water(x,z)&&!island)
+            {
+                if(id=="Dead_Leaf_Litter"||id=="Moss_Cushion")return null;
+                if(id=="Withered_Shrub")height=-1.2f+lift;
+            }
             var go=Instantiate(prefab,a2Root.transform);go.name="A2_"+id;
-            go.transform.SetPositionAndRotation(new Vector3(x,NativeRemodel3D.GroundY(x,z)+lift-.08f,z),Quaternion.Euler(0,yaw,0));
+            go.transform.SetPositionAndRotation(new Vector3(x,height,z),Quaternion.Euler(0,yaw,0));
             go.transform.localScale=new Vector3(sx,sy,sz)*units;
             foreach(var r in go.GetComponentsInChildren<MeshRenderer>()){r.shadowCastingMode=id=="Forest_Vista_Card"?ShadowCastingMode.Off:ShadowCastingMode.On;r.receiveShadows=true;}
             return go;
