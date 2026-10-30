@@ -223,20 +223,6 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
-                    "m_Id": "36d47afc5aab4ffb9a7638f7bd870b80"
-                },
-                "m_SlotId": 2
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "ea558b80dfbd4f6bb3f07cbdbfc6f0aa"
-                },
-                "m_SlotId": 0
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
                     "m_Id": "478f4ad3240c4c8294f309cdc7b3deec"
                 },
                 "m_SlotId": 0
@@ -719,6 +705,20 @@
             },
             "m_InputSlot": {
                 "m_Node": {
+                    "m_Id": "8d20e03607f7470f9d243b438c28e9f8"
+                },
+                "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "36d47afc5aab4ffb9a7638f7bd870b80"
+                },
+                "m_SlotId": 2
+            },
+            "m_InputSlot": {
+                "m_Node": {
                     "m_Id": "4c27bbd799a5e5b5f06b33ecbd74940a"
                 },
                 "m_SlotId": 0
@@ -733,7 +733,7 @@
             },
             "m_InputSlot": {
                 "m_Node": {
-                    "m_Id": "8d20e03607f7470f9d243b438c28e9f8"
+                    "m_Id": "ea558b80dfbd4f6bb3f07cbdbfc6f0aa"
                 },
                 "m_SlotId": 0
             }
@@ -5174,7 +5174,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "금속 마스크 확장",
+    "m_Name": "Power",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -5285,7 +5285,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "흑철 면 감쇠",
+    "m_Name": "Multiply",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -5472,7 +5472,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "피부와 천 보존",
+    "m_Name": "Add",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -5587,7 +5587,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "흑철 알베도",
+    "m_Name": "Multiply",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {

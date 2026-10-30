@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort {
    string output=Argument("-output");
    if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))){Debug.LogError("전사 검수는 명시적 출력·격리 세이브가 필요");Application.Quit(2);yield break;}
    Directory.CreateDirectory(output);Directory.CreateDirectory(Path.Combine(output,"frames"));
-   heroReviewActive=true;AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;Application.targetFrameRate=60;smokeActive=true;dropSmoke=true;pauseSmoke=true;Running=false;
+   heroReviewActive=true;AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;Application.targetFrameRate=60;Time.captureDeltaTime=1f/60;smokeActive=true;dropSmoke=true;pauseSmoke=true;Running=false;
    Screen.SetResolution(1600,900,FullScreenMode.Windowed);lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();
    EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;
    yield return new WaitForSecondsRealtime(.6f);
