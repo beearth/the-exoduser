@@ -1,6 +1,6 @@
 # 데모 v0 전사 3D 런타임 — 2026-10-30
 
-전사 LOCK은 `origin/main:docs/11내러티브·로어디자인/WARRIOR_DESIGN_LOCK.md`, 제작 현황은 `UNITY_CHARACTER_BOARD_20261027.md`를 따른다. 기존 전사 메시·망토 본·대검을 실제 Player에 연결하고 기능 검수·공통 반영·일반 Desktop 전달을 확인했다. **시각 판정은 RETOUCH**이며 전체 게임용 AAA 아트 완료로 올리지 않는다.
+전사 LOCK은 `origin/main:docs/11내러티브·로어디자인/WARRIOR_DESIGN_LOCK.md`, 제작 현황은 `UNITY_CHARACTER_BOARD_20261027.md`를 따른다. **현재 R4 지옥강타 접점 FAIL 발견으로 전달 확정 철회·R5 재작업 중**이다. 기능29/M123·일반모션 RETOUCH가 이 결함을 상쇄하지 않는다. 자기 R4 링크를 SHA 확인 후 이전 검증 skill-fix 링크로 동일byte 복구했고, Core 변경 없이 즉발 접점 계약으로 보정한다. 아래 R4 전달 표는 당시 이력이다.
 
 | 항목 | 소유·현재 값 |
 |---|---|
@@ -94,3 +94,17 @@ R3 수정 검수부터 `Time.captureDeltaTime=1/60`을 이 전용 fixture에만 
 | 최종 근거 | `desktop-delivery.json`·`desktop-readback.json`·`validated-build-adoption.json`, `I:/EXODUSER-Storage/codex-takeover/hero/REPORT.md`. 자기 예약은 공식 해제·새 Unity 실행0 |
 
 이 단위의 제작·검수·공통 반영·전달 범위를 마감한다. 시각 RETOUCH와 전사/VFX 담당의 위 잔여 수정 항목, Mac·OS손조작·자연 사망/실시간 체감 미검증은 유지한다. 첫 Desktop 도구 호출은 JSON 기본인코딩 오류로 쓰기 전 실패했고 UTF-8 명시 후 정상 완료했다. 검증 실패를 누락하거나 디자인 PASS로 올리지 않는다.
+
+## R4 최종 확정 철회·R5 즉발 접점 재설계 — 2026-10-31 KST
+
+위 R4 마감 문구는 후속 정합 감사로 철회한다. `2_1 스킬관리+합체시스템.md`461행의 피해/VFX 분리 규정과 웹 `game.html`46604~46606·46633행의 즉시 발동/즉시 히트, Core `Simulation.Skills.cs`225~233행을 대조했다. Core는 gSlamWindup 진입 틱에 이미 피해·heavy_hit·충격파를 실행한다. R4는10틱 들어올림 뒤 약4틱에 내려치는 **약233ms 접점 지연 FAIL**이었다. 상태 이름을 예비 동작으로 해석한 제작 결함이며, 선행 피해 위험 문구나29/M123 통과로 정합 완료를 선언하지 않는다.
+
+- 실제 R4 바로가기 SHA를 대조하고 이전 검증 skill-fix 링크를 동일byte 복구했다. `desktop-withdrawal.json`. 앱 자동기동/사용자세이브쓰기0, Git 롤백/타WIP변경0. 통합 담당과 보스/UI 담당에게 철회/후속수정 상태를 전달했다. b981 전달완료 docs는 공통에 추가 반영하지 않는다.
+- 제작 단계를 시각 타임라인 계약으로 되돌려 **시전틱0=칼 아래 접점·앞 체중·피해/SFX/충격파 동시**, 기존10/10/12틱은 접점 이후 압축→반동·안정화→운반 복귀로 바꾼다. 후속 상태에서 두 번째 내려침을 만들지 않는다. Core/기간·다른 공격·구르기·루트·조준은 변경하지 않는다.
+- R5 최종 순수 모션은 기존231+접점/평면/해제 신규110=341검사 통과(`motion-tests/out/green-r5-blade-release.log`), C# 오류/경고0. 접점0 RED는 `red-slam-contact.log`, 평면 보정 RED는 `red-blade-plane.log`, 해제 경계 RED는 `red-blade-release.log`로 보존했다. 실제 Player 검수 전 통과로 확대하지 않는다.
+- 실제 검수에만 HP1000000·Poise100·반경15·전사X+60의 격리 EnemyState 표적1개를 둔다. 시전 첫 StepInput 뒤 피해량과 Core틱·강타파동 수를 기록하고 표적을 제거해 기존 무적/AI 억제·충돌 계약을 유지한다. 같은 EndOfFrame의 실제 무기소켓에서 `dot(-socket.up, model.up)<-0.5`·SlamWindup phase0·첫 틱 HP 감소/파동·캐시한 실제 칼끝의 모델 바닥 평면 높이±0.03m를 함께 검사한다. `slamHitTick`·`slamDamage`·`slamWaveCount`·`slamBladeUpDot`·`slamBladeTipHeight`는실제 JSON에남긴다. 상태 이름 관측이나 각도/이상적 칼길이 계산만으로 실제 접점을 대체하지 않는다.
+- 대검 FBX만 Read/Write1로 해 실제 정점을 바인딩 때1회 읽는다(단일 메시 CPU사본 추가, 정확 메모리 비용은 미실측). 가장 긴 칼축 끝의 실제 정점 localPos/Transform을 캐시하고, gSlamWindup10틱에서만 우손 IK/칼 정렬→칼끝1cm 평면 보정→칼 방향 재정렬→좌손 파지 순서다. 보정은 초반25% 전량·나머지75% smoothstep 해제로 phase1에서0, 다음 반동 상태도0이라 경계 팝을 줄인다. 정상 프레임 정점읽기0, 루트/전신 이동·다른 동작/후반 상태 잠금0.
+- 독립 단일시전 fixture는 정확 Core DLL `b2acc241…571189`에서11/11 통과했다. 첫 입력 tick1에 HP461 감소·gSlamWindup10/phase0·강타파동1·heavy_hit 이벤트1, 무입력 대조군 피해0·다른 투사체/장판0·표적 제거 후 정상복귀. 실제 음향 재생/소켓/팁 렌더 증거는 아니다. `slam-contact-tests/receipt.json`·`out/result.log`.
+- 각 PNG 행에는 캐시된 실제 칼끝의 `bladeTipKnown`·`bladeTipHeight`도 남겨 접점 보정 해제와 후반 상태 경계의 연속성을 확인한다. 정상 게임에 기록하거나 매프레임 정점을 다시 읽지 않는다.
+
+R5의 새 정식 빌드·현재 접점 프레임/영상·M1·독립 정합 확인·통합·Desktop 재전달 전까지 본 단위는 미완료다.
