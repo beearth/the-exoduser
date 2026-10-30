@@ -93,3 +93,12 @@ Core(`Runtime/Core`)는 바꾸지 않았다.
 재현 검사 종료 시 로비·스토리·캐릭터 영상과 효과음을 닫고 1초 배출 후 종료한다. 기준 B07은 35/35·사슬700px이나 종료 지연으로 안전 완료 아님. 첫 빌드 UPM 시작 실패 a9c02bdb는 컴파일 미진입·USER_SAVE0이며, 기존 성공 프로세스 환경 래퍼로 원인을 분리한다.
 
 종료 차단 원인을 분리하기 위해 스킬 계측은 legacyFixture로 시작하고 LobbyFlow 상태만 전투로 전환한다. 영상 Open을 한 번도 호출하지 않는 전투·스킬 전용 fixture이며 로비·인트로·일반 입장 검수로 확대하지 않는다.
+
+### 실제 재현과 원인 수정
+
+| 경계 | 수정 전 실제 결과 | 수정 계약 |
+|---|---|---|
+| 조준 | 가상 Input System 마우스와 legacy 마우스가 분리되어 13입력 조준 오차 약1035px, 사슬 이동 중 최대1598px | AimWorld가 버튼과 같은 ExoInput.MousePosition만 읽음. 3D는 플레이어 높이 평면 역투영, 2D는 기존 ScreenToWorldPoint 유지 |
+| 악의구 위치 | Core는410px 진행하지만 부모 이동마다 SpriteRenderer lift가 다시 더해져 최대21.300u 이탈, 실제 연속 프레임에서 구체가 화면 위로 떠오름 | UpdateViews의 모든 writer 전에 직전 로컬 위치·회전을 복원. LateUpdate에 한 번만 tilt/lift 적용. 부모만 이동하는 파편·악의구도 누적0 |
+| 재현 판정 | source16b4f54f4, 빌드6c9148c9(errors0/USER_SAVE0), 1040프레임·14실패 | 원본 Core 규칙·속도·판정 수치는 변경0. 수정 후 동일 항목 재검수 예정 |
+| 실행 경로 | hidden 종료 지연은 영상 Open0에서도 조사 중, UI담당의 별도 batch M1은 정상 종료 | 이후 스킬 검사는 Desktop=batch의 실제 world camera RT로 연속 캡처. HUD/OS 손조작/자연 입장 검수와 구분 |

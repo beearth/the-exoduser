@@ -24,8 +24,9 @@ namespace Exoduser.UnityPort
         public Camera Remodel3DCamera { get { return r3Cam; } }
 
         // base state of each billboarded sprite: the position / rotation the 2D code wrote last (so the lift and the tilt are re-derived every frame, never accumulated)
-        struct R3Base { public Vector3 pos, writtenPos; public Quaternion writtenRot; public float roll; public bool seen; }
+        struct R3Base { public Vector3 localPosition; public Quaternion localRotation; }
         readonly Dictionary<SpriteRenderer, R3Base> r3Base = new Dictionary<SpriteRenderer, R3Base>();
+        readonly List<SpriteRenderer> r3Projected = new List<SpriteRenderer>();
 
         // Camera that shows the world: the scene's LOOK-001 camera while the 3D field is on, the 2D camera otherwise (HUD anchors, level-up burst).
         Camera HudCamera { get { return NativeRemodel3D.Active && r3Cam != null && r3Cam.enabled ? r3Cam : view; } }
@@ -80,6 +81,7 @@ namespace Exoduser.UnityPort
 
         void Remodel3DSetActive(bool on)
         {
+            Remodel3DRestoreBillboards();
             NativeRemodel3D.Active = on;
             if (r3Roots != null) foreach (var root in r3Roots) if (root != null) root.SetActive(on);
             if (!on) { r3Base.Clear(); view.cullingMask = worldMask; }   // back to the 2D camera: Update() re-applies the lobby / world mask next frame
@@ -110,21 +112,31 @@ namespace Exoduser.UnityPort
 
         // Every sprite of the game stands upright facing the LOOK-001 camera (same tilt as the slice's Marker Sprite: Euler(pitch, 0, 0)), feet on the terrain point it was placed at.
         // The 2D code still places sprites by their pivot at the Core point; here the sprite's lower edge is moved onto that point (along the sprite's own up axis).
+        // 표현 보정은 다음 writer 실행 전에 원래 로컬 자세로 되돌린다.
+        // 부모만 이동하는 악의구·얼음 파편도 이전 프레임의 lift를 다시 더하지 않는다.
+        void Remodel3DRestoreBillboards()
+        {
+            foreach (var sr in r3Projected)
+                if (sr != null && r3Base.TryGetValue(sr, out var pose))
+                { sr.transform.localPosition = pose.localPosition; sr.transform.localRotation = pose.localRotation; }
+            r3Projected.Clear();
+        }
+
         void Remodel3DBillboards()
         {
+            // 로비/일시정지 등 writer가 돌지 않은 프레임에도 한 번만 적용한다.
+            if (r3Projected.Count != 0) return;
             float pitch = NativeRemodel3D.Pitch, cos = Mathf.Cos(pitch), sin = Mathf.Sin(pitch);
             var tilt = Quaternion.Euler(pitch * Mathf.Rad2Deg, 0, 0);
             foreach (var sr in FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None))
             {
                 if (sr == null || !sr.enabled || sr.sprite == null || sr.gameObject.scene == r3Scene) continue;
-                var tr = sr.transform; R3Base b; r3Base.TryGetValue(sr, out b);
-                if (!b.seen || (tr.position - b.writtenPos).sqrMagnitude > 1e-10f) b.pos = tr.position;                                    // the 2D code placed it again this frame
-                if (!b.seen || Quaternion.Angle(tr.rotation, b.writtenRot) > .01f) b.roll = tr.rotation.eulerAngles.z;                     // ... or rotated it (roll / projectile angle)
-                float below = sr.sprite.pivot.y / sr.sprite.pixelsPerUnit * Mathf.Abs(tr.lossyScale.y);                                    // pivot -> lower edge, world units
-                var rot = tilt * Quaternion.Euler(0, 0, b.roll);
-                var pos = b.pos + new Vector3(0, below * cos, below * sin);
-                tr.SetPositionAndRotation(pos, rot);
-                b.writtenPos = tr.position; b.writtenRot = tr.rotation; b.seen = true; r3Base[sr] = b;
+                var tr = sr.transform;
+                r3Base[sr] = new R3Base { localPosition = tr.localPosition, localRotation = tr.localRotation };
+                float roll = tr.rotation.eulerAngles.z;
+                float below = sr.sprite.pivot.y / sr.sprite.pixelsPerUnit * Mathf.Abs(tr.lossyScale.y);
+                tr.SetPositionAndRotation(tr.position + new Vector3(0, below * cos, below * sin), tilt * Quaternion.Euler(0, 0, roll));
+                r3Projected.Add(sr);
             }
             if (r3Base.Count > 4096) { var dead = new List<SpriteRenderer>(); foreach (var k in r3Base.Keys) if (k == null) dead.Add(k); foreach (var k in dead) r3Base.Remove(k); }
         }
@@ -134,10 +146,10 @@ namespace Exoduser.UnityPort
         {
             if (NativeRemodel3D.Active && r3Cam != null && r3Cam.enabled && r3Marker != null)
             {
-                var ray = r3Cam.ScreenPointToRay(Input.mousePosition); var plane = new Plane(Vector3.up, r3Marker.position); float d;
+                var ray = r3Cam.ScreenPointToRay(ExoInput.MousePosition); var plane = new Plane(Vector3.up, r3Marker.position); float d;
                 if (plane.Raycast(ray, out d)) { var h = ray.GetPoint(d); return new Vector3(h.x, h.z, 0); }
             }
-            return view.ScreenToWorldPoint(Input.mousePosition);
+            return view.ScreenToWorldPoint(ExoInput.MousePosition);
         }
     }
 }

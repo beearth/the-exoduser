@@ -285,7 +285,7 @@ namespace Exoduser.UnityPort
         }
         void UpdateViews()
         {
-            if(Simulation==null||view==null)return;var p=Simulation.Player;
+            if(Simulation==null||view==null)return;Remodel3DRestoreBillboards();var p=Simulation.Player;
             float shk=Simulation.ShakeAmount*OptionShakeScale;   // B09: web G.shake -> camera offset (random +-shake px, game.html 51900)
             float camX=p.X/100,camY=-p.Y/100;BossCameraZoom();ClampCameraToMap(ref camX,ref camY);   // [CAM-CLAMP] web _clampCamToMap before the shake offset
             view.transform.position=new Vector3(camX+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),camY+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),-10);StageFlowSyncViews();if(!Simulation.Stage.InArena)StreamChunks(p.X,p.Y);
