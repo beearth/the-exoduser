@@ -45,7 +45,19 @@ namespace Exoduser.UnityPort.Core
         private bool skSuppressSpace;
         // Skill effects (blade scatter, voice choice, pierce rolls) draw from their own stream (web Math.random): the shared sim stream stays the enemy / loot owners'.
         private uint skillRandomState = 0x9E3779B9u;
-        private double SkillRandom() { skillRandomState = unchecked(skillRandomState * 1664525u + 1013904223u); return skillRandomState / 4294967296.0; }
+        // 검수에서 원문 난수 조건을 맞출 때만 주입한다. 기본 null은 기존 독립 스트림이다.
+        public Func<double> SkillRandom01;
+        private double SkillRandom()
+        {
+            if (SkillRandom01 != null)
+            {
+                double value = SkillRandom01();
+                if (double.IsNaN(value) || value < 0 || value >= 1) throw new InvalidOperationException("Skill random provider must return [0,1).");
+                return value;
+            }
+            skillRandomState = unchecked(skillRandomState * 1664525u + 1013904223u);
+            return skillRandomState / 4294967296.0;
+        }
         private int nextZoneId = 1, nextBladeId = 1, nextWaveId = 1;
         private readonly HashSet<EnemyState> spikeHitThisFrame = new HashSet<EnemyState>();
 
@@ -166,13 +178,12 @@ namespace Exoduser.UnityPort.Core
         {
             if (!SkillsWired) return;
             spikeHitThisFrame.Clear();
-            bool dead = Player.Hp <= 0 || Player.State == "dead" || Player.State == "fallen";
-            if (!dead) DispatchSkillKeys();
+            // 키 이벤트는 원문처럼 재생과 상태 타이머보다 앞서 처리한다.
+            TickMagicIdle(); TickMagicStates();
+            TickSkillBlades(); TickMaliceOrbs();
             TickSkillCooldowns();
             if (IceOrbActive) TickIceOrb();
-            TickMagicIdle(); TickMagicStates();
             CaptureShieldDomeFrame(); TickFireZones();
-            TickSkillBlades(); TickMaliceOrbs();
             for (int i = SlamWaves.Count - 1; i >= 0; i--) { var w = SlamWaves[i]; w.T++; if (w.T >= w.MaxT) SlamWaves.RemoveAt(i); }
         }
 
@@ -366,7 +377,7 @@ namespace Exoduser.UnityPort.Core
                     ApplyEnemyDamage(e, shatterDmg, (float)Math.Atan2(e.Y - cy, e.X - cx), false, 1, false, false, 0, 0, false, 2);
             }
             RaisePlayerText(cx, cy - 30, "❄ 파쇄!", "#aaeeff", 50); HurtShake(10);
-            Player.State = "idle"; Player.StateTicks = 0;
+            Player.State = "idle";
             IceOrbCd = SkillRules.IceOrbCooldown(slv);
             SkillSample("ice_storm", .5, 1.4);
         }
@@ -412,7 +423,26 @@ namespace Exoduser.UnityPort.Core
             if (IceOrbCd > 0) IceOrbCd -= 1 + bonus;               // 36828
         }
 
-        // G._fireZones loop (37339+): age, DOT tick, expiry; the dome only regenerates the player (resources +10+Lv*2 per second, x2 regen, x2 cooldowns)
+        // 원문32934: 첫 회복 영역의 평탄 회복 뒤 기본 자원 재생을2배로 적용한다.
+        private float ApplySkillRegen()
+        {
+            if (!SkillsWired) return 1;
+            foreach (var zone in FireZones)
+            {
+                if (zone.Type != "holyDome" || Distance(Player.X, Player.Y, zone.X, zone.Y) >= zone.R) continue;
+                if (Player.Hp > 0)
+                {
+                    float flat = (float)SkillRules.HolyDomeRegenPerFrame(zone.Lv, 1);
+                    Player.Hp = Math.Min(Player.MaxHp, Player.Hp + flat);
+                    Player.Mana = Math.Min(Player.MaxMana, Player.Mana + flat);
+                    Player.Stamina = Math.Min(Player.MaxStamina, Player.Stamina + flat);
+                }
+                return 2;
+            }
+            return 1;
+        }
+
+        // 원문 후반 장판 수명·DOT·만료. 회복 영역의 자원 재생은 앞 단계에서 이미 처리했다.
         private void TickFireZones()
         {
             for (int i = FireZones.Count - 1; i >= 0; i--)
@@ -437,11 +467,7 @@ namespace Exoduser.UnityPort.Core
                         }
                     }
                 }
-                else if (z.Type == "holyDome" && Player.Hp > 0 && Distance(Player.X, Player.Y, z.X, z.Y) < z.R)
-                {
-                    float f = (float)SkillRules.HolyDomeRegenPerFrame(z.Lv, 1);
-                    Player.Hp = Math.Min(Player.MaxHp, Player.Hp + f); Player.Mana = Math.Min(Player.MaxMana, Player.Mana + f); Player.Stamina = Math.Min(Player.MaxStamina, Player.Stamina + f);
-                }
+
                 if (z.T >= z.MaxT) FireZones.RemoveAt(i);
             }
         }

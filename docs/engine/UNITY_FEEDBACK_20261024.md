@@ -38,3 +38,28 @@ Godot 보존·Unity 비교 시험의 독립 단위 UNITY-FEEDBACK-01이다. 최�
 2026-10-31 후속: 실제3D 기검3타 영상의 중심이 위로 뜨는 결함은 캐릭터용 billboard 반높이 보정이 원인이었다. KiSlashView의 검기·충전·단계 renderer를 중심형으로 분류하고 생성/파괴 수명에 맞춰 registry를 관리한다. 크기·프레임·색·알파·Core 수치는 그대로다. 오프라인8/8·기존 강타 회귀14/14이며 새 Player 검수는 [게임 동작 대조](UNITY_GAMEPLAY_PARITY_20261031.md)의 최신 절을 따른다. 이전 빌드의 수치 통과를 새 표시 검수로 재사용하지 않는다.
 
 중심 수정 빌드53ac26ee의 실제3타는 지형 깊이에 아래쪽이 잘려 시각FAIL이다. 후속은 기검 전용Material 두 개만3D에서_ZTest=Always(8),2D에서는 기본LessEqual(4)로 표시한다. 공유Shader의 기본값4와 별도 명중 효과는 유지한다. 이 새 후보의 Shader 빌드·실제 전체 검기·M1은 미검증이며 전달하지 않았다.
+
+
+## 2026-10-31 04:18 시작 스킬 실제 대조
+
+새 3D 빌드 1c4b8e34(f4238e241 입력)는 오류0, 같은 실행본 hidden M1 8ce69de8의23단계·이동540틱·기검1040틱·구르기80틱·스킬창6장·시작14입력1350틱 검사를 통과했다. 실제1600×900의 Combo210-210에서 기검 하단 수평 잘림이 사라지고 중심 오차0을 확인했다. 다만 실제 웹1350틱의 추가 대조에서 자원·상태·위치260틱 차이, 쿨다운까지 포함하면303틱 차이가 발견되어 이 빌드는 공통/바탕화면에 채택하지 않았다. 해당 화면은 새 Core 수정의 실행 증거로 재사용하지 않는다.
+
+| 항목 | 현재 원문과 수정 내용 | 근거와 한계 |
+|---|---|---|
+| Shift 3단 자동 발사 | 홀드12틱 도달 시 키업 전에 발사. 키업 발사는 이벤트 단계, 자동 발사는 홀드 증가 뒤, 비행63px/틱·끌림16틱·거리700px은 기존 원문 수치 유지 | 14틱 홀드 사례의 첫 발사11번 틱·최대131.25px 시간차 해소. 벽 도우미·장기 홀드 착지 재발사·파생 이동기는 이 사례로 검증하지 않음 |
+| 스킬 키 이벤트 | DispatchSkillKeys를 일반 자원 재생·StateTicks 감소 앞에 실행. Roll 우선순위·Space 중복 시전 차단은 유지 | 지옥강타 첫 상태 타이머10→9, iceOrb 진입 첫 틱의 비idle 재생 배율 일치 |
+| 얼음보주 종료 | idle 복귀 때 기존 StateTicks 보존. 마법 자세→기존 투사체 이동→쿨다운→얼음보주 자동 파쇄→장판 순서 | 119번 틱에 파편8발을 원점 반경47px에 생성, 첫 이동은 다음 틱. 임의 타이머0 초기화·생성 틱8.5px 선행 이동 제거 |
+| 회복의 영역 | 자원 재생 앞에서 첫 겹침 영역의 평탄 회복(10+Lv×2)/60을 적용한 뒤 기본 HP/MP/ST 재생을2배. 장판 후반 중복 회복 제거 | Lv1·idle·MP330에서 첫 틱330.2125, 80틱 뒤347.0(웹 double 기준). 다중 영역은 첫 영역만 적용하는 원문 계약 |
+| Q 보호막 쿨다운 | sBlock 동안 SbCd 감소 정지, 해제 다음 틱부터 감소 | 기본30틱. 기존 실제 hold14 사례에서43틱 쿨다운 차이 해소. 보호 설계 문서2_3은 변경하지 않음 |
+| 비교 난수 | SkillRandom01은 검수에서만 .5를 공급하며 기본null일 때 기존 독립 LCG를 그대로 사용 | 실제 웹 Math.random=.5 통제와 얼음 파편 좌표를 대조하기 위한 주입점. 정상 게임 난수 고정 아님 |
+
+현재 제품 소스의 설치 Unity Core/Runtime 독립 컴파일 오류0(기존 경고2/15), 실제 원문1350틱의 위치·자원·상태/타이머·쿨다운·악의·무적·게이지·보주·파편 좌표 모두 차이0이다. 기존 이동540·기검1040·구르기80·E14경계도 차이0. 도구는 unity/Tools/gameplay-parity/StartingSkillsTrace.cs, 실행은 GameplayParity.dll --starting-skills-trace <web-all-skills.json> <inventory_seed.json> <출력.json>. NativeGame.PlaytestCapture에는 네 쿨다운·Q 쿨다운·악의·보주 상태/타이머를 추가해 새 Player에서도 같은 값을 확인한다.
+
+증거: I:/EXODUSER-Storage/demo-art/gameplay-parity/starting-skill-red01/결과.json, starting-skill-red02-strict/결과.json, starting-skill-candidate05-source-phases/결과.json, starting-skill-product-gates/영수증.json, starting-skill-independent-compile/영수증.json. 변경 전7파일은 starting-skill-source-before/목록.json에 byte 보존했다. **이 새 Core의 정식 빌드·동일 M1·실제 Player·영상/1배율·공통/바탕화면 전달은 아직 미완료**다. 전체55개 중 기존 실행 소유8개의 이번 입력 범위만 다뤘으며 전체 스킬·자연 전투·후반 진행 완료가 아니다.
+
+
+### 2026-10-31 04:22 제품 회귀 재확인
+
+현재 제품 소스로 시작 스킬1350·이동540·기검1040·구르기80·E14경계가 모두 불일치0이다. 보호막 쿨다운이 경직/기절 동안 멈추던 추가 결함은 현재 원문33211과 생존4자세×5쿨다운20조건으로8실패를 재현한 뒤, 입력 차단과 독립적으로 쿨다운을 감소시켜20/0으로 수정했다. sBlock 유지 중에는 감소하지 않는다. 도구 옵션은 --shield-cooldown-trace <Q쿨다운-생존자세-원문.json> <출력.json>이며, RED는 I:/EXODUSER-Storage/demo-art/gameplay-parity/Q쿨다운-생존자세-RED.json에 보존했다.
+
+현재 Core로 새로 추출·컴파일한 저장2604·돌진패링187165·스킬13216도 모두0, 최초 연습88·기존 스킬 실행107도 통과했다. 새 oracle은 starting-source-oracle/suite-save-oracle.json, 제품 회귀는 starting-skill-product-gates/영수증.json 및 starting-skill-integrations/영수증.json에 있다. 현재 전체는 여전히 진행 중이며 새 정식 빌드·같은 M1/Player·영상·공통/바탕화면은 미완료다.

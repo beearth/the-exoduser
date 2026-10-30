@@ -81,11 +81,14 @@ namespace Exoduser.UnityPort.Core
             TickDeathFrameStart();   // O-1: _sfxFrameReset (_critSfxCd)
             if (Player.Hp <= 0 || Player.State == "dead" || Player.State == "fallen") { TickFallen(); UpdateKiProjectiles(); UpdateBolts(); TickKiTimers(); TickHurtFx(); return; }
             if (!RollActive) Player.Facing = (float)Math.Atan2(aimY - Player.Y, aimX - Player.X);
+            if (SkillsWired) DispatchSkillKeys();
             if (Player.State != "pStun") ConsumeRollTrigger(); // 원본 일반 기동 발동은 재생·무적 감소보다 앞선다.
+            if (PlayerCombatWired && !CombatBusy) TickChainDash();
+            float regenMul = ApplySkillRegen();
             float regenDivisor = Player.State == "idle" ? 8 : 16;
-            Player.Hp = Math.Min(Player.MaxHp, Player.Hp + Config.PlayerHpRegen / regenDivisor);
-            Player.Stamina = Math.Min(Player.MaxStamina, Player.Stamina + Config.PlayerStaminaRegen / regenDivisor);
-            Player.Mana = Math.Min(Player.MaxMana, Player.Mana + Config.PlayerManaRegen / regenDivisor);
+            Player.Hp = Math.Min(Player.MaxHp, Player.Hp + Config.PlayerHpRegen * regenMul / regenDivisor);
+            Player.Stamina = Math.Min(Player.MaxStamina, Player.Stamina + Config.PlayerStaminaRegen * regenMul / regenDivisor);
+            Player.Mana = Math.Min(Player.MaxMana, Player.Mana + Config.PlayerManaRegen * regenMul / regenDivisor);
             Player.StateTicks--;
             Player.Iframes = Math.Max(0, Player.Iframes - 1);
             attackHeldForMagic = attack;
@@ -94,7 +97,7 @@ namespace Exoduser.UnityPort.Core
             if (Player.State == "pStun") ConsumeRollTrigger(); // 기절 탈출은 원본의 뒤쪽 상태 분기다.
             TickPlayerCombat();
             TickRoll();
-            TickSkills();   // B03: skill keys, cooldowns, zones, ice orb
+            TickSkills();   // B03: 마법 자세·투사체·쿨다운·보주·장판 후반 단계
             MoveKnockback();
             if (Player.State == "bladeDash") { }   // roll: TickRoll moves the player, no walking / attacking meanwhile (web case 'bladeDash')
             else if (Player.State == "stagger" || Player.State == "pStun") {

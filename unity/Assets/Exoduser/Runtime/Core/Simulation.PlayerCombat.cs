@@ -38,9 +38,10 @@ namespace Exoduser.UnityPort.Core
         // one simulation tick of the player combat states; called from Tick right after the generic state timers
         private void TickPlayerCombat()
         {
-            if (!PlayerCombatWired || CombatBusy) return;
+            if (!PlayerCombatWired) return;
+            if (SbCd > 0 && Player.State != "sBlock") SbCd--;
+            if (CombatBusy) return;
             bool qDown = combatQHeld && !combatQPrev, eDown = combatEHeld && !combatEPrev;
-            if (SbCd > 0) SbCd--;
             if (SbParryT > 0 && Player.State != "sBlock") SbParryT--;   // release window counts down by itself (12 frames)
             // 원본 _tryKiSlashQCancel: 기검 3타 자세는 Q 홀드로도 즉시 취소하며 그 틱은 이동하지 않는다.
             bool kiCancel = Config.ActiveAttack == "kiSlash" && (Player.State == "wWindup" || Player.State == "wSwing" || Player.State == "wRecover") && combatQHeld;
@@ -99,7 +100,7 @@ namespace Exoduser.UnityPort.Core
             else if (Player.State == "sBash" && Player.StateTicks <= 0) { Player.State = "sRecover"; Player.StateTicks = ParryRules.SRecoverTicks(PParry); }
             else if (Player.State == "sRecover" && Player.StateTicks <= 0) { Player.State = "idle"; SBashChgMul = 1; ShieldWingTicks = 0; }
             // ---- Shift: chain move ----
-            TickChainDash();
+            // 사슬은 원문 update의 재생 앞 단계에서 실행한다.
             // stun natural end: the web restores poise 4 and grants 60 frames of invulnerability
             if (Player.State == "pStun" && Player.StateTicks <= 0) { Player.Iframes = (float)PlayerPoise.NaturalEndIframes; Player.Poise = PlayerPoise.MaxPoise; }
         }
@@ -126,29 +127,38 @@ namespace Exoduser.UnityPort.Core
             }
         }
 
+        private bool FireChain(int tier)
+        {
+            var result = ChainDash.Release(tier, HarpGauge, Player.Stamina, Player.MaxStamina, ChargeBoostLevel, 0, PCharge);
+            if (!result.Fired) return false;
+            HarpGauge = result.Gauge; Player.Stamina = (float)result.St; HarpTier = tier;
+            HarpActive = true; HarpDist = 0; HarpMaxDist = result.MaxDist;
+            HarpDirX = (float)Math.Cos(Player.Facing); HarpDirY = (float)Math.Sin(Player.Facing);
+            HarpX = Player.X; HarpY = Player.Y; DashHits.Clear();
+            DashHold = false; DashHoldF = 0;
+            return true;
+        }
+
         private void TickChainDash()
         {
+            bool shiftDown = combatShiftHeld && !combatShiftPrev;
             bool shiftUp = !combatShiftHeld && combatShiftPrev;
-            if (combatShiftHeld && !HarpActive && !DashActive && DashHoldF < ChainDash.HoldFramesCap) DashHold = true;
-            if (DashHold && !HarpActive && !DashActive)
+            if (shiftDown && !HarpActive && !DashActive && HarpGauge > 0) { DashHold = true; DashHoldF = 0; }
+            // 키업은 update 진입 전 이벤트이고, 만충 자동 발사는 update의 홀드 증가 뒤다.
+            if (shiftUp && DashHold && !HarpActive && !DashActive)
             {
-                if (combatShiftHeld) DashHoldF++;
-                else if (shiftUp)
-                {
-                    int tier = ChainDash.TierForHoldFrames(DashHoldF);
-                    var r = ChainDash.Release(tier, HarpGauge, Player.Stamina, Player.MaxStamina, ChargeBoostLevel, 0, PCharge);
-                    DashHold = false; DashHoldF = 0;
-                    if (r.Fired)
-                    {
-                        HarpGauge = r.Gauge; Player.Stamina = (float)r.St; HarpTier = tier; HarpActive = true; HarpDist = 0; HarpMaxDist = r.MaxDist;
-                        HarpDirX = (float)Math.Cos(Player.Facing); HarpDirY = (float)Math.Sin(Player.Facing); HarpX = Player.X; HarpY = Player.Y;
-                        DashHits.Clear();   // _harpHits = []
-                    }
-                }
+                FireChain(ChainDash.TierForHoldFrames(DashHoldF)); DashHold = false; DashHoldF = 0;
+            }
+            HarpGauge = ChainDash.RegenGauge(HarpGauge, HarpGaugeMax, ChargeBoostLevel, PCharge, 1, DashHold, HarpActive, DashActive, false, false);
+            if (DashHold && combatShiftHeld && DashHoldF < ChainDash.HoldFramesCap)
+            {
+                DashHoldF++;
+                if (DashHoldF >= ChainDash.TierHoldFrames[3] && !HarpActive && !DashActive) FireChain(3);
             }
             if (HarpActive && !DashActive)
             {
-                double step; double d = HarpDist; ChainDash.FlightStep(1, HarpMaxDist, ref d, out step); HarpDist = d;
+                double step, distance = HarpDist;
+                ChainDash.FlightStep(1, HarpMaxDist, ref distance, out step); HarpDist = distance;
                 HarpX += HarpDirX * ChainDash.FlightSpeed * step; HarpY += HarpDirY * ChainDash.FlightSpeed * step;
                 if (HarpDist >= HarpMaxDist)
                 {
@@ -160,14 +170,11 @@ namespace Exoduser.UnityPort.Core
             {
                 Player.Iframes = Math.Max(Player.Iframes, ChainDash.MoveIframesMin);
                 double step = ChainDash.PullStep(1, DashLeft);
-                float nx = Player.X + (float)(DashVx * step), ny = Player.Y + (float)(DashVy * step);
-                if (Pass(nx, ny, Player.Radius)) { Player.X = nx; Player.Y = ny; } else DashLeft = 0;
-                TickDashPathHits();
-                DashLeft -= step;
+                float x = Player.X + (float)(DashVx * step), y = Player.Y + (float)(DashVy * step);
+                if (Pass(x, y, Player.Radius)) { Player.X = x; Player.Y = y; } else DashLeft = 0;
+                TickDashPathHits(); DashLeft -= step;
                 if (DashLeft <= 0) { DashActive = false; HarpActive = false; Player.Iframes = (float)ChainDash.LandingInvulnerable(Player.Iframes); }
             }
-            // gauge regeneration (stops while holding / flying / pulled)
-            HarpGauge = ChainDash.RegenGauge(HarpGauge, HarpGaugeMax, ChargeBoostLevel, PCharge, 1, DashHold, HarpActive, DashActive, false, false);
         }
 
         // what the sBlock / peaceShield branch of hurtP did to a non-parried hit (rate text, knock-back, shake, flash are applied by HurtPlayer in the web's order)
