@@ -16,6 +16,8 @@ function subtract(a,b){
 const shapeKnown=e=>e.axisAligned===true||geometry.valid(e.quad);
 const shape=e=>geometry.intersect(geometry.valid(e.quad)?e.quad:geometry.rectPoly(e.rect),geometry.rectPoly(e.rect));
 const opaque=e=>e.opacityKnown===true&&e.effectiveOpacity===1&&!!e.opacityProof&&Number.isFinite(e.depth)&&e.orderKnown&&e.clipKnown===true&&shapeKnown(e);
+const exact=(actual,expected)=>Array.isArray(actual)&&actual.length===expected.length&&actual.every((n,i)=>Number.isFinite(n)&&n===expected[i]);
+const alphaReaderValid=f=>f.alphaReaderVerified===true&&!!f.alphaReaderProof&&exact(f.alphaProbe,[0,.25,.5,1])&&exact(f.alphaMipProbe,[1,.5,0])&&exact(f.alphaRtProbe,[0,.25,.5,1]);
 function analyze(frame){
  const elements=[];
  for(const input of frame.elements||[]){
@@ -64,11 +66,11 @@ function run(dir){
  else {const scores=JSON.parse(fs.readFileSync(languagePath,'utf8')).scores;for(const category of ['설정','직업선택']){const rows=scores.filter(s=>s.category===category).sort((a,b)=>b.measuredWidth-a.measuredWidth);if(rows.length<28)missing.push(category+' 언어 폭 표 누락');else languages.add(rows[0].code);}}
  for(const width of [1920,1600])for(const lang of languages)for(const page of requiredPages)
   if(!frames.some(f=>f.width===width&&f.language===lang&&f.page===page&&f.repaintFrames>0&&f.elements.some(e=>e.kind==='text')))missing.push(`${width}/${lang}/${page}`);
- for(const f of frames){if(!f.visibilityComplete)missing.push(`${f.width}/${f.language}/${f.page}: 가림 계측 미충족 (${f.auditWarnings.join(', ')})`);const png=path.join(dir,`${f.width}-${f.language}-${f.page}.png`);if(!fs.existsSync(png)){missing.push('PNG 누락 '+path.basename(png));continue;}const bytes=fs.readFileSync(png);if(bytes.readUInt32BE(16)!==f.width||bytes.readUInt32BE(20)!==f.height)missing.push('실제 PNG 해상도 불일치 '+path.basename(png));}
+ for(const f of frames){if(!alphaReaderValid(f))missing.push(`${f.width}/${f.language}/${f.page}: 실제 GPU 알파 대조군 미충족`);if(!f.visibilityComplete)missing.push(`${f.width}/${f.language}/${f.page}: 가림 계측 미충족 (${f.auditWarnings.join(', ')})`);const png=path.join(dir,`${f.width}-${f.language}-${f.page}.png`);if(!fs.existsSync(png)){missing.push('PNG 누락 '+path.basename(png));continue;}const bytes=fs.readFileSync(png);if(bytes.readUInt32BE(16)!==f.width||bytes.readUInt32BE(20)!==f.height)missing.push('실제 PNG 해상도 불일치 '+path.basename(png));}
  const result={passed:missing.length===0&&frames.every(f=>f.issues.length===0),frameCount:frames.length,issueCount:frames.reduce((s,f)=>s+f.issues.length,0),missing,frames};
  fs.writeFileSync(path.join(dir,'overlap-report.json'),JSON.stringify(result,null,2));
  const rows=frames.flatMap(f=>f.issues.map(i=>`|${f.page}|${f.width}×${f.height}|${f.language}|${i.type}|${(i.a.text||'').replaceAll('|','/')}|${i.b?.text||i.b?.kind||''}|${i.a.source||''}|`));
   fs.writeFileSync(path.join(dir,'겹침_검사.md'),`# 전 화면 겹침 검사\n\n판정: ${result.passed?'PASS':'FAIL'}, ${frames.length}장, 교차 후보 ${result.issueCount}건, 누락 ${missing.length}건.\n\n실제 Repaint의 깊이·그리기 순서·클립과 증명된 유효 불투명도 1인 영역만 가림으로 쓴다. 부분 가림의 남은 조각을 검사하며, 불명 가림은 적용하지 않고 완료 판정을 차단한다. 교차 후보는 PNG 1x 검수가 필요하다.\n\n|화면|해상도|언어|종류|글자|상대|그리기 위치|\n|---|---|---|---|---|---|---|\n${rows.join('\n')}\n${missing.join('\n')}\n`);
  console.log(JSON.stringify({passed:result.passed,frames:frames.length,issues:result.issueCount,missing}));return result.passed;
 }
-module.exports={analyze,run};if(require.main===module)process.exitCode=run(process.argv[2])?0:2;
+module.exports={analyze,run,alphaReaderValid};if(require.main===module)process.exitCode=run(process.argv[2])?0:2;

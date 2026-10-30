@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort
             public float effectiveOpacity;
             public float minimumTextureAlpha,maximumTextureAlpha;public int mipLevels;public bool guiEnabled;public Color guiColor,contentColor,backgroundColor;
         }
-        [Serializable] internal sealed class Frame { public int schemaVersion=2;public string page,language; public int width,height,repaintFrames,capturedFrame; public List<Element> elements=new List<Element>(); }
+        [Serializable] internal sealed class Frame { public int schemaVersion=2;public string page,language,alphaReaderProof; public bool alphaReaderVerified;public float[] alphaProbe,alphaMipProbe,alphaRtProbe; public int width,height,repaintFrames,capturedFrame; public List<Element> elements=new List<Element>(); }
         internal static bool Active;
         [DefaultExecutionOrder(-31999)] internal sealed class Host:MonoBehaviour { void OnGUI(){if(Event.current.type==EventType.Repaint)BeginFrame();} }
         static Frame frame;
@@ -33,6 +33,7 @@ namespace Exoduser.UnityPort
             if(!Active)return;
             var matrix=GUI.matrix;GUI.matrix=Matrix4x4.identity;origin=GUIUtility.GUIToScreenPoint(Vector2.zero);GUI.matrix=matrix;
             frame=new Frame{width=Screen.width,height=Screen.height,repaintFrames=1,capturedFrame=Time.frameCount};clips.Clear();
+            ValidateAlphaReader();frame.alphaReaderVerified=alphaReaderVerified;frame.alphaReaderProof=alphaReaderProof;frame.alphaProbe=alphaProbe;frame.alphaMipProbe=alphaMipProbe;frame.alphaRtProbe=alphaRtProbe;
         }
         static Rect ScreenRect(Rect r)
         {
@@ -61,9 +62,30 @@ namespace Exoduser.UnityPort
             var e=Record(rect,kind,text,source,shadow);if(e!=null){e.effectiveOpacity=GUI.color.a;e.opacityKnown=false;}
         }
         // 실제 GPU의 모든 밉 알파를 읽는다. 동적 RT는 수집 프레임마다 다시 읽는다.
-        sealed class AlphaTiles {internal bool known,allOpaque;internal float minimum,maximum;internal uint update;internal int frame,levels;internal string proof;internal List<Rect> opaque=new List<Rect>();}
+        sealed class AlphaTiles {internal bool known,allOpaque;internal float minimum,maximum;internal uint update;internal int frame,levels;internal string proof;internal float[] firstPixels;internal List<float> mipMinima=new List<float>();internal List<Rect> opaque=new List<Rect>();}
         static readonly Dictionary<Texture,AlphaTiles> alphaCache=new Dictionary<Texture,AlphaTiles>();
         static Material alphaMaterial;
+        static bool alphaValidationAttempted,alphaReaderVerified,readingAlphaControl;
+        static string alphaReaderProof="실제 GPU 알파 대조군 미실행";
+        static float[] alphaProbe,alphaMipProbe,alphaRtProbe;
+        static bool Exact(float[] actual,float[] expected){if(actual==null||actual.Length!=expected.Length)return false;for(int i=0;i<actual.Length;i++)if(actual[i]!=expected[i])return false;return true;}
+        static void ValidateAlphaReader()
+        {
+            if(alphaValidationAttempted)return;alphaValidationAttempted=true;readingAlphaControl=true;
+            Texture2D rgba=null,mips=null;RenderTexture rt=null;var previous=RenderTexture.active;
+            try{
+                var values=new[]{0f,.25f,.5f,1f};rgba=new Texture2D(2,2,TextureFormat.RGBAFloat,false,true){filterMode=FilterMode.Point,wrapMode=TextureWrapMode.Clamp,name="실제 알파 대조군"};
+                var colors=new Color[4];for(int i=0;i<4;i++)colors[i]=new Color(0,0,0,values[i]);rgba.SetPixels(colors);rgba.Apply(false,true);
+                mips=new Texture2D(4,4,TextureFormat.RGBAFloat,true,true){filterMode=FilterMode.Point,wrapMode=TextureWrapMode.Clamp,name="실제 밉 대조군"};
+                for(int mip=0;mip<3;mip++){int n=(4>>mip)*(4>>mip);var level=new Color[n];for(int i=0;i<n;i++)level[i]=new Color(0,0,0,1-mip*.5f);mips.SetPixels(level,mip);}mips.Apply(false,true);
+                var a=Alpha(rgba);alphaProbe=a.firstPixels;var b=Alpha(mips);alphaMipProbe=b.mipMinima.ToArray();
+                rt=RenderTexture.GetTemporary(2,2,0,RenderTextureFormat.ARGBFloat,RenderTextureReadWrite.Linear);rt.filterMode=FilterMode.Point;rt.wrapMode=TextureWrapMode.Clamp;
+                Graphics.Blit(rgba,rt);RenderTexture.active=previous;var c=Alpha(rt);alphaRtProbe=c.firstPixels;
+                alphaReaderVerified=a.known&&b.known&&c.known&&Exact(alphaProbe,values)&&Exact(alphaMipProbe,new[]{1f,.5f,0f})&&Exact(alphaRtProbe,values);
+                alphaReaderProof=alphaReaderVerified?"실제 RGBAFloat/3밉/RenderTexture 대조군 원소별 완전 일치":"GPU 알파 대조군 불일치";
+            }catch(Exception error){alphaReaderVerified=false;alphaReaderProof="GPU 알파 대조군 실패: "+error.GetType().Name;}
+            finally{readingAlphaControl=false;RenderTexture.active=previous;if(rgba!=null){alphaCache.Remove(rgba);UnityEngine.Object.Destroy(rgba);}if(mips!=null){alphaCache.Remove(mips);UnityEngine.Object.Destroy(mips);}if(rt!=null){alphaCache.Remove(rt);RenderTexture.ReleaseTemporary(rt);}}
+        }
         static void MergeOpaqueTiles(List<Rect> tiles)
         {
             var rows=new List<Rect>();
@@ -92,7 +114,8 @@ namespace Exoduser.UnityPort
                     try{
                         alphaMaterial.SetFloat("_Mip",mip);Graphics.Blit(texture,target,alphaMaterial);RenderTexture.active=target;
                         copy=new Texture2D(w,h,TextureFormat.RGBAFloat,false,true);copy.ReadPixels(new Rect(0,0,w,h),0,0,false);copy.Apply(false,false);
-                        var pixels=copy.GetPixels();foreach(var pixel in pixels){if(float.IsNaN(pixel.a)||float.IsInfinity(pixel.a))throw new InvalidOperationException("유한하지 않은 GPU 알파");minimum=Mathf.Min(minimum,pixel.a);maximum=Mathf.Max(maximum,pixel.a);}
+                        var pixels=copy.GetPixels();float mipMinimum=1;foreach(var pixel in pixels){if(float.IsNaN(pixel.a)||float.IsInfinity(pixel.a))throw new InvalidOperationException("유한하지 않은 GPU 알파");minimum=Mathf.Min(minimum,pixel.a);mipMinimum=Mathf.Min(mipMinimum,pixel.a);maximum=Mathf.Max(maximum,pixel.a);}data.mipMinima.Add(mipMinimum);
+                        if(readingAlphaControl&&mip==0&&pixels.Length>=4)data.firstPixels=new[]{pixels[0].a,pixels[1].a,pixels[2].a,pixels[3].a};
                         // 다중 밉은 전체 밉의 최솟값만 사용한다. 부분 타일을 mip0만 보고 불투명으로 올리지 않는다.
                         if(levels==1&&texture.anisoLevel<=1)for(int y=0;y<h;y+=16)for(int x=0;x<w;x+=16){
                             int x1=Mathf.Min(x+16,w),y1=Mathf.Min(y+16,h);bool solid=true;
@@ -118,7 +141,7 @@ namespace Exoduser.UnityPort
             var e=Record(r,"surface","",source);if(e==null)return;e.ownerId=owner;
             var alpha=alphaBlend?Alpha(texture):null;
             // GUI.DrawTexture는 GUI.enabled를 상태 선택에 사용하지 않는다. 실제 전달 GUI.color만 곱한다.
-            e.opacityKnown=!alphaBlend||alpha.known;e.effectiveOpacity=alphaBlend?Mathf.Clamp01(GUI.color.a)*alpha.minimum:1;
+            e.opacityKnown=!alphaBlend||(alpha.known&&alphaReaderVerified);e.effectiveOpacity=alphaBlend?Mathf.Clamp01(GUI.color.a)*alpha.minimum:1;
             e.opacityProof=alphaBlend?alpha.proof:"GUI.DrawTexture alphaBlend=false";
             e.textureName=texture.name;e.opacitySampling=alphaBlend?"유효 불투명도의 보수적 하한 / 모든 밉 실제 표본":"비혼합 칠";
             if(alpha!=null){e.minimumTextureAlpha=alpha.minimum;e.maximumTextureAlpha=alpha.maximum;e.mipLevels=alpha.levels;}
