@@ -89,6 +89,7 @@ namespace Exoduser.UnityPort.Core
         public void RestoreSkills(Dictionary<string, double> skills, string[] slots, string ult, string ct)
         {
             if (skills == null) return;
+            CaptureDisplaySkillLevels(skills);
             foreach (var id in PortedSkillIds) { double v; skills.TryGetValue(id, out v); if ((id == "kiSlash"||id == "fireball"||id=="maliceSwipe"||id=="shieldThrow"||id=="spikeTrap"||id=="giantSlam"||id=="holyDome") && v < 1) v = 1; if (v >= 1) Skills.Levels[id] = (int)v; else Skills.Levels.Remove(id); }
             var reservedRawSlots = new bool[SkillRules.SlotCount];
             for (int i = 0; i < SkillRules.SlotCount; i++)

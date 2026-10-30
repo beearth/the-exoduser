@@ -9,7 +9,7 @@ namespace Exoduser.UnityPort {
  // Definitions (names, descriptions, icons, slot candidate lists, geometry) come from Resources/Data/skill_defs_web.json, extracted from the web
  // runtime with a state mirror of Unity (only kiSlash learned and equipped in LMB). State values (equipped skill, level, SP, malice, player LV)
  // are read from Unity; whatever Unity does not have is drawn as "미이식". The 3D altar/slot discs are stills captured from the web renderer.
- [Serializable] public sealed class SkillDefsOrb {public string id;public float x,y,o;public bool host,dim;public float[] nameRect,subRect,hostRect;}
+ [Serializable] public sealed class SkillDefsOrb {public string id;public float x,y,o;public bool host,dim,sourceDim;public string badge;public float[] nameRect,subRect,hostRect;}
  [Serializable] public sealed class SkillDefsSlot {
   public int index;public string key,fieldTitle,fieldSub;
   public float[] button,disc,keyRect,nameRect,fieldRect,fieldTitleRect,fieldSubRect,coreRect,coreNameRect,hintRect;
@@ -18,7 +18,7 @@ namespace Exoduser.UnityPort {
  [Serializable] public sealed class SkillDefsSkill {public string id,name,desc,icon;public bool host;public string[] lines;}
  [Serializable] public sealed class SkillDefsFile {public SkillDefsSlot[] slots;public SkillDefsSkill[] skills;}
 
- public sealed class NativeSkills {
+ public sealed partial class NativeSkills {
   public bool Open {get;private set;}
   public int SelectedSlot {get;private set;}=SkillUiState.LmbSlot;
   const string NotPorted="미이식";
@@ -156,7 +156,8 @@ namespace Exoduser.UnityPort {
   }
 
   Texture2D OrbIcon(string id,bool dim){
-   if(id=="chargeBoost")id="charge"; // 원문 SKILL_ICONS의 charge/chargeBoost는 같은 이미지
+   if(id=="chainSlam"||id=="chainAssault"||id=="chainSlash")return ChainOrbIcon(dim);
+    if(id=="chargeBoost")id="charge"; // 원문 SKILL_ICONS의 charge/chargeBoost는 같은 이미지
     string path="Art/ui/skill_icons/orb/"+id+(dim?"_dim":"");
    if(!orbIcons.TryGetValue(path,out var t)){t=Resources.Load<Texture2D>(path);orbIcons[path]=t;}
    return t;
@@ -259,12 +260,12 @@ namespace Exoduser.UnityPort {
    Grad(new Rect(hb.x,hb.y,hb.width*.12f,hb.height),C(6,9,9,0),C(6,9,9,.82f),90);Fill(new Rect(hb.x+hb.width*.12f,hb.y,hb.width*.76f,hb.height),C(6,9,9,.82f));Grad(new Rect(hb.x+hb.width*.88f,hb.y,hb.width*.12f,hb.height),C(6,9,9,.82f),C(6,9,9,0),90);
    Border(hb,C(89,92,92,.333f));
    Text(hb,hint,serif,13,C(217,214,208),FontStyle.Normal,0,TextAnchor.MiddleCenter,true);
-   foreach(var o in slot.orbs)DrawOrb(o,level);
+   if(SelectedSlot==8)DrawChargeOrbs(level);else foreach(var o in slot.orbs)DrawOrb(o,level);
   }
 
   void DrawOrb(SkillDefsOrb o,int level){
    var c=AltarOrigin+new Vector2(o.x,o.y);float r=o.o/2f;bool ki=o.id=="kiSlash";
-   bool dim=o.dim&&!(cur!=null&&Ported(o.id)&&SkillLevelOf(o.id)>=1);
+   bool dim=o.sourceDim?o.dim:o.dim&&!(cur!=null&&Ported(o.id)&&SkillLevelOf(o.id)>=1);
    // ball: shadow ring layers (web box-shadow), dark ball, circular icon
    Glow(c.x,c.y+10,r+8,r+4,C(0,0,0,.5f));
    if(!dim)Glow(c.x,c.y,r+18,r+18,C(230,199,122,.28f));

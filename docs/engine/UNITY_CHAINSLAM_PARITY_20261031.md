@@ -31,3 +31,7 @@
 ## 증거와 제외
 
 I:/EXODUSER-Storage/demo-art/gameplay-parity/chain-slam-final-cpu-r2/입력.json·영수증.json, chain-slam-independent-compile-r3/, 기동파괴-실행연속-원문.json, 기동파괴-착지반사-원문정책-r2.json 및 각 RED/green 폴더. 입력예약 최초 fixture는 비활성 시 예약 해제 원문을 누락해768거짓차이를 만들었으므로 r2를 사용한다. 최초 반사 fixture의 임의 배율1은 실제 무장비 .7로 수정한 r2만 판정한다. 보호된2_3 문서는 수정하지 않는다. 같은 HID 종료 실패 방식의 Player/M1 반복0, GPU/Player 예약0이다.
+
+### 2026-10-31 사슬 제단 동적 후보 후속
+
+[현행 계약](UNITY_CHARGE_FORGE_ORBS_20261031.md)에 모체 습득 전2/후6구슬·습득/데모 우선순위·미소유 저장레벨 표시·원본 공용아이콘을 기록했다. 원문256조건 및 저장사본7,440값0, 고정41묶음8,877,916단위0·설치참조0. Core11소유/44미이식 유지. 실제Player/M1/Native관리3단계/1x/영상/공통/Desktop은 미검증 NOT_READY다.

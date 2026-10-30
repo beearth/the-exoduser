@@ -70,3 +70,7 @@ SkillDockBinding.ForgeHostForWindow는 실제 _FUSE_PAIRS/HOST_OVERRIDE의 모�
 ### 2026-10-31 기동파괴 비합체 소스 후보
 
 [현행 계약](UNITY_CHAINSLAM_PARITY_20261031.md)에 입력·착지·균열·반사·학습/저장을 기록했다. Core 소유11종/미이식44종, 고정40묶음8,870,476단위0·설치참조 오류0. 패링 Counter의 공격용2배를 제외한다. 무지개탄Q전용 및 리모델 드루이드 반사금지를 유지한다. Native 표시 후보 연결·원본2PNG 재사용, 실제Player/M1/UI저장/제단6구슬/영상/1x/공통/Desktop은 미완료 NOT_READY다.
+
+### 2026-10-31 사슬 제단 동적 후보 후속
+
+[현행 계약](UNITY_CHARGE_FORGE_ORBS_20261031.md)에 모체 습득 전2/후6구슬·습득/데모 우선순위·미소유 저장레벨 표시·원본 공용아이콘을 기록했다. 원문256조건 및 저장사본7,440값0, 고정41묶음8,877,916단위0·설치참조0. Core11소유/44미이식 유지. 실제Player/M1/Native관리3단계/1x/영상/공통/Desktop은 미검증 NOT_READY다.
