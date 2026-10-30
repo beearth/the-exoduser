@@ -98,7 +98,7 @@ namespace Exoduser.UnityPort
             view.cullingMask = 0;                  // the 2D camera only clears the frame while the 3D one draws
             r3Cam.enabled = !hidden;
             Remodel3DViewport();
-            var p = Simulation.Player; r3Marker.position = NativeRemodel3D.Point(p.X, p.Y) + NativeRemodelCamera.TargetOffset;   // CM LOOK-001 follows the marker (offset 0, 10.52, -9.24, no damping)
+            var p = Simulation.Player; r3Marker.position = NativeRemodel3D.Point(p.X, p.Y) + NativeRemodelCamera.TargetOffset + (A2Requested ? new Vector3(2.4f,0,0) : Vector3.zero);   // A2 원화의 왼쪽 영웅·오른쪽 강 구도. 논리 카메라와 조준 좌표는 불변.
             foreach (var r in props) if (r != null) r.enabled = false;
             foreach (var c in chunks.Values) if (c.renderer != null) c.renderer.enabled = false;
             Remodel3DBillboards();

@@ -25,7 +25,7 @@ namespace Exoduser.UnityPort
             A2Module("Fallen_Log", 34,-74,.8f,.85f,.8f,-18);
             A2Module("Fallen_Log", 46,-68.2f,.65f,.7f,.7f,38);
             A2Module("Fallen_Log", 51.3f,-73.5f,.9f,.8f,.75f,135);
-            A2Module("Rotten_Wood_Bridge", 43.2f,-71.8f,1,.55f,1,-24);
+            A2Module("Rotten_Wood_Bridge", 43.2f,-71.8f,1,.55f,1,24);
             A2Module("Root_Stump",48.6f,-72.8f,.8f,.8f,.8f,35,-.25f);
             A2Module("Foreground_Branch_Frame",34,-79.5f,1.4f,.9f,1.2f,12);
             A2Module("Foreground_Branch_Frame",51,-80.8f,1.6f,.9f,1.2f,-32);
