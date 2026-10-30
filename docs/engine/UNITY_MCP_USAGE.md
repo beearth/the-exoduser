@@ -48,7 +48,7 @@ if ($LASTEXITCODE -ne 0) { throw 'MCP 연결 부팅 실패: 로그를 확인합�
 
 `codex mcp get unityMCP`로 기존 stdio 등록을 확인한다. 기존 서버 소스는 `G:/exoduser-tools/unity-mcp-v10.3.0/Server`이며 프로젝트 checkout과 별도인 공용 실행 런타임이다. 서버와 Editor의 `UNITY_MCP_STATUS_DIR`가 같아야 한다. 위 경로는 현재 등록에 맞춘 공용 발견 디렉터리이고 소유자/프로젝트 고정값이 아니다. 디렉터리 안 파일명은 프로젝트별 hash로 구분한다. 기존 MCP 설정 원문을 덮어쓰거나 전역 설정을 추가로 바꾸지 않는다.
 
-MCP 도구에서 `mcpforunity://instances`를 읽어 `instances[].path`가 `$wt/unity`인지 확인하고, 그 응답의 hash로 `set_active_instance`를 호출한다. 예전 instance hash를 복사하지 않는다. 도구 목록이 보이지 않을 때만 클라이언트 MCP 연결을 새로고침한다. 새 세션 생성 자체는 Editor 조작 성공 증거가 아니다.
+MCP 도구에서 `mcpforunity://instances`를 읽어 `instances[].path`가 `$wt/unity/Assets`인지 확인하고, `mcpforunity://project/info`의 `data.projectRoot`가 `$wt/unity`인지 대조한 뒤 instances 응답의 hash로 `set_active_instance`를 호출한다. 예전 instance hash를 복사하지 않는다. 도구 목록이 보이지 않을 때만 클라이언트 MCP 연결을 새로고침한다. 새 세션 생성 자체는 Editor 조작 성공 증거가 아니다.
 
 ## 장면·조명·배치
 
