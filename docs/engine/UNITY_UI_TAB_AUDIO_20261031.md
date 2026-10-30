@@ -15,7 +15,7 @@
 | 무음 | 활성탭·죽음·firstPractice·null Simulation·미지원/null id·실패한열기·최초단축키열기·로비가림·Layout/Repaint0 |
 | 기존 동작 | 같은 활성 능력치/대장간 단축키의 기존 닫기 동작을 그대로 유지하며 소리만0. 선택·키바인딩·Core·저장·기타UI 변경0, NativePanelTabBar 변경0 |
 | 독립 회귀 | behavior.cjs: 생산 NativeGame 전환/Set본문 및 NativeFeedbackAudio/NativeAudioMixer 전체 C# 실행. Unity 장치·패널 대체. RED1176case/99실패→GREEN1176case/2364검사/0실패, 전환음96회·기존 상태 차이0. 실제Player PASS 아님 |
-| 실제 검수 도구 | 자기 Runtime/Tools/UiTabAudioCheck.cs. 명시적 --unity-ui-tab-audio-check -output 절대경로 + --unity-qa-sandbox 필수. 무음·Requested 확정/실제InputSystem F10/clip디코드/실제Source 설정/후속Flush/입력·선택state 검사. 가상 장치 이벤트를 다음 정상 프레임의 NativeGame.Update가 소비하는 F10 경로와 자기 PID·UnityWndClass로 한정한 숨은 Player 창 WM 마우스 클릭을 검사. 마우스 GUI 수신·활성탭 무음·열림/Running/fence·SFX버스 dB·0/60/100%·Layout/Repaint를 기록. 사용자 손조작·청음과 구분. 현재 도구 실행 미검증 |
+| 실제 검수 도구 | 자기 Runtime/Tools/UiTabAudioCheck.cs. 명시적 --unity-ui-tab-audio-check -output 절대경로 + --unity-qa-sandbox 필수. 무음·Requested 확정/실제InputSystem F10/clip디코드/실제Source 설정/후속Flush/입력·선택state 검사. 가상 장치 이벤트를 다음 정상 프레임의 NativeGame.Update가 소비하는 F10 경로와 자기 PID·UnityWndClass로 한정한 숨은 Player 창 WM 마우스 클릭을 검사. 마우스 GUI 수신·활성탭 무음·열림/Running/fence·실제 SetSfxPercent 설정 콜백·SFX버스 dB·0/60/100%·Layout/Repaint를 기록. 사용자 손조작·청음과 구분. 현재 도구 실행 미검증 |
 | 순수 입력 | pure-input.cjs가 별도 임시 Git INDEX에서 최신 공통+이번 audio commit의 정확 경로만 합친 tree를 만들고 Git C# blob을 I:보관물로 독립컴파일. checkout/branch/공유INDEX/3D hook·자산 변경0. 이 입력은 Unity프로젝트 작업본이 아님 |
 | 통합 의존성 | 현재 UI branch는 중단3D 이력이 있으므로 전체branch merge금지. 지정 unity-integrator가 공통expected·단일 audio diff·순수tree를 대조하여 기존 자기 작업본에서 정상 검증입력을 확보해야 정식빌드 가능. 확보 전 예약/READY/제품전달0 |
 | 보호/출력 | 시작 HEAD857995b0b·원격expected018ce33f2·INDEX0·대상WORK0. 기존WIP/중단무대/씬656파일32947018bytes 실물 I:복사·SHA대조. 산출 I:/EXODUSER-Storage/demo-art/unity-ui/ui-tab-audio-20261031/ |
