@@ -1,6 +1,6 @@
 # 공식 실행기 로그 공유 읽기와 GPU 판정 — 2026-10-31
 
-범위: `unity/Tools/devtools/exo-unity.ps1`의 Editor/Player 로그 읽기와 GPU 파서. 게임 Assets·Core·Runtime·실행 방식·권한은 변경하지 않는다. 실제 Player 종료 결함의 해결 증거가 아니다.
+범위: `unity/Tools/devtools/exo-unity.ps1`의 Editor/Player/Browser 로그 읽기와 GPU 파서. 게임 Assets·Core·Runtime·실행 방식·권한은 변경하지 않는다. 실제 Player 종료 결함의 해결 증거가 아니다.
 
 | 문제 | 변경 | 검수 |
 |---|---|---|
@@ -13,3 +13,5 @@
 별도 실패: 05:43 GPU batch 대조는 공식 Start-Process의 Access is denied가 PowerShell Operational4100(20:43:22.561Z)으로 확인됐다. Player 생성0·빈 로그이며 권한·다른 실행 API/경로로 재시도하지 않았다. 해당 실행기 PID15036 사망·자기 잠금의 owner/시각을 확인하고 기존 공식 Release-Lock 함수로 자기 stale 잠금만 반환했다. CI/AppLocker의 같은15초 이벤트는 없었으나 거부 원인을 특정 정책이나 보안 제품으로 단정하지 않는다.
 
 앞선 Native Player의 InputShutdown 뒤 종료 지연은 별도 미해결이다. 이 도구 수정으로 정상 종료나 새 빌드·M1·화면·영상·공통·바탕화면 검수가 완료됐다고 보고하지 않는다.
+
+추가로 브라우저 stdout/stderr의 EXO_REJECT 검사에도 같은 공유 reader를 사용한다. 시간 초과 정리의 네이티브 stderr가 예외로 승격되면 최종 영수증 자체가 누락되는 결함도 [정리 오류 경계](UNITY_GUARDED_CLEANUP_FAILURE_20261031.md)에서 수정했다. `cleanupErrors`는 실제 오류·종료값을 보존하며 오류가 있으면 예정 종료에서도 불합격이다. 실제 원문 함수와 자식 CMD로 RED를 재현했고 정상/timeout/예정종료/핸들반환 오류의6개 경계와 제품 재검사를 마쳤다. 실제 브라우저·M1 정상종료 증거는 여전히 별도다.

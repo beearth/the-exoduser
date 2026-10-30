@@ -855,7 +855,7 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
         if ($Cwd) { $sp.WorkingDirectory = $Cwd }
         $proc = Start-Process @sp
     }
-    $tree = @{}; $violations = @(); $warnings = @(); $timedOut = $false; $expectedKill = $false
+    $tree = @{}; $violations = @(); $warnings = @(); $cleanupErrors = @(); $timedOut = $false; $expectedKill = $false
     $sw = [Diagnostics.Stopwatch]::StartNew()
     while ($true) {
         $t = Get-ProcTree $proc.Id
@@ -886,8 +886,15 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
         else { $exit = $proc.ExitCode }
     }
     else {
-        & taskkill.exe /PID $proc.Id /T /F 2>&1 | Out-Null
-        $proc.WaitForExit(15000) | Out-Null
+        # 정리 실패는 실패 근거로 보존하되, 뒤의 핸들 반환·영수증 작성을 막지 않는다.
+        $savedErrorPreference = $ErrorActionPreference
+        try {
+            $ErrorActionPreference = 'Continue'
+            $killOutput = @(& taskkill.exe /PID $proc.Id /T /F 2>&1)
+            $killExit = $LASTEXITCODE
+            if ($killExit -ne 0) { $cleanupErrors += ('taskkill exit=' + $killExit + ': ' + (($killOutput | ForEach-Object { [string]$_ }) -join ' ')) }
+        } finally { $ErrorActionPreference = $savedErrorPreference }
+        try { $proc.WaitForExit(15000) | Out-Null } catch { $cleanupErrors += ('종료 대기: ' + $_.Exception.Message) }
         $exit = -1
     }
     # 종료 확인: 트리에 있던 프로세스가 실제로 사라졌는지
@@ -900,21 +907,26 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
     }
     $killed = @()
     foreach ($id in $left) { try { Stop-Process -Id ([int]$id) -Force -ErrorAction Stop; $killed += $id } catch { } }
-    if ($HiddenDesktop) { Close-DesktopProcess $dproc; $desktopClosed = [bool](Close-HiddenDesktop $desk) }
+    if ($HiddenDesktop) {
+        try { Close-DesktopProcess $dproc } catch { $cleanupErrors += ('프로세스 핸들 반환: ' + $_.Exception.Message) }
+        finally { try { $desktopClosed = [bool](Close-HiddenDesktop $desk) } catch { $cleanupErrors += ('데스크톱 반환: ' + $_.Exception.Message) } }
+    }
     $sw.Stop()
     return [pscustomobject]@{
         exitCode = $exit; timedOut = $timedOut; expectedKill = $expectedKill; durMs = $sw.ElapsedMilliseconds
         windowHits = @($violations | Select-Object -Unique); warnings = @($warnings | Select-Object -Unique)
-        leftovers = @($left); leftoversKilled = @($killed); treeCount = $tree.Count; hiddenWindows = $hiddenMax; hiddenTitles = @($hiddenTitles); desktopClosed = $desktopClosed
+        leftovers = @($left); leftoversKilled = @($killed); cleanupErrors = @($cleanupErrors); treeCount = $tree.Count; hiddenWindows = $hiddenMax; hiddenTitles = @($hiddenTitles); desktopClosed = $desktopClosed
     }
 }
 
 function Finish-Guarded([string]$kind, [string]$id, $g, $extra, [bool]$extraOk, [string]$failNote) {
-    $ok = $extraOk -and ($g.windowHits.Count -eq 0) -and (-not $g.timedOut) -and ($g.exitCode -eq 0 -or $g.expectedKill)
+    $cleanup = @(); if ($g.PSObject.Properties['cleanupErrors']) { $cleanup = @($g.cleanupErrors) }
+    $ok = $extraOk -and ($cleanup.Count -eq 0) -and ($g.windowHits.Count -eq 0) -and (-not $g.timedOut) -and ($g.exitCode -eq 0 -or $g.expectedKill)
     $sc = @(); if ($null -ne $script:SaveBefore) { $sc = @(Compare-UserSave $script:SaveBefore) }
     if ($sc.Count -gt 0) { $ok = $false }
     $notes = @()
     if ($failNote) { $notes += $failNote }
+    if ($cleanup.Count -gt 0) { $notes += ('정리 오류: ' + ($cleanup -join '; ')) }
     if ($sc.Count -gt 0) { $notes += ('USER_SAVE changed=' + $sc.Count) }
     if ($g.timedOut) { $notes += '시간 초과로 종료시킴' }
     if ($g.windowHits.Count -gt 0) { $notes += '창 감지: ' + ($g.windowHits -join '; ') }
@@ -922,7 +934,7 @@ function Finish-Guarded([string]$kind, [string]$id, $g, $extra, [bool]$extraOk, 
     $res = [ordered]@{
         id = $id; kind = $kind; ok = $ok; exitCode = $g.exitCode; durMs = $g.durMs; expectedKill = $g.expectedKill; timedOut = $g.timedOut
         windowHandleCount = $g.windowHits.Count; windowHits = @($g.windowHits); warnings = @($g.warnings); treeProcesses = $g.treeCount
-        leftovers = @($g.leftovers); note = ($notes -join ' | '); userSaveChanged = $sc.Count; userSaveFiles = @($sc)
+        leftovers = @($g.leftovers); cleanupErrors = @($cleanup); note = ($notes -join ' | '); userSaveChanged = $sc.Count; userSaveFiles = @($sc)
     }
     foreach ($k in $extra.Keys) { $res[$k] = $extra[$k] }
     New-Item -ItemType Directory -Force -Path (Join-Path $ExecDir 'done') | Out-Null
@@ -1034,7 +1046,7 @@ function Cmd-Browser {
     if ($BrowserDesktopIsolation) { Import-Module (Join-Path $PSScriptRoot 'HiddenDesktop.psm1') -Force -DisableNameChecking }
     $g = Invoke-Guarded 'cmd.exe' @($cmdline) (Split-Path $scr -Parent) $TimeoutSec $KillAfterSec @($scr, $guard) ([bool]$BrowserDesktopIsolation)
     $fail = ''; $extraOk = $true; $rejected = $false
-    foreach ($f in @($out, $err)) { if ((Test-Path -LiteralPath $f) -and ([IO.File]::ReadAllText($f)).Contains('EXO_REJECT')) { $rejected = $true } }
+    foreach ($f in @($out, $err)) { if ((Test-Path -LiteralPath $f) -and (Read-RunLogShared $f).Contains('EXO_REJECT')) { $rejected = $true } }
     if ($rejected) { $extraOk = $false; $fail = '가드가 headless:false/--headed 를 거부함(EXO_REJECT)' }
     if ($BrowserDesktopIsolation -and -not $g.desktopClosed) { $extraOk = $false; $fail = '숨은 브라우저 데스크톱 정리 실패' }
     $browserDesktop = 'current-headless'; if ($BrowserDesktopIsolation) { $browserDesktop = 'hidden' }

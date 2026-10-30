@@ -64,6 +64,7 @@ $wt = 'E:\exoduser-wt\<내 워크트리>'
 - 예약을 여러 단계에 걸쳐 쥐고 싶으면 `-Owner 이름 -KeepReservation`(획득해도 예약이 남음), 끝나면 `unreserve`.
 
 - headless 브라우저의 자식 프로세스가 사용자 데스크톱에 빈 창 핸들을 만드는 경우 `browser -BrowserDesktopIsolation -Script <경로>`로 기존 HiddenDesktop 모듈 안에서 전체 자손을 격리한다. 기본 브라우저 경로는 유지하며 `headless:false`·`--headed` 거부도 그대로다. 영수증의 desktop=hidden·사용자창0·leftovers0·desktopClosed=true를 확인한다. 숨은 데스크톱 정리 실패는 실패로 판정한다.
+- 종료 정리 명령이 실패하면 `cleanupErrors`에 실제 종료값·오류를 남기고, 핸들 반환과 최종 실패 영수증 작성을 계속한다. 정리 오류가 있으면 `expectedKill=true`여도 `ok=false`다. 브라우저 stdout/stderr의 가드 문구도 `Read-RunLogShared`로 읽는다. 시간 초과·사용자창·세이브·GPU 검증 조건은 유지한다. 상세 근거는 [종료 정리 오류 경계](../../../docs/engine/UNITY_GUARDED_CLEANUP_FAILURE_20261031.md)다.
 
 ## job json (직접 넣을 때)
 `{"id":"x1","method":"Exoduser.Rm0EngineSetup.Capture","args":["-output","I:/x.png"],"refresh":true,"timeoutSec":600}`
