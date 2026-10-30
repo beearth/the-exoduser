@@ -30,7 +30,7 @@ namespace Exoduser.UnityPort
                     if(profile.TryGet<Vignette>(out var vignette)){vignette.color.Override(new Color(.008f,.012f,.018f));vignette.intensity.Override(.13f);vignette.smoothness.Override(.65f);}
                     if(profile.TryGet<FilmGrain>(out var grain))grain.active=false;
                 }
-                foreach(var t in root.GetComponentsInChildren<Transform>(true))if(t.name=="Shafts"||t.name=="Foreground Cards"||t.name=="Background Cards")Destroy(t.gameObject);
+                foreach(var t in root.GetComponentsInChildren<Transform>(true))if(t.name=="Shafts"||t.name=="Foreground Cards"||t.name=="Background Cards"||t.name=="Decals_blood"||t.name=="Decals_blood_drag")Destroy(t.gameObject);
                 foreach(var l in root.GetComponentsInChildren<Light>(true))
                 {
                     if(l.type==LightType.Directional){l.color=new Color(.85f,.89f,1f);l.intensity=1f;l.shadows=LightShadows.Soft;l.shadowStrength=.85f;l.transform.rotation=Quaternion.Euler(62,35,0);}
@@ -45,7 +45,6 @@ namespace Exoduser.UnityPort
                 g.terrainData.terrainLayers=layers;
                 HellGroundSetup(g);
             }
-            foreach(var root in r3Roots)if(root!=null)foreach(var renderer in root.GetComponentsInChildren<MeshRenderer>(true))if(renderer.shadowCastingMode==ShadowCastingMode.On&&renderer.name!="지옥 바닥 PBR 표면")renderer.shadowCastingMode=ShadowCastingMode.Off;
             hellActorMaterial=new Material(Shader.Find("EXODUSER/SpriteLit3D"));hellActorMaterial.SetFloat("_Ambient",.3f);hellActorMaterial.SetFloat("_NormalTilt",.4f);
             var rim=new GameObject("영웅 차가운 림광");rim.transform.SetParent(r3Marker,false);rim.transform.localPosition=new Vector3(-.3f,1.8f,.6f);
             hellHeroRim=rim.AddComponent<Light>();hellHeroRim.type=LightType.Point;hellHeroRim.color=new Color(.68f,.8f,1f);hellHeroRim.range=3.5f;hellHeroRim.intensity=2.2f;

@@ -97,7 +97,7 @@ Core(`Runtime/Core`)는 바꾸지 않았다.
 | Volume | ACES/postExposure+.25EV/contrast16/saturation-8. Split shadow(.43,.48,.54)/highlight(.55,.51,.46)/balance-12. Bloom.16/threshold1.1/scatter.48. Vignette.13/smoothness.65. FilmGrain 비활성 |
 | 높이산란 | HellFogFeature/HellHeightFog:16고정샘플/density.065/height falloff1.8/기준.4u. 차가운산란(.06,.12,.16)+5개불빛산란(.6,.35,.15). 산란 shadow ray는 없으므로 그림자까지 계산한 볼류메트릭이라고 주장하지 않는다 |
 | SSAO | HellSsaoFeature·URP기반/전체해상도/Intensity.6/Radius.18/DirectLightingStrength.12/DepthNormals/High샘플·High bilateral. 필드 표현카메라만 적용. 로비/기본2D/보스 새필드패스 미적용 |
-| 5 검은실루엣 | 카드제거+기존 블록아웃 메시 shadowCasting Off. 거대한 합성 bounds는 중심만 화면안이어도 화면밖 나무그림자가 남아 제외함. 새 표면메시/영웅/적/화로 그림자 유지 |
+| 5 검은실루엣 | 카드제거+나무처럼 보이는 Decals_blood/Decals_blood_drag 런타임 인스턴스 제거. 혈흔 원본을 직접 대조해 정체확인. 기존 실제메시/새바닥/영웅/적/화로 그림자 유지 |
 | 보스구도 | 기존2D아레나/논리카메라/Core 유지. 별도표현카메라 max(논리직교크기×.53,합친bounds높이×.63+.3u),중심y-.15. 드루이드 표현크기.72,반경/공격판정/AI불변. HUD/조준은 실제 표현카메라 사용 |
 | 보스바닥 | ArenaSoilLit:흙20%+CC0돌80%/월드6u/3texel기울기×.15/ambient(.62,.67,.73). 국소광3개9/7/3·반경7·warm(1,.6,.3)/cool(.55,.68,.85). 마지막광원 영웅추적. 보스/영웅 접촉음영2.2×.45u/.48×.12u·알파.32. 실제3D보스 리모델 완료 아님 |
 
@@ -111,3 +111,5 @@ Core(`Runtime/Core`)는 바꾸지 않았다.
 - 기존 codex-unity-visual의 공유WIP보호:09fe65b8840에서 G:/exoduser-wt/codex-unity-keyshot-final·codex/pc-unity-keyshot-final-20261030으로분리. 자기입력11경로 byte보존이송. 인수미확인 HellEnvironment모듈/호출은 독립후보에서제외. 기존guard WIP원위치보존.
 
 최종후보36c97a89/촬영은 큰 합성메시 bounds중심 방식으로 실루엣이 남고,160tick공격으로 원거리 적이 죽어 전투탄1개만남아 재작업. 기존블록아웃 메시그림자 전체를끄고 새바닥/영웅/적/화로 그림자 유지. 촬영도40tick공격만 사용,전투탄3개/보스탄6개 미만은 receipt FAIL로강화. Legacy Core36검사 중35PASS/맵2523표본2불일치가 관찰됨. Core·SourceMap·ch1_map·구형oracle·원본입력은 공통c122746b9와byte동일,이번조명변경과분리하며 해당검사를PASS라하지않는다.
+
+후보54601c962 촬영02b68b00: 탐험/전투/보스 몸체높이9.54%/9.21%/8.11%,실제탄3개/14개. 큰합성메시 그림자를꺼도 같은검은무늬가남아 그림자가설기각. 원본데칼contact sheet대조로 Decals_blood/Decals_blood_drag의 큰혈흔이 나무형실루엣처럼보임을확인,해당2데칼제거+실제메시그림자복원. 현행맵을양쪽에제공한 JS/C#2523표본·36검사0실패,현행필드448/0·스테이지7076/0. 구형Godot맵과현행Unity맵은북문13칸차이이며구형oracle불일치2개표본이여기에해당,원본결과보존.
