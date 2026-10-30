@@ -161,9 +161,17 @@ namespace Exoduser.UnityPort
         static Color ProbeColor(Texture2D image,int x,int y)
         {
             var c=image.GetPixel(x,y);
-            // ARGB32 readback is sRGB-encoded in a Linear project; compare shader-space RGB in both project color spaces.
-            if(QualitySettings.activeColorSpace==ColorSpace.Linear){c.r=Mathf.GammaToLinearSpace(c.r);c.g=Mathf.GammaToLinearSpace(c.g);c.b=Mathf.GammaToLinearSpace(c.b);}
+            // SourceHudOrb는 웹 sRGB 상수를 출력 직전에 선형화한다. ReadPixels의 sRGB 값을 웹 값과 직접 비교한다.
             return c;
+        }
+        public bool VerifySourceColor(out string detail)
+        {
+            var image=Pixels(hp);try{
+                float top=1-128.5f/256,r=Vector2.Distance(new Vector2((128.5f/256-.5f)*.70710678f,(top-material.GetFloat("_HpTranslate")-.4f)*1.1785113f),Vector2.zero);
+                Color expected=top<material.GetFloat("_HpTranslate")?new Color(8/255f,8/255f,8/255f):r<.5f?Color.Lerp(new Color(107/255f,16/255f,32/255f),new Color(61/255f,10/255f,18/255f),r*2):Color.Lerp(new Color(61/255f,10/255f,18/255f),new Color(30/255f,5/255f,10/255f),Mathf.Clamp01((r-.5f)*2));
+                var actual=image.GetPixel(128,128);float error=Mathf.Max(Mathf.Abs(actual.r-expected.r),Mathf.Abs(actual.g-expected.g),Mathf.Abs(actual.b-expected.b))*255;
+                detail="HP 원본 sRGB GPU 오차 "+error.ToString("0.00")+"/255, 실제 "+ColorUtility.ToHtmlStringRGB(actual)+", 기준 "+ColorUtility.ToHtmlStringRGB(expected);return error<=3;
+            }finally{Release(image);}
         }
         public HudPixelProbe Probe(string name)
         {
