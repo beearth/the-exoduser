@@ -16,11 +16,13 @@ namespace Exoduser.UnityPort
         }
         GameObject a2Root;
         Material a2Water;
+        readonly System.Collections.Generic.HashSet<string> a2UnreadableMeshes=new System.Collections.Generic.HashSet<string>();
         void A2ForestSetup(Terrain ground)
         {
             if (!A2Requested) return;
             var timer=System.Diagnostics.Stopwatch.StartNew();Debug.Log("[A2 초기화] 숲 조립 시작");
             NativeRemodel3D.ForestA2=true;
+            NativeRemodel3D.PrepareForestHeightCache();
             foreach(var root in r3Roots)foreach(var volume in root.GetComponentsInChildren<UnityEngine.Rendering.Volume>(true))
             {
                 var profile=volume.profile;if(profile==null)continue;
@@ -176,8 +178,9 @@ namespace Exoduser.UnityPort
             go.transform.localScale=new Vector3(sx,sy,sz)*units;
             if(roots||id=="Dead_Leaf_Litter")foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
             {
+                if(!mf.sharedMesh.isReadable){if(a2UnreadableMeshes.Add(id))Debug.LogError("[A2] 지면 접합 정점읽기 누락. 원본 메시 유지: "+id);continue;}
                 var mesh=Instantiate(mf.sharedMesh);var points=mesh.vertices;
-                for(int i=0;i<points.Length;i++){var p=mf.transform.TransformPoint(points[i]);p.y+=NativeRemodel3D.GroundY(p.x,p.z)-placementGround;points[i]=mf.transform.InverseTransformPoint(p);}
+                for(int i=0;i<points.Length;i++){var p=mf.transform.TransformPoint(points[i]);float groundY=A2ForestLayout.Water(p.x,p.z)&&!A2ForestLayout.Island(p.x,p.z)?A2ForestLayout.WaterLevel-.18f:NativeRemodel3D.GroundY(p.x,p.z);p.y+=groundY-placementGround;points[i]=mf.transform.InverseTransformPoint(p);}
                 mesh.vertices=points;mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();mf.sharedMesh=mesh;
             }
             foreach(var r in go.GetComponentsInChildren<MeshRenderer>())
@@ -262,7 +265,8 @@ namespace Exoduser.UnityPort
             {
                 if(renderer.name!="지옥 바닥 PBR 표면")continue;
                 var filter=renderer.GetComponent<MeshFilter>();var source=filter.sharedMesh;var vertices=source.vertices;var triangles=source.triangles;
-                for(int j=0;j<vertices.Length;j++){var world=filter.transform.TransformPoint(vertices[j]);world.y=NativeRemodel3D.GroundY(world.x,world.z);vertices[j]=filter.transform.InverseTransformPoint(world);}
+                var origin=ground.transform.position;var size=ground.terrainData.size;
+                for(int j=0;j<vertices.Length;j++){var world=filter.transform.TransformPoint(vertices[j]);world.y=A2ForestLayout.CutHeight(world.x,world.z,NativeRemodel3D.ForestHeight(world.x,world.z,world.y,origin,size));vertices[j]=filter.transform.InverseTransformPoint(world);}
                 var kept=new System.Collections.Generic.List<int>();var edges=new System.Collections.Generic.Dictionary<long,int>();
                 for(int i=0;i<triangles.Length;i+=3)
                 {
@@ -303,10 +307,18 @@ namespace Exoduser.UnityPort
             int samples=(ground.terrainData.heightmapResolution-1)/2+1;
             var xs=A2ExtendedAxis(-30,110,origin.x,size.x,samples);var zs=A2ExtendedAxis(-100,70,origin.z,size.z,samples);
             int cols=xs.Count,rows=zs.Count;var v=new Vector3[cols*rows];var uv=new Vector2[v.Length];var t=new System.Collections.Generic.List<int>();
+            var boundaryHeights=new System.Collections.Generic.Dictionary<Vector2,float>();
             for(int row=0;row<rows;row++)for(int col=0;col<cols;col++)
             {
                 float x=xs[col],z=zs[row];
-                float h=NativeRemodel3D.GroundY(x,z);
+                bool inside=x>origin.x+.001f&&x<origin.x+size.x-.001f&&z>origin.z+.001f&&z<origin.z+size.z-.001f;
+                float h=0;
+                if(!inside)
+                {
+                    var key=new Vector2(Mathf.Clamp(x,origin.x,origin.x+size.x),Mathf.Clamp(z,origin.z,origin.z+size.z));float original;
+                    if(!boundaryHeights.TryGetValue(key,out original)){original=ground.SampleHeight(new Vector3(key.x,0,key.y))+origin.y;boundaryHeights.Add(key,original);}
+                    h=A2ForestLayout.CutHeight(x,z,NativeRemodel3D.ForestHeight(x,z,original,origin,size));
+                }
                 int n=row*cols+col;v[n]=new Vector3(x,h,z);uv[n]=new Vector2(x,z)*.1f;
                 if(row==rows-1||col==cols-1)continue;float cx=(x+xs[col+1])*.5f,cz=(z+zs[row+1])*.5f;
                 if(cx>origin.x&&cx<origin.x+size.x&&cz>origin.z&&cz<origin.z+size.z)continue;
@@ -315,6 +327,7 @@ namespace Exoduser.UnityPort
             }
             var mesh=new Mesh{name="A2 창 밖으로 이어지는 숲 지형",indexFormat=IndexFormat.UInt32};mesh.vertices=v;mesh.uv=uv;mesh.SetTriangles(t,0);mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();
             var go=new GameObject("A2 연속 외곽 숲 지면");go.transform.SetParent(a2Root.transform,false);go.AddComponent<MeshFilter>().sharedMesh=mesh;
+            Debug.Log("[A2 외곽] 원본 높이 경계 표본 "+boundaryHeights.Count+"개 재사용");
             foreach(var renderer in ground.GetComponentsInChildren<MeshRenderer>())if(renderer.name=="지옥 바닥 PBR 표면"){go.AddComponent<MeshRenderer>().sharedMaterial=renderer.sharedMaterial;break;}
         }
         static System.Collections.Generic.List<float> A2ExtendedAxis(float min,float max,float start,float length,int samples)

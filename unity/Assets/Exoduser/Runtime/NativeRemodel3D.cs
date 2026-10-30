@@ -31,17 +31,47 @@ namespace Exoduser.UnityPort
         public static float GroundY(float wx, float wz)
         {
             if (Ground == null) return 0f;
+            if(ForestA2&&Ground==forestHeightGround&&forestHeights!=null)
+                return ForestHeight(wx,wz,ForestSample(wx,wz),forestOrigin,forestSize);
             var tp = Ground.transform.position; var sz = Ground.terrainData.size;
             float cx = Mathf.Clamp(wx, tp.x, tp.x + sz.x), cz = Mathf.Clamp(wz, tp.z, tp.z + sz.z);
             float height=Ground.SampleHeight(new Vector3(cx, 0, cz)) + tp.y;
-            if(ForestA2)
+            return ForestA2?ForestHeight(wx,wz,height,tp,sz):height;
+        }
+        static Terrain forestHeightGround;
+        static float[,] forestHeights;
+        static Vector3 forestOrigin,forestSize;
+        // 수십만 정점마다 native Terrain.SampleHeight를 호출하지 않도록 원본 표본을 한 번 읽는다.
+        // 현재 Terrain의 native 질의256점과 먼저 대조하고 오차가 크면 기존 경로로 폴백한다.
+        public static void PrepareForestHeightCache()
+        {
+            forestHeightGround=Ground;forestHeights=null;if(Ground==null)return;
+            forestOrigin=Ground.transform.position;var data=Ground.terrainData;forestSize=data.size;
+            forestHeights=data.GetHeights(0,0,data.heightmapResolution,data.heightmapResolution);
+            float maxError=0;
+            for(int i=0;i<256;i++)
             {
-                float outside=Mathf.Max(Mathf.Max(tp.x-wx,wx-tp.x-sz.x),Mathf.Max(tp.z-wz,wz-tp.z-sz.z));
-                height+=Mathf.SmoothStep(0,1,Mathf.Max(0,outside)/4)*(.35f*Mathf.Sin(wx*.31f)+.28f*Mathf.Cos(wz*.27f));
-                height=A2ForestLayout.BankHeight(wx,wz,height);
-                height=A2ForestLayout.IslandHeight(wx,wz,height);
+                float x=forestOrigin.x+forestSize.x*((i*73%257)/256f),z=forestOrigin.z+forestSize.z*((i*151%257)/256f);
+                float native=Ground.SampleHeight(new Vector3(x,0,z))+forestOrigin.y;
+                maxError=Mathf.Max(maxError,Mathf.Abs(native-ForestSample(x,z)));
             }
-            return height;
+            if(maxError>.0005f){forestHeights=null;Debug.LogWarning("[A2 높이 캐시] 원본 대조 오차="+maxError+". native 높이 유지");}
+            else Debug.Log("[A2 높이 캐시] 원본256점 최대오차="+maxError+"u");
+        }
+        static float ForestSample(float x,float z)
+        {
+            int n=forestHeights.GetLength(0)-1;
+            float u=Mathf.Clamp01((x-forestOrigin.x)/forestSize.x)*n,v=Mathf.Clamp01((z-forestOrigin.z)/forestSize.z)*n;
+            int ix=Mathf.Min((int)u,n-1),iz=Mathf.Min((int)v,n-1);float fx=u-ix,fz=v-iz;
+            return forestOrigin.y+forestSize.y*Mathf.Lerp(Mathf.Lerp(forestHeights[iz,ix],forestHeights[iz,ix+1],fx),Mathf.Lerp(forestHeights[iz+1,ix],forestHeights[iz+1,ix+1],fx),fz);
+        }
+        // 원본 높이 표본은 호출자가 재사용할 수 있다. 배우와 생성 메시가 같은 수식을 공유한다.
+        public static float ForestHeight(float wx,float wz,float height,Vector3 origin,Vector3 size)
+        {
+            float outside=Mathf.Max(Mathf.Max(origin.x-wx,wx-origin.x-size.x),Mathf.Max(origin.z-wz,wz-origin.z-size.z));
+            height+=Mathf.SmoothStep(0,1,Mathf.Max(0,outside)/4)*(.35f*Mathf.Sin(wx*.31f)+.28f*Mathf.Cos(wz*.27f));
+            height=A2ForestLayout.BankHeight(wx,wz,height);
+            return A2ForestLayout.IslandHeight(wx,wz,height);
         }
     }
 

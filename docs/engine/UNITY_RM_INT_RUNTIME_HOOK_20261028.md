@@ -423,3 +423,6 @@ A2 이전824b67a99 실제빌드599c790b/M1dab0f945 23단계 통과, 촬영adc6e9
 
 ### 2026-10-31 검정 촬영의 직접 원인
 A2CaptureFrame이 정상 LateUpdate 이후 Remodel3DLate를 다시 불러 이미0으로 비운 view mask를 로비 숨김으로 오독했다. r3Cam을 끄고 HudCamera가 mask0인2D카메라로 폴백하여 검정3장이 저장됐다. 두 번째 Late 호출을 제거하고 실제 활성3D 경로는 r3Cam을 직접 선택한다. URP SingleCameraRequest/휘도>.01 검증도 함께 적용한다. 현재 독립Core/C#0이며 실제 새Player 재검수 전이다.
+
+### 2026-10-31 실제 Player 회귀 후속
+현재26수면/침수정점/다리/출구/앵글러회귀PASS·독립C#0. SourceMap수면은보행만/거목은투사체·시야도차단계약유지. 이전erosion실제3장촬영기능통과와210정점읽기오류/시각FAIL을분리한다. 정확3FBX읽기·침수경계·원본높이캐시대조·실제활성영웅측정·A2전용기본보스카메라/Repeat바닥/낮은프레임을재작업중이다. 실제새Player/M1전채택0, 상세숫자는A2 SSOT.

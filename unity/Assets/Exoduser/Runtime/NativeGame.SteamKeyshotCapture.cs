@@ -9,12 +9,15 @@ namespace Exoduser.UnityPort
     public sealed partial class NativeGame
     {
         [Serializable] sealed class KeyshotFrame { public string name; public int tick, enemies, projectiles; public bool arena, remodel; public float heroHeight01, cameraFov,luminance=-1; public Vector3 heroWorld,cameraWorld,bossCenter,bossSize; }
-        [Serializable] sealed class KeyshotReceipt { public string scope="실제 NativeGame·격리 세이브·직접 입장·생존 보조·스크립트 입력. 적/탄 직접 주입 없음. 손 조작 검수와 구분"; public List<KeyshotFrame> frames=new List<KeyshotFrame>(); public bool passed; }
+        [Serializable] sealed class KeyshotReceipt { public string scope="실제 NativeGame·격리 세이브·직접 입장·생존 보조·스크립트 입력. 적/탄 직접 주입 없음. 손 조작 검수와 구분"; public List<KeyshotFrame> frames=new List<KeyshotFrame>(); public bool passed;public int unityErrors; }
+        int keyshotErrors;
+        void KeyshotLog(string text,string stack,LogType type){if(type==LogType.Error||type==LogType.Exception||type==LogType.Assert)keyshotErrors++;}
         IEnumerator SteamKeyshotCapture()
         {
             string output=Argument("-output");
             if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))){Application.Quit(2);yield break;}
             Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;smokeActive=true;pauseSmoke=true;
+            keyshotErrors=0;Application.logMessageReceived+=KeyshotLog;
             Screen.SetResolution(1920,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
             if(A2Requested){lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();if(!lobby.Flow.EnterTest()){Application.Quit(2);yield break;}}
             else{lobby.ShowLobby();lobby.SelectPreview();if(!lobby.EnterNativeTest()){Application.Quit(2);yield break;}}
@@ -70,17 +73,19 @@ namespace Exoduser.UnityPort
             sim.Config.EnemyAiEnabled=true;var boss=sim.Stage.FindBoss();
             if(boss!=null)
             {
-                if(!arenaPositioned){p.X=boss.X+260;p.Y=boss.Y-150;}
+                p.X=boss.X+260;p.Y=boss.Y-150;lastX=p.X;lastY=p.Y;
                 for(int tick=0;tick<1100;tick++)
                 {
                     p.Hp=p.MaxHp;p.Shield=p.MaxShield;p.Iframes=600;
                     StepInput(0,0,boss.X,boss.Y,false,false);
                     if(tick%3==0)yield return null;
-                    if(tick>180&&KeyshotActiveShots(true)>=6){yield return KeyshotSave(output,"03-드루이드",receipt);break;}
+                    float cx=(sim.Stage.Arena.RoomCx+.5f)*40,cy=(sim.Stage.Arena.RoomCy+.5f)*40;
+                    if(tick>180&&KeyshotActiveShots(true)>=6&&(boss.X-cx)*(boss.X-cx)+(boss.Y-cy)*(boss.Y-cy)<600*600){yield return KeyshotSave(output,"03-드루이드",receipt);break;}
                     if(tick==1099)yield return KeyshotSave(output,"03-드루이드",receipt);
                 }
             }
-            receipt.passed=receipt.frames.Count==3&&receipt.frames.TrueForAll(f=>f.heroHeight01>=.08f&&f.heroHeight01<=.11f&&(!A2Requested||f.luminance>.01f))&&receipt.frames[1].projectiles>=3&&receipt.frames[2].projectiles>=6;
+            receipt.unityErrors=keyshotErrors;Application.logMessageReceived-=KeyshotLog;
+            receipt.passed=receipt.unityErrors==0&&receipt.frames.Count==3&&receipt.frames.TrueForAll(f=>f.heroHeight01>=.08f&&f.heroHeight01<=.11f&&(!A2Requested||f.luminance>.01f))&&receipt.frames[1].projectiles>=3&&receipt.frames[2].projectiles>=6;
             File.WriteAllText(Path.Combine(output,"검수.json"),JsonUtility.ToJson(receipt,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);
             Application.Quit(receipt.passed?0:3);
@@ -102,11 +107,10 @@ namespace Exoduser.UnityPort
         }
         IEnumerator KeyshotSave(string output,string name,KeyshotReceipt receipt)
         {
-            if(Simulation.Stage.InArena){var b=Simulation.Stage.FindBoss();if(b!=null){Simulation.Player.X=b.X+260;Simulation.Player.Y=b.Y-150;lastX=Simulation.Player.X;lastY=Simulation.Player.Y;}}
             menu=false;Running=false;gameFocused=true;UpdateViews();yield return new WaitForSecondsRealtime(Simulation.Stage.InArena?2.8f:.35f);UpdateViews();if(!Application.isBatchMode)yield return new WaitForEndOfFrame();
             var camera=HudCamera;float h=0;
             if(name=="01-탐험"){var objects=new List<string>();foreach(var renderer in FindObjectsByType<Renderer>(FindObjectsInactive.Include,FindObjectsSortMode.None))objects.Add(renderer.gameObject.scene.name+"|"+renderer.name+"|"+renderer.enabled+"|"+renderer.gameObject.activeInHierarchy+"|"+(renderer.sharedMaterial!=null?renderer.sharedMaterial.name:"없음"));var terrain=NativeRemodel3D.Ground;objects.Add("지형|"+terrain.terrainData.size+"|"+terrain.transform.position+"|"+terrain.drawInstanced+"|"+terrain.detailObjectDistance+"|"+terrain.materialTemplate);foreach(var l in FindObjectsByType<Light>(FindObjectsSortMode.None))objects.Add("광원|"+l.name+"|"+l.type+"|"+l.shadows);foreach(var cam in FindObjectsByType<Camera>(FindObjectsSortMode.None))objects.Add("카메라|"+cam.name+"|"+cam.enabled+"|"+cam.cullingMask+"|"+cam.depth);File.WriteAllLines(Path.Combine(output,"필드-렌더러.txt"),objects); }
-            if(playerView!=null&&playerView.sprite!=null&&camera!=null)
+            if(playerView!=null&&playerView.enabled&&playerView.sprite!=null&&camera!=null)
             {
                 var s=playerView.sprite;var rect=s.textureRect;var rt=RenderTexture.GetTemporary(s.texture.width,s.texture.height,0,RenderTextureFormat.ARGB32);var previous=RenderTexture.active;
                 Graphics.Blit(s.texture,rt);RenderTexture.active=rt;var tex=new Texture2D((int)rect.width,(int)rect.height,TextureFormat.RGBA32,false);tex.ReadPixels(rect,0,0);tex.Apply();RenderTexture.active=previous;RenderTexture.ReleaseTemporary(rt);
@@ -114,11 +118,12 @@ namespace Exoduser.UnityPort
                 var low=playerView.transform.TransformPoint(new Vector3(0,(y0-s.pivot.y)/s.pixelsPerUnit,0));var high=playerView.transform.TransformPoint(new Vector3(0,(y1+1-s.pivot.y)/s.pixelsPerUnit,0));h=Mathf.Abs(camera.WorldToViewportPoint(high).y-camera.WorldToViewportPoint(low).y);Destroy(tex);
             }
             // 전사 R5 이후 숨긴 2D 스프라이트가 아닌 실제 현재 스킨 메시로 높이를 판정한다.
-            if(NativeRemodel3D.Active&&heroView!=null&&heroView.Ready&&camera!=null)
+            if(heroView!=null&&heroView.Ready&&heroView.Model.activeInHierarchy&&camera!=null)
             {
                 float low=float.MaxValue,high=float.MinValue;
                 foreach(var renderer in heroView.Model.GetComponentsInChildren<SkinnedMeshRenderer>())
                 {
+                    if(!renderer.enabled||!renderer.gameObject.activeInHierarchy||(camera.cullingMask&(1<<renderer.gameObject.layer))==0)continue;
                     var mesh=new Mesh();renderer.BakeMesh(mesh);
                     foreach(var vertex in mesh.vertices){var v=camera.WorldToViewportPoint(renderer.transform.TransformPoint(vertex));low=Mathf.Min(low,v.y);high=Mathf.Max(high,v.y);}
                     Destroy(mesh);

@@ -15,6 +15,7 @@ ModelImporter:
     materialSearch: 1
     materialLocation: 1
   meshes:
+    isReadable: 1
     globalScale: 1
     meshCompression: 0
     addColliders: 0

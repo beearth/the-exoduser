@@ -24,16 +24,17 @@ namespace Exoduser.UnityPort
             hellArenaRig.SetActive(true);bool shown=view.cullingMask!=0;hellArenaCamera.CopyFrom(view);hellArenaCamera.enabled=shown;hellArenaCamera.depth=view.depth+5;
             if(druidBody!=null&&druidBody.Visible)druidBody.PresentationScale=.72f;
             var focus=playerView.bounds;if(druidBody!=null&&druidBody.Visible&&Vector3.Distance(playerView.bounds.center,druidBody.Bounds.center)<12)focus.Encapsulate(druidBody.Bounds);
-            float halfH=Mathf.Max(view.orthographicSize*.53f,focus.size.y*.63f+.3f);var focusCenter=focus.center;
+            float halfH=A2Requested?view.orthographicSize:Mathf.Max(view.orthographicSize*.53f,focus.size.y*.63f+.3f);var focusCenter=focus.center;
             hellArenaCamera.transform.SetPositionAndRotation(new Vector3(focusCenter.x,focusCenter.y-.15f,view.transform.position.z),view.transform.rotation);hellArenaCamera.orthographicSize=halfH;hellArenaCamera.cullingMask=worldMask;view.cullingMask=0;
             if(compare){hellBossContact.enabled=false;hellPlayerContact.enabled=false;return;}
             hellActorMaterial.SetFloat("_Ambient",.85f);
+            A2ArenaFlameLate();
             var liveBoss=Simulation.Stage.FindBoss();if(liveBoss!=null&&druidBody!=null){hellBossContact.transform.position=new Vector3(liveBoss.X/100f,-liveBoss.Y/100f,0);hellBossContact.transform.localScale=new Vector3(2.2f/hellBossContact.sprite.bounds.size.x,.45f/hellBossContact.sprite.bounds.size.y,1);}
             hellPlayerContact.transform.position=new Vector3(Simulation.Player.X/100f,-Simulation.Player.Y/100f-.08f,0);hellPlayerContact.transform.localScale=new Vector3(.48f/hellPlayerContact.sprite.bounds.size.x,.12f/hellPlayerContact.sprite.bounds.size.y,1);
             if(hellArenaLights.Count==3){hellArenaLights[2].transform.position=new Vector3(Simulation.Player.X/100f,-Simulation.Player.Y/100f+.5f,-1.3f);for(int i=0;i<3;i++){var at=hellArenaLights[i].transform.position;Shader.SetGlobalVector("_HellArenaLight"+i,new Vector4(at.x,at.y,at.z,hellArenaLights[i].intensity));}}
             if(arenaView!=null&&hellLitArena!=arenaView)
             {
-                var soilShader=Shader.Find("EXODUSER/ArenaSoilLit");if(soilShader!=null){var soil=new Material(soilShader);soil.SetTexture("_RockTex",Resources.Load<Texture2D>("Art/map/hell_lighting/rock_face_Diffuse"));soil.SetTexture("_RockNormal",Resources.Load<Texture2D>("Art/map/hell_lighting/rock_face_nor_gl"));arenaView.SetLightingMaterial(soil);}
+                var soilShader=Shader.Find("EXODUSER/ArenaSoilLit");if(soilShader!=null){var soil=new Material(soilShader);string rock=A2Requested?"rock_ground":"rock_face";soil.SetTexture("_RockTex",Resources.Load<Texture2D>("Art/map/hell_lighting/"+rock+"_Diffuse"));soil.SetTexture("_RockNormal",Resources.Load<Texture2D>("Art/map/hell_lighting/"+rock+"_nor_gl"));arenaView.SetLightingMaterial(soil);}
                 hellLitArena=arenaView;foreach(var old in hellArenaRig.GetComponentsInChildren<Light>())Destroy(old.gameObject);hellArenaLights.Clear();var boss=Simulation.Stage.FindBoss();if(boss!=null)
                 {
                     var center=new Vector3(boss.X/100f,-boss.Y/100f,-1.5f);
@@ -43,6 +44,7 @@ namespace Exoduser.UnityPort
                         var light=go.AddComponent<Light>();light.type=LightType.Point;light.range=7;light.intensity=spec.z;light.color=spec.w>0?new Color(1,.6f,.3f):new Color(.55f,.68f,.85f);hellArenaLights.Add(light);
                     }
                 }
+                A2ArenaSetup(Simulation.Stage.Arena);
             }
         }
     }

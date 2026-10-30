@@ -1,12 +1,12 @@
 Shader "EXODUSER/A2Atmosphere"
 {
- Properties { _Color("달빛 안개",Color)=(.42,.52,.64,.12) }
+ Properties { _Color("달빛 안개",Color)=(.42,.52,.64,.18) }
  SubShader
  {
   Tags { "RenderPipeline"="UniversalPipeline" "RenderType"="Transparent" "Queue"="Transparent" }
   Pass
   {
-   Blend SrcAlpha OneMinusSrcAlpha
+   Blend SrcAlpha One
    ZWrite Off
    Cull Off
    HLSLPROGRAM

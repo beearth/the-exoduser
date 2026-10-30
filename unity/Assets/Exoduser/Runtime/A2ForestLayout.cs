@@ -44,6 +44,8 @@ namespace Exoduser.UnityPort
         }
         public static bool BlockedCore(float x,float y) { float wx=x/100,wz=-y/100;return Water(wx,wz)&&!Bridge(wx,wz)||Trunk(wx,wz); }
         public static bool SolidCore(float x,float y) { return Trunk(x/100,-y/100); }
+        // 수로 삼각형의 일부가 남는 가장자리도 높은 원본 정점이 수면 위로 솟지 않게 한다.
+        public static float CutHeight(float x,float z,float ground) { return Water(x,z)?WaterLevel-.3f:ground; }
         // 물가의 높은 수직 단면을 침식 경사로 잇는다. 통행 다리의 기존 높이는 보존한다.
         public static float BankHeight(float x,float z,float ground)
         {
