@@ -59,7 +59,7 @@ namespace Exoduser.UnityPort
                 if(clip==null)throw new InvalidOperationException("Missing original audio sample "+key);
                 clip.LoadAudioData();clips.Add(key,clip);
             }
-            foreach(var folder in new[]{"Audio/SFX","Audio/RM1"})foreach(var clip in Resources.LoadAll<AudioClip>(folder)){clip.LoadAudioData();clips[clip.name]=clip;}
+            foreach(var folder in new[]{"Audio/SFX","Audio/RM1","Audio/UI"})foreach(var clip in Resources.LoadAll<AudioClip>(folder)){clip.LoadAudioData();clips[clip.name]=clip;}
             foreach(string key in new[]{"monster_hit","monster_hit1","monster_hit_flesh1","monster_hit_flesh2","flat_hit","crit_heavy","boss_hit","boss_howl","death_boss","footstep","footstep2","tell_melee","tell_ranged","tell_boss","tell_grab","toxic_bubble"})
                 if(!clips.ContainsKey(key))throw new InvalidOperationException("Missing RM-1 audio sample "+key);
             Receipt.loadedClips=clips.Count;bus.SetSfxPercent(60);AudioListener.GetOutputData(output,0);
@@ -71,7 +71,8 @@ namespace Exoduser.UnityPort
         static void Classify(string key,out int priority,out string group,out float blend,out bool front)
         {
             front=key.StartsWith("sword_swing",StringComparison.Ordinal)||key=="sword_parry";blend=0;
-            if(front||key=="q_parry"||key=="scarecrow_charge"||key=="spike_trap"||key=="fireball"||key=="heavy_hit"||key=="ice_storm"){priority=PriSkill;group="Skill";}
+            if(key=="ui_tab"){priority=PriSkill;group="UI";}
+            else if(front||key=="q_parry"||key=="scarecrow_charge"||key=="spike_trap"||key=="fireball"||key=="heavy_hit"||key=="ice_storm"){priority=PriSkill;group="Skill";}
             else if(key.StartsWith("sword_back",StringComparison.Ordinal)){priority=PriHit;group="PlayerHit";}   // web: HIT class
             else if(key.StartsWith("player_hit",StringComparison.Ordinal)){priority=PriPlayerHit;group="PlayerHit";}
             else if(key.StartsWith("voice_",StringComparison.Ordinal)||key=="male_grunt"){priority=PriVoice;group="Voice";}
@@ -263,6 +264,8 @@ namespace Exoduser.UnityPort
         public const string SinkCoreSource="third fall: sink escape",SinkViewSource="view: sink hole opens (body sink 55 %)";
         // 1-1 druid sink: called by the sink drawing (NativeGame.BossSinkDraw) when the hole shows; same routing and Receipt line as a Core sample event
         public void PlaySinkHole(float x,float y,int tick){Handle(new FeedbackEvent{Kind=FeedbackKind.Sample,Tick=tick,X=x,Y=y,SampleKey="druid_sink",Source=SinkViewSource,Rate=1,QueuedRate=1});}
+        // UI 탭은 전투 Tick이 멈춘 패널에서도 즉시 1회. SFX/UI와 기존 사용자 음량을 따른다.
+        public void PlayUiTab(){Receipt.requested++;Play(Make("ui_tab",.22f,1f,Vector3.zero));}
         public void PlayNow(string key,float volume,float pitch,Vector3 world){Receipt.requested++;direct.Add(Make(key,volume,pitch,world));}
         public void Flush()
         {
