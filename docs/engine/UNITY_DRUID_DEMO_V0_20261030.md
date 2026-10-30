@@ -72,3 +72,14 @@
 | 사용자 최우선 보류 | UI CLI5388 제품통합·Desktop 전달 확인 전 **새 보스 Unity 예약/FIFO 생성 금지**. 실제 자기 예약 `20261030T150949028_codex-boss-druid.json`은 공식 unreserve, 자기 죽은 실행기45400만 사전 소유/PID/서버0 확인 뒤 공식 reap. 재조회: 자기 예약/FIFO/Unity·Player0, 잠금 없음, UI 첫 순번. 타인 예약·티켓·잠금 직접 변경/강제종료0 |
 
 순번 반환 영수증은 `I:/EXODUSER-Storage/demo-art/boss-druid/ui-priority-release-20261031.json`이다. 후보·실패·입력·소스는 보존한다. 승인된 비Unity 작업만 자원 조건 안에서 진행하며 새 writer/작업본·자동 통합을 만들지 않는다. 최종 원본/변경 같은 빌드 비교영상, MERGE_QUEUE 준비 영수증, 공통/바탕화면 반영은 아직 없다. 기존 3471의 원본 영상으로 최신 입력의 비교 완료를 대체하지 않는다.
+
+
+## 가시 단면 정규 R4 — 2026-10-31 03:23 KST
+
+R3 물리 가시가 판형으로 보인 원인으로, 곁가지 영역에도 주 줄기의 단일 단면 정규를 적용하는 소스 식을 확인했다. 실제 HLSL 정규 식을 읽어 실행하는 'unity/Tools/druid-presentation/thorn-volume-check.cjs'에서 곁가지 양쪽의 서로 다른 두 단면 표본이 같은/유사 정규가 되는 **RED 1,683검사/실패2**를 재현했다. 주 줄기 외곽 밖까지 줄기 높이가 이어지는 문제도 수정했다.
+
+R4는 기존 Sprite 쿼드를 유지하고 주 줄기·세 곁가지 각각의 원형 단면 높이에서 국소 정규를 계산한다. **새 3D 메시를 만든 것이 아니다.** WoodEdge/SeedEdge 외곽·중앙 판정 원·탄 지름·Core·공유난수·피해/패링/속도·반사 청색 구분은 그대로다. 기존 판형의 상하 밝기 절단을 제거하고 같은 고정 광원/색/반사 식을 사용한다. 실제 식 검사 **GREEN 1,683/실패0**이며 'thorn-volume-red.log'·'thorn-volume-green.log'가 근거다. 수치 통과는 Unity 셰이더 컴파일·GPU·1x 품질 PASS가 아니다. R3 이전 셰이더 SHAa15a534d7abfb478a43f7c4eb0777974148fd42dc9f77da3ed75c1d88c867993는 I: 'backups/DruidProjectile-pre-barb-volume-r4.shader'에 보존했다.
+
+숨김·무음 Chrome의 오프라인 WebGL 비교 도구는 HLSL→GLSL 단순 변환에서 정수 리터럴의 암시적 float 변환 차이로 컴파일되지 않았다. 첫 호출은 timeout, 두 번째는 같은 원인의 실제 컴파일 메시지를 수집했고 추가 실행을 중단했다. 이는 Unity HLSL 실패를 뜻하지 않으며 이미지/시각 PASS0이다. 'thorn-volume-WebGL-실패.json'·HTML·스크립트를 보존했다. Unity의 실제 컴파일/동일 새 소스 Player가 다음 검수다. 기존 7be17151/99f15c23/d50f1d9c는 R4를 검증하지 않는다.
+
+공용 MERGE_QUEUE의 UI 최종 제품 전달 완료 행 및 'demo-art/unity-ui/overlap/REPORT.md'의 실제 최종 영수증 경로를 확인했다. 이전 UI 전달 전 보스 선예약 금지의 선행 게이트는 충족됐다. 다음 공식 Unity 작업은 최신 공통 소스를 정상 병합·소유/원본/INDEX·자원과 앞 예약/현재 실행을 확인한 뒤 진행한다. 타인 예약/잠금/프로세스 조작0, 현재 자기 예약0이다. 모델/리그8동작/전체3D 아레나·최종 비교영상/통합/바탕화면 전달은 계속 미완료다.

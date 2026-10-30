@@ -47,6 +47,42 @@ Shader "EXODUSER/DruidProjectile"
                 e=max(e,TriangleEdge(p,float2(.30,.28),float2(.76,.16),float2(.34,-.23)));
                 return max(e,.505-length(p));
             }
+            float ThornBranchHeight(float x,float y,float ax,float ay,float bx,float by,float radius0,float lift)
+            {
+                float dx=bx-ax,dy=by-ay;
+                float length2=dx*dx+dy*dy;
+                float along=((x-ax)*dx+(y-ay)*dy)/length2;
+                if (along<=0 || along>=1) return -1;
+                float across=(-(x-ax)*dy+(y-ay)*dx)/sqrt(length2);
+                float radius=radius0*(1-along);
+                if (abs(across)>=radius) return -1;
+                return lift*(1-along)+sqrt(max(0,radius*radius-across*across));
+            }
+            float ThornSurfaceHeight(float2 p)
+            {
+                // 주 줄기와 세 곁가지에 각각 둥근 단면을 준다. 외곽/판정/밝은 후광은 늘리지 않는다.
+                float upper=p.x<-.12?-.10+(p.x+.68)*.39/.56:.29-(p.x+.12)*.325/1.06;
+                float lower=p.x<-.18?-.10-(p.x+.68)*.17/.50:-.27+(p.x+.18)*.235/1.12;
+                float seam=(upper+lower)*.5;
+                float width=max(0,(upper-lower)*.5);
+                float crossY=p.y-seam;
+                float height=.005;
+                if (p.x>-.68 && p.x<.94 && p.y>lower && p.y<upper)
+                    height=max(height,sqrt(max(0,width*width-crossY*crossY)));
+                float centerRadius2=p.x*p.x+p.y*p.y;
+                if (centerRadius2<.255*.255) height=max(height,sqrt(.255*.255-centerRadius2));
+                height=max(height,ThornBranchHeight(p.x,p.y,-.18,.10,-.56,.58,.115,.070));
+                height=max(height,ThornBranchHeight(p.x,p.y,-.46,-.03,-.84,.36,.105,.055));
+                height=max(height,ThornBranchHeight(p.x,p.y,-.12,-.10,-.40,-.54,.105,.065));
+                return height;
+            }
+            float3 ThornSurfaceNormal(float2 p)
+            {
+                float step=.003;
+                float dx=(ThornSurfaceHeight(float2(p.x+step,p.y))-ThornSurfaceHeight(float2(p.x-step,p.y)))/(2*step);
+                float dy=(ThornSurfaceHeight(float2(p.x,p.y+step))-ThornSurfaceHeight(float2(p.x,p.y-step)))/(2*step);
+                return normalize(float3(-dx,-dy,1));
+            }
             fixed4 frag(output i):SV_Target
             {
                 float2 p=i.uv*2-1;
@@ -82,12 +118,8 @@ Shader "EXODUSER/DruidProjectile"
                 float pulp=0;
                 if (_Thorn>.5)
                 {
-                    float seam=.035+.035*sin(p.x*4);
-                    float crossWidth=max(.13,.32*(.96-p.x)/1.64);
-                    float crossY=clamp((p.y-seam)/crossWidth,-.96,.96);
-                    surfaceNormal=normalize(float3(-.18,crossY,sqrt(max(.06,1-crossY*crossY))));
-                    float facet=p.y>seam?1.12:.48;
-                    body*=facet;
+                    surfaceNormal=ThornSurfaceNormal(p);
+                    body*=.92;
                 }
                 else
                 {
