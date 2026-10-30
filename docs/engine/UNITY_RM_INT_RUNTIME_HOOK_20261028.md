@@ -299,3 +299,35 @@ Blender 원본2개의 packed 데이터/현재 PNG byte 일치도 확인했다(pa
 VISUAL VERDICT: RETOUCH — 독립 조립 시연, 실제 게임 미검증. 회색 강바닥·짧은 단일 아치·외곽 반복·경계가 남아 A2 장면과 차이가 크다. 게임용 아트/Steam PASS로 올리지 않는다. UI 이후 기존 키샷 담당이 별도 인수하여 수면·조명·다리 접근/연속 구성·후경 알파·실제1080p/1x·전투·같은 후보M1을 검수한다.
 
 첫 UV edit-mode native crash, 잘못 추출한 재작업 루프의6종 High 누락,139성분 고립 투영 폐기는 REPORT/source 실패보존에 남겼다. 최종은 누락 수정·새 기하/UV·합성 거목 뒤의 최신 영수증만 근거로 사용한다. 레시피 forest_*는 tools/blender-env, 실체는 I: code-checkpoint. 바이너리/렌더는 I: 보관이며 GitHub 업로드·unity/main 통합·PC/Mac 동기화가 아니다.
+
+## 2026-10-30 사용자 승인 나무다리 기준 — Blender woodbridge-r2
+
+최신 승인 기준은 APPROVED_1-1_keyframe_A2_woodbridge.png다. r1은 보존하고 독립 후보를 I:/EXODUSER-Storage/demo-art/blender-env/woodbridge-r2/delivery/Assets에 제작했다. FBX17/재질17/PNG119/메타 포함310파일, 94337tri. Unity/Player/게임 코드/상속 Runtime 병합/실게임 검수0.
+
+| ID | 역할 | 삼각형 | 텍스처 |
+|---|---|---:|---:|
+| RF_Riverbed | 10×6m 강바닥 형태, 장축 양끝 동일·중앙 수심. 시각 메시, 충돌 별도 | 1232 | 1024×1024 |
+| RF_Broken_Stone_Bridge | A2용 낮은 아치 돌다리·상판과 하부 구조 분리·무너진 난간 | 6378 | 2048×2048 |
+| RF_Corroded_Riverbank | 독액 강가 부식 암반·하부 올리브 오염·노출 뿌리 | 1666 | 2048×2048 |
+| RF_Foam_Bank | 강가에 붙이는 낮은 연속 거품막·정적 메시 | 3228 | 1024×1024 |
+| RF_Ancient_Rotten_Tree | 검게 썩은 거대 속빈 줄기·비대칭 부러진 가지·넓은6판근·실물스캔 밑동 | 11762 | 2048×2048 |
+| RF_Rotten_Wood_Bridge | 상판 약11.2m·지지구조 약11.62m 썩은 나무다리·29판자·10말뚝·목재난간·밧줄 | 10164 | 2048×2048 |
+| RF_Fallen_Log | 비대칭으로 겹친 부패 고목·실물스캔 파단 목질 | 15128 | 2048×2048 |
+| RF_Foreground_Roots | 화면 아래 전경용 넓은 판근과 실물파단 목질·비보행 | 7885 | 2048×2048 |
+| RF_River_Stake_Cluster | 독액 강가의 썩고 부러진 말뚝7개·낮은 접지뿌리 | 616 | 1024×1024 |
+| RF_Bridge_Torch_Holder | 다리 끝 목재 횃불받침·녹슨 철제바구니. 불꽃·광원 제외 | 928 | 1024×1024 |
+| RF_Fractured_Stump | 강가 낮은 파단 그루터기·속빈 내부·찢긴 림·여섯 판근 | 4558 | 2048×2048 |
+| RF_Gnarled_Split_Trunk | 옆으로 굽은 비대칭 파단 줄기·크고 작은 가지 분기·판근 | 4700 | 2048×2048 |
+| RF_Foreground_Branch_Frame | 카메라 아래 전경용 휘어진 부패 가지 프레임·갈라진 세 분기 | 272 | 1024×1024 |
+| RF_Withered_Shrub | 13마른줄기·52잔가지·52갈림의 낮은 시든 덤불, 신선한 잎 없음 | 2704 | 1024×1024 |
+| RF_Forest_Vista_Card | 22×11m 후경용 투명 숲 실루엣 카드, 비보행 BACK 전용 | 2 | 2048×1024 |
+| RF_Fungal_Colony | 닫힌 층상 부후균15개·낮은 대비 성장고리·얇은테·휘어진 균사 | 2124 | 1024×1024 |
+| RF_Hanging_Moss | 회갈색 부패 수염이끼·5다발/125가는섬유·가늘어진 끝·정적 메시 | 20990 | 1024×1024 |
+
+새 줄기의 부착 가지·두꺼운 판근·스캔 밑동/UV, 불규칙 나무다리와 받침, 닫힌 층상 부후균, 분기 덤불, 회갈색 수염이끼, 낮은 파단/휜 줄기/전경 가지 변주, 새 먼 숲 카드 하단24% 알파를 제작했다. Normal/AO/Curvature/PBR 실제 베이크, CC0 목질 거칠기, R=metallic/A=1−roughness. URP/Lit/임포트 계약은 위 r1과 같으며 새 유기물 roughness 하한205/255·이끼235/255, 기존 불변 맵은 r1 값 유지. 카드6상수맵은3D베이크로 표시하지 않는다.
+
+현재 FBX17 SHA 재수입·축/크기<.003m·퇴화면/고립정점/UV 오류0·강바닥13쌍<.00001m·GUID157 중복/유실0·PNG119 규격/색공간/금속평활 전픽셀·packed원본2개 연결 이미지 byte 검사 PASS. 동일52도34렌더·원화/노레위 비교각17·1920×1080 조립/1x는 REPORT에 직접 판정한다.
+
+독액 기준 linear(.075,.080,.023)/sRGB#4D502A/roughness.43/emission0. Blender 정적 수면은 색 대리물이며 Unity 셰이더가 아니다. 조립은 추정 약37도/40mm, 개별 모듈52도이며 원화와 정확한 카메라 보정을 한 것은 아니다.
+
+**VISUAL VERDICT: RETOUCH. 브리프의 큰 차이0·게임용 아트/Steam 완료 미달.** 일부 큰 줄기/판근의 단순한 조형과 지면·오염 연결/층별 빛/독액 표면 차이가 남는다. Blender 담당의 형태/중간 접합 추가 재작업을 남기고, UI 후 기존 키샷 담당의 실제1080p·1x·탄막/8카메라/M1은 별도다. 기술 PASS를 시각 PASS로 올리지 않는다. 원본 r1 202파일·시작guard WIP SHA 보존. 정확한 근거/실패/저장 순서/다음 작업은 I:/EXODUSER-Storage/demo-art/blender-env/woodbridge-r2/REPORT.md·최종-인계영수증.json.
