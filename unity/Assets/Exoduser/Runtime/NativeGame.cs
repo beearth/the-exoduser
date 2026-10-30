@@ -492,6 +492,9 @@ namespace Exoduser.UnityPort
         void OnLevelledUp(LevelUpEvent up){levelUp.Show(up.NewLevel);levelUpSeen=up.NewLevel;RequestCombatSave();}
         void OnPanelRequested(string id){
             if(Simulation==null||Simulation.Player.Hp<=0||firstPractice!=null)return;
+            bool TabOpen(string tab){return tab=="settings"?menu:tab=="invPanel"?inventory.Open:tab=="skillPanel"?skills.Open:tab=="statPanel"?stats.Open:tab=="forge"?forge.Open:false;}
+            bool hadVisiblePanel=(lobby==null||!lobby.IsBlocking)&&(menu||inventory.Open||skills.Open||stats.Open||forge.Open);
+            bool targetWasOpen=TabOpen(id);
             switch(id){
                 case "settings":
                     if(forge.Open)SetForge(false);
@@ -533,6 +536,8 @@ namespace Exoduser.UnityPort
                     Debug.Log("[PanelTabBar] "+id+" window is not ported yet");
                     break;
             }
+            // 요청 자체가 아니라, 이미 보이던 다른 패널에서 대상 열기가 확정된 뒤에만 재생한다.
+            if(hadVisiblePanel&&!targetWasOpen&&!PlayerDown&&TabOpen(id))sound?.PlayUiTab();
         }
         // Web update() 32117~32122: window keys are processed while paused. G = forge, J = stats, F10 = settings toggle.
         // TAB/K switching between inventory and skills is in OnPanelRequested's callers; ESC follows _panelBack (close the open window, else open settings).
