@@ -126,6 +126,21 @@ static class Program
         foreach (var c in s.GetProperty("level").GetProperty("cost").EnumerateArray()) Same("upSp Lv" + I(c, "lv"), D(c, "out"), SkillRules.UpgradeSpCost);
         foreach (var c in s.GetProperty("level").GetProperty("locks").EnumerateArray()) Same("lock Lv" + I(c, "lv"), D(c, "out"), SkillRules.SkillLevelLock(I(c, "lv")));
 
+        section = "fireball";
+        foreach (var c in s.GetProperty("fireball").GetProperty("cases").EnumerateArray())
+        {
+            int lv = I(c, "lv"); var o = c.GetProperty("out"); double angle = D(c, "angle"); string tag = "악의구 Lv" + lv;
+            Same(tag + " 시전시간", D(c, "castTicks"), Js.Int(14 / D(c, "castSpeed")));
+            // 위치·속도는 Core의 float32 저장 계약에서 비트 일치한다. JS/.NET sin의 double 1ULP 차이는 그대로 저장 형식에 양자화한다.
+            Same(tag + " 시작x(float32)", (float)D(o, "x"), (float)(100 + Math.Cos(angle) * 14)); Same(tag + " 시작y(float32)", (float)D(o, "y"), (float)(200 + Math.Sin(angle) * 14));
+            Same(tag + " 시작각vx(float32)", (float)D(o, "vx"), (float)(Math.Cos(angle) * SkillRules.FireballSpeed)); Same(tag + " 시작각vy(float32)", (float)D(o, "vy"), (float)(Math.Sin(angle) * SkillRules.FireballSpeed));
+            Same(tag + " 사거리", D(o, "maxDist"), SkillRules.FireballRange(lv, D(c, "bonusRange")));
+            Same(tag + " 초기반경", D(o, "r"), SkillRules.FireballRadius0); Same(tag + " 성장반경", D(o, "_fbRMax"), SkillRules.FireballRadiusMax(lv));
+            Same(tag + " 폭발반경", D(o, "explR"), SkillRules.FireballExplosionRadius(lv)); Same(tag + " 속성", D(o, "el"), SkillRules.FireballElement);
+            int damage = SkillRules.FireballDamage(D(c, "magicRef"), D(c, "statInt"), D(c, "mul"), lv) + I(c, "bonus");
+            Same(tag + " 피해", D(o, "dmg"), damage); Same(tag + " 폭발피해", D(o, "explDmg"), Js.Int(damage * .6));
+        }
+
         var result = new { checks, mismatches, messages };
         File.WriteAllText(args[0], JsonSerializer.Serialize(result));
         Console.WriteLine("skill oracle: " + checks + " checks, " + mismatches + " mismatches");
