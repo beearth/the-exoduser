@@ -195,7 +195,12 @@ namespace Exoduser.UnityPort
             foreach(var r in go.GetComponentsInChildren<MeshRenderer>())
             {
                 r.shadowCastingMode=id=="Forest_Vista_Card"||id=="Hanging_Moss"?ShadowCastingMode.Off:ShadowCastingMode.On;r.receiveShadows=true;
-                if(id=="Hanging_Moss"){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.65f,.60f,.40f,1));r.SetPropertyBlock(block);}
+                if(id=="Hanging_Moss")
+                {
+                    // 기존 사진과 다른 Moss01 UV의 normal/AO를 섞지 않는다. 원본 알파 사진은 유지한다.
+                    var moss=Resources.Load<Material>("Art/map/a2/foliage/Materials/A2_Hanging_Moss_Lit");if(moss!=null)r.sharedMaterial=moss;
+                    var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(1,.95f,.75f,1));r.SetPropertyBlock(block);
+                }
                 if(id=="Withered_Shrub"){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.95f,.75f,.50f,1));r.SetPropertyBlock(block);}
                 if(id=="Ancient_Rotten_Tree"){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.95f,.80f,.60f,1));block.SetFloat("_BumpScale",.9f);block.SetFloat("_OcclusionStrength",.9f);r.SetPropertyBlock(block);}
                 if(id=="Fungal_Colony"){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.65f,.55f,.40f,1));r.SetPropertyBlock(block);}

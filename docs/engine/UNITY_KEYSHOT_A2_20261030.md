@@ -9,7 +9,7 @@
 | MCP Editor 미리보기 | 공식 실행기의 자기 Editor 프로세스에만 EXO_A2_EDITOR_PREVIEW=1, isEditor 및 --unity-qa-sandbox 동시조건으로 A2와 NativeRemodel3D 활성화. 일반 Player는 이 환경값을 무시한다. 해당 Editor fixture는 진입영상 없이 시작하여 MCP로 실제게임 배치/조명 검수. Player 캡처·M1 대체 아님 |
 | Editor Terrain 보호 | HellLightingSetup의 TerrainLayer 조정 전에 Editor에서만 TerrainData를 Instantiate하여 런타임 사본으로 사용. Player 동작과 높이 데이터는 그대로. 이전 Editor 재작성은 terrain-preview-before.asset에 보존 후 HEAD 필터 실제 byte로 복원(SHA5cc0a5619e3687e9b81fcb9a185d1607370b9a070567456c5c0cdfdf2b44770b). 다음 Editor에서 비에셋 사본/원본 보존 확인 예정 |
 | 자산 | R3 sourceb9ffca060의17FBX·종속재질/텍스처185파일만 Resources/Art/map/a2/r3에 동일byte 인수. R3 정적RETOUCH 유지, R4 HOLD 인수0. r1 Foam_Bank 현재 사용0 |
-| 큰 질량 | 주간4/후경15+19 위치·거목 충돌 유지. 주간 밑동의 고목3개+그루터기 조합은 큰 접합 차이가 남아 폐기. 새 CC0 Pine Roots A/B 각16324/16213삼각형·원본UV, 주간마다 scale(3.2,4.3,4)로1개 배치하고 실제 GroundY에 정점 접합. 큰 그루터기1은 유지. 나무 tint(.95,.8,.6), 이끼(.65,.60,.40)/ShadowOff, 덤불(.95,.75,.5), 균류(.65,.55,.4). 낙엽 기존12+12×12후보/2.4u 간격±.22u, 수면·길중심Across2.6u 제외. 낙엽만 지면+.01+lift, 정점별 접합. 새 GPU 미검증 |
+| 큰 질량 | 주간4/후경15+19 위치·거목 충돌 유지. 주간 밑동의 고목3개+그루터기 조합은 큰 접합 차이가 남아 폐기. 새 CC0 Pine Roots A/B 각16324/16213삼각형·원본UV, 주간마다 scale(3.2,4.3,4)로1개 배치하고 실제 GroundY에 정점 접합. 큰 그루터기1은 유지. 나무 tint(.95,.8,.6), 이끼(1,.95,.75)/ShadowOff, 덤불(.95,.75,.5), 균류(.65,.55,.4). 낙엽 기존12+12×12후보/2.4u 간격±.22u, 수면·길중심Across2.6u 제외. 낙엽만 지면+.01+lift, 정점별 접합. 새 GPU 미검증 |
 | 다리 | 중심(43.2,−71.8)u/yaw+24°/scale(.96,.55,.85)×.75. A2ForestLayout 다리 보행 |Along|≤4.45u·|Across|≤1.7u. 원본 JSON은 보존하고 A2 질의에만 수로·거목 경계 적용. 새 폭/배율은 실제 메시 높이7.24%였던21u 후보에서 카메라와 함께 수정. 현재 발 접지·동작 GPU 미검증 |
 | 카메라 구도 | 비A2 LOOK-001 그대로. A2만 pitch34°/distance16.5u/FOV46.9453°, 공통TargetOffset+(3,0,.6)u. SMAA High 추가. 논리 카메라/전투 범위는 그대로이고 조준은 실제 3D카메라 역투영. 실제 current source GPU 미검증 |
 | 독액 | A2ToxicRiver: linear RGB(.40,.32,.035), 거품(.45,.44,.16), emission.1. 저주파 사인속도.12/.08, 법선.035/.025, smoothness.62→거품.16, 접촉깊이.025~.28u. 수면Y−1.25는 A2ForestLayout.WaterLevel SSOT |
@@ -149,3 +149,13 @@ A2CaptureFrame이 정상 LateUpdate 이후 Remodel3DLate를 다시 불러 이미
 | 보스 검은 덩어리 | 실제MeshRenderer이름/UV/Unlit 분리로 MossRock이 아니라 PineRoots의 넓은 스캔 흙바닥14개임을 확정. 3.5cm/11.5cm 높이 절단2시안은 패드/파편으로 FAIL, 방식 중단·소스인수0. 보스방PineRoots 배치 제거, 필드원본자산보존. 전용directional과flat환경광 시안도 해결0/과장으로 미채택 |
 | 실제 아레나 한계 | Editor 640×480 시점의 ortho6.075u를 1920 Player의4.86u 증거로 인용하지 않음. 원래1e0 Player7.36%→현재×.9배율은새Player 재측정필수. 보스는기존2D/3D담당checkpoint0 유지 |
 | 실행과 다음 | 자기Editor34952 공식stop/예약반환·타프로세스변경0. 큰거목 제작은오프라인에서진행, 타담당정식QA와장시간렌더안겹침. 현재 독립Core/C#0, 새Player/M1/통합/Desktop 미완료 |
+
+## 2026-10-31 05:18 KST 이끼 사진 채널 불일치 교정 후보
+
+| 항목 | 실제 파일 근거·현재 계약 |
+|---|---|
+| 직접 근거 | RF3_Hanging_Moss 재질 BaseMap은 Atlas_hanging_moss_BaseColor이나 BumpMap은 Atlas_moss_01_Normal(guid2efbbe8a78e2c2edaf4e4455bde17f3c), AO는 Atlas_moss_01_AO(577a0bcb03615b48363a3413e144d633)임을 현재meta와대조. 서로다른사진UV의normal/AO를혼합한불일치. 기존MCP Lit/Unlit분리와알파검사도보존 |
+| A2 전용 수정 | Resources/Art/map/a2/foliage/Materials/A2_Hanging_Moss_Lit. 원본R3재질/사진byte보존. 같은BaseMap/alphaClip.32/Cull0/Queue2450 유지, 다른사진의Bump/MetallicMask/AO연결제거. keyword는ALPHATEST_ON만, Metallic0/Smoothness.15. 명시재질을리소스에두어Player의해당셰이더variant포함 |
+| 런타임 | A2Module Hanging_Moss만새Lit재질을사용, 누락시기존재질폴백. tint(1,.95,.75), 투사Off/수광On. 새로운이미지생성0/결제0. 현재독립Core/C#0, 실제새GPU미검증 |
+| 공통 인수 | 공통b9491cf58 오디오실제입력74/같은빌드M1검수분을정상병합한ad9702975 원격동일. 원래guard WIP보존. 자기새아트의GPU/M1로소급하지않음 |
+| 새 거목 | I: hollow-loft-v3 actual14072정점/27872삼각형/UV·재질3, .5/2/4/5.2m ray와내부법선·유한값5검사PASS. 첫v2시각FAIL을보존하고연속곡선/불규칙형태로보완. v3정적렌더는보스정식QA반환까지대기, Unity채택0 |
