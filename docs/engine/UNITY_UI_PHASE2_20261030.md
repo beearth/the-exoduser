@@ -100,3 +100,5 @@
 캡처는 실제 스크롤 후 키 목록 사각형 갱신, EN/JA/DE 각각 프리셋4개가 왼쪽818px 안, shake step1×2, NativeSettingsStore/프리셋 왕복을 실패 조건에 포함한다. 검사 원문이 말하던 '5씩'을 실제1씩으로 정정했다. 입력·옵션 값·저장 형식·게임 로직 변경0. 다음 정확 빌드/직접1x/실제 검사/M1 전 미완료.
 
 설정 캡처 입력 보호 정정: PauseNavigation.SelectTab은 항상 Fence를 건다. 기존 스크롤/팝업 QA 두 경로는 ObserveReleased(false)를 누락해 비활성 밝기로 찍혔다. 이 두 QA 경로에 키 놓임 관측을 추가하며 제품 입력 보호/시간 정책은 그대로다. 후보37a7b3efc 빌드06374c75 오류0은 소스 검증 근거이며, 수정된 정상 밝기 실제 화면은 새 후보에서 확인한다.
+
+설정 4탭·스크롤·키 표시 마감: 제품bfd265849, 빌드Succeeded/errors0, 실제bba0eb9f 30/30·M1 8c28d421 23/23. D3D11 RX9070XT·창/잔여/USER_SAVE0. 실제1920/1x 직접 검수한 UI 범위 PASS. Runtime 0c808de4d995fc137dddd05ec48457a9a4b1c79ce170fa69c95304270e61b808. OS손조작·Mac·전체3D/게임 완성도와 구분.
