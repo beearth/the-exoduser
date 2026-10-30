@@ -16,6 +16,7 @@ namespace Exoduser.UnityPort
             var stone=HellEnvironmentMaterial(new Color(.68f,.71f,.74f),.26f,2.2f,"rock_ground");
             var bark=HellEnvironmentMaterial(new Color(.65f,.53f,.46f),.12f,1.3f,"bark_brown_02");
             var bone=HellEnvironmentMaterial(new Color(.76f,.71f,.59f),.12f,.8f,"rock_ground");
+            var stump=HellScannedWoodMaterial("stump");var trunk=HellScannedWoodMaterial("trunk");
             int count=0;
             foreach(var item in JsonUtility.FromJson<HellModuleLayout>(layout.text).items)
             {
@@ -25,19 +26,26 @@ namespace Exoduser.UnityPort
                 module.transform.SetPositionAndRotation(new Vector3(item.x,NativeRemodel3D.GroundY(item.x,item.z)-.06f,item.z),Quaternion.Euler(0,item.yaw,0));
                 module.transform.localScale=new Vector3(item.sx,item.sy,item.sz);
                 var mat=item.module.StartsWith("root",StringComparison.Ordinal)||item.module=="fallen_root"?bark:item.module=="ribs"?bone:stone;
-                foreach(var renderer in module.GetComponentsInChildren<MeshRenderer>()){renderer.sharedMaterial=mat;renderer.shadowCastingMode=ShadowCastingMode.On;renderer.receiveShadows=true;}
+                foreach(var renderer in module.GetComponentsInChildren<MeshRenderer>()){renderer.sharedMaterial=item.module=="rotten_mass"?(renderer.name.IndexOf("stump",StringComparison.OrdinalIgnoreCase)>=0?stump:trunk):mat;renderer.shadowCastingMode=ShadowCastingMode.On;renderer.receiveShadows=true;}
                 count++;
             }
             Debug.Log("[키샷] Blender 환경 모듈 "+count+"개 · Collider 추가0");
         }
         Material HellEnvironmentMaterial(Color tint,float smoothness,float scale,string texture)
         {
-            var material=new Material(Shader.Find("EXODUSER/HellEnvironmentLit"));
-            material.SetColor("_Tint",tint);material.SetFloat("_Smoothness",smoothness);material.SetFloat("_Scale",scale);
+            var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            material.SetColor("_BaseColor",tint);material.SetFloat("_Smoothness",smoothness);
             material.SetTexture("_BaseMap",Resources.Load<Texture2D>("Art/map/hell_lighting/"+texture+"_Diffuse"));
             material.SetTexture("_BumpMap",Resources.Load<Texture2D>("Art/map/hell_lighting/"+texture+"_nor_gl"));
-            material.SetTexture("_RoughMap",Resources.Load<Texture2D>("Art/map/hell_lighting/"+texture+"_Rough"));
-            foreach(var key in new[]{"_BaseMap","_BumpMap","_RoughMap"})if(material.GetTexture(key) is Texture2D tex){tex.filterMode=FilterMode.Trilinear;tex.anisoLevel=8;tex.mipMapBias=1;}
+            material.SetFloat("_BumpScale",.35f);material.EnableKeyword("_NORMALMAP");
+            return material;
+        }
+        Material HellScannedWoodMaterial(string stem)
+        {
+            var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            material.SetTexture("_BaseMap",Resources.Load<Texture2D>("Art/map/keyshot/"+stem+"_albedo_tinted_1k"));
+            material.SetTexture("_BumpMap",Resources.Load<Texture2D>("Art/map/keyshot/"+stem+"_normal_baked_1k"));
+            material.SetColor("_BaseColor",new Color(.72f,.78f,.82f));material.SetFloat("_Smoothness",.24f);material.SetFloat("_BumpScale",.5f);material.EnableKeyword("_NORMALMAP");
             return material;
         }
     }

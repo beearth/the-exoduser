@@ -154,3 +154,21 @@ Exoduser.KeyshotRenderSetup.Run은 기존 PC 렌더러에 HellSsaoFeature/HellFo
 | 입력 검사 | environment-input.test.cjs: 누락 리소스 FAIL 재현 후 132배치 리소스·유한좌표·양수scale·큰모듈 차단셀·낮은 접합·영웅 보호 검사 PASS. GPU·Steam시각 판정 별도 |
 
 직접 본 기준: 사용자 PoE2 ref_07, NRFTW contact_sheet_2 6장, Blender 모듈 렌더, mesh-after 탐험/드루이드 원본. 현재 핵심 차이는 외곽 입체 질량·높낮이·접지·깊이감이다. 큰 질량→접합→바닥→전투 가독성 순서로 실제 장면을 검수한다. 시각 미검증 후보이며 Steam 합격/통합 완료가 아니다.
+
+
+### 환경 후보1 실제 판정과 제작법 변경
+
+환경1 빌드0773279c: 컴파일오류0·BuildReport Succeeded·USER_SAVE변경0. environment1-caps 원본3장 직접 확인: 외곽 높이는 생겼지만 암반 평판 형태·표면 줄무늬·기존 블록아웃의 긴 그림자가 남아 VISUAL FAIL. 이 후보는 Steam 채택하지 않는다. 촬영 중 REPL30초 중단으로 부모 추적이 끊겨 안전 영수증은 미확보이며 PNG/크기검사만으로 Player 안전 PASS를 주장하지 않는다. 자동임포트451경로는 environment1-import-auto에 SHA 보존 후 시작 시 clean이던 HEAD byte로 복원. 첫 호출30초 중단 후 남은18경로만 처리했다.
+
+| 후보2 변경 | 현행 구현·근거 |
+|---|---|
+| 재질 방법 | 사용자 정의 HellEnvironmentLit 대신 Unity URP/Lit. FBX smart UV·_BaseMap·_NORMALMAP, BumpScale 돌/기존목질.35·스캔목질.5. custom shader는 보존 자료이며 현재 모듈 렌더에서 미사용 |
+| 실제 원인 | 기존 rock_ground_nor_gl 메타는 textureType0/sRGB1/mipmap0. 노멀을 선형 normal map으로 임포트하고 diffuse/normal/rough mipmap1·Trilinear·aniso8로 수정. 리소스 누락/컴파일 통과만으로 이 설정을 올바르다고 가정하지 않음 |
+| 암반 큰 형태 | Blender4종의 넓게 잘린 상부를 제거하고 굴곡·절리 면을 재조형. 원본/수정 FBX와 blend는 I:에 보존 |
+| 고목 큰 형태 | 기존 map R2의 CC0 tree_stump_01/dead_tree_trunk_02 LOD1 FBX(6899tri)·1K tinted albedo/normal4개를 manifest SHA 대조 후 후보로 연결. 기존 HOLD는 실제 Unity 검수 전 상태이며 이번 연결을 채택/PASS로 올리지 않음 |
+| 스캔 재질 | 파트 이름 stump/trunk에 맞춘 각 고유 albedo/normal, tint(.72,.78,.82), smoothness.24. 원본/CC0 출처는 I:/EXODUSER-Storage/demo-art/map/r2/import-manifest.json·HANDOFF.md |
+| 그림자 | 기존 소유 후보54601c962의 블록아웃 cast 제거를 출처로 인수. 새 바닥·Blender/스캔 환경·영웅·적·화로 그림자는 유지. 환경 전체 그림자 제거로 결함을 덮지 않음 |
+| 같은 카메라 | --unity-keyshot-baseline --unity-keyshot-fixed-camera이면 구 조명/표현과 FOV24.5를 함께 사용. 새 후보와 같은 위치·피치·거리·영웅 비율로 비교 |
+| 탄막 촬영 | 초기40tick만 공격하고180tick 뒤 실제 보이는 탄3개 이상을 기다림. 입력 영수증은 필드탄3/보스탄6 미만이면 FAIL. 적/탄 직접 주입0 |
+
+Core·충돌·보행로 변경0. 기존 독립 oracle는2523표본 중2불일치이며 north gate 주변(4018.543,104.749,r10)/(4042.906,207.936,r15)이다. 원본 스냅샷과 현재 ch1_map의 북쪽 게이트 타일 계약 차이를 확인했으며 이 후보의 Core 수정/새 회귀로 단정하지 않는다. 전체 oracle PASS는 미확보 상태로 남긴다.

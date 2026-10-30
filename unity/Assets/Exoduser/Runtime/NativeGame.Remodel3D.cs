@@ -108,7 +108,7 @@ namespace Exoduser.UnityPort
             // 웹의 월드 1px : 화면 1px 기준. 논리 카메라와 전투 판정은 그대로 유지한다.
             if (r3Vcam == null) return;
             var lens = r3Vcam.Lens;
-            float fov = System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "--unity-keyshot-baseline") >= 0
+            float fov = System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "--unity-keyshot-baseline") >= 0 && System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "--unity-keyshot-fixed-camera") < 0
                 ? 2f * Mathf.Atan(Screen.height / (2f * 1400f)) * Mathf.Rad2Deg : 24.5f;
             if (Mathf.Abs(lens.FieldOfView - fov) > .01f) { lens.FieldOfView = fov; r3Vcam.Lens = lens; }
         }
