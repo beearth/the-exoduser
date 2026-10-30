@@ -82,9 +82,10 @@ namespace Exoduser.UnityPort.Core
             TickDeathFrameStart();   // O-1: _sfxFrameReset (_critSfxCd)
             if (Player.Hp <= 0 || Player.State == "dead" || Player.State == "fallen") { TickFallen(); UpdateKiProjectiles(); UpdateBolts(); TickKiTimers(); TickHurtFx(); return; }
             if (!RollActive) Player.Facing = (float)Math.Atan2(aimY - Player.Y, aimX - Player.X);
+            if (PlayerCombatWired) UpdateChainInputEvents();
             if (SkillsWired) DispatchSkillKeys();
             if (Player.State != "pStun") ConsumeRollTrigger(); // 원본 일반 기동 발동은 재생·무적 감소보다 앞선다.
-            if (PlayerCombatWired && !CombatBusy) TickChainDash();
+            if (PlayerCombatWired && Player.State != "pStun") TickChainDash();
             float regenMul = ApplySkillRegen();
             float regenDivisor = Player.State == "idle" ? 8 : 16;
             Player.Hp = Math.Min(Player.MaxHp, Player.Hp + Config.PlayerHpRegen * regenMul / regenDivisor);
@@ -102,7 +103,14 @@ namespace Exoduser.UnityPort.Core
             MoveKnockback();
             if (Player.State == "bladeDash") { }   // roll: TickRoll moves the player, no walking / attacking meanwhile (web case 'bladeDash')
             else if (Player.State == "stagger" || Player.State == "pStun") {
-                if (Player.StateTicks <= 0) { Player.State = "idle"; if (Player.Poise <= 0) Player.Poise = 4; }
+                bool chainEscape = combatShiftHeld && (!combatShiftPrev || DashHold || HarpActive || DashActive);
+                if (chainEscape)
+                {
+                    if (Player.State == "pStun") { Player.Iframes = 30; Player.Poise = 4; }
+                    else Player.StateTicks = 0;
+                    Player.State = "idle";
+                }
+                else if (Player.StateTicks <= 0) { if (Player.State == "pStun") { Player.Iframes = 60; Player.Poise = 4; } Player.State = "idle"; if (Player.Poise <= 0) Player.Poise = 4; }
             }
             else if (TickSkillState(moveX, moveY)) { }   // B03: giant slam windup / strike / recover, ice orb
             else if (playerActionBranchConsumed) { } // 원본 switch는 진입한 자세 한 분기만 실행한다.

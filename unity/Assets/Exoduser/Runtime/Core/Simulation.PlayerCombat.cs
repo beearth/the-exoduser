@@ -101,8 +101,7 @@ namespace Exoduser.UnityPort.Core
             else if (Player.State == "sRecover" && Player.StateTicks <= 0) { Player.State = "idle"; SBashChgMul = 1; ShieldWingTicks = 0; }
             // ---- Shift: chain move ----
             // 사슬은 원문 update의 재생 앞 단계에서 실행한다.
-            // stun natural end: the web restores poise 4 and grants 60 frames of invulnerability
-            if (Player.State == "pStun" && Player.StateTicks <= 0) { Player.Iframes = (float)PlayerPoise.NaturalEndIframes; Player.Poise = PlayerPoise.MaxPoise; }
+            // 기절 자연 종료·Shift 탈출은 Simulation의 후반 자세 분기에서 처리한다.
         }
 
         /// <summary>The enemies already hit by the current chain pull (web _harpHits): each is hit once per cast.</summary>
@@ -127,7 +126,7 @@ namespace Exoduser.UnityPort.Core
             }
         }
 
-        private bool FireChain(int tier)
+        private bool FireChain(int tier, bool resetHoldFrames = true)
         {
             var result = ChainDash.Release(tier, HarpGauge, Player.Stamina, Player.MaxStamina, ChargeBoostLevel, 0, PCharge);
             if (!result.Fired) return false;
@@ -135,25 +134,43 @@ namespace Exoduser.UnityPort.Core
             HarpActive = true; HarpDist = 0; HarpMaxDist = result.MaxDist;
             HarpDirX = (float)Math.Cos(Player.Facing); HarpDirY = (float)Math.Sin(Player.Facing);
             HarpX = Player.X; HarpY = Player.Y; DashHits.Clear();
-            DashHold = false; DashHoldF = 0;
+            DashHold = false; if (resetHoldFrames) DashHoldF = 0;
             return true;
+        }
+
+        // 키 이벤트는 기절/경직 중에도 먼저 처리하며, 실제 비행 갱신은 원문 순서를 따른다.
+        private void UpdateChainInputEvents()
+        {
+            bool shiftDown = combatShiftHeld && !combatShiftPrev;
+            bool shiftUp = !combatShiftHeld && combatShiftPrev;
+            if (shiftDown)
+            {
+                if (HarpActive || DashActive) { HarpActive = false; DashActive = false; DashHold = false; DashLeft = 0; DashVx = DashVy = 0; }
+                else if (!DashHold && HarpGauge > 0) { DashHold = true; DashHoldF = 0; }
+            }
+            // 키업은 update 진입 전 이벤트이고, 만충 자동 발사는 update의 홀드 증가 뒤다.
+            if (shiftUp && DashHold && (HarpActive || DashActive)) { DashHold = false; DashHoldF = 0; }
+            if (shiftUp && DashHold && !HarpActive && !DashActive)
+            {
+                FireChain(ChainDash.TierForHoldFrames(DashHoldF), false); DashHold = false;
+            }
         }
 
         private void TickChainDash()
         {
-            bool shiftDown = combatShiftHeld && !combatShiftPrev;
-            bool shiftUp = !combatShiftHeld && combatShiftPrev;
-            if (shiftDown && !HarpActive && !DashActive && HarpGauge > 0) { DashHold = true; DashHoldF = 0; }
-            // 키업은 update 진입 전 이벤트이고, 만충 자동 발사는 update의 홀드 증가 뒤다.
-            if (shiftUp && DashHold && !HarpActive && !DashActive)
-            {
-                FireChain(ChainDash.TierForHoldFrames(DashHoldF)); DashHold = false; DashHoldF = 0;
-            }
             HarpGauge = ChainDash.RegenGauge(HarpGauge, HarpGaugeMax, ChargeBoostLevel, PCharge, 1, DashHold, HarpActive, DashActive, false, false);
             if (DashHold && combatShiftHeld && DashHoldF < ChainDash.HoldFramesCap)
             {
                 DashHoldF++;
                 if (DashHoldF >= ChainDash.TierHoldFrames[3] && !HarpActive && !DashActive) FireChain(3);
+                if (DashHold && !HarpActive && !DashActive)
+                {
+                    int tier = ChainDash.TierForHoldFrames(DashHoldF);
+                    double range = ChainDash.AvailableDistance(tier, HarpGauge, ChargeBoostLevel, 0, PCharge);
+                    float dx = (float)Math.Cos(Player.Facing), dy = (float)Math.Sin(Player.Facing);
+                    for (double d = 16; d <= range; d += 16)
+                        if (!Pass(Player.X + dx * (float)d, Player.Y + dy * (float)d, 2)) { FireChain(tier); break; }
+                }
             }
             if (HarpActive && !DashActive)
             {
@@ -162,6 +179,7 @@ namespace Exoduser.UnityPort.Core
                 HarpX += HarpDirX * ChainDash.FlightSpeed * step; HarpY += HarpDirY * ChainDash.FlightSpeed * step;
                 if (HarpDist >= HarpMaxDist)
                 {
+                    if (!Pass((float)HarpX, (float)HarpY, 2)) { HarpX -= HarpDirX * ChainDash.FlightSpeed * 2; HarpY -= HarpDirY * ChainDash.FlightSpeed * 2; }
                     var pull = ChainDash.StartPull(HarpTier, Player.X, Player.Y, (float)HarpX, (float)HarpY);
                     DashActive = true; DashVx = pull.Vx; DashVy = pull.Vy; DashLeft = pull.Left; Player.Poise = (float)pull.Poise;
                 }
@@ -173,7 +191,13 @@ namespace Exoduser.UnityPort.Core
                 float x = Player.X + (float)(DashVx * step), y = Player.Y + (float)(DashVy * step);
                 if (Pass(x, y, Player.Radius)) { Player.X = x; Player.Y = y; } else DashLeft = 0;
                 TickDashPathHits(); DashLeft -= step;
-                if (DashLeft <= 0) { DashActive = false; HarpActive = false; Player.Iframes = (float)ChainDash.LandingInvulnerable(Player.Iframes); }
+                if (DashLeft <= 0)
+                {
+                    DashActive = false; HarpActive = false; DashHold = false; DashHoldF = 0; HarpTier = 0;
+                    Player.Iframes = (float)ChainDash.LandingInvulnerable(Player.Iframes);
+                    // 착지 직후 계속 누른 Shift는 잔여 게이지로 최고단을 다시 발사한다.
+                    if (combatShiftHeld) FireChain(3);
+                }
             }
         }
 

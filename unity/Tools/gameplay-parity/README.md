@@ -16,7 +16,7 @@
 C:/nvm4w/nodejs/node.exe unity/Tools/gameplay-parity/export-movement.cjs --source <고정한 origin/main의 game.html> --out <I: 출력 JSON>
 ```
 
-실제 입력·현재 결과·전체 48개 스킬의 미완료 경계는 docs/engine/UNITY_GAMEPLAY_PARITY_20261031.md와 I:/EXODUSER-Storage/demo-art/gameplay-parity/를 따른다. 숫자 대조 통과를 전체 이식·실게임·시각 합격으로 올리지 않는다.
+실제 입력·현재 결과·전체 55개 스킬의 미완료 경계는 docs/engine/UNITY_GAMEPLAY_PARITY_20261031.md와 I:/EXODUSER-Storage/demo-art/gameplay-parity/를 따른다. 숫자 대조 통과를 전체 이식·실게임·시각 합격으로 올리지 않는다.
 
 ## Q/E 무료 기본 합체 대조
 
@@ -35,3 +35,8 @@ export-hud-bindings.cjs는 현재 웹 CSS의13개 위치와 _slotSkId를 그대�
 | --combo-trace 웹JSON 장비JSON 출력JSON | capture-web-combo.cjs의 실제 웹 update1,040틱, 3타 홀드119/159/210틱·110틱째 Q취소. 자세/타이머/자원/충전/콤보/검기피해·수명·반경 정확, 위치 .05px/자원 .005 허용 |
 
 capture-web-combo.cjs는 현재 브리프의 고정 원본 로컬서버3344와 I:기준 원문 묶음, readonly 실제 미디어를 사용한다. node로 서버를 별도 격리 저장 디렉터리에서 실행하고 HTTP game.html SHA를 확인한 뒤 exo-unity.ps1 browser로만 실행한다. headless·mute·SwiftShader, 실제 게임 loop를 멈춘 통제 update이며 자연 전투/OS 손조작이 아니다. -combo-parity 1 Player는 기존 FixedUpdate에 같은 Input System 장치를 주고260틱×4 입력과 각3틱마다348장을 남긴다.
+
+
+## 사슬 이동 실행 경계 대조
+
+export-chain-boundaries.cjs --source <고정 origin/main game.html> --out <새 JSON> --extended는 실제 Shift keydown/keyup·사슬 갱신 전체 블록·경직/기절 후반 분기를 실행한다. 적 없음, 파생 스킬/합체/유니크/장비/재생0 조건이다. --chain-boundaries <원문JSON> <결과JSON>은 실제 Simulation.Tick으로475사례·66,500틱·1,130,500필드검사를 대조한다. 위치/부동소수 .003px 이내, 문자열·불리언 정확 일치다. 벽 조준 도우미16px 간격/반경2, 끝점 벽이면126px 후퇴, 착지 Shift 최고단 재발사, 재입력 취소와 경직/기절 탈출을 포함한다. 기본7사례980틱은16,660검사다. 범위 밖47개 실행 스킬·자연전투/실제Player/시각 합격을 뜻하지 않는다. 상세는 UNITY_CHAIN_BOUNDARY_PARITY_20261031.md를 따른다.

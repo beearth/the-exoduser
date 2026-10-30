@@ -4,7 +4,7 @@ namespace Exoduser.UnityPort.Core.Combat
 {
     // Web chain movement (Shift, `_harp*` / `_dash*`) numbers as pure functions: tier by hold frames, distance, gauge cost / maximum / regeneration, stamina,
     // flight step, pull velocity, invulnerability and landing (game.html 12851-12883, 13335-13357, 32168-32260, 32262-32366, 32785-32791, 63460-63466).
-    // 최고단 자동 발사는 Simulation.PlayerCombat이 원문 순서로 처리한다. 벽 도우미·불바닥·칼날개는 별도 미이식 범위다.
+    // 자동 발사·벽 도우미·연속 재발사는 Simulation.PlayerCombat이 원문 순서로 처리한다. 불바닥·칼날개는 별도 미이식 범위다.
     // Compared with the original statements (executed in a Node VM) by Tools/dash-parry-oracle.
     public static class ChainDash
     {

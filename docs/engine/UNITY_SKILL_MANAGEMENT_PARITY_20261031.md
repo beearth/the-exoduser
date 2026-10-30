@@ -79,3 +79,8 @@ E 활성값을 maliceSwipe로 정규화하는 것은 원문 `_ensureBaseWingStri
 별도로 05:43 GPU batch 시작은 OS PowerShell Operational4100에서 Start-Process Access is denied로 확인됐다. Player 생성0·빈 로그이며 이 reader 수정으로 실행 거부가 해결되는 것은 아니다. 권한 변경·다른 실행 API/경로 재시도는 하지 않는다. 해당 시도는 엔진 batch 동작 판정에 사용할 수 없고, 기존 Native InputShutdown 이후 종료 지연과 구분한다. 근거 combat-final-r2/배치-시작실패-OS이벤트.json·배치-시작후-프로세스.json.
 
 GPU 파서에는 별도로 기존 결함을 정정했다. 파일이 없거나 Renderer 이름이 없으면 메모만 남기고 extraOk=true였던2조건을 false로 바꿨다. 실제 현재 Cmd-Player 파서 블록만 추출한4대조군(파일없음/이름없음/Null/이름있음)은2실패→0이다. 실제 GPU 실행이 아니며, 기존처럼 Null GPU·시간초과·비정상 종료는 실패다. 근거 player-gpu-parser-red/green.
+
+
+## 2026-10-31 새 정식 빌드의 실제 종료 판정
+
+edf 입력 새정식빌드 d0ade204 컴파일0, 같은 M1 549945c8 단계23/23이지만 공식전체는 ok=false/timedOut=true/exit-1이다. 종료전 메인→HIDInput 대기, 관리코드 OnApplicationQuit/OnDestroy 및 표시/효과음/HUD Dispose 완료를 계측했다. 종료성공·실제관리UI3프로세스·공통/Desktop 검수는 미완료다. 외부 I:진단래퍼의 exit손실 오판은 공식JSON으로 교정·이력보존했고, 상세는 UNITY_HID_SHUTDOWN_DIAGNOSIS_20261031.md다.
