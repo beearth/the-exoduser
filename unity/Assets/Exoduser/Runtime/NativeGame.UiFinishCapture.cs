@@ -33,13 +33,18 @@ namespace Exoduser.UnityPort
   {
    menu=true;Running=false;pauseMenu.Reset();pauseMenu.ShowSettings();
    for(int tab=0;tab<4;tab++){pauseMenu.Navigation.SelectTab(tab);pauseMenu.Navigation.ObserveReleased(false);yield return UiCapture(output,"unity-settings-"+tab+"-"+tag);}
-   pauseMenu.Navigation.SelectTab(3);pauseMenu.A15SetScrollForQa(9999);yield return UiCapture(output,"unity-settings-3-scrolled-"+tag);pauseMenu.A15SetScrollForQa(0);
+   pauseMenu.Navigation.SelectTab(3);pauseMenu.A15SetScrollForQa(9999);yield return UiCapture(output,"unity-settings-3-scrolled-"+tag);
+   var offsets=(float[])typeof(NativePauseMenu).GetField("a15Scroll",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(pauseMenu);
+   float expectedKeyY=253-offsets[3]+NativeKeyBindList.QRowsTop+11;var rects=pauseMenu.KeyListForTest.LastKeyRects;
+   bool scrollDrawn=rects.Count>0&&Mathf.Abs(rects[0].y-expectedKeyY)<.1f;if(!scrollDrawn)uiArtFailures++;
+   log.Add((scrollDrawn?"PASS ":"FAIL ")+"조작 스크롤 끝의 실제 키 목록 그리기 "+tag);pauseMenu.A15SetScrollForQa(0);
    pauseMenu.Navigation.SelectTab(2);pauseMenu.A15OpenSelectForQa("optBgmTrack");yield return UiCapture(output,"unity-settings-2-popup-"+tag);
    log.Add("opt="+settings.Options.Encode()+" sfx="+settings.SfxPercent+" bgm="+settings.BgmPercent+" fps="+settings.FrameCap);
    // keyboard rows: cursor onto the first Display row (Shake) and step it right.
    pauseMenu.Reset();pauseMenu.ShowSettings();pauseMenu.Navigation.SelectTab(1);pauseMenu.Navigation.PointAt(4);int shakeBefore=settings.Options.Get("shake");
    for(int i=0;i<2;i++){pauseMenu.Navigation.ObserveReleased(false);ApplyPauseCommand(pauseMenu.HandleKey(PauseKey.Left,false,false));}
-   log.Add("kbd shake "+shakeBefore+" -> "+settings.Options.Get("shake")+" (two Left steps of 5)");settings.Options.Set("shake",shakeBefore);
+   bool stepped=settings.Options.Get("shake")==Mathf.Max(0,shakeBefore-2);if(!stepped)uiArtFailures++;
+   log.Add("kbd shake "+shakeBefore+" -> "+settings.Options.Get("shake")+" (Left 2회, 실제 step1)");settings.Options.Set("shake",shakeBefore);
    // persistence round trip through the real store + codec.
    var st=new NativeSettingsState(60);st.Options.Set("shake",35);st.Options.Set("brightness",90);st.Options.Set("bloom",0);st.Options.Set("atmos",1);st.Options.BgmTrack="hell3";st.Presets[0]="{\"opt\":{}}";
    string dir=Path.Combine(output,"io-"+tag,"native-settings-v1");NativeSettingsSnapshot snap;NativeSettingsStoreStatus status;
@@ -48,9 +53,14 @@ namespace Exoduser.UnityPort
    var store2=new NativeSettingsStore(dir,NativeSettingsJsonCodec.Encode,NativeSettingsJsonCodec.Decode,new NativeSettingsState(60),false);bool loaded=store2.TryLoad(out snap,out status);
    var st2=new NativeSettingsState(60);string raw="",rawPreset="";if(snap!=null&&snap.extra!=null){snap.extra.TryGetValue("opt",out raw);snap.extra.TryGetValue("preset1",out rawPreset);}st2.Options.Decode(raw);
    log.Add("io saved="+saved+" loaded="+loaded+" same="+(st2.Options.Encode()==st.Options.Encode())+" shake="+st2.Options.Get("shake")+" brightness="+st2.Options.Get("brightness")+" bloom="+st2.Options.Get("bloom")+" atmos="+st2.Options.Get("atmos")+" bgmTrack="+st2.Options.BgmTrack+" preset1="+rawPreset);
+   if(!saved||!loaded||st2.Options.Encode()!=st.Options.Encode()||rawPreset!=st.Presets[0])uiArtFailures++;
    // other languages (web strings from the live DOM).
    pauseMenu.Reset();pauseMenu.ShowSettings();
-   foreach(string code in new[]{"en","ja","de"}){lobby.SetLanguage(code);pauseMenu.Navigation.SelectTab(0);pauseMenu.Navigation.ObserveReleased(false);yield return UiCapture(output,"unity-settings-0-"+code+"-"+tag);}
+   foreach(string code in new[]{"en","ja","de"}){lobby.SetLanguage(code);pauseMenu.Navigation.SelectTab(0);pauseMenu.Navigation.ObserveReleased(false);yield return UiCapture(output,"unity-settings-0-"+code+"-"+tag);
+    var cache=(System.Collections.IDictionary)typeof(NativePauseMenu).GetField("a15Items",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(pauseMenu);
+    int presets=0;bool bounded=cache.Contains(0);if(bounded)foreach(var row in (System.Collections.IEnumerable)cache[0]){var type=row.GetType();string id=(string)type.GetField("id").GetValue(row);if(id=="saveP1"||id=="loadP1"||id=="saveP2"||id=="loadP2"){presets++;var bounds=(Rect)type.GetField("r").GetValue(row);if(bounds.x<0||bounds.xMax>818.01f)bounded=false;}}
+    bounded=bounded&&presets==4;if(!bounded)uiArtFailures++;log.Add((bounded?"PASS ":"FAIL ")+"프리셋 4버튼 왼쪽818px 안 "+code+" "+tag);
+   }
    lobby.SetLanguage("ko");
    pauseMenu.Reset();
   }
