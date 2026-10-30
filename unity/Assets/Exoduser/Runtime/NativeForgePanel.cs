@@ -61,7 +61,7 @@ namespace Exoduser.UnityPort {
   Rect Off(Rect r){r.x-=off.x;r.y-=off.y;return r;}
   void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;GUI.DrawTexture(Off(r),Texture2D.whiteTexture);GUI.color=old;}
   void Border(Rect r,Color c,float w=1){Fill(new Rect(r.x,r.y,r.width,w),c);Fill(new Rect(r.x,r.yMax-w,r.width,w),c);Fill(new Rect(r.x,r.y+w,w,r.height-2*w),c);Fill(new Rect(r.xMax-w,r.y+w,w,r.height-2*w),c);}
-  bool Hit(Rect r){return GUI.Button(Off(r),GUIContent.none,GUIStyle.none);}
+  bool Hit(Rect r){return NativeSilverHellUi.Button(Off(r),GUIContent.none,GUIStyle.none);}
   bool Over(Rect r){return GUI.enabled&&Off(r).Contains(Event.current.mousePosition);}
   Texture2D Gradient(Color a,Color b,float angle){
    string key="g"+ColorUtility.ToHtmlStringRGBA(a)+ColorUtility.ToHtmlStringRGBA(b)+angle;
@@ -98,8 +98,8 @@ namespace Exoduser.UnityPort {
    for(int pass=shadow.HasValue?0:1;pass<2;pass++){
     var col=pass==0?new Color(shadow.Value.r,shadow.Value.g,shadow.Value.b,shadow.Value.a*alpha):new Color(c.r,c.g,c.b,c.a*alpha);
     st.normal.textColor=col;float px=x,oy=pass==0?shY:0;
-    if(sp==0){GUI.Label(new Rect(px,r.y+oy,total+16,r.height),text,st);continue;}
-    foreach(char ch in text){var g=ch.ToString();GUI.Label(new Rect(px,r.y+oy,60,r.height),g,st);px+=st.CalcSize(new GUIContent(g)).x+sp;}
+    if(sp==0){NativeSilverHellUi.Label(new Rect(px,r.y+oy,total+16,r.height),text,st);continue;}
+    foreach(char ch in text){var g=ch.ToString();NativeSilverHellUi.Label(new Rect(px,r.y+oy,60,r.height),g,st);px+=st.CalcSize(new GUIContent(g)).x+sp;}
    }
    return total;
   }
@@ -133,21 +133,21 @@ namespace Exoduser.UnityPort {
 
   void DrawHeader(Simulation sim){
    // ptitle plate text (24px "Noto Serif KR" 600, ls .48, centred in the plate): serif body face of the project
-   Txt(new Rect(780,210,360,32),defs.title,F.NM,24,C(239,225,197),true,TextAnchor.MiddleCenter,.48f,1f,new Color(0,0,0,1),2f);
+   Txt(new Rect(780,210,360,32),defs.title,F.NM,24,C(229,226,220),true,TextAnchor.MiddleCenter,.48f,1f,new Color(0,0,0,1),2f);
    // #forgeMats: "악의: N" 14px 600 ls .08em
-   Txt(new Rect(500,267,920,41),defs.matsLabel+": "+sim.Materials,F.SansSemi,14,C(227,206,176),false,TextAnchor.MiddleCenter,1.12f);
+   Txt(new Rect(500,267,920,41),defs.matsLabel+": "+sim.Materials,F.SansSemi,14,C(211,208,202),false,TextAnchor.MiddleCenter,1.12f);
    // #forgeLore: 12px italic, opacity .85, emoji crops inline, centred
    float total=0;foreach(var run in defs.lore)total+=run.g!=null?GlyphW(run.g):Meas(run.t,F.NM,12,false,0,true);
    float x=732+(688-total)/2f;
    foreach(var run in defs.lore){
     if(run.g!=null){Spr(run.g,x,336,.85f);x+=GlyphW(run.g);}
-    else x+=Txt(new Rect(x,336,Meas(run.t,F.NM,12,false,0,true)+8,20.4f),run.t,F.NM,12,C(182,165,143),false,TextAnchor.MiddleLeft,0,.85f,new Color(0,0,0,.9f),1f,true);
+    else x+=Txt(new Rect(x,336,Meas(run.t,F.NM,12,false,0,true)+8,20.4f),run.t,F.NM,12,C(165,168,168),false,TextAnchor.MiddleLeft,0,.85f,new Color(0,0,0,.9f),1f,true);
    }
   }
 
   void PlateFace(Rect r,bool active,bool leftBar){
    Fill(r,C(35,34,37));if(plate!=null)GUI.DrawTexture(r,plate,ScaleMode.StretchToFill);
-   if(active){Grad(r,C(87,23,12,.6f),C(38,9,7,.72f));if(leftBar)Fill(new Rect(r.x,r.y,3,r.height),C(172,121,83));else Fill(new Rect(r.x,r.yMax-2,r.width,2),C(172,121,83));}
+   if(active){Grad(r,C(87,23,12,.6f),C(38,9,7,.72f));if(leftBar)Fill(new Rect(r.x,r.y,3,r.height),C(127,130,130));else Fill(new Rect(r.x,r.yMax-2,r.width,2),C(127,130,130));}
    else Grad(r,C(21,20,23,.51f),C(11,10,12,.675f));
    if(!active&&Over(r))Fill(r,new Color(1,1,1,.05f));
   }
@@ -156,19 +156,19 @@ namespace Exoduser.UnityPort {
     var t=defs.tabs[i];var r=new Rect(500,518+46*i,216,40);bool act=Tab==t.id;
     PlateFace(r,act,true);
     // .fg-tab-txt 12.48px 700 ls .624, text-shadow 0 2px 4px rgba(0,0,0,.95)
-    Txt(new Rect(512,r.y+11,192,18),t.label,F.NM,12.48f,act?C(244,230,203):C(199,190,173),true,TextAnchor.MiddleCenter,.624f,1f,new Color(0,0,0,.9f),2f);
+    Txt(new Rect(512,r.y+11,192,18),t.label,F.NM,12.48f,act?C(244,230,203):C(194,191,185),true,TextAnchor.MiddleCenter,.624f,1f,new Color(0,0,0,.9f),2f);
     if(Hit(r)&&!act)SelectTab(t.id);
    }
   }
   void DrawClose(Action close){
    var r=new Rect(885,1004,150,36);PlateFace(r,false,false);
-   Txt(r,defs.closeLabel,F.SansSemi,12,C(199,190,173),false,TextAnchor.MiddleCenter,.24f,1f,new Color(0,0,0,1),2f);
+   Txt(r,defs.closeLabel,F.SansSemi,12,C(194,191,185),false,TextAnchor.MiddleCenter,.24f,1f,new Color(0,0,0,1),2f);
    if(Hit(r))close();
   }
 
   // ---- scrolling ----
-  // Web scrollbar (#fgGrid and inner lists): 10px column, 12px arrow buttons, 6px pill thumb (#75674f), arrows as small triangles.
-  static readonly Color BarColor=new Color32(117,103,79,255);
+  // Web scrollbar (#fgGrid and inner lists): 10px column, 12px arrow buttons, 6px pill thumb (#666969), arrows as small triangles.
+  static readonly Color BarColor=new Color32(102,105,105,255);
   void ScrollBar(int id,Rect bar,float viewH,float contentH,ref float scroll){
    float max=Mathf.Max(0,contentH-viewH);scroll=Mathf.Clamp(scroll,0,max);if(max<=0)return;
    float track=bar.height-24,thumb=Mathf.Max(20,Mathf.Round(track*viewH/contentH)),room=track-thumb,top=bar.y+12+room*(scroll/max);

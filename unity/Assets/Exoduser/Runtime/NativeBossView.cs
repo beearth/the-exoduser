@@ -9,11 +9,15 @@ namespace Exoduser.UnityPort
     // oracle-checked against game.html); this file draws it with the web's own art: the poison-pool / orb / hit / roots / shockring / dust atlas clips
     // (assets/vfx/boss/druid_*_24_*), the corruption ring (druid_corruption_ring.svg) and the grey-then-#66dd22 fire-devil orb sheet for the poison shots,
     // with the web's sizes, alphas and clip time (24 fps loops from the hazard's own T, once-clips stretched over maxFrames x frameTime ticks).
-    // Still procedural (the web strokes them as vector lines too): fissure crack body, tide-wave beads, seeker mines, rhythm volley.
+    // Still procedural (the web strokes them as vector lines too): fissure crack body, tide-wave beads, rhythm volley. 추적/탄 지뢰는 현행 어둠 지뢰 원화를 사용한다.
     public sealed partial class NativeBossView
     {
         readonly Transform root; readonly List<SpriteRenderer> pool = new List<SpriteRenderer>(), addPool = new List<SpriteRenderer>(); int used, addUsed;
         readonly Sprite disc, ring, thinRing, hardDisc;
+        public int MineSpritesDrawn{get;private set;}
+        public int MineArtFallbacks{get;private set;}
+        static Sprite mineFlashRing;
+        static Sprite MineFlashRing(){if(mineFlashRing!=null)return mineFlashRing;const int n=256;var tex=new Texture2D(n,n,TextureFormat.RGBA32,false);var px=new Color[n*n];for(int y=0;y<n;y++)for(int x=0;x<n;x++){float r=Vector2.Distance(new Vector2(x+.5f,y+.5f),new Vector2(n/2f,n/2f))/(n/2f);float a=Mathf.Min(Mathf.Clamp01((1-r)*n/2+.5f),Mathf.Clamp01((r-51f/53)*n/2+.5f));px[y*n+x]=new Color(1,1,1,a);}tex.SetPixels(px);tex.Apply(false,true);mineFlashRing=Sprite.Create(tex,new Rect(0,0,n,n),new Vector2(.5f,.5f),100,0,SpriteMeshType.FullRect);return mineFlashRing;}
         // game.html draws the pool rim as arc(r) + reversed arc(r-1.2) fill; its GPU canvas proxy fills that as a whole disc (#a9d76a at .55 of the clip alpha). Boss lead / design lead decision (10-27): keep the 1.2 px hairline the code means; true reproduces the web's disc.
         const bool PoolRimAsWebProxyDisc = false;
         readonly MaterialPropertyBlock block = new MaterialPropertyBlock();
@@ -93,9 +97,9 @@ namespace Exoduser.UnityPort
             r.transform.position = Point(x, y); r.transform.localScale = new Vector3((float)w / s.rect.width, (float)h / s.rect.height, 1);
         }
 
-        void PutAdd(Sprite s, double x, double y, double w, double h, float opacity, int order, double angle = 0)
+        void PutAdd(Sprite s, double x, double y, double w, double h, float opacity, int order, double angle = 0, Color? tint = null)
         {
-            var r = NextAdd(); r.sprite = s; r.sortingOrder = order; r.color = Color.white; r.transform.rotation = Quaternion.Euler(0, 0, -(float)(angle * Mathf.Rad2Deg));
+            var r = NextAdd(); r.sprite = s; r.sortingOrder = order; r.color = tint??Color.white; r.transform.rotation = Quaternion.Euler(0, 0, -(float)(angle * Mathf.Rad2Deg));
             r.transform.position = Point(x, y); r.transform.localScale = new Vector3((float)w / s.rect.width, (float)h / s.rect.height, 1);
             r.GetPropertyBlock(block); block.SetFloat(NativeDruidArt.Opacity, opacity); r.SetPropertyBlock(block);
         }
@@ -138,7 +142,7 @@ namespace Exoduser.UnityPort
 
         public void Update(Simulation sim)
         {
-            used = 0; addUsed = 0; FieldMouthsDrawn = 0; FieldCometsDrawn = 0; FieldOrbsDrawn = 0; FieldBulletFallbacks = 0;
+            used = 0; addUsed = 0; MineSpritesDrawn = 0; MineArtFallbacks = 0; FieldMouthsDrawn = 0; FieldCometsDrawn = 0; FieldOrbsDrawn = 0; FieldBulletFallbacks = 0;
             if (bound != sim) { if (bound != null) bound.BossFx -= OnFx; bound = sim; sim.BossFx += OnFx; }
             DrawFieldZones(sim);
             var druid = sim.Druid; if (druid == null) { Finish(); return; }
@@ -211,8 +215,9 @@ namespace Exoduser.UnityPort
             // things in the air
             foreach (var m in druid.SeekerMines)
             {
-                bool armed = m.T > m.ArmT; Put(disc, m.X, m.Y, 20, armed ? new Color(Mine.r + .3f, Mine.g, Mine.b + .2f, .95f) : new Color(Mine.r, Mine.g, Mine.b, .5f), (int)m.Y + 1);
-                if (armed) Put(ring, m.X, m.Y, m.R, new Color(Mine.r + .3f, 0, Mine.b + .2f, .35f), (int)m.Y);
+                bool armed = m.T > m.ArmT;
+                if(HasArt(WardSheet)){float a=armed?(float)(.78+(.5+Math.Sin(nowMs*.015)*.5)*.18):.46f;PutAdd(NativeDruidArt.ClipFrame(WardSheet,2,1,0),m.X,m.Y,m.R*2,m.R*2,a,(int)m.Y,nowMs*.00035);MineSpritesDrawn++;}
+                else{Put(disc,m.X,m.Y,20,new Color(Mine.r,Mine.g,Mine.b,.5f),(int)m.Y);MineArtFallbacks++;}
             }
             foreach (var o in druid.Orbs)
             {
@@ -222,7 +227,7 @@ namespace Exoduser.UnityPort
             foreach (var p in druid.Projectiles)
             {
                 if (!p.Active) continue;
-                if (p.Mine) { Put(disc, p.X, p.Y, 18, Mine, (int)p.Y); continue; }
+                if(p.Mine){if(HasArt(WardSheet)){double mp=p.Life/(p.Ml==0?180:p.Ml),pulse=.5+Math.Sin(nowMs/(80+mp*100))*.5;bool blink=mp<.35;PutAdd(NativeDruidArt.ClipFrame(WardSheet,2,1,0),p.X,p.Y,112,112,(float)((blink?.84:.76)+pulse*.18),(int)p.Y,nowMs*.00035);if(blink)PutAdd(MineFlashRing(),p.X,p.Y,106,106,(float)(.3+pulse*.2),(int)p.Y+1,0,new Color(1,216/255f,74/255f));MineSpritesDrawn++;}else{Put(disc,p.X,p.Y,18,Mine,(int)p.Y);MineArtFallbacks++;}continue;}
                 if (p.DruidPoison)
                 {
                     // _drawDruidPoisonShot: 16-frame orb at 70 ms/frame, 96..180 px by Sz (240 for mines / element balls), doubled for physical-parry shots

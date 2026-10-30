@@ -26,8 +26,8 @@ namespace Exoduser.UnityPort {
    GUI.DrawTexture(new Rect(slot.x,slot.y,b,slot.height),Texture2D.whiteTexture);GUI.DrawTexture(new Rect(slot.xMax-b,slot.y,b,slot.height),Texture2D.whiteTexture);
    if(rage>=100){GUI.color=new Color(1f,.118f,0,.6f);const float g=5;GUI.DrawTexture(new Rect(slot.x+b,slot.y+b,slot.width-2*b,g),Texture2D.whiteTexture);GUI.DrawTexture(new Rect(slot.x+b,slot.yMax-b-g,slot.width-2*b,g),Texture2D.whiteTexture);}
    string label=Math.Truncate(rage).ToString("0")+"%";
-   GUI.color=new Color(.4f,0,0,.9f);GUI.Label(new Rect(slot.x+1,slot.y+3,slot.width,slot.height),label,rageText);
-   GUI.color=Color.white;GUI.Label(new Rect(slot.x,slot.y+2,slot.width,slot.height),label,rageText);
+   GUI.color=new Color(.4f,0,0,.9f);NativeSilverHellUi.Label(new Rect(slot.x+1,slot.y+3,slot.width,slot.height),label,rageText);
+   GUI.color=Color.white;NativeSilverHellUi.Label(new Rect(slot.x,slot.y+2,slot.width,slot.height),label,rageText);
    GUI.color=old;
   }
   // B03: dock slot -> equipped skill (0..3 = keys 1-4, 4 = F, 5 = Z, 7 = RMB, 8 = Shift, 9 = E, 10 = Q, 11 = Ctrl, 12 = Space; web _slotSkId: RMB maliceSwipe / Shift charge / Q parry are fixed unless re-slotted); the LMB slot keeps its own kiSlash drawing
@@ -45,7 +45,7 @@ namespace Exoduser.UnityPort {
    if(cd>0&&total>0){
     var old=GUI.color;float frac=Mathf.Clamp01(cd/total);GUI.color=new Color(0,0,0,.62f);GUI.DrawTexture(new Rect(slot.x,slot.yMax-slot.height*frac,slot.width,slot.height*frac),Texture2D.whiteTexture);
     if(cooldownText==null){cooldownText=new GUIStyle(keyLabel){fontSize=15,fontStyle=FontStyle.Bold,alignment=TextAnchor.MiddleCenter};}
-    GUI.color=new Color(.87f,.84f,.76f,1f);GUI.Label(slot,Mathf.CeilToInt(cd/60f).ToString(),cooldownText);GUI.color=old;
+    GUI.color=new Color(217/255f,214/255f,208/255f,1f);NativeSilverHellUi.Label(slot,Mathf.CeilToInt(cd/60f).ToString(),cooldownText);GUI.color=old;
    }
   }
   // Web updateHUD (60406): a 3 px bar along the bottom of the Shift slot, width = _harpGauge / _HARP_GAUGE_MAX, #44ffaa full / #88ccff from half / #ff8844 below
@@ -64,13 +64,13 @@ namespace Exoduser.UnityPort {
     var rect=SkillSlotRect(dock,i);
     string slotSkill=simulation!=null?SlotSkillId(simulation,i):null;
     if(slotSkill!=null)DrawSlotSkill(rect,slotSkill,simulation);
-    else if(i!=6){var old=GUI.color;GUI.color=new Color(.5f,.47f,.40f,.7f);GUI.Label(new Rect(rect.x,rect.y+4,rect.width,25),"—",keyLabel);GUI.color=old;}
-    if(GUI.Button(rect,"",GUIStyle.none)){statusSelectionUntil=i==6?Time.unscaledTime+1.6f:0;SlotSelected?.Invoke(i);}
+    else if(i!=6){var old=GUI.color;GUI.color=new Color(118/255f,121/255f,121/255f,.7f);NativeSilverHellUi.Label(new Rect(rect.x,rect.y+4,rect.width,25),"—",keyLabel);GUI.color=old;}
+    if(NativeSilverHellUi.Button(rect,"",GUIStyle.none)){statusSelectionUntil=i==6?Time.unscaledTime+1.6f:0;SlotSelected?.Invoke(i);}
    }
    if(simulation==null)return;
    DrawRageSlot(SkillSlotRect(dock,12),simulation);
    DrawChainGauge(SkillSlotRect(dock,8),simulation);
-   if(skillStatus==null){skillStatus=new GUIStyle(keyLabel){fontSize=14,alignment=TextAnchor.MiddleCenter};skillStatus.normal.textColor=new Color(.74f,.69f,.59f);}
+   if(skillStatus==null){skillStatus=new GUIStyle(keyLabel){fontSize=14,alignment=TextAnchor.MiddleCenter};skillStatus.normal.textColor=new Color(175/255f,178/255f,178/255f);}
    string name=simulation.Config.ActiveAttack=="kiSlash"?"기검참":"기본 무기";
    var statusRect=DockStatusRect(dock,width);
    var oldColor=GUI.color;
@@ -78,7 +78,7 @@ namespace Exoduser.UnityPort {
    if(showStatus){
     string statusText=name+" · ST "+SkillUiState.StaminaCost(simulation)+" · "+SkillUiState.Status(simulation)+" [K]";
     float fitWidth=Mathf.Max(360,skillStatus.CalcSize(new GUIContent(statusText)).x+12);statusRect.x=width*.5f-fitWidth*.5f;statusRect.width=fitWidth;
-    GUI.Label(statusRect,statusText,skillStatus);
+    NativeSilverHellUi.Label(statusRect,statusText,skillStatus);
     if(simulation.Player.KiChargeActive){var chargeRect=new Rect(width*.5f-80,statusRect.y-4,160,2);GUI.color=new Color(.18f,.20f,.21f,.8f);GUI.DrawTexture(chargeRect,Texture2D.whiteTexture);GUI.color=new Color(.55f,.72f,.78f,.9f);GUI.DrawTexture(new Rect(chargeRect.x,chargeRect.y,chargeRect.width*Mathf.Clamp01(simulation.Player.KiChargeTicks/120),chargeRect.height),Texture2D.whiteTexture);}
    }
    GUI.color=oldColor;

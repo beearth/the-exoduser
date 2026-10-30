@@ -26,12 +26,12 @@ namespace Exoduser.UnityPort
    grad=new Texture2D(1,16,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
    for(int i=0;i<16;i++)grad.SetPixel(0,15-i,new Color(12/255f,13/255f,16/255f,.72f*(1f-i/15f)));grad.Apply(false,true);
   }
-  // _mmTickBuild: tile 1 is skipped, 2 #887766, 4 #443355, everything else #665544; one sc-sized square per tile.
+  // _mmTickBuild: tile 1 is skipped, 2 #777a7a, 4 #443355, everything else #555858; one sc-sized square per tile.
   void BuildMap(SourceMap map)
   {
    texFor=map;int mw=map.Data.width,mh=map.Data.height;float sc=Mathf.Min(122f/mw,122f/mh);mapSc=sc;
    mapW=Mathf.Max(1,(int)(mw*sc));mapH=Mathf.Max(1,(int)(mh*sc));
-   var px=new Color32[mapW*mapH];Color32 a=new Color32(136,119,102,255),b=new Color32(68,51,85,255),c=new Color32(102,85,68,255);
+   var px=new Color32[mapW*mapH];Color32 a=new Color32(119,122,122,255),b=new Color32(68,51,85,255),c=new Color32(85,88,88,255);
    var tiles=map.Data.tiles;int size=Mathf.Max(1,Mathf.CeilToInt(sc));
    for(int ty=0;ty<mh;ty++)for(int tx=0;tx<mw;tx++)
    {
@@ -66,7 +66,7 @@ namespace Exoduser.UnityPort
    var p=sim.Player;float px=ox+p.X/T*mapSc,py=oy+p.Y/T*mapSc;float cx=canvas.x+px*k,cy=canvas.y+py*k,r=7*k;
    // direction triangle, then the white disc with the black+white double ring (_mmDrawPlayerMarker without portrait).
    var m=GUI.matrix;RotateLocal(new Vector2(cx,cy),-p.Facing*Mathf.Rad2Deg);Fill(new Rect(cx+r+.5f,cy-1.2f,4,2.4f),Color.white);GUI.matrix=m;
-   Fill(new Rect(cx-r-.5f,cy-r-.5f,(r+.5f)*2,(r+.5f)*2),Color.black);Fill(new Rect(cx-r+.5f,cy-r+.5f,(r-.5f)*2,(r-.5f)*2),Color.white);Fill(new Rect(cx-r+1.5f,cy-r+1.5f,(r-1.5f)*2,(r-1.5f)*2),new Color32(232,226,208,255));
+   Fill(new Rect(cx-r-.5f,cy-r-.5f,(r+.5f)*2,(r+.5f)*2),Color.black);Fill(new Rect(cx-r+.5f,cy-r+.5f,(r-.5f)*2,(r-.5f)*2),Color.white);Fill(new Rect(cx-r+1.5f,cy-r+1.5f,(r-1.5f)*2,(r-1.5f)*2),new Color32(229,226,220,255));
    if(frame!=null){GUI.color=new Color(1,1,1,.94f);GUI.DrawTexture(new Rect(8,8,141.1f,141.1f),frame,ScaleMode.StretchToFill,true);GUI.color=old;}
   }
   // Rotation about a point in the current (scaled) GUI space; RotateAroundPivot assumes an unscaled matrix.
@@ -83,31 +83,31 @@ namespace Exoduser.UnityPort
   void DrawCorner(Info info)
   {
    var box=new Rect(16,188,108,58.3f);float a=.94f;
-   Fill(box,C(21,19,18,.9f*a));Fill(new Rect(box.x,box.y,box.width,1),C(178,140,86,.4f*a));Fill(new Rect(box.x,box.y,2,box.height),C(184,141,81,.64f*a));
-   var tc=C(238,222,194,.93f*a);
+   Fill(box,C(21,19,18,.9f*a));Fill(new Rect(box.x,box.y,box.width,1),C(142,145,145,.4f*a));Fill(new Rect(box.x,box.y,2,box.height),C(144,147,147,.64f*a));
+   var tc=C(226,223,217,.93f*a);
    Star(36,205,5,tc);
    string sp=info.statPoints.ToString()+(info.passivePoints>0?" +"+info.passivePoints:"");
-   GUI.Label(new Rect(46,196,70,17.7f),sp,St(13,TextAnchor.MiddleLeft,tc));
-   Fill(new Rect(28,216.7f,86,1),C(164,127,82,.2f*a));
+   NativeSilverHellUi.Label(new Rect(46,196,70,17.7f),sp,St(13,TextAnchor.MiddleLeft,tc));
+   Fill(new Rect(28,216.7f,86,1),C(130,133,133,.2f*a));
    Lozenge(36,229,4.5f,tc);
    string cp=info.combatPower>=100000?Compact(info.combatPower):info.combatPower.ToString("N0",System.Globalization.CultureInfo.InvariantCulture);
-   GUI.Label(new Rect(46,219,70,21.7f),cp,St(13,TextAnchor.MiddleLeft,tc));
+   NativeSilverHellUi.Label(new Rect(46,219,70,21.7f),cp,St(13,TextAnchor.MiddleLeft,tc));
   }
   void DrawClock(float hudWidth,Info info)
   {
    float a=1f,x=hudWidth/2-85;var box=new Rect(x,17,170,37);
    var o=GUI.color;GUI.color=new Color(1,1,1,a);GUI.DrawTexture(box,grad);GUI.color=o;
-   Fill(new Rect(box.x,box.y,box.width,1),C(179,143,93,.38f*a));
+   Fill(new Rect(box.x,box.y,box.width,1),C(145,148,148,.38f*a));
    int sec=Mathf.Max(0,info.sim.TickCount/60);string t=(sec/60).ToString("00")+":"+(sec%60).ToString("00");
-   var st=St(12,TextAnchor.MiddleCenter,C(240,226,197,.92f*a),true);
+   var st=St(12,TextAnchor.MiddleCenter,C(230,227,221,.92f*a),true);
    // letter-spacing .14em
    float total=0;foreach(char ch in t)total+=st.CalcSize(new GUIContent(ch.ToString())).x+1.68f;float lx=box.center.x-total/2;
-   foreach(char ch in t){GUI.Label(new Rect(lx,23,20,16),ch.ToString(),St(12,TextAnchor.MiddleLeft,C(240,226,197,.92f*a),true));lx+=st.CalcSize(new GUIContent(ch.ToString())).x+1.68f;}
+   foreach(char ch in t){NativeSilverHellUi.Label(new Rect(lx,23,20,16),ch.ToString(),St(12,TextAnchor.MiddleLeft,C(230,227,221,.92f*a),true));lx+=st.CalcSize(new GUIContent(ch.ToString())).x+1.68f;}
    // #stageProgress: 2px track rgba(0,0,0,.45) + shadow 0 1px 2px rgba(0,0,0,.85); #stageProgressFill: linear-gradient(90deg,rgba(112,96,73,.34),rgba(183,166,129,.8),rgba(112,96,73,.34)),
    // width transition .6s ease-out (cubic-bezier(0,0,.58,1)); the fill's own glow is clipped by the track's overflow:hidden
    var bar=new Rect(x+12,44,146,2);Fill(new Rect(bar.x-1,bar.y+1,bar.width+2,2),new Color(0,0,0,.28f*a));Fill(bar,new Color(0,0,0,.45f*a));
    float w=bar.width*ProgressShown(Mathf.Clamp01(info.progress));
-   if(w>0){if(fillGrad==null){fillGrad=new Texture2D(3,1,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};fillGrad.SetPixel(0,0,C(112,96,73,.34f));fillGrad.SetPixel(1,0,C(183,166,129,.8f));fillGrad.SetPixel(2,0,C(112,96,73,.34f));fillGrad.Apply(false,true);}
+   if(w>0){if(fillGrad==null){fillGrad=new Texture2D(3,1,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};fillGrad.SetPixel(0,0,C(96,99,99,.34f));fillGrad.SetPixel(1,0,C(165,168,168,.8f));fillGrad.SetPixel(2,0,C(96,99,99,.34f));fillGrad.Apply(false,true);}
     var oc=GUI.color;GUI.color=new Color(1,1,1,a);GUI.DrawTexture(new Rect(bar.x,bar.y,w,2),fillGrad);GUI.color=oc;}
   }
   Texture2D fillGrad;float progFrom,progTo,progStart=-10;bool progInit;

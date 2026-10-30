@@ -64,9 +64,9 @@ namespace Exoduser.UnityPort
   {
    if(ready)return;ready=true;
    body=new GUIStyle(GUI.skin.label){font=font,fontSize=20,wordWrap=true};
-   body.normal.textColor=new Color(.91f,.87f,.80f);
+   body.normal.textColor=new Color(226/255f,223/255f,217/255f);
    title=new GUIStyle(body){fontSize=32,fontStyle=FontStyle.Bold,alignment=TextAnchor.MiddleCenter};
-   muted=new GUIStyle(body){fontSize=16};muted.normal.textColor=new Color(.66f,.62f,.55f);
+   muted=new GUIStyle(body){fontSize=16};muted.normal.textColor=new Color(157/255f,160/255f,160/255f);
    button=new GUIStyle(GUI.skin.button){font=font,fontSize=20,padding=new RectOffset(12,12,8,8)};
    tabButton=new GUIStyle(button){fontSize=18};
    activeTab=new GUIStyle(tabButton);activeTab.normal.textColor=new Color(.95f,.77f,.43f);
@@ -97,28 +97,28 @@ namespace Exoduser.UnityPort
     {float s1=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s1)/2,(Screen.height-1080*s1)/2,0),Quaternion.identity,Vector3.one*s1);NativePanelTabBar.Draw(NativePanelTabBar.Preset.Settings,"settings");GUI.matrix=Matrix4x4.identity;}
     float scale=Mathf.Min(Screen.width/1280f,Screen.height/720f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1280*scale)/2,(Screen.height-720*scale)/2,0),Quaternion.identity,Vector3.one*scale);
-    var panel=new Rect(300,72,680,576);Fill(panel,new Color(.055f,.047f,.043f,.98f));
-    Border(panel,new Color(.48f,.36f,.23f));Fill(new Rect(328,151,624,1),new Color(.48f,.36f,.23f,.65f));
+    var panel=new Rect(300,72,680,576);Fill(panel,new Color(10/255f,13/255f,13/255f,.98f));
+    Border(panel,new Color(94/255f,97/255f,97/255f));Fill(new Rect(328,151,624,1),new Color(94/255f,97/255f,97/255f,.65f));
     if(page==PausePage.Settings){DrawSettings(fullscreen);return PauseMenuCommand.None;}
     if(page==PausePage.Quit)return DrawQuit();
-    GUI.Label(new Rect(336,98,608,48),dead?T("쓰러졌습니다","You have fallen"):T("일시정지","Paused"),title);
+    NativeSilverHellUi.Label(new Rect(336,98,608,48),dead?T("쓰러졌습니다","You have fallen"):T("일시정지","Paused"),title);
     if(MenuButton(new Rect(388,196,504,58),dead?T("다시 시작","Restart"):T("계속하기","Resume"),0,button))return dead?PauseMenuCommand.Restart:PauseMenuCommand.Resume;
     if(MenuButton(new Rect(388,272,504,58),T("설정","Settings"),1,button))page=PausePage.Settings;
     if(MenuButton(new Rect(388,348,504,58),T("로비로 돌아가기","Return to lobby"),2,button))return PauseMenuCommand.ReturnLobby;
     if(MenuButton(new Rect(388,424,504,58),T("게임 종료","Quit game"),3,button))page=PausePage.Quit;
-    GUI.Label(new Rect(364,524,552,58),T("미리보기의 진행 상황은 저장되지 않습니다.","Progress in this preview is not saved."),muted);
-    GUI.Label(new Rect(364,600,552,28),dead?T("다시 시작하거나 로비로 돌아갈 수 있습니다.","Restart or return to the lobby."):T("↑↓ 선택 · Enter 확인 · ESC 뒤로 · TAB 인벤토리","↑↓ Select · Enter Confirm · ESC Back · TAB Inventory"),muted);
+    NativeSilverHellUi.Label(new Rect(364,524,552,58),T("미리보기의 진행 상황은 저장되지 않습니다.","Progress in this preview is not saved."),muted);
+    NativeSilverHellUi.Label(new Rect(364,600,552,28),dead?T("다시 시작하거나 로비로 돌아갈 수 있습니다.","Restart or return to the lobby."):T("↑↓ 선택 · Enter 확인 · ESC 뒤로 · TAB 인벤토리","↑↓ Select · Enter Confirm · ESC Back · TAB Inventory"),muted);
     return PauseMenuCommand.None;
    }
    finally { GUI.matrix=oldMatrix;GUI.color=oldColor;GUI.enabled=oldEnabled; }
   }
   void DrawSettings(bool fullscreen)
   {
-   GUI.Label(new Rect(336,98,608,48),T("설정","Settings"),title);
+   NativeSilverHellUi.Label(new Rect(336,98,608,48),T("설정","Settings"),title);
    string[] tabs={T("화면","Display"),T("소리","Audio"),T("조작 안내","Controls")};
    for(int i=0;i<tabs.Length;i++)if(MenuButton(new Rect(340+i*202,174,194,44),tabs[i],i,tab==i?activeTab:tabButton))tab=i;
    if(tab==0)DrawDisplay(fullscreen);else if(tab==1)DrawAudio();else DrawControls();
-   GUI.Label(new Rect(348,528,584,56),T("↑↓ 선택 · ←→ 값 조절 · Enter 확인\n","↑↓ Select · ←→ Adjust · Enter Confirm\n")+SettingsPersistenceNotice(),muted);
+   NativeSilverHellUi.Label(new Rect(348,528,584,56),T("↑↓ 선택 · ←→ 값 조절 · Enter 확인\n","↑↓ Select · ←→ Adjust · Enter Confirm\n")+SettingsPersistenceNotice(),muted);
    if(MenuButton(new Rect(340,588,288,44),T("기본값 복원","Restore defaults"),navigation.Count-2,button))RestoreDefaults();
    if(MenuButton(new Rect(652,588,288,44),T("뒤로","Back"),navigation.Count-1,button))navigation.BackPage();
   }
@@ -132,15 +132,15 @@ namespace Exoduser.UnityPort
   }
   void DrawA15FrameCard(Rect card)
   {
-   Fill(card,new Color(.10f,.085f,.07f,.85f));Border(card,new Color(.34f,.27f,.19f));GUI.Label(new Rect(card.x+12,card.y+12,card.width-24,38),T("프레임 제한","Frame rate limit"),body);
+   Fill(card,new Color(20/255f,23/255f,23/255f,.85f));Border(card,new Color(69/255f,72/255f,72/255f));NativeSilverHellUi.Label(new Rect(card.x+12,card.y+12,card.width-24,38),T("프레임 제한","Frame rate limit"),body);
    PointAt(card,4);FocusBorder(card,4);bool enabled=GUI.enabled;GUI.enabled=enabled&&frameCapChanged!=null;
    float buttonW=(card.width-36)/NativeSettingsState.FrameCapCount;
-   for(int i=0;i<NativeSettingsState.FrameCapCount;i++){int cap=NativeSettingsState.GetFrameCap(i);string label=cap==0?T("무제한","Unlimited"):cap.ToString();if(GUI.Button(new Rect(card.x+12+i*buttonW,card.y+78,buttonW-2,46),label,settings.FrameCap==cap?activeFpsButton:fpsButton)){settings.TrySetFrameCap(cap);frameCapChanged(cap);navigation.Fence();}}
+   for(int i=0;i<NativeSettingsState.FrameCapCount;i++){int cap=NativeSettingsState.GetFrameCap(i);string label=cap==0?T("무제한","Unlimited"):cap.ToString();if(NativeSilverHellUi.Button(new Rect(card.x+12+i*buttonW,card.y+78,buttonW-2,46),label,settings.FrameCap==cap?activeFpsButton:fpsButton)){settings.TrySetFrameCap(cap);frameCapChanged(cap);navigation.Fence();}}
    GUI.enabled=enabled;
   }
   void DrawA15FullscreenCard(Rect card,bool fullscreen,int cursor)
   {
-   Fill(card,new Color(.10f,.085f,.07f,.85f));Border(card,new Color(.34f,.27f,.19f));GUI.Label(new Rect(card.x+12,card.y+12,card.width-24,38),T("전체 화면","Fullscreen"),body);
+   Fill(card,new Color(20/255f,23/255f,23/255f,.85f));Border(card,new Color(69/255f,72/255f,72/255f));NativeSilverHellUi.Label(new Rect(card.x+12,card.y+12,card.width-24,38),T("전체 화면","Fullscreen"),body);
    PointAt(card,cursor);FocusBorder(card,cursor);bool enabled=GUI.enabled;GUI.enabled=enabled&&fullscreenChanged!=null;
    bool next=GUI.Toggle(new Rect(card.x+12,card.y+76,card.width-24,48),fullscreen,fullscreen?T("켜짐","On"):T("꺼짐","Off"),button);
    if(next!=fullscreen&&fullscreenChanged!=null){fullscreenChanged(next);navigation.Fence();}GUI.enabled=enabled;
@@ -148,8 +148,8 @@ namespace Exoduser.UnityPort
   void DrawA15VolumeCard(Rect card,bool sfx)
   {
    int value=sfx?settings.SfxPercent:settings.BgmPercent,index=sfx?4:5;bool connected=sfx?sfxChanged!=null:bgmChanged!=null;
-   Fill(card,new Color(.10f,.085f,.07f,.85f));Border(card,new Color(.34f,.27f,.19f));PointAt(card,index);FocusBorder(card,index);
-   GUI.Label(new Rect(card.x+12,card.y+12,card.width-140,38),sfx?T("효과음","Sound effects"):T("배경 음악","Background music"),body);GUI.Label(new Rect(card.xMax-110,card.y+12,98,38),value+"%",body);
+   Fill(card,new Color(20/255f,23/255f,23/255f,.85f));Border(card,new Color(69/255f,72/255f,72/255f));PointAt(card,index);FocusBorder(card,index);
+   NativeSilverHellUi.Label(new Rect(card.x+12,card.y+12,card.width-140,38),sfx?T("효과음","Sound effects"):T("배경 음악","Background music"),body);NativeSilverHellUi.Label(new Rect(card.xMax-110,card.y+12,98,38),value+"%",body);
    bool enabled=GUI.enabled;GUI.enabled=enabled&&connected;int next=Mathf.RoundToInt(GUI.HorizontalSlider(new Rect(card.x+16,card.y+88,card.width-32,34),value,0,100));GUI.enabled=enabled;
    if(next!=value&&connected){if(sfx){settings.SetSfxPercent(next);sfxChanged(settings.SfxPercent);}else{settings.SetBgmPercent(next);bgmChanged(settings.BgmPercent);}}
   }
@@ -190,14 +190,14 @@ namespace Exoduser.UnityPort
   }
   void DrawDisplay(bool fullscreen)
   {
-   GUI.Label(new Rect(348,246,584,34),T("프레임 제한","Frame rate limit"),body);
+   NativeSilverHellUi.Label(new Rect(348,246,584,34),T("프레임 제한","Frame rate limit"),body);
    bool enabled=GUI.enabled;GUI.enabled=enabled&&frameCapChanged!=null;
    PointAt(new Rect(344,286,592,54),3);FocusBorder(new Rect(344,286,592,54),3);
    for(int i=0;i<NativeSettingsState.FrameCapCount;i++)
    {
     int cap=NativeSettingsState.GetFrameCap(i);
     string label=cap==0?T("무제한","Unlimited"):cap.ToString();
-    if(GUI.Button(new Rect(348+i*98,290,92,46),label,settings.FrameCap==cap?activeFpsButton:fpsButton))
+    if(NativeSilverHellUi.Button(new Rect(348+i*98,290,92,46),label,settings.FrameCap==cap?activeFpsButton:fpsButton))
     { settings.TrySetFrameCap(cap);frameCapChanged(cap);navigation.Fence(); }
    }
    GUI.enabled=enabled&&fullscreenChanged!=null;
@@ -217,7 +217,7 @@ namespace Exoduser.UnityPort
   int VolumeRow(float y,string name,int value,bool connected)
   {
    int cursor=y<300?3:4;PointAt(new Rect(344,y,592,90),cursor);FocusBorder(new Rect(344,y,592,90),cursor);
-   GUI.Label(new Rect(348,y,456,34),name,body);GUI.Label(new Rect(830,y,104,34),value+"%",body);
+   NativeSilverHellUi.Label(new Rect(348,y,456,34),name,body);NativeSilverHellUi.Label(new Rect(830,y,104,34),value+"%",body);
    bool enabled=GUI.enabled;GUI.enabled=enabled&&connected;
    int next=Mathf.RoundToInt(GUI.HorizontalSlider(new Rect(350,y+54,580,34),value,0,100));GUI.enabled=enabled;
    return connected?next:value;
@@ -229,9 +229,9 @@ namespace Exoduser.UnityPort
    string[] actions={T("이동","Move"),T("기본 공격 / 기검참","Attack / Ki Slash"),T("차지 후 놓아서 발사","Charge and release"),T("소지품 열기 / 닫기","Open / close inventory"),T("스킬 창 열기 / 닫기","Open / close skills"),T("닫기 / 일시정지","Back / Pause")};
    for(int i=0;i<keys.Length;i++)
    {
-    GUI.Label(new Rect(348,246+i*38,240,38),keys[i],body);GUI.Label(new Rect(600,246+i*38,332,38),actions[i],body);
+    NativeSilverHellUi.Label(new Rect(348,246+i*38,240,38),keys[i],body);NativeSilverHellUi.Label(new Rect(600,246+i*38,332,38),actions[i],body);
    }
-   if(GUI.Button(new Rect(348,480,584,40),T("키 설정 변경","Change key bindings"),button)){keyPage=true;keyScroll=0;if(keyList==null)keyList=new NativeKeyBindList(NativeKeyBindInput.Bindings);}
+   if(NativeSilverHellUi.Button(new Rect(348,480,584,40),T("키 설정 변경","Change key bindings"),button)){keyPage=true;keyScroll=0;if(keyList==null)keyList=new NativeKeyBindList(NativeKeyBindInput.Bindings);}
   }
   // Legacy A16 QA hook; normal settings draw the list inside Controls.
   void DrawKeyPage()
@@ -244,18 +244,18 @@ namespace Exoduser.UnityPort
    else if(SettingsPersistenceEnabled){keyList.SaveNote="키 설정 변경은 "+NativePlatformLabel.Ko+"에 자동 저장됩니다";keyList.SaveNoteEn="Key binding changes are saved on "+NativePlatformLabel.En+"";}
    else{keyList.SaveNote="검수 실행의 키 설정은 저장하지 않습니다";keyList.SaveNoteEn="Key bindings are not saved during this QA run";}
    var pane=new Rect(45,60,1830,880);
-   Fill(pane,new Color(.04f,.04f,.045f,.97f));Border(pane,new Color(.48f,.36f,.23f,.6f));
+   Fill(pane,new Color(.04f,.04f,.045f,.97f));Border(pane,new Color(94/255f,97/255f,97/255f,.6f));
    float max=Mathf.Max(0,keyList.ContentHeight+51+32-pane.height);
    if(Event.current.type==EventType.ScrollWheel&&pane.Contains(Event.current.mousePosition)){keyScroll=Mathf.Clamp(keyScroll+Event.current.delta.y*40f,0,max);Event.current.Use();}
    keyScroll=Mathf.Clamp(keyScroll,0,max);
    GUI.BeginGroup(pane);
    // web `#settings-page-controls .set-label` computed style: Noto Sans KR 600 16px, letter-spacing .64px, rgb(200,181,143), left aligned, box 1736x39 (padding 4/0/10), hairline rgb(73,65,54) below, list 12px under it
    if(keyLabelStyle==null){keyLabelStyle=new GUIStyle(GUI.skin.label){font=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold")??font,fontSize=16,alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset()};keyLabelStyle.normal.textColor=new Color(200/255f,181/255f,143/255f);}
-   {float lx=42,ly=14-keyScroll+4;foreach(char ch in T("조작 키 설정 (클릭하여 변경)","Key bindings (click to change)")){string g=ch.ToString();GUI.Label(new Rect(lx,ly,40,24),g,keyLabelStyle);lx+=keyLabelStyle.CalcSize(new GUIContent(g)).x+.64f;}
+   {float lx=42,ly=14-keyScroll+4;foreach(char ch in T("조작 키 설정 (클릭하여 변경)","Key bindings (click to change)")){string g=ch.ToString();NativeSilverHellUi.Label(new Rect(lx,ly,40,24),g,keyLabelStyle);lx+=keyLabelStyle.CalcSize(new GUIContent(g)).x+.64f;}
     Fill(new Rect(42,14-keyScroll+38,1736,1),new Color(73/255f,65/255f,54/255f));}
    keyList.Draw(new Vector2(42,14+51-keyScroll),new Rect(0,0,pane.width,pane.height));GUI.EndGroup();
    keyList.DrawToasts();
-   if(GUI.Button(new Rect(860,984,200,44),T("뒤로","Back"),button)&&!keyList.Listening)keyPage=false;
+   if(NativeSilverHellUi.Button(new Rect(860,984,200,44),T("뒤로","Back"),button)&&!keyList.Listening)keyPage=false;
   }
   void RestoreDefaults()
   {
@@ -266,8 +266,8 @@ namespace Exoduser.UnityPort
   }
   PauseMenuCommand DrawQuit()
   {
-   GUI.Label(new Rect(340,160,600,112),T("게임을 종료하시겠습니까?","Quit the game?"),title);
-   GUI.Label(new Rect(364,302,552,76),T("미리보기의 진행 상황은 저장되지 않습니다.","Progress in this preview is not saved."),body);
+   NativeSilverHellUi.Label(new Rect(340,160,600,112),T("게임을 종료하시겠습니까?","Quit the game?"),title);
+   NativeSilverHellUi.Label(new Rect(364,302,552,76),T("미리보기의 진행 상황은 저장되지 않습니다.","Progress in this preview is not saved."),body);
    if(MenuButton(new Rect(360,450,264,58),T("취소","Cancel"),0,button))navigation.BackPage();
    if(MenuButton(new Rect(656,450,264,58),T("종료","Quit"),1,button))return PauseMenuCommand.Quit;
    return PauseMenuCommand.None;

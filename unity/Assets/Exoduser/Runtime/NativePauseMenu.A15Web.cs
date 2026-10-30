@@ -15,8 +15,8 @@ namespace Exoduser.UnityPort
   static readonly OptionDef DefFps=new OptionDef("optFps","fpsCap",1,OptionKind.Range,0,5,1,5,"fps");
   static readonly OptionDef DefSfx=new OptionDef("optSfx","sfxVol",2,OptionKind.Range,0,100,1,60,"pct");
   static readonly OptionDef DefBgm=new OptionDef("optBgm","bgmVol",2,OptionKind.Range,0,100,1,60,"pct");
-  static readonly Color Bone=new Color32(223,214,194,255),Title=new Color32(235,218,186,255),Sub=new Color32(182,165,143,255),Dim=new Color32(143,129,112,255),Brass=new Color32(172,121,83,255);
-  static readonly Color Line=new Color32(164,147,115,128),LineSoft=new Color32(164,147,115,46),LineTab=new Color32(164,147,115,77),BoxLine=new Color32(164,147,115,153),Danger=new Color32(176,40,28,255);
+  static readonly Color Bone=new Color32(217,214,208,255),Title=new Color32(222,219,213,255),Sub=new Color32(165,168,168,255),Dim=new Color32(129,132,132,255),Brass=new Color32(127,130,130,255);
+  static readonly Color Line=new Color32(146,149,149,128),LineSoft=new Color32(146,149,149,46),LineTab=new Color32(146,149,149,77),BoxLine=new Color32(146,149,149,153),Danger=new Color32(176,40,28,255);
   const float PagesX=96,PagesY=256,PagesW=1728,PagesH=727;
   readonly Dictionary<int,List<It>> a15Items=new Dictionary<int,List<It>>();
   readonly Dictionary<string,GUIStyle> a15Styles=new Dictionary<string,GUIStyle>();
@@ -50,7 +50,7 @@ namespace Exoduser.UnityPort
    s=new GUIStyle(GUI.skin.label){font=display?(cinzel??FontFor(LocaleCode)):FontFor(LocaleCode),fontSize=size,fontStyle=fs,alignment=a,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset()};
    s.normal.textColor=c;a15Styles[key]=s;return s;
   }
-  void Txt(Rect r,string text,int size,Color c,TextAnchor a=TextAnchor.MiddleLeft,FontStyle fs=FontStyle.Normal,bool display=false){GUI.Label(r,text,St(size,fs,c,a,display));}
+  void Txt(Rect r,string text,int size,Color c,TextAnchor a=TextAnchor.MiddleLeft,FontStyle fs=FontStyle.Normal,bool display=false){NativeSilverHellUi.Label(r,text,St(size,fs,c,a,display));}
   float TW(string text,int size,FontStyle fs,bool display=false){return St(size,fs,Color.white,TextAnchor.MiddleLeft,display).CalcSize(new GUIContent(text)).x;}
   // CSS letter-spacing: per-glyph for scripts that do not join (the web uses .08em on headings).
   void Spaced(Rect r,string text,int size,Color c,float spacing,FontStyle fs=FontStyle.Bold,bool display=false)
@@ -58,7 +58,7 @@ namespace Exoduser.UnityPort
    string code=LobbyLanguage.Normalize(LocaleCode);
    if(code=="th"||code=="ar"||spacing<=0){Txt(r,text,size,c,TextAnchor.MiddleLeft,fs,display);return;}
    float x=r.x;var st=St(size,fs,c,TextAnchor.MiddleLeft,display);
-   foreach(char ch in text){string g=ch.ToString();GUI.Label(new Rect(x,r.y,size*2,r.height),g,st);x+=st.CalcSize(new GUIContent(g)).x+spacing;}
+   foreach(char ch in text){string g=ch.ToString();NativeSilverHellUi.Label(new Rect(x,r.y,size*2,r.height),g,st);x+=st.CalcSize(new GUIContent(g)).x+spacing;}
   }
   // ---- primitives ----
   static void HLine(float x,float y,float w,Color c){Fill(new Rect(x,y,w,1),c);}
@@ -197,7 +197,7 @@ namespace Exoduser.UnityPort
     PointAt(r,i);bool focus=navigation.Focused&&navigation.Cursor==i;
     Txt(new Rect(x+2,213+8,w,22),s,18,sel?Title:focus?Bone:Sub,TextAnchor.MiddleLeft,FontStyle.Bold);
     if(sel)Fill(new Rect(x,253,w,2),new Color32(176,40,28,255));else if(focus)Fill(new Rect(x,253,w,1),Line);
-    if(GUI.Button(r,GUIContent.none,GUIStyle.none)){if(tab!=i){tab=i;openSelect=-1;}navigation.Fence();}
+    if(NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none)){if(tab!=i){tab=i;openSelect=-1;}navigation.Fence();}
     x+=w+40;
    }
    HLine(96,255,1728,LineTab);
@@ -215,15 +215,15 @@ namespace Exoduser.UnityPort
    foreach(var it in items)DrawItem(it,sy,fullscreen);
    GUI.EndGroup();
    GUI.enabled=wasEnabled;
-   if(max>0&&sy<max-1)Fill(new Rect(PagesX,PagesY+PagesH-24,PagesW,24),new Color32(20,17,16,200));
+   if(max>0&&sy<max-1)Fill(new Rect(PagesX,PagesY+PagesH-24,PagesW,24),new Color32(16,19,19,200));
    // Footer: autosave note + close.
    HLine(96,983,1728,LineSoft);
-   Txt(new Rect(96,1004,500,20),W("b.settingsAutoSaveLabel","✓ Settings saved automatically"),14,SettingsPersistenceProblem||!SettingsPersistenceEnabled?new Color32(176,120,84,255):new Color32(120,160,128,255));
+   Txt(new Rect(96,1004,500,20),W("b.settingsAutoSaveLabel","✓ Settings saved automatically"),14,SettingsPersistenceProblem||!SettingsPersistenceEnabled?new Color32(127,130,130,255):new Color32(120,160,128,255));
    if(SettingsHostApplyPending||SettingsHostApplyFailed||SettingsPersistenceProblem||!SettingsPersistenceEnabled)Txt(new Rect(96,1022,1200,18),SettingsPersistenceNotice(),11,Dim);
    if(Time.unscaledTime<presetNoteUntil)Txt(new Rect(260,1004,600,20),presetNote,14,new Color32(120,200,150,255));
    var close=new Rect(1644,994,180,40);int closeIdx=navigation.Count-1;
    DrawButton(close,W("b.setClose",T("닫기 [ESC]","Close [ESC]")),false,false);PointAt(close,closeIdx);FocusBorder(close,closeIdx);
-   if(!popup&&GUI.Button(close,GUIContent.none,GUIStyle.none)&&!(keyList!=null&&keyList.Listening)){navigation.Fence();if(!navigation.BackPage())a15Command=PauseMenuCommand.Resume;}
+   if(!popup&&NativeSilverHellUi.Button(close,GUIContent.none,GUIStyle.none)&&!(keyList!=null&&keyList.Listening)){navigation.Fence();if(!navigation.BackPage())a15Command=PauseMenuCommand.Resume;}
    if(popup)DrawPopup(items,sy);
    return a15Command;
   }
@@ -239,11 +239,11 @@ namespace Exoduser.UnityPort
   }
   void DrawButton(Rect r,string text,bool selected,bool danger)
   {
-   Fill(r,selected?new Color32(40,32,26,255):new Color32(23,18,17,255));
-   Border(r,danger?new Color32(110,32,26,255):(selected?new Color32(223,214,194,200):BoxLine));
-   Txt(r,text,16,danger?new Color32(214,170,150,255):Bone,TextAnchor.MiddleCenter,FontStyle.Bold);
+   Fill(r,selected?new Color32(31,34,34,255):new Color32(17,20,20,255));
+   Border(r,danger?new Color32(110,32,26,255):(selected?new Color32(217,214,208,200):BoxLine));
+   Txt(r,text,16,danger?new Color32(176,179,179,255):Bone,TextAnchor.MiddleCenter,FontStyle.Bold);
   }
-  bool Clicked(Rect r){return GUI.Button(r,GUIContent.none,GUIStyle.none);}
+  bool Clicked(Rect r){return NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none);}
   void DrawItem(It it,float sy,bool fullscreen)
   {
    var r=new Rect(it.r.x,it.r.y-sy,it.r.width,it.r.height);
@@ -289,7 +289,7 @@ namespace Exoduser.UnityPort
    var ctl=new Rect(r.x+250,r.y+13.5f,ctlW,20);
    Txt(new Rect(r.xMax-valW,r.y+13,valW,21),Fmt(d,v),15,ValueColor(d,v),TextAnchor.MiddleRight,FontStyle.Bold,false);
    float t=(v-d.Min)/(float)(d.Max-d.Min);
-   Fill(new Rect(ctl.x,ctl.y+9.5f,ctl.width,1),new Color32(164,147,115,90));
+   Fill(new Rect(ctl.x,ctl.y+9.5f,ctl.width,1),new Color32(146,149,149,90));
    Diamond(ctl.x+4.5f+(ctl.width-9)*t,ctl.y+10,9,Brass);
    int id=GUIUtility.GetControlID(FocusType.Passive);Event e=Event.current;
    var hit=new Rect(ctl.x-4,ctl.y-6,ctl.width+8,32);
@@ -305,7 +305,7 @@ namespace Exoduser.UnityPort
   {
    var d=it.def;DrawRowFrame(it,r,cursor,r.width-18-20);
    var box=new Rect(r.xMax-18,r.y+14.5f,18,18);bool on=GetVal(d)!=0;
-   Fill(box,new Color32(14,12,11,255));Border(box,on?new Color32(223,214,194,200):BoxLine);
+   Fill(box,new Color32(10,13,13,255));Border(box,on?new Color32(217,214,208,200):BoxLine);
    if(on)Diamond(box.center.x,box.center.y,6,Brass);
    var hit=new Rect(r.x,r.y,r.width,47);
    if(Clicked(hit)){SetVal(d,on?0:1);navigation.Fence();navigation.PointAt(cursor);}
@@ -331,7 +331,7 @@ namespace Exoduser.UnityPort
    float selW=it.id=="optAtmos"?160:280;
    DrawRowFrame(it,r,cursor,r.width-selW-20);
    var box=new Rect(r.xMax-selW,r.y+4.5f,selW,38);
-   Fill(box,new Color32(14,12,11,255));Border(box,Line);
+   Fill(box,new Color32(10,13,13,255));Border(box,Line);
    string label=current<labels.Count?labels[current]:"";
    Txt(new Rect(box.x+14,box.y,selW-48,38),label,16,Bone);
    float cx=box.xMax-17,cy=box.center.y;Fill(new Rect(cx-4,cy-1,2,2),Sub);Fill(new Rect(cx-2,cy+1,4,2),Sub);Fill(new Rect(cx+2,cy-1,2,2),Sub);
@@ -347,15 +347,15 @@ namespace Exoduser.UnityPort
    Event e=Event.current;float max=Mathf.Max(0,34*labels.Count+4-box.height);
    if(e.type==EventType.ScrollWheel&&box.Contains(e.mousePosition)){popupScroll=Mathf.Clamp(popupScroll+e.delta.y*34f,0,max);e.Use();}
    popupScroll=Mathf.Clamp(popupScroll,0,max);
-   Fill(box,new Color32(14,12,11,250));Border(box,BoxLine);
+   Fill(box,new Color32(10,13,13,250));Border(box,BoxLine);
    GUI.BeginGroup(box);
    for(int i=0;i<labels.Count;i++)
    {
     var row=new Rect(2,2+i*34-popupScroll,box.width-4,34);if(row.yMax<0||row.y>box.height)continue;
     bool hover=row.Contains(e.mousePosition);
-    if(i==current)Fill(row,new Color32(60,30,26,255));else if(hover)Fill(row,new Color32(34,28,24,255));
+    if(i==current)Fill(row,new Color32(34,37,37,255));else if(hover)Fill(row,new Color32(27,30,30,255));
     Txt(new Rect(row.x+12,row.y,row.width-16,34),labels[i],15,i==current?Title:Bone);
-    if(GUI.Button(row,GUIContent.none,GUIStyle.none)){ApplySelect(it,i,values);openSelect=-1;navigation.Fence();}
+    if(NativeSilverHellUi.Button(row,GUIContent.none,GUIStyle.none)){ApplySelect(it,i,values);openSelect=-1;navigation.Fence();}
    }
    GUI.EndGroup();
    if(e.type==EventType.MouseDown&&!box.Contains(e.mousePosition)){openSelect=-1;e.Use();}
@@ -414,7 +414,7 @@ namespace Exoduser.UnityPort
    bool character=it.id.StartsWith("char",StringComparison.Ordinal);
    int idx=it.id.EndsWith("1",StringComparison.Ordinal)?1:0;
    bool sel=character?idx==CharacterIndex:settings.Options.Get("cursor")==idx;
-   Fill(r,sel?new Color32(36,29,24,255):new Color32(20,16,15,255));Border(r,sel?new Color32(223,214,194,220):new Color32(164,147,115,70));
+   Fill(r,sel?new Color32(28,31,31,255):new Color32(15,18,18,255));Border(r,sel?new Color32(217,214,208,220):new Color32(146,149,149,70));
    if(character)
    {
     string[] parts=W("char."+idx,"").Split('\u0002');
@@ -422,7 +422,7 @@ namespace Exoduser.UnityPort
     if(sprite!=null){sprite.filterMode=FilterMode.Point;GUI.DrawTexture(new Rect(r.x+r.width/2-44,r.y+14,88,88),sprite,ScaleMode.ScaleToFit,true);}
     Txt(new Rect(r.x+8,r.y+118,r.width-16,24),parts.Length>0?parts[0]:"",16,sel?Title:Bone,TextAnchor.MiddleCenter,FontStyle.Bold);
     var desc=St(13,FontStyle.Normal,Dim,TextAnchor.UpperCenter);desc.wordWrap=true;
-    GUI.Label(new Rect(r.x+14,r.y+146,r.width-28,48),parts.Length>1?parts[1]:"",desc);
+    NativeSilverHellUi.Label(new Rect(r.x+14,r.y+146,r.width-28,48),parts.Length>1?parts[1]:"",desc);
     if(sel&&parts.Length>2)Txt(new Rect(r.x+8,r.y+210,r.width-16,20),parts[2],13,Sub,TextAnchor.MiddleCenter);
    }
    else
@@ -439,7 +439,7 @@ namespace Exoduser.UnityPort
   public int CharacterIndex { get; set; }
   void DrawDiag(Rect r)
   {
-   Fill(r,new Color32(14,12,11,180));Border(r,LineSoft);
+   Fill(r,new Color32(10,13,13,180));Border(r,LineSoft);
    string[] labels={"GPU:",T("그래픽 API:","Graphics API:"),W("b.diagTier",T("성능 등급:","Performance tier:")),W("b.diagBench",T("벤치 FPS:","Bench FPS:"))};
    float[] xs={0,400,892,1188};float[] ws={388,480,288,288};
    for(int i=0;i<4;i++)
@@ -448,7 +448,7 @@ namespace Exoduser.UnityPort
     Txt(new Rect(x,r.y+14,ws[i],22),labels[i],14,Dim,TextAnchor.MiddleLeft,FontStyle.Normal,false);
     string value=DiagLine!=null?DiagLine(i):"";
     var st=St(i==0?15:i==1?15:18,FontStyle.Normal,i==2?new Color32(255,204,68,255):Bone,TextAnchor.UpperLeft);st.wordWrap=i<2;
-    GUI.Label(new Rect(x,r.y+40,ws[i],60),value,st);
+    NativeSilverHellUi.Label(new Rect(x,r.y+40,ws[i],60),value,st);
    }
   }
   void DrawKeys(It it,float sy)

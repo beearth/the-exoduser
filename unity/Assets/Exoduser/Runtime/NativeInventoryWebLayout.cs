@@ -99,8 +99,8 @@ namespace Exoduser.UnityPort {
         }
         void Txt(Rect r,string s,int size,Color c,int weight=500,TextAnchor anchor=TextAnchor.MiddleLeft,bool shadow=false){
             var st=TextStyle(size,weight,anchor);
-            if(shadow){st.normal.textColor=new Color(0,0,0,.75f);GUI.Label(new Rect(r.x,r.y+1,r.width,r.height),s,st);}
-            st.normal.textColor=c;GUI.Label(r,s,st);
+            if(shadow){st.normal.textColor=new Color(0,0,0,.75f);NativeSilverHellUi.Label(new Rect(r.x,r.y+1,r.width,r.height),s,st);}
+            st.normal.textColor=c;NativeSilverHellUi.Label(r,s,st);
         }
         float TextWidth(string s,int size,int weight){return TextStyle(size,weight,TextAnchor.MiddleLeft).CalcSize(new GUIContent(s)).x;}
 
@@ -113,7 +113,7 @@ namespace Exoduser.UnityPort {
                 st=new GUIStyle(GUI.skin.label){font=fontSerif,fontSize=size,alignment=anchor,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};
                 textStyles[key]=st;
             }
-            st.normal.textColor=c;GUI.Label(r,s,st);
+            st.normal.textColor=c;NativeSilverHellUi.Label(r,s,st);
         }
         // CSS letter-spacing: IMGUI has none, so advance glyph by glyph (left aligned only).
         void TxtSp(Rect r,string s,int size,Color c,int weight,float spacing){
@@ -203,18 +203,18 @@ namespace Exoduser.UnityPort {
         // Web .panel-nav-tab / .ui-section-tab / .inv-actions button: gradient over the iron plate over #232225.
         void PlateFace(Rect r,bool active){
             Fill(r,C(35,34,37));GUI.DrawTexture(r,plate,ScaleMode.StretchToFill);
-            if(active){Grad(r,C(87,23,12,.6f),C(38,9,7,.72f));Fill(new Rect(r.x,r.yMax-2,r.width,2),C(172,121,83));}
+            if(active){Grad(r,C(87,23,12,.6f),C(38,9,7,.72f));Fill(new Rect(r.x,r.yMax-2,r.width,2),C(127,130,130));}
             else Grad(r,C(21,20,23,.51f),C(11,10,12,.675f));
             if(r.Contains(Event.current.mousePosition)&&GUI.enabled)Fill(r,new Color(1,1,1,.07f));
         }
         bool PlateButton(Rect r,string label,int size,bool active=false,bool shadow=true){
             PlateFace(r,active);
-            Txt(r,label,size,active?C(244,230,203):C(199,190,173),500,TextAnchor.MiddleCenter,shadow);
-            return GUI.Button(r,GUIContent.none,GUIStyle.none);
+            Txt(r,label,size,active?C(244,230,203):C(194,191,185),500,TextAnchor.MiddleCenter,shadow);
+            return NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none);
         }
         // Display-only tab (sections not ported yet): same face, no click.
         void PlateTab(Rect r,string label,int size,bool active){
-            PlateFace(r,active);Txt(r,label,size,active?C(244,230,203):C(199,190,173),500,TextAnchor.MiddleCenter,true);
+            PlateFace(r,active);Txt(r,label,size,active?C(244,230,203):C(194,191,185),500,TextAnchor.MiddleCenter,true);
         }
     }
 }

@@ -86,7 +86,7 @@ namespace Exoduser.UnityPort
    var R = sim.Regions; if (R == null || idx < 0 || idx > 3) return;
    var r = R[idx]; bool ch1 = sim.Config.StageIndex == 0;
    string nameKo = ch1 ? KoNames[idx] : new[] { "북서", "북동", "남서", "남동" }[idx], nameEn = ch1 ? EnNames[idx] : new[] { "Northwest", "Northeast", "Southwest", "Southeast" }[idx];
-   bGem = purge ? Hex("#d8b778") : (r.FbIdx >= 0 ? Desat(Hex(ElColor[idx])) : Hex("#8d7c65"));
+   bGem = purge ? Hex("#bcb9b3") : (r.FbIdx >= 0 ? Desat(Hex(ElColor[idx])) : Hex("#7c7f7f"));
    if (purge) { bKr = L(nameKo, nameEn) + " — " + L("정화", "Purged"); bEn = "REGION PURGED · " + sim.RegionClearedCount() + " / 4"; bSub = ""; }
    else
    {
@@ -116,7 +116,7 @@ namespace Exoduser.UnityPort
    {
     float dx = (x + .5f - fw / 2f) / (fw / 2f), dy = (y + .5f - fh / 2f) / (fh / 2f); float d = Mathf.Sqrt(dx * dx + dy * dy) / 1.4142f * 1.4142f;   // farthest-corner ellipse
     d = Mathf.Sqrt(dx * dx + dy * dy) / 1.4142f;
-    Color c; if (d <= .55f) c = Color.Lerp(C(255, 138, 58, .22f), C(216, 183, 120, .1f), d / .55f); else if (d <= .75f) c = Color.Lerp(C(216, 183, 120, .1f), C(216, 183, 120, 0f), (d - .55f) / .2f); else c = C(216, 183, 120, 0f);
+    Color c; if (d <= .55f) c = Color.Lerp(C(255, 138, 58, .22f), C(188,185,179, .1f), d / .55f); else if (d <= .75f) c = Color.Lerp(C(188,185,179, .1f), C(188,185,179, 0f), (d - .55f) / .2f); else c = C(188,185,179, 0f);
     flareTex.SetPixel(x, fh - 1 - y, c);
    }
    flareTex.Apply(false, true);
@@ -149,7 +149,7 @@ namespace Exoduser.UnityPort
    foreach (char ch in s)
    {
     bool lt = latin != null && Latin(ch); var f = lt ? latin : nanum; var st = St(f, size, TextAnchor.MiddleLeft, lt ? latinFs : FontStyle.Normal); st.normal.textColor = col;
-    GUI.Label(new Rect(x, cy + off.y - size, 80, size * 2), ch.ToString(), st);
+    NativeSilverHellUi.Label(new Rect(x, cy + off.y - size, 80, size * 2), ch.ToString(), st);
     x += CharW(ch, size, latin) + ls;
    }
   }
@@ -219,7 +219,7 @@ namespace Exoduser.UnityPort
    GUI.color = old;
    // row 1: gem  KR  gem
    float kw = SpacedWidth(bKr, KrSize, KrLs, cinzelDeco);
-   Color krCol = bannerPurge ? C(233, 216, 180, .96f * op) : C(223, 214, 194, .92f * op);
+   Color krCol = bannerPurge ? C(220,217,211, .96f * op) : C(217,214,208, .92f * op);
    Ring(bKr, cx, top + KrCy, KrSize, KrLs, cinzelDeco, new Color(0, 0, 0, .9f * op), 5f, 4f);                       // filter: drop-shadow(0 4px 10px rgba(0,0,0,.9))
    SpacedLine(bKr, cx, top + KrCy, KrSize, KrLs, new Color(0, 0, 0, .55f * op), cinzelDeco, new Vector2(0, 2));      // text-shadow 0 2px 6px #000
    if (blur > .6f) { Ring(bKr, cx, top + KrCy, KrSize, KrLs, cinzelDeco, new Color(krCol.r, krCol.g, krCol.b, krCol.a * 2.2f), blur * .5f, 0); SpacedLine(bKr, cx, top + KrCy, KrSize, KrLs, new Color(krCol.r, krCol.g, krCol.b, krCol.a * .3f), cinzelDeco, Vector2.zero); }
@@ -232,13 +232,13 @@ namespace Exoduser.UnityPort
    string en = bEn.ToUpperInvariant(); int enSize; float enLs; FitBoldLine(en, out enSize, out enLs);
    latinFs = FontStyle.Bold;
    Ring(en, cx, top + EnCy, enSize, enLs, cinzel, new Color(0, 0, 0, .9f * op), 5f, 4f);
-   SpacedLine(en, cx, top + EnCy, enSize, enLs, C(168, 153, 127, .72f * op), cinzel, Vector2.zero); latinFs = FontStyle.Normal;
+   SpacedLine(en, cx, top + EnCy, enSize, enLs, C(152,155,155, .72f * op), cinzel, Vector2.zero); latinFs = FontStyle.Normal;
    // row 3: sub line
    if (!string.IsNullOrEmpty(bSub))
    {
     Ring(bSub, cx, top + SubCy, SubSize, SubLs, null, new Color(0, 0, 0, .9f * op), 5f, 4f);
     SpacedLine(bSub, cx, top + SubCy, SubSize, SubLs, new Color(0, 0, 0, .95f * op), null, new Vector2(0, 1));
-    SpacedLine(bSub, cx, top + SubCy, SubSize, SubLs, C(219, 208, 190, .92f * op), null, Vector2.zero);
+    SpacedLine(bSub, cx, top + SubCy, SubSize, SubLs, C(212,209,203, .92f * op), null, Vector2.zero);
    }
    GUI.color = old;
   }
@@ -247,7 +247,7 @@ namespace Exoduser.UnityPort
   {
    var m = GUI.matrix; var oc = GUI.color;
    RotateLocal(new Vector2(cx, cy), 45);
-   float glow = bannerPurge ? 9f : 5f; Color gc = bannerPurge ? C(216, 183, 120, .7f * op) : new Color(0, 0, 0, .6f * op);
+   float glow = bannerPurge ? 9f : 5f; Color gc = bannerPurge ? C(188,185,179, .7f * op) : new Color(0, 0, 0, .6f * op);
    GUI.color = new Color(gc.r, gc.g, gc.b, gc.a * .14f); GUI.DrawTexture(new Rect(cx - 3 - glow * .25f, cy - 3 - glow * .25f, 6 + glow * .5f, 6 + glow * .5f), Texture2D.whiteTexture);
    GUI.color = new Color(16 / 255f, 11 / 255f, 8 / 255f, .9f * op); GUI.DrawTexture(new Rect(cx - 3, cy - 3, 6, 6), Texture2D.whiteTexture);   // 6px border-box with a 1px border
    GUI.color = new Color(col.r, col.g, col.b, op); GUI.DrawTexture(new Rect(cx - 2, cy - 2, 4, 4), Texture2D.whiteTexture);
@@ -292,7 +292,7 @@ namespace Exoduser.UnityPort
    if (!found) return;
    raX = (float)bx; raY = (float)by; raHas = true;
    if (bFb) { raCol = Desat(Hex(ElColor[bIdx])); raLabel = L("앵글러", "Angler") + " · " + L(ElKo[bIdx], ElEn[bIdx]); }
-   else { raCol = Hex("#d8b778"); raLabel = L(KoNames[bIdx], EnNames[bIdx]); }
+   else { raCol = Hex("#bcb9b3"); raLabel = L(KoNames[bIdx], EnNames[bIdx]); }
   }
 
   // blurred, colour-filled silhouette behind the arrow (web _raGlow: blur(9px) then source-in colour), pad 18
@@ -364,15 +364,15 @@ namespace Exoduser.UnityPort
    // label: Nanum Myeongjo 700 14px bone, Cinzel 12px distance, 8-direction black offsets
    float dm = Mathf.Floor(Mathf.Sqrt((raX - sim.Player.X) * (raX - sim.Player.X) + (raY - sim.Player.Y) * (raY - sim.Player.Y)) / 64f);
    float lx = ax - Mathf.Cos(ang) * 68, ly = ay - Mathf.Sin(ang) * 68;
-   if (!string.IsNullOrEmpty(raLabel)) OutlinedCenter(raLabel, lx, ly, nanum, 14, FontStyle.Bold, C(228, 214, 185, .96f), 1.5f);
-   OutlinedCenter(dm + "m", lx, ly + 16, cinzel, 12, FontStyle.Bold, C(201, 184, 145, .92f), 1.4f);
+   if (!string.IsNullOrEmpty(raLabel)) OutlinedCenter(raLabel, lx, ly, nanum, 14, FontStyle.Bold, C(218,215,209, .96f), 1.5f);
+   OutlinedCenter(dm + "m", lx, ly + 16, cinzel, 12, FontStyle.Bold, C(188,185,179, .92f), 1.4f);
   }
   void OutlinedCenter(string s, float x, float y, Font f, int size, FontStyle fs, Color col, float o)
   {
    var st = St(f, size, TextAnchor.MiddleCenter, fs); var keep = st.normal.textColor;
    st.normal.textColor = new Color(0, 0, 0, .9f);
-   for (int i = 0; i < 8; i++) { float a = i * Mathf.PI / 4; GUI.Label(new Rect(x - 300 + Mathf.Cos(a) * o, y - 20 + Mathf.Sin(a) * o, 600, 40), s, st); }
-   st.normal.textColor = col; GUI.Label(new Rect(x - 300, y - 20, 600, 40), s, st); st.normal.textColor = keep;
+   for (int i = 0; i < 8; i++) { float a = i * Mathf.PI / 4; NativeSilverHellUi.Label(new Rect(x - 300 + Mathf.Cos(a) * o, y - 20 + Mathf.Sin(a) * o, 600, 40), s, st); }
+   st.normal.textColor = col; NativeSilverHellUi.Label(new Rect(x - 300, y - 20, 600, 40), s, st); st.normal.textColor = keep;
   }
 
   // ---------------- gate label (web 52263-52271) ----------------
@@ -395,7 +395,7 @@ namespace Exoduser.UnityPort
    Vector2 pt = ToGUI(pcx, pcy - psz * .45f);
    var st = St(notoSans, 13, TextAnchor.LowerCenter, FontStyle.Normal); var keep = st.normal.textColor;   // web: bold 13px "Noto Sans KR" (Bold face)
    Color col = unlocked ? Hex("#66ccff") : Hex("#ff6644"); col.a = alpha;
-   st.normal.textColor = col; GUI.Label(new Rect(pt.x - 300, pt.y - 40, 600, 40), text, st); st.normal.textColor = keep;
+   st.normal.textColor = col; NativeSilverHellUi.Label(new Rect(pt.x - 300, pt.y - 40, 600, 40), text, st); st.normal.textColor = keep;
   }
 
   // ---------------- entry ----------------

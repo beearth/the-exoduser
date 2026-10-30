@@ -27,31 +27,31 @@ namespace Exoduser.UnityPort {
             StPane(new Rect(43,183,912,800));
             var head=new Rect(59,197,880,34);
             IronTile(head,iron320,320);Grad(head,C(25,22,25,.30f),C(17,16,21,.45f));
-            Fill(new Rect(head.x,head.y,head.width,1),C(98,88,70));Fill(new Rect(head.x,head.yMax-1,head.width,1),C(98,88,70));
+            Fill(new Rect(head.x,head.y,head.width,1),C(87,90,90));Fill(new Rect(head.x,head.yMax-1,head.width,1),C(87,90,90));
             float x=67;string count=State.Bag.Count.ToString();
-            Txt(new Rect(x,200,300,23),"가방 (",14,C(222,212,192),500);x+=TextWidth("가방 (",14,500);
+            Txt(new Rect(x,200,300,23),"가방 (",14,C(216,213,207),500);x+=TextWidth("가방 (",14,500);
             Serif(new Rect(x,200,300,23),count,14,C(240,223,189),true);x+=SerifWidth(count,14,true,0);
-            Txt(new Rect(x,200,300,23),"/",14,C(222,212,192),500);x+=TextWidth("/",14,500);
-            Serif(new Rect(x,200,300,23),InventoryState.BagMax.ToString(),14,C(169,157,135),false);x+=SerifWidth("300",14,false,0);
-            Txt(new Rect(x,200,300,23),")",14,C(222,212,192),500);
+            Txt(new Rect(x,200,300,23),"/",14,C(216,213,207),500);x+=TextWidth("/",14,500);
+            Serif(new Rect(x,200,300,23),InventoryState.BagMax.ToString(),14,C(156,159,159),false);x+=SerifWidth("300",14,false,0);
+            Txt(new Rect(x,200,300,23),")",14,C(216,213,207),500);
             var sort=new Rect(820.4f,197.5f,66,28);
             PlateFace(sort,false);
-            Txt(sort,"↕ 정렬",12,C(199,190,173),500,TextAnchor.MiddleCenter,true);
-            if(GUI.Button(sort,GUIContent.none,GUIStyle.none))Sort();
-            Fill(new Rect(890.4f,203.3f,1,16.5f),C(117,98,71,.4f));
-            Serif(new Rect(899.4f,203.3f,30,16.5f),"최대",11,C(184,170,145),false);
+            Txt(sort,"↕ 정렬",12,C(194,191,185),500,TextAnchor.MiddleCenter,true);
+            if(NativeSilverHellUi.Button(sort,GUIContent.none,GUIStyle.none))Sort();
+            Fill(new Rect(890.4f,203.3f,1,16.5f),C(98,101,101,.4f));
+            Serif(new Rect(899.4f,203.3f,30,16.5f),"최대",11,C(169,172,172),false);
             var filter=new Rect(59,239,880,32);
-            Grad(filter,C(65,50,34,.314f),C(20,17,21,.533f),90);Border(filter,C(81,70,56));
-            var chev=C(170,150,115);Line(new Vector2(72,250),new Vector2(77,255),1.4f,chev);Line(new Vector2(77,255),new Vector2(72,260),1.4f,chev);
-            Txt(new Rect(85,239,300,32),"아이템 필터",12,C(195,181,155),400);
+            Grad(filter,C(50,53,53,.314f),C(20,17,21,.533f),90);Border(filter,C(69,72,72));
+            var chev=C(150,153,153);Line(new Vector2(72,250),new Vector2(77,255),1.4f,chev);Line(new Vector2(77,255),new Vector2(72,260),1.4f,chev);
+            Txt(new Rect(85,239,300,32),"아이템 필터",12,C(185,182,176),400);
             GridX=213f;GridY=283f;GridViewW=572f;GridViewH=529f;DrawDockBag(level);
             DrawStDeposit();
         }
 
         // #invStBagSection: "▼ 보관 (가방 N개)" + one row per bag item (slot icon, rarity-coloured name, "보관"). Clicking a row does nothing yet.
         void DrawStDeposit(){
-            var sec=new Rect(59,820,880,147);Border(sec,C(117,96,68,.44f));
-            Txt(new Rect(60,821,400,34),"▼ 보관 (가방 "+State.Bag.Count+"개)",12,C(201,181,147),500);
+            var sec=new Rect(59,820,880,147);Border(sec,C(96,99,99,.44f));
+            Txt(new Rect(60,821,400,34),"▼ 보관 (가방 "+State.Bag.Count+"개)",12,C(186,183,177),500);
             var list=new Rect(59,855,880,112);float total=State.Bag.Count*30f,max=Mathf.Max(0,total-list.height);
             var e=Event.current;
             if(e.type==EventType.ScrollWheel&&list.Contains(e.mousePosition)){stListScroll=Mathf.Clamp(stListScroll+e.delta.y*14f,0,max);e.Use();}
@@ -69,7 +69,7 @@ namespace Exoduser.UnityPort {
             if(max>0){
                 var track=new Rect(list.xMax-11,list.y,10,list.height);
                 float inner=list.height-24f,thumbH=Mathf.Max(20f,inner*list.height/total),travel=inner-thumbH;
-                float thumbY=track.y+12+travel*Mathf.Clamp01(stListScroll/max);var thumbCol=C(124,111,88);
+                float thumbY=track.y+12+travel*Mathf.Clamp01(stListScroll/max);var thumbCol=C(110,113,113);
                 Fill(track,C(18,17,19));Fill(new Rect(track.x+2,thumbY+1.5f,6,thumbH-3),thumbCol);Fill(new Rect(track.x+3,thumbY,4,thumbH),thumbCol);
                 float[] aw={2,4,4,6};
                 for(int k=0;k<aw.Length;k++){
@@ -88,11 +88,11 @@ namespace Exoduser.UnityPort {
         void DrawStColumn(){
             StPane(new Rect(965,183,912,800));
             var bar=new Rect(983,199,876,37);
-            Grad(bar,C(48,37,29,.62f),C(17,15,14,.66f));Border(bar,C(176,126,84,.25f));
+            Grad(bar,C(37,40,40,.62f),C(13,16,16,.66f));Border(bar,C(132,135,135,.25f));
             Border(new Rect(bar.x+1,bar.y+1,bar.width-2,bar.height-2),C(255,219,185,.024f));
-            TxtSp(new Rect(994,208,200,19),"지옥창고",15,C(214,177,138),700,1.52f);
-            Txt(new Rect(1832,208,20,19),"▼",15,C(214,177,138),700);
-            Txt(new Rect(983,244,876,18),"지옥창고 — 미이식/"+StorageMax,12,C(201,181,147),500,TextAnchor.MiddleCenter);
+            TxtSp(new Rect(994,208,200,19),"지옥창고",15,C(185,182,176),700,1.52f);
+            Txt(new Rect(1832,208,20,19),"▼",15,C(185,182,176),700);
+            Txt(new Rect(983,244,876,18),"지옥창고 — 미이식/"+StorageMax,12,C(186,183,177),500,TextAnchor.MiddleCenter);
             // The 200-slot shared storage is not ported: only the 12 empty cells the web always appends are drawn.
             for(int i=0;i<12;i++){
                 var r=new Rect(983+146*(i%6),274+146*(i/6),140,140);

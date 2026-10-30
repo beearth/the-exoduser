@@ -1,0 +1,2425 @@
+{
+  "방식": "승인된 실버 헬 밝기 보존 변환, UI 리터럴 한정. 선명한 등급·원소색과 게임 데이터 보존",
+  "rows": [
+    {
+      "파일": "NativeFieldHud.cs",
+      "이전": "C(178,140,86",
+      "현재": "C(142,145,145"
+    },
+    {
+      "파일": "NativeFieldHud.cs",
+      "이전": "C(184,141,81",
+      "현재": "C(144,147,147"
+    },
+    {
+      "파일": "NativeFieldHud.cs",
+      "이전": "C(238,222,194",
+      "현재": "C(226,223,217"
+    },
+    {
+      "파일": "NativeFieldHud.cs",
+      "이전": "C(164,127,82",
+      "현재": "C(130,133,133"
+    },
+    {
+      "파일": "NativeFieldHud.cs",
+      "이전": "C(179,143,93",
+      "현재": "C(145,148,148"
+    },
+    {
+      "파일": "NativeFieldHud.cs",
+      "이전": "C(240,226,197",
+      "현재": "C(230,227,221"
+    },
+    {
+      "파일": "NativeFieldHud.cs",
+      "이전": "C(240,226,197",
+      "현재": "C(230,227,221"
+    },
+    {
+      "파일": "NativeFieldHud.cs",
+      "이전": "C(112,96,73",
+      "현재": "C(96,99,99"
+    },
+    {
+      "파일": "NativeFieldHud.cs",
+      "이전": "C(183,166,129",
+      "현재": "C(165,168,168"
+    },
+    {
+      "파일": "NativeFieldHud.cs",
+      "이전": "C(112,96,73",
+      "현재": "C(96,99,99"
+    },
+    {
+      "파일": "NativeFieldHud.cs",
+      "이전": "new Color32(136,119,102",
+      "현재": "new Color32(119,122,122"
+    },
+    {
+      "파일": "NativeFieldHud.cs",
+      "이전": "new Color32(102,85,68",
+      "현재": "new Color32(85,88,88"
+    },
+    {
+      "파일": "NativeFieldHud.cs",
+      "이전": "new Color32(232,226,208",
+      "현재": "new Color32(229,226,220"
+    },
+    {
+      "파일": "NativeFieldHud.cs",
+      "이전": "#887766",
+      "현재": "#777a7a"
+    },
+    {
+      "파일": "NativeFieldHud.cs",
+      "이전": "#665544",
+      "현재": "#555858"
+    },
+    {
+      "파일": "NativeForgePanel.cs",
+      "이전": "C(239,225,197",
+      "현재": "C(229,226,220"
+    },
+    {
+      "파일": "NativeForgePanel.cs",
+      "이전": "C(227,206,176",
+      "현재": "C(211,208,202"
+    },
+    {
+      "파일": "NativeForgePanel.cs",
+      "이전": "C(182,165,143",
+      "현재": "C(165,168,168"
+    },
+    {
+      "파일": "NativeForgePanel.cs",
+      "이전": "C(172,121,83",
+      "현재": "C(127,130,130"
+    },
+    {
+      "파일": "NativeForgePanel.cs",
+      "이전": "C(172,121,83",
+      "현재": "C(127,130,130"
+    },
+    {
+      "파일": "NativeForgePanel.cs",
+      "이전": "C(199,190,173",
+      "현재": "C(194,191,185"
+    },
+    {
+      "파일": "NativeForgePanel.cs",
+      "이전": "C(199,190,173",
+      "현재": "C(194,191,185"
+    },
+    {
+      "파일": "NativeForgePanel.cs",
+      "이전": "new Color32(117,103,79",
+      "현재": "new Color32(102,105,105"
+    },
+    {
+      "파일": "NativeForgePanel.cs",
+      "이전": "#75674f",
+      "현재": "#666969"
+    },
+    {
+      "파일": "NativeForgePanel.Potion.cs",
+      "이전": "C(71,51,31",
+      "현재": "C(52,55,55"
+    },
+    {
+      "파일": "NativeForgePanel.Potion.cs",
+      "이전": "C(183,149,96",
+      "현재": "C(150,153,153"
+    },
+    {
+      "파일": "NativeForgePanel.Potion.cs",
+      "이전": "C(199,183,155",
+      "현재": "C(187,184,178"
+    },
+    {
+      "파일": "NativeForgePanel.Potion.cs",
+      "이전": "C(52,32,26",
+      "현재": "C(34,37,37"
+    },
+    {
+      "파일": "NativeForgePanel.Potion.cs",
+      "이전": "C(34,21,18",
+      "현재": "C(22,25,25"
+    },
+    {
+      "파일": "NativeForgePanel.Potion.cs",
+      "이전": "C(18,11,10",
+      "현재": "C(10,13,13"
+    },
+    {
+      "파일": "NativeForgePanel.Potion.cs",
+      "이전": "C(11,7,7",
+      "현재": "C(6,9,9"
+    },
+    {
+      "파일": "NativeForgePanel.Potion.cs",
+      "이전": "C(104,60,36",
+      "현재": "C(66,69,69"
+    },
+    {
+      "파일": "NativeForgePanel.Potion.cs",
+      "이전": "#b79560",
+      "현재": "#969999"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(48,39,31",
+      "현재": "C(38,41,41"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(203,177,132",
+      "현재": "C(177,180,180"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(100,83,63",
+      "현재": "C(83,86,86"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(85,68,51",
+      "현재": "C(68,71,71"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(68,51,34",
+      "현재": "C(51,54,54"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(204,136,68",
+      "현재": "C(144,147,147"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(182,165,143",
+      "현재": "C(165,168,168"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(51,34,17",
+      "현재": "C(34,37,37"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(182,165,143",
+      "현재": "C(165,168,168"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(85,68,51",
+      "현재": "C(68,71,71"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(192,179,157",
+      "현재": "C(183,180,174"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(137,113,77",
+      "현재": "C(114,117,117"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(224,201,163",
+      "현재": "C(206,203,197"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(10,8,6",
+      "현재": "C(6,9,9"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(68,51,34",
+      "현재": "C(51,54,54"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(10,8,6",
+      "현재": "C(6,9,9"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(68,51,34",
+      "현재": "C(51,54,54"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(182,165,143",
+      "현재": "C(165,168,168"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(170,136,85",
+      "현재": "C(138,141,141"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(209,178,123",
+      "현재": "C(184,181,175"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(209,178,123",
+      "현재": "C(184,181,175"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(192,179,157",
+      "현재": "C(183,180,174"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(137,113,77",
+      "현재": "C(114,117,117"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(224,201,163",
+      "현재": "C(206,203,197"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(182,165,143",
+      "현재": "C(165,168,168"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(102,85,68",
+      "현재": "C(85,88,88"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(51,34,17",
+      "현재": "C(34,37,37"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(182,165,143",
+      "현재": "C(165,168,168"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(51,34,17",
+      "현재": "C(34,37,37"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(68,51,34",
+      "현재": "C(51,54,54"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(170,136,85",
+      "현재": "C(138,141,141"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(85,68,51",
+      "현재": "C(68,71,71"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(48,39,31",
+      "현재": "C(38,41,41"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(203,177,132",
+      "현재": "C(177,180,180"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(100,83,63",
+      "현재": "C(83,86,86"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(192,179,157",
+      "현재": "C(183,180,174"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(51,34,17",
+      "현재": "C(34,37,37"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(170,136,85",
+      "현재": "C(138,141,141"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(170,136,85",
+      "현재": "C(138,141,141"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(170,136,85",
+      "현재": "C(138,141,141"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(85,68,51",
+      "현재": "C(68,71,71"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(68,51,34",
+      "현재": "C(51,54,54"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(136,119,102",
+      "현재": "C(119,122,122"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(68,51,34",
+      "현재": "C(51,54,54"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(136,119,102",
+      "현재": "C(119,122,122"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(136,119,102",
+      "현재": "C(119,122,122"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(170,153,136",
+      "현재": "C(153,156,156"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(68,51,34",
+      "현재": "C(51,54,54"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(170,153,136",
+      "현재": "C(153,156,156"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(85,68,51",
+      "현재": "C(68,71,71"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(85,68,51",
+      "현재": "C(68,71,71"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(136,119,102",
+      "현재": "C(119,122,122"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(136,119,102",
+      "현재": "C(119,122,122"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(68,51,34",
+      "현재": "C(51,54,54"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(204,170,119",
+      "현재": "C(172,175,175"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(68,51,34",
+      "현재": "C(51,54,54"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "C(102,85,68",
+      "현재": "C(85,88,88"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "#64533f",
+      "현재": "#535656"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "#443322",
+      "현재": "#333636"
+    },
+    {
+      "파일": "NativeForgePanel.Tabs.cs",
+      "이전": "#332211",
+      "현재": "#222525"
+    },
+    {
+      "파일": "NativeHud.cs",
+      "이전": "new Color(.78f,.74f,.66f",
+      "현재": "new Color(192/255f,189/255f,183/255f"
+    },
+    {
+      "파일": "NativeHud.cs",
+      "이전": "new Color(.92f,.84f,.68f",
+      "현재": "new Color(219/255f,216/255f,210/255f"
+    },
+    {
+      "파일": "NativeHudSkills.cs",
+      "이전": "new Color(.87f,.84f,.76f",
+      "현재": "new Color(217/255f,214/255f,208/255f"
+    },
+    {
+      "파일": "NativeHudSkills.cs",
+      "이전": "new Color(.5f,.47f,.40f",
+      "현재": "new Color(118/255f,121/255f,121/255f"
+    },
+    {
+      "파일": "NativeHudSkills.cs",
+      "이전": "new Color(.74f,.69f,.59f",
+      "현재": "new Color(175/255f,178/255f,178/255f"
+    },
+    {
+      "파일": "NativeInventory.cs",
+      "이전": "new Color(.76f,.62f,.39f",
+      "현재": "new Color(159/255f,162/255f,162/255f"
+    },
+    {
+      "파일": "NativeInventory.cs",
+      "이전": "new Color(.30f,.26f,.19f",
+      "현재": "new Color(65/255f,68/255f,68/255f"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(179,140,115",
+      "현재": "C(144,147,147"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(204,170,119",
+      "현재": "C(172,175,175"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(204,170,119",
+      "현재": "C(172,175,175"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(204,136,68",
+      "현재": "C(144,147,147"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(170,136,102",
+      "현재": "C(139,142,142"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(117,98,71",
+      "현재": "C(98,101,101"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(155,128,80",
+      "현재": "C(128,131,131"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(155,128,80",
+      "현재": "C(128,131,131"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(140,118,84",
+      "현재": "C(118,121,121"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(81,64,43",
+      "현재": "C(64,67,67"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(117,98,71",
+      "현재": "C(98,101,101"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(117,98,71",
+      "현재": "C(98,101,101"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(201,189,167",
+      "현재": "C(193,190,184"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(140,118,84",
+      "현재": "C(118,121,121"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(50,39,25",
+      "현재": "C(38,41,41"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(117,98,71",
+      "현재": "C(98,101,101"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(187,170,141",
+      "현재": "C(170,173,173"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(51,34,17",
+      "현재": "C(34,37,37"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(165,125,72",
+      "현재": "C(128,131,131"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(189,138,59",
+      "현재": "C(141,144,144"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(50,39,25",
+      "현재": "C(38,41,41"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(117,98,71",
+      "현재": "C(98,101,101"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(187,170,141",
+      "현재": "C(170,173,173"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(98,85,62",
+      "현재": "C(84,87,87"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(51,34,17",
+      "현재": "C(34,37,37"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(230,208,167",
+      "현재": "C(213,210,204"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(221,197,173",
+      "현재": "C(203,200,194"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(103,86,58",
+      "현재": "C(86,89,89"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(81,70,49",
+      "현재": "C(69,72,72"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(199,174,131",
+      "현재": "C(174,177,177"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(170,102,68",
+      "현재": "C(112,115,115"
+    },
+    {
+      "파일": "NativeInventoryComparison.cs",
+      "이전": "C(51,34,17",
+      "현재": "C(34,37,37"
+    },
+    {
+      "파일": "NativeInventoryCrystals.cs",
+      "이전": "C(169,159,141",
+      "현재": "C(158,161,161"
+    },
+    {
+      "파일": "NativeInventoryCrystals.cs",
+      "이전": "C(216,204,183",
+      "현재": "C(208,205,199"
+    },
+    {
+      "파일": "NativeInventoryCrystals.cs",
+      "이전": "C(216,204,183",
+      "현재": "C(208,205,199"
+    },
+    {
+      "파일": "NativeInventoryCrystals.cs",
+      "이전": "C(124,111,88",
+      "현재": "C(110,113,113"
+    },
+    {
+      "파일": "NativeInventoryCrystals.cs",
+      "이전": "C(200,182,150",
+      "현재": "C(187,184,178"
+    },
+    {
+      "파일": "NativeInventoryCrystals.cs",
+      "이전": "C(169,158,142",
+      "현재": "C(157,160,160"
+    },
+    {
+      "파일": "NativeInventoryCrystals.cs",
+      "이전": "C(167,154,130",
+      "현재": "C(153,156,156"
+    },
+    {
+      "파일": "NativeInventoryCrystals.cs",
+      "이전": "C(204,186,147",
+      "현재": "C(190,187,181"
+    },
+    {
+      "파일": "NativeInventoryCrystals.cs",
+      "이전": "C(128,99,58",
+      "현재": "C(100,103,103"
+    },
+    {
+      "파일": "NativeInventoryCrystals.cs",
+      "이전": "C(49,38,26",
+      "현재": "C(37,40,40"
+    },
+    {
+      "파일": "NativeInventoryCrystals.cs",
+      "이전": "C(180,151,93",
+      "현재": "C(151,154,154"
+    },
+    {
+      "파일": "NativeInventoryCrystals.cs",
+      "이전": "C(198,162,104",
+      "현재": "C(163,166,166"
+    },
+    {
+      "파일": "NativeInventoryCrystals.cs",
+      "이전": "C(118,98,70",
+      "현재": "C(98,101,101"
+    },
+    {
+      "파일": "NativeInventoryCrystals.cs",
+      "이전": "C(181,160,121",
+      "현재": "C(160,163,163"
+    },
+    {
+      "파일": "NativeInventoryCrystals.cs",
+      "이전": "C(182,174,156",
+      "현재": "C(172,175,175"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(199,190,173",
+      "현재": "C(194,191,185"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(102,94,80",
+      "현재": "C(93,96,96"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(136,102,68",
+      "현재": "C(105,108,108"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(225,194,139",
+      "현재": "C(200,197,191"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(184,176,161",
+      "현재": "C(175,178,178"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(204,190,165",
+      "현재": "C(194,191,185"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(134,94,67",
+      "현재": "C(99,102,102"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(170,136,102",
+      "현재": "C(139,142,142"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(83,75,62",
+      "현재": "C(74,77,77"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(101,80,61",
+      "현재": "C(81,84,84"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(209,193,163",
+      "현재": "C(197,194,188"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(136,116,83",
+      "현재": "C(116,119,119"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(176,142,96",
+      "현재": "C(144,147,147"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(213,181,121",
+      "현재": "C(186,183,177"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(136,116,83",
+      "현재": "C(116,119,119"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(168,154,129",
+      "현재": "C(153,156,156"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(136,116,83",
+      "현재": "C(116,119,119"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(168,152,116",
+      "현재": "C(151,154,154"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(236,220,184",
+      "현재": "C(224,221,215"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(150,140,120",
+      "현재": "C(139,142,142"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(215,181,118",
+      "현재": "C(187,184,178"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(215,181,118",
+      "현재": "C(187,184,178"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(98,88,70",
+      "현재": "C(87,90,90"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(98,88,70",
+      "현재": "C(87,90,90"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(222,212,192",
+      "현재": "C(216,213,207"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(222,212,192",
+      "현재": "C(216,213,207"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(169,157,135",
+      "현재": "C(156,159,159"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(222,212,192",
+      "현재": "C(216,213,207"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(199,190,173",
+      "현재": "C(194,191,185"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(117,98,71",
+      "현재": "C(98,101,101"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(184,170,145",
+      "현재": "C(169,172,172"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(65,50,34",
+      "현재": "C(50,53,53"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(81,70,56",
+      "현재": "C(69,72,72"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(170,150,115",
+      "현재": "C(150,153,153"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(195,181,155",
+      "현재": "C(185,182,176"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(157,141,99",
+      "현재": "C(139,142,142"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(58,48,48",
+      "현재": "C(48,51,51"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(60,46,42",
+      "현재": "C(47,50,50"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(223,208,181",
+      "현재": "C(212,209,203"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(124,111,88",
+      "현재": "C(110,113,113"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(120,96,57",
+      "현재": "C(96,99,99"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(117,99,66",
+      "현재": "C(98,101,101"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(174,140,93",
+      "현재": "C(142,145,145"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(225,201,155",
+      "현재": "C(206,203,197"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(169,156,133",
+      "현재": "C(155,158,158"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(102,88,61",
+      "현재": "C(87,90,90"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(169,155,129",
+      "현재": "C(154,157,157"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(203,168,117",
+      "현재": "C(170,173,173"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(105,86,58",
+      "현재": "C(86,89,89"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(81,68,52",
+      "현재": "C(68,71,71"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(159,144,121",
+      "현재": "C(144,147,147"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(112,104,90",
+      "현재": "C(103,106,106"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(225,201,155",
+      "현재": "C(206,203,197"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(102,95,82",
+      "현재": "C(94,97,97"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(91,81,67",
+      "현재": "C(80,83,83"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(199,190,173",
+      "현재": "C(194,191,185"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "C(199,190,173",
+      "현재": "C(194,191,185"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "new Color(.91f,.87f,.78f",
+      "현재": "new Color(225/255f,222/255f,216/255f"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "new Color(.83f,.72f,.52f",
+      "현재": "new Color(189/255f,186/255f,180/255f"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "#7c6f58",
+      "현재": "#6e7171"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "#7c6f58",
+      "현재": "#6e7171"
+    },
+    {
+      "파일": "NativeInventoryDock.cs",
+      "이전": "#69563a",
+      "현재": "#565959"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(98,88,70",
+      "현재": "C(87,90,90"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(98,88,70",
+      "현재": "C(87,90,90"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(222,212,192",
+      "현재": "C(216,213,207"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(222,212,192",
+      "현재": "C(216,213,207"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(169,157,135",
+      "현재": "C(156,159,159"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(222,212,192",
+      "현재": "C(216,213,207"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(199,190,173",
+      "현재": "C(194,191,185"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(117,98,71",
+      "현재": "C(98,101,101"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(184,170,145",
+      "현재": "C(169,172,172"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(65,50,34",
+      "현재": "C(50,53,53"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(81,70,56",
+      "현재": "C(69,72,72"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(170,150,115",
+      "현재": "C(150,153,153"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(195,181,155",
+      "현재": "C(185,182,176"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(157,141,99",
+      "현재": "C(139,142,142"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(124,111,88",
+      "현재": "C(110,113,113"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(81,65,50",
+      "현재": "C(65,68,68"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(128,104,70",
+      "현재": "C(105,108,108"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(140,114,75",
+      "현재": "C(115,118,118"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(115,94,57",
+      "현재": "C(94,97,97"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(140,114,75",
+      "현재": "C(115,118,118"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(172,141,91",
+      "현재": "C(142,145,145"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(172,141,91",
+      "현재": "C(142,145,145"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(229,207,165",
+      "현재": "C(212,209,203"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(180,165,141",
+      "현재": "C(164,167,167"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(68,53,35",
+      "현재": "C(53,56,56"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(224,206,176",
+      "현재": "C(211,208,202"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(111,88,59",
+      "현재": "C(89,92,92"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(201,181,147",
+      "현재": "C(186,183,177"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(117,96,68",
+      "현재": "C(96,99,99"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(223,205,165",
+      "현재": "C(209,206,200"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(221,206,180",
+      "현재": "C(210,207,201"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(147,140,126",
+      "현재": "C(138,141,141"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(139,112,71",
+      "현재": "C(113,116,116"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(139,112,71",
+      "현재": "C(113,116,116"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(139,112,71",
+      "현재": "C(113,116,116"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(139,112,71",
+      "현재": "C(113,116,116"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(117,96,68",
+      "현재": "C(96,99,99"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(224,205,174",
+      "현재": "C(210,207,201"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(116,96,61",
+      "현재": "C(96,99,99"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(170,158,133",
+      "현재": "C(157,160,160"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(117,96,68",
+      "현재": "C(96,99,99"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(192,179,155",
+      "현재": "C(183,180,174"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(150,137,116",
+      "현재": "C(136,139,139"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(24,21,19",
+      "현재": "C(19,22,22"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(117,96,68",
+      "현재": "C(96,99,99"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(223,205,165",
+      "현재": "C(209,206,200"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(86,70,47",
+      "현재": "C(70,73,73"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(203,180,137",
+      "현재": "C(185,182,176"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(98,83,62",
+      "현재": "C(83,86,86"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(224,206,176",
+      "현재": "C(211,208,202"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(161,138,102",
+      "현재": "C(138,141,141"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(117,96,68",
+      "현재": "C(96,99,99"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(101,80,54",
+      "현재": "C(81,84,84"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(142,114,70",
+      "현재": "C(115,118,118"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(142,114,70",
+      "현재": "C(115,118,118"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(128,103,67",
+      "현재": "C(104,107,107"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(117,96,68",
+      "현재": "C(96,99,99"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(184,156,104",
+      "현재": "C(156,159,159"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(170,157,135",
+      "현재": "C(156,159,159"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(188,174,149",
+      "현재": "C(173,176,176"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(232,210,168",
+      "현재": "C(215,212,206"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(106,86,54",
+      "현재": "C(86,89,89"
+    },
+    {
+      "파일": "NativeInventoryOssuary.cs",
+      "이전": "C(150,141,124",
+      "현재": "C(140,143,143"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(98,88,70",
+      "현재": "C(87,90,90"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(98,88,70",
+      "현재": "C(87,90,90"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(222,212,192",
+      "현재": "C(216,213,207"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(222,212,192",
+      "현재": "C(216,213,207"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(169,157,135",
+      "현재": "C(156,159,159"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(222,212,192",
+      "현재": "C(216,213,207"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(199,190,173",
+      "현재": "C(194,191,185"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(117,98,71",
+      "현재": "C(98,101,101"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(184,170,145",
+      "현재": "C(169,172,172"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(65,50,34",
+      "현재": "C(50,53,53"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(81,70,56",
+      "현재": "C(69,72,72"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(170,150,115",
+      "현재": "C(150,153,153"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(195,181,155",
+      "현재": "C(185,182,176"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(117,96,68",
+      "현재": "C(96,99,99"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(201,181,147",
+      "현재": "C(186,183,177"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(124,111,88",
+      "현재": "C(110,113,113"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(48,37,29",
+      "현재": "C(37,40,40"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(17,15,14",
+      "현재": "C(13,16,16"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(176,126,84",
+      "현재": "C(132,135,135"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(214,177,138",
+      "현재": "C(185,182,176"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(214,177,138",
+      "현재": "C(185,182,176"
+    },
+    {
+      "파일": "NativeInventoryStorage.cs",
+      "이전": "C(201,181,147",
+      "현재": "C(186,183,177"
+    },
+    {
+      "파일": "NativeInventoryWebLayout.cs",
+      "이전": "C(172,121,83",
+      "현재": "C(127,130,130"
+    },
+    {
+      "파일": "NativeInventoryWebLayout.cs",
+      "이전": "C(199,190,173",
+      "현재": "C(194,191,185"
+    },
+    {
+      "파일": "NativeInventoryWebLayout.cs",
+      "이전": "C(199,190,173",
+      "현재": "C(194,191,185"
+    },
+    {
+      "파일": "NativePanelTabBar.cs",
+      "이전": "C(91,81,66",
+      "현재": "C(80,83,83"
+    },
+    {
+      "파일": "NativePanelTabBar.cs",
+      "이전": "C(198,139,91",
+      "현재": "C(146,149,149"
+    },
+    {
+      "파일": "NativePanelTabBar.cs",
+      "이전": "C(198,139,91",
+      "현재": "C(146,149,149"
+    },
+    {
+      "파일": "NativePanelTabBar.cs",
+      "이전": "C(73,58,49",
+      "현재": "C(59,62,62"
+    },
+    {
+      "파일": "NativePanelTabBar.cs",
+      "이전": "C(172,121,83",
+      "현재": "C(127,130,130"
+    },
+    {
+      "파일": "NativePanelTabBar.cs",
+      "이전": "C(199,190,173",
+      "현재": "C(194,191,185"
+    },
+    {
+      "파일": "NativePanelTabBar.cs",
+      "이전": "#ac7953",
+      "현재": "#7f8282"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(223,214,194",
+      "현재": "new Color32(217,214,208"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(235,218,186",
+      "현재": "new Color32(222,219,213"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(182,165,143",
+      "현재": "new Color32(165,168,168"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(143,129,112",
+      "현재": "new Color32(129,132,132"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(172,121,83",
+      "현재": "new Color32(127,130,130"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(164,147,115",
+      "현재": "new Color32(146,149,149"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(164,147,115",
+      "현재": "new Color32(146,149,149"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(164,147,115",
+      "현재": "new Color32(146,149,149"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(164,147,115",
+      "현재": "new Color32(146,149,149"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(20,17,16",
+      "현재": "new Color32(16,19,19"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(176,120,84",
+      "현재": "new Color32(127,130,130"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(40,32,26",
+      "현재": "new Color32(31,34,34"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(23,18,17",
+      "현재": "new Color32(17,20,20"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(223,214,194",
+      "현재": "new Color32(217,214,208"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(214,170,150",
+      "현재": "new Color32(176,179,179"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(164,147,115",
+      "현재": "new Color32(146,149,149"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(14,12,11",
+      "현재": "new Color32(10,13,13"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(223,214,194",
+      "현재": "new Color32(217,214,208"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(14,12,11",
+      "현재": "new Color32(10,13,13"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(14,12,11",
+      "현재": "new Color32(10,13,13"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(60,30,26",
+      "현재": "new Color32(34,37,37"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(34,28,24",
+      "현재": "new Color32(27,30,30"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(36,29,24",
+      "현재": "new Color32(28,31,31"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(20,16,15",
+      "현재": "new Color32(15,18,18"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(223,214,194",
+      "현재": "new Color32(217,214,208"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(164,147,115",
+      "현재": "new Color32(146,149,149"
+    },
+    {
+      "파일": "NativePauseMenu.A15Web.cs",
+      "이전": "new Color32(14,12,11",
+      "현재": "new Color32(10,13,13"
+    },
+    {
+      "파일": "NativePauseMenu.cs",
+      "이전": "new Color(.91f,.87f,.80f",
+      "현재": "new Color(226/255f,223/255f,217/255f"
+    },
+    {
+      "파일": "NativePauseMenu.cs",
+      "이전": "new Color(.66f,.62f,.55f",
+      "현재": "new Color(157/255f,160/255f,160/255f"
+    },
+    {
+      "파일": "NativePauseMenu.cs",
+      "이전": "new Color(.055f,.047f,.043f",
+      "현재": "new Color(10/255f,13/255f,13/255f"
+    },
+    {
+      "파일": "NativePauseMenu.cs",
+      "이전": "new Color(.48f,.36f,.23f",
+      "현재": "new Color(94/255f,97/255f,97/255f"
+    },
+    {
+      "파일": "NativePauseMenu.cs",
+      "이전": "new Color(.48f,.36f,.23f",
+      "현재": "new Color(94/255f,97/255f,97/255f"
+    },
+    {
+      "파일": "NativePauseMenu.cs",
+      "이전": "new Color(.10f,.085f,.07f",
+      "현재": "new Color(20/255f,23/255f,23/255f"
+    },
+    {
+      "파일": "NativePauseMenu.cs",
+      "이전": "new Color(.34f,.27f,.19f",
+      "현재": "new Color(69/255f,72/255f,72/255f"
+    },
+    {
+      "파일": "NativePauseMenu.cs",
+      "이전": "new Color(.10f,.085f,.07f",
+      "현재": "new Color(20/255f,23/255f,23/255f"
+    },
+    {
+      "파일": "NativePauseMenu.cs",
+      "이전": "new Color(.34f,.27f,.19f",
+      "현재": "new Color(69/255f,72/255f,72/255f"
+    },
+    {
+      "파일": "NativePauseMenu.cs",
+      "이전": "new Color(.10f,.085f,.07f",
+      "현재": "new Color(20/255f,23/255f,23/255f"
+    },
+    {
+      "파일": "NativePauseMenu.cs",
+      "이전": "new Color(.34f,.27f,.19f",
+      "현재": "new Color(69/255f,72/255f,72/255f"
+    },
+    {
+      "파일": "NativePauseMenu.cs",
+      "이전": "new Color(.48f,.36f,.23f",
+      "현재": "new Color(94/255f,97/255f,97/255f"
+    },
+    {
+      "파일": "NativeRegionHud.cs",
+      "이전": "C(216, 183, 120",
+      "현재": "C(188,185,179"
+    },
+    {
+      "파일": "NativeRegionHud.cs",
+      "이전": "C(216, 183, 120",
+      "현재": "C(188,185,179"
+    },
+    {
+      "파일": "NativeRegionHud.cs",
+      "이전": "C(216, 183, 120",
+      "현재": "C(188,185,179"
+    },
+    {
+      "파일": "NativeRegionHud.cs",
+      "이전": "C(216, 183, 120",
+      "현재": "C(188,185,179"
+    },
+    {
+      "파일": "NativeRegionHud.cs",
+      "이전": "C(233, 216, 180",
+      "현재": "C(220,217,211"
+    },
+    {
+      "파일": "NativeRegionHud.cs",
+      "이전": "C(223, 214, 194",
+      "현재": "C(217,214,208"
+    },
+    {
+      "파일": "NativeRegionHud.cs",
+      "이전": "C(168, 153, 127",
+      "현재": "C(152,155,155"
+    },
+    {
+      "파일": "NativeRegionHud.cs",
+      "이전": "C(219, 208, 190",
+      "현재": "C(212,209,203"
+    },
+    {
+      "파일": "NativeRegionHud.cs",
+      "이전": "C(216, 183, 120",
+      "현재": "C(188,185,179"
+    },
+    {
+      "파일": "NativeRegionHud.cs",
+      "이전": "C(228, 214, 185",
+      "현재": "C(218,215,209"
+    },
+    {
+      "파일": "NativeRegionHud.cs",
+      "이전": "C(201, 184, 145",
+      "현재": "C(188,185,179"
+    },
+    {
+      "파일": "NativeRegionHud.cs",
+      "이전": "#d8b778",
+      "현재": "#bcb9b3"
+    },
+    {
+      "파일": "NativeRegionHud.cs",
+      "이전": "#8d7c65",
+      "현재": "#7c7f7f"
+    },
+    {
+      "파일": "NativeRegionHud.cs",
+      "이전": "#d8b778",
+      "현재": "#bcb9b3"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(90,75,60",
+      "현재": "C(75,78,78"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(201,166,99",
+      "현재": "C(167,170,170"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(223,214,194",
+      "현재": "C(217,214,208"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(185,171,146",
+      "현재": "C(170,173,173"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(125,114,100",
+      "현재": "C(113,116,116"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(125,114,100",
+      "현재": "C(113,116,116"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(90,75,60",
+      "현재": "C(75,78,78"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(223,214,194",
+      "현재": "C(217,214,208"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(201,166,99",
+      "현재": "C(167,170,170"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(164,147,115",
+      "현재": "C(146,149,149"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(216,204,184",
+      "현재": "C(208,205,199"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(216,204,184",
+      "현재": "C(208,205,199"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(185,171,146",
+      "현재": "C(170,173,173"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(40,28,26",
+      "현재": "C(28,31,31"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(27,18,18",
+      "현재": "C(18,21,21"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(150,92,60",
+      "현재": "C(100,103,103"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(64,50,47",
+      "현재": "C(51,54,54"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(223,214,194",
+      "현재": "C(217,214,208"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(150,138,130",
+      "현재": "C(138,141,141"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(26,23,22",
+      "현재": "C(22,25,25"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(18,16,15",
+      "현재": "C(14,17,17"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(55,50,46",
+      "현재": "C(49,52,52"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(107,88,67",
+      "현재": "C(89,92,92"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(185,171,146",
+      "현재": "C(170,173,173"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(42,33,28",
+      "현재": "C(33,36,36"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(22,17,15",
+      "현재": "C(16,19,19"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(107,88,67",
+      "현재": "C(89,92,92"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(223,214,194",
+      "현재": "C(217,214,208"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(164,147,115",
+      "현재": "C(146,149,149"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(185,171,146",
+      "현재": "C(170,173,173"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(10,7,7",
+      "현재": "C(6,9,9"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(10,7,7",
+      "현재": "C(6,9,9"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(223,214,194",
+      "현재": "C(217,214,208"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(10,7,7",
+      "현재": "C(6,9,9"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(10,7,7",
+      "현재": "C(6,9,9"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(223,214,194",
+      "현재": "C(217,214,208"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(185,171,146",
+      "현재": "C(170,173,173"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(10,7,7",
+      "현재": "C(6,9,9"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(10,7,7",
+      "현재": "C(6,9,9"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(10,7,7",
+      "현재": "C(6,9,9"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(10,7,7",
+      "현재": "C(6,9,9"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(10,7,7",
+      "현재": "C(6,9,9"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(107,88,67",
+      "현재": "C(89,92,92"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(223,214,194",
+      "현재": "C(217,214,208"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(120,108,90",
+      "현재": "C(107,110,110"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(47,40,34",
+      "현재": "C(39,42,42"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(143,113,66",
+      "현재": "C(114,117,117"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(10,7,7",
+      "현재": "C(6,9,9"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(13,9,9",
+      "현재": "C(8,11,11"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(10,7,7",
+      "현재": "C(6,9,9"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(149,139,123",
+      "현재": "C(138,141,141"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(223,214,194",
+      "현재": "C(217,214,208"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(10,7,7",
+      "현재": "C(6,9,9"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(201,166,99",
+      "현재": "C(167,170,170"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(58,40,18",
+      "현재": "C(40,43,43"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(30,20,11",
+      "현재": "C(19,22,22"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(176,138,72",
+      "현재": "C(139,142,142"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(223,214,194",
+      "현재": "C(217,214,208"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(164,147,115",
+      "현재": "C(146,149,149"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(125,114,100",
+      "현재": "C(113,116,116"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "C(199,190,173",
+      "현재": "C(194,191,185"
+    },
+    {
+      "파일": "NativeSkills.cs",
+      "이전": "#5a4b3c",
+      "현재": "#4b4e4e"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(221,195,170",
+      "현재": "C(202,199,193"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(219,199,170",
+      "현재": "C(204,201,195"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(196,183,166",
+      "현재": "C(188,185,179"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(229,215,193",
+      "현재": "C(219,216,210"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(150,138,122",
+      "현재": "C(137,140,140"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(217,145,114",
+      "현재": "C(156,159,159"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(165,129,74",
+      "현재": "C(131,134,134"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(165,129,74",
+      "현재": "C(131,134,134"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(217,145,114",
+      "현재": "C(156,159,159"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(211,186,142",
+      "현재": "C(191,188,182"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(224,212,193",
+      "현재": "C(216,213,207"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(196,183,166",
+      "현재": "C(188,185,179"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(196,183,166",
+      "현재": "C(188,185,179"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(217,145,114",
+      "현재": "C(156,159,159"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(169,158,144",
+      "현재": "C(157,160,160"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(166,152,118",
+      "현재": "C(151,154,154"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(166,152,118",
+      "현재": "C(151,154,154"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(236,224,189",
+      "현재": "C(227,224,218"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(107,80,52",
+      "현재": "C(82,85,85"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(186,168,142",
+      "현재": "C(168,171,171"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(186,168,142",
+      "현재": "C(168,171,171"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(179,144,80",
+      "현재": "C(145,148,148"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(48,43,30",
+      "현재": "C(41,44,44"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(214,192,134",
+      "현재": "C(195,192,186"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(196,178,136",
+      "현재": "C(177,180,180"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(208,198,168",
+      "현재": "C(201,198,192"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(234,212,173",
+      "현재": "C(217,214,208"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(102,81,56",
+      "현재": "C(82,85,85"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(208,179,131",
+      "현재": "C(185,182,176"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(207,175,135",
+      "현재": "C(177,180,180"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(212,186,148",
+      "현재": "C(192,189,183"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(215,180,122",
+      "현재": "C(186,183,177"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(227,215,190",
+      "현재": "C(219,216,210"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(200,170,121",
+      "현재": "C(171,174,174"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(158,140,113",
+      "현재": "C(140,143,143"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(142,117,67",
+      "현재": "C(117,120,120"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(227,215,190",
+      "현재": "C(219,216,210"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(206,177,129",
+      "현재": "C(178,181,181"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(206,177,129",
+      "현재": "C(178,181,181"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(114,96,62",
+      "현재": "C(95,98,98"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(176,144,92",
+      "현재": "C(145,148,148"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(92,81,68",
+      "현재": "C(80,83,83"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(213,194,162",
+      "현재": "C(199,196,190"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(238,224,197",
+      "현재": "C(228,225,219"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(213,194,162",
+      "현재": "C(199,196,190"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(157,139,112",
+      "현재": "C(139,142,142"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(66,59,48",
+      "현재": "C(58,61,61"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(213,194,162",
+      "현재": "C(199,196,190"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(105,81,55",
+      "현재": "C(82,85,85"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(105,81,55",
+      "현재": "C(82,85,85"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(201,187,165",
+      "현재": "C(191,188,182"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(196,183,166",
+      "현재": "C(188,185,179"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(196,183,166",
+      "현재": "C(188,185,179"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(56,51,41",
+      "현재": "C(49,52,52"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(201,187,165",
+      "현재": "C(191,188,182"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(170,160,143",
+      "현재": "C(159,162,162"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(56,51,41",
+      "현재": "C(49,52,52"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(213,200,182",
+      "현재": "C(204,201,195"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(213,194,162",
+      "현재": "C(199,196,190"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(124,111,88",
+      "현재": "C(110,113,113"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(196,183,166",
+      "현재": "C(188,185,179"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(196,183,166",
+      "현재": "C(188,185,179"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(196,183,166",
+      "현재": "C(188,185,179"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(166,140,113",
+      "현재": "C(142,145,145"
+    },
+    {
+      "파일": "NativeStatPanel.cs",
+      "이전": "C(201,178,145",
+      "현재": "C(184,181,175"
+    }
+  ]
+}

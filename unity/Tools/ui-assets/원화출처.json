@@ -128,5 +128,310 @@
       "sha256": "0bba78ef3e3322adbc8f152eeac8b225eccef7efb1d5d0a4a5361022f14dcf26",
       "방식": "동일 바이트"
     }
+  ],
+  "후속파생": [
+    {
+      "웹원본": "index.html + ui-refinement.css",
+      "Unity": "Art/ui/silver_hell/name_panel.png",
+      "sha256": "a562d7bf53dfe1ef50dfac6470a19c9e90e2882d98de782b67a9f50ad87ff5fa",
+      "처리": "현재 CSS·원화의 텍스트 제외 래스터"
+    },
+    {
+      "웹원본": "index.html + ui-refinement.css",
+      "Unity": "Art/ui/silver_hell/name_input.png",
+      "sha256": "5c5e95323cfbfaffc0e108eaebeca99229f6b576122d534e7bbef462152df23d",
+      "처리": "현재 CSS·원화의 텍스트 제외 래스터"
+    },
+    {
+      "웹원본": "index.html + ui-refinement.css",
+      "Unity": "Art/ui/silver_hell/name_cancel.png",
+      "sha256": "494c1c903e200c29aa7d7638cc38956dfcdbac9ff99b09256760a7f25d23e2ba",
+      "처리": "현재 CSS·원화의 텍스트 제외 래스터"
+    },
+    {
+      "웹원본": "index.html + ui-refinement.css",
+      "Unity": "Art/ui/silver_hell/name_create.png",
+      "sha256": "5be6aa3ce801b8a28ae331264b08b790f511a082619568b21d3421b06f5efc03",
+      "처리": "현재 CSS·원화의 텍스트 제외 래스터"
+    },
+    {
+      "웹원본": "img/ui/silver_hell/btn_plaque_20261029.png",
+      "Unity": "Art/ui/silver_hell/guide_button_glow.png",
+      "sha256": "c210f5fc234787cd69d9e0b20d804db588c42459c9b629e269601692f0398ba9",
+      "처리": "원본 알파 blur sigma5·rgba194/26/16/.45"
+    }
+  ],
+  "공통원화": [
+    {
+      "웹원본": "img/ui/unique-items/ui-01_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-01_cut.png",
+      "sha256": "6208e9bed92ddf8f268739639ba2c9001f83922f61068d5ceb4891b074cdcd00",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-02_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-02_cut.png",
+      "sha256": "4253758f4b1da402611dc23d5c48271d1031bc8138437f87afad24f22c7b29a9",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-03_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-03_cut.png",
+      "sha256": "2162cb6fdc25f0b73b2bcb38cab2ffaf9fdfc3a77566a9220692e91f5ea5b692",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-04_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-04_cut.png",
+      "sha256": "45ef8b59279e7a82d36a7ee49d5a7101c0849bdb2f5e8afacbc170c098483e44",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-05_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-05_cut.png",
+      "sha256": "1714013db145d300f48d917d13a9cf97168a5dd22b52734c32a21cd657b358a1",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-06_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-06_cut.png",
+      "sha256": "e34fe5d97e18ed123b45d70ec26979df5aaf617c7d6a63d99c9ad96f5a1a4737",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-07_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-07_cut.png",
+      "sha256": "6adb03f423e6ba7b52088681f72f4acb805d1106148d49b577775d14613cf1f8",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-08_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-08_cut.png",
+      "sha256": "bd89d594386913607cf52f599e56108582dbba751fed0bc47a5d5f6a9b676f4c",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-09_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-09_cut.png",
+      "sha256": "cba1175d5cedd4c3a766e41a149769004acd5aa18c9c2727561a8e1fe970ac2d",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-10_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-10_cut.png",
+      "sha256": "924bafe296bc3b3395415e7625d6b1e651131ccbad3290ff24dc75b4c1f811cb",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-11_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-11_cut.png",
+      "sha256": "8d5d48bbd6ff8e4d19f79fa075e5ec4976f67faf31945e1e06e2870736eb1b7e",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-12_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-12_cut.png",
+      "sha256": "64dce77ffb2118976696e6505608c6f72a083ccfc98c595a88b899a06a38a5b7",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-13_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-13_cut.png",
+      "sha256": "ca4194da339a3be24c6bcb4d90304b9fe1ad90230cf4f50109e979d60fb1ea0f",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-14_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-14_cut.png",
+      "sha256": "28529b65ba493bcc70f6608bb8d2ee937343503aa4816256d8c0670420a63caa",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-15_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-15_cut.png",
+      "sha256": "6520b48aa249b70fa1c727403b3df85a2ee5335a3077c623c430f4aee474f97f",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-16_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-16_cut.png",
+      "sha256": "99604d0030cf9beef88c2449d79849e01ee164aa6faaf39e0e12095d36f64bdd",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-17_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-17_cut.png",
+      "sha256": "c174c6d2d584a2141d9a464625f515b6fa4eab61ed9f971acaf554e63062d913",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-18_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-18_cut.png",
+      "sha256": "3dd8d0353fc76e1e0587c4945584a27bcdeeec1296b775643d7a583e968b1be4",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-19_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-19_cut.png",
+      "sha256": "031eed595bc464a164c73f538ecf421c18aeb37e4dfd68a751149184da25c1c6",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-20_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-20_cut.png",
+      "sha256": "de37bd8c6683eee48ed596f5d75152741165fe6574d62226f53dc9c31c8a758d",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-21_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-21_cut.png",
+      "sha256": "9ae988b9f7cad02c038243b641b2bec8a30db43ead331487ca012f595ea7052a",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-22_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-22_cut.png",
+      "sha256": "4d17aa9143ca4f1d018cbbf94f62cdc2f30f56613ff18a945afac7a5b4e3030b",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-23_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-23_cut.png",
+      "sha256": "271f80b0fe0f31316add6587a6ae89646f27a7ae086ff32ccdc8b96ccbbead92",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-24_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-24_cut.png",
+      "sha256": "bb423859f5f9f3fc92fd31105e64d5d7ae7046371cbbb7e45addadad72409985",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-25_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-25_cut.png",
+      "sha256": "b187ad44e3ecc25ab37cfcddef6e6b7f133daf54541d64a1feb604fd8f777eca",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-26_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-26_cut.png",
+      "sha256": "66dccf85cd35bb2838721d5c25efe9c3f5548f54cde371ee1b3e57ae17788aef",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/unique-items/ui-27_cut.png",
+      "Unity": "Art/ui/inventory/unique/ui-27_cut.png",
+      "sha256": "27cef4936d3f6226d026955a3d1915f7682e06c89e97aaf6a70d27abf633fa56",
+      "방식": "동일 바이트·투명 컷아웃"
+    },
+    {
+      "웹원본": "img/ui/hell_gothic/iron.png",
+      "Unity": "Art/ui/inventory/iron.png",
+      "sha256": "09d66985dad678990b6b316bc3b6614664c7d771e9c3c6cbd247b2f23330d0bd",
+      "방식": "현행 원본 동일 바이트·이전 금색 자산 교체"
+    },
+    {
+      "웹원본": "img/ui/ossuary_socket_hf_v2.png",
+      "Unity": "Art/ui/inventory/socket.png",
+      "sha256": "2f34a20cac5deca75962e5cf07fd943571c9544d9f3a68b0a07d7b5496c751cb",
+      "방식": "현행 원본 동일 바이트·이전 금색 자산 교체"
+    },
+    {
+      "웹원본": "img/ui/hell_gothic/iron.png",
+      "Unity": "Art/ui/inventory/iron_320.png",
+      "sha256": "92d2b56e63b4a69ccacd6661cc62a7d4df3fa36f3ac3f01b974b641b0e948fcd",
+      "방식": "기존 CSS 타일 크기와 동일한 축소 PNG"
+    },
+    {
+      "웹원본": "img/ui/hell_gothic/iron.png",
+      "Unity": "Art/ui/inventory/iron_480.png",
+      "sha256": "d67cadf02d6e65cb3a7eed0d7b625af6347a74e016ece3c6c13374e2474c7c1a",
+      "방식": "기존 CSS 타일 크기와 동일한 축소 PNG"
+    },
+    {
+      "웹원본": "img/ui/iron_covenant_20260924/button.webp",
+      "Unity": "Art/ui/inventory/plate.png",
+      "sha256": "730f10992913d334e236f141b0f45ffd4a5212118db0c9d8f5a752fb64ae610b",
+      "방식": "이전 버전 픽셀 일치로 원본 대응 확인 후 현행 WebP를 PNG로 무손실 디코드"
+    },
+    {
+      "웹원본": "img/ui/iron_covenant_20260924/frame.webp",
+      "Unity": "Art/ui/inventory/rail.png",
+      "sha256": "b361b1b152eaaa8e3baae84abb57665553c9275bb13c192c612140b566dfb213",
+      "방식": "이전 버전 픽셀 일치로 원본 대응 확인 후 현행 WebP를 PNG로 무손실 디코드"
+    }
+  ],
+  "웹후속기준": "057f6f4b779bc93763d41361ff128ac354d2ba7e",
+  "재추출": [
+    {
+      "Unity": "Art/ui/forge/window_base.png",
+      "sha256": "fd6d129a31727f0878e1741a7d9337898503abeb23e0edff65eb2f997275c9fc",
+      "근거": "현행 실제 웹 렌더에서 기존 텍스트 제외 CSS 재사용, 새 원화0"
+    },
+    {
+      "Unity": "Art/ui/inventory/ossuary/center_frame_baked.png",
+      "sha256": "3bf2f7559d944345d212566a37c802f8495b343a8079dd09431e74f3b0017a42",
+      "근거": "현행 원본+기존 bake.py, ui-refinement.css 은빛 색 계약"
+    },
+    {
+      "Unity": "Art/ui/inventory/ossuary/node_frame_baked.png",
+      "sha256": "d64421ac4650065050e8298e327081eca92a585927cfb0bd57c327f915e1d13a",
+      "근거": "현행 원본+기존 bake.py, ui-refinement.css 은빛 색 계약"
+    },
+    {
+      "Unity": "Art/ui/inventory/ossuary/ring_baked.png",
+      "sha256": "123088fcf77520aaed39c7f0ccf45e256f58a154441333ad2d8175e7805ef330",
+      "근거": "현행 원본+기존 bake.py, ui-refinement.css 은빛 색 계약"
+    },
+    {
+      "Unity": "Art/ui/inventory/ossuary/sigil_1024.png",
+      "sha256": "c109420165f1e897b43fe591ecbc5a9ce967027b1f8a8bb03735745b2b8f7eec",
+      "근거": "현행 원본+기존 bake.py, ui-refinement.css 은빛 색 계약"
+    },
+    {
+      "Unity": "Art/ui/settings/window_base.png",
+      "sha256": "2f6c837ec1734b1557f361bb30a60a442ac9ad03f20361daa915615657e684cb",
+      "근거": "현행 실제 웹 렌더에서 기존 텍스트 제외 CSS 재사용, 새 원화0"
+    },
+    {
+      "Unity": "Art/ui/skill/altar_lmb.png",
+      "sha256": "acd857b9424e2bd430f58380e61fbe83a336ad84a6b471f4d4a648b95e35318c",
+      "근거": "현행 실제 웹 렌더에서 기존 텍스트 제외 CSS 재사용, 새 원화0"
+    },
+    {
+      "Unity": "Art/ui/skill/altar_none.png",
+      "sha256": "e522c928247d5fab3fdcb1e72383b4fb6b42393d325404bf9c0e83ebab783ecf",
+      "근거": "현행 실제 웹 렌더에서 기존 텍스트 제외 CSS 재사용, 새 원화0"
+    },
+    {
+      "Unity": "Art/ui/skill/disc_empty.png",
+      "sha256": "54b191db0e3c536690558d1e41e4bd1394be727d3f245a0296b4d31347014b54",
+      "근거": "현행 실제 웹 렌더에서 기존 텍스트 제외 CSS 재사용, 새 원화0"
+    },
+    {
+      "Unity": "Art/ui/skill/disc_empty_sel.png",
+      "sha256": "36bee55b6a4a7afe7d817df7ede62eadda8accbc357132aab74c20b860dc4c42",
+      "근거": "현행 실제 웹 렌더에서 기존 텍스트 제외 CSS 재사용, 새 원화0"
+    },
+    {
+      "Unity": "Art/ui/skill/disc_lmb.png",
+      "sha256": "2d73e2166fee9fc67a094dd1074ed5067e3609bff5ec86906152e65191055e71",
+      "근거": "현행 실제 웹 렌더에서 기존 텍스트 제외 CSS 재사용, 새 원화0"
+    },
+    {
+      "Unity": "Art/ui/skill/disc_lmb_sel.png",
+      "sha256": "e1807ba138bcff8786a72938c07738e59b2171baab18997e7181c86c09c11aa5",
+      "근거": "현행 실제 웹 렌더에서 기존 텍스트 제외 CSS 재사용, 새 원화0"
+    },
+    {
+      "Unity": "Art/ui/skill/window_base.png",
+      "sha256": "df11772f8ac97f28f502888dee375384a89e7514692bb97219c0a744cff4c24e",
+      "근거": "현행 실제 웹 렌더에서 기존 텍스트 제외 CSS 재사용, 새 원화0"
+    },
+    {
+      "Unity": "Art/ui/stat/stat_base.png",
+      "sha256": "dd00f57b7f07f6294736f5d501d36f73bfe66cf65dd71fb2ee41a491c986ad80",
+      "근거": "현행 실제 웹 렌더에서 기존 텍스트 제외 CSS 재사용, 새 원화0"
+    }
   ]
 }
