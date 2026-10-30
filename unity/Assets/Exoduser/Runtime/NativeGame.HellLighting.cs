@@ -82,7 +82,7 @@ namespace Exoduser.UnityPort
             if(on&&A2Requested)
             {
                 RenderSettings.ambientSkyColor=new Color(.31f,.34f,.36f);RenderSettings.ambientEquatorColor=new Color(.20f,.22f,.20f);RenderSettings.ambientGroundColor=new Color(.075f,.07f,.05f);
-                RenderSettings.fogColor=new Color(.15f,.18f,.21f);RenderSettings.fogDensity=.035f;
+                RenderSettings.fogColor=new Color(.15f,.18f,.21f);RenderSettings.fogDensity=.02f;
             }
         }
         void HellLightingLate()

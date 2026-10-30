@@ -8,6 +8,7 @@ public sealed class SourceTextureImporter : AssetPostprocessor
   var t=(TextureImporter)assetImporter;
   var name=System.IO.Path.GetFileNameWithoutExtension(assetPath);
   bool a2=assetPath.StartsWith("Assets/Exoduser/Resources/Art/map/a2/");
+  bool a2Ground=assetPath.StartsWith("Assets/Exoduser/Resources/Art/map/a2/ground/");
   bool pbr=assetPath.StartsWith("Assets/Exoduser/Resources/Art/map/hell_lighting/")&&
    (name=="rock_ground_Diffuse"||name=="rock_ground_nor_gl"||name=="rock_ground_Rough"||name=="burned_ground_01_Diffuse"||name=="bark_brown_02_Diffuse"||name=="bark_brown_02_nor_gl"||name=="bark_brown_02_Rough");
   if(a2||pbr)
@@ -16,7 +17,7 @@ public sealed class SourceTextureImporter : AssetPostprocessor
    bool color=name.EndsWith("_Diffuse")||name.EndsWith("_BaseColor");
    t.textureType=normal?TextureImporterType.NormalMap:TextureImporterType.Default;t.textureShape=TextureImporterShape.Texture2D;t.sRGBTexture=color;
    t.mipmapEnabled=true;t.alphaIsTransparency=a2&&color;t.npotScale=TextureImporterNPOTScale.None;
-   t.maxTextureSize=2048;t.textureCompression=TextureImporterCompression.CompressedHQ;t.wrapMode=a2?UnityEngine.TextureWrapMode.Clamp:UnityEngine.TextureWrapMode.Repeat;
+   t.maxTextureSize=2048;t.textureCompression=TextureImporterCompression.CompressedHQ;t.wrapMode=a2&&!a2Ground?UnityEngine.TextureWrapMode.Clamp:UnityEngine.TextureWrapMode.Repeat;
    t.filterMode=UnityEngine.FilterMode.Trilinear;t.anisoLevel=8;return;
   }
   t.textureType=TextureImporterType.Default;t.textureShape=TextureImporterShape.Texture2D;t.mipmapEnabled=false;t.alphaIsTransparency=true;t.npotScale=TextureImporterNPOTScale.None;

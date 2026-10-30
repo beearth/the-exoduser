@@ -1,6 +1,6 @@
 Shader "EXODUSER/A2ToxicRiver"
 {
- Properties { _BaseColor("탁한 녹황",Color)=(.30,.32,.045,1) _FoamColor("오염 거품",Color)=(.45,.44,.16,1) _Emission("은은한 자체발광",Range(0,.1))=.1 _PlanarReflection("실제 장면 반사",2D)="black"{} _PlanarStrength("실제 반사 활성",Float)=0 }
+ Properties { _BaseColor("탁한 녹황",Color)=(.40,.32,.035,1) _FoamColor("오염 거품",Color)=(.45,.44,.16,1) _Emission("은은한 자체발광",Range(0,.1))=.1 _PlanarReflection("실제 장면 반사",2D)="black"{} _PlanarStrength("실제 반사 활성",Float)=0 }
  SubShader
  {
   // 물가 거품은 불투명 지형 깊이가 복사된 뒤 샘플한다. 표면은 불투명하게 쓰되 그리기 순서만 뒤로 둔다.
@@ -44,11 +44,11 @@ Shader "EXODUSER/A2ToxicRiver"
     SurfaceData s=(SurfaceData)0;s.albedo=lerp(_BaseColor.rgb*(.82+.24*flow),_FoamColor.rgb,foam);s.normalTS=float3(0,0,1);s.metallic=0;s.specular=.035;s.smoothness=lerp(.62,.16,foam);s.occlusion=1;s.alpha=1;s.emission=_BaseColor.rgb*_Emission;
     half4 c=UniversalFragmentPBR(data,s);
     float4 reflected=mul(_PlanarVP,float4(i.world,1));float2 reflectionUV=reflected.xy/reflected.w*.5+.5;
-    reflectionUV+=n.xz*.035;
+    reflectionUV+=n.xz*.12;
     float valid=step(0,reflectionUV.x)*step(reflectionUV.x,1)*step(0,reflectionUV.y)*step(reflectionUV.y,1);
     half3 reflectedColor=SAMPLE_TEXTURE2D(_PlanarReflection,sampler_PlanarReflection,reflectionUV).rgb;
-    float fresnel=.22+.28*pow(1-saturate(dot(n,data.viewDirectionWS)),3);
-    c.rgb=lerp(c.rgb,reflectedColor*half3(.85,.88,.66),_PlanarStrength*valid*fresnel*(1-foam));
+    float fresnel=.30+.30*pow(1-saturate(dot(n,data.viewDirectionWS)),3);
+    c.rgb=lerp(c.rgb,reflectedColor*half3(.85,.80,.42),_PlanarStrength*valid*fresnel*(1-foam));
     c.rgb=MixFog(c.rgb,i.fog);return c;
    }
    ENDHLSL

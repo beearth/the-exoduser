@@ -402,7 +402,7 @@ VISUAL VERDICT: RETOUCH — 독립 조립 시연, 실제 게임 미검증. 회�
 
 ## 2026-10-31 A2 수로 구조 재작업
 
-A2에서만 SourceMap 생성 시 선택적 additionalBlocked= A2ForestLayout.BlockedCore를 전달한다. Blocked·CanMove·LineOfSight 및 기존 투사체 벽 delegate가 같은 수로 경계를 쓰며, 원본 ch1_map byte와 비A2 생성자 호출의 동작은 보존한다. Core 변경은 없다. 수면·다리 수치와152693표본/101점 회귀 근거는 UNITY_KEYSHOT_A2_20261030.md가 SSOT다. A2 카메라만38°/21u/TargetOffset+(3,0,1.05), 비A2 LOOK-001 그대로다. Editor 첫 화면은 FAIL이며 새 구조의 Player/GPU/M1은 미검증이다.
+A2에서만 SourceMap 생성 시 선택적 additionalBlocked= A2ForestLayout.BlockedCore를 전달한다. Blocked·CanMove·LineOfSight 및 기존 투사체 벽 delegate가 같은 수로 경계를 쓰며, 원본 ch1_map byte와 비A2 생성자 호출의 동작은 보존한다. Core 변경은 없다. 수면·다리 수치와152693표본/101점 회귀 근거는 UNITY_KEYSHOT_A2_20261030.md가 SSOT다. A2 카메라만38°/18u/TargetOffset+(3,0,.6), 비A2 LOOK-001 그대로다. Editor 첫 화면은 FAIL이며 새 구조의 Player/GPU/M1은 미검증이다.
 
 ## R5 전달 이후 야간 한 건 — 중심형 강타 앵커
 

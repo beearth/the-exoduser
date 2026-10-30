@@ -9,7 +9,7 @@ namespace Exoduser.UnityPort
     {
         public Camera Viewer;
         public Material Surface;
-        public float Height=-1.25f;
+        public float Height=A2ForestLayout.WaterLevel;
         public int RenderCount {get;private set;}
         Camera reflected;
         RenderTexture texture;

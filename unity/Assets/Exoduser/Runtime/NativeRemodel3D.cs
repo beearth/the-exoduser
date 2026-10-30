@@ -14,7 +14,7 @@ namespace Exoduser.UnityPort
         public static Terrain Ground;         // the scene's Terrain (window of tiles x48..152 / y126..200)
         public static bool ForestA2;          // A2 승인 구도만 원근을 넓힌다. 비A2 LOOK-001은 보존한다.
         public static float Pitch { get { return ForestA2 ? 38*Mathf.Deg2Rad : NativeRemodelCamera.Pitch; } }
-        public static float DistU { get { return ForestA2 ? 21 : NativeRemodelCamera.Distance; } }
+        public static float DistU { get { return ForestA2 ? 18 : NativeRemodelCamera.Distance; } }
 
         /// <summary>The 2D mapping the whole port was written against (also what Core-feeding callbacks must keep using, whatever the presentation does).</summary>
         public static Vector3 Point2D(double px, double py) { return new Vector3((float)px / 100, -(float)py / 100, 0); }
@@ -33,7 +33,14 @@ namespace Exoduser.UnityPort
             if (Ground == null) return 0f;
             var tp = Ground.transform.position; var sz = Ground.terrainData.size;
             float cx = Mathf.Clamp(wx, tp.x, tp.x + sz.x), cz = Mathf.Clamp(wz, tp.z, tp.z + sz.z);
-            return Ground.SampleHeight(new Vector3(cx, 0, cz)) + tp.y;
+            float height=Ground.SampleHeight(new Vector3(cx, 0, cz)) + tp.y;
+            if(ForestA2)
+            {
+                float outside=Mathf.Max(Mathf.Max(tp.x-wx,wx-tp.x-sz.x),Mathf.Max(tp.z-wz,wz-tp.z-sz.z));
+                height+=Mathf.SmoothStep(0,1,Mathf.Max(0,outside)/4)*(.35f*Mathf.Sin(wx*.31f)+.28f*Mathf.Cos(wz*.27f));
+                height=A2ForestLayout.IslandHeight(wx,wz,height);
+            }
+            return height;
         }
     }
 
