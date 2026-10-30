@@ -105,7 +105,9 @@ namespace Exoduser.UnityPort
                 }
             }
             A2AttachMoss();
+            A2BridgeMoss();
             A2River(ground);
+            A2RootRelief(ground);
             Debug.Log("[A2 초기화] 수로·외곽 완료 "+timer.ElapsedMilliseconds+"ms");
             // 통행로를 막지 않는 낮은 낙엽·잔돌. 2u 이상 간격의 정해진 접합점만 쓴다.
             var patches=new[]{new Vector2(35.8f,-78.5f),new Vector2(38,-79),new Vector2(40.2f,-80),new Vector2(33.4f,-77.2f),new Vector2(37.4f,-76.6f),new Vector2(36.2f,-66.5f),new Vector2(38.5f,-65.3f),new Vector2(41,-64.8f),new Vector2(43.4f,-64),new Vector2(45.8f,-62.6f),new Vector2(48.2f,-60.8f),new Vector2(32,-69.4f)};
@@ -133,7 +135,7 @@ namespace Exoduser.UnityPort
             probe.clearFlags=ReflectionProbeClearFlags.SolidColor;probe.backgroundColor=new Color(.085f,.115f,.14f);probe.farClipPlane=150;
             A2Ambient();
             foreach(var light in UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None))if(light.type==LightType.Directional)
-            {light.intensity=2.1f;light.color=new Color(.8f,.87f,1);light.shadowStrength=.65f;light.transform.rotation=Quaternion.Euler(54,-32,0);}
+            {light.intensity=2.4f;light.color=new Color(1,.96f,.90f);light.shadowStrength=.65f;light.transform.rotation=Quaternion.Euler(54,-32,0);}
             // 기존 검은 배경색을 실제로 이어지는 먼 숲의 안개색으로 연결한다.
             r3Cam.backgroundColor=new Color(.23f,.29f,.35f);
             r3Cam.farClipPlane=240;
@@ -141,8 +143,8 @@ namespace Exoduser.UnityPort
         }
         static void A2Ambient()
         {
-            RenderSettings.ambientMode=AmbientMode.Trilight;RenderSettings.ambientSkyColor=new Color(.20f,.25f,.30f);
-            RenderSettings.ambientEquatorColor=new Color(.12f,.14f,.16f);RenderSettings.ambientGroundColor=new Color(.035f,.03f,.02f);
+            RenderSettings.ambientMode=AmbientMode.Trilight;RenderSettings.ambientSkyColor=new Color(.22f,.26f,.31f);
+            RenderSettings.ambientEquatorColor=new Color(.14f,.14f,.135f);RenderSettings.ambientGroundColor=new Color(.04f,.035f,.03f);
         }
         void A2Torch(float x,float z)
         {
@@ -221,6 +223,7 @@ namespace Exoduser.UnityPort
                 if(id=="Fungal_Colony"){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.65f,.55f,.40f,1));r.SetPropertyBlock(block);}
                 if(stump){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.85f,.78f,.65f,1));r.SetPropertyBlock(block);}
             }
+            if(id=="Withered_Shrub")A2Bramble(go,x,z);
             return go;
         }
         void A2RootedTree(float x,float z,float sx,float sy,float sz,float yaw)

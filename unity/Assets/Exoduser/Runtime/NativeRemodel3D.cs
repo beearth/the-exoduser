@@ -68,6 +68,16 @@ namespace Exoduser.UnityPort
         // 원본 높이 표본은 호출자가 재사용할 수 있다. 배우와 생성 메시가 같은 수식을 공유한다.
         public static float ForestHeight(float wx,float wz,float height,Vector3 origin,Vector3 size)
         {
+            // 기존 블록아웃의 직선 테두리 융기를 A2 연속 숲에 투영하지 않는다.
+            // 안쪽 1.6u 표본으로 경계 높이를 잇고 배우·소품·지면에 같은 수식을 쓴다.
+            const float inset=1.6f;
+            float inside=Mathf.Min(Mathf.Min(wx-origin.x,origin.x+size.x-wx),Mathf.Min(wz-origin.z,origin.z+size.z-wz));
+            if(inside<inset&&Ground!=null)
+            {
+                float x=Mathf.Clamp(wx,origin.x+inset,origin.x+size.x-inset),z=Mathf.Clamp(wz,origin.z+inset,origin.z+size.z-inset);
+                float inner=Ground==forestHeightGround&&forestHeights!=null?ForestSample(x,z):Ground.SampleHeight(new Vector3(x,0,z))+origin.y;
+                height=Mathf.Lerp(inner,height,Mathf.SmoothStep(0,1,Mathf.Clamp01(inside/inset)));
+            }
             float outside=Mathf.Max(Mathf.Max(origin.x-wx,wx-origin.x-size.x),Mathf.Max(origin.z-wz,wz-origin.z-size.z));
             height+=Mathf.SmoothStep(0,1,Mathf.Max(0,outside)/4)*(.35f*Mathf.Sin(wx*.31f)+.28f*Mathf.Cos(wz*.27f));
             height=A2ForestLayout.BankHeight(wx,wz,height);

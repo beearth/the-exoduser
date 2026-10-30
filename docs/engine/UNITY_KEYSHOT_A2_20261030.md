@@ -9,7 +9,7 @@
 | MCP Editor 미리보기 | 공식 실행기의 자기 Editor 프로세스에만 EXO_A2_EDITOR_PREVIEW=1, isEditor 및 --unity-qa-sandbox 동시조건으로 A2와 NativeRemodel3D 활성화. 일반 Player는 이 환경값을 무시한다. 해당 Editor fixture는 진입영상 없이 시작하여 MCP로 실제게임 배치/조명 검수. Player 캡처·M1 대체 아님 |
 | Editor Terrain 보호 | HellLightingSetup의 TerrainLayer 조정 전에 Editor에서만 TerrainData를 Instantiate하여 런타임 사본으로 사용. Player 동작과 높이 데이터는 그대로. 이전 Editor 재작성은 terrain-preview-before.asset에 보존 후 HEAD 필터 실제 byte로 복원(SHA5cc0a5619e3687e9b81fcb9a185d1607370b9a070567456c5c0cdfdf2b44770b). 다음 Editor에서 비에셋 사본/원본 보존 확인 예정 |
 | 자산 | R3 sourceb9ffca060의17FBX·종속재질/텍스처185파일만 Resources/Art/map/a2/r3에 동일byte 인수. R3 정적RETOUCH 유지, R4 HOLD 인수0. r1 Foam_Bank 현재 사용0 |
-| 큰 질량 | 주거목4/후경15+19 고정위치 보존. Hollow_Loft_Tree 현재v4b13510정점/26876삼각형/재질3, 개별절점가지·높은비대칭뿌리/속빈외피. 주거목4+후경5에같은모델. 낮은뿌리8갈래/회갈색이끼·균류군집·낙엽·덤불 유지. 새모델 실제Editor 검수 전 |
+| 큰 질량 | 주거목4/후경15+19 고정위치 보존. Hollow_Loft_Tree 현재v4b13510정점/26876삼각형/재질3, Unity임포트14292정점. 주거목4+후경5/속빈외피·비대칭뿌리. 낮은뿌리8갈래와새스캔부조4/회갈색이끼·균류·낙엽 유지. 실제Editor에서기하확인/새Player미검증 |
 | 다리 | 중심(43.2,−71.8)u/yaw+24°/scale(.96,.55,.85)×.75. A2ForestLayout 다리 보행 |Along|≤4.45u·|Across|≤1.7u. 원본 JSON은 보존하고 A2 질의에만 수로·거목 경계 적용. 새 폭/배율은 실제 메시 높이7.24%였던21u 후보에서 카메라와 함께 수정. 현재 발 접지·동작 GPU 미검증 |
 | 카메라 구도 | 비A2 LOOK-001 그대로. A2만 pitch34°/distance16.5u/FOV46.9453°, 공통TargetOffset+(3,0,.6)u. SMAA High. 실제 새 Editor 위치(45,9.24,-86.23)·1920×1080 확인. 실제 Player 영웅8~11% 재검수 전 |
 | 독액 | A2ToxicRiver: linear RGB(.40,.32,.035), 거품(.45,.44,.16), emission.1. 저주파 사인속도.12/.08, 법선.035/.025, smoothness.62→거품.16, 접촉깊이.025~.28u. 수면Y−1.25는 A2ForestLayout.WaterLevel SSOT |
@@ -17,8 +17,8 @@
 | 수로 | Water: z(−94,−30),동쪽 x>Shore(z)와 둥근 지류 BranchDistance<0의 합집합. Shore=48+1.4sin((z+72)×.22)+34×smoothstep(−66,−56,z)−28×smoothstep(−52,−42,z)로 북동쪽에 굽어 빠짐. 남동 앵글러(148,150) 접근을 수로가 덮던 실제 회귀 FAIL을 고쳐 고정 위치/전투 규칙 보존. 수위−1.25, 연속 수면 x−30~110/z−100~70. 실제 수로 접점에만 수직 강둑. 암반9·말뚝5·강둑13접합/지류 접합. 기존 River_/Pool_만 숨김·r1거품 미사용 |
 | 반영 | 환경 Realtime ReflectionProbe256²×6면/OnAwake·위치(50,GroundY(50,−72)+1,−72)/크기180×80×260/boxProjection/강도.55/importance100/far150 유지. A2RiverReflection 실제 평면반사960×540 ARGBHalf/수면Y−1.25/oblique clip+.04u, Water layer4 제외·후처리off/깊이on. 설치 URP SingleCameraRequest+SubmitRenderRequest 사용, 정지.1초/이동.05u/회전.3° 갱신. GPU/논리 투영 분리로 GPU VP의 방향 확인, reflection RT 직접 확인·실행1270회/Unity 오류0. 현재 혼합(.30+.30×Fresnel³)×(1−거품), 색(.85,.80,.42), UV왜곡 n.xz×.12. 실패 기본수면 폴백/추가반복0. 새 혼합은 GPU 재검수 예정 |
 | 횃불 | R3 holder×.5·8프레임 불꽃/높이1.24u. 다리 국소 Along±3.65/Across±2.5u를 world로 변환해 두 끝에 배치. RGB(1,.55,.19)/강도7/반경5/soft shadow/bias.04/normalBias.1. 받침 투사만off, 기존 화로 루트off/Pool_Hell광원0 |
-| 분위기 | A2 배경/선형안개(.23,.29,.35)/16..40u/far240. 환경광 sky(.20,.25,.30)/equator(.12,.14,.16)/ground(.035,.03,.02). 주광2.1/색(.8,.87,1)/회전(54,-32,0)/그림자.65. Volume+.25EV/대비16·ACES·블룸.16. 빛기둥4는색(1.4,1.6,1.8)/alpha.045 가산·깊이감쇠 후보. GraphicsSettings FogStripping Custom1/기존 Linear·Exp·Exp2 모두keep1. 새 실제 Player 검수 전 |
-| 임포트 | SourceTextureImporter v3의 a2/ground Repeat 예외 유지. 원래 낙엽3맵+새 흙/뿌리6맵1024²/Repeat/mipmap/Trilinear/aniso8. BaseColor sRGB, NormalMap/Roughness linear. A2GroundCoverImporter v3은 기존4개+Hollow FBX의 정확5경로만 읽기true |
+| 분위기 | A2 배경/선형안개(.23,.29,.35)/16..40u/far240. 환경광 sky(.22,.26,.31)/equator(.14,.14,.135)/ground(.04,.035,.03). 주광2.4/색(1,.96,.90)/회전(54,-32,0)/그림자.65. Volume+.25EV/대비16·ACES·블룸.16. 빛기둥4 색(1.4,1.6,1.8)/alpha.045. GraphicsSettings FogStripping Custom1/기존3안개keep1의e271 실제Player원경복원확인. 새중립목질광은Player재검수전 |
+| 임포트 | SourceTextureImporter v3의 a2/ground Repeat 예외 유지. 원래 낙엽3맵+새 흙/뿌리6맵1024²/Repeat/mipmap/Trilinear/aniso8. BaseColor sRGB, NormalMap/Roughness linear. A2GroundCoverImporter v3은 기존4개+Hollow+RootRelief FBX의 정확6경로만 읽기true. 신규 RootRelief는2k/Clamp/Trilinear/mipmap/aniso8, BaseColor sRGB·Normal/ARM linear |
 | 기존 바닥 셰이더 | 작업 시작부터 실제 사용 중인 HellGroundPBR.shader가 미추적이고 .meta만 Git에 있음을 확인. 해당 원본 byte를 보존해 필수 런타임 소스로 함께 체크포인트하며 새 시각합격으로 세지 않음 |
 | A2 바닥 | HellGroundPBR _ForestBlend 기본0/A2만1. 기존 바닥 폴백 유지. 새 자갈흙3.2u/뿌리흙2.5u와 국소 낙엽2.1u를 거리·저주파 마스크로 혼합, 낙엽mix.35. 새6맵 모두 로드될 때 _SoilTextureMix=1, 하나라도 누락하면0으로 기존 흙·낙엽 폴백/에러 기록. 비A2 soilMix0. 정확 tint/normal/roughness는 최신 절 |
 | 숲 바닥 출처 | [Poly Haven Forest Floor](https://polyhaven.com/a/forest_floor), eye-candy.xyz/CC0, Powered by Poly Haven. 무료 원본1024² BaseColor/NormalGL/Roughness3맵, 합8100628B 동일byte 인수. 생성/구매/크레딧0. 원본·API메타·MD5/SHA는 I:/EXODUSER-Storage/steam-keyshot/a2/forest-floor-source/출처-영수증.json |
@@ -249,3 +249,34 @@ GP 원작성자 edf12c419의 exo-unity.ps1·devtools/README·UNITY_DEVTOOLS_SHAR
 | 영구 소스 | A2AttachMoss를 A2 초기화에서1회/수로생성전 호출. 가장가까운Hollow트리의실제읽기가능mesh만사용, 외측12u에서안쪽24u이내최초삼각형교차. 이끼상단을hit-dir*.025로연결하고tint(.8,.76,.6). Collider추가0/원본모델·사진변경0/프레임반복0. 누락메시는건너뛰고원래위치유지 |
 | 검사 | 새소스독립Core/C#0. 변경한충돌은최신36검사PASS/수면123472·겹침0/도달16766/출구3·앵글러4접근·시야. 추가장식변경은보행설계에참여하지않음 |
 | 종료·자원 | 실제Editor오류0→Playstop→공식stop종료0→공식unreserve종료0. GP종료경계진단에반환/자기GPU·예약·자동대기0. 새영구모델과접합의Player/M1은미검증. Editor RT는기하근거이며최종Player명암/반영검수대체아님 |
+
+## 2026-10-31 06:51 KST 스캔 뿌리의 연속 지면 접합 후보
+
+| 항목 | 현재 입력·검수 한계 |
+|---|---|
+| 출처 | [Poly Haven Root Cluster 01](https://polyhaven.com/a/root_cluster_01), Jenelle van Heerden·Rico Cilliers, CC0. 공식 glTF와 원본2k BaseColor/NormalGL/ARM 등5파일18198016B 현재 MD5 확인. 원본·출처 영수증은 I:root-cluster-source. 비용0 |
+| 방법 변경 | 전체 흙판을 그대로 놓은 root-patch-candidate 정적2장 FAIL/Unity인수0. 높이로 잘라 뿌리를 끊는 방법 대신 전체36040면과 원본UV를 보존하고, 주변.24m의 하위10% 높이를 기준으로 부조를 추출. 해당 실패도 I:에 보존 |
+| 부조 | prominence0...36m, 높이=(prominence×.9+원래양수높이×.035)×경계.55m smoothstep. 사진 가중=같은경계×smoothstep(.015,.10,prominence). 정점색 R=사진/G=경계/B=prominence÷.36. 18181정점/36040삼각형,4.12176×2.68349×.3610254m. 원본 삼각형 삭제0 |
+| 정적 검사 | root-patch-relief-r1의 제작·가중 영수증, 전체·접합 렌더 직접확인. 경계사진가중0/경계높이0/검사실패0. 큰 흙판은 제거됐으나 미세한 경계차이 잔여로 정적 RETOUCH/게임 아트 PASS 아님 |
+| 실제 자산 | Resources/Art/map/a2/rootrelief 아래 FBX·전용재질·원본3맵. EXODUSER/A2RootSurface는 실제 HellGroundPBR의 월드지면15맵/6값을 공유하고, 원본UV 스캔사진·법선·ARM을 정점R로 혼합. AO=ARM.r/거칠기=ARM.g/metal0. scan색(.9,.85,.75), 지면 반복 sampler 공유·scan Clamp 분리, Forward Offset -1,-1 |
+| 배치 | NativeGame.A2RootRelief: (x,z,scale,yaw)=(34.8,-70.5,1.05,75)/(49,-64.8,.8,170)/(53.3,-77,.85,237)/(29.5,-64,.8,85). 수로 생성 뒤1회, 정확4개. 실제GroundY를 정점별 추종하고 비섬 수면은WaterLevel-.18u. 새Collider0·기존36보행검사 계약변경0 |
+| 실패 폴백 | 모델·재질·지면·지원셰이더 누락은 오류로그와 기존뿌리 유지. 읽기/정점색 개수 불일치는 새장식만 제거. 오류를 숨기고 시각검수 통과하지 않음 |
+| 현재 검증 | 독립 최신Core/C#0/0. Unity 셰이더·정점색 임포트·실제 그림자/1x 접합은 아직미검증. 실제 Player3장·같은빌드 M1·통합·일반Desktop 미완료. VISUAL VERDICT: FAIL 유지 |
+
+## 2026-10-31 07:01 KST 실제 경계 융기 진단과 중간 연결층 수정
+
+| 항목 | 변경·증거·한계 |
+|---|---|
+| 부조 실제 | Unity임포트20728정점/36040삼각형·동수정점색/읽기true, 셰이더지원true/메시지0. 실제4개 원본3맵·지면맵연결/사진가중0..1/Collider0 확인. root-relief-first/wide 실제Editor1920×1080 직접확인. UV경계분할정점은 Blender18181과구분 |
+| 부조 배치 교정 | 원본의비대칭피벗때문에밑동덮는범위가좁아수평bounds중심을배치좌표에정렬. scale순서1.7/1.35/1.3/1.35, yaw75/170/237/85. 높이와사진경계0·원본면·UV·원본3맵유지. root-relief-wide 직접확인 |
+| 긴 검은 선 | 실제카메라(400,105)레이와읽기가능메시삼각형교차로 지옥바닥(40.39,.54,-79.74) 확인. 가지/RootWeb/Blockout Mass04 각각숨김시에도선잔류. 원본Terrain z-80 경계높이.7799382→z-79 .04202u의직선융기가원인. 숨김진단은영구소스미채택 |
+| 경계 높이 | A2 ForestHeight만 원본창안쪽1.6u 표본으로 경계를잇고 inside/inset의smoothstep으로원본내부복귀. 기존외곽저주파·Bank/Island는이후동일적용. cache/native같은표본/배우·소품·지면같은수식. 실제시안 경계.7799382→.001388073u/긴선제거 root-border-smoothed.png 직접확인. 원본Terrain/Core/충돌데이터변경0 |
+| 광 시안 | 2.8/색(1,.90,.73)과밝은환경광은과도한갈색이라미채택. 중립주광2.4/색(1,.96,.90), 환경광sky(.22,.26,.31)/equator(.14,.14,.135)/ground(.04,.035,.03)만후속Player비교입력. 속빈내부Point4 시안은균류핫스폿·내부개선부족으로미채택 |
+| 덤불 방법 전환 | R3넓은잎카드확대1.8와양면재질교정두시안은원화와불일치하여미채택. 기존r1 마른덤불도굵은다리형태로미채택. 해당실제화면보존후새입체잔가지로제작방식변경. 기존정확배치92곳/크기/충돌보존 |
+| 입체 고사 덤불 | NativeGame.A2Bramble: 3공유변형메시,13줄기×주가지1/곁가지3/갈림6=4212삼각형씩. 높이.85..1.25u/가지끝.0008u, 주간반경.032/곁가지.011/갈림.0065u. 실제단면5/갈림4각·곡선링6/4/3. 기존Hollow수피사진·법선공유, tint(1.1,.8,.5), smooth0/bump.45/반사광택·환경반사off. 유료0/새이미지0/원본R3보존·소스누락시원래사진폴백+오류 |
+| 다리 이끼 | 기존HangingMoss사진·전용양면셰이더로난간10묶음. Along-3.4..3.4/1.7간격,Across±1.58/scale(.30,.38,.25)/yaw24±90, 상단y.65u/tint(.62,.63,.43). A2AttachMoss뒤별도호출해거목으로오접합하지않음. 새충돌0/보행반경보존 |
+| 품질 상태 | 실제a0bdfeb2 어셈블리의기하확인/Unity오류0. 잔가지최종두께·무광수정과최종명암·반영은새Player미검증. 원화의거목·복잡한뿌리·수로·층별원근차이는여전히FAIL. 통합·Desktop채택요청0 |
+
+### 07:02 KST 최신 Editor 실제 검수
+
+실제 어셈블리4e0c287d-bfaa-47b1-8dfc-e62284628c1e. 지면441141정점과같은GroundY 질의 최대차이.0000158548355u, 경계높이.001388073u/전후.02u기울기.004763901. 부조4·입체덤불92·다리이끼10, Unity오류0. 새가지3변형각3276정점/4212삼각형·퇴화/비유한0/주간바깥면방향양수 확인. root-connection-final-editor.png/동크기/640²1x목질·다리직접확인. 형상개선은있으나평평한수면·원화대비근경과뿌리·층별원근차이로전체FAIL. 현재D3D12 Editor반사는진단폴백이며D3D11 Player검수대체아님. Player/M1/일반Desktop미완료.
