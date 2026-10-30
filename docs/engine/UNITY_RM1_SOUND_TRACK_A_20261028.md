@@ -200,4 +200,4 @@ BGM 되감김이 사라져 음악이 제대로 깔려서 이 표의 그룹 RMS�
 
 ## AD2 ui_tab Runtime 인수 후보 — 2026-10-31
 
-사용자 선택 r3c 동일byte(3386B/SHA3a693839af04190e6255f3098c92528d95812fa5b4a84e4be1a01a5bf66a1a4b)를 Audio/UI/ui_tab으로 추가했다. NativeFeedbackAudio는 Audio/UI도 로드하며 ui_tab을 UI/2D·우선순위10으로 명시한다. 이미 열린 다른 창으로 실제 전환 확정 후 PlayUiTab이 raw gain.22/pitch1/loopfalse로 즉시1회 재생한다. 최초열기·활성탭·거부·Layout/Repaint0, 기존SFX설정/믹서계약 유지. 전체branch에 중단3D가 있어 오디오 단일diff만 통합 가능하며 현재 순수입력 정식Unity/Player/동일M1/사용자청음은 미검증이다. 상세는 UNITY_UI_TAB_AUDIO_20261031.md.
+사용자 선택 r3c 동일byte(3386B/SHA3a693839af04190e6255f3098c92528d95812fa5b4a84e4be1a01a5bf66a1a4b)를 Audio/UI/ui_tab으로 추가했다. NativeFeedbackAudio는 Audio/UI도 로드하며 ui_tab을 UI/2D·우선순위10으로 명시한다. 이미 열린 다른 창으로 실제 전환 확정 후 PlayUiTab이 raw gain.22/pitch1/loopfalse로 즉시1회 재생한다. 최초열기·활성탭·거부·Layout/Repaint0, 기존SFX설정/믹서계약 유지. 전체branch에 중단3D가 있어 오디오 단일diff만 통합 가능하며 순수 NTFS 호스트의 38114e2b 컴파일0오류·d4c880b6 실제 입력/voice74검사 통과·동일새빌드41a87de7 M1 23/23을 확인했다. 사용자청음은 미검증이며 지정통합의 공통/Desktop 반영 대기다. 상세는 UNITY_UI_TAB_AUDIO_20261031.md.
