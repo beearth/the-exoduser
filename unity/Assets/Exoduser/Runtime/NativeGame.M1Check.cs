@@ -173,6 +173,8 @@ namespace Exoduser.UnityPort
             M1Add("07", "kill mobs", killed >= 1 ? "ok" : "fail", killed + "/3 killed (ticks per enemy " + string.Join(",", ttks.ToArray()) + ") at full enemy hp, loot rolls " + (sim.Loot.Count + sim.CollectedLoot.Count - lootBefore) + ", enemy hits landed on the player " + (sim.HurtCount - hurt0), "07-kill.png");
 
             // ---- 07b enemy attack hits the player (B09): etype0 contact attack -> shield first -> knock-back, shake, flash, floater, hit sound; second hit after the 40..60 tick cooldown; lethal hit -> fallen ----
+            // 접촉 피격만 측정한다. 앞 공격 단계의 잔여 검기/자동 석궁이 공격자를 먼저 죽이지 않도록 격리한다.
+            bool contactCrossbowWasOn=sim.CrossbowAuto;sim.CrossbowAuto=false;sim.Bolts.Clear();sim.Projectiles.Clear();
             sim.Enemies.Clear(); sim.Config.EnemyAiEnabled = true; p.Hp = p.MaxHp; p.Iframes = 0; p.State = "idle"; p.StateTicks = 0; p.KnockbackX = 0; p.KnockbackY = 0; p.Poise = 4;
             p.Shield = Mathf.Min(p.MaxShield, 40); sim.Feedback.Clear(); revive.Reset(); damage.Clear();   // clean capture: no floaters left over from the parry / kill steps
             var attacker = sim.SpawnNormalEnemy(p.X + 70, p.Y); if (attacker == null) attacker = sim.SpawnNormalEnemy(p.X - 70, p.Y);
@@ -202,6 +204,8 @@ namespace Exoduser.UnityPort
             M1Add("07b", "enemy attack hits the player", hitOk && fell && (gap < 0 || (gap >= 40 && gap <= 200)) ? "ok" : "fail",
                 "etype0 contact hit after " + firstHit + " ticks: shield " + shBefore.ToString("0") + " -> " + shAfter.ToString("0") + ", hp " + hpBefore2.ToString("0") + " -> " + hpAfter.ToString("0") + ", state " + stateAfter + ", knock-back " + kbMag.ToString("0.0") + " px/tick, shake " + shakeAtHit.ToString("0.0") + ", red flash " + flashAtHit.ToString("0.00") + ", floaters [" + string.Join(",", floaters.ToArray()) + "], hit sounds " + (sound.Receipt.requested - soundsBefore) + ", landed hits " + (sim.HurtCount - hurtBefore) + ", next hit after " + gap + " ticks; lethal hit at 1 hp -> fallen " + fell + " (tick " + fallTick + "). Not ported: etype0 field projectile (60f charge ring + shot, needs the enemy-projectile / projectile-parry owner), chromatic pulse, particles",
                 "07b-enemy-hit.png");
+            Debug.Log("[M1 접촉 진단] attacker="+(attacker==null?"null":attacker.Alive+" hp="+attacker.Hp+" shield="+attacker.Shield+" state="+attacker.State)+" first="+firstHit+" second="+secondHit+" isolatedCrossbow="+contactCrossbowWasOn+" sameSimulation="+ReferenceEquals(sim,Simulation));
+            sim.CrossbowAuto=contactCrossbowWasOn;
 
             // ---- 07c natural 1-1 field spawn (C01-AI): the player walks up to a 소환굴, the pool summons mixed etypes and each runs its own AI ----
             {
@@ -345,8 +349,11 @@ namespace Exoduser.UnityPort
                 anglerHits = sim.HurtFieldMobs(angler.X, angler.Y, 10, 1e9, null);
                 for (int i = 0; i < 30; i++) StepInput(0, 0, p.X, p.Y, false, false);
             }
+            // 원문 지역15틱/게이트30틱 정기 검사 경계를 실제 Tick으로 기다린다. 해금 플래그는 쓰지 않는다.
+            int unlockWait=0;while(!flow.BossUnlocked&&unlockWait<60){StepInput(0,0,p.X+100,p.Y,false,false);unlockWait++;}
+            Debug.Log("[M1 게이트 진단] wait="+unlockWait+" enabled="+flow.Enabled+" alive="+flow.BossAlive+" inArena="+flow.InArena+" load="+flow.LoadPhase+" check="+flow.CheckT+" heavy="+flow.HeavyRuns+" hp="+p.Hp+" state="+p.State+" sameSimulation="+ReferenceEquals(sim,Simulation));
             bool naturalUnlock = sealedAtSparseKills && regionKillsReached && anglersStillBlock && anglerHits && flow.FieldBossDone && sim.FieldBossAliveCount() == 0 && sim.RegionClearedCount() == 4 && flow.BossUnlocked;
-            M1Add("09c", "LT-10 regional Hell Gate", naturalUnlock ? "ok" : "fail", "sparse kills sealed " + sealedAtSparseKills + ", real kill thresholds reached " + regionKillsReached + ", all four living anglers still blocked " + anglersStillBlock + ", four angler hit paths " + anglerHits + ", all dead " + flow.FieldBossDone + ", regions " + sim.RegionClearedCount() + "/4, naturally unlocked " + flow.BossUnlocked + "; stage kills " + flow.StageKills + "/" + flow.TotalSpawned + " (harness combat, not OS input)", "");
+            M1Add("09c", "LT-10 regional Hell Gate", naturalUnlock ? "ok" : "fail", "sparse kills sealed " + sealedAtSparseKills + ", real kill thresholds reached " + regionKillsReached + ", all four living anglers still blocked " + anglersStillBlock + ", four angler hit paths " + anglerHits + ", all dead " + flow.FieldBossDone + ", regions " + sim.RegionClearedCount() + "/4, naturally unlocked " + flow.BossUnlocked + "; stage kills " + flow.StageKills + "/" + flow.TotalSpawned + ", 정기 검사 대기="+unlockWait+"틱 (harness combat, not OS input)", "");
             if (!naturalUnlock) { yield return M1Finish(output); yield break; }
             sim.Enemies.Clear(); sim.Loot.Clear(); p.Hp = p.MaxHp;
             // ---- 10..13 boss arena / boss / kill + exit / stage clear (C07). ----
