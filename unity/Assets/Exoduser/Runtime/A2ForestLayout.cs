@@ -32,7 +32,7 @@ namespace Exoduser.UnityPort
         public static bool Bridge(float x,float z) { return Math.Abs(Along(x,z))<=4.45f&&Math.Abs(Across(x,z))<=1.7f; }
         public static bool Trunk(float x,float z)
         {
-            if(Circle(x,z,34.8f,-70.5f,2.2f)||Circle(x,z,49,-64.8f,2)||Circle(x,z,53.3f,-77,1.1f)||Circle(x,z,29.5f,-64,1.1f)||Circle(x,z,47.6f,-67.2f,1.3f))return true;
+            if(Circle(x,z,34.8f,-70.5f,2.6f)||Circle(x,z,49,-64.8f,2)||Circle(x,z,53.3f,-77,1.8f)||Circle(x,z,29.5f,-64,1.9f)||Circle(x,z,47.6f,-67.2f,1.3f))return true;
             for(int layer=0;layer<3;layer++)for(int j=0;j<5;j++)if(Circle(x,z,22+j*9.5f+layer*2.3f,-57+layer*8.5f,.8f))return true;
             for(int layer=0;layer<3;layer++)for(int j=0;j<7;j++)
             {float tx=24+j*6.2f+layer*1.1f,tz=-60+layer*6.5f;if(SecondaryTree(tx,tz)&&Circle(x,z,tx,tz,.5f))return true;}

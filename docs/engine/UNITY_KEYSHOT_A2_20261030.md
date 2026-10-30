@@ -9,7 +9,7 @@
 | MCP Editor 미리보기 | 공식 실행기의 자기 Editor 프로세스에만 EXO_A2_EDITOR_PREVIEW=1, isEditor 및 --unity-qa-sandbox 동시조건으로 A2와 NativeRemodel3D 활성화. 일반 Player는 이 환경값을 무시한다. 해당 Editor fixture는 진입영상 없이 시작하여 MCP로 실제게임 배치/조명 검수. Player 캡처·M1 대체 아님 |
 | Editor Terrain 보호 | HellLightingSetup의 TerrainLayer 조정 전에 Editor에서만 TerrainData를 Instantiate하여 런타임 사본으로 사용. Player 동작과 높이 데이터는 그대로. 이전 Editor 재작성은 terrain-preview-before.asset에 보존 후 HEAD 필터 실제 byte로 복원(SHA5cc0a5619e3687e9b81fcb9a185d1607370b9a070567456c5c0cdfdf2b44770b). 다음 Editor에서 비에셋 사본/원본 보존 확인 예정 |
 | 자산 | R3 sourceb9ffca060의17FBX·종속재질/텍스처185파일만 Resources/Art/map/a2/r3에 동일byte 인수. R3 정적RETOUCH 유지, R4 HOLD 인수0. r1 Foam_Bank 현재 사용0 |
-| 큰 질량 | 주거목4/후경15+19 고정위치·충돌 유지. 주거목4는 Hollow_Loft_Tree 14072정점/27872삼각형/재질3과 낮은 뿌리8갈래 우선. 종전 R3+PineRoots+ScannedStump는 자산누락 폴백. 후경15 중5그루는 좁은 Hollow, 나머지 A/B·높이·가로비 변주. 회갈색 이끼 전용 Lit, 덤불·균류·낙엽 및 원경 낮은 덤불26개. 정확 배율은 최신 절 |
+| 큰 질량 | 주거목4/후경15+19 고정위치 보존. Hollow_Loft_Tree 현재v4b13510정점/26876삼각형/재질3, 개별절점가지·높은비대칭뿌리/속빈외피. 주거목4+후경5에같은모델. 낮은뿌리8갈래/회갈색이끼·균류군집·낙엽·덤불 유지. 새모델 실제Editor 검수 전 |
 | 다리 | 중심(43.2,−71.8)u/yaw+24°/scale(.96,.55,.85)×.75. A2ForestLayout 다리 보행 |Along|≤4.45u·|Across|≤1.7u. 원본 JSON은 보존하고 A2 질의에만 수로·거목 경계 적용. 새 폭/배율은 실제 메시 높이7.24%였던21u 후보에서 카메라와 함께 수정. 현재 발 접지·동작 GPU 미검증 |
 | 카메라 구도 | 비A2 LOOK-001 그대로. A2만 pitch34°/distance16.5u/FOV46.9453°, 공통TargetOffset+(3,0,.6)u. SMAA High. 실제 새 Editor 위치(45,9.24,-86.23)·1920×1080 확인. 실제 Player 영웅8~11% 재검수 전 |
 | 독액 | A2ToxicRiver: linear RGB(.40,.32,.035), 거품(.45,.44,.16), emission.1. 저주파 사인속도.12/.08, 법선.035/.025, smoothness.62→거품.16, 접촉깊이.025~.28u. 수면Y−1.25는 A2ForestLayout.WaterLevel SSOT |
@@ -26,7 +26,7 @@
 | 촬영 | --unity-steam-keyshot+A2는 실제NativeGame/격리세이브·실제AI/스크립트입력. 주3장은 hidden non-batch Player의 최종 ScreenCapture 프레임/HUD포함1920×1080. actualScreen=true·captureSource·screenWidth/Height·휘도>.01·Unity오류0·실제활성스킨높이8~11%가 통과조건. GPU batch/별도카메라 요청은 A2 최종검수 통과 불가 |
 | 영웅 크기 | R5가 있으면 실제 SkinnedMeshRenderer.BakeMesh 정점 투영으로 측정. 숨긴2D스프라이트 높이를 실제전사 크기로 인용하지 않음. 원래8~11% 촬영검사 유지 |
 | 미니맵 경계 | SourceMap.DisplayTile(tx,ty)는 추가 경계가 차단한 타일 중심을1로 반환하고 나머지는 원본 Data.tiles 값을 그대로 반환. NativeFieldHud는 이 값으로 기존 미니맵을 그린다. A2 수로/다리/비A2 표시3검사PASS, UI 모양·원본 맵 데이터 변경0. 미니맵-수정전-FAIL.json에 수정 전 불일치 보존 |
-| 보행 교차 회귀 | 실제 SourceMap/ch1_map으로 비다리 수면123472표본/겹침0. 주간충돌: 왼쪽2.2u·먼쪽2u·기타2주간1.1u, 큰그루터기1.3u, 기존후경15×.8u/작은후경19×.5u. 다리101점/반경15px·촬영4200:7460·일반4020:7420·중앙4320:7180 보행true.16845타일/출구3곳 연결, 고정앵글러4곳 모두300px 내 접근·시야 확보. 섬바깥49점 높이튐0. 현재30검사PASS. 원본JSON/Core 및 수면/새거목 밖차단 보존. 섬고리/남동앵글러 수정전FAIL별도 보존 |
+| 보행 교차 회귀 | 실제 SourceMap/ch1_map 현재36검사PASS. 수면123472표본/보행겹침0/다리101점, 도달16766타일/출구3·고정앵글러4접근/시야. 주거목 충돌 왼쪽2.6u/먼쪽2u/섬1.8u/북서1.9u, 밑동1.3u/기존후경15×.8u·작은후경19×.5u. 새경계안팎6점고체검사 포함. 원본JSON/Core규칙보존 |
 | 종료 | 미디어닫기·효과음정리·1초배출. 보스1100tick 제한 마지막 촬영 분기1099로 교정 |
 | 검증 | erosion/dd53cf66 빌드오류0/MCP제외PASS, bfd44855 실제1920 3장·탄3/15·검정수정 확인. 다만 CPU정점읽기210오류/뿌리·낙엽 누락/경계톱니/빈보스바닥으로 실제FAIL. receipt.passed=true는 아트/오류 통과가 아니며 다음코드에 unityErrors==0 조건 추가. 새소스 독립C#0·28경계/침수/동선검사PASS, 실제GPU/현재빌드M1/통합/일반Desktop 미검증 |
 
@@ -226,3 +226,26 @@ A2CaptureFrame이 정상 LateUpdate 이후 Remodel3DLate를 다시 불러 이미
 ## 2026-10-31 06:14 KST 검증된 로그 읽기 변경분 한정 인수
 
 GP 원작성자 edf12c419의 exo-unity.ps1·devtools/README·UNITY_DEVTOOLS_SHARED_LOG 정확3파일 변경분만 정상 패치 통합했다. 원작성자의 Read-RunLogShared 함수는 동일byte이며 패치 역방향check로 전체변경분 적용을 확인했다. 원작성자 전체파일에는 이 브랜치에 없는 BrowserDesktopIsolation 선행기능이 있어 전체Git blob동일검사는 실패했고, 해당 미인수기능을 끼워넣지 않고 현재 브라우저분기를 보존했다. 공유읽기 FileShare.ReadWrite와 GPU이름미확인실패만 인수/게임·Core·Runtime·Assets·다른GP문서0. 시간초과·잔존은 계속실패다. 자기실행잠금0에서만교체·원본I:보존. 기존e271 빌드게임입력byte동일, 검수도구변경을게임재빌드로세지않는다.
+
+## 2026-10-31 06:20 KST 실제 안개 복원 확인과 주거목 v4b 비교 후보
+
+| 항목 | 정확 입력·검수·한계 |
+|---|---|
+| 안개 실제 증거 | 게임소스e271cc02c/빌드3c22df83/3766523550B/오류0/MCP파일·참조0. Tool5a5759acf에서같은바이너리70ea8988 hidden D3D11 RX9070XT 실제최종3장, actualScreen=true1920×1080/Unity오류0/영웅.0981518/.1055537/.0817301/적탄0·3·15. display-fog-caps/01..03 직접확인 |
+| 원경·광선 | 직전2f8 실제일반화면과비교해 Custom1 안개보존후 먼숲이푸른감쇠층으로돌아옴. 셰이더제거위험과실제차이를함께확인. 실제최종표시의과한흰빛기둥도새alpha.045로완화. 현재표시를별도RT요청으로대체하지않음 |
+| 종료·도구 | 70ea공식결과ok=false/timedOut=true/exit-1/91299ms, 사용자창0/USER_SAVE0/공식leftovers목록0/hiddenDesktopClosedtrue. 내용검사passed=true여도정상종료FAIL. 공유로그읽기수정으로IOException부가없이실패JSON생성확인. 같은빌드M1미실행 |
+| 거목 제작 변경 | v3의판형뿌리·U자가지반복을보존하고개별가지절점그래프·비대칭버트레스로제작단계를되돌림. v4정적렌더에서분리가지발견FAIL/Unity인수0. v4b는줄기실제중심과반경.6위치에가지시작점접합후재렌더직접확인. 13510정점/26876삼각형/UV·재질3/속빈입구와법선5검사PASS. 게임아트PASS아님 |
+| 모델 인수 | 기존FBX와Inner재질·관련소스4개를I:loft-v4b-before-1793395055427/에보존·SHA기록뒤동일런타임경로에교체. 기존GUID·외부재질매핑·원래수피텍스처유지. Inner색(.19,.13,.075)→(.55,.36,.2)로검은내부의수피가독성비교 |
+| 지면·장식 | 더넓은몸통에맞춰수염반경왼쪽2.1u/기타1.6u, z반경×.8. 첫수염은x-.8/z-1.7. 균류군집은x+1.7/z-.7 scale(1,.9,.9)/lift.35와x-1.3/z-1.1 scale(.6,.7,.6)/yaw+160/lift.15. 기존수광·알파·원본사진유지 |
+| 충돌·검사 | 왼쪽2.2→2.6/섬1.1→1.8/북서1.1→1.9u, 다른좌표/경계보존. 최초30검사1실패는독립검사의의도영역이옛반경이어서발생. 구오라클FAIL과원본코드보존. 새의도영역밖원본보존검사와안팎6점추가후36검사0실패. 수면겹침0/다리101/출구3·앵글러4접근모두유지 |
+| 현재 품질 | VISUAL VERDICT: FAIL 유지. 새v4b의게임시점실제접지·실루엣·명암검수전. 원경표시교정과실제촬영교정은확인했으나전체원화큰차이·정상종료·M1·unity/main·Desktop미완료 |
+
+## 2026-10-31 06:26 KST 새 거목 실게임 기하와 이끼 접합
+
+| 항목 | 검증·현재 계약 |
+|---|---|
+| 실제 기하 | Editor 신규서버21840/Play 실제카메라1920×1080/frame2629. FBX임포트는 UV·normal 경계 분할 후14292정점/26876삼각형/읽기true, Blender원본13510정점과구분. 위치(34.8,-.95,-70.5)/yaw335(-25)/Inner(.55,.36,.2) 실제조회. loft-v4b-automatic-frame.png 직접확인 |
+| 이끼 결함 | 바깥반경만늘린배치가실제게임에서떠보이는결함발견. 개별Hollow메시 삼각형에수평레이교차로표면을찾아 이끼 bounds상단중심을붙이는방식으로변경. 실제시안24/24접합/loft-v4b-attached-moss.png 직접확인. 새목질·균류·지면접합은개선됐으나원화차이FAIL유지 |
+| 영구 소스 | A2AttachMoss를 A2 초기화에서1회/수로생성전 호출. 가장가까운Hollow트리의실제읽기가능mesh만사용, 외측12u에서안쪽24u이내최초삼각형교차. 이끼상단을hit-dir*.025로연결하고tint(.8,.76,.6). Collider추가0/원본모델·사진변경0/프레임반복0. 누락메시는건너뛰고원래위치유지 |
+| 검사 | 새소스독립Core/C#0. 변경한충돌은최신36검사PASS/수면123472·겹침0/도달16766/출구3·앵글러4접근·시야. 추가장식변경은보행설계에참여하지않음 |
+| 종료·자원 | 실제Editor오류0→Playstop→공식stop종료0→공식unreserve종료0. GP종료경계진단에반환/자기GPU·예약·자동대기0. 새영구모델과접합의Player/M1은미검증. Editor RT는기하근거이며최종Player명암/반영검수대체아님 |

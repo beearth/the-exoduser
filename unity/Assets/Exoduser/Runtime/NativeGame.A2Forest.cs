@@ -89,19 +89,22 @@ namespace Exoduser.UnityPort
             }
             foreach(var p in new[]{new Vector3(34.8f,-70.5f,45),new Vector3(49,-64.8f,165),new Vector3(52,-77,240),new Vector3(30,-64,15)})
             {
-                A2Module("Hanging_Moss",p.x,p.y,.8f,1.05f,.8f,p.z,2.5f);
-                A2Module("Fungal_Colony",p.x+1,p.y-.4f,.75f,.8f,.65f,p.z);
+                float mossRadius=p.x>32&&p.x<40?2.1f:1.6f;
+                A2Module("Hanging_Moss",p.x-.8f,p.y-1.7f,.8f,1.05f,.8f,p.z,2.5f);
+                A2Module("Fungal_Colony",p.x+1.7f,p.y-.7f,1,.9f,.9f,p.z,.35f);
+                A2Module("Fungal_Colony",p.x-1.3f,p.y-1.1f,.6f,.7f,.6f,p.z+160,.15f);
                 A2Module("Withered_Shrub",p.x+1.2f,p.y-.8f,.8f,.8f,.8f,p.z+45);
                 // 수염 이끼는 주간 접점 주위에 매달고, 지면 연결은 낮은 목질·이끼로 묶는다.
                 for(int j=0;j<5;j++)
                 {
                     float angle=(p.z+j*57)*Mathf.Deg2Rad;
-                    A2Module("Hanging_Moss",p.x+Mathf.Cos(angle)*1.1f,p.y+Mathf.Sin(angle)*.9f,.9f,1.2f,.8f,p.z+j*57,2.2f+j*.45f);
+                    A2Module("Hanging_Moss",p.x+Mathf.Cos(angle)*mossRadius,p.y+Mathf.Sin(angle)*mossRadius*.8f,.9f,1.2f,.8f,p.z+j*57,2.2f+j*.45f);
                     A2Module("Moss_Cushion",p.x+Mathf.Cos(angle)*1.8f,p.y+Mathf.Sin(angle)*1.4f,1.2f,1,1.2f,p.z+j*57);
                     A2Module("Withered_Shrub",p.x+Mathf.Cos(angle)*2.1f,p.y+Mathf.Sin(angle)*1.7f,1.1f,1.1f,1.1f,p.z+j*57);
                     A2Module("Dead_Leaf_Litter",p.x+Mathf.Cos(angle)*2.5f,p.y+Mathf.Sin(angle)*2,1.1f,1,1.1f,p.z+j*57,.015f);
                 }
             }
+            A2AttachMoss();
             A2River(ground);
             Debug.Log("[A2 초기화] 수로·외곽 완료 "+timer.ElapsedMilliseconds+"ms");
             // 통행로를 막지 않는 낮은 낙엽·잔돌. 2u 이상 간격의 정해진 접합점만 쓴다.
@@ -231,6 +234,10 @@ namespace Exoduser.UnityPort
             // 고목을 방사형으로 붙이는 방법도 원화의 뿌리 접합이 되지 않아 실제 뿌리 스캔으로 교체한다.
             A2Module(x>40?"PineRoots_B":"PineRoots_A",x,z,3.2f,4.3f,4,yaw,-.02f);
             A2Module("Scanned_Stump",x,z,3.2f,2.8f,3.2f,yaw,-.18f);
+        }
+        void A2AttachMoss()
+        {
+            var root=a2Root;if(root==null)return;var trees=new System.Collections.Generic.List<GameObject>();var moss=new System.Collections.Generic.List<GameObject>();foreach(Transform t in root.transform){if(t.name=="A2_Hollow_Loft_Tree")trees.Add(t.gameObject);if(t.name=="A2_Hanging_Moss")moss.Add(t.gameObject);}int fixedCount=0;foreach(var go in moss){GameObject tree=null;float best=999999;foreach(var candidate in trees){float d=(candidate.transform.position-go.transform.position).sqrMagnitude;if(d<best){best=d;tree=candidate;}}if(tree==null)continue;var direction=go.transform.position-tree.transform.position;direction.y=0;if(direction.sqrMagnitude<.01f)direction=Vector3.back;direction.Normalize();var rs=go.GetComponentsInChildren<MeshRenderer>();if(rs.Length==0)continue;var bounds=rs[0].bounds;foreach(var r in rs)bounds.Encapsulate(r.bounds);var origin=tree.transform.position+direction*12;origin.y=bounds.max.y;var ray=-direction;float nearest=24;Vector3 hit=Vector3.zero;foreach(var mf in tree.GetComponentsInChildren<MeshFilter>()){if(!mf.sharedMesh.isReadable)continue;var vertices=mf.sharedMesh.vertices;var triangles=mf.sharedMesh.triangles;for(int i=0;i<triangles.Length;i+=3){var a=mf.transform.TransformPoint(vertices[triangles[i]]);var b=mf.transform.TransformPoint(vertices[triangles[i+1]]);var c=mf.transform.TransformPoint(vertices[triangles[i+2]]);var e1=b-a;var e2=c-a;var p=Vector3.Cross(ray,e2);float det=Vector3.Dot(e1,p);if(Mathf.Abs(det)<.000001f)continue;float inv=1/det;var tv=origin-a;float u=Vector3.Dot(tv,p)*inv;if(u<0||u>1)continue;var q=Vector3.Cross(tv,e1);float v=Vector3.Dot(ray,q)*inv;if(v<0||u+v>1)continue;float distance=Vector3.Dot(e2,q)*inv;if(distance>0&&distance<nearest){nearest=distance;hit=origin+ray*distance;}}}if(nearest<24){go.transform.position+=hit-direction*.025f-new Vector3(bounds.center.x,bounds.max.y,bounds.center.z);fixedCount++;}foreach(var r in rs){var block=new MaterialPropertyBlock();r.GetPropertyBlock(block);block.SetColor("_BaseColor",new Color(.8f,.76f,.6f,1));r.SetPropertyBlock(block);}}Debug.Log("[A2] 이끼 상단 표면 접합 "+fixedCount+"/"+moss.Count);
         }
         void A2RootWeb(float x,float z,float scale,float yaw)
         {
