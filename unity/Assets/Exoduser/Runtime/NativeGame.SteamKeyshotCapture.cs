@@ -8,8 +8,8 @@ namespace Exoduser.UnityPort
 {
     public sealed partial class NativeGame
     {
-        [Serializable] sealed class KeyshotFrame { public string name; public int tick, enemies, projectiles, visibleProjectiles; public bool arena, remodel, bossPresented; public string bossState; public float heroHeight01, cameraFov; public Vector3 heroWorld,cameraWorld,bossCenter,bossSize; }
-        [Serializable] sealed class KeyshotReceipt { public string scope="실제 NativeGame·격리 세이브·직접 입장·생존 보조·스크립트 입력. 적/탄 직접 주입 없음. 손 조작 검수와 구분"; public List<KeyshotFrame> frames=new List<KeyshotFrame>(); public bool passed; }
+        [Serializable] sealed class KeyshotFrame { public string name; public int tick, enemies, projectiles, visibleProjectiles; public bool arena, remodel, bossPresented, heroClear; public string bossState; public float heroHeight01, cameraFov; public Vector3 heroWorld,cameraWorld,bossCenter,bossSize; }
+        [Serializable] sealed class KeyshotReceipt { public string scope="실제 NativeGame·격리 세이브·직접 입장·생존 보조·스크립트 입력. 적/탄 직접 주입 없음. 손 조작 검수와 구분"; public List<KeyshotFrame> frames=new List<KeyshotFrame>(); public bool passed,combatFramed; }
         IEnumerator SteamKeyshotCapture()
         {
             string output=Argument("-output");
@@ -41,10 +41,11 @@ namespace Exoduser.UnityPort
                 UnityEngine.Rendering.Universal.CameraExtensions.GetUniversalAdditionalCameraData(r3Cam).renderPostProcessing=false;yield return KeyshotSave(output,"진단4-후처리끔",receipt);
                 Application.Quit(0);yield break;
             }
-            sim.Config.EnemyAiEnabled=true;p.X=2750;p.Y=6320;
+            sim.Config.EnemyAiEnabled=true;p.X=3150;p.Y=6320;
             int best=0;
-            var waypoints=new[]{new Vector2(2750,6320),new Vector2(2950,6100),new Vector2(2950,6570),new Vector2(2620,6700)};int waypoint=1;
-            for(int tick=0;tick<1800;tick++)
+            bool combatFramed=false;
+            var waypoints=new[]{new Vector2(3150,6320),new Vector2(3350,6100),new Vector2(3350,6570),new Vector2(3020,6700)};int waypoint=1;
+            for(int tick=0;tick<3600;tick++)
             {
                 p.Hp=p.MaxHp;p.Shield=p.MaxShield;p.Iframes=600;
                 float ax=p.X+280,ay=p.Y-40,nearest=1e8f;
@@ -64,13 +65,13 @@ namespace Exoduser.UnityPort
                         if(score>bestMove){bestMove=score;move=candidate;}
                     }
                 }
-                StepInput(move.x,move.y,ax,ay,tick<100&&tick%60<20,false);
+                StepInput(move.x,move.y,ax,ay,tick%360<120,false);
                 if(tick%3==0)yield return null;
                 int count=sim.Druid.Projectiles.Count;
                 if(count>best&&tick>100){best=count;}
                 int visible=0;foreach(var shot in sim.Druid.Projectiles)if(shot.Active){var v=HudCamera.WorldToViewportPoint(NativeRemodel3D.Point(shot.X,shot.Y));if(v.x>.08f&&v.x<.92f&&v.y>.15f&&v.y<.88f)visible++;}
-                if(tick>280&&visible>=3&&nearest>67600){yield return KeyshotSave(output,"02-전투",receipt);break;}
-                if(tick==1799)yield return KeyshotSave(output,"02-전투",receipt);
+                if(tick>280&&tick%3==0&&tick%360>240&&visible>=3&&nearest>67600){yield return new WaitForEndOfFrame();if(KeyshotHeroClear()){combatFramed=true;yield return KeyshotSave(output,"02-전투",receipt);break;}}
+                if(tick==3599)yield return KeyshotSave(output,"02-전투",receipt);
             }
             BossDirectEnter();int entry=0;
             while((!sim.Stage.InArena||sim.Stage.LoadPhase!=0)&&entry++<1000){p.Hp=p.MaxHp;p.Iframes=600;StepInput(0,0,p.X+100,p.Y,false,false);if(entry%10==0)yield return null;}
@@ -83,13 +84,32 @@ namespace Exoduser.UnityPort
                     p.Hp=p.MaxHp;p.Shield=p.MaxShield;p.Iframes=600;
                     StepInput(0,0,boss.X,boss.Y,false,false);
                     if(tick%3==0)yield return null;
-                    if(tick>180&&sim.Druid.Projectiles.Count>=6&&druidBody!=null&&druidBody.Visible&&druidBody.Bounds.size.y>3.2f){yield return KeyshotSave(output,"03-드루이드",receipt);break;}
+                    string state=sim.Druid.Data.TryGetValue(boss,out var dd)?dd.S:"";bool humanoid=state=="bossDruidVolley"||state=="bossDruidVolleyWind"||state=="idle"||state=="recover"||state=="eWalk"||state=="eApproach";
+                    if(tick>180&&humanoid&&sim.Druid.Projectiles.Count>=6&&druidBody!=null&&druidBody.Visible&&druidBody.Bounds.size.y>3.2f){yield return KeyshotSave(output,"03-드루이드",receipt);break;}
                     if(tick==1499)yield return KeyshotSave(output,"03-드루이드",receipt);
                 }
             }
-            receipt.passed=receipt.frames.Count==3&&receipt.frames.TrueForAll(f=>f.heroHeight01>=.08f&&f.heroHeight01<=.10f)&&receipt.frames[1].visibleProjectiles>=3&&receipt.frames[2].bossPresented;
+            receipt.combatFramed=combatFramed;receipt.passed=combatFramed&&receipt.frames.Count==3&&receipt.frames.TrueForAll(f=>f.heroHeight01>=.08f&&f.heroHeight01<=.10f)&&receipt.frames[1].visibleProjectiles>=3&&receipt.frames[1].heroClear&&receipt.frames[2].bossPresented;
             File.WriteAllText(Path.Combine(output,"검수.json"),JsonUtility.ToJson(receipt,true));
             Application.Quit(receipt.passed?0:3);
+        }
+        Rect KeyshotSpriteRect(SpriteRenderer renderer,bool opaque)
+        {
+            var s=renderer.sprite;Rect local;
+            if(!opaque)local=new Rect(-s.pivot.x/s.pixelsPerUnit,-s.pivot.y/s.pixelsPerUnit,s.rect.width/s.pixelsPerUnit,s.rect.height/s.pixelsPerUnit);
+            else local=SpriteOpaqueLocalRect(s);
+            var cam=HudCamera;var tr=renderer.transform;var a=cam.WorldToViewportPoint(tr.TransformPoint(new Vector3(local.xMin,local.yMin,0)));var b=cam.WorldToViewportPoint(tr.TransformPoint(new Vector3(local.xMax,local.yMin,0)));var c=cam.WorldToViewportPoint(tr.TransformPoint(new Vector3(local.xMin,local.yMax,0)));var d=cam.WorldToViewportPoint(tr.TransformPoint(new Vector3(local.xMax,local.yMax,0)));
+            return Rect.MinMaxRect(Mathf.Min(a.x,b.x,c.x,d.x),Mathf.Min(a.y,b.y,c.y,d.y),Mathf.Max(a.x,b.x,c.x,d.x),Mathf.Max(a.y,b.y,c.y,d.y));
+        }
+        bool KeyshotHeroClear()
+        {
+            if(playerView==null||playerView.sprite==null)return false;var hero=KeyshotSpriteRect(playerView,true);float area=hero.width*hero.height;
+            foreach(var enemy in enemies.Values)foreach(var r in new[]{enemy.body,enemy.walk})
+            {
+                if(r==null||!r.enabled||r.sprite==null||r.sortingOrder<=playerView.sortingOrder)continue;var other=KeyshotSpriteRect(r,false);
+                float overlap=Mathf.Max(0,Mathf.Min(hero.xMax,other.xMax)-Mathf.Max(hero.xMin,other.xMin))*Mathf.Max(0,Mathf.Min(hero.yMax,other.yMax)-Mathf.Max(hero.yMin,other.yMin));if(overlap>area*.08f)return false;
+            }
+            return true;
         }
         IEnumerator KeyshotSave(string output,string name,KeyshotReceipt receipt)
         {
@@ -108,7 +128,7 @@ namespace Exoduser.UnityPort
             var bossNow=Simulation.Stage.FindBoss();string state="";if(bossNow!=null&&Simulation.Druid.Data.TryGetValue(bossNow,out var data))state=data.S;
             bool presented=Simulation.Stage.InArena&&druidBody!=null&&druidBody.Visible&&druidBody.Bounds.size.y>3.2f;
             if(presented){var lo=camera.WorldToViewportPoint(druidBody.Bounds.min);var hi=camera.WorldToViewportPoint(druidBody.Bounds.max);presented=lo.x>.04f&&hi.x<.96f&&lo.y>.15f&&hi.y<.88f;}
-            receipt.frames.Add(new KeyshotFrame{name=name,tick=Simulation.TickCount,enemies=Simulation.Enemies.Count,projectiles=Simulation.Druid.Projectiles.Count,visibleProjectiles=visibleShots,arena=Simulation.Stage.InArena,remodel=NativeRemodel3D.Active,bossPresented=presented,bossState=state,heroHeight01=h,cameraFov=camera.fieldOfView,heroWorld=playerView.transform.position,cameraWorld=camera.transform.position,bossCenter=druidBody!=null?druidBody.Bounds.center:Vector3.zero,bossSize=druidBody!=null?druidBody.Bounds.size:Vector3.zero});
+            receipt.frames.Add(new KeyshotFrame{name=name,tick=Simulation.TickCount,enemies=Simulation.Enemies.Count,projectiles=Simulation.Druid.Projectiles.Count,visibleProjectiles=visibleShots,arena=Simulation.Stage.InArena,remodel=NativeRemodel3D.Active,bossPresented=presented,heroClear=KeyshotHeroClear(),bossState=state,heroHeight01=h,cameraFov=camera.fieldOfView,heroWorld=playerView.transform.position,cameraWorld=camera.transform.position,bossCenter=druidBody!=null?druidBody.Bounds.center:Vector3.zero,bossSize=druidBody!=null?druidBody.Bounds.size:Vector3.zero});
             ScreenCapture.CaptureScreenshot(Path.Combine(output,name+".png"));yield return null;yield return new WaitForSecondsRealtime(.4f);
         }
     }

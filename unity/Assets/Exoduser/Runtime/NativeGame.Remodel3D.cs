@@ -24,8 +24,12 @@ namespace Exoduser.UnityPort
         public Camera Remodel3DCamera { get { return r3Cam; } }
 
         // base state of each billboarded sprite: the position / rotation the 2D code wrote last (so the lift and the tilt are re-derived every frame, never accumulated)
-        struct R3Base { public Vector3 pos, writtenPos; public Quaternion writtenRot; public float roll; public bool seen; }
+        struct R3Base { public Vector3 pos, writtenPos, scale, writtenScale; public Quaternion writtenRot; public float roll; public bool seen; }
         readonly Dictionary<SpriteRenderer, R3Base> r3Base = new Dictionary<SpriteRenderer, R3Base>();
+        readonly Dictionary<Sprite, Rect> r3OpaqueRects = new Dictionary<Sprite, Rect>();
+        static readonly bool r3CloseCamera = System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "--unity-keyshot-close-camera") >= 0;
+        static readonly bool r3BaselineCamera = System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "--unity-keyshot-baseline") >= 0;
+        float R3HeroScale { get { return r3CloseCamera || r3BaselineCamera ? 1f : 2f; } }
 
         // Camera that shows the world: the scene's LOOK-001 camera while the 3D field is on, the 2D camera otherwise (HUD anchors, level-up burst).
         Camera HudCamera { get { return hellArenaCamera != null && hellArenaCamera.isActiveAndEnabled ? hellArenaCamera : NativeRemodel3D.Active && r3Cam != null && r3Cam.enabled ? r3Cam : view; } }
@@ -108,8 +112,8 @@ namespace Exoduser.UnityPort
             // 웹의 월드 1px : 화면 1px 기준. 논리 카메라와 전투 판정은 그대로 유지한다.
             if (r3Vcam == null) return;
             var lens = r3Vcam.Lens;
-            float fov = System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "--unity-keyshot-baseline") >= 0
-                ? 2f * Mathf.Atan(Screen.height / (2f * 1400f)) * Mathf.Rad2Deg : 24.5f;
+            float fov = r3BaselineCamera ? 2f * Mathf.Atan(Screen.height / (2f * 1400f)) * Mathf.Rad2Deg
+                : 2f * Mathf.Atan(Mathf.Tan(24.5f * Mathf.Deg2Rad * .5f) * R3HeroScale) * Mathf.Rad2Deg;
             if (Mathf.Abs(lens.FieldOfView - fov) > .01f) { lens.FieldOfView = fov; r3Vcam.Lens = lens; }
         }
 
@@ -125,13 +129,38 @@ namespace Exoduser.UnityPort
                 var tr = sr.transform; R3Base b; r3Base.TryGetValue(sr, out b);
                 if (!b.seen || (tr.position - b.writtenPos).sqrMagnitude > 1e-10f) b.pos = tr.position;                                    // the 2D code placed it again this frame
                 if (!b.seen || Quaternion.Angle(tr.rotation, b.writtenRot) > .01f) b.roll = tr.rotation.eulerAngles.z;                     // ... or rotated it (roll / projectile angle)
+                if (!b.seen || (tr.localScale - b.writtenScale).sqrMagnitude > 1e-10f) b.scale = tr.localScale;
+                tr.localScale = b.scale * (sr == playerView ? R3HeroScale : 1f);
                 float below = sr.sprite.pivot.y / sr.sprite.pixelsPerUnit * Mathf.Abs(tr.lossyScale.y);                                    // pivot -> lower edge, world units
+                if (sr == playerView && R3HeroScale > 1f) below = -SpriteOpaqueLocalRect(sr.sprite).yMin * Mathf.Abs(tr.lossyScale.y);
                 var rot = tilt * Quaternion.Euler(0, 0, b.roll);
                 var pos = b.pos + new Vector3(0, below * cos, below * sin);
                 tr.SetPositionAndRotation(pos, rot);
-                b.writtenPos = tr.position; b.writtenRot = tr.rotation; b.seen = true; r3Base[sr] = b;
+                b.writtenPos = tr.position; b.writtenRot = tr.rotation; b.writtenScale = tr.localScale; b.seen = true; r3Base[sr] = b;
             }
             if (r3Base.Count > 4096) { var dead = new List<SpriteRenderer>(); foreach (var k in r3Base.Keys) if (k == null) dead.Add(k); foreach (var k in dead) r3Base.Remove(k); }
+        }
+
+        Rect SpriteOpaqueLocalRect(Sprite sprite)
+        {
+            if (r3OpaqueRects.TryGetValue(sprite, out var result)) return result;
+            var rect = sprite.textureRect;
+            var rt = RenderTexture.GetTemporary(sprite.texture.width, sprite.texture.height, 0, RenderTextureFormat.ARGB32);
+            var previous = RenderTexture.active;
+            Texture2D readback = null;
+            try
+            {
+                Graphics.Blit(sprite.texture, rt); RenderTexture.active = rt;
+                readback = new Texture2D((int)rect.width, (int)rect.height, TextureFormat.RGBA32, false);
+                readback.ReadPixels(rect, 0, 0); readback.Apply();
+                var pixels = readback.GetPixels32(); int x0 = readback.width, y0 = readback.height, x1 = 0, y1 = 0;
+                for (int y = 0; y < readback.height; y++) for (int x = 0; x < readback.width; x++)
+                    if (pixels[y * readback.width + x].a > 64) { x0 = Mathf.Min(x0, x); y0 = Mathf.Min(y0, y); x1 = Mathf.Max(x1, x); y1 = Mathf.Max(y1, y); }
+                result = new Rect((x0 - sprite.pivot.x) / sprite.pixelsPerUnit, (y0 - sprite.pivot.y) / sprite.pixelsPerUnit, (x1 + 1 - x0) / sprite.pixelsPerUnit, (y1 + 1 - y0) / sprite.pixelsPerUnit);
+                r3OpaqueRects[sprite] = result;
+                return result;
+            }
+            finally { RenderTexture.active = previous; RenderTexture.ReleaseTemporary(rt); if (readback != null) Destroy(readback); }
         }
 
         // Mouse aim in world units of the old 2D mapping (x, -py / 100): through the ground plane of the player when the 3D camera draws.

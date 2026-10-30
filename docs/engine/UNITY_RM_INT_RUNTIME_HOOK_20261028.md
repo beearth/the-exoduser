@@ -90,7 +90,8 @@ Core(`Runtime/Core`)는 바꾸지 않았다.
 | 1 바닥 | 원본 Terrain 높이1025의2칸 간격513×513 표면 메시,524288삼각형. 충돌/높이 질의/Core는 원본 Terrain 유지. Terrain.drawHeightmap/foliage=false. 피부 컬러맵/노멀(.45)+CC0 돌·재6u 혼합. 돌8~34%,재6~18%,나머지피부. 넓은 삼각함수 가중치,랜덤/디더 없음 |
 | PBR | HellGroundPBR·URP UniversalFragmentPBR. 돌 디퓨즈(.55,.56,.58),돌노멀.3,smoothness=.50-.25×rough,피부.24,금속0/AO1. CC0텍스처 Trilinear/mipBias2/aniso8. ShadowCaster/DepthOnly/DepthNormals |
 | 2 빛줄기 | Shafts·Foreground Cards·Background Cards 런타임 인스턴스 폐기. 원본 씬/아트 보존 |
-| 3 영웅 | 필드FOV24.5°/피치48.7°/거리14u. 영웅점광(.68,.8,1)/강도2.2/반경3.5u/로컬(-.3,1.8,.6). SpriteLit3D ambient.3/normalTilt.4. 기존 UI 수치/배치 유지 |
+| 3 영웅 | 필드 피치48.7°/거리14u. 영웅 표현스케일×2와 세로FOV=2atan(2tan(24.5°/2))를 함께 적용해 몸체 화면높이8~10%를 유지하며 외곽 시야를 넓힘. 원본 Native scale2→표현4, 누적 방지 base/writtenScale 별도 보존. 영웅점광(.68,.8,1)/강도2.2/반경3.5u/로컬(-.3,1.8,.6). SpriteLit3D ambient.3/normalTilt.4. 2D/아레나·Core/기존 UI 수치 불변 |
+| 영웅 접지 | 3D 새 구도에서만 alpha>64 불투명 경계의 yMin을 발 기준으로 삼음. Sprite별 로컬Rect를 최초1회 GPU readback 후 캐시하며 RenderTexture 상태/임시메모리 해제. 투명 셀 하단을 지면으로 삼던 공백을 제거. --unity-keyshot-close-camera는 종전24.5°/표현×1/셀 하단 앵커 비교용, baseline은 과거 해상도FOV/표현×1 유지 |
 | 4 광원 | 지옥불 점광5개(1,.60,.28)/강도5/반경4.7u/soft그림자.8/bias.025/normalBias.1. 방향광(.85,.89,1)/강도1/그림자.85/회전(62,35,0). PC추가광그림자 atlas4096 |
 | 광원 위치 | 타일(95,183),(109,174),(100,156),(112,142),(80.5,152.5). 월드 x=.4×tx,z=-.4×ty. 기존 torch_base/torch_flame 재사용. 받침높이1.6u,불꽃오프셋 up.93+right.34,스케일.14,RGB(1.5,1.2,1),4×2시트8프레임12fps |
 | 기본조명 | Trilight sky(.18,.20,.24)/equator(.09,.115,.15)/ground(.04,.045,.055). 지수안개밀도.023/RGB(.035,.065,.085) |
@@ -134,3 +135,5 @@ QA 전용 `--unity-keyshot-material-probe`는 동일 장면을 원래 재질→�
 첫 후보에서 전투탄1개인데 크기만으로 passed=true였던 QA 조건을 수정했다. keyshot2 현행 전투 하네스는 시작(3500,7100), 보행점(3500,7100)→(4100,7100)→(4100,7500)→(3500,7500), 목표80px 이내 다음점. 가까운적300px 이내에서 도주방향.85+접선.35+이동목표.2를 정규화한다. 공격은100tick 이전 tick%60<20, 최대1800tick. 280tick 이후 화면 안 실제탄3개·최근접적260px 초과 때 촬영한다. 각 프레임 visibleProjectiles 기록, 전투3개 미달이면 수치검수도 실패다. 일반 AI·공격·스폰·피해 규칙은 바꾸지 않으며 생존보조/스크립트입력임을 유지한다.
 
 위 도주 초안은 Player710b8046에서 왼쪽 벽에 갇혀 실패했다(전투 실탄1·보스 변신/가림 순간, 전체수치exit3). 현행 QA만 수정: 실제 SW 앵글러 인근(2750,6320) 시작, 목표점(2750,6320)/(2950,6100)/(2950,6570)/(2620,6700). 400px 안 적이 있으면24방향에서 원본 CanMove의25/110px 앞을 통과하는 방향만 평가하고 미래 적거리+목표방향×5000으로 선택. 앵글러 여유100px 반영, 일반 스폰/발사/AI 직접주입0. 보스 최대1500tick에서 실제탄6개 이상+몸체높이3.2u 초과인 순간을 찾고 저장 시 bounds의뷰포트 x.04~.96/y.15~.88를 확인한다. bossState/bossPresented를 기록하며 본체 미표시면 수치검수도 FAIL. 실제 화면의 최종판정은 별도다.
+
+Player5a5e70be는 필드 실탄13개/보스5개·크기조건/본체표시 통과지만 필드 영웅이 적에 가려진 fallback사진, 보스는 charge 변신 이미지였다. 이 수치PASS를 Steam PASS로 올리지 않는다. 현행 QA는 넓힌 시야에서 시작(3150,6320), 목표점(3150,6320)/(3350,6100)/(3350,6570)/(3020,6700), 최대3600tick, 공격 tick%360<120/촬영휴식 tick%360>240. 실제 EndOfFrame 뒤 영웅 불투명Rect와 앞쪽 적 스프라이트Rect의 겹침8% 이하를 추가한다. combatFramed/heroClear를 기록하고 fallback은 passed=false다. 보스는 volley/volleyWind/idle/recover/eWalk/eApproach 중 본체가 나온 순간만 선택한다. 일반 게임 입력/AI/공격 수치 변경0.
