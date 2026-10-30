@@ -121,10 +121,12 @@ namespace Exoduser.UnityPort
             add.SetInt("_DepthTest",depth); addFlat.SetInt("_DepthTest",depth); alpha.SetInt("_DepthTest",depth);
             BindMaliceBursts(sim); UpdateMaliceBursts(sim.TickCount); BindIceShatter(sim); UpdateIceShatter(sim.TickCount); UpdateQeVisuals(sim,time);
             ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0; var p = sim.Player;
+            UpdateFireTrails(sim, time);
             // ---- ground zones ----
             stale.Clear(); foreach (var k in zones.Keys) stale.Add(k);
             foreach (var z in sim.FireZones)
             {
+                if (z.Type == "fireTrail") continue;
                 stale.Remove(z.Id); Item it; if (!zones.TryGetValue(z.Id, out it)) { it = NewItem(z.Type + z.Id); zones[z.Id] = it; BuildZone(it, z); }
                 ActiveZones++; it.go.transform.position = Point(z.X, z.Y) + (NativeRemodel3D.Active ? Vector3.up * .025f : Vector3.zero);
                 float fade = Mathf.Clamp01((z.MaxT - z.T) / 30f), deploy = Mathf.Min(1f, z.T / (z.Type == "holyDome" ? 15f : 12f));
@@ -222,6 +224,7 @@ namespace Exoduser.UnityPort
                 if(renderer.sharedMaterial.GetInt("_DepthTest")!=(int)UnityEngine.Rendering.CompareFunction.Always)depth++;
             };
             foreach(var z in sim.FireZones)if(zones.TryGetValue(z.Id,out var zone))sample(zone.a,Point(z.X,z.Y)+Vector3.up*.025f,true);
+            foreach(var z in sim.FireZones)if(fireTrails.TryGetValue(z.Id,out var flames))foreach(var flame in flames)sample(flame.Renderer,Point(z.X+flame.X,z.Y+flame.Y),false);
             foreach(var w in sim.SlamWaves)if(waves.TryGetValue(w.Id,out var wave)){sample(wave.a,Point(w.X,w.Y),false);sample(wave.b,Point(w.X,w.Y),false);}
             foreach(var b in sim.SkillBlades)if(b.Active&&blades.TryGetValue(b.Id,out var blade))sample(blade.a,Point(b.X,b.Y),false);
             if(sim.IceOrbActive&&orb!=null){var expected=Point(sim.IceOrbX,sim.IceOrbY);sample(orb.a,expected,false);sample(orb.b,expected,false);sample(glow0,expected,false);sample(glow1,expected,false);}
@@ -235,14 +238,14 @@ namespace Exoduser.UnityPort
 
         public void Reset()
         {
-            ResetMaliceBursts(); ResetIceShatter(); ResetQeVisuals();
+            ResetMaliceBursts(); ResetIceShatter(); ResetQeVisuals(); ResetFireTrails();
             foreach (var m in new[] { zones, waves, blades, orbs }) { foreach (var it in m.Values) { ForgetMaliceSprites(it); ForgetCenteredSlamSprites(it); ForgetSkillSprites(it); UnityEngine.Object.Destroy(it.go); } m.Clear(); }
             if (orb != null) orb.go.SetActive(false);
             orbTrails.Clear(); ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0;
         }
         public void Dispose()
         {
-            Reset(); DisposeMaliceVisuals(); DisposeIceShatter(); DisposeQeVisuals(); if (orb != null) { ForgetSkillSprites(orb); UnityEngine.Object.Destroy(orb.go); }
+            Reset(); DisposeMaliceVisuals(); DisposeIceShatter(); DisposeQeVisuals(); if (trailFrames != null) foreach (var sprite in trailFrames) UnityEngine.Object.Destroy(sprite); if (orb != null) { ForgetSkillSprites(orb); UnityEngine.Object.Destroy(orb.go); }
             UnityEngine.Object.Destroy(add); UnityEngine.Object.Destroy(addFlat); UnityEngine.Object.Destroy(alpha); UnityEngine.Object.Destroy(malice);
         }
     }

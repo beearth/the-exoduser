@@ -51,6 +51,7 @@ namespace Exoduser.UnityPort.Core
             if (windowSlot == 6) return id == "kiSlash";
             if (windowSlot == 9) return id == "fireball";
             if (!Skills.Learned(id)) return false;
+            if (windowSlot == 8) return id == "magicBlink";
             if (windowSlot >= 0 && windowSlot < 4) return id == "spikeTrap" || id == "iceOrb";
             if (windowSlot == 4) return id == "holyDome";
             if (windowSlot == 7) return id == "maliceSwipe";
@@ -82,7 +83,7 @@ namespace Exoduser.UnityPort.Core
                 case "giantSlam": return 120;
                 case "holyDome": return 90;
                 case "iceOrb": return 100;
-                case "chargeBoost": return 100;
+                case "chargeBoost": case "magicBlink": return 100;
                 default: return 80;
             }
         }
@@ -95,6 +96,7 @@ namespace Exoduser.UnityPort.Core
             if (!CanLearnSkill(id)) return false;
             int paid; if (!TrySpendMalice(SkillLearnMalice(id), out paid)) return false;
             Skills.Levels[id] = 1; Player.StatPoints -= 10;
+            if (id == "magicBlink") Skills.ChargeSkill = id;
             if (id == "kiSlash") Config.KiSlashLevel = 1;
             MaliceSwipeLevel = Skills.Level("maliceSwipe"); ShieldThrowLevel = Skills.Level("shieldThrow");
             int slot = -1;

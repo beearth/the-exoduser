@@ -4,7 +4,7 @@ namespace Exoduser.UnityPort.Core.Combat
 {
     // Web chain movement (Shift, `_harp*` / `_dash*`) numbers as pure functions: tier by hold frames, distance, gauge cost / maximum / regeneration, stamina,
     // flight step, pull velocity, invulnerability and landing (game.html 12851-12883, 13335-13357, 32168-32260, 32262-32366, 32785-32791, 63460-63466).
-    // 자동 발사·벽 도우미·연속 재발사는 Simulation.PlayerCombat이 원문 순서로 처리한다. 불바닥·칼날개는 별도 미이식 범위다.
+    // 자동 발사·벽 도우미·연속 재발사·비합체 화염 사슬은 Simulation.PlayerCombat이 처리한다. 칼날개·합체는 별도 미이식 범위다.
     // Compared with the original statements (executed in a Node VM) by Tools/dash-parry-oracle.
     public static class ChainDash
     {
@@ -104,8 +104,8 @@ namespace Exoduser.UnityPort.Core.Combat
         // landing (32363-32378): 48 invulnerable frames, 30 animation frames, shake 10/20/30 by tier (not for dim-breach unless a slam is ready)
         public static double LandingInvulnerable(double iframes) { return Math.Max(iframes, LandingIframes); }
 
-        // Pass-through hit while the player is pulled (the `_dashActive` loop, game.html 32474-32505, STR branch; the magicBlink / dimBreach fire branch, the blade-wing
-        // wide slash and the crowd refund are skills / uniques that are not ported). Every enemy within e.r + 20 of the player is hit once per chain cast.
+        // 끌림 경로의 물리 타격 식. 비합체 magicBlink의 마법 분기는 Simulation.PlayerCombat이 소유한다.
+        // dimBreach 합체·칼날개·유니크 환급은 미이식이다. 적마다 한 시전당1회, 반경 e.r+20이다.
         public const double PathHitReachExtra = 20, PathHitKnockbackMult = 2, PathHitPoiseMult = 2.0, PathHitPush = 25, PathHitShake = 4;
         public static bool IsPathHit(double px, double py, double ex, double ey, double er, bool alive, bool alreadyHit)
         {

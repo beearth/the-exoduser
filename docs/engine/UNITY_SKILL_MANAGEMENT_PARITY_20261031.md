@@ -1,8 +1,8 @@
 # 스킬 관리·선택 저장의 웹 대조 — 2026-10-31
 
-상태: **제품 Core·스킬창 연결 후보 / 실제 Player·영상·공통·바탕화면 미완료**. 현재 실행·저장 소유9개를 대상으로 한다. 실제 원문 SKILL_LIST55개 전체 이식·합체 제단·드래그·일괄 강화·추천 자동 완료를 뜻하지 않는다.
+상태: **제품 Core·스킬창 연결 후보 / 실제 Player·영상·공통·바탕화면 미완료**. 현재 실행·저장 소유10개를 대상으로 한다. 실제 원문 SKILL_LIST55개 전체 이식·합체 제단·드래그·일괄 강화·추천 자동 완료를 뜻하지 않는다.
 
-추가 웹 실측: 현재 origin/main HTML과 SHA256가 같은3344 로컬 페이지의 실제 DOM에서 관리 버튼11개를 조작해 수치가 모두 일치했다(`web-management-current/웹-스킬관리-실제DOM.json`). 강타·얼음보주 재학습, 리셋 취소·확인, 가시덫 숫자2 장착, 무료 합체 양쪽 강화·감소를 확인했다. 단 참조 이미지1개404와 브라우저 종료 실패 때문에 실행 전체는 FAIL이며 Unity 실제 UI 통과 증거가 아니다. 사슬 초기 모체charge/구슬2개가 chargeBoost1 학습 후 모체chargeBoost/구슬6개로 바뀌는 실제 화면도 보존했다. 현재 Native의 고정 초기48정의가 전체55개 상태를 표현한다고 보지 않는다. 사슬충돌의9Core·Native4호출부·메타데이터57정의·명시적 사슬3단계QA는 작업 브랜치 후보로 반영했다. 현재 소유9종이며 실제 UI/새 저장3단계는 미검증이다.
+추가 웹 실측: 현재 origin/main HTML과 SHA256가 같은3344 로컬 페이지의 실제 DOM에서 관리 버튼11개를 조작해 수치가 모두 일치했다(`web-management-current/웹-스킬관리-실제DOM.json`). 강타·얼음보주 재학습, 리셋 취소·확인, 가시덫 숫자2 장착, 무료 합체 양쪽 강화·감소를 확인했다. 단 참조 이미지1개404와 브라우저 종료 실패 때문에 실행 전체는 FAIL이며 Unity 실제 UI 통과 증거가 아니다. 사슬 초기 모체charge/구슬2개가 chargeBoost1 학습 후 모체chargeBoost/구슬6개로 바뀌는 실제 화면도 보존했다. 현재 Native의 고정 초기48정의가 전체55개 상태를 표현한다고 보지 않는다. 사슬충돌의9Core·Native4호출부·메타데이터57정의·명시적 사슬3단계QA는 작업 브랜치 후보로 반영했다. 현재 소유10종이며 실제 UI/새 저장3단계는 미검증이다.
 
 ## 실행 계약
 
@@ -17,12 +17,13 @@
 | maliceSwipe | 불꽃칼날 모체 | 10 | 80 | 40 | E 입력(창 의미 RMB) |
 | shieldThrow | 불꽃칼날 합체 구성원 | 10 | 80 | 40 | 독립 장착 없음 |
 | chargeBoost | 사슬기동:충돌 | 10 | 100 | 50 | 학습 레벨이 Shift를 강화, 독립 장착 없음 |
+| magicBlink | 사슬기동:화염 | 10 | 100 | 50 | 습득 즉시 Shift 선택, 명시적 Shift 장착 가능 |
 
 기존 무료 시작 지급은 그대로다. 표의 습득은 리셋 뒤 재학습 경로이며, 실제 원문 `_skCtx`·`_skLearnUp`·`skill-forge.js canEquip/equip`에서 읽는다. UI의 키 표시에는 실제 재지정 키를 사용한다. 표시 메타데이터의 upSp5를 실행 강화 비용으로 사용하지 않는다.
 
 | 함수/동작 | 현재 수치·순서 |
 |---|---|
-| `LearnSkill`/`CanLearnSkill` | 미습득·SP≥10·실제 악의 충족. SP10/악의 차감 뒤 Lv1. 기검 Config 레벨도1. Space/F는 해당 빈 슬롯만, 가시덫/얼음보주는 빈1~4에 자동 배정. 얼음보주 학습만으로 Ctrl을 덮어쓰지 않음 |
+| `LearnSkill`/`CanLearnSkill` | 미습득·SP≥10·실제 악의 충족. SP10/악의 차감 뒤 Lv1. 기검 Config 레벨도1. Space/F는 해당 빈 슬롯만, 가시덫/얼음보주는 빈1~4에 자동 배정. 얼음보주 학습만으로 Ctrl을 덮어쓰지 않음. 화염 사슬 습득은 Shift 선택을 자동 변경 |
 | 일반 강화 | 기존 SP1, 최대20, 플레이어 레벨 잠금 min(20,floor(LV/50)+1) 유지 |
 | `LowerSkillLevel` | 일반은 Lv>1에서1감소·SP1환급. 기본 합체 구성원은 min(두 레벨)의 이전 단계로 모두 낮춤. 낮아진 단계≥9이면 SP6, 아니면 SP2환급. 상위 구성원 레벨을 임의 보존하는 방식으로 바꾸지 않음 |
 | `ResetSkill` 확인 취소 | 레벨·SP·악의·슬롯 변경0 |
@@ -89,3 +90,9 @@ GPU 파서에는 별도로 기존 결함을 정정했다. 파일이 없거나 Re
 edf 입력 새정식빌드 d0ade204 컴파일0, 같은 M1 549945c8 단계23/23이지만 공식전체는 ok=false/timedOut=true/exit-1이다. 종료전 메인→HIDInput 대기, 관리코드 OnApplicationQuit/OnDestroy 및 표시/효과음/HUD Dispose 완료를 계측했다. 종료성공·실제관리UI3프로세스·공통/Desktop 검수는 미완료다. 외부 I:진단래퍼의 exit손실 오판은 공식JSON으로 교정·이력보존했고, 상세는 UNITY_HID_SHUTDOWN_DIAGNOSIS_20261031.md다.
 
 사슬 선택 activeChargeSk·장비 bonusChargeStock·사망 재충전·제단 모체의 현재 세부 계약과 실제 검수 대기 항목은 [사슬충돌 후속](UNITY_CHARGEBOOST_PARITY_20261031.md)을 따른다. NativeGame.CombatSave 호출부까지 함께 인수해야 한다. 기본 charge/parry 정보판은 레벨·습득/강화 버튼을 표시하지 않는다.
+
+웹 관리 재검수 `web-management-keyboard-r2`/공식63f35686은 실제 DOM11조건0·JS오류0·누락0, oktrue/exit0/정상반환22:18:42UTC/숨은Desktop 닫힘/USER_SAVE0이다. 키보드 전용 fixture에서 물리 gamepad API·연결 이벤트를 격리했고 명시적 context/browser 종료와 파일 stdout 수집을 적용했다. 물리 패드·Unity HID 해결이나 Native 저장3단계 증거로 확대하지 않는다. 앞선 실패 자료는 별도 보존한다.
+
+### 2026-10-31 화염 사슬 후속
+
+현행 실행·저장10종의 `magicBlink`는 [화염 사슬 계약](UNITY_MAGICBLINK_PARITY_20261031.md)을 따른다. 이전 절의 화염 미이식/HOLD 표시는 이전 후보의 범위다. 비합체 화염의 일반 Shift·후반 MP 취소·화염 관통·15틱 DOT·720틱 수명·저장 소유권을 연결했다. 기존 사슬충돌은 유지하며 합체/칼날개/기동불꽃·전체55종은 미완료다. CPU30묶음5,471,182단위0, 설치Unity Core/Runtime 오류0이다. 실제 동일 Player/M1·관리 저장3단계·제단6구슬·웹|Unity 영상·공통/바탕화면/Mac 검수는 미완료이며 NOT_READY다.

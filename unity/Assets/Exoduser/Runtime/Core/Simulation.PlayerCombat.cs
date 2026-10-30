@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Exoduser.UnityPort.Core.Combat;
+using Exoduser.UnityPort.Core.Skills;
 
 namespace Exoduser.UnityPort.Core
 {
@@ -22,6 +23,9 @@ namespace Exoduser.UnityPort.Core
         public double SbParryT, SbHoldT, SbReleaseR, SbCd, SdHold, KgChg, SBashChgMul = 1, HarpGauge = 225, HarpGaugeMax = 225;
         // chain dash (web _dashHold/_dashHoldF/_harpActive/_dashActive)
         public bool DashHold, HarpActive, DashActive; public double DashHoldF; public int HarpTier;
+        // 발사 때 선택을 고정한다. 비행 중 슬롯을 바꿔도 현재 사슬의 속성은 바뀌지 않는다.
+        public string HarpSkill = "charge";
+        public int MagicBlinkLevel { get { return Skills.Level("magicBlink"); } }
         public double HarpDist, HarpMaxDist, HarpX, HarpY, DashVx, DashVy, DashLeft; public float HarpDirX, HarpDirY;
         // last parry result (for the presentation layer / smoke)
         public int ParryCount; public double LastParryHp;
@@ -115,13 +119,15 @@ namespace Exoduser.UnityPort.Core
 
         private bool TryLateChainMove(bool gathering)
         {
-            if (!combatShiftHeld || Player.ChargeStocks <= 0 || HarpActive || gathering && DashActive || Skills.ChargeSkill != "charge") return false;
-            int cost = SkillStCost("charge", "chargeBoost");
-            if (cost <= 0 || Player.Stamina < cost) return false;
-            Player.Stamina -= cost; Player.ChargeStocks--;
+            if (!combatShiftHeld || Player.ChargeStocks <= 0 || HarpActive || gathering && DashActive || Skills.ChargeSkill != "charge" && Skills.ChargeSkill != "magicBlink") return false;
+            bool magic = Skills.ChargeSkill == "magicBlink";
+            int cost = magic ? SkillMpCost("blink", "magicBlink") : SkillStCost("charge", "chargeBoost");
+            if (magic ? Player.Mana < cost : cost <= 0 || Player.Stamina < cost) return false;
+            if (magic) Player.Mana = Math.Max(0, Player.Mana - cost); else Player.Stamina -= cost;
+            Player.ChargeStocks--; HarpSkill = Skills.ChargeSkill;
             if (Player.ChargeStocks < Player.MaxChargeStocks && Player.ChargeCd <= 0) Player.ChargeCd = 300;
             DashHold = false; DashHoldF = 0; HarpTier = ChainDash.CancelTier(ChargeBoostLevel);
-            HarpActive = true; HarpDist = 0; HarpMaxDist = ChainDash.DistanceOfTier(HarpTier, ChargeBoostLevel, 0, PCharge);
+            HarpActive = true; HarpDist = 0; HarpMaxDist = ChainDash.DistanceOfTier(HarpTier, ChargeBoostLevel, MagicBlinkLevel, PCharge);
             double direction = actionMoveX != 0 || actionMoveY != 0 ? Math.Atan2(actionMoveY, actionMoveX) : Player.Facing;
             HarpDirX = (float)Math.Cos(direction); HarpDirY = (float)Math.Sin(direction);
             HarpX = Player.X; HarpY = Player.Y; DashHits.Clear();
@@ -139,9 +145,18 @@ namespace Exoduser.UnityPort.Core
                 if (!ChainDash.IsPathHit(Player.X, Player.Y, e.X, e.Y, e.Radius, e.Alive, DashHits.Contains(e))) continue;
                 DashHits.Add(e);
                 double ang = Math.Atan2(e.Y - Player.Y, e.X - Player.X);
-                int dmg = ChainDash.PathHitDamage(ChargeBoostLevel, armor != null ? armor.charge : 0, Player.BaseAttack, 1, EquippedInventory != null ? EquippedInventory.AffixTotal("dashBoost") : 0);
-                ApplyEnemyDamage(e, dmg, (float)ang, true, (float)ChainDash.PathHitKnockbackMult, false, false, 0, 0, false, armor != null ? armor.el : 0, false, false, false, false, ChainDash.PathHitPoiseMult);
-                e.KnockbackX += (float)(Math.Cos(ang) * ChainDash.PathHitPush); e.KnockbackY += (float)(Math.Sin(ang) * ChainDash.PathHitPush);
+                if (HarpSkill == "magicBlink")
+                {
+                    int dmg = Js.Int(MagicReference() * SkillRules.SkMul("magicBlink", MagicBlinkLevel) * MagicDamageMultiplier() * Math.Max(1, Math.Min(3, HarpTier)));
+                    ApplyEnemyDamage(e, dmg, (float)ang, true, 1, false, false, 0, 0, false, 1, false, false, false, false, 1.5);
+                    var w = e.Web ?? SyncToWeb(e); w.burnT = Math.Max(w.burnT, 180); w.burnStk = Math.Min(10, w.burnStk + 1);
+                }
+                else
+                {
+                    int dmg = ChainDash.PathHitDamage(ChargeBoostLevel, armor != null ? armor.charge : 0, Player.BaseAttack, 1, EquippedInventory != null ? EquippedInventory.AffixTotal("dashBoost") : 0);
+                    ApplyEnemyDamage(e, dmg, (float)ang, true, (float)ChainDash.PathHitKnockbackMult, false, false, 0, 0, false, armor != null ? armor.el : 0, false, false, false, false, ChainDash.PathHitPoiseMult);
+                    e.KnockbackX += (float)(Math.Cos(ang) * ChainDash.PathHitPush); e.KnockbackY += (float)(Math.Sin(ang) * ChainDash.PathHitPush);
+                }
                 ShakeAmount = (float)(ChainDash.PathHitShake * OptShake / 100);   // G.shake = 4 * OPT.shake / 100 (G.hitStop is not modelled in the Core)
                 if (!inEnemyLoop) FlushDeathSpawns();
             }
@@ -149,10 +164,10 @@ namespace Exoduser.UnityPort.Core
 
         private bool FireChain(int tier, bool resetHoldFrames = true)
         {
-            var result = ChainDash.Release(tier, HarpGauge, Player.Stamina, Player.MaxStamina, ChargeBoostLevel, 0, PCharge);
+            var result = ChainDash.Release(tier, HarpGauge, Player.Stamina, Player.MaxStamina, ChargeBoostLevel, MagicBlinkLevel, PCharge);
             if (!result.Fired) return false;
             HarpGauge = result.Gauge; Player.Stamina = (float)result.St; HarpTier = tier;
-            HarpActive = true; HarpDist = 0; HarpMaxDist = result.MaxDist;
+            HarpActive = true; HarpDist = 0; HarpMaxDist = result.MaxDist; HarpSkill = Skills.ChargeSkill ?? "charge";
             HarpDirX = (float)Math.Cos(Player.Facing); HarpDirY = (float)Math.Sin(Player.Facing);
             HarpX = Player.X; HarpY = Player.Y; DashHits.Clear();
             DashHold = false; if (resetHoldFrames) DashHoldF = 0;
@@ -187,7 +202,7 @@ namespace Exoduser.UnityPort.Core
                 if (DashHold && !HarpActive && !DashActive)
                 {
                     int tier = ChainDash.TierForHoldFrames(DashHoldF);
-                    double range = ChainDash.AvailableDistance(tier, HarpGauge, ChargeBoostLevel, 0, PCharge);
+                    double range = ChainDash.AvailableDistance(tier, HarpGauge, ChargeBoostLevel, MagicBlinkLevel, PCharge);
                     float dx = (float)Math.Cos(Player.Facing), dy = (float)Math.Sin(Player.Facing);
                     for (double d = 16; d <= range; d += 16)
                         if (!Pass(Player.X + dx * (float)d, Player.Y + dy * (float)d, 2)) { FireChain(tier); break; }
@@ -211,7 +226,13 @@ namespace Exoduser.UnityPort.Core
                 double step = ChainDash.PullStep(1, DashLeft);
                 float x = Player.X + (float)(DashVx * step), y = Player.Y + (float)(DashVy * step);
                 if (Pass(x, y, Player.Radius)) { Player.X = x; Player.Y = y; } else DashLeft = 0;
-                TickDashPathHits(); DashLeft -= step;
+                TickDashPathHits();
+                if (HarpSkill == "magicBlink" && Js.Int(DashLeft) % 3 == 0)
+                {
+                    int lv = Math.Max(1, MagicBlinkLevel);
+                    FireZones.Add(new FireZone { Id = nextZoneId++, Type = "fireTrail", X = Player.X, Y = Player.Y, R = 40 + lv * 3, Dmg = Js.Int(MagicReference() * SkillRules.SkMul("magicBlink", lv) * MagicDamageMultiplier() * .5), MaxT = 720, Lv = lv });
+                }
+                DashLeft -= step;
                 if (DashLeft <= 0)
                 {
                     DashActive = false; HarpActive = false; DashHold = false; DashHoldF = 0; HarpTier = 0;
@@ -228,7 +249,7 @@ namespace Exoduser.UnityPort.Core
             var armor = EquippedInventory != null ? EquippedInventory.GetEquipped("armor") : null;
             var boots = EquippedInventory != null ? EquippedInventory.GetEquipped("boots") : null;
             double extra = EquippedInventory != null ? EquippedInventory.AffixTotal("extraST") : 0;
-            var maximum = ChainDash.ComputeGaugeMax(false, false, false, ChargeBoostLevel, 0, extra, armor != null ? armor.bonusChargeStock : 0, boots != null ? boots.bonusChargeStock : 0);
+            var maximum = ChainDash.ComputeGaugeMax(false, false, false, ChargeBoostLevel, MagicBlinkLevel, extra, armor != null ? armor.bonusChargeStock : 0, boots != null ? boots.bonusChargeStock : 0);
             Player.MaxChargeStocks = maximum.MaxStocks;
             HarpGaugeMax = maximum.Max; HarpGauge = Math.Min(HarpGauge, HarpGaugeMax);
             if (Player.ChargeStocks < Player.MaxChargeStocks)

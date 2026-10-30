@@ -58,3 +58,7 @@ SkillDockBinding.ForgeHostForWindow는 실제 _FUSE_PAIRS/HOST_OVERRIDE의 모�
 `--unity-charge-management-check -skill-phase write|read|verify -output <단계별새폴더>`는 동일한 명시적 QA sandbox에서만 실행하도록 준비했다. 자기 숨은 창의 실제 IMGUI 버튼, 사슬 강화/감소/리셋 취소·확인/재학습, 외부 학습 선택 저장, 일반 재시도 Native 호출, 다음 프로세스 복원과 기본 사슬 명시 장착을 검사한다. 최초 학습 상태·외부 magicBlink 선택은 통제 fixture이며 미이식 화염 실행이나 실제 손조작 증거로 사용하지 않는다. **아직 실제 실행하지 않았다.** 기존 스킬 관리3단계와 별개로 모두 필요하다.
 
 정식 빌드→같은 무창 M1 정상 종료→현재 웹/Player 연속 프레임·영상/1x→제단 배치 보완→공통/바탕화면 순서를 남긴다. HID 종료 지연은 [별도 진단](UNITY_HID_SHUTDOWN_DIAGNOSIS_20261031.md)의 미해결 상태를 유지한다.
+
+### 2026-10-31 화염 사슬 후속
+
+현행 실행·저장10종의 `magicBlink`는 [화염 사슬 계약](UNITY_MAGICBLINK_PARITY_20261031.md)을 따른다. 이전 절의 화염 미이식/HOLD 표시는 이전 후보의 범위다. 비합체 화염의 일반 Shift·후반 MP 취소·화염 관통·15틱 DOT·720틱 수명·저장 소유권을 연결했다. 기존 사슬충돌은 유지하며 합체/칼날개/기동불꽃·전체55종은 미완료다. CPU30묶음5,471,182단위0, 설치Unity Core/Runtime 오류0이다. 실제 동일 Player/M1·관리 저장3단계·제단6구슬·웹|Unity 영상·공통/바탕화면/Mac 검수는 미완료이며 NOT_READY다.

@@ -57318,3 +57318,7 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 2026-10-31 Mac `ui_tab` 검수 Tools 이식성: 현재 공통 제품 `b9491cf58`의 `UiTabAudioCheck.cs`만 Mac 조건부로 수정했다. Windows WM 클릭/창 없는 GUI 화면을 미지원으로 따로 기록하고 전체 PASS를 막는다. 새 ARM64 앱 오류0, 실제 무음·격리 Player 지원 46/46(클립·전환·F10·AudioSource/UI버스·SFX 0/60/100%) 통과, 미지원2·`partial-unsupported`·의도적 exit4. 같은 새 앱 M1 Metal 23/23·exit0. 제품 오디오/샘플/Core 변경0, 물리 마우스·실제 GUI·청음은 미검증. [Mac 결과·보존](engine/UNITY_MAC_A15_M1_FINAL_20261029.md#0634-후속--mac-오디오-검수-tools의-이식성), [오디오 계약](engine/UNITY_UI_TAB_AUDIO_20261031.md#mac-무창-player-검수-tools-이식성--2026-10-31).
 
 - 2026-10-31 게임동작 후보: chargeBoost 소유9종·레벨/스톡/후반Shift/장비/activeChargeSk·사망재시도 자원·제단 모체 연결. 원문55개+기본2표시=57정의. 고정 CPU20게이트2860184검사단위0·설치참조 컴파일0. 실제 Player/M1/Native저장3단계/제단6구슬/영상/공통/Desktop 미완료(NOT_READY). 상세 docs/engine/UNITY_CHARGEBOOST_PARITY_20261031.md.
+
+### 2026-10-31 화염 사슬 후속
+
+현행 실행·저장10종의 `magicBlink`는 [화염 사슬 계약](engine/UNITY_MAGICBLINK_PARITY_20261031.md)을 따른다. 이전 절의 화염 미이식/HOLD 표시는 이전 후보의 범위다. 비합체 화염의 일반 Shift·후반 MP 취소·화염 관통·15틱 DOT·720틱 수명·저장 소유권을 연결했다. 기존 사슬충돌은 유지하며 합체/칼날개/기동불꽃·전체55종은 미완료다. CPU30묶음5,471,182단위0, 설치Unity Core/Runtime 오류0이다. 실제 동일 Player/M1·관리 저장3단계·제단6구슬·웹|Unity 영상·공통/바탕화면/Mac 검수는 미완료이며 NOT_READY다.

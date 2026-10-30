@@ -77,7 +77,7 @@ namespace Exoduser.UnityPort.Core
         }
 
         // ---- save (web `skills`, `skillSlots`, `ultSlot`, `activeCtSk`): only the skills this executor runs are owned by Unity ----
-        public static readonly string[] PortedSkillIds = { "kiSlash", "spikeTrap", "giantSlam", "holyDome", "iceOrb", "fireball", "maliceSwipe", "shieldThrow", "chargeBoost" };
+        public static readonly string[] PortedSkillIds = { "kiSlash", "spikeTrap", "giantSlam", "holyDome", "iceOrb", "fireball", "maliceSwipe", "shieldThrow", "chargeBoost", "magicBlink" };
         static bool IsPorted(string id) { return id != null && Array.IndexOf(PortedSkillIds, id) >= 0; }
         public void CaptureSkills(out Dictionary<string, double> skills, out string[] slots, out string ult, out string ct)
         {
@@ -204,7 +204,7 @@ namespace Exoduser.UnityPort.Core
             TickSkillBlades(); TickMaliceOrbs();
             TickSkillCooldowns();
             if (IceOrbActive) TickIceOrb();
-            CaptureShieldDomeFrame(); TickFireZones();
+            CaptureShieldDomeFrame(); // 장판 피해는 원문처럼 적 갱신 뒤 Simulation에서 처리한다.
             for (int i = SlamWaves.Count - 1; i >= 0; i--) { var w = SlamWaves[i]; w.T++; if (w.T >= w.MaxT) SlamWaves.RemoveAt(i); }
         }
 
@@ -468,7 +468,8 @@ namespace Exoduser.UnityPort.Core
         // 원문 후반 장판 수명·DOT·만료. 회복 영역의 자원 재생은 앞 단계에서 이미 처리했다.
         private void TickFireZones()
         {
-            for (int i = FireZones.Count - 1; i >= 0; i--)
+            // 원문은 생성 순서로 처리한다. 역순이면 화상 10중첩 경계에서 풀에 더하는 피해가 달라진다.
+            for (int i = 0; i < FireZones.Count; i++)
             {
                 var z = FireZones[i]; z.T++;
                 if (z.Type == "spikeTrap")
@@ -491,7 +492,23 @@ namespace Exoduser.UnityPort.Core
                     }
                 }
 
-                if (z.T >= z.MaxT) FireZones.RemoveAt(i);
+                if (z.Type == "fireTrail")
+                {
+                    z.TickTimer++;
+                    if (z.TickTimer >= 15)
+                    {
+                        z.TickTimer -= 15;
+                        foreach (var e in Enemies.ToArray())
+                        {
+                            if (!e.Alive || Distance(z.X, z.Y, e.X, e.Y) > z.R) continue;
+                            ApplyEnemyDamage(e, z.Dmg, (float)Math.Atan2(e.Y - z.Y, e.X - z.X), false, 1, true, true, 0, 0, false, 1);
+                            var w = e.Web ?? SyncToWeb(e); w.burnT = Math.Max(w.burnT, 180); w.burnStk = Math.Min(10, w.burnStk + 1);
+                            if (w.burnStk < 10) w._burnPool += z.Dmg * .10; // 현재 패시브 pDotPool=1 범위
+                            w._webSlow = Math.Max(w._webSlow ?? 0, 20);
+                        }
+                    }
+                }
+                if (z.T >= z.MaxT) FireZones.RemoveAt(i--);
             }
         }
 

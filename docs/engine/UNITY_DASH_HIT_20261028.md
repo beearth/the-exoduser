@@ -28,7 +28,8 @@
 
 | 항목 | 사유 |
 |---|---|
-| magicBlink / dimBreach 화염 관통 + 화상 | 스킬 미이식 |
+| magicBlink 화염 관통 + 화상 | 별도 화염 계약의 후보, 실제 Player 미검증 |
+| dimBreach 합체 | 미이식 |
 | 기동칼날개 광역 베기·검색 반경 확대(`_chainSlashActive`) | 스킬 미이식 |
 | 합체(`_fuseMul`), 유니크 회수(`_uChainCrowdRefund`), 착지 슬램 | 스킬·유니크 미이식 |
 | `G.hitStop` | Core에 모델 없음(`ShakeAmount`만 있음) |
@@ -49,3 +50,7 @@
 ## 2026-10-31 공용 사슬 경계 후속
 
 경로 타격 식·적별1회·피해/넉백은 유지한다. 사슬 재발사마다 기존 DashHits를 비워 새시전1회 제한을 유지한다. 벽 도우미·끝점후퇴·장기홀드·재입력취소·경직/기절 탈출은 UNITY_CHAIN_BOUNDARY_PARITY_20261031.md의 현행 계약과 회귀 결과를 따른다. magicBlink/합체/칼날개/유니크는 여전히 미이식이다. 실제 Player·공통/바탕화면 검수는 HID 종료 문제로 미완료다.
+
+### 2026-10-31 화염 사슬 후속
+
+현행 실행·저장10종의 `magicBlink`는 [화염 사슬 계약](UNITY_MAGICBLINK_PARITY_20261031.md)을 따른다. 이전 절의 화염 미이식/HOLD 표시는 이전 후보의 범위다. 비합체 화염의 일반 Shift·후반 MP 취소·화염 관통·15틱 DOT·720틱 수명·저장 소유권을 연결했다. 기존 사슬충돌은 유지하며 합체/칼날개/기동불꽃·전체55종은 미완료다. CPU30묶음5,471,182단위0, 설치Unity Core/Runtime 오류0이다. 실제 동일 Player/M1·관리 저장3단계·제단6구슬·웹|Unity 영상·공통/바탕화면/Mac 검수는 미완료이며 NOT_READY다.

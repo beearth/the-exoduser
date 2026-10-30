@@ -29,3 +29,7 @@
 I: 후보로 기존 적전투900·Q쿨다운20·시작스킬1350·이동540·기검1040·구르기80·E경계14도0이다. 제품 반영 후 실제 CLI의 사슬1,130,500필드와 이7개 회귀도 모두0, 설치Unity참조 Core/Runtime 오류0(기존경고2/17), 첫연습88·스킬실행107도 통과했다. 제품 추출기 실제 CLI가 기존 I:원문475사례와 JSON 전체 일치함을 확인했다. 최초 제품 회귀는 CLI 분기 누락으로 파일찾기 오류였고 원본 출력을 보존했으며 분기를 연결한 r2는 통과했다. 실제 게임 화면·OS 입력·새 같은 빌드 M1·1x 영상의 통과로 확대하지 않는다.
 
 근거: `I:/EXODUSER-Storage/demo-art/gameplay-parity/chain-boundary-red/`, `chain-boundary-candidate/`, `chain-boundary-extended-candidate/`, `chain-candidate-regression/`, `chain-product-gates-r2/`, `chain-product-independent-compile/`, `chain-product-integrations/`, `chain-tool-validation/`, `chain-source-before/목록.json`, `사슬-문서전체검색.log`. 현재 제품 빌드·공통 병합·바탕화면 전달은 HID 종료 문제와 실제 검수 게이트가 해결된 뒤 진행한다.
+
+### 2026-10-31 화염 사슬 후속
+
+현행 실행·저장10종의 `magicBlink`는 [화염 사슬 계약](UNITY_MAGICBLINK_PARITY_20261031.md)을 따른다. 이전 절의 화염 미이식/HOLD 표시는 이전 후보의 범위다. 비합체 화염의 일반 Shift·후반 MP 취소·화염 관통·15틱 DOT·720틱 수명·저장 소유권을 연결했다. 기존 사슬충돌은 유지하며 합체/칼날개/기동불꽃·전체55종은 미완료다. CPU30묶음5,471,182단위0, 설치Unity Core/Runtime 오류0이다. 실제 동일 Player/M1·관리 저장3단계·제단6구슬·웹|Unity 영상·공통/바탕화면/Mac 검수는 미완료이며 NOT_READY다.

@@ -42,3 +42,7 @@ B07 Core(`UNITY_B07_CORE_20261026.md` §6 "구현하지 않은 것")의 후속. 
 현재 _ensureBaseWingStrike·_autoShieldThrow·합체 파동·Q/E 원본 표시의 후속 구현과 검수 경계는 [UNITY_QE_BASE_FUSION_20261031.md](UNITY_QE_BASE_FUSION_20261031.md)를 따른다. 이 문서의 과거 미이식 표기는 해당 새 게이트에서만 대체한다. 무지개탄 Q 전용 규칙은 유지한다.
 
 2026-10-31 정정: 현재 기검3타 자세의 Q홀드 취소도 원본 _tryKiSlashQCancel에 연결했다. wWindup/wSwing/wRecover·MP10·Q쿨0에서 그 틱 이동 없이 sBlock 진입, 충전 중이면 충전/콤보0이다. 원본 실제 update와1,040틱 차이0. 상세 근거와 같은 Player 게이트는 [Q/E·기검 정합](UNITY_QE_BASE_FUSION_20261031.md)을 따른다.
+
+### 2026-10-31 화염 사슬 후속
+
+현행 실행·저장10종의 `magicBlink`는 [화염 사슬 계약](UNITY_MAGICBLINK_PARITY_20261031.md)을 따른다. 이전 절의 화염 미이식/HOLD 표시는 이전 후보의 범위다. 비합체 화염의 일반 Shift·후반 MP 취소·화염 관통·15틱 DOT·720틱 수명·저장 소유권을 연결했다. 기존 사슬충돌은 유지하며 합체/칼날개/기동불꽃·전체55종은 미완료다. CPU30묶음5,471,182단위0, 설치Unity Core/Runtime 오류0이다. 실제 동일 Player/M1·관리 저장3단계·제단6구슬·웹|Unity 영상·공통/바탕화면/Mac 검수는 미완료이며 NOT_READY다.
