@@ -113,6 +113,18 @@ namespace Exoduser.UnityPort
                 var pixels=tex.GetPixels32();int y0=tex.height,y1=0;for(int y=0;y<tex.height;y++)for(int x=0;x<tex.width;x++)if(pixels[y*tex.width+x].a>64){y0=Math.Min(y0,y);y1=Math.Max(y1,y);}
                 var low=playerView.transform.TransformPoint(new Vector3(0,(y0-s.pivot.y)/s.pixelsPerUnit,0));var high=playerView.transform.TransformPoint(new Vector3(0,(y1+1-s.pivot.y)/s.pixelsPerUnit,0));h=Mathf.Abs(camera.WorldToViewportPoint(high).y-camera.WorldToViewportPoint(low).y);Destroy(tex);
             }
+            // 전사 R5 이후 숨긴 2D 스프라이트가 아닌 실제 현재 스킨 메시로 높이를 판정한다.
+            if(heroView!=null&&heroView.Ready&&camera!=null)
+            {
+                float low=float.MaxValue,high=float.MinValue;
+                foreach(var renderer in heroView.Model.GetComponentsInChildren<SkinnedMeshRenderer>())
+                {
+                    var mesh=new Mesh();renderer.BakeMesh(mesh);
+                    foreach(var vertex in mesh.vertices){var v=camera.WorldToViewportPoint(renderer.transform.TransformPoint(vertex));low=Mathf.Min(low,v.y);high=Mathf.Max(high,v.y);}
+                    Destroy(mesh);
+                }
+                if(high>=low)h=high-low;
+            }
             receipt.frames.Add(new KeyshotFrame{name=name,tick=Simulation.TickCount,enemies=Simulation.Enemies.Count,projectiles=KeyshotActiveShots(Simulation.Stage.InArena),arena=Simulation.Stage.InArena,remodel=NativeRemodel3D.Active,heroHeight01=h,cameraFov=camera.fieldOfView,heroWorld=playerView.transform.position,cameraWorld=camera.transform.position,bossCenter=druidBody!=null?druidBody.Bounds.center:Vector3.zero,bossSize=druidBody!=null?druidBody.Bounds.size:Vector3.zero});
             if(Application.isBatchMode)A2CaptureFrame(Path.Combine(output,name+".png"));else ScreenCapture.CaptureScreenshot(Path.Combine(output,name+".png"));yield return null;yield return new WaitForSecondsRealtime(.4f);
         }

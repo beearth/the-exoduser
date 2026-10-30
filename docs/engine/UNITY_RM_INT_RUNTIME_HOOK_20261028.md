@@ -398,4 +398,4 @@ VISUAL VERDICT: RETOUCH — 독립 조립 시연, 실제 게임 미검증. 회�
 
 ## 2026-10-30 승인 A2 조립 후보
 
-최신 구현·수치·MAP PRODUCTION REPORT는 [A2 제작 SSOT](UNITY_KEYSHOT_A2_20261030.md)를 따른다. --unity-a2-forest 명시 활성화 후보이며 일반 게임 채택0. r2 HOLD는 사용하지 않는다. 독립C#오류0과 실제Unity/GPU/1920시각/M1·공통/바로가기 완료는 구분한다.
+최신 구현·수치·MAP PRODUCTION REPORT는 [A2 제작 SSOT](UNITY_KEYSHOT_A2_20261030.md)를 따른다. --unity-a2-forest 명시 활성화 후보이며 일반 게임 채택0. 10-31 재개는 최신공통a861d0303의 UI·진입·전사R5를 병합하고 검수된R3 17종/185파일을 정확 인수했다. R4 HOLD 인수0, Decals_blood 제외·수면반영·실제전사메시 크기검사 후보를 추가했다. 이전 독립C#0오류는 새소스에 소급하지 않으며 현재 Unity/GPU/1920시각/M1·공통/바로가기 미검증이다.
