@@ -97,15 +97,17 @@ Core(`Runtime/Core`)는 바꾸지 않았다.
 | Volume | ACES/postExposure+.25EV/contrast16/saturation-8. Split shadow(.43,.48,.54)/highlight(.55,.51,.46)/balance-12. Bloom.16/threshold1.1/scatter.48. Vignette.13/smoothness.65. FilmGrain 비활성 |
 | 높이산란 | HellFogFeature/HellHeightFog:16고정샘플/density.065/height falloff1.8/기준.4u. 차가운산란(.06,.12,.16)+5개불빛산란(.6,.35,.15). 산란 shadow ray는 없으므로 그림자까지 계산한 볼류메트릭이라고 주장하지 않는다 |
 | SSAO | HellSsaoFeature·URP기반/전체해상도/Intensity.6/Radius.18/DirectLightingStrength.12/DepthNormals/High샘플·High bilateral. 필드 표현카메라만 적용. 로비/기본2D/보스 새필드패스 미적용 |
-| 5 검은실루엣 | 카드제거+화면밖 메시중심(x.05~.95,y.12~.95,z>0 밖)의 shadowCasting Off. 화면안 메시/영웅/적/화로 그림자 유지. 표면메시는 이 제외 규칙 대상 아님 |
+| 5 검은실루엣 | 카드제거+기존 블록아웃 메시 shadowCasting Off. 거대한 합성 bounds는 중심만 화면안이어도 화면밖 나무그림자가 남아 제외함. 새 표면메시/영웅/적/화로 그림자 유지 |
 | 보스구도 | 기존2D아레나/논리카메라/Core 유지. 별도표현카메라 max(논리직교크기×.53,합친bounds높이×.63+.3u),중심y-.15. 드루이드 표현크기.72,반경/공격판정/AI불변. HUD/조준은 실제 표현카메라 사용 |
 | 보스바닥 | ArenaSoilLit:흙20%+CC0돌80%/월드6u/3texel기울기×.15/ambient(.62,.67,.73). 국소광3개9/7/3·반경7·warm(1,.6,.3)/cool(.55,.68,.85). 마지막광원 영웅추적. 보스/영웅 접촉음영2.2×.45u/.48×.12u·알파.32. 실제3D보스 리모델 완료 아님 |
 
 ### 검수·소유 경계
 
 - --unity-steam-keyshot --unity-boss-direct 0 --remodel3d -output <폴더>: 실제 NativeGame·격리세이브·직접입장·생존보조·스크립트입력. 적/탄 직접주입0. 탐험/실제AI탄막/드루이드1920×1080. 알파>64 불투명 몸체높이8~10%가 수치조건이며 시각합격과 별개다.
-- 전투1100tick상한/90tick마다 사각이동/160tick이전만공격(tick%120<60). 280tick이후 화면내실탄3개/가장가까운적100px초과때촬영. 보스촬영 플레이어는 보스(+260,-150)px,자연UI대기2.8초. AI/공격수치 불변.
+- 전투1100tick상한/90tick마다 사각이동/40tick이전만공격. 180tick이후 화면내실탄3개/가장가까운적100px초과때촬영. 보스촬영 플레이어는 보스(+260,-150)px,자연UI대기2.8초. AI/공격수치 불변.
 - QA전용 --unity-keyshot-diagnostic는 메시/스프라이트/지형/안개/AO/풀/인스턴싱/그림자를 순차분리한다. 필터 기본0. --unity-keyshot-location X:Y는 탐험위치 선택. --unity-keyshot-baseline만 과거 해상도별FOV를 사용한다.
 - 최초PBR점무늬는 재질혼합OFF때소실(AO/그림자OFF로는유지). 필터·노멀·반사·가중치 재작업. 하단가로줄은 Terrain만남겨도유지·TerrainOFF때소실. 일반메시6c8ee055/Player2b619f69에서 같은구도 가로줄소실. Unity/드라이버 내부원인 미확정. 진단01bc0c75는 폐기루트 null참조로시간초과,해당루프 null검사수정. 해당진단을PASS로기록하지않음.
 - 원본·후보·비교·기록: I:/EXODUSER-Storage/steam-keyshot/. CC0출처·SHA는 PBR-원본출처.json. https://polyhaven.com/a/rock_ground / https://polyhaven.com/a/burned_ground_01 / https://polyhaven.com/license . 신규지출0. 미사용 탄화토normal/rough2종은 unused-source로hash대조이관.
 - 기존 codex-unity-visual의 공유WIP보호:09fe65b8840에서 G:/exoduser-wt/codex-unity-keyshot-final·codex/pc-unity-keyshot-final-20261030으로분리. 자기입력11경로 byte보존이송. 인수미확인 HellEnvironment모듈/호출은 독립후보에서제외. 기존guard WIP원위치보존.
+
+최종후보36c97a89/촬영은 큰 합성메시 bounds중심 방식으로 실루엣이 남고,160tick공격으로 원거리 적이 죽어 전투탄1개만남아 재작업. 기존블록아웃 메시그림자 전체를끄고 새바닥/영웅/적/화로 그림자 유지. 촬영도40tick공격만 사용,전투탄3개/보스탄6개 미만은 receipt FAIL로강화. Legacy Core36검사 중35PASS/맵2523표본2불일치가 관찰됨. Core·SourceMap·ch1_map·구형oracle·원본입력은 공통c122746b9와byte동일,이번조명변경과분리하며 해당검사를PASS라하지않는다.

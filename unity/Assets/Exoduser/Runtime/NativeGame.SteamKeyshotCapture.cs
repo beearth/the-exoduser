@@ -46,12 +46,12 @@ namespace Exoduser.UnityPort
                 p.Hp=p.MaxHp;p.Shield=p.MaxShield;p.Iframes=600;
                 int phase=(tick/90)%4;float mx=phase==0?1:phase==2?-1:0,my=phase==1?1:phase==3?-1:0;float ax=p.X+280,ay=p.Y-40,nearest=1e8f;
                 foreach(var e in sim.Enemies)if(e.Alive){float d=(e.X-p.X)*(e.X-p.X)+(e.Y-p.Y)*(e.Y-p.Y);if(d<nearest){nearest=d;ax=e.X;ay=e.Y;}}
-                StepInput(mx,my,ax,ay,tick<160&&tick%120<60,false);
+                StepInput(mx,my,ax,ay,tick<40,false);
                 if(tick%3==0)yield return null;
                 int count=sim.Druid.Projectiles.Count;
                 if(count>best&&tick>100){best=count;}
                 int visible=0;foreach(var shot in sim.Druid.Projectiles)if(shot.Active){var v=HudCamera.WorldToViewportPoint(NativeRemodel3D.Point(shot.X,shot.Y));if(v.x>.08f&&v.x<.92f&&v.y>.15f&&v.y<.88f)visible++;}
-                if(tick>280&&visible>=3&&nearest>10000){yield return KeyshotSave(output,"02-전투",receipt);break;}
+                if(tick>180&&visible>=3&&nearest>10000){yield return KeyshotSave(output,"02-전투",receipt);break;}
                 if(tick==1099)yield return KeyshotSave(output,"02-전투",receipt);
             }
             BossDirectEnter();int entry=0;
@@ -69,7 +69,7 @@ namespace Exoduser.UnityPort
                     if(tick==1099)yield return KeyshotSave(output,"03-드루이드",receipt);
                 }
             }
-            receipt.passed=receipt.frames.Count==3&&receipt.frames.TrueForAll(f=>f.heroHeight01>=.08f&&f.heroHeight01<=.10f);
+            receipt.passed=receipt.frames.Count==3&&receipt.frames.TrueForAll(f=>f.heroHeight01>=.08f&&f.heroHeight01<=.10f)&&receipt.frames[1].projectiles>=3&&receipt.frames[2].projectiles>=6;
             File.WriteAllText(Path.Combine(output,"검수.json"),JsonUtility.ToJson(receipt,true));
             Application.Quit(receipt.passed?0:3);
         }

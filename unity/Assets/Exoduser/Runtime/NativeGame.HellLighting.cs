@@ -10,7 +10,6 @@ namespace Exoduser.UnityPort
         public static bool HellAtmosphereEnabled { get; private set; }
         int hellDiagnosticFilter;
         Material hellActorMaterial; Light hellHeroRim;
-        readonly List<Renderer> hellSceneShadowCasters=new List<Renderer>();
         readonly List<SpriteRenderer> hellFlames=new List<SpriteRenderer>();
         Sprite[] hellFlameFrames;
         AmbientMode hellOldAmbient; Color hellOldSky,hellOldEquator,hellOldGround,hellOldFog; bool hellOldFogOn; float hellOldFogDensity; FogMode hellOldFogMode;
@@ -46,7 +45,7 @@ namespace Exoduser.UnityPort
                 g.terrainData.terrainLayers=layers;
                 HellGroundSetup(g);
             }
-            foreach(var root in r3Roots)if(root!=null)foreach(var renderer in root.GetComponentsInChildren<MeshRenderer>(true))if(renderer.shadowCastingMode==ShadowCastingMode.On&&renderer.name!="지옥 바닥 PBR 표면")hellSceneShadowCasters.Add(renderer);
+            foreach(var root in r3Roots)if(root!=null)foreach(var renderer in root.GetComponentsInChildren<MeshRenderer>(true))if(renderer.shadowCastingMode==ShadowCastingMode.On&&renderer.name!="지옥 바닥 PBR 표면")renderer.shadowCastingMode=ShadowCastingMode.Off;
             hellActorMaterial=new Material(Shader.Find("EXODUSER/SpriteLit3D"));hellActorMaterial.SetFloat("_Ambient",.3f);hellActorMaterial.SetFloat("_NormalTilt",.4f);
             var rim=new GameObject("영웅 차가운 림광");rim.transform.SetParent(r3Marker,false);rim.transform.localPosition=new Vector3(-.3f,1.8f,.6f);
             hellHeroRim=rim.AddComponent<Light>();hellHeroRim.type=LightType.Point;hellHeroRim.color=new Color(.68f,.8f,1f);hellHeroRim.range=3.5f;hellHeroRim.intensity=2.2f;
@@ -78,7 +77,6 @@ namespace Exoduser.UnityPort
         void HellLightingLate()
         {
             if(hellActorMaterial==null)return;
-            foreach(var renderer in hellSceneShadowCasters)if(renderer!=null){var v=r3Cam.WorldToViewportPoint(renderer.bounds.center);renderer.shadowCastingMode=v.z>0&&v.x>.05f&&v.x<.95f&&v.y>.12f&&v.y<.95f?ShadowCastingMode.On:ShadowCastingMode.Off;}
             if(playerView!=null){playerView.sharedMaterial=hellActorMaterial;playerView.shadowCastingMode=ShadowCastingMode.On;playerView.receiveShadows=true;}
             foreach(var e in enemies.Values)foreach(var sr in new[]{e.body,e.walk})if(sr!=null){sr.sharedMaterial=hellActorMaterial;sr.shadowCastingMode=ShadowCastingMode.On;sr.receiveShadows=true;}
             for(int i=0;i<hellFlames.Count;i++)if(hellFlames[i]!=null)hellFlames[i].sprite=hellFlameFrames[((int)(Time.time*12)+i*3)%8];
