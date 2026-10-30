@@ -14,7 +14,8 @@ namespace Exoduser.UnityPort
         public static float Shore(float z)
         {
             float bend=Math.Max(0,Math.Min(1,(z+66)/10));bend=bend*bend*(3-2*bend);
-            return 48+1.4f*(float)Math.Sin((z+72)*.22f)+34*bend;
+            float returning=Math.Max(0,Math.Min(1,(z+52)/10));returning=returning*returning*(3-2*returning);
+            return 48+1.4f*(float)Math.Sin((z+72)*.22f)+34*bend-28*returning;
         }
         public static bool Water(float x,float z)
         {

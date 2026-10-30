@@ -14,7 +14,7 @@
 | 카메라 구도 | 비A2 LOOK-001 그대로. A2만 pitch38°/distance18u/FOV46.9453°, 공통TargetOffset+(3,0,.6)u. SMAA High 추가. 논리 카메라/전투 범위는 그대로이고 조준은 실제 3D카메라 역투영. 실제 current source GPU 미검증 |
 | 독액 | A2ToxicRiver: linear RGB(.40,.32,.035), 거품(.45,.44,.16), emission.1. 저주파 사인속도.12/.08, 법선.035/.025, smoothness.62→거품.16, 접촉깊이.025~.28u. 수면Y−1.25는 A2ForestLayout.WaterLevel SSOT |
 | 접촉 거품 깊이 | 기존 URP_PC_High/Mac_Balanced의 m_RequireDepthTexture=0 확인. A2 카메라에 requiresDepthTexture=true, 수면은 Transparent 큐/ZWrite On/alpha1로 불투명 지형 깊이 복사 후 샘플. 실제 거품 표현 미검증 |
-| 수로 | Water: z(−94,−30),동쪽 x>Shore(z)와 지류 |Along|<2.75/Across(−8.5,20)의 합집합. Shore=48+1.4sin((z+72)×.22)+34×smoothstep(−66,−56,z)로 북동쪽에 굽어 빠짐. 남동 앵글러(148,150) 접근을 수로가 덮던 실제 회귀 FAIL을 고쳐 고정 위치/전투 규칙 보존. 수위−1.25, 연속 수면 x−30~110/z−100~70. 실제 수로 접점에만 수직 강둑. 암반9·말뚝5·강둑13접합/지류 접합. 기존 River_/Pool_만 숨김·r1거품 미사용 |
+| 수로 | Water: z(−94,−30),동쪽 x>Shore(z)와 지류 |Along|<2.75/Across(−8.5,20)의 합집합. Shore=48+1.4sin((z+72)×.22)+34×smoothstep(−66,−56,z)−28×smoothstep(−52,−42,z)로 북동쪽에 굽어 빠짐. 남동 앵글러(148,150) 접근을 수로가 덮던 실제 회귀 FAIL을 고쳐 고정 위치/전투 규칙 보존. 수위−1.25, 연속 수면 x−30~110/z−100~70. 실제 수로 접점에만 수직 강둑. 암반9·말뚝5·강둑13접합/지류 접합. 기존 River_/Pool_만 숨김·r1거품 미사용 |
 | 반영 | 환경 Realtime ReflectionProbe256²×6면/OnAwake·위치(50,GroundY(50,−72)+1,−72)/크기180×80×260/boxProjection/강도.55/importance100/far150 유지. A2RiverReflection 실제 평면반사960×540 ARGBHalf/수면Y−1.25/oblique clip+.04u, Water layer4 제외·후처리off/깊이on. 설치 URP SingleCameraRequest+SubmitRenderRequest 사용, 정지.1초/이동.05u/회전.3° 갱신. GPU/논리 투영 분리로 GPU VP의 방향 확인, reflection RT 직접 확인·실행1270회/Unity 오류0. 현재 혼합(.30+.30×Fresnel³)×(1−거품), 색(.85,.80,.42), UV왜곡 n.xz×.12. 실패 기본수면 폴백/추가반복0. 새 혼합은 GPU 재검수 예정 |
 | 횃불 | R3 holder×.5·8프레임 불꽃/높이1.24u. 다리 국소 Along±3.65/Across±1.95u를 world로 변환해 두 끝에 배치. RGB(1,.55,.19)/강도7/반경5/soft shadow/bias.04/normalBias.1. 받침 투사만off, 기존 화로 루트off/Pool_Hell광원0 |
 | 분위기 | A2 배경/안개(.15,.18,.21)/Linear14~54u/far240. 비A2/해제 시 이전 fog mode/start/end 복원. 환경광 sky(.31,.34,.36)/equator(.20,.22,.20)/ground(.075,.07,.05). 주광2.1/RGB(.77,.83,.88)/회전(54,−32,0)/그림자.55. Volume+.9EV/대비8·ACES·블룸.16. 달빛기둥4/alpha.18·가산 합성/깊이·가장자리 감쇠. 랜덤 점 노이즈0 |
@@ -26,9 +26,9 @@
 | 촬영 | --unity-steam-keyshot+A2는 실제NativeGame/격리세이브. 4200:7460, 실제AI/스크립트입력·생존보조, 적/탄 직접주입0. URP SingleCameraRequest/SubmitRenderRequest로1920×1080 월드RT·HUD제외. RGB휘도16픽셀표본 평균>.01 추가하여 검정이미지 성공 방지. 스킨 높이는 Model.activeInHierarchy·Renderer.enabled·카메라layer 교집합일 때 측정, 2D아레나도 보이는3D전사는 실제활성Renderer를 측정(숨긴2D스프라이트 사용0). 일반 손조작/HUD 검수 별도 |
 | 영웅 크기 | R5가 있으면 실제 SkinnedMeshRenderer.BakeMesh 정점 투영으로 측정. 숨긴2D스프라이트 높이를 실제전사 크기로 인용하지 않음. 원래8~11% 촬영검사 유지 |
 | 미니맵 경계 | SourceMap.DisplayTile(tx,ty)는 추가 경계가 차단한 타일 중심을1로 반환하고 나머지는 원본 Data.tiles 값을 그대로 반환. NativeFieldHud는 이 값으로 기존 미니맵을 그린다. A2 수로/다리/비A2 표시3검사PASS, UI 모양·원본 맵 데이터 변경0. 미니맵-수정전-FAIL.json에 수정 전 불일치 보존 |
-| 보행 교차 회귀 | 실제 SourceMap/ch1_map으로 비다리 수면99910표본/겹침0. 주간충돌: 왼쪽2.2u·먼쪽2u·기타2주간1.1u, 큰그루터기1.3u, 기존후경15×.8u/작은후경19×.5u. 다리101점/반경15px·촬영4200:7460·일반4020:7420·중앙4320:7180 보행true.17803타일/출구3곳 연결, 고정앵글러4곳 모두300px 내 접근·시야 확보. 섬바깥49점 높이튐0. 현재26검사PASS. 원본JSON/Core 및 수면/새거목 밖차단 보존. 섬고리/남동앵글러 수정전FAIL별도 보존 |
+| 보행 교차 회귀 | 실제 SourceMap/ch1_map으로 비다리 수면123571표본/겹침0. 주간충돌: 왼쪽2.2u·먼쪽2u·기타2주간1.1u, 큰그루터기1.3u, 기존후경15×.8u/작은후경19×.5u. 다리101점/반경15px·촬영4200:7460·일반4020:7420·중앙4320:7180 보행true.16842타일/출구3곳 연결, 고정앵글러4곳 모두300px 내 접근·시야 확보. 섬바깥49점 높이튐0. 현재28검사PASS. 원본JSON/Core 및 수면/새거목 밖차단 보존. 섬고리/남동앵글러 수정전FAIL별도 보존 |
 | 종료 | 미디어닫기·효과음정리·1초배출. 보스1100tick 제한 마지막 촬영 분기1099로 교정 |
-| 검증 | erosion/dd53cf66 빌드오류0/MCP제외PASS, bfd44855 실제1920 3장·탄3/15·검정수정 확인. 다만 CPU정점읽기210오류/뿌리·낙엽 누락/경계톱니/빈보스바닥으로 실제FAIL. receipt.passed=true는 아트/오류 통과가 아니며 다음코드에 unityErrors==0 조건 추가. 새소스 독립C#0·26경계/침수/동선검사PASS, 실제GPU/현재빌드M1/통합/일반Desktop 미검증 |
+| 검증 | erosion/dd53cf66 빌드오류0/MCP제외PASS, bfd44855 실제1920 3장·탄3/15·검정수정 확인. 다만 CPU정점읽기210오류/뿌리·낙엽 누락/경계톱니/빈보스바닥으로 실제FAIL. receipt.passed=true는 아트/오류 통과가 아니며 다음코드에 unityErrors==0 조건 추가. 새소스 독립C#0·28경계/침수/동선검사PASS, 실제GPU/현재빌드M1/통합/일반Desktop 미검증 |
 
 ## MAP PRODUCTION REPORT
 
@@ -75,3 +75,6 @@ A2CaptureFrame이 정상 LateUpdate 이후 Remodel3DLate를 다시 불러 이미
 | A2 보스 지면 | Clamp rock_face 대신 기존Repeat rock_ground Diffuse/Normal을기존ArenaSoilLit worldXY/4u에연결. NativeArenaView/충돌/벽마스크수정0 |
 | A2 보스 낮은 프레임 | 실제Room중심 주위 PineRoots14개/타원8.5×6.2u/scale1.8,1.2,2.2, yaw137°간격. 짝수암반7개/scale.3,.22,.35. 횃불2개×.45,중심±6/±2.5u/pitch−52°·불꽃8프레임12fps·앞오프셋z−1/y+.7/scale.12. 기존두warm광원을같은위치z−1.3으로옮김. 전부장식Collider0·신규보스모델0 |
 | 전경·빛 | 빛기둥은기존4개depthfade메시를가산합성alpha.18로교정. 실제볼류메트릭안개가아님. Linear안개14~54u. 입체뿌리/낙엽이현재Player에서누락됐으므로개선완료라부르지않음 |
+
+### 먼 수로의 원근 연결
+남동 고정앵글러 주변에서 북동쪽으로 비켜간 강이 z−52~−42u에서 다시28u 돌아와 먼 오른쪽 숲에 보이도록 Shore를 보완했다. 고정앵글러 위치/AI/보행 규칙은 보존한다. 현재 수면123571표본/보행겹침0, 연결16842타일/출구3·앵글러4접근, 수로 원근 재연결 포함28검사PASS. 실제 새Player에서 조립시간·오류·1x 검수 전이다.

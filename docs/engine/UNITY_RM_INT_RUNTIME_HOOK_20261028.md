@@ -402,7 +402,7 @@ VISUAL VERDICT: RETOUCH — 독립 조립 시연, 실제 게임 미검증. 회�
 
 ## 2026-10-31 A2 수로 구조 재작업
 
-A2에서만 SourceMap 생성 시 선택적 additionalBlocked= A2ForestLayout.BlockedCore를 전달한다. Blocked·CanMove는 수로/거목, LineOfSight·ProjectileBlocked는 세 번째 SolidCore 콜백의 거목 경계를 쓰며, 원본 ch1_map byte와 비A2 생성자 호출의 동작은 보존한다. Core 변경은 없다. 수면·다리 수치와99910표본/101점 회귀 근거는 UNITY_KEYSHOT_A2_20261030.md가 SSOT다. A2 카메라만38°/18u/TargetOffset+(3,0,.6), 비A2 LOOK-001 그대로다. Editor 첫 화면은 FAIL이며 새 구조의 Player/GPU/M1은 미검증이다.
+A2에서만 SourceMap 생성 시 선택적 additionalBlocked= A2ForestLayout.BlockedCore를 전달한다. Blocked·CanMove는 수로/거목, LineOfSight·ProjectileBlocked는 세 번째 SolidCore 콜백의 거목 경계를 쓰며, 원본 ch1_map byte와 비A2 생성자 호출의 동작은 보존한다. Core 변경은 없다. 수면·다리 수치와123571표본/101점 회귀 근거는 UNITY_KEYSHOT_A2_20261030.md가 SSOT다. A2 카메라만38°/18u/TargetOffset+(3,0,.6), 비A2 LOOK-001 그대로다. Editor 첫 화면은 FAIL이며 새 구조의 Player/GPU/M1은 미검증이다.
 
 ## R5 전달 이후 야간 한 건 — 중심형 강타 앵커
 
@@ -426,3 +426,6 @@ A2CaptureFrame이 정상 LateUpdate 이후 Remodel3DLate를 다시 불러 이미
 
 ### 2026-10-31 실제 Player 회귀 후속
 현재26수면/침수정점/다리/출구/앵글러회귀PASS·독립C#0. SourceMap수면은보행만/거목은투사체·시야도차단계약유지. 이전erosion실제3장촬영기능통과와210정점읽기오류/시각FAIL을분리한다. 정확3FBX읽기·침수경계·원본높이캐시대조·실제활성영웅측정·A2전용기본보스카메라/Repeat바닥/낮은프레임을재작업중이다. 실제새Player/M1전채택0, 상세숫자는A2 SSOT.
+
+### A2 먼 수로 재연결
+Shore는 고정앵글러 주변을 피한 후 z−52~−42에서 다시28u 굽어 먼 오른쪽 강을 잇는다. 현재28경계/침수/출구/앵글러검사PASS, source와수치SSOT는UNITY_KEYSHOT_A2_20261030.md. 새Player/GPU는미검증이다.
