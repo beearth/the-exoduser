@@ -150,3 +150,8 @@ patch 번호: 1~15 + **16** `A16_nativepausemenu_keybinds` + **17** `A16_nativeg
 ## 구르기 키 줄 추가 (2026-10-27, PC B07 연결)
 
 웹 614cf73a0(`BINDS.roll`)에 맞춰 `KeyBindings.Actions`에 **`roll`(구르기 (방향키 +) / Roll (Arrow Keys +), 기본 Space, 보조 없음)** 을 `charge` 다음에 추가했다. 처음 행 수 20→**21**, 초기화 후 18→**19**. 마우스 버튼 지정은 거부("구르기는 키보드 키로 지정하세요." / "Bind Roll to a keyboard key."). 설정 파일(JSON)은 이름 키라 옛 파일에 `roll`이 없으면 기본 Space. `keybind_web.json`·`keybind_ui_web.json`은 웹 593be3aa4에서 `extract_keybind_defs.cjs`로 다시 뽑았고 시나리오에 roll 4개를 넣었다(keybind-parity 1,346 checks / 0 failures). 캡처 자체검사의 높이·좌표(기본 688→745, 초기화 버튼 644→701, 키 사각형 40→42, 대기 717→774, 초기화 후 19행)는 행 하나(피치 57)가 늘어난 계산값이며 새 캡처로 재확인은 안 했다.
+
+
+## 2026-10-30 UI 2단계 표시 마감 후보
+
+위10-26 표의 금색/이모지 그대로 이식은 과거 이력이다. 현재 NativeKeyBindList 표시층은 Hahmlet300·은빛 팔레트·Linear 글자 보정을 사용하고 ⌨/🎮는 조회 후 표시에서 제거한다. 키/탭/초기화는 기존 실버 헬 원본 금속3-slice(edge12/22, outset0/2/4). 키 입력·충돌·저장·패드 미이식 규칙은 그대로다. 수치와 정확 Player 검수 상태는 UNITY_UI_PHASE2_20261030.md 최신 설정 절을 따른다.

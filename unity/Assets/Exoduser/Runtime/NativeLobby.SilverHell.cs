@@ -99,14 +99,14 @@ namespace Exoduser.UnityPort
             Slice(new Rect(box.x-14,box.y,box.width+28,box.height),plaque,174,0,40,0,true);
         }
         // 기존 금속 원화의 안쪽 표면만 착색한다. 테와 양끝 조각은 원본 은빛을 유지한다.
-        internal static void ActionPlate(Rect box,bool primary,float selection,bool pressed)
+        internal static void ActionPlate(Rect box,bool primary,float selection,bool pressed,float edge=40,float outset=14)
         {
             var previous=GUI.color;
             float light=pressed?.74f:Mathf.Lerp(.78f,1.18f,selection);
             GUI.color=new Color(light,light,light,previous.a);
             if(primaryPlaque==null&&primary)primaryPlaque=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_primary_composed");
-            if(primary&&primaryPlaque!=null)Slice(new Rect(box.x-14,box.y,box.width+28,box.height),primaryPlaque,174,0,40,0,true);
-            else Button(box);
+            if(plaque==null)plaque=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_plaque_20261029");
+            Slice(new Rect(box.x-outset,box.y,box.width+outset*2,box.height),primary&&primaryPlaque!=null?primaryPlaque:plaque,174,0,edge,0,true);
             GUI.color=previous;
         }
     }
