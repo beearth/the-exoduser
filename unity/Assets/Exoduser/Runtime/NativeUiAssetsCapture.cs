@@ -154,7 +154,9 @@ namespace Exoduser.UnityPort
             {
                 passed=failures==0,failures=failures,scope="실제 Player 렌더·API/격리 메모리 슬롯. OS 입력·수동 플레이 검증과 구분.",checks=checks.ToArray()
             },true));
-            Application.Quit(failures==0?0:2);
+            // 기존 설정 저장 QA와 같은 1초 배출: 지연 Destroy를 엔진 종료 전에 완료한다.
+            lobby.enabled=false;lobby.CloseStartupCaptureMedia();yield return new WaitForSecondsRealtime(1);
+            Debug.Log("QA_MEDIA_DRAIN_COMPLETE UI");Application.Quit(failures==0?0:2);
         }
         IEnumerator Shot(string name)
         {

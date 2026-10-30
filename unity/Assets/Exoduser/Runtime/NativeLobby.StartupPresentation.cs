@@ -19,7 +19,7 @@ namespace Exoduser.UnityPort
   };}
   GUIStyle startupBody,startupName,startupHint,guideTitle,guideDialogue,guideText,guideKey,guideProgress,guideAction;
   internal FrontendEntryFlow StartupCaptureState {get{return startup;}}
-  internal void CloseStartupCaptureMedia(){CancelStartupEntry();CancelCharacterStory();movie.Close();StopMusic();}
+  internal void CloseStartupCaptureMedia(){CancelStartupEntry();CancelCharacterStory();CloseCharacterPresentationVideo();movie.Close();StopMusic();}
   public Action StartupGameplayPrepare {private get;set;}
   public bool StartupGameplayPrepared {get;private set;}
   public bool StartupEntryActive{get{return startup.Active;}}
