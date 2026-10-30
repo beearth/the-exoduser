@@ -6,6 +6,9 @@ const fs = require('node:fs'), path = require('node:path'), vm = require('node:v
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i < 0 ? d : process.argv[i + 1]; };
 const SRC = path.resolve(arg('--source', 'G:/exoduser/game.html')), OUT = path.resolve(arg('--out', path.join(__dirname, 'oracle.json'))), CHECK = process.argv.includes('--check');
 const text = fs.readFileSync(SRC, 'utf8'), lines = text.split('\n');
+// 최신 원본의 펫 문구가 호출하는 실제 공유 번역 모듈을 같은 소스 묶음에서 읽는다.
+const localeScope = {}; require('node:vm').runInNewContext(fs.readFileSync(path.join(path.dirname(SRC), 'localization-runtime.js'), 'utf8'), localeScope);
+const ExoduserI18n = localeScope.ExoduserI18n;
 const sha = s => crypto.createHash('sha256').update(s).digest('hex');
 const blocks = [];
 function record(from, to, label) { const body = lines.slice(from - 1, to).join('\n'); blocks.push({ label, from, to, sha256: sha(body) }); return body + String.fromCharCode(10); }   // trailing newline: a last-line `//` comment must not swallow a wrapper's closing brace
@@ -46,7 +49,7 @@ function scope(base, noops) {
   });
 }
 const SFXP = new Proxy({}, { get: () => () => undefined });   // SFX.xxx() audio calls
-function load(src, base, expose, noops = []) { if (!('SFX' in base)) base.SFX = SFXP; const s = scope(base, noops); return new Function('__s', 'with(__s){' + src + '\nreturn {' + expose.join(',') + '};}')(s); }
+function load(src, base, expose, noops = []) { base.ExoduserI18n = ExoduserI18n; if (!('_T' in base)) base._T = text => text; if (!('SFX' in base)) base.SFX = SFXP; const s = scope(base, noops); return new Function('__s', 'with(__s){' + src + '\nreturn {' + expose.join(',') + '};}')(s); }
 const J = o => JSON.parse(JSON.stringify(o, (k, v) => (v === undefined ? null : v)));
 // design of experiments: every single axis value around the first-value base + seeded random full combinations (deterministic xorshift32)
 function grid(axes, n, seed = 20261026) {
@@ -340,7 +343,7 @@ const CAPES = [0, .05, .1, .25, .3, .5, 1, 2];
   // from `case 'stagger'` to the closing `break;}` of pStun
   let end = at("case 'pStun':{"); while (!lines[end - 1].trimStart().startsWith('break;}')) end++;
   const body = record(a, end, 'stagger/pStun exits');
-  const ctx = { P: { s: 'idle', st2: 0, iframes: 0, poise: 0, poiseR: 0, _bdTrigger: null, _seaParalyzed: 0, _pStunSayF: 0, x: 0, y: 0 }, _gameFrame: 0, K: { ShiftLeft: false }, _dashHold: false, _harpActive: false, _dashActive: false, jc: {}, isJust: k => !!ctx.jc[k], _canBladeDash: () => ctx.canBd, canBd: false, bd: [], activateBladeDash: v => ctx.bd.push(v) };
+  const ctx = { P: { s: 'idle', st2: 0, iframes: 0, poise: 0, poiseR: 0, _bdTrigger: null, _seaParalyzed: 0, _pStunSayF: 0, x: 0, y: 0 }, _gameFrame: 0, K: { ShiftLeft: false }, _dashHold: false, _harpActive: false, _dashActive: false, jc: {}, isJust: k => !!ctx.jc[k], _canMobility: () => ctx.canBd, canBd: false, bd: [], activateMobility: v => ctx.bd.push(v) };
   const m = load('function ex(){switch(P.s){\n' + body + '\n}}', ctx, ['ex'], ['addTxt', '_T']);
   const cases = [];
   for (const s of ['stagger', 'pStun']) for (const st2 of [0, 5]) for (const jc of [{}, { charge: true }, { parry: true }, { skill7: true }]) for (const [sh, dh, ha, da] of [[false, false, false, false], [true, true, false, false], [true, false, true, false], [true, false, false, true], [true, false, false, false]]) for (const [bdT, cbd, sea] of [[null, false, 0], [1, true, 0], [1, true, 5], [1, false, 0]]) {

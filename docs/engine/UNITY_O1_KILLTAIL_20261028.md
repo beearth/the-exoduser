@@ -32,7 +32,7 @@
 | `Core/EnemyHurt.DeathTail.cs` (신규) | `EnemyHurt.DeathTail` = 42952~43322 손 이식. 잔해·킬 체인 균열·M26·폭독혈·etype 사망 효과(1~7장)·속성 사망 장판·레어몹 보상·엘리트 모드(M07/M08/M10/M20)·슬라임·악의·물약·콤보 보너스·rollDrop·경험치·checkRooms·10킬 자동저장 |
 | `Core/EnemyHurtContext.Tail.cs` (신규) | `JsObj`(웹 객체 리터럴: 키 순서·undefined 키 보존), `EnemyPotDef`, 뒷부분 전역·주입 함수 |
 | `Core/EnemyHurt.cs` | 치명타 전용음(웹 780ac692b): `!isDot&&!noSound&&_critSfxCd<=0`이면 `_critSfxCd=12` + `playSample('crit_heavy',.45,_r(1,.05))` — **난수 1개 추가** |
-| `Core/EnemyHurt.Death.cs` | STY-12 보스 마지막 사망 대사 `_bossLine('die'+stage)`(si1~3, 웹 481482e72) · `_druidSinkStart`의 침강음(난수 1개)·`G._druidFled`·`_bossLine('sink0')`(웹 2c3c380ec·05d519db7) |
+| `Core/EnemyHurt.Death.cs` | STY-12 보스 마지막 사망 대사 `_bossLine('die'+stage)`(최신 원본은 스테이지 제한 없음, 등록된 대사 키 표시; 과거 si1~3 범위는 해제) · `_druidSinkStart`의 침강음(난수 1개)·`G._druidFled`·`_bossLine('sink0')`(웹 2c3c380ec·05d519db7) |
 | `Core/EnemyHurtContext.cs`·`EnemySpawn.Hurt.cs`·`EnemyTickContext.cs` | `P._freezeSlow`·`P.r` / `_plagued`·`_plagueLv`·`_isSlime`·`matDrop`·`_eatenItems`·`_twPartnerDead` / `EnemyRift.si`·`spawned`(nullable) |
 | `Core/Simulation.Death.cs` (신규) | **연결**: `RunWebDeath` = 상태 → 웹 객체 복사 → `DeathHead` → (Continue면) `DeathTail` → 결과를 Simulation으로. 분열·동반부활 적 등록, 다른 적 버프 반영, 이벤트(`ReviveTextRaised`·`BossRevived`·`KillDropped`·`BossLineRaised`·`AutosaveRequested`) |
 | `Core/Simulation.cs` | `KillEnemy` = 부활 판정을 끈 웹 사망부(리모델 마지막 목숨·하니스·실습). 손 조립 경로(처치→콤보→악의+4→물약→엘리트 악의→장비→경험치) 삭제. 피해 경로가 Body 결과를 넘기고 `_critSfxCd`를 프레임 사이에 유지. Tick에 `TickDeathFrameStart`(`_sfxFrameReset`)·`TickDeathFrameEnd`(킬 체인 타이머·지연 등록·처치 checkRooms) 각 1줄 |
@@ -127,3 +127,8 @@ O-1판(1332dcc96)은 m1 19/20(09b 가시덫 실패), 기준판(c7b497131, 새 de
 | 범위 | 미리보기 전용 브랜치. Unity 재빌드·최종 M1 결과는 `UNITY_PC_PREVIEW_ALL_20261029.md`에서 갱신한다 |
 
 증거: `I:/EXODUSER-Storage/unity-preview/resume-brief2/kill-wire-red.log`, `kill-wire-green.log/json`.
+
+
+## 2026-10-31 최신 원본의 보스 사망 대사 범위 후속
+
+현행 변경·원본 수치·검수 및 미완료 게이트는 [게임 동작 웹 대조](UNITY_GAMEPLAY_PARITY_20261031.md)를 따른다. 과거 검수 수치는 이번 Player·전체 스킬 완료 근거로 소급하지 않는다.

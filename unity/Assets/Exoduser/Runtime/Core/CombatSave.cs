@@ -60,8 +60,8 @@ namespace Exoduser.UnityPort.Core
     {
      case "player":root.Set(key,player);break;case "inv":root.Set(key,inv);break;case "game":root.Set(key,game);break;
      case "bagMax":root.Set(key,JsonValue.Of(m.BagMax));break;case "potLv":root.Set(key,pot);break;
-     case "skills":root.Set(key,m.Skills!=null?EncodeSkills(m,Raw(m,key)):Raw(m,key));break;
-     case "skillSlots":root.Set(key,m.SkillSlots!=null?EncodeSlots(m,Raw(m,key)):Raw(m,key));break;
+     case "skills":if(m.Skills!=null)root.Set(key,EncodeSkills(m,Raw(m,key)));else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;
+     case "skillSlots":if(m.SkillSlots!=null)root.Set(key,EncodeSlots(m,Raw(m,key)));else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;
      case "ultSlot":if(m.Skills!=null)root.Set(key,m.UltSlot!=null?JsonValue.Of(m.UltSlot):JsonValue.Null);else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;
      case "activeCtSk":if(m.ActiveCtSk!=null)root.Set(key,JsonValue.Of(m.ActiveCtSk));else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;
      default:{var raw=Raw(m,key);if(raw!=null)root.Set(key,raw);break;}
@@ -75,17 +75,23 @@ namespace Exoduser.UnityPort.Core
   static JsonValue EncodeSkills(CombatSaveModel m,JsonValue raw)
   {
    var o=Obj();
-   if(raw!=null&&raw.Kind==JsonKind.Object)foreach(var kv in raw.Members)if(!m.Skills.ContainsKey(kv.Key))o.Set(kv.Key,kv.Value);
+   if(raw!=null&&raw.Kind==JsonKind.Object)foreach(var kv in raw.Members)
+   {
+    double level;
+    if(OwnsSkill(kv.Key)&&m.Skills.TryGetValue(kv.Key,out level)){if(level>=1)o.Set(kv.Key,JsonValue.Of(level));}
+    else o.Set(kv.Key,kv.Value);
+   }
    foreach(var kv in m.Skills)if(kv.Value>=1)o.Set(kv.Key,JsonValue.Of(kv.Value));
    return o;
   }
+  static bool OwnsSkill(string id){return id=="kiSlash"||Array.IndexOf(Simulation.PortedSkillIds,id)>=0;}
   static JsonValue EncodeSlots(CombatSaveModel m,JsonValue raw)
   {
    var a=Arr();
    for(int i=0;i<m.SkillSlots.Length;i++)
    {
     string s=m.SkillSlots[i];
-    if(s==null&&raw!=null&&raw.Kind==JsonKind.Array&&i<raw.Items.Count){var r=raw.Items[i];if(r!=null&&r.Kind==JsonKind.String&&!m.Skills.ContainsKey(r.Text)){a.Add(r);continue;}}
+    if(s==null&&raw!=null&&raw.Kind==JsonKind.Array&&i<raw.Items.Count){var r=raw.Items[i];if(r!=null&&r.Kind==JsonKind.String&&(!OwnsSkill(r.Text)||!m.Skills.ContainsKey(r.Text))){a.Add(r);continue;}}
     a.Add(s!=null?JsonValue.Of(s):JsonValue.Null);
    }
    return a;

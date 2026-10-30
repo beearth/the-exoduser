@@ -239,3 +239,8 @@ oracle 케이스 1240개(U1 891 · L1 349, 적 7,232마리, 난수 383회): 명�
 | oracle | `enemy-ai-oracle` 692 시나리오(+218: DOT 48[출혈·중독·화상·냉기·악의사냥·표식 6 etype×8], 방어구 속성 132[etype 30×3 + 상태 7×6], 엘리트 M31/M32 단독·조합·경계 38) 124,540틱·2,323,428 검사 / **0 불일치**(원본 `updateE` 전체를 Node VM에서 틱 단위 실행, 호출 로그 `hurtE(dot)`·`zone`(+el)·`shot`(+web)·난수 소비 포함). `druid-boss-oracle` 5,421,635 / 0 (투사체 변경 후 회귀 없음) |
 | Unity 런타임 | 컴파일 0. `--unity-m1-check` 14단계 전부 ok(02 포함, 최종 빌드 1회). `--unity-field-compare`(신규 캡처 모드, `NativeGame.FieldCompare.cs`) 자기점검 5/5: DOT가 실제 hurtE로 초당 HP를 깎음(100000→95166, 5초 구간), 덫(hp+shield 811→711·감속 119·소멸), 빙판(얼음속성 freeze 59), 눈보라(어둠속성 hp 711→631·freeze 0), 범위 밖 장판 유지 |
 | 필드 화면 비교 | 1-1 시작 지점(4020,7420) 같은 위치에 같은 etype 24종을 같은 간격으로 배치해 웹(headless Playwright·음소거)과 나란히 캡처: `E:/exoduser-wt/_out/field-compare/`(`field-web.png`·`field-unity.png`·`compare_full_50pct.png`·`compare_crop_top_1x.png`·`compare_crop_bottom_1x.png`·`compare_zoom_row_2x.png`·`zones-web.png`·`zones-unity.png`·`compare_zones_1x.png`). **판정: 몹 그림·크기·쉴드 아크·덫·장판은 같은 게임으로 보임. 남은 차이** — (a) etype별 장식(etype 5 주황 후광, 7 리치 보라 후광, 8 주황 깜빡임 등 `_eDecor` 70여 줄) 미이식, (b) 맵 바닥의 핏줄 데칼·가장자리 가시 덩굴·비네팅(맵 총괄 영역), (c) 필드 몹 **탄 그림**: Unity는 보스용 `NativeBossView`의 초록 원이고 웹은 속성·종류별 콩/입 스프라이트 — 같은 게임으로 안 보임, 다음 단위 후보 |
+
+
+## 2026-10-31 최신 원본의 이전 상태 마커 후속
+
+현행 변경·원본 수치·검수 및 미완료 게이트는 [게임 동작 웹 대조](UNITY_GAMEPLAY_PARITY_20261031.md)를 따른다. 과거 검수 수치는 이번 Player·전체 스킬 완료 근거로 소급하지 않는다.
