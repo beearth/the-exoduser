@@ -79,7 +79,7 @@ namespace Exoduser.UnityPort.Core
         {
             switch (id)
             {
-                case "kiSlash": case "fireball": return 0;
+                case "kiSlash": case "fireball": case "chainAssault": return 0;
                 case "giantSlam": return 120;
                 case "holyDome": return 90;
                 case "iceOrb": return 100;
@@ -97,6 +97,7 @@ namespace Exoduser.UnityPort.Core
             int paid; if (!TrySpendMalice(SkillLearnMalice(id), out paid)) return false;
             Skills.Levels[id] = 1; Player.StatPoints -= 10;
             if (id == "magicBlink") Skills.ChargeSkill = id;
+            if (id == "chainAssault" && !Skills.Learned("chainSlam")) Skills.Levels["chainSlam"] = 1;
             if (id == "kiSlash") Config.KiSlashLevel = 1;
             MaliceSwipeLevel = Skills.Level("maliceSwipe"); ShieldThrowLevel = Skills.Level("shieldThrow");
             int slot = -1;

@@ -61,6 +61,7 @@ namespace Exoduser.UnityPort.Core
     {
      case "player":root.Set(key,player);break;case "inv":root.Set(key,inv);break;case "game":root.Set(key,game);break;
      case "bagMax":root.Set(key,JsonValue.Of(m.BagMax));break;case "potLv":root.Set(key,pot);break;
+     case "skProf":{var profile=Raw(m,key);if(profile!=null)root.Set(key,m.Skills!=null&&OwnsSkill("chainAssault")?ChainSkillRestoreRules.NormalizeProficiency(profile):profile);break;}
      case "skills":if(m.Skills!=null)root.Set(key,EncodeSkills(m,Raw(m,key)));else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;
      case "skillSlots":if(m.SkillSlots!=null)root.Set(key,EncodeSlots(m,Raw(m,key)));else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;
      case "ultSlot":if(m.Skills!=null)root.Set(key,m.UltSlot!=null?JsonValue.Of(m.UltSlot):JsonValue.Null);else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;
@@ -79,8 +80,10 @@ namespace Exoduser.UnityPort.Core
   static JsonValue EncodeSkills(CombatSaveModel m,JsonValue raw)
   {
    var o=Obj();
+   bool migrated=OwnsSkill("chainAssault")&&ChainSkillRestoreRules.LegacyAliasMoved(raw);
    if(raw!=null&&raw.Kind==JsonKind.Object)foreach(var kv in raw.Members)
    {
+    if(migrated&&kv.Key=="chainStun")continue;
     double level;
     if(OwnsSkill(kv.Key)&&m.Skills.TryGetValue(kv.Key,out level)){if(level>=1)o.Set(kv.Key,JsonValue.Of(level));}
     else o.Set(kv.Key,kv.Value);
@@ -156,6 +159,7 @@ namespace Exoduser.UnityPort.Core
    if(Valid(sk,JsonKind.Object))
    {
     m.Skills=new Dictionary<string,double>();foreach(var kv in sk.Members)if(kv.Value!=null&&kv.Value.Kind==JsonKind.Number)m.Skills[kv.Key]=kv.Value.Number;
+     if(OwnsSkill("chainAssault"))m.Skills=ChainSkillRestoreRules.Normalize(m.Skills);
     var slots=data.Get("skillSlots");m.SkillSlots=new string[6];
     if(Valid(slots,JsonKind.Array))for(int i=0;i<6&&i<slots.Items.Count;i++){var v=slots.Items[i];if(v!=null&&v.Kind==JsonKind.String)m.SkillSlots[i]=v.Text;}
     var ult=data.Get("ultSlot");m.UltSlot=ult!=null&&ult.Kind==JsonKind.String?ult.Text:null;

@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort.Core
         public bool Learned(string id) { return Level(id) >= 1; }
     }
 
-    public sealed class FireZone { public int Id; public string Type; public float X, Y, R, TickTimer; public int T, MaxT, Lv, Dmg; }
+    public sealed class FireZone { public int Id; public string Type; public float X, Y, R, TickTimer; public int T, MaxT, Lv, AfStack, Revision; public double Dmg, AfBaseR, AfBaseDmg; }
     public sealed class SlamWave { public int Id; public float X, Y, MaxR; public int T, MaxT; public bool Bash, Flame; }   // Bash: the E strike wave (blue-grey, web col #66aadd)
     public sealed class SkillBlade
     {
@@ -77,7 +77,7 @@ namespace Exoduser.UnityPort.Core
         }
 
         // ---- save (web `skills`, `skillSlots`, `ultSlot`, `activeCtSk`): only the skills this executor runs are owned by Unity ----
-        public static readonly string[] PortedSkillIds = { "kiSlash", "spikeTrap", "giantSlam", "holyDome", "iceOrb", "fireball", "maliceSwipe", "shieldThrow", "chargeBoost", "magicBlink", "chainSlam" };
+        public static readonly string[] PortedSkillIds = { "kiSlash", "spikeTrap", "giantSlam", "holyDome", "iceOrb", "fireball", "maliceSwipe", "shieldThrow", "chargeBoost", "magicBlink", "chainSlam", "chainAssault" };
         static bool IsPorted(string id) { return id != null && Array.IndexOf(PortedSkillIds, id) >= 0; }
         public void CaptureSkills(out Dictionary<string, double> skills, out string[] slots, out string ult, out string ct)
         {
@@ -89,6 +89,7 @@ namespace Exoduser.UnityPort.Core
         public void RestoreSkills(Dictionary<string, double> skills, string[] slots, string ult, string ct)
         {
             if (skills == null) return;
+            skills = ChainSkillRestoreRules.Normalize(skills);
             CaptureDisplaySkillLevels(skills);
             foreach (var id in PortedSkillIds) { double v; skills.TryGetValue(id, out v); if ((id == "kiSlash"||id == "fireball"||id=="maliceSwipe"||id=="shieldThrow"||id=="spikeTrap"||id=="giantSlam"||id=="holyDome") && v < 1) v = 1; if (v >= 1) Skills.Levels[id] = (int)v; else Skills.Levels.Remove(id); }
             var reservedRawSlots = new bool[SkillRules.SlotCount];
@@ -289,6 +290,7 @@ namespace Exoduser.UnityPort.Core
             GiantSlamHit(range, dmg, slv);
             ShakeAmount = Math.Max(ShakeAmount, (float)(14 * OptShake / 100.0));
             SlamWaves.Add(new SlamWave { Id = nextWaveId++, X = Player.X, Y = Player.Y, MaxR = (float)(range * 2), MaxT = SkillRules.GiantSlamWaveMaxT });
+            DetonateAssaultFlames();
             SkillSample("heavy_hit", 1, 1); SkillSample(SkillRandom() < .5 ? "voice_grunt" : "male_grunt", 1, 1); Cast("giantSlam");
             return true;
         }
@@ -493,19 +495,20 @@ namespace Exoduser.UnityPort.Core
                     }
                 }
 
-                if (z.Type == "fireTrail")
+                if (z.Type == "fireTrail" || z.Type == "assaultFlame")
                 {
+                    int interval = z.Type == "assaultFlame" ? 20 : 15;
                     z.TickTimer++;
-                    if (z.TickTimer >= 15)
+                    if (z.TickTimer >= interval)
                     {
-                        z.TickTimer -= 15;
+                        z.TickTimer -= interval;
                         foreach (var e in Enemies.ToArray())
                         {
                             if (!e.Alive || Distance(z.X, z.Y, e.X, e.Y) > z.R) continue;
                             ApplyEnemyDamage(e, z.Dmg, (float)Math.Atan2(e.Y - z.Y, e.X - z.X), false, 1, true, true, 0, 0, false, 1);
-                            var w = e.Web ?? SyncToWeb(e); w.burnT = Math.Max(w.burnT, 180); w.burnStk = Math.Min(10, w.burnStk + 1);
+                            var w = e.Web ?? SyncToWeb(e); w.burnT = z.Type == "assaultFlame" ? 180 : Math.Max(w.burnT, 180); w.burnStk = Math.Min(10, w.burnStk + 1);
                             if (w.burnStk < 10) w._burnPool += z.Dmg * .10; // 현재 패시브 pDotPool=1 범위
-                            w._webSlow = Math.Max(w._webSlow ?? 0, 20);
+                            if (z.Type == "fireTrail") w._webSlow = Math.Max(w._webSlow ?? 0, 20);
                         }
                     }
                 }

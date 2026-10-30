@@ -40,7 +40,7 @@ namespace Exoduser.UnityPort.Core
         // mpCost('magic'): _COST_SK has no 'magic' entry, so the skill-level factor is 1
         public int MagicMpCost() { return SkillRules.MpCost("magic", 1, MagicCostMultiplier()); }
 
-        private bool CanStartMagic { get { return Player.State == "idle" && !HarpActive && !DashActive && Player.Mana >= MagicMpCost(); } }
+        private bool CanStartMagic { get { return Player.State == "idle" && !HarpActive && !DashActive && !idleChainDetonation && Player.Mana >= MagicMpCost(); } }
 
         // idle branch of the web state machine: `else if(isHeld('beam')&&P.mp>=mpCost('magic')) _execMagicE()`, after the weapon / shield / Q branches
         private void TickMagicIdle()

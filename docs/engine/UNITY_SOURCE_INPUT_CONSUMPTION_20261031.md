@@ -22,3 +22,7 @@ NativeKeyBindInput의 기존 Down/Held API는 유지한다. 실제 게임 조작
 Simulation의 SourceJustInput/SourceActInput/SourceHeldInput/SourceClearInput 공급자는 실제 FixedUpdate의 한 틱에만 붙이고 finally에서 해제한다. StepInput·CPU·스크립트 검수·첫 훈련은 기존 명시 입력 경로를 유지한다. 새 실행 때 원문 입력 버퍼를 초기화한다. Native 연결은 설치 참조 컴파일까지 확인했으며 실제 키보드·마우스·패드와 실제 Player 동작은 아직 미검증이다.
 
 고정43묶음 **9,107,540비교단위 불일치0**, 설치 Unity 참조 Core/Runtime 오류0(기존경고2/17). 근거: 키마입력-소비상태-원문.json, 기동파괴-키보드홀드-원문-r2.json, source-buffer-green/, chain-source-held-red/·green/, source-input-final-cpu/, source-input-independent-compile-r1/. 현재 시스템의 공식 메모리 여유10GB 조건을 지켜 신규 GPU/Player 실행0이다. 사용자 저장·장치·서비스·권한 변경0, 종료 취소/추가kill0이다.
+
+### 2026-10-31 기동불꽃 현행 소스 범위
+
+[상세 계약](UNITY_CHAINASSAULT_PARITY_20261031.md) — 기동불꽃 비합체 소스 후보를 추가해 현재 Core 실행·학습·저장 소유12종/미이식43종이다. MP20+Lv×2 예약, 직격450+(Lv−1)×25, 중첩3/6/9배 수명·20틱DOT·3기폭 호출·구형별칭/숙련 복원·실제키마소비를 대조했다. 고정55묶음10,989,987단위0·설치참조 오류0. 원본 착지/기폭시트·장판 묶음mesh·24틱광원·기동불꽃 SFX 후보 연결, 실제Player/M1/UI3단계/영상/1x/공통/Desktop/Mac은 미완료 NOT_READY다.

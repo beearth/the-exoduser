@@ -26,10 +26,11 @@ namespace Exoduser.UnityPort.Core
         void BeginChainLandingInput(bool attack)
         {
             if (!chainInputPending) { chainWeaponJust = attack && !chainAttackPrevious; chainShieldJust = combatEHeld && !combatEPrev; }
-            chainAttackPrevious = attack; chainInputPending = false;
+            chainAttackPrevious = attack; chainInputPending = false; BeginChainAssaultInput();
         }
         void TickChainSlamInput()
         {
+            TickChainAssaultInput();
             if (ChainSkillDelay <= 0 && (HarpActive || DashActive) && Skills.Learned("chainSlam") && (ChainJust("shield") || ChainJust("weapon")) && !ChainSlamReady && !ChainAssaultReady)
             {
                 int cost = ChainSlamRules.StaminaCost(Skills.Level("chainSlam"));
@@ -53,8 +54,8 @@ namespace Exoduser.UnityPort.Core
                 Damage = ChainSlamRules.Damage(MeleeReference(), lv, Config.DamageMultiplier, EquippedInventory != null ? EquippedInventory.AffixTotal("skillBoost") : 0, HarpTier) });
             SbCd = Math.Max(SbCd, 30); combatEPrev = combatEHeld; // K['KeyE']만 소비하며 KH 홀드는 유지한다.
             ClearSourceCode("mouse2"); ClearSourceCode("KeyE");
-            ReflectChainSlam();
-            // 기동불꽃 폭발은 해당 장판 생산자 이식과 함께 검증한다.
+            ReflectChainSlam(); DetonateAssaultFlames();
+            // 기동불꽃 일괄기폭은 착지 반사 뒤 실행한다.
         }
         void ReflectChainSlam()
         {

@@ -254,17 +254,17 @@ namespace Exoduser.UnityPort.Core
         }
 
         // hurtE: the oracle-checked Core head + middle (EnemyHurt) and, at zero HP, the death part (EnemyHurt.DeathHead + DeathTail, Simulation.Death.cs).
-        private void ApplyEnemyDamage(EnemyState enemy, int damage, float angle, bool poiseHit, float knockbackMultiplier, bool dot = false, bool shieldHit = false, double typeDamagePct = 0, double critRateBonus = 0, bool arrow = false, int atkEl = 0, bool iceBlade = false, bool blueBean = false, bool parryBlueBean = false, bool magicHit = false, double? poiseMult = null)
+        private void ApplyEnemyDamage(EnemyState enemy, double damage, float angle, bool poiseHit, float knockbackMultiplier, bool dot = false, bool shieldHit = false, double typeDamagePct = 0, double critRateBonus = 0, bool arrow = false, int atkEl = 0, bool iceBlade = false, bool blueBean = false, bool parryBlueBean = false, bool magicHit = false, double? poiseMult = null, bool explode = false)
         {
             if (enemy == null || !enemy.Alive || enemy.Hp <= 0) return;
             // Source parryLesson.hurtEnemy: a valid hit defeats this lesson actor
             // directly; its inherited shield is untouched and no rewards roll.
-            if(IsFirstPracticeActor(enemy)){ApplyPracticeDamage(enemy,damage);return;}
+            if(IsFirstPracticeActor(enemy)){ApplyPracticeDamage(enemy,Exoduser.UnityPort.Core.Combat.Js.Int(damage));return;}
             bool live = inEnemyLoop && enemy.Web != null;   // inside the L1 loop the web object is the live one (see ApplyEnemyDot): no state -> web copy
             var web = live ? enemy.Web : SyncToWeb(enemy);
             var player = HurtPlayerView();
             var context = BuildHurtContext(player, typeDamagePct, critRateBonus); context.CritSfxCd = critSfxCd;
-            var opts = new EnemyHurtOpts { dot = dot ? (bool?)true : null, shieldHit = shieldHit ? (bool?)true : null, poiseHit = poiseHit ? (bool?)true : null, kbMult = knockbackMultiplier, noImpact = true, maxDist = arrow ? (double?)1 : null, iceBlade = iceBlade ? (bool?)true : null, blueBean = blueBean ? (bool?)true : null, parryBlueBean = parryBlueBean ? (bool?)true : null, magic = magicHit ? (bool?)true : null, poiseMult = poiseMult };
+            var opts = new EnemyHurtOpts { dot = dot ? (bool?)true : null, shieldHit = shieldHit ? (bool?)true : null, poiseHit = poiseHit ? (bool?)true : null, kbMult = knockbackMultiplier, noImpact = true, maxDist = arrow ? (double?)1 : null, iceBlade = iceBlade ? (bool?)true : null, blueBean = blueBean ? (bool?)true : null, parryBlueBean = parryBlueBean ? (bool?)true : null, magic = magicHit ? (bool?)true : null, poiseMult = poiseMult, explode = explode ? (bool?)true : null };
             if (live) { enemy.Hp = ToIntClamped(web.hp); enemy.Shield = (float)web.eShield; }
             double hpBefore = enemy.Hp, shieldBefore = enemy.Shield;
             hurtSfxEnemy = enemy;   // RM-1 sound: the hurt context reports hit / crit sounds for this enemy

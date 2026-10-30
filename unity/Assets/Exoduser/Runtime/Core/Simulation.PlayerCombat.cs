@@ -51,8 +51,14 @@ namespace Exoduser.UnityPort.Core
             if (SbParryT > 0 && Player.State != "sBlock") SbParryT--;   // release window counts down by itself (12 frames)
             // 원본 _tryKiSlashQCancel: 기검 3타 자세는 Q 홀드로도 즉시 취소하며 그 틱은 이동하지 않는다.
             bool kiCancel = Config.ActiveAttack == "kiSlash" && (Player.State == "wWindup" || Player.State == "wSwing" || Player.State == "wRecover") && combatQHeld;
+            // 원문 idle: Shift+E는 먼저 입력을 소비한다. 기폭이 없으면 후속 무기/마법 분기는 계속한다.
+            if (Player.State == "idle" && !HarpActive && !DashActive && (SourceActInput != null ? SourceActInput("charge") : combatShiftHeld) && (SourceJustInput != null ? SourceJustInput("shield") : eDown))
+            {
+                eDown = false;
+                if (DetonateAssaultFlames()) { MovePlayerAction(1, true); idleChainDetonation = true; }
+            }
             // ---- Q: shield / parry ----
-            if ((Player.State == "idle" && combatQHeld && !HarpActive && !DashActive || Player.State == "sRecover" && qDown || kiCancel) && SbCd <= 0)   // 사슬 중 idle 시작 행동 차단, 계속 누른 Q는 착지 뒤 허용
+            if ((Player.State == "idle" && combatQHeld && !HarpActive && !DashActive || Player.State == "sRecover" && qDown || kiCancel) && SbCd <= 0 && !idleChainDetonation)   // 사슬 중 idle 시작 행동 차단, 계속 누른 Q는 착지 뒤 허용
             {
                 var s = new ParryRules.SBlockState { Mp = Player.Mana, Mmp = Player.MaxMana, S = Player.State };
                 if (ParryRules.SBlockEnter(ref s, CapeParry, ShieldCdRed)) { if (kiCancel && Player.KiChargeActive) CancelKiCharge(); MovePlayerAction(Player.State == "idle" ? 1 : 0, true); Player.Mana = (float)s.Mp; Player.State = "sBlock"; Player.StateTicks = 999; SbParryT = s.SbParryT; SbHoldT = 0; SbReleaseR = 0; SbCd = s.SbCd; }
@@ -238,7 +244,7 @@ namespace Exoduser.UnityPort.Core
                 DashLeft -= step;
                 if (DashLeft <= 0)
                 {
-                    LandChainSlam();
+                    LandChainSlam(); LandChainAssault();
                     DashActive = false; HarpActive = false; DashHold = false; DashHoldF = 0; HarpTier = 0;
                     Player.Iframes = (float)ChainDash.LandingInvulnerable(Player.Iframes);
                     // 착지 직후 계속 누른 Shift는 잔여 게이지로 최고단을 다시 발사한다.

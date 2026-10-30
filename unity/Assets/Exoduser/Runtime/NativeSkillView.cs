@@ -121,12 +121,12 @@ namespace Exoduser.UnityPort
             add.SetInt("_DepthTest",depth); addFlat.SetInt("_DepthTest",depth); alpha.SetInt("_DepthTest",depth);
             BindMaliceBursts(sim); UpdateMaliceBursts(sim.TickCount); BindIceShatter(sim); UpdateIceShatter(sim.TickCount); UpdateQeVisuals(sim,time);
             ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0; var p = sim.Player;
-            UpdateFireTrails(sim, time); UpdateChainSlamView(sim);
+            UpdateFireTrails(sim, time); UpdateChainSlamView(sim); UpdateChainAssaultView(sim, time);
             // ---- ground zones ----
             stale.Clear(); foreach (var k in zones.Keys) stale.Add(k);
             foreach (var z in sim.FireZones)
             {
-                if (z.Type == "fireTrail") continue;
+                if (z.Type == "fireTrail" || z.Type == "assaultFlame") continue;
                 stale.Remove(z.Id); Item it; if (!zones.TryGetValue(z.Id, out it)) { it = NewItem(z.Type + z.Id); zones[z.Id] = it; BuildZone(it, z); }
                 ActiveZones++; it.go.transform.position = Point(z.X, z.Y) + (NativeRemodel3D.Active ? Vector3.up * .025f : Vector3.zero);
                 float fade = Mathf.Clamp01((z.MaxT - z.T) / 30f), deploy = Mathf.Min(1f, z.T / (z.Type == "holyDome" ? 15f : 12f));
@@ -238,7 +238,7 @@ namespace Exoduser.UnityPort
 
         public void Reset()
         {
-            ResetMaliceBursts(); ResetIceShatter(); ResetQeVisuals(); ResetFireTrails(); ResetChainSlamView();
+            ResetMaliceBursts(); ResetIceShatter(); ResetQeVisuals(); ResetFireTrails(); ResetChainSlamView(); ResetChainAssaultView();
             foreach (var m in new[] { zones, waves, blades, orbs }) { foreach (var it in m.Values) { ForgetMaliceSprites(it); ForgetCenteredSlamSprites(it); ForgetSkillSprites(it); UnityEngine.Object.Destroy(it.go); } m.Clear(); }
             if (orb != null) orb.go.SetActive(false);
             orbTrails.Clear(); ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0;
