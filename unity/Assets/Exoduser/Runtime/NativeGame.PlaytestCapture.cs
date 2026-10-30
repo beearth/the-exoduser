@@ -11,7 +11,7 @@ namespace Exoduser.UnityPort {
  public sealed partial class NativeGame {
   [Serializable] sealed class PlaytestKi {public float x,y,life,r;public int dmg,step;}
    [Serializable] sealed class PlaytestFrame { public bool charging,roll;public float charge,combo,kiCd,iframes;public double rollTicks,gauge;public int step;public List<PlaytestKi> kiDetails=new List<PlaytestKi>(); public string key; public int frame,tick; public float x,y,facing,aimError,maxSpriteError,maxKiSpriteError,stateTicks,stamina,mana; public string state; public List<Vector2> ki=new List<Vector2>(),magic=new List<Vector2>(),magicVelocity=new List<Vector2>(),blades=new List<Vector2>(); public float harpX,harpY; public bool harp,dash; public int zones,waves,blasts,burstViews,shieldWaves; public bool shieldAura,flameArc;public List<Vector2> shieldWavePositions=new List<Vector2>();public float shieldRange;public double shieldCd,wingTicks; }
-  [Serializable] sealed class PlaytestResult { public string scope="실제 Player, 가상 Input System 장치 → 기존 FixedUpdate → Core → LateUpdate. OS 손조작 아님"; public bool passed,remodel3d,maliceTrailDefaultColorSpace;public float fieldOfView,heroScale,pitchDegrees,distance,lookAhead,baselineHp,baselineMana,baselineStamina,baselineSpeed,baselineCastSpeed; public int failures; public List<string> checks=new List<string>(); public List<PlaytestFrame> frames=new List<PlaytestFrame>(); }
+   [Serializable] sealed class PlaytestResult { public string scope="실제 Player, 가상 Input System 장치 → 기존 FixedUpdate → Core → LateUpdate. OS 손조작 아님"; public bool passed,remodel3d,maliceTrailDefaultColorSpace,kiOverlayDepth;public float fieldOfView,heroScale,pitchDegrees,distance,lookAhead,baselineHp,baselineMana,baselineStamina,baselineSpeed,baselineCastSpeed; public int failures; public List<string> checks=new List<string>(); public List<PlaytestFrame> frames=new List<PlaytestFrame>(); }
   IEnumerator PlaytestCapture() {
    string output=Argument("-output"); if(string.IsNullOrEmpty(output)){Application.Quit(2);yield break;} Directory.CreateDirectory(output);
    AudioListener.volume=0;AudioListener.pause=true;smokeActive=true;dropSmoke=true;Running=false;
@@ -71,7 +71,7 @@ namespace Exoduser.UnityPort {
      check(maxAimError<1,control+" 조준 오차 "+maxAimError.ToString("F2")+"px");
      if(action=="LMB"||action=="RMB")check(spawned&&maxMotion>100,control+" 투사체 전진 "+maxMotion.ToString("F1")+"px");
       if(action=="RMB"&&NativeRemodel3D.Active)check(maxError<.02f,"악의구 Core→화면 위치 오차 "+maxError.ToString("F3")+"u");
-      if(action=="LMB"&&NativeRemodel3D.Active)check(maxKiError<.02f,"기검·충전 Core→화면 중심 오차 "+maxKiError.ToString("F3")+"u");
+      if(action=="LMB"&&NativeRemodel3D.Active){check(maxKiError<.02f,"기검·충전 Core→화면 중심 오차 "+maxKiError.ToString("F3")+"u");result.kiOverlayDepth=kiView.OverlayDepth;check(result.kiOverlayDepth,"기검 전용3D 재질 합성 깊이");}
      if(action=="RMB"&&directional){var first=result.frames.Find(r=>r.key==control&&r.magicVelocity.Count>0);check(first!=null&&Vector2.Distance(first.magicVelocity[0],new Vector2(dx*5.5f,dy*5.5f))<.01f,control+" 시전 시작 방향·속도5.5px");}
      if(action=="RMB"&&!moving)check(s.MaliceOrbBlasts==1&&burstSeen&&skillView.ActiveMaliceBursts==0,control+" 실제 폭발1회·원본 표시·수명 종료");
      if(control=="ComboQ110"){var canceled=result.frames.Find(r=>r.key==control&&r.frame==110);check(canceled!=null&&canceled.state=="sBlock"&&!canceled.charging&&canceled.step==0,"기검3타 Q 취소 순간 자세·충전·콤보 초기화");}

@@ -1,10 +1,10 @@
 Shader "EXODUSER/KiSlashInk"
 {
-    Properties { [PerRendererData] _MainTex ("Original silver sheet", 2D) = "white" {} [PerRendererData] _Opacity ("Source opacity", Float) = 1 }
+    Properties { [PerRendererData] _MainTex ("Original silver sheet", 2D) = "white" {} [PerRendererData] _Opacity ("Source opacity", Float) = 1 [Enum(UnityEngine.Rendering.CompareFunction)] _ZTest ("Depth comparison", Float) = 4 }
     SubShader
     {
         Tags { "Queue"="Transparent" "RenderType"="Transparent" "CanUseSpriteAtlas"="False" }
-        Cull Off Lighting Off ZWrite Off Blend SrcAlpha OneMinusSrcAlpha
+        Cull Off Lighting Off ZWrite Off ZTest [_ZTest] Blend SrcAlpha OneMinusSrcAlpha
         Pass
         {
             CGPROGRAM

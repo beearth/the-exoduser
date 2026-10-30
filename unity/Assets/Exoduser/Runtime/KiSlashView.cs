@@ -20,6 +20,8 @@ namespace Exoduser.UnityPort
         readonly Sprite line;
         readonly MaterialPropertyBlock properties=new MaterialPropertyBlock();
         static readonly int Opacity=Shader.PropertyToID("_Opacity");
+        static readonly int DepthTest=Shader.PropertyToID("_ZTest");
+        public bool OverlayDepth { get { return additive.GetInt(DepthTest)==(int)UnityEngine.Rendering.CompareFunction.Always&&ink.GetInt(DepthTest)==(int)UnityEngine.Rendering.CompareFunction.Always; } }
 
         public KiSlashView(Transform parent,Func<int,Sprite> frame)
         {
@@ -48,6 +50,9 @@ namespace Exoduser.UnityPort
         }
         public void Update(Simulation simulation)
         {
+            // 중심형 3D billboard는 원문 Canvas 합성처럼 지형에 수평으로 잘리지 않아야 한다.
+            int depth=NativeRemodel3D.Active?(int)UnityEngine.Rendering.CompareFunction.Always:(int)UnityEngine.Rendering.CompareFunction.LessEqual;
+            additive.SetInt(DepthTest,depth);ink.SetInt(DepthTest,depth);
             var active=new HashSet<int>();int slot=0;
             foreach(var p in simulation.Projectiles)
             {
