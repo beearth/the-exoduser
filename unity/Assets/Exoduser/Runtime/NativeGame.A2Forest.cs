@@ -110,6 +110,7 @@ namespace Exoduser.UnityPort
         {
             a2Water=new Material(Shader.Find("EXODUSER/A2ToxicRiver"));
             r3Cam.depthTextureMode|=DepthTextureMode.Depth;
+            UnityEngine.Rendering.Universal.CameraExtensions.GetUniversalAdditionalCameraData(r3Cam).requiresDepthTexture=true;
             // 기존 수로 메시는 그대로 보존하고 수면 재질만 교체한다. 새 보행 수로를 임의로 만들지 않는다.
             foreach(var root in r3Roots)foreach(var r in root.GetComponentsInChildren<MeshRenderer>(true))
                 if(r.name.StartsWith("River_",StringComparison.Ordinal)||r.name.StartsWith("Pool_",StringComparison.Ordinal))r.sharedMaterial=a2Water;
@@ -136,8 +137,19 @@ namespace Exoduser.UnityPort
         }
         float A2ShoreX(float z)
         {
-            float x=48;while(x<95&&Simulation.CanMove(x*100,-z*100,30))x+=.2f;
-            return x+.4f;
+            // 첫 막힘이 아닌 동쪽의 마지막 보행면 바깥이다. 중간 섬 뒤에 다시 열리는 길을 물로 덮지 않는다.
+            // 인접 행도 합집합으로 잡아 .8u 수면 삼각형 사이의 보간 경계가 길 안으로 들어오지 않게 한다.
+            float shore=48;
+            for(int row=-2;row<=2;row++)
+            {
+                float sampleZ=z+row*.2f;
+                for(int col=0;col<=235;col++)
+                {
+                    float x=48+col*.2f;
+                    if(Simulation.CanMove(x*100,-sampleZ*100,0))shore=Math.Max(shore,x+.2f);
+                }
+            }
+            return shore+.6f;
         }
         void A2CaptureFrame(string path)
         {
