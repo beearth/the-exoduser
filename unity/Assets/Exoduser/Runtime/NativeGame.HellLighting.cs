@@ -46,10 +46,12 @@ namespace Exoduser.UnityPort
                 HellGroundSetup(g);
                 HellEnvironmentSetup(g);
             }
-            foreach(var root in r3Roots)if(root!=null)foreach(var renderer in root.GetComponentsInChildren<MeshRenderer>(true))if(renderer.name!="지옥 바닥 PBR 표면"&&(hellEnvironment==null||!renderer.transform.IsChildOf(hellEnvironment.transform)))renderer.shadowCastingMode=ShadowCastingMode.Off;
+            foreach(var root in r3Roots)if(root!=null)foreach(var renderer in root.GetComponentsInChildren<MeshRenderer>(true))if(renderer.name!="지옥 바닥 PBR 표면"&&(hellEnvironment==null||!renderer.transform.IsChildOf(hellEnvironment.transform))){renderer.shadowCastingMode=ShadowCastingMode.Off;var mat=renderer.sharedMaterial;if(mat!=null&&(mat.name.Contains("RottenWoodMembrane")||mat.name.Contains("CursedBark")||renderer.name.StartsWith("Decals_root",StringComparison.Ordinal)))renderer.enabled=false;}
             hellActorMaterial=new Material(Shader.Find("EXODUSER/SpriteLit3D"));hellActorMaterial.SetFloat("_Ambient",.3f);hellActorMaterial.SetFloat("_NormalTilt",.4f);
             var rim=new GameObject("영웅 차가운 림광");rim.transform.SetParent(r3Marker,false);rim.transform.localPosition=new Vector3(-.3f,1.8f,.6f);
             hellHeroRim=rim.AddComponent<Light>();hellHeroRim.type=LightType.Point;hellHeroRim.color=new Color(.68f,.8f,1f);hellHeroRim.range=3.5f;hellHeroRim.intensity=2.2f;
+            var heroSpot=new GameObject("영웅 달빛 웅덩이");heroSpot.transform.SetParent(r3Marker,false);heroSpot.transform.localPosition=new Vector3(0,4,0);heroSpot.transform.localRotation=Quaternion.Euler(90,0,0);
+            var spot=heroSpot.AddComponent<Light>();spot.type=LightType.Spot;spot.color=new Color(.72f,.84f,1);spot.intensity=14;spot.range=7;spot.spotAngle=58;spot.innerSpotAngle=40;spot.shadows=LightShadows.Soft;spot.shadowStrength=.65f;spot.shadowNormalBias=.1f;
             var sheet=Resources.Load<Texture2D>("Art/map/hell_lighting/torch_flame");
             if(sheet!=null){hellFlameFrames=new Sprite[8];for(int i=0;i<8;i++)hellFlameFrames[i]=Sprite.Create(sheet,new Rect(i%4*(sheet.width/4),(1-i/4)*(sheet.height/2),sheet.width/4,sheet.height/2),new Vector2(.5f,.12f),100);}
             var baseTex=Resources.Load<Texture2D>("Art/map/hell_lighting/torch_base");

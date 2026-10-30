@@ -172,3 +172,27 @@ Exoduser.KeyshotRenderSetup.Run은 기존 PC 렌더러에 HellSsaoFeature/HellFo
 | 탄막 촬영 | 초기40tick만 공격하고180tick 뒤 실제 보이는 탄3개 이상을 기다림. 입력 영수증은 필드탄3/보스탄6 미만이면 FAIL. 적/탄 직접 주입0 |
 
 Core·충돌·보행로 변경0. 기존 독립 oracle는2523표본 중2불일치이며 north gate 주변(4018.543,104.749,r10)/(4042.906,207.936,r15)이다. 원본 스냅샷과 현재 ch1_map의 북쪽 게이트 타일 계약 차이를 확인했으며 이 후보의 Core 수정/새 회귀로 단정하지 않는다. 전체 oracle PASS는 미확보 상태로 남긴다.
+
+
+### 보스 촬영의 입장 동선 보정
+
+환경1 보스 프레임의 본체 중심은(35.42,-37.15u)로 아레나 중심(25.8,-21.8u)에서 멀었다. StageFlow는 연출 진행 중에도 입구에 놓인 플레이어를 향해 보스 AI를 갱신한다. 기존 하네스는 LoadPhase0까지 기다린 뒤 플레이어를 옮겨 보스가 남쪽 외곽까지 이동한 화면을 촬영했다. 검은 바깥 경계를 노출 조정으로 덮지 않는다.
+
+촬영 하네스만 보정: Stage.InArena 최초 확인 때 실제 Arena.RoomCx/Cy 중심(+.5타일)에서 플레이어를(+260,-150px)에 1회 배치하고, 이후 원래 AI/실제 발사로 촬영한다. 적/보스/탄 직접 배치나 Core/입장 동선의 제품 규칙 변경0. 이 보정 전 환경2 Player와 보정 후 새 빌드를 구분하며, 새 실제 보스 화면을 확인해야 수정 완료다.
+
+
+### 환경 후보3 — 구도·재질 단계로 복귀
+
+환경2 빌드0c1988ab 오류0·USER_SAVE0, Player6b8887d5(AMD9070XT/D3D11,1920×1080) 사용자 창0·잔여0·세이브변경0이나 실제 필드탄0으로 exit3/FAIL. 원본3장을 직접 확인했다. 암반 형태는 개선됐으나 rock_ground 자갈 무늬가 암반에서 잔점처럼 읽히고 기존 CursedBark 블록아웃/Decals_root가 검은 실루엣을 만들며 영웅이 적에 가려졌다. 같은 강도 조정을 반복하지 않고 큰 구도·표면 선정 단계로 돌아간다.
+
+| 항목 | 후보3 구현·판정 경계 |
+|---|---|
+| 암반 표면 | 공식 Poly Haven Rock Face https://polyhaven.com/a/rock_face, Dario Barresi/Greg Zaal·CC0. Diffuse/GLnormal/Rough 1K3개 공식 API MD5·SHA대조, tint(.48,.58,.68)·smoothness.18·URP/Lit. 넓은 풍화 면을 직접 열어 자갈 무늬와 구분. 구매/지출0 |
+| 기존 블록아웃 | 새환경 자식·새 바닥을 제외한 M_RottenWoodMembrane/M_CursedBark/Decals_root* 렌더러만 새조명 런타임에서 비활성. 씬/원본 메시·충돌 불변. 기존 blood/bone/river/광원 유지 |
+| 전경 큰 질량 | 스캔 고목1개를(33.7,-73.8u), scale(.5,.65,.5), yaw20°에 추가. 원본 차단영역 접합. 기존 외곽75/접합58=133개, 입력 안전 검사 PASS. 실제 가림/발자국 확인은 Player에서 별도 |
+| 영웅 초점 | 부모 Player Marker의(0,4,0u), 아래방향 spot·색(.72,.84,1)·강도14·range7u·outer58°/inner40°·Soft 그림자강도.65·normalBias.1. 기존림/불빛/ACES 유지 |
+| 실제 탄막 입력 | 같은 Core/원본 맵으로 독립 입력 재현. 3540:7400은1800tick까지 탄과 거리 조건 동시충족 실패를 재현. 3700:7400에서240tick 중30tick 실제공격+75tick 이후 정지촬영 조건은1422tick에 가시탄4/처치2. 적/탄 주입0 |
+| 실제 캡처 | 3700:7400px, 1800tick 한도·240tick 중30tick 공격·phase>75/가시탄≥3/최근접 적>100px에서 촬영. 보스도1800tick 한도. CPU 입력진단은 실제 GPU 시각 PASS가 아님 |
+| 임포트 진단 | --unity-steam-keyshot에만 모듈별 첫1회 원본 FBX rotation/scale와 실제 Renderer.bounds 로그를 남겨 실제 크기·축을 확인 |
+
+필드 입력 진단 첫 실행은 자식 APPDATA 경로 누락으로 NuGet 시작 전 실패했다. 기존 확인된 Windows 자식 환경을 적용한 동일 진단은 정상 실행됐으며 dotnet/호스트 영구설정 변경0. 환경 후보3은 새 실제 화면·M1·전후 비교 전까지 미검증이다.

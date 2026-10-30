@@ -41,32 +41,39 @@ namespace Exoduser.UnityPort
             }
             sim.Config.EnemyAiEnabled=true;if(string.IsNullOrEmpty(loc)){p.X=4020;p.Y=6880;}
             int best=0;
-            for(int tick=0;tick<1100;tick++)
+            for(int tick=0;tick<1800;tick++)
             {
                 p.Hp=p.MaxHp;p.Shield=p.MaxShield;p.Iframes=600;
                 int phase=(tick/90)%4;float mx=phase==0?1:phase==2?-1:0,my=phase==1?1:phase==3?-1:0;float ax=p.X+280,ay=p.Y-40,nearest=1e8f;
                 foreach(var e in sim.Enemies)if(e.Alive){float d=(e.X-p.X)*(e.X-p.X)+(e.Y-p.Y)*(e.Y-p.Y);if(d<nearest){nearest=d;ax=e.X;ay=e.Y;}}
-                StepInput(mx,my,ax,ay,tick<40,false);
+                StepInput(mx,my,ax,ay,tick%240<30,false);
                 if(tick%3==0)yield return null;
                 int count=sim.Druid.Projectiles.Count;
                 if(count>best&&tick>100){best=count;}
                 int visible=0;foreach(var shot in sim.Druid.Projectiles)if(shot.Active){var v=HudCamera.WorldToViewportPoint(NativeRemodel3D.Point(shot.X,shot.Y));if(v.x>.08f&&v.x<.92f&&v.y>.15f&&v.y<.88f)visible++;}
-                if(tick>180&&visible>=3&&nearest>10000){yield return KeyshotSave(output,"02-전투",receipt);break;}
-                if(tick==1099)yield return KeyshotSave(output,"02-전투",receipt);
+                if(tick>180&&tick%240>75&&visible>=3&&nearest>10000){yield return KeyshotSave(output,"02-전투",receipt);break;}
+                if(tick==1799)yield return KeyshotSave(output,"02-전투",receipt);
             }
-            BossDirectEnter();int entry=0;
-            while((!sim.Stage.InArena||sim.Stage.LoadPhase!=0)&&entry++<1000){p.Hp=p.MaxHp;p.Iframes=600;StepInput(0,0,p.X+100,p.Y,false,false);if(entry%10==0)yield return null;}
+            BossDirectEnter();int entry=0;bool arenaPositioned=false;
+            while((!sim.Stage.InArena||sim.Stage.LoadPhase!=0)&&entry++<1000)
+            {
+                if(sim.Stage.InArena&&!arenaPositioned&&sim.Stage.Arena!=null)
+                {
+                    var arena=sim.Stage.Arena;p.X=(arena.RoomCx+.5f)*40+260;p.Y=(arena.RoomCy+.5f)*40-150;lastX=p.X;lastY=p.Y;arenaPositioned=true;
+                }
+                p.Hp=p.MaxHp;p.Iframes=600;StepInput(0,0,p.X+100,p.Y,false,false);if(entry%10==0)yield return null;
+            }
             var boss=sim.Stage.FindBoss();
             if(boss!=null)
             {
-                p.X=boss.X+160;p.Y=boss.Y+250;
+                if(!arenaPositioned){p.X=boss.X+260;p.Y=boss.Y-150;}
                 for(int tick=0;tick<1100;tick++)
                 {
                     p.Hp=p.MaxHp;p.Shield=p.MaxShield;p.Iframes=600;
                     StepInput(0,0,boss.X,boss.Y,false,false);
                     if(tick%3==0)yield return null;
                     if(tick>180&&sim.Druid.Projectiles.Count>=6){yield return KeyshotSave(output,"03-드루이드",receipt);break;}
-                    if(tick==1099)yield return KeyshotSave(output,"03-드루이드",receipt);
+                    if(tick==1799)yield return KeyshotSave(output,"03-드루이드",receipt);
                 }
             }
             receipt.passed=receipt.frames.Count==3&&receipt.frames.TrueForAll(f=>f.heroHeight01>=.08f&&f.heroHeight01<=.11f)&&receipt.frames[1].projectiles>=3&&receipt.frames[2].projectiles>=6;

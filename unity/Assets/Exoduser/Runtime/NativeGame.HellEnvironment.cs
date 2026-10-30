@@ -13,10 +13,11 @@ namespace Exoduser.UnityPort
             var layout=Resources.Load<TextAsset>("Art/map/keyshot/layout");
             if(layout==null){Debug.LogError("[키샷] 환경 배치 누락");return;}
             hellEnvironment=new GameObject("1-1 부패 뿌리·암반 외곽");hellEnvironment.transform.SetParent(ground.transform.parent,false);
-            var stone=HellEnvironmentMaterial(new Color(.68f,.71f,.74f),.26f,2.2f,"rock_ground");
+            var stone=HellEnvironmentMaterial(new Color(.48f,.58f,.68f),.18f,2.2f,"rock_face");
             var bark=HellEnvironmentMaterial(new Color(.65f,.53f,.46f),.12f,1.3f,"bark_brown_02");
             var bone=HellEnvironmentMaterial(new Color(.76f,.71f,.59f),.12f,.8f,"rock_ground");
             var stump=HellScannedWoodMaterial("stump");var trunk=HellScannedWoodMaterial("trunk");
+            var inspected=new System.Collections.Generic.HashSet<string>();
             int count=0;
             foreach(var item in JsonUtility.FromJson<HellModuleLayout>(layout.text).items)
             {
@@ -27,6 +28,8 @@ namespace Exoduser.UnityPort
                 module.transform.localScale=new Vector3(item.sx,item.sy,item.sz);
                 var mat=item.module.StartsWith("root",StringComparison.Ordinal)||item.module=="fallen_root"?bark:item.module=="ribs"?bone:stone;
                 foreach(var renderer in module.GetComponentsInChildren<MeshRenderer>()){renderer.sharedMaterial=item.module=="rotten_mass"?(renderer.name.IndexOf("stump",StringComparison.OrdinalIgnoreCase)>=0?stump:trunk):mat;renderer.shadowCastingMode=ShadowCastingMode.On;renderer.receiveShadows=true;}
+                if(System.Array.IndexOf(System.Environment.GetCommandLineArgs(),"--unity-steam-keyshot")>=0&&inspected.Add(item.module))
+                {var bounds=new Bounds(module.transform.position,Vector3.zero);foreach(var rr in module.GetComponentsInChildren<MeshRenderer>())bounds.Encapsulate(rr.bounds);Debug.Log("[키샷 임포트] "+item.module+" 원본회전 "+source.transform.localEulerAngles+" 원본스케일 "+source.transform.localScale+" 실제경계 "+bounds);}
                 count++;
             }
             Debug.Log("[키샷] Blender 환경 모듈 "+count+"개 · Collider 추가0");
