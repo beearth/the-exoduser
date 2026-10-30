@@ -18,6 +18,7 @@
 | 분위기 | 배경/안개(.085,.115,.14), 밀도.028/far240u. 국소 달빛기둥3개/alpha.065/깊이·가장자리 감쇠. 그림자 적분 볼류메트릭이 아닌 메시 연출, 랜덤 노이즈0 |
 | 임포트 | SourceTextureImporter v3. 기존 keyshot2 진단의 정확7종PBR은 Repeat/mipmap/Trilinear/aniso8/normal·linear. A2는 같은 색공간과Clamp. 공통UI분기 보존 |
 | 기존 바닥 셰이더 | 작업 시작부터 실제 사용 중인 HellGroundPBR.shader가 미추적이고 .meta만 Git에 있음을 확인. 해당 원본 byte를 보존해 필수 런타임 소스로 함께 체크포인트하며 새 시각합격으로 세지 않음 |
+| A2 바닥 | HellGroundPBR._ForestBlend 기본0/A2만1. 기존CC0 토양·돌만 사용. forest=lerp(soil×.9,stone×.6,.28+.2×sweep)×RGB(.75,.65,.48), 표면normal=돌normal, smoothness=.36−.16×rough. 기존skin/비A2 경로와 Core·충돌 불변. 실제 현재 바닥 시각 미검증 |
 | 검은 무늬 | A2에서 이름이 Decals_blood로 시작하는 기존 메시 렌더러만 비활성. 이전 분리진단의 원인 수정이며 원본/충돌 불변 |
 | 촬영 | --unity-steam-keyshot+A2는 영상Open 없는 기존NativeGame fixture. batch GPU 월드RT1920×1080/HUD제외. 스크립트입력·생존보조·실제AI, 적/탄 직접주입0. 일반입장/손조작/HUD 검수와 구분 |
 | 영웅 크기 | R5가 있으면 실제 SkinnedMeshRenderer.BakeMesh 정점 투영으로 측정. 숨긴2D스프라이트 높이를 실제전사 크기로 인용하지 않음. 원래8~11% 촬영검사 유지 |

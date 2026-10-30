@@ -12,6 +12,8 @@ namespace Exoduser.UnityPort
         void A2ForestSetup(Terrain ground)
         {
             if (!A2Requested) return;
+            foreach(var r in ground.GetComponentsInChildren<MeshRenderer>())
+                if(r.name=="지옥 바닥 PBR 표면")r.sharedMaterial.SetFloat("_ForestBlend",1);
             if (hellEnvironment != null) hellEnvironment.SetActive(false);
             a2Root = new GameObject("A2 썩은 숲·나무다리 제작 후보");
             a2Root.transform.SetParent(ground.transform.parent, false);

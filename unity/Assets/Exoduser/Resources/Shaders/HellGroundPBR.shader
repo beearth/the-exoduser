@@ -1,6 +1,6 @@
 Shader "EXODUSER/HellGroundPBR"
 {
- Properties { _BaseMap("피부 컬러맵",2D)="white"{} _BaseColor("색",Color)=(1,1,1,1) _BumpMap("피부 노멀",2D)="bump"{} _RockMap("젖은 돌",2D)="white"{} _AshMap("탄화토",2D)="white"{} _RockNormal("돌 노멀",2D)="bump"{} _RockRough("돌 러프니스",2D)="white"{} _Cutoff("잘림",Float)=.5 _Smoothness("매끈함",Float)=.24 _Metallic("금속",Float)=0 }
+ Properties { _BaseMap("피부 컬러맵",2D)="white"{} _BaseColor("색",Color)=(1,1,1,1) _BumpMap("피부 노멀",2D)="bump"{} _RockMap("젖은 돌",2D)="white"{} _AshMap("탄화토",2D)="white"{} _RockNormal("돌 노멀",2D)="bump"{} _RockRough("돌 러프니스",2D)="white"{} _Cutoff("잘림",Float)=.5 _Smoothness("매끈함",Float)=.24 _Metallic("금속",Float)=0 _ForestBlend("A2 젖은 숲 바닥",Range(0,1))=0 }
  SubShader
  {
   Tags { "RenderPipeline"="UniversalPipeline" "RenderType"="Opaque" "Queue"="Geometry" }
@@ -22,7 +22,7 @@ Shader "EXODUSER/HellGroundPBR"
    TEXTURE2D(_RockMap);SAMPLER(sampler_RockMap);TEXTURE2D(_AshMap);SAMPLER(sampler_AshMap);
    TEXTURE2D(_RockNormal);SAMPLER(sampler_RockNormal);TEXTURE2D(_RockRough);SAMPLER(sampler_RockRough);
    CBUFFER_START(UnityPerMaterial)
-   float4 _BaseMap_ST;half4 _BaseColor;half _Cutoff,_Smoothness,_Metallic;
+   float4 _BaseMap_ST;half4 _BaseColor;half _Cutoff,_Smoothness,_Metallic,_ForestBlend;
    CBUFFER_END
    struct A {float4 positionOS:POSITION;float3 normalOS:NORMAL;float4 tangentOS:TANGENT;float2 uv:TEXCOORD0;};
    struct V {float4 positionCS:SV_POSITION;float3 world:TEXCOORD0;float3 normal:TEXCOORD1;float4 tangent:TEXCOORD2;float2 uv:TEXCOORD3;half fog:TEXCOORD4;};
@@ -35,13 +35,16 @@ Shader "EXODUSER/HellGroundPBR"
     half3 stone=SAMPLE_TEXTURE2D(_RockMap,sampler_RockMap,tile).rgb*half3(.55,.56,.58);
     half3 soil=SAMPLE_TEXTURE2D(_AshMap,sampler_AshMap,tile).rgb*half3(.55,.56,.58);
     half3 a=skin*(1-rock-ash)+stone*rock+soil*ash;
+    half3 forest=lerp(soil*.9,stone*.6,.28+.2*sweep)*half3(.75,.65,.48);
+    a=lerp(a,forest,_ForestBlend);
     half3 ns=UnpackNormalScale(SAMPLE_TEXTURE2D(_BumpMap,sampler_BumpMap,i.uv),.45);
     half3 nr=UnpackNormalScale(SAMPLE_TEXTURE2D(_RockNormal,sampler_RockNormal,tile),.3);
-    half3 nt=normalize(lerp(ns,nr,rock));float3 n=normalize(i.normal),t=normalize(i.tangent.xyz),b=cross(n,t)*i.tangent.w;
+    half3 nt=normalize(lerp(ns,nr,lerp(rock,1,_ForestBlend)));float3 n=normalize(i.normal),t=normalize(i.tangent.xyz),b=cross(n,t)*i.tangent.w;
     InputData input=(InputData)0;input.positionWS=i.world;input.normalWS=normalize(mul(nt,float3x3(t,b,n)));input.viewDirectionWS=GetWorldSpaceNormalizeViewDir(i.world);
     input.shadowCoord=TransformWorldToShadowCoord(i.world);input.bakedGI=SampleSH(input.normalWS);input.normalizedScreenSpaceUV=GetNormalizedScreenSpaceUV(i.positionCS);input.shadowMask=1;
     SurfaceData surface=(SurfaceData)0;surface.albedo=a;surface.alpha=1;surface.occlusion=1;surface.normalTS=nt;surface.specular=.04;
     half rough=SAMPLE_TEXTURE2D(_RockRough,sampler_RockRough,tile).r;surface.smoothness=lerp(.24,.50-.25*rough,rock);surface.metallic=0;
+    surface.smoothness=lerp(surface.smoothness,.36-.16*rough,_ForestBlend);
     half4 color=UniversalFragmentPBR(input,surface);color.rgb=MixFog(color.rgb,i.fog);return color;
    }
    ENDHLSL
