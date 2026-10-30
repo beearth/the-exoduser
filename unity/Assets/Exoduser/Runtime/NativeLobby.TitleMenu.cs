@@ -138,19 +138,21 @@ namespace Exoduser.UnityPort
             float fade = Mathf.Clamp01((Time.unscaledTime - titleStart) / 1f); var prev = GUI.color;
             GUI.color = new Color(1, 1, 1, fade); GUI.DrawTexture(new Rect(0, 0, 1920, 1080), titleVeil, ScaleMode.StretchToFill, true);
             if (titleLogo != null) { float lw = 520, lh = lw * titleLogo.height / titleLogo.width; GUI.color = new Color(0, 0, 0, .5f * fade); GUI.DrawTexture(new Rect(96, 106, lw, lh), titleLogo, ScaleMode.StretchToFill, true); GUI.color = new Color(1, 1, 1, fade); GUI.DrawTexture(new Rect(96, 96, lw, lh), titleLogo, ScaleMode.StretchToFill, true); }
-            const float left = 116, top = 436, width = 380, rowH = 48;
-            var e = Event.current; var line = new Color(230f / 255, 227f / 255, 220f / 255, .1f * fade);
-            GUI.color = line; GUI.DrawTexture(new Rect(left, top - 1, width, 1), Texture2D.whiteTexture);
+            const float left = 116, top = 436, width = 400;
+            var e = Event.current;
             for (int i = 0; i < titleRows.Count; i++)
             {
-                var rect = new Rect(left, top + i * rowH, width, rowH);
+                float rowH=i==0?68:48;
+                var rect = new Rect(left, i==0?top:top+84+(i-1)*62, i==0?width:width-32, rowH);
                 if (e.type == EventType.MouseMove || e.type == EventType.Repaint) { if (rect.Contains(e.mousePosition) && e.type == EventType.MouseMove && !AutomatedInput && i != titleSel) SelectTitleRow(i); }
                 if (e.type == EventType.MouseDown && e.button == 0 && rect.Contains(e.mousePosition) && !AutomatedInput) { ActivateTitleRow(i); e.Use(); return; }
                 var row = titleRows[i]; float s = row.Sel;
-                if (s > 0) { GUI.color = new Color(230f / 255, 227f / 255, 220f / 255, .6f * s * fade); GUI.DrawTexture(new Rect(left + 13, rect.center.y - .5f, 16, 1), Texture2D.whiteTexture); }
-                GUI.color = line; GUI.DrawTexture(new Rect(left, rect.yMax - 1, width, 1), Texture2D.whiteTexture);
+                GUI.color=new Color(1,1,1,fade);
+                NativeSilverHellUi.ActionPlate(rect,i==0,s,!AutomatedInput&&rect.Contains(e.mousePosition)&&ExoInput.Mouse(0));
                 Color txt = Color.Lerp(new Color(201f / 255, 199f / 255, 195f / 255), new Color(242f / 255, 240f / 255, 236f / 255), s); txt.a = fade;
-                GUI.color = Color.white; DrawSpaced(left + 36 + 18 * .16f, rect.y, rowH, row.Label, titleMenuFont, 18, 18 * .14f, txt, true);
+                int size=i==0?22:18;float spacing=size*.14f;
+                float labelWidth=SpacedWidth(titleMenuFont,size,row.Label,spacing)-spacing;
+                GUI.color = Color.white; DrawSpaced(rect.center.x-labelWidth/2, rect.y, rowH, row.Label, titleMenuFont, size, spacing, txt, true);
             }
             // #splashTitleBuild: right 36, bottom 26, Cinzel 600 11 px / 1.7, letter-spacing .28em, rgba(230,227,221,.6), two lines right aligned
             string l1 = BuildFlavor.Current.Label + (string.IsNullOrEmpty(BuildFlavor.ReleaseVersion) ? "" : " · v" + BuildFlavor.ReleaseVersion), l2 = "FOR DEAR GAMERS"; float sp = 11 * .28f, lh2 = 11 * 1.7f;

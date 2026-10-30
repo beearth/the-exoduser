@@ -11,8 +11,8 @@ namespace Exoduser.UnityPort
         public static readonly bool Requested = Array.IndexOf(Environment.GetCommandLineArgs(), "--remodel3d") >= 0;
         public static bool Active;            // the RM-1 scene is loaded and the field is shown in 3D right now (false in the boss arena / before the scene is ready)
         public static Terrain Ground;         // the scene's Terrain (window of tiles x48..152 / y126..200)
-        public const float Pitch = 0.85f;     // LOOK-001: elevation 0.85 rad = 48.70 deg
-        public const float DistU = 14f;       // LOOK-001: 1400 px
+        public static float Pitch { get { return NativeRemodelCamera.Pitch; } }     // LOOK-001: elevation 0.85 rad = 48.70 deg
+        public static float DistU { get { return NativeRemodelCamera.Distance; } }       // LOOK-001: 1400 px
 
         /// <summary>The 2D mapping the whole port was written against (also what Core-feeding callbacks must keep using, whatever the presentation does).</summary>
         public static Vector3 Point2D(double px, double py) { return new Vector3((float)px / 100, -(float)py / 100, 0); }

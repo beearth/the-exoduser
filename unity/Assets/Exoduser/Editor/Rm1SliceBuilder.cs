@@ -25,7 +25,8 @@ namespace Exoduser
         // Padded window (tiles): the colour map covers x48..152 y126..200 so the perspective view never sees past the terrain edge.
         const int TX0 = 48, TY0 = 126, TX1 = 152, TY1 = 200;
         const float T = 0.4f, TerrainH = 4f, BaseY = -0.5f;
-        const float Pitch = 0.85f, DistU = 14f;
+        static float Pitch { get { return Exoduser.UnityPort.NativeRemodelCamera.Pitch; } }
+        static float DistU { get { return Exoduser.UnityPort.NativeRemodelCamera.Distance; } }
         const int HRes = 1025, ARes = 512;
 
         [Serializable] class WalkDump { public string[] walk; public int[] start; }
@@ -852,7 +853,7 @@ namespace Exoduser
             var rig = new GameObject("RM1_CameraRig").transform;
             var camGo = new GameObject("Main Camera") { tag = "MainCamera" }; camGo.transform.SetParent(rig, false); var cam = camGo.AddComponent<Camera>();
             cam.orthographic = false; cam.clearFlags = CameraClearFlags.SolidColor; cam.backgroundColor = Hex("#060403"); cam.nearClipPlane = 0.3f; cam.farClipPlane = 160f;
-            float fov = 2f * Mathf.Atan(900f / (2f * 1400f)) * Mathf.Rad2Deg; cam.fieldOfView = fov;
+            float fov = Exoduser.UnityPort.NativeRemodelCamera.FieldOfView; cam.fieldOfView = fov;
             var offset = new Vector3(0, Mathf.Sin(Pitch), -Mathf.Cos(Pitch)) * DistU; var start = W(100f, 185f);
             camGo.transform.SetPositionAndRotation(start + offset, Quaternion.Euler(Pitch * Mathf.Rad2Deg, 0, 0));
             camGo.AddComponent<UniversalAdditionalCameraData>().renderPostProcessing = true;
@@ -866,8 +867,8 @@ namespace Exoduser
             }
             camGo.AddComponent<CinemachineBrain>().DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Styles.Cut, 0); camGo.AddComponent<AudioListener>();
 
-            var marker = new GameObject("Player Marker"); marker.transform.SetParent(rig, false); marker.transform.position = new Vector3(start.x, GroundY(start.x, start.z), start.z);
-            var actor = new GameObject("Marker Sprite"); actor.transform.SetParent(marker.transform, false); actor.transform.localPosition = new Vector3(0, 0.75f, 0); actor.transform.rotation = Quaternion.Euler(Pitch * Mathf.Rad2Deg, 0, 0);
+            var marker = new GameObject("Player Marker"); marker.transform.SetParent(rig, false); marker.transform.position = new Vector3(start.x, GroundY(start.x, start.z), start.z) + Exoduser.UnityPort.NativeRemodelCamera.TargetOffset;
+            var actor = new GameObject("Marker Sprite"); actor.transform.SetParent(marker.transform, false); actor.transform.localPosition = new Vector3(0, 0.75f, 0) - Exoduser.UnityPort.NativeRemodelCamera.TargetOffset; actor.transform.rotation = Quaternion.Euler(Pitch * Mathf.Rad2Deg, 0, 0);
             var sp = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Exoduser/Rendering/Sandbox/test_sprite.png");
             if (sp != null) { var sr = actor.AddComponent<SpriteRenderer>(); sr.sprite = sp; sr.sharedMaterial = AssetDatabase.LoadAssetAtPath<Material>("Assets/Exoduser/Rendering/Sandbox/SpriteLit3D.mat"); sr.shadowCastingMode = ShadowCastingMode.On; }
 

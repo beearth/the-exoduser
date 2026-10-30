@@ -83,7 +83,7 @@ namespace Exoduser.UnityPort
             pauseMenu.OptionChanged=OnSettingsOptionChanged;pauseMenu.LanguagePicked=code=>{lobby.SetLanguage(code);QueueSettingsSave();};pauseMenu.DiagLine=SettingsDiagLine;
             UpdateSettingsPersistenceNotice();
             var args=Environment.GetCommandLineArgs();
-            bool legacyFixture=Array.IndexOf(args,"--unity-boss-text-smoke")>=0||Array.IndexOf(args,"--unity-exp-capture")>=0||Array.IndexOf(args,A15DirectArgument)>=0||Array.IndexOf(args,IntroSilenceFlag)>=0||Array.IndexOf(args,NativeSettingsStorageScope.FixtureArgument)>=0||Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0||Array.IndexOf(args,"--unity-pause-smoke")>=0||Array.IndexOf(args,"--unity-character-story-smoke")>=0||Array.IndexOf(args,"--unity-character-store-smoke")>=0||Array.IndexOf(args,"--unity-character-smoke")>=0||Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-hud-blend-smoke")>=0||Array.IndexOf(args,"--unity-drop-smoke")>=0||Array.IndexOf(args,"--unity-revive-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
+            bool legacyFixture=Array.IndexOf(args,"--unity-playtest-capture")>=0||Array.IndexOf(args,"--unity-boss-text-smoke")>=0||Array.IndexOf(args,"--unity-exp-capture")>=0||Array.IndexOf(args,A15DirectArgument)>=0||Array.IndexOf(args,IntroSilenceFlag)>=0||Array.IndexOf(args,NativeSettingsStorageScope.FixtureArgument)>=0||Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0||Array.IndexOf(args,"--unity-pause-smoke")>=0||Array.IndexOf(args,"--unity-character-story-smoke")>=0||Array.IndexOf(args,"--unity-character-store-smoke")>=0||Array.IndexOf(args,"--unity-character-smoke")>=0||Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-hud-blend-smoke")>=0||Array.IndexOf(args,"--unity-drop-smoke")>=0||Array.IndexOf(args,"--unity-revive-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
             if(!legacyFixture){Running=false;if(cinSeen)lobby.ShowLobby();else lobby.Begin();}
             if(Array.IndexOf(args,"--unity-exp-capture")>=0){menu=false;Running=true;}
             else if(Array.IndexOf(args,A15DirectArgument)>=0){BeginA15DirectReview(args);}
@@ -96,6 +96,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-c04-dump")>=0){Running=false;StartCoroutine(C04Dump());}
             else if(Array.IndexOf(args,"--unity-boss-text-smoke")>=0){Running=false;pauseSmoke=true;StartCoroutine(BossTextLocalityCapture());}
             else if(Array.IndexOf(args,"--unity-steam-keyshot")>=0){Running=false;pauseSmoke=true;StartCoroutine(SteamKeyshotCapture());}
+            else if(Array.IndexOf(args,"--unity-playtest-capture")>=0){Running=false;StartCoroutine(PlaytestCapture());}
             else if(Array.IndexOf(args,"--unity-m1-check")>=0){Running=false;StartCoroutine(M1Check());}
             else if(Array.IndexOf(args,"--unity-review-args-capture")>=0){Running=false;StartCoroutine(ReviewArgsCapture());}
             else if(Array.IndexOf(args,"--unity-field-compare")>=0){Running=false;StartCoroutine(FieldCompare());}
@@ -228,8 +229,8 @@ namespace Exoduser.UnityPort
             Simulation.Stage.Enabled=firstPractice==null;
             if(firstPractice==null){   // the first-practice tick sets these once per tick itself (the combat / roll inputs detect edges against the previous call)
             Simulation.SetPlayerCombatInput(NativeKeyBindInput.Held("parry"),NativeKeyBindInput.Held("shield"),NativeKeyBindInput.Held("charge"));
-            SetSkillKeys();
-            Simulation.SetRollInput(NativeKeyBindInput.Held("up"),NativeKeyBindInput.Held("down"),NativeKeyBindInput.Held("left"),NativeKeyBindInput.Held("right"),NativeKeyBindInput.HeldKeyboard("roll"));}
+            Simulation.SetRollInput(NativeKeyBindInput.Held("up"),NativeKeyBindInput.Held("down"),NativeKeyBindInput.Held("left"),NativeKeyBindInput.Held("right"),NativeKeyBindInput.HeldKeyboard("roll"));
+            SetSkillKeys();}
             int statPointsBeforeTick=Simulation.Player.StatPoints;
             if(!HandleFirstPracticeTick(x,y,aim.x*100,-aim.y*100,attack,PointerOverPractice()))Simulation.Tick(x,y,aim.x*100,-aim.y*100,attack,NativeKeyBindInput.Held("interact"));
             StageFlowPump(statPointsBeforeTick);DispatchFeedback();
@@ -285,7 +286,7 @@ namespace Exoduser.UnityPort
         }
         void UpdateViews()
         {
-            if(Simulation==null||view==null)return;var p=Simulation.Player;
+            if(Simulation==null||view==null)return;Remodel3DRestoreBillboards();var p=Simulation.Player;
             float shk=Simulation.ShakeAmount*OptionShakeScale;   // B09: web G.shake -> camera offset (random +-shake px, game.html 51900)
             float camX=p.X/100,camY=-p.Y/100;BossCameraZoom();ClampCameraToMap(ref camX,ref camY);   // [CAM-CLAMP] web _clampCamToMap before the shake offset
             view.transform.position=new Vector3(camX+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),camY+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),-10);StageFlowSyncViews();if(!Simulation.Stage.InArena)StreamChunks(p.X,p.Y);
@@ -296,7 +297,7 @@ namespace Exoduser.UnityPort
             int frame=p.KiChargeActive?0:attack?Mathf.Clamp((int)(p.SwingProgress*9),0,8):moving?2+(int)(walkDistance/32)%8:(Simulation.TickCount/48)%2;
             playerView.sprite=attack?SpriteFor("Art/player/attack-bat-v1",frame*80,direction*80,80,80,new Vector2(.5f,45f/80)):
                 SpriteFor("Art/player/"+directions[direction],frame*48,0,48,48,new Vector2(.5f,.5f));
-            playerView.transform.position=Point(p.X,p.Y);playerView.transform.localScale=Vector3.one*2;playerView.sortingOrder=(int)p.Y;
+            playerView.transform.position=Point(p.X,p.Y);playerView.transform.localScale=Vector3.one*2*(NativeRemodel3D.Active?NativeRemodelCamera.HeroScale:1);playerView.sortingOrder=(int)p.Y;
             // web roll: the body curls up and turns once (360 degrees) over the 18 frames, dust trail
             playerView.transform.rotation=Simulation.RollActive?Quaternion.Euler(0,0,-360f*(1f-(float)Simulation.RollMoveT/RollRules.Frames)):Quaternion.identity;
             foreach(var e in Simulation.Enemies)

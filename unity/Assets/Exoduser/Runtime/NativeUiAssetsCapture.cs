@@ -136,10 +136,13 @@ namespace Exoduser.UnityPort
             Check(lobby.StartupCaptureState.Page==FrontendEntryPage.Guide,"기존 4단계 튜토리얼 도달");
             for(int n=0;n<4;n++)
             {
-                yield return new WaitForSecondsRealtime(.2f);
+                // 실제 Guide의 250ms 중복입력 방지를 지난 뒤 각 단계를 확인한다.
+                yield return new WaitForSecondsRealtime(.3f);
+                Check(lobby.StartupCaptureState.Page==FrontendEntryPage.Guide&&lobby.StartupCaptureState.GuideStep==n,"안내 실제 단계 "+(n+1));
                 yield return Shot("Unity_튜토리얼_"+(n+1)+"_1920");
                 lobby.StartupCaptureState.Advance();
             }
+            Check(lobby.StartupCaptureState.Page==FrontendEntryPage.Curtain,"안내 4단계 완료 후 실제 커튼 전환");
             lobby.CloseStartupCaptureMedia();
             File.WriteAllText(Path.Combine(output,"화면검수.json"),JsonUtility.ToJson(new Receipt
             {

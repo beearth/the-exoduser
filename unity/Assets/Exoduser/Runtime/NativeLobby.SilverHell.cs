@@ -19,7 +19,7 @@ namespace Exoduser.UnityPort
         internal static string TextField(Rect rect,string text,GUIStyle style){return TextField(rect,text,-1,style);}
         internal static string TextField(Rect rect,string text,int max,GUIStyle style){var n=style.normal.textColor;var f=style.focused.textColor;try{style.normal.textColor=TextColor(n);style.focused.textColor=TextColor(f);return max<0?GUI.TextField(rect,text,style):GUI.TextField(rect,text,max,style);}finally{style.normal.textColor=n;style.focused.textColor=f;}}
         static Font light,regular;
-        static Texture2D frame,plaque,panelBackground,buttonGlow;
+        static Texture2D frame,plaque,panelBackground,buttonGlow,primaryPlaque,panelIron;
         internal static void ButtonFocus(Rect box){if(buttonGlow==null)buttonGlow=Resources.Load<Texture2D>("Art/ui/silver_hell/guide_button_glow");if(buttonGlow!=null)GUI.DrawTexture(new Rect(box.x-34,box.y-20,box.width+68,box.height+40),buttonGlow); }
         internal static Font Font(bool body=false)
         {
@@ -84,17 +84,30 @@ namespace Exoduser.UnityPort
                 GUI.DrawTextureWithTexCoords(new Rect(dx[x],dy[y],dw,dh),tex,new Rect(sx[x]/tex.width,1-sy[y+1]/tex.height,(sx[x+1]-sx[x])/tex.width,(sy[y+1]-sy[y])/tex.height),true);
             }
         }
-        internal static void Panel(Rect box)
+        internal static void Panel(Rect box,float edge=75,float outset=24)
         {
             if(frame==null)frame=Resources.Load<Texture2D>("Art/ui/silver_hell/panel_frame_20261029");
             if(panelBackground==null)panelBackground=Effect(1,64,(u,v)=>Color.Lerp(new Color(16/255f,15/255f,15/255f,.95f),new Color(8/255f,8/255f,9/255f,.97f),v));
             GUI.DrawTexture(box,panelBackground);
-            Slice(new Rect(box.x-24,box.y-24,box.width+48,box.height+48),frame,150,150,75,75,false);
+            if(panelIron==null)panelIron=Resources.Load<Texture2D>("Art/ui/inventory/iron_480");
+            if(panelIron!=null){var c=GUI.color;GUI.color=new Color(c.r,c.g,c.b,c.a*.14f);GUI.DrawTexture(box,panelIron,ScaleMode.StretchToFill,true);GUI.color=c;}
+            Slice(new Rect(box.x-outset,box.y-outset,box.width+outset*2,box.height+outset*2),frame,150,150,edge,edge,false);
         }
         internal static void Button(Rect box)
         {
             if(plaque==null)plaque=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_plaque_20261029");
             Slice(new Rect(box.x-14,box.y,box.width+28,box.height),plaque,174,0,40,0,true);
+        }
+        // 기존 금속 원화의 안쪽 표면만 착색한다. 테와 양끝 조각은 원본 은빛을 유지한다.
+        internal static void ActionPlate(Rect box,bool primary,float selection,bool pressed,float edge=40,float outset=14)
+        {
+            var previous=GUI.color;
+            float light=pressed?.74f:Mathf.Lerp(.78f,1.18f,selection);
+            GUI.color=new Color(light,light,light,previous.a);
+            if(primaryPlaque==null&&primary)primaryPlaque=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_primary_composed");
+            if(plaque==null)plaque=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_plaque_20261029");
+            Slice(new Rect(box.x-outset,box.y,box.width+outset*2,box.height),primary&&primaryPlaque!=null?primaryPlaque:plaque,174,0,edge,0,true);
+            GUI.color=previous;
         }
     }
     public sealed partial class NativeLobby

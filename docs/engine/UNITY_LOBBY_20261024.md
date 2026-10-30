@@ -194,3 +194,6 @@ Mac `unity/main:9ed30495b050ac877e62b3989d775b41663fe95d`의 기존 실제 1280 
 | 모달 | 버튼에서 열 때 close로 초점 이동, Esc/닫기 버튼/배경으로 닫고 우하단 버튼에 초점 복귀 | 좌상단에서 열어 close로 초점 이동, Esc/Return/Space/닫기 버튼/바깥 click으로 닫고 이전 초점(없으면 좌상단)에 복귀. 기존 1280 키보드 실검수 PASS, 물리 마우스 HOLD |
 
 후보가 웹 `main`에 정식 채택된 뒤 필요한 **Mac 최소 수정 위치**는 `NativeLobbyBuildLabels.cs`의 좌상단 표시 호출·우하단 라벨 Rect, `NativeLobby.PatchNotes.cs`의 `DrawPatchNotesLauncher`와 `HandlePatchNotesKeys`·닫기 초점 복귀, `NativeLobby.cs`의 버튼 그리기 순서, `buildflavor_web.json`의 좌상단 표시 계약 및 관련 docs다. 기존 첫 Tab→Return/Esc 검증 경로는 후보 채택 전까지 보존한다. 이번 단위는 비교 기록만 하며 Mac 제품 변경·새 빌드·Player 실행 0, 전체 로비 VISUAL VERDICT: RETOUCH, 물리 마우스 hit: HOLD다.
+
+
+UI 2단계(2026-10-30) 로비 입장은 기존 은빛 ENTER 원화416×156에서 공통 금속 주 버튼400×76·(1428,722)·입장/Hahmlet300 22px로 교체한 후보다. 선택 전 비활성·선택 후 진홍·기존 입장 API 유지. 캐릭터 선택 UI도 같은 판/버튼 원화를 사용하며 실제3D 무대 소유권은 별도다. 세부수치·검수 상태는 UNITY_UI_PHASE2_20261030.md 최신 절을 따른다.

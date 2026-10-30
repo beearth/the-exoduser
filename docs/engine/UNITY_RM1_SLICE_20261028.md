@@ -49,7 +49,7 @@
 
 ### 카메라 LOOK-001 (슬라이스 값)
 - 원근, 피치 **0.85rad = 48.70°**(회전 `Euler(48.70, 0, 0)`), 거리 **14u**(= 1400px). 카메라 위치 = 대상 위치 + `(0, sin0.85·14, −cos0.85·14)` = 대상 + **(0, 10.52, −9.24)**. 댐핑 0, 월드 좌표 추적(`CinemachineFollow`).
-- 세로 FOV = `2·atan(H / (2·1400))`. 슬라이스 캡처는 H=900(1600×900)이라 **35.65°**. 게임 기준 1920×1080(H=1080)이면 **42.17°**. 현재 이식 게임 카메라는 정사영 5.4(화면 높이 10.8u = 1080px). 평면 거리 14u에서 H=1080 FOV를 쓰면 대상 평면에서의 보이는 높이가 10.8u로 같다. 어느 값을 쓸지는 연결 쪽 결정.
+- 현행 빌더·런타임 카메라 수치는 `Resources/Data/remodel_camera.json` 하나다: 세로FOV46.9453° 고정, 피치48.7014126°·거리14u, 영웅2배·북쪽전방1.45u. 기존 저장 씬은 로드 후 공통값으로 덮어쓰며 다시 굽는 빌더도 같은 값을 읽는다. 이전 H/2800 FOV와 900p35.65°/1080p42.17°는 과거 검수 기록이다.
 - 스프라이트 빌보드: 마커 스프라이트 회전 `Euler(48.70, 0, 0)`(카메라 피치와 같은 기울임), 쉐이더 `Rendering/Sandbox/SpriteLit3D.mat`.
 - 같은 씬에 카메라 리그(`Main Camera`·`AudioListener`·`CinemachineBrain`·`CM LOOK-001`·`Player Marker`)가 들어 있어 additive 로드하면 `NativeGame`의 `Camera.main`·오디오 리스너와 겹친다. 연결 쪽에서 로드 직후 이 오브젝트를 이름으로 끄거나 `NativeGame` 카메라가 CM에 따르게 해야 한다. **빌더는 이미 고쳤다(맵 총괄 승인 10-28)**: `Main Camera`(+`Foreground Cards`·`AudioListener`·`CinemachineBrain`)·`CM LOOK-001`·`Player Marker`를 루트 `RM1_CameraRig`(위치 0·회전 없음·스케일 1) 하나로 묶는다. additive 로드 뒤 이 루트 하나만 `SetActive(false)`하면 된다. **저장된 `RM1_Slice.unity`는 아직 다시 굽지 않아 예전 배치(리그가 씬 루트에 흩어짐)다** — 재생성은 Unity 실행 순번을 받은 뒤라 그때까지는 이름으로 끈다.
 
@@ -65,7 +65,7 @@
 | 항목 | 현재 후보 값·동작 | 적용 위치 |
 |---|---|---|
 | 빛줄기 | Hell 1/2 강도 0.035/0.028, 셰이더 상한 0.05, 가로 감쇠 제곱, 세로 0~0.75 진입·0.75~1 퇴장 smoothstep. 바닥 끝 사각형 단절 제거 | 빌더·두 재질·LightShaft.shader |
-| 카메라 | 실제 화면 높이 H로 2·atan(H/2800), 900p 35.65도. 거리 14u·피치 .85rad·Core 카메라/판정은 유지 | NativeGame.Remodel3DViewport |
+| 카메라 | 공통 JSON: FOV46.9453°·피치48.7014126°·거리14u·영웅2배·전방1.45u. Core 카메라/판정은 유지. 발끝은 원본240프레임 알파>64 측정값 | NativeRemodelCamera / NativeGame.Remodel3DViewport / Rm1SliceBuilder |
 | 필드 톤 | RM-1 로드 뒤 Volume 프로필 사본의 노출 +1.0EV, 채도 -18, 색 필터 (0.82,0.90,1). 공통 렌더 자산은 변경하지 않음 | NativeGame.Remodel3DLoad |
 | 피부 결 | 기존 웹 컬러맵 4260×3031의 회색조→blur sigma1→중앙 차분×6, nx=-dx/길이·ny=dy/길이·nz=1/길이를 RGB로 인코딩한 normal. 최대4096, TerrainLayer Colormap normalScale .55 | Ground/ch1_1_r1r2_normal.png, TL_Colormap, 빌더 |
 | 피격막 | 원본 색 알파 .25×Core ScreenFlashAlpha. 처음 유효 알파 .0625, Core 감쇠 불변 | NativeGame.OnGUI, B07 정본 |
@@ -263,3 +263,33 @@ root가 candidate2-caps/natural-medium.png·synthetic-high.png·synthetic-moving
 - 첫 재질native5512bc8f는35경계검사통과라도960모서리가로줄무늬로시각반려. 2px행→1.381117화면px의소수배율에서공유픽셀경계/UV역보정경로로한번수정하고1240연속성검사통과. 원화/색/코너크기/행개수만바꾸는변형아님. 다음실화면에서같은결함이면HOLD. 기존실패/프레임보존, 최종시각판정은후속새실행영수증과구분.
 
 - 최종재질후보 빌드입력881c1e17737ceefd1e785c3918e58411cb2bbeaf/Unity tree8c9c45ac9b0d63f2027b68c617a70cf4b245a41f, 빌드5b891d6a오류0·새Runtime d13a3619ddf0cd55decf3e5856ec871ca3af271d93e51818ce8b85eb7045dcc8. 최종193a42a4는같은값1/168·16초·SP10의1600/960표시전용11/11·창0/잔여0/USER_SAVE0. 직전수정후9e671e00의재질/7언어35검사는별도Runtime/동일3렌더소스blob근거로구분. 원화PNG/meta전후byte동일·450임포트보존. 1x직접판정은원화재질/마감국소개선확인·전체RETOUCH/root독립검수대기, 새M1미실행/현재47961226소급0. 후보-제출영수증.json과전후_동일값_1600.png/960.png·1x_프레임_전후.png 참조. 이번private만/main·바로가기0.
+
+## 2026-10-30 사용자 플레이 결함 수정 최종 실행 증거
+
+| 항목 | 실제 검증 범위와 결과 |
+|---|---|
+| 코드 후보 | ef75f883e03fdc355392ff853bde4813e8412053, Core 트리546cad24a1e4f2988fb1a268ba35a43b67a90d19 유지 |
+| 정식 빌드 | Unity6000.6.7f1 Win64, 6bcf428c, 컴파일 오류0·종료0 |
+| 전 입력 | 16c7536f, LMB/RMB/Shift/E/Q/Ctrl/Space/1~4/F/Z/이동+Space 14사례·44검사 통과, 1190틱·20fps401장 |
+| 표현/조준 | 조준오차 최대0.021356374px, 투사체 표현 위치오차 최대2.980232238e-8u, 구르기175px·중복스킬0 |
+| M1 | 72cd32e1, 23단계 전부ok·firstBlocked 없음, D3D11 RX9070XT, exit0 |
+| 실행 안전 | 최종 두 Player batch 실행 창0·잔여0·사용자 세이브 변경0. 임의 OS 손조작/전체 자연 플레이의 증거는 아님 |
+| 촬영 방식 | 실제 FixedUpdate/Input System/Core/실제 카메라 렌더. batch RT는 HUD 제외. 자동 검사 강제 진행은 별도 표기 |
+| 원본 대조 | 스킬8416·검기93·사슬/패링187165검사 불일치0. 최신H5 관련24섹션 대조만 확인, 미이식 기동스킬까지 최신 전체동등으로 확대하지 않음 |
+| 산출물 | I:/EXODUSER-Storage/demo-art/playtest-fix/final-player, final-m1, final-build, oracles |
+
+기술 범위는 입력·스킬 이동·누적 billboard·공통 카메라 설정 수정이다. 승인 A2의 숲/목교/재질/조명 전체 환경 제작은 이 후보에 포함되지 않으며 실제 현재 환경은 여전히 차이가 크다. 카메라/영웅 가독성 개선은 RETOUCH, 전체 A2 아트 PASS 아님. 기존 hidden Player 종료 지연은 같은 경로 두 번 확인 후 중단했으며 정상 종료가 검증된 공식 batch 경로만 최종 영수증에 사용했다.
+
+
+## 웹/Unity 전수 비교 최종 자료
+
+- 웹은 고정 origin/main18aef1218의 실제 update/draw와 실제 브라우저 키/마우스 이벤트로1190틱·20fps401장. 제품 소스 수정0, 시작결계·대사·적/자동석궁만 QA상태로 격리했다. API는 QA메모리응답이며 실제백엔드·저장 검수 아님.
+- 검기224px·악의구410px·사슬700px·구르기175px는 웹/Unity 일치. Q는sBlock, E는sDraw/sBash, Ctrl얼음보주·Space강타·1가시덫/F회복장판·미배정2~4/Z를 나란히 직접 확인했다.
+- 자료: I:/EXODUSER-Storage/demo-art/playtest-fix/스킬-전수-비교.html (원본1600×900,1x·20fps슬라이더), 웹-Unity-14입력-연속비교.mp4, 전수-비교-축소목록.png, 악의구-수정전후-연속비교.png, A2-현재-동일크기.png, A2-영웅-1x.png. 축소목록만으로1x판정을 대체하지 않았다.
+- 실제 웹pageerror0. 정적 URL18개(기존 UI이미지3·글꼴2·음원13)가 읽기용G자산경로에 없어404기록; 전체웹자산로딩 PASS로 주장하지 않는다. 스킬 원본 이미지와 궤적은 비교 자료에 포함됐다.
+- 웹 첫 촬영482d71ff는240초 제한종료, 재촬영b533b4f8는14입력/1190틱/401장·JSON저장 완료 후 browser.close 지연. 격리프로필로 소유 확인한 Chrome44840/56660·촬영Node27320만 종료요청했다. Chrome HasExited=true 확인. 정상종료 PASS로 세지 않으며 실행기 잔류 감지의 WMI 사후목록과 실제HasExited를 구분한다. 같은 촬영 경로 추가 반복0.
+- 카메라/영웅 가독성 RETOUCH. A2의3D영웅·숲/목교 질량·재질·조명과 현재화면의 차이는 남아 있다. Q/E의 잔광·링크 및 장판표현도 원본과 조형/잔상 차이가 있어 전체 VFX아트 PASS가 아니다. 기존 맵/캐릭터/VFX 담당의 후속범위다.
+
+영상 순서(초): LMB0~1.35, RMB1.35~2.70, Shift2.70~4.05, E4.05~5.40, Q5.40~6.75, Ctrl6.75~9.25, Space9.25~10.60, 1키10.60~11.95, 2키11.95~13.30, 3키13.30~14.65, 4키14.65~16.00, F16.00~17.35, Z17.35~18.70, 구르기18.70~20.05. 왼쪽웹/오른쪽Unity, 각1600×900.
+
+웹 실행기 b533b4f8 최종 영수증은 ok=false/exit=-1/창0/사용자세이브변경0, 잔류1(PID56288)을 실행기가 정리했다. 해당PID와 실행기5172는 최종조회에서없음, 두Chrome은HasExited=true다. 두임시프로필은 chrome_debug.log EBUSY로 완전삭제 미완료이며 browser-profile-cleanup.json에 정확경로를 남겼다. 사용자앱/브라우저·시스템설정 변경0. 영상은3200×900·20fps·401프레임·20.05초로 인코딩/추출프레임 직접확인 완료.

@@ -54,8 +54,8 @@ namespace Exoduser.UnityPort {
   }
 
   // ---- text ----
-  string T(string ko){string v;string fallback=English&&en.TryGetValue(ko,out v)?v:ko;return NativeA15SettingsLabels.GetKeyByKo(ko,LocaleCode,fallback);}
-  string L(string ko,string eng){return NativeA15SettingsLabels.GetKeyByKo(ko,LocaleCode,English?eng:ko);}
+  string T(string ko){string v;string fallback=English&&en.TryGetValue(ko,out v)?v:ko;return NativeA15SettingsLabels.GetKeyByKo(ko,LocaleCode,fallback).Replace("⌨","").Replace("🎮","").Trim();}
+  string L(string ko,string eng){return NativeA15SettingsLabels.GetKeyByKo(ko,LocaleCode,English?eng:ko).Replace("⌨","").Replace("🎮","").Trim();}
 
   // ---- state changes ----
   public void BeginListening(string action,bool alternate){held.Clear();listenAction=action;listenAlt=alternate;listenAt=Time.unscaledTime;}
@@ -76,8 +76,8 @@ namespace Exoduser.UnityPort {
   void Init(){
    if(ready)return;ready=true;
    plate=Resources.Load<Texture2D>("Art/ui/inventory/plate");glyphTex=Resources.Load<Texture2D>("Art/ui/keybind/keybind_glyphs");
-   regular=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular");semi=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold")??regular;bold=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Bold")??regular;
-   serif=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular")??regular;
+   regular=NativeSilverHellUi.Font()??Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular");semi=regular;bold=regular;
+   serif=regular;
   }
   void Fill(Rect r,Color c){var old=GUI.color;GUI.color=new Color(c.r,c.g,c.b,c.a*curA);GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
   void Border(Rect r,Color c,float top=1,float right=1,float bottom=1,float left=1){
@@ -132,7 +132,7 @@ namespace Exoduser.UnityPort {
     float adv=st.CalcSize(new GUIContent(g)).x*(css/px);
     if(g!=" "){
      if(shadow>0){st.normal.textColor=new Color(0,0,0,shadow*col.a*curA);GUI.Label(new Rect(x+w,cy-16+1,60,32),g,st);}
-     st.normal.textColor=new Color(col.r,col.g,col.b,col.a*curA);GUI.Label(new Rect(x+w,cy-16,60,32),g,st);
+     st.normal.textColor=NativeSilverHellUi.TextColor(new Color(col.r,col.g,col.b,col.a*curA));GUI.Label(new Rect(x+w,cy-16,60,32),g,st);
     }
     w+=adv+ls;
    }
@@ -180,10 +180,10 @@ namespace Exoduser.UnityPort {
    float y;
    DrawTabs();
    if(CurrentTab==Tab.Kbm)y=DrawKbm();else y=DrawPad();
-   if(Listening&&CurrentTab==Tab.Kbm){y+=4+6;if(paint)RunCentered(origin.x+ListW/2f,origin.y+y+9.5f,T(ui.texts.hint),serif,15,15.2f,1.52f,C(255,170,68));y+=19;}
+   if(Listening&&CurrentTab==Tab.Kbm){y+=4+6;if(paint)RunCentered(origin.x+ListW/2f,origin.y+y+9.5f,T(ui.texts.hint),serif,15,15.2f,1.52f,C(243,240,234));y+=19;}
    WebHeight=y;
    // "saving not ported": Unity settings schema has no key fields yet
-   y+=10;if(paint)RunCentered(origin.x+ListW/2f,origin.y+y+8,L(SaveNote,SaveNoteEn),regular,12,11.52f,.3f,C(153,136,119));y+=16;
+   y+=10;if(paint)RunCentered(origin.x+ListW/2f,origin.y+y+8,L(SaveNote,SaveNoteEn),regular,12,11.52f,.3f,C(136,139,139));y+=16;
    ContentHeight=y;
   }
 
@@ -191,7 +191,7 @@ namespace Exoduser.UnityPort {
 
   // ---- quiet tier (ui-quiet-tier.css 2026-10-27): text-weight list, 818px columns / 64px gap, 56px rows, 34px key capsules ----
   public const float QListW=1700,QColW=818,QColGap=64,QRowsTop=57.5f,QRowPitch=56,QKeyH=34,QAltW=61.7f,QPad=8;
-  static readonly Color QBone=new Color32(223,214,194,255),QTitle=new Color32(235,218,186,255),QDim=new Color32(143,129,112,255),QLine=new Color32(164,147,115,128),QLineSoft=new Color32(164,147,115,46);
+  static readonly Color QBone=new Color32(217,214,208,255),QTitle=new Color32(222,219,213,255),QDim=new Color32(129,132,132,255),QLine=new Color32(146,149,149,128),QLineSoft=new Color32(146,149,149,46);
   Font cinzelFont;
   Font KeyFont(string text){
    foreach(char ch in text)if(ch>127)return bold;
@@ -203,8 +203,7 @@ namespace Exoduser.UnityPort {
    for(int i=0;i<2;i++){
     var t=ui.tabs[i];string label=L(t.ko,t.en);float w=Mathf.Max(110,Width(label,semi,16,16f,0,1)+40);var r=R(x,12,w,40);x+=w+6;bool sel=(i==0)==(CurrentTab==Tab.Kbm);
     if(paint&&inView(r)){
-     Fill(r,sel?C(40,32,26):C(23,18,17));Border(r,sel?C(223,214,194,.8f):C(164,147,115,.6f));
-     if(Hover(r))Fill(r,new Color(1,1,1,.05f));
+     NativeSilverHellUi.ActionPlate(r,false,sel||Hover(r)?1:0,Hover(r)&&ExoInput.Mouse(0),22,2);
      RunCentered(r.center.x,r.center.y,label,semi,16,16f,0,QBone,0,1);
     }
     if(Click(r)){CurrentTab=i==0?Tab.Kbm:Tab.Pad;CancelListening();}
@@ -237,26 +236,25 @@ namespace Exoduser.UnityPort {
    var delR=new Rect(altR.xMax-22,altR.y,22,QKeyH);
    LastKeyRects.Add(mainR);LastKeyRects.Add(altR);
    if(paint&&inView(row)){
-    if(mainL||altL){Grad(row,C(142,105,51,.18f),C(70,51,33,.086f),true);Fill(new Rect(row.x,row.y,3,row.height),C(187,150,94));}
-    else if(Hover(row))Fill(row,C(155,112,67,.06f));
+    if(mainL||altL){Grad(row,C(107,110,110,.18f),C(52,55,55,.086f),true);Fill(new Rect(row.x,row.y,3,row.height),C(152,155,155));}
+    else if(Hover(row))Fill(row,C(116,119,119,.06f));
     Fill(new Rect(row.x,row.yMax-1,row.width,1),QLineSoft);
     DrawActionName(row,NativeA15SettingsLabels.GetKeyByKo(KeyBindings.Name(action,false),LocaleCode,KeyBindings.Name(action,English)));
     DrawKey(mainR,mainText,mainL,1f,false);
     DrawKey(altR,altText,altL,1f,alt==null&&!altL);
-    if(alt!=null){var dc=Hover(delR)?C(214,170,150):C(171,131,112);RunCentered(delR.center.x,delR.center.y,"✕",regular,14,14f,0,dc,1f,5);}
+    if(alt!=null){var dc=Hover(delR)?C(176,179,179):C(136,139,139);RunCentered(delR.center.x,delR.center.y,"✕",regular,14,14f,0,dc,1f,5);}
    }
    if(alt!=null&&Click(delR))keys.ClearSecondary(action);
    else if(Click(mainR))BeginListening(action,false);
    else if(Click(altR))BeginListening(action,true);
   }
 
-  // `.set-key` in the quiet tier: flat #0e0c0b capsule, 1px hairline, Cinzel 14px; the empty alternate slot is a dim ghost
+  // `.set-key` in the quiet tier: flat #0a0d0d capsule, 1px hairline, Cinzel 14px; the empty alternate slot is a dim ghost
   void DrawKey(Rect r,string text,bool listening,float opacity,bool ghost){
    float keep=curA;bool hover=Hover(r);
-   Fill(r,listening?C(60,40,24):C(14,12,11));
-   Border(r,listening?C(203,170,110):hover?C(223,214,194,.9f):ghost?C(164,147,115,.3f):QLine);
-   if(hover&&!listening)Fill(r,new Color(1,1,1,.05f));
-   Color txt=listening?C(255,240,202):ghost?QDim:QBone;
+   var color=GUI.color;GUI.color=new Color(color.r,color.g,color.b,color.a*curA*(ghost?.38f:1));
+   NativeSilverHellUi.ActionPlate(r,false,listening||hover?1:0,hover&&ExoInput.Mouse(0),12,0);GUI.color=color;
+   Color txt=listening?C(243,240,234):ghost?QDim:QBone;
    Font f=ghost||text.Length>0&&text[0]>127?semi:KeyFont(text);
    RunCentered(r.center.x,r.center.y,text,f,14,14f,0,txt,0,4);
    curA=keep;
@@ -265,7 +263,7 @@ namespace Exoduser.UnityPort {
    if(Event.current.type!=EventType.Repaint){if(enabled&&Click(r))ResetBindings();return;}
    float keep=curA;if(!enabled)curA=keep*.48f;bool hover=enabled&&Hover(r);
    if(inView(r)){
-    Fill(r,hover?C(40,32,26):C(23,18,17));Border(r,C(164,147,115,.6f));
+    var color=GUI.color;GUI.color=new Color(color.r,color.g,color.b,color.a*curA);NativeSilverHellUi.ActionPlate(r,false,hover?1:0,hover&&ExoInput.Mouse(0),22,4);GUI.color=color;
     RunCentered(r.center.x,r.center.y,text,semi,16,16f,0,QBone);
    }
    curA=keep;
@@ -274,40 +272,39 @@ namespace Exoduser.UnityPort {
   // ---- gamepad tab (web layout; values are Unity state, which has none -> 미이식) ----
   float DrawPad(){
    bool paint=Event.current.type==EventType.Repaint;
-   // title (grid-column 1/-1, border-top 1px #443322, 17.6px, margin 20 0 10)
+   // title (grid-column 1/-1, border-top 1px #333636, 17.6px, margin 20 0 10)
    var title=R(0,82,ListW,38);
-   if(paint&&inView(title)){Fill(new Rect(title.x,title.y,title.width,1),C(68,51,34));RunCentered(title.center.x,title.y+1+12+12.5f,T(ui.texts.padTitle),regular,18,17.6f,1.76f,C(204,170,119),0,2);}
+   if(paint&&inView(title)){Fill(new Rect(title.x,title.y,title.width,1),C(51,54,54));RunCentered(title.center.x,title.y+1+12+12.5f,T(ui.texts.padTitle),regular,18,17.6f,1.76f,C(172,175,175),0,2);}
    var rows=ui.padRows;float top=134;
    for(int i=0;i<rows.Length;i++){
     float rx=(i%2)*(ColW+ColGap),ry=top+(i/2)*RowPitch;var p=rows[i];var row=R(rx,ry,ColW,RowH);
     if(paint&&inView(row)){
-     if(Hover(row))Fill(row,C(155,112,67,.086f));
-     Fill(new Rect(row.x,row.yMax-1,row.width,1),C(140,121,85,.11f));
-     Run(row.x+NameX,row.y+26,p.btn,regular,15,15f,.6f,C(215,200,166));
-     Run(row.x+168.23f,row.y+26.2f,T(p.act),regular,14,14f,0,C(197,190,176));
+     if(Hover(row))Fill(row,C(116,119,119,.086f));
+     Fill(new Rect(row.x,row.yMax-1,row.width,1),C(120,123,123,.11f));
+     Run(row.x+NameX,row.y+26,p.btn,regular,15,15f,.6f,C(204,201,195));
+     Run(row.x+168.23f,row.y+26.2f,T(p.act),regular,14,14f,0,C(193,190,184));
      var kr=R(rx+512.11f,ry+5,333.88f,KeyH);float keep=curA;curA=keep*.48f;
      DrawKeyPlain(kr,p.@fixed?T(ui.texts.@fixed):"미이식",.48f);curA=keep;
     }
    }
    float rowsEnd=top+((rows.Length+1)/2)*RowPitch;float resetY=rowsEnd+8;
    DrawResetButton(R(0,resetY,ListW,44),T(ui.texts.padReset),false);
-   // note box: 1px #443322 border, rgba(0,0,0,.35), padding 10/14, title 12.8px bold, 2-column guide rows 11.52px (100px button label + text)
+   // note box: 1px #333636 border, rgba(0,0,0,.35), padding 10/14, title 12.8px bold, 2-column guide rows 11.52px (100px button label + text)
    float ny=resetY+44+18;var note=R(0,ny,ListW,299.66f);
    if(paint&&inView(note)){
-    Fill(note,new Color(0,0,0,.35f));Border(note,C(68,51,34));
-    Run(note.x+15,note.y+11+11.5f,T(ui.texts.padGuide),bold,13,12.8f,1.024f,C(204,170,119),0,3);
+    Fill(note,new Color(0,0,0,.35f));Border(note,C(51,54,54));
+    Run(note.x+15,note.y+11+11.5f,T(ui.texts.padGuide),bold,13,12.8f,1.024f,C(172,175,175),0,3);
     for(int i=0;i<ui.guide.Length;i++){
      float gx=note.x+11+(i%2)*(849+16),gy=note.y+11+23.03f+6+(i/2)*20.72f+10.36f;var g=ui.guide[i];
-     Run(gx,gy,g.btn,bold,12,11.52f,0,C(204,170,102));Run(gx+100,gy,T(g.act),regular,12,11.52f,0,C(153,136,119));
+     Run(gx,gy,g.btn,bold,12,11.52f,0,C(170,173,173));Run(gx+100,gy,T(g.act),regular,12,11.52f,0,C(136,139,139));
     }
    }
    return ny+299.66f;
   }
   // disabled key look (`.set-key` + disabled): no hover / click
   void DrawKeyPlain(Rect r,string text,float opacity){
-   GUI.color=new Color(1,1,1,curA/opacity*.15f*opacity);GUI.DrawTexture(r,plate,ScaleMode.StretchToFill);GUI.color=Color.white;Grad(r,C(53,48,43,.85f),C(23,21,24,.92f));
-   Border(r,C(118,99,75),1,1,1,1);Fill(new Rect(r.x,r.yMax-3,r.width,3),C(64,54,43));Fill(new Rect(r.x+1,r.y+1,r.width-2,1),C(199,177,139,.19f));
-   RunCentered(r.center.x,r.y+1+(r.height-4)/2f,text,bold,14,14f,.28f,C(223,208,180),1f);
+   var color=GUI.color;GUI.color=new Color(color.r,color.g,color.b,color.a*curA);NativeSilverHellUi.ActionPlate(r,false,0,false,12,0);GUI.color=color;
+   RunCentered(r.center.x,r.y+1+(r.height-4)/2f,text,bold,14,14f,.28f,QBone,1f);
   }
 
   // ---- floating messages (web #ph 500ms: 28.8px 900, #ffaa44 glow, centre ~y879; #notif 1.5s box at y777) ----
@@ -317,7 +314,7 @@ namespace Exoduser.UnityPort {
   public void DrawToasts(){
    Init();if(!ToastsVisible||Event.current.type!=EventType.Repaint)return;float now=Time.unscaledTime;curA=1;
    if(phText!=null&&now<phUntil){
-    float cx=960,cy=859+20.5f;var c=C(255,170,68);
+    float cx=960,cy=859+20.5f;var c=C(243,240,234);
     for(int k=0;k<3;k++){float ox=(k-1)*1.2f;RunCentered(cx+ox,cy,phText,bold,29,28.8f,5.76f,new Color(c.r,c.g,c.b,.16f));}
     RunCentered(cx,cy,phText,bold,29,28.8f,5.76f,c,.9f);
    }

@@ -92,8 +92,13 @@ namespace Exoduser.UnityPort
                 characterRestoreCreateFocus=false;
             }
             GUI.enabled=controls;
-            var play=new Rect(1428,702,416,156);
-            Image(play,Characters.SelectedIndex>=0?lobbySilverEnter:lobbySilverDisabled);
+            var play=new Rect(1428,722,400,76);
+            bool canEnter=controls&&Characters.SelectedIndex>=0;
+            var tint=GUI.color;if(!canEnter)GUI.color=new Color(tint.r*.52f,tint.g*.52f,tint.b*.52f,tint.a);
+            NativeSilverHellUi.ActionPlate(play,canEnter,canEnter&&play.Contains(Event.current.mousePosition)?1:0,!AutomatedInput&&play.Contains(Event.current.mousePosition)&&ExoInput.Mouse(0));
+            GUI.color=tint;
+            var enterText=K("입장","ENTER");float enterSpacing=22*.14f,enterWidth=SpacedWidth(silverName.font,22,enterText,enterSpacing)-enterSpacing;
+            DrawSpaced(play.center.x-enterWidth/2,play.y,play.height,enterText,silverName.font,22,enterSpacing,canEnter?NativeSilverHellUi.Bright:NativeSilverHellUi.Dim,true);
             GUI.enabled=controls&&Characters.SelectedIndex>=0;
             if(GUI.Button(play,"",GUIStyle.none))EnterSelectedCharacter();
             GUI.enabled=controls;

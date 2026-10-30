@@ -63,7 +63,7 @@ namespace Exoduser.UnityPort
   void StepFrameCap(int delta){if(frameCapChanged==null)return;for(int i=0;i<NativeSettingsState.FrameCapCount;i++)if(NativeSettingsState.GetFrameCap(i)==settings.FrameCap){int cap=NativeSettingsState.GetFrameCap(Mathf.Clamp(i+delta,0,NativeSettingsState.FrameCapCount-1));if(cap!=settings.FrameCap){settings.TrySetFrameCap(cap);frameCapChanged(cap);}return;}}
   void StepVolume(bool sfx,int delta){if(sfx){if(sfxChanged==null)return;int before=settings.SfxPercent;settings.SetSfxPercent(before+delta);if(settings.SfxPercent!=before)sfxChanged(settings.SfxPercent);}else{if(bgmChanged==null)return;int before=settings.BgmPercent;settings.SetBgmPercent(before+delta);if(settings.BgmPercent!=before)bgmChanged(settings.BgmPercent);}}
   void PointAt(Rect rect,int index){if(Event.current.type==EventType.MouseDown&&rect.Contains(Event.current.mousePosition))navigation.PointAt(index);}
-  void FocusBorder(Rect rect,int index){if(navigation.Focused&&navigation.Cursor==index)Border(new Rect(rect.x-3,rect.y-3,rect.width+6,rect.height+6),new Color(.94f,.73f,.4f));}
+  void FocusBorder(Rect rect,int index){if(navigation.Focused&&navigation.Cursor==index)Border(new Rect(rect.x-3,rect.y-3,rect.width+6,rect.height+6),NativeSilverHellUi.Bright);}
   bool MenuButton(Rect rect,string text,int index,GUIStyle style){PointAt(rect,index);bool clicked=GUI.Button(rect,text,style);FocusBorder(rect,index);if(clicked)navigation.Fence();return clicked;}
  }
 }

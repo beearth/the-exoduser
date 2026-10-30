@@ -35,7 +35,7 @@ namespace Exoduser.UnityPort
   // ---- text / fonts ----
   Font FontFor(string locale)
   {
-   if(myeongjo==null){myeongjo=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular")??font;cinzel=Resources.Load<Font>("Art/fonts/CinzelDecorative-Bold")??myeongjo;}
+   if(myeongjo==null){myeongjo=NativeSilverHellUi.Font()??Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular")??font;cinzel=Resources.Load<Font>("Art/fonts/CinzelDecorative-Bold")??myeongjo;}
    string code=LobbyLanguage.Normalize(locale);
    if(code=="ja"){var jp=Resources.Load<Font>("Art/fonts/NotoSerifCJKjp-Regular");if(jp!=null)return jp;}
    if(code=="ko"||code=="en")return myeongjo;
@@ -139,27 +139,29 @@ namespace Exoduser.UnityPort
     float w1=BtnW(fs),w2=BtnW(lobby);
     Add(l,K.Button,"fullscreen",new Rect(0,129.5f,w1,40),true,fs);Add(l,K.Button,"lobby",new Rect(w1+12,129.5f,w2,40),true,lobby);
     Add(l,K.Heading,"h.preset",new Rect(0,201.8f,818,31),false);
-    string[] pk={"saveP1","loadP1","saveP2","loadP2"};float px=0;
-    foreach(string id in pk){string tx=W("b."+id,id);float w=BtnW(tx);Add(l,K.Button,id,new Rect(px,244.8f,w,40),true,tx);px+=w+12;}
+    string[] pk={"saveP1","loadP1","saveP2","loadP2"};float px=0,presetY=244.8f;
+    foreach(string id in pk){string tx=W("b."+id,id);float w=Mathf.Min(818,BtnW(tx));if(px>0&&px+w>818){px=0;presetY+=52;}Add(l,K.Button,id,new Rect(px,presetY,w,40),true,tx);px+=w+12;}
+    float presetShift=presetY-244.8f;
     Add(l,K.Card,"char0",new Rect(882,53,220,242),true);Add(l,K.Card,"char1",new Rect(1118,53,220,242),true);
-    Add(l,K.Heading,"h.gameopt",new Rect(0,317,1700,31),false);
-    int i=0;foreach(var d in NativeOptionSet.All)if(d.Tab==0){RowFor(l,d,(i%2)*882,356+56*(i/2),818);i++;}
-    Add(l,K.Rule,"red",new Rect(0,650,818,1),false);Add(l,K.Rule,"red",new Rect(882,650,818,1),false);
+    Add(l,K.Heading,"h.gameopt",new Rect(0,317+presetShift,1700,31),false);
+    int i=0;foreach(var d in NativeOptionSet.All)if(d.Tab==0){RowFor(l,d,(i%2)*882,356+presetShift+56*(i/2),818);i++;}
+    Add(l,K.Rule,"red",new Rect(0,650+presetShift,818,1),false);Add(l,K.Rule,"red",new Rect(882,650+presetShift,818,1),false);
     string reset=W("b.resetBtn","Reset game"),quit=W("b.quitBtn","Quit game");
-    Add(l,K.Button,"reset",new Rect(0,671,BtnW(reset),40),true,reset,null,true);Add(l,K.Button,"quit",new Rect(882,671,BtnW(quit),40),true,quit,null,true);
+    Add(l,K.Button,"reset",new Rect(0,671+presetShift,BtnW(reset),40),true,reset,null,true);Add(l,K.Button,"quit",new Rect(882,671+presetShift,BtnW(quit),40),true,quit,null,true);
    }
    else if(t==1)
    {
     Add(l,K.Heading,"h.fx",new Rect(0,10,818,31),false);Add(l,K.Heading,"h.gfx",new Rect(882,10,818,31),false);
     OptionDef[] left={Def("shake"),Def("textScale"),Def("panelFit"),Def("parts"),DefFps,Def("resScale"),Def("irisSz"),Def("brightness"),Def("irisGlow")};
     for(int i=0;i<left.Length;i++)RowFor(l,left[i],0,47+48*i,818);
-    string[] gf=NativeOptionText.List("b.gfx",LocaleCode);float gx=882;
-    for(int i=0;i<5;i++){string tx=i<gf.Length?gf[i]:i.ToString();float w=Mathf.Max(76.4f,BtnW(tx)-4);Add(l,K.Button,"gfx"+i,new Rect(gx,63,w,40),true,tx).index=i;gx+=w+12;}
+    string[] gf=NativeOptionText.List("b.gfx",LocaleCode);float gx=882,gy=63;
+    for(int i=0;i<5;i++){string tx=i<gf.Length?gf[i]:i.ToString();float w=Mathf.Min(818,Mathf.Max(76.4f,BtnW(tx)-4));if(gx>882&&gx+w>1700){gx=882;gy+=52;}Add(l,K.Button,"gfx"+i,new Rect(gx,gy,w,40),true,tx).index=i;gx+=w+12;}
+    float gfxShift=gy-63;
     string[] right={"bloom","trail","slash","postfx","deathFx","lighting","torch","atmos","ambPart","fog","grain","outline","showFps"};
-    for(int i=0;i<right.Length;i++)RowFor(l,Def(right[i]),882+(i%2)*419,117+52*(i/2),399);
-    Add(l,K.Heading,"h.diag",new Rect(0,501,1700,31),false);
-    Add(l,K.Diag,"diag",new Rect(0,544,1494,108),false);
-    Add(l,K.Button,"rediag",new Rect(1510,544,190,40),true,W("b.btnRedetect","Redetect"));
+    for(int i=0;i<right.Length;i++)RowFor(l,Def(right[i]),882+(i%2)*419,117+gfxShift+52*(i/2),399);
+    Add(l,K.Heading,"h.diag",new Rect(0,501+gfxShift,1700,31),false);
+    Add(l,K.Diag,"diag",new Rect(0,544+gfxShift,1494,108),false);
+    Add(l,K.Button,"rediag",new Rect(1510,544+gfxShift,190,40),true,W("b.btnRedetect","Redetect"));
    }
    else if(t==2)
    {
@@ -239,15 +241,16 @@ namespace Exoduser.UnityPort
   }
   void DrawButton(Rect r,string text,bool selected,bool danger)
   {
-   Fill(r,selected?new Color32(31,34,34,255):new Color32(17,20,20,255));
-   Border(r,danger?new Color32(110,32,26,255):(selected?new Color32(217,214,208,200):BoxLine));
-   Txt(r,text,16,danger?new Color32(176,179,179,255):Bone,TextAnchor.MiddleCenter,FontStyle.Bold);
+   bool hover=r.Contains(Event.current.mousePosition);
+   NativeSilverHellUi.ActionPlate(r,false,selected||hover?1:0,hover&&ExoInput.Mouse(0),22,4);
+   Txt(r,text,16,danger?new Color32(176,179,179,255):Bone,TextAnchor.MiddleCenter,FontStyle.Normal);
   }
   bool Clicked(Rect r){return NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none);}
   void DrawItem(It it,float sy,bool fullscreen)
   {
    var r=new Rect(it.r.x,it.r.y-sy,it.r.width,it.r.height);
-   if(r.yMax<0||r.y>PagesH)return;
+   float bottom=it.k==K.Keys&&keyList!=null?r.y+keyList.ContentHeight:r.yMax;
+   if(bottom<0||r.y>PagesH)return;
    int cursor=it.nav?4+it.navIdx:-1;
    switch(it.k)
    {
@@ -280,12 +283,12 @@ namespace Exoduser.UnityPort
    PointAt(r,cursor);
    HLine(r.x,r.y+47,r.width,LineSoft);
    Txt(new Rect(r.x,r.y+12,nameW,24),RowName(it),17,Bone);
-   if(navigation.Focused&&cursor>=0&&navigation.Cursor==cursor)Border(new Rect(r.x-4,r.y-1,r.width+8,50),new Color32(240,186,102,255));
+   if(navigation.Focused&&cursor>=0&&navigation.Cursor==cursor)Border(new Rect(r.x-4,r.y-1,r.width+8,50),new Color32(230,227,220,255));
   }
   void DrawRange(It it,Rect r,int cursor)
   {
    var d=it.def;DrawRowFrame(it,r,cursor,230);
-   int v=GetVal(d);float valW=112,ctlW=r.width-250-valW-20;if(r.width>900)ctlW=r.width-250-valW-20;
+   int v=GetVal(d);float valW=Mathf.Clamp(TW(Fmt(d,v),15,FontStyle.Bold)+8,112,r.width*.34f),ctlW=r.width-250-valW-20;
    var ctl=new Rect(r.x+250,r.y+13.5f,ctlW,20);
    Txt(new Rect(r.xMax-valW,r.y+13,valW,21),Fmt(d,v),15,ValueColor(d,v),TextAnchor.MiddleRight,FontStyle.Bold,false);
    float t=(v-d.Min)/(float)(d.Max-d.Min);
@@ -370,7 +373,7 @@ namespace Exoduser.UnityPort
    string text=it.text;
    if(it.id=="reset"&&resetConfirm){text=W("b.resetYes",T("확인","Confirm"));}
    DrawButton(r,text,selected,it.danger);
-   if(navigation.Focused&&cursor>=0&&navigation.Cursor==cursor)Border(new Rect(r.x-3,r.y-3,r.width+6,r.height+6),new Color32(240,186,102,255));
+   if(navigation.Focused&&cursor>=0&&navigation.Cursor==cursor)Border(new Rect(r.x-3,r.y-3,r.width+6,r.height+6),new Color32(230,227,220,255));
    if(Clicked(r)){navigation.Fence();navigation.PointAt(cursor);Activate(it,fullscreen);}
   }
   void Activate(It it,bool fullscreen)
@@ -433,7 +436,7 @@ namespace Exoduser.UnityPort
     else Diamond(r.center.x,r.y+34,26,idx==0?new Color32(176,40,28,255):new Color32(120,86,190,255));
     Txt(new Rect(r.x+8,r.y+66,r.width-16,28),idx<names.Length?names[idx]:"",13,sel?Title:Bone,TextAnchor.MiddleCenter,FontStyle.Bold);
    }
-   if(navigation.Focused&&cursor>=0&&navigation.Cursor==cursor)Border(new Rect(r.x-3,r.y-3,r.width+6,r.height+6),new Color32(240,186,102,255));
+   if(navigation.Focused&&cursor>=0&&navigation.Cursor==cursor)Border(new Rect(r.x-3,r.y-3,r.width+6,r.height+6),new Color32(230,227,220,255));
    if(!character&&Clicked(r)){settings.Options.Set("cursor",idx);if(OptionChanged!=null)OptionChanged("cursor");navigation.Fence();navigation.PointAt(cursor);}
   }
   public int CharacterIndex { get; set; }
