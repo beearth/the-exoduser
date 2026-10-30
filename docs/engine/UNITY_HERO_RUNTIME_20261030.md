@@ -121,3 +121,7 @@ R3 수정 검수부터 `Time.captureDeltaTime=1/60`을 이 전용 fixture에만 
 | 증거 | `I:/EXODUSER-Storage/demo-art/hero/r5/gate-evidence.json`·`판정.md`·`검수.html`·현재 영상과1x 판. R4 전달/철회 원본 영수증은 `r4/delivery-history/`에 SHA와 함께 보존 |
 
 공통 통합과 Desktop 재전달은 위 검수와 별도 영수증에서 확인한다. 실제 음향은 무음 정책으로 듣지 않았고, 독립 Core의 같은 틱 heavy_hit1 이벤트만 확인했다. 자연 사망·OS손조작·Mac·경사 전체접지·장시간 플레이는 미검증이다.
+
+## R5 전달 이후 야간 한 건 — 중심형 강타 앵커
+
+현재 후속은 `UNITY_HERO_VFX_CENTER_ANCHOR_20261031.md`다. wave/flash 중심 pivot에 캐릭터 발끝 lift가 적용돼648px가3.24m 올라간 오류를 오프라인 RED→명시적 중심 registry 최소 수정→GREEN14/14로 확인했다. 기존R5 완료영수증과 새소스입력의 실제Player/적탄/시각/M1·전달은 구분한다. UI 최종 Desktop 완료 전 Unity/Player/빌드/선예약0이며, 현재 실제화면 개선은 미검증이다. 크기/알파/밝기/카메라/전투수치·악의구중심·캐릭터발끝/2D는 유지한다.
