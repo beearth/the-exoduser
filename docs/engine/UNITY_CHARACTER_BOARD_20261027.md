@@ -1,5 +1,18 @@
 # Unity 캐릭터 총괄 보드 (2026-10-27~)
 
+## 2026-10-30 데모 v0 전사 실제 Player·공통 반영
+
+최신 계약은 `UNITY_HERO_RUNTIME_20261030.md`·`UNITY_HERO_MOTION_20261030.md`다. 제품 R4 `b46c3d6c2`·문서포함 `a62b515d6`을 통합 담당이 expected `f27c9d1f9`에서 원격 `unity/main`에 정상 fast-forward했다. 바탕화면 전달은 통합 빌드·설치본 검수 뒤 별도 기록한다.
+
+| 항목 | 현재 근거 |
+|---|---|
+| 작업본·브랜치 | `G:/exoduser-wt/codex-hero`, `codex/pc-hero-quality-20261030` |
+| 구현 | Resources 전사3D·기존 대검/망토, Core틱 대기·달리기·구르기·3타·검기·E강타·시전·피격·사망. Core/기존 이동조준 변경0 |
+| 실제 후보 | 빌드 efba8711 컴파일/셰이더오류0, Player e45fd978 29/29·579PNG·높이9.3854%, 같은빌드 M1 165d48f9 23/23·정상exit0·창/잔여/USER_SAVE변경0 |
+| 판정 | 제작자·독립 검토 현재1x/2D아레나 **RETOUCH**. 편다리 구르기FAIL·사망 메뉴가림 해소. 큰 판금 명암·1/2타 하체·2D발밑·E임팩트 가림은 후속. 전체게임AAA/실시간손조작 PASS로 올리지 않음 |
+| 증거 | `I:/EXODUSER-Storage/demo-art/hero/r4/gate-evidence.json`·`검수.html`·12종1x·19.3초 실제모션·3초 노레위비교. 원본실패/수정 이력은 Runtime 문서에 보존 |
+| 보호·경계 | pc-unity-char 자산45개 동일byte 인수·원본수정/생성/지출0. UCH-05·06은 이번 단위 범위 밖. Mac미검증 |
+
 - 총괄: PC Claude 세션 "유니티 캐릭터 총괄"(Opus). 2026-10-27 사용자가 이 역할을 지정했다.
 - 맡는 일: Unity 리모델링에서 플레이어 영웅의 3D 외형을 만든다. 범위는 캐릭터 시트 → 3D 메시 → 리깅 → Animator → 인게임 판정이다. 명세·판정은 총괄이 하고, 실행은 Sonnet이 한다.
 - 범위 밖: 전투 규칙(`Runtime/Core`, 웹 oracle 정답), 보스 외형(BX-12, 보스전 총괄), 맵(맵 총괄). 톤 최종 판정은 디자인총괄(통합 컨셉 4장 T1~T8)이 한다.
@@ -9,7 +22,7 @@
 
 | id | 캐릭터 | 원화 상태 | Unity 단계 |
 |---|---|---|---|
-| warrior | 대검전사 | LOCK 확정(앵커) | UCH-01 시트 |
+| warrior | 대검전사 | LOCK 확정(앵커) | 데모v0 실제3D/모션·공통반영, 시각RETOUCH |
 | silvertail | 실버테일 | LOCK v1.2(단검 1·왼쪽 허벅지) | UCH-01 시트 |
 | ivan | 아이반(검은 연기) | T8 r4 확정 | UCH-01 시트 |
 | spearmage | 창법사 | 원화 RETOUCH 중 | 원화 채택 뒤 |
@@ -28,11 +41,11 @@
 | UCH-03d | Hero Light(캐릭터 전용 보조광, 바이블 §8 L-9 캐릭터 총괄 소유)·웅덩이 림광·RM-0 확정 조명(unity/main b280ddf6) 재촬영 | **완료** (Hero 0.6 PASS, L-4 테두리 색 미해결, 디자인총괄 2차 판정 대기) |
 | UCH-03e | 웅덩이 테두리광 재설계: 림 Point 재배치 1회 → 안 되면 웅덩이 색 Fresnel(Shader Graph). 이번 단위는 구조만(세기는 Linear 뒤) | **완료** (림 Point 반려, Fresnel 구조 PASS, 세기·지표는 03f) |
 | UCH-03f | VFX 병합(Linear·후처리) + RM0-LIGHT-L 뒤 재조정: Hero·Fresnel 세기 확정, ACES 색 밀림(350~12°)·블룸 번짐 확인, Hero Light 브랜치 merge·재캡처·병합 요청 | 대기 |
-| UCH-03c | Animator 기본(대기·이동·구르기·공격 1) | 대기 |
+| UCH-03c | Animator 기본과 Core틱 전투·피격·사망 모션 | 데모v0 실제Player 기능검수 완료·시각RETOUCH(상단 최신 영수증) |
 | UCH-05 | 실버테일 Meshy body 3D·리깅(1.72m)·단검 3D 각 1건 → Unity 임포트·캡처 | 진행 (Meshy 3건 완료 65cr, Unity는 메모리 여유 대기) |
 | UCH-06 | 아이반 Meshy body 3D·리깅(1.85m)·총 3D 각 1건 → Unity 임포트·캡처 | 진행 (Meshy 3건 완료 65cr, Unity는 메모리 여유 대기) |
 | UCH-A1 | 애니메이션 공급원 비교 시범(보스전 총괄 공동): 무료 1단계 = 문서 조사·Unity 수동 키 "내려찍기"(예비 48f·발동 6f·회복 70f), 유료 2단계는 사용자 확인 후 | 공급원 결정 완료(§3 10-28). 다음 = 전사 TM-A 원형을 Unity에서 재타이밍·IK 손질(UCH-03c 공격 1과 함께, Unity 순번 필요) |
-| UCH-04 | 인게임 판정: 1-1 맵 위 1920×1080·1x 크롭, 전사·실버테일 옆 T1~T8 | 대기 |
+| UCH-04 | 인게임 판정: 1-1 맵·1x·원화/장르 레퍼런스 비교 | 전사1600×900 실제Player·1x/독립검토 RETOUCH, 실버테일 대기 |
 
 ## 3. 결정 기록
 
