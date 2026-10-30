@@ -17,7 +17,7 @@
 | 보존 | 기존WIP·씬 실물615파일 5944926bytes I:착수백업/ 복사·SHA 일치 뒤 018ce33f2 정상 병합. 빌드 직전 다시 byte 고정 |
 | 비용/채택 | 신규 유료/외부게시/일반실행본 교체0. 기존 Blender/depth-finish RETOUCH·미채택 및 실제 계측 실패1회 이력 유지 |
 
-현재 독립컴파일0오류·기하 회귀4/4. 정식 빌드·실제 Player·기능·M1·1x·시각은 아직 미검증이다. 검수 결과와 가장 큰 결함은 I:/EXODUSER-Storage/demo-art/charselect/unity-preview-20261031/REPORT.md에 이어 기록한다.
+착수 당시 독립컴파일0오류·기하 회귀4/4였으며 아래 최종 게이트가 현재 판정이다. 검수 결과와 가장 큰 결함은 I:/EXODUSER-Storage/demo-art/charselect/unity-preview-20261031/REPORT.md에 이어 기록한다.
 
 ## 첫 실제 후보 FAIL과 1회 보완
 
@@ -26,3 +26,20 @@
 검수자의 다른 MonoBehaviour OnGUI에서 입력을 직접 호출한 것이 GUI.Button hotControl 문맥과 달랐다. QA 입력은 이제 원래 NativeLobby.OnGUI/Draw에서 받으며 일반 입력/기본 실행은 바꾸지 않는다. 초기3프레임의 접지를 폐기하고 독립 부모 앵커에서 렌더 직전 매 프레임 교정한다. 전사 원본·NativeHeroView/Core/게임 카메라 변경0. 새 입력의 정식빌드·Player·M1·1x는 미검증이며 같은 실패 재발이면 중단한다.
 
 전사 방향은 Animator가 소유하는 모델 루트의 Euler 값만 믿지 않는다. 기존 NativeHeroView처럼 모델 로컬0/identity·부모 앵커를 분리하고, 렌더 직전 실제 Humanoid 좌우 상완×머리/골반 축으로 전면을 고정한다. 캡처마다 실제 신체높이1.85±0.04m·전면축과카메라내적>0.9를 검증하여 수치만 바꾸고 뒷모습을 제출하지 않는다.
+
+## 최종 게이트 — 동일 실패2 중단
+
+공식 r2 빌드e28f1933 오류0, Player1e84e220 실제1920한국어5장/27기능통과 뒤 마우스 직업선택이 r1과 같은 지점 실패2다. 추가 수정/Player/M1 중단·자기예약 정상반환. Runtime SHA0085b0fbecb7eb7ca62863e8211680fdf5a7d424fee4148730f3ef2bfb723fae. 내부receipt passed=false이므로 래퍼exit0은 기능PASS가 아니다.
+
+| 게이트 | 최종 판정 |
+|---|---|
+| 독립C#/정식빌드/MCP제외 | 오류0/성공/212파일160DLL 참조0 |
+| 실제선택/4잠금/키보드 | 현재1920한국어 부분통과 |
+| 마우스·전체기능 | FAIL2, 자동IMGUI주입 실패이며 OS손조작의 제품고장 여부 미판정 |
+| 겹침 | 현재5장0, 계획36장 중31장 미검증 |
+| 시각·접촉 | FAIL. 정면축.978·키1.8578 개선, 거대평판후면·재질반복·발떠보임 잔존 |
+| 1600/긴언어/이름생성/연속대기/동일빌드M1 | 중단으로 미검증 |
+| 보존 | 자기허용NativeLobby.cs훅 제외614기존파일 SHA변경0, FirstPlayable 원본2ff71d24 복구·파생I보존, USER_SAVE0·창0·잔여0 |
+| 제품/공통/Desktop | 미채택. 후보 branch만보존, 자동반영0 |
+
+같은크기 ref00/ref02 및 1x 직접검수와 MAP PRODUCTION REPORT는 I:/EXODUSER-Storage/demo-art/charselect/unity-preview-20261031/REPORT.md. r1/r2·환경·기존UI/Blender 실패 카운터 유지. 다음 야간 단위/자동재개0, LARGE MASS/GROUND와 실제입력 진단으로 돌아갈 후속과 사용자 채택은 보류한다.
