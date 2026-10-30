@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Exoduser.UnityPort.Core;
 
 namespace Exoduser.UnityPort.Tools
@@ -40,7 +41,7 @@ namespace Exoduser.UnityPort.Tools
         NativeGame game; NativeBossView boss; Simulation bound,fixedSim;
         readonly List<BossProjectile> shots=new List<BossProjectile>();
         readonly List<string> shotKinds=new List<string>();
-        Receipt report; string output; int lastTick=-1; HashSet<SpriteRenderer> centered;
+        Receipt report; string output; int lastTick=-1,pendingTick=-1; HashSet<SpriteRenderer> centered;
         void Awake()
         {
             output=Path.Combine(Arg("-output"),"anchor");Directory.CreateDirectory(output);
@@ -48,6 +49,7 @@ namespace Exoduser.UnityPort.Tools
             if(mode!="current"&&mode!="baseline"&&mode!="control"){Debug.LogError("알 수 없는 앵커 검수모드");enabled=false;Application.Quit(2);return;}
             report=new Receipt{mode=mode,device=SystemInfo.graphicsDeviceName};
             centered=(HashSet<SpriteRenderer>)typeof(NativeSkillView).GetField("centeredSlamSprites",BindingFlags.Static|BindingFlags.NonPublic).GetValue(null);
+            RenderPipelineManager.endCameraRendering+=OnCameraRendered;
         }
         void LateUpdate()
         {
@@ -68,7 +70,7 @@ namespace Exoduser.UnityPort.Tools
                 if(IsWave(sr))sr.enabled=false;
             if(sim.SlamWaves.Count>0&&sim.TickCount!=lastTick){
                 lastTick=sim.TickCount;
-                if(sim.SlamWaves[0].T%2==0)StartCoroutine(Observe(sim.TickCount));
+                if(sim.SlamWaves[0].T%2==0)pendingTick=sim.TickCount;
             }
         }
         void Bind(Simulation sim)
@@ -83,11 +85,13 @@ namespace Exoduser.UnityPort.Tools
             }
         }
         static bool IsWave(SpriteRenderer sr) {return sr!=null&&(sr.name=="wave"||sr.name=="flash")&&sr.transform.parent!=null&&sr.transform.parent.name.StartsWith("slam",StringComparison.Ordinal);}
-        IEnumerator Observe(int tick)
+        void OnCameraRendered(ScriptableRenderContext context,Camera camera)
         {
-            yield return new WaitForEndOfFrame();
-            var sim=bound;if(sim==null||sim.TickCount!=tick)yield break;
-            var cam=game.Remodel3DCamera; if(cam==null)yield break;
+            // 기존 HeroCapture는 EndOfFrame 직후 다음 Core 틱을 진행한다.
+            // 그보다 앞선 실제 3D 카메라 렌더종료에서 같은 화면의 현재 틱을 읽는다.
+            if(pendingTick<0||game==null||bound==null||camera!=game.Remodel3DCamera)return;
+            int tick=pendingTick;pendingTick=-1;var sim=bound;if(sim.TickCount!=tick)return;
+            var cam=camera;
             var row=new FrameSample{tick=tick,state=sim.Player.State,playerScreen=cam.WorldToScreenPoint(NativeRemodel3D.Point(sim.Player.X,sim.Player.Y)),mouths=boss.FieldMouthsDrawn,comets=boss.FieldCometsDrawn,orbs=boss.FieldOrbsDrawn,fallbacks=boss.FieldBulletFallbacks};
             var pool=(List<SpriteRenderer>)typeof(NativeBossView).GetField("pool",Private).GetValue(boss);
             for(int i=0;i<shots.Count;i++){var b=shots[i];var sr=i<pool.Count?pool[i]:null;row.bullets.Add(new BulletSample{kind=shotKinds[i],x=b.X,y=b.Y,vx=b.Vx,vy=b.Vy,active=b.Active,screen=cam.WorldToScreenPoint(NativeRemodel3D.Point((float)b.X,(float)b.Y)),drawn=sr!=null&&sr.enabled,rendererScreen=sr!=null?cam.WorldToScreenPoint(sr.transform.position):Vector3.zero,bounds=sr!=null?sr.bounds:new Bounds(),textureRect=sr!=null?sr.sprite.rect.ToString():"없음"});}
@@ -99,6 +103,6 @@ namespace Exoduser.UnityPort.Tools
             report.frames.Add(row);File.WriteAllText(Path.Combine(output,"고정표본.json"),JsonUtility.ToJson(report,true));
             ScreenCapture.CaptureScreenshot(Path.Combine(output,"tick-"+tick.ToString("0000")+".png"));
         }
-        void OnDestroy(){if(boss!=null)boss.Dispose();}
+        void OnDestroy(){RenderPipelineManager.endCameraRendering-=OnCameraRendered;if(boss!=null)boss.Dispose();}
     }
 }

@@ -33,6 +33,6 @@ UI 최종 Desktop 완료 전 Unity/Player/빌드/선예약0. 완료 후 최신�
 
 `Runtime/Tools/HeroAnchorCapture.cs`는 명시적 `--unity-hero-anchor-check`·기존 `--unity-hero-review`·세이브격리·출력인자가 모두 있어야 생성되는 검수 도구다. NativeGame.cs/기존 HeroCapture는 수정하지 않는다. 기존Player rsp 기반의 독립Roslyn컴파일은오류0·자기신규경고0/기존14경고다. `compile/영수증.json`·`결과.log`. Unity/빌드/Player실행으로보고하지않는다.
 
-검수예정 고정탄은 **3종×8=24개**(물리입·번개마법혜성·불속성구), 열X오프셋−180/−90/90/180px와행Y−140/−84/−28/28/84/140px에순환배정한다. Vx=Vy=0·Dmg0·R4·Sz1·Life/Ml6000, 실제틱을그대로기록한다. 실제게임Simulation에는표본을넣지않고 별도표시용Simulation+기존NativeBossView로만그려 AI/히트/피해/RNG를건드리지않는다. 종류별그리기수·fallback·실제renderer/화면좌표·시트rect·wave나이/크기/색/좌표를같은EndOfFrame에기록한다. 시간기반프레임이달라지는독구표본을피하고틱기반세종으로고정한다.
+검수예정 고정탄은 **3종×8=24개**(물리입·번개마법혜성·불속성구), 열X오프셋−180/−90/90/180px와행Y−140/−84/−28/28/84/140px에순환배정한다. Vx=Vy=0·Dmg0·R4·Sz1·Life/Ml6000, 실제틱을그대로기록한다. 실제게임Simulation에는표본을넣지않고 별도표시용Simulation+기존NativeBossView로만그려 AI/히트/피해/RNG를건드리지않는다. 종류별그리기수·fallback·실제renderer/화면좌표·시트rect·wave나이/크기/색/좌표를실제3D카메라의렌더종료이벤트에서기록하고같은프레임스크린샷을요청한다. 기존HeroCapture는EndOfFrame직후다음Core틱을진행하므로후순위EndOfFrame코루틴의틱오염을피한다. 카메라설정/기존하네스소스변경0이다. 시간기반프레임이달라지는독구표본을피하고틱기반세종으로고정한다.
 
 `baseline`은같은새빌드에서 새강타registry만비워R5기존lift를재현하는명시적QA대조다. 과거R5바이너리실행으로표시하지않는다. `current`는제품수정그대로, `control`은검수대조에서만wave/flash를숨겨탄표본/머리·견갑기준을읽는다. 일반실행의크기/색/알파/밝기는어느모드에서도제품코드로바꾸지않는다. 이도구작성·컴파일만으로실제시각/밀집탄막PASS를선언하지않는다.
