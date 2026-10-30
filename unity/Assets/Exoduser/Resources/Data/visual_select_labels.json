@@ -206,6 +206,42 @@
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
           "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+        },
+        {
+          "key": "장",
+          "text": "장"
+        },
+        {
+          "key": "층",
+          "text": "층"
+        },
+        {
+          "key": "썩은 숲",
+          "text": "썩은 숲"
+        },
+        {
+          "key": "벌레굴",
+          "text": "벌레굴"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "지옥의 겨울"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "고통의 화염지대"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "지옥의 군단"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "사도의 마굴"
+        },
+        {
+          "key": "지옥성",
+          "text": "지옥성"
         }
       ]
     },
@@ -286,11 +322,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Twin-Dagger Mobility"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Close in with swift, agile chains of attacks."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -382,39 +418,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Ceaseless Motion"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Keep moving, build momentum, then unleash it in a single strike."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Lance Gunner"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "A blood-moon lance gunner who turns his own blood into bullets"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Piercing Lance Strike"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Skewer every enemy in a straight line with your lance-cannon."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Reaper"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "A blue-flame scythe that grows by devouring the souls it reaps"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Reap the souls of slain enemies to empower your scythe."
+        },
+        {
+          "key": "장",
+          "text": "CH"
+        },
+        {
+          "key": "층",
+          "text": "F"
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Rotten Forest"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Worm Nest"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Hell Winter"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Infernal Wastes"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Hell Legion"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Apostle's Den"
+        },
+        {
+          "key": "지옥성",
+          "text": "Hell Citadel"
         }
       ]
     },
@@ -495,11 +567,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "双匕首机动"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "以迅捷灵活的连续攻击切入敌阵。"
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -591,39 +663,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "永不停歇的机动"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "持续移动积蓄气势，在一击中尽数爆发。"
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "枪炮手"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "以自身之血为弹的血月枪炮手"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "贯穿枪击"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "用枪炮贯穿直线上的所有敌人。"
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "死神"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "吞噬所斩之魂而成长的青焰之镰"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "收取击杀敌人的灵魂，强化镰刀。"
+        },
+        {
+          "key": "장",
+          "text": "章"
+        },
+        {
+          "key": "층",
+          "text": "层"
+        },
+        {
+          "key": "썩은 숲",
+          "text": "腐烂森林"
+        },
+        {
+          "key": "벌레굴",
+          "text": "虫巢"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "地狱寒冬"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "苦痛炎域"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "地狱军团"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "使徒巢穴"
+        },
+        {
+          "key": "지옥성",
+          "text": "地狱城"
         }
       ]
     },
@@ -704,11 +812,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "雙匕首機動"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "以迅捷靈活的連續攻擊切入敵陣。"
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -800,39 +908,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "永不停歇的機動"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "持續移動積蓄氣勢，在一擊中盡數爆發。"
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "槍炮手"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "以自身之血為彈的血月槍炮手"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "貫穿槍擊"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "用槍炮貫穿直線上的所有敵人。"
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "死神"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "吞噬所斬之魂而成長的青焰之鐮"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "收取擊殺敵人的靈魂，強化鐮刀。"
+        },
+        {
+          "key": "장",
+          "text": "章"
+        },
+        {
+          "key": "층",
+          "text": "層"
+        },
+        {
+          "key": "썩은 숲",
+          "text": "腐爛森林"
+        },
+        {
+          "key": "벌레굴",
+          "text": "蟲巢"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "地獄寒冬"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "苦痛炎域"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "地獄軍團"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "使徒巢穴"
+        },
+        {
+          "key": "지옥성",
+          "text": "地獄城"
         }
       ]
     },
@@ -913,11 +1057,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "双短剣の機動"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "素早く軽やかな連続攻撃で切り込みます。"
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -1009,39 +1153,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "止まらぬ機動"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "絶えず動き続けて溜めた勢いを、一撃で解き放ちます。"
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "槍砲手"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "自らの血を弾丸とする血月の槍砲手"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "貫通槍撃"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "槍砲で直線上の敵をすべて貫きます。"
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "死神"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "刈り取った魂を喰らって育つ青炎の鎌"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "倒した敵の魂を刈り取り、鎌を強化します。"
+        },
+        {
+          "key": "장",
+          "text": "章"
+        },
+        {
+          "key": "층",
+          "text": "階"
+        },
+        {
+          "key": "썩은 숲",
+          "text": "腐敗の森"
+        },
+        {
+          "key": "벌레굴",
+          "text": "蟲の巣"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "地獄の冬"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "苦痛の灼熱地帯"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "地獄の軍団"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "使徒の棲処"
+        },
+        {
+          "key": "지옥성",
+          "text": "地獄城"
         }
       ]
     },
@@ -1122,11 +1302,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Cơ động song đoản đao"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Áp sát bằng chuỗi tấn công nhanh và linh hoạt."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -1218,39 +1398,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Chuyển động không ngừng"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Di chuyển không ngừng, tích tụ đà và giải phóng nó trong một đòn duy nhất."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Xạ thủ thương pháo"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "Xạ thủ thương pháo của huyết nguyệt, lấy máu mình làm đạn"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Thương kích xuyên phá"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Dùng thương pháo xuyên thủng mọi kẻ địch trên đường thẳng."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Tử thần"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "Lưỡi hái thanh diễm lớn lên nhờ nuốt những linh hồn bị chém"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Thu linh hồn kẻ địch bị hạ để cường hóa lưỡi hái."
+        },
+        {
+          "key": "장",
+          "text": "Chương"
+        },
+        {
+          "key": "층",
+          "text": "Tầng"
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Rừng Mục Nát"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Hang Giun"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Mùa đông địa ngục"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Vùng Lửa"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Quân Đoàn Địa Ngục"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Hang Tông Đồ"
+        },
+        {
+          "key": "지옥성",
+          "text": "Thành Địa Ngục"
         }
       ]
     },
@@ -1331,11 +1547,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "ความคล่องตัวมีดคู่"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "เข้าประชิดด้วยชุดโจมตีรวดเร็วและว่องไว"
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -1427,39 +1643,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "เคลื่อนไหวไม่หยุดยั้ง"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "เคลื่อนไหวไม่หยุด สะสมแรงส่ง แล้วปลดปล่อยในการโจมตีครั้งเดียว"
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "พลปืนทวน"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "พลปืนทวนแห่งจันทราเลือดผู้ใช้เลือดตนเป็นกระสุน"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "แทงทวนทะลวง"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "ใช้ปืนทวนเสียบทะลุศัตรูทุกตัวในแนวเส้นตรง"
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "ยมทูต"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "เคียวเพลิงครามที่เติบโตด้วยการกลืนกินวิญญาณที่เก็บเกี่ยว"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "เก็บวิญญาณศัตรูที่สังหารเพื่อเสริมพลังเคียว"
+        },
+        {
+          "key": "장",
+          "text": "บท"
+        },
+        {
+          "key": "층",
+          "text": "ชั้น"
+        },
+        {
+          "key": "썩은 숲",
+          "text": "ป่าเน่า"
+        },
+        {
+          "key": "벌레굴",
+          "text": "รังหนอน"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "เหมันต์นรก"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "ดินแดนเพลิง"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "กองทัพนรก"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "ถ้ำอัครทูต"
+        },
+        {
+          "key": "지옥성",
+          "text": "ป้อมนรก"
         }
       ]
     },
@@ -1540,11 +1792,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Mobilitas Belati Kembar"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Dekati musuh dengan rangkaian serangan cepat dan lincah."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -1636,39 +1888,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Gerak Tanpa Henti"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Terus bergerak, kumpulkan momentum, lalu lepaskan dalam satu serangan."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Penembak Tombak"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "Penembak tombak bulan darah yang menjadikan darahnya sendiri sebagai peluru"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Tusukan Tombak Menembus"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Tembus semua musuh dalam satu garis lurus dengan meriam tombak."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Penuai"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "Sabit api biru yang tumbuh dengan melahap jiwa-jiwa yang dituainya"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Tuai jiwa musuh yang dikalahkan untuk memperkuat sabit."
+        },
+        {
+          "key": "장",
+          "text": "Bab"
+        },
+        {
+          "key": "층",
+          "text": "Lt."
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Hutan Busuk"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Sarang Cacing"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Musim Dingin Neraka"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Tanah Neraka"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Legiun Neraka"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Sarang Rasul"
+        },
+        {
+          "key": "지옥성",
+          "text": "Benteng Neraka"
         }
       ]
     },
@@ -1749,11 +2037,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Mobiliti Belati Kembar"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Dekati musuh dengan rangkaian serangan pantas dan tangkas."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -1845,39 +2133,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Gerakan Tanpa Henti"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Terus bergerak, kumpul momentum, lalu lepaskannya dalam satu serangan."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Penembak Tombak"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "Penembak tombak bulan darah yang menjadikan darahnya sendiri sebagai peluru"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Tikaman Tombak Menembusi"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Tembusi semua musuh dalam satu garisan lurus dengan meriam tombak."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Penuai"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "Sabit api biru yang membesar dengan membaham jiwa yang dituainya"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Tuai jiwa musuh yang ditewaskan untuk memperkukuh sabit."
+        },
+        {
+          "key": "장",
+          "text": "Bab"
+        },
+        {
+          "key": "층",
+          "text": "Tingkat"
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Hutan Busuk"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Sarang Cacing"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Musim Sejuk Neraka"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Tanah Neraka"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Legiun Neraka"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Sarang Rasul"
+        },
+        {
+          "key": "지옥성",
+          "text": "Benteng Neraka"
         }
       ]
     },
@@ -1958,11 +2282,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Movilidad de dagas gemelas"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Acércate con cadenas de ataques rápidos y ágiles."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -2054,39 +2378,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Movimiento incesante"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Muévete sin parar, acumula impulso y desátalo en un solo golpe."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Artillero de lanza"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "Artillero de lanza de la luna de sangre que convierte su propia sangre en balas"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Estocada perforante"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Atraviesa a todos los enemigos en línea recta con tu lanza-cañón."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Segador"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "Guadaña de llama azul que crece devorando las almas que siega"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Recoge las almas de los enemigos abatidos para potenciar tu guadaña."
+        },
+        {
+          "key": "장",
+          "text": "CAP"
+        },
+        {
+          "key": "층",
+          "text": "P"
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Bosque Podrido"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Nido de Gusanos"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Invierno infernal"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Páramo Infernal"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Legión Infernal"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Guarida del Apóstol"
+        },
+        {
+          "key": "지옥성",
+          "text": "Ciudadela Infernal"
         }
       ]
     },
@@ -2167,11 +2527,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Mobilité aux dagues jumelles"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Approchez avec des enchaînements rapides et agiles."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -2263,39 +2623,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Mouvement incessant"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Bougez sans cesse, accumulez de l'élan et libérez-le en un seul coup."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Canonnier à lance"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "Canonnier à lance de la lune de sang qui fait de son propre sang des balles"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Estoc perforant"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Transpercez tous les ennemis en ligne droite avec votre lance-canon."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Faucheur"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "Faux aux flammes bleues qui grandit en dévorant les âmes fauchées"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Récoltez les âmes des ennemis vaincus pour renforcer votre faux."
+        },
+        {
+          "key": "장",
+          "text": "Ch."
+        },
+        {
+          "key": "층",
+          "text": "Ét."
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Forêt Putride"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Nid de Vers"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Hiver infernal"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Terres Infernales"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Légion Infernale"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Antre de l'Apôtre"
+        },
+        {
+          "key": "지옥성",
+          "text": "Citadelle Infernale"
         }
       ]
     },
@@ -2376,11 +2772,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Mobilità dei pugnali gemelli"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Avvicinati con rapide e agili sequenze d'attacco."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -2472,39 +2868,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Movimento incessante"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Muoviti senza sosta, accumula slancio e scatenalo in un solo colpo."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Artigliere di lancia"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "Artigliere di lancia della luna di sangue che trasforma il proprio sangue in proiettili"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Affondo perforante"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Trafiggi tutti i nemici in linea retta con la lancia-cannone."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Mietitore"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "Falce di fiamma blu che cresce divorando le anime mietute"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Raccogli le anime dei nemici uccisi per potenziare la falce."
+        },
+        {
+          "key": "장",
+          "text": "Cap."
+        },
+        {
+          "key": "층",
+          "text": "P."
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Foresta Marcia"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Nido di Vermi"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Inverno infernale"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Landa Infernale"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Legione Infernale"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Tana dell'Apostolo"
+        },
+        {
+          "key": "지옥성",
+          "text": "Cittadella Infernale"
         }
       ]
     },
@@ -2585,11 +3017,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Mobilidade de adagas gêmeas"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Avance com sequências de ataques rápidos e ágeis."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -2681,39 +3113,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Movimento incessante"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Mova-se sem parar, acumule impulso e libere-o em um único golpe."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Artilheiro de lança"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "Artilheiro de lança da lua de sangue que transforma o próprio sangue em balas"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Estocada perfurante"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Perfure todos os inimigos em linha reta com sua lança-canhão."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Ceifador"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "Foice de chama azul que cresce devorando as almas que ceifa"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Colha as almas dos inimigos abatidos para fortalecer sua foice."
+        },
+        {
+          "key": "장",
+          "text": "Cap."
+        },
+        {
+          "key": "층",
+          "text": "And."
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Floresta Apodrecida"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Covil de Vermes"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Inverno infernal"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Terras Infernais"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Legião Infernal"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Covil do Apóstolo"
+        },
+        {
+          "key": "지옥성",
+          "text": "Cidadela Infernal"
         }
       ]
     },
@@ -2794,11 +3262,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Mobilitatea pumnalelor gemene"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Apropie-te cu șiruri de atacuri rapide și agile."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -2890,39 +3358,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Mișcare neîncetată"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Mișcă-te fără oprire, acumulează avânt și dezlănțuie-l într-o singură lovitură."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Tunar cu lance"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "Tunar cu lance al lunii însângerate, care își preface propriul sânge în gloanțe"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Străpungere cu lancea"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Străpunge toți inamicii aflați în linie dreaptă cu lancea-tun."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Secerător"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "O coasă de flacără albastră care crește devorând sufletele secerate"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Culege sufletele inamicilor uciși pentru a-ți întări coasa."
+        },
+        {
+          "key": "장",
+          "text": "Cap."
+        },
+        {
+          "key": "층",
+          "text": "Etaj"
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Pădurea Putredă"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Cuibul Viermilor"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Iarna iadului"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Ținutul Infernal"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Legiunea Infernului"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Vizuina Apostolului"
+        },
+        {
+          "key": "지옥성",
+          "text": "Citadela Infernului"
         }
       ]
     },
@@ -3003,11 +3507,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Zwillingsdolch-Mobilität"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Rücke mit schnellen, wendigen Angriffsfolgen vor."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -3099,39 +3603,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Rastlose Bewegung"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Bleib ständig in Bewegung, baue Schwung auf und entfessle ihn in einem einzigen Schlag."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Lanzenkanonier"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "Lanzenkanonier des Blutmonds, der sein eigenes Blut zu Kugeln macht"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Durchbohrender Lanzenstoß"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Durchbohre mit der Lanzenkanone alle Gegner in gerader Linie."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Sensenmann"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "Blauflammensense, die wächst, indem sie geerntete Seelen verschlingt"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Ernte die Seelen erschlagener Gegner, um deine Sense zu stärken."
+        },
+        {
+          "key": "장",
+          "text": "Kap."
+        },
+        {
+          "key": "층",
+          "text": "Etg."
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Fauliger Wald"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Wurmnest"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Höllenwinter"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Flammenöde der Qual"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Höllenlegion"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Schlund des Apostels"
+        },
+        {
+          "key": "지옥성",
+          "text": "Höllenfeste"
         }
       ]
     },
@@ -3212,11 +3752,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Mobiliteit met tweelingdolken"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Nader met snelle, behendige aanvalsreeksen."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -3308,39 +3848,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Onophoudelijke beweging"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Blijf in beweging, bouw momentum op en ontketen het in één enkele slag."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Lansschutter"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "Lansschutter van de bloedmaan die zijn eigen bloed tot kogels maakt"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Doorborende lansstoot"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Doorboor alle vijanden in een rechte lijn met het lanskanon."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Maaier"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "Een blauwvlammende zeis die groeit door gemaaide zielen te verslinden"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Oogst de zielen van gedode vijanden om je zeis te versterken."
+        },
+        {
+          "key": "장",
+          "text": "Hfst."
+        },
+        {
+          "key": "층",
+          "text": "Verd."
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Verrot Bos"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Wormennest"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Helse winter"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Infernale Vlakte"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Hellegioen"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Apostelhol"
+        },
+        {
+          "key": "지옥성",
+          "text": "Helburcht"
         }
       ]
     },
@@ -3421,11 +3997,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Tvillingdolksrörlighet"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Närma dig med snabba och smidiga attackkedjor."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -3517,39 +4093,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Oupphörlig rörelse"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Håll dig i rörelse, bygg upp fart och släpp lös den i ett enda slag."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Lansskytt"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "Blodmånens lansskytt som gör sitt eget blod till kulor"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Genomborrande lansstöt"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Genomborra alla fiender i en rak linje med lanskanonen."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Liemannen"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "En blåeldslie som växer genom att sluka skördade själar"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Skörda dräpta fienders själar för att stärka lien."
+        },
+        {
+          "key": "장",
+          "text": "Kap."
+        },
+        {
+          "key": "층",
+          "text": "Vån."
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Ruttnande Skog"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Maskhåla"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Helvetets vinter"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Infernalisk Ödemark"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Helveteslegion"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Apostelns Håla"
+        },
+        {
+          "key": "지옥성",
+          "text": "Helvetesfästning"
         }
       ]
     },
@@ -3630,11 +4242,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Tvillingedolkens mobilitet"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Ryk ind med hurtige, smidige angrebsserier."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -3726,39 +4338,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Uophørlig bevægelse"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Bliv i bevægelse, opbyg momentum, og slip det løs i ét enkelt slag."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Lanseskytte"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "Blodmånens lanseskytte, der gør sit eget blod til kugler"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Gennemborende lansestød"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Gennembor alle fjender på en lige linje med lansekanonen."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Høstmand"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "En le af blå flammer, der vokser ved at fortære høstede sjæle"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Høst dræbte fjenders sjæle for at styrke leen."
+        },
+        {
+          "key": "장",
+          "text": "Kap."
+        },
+        {
+          "key": "층",
+          "text": "Etg."
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Rådden Skov"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Ormehul"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Helvedes vinter"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Infernalsk Ødemark"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Helvedes Legion"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Apostlens Hule"
+        },
+        {
+          "key": "지옥성",
+          "text": "Helvedesfæstning"
         }
       ]
     },
@@ -3839,11 +4487,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Tvillingdolkenes mobilitet"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Rykk inn med raske og smidige angrepsrekker."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -3935,39 +4583,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Uopphørlig bevegelse"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Hold deg i bevegelse, bygg opp fart og slipp den løs i ett enkelt slag."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Lanseskytter"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "Blodmånens lanseskytter som gjør sitt eget blod til kuler"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Gjennomborende lansestøt"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Gjennombor alle fiender på en rett linje med lansekanonen."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Ljåmannen"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "En ljå av blå flammer som vokser ved å sluke høstede sjeler"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Høst sjelene til drepte fiender for å styrke ljåen."
+        },
+        {
+          "key": "장",
+          "text": "Kap."
+        },
+        {
+          "key": "층",
+          "text": "Etg."
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Råtten Skog"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Ormehull"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Helvetes vinter"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Infernalsk Ødemark"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Helvedes Legion"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Apostelens Hule"
+        },
+        {
+          "key": "지옥성",
+          "text": "Helvetesfestning"
         }
       ]
     },
@@ -4048,11 +4732,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Подвижность парных кинжалов"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Сближайтесь быстрыми и ловкими сериями атак."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -4144,39 +4828,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Непрерывное движение"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Двигайтесь без остановки, копите напор и обрушьте его одним ударом."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Копейный канонир"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "Копейный канонир кровавой луны, обращающий собственную кровь в пули"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Пронзающий удар копья"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Пронзите копейной пушкой всех врагов на прямой линии."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Жнец"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "Коса синего пламени, что растёт, пожирая скошенные души"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Собирайте души убитых врагов, усиливая косу."
+        },
+        {
+          "key": "장",
+          "text": "Гл."
+        },
+        {
+          "key": "층",
+          "text": "Эт."
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Гнилой Лес"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Червоточина"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Адская зима"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Пылающие Пустоши"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Адский Легион"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Логово Апостола"
+        },
+        {
+          "key": "지옥성",
+          "text": "Адская Цитадель"
         }
       ]
     },
@@ -4257,11 +4977,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Рухливість парних кинджалів"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Зближуйтеся швидкими й спритними серіями атак."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -4353,39 +5073,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Невпинний рух"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Рухайтеся без зупинки, накопичуйте натиск і обрушуйте його одним ударом."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Списовий канонір"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "Списовий канонір кривавого місяця, що обертає власну кров на кулі"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Пронизливий удар списом"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Прошийте списом-гарматою всіх ворогів на прямій лінії."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Жнець"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "Коса синього полум’я, що росте, пожираючи зжаті душі"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Збирайте душі вбитих ворогів, посилюючи косу."
+        },
+        {
+          "key": "장",
+          "text": "Розд."
+        },
+        {
+          "key": "층",
+          "text": "Пов."
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Гнилий ліс"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Черв'яча нора"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Пекельна зима"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Вогняна пустеля болю"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Пекельний легіон"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Лігво апостола"
+        },
+        {
+          "key": "지옥성",
+          "text": "Пекельна цитадель"
         }
       ]
     },
@@ -4466,11 +5222,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Mobilność bliźniaczych sztyletów"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Zbliżaj się szybkimi i zwinnymi seriami ataków."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -4562,39 +5318,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Nieustanny ruch"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Nie przestawaj się ruszać, zbieraj impet i uwolnij go jednym ciosem."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Kanonier z lancą"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "Kanonier z lancą spod krwawego księżyca, który własną krew zmienia w pociski"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Przeszywające pchnięcie lancy"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Przebij lancą-działem wszystkich wrogów w linii prostej."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Żniwiarz"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "Kosa błękitnego płomienia, rosnąca pożerając zżęte dusze"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Zbieraj dusze zabitych wrogów, by wzmocnić kosę."
+        },
+        {
+          "key": "장",
+          "text": "Roz."
+        },
+        {
+          "key": "층",
+          "text": "Pię."
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Zgniły Las"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Nora Robaków"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Piekielna zima"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Piekielna Pustkowie"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Legion Piekieł"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Kryjówka Apostoła"
+        },
+        {
+          "key": "지옥성",
+          "text": "Piekielna Cytadela"
         }
       ]
     },
@@ -4675,11 +5467,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Pohyblivost dvojitých dýk"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Přibliž se rychlými a hbitými sériemi útoků."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -4771,39 +5563,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Neustálý pohyb"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Neustále se pohybuj, nabírej švih a uvolni ho jediným úderem."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Kanonýr s kopím"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "Kanonýr s kopím krvavého měsíce, jenž mění vlastní krev v kulky"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Průrazný výpad kopím"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Prostřel kopím-dělem všechny nepřátele v jedné přímce."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Žnec"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "Kosa modrého plamene, jež roste pohlcováním skosených duší"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Sbírej duše zabitých nepřátel a posiluj svou kosu."
+        },
+        {
+          "key": "장",
+          "text": "Kap."
+        },
+        {
+          "key": "층",
+          "text": "Patr."
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Shnilý les"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Červí doupě"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Pekelná zima"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Pekelné pustiny"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Pekelná legie"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Apoštolovo doupě"
+        },
+        {
+          "key": "지옥성",
+          "text": "Pekelná citadela"
         }
       ]
     },
@@ -4884,11 +5712,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Ikerpengés mozgékonyság"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Gyors, fürge támadássorokkal zárkózik fel."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -4980,39 +5808,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Szüntelen mozgás"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Mozogj megállás nélkül, gyűjts lendületet, és szabadítsd fel egyetlen csapásban."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Lándzsás lövész"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "A vérhold lándzsás lövésze, aki saját vérét használja lövedékként"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Átütő lándzsacsapás"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "A lándzsaágyúval egy egyenes vonalban minden ellenfelet átdöf."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Kaszás"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "Kék lánggal égő kasza, amely a learatott lelkeket felfalva növekszik"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "A legyőzött ellenfelek lelkét begyűjtve erősíti a kaszát."
+        },
+        {
+          "key": "장",
+          "text": "Fej."
+        },
+        {
+          "key": "층",
+          "text": "Em."
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Rothadt Erdő"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Féregjárat"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Pokoli tél"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Pokoli Pusztaság"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Pokoli Légió"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Apostol Barlangja"
+        },
+        {
+          "key": "지옥성",
+          "text": "Pokoli Citadella"
         }
       ]
     },
@@ -5093,11 +5957,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Подвижност на двойните кинжали"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Приближавай с бързи и ловки поредици от атаки."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -5189,39 +6053,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Неспиращо движение"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Движи се безспир, натрупай инерция и я освободи в един удар."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Копиен канонир"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "Копиен канонир на кървавата луна, превръщащ собствената си кръв в куршуми"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Пронизващ удар с копие"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Пронижи с копието-оръдие всички врагове по права линия."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Жътвар"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "Коса от син пламък, растяща, като поглъща пожънатите души"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Прибирай душите на убитите врагове, за да подсилиш косата."
+        },
+        {
+          "key": "장",
+          "text": "Гл."
+        },
+        {
+          "key": "층",
+          "text": "Ет."
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Гнила гора"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Гнездо на червеи"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Адска зима"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Огнена пустош"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Адски легион"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Логото на апостола"
+        },
+        {
+          "key": "지옥성",
+          "text": "Адска цитадела"
         }
       ]
     },
@@ -5302,11 +6202,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Κινητικότητα δίδυμων στιλέτων"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Πλησίασε με γρήγορες και ευέλικτες αλυσίδες επιθέσεων."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -5398,39 +6298,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Ακατάπαυστη κίνηση"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Κινήσου ασταμάτητα, συσσώρευσε ορμή και απελευθέρωσέ την σε ένα μόνο χτύπημα."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Λογχοπυροβολητής"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "Λογχοπυροβολητής της ματωμένης σελήνης που κάνει το ίδιο του το αίμα σφαίρες"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Διατρητικό χτύπημα λόγχης"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Διαπέρασε με τη λόγχη-κανόνι όλους τους εχθρούς σε ευθεία γραμμή."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Θεριστής"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "Δρεπάνι γαλάζιας φλόγας που μεγαλώνει καταβροχθίζοντας τις θερισμένες ψυχές"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Μάζεψε τις ψυχές των σκοτωμένων εχθρών για να ενισχύσεις το δρεπάνι."
+        },
+        {
+          "key": "장",
+          "text": "Κεφ."
+        },
+        {
+          "key": "층",
+          "text": "Όρ."
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Σάπιο Δάσος"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Φωλιά Σκουληκιών"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Κολασμένος χειμώνας"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Κολασμένα Ερείπια"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Κόλαση Legion"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Φωλιά Αποστόλου"
+        },
+        {
+          "key": "지옥성",
+          "text": "Ακρόπολη Κόλασης"
         }
       ]
     },
@@ -5511,11 +6447,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "Kaksostikarien liikkuvuus"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Lähesty nopeilla ja ketterillä hyökkäyssarjoilla."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -5607,39 +6543,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Lakkaamaton liike"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Pysy liikkeessä, kerää vauhtia ja pura se yhteen iskuun."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Peitsiampuja"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "Verikuun peitsiampuja, joka muuttaa oman verensä luodeiksi"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Lävistävä peitsi-isku"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Lävistä peitsitykillä kaikki viholliset suorassa linjassa."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Viikatemies"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "Sinisen liekin viikate, joka kasvaa ahmimalla niitetyt sielut"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Korjaa surmattujen vihollisten sielut vahvistaaksesi viikatetta."
+        },
+        {
+          "key": "장",
+          "text": "Luku"
+        },
+        {
+          "key": "층",
+          "text": "Kerros"
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Mätä Metsä"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Matojen Pesä"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Helvetin talvi"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Helvetin Erämaa"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Helvetti Legion"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Apostolin Luola"
+        },
+        {
+          "key": "지옥성",
+          "text": "Helvetin Linnake"
         }
       ]
     },
@@ -5720,11 +6692,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "İkiz Hançer Hareketliliği"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "Hızlı ve çevik saldırı zincirleriyle yaklaş."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -5816,39 +6788,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "Durmaksızın Hareket"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "Durmadan hareket et, ivme kazan ve onu tek bir darbede serbest bırak."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "Mızrak Topçusu"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "Kendi kanını mermiye çeviren kan ayının mızrak topçusu"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "Delici Mızrak Vuruşu"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "Mızrak topuyla düz hattaki tüm düşmanları del."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "Azrail"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "Biçtiği ruhları yiyerek büyüyen mavi alevli tırpan"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "Öldürülen düşmanların ruhlarını toplayarak tırpanı güçlendir."
+        },
+        {
+          "key": "장",
+          "text": "Böl."
+        },
+        {
+          "key": "층",
+          "text": "Kat"
+        },
+        {
+          "key": "썩은 숲",
+          "text": "Çürük Orman"
+        },
+        {
+          "key": "벌레굴",
+          "text": "Kurt Yuvası"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "Cehennem Kışı"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "Cehennem Çölü"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "Cehennem Legion"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "Havari İni"
+        },
+        {
+          "key": "지옥성",
+          "text": "Cehennem Kalesi"
         }
       ]
     },
@@ -5929,11 +6937,11 @@
         },
         {
           "key": "쌍단검 기동",
-          "text": "حركة الخنجرين التوأمين"
+          "text": "쌍단검 기동"
         },
         {
           "key": "빠르고 민첩한 연속 공격으로 파고듭니다.",
-          "text": "اقترب بسلاسل هجمات سريعة ورشيقة."
+          "text": "빠르고 민첩한 연속 공격으로 파고듭니다."
         },
         {
           "key": "무희의 춤",
@@ -6025,39 +7033,75 @@
         },
         {
           "key": "멈추지 않는 기동",
-          "text": "멈추지 않는 기동"
+          "text": "حركة لا تتوقف"
         },
         {
           "key": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다.",
-          "text": "쉬지 않고 움직이며 쌓은 기세를 일격에 터뜨립니다."
+          "text": "تحرّك بلا توقف، واجمع الزخم، ثم أطلقه في ضربة واحدة."
         },
         {
           "key": "창포수",
-          "text": "창포수"
+          "text": "مدفعي الرمح"
         },
         {
           "key": "자신의 피를 탄환 삼는 혈월의 창포수",
-          "text": "자신의 피를 탄환 삼는 혈월의 창포수"
+          "text": "مدفعي رمح القمر الدموي الذي يجعل من دمه رصاصًا"
         },
         {
           "key": "관통 창격",
-          "text": "관통 창격"
+          "text": "طعنة الرمح الخارقة"
         },
         {
           "key": "창포로 일직선상의 적을 모두 꿰뚫습니다.",
-          "text": "창포로 일직선상의 적을 모두 꿰뚫습니다."
+          "text": "اخترق بمدفع الرمح كل الأعداء على خط مستقيم."
         },
         {
           "key": "사신",
-          "text": "사신"
+          "text": "حاصد الأرواح"
         },
         {
           "key": "베어낸 영혼을 먹고 자라는 청염의 낫",
-          "text": "베어낸 영혼을 먹고 자라는 청염의 낫"
+          "text": "منجل اللهب الأزرق الذي ينمو بالتهام الأرواح المحصودة"
         },
         {
           "key": "처치한 적의 영혼을 거둬 낫을 강화합니다.",
-          "text": "처치한 적의 영혼을 거둬 낫을 강화합니다."
+          "text": "اجمع أرواح الأعداء المقتولين لتقوية المنجل."
+        },
+        {
+          "key": "장",
+          "text": "فصل"
+        },
+        {
+          "key": "층",
+          "text": "طابق"
+        },
+        {
+          "key": "썩은 숲",
+          "text": "الغابة المتعفنة"
+        },
+        {
+          "key": "벌레굴",
+          "text": "عش الديدان"
+        },
+        {
+          "key": "지옥의 겨울",
+          "text": "شتاء الجحيم"
+        },
+        {
+          "key": "고통의 화염지대",
+          "text": "أراضي اللهب"
+        },
+        {
+          "key": "지옥의 군단",
+          "text": "فيلق الجحيم"
+        },
+        {
+          "key": "사도의 마굴",
+          "text": "وكر الرسول"
+        },
+        {
+          "key": "지옥성",
+          "text": "قلعة الجحيم"
         }
       ]
     }

@@ -142,7 +142,7 @@ namespace Exoduser.UnityPort
                 if (ch != ' ')
                 {
                     if (shadow) { st.normal.textColor = new Color(0, 0, 0, .9f * color.a); GUI.Label(new Rect(cx, y + 1, 80, height), s, st); st.normal.textColor = new Color(0, 0, 0, .3f * color.a); GUI.Label(new Rect(cx + .5f, y + 3, 80, height), s, st); GUI.Label(new Rect(cx - .5f, y + 3, 80, height), s, st); }
-                    st.normal.textColor = color; GUI.Label(new Rect(cx, y, 80, height), s, st);
+                    st.normal.textColor = NativeSilverHellUi.TextColor(color); GUI.Label(new Rect(cx, y, 80, height), s, st);
                 }
                 cx += info.advance + spacing;
             }
@@ -173,11 +173,11 @@ namespace Exoduser.UnityPort
                 if (s > 0) { GUI.color = new Color(1, 1, 1, s * fade); GUI.DrawTexture(rect, titleSelBand, ScaleMode.StretchToFill, true); GUI.DrawTexture(new Rect(left + 13 - 15 + 3.5f, rect.center.y - 15, 30, 30), titleDot, ScaleMode.StretchToFill, true); }
                 GUI.color = line; GUI.DrawTexture(new Rect(left, rect.yMax - 1, width, 1), Texture2D.whiteTexture);
                 Color txt = Color.Lerp(new Color(201f / 255, 199f / 255, 195f / 255), new Color(242f / 255, 240f / 255, 236f / 255), s); txt.a = fade;
-                DrawSpaced(left + 36 + 18 * .16f, rect.y, rowH, row.Label, titleMenuFont, 18, 18 * .14f, txt, true);
+                GUI.color = Color.white; DrawSpaced(left + 36 + 18 * .16f, rect.y, rowH, row.Label, titleMenuFont, 18, 18 * .14f, txt, true);
             }
             // #splashTitleBuild: right 36, bottom 26, Cinzel 600 11 px / 1.7, letter-spacing .28em, rgba(230,227,221,.6), two lines right aligned
             string l1 = BuildFlavor.Current.Label + (string.IsNullOrEmpty(BuildFlavor.ReleaseVersion) ? "" : " · v" + BuildFlavor.ReleaseVersion), l2 = "FOR DEAR GAMERS"; float sp = 11 * .28f, lh2 = 11 * 1.7f;
-            var bc = new Color(230f / 255, 227f / 255, 221f / 255, .6f * fade);
+            GUI.color = Color.white; var bc = new Color(230f / 255, 227f / 255, 221f / 255, .6f * fade);
             DrawSpaced(1920 - 36 - SpacedWidth(titleBuildFont, 11, l1, sp) + sp, 1080 - 26 - lh2 * 2, lh2, l1, titleBuildFont, 11, sp, bc, true);
             DrawSpaced(1920 - 36 - SpacedWidth(titleBuildFont, 11, l2, sp) + sp, 1080 - 26 - lh2, lh2, l2, titleBuildFont, 11, sp, bc, true);
             GUI.color = prev;

@@ -6,6 +6,17 @@ namespace Exoduser.UnityPort
     {
         GUIStyle silverName,silverBody,silverMicro;
         Texture2D silverLobbyPoster;
+        sealed class SilverSlotSummary{internal int level=1,stage;internal bool unreadable;}
+        readonly System.Collections.Generic.Dictionary<string,SilverSlotSummary> silverSlotSummaries=new System.Collections.Generic.Dictionary<string,SilverSlotSummary>();
+        string SilverSlotCaption(string name)
+        {
+            if(!silverSlotSummaries.TryGetValue(name,out var summary)){summary=new SilverSlotSummary();silverSlotSummaries[name]=summary;
+                if(!string.IsNullOrEmpty(CharacterStoreDirectory)){var store=new CombatSaveStore(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(CharacterStoreDirectory),"combat-save-v1"));if(store.Exists(name)){if(store.TryLoad(name,out var data,out var revision,out var status)){var p=data.Get("player");var g=data.Get("game");summary.level=Mathf.Clamp((int)(p==null?1:p.Num("lv",1)),1,1461);summary.stage=Mathf.Clamp((int)(g==null?0:g.Num("stage",0)),0,34);}else summary.unreadable=true;}}
+            }
+            if(summary.unreadable)return "—";
+            int[] starts={0,4,10,14,21,26,32};string[] names={"썩은 숲","벌레굴","지옥의 겨울","고통의 화염지대","지옥의 군단","사도의 마굴","지옥성"};string[] english={"Rotten Forest","Bug Cave","Hell's Winter","Land of Agony and Flame","Legion of Hell","Apostle's Lair","Hell Castle"};int chapter=0;for(int c=1;c<starts.Length;c++)if(summary.stage>=starts[c])chapter=c;
+            return "Lv."+summary.level+" · "+(chapter+1)+VisualSelectionLabel("장"," Chapter")+" "+VisualSelectionLabel(names[chapter],english[chapter])+" "+(summary.stage-starts[chapter]+1)+VisualSelectionLabel("층","F");
+        }
         void SilverStyles()
         {
             EnsureSilverArt();
@@ -61,7 +72,7 @@ namespace Exoduser.UnityPort
                 Fill(new Rect(card.x,card.yMax-1,card.width,1),new Color(.61f,.62f,.62f,.13f));
                 DrawSpaced(1450,card.y+10,32,name,silverName.font,22,22*.08f,NativeSilverHellUi.Text,true);
                 SilverLabel(new Rect(1600,card.y+20,160,20),K("전사","WARRIOR"),silverMicro,TextAnchor.MiddleLeft);
-                SilverLabel(new Rect(1450,card.y+52,342,24),CharacterSlotCaption(),silverBody,TextAnchor.MiddleLeft);
+                SilverLabel(new Rect(1450,card.y+52,342,24),SilverSlotCaption(name),silverBody,TextAnchor.MiddleLeft);
                 if(GUI.Button(new Rect(card.x,card.y,345,84),"",GUIStyle.none))SelectCharacter(index);
                 if((selected||card.Contains(Event.current.mousePosition))&&GUI.Button(new Rect(1782,card.y+21,30,34),"×",silverBody))RequestCharacterDelete(index);
             }

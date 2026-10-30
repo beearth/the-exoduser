@@ -128,20 +128,24 @@ namespace Exoduser.UnityPort
    if(i==1){if(presentationChains!=null){Color old=GUI.color;GUI.color=new Color(1,1,1,.58f);GUI.DrawTexture(new Rect(stageX,bodyY+bodyHeight*.18f,stageWidth,bodyHeight*.72f),presentationChains,ScaleMode.ScaleToFit,true);GUI.color=old;}Label(new Rect(stageX,railY-31,stageWidth,26),VisualSelectionLabel("출시 준비 중","COMING SOON"),presentationSubtitle,TextAnchor.MiddleCenter);}
    else if(i>=2){float releaseBottom=bodyY+bodyHeight-4,chainSize=Mathf.Min(72,bodyHeight*.20f);Rect chainRect=new Rect((w-chainSize)*.5f,releaseBottom-28-8-chainSize,chainSize,chainSize);if(presentationChains!=null){Color old=GUI.color;GUI.color=new Color(1,1,1,.78f);GUI.DrawTexture(chainRect,presentationChains,ScaleMode.ScaleToFit,true);GUI.color=old;}Label(new Rect(w*.5f-150,releaseBottom-28,300,28),VisualSelectionLabel("출시 준비 중","COMING SOON"),presentationReleaseLabel,TextAnchor.MiddleCenter);}
   }
+  Texture2D silverNamePanel,silverNameInput,silverNameCancel,silverNameCreate;
   void DrawCharacterNamePresentation()
   {
-   float w=Screen.width,h=Screen.height;Fill(new Rect(0,0,w,h),new Color(0,0,0,.90f));Rect panel=new Rect((w-440)/2,(h-333.5f)/2,440,333.5f);
-   Fill(panel,new Color(.055f,.047f,.045f,.98f));if(presentationIron!=null){Color old=GUI.color;GUI.color=new Color(.19f,.19f,.19f,.55f);GUI.DrawTexture(panel,presentationIron,ScaleMode.StretchToFill,true);GUI.color=old;}
-   Border(panel,new Color(.43f,.33f,.23f,.78f),1);
-   float x=panel.x+41,y=panel.y;
-   Label(new Rect(x,y+49,358,32.5f),CharacterDialogLabel("title",K("새 캐릭터 생성","Create Character")),Language=="ko"?presentationKoNameTitle:presentationNameTitle,TextAnchor.MiddleCenter);
-   Label(new Rect(x,y+89.5f,358,18.5f),CharacterDialogLabel("description",K("지옥에 보낼 캐릭터의 이름을 지어주세요","Choose a name for the character you will send to hell.")),presentationNameDescription,TextAnchor.MiddleCenter);
-   Label(new Rect(x,y+136,358,21),CharacterDialogLabel("nameLabel",K("캐릭터 이름 (2~8자)","Character name (2–8 characters)")),presentationNameLabel,TextAnchor.MiddleLeft);
-   GUI.SetNextControlName("character-name");characterName=GUI.TextField(new Rect(x,y+165,358,53),characterName,8,presentationInput);
+   if(silverNamePanel==null){silverNamePanel=Resources.Load<Texture2D>("Art/ui/silver_hell/name_panel");silverNameInput=Resources.Load<Texture2D>("Art/ui/silver_hell/name_input");silverNameCancel=Resources.Load<Texture2D>("Art/ui/silver_hell/name_cancel");silverNameCreate=Resources.Load<Texture2D>("Art/ui/silver_hell/name_create");}
+   float w=Screen.width,h=Screen.height;Fill(new Rect(0,0,w,h),new Color(0,0,0,.90f));Rect panel=new Rect((w-440)/2,(h-335)/2,440,335);Image(panel,silverNamePanel,ScaleMode.StretchToFill);
+   float x=panel.x+41,y=panel.y;var noto=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular");
+   var title=Language=="ko"?presentationKoNameTitle:presentationNameTitle;title.fontStyle=FontStyle.Bold;title.normal.textColor=new Color(222/255f,219/255f,213/255f);TrackedLabel(new Rect(x,y+49,358,32),CharacterDialogLabel("title",K("새 캐릭터 생성","Create Character")),title,2.4f);
+   presentationNameDescription.font=noto;presentationNameDescription.normal.textColor=new Color(186/255f,183/255f,177/255f);Label(new Rect(x,y+89,358,19),CharacterDialogLabel("description",K("지옥에 보낼 캐릭터의 이름을 지어주세요","Choose a name for the character you will send to hell.")),presentationNameDescription,TextAnchor.MiddleCenter);
+   presentationNameLabel.font=noto;presentationNameLabel.normal.textColor=new Color(198/255f,195/255f,189/255f);Label(new Rect(x,y+136,358,21),CharacterDialogLabel("nameLabel",K("캐릭터 이름 (2~8자)","Character name (2–8 characters)")),presentationNameLabel,TextAnchor.MiddleLeft);
+   var input=new Rect(x,y+165,358,54);Image(input,silverNameInput,ScaleMode.StretchToFill);if(GUI.GetNameOfFocusedControl()=="character-name"){Border(input,new Color(191/255f,188/255f,182/255f),1);Border(new Rect(input.x-2,input.y-2,input.width+4,input.height+4),new Color(191/255f,188/255f,182/255f,.2f),1);}var field=new GUIStyle(GUIStyle.none){font=noto,fontSize=16,alignment=TextAnchor.MiddleLeft,padding=new RectOffset(18,18,14,14)};field.normal.textColor=field.focused.textColor=NativeSilverHellUi.TextColor(new Color(232/255f,229/255f,223/255f));
+   GUI.SetNextControlName("character-name");characterName=GUI.TextField(input,characterName,8,field);
    if(characterFocus&&Event.current.type==EventType.Repaint){GUI.FocusControl("character-name");characterFocus=false;}
-   if(!string.IsNullOrEmpty(characterError))Label(new Rect(x,y+218,358,18),characterError,presentationNameError,TextAnchor.MiddleLeft);
-   GUI.SetNextControlName("character-cancel");if(GUI.Button(new Rect(x,y+238,173,46.5f),CharacterDialogLabel("cancel",K("취소","CANCEL")),presentationNameButton))CloseCharacterCreation();
-   GUI.SetNextControlName("character-create");if(GUI.Button(new Rect(x+185,y+238,173,46.5f),CharacterDialogLabel("create",K("생성","CREATE")),presentationNameButton))CreateCharacter(characterName);
+   if(!string.IsNullOrEmpty(characterError))Label(new Rect(x,y+219,358,18),characterError,presentationNameError,TextAnchor.MiddleLeft);
+   var cancel=new Rect(x,y+239,173,47);var create=new Rect(x+185,y+239,173,47);Image(cancel,silverNameCancel,ScaleMode.StretchToFill);Image(create,silverNameCreate,ScaleMode.StretchToFill);
+   DrawSpaced(cancel.center.x-(SpacedWidth(noto,14,CharacterDialogLabel("cancel",K("취소","CANCEL")),1.152f)-1.152f)/2,cancel.y,cancel.height,CharacterDialogLabel("cancel",K("취소","CANCEL")),noto,14,1.152f,new Color(210/255f,207/255f,201/255f),false);
+   var bold=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Bold")??noto;DrawSpaced(create.center.x-(SpacedWidth(bold,14,CharacterDialogLabel("create",K("생성","CREATE")),1.728f)-1.728f)/2,create.y,create.height,CharacterDialogLabel("create",K("생성","CREATE")),bold,14,1.728f,new Color(244/255f,241/255f,235/255f),false);
+   GUI.SetNextControlName("character-cancel");if(GUI.Button(cancel,"",GUIStyle.none))CloseCharacterCreation();
+   GUI.SetNextControlName("character-create");if(GUI.Button(create,"",GUIStyle.none))CreateCharacter(characterName);
   }
   void DrawCharacterVisualVignette(float w,float h){
    Fill(new Rect(0,0,w,Mathf.Min(h*.11f,112)),new Color(0,0,0,.34f));Fill(new Rect(0,h-Mathf.Min(h*.132f,142),w,Mathf.Min(h*.132f,142)),new Color(0,0,0,.55f));

@@ -6,8 +6,11 @@ namespace Exoduser.UnityPort
     internal static class NativeSilverHellUi
     {
         internal static readonly Color Text=new Color(214/255f,211/255f,205/255f),Dim=new Color(138/255f,141/255f,141/255f),Bright=new Color(242/255f,240/255f,236/255f);
+        // Linear Player의 IMGUI 글자 채널은 sRGB→Linear 변환을 한 번 더 적용한다. 텍스처·GUI.color에는 적용하지 않는다.
+        internal static Color TextColor(Color srgb){return QualitySettings.activeColorSpace==ColorSpace.Linear?srgb.gamma:srgb;}
         static Font light,regular;
-        static Texture2D frame,plaque,panelBackground;
+        static Texture2D frame,plaque,panelBackground,buttonGlow;
+        internal static void ButtonFocus(Rect box){if(buttonGlow==null)buttonGlow=Resources.Load<Texture2D>("Art/ui/silver_hell/guide_button_glow");if(buttonGlow!=null)GUI.DrawTexture(new Rect(box.x-34,box.y-20,box.width+68,box.height+40),buttonGlow); }
         internal static Font Font(bool body=false)
         {
             if(light==null)light=Resources.Load<Font>("Art/fonts/Hahmlet-300-ko");

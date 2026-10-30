@@ -4,7 +4,7 @@ namespace Exoduser.UnityPort
     public sealed partial class NativeLobby
     {
         Texture2D silverCornerTop,silverCornerBottom,silverVisualCancel,silverVisualCreate,silverVisualDisabled;
-        Texture2D[] silverEmblems,silverPosters;
+        Texture2D[] silverEmblems,silverPosters,silverPortraits;
         GUIStyle silverVisualTitle,silverVisualName,silverVisualDescription,silverVisualCaption,silverVisualAction,silverVisualTraitTitle,silverVisualTraitBody;
         Texture2D silverVisualVignette,silverHeadingLine;
         void EnsureSilverVisual()
@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort
             silverCornerTop=Resources.Load<Texture2D>("Art/ui/silver_hell/panel_corner_0");
             silverCornerBottom=Resources.Load<Texture2D>("Art/ui/silver_hell/panel_corner_1");
             presentationTraitGlyphs=Resources.Load<Texture2D>("Art/ui/silver_hell/trait_silver")??presentationTraitGlyphs;
-            silverPosters=new Texture2D[5];string[] posterNames={"poster_idle_warrior_cs3_4k","poster_idle_silvertail_4k","poster_idle_hellgunner","poster_idle_transmuter","poster_idle_spearmage"};for(int p=0;p<5;p++)silverPosters[p]=Resources.Load<Texture2D>("Art/CharacterSelect/"+posterNames[p]);silverEmblems=new Texture2D[5];
+            silverPortraits=new Texture2D[5];string[] fallbackNames={"portrait_warrior","portrait_silvertail","portrait_hellgunner","portrait_transmuter","portrait_spearmage"};for(int p=0;p<5;p++)silverPortraits[p]=Resources.Load<Texture2D>("Art/CharacterSelect/"+fallbackNames[p]);silverPosters=new Texture2D[5];string[] posterNames={"poster_idle_warrior_cs3_4k","poster_idle_silvertail_4k","poster_idle_hellgunner","poster_idle_transmuter","poster_idle_spearmage"};for(int p=0;p<5;p++)silverPosters[p]=Resources.Load<Texture2D>("Art/CharacterSelect/"+posterNames[p]);silverEmblems=new Texture2D[5];
             string[] names=
             {
                 "warrior","silvertail","hellgunner","transmuter","spearmage"
@@ -69,7 +69,7 @@ namespace Exoduser.UnityPort
         void DrawSilverScene(Rect box,int i)
         {
             var playback=characterPresentationPlayback==null?null:characterPresentationPlayback.Video;
-            Texture src=silverPosters[i]??presentationCutouts[i];
+            Texture src=silverPosters[i]??silverPortraits[i]??presentationCutouts[i];
             if(playback!=null)
             {
                 if(presentationVideoVisual!=i)
@@ -118,7 +118,7 @@ namespace Exoduser.UnityPort
             [i]),silverVisualDescription,TextAnchor.UpperLeft);
             var traits=new Rect(x+8,top+16,364,shortScreen?214:284.4f);
             SilverCornerPanel(traits);
-            SilverLabel(new Rect(x+34,traits.y+22,312,28),VisualSelectionLabel("플레이 방식","PLAYSTYLE"),silverVisualTitle,TextAnchor.MiddleCenter);
+            var playstyle=VisualSelectionLabel("플레이 방식","PLAYSTYLE");float playWidth=SpacedWidth(silverVisualTitle.font,18,playstyle,3.6f)-3.6f;DrawSpaced(x+190-playWidth/2,traits.y+22,28,playstyle,silverVisualTitle.font,18,3.6f,NativeSilverHellUi.Text,false);
             Fill(new Rect(x+34,traits.y+58,312,1),new Color(.61f,.62f,.62f,.18f));
             for(int n=0;n<3;n++)
             {
@@ -169,10 +169,10 @@ namespace Exoduser.UnityPort
             Image(cancel,silverVisualCancel,ScaleMode.StretchToFill);
             Image(create,locked?silverVisualDisabled:silverVisualCreate,ScaleMode.StretchToFill);
             GUI.SetNextControlName("visual-cancel");
-            if(GUI.Button(cancel,CharacterDialogLabel("cancel",K("취소","CANCEL")),silverVisualAction))CloseCharacterCreation();
+            SilverLabel(cancel,CharacterDialogLabel("cancel",K("취소","CANCEL")),silverVisualAction,TextAnchor.MiddleCenter);if(GUI.Button(cancel,"",GUIStyle.none))CloseCharacterCreation();
             GUI.enabled=prior&&!locked;
             GUI.SetNextControlName("visual-create");
-            if(GUI.Button(create,locked?CharacterDialogLabel("comingSoon",K("출시 준비 중","COMING SOON")):CharacterDialogLabel("create",K("생성","CREATE")),silverVisualAction))ConfirmCharacterVisual();
+            SilverLabel(create,locked?CharacterDialogLabel("comingSoon",K("출시 준비 중","COMING SOON")):CharacterDialogLabel("create",K("생성","CREATE")),silverVisualAction,TextAnchor.MiddleCenter);if(GUI.Button(create,"",GUIStyle.none))ConfirmCharacterVisual();
             GUI.enabled=prior;
             if(characterVisualFocusPending&&Event.current.type==EventType.Repaint)
             {

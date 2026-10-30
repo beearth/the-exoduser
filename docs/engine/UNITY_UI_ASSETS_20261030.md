@@ -65,3 +65,21 @@
 - 현재 웹 `CHAR_VISUALS`의 직업명·설명·특성을 그대로 사용한다. 기존 지원 29언어 표에 없던 기존 웹 키 9개를 261행 추가했다. 새 문구 창작은 없다. 웹에 번역이 없는 키는 웹과 동일하게 한국어로 폴백한다. 기존 번역은 보존했다. 번역 완성도 PASS를 주장하지 않는다.
 - 서체가 문자를 지원하지 않으면 기존 동봉 Hahmlet·Noto Serif·CJK·Thai·Arabic 서체로 폴백한다. 문자를 지우거나 새 시스템 폰트를 설치하지 않는다. QA는 실제 동봉 글꼴의 누락 글리프와 5직업의 정적 원화·영상 디코드를 확인한다. Arabic 조판·물리 입력·전체 언어 시각 품질과 별개다.
 - 캐릭터 입장·다른 화면·게임 진입 때 미리보기 영상을 닫아 숨은 디코더가 남지 않게 했다.
+
+
+## 실제 Player 명암 원인 수정·이름 입력창 (후보4 이후)
+
+| 항목 | 실제 근거 | 수정 계약 |
+|---|---|---|
+| 글자 명암 | candidate3-caps/색공간_진단.json 및 Unity_색공간_진단.png: Linear, GUI/color/contentColor=흰색, enabled=true. 0.5 회색 텍스처128, 같은 글자55 | IMGUI 글자 색에만 Color.gamma 적용. GUI.color·이미지·게임 조명은 그대로. 후보4 보정 글자 최대128 확인 |
+| 로고 축소 | 공통 SourceTextureImporter가 개별meta의 mipmap을 다시0으로 만듦 | silver_hell UI와 눈 로고3경로만 mipmap·Trilinear. 원화RGB/알파 바이트 불변, 다른월드텍스처 규칙 불변 |
+| 로비 진행 | 기존 전사/기기저장 설명은 현행 웹의 Lv./장/층과 다름 | combat-save-v1을 읽기만 해 캐시. 기본 Lv.1/stage0, 손상 읽기 실패는 —. 현재 웹 lobby-stage-info의 시작층0/4/10/14/21/26/32, 끝34. 실제 선택 영상은 전체1920×1080 cover |
+| 이름 입력 | 웹 create-modal-inner 실측440×335, padding48/40, input358×54 | 현재 CSS+원화에서 텍스트를 뺀 name_panel/input/cancel/create PNG4개. 기존2~8자·중복·잠금 검증 유지 |
+| 안내 | 정본 폰트 연결 후 panel720×488.92, inner614, progress16·제목37·hint17 | padding34/52/40+border1, skip178.72×46/next168×46. 글자 기준선 보정10/6px, 원본 버튼 알파의 blur5(웹 shadow10px)·rgba194/26/16/.45, focus brightness1.18. 기본글자223/214/194, 초점242/237/226 |
+| 언어 | 최신 index _LOBBY_* + lobby_i18n + localization-data 합성 순서 | sync-labels.cjs가 기존 키60개×29언어를 원문 그대로 반입. 웹에 없는 번역은 영어→한국어 순서 동일 |
+
+후보4 빌드102fc76c Succeeded/errors0, Player136dcc69 실제21검사 PASS·D3D11/RX9070XT·사용자창0·잔여0·USER_SAVE0. 비교 compare-candidate4/1x_로비.png·특성.png·안내.png·이름.png를 직접 검수해 글자/로고 핵심 결함 해소를 확인했다. 그 뒤 타이틀의 이전 구분선 GUI.color 알파.1이 글자에 곱해지는 원인을 수정하고, 이름창 제목·안내 기준선/자간·초점 그림자를 추가 마감했다. 이 후속은 다음 정확 빌드에서 재검수하며 후보4 결과를 소급하지 않는다.
+
+웹 타이틀 초기 두 비교 캡처는 실제 타이틀 미노출로 비교 증거에서 제외했다. 클릭 전파를 통한 상태전환 대신 검수 전용 응답에 원본 nextPhase 호출 훅만 노출해 같은 원본의 정지 원화/메뉴를 캡처했다(browser3b5f1855). 제품 웹 파일 수정0, OS입력/NW.js 검수로 세지 않는다.
+
+확대 범위26폴더는 DESIGN_REVIEW_APPLY.md에 승인/거절/미판정/참고·결과 자료로 분류했다. pending_grid.png의4후보는 반입하지 않는다. 지뢰·그 밖의 공통 창/HUD 승인 원화의 후속 대조는 계속 진행 중이며, 전체 브리프 완료가 아니다.

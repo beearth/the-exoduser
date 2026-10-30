@@ -155,7 +155,7 @@ namespace Exoduser.UnityPort
   }
   void DrawSelectedCharacter()
   {
-   SilverStyles();if(Characters.SelectedIndex<0){DrawAncestor();return;}EnsureSilverVisual();DrawSilverScene(new Rect(0,0,1360,1080),0);Label(new Rect(383,950,500,60),Characters.SelectedName,silverName,TextAnchor.MiddleCenter);Label(new Rect(383,1010,500,24),K("전사","WARRIOR"),silverMicro,TextAnchor.MiddleCenter);
+   SilverStyles();if(Characters.SelectedIndex<0){DrawAncestor();return;}EnsureSilverVisual();DrawSilverScene(new Rect(0,0,1920,1080),0);Label(new Rect(383,950,500,60),Characters.SelectedName,silverName,TextAnchor.MiddleCenter);Label(new Rect(383,1010,500,24),K("전사","WARRIOR"),silverMicro,TextAnchor.MiddleCenter);
   }
   void DrawCharacterModal()
   {

@@ -13,11 +13,22 @@ namespace Exoduser.UnityPort
         string output;
         readonly List<string> checks=new List<string>();
         int failures;
+        bool calibration;Texture2D srgbProbe,linearProbe;
+        void OnGUI()
+        {
+            if(!calibration)return;GUI.depth=-10000;GUI.matrix=Matrix4x4.identity;GUI.enabled=true;GUI.color=Color.black;GUI.DrawTexture(new Rect(0,0,1920,1080),Texture2D.whiteTexture);
+            if(srgbProbe==null){srgbProbe=new Texture2D(1,1,TextureFormat.RGBA32,false,false);linearProbe=new Texture2D(1,1,TextureFormat.RGBA32,false,true);srgbProbe.SetPixel(0,0,new Color(.5f,.5f,.5f,1));linearProbe.SetPixel(0,0,new Color(.5f,.5f,.5f,1));srgbProbe.Apply();linearProbe.Apply();}
+            GUI.color=new Color(.5f,.5f,.5f,1);GUI.DrawTexture(new Rect(100,100,200,200),Texture2D.whiteTexture);GUI.color=Color.white;GUI.DrawTexture(new Rect(400,100,200,200),srgbProbe);GUI.DrawTexture(new Rect(700,100,200,200),linearProbe);
+            var style=new GUIStyle{font=NativeSilverHellUi.Font(),fontSize=60};style.normal.textColor=new Color(.5f,.5f,.5f,1);GUI.Label(new Rect(100,400,1000,100),"가나다 TEXT 0.5",style);style.normal.textColor=NativeSilverHellUi.TextColor(new Color(.5f,.5f,.5f,1));GUI.Label(new Rect(100,700,1000,100),"가나다 TEXT 보정 0.5",style);style.normal.textColor=Color.white;GUI.Label(new Rect(100,550,1000,100),"가나다 TEXT 1.0",style);
+            var logo=Resources.Load<Texture2D>("Art/lobby/logo_exoduser");GUI.DrawTexture(new Rect(1100,100,310,148),logo,ScaleMode.ScaleToFit,true);
+            GUI.color=Color.white;
+        }
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]static void Begin()
         {
             if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-ui-assets-capture")<0)return;
             new GameObject("UI원화검수").AddComponent<NativeUiAssetsCapture>();
         }
+        [Serializable]sealed class ColorProbe{public string space,guiColor,contentColor;public bool enabled;}
         [Serializable]sealed class Receipt
         {
             public bool passed;
@@ -72,7 +83,10 @@ namespace Exoduser.UnityPort
             lobby.SetPlaybackFocus(true);
             Screen.SetResolution(1920,1080,FullScreenMode.Windowed);
             yield return new WaitForSecondsRealtime(.5f);
+            File.WriteAllText(Path.Combine(output,"색공간_진단.json"),JsonUtility.ToJson(new ColorProbe{space=QualitySettings.activeColorSpace.ToString(),guiColor=GUI.color.ToString(),contentColor=GUI.contentColor.ToString(),enabled=GUI.enabled},true));
+            calibration=true;yield return Shot("Unity_색공간_진단");calibration=false;
             yield return CheckFonts();
+            lobby.Begin();lobby.AdvanceSplash();lobby.CurrentVideo.SetPlaybackAllowed(false);yield return new WaitForSecondsRealtime(1.2f);yield return Shot("Unity_타이틀_1920");lobby.CurrentVideo.SetPlaybackAllowed(true);
             lobby.ReplayIntro();
             yield return new WaitForSecondsRealtime(1.5f);
             yield return Shot("Unity_인장_등장_1920");
@@ -109,7 +123,7 @@ namespace Exoduser.UnityPort
             yield return Shot("Unity_캐릭터선택_동작2_1920");
             Check(lobby.GetComponent<NativeCharacterPresentationPlayback>().Video.Frame>=0,"기존 캐릭터 대기 영상 실제 디코드");
             for(int visual=1;visual<5;visual++){lobby.GetComponent<NativeCharacterPresentationPlayback>().Video.SetPlaybackAllowed(false);Check(lobby.ChooseCharacterVisual(visual),"잠긴 직업 UI 선택 "+visual);yield return new WaitForSecondsRealtime(.3f);yield return Shot("Unity_캐릭터선택_"+(visual+1)+"_1920");var clip=lobby.GetComponent<NativeCharacterPresentationPlayback>().Video;clip.SetPlaybackAllowed(true);float deadline=Time.realtimeSinceStartup+5;while(clip.Frame<0&&clip.Error.Length==0&&Time.realtimeSinceStartup<deadline)yield return null;Check(clip.Error.Length==0&&clip.Frame>=0,"잠긴 직업 기존 영상 디코드 "+visual);}
-            lobby.CloseCharacterCreation();lobby.GetComponent<NativeCharacterPresentationPlayback>().Video.SetPlaybackAllowed(true);
+            Check(lobby.ChooseCharacterVisual(0)&&lobby.ConfirmCharacterVisual(),"전사 이름 입력창 도달");yield return null;yield return Shot("Unity_이름생성_1920");Check(!lobby.CreateCharacter("a"),"이름 2~8자 검증 유지");Check(!lobby.CreateCharacter("검수전사"),"중복 이름 검증 유지");lobby.CloseCharacterCreation();lobby.GetComponent<NativeCharacterPresentationPlayback>().Video.SetPlaybackAllowed(true);
             lobby.SelectCharacter(0);
             yield return new WaitForSecondsRealtime(1);
             yield return Shot("Unity_선택로비_1920");
