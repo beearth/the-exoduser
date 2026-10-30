@@ -1,0 +1,902 @@
+{
+  "범위": "18개 납품 모듈의 Blender 실제 연결 이미지. 선형 픽셀을 같은 색공간에서 대조",
+  "검사": [
+    {
+      "이미지": "RF3_Ancient_Tree_A_BaseColor",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Ancient_Tree_A_BaseColor.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        4096,
+        4096
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "946baefd631f680849b97cd7a7ec391006b8722a650c2f246b4f3abbd24aabee",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Ancient_Tree_A_Roughness",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Ancient_Tree_A_Roughness.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        4096,
+        4096
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "0934fb280083f8d5d77d79a77222619f975fefa8e17a83262aa655073b286fed",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Ancient_Tree_A_Metallic",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Ancient_Tree_A_Metallic.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        4096,
+        4096
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "0d13075ac2ce6d06a6cae9840663384ee5a2cbb3a3b89e1ac6c01d41c08c33b9",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Ancient_Tree_A_Normal",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Ancient_Tree_A_Normal.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        4096,
+        4096
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "1d3cd8d1ebadee689d6dee98461963cccb0ab1c9834a903780241040612f2949",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Ancient_Tree_B_BaseColor",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Ancient_Tree_B_BaseColor.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        4096,
+        4096
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "c98a842158b46c4d57d2ca745bf68da491e5561d28c67a37ff750a9954dfdf09",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Ancient_Tree_B_Roughness",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Ancient_Tree_B_Roughness.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        4096,
+        4096
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "26378434c0e5710a5004950e445913535f6014e433a3a4bf020119d4ab009d0d",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Ancient_Tree_B_Metallic",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Ancient_Tree_B_Metallic.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        4096,
+        4096
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "0d13075ac2ce6d06a6cae9840663384ee5a2cbb3a3b89e1ac6c01d41c08c33b9",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Ancient_Tree_B_Normal",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Ancient_Tree_B_Normal.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        4096,
+        4096
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "baba5e9b8e4e14763b004cf048d791dfce446dc727ccda1bbb5d9a2d239c7672",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Fallen_Log_BaseColor.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Fallen_Log_BaseColor.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "a7acf9eef15ea938b6ff1b86b0e22fe37cbd23891eedeb11d1f0bc94e3d65700",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Fallen_Log_Roughness.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Fallen_Log_Roughness.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "5e6489be6b66d283e2457ccd388fe689d2be4da28762c75030f3a3885f29655f",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Fallen_Log_Metallic.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Fallen_Log_Metallic.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "05b1c7670a95c3a7a282650f1f7b319c4d41659aa9e846c2c2b75391ad430860",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Fallen_Log_Normal.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Fallen_Log_Normal.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "5c570aa196e222efc19542df97b0ce4313395957ae7a8dc22889a4a62dc6b11b",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Root_Stump_BaseColor.001",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Root_Stump_BaseColor.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "1edab96f091e9b237a88c9fd4773e28941dadb685a11db4a38264f52f76d2e6e",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Root_Stump_Roughness.001",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Root_Stump_Roughness.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "0f547a7ac8cf79d5e8f1468191db50418d0969824fe9d4aaf0e8e8a41f123534",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Root_Stump_Metallic.001",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Root_Stump_Metallic.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "98af1805c2d325e0d84b365ca83126f8297f3994debc43ee46b2cee121eb471a",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Root_Stump_Normal.001",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Root_Stump_Normal.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "f0b3cd5681932edbc27a542246d7b3ca845028feff099759096911052ec4a512",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Moss_Rock_1_BaseColor",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Moss_Rock_1_BaseColor.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "7f3fa5cbfe33af3eb24f1c4437eb9e710d78197a82f2a4f6ca15eba7d397b742",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Moss_Rock_1_Roughness",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Moss_Rock_1_Roughness.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "91c7b485fce1f30606229a4bb24e6c415bc416e4cb41e671fdf231dcb5dd1252",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Moss_Rock_1_Metallic",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Moss_Rock_1_Metallic.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "98af1805c2d325e0d84b365ca83126f8297f3994debc43ee46b2cee121eb471a",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Moss_Rock_1_Normal",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Moss_Rock_1_Normal.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "a3a6052f34a32c151230bf88e390b62ac1724ac734e9ec7e4f1cee234aea61e9",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Moss_Rock_2_BaseColor",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Moss_Rock_2_BaseColor.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "744ee8cc7f62c507e4a66d59fcc098265aac12656032037d085b4c30bb9e3f49",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Moss_Rock_2_Roughness",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Moss_Rock_2_Roughness.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "971faad201ce035145c2be14d329e43d1202b4607eeac5d9da452609f629bc90",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Moss_Rock_2_Metallic",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Moss_Rock_2_Metallic.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "98af1805c2d325e0d84b365ca83126f8297f3994debc43ee46b2cee121eb471a",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Moss_Rock_2_Normal",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Moss_Rock_2_Normal.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "c68adbcbbfb6f2eae95cfff50867f3541f450d147b51498c01a1683abb37ce4c",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Moss_Rock_3_BaseColor",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Moss_Rock_3_BaseColor.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "7d68703b40aed589181590d7f105c0575b9bd93c75aa1de486403a8f40396a02",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Moss_Rock_3_Roughness",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Moss_Rock_3_Roughness.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "7f317fae586fe74e88524dc6c13de105fd4e326de960787dee24817a87594c5f",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Moss_Rock_3_Metallic",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Moss_Rock_3_Metallic.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "98af1805c2d325e0d84b365ca83126f8297f3994debc43ee46b2cee121eb471a",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Moss_Rock_3_Normal",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Moss_Rock_3_Normal.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "433e649fb4ce51944ba37bf86b4701de6d1ddce496b927b29cda395eaeac8c1f",
+      "PASS": true
+    },
+    {
+      "이미지": "Atlas_shrub_03_BaseColor.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\Atlas_shrub_03_BaseColor.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "519b03d9a69d129f4e5c7c238119c45a6dbb7d4b99dbbe2bdf19576a0d764a16",
+      "PASS": true
+    },
+    {
+      "이미지": "Atlas_shrub_03_Roughness.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\Atlas_shrub_03_Roughness.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "72d92cbe4e137deaa72a6587a3832d294e82873dc7c18db6cc8c42651f97952b",
+      "PASS": true
+    },
+    {
+      "이미지": "Atlas_shrub_03_Metallic.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\Atlas_shrub_03_Metallic.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "98af1805c2d325e0d84b365ca83126f8297f3994debc43ee46b2cee121eb471a",
+      "PASS": true
+    },
+    {
+      "이미지": "Atlas_shrub_03_Normal.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\Atlas_shrub_03_Normal.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "b7d436e98a70d95a48d00e06ad97fc01bfc03c2619d49b29d1a812017a462172",
+      "PASS": true
+    },
+    {
+      "이미지": "Atlas_hanging_moss_BaseColor.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\Atlas_hanging_moss_BaseColor.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "549636806b102977b2ab8132fce86afbbf95d0e5fd50831540095e55ba716754",
+      "PASS": true
+    },
+    {
+      "이미지": "Atlas_moss_01_Roughness.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\Atlas_moss_01_Roughness.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "72d92cbe4e137deaa72a6587a3832d294e82873dc7c18db6cc8c42651f97952b",
+      "PASS": true
+    },
+    {
+      "이미지": "Atlas_moss_01_Metallic.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\Atlas_moss_01_Metallic.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "98af1805c2d325e0d84b365ca83126f8297f3994debc43ee46b2cee121eb471a",
+      "PASS": true
+    },
+    {
+      "이미지": "Atlas_moss_01_Normal.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\Atlas_moss_01_Normal.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "cef36450708ec52e83199eeb55dcc7802bd940de655d1ffca9b1573d4b9965fa",
+      "PASS": true
+    },
+    {
+      "이미지": "Atlas_moss_01_BaseColor.png.001",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\Atlas_moss_01_BaseColor.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "1821569453e3de49f0754dd6e9497b71159e71ddee8bf3447612a0199a026a34",
+      "PASS": true
+    },
+    {
+      "이미지": "Atlas_moss_01_Roughness.png.001",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\Atlas_moss_01_Roughness.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "72d92cbe4e137deaa72a6587a3832d294e82873dc7c18db6cc8c42651f97952b",
+      "PASS": true
+    },
+    {
+      "이미지": "Atlas_moss_01_Metallic.png.001",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\Atlas_moss_01_Metallic.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "98af1805c2d325e0d84b365ca83126f8297f3994debc43ee46b2cee121eb471a",
+      "PASS": true
+    },
+    {
+      "이미지": "Atlas_moss_01_Normal.png.001",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\Atlas_moss_01_Normal.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "cef36450708ec52e83199eeb55dcc7802bd940de655d1ffca9b1573d4b9965fa",
+      "PASS": true
+    },
+    {
+      "이미지": "다리_부패BaseColor",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Rotten_Wood_Bridge_BaseColor.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "8934f698620a913a8560c3d5f2da74b00645f14d3025d011b9a5426d7d2a9fa4",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Rotten_Wood_Bridge_Roughness.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Rotten_Wood_Bridge_Roughness.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "3d6b20db38166367c5ec60d3480ddd32439a524a2d8b52de8d18c168f0dccf4f",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Rotten_Wood_Bridge_Metallic.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Rotten_Wood_Bridge_Metallic.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "5630edf42913f842e57308503a7e0977e721d09027a12c453b8878c22108cd37",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Rotten_Wood_Bridge_Normal.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Rotten_Wood_Bridge_Normal.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        2048
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "30ce980f584f4e1139bfcdbda7ecdf2dcc9f8ad8187797e32c04ba2fa731789d",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Fungal_Colony_BaseColor.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Fungal_Colony_BaseColor.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        1024,
+        1024
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "2bad607169d107496685bb3b3c99eb0e60aa197d986ddc90bcabf152787ce3a4",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Fungal_Colony_Roughness.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Fungal_Colony_Roughness.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        1024,
+        1024
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "e29c5a64663fa078830c0d80fafef7ff7d0a0b1987cb3232c54f450891ef3981",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Fungal_Colony_Metallic.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Fungal_Colony_Metallic.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        1024,
+        1024
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "1a5e57350822bcd0cdb03f4dc88a26b4a281ba170756106cf0e2df2b298a2cd2",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Fungal_Colony_Normal.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Fungal_Colony_Normal.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        1024,
+        1024
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "c4b2c8610872c6556c81ad0708fea86d02d0047b5a4f7b176652a97e7c971e50",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Bridge_Torch_Holder_BaseColor.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Bridge_Torch_Holder_BaseColor.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        1024,
+        1024
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "af494628f0d3ced07563952f439672afcc85e76233705499dcd36f8b28031ff8",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Bridge_Torch_Holder_Roughness.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Bridge_Torch_Holder_Roughness.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        1024,
+        1024
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "709552a04260f0b6e56d7f0733e2d9502ffa9085dbdc97b0643ba09627c68580",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Bridge_Torch_Holder_Metallic.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Bridge_Torch_Holder_Metallic.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        1024,
+        1024
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "1a5e57350822bcd0cdb03f4dc88a26b4a281ba170756106cf0e2df2b298a2cd2",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Bridge_Torch_Holder_Normal.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Bridge_Torch_Holder_Normal.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        1024,
+        1024
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "3409a2cd6ead062a6575fb72ff788a557386d1024a5b274852a4b2461ececfaa",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Forest_Vista_Card_BaseColor.png.001",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Forest_Vista_Card_BaseColor.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        1024
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "408e6a63614b21b61d44d07ef3747b25c99b8938ad5ba1b981ce51747f762b25",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Forest_Vista_Card_Roughness.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Forest_Vista_Card_Roughness.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        1024
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "cc8673ac5e21e2a4b1be76829016e097e28fda9beb2c717a14aa05e139055beb",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Forest_Vista_Card_Metallic.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Forest_Vista_Card_Metallic.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        1024
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "2fb9ddb7eb34bda00d3487a9509bd306dc84fa0cddcc672e3bb98c89467439ee",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Forest_Vista_Card_Normal.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Forest_Vista_Card_Normal.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        2048,
+        1024
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "c4ad94f0882240b5c6beca9045990d1cb639628069f35cc17f44485bc220b38c",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Continuous_Bank_Terrain_BaseColor.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Continuous_Bank_Terrain_BaseColor.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        4096,
+        4096
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "6870e5c02cea78ad2b600aecbaa09dbb0d8b4439616831e104e8c7161d340e87",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Continuous_Bank_Terrain_Roughness.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Continuous_Bank_Terrain_Roughness.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        4096,
+        4096
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "1b7142f06fd41bc5928a1d915529274b83d06f1147f28dd3680b389826946c6e",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Continuous_Bank_Terrain_Metallic.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Continuous_Bank_Terrain_Metallic.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        4096,
+        4096
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "0d13075ac2ce6d06a6cae9840663384ee5a2cbb3a3b89e1ac6c01d41c08c33b9",
+      "PASS": true
+    },
+    {
+      "이미지": "위방향재베이크_Normal",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Continuous_Bank_Terrain_Normal.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        4096,
+        4096
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "b290c3617961df33bd53bfbb70222349f09cff3ae18f13c2733c512b7c5a1ec3",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Dead_Leaf_Litter_BaseColor.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Dead_Leaf_Litter_BaseColor.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        1024,
+        1024
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "ad4abede1d8f9d778ca9beb9b0e8321680b756d5fb21dd2cb3fb283189bb1862",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Dead_Leaf_Litter_Roughness.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Dead_Leaf_Litter_Roughness.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        1024,
+        1024
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "7cc6d70574b24847bcb4d63c45a0f7d2baa5bd530d831547ab8a71d11312e70d",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Dead_Leaf_Litter_Metallic.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Dead_Leaf_Litter_Metallic.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        1024,
+        1024
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "a3acee77059e3c784c727f5bbee93338ed98fdc5e05ba57fcf31220a3511894d",
+      "PASS": true
+    },
+    {
+      "이미지": "RF3_Dead_Leaf_Litter_Normal.png",
+      "경로": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\delivery\\Assets\\Exoduser\\Art\\Environment\\CH1_1_WoodbridgeR3\\Textures\\RF3_Dead_Leaf_Litter_Normal.png",
+      "source": "FILE",
+      "packed": true,
+      "규격": [
+        1024,
+        1024
+      ],
+      "현재납품맵": true,
+      "최대픽셀차": 0,
+      "SHA256": "46bc3d1da5f0574255a792dc92753535de30f20aff2d3e5cc1142a7193fa8af9",
+      "PASS": true
+    }
+  ],
+  "PASS": true
+}

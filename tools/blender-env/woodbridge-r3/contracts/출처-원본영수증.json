@@ -1,0 +1,611 @@
+{
+  "확인시각": "2026-10-30T06:43:55.306Z",
+  "라이선스": "https://polyhaven.com/license",
+  "등급": "CC0",
+  "결제": 0,
+  "파일": [
+    {
+      "id": "tree_stump_02",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/tree_stump_02",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/tree_stump_02/tree_stump_02.gltf",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/2k/tree_stump_02/tree_stump_02_2k.gltf",
+      "md5": "353762f8e1f2f04da8bb9051fbccf46f",
+      "SHA256": "8f4bcbde5650e357b231e68ca2dfa7e7f353d0705ce5c80fd916bfbd58eecc7e"
+    },
+    {
+      "id": "tree_stump_02",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/tree_stump_02",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/tree_stump_02/textures/tree_stump_02_diff_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/tree_stump_02/tree_stump_02_diff_2k.jpg",
+      "md5": "278b1dadd4a5dd61142e09f7c9139dd2",
+      "SHA256": "8078862e35578a8f7ea1e82072cb7e6f5d7f137290c2d0da6c783b3080a782b0"
+    },
+    {
+      "id": "tree_stump_02",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/tree_stump_02",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/tree_stump_02/textures/tree_stump_02_arm_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/tree_stump_02/tree_stump_02_arm_2k.jpg",
+      "md5": "23acef106fdfcca65082578e632ceaeb",
+      "SHA256": "d34610d4d6133c28688eb68208c9be223580f6c7b43e98c5d35dea48266512d3"
+    },
+    {
+      "id": "tree_stump_02",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/tree_stump_02",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/tree_stump_02/tree_stump_02.bin",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/tree_stump_02/tree_stump_02.bin",
+      "md5": "87f18fe07707d421da70fa2f69b12366",
+      "SHA256": "db5e85d08beb889f0cc5be3b9bdfbcb1ae6df47e8e242af3c355766422f49d1d"
+    },
+    {
+      "id": "tree_stump_02",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/tree_stump_02",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/tree_stump_02/textures/tree_stump_02_nor_gl_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/tree_stump_02/tree_stump_02_nor_gl_2k.jpg",
+      "md5": "6007d71cbbb30c4804766afe41150a9c",
+      "SHA256": "e59283307ef698f9a43e95db5493d98b2b03b5b90682d9bb6158c4187f6154ab"
+    },
+    {
+      "id": "dead_tree_trunk_02",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/dead_tree_trunk_02",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/dead_tree_trunk_02/dead_tree_trunk_02.gltf",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/2k/dead_tree_trunk_02/dead_tree_trunk_02_2k.gltf",
+      "md5": "7f970c5713209f3babce57a9d1a07e83",
+      "SHA256": "47699d11f00d22d5f87f8776f94c9f2516f839a0de9c5da80126b355200edd42"
+    },
+    {
+      "id": "dead_tree_trunk_02",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/dead_tree_trunk_02",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/dead_tree_trunk_02/textures/dead_tree_trunk_02_nor_gl_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/dead_tree_trunk_02/dead_tree_trunk_02_nor_gl_2k.jpg",
+      "md5": "50337a23125956306c1f7948e838d42f",
+      "SHA256": "c01134451c6610e3c9225f16d8da2080b0eaba4df137e2bf1a7980d7ce417f35"
+    },
+    {
+      "id": "dead_tree_trunk_02",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/dead_tree_trunk_02",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/dead_tree_trunk_02/textures/dead_tree_trunk_02_diff_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/dead_tree_trunk_02/dead_tree_trunk_02_diff_2k.jpg",
+      "md5": "016bd2d6b12a49c130ffd1a34c0e50e9",
+      "SHA256": "d5b928c12885249e5a5fbe13619ac9693a67f6196137cc9eadedd5a6b90a87de"
+    },
+    {
+      "id": "dead_tree_trunk_02",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/dead_tree_trunk_02",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/dead_tree_trunk_02/textures/dead_tree_trunk_02_arm_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/dead_tree_trunk_02/dead_tree_trunk_02_arm_2k.jpg",
+      "md5": "6c34b9bcc1f65d9f3c8e14016ceda09f",
+      "SHA256": "0be2e1a7c945090c385c7ae2636e6e6c341d4da14d741164b5cfe3080655331d"
+    },
+    {
+      "id": "dead_tree_trunk_02",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/dead_tree_trunk_02",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/dead_tree_trunk_02/dead_tree_trunk_02.bin",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/dead_tree_trunk_02/dead_tree_trunk_02.bin",
+      "md5": "7848170c88b67d9e1d5e7d111db7b7ff",
+      "SHA256": "2b1b7ca07d98396ddc1987e367dcff9734df16b62e997c14837512d134687ded"
+    },
+    {
+      "id": "rock_moss_set_01",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/rock_moss_set_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/rock_moss_set_01/rock_moss_set_01.gltf",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/2k/rock_moss_set_01/rock_moss_set_01_2k.gltf",
+      "md5": "c45cebb55c848a11233126f691557ca0",
+      "SHA256": "794beaf2f4dc0ab155114f286049dc912a8f3287520965ca8bf6bb0d821ae3e2"
+    },
+    {
+      "id": "rock_moss_set_01",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/rock_moss_set_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/rock_moss_set_01/rock_moss_set_01.bin",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/rock_moss_set_01/rock_moss_set_01.bin",
+      "md5": "207a51c9f56d34732e9814bbf9cc07b1",
+      "SHA256": "de8360e6175879aaf02c171911069cf5f1852547f9ca7f10e440085dbcc3315e"
+    },
+    {
+      "id": "rock_moss_set_01",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/rock_moss_set_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/rock_moss_set_01/textures/rock_moss_set_01_diff_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/rock_moss_set_01/rock_moss_set_01_diff_2k.jpg",
+      "md5": "d3e1292c9e34bd6b4a236698a1b41290",
+      "SHA256": "bdee6da8baba67bd7e85e414e669cd46aab9afaf755114fb5163f0e68775c3d6"
+    },
+    {
+      "id": "rock_moss_set_01",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/rock_moss_set_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/rock_moss_set_01/textures/rock_moss_set_01_nor_gl_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/rock_moss_set_01/rock_moss_set_01_nor_gl_2k.jpg",
+      "md5": "88be6d9cf2927a09182e2bfccc9b8b56",
+      "SHA256": "f11c238a203eebd5e82da3a50468040a78d25fd2e46783c4ad79b1022b144c0d"
+    },
+    {
+      "id": "rock_moss_set_01",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/rock_moss_set_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/rock_moss_set_01/textures/rock_moss_set_01_rough_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/rock_moss_set_01/rock_moss_set_01_rough_2k.jpg",
+      "md5": "f7b3045b503fbde038598f8586ac25ef",
+      "SHA256": "a05a8bd9f2563cf55b738484b894671df7b2391aa02d66451366c5ad38077cd2"
+    },
+    {
+      "id": "dry_branches_medium_01",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/dry_branches_medium_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/dry_branches_medium_01/dry_branches_medium_01.gltf",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/2k/dry_branches_medium_01/dry_branches_medium_01_2k.gltf",
+      "md5": "48cebd47ff47f1c166e32bf2846fc5f8",
+      "SHA256": "95d29c7dc5cf55b6b06ac0999ffc6773d4929ac3a77d0e9c8e2e2dcfa68894df"
+    },
+    {
+      "id": "dry_branches_medium_01",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/dry_branches_medium_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/dry_branches_medium_01/textures/dry_branches_medium_01_nor_gl_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/dry_branches_medium_01/dry_branches_medium_01_nor_gl_2k.jpg",
+      "md5": "385022548e1a3b84be6c4ab2e103aa4f",
+      "SHA256": "62c2352a8b194889cb6a9430e74fff044a6fa0b34c579d8d5be1b3fd539b7f14"
+    },
+    {
+      "id": "dry_branches_medium_01",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/dry_branches_medium_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/dry_branches_medium_01/textures/dry_branches_medium_01_arm_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/dry_branches_medium_01/dry_branches_medium_01_arm_2k.jpg",
+      "md5": "7610240aa1aafb3c6cfa5c7f89051c33",
+      "SHA256": "53cf4afec248f49ccea0a49975ec9ba0a91bae2124adc802fd80568e17019751"
+    },
+    {
+      "id": "dry_branches_medium_01",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/dry_branches_medium_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/dry_branches_medium_01/textures/dry_branches_medium_01_diff_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/dry_branches_medium_01/dry_branches_medium_01_diff_2k.jpg",
+      "md5": "5f7ca4d25884545bd9b2063e43c0595c",
+      "SHA256": "dcabdd1c0c4d801f5c0ce6376f42daba2a632a5433ea679d38bf4e44e5b4ead2"
+    },
+    {
+      "id": "dry_branches_medium_01",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/dry_branches_medium_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/dry_branches_medium_01/dry_branches_medium_01.bin",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/dry_branches_medium_01/dry_branches_medium_01.bin",
+      "md5": "10de852c8bf38e3f3ca5fb1d6c8de9d0",
+      "SHA256": "969da1e8cbb2d8201e7fa0fc0dac5b19ef354b32c3d8c62dd9faa7cb3833d8ca"
+    },
+    {
+      "id": "shrub_03",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/shrub_03",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/shrub_03/shrub_03.gltf",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/2k/shrub_03/shrub_03_2k.gltf",
+      "md5": "9423a0213b3450e5d7a47dc728a98467",
+      "SHA256": "68c6c0d1f0866a08ade5cdcd0e7db4c70416415c95e719d4ae38d119402d1fd4"
+    },
+    {
+      "id": "shrub_03",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/shrub_03",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/shrub_03/shrub_03.bin",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/4k/shrub_03/shrub_03.bin",
+      "md5": "c26c6ed23b0034664eab5a0e3ee00f6a",
+      "SHA256": "bf4df21e6d2a2bc5f00b4c9142f776171fe7da00cf960001825748067af542b6"
+    },
+    {
+      "id": "shrub_03",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/shrub_03",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/shrub_03/textures/shrub_03_nor_gl_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/shrub_03/shrub_03_nor_gl_2k.jpg",
+      "md5": "731088ec8f2a4e57e7e959876e667509",
+      "SHA256": "d6ca015d7a283c772be266925fa4a4de6b133791c1f54a7606f6349f2fd9d451"
+    },
+    {
+      "id": "shrub_03",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/shrub_03",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/shrub_03/textures/shrub_03_diff_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/shrub_03/shrub_03_diff_2k.jpg",
+      "md5": "27f9a6beb620a60bd5036e8d3bfff0af",
+      "SHA256": "66290b6c5366dd0259f5a2a7d84deaac1dfe35f6be661c97752d98dbcdb427ed"
+    },
+    {
+      "id": "shrub_03",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/shrub_03",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/shrub_03/textures/shrub_03_arm_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/shrub_03/shrub_03_arm_2k.jpg",
+      "md5": "f8fd965fc3fd25dc1e7f47ece82d0139",
+      "SHA256": "008b06b8dc1f49a4b38aa7c5b3fdd70754a66009645283fed921ddc178dab067"
+    },
+    {
+      "id": "moss_01",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/moss_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/moss_01/moss_01.gltf",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/2k/moss_01/moss_01_2k.gltf",
+      "md5": "2a4fd6d96cbe0bbc3f65a657df64ad94",
+      "SHA256": "16c490f2d8c932d85455a6943b0a45283fb867669d6139054b2b7951d66fe13a"
+    },
+    {
+      "id": "moss_01",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/moss_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/moss_01/textures/moss_01_nor_gl_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/moss_01/moss_01_nor_gl_2k.jpg",
+      "md5": "96db55f825bbaefa2ded5c8d1cc6abbe",
+      "SHA256": "1d8489019937af3dd4c72b6a187c84baa166d18b6712fcbb037034e04c6182e7"
+    },
+    {
+      "id": "moss_01",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/moss_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/moss_01/textures/moss_01_diff_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/moss_01/moss_01_diff_2k.jpg",
+      "md5": "268c4ea561fa189fead481250ab5835c",
+      "SHA256": "75acf965b37418e1f35401a307d759bb2f7171f231e88e0c327f94d142d2499a"
+    },
+    {
+      "id": "moss_01",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/moss_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/moss_01/textures/moss_01_arm_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/moss_01/moss_01_arm_2k.jpg",
+      "md5": "427fabe137e96a5e9f9087fc2220407c",
+      "SHA256": "91d01f1f37d3bc1ce9b699878dc42bd5ca7cf5508b8513607f900e643237b561"
+    },
+    {
+      "id": "moss_01",
+      "용도": "CC0 스캔 원본",
+      "원본": "https://polyhaven.com/a/moss_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/moss_01/moss_01.bin",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/4k/moss_01/moss_01.bin",
+      "md5": "cdb092878a81b3208a162d79546892fe",
+      "SHA256": "440e3cadbd93ad383cdbb9b4c17c3236774924c33ff62ac409ab00b8ed622861"
+    },
+    {
+      "id": "brown_mud_leaves_01",
+      "용도": "CC0 재질",
+      "원본": "https://polyhaven.com/a/brown_mud_leaves_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/pbr-source/brown_mud_leaves_01_Diffuse.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/brown_mud_leaves_01/brown_mud_leaves_01_diff_2k.jpg",
+      "md5": "e8b45aee8e00a253eb3a2b08cea89776",
+      "SHA256": "29c997d77f56e4ea16d3e998a306be0c17fddb28ab4822657c7cd8249040ffda"
+    },
+    {
+      "id": "brown_mud_leaves_01",
+      "용도": "CC0 재질",
+      "원본": "https://polyhaven.com/a/brown_mud_leaves_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/pbr-source/brown_mud_leaves_01_Rough.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/brown_mud_leaves_01/brown_mud_leaves_01_rough_2k.jpg",
+      "md5": "3e7209ff00204174c5bd013df3945b22",
+      "SHA256": "9556215f5fef905c37cdf19c77aef7822f124890f8fb7dcce65d57c5eafc0ca5"
+    },
+    {
+      "id": "brown_mud_leaves_01",
+      "용도": "CC0 재질",
+      "원본": "https://polyhaven.com/a/brown_mud_leaves_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/pbr-source/brown_mud_leaves_01_nor_gl.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/brown_mud_leaves_01/brown_mud_leaves_01_nor_gl_2k.jpg",
+      "md5": "eb2c704d2889e1e5a53148dc6a2ebdf4",
+      "SHA256": "b6ec386e00d9d2a1c3a1da6a98a67066b0dfaa88ddb779341df29700cf081bdf"
+    },
+    {
+      "id": "brown_mud_leaves_01",
+      "용도": "CC0 재질",
+      "원본": "https://polyhaven.com/a/brown_mud_leaves_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/pbr-source/brown_mud_leaves_01_Displacement.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/brown_mud_leaves_01/brown_mud_leaves_01_disp_2k.jpg",
+      "md5": "cbf64ab799b5d9fa5ef27da55692e563",
+      "SHA256": "3688c1acc705f604ffdaf956064c898658bcd2d8b0258e437e671390c896abb8"
+    },
+    {
+      "id": "mud_forest",
+      "용도": "CC0 재질",
+      "원본": "https://polyhaven.com/a/mud_forest",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/pbr-source/mud_forest_Diffuse.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/mud_forest/mud_forest_diff_2k.jpg",
+      "md5": "e78c6eae192daae3d00a677a588d1739",
+      "SHA256": "6726cf9ad9b1be9bf284c629dd95d732527b18fc92be06ae9093a96a68f77628"
+    },
+    {
+      "id": "mud_forest",
+      "용도": "CC0 재질",
+      "원본": "https://polyhaven.com/a/mud_forest",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/pbr-source/mud_forest_Rough.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/mud_forest/mud_forest_rough_2k.jpg",
+      "md5": "f7feab5e66a7eabb63116bad875fc4c5",
+      "SHA256": "53245bf1e48255c38bb84ad033fb1b33da317d8507c513afd3f7f4dddcfbedaf"
+    },
+    {
+      "id": "mud_forest",
+      "용도": "CC0 재질",
+      "원본": "https://polyhaven.com/a/mud_forest",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/pbr-source/mud_forest_nor_gl.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/mud_forest/mud_forest_nor_gl_2k.jpg",
+      "md5": "17635ab324ff50542465d7a4284502e3",
+      "SHA256": "8d0ad08c4d0df9aabd2fc42ef34e0d34010d9a63eb472eed214be6fad5bc2d4e"
+    },
+    {
+      "id": "mud_forest",
+      "용도": "CC0 재질",
+      "원본": "https://polyhaven.com/a/mud_forest",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/pbr-source/mud_forest_Displacement.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/mud_forest/mud_forest_disp_2k.jpg",
+      "md5": "b90acf7295a2de413339fff7e34cbaf9",
+      "SHA256": "8f53b64ec43678c7a281529c24c91b53547d9a954c5a2d23919bc10a1da418fe"
+    },
+    {
+      "id": "forest_leaves_02",
+      "용도": "CC0 재질",
+      "원본": "https://polyhaven.com/a/forest_leaves_02",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/pbr-source/forest_leaves_02_Diffuse.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/forest_leaves_02/forest_leaves_02_diffuse_2k.jpg",
+      "md5": "b7837ba1c51fb0e11af36d6b4e225c20",
+      "SHA256": "9c38b2b151a0415457a6914966422cfca5a546c94674442e5395e0b1e908a196"
+    },
+    {
+      "id": "forest_leaves_02",
+      "용도": "CC0 재질",
+      "원본": "https://polyhaven.com/a/forest_leaves_02",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/pbr-source/forest_leaves_02_Rough.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/forest_leaves_02/forest_leaves_02_rough_2k.jpg",
+      "md5": "76e0435a0a0a0db7e591641b0a918e9e",
+      "SHA256": "ed2dd60a10242640b1738760015cfae85c8526a79dbf5da563fdffdf30828eae"
+    },
+    {
+      "id": "forest_leaves_02",
+      "용도": "CC0 재질",
+      "원본": "https://polyhaven.com/a/forest_leaves_02",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/pbr-source/forest_leaves_02_nor_gl.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/forest_leaves_02/forest_leaves_02_nor_gl_2k.jpg",
+      "md5": "f974000a2ddc7dcd22bc84c37aa5d7ce",
+      "SHA256": "af0346114834c347a8d6a138f6ea16a97b0bec8d6e4db32c24f1c7e482163235"
+    },
+    {
+      "id": "forest_leaves_02",
+      "용도": "CC0 재질",
+      "원본": "https://polyhaven.com/a/forest_leaves_02",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/pbr-source/forest_leaves_02_Displacement.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/forest_leaves_02/forest_leaves_02_disp_2k.jpg",
+      "md5": "13830bbe7693f4cf7f0e3c0958d3f211",
+      "SHA256": "0e3e244b3e3cfd4910762515e7d723b50abe1c7b72b456b3e39e9029eeb5defe"
+    },
+    {
+      "id": "moss_wood",
+      "용도": "CC0 재질",
+      "원본": "https://polyhaven.com/a/moss_wood",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/pbr-source/moss_wood_Diffuse.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/moss_wood/moss_wood_diff_2k.jpg",
+      "md5": "1346872073558c36b66ae4201f42ef30",
+      "SHA256": "43b1dfea5be88045f0d6cd74d1c94aedf697d39ee3359433d96de3ad717626e5"
+    },
+    {
+      "id": "moss_wood",
+      "용도": "CC0 재질",
+      "원본": "https://polyhaven.com/a/moss_wood",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/pbr-source/moss_wood_Rough.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/moss_wood/moss_wood_rough_2k.jpg",
+      "md5": "46cf862c7a0f85686ad0c098180cb354",
+      "SHA256": "e45a41b36bb19f5681773b0585aaaf7d65cb39d038c77fd43a5d33f5e7be5f92"
+    },
+    {
+      "id": "moss_wood",
+      "용도": "CC0 재질",
+      "원본": "https://polyhaven.com/a/moss_wood",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/pbr-source/moss_wood_nor_gl.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/moss_wood/moss_wood_nor_gl_2k.jpg",
+      "md5": "4f5dfac68e09f971ba8950d8fa0836be",
+      "SHA256": "f9386f6162cff21578b91fc9ff17e94aafd375943c0ade5a4bc9518beb4b9c00"
+    },
+    {
+      "id": "moss_wood",
+      "용도": "CC0 재질",
+      "원본": "https://polyhaven.com/a/moss_wood",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/pbr-source/moss_wood_Displacement.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/moss_wood/moss_wood_disp_2k.jpg",
+      "md5": "5b7f73c1dd0ef39a0b6493f8517af5b7",
+      "SHA256": "462ee66701428c9f9f133dce601af4b70ae2ed8fe273676a6f6af5e540e47aa7"
+    },
+    {
+      "id": "moss_01",
+      "용도": "glTF JPEG에서 누락된 원본 알파 마스크",
+      "원본": "https://polyhaven.com/a/moss_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/moss_01/moss_01_Alpha.png",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/moss_01/moss_01_alpha_2k.png",
+      "md5": "838476c334c1c70807d9c3b999b81186",
+      "SHA256": "43b8d86ec306f39bc9c896906d16aadfb20d00c1c773c9bcdc3122b6eff8a6d0"
+    },
+    {
+      "id": "shrub_03",
+      "용도": "glTF JPEG에서 누락된 원본 알파 마스크",
+      "원본": "https://polyhaven.com/a/shrub_03",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/shrub_03/shrub_03_Alpha.png",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/shrub_03/shrub_03_alpha_2k.png",
+      "md5": "1e5c462538f13c649693dbe727f1f169",
+      "SHA256": "250606877093a81e791cc52e434f271a843838e6bed460a1c88a1955f52af50c"
+    },
+    {
+      "id": "island_tree_01",
+      "용도": "원통 주간 대체용 실제 뒤틀린 나무 스캔. 생잎 제외",
+      "원본": "https://polyhaven.com/a/island_tree_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/island_tree_01/island_tree_01.gltf",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/2k/island_tree_01/island_tree_01_2k.gltf",
+      "md5": "5facbb0c10b6bce8956bba1c179bfdad",
+      "SHA256": "6024cf385e9e0add29030925f8b891de264b813948f1cb9fb95633e256f50dc7"
+    },
+    {
+      "id": "island_tree_01",
+      "용도": "원통 주간 대체용 실제 뒤틀린 나무 스캔. 생잎 제외",
+      "원본": "https://polyhaven.com/a/island_tree_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/island_tree_01/textures/island_tree_01_nor_gl_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/island_tree_01/island_tree_01_nor_gl_2k.jpg",
+      "md5": "1a4aa5c3c599fa9e69d27636680d03f1",
+      "SHA256": "d93014f038fc2dfab942ec89cfc1679345bad2a279a0be63fbe58ef0817900b5"
+    },
+    {
+      "id": "island_tree_01",
+      "용도": "원통 주간 대체용 실제 뒤틀린 나무 스캔. 생잎 제외",
+      "원본": "https://polyhaven.com/a/island_tree_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/island_tree_01/textures/island_tree_01_diff_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/island_tree_01/island_tree_01_diff_2k.jpg",
+      "md5": "06808aa5ccbfbc2a7e2f99a23f412c17",
+      "SHA256": "08df798e0cadae17359d480bfda1dba59f757a7b1d03e288d3360c289dd28f78"
+    },
+    {
+      "id": "island_tree_01",
+      "용도": "원통 주간 대체용 실제 뒤틀린 나무 스캔. 생잎 제외",
+      "원본": "https://polyhaven.com/a/island_tree_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/island_tree_01/textures/island_tree_01_arm_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/island_tree_01/island_tree_01_arm_2k.jpg",
+      "md5": "d6429928be150750d4cb51ef2bc4232f",
+      "SHA256": "c9754d0a62cb6d97eb9bf0f82effbdd81cfba613ba451a27054438e2eba8188f"
+    },
+    {
+      "id": "island_tree_01",
+      "용도": "원통 주간 대체용 실제 뒤틀린 나무 스캔. 생잎 제외",
+      "원본": "https://polyhaven.com/a/island_tree_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/island_tree_01/textures/island_tree_01_leaves_nor_gl_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/island_tree_01/island_tree_01_leaves_nor_gl_2k.jpg",
+      "md5": "b7d1e6306288a64119e1d17dae3c272d",
+      "SHA256": "efa74b8b59a7466a295bf210505560002990183817b6c33663f3ec0dd438dd73"
+    },
+    {
+      "id": "island_tree_01",
+      "용도": "원통 주간 대체용 실제 뒤틀린 나무 스캔. 생잎 제외",
+      "원본": "https://polyhaven.com/a/island_tree_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/island_tree_01/textures/island_tree_01_leaves_diff_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/island_tree_01/island_tree_01_leaves_diff_2k.jpg",
+      "md5": "9898a7bf79fe6214f7ca8c3b139c4116",
+      "SHA256": "e5c56ca13525aed76572852da5f69ae87cbee9e15abe2e1eff23adf92975f14a"
+    },
+    {
+      "id": "island_tree_01",
+      "용도": "원통 주간 대체용 실제 뒤틀린 나무 스캔. 생잎 제외",
+      "원본": "https://polyhaven.com/a/island_tree_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/island_tree_01/textures/island_tree_01_leaves_arm_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/island_tree_01/island_tree_01_leaves_arm_2k.jpg",
+      "md5": "a03c8dd6852becfbc0fbec70a4f0b30f",
+      "SHA256": "cf4d604711d955d74a13b656bdbf840015ac38a71e24821849efade730634cc6"
+    },
+    {
+      "id": "island_tree_01",
+      "용도": "원통 주간 대체용 실제 뒤틀린 나무 스캔. 생잎 제외",
+      "원본": "https://polyhaven.com/a/island_tree_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/island_tree_01/textures/island_tree_01_branches_nor_gl_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/island_tree_01/island_tree_01_branches_nor_gl_2k.jpg",
+      "md5": "0b598c975ce1515ea0d51fb0d5696ea3",
+      "SHA256": "e4cac77b4f35ad47ba4fcdb9061f91acf3318d9889dd259cb5e6e132b0ab60c7"
+    },
+    {
+      "id": "island_tree_01",
+      "용도": "원통 주간 대체용 실제 뒤틀린 나무 스캔. 생잎 제외",
+      "원본": "https://polyhaven.com/a/island_tree_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/island_tree_01/textures/island_tree_01_branches_diff_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/island_tree_01/island_tree_01_branches_diff_2k.jpg",
+      "md5": "3210126439a8423b3caba28de0f3c25f",
+      "SHA256": "52cb2c660983836249e3f31ad286ca1bab8033e93070569b23e1867e3ae70b4d"
+    },
+    {
+      "id": "island_tree_01",
+      "용도": "원통 주간 대체용 실제 뒤틀린 나무 스캔. 생잎 제외",
+      "원본": "https://polyhaven.com/a/island_tree_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/island_tree_01/textures/island_tree_01_branches_arm_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/island_tree_01/island_tree_01_branches_arm_2k.jpg",
+      "md5": "969af8206d91a37edfefaf65a668470e",
+      "SHA256": "a39d8291ba54adf1ca42f15abe2f622d0ac59fb13c87087a0fabc755b91dfee8"
+    },
+    {
+      "id": "island_tree_01",
+      "용도": "원통 주간 대체용 실제 뒤틀린 나무 스캔. 생잎 제외",
+      "원본": "https://polyhaven.com/a/island_tree_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/island_tree_01/island_tree_01.bin",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/island_tree_01/island_tree_01.bin",
+      "md5": "8271f2d12c2727bd647ce0c242acdcec",
+      "SHA256": "1faa817b46e24ed6fc90d3ec72188a0dc5ac75e82c89b3dd3c5fdaecf7cc005c"
+    },
+    {
+      "id": "bark_brown_02",
+      "용도": "매끈한 거목에 실제 균열 수피 디테일을 고밀도 베이크",
+      "원본": "https://polyhaven.com/a/bark_brown_02",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/pbr-source/bark_brown_02_Diffuse_4k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/bark_brown_02/bark_brown_02_diff_4k.jpg",
+      "md5": "6661ce5ba6acc2071f99d28b9bb8f1d6",
+      "SHA256": "6c8a25592af62af9630091d5153f5dbabe3a8e8863dc03724a3027a7b3036c39"
+    },
+    {
+      "id": "bark_brown_02",
+      "용도": "매끈한 거목에 실제 균열 수피 디테일을 고밀도 베이크",
+      "원본": "https://polyhaven.com/a/bark_brown_02",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/pbr-source/bark_brown_02_bump_4k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/bark_brown_02/bark_brown_02_bump_4k.jpg",
+      "md5": "8e1a2f2929c0fa3e56beb321fc6c070e",
+      "SHA256": "f555a579ead33f3a8d19247eec599a8f57560cd0f453d7684e78f58b49b7bda4"
+    },
+    {
+      "id": "island_tree_01",
+      "용도": "살아 있는 잎은 제외하고 실제 잎을 탈색한 바닥 낙엽으로만 사용",
+      "원본": "https://polyhaven.com/a/island_tree_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/island_tree_01/textures/island_tree_01_leaves_diff_2k.png",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/island_tree_01/island_tree_01_leaves_diff_2k.png",
+      "md5": "d54fd06a5611278810df55d427cc4b1b",
+      "SHA256": "fca98db31845a92e6374fccd032d40d6134e2c80fdca8038b063897c8e8f0035"
+    },
+    {
+      "id": "tree_stump_01",
+      "용도": "계속 드러나는 잘린 밑동을 대체할 실제 부패 그루터기 스캔 검토",
+      "원본": "https://polyhaven.com/a/tree_stump_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/tree_stump_01/tree_stump_01.gltf",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/2k/tree_stump_01/tree_stump_01_2k.gltf",
+      "md5": "5af8eb57d53722ad13a5b06f8910563e",
+      "SHA256": "9fd1a672738ce1023318b9af829ccc725bb05ddcf38ff2de905a66f42d8f5143"
+    },
+    {
+      "id": "tree_stump_01",
+      "용도": "계속 드러나는 잘린 밑동을 대체할 실제 부패 그루터기 스캔 검토",
+      "원본": "https://polyhaven.com/a/tree_stump_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/tree_stump_01/tree_stump_01.bin",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/tree_stump_01/tree_stump_01.bin",
+      "md5": "acb292727949126b92e58217fd50fca9",
+      "SHA256": "b4d9ca70b3c908c4a638fbd6a23ed96c84055bbbf14cf44b89e31ad59fa21e0a"
+    },
+    {
+      "id": "tree_stump_01",
+      "용도": "계속 드러나는 잘린 밑동을 대체할 실제 부패 그루터기 스캔 검토",
+      "원본": "https://polyhaven.com/a/tree_stump_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/tree_stump_01/textures/tree_stump_01_nor_gl_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/tree_stump_01/tree_stump_01_nor_gl_2k.jpg",
+      "md5": "78c30fd8b3b070596e92e7969c78eaa7",
+      "SHA256": "2cf395f2779c9e3dfab96088af1384573ecc3f36edbd5ccae8dfe26577c969b0"
+    },
+    {
+      "id": "tree_stump_01",
+      "용도": "계속 드러나는 잘린 밑동을 대체할 실제 부패 그루터기 스캔 검토",
+      "원본": "https://polyhaven.com/a/tree_stump_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/tree_stump_01/textures/tree_stump_01_diff_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/tree_stump_01/tree_stump_01_diff_2k.jpg",
+      "md5": "5e061f6985b34f3c36824e63473ed1c9",
+      "SHA256": "77d5238bc40168bcff0833dcf6510aecea4a2b6746968fed7879c5ca7864e6f5"
+    },
+    {
+      "id": "tree_stump_01",
+      "용도": "계속 드러나는 잘린 밑동을 대체할 실제 부패 그루터기 스캔 검토",
+      "원본": "https://polyhaven.com/a/tree_stump_01",
+      "파일": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3/scan-source/tree_stump_01/textures/tree_stump_01_arm_2k.jpg",
+      "URL": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/tree_stump_01/tree_stump_01_arm_2k.jpg",
+      "md5": "07f544eae11d9a255bef25e82510a91f",
+      "SHA256": "b025cf566d4ce1da452353f3d98c6ddee2fa63b2b440cfa94d9405de347f846f"
+    }
+  ]
+}

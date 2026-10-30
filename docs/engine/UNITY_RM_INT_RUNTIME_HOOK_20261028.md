@@ -331,3 +331,36 @@ VISUAL VERDICT: RETOUCH — 독립 조립 시연, 실제 게임 미검증. 회�
 독액 기준 linear(.075,.080,.023)/sRGB#4D502A/roughness.43/emission0. Blender 정적 수면은 색 대리물이며 Unity 셰이더가 아니다. 조립은 추정 약37도/40mm, 개별 모듈52도이며 원화와 정확한 카메라 보정을 한 것은 아니다.
 
 **VISUAL VERDICT: RETOUCH. 브리프의 큰 차이0·게임용 아트/Steam 완료 미달.** 일부 큰 줄기/판근의 단순한 조형과 지면·오염 연결/층별 빛/독액 표면 차이가 남는다. Blender 담당의 형태/중간 접합 추가 재작업을 남기고, UI 후 기존 키샷 담당의 실제1080p·1x·탄막/8카메라/M1은 별도다. 기술 PASS를 시각 PASS로 올리지 않는다. 원본 r1 202파일·시작guard WIP SHA 보존. 정확한 근거/실패/저장 순서/다음 작업은 I:/EXODUSER-Storage/demo-art/blender-env/woodbridge-r2/REPORT.md·최종-인계영수증.json.
+
+## 2026-10-30 실제 스캔·연속 UV·실물 낙엽 재작업 — woodbridge-r3
+
+최신 승인 APPROVED_1-1_keyframe_A2_woodbridge.png 기준의 독립 Blender 키트다. [전체 계약/실패·검수·표준 보고](BLENDER_WOODBRIDGE_R3_20261030.md), 산출 I:/EXODUSER-Storage/demo-art/blender-env/woodbridge-r3/REPORT.md·delivery/Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3를 따른다. 이전 r1/r2 수치는 후보 이력으로 보존하며 아래18종이 현재 R3다. 현재 공유 r2/delivery는 별도 담당의 추가 재작업 HOLD이므로 이 R3와 섞지 않는다. 인수 당시24맵 중22개 SHA 동일·2개 BaseColor의 이번 대체를 출처-r2-현재납품대조.json에 기록했고 현재 다른 담당 WIP는 자동 인수0이다.
+
+| ID | 삼각형 | PNG 규격 | BumpScale |
+|---|---:|---|---:|
+| RF3_Ancient_Tree_A | 19888 | 4096×4096 | 0.55 |
+| RF3_Ancient_Tree_B | 19888 | 4096×4096 | 0.55 |
+| RF3_Fallen_Log | 22265 | 2048×2048 | 0.65 |
+| RF3_Root_Stump | 14365 | 2048×2048 | 0.55 |
+| RF3_Moss_Rock_1 | 8250 | 2048×2048 | 0.55 |
+| RF3_Moss_Rock_2 | 8247 | 2048×2048 | 0.55 |
+| RF3_Moss_Rock_3 | 3750 | 2048×2048 | 0.55 |
+| RF3_Withered_Shrub | 33148 | 2048×2048 | 0.25 |
+| RF3_Hanging_Moss | 11200 | 2048×2048 | 0.25 |
+| RF3_Moss_Cushion | 332 | 2048×2048 | 0.25 |
+| RF3_Rotten_Wood_Bridge | 16938 | 2048×2048 | 0.55 |
+| RF3_Fungal_Colony | 1620 | 1024×1024 | 0.55 |
+| RF3_River_Stake_Cluster | 20035 | 2048×2048 | 0.65 |
+| RF3_Bridge_Torch_Holder | 928 | 1024×1024 | 0.55 |
+| RF3_Foreground_Branch_Frame | 44530 | 2048×2048 | 0.65 |
+| RF3_Forest_Vista_Card | 2 | 2048×1024 | 0.55 |
+| RF3_Continuous_Bank_Terrain | 16799 | 4096×4096 | 0.45 |
+| RF3_Dead_Leaf_Litter | 768 | 1024×1024 | 0.25 |
+
+FBX18/PNG106/재질18/메타 포함288파일·242953tri·GUID146. BaseColor sRGB·데이터 linear, R=metallic/A=1−roughness 전픽셀/UV/현재FBX SHA 재수입/실제 원본Alpha/packed현재PNG 대조를 통과했다. 8종 실제 high→low normal/AO/곡률/PBR, 거목2종4K·암반3종과 실제 전체 그루터기2K, 원래 스캔UV의 실제6맵 재베이크. 식생4종은 CC0 원본 사진 UV/노멀/Alpha이며 AO1·곡률.5·roughness.9(낙엽235/255)는 상수다. 전경/말뚝은 실제 Fallen_Log atlas 공유, 다리 BaseColor는 moss_wood 부패 얼룩 재베이크. 상수를 실제 베이크로 과장하지 않는다. 강둑은 현재 UV 삼각형의 실제 보간 높이로 wet=smoothstep(clamp((.48−z)/.50,0,1)), linearRGB(.021,.017,.010)·원본 밝기배율.55~1.5·최대혼합.94·수위주변roughness하한.76의 부패흙 전이를 마감했다.
+
+처진 이끼560개 실물 잎/20다발, 낙엽 모듈48잎·정적 접지1028군락/49344잎. 실제 게임 배치·GPU 예산 PASS가 아니다. 식생cutoff.32·양면2450, 먼 숲 카드만 투명3000/ShadowCaster 비활성. URP/Lit GUID933532a4fcc9baf4fa0491de14d08ed7. 독액대리면 linear RGB(.062,.070,.014)→(.082,.086,.021), 중앙근사sRGB#4C4F24, roughness.16/IOR1.36/SpecularIORLevel.30/발광0. 물/불/체적안개는 Blender 검수 대리물이다.
+
+**VISUAL VERDICT: RETOUCH.** 다섯 지적을 실제 제작·재작업한 독립 Blender 인계 후보다. 원화의 큰 차이0·최종 게임용 아트 PASS로 승인한 상태는 아니다. 실제1920×1080·1x와 모듈18종 동일52도/같은조명·노레위 비교가 근거다. Unity/Player/빌드/충돌·실이동·탄막/8게임카메라/M1 미실행. 코드/docs는 전용 codex/pc-blender-env-r3-20261030에 보존하며 원격SHA는 최종-인계영수증.json과 대조한다. 바이너리 원격 업로드/공통 merge/PC·Mac 동기화 완료가 아니다.
+
+다음 담당: 기존 총괄이 이 R3의 같은 크기/1x·모듈 비교를 판정. Blender 담당은 남은 중경 이끼 질량·뿌리 연결을 같은 후보에서 재작업할 책임을 유지한다. UI 순번 뒤 기존 키샷 담당이 정확한 자산만 별도 인수하고 독액 셰이더·실제8게임카메라·전투 가독성·GPU/M1을 검수한다. 브랜치 전체 Runtime merge 요청 아님. 이 브랜치 전체를 런타임에 merge하지 않는다. 상속 Runtime은 이번 자산 작업의 변경이 아니며, 기존 키샷 담당이 정확한 자산 폴더와 영수증만 별도 인수한다.

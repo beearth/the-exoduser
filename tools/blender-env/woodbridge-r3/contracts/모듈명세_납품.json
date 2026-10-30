@@ -1,0 +1,676 @@
+[
+  {
+    "id": "RF3_Ancient_Tree_A",
+    "역할": "CC0 스캔 거대 고목·노출 판근·비대칭 파단 주간",
+    "저밀도삼각형": 19888,
+    "정점": 11699,
+    "high": "RF3_Ancient_Tree_A_연속UV_수피High",
+    "alpha": false,
+    "텍스처해상도": 4096,
+    "재질": "RF3_Ancient_Tree_A_Baked",
+    "맵": {
+      "Normal": "RF3_Ancient_Tree_A_Normal.png",
+      "AO": "RF3_Ancient_Tree_A_AO.png",
+      "Curvature": "RF3_Ancient_Tree_A_Curvature.png",
+      "BaseColor": "RF3_Ancient_Tree_A_BaseColor.png",
+      "Roughness": "RF3_Ancient_Tree_A_Roughness.png",
+      "Metallic": "RF3_Ancient_Tree_A_Metallic.png",
+      "MetallicSmoothness": "RF3_Ancient_Tree_A_MetallicSmoothness.png"
+    },
+    "베이크": "실제 원본/조형 high→decimated low selected-to-active Cycles normal/AO/curvature/PBR",
+    "FBX": "RF3_Ancient_Tree_A.fbx",
+    "high삼각형": 33220,
+    "bounds": [
+      -9.602667808532715,
+      -8.184150695800781,
+      -0.708290159702301,
+      10.638649940490723,
+      10.997620582580566,
+      22
+    ],
+    "텍스처규격": [
+      4096,
+      4096
+    ],
+    "BumpScale": 0.550000011920929,
+    "수피추가": "CC0 bark_brown_02를10m 폭의 BOX 투사. 스캔 원래 UV를 보존한 low에6종4K 실제 베이크. 점 노이즈 대체0",
+    "매립깊이m": 1,
+    "피벗계약": "피벗Z0=권장 지표/매립선. 하단1m는 뿌리 매립부이며 지면 위로 들어 올리지 않음. 시각 메시, 충돌 별도"
+  },
+  {
+    "id": "RF3_Ancient_Tree_B",
+    "역할": "CC0 스캔 거대 고목·노출 판근·비대칭 파단 주간",
+    "저밀도삼각형": 19888,
+    "정점": 11699,
+    "high": "RF3_Ancient_Tree_B_연속UV_수피High",
+    "alpha": false,
+    "텍스처해상도": 4096,
+    "재질": "RF3_Ancient_Tree_B_Baked",
+    "맵": {
+      "Normal": "RF3_Ancient_Tree_B_Normal.png",
+      "AO": "RF3_Ancient_Tree_B_AO.png",
+      "Curvature": "RF3_Ancient_Tree_B_Curvature.png",
+      "BaseColor": "RF3_Ancient_Tree_B_BaseColor.png",
+      "Roughness": "RF3_Ancient_Tree_B_Roughness.png",
+      "Metallic": "RF3_Ancient_Tree_B_Metallic.png",
+      "MetallicSmoothness": "RF3_Ancient_Tree_B_MetallicSmoothness.png"
+    },
+    "베이크": "실제 원본/조형 high→decimated low selected-to-active Cycles normal/AO/curvature/PBR",
+    "FBX": "RF3_Ancient_Tree_B.fbx",
+    "high삼각형": 33220,
+    "bounds": [
+      -10.638649940490723,
+      -8.184150695800781,
+      -0.7082901000976562,
+      9.602667808532715,
+      10.997620582580566,
+      22
+    ],
+    "텍스처규격": [
+      4096,
+      4096
+    ],
+    "BumpScale": 0.550000011920929,
+    "수피추가": "CC0 bark_brown_02를10m 폭의 BOX 투사. 스캔 원래 UV를 보존한 low에6종4K 실제 베이크. 점 노이즈 대체0",
+    "매립깊이m": 1,
+    "피벗계약": "피벗Z0=권장 지표/매립선. 하단1m는 뿌리 매립부이며 지면 위로 들어 올리지 않음. 시각 메시, 충돌 별도"
+  },
+  {
+    "id": "RF3_Fallen_Log",
+    "역할": "스캔 쓰러진 부패 고목과 가지",
+    "저밀도삼각형": 22265,
+    "정점": 14028,
+    "high": "RF3_Fallen_Log_High",
+    "alpha": false,
+    "텍스처해상도": 2048,
+    "재질": "RF3_Fallen_Log_Baked.001",
+    "맵": {
+      "Normal": "RF3_Fallen_Log_Normal.png",
+      "AO": "RF3_Fallen_Log_AO.png",
+      "Curvature": "RF3_Fallen_Log_Curvature.png",
+      "BaseColor": "RF3_Fallen_Log_BaseColor.png",
+      "Roughness": "RF3_Fallen_Log_Roughness.png",
+      "Metallic": "RF3_Fallen_Log_Metallic.png",
+      "MetallicSmoothness": "RF3_Fallen_Log_MetallicSmoothness.png"
+    },
+    "베이크": "실제 원본/조형 high→decimated low selected-to-active Cycles normal/AO/curvature/PBR",
+    "FBX": "RF3_Fallen_Log.fbx",
+    "high삼각형": 89061,
+    "bounds": [
+      -3.4443018436431885,
+      -1.642573356628418,
+      -0.0028987948317080736,
+      3.444972038269043,
+      2.2487292289733887,
+      1.477189540863037
+    ],
+    "텍스처규격": [
+      2048,
+      2048
+    ],
+    "BumpScale": 0.6499999761581421
+  },
+  {
+    "id": "RF3_Root_Stump",
+    "역할": "실제 부패 그루터기 tree_stump_01·노출 뿌리·큰 목질·원본UV·흙 받침 매립",
+    "저밀도삼각형": 14365,
+    "정점": 8860,
+    "high": "RF3_Root_Stump_실제부패High",
+    "alpha": false,
+    "텍스처해상도": 2048,
+    "재질": "RF3_Root_Stump_Baked.001",
+    "맵": {
+      "Normal": "RF3_Root_Stump_Normal.png",
+      "AO": "RF3_Root_Stump_AO.png",
+      "Curvature": "RF3_Root_Stump_Curvature.png",
+      "BaseColor": "RF3_Root_Stump_BaseColor.png",
+      "Roughness": "RF3_Root_Stump_Roughness.png",
+      "Metallic": "RF3_Root_Stump_Metallic.png",
+      "MetallicSmoothness": "RF3_Root_Stump_MetallicSmoothness.png"
+    },
+    "베이크": "실제 원본/조형 high→decimated low selected-to-active Cycles normal/AO/curvature/PBR",
+    "FBX": "RF3_Root_Stump.fbx",
+    "high삼각형": 41046,
+    "bounds": [
+      -2.4657137393951416,
+      -2.749706268310547,
+      -1.0994676351547241,
+      2.4794933795928955,
+      2.7496964931488037,
+      2.1994376182556152
+    ],
+    "텍스처규격": [
+      2048,
+      2048
+    ],
+    "BumpScale": 0.550000011920929,
+    "매립깊이m": 0.9,
+    "피벗계약": "피벗Z0=지표. 바깥 원본 흙 가장자리는Z음수 매립. 중심 목질을 넓힌 실제 전체 그루터기 스캔",
+    "그루터기후속": "속빈 나무를 잘라 만든 껍질형 밑동 폐기. 실제 전체 스캔·원본 UV·6맵2K 실제 베이크"
+  },
+  {
+    "id": "RF3_Moss_Rock_1",
+    "역할": "CC0 실물 이끼 암반 1",
+    "저밀도삼각형": 8250,
+    "정점": 4698,
+    "high": "RF3_Moss_Rock_1_원본UVHigh",
+    "alpha": false,
+    "텍스처해상도": 2048,
+    "재질": "RF3_Moss_Rock_1_Baked",
+    "맵": {
+      "Normal": "RF3_Moss_Rock_1_Normal.png",
+      "AO": "RF3_Moss_Rock_1_AO.png",
+      "Curvature": "RF3_Moss_Rock_1_Curvature.png",
+      "BaseColor": "RF3_Moss_Rock_1_BaseColor.png",
+      "Roughness": "RF3_Moss_Rock_1_Roughness.png",
+      "Metallic": "RF3_Moss_Rock_1_Metallic.png",
+      "MetallicSmoothness": "RF3_Moss_Rock_1_MetallicSmoothness.png"
+    },
+    "베이크": "실제 원본/조형 high→decimated low selected-to-active Cycles normal/AO/curvature/PBR",
+    "FBX": "RF3_Moss_Rock_1.fbx",
+    "high삼각형": 11000,
+    "bounds": [
+      -1.1194143295288086,
+      -1.6844021081924438,
+      0,
+      1.1188161373138428,
+      1.6844022274017334,
+      1.4726980924606323
+    ],
+    "텍스처규격": [
+      2048,
+      2048
+    ],
+    "BumpScale": 0.550000011920929,
+    "암반후속": "원래 스캔UV·75퍼센트 기하 보존,6맵2K 실제 재베이크. 자동UV 조각화 세부 손실을 수정"
+  },
+  {
+    "id": "RF3_Moss_Rock_2",
+    "역할": "CC0 실물 이끼 암반 2",
+    "저밀도삼각형": 8247,
+    "정점": 4809,
+    "high": "RF3_Moss_Rock_2_원본UVHigh",
+    "alpha": false,
+    "텍스처해상도": 2048,
+    "재질": "RF3_Moss_Rock_2_Baked",
+    "맵": {
+      "Normal": "RF3_Moss_Rock_2_Normal.png",
+      "AO": "RF3_Moss_Rock_2_AO.png",
+      "Curvature": "RF3_Moss_Rock_2_Curvature.png",
+      "BaseColor": "RF3_Moss_Rock_2_BaseColor.png",
+      "Roughness": "RF3_Moss_Rock_2_Roughness.png",
+      "Metallic": "RF3_Moss_Rock_2_Metallic.png",
+      "MetallicSmoothness": "RF3_Moss_Rock_2_MetallicSmoothness.png"
+    },
+    "베이크": "실제 원본/조형 high→decimated low selected-to-active Cycles normal/AO/curvature/PBR",
+    "FBX": "RF3_Moss_Rock_2.fbx",
+    "high삼각형": 10996,
+    "bounds": [
+      -1.3262385129928589,
+      -1.6301348209381104,
+      -0.0012010665377601981,
+      1.3276903629302979,
+      1.6318602561950684,
+      1.2619911432266235
+    ],
+    "텍스처규격": [
+      2048,
+      2048
+    ],
+    "BumpScale": 0.550000011920929,
+    "암반후속": "원래 스캔UV·75퍼센트 기하 보존,6맵2K 실제 재베이크. 자동UV 조각화 세부 손실을 수정"
+  },
+  {
+    "id": "RF3_Moss_Rock_3",
+    "역할": "CC0 실물 이끼 암반 3",
+    "저밀도삼각형": 3750,
+    "정점": 2116,
+    "high": "RF3_Moss_Rock_3_원본UVHigh",
+    "alpha": false,
+    "텍스처해상도": 2048,
+    "재질": "RF3_Moss_Rock_3_Baked",
+    "맵": {
+      "Normal": "RF3_Moss_Rock_3_Normal.png",
+      "AO": "RF3_Moss_Rock_3_AO.png",
+      "Curvature": "RF3_Moss_Rock_3_Curvature.png",
+      "BaseColor": "RF3_Moss_Rock_3_BaseColor.png",
+      "Roughness": "RF3_Moss_Rock_3_Roughness.png",
+      "Metallic": "RF3_Moss_Rock_3_Metallic.png",
+      "MetallicSmoothness": "RF3_Moss_Rock_3_MetallicSmoothness.png"
+    },
+    "베이크": "실제 원본/조형 high→decimated low selected-to-active Cycles normal/AO/curvature/PBR",
+    "FBX": "RF3_Moss_Rock_3.fbx",
+    "high삼각형": 5000,
+    "bounds": [
+      -1.0538419485092163,
+      -1.039792776107788,
+      -0.0004957318305969238,
+      1.0542912483215332,
+      1.039792776107788,
+      1.0996944904327393
+    ],
+    "텍스처규격": [
+      2048,
+      2048
+    ],
+    "BumpScale": 0.550000011920929,
+    "암반후속": "원래 스캔UV·75퍼센트 기하 보존,6맵2K 실제 재베이크. 자동UV 조각화 세부 손실을 수정"
+  },
+  {
+    "id": "RF3_Withered_Shrub",
+    "역할": "CC0 식물 알파 카드의 시든 덤불 군락",
+    "저밀도삼각형": 33148,
+    "정점": 23520,
+    "high": "RF3_Withered_Shrub_High",
+    "alpha": true,
+    "텍스처해상도": 2048,
+    "재질": "RF3_Withered_Shrub_Baked.001",
+    "맵": {
+      "BaseColor": "Atlas_shrub_03_BaseColor.png",
+      "Normal": "Atlas_shrub_03_Normal.png",
+      "AO": "Atlas_shrub_03_AO.png",
+      "Roughness": "Atlas_shrub_03_Roughness.png",
+      "Metallic": "Atlas_shrub_03_Metallic.png",
+      "Curvature": "Atlas_shrub_03_Curvature.png",
+      "MetallicSmoothness": "Atlas_shrub_03_MetallicSmoothness.png"
+    },
+    "베이크": "CC0 원본 UV/노멀/알파 보존. 컬러 톤은 emission atlas bake. AO1·곡률.5·roughness.9는 식생 기준 상수",
+    "FBX": "RF3_Withered_Shrub.fbx",
+    "high삼각형": 33148,
+    "bounds": [
+      -0.4513939619064331,
+      -0.6732298135757446,
+      -0.009999999776482582,
+      0.4731029272079468,
+      0.6503329277038574,
+      1.0346661806106567
+    ],
+    "텍스처규격": [
+      2048,
+      2048
+    ],
+    "BumpScale": 0.25
+  },
+  {
+    "id": "RF3_Hanging_Moss",
+    "역할": "CC0 넓은 실물 잎560개를20개 처진 곡선 다발로 엮은 이끼·탈색 회녹색",
+    "저밀도삼각형": 11200,
+    "정점": 11016,
+    "high": null,
+    "alpha": true,
+    "텍스처해상도": 2048,
+    "재질": "RF3_Hanging_Moss_Baked.001",
+    "맵": {
+      "BaseColor": "Atlas_hanging_moss_BaseColor.png",
+      "Normal": "Atlas_moss_01_Normal.png",
+      "AO": "Atlas_moss_01_AO.png",
+      "Curvature": "Atlas_moss_01_Curvature.png",
+      "Roughness": "Atlas_moss_01_Roughness.png",
+      "Metallic": "Atlas_moss_01_Metallic.png",
+      "MetallicSmoothness": "Atlas_moss_01_MetallicSmoothness.png"
+    },
+    "베이크": "실물 잎 UV/노멀/원본Alpha·컬러 톤 atlas. AO1·곡률.5·roughness.9 기준 상수. 넓은 천막/매끈한 섬유0",
+    "FBX": "RF3_Hanging_Moss.fbx",
+    "high삼각형": null,
+    "bounds": [
+      -0.8263881802558899,
+      -0.3895684480667114,
+      0.23372584581375122,
+      0.7504648566246033,
+      0.37316668033599854,
+      2.418872833251953
+    ],
+    "텍스처규격": [
+      2048,
+      2048
+    ],
+    "BumpScale": 0.25,
+    "세부원본": {
+      "실물원본": "moss_01_a..f_LOD0",
+      "원래잎비례": true,
+      "잎560": true,
+      "다발20": true
+    }
+  },
+  {
+    "id": "RF3_Moss_Cushion",
+    "역할": "CC0 이끼 알파 카드 접지 패치",
+    "저밀도삼각형": 332,
+    "정점": 313,
+    "high": null,
+    "alpha": true,
+    "텍스처해상도": 2048,
+    "재질": "RF3_Moss_Cushion_Baked.001",
+    "맵": {
+      "BaseColor": "Atlas_moss_01_BaseColor.png",
+      "Normal": "Atlas_moss_01_Normal.png",
+      "AO": "Atlas_moss_01_AO.png",
+      "Curvature": "Atlas_moss_01_Curvature.png",
+      "Roughness": "Atlas_moss_01_Roughness.png",
+      "Metallic": "Atlas_moss_01_Metallic.png",
+      "MetallicSmoothness": "Atlas_moss_01_MetallicSmoothness.png"
+    },
+    "베이크": "CC0 원본 UV/노멀/Alpha·컬러 톤. AO1·곡률.5·roughness.9 상수. 불투명 코어 채택0",
+    "FBX": "RF3_Moss_Cushion.fbx",
+    "high삼각형": null,
+    "bounds": [
+      -0.42219918966293335,
+      -0.7532756924629211,
+      0.03999999910593033,
+      0.5020157098770142,
+      0.7299906611442566,
+      0.6410189270973206
+    ],
+    "텍스처규격": [
+      2048,
+      2048
+    ],
+    "BumpScale": 0.25
+  },
+  {
+    "id": "RF3_Rotten_Wood_Bridge",
+    "역할": "29부패판자·10말뚝·불규칙 뒤틀림·3곳 부분파손·목재난간·처진밧줄",
+    "저밀도삼각형": 16938,
+    "정점": 8663,
+    "high": null,
+    "alpha": false,
+    "맵": {
+      "BaseColor": "RF3_Rotten_Wood_Bridge_BaseColor.png",
+      "Normal": "RF3_Rotten_Wood_Bridge_Normal.png",
+      "AO": "RF3_Rotten_Wood_Bridge_AO.png",
+      "Curvature": "RF3_Rotten_Wood_Bridge_Curvature.png",
+      "Roughness": "RF3_Rotten_Wood_Bridge_Roughness.png",
+      "Metallic": "RF3_Rotten_Wood_Bridge_Metallic.png",
+      "MetallicSmoothness": "RF3_Rotten_Wood_Bridge_MetallicSmoothness.png"
+    },
+    "텍스처해상도": 2048,
+    "베이크": "r2 실제 high→low 베이크 원본 인수. 다리 파손/휨 기하 보정",
+    "FBX": "RF3_Rotten_Wood_Bridge.fbx",
+    "재질": "RF3_Rotten_Wood_Bridge_Baked",
+    "bounds": [
+      -2.358912467956543,
+      -5.8086347579956055,
+      -0.8055515289306641,
+      2.340503215789795,
+      5.808239459991455,
+      1.980291485786438
+    ],
+    "텍스처규격": [
+      2048,
+      2048
+    ],
+    "BumpScale": 0.550000011920929,
+    "재질후속": "동일 형상/UV의 다리 high에 CC0 moss_wood+큰 마스크를 얹어 BaseColor2K 실제 재베이크. 기존 normal/AO/곡률/roughness/metallic 유지",
+    "판자실제끝파손": 28,
+    "마감설명": "기존 UV/베이크 보존, 끝 최대19cm의 비대칭 결손과 큰 뒤틀림. 기존 두 부분파손 판자 유지. 새 high 베이크로 과장하지 않음",
+    "평면정리": {
+      "이전삼각형": 55524,
+      "현재": 16938,
+      "각라디안": 0.03,
+      "보존": "UV/재질/Seam/Sharp 경계·새 파손 실루엣"
+    }
+  },
+  {
+    "id": "RF3_Fungal_Colony",
+    "역할": "닫힌 층상 부후균15개·반복 사다리형 균사14개 제외·기존 동일 UV/베이크",
+    "저밀도삼각형": 1620,
+    "정점": 840,
+    "high": null,
+    "alpha": false,
+    "맵": {
+      "BaseColor": "RF3_Fungal_Colony_BaseColor.png",
+      "Normal": "RF3_Fungal_Colony_Normal.png",
+      "AO": "RF3_Fungal_Colony_AO.png",
+      "Curvature": "RF3_Fungal_Colony_Curvature.png",
+      "Roughness": "RF3_Fungal_Colony_Roughness.png",
+      "Metallic": "RF3_Fungal_Colony_Metallic.png",
+      "MetallicSmoothness": "RF3_Fungal_Colony_MetallicSmoothness.png"
+    },
+    "텍스처해상도": 1024,
+    "베이크": "r2 실제 high→low 베이크 원본 인수. 다리 파손/휨 기하 보정",
+    "FBX": "RF3_Fungal_Colony.fbx",
+    "재질": "RF3_Fungal_Colony_Baked",
+    "bounds": [
+      -1.4104896783828735,
+      -0.7313649654388428,
+      0.12600000202655792,
+      0.38659730553627014,
+      0.20000000298023224,
+      1.888444185256958
+    ],
+    "텍스처규격": [
+      1024,
+      1024
+    ],
+    "BumpScale": 0.550000011920929
+  },
+  {
+    "id": "RF3_River_Stake_Cluster",
+    "역할": "실제 세워진 파단 목질5개의 침수 말뚝·Quaternion/Euler 행렬 교정·공유 베이크 atlas",
+    "저밀도삼각형": 20035,
+    "정점": 15471,
+    "high": null,
+    "alpha": false,
+    "맵": {
+      "Normal": "RF3_Fallen_Log_Normal.png",
+      "AO": "RF3_Fallen_Log_AO.png",
+      "Curvature": "RF3_Fallen_Log_Curvature.png",
+      "BaseColor": "RF3_Fallen_Log_BaseColor.png",
+      "Roughness": "RF3_Fallen_Log_Roughness.png",
+      "Metallic": "RF3_Fallen_Log_Metallic.png",
+      "MetallicSmoothness": "RF3_Fallen_Log_MetallicSmoothness.png"
+    },
+    "텍스처해상도": 2048,
+    "베이크": "실물 Fallen_Log 베이크 atlas/UV 공유. 작은파단목질 LOD, 추가 원뿔 없음",
+    "FBX": "RF3_River_Stake_Cluster.fbx",
+    "재질": "RF3_River_Stake_Cluster_Baked.001",
+    "bounds": [
+      -1.5774455070495605,
+      -0.4219541549682617,
+      -0.5023548603057861,
+      1.3873562812805176,
+      0.3487425446510315,
+      1.7000230550765991
+    ],
+    "텍스처규격": [
+      2048,
+      2048
+    ],
+    "BumpScale": 0.6499999761581421,
+    "매립깊이m": 0.5,
+    "피벗계약": "피벗Z0=수면/지표. 하단 약.5m는 매립부. 실제 장축 다섯개 Z>.95, 높이1.5m초과 검사"
+  },
+  {
+    "id": "RF3_Bridge_Torch_Holder",
+    "역할": "r2 베이크 원본 인수 후 구도/식생 접합 개선",
+    "저밀도삼각형": 928,
+    "정점": 486,
+    "high": null,
+    "alpha": false,
+    "맵": {
+      "BaseColor": "RF3_Bridge_Torch_Holder_BaseColor.png",
+      "Normal": "RF3_Bridge_Torch_Holder_Normal.png",
+      "AO": "RF3_Bridge_Torch_Holder_AO.png",
+      "Curvature": "RF3_Bridge_Torch_Holder_Curvature.png",
+      "Roughness": "RF3_Bridge_Torch_Holder_Roughness.png",
+      "Metallic": "RF3_Bridge_Torch_Holder_Metallic.png",
+      "MetallicSmoothness": "RF3_Bridge_Torch_Holder_MetallicSmoothness.png"
+    },
+    "텍스처해상도": 1024,
+    "베이크": "r2 실제 high→low 베이크 원본 인수. 다리 파손/휨 기하 보정",
+    "FBX": "RF3_Bridge_Torch_Holder.fbx",
+    "재질": "RF3_Bridge_Torch_Holder_Baked",
+    "bounds": [
+      -0.375,
+      -0.375,
+      -0.20000000298023224,
+      0.3748314678668976,
+      0.375,
+      2.119999885559082
+    ],
+    "텍스처규격": [
+      1024,
+      1024
+    ],
+    "BumpScale": 0.550000011920929
+  },
+  {
+    "id": "RF3_Foreground_Branch_Frame",
+    "역할": "CC0 실물 파단 목질2개를 접합한 전경 프레임·공유 베이크 atlas",
+    "저밀도삼각형": 44530,
+    "정점": 28056,
+    "high": null,
+    "alpha": false,
+    "맵": {
+      "Normal": "RF3_Fallen_Log_Normal.png",
+      "AO": "RF3_Fallen_Log_AO.png",
+      "Curvature": "RF3_Fallen_Log_Curvature.png",
+      "BaseColor": "RF3_Fallen_Log_BaseColor.png",
+      "Roughness": "RF3_Fallen_Log_Roughness.png",
+      "Metallic": "RF3_Fallen_Log_Metallic.png",
+      "MetallicSmoothness": "RF3_Fallen_Log_MetallicSmoothness.png"
+    },
+    "텍스처해상도": 2048,
+    "베이크": "RF3_Fallen_Log의 실제 스캔 high→low 베이크를 UV 동일하게 공유. 추가 절차적 뿔/판근 없음",
+    "FBX": "RF3_Foreground_Branch_Frame.fbx",
+    "재질": "RF3_Foreground_Branch_Frame_Baked.001",
+    "bounds": [
+      -3.0998716354370117,
+      -1.067672610282898,
+      -0.0020291563123464584,
+      3.1004748344421387,
+      1.4616739749908447,
+      1.0340327024459839
+    ],
+    "텍스처규격": [
+      2048,
+      2048
+    ],
+    "BumpScale": 0.6499999761581421
+  },
+  {
+    "id": "RF3_Forest_Vista_Card",
+    "역할": "실제 CC0 거목17개의 원근별 가지/줄기 렌더·하단25퍼센트/가로끝 Alpha 페이드·먼 BACK 전용",
+    "저밀도삼각형": 2,
+    "정점": 4,
+    "high": null,
+    "alpha": true,
+    "맵": {
+      "BaseColor": "RF3_Forest_Vista_Card_BaseColor.png",
+      "Normal": "RF3_Forest_Vista_Card_Normal.png",
+      "AO": "RF3_Forest_Vista_Card_AO.png",
+      "Curvature": "RF3_Forest_Vista_Card_Curvature.png",
+      "Roughness": "RF3_Forest_Vista_Card_Roughness.png",
+      "Metallic": "RF3_Forest_Vista_Card_Metallic.png",
+      "MetallicSmoothness": "RF3_Forest_Vista_Card_MetallicSmoothness.png"
+    },
+    "텍스처해상도": 2048,
+    "베이크": "r2의 카드 geometry/상수 데이터맵 인수. BaseColor는 현재 실제 거목17개의 실루엣 렌더로 교체. 하이/로우3D 베이크 아님",
+    "FBX": "RF3_Forest_Vista_Card.fbx",
+    "재질": "RF3_Forest_Vista_Card_Baked",
+    "bounds": [
+      -11,
+      0,
+      0,
+      11,
+      0,
+      11
+    ],
+    "텍스처규격": [
+      2048,
+      1024
+    ],
+    "BumpScale": 0.550000011920929
+  },
+  {
+    "id": "RF3_Continuous_Bank_Terrain",
+    "역할": "연속 굴곡 강둑·좌측 거목 반도·강바닥. 분리 흙섬 없이 침수된 목질 뿌리로 접합",
+    "저밀도삼각형": 16799,
+    "정점": 8545,
+    "high": "RF3_Continuous_Bank_Terrain_High",
+    "alpha": false,
+    "텍스처해상도": 4096,
+    "재질": "RF3_Continuous_Bank_Terrain_Baked",
+    "맵": {
+      "Normal": "RF3_Continuous_Bank_Terrain_Normal.png",
+      "AO": "RF3_Continuous_Bank_Terrain_AO.png",
+      "Curvature": "RF3_Continuous_Bank_Terrain_Curvature.png",
+      "BaseColor": "RF3_Continuous_Bank_Terrain_BaseColor.png",
+      "Roughness": "RF3_Continuous_Bank_Terrain_Roughness.png",
+      "Metallic": "RF3_Continuous_Bank_Terrain_Metallic.png",
+      "MetallicSmoothness": "RF3_Continuous_Bank_Terrain_MetallicSmoothness.png"
+    },
+    "베이크": "실제 원본/조형 high→decimated low selected-to-active Cycles normal/AO/curvature/PBR",
+    "FBX": "RF3_Continuous_Bank_Terrain.fbx",
+    "bounds": [
+      -36.00382614135742,
+      -22.001541137695312,
+      -1.1010626554489136,
+      39.00064468383789,
+      58.001216888427734,
+      1.0999009609222412
+    ],
+    "텍스처규격": [
+      4096,
+      4096
+    ],
+    "high원본": {
+      "파일": "source/승인구도_베이크입력.blend",
+      "오브젝트": "RF3_Continuous_Bank_Terrain",
+      "삼각형": 48000,
+      "후속": "현재기저위방향 Normal/AO 재베이크 후 비노출 흙섬을 수면 아래로 낮춤"
+    },
+    "BumpScale": 0.44999998807907104,
+    "수위흙마감": {
+      "기준": "현재 실제 UV 삼각형의 보간 높이",
+      "wet": "smoothstep(clamp((.48-z)/.50,0,1))",
+      "linearRGB기준": [
+        0.021,
+        0.017,
+        0.01
+      ],
+      "원본밝기세부배율": [
+        0.55,
+        1.5
+      ],
+      "최대혼합": 0.94,
+      "젖은흙roughness하한": 0.76,
+      "의도": "회색 절단 띠의 밝은 노출과 과도한 젖은면 반사 제거. 실제 사진 세부는 유지"
+    }
+  },
+  {
+    "id": "RF3_Dead_Leaf_Litter",
+    "역할": "실제 CC0 사진 잎48개의 갈색 낙엽·얕은 곡면·접지 산포용",
+    "정점": 720,
+    "저밀도삼각형": 768,
+    "high": null,
+    "high삼각형": null,
+    "alpha": true,
+    "BumpScale": 0.25,
+    "텍스처규격": [
+      1024,
+      1024
+    ],
+    "텍스처해상도": 1024,
+    "맵": {
+      "BaseColor": "RF3_Dead_Leaf_Litter_BaseColor.png",
+      "Normal": "RF3_Dead_Leaf_Litter_Normal.png",
+      "AO": "RF3_Dead_Leaf_Litter_AO.png",
+      "Curvature": "RF3_Dead_Leaf_Litter_Curvature.png",
+      "Roughness": "RF3_Dead_Leaf_Litter_Roughness.png",
+      "Metallic": "RF3_Dead_Leaf_Litter_Metallic.png",
+      "MetallicSmoothness": "RF3_Dead_Leaf_Litter_MetallicSmoothness.png"
+    },
+    "재질": "RF3_Dead_Leaf_Litter_Baked",
+    "FBX": "RF3_Dead_Leaf_Litter.fbx",
+    "베이크": "CC0 잎 원본 RGBA/노멀 재배치·갈색 탈색. AO1·곡률.5·roughness235/255·metallic0 상수. 하이베이크 아님",
+    "bounds": [
+      -0.7785260677337646,
+      -0.7974080443382263,
+      0.009999999776482582,
+      0.7427201867103577,
+      0.8155159950256348,
+      0.05050000175833702
+    ]
+  }
+]

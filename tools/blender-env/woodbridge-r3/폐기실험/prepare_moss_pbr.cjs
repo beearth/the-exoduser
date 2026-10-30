@@ -1,0 +1,1 @@
+const fs=require('fs'),sharp=require('G:/exoduser/node_modules/sharp');(async()=>{const r=__dirname;for(const k of ['Diffuse','Rough']){await sharp(r+'/pbr-source/moss_wood_'+k+'.jpg').extract({left:256,top:0,width:192,height:2048}).resize(1024,1024).blur(2.5).png().toFile(r+'/source/이끼표면_'+k+'.png')}console.log('CC0 이끼 표면의 판자 틈 제외·저주파 crop');})();

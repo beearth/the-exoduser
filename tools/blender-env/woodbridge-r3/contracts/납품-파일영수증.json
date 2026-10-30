@@ -1,0 +1,1448 @@
+{
+  "생성시각": "2026-10-30T10:52:22.915Z",
+  "모듈": 18,
+  "파일": [
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Ancient_Tree_A.fbx",
+      "크기": 704860,
+      "SHA256": "50e2f4c8f64885142e53203af0beacdbbdc2924ade1326f1bfbd4b22f4a299d3"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Ancient_Tree_B.fbx",
+      "크기": 707676,
+      "SHA256": "865c5a8b601ac8d176d26bfe4e13f91aec9a07760c81f8864645b22d2bded2f2"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Fallen_Log.fbx",
+      "크기": 1005980,
+      "SHA256": "4cc8aa9fa925bea80ecd7505d95cbf17101e537a49f43e2825c410a422df462b"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Root_Stump.fbx",
+      "크기": 659516,
+      "SHA256": "b01a213b7c9bbef88b9c01f487d0a163af8d4ca33b77f08079234a02d539bcc7"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Moss_Rock_1.fbx",
+      "크기": 309388,
+      "SHA256": "3e76b08ebf1bd46c975a2ebd061d54bc030d4acc85cba59d447df679387c28bd"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Moss_Rock_2.fbx",
+      "크기": 311420,
+      "SHA256": "b8ba0bdd12e8103f0b0dbc3613da0fdc3628de3252e979d9fd90b7b7750cd4f0"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Moss_Rock_3.fbx",
+      "크기": 151692,
+      "SHA256": "aa71a505db5baa11d7e7dd73de5ec25653ba32fa95ed095c4d675ef8b6854aa2"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Withered_Shrub.fbx",
+      "크기": 1125772,
+      "SHA256": "e81bca546fdab88a8f20f25f7da6c74a386165d95beaa98511fe6fe5c949d5af"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Hanging_Moss.fbx",
+      "크기": 448172,
+      "SHA256": "c3acd7183190314dd29ea274dc0309154e9df9c2a1004068d9052d7daf808cd3"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Moss_Cushion.fbx",
+      "크기": 35964,
+      "SHA256": "5456f0a091bc7fa7993271dc34cc34de485b68d18b5cc2df79ce92e4560db01b"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Rotten_Wood_Bridge.fbx",
+      "크기": 501852,
+      "SHA256": "1596edc576f52b86a42bf1fae25622e31b5335006545afbc7156ff7cf692df88"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Fungal_Colony.fbx",
+      "크기": 73500,
+      "SHA256": "cfaca8cc648f9ab55271c22d9ca55a6afe8a2016ee07037ce33d26baebd55ecf"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_River_Stake_Cluster.fbx",
+      "크기": 969756,
+      "SHA256": "4987dab71a3a5a9ba3eeb5db5f17a2b57fb13440cf35c196b7838b7ecc1c4800"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Bridge_Torch_Holder.fbx",
+      "크기": 50092,
+      "SHA256": "0221ad6afa011369751c205e625fefbb347df69c6221c630fc2531aa180401a4"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Foreground_Branch_Frame.fbx",
+      "크기": 1833180,
+      "SHA256": "a3bd35220c5a739cc8aa91f60cea64f2d4458919325c4baf5dbd07672af77a63"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Forest_Vista_Card.fbx",
+      "크기": 23532,
+      "SHA256": "985f44898c19a6c1985167aa5253a756aa60d863bccf390681f2a42b6e7095be"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Continuous_Bank_Terrain.fbx",
+      "크기": 523852,
+      "SHA256": "859d9cb89442d7eb1324e4fe0b1f138d7ace1d5c6ab8119b9810c88e681f4d14"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Ancient_Tree_A.fbx.meta",
+      "크기": 1080,
+      "SHA256": "c8d3295de3cc892f6a1a6779ad75f807786cd68cc8443475279551440d7840a3"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Ancient_Tree_B.fbx.meta",
+      "크기": 1080,
+      "SHA256": "02036bf428b7154a4bfe1d73709a75ab1ab8714b0d4f318ab316d85dc102fdee"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Fallen_Log.fbx.meta",
+      "크기": 1080,
+      "SHA256": "75df009ee7ec06c1a9fb2f08fd6b94de0155d88824414bf154f6309d1d9a89e5"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Root_Stump.fbx.meta",
+      "크기": 1080,
+      "SHA256": "5d5f5a94b9299ffe2df573632a8f8f09e880ebdf59fcbeb2e16930946f30730d"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Moss_Rock_1.fbx.meta",
+      "크기": 1077,
+      "SHA256": "99a2186e612b4723c0673c62ad602332abd56385df6978c4a5f59127c4d706e4"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Moss_Rock_2.fbx.meta",
+      "크기": 1077,
+      "SHA256": "1e88f4d2b745b4de2bae23f5562272f5a3c5803b623521918248f5e1c51c77b6"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Moss_Rock_3.fbx.meta",
+      "크기": 1077,
+      "SHA256": "3468c3acc3f6dde22d05acc30535cf4cfc7714464a89d70cfc5288ea79b7f3f3"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Withered_Shrub.fbx.meta",
+      "크기": 1084,
+      "SHA256": "f0c301e5d9465dcbcb2448f7270fb5ae34f3ce03ba45486a150caa7d4c449a6b"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Hanging_Moss.fbx.meta",
+      "크기": 1082,
+      "SHA256": "6bdeb11b1da2942af9c3059a5023439a1a9b92091cbb19ee11f621473a3b25df"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Moss_Cushion.fbx.meta",
+      "크기": 1082,
+      "SHA256": "483c75d0e364f3217641e1a8efa3ecf15fe02284c4f33cab879c2396681c552e"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Rotten_Wood_Bridge.fbx.meta",
+      "크기": 1084,
+      "SHA256": "89b0766b3615949b1c02c5df6ecf870fa84beea90ce1ad3c4b566ed13260444b"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Fungal_Colony.fbx.meta",
+      "크기": 1079,
+      "SHA256": "8c4d37d87c84f6ebc8fe362fd2a08a95e871b3ab3bfdc493b4f65c03164dba46"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_River_Stake_Cluster.fbx.meta",
+      "크기": 1089,
+      "SHA256": "3c4e7f1b1bb91ef164ed6f902b8fb19769db7c7d467e6b153b55c7b641bfc6ec"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Bridge_Torch_Holder.fbx.meta",
+      "크기": 1085,
+      "SHA256": "4b6db2fe6b52b06ca7226c97dbe8bae5caf39cb75c6b294e5775f6995793bbbe"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Foreground_Branch_Frame.fbx.meta",
+      "크기": 1093,
+      "SHA256": "96a1cd5cd8c334a194b384f1353bb3113264436d481de2f0015bb3cbae921151"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Forest_Vista_Card.fbx.meta",
+      "크기": 1083,
+      "SHA256": "fb06308b68af3443e9379fb3a76e55e1b9cbcf00e13d2b6c8f97b8a90ea2c46c"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Continuous_Bank_Terrain.fbx.meta",
+      "크기": 1089,
+      "SHA256": "a210cc70581981e8dea36dd372f09299cc3fe5af279635d7c94de19ac9c9dcb6"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Dead_Leaf_Litter.fbx",
+      "크기": 45596,
+      "SHA256": "a2e125895150384820b33a6498af670ef173d05c348d1ad631850862e1a0b606"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models/RF3_Dead_Leaf_Litter.fbx.meta",
+      "크기": 1082,
+      "SHA256": "d3384b86140201f8695928f822144b4e88d6b739db0ffa27029d9e2c95f9c0d2"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_A_Normal.png",
+      "크기": 38163736,
+      "SHA256": "1d3cd8d1ebadee689d6dee98461963cccb0ab1c9834a903780241040612f2949"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_A_AO.png",
+      "크기": 12929040,
+      "SHA256": "7752bc55a0e204023b5f1702e85405c17f0294b8f853411b76b93508c6c55930"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_A_Curvature.png",
+      "크기": 2367553,
+      "SHA256": "bf5d1c3453b513af40d038f1c9d35be376f598bfe41dd2ca6ba4164399ec95cf"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_A_BaseColor.png",
+      "크기": 22408050,
+      "SHA256": "946baefd631f680849b97cd7a7ec391006b8722a650c2f246b4f3abbd24aabee"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_A_Metallic.png",
+      "크기": 304633,
+      "SHA256": "0d13075ac2ce6d06a6cae9840663384ee5a2cbb3a3b89e1ac6c01d41c08c33b9"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_B_Normal.png",
+      "크기": 38167055,
+      "SHA256": "baba5e9b8e4e14763b004cf048d791dfce446dc727ccda1bbb5d9a2d239c7672"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_B_AO.png",
+      "크기": 12928268,
+      "SHA256": "3f97baeff693b424ca0584b9003615836d379d0c13d00371b174c2aa8eb168f3"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_B_Curvature.png",
+      "크기": 2376168,
+      "SHA256": "0aeb550acd870e96c2e1de812c26affc130f940bb3fcb1a57873c99aec832d2f"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_B_BaseColor.png",
+      "크기": 22458490,
+      "SHA256": "c98a842158b46c4d57d2ca745bf68da491e5561d28c67a37ff750a9954dfdf09"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_B_Metallic.png",
+      "크기": 304633,
+      "SHA256": "0d13075ac2ce6d06a6cae9840663384ee5a2cbb3a3b89e1ac6c01d41c08c33b9"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fallen_Log_Normal.png",
+      "크기": 2893263,
+      "SHA256": "5c570aa196e222efc19542df97b0ce4313395957ae7a8dc22889a4a62dc6b11b"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fallen_Log_AO.png",
+      "크기": 2128660,
+      "SHA256": "62dec097a927f4784bb8666ea8f1556f606a4bfbb677756eff9163659f10382d"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fallen_Log_Curvature.png",
+      "크기": 1776721,
+      "SHA256": "119966e23c0e9cb75a79a429a7069d72b18e0260983590daa852039d48c69b19"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fallen_Log_BaseColor.png",
+      "크기": 2634938,
+      "SHA256": "a7acf9eef15ea938b6ff1b86b0e22fe37cbd23891eedeb11d1f0bc94e3d65700"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fallen_Log_Metallic.png",
+      "크기": 79829,
+      "SHA256": "05b1c7670a95c3a7a282650f1f7b319c4d41659aa9e846c2c2b75391ad430860"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Root_Stump_Normal.png",
+      "크기": 8705628,
+      "SHA256": "f0b3cd5681932edbc27a542246d7b3ca845028feff099759096911052ec4a512"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Root_Stump_AO.png",
+      "크기": 3310562,
+      "SHA256": "73dd451ec55f1f00d24c87de3e52dc3a219e6e634ee1bd824946cf0811a710ef"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Root_Stump_Curvature.png",
+      "크기": 1342968,
+      "SHA256": "d736335f6bea0068988fc0f434bb17562194f5f57d6ffa4f0a3b8ca7368952b0"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Root_Stump_BaseColor.png",
+      "크기": 5613967,
+      "SHA256": "1edab96f091e9b237a88c9fd4773e28941dadb685a11db4a38264f52f76d2e6e"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Root_Stump_Metallic.png",
+      "크기": 78303,
+      "SHA256": "98af1805c2d325e0d84b365ca83126f8297f3994debc43ee46b2cee121eb471a"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_1_Normal.png",
+      "크기": 764357,
+      "SHA256": "a3a6052f34a32c151230bf88e390b62ac1724ac734e9ec7e4f1cee234aea61e9"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_1_AO.png",
+      "크기": 355546,
+      "SHA256": "41a53c083498a66a208d7391ced2c2163152ce3756fcebae2b8b48f47d14ddc5"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_1_Curvature.png",
+      "크기": 276448,
+      "SHA256": "fef737172c82c2d396d552fbd1ea46df9e0cdcee7a7bbc4a497a84b5a0f38319"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_1_BaseColor.png",
+      "크기": 635252,
+      "SHA256": "7f3fa5cbfe33af3eb24f1c4437eb9e710d78197a82f2a4f6ca15eba7d397b742"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_1_Roughness.png",
+      "크기": 361386,
+      "SHA256": "91c7b485fce1f30606229a4bb24e6c415bc416e4cb41e671fdf231dcb5dd1252"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_1_Metallic.png",
+      "크기": 78303,
+      "SHA256": "98af1805c2d325e0d84b365ca83126f8297f3994debc43ee46b2cee121eb471a"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_2_Normal.png",
+      "크기": 767892,
+      "SHA256": "c68adbcbbfb6f2eae95cfff50867f3541f450d147b51498c01a1683abb37ce4c"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_2_AO.png",
+      "크기": 318355,
+      "SHA256": "0bdc66c4cc328829cebcf3a7f1b875fc658d56feb57f7eaaf0d7e21ffd561823"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_2_Curvature.png",
+      "크기": 265239,
+      "SHA256": "93e698b25e3f2a924e647b8d63bab393dc7597800b169d5845238f1c9efcb981"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_2_BaseColor.png",
+      "크기": 622799,
+      "SHA256": "744ee8cc7f62c507e4a66d59fcc098265aac12656032037d085b4c30bb9e3f49"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_2_Roughness.png",
+      "크기": 373306,
+      "SHA256": "971faad201ce035145c2be14d329e43d1202b4607eeac5d9da452609f629bc90"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_2_Metallic.png",
+      "크기": 78303,
+      "SHA256": "98af1805c2d325e0d84b365ca83126f8297f3994debc43ee46b2cee121eb471a"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_3_Normal.png",
+      "크기": 837309,
+      "SHA256": "433e649fb4ce51944ba37bf86b4701de6d1ddce496b927b29cda395eaeac8c1f"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_3_AO.png",
+      "크기": 291094,
+      "SHA256": "ecdab52d5be0d39a30a64623fb5e78a0a38b093df65a8a4b0d82550f057f00f0"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_3_Curvature.png",
+      "크기": 241671,
+      "SHA256": "b0e70e866fa14ca39fccb46eee1dfe29fa9cfd59c078ffc846334edc8eb5d87e"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_3_BaseColor.png",
+      "크기": 718529,
+      "SHA256": "7d68703b40aed589181590d7f105c0575b9bd93c75aa1de486403a8f40396a02"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_3_Roughness.png",
+      "크기": 415960,
+      "SHA256": "7f317fae586fe74e88524dc6c13de105fd4e326de960787dee24817a87594c5f"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_3_Metallic.png",
+      "크기": 78303,
+      "SHA256": "98af1805c2d325e0d84b365ca83126f8297f3994debc43ee46b2cee121eb471a"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Continuous_Bank_Terrain_Normal.png",
+      "크기": 38008114,
+      "SHA256": "b290c3617961df33bd53bfbb70222349f09cff3ae18f13c2733c512b7c5a1ec3"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Continuous_Bank_Terrain_AO.png",
+      "크기": 5360928,
+      "SHA256": "328b36d98884f4cfeb9c9155943b368d0251041aa4b2d8412ed9869a4521d4fb"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Continuous_Bank_Terrain_Curvature.png",
+      "크기": 1735527,
+      "SHA256": "5909c90dd5e2e71d15bc58ce07c762e6010531907097192e5dde958b8cdeadc2"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Continuous_Bank_Terrain_BaseColor.png",
+      "크기": 33064818,
+      "SHA256": "6870e5c02cea78ad2b600aecbaa09dbb0d8b4439616831e104e8c7161d340e87"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Continuous_Bank_Terrain_Roughness.png",
+      "크기": 11251262,
+      "SHA256": "1b7142f06fd41bc5928a1d915529274b83d06f1147f28dd3680b389826946c6e"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Continuous_Bank_Terrain_Metallic.png",
+      "크기": 304633,
+      "SHA256": "0d13075ac2ce6d06a6cae9840663384ee5a2cbb3a3b89e1ac6c01d41c08c33b9"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_moss_01_BaseColor.png",
+      "크기": 876742,
+      "SHA256": "1821569453e3de49f0754dd6e9497b71159e71ddee8bf3447612a0199a026a34"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_moss_01_Normal.png",
+      "크기": 315195,
+      "SHA256": "cef36450708ec52e83199eeb55dcc7802bd940de655d1ffca9b1573d4b9965fa"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_moss_01_AO.png",
+      "크기": 78299,
+      "SHA256": "d6fe4f68222d38414c20f3c33c367eea35b106a15ff6e540b4cf21e8485e47ec"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_moss_01_Roughness.png",
+      "크기": 78302,
+      "SHA256": "72d92cbe4e137deaa72a6587a3832d294e82873dc7c18db6cc8c42651f97952b"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_moss_01_Metallic.png",
+      "크기": 78303,
+      "SHA256": "98af1805c2d325e0d84b365ca83126f8297f3994debc43ee46b2cee121eb471a"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_moss_01_Curvature.png",
+      "크기": 78301,
+      "SHA256": "f45cdee4a2e395bc0cb6ad051042b083a3cd7dd0407125034be2a21047deaa79"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_shrub_03_BaseColor.png",
+      "크기": 3535523,
+      "SHA256": "519b03d9a69d129f4e5c7c238119c45a6dbb7d4b99dbbe2bdf19576a0d764a16"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_shrub_03_Normal.png",
+      "크기": 333660,
+      "SHA256": "b7d436e98a70d95a48d00e06ad97fc01bfc03c2619d49b29d1a812017a462172"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_shrub_03_AO.png",
+      "크기": 78299,
+      "SHA256": "d6fe4f68222d38414c20f3c33c367eea35b106a15ff6e540b4cf21e8485e47ec"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_shrub_03_Roughness.png",
+      "크기": 78302,
+      "SHA256": "72d92cbe4e137deaa72a6587a3832d294e82873dc7c18db6cc8c42651f97952b"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_shrub_03_Metallic.png",
+      "크기": 78303,
+      "SHA256": "98af1805c2d325e0d84b365ca83126f8297f3994debc43ee46b2cee121eb471a"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_shrub_03_Curvature.png",
+      "크기": 78301,
+      "SHA256": "f45cdee4a2e395bc0cb6ad051042b083a3cd7dd0407125034be2a21047deaa79"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Rotten_Wood_Bridge_BaseColor.png",
+      "크기": 3434487,
+      "SHA256": "8934f698620a913a8560c3d5f2da74b00645f14d3025d011b9a5426d7d2a9fa4"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Rotten_Wood_Bridge_Normal.png",
+      "크기": 2737314,
+      "SHA256": "30ce980f584f4e1139bfcdbda7ecdf2dcc9f8ad8187797e32c04ba2fa731789d"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Rotten_Wood_Bridge_AO.png",
+      "크기": 2050793,
+      "SHA256": "895e199a6922c491ae302f1a09dc67f6a776352ef96face320a1b4ce4cc33dce"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Rotten_Wood_Bridge_Curvature.png",
+      "크기": 1179277,
+      "SHA256": "7a0ed3325f5de0aed24cbb9e92c5ee1bf63302dc66d218c9e2a2aeeeb45fd719"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Rotten_Wood_Bridge_Roughness.png",
+      "크기": 1050309,
+      "SHA256": "3d6b20db38166367c5ec60d3480ddd32439a524a2d8b52de8d18c168f0dccf4f"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Rotten_Wood_Bridge_Metallic.png",
+      "크기": 55235,
+      "SHA256": "5630edf42913f842e57308503a7e0977e721d09027a12c453b8878c22108cd37"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fungal_Colony_BaseColor.png",
+      "크기": 792485,
+      "SHA256": "2bad607169d107496685bb3b3c99eb0e60aa197d986ddc90bcabf152787ce3a4"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fungal_Colony_Normal.png",
+      "크기": 939748,
+      "SHA256": "c4b2c8610872c6556c81ad0708fea86d02d0047b5a4f7b176652a97e7c971e50"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fungal_Colony_AO.png",
+      "크기": 979200,
+      "SHA256": "5b4bb683ac2eecdffd1ebf150da02f054365fa3b5aade868eb7e1c9e8c828748"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fungal_Colony_Curvature.png",
+      "크기": 513436,
+      "SHA256": "246b845b2325bcdcabba05936c8e24bf8063303e8cbf6cb7633d72c7b524a2df"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fungal_Colony_Roughness.png",
+      "크기": 35176,
+      "SHA256": "e29c5a64663fa078830c0d80fafef7ff7d0a0b1987cb3232c54f450891ef3981"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fungal_Colony_Metallic.png",
+      "크기": 13995,
+      "SHA256": "1a5e57350822bcd0cdb03f4dc88a26b4a281ba170756106cf0e2df2b298a2cd2"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Bridge_Torch_Holder_BaseColor.png",
+      "크기": 911504,
+      "SHA256": "af494628f0d3ced07563952f439672afcc85e76233705499dcd36f8b28031ff8"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Bridge_Torch_Holder_Normal.png",
+      "크기": 1043164,
+      "SHA256": "3409a2cd6ead062a6575fb72ff788a557386d1024a5b274852a4b2461ececfaa"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Bridge_Torch_Holder_AO.png",
+      "크기": 827464,
+      "SHA256": "ab3bbc45d34c56de2cfa84ecc0f201c49095b241e9e162c1d6ae8c996c188927"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Bridge_Torch_Holder_Curvature.png",
+      "크기": 417940,
+      "SHA256": "09492feef87c33d94e877dfce857e7a7b543fa2ebd2ef1c59c0c97a942427463"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Bridge_Torch_Holder_Roughness.png",
+      "크기": 254766,
+      "SHA256": "709552a04260f0b6e56d7f0733e2d9502ffa9085dbdc97b0643ba09627c68580"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Bridge_Torch_Holder_Metallic.png",
+      "크기": 13995,
+      "SHA256": "1a5e57350822bcd0cdb03f4dc88a26b4a281ba170756106cf0e2df2b298a2cd2"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Forest_Vista_Card_BaseColor.png",
+      "크기": 1060958,
+      "SHA256": "408e6a63614b21b61d44d07ef3747b25c99b8938ad5ba1b981ce51747f762b25"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Forest_Vista_Card_Normal.png",
+      "크기": 39293,
+      "SHA256": "c4ad94f0882240b5c6beca9045990d1cb639628069f35cc17f44485bc220b38c"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Forest_Vista_Card_AO.png",
+      "크기": 39291,
+      "SHA256": "cc8673ac5e21e2a4b1be76829016e097e28fda9beb2c717a14aa05e139055beb"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Forest_Vista_Card_Curvature.png",
+      "크기": 39294,
+      "SHA256": "135bbae6c9dd6a63ee5d5cab931e0c24373edba12c35a89a84fcf924c5f5f583"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Forest_Vista_Card_Roughness.png",
+      "크기": 39291,
+      "SHA256": "cc8673ac5e21e2a4b1be76829016e097e28fda9beb2c717a14aa05e139055beb"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Forest_Vista_Card_Metallic.png",
+      "크기": 39296,
+      "SHA256": "2fb9ddb7eb34bda00d3487a9509bd306dc84fa0cddcc672e3bb98c89467439ee"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_A_Normal.png.meta",
+      "크기": 659,
+      "SHA256": "29920da45a8dbef2fb7d058266c4de22b08acee086f71a5daf9d5b4d180ae78c"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_A_AO.png.meta",
+      "크기": 659,
+      "SHA256": "d4c1aa3f6d1038b96a8eeb99804dac9a9108f85c20d665738727a8c391ffef57"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_A_Curvature.png.meta",
+      "크기": 659,
+      "SHA256": "3a9e87a0755630a1de4638c83ce573eec6013d199404906377336238266eabb6"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_A_BaseColor.png.meta",
+      "크기": 659,
+      "SHA256": "23e6ef89287fdcc9a81f4e6d569d14268ec8ed5c48acc9d60f4b7bb4154a2aa8"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_A_Roughness.png.meta",
+      "크기": 659,
+      "SHA256": "8fb94603e6fc062fd374c7c36992d4a99e1addb572c15e889c48c350c033b21b"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_A_Metallic.png.meta",
+      "크기": 659,
+      "SHA256": "9e4426580b95f0eb8f37b986627cd7bbbec2f952f2c0ab77f4c1b63a8891e583"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_B_Normal.png.meta",
+      "크기": 659,
+      "SHA256": "5a7bfc3ebab6656d38271c53bea9131f36545d363b397c9ba731cf3efd9428c7"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_B_AO.png.meta",
+      "크기": 659,
+      "SHA256": "0f7b6aa30d43708f7a937c4951331737dbb94263564ff41d22e86cb76013b673"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_B_Curvature.png.meta",
+      "크기": 659,
+      "SHA256": "8a09c242d844c02573ce7b3813063988f2087c5ff1c41d5d92b2e47d99ea2d5a"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_B_BaseColor.png.meta",
+      "크기": 659,
+      "SHA256": "0dd49d564b6250251ec7076ec657c956f9d5d41aa267f770e739b2dca1c763a3"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_B_Roughness.png.meta",
+      "크기": 659,
+      "SHA256": "c6aa75f797529934d7ca85dacf15a0a61445e6ebc5019b5e247272a75ca68c03"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_B_Metallic.png.meta",
+      "크기": 659,
+      "SHA256": "379cd35f9bd0e9868033df2289f635079fafc547829800dc545ef8d930a99b8c"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fallen_Log_MetallicSmoothness.png",
+      "크기": 146003,
+      "SHA256": "a801297fa8e98d25591cb8f887f9ee26f33de8fe92b79c99c2f1e06f7e2d3dc9"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fallen_Log_Normal.png.meta",
+      "크기": 659,
+      "SHA256": "c8e0ea8acd2630dc8933b7504d5a7e491e0a3105005fba0b622d36303400fa36"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fallen_Log_AO.png.meta",
+      "크기": 659,
+      "SHA256": "85aa7ebb5522b9215ce14b0c8ba0956b3a7b1b098aadb1e1cc359e5818464326"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fallen_Log_Curvature.png.meta",
+      "크기": 659,
+      "SHA256": "ff693fc48192a2fb2e06cf5170c82193c1c256b6d684db146b475ffe02c3bb58"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fallen_Log_BaseColor.png.meta",
+      "크기": 659,
+      "SHA256": "adff00e431eb305c150192cae3da814adaae5d12b75b49e4b519196b89dcb59c"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fallen_Log_Roughness.png.meta",
+      "크기": 659,
+      "SHA256": "00feaa4568a81462c49e26ca1f153db008a55b28f1e439cdc5087dcce5b9e2e2"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fallen_Log_Metallic.png.meta",
+      "크기": 659,
+      "SHA256": "248c35ef1292fb82cbe57d2234cfd425f39dcd0546f5b2a993a3267fd2825c55"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fallen_Log_MetallicSmoothness.png.meta",
+      "크기": 659,
+      "SHA256": "b956374d3a15ef728a4bf64af3672145758d8e5cc0598b81212532f3b1a91462"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Root_Stump_Normal.png.meta",
+      "크기": 659,
+      "SHA256": "90d7e99d5ef23d25155ebf1e9be0da8f32ca888109a39fcaf9e808ff09a6a78f"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Root_Stump_AO.png.meta",
+      "크기": 659,
+      "SHA256": "df05acbaf1226be41c7fe2389c85ebc0879690585e4e0384b4df24162b703ea4"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Root_Stump_Curvature.png.meta",
+      "크기": 659,
+      "SHA256": "9891c70257b492da152506f5e1101592c22767c866078ad8c32d6340a6748739"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Root_Stump_BaseColor.png.meta",
+      "크기": 659,
+      "SHA256": "4aad5f535e0c99962fad63a3a0f1fe63d44d82ebe1b3e828d600ec04c85b8272"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Root_Stump_Roughness.png.meta",
+      "크기": 659,
+      "SHA256": "06d5654f3f4ef0ede66ecdaa68ad9fbd9f80ad56ee78cf8126667308ab784912"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Root_Stump_Metallic.png.meta",
+      "크기": 659,
+      "SHA256": "78772be0549d47bb0516128add4b91140a44c8f6523a20d19fbe3ab8feb1f020"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_1_MetallicSmoothness.png",
+      "크기": 308810,
+      "SHA256": "59e4cbdf54551db96888176cc58e4e13a41561df26ca74d809f55347d0bcf965"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_1_Normal.png.meta",
+      "크기": 659,
+      "SHA256": "8b2dcef80c04f5cf17ee4d0cac59e0c4a1fd3b27495a22ced44833657f3a4c44"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_1_AO.png.meta",
+      "크기": 659,
+      "SHA256": "4732d98e8e846790257348cb9abd18d154a28356ad0eac1d13865717dfb04b27"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_1_Curvature.png.meta",
+      "크기": 659,
+      "SHA256": "3e5d05edee0ce78e641f941a07f915a5df6c4ec3e75cbf6e4378983fb53f5296"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_1_BaseColor.png.meta",
+      "크기": 659,
+      "SHA256": "1a7f104c10bb8b298816e6d748a4e008e9f3a5f42c8527066601723dfc4a585a"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_1_Roughness.png.meta",
+      "크기": 659,
+      "SHA256": "48b57950ebfa9a15dbc4183c27a2fc94644217e88c62493ab1da8f0467de41ce"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_1_Metallic.png.meta",
+      "크기": 659,
+      "SHA256": "26c0745ad8d584a526bc5e4559a66ac37cd8e3e9f5791a745c94f14d5db2b718"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_1_MetallicSmoothness.png.meta",
+      "크기": 659,
+      "SHA256": "3b6b6f3570100f6aa141ab719bf561b010d431305d8dc33f5d2331b62ed0380e"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_2_MetallicSmoothness.png",
+      "크기": 326951,
+      "SHA256": "28fe8d56da3ecb414ba080b45c4e3cb944e561a5eeeba7aee789a04c5a5a99d2"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_2_Normal.png.meta",
+      "크기": 659,
+      "SHA256": "d4ff20664d8848b70463a723b6762de0b34622fc31dba12e5fea3429a806d90c"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_2_AO.png.meta",
+      "크기": 659,
+      "SHA256": "1c33aad6185b6ff7c25de259030e129ee94b006fe1859bdee87cf637592d4f93"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_2_Curvature.png.meta",
+      "크기": 659,
+      "SHA256": "0fa000cbeb81c50f6233ec094ceedcb78a134c2867137150864928e0ec9eb80a"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_2_BaseColor.png.meta",
+      "크기": 659,
+      "SHA256": "1b8bb89bbd080f331cc1768b4cd808207928deac4faaeae10dc2de02e76bef6a"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_2_Roughness.png.meta",
+      "크기": 659,
+      "SHA256": "4730e9cdb3031c5623f41763e52fd094a0a70a4dae73aea06e8a3781eb69c10a"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_2_Metallic.png.meta",
+      "크기": 659,
+      "SHA256": "39c4d7eee690d3453b6172138fee57631d9cb7e07780f4147bd9ca62bd4b06f1"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_2_MetallicSmoothness.png.meta",
+      "크기": 659,
+      "SHA256": "7ee6845996899659c66f3220fe1b16c77a9eefe347f34740032bce758d70c554"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_3_MetallicSmoothness.png",
+      "크기": 368434,
+      "SHA256": "0f0a6ad0be40ebdf1792ea5efcf056045694b31583eb6e3676e8ac4f0eac47d7"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_3_Normal.png.meta",
+      "크기": 659,
+      "SHA256": "4eea8db298157e8c7549e783ac06813c613bee987f4aef091fbc5ea15646e31b"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_3_AO.png.meta",
+      "크기": 659,
+      "SHA256": "1aadb02ad77890e386b15c8165423d9bbd4e00c08c1c30e215ba04884b1382df"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_3_Curvature.png.meta",
+      "크기": 659,
+      "SHA256": "4ed04818836cafdd8b715290e13f6fb4c623465b7da6c10f8975f47f79831565"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_3_BaseColor.png.meta",
+      "크기": 659,
+      "SHA256": "1313cc57ab9e49a9d191b5241ff782ebbdcb08c0578f440704c0c2c1bc1f626e"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_3_Roughness.png.meta",
+      "크기": 659,
+      "SHA256": "611fda53e787f89175e087a915314e4c56d3cc7ffaa518fb305f058beabaf3fe"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_3_Metallic.png.meta",
+      "크기": 659,
+      "SHA256": "c9ec082540787dcb01e4b325c7b3c9ef99de7e3315029086583fc146938cc38e"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Moss_Rock_3_MetallicSmoothness.png.meta",
+      "크기": 659,
+      "SHA256": "b9b8dd900f4e5881d41e0e31b66f1ae070b3f7c40be8d919bf645596b2362b2f"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_shrub_03_MetallicSmoothness.png",
+      "크기": 84792,
+      "SHA256": "9fc4c1ae4cab1be5d66fe30046e2a40c98f9138bcff31130fc721e93375711b1"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_shrub_03_BaseColor.png.meta",
+      "크기": 659,
+      "SHA256": "146af1cf93fd4d1386c1e25a3954ff36741e7cab8a100b2a1f3614aac7217532"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_shrub_03_Normal.png.meta",
+      "크기": 659,
+      "SHA256": "5e96ca3343ad79036f9378df95f5cde333b4af7a5d0d2aecb907077f1e68dd5a"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_shrub_03_AO.png.meta",
+      "크기": 659,
+      "SHA256": "e3e1618afb9613cf86bfc51d805f2a2d110b89a407fbd2b1898307156736a54f"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_shrub_03_Roughness.png.meta",
+      "크기": 659,
+      "SHA256": "2f94d40e2ab7ce377e2189f68e8e68908acf58af58b0943682d118cf9ba09eaa"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_shrub_03_Metallic.png.meta",
+      "크기": 659,
+      "SHA256": "cbd9e1f203dbcd86dc32f419478b6d34becd13b0a7851132aa950654e1646e6c"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_shrub_03_Curvature.png.meta",
+      "크기": 659,
+      "SHA256": "a10a2fc5799977d9c7428fd9dc952e36f662164c650c91b9b77b056939ec5c75"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_shrub_03_MetallicSmoothness.png.meta",
+      "크기": 659,
+      "SHA256": "79f0f9bbc67cfa4b34da4d328e48f6a9a06d34afaefde174618ad380a1144a89"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_moss_01_MetallicSmoothness.png",
+      "크기": 84792,
+      "SHA256": "9fc4c1ae4cab1be5d66fe30046e2a40c98f9138bcff31130fc721e93375711b1"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_moss_01_BaseColor.png.meta",
+      "크기": 659,
+      "SHA256": "2963db739923a2db5828ec45343bc7a6226385ca6afcab75def8ee59c3d34414"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_moss_01_Normal.png.meta",
+      "크기": 659,
+      "SHA256": "860c9f02f3cab3831d0f0b10455816edd36ec393e2027084d54af8fdb513dd70"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_moss_01_AO.png.meta",
+      "크기": 659,
+      "SHA256": "34a49c1c98b61ecf90c16ecb7f3b82d5ad4f54162c7bb295f50d378ec920b8da"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_moss_01_Roughness.png.meta",
+      "크기": 659,
+      "SHA256": "b2100caa061fc0d73d49bf08c5d006f10278a2c1ac2ac1517dc4055ea4f33f71"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_moss_01_Metallic.png.meta",
+      "크기": 659,
+      "SHA256": "bf34eedc137868cddb87c6dad6bb7a2854bcf0e648a59f250576150243980dd4"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_moss_01_Curvature.png.meta",
+      "크기": 659,
+      "SHA256": "67d6c950a141e048b620323da22932fd905018f2cf83254da1819c23759192ee"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_moss_01_MetallicSmoothness.png.meta",
+      "크기": 659,
+      "SHA256": "e7b2b31a682e5f43ae142be7447e7047d6cacbb88dd90024dd5eb7e74ff074f5"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Rotten_Wood_Bridge_MetallicSmoothness.png",
+      "크기": 1032517,
+      "SHA256": "88db921c6d96142ada0a29252e2723676ca9ba2991cdee5b41886c4b9a815d9a"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Rotten_Wood_Bridge_BaseColor.png.meta",
+      "크기": 659,
+      "SHA256": "c6d06c8fa95e17ac6c8cb9259192f2626226fc73b423f44dcf6c190b9a987595"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Rotten_Wood_Bridge_Normal.png.meta",
+      "크기": 659,
+      "SHA256": "b385e053956d0d7ce62349a1fc6e253c676879bd6ec47831235e1f596f727d6c"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Rotten_Wood_Bridge_AO.png.meta",
+      "크기": 659,
+      "SHA256": "cc1ce326dd7ecd5c72aa1b4c0aeb1125d7c2b3abcc37469ae82fd85e1633ace9"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Rotten_Wood_Bridge_Curvature.png.meta",
+      "크기": 659,
+      "SHA256": "e02e2e81113ee97951c4280887fefdc4170f587ca2cc5f0e70310ad13ce823b8"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Rotten_Wood_Bridge_Roughness.png.meta",
+      "크기": 659,
+      "SHA256": "b7c29a23606081fc63b5cf07098602dae3ceaf68501171b53840f8b08013374c"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Rotten_Wood_Bridge_Metallic.png.meta",
+      "크기": 659,
+      "SHA256": "a89b6f1e80378229ee02500aa6b9808e0e77e7562218b6b00b45c6d30448acd4"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Rotten_Wood_Bridge_MetallicSmoothness.png.meta",
+      "크기": 659,
+      "SHA256": "852768d3e8c5ef38edb60903d5cfa1f97476adeb63750830657aebac39da144e"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fungal_Colony_MetallicSmoothness.png",
+      "크기": 45356,
+      "SHA256": "fdacb68ad004109b09a9d93e55b567609c54889fa5dc4cd1bf02958960193257"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fungal_Colony_BaseColor.png.meta",
+      "크기": 659,
+      "SHA256": "03854ed6a88208e4fc4ce29722a5e664473b8dcec3d70237cc474c4ae488c07e"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fungal_Colony_Normal.png.meta",
+      "크기": 659,
+      "SHA256": "11186b2d2a32386710296ffc2e38b034087db427f2c9d80949496446a0d44ff1"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fungal_Colony_AO.png.meta",
+      "크기": 659,
+      "SHA256": "ab2e3c5a7a5feef81f713815760358c9485579179c9e650400269ff5057f4472"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fungal_Colony_Curvature.png.meta",
+      "크기": 659,
+      "SHA256": "b516eabc337ed8b1a915774356cd7a838b29f521fd751d4e0456f1e21e22e383"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fungal_Colony_Roughness.png.meta",
+      "크기": 659,
+      "SHA256": "973cf1e11df550c738f04a08db01171f51f27fc8f2890e51637129d359459cf6"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fungal_Colony_Metallic.png.meta",
+      "크기": 659,
+      "SHA256": "adc1a26e4a115d68089dc677f79573d71d45af70df5e32f8006a15324cab8f7e"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fungal_Colony_MetallicSmoothness.png.meta",
+      "크기": 659,
+      "SHA256": "dad68ff9b500dcba44ce4f88fd40716a11958ed7654de89aa83a08ae1cc56187"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Bridge_Torch_Holder_MetallicSmoothness.png",
+      "크기": 266854,
+      "SHA256": "d83568c5b816ae8d44a354a72740aa3c5b193e5f81c45d11128f0fbf14e37614"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Bridge_Torch_Holder_BaseColor.png.meta",
+      "크기": 659,
+      "SHA256": "731c5b17b7658e9c4acac9d29ec5627830b6c635d8a19560eb550e7611d53d98"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Bridge_Torch_Holder_Normal.png.meta",
+      "크기": 659,
+      "SHA256": "9146c0c7743117255b6341910b00a5d105ea4f3055bec06b1a2c0573c5e21625"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Bridge_Torch_Holder_AO.png.meta",
+      "크기": 659,
+      "SHA256": "09e2aa76e5d1a43edfbd36e7f8454bb7ee667328ebf23015c426f25408e4e09d"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Bridge_Torch_Holder_Curvature.png.meta",
+      "크기": 659,
+      "SHA256": "c8d5a36d3b07cf1df8c2269543c433a15ff11bd79ab0418689f5ff6e2f75b091"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Bridge_Torch_Holder_Roughness.png.meta",
+      "크기": 659,
+      "SHA256": "40c0ecfd78aff1dde97c65ce010b5b8daa70652bb39c3f54e0a18edde29d33be"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Bridge_Torch_Holder_Metallic.png.meta",
+      "크기": 659,
+      "SHA256": "eb538587e453bee1a8e67a8c0ae0ca0b2449f1a2d3f5359c10e8d7657f7ef45b"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Bridge_Torch_Holder_MetallicSmoothness.png.meta",
+      "크기": 659,
+      "SHA256": "71a00ec38458a258e658f332db54577ee8b0c5bee6d101ad7e8ac96fc810b1e8"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Forest_Vista_Card_MetallicSmoothness.png",
+      "크기": 8243,
+      "SHA256": "ad2ee3f9f4966981e82cdb7e342dc40d8e1a668e9ff4df3faab256dd129e08ca"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Forest_Vista_Card_BaseColor.png.meta",
+      "크기": 659,
+      "SHA256": "91138cc518127f9d803f13fcf9e457442dcfc633262a94cb8239c11f765de2e1"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Forest_Vista_Card_Normal.png.meta",
+      "크기": 659,
+      "SHA256": "7c1f8cb027c772ebb1c32dc21edfba611806814bf311da0aa7d8866b96d91269"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Forest_Vista_Card_AO.png.meta",
+      "크기": 659,
+      "SHA256": "12454fcb0612478a8897e1aecd4edeba78e6a6332258d0684d4d8cbcaf6cefea"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Forest_Vista_Card_Curvature.png.meta",
+      "크기": 659,
+      "SHA256": "469d19eb6a66a924dd212786f52301ed7a8575ba68ed0db59b99d9880e9b5003"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Forest_Vista_Card_Roughness.png.meta",
+      "크기": 659,
+      "SHA256": "661a0a159af328330206150106b2443c8896eebb9ea73a19ec3ab26cb3db6616"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Forest_Vista_Card_Metallic.png.meta",
+      "크기": 659,
+      "SHA256": "4e43050fbbee1eafaeacdbc46a99cb22d9f547a2f701e542ff0bb0edba7a6e4c"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Forest_Vista_Card_MetallicSmoothness.png.meta",
+      "크기": 659,
+      "SHA256": "0499d74259d5823b490f072f618a1c6ef9a3c9d841f8dd9b178cacf67d2570af"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Continuous_Bank_Terrain_MetallicSmoothness.png",
+      "크기": 9561909,
+      "SHA256": "9bc7babeeb182296757bb95186c0735ba98217e8b61177e581bdb0d540ae4d39"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Continuous_Bank_Terrain_Normal.png.meta",
+      "크기": 659,
+      "SHA256": "6d5b628e0463ba2b9a8d27d2f6a93a9857aabefe6f77ed907b1ef769b6146b1f"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Continuous_Bank_Terrain_AO.png.meta",
+      "크기": 659,
+      "SHA256": "7d27439160afb63db255bb92ef6e3d0b28fb9dfa5729ee1ea386588fbc1e76fb"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Continuous_Bank_Terrain_Curvature.png.meta",
+      "크기": 659,
+      "SHA256": "e97b2b78822e392fa92e8197a737d7a823370ff0eac131a897dcf3b6a99f9f8c"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Continuous_Bank_Terrain_BaseColor.png.meta",
+      "크기": 659,
+      "SHA256": "785b3904bff0564dae60a474f7a3323c477fdeb75f289fcb9663f485805baa9b"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Continuous_Bank_Terrain_Roughness.png.meta",
+      "크기": 659,
+      "SHA256": "c8a722dafe6611fd6d9cd2eb8cbfc2e0535a86446d93fca8026860600f538b6c"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Continuous_Bank_Terrain_Metallic.png.meta",
+      "크기": 659,
+      "SHA256": "a47db40632768e344c12293deb61d679241e234063cd51bd2ff4aa9dc301ce76"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Continuous_Bank_Terrain_MetallicSmoothness.png.meta",
+      "크기": 659,
+      "SHA256": "ba5c433a1c31c791b41ea1cc78243c9d8a546ed61ea0591138550f0a552a9a7b"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_A_Roughness.png",
+      "크기": 640436,
+      "SHA256": "0934fb280083f8d5d77d79a77222619f975fefa8e17a83262aa655073b286fed"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_B_Roughness.png",
+      "크기": 640445,
+      "SHA256": "26378434c0e5710a5004950e445913535f6014e433a3a4bf020119d4ab009d0d"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Root_Stump_Roughness.png",
+      "크기": 2951154,
+      "SHA256": "0f547a7ac8cf79d5e8f1468191db50418d0969824fe9d4aaf0e8e8a41f123534"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Fallen_Log_Roughness.png",
+      "크기": 81524,
+      "SHA256": "5e6489be6b66d283e2457ccd388fe689d2be4da28762c75030f3a3885f29655f"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_hanging_moss_BaseColor.png",
+      "크기": 801614,
+      "SHA256": "549636806b102977b2ab8132fce86afbbf95d0e5fd50831540095e55ba716754"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_A_MetallicSmoothness.png",
+      "크기": 567849,
+      "SHA256": "dfd5218bff027fff80652d471269d9e71f9bc842c41064c4fb0121a001e6ec30"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_A_MetallicSmoothness.png.meta",
+      "크기": 659,
+      "SHA256": "517ba560b8ca13f788f56eca31eec427f0dbb07448e13d614b12728923b7ba9d"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_B_MetallicSmoothness.png",
+      "크기": 567879,
+      "SHA256": "c5534cc8aac72a9e8a2679d52aa4d603002c501373d0575b6bbef693cb1b334d"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Ancient_Tree_B_MetallicSmoothness.png.meta",
+      "크기": 659,
+      "SHA256": "e7355c147b9c04a1af6e0956957b16b4e09f0e079057bc7021d4febb569f69fa"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Root_Stump_MetallicSmoothness.png",
+      "크기": 2441870,
+      "SHA256": "c3a23f2aa33127abb6833c3e4d711196a81d56d6c68f66c12152cf1777d3148e"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Root_Stump_MetallicSmoothness.png.meta",
+      "크기": 659,
+      "SHA256": "26e111051da9c93007369c21a41acb0b6daea2d57d55cf5ea832f2ec94d37eed"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/Atlas_hanging_moss_BaseColor.png.meta",
+      "크기": 659,
+      "SHA256": "e091cf5099869896e2357b5717fd56109643b05fa53d3afff60cd4cea4a2693c"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Dead_Leaf_Litter_BaseColor.png",
+      "크기": 712157,
+      "SHA256": "ad4abede1d8f9d778ca9beb9b0e8321680b756d5fb21dd2cb3fb283189bb1862"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Dead_Leaf_Litter_Normal.png",
+      "크기": 2623548,
+      "SHA256": "46bc3d1da5f0574255a792dc92753535de30f20aff2d3e5cc1142a7193fa8af9"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Dead_Leaf_Litter_AO.png",
+      "크기": 5353,
+      "SHA256": "b04e44f8f7123ad9b6a95afeb8c4f75b63c29d58cd896e803f5a4ef282ef96e8"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Dead_Leaf_Litter_Curvature.png",
+      "크기": 5353,
+      "SHA256": "72f38e0069332191653dc168d5afbe07f5ef945b728e9e994f51dcafbeb05bb9"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Dead_Leaf_Litter_Roughness.png",
+      "크기": 5354,
+      "SHA256": "7cc6d70574b24847bcb4d63c45a0f7d2baa5bd530d831547ab8a71d11312e70d"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Dead_Leaf_Litter_Metallic.png",
+      "크기": 3150,
+      "SHA256": "a3acee77059e3c784c727f5bbee93338ed98fdc5e05ba57fcf31220a3511894d"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Dead_Leaf_Litter_MetallicSmoothness.png",
+      "크기": 22119,
+      "SHA256": "ca7d7fb7ffe5e10f0b4cd21840d318d93e0cde2d09688ba77c36eccb86332166"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Dead_Leaf_Litter_BaseColor.png.meta",
+      "크기": 659,
+      "SHA256": "9428469e7e944b9e4baef13cb24139e4d3f2bff115f5e03cca1acf07029172a1"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Dead_Leaf_Litter_Normal.png.meta",
+      "크기": 659,
+      "SHA256": "5c8e194a3f7d8524880aa35dcb48fc70afe4d8988bdf1decc227ca7e5748670c"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Dead_Leaf_Litter_AO.png.meta",
+      "크기": 659,
+      "SHA256": "3aff4dd0a41a07f8a1bd96d8a4af0e27b356e32befe5fea59eef2ee0ee7fa26c"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Dead_Leaf_Litter_Curvature.png.meta",
+      "크기": 659,
+      "SHA256": "290cd64f6bd87bddc9b67e721bec426f21e12365079027e60d9364bbc7763752"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Dead_Leaf_Litter_Roughness.png.meta",
+      "크기": 659,
+      "SHA256": "64cca0ab7df81097625ab290b250e5785ebd719a82d5276f97e6b3b075957018"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Dead_Leaf_Litter_Metallic.png.meta",
+      "크기": 659,
+      "SHA256": "2cf98f1b3fe38bf23a1929e6e58584ab6886d959c9b3995628aa74e2e874c438"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures/RF3_Dead_Leaf_Litter_MetallicSmoothness.png.meta",
+      "크기": 659,
+      "SHA256": "e37082c8d0a0adb7daeb08e8210390b3eccd2f6c0593791cdd520abf5c202302"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Ancient_Tree_A.mat",
+      "크기": 1889,
+      "SHA256": "19a5e7d4f00ab034726b2d72ca60b489816beab39668d27f16ee7589750edf14"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Ancient_Tree_A.mat.meta",
+      "크기": 185,
+      "SHA256": "7d13ed5bc8a22ce8e02c1e36c5eb102d24fdc7ba8f2c6a1bf366eee2db014c39"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Ancient_Tree_B.mat",
+      "크기": 1889,
+      "SHA256": "b1b9e754f55b8cbe91321b410a85095716bc0c63fec03019ea3d26d14f8744a9"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Ancient_Tree_B.mat.meta",
+      "크기": 185,
+      "SHA256": "80c1d6f485af1733b088d6d8e0929b66b0992a7dbd0c08c99b57b8238313f6a5"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Fallen_Log.mat",
+      "크기": 1886,
+      "SHA256": "6da44e82dda5822c7aa347c0181c49112c67f5c03a93d1d44aaa49843b0c3f72"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Fallen_Log.mat.meta",
+      "크기": 185,
+      "SHA256": "c9235d7e4f5df91ddf22847650af7771f479ff7742ee7d3d705f469aa26c8a4b"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Root_Stump.mat",
+      "크기": 1885,
+      "SHA256": "9f90091da6ed8d5c0d8a23fb724bdab46ed0dfdece266697d908bc5fda5728ec"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Root_Stump.mat.meta",
+      "크기": 185,
+      "SHA256": "a42c5e438d02a2f951df19c18fec396e3bb4471e7d288a82554078bd6858e5b3"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Moss_Rock_1.mat",
+      "크기": 1886,
+      "SHA256": "b690542d7e9e2eaa150a08a1c1e930b0f5c73d6d7ad1fd614b2ed10c9273a70a"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Moss_Rock_1.mat.meta",
+      "크기": 185,
+      "SHA256": "e74ba73099bc274d4321bb61d0ea3e6c00eeb2139ae8e4bdf9ea4a5c39f262dc"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Moss_Rock_2.mat",
+      "크기": 1886,
+      "SHA256": "6b57aa2b62fa56b6b02bbcf21934ac1cfecbbf8a33a9a9108d0892162322096a"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Moss_Rock_2.mat.meta",
+      "크기": 185,
+      "SHA256": "dde7a79ccd095fab2aabbccfe2504468a6a2be2e7a9a96c0631fecd15629df7c"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Moss_Rock_3.mat",
+      "크기": 1886,
+      "SHA256": "300d1604fb130ff52a0ee6e04dee206b3ad92414d4d79c3fecdc058a80d2600b"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Moss_Rock_3.mat.meta",
+      "크기": 185,
+      "SHA256": "f4f0079f2340cf8922a3336c6e5cd76406ae40b6e83a45d0d1023a3ecacdc5b9"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Withered_Shrub.mat",
+      "크기": 1907,
+      "SHA256": "0bc9fbec48882b1494ea44bd7e9c8cae6d8faa6b5b1ac0a47693cea4ccc679c7"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Withered_Shrub.mat.meta",
+      "크기": 185,
+      "SHA256": "39d1154ded4d82c58c65faa39971d6ecdd50ccb8980e2950dd574a02b37b3917"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Hanging_Moss.mat",
+      "크기": 1905,
+      "SHA256": "16b916da088cd247033bfbf0d28c246797e862472be04954d34e547aaec5eeb2"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Hanging_Moss.mat.meta",
+      "크기": 185,
+      "SHA256": "df0e169536d81670c5d29f8aa3973fca854bf16a943bb324ac4fdfd171451a47"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Moss_Cushion.mat",
+      "크기": 1905,
+      "SHA256": "8c1a869ba21d3feb9e72ff80bf32ac5336fa639a2eb74233839004c0e86b34bd"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Moss_Cushion.mat.meta",
+      "크기": 185,
+      "SHA256": "401a5a7119cc38ddeee6e6118b85d41e07f82331fc9f44f1883ba94804783143"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Rotten_Wood_Bridge.mat",
+      "크기": 1893,
+      "SHA256": "ae2d92efa812698397822f8211c89ca88f44a40e77b2517f0f34168f26b84ad0"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Rotten_Wood_Bridge.mat.meta",
+      "크기": 185,
+      "SHA256": "183ce79318f115929e541a1d75d758f873a2310366455c715e90d0de36f819ac"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Fungal_Colony.mat",
+      "크기": 1888,
+      "SHA256": "91b9a13fc769291a38799ca6a71146cce44ba659c1cd7a45318ad809f75403fa"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Fungal_Colony.mat.meta",
+      "크기": 185,
+      "SHA256": "f9cf1f416d81fefc89a1cee683051f440bf441e8e245e48a3821f44f7bfcbbbb"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_River_Stake_Cluster.mat",
+      "크기": 1895,
+      "SHA256": "6b2d7493686f6b8922cf5e3aa13ca5f3c32b77ceef127e9bc571b84cca3846ff"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_River_Stake_Cluster.mat.meta",
+      "크기": 185,
+      "SHA256": "f56fb8b1f2104520dd87afda22d4c9d454f22a571800a195a369d513a09f835d"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Bridge_Torch_Holder.mat",
+      "크기": 1894,
+      "SHA256": "aa0f92b275b29987d583eaf7952ddd17c2bd7e40c988b75acfd0e79d0cb922f6"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Bridge_Torch_Holder.mat.meta",
+      "크기": 185,
+      "SHA256": "94763a0f970acc028bee583090e6f521288c4b0efa1d20317965b8febe238da7"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Foreground_Branch_Frame.mat",
+      "크기": 1899,
+      "SHA256": "a47547cf6e3c1fa1ed1db39409b72e1867ca9c7fc4e18f1e59d3cea7a87277a1"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Foreground_Branch_Frame.mat.meta",
+      "크기": 185,
+      "SHA256": "984b7a982430d11c73321c8c995772e09ca6f43d356ff80ceeeeaa342636f1fd"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Forest_Vista_Card.mat",
+      "크기": 1946,
+      "SHA256": "8ac95c22b74a6d26eb90fd2ba2ded652a6d4380f53a0ac1302d648ac565d0367"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Forest_Vista_Card.mat.meta",
+      "크기": 185,
+      "SHA256": "697b47dbfccc4e2e1e140b145a6960ec559e3288f1bc8a060fcbbab7cb237c15"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Continuous_Bank_Terrain.mat",
+      "크기": 1900,
+      "SHA256": "89cdfd661d8d9eb947dea071a76d0c53c70be4a0223a96680693c0dd361a5811"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Continuous_Bank_Terrain.mat.meta",
+      "크기": 185,
+      "SHA256": "9b4d6698bec1e0c144ed2f9b7b4e61c627fae0389a362fbf0a6e8208a8e170db"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Dead_Leaf_Litter.mat",
+      "크기": 1909,
+      "SHA256": "c4b2845a9ae5c340396f37c00d2290e19ade23b1ae4fe0128e9e0d8d5a585ced"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials/RF3_Dead_Leaf_Litter.mat.meta",
+      "크기": 185,
+      "SHA256": "7d72f258ce77fde12087898fdbb404147e1f761f850da8f47e86b2e1658fafd5"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Models.meta",
+      "크기": 169,
+      "SHA256": "3b0e9a6957943c66b4e05bb5ec2b5a5f79406ae1598e3b04d37b19c8de5d20a4"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Textures.meta",
+      "크기": 169,
+      "SHA256": "79f64b5653a704f5d8db07d08310b75b6b73cd7b9c6c7a6980a00c40a6d190d0"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3/Materials.meta",
+      "크기": 169,
+      "SHA256": "e433ae9394510059b7a8907369f6fa68f4eae73ff4405c521a06150eddab3ef3"
+    },
+    {
+      "경로": "Assets/Exoduser/Art/Environment/CH1_1_WoodbridgeR3.meta",
+      "크기": 169,
+      "SHA256": "4db7156ce62833678a48598080ee6712af69068ae4779e7f148cafd7574b2d76"
+    }
+  ],
+  "Unity실행": 0,
+  "Player실행": 0
+}
