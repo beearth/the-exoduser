@@ -126,23 +126,23 @@ namespace Exoduser.UnityPort
   public void Draw(){if(!IsBlocking||!ready)return;Styles();var old=GUI.matrix;var tint=GUI.color;bool enabled=GUI.enabled;int priorDepth=GUI.depth;GUI.matrix=Matrix4x4.identity;if(!StartupWorldVisible)Fill(new Rect(0,0,Screen.width,Screen.height),Color.black);float fit=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*fit)/2,(Screen.height-1080*fit)/2,0),Quaternion.identity,new Vector3(fit,fit,1));OriginalArtDrawn=false;CaptionVisible=false;if(!StartupWorldVisible)Fill(new Rect(0,0,1920,1080),Color.black);if(StartupEntryActive)DrawStartupEntry();else if(CharacterStoryActive)DrawCharacterStory();else if(splash==1){if(fdgWatchdog.FallingBack)Image(new Rect(0,0,1920,1080),fdgEmblem);else DrawMovie(new Rect(0,0,1920,1080),fdgEmblem,false);Label(new Rect(0,955,1920,60),K("아무 키나 눌러 계속","Press any key to continue"),small,TextAnchor.MiddleCenter);}else if(splash==2){DrawTitleSplash();}else if(Flow.Page==LobbyPage.Lobby)DrawLobby();else{DrawCinematicMovie();if(Flow.Page==LobbyPage.Title||Flow.Page==LobbyPage.Gate)DrawGatePresentation();if(Flow.Page==LobbyPage.WorldIntro)DrawWorldIntro();if(Flow.Page!=LobbyPage.Lobby&&Flow.Page!=LobbyPage.Title){DrawCinematicSkip();}}GUI.color=tint;GUI.enabled=enabled;GUI.depth=priorDepth;GUI.matrix=old;}
   void OnGUI(){if(AutomatedInput&&(Event.current.isKey||Event.current.isMouse||Event.current.type==EventType.ScrollWheel))Event.current.Use();Draw();}
   string K(string ko,string en){return Language=="ko"?ko:en;}
-  static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
-  static void Label(Rect r,string text,GUIStyle style,TextAnchor alignment){var old=style.alignment;var color=style.normal.textColor;try{style.alignment=alignment;style.normal.textColor=NativeSilverHellUi.TextColor(color);GUI.Label(r,text,style);}finally{style.alignment=old;style.normal.textColor=color;}}
-  void Image(Rect r,Texture t,ScaleMode mode=ScaleMode.ScaleToFit){if(t==null)return;GUI.DrawTexture(r,t,mode,true);OriginalArtDrawn=true;}
+  static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
+  static void Label(Rect r,string text,GUIStyle style,TextAnchor alignment){var old=style.alignment;var color=style.normal.textColor;try{style.alignment=alignment;style.normal.textColor=NativeSilverHellUi.TextColor(color);NativeUiAudit.Label(r,text,style);}finally{style.alignment=old;style.normal.textColor=color;}}
+  void Image(Rect r,Texture t,ScaleMode mode=ScaleMode.ScaleToFit){if(t==null)return;NativeUiAudit.DrawTexture(r,t,mode,true);NativeUiAudit.ImageText(r,t);OriginalArtDrawn=true;}
   void DrawMovie(Rect box,Texture fallback,bool cover){var texture=movie.Error.Length==0&&movie.Prepared&&movie.Frame>=0?movie.Texture:fallback;Image(box,texture,cover?ScaleMode.ScaleAndCrop:ScaleMode.ScaleToFit);}
-  void DrawGate(){var frame=new Rect(34.2857f,0,1851.4286f,1080);float titleWidth=frame.width*.52f;float height=logo==null?300:titleWidth*logo.height/logo.width;Image(new Rect(frame.x+frame.width*.533f-titleWidth/2,1080*.37f-height/2,titleWidth,height),logo);var r=new Rect(frame.x+frame.width*.533f-120,1080*.8f-80,240,160);Image(r,enterArt);if(GUI.Button(r,"",GUIStyle.none))StartGate();if(enterArt==null)Label(r,"ENTER",heading,TextAnchor.MiddleCenter);}
-  void DrawSplash(){Texture tex=movie.Error.Length==0&&movie.Prepared&&movie.Frame>=0?movie.Texture:splashTitle;if(tex==null)return;bool video=tex==movie.Texture;float sy=video?78f/768:80f/793,sh=video?616f/768:636f/793;float dw=1080f*tex.width/(tex.height*sh),dx=Mathf.Max((1920-dw)/2,-dw*.1f);GUI.DrawTextureWithTexCoords(new Rect(dx,0,dw,1080),tex,new Rect(0,1-sy-sh,1,sh),true);OriginalArtDrawn=true;if(splashBrand!=null)Image(new Rect(dx,-80f/636*1080,dw,dw*793/1983),splashBrand);}
+  void DrawGate(){var frame=new Rect(34.2857f,0,1851.4286f,1080);float titleWidth=frame.width*.52f;float height=logo==null?300:titleWidth*logo.height/logo.width;Image(new Rect(frame.x+frame.width*.533f-titleWidth/2,1080*.37f-height/2,titleWidth,height),logo);var r=new Rect(frame.x+frame.width*.533f-120,1080*.8f-80,240,160);Image(r,enterArt);if(NativeUiAudit.Button(r,"",GUIStyle.none))StartGate();if(enterArt==null)Label(r,"ENTER",heading,TextAnchor.MiddleCenter);}
+  void DrawSplash(){Texture tex=movie.Error.Length==0&&movie.Prepared&&movie.Frame>=0?movie.Texture:splashTitle;if(tex==null)return;bool video=tex==movie.Texture;float sy=video?78f/768:80f/793,sh=video?616f/768:636f/793;float dw=1080f*tex.width/(tex.height*sh),dx=Mathf.Max((1920-dw)/2,-dw*.1f);NativeUiAudit.DrawTextureWithTexCoords(new Rect(dx,0,dw,1080),tex,new Rect(0,1-sy-sh,1,sh),true);OriginalArtDrawn=true;if(splashBrand!=null)Image(new Rect(dx,-80f/636*1080,dw,dw*793/1983),splashBrand);}
   void DrawWorldIntro()
   {
    LobbyStyles();bool popupWasOpen=showLanguages;HandleLanguagePopupKeys();bool previousEnabled=GUI.enabled;
    var captionStyle=CaptionStyleForLanguage();var shadowStyle=CaptionShadowForLanguage();float h=captionStyle.CalcHeight(new GUIContent(SubtitleText),1612);Rect r=new Rect(154,940-h,1612,h);
-   if(SubtitleText.Length>0&&!(Language=="ar"&&arabicCaptionOverlay!=null&&arabicCaptionOverlay.Ready)){for(int dx=-2;dx<=2;dx+=2)for(int dy=-2;dy<=2;dy+=2)GUI.Label(new Rect(r.x+dx,r.y+dy,r.width,r.height),SubtitleText,shadowStyle);GUI.Label(r,SubtitleText,captionStyle);CaptionVisible=true;}
+   if(SubtitleText.Length>0&&!(Language=="ar"&&arabicCaptionOverlay!=null&&arabicCaptionOverlay.Ready)){for(int dx=-2;dx<=2;dx+=2)for(int dy=-2;dy<=2;dy+=2)NativeUiAudit.Label(new Rect(r.x+dx,r.y+dy,r.width,r.height),SubtitleText,shadowStyle);NativeUiAudit.Label(r,SubtitleText,captionStyle);CaptionVisible=true;}
    if(SubtitleText.Length>0&&Language=="ar"&&arabicCaptionOverlay!=null&&arabicCaptionOverlay.Ready){arabicCaptionOverlay.DrawComposite(new Rect(0,0,1920,1080));CaptionVisible=true;}
    DrawCinematicLanguage();
    GUI.enabled=previousEnabled&&!showLanguages;
    // Source hides worldIntroMix during normal playback; show recovery only when paused/error.
    bool playing=movie.Prepared&&movie.Player!=null&&movie.Player.isPlaying;
-   if((VideoError.Length>0||(movie.Prepared&&!playing))&&GUI.Button(new Rect(28,26,240,48),VideoError.Length>0?K("재생 / 재시도","Play / retry"):playing?K("일시정지","Pause"):K("재생","Play"),button))TogglePlayback();
+   if((VideoError.Length>0||(movie.Prepared&&!playing))&&NativeUiAudit.Button(new Rect(28,26,240,48),VideoError.Length>0?K("재생 / 재시도","Play / retry"):playing?K("일시정지","Pause"):K("재생","Play"),button))TogglePlayback();
    if(VideoError.Length>0)Label(new Rect(28,86,1300,100),K("영상 재생 실패 — 재시도하거나 ESC를 길게 눌러 나가세요.","Video playback failed — retry or hold ESC to continue."),normal,TextAnchor.UpperLeft);
    GUI.enabled=previousEnabled;
    if(showLanguages){
@@ -207,7 +207,7 @@ namespace Exoduser.UnityPort
    bool hover=r.Contains(Event.current.mousePosition),pressed=!AutomatedInput&&hover&&ExoInput.Mouse(0);
    if(hover&&!pressed)NativeSilverHellUi.ButtonFocus(r);NativeSilverHellUi.ActionPlate(r,primary,hover?1:0,pressed,28,6);
    var label=new GUIStyle(normal){font=NativeSilverHellUi.Font()??normal.font,fontSize=18,fontStyle=FontStyle.Normal};label.normal.textColor=NativeSilverHellUi.Bright;Label(r,text,label,TextAnchor.MiddleCenter);
-   return GUI.Button(r,GUIContent.none,GUIStyle.none);
+   return NativeUiAudit.Button(r,GUIContent.none,GUIStyle.none);
   }
   string LobbyLanguageLabel(string code)
   {
@@ -225,17 +225,17 @@ namespace Exoduser.UnityPort
   }
   static bool DismissOutside(Rect popup)
   {
-   bool dismiss=GUI.Button(new Rect(0,0,1920,popup.yMin),"",GUIStyle.none);
-   dismiss|=GUI.Button(new Rect(0,popup.yMax,1920,1080-popup.yMax),"",GUIStyle.none);
-   dismiss|=GUI.Button(new Rect(0,popup.yMin,popup.xMin,popup.height),"",GUIStyle.none);
-   dismiss|=GUI.Button(new Rect(popup.xMax,popup.yMin,1920-popup.xMax,popup.height),"",GUIStyle.none);
+   bool dismiss=NativeUiAudit.Button(new Rect(0,0,1920,popup.yMin),"",GUIStyle.none);
+   dismiss|=NativeUiAudit.Button(new Rect(0,popup.yMax,1920,1080-popup.yMax),"",GUIStyle.none);
+   dismiss|=NativeUiAudit.Button(new Rect(0,popup.yMin,popup.xMin,popup.height),"",GUIStyle.none);
+   dismiss|=NativeUiAudit.Button(new Rect(popup.xMax,popup.yMin,1920-popup.xMax,popup.height),"",GUIStyle.none);
    return dismiss;
   }
   void DrawLobbyBackground()
   {
    Texture tex=movie.Error.Length==0&&movie.Prepared&&movie.Frame>=0?movie.Texture:lobbyPoster;if(tex==null)return;
    float scale=Mathf.Max(1920f/tex.width,1080f/tex.height),sw=1920/(scale*tex.width),sh=1080/(scale*tex.height);
-   GUI.DrawTextureWithTexCoords(new Rect(0,0,1920,1080),tex,new Rect((1-sw)*.5f,(1-sh)*.25f,sw,sh),true);OriginalArtDrawn=true;
+   NativeUiAudit.DrawTextureWithTexCoords(new Rect(0,0,1920,1080),tex,new Rect((1-sw)*.5f,(1-sh)*.25f,sw,sh),true);OriginalArtDrawn=true;
   }
   static void Border(Rect r,Color color,float width){Fill(new Rect(r.x,r.y,r.width,width),color);Fill(new Rect(r.x,r.yMax-width,r.width,width),color);Fill(new Rect(r.x,r.y,width,r.height),color);Fill(new Rect(r.xMax-width,r.y,width,r.height),color);}
   static void DashedBorder(Rect r,Color color){for(float x=r.x;x<r.xMax;x+=5){float w=Mathf.Min(3,r.xMax-x);Fill(new Rect(x,r.y,w,1),color);Fill(new Rect(x,r.yMax-1,w,1),color);}for(float y=r.y;y<r.yMax;y+=5){float h=Mathf.Min(3,r.yMax-y);Fill(new Rect(r.x,y,1,h),color);Fill(new Rect(r.xMax-1,y,1,h),color);}}
@@ -251,6 +251,6 @@ namespace Exoduser.UnityPort
    foreach(char ch in text){float w=style.CalcSize(new GUIContent(ch.ToString())).x;Label(new Rect(x,y,w,height),ch.ToString(),style,TextAnchor.MiddleCenter);x+=w+spacing;}
   }
 
-  void DrawAncestor(){float scale=Mathf.Max(1920f/1920,1080f/1088),footY=Mathf.Min(1080*.89f,Mathf.Max(1080*.76f,1088*scale*.84f+(1080-1088*scale)*.75f));float h=Mathf.Min(1080*.8f,footY-28),w=h*384/624,footX=Mathf.Max(w*.52f+12,Mathf.Min(1920*.65f-w*.48f-12,1920*scale*.33f+(1920-1920*scale)*.5f));Rect r=new Rect(footX-182.43863f/384*w,footY-603.68209f/624*h,w,h);if(ancestor!=null){int frame=(int)(Time.unscaledTime*24)%96;GUI.DrawTextureWithTexCoords(r,ancestor,new Rect(frame%8/8f,1-(frame/8+1)/12f,1/8f,1/12f),true);OriginalArtDrawn=true;}else Image(r,ancestorFirst);var oldColor=lobbyMicro.normal.textColor;TrackedLabel(new Rect(footX-350,935.6f,700,18.2f),K("선대 소환체","ANCESTRAL SUMMON"),lobbySub,2);TrackedLabel(new Rect(footX-350,957.8f,700,69),K("묘왕 바르칸","Varkan, the Tomb King"),lobbyTitle,Language=="ko"?11.2f:3);lobbyMicro.normal.textColor=NativeSilverHellUi.Dim;TrackedLabel(new Rect(footX-350,1030.8f,700,16.8f),K("플레이어가 소환하는 선대의 영체","A spirit summoned by the player."),lobbyMicro,.4f);lobbyMicro.normal.textColor=oldColor;}
+  void DrawAncestor(){float scale=Mathf.Max(1920f/1920,1080f/1088),footY=Mathf.Min(1080*.89f,Mathf.Max(1080*.76f,1088*scale*.84f+(1080-1088*scale)*.75f));float h=Mathf.Min(1080*.8f,footY-28),w=h*384/624,footX=Mathf.Max(w*.52f+12,Mathf.Min(1920*.65f-w*.48f-12,1920*scale*.33f+(1920-1920*scale)*.5f));Rect r=new Rect(footX-182.43863f/384*w,footY-603.68209f/624*h,w,h);if(ancestor!=null){int frame=(int)(Time.unscaledTime*24)%96;NativeUiAudit.DrawTextureWithTexCoords(r,ancestor,new Rect(frame%8/8f,1-(frame/8+1)/12f,1/8f,1/12f),true);OriginalArtDrawn=true;}else Image(r,ancestorFirst);var oldColor=lobbyMicro.normal.textColor;TrackedLabel(new Rect(footX-350,935.6f,700,18.2f),K("선대 소환체","ANCESTRAL SUMMON"),lobbySub,2);TrackedLabel(new Rect(footX-350,957.8f,700,69),K("묘왕 바르칸","Varkan, the Tomb King"),lobbyTitle,Language=="ko"?11.2f:3);lobbyMicro.normal.textColor=NativeSilverHellUi.Dim;TrackedLabel(new Rect(footX-350,1030.8f,700,16.8f),K("플레이어가 소환하는 선대의 영체","A spirit summoned by the player."),lobbyMicro,.4f);lobbyMicro.normal.textColor=oldColor;}
  }
 }

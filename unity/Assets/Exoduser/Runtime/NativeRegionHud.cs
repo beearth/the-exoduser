@@ -208,13 +208,13 @@ namespace Exoduser.UnityPort
    var old = GUI.color;
    // ::before / ::after: top .78em, 21 % wide, 1px gradient, opacity .8 (right one mirrored)
    GUI.color = new Color(1, 1, 1, .8f * op);
-   GUI.DrawTexture(new Rect(left, top + LineY, BannerW * .21f, 1), lineTex);
-   GUI.DrawTextureWithTexCoords(new Rect(left + BannerW - BannerW * .21f, top + LineY, BannerW * .21f, 1), lineTex, new Rect(1, 0, -1, 1));
+   NativeUiAudit.DrawTexture(new Rect(left, top + LineY, BannerW * .21f, 1), lineTex);
+   NativeUiAudit.DrawTextureWithTexCoords(new Rect(left + BannerW - BannerW * .21f, top + LineY, BannerW * .21f, 1), lineTex, new Rect(1, 0, -1, 1));
    // purge flare (340x56, centred, top .5em)
    if (bannerPurge)
    {
     float fop, fsx; SampleFlare(age, out fop, out fsx);
-    if (fop > .002f) { GUI.color = new Color(1, 1, 1, fop * op); float fw = 340 * fsx; GUI.DrawTexture(new Rect(cx - fw / 2f, top + 8f, fw, 56f), flareTex); }
+    if (fop > .002f) { GUI.color = new Color(1, 1, 1, fop * op); float fw = 340 * fsx; NativeUiAudit.DrawTexture(new Rect(cx - fw / 2f, top + 8f, fw, 56f), flareTex); }
    }
    GUI.color = old;
    // row 1: gem  KR  gem
@@ -248,9 +248,9 @@ namespace Exoduser.UnityPort
    var m = GUI.matrix; var oc = GUI.color;
    RotateLocal(new Vector2(cx, cy), 45);
    float glow = bannerPurge ? 9f : 5f; Color gc = bannerPurge ? C(188,185,179, .7f * op) : new Color(0, 0, 0, .6f * op);
-   GUI.color = new Color(gc.r, gc.g, gc.b, gc.a * .14f); GUI.DrawTexture(new Rect(cx - 3 - glow * .25f, cy - 3 - glow * .25f, 6 + glow * .5f, 6 + glow * .5f), Texture2D.whiteTexture);
-   GUI.color = new Color(16 / 255f, 11 / 255f, 8 / 255f, .9f * op); GUI.DrawTexture(new Rect(cx - 3, cy - 3, 6, 6), Texture2D.whiteTexture);   // 6px border-box with a 1px border
-   GUI.color = new Color(col.r, col.g, col.b, op); GUI.DrawTexture(new Rect(cx - 2, cy - 2, 4, 4), Texture2D.whiteTexture);
+   GUI.color = new Color(gc.r, gc.g, gc.b, gc.a * .14f); NativeUiAudit.DrawTexture(new Rect(cx - 3 - glow * .25f, cy - 3 - glow * .25f, 6 + glow * .5f, 6 + glow * .5f), Texture2D.whiteTexture);
+   GUI.color = new Color(16 / 255f, 11 / 255f, 8 / 255f, .9f * op); NativeUiAudit.DrawTexture(new Rect(cx - 3, cy - 3, 6, 6), Texture2D.whiteTexture);   // 6px border-box with a 1px border
+   GUI.color = new Color(col.r, col.g, col.b, op); NativeUiAudit.DrawTexture(new Rect(cx - 2, cy - 2, 4, 4), Texture2D.whiteTexture);
    GUI.matrix = m; GUI.color = oc;
   }
   static void RotateLocal(Vector2 pivot, float deg) { GUI.matrix = GUI.matrix * Matrix4x4.TRS(pivot, Quaternion.Euler(0, 0, deg), Vector3.one) * Matrix4x4.TRS(-pivot, Quaternion.identity, Vector3.one); }
@@ -357,9 +357,9 @@ namespace Exoduser.UnityPort
    if (gl != null)
    {
     float k = W / arrowTex.width; GUI.color = new Color(1, 1, 1, Mathf.Min(1, pulse * 1.25f));
-    var gr = new Rect(ox - 18 * k, ay - H / 2 - 18 * k, gl.width * k, gl.height * k); GUI.DrawTexture(gr, gl); GUI.DrawTexture(gr, gl);
+    var gr = new Rect(ox - 18 * k, ay - H / 2 - 18 * k, gl.width * k, gl.height * k); NativeUiAudit.DrawTexture(gr, gl); NativeUiAudit.DrawTexture(gr, gl);
    }
-   GUI.color = new Color(1, 1, 1, Mathf.Min(1, pulse + .2f)); GUI.DrawTexture(new Rect(ox, ay - H / 2, W, H), arrowTex);
+   GUI.color = new Color(1, 1, 1, Mathf.Min(1, pulse + .2f)); NativeUiAudit.DrawTexture(new Rect(ox, ay - H / 2, W, H), arrowTex);
    GUI.matrix = oldM; GUI.color = oldC;
    // label: Nanum Myeongjo 700 14px bone, Cinzel 12px distance, 8-direction black offsets
    float dm = Mathf.Floor(Mathf.Sqrt((raX - sim.Player.X) * (raX - sim.Player.X) + (raY - sim.Player.Y) * (raY - sim.Player.Y)) / 64f);

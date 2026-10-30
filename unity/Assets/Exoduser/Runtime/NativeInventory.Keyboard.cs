@@ -40,7 +40,7 @@ namespace Exoduser.UnityPort {
   void RevealSelection(){var it=State.Selected;if(it==null||!State.Bag.Contains(it))return;const float cellSize=56f,visibleHeight=672;float top=it._gy*cellSize,bottom=(it._gy+2)*cellSize;if(top<scroll.y)scroll.y=top;else if(bottom>scroll.y+visibleHeight)scroll.y=bottom-visibleHeight;}
   void AfterOwnershipChange(){Navigation.TrackSelection();Navigation.Fence();RefreshSelection();}
   void DrawKeyboardHelp(Rect pane){
-   GUI.Label(new Rect(pane.x+32,pane.yMax-70,pane.width-64,68),"방향키 선택 · G 가방/장착 장비 · Enter 장착/해제\nC 비교/상세 · PgUp/PgDn 상세 스크롤 · Tab/ESC 닫기",small);
+   NativeUiAudit.Label(new Rect(pane.x+32,pane.yMax-70,pane.width-64,68),"방향키 선택 · G 가방/장착 장비 · Enter 장착/해제\nC 비교/상세 · PgUp/PgDn 상세 스크롤 · Tab/ESC 닫기",small);
    if(Navigation.Focused){var active=Navigation.Pane==InventoryPane.Bag?new Rect(Screen.width/Mathf.Min(Screen.width/1920f,Screen.height/1080f)-600,24,600,3):new Rect(0,24,640,3);Fill(active,gold);}
   }
  }

@@ -68,7 +68,7 @@ namespace Exoduser.UnityPort {
    windowBase=Tex("Art/ui/skill/window_base");altarLmb=Tex("Art/ui/skill/altar_lmb");discEmpty=Tex("Art/ui/skill/disc_empty");discEmptySel=Tex("Art/ui/skill/disc_empty_sel");discLmb=Tex("Art/ui/skill/disc_lmb");discLmbSel=Tex("Art/ui/skill/disc_lmb_sel");
    plate=Tex("Art/ui/inventory/plate");
   }
-  static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
+  static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
   static void Border(Rect r,Color c,float w=1){Fill(new Rect(r.x,r.y,r.width,w),c);Fill(new Rect(r.x,r.yMax-w,r.width,w),c);Fill(new Rect(r.x,r.y+w,w,r.height-2*w),c);Fill(new Rect(r.xMax-w,r.y+w,w,r.height-2*w),c);}
   static Rect R(float[] a){return new Rect(a[0],a[1],a[2],a[3]);}
   // CSS linear-gradient angle: 180 top to bottom, 90 left to right, 270 right to left.
@@ -80,21 +80,21 @@ namespace Exoduser.UnityPort {
    for(int iy=0;iy<n;iy++)for(int ix=0;ix<n;ix++){float sx=(ix+.5f)/n-.5f,sy=((n-1-iy)+.5f)/n-.5f;px[iy*n+ix]=Color.Lerp(a,b,Mathf.Clamp01(.5f+(sx*dx+sy*dy)/len));}
    t.SetPixels(px);t.Apply(false,true);procedural[key]=t;return t;
   }
-  void Grad(Rect r,Color a,Color b,float angle=180f){GUI.DrawTexture(r,Gradient(a,b,angle));}
+  void Grad(Rect r,Color a,Color b,float angle=180f){NativeUiAudit.DrawTexture(r,Gradient(a,b,angle));}
   Texture2D Radial(){
    if(procedural.TryGetValue("radial",out var t))return t;
    const int n=128;t=new Texture2D(n,n,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};var px=new Color[n*n];
    for(int y=0;y<n;y++)for(int x=0;x<n;x++){float dx=(x+.5f)/n*2-1,dy=(y+.5f)/n*2-1;px[y*n+x]=new Color(1,1,1,Mathf.Clamp01(1-Mathf.Sqrt(dx*dx+dy*dy)));}
    t.SetPixels(px);t.Apply(false,true);procedural["radial"]=t;return t;
   }
-  void Glow(float cx,float cy,float rx,float ry,Color c){var old=GUI.color;GUI.color=c;GUI.DrawTexture(new Rect(cx-rx,cy-ry,rx*2,ry*2),Radial());GUI.color=old;}
+  void Glow(float cx,float cy,float rx,float ry,Color c){var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(new Rect(cx-rx,cy-ry,rx*2,ry*2),Radial());GUI.color=old;}
   Texture2D DiscTexture(){
    if(procedural.TryGetValue("disc",out var t))return t;
    const int n=128;t=new Texture2D(n,n,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};var px=new Color[n*n];
    for(int y=0;y<n;y++)for(int x=0;x<n;x++){float d=Mathf.Sqrt((x+.5f-n/2f)*(x+.5f-n/2f)+(y+.5f-n/2f)*(y+.5f-n/2f))/(n/2f);px[y*n+x]=new Color(1,1,1,Mathf.Clamp01((1f-d)*n/2f+.5f));}
    t.SetPixels(px);t.Apply(false,true);procedural["disc"]=t;return t;
   }
-  void Disc(Vector2 c,float r,Color col){var old=GUI.color;GUI.color=col;GUI.DrawTexture(new Rect(c.x-r,c.y-r,r*2,r*2),DiscTexture());GUI.color=old;}
+  void Disc(Vector2 c,float r,Color col){var old=GUI.color;GUI.color=col;NativeUiAudit.DrawTexture(new Rect(c.x-r,c.y-r,r*2,r*2),DiscTexture());GUI.color=old;}
 
   // ---- text ----
   GUIStyle Style(Font f,int size,FontStyle fs){
@@ -159,7 +159,7 @@ namespace Exoduser.UnityPort {
    return t;
   }
   bool Plate(Rect r,string label,Color text,bool shadow=true){
-   Fill(r,C(35,34,37));if(plate!=null)GUI.DrawTexture(r,plate,ScaleMode.StretchToFill);
+   Fill(r,C(35,34,37));if(plate!=null)NativeUiAudit.DrawTexture(r,plate,ScaleMode.StretchToFill);
    Grad(r,C(21,20,23,.51f),C(11,10,12,.675f));
    if(GUI.enabled&&r.Contains(Event.current.mousePosition))Fill(r,new Color(1,1,1,.05f));
    Text(r,label,serif,16,text,FontStyle.Bold,0,TextAnchor.MiddleCenter,shadow);
@@ -174,7 +174,7 @@ namespace Exoduser.UnityPort {
     float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
     cur=sim;bool lmb=sim.Config.ActiveAttack=="kiSlash";int level=Math.Max(1,sim.Config.KiSlashLevel);
-    GUI.DrawTexture(WindowRect,windowBase,ScaleMode.StretchToFill,false);
+    NativeUiAudit.DrawTexture(WindowRect,windowBase,ScaleMode.StretchToFill,false);
     NativePanelTabBar.Draw(NativePanelTabBar.Preset.Skill,"skillPanel");
     DrawSlots(lmb);
     DrawInfo(sim,lmb,level,equip);
@@ -189,12 +189,12 @@ namespace Exoduser.UnityPort {
     var d=defs.slots[i];bool sel=i==SelectedSlot,equipped=i==SkillUiState.LmbSlot&&lmb;
     var disc=R(d.disc).center;var sprite=new Rect(disc.x-53,disc.y-53,106,106);
     string slotSkill=i==SkillUiState.LmbSlot?null:EquippedId(i);
-    if(equipped)GUI.DrawTexture(sprite,sel?discLmbSel:discLmb);
+    if(equipped)NativeUiAudit.DrawTexture(sprite,sel?discLmbSel:discLmb);
     else if(slotSkill!=null){
-     GUI.DrawTexture(sprite,sel?discEmptySel:discEmpty);var tex=OrbIcon(slotSkill,false);
-     if(tex!=null){Disc(disc,29,C(75,78,78));GUI.DrawTexture(new Rect(disc.x-27,disc.y-27,54,54),tex);}
+     NativeUiAudit.DrawTexture(sprite,sel?discEmptySel:discEmpty);var tex=OrbIcon(slotSkill,false);
+     if(tex!=null){Disc(disc,29,C(75,78,78));NativeUiAudit.DrawTexture(new Rect(disc.x-27,disc.y-27,54,54),tex);}
     }
-    else if(sel)GUI.DrawTexture(sprite,discEmptySel);
+    else if(sel)NativeUiAudit.DrawTexture(sprite,discEmptySel);
     var key=R(d.keyRect);var name=R(d.nameRect);var button=R(d.button);
     // .sf-slot-key 11px Cinzel ls .08em gold; .sf-slot-name 11px (empty = dim, on = bone).
     Text(new Rect(button.x,key.y,button.width,key.height),d.key.ToUpperInvariant(),latinFont,11,C(167,170,170),FontStyle.Normal,.88f,TextAnchor.MiddleCenter);
@@ -207,7 +207,7 @@ namespace Exoduser.UnityPort {
 
   void DrawInfo(Simulation sim,bool lmb,int level,Action equip){
    string id=selectedOrb??EquippedId(SelectedSlot);if(id==null||!skillById.TryGetValue(id,out var def)){Text(new Rect(74,316.64f,284,28),"비어 있음",serif,16,C(129,132,132));DrawInfoResources(sim,638.64f);return;}bool ki=id=="kiSlash",ported=Ported(id);int slv=ported?SkillLevelOf(id):0;bool learned=ported&&slv>=1;
-   var ic=new Vector2(102,344.64f);Disc(ic,28,C(75,78,78));var tex=OrbIcon(id,false);if(tex!=null)GUI.DrawTexture(new Rect(74,316.64f,56,56),tex);
+   var ic=new Vector2(102,344.64f);Disc(ic,28,C(75,78,78));var tex=OrbIcon(id,false);if(tex!=null)NativeUiAudit.DrawTexture(new Rect(74,316.64f,56,56),tex);
    Text(new Rect(144,316.84f,214,33.6f),ki?data.skill.name:def.name,serif,28,C(222,219,213),FontStyle.Bold,.56f);Text(new Rect(144,354.44f,214,18),ki?"Lv "+level+" / 20":learned?"Lv "+slv+" / 20":ported?"미습득":"Lv "+NotPorted,latinFont,13,C(165,168,168),FontStyle.Normal,.78f);
    Fill(new Rect(74,384.64f,284,1),C(146,149,149,.5f));Paragraph(new Rect(74,399.64f,284,112),ki?data.skill.description:def.desc,serif,16,C(217,214,208),28);
    Text(new Rect(76,536.64f,140,19),learned?"강화 SP "+SkillRules.UpgradeSpCost:"강화 "+NotPorted,serif,15,C(165,168,168));Text(new Rect(216,536.64f,140,19),learned&&slv>=SkillRules.SkillLevelLock(sim.Player.Level)&&slv<SkillRules.MaxSkillLevel?"Lv"+(SkillRules.SkillLevelLock(sim.Player.Level)*50)+" 도달 시 해금":"",serif,15,C(201,163,154),FontStyle.Normal,0,TextAnchor.MiddleRight);
@@ -220,7 +220,7 @@ namespace Exoduser.UnityPort {
 
   void DrawAltar(bool lmb,int level){
    var slot=defs.slots[SelectedSlot];bool equipped=SelectedSlot==SkillUiState.LmbSlot&&lmb;
-   if(equipped)GUI.DrawTexture(AltarImageRect,altarLmb,ScaleMode.StretchToFill,false);
+   if(equipped)NativeUiAudit.DrawTexture(AltarImageRect,altarLmb,ScaleMode.StretchToFill,false);
    // core name box (top left of the altar): 22px, 2px fire border-left, gradient to transparent
    string coreName=equipped?data.skill.name:NotPorted;
    var cn=R(slot.coreNameRect);float cw=Width(serif,22,FontStyle.Bold,coreName,1.32f)+28;var box=new Rect(cn.x,cn.y,cw,cn.height);
@@ -249,7 +249,7 @@ namespace Exoduser.UnityPort {
    if(dim){Disc(c,r+3.5f,C(107,110,110,.32f));Disc(c,r+2.5f,C(39,42,42));}
    else{Disc(c,r+4,C(236,208,138));Disc(c,r+2.5f,C(114,117,117));}
    Disc(c,r+1,C(6,9,9));Disc(c,r,C(8,11,11));
-   var tex=OrbIcon(o.id,dim);if(tex!=null)GUI.DrawTexture(new Rect(c.x-r,c.y-r,o.o,o.o),tex);
+   var tex=OrbIcon(o.id,dim);if(tex!=null)NativeUiAudit.DrawTexture(new Rect(c.x-r,c.y-r,o.o,o.o),tex);
    // label: name (12px) + level/host badge, soft dark blob behind
    var nr=R(o.nameRect);Glow(nr.center.x,nr.center.y,nr.width/2+8,nr.height/2+4,C(6,9,9,.86f));
    Color nameCol=ki?C(240,220,168):dim?C(138,141,141):C(217,214,208);
@@ -276,7 +276,7 @@ namespace Exoduser.UnityPort {
    Plate(new Rect(1040.61f,998,111.19f,40),"추천 자동",txt);
    // frame strip drawn above the buttons: window-image rows 1038..1050 (screen y 1046..1058)
    var strip=new Rect(8,1046,1904,12);
-   GUI.DrawTextureWithTexCoords(strip,windowBase,new Rect(0,1-(1038f+12f)/1064f,1,12f/1064f));
+   NativeUiAudit.DrawTextureWithTexCoords(strip,windowBase,new Rect(0,1-(1038f+12f)/1064f,1,12f/1064f));
   }
  }
 }

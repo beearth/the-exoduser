@@ -75,7 +75,7 @@ namespace Exoduser.UnityPort
   }
   static void Fill(Rect rect,Color color)
   {
-   Color old=GUI.color;GUI.color=color;GUI.DrawTexture(rect,Texture2D.whiteTexture);GUI.color=old;
+   Color old=GUI.color;GUI.color=color;NativeUiAudit.DrawTexture(rect,Texture2D.whiteTexture);GUI.color=old;
   }
   static void Border(Rect r,Color c)
   {
@@ -163,11 +163,11 @@ namespace Exoduser.UnityPort
    if(Event.current.type==EventType.ScrollWheel&&content.Contains(Event.current.mousePosition)){keyScroll=Mathf.Clamp(keyScroll+Event.current.delta.y*40f,0,max);Event.current.Use();}
    keyScroll=Mathf.Clamp(keyScroll,0,max);
    TraceHitForQa("menu",content,max);
-   GUI.BeginGroup(content);
+   NativeUiAudit.BeginGroup(content);
    TraceHitForQa("group-before",content,max);
    keyList.Draw(new Vector2(12,14-keyScroll),new Rect(0,0,content.width,content.height));
    TraceHitForQa("group-after",content,max);
-   GUI.EndGroup();
+   NativeUiAudit.EndGroup();
   }
   void TraceHitForQa(string phase,Rect content,float max)
   {
@@ -247,12 +247,12 @@ namespace Exoduser.UnityPort
    float max=Mathf.Max(0,keyList.ContentHeight+51+32-pane.height);
    if(Event.current.type==EventType.ScrollWheel&&pane.Contains(Event.current.mousePosition)){keyScroll=Mathf.Clamp(keyScroll+Event.current.delta.y*40f,0,max);Event.current.Use();}
    keyScroll=Mathf.Clamp(keyScroll,0,max);
-   GUI.BeginGroup(pane);
+   NativeUiAudit.BeginGroup(pane);
    // web `#settings-page-controls .set-label` computed style: Noto Sans KR 600 16px, letter-spacing .64px, rgb(200,181,143), left aligned, box 1736x39 (padding 4/0/10), hairline rgb(73,65,54) below, list 12px under it
    if(keyLabelStyle==null){keyLabelStyle=new GUIStyle(GUI.skin.label){font=font,fontStyle=FontStyle.Normal,fontSize=16,alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset()};keyLabelStyle.normal.textColor=NativeSilverHellUi.Text;}
    {float lx=42,ly=14-keyScroll+4;foreach(char ch in T("조작 키 설정 (클릭하여 변경)","Key bindings (click to change)")){string g=ch.ToString();NativeSilverHellUi.Label(new Rect(lx,ly,40,24),g,keyLabelStyle);lx+=keyLabelStyle.CalcSize(new GUIContent(g)).x+.64f;}
     Fill(new Rect(42,14-keyScroll+38,1736,1),new Color(94/255f,97/255f,97/255f));}
-   keyList.Draw(new Vector2(42,14+51-keyScroll),new Rect(0,0,pane.width,pane.height));GUI.EndGroup();
+   keyList.Draw(new Vector2(42,14+51-keyScroll),new Rect(0,0,pane.width,pane.height));NativeUiAudit.EndGroup();
    keyList.DrawToasts();
    if(MetalAction(new Rect(860,984,200,44),T("뒤로","Back"),false,false,button)&&!keyList.Listening)keyPage=false;
   }
