@@ -11,7 +11,7 @@ namespace Exoduser.UnityPort
     public sealed partial class NativeSkillView : IDisposable
     {
         sealed class Item { public GameObject go; public SpriteRenderer a, b; public LineRenderer[] rings; public SpriteRenderer[] embers; }
-        readonly Transform parent; readonly Material add, addFlat, alpha;
+        readonly Transform parent; readonly Material add, addFlat, alpha, malice;
         readonly Dictionary<int, Item> zones = new Dictionary<int, Item>(), waves = new Dictionary<int, Item>(), blades = new Dictionary<int, Item>(), orbs = new Dictionary<int, Item>();
         readonly Dictionary<int, List<Vector3>> orbTrails = new Dictionary<int, List<Vector3>>();
         readonly List<int> stale = new List<int>();
@@ -29,6 +29,10 @@ namespace Exoduser.UnityPort
             add = new Material(Resources.Load<Shader>("Shaders/SkillAdditive"));
             addFlat = new Material(Resources.Load<Shader>("Shaders/SkillAdditive")); addFlat.SetFloat("_Flat", 1);
             alpha = new Material(Shader.Find("Sprites/Default"));
+            // 현행 웹 GPU 프록시는 globalCompositeOperation을 무시하므로 악의구도 일반 합성이다.
+            malice = new Material(Resources.Load<Shader>("Shaders/SkillAdditive")); malice.SetFloat("_NormalBlend", 1);
+            malice.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            malice.SetInt("_DepthTest", (int)UnityEngine.Rendering.CompareFunction.Always);
             spike = Whole("Art/vfx/skill_spike_thorn"); dome = Whole("Art/vfx/skill_holy_dome");
             var slam = Resources.Load<Texture2D>("Art/vfx/skill_inferno_slam_sheet"); int hw = slam.width / 2, hh = slam.height / 2;
             for (int i = 0; i < 4; i++) slamFrames[i] = Sprite.Create(slam, new Rect(i % 2 * hw, slam.height - (i / 2 + 1) * hh, hw, hh), new Vector2(.5f, .5f), 100, 0, SpriteMeshType.FullRect);
@@ -157,7 +161,7 @@ namespace Exoduser.UnityPort
             foreach (var o in sim.MaliceOrbs)
             {
                 if (!o.Active) continue; stale.Remove(o.Id); Item it; List<Vector3> trail;
-                if (!orbs.TryGetValue(o.Id, out it)) { it = NewItem("malice" + o.Id); orbs[o.Id] = it; it.a = NewRenderer(it, "orb", maliceFrames[0], add, 0); centeredMaliceSprites.Add(it.a); it.rings = NewMaliceTrail(it); orbTrails[o.Id] = new List<Vector3>(); }
+                if (!orbs.TryGetValue(o.Id, out it)) { it = NewItem("malice" + o.Id); orbs[o.Id] = it; it.a = NewRenderer(it, "orb", maliceFrames[0], malice, 0); centeredMaliceSprites.Add(it.a); it.rings = NewMaliceTrail(it); orbTrails[o.Id] = new List<Vector3>(); }
                 trail = orbTrails[o.Id]; ActiveMaliceOrbs++;
                 var pos = MalicePosition(o.X, o.Y); it.go.transform.position = pos; it.a.sortingOrder = (int)o.Y + 3;
                 int fr = (int)(time * 1000f * .12f + o.X * .1f); it.a.sprite = maliceFrames[((fr % 20) + 20) % 20];
@@ -208,7 +212,7 @@ namespace Exoduser.UnityPort
         public void Dispose()
         {
             Reset(); if (orb != null) UnityEngine.Object.Destroy(orb.go);
-            UnityEngine.Object.Destroy(add); UnityEngine.Object.Destroy(addFlat); UnityEngine.Object.Destroy(alpha);
+            UnityEngine.Object.Destroy(add); UnityEngine.Object.Destroy(addFlat); UnityEngine.Object.Destroy(alpha); UnityEngine.Object.Destroy(malice);
         }
     }
 }

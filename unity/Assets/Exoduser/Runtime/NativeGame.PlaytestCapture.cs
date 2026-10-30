@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.LowLevel;
 using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort {
  public sealed partial class NativeGame {
-  [Serializable] sealed class PlaytestFrame { public string key; public int frame,tick; public float x,y,facing,aimError,maxSpriteError; public string state; public List<Vector2> ki=new List<Vector2>(),magic=new List<Vector2>(),magicVelocity=new List<Vector2>(),blades=new List<Vector2>(); public float harpX,harpY; public bool harp,dash; public int zones,waves,blasts; }
+  [Serializable] sealed class PlaytestFrame { public string key; public int frame,tick; public float x,y,facing,aimError,maxSpriteError; public string state; public List<Vector2> ki=new List<Vector2>(),magic=new List<Vector2>(),magicVelocity=new List<Vector2>(),blades=new List<Vector2>(); public float harpX,harpY; public bool harp,dash; public int zones,waves,blasts,burstViews; }
   [Serializable] sealed class PlaytestResult { public string scope="실제 Player, 가상 Input System 장치 → 기존 FixedUpdate → Core → LateUpdate. OS 손조작 아님"; public bool passed,remodel3d;public float fieldOfView,heroScale,pitchDegrees,distance,lookAhead; public int failures; public List<string> checks=new List<string>(); public List<PlaytestFrame> frames=new List<PlaytestFrame>(); }
   IEnumerator PlaytestCapture() {
    string output=Argument("-output"); if(string.IsNullOrEmpty(output)){Application.Quit(2);yield break;} Directory.CreateDirectory(output);
@@ -25,22 +25,24 @@ namespace Exoduser.UnityPort {
    var oldKeyboard=Keyboard.current;var oldMouse=Mouse.current;var keyboard=InputSystem.AddDevice<Keyboard>();var mouse=InputSystem.AddDevice<Mouse>();
    try {
     var controls=new List<string>{"LMB","RMB","Shift","E","Q","Ctrl","Space","1","2","3","4","F","Z","Roll"};
-    if(Argument("-malice-directions")=="1"){for(int i=0;i<8;i++){controls.Add("RMB-"+i);controls.Add("LMB-"+i);}controls.Add("RMB-sweep");}
+    if(Argument("-malice-directions")=="1"){for(int i=0;i<8;i++){controls.Add("RMB-"+i);controls.Add("LMB-"+i);}controls.Add("RMB-sweep");controls.Add("RMB-lv3");}
+    string selectedControls=Argument("-playtest-controls");if(!string.IsNullOrEmpty(selectedControls)){var selected=selectedControls.Split(',');controls.RemoveAll(c=>Array.IndexOf(selected,c)<0);}
     foreach(string control in controls) {
      string action=control.Split('-')[0];bool directional=control.Contains("-");
      ResetRun();if(firstPractice!=null)EndFirstPractice(true);menu=false;frontendEntryInputFence=false;SetGameFocus(true);Running=false;
      var s=Simulation;var p=s.Player;s.Config.EnemyAiEnabled=false;s.Enemies.Clear();s.SpawnHoles=null;s.CrossbowAuto=false;s.Materials=1000;p.Iframes=100000;
+     if(control=="RMB-lv3")s.Skills.Levels["fireball"]=3;
      // 맵 충돌을 끄지 않고 시작점의 열린 방향을 선택한다.
      float dx=1,dy=0;bool free=false;float[][] dirs={new[]{1f,0f},new[]{-1f,0f},new[]{0f,-1f},new[]{0f,1f}};
      foreach(var d in dirs){bool ok=true;for(int t=1;t<=20;t++)if(!Map.CanMove(p.X+d[0]*t*25,p.Y+d[1]*t*25,p.Radius)){ok=false;break;}if(ok){dx=d[0];dy=d[1];free=true;break;}}
-     if(directional){int dir=control=="RMB-sweep"?0:int.Parse(control.Split('-')[1]);
+     if(directional){int dir=control=="RMB-sweep"||control=="RMB-lv3"?0:int.Parse(control.Split('-')[1]);
       // 웹 MouseEvent.clientX/Y는 정수로 전달된다. 같은1600×900 입력 격자의 실제 방향을 대조한다.
       dx=(float)(Math.Floor(800+Math.Cos(dir*Math.PI/4)*300)-800);dy=(float)(Math.Floor(450+Math.Sin(dir*Math.PI/4)*300)-450);float length=Mathf.Sqrt(dx*dx+dy*dy);dx/=length;dy/=length;
       free=Map.CanMove(p.X+dx*25,p.Y+dy*25,p.Radius);}
      check(free,control+" 열린 발사 시작점");float x0=p.X,y0=p.Y,aimX=p.X+dx*300,aimY=p.Y+dy*300;
      UpdateViews();yield return null;if(Application.isBatchMode&&NativeRemodel3D.Active){Remodel3DLate();manualBrain?.ManualUpdate();}else if(!Application.isBatchMode)yield return new WaitForEndOfFrame();
-     float maxMotion=0,maxError=0,maxAimError=0;bool spawned=false,zone=false,orb=false,blades=false,block=false,wave=false;int cast0=s.SkillCastCount;
-     for(int f=0;f<(control=="Ctrl"?150:80);f++) {
+     float maxMotion=0,maxError=0,maxAimError=0;bool spawned=false,zone=false,orb=false,blades=false,block=false,wave=false,burstSeen=false;int cast0=s.SkillCastCount;
+     for(int f=0;f<(action=="RMB"?180:control=="Ctrl"?150:80);f++) {
       if(control=="RMB-sweep"&&f==1){aimX=x0;aimY=y0+300;}
       bool held=f<(action=="E"||action=="Roll"?1:14);var keys=new List<Key>();if(held){switch(action){case "Roll":keys.Add(Key.Space);keys.Add(dx>0?Key.D:dx<0?Key.A:dy>0?Key.S:Key.W);break;case "Shift":keys.Add(Key.LeftShift);break;case "E":keys.Add(Key.E);break;case "Q":keys.Add(Key.Q);break;case "Ctrl":keys.Add(Key.LeftCtrl);break;case "Space":keys.Add(Key.Space);break;case "1":keys.Add(Key.Digit1);break;case "2":keys.Add(Key.Digit2);break;case "3":keys.Add(Key.Digit3);break;case "4":keys.Add(Key.Digit4);break;case "F":keys.Add(Key.F);break;case "Z":keys.Add(Key.Z);break;}}
       keyboard.MakeCurrent();mouse.MakeCurrent();InputState.Change(keyboard,new KeyboardState(keys.ToArray()));
@@ -48,7 +50,7 @@ namespace Exoduser.UnityPort {
       var actualAim=AimWorld();float aimError=Vector2.Distance(new Vector2(actualAim.x*100,-actualAim.y*100),new Vector2(aimX,aimY));maxAimError=Mathf.Max(maxAimError,aimError);
       Running=true;FixedUpdate();Running=false;UpdateViews();
       yield return null;if(Application.isBatchMode&&NativeRemodel3D.Active){Remodel3DLate();manualBrain?.ManualUpdate();}else if(!Application.isBatchMode)yield return new WaitForEndOfFrame();
-      var row=new PlaytestFrame{key=control,frame=f,tick=s.TickCount,x=p.X,y=p.Y,facing=p.Facing,state=p.State,aimError=aimError,harp=(s.HarpActive),dash=s.DashActive,harpX=(float)s.HarpX,harpY=(float)s.HarpY,zones=s.FireZones.Count,waves=s.SlamWaves.Count,blasts=s.MaliceOrbBlasts};
+      var row=new PlaytestFrame{key=control,frame=f,tick=s.TickCount,x=p.X,y=p.Y,facing=p.Facing,state=p.State,aimError=aimError,harp=(s.HarpActive),dash=s.DashActive,harpX=(float)s.HarpX,harpY=(float)s.HarpY,zones=s.FireZones.Count,waves=s.SlamWaves.Count,blasts=s.MaliceOrbBlasts,burstViews=skillView.ActiveMaliceBursts};burstSeen|=row.burstViews>0;
       maxMotion=Mathf.Max(maxMotion,Vector2.Distance(new Vector2(p.X,p.Y),new Vector2(x0,y0)));
       foreach(var b in s.Projectiles)if(b.Active){row.ki.Add(new Vector2(b.X,b.Y));spawned=true;maxMotion=Mathf.Max(maxMotion,Vector2.Distance(new Vector2(b.X,b.Y),new Vector2(x0,y0)));}
       foreach(var b in s.MaliceOrbs)if(b.Active){row.magic.Add(new Vector2(b.X,b.Y));row.magicVelocity.Add(new Vector2(b.Vx,b.Vy));spawned=true;maxMotion=Mathf.Max(maxMotion,Vector2.Distance(new Vector2(b.X,b.Y),new Vector2(x0,y0)));if(NativeRemodel3D.Active){var go=GameObject.Find("malice"+b.Id);if(go!=null){var sr=go.transform.Find("orb").GetComponent<SpriteRenderer>();var expected=NativeSkillView.MalicePosition(b.X,b.Y);row.maxSpriteError=Mathf.Max(row.maxSpriteError,Vector3.Distance(sr.transform.position,expected));}}}
@@ -59,6 +61,7 @@ namespace Exoduser.UnityPort {
      if(action=="LMB"||action=="RMB")check(spawned&&maxMotion>100,control+" 투사체 전진 "+maxMotion.ToString("F1")+"px");
      if(action=="RMB"&&NativeRemodel3D.Active)check(maxError<.02f,"악의구 Core→화면 위치 오차 "+maxError.ToString("F3")+"u");
      if(action=="RMB"&&directional){var first=result.frames.Find(r=>r.key==control&&r.magicVelocity.Count>0);check(first!=null&&Vector2.Distance(first.magicVelocity[0],new Vector2(dx*5.5f,dy*5.5f))<.01f,control+" 시전 시작 방향·속도5.5px");}
+     if(action=="RMB")check(s.MaliceOrbBlasts==1&&burstSeen&&skillView.ActiveMaliceBursts==0,control+" 실제 폭발1회·원본 표시·수명 종료");
      if(control=="E")check(s.BashStrikeCount>0,"E 짧게 눌러 강타 판정");if(control=="Q")check(block,"Q 패링 자세");if(control=="Space")check(wave&&s.SkillCastCount>cast0,"Space 지옥강타");
      if(control=="Roll")check(maxMotion>=174&&maxMotion<=176&&s.SkillCastCount==cast0&&!wave,"이동+Space 구르기175px·스킬 중복시전0");
      if(control=="Shift")check(maxMotion>100,"사슬 이동 "+maxMotion.ToString("F1")+"px");

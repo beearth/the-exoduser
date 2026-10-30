@@ -15,6 +15,7 @@ namespace Exoduser.UnityPort
         readonly Sprite[][] maliceBurstFrames = new Sprite[3][];
         readonly List<MaliceBurst> maliceBursts = new List<MaliceBurst>();
         Simulation maliceSim;
+        public int ActiveMaliceBursts { get { return maliceBursts.Count; } }
         sealed class MaliceBurst { public Item item; public SpriteRenderer[] layers; public int start; public float scale; }
         static readonly float[] trailFraction = { 1f, 1f, .66f, .38f, .5f };
         static readonly float[] trailWidth = { 2.8f, 1.7f, 1.5f, 1.3f, .5f };
@@ -31,10 +32,10 @@ namespace Exoduser.UnityPort
                 var go = new GameObject("웹 악의구 리본 " + i); go.transform.SetParent(item.go.transform, false);
                 var line = go.AddComponent<LineRenderer>(); lines[i] = line;
                 line.useWorldSpace = false; line.numCapVertices = 0; line.numCornerVertices = 0;
-                line.sharedMaterial = i == 0 ? alpha : add; line.startColor = line.endColor = colors[i];
+                line.sharedMaterial = malice; line.startColor = line.endColor = colors[i].linear;
             }
             item.embers = new SpriteRenderer[4];
-            for (int i = 0; i < 4; i++) { item.embers[i] = NewRenderer(item, "웹 악의구 잔불 " + i, disc, add, 0); centeredMaliceSprites.Add(item.embers[i]); }
+            for (int i = 0; i < 4; i++) { item.embers[i] = NewRenderer(item, "웹 악의구 잔불 " + i, disc, malice, 0); centeredMaliceSprites.Add(item.embers[i]); }
             return lines;
         }
 
@@ -56,7 +57,7 @@ namespace Exoduser.UnityPort
                 sprite.transform.localPosition = history[history.Count - index] - head + offset / 100f;
                 // 웹12px 스탬프의 원 반경5px와 drawImage 지름2s.
                 float size = (radius * .45f * fraction + .8f) * 2 * (10f / 12f); Fit(sprite, size, sprite.sprite.rect.width);
-                sprite.color = new Color(180 / 255f, 107 / 255f, 1, .55f * fraction); sprite.sortingOrder = item.a.sortingOrder - 1;
+                sprite.color = new Color(180 / 255f, 107 / 255f, 1, .55f * fraction).linear; sprite.sortingOrder = item.a.sortingOrder - 1;
             }
         }
 
@@ -102,7 +103,7 @@ namespace Exoduser.UnityPort
             var item = NewItem("악의구 원본 폭발"); item.go.transform.position = MalicePosition(orb.X, orb.Y);
             var burst = new MaliceBurst { item = item, start = maliceSim.TickCount, scale = Mathf.Clamp(Mathf.Sqrt(orb.ExplR / 80f), .8f, 2.5f), layers = new SpriteRenderer[6] };
             // 현행 웹 draw에는 TVFX2 패스가 두 번 있다. 같은 틱의 두 샘플을 두 겹으로 보존한다.
-            for (int i = 0; i < 6; i++) { burst.layers[i] = NewRenderer(item, "웹 폭발 층 " + i, maliceBurstFrames[i / 2][0], add, (int)orb.Y + 4); centeredMaliceSprites.Add(burst.layers[i]); }
+            for (int i = 0; i < 6; i++) { burst.layers[i] = NewRenderer(item, "웹 폭발 층 " + i, maliceBurstFrames[i / 2][0], malice, (int)orb.Y + 4); centeredMaliceSprites.Add(burst.layers[i]); }
             maliceBursts.Add(burst);
         }
 
