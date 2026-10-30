@@ -167,3 +167,11 @@ HUD 후보를 보존본 SHA 대조 후 복원했다. 새 제품에는 검수 종
 HUD의 미착수 빌드 대기 한 건만 취소하고(타팀 잠금 보존), 남은 세 화면은 같은 최종 바이너리에서 각자 실제 화면·1x·회귀를 검수한다. 같은 소스/바이너리의 공통 M1 근거를 재사용하며 종료 안전 실패는 별도 유지한다. 아직 공통 반영·시각 PASS 전이다.
 
 현재 남은 전체 후보8a372147a는 동일 Player RSP/Unity Roslyn 독립컴파일 exit0·오류0. 이는 Editor/Player 빌드·직접 화면 검수와 별도다. UI상태/동작의 실제 검수가 남아 전체 완료가 아니다.
+
+배치 분리 검수 b0bce06e(ad91f26af): 실제D3D11 RX9070XT M1 23/23·26.139초 정상exit0·창0·잔여0·사용자세이브변경0. GUI Repaint/bridge0이어서 이 이미지에 시각 UI PASS를 부여하지 않는다. 최종 전체 후보1cac2ed24의 정식빌드7ed4d7c1 Succeeded/errors0, 별도 최신 batch M1 검수 중.
+
+공식 Unity RenderingThreadingMode.SingleThreaded 문서(https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Rendering.RenderingThreadingMode.SingleThreaded.html)의 -force-gfx-st로 hidden UI 표시/종료를 분리하는 단일 진단을 준비했다. 현재release BuildOptions.None이므로 적용 여부는 로그로 확인하며, 무시됐거나 정상 종료가 아니면 PASS로 쓰지 않는다. 공용 래퍼·사용자 환경·일반 실행 인수는 변경하지 않는다.
+
+독립컴파일 판정 정정: 최초 PS 반환0에는 실제 DLL이 없어 성공 근거로 인정하지 않는다. Unity SDK Roslyn4.10을 직접 호출해 같은 Player RSP를 컴파일, 기존 경고만 있고 오류0·출력DLL1125376바이트를 확인했다(phase2/최종후보-독립컴파일/실제출력_영수증.json). 정식Player7ed4d7c1 오류0 근거와 분리한다.
+
+현재 마감 경계: 최신1cac2ed24/Runtime8d1326d5… 정식빌드7ed4d7c1 오류0·batch ae4294bf M123/23 정상종료. hidden -force-gfx-st는 실제NonThreaded 적용됐지만 player-74731c77.log 공유 IOException/exit1. HUD/일시정지 실화면/1x 미검증으로 전체 RETOUCH/HOLD, 일반 검수 창 허용 응답 대기. 정상 바로가기 누락을 발견해 검증된 settings-r4/source2584e36e4/Runtime0c808de4…로만 복구·4속성 확인. 새 후보 채택/자동게임실행0. 상세 한국어보고 phase2/REPORT.md 및 승인대기검수초안.
