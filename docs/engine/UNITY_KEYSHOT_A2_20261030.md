@@ -12,10 +12,10 @@
 | 큰 질량 | 주거목4/후경15+19 고정위치 보존. Hollow_Loft_Tree 현재v4b13510정점/26876삼각형/재질3, Unity임포트14292정점. 주거목4+후경5/속빈외피·비대칭뿌리. 낮은뿌리8갈래와새스캔부조4/회갈색이끼·균류·낙엽 유지. 실제Editor에서기하확인/새Player미검증 |
 | 다리 | 중심(43.2,−71.8)u/yaw+24°/scale(.96,.55,.85)×.75. A2ForestLayout 다리 보행 |Along|≤4.45u·|Across|≤1.7u. 원본 JSON은 보존하고 A2 질의에만 수로·거목 경계 적용. 새 폭/배율은 실제 메시 높이7.24%였던21u 후보에서 카메라와 함께 수정. 현재 발 접지·동작 GPU 미검증 |
 | 카메라 구도 | 비A2 LOOK-001 그대로. A2만 pitch34°/distance16.5u/FOV46.9453°, 공통TargetOffset+(3,0,.6)u. SMAA High. 실제 새 Editor 위치(45,9.24,-86.23)·1920×1080 확인. 실제 Player 영웅8~11% 재검수 전 |
-| 독액 | A2ToxicRiver: linear RGB(.40,.32,.035), 거품(.45,.44,.16), emission.1. 저주파 사인속도.12/.08, 법선.035/.025, smoothness.62→거품.16, 접촉깊이.025~.28u. 수면Y−1.25는 A2ForestLayout.WaterLevel SSOT |
+| 독액 | A2ToxicRiver: linear RGB(.40,.32,.035), 거품(.57,.52,.23), emission.1. 저주파속도.12/.08·법선.07/.045, smoothness.78→거품.22, 깊이접촉.025~.28u. SSOT수로 RFloat512² 거리장으로수평.04~.50u 거품, 흐르는넓은오염띠16% 추가. 수면Y−1.25는기존SSOT. 새D3D11 Player 검수전 |
 | 접촉 거품 깊이 | 기존 URP_PC_High/Mac_Balanced의 m_RequireDepthTexture=0 확인. A2 카메라에 requiresDepthTexture=true, 수면은 Transparent 큐/ZWrite On/alpha1로 불투명 지형 깊이 복사 후 샘플. 실제 거품 표현 미검증 |
 | 수로 | Water: z(−94,−30),동쪽 x>Shore(z)와 둥근 지류 BranchDistance<0의 합집합. Shore=48+1.4sin((z+72)×.22)+34×smoothstep(−66,−56,z)−28×smoothstep(−52,−42,z)로 북동쪽에 굽어 빠짐. 남동 앵글러(148,150) 접근을 수로가 덮던 실제 회귀 FAIL을 고쳐 고정 위치/전투 규칙 보존. 수위−1.25, 연속 수면 x−30~110/z−100~70. 실제 수로 접점에만 수직 강둑. 암반9·말뚝5·강둑13접합/지류 접합. 기존 River_/Pool_만 숨김·r1거품 미사용 |
-| 반영 | 환경 Realtime ReflectionProbe256²×6면/OnAwake·위치(50,GroundY(50,−72)+1,−72)/크기180×80×260/boxProjection/강도.55/importance100/far150 유지. A2RiverReflection 실제 평면반사960×540 ARGBHalf/수면Y−1.25/oblique clip+.04u, Water layer4 제외·후처리off/깊이on. 설치 URP SingleCameraRequest+SubmitRenderRequest 사용, 정지.1초/이동.05u/회전.3° 갱신. GPU/논리 투영 분리로 GPU VP의 방향 확인, reflection RT 직접 확인·실행1270회/Unity 오류0. 현재 혼합(.30+.30×Fresnel³)×(1−거품), 색(.85,.80,.42), UV왜곡 n.xz×.12. 실패 기본수면 폴백/추가반복0. 새 혼합은 GPU 재검수 예정 |
+| 반영 | 환경 Realtime ReflectionProbe256²×6면/OnAwake·위치(50,GroundY(50,−72)+1,−72)/크기180×80×260/boxProjection/강도.55/importance100/far150 유지. A2RiverReflection 실제 평면반사960×540 ARGBHalf/수면Y−1.25/oblique clip+.04u, Water layer4 제외·후처리off/깊이on. 설치 URP SingleCameraRequest+SubmitRenderRequest, 정지.1초/이동.05u/회전.3° 갱신. D3D12는진단폴백/실제반사는D3D11에서만채택. 현재혼합(.48+.32×Fresnel³)×(1−거품), 색(.85,.80,.42), UV왜곡n.xz×.12. 새혼합D3D11 Player 재검수전 |
 | 횃불 | R3 holder×.5·8프레임 불꽃/높이1.24u. 다리 국소 Along±3.65/Across±2.5u를 world로 변환해 두 끝에 배치. RGB(1,.55,.19)/강도7/반경5/soft shadow/bias.04/normalBias.1. 받침 투사만off, 기존 화로 루트off/Pool_Hell광원0 |
 | 분위기 | A2 배경/선형안개(.23,.29,.35)/16..40u/far240. 환경광 sky(.22,.26,.31)/equator(.14,.14,.135)/ground(.04,.035,.03). 주광2.4/색(1,.96,.90)/회전(54,-32,0)/그림자.65. Volume+.25EV/대비16·ACES·블룸.16. 빛기둥4 색(1.4,1.6,1.8)/alpha.045. GraphicsSettings FogStripping Custom1/기존3안개keep1의e271 실제Player원경복원확인. 새중립목질광은Player재검수전 |
 | 임포트 | SourceTextureImporter v3의 a2/ground Repeat 예외 유지. 원래 낙엽3맵+새 흙/뿌리6맵1024²/Repeat/mipmap/Trilinear/aniso8. BaseColor sRGB, NormalMap/Roughness linear. A2GroundCoverImporter v3은 기존4개+Hollow+RootRelief FBX의 정확6경로만 읽기true. 신규 RootRelief는2k/Clamp/Trilinear/mipmap/aniso8, BaseColor sRGB·Normal/ARM linear |
@@ -280,3 +280,21 @@ GP 원작성자 edf12c419의 exo-unity.ps1·devtools/README·UNITY_DEVTOOLS_SHAR
 ### 07:02 KST 최신 Editor 실제 검수
 
 실제 어셈블리4e0c287d-bfaa-47b1-8dfc-e62284628c1e. 지면441141정점과같은GroundY 질의 최대차이.0000158548355u, 경계높이.001388073u/전후.02u기울기.004763901. 부조4·입체덤불92·다리이끼10, Unity오류0. 새가지3변형각3276정점/4212삼각형·퇴화/비유한0/주간바깥면방향양수 확인. root-connection-final-editor.png/동크기/640²1x목질·다리직접확인. 형상개선은있으나평평한수면·원화대비근경과뿌리·층별원근차이로전체FAIL. 현재D3D12 Editor반사는진단폴백이며D3D11 Player검수대체아님. Player/M1/일반Desktop미완료.
+
+## 2026-10-31 07:30 KST 실제 Player 검수와 수면·보스 촬영 교정
+
+| 항목 | 정확 입력·결과·새 계약 |
+|---|---|
+| 직전 실제 입력 | 598749108의새시각소스+최신공통0ced574ef 정상병합4c6b845e01d9d8b116b92e1c3891ba93a3232ff7. 원격같은SHA. 빌드4e18c658/3784613982B/오류0/212파일·160DLL/MCP파일·참조0 |
+| 실제 M1 | 같은실행파일de8a5184의23/23내용검사통과. 106379ms/timedOut/exit-1이라정상종료FAIL. 사용자창0/세이브변경0/공식잔여목록0/hiddenDesktopClosed=true. 실제PNG는m1/caps 하위이며목록을추가확인. 과거정상M1로소급하지않음 |
+| 실제 3장 | 69d9633b의root-connection-caps 실제최종/HUD포함1920×1080. 영웅높이.0981518/.1057166/.0885409, 탄0/3/25, Unity오류0. 실제기하·경계선제거·새목질·수염·다리이끼확인. 촬영도정상종료FAIL/내용passed와분리 |
+| 시각 판정 | 3장·A2동크기/1x·PoE2/노레위6장전후비교생성·직접판정FAIL. 수면평면성/빈약한물가·원화대비큰형태와원근차이. 03은드루이드가잠복해본체가없으므로Steam용채택불가 |
+| 최소 덤프 | 이번자기M1생존PID55600/부모53264/생성22:08:50.8828530UTC/EXE/창0 검증.22:09:14 한회0x1004 스레드+핸들정보 최소덤프성공/전체메모리제외. M1진행중수집이므로종료후덤프로주장하지않음. GP파일분석에서동일HID제품명조회대기확인, 파일핸들명·VID/PID없음. 추가수집/라이브접근/장치·권한변경0 |
+| 수로 거리장 | NativeGame.A2ShoreField: 512²/RFloat/linear/Bilinear/Clamp/mipmap0, 세계(-30,-100)+(140,170)u. 기존 Shore/기울기±.05u·BranchDistance/IslandRadius를직접사용한wet양수거리. z범위-94..-30과섬경계최솟값. 게임맵·충돌설계변경0. RFloat미지원은기존깊이거품폴백+경고 |
+| 거품·흐름 | 수평.04~.50u 거품띠×.85와기존깊이.025~.28u×.72 중큰값, ribbon임계.20..8. 넓은오염띠 sin(p.x×.72+p.z×.36+t×.05)^16과sin(p.x×.22-p.z×.48-t×.1)^8의양수정규화곱×.16. 점·디더·필름그레인추가0. 거품색(.57,.52,.23)/법선.07,.045/smooth.78→.22/반영(.48+.32×Fresnel³) |
+| 물가 부조 | 기존4주거목 +Shore9후보(z-79+i×2.6,xShore-.65,scale.95+.15sin(2.1i),접선yaw-90+17sin(i)) +지류양쪽10후보(Along±3.4,Across-5+j×4.5,scale.8+.1(j%3),yaw24±20+j47). 기존Water/Trunk/Bridge면후보제외. 실제Editor14개/거리장Ready1·512² 확인. 정점/사진혼합·새Collider0 유지 |
+| 부드러운 그림자 | 설치URP ffe395a3a1d1의Lit.shader가쓰는 _SHADOWS_SOFT/LOW/MEDIUM/HIGH 변종을A2수면·부조·이끼/HellGroundPBR에도추가. 현재PC자산supportsSoftShadows1/quality2 확인. 렌더사이글로벌키워드조회는모두false라실제하드그림자의단독원인확정으로쓰지않음. shader지원/메시지0, 새Player직접검수대상 |
+| 보스 촬영 | KeyshotBossVisible: 실제살아있는드루이드/렌더러와Data상태확인. Under/Dive/Erupt/TelePrep/TeleWarn 제외. bounds투영 x.03..97/y.18..88, 높이>.15/카메라앞조건. 03선택및최종passed에가시성필수, bossState/bossVisible영수증기록. 적/탄/AI패턴수정0. Editor정상idle true, 잠복상태만잠깐검사한fixture false/원상복원true/적·탄주입0. 새Player자연순간검수필수 |
+| 아레나 지면 | 비A2 ArenaSoilLit 보존/A2ArenaSoilLit만추가. 기존rock5.5u/새숲흙3.2u·뿌리2.5u 사진과법선4맵, 넓은저주파혼합(root가중최대.55)/젖은암화최대.18. 법선.25/.45/.5, 기존실제국소광3·원본floor알파 유지. 누락은기존암반폴백+오류. 실제Editor 반복무늬완화확인/Player미검증 |
+| 실패 소품 제외 | 아레나FallenLog8개 URPLit검은가지시안FAIL. 바닥과같은XY국소광전용셰이더시안도군데군데놓은소품으로보여FAIL. 두이미지·셰이더원본SHA를I:arena-wood-failed-candidate 보존후런타임에서8개및미사용셰이더제외. 원래횃불2·광원3 유지. 보스담당신규3D는NOT_READY/인수0 |
+| 현재 경계 | 새소스독립Core/C#0/0·수면/부조/아레나셰이더지원true·컴파일메시지0. Editor의private카메라접근진단코드1회실패는reflection으로교정/게임소스컴파일실패아님. D3D12 Editor는반사폴백이므로실제D3D11명암/반영대체아님. 전체VISUAL VERDICT: FAIL, 새Player/M1·통합·일반Desktop미완료 |

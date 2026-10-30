@@ -273,6 +273,7 @@ namespace Exoduser.UnityPort
         void A2River(Terrain ground)
         {
             a2Water=new Material(Shader.Find("EXODUSER/A2ToxicRiver"));
+            A2ShoreField();
             r3Cam.depthTextureMode|=DepthTextureMode.Depth;
             UnityEngine.Rendering.Universal.CameraExtensions.GetUniversalAdditionalCameraData(r3Cam).requiresDepthTexture=true;
             // A2의 단일 경계로 지형과 보행을 함께 나눈다. 원본 맵 데이터/비A2 실행은 보존한다.

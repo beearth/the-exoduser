@@ -34,7 +34,9 @@ namespace Exoduser.UnityPort
             if(hellArenaLights.Count==3){hellArenaLights[2].transform.position=new Vector3(Simulation.Player.X/100f,-Simulation.Player.Y/100f+.5f,-1.3f);for(int i=0;i<3;i++){var at=hellArenaLights[i].transform.position;Shader.SetGlobalVector("_HellArenaLight"+i,new Vector4(at.x,at.y,at.z,hellArenaLights[i].intensity));}}
             if(arenaView!=null&&hellLitArena!=arenaView)
             {
-                var soilShader=Shader.Find("EXODUSER/ArenaSoilLit");if(soilShader!=null){var soil=new Material(soilShader);string rock=A2Requested?"rock_ground":"rock_face";soil.SetTexture("_RockTex",Resources.Load<Texture2D>("Art/map/hell_lighting/"+rock+"_Diffuse"));soil.SetTexture("_RockNormal",Resources.Load<Texture2D>("Art/map/hell_lighting/"+rock+"_nor_gl"));arenaView.SetLightingMaterial(soil);}
+                var soilShader=Shader.Find(A2Requested?"EXODUSER/A2ArenaSoilLit":"EXODUSER/ArenaSoilLit");
+                if(A2Requested&&soilShader==null){Debug.LogError("[A2 보스방] 숲 지면 셰이더 누락. 기존 바닥 유지");soilShader=Shader.Find("EXODUSER/ArenaSoilLit");}
+                if(soilShader!=null){var soil=new Material(soilShader);string rock=A2Requested?"rock_ground":"rock_face";soil.SetTexture("_RockTex",Resources.Load<Texture2D>("Art/map/hell_lighting/"+rock+"_Diffuse"));soil.SetTexture("_RockNormal",Resources.Load<Texture2D>("Art/map/hell_lighting/"+rock+"_nor_gl"));if(A2Requested)A2ArenaSoil(soil);arenaView.SetLightingMaterial(soil);}
                 hellLitArena=arenaView;foreach(var old in hellArenaRig.GetComponentsInChildren<Light>())Destroy(old.gameObject);hellArenaLights.Clear();var boss=Simulation.Stage.FindBoss();if(boss!=null)
                 {
                     var center=new Vector3(boss.X/100f,-boss.Y/100f,-1.5f);

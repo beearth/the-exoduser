@@ -8,7 +8,7 @@ namespace Exoduser.UnityPort
 {
     public sealed partial class NativeGame
     {
-        [Serializable] sealed class KeyshotFrame { public string name,captureSource; public int tick, enemies, projectiles,screenWidth,screenHeight; public bool arena, remodel,actualScreen; public float heroHeight01, cameraFov,luminance=-1,screenLuminance=-1; public Vector3 heroWorld,cameraWorld,bossCenter,bossSize; }
+        [Serializable] sealed class KeyshotFrame { public string name,captureSource,bossState; public int tick, enemies, projectiles,screenWidth,screenHeight; public bool arena, remodel,actualScreen,bossVisible; public float heroHeight01, cameraFov,luminance=-1,screenLuminance=-1; public Vector3 heroWorld,cameraWorld,bossCenter,bossSize; }
         [Serializable] sealed class KeyshotReceipt { public string scope="실제 NativeGame·격리 세이브·직접 입장·생존 보조·스크립트 입력. 적/탄 직접 주입 없음. 손 조작 검수와 구분"; public List<KeyshotFrame> frames=new List<KeyshotFrame>(); public bool passed;public int unityErrors; }
         int keyshotErrors;
         void KeyshotLog(string text,string stack,LogType type){if(type==LogType.Error||type==LogType.Exception||type==LogType.Assert)keyshotErrors++;}
@@ -80,18 +80,31 @@ namespace Exoduser.UnityPort
                     StepInput(0,0,boss.X,boss.Y,false,false);
                     if(tick%3==0)yield return null;
                     float cx=(sim.Stage.Arena.RoomCx+.5f)*40,cy=(sim.Stage.Arena.RoomCy+.5f)*40;
-                    if(tick>180&&KeyshotActiveShots(true)>=6&&(boss.X-cx)*(boss.X-cx)+(boss.Y-cy)*(boss.Y-cy)<600*600){yield return KeyshotSave(output,"03-드루이드",receipt);break;}
+                    if(tick>180&&KeyshotActiveShots(true)>=6&&KeyshotBossVisible()&&(boss.X-cx)*(boss.X-cx)+(boss.Y-cy)*(boss.Y-cy)<600*600){yield return KeyshotSave(output,"03-드루이드",receipt);break;}
                     if(tick==1099)yield return KeyshotSave(output,"03-드루이드",receipt);
                 }
             }
             receipt.unityErrors=keyshotErrors;Application.logMessageReceived-=KeyshotLog;
-            receipt.passed=receipt.unityErrors==0&&receipt.frames.Count==3&&receipt.frames.TrueForAll(f=>f.heroHeight01>=.08f&&f.heroHeight01<=.11f&&(!A2Requested||(f.actualScreen&&f.screenWidth==1920&&f.screenHeight==1080&&f.luminance>.01f)))&&receipt.frames[1].projectiles>=3&&receipt.frames[2].projectiles>=6;
+            receipt.passed=receipt.unityErrors==0&&receipt.frames.Count==3&&receipt.frames.TrueForAll(f=>f.heroHeight01>=.08f&&f.heroHeight01<=.11f&&(!A2Requested||(f.actualScreen&&f.screenWidth==1920&&f.screenHeight==1080&&f.luminance>.01f)))&&receipt.frames[1].projectiles>=3&&receipt.frames[2].projectiles>=6&&(!A2Requested||receipt.frames[2].bossVisible);
             File.WriteAllText(Path.Combine(output,"검수.json"),JsonUtility.ToJson(receipt,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);
             Application.Quit(receipt.passed?0:3);
         }
         int KeyshotActiveShots(bool boss)
         {int count=0;foreach(var shot in Simulation.Druid.Projectiles)if(shot.Active&&!shot.Friendly&&(!boss||shot.DruidPoison))count++;return count;}
+        bool KeyshotBossVisible()
+        {
+            var boss=Simulation.Stage.FindBoss();if(boss==null||!boss.Alive||druidBody==null||!druidBody.Visible||HudCamera==null)return false;
+            string state=KeyshotBossState();if(string.IsNullOrEmpty(state))return false;
+            if(state=="bossDruidUnder"||state=="bossDruidDive"||state=="bossDruidErupt"||state=="bossTelePrep"||state=="bossTeleWarn")return false;
+            var bounds=druidBody.Bounds;var low=HudCamera.WorldToViewportPoint(bounds.min);var high=HudCamera.WorldToViewportPoint(bounds.max);
+            return low.z>0&&high.z>0&&low.x>.03f&&high.x<.97f&&low.y>.18f&&high.y<.88f&&high.y-low.y>.15f;
+        }
+        string KeyshotBossState()
+        {
+            var boss=Simulation.Stage.FindBoss();DruidData data;
+            return boss!=null&&Simulation.Druid!=null&&Simulation.Druid.Data.TryGetValue(boss,out data)?data.S??"":"";
+        }
         Vector2 KeyshotDistanceInput(Simulation sim,Vector2 centre)
         {
             var p=sim.Player;var result=Vector2.zero;double best=double.NegativeInfinity;
@@ -130,7 +143,7 @@ namespace Exoduser.UnityPort
                 }
                 if(high>=low)h=high-low;
             }
-            receipt.frames.Add(new KeyshotFrame{name=name,tick=Simulation.TickCount,enemies=Simulation.Enemies.Count,projectiles=KeyshotActiveShots(Simulation.Stage.InArena),arena=Simulation.Stage.InArena,remodel=NativeRemodel3D.Active,heroHeight01=h,cameraFov=camera.fieldOfView,heroWorld=playerView.transform.position,cameraWorld=camera.transform.position,bossCenter=druidBody!=null?druidBody.Bounds.center:Vector3.zero,bossSize=druidBody!=null?druidBody.Bounds.size:Vector3.zero});
+            receipt.frames.Add(new KeyshotFrame{name=name,tick=Simulation.TickCount,enemies=Simulation.Enemies.Count,projectiles=KeyshotActiveShots(Simulation.Stage.InArena),arena=Simulation.Stage.InArena,remodel=NativeRemodel3D.Active,heroHeight01=h,cameraFov=camera.fieldOfView,heroWorld=playerView.transform.position,cameraWorld=camera.transform.position,bossCenter=druidBody!=null?druidBody.Bounds.center:Vector3.zero,bossSize=druidBody!=null?druidBody.Bounds.size:Vector3.zero,bossState=Simulation.Stage.InArena?KeyshotBossState():"",bossVisible=Simulation.Stage.InArena&&KeyshotBossVisible()});
             if(A2Requested&&!Application.isBatchMode)
             {
                 // 별도 카메라 요청은 깊이 의존 효과가 실제 표시와 달랐다. 최종 표시 프레임을 증거로 저장한다.

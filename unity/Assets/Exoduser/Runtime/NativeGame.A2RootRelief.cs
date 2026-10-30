@@ -18,8 +18,23 @@ namespace Exoduser.UnityPort
                 if(field.HasProperty(key)&&material.HasProperty(key))material.SetTexture(key,field.GetTexture(key));
             foreach(var key in new[]{"_ForestBlend","_ForestTextureMix","_SoilTextureMix","_Smoothness","_Metallic","_Cutoff"})
                 if(field.HasProperty(key)&&material.HasProperty(key))material.SetFloat(key,field.GetFloat(key));
+            var placements=new System.Collections.Generic.List<Vector4>{new Vector4(34.8f,-70.5f,1.7f,75),new Vector4(49,-64.8f,1.35f,170),new Vector4(53.3f,-77,1.3f,237),new Vector4(29.5f,-64,1.35f,85)};
+            for(int i=0;i<9;i++)
+            {
+                float z=-79+i*2.6f,x=A2ForestLayout.Shore(z)-.65f;
+                if(A2ForestLayout.Water(x,z)||A2ForestLayout.Trunk(x,z)||A2ForestLayout.Bridge(x,z))continue;
+                float slope=(A2ForestLayout.Shore(z+.05f)-A2ForestLayout.Shore(z-.05f))/.1f;
+                placements.Add(new Vector4(x,z,.95f+.15f*Mathf.Sin(i*2.1f),Mathf.Atan2(slope,1)*Mathf.Rad2Deg-90+17*Mathf.Sin(i)));
+            }
+            for(int side=-1;side<=1;side+=2)for(int j=0;j<5;j++)
+            {
+                float u=side*3.4f,w=-5+j*4.5f;
+                float x=A2ForestLayout.BridgeX+u*A2ForestLayout.SinYaw+w*A2ForestLayout.CosYaw,z=A2ForestLayout.BridgeZ+u*A2ForestLayout.CosYaw-w*A2ForestLayout.SinYaw;
+                if(A2ForestLayout.Water(x,z)||A2ForestLayout.Trunk(x,z)||A2ForestLayout.Bridge(x,z))continue;
+                placements.Add(new Vector4(x,z,.8f+.1f*(j%3),24+side*20+j*47));
+            }
             int placed=0;
-            foreach(var placement in new[]{new Vector4(34.8f,-70.5f,1.7f,75),new Vector4(49,-64.8f,1.35f,170),new Vector4(53.3f,-77,1.3f,237),new Vector4(29.5f,-64,1.35f,85)})
+            foreach(var placement in placements)
             {
                 float baseY=NativeRemodel3D.GroundY(placement.x,placement.y);
                 var go=Instantiate(source,a2Root.transform);go.name="A2 연속 뿌리 부조";

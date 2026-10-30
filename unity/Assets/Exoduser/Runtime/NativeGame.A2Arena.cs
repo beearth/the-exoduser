@@ -8,6 +8,13 @@ namespace Exoduser.UnityPort
     {
         GameObject a2ArenaRoot;
         readonly System.Collections.Generic.List<SpriteRenderer> a2ArenaFlames=new System.Collections.Generic.List<SpriteRenderer>();
+        void A2ArenaSoil(Material material)
+        {
+            if(!material.HasProperty("_LayerReady"))return;bool ready=true;
+            foreach(var pair in new[]{new[]{"_SoilTex","A2_ForestSoil_BaseColor"},new[]{"_SoilNormal","A2_ForestSoil_Normal"},new[]{"_RootsTex","A2_ExposedRoots_BaseColor"},new[]{"_RootsNormal","A2_ExposedRoots_Normal"}})
+            {var texture=Resources.Load<Texture2D>("Art/map/a2/ground/"+pair[1]);if(texture==null){ready=false;Debug.LogError("[A2 보스방] 숲 지면 누락 "+pair[1]);}else material.SetTexture(pair[0],texture);}
+            material.SetFloat("_LayerReady",ready?1:0);
+        }
         void A2ArenaSetup(BossArenaLayout arena)
         {
             if(!A2Requested||arena==null)return;
