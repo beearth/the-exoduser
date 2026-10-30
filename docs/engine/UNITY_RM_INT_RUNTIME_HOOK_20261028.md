@@ -123,6 +123,7 @@ Core(`Runtime/Core`)는 바꾸지 않았다.
 | 심연 재질 | 메시 vertex color R=하강 비율. .015~.15에서 기존피부/돌/재를 돌×.5로 전이. 기존 높이안개·지수안개와 깊이를 연결. 디더링·그레인·랜덤 점무늬 없음 |
 | 수피 | Poly Haven bark_brown_02, Rob Tuytel, CC0. Diffuse/GL normal/Rough 각2K, 기존 출처영수증 SHA256과 byte 대조 후 런타임 인수. 돌/수피/뼈색 재질 분리·월드 트라이플래너. roughness를 smoothness에 반영 |
 | 반복 샘플러 수정 | rock_ground(Diffuse/nor_gl/Rough),burned_ground_01(Diffuse),bark_brown_02(Diffuse/nor_gl/Rough) 총7개 TextureImporter의 wrapU/V/W=0(Repeat). 종전1(Clamp)은 월드UV가0~1 밖일 때 가장자리 한 색을 늘여 바위·바닥·보스방을 평면처럼 만들었다. 피부 컬러맵·원본 스프라이트의 Clamp는 유지. 이전 .meta7개는 I: before-repeat에 byte보존 |
+| 임포트 원인 수정 | 첫 .meta 수정은 빌드492169a0 후 공용 SourceTextureImporter에 의해 다시 Clamp·mipmap OFF·normal=Default/sRGB로 덮였다. 이 임포터의 **위7개 이름·hell_lighting 폴더만** PBR 분기로 수정: Repeat/Trilinear/aniso8/mipmap ON/max2048/CompressedHQ/alpha 없음. nor_gl=NormalMap·linear, Rough=Default·linear,Diffuse=Default·sRGB. 다른 Resources/Art 동작은 유지. GetVersion 1→2로 캐시된 임포트도 갱신한 뒤 재검사한다. [Unity 캐시 갱신 계약](https://docs.unity.com/en-us/engine/6000.0/script-reference/unityeditor/assetpostprocessor/getversion) |
 | 구형 표현 교체 | 새 조명 모드에서만 M_CursedBark/M_RottenWoodMembrane/M_ToxicFlow 메시의 Renderer 비활성. 하강 지면 위에 떠 남는 기둥·막·수면을 교체하며 원본과 충돌 보존. y=-18u·x=-10~90/z=-115~-25의 먼 안개 받침, RGB(.018,.030,.045)·거리안개. 화면 색막이 아닌 심연 아래 월드 메시 |
 | 범위 | 지형 표현만 변경. 영웅·보스 기존 2D 표현을 3D 리모델 완료로 보고하지 않음. 검수 결과는 I:/EXODUSER-Storage/steam-keyshot/keyshot2/REPORT.md에 기록 |
 
@@ -131,3 +132,5 @@ Core(`Runtime/Core`)는 바꾸지 않았다.
 QA 전용 `--unity-keyshot-material-probe`는 동일 장면을 원래 재질→표준회색 Lit→텍스처 Unlit→표준텍스처 Lit로 분리한다. 새 모듈의 실제 월드 bounds·CPU 법선 읽기 가능 여부·로드된 컬러/노멀 이름을 기록하고 종료한다. 일반 실행에는 분리 재질을 적용하지 않는다. 최초분리 Player bcda81db는 표준회색까지 촬영 뒤 기본URP/Unlit이 빌드에서 제거되어 shader null로 정지했다. mesh.isReadable=false에서 법선 조회 오류도 있었으므로 당시 normalY=1:-1은 유효 측정이 아니다. QA용 Resources 셰이더 HellTextureProbe를 명시 포함하고 법선 직접 읽기를 제거했다. 동일 원인의 무한 재실행 없이 수정 후 한 차례 재검수한다.
 
 첫 후보에서 전투탄1개인데 크기만으로 passed=true였던 QA 조건을 수정했다. keyshot2 현행 전투 하네스는 시작(3500,7100), 보행점(3500,7100)→(4100,7100)→(4100,7500)→(3500,7500), 목표80px 이내 다음점. 가까운적300px 이내에서 도주방향.85+접선.35+이동목표.2를 정규화한다. 공격은100tick 이전 tick%60<20, 최대1800tick. 280tick 이후 화면 안 실제탄3개·최근접적260px 초과 때 촬영한다. 각 프레임 visibleProjectiles 기록, 전투3개 미달이면 수치검수도 실패다. 일반 AI·공격·스폰·피해 규칙은 바꾸지 않으며 생존보조/스크립트입력임을 유지한다.
+
+위 도주 초안은 Player710b8046에서 왼쪽 벽에 갇혀 실패했다(전투 실탄1·보스 변신/가림 순간, 전체수치exit3). 현행 QA만 수정: 실제 SW 앵글러 인근(2750,6320) 시작, 목표점(2750,6320)/(2950,6100)/(2950,6570)/(2620,6700). 400px 안 적이 있으면24방향에서 원본 CanMove의25/110px 앞을 통과하는 방향만 평가하고 미래 적거리+목표방향×5000으로 선택. 앵글러 여유100px 반영, 일반 스폰/발사/AI 직접주입0. 보스 최대1500tick에서 실제탄6개 이상+몸체높이3.2u 초과인 순간을 찾고 저장 시 bounds의뷰포트 x.04~.96/y.15~.88를 확인한다. bossState/bossPresented를 기록하며 본체 미표시면 수치검수도 FAIL. 실제 화면의 최종판정은 별도다.
