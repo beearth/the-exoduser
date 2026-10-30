@@ -10,7 +10,7 @@ namespace Exoduser.UnityPort
 {
     public sealed partial class NativeGame
     {
-        [Serializable] sealed class UiOverlapCoverage {public string scope="실제 Player OnGUI·원본 API 상태 전환, OS 입력/자연 클리어와 구분";public string[] languages={"ko","de"};public List<string> pages=new List<string>(),frames=new List<string>();}
+        [Serializable] sealed class UiOverlapCoverage {public int schemaVersion=1;public string runtimeSha256,unityVersion,device,deviceType;public string scope="실제 Player OnGUI·원본 API 상태 전환, OS 입력/자연 클리어와 구분";public string[] languages={"ko","de"};public List<string> pages=new List<string>(),frames=new List<string>();}
         UiOverlapCoverage overlapCoverage;
         string overlapOutput,overlapLanguage;
         [Serializable] sealed class OverlapOptionBundle {public string[] codes;public OverlapOptionEntry[] entries;}
@@ -70,6 +70,8 @@ namespace Exoduser.UnityPort
             overlapOutput=Argument("-output");
             if(!NativeQaSandbox.Active||string.IsNullOrEmpty(overlapOutput)||!Path.IsPathRooted(overlapOutput)){Debug.LogError("겹침 검사는 격리 저장·절대 출력 경로 필요");Application.Quit(3);yield break;}
             Directory.CreateDirectory(overlapOutput);overlapCoverage=new UiOverlapCoverage();SelectOverlapLanguages();
+            using(var hash=System.Security.Cryptography.SHA256.Create())using(var binary=File.OpenRead(typeof(NativeGame).Assembly.Location))overlapCoverage.runtimeSha256=BitConverter.ToString(hash.ComputeHash(binary)).Replace("-","").ToLowerInvariant();
+            overlapCoverage.unityVersion=Application.unityVersion;overlapCoverage.device=SystemInfo.graphicsDeviceName;overlapCoverage.deviceType=SystemInfo.graphicsDeviceType.ToString();
             smokeActive=true;pauseSmoke=true;lobby.AutomatedInput=true;lobby.SetPlaybackFocus(true);
             gameObject.AddComponent<NativeUiAudit.Host>();NativeUiAudit.Active=true;
             foreach(var size in new[]{new Vector2Int(1920,1080),new Vector2Int(1600,900)})

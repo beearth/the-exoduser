@@ -8,7 +8,8 @@ function analyze(frame){
  for(const e of frame.elements||[]){
   if(!e.rect||e.rect.width<=0||e.rect.height<=0)continue;
   // 같은 문자열의 1px 외곽선/그림자만 통합한다. 다른 내용은 제외하지 않는다.
-  if(elements.some(p=>p.kind===e.kind&&p.text===e.text&&['x','y','width','height'].every(k=>Math.abs(p.rect[k]-e.rect[k])<=3.1)))continue;
+  const duplicate=elements.findIndex(p=>p.kind===e.kind&&p.text===e.text&&(e.kind!=='text'||p.shadow||e.shadow)&&['x','y','width','height'].every(k=>Math.abs(p.rect[k]-e.rect[k])<=3.1));
+  if(duplicate>=0){if(elements[duplicate].shadow&&!e.shadow)elements[duplicate]=e;continue;}
   elements.push(e);
  }
  const visible=elements.filter(e=>!elements.some(p=>p.kind==='panel'&&p.order>e.order&&inside(e.rect,p.rect)));
@@ -29,13 +30,14 @@ function run(dir){
  const manifest=JSON.parse(fs.readFileSync(path.join(dir,'coverage.json'),'utf8'));
  const frames=manifest.frames.map(name=>analyze(JSON.parse(fs.readFileSync(path.join(dir,name+'.json'),'utf8'))));
  const missing=[];
+ if(manifest.schemaVersion!==1||!/^[0-9a-f]{64}$/.test(manifest.runtimeSha256)||!manifest.device||manifest.deviceType==='Null')missing.push('계측 스키마/실제 Runtime SHA/GPU 영수증 누락');
  const languages=new Set(['ko','de',...manifest.languages]);
  const languagePath=path.join(dir,'최장언어_실측.json');
  if(!fs.existsSync(languagePath))missing.push('최장 언어의 실제 서체 폭 측정 없음');
  else {const scores=JSON.parse(fs.readFileSync(languagePath,'utf8')).scores;for(const category of ['설정','직업선택']){const rows=scores.filter(s=>s.category===category).sort((a,b)=>b.measuredWidth-a.measuredWidth);if(rows.length<28)missing.push(category+' 언어 폭 표 누락');else languages.add(rows[0].code);}}
  for(const width of [1920,1600])for(const lang of languages)for(const page of requiredPages)
   if(!frames.some(f=>f.width===width&&f.language===lang&&f.page===page&&f.repaintFrames>0&&f.elements.some(e=>e.kind==='text')))missing.push(`${width}/${lang}/${page}`);
- for(const f of frames){const png=path.join(dir,`${f.width}-${f.language}-${f.page}.png`);if(!fs.existsSync(png)){missing.push('PNG 누락 '+path.basename(png));continue;}const bytes=fs.readFileSync(png);if(bytes.readUInt32BE(16)!==f.width||bytes.readUInt32BE(20)!==f.height)missing.push('실제 PNG 해상도 불일치 '+path.basename(png));}
+ for(const f of frames){if(f.schemaVersion!==1)missing.push('계측 스키마 불일치 '+f.page);const png=path.join(dir,`${f.width}-${f.language}-${f.page}.png`);if(!fs.existsSync(png)){missing.push('PNG 누락 '+path.basename(png));continue;}const bytes=fs.readFileSync(png);if(bytes.readUInt32BE(16)!==f.width||bytes.readUInt32BE(20)!==f.height)missing.push('실제 PNG 해상도 불일치 '+path.basename(png));}
  const result={passed:missing.length===0&&frames.every(f=>f.issues.length===0),frameCount:frames.length,issueCount:frames.reduce((s,f)=>s+f.issues.length,0),missing,frames};
  fs.writeFileSync(path.join(dir,'overlap-report.json'),JSON.stringify(result,null,2));
  const rows=frames.flatMap(f=>f.issues.map(i=>`|${f.page}|${f.width}×${f.height}|${f.language}|${i.type}|${(i.a.text||'').replaceAll('|','/')}|${i.b?.text||i.b?.kind||''}|${i.a.source||''}|`));

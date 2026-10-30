@@ -9,8 +9,8 @@ namespace Exoduser.UnityPort
     // 실제 제품 그리기를 그대로 호출한다. 격리 검수에서만 화면 좌표를 수집한다.
     internal static class NativeUiAudit
     {
-        [Serializable] internal sealed class Element { public string id,kind,text,source; public Rect rect; public int order; }
-        [Serializable] internal sealed class Frame { public string page,language; public int width,height,repaintFrames; public List<Element> elements=new List<Element>(); }
+        [Serializable] internal sealed class Element { public string id,kind,text,source; public Rect rect; public int order;public bool shadow; }
+        [Serializable] internal sealed class Frame { public int schemaVersion=1;public string page,language; public int width,height,repaintFrames; public List<Element> elements=new List<Element>(); }
         internal static bool Active;
         [DefaultExecutionOrder(-31999)] internal sealed class Host:MonoBehaviour { void OnGUI(){if(Event.current.type==EventType.Repaint)BeginFrame();} }
         static Frame frame;
@@ -27,12 +27,12 @@ namespace Exoduser.UnityPort
             Vector2 a=GUIUtility.GUIToScreenPoint(r.min)-origin,b=GUIUtility.GUIToScreenPoint(r.max)-origin;
             return Rect.MinMaxRect(Mathf.Min(a.x,b.x),Mathf.Min(a.y,b.y),Mathf.Max(a.x,b.x),Mathf.Max(a.y,b.y));
         }
-        internal static void Region(Rect rect,string kind,string text="",string source="")
+        internal static void Region(Rect rect,string kind,string text="",string source="",bool shadow=false)
         {
             if(!Active||frame==null||Event.current.type!=EventType.Repaint||GUI.color.a<.01f)return;
             Rect measured=ScreenRect(rect);
             if(clips.Count>0){Rect clip=clips.Peek();measured=Rect.MinMaxRect(Mathf.Max(measured.xMin,clip.xMin),Mathf.Max(measured.yMin,clip.yMin),Mathf.Min(measured.xMax,clip.xMax),Mathf.Min(measured.yMax,clip.yMax));if(measured.width<=0||measured.height<=0)return;}
-            frame.elements.Add(new Element{id=frame.elements.Count.ToString(),kind=kind,text=text,source=source,rect=measured,order=frame.elements.Count});
+            frame.elements.Add(new Element{id=frame.elements.Count.ToString(),kind=kind,text=text,source=source,rect=measured,order=frame.elements.Count,shadow=shadow});
         }
         static void Text(Rect rect,GUIContent content,GUIStyle style,string source)
         {
@@ -47,7 +47,8 @@ namespace Exoduser.UnityPort
             float x=rect.x+style.padding.left+(align%3==1?(available-width)/2:align%3==2?available-width:0);
             float innerH=rect.height-style.padding.vertical;
             float y=rect.y+style.padding.top+(align/3==1?(innerH-height)/2:align/3==2?innerH-height:0);
-            Region(new Rect(x+style.contentOffset.x,y+style.contentOffset.y,width,height),"text",content.text,source);
+            Color ink=style.normal.textColor;
+            Region(new Rect(x+style.contentOffset.x,y+style.contentOffset.y,width,height),"text",content.text,source,ink.r<.001f&&ink.g<.001f&&ink.b<.001f);
         }
         internal static void Save(string path,string page,string language)
         {

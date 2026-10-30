@@ -24,8 +24,11 @@ test('서로 다른 글자 충돌, 화면 이탈, 비겹침 경계를 구분한�
  assert.equal(analyze({width:100,height:100,elements:[text('화면밖',90,0,20,10)]}).issues[0].type,'화면 이탈');
 });
 test('같은 글자의 그림자 중복만 합치고 다른 글자 충돌은 남긴다',{skip:!analyze},()=>{
- const result=analyze({width:100,height:100,elements:[text('가',10,10,20,10),text('가',11,11,20,10),text('나',15,10,20,10)]});
+ const result=analyze({width:100,height:100,elements:[{...text('가',10,10,20,10),shadow:true},text('가',11,11,20,10),text('나',15,10,20,10)]});
  assert.equal(result.elements.length,2);assert.equal(result.issues.length,1);
+});
+test('그림자가 아닌 같은 글자의 실제 중복도 충돌로 남긴다',{skip:!analyze},()=>{
+ assert.equal(analyze({width:100,height:100,elements:[text('안내',10,10,20,10),text('안내',11,11,20,10)]}).issues.length,1);
 });
 test('나중 전체 배경이 덮은 기존 버튼도 가림 처리한다',{skip:!analyze},()=>{
  const out=analyze({width:100,height:100,elements:[{...button('이전 삭제',20,0,20,20),order:0},{id:'배경',kind:'panel',rect:{x:0,y:0,width:100,height:100},order:1},{...text('새 안내',10,10,20,10),order:2}]});
