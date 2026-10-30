@@ -54,7 +54,7 @@ namespace Exoduser.UnityPort {
      if(control=="2"||control=="3"||control=="4"||control=="Z")check(s.SkillCastCount==cast0,"미배정 슬롯 "+control+" 무시");
     }
    } finally {InputSystem.RemoveDevice(keyboard);InputSystem.RemoveDevice(mouse);if(oldKeyboard!=null)oldKeyboard.MakeCurrent();if(oldMouse!=null)oldMouse.MakeCurrent();}
-   result.passed=result.failures==0;File.WriteAllText(Path.Combine(output,"playtest.json"),JsonUtility.ToJson(result,true));Application.Quit(result.passed?0:2);
+   result.passed=result.failures==0;File.WriteAllText(Path.Combine(output,"playtest.json"),JsonUtility.ToJson(result,true));lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);Application.Quit(result.passed?0:2);
   }
  }
 }

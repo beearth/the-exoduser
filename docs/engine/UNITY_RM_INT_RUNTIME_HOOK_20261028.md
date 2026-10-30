@@ -89,3 +89,5 @@ Core(`Runtime/Core`)는 바꾸지 않았다.
 | 입력 | LMB/RMB/Shift/E/Q/Ctrl/Space/1~4/F/Z. 기본 미배정 2~4/Z는 무시, 가시덫·회복의 영역은 고정형이 정상 |
 | 확인 중인 경계 | legacy 마우스와 ExoInput 좌표 혼용, 부모 이동 후 billboard 높이 보정 누적. 제품 수정 전 동일 코드 재현 검사를 먼저 수행 |
 | 근거 위치 | I:/EXODUSER-Storage/demo-art/playtest-fix. 컴파일·oracle·3D 재현·M1·통합·바탕화면은 각각 별도 게이트이며 현재 미완료 |
+
+재현 검사 종료 시 로비·스토리·캐릭터 영상과 효과음을 닫고 1초 배출 후 종료한다. 기준 B07은 35/35·사슬700px이나 종료 지연으로 안전 완료 아님. 첫 빌드 UPM 시작 실패 a9c02bdb는 컴파일 미진입·USER_SAVE0이며, 기존 성공 프로세스 환경 래퍼로 원인을 분리한다.
