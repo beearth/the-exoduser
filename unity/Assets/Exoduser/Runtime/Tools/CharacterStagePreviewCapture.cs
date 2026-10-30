@@ -18,7 +18,7 @@ namespace Exoduser.UnityPort.Tools
   static bool Has(string key){return Array.IndexOf(Environment.GetCommandLineArgs(),key)>=0;}
   [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
   static void Boot(){if(!NativeLobby.CharacterStageReviewRequested||Has("--unity-m1-check")||Has("--unity-ui-overlap-check"))return;if(!NativeQaSandbox.Active){Debug.LogError("3D 무대 후보는 격리 저장 경로 필요");Application.Quit(3);return;}var go=new GameObject("검토 전용 캐릭터 선택 진입");DontDestroyOnLoad(go);go.AddComponent<CharacterStagePreviewCapture>();}
-  NativeLobby lobby;Receipt receipt;string output,language;Event pending;string focus;bool sent;int sequence;bool checking;
+  NativeLobby lobby;Receipt receipt;string output,language;bool checking;
   void Awake(){AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;Application.targetFrameRate=60;checking=Has("--unity-character-stage-check");if(checking){output=Arg("-output");if(string.IsNullOrEmpty(output)||!Path.IsPathRooted(output))throw new InvalidOperationException("무대 검수 절대 출력 필요");Directory.CreateDirectory(output);receipt=new Receipt{runtimeSha256=Hash(typeof(NativeLobby).Assembly.Location),coreSha256=Hash(typeof(Exoduser.UnityPort.Core.Simulation).Assembly.Location),device=SystemInfo.graphicsDeviceName,unityVersion=Application.unityVersion,sandbox=NativeQaSandbox.Root};}StartCoroutine(Guard(Run()));}
   static string Hash(string p){using(var h=System.Security.Cryptography.SHA256.Create())using(var f=File.OpenRead(p))return BitConverter.ToString(h.ComputeHash(f)).Replace("-","").ToLowerInvariant();}
   IEnumerator Guard(IEnumerator body){var stack=new Stack<IEnumerator>();stack.Push(body);while(stack.Count>0){bool more=false;object current=null;Exception error=null;try{more=stack.Peek().MoveNext();if(more)current=stack.Peek().Current;}catch(Exception e){error=e;}if(error!=null){if(receipt!=null){receipt.checks.Add(new Check{id="검수 예외",passed=false,detail=error.ToString()});Save();}Debug.LogError("CHARACTER_STAGE_CHECK_FAILED "+error);Application.Quit(2);yield break;}if(!more){stack.Pop();continue;}if(current is IEnumerator child)stack.Push(child);else yield return current;}}
@@ -76,7 +76,7 @@ namespace Exoduser.UnityPort.Tools
   IEnumerator Key(KeyCode key,string control){yield return Send(new Event{type=EventType.KeyDown,keyCode=key},control);yield return null;}
   IEnumerator Text(char c){yield return Send(new Event{type=EventType.KeyDown,character=c},"character-name");yield return null;}
   IEnumerator Mouse(Vector2 p){yield return Send(new Event{type=EventType.MouseDown,button=0,mousePosition=p},null);yield return Send(new Event{type=EventType.MouseUp,button=0,mousePosition=p},null);yield return null;}
-  IEnumerator Send(Event e,string control){pending=e;focus=control;sent=false;float deadline=Time.realtimeSinceStartup+4;while(!sent&&Time.realtimeSinceStartup<deadline)yield return null;if(!sent)throw new InvalidOperationException("IMGUI 이벤트 미수신");}
-  void OnGUI(){if(lobby==null||pending==null||Event.current.type!=EventType.Repaint)return;var e=pending;pending=null;lobby.CharacterStageReviewInput(e,focus);sent=true;}
+  IEnumerator Send(Event e,string control){lobby.CharacterStageReviewInput(e,control);float deadline=Time.realtimeSinceStartup+4;while(lobby.CharacterStageReviewInputPending&&Time.realtimeSinceStartup<deadline)yield return null;if(lobby.CharacterStageReviewInputPending)throw new InvalidOperationException("로비 OnGUI 이벤트 미수신");}
+
  }
 }

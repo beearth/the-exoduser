@@ -26,15 +26,23 @@ namespace Exoduser.UnityPort
    if(Event.current.type==EventType.Repaint)NativeUiAudit.DrawTexture(box,characterStagePreview.Output,ScaleMode.StretchToFill,false);
    return true;
   }
-  // 명시적 격리 검수에서 기존 IMGUI 핸들러/GUI.Button에 이벤트를 전달한다. OS 입력 검수와 구분한다.
+  Event stageReviewEvent;string stageReviewFocus;
+  internal bool CharacterStageReviewInputPending {get{return stageReviewEvent!=null;}}
   internal void CharacterStageReviewInput(Event input,string focus)
   {
-   if(!CharacterStageReviewRequested||!NativeQaSandbox.Active)throw new InvalidOperationException("무대 입력 검수는 명시적 격리 진입만 허용");
-   var old=Event.current;bool automatic=AutomatedInput;var matrix=GUI.matrix;var tint=GUI.color;bool gui=GUI.enabled;
-   try{Event.current=input;AutomatedInput=false;GUI.matrix=Matrix4x4.identity;GUI.enabled=true;if(focus!=null)GUI.FocusControl(focus);
-    if(input.isKey)HandleCharacterKeys();if(input.type!=EventType.Used)DrawCharacterModal();
-   }finally{Event.current=old;AutomatedInput=automatic;GUI.matrix=matrix;GUI.color=tint;GUI.enabled=gui;}
+   if(!CharacterStageReviewRequested||!NativeQaSandbox.Active||stageReviewEvent!=null)throw new InvalidOperationException("명시적 격리 무대 검수 입력만 허용");
+   stageReviewEvent=input;stageReviewFocus=focus;
   }
+  // GUI.Button hotControl이 실제 로비와 동일한 GUI 문맥에서 down/up을 받도록 한다.
+  bool TryDrawCharacterStageReviewInput()
+  {
+   if(stageReviewEvent==null||Event.current.type!=EventType.Repaint)return false;
+   var old=Event.current;bool automatic=AutomatedInput;
+   try{Event.current=stageReviewEvent;AutomatedInput=false;if(stageReviewFocus!=null)GUI.FocusControl(stageReviewFocus);Draw();}
+   finally{Event.current=old;AutomatedInput=automatic;stageReviewEvent=null;stageReviewFocus=null;}
+   return true;
+  }
+
  }
 
  // 검토 전용 로비 객체의 RT 카메라. 게임 카메라·Core·원본 프리팹·전역 RenderSettings에는 쓰지 않는다.
@@ -59,7 +67,7 @@ namespace Exoduser.UnityPort
   readonly Dictionary<int,Texture2D> textures=new Dictionary<int,Texture2D>();
   readonly List<Light> lights=new List<Light>();
   GameObject stageRoot;Material[] materials;NativeHeroMotion motion;Animator animator;Simulation idle;
-  Transform footL,footR;Mesh baked;int settleFrames;float started;
+  Transform footL,footR,heroPivot,breathingChest;Mesh baked;int poseWarmup;bool fitted;float started;
   public Vector3 Origin {get{return new Vector3(10000,0,10000);}}
   public void Initialize(NativeLobby owner)
   {
@@ -70,7 +78,7 @@ namespace Exoduser.UnityPort
     stageRoot=new GameObject("CharacterSelectStagePreview 사슬 재판정");stageRoot.transform.SetParent(transform,false);stageRoot.transform.position=Origin;stageRoot.layer=Layer;
     materials=new Material[Spec.materials.Length];for(int i=0;i<materials.Length;i++)materials[i]=MakeMaterial(Spec.materials[i]);
     LoadGeometry();BuildRearChamber();BuildHero();BuildCamera();BuildLights();
-    RenderPipelineManager.endCameraRendering+=OnRendered;Ready=true;
+    RenderPipelineManager.beginCameraRendering+=PrepareHero;RenderPipelineManager.endCameraRendering+=OnRendered;Ready=true;
    }catch(Exception e){Error=e.ToString();Debug.LogError("CHARACTER_STAGE_PREVIEW_FAILED "+e);Ready=false;}
   }
   T Own<T>(T value) where T:UnityEngine.Object {owned.Add(value);return value;}
@@ -83,9 +91,9 @@ namespace Exoduser.UnityPort
   }
   Material MakeMaterial(MaterialSpec s)
   {
-   var shader=Shader.Find("Universal Render Pipeline/Lit");if(shader==null)throw new InvalidOperationException("URP Lit 누락");
+   var shader=Resources.Load<Shader>(Resource+"StagePBR");if(shader==null)throw new InvalidOperationException("검토 전용 StagePBR 누락");
    var m=Own(new Material(shader){name="검토 전용 "+s.name});m.SetFloat("_Cull",0);m.SetFloat("_Metallic",s.metallic);m.SetFloat("_Smoothness",1-s.roughness);
-   m.SetColor("_BaseColor",new Color(s.color[0],s.color[1],s.color[2],s.color[3]));
+   var color=new Color(s.color[0],s.color[1],s.color[2],s.color[3]);if(s.name.Contains("검게산화"))color*=new Color(.28f,.25f,.23f,1);m.SetColor("_BaseColor",color);
    if(s.albedo>=0)m.SetTexture("_BaseMap",Texture(s.albedo,false));
    if(s.normal>=0){m.SetTexture("_BumpMap",Texture(s.normal,true));m.SetFloat("_BumpScale",s.normalScale);m.EnableKeyword("_NORMALMAP");}
    if(s.metalRough>=0){var source=Texture(s.metalRough,true);var pixels=source.GetPixels32();for(int i=0;i<pixels.Length;i++){var p=pixels[i];pixels[i]=new Color32((byte)(p.b*s.metallic),0,0,(byte)((255-p.g)*(1-s.roughness)));}
@@ -144,17 +152,17 @@ namespace Exoduser.UnityPort
   void BuildHero()
   {
    var prefab=Resources.Load<GameObject>("Characters/Warrior");if(prefab==null)throw new InvalidDataException("현재 전사 프리팹 없음");
-   Hero=Instantiate(prefab,stageRoot.transform);Hero.name="검토 전용 현재 전사 1명";Hero.transform.localPosition=new Vector3(0,.48f,-.5f);Hero.transform.localRotation=Quaternion.Euler(0,166,0);
+   heroPivot=new GameObject("검토 전사 접지 앵커").transform;heroPivot.SetParent(stageRoot.transform,false);heroPivot.localPosition=new Vector3(0,.48f,-.5f);heroPivot.localRotation=Quaternion.Euler(0,-14,0);
+   Hero=Instantiate(prefab,heroPivot);Hero.name="검토 전용 현재 전사 1명";Hero.transform.localPosition=Vector3.zero;Hero.transform.localRotation=Quaternion.identity;Hero.transform.localScale=Vector3.one;
    foreach(var t in Hero.GetComponentsInChildren<Transform>(true))t.gameObject.layer=Layer;
    foreach(var r in Hero.GetComponentsInChildren<Renderer>(true)){r.shadowCastingMode=ShadowCastingMode.On;r.receiveShadows=true;}
    animator=Hero.GetComponent<Animator>()??Hero.GetComponentInChildren<Animator>();if(animator==null||!animator.isHuman)throw new InvalidDataException("현재 전사 Humanoid 누락");
    animator.applyRootMotion=false;animator.cullingMode=AnimatorCullingMode.AlwaysAnimate;footL=animator.GetBoneTransform(HumanBodyBones.LeftFoot);footR=animator.GetBoneTransform(HumanBodyBones.RightFoot);
-   motion=Hero.GetComponent<NativeHeroMotion>()??Hero.AddComponent<NativeHeroMotion>();
+   motion=Hero.GetComponent<NativeHeroMotion>()??Hero.AddComponent<NativeHeroMotion>();motion.enabled=false;breathingChest=animator.GetBoneTransform(HumanBodyBones.Chest)??animator.GetBoneTransform(HumanBodyBones.Spine);
    // 전투 시뮬레이션과 다른 독립 대기 표본. Tick/입력/피해/세이브 호출 없음.
    idle=new Simulation(new SimulationConfig{EnemyAiEnabled=false},0x53544147);idle.Player.State="idle";idle.Player.Hp=idle.Player.MaxHp;idle.Player.Shield=idle.Player.MaxShield;
    motion.Sync(idle,false);animator.Update(0);baked=Own(new Mesh{name="검토 전사 접지 측정"});
-   var body=Hero.GetComponentsInChildren<SkinnedMeshRenderer>(true);float max=0,min=100;foreach(var r in body){r.BakeMesh(baked);foreach(var p in baked.vertices){var w=r.transform.TransformPoint(p);max=Mathf.Max(max,w.y);min=Mathf.Min(min,w.y);}}
-   float height=max-min;if(height<.5f||height>5)throw new InvalidDataException("전사 표시 높이 범위 "+height);Hero.transform.localScale*=1.85f/height;motion.Sync(idle,false);
+
   }
   void BuildCamera()
   {
@@ -178,8 +186,18 @@ namespace Exoduser.UnityPort
    Light("후실 호박 잔광",new Vector3(-4.2f,2.9f,8.35f),new Vector3(-2.1f,1.1f,7),new Color(1,.69f,.44f),1.4f,7,80,false);
    foreach(var x in new[]{new Vector3(-5,1.6f,-.1f),new Vector3(4.8f,1.6f,1.6f)}){var go=new GameObject("화로 작은 주황광");go.layer=Layer;go.transform.SetParent(stageRoot.transform,false);go.transform.localPosition=x;var l=go.AddComponent<Light>();l.type=LightType.Point;l.color=new Color(1,.43f,.18f);l.intensity=1.3f;l.range=4;l.cullingMask=1<<Layer;l.shadows=LightShadows.None;lights.Add(l);}
   }
-  void Update(){if(!Ready||Owner==null)return;bool visible=Owner.CharacterStageVisible;stageRoot.SetActive(visible);if(!visible)return;Resize();Hero.SetActive(Owner.CharacterStageVisual==0);if(Hero.activeSelf){idle.TickCount=Mathf.RoundToInt((Time.unscaledTime-started)*60);motion.Sync(idle,false);}}
-  void LateUpdate(){if(!Ready||!HeroVisible)return;if(settleFrames++<3){var sample=Measure();float bottom=Mathf.Min(sample.leftSole,sample.rightSole);if(Mathf.Abs(bottom)<2){Hero.transform.position+=Vector3.up*(.48f-bottom);}}}
+  void Update(){if(!Ready||Owner==null)return;bool visible=Owner.CharacterStageVisible;stageRoot.SetActive(visible);if(!visible)return;Resize();Hero.SetActive(Owner.CharacterStageVisual==0);}
+  void PrepareHero(ScriptableRenderContext context,Camera camera)
+  {
+   if(camera!=StageCamera||!Ready||!HeroVisible)return;
+   // 현재 전사의 Idle/무기 홀드만 재사용하고 렌더 직전의 실제 스킨을 잰다.
+   Hero.transform.localPosition=Vector3.zero;Hero.transform.localRotation=Quaternion.identity;
+   idle.TickCount=Mathf.RoundToInt((Time.unscaledTime-started)*60);motion.Sync(idle,false);
+   if(breathingChest!=null)breathingChest.localRotation*=Quaternion.Euler(Mathf.Sin((Time.unscaledTime-started)*1.5f)*.8f,0,0);
+   if(!fitted&&poseWarmup++>=2){float low=100,high=-100;foreach(var r in Hero.GetComponentsInChildren<SkinnedMeshRenderer>(true)){r.BakeMesh(baked);foreach(var p in baked.vertices){float y=r.transform.TransformPoint(p).y;low=Mathf.Min(low,y);high=Mathf.Max(high,y);}}
+    float height=high-low;if(height<.5f||height>5)throw new InvalidDataException("실제 전사 높이 범위 "+height);heroPivot.localScale*=1.85f/height;fitted=true;}
+   var pose=Measure();float sole=Mathf.Min(pose.leftSole,pose.rightSole);if(sole> -2&&sole<3)heroPivot.position+=Vector3.up*(.48f-sole);
+  }
   void OnRendered(ScriptableRenderContext context,Camera camera){if(camera==StageCamera)RenderedFrames++;}
   public PoseSample Measure()
   {
@@ -191,6 +209,6 @@ namespace Exoduser.UnityPort
    }}row.bladePresent=motion.TryGetBladeTip(out var tip);row.bladeTip=tip-Origin;return row;
   }
   void OnDisable(){if(stageRoot!=null)stageRoot.SetActive(false);}
-  void OnDestroy(){RenderPipelineManager.endCameraRendering-=OnRendered;if(Output!=null){Output.Release();Destroy(Output);}if(stageRoot!=null)Destroy(stageRoot);foreach(var o in owned)if(o!=null)Destroy(o);}
+  void OnDestroy(){RenderPipelineManager.beginCameraRendering-=PrepareHero;RenderPipelineManager.endCameraRendering-=OnRendered;if(Output!=null){Output.Release();Destroy(Output);}if(stageRoot!=null)Destroy(stageRoot);foreach(var o in owned)if(o!=null)Destroy(o);}
  }
 }
