@@ -19,6 +19,7 @@ namespace Exoduser.UnityPort
    {
     Screen.SetResolution(size.x,size.y,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.5f);
     string tag=size.x.ToString();
+    if(phase=="art")yield return UiFinishArt(output,tag,log);
     if(phase=="settings")yield return UiFinishSettings(output,tag,log);
     if(phase=="hud")yield return UiFinishHud(output,tag,log);
     if(phase=="pause")yield return UiFinishPause(output,tag,log);
@@ -67,5 +68,18 @@ namespace Exoduser.UnityPort
    pauseMenu.Navigation.ObserveReleased(false);ApplyPauseCommand(pauseMenu.HandleKey(PauseKey.Back,false,false));
    log.Add("esc again -> menu="+menu+" running="+Running);
   }
+  IEnumerator UiFinishArt(string output,string tag,System.Collections.Generic.List<string> log)
+  {
+   // 기존 실제 창 진입 함수를 사용한다. 플레이·저장 품질을 이 정지 화면으로 판정하지 않는다.
+   if(!NativeQaSandbox.Active)yield break;smokeActive=true;menu=false;Running=false;pauseMenu.Reset();
+   yield return UiCapture(output,"Unity_HUD_"+tag);
+   SetInventory(true);yield return UiCapture(output,"Unity_인벤토리_"+tag);SetInventory(false);Running=false;
+   SetSkills(true,6);yield return UiCapture(output,"Unity_스킬_"+tag);SetSkills(false);Running=false;
+   SetStats(true);yield return UiCapture(output,"Unity_능력치_"+tag);SetStats(false);Running=false;
+   SetForge(true);yield return UiCapture(output,"Unity_대장간_"+tag);SetForge(false);Running=false;
+   menu=true;pauseMenu.OpenSettingsDirect();yield return UiCapture(output,"Unity_설정_"+tag);pauseMenu.Reset();menu=false;Running=false;
+   int present=0;for(int i=1;i<=27;i++)if(Resources.Load<Texture2D>("Art/ui/inventory/unique/ui-"+i.ToString("00")+"_cut")!=null)present++;log.Add("유니크 기존 원화 "+present+"/27, 화면 "+tag);
+  }
+
  }
 }
