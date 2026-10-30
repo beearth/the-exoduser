@@ -12,6 +12,7 @@ namespace Exoduser.UnityPort {
   [Serializable] sealed class PlaytestFrame { public string key; public int frame,tick; public float x,y,facing,aimError,maxSpriteError; public string state; public List<Vector2> ki=new List<Vector2>(),magic=new List<Vector2>(),magicVelocity=new List<Vector2>(),blades=new List<Vector2>(); public float harpX,harpY; public bool harp,dash; public int zones,waves,blasts,burstViews; }
   [Serializable] sealed class PlaytestResult { public string scope="실제 Player, 가상 Input System 장치 → 기존 FixedUpdate → Core → LateUpdate. OS 손조작 아님"; public bool passed,remodel3d,maliceTrailDefaultColorSpace;public float fieldOfView,heroScale,pitchDegrees,distance,lookAhead,baselineHp,baselineMana,baselineStamina,baselineSpeed,baselineCastSpeed; public int failures; public List<string> checks=new List<string>(); public List<PlaytestFrame> frames=new List<PlaytestFrame>(); }
   IEnumerator PlaytestCapture() {
+   if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-druid-impact-capture")>=0){yield return DruidImpactCapture();yield break;}
    string output=Argument("-output"); if(string.IsNullOrEmpty(output)){Application.Quit(2);yield break;} Directory.CreateDirectory(output);
    AudioListener.volume=0;AudioListener.pause=true;smokeActive=true;dropSmoke=true;Running=false;
    Screen.SetResolution(1600,900,FullScreenMode.Windowed);lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();lobby.Flow.EnterTest();

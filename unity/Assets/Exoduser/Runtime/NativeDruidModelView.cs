@@ -17,7 +17,9 @@ namespace Exoduser.UnityPort
         static readonly Vector3 StageOrigin = new Vector3(-20000, -20000, 0);
         static readonly string[] RequiredClips = { "Idle", "Walk", "CastThorn", "CastPoison", "CastRoot", "Slam", "Hit", "Death" };
         static readonly HashSet<string> warnings = new HashSet<string>();
-        readonly NativeDruidMotionClock clock = new NativeDruidMotionClock();
+        NativeDruidMotionClock clock = new NativeDruidMotionClock();
+        readonly NativeDruidPoseHold<NativeDruidMotionClock.Pose> impactPose = new NativeDruidPoseHold<NativeDruidMotionClock.Pose>();
+        int poseActorId = -1;
         readonly Dictionary<string, int> indices = new Dictionary<string, int>();
         readonly List<AnimationClipPlayable> playables = new List<AnimationClipPlayable>();
         readonly List<AnimationClip> clips = new List<AnimationClip>();
@@ -196,16 +198,21 @@ namespace Exoduser.UnityPort
             stamp = Time.frameCount;
         }
 
-        public bool Draw(EnemyState e, DruidData data, int tick, bool moving)
+        public bool Draw(EnemyState e, DruidData data, int tick, bool moving, bool holdPose)
         {
+            if (poseActorId != e.Id) { poseActorId = e.Id; impactPose.Clear(); clock = new NativeDruidMotionClock(); }
             if (!Ready || NativeRemodel3D.Active || data.S == "bossDruidUnder") { Hide(); return false; }
-            Pose(clock.Sample(tick, data.S, data.RmMoveId ?? data.CurMove, data.St2, data.RmTeleTotal, moving, e.Stunned > 0 || data.S == "eHit" || data.S == "eStagger", e.Hp <= 0));
+            // 기저 Core 상태 시계는 정지 중에도 진행한다. RT/향후 직접3D 양쪽에서 재사용 가능한 표시 자세 데이터만 유지한다.
+            var underlying = clock.Sample(tick, data.S, data.RmMoveId ?? data.CurMove, data.St2, data.RmTeleTotal, moving, e.Stunned > 0 || data.S == "eHit" || data.S == "eStagger", e.Hp <= 0);
+            Pose(impactPose.Select(tick, underlying, holdPose, e.Hp <= 0 || data.S == "eDeath", e.Id));
             model.transform.localRotation = Quaternion.Euler(0, (float)NativeDruidMotionClock.FacingYawDegrees(data.Facing), 0);
             Place(e, 1, 0); return true;
         }
 
         public bool DrawSink(EnemyState e, int tick, int t, int bodyTicks, int holdTicks, int fadeTicks)
         {
+            if (poseActorId != e.Id) { poseActorId = e.Id; clock = new NativeDruidMotionClock(); }
+            impactPose.Clear();
             if (!Ready || NativeRemodel3D.Active) return false;
             Pose(clock.Sample(tick, "eDeath", "", 0, 0, false, false, true));
             float fade = Mathf.Clamp01((t - bodyTicks - holdTicks) / (float)fadeTicks);
@@ -215,6 +222,7 @@ namespace Exoduser.UnityPort
 
         public void Hide()
         {
+            impactPose.Clear();
             if (renderer != null) renderer.enabled = false;
             if (shadow != null) shadow.enabled = false;
             if (stage != null) stage.SetActive(false);

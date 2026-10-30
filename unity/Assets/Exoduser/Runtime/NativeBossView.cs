@@ -50,6 +50,7 @@ namespace Exoduser.UnityPort
         public void Dispose()
         {
             if (bound != null) bound.BossFx -= OnFx;
+            druidContacts.Clear();
             DisposeDruidProjectileArt();
             if (root != null) UnityEngine.Object.Destroy(root.gameObject);
         }
@@ -252,6 +253,7 @@ namespace Exoduser.UnityPort
                 PutAdd(ClipSprite(v.Clip, frame), v.X, v.Y, v.W, v.H, 1f - (float)legacy / v.MaxFrames * .3f, (int)v.Y + 20);
                 i++;
             }
+            DrawDruidContacts(t);
             Finish();
         }
 

@@ -17,7 +17,7 @@ static class Program
             wind = clock.Sample(124, "bossSlamWind", "slam", 24, 48, false, false, false);
             Check(Near(wind.Time, 24.0 / 124), "48프레임 예비의 중간 자세");
             var frozen = clock.Sample(124, "bossSlamWind", "slam", 24, 48, false, false, false);
-            Check(Near(wind.Time, frozen.Time), "렌더 반복·타격 정지 중 자세 보존");
+            Check(Near(wind.Time, frozen.Time), "같은 Core틱의 반복 렌더에서 시계 샘플 동일(실제 자세 정지 검사는 별도)");
             var active = clock.Sample(148, "bossSlam", "slam", 6, 48, false, false, false);
             Check(Near(active.Time, 48.0 / 124), "Core 강타 발동 첫 프레임과 접점 일치");
             active = clock.Sample(151, "bossSlam", "slam", 3, 48, false, false, false);
@@ -98,6 +98,7 @@ static class Program
                 double yaw = NativeDruidMotionClock.FacingYawDegrees(facing) * Math.PI / 180;
                 Check(Near(-Math.Sin(yaw), Math.Cos(facing)) && Near(-Math.Cos(yaw), -Math.Sin(facing)), "Unity -Z 정면이 Core 동/남/서/북 방향과 일치: " + facing);
             }
+            ImpactChecks.Run(Check);
             Console.WriteLine("검사=" + checks + " 실패=0");
             return 0;
         }

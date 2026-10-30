@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Exoduser.UnityPort.Core;
@@ -10,6 +11,9 @@ namespace Exoduser.UnityPort
     {
         NativeBossView bossView; NativeDruidBody druidBody; NativeDruidTelegraphView teleView; readonly Dictionary<int, int> sinkStart = new Dictionary<int, int>();
         NativeDruidModelView druidModel;
+        readonly NativeDruidImpactClock druidImpact = new NativeDruidImpactClock();
+        readonly List<NativeDruidImpactClock.Actor> impactActors = new List<NativeDruidImpactClock.Actor>();
+        int impactActorId = -1, impactEtype = -1;
         public const int SinkBodyTicks = 66, SinkHoldTicks = 18, SinkFadeTicks = 18;
         public const int SinkHoleTick = (int)(SinkBodyTicks * .55f) + 1;   // first tick NativeDruidBody.DrawSink shows the hole (t > bodyTicks * .55); the sink sound plays here
         readonly HashSet<int> sinkSounded = new HashSet<int>();
@@ -25,8 +29,43 @@ namespace Exoduser.UnityPort
 
         void BossViewDispose()
         {
+            druidImpact.Reset();
+            impactActors.Clear(); impactActorId = impactEtype = -1;
             bossView?.Dispose(); druidBody?.Dispose(); teleView?.Dispose(); druidModel?.Dispose();
             bossView = null; druidBody = null; teleView = null; druidModel = null;
+        }
+
+        // 매 Core틱의 기존 DispatchFeedback에서만 읽는다. 보스 본체의 등록/id/현재 좌표를 확인하며 다른 보스에는 적용하지 않는다.
+        void BossImpactBeginTick()
+        {
+            impactActors.Clear(); impactActorId = impactEtype = -1;
+            var sim = Simulation; var boss = sim != null && sim.Druid != null ? sim.Druid.Boss : null;
+            DruidData data;
+            bool valid = sim != null && sim.Config.StageIndex == 0 && sim.Stage.InArena && boss != null && boss.IsBoss && boss.Alive && boss.Hp > 0
+                && ReferenceEquals(sim.Stage.FindBoss(), boss) && sim.Druid.Data.TryGetValue(boss, out data);
+            if (!valid) { druidImpact.Reset(); return; }
+            data = sim.Druid.Data[boss];
+            impactActorId = boss.Id; impactEtype = boss.Etype;
+            foreach (var actor in sim.Enemies)
+                if (actor.Alive && actor.Hp > 0 && actor.IsBoss)
+                    impactActors.Add(new NativeDruidImpactClock.Actor { Id = actor.Id, Etype = actor.Etype, X = actor.X, Y = actor.Y, Radius = actor.Radius, Alive = true, IsBoss = true });
+            // DruidTelegraph.StaffTip과 같은 공개 계약: Facing+WeaponAng, 몸 반지름+70.
+            double angle = data.Facing + data.WeaponAng, reach = data.R + DruidBoss.StaffReachExtra;
+            druidImpact.Begin(sim.TickCount, boss.Id, data.X, data.Y, data.R, data.S, true,
+                data.X + Math.Cos(angle) * reach, data.Y + Math.Sin(angle) * reach);
+        }
+
+        void BossImpactOffer(FeedbackEvent e)
+        {
+            if (e.Kind == FeedbackKind.KiSlashHit) druidImpact.OfferKi(e.Tick, e.X, e.Y);
+            else if ((e.Kind == FeedbackKind.BossHit || e.Kind == FeedbackKind.EnemyCrit)
+                && NativeDruidImpactClock.SourceMatches(impactActorId, impactEtype, e.Etype, e.IsBoss, e.X, e.Y, impactActors))
+                druidImpact.OfferHit(e.Tick, e.X, e.Y, e.Kind == FeedbackKind.EnemyCrit);
+        }
+
+        void BossImpactFinishTick()
+        {
+            if (Simulation != null && bossView != null) bossView.DruidContact(druidImpact.Finish(Simulation.TickCount), Simulation.TickCount);
         }
 
         // web camera: zoom target 0.80 while a boss is alive (1.0 otherwise), eased zoom += (target - zoom) * (1 - .94^dt); orthographicSize 5.4 is zoom 1
@@ -67,9 +106,10 @@ namespace Exoduser.UnityPort
         {
             if (!e.IsBoss || druidBody == null || Simulation.Druid == null) return false;
             DruidData dd; if (!Simulation.Druid.Data.TryGetValue(e, out dd)) return false;
-            if (druidModel != null && druidModel.Draw(e, dd, Simulation.TickCount, ev.moving))
+            bool holdPose = druidImpact.Holding(Simulation.TickCount);
+            if (druidModel != null && druidModel.Draw(e, dd, Simulation.TickCount, ev.moving, holdPose))
             { druidBody.Hide(); ev.body.enabled = false; ev.walk.enabled = false; return true; }
-            if (!druidBody.Draw(e, dd, newTick)) return false;
+            if (!druidBody.Draw(e, dd, newTick, Simulation.TickCount, holdPose)) return false;
             druidBody.Stamp = Time.frameCount; ev.body.enabled = false; ev.walk.enabled = false;
             return true;
         }

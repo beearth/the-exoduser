@@ -260,7 +260,9 @@ namespace Exoduser.UnityPort
         void DispatchFeedback()
         {
             sound.CurrentTick=Simulation.TickCount;
-            while(Simulation.Feedback.Count>0){var e=Simulation.Feedback.Dequeue();impacts.Handle(e);sound.Handle(e);}
+            BossImpactBeginTick();
+            while(Simulation.Feedback.Count>0){var e=Simulation.Feedback.Dequeue();BossImpactOffer(e);impacts.Handle(e);sound.Handle(e);}
+            BossImpactFinishTick();
             sound.Flush();
         }
         void BuildProps()
@@ -288,7 +290,7 @@ namespace Exoduser.UnityPort
         void UpdateViews()
         {
             if(Simulation==null||view==null)return;Remodel3DRestoreBillboards();var p=Simulation.Player;
-            float shk=Simulation.ShakeAmount*OptionShakeScale;   // B09: web G.shake -> camera offset (random +-shake px, game.html 51900)
+            float shk=(float)NativeDruidImpactClock.CombineShake(Simulation.ShakeAmount,druidImpact.Shake(Simulation.TickCount),OptionShakeScale);   // 기존 흔들림과 표현 보조 중 큰 값, 사용자 옵션은 한 번만 적용
             float camX=p.X/100,camY=-p.Y/100;BossCameraZoom();ClampCameraToMap(ref camX,ref camY);   // [CAM-CLAMP] web _clampCamToMap before the shake offset
             view.transform.position=new Vector3(camX+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),camY+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),-10);StageFlowSyncViews();if(!Simulation.Stage.InArena)StreamChunks(p.X,p.Y);
             bool newTick=renderedTick!=Simulation.TickCount;

@@ -14,8 +14,10 @@ const refs = fs.readdirSync(ref).filter(x=>x.endsWith('.dll')).map(x=>'-r:'+path
 const binary = path.join(out, 'DruidPresentation.dll');
 const helper = path.join(root, 'Assets/Exoduser/Runtime/NativeDruidMotionClock.cs');
 if (!fs.existsSync(helper)) { console.error('실패: 드루이드 표현 타이밍 구현이 없음'); process.exit(1); }
+const impact = path.join(root, 'Assets/Exoduser/Runtime/NativeDruidImpactClock.cs');
+if (!fs.existsSync(impact)) { console.error('실패: 보스 접점·자세정지 표현 구현이 없음'); process.exit(1); }
 const options = {cwd:root,windowsHide:true,encoding:'utf8',timeout:120000,env:{...process.env,DOTNET_ADD_GLOBAL_TOOLS_TO_PATH:'false',DOTNET_NOLOGO:'1',DOTNET_SKIP_FIRST_TIME_EXPERIENCE:'1'}};
-let r = cp.spawnSync(dotnet,['C:/Program Files/dotnet/sdk/8.0.301/Roslyn/bincore/csc.dll','-nologo','-utf8output','-target:exe','-out:'+binary,...refs,path.join(__dirname,'Program.cs'),helper,path.join(root,'Assets/Exoduser/Runtime/NativeDruidRigContract.cs'),path.join(root,'Assets/Exoduser/Runtime/NativeReviewArgs.cs')],options);
+let r = cp.spawnSync(dotnet,['C:/Program Files/dotnet/sdk/8.0.301/Roslyn/bincore/csc.dll','-nologo','-utf8output','-target:exe','-out:'+binary,...refs,path.join(__dirname,'Program.cs'),path.join(__dirname,'ImpactChecks.cs'),helper,impact,path.join(root,'Assets/Exoduser/Runtime/NativeDruidRigContract.cs'),path.join(root,'Assets/Exoduser/Runtime/NativeReviewArgs.cs')],options);
 let log=(r.stdout||'')+(r.stderr||'');
 if (r.status===0) {
   fs.writeFileSync(path.join(out,'DruidPresentation.runtimeconfig.json'),JSON.stringify({runtimeOptions:{tfm:'net8.0',framework:{name:'Microsoft.NETCore.App',version:'8.0.0'}}}));
