@@ -217,3 +217,40 @@ Unity가 직접 기록한 FBX 원본 회전0/scale1과 실제경계로 축·단�
 
 
 저장 정책 마감: 더 이상 참조하지 않는 자기 후보의 root_0~2 FBX/메타, HellEnvironmentLit/메타, 미사용 rough2세트, torch_base/메타 총14파일은 문자열·GUID 참조0을 확인하고 I:/EXODUSER-Storage/steam-keyshot/unused-owned-runtime에 SHA 대조 보존 뒤 SSD 사본만 정리했다. 활성 화로·스캔고목·바닥·불꽃·원본 H5 자산은 유지한다. 삭제 채택이 아니라 중간 후보 보관 위치 분리다.
+
+
+## UI 우선 사용자 지시 확인 후 마감 — 2026-10-30
+
+최신 MERGE_QUEUE의 CTO09:4x 행과 canonical CTO_STATE actor1은 UI unity/main 병합·실제 바탕화면 갱신 전 키샷 Unity/Player/새 빌드를 중지하도록 명시했다. 확인 당시 후보4 PS58500은 Unity 시작 전 예약 대기였으므로 자기 PS만 중단하고 steam-keyshot-environment 예약을 해제했다. 타인 프로세스 종료0, 후보4 Unity 실행0. 해당 마감은 I: UI우선-대기.json에 기록했다.
+
+| 게이트 | 실제 현재 상태 |
+|---|---|
+| 소스 | 요청 브랜치 source52ca9f20b4ed3afa91b68507016b2c6e0a95561c 원격 ref 대조. 이 뒤 마감 docs만 추가하며 Unity tree는 동일 |
+| 컴파일/빌드 | 환경1/2/3는 오류0 빌드 영수증0773279c/0c1988ab/c8f93b05. 후보4는 대기 중 취소, 컴파일/셰이더/GPU 검수 미실행 |
+| 실제 캡처 | environment1~3-caps 각1920×1080 원본3장. 최신 실제 Player e4a9b14d는 필드탄2로 exit3이며 Steam 채택 FAIL. 창·잔여·USER_SAVE0 |
+| 새 화로 | Blender FBX 재수입·640² 중립 형태 렌더 확인. 첫 렌더의 BSDF 이름 조회 실패를 type 조회로 수정한 뒤 실제 PNG 생성 확인. Unity 재질·불꽃·접지는 아직 미검증 |
+| 안전 보존 | automatic-import-final에 자동 임포트462경로 SHA 보존 후 시작 clean이던 HEAD byte로 복원. tracked WORK는 시작 WIP guard.baseline.json만, 원래 SHA9414ce48870885726bd4bd6db7df52d6d3ad8aa63edcb7f67c6cb3f63c4bb8ca 동일. INDEX 비어 있음. 타인 미추적 메타/WIP 보존 |
+| 전체M1/통합 | 이 후보의 전체M1·공통줄기·바로가기 갱신 미완료. 다른 후보627113829의 b50ce3b5 23/23을 현재 Runtime에 소급하지 않음 |
+| Steam 판정 | 현재 합격3장 없음. 빌드·소스 백업·부분 형태 개선을 Steam 완료로 올리지 않음 |
+
+### 재개 시 재사용할 새 근거
+
+독립 조명 인계 steam-keyshot-lighting-handoff.md와 source47e519f41984a3124995d4b70a1169550110644c를 확인했다. 긴 검은 나무형 무늬의 실제 원인은 Decals_blood/Decals_blood_drag 원본 혈흔이며, 실제 메시 그림자 제거만으로는 남는다고 명시했다. 이 원인 수정은 현재52ca 후보에 아직 인수하지 않았다. UI 게이트 뒤 자기 환경/화로 변경을 보존하는 3way 대조로 정확 부분만 인수해야 한다. 같은 인계의 회복/대기 보스 프레임 선택·순수 돌 노멀/알베도와 현행 맵 oracle2523/36검사0 근거도 비교하며, 과거 Godot맵의 북문13칸 차이2불일치와 구분한다. 새 입력으로 판정 기준을 낮추지 않는다.
+
+### MAP PRODUCTION REPORT — 현재 범위와 다음 미완료 단위
+
+| 항목 | 실제 상태 |
+|---|---|
+| STAGE / MASTER | CH1-1 키샷 구간. 기존200²맵·남→북 진행·전투장·상단 통로·Core/Collider 보존. 전체 맵 재설계 아님 |
+| OUTER MASS | LEFT는 실제 암반/스캔고목 높이 관찰, RIGHT/TOP/SOUTH는 같은 후보의 전체 카메라 QA 미완료. 심연/먼 폐허/다층 안개의 원근감은 미구현이며 최신1순위 미충족 |
+| LARGE | 실제 FBX 축0/scale1·경계 확인. 전경 그루터기·암반으로 높이 추가, 어두운 표면·반복·공간 조화는 RETOUCH. 화로 새 후보는 Unity 미검증 |
+| MEDIUM / GROUND | 낮은 뿌리·잔해 접합58개. 표면 메시의 원본 높이/충돌 유지. 혈흔의 나무형 무늬·전체 접합과 바닥 잔점은 최신 인계 수정 인수 후 재검수 필요 |
+| PLAYABLE | Core/Collision 수정0. 실제 스크립트 이동·생존 보조 전투 관찰. 최신 촬영2/3 탄막조건 FAIL, 새 거리유지 입력은 CPU 진단만 확인 |
+| LANDMARK | 기존 지옥불 광원·스캔 고목1개 시각 초점. 주/보조 랜드마크 전체 위계 미완료 |
+| CAMERA QA | START 근처 탐험·필드전투·보스3장 직접 열람. EARLY/SIDE L/SIDE R/LANDMARK/LATE/EXIT 전체8뷰는 미검증. 실제 PNG는1x로 확인했고 PoE2원본/NRFTW6장 격자보드와 비교 |
+| TECH QA | 3후보 컴파일/Win빌드 오류0, 최신2Player의 창/잔여/세이브0. 후보4 컴파일·GPU·M1·성능·전후 합성 미검증. Core/원본 데이터/사용자 앱 불변 |
+| FILES / GIT | 자기 Runtime/Shader/Resources와 본 SSOT만 정확 경로 commit·비강제 push. inactive14파일은 I: SHA 보존. 사용자 guard/다른 untracked 보존. 배포/구매/크레딧0 |
+| VISUAL VERDICT | Steam 제출 FAIL. 후보4는 미검증. 부분 형태·초점 개선을 전체 PASS로 승격하지 않음 |
+| NEXT PASS | UI 공통 SHA/바탕화면 실제 갱신 영수증 → 최신unity/main 정상merge → 조명 인계의 혈흔/회복프레임/현행oracle 정확 인수 → 새 후보4 실제검수 → 외곽 원근감 제작·동크기비교 → 정확실행본 전체M1 → 지정통합/바로가기 |
+
+외곽 원근감의 다음 제작 단위는 임의 소품 추가가 아니다. 보행과 연결된 바닥은 유지하고, 바깥과 연결된 비보행 구역만 시각 표면을 낮추는 절벽/하부 질량, 먼 덩어리, 깊이에 따른 안개층을 실제 카메라 구도로 설계한다. Core 권위·TerrainCollider·플레이어 높이 질의는 지키며, 고립된 충돌 소품 영역을 심연으로 오인하지 않도록 별도 분류해야 한다. 아직 구현하지 않았고 UI 이전에 새 제작/빌드를 시작하지 않는다.
