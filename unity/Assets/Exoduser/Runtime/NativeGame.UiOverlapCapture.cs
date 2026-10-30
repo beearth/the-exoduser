@@ -73,7 +73,7 @@ namespace Exoduser.UnityPort
             Directory.CreateDirectory(overlapOutput);overlapCoverage=new UiOverlapCoverage();SelectOverlapLanguages();
             using(var hash=System.Security.Cryptography.SHA256.Create())using(var binary=File.OpenRead(typeof(NativeGame).Assembly.Location))overlapCoverage.runtimeSha256=BitConverter.ToString(hash.ComputeHash(binary)).Replace("-","").ToLowerInvariant();
             overlapCoverage.unityVersion=Application.unityVersion;overlapCoverage.device=SystemInfo.graphicsDeviceName;overlapCoverage.deviceType=SystemInfo.graphicsDeviceType.ToString();
-            smokeActive=true;pauseSmoke=true;lobby.AutomatedInput=true;lobby.SetPlaybackFocus(true);
+            smokeActive=true;pauseSmoke=true;lobby.AutomatedInput=true;lobby.SetPlaybackFocus(true);SetGameFocus(true);
             gameObject.AddComponent<NativeUiAudit.Host>();NativeUiAudit.Active=false;
             foreach(var size in new[]{new Vector2Int(1920,1080),new Vector2Int(1600,900)})
             foreach(string language in overlapCoverage.languages)
