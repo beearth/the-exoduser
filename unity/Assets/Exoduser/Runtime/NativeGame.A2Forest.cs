@@ -168,7 +168,8 @@ namespace Exoduser.UnityPort
             else if(id=="Corroded_Riverbank"){source="Moss_Rock_1";units=1.2f;}
             else if(id=="Dead_Leaf_Litter")units=.45f;
             bool roots=id.StartsWith("PineRoots_",StringComparison.Ordinal);
-            var prefab=Resources.Load<GameObject>(roots?"Art/map/a2/roots/Models/A2_"+id:id=="Foam_Bank"?"Art/map/a2/Models/RF_Foam_Bank":"Art/map/a2/r3/Models/RF3_"+source);
+            bool stump=id=="Scanned_Stump";
+            var prefab=Resources.Load<GameObject>(stump?"Art/map/a2/stump/Models/A2_Scanned_Stump":roots?"Art/map/a2/roots/Models/A2_"+id:id=="Foam_Bank"?"Art/map/a2/Models/RF_Foam_Bank":"Art/map/a2/r3/Models/RF3_"+source);
             if(prefab==null){Debug.LogError("[A2] 모듈 누락 "+id);return null;}
             float placementGround=NativeRemodel3D.GroundY(x,z);
             float height=placementGround+lift+(id=="Dead_Leaf_Litter"?.01f:-.08f);
@@ -184,7 +185,7 @@ namespace Exoduser.UnityPort
             var go=Instantiate(prefab,a2Root.transform);go.name="A2_"+id;
             go.transform.SetPositionAndRotation(new Vector3(x,height,z),Quaternion.Euler(0,yaw,0));
             go.transform.localScale=new Vector3(sx,sy,sz)*units;
-            if(roots||id=="Dead_Leaf_Litter")foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
+            if(roots||stump||id=="Dead_Leaf_Litter")foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
             {
                 if(!mf.sharedMesh.isReadable){if(a2UnreadableMeshes.Add(id))Debug.LogError("[A2] 지면 접합 정점읽기 누락. 원본 메시 유지: "+id);continue;}
                 var mesh=Instantiate(mf.sharedMesh);var points=mesh.vertices;
@@ -206,6 +207,7 @@ namespace Exoduser.UnityPort
             var tree=A2Module("Ancient_Rotten_Tree",x,z,sx,sy,sz,yaw);if(tree==null)return;
             // 고목을 방사형으로 붙이는 방법도 원화의 뿌리 접합이 되지 않아 실제 뿌리 스캔으로 교체한다.
             A2Module(x>40?"PineRoots_B":"PineRoots_A",x,z,3.2f,4.3f,4,yaw,-.02f);
+            A2Module("Scanned_Stump",x,z,3.2f,4,3.2f,yaw,-.18f);
         }
         void A2River(Terrain ground)
         {

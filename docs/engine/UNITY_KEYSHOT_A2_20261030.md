@@ -26,7 +26,7 @@
 | 촬영 | --unity-steam-keyshot+A2는 실제NativeGame/격리세이브. 4200:7460, 실제AI/스크립트입력·생존보조, 적/탄 직접주입0. URP SingleCameraRequest/SubmitRenderRequest로1920×1080 월드RT·HUD제외. RGB휘도16픽셀표본 평균>.01 추가하여 검정이미지 성공 방지. 스킨 높이는 Model.activeInHierarchy·Renderer.enabled·카메라layer 교집합일 때 측정, 2D아레나도 보이는3D전사는 실제활성Renderer를 측정(숨긴2D스프라이트 사용0). 일반 손조작/HUD 검수 별도 |
 | 영웅 크기 | R5가 있으면 실제 SkinnedMeshRenderer.BakeMesh 정점 투영으로 측정. 숨긴2D스프라이트 높이를 실제전사 크기로 인용하지 않음. 원래8~11% 촬영검사 유지 |
 | 미니맵 경계 | SourceMap.DisplayTile(tx,ty)는 추가 경계가 차단한 타일 중심을1로 반환하고 나머지는 원본 Data.tiles 값을 그대로 반환. NativeFieldHud는 이 값으로 기존 미니맵을 그린다. A2 수로/다리/비A2 표시3검사PASS, UI 모양·원본 맵 데이터 변경0. 미니맵-수정전-FAIL.json에 수정 전 불일치 보존 |
-| 보행 교차 회귀 | 실제 SourceMap/ch1_map으로 비다리 수면123571표본/겹침0. 주간충돌: 왼쪽2.2u·먼쪽2u·기타2주간1.1u, 큰그루터기1.3u, 기존후경15×.8u/작은후경19×.5u. 다리101점/반경15px·촬영4200:7460·일반4020:7420·중앙4320:7180 보행true.16842타일/출구3곳 연결, 고정앵글러4곳 모두300px 내 접근·시야 확보. 섬바깥49점 높이튐0. 현재30검사PASS. 원본JSON/Core 및 수면/새거목 밖차단 보존. 섬고리/남동앵글러 수정전FAIL별도 보존 |
+| 보행 교차 회귀 | 실제 SourceMap/ch1_map으로 비다리 수면123472표본/겹침0. 주간충돌: 왼쪽2.2u·먼쪽2u·기타2주간1.1u, 큰그루터기1.3u, 기존후경15×.8u/작은후경19×.5u. 다리101점/반경15px·촬영4200:7460·일반4020:7420·중앙4320:7180 보행true.16845타일/출구3곳 연결, 고정앵글러4곳 모두300px 내 접근·시야 확보. 섬바깥49점 높이튐0. 현재30검사PASS. 원본JSON/Core 및 수면/새거목 밖차단 보존. 섬고리/남동앵글러 수정전FAIL별도 보존 |
 | 종료 | 미디어닫기·효과음정리·1초배출. 보스1100tick 제한 마지막 촬영 분기1099로 교정 |
 | 검증 | erosion/dd53cf66 빌드오류0/MCP제외PASS, bfd44855 실제1920 3장·탄3/15·검정수정 확인. 다만 CPU정점읽기210오류/뿌리·낙엽 누락/경계톱니/빈보스바닥으로 실제FAIL. receipt.passed=true는 아트/오류 통과가 아니며 다음코드에 unityErrors==0 조건 추가. 새소스 독립C#0·28경계/침수/동선검사PASS, 실제GPU/현재빌드M1/통합/일반Desktop 미검증 |
 
@@ -65,7 +65,7 @@ A2CaptureFrame이 정상 LateUpdate 이후 Remodel3DLate를 다시 불러 이미
 
 | 항목 | 현재 코드 계약·검증 한계 |
 |---|---|
-| 메시 읽기 | A2GroundCoverImporter v1은 정확 PineRootsA/B·R3DeadLeaf3FBX만 isReadable=true. 해당3meta도 명시. 누락이면 원본메시 유지/이름별1회오류, 빈정점으로 원본 메시를 지우지 않음. 새Player에서오류0·3메시실존 재검수필수 |
+| 메시 읽기 | A2GroundCoverImporter v2은 정확 PineRootsA/B·R3DeadLeaf·ScannedStump4FBX만 isReadable=true. 해당4meta도 명시. 누락이면 원본메시 유지/이름별1회오류, 빈정점으로 원본 메시를 지우지 않음. 새Player에서오류0·4메시실존 재검수필수 |
 | 침수 경계 | CutHeight는 수면정점을 water−.3u로 내려 부분잔류삼각형의 높은원본정점/톱니를 제거. 원본FieldMesh와외곽에같이적용, 별도섬메시는동일IslandHeight유지. 26회귀PASS, 실제Pixel 재검수필수 |
 | 높이 재사용 | ForestHeight가 기존 연장/Bank/Island수식 단일원본. 원본Terrain1025² float표본1회읽기, native256점대조 오차>.0005u면native폴백. 배우/정점이같은캐시/수식사용. 외곽은미사용내부정점계산생략·경계원본높이재사용. 이전조립104373ms→현재속도/오차는새Player미검증 |
 | 물가 접합 | Roots/낙엽의정점이 비섬수면에걸치면 수면−.18u로내림, 나머지는GroundY. 같은실제ReadWrite메시의UV·normal/tangent 재계산. 지면보조물만/코어충돌불변 |
@@ -122,3 +122,13 @@ A2CaptureFrame이 정상 LateUpdate 이후 Remodel3DLate를 다시 불러 이미
 | 후속 코드 | A2 보스 카메라 기본5.4×.9=4.86u. 낮은 암반7개를 scale(.16,.12,.18)로 줄임. 필드 주광이 꺼진 XY 아레나에만 전용 directional RGB(.6,.7,.85)/강도.9/회전(25,−25,0)/그림자없음. rig와 함께 비활성, Core/AI/보스모델불변. 실제 조명 재검수필수 |
 | 필드 환경광 재진입 | HellLightingActive(on)의 이전(.31,.34,.36) 덮어쓰기를 제거. 조립/활성화가 A2Ambient 한 함수를 공유해 (.20,.25,.30)/(.12,.14,.16)/(.035,.03,.02)를 적용. 현재 독립C#0, 실제 새후보 미검증 |
 | 단일 실행 | 자기 예약 정상 반환, 다음 기존 UI-tab-audio 예약 보존. 큰형태 보완은 자기 오프라인 자산에서 진행, 타프로세스 종료0 |
+
+## 2026-10-31 실제 스캔 큰 밑동 제작 후보
+
+| 항목 | 출처·규격·검수 한계 |
+|---|---|
+| 원본 | [Poly Haven Tree Stump 01](https://polyhaven.com/a/tree_stump_01), Rob Tuytel/CC0/Powered by Poly Haven. 공식2k glTF5파일11375163B 전부 MD5 확인·SHA256 원장. 원본·API메타·변환은 I:/EXODUSER-Storage/steam-keyshot/a2/scanned-stump-source 및 scanned-stump-export. 결제0/생성크레딧0 |
+| 메시 | 원본41046→20523삼각형/원본UV 유지·decimate.5. Blender 축 크기(1.425737,1.590188,.572362)m, 중앙/최저점 원점. Traceback0/의미성공표식 확인. 정적 변환 성공을 실게임PASS로 보지 않음 |
+| 현재 배치 | Resources/Art/map/a2/stump의1FBX/1재질/3텍스처. 기존4주간에 scale(3.2,4,3.2)/yaw각주간/lift−.18, PineRoots를 유지하고 큰 밑동을 추가. 지면/수면 정점 접합은 같은 GroundY/WaterLevel−.18. 장식·충돌/Core변경0 |
+| 재질/임포트 | 원본2k Diffuse/NormalGL 동일byte, ARM의 R을Unity AO_G·1−G를smoothness_A·Metal_R0으로 포장. URP Lit/normal.65/occlusion.65. SourceTextureImporter v3의A2규칙으로sRGB색·linearNormal/Mask·mipmap/Trilinear/aniso8/max2048/Clamp. A2GroundCoverImporter v2는 정확4모델만읽기true |
+| 다음 실제검수 | 큰 밑동의 접합·컷면 노출·실루엣·카메라 거리16/18u 및 왼쪽거목 회전 대조. 이끼 카드의 검은 암부는 실제 Unlit 분리로 먼저 진단. 현재 GPU/Player미검증/아트FAIL 유지 |
