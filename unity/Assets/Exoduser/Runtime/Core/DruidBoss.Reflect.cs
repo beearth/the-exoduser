@@ -21,7 +21,7 @@ namespace Exoduser.UnityPort.Core
         static ReflectProjectile ToReflect(BossProjectile p)
         {
             return new ReflectProjectile { X = p.X, Y = p.Y, Vx = p.Vx, Vy = p.Vy, Dmg = p.Dmg, Life = p.Life, Ml = p.Ml, El = p.El, Sz = p.Sz, R = p.R, Col = p.Col, ParryClass = p.ParryClass,
-                Mine = p.Mine, BlackBean = p.BlackBean, Friendly = p.Friendly, Web = p.Web, ElemBall = p.ElemBall, FireMagic = p.FireMagic, RedBean = p.RedBean, WaterBean = p.WaterBean, TitanEye = p.TitanEye, BwBean = p.BwBean, GbBean = p.GbBean,
+                FbEnergy = p.FbEnergy, FdEnergy = p.FdEnergy, Mine = p.Mine, BlackBean = p.BlackBean, Friendly = p.Friendly, Web = p.Web, ElemBall = p.ElemBall, FireMagic = p.FireMagic, RedBean = p.RedBean, WaterBean = p.WaterBean, TitanEye = p.TitanEye, BwBean = p.BwBean, GbBean = p.GbBean,
                 BlueBean = p.BlueBean, ParryBlueBean = p.ParryBlueBean, Magic = p.Magic, Homing = p.Homing, FromRainbow = p.FromRainbow, DruidStraight = p.DruidStraight, AoeR = p.AoeR, AoeDmg = p.AoeDmg };
         }
 

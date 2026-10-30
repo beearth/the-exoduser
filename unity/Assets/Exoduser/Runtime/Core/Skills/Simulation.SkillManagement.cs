@@ -83,7 +83,7 @@ namespace Exoduser.UnityPort.Core
                 case "giantSlam": return 120;
                 case "holyDome": return 90;
                 case "iceOrb": return 100;
-                case "chargeBoost": case "magicBlink": return 100;
+                case "chargeBoost": case "magicBlink": case "chainSlam": return 100;
                 default: return 80;
             }
         }

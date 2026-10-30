@@ -233,6 +233,7 @@ namespace Exoduser.UnityPort
             Simulation.Stage.Enabled=firstPractice==null;
             if(firstPractice==null){   // the first-practice tick sets these once per tick itself (the combat / roll inputs detect edges against the previous call)
             Simulation.SetPlayerCombatInput(NativeKeyBindInput.Held("parry"),NativeKeyBindInput.Held("shield"),NativeKeyBindInput.Held("charge"));
+            Simulation.SetChainLandingInput(attack && NativeKeyBindInput.Down("weapon"), !skillInputFence && NativeKeyBindInput.Down("shield"));
             Simulation.SetRollInput(NativeKeyBindInput.Held("up"),NativeKeyBindInput.Held("down"),NativeKeyBindInput.Held("left"),NativeKeyBindInput.Held("right"),NativeKeyBindInput.HeldKeyboard("roll"));
             SetSkillKeys();}
             int statPointsBeforeTick=Simulation.Player.StatPoints;

@@ -74,6 +74,7 @@ namespace Exoduser.UnityPort.Core
         {
             if (!Finite(moveX) || !Finite(moveY) || !Finite(aimX) || !Finite(aimY)) throw new ArgumentException("Non-finite input");
             if (Stage.Enabled && Stage.LoadPhase > 0) { moveX = 0; moveY = 0; attack = false; pickup = false; }   // C07: the boss-arena load screen freezes the player (web 43568, 61395)
+            BeginChainLandingInput(attack);
             TickCount++;
             if (hitSfxCd > 0) hitSfxCd--; TickScheduledSounds();   // RM-1 sound cooldowns (web _hitSfxCd / _critSfxCd)
             LastHitDamage = 0;
@@ -86,6 +87,7 @@ namespace Exoduser.UnityPort.Core
             if (SkillsWired) DispatchSkillKeys();
             if (Player.State != "pStun") ConsumeRollTrigger(); // 원본 일반 기동 발동은 재생·무적 감소보다 앞선다.
             if (PlayerCombatWired) TickChainDash(); // 기절은 새 홀드·재생만 막고 이미 날아간 사슬은 계속 진행한다.
+            TickChainSlamInput();
             float regenMul = ApplySkillRegen();
             float regenDivisor = Player.State == "idle" ? 8 : 16;
             Player.Hp = Math.Min(Player.MaxHp, Player.Hp + Config.PlayerHpRegen * regenMul / regenDivisor);
@@ -183,6 +185,7 @@ namespace Exoduser.UnityPort.Core
             TickAutoPotion();
             TickShieldThrow(); // 원본 _stCd/_stWingT/_stProjs, 적 탄환 이동 뒤 실행
             if (SkillsWired) TickFireZones(); // 원문 후반 장판 DOT: 적 이동·상태 감소가 끝난 뒤 생성 순서대로
+            TickChainSlamWaves();
             if (pickup) { if (pickupHoldTicks == 0 || pickupHoldTicks >= 9) { PickSourcePriorityLoot(); pickupHoldTicks = 0; } pickupHoldTicks++; }
             else pickupHoldTicks = 0;
             CapEnemies();   // web 34540: ens hard cap 800 -> 700

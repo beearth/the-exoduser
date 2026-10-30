@@ -170,6 +170,7 @@ namespace Exoduser.UnityPort.Core
             HarpActive = true; HarpDist = 0; HarpMaxDist = result.MaxDist; HarpSkill = Skills.ChargeSkill ?? "charge";
             HarpDirX = (float)Math.Cos(Player.Facing); HarpDirY = (float)Math.Sin(Player.Facing);
             HarpX = Player.X; HarpY = Player.Y; DashHits.Clear();
+            ChainSlamReady = ChainAssaultReady = false; ChainSkillDelay = 3;
             DashHold = false; if (resetHoldFrames) DashHoldF = 0;
             return true;
         }
@@ -209,6 +210,7 @@ namespace Exoduser.UnityPort.Core
                         if (!Pass(Player.X + dx * (float)d, Player.Y + dy * (float)d, 2)) { FireChain(tier); break; }
                 }
             }
+            if (ChainSkillDelay > 0) ChainSkillDelay--;
             if (HarpActive && !DashActive)
             {
                 double step, distance = HarpDist;
@@ -236,6 +238,7 @@ namespace Exoduser.UnityPort.Core
                 DashLeft -= step;
                 if (DashLeft <= 0)
                 {
+                    LandChainSlam();
                     DashActive = false; HarpActive = false; DashHold = false; DashHoldF = 0; HarpTier = 0;
                     Player.Iframes = (float)ChainDash.LandingInvulnerable(Player.Iframes);
                     // 착지 직후 계속 누른 Shift는 잔여 게이지로 최고단을 다시 발사한다.

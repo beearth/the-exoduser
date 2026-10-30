@@ -121,7 +121,7 @@ namespace Exoduser.UnityPort
             add.SetInt("_DepthTest",depth); addFlat.SetInt("_DepthTest",depth); alpha.SetInt("_DepthTest",depth);
             BindMaliceBursts(sim); UpdateMaliceBursts(sim.TickCount); BindIceShatter(sim); UpdateIceShatter(sim.TickCount); UpdateQeVisuals(sim,time);
             ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0; var p = sim.Player;
-            UpdateFireTrails(sim, time);
+            UpdateFireTrails(sim, time); UpdateChainSlamView(sim);
             // ---- ground zones ----
             stale.Clear(); foreach (var k in zones.Keys) stale.Add(k);
             foreach (var z in sim.FireZones)
@@ -238,7 +238,7 @@ namespace Exoduser.UnityPort
 
         public void Reset()
         {
-            ResetMaliceBursts(); ResetIceShatter(); ResetQeVisuals(); ResetFireTrails();
+            ResetMaliceBursts(); ResetIceShatter(); ResetQeVisuals(); ResetFireTrails(); ResetChainSlamView();
             foreach (var m in new[] { zones, waves, blades, orbs }) { foreach (var it in m.Values) { ForgetMaliceSprites(it); ForgetCenteredSlamSprites(it); ForgetSkillSprites(it); UnityEngine.Object.Destroy(it.go); } m.Clear(); }
             if (orb != null) orb.go.SetActive(false);
             orbTrails.Clear(); ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0;

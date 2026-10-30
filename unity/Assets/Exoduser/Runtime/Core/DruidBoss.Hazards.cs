@@ -9,7 +9,7 @@ namespace Exoduser.UnityPort.Core
         public double X, Y, Vx, Vy, Dmg, Life, Ml, Sz = 1, R = 4;
         public int El; public bool ElementAbsent;
         public string Col = "", ParryClass = "";
-        public bool RedBean, BlackBean, Homing, Mine, ElemBall, DruidStraight, DruidParryVolley, Commit, FireMagic, MissileTrail, Typed, Web;
+        public bool FbEnergy, FdEnergy, RedBean, BlackBean, Homing, Mine, ElemBall, DruidStraight, DruidParryVolley, Commit, FireMagic, MissileTrail, Typed, Web;
     }
 
     public sealed class BossProjectile
@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort.Core
         public double X, Y, Vx, Vy, Dmg, Life, Ml, Sz = 1, R = 4, Dist;
         public int El; public bool ElementAbsent;
         public string Col = "", ParryClass = "";
-        public bool RedBean, BlackBean, Homing, Mine, ElemBall, DruidStraight, DruidPoison, DruidParryVolley, Commit, FireMagic, MissileTrail, Typed, Web, Active = true;
+        public bool FbEnergy, FdEnergy, RedBean, BlackBean, Homing, Mine, ElemBall, DruidStraight, DruidPoison, DruidParryVolley, Commit, FireMagic, MissileTrail, Typed, Web, Active = true;
         // parry reflection (ParryReflect.cs): a reflected bullet is friendly and flies back as a blue bean
         public bool Friendly, BlueBean, ParryBlueBean, Magic, FromRainbow, WaterBean, TitanEye, BwBean, GbBean;
         public double AoeR, AoeDmg;
@@ -86,7 +86,7 @@ namespace Exoduser.UnityPort.Core
         public BossProjectile SpawnProjectile(EnemyState e, DruidData d, ProjSpec s, bool viaBoss)
         {
             var p = new BossProjectile { X = s.X, Y = s.Y, Vx = s.Vx, Vy = s.Vy, Dmg = s.Dmg, ElementAbsent = s.ElementAbsent, Life = s.Life, Ml = s.Ml, Sz = s.Sz, R = s.R, El = s.El, Col = s.Col, ParryClass = s.ParryClass,
-                RedBean = s.RedBean, BlackBean = s.BlackBean, Homing = s.Homing, Mine = s.Mine, ElemBall = s.ElemBall, DruidStraight = s.DruidStraight, DruidParryVolley = s.DruidParryVolley,
+                FbEnergy = s.FbEnergy, FdEnergy = s.FdEnergy, RedBean = s.RedBean, BlackBean = s.BlackBean, Homing = s.Homing, Mine = s.Mine, ElemBall = s.ElemBall, DruidStraight = s.DruidStraight, DruidParryVolley = s.DruidParryVolley,
                 Commit = s.Commit, FireMagic = s.FireMagic, MissileTrail = s.MissileTrail, Typed = s.Typed, Web = s.Web };
             if (viaBoss) { p.DruidPoison = e != null && e.IsBoss && DruidStage; p.DruidStraight = p.DruidStraight && e != null && e.IsBoss && DruidStage; }
             if (p.DruidPoison) { p.ParryClass = ClassOf(p); p.El = EL_P; p.Col = "#66dd22"; }
