@@ -14,7 +14,7 @@ namespace Exoduser.UnityPort {
   }
   static float Text(float x,float y,float h,string text,int size,Color col,float ls){
    var st=Style(size);float xx=x;st.normal.textColor=col;
-   foreach(char ch in text){string g=ch.ToString();GUI.Label(new Rect(xx,y,40,h),g,st);xx+=st.CalcSize(new GUIContent(g)).x+ls;}
+   foreach(char ch in text){string g=ch.ToString();NativeUiAudit.Label(new Rect(xx,y,40,h),g,st);xx+=st.CalcSize(new GUIContent(g)).x+ls;}
    return xx-x;
   }
   public static float Width(string text,int size,float ls){var st=Style(size);float w=0;foreach(char ch in text)w+=st.CalcSize(new GUIContent(ch.ToString())).x+ls;return w;}

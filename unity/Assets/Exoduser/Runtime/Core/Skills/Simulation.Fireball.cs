@@ -45,7 +45,8 @@ namespace Exoduser.UnityPort.Core
         // idle branch of the web state machine: `else if(isHeld('beam')&&P.mp>=mpCost('magic')) _execMagicE()`, after the weapon / shield / Q branches
         private void TickMagicIdle()
         {
-            if (!magicHeld || attackHeldForMagic || !CanStartMagic) return;
+            if (!magicHeld || attackHeldForMagic || playerActionBranchConsumed || !CanStartMagic) return;
+            MovePlayerAction(1, true);
             ExecMagicE();
         }
 
@@ -63,10 +64,12 @@ namespace Exoduser.UnityPort.Core
         {
             if (Player.State == "magicCast")
             {
+                MovePlayerAction(.8f);
                 if (Player.StateTicks <= 0) { FireMaliceOrb(); Player.State = "magicRecover"; Player.StateTicks = 12; }
             }
             else if (Player.State == "magicRecover")
             {
+                MovePlayerAction(.8f);
                 if (Player.StateTicks <= 0)
                 {
                     if (magicHeld && Player.Mana >= MagicMpCost()) ExecMagicE();   // hold = rapid fire

@@ -77,8 +77,8 @@ namespace Exoduser.UnityPort {
   void DrawCells(List<Cell> cells,float x,float cy,int nanumSize,Color col,Vector2 off){
    var st=Style(nanumSize);var old=GUI.color;float xx=x+off.x;
    foreach(var c in cells){
-    if(c.glyph){var t=tok[c.token];GUI.color=col;GUI.DrawTextureWithTexCoords(new Rect(xx-t.pad,cy+off.y-t.cy,t.w,t.h),atlas,new Rect(t.x/atlas.width,1f-(t.y+t.h)/atlas.height,t.w/atlas.width,t.h/atlas.height));}
-    else{st.normal.textColor=col;GUI.Label(new Rect(xx,cy+off.y-20,70,40),c.text,st);}
+    if(c.glyph){var t=tok[c.token];GUI.color=col;NativeUiAudit.DrawTextureWithTexCoords(new Rect(xx-t.pad,cy+off.y-t.cy,t.w,t.h),atlas,new Rect(t.x/atlas.width,1f-(t.y+t.h)/atlas.height,t.w/atlas.width,t.h/atlas.height));}
+    else{st.normal.textColor=col;NativeUiAudit.Label(new Rect(xx,cy+off.y-20,70,40),c.text,st);}
     xx+=c.adv;
    }
    GUI.color=old;
@@ -106,8 +106,8 @@ namespace Exoduser.UnityPort {
     var T=defs.title;float cx=T.boxX+T.boxW/2f;float top=T.boxTop+ty;
     // ::before / ::after: 21% wide, 1px, gradient transparent -> rgba(164,147,115,.54), opacity .8 (right one mirrored)
     GUI.color=new Color(1,1,1,.8f*op);
-    GUI.DrawTexture(new Rect(T.boxX,top+T.lineTop,T.lineW,1),lineTex);
-    GUI.DrawTextureWithTexCoords(new Rect(T.boxX+T.boxW-T.lineW,top+T.lineTop,T.lineW,1),lineTex,new Rect(1,0,-1,1));
+    NativeUiAudit.DrawTexture(new Rect(T.boxX,top+T.lineTop,T.lineW,1),lineTex);
+    NativeUiAudit.DrawTextureWithTexCoords(new Rect(T.boxX+T.boxW-T.lineW,top+T.lineTop,T.lineW,1),lineTex,new Rect(1,0,-1,1));
     GUI.color=Color.white;
     string kr=KrText(),en=EnText();
     float w;var krCells=Layout(kr,"k:",25,T.krLs,out w);float kx=cx-w/2f;

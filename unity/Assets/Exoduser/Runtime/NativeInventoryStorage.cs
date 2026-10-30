@@ -56,16 +56,16 @@ namespace Exoduser.UnityPort {
             var e=Event.current;
             if(e.type==EventType.ScrollWheel&&list.Contains(e.mousePosition)){stListScroll=Mathf.Clamp(stListScroll+e.delta.y*14f,0,max);e.Use();}
             stListScroll=Mathf.Clamp(stListScroll,0,max);
-            GUI.BeginGroup(list);
+            NativeUiAudit.BeginGroup(list);
             for(int i=0;i<State.Bag.Count;i++){
                 float y=i*30f-stListScroll;if(y>list.height||y+30<0)continue;
                 var it=State.Bag[i];var col=RarityColor(it.rarity);
-                Texture2D g;if(stGlyph.TryGetValue(it.slot,out g)&&g!=null){var old=GUI.color;GUI.color=col;GUI.DrawTexture(new Rect(6,y+8.1f,14,14),g,ScaleMode.ScaleToFit,true);GUI.color=old;}
+                Texture2D g;if(stGlyph.TryGetValue(it.slot,out g)&&g!=null){var old=GUI.color;GUI.color=col;NativeUiAudit.DrawTexture(new Rect(6,y+8.1f,14,14),g,ScaleMode.ScaleToFit,true);GUI.color=old;}
                 TxtSerif(new Rect(24,y+6.9f,200,15.2f),it.name,12,col);
                 TxtSerif(new Rect(843.1f,y+7.5f,40,14),"보관",11,C(201,212,170));
                 Fill(new Rect(0,y+29,870,1),C(26,14,0));
             }
-            GUI.EndGroup();
+            NativeUiAudit.EndGroup();
             if(max>0){
                 var track=new Rect(list.xMax-11,list.y,10,list.height);
                 float inner=list.height-24f,thumbH=Mathf.Max(20f,inner*list.height/total),travel=inner-thumbH;

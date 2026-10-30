@@ -39,7 +39,7 @@ add(stmt('mkEn','function mkEn('));
 add(single('ELP','const ELP='));add(single('_UNDEAD_ET','const _UNDEAD_ET='));add(single('elMul','function elMul('));
 for(const n of ['ar','wp','nc','rg1','rg2'])add(single(n,'function '+n+'(){'));
 add(single('dst','function dst('));
-add(stmt('_HS','const _HS={'));add(single('_diffSigned','const _diffSigned='));add(single('_isSi0DruidSink','function _isSi0DruidSink('));add(single('_druidSinkStart','function _druidSinkStart('));
+add(stmt('_HS','const _HS={'));add(single('_diffSigned','const _diffSigned='));add(single('_isSi0DruidSink','function _isSi0DruidSink('));add(stmt('_druidSinkStart','function _druidSinkStart('));
 add(stmt('_druidFinaleReviveChance','function _druidFinaleReviveChance('));add(single('_r','function _r(v,s){'));add(single('_eMouthXY','function _eMouthXY('));
 add(single('_TXT_BUDGET','const _TXT_BUDGET='));add(stmt('_poiseHit','function _poiseHit('));
 // ---- the hurtE head ----
@@ -137,6 +137,7 @@ function _tickSkyCrusherRecharge(f){__rec('tickSkyCrusherRecharge',f);}
 var _dpsDmg=0,_txtPerFrame=0,_impPerFrame=0,_uqScCtx,_uqS,VW=1600,VH=900;
 var SFX={block:function(){__rec('sfxBlock');},groggy:function(){__rec('sfxGroggy');}};`,ctx);
 vm.runInContext(`
+var projs=[];function _recycleProj(){}
 var pProjs=[],_shDirty=false,_harpGauge=0,_HARP_GAUGE_MAX=0,_uqHitCtx=null,_uqFzCtx=null,__w3=null;
 function hurtP(){__rec.apply(null,['hurtP'].concat(Array.prototype.slice.call(arguments)));}
 function atkTicketRelease(e){__rec('atkTicketRelease',e);}

@@ -46,7 +46,7 @@ namespace Exoduser.UnityPort.Core
             if ((Player.State == "idle" || Player.State == "sRecover") && qDown && SbCd <= 0)   // web sRecover: Q cancels the recovery into the shield
             {
                 var s = new ParryRules.SBlockState { Mp = Player.Mana, Mmp = Player.MaxMana, S = Player.State };
-                if (ParryRules.SBlockEnter(ref s, CapeParry, ShieldCdRed)) { Player.Mana = (float)s.Mp; Player.State = "sBlock"; Player.StateTicks = 999; SbParryT = s.SbParryT; SbHoldT = 0; SbReleaseR = 0; SbCd = s.SbCd; }
+                if (ParryRules.SBlockEnter(ref s, CapeParry, ShieldCdRed)) { MovePlayerAction(Player.State == "idle" ? 1 : 0, true); Player.Mana = (float)s.Mp; Player.State = "sBlock"; Player.StateTicks = 999; SbParryT = s.SbParryT; SbHoldT = 0; SbReleaseR = 0; SbCd = s.SbCd; }
             }
             else if (Player.State == "sBlock")
             {
@@ -55,30 +55,37 @@ namespace Exoduser.UnityPort.Core
                 Player.Mana = (float)s.Mp; SbParryT = s.SbParryT; SbHoldT = s.SbHoldT;
                 if (!combatQHeld || Player.Mana <= 0)
                 {
+                    MovePlayerAction(0);
                     s.SbHoldT = SbHoldT; ParryRules.SBlockRelease(ref s);
-                    Player.State = "idle"; Player.StateTicks = 0; SbParryT = s.SbParryT; SbReleaseR = s.SbReleaseR; SbHoldT = 0;
+                    Player.State = "idle"; SbParryT = s.SbParryT; SbReleaseR = s.SbReleaseR; SbHoldT = 0;
                 }
+                else MovePlayerAction(.35f, false, false);
             }
             // ---- E strike moment (st2 crosses 12): the circular hit of _gSlamHit ----
+            if (Player.State == "sBash" || Player.State == "sRecover") MovePlayerAction(.8f);
             if (BashStrikeMoment) BashStrike();
             // ---- E: shield strike (tap = sBash, hold = charge) ----
-            if (Player.State == "idle" && eDown) { Player.State = "sDraw"; Player.StateTicks = 999; SdHold = 0; }
+            if (Player.State == "idle" && eDown && !playerActionBranchConsumed) { MovePlayerAction(1, true); Player.State = "sDraw"; SdHold = 0; }
             else if (Player.State == "sDraw")
             {
                 SdHold++;
                 if (ParryRules.SdHoldConfirmed(SdHold))
                 {
+                    MovePlayerAction(0);
                     var f = ParryRules.SBashFire(Player.Stamina, MaliceSwipeLevel, Player.State, SBashChgMul, 0);
                     if (f.Fired) { Player.Stamina = (float)f.St; Player.State = "kiGather"; KgChg = SdHold * 2; } else Player.State = "idle";
                 }
                 else if (!combatEHeld)
                 {
+                    MovePlayerAction(0);
                     var f = ParryRules.SBashFire(Player.Stamina, MaliceSwipeLevel, Player.State, SBashChgMul, 0);
                     if (f.Fired) { Player.Stamina = (float)f.St; attackBonus = (int)f.AtkBon; Player.State = "sBash"; Player.StateTicks = ParryRules.SBashTicks; SBashChgMul = 1; } else Player.State = "idle";
                 }
+                else MovePlayerAction(.5f, false, false);
             }
             else if (Player.State == "kiGather")
             {
+                MovePlayerAction(.18f, false, false);
                 KgChg += 2;
                 if (ParryRules.KiGatherAutoRelease(KgChg)) { SBashChgMul = ParryRules.ClampChargeMul(3); Player.State = "sBash"; Player.StateTicks = ParryRules.SBashTicks; KgChg = 0; }
                 else if (!combatEHeld)

@@ -26,6 +26,8 @@ namespace Exoduser.UnityPort.Core
         private uint randomState;
         private int nextEnemyId = 1, nextLootId = 1, attackBonus, pickupHoldTicks;
         private float attackAngle;
+        private float actionMoveX, actionMoveY;
+        private bool playerActionBranchConsumed;
         private static readonly double[] Difficulty = { .45, .55, .65, .76, .88, 1, 1.12, 1.25, 1.40, 1.58, 1.78 };
         private static readonly string[] DropSlots = { "weapon", "shield", "boots", "armor", "helmet", "bow", "gloves", "pants", "belt", "necklace", "ring1", "ring2", "cape", "bracelet", "headband", "headband2" };
         private static readonly double[] NormalRarityWeights = { 65, 22, 9, 3, 1, .01 };
@@ -86,6 +88,7 @@ namespace Exoduser.UnityPort.Core
             Player.StateTicks--;
             Player.Iframes = Math.Max(0, Player.Iframes - 1);
             attackHeldForMagic = attack;
+            actionMoveX = moveX; actionMoveY = moveY; playerActionBranchConsumed = false;
             TickPlayerShieldAndRevive();
             ConsumeRollTrigger();
             TickPlayerCombat();
@@ -97,8 +100,9 @@ namespace Exoduser.UnityPort.Core
                 if (Player.StateTicks <= 0) { Player.State = "idle"; if (Player.Poise <= 0) Player.Poise = 4; }
             }
             else if (TickSkillState(moveX, moveY)) { }   // B03: giant slam windup / strike / recover, ice orb
+            else if (playerActionBranchConsumed) { } // 원본 switch는 진입한 자세 한 분기만 실행한다.
             else {
-                MovePlayer(moveX, moveY, Player.State == "idle" ? 1 : .8f);
+                MovePlayer(moveX, moveY, Player.State == "idle" ? 1 : .8f, Player.State == "idle");
                 if (Player.State == "idle") {
                     float cost = Config.ActiveAttack == "kiSlash" ? 10 + (Math.Max(1, Config.KiSlashLevel) - 1) * 2 : 5;
                     if (attack && Player.Stamina >= cost) {
@@ -175,11 +179,20 @@ namespace Exoduser.UnityPort.Core
             TickHurtFx();   // B09: screen shake / flash decay
         }
 
-        private void MovePlayer(float x, float y, float multiplier)
+        private float BootMoveSpeed { get { var boots = EquippedInventory != null ? EquippedInventory.GetEquipped("boots") : null; return boots != null ? (float)boots.spd : 0; } }
+
+        private void MovePlayerAction(float multiplier, bool applySlow = false, bool includeBoots = true)
+        {
+            if (playerActionBranchConsumed) return;
+            playerActionBranchConsumed = true;
+            MovePlayer(actionMoveX, actionMoveY, multiplier, applySlow, includeBoots);
+        }
+
+        private void MovePlayer(float x, float y, float multiplier, bool applySlow, bool includeBoots = true)
         {
             double length = Math.Sqrt(x*x+y*y);
             if (length <= 0) return;
-            float distance = Player.Speed * multiplier * MoveSlowMultiplier;   // BX: P._webSlow halves the walk (web 33160)
+            float distance = (Player.Speed + (includeBoots ? BootMoveSpeed : 0)) * multiplier * (applySlow ? MoveSlowMultiplier : 1); // 원본 감속 상태이상은 idle 이동에만 적용한다.
             float nx = Player.X + (float)(x / length) * distance, ny = Player.Y + (float)(y / length) * distance;
             if (Pass(nx, Player.Y, Player.Radius)) Player.X = nx;
             if (Pass(Player.X, ny, Player.Radius)) Player.Y = ny;

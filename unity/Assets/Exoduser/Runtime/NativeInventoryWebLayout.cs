@@ -44,17 +44,17 @@ namespace Exoduser.UnityPort {
             t.SetPixels(px);t.Apply(false,true);procedural["radial"]=t;return t;
         }
 
-        void Grad(Rect r,Color a,Color b,float angle=180f){GUI.DrawTexture(r,Gradient(a,b,angle));}
+        void Grad(Rect r,Color a,Color b,float angle=180f){NativeUiAudit.DrawTexture(r,Gradient(a,b,angle));}
         // Elliptical glow: full color at (cx,cy), fading to transparent at radii (rx,ry).
-        void Glow(float cx,float cy,float rx,float ry,Color c){var old=GUI.color;GUI.color=c;GUI.DrawTexture(new Rect(cx-rx,cy-ry,rx*2,ry*2),Radial());GUI.color=old;}
+        void Glow(float cx,float cy,float rx,float ry,Color c){var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(new Rect(cx-rx,cy-ry,rx*2,ry*2),Radial());GUI.color=old;}
         // Repeating iron surface at the web's tile size, offset so the tile is centered on the rect.
         void IronTile(Rect r,Texture2D tile,float size){
             float w=r.width/size,h=r.height/size;
-            GUI.DrawTextureWithTexCoords(r,tile,new Rect(.5f-w/2,.5f-h/2,w,h));
+            NativeUiAudit.DrawTextureWithTexCoords(r,tile,new Rect(.5f-w/2,.5f-h/2,w,h));
         }
         static void Piece(Texture2D t,Rect dst,float sx,float sy,float sw,float sh){
             if(dst.width<=0||dst.height<=0)return;
-            GUI.DrawTextureWithTexCoords(dst,t,new Rect(sx/t.width,1-(sy+sh)/t.height,sw/t.width,sh/t.height));
+            NativeUiAudit.DrawTextureWithTexCoords(dst,t,new Rect(sx/t.width,1-(sy+sh)/t.height,sw/t.width,sh/t.height));
         }
         // border-image: <rail> slice / border width / 0 stretch (center omitted).
         void Rail(Rect r,float b,float slice){Rail(rail,r,b,slice);}
@@ -86,7 +86,7 @@ namespace Exoduser.UnityPort {
             t.SetPixels(px);t.Apply(false,true);procedural[key]=t;return t;
         }
         void DrawDiamond(Vector2 center,float half,Color c,int thickPermille){
-            float s=half*2.8284271f;var old=GUI.color;GUI.color=c;GUI.DrawTexture(new Rect(center.x-s/2,center.y-s/2,s,s),DiamondTexture(thickPermille));GUI.color=old;
+            float s=half*2.8284271f;var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(new Rect(center.x-s/2,center.y-s/2,s,s),DiamondTexture(thickPermille));GUI.color=old;
         }
         void Diamond(Vector2 center,float half,Color c){DrawDiamond(center,half,c,0);}
         void DiamondOutline(Vector2 center,float half,Color c){DrawDiamond(center,half,c,Mathf.Clamp(Mathf.RoundToInt(1000f/half),1,1000));}
@@ -202,7 +202,7 @@ namespace Exoduser.UnityPort {
 
         // Web .panel-nav-tab / .ui-section-tab / .inv-actions button: gradient over the iron plate over #232225.
         void PlateFace(Rect r,bool active){
-            Fill(r,C(35,34,37));GUI.DrawTexture(r,plate,ScaleMode.StretchToFill);
+            Fill(r,C(35,34,37));NativeUiAudit.DrawTexture(r,plate,ScaleMode.StretchToFill);
             if(active){Grad(r,C(87,23,12,.6f),C(38,9,7,.72f));Fill(new Rect(r.x,r.yMax-2,r.width,2),C(127,130,130));}
             else Grad(r,C(21,20,23,.51f),C(11,10,12,.675f));
             if(r.Contains(Event.current.mousePosition)&&GUI.enabled)Fill(r,new Color(1,1,1,.07f));

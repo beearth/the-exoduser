@@ -101,8 +101,8 @@ namespace Exoduser.UnityPort
             var shadow=LessonStyle(14,TextAnchor.MiddleCenter,new Color(0,0,0,.9f),false,true);var text=LessonStyle(14,TextAnchor.MiddleCenter,Hex(0xffe4c7),false,true);var big=LessonStyle(29,TextAnchor.MiddleCenter,Hex(0xffe4c7),true,false);var bigShadow=LessonStyle(29,TextAnchor.MiddleCenter,new Color(0,0,0,.9f),true,false);
             string a=PracticeCopy("rageFocusA"),b=PracticeCopy("rageFocusB"),z=PracticeCopy("rageZoom").Replace("{p0}",Mathf.FloorToInt((float)Simulation.Rage).ToString());
             var ra=new Rect(cx-140,top,280,22);var rz=new Rect(cx-140,top+24,280,40);var rb=new Rect(cx-140,top+68,280,44);
-            GUI.Label(new Rect(ra.x+1,ra.y+1,ra.width,ra.height),a,shadow);GUI.Label(ra,a,text);GUI.Label(new Rect(rz.x+1,rz.y+1,rz.width,rz.height),z,bigShadow);GUI.Label(rz,z,big);GUI.Label(new Rect(rb.x+1,rb.y+1,rb.width,rb.height),b,shadow);GUI.Label(rb,b,text);
-            var arrow=LessonStyle(30,TextAnchor.MiddleCenter,Hex(0xffe49c),true);GUI.Label(new Rect(cx-20,top+112+Mathf.Sin(Time.unscaledTime*6)*4,40,36),"↓",arrow);
+            NativeUiAudit.Label(new Rect(ra.x+1,ra.y+1,ra.width,ra.height),a,shadow);NativeUiAudit.Label(ra,a,text);NativeUiAudit.Label(new Rect(rz.x+1,rz.y+1,rz.width,rz.height),z,bigShadow);NativeUiAudit.Label(rz,z,big);NativeUiAudit.Label(new Rect(rb.x+1,rb.y+1,rb.width,rb.height),b,shadow);NativeUiAudit.Label(rb,b,text);
+            var arrow=LessonStyle(30,TextAnchor.MiddleCenter,Hex(0xffe49c),true);NativeUiAudit.Label(new Rect(cx-20,top+112+Mathf.Sin(Time.unscaledTime*6)*4,40,36),"↓",arrow);
         }
     }
 }

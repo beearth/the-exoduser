@@ -729,8 +729,24 @@ function Cmd-Run {
       }
       break
       }
+      # M1 다음의 필수 UI 검사. 기존 잠금은 exo 실행기에 정상 양도하고 반환받는다.
+      if ($null -ne $m1 -and $m1.present -and $m1.fail -eq 0 -and $sm.exit -eq 0) {
+        $uiCheck = Join-Path $Cfg.Worktree 'unity\Tools\ui-overlap\check.ps1'
+        Release-Lock; $got = $false
+        try {
+          $uiLog = Join-Path $runDir 'ui-overlap.log'
+          & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -NonInteractive -WindowStyle Hidden -File $uiCheck -Exe (Join-Path $stage 'EXODUSER-Unity.exe') -Worktree $Cfg.Worktree -Output (Join-Path $runDir 'ui-check') -OverlapOnly *> $uiLog
+          $uiExit = $LASTEXITCODE
+          $uiReport = ReadJson (Join-Path $runDir 'ui-check\overlap\overlap-report.json')
+          $run.uiOverlap = @{ passed = ($uiExit -eq 0 -and $null -ne $uiReport -and $uiReport.passed); exit = $uiExit; log = $uiLog }
+        } finally {
+          $got = Acquire-Lock $runId
+          if (-not $got) { throw 'UI 검사 뒤 공통 실행 잠금을 다시 받지 못함' }
+        }
+      }
     } else { $run.smokeNote = '빌드 실패로 스모크 없음' }
     $run.player = $pj; $run.m1 = $m1
+    if (-not $run.Contains('uiOverlap')) { $run.uiOverlap = @{ passed = $false; note = 'M1 실패로 UI 검사 미실행' } }
 
     # 4) 판정
     $reasons = @()
@@ -738,6 +754,7 @@ function Cmd-Run {
     if ($bj.fail -gt 0) { $reasons += "빌드 로그 결함 $($bj.fail)건" }
     if ($run.buildWindow) { $reasons += 'Unity 에디터가 창을 띄움(무창 위반)' }
     if ($buildOk) {
+      if ($null -eq $run.uiOverlap -or -not $run.uiOverlap.passed) { $reasons += '전 화면 UI 겹침 검사 실패 또는 미실행' }
       if ($null -eq $pj) { $reasons += '스모크 미실행' }
       else {
         if ($pj.fail -gt 0) { $reasons += "플레이어 로그 결함 $($pj.fail)건" }

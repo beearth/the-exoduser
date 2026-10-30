@@ -143,3 +143,13 @@ Core(`Runtime/Core`)는 바꾸지 않았다.
 영상 순서(초): LMB0~1.35, RMB1.35~2.70, Shift2.70~4.05, E4.05~5.40, Q5.40~6.75, Ctrl6.75~9.25, Space9.25~10.60, 1키10.60~11.95, 2키11.95~13.30, 3키13.30~14.65, 4키14.65~16.00, F16.00~17.35, Z17.35~18.70, 구르기18.70~20.05. 왼쪽웹/오른쪽Unity, 각1600×900.
 
 웹 실행기 b533b4f8 최종 영수증은 ok=false/exit=-1/창0/사용자세이브변경0, 잔류1(PID56288)을 실행기가 정리했다. 해당PID와 실행기5172는 최종조회에서없음, 두Chrome은HasExited=true다. 두임시프로필은 chrome_debug.log EBUSY로 완전삭제 미완료이며 browser-profile-cleanup.json에 정확경로를 남겼다. 사용자앱/브라우저·시스템설정 변경0. 영상은3200×900·20fps·401프레임·20.05초로 인코딩/추출프레임 직접확인 완료.
+
+## R5 전달 이후 야간 한 건 — 중심형 강타 앵커
+
+현재 상세SSOT는 `UNITY_HERO_VFX_CENTER_ANCHOR_20261031.md`다. 새 제품ccde13cb9·빌드b970760a, 실제전후/고정탄39표본씩·같은빌드M1aaf2078e23/23, 정확새Core독립11/11완료. 중심앵커오류수정/머리·견갑개선PASS, 전체전사/VFX아트RETOUCH. 하단수평잘림·흰arc파지가림및자연밀집전투/움직이는탄막미검증은남긴다. 기존R5완료M1재사용아님. 크기/알파/밝기/카메라·전투판정변경0. 최초실행실패/대조정리경고와재검증채택을분리보존하고자기예약반환. 공통반영·Desktop은별도실제영수증을확인한다. 기존파생521byte동일·빌드재생성씬1변경(이전byte백업누락/복구미완료)은상세SSOT와생성씬보존영수증에명시한다.
+
+### 중심 앵커 후속 공통 반영·실행본 전달 완료
+
+지정 통합 담당이 expected968f2a324에서 bf9b2d25c28a44d4a90e8f2017a27f8d5f657394로 비강제FF했고원격SHA를읽어대조했다. 제품ccde13cb9와공통Unity tree동일, 새빌드b970760a·M1aaf2078e/실제3바이너리동일로 COMMON_RULES의유효검수재사용을적용했다. 새통합빌드/추가M1반복0이다.
+
+일반Desktop은 `I:/EXODUSER-Storage/demo-art/hero/night-anchor-20261031/build/EXODUSER-Unity.exe`, 인자 `-force-d3d11 --remodel3d`, 작업폴더는EXE부모·아이콘EXE,0이다. 이전게임대조소스bce000073이현재제품조상임을확인한뒤현재링크SHA를CAS검사하고이전링크동일byteI백업→전달→별도PowerShell프로세스4속성/Runtime·Core·EXE SHAreadback을완료했다. 앱자동기동/사용자세이브쓰기0. 근거 night-anchor-20261031/validated-adoption.json·desktop-delivery.json·desktop-readback.json. Mac실제반영/실행은pending, 전체아트RETOUCH및위생성씬이전byte복구미완료는유지한다.

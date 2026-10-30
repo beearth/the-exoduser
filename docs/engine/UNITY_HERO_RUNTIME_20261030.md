@@ -121,3 +121,13 @@ R3 수정 검수부터 `Time.captureDeltaTime=1/60`을 이 전용 fixture에만 
 | 증거 | `I:/EXODUSER-Storage/demo-art/hero/r5/gate-evidence.json`·`판정.md`·`검수.html`·현재 영상과1x 판. R4 전달/철회 원본 영수증은 `r4/delivery-history/`에 SHA와 함께 보존 |
 
 공통 통합과 Desktop 재전달은 위 검수와 별도 영수증에서 확인한다. 실제 음향은 무음 정책으로 듣지 않았고, 독립 Core의 같은 틱 heavy_hit1 이벤트만 확인했다. 자연 사망·OS손조작·Mac·경사 전체접지·장시간 플레이는 미검증이다.
+
+## R5 전달 이후 야간 한 건 — 중심형 강타 앵커
+
+현재 상세SSOT는 `UNITY_HERO_VFX_CENTER_ANCHOR_20261031.md`다. 새 제품ccde13cb9·빌드b970760a, 실제전후/고정탄39표본씩·같은빌드M1aaf2078e23/23, 정확새Core독립11/11완료. 중심앵커오류수정/머리·견갑개선PASS, 전체전사/VFX아트RETOUCH. 하단수평잘림·흰arc파지가림및자연밀집전투/움직이는탄막미검증은남긴다. 기존R5완료M1재사용아님. 크기/알파/밝기/카메라·전투판정변경0. 최초실행실패/대조정리경고와재검증채택을분리보존하고자기예약반환. 공통반영·Desktop은별도실제영수증을확인한다. 기존파생521byte동일·빌드재생성씬1변경(이전byte백업누락/복구미완료)은상세SSOT와생성씬보존영수증에명시한다.
+
+### 중심 앵커 후속 공통 반영·실행본 전달 완료
+
+지정 통합 담당이 expected968f2a324에서 bf9b2d25c28a44d4a90e8f2017a27f8d5f657394로 비강제FF했고원격SHA를읽어대조했다. 제품ccde13cb9와공통Unity tree동일, 새빌드b970760a·M1aaf2078e/실제3바이너리동일로 COMMON_RULES의유효검수재사용을적용했다. 새통합빌드/추가M1반복0이다.
+
+일반Desktop은 `I:/EXODUSER-Storage/demo-art/hero/night-anchor-20261031/build/EXODUSER-Unity.exe`, 인자 `-force-d3d11 --remodel3d`, 작업폴더는EXE부모·아이콘EXE,0이다. 이전게임대조소스bce000073이현재제품조상임을확인한뒤현재링크SHA를CAS검사하고이전링크동일byteI백업→전달→별도PowerShell프로세스4속성/Runtime·Core·EXE SHAreadback을완료했다. 앱자동기동/사용자세이브쓰기0. 근거 night-anchor-20261031/validated-adoption.json·desktop-delivery.json·desktop-readback.json. Mac실제반영/실행은pending, 전체아트RETOUCH및위생성씬이전byte복구미완료는유지한다.

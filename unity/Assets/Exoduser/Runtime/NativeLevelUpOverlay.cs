@@ -38,7 +38,7 @@ namespace Exoduser.UnityPort {
   public void Hide(){labelOn=toastOn=false;}
   float Age(float start){return ForcedAge.HasValue?ForcedAge.Value:Now-start;}
 
-  static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
+  static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
   void Init(){
    if(ready)return;ready=true;
    atlas=Resources.Load<Texture2D>("Art/ui/overlay/levelup_label");
@@ -80,7 +80,7 @@ namespace Exoduser.UnityPort {
    GUI.color=new Color(1,1,1,alpha);
    foreach(var t in seq){
     var dst=new Rect(x-t.pad,y-t.cy,t.w,t.h);
-    GUI.DrawTextureWithTexCoords(dst,atlas,new Rect(t.x/atlas.width,1f-(t.y+t.h)/atlas.height,t.w/atlas.width,t.h/atlas.height));
+    NativeUiAudit.DrawTextureWithTexCoords(dst,atlas,new Rect(t.x/atlas.width,1f-(t.y+t.h)/atlas.height,t.w/atlas.width,t.h/atlas.height));
     x+=t.adv;
    }
    GUI.color=Color.white;
@@ -96,13 +96,13 @@ namespace Exoduser.UnityPort {
    // text-shadow: 0 0 25px currentColor -> soft radial halo behind the text plus faint offset copies
    var old=GUI.color;
    GUI.color=new Color(c.r,c.g,c.b,.13f*a);float gw=adv+T.glowBlur*1.6f,gh=41+T.glowBlur*1.1f;
-   GUI.DrawTexture(new Rect(960-gw/2,cy-gh/2,gw,gh),radial);
+   NativeUiAudit.DrawTexture(new Rect(960-gw/2,cy-gh/2,gw,gh),radial);
    GUI.color=old;
    Text(x0,cy,text,new Color(c.r,c.g,c.b,a),T.letterSpacing);
   }
   void Text(float x,float cy,string text,Color c,float spacing){
    style.normal.textColor=c;
-   foreach(char ch in text){var g=ch.ToString();GUI.Label(new Rect(x,cy-20.5f,60,41),g,style);x+=style.CalcSize(new GUIContent(g)).x+spacing;}
+   foreach(char ch in text){var g=ch.ToString();NativeUiAudit.Label(new Rect(x,cy-20.5f,60,41),g,style);x+=style.CalcSize(new GUIContent(g)).x+spacing;}
   }
  }
 }
