@@ -122,6 +122,7 @@ Core(`Runtime/Core`)는 바꾸지 않았다.
 | 심연 표면 | 원본200×200 보행 덤프에서 최근접 보행 거리, 셀당1/16tile byte·헤더8byte, 총40008byte. 보행 셀값0 전수검사. 셀 중심 기준 bilinear 표본, 거리2tile 이하는 표면 변형0, 2~12tile에서 smoothstep으로 최대10u 하강. TerrainCollider·GroundY·Core는 원본 불변 |
 | 심연 재질 | 메시 vertex color R=하강 비율. .015~.15에서 기존피부/돌/재를 돌×.5로 전이. 기존 높이안개·지수안개와 깊이를 연결. 디더링·그레인·랜덤 점무늬 없음 |
 | 수피 | Poly Haven bark_brown_02, Rob Tuytel, CC0. Diffuse/GL normal/Rough 각2K, 기존 출처영수증 SHA256과 byte 대조 후 런타임 인수. 돌/수피/뼈색 재질 분리·월드 트라이플래너. roughness를 smoothness에 반영 |
+| 반복 샘플러 수정 | rock_ground(Diffuse/nor_gl/Rough),burned_ground_01(Diffuse),bark_brown_02(Diffuse/nor_gl/Rough) 총7개 TextureImporter의 wrapU/V/W=0(Repeat). 종전1(Clamp)은 월드UV가0~1 밖일 때 가장자리 한 색을 늘여 바위·바닥·보스방을 평면처럼 만들었다. 피부 컬러맵·원본 스프라이트의 Clamp는 유지. 이전 .meta7개는 I: before-repeat에 byte보존 |
 | 구형 표현 교체 | 새 조명 모드에서만 M_CursedBark/M_RottenWoodMembrane/M_ToxicFlow 메시의 Renderer 비활성. 하강 지면 위에 떠 남는 기둥·막·수면을 교체하며 원본과 충돌 보존. y=-18u·x=-10~90/z=-115~-25의 먼 안개 받침, RGB(.018,.030,.045)·거리안개. 화면 색막이 아닌 심연 아래 월드 메시 |
 | 범위 | 지형 표현만 변경. 영웅·보스 기존 2D 표현을 3D 리모델 완료로 보고하지 않음. 검수 결과는 I:/EXODUSER-Storage/steam-keyshot/keyshot2/REPORT.md에 기록 |
 
