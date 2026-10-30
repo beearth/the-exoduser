@@ -54,7 +54,7 @@ namespace Exoduser.UnityPort
                     receipt.frames.Add(new DruidImpactFrame{phase=phase,frame=f,tick=sim.TickCount,hp=boss.Hp,shield=boss.Shield,hit=hit,held=held,contacts=active,newContact=fresh,critical=fresh&&contact.Critical,matched=matched,width=fresh?contact.Width:0,life=fresh?contact.Life:0,holdTicks=fresh?contact.HoldTicks:0,coreShake=sim.ShakeAmount,presentationShake=(float)druidImpact.Shake(sim.TickCount)});
                     yield return null;
                     if(Application.isBatchMode)RmIntShot(Path.Combine(output,phase+"-"+f.ToString("000")+".png"));
-                    else {yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,phase+"-"+f.ToString("000")+".png"));}
+                    else {yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(output,phase+"-"+f.ToString("000")+".png"));yield return null;}
                 }
                 receipt.hits+=hits;receipt.matchedHits+=matchedHits;receipt.contactFrames+=contacts;receipt.heldFrames+=holds;
                 if(hits==0||contacts==0||holds==0||matchedHits==0)receipt.failures++;
