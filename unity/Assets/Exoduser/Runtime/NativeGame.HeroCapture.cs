@@ -7,11 +7,11 @@ namespace Exoduser.UnityPort {
  public sealed partial class NativeGame {
   bool heroReviewActive;
   [Serializable] sealed class HeroFrame {
-   public int frame,tick,combo;public string section,state,motion;public float phase,x,y,facing,footError,screenHeight,screenX,screenY;public bool spriteVisible;public Vector3 root;
+   public int frame,tick,combo;public string section,state,motion;public float phase,x,y,facing,footError,screenHeight,screenX,screenY,bladeTipHeight;public bool spriteVisible,bladeTipKnown;public Vector3 root;
   }
   [Serializable] sealed class HeroReview {
-   public string scope="실제 Player·격리 세이브·Core 입력과 별도 피격/사망 fixture, OS 손조작 아님. PNG 연속프레임을30fps 영상으로 조립";
-   public string device;public bool passed,world3D;public float idleMeshHeight;public List<string> checks=new List<string>();public List<HeroFrame> frames=new List<HeroFrame>();
+   public string scope="실제 Player·격리 세이브·Core 입력·지옥강타 첫틱 피해 표적과 별도 피격/사망 fixture, OS 손조작 아님. PNG 연속프레임을30fps 영상으로 조립";
+   public string device;public bool passed,world3D;public float idleMeshHeight,slamBladeUpDot,slamBladeTipHeight;public int slamHitTick,slamDamage,slamWaveCount;public List<string> checks=new List<string>();public List<HeroFrame> frames=new List<HeroFrame>();
   }
   IEnumerator HeroCapture(){
    string output=Argument("-output");
@@ -44,6 +44,12 @@ namespace Exoduser.UnityPort {
     if(section=="피격"){p.Iframes=0;p.Hp=p.MaxHp;p.Shield=p.MaxShield;sim.HurtPlayer(80);}
     if(section=="사망"){p.Iframes=0;p.Hp=0;p.Shield=0;p.State="dead";p.StateTicks=0;}
     var sectionMotions=new HashSet<string>();var sectionCombos=new HashSet<int>();var sectionDirections=new HashSet<int>();
+    Core.EnemyState slamTarget=null;int slamRequestedTick=-1,slamBeforeHp=0;
+    if(section=="시전"){
+     // 첫 피해 틱과 실제 칼 접점을 함께 확인하는 격리 표적. AI/소환을 켜거나 Core 피해 시각을 바꾸지 않는다.
+     slamTarget=new Core.EnemyState{Id=-90005,Etype=0,Hp=1000000,MaxHp=1000000,Level=1,X=p.X+60,Y=p.Y,Radius=15,Poise=100,MaxPoise=100};
+     sim.Enemies.Add(slamTarget);slamBeforeHp=slamTarget.Hp;slamRequestedTick=sim.TickCount+1;
+    }
     for(int f=0;f<lengths[index];f++,frame++){
      bool attack=section=="대검3타"||section=="검기3타"&&f<130;
      if(section=="구르기")sim.SetRollInput(moveY<0,moveY>0,moveX<0,moveX>0,f==0);
@@ -51,8 +57,15 @@ namespace Exoduser.UnityPort {
      sim.SetSkillInput(section=="보조시전"&&f==0,false,false,false,section=="시전"&&f==0,false,false,false);
      float ax=moveX,ay=moveY;if(section=="방향"){float angle=(f/20)*Mathf.PI/4;ax=Mathf.Cos(angle);ay=Mathf.Sin(angle);}
      StepInput(section=="달리기"?moveX:0,section=="달리기"?moveY:0,p.X+ax*300,p.Y+ay*300,attack,false);
+     if(section=="시전"&&f==0){report.slamDamage=slamBeforeHp-slamTarget.Hp;report.slamHitTick=sim.TickCount;report.slamWaveCount=sim.SlamWaves.Count;sim.Enemies.Remove(slamTarget);UpdateViews();}
      Running=false;yield return null;yield return new WaitForEndOfFrame();
      var motion=heroView.Motion;motions.Add(motion.MotionKind.ToString());sectionMotions.Add(motion.MotionKind.ToString());
+     if(section=="시전"&&f==0){
+      var socket=Array.Find(heroView.Model.GetComponentsInChildren<Transform>(true),t=>t.name=="Socket_Weapon_R");
+      report.slamBladeUpDot=socket!=null?Vector3.Dot(-socket.up,heroView.Model.transform.up):1;
+      bool hasTip=motion.TryGetBladeTip(out var tip);report.slamBladeTipHeight=hasTip?Vector3.Dot(tip-heroView.Model.transform.position,heroView.Model.transform.up):float.MaxValue;
+      check(report.slamDamage>0&&report.slamWaveCount>0&&report.slamHitTick==slamRequestedTick&&motion.MotionKind==HeroMotionKind.SlamWindup&&motion.MotionPhase<.01f&&report.slamBladeUpDot<-.5f&&hasTip&&Mathf.Abs(report.slamBladeTipHeight)<=.03f,"지옥강타 첫 피해틱=실제 내려찍기 접점: damage="+report.slamDamage+",tick="+report.slamHitTick+",wave="+report.slamWaveCount+",칼상향내적="+report.slamBladeUpDot.ToString("F3")+",실제칼끝높이="+report.slamBladeTipHeight.ToString("F4"));
+     }
      if(section=="방향")sectionDirections.Add((Mathf.RoundToInt(p.Facing/(Mathf.PI/4))%8+8)%8);
      if(motion.MotionKind==HeroMotionKind.Swing)sectionCombos.Add(motion.ComboStep);
      if(f%2==0){
@@ -68,7 +81,8 @@ namespace Exoduser.UnityPort {
        var b=r.bounds;for(int a=0;a<8;a++){var v=b.center+Vector3.Scale(b.extents,new Vector3((a&1)==0?-1:1,(a&2)==0?-1:1,(a&4)==0?-1:1));var screen=HudCamera.WorldToViewportPoint(v);low=Mathf.Min(low,screen.y);high=Mathf.Max(high,screen.y);}
       }
       var anchor=HudCamera.WorldToScreenPoint(heroView.Model.transform.parent.position);
-      report.frames.Add(new HeroFrame{frame=frame,tick=sim.TickCount,section=section,state=p.State,motion=motion.MotionKind.ToString(),phase=motion.MotionPhase,combo=motion.ComboStep,x=p.X,y=p.Y,facing=p.Facing,footError=heroView.FootError(),screenHeight=high-low,screenX=anchor.x,screenY=Screen.height-anchor.y,spriteVisible=playerView.enabled,root=heroView.Model.transform.parent.position});
+      bool tipKnown=motion.TryGetBladeTip(out var frameTip);float tipHeight=tipKnown?Vector3.Dot(frameTip-heroView.Model.transform.position,heroView.Model.transform.up):0;
+      report.frames.Add(new HeroFrame{frame=frame,tick=sim.TickCount,section=section,state=p.State,motion=motion.MotionKind.ToString(),phase=motion.MotionPhase,combo=motion.ComboStep,x=p.X,y=p.Y,facing=p.Facing,footError=heroView.FootError(),screenHeight=high-low,screenX=anchor.x,screenY=Screen.height-anchor.y,bladeTipKnown=tipKnown,bladeTipHeight=tipHeight,spriteVisible=playerView.enabled,root=heroView.Model.transform.parent.position});
       ScreenCapture.CaptureScreenshot(Path.Combine(output,"frames","hero-"+(shot++).ToString("0000")+".png"));
      }
     }
