@@ -87,3 +87,5 @@
 - 구슬 흐림: 웹 `canEquip` 규칙(기본 스킬은 미습득이어도 장착 가능)을 Unity 상태에 적용한 결과로 인정한다(규칙=정의).
 - LMB 스모크 `close restores play with click release fence` 실패 원인: U05 코드 문제가 아니다. `SkillSmoke`가 해상도 변경 뒤 0.4초 기다리는 사이 창 포커스를 잃으면 `SetGameFocus(false)`(`NativeGame.PauseFocus.cs`)가 열린 창이 없는 상태라 `menu=true`를 남기고, 스모크가 `Running=true`로 되돌려도 `menu`가 남아 `SetSkills(false)`의 `Running=…&&!menu`가 false가 된다. 같은 빌드의 SPACE 실행은 6/6 통과. NativeSkills는 `Running`/`menu`를 건드리지 않는다.
 - 조치: 스킬 스모크를 `pauseSmoke`처럼 OS 포커스와 무관하게 만드는 Codex용 patch `docs/engine/unity_patches/U05_nativegame_skill_smoke_focus.patch`(`git apply --check` 통과). 적용 전까지 이 검사는 실행 창 포커스에 따라 흔들린다.
+
+2026-10-30 PC 현행 시각 자산·은빛 팔레트·Linear 글자 보정은 [Unity UI 원화 반영](UNITY_UI_ASSETS_20261030.md)을 따른다. 기능·저장·미이식 범위와 위 검수 이력은 유지하며, 현재 원화의 실제 Player 결과는 해당 문서의 정확 후보 영수증으로 구분한다.

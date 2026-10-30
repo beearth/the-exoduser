@@ -25,7 +25,7 @@ namespace Exoduser.UnityPort {
   static readonly Vector2 AltarOrigin=new Vector2(393,295.64f);
   static readonly Rect AltarImageRect=new Rect(383,296,1154,671),WindowRect=new Rect(8,8,1904,1064);
   readonly SkillUiData data;readonly SkillDefsFile defs;readonly Dictionary<string,SkillDefsSkill> skillById=new Dictionary<string,SkillDefsSkill>();
-  Font serif,cinzel,latin,sans,sansSemi;
+  Font serif,cinzel,latinFont,sans,sansSemi;
   Texture2D windowBase,altarLmb,discEmptySel,discLmb,discLmbSel,plate;
   readonly Dictionary<string,Texture2D> orbIcons=new Dictionary<string,Texture2D>(),procedural=new Dictionary<string,Texture2D>();
   readonly Dictionary<long,GUIStyle> styles=new Dictionary<long,GUIStyle>();
@@ -63,7 +63,7 @@ namespace Exoduser.UnityPort {
   Texture2D Tex(string path){return Resources.Load<Texture2D>(path);}
   void Init(){
    if(ready)return;ready=true;
-   latin=Resources.Load<Font>("Art/fonts/Cinzel-400");serif=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular");cinzel=Resources.Load<Font>("Art/fonts/CinzelDecorative-Bold")??serif;
+   latinFont=Resources.Load<Font>("Art/fonts/Cinzel-400");serif=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular");cinzel=Resources.Load<Font>("Art/fonts/CinzelDecorative-Bold")??serif;
    sans=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular");sansSemi=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold")??sans;
    windowBase=Tex("Art/ui/skill/window_base");altarLmb=Tex("Art/ui/skill/altar_lmb");discEmpty=Tex("Art/ui/skill/disc_empty");discEmptySel=Tex("Art/ui/skill/disc_empty_sel");discLmb=Tex("Art/ui/skill/disc_lmb");discLmbSel=Tex("Art/ui/skill/disc_lmb_sel");
    plate=Tex("Art/ui/inventory/plate");
@@ -98,7 +98,7 @@ namespace Exoduser.UnityPort {
 
   // ---- text ----
   GUIStyle Style(Font f,int size,FontStyle fs){
-   long key=(((long)(f==serif?1:f==cinzel?2:f==sansSemi?3:f==latin?5:4))*1000+size)*4+(int)fs;
+   long key=(((long)(f==serif?1:f==cinzel?2:f==sansSemi?3:f==latinFont?5:4))*1000+size)*4+(int)fs;
    if(!styles.TryGetValue(key,out var s)){s=new GUIStyle(GUI.skin.label){font=f,fontSize=size,fontStyle=fs,alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};styles[key]=s;}
    return s;
   }
@@ -122,11 +122,11 @@ namespace Exoduser.UnityPort {
    var runs=new List<KeyValuePair<bool,string>>();string cur="";bool latin=false;
    foreach(char ch in text){bool l=IsLatin(ch)&&ch!=' ';if(ch==' '){cur+=ch;continue;}if(cur.Length>0&&l!=latin&&cur.Trim().Length>0){runs.Add(new KeyValuePair<bool,string>(latin,cur));cur="";}latin=l;cur+=ch;}
    if(cur.Length>0)runs.Add(new KeyValuePair<bool,string>(latin,cur));
-   float total=0;foreach(var run in runs)total+=run.Key?Width(cinzel,size,FontStyle.Normal,run.Value,spacing):Width(serif,size,koStyle,run.Value,spacing);
+   float total=0;foreach(var run in runs)total+=run.Key?Width(latinFont,size,FontStyle.Normal,run.Value,spacing):Width(serif,size,koStyle,run.Value,spacing);
    float x=r.x;if(anchor==TextAnchor.MiddleCenter)x=r.x+(r.width-total)/2f;else if(anchor==TextAnchor.MiddleRight)x=r.xMax-total;
    foreach(var run in runs){
-    float w=run.Key?Width(cinzel,size,FontStyle.Normal,run.Value,spacing):Width(serif,size,koStyle,run.Value,spacing);
-    Text(new Rect(x,r.y,w+4,r.height),run.Value,run.Key?cinzel:serif,size,c,run.Key?FontStyle.Normal:koStyle,spacing,TextAnchor.MiddleLeft,shadow);x+=w;
+    float w=run.Key?Width(latinFont,size,FontStyle.Normal,run.Value,spacing):Width(serif,size,koStyle,run.Value,spacing);
+    Text(new Rect(x,r.y,w+4,r.height),run.Value,run.Key?latinFont:serif,size,c,run.Key?FontStyle.Normal:koStyle,spacing,TextAnchor.MiddleLeft,shadow);x+=w;
    }
   }
   // Greedy wrap with the browser's break opportunities for Korean: after spaces and between Hangul syllables / Latin-or-digit and Hangul
@@ -197,7 +197,7 @@ namespace Exoduser.UnityPort {
     else if(sel)GUI.DrawTexture(sprite,discEmptySel);
     var key=R(d.keyRect);var name=R(d.nameRect);var button=R(d.button);
     // .sf-slot-key 11px Cinzel ls .08em gold; .sf-slot-name 11px (empty = dim, on = bone).
-    Text(new Rect(button.x,key.y,button.width,key.height),d.key.ToUpperInvariant(),latin,11,C(167,170,170),FontStyle.Normal,.88f,TextAnchor.MiddleCenter);
+    Text(new Rect(button.x,key.y,button.width,key.height),d.key.ToUpperInvariant(),latinFont,11,C(167,170,170),FontStyle.Normal,.88f,TextAnchor.MiddleCenter);
     string label=equipped?data.skill.name:slotSkill!=null&&skillById.ContainsKey(slotSkill)?skillById[slotSkill].name:"비어 있음";
     Color col=sel?C(217,214,208):equipped?C(170,173,173):C(113,116,116);
     Text(new Rect(button.x-6,name.y,button.width+12,name.height),label,serif,11,col,FontStyle.Normal,0,TextAnchor.MiddleCenter);
@@ -208,9 +208,9 @@ namespace Exoduser.UnityPort {
   void DrawInfo(Simulation sim,bool lmb,int level,Action equip){
    string id=selectedOrb??EquippedId(SelectedSlot);if(id==null||!skillById.TryGetValue(id,out var def)){Text(new Rect(74,316.64f,284,28),"비어 있음",serif,16,C(129,132,132));DrawInfoResources(sim,638.64f);return;}bool ki=id=="kiSlash",ported=Ported(id);int slv=ported?SkillLevelOf(id):0;bool learned=ported&&slv>=1;
    var ic=new Vector2(102,344.64f);Disc(ic,28,C(75,78,78));var tex=OrbIcon(id,false);if(tex!=null)GUI.DrawTexture(new Rect(74,316.64f,56,56),tex);
-   Text(new Rect(144,316.84f,214,33.6f),ki?data.skill.name:def.name,serif,28,C(222,219,213),FontStyle.Bold,.56f);Text(new Rect(144,354.44f,214,18),ki?"Lv "+level+" / 20":learned?"Lv "+slv+" / 20":ported?"미습득":"Lv "+NotPorted,latin,13,C(165,168,168),FontStyle.Normal,.78f);
+   Text(new Rect(144,316.84f,214,33.6f),ki?data.skill.name:def.name,serif,28,C(222,219,213),FontStyle.Bold,.56f);Text(new Rect(144,354.44f,214,18),ki?"Lv "+level+" / 20":learned?"Lv "+slv+" / 20":ported?"미습득":"Lv "+NotPorted,latinFont,13,C(165,168,168),FontStyle.Normal,.78f);
    Fill(new Rect(74,384.64f,284,1),C(146,149,149,.5f));Paragraph(new Rect(74,399.64f,284,112),ki?data.skill.description:def.desc,serif,16,C(217,214,208),28);
-   Text(new Rect(76,536.64f,140,19),learned?"강화 SP "+SkillRules.UpgradeSpCost:"강화 "+NotPorted,serif,15,C(165,168,168));Text(new Rect(216,536.64f,140,19),"Lv"+SkillRules.SkillLevelLock(sim.Player.Level)+" 도달 시 해금",serif,15,C(201,163,154),FontStyle.Normal,0,TextAnchor.MiddleRight);
+   Text(new Rect(76,536.64f,140,19),learned?"강화 SP "+SkillRules.UpgradeSpCost:"강화 "+NotPorted,serif,15,C(165,168,168));Text(new Rect(216,536.64f,140,19),learned&&slv>=SkillRules.SkillLevelLock(sim.Player.Level)&&slv<SkillRules.MaxSkillLevel?"Lv"+(SkillRules.SkillLevelLock(sim.Player.Level)*50)+" 도달 시 해금":"",serif,15,C(201,163,154),FontStyle.Normal,0,TextAnchor.MiddleRight);
    bool canUp=learned&&!ki&&sim.CanUpgradeSkill(id);if(WebButton(new Rect(74,582.64f,87,40),"강화 +",canUp?C(70,34,26):C(28,31,31),canUp?C(38,18,14):C(18,21,21),canUp?C(100,103,103):C(51,54,54),canUp?C(222,219,213):C(138,141,141),canUp))sim.UpgradeSkill(id);
    WebButton(new Rect(171,582.64f,86.44f,40),"강화 −",C(22,25,25),C(14,17,17),C(49,52,52),C(115,110,100));WebButton(new Rect(267.44f,582.64f,72.41f,40),"리셋",C(0,0,0,0),C(0,0,0,0),C(89,92,92),C(170,173,173));
    float y=638.64f;if(ki&&SelectedSlot==SkillUiState.LmbSlot&&!lmb){if(WebButton(new Rect(74,y,240,40),"이 슬롯에 장착 [LMB]",C(33,36,36),C(16,19,19),C(89,92,92),C(217,214,208),true))equip();y+=52;}DrawInfoResources(sim,y);

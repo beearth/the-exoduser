@@ -194,8 +194,8 @@ namespace Exoduser.UnityPort {
                 float oa=a+sh*(1-a);
                 if(oa>.0001f){float k=a/oa;outPx[y*cw+x]=new Color32((byte)(r*k*255+.5f),(byte)(g*k*255+.5f),(byte)(b*k*255+.5f),(byte)(Mathf.Clamp01(oa)*255+.5f));}
             }
-            knightLit=new Texture2D(cw,ch,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
-            knightLit.SetPixels32(outPx);knightLit.Apply(false,true);
+            knightLit=new Texture2D(cw,ch,TextureFormat.RGBA32,true){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Trilinear};
+            knightLit.SetPixels32(outPx);knightLit.Apply(true,true);
             float imgX=200+(395-w*s)/2f;
             knightRect=new Rect(imgX-padX*s,279-padT*s,cw*s,ch*s);
         }

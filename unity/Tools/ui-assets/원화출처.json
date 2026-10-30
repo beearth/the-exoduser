@@ -365,8 +365,8 @@
   "재추출": [
     {
       "Unity": "Art/ui/forge/window_base.png",
-      "sha256": "fd6d129a31727f0878e1741a7d9337898503abeb23e0edff65eb2f997275c9fc",
-      "근거": "현행 실제 웹 렌더에서 기존 텍스트 제외 CSS 재사용, 새 원화0"
+      "sha256": "5340fd443b2a4c76380a7d1c1100cf8000a6cbd79d58b2a469ed35a1f5b65627",
+      "근거": "현행 웹 정적판. 제목 원문은 포함하고 Native 덧쓰기0, 악의 텍스트 노드만 숨겨 동적 수치와 분리. 대장간추출근거.json"
     },
     {
       "Unity": "Art/ui/inventory/ossuary/center_frame_baked.png",

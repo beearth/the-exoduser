@@ -102,3 +102,5 @@ A15 글꼴 후속에서는 미검수 언어 exact43의 실제 스타일 cmap을 
 ### 2026-10-29 PC 1% 원본 인수·Mac 최종 gate
 
 위 5% 불일치 문단은 수리 전 이력이다. PC owner 원본 `2ac5793190dde04551b6e76cc7b67be78b018c54`를 정상 merge해 모든 `K.Range`의 단계가 `d.Step>1 ? d.Step : 1`을 따르도록 했다. `optSfx`/`optBgm`은 명시 5% 예외가 사라져 웹과 동일한 좌/우 1%다. Mac Editor는 두 callback의 전달값·호출 수와 SFX 0/100 clamp를 검사하며 전체 Verify exit0/receipt PASS. ARM64 Settings QA 빌드 Succeeded/errors0, 격리 M1 Player 전 stage ok. 이 Player는 headless `Simulation.Tick` 자동 시나리오라 실제 설정 UI 키 조작은 여전히 미검증이다. [수치 표·영수증·범위](UNITY_MAC_A15_M1_FINAL_20261029.md).
+
+2026-10-30 PC 현행 시각 자산·은빛 팔레트·Linear 글자 보정은 [Unity UI 원화 반영](UNITY_UI_ASSETS_20261030.md)을 따른다. 기능·저장·미이식 범위와 위 검수 이력은 유지하며, 현재 원화의 실제 Player 결과는 해당 문서의 정확 후보 영수증으로 구분한다.
