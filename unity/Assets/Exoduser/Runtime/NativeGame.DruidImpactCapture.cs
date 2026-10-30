@@ -15,7 +15,7 @@ namespace Exoduser.UnityPort
         [Serializable] sealed class DruidImpactReceipt
         {
             public string scope="격리된 실제 Player. 직접 보스 입장·정지한 AI·기본 무기 StepInput 공격. 일반/치명타 확률 0/100은 검수용 설정이며 제품 수치 변경 아님. OS 손조작·자연 종주 아님";
-            public bool passed, remodel3d; public int failures, hits, matchedHits, contactFrames, heldFrames; public List<DruidImpactFrame> frames=new List<DruidImpactFrame>();
+            public bool passed, world3dRequested, bossArena2d; public int failures, hits, matchedHits, contactFrames, heldFrames; public List<DruidImpactFrame> frames=new List<DruidImpactFrame>();
         }
         // 기존 playtest 진입점의 명시적 추가 옵션에서만 실행한다. 일반 실행/M1 경로는 사용하지 않는다.
         IEnumerator DruidImpactCapture()
@@ -30,10 +30,10 @@ namespace Exoduser.UnityPort
             var boss=sim.Stage.FindBoss();
             if(boss==null||!sim.Stage.InArena){Debug.LogError("드루이드 접점 검수 아레나 입장 실패");Application.Quit(2);yield break;}
             sim.Config.EnemyAiEnabled=false;p.Iframes=100000;p.X=boss.X-boss.Radius-p.Radius-4;p.Y=boss.Y;
-            float deadline=Time.realtimeSinceStartup+40;
-            while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
-            var receipt=new DruidImpactReceipt{remodel3d=NativeRemodel3D.Active};
-            if(NativeRemodel3D.Requested&&!receipt.remodel3d)receipt.failures++;
+            // 현행 --remodel3d는 필드만 3D이며 보스방에서 의도적으로 2D로 복귀한다.
+            UpdateViews();yield return null;
+            var receipt=new DruidImpactReceipt{world3dRequested=NativeRemodel3D.Requested,bossArena2d=sim.Stage.InArena&&!NativeRemodel3D.Active};
+            if(!receipt.bossArena2d)receipt.failures++;
             foreach(string phase in new[]{"일반","치명타"})
             {
                 // 전 단계의 공격·효과를 완전히 만료시켜 잔여 일반광으로 치명타 검수가 통과하지 않게 한다.

@@ -34,6 +34,8 @@
 | 실제 입력 검수 경로 | `--unity-playtest-capture --unity-druid-impact-capture --unity-boss-direct 0 --unity-basic-weapon -output <I:>` + 실행기의 격리 저장 필수. 정지 AI·기본검 `StepInput` 120틱×일반/치명 확률0/100, 단계 사이 해제12틱. 실제 충돌·피드백에서 피해 감소와 같은 새 틱의 일반/치명 강도·접점광·held 동시 관측 필수. 240 GPU PNG·`접점검사.json` | 별도 검수 하니스이며 효과 사건 직접 주입0. 일반 실행·M1 영향0. OS 손조작·자연 종주가 아니며 GPU 실행은 아직 미검증 |
 | 증거·한계 | 누락 구현·기본 recover 누락·슬램 중첩·새 배우/방향/사건 식별 API RED 확인 뒤 순수 표현 검사90/0 × 두 옵션. `I:/EXODUSER-Storage/demo-art/boss-druid/impact-tests-green/검사결과.json` | Unity/GPU/실제 동작·가독성은 부모 최종 빌드 검수 전. M1의 틱 밖 합성 HurtEnemy는 다음틱까지 큐에 남을 수 있으므로 실제 공격 입력 또는 같은틱 배출 검수와 구분 |
 
+접점 QA는 현행 `NativeGame.Remodel3D.cs`의 보스방 2D 복귀 계약을 따른다. `--remodel3d` 요청과 실제 보스방의 `bossArena2d`를 별도로 기록하며, 보스방에서 3D Active를 기다리거나 필수로 요구하지 않는다. 이 캡처는 실제 3D 아레나 검증이 아니다.
+
 ## 검증과 반영 단계
 
 | 검사 | 현재 증거 |
