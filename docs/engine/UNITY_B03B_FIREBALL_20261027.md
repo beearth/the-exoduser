@@ -53,7 +53,9 @@
 | 폭발 원본 | 웹 `Dark_DarkSmoke_FBF_4x4.png`·`Arcane_Arcane_FBF_6x6.png`·`Dark_BasicImpact.png` 동일바이트 Resources 시트3개. 4×4/6×6/3×3, 배율1.8/1.4/.8, 지연0/1/0, 프레임속도3/3/2. 반경배율 clamp(sqrt(ExplR/80),.8,2.5), 알파.7·후반40% 감쇠, 크기1+.4p |
 | 현행 웹 중복 패스 | 현재 웹 draw가 TVFX2를 두 번 진행·그리므로 같은 틱의 두 샘플을 표시. 임의로 속도나 밝기를 정상화하지 않음. 동시 폭발 표시 상한12 |
 | 전수 하네스 | `--unity-playtest-capture -malice-directions 1`은 기존14입력+LMB/RMB 각8방향+시전중 조준변경. 충돌을 끄지 않고 시작점·발사속도·조준·중심오차·연속PNG 기록 |
-| 단독 검증 | Runtime 전체 독립 Roslyn 컴파일 오류0, 최신 웹 원본에서 재추출한 스킬 oracle8416검사·불일치0. 꼬리 폭은 startWidth/endWidth로 갱신해 렌더마다 AnimationCurve를 새로 만들지 않음 |
+| 단독 검증 | Runtime 전체 독립 Roslyn 컴파일 오류0, 최신 웹 원본에서 재추출한 스킬 oracle13216검사·불일치0(악의구 실제 발사 본문400사례·4800검사 추가). 꼬리 폭은 startWidth/endWidth로 갱신해 렌더마다 AnimationCurve를 새로 만들지 않음 |
 | 완료 게이트 | 독립 Simulation 통과는 Player 증거가 아님. Unity 컴파일·원본 oracle·무창 M1·웹/Unity 연속 비교·MERGE_QUEUE·unity/main 정상반영·바탕화면 갱신은 현재 후속 검증 단계 |
 
 산출물: `I:/EXODUSER-Storage/demo-art/skill-fix/`. 실제 사용자 Player(PID13912, entry-flow/build)가 실행 중임을 확인하여 동시 Unity 실행을 하지 않았다. 사용자 창·세이브·타팀WIP를 보존한다.
+
+악의구 오라클은 `_execMagicE`와 실제 폴백 발사 본문을 실행한다. Lv1~20·기준마력·INT·배율·MP보너스·사거리보너스·시전속도·방향400사례에서 시전시간·시작좌표/방향·초기/성장/폭발반경·사거리·속성·직격/폭발피해를 비교한다. JS/.NET sin의 double1ULP 차이97건을 먼저 기록했고, 좌표/속도는 실제 Core 저장 형식인 float32에서 정확히 일치하며 나머지 수치는 기존 double 비트 일치 기준을 유지한다. 임의 허용오차는 넣지 않았다. 원본 실패 영수증 `oracles/fireball-double-ulp-red.json` 보존.
