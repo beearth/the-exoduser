@@ -35,7 +35,7 @@ namespace Exoduser.UnityPort
   // ---- text / fonts ----
   Font FontFor(string locale)
   {
-   if(myeongjo==null){myeongjo=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular")??font;cinzel=Resources.Load<Font>("Art/fonts/CinzelDecorative-Bold")??myeongjo;}
+   if(myeongjo==null){myeongjo=NativeSilverHellUi.Font()??Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular")??font;cinzel=Resources.Load<Font>("Art/fonts/CinzelDecorative-Bold")??myeongjo;}
    string code=LobbyLanguage.Normalize(locale);
    if(code=="ja"){var jp=Resources.Load<Font>("Art/fonts/NotoSerifCJKjp-Regular");if(jp!=null)return jp;}
    if(code=="ko"||code=="en")return myeongjo;
@@ -239,9 +239,9 @@ namespace Exoduser.UnityPort
   }
   void DrawButton(Rect r,string text,bool selected,bool danger)
   {
-   Fill(r,selected?new Color32(31,34,34,255):new Color32(17,20,20,255));
-   Border(r,danger?new Color32(110,32,26,255):(selected?new Color32(217,214,208,200):BoxLine));
-   Txt(r,text,16,danger?new Color32(176,179,179,255):Bone,TextAnchor.MiddleCenter,FontStyle.Bold);
+   bool hover=r.Contains(Event.current.mousePosition);
+   NativeSilverHellUi.ActionPlate(new Rect(r.x+8,r.y,r.width-16,r.height),false,selected||hover?1:0,hover&&ExoInput.Mouse(0));
+   Txt(r,text,14,danger?new Color32(176,179,179,255):Bone,TextAnchor.MiddleCenter,FontStyle.Normal);
   }
   bool Clicked(Rect r){return NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none);}
   void DrawItem(It it,float sy,bool fullscreen)
@@ -280,7 +280,7 @@ namespace Exoduser.UnityPort
    PointAt(r,cursor);
    HLine(r.x,r.y+47,r.width,LineSoft);
    Txt(new Rect(r.x,r.y+12,nameW,24),RowName(it),17,Bone);
-   if(navigation.Focused&&cursor>=0&&navigation.Cursor==cursor)Border(new Rect(r.x-4,r.y-1,r.width+8,50),new Color32(240,186,102,255));
+   if(navigation.Focused&&cursor>=0&&navigation.Cursor==cursor)Border(new Rect(r.x-4,r.y-1,r.width+8,50),new Color32(230,227,220,255));
   }
   void DrawRange(It it,Rect r,int cursor)
   {
@@ -370,7 +370,7 @@ namespace Exoduser.UnityPort
    string text=it.text;
    if(it.id=="reset"&&resetConfirm){text=W("b.resetYes",T("확인","Confirm"));}
    DrawButton(r,text,selected,it.danger);
-   if(navigation.Focused&&cursor>=0&&navigation.Cursor==cursor)Border(new Rect(r.x-3,r.y-3,r.width+6,r.height+6),new Color32(240,186,102,255));
+   if(navigation.Focused&&cursor>=0&&navigation.Cursor==cursor)Border(new Rect(r.x-3,r.y-3,r.width+6,r.height+6),new Color32(230,227,220,255));
    if(Clicked(r)){navigation.Fence();navigation.PointAt(cursor);Activate(it,fullscreen);}
   }
   void Activate(It it,bool fullscreen)
@@ -433,7 +433,7 @@ namespace Exoduser.UnityPort
     else Diamond(r.center.x,r.y+34,26,idx==0?new Color32(176,40,28,255):new Color32(120,86,190,255));
     Txt(new Rect(r.x+8,r.y+66,r.width-16,28),idx<names.Length?names[idx]:"",13,sel?Title:Bone,TextAnchor.MiddleCenter,FontStyle.Bold);
    }
-   if(navigation.Focused&&cursor>=0&&navigation.Cursor==cursor)Border(new Rect(r.x-3,r.y-3,r.width+6,r.height+6),new Color32(240,186,102,255));
+   if(navigation.Focused&&cursor>=0&&navigation.Cursor==cursor)Border(new Rect(r.x-3,r.y-3,r.width+6,r.height+6),new Color32(230,227,220,255));
    if(!character&&Clicked(r)){settings.Options.Set("cursor",idx);if(OptionChanged!=null)OptionChanged("cursor");navigation.Fence();navigation.PointAt(cursor);}
   }
   public int CharacterIndex { get; set; }
