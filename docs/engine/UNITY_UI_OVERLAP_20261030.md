@@ -215,3 +215,24 @@ GPU 판독 자체도 실제 대조군으로 검증한다. 첫 수집 Repaint에�
 최초 실제 가림 완전성 FAIL1회와 과거 r1/r2/RETOUCH·오프라인 실패 이력은 그대로 유지한다. 긴 BGM 내부식별자 접미부 클립, 긴 프랑스어 직업명 단어 중간 줄바꿈, 기존 영문 폴백/일부 한국어 설명은 남은 한계이며 전체 번역/아트/게임 AAA PASS로 확대하지 않는다. 자기 예약은 실제 작업 종료 뒤 공식 반환했으며 타인 예약/잠금 변경0·타인 종료0·기존 실행본/세이브 덮기0다.
 
 근거: final-ui-20261030/candidate3/최종게이트_요약.json·공식영수증/목록.json·verify/overlap/직접검수/직접판정.json. 이 시점 MERGE_QUEUE READY 준비 완료이며 공통 비강제 반영·일반 Desktop 네속성/해시 전달 결과는 다음 영수증에 기록한다.
+
+## 현재 UI 단위 제품 전달 완료 — 2026-10-31 01:10 KST
+
+MERGE_QUEUE READY 뒤 expected공통202b32c85df19ce0b2a11db118e313298948a416을 보존하여 fd83657f3e494ff01d3b4c619a967afc10ea17eb를 정상 비강제 push하고 원격 동일SHA·검증 Unity tree b0e63e30e651d8904797bdb14a20300ac8eb2ffe 일치를 재조회했다. 빌드 이후 정상병합은 문서만 바뀌었으므로 새 Unity/Player 검사를 반복하거나 새 통합 빌드 영수증으로 표시하지 않았다. 검수한 같은 Runtime/Core 실행본을 전달했다.
+
+일반 바탕화면 지옥의 길(Unity).lnk는 직전 R5 링크 SHA c5acbfd74c91e27d17b5a5ef331b5ff66e68b603d5ee66c884a0e6067d5bd404 및 이전 Runtime/Core를 다시 대조한 뒤 원본 byte를 I:에 백업하고 갱신했다. 별도 PowerShell readback에서도 네속성과 EXE/Runtime/Core SHA가 동일하다.
+
+| 실제 전달 항목 | 값 |
+|---|---|
+| Target | I:\EXODUSER-Storage\demo-art\unity-ui\overlap\final-ui-20261030\candidate3\build\EXODUSER-Unity.exe |
+| Arguments | -force-d3d11 --remodel3d |
+| WorkingDirectory | I:\EXODUSER-Storage\demo-art\unity-ui\overlap\final-ui-20261030\candidate3\build |
+| Icon | I:\EXODUSER-Storage\demo-art\unity-ui\overlap\final-ui-20261030\candidate3\build\EXODUSER-Unity.exe,0 |
+| 링크 SHA256 | 42a45f0af653eecc4e6a37d29f5013ed0e4264b61d24cde021b42a1a505d5d97 |
+| Runtime SHA256 | c783571aa39dc01b3c5ac82eae3b97b5ba7613d17a236f48d6e4b9fd65569218 |
+| Core SHA256 | dfb9c3f0db87869b06c6b22e44e37b1443e8cafce802a6e3d148557dff7299b0 |
+| EXE SHA256 | 9806abde4a406ed68647e9505852c49f6aa72a372f4f084e2aa2821affea57a2 |
+| 독립 readback | desktop-observations/20261030T161001397/관측.json |
+| 안전·보존 | 사용자 앱 자동기동0·기존 실행본 덮기0·세이브변경0·강제종료0·타인 예약/잠금 변경0, 자기 예약 공식반환 |
+
+최종 근거는 candidate3/최종게이트_요약.json·공식영수증/목록.json·verify/overlap/직접검수/직접판정.json·공통반영_영수증.json·Desktop_전달.json이다. 같은 후보 정식빌드/실제168장·가림완전성/동일M1/1x/UI겹침PASS/일반Desktop 전달을 완료했다. PC 현재 소유 checkout과 GitHub 공통 소스는 확인했으며 Mac 실제 checkout 반영은 미확인이다. 전체 아트/번역/게임 품질 RETOUCH와 기존 실패 이력을 유지한다. 다른 담당은16:10UTC 정상 자기 실행 잠금을 사용 중이며 UI는 더 실행/예약하지 않는다.
