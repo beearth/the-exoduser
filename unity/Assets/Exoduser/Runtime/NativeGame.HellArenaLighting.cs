@@ -24,7 +24,7 @@ namespace Exoduser.UnityPort
             hellArenaRig.SetActive(true);bool shown=view.cullingMask!=0;hellArenaCamera.CopyFrom(view);hellArenaCamera.enabled=shown;hellArenaCamera.depth=view.depth+5;
             if(druidBody!=null&&druidBody.Visible)druidBody.PresentationScale=.72f;
             var focus=playerView.bounds;if(druidBody!=null&&druidBody.Visible&&Vector3.Distance(playerView.bounds.center,druidBody.Bounds.center)<12)focus.Encapsulate(druidBody.Bounds);
-            float halfH=A2Requested?view.orthographicSize:Mathf.Max(view.orthographicSize*.53f,focus.size.y*.63f+.3f);var focusCenter=focus.center;
+            float halfH=A2Requested?view.orthographicSize*.9f:Mathf.Max(view.orthographicSize*.53f,focus.size.y*.63f+.3f);var focusCenter=focus.center;
             hellArenaCamera.transform.SetPositionAndRotation(new Vector3(focusCenter.x,focusCenter.y-.15f,view.transform.position.z),view.transform.rotation);hellArenaCamera.orthographicSize=halfH;hellArenaCamera.cullingMask=worldMask;view.cullingMask=0;
             if(compare){hellBossContact.enabled=false;hellPlayerContact.enabled=false;return;}
             hellActorMaterial.SetFloat("_Ambient",.85f);

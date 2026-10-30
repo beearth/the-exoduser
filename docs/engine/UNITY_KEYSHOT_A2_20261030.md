@@ -71,9 +71,9 @@ A2CaptureFrame이 정상 LateUpdate 이후 Remodel3DLate를 다시 불러 이미
 | 물가 접합 | Roots/낙엽의정점이 비섬수면에걸치면 수면−.18u로내림, 나머지는GroundY. 같은실제ReadWrite메시의UV·normal/tangent 재계산. 지면보조물만/코어충돌불변 |
 | 촬영 오류 | keyshotLog Error/Exception/Assert집계, receipt.unityErrors==0이추가통과조건. 실제보이는전사스킨(2D아레나도활성3D전사있음)을측정. 숨긴스프라이트 측정값8.1%는실제전사값으로채택하지않음 |
 | 자연 보스 순간 | 로딩완료후 실제boss+260/−150px에플레이어1회배치. 촬영직전순간이동제거. AI가중심600px 내에있고적탄6이상인자연순간선택, 적/탄/AI위치주입0. 최종1099fallback유지. 보스AI/NativeBossView/3D모델변경0 |
-| A2 보스 카메라 | 기존의.53배줌인대신view.orthographicSize기본5.4u로복원(A2만). 실제3D영웅8~11%재측정필수. 보스PresentationScale.72/물리/전투불변. 현재2D보스,3D모델인수0 |
+| A2 보스 카메라 | 기존의.53배줌인대신view.orthographicSize×.9=기본4.86u(A2만). 실제3D영웅8~11%재측정필수. 보스PresentationScale.72/물리/전투불변. 현재2D보스,3D모델인수0 |
 | A2 보스 지면 | Clamp rock_face 대신 기존Repeat rock_ground Diffuse/Normal을기존ArenaSoilLit worldXY/4u에연결. NativeArenaView/충돌/벽마스크수정0 |
-| A2 보스 낮은 프레임 | 실제Room중심 주위 PineRoots14개/타원8.5×6.2u/scale1.8,1.2,2.2, yaw137°간격. 짝수암반7개/scale.3,.22,.35. 횃불2개×.45,중심±6/±2.5u/pitch−52°·불꽃8프레임12fps·앞오프셋z−1/y+.7/scale.12. 기존두warm광원을같은위치z−1.3으로옮김. 전부장식Collider0·신규보스모델0 |
+| A2 보스 낮은 프레임 | 실제Room중심 주위 PineRoots14개/타원8.5×6.2u/scale1.8,1.2,2.2, yaw137°간격. 짝수암반7개/scale.16,.12,.18. 횃불2개×.45,중심±6/±2.5u/pitch−52°·불꽃8프레임12fps·앞오프셋z−1/y+.7/scale.12. 기존두warm광원을같은위치z−1.3으로옮김. 전부장식Collider0·신규보스모델0 |
 | 전경·빛 | 빛기둥은기존4개depthfade메시를가산합성alpha.18로교정. 실제볼류메트릭안개가아님. Linear안개14~54u. 입체뿌리/낙엽이현재Player에서누락됐으므로개선완료라부르지않음 |
 
 ### 먼 수로의 원근 연결
@@ -109,3 +109,16 @@ A2CaptureFrame이 정상 LateUpdate 이후 Remodel3DLate를 다시 불러 이미
 
 ### 지류를 직각 직사각형에서 둥근 침식 형태로 전환
 원화와 같은 물가의 큰 형태를 위해 BranchDistance를 Water/BankHeight가 공유한다. w=Across, u=Along−.35sin(w×.45), end=w−clamp(w,−5.75,17.25), width=2.75+.20sin(w×.73)+.12cos(w×1.6), signedDistance=sqrt(u²+end²)−width. 양끝 둥근 형태와 낮은 굽음으로 직각 꼭짓점을 제거하며 다리 통행 경계는 기존4.45/1.7u 유지. 실제 지류 끝 모서리 검사 실패1을 먼저 재현·보존한 뒤30/30 PASS, 수면123472표본/보행겹침0·출구3/3·고정앵글러4접근 유지. 큰형태·수면반사·현재Player/동일빌드M1은 다음 검수 대상. 별도 목질8배 세부결 MCP시안은1x 개선이 뚜렷하지 않아 인수0.
+
+## 2026-10-31 source1e0a748e8 실제 Player와 같은 빌드 M1
+
+| 항목 | 실제 근거와 판정 |
+|---|---|
+| 빌드 | 8b4e655b, StandaloneWindows64/6000.6.7f1/BuildReport Succeeded/오류0/3734889646B. 실행기 errorLogs2는 별도 보존, C# compileErrors0. MCP 파일/관리참조0:212파일/160DLL PASS |
+| 실제3장 | hidden Player765006d8/D3D11/25.6초, 탐험8.4726%·전투9.3696%/적탄3·드루이드7.3557%/적탄15, 평균휘도.1589/.1584/.1461. unityErrors0/정점읽기오류0. 보스 크기 기준8~11% 미달로 exit3. 창0/세이브0/잔여0. 실제 PNG3장과 원화 같은크기·1x 직접 확인 |
+| 실제 성능/반사 | 수로·외곽1697ms/전체1797ms, 원본 높이256점오차2.384186E−07u. D3D11 평면반사가 실제 이미지에 보이며 크래시0. 최종아트 합격과 분리 |
+| M1 | 같은 shore-build, c9a2389a/25.9초,23단계 전부ok·firstBlocked빈값·실제화면32장/AMD RX9070XT/D3D11. 창0/세이브0/잔여0. 다음 소스에 소급하지 않음 |
+| 시각 결함 | 원화에 비해 넓은 평면 바닥·가늘고 반복되는 나무/작은 밑동·부족한 큰 목질·단순한 물가, 보스 암반의 검은 무리와 영웅크기 부족. 아트FAIL 유지/공통·Desktop 채택0 |
+| 후속 코드 | A2 보스 카메라 기본5.4×.9=4.86u. 낮은 암반7개를 scale(.16,.12,.18)로 줄임. 필드 주광이 꺼진 XY 아레나에만 전용 directional RGB(.6,.7,.85)/강도.9/회전(25,−25,0)/그림자없음. rig와 함께 비활성, Core/AI/보스모델불변. 실제 조명 재검수필수 |
+| 필드 환경광 재진입 | HellLightingActive(on)의 이전(.31,.34,.36) 덮어쓰기를 제거. 조립/활성화가 A2Ambient 한 함수를 공유해 (.20,.25,.30)/(.12,.14,.16)/(.035,.03,.02)를 적용. 현재 독립C#0, 실제 새후보 미검증 |
+| 단일 실행 | 자기 예약 정상 반환, 다음 기존 UI-tab-audio 예약 보존. 큰형태 보완은 자기 오프라인 자산에서 진행, 타프로세스 종료0 |

@@ -117,14 +117,18 @@ namespace Exoduser.UnityPort
             var probe=reflection.AddComponent<ReflectionProbe>();probe.mode=ReflectionProbeMode.Realtime;probe.refreshMode=ReflectionProbeRefreshMode.OnAwake;
             probe.resolution=256;probe.size=new Vector3(180,80,260);probe.boxProjection=true;probe.intensity=.55f;probe.importance=100;
             probe.clearFlags=ReflectionProbeClearFlags.SolidColor;probe.backgroundColor=new Color(.085f,.115f,.14f);probe.farClipPlane=150;
-            RenderSettings.ambientMode=AmbientMode.Trilight;RenderSettings.ambientSkyColor=new Color(.20f,.25f,.30f);
-            RenderSettings.ambientEquatorColor=new Color(.12f,.14f,.16f);RenderSettings.ambientGroundColor=new Color(.035f,.03f,.02f);
+            A2Ambient();
             foreach(var light in UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None))if(light.type==LightType.Directional)
             {light.intensity=2.1f;light.color=new Color(.8f,.87f,1);light.shadowStrength=.65f;light.transform.rotation=Quaternion.Euler(54,-32,0);}
             // 기존 검은 배경색을 실제로 이어지는 먼 숲의 안개색으로 연결한다.
             r3Cam.backgroundColor=new Color(.15f,.18f,.21f);
             r3Cam.farClipPlane=240;
             Debug.Log("[A2] R3 스캔 자산 조립 후보. R4 HOLD 인수0·Core/원본맵 변경0·A2 수로/거목 경계 적용 "+timer.ElapsedMilliseconds+"ms");
+        }
+        static void A2Ambient()
+        {
+            RenderSettings.ambientMode=AmbientMode.Trilight;RenderSettings.ambientSkyColor=new Color(.20f,.25f,.30f);
+            RenderSettings.ambientEquatorColor=new Color(.12f,.14f,.16f);RenderSettings.ambientGroundColor=new Color(.035f,.03f,.02f);
         }
         void A2Torch(float x,float z)
         {
