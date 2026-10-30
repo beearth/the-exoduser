@@ -13,7 +13,9 @@ namespace Exoduser.CharacterLab {
     instance.name="Warrior";instance.transform.SetPositionAndRotation(Vector3.zero,Quaternion.identity);instance.transform.localScale=Vector3.one;
     var body=AssetDatabase.LoadAssetAtPath<Material>(WarriorImport.MatPath);
     var weapon=AssetDatabase.LoadAssetAtPath<Material>(WarriorImport.Dir+"/Weapon/Warrior_Greatsword_Mat.mat");
-    body.SetFloat("_BumpScale",.35f);body.SetFloat("_Smoothness",.68f);
+    var iron=AssetDatabase.LoadAssetAtPath<Shader>("Assets/Exoduser/Art/Characters/Shaders/HeroIronContrast.shadergraph");
+    if(iron==null)throw new System.Exception("전사 흑철 셰이더 누락");
+    body.shader=iron;body.SetFloat("_BumpScale",.35f);body.SetFloat("_Smoothness",.68f);
     weapon.SetFloat("_BumpScale",.55f);weapon.SetFloat("_Smoothness",.75f);
     EditorUtility.SetDirty(body);EditorUtility.SetDirty(weapon);
     foreach(var r in instance.GetComponentsInChildren<Renderer>(true)){

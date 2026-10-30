@@ -15,6 +15,13 @@ namespace Exoduser.UnityPort
         public bool Rolling,Moving,KiAttack;
     }
     public struct HeroMotionSample { public HeroMotionKind Kind; public float Phase,ContactPhase; public int Combo; }
+    public struct HeroBodyWeight
+    {
+        public bool Active;
+        public float Side,Forward,Drop,PelvisYaw,ChestYaw,ChestPitch;
+        public HeroBodyWeight(float side,float forward,float drop,float pelvisYaw,float chestYaw,float chestPitch)
+        {Active=true;Side=side;Forward=forward;Drop=drop;PelvisYaw=pelvisYaw;ChestYaw=chestYaw;ChestPitch=chestPitch;}
+    }
     public sealed class NativeHeroMotionClock
     {
         int lastTick=-1,enteredTick,deathTick,skillTick=-1000,hurtTick=-1000,lastCast,basicCombo;
@@ -54,6 +61,55 @@ namespace Exoduser.UnityPort
         {
             float length=float.IsNaN(legLength)||float.IsInfinity(legLength)?0:Math.Max(0,legLength);
             down=length*.20f;back=length*.10f;
+        }
+        static HeroBodyWeight WeightLerp(HeroBodyWeight a,HeroBodyWeight b,float t)
+        {
+            t=Smooth(t);float Mix(float x,float y){return x+(y-x)*t;}
+            return new HeroBodyWeight(Mix(a.Side,b.Side),Mix(a.Forward,b.Forward),Mix(a.Drop,b.Drop),Mix(a.PelvisYaw,b.PelvisYaw),Mix(a.ChestYaw,b.ChestYaw),Mix(a.ChestPitch,b.ChestPitch));
+        }
+        static HeroBodyWeight SwingWeight(int combo,float phase,float contact)
+        {
+            HeroBodyWeight start,hit,end;
+            if(combo==3)
+            {
+                start=new HeroBodyWeight(.015f,-.065f,.015f,-3,-3,-18);
+                hit=new HeroBodyWeight(0,.09f,.025f,0,0,22);
+                end=new HeroBodyWeight(0,.055f,.020f,1,1,12);
+            }
+            else
+            {
+                float side=combo==2?1:-1;
+                start=new HeroBodyWeight(-side*.06f,-.045f,.015f,-side*6,-side*14,-6);
+                hit=new HeroBodyWeight(side*.03f,.08f,.025f,side*7,side*15,12);
+                end=new HeroBodyWeight(side*.07f,.055f,.015f,side*8,side*16,-5);
+            }
+            if(contact>0&&phase<contact)return WeightLerp(start,hit,phase/contact);
+            return WeightLerp(hit,end,(phase-contact)/Math.Max(.01f,1-contact));
+        }
+        static HeroBodyWeight BashWeight(float phase)
+        {
+            var start=new HeroBodyWeight(.03f,-.055f,.015f,-4,-10,-12);
+            var hit=new HeroBodyWeight(-.015f,.09f,.025f,5,12,18);
+            var end=new HeroBodyWeight(-.025f,.065f,.015f,7,12,8);
+            return phase<.4f?WeightLerp(start,hit,phase/.4f):WeightLerp(hit,end,(phase-.4f)/.6f);
+        }
+        public static HeroBodyWeight BodyWeight(HeroMotionSample sample)
+        {
+            float t=Clamp(sample.Phase);var zero=new HeroBodyWeight(0,0,0,0,0,0);
+            var slamStart=new HeroBodyWeight(.015f,-.065f,.015f,-3,-3,-18);
+            var slamHit=new HeroBodyWeight(0,.09f,.025f,0,0,22);
+            var slamEnd=new HeroBodyWeight(0,.055f,.020f,1,1,12);
+            switch(sample.Kind)
+            {
+                case HeroMotionKind.Swing:return SwingWeight(sample.Combo,t,Clamp(sample.ContactPhase));
+                case HeroMotionKind.Recover:return WeightLerp(SwingWeight(sample.Combo,1,Clamp(sample.ContactPhase)),zero,t);
+                case HeroMotionKind.Bash:return BashWeight(t);
+                case HeroMotionKind.BashRecover:return WeightLerp(BashWeight(1),zero,t);
+                case HeroMotionKind.SlamWindup:return WeightLerp(zero,slamStart,t);
+                case HeroMotionKind.SlamStrike:return t<.35f?WeightLerp(slamStart,slamHit,t/.35f):WeightLerp(slamHit,slamEnd,(t-.35f)/.65f);
+                case HeroMotionKind.SlamRecover:return WeightLerp(slamEnd,zero,t);
+                default:return default(HeroBodyWeight);
+            }
         }
         public HeroMotionSample Evaluate(HeroMotionInput q)
         {
@@ -262,6 +318,7 @@ namespace Exoduser.UnityPort
             poseHandler.GetHumanPose(ref pose);
             float t=current.Phase;
             float weight=NativeHeroMotionClock.PoseWeight(current);
+            var bodyWeight=NativeHeroMotionClock.BodyWeight(current);
             var grip=ReadyPose();bool twoHands=true;
             switch(current.Kind)
             {
@@ -288,13 +345,22 @@ namespace Exoduser.UnityPort
                     grip=new GripPose(new Vector3(.22f,1.05f,.12f),new Vector3(.75f,-.35f,.5f),-.5f,0,.70f*Ease(t));
                     pose.bodyRotation=pose.bodyRotation*Quaternion.Euler(84*Ease(t),0,-8*Ease(t));twoHands=false;break;
             }
-            BlendMuscle(spineBend,grip.Bend*.6f,weight);BlendMuscle(chestBend,grip.Bend*.4f,weight);BlendMuscle(spineTwist,grip.Twist*.6f,weight);BlendMuscle(chestTwist,grip.Twist*.4f,weight);
+            if(!bodyWeight.Active)
+            {BlendMuscle(spineBend,grip.Bend*.6f,weight);BlendMuscle(chestBend,grip.Bend*.4f,weight);BlendMuscle(spineTwist,grip.Twist*.6f,weight);BlendMuscle(chestTwist,grip.Twist*.4f,weight);}
             float lowering=current.Kind==HeroMotionKind.Roll?grip.Lower:grip.Lower*weight;
+            lowering+=bodyWeight.Drop;
             pose.bodyPosition+=Vector3.down*(lowering/Mathf.Max(.1f,animator.humanScale));
             poseHandler.SetHumanPose(ref pose);
             if(current.Kind==HeroMotionKind.Roll){ApplyRollTuck(t);FitRollBodyToFloor(t);return;}
             if(current.Kind==HeroMotionKind.Dead)return;
-            if(lowering>.00001f)
+            if(bodyWeight.Active&&hips!=null)
+            {
+                // 몸의 체중만 옮긴다. 손/칼의 기존 목표와 게임 루트·조준축은 유지한다.
+                hips.position+=transform.TransformVector(new Vector3(bodyWeight.Side,0,bodyWeight.Forward));
+                hips.rotation=Quaternion.AngleAxis(bodyWeight.PelvisYaw,transform.up)*hips.rotation;
+                if(chest!=null)chest.rotation=Quaternion.AngleAxis(bodyWeight.ChestYaw,transform.up)*Quaternion.AngleAxis(bodyWeight.ChestPitch,transform.right)*chest.rotation;
+            }
+            if(lowering>.00001f||bodyWeight.Active)
             {
                 // 골반 하강은 발목을 내리는 대신 무릎 굽힘으로 받는다. 이동의 원 Animator 발 위치는 보존한다.
                 SolveArm(leftThigh,leftShin,leftFoot,leftFootPosition,transform.forward-transform.right*.12f);
