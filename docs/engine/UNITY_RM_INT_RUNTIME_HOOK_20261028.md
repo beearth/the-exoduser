@@ -119,3 +119,38 @@ Core(`Runtime/Core`)는 바꾸지 않았다.
 Exoduser.KeyshotRenderSetup.Run은 기존 PC 렌더러에 HellSsaoFeature/HellFogFeature와 높이안개 재질을 추가한다. 실제3D카메라+새조명 활성 조건에서만 실행하고 baseline/2D/로비에는 새패스를 넣지 않는다. 안개는 깊이복원광선의 고정16위치에서 높이밀도·국소불빛을 적분하며 랜덤 디더링/필름그레인/점노이즈 없음. 그림자광선적분은 없어 그림자있는 볼류메트릭으로 확대하지 않는다.
 
 렌더러 설정 실실행 40d8203b: Unity6000.6.7f1 오류로그0·정상종료0·세이브격리, SSAO/안개 자산 생성 및 셰이더 오류검사 통과. 이것은 Player 화면/성능/Steam시각합격과 별도다.
+
+첫 후보 실제1080p d44633a4는 크기검사통과(필드9.54%·보스8.11%)이나 전체시각FAIL. AO/안개→그림자→PBR→후처리 순의 동일장면분리7d75d133에서 PBR혼합을 끌 때 점무늬가 사라졌다. 후속은 샘플방법 변경: 타일6u·Trilinear/밉바이어스2/이방성8, 돌8~34%·탄화토6~18%·피부잔여, 노멀.3/.18, 돌smoothness=.50-.25×rough·탄화토=.20-.12×rough. 단순노출튜닝으로 점무늬를 가리지 않는다.
+후속조명: EV.25·키라이트색(.85,.89,1)/강도1, 지옥불(1,.60,.28)/강도5, 기구높이1.6u/불꽃.14배·영웅rim강도2.2. 전경/Shaft제거 유지. 보스표현카메라는 실제영웅·본체Bounds의합집합에 맞추며 기본직교×.53을유지하되 본체가크면 높이를늘려 잘림을방지한다. 논리카메라·Core는불변. 바닥의기본광/세국소광은 원화노멀광계산을 사용하고 영웅은 최소주변광.85로 식별한다.
+
+
+후보2 직접 검수 FAIL: 탐험 하단 가로줄/검은 카드, 보스 원화 과대/영웅 HUD 근접, 보스 바닥 과도한 검정이 남았다. 분리 진단 7d75d133/b2fb6794 후속: AO·안개·광원 그림자를 꺼도 가로줄/실루엣 유지. 후보3은 단순 강도 재조정 대신 Shafts/Foreground Cards/Background Cards의 런타임 인스턴스를 폐기한다(원본 씬 보존). 보스 바닥은 기존 흙 단독에서 CC0 rock_ground 디퓨즈 월드6u 혼합80%로 변경, 노멀 기울기 .15. 드루이드 표현 스프라이트 크기 .72, Core 반경/AI/공격 판정 불변. 아레나 카메라는 합친 bounds 높이×.63+.3와 논리크기×.53 중 큰 값, 중심 y-.15. 검수 플레이어는 보스(+260,-150)px로 배치하고 직접 주입 없는 실제 AI 탄을 촬영한다. 새 시각 판정·M1 전에는 통합하지 않는다.
+
+후보3 54faacac 직접 검수: 전경·배경 카드/빛줄기 인스턴스가 렌더러 목록에서 제거됐지만 하단 가로줄·검은 실루엣은 유지됨. 카드만으로 원인이 설명된다는 가설 기각. QA 전용 누적 분리실험(모든 MeshRenderer→영웅 외 SpriteRenderer→Terrain 높이맵)을 추가해 실제 렌더링 범위를 확인한다. 프로덕션에서 이 필터는 기본0이고 --unity-keyshot-diagnostic만1이상으로 변경한다.
+
+분리 촬영: 모든 메시를 끄면 검은 실루엣은 사라지지만 가로줄은 유지, 영웅 외 스프라이트 제거 후도 가로줄 유지, 지형 높이맵 제거 시 사라짐. 지형만 복원한 AO/안개·풀·인스턴싱·전체그림자 순차 분리를 추가한다. 촬영 하네스는 --unity-keyshot-location X:Ypx 위치 선택, 전투 공격이 쉬는 tick%120>=85, 보스 자연 UI 애니메이션 대기2.8초를 사용한다.
+
+지형 분리 6ab53d73 후속: AO·안개·풀·인스턴싱·전체그림자 OFF에서도 가로줄 유지. 기존 Terrain 렌더링을 중단하고 동일 TerrainData 높이맵의 2칸 간격 513×513 일반 메시(524288 삼각형)로 표면만 교체한다. TerrainCollider/NativeRemodel3D.SampleHeight/Core/원본 TerrainData 보존. HellGroundPBR은 기존 피부 컬러맵·노멀 + 돌/재6u 블렌드, URP UniversalFragmentPBR·ShadowCaster·DepthOnly·DepthNormals 사용. 원인 범위는 Terrain 표면 경로까지 확인됐으며 Unity/드라이버의 정확한 내부 원인은 미확정이다. 키 방향광 높이62도/방위35도로 길게 늘어진 오프스크린 그림자를 줄인다. 새 메시 실제 시각·성능은 후속 검수한다.
+
+지형 분리 Player01bc0c75는 이미지8장 이후 QA 전용 구형 루프가 폐기된 Shafts 루트를 참조해 NullReferenceException으로 멈추었고 180초 제한 종료됐다. USER_SAVE변경0·남은프로세스0. 루트 null 검사를 추가했다. 일반 촬영 경로와 구분하며 해당 진단 전체를 PASS로 기록하지 않는다.
+
+표면 메시 6c8ee055/Player2b619f69 직접 관찰: 같은 탐험 위치에서 가로줄 소실, 기존 Terrain 경로에서만 발생한 문제를 우회한 것. 첫 메시 후보의 전투 순간은 큰 KiSlash가 화면 상단을 덮어 재촬영 대상. 최종 조정은 QA 입력을160tick 이후 공격 해제하고280tick 이후 실제 탄3개 이상 때 촬영한다. 프로덕션은 화면 밖 메시 중심(뷰포트 x.05~.95,y.12~.95,z>0 밖)의 그림자 캐스팅을 끄고 카메라 안 메시·영웅·적·화로 그림자는 유지한다. PC 추가광 그림자 atlas4096(기존2048), 보스/영웅 2D 접촉음영2.2×.45u/.48×.12u 알파.32, 바닥위에 표시. Core/충돌 불변.
+
+
+## 2026-10-30 최신 인계 재개 — Blender 환경 연결 후보
+
+현재 요청 브랜치 codex/pc-unity-steam-keyshot-20261030에서 환경 원본을 인수했다. 기존 별도 final 체크아웃의 실행 입력은 수정하지 않는다. 원 체크아웃 미커밋 14경로는 I:/EXODUSER-Storage/steam-keyshot/reprise-2026-10-30T00-16-19.875Z에 SHA와 함께 보존했다. guard.baseline.json은 기존 WIP이며 커밋 제외한다.
+
+| 항목 | 현행 후보 계약 |
+|---|---|
+| 제작·실행 | Blender 무창 제작 FBX10종을 최신 최종후보-파일영수증.json SHA로 인수. HellLightingSetup의 Terrain 처리 뒤 HellEnvironmentSetup 호출. --remodel3d의 새 조명 경로에서만 활성 |
+| 큰 질량 | 기존 보행 덤프를 따른 좌우 암반·부패 그루터기74개. 큰 모듈 중심은 차단 셀, Collider 추가0. 전체 메시 발자국·가림은 실제 Player에서 별도 판정 |
+| 접합 | 바닥 접합58개, sy 최대.35, 영웅 기준(35.4,-74u) 반경1.65u 보호. 총132개는 입력 명세이며 개수 자체가 합격 기준은 아님 |
+| 돌 | Poly Haven rock_ground, tint(.68,.71,.74), smoothness.26, world tile2.2u |
+| 목질 | Poly Haven bark_brown_02 디퓨즈·GL노멀·러프니스 2K, tint(.65,.53,.46), smoothness.12, tile1.3u. Rob Tuytel/CC0, 원본 URL·SHA는 I: pbr-source/bark-출처.json |
+| 뼈 | rock_ground 표면, tint(.76,.71,.59), smoothness.12, tile.8u |
+| 재질 샘플 | Trilinear·이방성8·밉바이어스1. 표면 smoothness = 지정값 × (1−rough×.65), 기존 피부 높이맵·충돌 유지 |
+| 촬영 | --unity-keyshot-location X:Ypx 지정 시 탐험과 전투 시작점을 공유. 직접 입장·생존 보조·스크립트 입력, 실제 적/탄 AI. baseline 플래그로 같은 바이너리의 구 조명 경로 비교 가능 |
+| 입력 검사 | environment-input.test.cjs: 누락 리소스 FAIL 재현 후 132배치 리소스·유한좌표·양수scale·큰모듈 차단셀·낮은 접합·영웅 보호 검사 PASS. GPU·Steam시각 판정 별도 |
+
+직접 본 기준: 사용자 PoE2 ref_07, NRFTW contact_sheet_2 6장, Blender 모듈 렌더, mesh-after 탐험/드루이드 원본. 현재 핵심 차이는 외곽 입체 질량·높낮이·접지·깊이감이다. 큰 질량→접합→바닥→전투 가독성 순서로 실제 장면을 검수한다. 시각 미검증 후보이며 Steam 합격/통합 완료가 아니다.
