@@ -1,11 +1,11 @@
 # 유니티 캐릭터 총괄 인계 — 2026-10-28 09:xx KST
 
-## 2026-10-30 전사 데모 v0 인수 갱신
+## 2026-10-31 전사 R4 철회·R5 접점 보정 인계
 
-- 실제 작업본 `G:/exoduser-wt/codex-hero`, `codex/pc-hero-quality-20261030`. 제품 `b46c3d6c2`·문서포함 `a62b515d6`을 통합 담당이 원격 `unity/main`으로 정상FF했고 expected f27c9d1f9와 readback을 확인했다. 통합 빌드/설치본 M1/일반 Desktop 전달은 진행 중이며 그 영수증 없이 완료로 세지 않는다.
-- 전사3D Resources·기존 대검/망토·Core틱 전체 기본모션을 연결했다. 최종 빌드 efba8711 오류0·실제 Player e45fd978 29/29·579PNG·높이9.3854%·같은 M1 165d48f9 23/23, 창/잔여/세이브변경0. Core DLL b2acc241…571189 정확187275검사 불일치0 재사용·순수모션231검사 통과. 스킬 oracle 중단·구르기 독립 oracle 미실행은 별도.
-- 현재 제작자/독립 1x 판정은 **RETOUCH**다. R1 구르기FAIL·사망 메뉴가림은 해소했고, 판금 큰면/1·2타 하체/2D발밑/E임팩트 가림은 전사·VFX 후속으로 남긴다. 실패한 R3 셰이더 후보와 USB접근위반/허용재시도 성공·실행기 진단 이력도 숨기지 않는다. 전체AAA·OS손조작·Mac PASS가 아니다.
-- SSOT `docs/engine/UNITY_HERO_RUNTIME_20261030.md`·`UNITY_HERO_MOTION_20261030.md`, 증거 `I:/EXODUSER-Storage/demo-art/hero/r4/gate-evidence.json`, 보고 `I:/EXODUSER-Storage/codex-takeover/hero/REPORT.md`. 원 pc-unity-char 자산45개 동일byte 인수·원본수정/생성/지출0. UCH-05·06 유료생성을 새로 시작하지 않는다. 아래 UCH-A1 로컬자료 미작성 표는 보드의10-28 확정 판정/공급원 결정으로 대체된 과거 이력이다.
+- 전사 R4는 기능29/M123·공통a62·링크갱신을 수행했으나, 최종SSOT감사에서 지옥강타 시각접점 약233ms 지연 **FAIL**을 발견해 최종확정을 철회했다. 자기R4 링크 SHA를 확인하고 이전검증 skill-fix 링크를 동일byte 복구했다. b981 전달완료 문서는 공통에 추가FF하지 않는다. 기존 실패/전달/철회 영수증은 보존한다.
+- 현재 후보는 `G:/exoduser-wt/codex-hero`, `codex/pc-hero-quality-20261030`의 `d8adbb744`. Core/웹 즉시피해는 유지하고 시전 첫틱을 칼아래접점·앞체중으로 맞춘다. 기존10/10/12틱은 압축·반동안정·복귀이며 두번째내려침을 만들지 않는다. 실제메시 팁캐시/첫state1cm보정·후반연속해제로 root/yaw/다른동작은유지한다.
+- 순수341검사·정확Core독립11검사(첫tick HP−461/wave1/heavy_hit1) 통과. 실제Player 첫틱 실제팁±3cm·경계연속/영상/M1·통합·재전달은 **미검증/미완료**다. 상태 관측만으로 통과시키지 않는다.
+- 최신 SSOT는 `docs/engine/UNITY_HERO_RUNTIME_20261030.md`·`UNITY_HERO_MOTION_20261030.md`; 근거 `I:/EXODUSER-Storage/demo-art/hero/`, 보고 `I:/EXODUSER-Storage/codex-takeover/hero/REPORT.md`. 기존모델45개는 인수시동일byte·원본수정0, 신규생성/지출0. UCH-05/06·유료생성·다른백로그는 새로 시작하지 않는다.
 
 - 세션 id `local_7de36273…`(유니티 캐릭터 총괄), 모델 Opus. 역할: 플레이어 영웅 3D 외형을 시트 → 메시 → 리깅 → Animator → 인게임 순으로 맡는다. 총괄은 명세·판정만 하고 실행은 Sonnet에 맡긴다.
 - 기준 문서(SSOT): `docs/engine/UNITY_CHARACTER_BOARD_20261027.md`. §3-1은 영웅·보스 공용 제작 경로·품질 기준이다. 메모리 `unity-character-lead-role.md`.

@@ -1,17 +1,17 @@
 # Unity 캐릭터 총괄 보드 (2026-10-27~)
 
-## 2026-10-30 데모 v0 전사 실제 Player·공통 반영
+## 2026-10-31 지옥강타 정합 감사·R4 전달 철회
 
-최신 계약은 `UNITY_HERO_RUNTIME_20261030.md`·`UNITY_HERO_MOTION_20261030.md`다. 제품 R4 `b46c3d6c2`·문서포함 `a62b515d6`을 통합 담당이 expected `f27c9d1f9`에서 원격 `unity/main`에 정상 fast-forward했다. 바탕화면 전달은 통합 빌드·설치본 검수 뒤 별도 기록한다.
+**현재 전사 지옥강타 접점은 R4 FAIL·R5 실물 검수 대기**다. 기존 기능29/M123 및 일반모션 RETOUCH가 시각 접점 결함을 상쇄하지 않는다. Core/웹은 시전 첫틱에 피해·파동·heavy_hit를 내지만 R4 모션은 약14틱(233ms) 늦었다. 통합a62는 이 결함이 남은 상태이며, 새 R5 정상보정 검수/반영 전까지 완료라 하지 않는다.
 
-| 항목 | 현재 근거 |
+| 항목 | 실제 상태 |
 |---|---|
-| 작업본·브랜치 | `G:/exoduser-wt/codex-hero`, `codex/pc-hero-quality-20261030` |
-| 구현 | Resources 전사3D·기존 대검/망토, Core틱 대기·달리기·구르기·3타·검기·E강타·시전·피격·사망. Core/기존 이동조준 변경0 |
-| 실제 후보 | 빌드 efba8711 컴파일/셰이더오류0, Player e45fd978 29/29·579PNG·높이9.3854%, 같은빌드 M1 165d48f9 23/23·정상exit0·창/잔여/USER_SAVE변경0 |
-| 판정 | 제작자·독립 검토 현재1x/2D아레나 **RETOUCH**. 편다리 구르기FAIL·사망 메뉴가림 해소. 큰 판금 명암·1/2타 하체·2D발밑·E임팩트 가림은 후속. 전체게임AAA/실시간손조작 PASS로 올리지 않음 |
-| 증거 | `I:/EXODUSER-Storage/demo-art/hero/r4/gate-evidence.json`·`검수.html`·12종1x·19.3초 실제모션·3초 노레위비교. 원본실패/수정 이력은 Runtime 문서에 보존 |
-| 보호·경계 | pc-unity-char 자산45개 동일byte 인수·원본수정/생성/지출0. UCH-05·06은 이번 단위 범위 밖. Mac미검증 |
+| Desktop | 자기R4 링크 SHA대조 후 이전 검증 skill-fix 일반링크를 동일byte 복구. 앱자동기동/세이브쓰기0. `hero/desktop-withdrawal.json` |
+| R5 후보 | `codex/pc-hero-quality-20261030` 제품 `d8adbb744`, Core0변경. 첫틱접점/압축10·반동안정10·복귀12·실제팁1cm 평면보정/연속해제. 세부 SSOT는 아래 Runtime/Motion 문서 |
+| 사전검수 | 순수341검사·C#0오류0경고, 정확Core b2acc241…571189 독립11검사: 첫tick HP−461·파동1·heavy_hit1, 대조군0. 실제소켓/칼끝±3cm/새Player영상/M1은 미검증 |
+| 기존 개선 | 전사3D·대검·망토·접힌구르기·사망가림해소·Core틱기본공격 연결. 일반아트는 RETOUCH이며 전체AAA PASS0 |
+| 남은 게이트 | R5실제 첫틱 피해·팁접점/경계연속·영상/M1→통합담당 정상반영→검증실행본/일반Desktop 재전달. 담당=전사 제작자 |
+| 근거 | `UNITY_HERO_RUNTIME_20261030.md`·`UNITY_HERO_MOTION_20261030.md`, `I:/EXODUSER-Storage/codex-takeover/hero/REPORT.md` |
 
 - 총괄: PC Claude 세션 "유니티 캐릭터 총괄"(Opus). 2026-10-27 사용자가 이 역할을 지정했다.
 - 맡는 일: Unity 리모델링에서 플레이어 영웅의 3D 외형을 만든다. 범위는 캐릭터 시트 → 3D 메시 → 리깅 → Animator → 인게임 판정이다. 명세·판정은 총괄이 하고, 실행은 Sonnet이 한다.
@@ -22,7 +22,7 @@
 
 | id | 캐릭터 | 원화 상태 | Unity 단계 |
 |---|---|---|---|
-| warrior | 대검전사 | LOCK 확정(앵커) | 데모v0 실제3D/모션·공통반영, 시각RETOUCH |
+| warrior | 대검전사 | LOCK 확정(앵커) | R4강타접점FAIL/전달철회·R5실물검수대기, 일반아트RETOUCH |
 | silvertail | 실버테일 | LOCK v1.2(단검 1·왼쪽 허벅지) | UCH-01 시트 |
 | ivan | 아이반(검은 연기) | T8 r4 확정 | UCH-01 시트 |
 | spearmage | 창법사 | 원화 RETOUCH 중 | 원화 채택 뒤 |
