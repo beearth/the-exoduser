@@ -134,11 +134,11 @@ namespace Exoduser.UnityPort
             var tilt = Quaternion.Euler(pitch * Mathf.Rad2Deg, 0, 0);
             foreach (var sr in FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None))
             {
-                if (sr == null || !sr.enabled || sr.sprite == null || sr.gameObject.scene == r3Scene) continue;
+                if (sr == null || !sr.enabled || sr.sprite == null || sr.gameObject.scene == r3Scene || NativeSkillView.IsGroundSkillSprite(sr)) continue;
                 var tr = sr.transform;
                 r3Base[sr] = new R3Base { localPosition = tr.localPosition, localRotation = tr.localRotation };
                 float roll = tr.rotation.eulerAngles.z;
-                float below = NativeSkillView.IsCenteredSkillSprite(sr) || KiSlashView.IsCenteredSprite(sr) ? 0 : (sr == playerView ? NativeRemodelCamera.HeroFootLift(sr.sprite) : sr.sprite.pivot.y / sr.sprite.pixelsPerUnit) * Mathf.Abs(tr.lossyScale.y);
+                float below = NativeSkillView.IsCenteredSkillSprite(sr) || KiSlashView.IsCenteredSprite(sr) || NativeBoltView.IsCenteredSprite(sr) ? 0 : (sr == playerView ? NativeRemodelCamera.HeroFootLift(sr.sprite) : sr.sprite.pivot.y / sr.sprite.pixelsPerUnit) * Mathf.Abs(tr.lossyScale.y);
                 tr.SetPositionAndRotation(tr.position + new Vector3(0, below * cos, below * sin), tilt * Quaternion.Euler(0, 0, roll));
                 r3Projected.Add(sr);
             }

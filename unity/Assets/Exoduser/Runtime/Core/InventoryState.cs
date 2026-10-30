@@ -94,15 +94,16 @@ namespace Exoduser.UnityPort.Core {
   public double ImplicitTotal(string name){return Implicit(name);} // web _eqImplicit(stat)
   double Implicit(string name){double v=0;foreach(var i in Equipped)if(i!=null&&i._implicitStat==name)v+=i._implicitVal;return v;}
   public InventoryStats CalculateStats(int level,int stage=1,int difficultySigned=0){if(level<1||stage<1||difficultySigned<-5||difficultySigned>5)throw new ArgumentOutOfRangeException();
-   double lb=(int)(level*.5),str=lb,dex=lb,intel=lb,lck=lb,hp=0,mp=0,shield=0,st=0,def=2,damage=0;
-   foreach(var i in Equipped){if(i==null)continue;string reason;if(!Admitted(i,out reason))throw new InvalidOperationException(reason);str+=i.bStr;dex+=i.bDex;intel+=i.bInt;st+=i.bonusSt;
+   double lb=(int)(level*.5),str=lb,dex=lb,intel=lb,lck=lb,hp=0,mp=0,shield=0,st=0,def=2,energyDef=0,grit=lb,damage=0;
+   foreach(var i in Equipped){if(i==null)continue;string reason;if(!Admitted(i,out reason))throw new InvalidOperationException(reason);str+=i.bStr;dex+=i.bDex;intel+=i.bInt;st+=i.bonusSt;grit+=i.bGrit;
     if(i.slot!="weapon"&&i.slot!="bow"&&i.slot!="helmet"){hp+=i.bonusHp;mp+=i.bonusMp;shield+=i.bonusShield;}
     if(i.slot=="shield"||i.slot=="armor"||i.slot=="boots"||i.slot=="gloves"||i.slot=="pants")def+=i.def;
+    if(i.slot!="weapon"&&i.slot!="bow"&&i.slot!="ossuary")energyDef+=i.eDef;
     if(i.slot=="necklace"||i.slot=="ring1"||i.slot=="ring2"||i.slot=="belt"||i.slot=="bracelet"||i.slot=="headband"||i.slot=="headband2")damage+=i.dmgBonus;
    }
    var w=GetEquipped("weapon");var g=GetEquipped("gloves");var n=GetEquipped("necklace");var r1=GetEquipped("ring1");var r2=GetEquipped("ring2");foreach(var i in Equipped)if(i!=null)lck+=i.bLck;
    return new InventoryStats{PlayerMaxHp=(int)((Math.Max(100,300-20*difficultySigned)+(stage-1)*6+str*5+hp+Implicit("_iMaxHP"))*(1+Affix("maxHPPct")+(Implicit("_iMaxHPPct")+Implicit("_iLifeHPPct"))*.01))+(int)lb,PlayerMaxStamina=(int)(100+st)+lb,PlayerMaxMana=(int)(100+intel*2+mp)+lb,PlayerMaxShield=(int)(100+intel*5+shield+Affix("shieldFlat")),PlayerBaseAttack=15+(stage-1)*2,
-    PlayerSpeed=(2.6+dex*.005)*(1+Implicit("_iMovSpd")*.01),PlayerHpRegen=.05+str*.002,PlayerStaminaRegen=.05+dex*.005,PlayerManaRegen=.05+intel*.005,PlayerPhysicalDefense=def+Affix("defFlat")+(int)(lb*.5),PlayerCriticalChance=lck*.025+(n?.critRate??0)+(r1?.critRate??0)+(r2?.critRate??0),PlayerCriticalMultiplier=1.5+lck*.002,AttackSpeedMultiplier=1+dex*.0005+(g?.atkSpd??0)+Implicit("_iAtkSpd")*.01,DamageMultiplier=.7,AccessoryDamageBonus=damage*.01,AccessoryDamageSum=damage,DropBonus=1+lck*.0015+Affix("dropRate"),StrengthFlat=str,Dex=dex,
+    PlayerSpeed=(2.6+dex*.005)*(1+Implicit("_iMovSpd")*.01),PlayerHpRegen=.05+str*.002,PlayerStaminaRegen=.05+dex*.005,PlayerManaRegen=.05+intel*.005,PlayerPhysicalDefense=def+Affix("defFlat")+(int)(lb*.5),PlayerEnergyDefense=energyDef+Affix("eDefFlat")+(int)((grit+Affix("gritFlatN")+Affix("gritFlatR"))*.5),PlayerCriticalChance=lck*.025+(n?.critRate??0)+(r1?.critRate??0)+(r2?.critRate??0),PlayerCriticalMultiplier=1.5+lck*.002,AttackSpeedMultiplier=1+dex*.0005+(g?.atkSpd??0)+Implicit("_iAtkSpd")*.01,DamageMultiplier=.7,AccessoryDamageBonus=damage*.01,AccessoryDamageSum=damage,DropBonus=1+lck*.0015+Affix("dropRate"),StrengthFlat=str,Dex=dex,
     WeaponAttack=w?.atk??0,WeaponSpeed=w?.spd??0,WeaponRange=(w?.wRange??0)+(w?.bonusRange??0)*4,WeaponArc=w?.wArcW??0,AntiRevive=Affix("antiRevive"),ReviveOnce=Affix("reviveOnce"),RevivePow=Affix("revivePow")+Implicit("_iRevPow")*.01,ReviveCd=Affix("reviveCd"),PhysicalDamageReduction=Implicit("_iPhysDR")*.01,ElementResistance=Implicit("_iElemRes")*.01,StatusResistance=Implicit("_iStsRes")*.01};
   }
  }

@@ -137,7 +137,7 @@ namespace Exoduser.UnityPort
             kiView?.Reset();boltView?.Reset();impacts?.Reset();skillView?.Reset();sound?.Reset();
             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;if(settings!=null)config.DifficultyIndex=settings.Options.Get("diff");if(BuildFlavor.Current.DemoMode)config.LevelCap=BuildFlavor.Current.LevelCap;CombatBeginRun(config);
             Simulation=new Simulation(config,SourceStarterFixture.Seed);revive.Reset();Simulation.ReviveTextRaised+=revive.Add;Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;Simulation.LevelledUp+=OnLevelledUp;ReviewArgsApply();ApplySettingsOptions();
-            inventory.Reset();CombatRestoreState();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;death.Hide();deathShown=false;stageClear.Hide();bossBar.Hide();areaTitle.Hide();areaTitleShown=false;skillInputFence=false;Simulation.ApplyEquipment(inventory.State);CombatRestoreResources();
+            inventory.Reset();CombatRestoreState();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;death.Hide();deathShown=false;stageClear.Hide();bossBar.Hide();areaTitle.Hide();areaTitleShown=false;skillInputFence=false;Simulation.ApplyEquipment(inventory.State);CombatRestoreResources();Simulation.EnableCrossbowPet();
             Simulation.IsLootOnScreen=l=>{var p=view.WorldToViewportPoint(NativeRemodel3D.Point2D(l.X,l.Y));return p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1;};   // RM-INT: Core callback, always the 2D logic camera
             // D01: mkItem drops are real; R picks the highest rarity on screen (web 32936) into the bag. Persistent saves stay unimplemented.
             Simulation.TryCollectLoot=CollectLoot;ClearDropViews();
@@ -391,8 +391,8 @@ namespace Exoduser.UnityPort
             Simulation.SetSkillInput(ExoInput.Key(KeyCode.Alpha1),ExoInput.Key(KeyCode.Alpha2),ExoInput.Key(KeyCode.Alpha3),ExoInput.Key(KeyCode.Alpha4),
                 NativeKeyBindInput.Held("bow"),ExoInput.Key(KeyCode.F),ExoInput.Key(KeyCode.LeftControl),ExoInput.Key(KeyCode.Z),bow!=null&&bow==roll);
         }
-        // Web: _xbowEquipped toggle + showPH('석궁 자동발사 ON/OFF'). OPT.xbowAuto persistence belongs to the settings owner and is not wired here.
-        public void ToggleCrossbow(){Toast(Simulation.ToggleCrossbowAuto()?"석궁 자동발사 ON":"석궁 자동발사 OFF");}
+        // 웹 T 토글은 OPT.xbowAuto와 설정 저장에도 즉시 반영한다.
+        public void ToggleCrossbow(){bool enabled=Simulation.ToggleCrossbowAuto();if(settings!=null){settings.Options.Set("xbowAuto",enabled?1:0);QueueSettingsSave();}Toast(enabled?"석궁 자동발사 ON":"석궁 자동발사 OFF");}
         void Toast(string text){notice=text;noticeUntil=Time.unscaledTime+3;}
         void InitGUI()
         {

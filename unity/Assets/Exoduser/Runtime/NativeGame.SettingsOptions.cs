@@ -17,6 +17,7 @@ namespace Exoduser.UnityPort
   {
    if(Simulation==null||settings==null)return;
    Simulation.MinPickRarity=settings.Options.Get("minPickRar");Simulation.MinPickLevelTier=settings.Options.Get("minPickLvTier");
+    if(Simulation.CrossbowAuto!=settings.Options.Check("xbowAuto"))Simulation.ToggleCrossbowAuto();
   }
   // game.html shake(): G.shake = n * OPT.shake / 100.
   float OptionShakeScale{get{return settings==null?1f:settings.Options.Get("shake")/100f;}}

@@ -70,7 +70,7 @@ namespace Exoduser.UnityPort.Core
      if(!e.Alive||w.Hit.Contains(e)||!InShieldWave(w,e.X,e.Y,e.Radius))continue;
      w.Hit.Add(e);ShieldWaveHits++;float a=(float)Math.Atan2(e.Y-w.Y,e.X-w.X);
      ApplyEnemyDamage(e,(int)w.Damage,a,false,1);double kb=30+w.Level*3;e.KnockbackX+=(float)(Math.Cos(w.Angle)*kb);e.KnockbackY+=(float)(Math.Sin(w.Angle)*kb);
-     var web=SyncToWeb(e);if(web.boss){e.Poise=Math.Max(0,e.Poise-30);web.poise=e.Poise;}else{if(!web._groggy){web._groggy=true;web.groggyT=90;web.s="hit";e.State="hit";}}
+     var web=SyncToWeb(e);if(web.boss==true){e.Poise=Math.Max(0,e.Poise-30);web.poise=e.Poise;}else{if(web._groggy!=true){web._groggy=true;web.groggyT=90;web.s="hit";e.State="hit";}}
      HurtShake(6);
     }
     if(Druid!=null&&!Druid.Remodel)foreach(var p in Druid.Projectiles)

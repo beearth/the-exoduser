@@ -78,6 +78,7 @@ namespace Exoduser.UnityPort.Core
             if (hitSfxCd > 0) hitSfxCd--; TickScheduledSounds();   // RM-1 sound cooldowns (web _hitSfxCd / _critSfxCd)
             LastHitDamage = 0;
             if (ComboTicks > 0) { ComboTicks--; if (ComboTicks <= 0) Combo = 0; }
+            TickCrossbowPet();
             TickDeathFrameStart();   // O-1: _sfxFrameReset (_critSfxCd)
             if (Player.Hp <= 0 || Player.State == "dead" || Player.State == "fallen") { TickFallen(); UpdateKiProjectiles(); UpdateBolts(); TickKiTimers(); TickHurtFx(); return; }
             if (!RollActive) Player.Facing = (float)Math.Atan2(aimY - Player.Y, aimX - Player.X);

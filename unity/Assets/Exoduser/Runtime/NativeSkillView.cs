@@ -17,7 +17,11 @@ namespace Exoduser.UnityPort
         readonly List<int> stale = new List<int>();
         // 웹 강타 wave/flash는 Core 점을 중심으로 그린다. 캐릭터용 발끝 lift 대상이 아니다.
         static readonly HashSet<SpriteRenderer> centeredSlamSprites = new HashSet<SpriteRenderer>();
-        public static bool IsCenteredSkillSprite(SpriteRenderer sprite) { return IsCenteredMaliceSprite(sprite) || centeredSlamSprites.Contains(sprite); }
+        static readonly HashSet<SpriteRenderer> centeredSkillSprites = new HashSet<SpriteRenderer>();
+        static readonly HashSet<SpriteRenderer> groundSkillSprites = new HashSet<SpriteRenderer>();
+        public static bool IsCenteredSkillSprite(SpriteRenderer sprite) { return centeredSkillSprites.Contains(sprite) || IsCenteredMaliceSprite(sprite) || centeredSlamSprites.Contains(sprite); }
+        public static bool IsGroundSkillSprite(SpriteRenderer sprite) { return groundSkillSprites.Contains(sprite); }
+        static void ForgetSkillSprites(Item item) { foreach(var sprite in item.go.GetComponentsInChildren<SpriteRenderer>(true)) { centeredSkillSprites.Remove(sprite); groundSkillSprites.Remove(sprite); } }
         static void ForgetCenteredSlamSprites(Item item) { centeredSlamSprites.Remove(item.a); centeredSlamSprites.Remove(item.b); }
         // The web draws fire zones in the world layer, then the dynamic lighting pass (game.html _renderLighting, line 55344) darkens them; Unity has no such overlay. Factor measured web|Unity capture 2026-10-28.
         const float WebLitHolyDome = .11f;
@@ -32,7 +36,7 @@ namespace Exoduser.UnityPort
             this.parent = parent;
             add = new Material(Resources.Load<Shader>("Shaders/SkillAdditive"));
             addFlat = new Material(Resources.Load<Shader>("Shaders/SkillAdditive")); addFlat.SetFloat("_Flat", 1);
-            alpha = new Material(Shader.Find("Sprites/Default"));
+            alpha = new Material(Resources.Load<Shader>("Shaders/SkillAdditive")); alpha.SetFloat("_NormalBlend", 1); alpha.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
             // 현행 웹 GPU 프록시는 globalCompositeOperation을 무시하므로 악의구도 일반 합성이다.
             malice = new Material(Resources.Load<Shader>("Shaders/SkillAdditive")); malice.SetFloat("_NormalBlend", 1);
             malice.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
@@ -92,7 +96,9 @@ namespace Exoduser.UnityPort
         SpriteRenderer NewRenderer(Item item, string name, Sprite sprite, Material material, int order)
         {
             var go = new GameObject(name); go.transform.SetParent(item != null ? item.go.transform : parent, false);
-            var r = go.AddComponent<SpriteRenderer>(); r.sprite = sprite; r.sharedMaterial = material; r.sortingOrder = order; return r;
+            var r = go.AddComponent<SpriteRenderer>(); r.sprite = sprite; r.sharedMaterial = material; r.sortingOrder = order;
+            if(material != malice && name != "wave" && name != "flash") centeredSkillSprites.Add(r);
+            return r;
         }
         Item NewItem(string name) { return new Item { go = new GameObject(name) { transform = { parent = parent } } }; }
         static void Fit(SpriteRenderer r, float px, float srcPx) { r.transform.localScale = Vector3.one * (px / srcPx); }
@@ -102,14 +108,17 @@ namespace Exoduser.UnityPort
             var l = go.AddComponent<LineRenderer>(); l.useWorldSpace = false; l.loop = true; l.positionCount = 72; l.widthMultiplier = .03f; l.sharedMaterial = add;
             l.startColor = l.endColor = color; l.sortingOrder = -18990; return l;
         }
-        static void SetRing(LineRenderer l, float radiusPx, Color c)
+        static void SetRing(LineRenderer l, float radiusPx, Color c, float x, float y)
         {
             l.startColor = l.endColor = c;
-            for (int i = 0; i < 72; i++) { float a = i * Mathf.PI * 2 / 72; l.SetPosition(i, new Vector3(Mathf.Cos(a) * radiusPx / 100, Mathf.Sin(a) * radiusPx / 100, 0)); }
+            for (int i = 0; i < 72; i++) { float a = i * Mathf.PI * 2 / 72; l.SetPosition(i, NativeRemodel3D.Active ? Point(x + Mathf.Cos(a) * radiusPx, y - Mathf.Sin(a) * radiusPx) + Vector3.up * .03f - l.transform.position : new Vector3(Mathf.Cos(a) * radiusPx / 100, Mathf.Sin(a) * radiusPx / 100, 0)); }
         }
 
         public void Update(Simulation sim, float time)
         {
+            // 중심형 효과는 Canvas의 전체 영역을 보존하고, 지면 장판은 XZ면에 놓는다.
+            int depth=NativeRemodel3D.Active?(int)UnityEngine.Rendering.CompareFunction.Always:(int)UnityEngine.Rendering.CompareFunction.LessEqual;
+            add.SetInt("_DepthTest",depth); addFlat.SetInt("_DepthTest",depth); alpha.SetInt("_DepthTest",depth);
             BindMaliceBursts(sim); UpdateMaliceBursts(sim.TickCount); UpdateQeVisuals(sim,time);
             ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0; var p = sim.Player;
             // ---- ground zones ----
@@ -117,22 +126,22 @@ namespace Exoduser.UnityPort
             foreach (var z in sim.FireZones)
             {
                 stale.Remove(z.Id); Item it; if (!zones.TryGetValue(z.Id, out it)) { it = NewItem(z.Type + z.Id); zones[z.Id] = it; BuildZone(it, z); }
-                ActiveZones++; it.go.transform.position = Point(z.X, z.Y);
+                ActiveZones++; it.go.transform.position = Point(z.X, z.Y) + (NativeRemodel3D.Active ? Vector3.up * .025f : Vector3.zero);
                 float fade = Mathf.Clamp01((z.MaxT - z.T) / 30f), deploy = Mathf.Min(1f, z.T / (z.Type == "holyDome" ? 15f : 12f));
                 if (z.Type == "spikeTrap")
                 {
-                    it.a.transform.localRotation = Quaternion.Euler(0, 0, -time * 1000f * 0.00005f * Mathf.Rad2Deg);
+                    it.a.transform.localRotation = (NativeRemodel3D.Active ? Quaternion.Euler(90, 0, 0) : Quaternion.identity) * Quaternion.Euler(0, 0, -time * 1000f * 0.00005f * Mathf.Rad2Deg);
                     Fit(it.a, z.R * 2 * deploy, spike.rect.width); it.a.color = new Color(1, 1, 1, (.43f + .04f * Mathf.Sin(time * 1000f * .003f)) * fade);
                 }
                 else
                 {
                     float t = time; float sz = z.R * 2 * deploy;
-                    it.a.transform.localRotation = Quaternion.Euler(0, 0, time * 1000f * 0.00005f * Mathf.Rad2Deg);
+                    it.a.transform.localRotation = (NativeRemodel3D.Active ? Quaternion.Euler(90, 0, 0) : Quaternion.identity) * Quaternion.Euler(0, 0, time * 1000f * 0.00005f * Mathf.Rad2Deg);
                     Fit(it.a, sz * 1.02f, dome.rect.width); it.a.color = new Color(182 / 255f, 1f, 84 / 255f, (.52f + .12f * Mathf.Sin(t * 3)) * fade * WebLitHolyDome);
                     for (int ri = 0; ri < 2; ri++)
                     {
                         float rp = (Mathf.Sin(t * (2.1f + ri * .35f) + ri * 2.4f) + 1) * .5f;
-                        SetRing(it.rings[ri], z.R * (.62f + ri * .19f + rp * .09f) * deploy, new Color(213 / 255f, 1f, 114 / 255f, (.64f + rp * .18f) * fade * WebLitHolyDomeRing));
+                        SetRing(it.rings[ri], z.R * (.62f + ri * .19f + rp * .09f) * deploy, new Color(213 / 255f, 1f, 114 / 255f, (.64f + rp * .18f) * fade * WebLitHolyDomeRing), z.X, z.Y);
                     }
                 }
             }
@@ -197,25 +206,42 @@ namespace Exoduser.UnityPort
         }
         void BuildZone(Item it, FireZone z)
         {
-            if (z.Type == "spikeTrap") { it.a = NewRenderer(it, "thorn", spike, add, -19000); return; }
+            if (z.Type == "spikeTrap") { it.a = NewRenderer(it, "thorn", spike, add, -19000); groundSkillSprites.Add(it.a); return; }
             it.a = NewRenderer(it, "dome", dome, addFlat, -19000);
+            groundSkillSprites.Add(it.a);
             it.rings = new[] { NewRing(it, Color.white), NewRing(it, Color.white) };
+        }
+        // 명시적 Player 검수에서 실제 billboard 적용 뒤 중심·지면·깊이를 읽는다.
+        public void AuditPresentation(Simulation sim, out float centerError, out float groundTiltError, out int depthFailures, out int checkedSprites)
+        {
+            float center=0,tilt=0;int depth=0,count=0;
+            Action<SpriteRenderer,Vector3,bool> sample=(renderer,expected,ground)=>{
+                if(renderer==null||!renderer.enabled||!renderer.gameObject.activeInHierarchy)return;
+                count++;center=Mathf.Max(center,Vector3.Distance(renderer.transform.position,expected));
+                if(ground)tilt=Mathf.Max(tilt,1-Mathf.Abs(Vector3.Dot(renderer.transform.forward,Vector3.up)));
+                if(renderer.sharedMaterial.GetInt("_DepthTest")!=(int)UnityEngine.Rendering.CompareFunction.Always)depth++;
+            };
+            foreach(var z in sim.FireZones)if(zones.TryGetValue(z.Id,out var zone))sample(zone.a,Point(z.X,z.Y)+Vector3.up*.025f,true);
+            foreach(var w in sim.SlamWaves)if(waves.TryGetValue(w.Id,out var wave)){sample(wave.a,Point(w.X,w.Y),false);sample(wave.b,Point(w.X,w.Y),false);}
+            foreach(var b in sim.SkillBlades)if(b.Active&&blades.TryGetValue(b.Id,out var blade))sample(blade.a,Point(b.X,b.Y),false);
+            if(sim.IceOrbActive&&orb!=null){var expected=Point(sim.IceOrbX,sim.IceOrbY);sample(orb.a,expected,false);sample(orb.b,expected,false);sample(glow0,expected,false);sample(glow1,expected,false);}
+            centerError=center;groundTiltError=tilt;depthFailures=depth;checkedSprites=count;
         }
         void Drop(Dictionary<int, Item> map, List<int> ids)
         {
-            foreach (int id in ids) { ForgetMaliceSprites(map[id]); ForgetCenteredSlamSprites(map[id]); UnityEngine.Object.Destroy(map[id].go); map.Remove(id); }
+            foreach (int id in ids) { ForgetMaliceSprites(map[id]); ForgetCenteredSlamSprites(map[id]); ForgetSkillSprites(map[id]); UnityEngine.Object.Destroy(map[id].go); map.Remove(id); }
         }
 
         public void Reset()
         {
             ResetMaliceBursts(); ResetQeVisuals();
-            foreach (var m in new[] { zones, waves, blades, orbs }) { foreach (var it in m.Values) { ForgetMaliceSprites(it); ForgetCenteredSlamSprites(it); UnityEngine.Object.Destroy(it.go); } m.Clear(); }
+            foreach (var m in new[] { zones, waves, blades, orbs }) { foreach (var it in m.Values) { ForgetMaliceSprites(it); ForgetCenteredSlamSprites(it); ForgetSkillSprites(it); UnityEngine.Object.Destroy(it.go); } m.Clear(); }
             if (orb != null) orb.go.SetActive(false);
             orbTrails.Clear(); ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0;
         }
         public void Dispose()
         {
-            Reset(); DisposeMaliceVisuals(); DisposeQeVisuals(); if (orb != null) UnityEngine.Object.Destroy(orb.go);
+            Reset(); DisposeMaliceVisuals(); DisposeQeVisuals(); if (orb != null) { ForgetSkillSprites(orb); UnityEngine.Object.Destroy(orb.go); }
             UnityEngine.Object.Destroy(add); UnityEngine.Object.Destroy(addFlat); UnityEngine.Object.Destroy(alpha); UnityEngine.Object.Destroy(malice);
         }
     }

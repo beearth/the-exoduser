@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort.Core {
  [Serializable] public sealed class InventorySeedData { public InventoryItem[] equipped,bag; }
  [Serializable] public sealed class InventoryStats {
   public int PlayerMaxHp,PlayerBaseAttack;
-  public double PlayerMaxStamina,PlayerMaxMana,PlayerMaxShield,PlayerSpeed,PlayerHpRegen,PlayerStaminaRegen,PlayerManaRegen,PlayerPhysicalDefense,PlayerCriticalChance,PlayerCriticalMultiplier,AttackSpeedMultiplier,DamageMultiplier,AccessoryDamageBonus,AccessoryDamageSum,DropBonus,StrengthFlat,WeaponAttack,WeaponSpeed,WeaponRange,WeaponArc;
+  public double PlayerMaxStamina,PlayerMaxMana,PlayerMaxShield,PlayerSpeed,PlayerHpRegen,PlayerStaminaRegen,PlayerManaRegen,PlayerPhysicalDefense,PlayerEnergyDefense,PlayerCriticalChance,PlayerCriticalMultiplier,AttackSpeedMultiplier,DamageMultiplier,AccessoryDamageBonus,AccessoryDamageSum,DropBonus,StrengthFlat,WeaponAttack,WeaponSpeed,WeaponRange,WeaponArc;
   // Kept separate from DEF, as in the source; parent combat adapter may admit these separately.
   public double PhysicalDamageReduction,ElementResistance,StatusResistance;
   // B08: web _eqAffix(antiRevive / reviveOnce / revivePow + _iRevPow*.01 / reviveCd) feed the revive rules and the stat panel rows.

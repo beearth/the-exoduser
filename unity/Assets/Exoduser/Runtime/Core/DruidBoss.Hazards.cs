@@ -7,7 +7,7 @@ namespace Exoduser.UnityPort.Core
     public sealed class ProjSpec
     {
         public double X, Y, Vx, Vy, Dmg, Life, Ml, Sz = 1, R = 4;
-        public int El;
+        public int El; public bool ElementAbsent;
         public string Col = "", ParryClass = "";
         public bool RedBean, BlackBean, Homing, Mine, ElemBall, DruidStraight, DruidParryVolley, Commit, FireMagic, MissileTrail, Typed, Web;
     }
@@ -15,7 +15,7 @@ namespace Exoduser.UnityPort.Core
     public sealed class BossProjectile
     {
         public double X, Y, Vx, Vy, Dmg, Life, Ml, Sz = 1, R = 4, Dist;
-        public int El;
+        public int El; public bool ElementAbsent;
         public string Col = "", ParryClass = "";
         public bool RedBean, BlackBean, Homing, Mine, ElemBall, DruidStraight, DruidPoison, DruidParryVolley, Commit, FireMagic, MissileTrail, Typed, Web, Active = true;
         // parry reflection (ParryReflect.cs): a reflected bullet is friendly and flies back as a blue bean
@@ -51,6 +51,7 @@ namespace Exoduser.UnityPort.Core
         public double VolleyT, OrbT; public int VolleyN;   // G._druidParryT / _druidOrbT / _druidParryVolley
         public bool ProjectileFlight = true;       // false: oracle (the web projectile loop is not extracted, spawn parameters only)
         public Action<BossProjectile> OnSpawn;
+        public Action<int, bool, double, double> ProjectilePlayerHurt;
         public Func<int, double> ElementMul;       // elMul(p.el, ar().el): null = 1 (the oracle and the boss arena)
 
         public const double ESpeedPhysMin = 300.0 / 60, ESpeedPhysMax = 300.0 / 60, ESpeedMagicMin = 500.0 / 60, ESpeedMagicMax = 600.0 / 60;
@@ -84,7 +85,7 @@ namespace Exoduser.UnityPort.Core
         // spawnProj(props) for an enemy bullet; `viaBoss` = _spawnBossProjectile wrapper (druid poison + straight flags)
         public BossProjectile SpawnProjectile(EnemyState e, DruidData d, ProjSpec s, bool viaBoss)
         {
-            var p = new BossProjectile { X = s.X, Y = s.Y, Vx = s.Vx, Vy = s.Vy, Dmg = s.Dmg, Life = s.Life, Ml = s.Ml, Sz = s.Sz, R = s.R, El = s.El, Col = s.Col, ParryClass = s.ParryClass,
+            var p = new BossProjectile { X = s.X, Y = s.Y, Vx = s.Vx, Vy = s.Vy, Dmg = s.Dmg, ElementAbsent = s.ElementAbsent, Life = s.Life, Ml = s.Ml, Sz = s.Sz, R = s.R, El = s.El, Col = s.Col, ParryClass = s.ParryClass,
                 RedBean = s.RedBean, BlackBean = s.BlackBean, Homing = s.Homing, Mine = s.Mine, ElemBall = s.ElemBall, DruidStraight = s.DruidStraight, DruidParryVolley = s.DruidParryVolley,
                 Commit = s.Commit, FireMagic = s.FireMagic, MissileTrail = s.MissileTrail, Typed = s.Typed, Web = s.Web };
             if (viaBoss) { p.DruidPoison = e != null && e.IsBoss && DruidStage; p.DruidStraight = p.DruidStraight && e != null && e.IsBoss && DruidStage; }
@@ -94,7 +95,7 @@ namespace Exoduser.UnityPort.Core
             bool moving = p.Vx * p.Vx + p.Vy * p.Vy > 0;
             bool speedBand = moving && !p.Mine && !p.ElemBall && !p.Web;   // the other exclusions (trap, bomb, swordWave ...) are flags this boss never sets
             if (speedBand && ClassOf(p) == "magic") p.Homing = true;
-            if (moving && p.El == EL_P && p.ParryClass == "physical" && !p.BlackBean && !p.FireMagic && !p.Mine && !p.ElemBall && !p.Web)
+            if (moving && !p.ElementAbsent && p.El == EL_P && p.ParryClass == "physical" && !p.BlackBean && !p.FireMagic && !p.Mine && !p.ElemBall && !p.Web)
             {
                 p.Homing = !p.DruidStraight;
                 if (!p.RedBean) { p.Vx *= 1.3; p.Vy *= 1.3; p.RedBean = true; }
@@ -208,7 +209,11 @@ namespace Exoduser.UnityPort.Core
                 if (pd < hitR && (host.ParryWindowOpen() || host.PIframes <= 0))
                 {
                     if (p.Web) { host.PlayerPoison(0, 90); RmText(px, py - 20, "🕸둔화!", "#aaaaaa", 30); }   // spider web: 1.5 s slow, no damage
-                    else host.HurtPlayer(I((p.Dmg != 0 ? p.Dmg : 10) * (ElementMul != null ? ElementMul(p.El) : 1)), true);
+                    else {
+                        int amount=I((p.Dmg!=0?p.Dmg:10)*(ElementMul!=null?ElementMul(p.El):1));
+                        if(ProjectilePlayerHurt==null)host.HurtPlayer(amount,true);
+                        else {double kx=p.Vx,ky=p.Vy,km=Math.Sqrt(kx*kx+ky*ky);if(km<=.001){kx=px-p.X;ky=py-p.Y;km=Math.Sqrt(kx*kx+ky*ky);}if(km<=.001){kx=0;ky=2;}else{kx=kx/km*2;ky=ky/km*2;}ProjectilePlayerHurt(amount,true,kx,ky);}
+                    }
                     p.Active = false; continue;
                 }
                 Projectiles[w++] = p;

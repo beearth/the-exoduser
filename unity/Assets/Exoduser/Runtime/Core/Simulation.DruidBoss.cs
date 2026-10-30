@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort.Core
         public void AttachDruidBoss()
         {
             if (Druid != null) return;
-            Druid = new DruidBoss(new BossHostAdapter(this)) { ElementMul = el => EnemyHurt.ElMul(el, ArmorElement()) };
+            Druid = new DruidBoss(new BossHostAdapter(this)) { ElementMul = el => EnemyHurt.ElMul(el, ArmorElement()), ProjectilePlayerHurt = (damage,magic,x,y) => HurtPlayer(damage,new HurtOptions{Magic=magic,HasKnockback=true,KnockbackX=(float)x,KnockbackY=(float)y}) };
             Stage.BossSpawners[0] = SpawnDruid; Stage.BossSpawners[3] = SpawnDruid;
             RegisterRemodelSpawners();   // RM-B0: other stages with a registered remodel set, only while its flag is on
             BossTick = DruidBossTick;

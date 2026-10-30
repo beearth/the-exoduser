@@ -136,9 +136,10 @@ namespace Exoduser.UnityPort.Core
 
         private void FireCrossbow(EnemyState target)
         {
-            double ox = Player.X, oy = Player.Y;
+            double ox = CrossbowPetEnabled ? CrossbowPetX : Player.X, oy = CrossbowPetEnabled ? CrossbowPetY : Player.Y;
             double ang = Math.Atan2(target.Y - oy, target.X - ox);
             double range, speed; AutoBowSpec(out range, out speed);
+            if(CrossbowPetEnabled)CrossbowPetAngle=ang;
             int damage = AutoCrossbowDamage();
             NewBolt(ox, oy, ang, range, speed, damage);
             if (Crossbow.LegendaryBowCrit && NextRandom() * 100 < Config.PlayerCriticalChance)
@@ -153,11 +154,12 @@ namespace Exoduser.UnityPort.Core
                 CrossbowTimer += 1;
                 CrossbowTarget = null;
                 double range, speed; AutoBowSpec(out range, out speed);
+                double ox=CrossbowPetEnabled?CrossbowPetX:Player.X,oy=CrossbowPetEnabled?CrossbowPetY:Player.Y;
                 double near = range;
-                foreach (var e in ShQuery(Player.X, Player.Y, range))
+                foreach (var e in ShQuery(ox, oy, range))
                 {
                     if (!e.Alive) continue;
-                    double dx = e.X - Player.X, dy = e.Y - Player.Y, d = Math.Sqrt(dx * dx + dy * dy);
+                    double dx = e.X - ox, dy = e.Y - oy, d = Math.Sqrt(dx * dx + dy * dy);
                     if (d < near) { near = d; CrossbowTarget = e; }
                 }
                 double spdMul = (Crossbow.BowSpd != 0 ? Crossbow.BowSpd : 1) * XbowSpdMul;

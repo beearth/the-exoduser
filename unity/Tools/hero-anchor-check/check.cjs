@@ -6,7 +6,7 @@ const creation=skill.match(/if \(!waves\.TryGetValue\(w\.Id, out it\)\) \{([^\n]
 const lift=remodel.match(/float below = ([^;]+);/)?.[1];if(!creation||!lift)throw Error('실제 생성문/lift 식 추출 불가');
 const set=()=>{const s=new Set();return {Add:x=>s.add(x),Contains:x=>s.has(x),Remove:x=>s.delete(x),get Count(){return s.size}}};
 const sr=()=>({sprite:{pivot:{y:256},pixelsPerUnit:100},transform:{lossyScale:{y:648/512}},heroLift:.18});
-const context={waves:{},w:{Id:1},it:null,slamFrames:[{}],disc:{},addFlat:{},add:{},alpha:{},centeredMaliceSprites:set(),centeredSlamSprites:set(),NewItem:()=>({}),NewRenderer:()=>sr(),KiSlashView:{IsCenteredSprite:()=>false},NativeRemodelCamera:{HeroFootLift:s=>s.heroLift},Mathf:{Abs:Math.abs}};
+const context={waves:{},w:{Id:1},it:null,slamFrames:[{}],disc:{},addFlat:{},add:{},alpha:{},centeredSkillSprites:set(),centeredMaliceSprites:set(),centeredSlamSprites:set(),NewItem:()=>({}),NewRenderer:()=>sr(),KiSlashView:{IsCenteredSprite:()=>false},NativeBoltView:{IsCenteredSprite:()=>false},NativeRemodelCamera:{HeroFootLift:s=>s.heroLift},Mathf:{Abs:Math.abs}};
 context.NativeSkillView={IsCenteredMaliceSprite:x=>context.centeredMaliceSprites.Contains(x)};
 const classify=skill.match(/public static bool IsCenteredSkillSprite\(SpriteRenderer sprite\)\s*\{([^}]+)\}/)?.[1];
 vm.createContext(context);if(classify){vm.runInContext('function IsCenteredMaliceSprite(sprite){return centeredMaliceSprites.Contains(sprite)};function classify(sprite){'+classify+'}',context);context.NativeSkillView.IsCenteredSkillSprite=x=>context.classify(x);}

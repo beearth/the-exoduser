@@ -112,8 +112,8 @@ namespace Exoduser.UnityPort.Core
             else if (fb == "dark") { s = new ProjSpec { X = e.x, Y = e.y, Vx = vx * 3.3, Vy = vy * 3.3, Dmg = Js.Int(e.atk * 1), El = 3, Life = pLife, Ml = pLife, Col = "#a44cff", Sz = 1.6, Commit = true }; parts = () => h.Parts(e.x, e.y, "#a44cff", 3); }
             else if (fb == "fire") { s = new ProjSpec { X = e.x, Y = e.y, Vx = vx * 3.2, Vy = vy * 3.2, Dmg = Js.Int(e.atk * 1.2), El = 1, Life = pLife, Ml = pLife, Col = "#ff2e22", Sz = 1.6, FireMagic = true, Commit = true }; parts = () => h.Parts(e.x, e.y, "#ff2e22", 3); }
             else if (fb == "water") { s = new ProjSpec { X = e.x, Y = e.y, Vx = vx * 3.2, Vy = vy * 3.2, Dmg = Js.Int(e.atk * 1.2), El = 2, Life = pLife, Ml = pLife, Col = "#317cec", Sz = 1.6, Commit = true }; parts = () => h.Parts(e.x, e.y, "#317cec", 3); }
-            else if (fb == "special") { s = new ProjSpec { X = e.x, Y = e.y, Vx = vx * 3, Vy = vy * 3, Dmg = Js.Int(e.atk * 1), El = (int)(e.el ?? 0), Life = pLife, Ml = pLife, Col = elc, Sz = 2.5, Commit = true }; parts = () => h.Parts(e.x, e.y, e.col, 3); }
-            else { s = new ProjSpec { X = e.x, Y = e.y, Vx = vx * 3, Vy = vy * 3, Dmg = Js.Int(e.atk * .8), El = (int)(e.el ?? 0), Life = pLife, Ml = pLife, Col = elc, Sz = 1.5, Commit = true }; parts = () => h.Parts(e.x, e.y, e.col, 2); }
+            else if (fb == "special") { s = new ProjSpec { X = e.x, Y = e.y, Vx = vx * 3, Vy = vy * 3, Dmg = Js.Int(e.atk * 1), El = (int)(e.el ?? 0), ElementAbsent = !e.el.HasValue, Life = pLife, Ml = pLife, Col = elc, Sz = 2.5, Commit = true }; parts = () => h.Parts(e.x, e.y, e.col, 3); }
+            else { s = new ProjSpec { X = e.x, Y = e.y, Vx = vx * 3, Vy = vy * 3, Dmg = Js.Int(e.atk * .8), El = (int)(e.el ?? 0), ElementAbsent = !e.el.HasValue, Life = pLife, Ml = pLife, Col = elc, Sz = 1.5, Commit = true }; parts = () => h.Parts(e.x, e.y, e.col, 2); }
             h.Proj(e, s); parts();
             e._projChargeT = 0; e._projChargeCol = null; e._projChargeBean = null; e._projChargeParryClass = null;   // _cancelProjCharge
         }
@@ -688,7 +688,7 @@ namespace Exoduser.UnityPort.Core
                     {
                         double mAng = JsMath.Atan2(py - e.y, px - e.x), mx, my; Mouth(e, mAng, out mx, out my);
                         double mSpd = e.ib ? 5 : 4, mLife = e.ib ? 80 : 60, mSz = e.ib ? 2.5 : 2.0;
-                        h.Shot(e, new ProjSpec { X = mx, Y = my, Vx = JsMath.Cos(mAng) * mSpd, Vy = JsMath.Sin(mAng) * mSpd, Dmg = Js.Int(e.atk * 1.0), El = (int)(e.el ?? 0), Life = mLife, Ml = mLife, Col = ElColor(e.el) ?? e.col, Sz = mSz });
+                        h.Shot(e, new ProjSpec { X = mx, Y = my, Vx = JsMath.Cos(mAng) * mSpd, Vy = JsMath.Sin(mAng) * mSpd, Dmg = Js.Int(e.atk * 1.0), El = (int)(e.el ?? 0), ElementAbsent = !e.el.HasValue, Life = mLife, Ml = mLife, Col = ElColor(e.el) ?? e.col, Sz = mSz });
                         h.Parts(e.x, e.y, !string.IsNullOrEmpty(e.col) ? e.col : "#ffaa00", 3);
                     }
                     if (e.st2 <= 0) { e.s = "recover"; e.st2 = 35; }
