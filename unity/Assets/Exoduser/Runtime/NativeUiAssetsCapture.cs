@@ -132,6 +132,8 @@ namespace Exoduser.UnityPort
             lobby.SelectCharacter(0);
             yield return new WaitForSecondsRealtime(1);
             yield return Shot("Unity_선택로비_1920");
+            // 종료를 실행하지 않고 기존 확인 모달의 KO/EN 실제 렌더만 기록한다.
+            var quitField=typeof(NativeLobby).GetField("lobbyQuitPrompt",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);quitField.SetValue(lobby,true);yield return Shot("Unity_로비종료확인_ko_1920");lobby.SetLanguage("en");yield return Shot("Unity_로비종료확인_en_1920");lobby.SetLanguage("ko");quitField.SetValue(lobby,false);
             lobby.AutomatedInput=false;
             Check(lobby.BeginCharacterEntry(false),"실제 신규 입장 API");
             Check(lobby.StartupCaptureState.Page==FrontendEntryPage.Loading,"실제 입장 로딩 상태");yield return Shot("Unity_로딩_1920");

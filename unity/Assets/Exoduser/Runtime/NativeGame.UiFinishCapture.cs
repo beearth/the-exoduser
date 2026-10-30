@@ -74,12 +74,19 @@ namespace Exoduser.UnityPort
   IEnumerator UiFinishPause(string output,string tag,System.Collections.Generic.List<string> log)
   {
    menu=false;Running=true;pauseMenu.Reset();yield return new WaitForSecondsRealtime(1f);
-   // web ESC: settings window opens directly and the game is frozen.
-   menu=true;pauseMenu.OpenSettingsDirect();Running=false;int tick=Simulation.TickCount;yield return new WaitForSecondsRealtime(.6f);
-   log.Add("esc -> settings direct="+(pauseMenu.SettingsOpen&&pauseMenu.Navigation.DirectSettings)+" frozen="+(Simulation.TickCount==tick));
+   // 기존 보조 메뉴도 같은 판을 쓰는지 확인한다. 정상 ESC 진입은 아래 실제 설정 직행 경로다.
+   menu=true;Running=false;pauseMenu.Reset();pauseMenu.Navigation.ObserveReleased(false);int tick=Simulation.TickCount;
+   yield return UiCapture(output,"Unity_일시정지_보조메뉴_"+tag);
+   pauseMenu.Navigation.PointAt(3);ApplyPauseCommand(pauseMenu.HandleKey(PauseKey.Accept,false,false));pauseMenu.Navigation.ObserveReleased(false);
+   bool quitOpen=pauseMenu.Navigation.Page==PausePage.Quit;if(!quitOpen)uiArtFailures++;log.Add((quitOpen?"PASS ":"FAIL ")+"보조메뉴 종료 확인 진입 "+tag);
+   yield return UiCapture(output,"Unity_일시정지_종료확인_"+tag);
+   ApplyPauseCommand(pauseMenu.HandleKey(PauseKey.Back,false,false));pauseMenu.Navigation.ObserveReleased(false);
+   bool back=pauseMenu.Navigation.Page==PausePage.Main;if(!back)uiArtFailures++;log.Add((back?"PASS ":"FAIL ")+"종료 취소 뒤 보조메뉴 복귀 "+tag);
+   pauseMenu.OpenSettingsDirect();pauseMenu.Navigation.ObserveReleased(false);Running=false;yield return new WaitForSecondsRealtime(.6f);
+   bool direct=pauseMenu.SettingsOpen&&pauseMenu.Navigation.DirectSettings&&Simulation.TickCount==tick;if(!direct)uiArtFailures++;log.Add((direct?"PASS ":"FAIL ")+"ESC 설정 직행·틱 정지 "+tag);
    yield return UiCapture(output,"unity-pause-open-"+tag);
    pauseMenu.Navigation.ObserveReleased(false);ApplyPauseCommand(pauseMenu.HandleKey(PauseKey.Back,false,false));
-   log.Add("esc again -> menu="+menu+" running="+Running);
+   bool resumed=!menu&&Running;if(!resumed)uiArtFailures++;log.Add((resumed?"PASS ":"FAIL ")+"두 번째 ESC 게임 재개 "+tag);
   }
   IEnumerator UiFinishArt(string output,string tag,System.Collections.Generic.List<string> log)
   {

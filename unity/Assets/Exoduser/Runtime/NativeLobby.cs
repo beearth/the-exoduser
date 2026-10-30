@@ -191,8 +191,23 @@ namespace Exoduser.UnityPort
    GUI.enabled=previousEnabled&&!patchNotesOpen;
    DrawCharacterModal();
    if(lobbyQuitPrompt&&DismissOutside(new Rect(710,427,500,226)))lobbyQuitPrompt=false;
-   if(lobbyQuitPrompt){Fill(new Rect(0,0,1920,1080),new Color(0,0,0,.75f));Fill(new Rect(710,427,500,226),new Color(.063f,.051f,.055f));Border(new Rect(710,427,500,226),new Color(.4f,.32f,.24f),1);Label(new Rect(740,457,440,60),K("게임을 종료하시겠습니까?","Quit the game?"),normal,TextAnchor.MiddleCenter);if(GUI.Button(new Rect(755,552,180,48),K("취소","Cancel"),button))lobbyQuitPrompt=false;if(GUI.Button(new Rect(985,552,180,48),K("종료","Quit"),button))Application.Quit();}
+   if(lobbyQuitPrompt)DrawLobbyQuitPrompt();
    GUI.enabled=priorEnabled;DrawPatchNotesPanel();
+  }
+  void DrawLobbyQuitPrompt()
+  {
+   Fill(new Rect(0,0,1920,1080),new Color(0,0,0,.75f));NativeSilverHellUi.Panel(new Rect(710,427,500,226),28,8);
+   var heading=new GUIStyle(normal){font=NativeSilverHellUi.Font()??normal.font,fontSize=24,fontStyle=FontStyle.Normal,wordWrap=true};heading.normal.textColor=NativeSilverHellUi.Bright;
+   Label(new Rect(740,457,440,60),K("게임을 종료하시겠습니까?","Quit the game?"),heading,TextAnchor.MiddleCenter);
+   if(LobbyQuitButton(new Rect(755,552,180,48),K("취소","Cancel"),false))lobbyQuitPrompt=false;
+   if(LobbyQuitButton(new Rect(985,548,200,56),K("종료","Quit"),true))Application.Quit();
+  }
+  bool LobbyQuitButton(Rect r,string text,bool primary)
+  {
+   bool hover=r.Contains(Event.current.mousePosition),pressed=!AutomatedInput&&hover&&ExoInput.Mouse(0);
+   if(hover&&!pressed)NativeSilverHellUi.ButtonFocus(r);NativeSilverHellUi.ActionPlate(r,primary,hover?1:0,pressed,28,6);
+   var label=new GUIStyle(normal){font=NativeSilverHellUi.Font()??normal.font,fontSize=18,fontStyle=FontStyle.Normal};label.normal.textColor=NativeSilverHellUi.Bright;Label(r,text,label,TextAnchor.MiddleCenter);
+   return GUI.Button(r,GUIContent.none,GUIStyle.none);
   }
   string LobbyLanguageLabel(string code)
   {
