@@ -271,3 +271,31 @@ blender-env-brief의 독립 제작 범위: 전용 브랜치 codex/pc-blender-env
 | 한계 | 모듈 정적 검수와 실게임 PASS 분리. 조립 시연 RETOUCH, 실제8카메라/탄/충돌/성능/M1 미검증. UI 완료 뒤 키샷 담당 인수. 현재 runtime에 자동 연결하지 않음 |
 
 세부 ID·삼각형·맵·원본·실패/수정·MAP PRODUCTION REPORT는 위 REPORT와 source/모듈명세.json. 레시피는 tools/blender-env, 실체는 I: code-checkpoint(junction/SHA검증). 같은 퇴화면 실패를 구 영수증으로 오인한 절차 오류는 보존하고, 최종은 실제 면 수정 뒤 최신 SHA 11개 재수입만 근거로 쓴다. Steam 합격·unity/main 반영·PC/Mac 동기화로 확대하지 않는다.
+
+## 2026-10-30 최신 콘셉트 — 썩은 숲·독액 강가·다리 독립 키트
+
+새 브리프11시 및 keyframe_A2를 읽고 독립 Assets11종을 추가 제작했다. 이전 키트202파일은 SHA 변경0. 인수는 I:/EXODUSER-Storage/demo-art/blender-env/forest-r1/delivery/Assets/Exoduser/Art/Environment/CH1_1_RottenForest, 상세는 같은 폴더 상위 REPORT.md·최종-인계영수증.json. Unity/Player 실행0·게임 반영0·원본 맵/세이브/UI 작성 변경0. 이 브랜치의 상속 키샷 Runtime을 병합하라는 요청이 아니다.
+
+| ID | 삼각형 | 맵 규격 |
+|---|---:|---:|
+| RF_Ancient_Rotten_Tree | 21479 | 4096² |
+| RF_Fallen_Log | 9762 | 2048² |
+| RF_Withered_Shrub | 2814 | 1024² |
+| RF_Rotten_Wood_Bridge | 7540 | 2048² |
+| RF_Hanging_Moss | 3946 | 1024² |
+| RF_Riverbed | 1232 | 1024² |
+| RF_Broken_Stone_Bridge | 6378 | 2048² |
+| RF_Fungal_Colony | 2832 | 1024² |
+| RF_Corroded_Riverbank | 1666 | 2048² |
+| RF_Foam_Bank | 3228 | 1024² |
+| RF_Forest_Vista_Card | 2 | 2048×1024 |
+
+총60879tri, FBX11/재질11/PNG77/고정GUID 메타 포함202파일. BaseColor/Normal/AO/Curvature/Roughness/Metallic/MetallicSmoothness, R=metallic/A=1−roughness. 거목은 CC0 실물 목질+비대칭 큰 가지, 원본UV/새UV 분리4096·로우 MikkT 노멀 기저. 나머지9개3D는 공통UV 하이 베이크, 후경 카드는22×11m/2tri·2048×1024 RGBA 및6상수맵. 물/독액 수면·Collider·Animator는 만들지 않았다.
+
+URP/Lit GUID933532a4fcc9baf4fa0491de14d08ed7, BumpScale.7/OcclusionStrength.6, BaseColor sRGB·나머지linear, mipmap/Trilinear/aniso8. 유기물 roughness≥217/255, 이끼·덤불≥232/255. 카드만 투명 양면·ZWrite0·ShadowCaster 비활성. 실제 Unity 임포터 수용 여부는 미검증.
+
+Blender 원본2개의 packed 데이터/현재 PNG byte 일치도 확인했다(packed-검사.json). 최신11FBX SHA 재수입·축/크기<.003m·퇴화면/고립정점/UV 오류0, 강바닥 양끝13쌍<.00001m, GUID103 중복/유실0. 같은52°·같은광원 정면/측면22장·노레위 비교11장·1x4장·A2조립 비교 직접 확인.5종 메시+7맵40파일 byte 불변으로 같은 입력 렌더를 재사용했다.
+
+VISUAL VERDICT: RETOUCH — 독립 조립 시연, 실제 게임 미검증. 회색 강바닥·짧은 단일 아치·외곽 반복·경계가 남아 A2 장면과 차이가 크다. 게임용 아트/Steam PASS로 올리지 않는다. UI 이후 기존 키샷 담당이 별도 인수하여 수면·조명·다리 접근/연속 구성·후경 알파·실제1080p/1x·전투·같은 후보M1을 검수한다.
+
+첫 UV edit-mode native crash, 잘못 추출한 재작업 루프의6종 High 누락,139성분 고립 투영 폐기는 REPORT/source 실패보존에 남겼다. 최종은 누락 수정·새 기하/UV·합성 거목 뒤의 최신 영수증만 근거로 사용한다. 레시피 forest_*는 tools/blender-env, 실체는 I: code-checkpoint. 바이너리/렌더는 I: 보관이며 GitHub 업로드·unity/main 통합·PC/Mac 동기화가 아니다.
