@@ -160,7 +160,7 @@ namespace Exoduser.UnityPort
                 var ground=p;ground.y=NativeRemodel3D.GroundY(p.x,p.z);var top=ground+new Vector3(-4,13,4.5f);
                 var side=Vector3.Cross((top-ground).normalized,new Vector3(0,Mathf.Sin(NativeRemodel3D.Pitch),-Mathf.Cos(NativeRemodel3D.Pitch))).normalized;
                 var mesh=new Mesh{name="수관 사이 빛기둥"};mesh.vertices=new[]{top-side*.35f,top+side*.35f,ground-side*1.2f,ground+side*1.2f};mesh.uv=new[]{new Vector2(0,0),new Vector2(1,0),new Vector2(0,1),new Vector2(1,1)};mesh.triangles=new[]{0,2,1,1,2,3};mesh.RecalculateBounds();
-                var shaft=new GameObject("A2 국소 달빛기둥");shaft.transform.SetParent(a2Root.transform,false);shaft.AddComponent<MeshFilter>().sharedMesh=mesh;var renderer=shaft.AddComponent<MeshRenderer>();renderer.sharedMaterial=new Material(shader);renderer.sharedMaterial.SetColor("_Color",new Color(2,2.5f,3,.18f));renderer.shadowCastingMode=ShadowCastingMode.Off;
+                var shaft=new GameObject("A2 국소 달빛기둥");shaft.transform.SetParent(a2Root.transform,false);shaft.AddComponent<MeshFilter>().sharedMesh=mesh;var renderer=shaft.AddComponent<MeshRenderer>();renderer.sharedMaterial=new Material(shader);renderer.sharedMaterial.SetColor("_Color",new Color(1.4f,1.6f,1.8f,.045f));renderer.shadowCastingMode=ShadowCastingMode.Off;
             }
             var target=new Vector3(39.5f,NativeRemodel3D.GroundY(39.5f,-72.8f),-72.8f);
             var moon=new GameObject("A2 수관 달빛 국소광");moon.transform.SetParent(a2Root.transform,false);moon.transform.position=target+new Vector3(-4,13,4.5f);moon.transform.LookAt(target);

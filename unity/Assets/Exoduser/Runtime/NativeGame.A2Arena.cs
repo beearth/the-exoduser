@@ -14,11 +14,7 @@ namespace Exoduser.UnityPort
             if(a2ArenaRoot!=null)Destroy(a2ArenaRoot);a2ArenaFlames.Clear();
             a2ArenaRoot=new GameObject("A2 보스방 조명·낮은 외곽 장식");a2ArenaRoot.transform.SetParent(hellArenaRig.transform,false);
             var center=new Vector2((arena.RoomCx+.5f)*.4f,-(arena.RoomCy+.5f)*.4f);
-            for(int i=0;i<7;i++)
-            {
-                float a=i*Mathf.PI*2/7,x=center.x+Mathf.Cos(a)*8.5f,y=center.y+Mathf.Sin(a)*6.2f;
-                A2ArenaModule("Art/map/a2/r3/Models/RF3_Moss_Rock_"+(i%3+1),x+.4f,y+.25f,.16f,.12f,.18f,i*73);
-            }
+            // 실제 Player에서 검은 파편으로 보인 낮은 암반은 제거한다. 원래 아레나 경계와 전투는 그대로다.
             foreach(int side in new[]{-1,1})
             {
                 float x=center.x+side*6,y=center.y+side*2.5f;

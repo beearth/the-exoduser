@@ -17,13 +17,13 @@
 | 수로 | Water: z(−94,−30),동쪽 x>Shore(z)와 둥근 지류 BranchDistance<0의 합집합. Shore=48+1.4sin((z+72)×.22)+34×smoothstep(−66,−56,z)−28×smoothstep(−52,−42,z)로 북동쪽에 굽어 빠짐. 남동 앵글러(148,150) 접근을 수로가 덮던 실제 회귀 FAIL을 고쳐 고정 위치/전투 규칙 보존. 수위−1.25, 연속 수면 x−30~110/z−100~70. 실제 수로 접점에만 수직 강둑. 암반9·말뚝5·강둑13접합/지류 접합. 기존 River_/Pool_만 숨김·r1거품 미사용 |
 | 반영 | 환경 Realtime ReflectionProbe256²×6면/OnAwake·위치(50,GroundY(50,−72)+1,−72)/크기180×80×260/boxProjection/강도.55/importance100/far150 유지. A2RiverReflection 실제 평면반사960×540 ARGBHalf/수면Y−1.25/oblique clip+.04u, Water layer4 제외·후처리off/깊이on. 설치 URP SingleCameraRequest+SubmitRenderRequest 사용, 정지.1초/이동.05u/회전.3° 갱신. GPU/논리 투영 분리로 GPU VP의 방향 확인, reflection RT 직접 확인·실행1270회/Unity 오류0. 현재 혼합(.30+.30×Fresnel³)×(1−거품), 색(.85,.80,.42), UV왜곡 n.xz×.12. 실패 기본수면 폴백/추가반복0. 새 혼합은 GPU 재검수 예정 |
 | 횃불 | R3 holder×.5·8프레임 불꽃/높이1.24u. 다리 국소 Along±3.65/Across±2.5u를 world로 변환해 두 끝에 배치. RGB(1,.55,.19)/강도7/반경5/soft shadow/bias.04/normalBias.1. 받침 투사만off, 기존 화로 루트off/Pool_Hell광원0 |
-| 분위기 | A2 배경/선형안개(.23,.29,.35)/16..40u/far240. 비A2/해제 시 이전값 복원. 환경광 sky(.20,.25,.30)/equator(.12,.14,.16)/ground(.035,.03,.02). 주광2.1/RGB(.8,.87,1)/회전(54,-32,0)/그림자.65. Volume+.25EV/대비16·ACES·블룸.16. 달빛기둥4/alpha.18·가산/깊이·가장자리감쇠. 추가 간접광·프로브Off 시안 미채택 |
+| 분위기 | A2 배경/선형안개(.23,.29,.35)/16..40u/far240. 환경광 sky(.20,.25,.30)/equator(.12,.14,.16)/ground(.035,.03,.02). 주광2.1/색(.8,.87,1)/회전(54,-32,0)/그림자.65. Volume+.25EV/대비16·ACES·블룸.16. 빛기둥4는색(1.4,1.6,1.8)/alpha.045 가산·깊이감쇠 후보. GraphicsSettings FogStripping Custom1/기존 Linear·Exp·Exp2 모두keep1. 새 실제 Player 검수 전 |
 | 임포트 | SourceTextureImporter v3의 a2/ground Repeat 예외 유지. 원래 낙엽3맵+새 흙/뿌리6맵1024²/Repeat/mipmap/Trilinear/aniso8. BaseColor sRGB, NormalMap/Roughness linear. A2GroundCoverImporter v3은 기존4개+Hollow FBX의 정확5경로만 읽기true |
 | 기존 바닥 셰이더 | 작업 시작부터 실제 사용 중인 HellGroundPBR.shader가 미추적이고 .meta만 Git에 있음을 확인. 해당 원본 byte를 보존해 필수 런타임 소스로 함께 체크포인트하며 새 시각합격으로 세지 않음 |
 | A2 바닥 | HellGroundPBR _ForestBlend 기본0/A2만1. 기존 바닥 폴백 유지. 새 자갈흙3.2u/뿌리흙2.5u와 국소 낙엽2.1u를 거리·저주파 마스크로 혼합, 낙엽mix.35. 새6맵 모두 로드될 때 _SoilTextureMix=1, 하나라도 누락하면0으로 기존 흙·낙엽 폴백/에러 기록. 비A2 soilMix0. 정확 tint/normal/roughness는 최신 절 |
 | 숲 바닥 출처 | [Poly Haven Forest Floor](https://polyhaven.com/a/forest_floor), eye-candy.xyz/CC0, Powered by Poly Haven. 무료 원본1024² BaseColor/NormalGL/Roughness3맵, 합8100628B 동일byte 인수. 생성/구매/크레딧0. 원본·API메타·MD5/SHA는 I:/EXODUSER-Storage/steam-keyshot/a2/forest-floor-source/출처-영수증.json |
 | 검은 무늬 | A2에서 이름이 Decals_blood로 시작하는 기존 메시 렌더러만 비활성. 이전 분리진단의 원인 수정이며 원본/충돌 불변 |
-| 촬영 | --unity-steam-keyshot+A2는 실제NativeGame/격리세이브. 4200:7460, 실제AI/스크립트입력·생존보조, 적/탄 직접주입0. URP SingleCameraRequest/SubmitRenderRequest로1920×1080 월드RT·HUD제외. RGB휘도16픽셀표본 평균>.01 추가하여 검정이미지 성공 방지. 스킨 높이는 Model.activeInHierarchy·Renderer.enabled·카메라layer 교집합일 때 측정, 2D아레나도 보이는3D전사는 실제활성Renderer를 측정(숨긴2D스프라이트 사용0). 일반 손조작/HUD 검수 별도 |
+| 촬영 | --unity-steam-keyshot+A2는 실제NativeGame/격리세이브·실제AI/스크립트입력. 주3장은 hidden non-batch Player의 최종 ScreenCapture 프레임/HUD포함1920×1080. actualScreen=true·captureSource·screenWidth/Height·휘도>.01·Unity오류0·실제활성스킨높이8~11%가 통과조건. GPU batch/별도카메라 요청은 A2 최종검수 통과 불가 |
 | 영웅 크기 | R5가 있으면 실제 SkinnedMeshRenderer.BakeMesh 정점 투영으로 측정. 숨긴2D스프라이트 높이를 실제전사 크기로 인용하지 않음. 원래8~11% 촬영검사 유지 |
 | 미니맵 경계 | SourceMap.DisplayTile(tx,ty)는 추가 경계가 차단한 타일 중심을1로 반환하고 나머지는 원본 Data.tiles 값을 그대로 반환. NativeFieldHud는 이 값으로 기존 미니맵을 그린다. A2 수로/다리/비A2 표시3검사PASS, UI 모양·원본 맵 데이터 변경0. 미니맵-수정전-FAIL.json에 수정 전 불일치 보존 |
 | 보행 교차 회귀 | 실제 SourceMap/ch1_map으로 비다리 수면123472표본/겹침0. 주간충돌: 왼쪽2.2u·먼쪽2u·기타2주간1.1u, 큰그루터기1.3u, 기존후경15×.8u/작은후경19×.5u. 다리101점/반경15px·촬영4200:7460·일반4020:7420·중앙4320:7180 보행true.16845타일/출구3곳 연결, 고정앵글러4곳 모두300px 내 접근·시야 확보. 섬바깥49점 높이튐0. 현재30검사PASS. 원본JSON/Core 및 수면/새거목 밖차단 보존. 섬고리/남동앵글러 수정전FAIL별도 보존 |
@@ -208,3 +208,17 @@ A2CaptureFrame이 정상 LateUpdate 이후 Remodel3DLate를 다시 불러 이미
 | 안전 종료 | Play stop→공식 Editor stop 종료0/pid57584 종료 확인→공식unreserve 종료0/잠금0·예약0. GP의 기존 실행파일 GPU batch 비교1회/100초 경계에 자원 반환. 선예약·자기자동대기0 |
 | 신규 폴백 | _SoilTextureMix 기본0, 새 지면6맵이 전부 로드될 때1. 누락은 기존 바닥으로 돌아가며 오류로그를 남겨 캡처 통과로 숨기지 않음. 이 작은 후속 소스는 새 Player/최종 셰이더 검수 대상 |
 | 품질 판정 | VISUAL VERDICT: FAIL. 속빈 구조/바위패드 제거/회갈색 이끼/흙 구분은 개선. 원화의 복잡한 뿌리와 원근·수면·재질 차이 잔여. 이 복구점은 제작 후보 보존이며 unity/main·Desktop 채택 요청0 |
+
+## 2026-10-31 06:01 KST 실제 Player 결과와 촬영·안개 교정 후보
+
+| 항목 | 결과·입력·한계 |
+|---|---|
+| 실제 빌드 | 소스/자기원격2f8c726311093c27863e768ac8ee8e5d4c4a5a48. 공식3d718027/Win64/6000.6.7f1/BuildReport오류0/3762198270B. 실제빌드212파일/160DLL/MCP파일0·MCP참조0 확인 |
+| 실제 촬영 | 공식9e499ff3/D3D11. 3장·Unity오류0, 필드조립1281ms/원본높이256점오차2.384186E-07u. 탐험높이.0981518/전투.1055537/드루이드.0817301, 적탄0/3/15. 캡처내용검사통과와 시각품질·정상종료를 분리 |
+| 최종 표시 차이 | 같은프레임 01-탐험.png의별도요청 빛기둥은약하지만 01-탐험_일반화면_HUD포함.png의실제최종표시는과도하게흼. 같은위치·1920·동일프레임의직접증거. 별도카메라/깊이의존경로 차이이며 정확엔진원인은미확정. 이전 월드촬영의 명암을 최종표시로 인용하지 않음 |
+| 촬영 교정 | A2 non-batch KeyshotSave는 최종 ScreenCapture를 주3장에직접저장, HUD도포함. actualScreen과1920×1080/휘도>.01을필수판정. A2 batch의기존RenderRequest폴백은진단만/통과불가. 비A2기존경로유지. 불필요한 OnGUI/사용자화면 수정0 |
+| 빛기둥 | 실제최종표시의과광을기준으로색(2,2.5,3)/alpha.18→(1.4,1.6,1.8)/.045. 실제새Player검수전, RT만보고통과하지않음 |
+| 안개 가설 | Editor에서보이던원경감쇠가Player에서약함. GraphicsSettings m_FogStripping=Automatic0, 세Keep=1 확인. Runtime에서Linear로전환하는데씬기반자동제거위험. [현재 Unity6000.6공식설명](https://docs.unity.com/en-us/engine/6000.6/manual/unity-editor/editor-settings-reference/comp-manager-group/class-graphics-settings) 확인 뒤 해당파일INDEX/WORK가HEAD동일임을검사·I:원본보존→Custom1 한필드변경. 기존세안개모드는모두keep1. 직접원인확정은새실제Player대조뒤 |
+| 보스 소품 | 실제03-드루이드에서작은암반7개도검은파편처럼보여해당시각배치제거. 기존횃불2/광원3/지면/보행/AI/2D보스유지. 3D보스인수0 |
+| 종료 실패 | 공식240초경계뒤ReadAllText IOException/실행기종료1. 자기58420/parent49392 HasExited=true·창0·thread1·CIM잔존. 로그InputShutdown까지. 실제검사JSON passed=true여도정상종료PASS아님. 같은빌드M1미실행/연속GPU중단/예약정상반환. 기존GP담당의종료경계진단과조율, 타인종료·권한변경·거부우회0 |
+| 품질·인수 | VISUAL VERDICT: FAIL. 판처럼얇은뿌리·검은내부·원경·물가·수면차이잔여. MERGE_QUEUE채택요청0/unity/main미반영/Desktop갱신0. 후속은최종표시·안개검증후근경제작방식보완 |
