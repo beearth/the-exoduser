@@ -33,7 +33,10 @@ namespace Exoduser.UnityPort {
      // 맵 충돌을 끄지 않고 시작점의 열린 방향을 선택한다.
      float dx=1,dy=0;bool free=false;float[][] dirs={new[]{1f,0f},new[]{-1f,0f},new[]{0f,-1f},new[]{0f,1f}};
      foreach(var d in dirs){bool ok=true;for(int t=1;t<=20;t++)if(!Map.CanMove(p.X+d[0]*t*25,p.Y+d[1]*t*25,p.Radius)){ok=false;break;}if(ok){dx=d[0];dy=d[1];free=true;break;}}
-     if(directional){int dir=control=="RMB-sweep"?0:int.Parse(control.Split('-')[1]);dx=Mathf.Cos(dir*Mathf.PI/4);dy=Mathf.Sin(dir*Mathf.PI/4);free=Map.CanMove(p.X+dx*25,p.Y+dy*25,p.Radius);}
+     if(directional){int dir=control=="RMB-sweep"?0:int.Parse(control.Split('-')[1]);
+      // 웹 MouseEvent.clientX/Y는 정수로 전달된다. 같은1600×900 입력 격자의 실제 방향을 대조한다.
+      dx=(float)(Math.Floor(800+Math.Cos(dir*Math.PI/4)*300)-800);dy=(float)(Math.Floor(450+Math.Sin(dir*Math.PI/4)*300)-450);float length=Mathf.Sqrt(dx*dx+dy*dy);dx/=length;dy/=length;
+      free=Map.CanMove(p.X+dx*25,p.Y+dy*25,p.Radius);}
      check(free,control+" 열린 발사 시작점");float x0=p.X,y0=p.Y,aimX=p.X+dx*300,aimY=p.Y+dy*300;
      UpdateViews();yield return null;if(Application.isBatchMode&&NativeRemodel3D.Active){Remodel3DLate();manualBrain?.ManualUpdate();}else if(!Application.isBatchMode)yield return new WaitForEndOfFrame();
      float maxMotion=0,maxError=0,maxAimError=0;bool spawned=false,zone=false,orb=false,blades=false,block=false,wave=false;int cast0=s.SkillCastCount;
