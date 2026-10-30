@@ -64,6 +64,13 @@ namespace Exoduser.UnityPort
                     float x=22+j*9.5f+layer*2.3f,z=-57+layer*8.5f;
                     A2Module("Ancient_Rotten_Tree",x,z,.9f+layer*.2f,1.4f+layer*.25f,1,31+j*83+layer*47);
                 }
+            for(int layer=0;layer<3;layer++)for(int j=0;j<7;j++)
+            {
+                float x=24+j*6.2f+layer*1.1f,z=-60+layer*6.5f;if(!A2ForestLayout.SecondaryTree(x,z))continue;
+                A2Module("Ancient_Rotten_Tree",x,z,.55f,.85f,.55f,21+j*79+layer*41);
+                A2Module("Withered_Shrub",x+.6f,z-.4f,.9f,.9f,.9f,j*73);
+                A2Module("Moss_Cushion",x-.4f,z-.3f,.9f,.8f,.9f,j*43,-.08f);
+            }
             A2Module("Forest_Vista_Card",24,-39,1.8f,2.4f,1,0);
             A2Module("Forest_Vista_Card",55,-27,2.4f,3,1,15);
             foreach(var p in new[]{new Vector3(34.8f,-70.5f,45),new Vector3(49,-64.8f,165),new Vector3(52,-77,240),new Vector3(30,-64,15)})
@@ -151,6 +158,7 @@ namespace Exoduser.UnityPort
                 if(id=="Dead_Leaf_Litter"||id=="Moss_Cushion")return null;
                 if(id=="Withered_Shrub")height=-1.2f+lift;
                 if(id=="Ancient_Rotten_Tree"||id=="Fallen_Log")height=A2ForestLayout.WaterLevel-.1f+lift;
+                if(id=="Root_Stump")height=A2ForestLayout.WaterLevel+.1f+lift;
                 if(id.StartsWith("Moss_Rock_",StringComparison.Ordinal))height=-1.5f+lift*.3f;
             }
             var go=Instantiate(prefab,a2Root.transform);go.name="A2_"+id;
@@ -167,6 +175,7 @@ namespace Exoduser.UnityPort
         void A2RootedTree(float x,float z,float sx,float sy,float sz,float yaw)
         {
             var tree=A2Module("Ancient_Rotten_Tree",x,z,sx,sy,sz,yaw);if(tree==null)return;
+            A2Module("Root_Stump",x,z,.8f,.35f,.85f,yaw+73,-.25f);
             // 두 번 FAIL한 절차식 판근은 폐기하고 원본 UV를 가진 실제 스캔 고목으로 접합한다.
             for(int root=0;root<3;root++)
             {
@@ -252,6 +261,9 @@ namespace Exoduser.UnityPort
                 foreach(var edge in edges)if(edge.Value==1)
                 {
                     int a=(int)(edge.Key>>32),b=(int)edge.Key;var p=filter.transform.TransformPoint(vertices[a]);var q=filter.transform.TransformPoint(vertices[b]);int n=bankV.Count;
+                    var mid=(p+q)*.5f;var side=Vector3.Cross(q-p,Vector3.up).normalized*.25f;
+                    // 원본 지형 창의 마른 경계는 절벽이 아니다. 실제 수로 접점만 닫는다.
+                    if(!A2ForestLayout.Water(mid.x+side.x,mid.z+side.z)&&!A2ForestLayout.Water(mid.x-side.x,mid.z-side.z))continue;
                     bool useX=Mathf.Abs(q.x-p.x)>Mathf.Abs(q.z-p.z);
                     bankUV.Add(new Vector2(useX?p.x:p.z,p.y)*.7f);bankUV.Add(new Vector2(useX?q.x:q.z,q.y)*.7f);
                     bankUV.Add(new Vector2(useX?p.x:p.z,waterHeight-.3f)*.7f);bankUV.Add(new Vector2(useX?q.x:q.z,waterHeight-.3f)*.7f);
@@ -262,7 +274,7 @@ namespace Exoduser.UnityPort
                     bankT.Add(n+5);bankT.Add(n+6);bankT.Add(n+4);bankT.Add(n+7);bankT.Add(n+6);bankT.Add(n+5);
                 }
                 var mesh=new Mesh{name="A2 연속 강둑 절벽"};mesh.indexFormat=IndexFormat.UInt32;mesh.SetVertices(bankV);mesh.SetUVs(0,bankUV);mesh.SetTriangles(bankT,0);mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();
-                var bank=new GameObject("A2 연속 강둑");bank.transform.SetParent(a2Root.transform,false);bank.AddComponent<MeshFilter>().sharedMesh=mesh;bank.AddComponent<MeshRenderer>().sharedMaterial=HellEnvironmentMaterial(new Color(.48f,.44f,.32f),.16f,1,"rock_face");
+                var bank=new GameObject("A2 연속 강둑");bank.transform.SetParent(a2Root.transform,false);bank.AddComponent<MeshFilter>().sharedMesh=mesh;bank.AddComponent<MeshRenderer>().sharedMaterial=HellEnvironmentMaterial(new Color(.48f,.44f,.32f),.16f,1,"rock_ground");
                 Debug.Log("[A2] 수로 지형 삼각형="+kept.Count/3+" 강둑 면="+bankT.Count/3+". 보행과 동일 경계");
             }
         }
@@ -273,21 +285,32 @@ namespace Exoduser.UnityPort
         void A2OuterGround(Terrain ground)
         {
             // 원본 Terrain 창 밖도 연결된 숲으로 이어져 직각 절단면이 화면에 들어오지 않게 한다.
-            const int cols=176,rows=214;var v=new Vector3[cols*rows];var uv=new Vector2[v.Length];var t=new System.Collections.Generic.List<int>();
             var origin=ground.transform.position;var size=ground.terrainData.size;
+            int samples=(ground.terrainData.heightmapResolution-1)/2+1;
+            var xs=A2ExtendedAxis(-30,110,origin.x,size.x,samples);var zs=A2ExtendedAxis(-100,70,origin.z,size.z,samples);
+            int cols=xs.Count,rows=zs.Count;var v=new Vector3[cols*rows];var uv=new Vector2[v.Length];var t=new System.Collections.Generic.List<int>();
             for(int row=0;row<rows;row++)for(int col=0;col<cols;col++)
             {
-                float x=-30+col*.8f,z=-100+row*.8f;
+                float x=xs[col],z=zs[row];
                 float h=NativeRemodel3D.GroundY(x,z);
                 int n=row*cols+col;v[n]=new Vector3(x,h,z);uv[n]=new Vector2(x,z)*.1f;
-                if(row==rows-1||col==cols-1)continue;float cx=x+.4f,cz=z+.4f;
+                if(row==rows-1||col==cols-1)continue;float cx=(x+xs[col+1])*.5f,cz=(z+zs[row+1])*.5f;
                 if(cx>origin.x&&cx<origin.x+size.x&&cz>origin.z&&cz<origin.z+size.z)continue;
                 if(A2ForestLayout.Water(cx,cz))continue;
                 t.Add(n);t.Add(n+cols);t.Add(n+1);t.Add(n+1);t.Add(n+cols);t.Add(n+cols+1);
             }
-            var mesh=new Mesh{name="A2 창 밖으로 이어지는 숲 지형"};mesh.vertices=v;mesh.uv=uv;mesh.SetTriangles(t,0);mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();
+            var mesh=new Mesh{name="A2 창 밖으로 이어지는 숲 지형",indexFormat=IndexFormat.UInt32};mesh.vertices=v;mesh.uv=uv;mesh.SetTriangles(t,0);mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();
             var go=new GameObject("A2 연속 외곽 숲 지면");go.transform.SetParent(a2Root.transform,false);go.AddComponent<MeshFilter>().sharedMesh=mesh;
             foreach(var renderer in ground.GetComponentsInChildren<MeshRenderer>())if(renderer.name=="지옥 바닥 PBR 표면"){go.AddComponent<MeshRenderer>().sharedMaterial=renderer.sharedMaterial;break;}
+        }
+        static System.Collections.Generic.List<float> A2ExtendedAxis(float min,float max,float start,float length,int samples)
+        {
+            var axis=new System.Collections.Generic.List<float>();
+            for(float p=min;p<start-.001f;p+=.8f)axis.Add(p);
+            // 원본 높이맵 메시의 모든 경계 정점을 그대로 이어 이음 간격/검은 띠를 없앤다.
+            for(int i=0;i<samples;i++)axis.Add(start+i/(samples-1f)*length);
+            for(float p=start+length+.8f;p<=max+.001f;p+=.8f)axis.Add(p);
+            return axis;
         }
         void A2CaptureFrame(string path)
         {
