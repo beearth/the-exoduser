@@ -18,6 +18,7 @@
 | 모션 | `NativeHeroMotion.Sync(Simulation,bool)`, 실행순서90→기존 `CapeSpring`100. 상세 상태·타이밍·수치는 `UNITY_HERO_MOTION_20261030.md` |
 | 실제 Player 검수 | `--unity-hero-review -output <고유경로>`·필수 `--unity-qa-sandbox`. 대기60·방향160(8방향×20틱)·달리기90·구르기36·대검3타180·검기3타180·E충전강타120·시전90·보조시전60·패링45·피격45·사망90틱, 2틱마다 1600×900 PNG. 적 AI/자연 소환을 끄고 이동 충돌을 유지한 제어 검수. E 두 번째 입력을70틱 누른 뒤 해제하며 Charge/Bash/BashRecover를 해당 구간에서 검사. heroReviewActive는 이 fixture의 사망/일시정지 메뉴 그리기만 분리하며 일반 실행은 불변. 피격은 HurtPlayer(80), 사망은 별도 상태주입이므로 자연 플레이로 세지 않음 |
 | 기존 수정 보존 | 이동·조준 `ef75f883e`는 시작 HEAD의 조상. Core 파일 변경0 |
+| 빌드 준비 파생 입력 | Unity 첫 임포트/빌드 준비로 생긴 자기64개 밖 변경522개는 `r2/import-meta.json`에 경로·SHA·diff를 보존. 메타만이 아니라 생성 Main씬·URP 프리필터·guard 기준도 포함한다. 자동 인수/일괄스테이징/원복하지 않으며 자기64개 WORK 변경0을 별도로 검사 |
 
 ## 제작자가 직접 본 자료와 현재 차이
 
