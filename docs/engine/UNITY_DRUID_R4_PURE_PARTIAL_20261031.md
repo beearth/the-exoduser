@@ -45,3 +45,23 @@ Sprite 쿼드의 국소 단면 정규이며 3D 메시를 공급한 것이 아니
 새 순수 tree는 이전 ad370831d과 다르므로 bde8342a/abc5f359의 성공을 재사용하지 않는다. 임시 INDEX의 허용 경로·제외 파일 부재·3D 의존 부재·FirstPlayable blob 동일·Core3줄 범위를 검사하고, 같은 순수 입력의 새 컴파일/공식 빌드/실제 GPU Player·M1·같은 크기1x 검수가 필요하다. 현재 단계의 실제 결과/로그/소스 SHA는 외부 영수증에 기록하며 미실행을 PASS로 올리지 않는다.
 
 비교 옵션의 M1 저장 차단1건과 기본 후보 정상 M1은 구분한다. 입력 접점 검사의 카운터 통과도 명중광1x 시각 PASS가 아니다. 원본 R4의 작은 가시·약한 명중광·기존2D 몸체 잘림은 RETOUCH이며 전체3D/데모 PASS나 공통/Desktop 전달을 뜻하지 않는다. Normal·hidden/windowsHide·AudioListener0·공식 실행기/PC Unity1·NTFS·격리 save를 유지한다. 진행 중 맵/게임/오디오 묶음과 충돌하면 새 선예약 없이 분리 준비로 보존한다.
+
+## 새 공통 결합 실제 검수 — 2026-10-31
+
+dispatchKey: night8h-boss-r4-pure-validation-20261031-0452. 오디오-only가 공통과 Desktop에 실제 전달된 뒤 fresh fetch한 expected는 b9491cf58bf47277b40f3497d684e46deee1c59c다. 기존 순수571607c와 정상 병합한 실제 실행 source는 da6eae92aac2cd32862e88997465845d924e55af이며 전체 tree acafaad1cddf991a2d7ac3ed88457360d992db50 / Unity subtree19f60cf6f792275a194e5d46a07e10177881ac22로 인수가상결과와 정확히 일치했다. 원본 전체bbc branch/실패3D 경로는 인수하지 않았다. 관련 문서만 갱신하는 후속 커밋은 실제 실행 source와 구분하며 같은 Unity subtree인지 확인한다.
+
+| 실제 단계 | 결과와 한계 |
+|---|---|
+| 순번 | 게임대조가 종료 결함으로 실행·인코딩 경계를 반환하고 A2가 자기 미착수 예약을 정상 반환한 뒤 보스가 공식 사전점검/예약. 앞 묶음의 영상·정상정리 미완료를 완료로 간주하지 않음 |
+| 사전 보호 | before-merge105파일 / before-unity1534파일 실제 byte/SHA 보존. 실행 직전1533원본 재대조와 당시 실제 INDEX 별도 사본. 기존55meta·FirstPlayable/메타·USER_SAVE15파일 현재 동일. 원본114파일 백업 유지 |
+| Win64 빌드 cbb5701b | Unity6000.6.7f1/x64, 컴파일·셰이더·BuildReport 오류0, 2,962,840,018바이트. errorLogs2는 실제 로그의 두 Exception.cs 파일명 집계. 자기 Unity Normal/공개 창0·정상 종료, USER_SAVE변경0 |
+| 자동 변경 보호 | 빌드 자동 재생성·재직렬화516meta/2asset/1scene 총519개를 새 byte/patch로 별도 보존 후 사전 byte로 복원. FirstPlayable의 생성 bootstrap/assembly표기 변경도 양쪽 보존. 영웅 원본 byte 보존FAIL 해소 주장0 |
+| 새 실제 GPU M1 d69ae1c9 | RX9070XT·Direct3D11·GUI Repaint1482, M1 **결과파일23/23**, 영화360PNG/30fps/12초. 같은 새 EXE 사용·Normal/무음/격리save 실제 확인. 그러나 정상 종료·정리 게이트는 실패이므로 실행 전체 PASS가 아님 |
+| 종료 실패 | QA_MEDIA_DRAIN_COMPLETE M1·Physics/Input Shutdown 뒤110스레드Wait/CPU정지. 240초 제한 설정의 공식 호출은 ReadAllText 로그 공유 IOException으로 종료1. 이후 자기60944는 HasExited=true/스레드1/창0이나 CIM핸들 잔존. 정상 실행기 영수증 없음·정상정리PASS0 |
+| 후속 접점 | 선행 종료 실패로 추가 접점 Player0. 새 입력의 접점/자세유지 검수는 미검증. 과거14096dcd/bde8342a/abc5f359 재사용0 |
+| 실제1x | 새1600×900 art-a-idle-volley/11a-druid-volley와 과거 화면을1x로 직접 비교. 독 녹색/수피 갈색 구분 유지, 작은 가시·방울 재질·거대한 기존2D 몸체/상단 잘림은 RETOUCH. 약한 명중광의 과거 판정은 유지하되 새 접점 검수로 바꾸지 않음 |
+| 슬롯/제품 | 공식 unreserve 정상 반환. 반환 직후 잠금/예약/실행Unity0, 잔존 핸들은 별도 기록. 직접 공통/Desktop 변경0·인수 HOLD |
+
+이 단위의 실제 GPU 종료 실패1회 뒤 추가GPU 재시도0이다. 앞선 게임대조의 다른 소스에서도 같은 종료 단계 증상이 관측됐지만 공통 원인은 미확정이며 보스29경로/오디오/드라이버로 단정하지 않는다. 승인 범위 안에서 근거 있는 수정 원인을 확보하지 못했으므로 같은 종료법을 반복하거나 공용 실행기·장치·드라이버·권한·타인 프로세스를 바꾸지 않는다. 기존 동일실패 중단 규칙·모델FAIL2·영웅보존FAIL을 초기화하지 않는다. 실제 검수 중단과 기술/제품 READY를 구분한다.
+
+새 검수 근거는 I:/EXODUSER-Storage/demo-art/boss-druid/R4-pure-partial/validation-0452/의 실제검수_차단영수증.json·shutdown-failure/·visual-review/판정.md다. 정확 소스/바이너리3종 SHA·로그 사본 SHA·보호 근거를 연결한다. 종료·정리 및 새 접점 게이트 미충족 상태이므로 자동 통합/제품/전체3D/데모 PASS를 요청하지 않는다.
