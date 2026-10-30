@@ -116,3 +116,32 @@ API 대조 근거는 Unity 공식 [그리기/비율 계산 소스](https://githu
 | 인도 전 SHA | 바로가기ac3c966fa11a9ffa837446a72428ed7718e20caabf4588303d6afc642bfa568b; Runtime b5bfe912ccec2a1df294be8db777678354d255b7a28aabbf98163b119409d49a; Core c63a59cd26ba349f73a6084fed8aa4770fc8eb062eb1ed1f12ac64a56fd165cf |
 
 근거는 `overlap/final4787/실행전_현황.json`과 `입력과_중단근거.json`이다. 원본 예약2개의 내용과 SHA도 기록했다. 이는 실제 UI 빌드/실게임 PASS가 아니다. 현재 미완료는 동일하게 새 입력의 정식 빌드→실제 가림 메타데이터 완전성→168장/M1→같은 후보 동일크기·1x→MERGE_QUEUE 준비→최신 공통 정상통합과 필요한 재검증→실제 Desktop 전달이다. 다른 담당 예약을 건드리거나 과거 d500/r3 결과를 재사용하지 않았다.
+
+## 정상 반환 후 실제 실행과 계측 재작업 — 2026-10-30
+
+13:33UTC 담당 재확인에서 타 예약0·잠금/HALT0·Unity/Player0·커밋 여유48.96GiB였다. 실제 Desktop은 skill-fix/release-build, Runtime `6a6ce52d982cbfbc29107fec264a24b239b0ac8e1c0e97e5bf1696074a021bbc`, Core `adf65e41bfa315c1cbdfb208c1e449459d3d90c3d543561905b0916d5e3b2fba`로 사용자 expected와 일치했다. 공식 reserve로 자기 순번을 확보하고 공통 `f27c9d1f9db3a83fd2ba8f9721c8c229a86e36e1`을 정상 병합했다. 병합 HEAD `ca984da45ea7d94daa08bae99c77cd7f065c66e7`, Unity tree `54ddf46dd17ec6400139e7d6c78e72354debbe68`, 기존 WIP520개 파일 byte 보존·INDEX 비어 있음을 확인하고 작업 원격에 보존했다.
+
+| 단계 | 실제 결과 |
+|---|---|
+| 순번 | 전사 선행 FIFO와 UI 예약이 역순 대기. 전사 담당이 자기 티켓만 안전 취소한 뒤 UI 진행. UI의 타인 티켓/예약/프로세스 변경0 |
+| 정식 빌드 | 공식 a5a55986, build.json Succeeded/errors0, compileErrors0, sandbox 세이브 변경0. 일반 errorLogs2와 컴파일 오류0은 구분 |
+| 현재 후보 DLL | Runtime eb965b9e0c36d6fc43100f708e68ee62b4d9adb021304fe9aac18f485a2d6d42, Core dfb9c3f0db87869b06c6b22e44e37b1443e8cafce802a6e3d148557dff7299b0 |
+| 실제 Player | 공식1244729a, AMD Radeon RX9070XT/D3D11, 168장, exit0/windows0/leftovers0/desktopClosed. 사용자 세이브 변경0 |
+| 가림 판정 | FAIL. 168프레임의 교차 후보48건, 가림 완전성 미충족162프레임. 48건은 HUD의8쌍×6조합이며 실제 PNG에서 그림자다. 확정 제품 겹침48건으로 세지 않음 |
+| 미충족 원인 | 동적/다중 밉 텍스처 알파 미수집, GUI.enabled를 DrawTexture에 잘못 적용, 회전 칠의 외접 상자만 기록, GUIStyle Label 바탕 상태 미수집. HUD 검정 그림자가 GUI.color로 지정돼 shadow로 태그되지 않음 |
+| 실행 스크립트 | 최초 PS 실행은 Player 시작 전 실패/자기 stale 잠금. 이후 공식 실행이 자기 stale 잠금 정상 회수 후1244729a 실행. 종료 뒤 PowerShell5의 기본 인코딩으로 한글 JSON을 잘못 읽는 오류를 확인. UTF8 명시 후 이미 수집된 JSON은 Node로 분석했으며 캡처 재실행0 |
+
+원본 근거는 `overlap/final-ui-20261030/candidate/`에 보존한다. 검사기 소스 보완 동안 공식 unreserve로 자기 예약을 정상 반환했으며 다른 담당의 슬롯을 독점하지 않았다. 현재 실패는 실제 계측 완전성 1회 실패로 유지하며 다음 같은 원인 실제 실패 때 중단한다. 이전 r1/r2/독립 검수/RETOUCH 이력은 초기화하지 않는다.
+
+| 계측 보완 | 구현 계약 |
+|---|---|
+| 실제 알파 | 검수 전용 UiAuditAlpha 셰이더가 tex2Dlod로 실제 GPU의 모든 밉을 RGBAFloat로 읽음. RT는 수집 프레임마다 재판독하고 정적 Texture2D는 updateCount 기준 캐시. 실효 불투명도는 모든 밉의 보수적 최솟값×GUI.color.a. 최솟값이 정확히1일 때만 전체 영역 가림으로 사용하며 불명은 여전히 실패 |
+| 부분 텍스처 | 단일 밉만16px 타일과 인접1px의 알파1을 증명해 부분 가림에 사용. 여러 밉을 mip0만 보고 불투명으로 승격하지 않음. 최솟값0인 영역을 임의로 가림 처리하지 않음 |
+| 메타데이터 | 실제 GUI/content/background 색, GUI.enabled, 텍스처명·밉 수·알파 최솟값/최댓값·표본 설명·칠 꼭짓점 quad를 추가. DrawTexture는 GUI.enabled와 무관하게 실제 전달 색으로 그리는 API이므로 이를 opacityKnown=false로 만드는 오류 수정 |
+| 회전/클립 | 외접 상자로 가리지 않고 실제 quad를 클립한 볼록 다각형의 차집합으로 처리. 남은 visiblePolygons와 외접 visibleRects, 실제 교차 다각형 경계로 충돌 계산. 기존0.5px 교차 임계값 유지. 불명 도형/클립은 여전히 완료 차단 |
+| Label 바탕 | Windows Player의 실제 GUI.Label hover/normal 상태와 GUI.backgroundColor를 적용해 해당 바탕 알파 수집. 제어 ID를 추측해야 하는 다른 상태는 여전히 불명으로 남김 |
+| 그림자 | style.normal.textColor뿐 아니라 GUI.color×GUI.contentColor까지 곱한 최종 검정 잉크를 shadow로 기록. 문자열/소스명 제외0, 비그림자 중복 글자 검출 유지 |
+| 수집 시점 | 촬영 직전 실제 Repaint에서만 계측 활성화, capturedFrame과 저장 시점 Time.frameCount 일치 필수. 대기 중 GPU 판독을 반복하지 않음 |
+| 오프라인 결과 | 기존9/9 + 추가4/4 + 가림7/7 유지, 회전/클립5/5 추가. 초기 회전 차집합의 중복 꼭짓점 1실패를 보존하고 수정 후 통과. 독립 컴파일의 GUIUtility.pixelsPerPoint API 1실패도 보존하고 실제 지원 경로로 수정 후 오류0 |
+
+현재 보완은 독립 컴파일까지 통과한 새 후보이며 새 정식 빌드/실제 168장/M1/1x는 미검증이다. 정식 빌드와 새 입력 검증 전에 이전 후보168장을 새 후보 PASS로 사용하지 않는다. 관련 docs 전체 검색은 `overlap/occlusion-docs-search.txt`에 남겼다.

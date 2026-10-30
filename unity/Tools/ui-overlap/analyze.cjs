@@ -1,4 +1,5 @@
 const fs=require('node:fs'),path=require('node:path');
+const geometry=require('./geometry.cjs');
 const requiredPages=['첫화면','브랜드인트로','메뉴','로비',...Array.from({length:5},(_,i)=>'캐릭터선택'+i),'이름입력','로딩',...Array.from({length:4},(_,i)=>'튜토리얼'+i),'HUD','일시정지','종료확인',...Array.from({length:4},(_,i)=>'설정'+i),...Array.from({length:4},(_,i)=>'설정스크롤'+i),'설정목록','클리어'];
 const right=r=>r.x+r.width,bottom=r=>r.y+r.height;
 const inside=(a,b,t=.5)=>a.x>=b.x-t&&a.y>=b.y-t&&right(a)<=right(b)+t&&bottom(a)<=bottom(b)+t;
@@ -12,7 +13,9 @@ function subtract(a,b){
  return [{x:a.x,y:a.y,width:a.width,height:cut.y-a.y},{x:a.x,y:bottom(cut),width:a.width,height:bottom(a)-bottom(cut)},
   {x:a.x,y:cut.y,width:cut.x-a.x,height:cut.height},{x:right(cut),y:cut.y,width:right(a)-right(cut),height:cut.height}].filter(positive);
 }
-const opaque=e=>e.opacityKnown===true&&e.effectiveOpacity===1&&!!e.opacityProof&&Number.isFinite(e.depth)&&e.orderKnown&&e.clipKnown===true&&e.axisAligned===true;
+const shapeKnown=e=>e.axisAligned===true||geometry.valid(e.quad);
+const shape=e=>geometry.intersect(geometry.valid(e.quad)?e.quad:geometry.rectPoly(e.rect),geometry.rectPoly(e.rect));
+const opaque=e=>e.opacityKnown===true&&e.effectiveOpacity===1&&!!e.opacityProof&&Number.isFinite(e.depth)&&e.orderKnown&&e.clipKnown===true&&shapeKnown(e);
 function analyze(frame){
  const elements=[];
  for(const input of frame.elements||[]){
@@ -26,16 +29,16 @@ function analyze(frame){
  }
  const masks=elements.filter(e=>(e.kind==='surface'||e.kind==='panel')&&opaque(e));
  const visible=elements.filter(e=>e.kind!=='surface').map(e=>{
-  let visibleRects=[e.rect];
-  for(const p of masks)if(p!==e&&above(p,e)&&p.ownerId!==e.id)visibleRects=visibleRects.flatMap(r=>subtract(r,p.rect));
-  return {...e,visibleRects};
+  let visiblePolygons=[shape(e)].filter(geometry.valid);
+  for(const p of masks)if(p!==e&&above(p,e)&&p.ownerId!==e.id)visiblePolygons=visiblePolygons.flatMap(poly=>geometry.subtract(poly,shape(p)));
+  return {...e,visiblePolygons,visibleRects:visiblePolygons.map(geometry.bounds)};
  }).filter(e=>e.visibleRects.length);
  const issues=[],screen={x:0,y:0,width:frame.width,height:frame.height};
  for(let i=0;i<visible.length;i++){
   const a=visible[i];if(a.kind!=='text')continue;
   if(a.visibleRects.some(r=>!inside(r,screen)))issues.push({type:'화면 이탈',a});
   for(let j=0;j<visible.length;j++){
-   if(i===j)continue;const b=visible[j];const intersections=a.visibleRects.flatMap(ar=>b.visibleRects.filter(br=>intersects(ar,br)).map(br=>intersection(ar,br)));if(!intersections.length)continue;
+   if(i===j)continue;const b=visible[j];const intersectionPolygons=a.visiblePolygons.flatMap(ar=>b.visiblePolygons.map(br=>geometry.intersect(ar,br))).filter(geometry.valid).filter(p=>{const r=geometry.bounds(p);return r.width>.5&&r.height>.5;});const intersections=intersectionPolygons.map(geometry.bounds);if(!intersections.length)continue;
    if(b.kind==='text'){if(j>i)issues.push({type:'글자-글자',a,b,intersections});}
    else if(b.kind==='button'&&!(inside(a.rect,b.rect)&&above(a,b)))issues.push({type:'글자-버튼',a,b,intersections});
    else if(b.kind==='panel'&&!inside(a.rect,b.rect))issues.push({type:'글자-판',a,b,intersections});
@@ -46,7 +49,7 @@ function analyze(frame){
  if(frame.schemaVersion!==2)auditWarnings.push('구 스키마: 실제 가림 정보 미충족');
  for(const e of elements){
   if(!Number.isFinite(e.depth)||!e.orderKnown||e.clipKnown!==true)auditWarnings.push(e.id+': 깊이/순서/클립 미충족');
-  if(e.kind==='surface'&&(!e.opacityKnown||!e.opacityProof||e.axisAligned!==true))auditWarnings.push(e.id+': 불투명도 또는 축 정렬 증명 불명');
+  if(e.kind==='surface'&&(!e.opacityKnown||!e.opacityProof||!shapeKnown(e)))auditWarnings.push(e.id+': 불투명도 또는 칠 도형 증명 불명');
  }
  return {...frame,elements:visible,surfaces:elements.filter(e=>e.kind==='surface'),issues,auditWarnings,visibilityComplete:auditWarnings.length===0};
 }

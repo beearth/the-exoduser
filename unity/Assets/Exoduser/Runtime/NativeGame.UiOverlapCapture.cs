@@ -45,10 +45,11 @@ namespace Exoduser.UnityPort
         }
         IEnumerator UiOverlapShot(string page)
         {
-            yield return new WaitForSecondsRealtime(.18f);yield return new WaitForEndOfFrame();
+            yield return new WaitForSecondsRealtime(.18f);NativeUiAudit.Active=true;yield return null;yield return new WaitForEndOfFrame();
             string name=Screen.width+"-"+overlapLanguage+"-"+page;
             NativeUiAudit.Save(Path.Combine(overlapOutput,name+".json"),page,overlapLanguage);
             ScreenCapture.CaptureScreenshot(Path.Combine(overlapOutput,name+".png"));
+            NativeUiAudit.Active=false;
             overlapCoverage.frames.Add(name);if(!overlapCoverage.pages.Contains(page))overlapCoverage.pages.Add(page);
             yield return null;
         }
@@ -73,7 +74,7 @@ namespace Exoduser.UnityPort
             using(var hash=System.Security.Cryptography.SHA256.Create())using(var binary=File.OpenRead(typeof(NativeGame).Assembly.Location))overlapCoverage.runtimeSha256=BitConverter.ToString(hash.ComputeHash(binary)).Replace("-","").ToLowerInvariant();
             overlapCoverage.unityVersion=Application.unityVersion;overlapCoverage.device=SystemInfo.graphicsDeviceName;overlapCoverage.deviceType=SystemInfo.graphicsDeviceType.ToString();
             smokeActive=true;pauseSmoke=true;lobby.AutomatedInput=true;lobby.SetPlaybackFocus(true);
-            gameObject.AddComponent<NativeUiAudit.Host>();NativeUiAudit.Active=true;
+            gameObject.AddComponent<NativeUiAudit.Host>();NativeUiAudit.Active=false;
             foreach(var size in new[]{new Vector2Int(1920,1080),new Vector2Int(1600,900)})
             foreach(string language in overlapCoverage.languages)
             {
