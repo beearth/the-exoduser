@@ -1145,6 +1145,8 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 <link rel="stylesheet" href="cin-enter-engraved.css?v=20261029-enter2">
 <link rel="stylesheet" href="fullscreen-art.css?v=20261031">
 <script src="fullscreen-art-dom.js?v=20261031" defer></script>
+<link rel="stylesheet" href="living-scenes.css?v=20261031">
+<script src="living-scenes.js?v=20261031" defer></script>
 <script>
 // ═══ 글로벌 게임패드 매니저 (전 화면 공통) ═══
 const _GP = {
@@ -4651,6 +4653,7 @@ function showCharGate(charId,storySeen=false){
   // 영상 오류 시 titleLoop가 같은 장면의 정지 그림(_titleArt)으로 그린다.
   function syncTitlePlayback(){
     if(done||phase!==2||document.hidden){_titleVideo.pause();return;}
+    if(globalThis.LivingScenes){_titleVideo.pause();return;}
     _titleVideo.play().catch(()=>{});
   }
   document.addEventListener('visibilitychange',syncTitlePlayback);
@@ -4753,7 +4756,7 @@ function showCharGate(charId,storySeen=false){
         // Keep UI text native and avoid redrawing an identical 24fps video frame at monitor refresh rate.
         const widePlate=w/h>2?globalThis.FullscreenArt?.get('img/title_bg_20261028.jpg',w,h):null;
         const hasOutpaint=!!(widePlate?.complete&&widePlate.naturalWidth&&widePlate.naturalWidth/widePlate.naturalHeight>2);
-        const frame=hasOutpaint?widePlate.naturalWidth:(_titleVideo.readyState>=2?Math.floor(_titleVideo.currentTime*60):-1);
+        const frame=hasOutpaint?widePlate.naturalWidth:(_titleArt.complete&&_titleArt.naturalWidth?_titleArt.naturalWidth:(_titleVideo.readyState>=2?Math.floor(_titleVideo.currentTime*60):-1));
         const uiReady=_titleVideo.readyState>=2||_titleArt.complete&&_titleArt.naturalWidth>0;
         if(uiReady&&_titleUI.style.display!=='block'){_titleUI.style.display='block';_fitTitleLabels();}
         else if(!uiReady)_titleUI.style.display='none';
@@ -4765,7 +4768,7 @@ function showCharGate(charId,storySeen=false){
         lastTitleFrame=frame;lastTitleW=w;lastTitleH=h;
         cx.clearRect(0,0,w,h);cx.fillStyle='#000';cx.fillRect(0,0,w,h);
         cx.save();cx.globalAlpha=fadeIn;
-        const titleSource=hasOutpaint?widePlate:(!_titleVideo.error&&_titleVideo.readyState>=2?_titleVideo:_titleArt);
+        const titleSource=hasOutpaint?widePlate:(_titleArt.complete&&_titleArt.naturalWidth?_titleArt:_titleVideo);
         const titleWidth=titleSource.videoWidth||titleSource.naturalWidth;
         const titleHeight=titleSource.videoHeight||titleSource.naturalHeight;
         if(titleWidth&&titleHeight){
