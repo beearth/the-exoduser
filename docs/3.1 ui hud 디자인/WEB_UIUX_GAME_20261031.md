@@ -4,8 +4,8 @@
 
 | 현재 차이 | 반영 | 계약 |
 |---|---|---|
-| 32:9 미니맵·상태 정보가 화면 양끝으로 벌어짐 | HUD 가장자리 요소와 패널 내용에 중앙 16:9 안전 영역 | 폭=min(100vw,100dvh×16/9), 좌우 여백=(100vw−폭)/2. 월드 캔버스·전면 어둠은 전체 화면 유지 |
-| 펫 자막·실습/시스템 안내가 안전 영역 밖에 남음 | 기존 원화와 원래 좌우·실습창 피하기 계산 보존 | 20px 기본 펫 앵커에 gutter 추가, parryLesson은 zoom 분모 보정, systemLesson은 gutter+18px(좁은 화면10px). 펫 글자 Hahmlet400 |
+| 32:9 가장자리 HUD가 중앙으로 밀림 | 2026-10-31 사용자 정정: 미니맵·자원·레벨/처치는 실제 화면 가장자리 | mmWrap=왼쪽 inset+safe-area+8px×ui-scale, mmLvl=오른쪽 inset+safe-area+10px×ui-scale, hudCorner=왼쪽 inset+safe-area+16px×ui-scale. HP·MP 구슬/스킬바 묶음과 모달만 중앙 16:9 유지 |
+| 펫·실습/시스템 안내가 중앙으로 밀리거나 구슬을 덮음 | 펫과 안내는 실제 화면 끝, 상태판·하단 HUD 공간 예약 | 펫20px; 고양이는 parryLesson/systemLesson/keyGuide가 열리면 왼쪽20px. 실습 right=clamp(18px,5.185185dvh,56px)/guide-scale, 시스템18px(좁은 화면10px), 키 안내10px. Hahmlet400 유지 |
 | 인벤토리·스킬 창이 초광폭 전체로 늘어남 | 기존 창 자체 폭과 좌우 패딩 제한 | 3840×1080에서 중앙 영역 x960~2880. 인벤토리 내용 x996~2868, 설정 x972~2868. 기존 설정 zoom에는 안내 배율 분모 유지 |
 | 상단 공통 메뉴가 클릭 전용 div | 기존 노드·onclick 보존, role=button·tabIndex=0 | Tab/Shift+Tab 순환, Enter/Space 한 번 활성. 동적 재생성 메뉴·대장간 fg-tab/fg-i·슬롯팝업 sk-pop-tab/sk-opt·기존 패드 분류의 property onclick과 위임형 sf-orb에도 적용. locked/dis/aria-disabled 제외 |
 | 패널 밖으로 Tab 이동·닫은 뒤 초점 유실 | 가장 위의 열린 모달 안에서 Tab 순환 및 단계별 초점 복귀 | gcModal·유물 주머니·스킬 팝업·초기 안내·난이도·클리어·사망·데모 종료·성장 안내 포함. 키 재지정 대기는 기존 입력 담당 우선. 확인창 첫 초점은 gcCancel, 확인·취소 버튼의 Enter/Space repeat만 차단. gc-box 등장 애니메이션의 opacity0 때문에 처음 비었던 컨트롤은 animationend에서 재시도 |
@@ -25,4 +25,22 @@
 
 근거: I:/EXODUSER-Storage/design/web-uiux-20261031/game-ui/의 final-*.png, final-geometry.json, tests.txt. final 접두사가 없는 초기 캡처는 부트/컷씬에 가렸으므로 채택 근거에서 제외한다. docs 전체 관련 키워드 검색899행은 docs-keyword-search.txt로 보존했다. 초기 skillBarGamepadDisplay 3건은 지정 Chrome 채널 부재로 실행 실패했다. 최종에는 테스트 실행기를 설치된 Playwright Chromium·headless·mute로 정합하여 같은 3건 모두 통과했다. 실제 게임패드·NW.js 실기·전체 언어 장문·청취 검수는 별도다.
 
-최종 전체 통합: 신규 로비9개·공통16개 및 관련 기존분·패드HUD를 포함해 347/347, project-check 103/103. 최종 캐시 CSS=20261031-final5, JS=20261031-final4. 33화면×1920/3840=66장, 유효 텍스트 범위에서 겹침0. 검수 상태 직접 표시·bosstest 도구 숨김은 자연플레이 증거와 구분한다.
+최종 전체 통합: 신규 로비9개·공통16개 및 관련 기존분·패드HUD를 포함해 347/347, project-check 103/103. 당시 캐시 CSS=20261031-final5, JS=20261031-final4. 33화면×1920/3840=66장, 유효 텍스트 범위에서 겹침0. 검수 상태 직접 표시·bosstest 도구 숨김은 자연플레이 증거와 구분한다.
+
+
+## 2026-10-31 화면 끝 배치 정정 — sidepanel-edge-brief 확장 범위
+
+이 절이 위의 이전 검수·안전영역 해석보다 우선한다. 기존 원화·폰트·전투·성장·세이브 형식은 보존한다.
+
+| 적용 위치 | 현행 좌표·동작 계약 |
+|---|---|
+| 가장자리와 중앙 구분 | 미니맵·자원·레벨/처치·튜토리얼/시스템/키 안내·펫·일반 알림은 실제 화면 끝. HP·MP 구슬+스킬바 묶음, 대화 모달, 인벤토리·상점·설정·성장 전체 창, 클리어·다음 난관은 중앙 16:9 영역 유지. 큰 모달 안의 내비게이션 열은 그 모달 구성 요소 |
+| 실습창 충돌 회피 | web-uiux.js placeGuides()가 mmLvl의 실제 bottom+16px를 상단으로, globeHP/globeMP/skBar 중 가장 높은 top−16px를 하단으로 예약. resize·관찰한 노드 크기 변경 때 재측정. CSS --web-ui-guide-top/--web-ui-guide-bottom, 초기 폴백190px/220px. 실습창 top 및 max-height는 guide-scale로 나누어 zoom 후 실제 경계를 보존. max-height=(100dvh−상단 예약−하단 예약)/guide-scale. min-width761px에서 적용 |
+| 레벨·처치 | 실습 중 mmLvl visibility=visible. 기존 패널 열린 동안 HUD를 숨기는 규칙은 유지. 실습 중 훈장 버튼 숨김은 유지하여 보조 팝업 충돌 방지 |
+| 시스템·키 안내 | 같은 상/하단 예약을 사용. keyGuide는 overflow-y:auto·border-box. 안내 내용은 기존 내부 스크롤·푸터 동작 유지 |
+| 펫 | game.html _petBubbleShow의 _guideOpen은 parryLesson/systemLesson/keyGuide가 hidden=false, display!=none, visibility!=hidden인지 확인. 까마귀 또는 안내 있음이면 _petAtLeft=true, left20px/right auto/transform-origin left bottom. 그 외 고양이는 right20px/left auto/right bottom. 기존 원화480px·ui-scale×ui-text-scale×1.5 보존 |
+| 일반 알림 notif | left=왼쪽 inset+safe-area+20px, top=상단 inset+270px×ui-scale, max-width=min(440px,100vw−40px), 왼쪽 정렬. 펫·자원 사이에 배치. 전투 피드백 ph는 중앙·안전 폭 유지 |
+| 캐시 | game.html의 web-uiux.css·web-uiux.js=20261031-edge1 |
+| 검수 도구 | tools/check-web-sidepanel.mjs: 1920×1080,2560×1080,3840×1080,2560×1600 실제 페이지 캡처·가시 텍스트 Range 겹침·HUD 중앙/가장자리·안내/구슬/상태판/펫 충돌 검사. 각 캡처 페이지를 bringToFront한 뒤 전환 완료를 기다려 가시 텍스트0을 실패 처리하고, 실제 게임 캔버스를 다시 그린다. HTTP와 디스크 SHA256 비교. 로컬 forgelab=1&stage=0 Lv1000 테스트 경로·독립 브라우저 저장소를 사용하고 서버 save API는 검수 응답으로 격리. 자연 플레이 검수와 구분 |
+
+대상 화면: 로비·캐릭터 선택·타이틀 메뉴·설정4탭·1-1 HUD·실습·시스템/키 안내·알림·인벤토리/보관함·스킬·대장간/물약 상점·성장·일시정지·클리어·난이도·조작 안내. 최종 실측·이미지·원격 SHA는 지정 sidepanel/REPORT.md와 source-receipt.json에 기록한다.

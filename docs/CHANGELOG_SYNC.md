@@ -55507,3 +55507,14 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 산출·실행 | G:/exoduser/tmp/design-review/20261031_web_uiux/REPORT.md, 원본은I:/EXODUSER-Storage/design/web-uiux-20261031/. localhost3366자기작업본서버·격리save유지, Steam/DEMO/EA/외부배포0 |
 
 - 최종 커밋 훅이 자동 생성한 tools/guard.baseline.json의 lines를 기존65880→현행66030으로 동기화했다. 게임루프136행·보스idx·강화확률 해시는 그대로이며 guard PASS, 새 검사 우회0이다.
+
+
+## 2026-10-31 초광폭 사이드 판·인게임 가장자리 사용자 정정
+
+| 범위 | 구현·검수 계약 |
+|---|---|
+| 로비·캐릭터 선택·타이틀 메뉴 | 사이드 정보판은 실제 화면 끝, 높이 기준 축척. 중앙 제목·무대·모달 유지. 로비 어둠은 판 폭, 선택창 우측 비네트480px 한정 |
+| 인게임 전체 UI | 미니맵·자원·레벨/처치·튜토리얼·시스템/키 안내·알림·펫은 화면 가장자리. HP/MP·스킬바 묶음과 큰 메뉴는 중앙16:9 유지. 실습 중 상태판 표시, 실제 bounds로 상태판 아래·구슬 위 공간 예약 |
+| 검수·인계 | test/webUiux.test.mjs의 21개 회귀, tools/check-web-sidepanel.mjs의 네 해상도 실제 페이지·텍스트/컴포넌트 충돌·HTTP 입력 일치 검사. 기존 원본에서도 실패하는 inventoryPaperdollLayout/petGateLockedDialogue 2건은 별도 기록. Unity ui-ultrawide-brief.md 끝에 확장 지시 추가 |
+
+상세 좌표·수치·최종 캡처/원격 근거는 WEB_UIUX_GAME_20261031.md 및 지정 sidepanel/REPORT.md를 따른다.

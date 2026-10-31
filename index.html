@@ -515,8 +515,8 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 <link rel="stylesheet" href="ui-foundation.css?v=20260927-enter-responsive">
 <link rel="stylesheet" href="ui-refinement.css?v=20261028-eye-crest">
 <link rel="stylesheet" href="silver-hell-ui-kit.css?v=20261029-frame">
-<link rel="stylesheet" href="lobby-silver-hell.css?v=20261031-final4">
-<link rel="stylesheet" href="charselect-silver-hell.css?v=20261031-final4">
+<link rel="stylesheet" href="lobby-silver-hell.css?v=20261031-edge2">
+<link rel="stylesheet" href="charselect-silver-hell.css?v=20261031-edge2">
 <link rel="stylesheet" href="lobby-ancestor-art.css?v=20260929-slotart3">
 <script src="lobby-ui-feedback.js?v=20261031-final4" defer></script>
 <script src="lobby-ancestor-sprite.js?v=20260929-slotart2" defer></script>
@@ -4631,7 +4631,7 @@ function showCharGate(charId,storySeen=false){
   function _fitTitleStage(){
     const w=overlay.clientWidth||innerWidth,h=overlay.clientHeight||innerHeight;
     const k=Math.min(w/1920,h/1080);
-    _titleStage.style.transform=`translate(${(w-1920*k)/2}px,${(h-1080*k)/2}px) scale(${k})`;
+    _titleStage.style.transform=`translate(0px,${(h-1080*k)/2}px) scale(${k})`;
   }
   window.addEventListener('resize',_fitTitleStage);
   // 영상 오류 시 titleLoop가 같은 장면의 정지 그림(_titleArt)으로 그린다.

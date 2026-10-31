@@ -41,6 +41,7 @@
   }
   function sync() {
     pending=false;
+    placeGuides();
     const next=topModal();
     if (next) prepare(next);
     if (next===active) {
@@ -58,6 +59,19 @@
     if(next) {
       if(!origins.has(next)) origins.set(next,visible(document.activeElement)?document.activeElement:previousOrigin);
       if(!next.contains(document.activeElement)) initialControl(next)?.focus({preventScroll:true});
+    }
+  }
+
+  function placeGuides() {
+    const status=document.getElementById('mmLvl');
+    if(!status)return;
+    const root=document.documentElement;
+    const statusRect=status.getBoundingClientRect();
+    const hudRects=['globeHP','globeMP','skBar'].map(id=>document.getElementById(id)).filter(node=>node&&getComputedStyle(node).display!=='none').map(node=>node.getBoundingClientRect()).filter(rect=>rect.height>0);
+    const top=Math.ceil(statusRect.bottom+16);
+    const bottom=Math.ceil(Math.max(16,...hudRects.map(rect=>innerHeight-rect.top+16)));
+    for(const [name,value] of [['--web-ui-guide-top',top],['--web-ui-guide-bottom',bottom]]){
+      const next=value+'px';if(root.style.getPropertyValue(name)!==next)root.style.setProperty(name,next);
     }
   }
 
@@ -125,6 +139,8 @@
     document.addEventListener('scroll',hideTip,true);
     document.addEventListener('transitionend',schedule);
     document.addEventListener('animationend',schedule);
+    const geometry=new ResizeObserver(schedule);
+    ['mmLvl','globeHP','globeMP','skBar'].forEach(id=>{const node=document.getElementById(id);if(node)geometry.observe(node);});
     sync();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();

@@ -2609,8 +2609,8 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <link rel="stylesheet" href="inventory-gems-balance.css?v=20260927-half">
 <link rel="stylesheet" href="ui-quiet-tier.css?v=20261027-settings">
 <script src="stat-panel-ui.js?v=20261016-refund-totals"></script>
-<link rel="stylesheet" href="web-uiux.css?v=20261031-final5">
-<script src="web-uiux.js?v=20261031-final4" defer></script>
+<link rel="stylesheet" href="web-uiux.css?v=20261031-edge1">
+<script src="web-uiux.js?v=20261031-edge1" defer></script>
 </head>
 <body>
 <div id="gcModal"><div class="gc-box"><div class="gc-msg" id="gcMsg"></div><div class="gc-btns"><button class="gc-btn gc-ok" id="gcOk"></button><button class="gc-btn gc-cancel" id="gcCancel"></button></div></div></div>
@@ -9424,15 +9424,12 @@ function _petBubbleShow(who,txt,textOnly){
     else{_txt.style.left='122px';_txt.style.top='250px';_txt.style.width='190px';_txt.style.height='42px'}
     _txt.style.fontSize='0.92rem';
   }
-  // 까마귀=왼쪽, 고양이=오른쪽 (프레임 방향에 맞춤)
-  if(_isCrow){_ps.style.left='20px';_ps.style.right='auto'}
-  else{
-    // 오른쪽 연습 가이드 패널이 떠 있으면 그 왼쪽에 붙여 가려지지 않게 한다 (2026-10-06)
-    const _gl=document.getElementById('parryLesson');const _gr=_gl&&getComputedStyle(_gl).display!=='none'?_gl.getBoundingClientRect():null;
-    _ps.style.right=(_gr&&_gr.width>0?Math.round(window.innerWidth-_gr.left+12):20)+'px';_ps.style.left='auto';
-  }
+  // 까마귀=왼쪽, 고양이=오른쪽. 오른쪽 안내가 열리면 펫은 반대쪽 화면 끝 사용.
+  const _guideOpen=['parryLesson','systemLesson','keyGuide'].some(id=>{const node=document.getElementById(id);return node&&!node.hidden&&getComputedStyle(node).display!=='none'&&getComputedStyle(node).visibility!=='hidden'});
+  const _petAtLeft=_isCrow||_guideOpen;
+  _ps.style.left=_petAtLeft?'20px':'auto';_ps.style.right=_petAtLeft?'auto':'20px';
   // 게임 전체 UI 스케일(--ui-scale = min(sw/1920, sh/1080))에 직접 연결 — HUD와 동일하게 창 크기 따라감
-  _ps.style.transformOrigin=_isCrow?'left bottom':'right bottom';
+  _ps.style.transformOrigin=_petAtLeft?'left bottom':'right bottom';
   _ps.style.transform='scale(calc(var(--ui-scale) * var(--ui-text-scale, 1) * 1.5))';
   _ps.style.opacity=_PET_OP_MAX;
 }

@@ -1,10 +1,10 @@
-/* H5 UI accessibility and centered 16:9 composition; world/canvas are untouched. */
+/* Edge HUD uses the viewport; central dialogs and the skill/orb group keep the 16:9 rail. */
 :root{--web-ui-safe-width:min(100vw,calc(100dvh * 16 / 9));--web-ui-gutter:max(0px,calc((100vw - var(--web-ui-safe-width)) / 2));--font-hell:var(--sh-font,'Hahmlet','Nanum Myeongjo','Noto Serif KR',serif)}
-#mmWrap{left:calc(var(--web-ui-gutter) + 8px * var(--ui-scale,1))!important}
-#mmLvl{right:calc(var(--web-ui-gutter) + var(--ui-inset-right,0px) + env(safe-area-inset-right,0px) + 10px * var(--ui-scale,1))!important}
-#hudCorner{left:calc(var(--web-ui-gutter) + var(--ui-inset-left,0px) + env(safe-area-inset-left,0px) + 16px * var(--ui-scale,1))!important}
-#keyGuide{right:calc(var(--web-ui-gutter) + 10px)!important}
-#dDmgLog{right:calc(var(--web-ui-gutter) + 24px)!important}
+#mmWrap{left:calc(var(--ui-inset-left,0px) + env(safe-area-inset-left,0px) + 8px * var(--ui-scale,1))!important}
+#mmLvl{right:calc(var(--ui-inset-right,0px) + env(safe-area-inset-right,0px) + 10px * var(--ui-scale,1))!important}
+#hudCorner{left:calc(var(--ui-inset-left,0px) + env(safe-area-inset-left,0px) + 16px * var(--ui-scale,1))!important}
+#keyGuide{right:10px!important}
+#dDmgLog{right:24px!important}
 /* Full-screen veils remain full screen; only their actual content is bounded. */
 html body :is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel).panel{padding-left:calc(var(--web-ui-gutter) + 12px)!important;padding-right:calc(var(--web-ui-gutter) + 12px)!important}
 html body :is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel).panel .pbox{min-width:0!important;max-width:calc((var(--web-ui-safe-width) - 48px) / var(--web-ui-panel-scale,1))!important}
@@ -50,15 +50,15 @@ html body :is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):i
 html body #settings#settings.panel.ui-composed .pbox :is(button,#setClose){font-family:var(--sh-font)!important;font-weight:400!important}
 html body #settings#settings.panel.ui-composed .pbox :is(#saveP1,#loadP1,#saveP2,#loadP2,#toLobbyBtn2,#resetBtn,#quitBtn,#resetYes,#resetNo,#btnRedetect,#setClose,button[onclick="toggleFullscreen()"]){border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;border-image:url('img/ui/silver_hell/btn_plaque_20261029.png') 0 174 fill / 0 28px / 0 6px stretch!important;padding-left:30px!important;padding-right:30px!important;min-height:40px!important;line-height:1.4!important;color:#d6d3cd!important}
 
-/* Preserve each pet portrait's original side and its guide-avoidance calculation. */
+/* Pets use a physical edge; game.html chooses the opposite edge when a guide is open. */
 #petSubtitle{font-family:var(--sh-font,'Hahmlet','Nanum Myeongjo',serif)!important}
 #petSubtitle #petBubbleTxt{font-family:inherit!important;font-weight:400!important}
-#petSubtitle[style*="left: 20px"],#petSubtitle[style*="left:20px"]{left:calc(var(--web-ui-gutter) + 20px)!important}
-#petSubtitle[style*="right: 20px"],#petSubtitle[style*="right:20px"]{right:calc(var(--web-ui-gutter) + 20px)!important}
-#parryLesson{right:calc((var(--web-ui-gutter) + clamp(18px,3vw,56px)) / var(--ui-guide-scale,1))!important;font-family:var(--sh-font,'Hahmlet','Nanum Myeongjo',serif)!important}
-#systemLesson{right:calc(var(--web-ui-gutter) + 18px)!important;font-family:var(--sh-font,'Hahmlet','Nanum Myeongjo',serif)!important}
+#petSubtitle[style*="left: 20px"],#petSubtitle[style*="left:20px"]{left:20px!important}
+#petSubtitle[style*="right: 20px"],#petSubtitle[style*="right:20px"]{right:20px!important}
+#parryLesson{right:calc(clamp(18px,5.185185dvh,56px) / var(--ui-guide-scale,1))!important;font-family:var(--sh-font,'Hahmlet','Nanum Myeongjo',serif)!important}
+#systemLesson{right:18px!important;font-family:var(--sh-font,'Hahmlet','Nanum Myeongjo',serif)!important}
 #webUiuxTooltip{background:linear-gradient(rgba(7,8,9,.88),rgba(7,8,9,.94)),url('img/ui/hell_gothic/iron.png') center/480px repeat,#0b0c0d}
-@media(max-width:760px){#systemLesson{right:calc(var(--web-ui-gutter) + 10px)!important}}
+@media(max-width:760px){#systemLesson{right:10px!important}}
 
 #notif,#ph{max-width:calc(var(--web-ui-safe-width) - 48px);white-space:normal;overflow-wrap:anywhere;text-align:center}
 
@@ -78,3 +78,14 @@ body:has(#bossBar.on) #stageClock{top:calc(var(--ui-inset-top,0px) + env(safe-ar
 #bossBar,#bossBar#bossBar :is(.bn,#bossName){font-family:var(--sh-font,'Hahmlet','Nanum Myeongjo',serif)!important}
 #bossBar#bossBar :is(.bn,#bossName){font-weight:300!important}
 #globeHP .globe-val #hpMax{margin-top:4px!important;line-height:1.2!important}
+
+/* Reserve the measured status row and the complete orb/skill HUD, including zoom. */
+:root{--web-ui-guide-top:190px;--web-ui-guide-bottom:220px}
+body:has(#parryLesson) #mmLvl{visibility:visible}
+@media(min-width:761px){
+ #parryLesson{top:calc(var(--web-ui-guide-top) / var(--ui-guide-scale,1));bottom:auto;transform:none;max-height:calc((100dvh - var(--web-ui-guide-top) - var(--web-ui-guide-bottom)) / var(--ui-guide-scale,1))}
+ #systemLesson{top:var(--web-ui-guide-top);max-height:calc(100dvh - var(--web-ui-guide-top) - var(--web-ui-guide-bottom))}
+ #keyGuide{top:var(--web-ui-guide-top)!important;max-height:calc(100dvh - var(--web-ui-guide-top) - var(--web-ui-guide-bottom));overflow-y:auto;box-sizing:border-box}
+}
+/* Transient system notifications occupy the outer left rail above the pet portrait. */
+#notif{left:calc(var(--ui-inset-left,0px) + env(safe-area-inset-left,0px) + 20px)!important;right:auto;top:calc(var(--ui-inset-top,0px) + 270px * var(--ui-scale,1));bottom:auto!important;transform:none;max-width:min(440px,calc(100vw - 40px));text-align:left}
