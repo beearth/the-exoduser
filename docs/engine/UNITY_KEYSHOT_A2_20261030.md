@@ -14,6 +14,7 @@ R5의 카펫형 재질과 둥근 뿌리 패치가 남아 있어 전역 이끼량
 | 실제 메시 계측 | 같은 Player JSON에 rootPatches/색누락/색r<=.2 흙둘레 정점수·지형+.006m 최대차/r>=.99 높은목질 정점수·최대높이와 실제지면17정점간격의 TerrainHeight 최대차를 추가. 계산식 통과를 아트PASS로 사용하지 않음 |
 | 검수 도구 | 기존8곳에 실제 R5 공동검수 가림재현3곳(4790.811/7142.689,3320/7500,3320/7000)을 정확 인수하여 11곳×2해상도=22 HUD사진. AIoff/격리 순간이동 fixture, 자연완주와 구분 |
 | 실제 R6 Editor | PID67804/D3D11·RX9070XT/격리저장·노출창0. 실제144지면청크·9셰이더지원·뿌리78개/색누락0. 흙둘레275028정점의 지면+.006m 최대차1.53202564e−6m/높은 흰목질574782정점·최대.294820547m/지면17정점간격 최대차7.15255737e−7m. 첫1920 중간사진에서 스캔 흙의 둥근 색패드 잔존→법선 기울기 가중으로 평평한 흙을 world 지면재질에 접합하여 실제 같은구도 재확인. 1920/3840 시작·중간·보스남측 RT6구도 확인. 초광폭 중간의 높은 숲 지면 과광택을 발견해 worldY .15.. .85m 가중으로 교정/같은3840 실제구도 재확인. HUD/Player/M1 아트완료로 승격0 |
+| 승인 공통 b673 병합 | R5 순수맵+HD2D 1단계의 공통 b673cb3f7a534c367e03c285404342e3769a8bfc를 기존 R6 브랜치에 정상병합. Git 기준 공통19c 이후 add/add는 실제 인수 R5 1a3을 의미상 기준으로12코드/문서 자동3방향대조, 문서2곳의 R6 추가절을 보존. NativeDruidBody/A2Enemies/HellArenaLighting/HellLighting/Remodel3D는 공통 HD2D 내용 보존, A2Field는 R6 마스크·뿌리와 공통 HD2D AA없음 분기를 함께 보존. 위 Editor RT·계측은 b673 병합 전13d 입력이며 새픽셀배우·새Player 검수로 소급0. Core·원본 SourceMap 계약 불변. 결합 Core114/Runtime196/Editor54 독립컴파일 오류0·42회귀PASS. 공통에서 인수한 meta의 기존 후행공백은 byte 보존하고 새 코드 검사와 구분 |
 | CPU·보존 | 테스트 먼저 RED4→GREEN42. Core114/Runtime194 현재 소스 독립컴파일 오류0. 처음 Bee Runtime190 목록은 새 승인공통 sound4파일이 없어 실패했으며 결과 보존/목록보정 후 재검사. 셰이더·실제 Player·M1·FPS·시각 미검증. 이전 R5 실제 Player 기술 PASS/아트 RETOUCH 근거는 아래 별도 보존 |
 | 근거 | I:steam-keyshot/a2/field-screen-20261031/r6-cpu/ 아래 R5-지형-수면-기준표.json, 뿌리원형-정점가중-조사.json, RED/GREEN 및 compile 결과. 원본 백업도 I: before-r6/ 보존 |
 
@@ -578,3 +579,8 @@ GP 원작성자 edf12c419의 exo-unity.ps1·devtools/README·UNITY_DEVTOOLS_SHAR
 | 1차 FAIL | 7.1/PBR4k, 작업01a18f4e-6905-75ff-b5fd-9474de181d46. 승인원화알파크롭. 실제폭1.902916·두께.041771·높이1.832239/22132정점·28769tri. 정면·측면직접확인: 입체거목이아닌판. Blender4방향/exit0·traceback0. Unity인수0 |
 | 2차 FAIL | 원화사각크롭/t2.5 SmartTopology 무텍스처, 작업01a18f50-feaa-7358-b7fc-efac03da68a8. 실제범위.951172/.940430/.860352·16155정점·29999tri·604연결그룹. 정면·측면·후면직접확인: 주변이끼·배경이기둥/막/바닥판으로묶인큰형태결함. Blender4방향/exit0·traceback0. Unity인수0 |
 | 중단·다음 입력 | 같은거목2후보FAIL/추가생성0. 깨끗한전체거목정면·측면입력또는검증된실제스캔원형이필요. 생성원본·PBR·Blender·해시·원화대조를 I:/EXODUSER-Storage/steam-keyshot/a2/meshy-hollow 에보존. 신규GPU검수·전체시각PASS·common·Desktop으로승격0 |
+
+
+## HD-2D Main의 R5 1단계 결합 경계
+
+맵1a3 기술게이트와아트RETOUCH를인수해Main의순수985/문서a2cfa8388과정상3way결합한다. HD actor재질덮기/일반적추가접지메시중복/field SMAA/아레나별도camera·.72축소의4호환을표현경로에만분기했다. 구체수치/소유권은[HD2D SSOT](UNITY_HD2D_RUNTIME_20261031.md#r5-순수맵과-hd-2d-1단계-정상-결합--새-실행-검수-전)를따른다. Core114/Map보행·LOS40000·배치/지형/메시·저장변경0. API0후보이며새build/M1/실제1x/공통/Desktop은미검증, UI실패후보/신규리마스터/단계2·3인수0. 과거FAIL/종료·생성모델미채택이력은위와같이보존한다.

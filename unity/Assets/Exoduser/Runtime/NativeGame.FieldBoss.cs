@@ -46,7 +46,7 @@ namespace Exoduser.UnityPort
                 r.sprite = sprite; r.enabled = true;
                 r.transform.position = Point((float)fb.X, (float)fb.Y - bob); r.transform.rotation = Quaternion.Euler(0, 0, -wob * Mathf.Rad2Deg);
                 r.transform.localScale = Vector3.one * (300f / (sprite.rect.width));
-                r.sortingOrder = (int)fb.Y;
+                r.sortingOrder = (int)fb.Y;NativeHd2D.Actor(r,false,1.5f);
             }
         }
 

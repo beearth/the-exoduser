@@ -21,11 +21,16 @@ namespace Exoduser.UnityPort
                 foreach(bool bossContact in new[]{true,false}){var contactGo=new GameObject(bossContact?"보스 접촉 음영":"영웅 접촉 음영");contactGo.transform.SetParent(hellArenaRig.transform,false);var contact=contactGo.AddComponent<SpriteRenderer>();contact.sprite=DiscSprite();contact.color=new Color(.005f,.008f,.012f,.32f);contact.sortingOrder=-25000;if(bossContact)hellBossContact=contact;else hellPlayerContact=contact;}
                 var volume=hellArenaRig.AddComponent<Volume>();volume.isGlobal=true;volume.priority=20;if(hellProfile!=null)volume.sharedProfile=Instantiate(hellProfile);
             }
-            hellArenaRig.SetActive(true);bool shown=view.cullingMask!=0;hellArenaCamera.CopyFrom(view);hellArenaCamera.enabled=shown;hellArenaCamera.depth=view.depth+5;
-            if(druidBody!=null&&druidBody.Visible)druidBody.PresentationScale=.72f;
+            hellArenaRig.SetActive(true);bool shown=view.cullingMask!=0;hellArenaCamera.CopyFrom(view);hellArenaCamera.enabled=shown&&!NativeHd2D.Enabled;hellArenaCamera.depth=view.depth+5;
+            if(druidBody!=null&&druidBody.Visible)druidBody.PresentationScale=NativeHd2D.Enabled?1f:.72f;
+            // The HD2D base view already fits the body-relative source bounds and player at scale4.
+            if(!NativeHd2D.Enabled)
+            {
             var focus=playerView.bounds;if(druidBody!=null&&druidBody.Visible&&Vector3.Distance(playerView.bounds.center,druidBody.Bounds.center)<12)focus.Encapsulate(druidBody.Bounds);
             float halfH=A2Requested?view.orthographicSize*.9f:Mathf.Max(view.orthographicSize*.53f,focus.size.y*.63f+.3f);var focusCenter=focus.center;
             hellArenaCamera.transform.SetPositionAndRotation(new Vector3(focusCenter.x,focusCenter.y-.15f,view.transform.position.z),view.transform.rotation);hellArenaCamera.orthographicSize=halfH;hellArenaCamera.cullingMask=worldMask;view.cullingMask=0;
+            }
+            hellBossContact.enabled=!NativeHd2D.Enabled;hellPlayerContact.enabled=!NativeHd2D.Enabled;
             if(compare){hellBossContact.enabled=false;hellPlayerContact.enabled=false;return;}
             hellActorMaterial.SetFloat("_Ambient",.85f);
             A2ArenaFlameLate();

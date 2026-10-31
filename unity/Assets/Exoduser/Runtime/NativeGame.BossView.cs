@@ -25,17 +25,39 @@ namespace Exoduser.UnityPort
 
         // web camera: zoom target 0.80 while a boss is alive (1.0 otherwise), eased zoom += (target - zoom) * (1 - .94^dt); orthographicSize 5.4 is zoom 1
         float camZoom = 1f;
+        Bounds hd2dArenaBody;bool hd2dArenaBodyKnown;
+        Vector3 hd2dCameraShake;
         void BossCameraZoom()
         {
+            if(!Simulation.Stage.InArena)hd2dArenaBodyKnown=false;
             var d = Simulation.Druid; bool boss = d != null && d.Boss != null && d.Boss.Alive;
             camZoom += ((boss ? .8f : 1f) - camZoom) * (1f - Mathf.Pow(.94f, Mathf.Min(Time.unscaledDeltaTime * 60f, 3f)));
             view.orthographicSize = 5.4f / camZoom;
         }
 
+        // HD 배우를 그린 뒤 최종 2D 카메라를 확정한다. Core 위치/충돌/기존 3D 경로는 그대로다.
+        void Hd2dArenaFrame()
+        {
+            if(!NativeHd2D.Enabled||NativeRemodel3D.Active||Simulation==null||!Simulation.Stage.InArena||
+                view==null||druidBody==null||!druidBody.Visible||playerView==null||!playerView.enabled)return;
+            var bounds=druidBody.Bounds;var anchor=druidBody.Anchor;
+            bounds.center-=anchor;
+            if(hd2dArenaBodyKnown)hd2dArenaBody.Encapsulate(bounds);
+            else{hd2dArenaBody=bounds;hd2dArenaBodyKnown=true;}
+            bounds=hd2dArenaBody;bounds.center+=anchor;
+            var playerBounds=playerView.bounds;
+            // 원본 writer는 발 anchor를 쓴다. 곧 적용할 lift까지 포함한 최종 bounds를 예측한다.
+            playerBounds.center+=view.transform.up*(NativeHd2D.FootLift(playerView.sprite)*Mathf.Abs(playerView.transform.lossyScale.y));
+            bounds.Encapsulate(playerBounds);
+            const float usableWidth=.84f,usableHeight=.68f,safeCentreY=.54f;
+            float half=Mathf.Max(view.orthographicSize,Mathf.Max(bounds.size.y/(2*usableHeight),bounds.size.x/(2*usableWidth*Mathf.Max(.1f,view.aspect))));
+            view.orthographicSize=half;
+            view.transform.position=new Vector3(bounds.center.x,bounds.center.y-(safeCentreY-.5f)*2*half,view.transform.position.z)+hd2dCameraShake;
+        }
+
         void BossViewUpdate()
         {
             if (bossView != null) bossView.Update(Simulation);
-            if (teleView != null) teleView.Update(Simulation, view);   // RB1-3: reads Simulation.DruidTelegraphs only (remodel off = empty list = nothing drawn)
             if (druidBody != null && druidBody.Stamp != Time.frameCount) druidBody.Hide();   // nobody drew the druid this frame (gone / not on this stage)
             foreach (var e in Simulation.Enemies) if (e.Alive && e.IsBoss && sinkStart.Count > 0) { sinkStart.Remove(e.Id); sinkSounded.Remove(e.Id); }
         }
