@@ -200,3 +200,14 @@
 |인수 상태|제작자선택1x검수완료/공통·Desktop지정integrator 신청준비. 공통병합·Desktop갱신·설치본M1은이문서만으로완료아님. 자연완주·실측FPS·OSfocus·Mac동기화 미검증|
 
 근거 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/STAGE1_R5_VISUAL_REVIEW_KO.md, STAGE1_R5_BUILD_LINK.json, stage1-r5-validation-8dbdf205a/receipt.json, stage1-r5-review-8dbdf205a, scope-cleanup-after-r5. 이전순수985/087·실패validator 이력은덮지않는다.
+
+
+## 2026-10-31 R4 최신 승인공통 b673 정상병합
+
+|항목|현재 결합 계약|
+|---|---|
+|승인 인수|unity/main b673cb3f7a534c367e03c285404342e3769a8bfc의R5순수맵+HD2D1만인수. UI bc1과정상2부모병합0764e602. R6·HD2D2/3·새리마스터시안자동인수0|
+|충돌 해소|공통이선택인수여서맵신규파일add/add가생겼다. 양측공통내용인1a3 기준으로UI 고유문장/22포즈·시야계약과HD2D변경을3방향병합. SourcePose복원과BindWorldViewport를함께호출. common hd2dCameraShake의같은2UnityRandom 호출순서·진폭을보존하고청크는실제camera위치기준유지|
+|필드 검수|최신UI 결합 NativeGame.A2FieldCapture는기존8+거목재현3=11포즈×2폭22PNG. b673/8dbdf의실제16장영수증은이전소스증거로보존하며새22장으로소급하지않음|
+|UI 보호|중앙/가장자리·GuideHUD/최소물리16·공통제목64/메달40·스킬본문/실제16키·승인로딩16종·공유영상소유·UI검수틱/입력격리·AO선택필드·펫행간·명시재생버튼계약모두유지|
+|소스/증거|공용HEAD38·INDEX0/원WIP520/56·frozenCLI68b7/Queue8a00을보존. 새같은DLL의remodel-scenes1 build→M1→field22/world56/raw24/FPS/UI1225/웹1x 필수. R3나Main8dbdf의M1/사진을새UI 결합DLL 검수로소급0|
