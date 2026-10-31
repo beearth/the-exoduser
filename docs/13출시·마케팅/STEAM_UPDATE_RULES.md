@@ -195,3 +195,5 @@ schtasks /Create /TN "EXODUSER_DailySteamRelease" /TR "cmd /c G:\exoduser-steam\
 | 내일09시 | 작업 Enabled·Ready, 다음11/01 09:00. v0.7.11 로컬 태그·11/01 빌드 작업 경로 충돌 없음. 정각 재부팅·로그온 등 §9 조건을 충족해야 하고 현재 패키징 누락도 남아 있어 **출시 준비 완료·정상 성공을 보장하지 않음**. 계정 재인증·예약 실행 재현은 미실행 |
 | 사용자 확인 | 실제 다음 BuildID·검수 결과와 노트 문구를 확인한 뒤 Set Live·Steam 패치노트 게시. 새 BuildID를 임의 지정하지 않음 |
 | 권한 경계 | 빌드·preview·업로드·Steam 로그인·Set Live·Steam 게시·예약 작업 설정·공용 실행기/잠금 변경0회. 예약 XML 전후 SHA256 동일, 자기 스모크 서버/브라우저 종료 확인. 기존 latest-web·사용자 소스·세이브 보존. 증거: `I:/EXODUSER-Storage/steam-prep/20261031/REPORT.md` |
+
+| 2026-10-31 | v0.7.11 준비 점검에서 새 루트 모듈 6개가 `build-nwjs.mjs` FILES에 빠진 것을 발견(패키지에서 404 예상) | `fullscreen-art-data.js`·`fullscreen-art.js`·`fullscreen-art.css`·`fullscreen-art-dom.js`(전체 화면 원화 확장)·`currency-orb.js`·`currency-orb.css`(악의오브)를 FILES에 추가. 새 루트 파일을 만든 작업은 같은 커밋에서 FILES도 갱신한다 |

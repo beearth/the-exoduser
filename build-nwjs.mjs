@@ -37,6 +37,8 @@ mkdirSync(DIST, { recursive: true });
 const FILES = [
   "decision-sound.js", "fullscreen-art-data.js", "fullscreen-art.js", "fullscreen-art.css", "fullscreen-art-dom.js", "currency-orb.js", "currency-orb.css",
   'loading-art.js', 'loading-art.css',
+  'fullscreen-art-data.js', 'fullscreen-art.js', 'fullscreen-art.css', 'fullscreen-art-dom.js',
+  'currency-orb.js', 'currency-orb.css',
   'index.html', 'game.html', 'credits.html', 'nw-boot.html',
   'build-target.js',
   'engine/fdg/druid-qa-storage.js',
