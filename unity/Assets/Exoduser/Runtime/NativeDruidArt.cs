@@ -108,6 +108,26 @@ namespace Exoduser.UnityPort
             sprites[key] = s; return s;
         }
 
+        // 반사 불가 구체의 광택 흑요석 표현. 기존 프레임 시계·그리기 크기를 그대로 소비한다.
+        public static Sprite DeepBlackOrb(int frame)
+        {
+            frame = (frame % 16 + 16) % 16;
+            string key = "deepBlackOrb:" + frame;
+            Sprite s; if (sprites.TryGetValue(key, out s) && s != null) return s;
+            const int n = 128;
+            var px = new Color32[n * n];
+            for (int y = 0; y < n; y++) for (int x = 0; x < n; x++)
+            {
+                byte r, g, b, a;
+                DruidProjectileAppearance.Pixel((x + .5) * 2 / n - 1, (y + .5) * 2 / n - 1, frame, out r, out g, out b, out a);
+                px[y * n + x] = new Color32(r, g, b, a);
+            }
+            var cell = new Texture2D(n, n, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
+            cell.SetPixels32(px); cell.Apply(false, true);
+            s = Sprite.Create(cell, new Rect(0, 0, n, n), new Vector2(.5f, .5f), 100, 0, SpriteMeshType.FullRect);
+            sprites[key] = s; return s;
+        }
+
         // the corruption ring with its inside blanked (_drawDruidGroundRing innerFraction clip: only the band inner..1 of the radius stays)
         public static Sprite RingBand(float inner)
         {
