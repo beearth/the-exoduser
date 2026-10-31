@@ -114,3 +114,20 @@ Resources/Shaders/HD2DGround 누락 또는 isSupported=false면 원래 SpriteRen
 |meta|`unity/Assets/Exoduser/Resources/Shaders/HD2DGround.shader.meta`|신규|
 
 신규meta5의GUID·모든before/after SHA·원본보존은 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/PHASE2_APPLY_PLAN_R5_STAGE1.json, phase2-apply-original/verified-inputs.json, phase2-apply-status.json. 관련docs전체검색은phase2-docs-after-code-keyword-search.txt. 실제Editor·Shader·새build/M1·1920/3840·H5피격나란히검수·MERGE_QUEUE/common/Desktop2가남았다. 기존단계1영수증을새Runtime로소급하지않는다.
+
+
+## 2026-11-01 KST 단계2 실제 실행과 M1 접촉 검사 교정
+
+|항목|실제 결과/계약|
+|---|---|
+|검수 입력|5e9dd88d9655558343a6f547898ddd7fa3aad8a1 / Unity ac76e6e8e6121236898c1da12b9a99dcf7e5b694|
+|Editor|3167dc9d 방어/지면96,9809e15d surface/aim8,702a2b48 ground shader 통과. raw errorLogs 각1은 Licensing access-token update 문구이며 entitlement resolve/exit0. 컴파일오류0; 종료 Curl42 원문 보존|
+|빌드|f9c4417f 실제 Succeeded/errors0/3,833,089,931bytes. Editor705+build709 파생본 별도 보존/CAS복원, 기존60/원래57/guard9414/INDEX 안전|
+|M1 최초 실패|b1439857 창/SAVE/잔류0·D3D11·exit0, 기능22/23. 07b가 모든 HurtCount를 다음 접촉으로 간주하여 새 화상DOT의36틱을 접촉40..200 규칙과 비교한 FAIL. 실패 영수증은 그대로 보존|
+|추가 진단|같은 EXE/Runtime/Core 고정 fd553797 field16,daac5a0b actor336,9c33dc69 hit150,12048a05 controls1920x1080 54/8checks,2b6d6146 controls3840x1080 54/8checks 기능·공식안전 통과. M1실패를 무효화하거나 최종전달로 취급하지 않음|
+|접촉 관측 교정|07b는 실제 etype0 idle 접촉의 StateTicks <=1에서 [40,60) 재설정과 HurtCount 증가를 함께 관측. 다른 탄/DOT 피해는 별도 제외 수로 남김. 첫 접촉 직전HP/Shield를 같은 프레임에서 보존하여 선행DOT와 섞지 않음. 간격40..200 합격선 유지|
+|치명 접촉 fixture|1HP 단계 전에 이전 구간 적·탄/장판·화상/무지개중독/PlayerPoison/KB를 정리. 실제 적을 +40px 접촉 거리로 생성해 실제 AI tick의 cooldown reset과 fallen을 함께 확인. 직접 HurtPlayer 호출·피해규칙 변경 없음|
+|CPU 양성 대조|같은 Core114로 burn=false/true 각각350ticks. 두 조건 접촉0/50/100/150/200/250/300 동일. burn=true에35/71/107/... HurtCount가 추가되나 접촉으로 집계하지 않음. 별도 API Runtime 컴파일0|
+|현재 제한|M1 수정 source의 새빌드/실제M1/같은Player 전체검수·실제H5 피격프레임 나란히·common/Desktop2 미완료. 위5e9 캡처를 뒤 source의 증거로 소급하지 않음|
+
+근거는 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/stage2-m1-contact-diagnostic, stage2-validation-5e9dd88d9, stage2-diagnostic-remaining-5e9dd88d9. Core114·게임 규칙은 이 교정으로 변경하지 않는다.

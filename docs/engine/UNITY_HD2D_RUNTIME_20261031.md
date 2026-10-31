@@ -205,3 +205,7 @@
 ## 2026-10-31 HD2D 2단계 판정·표시 정렬 — 소스 적용/실제검수 전
 
 1단계는공통b673/설치경로M1b8e40eba23항목·창SAVE잔여0까지확인했다. 그뒤일반탄접촉/sweep·HurtOptions·화상/무지개pool·지뢰캐시와표시역할/지형조준31경로를정확적용했다. 최신수치·범위·26코드및meta5·검증/미완료는 [HD2D 판정 정렬](UNITY_HD2D_ALIGNMENT_20261031.md)을따른다. Core13suite입력114개동일/API0는actualEditor·Shader·새Player·웹피격·common/Desktop2완료증거가아니다. NativeRemodel3D 맵표시와Druid.Remodel 보호flag를구분하고ParryRules·보호2_3수치는변경하지않았다. 기존과거영수증은각당시입력범위로유지한다.
+
+
+### 2026-11-01 KST 단계2 M1 교정 진행
+5e9 실제 Editor96+8+shader와build는 통과했으나 M1 b1439857 07b에서 DOT와 접촉 간격을 섞어22/23 FAIL. 같은 빌드의 추가field16/actor336/hit150/두1080controls각54 검사는 진단 증거로만 보존했다. NativeGame.M1Check의 접촉timer전이·첫접촉직전HP·독립 치명접촉 관측을 교정했으며 Core규칙 변경0. 새source 실제build/M1/H5프레임대조·common/Desktop2가 남았다. 상세는 UNITY_HD2D_ALIGNMENT_20261031.md 최신절.
