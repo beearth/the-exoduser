@@ -7,6 +7,29 @@ class Program
 {
     static int failures;
     static void Check(bool yes,string name) { Console.WriteLine((yes?"PASS ":"FAIL ")+name);if(!yes)failures++; }
+    static float SegmentDistanceSquared(float x,float z,float ax,float az,float bx,float bz)
+    {
+        float dx=bx-ax,dz=bz-az,den=dx*dx+dz*dz;
+        float t=den==0?0:Math.Clamp(((x-ax)*dx+(z-az)*dz)/den,0,1);
+        dx=x-ax-dx*t;dz=z-az-dz*t;return dx*dx+dz*dz;
+    }
+    // 원형 XZ 삼각형과 8cm 원의 실제 최단거리. 발면 함수의 방사 표본 구현과 독립이다.
+    static bool NearDeck(float[] xyz,int[] triangles,float ceiling,float x,float z)
+    {
+        const float r=.08f;
+        for(int i=0;i<triangles.Length;i+=3)
+        {
+            int a=triangles[i]*3,b=triangles[i+1]*3,c=triangles[i+2]*3;
+            if(Math.Max(xyz[a+1],Math.Max(xyz[b+1],xyz[c+1]))>ceiling)continue;
+            float ax=xyz[a],az=xyz[a+2],bx=xyz[b],bz=xyz[b+2],cx=xyz[c],cz=xyz[c+2];
+            if(x<Math.Min(ax,Math.Min(bx,cx))-r||x>Math.Max(ax,Math.Max(bx,cx))+r||z<Math.Min(az,Math.Min(bz,cz))-r||z>Math.Max(az,Math.Max(bz,cz))+r)continue;
+            float det=(bz-cz)*(ax-cx)+(cx-bx)*(az-cz);if(Math.Abs(det)<.000001f)continue;
+            float u=((bz-cz)*(x-cx)+(cx-bx)*(z-cz))/det,v=((cz-az)*(x-cx)+(ax-cx)*(z-cz))/det;
+            if(u>=0&&v>=0&&u+v<=1)return true;
+            if(Math.Min(SegmentDistanceSquared(x,z,ax,az,bx,bz),Math.Min(SegmentDistanceSquared(x,z,bx,bz,cx,cz),SegmentDistanceSquared(x,z,cx,cz,ax,az)))<=r*r)return true;
+        }
+        return false;
+    }
     static void Main(string[] args)
     {
         var data=JsonSerializer.Deserialize<MapData>(File.ReadAllText(args[0]),new JsonSerializerOptions{IncludeFields=true});
@@ -129,6 +152,17 @@ class Program
                 }
                 Check(mr.GetProperty("maxSourceDifference").GetDouble()<.001,"원형FBX와실제Unity15점 좌표대조 1mm미만 "+mr.GetProperty("maxSourceDifference"));
                 Check(maxSupport<.035f,"동일목교15점의원형삼각형접지 3.5cm미만 "+maxSupport);
+                int unsupported=0;float phantom=0,worstX=0,worstZ=0;
+                for(int step=0;step<=28;step++)foreach(float side in new[]{-1f,1f})for(int edge=0;edge<=8;edge++)
+                {
+                    float along=-3.5f+step*.25f,across=side*(1.1f+edge*.1f);
+                    float x=A2ForestLayout.BridgeX+along*A2ForestLayout.SinYaw+across*A2ForestLayout.CosYaw,z=A2ForestLayout.BridgeZ+along*A2ForestLayout.CosYaw-across*A2ForestLayout.SinYaw;
+                    if(!original.CanMove(x*100,-z*100,15)||NearDeck(xyz,indices,mr.GetProperty("ceiling").GetSingle(),x,z))continue;
+                    unsupported++;float rise=(float)height.Invoke(originalModel,new object[]{x,z})-terrainAt(x,z);
+                    if(rise>phantom){phantom=rise;worstX=x;worstZ=z;}
+                }
+                Check(unsupported>20&&phantom<.005f,"원형8cm밖의보행가능점에가짜목교발판없음/표본"+unsupported+" 최대부양"+phantom+" X"+worstX+" Z"+worstZ);
+
             }
         }
         Environment.ExitCode=failures==0?0:1;

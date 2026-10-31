@@ -73,7 +73,8 @@ namespace Exoduser.UnityPort
             float ground=TerrainHeight(x,z);
             float along=Math.Abs(A2ForestLayout.Along(x,z)),across=Math.Abs(A2ForestLayout.Across(x,z));
             float deck=(1-Smooth(Clamp((along-3.8f)/.8f,0,1)))*(1-Smooth(Clamp((across-1.4f)/.3f,0,1)));
-            ground=Math.Max(ground,Lerp(ground,.12f,deck));
+            // 원형 상판이 등록되면 이전 사각형 폴백을 발판으로 남기지 않는다.
+            if(deckTriangles.Count==0)ground=Math.Max(ground,Lerp(ground,.12f,deck));
             if(surfaces!=null&&x>=0&&x<=80&&z<=0&&z>=-80)
             {
                 float u=x/SurfaceStep,v=-z/SurfaceStep;int ix=Math.Min((int)u,SurfaceCells-2),iy=Math.Min((int)v,SurfaceCells-2);
