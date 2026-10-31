@@ -250,3 +250,54 @@ R2 source e357a344/정식build feecb283/M1 07fa19ed 23/23/field bb5d6a48 22장/�
 |필드 검수|최신UI 결합 NativeGame.A2FieldCapture는기존8+거목재현3=11포즈×2폭22PNG. b673/8dbdf의실제16장영수증은이전소스증거로보존하며새22장으로소급하지않음|
 |UI 보호|중앙/가장자리·GuideHUD/최소물리16·공통제목64/메달40·스킬본문/실제16키·승인로딩16종·공유영상소유·UI검수틱/입력격리·AO선택필드·펫행간·명시재생버튼계약모두유지|
 |소스/증거|공용HEAD38·INDEX0/원WIP520/56·frozenCLI68b7/Queue8a00을보존. 새같은DLL의remodel-scenes1 build→M1→field22/world56/raw24/FPS/UI1225/웹1x 필수. R3나Main8dbdf의M1/사진을새UI 결합DLL 검수로소급0|
+
+
+## R4 동일 패키지 실제 전수 영수증 — 2026-10-31
+
+|항목|실제 확인과 한계|
+|---|---|
+|빌드 입력|4c1c8533b37c9fdf17d0a927a1e9d9fd8a2fdef1, Unity4088 Git blob exact/후보밖0, 정식빌드후 코드·셰이더·assembly479 exact. 공통b673 정상조상|
+|정식 패키지|build aa96a84e, remodel-scenes1, BuildReport errors0. Runtime5a0843ec556be5cf6500220377578b100631f937888cb63b07d3b503e6cff51d/Corecf277366bd0ae827507de776b81331128fe0f54a844d2e4057e247c1bcc6f934. 실제212파일/160DLL·MCP파일/참조0·승인8영상byte동일. Editor licensing 경고별도보존|
+|M1/필드|같은패키지f7ccc0d3 23/23·ccab5815 필드22PNG, 공식정상종료/노출창0/잔여0/USER_SAVE0. 필드메시JSON은R2검수본과byte동일SHA5ad34ce807ad33e29e65bf4dddc06e6a8e8e44ed2da3c9c6304c74e2581e6fa9|
+|UI 전수|94fb2faa, 5해상도×선택3언어·추가승인로딩 포함1225PNG, 입력격리1225/틱정지1225/실제미디어120. 전체컴포넌트·글자화면경계·겹침0, 실제GPU알파·가림·누락검증PASS. 요청언어와실제부분번역/폴백의완성도는구분|
+|수정 실제1x|사망펫본문최소줄간격5.3333physicalpx·시네마틱일시정지명시ActionPlate 가독/겹침0. 캐릭터선택실제오른쪽정보판/중앙원화비율,1920/16:10안내의상태·HUD비중첩,스킬좌설명/강화SP·중앙트리직접확인|
+|월드|0c804cc9 실제8위치×4해상도32+양축이동24=56PNG,1920 raw24. 전체viewport/고정세로FOV/가로확장/청크이동PASS,같은프레임self·viewport차이0·활성AO sampler1. 과거빌드와픽셀동일주장0|
+|FPS|같은초기32적SHAfe318fe867b12033fc880c38643e74cb012c4d5e21923ca04addceeed2ca4b60/seed539365412·각240tick·각4초.1920=133.0067FPS,3840=84.5322FPS. 무적·API fixture이며자연완주/장시간보증/성능향상률아님|
+|월드 글자|원시전수검사468쌍FAIL을보존. 모두지역배너전환의같은glyph8방향컬러블러+중앙복사9패스13그룹임을원본소스blob/clip/순서/치수/알파비/정확8방향으로별도증명. 반경blur×.5(blur>.6,최대4),ring알파/body알파=2.2×.07/.3. 증명468/실제타본문충돌0·계측누락0. 다른본문/불명알파/clip/순서/일반중복을차단하는12음성회귀PASS. 기존제품분석기·원시JSON수정0|
+|시야 Core 보강|같은Player CoreDLL 직접참조3595검사PASS. 실제32카메라groundCorners의플레이어높이가로단면을쓴충전180/탄수명320·반경20/R루팅희귀도우선·수집실패보존/RNG불변,기존null사각과같은callback4거리×240tick 상태/RNG동일. 같은Runtime IL은실제Point→WorldToViewportPoint·near/far·Simulation/Druid/loot0/fire-64 delegate연결증명. CPU단면·IL검사이며네이티브콜백직접호출/자연플레이로확대0|
+|웹·통합|웹afcb65b0aac2a7e52bba915c83e5ba29d707a5e6 동일크기비교/안전영수증 진행중. MERGE_QUEUE READY·공통·Desktop은그후기존단독통합자실제영수증필수. 이표만으로완료아님|
+
+검수자료는 I:/EXODUSER-Storage/demo-art/unity-ui/ultrawide/expanded-r4 및 R4_동일Runtime_IL_시야연결.json/R4_동일Core_카메라단면_틱증거.json을 따른다. R1/R2/R3 실패는각원본영수증에남기며R4PASS로소급하지않는다. 전체맵아트는RETOUCH,Mac실제반영·자연완주는미검증이다.
+
+### 웹 실행 순번 보완 — 동결 CLI 변경 없음
+
+Cmd-Browser에는자체FIFO/PC잠금획득이없음을실제소스로확인했다. 자기웹시도2만중단했고guard2e544693 창0/잔여0/USER_SAVE0·자기예약공식반환을확인했다. 후속자기wrapper는유효예약선두owner=unity-ui-ultrawide·PC잠금없음·실제Unity/Player없음의안정표본과실행직전재확인/예약만료40분이상여유후에만공식browser를호출한다. 타인예약/잠금/프로세스조작0,CLI68b7/Queue8a00원본불변. 웹전체수집한도1800초,페이지탐색90초이며단일비동기Git batch/정확blob·LFS검증/정상context·browser·서버·Git종료대기를사용한다. 실패자료는시도별I:보존한다.
+
+동일 패키지 전파일212개(4472617343bytes)의목록결합SHA256은c32f58f2c39e4b6e4b2aa0891317eebb76c408900b2a523d334e6eac38c5b5fd다. Managed153/전체160DLL을구분하며디버그보관파일1개는명시한다. expanded-r4/패키지_전파일_SHA256.json의각상대경로·크기·SHA로설치본을대조한다. 월드56장의실제HUD5컴포넌트280개는물리edge/중앙행렬대조이탈0(최대좌표오차0.000081381px), 월드_HUD_실제배치검증.json을따른다.
+
+맵담당은같은R4 field의1920/3840 시작·중간·보스입구대표6원본을직접재검토했다. 정지구도의지면/수면연결·양측시야·HUD표시를확인했으며전체아트는R5이끼카펫·원형뿌리색패드·가는외곽나무/빈둑때문RETOUCH유지다. Core시야/자연전투/웹/전체UI수락으로확대하지않는다. 영수증expanded-r4/field/맵담당_R4_대표6구도_판정.json.
+
+배너컬러블러의정확호출소유는추론이다. 원시audit.source는NativeLobby.SilverHell.cs:11 공통wrapper이므로정확callsite기록이라고주장하지않는다. 동결NativeRegionHud Gitblob7df3cab9와실제8방향기하·알파비·clip·순서조합으로같은glyph효과관계를도출했고,통합담당도범위한정으로수용했다. 실제3곳1x는전환흐림표본이며정지문구가독성PASS로확대하지않는다. 원시468FAIL과모든요소를보존한다.
+
+웹직접비교에서afcb는3f19/f308/9780을정상조상으로포함하지만초기_introGuide의#introKeys 중앙배치/초기HUD숨김계약이그대로임을실제PNG와코드로확인했다. Native는최신사용자확장지시가우선이므로오른쪽EdgeMatrix·상태/HUD노출·실제장식16px예약을유지한다. web-native-map.json의튜토리얼0..3에의도적차이를명시하고동일배치/픽셀일치로주장하지않는다. 웹원본readonly·재현CSS주입0.
+
+
+## R5 필수 로딩 팁 보완 — 2026-11-01 KST
+
+R4 웹 최종400/guard1ba9f2bd는 정상종료·창/잔여/사용자세이브0·페이지/HTTP/라우터/cleanup0을 확보했다. 그러나 같은 크기 직접비교에서 Native 전환로딩에 팁 문구행이 없음을 확인해 필수 누락 FAIL로 보존한다. 통합 담당도 브리프 최종35장 절에 따른 필수 보완으로 판정했다. R4를 READY로 제출하거나 새 R5 DLL 검수로 소급하지 않는다.
+
+|항목|R5 계약|
+|---|---|
+|승인 원문|웹afcb65b0a game.html _LOAD_TIPS_KO/EN의0기준10/11/13/14. 현재Native에있는보스패턴·인벤비교/장착·R수거·HP설정자동물약4종만사용. 미이식능력·미확인흡수/배율/상태이상수치힌트는반입하지않음|
+|언어|현재StageFlow의KO/EN선택을유지. KO이외는승인EN폴백이며다른언어완역을주장하지않음|
+|선택/키|단계번호 mod4로결정. Core/Unity난수·게임시계·세이브수정0. inventory/interact 실제primary,없으면secondary를사용하며둘다없으면일반보스패턴팁. UI검수ForcedTip은샷뒤−1복귀|
+|팁서체|승인body서체400,clamp(11px,1.25vh,16px)의물리px반올림.900높이11px·1080높이14px·1600높이16px. actualGUI.matrix=identity로가로폭/EdgeScale가물리글자를늘이지않게함|
+|팁색/자간/높이|#b2a996·자간.06em·검정2physicalpx그림자. 줄높이=max(fontPixels×1.4,실제CalcSize(tip).y+4physicalpx). 실제잉크높이를고려|
+|수직배치|기존하단padding/clamp와22vh/150..300px그라데이션유지. 팁은진행선아래8physicalpx,기존제목/층정보/진행선묶음을팁높이+9physicalpx만큼위로이동. 원화크기·확장선택/contain폴백·추가검은띠금지유지|
+|게이트|index 로비게이트의기존로고/제목계약보존. game 전환로딩에팁표시,게이트에가짜게임팁을추가하지않음|
+|검수증가|76상태×5해상도×3언어+17전환로딩×5×3=1395PNG. 실제팁255샷,KO와기존EN폴백모두확인. 입력격리/틱정지확인수도1395필수. 실제8영상120기록불변|
+|CPU|팁누락CS0103 RED→구현GREEN,미지정키잘못안내 assertion RED→일반팁대체GREEN. 좌표/선택/팁702검사PASS. 독립compile34 Core114/Runtime203 오류0. 실제새동일Player검수는별도|
+
+코드변경은NativeUiViewport/NativeGame.StageFlow/NativeLoadingSelection/NativeGame.UiOverlapCapture와정확소유tests/docs뿐이다. 기존공통b673·R5맵/HD2D1·CLI68b7/Queue8a00과원WIP520/56보존, R6/R7·HD2D2·Impact새후보인수0. R5는새remodel-scenes1 build→같은M1/field/world/UI1395/1x→MQ READY→공통/Desktop까지확인한다. 웹참조는변하지않아실제400PNG와최종안전영수증을같은입력근거로사용한다.
+
+- R5 실제 입력 키 검수: 각 5해상도×ko/de/fr에서 전환로딩06/07 캡처에만 인벤토리 V·수거 F2를 제품 KeyBindings API로 설정하고, 캡처 직후 원래 두 primary를 복원한다. secondary·사용자 설정 파일은 쓰지 않는다. coverage.tipKeyChanges 30행과 실제 audit 글자 V/F2·복원 여부를 함께 확인한다. API 상태 검수이며 OS 입력/자연 플레이 증거와 구분한다.

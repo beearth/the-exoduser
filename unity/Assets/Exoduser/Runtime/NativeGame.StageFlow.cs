@@ -153,10 +153,11 @@ namespace Exoduser.UnityPort
                 if (flow.LoadPhase >= 2 && fade > .5f)
                 {
                     float nt = flow.LoadPhase == 2 ? Mathf.Min(1f, (float)flow.LoadT / 35f) : 1f;
-                    string name=bossBar.BossNameForStage(Simulation.Config.StageIndex)??"???";NativeLoadingArtwork.Draw(NativeLoadingSelection.ForStage(Simulation.Config.StageIndex),name,StageSubtitle(Simulation.Config.StageIndex),Mathf.Clamp01((float)flow.LoadT/35),nt);
+                    string name=bossBar.BossNameForStage(Simulation.Config.StageIndex)??"???";NativeLoadingArtwork.Draw(NativeLoadingSelection.ForStage(Simulation.Config.StageIndex),name,StageSubtitle(Simulation.Config.StageIndex),Mathf.Clamp01((float)flow.LoadT/35),nt,false,NativeLoadingTips.Pick(NativeLoadingArtwork.ForcedTip>=0?NativeLoadingArtwork.ForcedTip:Simulation.Config.StageIndex,English,LoadingTipKey("inventory"),LoadingTipKey("interact")));
                 }
             }
         }
+        string LoadingTipKey(string action){var keys=NativeKeyBindInput.Bindings;string key=keys.Primary(action)??keys.Secondary(action);return key==null?null:KeyBindings.KeyName(key,English);}
         static void DiamondMark(float x, float y, Color c)
         {   // web fillRect 8x8 rotated 45 degrees: approximated by a 3-row stack (GUI cannot rotate cheaply), 1px hairline scale
             Fill(new Rect(x - 1, y - 4, 2, 8), c); Fill(new Rect(x - 3, y - 2, 6, 4), c); Fill(new Rect(x - 4, y - 1, 8, 2), c);

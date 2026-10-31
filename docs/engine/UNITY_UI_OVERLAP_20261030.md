@@ -260,3 +260,10 @@ R3 전면자간글자의기존1px·±.5px/3px검정그림자는frontend-black-sh
 |수정|NativeLobby의재생/재시도버튼은기존취소/종료에쓰던명시페인트공통함수LobbyActionButton을사용. NativeSilverHellUi.ActionPlate(edge28/outset6),호버Focus/pressed,글꼴공통/크기18/가운데배치,GUIStyle.none hit영역으로그림과클릭을분리. 회복Rect(28,26,240,48)·실제왼쪽위EdgeMatrix·TogglePlayback·오류재시도조건유지|
 |보존|기존취소/종료의기능/외형은같고공통함수명만변경. NativeUiAudit의불명상태차단·불투명도/가림판정엄격조건·actualGPU대조군은완화하지않음|
 |검수|새동일Player에서전5해상도/3언어시네마틱일시정지·실제영상·원시계측완전성·겹침0과1x를확인. R3의1225PNG/안전0/컴포넌트0/화면경계0을새DLL증거로소급하지않음|
+
+
+## 2026-11-01 R5 전환로딩 팁 전수
+
+R4의전환로딩팁행누락을수정한다. NativeLoadingTips 승인4종/실제키·KO/EN폴백, 물리11..16px·실제서체높이+4px·진행선아래8px는 UNITY_UI_ULTRAWIDE_20261031.md R5절을따른다. 전환로딩16종과실제누락폴백17샷을KO뿐아니라선택3언어모두수집하여총1395PNG/입력격리1395/틱정지1395가필수다. 추가팁255샷에서원시loading-tip component·실제Visible본문/서체높이·오버레이포함·진행선간격·누락/클립/겹침0을검사한다. 실제미디어120기록은변하지않는다. R4 1225장·웹400장의증명범위와새R5 DLL1395장을구분하며새Runtime SHA가있는실제Player와M1로검증한다.
+
+- R5 실제 입력 키 검수: 각 5해상도×ko/de/fr에서 전환로딩06/07 캡처에만 인벤토리 V·수거 F2를 제품 KeyBindings API로 설정하고, 캡처 직후 원래 두 primary를 복원한다. secondary·사용자 설정 파일은 쓰지 않는다. coverage.tipKeyChanges 30행과 실제 audit 글자 V/F2·복원 여부를 함께 확인한다. API 상태 검수이며 OS 입력/자연 플레이 증거와 구분한다.

@@ -10,7 +10,22 @@ namespace Exoduser.UnityPort
 {
     public sealed partial class NativeGame
     {
-        [Serializable] sealed class UiOverlapCoverage {public int schemaVersion=2,inputIsolationChecks,simulationFrozenChecks;public string runtimeSha256,unityVersion,device,deviceType;public string scope="실제 Player OnGUI·제품 API 상태 전환/검수 시계/실제 미디어 seek/8방향 투영 표본, OS 입력/자연 클리어와 구분";public string[] resolutions={"1920x1080","2560x1080","3840x1080","1600x900","2560x1600"};public string[] languages={"ko","de"};public List<string> pages=new List<string>(),frames=new List<string>();public List<UiWideMovie> movies=new List<UiWideMovie>();public List<UiWideCue> worldCues=new List<UiWideCue>();public int[] loadingImages=new List<int>(NativeLoadingSelection.Images).ToArray();}
+        [Serializable] sealed class UiOverlapCoverage {public int schemaVersion=2,inputIsolationChecks,simulationFrozenChecks;public string runtimeSha256,unityVersion,device,deviceType;public string scope="실제 Player OnGUI·제품 API 상태 전환/검수 시계/실제 미디어 seek/8방향 투영 표본, OS 입력/자연 클리어와 구분";public string[] resolutions={"1920x1080","2560x1080","3840x1080","1600x900","2560x1600"};public string[] languages={"ko","de"};public List<string> pages=new List<string>(),frames=new List<string>();public List<UiWideMovie> movies=new List<UiWideMovie>();public List<UiWideCue> worldCues=new List<UiWideCue>();public List<UiWideTipKeyChange> tipKeyChanges=new List<UiWideTipKeyChange>();public int[] loadingImages=new List<int>(NativeLoadingSelection.Images).ToArray();}
+        [Serializable] sealed class UiWideTipKeyChange {public int width,height,image;public string language,inventoryBefore,pickupBefore,inventoryChanged,pickupChanged,expectedText;public bool restored;}
+        UiWideTipKeyChange activeTipKeyChange;
+        void BeginLoadingTipKeyChange(int image)
+        {
+            var keys=NativeKeyBindInput.Bindings;activeTipKeyChange=new UiWideTipKeyChange{width=Screen.width,height=Screen.height,image=image,language=overlapLanguage,inventoryBefore=keys.Primary("inventory"),pickupBefore=keys.Primary("interact")};
+            if(!keys.TrySet("inventory","KeyV",false,out string invError)||!keys.TrySet("interact","F2",false,out string pickupError))throw new InvalidOperationException("검수 전용 팁 키 변경 실패");
+            activeTipKeyChange.inventoryChanged=LoadingTipKey("inventory");activeTipKeyChange.pickupChanged=LoadingTipKey("interact");activeTipKeyChange.expectedText=NativeLoadingTips.Pick((image-1)%NativeLoadingTips.Count,English,activeTipKeyChange.inventoryChanged,activeTipKeyChange.pickupChanged);
+        }
+        void RestoreLoadingTipKeyChange()
+        {
+            if(activeTipKeyChange==null)return;var row=activeTipKeyChange;var keys=NativeKeyBindInput.Bindings;
+            keys.TrySet("inventory",row.inventoryBefore,false,out string invError);keys.TrySet("interact",row.pickupBefore,false,out string pickupError);
+            row.restored=keys.Primary("inventory")==row.inventoryBefore&&keys.Primary("interact")==row.pickupBefore;overlapCoverage.tipKeyChanges.Add(row);activeTipKeyChange=null;
+            if(!row.restored)throw new InvalidOperationException("검수 전용 팁 키 복원 실패");
+        }
         [Serializable] sealed class UiWideCue {public int width,height;public string language,caption;public double start,end,requested,observed;}
         [Serializable] sealed class UiWideMovie {public int width,height,visual,textureWidth,textureHeight;public string language,file;public long frameBefore,frameAfter;public double timeBefore,timeAfter;public bool prepared,playing;}
         [Serializable] sealed class UiWideInputCheck {public int width,height;public bool lockedBlocked,nameOpened;}
@@ -72,7 +87,7 @@ namespace Exoduser.UnityPort
             {
                 object current=null;bool more=false;Exception error=null;
                 try{more=pending.Peek().MoveNext();if(more)current=pending.Peek().Current;}catch(Exception caught){error=caught;}
-                if(error!=null){Debug.LogError("UI_OVERLAP_FAILED "+error);SaveOverlapCaptureProgress();lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);Application.Quit(2);yield break;}
+                if(error!=null){RestoreLoadingTipKeyChange();Debug.LogError("UI_OVERLAP_FAILED "+error);SaveOverlapCaptureProgress();lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);Application.Quit(2);yield break;}
                 if(!more){pending.Pop();continue;}
                 if(current is IEnumerator child){pending.Push(child);continue;}
                 yield return current;
@@ -173,7 +188,7 @@ namespace Exoduser.UnityPort
                 lobby.StartupCaptureState.Skip();lobby.SelectPreview();lobby.EnterNativeTest();
                 frontendEntryInputFence=false;Running=false;menu=false;EndFirstPractice(true);Running=false;
                 areaTitle.Hide();levelUp.Hide();yield return UiOverlapShot("HUD");yield return UiArrowShots();regionHud.ForcedBannerAge=1;regionHud.ShowBanner(Simulation,0,false);yield return UiOverlapShot("지역진입");regionHud.ShowBanner(Simulation,0,true);yield return UiOverlapShot("지역정화");regionHud.ForcedBannerAge=null;regionHud.Reset();
-                if(language=="ko"){var load=Simulation.Stage;int oldPhase=load.LoadPhase;double oldT=load.LoadT,oldFade=load.LoadFade;load.LoadPhase=2;load.LoadT=35;load.LoadFade=1;foreach(int image in NativeLoadingSelection.Images){NativeLoadingArtwork.ForcedImage=image;yield return UiOverlapShot("전환로딩"+image.ToString("00"));}NativeLoadingArtwork.ForcedImage=1;NativeLoadingArtwork.SimulateMissingWide=true;yield return UiOverlapShot("전환로딩폴백");NativeLoadingArtwork.ForcedImage=-1;NativeLoadingArtwork.SimulateMissingWide=false;load.LoadPhase=oldPhase;load.LoadT=oldT;load.LoadFade=oldFade;}
+                {var load=Simulation.Stage;int oldPhase=load.LoadPhase;double oldT=load.LoadT,oldFade=load.LoadFade;load.LoadPhase=2;load.LoadT=35;load.LoadFade=1;foreach(int image in NativeLoadingSelection.Images){NativeLoadingArtwork.ForcedImage=image;NativeLoadingArtwork.ForcedTip=(image-1)%NativeLoadingTips.Count;if(image==6||image==7)BeginLoadingTipKeyChange(image);try{yield return UiOverlapShot("전환로딩"+image.ToString("00"));}finally{RestoreLoadingTipKeyChange();}}NativeLoadingArtwork.ForcedImage=1;NativeLoadingArtwork.ForcedTip=NativeLoadingTips.Count-1;NativeLoadingArtwork.SimulateMissingWide=true;yield return UiOverlapShot("전환로딩폴백");NativeLoadingArtwork.ForcedImage=-1;NativeLoadingArtwork.ForcedTip=-1;NativeLoadingArtwork.SimulateMissingWide=false;load.LoadPhase=oldPhase;load.LoadT=oldT;load.LoadFade=oldFade;}
                 BeginFirstPractice();Running=false;yield return UiOverlapShot("실습안내");firstPractice.Start();yield return UiOverlapShot("실습진행");practiceScroll=new Vector2(0,9999);yield return UiOverlapShot("실습스크롤");EndFirstPractice(true);Running=false;practiceScroll=Vector2.zero;
                 menu=true;pauseMenu.Reset();pauseMenu.Navigation.ObserveReleased(false);yield return UiOverlapShot("일시정지");
                 pauseMenu.Navigation.PointAt(3);ApplyPauseCommand(pauseMenu.HandleKey(PauseKey.Accept,false,false));pauseMenu.Navigation.ObserveReleased(false);yield return UiOverlapShot("종료확인");
