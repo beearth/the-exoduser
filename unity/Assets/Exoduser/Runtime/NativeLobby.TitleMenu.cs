@@ -68,7 +68,7 @@ namespace Exoduser.UnityPort
         void EnsureTitleArt()
         {
             if (titleArtLoaded) return; titleArtLoaded = true;
-            titleLogo = Resources.Load<Texture2D>("Art/lobby/logo_exoduser"); titleBg = Resources.Load<Texture2D>("Art/lobby/title_bg_20261028");
+            titleLogo = Resources.Load<Texture2D>("Art/lobby/logo_exoduser_solid"); titleBg = Resources.Load<Texture2D>("Art/lobby/title_bg_20261028");
             titleMenuFont = NativeSilverHellUi.Font() ?? Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular"); titleBuildFont = Resources.Load<Font>("Art/fonts/Cinzel-VariableFont_wght");
             titleVeil = BakeTitleVeil();
         }

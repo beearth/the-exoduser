@@ -129,7 +129,7 @@ namespace Exoduser.UnityPort
             if(silverArtLoaded)return;
             silverArtLoaded=true;
             gateSigil=Resources.Load<Texture2D>("Art/ui/silver_hell/gate_sigil_20261028");
-            gateLogo=Art("logo_exoduser");
+            gateLogo=Art("logo_exoduser_solid");
             gateEnterLine=Resources.Load<Texture2D>("Art/ui/silver_hell/gate_enter_line");
             lobbySilverEnter=Resources.Load<Texture2D>("Art/ui/silver_hell/lobby_enter_btn_silver_20261029");
             lobbySilverDisabled=Resources.Load<Texture2D>("Art/ui/silver_hell/lobby_enter_disabled");

@@ -17,14 +17,28 @@
 | 대장간 | 중복 큰 눈 배경을 제거하고 기존 원화 외곽을 보존. 본문은117px 위로, GridView 높이570→687, 카테고리는 같은 내용 시작선에 배치 |
 | 설정 / 인벤토리 | 설정 본문 Y196/H787로60px 확보, 탭Y153. 인벤 제목은 중앙64px, 전투력 왼쪽/악의 값 오른쪽 유지. 전체 창은 중앙 안전영역 |
 | 스킬 | 설명판 실제 왼쪽24·폭270·패딩16·제목23·본문15, 실제 설명 높이 바로 아래 강화/SP. 합성 계열 없으면 오른쪽 로드맵 생략. 초광폭 중앙 최대1800, 슬롯 줄 중앙. 13기존 슬롯+구르기/X처형/T자동석궁=16표시. 구르기·처형 고정/교체불가, 나머지 전용과 구분. 실제 장착 기술명·KeyBindings 표시. RMB=마법, E=칼등 처내기 아이콘 정정. Space/Z 미장착은 실제 습득 필요/장착 필요이며 Lv50 슬롯 잠금 신설0 |
-| 로딩 실제 목록 | 기존 Unity 로고만 쓰던 전환에 웹 활성19장 원본+1/2/3 확장6장 도입. rd16장은 Unity에서 참조하지 않으므로 미반입. 승인 원화31파일(로딩25+메달1+빈소켓3+부츠1+석궁1), 신규 생성0. 각 PNG/무손실 WebP→PNG의 decoded RGBA SHA256 일치 |
-| 로딩 선택 / 구도 | W/H>2.5이면32판4096×1152, >1.8이면21판2730×1152, 그 외 원본. 전체 contain/center. 확장판 실패·없는 나머지는 같은 원본 블러/밝기.28 뒤에 원본 전체 보존. QA는 실제 없는 확장 리소스를 요청해 폴백 확인 |
-| 로딩 상태 | 그림과 분리한 아래 clamp(120px,15vh,200px), gate clamp(100px,13vh,170px). 제목 clamp(16px,2.1vh,26px), 층정보 clamp(11px,1.35vh,17px), 진행선3px·폭min(32vh,80vw). 전환의 callback/LoadPhase/시간 변경0. 로딩 그림·문구는 HUD 위에 그려 가림 방지 |
-| 실제 컴포넌트 검사 | 감사기의 실제 OnGUI 변환 후 frontend-right, hud-minimap/objective/hp-frame/mp-frame/skills, startup-guide/practice-panel/guide-footer, loading-art/status, common-title 경계를 기록. 글자 검사와 별도로 가장자리 앵커·중앙 정렬·안내/구슬/상태판 충돌 검사 |
+| 로딩 실제 목록 | Unity 활성19장 원본은 실패 폴백용으로 유지. 최종 승인19×3 확장판(16/21/32) 인수 대기이며 rd 대기후보16장은 런타임 미참조라 반입하지 않음. 초기3장 확장판은 이전 후보 이력 |
+| 로딩 선택 / 구도 | W/H>2560/1080이면32, >1920/1080이면21, 그 외16. 승인 확장판은 전체 화면 cover하되 원래 보호 피사체 영역을 유지. 누락만 동일 원본 블러 밝기.28+전체 contain. 실제 없는 리소스를 요청해 폴백 검사 |
+| 로딩 상태 | 전체 높이 원화 위 하단 clamp(150px,22vh,300px), rgba(5,5,6,0)→.32@35%→.78 그라데이션. 상단여백 clamp(44px,7vh,96px), 하단 clamp(18px,3vh,44px), 뼈색 제목 clamp(16px,2.1vh,26px), 층정보 clamp(11px,1.35vh,17px), 금빛 진행선1px·폭min(32vh,80vw). 전환 callback/LoadPhase/시간 변경0 |
+| 실제 컴포넌트 검사 | 감사기의 실제 OnGUI 변환 후 frontend-right, hud-minimap/objective/hp-frame/mp-frame/skills, startup-guide/practice-panel/guide-footer, loading-art/source-canvas/status, common-title 경계를 기록. 글자 검사와 별도로 가장자리 앵커·중앙 정렬·안내/구슬/상태판 충돌 검사 |
 | 새 캡처 목표 | 공통50화면×5해상도×ko/de/fr=750 + 한국어 전환원화19종/확장실패1종×5=100, 합850 PNG. 5해상도는1920×1080,2560×1080,3840×1080,1600×900,2560×1600. 이전480장은 변경 전 이력 |
-| 보호 / 검증 경계 | Core·전투·저장 형식 변경0. 미이식 고정기술·성장 상태는 이 UI 변경으로 이식 완료가 되지 않음. 기존 미채택3D 무대·원본520WIP는 보존하며 순수 후보에서 제외. 정식 -remodel-scenes 1 빌드→동일 빌드 M1→PNG/1x/웹 비교→MERGE_QUEUE→unity/main 비강제 병합→Desktop 순서 유지 |
+| 보호 / 검증 경계 | Core 투사체 화면 정리 경계2파일만 아래 월드 계약대로 변경. 전투 수치·저장 형식 변경0. 미이식 고정기술·성장 상태는 이 UI 변경으로 이식 완료가 되지 않음. 기존 미채택3D 무대·원본520WIP는 보존하며 순수 후보에서 제외. 정식 -remodel-scenes 1 빌드→동일 빌드 M1→PNG/1x/웹 비교→MERGE_QUEUE→unity/main 비강제 병합→Desktop 순서 유지 |
 
-웹 비교 정본은 origin/main 3f19b0bd1884ce22eaeab3c6f70e74a145762530(가장자리·최종 메달·소켓·로딩 포함)으로 고정한다. 기존513d14f/145장 웹 증거는 이전 이력이다. 원본 웹 작업본/INDEX/WIP는 수정하지 않는다. 원화 반입 근거는 I:/EXODUSER-Storage/demo-art/unity-ui/ultrawide/승인원화_반입영수증.json이다.
+웹 비교 기준은 기존3f19b0b에 월드9780db0c·불투명 로고7dc96cd를 포함한 승인 원격 main이며 최종35장 로딩 반영 SHA까지 확정 후 동결한다. 초기31파일 반입 영수증과 신규 로고 영수증은 I:/EXODUSER-Storage/demo-art/unity-ui/ultrawide/에 보존한다. 실제 전체 확장판 인수·Player 검수 전에는 완료가 아니다.
+
+## 인게임 월드 초광폭 — 실제 Player 검수 대기
+
+| 항목 | 구현·검수 계약 |
+|---|---|
+| 카메라 | 실제 HudCamera를 사용. 3D 카메라 세로FOV46.9453·pitch48.7014·distance14·lookAhead1.45 보존, rect전체·RT없음·가로 시야 확대를 4해상도에서 계측. 월드에 중앙 UI 마스크 적용0 |
+| 적 사격 / 루팅 | FieldEnemyCanShoot는 실제 2D/3D 카메라에 Core64px 사방을 투영하여 네 모서리가 모두 안일 때 허용. IsLootOnScreen은 동일 카메라0margin. 사격·어그로·수거 거리 규칙 수치 변경0 |
+| 일반 투사체 | DruidBoss.WorldPointVisible 선택 callback, null이면 기존 로직. Life<=0일 때 기존 거리제곱6250000 밖이어도 실제 화면과 R+100px 영역이 겹치면 Life=1로 유지. 화면 밖/강제만료Life<=−900은 기존 정리. 지뢰·빨콩 별도 수명 그대로 |
+| 2D 청크 | camera Core중심의 floor(x/1000),floor(y/1000), radiusX=max(2,ceil(halfWidth/1000)), radiusY=max(1,ceil(halfHeight/1000)). 기존1920 기본 반경2/1 유지, 확대/광폭 화면의 보이는 청크를 보존 |
+| Core 회귀 | 실제 UpdateProjectiles RED→GREEN 및 4비율×3zoom×5X×3Y 청크 포함 검사 총2364 PASS. 기본 null/offscreen 동작·2500 정확 경계·지뢰/빨콩/강제수명 검사 |
+| 전체 맵 의존 | 공통 기존 RM1 지형은 원본200² 중 일부 범위뿐임을 확인. A2 R3 전체80×80u가 담당 검수·공통 인수 전 NOT_READY이므로 미검수 후보 직접 채택0. 지형/충돌/장식 WIP 수정0 |
+| 실화면 목표 | 1920×1080·2560×1080·3840×1080·2560×1600의 시작/전투/보스앞12장과 가로·세로 이동24장. 카메라 실제 viewport/픽셀Rect/FOV/지면범위·보행가능 위치 기록. 1920/3840은 같은 seed·적32·4초·직접60Hz 입력 표본 FPS, 자연 플레이/장시간 보증과 별도 |
+| 픽셀 증거 한계 | 동일 결합 후보의1920 렌더 반복/viewport 유지 비교를 기록. 과거 다른 빌드와의 변경픽셀0 증거로 확대하지 않음. 최종 비교 범위는 실제 영수증 기준 |
+| 로고 | 승인7dc96cd의logo_exoduser_solid.png(1506×719), SHA256167e8465a0aec6fa5e8cd90131f203a86a27dccca2aa913a317cffe93c7d413d. 원본 보존·일반 alpha blend·비율/높이 기준. gate/메뉴/로비/로딩의 경로 통일. 영상 합성 로고는 별도 |
 
 ## 이전 중앙 안전영역 후보·검수 이력 — 현행 전달 근거 아님
 

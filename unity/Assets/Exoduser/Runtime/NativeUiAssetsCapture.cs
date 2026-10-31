@@ -21,7 +21,7 @@ namespace Exoduser.UnityPort
             if(srgbProbe==null){srgbProbe=new Texture2D(1,1,TextureFormat.RGBA32,false,false);linearProbe=new Texture2D(1,1,TextureFormat.RGBA32,false,true);srgbProbe.SetPixel(0,0,new Color(.5f,.5f,.5f,1));linearProbe.SetPixel(0,0,new Color(.5f,.5f,.5f,1));srgbProbe.Apply();linearProbe.Apply();}
             GUI.color=new Color(.5f,.5f,.5f,1);NativeUiAudit.DrawTexture(new Rect(100,100,200,200),Texture2D.whiteTexture);GUI.color=Color.white;NativeUiAudit.DrawTexture(new Rect(400,100,200,200),srgbProbe);NativeUiAudit.DrawTexture(new Rect(700,100,200,200),linearProbe);
             var style=new GUIStyle{font=NativeSilverHellUi.Font(),fontSize=60};style.normal.textColor=new Color(.5f,.5f,.5f,1);NativeUiAudit.Label(new Rect(100,400,1000,100),"가나다 TEXT 0.5",style);style.normal.textColor=NativeSilverHellUi.TextColor(new Color(.5f,.5f,.5f,1));NativeUiAudit.Label(new Rect(100,700,1000,100),"가나다 TEXT 보정 0.5",style);style.normal.textColor=Color.white;NativeUiAudit.Label(new Rect(100,550,1000,100),"가나다 TEXT 1.0",style);
-            var logo=Resources.Load<Texture2D>("Art/lobby/logo_exoduser");NativeUiAudit.DrawTexture(new Rect(1100,100,310,148),logo,ScaleMode.ScaleToFit,true);
+            var logo=Resources.Load<Texture2D>("Art/lobby/logo_exoduser_solid");NativeUiAudit.DrawTexture(new Rect(1100,100,310,148),logo,ScaleMode.ScaleToFit,true);
             GUI.color=Color.white;
         }
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]static void Begin()
