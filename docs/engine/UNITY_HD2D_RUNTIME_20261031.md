@@ -142,3 +142,21 @@
 | 보호 | 기존guard WIP·초기미추적57경로를정확바이트로보존,미추적C#0. 보관영수증archive-receipt.json/입력보존untracked-before-merge.json. 복구용미추적백업branch는정식모듈채택이아니다. |
 | Core 경계 | 현재Core는Pause공통과동일하며HD2D1단계가추가한Core변경0. 이전087의114전체바이트동일주장은15c기준의당시증거이고,이번PauseNavigation변경을포함한순수제품입력의새빌드/같은M1/Player검수를별도로진행한다. 2단계Core·surface·리마스터후보는여전히I미적용. |
 | 검증 상태 | Unitytree동일성은새실행검증의준비다. 순수새DLL/build/M1/1600·1920·3840Player/1x/공통Desktop은이정리커밋만으로완료하지않는다. 앞선4공식GPU예약을보존하고기존Main owner로꼬리한건만검수한다. |
+
+
+## 순수1단계 같은빌드 재검수 — 985daefcf r2
+
+|항목|실제새증거·범위|
+|---|---|
+|입력/빌드|985daefcf6343c9221731249ed85aeecebb3e989(Unitytree95af39c39dec5bb607c2b92ea3f4418e137480c0)→공식35ab5195/Succeeded/builder오류0/3,102,479,948bytes. 원로그errorLogs2/기존importer·licensing경고보존|
+|같은Runtime|ae1c4cf27663d1786222e0a0da0d5078505835f74005c87c9a9e0d805bc5822b. 실제212파일/DLL160/MCP파일·참조0, 3실행전후EXE/Runtime/Core SHA동일|
+|Core검사|순수985정확114입력4suite(드루이드5,421,635/실제패링26/특수48,708/피격47,559검사)모두0. PauseNavigation포함현재입력을빌드후114byte재대조0. 이전087입력으로대신하지않음|
+|M1|ecddc37a/23항목ok/D3D11/batch기능만|
+|Player|9bf3b4da/1920·3840×1080/336PNG·336frame/footMax .6790987849px/pixelMax .00048828125px/배우Shader실패0/각360틱종료HP526|
+|조작표시|98695705/1600×900/E·LMB54PNG/7checks0. 실제가상InputSystem→FixedUpdate. 자연피격·패링·OS손조작아님|
+|PNG감사|총390개1,704,217,584bytes/IHDR·IEND·SHA전수0실패. 원본수정0/원본1x부분추출비교|
+|보존|build유래519경로를I에정확보존후CAS원본복원519. INDEX0/trackedUnity clean/guard WIP·기존57 byte불변. 창/사용자세이브/잔류각0. 공식GPU반환exit0|
+|시각|선택정지·이동/회피·예고·E/LMB원본1x직접검토: 1단계배우전환·발선/재질·기본프레임/표시연결표본PASS, 전체아트RETOUCH. 드루이드원본상단잘림/회피뻣뻣함/영웅대비약함/분리shield arc/옛RM1수면은유지해후속담당명시|
+|다음인수|R5 1a3기술게이트는R2같은DLL/M1·실제field22로별도충족/전체아트RETOUCH. 순수맵+HD호환4함수정상병합후새실행검수. UI아직FAIL후보0. 공통·Desktop지정단독writer통합/단계2·3·리마스터채택은아직미완|
+
+실물판정/근거는 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/STAGE1_PURE_VISUAL_REVIEW_985_R2.md, STAGE1_PURE_BUILD_LINK_985_R2.json, stage1-pure-validation-985-r2/receipt.json, stage1-pure-review-985-r2/raw-png-audit.json. 옛087/실패내역은역사그대로보존하며새순수본증거로덮지않는다.

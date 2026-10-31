@@ -160,3 +160,8 @@ R7 현재같은제품의 실제검수·입력보존·전체아트RETOUCH경계�
 
 
 2026-10-31 HD2D 보완: 이 파일의 NativeHeroMotionClock/3D Animator 계약은 유지한다. 같은 NativeHeroMotion.cs에 원본 warrior-bat-swing.js의 순수 NativeHeroSpriteMotion(.85, 일반5틱/E20틱, 회복6/7/8)을 추가했고 기본 픽셀 표현은 실제 Core 상태/남은틱으로9셀을 선택한다. 상세 수치와1344조건 대조는 UNITY_HD2D_RUNTIME_20261031.md의 원본 전사 공격 표시 복원을 따른다. Core나3D모션 길이변경은없다.
+
+
+### 순수 HD-2D 985 같은빌드 재검수
+
+[현재1단계실물검수](UNITY_HD2D_RUNTIME_20261031.md#순수1단계-같은빌드-재검수--985daefcf-r2)의새build35ab5195·M1ecddc37a(23/23)·Player9bf3b4da(336PNG)·E/LMB98695705(54PNG/7checks0)로순수제품입력을검수했다. 원본1x선택프레임의배우전환·발선/재질·표시연결만범위한정PASS/전체아트RETOUCH. 기존3D코드off보존, 리마스터채택0. R5맵결합/단계2·3/공통·Desktop은새소스별도미완이며옛3D/087실행영수증으로대체하지않는다. 상세I: STAGE1_PURE_VISUAL_REVIEW_985_R2.md.

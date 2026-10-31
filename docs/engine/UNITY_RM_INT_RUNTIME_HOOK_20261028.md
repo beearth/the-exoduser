@@ -157,3 +157,8 @@ Core(`Runtime/Core`)는 바꾸지 않았다.
 ## 2026-10-31 HD-2D 방향 확정 — 현행 표현 전환
 
 [본 적용 계약](UNITY_HD2D_RUNTIME_20261031.md)에 따라 현재 후보는 픽셀 스프라이트를 기본으로 사용한다. NativeHeroView 3D 연결 코드는 보존하고 --legacy-models에서만 생성한다. 캐릭터만 원본 알파 발선·출력1화소 스냅·URP 조명·접지 그림자를 적용한다. 드루이드 원본 시트의 중복 additive 발광은 기본 해제한다. 아래의 과거 3D 후보 검수와 Desktop 영수증은 당시 입력의 이력이며 HD2D 후보의 검증을 대신하지 않는다. 현 후보 Player·공통통합·Desktop은 아직 미완이다.
+
+
+### 순수 HD-2D 985 같은빌드 재검수
+
+[현재1단계실물검수](UNITY_HD2D_RUNTIME_20261031.md#순수1단계-같은빌드-재검수--985daefcf-r2)의새build35ab5195·M1ecddc37a(23/23)·Player9bf3b4da(336PNG)·E/LMB98695705(54PNG/7checks0)로순수제품입력을검수했다. 원본1x선택프레임의배우전환·발선/재질·표시연결만범위한정PASS/전체아트RETOUCH. 기존3D코드off보존, 리마스터채택0. R5맵결합/단계2·3/공통·Desktop은새소스별도미완이며옛3D/087실행영수증으로대체하지않는다. 상세I: STAGE1_PURE_VISUAL_REVIEW_985_R2.md.
