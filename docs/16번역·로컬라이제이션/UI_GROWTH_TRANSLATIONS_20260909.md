@@ -83,7 +83,7 @@
 | growth-054 | MP 재생 | MP regeneration |
 | growth-055 | 최대 ST | Maximum ST |
 | growth-056 | ST 재생 | ST regeneration |
-| growth-057 | 악의구슬 획득량 | Malice Sphere gained |
+| growth-057 | 악의오브 획득량 | Orb of Malice gained |
 | growth-058 | 최대 HP | Maximum HP |
 | growth-059 | 물리 방어 | Physical defense |
 | growth-060 | 정예 / 보스 추가 피해 | Elite / boss bonus damage |

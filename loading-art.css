@@ -1,0 +1,23 @@
+/* Loading and waiting screens: artwork and Silver Hell status occupy separate regions. */
+.loading-art{position:absolute;inset:0;overflow:hidden;isolation:isolate;background:#050506}
+.loading-art>img:not(.loading-backdrop){position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;z-index:1;filter:none}
+.loading-art>.loading-backdrop{position:absolute;inset:-28px;width:calc(100% + 56px);height:calc(100% + 56px);object-fit:cover;filter:blur(24px) brightness(.28);z-index:0;pointer-events:none}
+#stageTransition{--loading-footer:clamp(120px,15vh,200px);background:#050506!important;overflow:hidden}
+#stageTransition .loading-art{bottom:var(--loading-footer)}
+#stLoadStatus{position:absolute;bottom:0;left:0;right:0;height:var(--loading-footer);padding:12px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:linear-gradient(#0b0c0d,#050506);border-top:1px solid rgba(155,158,158,.2);text-align:center;pointer-events:none;overflow:auto}
+#stNextName{max-width:min(88vw,150vh);font:300 clamp(16px,2.1vh,26px)/1.5 var(--sh-font,'Hahmlet',serif);color:#e6e3dc;letter-spacing:.12em;overflow-wrap:anywhere}
+#stFloorInfo{font:400 clamp(11px,1.35vh,17px)/1.4 var(--sh-font,'Hahmlet',serif);color:#a8aaa8;letter-spacing:.08em}
+#stLoadTrack{width:min(32vh,80vw);height:3px;background:#27292a;flex-shrink:0}
+#stLoadBar{height:100%;background:#b7b6af;box-shadow:0 0 9px rgba(194,26,16,.25);width:0%;transition:width .2s}
+#stLoadTip{font:400 clamp(11px,1.25vh,16px)/1.4 var(--sh-font,'Hahmlet',serif);color:#8a8d8d;letter-spacing:.06em}
+#loadingBodyArt{position:fixed;inset:0;z-index:-1;pointer-events:none}
+#loadingBodyArt>img:not(.loading-backdrop){filter:brightness(.45)}
+#chapterGate{--loading-footer:clamp(100px,13vh,170px)}
+#chapterGate .loading-art{bottom:var(--loading-footer)}
+#chapterGate #chGateImg{background:transparent!important;z-index:1!important}
+#chGateStatus{position:absolute;bottom:0;left:0;right:0;min-height:var(--loading-footer);margin:0;padding:26px;display:flex;align-items:center;justify-content:center;gap:16px;text-align:center;overflow-wrap:anywhere;font:300 clamp(16px,2.1vh,26px)/1.5 var(--sh-font,'Hahmlet',serif);color:#d6d3cd;background:#08090a;border-top:1px solid rgba(155,158,158,.2)}
+#chGateStatus::before{content:'';width:16px;height:16px;flex:none;border:1px solid #373a3b;border-top-color:#cfccc6;border-radius:50%;animation:spin 1s linear infinite}
+@media(prefers-reduced-motion:reduce){#chGateStatus::before{animation:none}#stLoadBar{transition:none}}
+
+#chapterGate>.cin-lb{display:none}
+#chGateStatus{z-index:30}

@@ -23,7 +23,7 @@
 
 | API / 새 코드 위치 | 원본 `game.html` 행 | 그대로 이식한 내용 |
 |---|---|---|
-| `hp_definition()` / producer:20 | 27677~27679 | hp의 7필드: name 악의구슬 추출, emoji 👿, col #33cc66, colG #66ff99, base100, per20, desc `악의구슬을 소모해 지옥의 힘으로 회복합니다 (+100 HP)`. 매 호출 독립 Dictionary, 원본 POT/G 전역 생성 아님 |
+| `hp_definition()` / producer:20 | 27677~27679 | hp의 7필드: name 악의오브 추출, emoji 👿, col #33cc66, colG #66ff99, base100, per20, desc `악의오브를 소모해 지옥의 힘으로 회복합니다 (+100 HP)`. 매 호출 독립 Dictionary, 원본 POT/G 전역 생성 아님 |
 | `pot_heal(level)` / :24 | 28072 | `lv<=0 ? 100 : lv===1 ? 150 : lv*100`. 0~10은100/150/200/300/400/500/600/700/800/900/1000. 함수에 없는 10단 clamp/반올림 없음; −1→100,11→1100,0.5→50 |
 | `enhanced_heal(level,potion_power)` / :32 | 35894,35903 | `~~(potHeal('hp')*(1+potionPower))`. 기존 Formula의 `js_to_int32` 재사용. 100×1.12→112,150×1.12→168, NaN/Infinity→0, signed32 overflow 보존 |
 | `auto_cooldown(...)` / :42 | 35898~35902 | 장갑/벨트 각각 unary+ 뒤 falsy0→상한0.2. pRegen은 ToNumber×0.03→상한0.3이고 `or 0` 없음. `max(6,ToInt32(420*(((1-g)-b)-r)))`. 음수 하한 clamp/수동 potionCdRed/300f/autoPotThr 항 추가 없음 |

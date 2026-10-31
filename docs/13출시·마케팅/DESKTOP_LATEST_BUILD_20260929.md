@@ -36,7 +36,7 @@
 | 실제 내장 서버 | 사본 `node-main.js`를 포트 3341 및 작업 폴더 안 임시 APPDATA로 실행한 뒤 검증. 종료한 프로세스는 이번 검사를 위해 생성한 자식 프로세스 하나뿐 |
 | 정적 의존성 | 로비·게임·쉬운 테스트 진입점, three-runtime.js·GLTFLoader.js·three.min.js HTTP 200 및 응답 SHA-256 일치 |
 | 최신 맵·영상 | CH1 production_finish chunk_0_0.png 및 bg_scene1_loop.mp4: HTTP 206 범위 응답과 원본 바이트 일치 |
-| 저장 API | 빈 슬롯·초기 악의구슬 확인 후 임시 경로에서 저장/불러오기·악의구슬 저장 왕복 통과 |
+| 저장 API | 빈 슬롯·초기 악의오브 확인 후 임시 경로에서 저장/불러오기·악의오브 저장 왕복 통과 |
 | 바탕화면 사본 | 최초 복사 6,600개 크기·SHA-256 일치. 전체화면 후속 변경 3개 파일도 갱신 manifest와 크기·SHA-256 일치 |
 | 전체화면 후속 변경 | package.nw/package.json의 window.fullscreen을 false→true로 변경. README_KO.txt·BUILD_INFO.txt 안내도 동기화. 준비본·바탕화면 사본 동일 설정 확인 |
 | 백업 | 변경 전 3개 파일을 tmp/desktop-test-20260929/fullscreen-stage/before/에 보존 |

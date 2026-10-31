@@ -40,7 +40,7 @@
 | 시스템·키 안내 | 같은 상/하단 예약을 사용. keyGuide는 overflow-y:auto·border-box. 안내 내용은 기존 내부 스크롤·푸터 동작 유지 |
 | 펫 | game.html _petBubbleShow의 _guideOpen은 parryLesson/systemLesson/keyGuide가 hidden=false, display!=none, visibility!=hidden인지 확인. 까마귀 또는 안내 있음이면 _petAtLeft=true, left20px/right auto/transform-origin left bottom. 그 외 고양이는 right20px/left auto/right bottom. 기존 원화480px·ui-scale×ui-text-scale×1.5 보존 |
 | 일반 알림 notif | left=왼쪽 inset+safe-area+20px, top=상단 inset+270px×ui-scale, max-width=min(440px,100vw−40px), 왼쪽 정렬. 펫·자원 사이에 배치. 전투 피드백 ph는 중앙·안전 폭 유지 |
-| 캐시 | game.html의 web-uiux.css=20261031-edge4, web-uiux.js=20261031-edge2 |
+| 캐시 | game.html의 web-uiux.css=20261031-edge5, web-uiux.js=20261031-edge2 |
 | 검수 도구 | tools/check-web-sidepanel.mjs: 1920×1080,2560×1080,3840×1080,2560×1600 실제 페이지 캡처·가시 텍스트 Range 겹침·HUD 중앙/가장자리·안내/구슬/상태판/펫 충돌 검사. 각 캡처 페이지를 bringToFront한 뒤 전환 완료를 기다려 가시 텍스트0을 실패 처리하고, 실제 게임 캔버스를 다시 그린다. HTTP와 디스크 SHA256 비교. 로컬 forgelab=1&stage=0 Lv1000 테스트 경로·독립 브라우저 저장소를 사용하고 서버 save API는 검수 응답으로 격리. 자연 플레이 검수와 구분 |
 
 대상 화면: 로비·캐릭터 선택·타이틀 메뉴·설정4탭·1-1 HUD·실습·시스템/키 안내·알림·인벤토리/보관함·스킬·대장간/물약 상점·성장·일시정지·클리어·난이도·조작 안내. 최종 실측·이미지·원격 SHA는 지정 sidepanel/REPORT.md와 source-receipt.json에 기록한다.
@@ -49,7 +49,8 @@
 
 ## 공통 제목 띠 후속 — 2026-10-31
 
-statwindow-brief에 따라 web-uiux.css에서 다섯 창 제목44px·성장 머리44px를 공통화하고, 기존 첫 화면 인장의 눈을 성장 배경에 연결했다. 상세 수치와 원화 근거는 [UI_COMPOSITION 최신 절](UI_COMPOSITION_20260925.md#2026-10-31-성장-창과-공통-다섯-창의-얇은-제목-띠)에만 둔다. 해당 후보의 game.html CSS 캐시는20261031-compact-title1이었으며, 사이드 판 통합본은20261031-edge4으로 두 변경을 함께 연결한다. tools/check-stat-window.mjs는 --url/--out/--modules 옵션으로 분리 server.cjs에서 두 해상도×다섯 창의 제목/본문/AP/노드 경계·검색·미리보기·요약 닫기·J 재열기·저장0을 검사한다. 스킬 본문은 다른 담당 소유이며 이번 수정 범위가 아니다.
+statwindow-brief 보정2에 따라 web-uiux.css에서 다섯 창 제목64px(40px 투명 원형 메달+24px 글자)·성장 머리64px를 공통화했다. 금빛 헤어라인 중앙을 끊어 은색 메달을 끼우고 중복되던 성장·대장간 배경 눈을 제거했다. 상세 수치와 원화 근거는 [UI_COMPOSITION 최신 절](UI_COMPOSITION_20260925.md#2026-10-31-성장-창과-공통-다섯-창의-얇은-제목-띠)에만 둔다. 통합 game.html CSS 캐시=20261031-edge5. 기존 메달 보정 원본은20261031-round-medallion. tools/check-stat-window.mjs는 --url/--out/--modules 옵션으로 분리 server.cjs에서 두 해상도×다섯 창의 제목/본문/AP/노드 경계·검색·미리보기·요약 닫기·J 재열기·저장0과1x/3x 크롭을 검사·기록한다. 스킬 본문은 다른 담당 소유이며 이번 수정 범위가 아니다.
+
 
 - 최신 origin/main 9f5db2ac6의 악의구슬 명칭·성장 제목/눈 원화·스킬 창 변경과 정상 병합했다. 공통 CSS의 양쪽 독립 구역과 양쪽 문서 이력을 모두 보존했고, game.html guard 줄수는66032다. 검수는 이 통합본에서 다시 수행한다.
 
@@ -64,3 +65,5 @@ statwindow-brief에 따라 web-uiux.css에서 다섯 창 제목44px·성장 머�
 - 최종 장식 경계 보강: 구슬 본체 밖으로44px 나오는 .globe-glass의 변환 후 실제 rect까지 HUD 예약/충돌검사에 포함했다. 1920×1080에서 안내창 하단이 본체뿐 아니라 바깥 프레임 위16px까지 비우도록 한다. 내부 체크리스트 스크롤·시작/건너뛰기 푸터는 유지한다.
 
 - 검수 좌표는 본체 bodyRect와 바깥 장식 rect를 따로 보존한다. 중앙 정렬은 HP/MP 본체의 대칭 앵커를 기준으로, 안내창 충돌은 장식까지 포함한 rect를 기준으로 한다. 기존 원화가 양쪽 모두 약1.8px 좌측 보정되어 있는 것을 중앙 이탈로 오판하지 않으며, 충돌 기준은 완화하지 않는다. 검수도구 회귀2건을 추가했다.
+
+- 원격6d190ff87의 악의오브 최종 명칭·4단계 원화/수거·빈 소켓·초광폭 로딩·64px 메달 제목을 보존 통합했다. HUD 테스트 기대명은 현행 악의오브다. 현재 CSS=20261031-edge5, JS=20261031-edge2이며, 검수 HTTP/디스크 대조는 새 화폐·로딩4모듈을 포함한21파일이다. guard 줄수는65990다.

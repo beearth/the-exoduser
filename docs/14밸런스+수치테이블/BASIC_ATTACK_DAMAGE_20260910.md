@@ -25,7 +25,7 @@
 | 기검참 일반 콤보 | 7×_skMul | 7×_skMul | Lv1=84, Lv10=401.52, Lv20=754.32배/타; meleeRef×statStr×pAtkMul 곱 후 정수화 |
 | bowRecover 캔슬 검기 | 1.2/1.2/2×이전 _skMul | 7/7/7×현재 _skMul | 후속 초반 밸런스 수정: 발사 직후에도 일반 콤보와 동일 피해. 기존 일반 대비17.14%/17.14%/28.57% 경로 제거 |
 | _fireXbow | floor((bowRef×pBowMul×pXbowMul×무기atkMul+28)×(_gxFiring 또는1)) | 이전 정수 결과×3 | 자동 normal·ghostXbowTurret 폴백, 장비·패시브·터렛·고정28 포함 |
-| fireBow | floor(bowRef×pBowMul×10)+_bowBon | 이전 결과×3 | 악의구슬1/발, 보너스 소모/reset, 관통0 |
+| fireBow | floor(bowRef×pBowMul×10)+_bowBon | 이전 결과×3 | 악의오브1/발, 보너스 소모/reset, 관통0 |
 | _skSpecificDetails(kiSlash) | 오래된 1.2/1.2/2, 레벨당100% | 일반 콤보별7×현재레벨 _SK_MUL, 레벨당+35.28배 | 표시 레벨 slv에 따라 계산, 소수2자리 |
 
 공격속도·선후딜·소모 자원·범위·속도·관통·애니메이션·소리는 바꾸지 않는다. 회전참, 선택형 석궁 스킬, 우클릭 마법, E 처내기/차징, 패링 반사 배율은 이번 수정 범위가 아니다. 반사 최소치는 기존 고정14×이며 현재 기검참1타와 같은 값이라는 과거 설명만 정정한다. 평타 ST 소비 가산은3배에 포함되지 않으며, 그 외 정수 반올림·적 방어·속성 적용으로 표시 피해 비율은 미세하게 달라질 수 있다.
