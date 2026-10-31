@@ -5,6 +5,7 @@ namespace Exoduser.UnityPort
 {
     public sealed partial class NativeGame
     {
+        [System.Serializable] sealed class A2FieldRenderCost { public string scope="격리 QA 정지구도 렌더 부하. 자연 전투 FPS/기기 성능 보장과 구분";public int width,height,frames;public float elapsedSeconds,framesPerSecond,p95FrameMs; }
         IEnumerator A2FieldCapture()
         {
             string output=Argument("-output");
@@ -45,6 +46,13 @@ namespace Exoduser.UnityPort
                     }
                     Simulation.Player.X=p.x;Simulation.Player.Y=p.y;lastX=p.x;lastY=p.y;
                     for(int frame=0;frame<12;frame++){UpdateViews();yield return null;}
+                    // 스크린샷 ReadPixels 비용을 제외하고 실제 PlayerLoop 프레임만 측정한다.
+                    var renderCost=new A2FieldRenderCost{width=Screen.width,height=Screen.height,frames=60};
+                    var times=new float[renderCost.frames];var watch=System.Diagnostics.Stopwatch.StartNew();
+                    for(int frame=0;frame<times.Length;frame++){yield return null;times[frame]=Time.unscaledDeltaTime*1000;}
+                    watch.Stop();System.Array.Sort(times);renderCost.elapsedSeconds=(float)watch.Elapsed.TotalSeconds;
+                    renderCost.framesPerSecond=renderCost.frames/Mathf.Max(.0001f,renderCost.elapsedSeconds);renderCost.p95FrameMs=times[Mathf.CeilToInt(times.Length*.95f)-1];
+                    File.WriteAllText(Path.Combine(folder,names[i]+"-렌더부하.json"),JsonUtility.ToJson(renderCost,true));
                     yield return KeyshotSave(folder,names[i],receipt);
                 }
             }

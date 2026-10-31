@@ -1,3 +1,10 @@
+## 필드 실제 렌더 부하 기록 — 2026-10-31
+
+| 항목 | 계약 |
+|---|---|
+| 측정 | A2FieldCapture가 8곳×1920/3840×1080의 각 구도에서 기존12프레임 안정화 뒤60PlayerLoop프레임을 기록. Stopwatch 경과/평균FPS/Time.unscaledDeltaTime p95ms를 같은 폴더의 `지점-렌더부하.json`에 저장. ScreenCapture/ReadPixels 비용은 측정창 밖 |
+| 한계 | 격리 QA·정지구도·AI정지의 실제 렌더 비용이며 자연 전투/완주 성능 PASS가 아니다. 실행 전이므로 수치·성능 판정 미검증. M1은 GPU D3D11유지 batch, 실제 HUD 캡처는 hidden desktop 별도 |
+
 ## 2026-10-31 32:9 전체 시야의 렌더 범위 교정
 
 | 항목 | 현재 계약·검수 근거 |
