@@ -88,3 +88,5 @@
 - window-focus 실제 OS 검수는 현재 thread desktop 이름이 공식 ExoDesk 접두사이고 현재 전경 창이 자기 게임 창일 때만 64x64 네이티브 검수 창을 같은 숨은 desktop/자기 PID에 만들고 전경을 왕복한다. 사용자 Default desktop, 타 PID, SwitchDesktop, AttachThreadInput은 사용하지 않는다. 생성 창은 종료/실패 모두 정리한다. 실제 Application.isFocused·Unity 콜백·제품 상태가 함께 바뀌어야 nativeFocusVerified=true이다. 별도 focus-callback 사례는 제품 OnApplicationFocus 직접호출 fixture로 명시하며 OS 검수와 구분한다.
 
 - private desktop/네이티브 창 API 근거: https://learn.microsoft.com/en-us/windows/win32/winstation/desktops , https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setforegroundwindow , https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createwindowexw . 전경/desktop 사전 조건 실패 시 다른 창을 시도하지 않고 검수 실패로 끝낸다.
+
+- 네이티브 포커스 콜백 기준 횟수는 검수 창 생성 전에 저장한다. CreateWindowEx 자체가 활성 전환을 발생시키는 경우도 빠짐없이 관측한다.
