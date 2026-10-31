@@ -31,7 +31,7 @@ sample의 웹 전역 playbackRate .92~1.08 변동을 UI sample에 적용한다. 
 | 수정 전 재현 | tests/RED.log: 생산 패널 본문 6검사 중 열기/닫기 2실패 |
 | 생산본문 독립 회귀 | tests/matrix.json: 1176조합/2352검사/0실패. 선택·Running·입력 fence 등 기존 상태 일치. Unity 장치/패널 대체이므로 실제Player 증거와 구분 |
 | 독립 C# | Core/Runtime 전체 현재 C# 컴파일 오류0. 기존 경고 유지. 공식 Unity 빌드와 구분 |
-| 공식 빌드·M1 | 순번 대기, 미검증 |
+| 공식 빌드·M1 | 순번 대기, 미검증. 후보 원격 복구점 5093a76cecd076cf13b6754aab37ac2c766d571b |
 | 출력 버퍼·30초 영상 | Tools/UiSoundCapture.cs의 명시적 --unity-ui-sound-capture, sandbox/output 필수. 검수 실행 대기 |
 | 공통 병합·Desktop | 미반영. 영수증 이후 지정 통합 담당이 정상 병합하고 -remodel-scenes 1로 갱신 |
 
