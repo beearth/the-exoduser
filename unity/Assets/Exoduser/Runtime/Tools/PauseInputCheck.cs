@@ -42,8 +42,10 @@ namespace Exoduser.UnityPort.Tools
    previousKeyboard=Keyboard.current;keyboard=InputSystem.AddDevice<Keyboard>();keyboard.MakeCurrent();InputSystem.QueueStateEvent(keyboard,new KeyboardState());
    Screen.SetResolution(1600,900,FullScreenMode.Windowed);AudioListener.volume=0;AudioListener.pause=true;yield return new WaitForSecondsRealtime(.5f);
    lobby.ShowLobby();lobby.SelectPreview();CheckThat(lobby.EnterNativeTest(),"일반 미리보기 진입");game.SetGameFocus(true);
-   until=Time.realtimeSinceStartup+45;while((lobby.IsBlocking||!game.Running||NativeRemodel3D.Requested&&!NativeRemodel3D.Active)&&Time.realtimeSinceStartup<until)yield return null;
-   CheckThat(game.Running,"진입 키 해제 후 실행");CheckThat(!NativeRemodel3D.Requested||NativeRemodel3D.Active,"요청된 숲 3D 로드");receipt.width=Screen.width;receipt.height=Screen.height;CheckThat(receipt.width==1600&&receipt.height==900,"실제 캡처 화면 크기",receipt.width+"x"+receipt.height);recording=true;StartCoroutine(Frames());
+   until=Time.realtimeSinceStartup+10;while((lobby.IsBlocking||(bool)Get(game,"frontendEntryInputFence"))&&Time.realtimeSinceStartup<until)yield return null;
+   CheckThat(!lobby.IsBlocking&&!(bool)Get(game,"frontendEntryInputFence"),"정상 진입 키 해제");game.SetGameFocus(false);game.SetGameFocus(true);CheckThat(!game.Running&&(bool)Get(game,"menu"),"숲 로드 중 제품 메뉴로 정지");
+   until=Time.realtimeSinceStartup+45;while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<until)yield return null;
+   CheckThat(!NativeRemodel3D.Requested||NativeRemodel3D.Active,"요청된 숲 3D 로드");yield return null;yield return null;yield return Key(UnityEngine.InputSystem.Key.Enter);CheckThat(game.Running,"준비 뒤 명시 계속하기");receipt.width=Screen.width;receipt.height=Screen.height;CheckThat(receipt.width==1600&&receipt.height==900,"실제 캡처 화면 크기",receipt.width+"x"+receipt.height);recording=true;StartCoroutine(Frames());
    if(Arg("-pause-case")=="window-focus"){
     IntPtr window=OwnWindow();CheckThat(window!=IntPtr.Zero,"focus 자기 숨은 창 확인");int events=receipt.focusEvents;
     CheckThat(PostMessageW(window,0x001C,new IntPtr(1),IntPtr.Zero),"자기 창 활성 알림 전달");yield return new WaitForSecondsRealtime(.2f);
