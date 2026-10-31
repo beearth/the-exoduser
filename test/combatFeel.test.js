@@ -39,3 +39,10 @@ test('처치음 노드 제한 뒤에도 인수의 RNG는 OFF와 동일하게 소
  vm.runInContext('var _deathSfxFrameN=0;for(let i=0;i<6;i++){_deathSfxFrameN=i+1;_feelDeathSample("death",(++rng)/10,1);}',c);
  assert.equal(c.rng,6);assert.equal(c.calls.length,query.endsWith('0')?6:2);}
 });
+
+test('밀집 접점은 그림자/광원 두 패스로 합성 상태 전환을 제한한다',()=>{
+ const c=setup();c._KI_SLASH_HIT_IMG={complete:true,naturalWidth:512,naturalHeight:512};c._kiHitShadowImg={};
+ let changes=0,draws=0;const ctx={save(){},restore(){},translate(){},rotate(){},drawImage(){draws++},set globalCompositeOperation(v){changes++},set globalAlpha(v){}};c.ctx=ctx;
+ vm.runInContext('for(let i=0;i<8;i++)_feelContact({x:i,y:0,r:20},0);_drawFeelContacts(ctx);',c);
+ assert.equal(draws,16);assert.ok(changes<=2,'최대 두 번만 합성 모드 전환');
+});

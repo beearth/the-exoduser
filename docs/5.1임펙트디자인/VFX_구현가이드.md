@@ -1481,3 +1481,5 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | 제외 | DOT·beam·bladeShard·maliceHunt·iceBlade·lightning·ltnChaser | 연속 피해는 새 접점 누적에서 제외. 기존 표현 유지 |
 
 비교 서버: http://127.0.0.1:3347/game.html?feel=0 / ?feel=1. 전용 저장소는 I:/EXODUSER-Storage/combat-feel/20261031/saves. 실제 검수와 남은 한계는 같은 폴더 REPORT.md 및 전용 인계 combat-feel.md. 재미의 최종 판정은 사용자 직접 플레이다.
+
+- 실물 재작업: 접점 그림자 전체→가산광 전체 두 패스로 묶어 8접점에서 합성 전환16→2회. HP 표식은 외곽 아트의 사각 바운드 대신 원형 globe-liquid-wrap::after 안쪽에만 표시한다.
