@@ -16,7 +16,8 @@
 | 다리 수염 | 전체필드목교에기존양측×5=10곳을연결. Field에서는고정Y.65 대신현재목교읽기정점·world normal.y≥.25/score=dx²+dz²−.05Y의윗면에상단hit−Y.02로부착. scale(.30,.38,.25)/tint(.62,.63,.43)유지. 실제윗면없으면오류기록후그이끼제외/공중부착0. Legacy비field는기존.65규칙유지 |
 | 먼 숲 범위 | 지면290m로확장후원경만이전−34..110.5m/거리10..34m에남은불일치수정. DistantForestSites의21×26후보/10m간격, X−85+10col+2.4sin(.9row+1.7col), Z−140+10row+1.8sin(.71col+.93row), 원본경계밖거리12..110m만사용. 28m밖ShadowCastingOff/가까운층기존그림자유지. Core/기존통행변경0 |
 | 원경 회귀 | 같은카메라128모서리광선중외부육지표본1920:12/3840:21의가장가까운원경나무12m이내를확인. 이전누락2/12·최장23.164/42.492m→현재0/0·최장8.703/9.816m. 원경숲빈공간의좌표계회귀일뿐실제실루엣·원근·FPS·1x PASS아님 |
-| 실행기 | UI소유공식start의선택ForceD3D11 인수인수. CLI SHA68b7a0c7bf27e11f35b699661e466d0f9fcc2c962e61c8d23e8feda59dbddde2/QueueTurn8a00a15e…/AcquireSlot byte동일. 기본/명시DryRun·자기검사PASS·새실제GPU0. 맵후속start에ForceD3D11, 독립batch buildArgs에-force-d3d11 명시. UI제품코드인수0 |
+| 맵 인수 제외 | 기존분기상속의 c253ec3b0/1c985c88e 클리어UI재질시안은 현공통15c8 및 순수UI01dbc4954의조상이아니며현행채택·품질PASS근거0(UI담당대조). Runtime의Overlay/Presentation/MaterialLayout(.meta)/Material.Capture(.meta)6파일과stageclear-material-tests2파일을맵READY범위에서제외. 현재R3/다음R4검수입력에상속포함된8파일SHA256·Gitblob은I: `미인수-상속UI-분리.json` 보존/R3·R4동일. 기존맵WIP임의복원0·전체분기맹목인수금지/최종순수통합본별도빌드검수필수. 관련A22/RM1문서의재질절도맵품질PASS로승격0 |
+| 실행기 | UI소유공식start의선택ForceD3D11 읽기전용인수. CLI SHA68b7a0c7bf27e11f35b699661e466d0f9fcc2c962e61c8d23e8feda59dbddde2/QueueTurn8a00a15e…/AcquireSlot byte동일. 기본/명시DryRun·자기검사PASS·새실제GPU0. 맵후속start에ForceD3D11, 독립batch buildArgs에-force-d3d11 명시. UI제품코드인수0 |
 
 > 아래 R3 및 이전 절은 당시 후보 이력이다. 현행 계약·지표는 위 R4 표를 우선하며, 당시 실패 근거를 소급 수정하지 않는다.
 
