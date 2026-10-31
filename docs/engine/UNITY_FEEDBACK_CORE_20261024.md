@@ -36,6 +36,8 @@
 
 2026-10-31 임팩트 브리프의 50~100ms 요구는 별도 표현 후보 `ImpactResponse`가 일반55/치명프로필75/강공90ms의 뷰 정지로 다룬다. 이 문서의 Core·웹 scheduler 계약은 그대로다. r1 정식 Player/M1·12초 전후 Core SHA 동일을 확인했으며, r2는 현재5스킬·탄막·XY 아레나 표현을 별도 재검수한다. 치명 프로필은 실제 이벤트 미연결이며 상세 수치는 [RM-1 구현 기록](../5.1임펙트디자인/UNITY_RM1_VFX_IMPLEMENTATION_20261028.md)을 따른다.
 
+r1의 기술 게이트와 별개로, 1x 연속 접점 프레임에서 코어·방향 파편이 식별되지 않아 **접점 Graph 가시성은 FAIL**이다. 입자 생성 수로 화면 표시를 주장하지 않는다. r2는 자기 Unity 순번 대기 중이며 이벤트 위치·bounds·컬링·그리기 순서의 실제 GPU 대조와 수정 후 영상 판정이 남았다. 설치 DLL에서 World=1을 확인한 사실만으로 좌표 문제의 유무를 확정하지 않는다.
+
 명중 잉크는 19375행 `floor((_gameFrame-f0)/3)`으로 4프레임이다. additive는 `playVFXAng`(19328행) 생성 시 `bornGameTime`이 없으므로 54583행 fallback인 `v.t+=_dtSp; if(v.t>=frameTime){v.t=0;v.frame++}`를 사용한다. 이 경로는 남은 시간 버림 및 한 render에서 한 프레임 진행 규칙이다. 고정 60Hz TickCount에 대응하는 이벤트 수명 정보만 전달하며, 가변 render cadence/고FPS 시계 전체 동치로 보고하지 않는다.
 
 ## 검증과 남은 범위
