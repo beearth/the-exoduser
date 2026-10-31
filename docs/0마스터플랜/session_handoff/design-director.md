@@ -111,3 +111,7 @@
 - statwindow-brief 담당 codex-web-statwin. 직접 열람한 성장나무/서랍 시안은 승인 대조표상 미채택이므로 새 자산으로 쓰지 않고, 브리프 지정 gate_sigil 원화의 금속 음각 눈을 사용했다. 공통 다섯 창 제목44px, 성장 머리225→44px·본문676→857px. 원화 종횡비 유지·검정 바탕 합성·제목 luminance 마스크로1x 경계 수정.
 - 실제 game.html의1920×1080/3840×1080×5창10건: 제목/탭·머리/본문·제목/AP 충돌0, 가로넘침0·노드이탈0·pageerror0·저장호출0. 검색·미리보기·요약 ESC·J 재열기 PASS. 관련 회귀39/39·project-check103/103·guard PASS. 부트 종료/보스 테스트 강제 상태이며 자연플레이·NW.js·Unity·전체 게임 디자인 합격은 별도다.
 - 제작자 직접 판정 VISUAL VERDICT: PASS(웹 제목 축소·원화 인장 표시·변경 부위1x 범위). 총괄 별도 판정은 꾸미지 않는다. 소스/문서의 경로 지정 커밋→원격 main 비강제 반영 및 최종 SHA는 G:/exoduser/tmp/design-review/20261031_stat_window/REPORT.md. 분리 서버 주소도 같은 보고서에 기록한다. Unity 지시는 I:/EXODUSER-Storage/codex-takeover/ui-ultrawide-brief.md 끝에 추가했다.
+
+### 2026-10-31 CTO 눈 인장 판정에 따른 최종 보정
+
+앞 절의 최초 눈 가시성 자체 PASS는 CTO 1x 보정 지시로 대체한다. 웹 다섯 창 공통으로 제목 바로 위 중앙64×20px 원화 눈을 표시하고 명암을 높이며 제목44px는 유지한다. 현행 상세 계약은 UI_COMPOSITION 최신 보정 절, 전후 실화면·검수·원격 상태는 I:/EXODUSER-Storage/codex-web-statwin/eye-center-20261031/REPORT.md에 기록한다. 스킬 본문·Unity 구현은 이번 범위에 포함하지 않는다.

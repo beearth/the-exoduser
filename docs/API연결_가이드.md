@@ -1,296 +1,123 @@
-# API 연결 가이드
-
-프로젝트에서 사용 중인 외부 API 전체 목록, 연결 방식, 활용 방법을 정리한 문서.
-
----
-
-## 1. 전체 API 현황
-
-| # | API | 제공자 | 용도 | 키 변수 | 상태 |
-|---|------|--------|------|---------|------|
-| 1 | **PixelLab** | pixellab.ai | 픽셀아트 스프라이트 생성 | `PIXELLAB_API_KEY` | 활성 |
-| 2 | **OpenAI (DALL-E)** | openai.com | 이미지 생성 (UI, 에셋) | `OPENAI_API_KEY` | 활성 |
-| 3 | **ElevenLabs** | elevenlabs.io | TTS 음성 생성 | `ELEVENLABS_API_KEY` | 활성 |
-| 4 | **xAI (Grok)** | x.ai | 이미지 생성 (보스, VFX) | `XAI_API_KEY` | 활성 |
-| 5 | **Supabase** | supabase.co | DB/인증 (랭킹 등) | `SUPABASE_KEY` | 설정됨 |
-| 6 | **Ludo AI** | each::sense | 이미지/음악/3D/스프라이트 | MCP 연결 | 활성 |
-| 7 | **Google Fonts** | fonts.googleapis.com | 웹폰트 로딩 | 없음 (공개) | 활성 |
-| 8 | **Vercel** | vercel.com | 배포/CI | `VERCEL_OIDC_TOKEN` | 설정됨 |
+# MCP와 API 공통 목록
+
+확인일: 2026년 10월 31일 15:09 KST. EXODUSER 모든 팀은 이 목록을 공통 기준으로 사용한다. 이 PC Codex 세션의 도구 노출과 실제 계정 인증을 구분하며, Mac·Claude·다른 채팅의 연결 완료를 대신 증명하지 않는다.
+
+## 1. 용도별 주력과 현재 확인 범위
+
+| 용도 | 주력 또는 보조 | 확인 범위와 실행 전 조건 |
+|---|---|---|
+| 개발·총괄 | Codex 주력, Claude 전문 작업 | 기존 담당·모델 기준 유지. 두 서비스의 구독 한도와 직접 API 비용을 분리 |
+| GPT 직접 API | OpenAI API | 10/30 프로젝트 키로 모델 목록 조회 HTTP 200. 생성 성공·결제 잔액·월 한도는 미검증 |
+| 2D 이미지 | Higgsfield에 이미 포함된 웹 무제한 우선 검토 | 10/30 웹 권한 관측과 MCP 비용은 별개. 최신 공급자 우선순위·이미지 생성 지시 우선 |
+| 영상 | Kling 직접 MCP 및 Higgsfield | Kling 유료 사용은 사용자 승인됨. 실제 모델·수량·요금·기간 예산 확인 후 사용 |
+| 3D·리깅·모션 | Meshy 주력 | 10/31 잔액 조회 성공. 월간 지급분과 영구 구매분 분리 |
+| 효과음·음성 | ElevenLabs 주력 | 10/30 웹 구독·잔액 확인. 월간 초기화일과 구독 종료일은 별개 |
+| 스프라이트·VFX | Ludo 보조 검토 | 도구는 노출되지만 10/30 API 키 거부. 잔액 0이나 정상 연결로 단정하지 않음 |
+| 3D 비교 실험 | VARCO 보류 | 과거 HTTP 402. 현재 잔액·상업 라이선스·비용 확인 전 재시도하지 않음 |
+| 해지·환불 확인 | MagicLight | 기존 분쟁·서비스 이용 보류 기록과 최신 사용자 지시를 확인. 해지 요청과 완료는 별개 |
+
+Kling은 10/31 전용 MCP의 `who_am_i`와 `query_membership_and_credits` 응답까지 확인했다. MCP 버전은 1.3.3이다. 텍스트·참조 이미지 기반 이미지 생성, 텍스트·이미지 기반 영상, 모션 제어, Omni-Ref 및 에셋 업로드를 제공한다. 이 확인 과정에서 생성·결제를 실행하지 않았다. 모델·인수는 요청 전 `who_am_i`의 현재 계정 스키마를 사용하고, 도구 버전이 뒤처졌다는 응답이면 기존 실행을 보존한 채 해당 연결의 갱신 필요를 보고한다.
+
+## 2. 현재 노출된 MCP 전체 목록
+
+도구 노출은 유료 구독·인증·실제 작업 성공을 의미하지 않는다. 이 시점에는 26개 도구 그룹이 확인됐으며, 서비스별 인증·잔액은 아래 증거 수준을 따른다.
+
+| MCP 도구 그룹 | 기능 | 확인 상태 |
+|---|---|---|
+| Codex 앱 | 채팅·프로젝트·자동화·워크트리 | 도구 노출. 채팅 전달은 사용자 승인 범위만 |
+| Artifact Session | 스프레드시트·프레젠테이션 편집 | 도구 노출 |
+| Node REPL | JavaScript 실행·로컬 자료 처리 | 현재 세션 실행 확인 |
+| Canva | 디자인·이미지·프레젠테이션 | 도구 노출, 계정 과금 미확인 |
+| ChatGPT Space | 페이지·스페이스 관리 | 도구 노출 |
+| Document Control | 연결 문서 세션 제어 | 도구 노출 |
+| Codex Security Cloud | 저장소 보안 검사 | 도구 노출 |
+| GitHub | 저장소·이슈·PR | 저장소 메타데이터 조회 확인 |
+| Gmail | 메일 검색·읽기·발송 | 10/30 조회 확인. 발송은 별도 사용자 지시 필요 |
+| Google Calendar | 일정 조회·관리 | 도구 노출 |
+| Google Contacts | 연락처 검색·조회 | 도구 노출 |
+| Google Drive | 파일·Docs·Sheets·Slides | 도구 노출 |
+| Higgsfield 앱 연결 | 이미지·영상·오디오·편집 | 10/31 잔액 조회 확인 |
+| Higgsfield 직접 MCP | 이미지·영상·오디오·편집 | 도구 노출. 앱 연결과 동일 업체이므로 중복 구독으로 계산하지 않음 |
+| Kling 직접 MCP | 이미지·영상·모션·Omni-Ref | 10/31 OAuth 인증·회원/잔액 조회 확인 |
+| Ludo AI | 게임 에셋·스프라이트·애니메이션·3D | 도구 노출, 10/30 인증 오류 |
+| Meshy | 3D·텍스처·리깅·모션 | 10/31 잔액 조회 확인 |
+| Unity MCP | Unity Editor 연동 | 도구 노출. Editor 연결·실행은 미확인, 공식 단일 실행기·잠금 준수 |
+| Linear | 이슈·프로젝트 관리 | 도구 노출 |
+| Sites | 웹사이트 제작·호스팅 | 도구 노출. 게시 권한은 별도 |
+| Pets | ChatGPT 펫 관리 | 도구 노출, 게임 에셋 생성 도구와 구분 |
+| Plugin Creator | 플러그인 제작·수정 | 도구 노출 |
+| Plugin Management | 플러그인 검색·연결·권한 관리 | 검색 확인. 전역 권한 임의 변경 금지 |
+| Search Service | 인터넷 검색 | 도구 노출 |
+| Safety Settings | 보호자·안전 설정 | 도구 노출, 프로젝트 개발 권한과 별개 |
+| Hotline | 지역별 지원 전화 조회 | 도구 노출 |
+
+MCP 외에도 웹 조회, 이미지 생성, 터미널·파일 편집, Computer Use가 제공된다. 내장 이미지 생성이나 다른 공급자의 도구 존재만으로 프로젝트의 생성 공급자 우선순위·금지 사항을 바꾸지 않는다.
+
+## 3. 직접 API와 기존 프로젝트 연동
+
+| API 또는 연동 | 구현·설정 기준 | 현재 검증 경계 |
+|---|---|---|
+| OpenAI GPT API | 프로젝트 `OPENAI_API_KEY`, `server.cjs`의 `/api/gpt-image` 구현 | 키 값 비공개. 10/30 모델 목록 인증만 확인, 이미지 생성 프록시의 현재 런타임은 별도 |
+| ElevenLabs | 기존 TTS·SFX 도구 및 프록시 | 웹 계정 관측과 직접 API 인증을 구분. 기존 사운드 SSOT·예산 유지 |
+| PixelLab | 기존 `tools/pixellab_request.mjs`와 에셋 이력 | 현재 API 인증 미검증. 사용자 확정 캐릭터 생성 금지 유지 |
+| xAI / Grok | 기존 이미지·VFX 생성 도구 이력 | 현재 인증·모델·단가 미검증. 과거 단가로 새 요청을 계산하지 않음 |
+| Supabase | 웹 소스의 DB·저장·인증 연동 | 기존 구현과 현재 접속 검증을 구분. 키·식별값을 문서에 복사하지 않음 |
+| VARCO REST | 기존 Image-to-3D 시험 원장 | 과거 크레딧 부족. 원장·입력 SHA·라이선스·예산 확인 없이 재제출하지 않음 |
+| Google Fonts | 공개 웹폰트 로딩 | 유료 생성 구독으로 계산하지 않음 |
+| Vercel | 기존 배포 설정·CI 이력 | MCP 연결이나 현재 인증으로 간주하지 않음. 이번 작업은 설치·배포를 실행하지 않음 |
+| 로컬 게임 서버 | 아래 `server.cjs` API | 소스 경로 존재 확인. 서버·게임 자동 재시작 및 저장·삭제 호출 없음 |
+
+인증은 각 호스트의 승인된 설정·프로젝트 환경 파일에서만 읽는다. 10/30 PC에서는 `G:/exoduser/.env`의 OpenAI 설정을 확인했으나, 과거 `G:/hell` 경로나 다른 호스트의 파일이 자동 동기화됐다고 간주하지 않는다. 키 값·OAuth 토큰·카드 정보·청구 주소·사용자 전역 인증 설정은 Git·팀 메시지·보고서에 기록하지 않는다.
+
+## 4. 월간 크레딧과 토큰 분할 사용
+
+사용자 지시: 월별 크레딧을 사용 기간 전체에 나누어 관리한다. 예비율 20%는 조정 가능한 초기 운영값이며 사용자 지정 예산이 우선한다.
+
+1. 작업 전 서비스별 지급량·잔액·초기화일·오늘 사용량·진행 중 예약을 확인한다. 월간·영구 구매분·주간 플랜 한도·무료 횟수·웹 무제한·직접 API 비용을 분리한다.
+2. 기간 지급량을 확인했으면 그 지급량의 20%를 예비분으로 고정한다. 실제 단위에 맞춰 반올림하며 정수 크레딧은 올림한다. 지급량이 없고 잔액·만료일만 있는 별도 크레딧은 최초 관측 잔액 기준으로 고정한다.
+3. `사용 가능량 = max(0, 기간 잔액 - 고정 예비분 - 진행 중 예약량)`, `남은 일수 = max(1, ceil((초기화 시각 - 조회 시각) / 24시간))`으로 계산한다.
+4. `일일 예산 = 사용 가능량 / 남은 일수`, `주간 예산 = min(사용 가능량, 일일 예산 × min(7, 남은 일수))`다. 정수 크레딧은 내림한다. 소멸일을 포함한 날짜별 배분이면 그 기준을 내부 원장에 적는다.
+5. 같은 날 최초 예산과 누적 사용·예약을 유지한다. 재조회로 오늘 사용량을 지우거나 예비분을 줄이지 않는다. 다음 날 최신 잔액과 남은 기간으로 재분배한다.
+6. 유료 작업을 시작하기 전에 담당·모델·수량·예상 차감·작업 ID를 공용 원장에 예약하고, 완료·실패·환불의 실제 차감을 기록한다. 같은 공유 풀의 예약을 확인할 수 없으면 유료 작업을 병렬 시작하지 않는다. 다른 팀 동시 사용분을 전부 자기 작업 비용으로 귀속하지 않는다.
+7. 이미 승인된 비용·수량 범위와 무료·무제한·기존 산출물을 우선 활용한다. 예산 초과 시 시점·범위를 조정한다. 관리 요청·Kling 사용 허용만으로 무제한 지출·신규 구독·자동 충전 활성화를 승인받았다고 해석하지 않는다.
+8. 잔액·초기화일이 미확인이면 예산도 미확인으로 남긴다. 연간 구독 종료일, 지출 상한 여유, 예정 API 지급액을 월간 현재 잔액으로 대신하지 않는다.
+9. 장시간 작업은 주요 단계 경계에서만 추가 조회한다. 같은 문서 전문·검색·동일 검증을 반복하지 않되 필수 품질 검수와 사용자 확정 모델 기준은 유지한다.
+
+이 규칙은 작업 전후의 관리 기준이며 모든 채팅의 토큰을 자동 차단하는 장치가 아니다. 예약은 계획, 원장상 차감은 관측값, 공급자의 하드 한도는 별도다. 실제 유료 생성의 기존 승인 절차와 실패·중복 재제출 방지 규칙을 유지한다.
+
+## 5. 내부 지출 원장과 팀 공유
+
+GitHub 저장소는 공개이므로 개인 결제 내역·계정 식별값·잔액을 공개 MD에 복사하지 않는다. 팀은 아래 내부 MD와 JSON 원장을 함께 사용한다.
+
+| 자료 | PC 내부 위치 | 사용 방법 |
+|---|---|---|
+| 구독·지출·잔액 상세 MD | `I:/EXODUSER-Storage/admin/subscriptions/구독과_크레딧_지출목록_20261030_0937.md` | 항목별 확인일을 유지. 10/30 결제 기록을 현재 월 총액으로 확대하지 않음 |
+| 갱신·잔액·기간 예산 JSON | `I:/EXODUSER-Storage/admin/subscriptions/subscription-ledger-20261030-0937.json` | 서비스별 관측과 예약·차감의 기준. 다른 세션도 같은 원장 사용 |
+| 팀 공유·수신 기록 | `I:/EXODUSER-Storage/admin/subscriptions/team-share-20261031.json` | 전달 성공과 실제 인수·작업 적용을 구분 |
+
+Mac·다른 호스트에서 I:에 접근할 수 없으면 중앙 CTO에게 필요한 최신 서비스 예산만 요청한다. 인증 파일·키를 보내거나 I: 경로가 모든 호스트에 존재한다고 가정하지 않는다. 연결은 계정·호스트별이며 로컬 설정을 Git으로 배포하지 않는다.
+
+중앙 CTO와 기존 팀 채팅에 이 문서 위치·원격 SHA를 공유한다. 공지는 새 제작·생성·빌드·Unity 실행·휴면 작업 재가동 지시가 아니다. 팀은 현재 담당·실행기 잠금·통합 권한을 보존하며 다음 실제 사용 전에 필요한 구역만 읽는다. 소유 작업본에서 최신 문서를 인수하되 타인 WIP 위로 자동 pull·merge하지 않는다. 공유 수락·문서 반영을 게임 품질 개선이나 전원 적용 완료로 보고하지 않는다.
+
+## 6. 로컬 서버 API
 
----
+서버가 필요한 승인 작업에서만 `C:/nvm4w/nodejs/node.exe server.cjs`를 해당 프로젝트 경로에서 실행한다. 포트는 3333이다. `python http.server`는 사용하지 않는다.
 
-## 2. API 키 관리
+| 메서드 | 경로 | 기존 기능 |
+|---|---|---|
+| GET | `/api/slots` | 개발 저장 슬롯 목록 |
+| POST | `/api/save` | 저장 |
+| GET | `/api/load/:slot` | 로드 |
+| DELETE | `/api/save/:slot` | 슬롯 삭제. 별도 삭제 권한 준수 |
+| GET / POST | `/api/mats` | 악의구슬 공유 풀 조회·수정 |
+| POST | `/api/gpt-image` | OpenAI 이미지 생성 프록시. 별도 유료 작업 |
 
-### 파일 위치
-```
-G:\hell\.env              ← 메인 키 파일 (5개)
-G:\hell\.env.local         ← Vercel 배포용 토큰
-```
+기존 에셋 프롬프트·파일 규격·게임 반영은 각 아트·사운드·맵 SSOT를 따른다. 이 목록이 캐릭터 생성 금지, 맵 제작 가이드, 보호된 전투·저장 설계, 세이브 격리 및 실제 게임 검수 기준을 바꾸지 않는다.
 
-### .env 구조
-```env
-PIXELLAB_API_KEY=xxx
-PIXELLAB_BASE_URL=https://api.pixellab.ai
-OPENAI_API_KEY=sk-proj-xxx
-ELEVENLABS_API_KEY=sk_xxx
-XAI_API_KEY=xai-xxx
-```
-
-> **주의**: `.env`는 `.gitignore`에 포함. 커밋 금지.
-
----
-
-## 3. 각 API 상세
-
----
-
-### 3-1. PixelLab API (픽셀아트 스프라이트)
-
-**용도**: 몬스터/보스 스프라이트 자동 생성 (8방향, 걷기 애니메이션)
-
-**연결 방식**:
-- CLI: `tools/pixellab_request.mjs` 스크립트
-- MCP: Claude Code에서 블렌더 MCP 또는 직접 호출
-
-**호출 예시** (curl):
-```bash
-curl -X POST https://api.pixellab.ai/v1/generate \
-  -H "Authorization: Bearer $PIXELLAB_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "top-down dark fantasy skeleton warrior",
-    "size": 64,
-    "n_directions": 8,
-    "outline": "single color black outline",
-    "shading": "detailed shading"
-  }'
-```
-
-**출력 위치**: `img/all_assets/pixellab_all/`, `img/all_assets/monsters/`
-
-**주요 파라미터**:
-| 파라미터 | 설명 | 기본값 |
-|---------|------|--------|
-| `size` | 스프라이트 크기 | 64 (일반), 128 (보스) |
-| `n_directions` | 방향 수 | 8 |
-| `body_type` | 체형 | humanoid, quadruped 등 |
-| `ai_freedom` | AI 자유도 | 600 |
-| `detail` | 디테일 수준 | high detail |
-
-**프롬프트 레퍼런스**: `docs/10ai에셋프롬프트모음/pixellab_monster_prompts.md`
-- BODY 10종 × TRAIT 15종 × ATTACK 10종 × COLOR 5종 = 7,500+ 조합
-
----
-
-### 3-2. OpenAI API (DALL-E 이미지 생성)
-
-**용도**: UI 아이콘, 배경, 프레임, 기타 에셋 생성
-
-**연결 방식**: `server.cjs`에서 `/api/gpt-image` POST 엔드포인트
-
-**서버 엔드포인트**:
-```
-POST http://localhost:3333/api/gpt-image
-Content-Type: application/json
-
-{
-  "prompt": "pixel art fire icon, dark fantasy style, 64x64",
-  "model": "gpt-image-1",
-  "size": "1024x1024",
-  "quality": "auto",
-  "n": 1
-}
-```
-
-**내부 동작**:
-1. `server.cjs`가 OpenAI `/v1/images/generations`로 프록시
-2. base64 응답을 `img/gpt_gen/gpt_{timestamp}_{idx}.png`로 자동 저장
-3. URL 방식 응답은 URL만 반환
-
-**출력 위치**: `img/gpt_gen/`
-
-**프롬프트 레퍼런스**:
-- `docs/10ai에셋프롬프트모음/UI_아이콘_GPT_생성프롬프트팩.md` — 스탯/패널/원소 아이콘
-- `docs/10ai에셋프롬프트모음/UI_프레임_배경_생성프롬프트.md` — UI 프레임/배경
-
----
-
-### 3-3. ElevenLabs TTS API (음성 생성)
-
-**용도**: 게임 보이스오버, NPC 대사, 시네마틱 음성
-
-**연결 방식**: `tools/elevenlabs_tts.mjs` CLI 도구 + `src/elevenlabsProxy.js`
-
-**호출 예시** (curl):
-```bash
-curl -X POST "https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}" \
-  -H "xi-api-key: $ELEVENLABS_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "text": "너는... 살아남지 못할 것이다.",
-    "model_id": "eleven_multilingual_v2",
-    "voice_settings": {
-      "stability": 0.5,
-      "similarity_boost": 0.75
-    }
-  }'
-```
-
-**출력 위치**: `sfx/voice/`
-**포맷**: MP3 (44.1kHz, 128kbps)
-
-**주요 파라미터**:
-| 파라미터 | 설명 | 기본값 |
-|---------|------|--------|
-| `model_id` | TTS 모델 | `eleven_multilingual_v2` |
-| `output_format` | 출력 포맷 | `mp3_44100_128` |
-| `stability` | 음성 안정도 | 0.5 |
-| `similarity_boost` | 유사도 강화 | 0.75 |
-
----
-
-### 3-4. xAI / Grok API (이미지 생성)
-
-**용도**: 보스 스프라이트, VFX 스프라이트 시트, 컨셉아트
-
-**연결 방식**: Claude Code에서 직접 curl 호출 (서버 프록시 없음)
-
-**호출 예시** (curl):
-```bash
-curl -X POST "https://api.x.ai/v1/images/generations" \
-  -H "Authorization: Bearer $XAI_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "grok-imagine-image",
-    "prompt": "pixel art sprite sheet, 8 frames...",
-    "n": 1
-  }'
-```
-
-**사용 가능 모델** (2026-04 기준):
-| 모델 | 용도 |
-|------|------|
-| `grok-imagine-image` | 이미지 생성 (기본) |
-| `grok-imagine-image-pro` | 이미지 생성 (고품질) |
-| `grok-imagine-video` | 비디오 생성 |
-| `grok-3` / `grok-4-*` | 텍스트 (이미지 아님) |
-
-**출력 위치**: `img/grok_gen/`
-- 결과 이미지 + JSON 메타데이터 함께 저장
-- 비용: 약 $0.07/이미지 (700M USD ticks)
-
-**생성 이력**:
-| 파일 | 용도 | 날짜 |
-|------|------|------|
-| `boss_north/south/east/west.png` | 보스 4방향 스프라이트 | — |
-| `grok_boss_sprite.png` | 보스 스프라이트 | — |
-| `grok_attack_motion.png` | 공격 모션 | — |
-| `grok_tele_effect.png` | 텔레포트 이펙트 | — |
-| `burn_death_sheet.png` | 불타죽는 사망 VFX 8프레임 | 2026-04-25 |
-
-**후처리 파이프라인** (Python):
-1. Grok으로 원본 생성 (1024+ px)
-2. PIL/numpy로 배경 제거 (검정→투명)
-3. 프레임 분할 + 정사각형 정렬
-4. 최종 스프라이트 시트 → `img/` 폴더에 배치
-
----
-
-### 3-5. Supabase (DB/인증)
-
-**용도**: 서버 세이브, 랭킹, 인증 (구성됨)
-
-**연결 방식**: `game.html`에서 CDN으로 SDK 로드 + 직접 연결
-```javascript
-const SUPABASE_URL = 'https://tevlznuhjqcnzgewlswx.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_chAwadci1zVQNEKPC__s_w_7K3Oz_WP';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-```
-
-**참조 파일**: `game.html` (2852행), `index.html` (267행)
-
----
-
-### 3-6. Ludo AI (MCP 연결)
-
-**용도**: AI 이미지/음악/3D모델/스프라이트 생성 (Claude Code MCP 경유)
-
-**MCP 도구 목록**:
-| 도구 | 기능 |
-|------|------|
-| `createImage` | 이미지 생성 |
-| `editImage` | 이미지 편집 |
-| `removeBackground` | 배경 제거 |
-| `animateSprite` | 스프라이트 애니메이션 |
-| `createMusic` | 음악 생성 |
-| `createSoundEffect` | 효과음 생성 |
-| `createSpeech` | 음성 생성 |
-| `create3DModel` | 3D 모델 생성 |
-| `generateWithStyle` | 스타일 기반 생성 |
-
-**호출 방식**: Claude Code 대화에서 MCP 도구로 직접 호출
-
----
-
-## 4. 로컬 서버 API (server.cjs)
-
-`node server.cjs` → 포트 3333
-
-| 메서드 | 엔드포인트 | 기능 |
-|--------|-----------|------|
-| GET | `/api/slots` | 개발 저장 슬롯 목록 `{ok:true,slots,development:true}`. 로컬 비데모 로비에서만 개발자 표시·슬롯 무제한. 출하 `node-main.js`는 development 표시 없음 |
-| POST | `/api/save` | 게임 저장 `{slot, data}` |
-| GET | `/api/load/:slot` | 세이브 로드 |
-| DELETE | `/api/save/:slot` | 세이브 삭제 |
-| GET | `/api/mats` | 악의구슬(mats) 공유 풀 조회 |
-| POST | `/api/mats` | 악의구슬 공유 풀 업데이트 `{mats}` |
-| POST | `/api/gpt-image` | OpenAI 이미지 생성 프록시 |
-
-
----
-
-## 5. 에셋 생성 워크플로우
-
-### 몬스터 스프라이트 (PixelLab)
-```
-1. docs/10ai에셋프롬프트모음/pixellab_monster_prompts.md에서 프롬프트 선택
-2. tools/pixellab_request.mjs로 호출
-3. img/all_assets/pixellab_all/에 저장
-4. tools/sync_ch1_monster_atlas_sources.mjs로 아틀라스 통합
-```
-
-### VFX 스프라이트 시트 (Grok)
-```
-1. Grok API로 스프라이트 시트 생성 (grok-imagine-image)
-2. Python으로 후처리 (배경 제거, 프레임 분할)
-3. img/vfx_*.png로 저장
-4. game.html에서 registerVFX()로 등록
-5. playVFXAng()으로 재생
-```
-
-### UI 아이콘 (OpenAI DALL-E)
-```
-1. docs/10ai에셋프롬프트모음/UI_아이콘_GPT_생성프롬프트팩.md에서 프롬프트 선택
-2. POST /api/gpt-image로 호출
-3. img/gpt_gen/에 자동 저장
-4. 필요한 위치로 복사/리네임
-```
-
-### 음성 (ElevenLabs)
-```
-1. tools/elevenlabs_tts.mjs로 호출
-2. sfx/voice/에 저장
-3. game.html에서 playSample()로 재생
-```
-
----
-
-## 6. 비용 참고
-
-| API | 단가 (대략) | 비고 |
-|-----|------------|------|
-| PixelLab | 크레딧 기반 | 월 한도 있음 |
-| OpenAI DALL-E | ~$0.04/이미지 (1024×1024) | gpt-image-1 기준 |
-| ElevenLabs | ~$0.30/1000자 | eleven_multilingual_v2 |
-| Grok | ~$0.07/이미지 | grok-imagine-image |
-| Supabase | Free tier | 500MB DB, 1GB 스토리지 |
+## 7. 확인 근거
+
+- 10/31 현재 세션 도구 메타데이터: MCP 도구 그룹 목록.
+- 10/31 Kling `who_am_i` 및 `query_membership_and_credits`: 직접 MCP 인증과 조회. Higgsfield·Meshy: 잔액 조회 성공.
+- 10/30 OpenAI 공식 `GET /v1/models`: HTTP 200. 생성 요청은 하지 않음.
+- 10/30 ElevenLabs·Higgsfield 계정 화면과 로컬 지출 원장: 당시 권한·잔액·구독 관측.
+- 현행 `server.cjs`: 로컬 API 경로. 실제 서버·저장 호출 검증과 별개.
