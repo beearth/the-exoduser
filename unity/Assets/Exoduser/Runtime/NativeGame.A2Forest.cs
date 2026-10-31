@@ -230,6 +230,7 @@ namespace Exoduser.UnityPort
                 if(id=="Fungal_Colony"){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.65f,.55f,.40f,1));r.SetPropertyBlock(block);}
                 if(stump){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.85f,.78f,.65f,1));r.SetPropertyBlock(block);}
             }
+            if(a2Field!=null&&(roots||stump||hollow||id=="Fallen_Log"||id=="Rotten_Wood_Bridge"))A2FieldRegister(go);
             if(id=="Withered_Shrub")A2Bramble(go,x,z);
             return go;
         }

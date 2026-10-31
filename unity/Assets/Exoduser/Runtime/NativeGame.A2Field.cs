@@ -144,7 +144,7 @@ namespace Exoduser.UnityPort
                     if(a2Field.Distance(x,z)<.8f||a2Field.Water(x,z))continue;
                     A2FieldRoots(x,z,2.05f,region*71+side*37);
                     var log=A2Module("Fallen_Log",x,z,.9f,.45f,.9f,region*79+side*51,-.05f);
-                    if(log!=null){log.name="A2 전투구역 쓰러진 목질 "+region+"/"+side;A2FieldRegister(log);}
+                    if(log!=null)log.name="A2 전투구역 쓰러진 목질 "+region+"/"+side;
                 }
                 for(int j=0;j<7;j++)
                 {
