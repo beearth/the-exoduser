@@ -41,7 +41,7 @@ namespace Exoduser.UnityPort {
   }
   static string Key(string s){return s.Replace("️","");}
   public void SetOpen(bool value){Open=value;dragBar=0;}
-  public void SelectTab(string id){foreach(var t in defs.tabs)if(t.id==id){Tab=id;listScroll=0;potionSelected=false;potionNotice=null;return;}}   // web: tab switch clears _forgeSel
+  public void SelectTab(string id){foreach(var t in defs.tabs)if(t.id==id){if(Open&&Tab!=id)NativeUiSounds.Current?.TabChanged();Tab=id;listScroll=0;potionSelected=false;potionNotice=null;return;}}   // web: tab switch clears _forgeSel
   // Web: clicking the already selected equipment chip keeps it; selecting a chip fills the AI row.
   public void SelectChip(string slot){SelectedChip=slot;}
   public void HandleKeys(Action close){if(NativeKeyBindInput.Down("forge")||ExoInput.KeyDown(KeyCode.Escape))close();}   // A16: web BINDS.forge (ESC = fixed back key)
@@ -156,7 +156,7 @@ namespace Exoduser.UnityPort {
     PlateFace(r,act,true);
     // .fg-tab-txt 12.48px 700 ls .624, text-shadow 0 2px 4px rgba(0,0,0,.95)
     Txt(new Rect(512,r.y+11,192,18),t.label,F.NM,12.48f,act?C(244,230,203):C(194,191,185),true,TextAnchor.MiddleCenter,.624f,1f,new Color(0,0,0,.9f),2f);
-    if(Hit(r)&&!act)SelectTab(t.id);
+    if(NativeUiSounds.SilentButton(()=>Hit(r))&&!act)SelectTab(t.id);
    }
   }
   void DrawClose(Action close){

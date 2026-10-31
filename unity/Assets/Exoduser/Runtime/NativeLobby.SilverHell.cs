@@ -170,7 +170,7 @@ namespace Exoduser.UnityPort
                 NativeUiAudit.DrawTextureWithTexCoords(new Rect(960+tw/2+22,945.9f,120,9),gateEnterLine,new Rect(1,0,-1,1),true);
             }
             GUI.color=c;
-            if(NativeUiAudit.Button(r,"",GUIStyle.none))StartGate();
+            DrawEntryHover(r);if(NativeUiAudit.Button(r,"",GUIStyle.none))StartGate();
         }
     }
 }

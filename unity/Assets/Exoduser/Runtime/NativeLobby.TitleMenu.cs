@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort
             titleRows.Add(new TitleRow { Label = K("게임 시작", "START GAME"), Act = () => { PlayStartupEnter(); AdvanceSplash(); } });           // playEnterSFX(); skip()
             titleRows.Add(new TitleRow { Label = K("인트로 다시 보기", "REPLAY INTRO"), Act = () => ReplayIntro() });                                   // skip(); _goCinematic()
             var kind = BuildFlavor.Current.Id;
-            if (kind == BuildFlavor.Kind.Demo || kind == BuildFlavor.Kind.Bic) titleRows.Add(new TitleRow { Label = K("STEAM 위시리스트 추가", "ADD TO STEAM WISHLIST"), Act = () => Application.OpenURL(SteamWishlistUrl) });
+            if (kind == BuildFlavor.Kind.Demo || kind == BuildFlavor.Kind.Bic) titleRows.Add(new TitleRow { Label = K("STEAM 위시리스트 추가", "ADD TO STEAM WISHLIST"), Act = () => { PlayStartupEnter(); Application.OpenURL(SteamWishlistUrl); } });
 #if !UNITY_WEBGL
             titleRows.Add(new TitleRow { Label = K("게임 종료", "QUIT GAME"), Act = QuitFromTitle });                                                    // only when the player can quit (NW.js / Electron in the web)
 #endif

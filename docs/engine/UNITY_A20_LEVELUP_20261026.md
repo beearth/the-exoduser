@@ -2,6 +2,17 @@
 
 기준: 사용자 확정 "UI는 일단 그대로 이식". 웹 기준 `G:/exoduser/game.html`(main 1770c2698, 아래 줄 번호는 d5f32ff57과 같음)과 `level-up-vfx.js`. 구현: 단순작업2. 브랜치 `claude/unity-pc-overlays-20261026`(`cc39eb672` 기준). 커밋은 맥북 총괄 검수 뒤.
 
+## 2026-10-31 현행 연결 계약
+
+아래 §4~5는 2026-10-26 초기 patch의 이력이다. 현행 `Simulation.AddExperience`는 실제 레벨 상승 시 `LevelledUp`을 호출하고, `NativeGame.OnLevelledUp`은 `sound.PlayLevelUp`·오버레이 표시·저장 요청을 처리한다. 레벨업 효과음은 현재 [ENTER·UI 사운드 계약](UNITY_UI_SOUND_MATCH_20261031.md)의 웹 합성 원음으로 연결되어 있다. 초기 patch의 ‘콜백 없음/효과음 미이식’을 현행 구현 상태로 해석하지 않는다.
+
+| 항목 | 현행 값 / 검수 |
+|---|---|
+| 일반 경험치 | `Core/LevelExp.cs`의 `LevelExp.Add`: `trans=false`이면 입력을 정수 나누기3 후 보너스 적용. 이 단위에서 공식 변경0 |
+| 초월 | 같은 Core의 1000레벨 이상 일일 상승 제한과 초월 처리가 존재한다. 아래 초기 문서의 ‘1000까지만’은 당시 이력 |
+| 실제 레벨업 캡처 | 기존 NativeLevelUpOverlay.Capture와 UiSoundCapture 모두 일반 `AddExperience(MaxExperience*3)` 경로로 레벨 상승을 유발한다. UiSoundCapture의 frame330(22초)은 실제 Level 증가와 ui_levelup 이벤트1회를 함께 확인한다 |
+| 수정 근거 | R5 캡처260ccf8f에서 `AddExperience(MaxExperience)` 입력으로 레벨업이 발생하지 않아 RED. 녹음 도구의 입력량만3배로 맞췄으며 제품 Core·레벨업 콜백·효과음 경로는 변경하지 않는다. 수정 후 새 공식 Player 검수는 UI 사운드 문서에 누적 |
+
 ## 1. 웹 근거 — 실제 레벨업은 무엇으로 구성되나
 
 | 요소 | 종류 | 코드 | 이식 |
@@ -41,14 +52,14 @@ overlay.ForcedAge                                   // 검증용: 설정하면 �
 
 시계는 `Time.unscaledTime`(웹은 게임 dt라 일시정지 중에는 멈춘다 — Unity는 멈추지 않는 차이, 아래 §6).
 
-## 4. 트리거 patch (`A20_nativegame_levelup.patch`, NativeGame.cs 5 hunk)
+## 4. 초기 트리거 patch 이력 (`A20_nativegame_levelup.patch`, 2026-10-26)
 
 - **Unity에 레벨업 이벤트(콜백)는 없다.** `Simulation.AddExperience`(Core/Simulation.cs:290-306)는 `levelled`를 지역변수로만 쓰고 이벤트를 내보내지 않는다. 대신 레벨은 실제 상태이므로 patch는 `Update`에서 `Simulation.Player.Level`이 직전 값보다 커졌는지 읽어 `levelUp.Show(level)`을 부른다(가짜 트리거 아님, 웹 호출 위치는 `addExp` 43164-43169).
 - 연결 줄: 필드 `NativeLevelUpOverlay levelUp;int levelUpSeen;`, Awake에서 생성, `ResetRun`에서 `levelUp.Hide();levelUpSeen=Player.Level`, `Update`의 레벨 비교, `OnGUI`에서 알림 문구 뒤에 `levelUp.Draw(player 화면 픽셀)`(`view.WorldToScreenPoint`).
 - 순서: 기존 6개(U04B→U08 NativeGame→U08 PauseMenu→U05→A07B NativeGame→A07B PauseMenu)→A13→A14→**A20**(9개) 순서대로 `git apply --check` 통과, 실제 적용 후 Win64 빌드 errors 0, 되돌린 뒤 NativeGame*·NativePauseMenu* 변경 0.
 - 레벨업 효과음(`SFX.levelup`)·체력/스태미나/마나 20% 회복은 이 단위 범위 밖(회복은 Simulation이 이미 수행).
 
-## 5. 미이식
+## 5. 2026-10-26 당시 미이식
 
 - 빛기둥·링·불꽃 VFX(`level-up-vfx.js` 캔버스, Unity 재제작).
 - 레벨업 효과음 연결, 마성 판정(`PASSIVES.pDemon>pHuman`)은 호출자가 `demonic`으로 넘겨야 함 — 패시브 상태가 Unity에 없어 patch는 항상 금색(`Show(level)`).
