@@ -21,6 +21,7 @@ r2는 기술 검사와 별개로 **3D 접점/탄막 가독성 FAIL**이다. 같�
 | 구간 비교 통제 | r2 영상에서 먼저 쓴 장시간 가시덫이 회복영역/얼음/악의구 구간까지 반복 피격광을 만들었다. r3 review는 매 구간 FireZones/SlamWaves/SkillBlades/MaliceOrbs/기검참 투사체와 IceOrbActive를 명시적으로 초기화한다. 새 표적/공통탄막3종은 유지. 양쪽 같은 fixture이며 생산 게임·Core 구현 변경이 아니다. 따라서 r3의 전후끼리 새 Core SHA를 대조하며 r2 SHA와 같다고 가정하지 않는다 |
 | 즉사 접점 경계 | 현행 실제 Core CPU 5사례에서 일반·즉사·보호막넘침·직접DOT API는 HurtTicks6/접점true, 완전 보호막흡수는 HurtTicks0/접점false다. 최초 두 진단은 보호막·DOT의 harness 기대가 틀려 실패했고 CX-04b/실제 Body를 읽어 기대를 정정했으며 생산 코드 변경0이다. 즉사 표적은 목록에 남는다. r3 실제영상은 첫 일반공격 표적1HP를 실제 처치하고 `killedTargets>=1`·새 경로의 해당 ID `EnemyFrozen`/생성 접점을 PASS에 요구한다. 나머지 표적은100만HP fixture. CPU 결과는 GPU 처치 표현의 PASS가 아니다 |
 | 표적 배치 | review만 영웅 기준 Core delta `(48,-28)`, `(48,28)`, `(104,0)`px. 첫 두 표적은 실제 일반공격 원호 안에 두어 즉사와 생존 적중을 함께 확인하고 세 번째는 기검참/스킬 대상이다. 판정 범위를 늘리거나 강제 hit 이벤트를 보내지 않는다 |
+| 기검참 실제3타 게이트 | r2 trace120틱 구간은 swing 시작0/40/100, windup80~99로3타 모션은 있으나20틱충전이며 Step 발사/명중은 별도 미기록이었다. r3 총960틱/16초/480PNG는 유지하고 일반120·기검참240·각스킬120틱으로 배분한다. 기검참은220틱까지 유지 후 해제하고 실제 Feedback를 dequeue 전 읽어 `sword_swing3`/Step3 발사·`KiSlashHit`/Step3 명중·Tier3를 모두 PASS에 요구한다. Core 큐/시간/난수는 변경하지 않는다. 악의구는96틱 유지·24틱 해제로 동일한 끝구간을 확보하고 얼음 파쇄는110틱 유지 |
 | 현재 기술 검증 | 표현 계약450개 RED→GREEN. 설치 Unity 참조125·runtime287소스 독립 C# 오류0·기존경고437. ContactFlash Graph47객체·누락참조0·재질GUID 일치. 정식 Unity 임포트/Player/M1/시각 판정은 아직 r3 미검증 |
 | 소유권·반환 | r2 종료08:15 UTC 자기 예약 해제·잠금 비어있음 확인·다음 기존 담당에게 반환. 파생575파일 byte/SHA 보존→기존519 정확복구·자기신규56 GUID참조0 정리·자기 source 변화0. CPU 재작업 중 Unity 점유0. 새 writer/세션/작업본0 |
 
