@@ -184,3 +184,13 @@ UI/월드 캡처 coverage가 생성된 동안 NativeGame.Update는 UiOverlapOwns
 |보존|원본38 브랜치는 미채택 캐릭터 시안이 있어 공통 전체병합 금지. 최종 원본복원은 정상2부모 병합+자기 초기UI 충돌의 최종후보 해소+원본 전용 시안/두 hook 보존+520 WIP/56 미추적 정확byte 복원을 사용. 구 복원기 차단 유지|
 
 맵 담당 요청 재현 좌표는 Core `(4790.811,7142.689)`, `(3320,7500)`, `(3320,7000)`이다. 같은 `--unity-field-screen` Player에서 기존8곳 뒤에 추가하고 정상 프레임 수를22로 검증한다. 일반 게임·56장 월드 검수 좌표는 바뀌지 않는다.
+
+
+## 실제 Player RED: 직업 모달 공유 영상 소유권
+
+|항목|확인/변경|
+|---|---|
+|실패|9ff/Runtime93cc86d75 실제2560×1600 ko 캡처035459db는8PNG 뒤실버테일 준비10초초과로종료2. 입력격리8/8 정상|
+|원인|DrawLobby의뒤선택전사 DrawSelectedCharacter와앞직업모달 DrawSilverScene이 같은 재생기를 한OnGUI에서0/1로반복Open. 로그OPEN7..12로재현|
+|수정|characterStep==1인 전체화면 직업선택 모달 동안 뒤 로비 DrawSelectedCharacter의 영상갱신을 건너뛰어 앞모달이 재생기를소유. 타임아웃10초/실제Prepared·프레임진행 필수유지|
+|재검수|새 source/build/M1/실제5직업/8미디어/전체해상도 캡처로재검수. 이전M1/field22는이전DLL범위만증명하며새DLL PASS로소급0|

@@ -155,6 +155,8 @@ namespace Exoduser.UnityPort
   }
   void DrawSelectedCharacter()
   {
+   // Full-screen class selection owns the shared decoder until its modal closes.
+   if(characterStep==1)return;
    SilverStyles();if(Characters.SelectedIndex<0){DrawAncestor();return;}EnsureSilverVisual();DrawSilverScene(new Rect(0,0,1920,1080),0);var label=Characters.SelectedName;float spacing=36*.16f,tw=SpacedWidth(silverName.font,36,label,spacing)-spacing;DrawSpaced(960-tw/2,993.6f,54,label,silverName.font,36,spacing,new Color(217/255f,214/255f,208/255f,.94f),true);string job=K("전사","WARRIOR");float jw=SpacedWidth(silverMicro.font,11,job,3.52f)-3.52f;DrawSpaced(960-jw/2,974.2f,15.4f,job,silverMicro.font,11,3.52f,new Color(195/255f,192/255f,186/255f),false);
   }
   void DrawCharacterModal()
