@@ -82,8 +82,9 @@ namespace Exoduser.UnityPort
             while(!Remodel3DReady&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
             if(!Remodel3DReady){Application.Quit(3);yield break;}
             A2FieldCaptureGeometry(output);
-            var locations=new[]{new Vector2(4020,7420),new Vector2(3500,6250),new Vector2(4000,5000),new Vector2(2200,4400),new Vector2(6500,4400),new Vector2(4600,3500),new Vector2(4000,1850),new Vector2(4020,500),new Vector2(4790.811f,7142.689f),new Vector2(3320,7500),new Vector2(3320,7000)};
-            var names=new[]{"01-시작","02-초반","03-전투공터","04-서측","05-동측","06-랜드마크","07-후반","08-보스입구","09-거목몸통재현","10-왼전경하단경계","11-왼전경상단경계"};
+            var locations=new System.Collections.Generic.List<Vector2>(new[]{new Vector2(4020,7420),new Vector2(3500,6250),new Vector2(4000,5000),new Vector2(2200,4400),new Vector2(6500,4400),new Vector2(4600,3500),new Vector2(4000,1850),new Vector2(4020,500),new Vector2(4790.811f,7142.689f),new Vector2(3320,7500),new Vector2(3320,7000)});
+            var names=new System.Collections.Generic.List<string>(new[]{"01-시작","02-초반","03-전투공터","04-서측","05-동측","06-랜드마크","07-후반","08-보스입구","09-거목몸통재현","10-왼전경하단경계","11-왼전경상단경계"});
+            if(System.Array.IndexOf(System.Environment.GetCommandLineArgs(),"--unity-field-boss-clear")>=0){locations.Add(new Vector2(4020,900));names.Add("12-보스입구남측");}
             foreach(int width in new[]{1920,3840})
             {
                 Screen.SetResolution(width,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.5f);
@@ -98,7 +99,7 @@ namespace Exoduser.UnityPort
                     Debug.LogError("[A2 필드촬영] 요청/실제 해상도 불일치");Application.Quit(3);yield break;
                 }
                 string folder=Path.Combine(output,width+"x1080");Directory.CreateDirectory(folder);
-                for(int i=0;i<locations.Length;i++)
+                for(int i=0;i<locations.Count;i++)
                 {
                     var p=locations[i];
                     if(!Map.CanMove(p.x,p.y,15))
@@ -120,7 +121,7 @@ namespace Exoduser.UnityPort
                 }
             }
             receipt.unityErrors=keyshotErrors;
-            receipt.passed=keyshotErrors==0&&receipt.frames.Count==22&&receipt.frames.TrueForAll(f=>f.remodel&&f.actualScreen&&f.screenHeight==1080&&(f.screenWidth==1920||f.screenWidth==3840)&&f.luminance>.01f);
+            receipt.passed=keyshotErrors==0&&receipt.frames.Count==locations.Count*2&&receipt.frames.TrueForAll(f=>f.remodel&&f.actualScreen&&f.screenHeight==1080&&(f.screenWidth==1920||f.screenWidth==3840)&&f.luminance>.01f);
             File.WriteAllText(Path.Combine(output,"전체필드-검수.json"),JsonUtility.ToJson(receipt,true));
             Application.logMessageReceived-=KeyshotLog;lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();
             yield return new WaitForSecondsRealtime(.5f);Application.Quit(receipt.passed?0:3);
