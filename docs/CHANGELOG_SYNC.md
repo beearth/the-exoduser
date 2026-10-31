@@ -5,7 +5,7 @@
 | 확정 | 영웅·이름 생성·슬롯 입장·새 게임·캐릭터 삭제, 실제 다음 난관 난이도 확정. 일반 이동/탭/설정/호버/취소/종료 제외 |
 | 오디오 | 후보3종+삭제변형3종 PCM16 44.1kHz stereo 1.8초, 간격 .42/.46/.38초. 임시 기본1·청음선택 전. gain=.8×sfxVol/100, 1850ms 중복방지, BGM -6dB/800ms 원본음량 보존 |
 | 패키징 | decision-sound.js 및 기존 entry 참조 fullscreen-art4/currency-orb2 누락을 NW FILES에 포함. 동시 main 보강을 정상 병합하며 중복 목록 제거. 새 NW/Steam 배포는 없음 |
-| 근거 | 회귀340/340, 프로젝트110/110, guard PASS, 실제생성→이야기건너뛰기→게임URL·삭제/취소·난이도 UI fixture, 소리포함 영상3개. [계약·파일표](6사운드디자인/DECISION_SOUND_20261031.md) |
+| 근거 | 회귀341/341, 프로젝트110/110, guard PASS, 실제생성→이야기건너뛰기→게임URL·삭제/취소·난이도 UI fixture, 소리포함 영상3개. [계약·파일표](6사운드디자인/DECISION_SOUND_20261031.md) |
 
 ## 2026-10-31 웹 3D 풀 배치 설계·레이어2 통합
 
@@ -740,7 +740,7 @@
 
 | id / 적용 위치 | 현재 정확 계약 |
 |---|---|
-| 기준 / 의존 | 최초 main e556b617/game SHA4d911cdd… 동일. CH2-01 4013102a 끝 분기 + CH1-04 5487245c 인수 merge0c63400f. --no-checkout+sparse, 자기 branch 원격 일치/DONE 뒤 자기 WT/cache 제거 |
+| 기준 / 의존 | 최초 main e556b617/game SHA4d911cdd… 동일. CH2-01 4013102a 끝 분기 + CH1-04 5487245c 인수 merge0c63410f. --no-checkout+sparse, 자기 branch 원격 일치/DONE 뒤 자기 WT/cache 제거 |
 | 공유 도구 | export_ch1_area_source optional post-snapshot observeNative7추가/2삭제. 동일 private 원 generator 상태 재사용, 기존0/1/4 전체 내용 차이0. Main/World/Player/P3/P2-006a/제품map/원본 PNG0줄 |
 | 실효 자원 | 신규 CH2 exporter/manifest/reader/World/preview/tests/UID3. initMapObjects 원문 실행107=hand105+lore1+gate1, nearFloor42보정. analytic 원52·tile1 28395cell exact276rectangle·기존27texture byte 참조. CH1hill/chunks복제0 |
 | 표현 / 수치 | 원 pivot/flip/rot/alpha·메모리 keying, 파일 이미지 변경0. Godot 연속 path바닥은 별도 표현. IEEE754 원입력 보존, query10998×2/LOS400·실제Physics40000센터/union 차이0. BFS165점/fixture왕복330 |
@@ -1505,7 +1505,7 @@ MagicLight Toolbox `GPT Image 2.5 sunburst`로 생체나무 4종을 생성하고
 
 ## 2026-09-29 — CH1-1 고목 접합84차
 
-현행 배경은 cache/bakeVersion **20260929-outer-84**다. 서측 부채꼴 고사리 구역을 낮은 부패 수피·괴사막으로 연결했다. master8192²/world8000²/tile40/64청크(core1024/bleed1/1026²), 변경chunk_1_5 1개·동일63개. 총109465px 변화(보행재질12058/비보행97407), geometry·충돌 변경0. 고목 보호2904814px 변경0; 이전 패치 보호 해제는 crop-local[495,340,835,655] 내부뿐(기존 패치 변화70882/창밖0). 타원밖·zero-mask·crop밖0, 선택crop의 near-black≤12/18/22는17595→17392 /64360→63422 /124323→122945. 재질 채널하한24, ellipse[635,490,260,180]/feather.25/opacity.96/줄기보호MaxFilter25·blur18. skin65→outer66..84 총20레이어, 마지막patch x1024/y5120/2048². 기존61차 생체 모듈·늪·동맥 유지/새모션0. 후보9카메라 오류0/G.map동일. 84차 본편18카메라·24적30초 전투·전체 베이크 재현 검수 완료는 저장된 live/runtime·promotion·로그로 확인했다. 현행85차와 상세 검수는 문서 맨 위 링크를 따른다.
+현행 배경은 cache/bakeVersion **20260929-outer-84**다. 서측 부채꼴 고사리 구역을 낮은 부패 수피·괴사막으로 연결했다. master8192²/world8000²/tile40/64청크(core1024/bleed1/1026²), 변경chunk_1_5 1개·동일63개. 총109465px 변화(보행재질12058/비보행97407), geometry·충돌 변경0. 고목 보호2904814px 변경0; 이전 패치 보호 해제는 crop-local[495,341,835,655] 내부뿐(기존 패치 변화70882/창밖0). 타원밖·zero-mask·crop밖0, 선택crop의 near-black≤12/18/22는17595→17392 /64360→63422 /124323→122945. 재질 채널하한24, ellipse[635,490,260,180]/feather.25/opacity.96/줄기보호MaxFilter25·blur18. skin65→outer66..84 총20레이어, 마지막patch x1024/y5120/2048². 기존61차 생체 모듈·늪·동맥 유지/새모션0. 후보9카메라 오류0/G.map동일. 84차 본편18카메라·24적30초 전투·전체 베이크 재현 검수 완료는 저장된 live/runtime·promotion·로그로 확인했다. 현행85차와 상세 검수는 문서 맨 위 링크를 따른다.
 
 [SSOT](4.1맵디자인+설정/CH1_1_PRODUCTION_FINISH_20260916.md#ch1-1-outer84). 기존 UI·전투·성능의 병행 수정은 보존했다.
 
@@ -1578,7 +1578,7 @@ WebGL 가산 및 Canvas2D 폴백에 동일한 baseAlpha를 전달한다. RGB `[2
 | id | 현행 계약 | 값 |
 |---|---|---|
 | OUTER81_SOURCE | 입력·생성 | master80 crop[1024,5120,3072,7168],2048²;Higgsfield GPT gpt_image_2_5/job34551eaf-ba11-466e-8403-c951d280d035;1:1/2k/high/opaque/count1,2.75credits |
-| OUTER81_MASK | 선택·합성 | ellipse[840,840,340,460];q=((x−840)/340)²+((y−840)/460)²;t=clamp((1−q)/.30);region=t²(3−2t).alpha=region×(1−protect)×.92×sourceAlpha;floor(alpha×255)/255;RGB=uint8(base80×(1−alpha)+edited81×alpha),원본alpha유지.경계band없음 |
+| OUTER81_MASK | 선택·합성 | ellipse[840,840,341,460];q=((x−840)/341)²+((y−840)/460)²;t=clamp((1−q)/.30);region=t²(3−2t).alpha=region×(1−protect)×.92×sourceAlpha;floor(alpha×255)/255;RGB=uint8(base80×(1−alpha)+edited81×alpha),원본alpha유지.경계band없음 |
 | OUTER81_KEEP | 보호 |73mask>12·74~80mask>0;이전합집합2100642픽셀.고목사각형[500,1502,1410,2048]/[760,70,1020,550]/[160,0,590,600],합879660픽셀.전체합2963916/MaxFilter25/GaussianBlur18/core강제alpha0.보호·타원밖·zero-mask·crop밖변경0 |
 | OUTER81_PIXELS | 변화 |총157436/보행123509/비보행33927;geometry·충돌·진행·늪버블·가스·동맥유지,새모션0 |
 | OUTER81_RUNTIME | 본편 |master·chunk_1_5.png/chunk_2_5.png·preview·composition·retouchLayers·game cache20260929-outer-81;64청크/core1024/bleed1/1026²·224strip동일;나머지62청크유지 |
@@ -3172,7 +3172,7 @@ The independent peace_shield_admission_hold group then passed FIRST 1/20 with FA
 | id / 적용 위치 | 정확 source / 현행 제작 상태 |
 |---|---|
 | pending data / schema | `godot/data/etype7_physical_flesh_crawler.json` / `exoduser.godot.etype7-physical-flesh-crawler.pending.v1` / `runtime:null` / `admitted:false`. 45503B/SHA `c0c2e22b393e27557bc2aeb943827e0f4a6a79a2837f597a95027ddc885a0c60`. 명세만 저장; factory가 이 JSON을 읽는 런타임 연결0·새 admission gate 구현0 |
-| 원 개체 / 방어값 | [4075,340]/ATK40/r22.73476334709674/speed.39137590795755384px/native tick. 원 factory HP1751→gate escort HP/mhp만 trunc×2.5=4377. shield/max1751·poise/max1751 유지; regen200/.15→262. 원16·native_final337·source supportfalse/runtimeNULL·seed/배치/수치 불변 |
+| 원 개체 / 방어값 | [4075,341]/ATK40/r22.73476334709674/speed.39137590795755384px/native tick. 원 factory HP1751→gate escort HP/mhp만 trunc×2.5=4377. shield/max1751·poise/max1751 유지; regen200/.15→262. 원16·native_final337·source supportfalse/runtimeNULL·seed/배치/수치 불변 |
 | source 조사 / 소비 준비 | 새 packet39838B/SHA `8916293092d23d418c58e79cbbb6742370d3cb5ccae805b2313548da490ac8b4`. `pending_source_values=[]`; 미확정 원수치0. readiness7행의 소비자는 모두false. 동적 자식의 실제 RNG/flags/skin/좌표는 실행 미생성이고 source 숫자 부족과 별개 |
 | 실제 이동 / contact | range800·LOS800. ranged stage d>680 flow×1 / d<520&&d>30 retreat×.5(point isW)→d 재계산→idle d<80 retreat×.6 / d>200 advance×1.2(canMv radius). type4 idle×1.6 alias0. `natural_contact_damage=null`; 자동 melee/windup·attack ticket 추가0 |
 | 자연 순간이동 | idle-only teleportT111.58698863349855/cd175.49626126885414. d<100/timer≤0에서 P 주변150..200px의 유효목표를 고정하고 warning120. entry 실패timer30. 완료 canMv 재검·착지와 뒤 경고탄 caller를 소비해야 함. 폐기된 경고 원 오버레이 재도입0 |
@@ -3248,7 +3248,7 @@ The independent peace_shield_admission_hold group then passed FIRST 1/20 with FA
 |---|---|
 | identity / 원 snapshot | id `ch1_initial_009`, order8, etype4/EL.I2, skin `soul_flame`, elite0/mods[]/aura=null. 논리명 갑각 사도·스킨명 영혼 화염·record name `native etype 4`를 구분. 기존 `encounters.json`의 source support=false/runtime=null·full337 fields·seed/RNG/순서/원좌표는 보존하며 새 runtime53/native_final subset27/initial_timers197만 별도 config로 소비 |
 | current typed config | `godot/data/etype4_ice_soul_flame.json`, schema `exoduser.godot.etype4-ice-soul-flame.v1`, profile `native_ch1_etype4_ice_soul_flame_v1`, current33672B/SHA `90f3ab523a7f9539437c2335c64db1eca6f93e3f87c060ba51df2ad48fc8706a`. 최초33508B 설정은 alpha source 명료화 전 이력이며 원 숫자/target/assets 변경0. config의 verification pending은 작성 당시 metadata로 보존하고 실제 결과와 구분 |
-| 원 기본값 / 위치 | spawn4191.995760537684,340 / HP875 / ATK31 / r34.87446582969278 / speed.32862369619309906px/native60tick / idle44.74301584530622 / projT294.2270742729306 / facing3.801742677476639 / eShield·max875 / poise·max875. map/camera/RLE/nav/STARTEXIT 변경0 |
+| 원 기본값 / 위치 | spawn4191.995760537684,341 / HP875 / ATK31 / r34.87446582969278 / speed.32862369619309906px/native60tick / idle44.74301584530622 / projT294.2270742729306 / facing3.801742677476639 / eShield·max875 / poise·max875. map/camera/RLE/nav/STARTEXIT 변경0 |
 | 공통 AI / contact | idle/recover d<800+LOS alert, range400은 추적 cutoff가 아닌 AI 분류. alerted d>30 flow 양축→X→Y 및 idle 추가 speed×1.6. 접촉은 raw24/phys·r+Player.r+8/cooldown40~59. 원 `_iceOnHit=false`이므로 접촉 냉기를 추가하지 않음. source에 없는50~100 자동alert·tank 방어감산·attack ticket0 |
 | ice charge / 피해 | 원 local295에60tick 차지→354 charge1→355 actor-center 발사. source water base`trunc(31×1.2)=37`→적 이동탄×2=74, EL.I/magic dtype·parry class, waterBean=true/redBean=false/blue=false/black=false/fromRainbow=false. 무장비 raw baseline 상성1. 현재 Player는 Main이 바인딩한 현재 armor.el의 원 상성을 읽는다(2026-10-17). full equipment·다른 탄/패링 변형은 미이식 |
 | ice 탄의 clock / 접촉 | speed500~600px/sec는 birth1회 추첨, sz3.2/r5.2/contact margin13.6+Player.r, life120/decay.667, 감소/연장 뒤 life>30에서 homing.00655rad/tick. camera거리>2500 update-front 회수→life감소→near expiry life1연장→homing→move→wall/현재·이전 Player 점의 투사체 선분 거리 최소값으로 contact. 실제 받아들인 피해에는 heading KB2, burn 추가0 |
@@ -3269,13 +3269,13 @@ The independent peace_shield_admission_hold group then passed FIRST 1/20 with FA
 |---|---|
 | 정확 입장 / 이름 | `ch1_initial_014`, order13, etype4, physical/EL.P0, `spine_beast`, elite0·mods[]·aura=null만 별도 profile `native_ch1_etype4_physical_spine_beast_v1`로 소비한다. 원 etype4 명칭 `갑각 사도`, 스킨 `척추 괴수(spine_beast)`, 원 record name `native etype 4`는 서로 구분하며 runtime name을 추정 변경하지 않음 |
 | 원 목록 / typed 설정 | 원16개체 `godot/data/encounters.json`·seed/RNG/배치와 지정 record의 `support.runtime_supported=false`/`runtime=null`은 그대로 보존한다. 새 `godot/data/etype4_physical_spine_beast.json`만 exact admission에 사용. 이 config26588bytes/SHA-256 `d098280a24d0c3ee4729c145b71cb849d3ef5171153a8d1de6df7c129d79064e`, native_final 원값27개 subset이며 원 full337개는 snapshot/report에 보존. 목록 재추출·재해시0 |
-| 원 수치 / 위치 | spawn3878.7467967160046/340, HP875·ATK31·radius34.3551987009123·speed0.40462583759799603px/native60tick, idle30.77384915202856·projT299.5166686736047·facing0.384930423474355, eShield/eShieldMax875·poise/maxPoise875. map RLE/nav/geometry/STARTEXIT/camera 불변 |
+| 원 수치 / 위치 | spawn3878.7467967160046/341, HP875·ATK31·radius34.3551987009123·speed0.40462583759799603px/native60tick, idle30.77384915202856·projT299.5166686736047·facing0.384930423474355, eShield/eShieldMax875·poise/maxPoise875. map RLE/nav/geometry/STARTEXIT/camera 불변 |
 | 실제 일반 AI | 원800px+LOS 어그로·단거리(range400) 분류의 d>30 밀착추적과 일반 idle 이동을 소비한다. 일반 접촉은 atk×.8의 raw24, cooldown40~59tick. common60tick 차지 후 actor-center의 physical raw24 탄이며 새로운 탱크 전용 공격·방어감산·attack-ticket를 추정 추가하지 않음 |
 | shield / 피격 | eShield875가 최종 배율 뒤 먼저 흡수하고 overflow만 HP로. 전부 흡수하면 HP·hitstun·KB·poise 감소0. 남은 HP 피해의 일반 idle hitstun8·KB=min(remaining×.25,15)×kbMult·poiseHit opt-in 및 stun/차지 중단은 기존 공통 소비 계약. tank renderer의 case4 외형을 특수 AI로 해석하지 않음 |
 | 기존 물리탄 / 화상 공유 | existing physical projectile의 damage24·dtype=parry/energy_def·heading KB×2·life120·size3·300px/sec 소비와 existing player burn pool48/idle 활성600·interval30·분모20·cap10/no-refresh·expiry-first19회 요청을 공유한다. 이번 단위에서 player·탄 수치를 새로 보정하지 않음. [물리 consumer 정본](engine/FDG_GODOT_ETYPE0_PHYSICAL_FLESH_CRAWLER_20261013.md), [화상 정본](engine/FDG_GODOT_ETYPE0_PHYSICAL_BURN_20261013.md) |
 | undead / modifier 경계 | etype4는 원 `_UNDEAD_ET`에 포함되며 STR 뒤 `trunc(dmg×(1+antiRevive))` 대상이다. native type trait/계약으로 이를 보존하되 현재 raw 무접사 `antiRevive=0`만 인수한다. nonzero antiRevive·full equipment/affix/상태 pipeline이나 다른 etype4/skin/ice 지원 승격 없음 |
 | 기존 atlas 소비 | body8방향, base crop1280/0/256/256(col5,row0); walk crop5120/5376/5632/5888/0/256/256. 거리128마다4프레임, base+walk overlay와 center pivot128/128·표시높이240.48639090638608px를 보존. 기존 복사 atlas16장+mouth1장을 재사용하며 이번 새 PNG 복사·가공·해시0. 옛 카탈로그 순번을 현재 cell index로 일괄 치환하지 않음 |
-| 새 고유 검증 | 신규 exact_admission / native_motion_charge / shield_poise_order 첫 실행3PASS/exit0·7.103183292초(명시 physics1159회). 추가 flow_axis_boundaries는 최초1FAIL/2assertions/exit1·2.340568333초(명시5회) → 추적 flow leaf 수리 후 그 실패1개만PASS/exit0·2.335691084초(명시5회). 현재 고유4 기술PASS, 첫3 성공 재실행0·fixture수정0. 원값/등록4/12/셀/거리 보행·차지300→59→birth360·caster 사망 후 독립탄 요청 sink(parry24/KB2/burn48)·shield/overflow/poise/KB·양축/X/Y/모두막힘/LOSfalse 근거리 자동alert0을 확인. 자동 fixture physics0·alive stun 실제관측false·이전검사/GUI/source재추출/재해시0. 현재 인간 앱에 새source 미로드, 공개·픽셀·성능 증거 아님 |
+| 새 고유 검증 | 신규 exact_admission / native_motion_charge / shield_poise_order 첫 실행3PASS/exit0·7.103183292초(명시 physics1159회). 추가 flow_axis_boundaries는 최초1FAIL/2assertions/exit1·2.341568333초(명시5회) → 추적 flow leaf 수리 후 그 실패1개만PASS/exit0·2.335691084초(명시5회). 현재 고유4 기술PASS, 첫3 성공 재실행0·fixture수정0. 원값/등록4/12/셀/거리 보행·차지300→59→birth360·caster 사망 후 독립탄 요청 sink(parry24/KB2/burn48)·shield/overflow/poise/KB·양축/X/Y/모두막힘/LOSfalse 근거리 자동alert0을 확인. 자동 fixture physics0·alive stun 실제관측false·이전검사/GUI/source재추출/재해시0. 현재 인간 앱에 새source 미로드, 공개·픽셀·성능 증거 아님 |
 | 등록 / API | factory `SPINE_SCRIPT`, `SPINE_CONFIG_FILE`, `SPINE_PROFILE`, `SPINE_CONFIG_SCHEMA`, `_spine_config`, `_is_spine_target`, `_validate_spine_config` exact leaf. actor `ExoduserSpineBeast.configure(runtime,world)`, `set_player`, `receive_damage(amount:int,direction:Vector2,source:String,opts:Dictionary={})`, `receive_poise_damage(float)` pending, `get_snapshot`. Body/WalkOverlay는 별도 spine 셀 소비; native_type_traits deep copy와 undead_for_anti_revive=true/anti_revive_affix_ported=false 보고 |
 | flow 이동 / source 교정 | `_move_flow_native(direction,ticks)`는 source 방향 성분을 speed 곱하기 전 캐시하고 양축→X→Y 순서로 이동. 성공은 stuck0/실제 방향 캐시, 모두 막히면 stuck+=ticks. snapshot `last_flow_direction`/`flow_stuck_ticks`는 읽기값만 제공. 일반 KB/idle/separation `_move_native`는 유지. 원source에 없는50~100 근접 alert를 제거한 config 메타데이터 교정이며 runtime/target/assets 값은 동일. 원8방향 escape·전체 globalFlow/cache/RNG/culling 동일성은 미검증 |
 | 검증 선언 / 범위 | 새 config의 `scope.runtime_consumer_verification` pending은 source/config 작성 당시 선언을 보존한 것이다. 현행 actor/factory 기술 소비는 이번 SSOT·고유4 검사 결과로 구분한다. 전달 sink는 기존 Player의 full hurtP/화상커널 재검이 아니며 full equipment/affix/AI/pathfinding/culling/원 global phase·RNG parity·생존 stun은 미검증/미이식 범위를 유지 |
@@ -3426,7 +3426,7 @@ The independent peace_shield_admission_hold group then passed FIRST 1/20 with FA
 | 결함 / 한정 수리 | 수리 전 keydown `_sdTapBuf=G.frame` 기록값undefined→`_sdTapBuf>=0` false로 TTL 비교 전 short-circuit·update 사이 E down/up 소비불가. 수리 전 helper `G.frame-_sdTapBuf<=3`와 stamp의 두 참조만 실제 native tick `_gameFrame`으로 수리. old G.frame 수식은 현재 게임 미사용이며 첫 press에서 차이 계산이 실행된 것으로 표기하지 않음 |
 | 유지 | TTL3틱·1회 소비·sDraw 진입 후 그다음 release→sBash20틱/기존16틱 패링 window. held native E·Q buffer 없음·피해/패링 설계/Q-E class 규칙 유지 |
 | 새 기술 / 실제 입력 | `test/fdgDruidETapBuffer.test.mjs` meaningful VM 최초4/4 PASS·fail0, E6/e-tap-buffer-test-first.log. code/UI reload 후 actual E fasttap→공개STEP1sDraw→STEP2sBash. old suite/proof 재검수0·이전 성공 합산0 |
-| E native 패링 | 정면340 pause/step slam은 ms77561 E/projectile:null·bossSlam→recover40/후속8틱 기록. 근접100 wind 타격취소 첫시도는 성공 제외. 비유도 physical fan은 ms143603 E physicalProjectile/classphysical/druidStraighttrue/friendlyblue→ms158928 native-reflection homingtrue. 남은 hostilemagic before1/step3/step6 vx−3.1937373020264976/vy−9.406679454233943 유지·보스hit중존속 |
+| E native 패링 | 정면341 pause/step slam은 ms77561 E/projectile:null·bossSlam→recover40/후속8틱 기록. 근접100 wind 타격취소 첫시도는 성공 제외. 비유도 physical fan은 ms143603 E physicalProjectile/classphysical/druidStraighttrue/friendlyblue→ms158928 native-reflection homingtrue. 남은 hostilemagic before1/step3/step6 vx−3.1937373020264976/vy−9.406679454233943 유지·보스hit중존속 |
 | Q fan / 정상 AI | fan Q는 normal-running 실제 공개 반복tap 소비로 magic+black 성공: q-black-close-live ms214654 Q black/fromRainbowtrue→214678 native-reflection homingtrue/actualraw17장. Q source0·소스force성공코드0·blackE금지 유지. pause/step E proof와 구분. native-ai-live 강제패턴0/소스force0·actualraw133장/first→last4.550577879초·HP3000 QAfixture. 120poll player poses bladeDash5/idle77/stagger8/sDraw2/sBash11/sRecover11/pStun6. Q native-parry5는 모두magic/druidStraightfalse 주변반사, AI Druid E parry/native-reflection0. bossHP21017alive/kill미관찰 |
 | 추가 연속 입력 / 사망 이력 | continuous tail actual raw202장/6.706461906초에서 player dead/HP0·bossHP21017/alive·kill0: FAIL. 당시 단순 클릭의 weapon consumption NOT_OBSERVED 이력 및 실패 영상·최종 원자료 보존 |
 | 일반 공격 소비 / mixed-held | 추가 공개 mouse hold/drag1px의 native mousedown/up82ms 후 wRecover11/ST490으로 실제 공격 소비 확인·추가 코드 수리0. 최종 mixed-held raw188장/6.172783852초, raw0003 HUD wSwing+white arc/0017 wRecover, 1280×720 PNG2장·2-panel board: 실제 일반 공격 소비 PASS. E/Q parry0·boss damage0·kill0, 마지막 player pStun/HP1156.4687500000105·boss charge/HP21017/alive 및 fixed camera 밖 이탈: full encounter camera FAIL |
@@ -4441,7 +4441,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 | 항목 | 결과 |
 |---|---|
 | 패키지 | 인트로 JS/CSS·로고/대장간/아이템 아트·투사체 아틀라스·프리팹 목록 누락 보완. 후속 localization 의존 파일도 builder 등록 |
-| 실제 무음 원인 | NW.js 0.111.2 기본 FFmpeg가 AAC를 디코딩하지 않음. 동일 버전 코덱으로 교체 후 decoded audio 65,491 bytes·peak 0.340915 확인 |
+| 실제 무음 원인 | NW.js 0.111.2 기본 FFmpeg가 AAC를 디코딩하지 않음. 동일 버전 코덱으로 교체 후 decoded audio 65,491 bytes·peak 0.341915 확인 |
 | 패키지 서버 | GET/POST /api/mats와 공유 파일 슬롯 제외, 영상 Range 206/416·HEAD·HTML 캐시 제어 동기화 |
 | 검증 | 패키지 게임 진입 pageerror/console error/404 0, 세이브 API 정상. 세계관 v13·28언어 자막·BGM 연속·컷 탐색·종료 회귀 PASS |
 | 배포 | 사용자 재인증 후 cached login·preview·upload PASS. default 24922778 → 25202408 적용 및 Steamworks 공개 기록 확인(한국 시각 2026-09-09 15:52). Windows depot 4749591 / manifest 5604079566035910679. 검증 패키지 5,850개 해시 일치; 이후 미완료 번역 WIP 제외 |
@@ -6306,7 +6306,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 | 항목 | 종전 | 현행 | 보존 |
 |---|---:|---:|---|
 | 중앙 authored detail | ritual 1 + 작은 유해 흔적 | 기존 바닥 3 source × 2 = **6개 저알파 detail ring** | 64×64 collision/vertical prop 0 |
-| source/runtime authored | `340/337` | `346/343` | collision 101 |
+| source/runtime authored | `341/337` | `346/343` | collision 101 |
 | runtime total | `338~339` | `344` 전체맵 / `345` 플레이 QA | START/EXIT·종주축 불변 |
 | 재사용 | filtered 34 / rotated 75 / composite 7 | filtered 40 / rotated 81 / composite 8 | source 21, crop 13종/87, mirror 30 |
 
@@ -6394,7 +6394,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 
 | 항목 | 종전 | 현행 | 보존 |
 |---|---:|---:|---|
-| authored | source/runtime `324/321` | `340/337`, Final Macro crest 16 | collision 101, core/route blocker 0 |
+| authored | source/runtime `324/321` | `341/337`, Final Macro crest 16 | collision 101, core/route blocker 0 |
 | rampart crop | 8종/71 instance | 13종/87 instance | 기존 source image 21(+base ground 1) |
 | 전역 톤 | floor `.46`, prop `.48/1.28/0` | floor `.49`, prop `.46/1.34/.18` | red accent는 fissure/landmark 국소만 |
 | ritual | alpha `.78` | alpha `.56` | `(100,100)`, scale `4.7`, 비충돌 |
@@ -6402,7 +6402,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 - `prop_hellwinter_rampart.png` 한 장에서 spire A/B, pillar, rubble A/B 5개 runtime crop을 추가했다. TOP/RIGHT/SOUTH/LEFT 각 4개씩 총 16개를 기존 tower anchor에 `.90~1.10` scale로 중첩해 4개 비대칭 silhouette family를 만들었다. base size `430~500`, alpha `.58~.70`, layer `-1`이며 전부 비충돌이다. rubble B 3개만 mirror한다.
 - 신규 PNG·신규 원화·random scatter·`edgeErase` 추가는 0이다. START/EXIT, 중앙 64×64 core, main route, collision wall, execution/prison/carcass/dormant 좌표·seam 처리는 변경하지 않았다.
 - 바닥 흑색 tone은 `rgba(6,8,10,.49)`, 프롭은 `brightness(.46) contrast(1.34) saturate(.18)`로 조정해 밝은 설원/청색 과포화를 억제하면서 dead blue-gray를 남겼다. ritual alpha는 `.56`으로 낮춰 30-enemy/적색 telegraph보다 낮은 hierarchy를 확인했다.
-- TDD는 27/27 PASS. runtime은 source/runtime authored `340/337`, 전체 `MAP_OBJS=338~339`, collision 101, silhouette breaker 16(각 family 4), pageerror/asset 404/missing sprite 0이다. WASD 6구간 `(100.5,185.5)→(100.5,11.50)` PASS, 최대 50ms 이동량 `43.41px`다.
+- TDD는 27/27 PASS. runtime은 source/runtime authored `341/337`, 전체 `MAP_OBJS=338~339`, collision 101, silhouette breaker 16(각 family 4), pageerror/asset 404/missing sprite 0이다. WASD 6구간 `(100.5,185.5)→(100.5,11.50)` PASS, 최대 50ms 이동량 `43.41px`다.
 - 최종 캡처는 `captures/ch3_final_macro_retouch/{SI11_full,model_vs_runtime,outer_LEFT,outer_RIGHT,outer_TOP,central_arena}.png`다. 판정은 **WALL SYSTEM / GAMEPLAY / SILHOUETTE / REPETITION / DENSITY / LIGHTING / COLOR / CANONICAL COMPARISON PASS — CH3-1 VISUAL FINAL PASS**다.
 - ASSET REUSE SUMMARY: source images 21(+base ground 1), reused as-is 15, cropped/runtime crop 13종/87 instance, rotated 75, mirrored 30, runtime filtered 34, runtime edge-erased 4종/5 instance, composite landmark 7, truly new asset 0. commit/push/deploy는 수행하지 않았다.
 
@@ -30835,7 +30835,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - CLAUDE.md
 - _autosave/game_20260516_183317.html
 - _autosave/game_20260516_183349.html
-- _autosave/game_20260516_183407.html
+- _autosave/game_20260516_183417.html
 - _autosave/game_20260516_183419.html
 - _autosave/game_20260516_183423.html
 - _autosave/game_20260516_183426.html
@@ -31968,7 +31968,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 ## 2026-05-20 15:30 (auto)
 - _add_phase33c_keys.py
 - _autosave/game_20260520_145331.html
-- _autosave/game_20260520_145340.html
+- _autosave/game_20260520_145341.html
 - _autosave/game_20260520_145349.html
 - _autosave/game_20260520_145353.html
 - _autosave/game_20260520_145403.html
@@ -32148,7 +32148,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - _autosave/game_20260520_222456.html
 - _autosave/game_20260520_222629.html
 - _autosave/game_20260520_222642.html
-- _autosave/game_20260520_223400.html
+- _autosave/game_20260520_223410.html
 - _autosave/game_20260520_223451.html
 - _autosave/game_20260520_223602.html
 - _autosave/game_20260520_224823.html
@@ -33386,7 +33386,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - assets/vfx_impact/_unity_preview/Library/Artifacts/30/3062bc33504f6f33fd85b8710c62a0de
 - assets/vfx_impact/_unity_preview/Library/Artifacts/30/30ab64bb861d44c22b48dbb197f18b2a
 - assets/vfx_impact/_unity_preview/Library/Artifacts/31/31297e107643347721703f3791fc87c5
-- assets/vfx_impact/_unity_preview/Library/Artifacts/32/322a9d3c0e7340bfdf4b6e6d7f0e6e0a
+- assets/vfx_impact/_unity_preview/Library/Artifacts/32/322a9d3c0e7341bfdf4b6e6d7f0e6e0a
 - assets/vfx_impact/_unity_preview/Library/Artifacts/33/335190bf94b4cbcca1d731d230be4594
 - assets/vfx_impact/_unity_preview/Library/Artifacts/33/3370e2a3a6675b4d2e4811c113644342
 - assets/vfx_impact/_unity_preview/Library/Artifacts/33/3376c7c37801112d2ed897d56bd54741
@@ -33699,7 +33699,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - assets/vfx_impact/_unity_preview/Library/Artifacts/d3/d36e5f7ed355af493dc1fb3555fcb1e8
 - assets/vfx_impact/_unity_preview/Library/Artifacts/d3/d39b16553face28830ab3f960d3e1a0e
 - assets/vfx_impact/_unity_preview/Library/Artifacts/d3/d3f1b8ea14272da9a1a4a0565e764d8d
-- assets/vfx_impact/_unity_preview/Library/Artifacts/d4/d43409c624e64377903eaa59fb30e415
+- assets/vfx_impact/_unity_preview/Library/Artifacts/d4/d43419c624e64377903eaa59fb30e415
 - assets/vfx_impact/_unity_preview/Library/Artifacts/d4/d451d8f53fa1817567d26a8b79db30be
 - assets/vfx_impact/_unity_preview/Library/Artifacts/d4/d4765f673477a61d97414f8833ff6fac
 - assets/vfx_impact/_unity_preview/Library/Artifacts/d4/d4e4c8067267296a05faf33728c01c7f
@@ -33782,7 +33782,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - assets/vfx_impact/_unity_preview/Library/Bee/1900b0aE.dag_derived
 - assets/vfx_impact/_unity_preview/Library/Bee/1900b0aE.dag_fsmtime
 - assets/vfx_impact/_unity_preview/Library/Bee/CachedNodeOutput/609eaf655a6a37fac5f599dcbeb74b46_out
-- assets/vfx_impact/_unity_preview/Library/Bee/CachedNodeOutput/ccddbe48dbc53403949e9216bea01a8c_out
+- assets/vfx_impact/_unity_preview/Library/Bee/CachedNodeOutput/ccddbe48dbc53413949e9216bea01a8c_out
 - assets/vfx_impact/_unity_preview/Library/Bee/TundraBuildState.state
 - assets/vfx_impact/_unity_preview/Library/Bee/TundraBuildState.state.map
 - assets/vfx_impact/_unity_preview/Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.UnityAdditionalFile.txt
@@ -33845,7 +33845,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - assets/vfx_impact/_unity_preview/Library/Bee/artifacts/mvdfrm/UnityEditor.SpriteShapeModule.dll_B89AE9E41F5664DF.mvfrm
 - assets/vfx_impact/_unity_preview/Library/Bee/artifacts/mvdfrm/UnityEditor.SubstanceModule.dll_85B96251854A1C13.mvfrm
 - assets/vfx_impact/_unity_preview/Library/Bee/artifacts/mvdfrm/UnityEditor.TerrainModule.dll_5E2771FF70CA9AD8.mvfrm
-- assets/vfx_impact/_unity_preview/Library/Bee/artifacts/mvdfrm/UnityEditor.TextCoreFontEngineModule.dll_5E22340C51B5713E.mvfrm
+- assets/vfx_impact/_unity_preview/Library/Bee/artifacts/mvdfrm/UnityEditor.TextCoreFontEngineModule.dll_5E22341C51B5713E.mvfrm
 - assets/vfx_impact/_unity_preview/Library/Bee/artifacts/mvdfrm/UnityEditor.TextCoreTextEngineModule.dll_A60A6A7DE1392A5C.mvfrm
 - assets/vfx_impact/_unity_preview/Library/Bee/artifacts/mvdfrm/UnityEditor.TextRenderingModule.dll_8DA5113D00701542.mvfrm
 - assets/vfx_impact/_unity_preview/Library/Bee/artifacts/mvdfrm/UnityEditor.TilemapModule.dll_FD23D98088877BE1.mvfrm
@@ -34896,7 +34896,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 
 ## 2026-05-24 23:30 (auto)
-- _autosave/game_20260524_223408.html
+- _autosave/game_20260524_223418.html
 - _autosave/game_20260524_223449.html
 - _autosave/game_20260524_223811.html
 - _autosave/game_20260524_223858.html
@@ -36315,7 +36315,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 ## 2026-06-10 19:30 (auto)
 - _autosave/game_20260610_183352.html
-- _autosave/game_20260610_183403.html
+- _autosave/game_20260610_183413.html
 - _autosave/game_20260610_183429.html
 - _autosave/game_20260610_183439.html
 - game.html
@@ -52507,7 +52507,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 
 | 항목 | 반영 |
 |---|---|
-| 대상 | m_c1sbone(1940,4340)/m_sword_pile(1580,4180)/m_wpile(2060,4220),원본하부alpha접촉그림자. 솟은장대상부제외 |
+| 대상 | m_c1sbone(1940,4341)/m_sword_pile(1580,4180)/m_wpile(2060,4220),원본하부alpha접촉그림자. 솟은장대상부제외 |
 | 비용 | 256²RGBA×최대3=.75MiB추가,전체native88.06269454956055MiB(기타shadow/GPU/임시제외). 보이는대상당1drawImage |
 | 검증 | 효과35+geometry5+구문1=41PASS,13시점+전투검수. live메타사용drawImage3회확인. JS pageerror0/HTTP오류0/외부차단6. 모듈20260927-35 |
 | 문서·상태 | [런타임35차](4.1맵디자인+설정/CH1_LIVING_DETAIL_RUNTIME_20260925.md)정확한수치·제작보고와관련7문서동기화. VISUAL VERDICT: RETOUCH. 권한/셸오류로커밋미완료 |
@@ -53698,7 +53698,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | id / 적용 위치 | 현행 계약 |
 |---|---|
 | 원인 | 480×360에서 기존 min(vw,rem)은 설명5.52px/특성 제목5.04px/특성 본문4.56px까지 축소. 오른쪽 프레임이 본문 영역의 위·아래로 넘어가며 작은 창 정보를 읽기 어려움. #csThumb만 숨기는900px 이하 규칙은 빈 코너 장식을 남김 |
-| 넓은 창 정보 | .cs-side flex:0 0 min(26vw,340px), justify-content:safe center, gap18px. min-width/min-height0, padding16px 8px, overflow-y:auto/overflow-x:hidden, overscroll-behavior:contain/scroll-padding-block16px/overflow-wrap:anywhere. 높이 부족 시 위에서 시작해 내부 스크롤, 충분하면 가운데 배치. .cs-trait 마지막 텍스트 div min-width0 |
+| 넓은 창 정보 | .cs-side flex:0 0 min(26vw,341px), justify-content:safe center, gap18px. min-width/min-height0, padding16px 8px, overflow-y:auto/overflow-x:hidden, overscroll-behavior:contain/scroll-padding-block16px/overflow-wrap:anywhere. 높이 부족 시 위에서 시작해 내부 스크롤, 충분하면 가운데 배치. .cs-trait 마지막 텍스트 div min-width0 |
 | 정보 초점 | #csLeft tabindex0/role region/aria-labelledby csCharName. #csRight tabindex0/role region/aria-labelledby csPlaystyleTitle. 기존 .cs-right-title 리프에 해당 id 추가. .cs-side:focus-visible outline2px solid #ead6a5/offset−2px |
 | 폭760px 이하 | .cs-head padding16px 20px 12px, h2의 좌우 장식선 숨김. .cs-body display:grid/columns:minmax(0,1fr)/grid-auto-rows:max-content/align-content:start/gap20px/padding4px 20px 20px. 세로 스크롤·가로 숨김·overscroll contain·stable 거터·scroll-padding-block16px. 헤더와 기존 하단 컨트롤은 이 스크롤 밖에 고정 |
 | 작은 창 정보 카드 | .cs-side min-height:auto/overflow:visible/padding2px/justify-content:flex-start. 왼쪽은 minmax(0,1fr) 64px의2열, gap8px 12px/align-items:start. 직업·이름·설명은1열의1/2/3행, 썸네일은2열의1~3행·width64px/margin0. 이름 margin0/아래선 margin-top6px, 설명 max-width:none |
@@ -53837,7 +53837,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 재질 | #756247 테두리색, linear-gradient(#131215ee,#0b0b0eef)/iron.png center320px/#111013, shadow0 18px 56px #000c/inset3px #090a0d/inset4px #a68a5433. 내부6px/1px #a68a542b 장식은 absolute/pointer-events:none으로 배치 치수에 영향 없음 |
 | 색상 | 제목·확인문구 #ecd9b7/설명 #c4b69e/label #d3c1a2/입력 #f1e4c9 및 #090a0d. 기본 버튼 #dfceb0/border #74604a/중성 button.webp, 활성 생성·확인 #fff0d1/border #b57b59/가넷 오버레이 유지 |
 | 상태 | 기존 .14s 재질·초점 transition, hover brightness1.13/#c9ab7d, active brightness.96/inset0 3px 7px #000a, focus-visible2px #ead1a0/offset-4px, disabled opacity.7/grayscale1/#aaa08e, reduced-motion transition:none. scrollbar-color만 유지하며 scrollbar-width 덮어쓰기도 제거 |
-| 검수 | 현재 기본 브라우저 viewport2353×1262/scale1에서 KO·EN·AR×이름/확인창6조건. 기존 CSS 백업과 각11요소의 폭·높이·패딩·테두리 두께·font·줄높이·마진·자간·display 등23속성을 비교, 차이0. 이름창 실측 KO440×340/EN440×367/AR440×364, 확인창 KO·EN400×140/AR400×150. 번역에 따른 기존 줄바꿈·높이 차이는 유지 |
+| 검수 | 현재 기본 브라우저 viewport2353×1262/scale1에서 KO·EN·AR×이름/확인창6조건. 기존 CSS 백업과 각11요소의 폭·높이·패딩·테두리 두께·font·줄높이·마진·자간·display 등23속성을 비교, 차이0. 이름창 실측 KO440×341/EN440×367/AR440×364, 확인창 KO·EN400×140/AR400×150. 번역에 따른 기존 줄바꿈·높이 차이는 유지 |
 | 검수 경계 | 원본 DOM·CSS를 Node 서버에서 제공하고 앱 스크립트를 제거한 격리 렌더의 치수 대조. 저장·생성·삭제·종료 실행이나 게임패드 검증을 대체하지 않는다. 이전435배치/148회귀는 이전 마감 기록이며 이번 현행 크기의 검수 결과로 재사용하지 않음. 검수 viewport override는 해제하고 화면 크기를 다시 바꾸지 않음 |
 | 회귀 | 관련 로비6개 테스트 파일132건 PASS. 이번 수정은 CSS 치수 복원·캐시 키 변경이며 생성·취소·이름 조합·초점 처리 코드는 변경하지 않음 |
 | 캐시·상태 | index.html의 ui-refinement.css?v=20260929-lobby-size-preserved. tmp/lobby-size-restore-20260929에 백업·검색·검수·patch 보관. .git 읽기 전용으로 커밋 미완료, 타 작업 스테이징 보존 |
@@ -54515,7 +54515,7 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | 공개 E / Q 범위 | E physicalProjectile/druidStraight native-parry1과 friendly guided blue를 실제 확인. 다른 E magic callback은 기존 조건부 소비이며 Q 성공으로 세지 않는다. Q pressKey 약1ms tap 성공0; hold는 지원 CDP Input 불가로 미시험, actor/input 상태주입0 |
 | 정상속도·강제 fan | normal-speed-forced:114 fullframes/record5095ms, 공개 force pattern. playerHP521→125.59375/pStun, bossHP21017 alive/shield17744, E/Q 성공0. 정상속도여도 강제 pattern을 자연 AI fan 성공으로 확대하지 않는다 |
 | 자연 native AI | native-ai:172 fullframes/record7037ms, AI 시작/강제 pattern0. HP595→0/fallen, bossHP21017 alive/shield18881. 자연 beanStorm/groundFissure/charge/slam/slashCombo 관측, fan0/new thorn0/EQ0. 이 run의 무관측이며 전체 AI의 fan 미지원으로 확대0 |
-| 실제 저장 / 오류 | 두 run runtimeexception0. 공개 자기 설정 save write1, reopen own read1/write0·config {distance340,pattern:fan,phase0,scale:.5} 복원. 전투 actor snapshot 저장0·HP3000 fixture0·actor console writes0. 전체 network/404 무오류 주장0 |
+| 실제 저장 / 오류 | 두 run runtimeexception0. 공개 자기 설정 save write1, reopen own read1/write0·config {distance341,pattern:fan,phase0,scale:.5} 복원. 전투 actor snapshot 저장0·HP3000 fixture0·actor console writes0. 전체 network/404 무오류 주장0 |
 | 최종 관측 / 정본 | VISUAL RETOUCH / 정확 잔여1 THORN_VOLLEY_COMBAT_ACCEPTANCE: 실전 가독성·Q hold 성공·자연 AI fan 관측 미인수. 실제 E 부분 성공/신규 기술 PASS를 전체 전투·엔진 완료 PASS로 확대0. 정확 GIF 파생 duration/경로·전체 실제 verdict/§23는 새 정본 참조 |
 
 정본: [다크드루이드 가시 일제발사 첫 사본](engine/FDG_DARK_DRUID_THORN_VOLLEY_FIRST.md).
@@ -54614,7 +54614,7 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | source / scope | first288cf917/sample/40/옛proof/GIF동결. 같은NORMAL scene와server3333의기존담당후속,다른backend/전체엔진/새모델gate확대0 |
 | production | m_c1be(54,51)1.7→(65,51)1.7, m_c1bn(48,12)1.7→(63,12)1.7. x만수정/12LARGE·38props·T40·72×84/RLE·geometry·원PNG·meta·AI·damage·속도·clock·poise·QE/blackQ전용원계약유지 |
 | cache / doc correction | sceneimport2곳forest-route-close-20261012. props좌표는o.x*T/o.y*T, START/EXIT/몹만(value+.5)*40이며기존문서props+.5오류수정/소비코드변경0 |
-| 새 실제 완주 | 수정후새정상AI공개전투·ghoul/revive모두종료→동쪽공간→북쪽→actualcompletedtrue. alive0/deadfalse/P1678.6147661288503,704.6375331977333/exit거리48.36340442949128<65,정상exitnote관측 |
+| 새 실제 완주 | 수정후새정상AI공개전투·ghoul/revive모두종료→동쪽공간→북쪽→actualcompletedtrue. alive0/deadfalse/P1678.6147661288503,704.6375331977333/exit거리48.36341442949128<65,정상exitnote관측 |
 | 피해 / HP / 패링 | HP567→547.9781250000857·순감소19.0218749999143/누적피해53.09999999999996/가한피해10904/maxhit1410/parry1/물약0/death0. 원native회복유지,parry1을E/Q둘다성공으로승격0 |
 | 금지 우회0 | HP/승리/위치·observer·callback쓰기0,forcepattern0,enemy/독립탄삭제0,God/난이도변경/공격제한/singlehit0. 고갈이동자원도보행·native전격이동으로해결 |
 | raw / performance | 새7구간528JPEG2560×1440/logical1280×720/178states+publicactions+timestamp. combat1FPS92..117/draw2.0681..4.3128ms,combat2FPS41..119/draw4.1650..8.4533ms,exitFPS54..74/draw13.7885..15.6713ms. 부분관측/녹화overhead 포함·지속60FPS보장0 |
@@ -54964,7 +54964,7 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | 항목 | 현행 구조·계약 |
 |---|---|
 | 변경 파일·범위 | index.html head 마지막 lobby-layout-20261016 CSS만 추가. 기존 로비 JS/DOM 자식/asset URL byte 불변, 새 제품 asset0. 원본 아트·로고·배경·생성/삭제/선택/입장·데모/요청guard/API·저장 권위 그대로 |
-| 패널·카드 | 우측 clamp(340px,35vw,560px), 폭700px 이하100%. 카드 기본84px→높이760 이하76px→560 이하64px→440 이하56px. 카드 gap10px/낮은높이8px, 같은 단계의 저장 카드는 균일 |
+| 패널·카드 | 우측 clamp(341px,35vw,560px), 폭700px 이하100%. 카드 기본84px→높이760 이하76px→560 이하64px→440 이하56px. 카드 gap10px/낮은높이8px, 같은 단계의 저장 카드는 균일 |
 | 목록·생성 | 기존 VIEW2·wheel/nav 인덱스 정책 유지. vp 선호=카드2개+gap/최소1개/내부 세로 스크롤. 별도 생성행64px→560 이하56px→440 이하48px. 440 이하 최소 목록122px/nav164px/coarse nav176px로 행 겹침 방지 |
 | 입장 | 하단 구분선·margin/padding으로 분리. 기존 이미지 비율·색/점등 유지, max-height clamp(64px,14dvh,132px), vh fallback 동일. min-height64px. 앞선 min(500px,28dvh) 실측은 이전 배율 이력 |
 | Steam CTA | 기존 버튼·URL·동작 유지. 버튼44px, 이미지100%×100% object-fit:contain. 높이760 이하/560 이하 보조행48px와 padding2px0. 최소44px 대상과 충돌하던 초기36/32px 검수안을 대체. 원본 PNG 치수는 읽지 않았고 어떤 비율도 contain 상자에 맞춤 |
@@ -54977,7 +54977,7 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 
 ```css
 /* Character selection: bounded cards, a separate create row and a compact entry. */
-#lobby>.lobby-right{--lobby-card:84px;--lobby-card-gap:10px;flex:0 0 clamp(340px,35vw,560px);min-width:0;min-height:0;padding:24px 28px;justify-content:center;}
+#lobby>.lobby-right{--lobby-card:84px;--lobby-card-gap:10px;flex:0 0 clamp(341px,35vw,560px);min-width:0;min-height:0;padding:24px 28px;justify-content:center;}
 #lobby .lobby-content{flex:0 1 auto;min-height:0;gap:12px;padding-inline-end:6px;scroll-padding-block:6px;}
 #lobby .lobby-content>.lobby-header{min-height:36px;margin:0;align-items:center;}
 #lobby .lobby-content>.lobby-divider{height:104px!important;margin:0;}
