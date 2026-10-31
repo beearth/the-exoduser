@@ -1,6 +1,6 @@
 Shader "EXODUSER/HellGroundPBR"
 {
- Properties { _BaseMap("피부 컬러맵",2D)="white"{} _BaseColor("색",Color)=(1,1,1,1) _BumpMap("피부 노멀",2D)="bump"{} _RockMap("젖은 돌",2D)="white"{} _AshMap("탄화토",2D)="white"{} _RockNormal("돌 노멀",2D)="bump"{} _RockRough("돌 러프니스",2D)="white"{} _ForestMap("숲 낙엽/흙",2D)="white"{} _ForestNormal("숲 노멀",2D)="bump"{} _ForestRough("숲 러프니스",2D)="white"{} _ForestTextureMix("낙엽 혼합",Range(0,1))=0 _Cutoff("잘림",Float)=.5 _Smoothness("매끈함",Float)=.24 _Metallic("금속",Float)=0 _ForestBlend("A2 젖은 숲 바닥",Range(0,1))=0
+ Properties { _BaseMap("피부 컬러맵",2D)="white"{} _BaseColor("색",Color)=(1,1,1,1) _BumpMap("피부 노멀",2D)="bump"{} _RockMap("젖은 돌",2D)="white"{} _AshMap("탄화토",2D)="white"{} _RockNormal("돌 노멀",2D)="bump"{} _RockRough("돌 러프니스",2D)="white"{} _ForestMap("숲 낙엽/흙",2D)="white"{} _ForestNormal("숲 노멀",2D)="bump"{} _ForestRough("숲 러프니스",2D)="white"{} _ForestTextureMix("낙엽 혼합",Range(0,1))=0 _FullField("전체 숲 지면",Float)=0 _FieldSdf("원본 외곽 거리장",2D)="gray"{} _FieldMoss("이끼",2D)="white"{} _Cutoff("잘림",Float)=.5 _Smoothness("매끈함",Float)=.24 _Metallic("금속",Float)=0 _ForestBlend("A2 젖은 숲 바닥",Range(0,1))=0
  _SoilTextureMix("A2 스캔 지면 사용",Range(0,1))=0 _SoilMap("A2 숲 자갈흙",2D)="white"{} _SoilNormal("A2 자갈흙 노멀",2D)="bump"{} _SoilRough("A2 자갈흙 러프니스",2D)="white"{} _RootMap("A2 노출 뿌리흙",2D)="white"{} _RootNormal("A2 뿌리흙 노멀",2D)="bump"{} _RootRough("A2 뿌리흙 러프니스",2D)="white"{} }
  SubShader
  {
@@ -24,8 +24,9 @@ Shader "EXODUSER/HellGroundPBR"
    TEXTURE2D(_RockNormal);SAMPLER(sampler_RockNormal);TEXTURE2D(_RockRough);SAMPLER(sampler_RockRough);
    TEXTURE2D(_ForestMap);SAMPLER(sampler_ForestMap);TEXTURE2D(_ForestNormal);SAMPLER(sampler_ForestNormal);TEXTURE2D(_ForestRough);SAMPLER(sampler_ForestRough);
    TEXTURE2D(_SoilMap);TEXTURE2D(_SoilNormal);TEXTURE2D(_SoilRough);TEXTURE2D(_RootMap);TEXTURE2D(_RootNormal);TEXTURE2D(_RootRough);
+   TEXTURE2D(_FieldSdf);SAMPLER(sampler_FieldSdf);TEXTURE2D(_FieldMoss);
    CBUFFER_START(UnityPerMaterial)
-   float4 _BaseMap_ST;half4 _BaseColor;half _Cutoff,_Smoothness,_Metallic,_ForestBlend,_ForestTextureMix,_SoilTextureMix;
+   float4 _BaseMap_ST;half4 _BaseColor;half _Cutoff,_Smoothness,_Metallic,_ForestBlend,_ForestTextureMix,_SoilTextureMix,_FullField;
    CBUFFER_END
    struct A {float4 positionOS:POSITION;float3 normalOS:NORMAL;float4 tangentOS:TANGENT;float2 uv:TEXCOORD0;};
    struct V {float4 positionCS:SV_POSITION;float3 world:TEXCOORD0;float3 normal:TEXCOORD1;float4 tangent:TEXCOORD2;float2 uv:TEXCOORD3;half fog:TEXCOORD4;};
@@ -60,6 +61,19 @@ Shader "EXODUSER/HellGroundPBR"
     float3 n=normalize(i.normal),t=normalize(i.tangent.xyz),b=cross(n,t)*i.tangent.w;
     InputData input=(InputData)0;input.positionWS=i.world;input.normalWS=normalize(mul(nt,float3x3(t,b,n)));input.viewDirectionWS=GetWorldSpaceNormalizeViewDir(i.world);
     input.shadowCoord=TransformWorldToShadowCoord(i.world);input.bakedGI=SampleSH(input.normalWS);input.normalizedScreenSpaceUV=GetNormalizedScreenSpaceUV(i.positionCS);input.shadowMask=1;
+    if(_FullField>.5)
+    {
+     float edge=(SAMPLE_TEXTURE2D(_FieldSdf,sampler_FieldSdf,float2(i.world.x/80,-i.world.z/80)).r-.5)*40;
+     float macro=smoothstep(-.7,.7,sin(i.world.x*.27+sin(i.world.z*.23)*1.8)+sin(i.world.z*.36+i.world.x*.16)*.55);
+     float fringe=1-smoothstep(.1,5,edge);
+     float2 soilFine=i.world.xz/2.3;
+     half3 dirt=SAMPLE_TEXTURE2D(_SoilMap,sampler_ForestMap,soilFine).rgb*half3(.43,.42,.36);
+     half3 roots=SAMPLE_TEXTURE2D(_RootMap,sampler_ForestMap,i.world.xz/3.8).rgb*half3(.43,.42,.32);
+     half3 leaves=SAMPLE_TEXTURE2D(_ForestMap,sampler_ForestMap,i.world.xz/1.8).rgb*half3(.33,.31,.22);
+     half3 moss=SAMPLE_TEXTURE2D(_FieldMoss,sampler_ForestMap,i.world.xz/2.6).rgb*half3(.28,.34,.21);
+     a=lerp(dirt,roots,.3+.35*fringe);a=lerp(a,leaves,macro*.42);a=lerp(a,moss,fringe*(.15+.30*macro));
+     a*=lerp(.8,1.12,macro);
+    }
     SurfaceData surface=(SurfaceData)0;surface.albedo=a;surface.alpha=1;surface.occlusion=1;surface.normalTS=nt;surface.specular=.04;
     half rough=SAMPLE_TEXTURE2D(_RockRough,sampler_RockRough,tile).r;surface.smoothness=lerp(.24,.50-.25*rough,rock);surface.metallic=0;
     surface.smoothness=lerp(surface.smoothness,.36-.16*rough,_ForestBlend);

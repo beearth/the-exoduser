@@ -1,3 +1,5 @@
+> 2026-10-31 field-screen 현재: NativeGame은 A2FieldLayout.CreateMap의 원본 SourceMap(MapData)를 사용한다. 이전 A2 additionalBlocked/SolidCore의 수로·거목 차단은 게임 연결에서 제외했다. 원본 JSON/Core 변경0. 전체 타일 이동·표시·시야 불일치0; 아래 A2 콜백 기록은 이전 후보 이력이다. 현행 수치/실제검수는 UNITY_KEYSHOT_A2_20261030.md 첫 절.
+
 # Unity 원본 기반 기본 무기·기검참 코어 — 2026-10-24
 
 > 2026-10-31 A2 표현 경로 보충: 기존 `SourceMap(MapData)` 생성자를 보존하고 `SourceMap(MapData, Func<float,float,bool> additionalBlocked)`를 추가했다. 선택 경계는 `Blocked` 입구에서 검사하며 비A2는 null로 기존 질의를 보존한다. A2만 `A2ForestLayout.BlockedCore`로 수로/다리/거목 보행을, 세 번째 콜백 `SolidCore`로 거목 시야/투사체 경계를 적용하며, 원본 JSON과 Core 전투 코드는 변경하지 않는다. 경계 수치·회귀·실제 화면 상태는 `UNITY_KEYSHOT_A2_20261030.md`를 따른다. 수치 회귀 통과를 시각·Player 검수 통과로 해석하지 않는다.

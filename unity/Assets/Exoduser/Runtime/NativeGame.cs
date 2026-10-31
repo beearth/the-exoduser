@@ -55,7 +55,7 @@ namespace Exoduser.UnityPort
             UnityEngine.Rendering.Universal.CameraExtensions.GetUniversalAdditionalCameraData(view).renderPostProcessing=true; // RM-1 VFX V0: HDR core + Bloom
             view.transform.position=new Vector3(40.2f,-74.2f,-10);
             var resource=Resources.Load<TextAsset>("Data/ch1_map");if(resource==null)throw new InvalidOperationException("Original map resource is missing");
-            Map=new SourceMap(JsonUtility.FromJson<MapData>(resource.text),A2Requested ? (Func<float,float,bool>)A2ForestLayout.BlockedCore : null,A2Requested ? (Func<float,float,bool>)A2ForestLayout.SolidCore : null);
+            Map=A2FieldLayout.CreateMap(JsonUtility.FromJson<MapData>(resource.text));
             font=Resources.Load<Font>("Art/fonts/NotoSansKR");
             hud=new NativeHud();skills=new NativeSkills();stats=new NativeStatPanel();hud.SlotSelected=slot=>{if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected callback slot="+slot+" before menu="+menu+" hp="+Simulation.Player.Hp+" skillsOpen="+skills.Open);if(!menu&&Simulation.Player.Hp>0){SetSkills(true,slot);if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected result skillsOpen="+skills.Open+" menu="+menu);}};
             NativePanelTabBar.Requested+=OnPanelRequested;forge=new NativeForgePanel();levelUp=new NativeLevelUpOverlay();death=new NativeDeathOverlay();death.OnRetry=RetryFromDeath;stageClear=new NativeStageClearOverlay();bossBar=new NativeBossBar();areaTitle=new NativeAreaTitle();objective=new NativeObjectivePanel();areaTitleAllowed=!Array.Exists(Environment.GetCommandLineArgs(),a=>a.StartsWith("--unity-",StringComparison.Ordinal)&&a!="--unity-world-3d"&&a!="--unity-a2-forest"&&!NativeReviewArgs.IsReviewArgument(a));
@@ -83,7 +83,7 @@ namespace Exoduser.UnityPort
             pauseMenu.OptionChanged=OnSettingsOptionChanged;pauseMenu.LanguagePicked=code=>{lobby.SetLanguage(code);QueueSettingsSave();};pauseMenu.DiagLine=SettingsDiagLine;
             UpdateSettingsPersistenceNotice();
             var args=Environment.GetCommandLineArgs();
-            bool legacyFixture=(A2Requested&&(Application.isEditor||Array.IndexOf(args,"--unity-steam-keyshot")>=0))||Array.IndexOf(args,"--unity-playtest-capture")>=0||Array.IndexOf(args,"--unity-boss-text-smoke")>=0||Array.IndexOf(args,"--unity-exp-capture")>=0||Array.IndexOf(args,A15DirectArgument)>=0||Array.IndexOf(args,IntroSilenceFlag)>=0||Array.IndexOf(args,NativeSettingsStorageScope.FixtureArgument)>=0||Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0||Array.IndexOf(args,"--unity-pause-smoke")>=0||Array.IndexOf(args,"--unity-character-story-smoke")>=0||Array.IndexOf(args,"--unity-character-store-smoke")>=0||Array.IndexOf(args,"--unity-character-smoke")>=0||Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-hud-blend-smoke")>=0||Array.IndexOf(args,"--unity-drop-smoke")>=0||Array.IndexOf(args,"--unity-revive-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
+            bool legacyFixture=(A2Requested&&(Application.isEditor||Array.IndexOf(args,"--unity-steam-keyshot")>=0||Array.IndexOf(args,"--unity-field-screen")>=0))||Array.IndexOf(args,"--unity-playtest-capture")>=0||Array.IndexOf(args,"--unity-boss-text-smoke")>=0||Array.IndexOf(args,"--unity-exp-capture")>=0||Array.IndexOf(args,A15DirectArgument)>=0||Array.IndexOf(args,IntroSilenceFlag)>=0||Array.IndexOf(args,NativeSettingsStorageScope.FixtureArgument)>=0||Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0||Array.IndexOf(args,"--unity-pause-smoke")>=0||Array.IndexOf(args,"--unity-character-story-smoke")>=0||Array.IndexOf(args,"--unity-character-store-smoke")>=0||Array.IndexOf(args,"--unity-character-smoke")>=0||Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-hud-blend-smoke")>=0||Array.IndexOf(args,"--unity-drop-smoke")>=0||Array.IndexOf(args,"--unity-revive-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
             InitializeEntryFlowCapture(args);
             if(!legacyFixture){Running=false;if(Array.IndexOf(args,"--unity-quick-start")>=0)lobby.ShowLobby();else lobby.Begin();}
             if(Array.IndexOf(args,"--unity-entry-flow-capture")>=0)StartCoroutine(EntryFlowCapture());
@@ -97,6 +97,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,CombatSaveCaptureFlag)>=0){Running=false;StartCoroutine(CombatSaveCapture());}
             else if(Array.IndexOf(args,"--unity-c04-dump")>=0){Running=false;StartCoroutine(C04Dump());}
             else if(Array.IndexOf(args,"--unity-boss-text-smoke")>=0){Running=false;pauseSmoke=true;StartCoroutine(BossTextLocalityCapture());}
+            else if(Array.IndexOf(args,"--unity-field-screen")>=0){Running=false;pauseSmoke=true;StartCoroutine(A2FieldCapture());}
             else if(Array.IndexOf(args,"--unity-steam-keyshot")>=0){Running=false;pauseSmoke=true;StartCoroutine(SteamKeyshotCapture());}
             else if(Array.IndexOf(args,"--unity-playtest-capture")>=0){Running=false;StartCoroutine(PlaytestCapture());}
             else if(Array.IndexOf(args,"--unity-ui-overlap-check")>=0){Running=false;StartCoroutine(UiOverlapCapture());}
@@ -361,6 +362,7 @@ namespace Exoduser.UnityPort
         }
         void UpdateEnemyShieldArc(EnemyState e,EnemyView ev)
         {
+            if(NativeRemodel3D.Requested){if(ev.arc!=null)ev.arc.enabled=false;return;}
             if(e.Web==null||e.IsBoss||e.MaxShield<=0||e.Web.eShieldMax<=0){if(ev.arc!=null)ev.arc.enabled=false;return;}
             if(ev.arc==null)ev.arc=CreateRenderer("Enemy shield "+e.Id);
             bool phys=e.Shield<=0;ev.arc.enabled=true;ev.arc.sprite=ArcSprite(Mathf.Max(1,Mathf.RoundToInt(e.Radius)),phys);
@@ -438,7 +440,7 @@ namespace Exoduser.UnityPort
             // 전환 중 전투 안내·지역 제목·레벨업이 중앙 명패를 덮지 않게 한다. 자원 HUD는 유지한다.
             if(Simulation.Stage.LoadPhase>0){GUI.matrix=old;return;}
             // game.html drawEn 54054: a 4 px bar (r*2+6 wide, r+16 above the centre) once the mob is hurt or its shield is down: black 60%, red hp, the blue shield laid over it
-            foreach(var e in Simulation.Enemies){if(!e.Alive||e.IsBoss||!(e.Hp<e.MaxHp||e.MaxShield>0&&e.Shield<e.MaxShield))continue;float ebw=e.Radius*2+6;var ebA=ToGUI(e.X-ebw/2,e.Y-e.Radius-16);var ebB=ToGUI(e.X+ebw/2,e.Y-e.Radius-16);float ebWid=ebB.x-ebA.x,ebHgt=Mathf.Max(2,4*ebWid/ebw);
+            foreach(var e in Simulation.Enemies){if(NativeRemodel3D.Active&&a2Field!=null){A2DrawEnemyStatus(e);continue;}if(!e.Alive||e.IsBoss||!(e.Hp<e.MaxHp||e.MaxShield>0&&e.Shield<e.MaxShield))continue;float ebw=e.Radius*2+6;var ebA=ToGUI(e.X-ebw/2,e.Y-e.Radius-16);var ebB=ToGUI(e.X+ebw/2,e.Y-e.Radius-16);float ebWid=ebB.x-ebA.x,ebHgt=Mathf.Max(2,4*ebWid/ebw);
                 Fill(new Rect(ebA.x,ebA.y,ebWid,ebHgt),new Color(0,0,0,.6f));Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Clamp01((float)e.Hp/e.MaxHp),ebHgt),new Color(.8f,0,0));if(e.MaxShield>0&&e.Shield>0)Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Min(1,e.Shield/e.MaxShield),ebHgt),new Color(.267f,.667f,1f));}
             DrawFieldBossBars();
             floatingTextLayout.BeginFrame(Time.unscaledTime);

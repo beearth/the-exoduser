@@ -84,6 +84,7 @@ namespace Exoduser.UnityPort
         {
             Remodel3DRestoreBillboards();
             NativeRemodel3D.Active = on;
+            if(a2EnemyShadowRoot!=null)a2EnemyShadowRoot.SetActive(on);
             if (hellActorMaterial != null) HellLightingActive(on);
             if (r3Roots != null) foreach (var root in r3Roots) if (root != null) root.SetActive(on);
             if (!on) { r3Base.Clear(); view.cullingMask = worldMask; }   // back to the 2D camera: Update() re-applies the lobby / world mask next frame
@@ -98,11 +99,12 @@ namespace Exoduser.UnityPort
             view.cullingMask = 0;                  // the 2D camera only clears the frame while the 3D one draws
             r3Cam.enabled = !hidden;
             Remodel3DViewport();
-            var p = Simulation.Player; r3Marker.position = NativeRemodel3D.Point(p.X, p.Y) + NativeRemodelCamera.TargetOffset + (A2Requested ? new Vector3(3,0,.6f) : Vector3.zero);   // A2 원화의 왼쪽 영웅·오른쪽 강 구도. 논리 카메라와 조준 좌표는 불변.
+            var p = Simulation.Player; r3Marker.position = NativeRemodel3D.Point(p.X, p.Y) + NativeRemodelCamera.TargetOffset;
             foreach (var r in props) if (r != null) r.enabled = false;
             foreach (var c in chunks.Values) if (c.renderer != null) c.renderer.enabled = false;
             Remodel3DBillboards();
             HellLightingLate();
+            A2EnemyGrounding();
         }
 
         void Remodel3DViewport()
@@ -142,7 +144,7 @@ namespace Exoduser.UnityPort
                 var tr = sr.transform;
                 r3Base[sr] = new R3Base { localPosition = tr.localPosition, localRotation = tr.localRotation };
                 float roll = tr.rotation.eulerAngles.z;
-                float below = NativeSkillView.IsCenteredSkillSprite(sr) ? 0 : (sr == playerView ? NativeRemodelCamera.HeroFootLift(sr.sprite) : sr.sprite.pivot.y / sr.sprite.pixelsPerUnit) * Mathf.Abs(tr.lossyScale.y);
+                float below = NativeSkillView.IsCenteredSkillSprite(sr) ? 0 : (sr == playerView ? NativeRemodelCamera.HeroFootLift(sr.sprite) : NativeEnemyFootprint.FootLift(sr.sprite)) * Mathf.Abs(tr.lossyScale.y);
                 tr.SetPositionAndRotation(tr.position + new Vector3(0, below * cos, below * sin), tilt * Quaternion.Euler(0, 0, roll));
                 r3Projected.Add(sr);
             }

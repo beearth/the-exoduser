@@ -47,7 +47,7 @@ namespace Exoduser.UnityPort
                 var layers=g.terrainData.terrainLayers;for(int i=0;i<layers.Length;i++){layers[i]=Instantiate(layers[i]);layers[i].normalScale=.55f;layers[i].smoothness=i==0?.24f:.22f;layers[i].specular=new Color(.12f,.12f,.12f);}
                 g.terrainData.terrainLayers=layers;
                 HellGroundSetup(g);
-                HellEnvironmentSetup(g);
+                if(!A2Requested)HellEnvironmentSetup(g);
             }
             foreach(var root in r3Roots)if(root!=null)foreach(var renderer in root.GetComponentsInChildren<MeshRenderer>(true))if(renderer.name!="지옥 바닥 PBR 표면"&&(hellEnvironment==null||!renderer.transform.IsChildOf(hellEnvironment.transform))){renderer.shadowCastingMode=ShadowCastingMode.Off;var mat=renderer.sharedMaterial;if(mat!=null&&(mat.name.Contains("RottenWoodMembrane")||mat.name.Contains("CursedBark")||renderer.name.StartsWith("Decals_root",StringComparison.Ordinal)))renderer.enabled=false;}
             hellActorMaterial=new Material(Shader.Find("EXODUSER/SpriteLit3D"));hellActorMaterial.SetFloat("_Ambient",.3f);hellActorMaterial.SetFloat("_NormalTilt",.4f);
@@ -84,7 +84,7 @@ namespace Exoduser.UnityPort
             if(on&&A2Requested)
             {
                 A2Ambient();
-                RenderSettings.fogColor=new Color(.23f,.29f,.35f);RenderSettings.fogMode=FogMode.Linear;RenderSettings.fogStartDistance=16;RenderSettings.fogEndDistance=40;
+                RenderSettings.fogColor=new Color(.105f,.145f,.17f);RenderSettings.fogMode=FogMode.Linear;RenderSettings.fogStartDistance=19;RenderSettings.fogEndDistance=62;
             }
         }
         void HellLightingLate()

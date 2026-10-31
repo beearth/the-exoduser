@@ -13,6 +13,7 @@ namespace Exoduser.UnityPort
         public static bool Active;            // the RM-1 scene is loaded and the field is shown in 3D right now (false in the boss arena / before the scene is ready)
         public static Terrain Ground;         // the scene's Terrain (window of tiles x48..152 / y126..200)
         public static bool ForestA2;          // A2 승인 구도만 원근을 넓힌다. 비A2 LOOK-001은 보존한다.
+        public static A2FieldLayout Field;
         public static float Pitch { get { return ForestA2 ? 34*Mathf.Deg2Rad : NativeRemodelCamera.Pitch; } }
         public static float DistU { get { return ForestA2 ? 16.5f : NativeRemodelCamera.Distance; } }
 
@@ -30,6 +31,7 @@ namespace Exoduser.UnityPort
         /// <summary>Terrain height at a world x / z (Rm1SliceBuilder.GroundY: SampleHeight + terrain y). The terrain only covers a window of the map, so the query is clamped into it.</summary>
         public static float GroundY(float wx, float wz)
         {
+            if(ForestA2&&Field!=null)return Field.Height(wx,wz);
             if (Ground == null) return 0f;
             if(ForestA2&&Ground==forestHeightGround&&forestHeights!=null)
                 return ForestHeight(wx,wz,ForestSample(wx,wz),forestOrigin,forestSize);

@@ -11,7 +11,7 @@ namespace Exoduser.UnityPort
             get
             {
                 var args=Environment.GetCommandLineArgs();
-                return Array.IndexOf(args,"--unity-a2-forest")>=0 || (Application.isEditor&&Array.IndexOf(args,"--unity-qa-sandbox")>=0&&Environment.GetEnvironmentVariable("EXO_A2_EDITOR_PREVIEW")=="1");
+                return NativeRemodel3D.Requested;
             }
         }
         GameObject a2Root;
@@ -20,6 +20,11 @@ namespace Exoduser.UnityPort
         void A2ForestSetup(Terrain ground)
         {
             if (!A2Requested) return;
+            A2FieldSetup(ground);
+        }
+        // 이전 단일 키샷 제작 경로는 비교 근거용으로 보존한다. 일반 필드는 전체 배치를 쓴다.
+        void A2LegacyKeyshotSetup(Terrain ground)
+        {
             var timer=System.Diagnostics.Stopwatch.StartNew();Debug.Log("[A2 초기화] 숲 조립 시작");
             NativeRemodel3D.ForestA2=true;
             NativeRemodel3D.PrepareForestHeightCache();
@@ -193,7 +198,7 @@ namespace Exoduser.UnityPort
             float placementGround=NativeRemodel3D.GroundY(x,z);
             float height=placementGround+lift+(id=="Dead_Leaf_Litter"?.01f:-.08f);
             bool island=A2ForestLayout.Island(x,z);
-            if(A2ForestLayout.Water(x,z)&&!island)
+            if(a2Field==null&&A2ForestLayout.Water(x,z)&&!island)
             {
                 if(id=="Dead_Leaf_Litter"||id=="Moss_Cushion")return null;
                 if(id=="Withered_Shrub")height=-1.2f+lift;
@@ -208,7 +213,7 @@ namespace Exoduser.UnityPort
             {
                 if(!mf.sharedMesh.isReadable){if(a2UnreadableMeshes.Add(id))Debug.LogError("[A2] 지면 접합 정점읽기 누락. 원본 메시 유지: "+id);continue;}
                 var mesh=Instantiate(mf.sharedMesh);var points=mesh.vertices;
-                for(int i=0;i<points.Length;i++){var p=mf.transform.TransformPoint(points[i]);float groundY=A2ForestLayout.Water(p.x,p.z)&&!A2ForestLayout.Island(p.x,p.z)?A2ForestLayout.WaterLevel-.18f:NativeRemodel3D.GroundY(p.x,p.z);float weight=hollow?1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(1,3,p.y-height)):1;p.y+=(groundY-placementGround)*weight;points[i]=mf.transform.InverseTransformPoint(p);}
+                for(int i=0;i<points.Length;i++){var p=mf.transform.TransformPoint(points[i]);float groundY=a2Field==null&&A2ForestLayout.Water(p.x,p.z)&&!A2ForestLayout.Island(p.x,p.z)?A2ForestLayout.WaterLevel-.18f:NativeRemodel3D.GroundY(p.x,p.z);float weight=hollow?1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(1,3,p.y-height)):1;p.y+=(groundY-placementGround)*weight;points[i]=mf.transform.InverseTransformPoint(p);}
                 mesh.vertices=points;mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();mf.sharedMesh=mesh;
             }
             foreach(var r in go.GetComponentsInChildren<MeshRenderer>())
