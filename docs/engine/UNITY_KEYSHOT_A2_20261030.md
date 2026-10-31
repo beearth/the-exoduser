@@ -1,3 +1,19 @@
+## R6 지면·뿌리 제작 방식 변경 — 2026-10-31 (실제 화면 검수 전)
+
+R5의 카펫형 재질과 둥근 뿌리 패치가 남아 있어 전역 이끼량 조절을 끝내고 목질 접점 중심의 국소 배치·메시 높이 접합으로 제작 방식을 변경했다. 아래 CPU 결과는 실제 Player 아트 합격이 아니다. R5 인수 입력1a3은 이 후보로 자동 교체하지 않는다.
+
+| 항목 | 현행 계약·검증 범위 |
+|---|---|
+| 국소 이끼 | GroundCover=11공터 clear × max(경계밴드, 원본나무밑동, 실제 쓰러진목질 접점). 경계 .72×(1−smooth(clamp((abs(Distance)−.25)/2.1))). 원본 collider 반경 min(rx,ry)/100>=.45m, 나무 테두리 .1..1.25m 완화. 11구역×양측 통나무의 기존 배치식·Distance>=.8/비수면일 때만 중심 .35..1.65m 완화×.65. 공터 타원2.8×2.4m/정규반경 .8..1.4 제외, 수면·목교 Along<5/Across<2 제외 유지 |
+| 마스크 전달 | 80×80m/256² RGBA32 linear/bilinear/clamp. R5 픽셀의 안쪽 .45 추가배율을 제거하고 새 GroundCover를 그대로 Soil·Root에 공유. 중간 x30..49/z−60..−41의400점 평균 .6828647389→.03072950227, 먼 목질 없는(-5,-40)=0. 실제 사진의 이끼 점유율로 부르지 않음 |
+| 외곽 높이층 | 기존 terrain 최종 bed 계산 후 Distance<−.2m 및 bed>−.35m인 비수면 숲에 .9×smooth(clamp((−Distance−.2)/4.5))×(1+.35sin(.22x+.17z))m 추가. 기존 보행·충돌·시야를 변경하지 않음. R5 42960기준점 비교: water 변경0/원본 CanMove(radius0) 지형높이 변경0·최대차0/비보행13160점에서15cm이상 높아짐. 수면 문턱−.45·branch·bridge 계약 유지 |
+| 뿌리 접합 | 원본 Root_Cluster_Patch FBX의 A2_RootBlend r를 읽어 runtime 복제 메시 높이=TerrainHeight+max(0,상대높이)×smooth(clamp((r−.2)/.8))+.006m. r<=.2 흙 둘레는 지면에 접합/r=1 목질높이 보존. 원본 FBX·UV·인덱스 수정0, 복제 메시 normals/tangents/bounds 재생성 뒤 Surface등록. 색이 없는 예외는 기존 높이를 유지 |
+| 재질 큰 영역 | FullField 전용 macro=smoothstep(−.7,.7,sin(.11x+2sin(.09z))+.6cos(.13z−.05x)); wetness=smoothstep(.32,.82,macro)×(1−.35saturate(edge/5)). 흙RGB(.48,.39,.30)/뿌리(.45,.35,.26)/낙엽(.36,.29,.21)/이끼(.31,.35,.23). 뿌리혼합 .18+.22fringe, 낙엽(1−macro)×.22, 젖은흙색 1.. .60, mossMix=cover×(.58+.22macro), 최종 macro색 .88..1.06. 동일 worldUV로 뿌리패치 둘레와 지면 연결 |
+| 물성·스캔 | FullField smoothness=lerp(lerp(.24−.10soilRough,.67,wetness),.18+.16(1−mossRough),mossMix). 스캔뿌리색·노멀 가중은 FullField만 smoothstep(.25,1,vertex.r), Legacy saturate(r) 유지. 실제 반사·밝기·형태는 다음 D3D11 화면 판정 대상 |
+| 검수 도구 | 기존8곳에 실제 R5 공동검수 가림재현3곳(4790.811/7142.689,3320/7500,3320/7000)을 정확 인수하여 11곳×2해상도=22 HUD사진. AIoff/격리 순간이동 fixture, 자연완주와 구분 |
+| CPU·보존 | 테스트 먼저 RED4→GREEN42. Core114/Runtime194 현재 소스 독립컴파일 오류0. 처음 Bee Runtime190 목록은 새 승인공통 sound4파일이 없어 실패했으며 결과 보존/목록보정 후 재검사. 셰이더·실제 Player·M1·FPS·시각 미검증. 이전 R5 실제 Player 기술 PASS/아트 RETOUCH 근거는 아래 별도 보존 |
+| 근거 | I:steam-keyshot/a2/field-screen-20261031/r6-cpu/ 아래 R5-지형-수면-기준표.json, 뿌리원형-정점가중-조사.json, RED/GREEN 및 compile 결과. 원본 백업도 I: before-r6/ 보존 |
+
 ## R5 실제 공동 Player 기술 검수 — 2026-10-31 12시 UTC
 
 **맵 기술 범위 PASS / VISUAL VERDICT: RETOUCH. 전체 맵 아트 완료가 아니다.**

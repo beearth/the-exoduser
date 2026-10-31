@@ -171,9 +171,31 @@ class Program
             {
                 float Cover(float x,float z)=>(float)cover.Invoke(field,new object[]{x,z});
                 Check(Cover(40,-50)==0&&Cover(43.2f,-71.8f)==0,"주 전투 중심·목교 통행면 식생 제외");
-                Check(Cover(-5,-40)>.5f,"외곽 숲의 낮은 식생 연속");
+                Check(Cover(-5,-40)==0,"목질 접점 없는 먼 바닥의 전역 이끼 제거");
                 double total=0;for(int y=0;y<20;y++)for(int x=0;x<20;x++)total+=Cover(30+x,-60+y);
-                Check(total/400>.3,"중간 전투구역 주변의 연속 바닥 질량 "+total/400);
+                Check(total/400<.2,"중간 전투구역의 이끼 카펫 제한 20퍼센트미만 "+total/400);
+            }
+
+            if(args.Length>3)
+            {
+                using var baseline=JsonDocument.Parse(File.ReadAllText(args[3]));int wetChange=0,walkGroundChange=0,raisedOutside=0;float maxWalk=0;
+                foreach(var sample in baseline.RootElement.GetProperty("rows").EnumerateArray())
+                {
+                    float x=sample[0].GetSingle(),z=sample[1].GetSingle(),oldY=sample[2].GetSingle();
+                    float now=terrainAt(x,z);if(((bool)water.Invoke(field,new object[]{x,z})?1:0)!=sample[3].GetInt32())wetChange++;
+                    if(sample[4].GetInt32()==1){float delta=Math.Abs(now-oldY);maxWalk=Math.Max(maxWalk,delta);if(delta>.00001f)walkGroundChange++;}
+                    else if(now-oldY>.15f)raisedOutside++;
+                }
+                Check(wetChange==0,"42960기준표의 실제 수면 경계 불변/변경"+wetChange);
+                Check(walkGroundChange==0,"원본 통행점 지형 높이 불변/변경"+walkGroundChange+" 최대차"+maxWalk);
+                Check(raisedOutside>500,"비보행숲에만 연속 높이층 제작/15cm이상"+raisedOutside);
+            }
+            var rootHeight=type.GetMethod("RootReliefHeight");
+            Check(rootHeight!=null,"스캔 흙 둘레를 지면에 연결하는 높이 가중");
+            if(rootHeight!=null)
+            {
+                float Root(float h,float red)=>(float)rootHeight.Invoke(null,new object[]{h,red});
+                Check(Root(.2f,0)==0&&Root(.2f,.2f)==0&&Math.Abs(Root(.2f,1)-.2f)<.00001f&&Root(.2f,.5f)<.1f,"흙 둘레 평탄접합/흰 뿌리 높이 보존");
             }
             if(args.Length>1)
             {

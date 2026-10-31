@@ -160,7 +160,11 @@ namespace Exoduser.UnityPort
             surface+=outside*(.25f-1.9f*Math.Max(east,northEast));
             // 키샷 지류는 발목 깊이의 실제 얕은 개울이다. 원본 XY 보행 경계는 바꾸지 않는다.
             float channel=1-Smooth(Clamp((A2ForestLayout.BranchDistance(x,z)+.15f)/1.4f,0,1));
-            return Lerp(surface,-.55f,channel);
+            float bed=Lerp(surface,-.55f,channel);
+            // 숲 안쪽만 완만한 높이 층을 만든다. 보행면과 기존 수면 경계는 보존한다.
+            if(d<-.2f&&bed>-.35f)
+                bed+=.9f*Smooth(Clamp((-d-.2f)/4.5f,0,1))*(1+.35f*(float)Math.Sin(x*.22+z*.17));
+            return bed;
         }
         public bool Water(float x,float z) { return TerrainHeight(x,z)<-.45f; }
         // 낮은 쓰러진 고목·뿌리의 실제 삼각형을 래스터화한다. Core는 여전히 같은 XY 경계를 쓴다.
@@ -252,18 +256,37 @@ namespace Exoduser.UnityPort
         }
         public bool TreeSite(float x,float z,float radius) { return Distance(x,z)<-radius-.6f; }
         public static readonly float[,] Regions=new float[,]{{33,-70},{53,-61},{22,-59},{40,-50},{16,-40},{41,-35},{65,-38},{40,-25},{25,-19},{58,-17},{40,-7}};
+        public static float RootReliefHeight(float height,float red)
+        {
+            return Math.Max(0,height)*Smooth(Clamp((red-.2f)/.8f,0,1));
+        }
         public float GroundCover(float x,float z)
         {
             if(Water(x,z)||Math.Abs(A2ForestLayout.Along(x,z))<5&&Math.Abs(A2ForestLayout.Across(x,z))<2)return 0;
-            float d=Distance(x,z);if(d<0)return 1;
+            float d=Distance(x,z);
+            float moss=.72f*(1-Smooth(Clamp((Math.Abs(d)-.25f)/2.1f,0,1)));
+            foreach(var c in data.colliders)
+            {
+                float r=Math.Min(c.rx,c.ry)/100f;if(r<.45f)continue;
+                float dx=x-c.x/100f,dz=z+c.y/100f;
+                float edge=(float)Math.Sqrt(dx*dx+dz*dz)-r;
+                moss=Math.Max(moss,1-Smooth(Clamp((edge-.1f)/1.15f,0,1)));
+            }
             float clear=1;
             for(int i=0;i<Regions.GetLength(0);i++)
             {
                 float dx=(x-Regions[i,0])/2.8f,dz=(z-Regions[i,1])/2.4f;
                 clear=Math.Min(clear,Smooth(Clamp(((float)Math.Sqrt(dx*dx+dz*dz)-.8f)/.6f,0,1)));
+                for(int side=-1;side<=1;side+=2)
+                {
+                    float lx=Regions[i,0]+side*(3.8f+.8f*(float)Math.Sin(i*2.1f));
+                    float lz=Regions[i,1]+side*(2.8f+.6f*(float)Math.Cos(i));
+                    if(Distance(lx,lz)<.8f||Water(lx,lz))continue;
+                    float ld=(float)Math.Sqrt((x-lx)*(x-lx)+(z-lz)*(z-lz));
+                    moss=Math.Max(moss,.65f*(1-Smooth(Clamp((ld-.35f)/1.3f,0,1))));
+                }
             }
-            float grove=.72f+.2f*(float)Math.Sin(x*.23+Math.Sin(z*.19));
-            return clear*Lerp(1,grove,Smooth(Clamp(d/5,0,1)));
+            return clear*moss;
         }
         public static SourceMap CreateMap(MapData map) { return new SourceMap(map); }
         public static bool ShowEnemyStatus(bool alive,bool boss,bool damaged,bool targeted) { return alive&&!boss&&(damaged||targeted); }
