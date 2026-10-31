@@ -15,7 +15,7 @@ namespace Exoduser.UnityPort
         }
         [Serializable] sealed class Hd2dReceipt
         {
-            public string scope="실제 hidden Player·격리세이브·실제Core/렌더/HUD. 시각검수 fixture: 탐험AI정지/고정추가적, 전투AI재개, 아레나gate강제개방. 자연완주·OS손조작 증거 아님";
+            public string scope="실제 hidden Player·격리세이브·실제Core/렌더/HUD. 시각검수 fixture: 탐험AI정지/고정추가적, 전투AI재개, 이동전HP/idle·Harp225정리·아레나gate강제개방. 자연완주·OS손조작 증거 아님";
             public bool passed;public List<string> failures=new List<string>();public List<Hd2dFrame> frames=new List<Hd2dFrame>();
         }
         IEnumerator Hd2dCapture()
