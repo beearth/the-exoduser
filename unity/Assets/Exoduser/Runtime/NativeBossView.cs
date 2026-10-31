@@ -143,6 +143,8 @@ namespace Exoduser.UnityPort
 
         public void Update(Simulation sim)
         {
+            var host = NativeGame.Instance;
+            if (host != null) host.EnsureDruidClearDiagnostics();
             used = 0; addUsed = 0; MineSpritesDrawn = 0; MineArtFallbacks = 0; FieldMouthsDrawn = 0; FieldCometsDrawn = 0; FieldOrbsDrawn = 0; FieldBulletFallbacks = 0;
             if (bound != sim) { if (bound != null) bound.BossFx -= OnFx; bound = sim; sim.BossFx += OnFx; }
             DrawFieldZones(sim);
