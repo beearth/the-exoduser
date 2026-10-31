@@ -419,14 +419,14 @@ namespace Exoduser.UnityPort
                 pauseMenu.English=lobby.Language!="ko";pauseMenu.LocaleCode=lobby.Language;
                 TraceA15HitRoot("before");ApplyPauseCommand(pauseMenu.Draw(PlayerDown,Screen.fullScreen));TraceA15HitRoot("after");DrawSettingsOverlays();return;
             }
-            InitGUI();var old=GUI.matrix;GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(Screen.width/1920f,Screen.height/1080f,1));
+            InitGUI();var old=GUI.matrix;GUI.matrix=NativeUiViewport.Matrix;
             var p=Simulation.Player;
             // B09: web draws the hit flash (_hitFlash) and the red damage flash (scrFlash) over the canvas, under the DOM HUD (game.html 55077-55078)
             if(Simulation.HitFlashAlpha>0){Color hc=Color.white;ColorUtility.TryParseHtmlString(Simulation.HitFlashColor,out hc);hc.a=Simulation.HitFlashAlpha;Fill(new Rect(0,0,1920,1080),hc);}
             // 웹 rgba(200,0,0,.25)의 색 알파와 globalAlpha를 함께 적용한다. Core 감쇠는 그대로 둔다.
             if(Simulation.ScreenFlashAlpha>0)Fill(new Rect(0,0,1920,1080),new Color(200f/255,0,0,Simulation.ScreenFlashAlpha*.25f));
             StageFlowDrawLoad();   // C07: black load screen under the HUD (the web draws it on the canvas, below the DOM HUD)
-            var baseMatrix=GUI.matrix;float hudScale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
+            var baseMatrix=GUI.matrix;
             GUI.matrix=NativeUiViewport.Matrix;
             float hudWidth=NativeUiSafeArea.DesignWidth,statusX=hudWidth-316;
             if(lobby.DiagnosticUiEnabled&&lobby.ActiveCharacterName.Length>0){Panel(new Rect(16,12,420,50));NativeUiAudit.Label(new Rect(28,20,396,40),lobby.ActiveCharacterName+" · "+(lobby.Language=="ko"?"미리보기":"Preview"),characterBadge);}
@@ -442,7 +442,7 @@ namespace Exoduser.UnityPort
             DrawFieldBossBars();
             floatingTextLayout.BeginFrame(Time.unscaledTime);
             floatingTextLayout.Reserve(new NativeFloatingTextLayout.Box(0,0,160,176));floatingTextLayout.Reserve(new NativeFloatingTextLayout.Box(1600,0,320,190));
-            if(Simulation.Stage.InArena&&druidBody!=null&&druidBody.Visible){var bounds=druidBody.Bounds;var a=HudCamera.WorldToScreenPoint(new Vector3(bounds.min.x,bounds.max.y,bounds.center.z));var b=HudCamera.WorldToScreenPoint(new Vector3(bounds.max.x,bounds.min.y,bounds.center.z));floatingTextLayout.Reserve(new NativeFloatingTextLayout.Box(a.x*1920/Screen.width,(Screen.height-a.y)*1080/Screen.height,(b.x-a.x)*1920/Screen.width,(a.y-b.y)*1080/Screen.height));}
+            if(Simulation.Stage.InArena&&druidBody!=null&&druidBody.Visible){var bounds=druidBody.Bounds;var a=HudCamera.WorldToScreenPoint(new Vector3(bounds.min.x,bounds.max.y,bounds.center.z));var b=HudCamera.WorldToScreenPoint(new Vector3(bounds.max.x,bounds.min.y,bounds.center.z));var ga=NativeUiViewport.Pointer(a);var gb=NativeUiViewport.Pointer(b);floatingTextLayout.Reserve(new NativeFloatingTextLayout.Box(ga.x,ga.y,gb.x-ga.x,gb.y-ga.y));}
             foreach(var d in damage)if(!d.submitted){d.submitted=true;damageFloaters.Add(d.x,d.y,d.amount.ToString(),d.shield?"#66ddff":"#ead7ac",d.shield?"enemy-shield":"enemy-hp",NativeFloatingTextLayout.DamagePriority,d.until-1,1,true,d.amount);}
             foreach(var n in damageFloaters.Live(Time.unscaledTime))NativeReviveHud.Offer(floatingTextLayout,n,ToGUI(n.X,n.Y),center);
             DrawPracticeShots();
@@ -566,7 +566,7 @@ namespace Exoduser.UnityPort
                 case PauseMenuCommand.Quit:if(gameFocused){SaveCombatNow();Application.Quit();}break;
             }
         }
-        Vector2 ToGUI(float x,float y){var v=HudCamera.WorldToViewportPoint(Point(x,y));return new Vector2(v.x*1920,(1-v.y)*1080);}
+        Vector2 ToGUI(float x,float y){var v=HudCamera.WorldToScreenPoint(Point(x,y));return NativeUiViewport.Pointer(v);}
         static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
         static void Panel(Rect r){Fill(r,new Color(.025f,.032f,.027f,.94f));Fill(new Rect(r.x,r.y,r.width,1),new Color(.49f,.4f,.24f));Fill(new Rect(r.x,r.y+r.height-1,r.width,1),new Color(.28f,.24f,.16f));}
         static void StatusBackdrop(Rect r)
