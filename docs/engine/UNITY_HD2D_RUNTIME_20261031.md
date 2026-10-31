@@ -130,3 +130,15 @@
 상세 근거: I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/STAGE1_FINAL_VISUAL_REVIEW.md, stage1-review-087d32acb/raw-png-audit.json, inherited-trial-audit.json, STAGE1_GPU_RETURNED.json. 앞 절의각과거미완료는해당당시상태이며이절의087실검수로갱신한다. 기능상수·밸런스변경0.
 
 순수공통인수 보충: 상속Trial/RF3는자기branch에보존하고공통전체branch무조건병합하지않는다. MainRuntime10+Resources6+Editor검수2+관련docs4(Trialdoc제외) 총22경로의정확바이트manifest를인수범위로제안한다. 087빌드는Trial코드가컴파일된실검수원본이다. 순수공통에서DLL이바뀌므로새빌드/같은M1/Player/실화면/Desktop을필수로재검증하며087영수증을순수본동일입력이라주장하지않는다. manifest는stage1-review-087d32acb/pure-intake-manifest.json.
+
+
+## 순수 제품 입력으로 시험 자료 분리
+
+| 항목 | 현행 계약·근거 |
+|---|---|
+| 공통 기준 | Pause 완료118a9421a67965905e89931b4d5faa9a8356f3bc와정상병합. 통합담당순수842bae975de0296c9ead831c1e7af416a7a26bcc의22경로입력을따른다. NativeGame의Pause PlayerDown복귀조건과HD2D표현을함께보존. |
+| 시험 자료 | 상속Trial/RF3/시험문서240경로,308,929,304bytes를I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/stage1-pure-source-intake/original에정확보관. HEAD Git blob·현재WORK·보관readback SHA모두대조했다. reparse부모0/현재파일정규경로검증뒤해당240만정상forward제외. 기존aef원격이력도보존. 원본영구삭제/타인WIP삭제0. |
+| 실행 입력 | 제외후Unity Git tree는통합담당순수842와정확히같다. Trial Runtime/Editor코드와미사용RF3는제품컴파일입력에넣지않는다. 자기기존branch/worktree를계속사용하며새writer/worktree0. |
+| 보호 | 기존guard WIP·초기미추적57경로를정확바이트로보존,미추적C#0. 보관영수증archive-receipt.json/입력보존untracked-before-merge.json. 복구용미추적백업branch는정식모듈채택이아니다. |
+| Core 경계 | 현재Core는Pause공통과동일하며HD2D1단계가추가한Core변경0. 이전087의114전체바이트동일주장은15c기준의당시증거이고,이번PauseNavigation변경을포함한순수제품입력의새빌드/같은M1/Player검수를별도로진행한다. 2단계Core·surface·리마스터후보는여전히I미적용. |
+| 검증 상태 | Unitytree동일성은새실행검증의준비다. 순수새DLL/build/M1/1600·1920·3840Player/1x/공통Desktop은이정리커밋만으로완료하지않는다. 앞선4공식GPU예약을보존하고기존Main owner로꼬리한건만검수한다. |
