@@ -1,12 +1,13 @@
 import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
+import { shoreline } from './banks.mjs';
 
-// The shoreline field comes from the same sampled surface as the Core comparison map.
+// The shoreline field follows the visual banks; Core collision stays separate.
 // It is visual data; it never writes a collision tile or changes a water hit test.
 export function riverMaterial(map,reflection){
   const w=map.template.mw,h=map.template.mh,data=new Uint8Array(w*h*4),land=new Uint8Array(w*h);
   for(let y=0;y<h;y++)for(let x=0;x<w;x++){
     const wx=(x+.5)*.4,wz=(y+.5)*.4;
-    land[y*w+x]=(map.heights[y*w+x]>.3&&(Math.abs(wx-40)>1.8||Math.abs(wz-60)>6.5))?1:0;
+    land[y*w+x]=(wz<shoreline(wx,false)||wz>shoreline(wx,true))?1:0;
   }
   for(let y=0;y<h;y++)for(let x=0;x<w;x++){
     let d=8;
@@ -59,15 +60,28 @@ export function addForestDepth(scene,prototypes){
   const group=new THREE.Group();group.name='north-forest-depth';
   const proto=prototypes.get('RF3_Forest_Vista_Card');
   if(proto){
-    const layers=[{z:37,count:3,scale:1.15,color:'#8c9da4',alpha:.50},{z:27,count:3,scale:1.65,color:'#a6b5b9',alpha:.37},{z:15,count:3,scale:2.1,color:'#bfcdcd',alpha:.25}];
+    const layers=[{z:16,count:3,scale:.8,color:'#d0d9da',alpha:.25},{z:0,count:3,scale:1.3,color:'#d4dfe0',alpha:.18},{z:-18,count:3,scale:1.5,color:'#dbe5e5',alpha:.12}];
     for(const [li,l]of layers.entries()){
       const material=new THREE.MeshBasicMaterial({map:proto.material.map,color:l.color,transparent:true,opacity:l.alpha,alphaTest:.02,depthWrite:false,side:THREE.DoubleSide,fog:true});
+      material.color.multiplyScalar(2.5);
       const mesh=new THREE.InstancedMesh(proto.geometry,material,l.count),dummy=new THREE.Object3D();
       // Source prototype includes its Blender-to-world orientation, stripped of translation.
       const pos=new THREE.Vector3(),rot=new THREE.Quaternion(),scale=new THREE.Vector3();proto.matrix.decompose(pos,rot,scale);
       for(let i=0;i<l.count;i++){dummy.position.set(19+i*23+li*2,-.8,l.z+Math.sin(i*2.7+li)*2);dummy.quaternion.copy(rot);dummy.scale.copy(scale).multiplyScalar(l.scale*(.94+.1*Math.sin(i*4.3)));dummy.updateMatrix();mesh.setMatrixAt(i,dummy.matrix);}
       mesh.instanceMatrix.needsUpdate=true;mesh.receiveShadow=true;group.add(mesh);
     }
+  }
+  // Sparse real trunks form the middle distance; silhouette cards belong beyond
+  // them, where their flat shapes lose contrast in fog instead of walling the bank.
+  for(const [index,id]of ['RF3_Ancient_Tree_A','RF3_Ancient_Tree_B'].entries()){
+    const tree=prototypes.get(id);if(!tree)continue;
+    const material=new THREE.MeshStandardMaterial({map:tree.material.map,normalMap:tree.material.normalMap,aoMap:tree.material.aoMap,
+      aoMapIntensity:.3,normalScale:new THREE.Vector2(.4,.4),color:'#d1c8b7',roughness:.94,metalness:0});
+    const positions=index?[[30,32,.38],[61,29,.34],[52,18,.30]]:[[20,38,.42],[50,35,.40],[35,20,.32]];
+    const mesh=new THREE.InstancedMesh(tree.geometry,material,positions.length),dummy=new THREE.Object3D(),pos=new THREE.Vector3(),rotation=new THREE.Quaternion(),scale=new THREE.Vector3();
+    tree.matrix.decompose(pos,rotation,scale);
+    positions.forEach(([x,z,s],i)=>{dummy.position.set(x,.35,z);dummy.quaternion.copy(rotation);dummy.rotateY((i+index)*.7);dummy.scale.copy(scale).multiplyScalar(s);dummy.updateMatrix();mesh.setMatrixAt(i,dummy.matrix);});
+    mesh.instanceMatrix.needsUpdate=true;mesh.castShadow=true;mesh.receiveShadow=true;group.add(mesh);
   }
   const shafts=new THREE.ShaderMaterial({transparent:true,depthWrite:false,side:THREE.DoubleSide,blending:THREE.AdditiveBlending,
     uniforms:{time:{value:0}},vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,

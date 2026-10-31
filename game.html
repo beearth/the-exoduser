@@ -66095,7 +66095,7 @@ if(new URLSearchParams(location.search).get('r3d')==='1'){
     projectile:p=>{
       const nativeProjectile=()=>{
         let canvas=proceduralProjectiles.get(p);if(!canvas){canvas=document.createElement('canvas');canvas.width=canvas.height=256;proceduralProjectiles.set(p,canvas);}
-        const ctx=canvas.getContext('2d');ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,256,256);ctx.save();ctx.setTransform(.5,0,0,.5,128-p.x*.5,128-p.y*.5);
+        const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,256,256);ctx.save();ctx.setTransform(.5,0,0,.5,128-p.x*.5,128-p.y*.5);
         try{window._Web3DDrawNativeProjectile(ctx,{...p},pProjs.includes(p));}finally{ctx.restore();}
         return {image:canvas,frame:{x:0,y:0,w:256,h:256},scale:2,dynamic:true,ground:!!(p.trap||p.mine||p.iceZone||p.blizzard)};
       };
@@ -66103,7 +66103,7 @@ if(new URLSearchParams(location.search).get('r3d')==='1'){
       const sc=Math.max(1.2,Math.min(4,(p.sz||1)*1.5))*.7*_physicalProjectileMultiplier(p,2);
       if(p.blackBean||p.blueBean||p.gbBean||p.waterBean){
         let canvas=proceduralProjectiles.get(p);if(!canvas){canvas=document.createElement('canvas');canvas.width=canvas.height=256;proceduralProjectiles.set(p,canvas);}
-        const ctx=canvas.getContext('2d'),previous=X;ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,256,256);ctx.save();ctx.translate(128-p.x,128-p.y);
+        const ctx=canvas.getContext('2d',{willReadFrequently:true}),previous=X;ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,256,256);ctx.save();ctx.translate(128-p.x,128-p.y);
         try{X=ctx;if(p.blackBean||p.blueBean)_drawClassicRainbow(p,1,sc);else if(p.gbBean)_drawDarkSphere(p,1,sc);else _drawWaterBean({...p},1,sc);}
         finally{X=previous;ctx.restore();}
         return {image:canvas,frame:{x:0,y:0,w:256,h:256},scale:1,dynamic:true};

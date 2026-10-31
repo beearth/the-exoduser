@@ -10,7 +10,9 @@ import { trialEnabled } from './core.mjs';
 import { riverMaterial,addForestDepth } from './river.mjs';
 import { drawEffects,createParticles } from './effects.mjs';
 import { presentationActors } from './presentation.mjs';
-import { loadRemasters,remasterFrame } from './remaster.mjs';
+import { loadRemasters,remasterFrame,normalTextureSize } from './remaster.mjs';
+import { textureView } from './texture-views.mjs';
+import { bankGeometry,shoreline } from './banks.mjs';
 
 const q=new URLSearchParams(location.search);
 const bridgeScene=q.get('r3dScene')==='bridge';
@@ -132,13 +134,14 @@ export async function install(read){
   });
   const bank=materials.get('RF3_Continuous_Bank_Terrain');
   const soil=await loadTexture('./assets/map/ch1/ground_dark_soil.png',true);soil.wrapS=soil.wrapT=THREE.RepeatWrapping;
-  bank.map=soil;bank.normalMap=null;bank.aoMap=null;bank.roughnessMap=null;bank.metalnessMap=null;bank.roughness=.94;bank.metalness=0;bank.color.set('#a39a92');
+  bank.map=soil;bank.normalMap=null;bank.aoMap=null;bank.roughnessMap=null;bank.metalnessMap=null;bank.roughness=.94;bank.metalness=0;bank.color.setRGB(1.8,1.55,1.28);
   bank.bumpMap=soil.clone();bank.bumpMap.colorSpace=THREE.NoColorSpace;bank.bumpMap.needsUpdate=true;bank.bumpScale=.065;
   const groups=new Map(),pick=[];const nativePrototypes=new Map();
   gltf.scene.traverse(o=>{
     if(!o.isMesh)return;
     const id=o.userData.web3dModule||o.parent?.userData.web3dModule;
     const material=materials.get(id);if(!material)throw Error('Unknown R3 module: '+o.name);
+    if(/Continuous_Bank/.test(id))return;
     if(!nativePrototypes.has(id))nativePrototypes.set(id,{geometry:o.geometry,material,matrix:o.matrixWorld.clone()});
     // Rebuild the large silhouette before adding detail: keep the bridge and banks exact.
     const position=new THREE.Vector3(),rotation=new THREE.Quaternion(),scale=new THREE.Vector3();o.matrixWorld.decompose(position,rotation,scale);
@@ -167,6 +170,9 @@ export async function install(read){
     mesh.castShadow=!/Leaf|Moss_Cushion|Vista/.test(id);mesh.receiveShadow=true;
     mesh.userData.module=id;mesh.computeBoundingSphere();environment.add(mesh);
     if(fading){mesh.renderOrder=3;occluders.push({mesh,matrices,box:drawGeometry.boundingBox.clone(),fade:drawGeometry.getAttribute('instanceFade')});}
+  }
+  for(const south of [false,true]){
+    const surface=new THREE.Mesh(bankGeometry(south,height),bank);surface.receiveShadow=true;surface.userData.module='RF3_Connected_Bank_'+(south?'South':'North');environment.add(surface);surface.updateMatrixWorld();pick.push(surface);
   }
   environment.visible=bridgeScene;
   const reflectionCamera=new THREE.OrthographicCamera(),reflectionTarget=new THREE.WebGLRenderTarget(960,540,{type:THREE.HalfFloatType});
@@ -246,15 +252,15 @@ export async function install(read){
   const importedNormals=new WeakMap();
   function importedNormal(image){
     if(!importedNormals.has(image)){const t=new THREE.Texture(image);t.colorSpace=THREE.NoColorSpace;t.magFilter=t.minFilter=THREE.NearestFilter;t.generateMipmaps=false;t.needsUpdate=true;importedNormals.set(image,t);}
-    const texture=importedNormals.get(image).clone();texture.needsUpdate=true;return texture;
+    return textureView(importedNormals.get(image));
   }
   function normalTexture(image){
-    if(normalTextures.has(image))return normalTextures.get(image).clone();
-    const c=document.createElement('canvas');c.width=image.naturalWidth||image.width;c.height=image.naturalHeight||image.height;
-    const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(image,0,0);const d=ctx.getImageData(0,0,c.width,c.height),src=d.data,out=new Uint8Array(src.length);
+    if(normalTextures.has(image))return textureView(normalTextures.get(image));
+    const dimensions=normalTextureSize(image.naturalWidth||image.width,image.naturalHeight||image.height),c=document.createElement('canvas');c.width=dimensions.width;c.height=dimensions.height;
+    const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(image,0,0,c.width,c.height);const d=ctx.getImageData(0,0,c.width,c.height),src=d.data,out=new Uint8Array(src.length);
     const value=(x,y)=>{const k=(Math.max(0,Math.min(c.height-1,y))*c.width+Math.max(0,Math.min(c.width-1,x)))*4;return src[k+3]/255*(.6+(src[k]+src[k+1]+src[k+2])/1912);};
     for(let y=0;y<c.height;y++)for(let x=0;x<c.width;x++){const k=(y*c.width+x)*4,dx=(value(x-1,y)-value(x+1,y))*.85,dy=(value(x,y+1)-value(x,y-1))*.85,l=Math.hypot(dx,dy,1);out[k]=128+127*dx/l;out[k+1]=128+127*dy/l;out[k+2]=128+127/l;out[k+3]=255;}
-    const tex=new THREE.DataTexture(out,c.width,c.height);tex.flipY=true;tex.magFilter=tex.minFilter=THREE.NearestFilter;tex.needsUpdate=true;normalTextures.set(image,tex);return tex.clone();
+    const tex=new THREE.DataTexture(out,c.width,c.height);tex.flipY=true;tex.magFilter=tex.minFilter=THREE.NearestFilter;tex.needsUpdate=true;normalTextures.set(image,tex);return textureView(tex);
   }
   function bounds(image,frame){
     if(!frameBounds.has(image))frameBounds.set(image,new Map());
@@ -269,7 +275,12 @@ export async function install(read){
     if(!bridgeScene)return 0;
     const cx=x/40-.5,cy=y/40-.5,ix=Math.floor(cx),iy=Math.floor(cy),fx=cx-ix,fy=cy-iy;
     const h=(a,b)=>map.heights[Math.max(0,Math.min(map.template.mh-1,b))*map.template.mw+Math.max(0,Math.min(map.template.mw-1,a))];
-    return Math.max(.29,(h(ix,iy)*(1-fx)+h(ix+1,iy)*fx)*(1-fy)+(h(ix,iy+1)*(1-fx)+h(ix+1,iy+1)*fx)*fy);
+    const bankLand=y/U<shoreline(x/U,false)||y/U>shoreline(x/U,true);
+    return Math.max(bankLand?.45:.29,(h(ix,iy)*(1-fx)+h(ix+1,iy)*fx)*(1-fy)+(h(ix,iy+1)*(1-fx)+h(ix+1,iy+1)*fx)*fy);
+  }
+  for(const art of remasters.values()){
+    if(art.image)renderer.initTexture(sourceTexture(art.image));
+    if(art.normal){const temporary=importedNormal(art.normal);temporary.dispose();renderer.initTexture(importedNormals.get(art.normal));}
   }
   let frameId=0,current=null,ready=true,lastNativeMap=null,lastSize='',hidden=false,lastRenderMs=0,lastDrawCalls=0,lastFadeTime=performance.now();
   const occlusionBox=new THREE.Box3(),occlusionCenter=new THREE.Vector3(),occlusionDirection=new THREE.Vector3(),occlusionCorner=new THREE.Vector3();
@@ -302,7 +313,7 @@ export async function install(read){
     const b=options.trim===false?frame:bounds(image,frame),iw=image.naturalWidth||image.width,ih=image.naturalHeight||image.height;
     const source=sourceTexture(image);let mesh=sprites.get(key);
     if(!mesh){
-      const tex=source.clone();tex.needsUpdate=true;
+      const tex=textureView(source);
       const settings={map:tex,transparent:true,alphaTest:.08,depthWrite:true,side:THREE.DoubleSide};
       const material=options.unlit?new THREE.MeshBasicMaterial(settings):new THREE.MeshStandardMaterial({...settings,
         roughness:.9,metalness:0,emissive:'#8f9baf',emissiveIntensity:.13});
@@ -320,7 +331,12 @@ export async function install(read){
       mesh=new THREE.Mesh(unitPlane,material);
       scene.add(mesh);sprites.set(key,mesh);
     }
-    if(mesh.userData.source!==source){mesh.material.map.dispose();mesh.material.map=source.clone();mesh.material.map.needsUpdate=true;mesh.userData.source=source;if(mesh.material.normalMap){mesh.material.normalMap.dispose();mesh.material.normalMap=null;}}
+    const views=mesh.userData.views||(mesh.userData.views=new Map());
+    if(mesh.userData.source!==source){
+      if(mesh.userData.source)views.set(mesh.userData.source,{map:mesh.material.map,normal:mesh.material.normalMap});
+      else mesh.material.map.dispose();
+      const cached=views.get(source);mesh.material.map=cached?.map||textureView(source);mesh.material.normalMap=cached?.normal||null;mesh.userData.source=source;
+    }
     if(!options.unlit&&!mesh.material.normalMap){mesh.material.normalMap=options.normalImage?importedNormal(options.normalImage):normalTexture(image);mesh.material.normalScale=new THREE.Vector2(.65,.65);mesh.material.needsUpdate=true;}
     if(mesh.material.emissive){mesh.material.emissiveMap=mesh.material.map;mesh.material.userData.rim?.uSpriteTexel.value.set(1/iw,1/ih);}
     if(mesh.material.normalMap){const n=mesh.material.normalMap;n.repeat.set(b.w/iw,b.h/ih);n.offset.set(b.x/iw,1-(b.y+b.h)/ih);}
@@ -420,7 +436,7 @@ export async function install(read){
       const idx=row*state.mobCols+col,walk=atlas.walkDirs?.[dir];
       if(e._isMoving&&walk?.ready&&atlas.walkMeta?._idxSet?.has(idx)){
         const n=atlas.walkMeta.framesPerMob||4,f=Math.floor((e._walkDist||0)/128)%n;
-        image=walk.img;frame={x:(col*n+f)*cell,y:row*cell,w:cell,h:cell};normalImage=null;frameScale=1;
+        image=walk.img;frame={x:(col*n+f)*cell,y:row*cell,w:cell,h:cell};normalImage=remasters.get('enemy-walk-'+dir.replaceAll('-','_'))?.normal;frameScale=1;
       }
       sprite(e,image,frame,e.x,e.y,sz/cell*1.8/frameScale,{normalImage,flash:e._hitFlash>0});
     }
@@ -442,7 +458,7 @@ export async function install(read){
     drawEffects(state,{sprite,viewFacing,project,height,THREE,scene,camera});
     updateParticles(state,height,camera);
     for(const [key,m]of sprites){if(m.userData.frame!==frameId){m.visible=false;if(!state.ens.includes(key)&&!state.projs.includes(key)&&!state.pProjs.includes(key)&&key!==state.P&&!state.objects.includes(key)){
-      scene.remove(m);m.material.map.dispose();m.material.normalMap?.dispose();m.material.dispose();sprites.delete(key);const sh=shadows.get(key);if(sh)scene.remove(sh);shadows.delete(key);
+      scene.remove(m);const textures=new Set([m.material.map,m.material.normalMap]);for(const v of m.userData.views?.values()||[]){textures.add(v.map);textures.add(v.normal);}for(const t of textures)t?.dispose();m.material.dispose();sprites.delete(key);const sh=shadows.get(key);if(sh)scene.remove(sh);shadows.delete(key);
     }}}
     for(const m of shadows.values())if(m.userData.frame!==frameId)m.visible=false;
     // Reflect only the upper world. Clipping removes the submerged bank undersides.
@@ -486,7 +502,7 @@ export async function install(read){
     }
   }
   const api={render:safeRender,inversePointer,project,snapshot,canvas,camera,viewFacing:f=>Math.atan2(Math.sin(f+yaw)*Math.sin(angle),Math.cos(f+yaw)),get active(){return ready&&!hidden;}};
-  if(q.get('r3dDebug')==='1')api.debug={renderer,scene,materials,ssao,bloom,grade,moon,water,environment};
+  if(q.get('r3dDebug')==='1')api.debug={renderer,scene,camera,materials,ssao,bloom,grade,moon,water,environment};
   window._Web3DTrial=api;
   return api;
 }

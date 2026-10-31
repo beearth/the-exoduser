@@ -11,3 +11,8 @@ test('2x artwork maps base, bat swing and dash cells without touching native ani
  assert.deepEqual(frames,original);assert.equal(remasterFrame(frames[0],1),null);
  assert.equal(remasterFrame({x:0,y:2000,w:80,h:80},0),null);
 });
+test('fallback normal generation stays bounded for a full walking atlas',async()=>{
+ const {normalTextureSize}=await import(file);assert.equal(typeof normalTextureSize,'function');
+ const s=normalTextureSize(8192,1280);assert.ok(s.width*s.height<=512*512);assert.ok(Math.abs(s.width/s.height-6.4)<.04);
+ assert.deepEqual(normalTextureSize(96,96),{width:96,height:96});
+});

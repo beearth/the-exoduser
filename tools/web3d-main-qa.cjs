@@ -64,8 +64,9 @@ async function nativeFingerprint(page){
     headless:true,args:['--mute-audio','--remote-debugging-port=9481'],viewport:{width:1920,height:1080},deviceScaleFactor:1,
     env:{...process.env,TEMP:store+'/temp',TMP:store+'/temp'}});
   const browser=persistent.browser();
+  await persistent.route('**/*',route=>route.continue()); // Disable stale disk/module cache during source-coupled QA.
   const receipt={browser:browser.version(),errors:[],consoleErrors:[],httpFailures:[],samples:[],source:{}};
-  for(const file of ['game.html','web3d/renderer.mjs','web3d/bridge-map.js','web3d/presentation.mjs','web3d/native-ground-effects.js','web3d/effects.mjs','web3d/river.mjs','web3d/remaster.mjs','assets/web3d/sprites/intake.json','assets/map/ch1/ground_dark_soil.png','assets/web3d/forest-assembly.glb']){
+  for(const file of ['game.html','web3d/renderer.mjs','web3d/bridge-map.js','web3d/presentation.mjs','web3d/native-ground-effects.js','web3d/effects.mjs','web3d/river.mjs','web3d/remaster.mjs','web3d/banks.mjs','web3d/texture-views.mjs','assets/web3d/sprites/intake.json','assets/map/ch1/ground_dark_soil.png','assets/web3d/forest-assembly.glb']){
     receipt.source[file]=crypto.createHash('sha256').update(await fs.readFile(path.join(root,file))).digest('hex');
   }
   const attach=p=>{p.on('pageerror',e=>receipt.errors.push(e.message));p.on('console',m=>{if(m.type()==='error')receipt.consoleErrors.push(m.text());});p.on('response',r=>{if(r.status()>=400)receipt.httpFailures.push({url:r.url(),status:r.status()});});};
@@ -200,7 +201,8 @@ async function nativeFingerprint(page){
       window._btFramePause=true;P.x=4020;P.y=4820;P.s='idle';G.cam.x=P.x;G.cam.y=P.y;ens=[];projs.length=0;pProjs.length=0;
       const tiles=G._floorTiles.filter(c=>{const x=(c.tx+.5)*T,y=(c.ty+.5)*T,d=Math.hypot(x-P.x,y-P.y);return d>120&&d<900&&canMv(x,y,24);});
       for(let i=0;i<64;i++){const c=tiles[(i*137)%tiles.length],e=mkEn((c.tx+.5)*T,(c.ty+.5)*T,0,i%8,false,1,0);if(e)ens.push(e);}
-      for(let i=0;i<96;i++){const a=i*Math.PI*2/96,r=170+(i%5)*100;spawnProj({x:P.x+Math.cos(a)*r,y:P.y+Math.sin(a)*r,vx:-Math.cos(a)*1.8,vy:-Math.sin(a)*1.8,life:600,ml:600,sz:2,el:i%5+1,dmg:20,friendly:false,redBean:i<64,blackBean:i>=64&&i<80,gbBean:i>=80,parryClass:i<64?'physical':'magic'});}
+      for(let i=0;i<96;i++){const a=i*Math.PI*2/96,r=170+(i%5)*100;spawnProj({x:P.x+Math.cos(a)*r,y:P.y+Math.sin(a)*r,vx:-Math.cos(a)*1.8,vy:-Math.sin(a)*1.8,life:600,ml:600,sz:2,el:i<64?0:i%5+1,dmg:20,friendly:false,redBean:i<64,blackBean:i>=64&&i<80,gbBean:i>=80,parryClass:i<64?'physical':'magic',_commit:true});}
+      if(ens.length!==64||projs.length!==96)throw Error('fixture 수량 불일치 '+ens.length+'/'+projs.length);
       return {method:'일시정지·강제 배치의 순수 밀집 렌더 fixture. 자연 플레이/AI 성능 아님',actors:ens.length,projectiles:projs.length,aiFrozen:true};
     });
     await page.waitForTimeout(2000);await page.screenshot({path:out+'/dense-fixture-1920x1080.png'});
