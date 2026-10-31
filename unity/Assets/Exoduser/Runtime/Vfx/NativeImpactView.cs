@@ -10,7 +10,7 @@ namespace Exoduser.UnityPort.Vfx
     // Read-only observer: no Core time, damage, input, RNG, displacement or save writes.
     public sealed class NativeImpactView : IDisposable
     {
-        sealed class Burst { public GameObject Go; public VisualEffect Fx; public VFXEventAttribute Attr; public Light Light; public float Born=-10; }
+        sealed class Burst { public GameObject Go; public VisualEffect Fx; public VFXEventAttribute Attr; public Light Light; public float Born=-10,Power; }
         sealed class Scar { public GameObject Go; public Material Mat; public DecalProjector Projector; public float Born=-10; }
         readonly Transform parent;
         readonly VisualEffectAsset asset;
@@ -97,7 +97,7 @@ namespace Exoduser.UnityPort.Vfx
             if(b.Attr.HasVector3("direction"))b.Attr.SetVector3("direction",new Vector3(dir.x,0,dir.y));
             b.Fx.SendEvent("OnBurst",b.Attr);
             Spawned++;
-            b.Light.enabled=lights<2;b.Light.intensity=heavy?3:2;
+            b.Light.enabled=lights<2;b.Power=heavy?3:2;b.Light.intensity=b.Power;b.Light.range=heavy?2.2f:1.5f;
             SpawnScar(x,y,angle,heavy,now);
         }
         void SpawnScar(float x,float y,float angle,bool heavy,float now)
@@ -107,13 +107,13 @@ namespace Exoduser.UnityPort.Vfx
             if(s==null){var go=new GameObject("타격 그을음");go.transform.SetParent(parent,false);var m=new Material(scarBase);var p=go.AddComponent<DecalProjector>();p.material=m;p.pivot=Vector3.zero;s=scars[index]=new Scar{Go=go,Mat=m,Projector=p};}
             float radius=heavy?.5f:.28f,box=radius*2+.12f;
             s.Mat.SetFloat("_Shape",0);s.Mat.SetFloat("_Progress",1);s.Mat.SetFloat("_Radius",radius);s.Mat.SetFloat("_SizeX",box);s.Mat.SetFloat("_SizeY",box);s.Mat.SetFloat("_EdgeGlow",0);s.Mat.SetFloat("_Flash",0);
-            s.Mat.SetColor("_FillColor",new Color32(27,20,16,255));s.Projector.size=new Vector3(box,box,2);s.Projector.fadeFactor=.6f;
-            s.Go.transform.SetPositionAndRotation(RemodelWorld.ToWorld(x,y,.2f),Quaternion.Euler(90,angle*Mathf.Rad2Deg,0));s.Go.SetActive(true);s.Born=now;
+            s.Mat.SetColor("_FillColor",new Color32(27,20,16,255));s.Projector.size=new Vector3(box,box,.3f);s.Projector.fadeFactor=.6f;
+            s.Go.transform.SetPositionAndRotation(RemodelWorld.ToWorld(x,y,.12f),Quaternion.Euler(90,angle*Mathf.Rad2Deg,0));s.Go.SetActive(true);s.Born=now;
         }
         void Animate(float now)
         {
             int particles=0;
-            foreach(var b in bursts)if(b!=null){particles+=b.Fx.aliveParticleCount;float age=now-b.Born;if(age>.1f)b.Light.enabled=false;else b.Light.intensity=Mathf.Max(0,1-age/.1f)*3;if(age>=.9f)b.Go.SetActive(false);}
+            foreach(var b in bursts)if(b!=null){particles+=b.Fx.aliveParticleCount;float age=now-b.Born;if(age>.1f)b.Light.enabled=false;else b.Light.intensity=Mathf.Max(0,1-age/.1f)*b.Power;if(age>=.9f)b.Go.SetActive(false);}
             PeakParticles=Math.Max(PeakParticles,particles);
             foreach(var s in scars)if(s!=null){float age=now-s.Born;s.Projector.fadeFactor=.6f*Mathf.Clamp01((2-age)/1.2f);if(age>=2)s.Go.SetActive(false);}
         }

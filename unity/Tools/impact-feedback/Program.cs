@@ -31,7 +31,15 @@ static class Program
             Check(ImpactResponse.IsContact(true,100,80,3), "체력·보호막 감소와 실제 피격 신호가 접점을 만든다");
             Check(!ImpactResponse.IsContact(true,80,100,3), "회복은 타격 섬광을 만들지 않는다");
             Check(!ImpactResponse.IsContact(true,100,99,0), "피격 신호 없는 DOT는 정지를 만들지 않는다");
-            Console.WriteLine($"타격 표현 시간·방향·예산 {checks}개 검사 통과"); return 0;
+            Check(SkillPresentation.Supports("spikeTrap")&&SkillPresentation.Supports("giantSlam")&&SkillPresentation.Supports("holyDome")&&SkillPresentation.Supports("iceOrb")&&SkillPresentation.Supports("fireball"), "현행 실행 스킬 5종 전체를 처리해야 한다");
+            Check(!SkillPresentation.Supports("unknown"), "미이식 스킬을 처리했다고 주장하지 않는다");
+            Check(SkillPresentation.BulletKind(true,false,3)==1, "드루이드 독은 별도 독 표면이다");
+            Check(SkillPresentation.BulletKind(false,true,3)==2, "물리 탄은 어둠 속성이라도 가시 실루엣이다");
+            Check(SkillPresentation.BulletKind(false,false,3)==3, "마법 어둠 탄은 독과 다른 실루엣이다");
+            Check(SkillPresentation.BulletKind(false,false,1)==0, "범위 밖 원소탄은 기존 표시를 유지한다");
+            Check(SkillPresentation.KiWidth(1,1)==192&&SkillPresentation.KiWidth(3,1)==252, "기검참 웹 외곽 크기를 보존한다");
+            Check(SkillPresentation.KiWidth(3,1.5f)==378, "차지 크기 배율은 그대로 적용한다");
+            Console.WriteLine($"타격·스킬 표현 계약 {checks}개 검사 통과"); return 0;
         } catch(Exception e) { Console.Error.WriteLine("실패: "+e.Message); return 1; }
     }
 }

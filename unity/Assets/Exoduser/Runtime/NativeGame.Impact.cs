@@ -7,6 +7,7 @@ namespace Exoduser.UnityPort
     public sealed partial class NativeGame
     {
         NativeImpactView contactVfx;
+        NativeSkillRemaster skillRemaster;
         float impactReviewClock=-1;
         float ImpactNow {get{return impactReviewClock>=0?impactReviewClock:Time.unscaledTime;}}
         bool Impact3DActive {get{return contactVfx!=null&&contactVfx.Enabled&&NativeRemodel3D.Active;}}
@@ -15,6 +16,7 @@ namespace Exoduser.UnityPort
             contactVfx=new NativeImpactView(transform);
             // Same-build before/after capture: baseline retains the previous drawing path.
             contactVfx.Enabled=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-impact-baseline")<0;
+            skillRemaster=new NativeSkillRemaster(transform){Enabled=contactVfx.Enabled};
         }
         Vector3 ImpactCameraOffset()
         {
@@ -25,7 +27,7 @@ namespace Exoduser.UnityPort
         bool ImpactHeroHeld
         {
             get {return Impact3DActive&&contactVfx.HeroFrozen(ImpactNow)&&!Simulation.RollActive&&
-                (Simulation.Player.State=="wSwing"||Simulation.Player.State=="wRecover"||Simulation.Player.State=="gSlam1"||Simulation.Player.State=="sBash");}
+                (Simulation.Player.State=="wSwing"||Simulation.Player.State=="wRecover"||Simulation.Player.State=="gSlamWindup"||Simulation.Player.State=="gSlam1"||Simulation.Player.State=="sBash");}
         }
     }
 }

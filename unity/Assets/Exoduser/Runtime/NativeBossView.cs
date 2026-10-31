@@ -227,6 +227,7 @@ namespace Exoduser.UnityPort
             foreach (var p in druid.Projectiles)
             {
                 if (!p.Active) continue;
+                if(Exoduser.UnityPort.Vfx.NativeSkillRemaster.Current!=null&&Exoduser.UnityPort.Vfx.NativeSkillRemaster.Current.Drawn(p))continue;
                 if(p.Mine){if(HasArt(WardSheet)){double mp=p.Life/(p.Ml==0?180:p.Ml),pulse=.5+Math.Sin(nowMs/(80+mp*100))*.5;bool blink=mp<.35;PutAdd(NativeDruidArt.ClipFrame(WardSheet,2,1,0),p.X,p.Y,112,112,(float)((blink?.84:.76)+pulse*.18),(int)p.Y,nowMs*.00035);if(blink)PutAdd(MineFlashRing(),p.X,p.Y,106,106,(float)(.3+pulse*.2),(int)p.Y+1,0,new Color(1,216/255f,74/255f));MineSpritesDrawn++;}else{Put(disc,p.X,p.Y,18,Mine,(int)p.Y);MineArtFallbacks++;}continue;}
                 if (p.DruidPoison)
                 {

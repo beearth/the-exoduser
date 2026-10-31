@@ -6,5 +6,6 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="../../Assets/Exoduser/Runtime/Vfx/ImpactResponse.cs" />
+    <Compile Include="../../Assets/Exoduser/Runtime/Vfx/SkillPresentation.cs" />
   </ItemGroup>
 </Project>
