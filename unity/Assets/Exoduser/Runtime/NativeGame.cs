@@ -188,8 +188,8 @@ namespace Exoduser.UnityPort
             // Web stat window: ESC blurs the search box first, then closes; K/TAB switch straight to skills/inventory (not while typing).
             if(stats.Open){
                 if(ExoInput.KeyDown(KeyCode.Escape)){if(stats.TextInputActive)stats.BlurSearch();else SetStats(false);}
-                else if(!stats.TextInputActive&&NativeKeyBindInput.Down("skill"))OnPanelRequested("skillPanel");
-                else if(!stats.TextInputActive&&NativeKeyBindInput.Down("inventory"))OnPanelRequested("invPanel");
+                else if(!stats.TextInputActive&&NativeKeyBindInput.Down("skill"))OnPanelHotkeyRequested("skillPanel");
+                else if(!stats.TextInputActive&&NativeKeyBindInput.Down("inventory"))OnPanelHotkeyRequested("invPanel");
                 else stats.HandleKeys(()=>SetStats(false));
                 return;
             }
@@ -200,12 +200,12 @@ namespace Exoduser.UnityPort
             // Web forge window (#forge): G toggles it in HandlePanelHotkeys; ESC closes (_panelBack); K / TAB switch directly to that window.
             if(forge.Open){
                 if(ExoInput.KeyDown(KeyCode.Escape)){SetForge(false);return;}
-                if(NativeKeyBindInput.Down("skill")){OnPanelRequested("skillPanel");return;}
-                if(NativeKeyBindInput.Down("inventory")){OnPanelRequested("invPanel");return;}
+                if(NativeKeyBindInput.Down("skill")){OnPanelHotkeyRequested("skillPanel");return;}
+                if(NativeKeyBindInput.Down("inventory")){OnPanelHotkeyRequested("invPanel");return;}
                 UpdateViews();return;
             }
             // Web togglePanel: pressing another window's key while a window is open switches directly to that window.
-            if(inventory.Open&&!inventoryKeysSmoke&&NativeKeyBindInput.Down("skill")){OnPanelRequested("skillPanel");return;}
+            if(inventory.Open&&!inventoryKeysSmoke&&NativeKeyBindInput.Down("skill")){OnPanelHotkeyRequested("skillPanel");return;}
             if(inventory.Open){if(!inventoryKeysSmoke&&inventory.PollKeys(Simulation.Player.Level))SetInventory(false);UpdateViews();return;}
             if(skillInputFence&&!ExoInput.Mouse(0))skillInputFence=false;
             if(ExoInput.KeyDown(KeyCode.Escape)||NativeKeyBindInput.Down("settings")){
@@ -214,7 +214,7 @@ namespace Exoduser.UnityPort
                 else {string uiBefore=UiPanelState();menu=true;pauseMenu.OpenSettingsDirect();Running=false;UiPanelChanged(uiBefore);}
                 return;
             }
-            if(skills.Open&&NativeKeyBindInput.Down("inventory")){OnPanelRequested("invPanel");return;}
+            if(skills.Open&&NativeKeyBindInput.Down("inventory")){OnPanelHotkeyRequested("invPanel");return;}
             if(skills.Open){skills.HandleKeys(()=>SetSkills(false),EquipSelectedSkill);return;}
             if(!menu&&!inventory.Open&&Simulation.Player.Hp>0&&NativeKeyBindInput.Down("skill")){SetSkills(true);return;}
             if(!menu&&Simulation.Player.Hp>0&&NativeKeyBindInput.Down("inventory"))SetInventory(!inventory.Open);
@@ -551,11 +551,11 @@ namespace Exoduser.UnityPort
         // TAB/K switching between inventory and skills is in OnPanelRequested's callers; ESC follows _panelBack (close the open window, else open settings).
         bool HandlePanelHotkeys(){
             if(Simulation==null||Simulation.Player.Hp<=0||firstPractice!=null||stats.TextInputActive||pauseMenu.KeyCaptureActive)return false;   // A16: a key waiting in the binding page must not open windows
-            if(NativeKeyBindInput.Down("forge")){OnPanelRequested("forge");return true;}
-            if(NativeKeyBindInput.Down("stats")){OnPanelRequested("statPanel");return true;}
+            if(NativeKeyBindInput.Down("forge")){OnPanelHotkeyRequested("forge");return true;}
+            if(NativeKeyBindInput.Down("stats")){OnPanelHotkeyRequested("statPanel");return true;}
             if(ExoInput.KeyDown(KeyCode.F10)){
                 if(menu){if(gameFocused){string uiBefore=UiPanelState();menu=false;skillInputFence=true;Running=true;UiPanelChanged(uiBefore);}}   // togglePanel('settings') while settings is open closes it
-                else OnPanelRequested("settings");
+                else OnPanelHotkeyRequested("settings");
                 return true;
             }
             return false;

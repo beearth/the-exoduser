@@ -13,7 +13,7 @@
 | 캐릭터 입장 | 같은 playEnterSFX 원음 gain 2, 지연 0 | 새 캐릭터만 소리, 저장 캐릭터는 조기 return으로 누락 | 유효한 저장 캐릭터 입장도 같은 원음 1회 |
 | 게임 버튼 hover | sfx/ui/button_hover.mp3 .25, 다른 버튼 진입만, 60ms gate; sample 동일 키 30ms | 없음 | 같은 byte/gain/gate, MouseMove만. Layout/Repaint와 로비에는 추가음 없음 |
 | 게임 버튼 click | sfx/ui/button_confirm.mp3 .35, 80ms; 처리기 고유음이 있으면 생략; setTimeout 0 | 없음 | 같은 byte/gain/gate. 다음 engine frame LateUpdate에서 고유 UI음 발생 여부 확인 후 1회 |
-| 창 열기·일시정지·TAB 최초 열기 | sfx/ui/panel_open.mp3 .22, 실제 열림 즉시, 전환 중 close는 quiet | 없음 | 확정된 열림 1회. lobby/practice/death/실패/이미 열린 창은 무음 |
+| 창 열기·일시정지·TAB 최초 열기 | sfx/ui/panel_open.mp3 .22, 실제 열림 즉시, 전환 중 close는 quiet | 없음 | 확정된 열림 1회. F10/G/J/K/TAB 단축키로 다른 창을 열 때도 open이며 마우스 패널 nav 전환만 tab. lobby/practice/death/실패/이미 열린 창은 무음 |
 | 창 닫기·일시정지 해제 | sfx/ui/panel_close.mp3 .22, 실제 닫힘 즉시 | 없음 | 실제 닫힘 1회. 이미 닫힘/포커스 자동정지는 무음 |
 | 패널 간 탭·대장간 하위 탭 | sfx/ui/tab.mp3 .22, 실제 바뀔 때 1회; 활성 재선택 무음 | 패널 간 탭만 연결 | 패널·대장간 탭 확정 1회. div인 탭에는 일반 button hover/confirm을 얹지 않음 |
 | 레벨업 | game.html SFX.levelup: 523/659/784/1047Hz를 0/95/190/285ms, 마감 화음 420ms; 파일 없음 | 없음 | 원래 playFM/playTone/playNoise/playSub 코드의 OfflineAudioContext 48kHz stereo 렌더 ui_levelup.wav. Simulation.LevelledUp당 1회, pitch 1 |
@@ -29,7 +29,8 @@ sample의 웹 전역 playbackRate .92~1.08 변동을 UI sample에 적용한다. 
 | 게이트 | 현재 증거 |
 |---|---|
 | 수정 전 재현 | tests/RED.log: 생산 패널 본문 6검사 중 열기/닫기 2실패 |
-| 생산본문 독립 회귀 | tests/matrix.json: 1176조합/2352검사/0실패. 선택·Running·입력 fence 등 기존 상태 일치. Unity 장치/패널 대체이므로 실제Player 증거와 구분 |
+| 생산본문 독립 회귀 | tests/matrix.json: 1206조합/2412검사/0실패. 선택·Running·입력 fence 등 기존 상태 일치. Unity 장치/패널 대체이므로 실제Player 증거와 구분 |
+| 실제 hover/button C# | hover 10검사 + button 11검사, 실패0. 진입100ms/종료80ms/빠른 재진입·포커스·60/80ms gate·고유음 중복·Layout/Repaint·로비 무음. 장치 대체 범위 |
 | 독립 C# | Core/Runtime 전체 현재 C# 컴파일 오류0. 기존 경고 유지. 공식 Unity 빌드와 구분 |
 | 공식 빌드·M1 | 순번 대기, 미검증. 후보 원격 복구점 5093a76cecd076cf13b6754aab37ac2c766d571b |
 | 출력 버퍼·30초 영상 | Tools/UiSoundCapture.cs의 명시적 --unity-ui-sound-capture, sandbox/output 필수. 검수 실행 대기 |
@@ -38,3 +39,5 @@ sample의 웹 전역 playbackRate .92~1.08 변동을 UI sample에 적용한다. 
 AudioRenderer.Start가 성공하기 전에는 Listener를 열지 않는다. 녹음 모드 동안 장치는 silence를 출력하고 실제 mixed PCM은 AudioRenderer.Render로 WAV에 보존한다. 종료/예외 시 Listener volume0/pause부터 적용한 뒤 녹음을 종료한다. 근거: [Unity AudioRenderer.Start](https://docs.unity.com/en-us/engine/6000.5/script-reference/unityengine/audiorenderer/start). 기존 --unity-mute, 공식 실행기, 숨은 Desktop, 세이브 격리/사용자세이브 전후 대조를 유지한다. 영상은 생산 콜백을 스크립트로 실행하는 범위이며 자연플레이/사용자 청음 PASS로 보고하지 않는다.
 
 영상 fixture는 전투 Update를 끈 상태에서 생산 NativeGame.OnGUI를 실제 GUI 이벤트마다 호출해 패널/HUD도 그대로 그린다. 로비는 기존 NativeLobby.OnGUI를 사용한다. 검수 설명 자막 외의 화면을 대체해서 그리지 않는다.
+
+빠른 입장 hover 재진입은 웹과 같이 이전 소스를 80ms로 내린 뒤 100ms에 정리하고 새 소스를 첫 샘플부터 100ms로 올린다. ENTER/hover PCM은 첫 클릭 전에 사전 로드한다. 영상에서 전투 Tick은 정지시키되 실제 UpdateViews와 카메라 원래 cullingMask를 적용해 UI 뒤 월드도 실제로 렌더한다.
