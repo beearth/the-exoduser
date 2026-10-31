@@ -1,0 +1,194 @@
+{
+  "schema": "exoduser.web3d.ghosts.v1",
+  "note": "유령나무는 기존 부패나무 원화 재사용. 판정·HP·타깃 없음. 고정 외곽 자리만 사용. 유령 가시성은 전경을 더 밝히지 않고 경계 안쪽220px의 조용한 어깨로 자리 정정.",
+  "trees": [
+    {
+      "id": "ghost_tree_0",
+      "x": 3176,
+      "y": 6944,
+      "type": "m_ctree13",
+      "width": 250,
+      "height": 350,
+      "alpha": 0.26,
+      "phase": 0,
+      "role": "시작·초입 외곽"
+    },
+    {
+      "id": "ghost_tree_1",
+      "x": 5048,
+      "y": 6864,
+      "type": "m_ctree20",
+      "width": 305,
+      "height": 395,
+      "alpha": 0.26,
+      "phase": 1.93,
+      "role": "시작·초입 외곽"
+    },
+    {
+      "id": "ghost_tree_2",
+      "x": 2570,
+      "y": 6559,
+      "type": "m_ctree14",
+      "width": 360,
+      "height": 440,
+      "alpha": 0.26,
+      "phase": 3.86,
+      "role": "시작·초입 외곽"
+    },
+    {
+      "id": "ghost_tree_3",
+      "x": 5558,
+      "y": 6435,
+      "type": "m_ctree19",
+      "width": 250,
+      "height": 485,
+      "alpha": 0.26,
+      "phase": 5.79,
+      "role": "시작·초입 외곽"
+    },
+    {
+      "id": "ghost_tree_4",
+      "x": 1634,
+      "y": 4325,
+      "type": "m_ctree15",
+      "width": 305,
+      "height": 350,
+      "alpha": 0.26,
+      "phase": 7.72,
+      "role": "제단·시체나무 외곽"
+    },
+    {
+      "id": "ghost_tree_5",
+      "x": 6585,
+      "y": 5405,
+      "type": "m_ctree18",
+      "width": 360,
+      "height": 395,
+      "alpha": 0.26,
+      "phase": 9.65,
+      "role": "제단·시체나무 외곽"
+    },
+    {
+      "id": "ghost_tree_6",
+      "x": 2338,
+      "y": 3049,
+      "type": "m_ctree13",
+      "width": 250,
+      "height": 440,
+      "alpha": 0.26,
+      "phase": 11.58,
+      "role": "제단·시체나무 외곽"
+    },
+    {
+      "id": "ghost_tree_7",
+      "x": 5648,
+      "y": 3040,
+      "type": "m_ctree20",
+      "width": 305,
+      "height": 485,
+      "alpha": 0.26,
+      "phase": 13.51,
+      "role": "제단·시체나무 외곽"
+    },
+    {
+      "id": "ghost_tree_8",
+      "x": 1457,
+      "y": 2326,
+      "type": "m_ctree15",
+      "width": 360,
+      "height": 350,
+      "alpha": 0.26,
+      "phase": 15.44,
+      "role": "북부 안개 경계"
+    },
+    {
+      "id": "ghost_tree_9",
+      "x": 6697,
+      "y": 3543,
+      "type": "m_ctree18",
+      "width": 250,
+      "height": 395,
+      "alpha": 0.26,
+      "phase": 17.37,
+      "role": "북부 안개 경계"
+    },
+    {
+      "id": "ghost_tree_10",
+      "x": 2819,
+      "y": 1434,
+      "type": "m_ctree16",
+      "width": 305,
+      "height": 440,
+      "alpha": 0.26,
+      "phase": 19.3,
+      "role": "북부 안개 경계"
+    },
+    {
+      "id": "ghost_tree_11",
+      "x": 5252,
+      "y": 1417,
+      "type": "m_ctree17",
+      "width": 360,
+      "height": 485,
+      "alpha": 0.26,
+      "phase": 21.23,
+      "role": "북부 안개 경계"
+    }
+  ],
+  "souls": [
+    {
+      "id": "soul_0",
+      "x": 3261,
+      "y": 7029,
+      "width": 18,
+      "height": 46,
+      "alpha": 0.11,
+      "phase": 0
+    },
+    {
+      "id": "soul_1",
+      "x": 5318,
+      "y": 6571,
+      "width": 18,
+      "height": 46,
+      "alpha": 0.11,
+      "phase": 2.17
+    },
+    {
+      "id": "soul_2",
+      "x": 1632,
+      "y": 4324,
+      "width": 18,
+      "height": 46,
+      "alpha": 0.11,
+      "phase": 4.34
+    },
+    {
+      "id": "soul_3",
+      "x": 6369,
+      "y": 5328,
+      "width": 18,
+      "height": 46,
+      "alpha": 0.11,
+      "phase": 6.51
+    },
+    {
+      "id": "soul_4",
+      "x": 2338,
+      "y": 3049,
+      "width": 18,
+      "height": 46,
+      "alpha": 0.11,
+      "phase": 8.68
+    },
+    {
+      "id": "soul_5",
+      "x": 6860,
+      "y": 2107,
+      "width": 18,
+      "height": 46,
+      "alpha": 0.11,
+      "phase": 10.85
+    }
+  ]
+}

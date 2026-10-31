@@ -16,4 +16,3 @@ test('boundary forest joins every edge with low masses and keeps large bases out
  assert.equal(JSON.stringify(anchors),before);
  assert.deepEqual(plan,forestLayout(data,anchors));
 });
-

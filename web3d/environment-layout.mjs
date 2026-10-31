@@ -18,4 +18,3 @@ export function forestLayout(data,anchors){
  const trees=data.groves.filter(p=>signedBoundaryDistance(p.x,p.y,anchors)>40).map(p=>({...p}));
  return {low,trees};
 }
-

@@ -3,6 +3,7 @@ import {foliageLayout,seeded,waterAt,plantHabitat} from './living-layout.mjs?v=2
 import {createRelief} from './living-relief.mjs?v=20261031-layer2';
 import {createMapLook} from './map-look-pass.mjs?v=20261031-maplook1';
 import {createForest} from './forest-layer.mjs?v=20261031-forest1';
+import {createGhosts} from './ghost-layer.mjs?v=20261031-ghost3';
 
 // The native map is the color source. This canvas contains ONLY added vegetation
 // and water highlights; actors, VFX, camera, lighting and HUD use their original pass.
@@ -20,6 +21,8 @@ export async function install(read){
   const mapLook=createMapLook(renderer,canvas,uniforms,lookData,lookAnchors);
   const forestResponse=await fetch('./assets/web3d/forest-ch1.json');if(!forestResponse.ok)throw Error('forest-ch1 '+forestResponse.status);
   const forest=await createForest(renderer,canvas,uniforms,await forestResponse.json(),lookAnchors);
+  const ghostResponse=await fetch('./assets/web3d/ghosts-ch1.json?v=20261031-ghost3');if(!ghostResponse.ok)throw Error('ghosts-ch1 '+ghostResponse.status);
+  const ghosts=createGhosts(renderer,canvas,uniforms,await ghostResponse.json());
   const relief=createRelief(renderer,canvas,uniforms,read,mapLook);
   const vs=`uniform vec4 view;uniform float time,bend;uniform vec2 hero;uniform vec3 impulse;attribute vec4 anchor;attribute float phase;attribute vec4 habitat;varying vec2 vUv;varying float light;varying vec2 localUV;varying vec3 tint;
   void main(){float variant=habitat.w;localUV=uv;vUv=(uv+vec2(mod(variant,2.),1.-floor(variant/2.)))*.5;vec2 p=position.xy*anchor.z;float h=max(0.,p.y)/100.;vec2 d=anchor.xy-hero;tint=habitat.rgb;
@@ -117,6 +120,7 @@ export async function install(read){
     mapLook.draw(ctx,s,view);
     renderer.render(scene,camera);canvas._glVer=(canvas._glVer||0)+1;
     ctx.save();ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';ctx.drawImage(canvas,view.x,view.y,view.w,view.h);ctx.restore();
+    ghosts.draw(ctx,s,view);
     relief.motes(ctx,s,view,low);
     Object.assign(stats,{frame,foliage:count,water:visibleWater,cpuMs:performance.now()-start,density,drawCalls:renderer.info.render.calls});
   }
@@ -125,6 +129,6 @@ export async function install(read){
   const api={draw:(ctx,view)=>{try{draw(ctx,read(),view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D living layer]',error);}},
     surface:(ctx,view)=>{const s=currentState=read();if(!active(s))return;try{const low=proxy||s.quality==='low',w=Math.max(1,Math.round(view.pw*(low?.65:1))),h=Math.max(1,Math.round(view.ph*(low?.65:1)));if(canvas.width!==w||canvas.height!==h)renderer.setSize(w,h,false);forest.draw(ctx,s,view);relief.surface(ctx,s,view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D surface]',error);}},
     beginObject:(ctx,o,m)=>{const s=currentState||read();return active(s)?relief.beginObject(ctx,o,m,s):false;},
-    snapshot:()=>({...stats,...relief.snapshot(),...forest.snapshot(),enabled,error:api.error||null}),setEnabled:value=>{enabled=!!value;},canvas};
+    snapshot:()=>({...stats,...relief.snapshot(),...forest.snapshot(),...ghosts.snapshot(),enabled,error:api.error||null}),setEnabled:value=>{enabled=!!value;},setGhostsEnabled:value=>ghosts.setEnabled(value),canvas};
   return api;
 }
