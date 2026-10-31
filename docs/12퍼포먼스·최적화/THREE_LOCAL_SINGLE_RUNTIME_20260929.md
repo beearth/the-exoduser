@@ -1,5 +1,11 @@
 # Three.js 로컬 단일 런타임 — 2026-09-29
 
+## 2026-10-31 분리 브랜치의 Web3D 시험
+
+`codex/web3d-trial-20261031`의 `game.html?r3d=1`만 기존과 같은 정규화 URL의 r160 코어를 사용한다. 별도 버전의 Three 엔진을 추가하지 않는다. EffectComposer/RenderPass/SSAO/Bloom/Output 및 관련 shader/math의 공식 r160 모듈13개를 추가했으며, 정확한 URL·바이트·SHA는 `web3d/vendor-provenance.json`에 있다. 기본 OFF 경로와 `game-easy-test.html`의 기존 계약은 유지한다. 추가 WebGLRenderer·1920×1080 후처리는 이 시험의 비용이며, 라이브러리 단일화가 컨텍스트나 렌더 비용을 제거했다는 뜻이 아니다.
+
+상세 좌표·색 공간·장면·실측·실패 폴백은 [웹3D 목교 시험 SSOT](../4.1맵디자인+설정/WEB3D_TRIAL_20261031.md). main 반영·NW.js/Steam 패키징·배포는 수행하지 않는다. 아래 9월 검증 수치는 당시 경로의 이력이며 이 시험의 성능 수치로 재사용하지 않는다.
+
 이 문서는 game.html과 game-easy-test.html의 Three.js 엔진 로딩·색상·배포 계약 SSOT다. 이전 안개 소실 보호/보스 GLB 수명 정리 단계의 r128+r160 중복 경고 기록은 당시 결과이며, 현행 계약은 아래 로컬 r160 단일 엔진으로 대체한다. ERR_INSUFFICIENT_RESOURCES 전체의 유일 원인을 증명하거나 장시간 메모리 누수가 모두 해소됐다고 판정한 작업은 아니다.
 
 ## 런타임 계약

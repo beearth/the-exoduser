@@ -3285,6 +3285,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <div class="ph" id="ph"></div>
 <div class="notif" id="notif"></div>
 
+<script src="web3d/bridge-map.js?v=20261031-r3"></script>
 <script>
 // ┌─────────────────────────────────────────────────────────────────────┐
 // │  TABLE OF CONTENTS — Ctrl+F "[S##]" 로 점프                        │
@@ -17339,6 +17340,11 @@ function _druidFinaleFrame(e,px,py,vw,vh,out){
 let _fdgNativePerspective=null; // only installed by exact r4 + fdgPerspective=first
 function _syncDruidFinaleMouse(){
   if(_gpActive||!Number.isFinite(mouse._screenX)||!Number.isFinite(mouse._screenY))return;
+  if(window._Web3DTrial?.active){
+    const target=window._Web3DTrial.inversePointer(mouse._screenX,mouse._screenY);
+    if(target){mouse.x=target.x-G.cam.x+VW/2;mouse.y=target.y-G.cam.y+VH/2;}
+    return;
+  }
   if(_fdgNativePerspective){
     const target=_fdgNativePerspective.inversePointer(mouse._screenX,mouse._screenY);
     if(target){mouse.x=target.x;mouse.y=target.y;}
@@ -30497,6 +30503,13 @@ function genFromTemplate(tmpl,si){
     for(let y=1;y<mh-1;y++)for(let x=1;x<mw-1;x++)if(map[y][x]===0)G._floorTiles.push({tx:x,ty:y});
   }
 
+  // Web3D authored comparison scene: use the native tile collision without stage geometry postprocessing.
+  if(tmpl===window._Web3DTrialMap){
+    G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=[];_cacheExitCenter();
+    G._testbed=true;G._pathImgTerrain=false;G._mapPaint=false;G._plateSrc=null;G._kitField=false;G._plateNative=false;
+    G.bossAlive=false;G.bossGate=[];G.bossGateOpen=true;G.bossSealed=false;G.spawnHoles=[];MAP_OBJS=[];
+    return;
+  }
   // Independent template consumes native tiles/crops without importing a stage gate.
   if(_FDG_RUINED_FOREST_FIRST&&tmpl._fdgIndependentScene==='ruined-forest-first'){
     G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=[];_cacheExitCenter();
@@ -31787,7 +31800,7 @@ function initStage(si){
   G._rewindMarks=[];G._gravityWells=[];G._wallPushes=[];G._poisonPools=[];G._cageTraps=[];
   G._chainLights=[];G._orbWeaves=[];G._soulAnchors=[];G._chaseAoes=[];G._lavaPools=[];G._fireRains=[];G._shockGrids=[];G._donutSlams=[];G._safeCorners=[];G._crossWipes=[];G._tidalWipes=[];G._gSlamWave=[];G._skyCrushers=[];G._lavaField=null;G._gwPillar=null;
   if(_FDG_RUINED_FOREST_FIRST)return _initRuinedForestNativeScene();
-  let _fixedMap=_getFixedMapForStage(si);G._fieldRebuildQA=false;G._fieldRebuildRegions=null;
+  let _fixedMap=(si===0&&window._Web3DTrialMap)?window._Web3DTrialMap:_getFixedMapForStage(si);G._fieldRebuildQA=false;G._fieldRebuildRegions=null;
   if(_DIABLO_FIELD_QA&&si===0&&_fixedMap){const _field=_buildDiabloField(0,200,200);_fixedMap=Object.assign({},_fixedMap,{tileRLE:_field.tileRLE,rooms:_field.rooms,corridors:[],spawnHoles:_field.spawnHoles.map(h=>({x:h.x,y:h.y,size:h.type})),portals:[],objects:[],_testbed:true});G._fieldRebuildQA=true;G._fieldRebuildRegions=_field.regions}
   if(_fixedMap){genFromTemplate(_fixedMap,si);G.mapType=_fixedMap._testbed?'fixed_testbed':'fixed'}
   else{genGauntlet(si);G.mapType='gauntlet'}
@@ -62228,6 +62241,7 @@ function loop(timestamp){
   const _domT0=_PERF_PROF.enabled?performance.now():0;
   _fpsDraw();if(_useGPU||_useGL){_glFlush();_drainTexGCQueue();/* [Track D] 프레임 마지막 flush 완료 후 old map 텍스처 결정적 삭제 (invariant #2) */}
   if(_DCP.on){_DCP.frame++;_DCP.report();_DCP.resetFrame();} // [DCPROF] 프레임 요약 후 리셋 (최종 glFlush 포함)
+  window._Web3DTrial?.render();
   _drawBurst(); // GPU Burst (별도 context — 기존 배처 무관)
   if(_PERF_PROF.enabled)_PERF_PROF._domAcc+=performance.now()-_domT0;
   // 사망 리플레이 캡처 (10fps)
@@ -66021,6 +66035,41 @@ if(window._FDGDruidQaStorage?.active&&new URLSearchParams(location.search).get('
       });
       window._FDGNativePerspectiveQa=_fdgNativePerspective;
     }).catch(error=>console.error('[FDG native perspective]',error));
+}
+</script>
+
+<script type="module">
+if(new URLSearchParams(location.search).get('r3d')==='1'){
+  const proceduralProjectiles=new WeakMap();
+  const read=()=>({G,P,ens,projs,pProjs,objects:MAP_OBJS,objectImages:_OBJ_SPR,objectMeta:_OBJ_META,
+    width:VW,height:VH,tile:T,now:_now,enemyAtlas:_ch8Atlas[1],mobCols:_MOB8_COLS,
+    playerFacing:P.s==='idle'&&P._walkMoving?P._walkFacing:P.facing,
+    direction:_facingDir8,mobDirection:_mobFacingDir8,syncMouse:()=>{_syncDruidFinaleMouse();_setMouseFacing();},
+    projectile:p=>{
+      const sc=Math.max(1.2,Math.min(4,(p.sz||1)*1.5))*.7*_physicalProjectileMultiplier(p,2);
+      if(p.blackBean||p.blueBean||p.gbBean||p.waterBean){
+        let canvas=proceduralProjectiles.get(p);if(!canvas){canvas=document.createElement('canvas');canvas.width=canvas.height=256;proceduralProjectiles.set(p,canvas);}
+        const ctx=canvas.getContext('2d'),previous=X;ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,256,256);ctx.save();ctx.translate(128-p.x,128-p.y);
+        try{X=ctx;if(p.blackBean||p.blueBean)_drawClassicRainbow(p,1,sc);else if(p.gbBean)_drawDarkSphere(p,1,sc);else _drawWaterBean({...p},1,sc);}
+        finally{X=previous;ctx.restore();}
+        return {image:canvas,frame:{x:0,y:0,w:256,h:256},scale:1,dynamic:true};
+      }
+      if(_projectileParryClass(p)==='physical'&&_physMouthReady){
+        const fi=((_gameFrame>>2)+Math.floor(p.x*.03))%8;
+        return {image:_physMouthImg,frame:{x:fi*768,y:0,w:768,h:384},scale:22.05*sc*.55/384};
+      }
+      if(_elemOrbReady){const row=_ELEM_ORB_ROW[p.el||1];if(row>=0){
+        const fi=((_gameFrame>>2)+Math.floor(p.x*.03))%6;
+        return {image:_elemOrbImg,frame:{x:fi*512,y:row*256,w:512,h:256},scale:(p.elemBall?Math.max(96,(p.sz||18)*5.3):18*sc)/256};
+      }}
+      return null;
+    }});
+  import('./web3d/renderer.mjs?v=20261031-r6').then(m=>m.install(read)).catch(error=>{
+    console.error('[WEB3D] renderer unavailable; native renderer retained',error);
+    const c=document.getElementById('web3dWorld');if(c)c.remove();
+    window._Web3DTrial=null;document.getElementById('c').style.opacity='';
+    window._Web3DTrialError=error.message;
+  });
 }
 </script>
 </body>
