@@ -69,7 +69,10 @@ function run(dir){
   if(!frames.some(f=>f.width===width&&f.height===height&&f.language===lang&&f.page===page&&f.repaintFrames>0&&f.elements.some(e=>e.kind==='text')))missing.push(`${width}x${height}/${lang}/${page}`);
  for(const f of frames){if(!alphaReaderValid(f))missing.push(`${f.width}/${f.language}/${f.page}: 실제 GPU 알파 대조군 미충족`);if(!f.visibilityComplete)missing.push(`${f.width}/${f.language}/${f.page}: 가림 계측 미충족 (${f.auditWarnings.join(', ')})`);const png=path.join(dir,`${f.captureName}.png`);if(!fs.existsSync(png)){missing.push('PNG 누락 '+path.basename(png));continue;}const bytes=fs.readFileSync(png);if(bytes.readUInt32BE(16)!==f.width||bytes.readUInt32BE(20)!==f.height)missing.push('실제 PNG 해상도 불일치 '+path.basename(png));}
  const result={passed:missing.length===0&&frames.every(f=>f.issues.length===0),frameCount:frames.length,issueCount:frames.reduce((s,f)=>s+f.issues.length,0),missing,frames};
- fs.writeFileSync(path.join(dir,'overlap-report.json'),JSON.stringify(result,null,2));
+ // 480 full audit frames can exceed V8's single-string limit. Keep every frame and every issue, writing bounded chunks.
+ const reportPath=path.join(dir,'overlap-report.json'),temporary=reportPath+'.tmp',fd=fs.openSync(temporary,'w');
+ try{fs.writeSync(fd,'{\n'+Object.entries(result).filter(([key])=>key!=='frames').map(([key,value])=>JSON.stringify(key)+':'+JSON.stringify(value)).join(',\n')+',\n"frames":[\n');for(let n=0;n<frames.length;n++){if(n)fs.writeSync(fd,',\n');fs.writeSync(fd,JSON.stringify(frames[n]));}fs.writeSync(fd,'\n]}\n');fs.fsyncSync(fd);}finally{fs.closeSync(fd);}
+ fs.renameSync(temporary,reportPath);
  const rows=frames.flatMap(f=>f.issues.map(i=>`|${f.page}|${f.width}×${f.height}|${f.language}|${i.type}|${(i.a.text||'').replaceAll('|','/')}|${i.b?.text||i.b?.kind||''}|${i.a.source||''}|`));
   fs.writeFileSync(path.join(dir,'겹침_검사.md'),`# 전 화면 겹침 검사\n\n판정: ${result.passed?'PASS':'FAIL'}, ${frames.length}장, 교차 후보 ${result.issueCount}건, 누락 ${missing.length}건.\n\n실제 Repaint의 깊이·그리기 순서·클립과 증명된 유효 불투명도 1인 영역만 가림으로 쓴다. 부분 가림의 남은 조각을 검사하며, 불명 가림은 적용하지 않고 완료 판정을 차단한다. 교차 후보는 PNG 1x 검수가 필요하다.\n\n|화면|해상도|언어|종류|글자|상대|그리기 위치|\n|---|---|---|---|---|---|---|\n${rows.join('\n')}\n${missing.join('\n')}\n`);
  console.log(JSON.stringify({passed:result.passed,frames:frames.length,issues:result.issueCount,missing}));return result.passed;

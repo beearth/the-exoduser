@@ -30,3 +30,7 @@ C# 공통 좌표/포인터 회귀215개 통과. 실제 사용자32:9 이미지�
 검수 의존 실행기 보완: 예약이 있을 때 선두 Owner 우선, 예약이 없을 때 살아 있는 batch 티켓 FIFO. 실제 역순 UI/sound 교착 RED→15개 GREEN, 기존 Acquire-Slot 본문은 바이트 불변. 타인 프로세스/티켓/예약 조작0.
 
 2560×1600 검수는 1440px 물리 모니터의 Screen.SetResolution 높이 제한 때문에 Player 내부에서 자기 PID/UnityWndClass를 다시 확인하고 GetClientRect/GetWindowRect 차이만큼 SetWindowPos로 보정한다. NOMOVE|NOZORDER|NOACTIVATE이며 시스템 해상도·사용자 창 변경0. 실제 Screen 크기 불일치면 여전히 FAIL. 검수 전용 분기이며 일반 UI/플레이 경로에서는 호출하지 않는다. 이 제한을 먼저 확인하도록 16:10부터 캡처한다.
+
+480장 분석 보고서는 전체 원소/가림/교차 근거를 보존한 채 프레임 단위 JSON으로 순차 기록한다. 한 문자열로 합치면 V8 Invalid string length가 발생했으며 검수 임계값/이슈/누락 검사를 완화하지 않는다. 이 보고서 직렬화 보완은 Player 컴파일 입력(Assets/Packages/ProjectSettings)을 변경하지 않는다.
+
+확장 패널 계측: 인벤 CP의 CSS text-shadow 두 고리16회는 명시 장식 패스로 기록하고 실제 본문1회는 독립 글자로 유지한다. 같은 글자의 일반 중복은 계속 충돌이다. TextField 바탕은 내부 focus/hot 상태를 추측하지 않고 normal/hover/active/focused/on4종과 공개 HiDPI 텍스처의 GPU 모든 밉 알파 공통 하한만 사용한다. null 상태의 하한0, 읽기 불명은 여전히 완료 차단. 그림/문구/좌표/광휘 알파·고리 수/텍스트필드 그리기 호출은 보존한다.

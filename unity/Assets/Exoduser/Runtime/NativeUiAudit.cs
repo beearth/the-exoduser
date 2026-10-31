@@ -19,6 +19,7 @@ namespace Exoduser.UnityPort
         }
         [Serializable] internal sealed class Frame { public int schemaVersion=2;public string page,language,alphaReaderProof; public bool alphaReaderVerified;public float[] alphaProbe,alphaMipProbe,alphaRtProbe; public int width,height,repaintFrames,capturedFrame; public List<Element> elements=new List<Element>(); }
         internal static bool Active;
+        internal static bool DrawingTextShadow;
         [DefaultExecutionOrder(-31999)] internal sealed class Host:MonoBehaviour { void OnGUI(){if(Event.current.type==EventType.Repaint)BeginFrame();} }
         static Frame frame;
         static Vector2 origin;
@@ -179,7 +180,7 @@ namespace Exoduser.UnityPort
             Color ink=style.normal.textColor;
             Rect inkRect=new Rect(x+style.contentOffset.x,y+style.contentOffset.y,width,height);if(!overflow)inkRect=Intersect(inkRect,rect);
             Color actualInk=ink*GUI.color*GUI.contentColor;
-            var e=Record(inkRect,"text",content.text,source,actualInk.r<.001f&&actualInk.g<.001f&&actualInk.b<.001f);
+            var e=Record(inkRect,"text",content.text,source+(DrawingTextShadow?" / 명시 CSS text-shadow 광휘 패스":""),DrawingTextShadow||(actualInk.r<.001f&&actualInk.g<.001f&&actualInk.b<.001f));
             if(e!=null){e.opacityKnown=true;e.effectiveOpacity=GUI.color.a*GUI.contentColor.a*ink.a;e.opacityProof="GUI.color × GUI.contentColor × 실제 글자색 알파";}
         }
         internal static void Save(string path,string page,string language)
@@ -218,8 +219,23 @@ namespace Exoduser.UnityPort
         internal static bool Button(Rect r,GUIContent s){return Button(r,s,GUI.skin.button);}
         internal static void Box(Rect r,string s,GUIStyle style){StyleBackground(r,style);Region(r,"panel");Text(r,new GUIContent(s),style,"판 글자");GUI.Box(r,s,style);}
         internal static void Box(Rect r,string s){Box(r,s,GUI.skin.box);}
-        internal static string TextField(Rect r,string s,GUIStyle style){StyleBackground(r,style);Region(r,"button");Text(r,new GUIContent(s),style,"입력 글자");return GUI.TextField(r,s,style);}
-        internal static string TextField(Rect r,string s,int max,GUIStyle style){StyleBackground(r,style);Region(r,"button");Text(r,new GUIContent(s),style,"입력 글자");return GUI.TextField(r,s,max,style);}
+        static void TextFieldBackground(Rect r,GUIStyle style)
+        {
+            if(!Repainting||style==GUIStyle.none)return;
+            // The internal focus/hot state is not guessed: read every possible state/HiDPI background.
+            // Only their measured common lower alpha bound is eligible for occlusion.
+            var states=new[]{style.normal,style.hover,style.active,style.focused,style.onNormal,style.onHover,style.onActive,style.onFocused};
+            var textures=new HashSet<Texture>();float minimum=1,maximum=0;bool known=alphaReaderVerified;int levels=0;
+            foreach(var state in states){if(state.background==null)minimum=0;else textures.Add(state.background);
+                try{var property=typeof(GUIStyleState).GetProperty("scaledBackgrounds",BindingFlags.Public|BindingFlags.Instance);var scaled=property?.GetValue(state,null) as Texture2D[];if(scaled!=null)foreach(var texture in scaled)if(texture!=null)textures.Add(texture);}catch{known=false;}}
+            if(textures.Count==0)return;
+            foreach(var texture in textures){var alpha=Alpha(texture);known&=alpha.known;minimum=Mathf.Min(minimum,alpha.minimum);maximum=Mathf.Max(maximum,alpha.maximum);levels+=alpha.levels;}
+            if(!GUI.enabled)minimum=0;
+            var e=Record(new Rect(r.x-style.overflow.left,r.y-style.overflow.top,r.width+style.overflow.horizontal,r.height+style.overflow.vertical),"surface","","GUI.TextField 모든 상태 바탕 알파 공통 하한");
+            if(e!=null){e.opacityKnown=known;e.minimumTextureAlpha=minimum;e.maximumTextureAlpha=maximum;e.mipLevels=levels;e.effectiveOpacity=Mathf.Clamp01(GUI.color.a*GUI.backgroundColor.a)*minimum;e.textureName="GUIStyleState backgrounds";e.opacitySampling="8상태 및 노출된 HiDPI 텍스처의 모든 밉 실측; null 상태는 하한0";e.opacityProof=known?"실제 GPU RGBAFloat 대조군 및 "+textures.Count+"개 상태별 텍스처 알파 범위 검증":"상태별 바탕 알파 읽기 불명";}
+        }
+        internal static string TextField(Rect r,string s,GUIStyle style){TextFieldBackground(r,style);Region(r,"button");Text(r,new GUIContent(s),style,"입력 글자");return GUI.TextField(r,s,style);}
+        internal static string TextField(Rect r,string s,int max,GUIStyle style){TextFieldBackground(r,style);Region(r,"button");Text(r,new GUIContent(s),style,"입력 글자");return GUI.TextField(r,s,max,style);}
         static void PushClip(Rect r){if(!Active||Event.current.type!=EventType.Repaint)return;Rect next=ScreenRect(r);if(clips.Count>0){Rect p=clips.Peek();next=Rect.MinMaxRect(Mathf.Max(next.xMin,p.xMin),Mathf.Max(next.yMin,p.yMin),Mathf.Min(next.xMax,p.xMax),Mathf.Min(next.yMax,p.yMax));}clips.Push(next);}
         static void PopClip(){if(Active&&Event.current.type==EventType.Repaint)clips.Pop();}
         internal static void BeginGroup(Rect r){PushClip(r);GUI.BeginGroup(r);}
