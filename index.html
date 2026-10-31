@@ -4810,14 +4810,6 @@ function showCharGate(charId,storySeen=false){
               fc.globalCompositeOperation='destination-in';fc.fillStyle=g;fc.fillRect(0,0,vw,vh);fc.globalCompositeOperation='source-over';
               cx.drawImage(_titleVideoFade,ox,dy,ow,dh);
             }
-            const band=Math.max(24,ow*0.035);
-            for(const sx of [ox,ox+ow]){
-              for(let i=0;i<4;i++){
-                const bw=band*(1-i*0.22);
-                cx.save();cx.globalAlpha=fadeIn*0.55;cx.beginPath();cx.rect(sx-bw,0,bw*2,h);cx.clip();
-                cx.filter='blur('+Math.round(6+i*5)+'px)';cx.drawImage(widePlate,dx,dy,dw,dh);cx.restore();
-              }
-            }
           }
         }else{
           cx.textAlign='center';cx.textBaseline='middle';
