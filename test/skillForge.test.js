@@ -25,10 +25,26 @@ function load(state){
     _fuseName:k=>k,_skById:()=>null,_L:(ko)=>ko,_T:s=>s,_canAssignSkillSlot:()=>true};
   g.globalThis=g;
   vm.runInNewContext(forgeSrc,g);
-  return{api:g.SkillForge,P};
+  return{api:g.SkillForge,P,g};
 }
 const J=v=>JSON.parse(JSON.stringify(v));
 const learn=ids=>Object.fromEntries(ids.map(id=>[id,3]));
+
+test('skill forge: E and RMB follow the actual Blade Parry and magic bindings',()=>{
+  const {api}=load();
+  assert.equal(api._slots.find(s=>s.k==='RMB').v,'activeMagicSk');
+  assert.equal(api._slots.find(s=>s.k==='E').v,'activeRMBSk');
+});
+
+test('skill forge: intrinsic mobility and execution are inspectable, never equip candidates',()=>{
+  const {api}=load();
+  for(const id of ['roll','execution']){
+    const i=api._slots.findIndex(s=>s.intrinsic===id);assert.ok(i>=0,id+' fixed action is visible');
+    api._state.slot=i;assert.equal(api._model().host,null);
+    assert.equal(api._orbItems(api._model()).size,0,'fixed action cannot be replaced');
+  }
+  assert.ok(api._slots.some(s=>s.k==='T'&&s.v==='activeBowSk'),'automatic crossbow is represented');
+});
 
 test('skill forge: clean checkout includes both required three r186 runtime modules',()=>{
   const dir='assets/vendor/three-r186/build/';
@@ -158,7 +174,7 @@ test('skill forge orbs: no horizontal tray, one rAF loop that stops when the pan
   assert.match(forgeSrc,/prefers-reduced-motion: reduce/);
   assert.match(forgeSrc,/_close\(\)\{if\(three\)three\.pause\(\);fxStop\(\)\}/);
   assert.match(css,/canvas\.sf-bolts\{[^}]*position:absolute!important/,'game-wide fixed canvas rule overridden');
-  assert.match(gameSrc,/skill-forge\.css\?v=20261021-orbs\d+/);
+  assert.match(gameSrc,/skill-forge\.css\?v=20261031-fixed-layout\d+/);
 });
 
 test('skill forge orbs (2nd pass): slot spacing leaves room for the floating drift — orbs never touch even at full amplitude',()=>{

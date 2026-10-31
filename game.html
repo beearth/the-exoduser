@@ -2603,8 +2603,8 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <link rel="stylesheet" href="inventory-gems-finish.css?v=20261010-socket-stone-art">
 <link rel="stylesheet" href="inventory-space.css?v=20260928-relic-frame1">
 <link rel="stylesheet" href="skill-workspace.css?v=20260928-fixed-categories5">
-<link rel="stylesheet" href="skill-forge.css?v=20261023-detach">
-<script src="skill-forge.js?v=20261023-detach"></script>
+<link rel="stylesheet" href="skill-forge.css?v=20261031-fixed-layout1">
+<script src="skill-forge.js?v=20261031-fixed-layout1"></script>
 <link rel="stylesheet" href="inventory-oss-balance.css?v=20260928-ossuary-fit5">
 <link rel="stylesheet" href="inventory-gems-balance.css?v=20260927-half">
 <link rel="stylesheet" href="ui-quiet-tier.css?v=20261027-settings">
@@ -8683,6 +8683,11 @@ const _EN={
 '일괄 작업은 선택한 분류에만 적용됩니다. 장착·해제는 인벤의 장비 소켓에서 가능합니다.':'Bulk actions affect the selected category. Equip or detach relics through inventory sockets.',
 };
 // --- 장비명 조합 번역 (접두사 + 기본형) ---
+
+// 2026-10-31: Skill Forge fixed abilities.
+Object.assign(_EN,{"고정":"Fixed","고정 기술은 교체할 수 없습니다":"Fixed abilities cannot be replaced","기절 탈출":"Stun escape","스킬 습득 후 장착":"Learn a skill to equip it","방향키와 함께 사용 · 기절 탈출":"Use with movement keys · stun escape","전용":"Dedicated","그로기 보스 전용":"Groggy bosses only"});
+
+Object.assign(_EN,{"구르기":"Roll"});
 const _EN_PFX={'녹슨':'Rusty','강철':'Steel','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Judgment','천벌의':'Divine Wrath','파멸의':'Destruction',
 '불꽃':'Flame','화염':'Inferno','염화':'Hellfire','지옥불':'Hellblaze','지옥화':'Hellblaze','지옥':'Hellblaze','멸화의':'Annihilating',
 '냉기':'Frost','빙결':'Frozen','빙하':'Glacial','서리의':'Rime','서리':'Rime','영겁빙':'Eternal Ice',

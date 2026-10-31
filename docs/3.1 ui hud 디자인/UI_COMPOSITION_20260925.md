@@ -2,7 +2,7 @@
 
 ## 2026-10-10 K 스킬 창 = Skill Forge — 현행
 
-`#skillPanel` 본문은 `#skillForge`(skill-forge.css/js, 3D skill-forge-3d.js·three r186)로 전면 교체. 13 키 슬롯 원형·합성 제단·로드맵, 넣을 수 있는 스킬은 2026-10-21부터 아래로 내린 제단 원 둘레의 떠다니는 구슬 + 합성 전류(가로 스크롤 트레이 삭제), 구 카드형 본문과 `#skSlotBar`는 숨김(폴백 `?skillForge=0`). 상세·검수: [SKILL_FORGE_20261010.md](SKILL_FORGE_20261010.md). 아래 2026-09-27~28 스킬 작업공간 절은 구 카드형 창 이력이다.
+`#skillPanel` 본문은 `#skillForge`(skill-forge.css/js, 3D skill-forge-3d.js·three r186)로 전면 교체. **2026-10-31 현행: 16키 슬롯(기존13+구르기/X/T), 설명270px·내용 높이, 빈 로드맵 접기, 초광폭 사이드는 실제 끝·중앙 최대1800px.** 떠다니는 구슬+합성 전류·기존 원화/표면 유지. 구 카드형 본문과 `#skSlotBar`는 숨김(폴백 `?skillForge=0`). 상세·검수·기존 치수의 대체 범위: [SKILL_FORGE_20261010.md §12](SKILL_FORGE_20261010.md#12-공간-재배분고정-기술-표시-2026-10-31-사용자-지시). 아래 스킬 작업공간·quiet-tier 수치는 날짜별 제작 이력이다.
 
 
 ## 2026-10-02 공통 제목 명패 S/M/L — 현행 SSOT

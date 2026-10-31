@@ -55507,3 +55507,8 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 산출·실행 | G:/exoduser/tmp/design-review/20261031_web_uiux/REPORT.md, 원본은I:/EXODUSER-Storage/design/web-uiux-20261031/. localhost3366자기작업본서버·격리save유지, Steam/DEMO/EA/외부배포0 |
 
 - 최종 커밋 훅이 자동 생성한 tools/guard.baseline.json의 lines를 기존65880→현행66030으로 동기화했다. 게임루프136행·보스idx·강화확률 해시는 그대로이며 guard PASS, 새 검사 우회0이다.
+# 2026-10-31 전투 스킬 창 공간·고정 기술
+
+- `skill-forge.js/css`: 설명판270px/내용 높이, 빈 로드맵 접기, 초광폭 좌우 끝·중앙1800px. 구르기·X처형·T자동석궁을 추가 표시하고 E/RMB 실제 배정·기절 탈출·미습득 조건을 맞췄다. 전투·6개 장착 슬롯·세이브 구조는 유지한다.
+- No.3588~3595를 EN+27개 lang에 전파. `SKILL_FORGE_20261010.md` §12, 스킬2_1·키바인딩3.3·번역 목록/가이드 동기화. 캐시 `20261031-fixed-layout1`, guard 기준선은 실제 줄 수만 갱신.
+- 검수 근거·서버·정확 SHA: `G:/exoduser/tmp/design-review/20261031_skill_window/REPORT.md`. Unity 브리프에 같은 지시 인계, 웹 검수를 Unity 검수로 세지 않음.
