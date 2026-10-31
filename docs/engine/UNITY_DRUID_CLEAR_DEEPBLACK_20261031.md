@@ -67,7 +67,7 @@ UseDeepBlack는 표시 전용 읽기이며 Col/ParryClass/Friendly/좌표/속도
 | 강타 단독 | 12000틱/7시전은 실제 치명피해 후 7회 부활하여 최종처치 미도달. 틱 진행·idle·좌표 유한. 정지로 세지 않음 |
 | 컴파일 | 사용자 원본 Runtime + 표시 3파일/진단 1파일, 사용자 Core51b 그대로 설치 Unity C# 참조 컴파일. 정식 Unity 빌드와 구별 |
 | 검수 패키지 | I: 독립 사본만 Runtime 1개 대체/PDB 1개 추가. 나머지 원본 211파일 유지. 범위 정정 전 Runtime1c6e6d09는 HOLD |
-| 실제 게임 | 원본 M1은 공식 FIFO 대기. 새 후보 Player/자연 처치/1x/Desktop 미검증. 정지 원인 미확정, VISUAL VERDICT: RETOUCH |
+| 실제 게임 | 우리 원본 M1은 공식 슬롯 대기2회 종료, 실제Player0. 새 후보 Player/자연 처치/1x/Desktop 미검증. 정지 원인 미확정, VISUAL VERDICT: RETOUCH |
 | 후보 직접 확인 | 실제 Pixel 출력 16프레임 CPU PNG에서 어두운 몸체·작은 광택·중성 윤곽 직접 확인. 실제 게임 화면이 아님 |
 
 실제 영수증·원자료: I:/EXODUSER-Storage/demo-art/gameplay-parity/druid-clear-deepblack-20261031/REPORT.md. 전체 브랜치 통합 금지. 최소 범위의 누적 패치만 검토하며 기존 16스킬은 포함하지 않는다.
@@ -97,7 +97,7 @@ UseDeepBlack는 표시 전용 읽기이며 Col/ParryClass/Friendly/좌표/속도
 | 새 사용자 종료 크래시 | 같은 제품 경로. 덤프 PID30032, 시작06:56:39 UTC(15:56:39 KST), 충돌07:00:19 UTC(16:00:19 KST). Physics cleanup/Input Shutdown 뒤 UnityPlayer.dll+UIAutomationCore 스택. 최초 정지 캡처보다 뒤에 시작한 별도 실행이며 처치 정지 원인으로 확정하지 않음 |
 | Windows 교차 근거 | Application Error1000, 07:00:20 UTC c0000005 및07:00:24 UTC c000041d. PID0x7550=30032, UnityPlayer offset0x10d1432로 덤프와 일치 |
 | 원자료 보존 | REPORT 경로 아래 사용자-종료크래시-070018에 Player.log/덤프/구조화 이벤트. 덤프 원본·사본 SHA de1ff34203c05070aad84adc200a809ae3e5a169d3a7a2e736462ea0ba9196b6. 기존 일시정지 담당이 증거 인수, 실제 원인 수정 완료로 합산하지 않음 |
-| CPU 경계 | StageFlowSyncViews의 출구 아레나 Rebuild/텍스처 업로드, 실제 저장 IO, OS 입력·포커스는 CPU 호스트 스텁 검증으로 대체하지 않음. 현재 실제 Player 대기 |
+| CPU 경계 | StageFlowSyncViews의 출구 아레나 Rebuild/텍스처 업로드, 실제 저장 IO, OS 입력·포커스는 CPU 호스트 스텁 검증으로 대체하지 않음. 우리 실제 Player 미실행·검수단위2회실패중단 |
 | 별도 Core 후속 | HD2D 담당이 미적용 2단계 6Core 후보에서 HurtProjectile/HurtOptions.Projectile을 시험한다는 인계를 받음. 우리 제품·Core 수정0/인수0. 새 Core 공식 채택 시 실제 생성탄 Q/E와 표시 범위를 다시 검증하며 구Core51b의15/22 관측을 새 후보에 소급하지 않음 |
 
 ## 화면 갱신 관측 확장
@@ -111,3 +111,11 @@ Core tick이 진행해도 UpdateViews가 완료되지 않으면 화면이 멈춰
 | 현재 컴파일 | 사용자14cc 원본+동일4입력/사용자Core51b, 설치참조컴파일오류0·Unity시작0. Runtime ebfeb4418d472e053c00af6770fff4647cb1c6003104f442ce277d6759c4f748 |
 | 보호 | NativeGame.cs/일시정지/임팩트/Core 수정0. 시뮬레이션·renderedTick·플레이어좌표쓰기0. 기존4입력컴파일범위유지 |
 | 한계 | 실제 Player로그와사용자멈춤원인미검증. 추가이동SDK2실패중단은별도단위로유지하며새관측GREEN을그실패에소급하지않음 |
+
+## 실행 중단 경계 인계
+
+사용자 지시의 실패2회중단을 적용했다. 두 차례 모두 공식 슬롯 획득 전 종료했으므로 게임 동작 실패나 정지 재현으로 세지 않는다. 우리 Unity/Player 시작0, 타인 잠금·프로세스변경0, 사용자제품 Runtime4671345c/Core51b7ae06 및 EXE9806abde 유지. 공식 unreserve로 자기 gameplay-parity 예약만 반환했고 기존 타인6예약의SHA는전후동일하다.
+
+정지원인미확정·수정완료0, 자연AI에서블랙대상미관측, 실제Player/1x/웹Unity영상/공통인수/Desktop갱신미완료다. 독립 C# 검수패키지를정식Unity빌드나전달완료로사용하지않는다. 현재소유branch전체통합은16스킬을끼워넣으므로금지하며, 기존통합담당의승인범위에서최신7경로누적패치만인수해야한다. 원본14cc checkout은읽기전용참조이므로우리담당이수정하지않았다. 같은실행즉시재요청없이공식자원반환·중앙인수경계의후속지시를기다린다.
+
+최종근거는REPORT및최종-중단경계-영수증.json, current-product-m1-wait2.실행.json, resource-return.실행.json이다.
