@@ -99,4 +99,3 @@ UseDeepBlack는 표시 전용 읽기이며 Col/ParryClass/Friendly/좌표/속도
 | 원자료 보존 | REPORT 경로 아래 사용자-종료크래시-070018에 Player.log/덤프/구조화 이벤트. 덤프 원본·사본 SHA de1ff34203c05070aad84adc200a809ae3e5a169d3a7a2e736462ea0ba9196b6. 기존 일시정지 담당이 증거 인수, 실제 원인 수정 완료로 합산하지 않음 |
 | CPU 경계 | StageFlowSyncViews의 출구 아레나 Rebuild/텍스처 업로드, 실제 저장 IO, OS 입력·포커스는 CPU 호스트 스텁 검증으로 대체하지 않음. 현재 실제 Player 대기 |
 | 별도 Core 후속 | HD2D 담당이 미적용 2단계 6Core 후보에서 HurtProjectile/HurtOptions.Projectile을 시험한다는 인계를 받음. 우리 제품·Core 수정0/인수0. 새 Core 공식 채택 시 실제 생성탄 Q/E와 표시 범위를 다시 검증하며 구Core51b의15/22 관측을 새 후보에 소급하지 않음 |
-
