@@ -16,7 +16,7 @@ namespace Exoduser.UnityPort
         [Serializable] sealed class Hd2dFile { public string path;public int width,height; }
         [Serializable] sealed class Hd2dReceipt
         {
-            public string scope="실제 hidden Player·격리세이브·실제Core/렌더/HUD. 시각검수 fixture: 탐험AI정지/고정추가적, 전투AI재개, 이동전HP/idle·Harp225정리·아레나gate강제개방·수동Core틱/목표60fps. 자연완주·OS손조작 증거 아님";
+            public string scope="실제 hidden Player·격리세이브·실제Core/렌더/HUD. 시각검수 fixture: 탐험AI정지/고정추가적, 전투AI재개, 이동전HP/idle·Harp225정리·아레나gate강제개방·수동Core틱/목표60fps, 60Hz Core시간 기준 영웅30fps·드루이드20fps 샘플(실측GPU fps 아님). 자연완주·OS손조작 증거 아님";
             public List<Hd2dFile> screenshots=new List<Hd2dFile>();public bool passed;public List<string> failures=new List<string>();public List<Hd2dFrame> frames=new List<Hd2dFrame>();
         }
         IEnumerator Hd2dCapture()
@@ -77,7 +77,7 @@ namespace Exoduser.UnityPort
                 sim.Stage.LeaveArenaToField();UpdateViews();yield return null;
             }
             yield return Hd2dWaitScreenshots(rc);
-            if(rc.screenshots.Count!=136)rc.failures.Add("capture count expected136 got"+rc.screenshots.Count);
+            if(rc.screenshots.Count!=336)rc.failures.Add("capture count expected336 got"+rc.screenshots.Count);
             rc.passed=rc.failures.Count==0;File.WriteAllText(Path.Combine(output,"hd2d-player.json"),JsonUtility.ToJson(rc,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(.8f);Application.Quit(rc.passed?0:2);
         }
@@ -88,7 +88,7 @@ namespace Exoduser.UnityPort
             {
                 if(Simulation.Player.Hp<=0){rc.failures.Add("druid motion ended by player death at "+i+": "+width);yield break;}
                 StepInput(i<180?.6f:-.6f,0,boss.X,boss.Y,false,false);completed++;yield return null;yield return new WaitForEndOfFrame();
-                if(i%18==0){Hd2dRecord(rc,width+"-druid-motion-"+i);Hd2dQueue(rc,Path.Combine(directory,(i/18).ToString("D4")+".png"));}
+                if(i%3==0){Hd2dRecord(rc,width+"-druid-motion-"+i);Hd2dQueue(rc,Path.Combine(directory,(i/3).ToString("D4")+".png"));}
             }
             if(completed!=360||Simulation.Player.Hp<=0)rc.failures.Add("druid motion incomplete or final-tick death: "+width+" ticks="+completed);
         }
