@@ -28,8 +28,8 @@ namespace Exoduser.UnityPort
         }
         void A2FullFieldShore()
         {
-            const int n=512;const float size=170,step=size/n;var distance=new float[n*n];
-            for(int y=0;y<n;y++)for(int x=0;x<n;x++)distance[y*n+x]=a2Field.Water(-45+(x+.5f)*step,-125+(y+.5f)*step)?10000:0;
+            const int n=1024;const float size=A2FieldLayout.GroundMaxX-A2FieldLayout.GroundMinX,step=size/n;var distance=new float[n*n];
+            for(int y=0;y<n;y++)for(int x=0;x<n;x++)distance[y*n+x]=a2Field.Water(A2FieldLayout.GroundMinX+(x+.5f)*step,A2FieldLayout.GroundMinZ+(y+.5f)*step)?10000:0;
             for(int pass=0;pass<2;pass++)
             {
                 int begin=pass==0?0:n-1,end=pass==0?n:-1,dir=pass==0?1:-1;
@@ -48,8 +48,8 @@ namespace Exoduser.UnityPort
             }
             var texture=new Texture2D(n,n,TextureFormat.RFloat,false,true){name="A2 전체 실제 지면 물가 거리장",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
             texture.SetPixelData(distance,0);texture.Apply(false,true);
-            a2Water.SetTexture("_ShoreField",texture);a2Water.SetVector("_ShoreBounds",new Vector4(-45,-125,size,size));a2Water.SetFloat("_ShoreReady",1);
-            Debug.Log("[A2 필드] 실제 지면·수면 물가512x512/원본 XY 경계 불변");
+            a2Water.SetTexture("_ShoreField",texture);a2Water.SetVector("_ShoreBounds",new Vector4(A2FieldLayout.GroundMinX,A2FieldLayout.GroundMinZ,size,size));a2Water.SetFloat("_ShoreReady",1);
+            Debug.Log("[A2 필드] 실제 지면·수면 물가1024x1024/원본 XY 경계 불변");
         }
     }
 }

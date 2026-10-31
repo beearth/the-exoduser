@@ -1,10 +1,21 @@
 using System;
+using System.Collections.Generic;
 
 namespace Exoduser.UnityPort
 {
     // 1-1 전체 숲의 시각 좌표. 원본 SourceMap은 유일한 보행/투사체 계약이다.
     public sealed class A2FieldLayout
     {
+        public const float GroundMinX=-105,GroundMaxX=185,GroundMinZ=-185,GroundMaxZ=105;
+        public static float[] GroundAxis(bool xAxis)
+        {
+            float min=xAxis?GroundMinX:GroundMinZ,max=xAxis?GroundMaxX:GroundMaxZ,nearMin=xAxis?-45:-125,nearMax=xAxis?125:45;
+            var values=new List<float>();
+            for(float v=min;v<nearMin;v+=2)values.Add(v);
+            for(float v=nearMin;v<=nearMax;v+=.25f)values.Add(v);
+            for(float v=nearMax+2;v<max;v+=2)values.Add(v);
+            values.Add(max);return values.ToArray();
+        }
         readonly MapData data;
         readonly float[] signed;
         readonly float tile;

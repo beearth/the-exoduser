@@ -57,20 +57,36 @@ namespace Exoduser.UnityPort
         void A2FieldGround()
         {
             // 32:9의 수평 시야와 최북단까지 이어지는 하나의 표면. 청크마다 다른 베이스를 쓰지 않는다.
-            const int n=681;const float minX=-45,minZ=-125,step=.25f;
-            var vertices=new Vector3[n*n];var uv=new Vector2[vertices.Length];var triangles=new int[(n-1)*(n-1)*6];int k=0;
-            for(int y=0;y<n;y++)for(int x=0;x<n;x++)
+            var xs=A2FieldLayout.GroundAxis(true);var zs=A2FieldLayout.GroundAxis(false);int nx=xs.Length,nz=zs.Length;
+            var vertices=new Vector3[nx*nz];var uv=new Vector2[vertices.Length];var triangles=new int[(nx-1)*(nz-1)*6];int k=0;
+            for(int y=0;y<nz;y++)for(int x=0;x<nx;x++)
             {
-                float wx=minX+x*step,wz=minZ+y*step;int i=y*n+x;
+                float wx=xs[x],wz=zs[y];int i=y*nx+x;
                 vertices[i]=new Vector3(wx,a2Field.TerrainHeight(wx,wz),wz);uv[i]=new Vector2(wx/80,-wz/80);
-                if(x==n-1||y==n-1)continue;
-                triangles[k++]=i;triangles[k++]=i+n;triangles[k++]=i+1;triangles[k++]=i+1;triangles[k++]=i+n;triangles[k++]=i+n+1;
+                if(x==nx-1||y==nz-1)continue;
+                triangles[k++]=i;triangles[k++]=i+nx;triangles[k++]=i+1;triangles[k++]=i+1;triangles[k++]=i+nx;triangles[k++]=i+nx+1;
             }
             var mesh=new Mesh{name="1-1 전체 젖은 흙·침식 둑",indexFormat=IndexFormat.UInt32};mesh.vertices=vertices;mesh.uv=uv;mesh.triangles=triangles;mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();
-            var go=new GameObject("A2 전체 필드 지면");go.transform.SetParent(a2Root.transform,false);go.AddComponent<MeshFilter>().sharedMesh=mesh;
-            var r=go.AddComponent<MeshRenderer>();r.sharedMaterial=a2FieldSoil;r.receiveShadows=true;
+            var terrainRoot=new GameObject("A2 전체 필드 지면");terrainRoot.transform.SetParent(a2Root.transform,false);
+            var normals=mesh.normals;var tangents=mesh.tangents;int chunkCount=0;
+            // 경계 정점/노멀/탄젠트는 같은 전체 격자에서 그대로 복사해 틈과 조명 이음을 없앤다.
+            for(int y0=0;y0<nz-1;y0+=64)for(int x0=0;x0<nx-1;x0+=64)
+            {
+                int cw=Mathf.Min(65,nx-x0),ch=Mathf.Min(65,nz-y0);var cv=new Vector3[cw*ch];var cn=new Vector3[cv.Length];var ct=new Vector4[cv.Length];var cu=new Vector2[cv.Length];var ci=new int[(cw-1)*(ch-1)*6];int index=0;
+                for(int y=0;y<ch;y++)for(int x=0;x<cw;x++)
+                {
+                    int local=y*cw+x,global=(y0+y)*nx+x0+x;cv[local]=vertices[global];cn[local]=normals[global];ct[local]=tangents[global];cu[local]=uv[global];
+                    if(x==cw-1||y==ch-1)continue;
+                    ci[index++]=local;ci[index++]=local+cw;ci[index++]=local+1;ci[index++]=local+1;ci[index++]=local+cw;ci[index++]=local+cw+1;
+                }
+                var chunk=new Mesh{name="A2 지면 "+x0+"/"+y0};chunk.vertices=cv;chunk.normals=cn;chunk.tangents=ct;chunk.uv=cu;chunk.triangles=ci;chunk.RecalculateBounds();
+                var go=new GameObject(chunk.name);go.transform.SetParent(terrainRoot.transform,false);go.AddComponent<MeshFilter>().sharedMesh=chunk;
+                var r=go.AddComponent<MeshRenderer>();r.sharedMaterial=a2FieldSoil;r.receiveShadows=true;chunkCount++;
+            }
+            Debug.Log("[A2 전체 지면] "+nx+"x"+nz+"/삼각형 "+triangles.Length/3+"/64셀청크 "+chunkCount+"/근경.25u·먼외곽2u/공유경계노멀·탄젠트");
+            Destroy(mesh);
             a2Water=new Material(Shader.Find("EXODUSER/A2ToxicRiver"));A2ShoreField();
-            var waterMesh=new Mesh{name="숲 외곽 독액 수면"};waterMesh.vertices=new[]{new Vector3(-45,-.45f,-125),new Vector3(125,-.45f,-125),new Vector3(-45,-.45f,45),new Vector3(125,-.45f,45)};
+            var waterMesh=new Mesh{name="숲 외곽 독액 수면"};waterMesh.vertices=new[]{new Vector3(A2FieldLayout.GroundMinX,-.45f,A2FieldLayout.GroundMinZ),new Vector3(A2FieldLayout.GroundMaxX,-.45f,A2FieldLayout.GroundMinZ),new Vector3(A2FieldLayout.GroundMinX,-.45f,A2FieldLayout.GroundMaxZ),new Vector3(A2FieldLayout.GroundMaxX,-.45f,A2FieldLayout.GroundMaxZ)};
             waterMesh.uv=new[]{Vector2.zero,Vector2.right,Vector2.up,Vector2.one};waterMesh.triangles=new[]{0,2,1,1,2,3};waterMesh.RecalculateNormals();waterMesh.RecalculateBounds();
             var water=new GameObject("A2 원본 보행 밖 독액 개울");water.transform.SetParent(a2Root.transform,false);water.layer=4;
             water.AddComponent<MeshFilter>().sharedMesh=waterMesh;var wr=water.AddComponent<MeshRenderer>();wr.sharedMaterial=a2Water;wr.shadowCastingMode=ShadowCastingMode.Off;

@@ -46,6 +46,28 @@ class Program
             for(int z=-78;z<=-4;z++)for(int x=10;x<=70;x++)if((float)distance.Invoke(field,new object[]{(float)x,(float)z})>1&&A2ForestLayout.BranchDistance(x,z)>2&&(bool)water.Invoke(field,new object[]{(float)x,(float)z}))accidentalPools++;
             Check(accidentalPools==0,"수로 밖 전투 지면의 우발적 둥근 웅덩이 제거 "+accidentalPools);
             var terrain=type.GetMethod("TerrainHeight");
+            // 실제 카메라의 화면 모서리 광선과 렌더 표면의 교차. 원본 통행 판정과 독립이다.
+            float Limit(string name,float fallback){var value=type.GetField(name);return value==null?fallback:Convert.ToSingle(value.GetRawConstantValue());}
+            float gx0=Limit("GroundMinX",-45),gx1=Limit("GroundMaxX",125),gz0=Limit("GroundMinZ",-125),gz1=Limit("GroundMaxZ",45);
+            var terrainAt=(Func<float,float,float>)terrain.CreateDelegate(typeof(Func<float,float,float>),field);
+            using var cameraJson=JsonDocument.Parse(File.ReadAllText(Path.Combine(Path.GetDirectoryName(args[0]),"remodel_camera.json")));
+            double fov=cameraJson.RootElement.GetProperty("verticalFieldOfView").GetDouble(),lookAhead=cameraJson.RootElement.GetProperty("lookAhead").GetDouble();
+            double pitch=34*Math.PI/180,sn=Math.Sin(pitch),cs=Math.Cos(pitch),tan=Math.Tan(fov*Math.PI/360);
+            var cameras=new float[,]{{40.2f,-74.2f},{35,-62.5f},{40,-50},{22,-44},{64.63045f,-43.84693f},{46,-35},{40,-18.5f},{40.2f,-5}};
+            foreach(int width in new[]{1920,3840})
+            {
+                int outside=0;double minHit=1e9,maxHit=-1e9;
+                for(int i=0;i<cameras.GetLength(0);i++)foreach(float raised in new[]{0f,.9f})foreach(int sx in new[]{-1,1})foreach(int sy in new[]{-1,1})
+                {
+                    double cx=cameras[i,0],cz=cameras[i,1]+lookAhead-16.5*cs,cy=(float)height.Invoke(field,new object[]{cameras[i,0],cameras[i,1]})+raised+16.5*sn;
+                    double dx=sx*(width/1080.0)*tan,dy=-sn+sy*cs*tan,dz=cs+sy*sn*tan,low=0,high=300;
+                    for(int k=0;k<32;k++){double t=(low+high)/2,px=cx+dx*t,pz=cz+dz*t,bed=Math.Max(-.45f,terrainAt((float)px,(float)pz));if(cy+dy*t>bed)low=t;else high=t;}
+                    double hitX=cx+dx*high,hitZ=cz+dz*high;minHit=Math.Min(minHit,hitX);maxHit=Math.Max(maxHit,hitX);
+                    if(hitX<gx0||hitX>gx1||hitZ<gz0||hitZ>gz1)outside++;
+                }
+                Check(outside==0,width+"x1080·8곳·4모서리·낮은목질상한의 지면/수면 구멍 없음 "+outside+" X["+minHit+","+maxHit+"]");
+            }
+
             Check(terrain!=null&&(float)height.Invoke(field,new object[]{43.2f,-71.8f})-(float)terrain.Invoke(field,new object[]{43.2f,-71.8f})>.12f,"목교는 얕은 수로 위를 가로지름");
             var register=type.GetMethod("RegisterSurface");
             Check(register!=null,"실제 쓰러진 목질 표면을 보행 높이에 연결");
