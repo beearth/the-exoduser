@@ -179,6 +179,8 @@ UI/월드 캡처 coverage가 생성된 동안 NativeGame.Update는 UiOverlapOwns
 |인수|맵 SourceReady `1a3d758352fb10b6facace12a61a64253b7a9e76`, 최신 승인공통 `19c6ccec8f7056acdc554b45de72d43a78c12ec6` 조상. release READY와 구분|
 |범위|정확633 Unity/검수 입력 + 맵SSOT5. 제작도구84·미인수 StageClear/Devtools 문서2는 결합 후보에서 제외. 기존 상속UI/실행기 반입0|
 |정상 결합|UI54b680a24와 맵1a3d75835의 두 부모 병합. NativeGame legacyFixture 단일 충돌은 `--unity-world-ultrawide-check`와 A2Requested의 Editor/Steam keyshot/field-screen 조건을 함께 유지|
-|검수|한 번의 `-remodel-scenes 1` 빌드 → 같은 EXE 무창M1 → 맵 `--unity-field-screen --remodel3d` 8곳×2해상도16장/실제필드-메시검수.json → UI76상태×5해상도×선택언어 → 월드56장/1920 raw24장/동일32적4초FPS → 웹1x. 실제 순서는 실행 영수증 참조|
+|검수|한 번의 `-remodel-scenes 1` 빌드 → 같은 EXE 무창M1 → 맵 `--unity-field-screen --remodel3d` 기본8곳+거목 재현3곳×2해상도22장/실제필드-메시검수.json → UI76상태×5해상도×선택언어 → 월드56장/1920 raw24장/동일32적4초FPS → 웹1x. 실제 순서는 실행 영수증 참조|
 |판정|SourceReady는 기술검수 허용만 의미한다. R4 Editor FAIL을 R5 Player에 소급하지 않으며 실제 같은 EXE 맵 담당 검토 뒤 공통/Desktop 채택 판단|
 |보존|원본38 브랜치는 미채택 캐릭터 시안이 있어 공통 전체병합 금지. 최종 원본복원은 정상2부모 병합+자기 초기UI 충돌의 최종후보 해소+원본 전용 시안/두 hook 보존+520 WIP/56 미추적 정확byte 복원을 사용. 구 복원기 차단 유지|
+
+맵 담당 요청 재현 좌표는 Core `(4790.811,7142.689)`, `(3320,7500)`, `(3320,7000)`이다. 같은 `--unity-field-screen` Player에서 기존8곳 뒤에 추가하고 정상 프레임 수를22로 검증한다. 일반 게임·56장 월드 검수 좌표는 바뀌지 않는다.
