@@ -4,18 +4,22 @@ using Exoduser.UnityPort.Core.Combat;
 
 namespace Exoduser.UnityPort
 {
-    // 표시 전용. Core의 분류 우선순위와 리모델 반사 금지를 읽으며 판정·색 필드는 쓰지 않는다.
+    // 표시 전용. 반사 금지와 Q/E 패링 모두 불가는 다른 계약이다.
     public static class DruidProjectileAppearance
     {
         public static bool UseDeepBlack(BossProjectile p, bool remodel)
         {
             if (p == null || !p.Active || !p.DruidPoison || p.Friendly || p.Mine) return false;
+            // 현행 사용자 Core51b7ae06의 충돌→HurtPlayer 경로에서는 forbidden/리모델도
+            // Q/E 패링 보상이 발생한다. Web 상태 적용만 두 입력으로 패링되지 않는다.
+            // remodel만 보고 패링 불가로 추정하지 않는다. Core 판정은 여기서 바꾸지 않는다.
+            if (!p.Web || p.BlackBean || p.TitanEye || p.BwBean || p.GbBean) return false;
+            // Web는 일반 피해 훅을 통과하지 않지만, 명시 magic/physical이면 반사가 가능하다.
+            // 리모델 Web는 TryReflect 자체가 막힌다. 혼합 특수탄은 보수적으로 제외한다.
             return remodel || ParryRules.ProjectileParryClass(new ParryRules.ProjectileFlags {
-                ParryClass = p.ParryClass,
-                BlackBean = p.BlackBean, ElemBall = p.ElemBall, Web = p.Web,
-                GbBean = p.GbBean, BlueBean = p.BlueBean, FireMagic = p.FireMagic,
-                WaterBean = p.WaterBean, TitanEye = p.TitanEye, BwBean = p.BwBean,
-                RedBean = p.RedBean, El = p.El
+                ParryClass = p.ParryClass, Web = true, ElemBall = p.ElemBall,
+                RedBean = p.RedBean, BlueBean = p.BlueBean, FireMagic = p.FireMagic,
+                WaterBean = p.WaterBean, El = p.El
             }) == ParryRules.ProjClass.Forbidden;
         }
 

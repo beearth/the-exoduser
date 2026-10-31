@@ -8,7 +8,7 @@ namespace Exoduser.UnityPort
     // BX: presentation of the 1-1 dark druid's projectiles, ground hazards and event VFX. Gameplay (timing, damage, positions) is the Core's (Core/DruidBoss*.cs,
     // oracle-checked against game.html); this file draws it with the web's own art: the poison-pool / orb / hit / roots / shockring / dust atlas clips
     // (assets/vfx/boss/druid_*_24_*), the corruption ring (druid_corruption_ring.svg) and the grey-then-#66dd22 fire-devil orb sheet for reflectable poison shots.
-    // 반사 불가 구체는 사용자 지정 광택 딥 블랙으로 표시한다. Core의 반사·피해·위치는 바꾸지 않는다.
+    // Q/E 모두 패링 불가인 독탄만 광택 딥 블랙으로 표시한다. 반사 금지만으로 선택하지 않는다.
     // with the web's sizes, alphas and clip time (24 fps loops from the hazard's own T, once-clips stretched over maxFrames x frameTime ticks).
     // Still procedural (the web strokes them as vector lines too): fissure crack body, tide-wave beads, rhythm volley. 추적/탄 지뢰는 현행 어둠 지뢰 원화를 사용한다.
     public sealed partial class NativeBossView
@@ -225,8 +225,8 @@ namespace Exoduser.UnityPort
             foreach (var o in druid.Orbs)
             {
                 double R = o.R * 2.4;   // _drawDruidOrbClip: o.t/60 s into the looping clip, 2.4 r
-                // 별도 Orbs는 유도 반사가 없고 접촉 시 제자리 폭발한다. 접촉 패링 규칙은 Core 그대로다.
-                PutBox(NativeDruidArt.DeepBlackOrb((int)(o.T * OrbClip.Fps / 60) % 16), o.X, o.Y, R * 2, R * 2, Color.white, (int)o.Y + 4);
+                // 별도 Orbs는 Q/E 접촉 패링이 가능하므로 기존 표시를 유지한다.
+                PutBox(ClipSprite(OrbClip, LoopFrame(OrbClip, o.T)), o.X, o.Y, R * 2, R * 2, Color.white, (int)o.Y + 4);
             }
             foreach (var p in druid.Projectiles)
             {
