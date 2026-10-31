@@ -116,10 +116,10 @@ namespace Exoduser.UnityPort {
    var old=GUI.matrix;var color=GUI.color;bool enabled=GUI.enabled;
    try {
     float age=Age;float fade=EaseOut(age/defs.timing.fade);
-    GUI.matrix=Matrix4x4.identity;
+    GUI.matrix=NativeUiViewport.Matrix;
     // background: "url(cin_remember_wide) center/cover" over the viewport; the dark radial gradient behind it is fully covered
-    float sc=Mathf.Max(Screen.width/(float)bg.width,Screen.height/(float)bg.height);float iw=bg.width*sc,ih=bg.height*sc;
-    GUI.color=new Color(1,1,1,fade);NativeUiAudit.DrawTexture(new Rect((Screen.width-iw)/2,(Screen.height-ih)/2,iw,ih),bg,ScaleMode.StretchToFill,false);
+    float sc=Mathf.Max(NativeUiSafeArea.DesignWidth/bg.width,NativeUiSafeArea.DesignHeight/bg.height);float iw=bg.width*sc,ih=bg.height*sc;
+    GUI.color=new Color(1,1,1,fade);NativeUiAudit.DrawTexture(new Rect((NativeUiSafeArea.DesignWidth-iw)/2,(NativeUiSafeArea.DesignHeight-ih)/2,iw,ih),bg,ScaleMode.StretchToFill,false);
     float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
     DrawLight(age,fade);

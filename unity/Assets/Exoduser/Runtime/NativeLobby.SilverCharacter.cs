@@ -85,7 +85,7 @@ namespace Exoduser.UnityPort
         {
             CharacterStyles();
             EnsureSilverVisual();
-            float w=Screen.width,h=Screen.height;
+            float w=NativeUiSafeArea.DesignWidth,h=NativeUiSafeArea.DesignHeight;
             int i=Mathf.Clamp(characterVisual,0,4);
             bool locked=i!=0,shortScreen=h<=940;
             float x=w-420,bodyY=62,top=bodyY+(shortScreen?190:300),size=shortScreen?54:64;

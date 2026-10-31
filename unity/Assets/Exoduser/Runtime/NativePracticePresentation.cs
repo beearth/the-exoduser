@@ -20,7 +20,7 @@ namespace Exoduser.UnityPort
         }
         Rect PracticePanel(float width){return new Rect(width-LessonRight-LessonW,LessonTop,LessonW,LessonH);}
         bool PointerOverPractice()
-        {float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);return PracticePanel(Screen.width/s).Contains(new Vector2(ExoInput.MousePosition.x/s,(Screen.height-ExoInput.MousePosition.y)/s));}
+        {return PracticePanel(NativeUiSafeArea.DesignWidth).Contains(NativeUiViewport.Pointer(ExoInput.MousePosition));}
         GUIStyle LessonStyle(int size,TextAnchor anchor,Color color,bool bold=false,bool wrap=false,bool key=false)
         {
             string id=size+"|"+anchor+"|"+ColorUtility.ToHtmlStringRGBA(color)+bold+wrap+key;GUIStyle s;if(lessonStyles.TryGetValue(id,out s))return s;

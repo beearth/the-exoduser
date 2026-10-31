@@ -161,7 +161,7 @@ namespace Exoduser.UnityPort
   {
    if(!CharacterModalOpen)return;
    if(CharacterDeleteOpen){DrawCharacterDelete();return;}
-   bool guiEnabled=GUI.enabled;var matrix=GUI.matrix;GUI.matrix=Matrix4x4.identity;
+   bool guiEnabled=GUI.enabled;var matrix=GUI.matrix;GUI.matrix=NativeUiViewport.Matrix;
    if(characterStep==1)DrawCharacterVisualPresentation();else DrawCharacterNamePresentation();
    GUI.matrix=matrix;GUI.enabled=guiEnabled;
   }

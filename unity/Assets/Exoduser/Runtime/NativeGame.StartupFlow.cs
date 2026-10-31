@@ -34,8 +34,8 @@ namespace Exoduser.UnityPort
   }
   void DrawStartupWorldHud()
   {
-   InitGUI();var old=GUI.matrix;float scale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,Vector3.one*scale);
-   bool enabled=GUI.enabled;GUI.enabled=false;hud.Draw(Screen.width/scale,Screen.height/scale,Simulation.Config.ActiveAttack,Simulation);GUI.enabled=enabled;GUI.matrix=old;
+   InitGUI();var old=GUI.matrix;GUI.matrix=NativeUiViewport.Matrix;
+   bool enabled=GUI.enabled;GUI.enabled=false;hud.Draw(NativeUiSafeArea.DesignWidth,NativeUiSafeArea.DesignHeight,Simulation.Config.ActiveAttack,Simulation);GUI.enabled=enabled;GUI.matrix=old;
   }
  }
 }

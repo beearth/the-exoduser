@@ -95,7 +95,7 @@ namespace Exoduser.UnityPort
    if(startup.Page==FrontendEntryPage.Loading){DrawEntryLoadingLogo();return;}
    if(startup.Page==FrontendEntryPage.Nemesis){DrawNemesis();return;}
    if(startup.Page==FrontendEntryPage.Guide){DrawStartupGuide();return;}
-   if(startup.Page==FrontendEntryPage.Curtain){var matrix=GUI.matrix;try{GUI.matrix=Matrix4x4.identity;DrawStartupBarrier();}finally{GUI.matrix=matrix;}if(startup.Elapsed<.4)DrawStartupGuide(Mathf.Clamp01(1-(float)startup.Elapsed/.4f),false);}
+   if(startup.Page==FrontendEntryPage.Curtain){var matrix=GUI.matrix;try{GUI.matrix=NativeUiViewport.Matrix;DrawStartupBarrier();}finally{GUI.matrix=matrix;}if(startup.Elapsed<.4)DrawStartupGuide(Mathf.Clamp01(1-(float)startup.Elapsed/.4f),false);}
   }
   void DrawEntryLoadingLogo(){EnsureSilverArt();if(loadingLogo==null)loadingLogo=Resources.Load<Texture2D>("Art/Startup/loading_logo");Fill(new Rect(0,0,1920,1080),Color.black);NativeSilverHellUi.Panel(new Rect(600,250,720,540),36,12,false);Image(new Rect(660,280,600,337.5f),gateSigil??loadingLogo);var st=new GUIStyle(startupBody){font=NativeSilverHellUi.Font()??startupBody.font,fontSize=22,fontStyle=FontStyle.Normal};st.normal.textColor=NativeSilverHellUi.Bright;SilverLabel(new Rect(640,680,640,40),K("불러오는 중","LOADING"),st,TextAnchor.MiddleCenter);}
   void DrawNemesis()
@@ -121,7 +121,7 @@ namespace Exoduser.UnityPort
    }
    bool pad=frontendPadQaEnabled||ExoInput.PadConnected;
    float hold=(float)startup.HoldProgress;var hintColor=GUI.color;GUI.color=new Color(1,1,1,hold>0?.8f:.25f+.1f*Mathf.Sin(Time.unscaledTime*2));Label(new Rect(1300,1032,600,24),pad?K("A 다음 / B 길게 / Start 건너뛰기","A Next / Hold B / Start Skip"):K("SPACE 길게 눌러 건너뛰기","Hold SPACE to skip"),startupHint,TextAnchor.MiddleRight);GUI.color=hintColor;Fill(new Rect(1780,1052,120,3),new Color(1,1,1,.15f));Fill(new Rect(1780,1052,120*hold,3),new Color(1,1,1,.8f));
-   var e=Event.current;if(!startupInputFence&&e.type==EventType.MouseDown&&e.button==0){startup.Advance();e.Use();}
+   var e=Event.current;if(insideSafe&&!startupInputFence&&e.type==EventType.MouseDown&&e.button==0){startup.Advance();e.Use();}
   }
   static string RevealStartupText(string full,int count){int at=0,visible=0;while(at<full.Length&&(visible<count||full[at]=='\n')){if(full[at]!='\n')visible++;at++;}return full.Substring(0,at)+"<color=#00000000>"+full.Substring(at)+"</color>";}
   void DrawStartupVignette(float strength){if(strength<=0)return;if(startupShade==null){startupShade=new Texture2D(128,72,TextureFormat.RGBA32,false);for(int y=0;y<72;y++)for(int x=0;x<128;x++){float d=Vector2.Distance(new Vector2(x/127f,(y/71f)*.5625f),new Vector2(.5f,.28125f));startupShade.SetPixel(x,y,new Color(0,0,0,Mathf.Clamp01((d-.2f)/.5f)));}startupShade.Apply();}var c=GUI.color;GUI.color=new Color(1,1,1,strength);Image(new Rect(0,0,1920,1080),startupShade,ScaleMode.StretchToFill);GUI.color=c;}
@@ -167,13 +167,13 @@ namespace Exoduser.UnityPort
   void DrawStartupGuide(float opacity=1,bool drawBarrier=true)
   {
    var matrix=GUI.matrix;var tint=GUI.color;float previousOpacity=startupGuideOpacity;bool previousBarrier=startupGuideDrawBarrier;
-   try{GUI.matrix=Matrix4x4.identity;startupGuideOpacity=opacity;startupGuideDrawBarrier=drawBarrier;GUI.color=new Color(tint.r,tint.g,tint.b,tint.a*opacity);DrawStartupGuidePhysical();}
+   try{GUI.matrix=NativeUiViewport.Matrix;startupGuideOpacity=opacity;startupGuideDrawBarrier=drawBarrier;GUI.color=new Color(tint.r,tint.g,tint.b,tint.a*opacity);DrawStartupGuidePhysical();}
    finally{GUI.matrix=matrix;GUI.color=tint;startupGuideOpacity=previousOpacity;startupGuideDrawBarrier=previousBarrier;}
   }
-  void DrawStartupBarrier(){if(startupBarrier==null)startupBarrier=Resources.Load<Texture2D>("Art/Startup/bonfire_barrier");if(startupBarrier==null)return;float size=560*(1+Mathf.Sin(Time.unscaledTime*1000/300)*.03f);var color=GUI.color;GUI.color=new Color(color.r,color.g,color.b,color.a*.9f);NativeUiAudit.DrawTexture(new Rect((Screen.width-size)/2,(Screen.height-size)/2,size,size),startupBarrier,ScaleMode.StretchToFill);GUI.color=color;}
+  void DrawStartupBarrier(){if(startupBarrier==null)startupBarrier=Resources.Load<Texture2D>("Art/Startup/bonfire_barrier");if(startupBarrier==null)return;float size=560*(1+Mathf.Sin(Time.unscaledTime*1000/300)*.03f);var color=GUI.color;GUI.color=new Color(color.r,color.g,color.b,color.a*.9f);NativeUiAudit.DrawTexture(new Rect((NativeUiSafeArea.DesignWidth-size)/2,(NativeUiSafeArea.DesignHeight-size)/2,size,size),startupBarrier,ScaleMode.StretchToFill);GUI.color=color;}
   void DrawStartupGuidePhysical()
   {
-   float sw=Screen.width,sh=Screen.height;
+   float sw=NativeUiSafeArea.DesignWidth,sh=NativeUiSafeArea.DesignHeight;bool insideSafe=new Rect(0,0,sw,sh).Contains(Event.current.mousePosition);
    if(startupGuideDrawBarrier)DrawStartupBarrier();
    EnsureStartupGradients();NativeUiAudit.DrawTexture(new Rect(0,0,sw,sh),startupGuideGradient);
    int step=startup.Page==FrontendEntryPage.Curtain?Mathf.Clamp(guidePhysicalStep,0,3):startup.GuideStep;if(guidePhysicalStep!=step){guidePhysicalStep=step;guideScroll=Vector2.zero;}
