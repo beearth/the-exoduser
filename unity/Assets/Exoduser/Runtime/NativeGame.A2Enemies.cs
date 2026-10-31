@@ -45,12 +45,18 @@ namespace Exoduser.UnityPort
             var sr=ev.walk.enabled?ev.walk:ev.body;if(sr.sprite==null)return;
             var top=sr.transform.TransformPoint(new Vector3(0,NativeEnemyFootprint.Top(sr.sprite),0));
             var screen=HudCamera.WorldToScreenPoint(top);if(screen.z<=0)return;
-            float x=screen.x*1920/Screen.width,y=(Screen.height-screen.y)*1080/Screen.height-12;
-            float width=42f*1920/Screen.width,pixelX=1920f/Screen.width;
-            Fill(new Rect(x-width/2-pixelX,y-1,width+2*pixelX,8),new Color(.015f,.018f,.018f,.88f));
-            Fill(new Rect(x-width/2,y,width,3),new Color(.18f,.07f,.065f));
-            Fill(new Rect(x-width/2,y,width*Mathf.Clamp01((float)e.Hp/Mathf.Max(1,e.MaxHp)),3),new Color(.66f,.16f,.10f));
-            if(e.MaxShield>0)Fill(new Rect(x-width/2,y+4,width*Mathf.Clamp01(e.Shield/e.MaxShield),2),new Color(.29f,.51f,.62f));
+            // 월드 표시를 실제 화면 픽셀로 그려 로비/안전영역 GUI 배율과 분리한다.
+            var matrix=GUI.matrix;
+            try
+            {
+                GUI.matrix=Matrix4x4.identity;
+                float x=screen.x,y=Screen.height-screen.y-12,width=42;
+                Fill(new Rect(x-width/2-1,y-1,width+2,8),new Color(.015f,.018f,.018f,.88f));
+                Fill(new Rect(x-width/2,y,width,3),new Color(.18f,.07f,.065f));
+                Fill(new Rect(x-width/2,y,width*Mathf.Clamp01((float)e.Hp/Mathf.Max(1,e.MaxHp)),3),new Color(.66f,.16f,.10f));
+                if(e.MaxShield>0)Fill(new Rect(x-width/2,y+4,width*Mathf.Clamp01(e.Shield/e.MaxShield),2),new Color(.29f,.51f,.62f));
+            }
+            finally { GUI.matrix=matrix; }
         }
     }
 }

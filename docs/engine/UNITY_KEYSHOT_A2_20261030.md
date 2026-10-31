@@ -89,7 +89,7 @@
 | 높이 | .14sin(.29x+.12z)+.10cos(.31z−.08x)+.055sin(.73x−.37z)−1.65smoothstep(clamp(−거리/2.8)). 외곽 독액 Y−.45u/보행 지면 아래,원본 통행 차단0 |
 | 지면 | 기존CC0 흙·노출뿌리·낙엽 재사용. 신규 이끼지면 [forest_leaves_02](https://polyhaven.com/a/forest_leaves_02),Rob Tuytel/[CC0](https://polyhaven.com/license),Powered by Poly Haven/비용0. 2K 컬러1668009B·GL노멀10708761B·러프니스723748B/공식MD5전부일치,Resources Art/map/a2/ground/A2_FieldMoss_* 3맵. 원본·SHA는 field-screen-20261031/moss-ground-source/출처-영수증.json. 원본 경계200²시각 거리장/40u정규화. HellGroundPBR _FullField=1. 머티리얼은 런타임 사본 |
 | 카메라/조명 | A2 34°/16.5u 유지,단일 다리용(+3,0,+.6)편향 제거. 방향광1.65/색(.77,.85,1)/49°−32°/소프트그림자. Linear안개19..62u/색(.105,.145,.17),수관빛9곳/alpha.035. A2HeightFog는 실제깊이/높이의 지수밀도 광선적분(밀도.045/높이감쇠.8/최대거리80u/alpha상한.42),점노이즈·수평안개카드0. 횃불7곳 실제점광원/기존강도7·반경5u |
-| 적 표시 | remodel의 항시 반달 제거. 살아있는 일반 적 중 피해입음 또는85Core단위 내 조준 대상을42px 체력3px·실드2px 바로 표시(1920/Screen.width 보정으로32:9에서도 폭42px 유지). 원본 HP/eShield/AI·전투 수치 변경0 |
+| 적 표시 | remodel의 항시 반달 제거. 살아있는 일반 적 중 피해입음 또는85Core단위 내 조준 대상을42px 체력3px·실드2px 바로 표시(WorldToScreenPoint의 실제 픽셀 좌표·로컬 GUI.matrix=identity/복원으로32:9 및 후속 안전영역 UI에서도 폭42px 유지; 상단간격12px/배경44×8px). 원본 HP/eShield/AI·전투 수치 변경0 |
 | 적 접지 | 원본16아틀라스/1600셀의 alpha>=32가3픽셀 이상인 최하단/최상단 추출. NativeEnemyFootprint로 투명 여백 높이 제외. 반경clamp(Radius×.012,.16,.48) 접촉그림자/alpha.5. SpriteLit3D 추가광 그림자·안개·림광. 원본PNG변경0 |
 | 검수 | --unity-field-screen: 일반 --remodel3d/추가A2옵션0,시작·초반·공터·서·동·랜드마크·후반·입구8곳×1920/3840×1080 최종ScreenCapture/HUD. 직접위치이동·AI정지 구도이며 자연완주 증거 아님 |
 | 현재 근거 | 독립Core/C#0/0,순수보행·거리장·표시10검사PASS. 실제Unity/셰이더·시각·같은빌드M1 미검증. 출력 I:/EXODUSER-Storage/steam-keyshot/a2/field-screen-20261031 |
