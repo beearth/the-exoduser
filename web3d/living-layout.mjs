@@ -1,5 +1,12 @@
 // Presentation-only data. No native random numbers, map writes or collision changes.
 export function seeded(seed){let s=seed>>>0;return()=>((s=(Math.imul(s,1664525)+1013904223)>>>0)/4294967296);}
+// The native GPU proxy has translate/rotate/scale, but no transform().
+// Signed SVD composes an affine matrix with those supported operations.
+export function applyAffine(ctx,a,b,c,d,e=0,f=0){
+  const theta=.5*Math.atan2(2*(a*b+c*d),a*a+c*c-b*b-d*d),co=Math.cos(theta),si=Math.sin(theta);
+  const x=co*a+si*b,y=co*c+si*d,sx=Math.hypot(x,y),sy=sx?(a*d-b*c)/sx:0;
+  ctx.translate(e,f);ctx.rotate(theta);ctx.scale(sx,sy);ctx.rotate(Math.atan2(-y,x));
+}
 export function foliageLayout(map,tile=40,seed=1){
   const random=seeded(seed),out=[],height=map.length,width=map[0]?.length||0;
   for(let y=2;y<height-2;y+=5)for(let x=2;x<width-2;x+=5){

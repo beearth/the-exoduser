@@ -1,6 +1,7 @@
 import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
 import {foliageLayout,seeded,waterAt,plantHabitat} from './living-layout.mjs?v=20261031-layer2';
 import {createRelief} from './living-relief.mjs?v=20261031-layer2';
+import {createMapLook} from './map-look-pass.mjs?v=20261031-maplook1';
 
 // The native map is the color source. This canvas contains ONLY added vegetation
 // and water highlights; actors, VFX, camera, lighting and HUD use their original pass.
@@ -14,7 +15,9 @@ export async function install(read){
   const uniforms={view:{value:new THREE.Vector4()},time:{value:0},hero:{value:new THREE.Vector2(-1e5,-1e5)},bend:{value:1},impulse:{value:new THREE.Vector3(-1e5,-1e5,0)}};
   const source=await new THREE.TextureLoader().loadAsync('./assets/web3d/living/rotten-underbrush-atlas.png');
   source.colorSpace=THREE.NoColorSpace;source.minFilter=THREE.LinearFilter;source.magFilter=THREE.LinearFilter;
-  const relief=createRelief(renderer,canvas,uniforms,read);
+  const [lookData,lookAnchors]=await Promise.all(['map-look-ch1.json','map-look-anchors.json'].map(async file=>{const r=await fetch('./assets/web3d/'+file);if(!r.ok)throw Error(file+' '+r.status);return r.json();}));
+  const mapLook=createMapLook(renderer,canvas,uniforms,lookData,lookAnchors);
+  const relief=createRelief(renderer,canvas,uniforms,read,mapLook);
   const vs=`uniform vec4 view;uniform float time,bend;uniform vec2 hero;uniform vec3 impulse;attribute vec4 anchor;attribute float phase;attribute vec4 habitat;varying vec2 vUv;varying float light;varying vec2 localUV;varying vec3 tint;
   void main(){float variant=habitat.w;localUV=uv;vUv=(uv+vec2(mod(variant,2.),1.-floor(variant/2.)))*.5;vec2 p=position.xy*anchor.z;float h=max(0.,p.y)/100.;vec2 d=anchor.xy-hero;tint=habitat.rgb;
     float near=exp(-dot(d,d)/3600.);float wave=sin(time*.85+anchor.x*.002+anchor.y*.0015)+.22*sin(time*2.7+phase);
@@ -108,6 +111,7 @@ export async function install(read){
     waterUniforms.hits.value=hitPool;
     const hill=s.hill,t=s.tile;waterUniforms.ramp.value.set(hill.rampX0*t,hill.rampX1*t,hill.rampY*t,0);waterUniforms.rampHalf.value.set(hill.rampHalf0*t,hill.rampHalf1*t);waterUniforms.band.value.set(hill.inner,hill.outer);
     let visibleWater=0;for(const water of waterMeshes){const visible=water.x+water.w/2>view.x&&water.x-water.w/2<view.x+view.w&&water.y+water.h/2>view.y&&water.y-water.h/2<view.y+view.h;water.mesh.visible=visible;if(visible)visibleWater++;water.mesh.onBeforeRender=()=>{waterUniforms.mode.value=water.mode;waterUniforms.center.value.set(water.x,water.y);waterUniforms.radii.value.set(water.mode===0?hill.rx*t:water.w/2,water.mode===0?hill.ry*t:water.h/2);waterUniforms.liquid.value=water.texture||source;waterUniforms.flip.value=water.flip||1;waterMaterial.uniformsNeedUpdate=true;};}
+    mapLook.draw(ctx,s,view);
     renderer.render(scene,camera);canvas._glVer=(canvas._glVer||0)+1;
     ctx.save();ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';ctx.drawImage(canvas,view.x,view.y,view.w,view.h);ctx.restore();
     relief.motes(ctx,s,view,low);

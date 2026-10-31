@@ -1,0 +1,1611 @@
+{
+  "schema": "exoduser.web3d.map-look-anchors.v1",
+  "source": "origin/claude/map-look-20261020:a5f28be8d",
+  "tile_size": 40,
+  "world_size": [
+    8000,
+    8000
+  ],
+  "boundary": [
+    [
+      88,
+      2
+    ],
+    [
+      88,
+      18
+    ],
+    [
+      74,
+      29
+    ],
+    [
+      58,
+      34
+    ],
+    [
+      37,
+      33
+    ],
+    [
+      29,
+      44
+    ],
+    [
+      31,
+      59
+    ],
+    [
+      40,
+      66
+    ],
+    [
+      52,
+      70
+    ],
+    [
+      53,
+      77
+    ],
+    [
+      40,
+      80
+    ],
+    [
+      26,
+      91
+    ],
+    [
+      28,
+      107
+    ],
+    [
+      40,
+      114
+    ],
+    [
+      53,
+      118
+    ],
+    [
+      62,
+      126
+    ],
+    [
+      58,
+      137
+    ],
+    [
+      40,
+      140
+    ],
+    [
+      28,
+      147
+    ],
+    [
+      30,
+      157
+    ],
+    [
+      43,
+      163
+    ],
+    [
+      58,
+      167
+    ],
+    [
+      72,
+      174
+    ],
+    [
+      81,
+      183
+    ],
+    [
+      85,
+      192
+    ],
+    [
+      96,
+      197
+    ],
+    [
+      109,
+      197
+    ],
+    [
+      120,
+      190
+    ],
+    [
+      125,
+      181
+    ],
+    [
+      137,
+      168
+    ],
+    [
+      151,
+      161
+    ],
+    [
+      169,
+      156
+    ],
+    [
+      179,
+      143
+    ],
+    [
+      178,
+      134
+    ],
+    [
+      161,
+      128
+    ],
+    [
+      143,
+      127
+    ],
+    [
+      134,
+      121
+    ],
+    [
+      139,
+      113
+    ],
+    [
+      160,
+      110
+    ],
+    [
+      175,
+      105
+    ],
+    [
+      180,
+      93
+    ],
+    [
+      172,
+      84
+    ],
+    [
+      151,
+      79
+    ],
+    [
+      145,
+      72
+    ],
+    [
+      154,
+      63
+    ],
+    [
+      174,
+      59
+    ],
+    [
+      181,
+      48
+    ],
+    [
+      177,
+      35
+    ],
+    [
+      162,
+      30
+    ],
+    [
+      142,
+      33
+    ],
+    [
+      126,
+      28
+    ],
+    [
+      113,
+      18
+    ],
+    [
+      112,
+      2
+    ]
+  ],
+  "props": [
+    {
+      "id": "m_ctree13",
+      "position": [
+        3380,
+        7380
+      ],
+      "authored_tile": [
+        84,
+        184
+      ],
+      "texture": "res://assets/map/props/rotforest_tree_01.png",
+      "draw_size": [
+        340,
+        340
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_ctree13",
+        "file": "rotforest_tree_01.png",
+        "sz": 400,
+        "large": 1,
+        "col": 1,
+        "dir": "collision",
+        "colSz": 60,
+        "sharedAtlas": 1,
+        "stageMax": 0,
+        "authoredOnly": 1
+      }
+    },
+    {
+      "id": "m_ctree14",
+      "position": [
+        3220,
+        6020
+      ],
+      "authored_tile": [
+        80,
+        150
+      ],
+      "texture": "res://assets/map/props/rotforest_tree_02.png",
+      "draw_size": [
+        440.00000000000006,
+        440.00000000000006
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_ctree14",
+        "file": "rotforest_tree_02.png",
+        "sz": 400,
+        "large": 1,
+        "col": 1,
+        "dir": "collision",
+        "colSz": 60,
+        "sharedAtlas": 1,
+        "stageMax": 0,
+        "authoredOnly": 1
+      }
+    },
+    {
+      "id": "m_ctree15",
+      "position": [
+        1220,
+        3860
+      ],
+      "authored_tile": [
+        30,
+        96
+      ],
+      "texture": "res://assets/map/props/rotforest_tree_04.png",
+      "draw_size": [
+        380,
+        380
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_ctree15",
+        "file": "rotforest_tree_04.png",
+        "sz": 400,
+        "large": 1,
+        "col": 1,
+        "dir": "collision",
+        "colSz": 60,
+        "sharedAtlas": 1,
+        "stageMax": 0,
+        "authoredOnly": 1
+      }
+    },
+    {
+      "id": "m_ctree16",
+      "position": [
+        3220,
+        1460
+      ],
+      "authored_tile": [
+        80,
+        36
+      ],
+      "texture": "res://assets/map/props/rotforest_tree_03.png",
+      "draw_size": [
+        459.99999999999994,
+        459.99999999999994
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_ctree16",
+        "file": "rotforest_tree_03.png",
+        "sz": 400,
+        "large": 1,
+        "col": 1,
+        "dir": "collision",
+        "colSz": 60,
+        "sharedAtlas": 1,
+        "stageMax": 0,
+        "authoredOnly": 1
+      }
+    },
+    {
+      "id": "m_ctree17",
+      "position": [
+        4980,
+        1260
+      ],
+      "authored_tile": [
+        124,
+        31
+      ],
+      "texture": "res://assets/map/props/rotforest_tree_03.png",
+      "draw_size": [
+        360,
+        360
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_ctree17",
+        "file": "rotforest_tree_03.png",
+        "sz": 400,
+        "large": 1,
+        "col": 1,
+        "dir": "collision",
+        "colSz": 60,
+        "sharedAtlas": 1,
+        "stageMax": 0,
+        "authoredOnly": 1
+      }
+    },
+    {
+      "id": "m_ctree18",
+      "position": [
+        7060,
+        3860
+      ],
+      "authored_tile": [
+        176,
+        96
+      ],
+      "texture": "res://assets/map/props/rotforest_tree_04.png",
+      "draw_size": [
+        448.00000000000006,
+        448.00000000000006
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_ctree18",
+        "file": "rotforest_tree_04.png",
+        "sz": 400,
+        "large": 1,
+        "col": 1,
+        "dir": "collision",
+        "colSz": 60,
+        "sharedAtlas": 1,
+        "stageMax": 0,
+        "authoredOnly": 1
+      }
+    },
+    {
+      "id": "m_ctree19",
+      "position": [
+        4980,
+        5980
+      ],
+      "authored_tile": [
+        124,
+        149
+      ],
+      "texture": "res://assets/map/props/rotforest_tree_02.png",
+      "draw_size": [
+        352,
+        352
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_ctree19",
+        "file": "rotforest_tree_02.png",
+        "sz": 400,
+        "large": 1,
+        "col": 1,
+        "dir": "collision",
+        "sharedAtlas": 1,
+        "stageMax": 0,
+        "authoredOnly": 1
+      }
+    },
+    {
+      "id": "m_ctree20",
+      "position": [
+        4980,
+        7180
+      ],
+      "authored_tile": [
+        124,
+        179
+      ],
+      "texture": "res://assets/map/props/rotforest_tree_01.png",
+      "draw_size": [
+        432,
+        432
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_ctree20",
+        "file": "rotforest_tree_01.png",
+        "sz": 400,
+        "large": 1,
+        "col": 1,
+        "dir": "collision",
+        "sharedAtlas": 1,
+        "stageMax": 0,
+        "authoredOnly": 1
+      }
+    },
+    {
+      "id": "m_fbones",
+      "position": [
+        3300,
+        7220
+      ],
+      "authored_tile": [
+        82,
+        180
+      ],
+      "texture": "res://assets/map/props/frozen_bones.png",
+      "draw_size": [
+        48,
+        48
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_fbones",
+        "file": "frozen_bones.png",
+        "sz": 48
+      }
+    },
+    {
+      "id": "corpse",
+      "position": [
+        4980,
+        7180
+      ],
+      "authored_tile": [
+        124,
+        179
+      ],
+      "texture": "res://assets/map/props/corpse.png",
+      "draw_size": [
+        40,
+        40
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "sz": 40
+      }
+    },
+    {
+      "id": "m_c1sroot",
+      "position": [
+        3060,
+        6180
+      ],
+      "authored_tile": [
+        76,
+        154
+      ],
+      "texture": "res://assets/map/props/prop_s_root.png",
+      "draw_size": [
+        150,
+        140.11363636363637
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_c1sroot",
+        "file": "prop_s_root.png",
+        "sz": 150,
+        "keepAR": 1
+      }
+    },
+    {
+      "id": "m_c1groot",
+      "position": [
+        4100,
+        3460
+      ],
+      "authored_tile": [
+        102,
+        86
+      ],
+      "texture": "res://assets/map/props/prop_g_root.png",
+      "draw_size": [
+        760,
+        758.4800000000001
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_c1groot",
+        "file": "prop_g_root.png",
+        "sz": 760,
+        "keepAR": 1
+      }
+    },
+    {
+      "id": "m_c1tree",
+      "position": [
+        4100,
+        3620
+      ],
+      "authored_tile": [
+        102,
+        90
+      ],
+      "texture": "res://assets/map/props/prop_corpsetree.png",
+      "draw_size": [
+        852.3514285714284,
+        1044
+      ],
+      "pivot": [
+        0.5,
+        0.72
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_c1tree",
+        "file": "prop_corpsetree.png",
+        "sz": 1450,
+        "large": 1,
+        "dir": "collision",
+        "col": 1,
+        "colW": 380,
+        "colH": 230,
+        "keepAR": 1
+      }
+    },
+    {
+      "id": "m_c1sroot",
+      "position": [
+        3020,
+        4220
+      ],
+      "authored_tile": [
+        75,
+        105
+      ],
+      "texture": "res://assets/map/props/prop_s_root.png",
+      "draw_size": [
+        150,
+        140.11363636363637
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_c1sroot",
+        "file": "prop_s_root.png",
+        "sz": 150,
+        "keepAR": 1
+      }
+    },
+    {
+      "id": "m_c1sbone",
+      "position": [
+        3220,
+        1180
+      ],
+      "authored_tile": [
+        80,
+        29
+      ],
+      "texture": "res://assets/map/props/prop_s_bone.png",
+      "draw_size": [
+        132.27272727272728,
+        150
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_c1sbone",
+        "file": "prop_s_bone.png",
+        "sz": 150,
+        "keepAR": 1
+      }
+    },
+    {
+      "id": "corpse",
+      "position": [
+        3140,
+        1500
+      ],
+      "authored_tile": [
+        78,
+        37
+      ],
+      "texture": "res://assets/map/props/corpse.png",
+      "draw_size": [
+        40,
+        40
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "sz": 40
+      }
+    },
+    {
+      "id": "m_fbones",
+      "position": [
+        3020,
+        1740
+      ],
+      "authored_tile": [
+        75,
+        43
+      ],
+      "texture": "res://assets/map/props/frozen_bones.png",
+      "draw_size": [
+        48,
+        48
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_fbones",
+        "file": "frozen_bones.png",
+        "sz": 48
+      }
+    },
+    {
+      "id": "m_c1cocoon",
+      "position": [
+        1900,
+        2020
+      ],
+      "authored_tile": [
+        47,
+        50
+      ],
+      "texture": "res://assets/map/props/prop_cocoon.png",
+      "draw_size": [
+        434,
+        380.26666666666665
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_c1cocoon",
+        "file": "prop_cocoon.png",
+        "sz": 280,
+        "large": 1,
+        "dir": "collision",
+        "col": 1,
+        "colSz": 80,
+        "keepAR": 1
+      }
+    },
+    {
+      "id": "m_hang_cage",
+      "position": [
+        1580,
+        1940
+      ],
+      "authored_tile": [
+        39,
+        48
+      ],
+      "texture": "res://assets/map/props/hang_cage.png",
+      "draw_size": [
+        280,
+        280
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "sz": 280,
+        "col": 1,
+        "large": 1,
+        "id": "m_hang_cage",
+        "file": "hang_cage.png",
+        "dir": "collision"
+      }
+    },
+    {
+      "id": "m_c1spod",
+      "position": [
+        1620,
+        2300
+      ],
+      "authored_tile": [
+        40,
+        57
+      ],
+      "texture": "res://assets/map/props/prop_s_pod.png",
+      "draw_size": [
+        150,
+        132.5
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_c1spod",
+        "file": "prop_s_pod.png",
+        "sz": 150,
+        "keepAR": 1
+      }
+    },
+    {
+      "id": "m_c1spod",
+      "position": [
+        2140,
+        2380
+      ],
+      "authored_tile": [
+        53,
+        59
+      ],
+      "texture": "res://assets/map/props/prop_s_pod.png",
+      "draw_size": [
+        150,
+        132.5
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_c1spod",
+        "file": "prop_s_pod.png",
+        "sz": 150,
+        "keepAR": 1
+      }
+    },
+    {
+      "id": "m_c1camp",
+      "position": [
+        1820,
+        4020
+      ],
+      "authored_tile": [
+        45,
+        100
+      ],
+      "texture": "res://assets/map/props/prop_camp.png",
+      "draw_size": [
+        589,
+        443.75795454545454
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_c1camp",
+        "file": "prop_camp.png",
+        "sz": 380,
+        "large": 1,
+        "dir": "collision",
+        "col": 1,
+        "colW": 130,
+        "colH": 80,
+        "keepAR": 1
+      }
+    },
+    {
+      "id": "m_sword_pile",
+      "position": [
+        1580,
+        4180
+      ],
+      "authored_tile": [
+        39,
+        104
+      ],
+      "texture": "res://assets/map/props/sword_pile.png",
+      "draw_size": [
+        200,
+        200
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "sz": 200,
+        "col": 1,
+        "large": 1,
+        "id": "m_sword_pile",
+        "file": "sword_pile.png",
+        "dir": "collision"
+      }
+    },
+    {
+      "id": "m_c1sbone",
+      "position": [
+        1940,
+        4340
+      ],
+      "authored_tile": [
+        48,
+        108
+      ],
+      "texture": "res://assets/map/props/prop_s_bone.png",
+      "draw_size": [
+        132.27272727272728,
+        150
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_c1sbone",
+        "file": "prop_s_bone.png",
+        "sz": 150,
+        "keepAR": 1
+      }
+    },
+    {
+      "id": "m_bone_arch",
+      "position": [
+        1420,
+        6020
+      ],
+      "authored_tile": [
+        35,
+        150
+      ],
+      "texture": "res://assets/map/props/bone_arch.png",
+      "draw_size": [
+        300,
+        300
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "sz": 300,
+        "col": 1,
+        "large": 1,
+        "id": "m_bone_arch",
+        "file": "bone_arch.png",
+        "dir": "collision"
+      }
+    },
+    {
+      "id": "m_c1sroot",
+      "position": [
+        1740,
+        6340
+      ],
+      "authored_tile": [
+        43,
+        158
+      ],
+      "texture": "res://assets/map/props/prop_s_root.png",
+      "draw_size": [
+        150,
+        140.11363636363637
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_c1sroot",
+        "file": "prop_s_root.png",
+        "sz": 150,
+        "keepAR": 1
+      }
+    },
+    {
+      "id": "m_penta_circle",
+      "position": [
+        5900,
+        3860
+      ],
+      "authored_tile": [
+        147,
+        96
+      ],
+      "texture": "res://assets/map/props/penta_circle.png",
+      "draw_size": [
+        350,
+        350
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "sz": 350,
+        "col": 1,
+        "large": 1,
+        "id": "m_penta_circle",
+        "file": "penta_circle.png",
+        "dir": "collision"
+      }
+    },
+    {
+      "id": "m_c1altar",
+      "position": [
+        5900,
+        3900
+      ],
+      "authored_tile": [
+        147,
+        97
+      ],
+      "texture": "res://assets/map/props/prop_altar.png",
+      "draw_size": [
+        478.5,
+        439.40304878048784
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_c1altar",
+        "file": "prop_altar.png",
+        "sz": 330,
+        "large": 1,
+        "dir": "collision",
+        "col": 1,
+        "colSz": 95,
+        "keepAR": 1
+      }
+    },
+    {
+      "id": "m_skull_totem",
+      "position": [
+        6220,
+        4060
+      ],
+      "authored_tile": [
+        155,
+        101
+      ],
+      "texture": "res://assets/map/props/skull_totem.png",
+      "draw_size": [
+        106.28571428571428,
+        240
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "sz": 240,
+        "col": 1,
+        "large": 1,
+        "keepAR": 1,
+        "colW": 30,
+        "colH": 20,
+        "colOy": 88,
+        "id": "m_skull_totem",
+        "file": "skull_totem.png",
+        "dir": "collision"
+      }
+    },
+    {
+      "id": "m_fyellow",
+      "position": [
+        5620,
+        4060
+      ],
+      "authored_tile": [
+        140,
+        101
+      ],
+      "texture": "res://assets/map/props/glow_flower_yellow.png",
+      "draw_size": [
+        40,
+        40
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_fyellow",
+        "file": "glow_flower_yellow.png",
+        "sz": 40,
+        "light": 1
+      }
+    },
+    {
+      "id": "m_c1sbone",
+      "position": [
+        6060,
+        4260
+      ],
+      "authored_tile": [
+        151,
+        106
+      ],
+      "texture": "res://assets/map/props/prop_s_bone.png",
+      "draw_size": [
+        132.27272727272728,
+        150
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_c1sbone",
+        "file": "prop_s_bone.png",
+        "sz": 150,
+        "keepAR": 1
+      }
+    },
+    {
+      "id": "m_c1gtoxic",
+      "position": [
+        6740,
+        1620
+      ],
+      "authored_tile": [
+        168,
+        40
+      ],
+      "texture": "res://assets/map/props/prop_g_toxic.png",
+      "draw_size": [
+        538.3888888888889,
+        550
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_c1gtoxic",
+        "file": "prop_g_toxic.png",
+        "sz": 550,
+        "keepAR": 1
+      }
+    },
+    {
+      "id": "m_c1pool",
+      "position": [
+        6700,
+        1740
+      ],
+      "authored_tile": [
+        167,
+        43
+      ],
+      "texture": "res://assets/map/props/prop_pool.png",
+      "draw_size": [
+        465,
+        377.94767441860466
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_c1pool",
+        "file": "prop_pool.png",
+        "sz": 300,
+        "large": 1,
+        "dir": "collision",
+        "col": 1,
+        "colSz": 85,
+        "keepAR": 1
+      }
+    },
+    {
+      "id": "m_c1gtoxicf",
+      "position": [
+        6500,
+        5460
+      ],
+      "authored_tile": [
+        162,
+        136
+      ],
+      "texture": "res://assets/map/props/prop_g_toxic.png",
+      "draw_size": [
+        440.5,
+        450
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": true,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_c1gtoxicf",
+        "file": "prop_g_toxic.png",
+        "sz": 450,
+        "keepAR": 1,
+        "flip": 1
+      }
+    },
+    {
+      "id": "pit_poison",
+      "position": [
+        6500,
+        5580
+      ],
+      "authored_tile": [
+        162,
+        139
+      ],
+      "texture": "res://assets/map/props/pit_poison.png",
+      "draw_size": [
+        200,
+        200
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "sz": 200,
+        "collision": true,
+        "colW": 80,
+        "colH": 58,
+        "colOy": 7
+      }
+    },
+    {
+      "id": "m_c1sroot",
+      "position": [
+        6860,
+        6020
+      ],
+      "authored_tile": [
+        171,
+        150
+      ],
+      "texture": "res://assets/map/props/prop_s_root.png",
+      "draw_size": [
+        150,
+        140.11363636363637
+      ],
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "rotation_degrees": 0,
+      "flip_h": false,
+      "alpha": 1,
+      "ground": false,
+      "metadata": {
+        "id": "m_c1sroot",
+        "file": "prop_s_root.png",
+        "sz": 150,
+        "keepAR": 1
+      }
+    }
+  ],
+  "prop_colliders": [
+    {
+      "id": "m_ctree13",
+      "position": [
+        3380,
+        7380
+      ],
+      "kind": "circle",
+      "radii": [
+        51,
+        51
+      ]
+    },
+    {
+      "id": "m_ctree14",
+      "position": [
+        3220,
+        6020
+      ],
+      "kind": "circle",
+      "radii": [
+        66,
+        66
+      ]
+    },
+    {
+      "id": "m_ctree15",
+      "position": [
+        1220,
+        3860
+      ],
+      "kind": "circle",
+      "radii": [
+        57,
+        57
+      ]
+    },
+    {
+      "id": "m_ctree16",
+      "position": [
+        3220,
+        1460
+      ],
+      "kind": "circle",
+      "radii": [
+        69,
+        69
+      ]
+    },
+    {
+      "id": "m_ctree17",
+      "position": [
+        4980,
+        1260
+      ],
+      "kind": "circle",
+      "radii": [
+        54,
+        54
+      ]
+    },
+    {
+      "id": "m_ctree18",
+      "position": [
+        7060,
+        3860
+      ],
+      "kind": "circle",
+      "radii": [
+        67.2,
+        67.2
+      ]
+    },
+    {
+      "id": "m_ctree19",
+      "position": [
+        4980,
+        5980
+      ],
+      "kind": "circle",
+      "radii": [
+        140.8,
+        140.8
+      ]
+    },
+    {
+      "id": "m_ctree20",
+      "position": [
+        4980,
+        7180
+      ],
+      "kind": "circle",
+      "radii": [
+        172.8,
+        172.8
+      ]
+    },
+    {
+      "id": "m_c1tree",
+      "position": [
+        4100,
+        3620
+      ],
+      "kind": "ellipse",
+      "radii": [
+        380,
+        230
+      ]
+    },
+    {
+      "id": "m_c1cocoon",
+      "position": [
+        1900,
+        2020
+      ],
+      "kind": "circle",
+      "radii": [
+        124,
+        124
+      ]
+    },
+    {
+      "id": "m_hang_cage",
+      "position": [
+        1580,
+        1940
+      ],
+      "kind": "circle",
+      "radii": [
+        112,
+        112
+      ]
+    },
+    {
+      "id": "m_c1camp",
+      "position": [
+        1820,
+        4020
+      ],
+      "kind": "ellipse",
+      "radii": [
+        201.5,
+        124
+      ]
+    },
+    {
+      "id": "m_sword_pile",
+      "position": [
+        1580,
+        4180
+      ],
+      "kind": "circle",
+      "radii": [
+        80,
+        80
+      ]
+    },
+    {
+      "id": "m_bone_arch",
+      "position": [
+        1420,
+        6020
+      ],
+      "kind": "circle",
+      "radii": [
+        120,
+        120
+      ]
+    },
+    {
+      "id": "m_penta_circle",
+      "position": [
+        5900,
+        3860
+      ],
+      "kind": "circle",
+      "radii": [
+        140,
+        140
+      ]
+    },
+    {
+      "id": "m_c1altar",
+      "position": [
+        5900,
+        3900
+      ],
+      "kind": "circle",
+      "radii": [
+        137.75,
+        137.75
+      ]
+    },
+    {
+      "id": "m_skull_totem",
+      "position": [
+        6220,
+        4148
+      ],
+      "kind": "ellipse",
+      "radii": [
+        30,
+        20
+      ]
+    },
+    {
+      "id": "m_c1pool",
+      "position": [
+        6700,
+        1740
+      ],
+      "kind": "circle",
+      "radii": [
+        131.75,
+        131.75
+      ]
+    },
+    {
+      "id": "pit_poison",
+      "position": [
+        6500,
+        5587
+      ],
+      "kind": "ellipse",
+      "radii": [
+        80,
+        58
+      ]
+    }
+  ]
+}
