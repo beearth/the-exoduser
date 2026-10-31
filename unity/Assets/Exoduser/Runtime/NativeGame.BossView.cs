@@ -53,7 +53,9 @@ namespace Exoduser.UnityPort
         {
             if (!e.IsBoss || druidBody == null || Simulation.Druid == null) return false;
             DruidData dd; if (!Simulation.Druid.Data.TryGetValue(e, out dd)) return false;
-            if (!druidBody.Draw(e, dd, newTick)) return false;
+            bool held=ImpactActive&&contactVfx.EnemyFrozen(e.Id,ImpactNow);
+            float flash=ImpactActive?contactVfx.Flash(e.Id,ImpactNow):0;
+            if (!druidBody.Draw(e, dd, newTick,held,flash)) return false;
             druidBody.Stamp = Time.frameCount; ev.body.enabled = false; ev.walk.enabled = false;
             return true;
         }

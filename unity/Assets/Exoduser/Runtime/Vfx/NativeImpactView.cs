@@ -11,7 +11,7 @@ namespace Exoduser.UnityPort.Vfx
     public sealed class NativeImpactView : IDisposable
     {
         sealed class Burst { public GameObject Go; public VisualEffect Fx; public VFXEventAttribute Attr; public Light Light; public float Born=-10,Power; }
-        sealed class Scar { public GameObject Go; public Material Mat; public DecalProjector Projector; public float Born=-10; }
+        sealed class Scar { public GameObject Go; public Material Mat,FlatMat; public DecalProjector Projector;public MeshRenderer Flat; public float Born=-10; }
         readonly Transform parent;
         readonly VisualEffectAsset asset;
         readonly Material scarBase;
@@ -56,7 +56,7 @@ namespace Exoduser.UnityPort.Vfx
             {
                 present.Add(e.Id);float total=e.Hp+e.Shield;
                 bool known=health.TryGetValue(e.Id,out var previous);
-                if(ImpactResponse.IsContact(known,previous,total,e.HurtTicks)&&Enabled&&NativeRemodel3D.Active)
+                if(ImpactResponse.IsContact(known,previous,total,e.HurtTicks)&&Enabled)
                 {
                     float angle=e.KnockbackX*e.KnockbackX+e.KnockbackY*e.KnockbackY>.001f?Mathf.Atan2(e.KnockbackY,e.KnockbackX):Mathf.Atan2(e.Y-sim.Player.Y,e.X-sim.Player.X);
                     bool heavy=sim.KiComboStep==3||sim.Player.State.StartsWith("gSlam",StringComparison.Ordinal)||sim.Player.State=="sBash";
@@ -64,7 +64,7 @@ namespace Exoduser.UnityPort.Vfx
                     if(e.HurtTicks>0&&response.Hit(e.Id,now,angle,heavy,false))
                     {
                         Contacts++;heroUntil=now+(float)response.FreezeSeconds;
-                        if(NativeRemodel3D.Active)Spawn(e.X-Mathf.Cos(angle)*e.Radius*.4f,e.Y-Mathf.Sin(angle)*e.Radius*.4f,angle,heavy,now);
+                        Spawn(e.X-Mathf.Cos(angle)*e.Radius*.4f,e.Y-Mathf.Sin(angle)*e.Radius*.4f,angle,heavy,now);
                     }
                 }
                 health[e.Id]=total;
@@ -92,7 +92,8 @@ namespace Exoduser.UnityPort.Vfx
                 PaletteMid=0x9a8a72,PaletteShadow=0x2a2220,ChunkSizeMin=.035f,ChunkSizeMax=heavy?.09f:.065f,ChunkSpeed=heavy?3.8f:2.8f,ChunkBias=.8f,
                 MistSize=heavy?.8f:.5f,MistLifeMin=.35f,MistLifeMax=.65f,MistAlpha=.14f,TaintCount=0,TaintSize=.01f,TaintAlpha=0};
             var dir=new Vector2(Mathf.Cos(angle),-Mathf.Sin(angle));PoisonBurstPresets.Apply(b.Fx,preset,dir,1);
-            var world=RemodelWorld.ToWorld(x,y,.42f);b.Go.transform.position=world;
+            ImpactSpace.Velocities(b.Fx,preset,dir);
+            var world=ImpactSpace.Point(x,y,.42f);b.Go.transform.position=world;
             if(b.Attr.HasVector3("position"))b.Attr.SetVector3("position",world);
             if(b.Attr.HasVector3("direction"))b.Attr.SetVector3("direction",new Vector3(dir.x,0,dir.y));
             b.Fx.SendEvent("OnBurst",b.Attr);
@@ -106,6 +107,14 @@ namespace Exoduser.UnityPort.Vfx
             int index=scarIndex++%scars.Length;var s=scars[index];
             if(s==null){var go=new GameObject("타격 그을음");go.transform.SetParent(parent,false);var m=new Material(scarBase);var p=go.AddComponent<DecalProjector>();p.material=m;p.pivot=Vector3.zero;s=scars[index]=new Scar{Go=go,Mat=m,Projector=p};}
             float radius=heavy?.5f:.28f,box=radius*2+.12f;
+            if(!NativeRemodel3D.Active)
+            {
+                s.Projector.enabled=false;
+                if(s.Flat==null){var go=new GameObject("2D 타격 그을음");go.transform.SetParent(s.Go.transform,false);go.AddComponent<MeshFilter>().sharedMesh=ImpactSpace.FloorQuad;s.Flat=go.AddComponent<MeshRenderer>();s.FlatMat=new Material(Resources.Load<Material>("VFX/Impact/M_SkillFloor"));s.Flat.sharedMaterial=s.FlatMat;s.Flat.sortingOrder=-18999;}
+                s.Flat.enabled=true;s.Flat.transform.localScale=Vector3.one*(radius*2);s.FlatMat.SetColor("_FillColor",new Color32(27,20,16,255));s.FlatMat.SetColor("_EdgeColor",new Color32(27,20,16,255));s.FlatMat.SetFloat("_EdgeGlow",0);s.FlatMat.SetFloat("_Fade",.6f);
+                s.Go.transform.SetPositionAndRotation(ImpactSpace.Point(x,y,.12f),ImpactSpace.FloorRotation*Quaternion.Euler(0,angle*Mathf.Rad2Deg,0));s.Go.SetActive(true);s.Born=now;return;
+            }
+            if(s.Flat!=null)s.Flat.enabled=false;s.Projector.enabled=true;
             s.Mat.SetFloat("_Shape",0);s.Mat.SetFloat("_Progress",1);s.Mat.SetFloat("_Radius",radius);s.Mat.SetFloat("_SizeX",box);s.Mat.SetFloat("_SizeY",box);s.Mat.SetFloat("_EdgeGlow",0);s.Mat.SetFloat("_Flash",0);
             s.Mat.SetColor("_FillColor",new Color32(27,20,16,255));s.Projector.size=new Vector3(box,box,.3f);s.Projector.fadeFactor=.6f;
             s.Go.transform.SetPositionAndRotation(RemodelWorld.ToWorld(x,y,.12f),Quaternion.Euler(90,angle*Mathf.Rad2Deg,0));s.Go.SetActive(true);s.Born=now;
@@ -115,8 +124,8 @@ namespace Exoduser.UnityPort.Vfx
             int particles=0;
             foreach(var b in bursts)if(b!=null){particles+=b.Fx.aliveParticleCount;float age=now-b.Born;if(age>.1f)b.Light.enabled=false;else b.Light.intensity=Mathf.Max(0,1-age/.1f)*b.Power;if(age>=.9f)b.Go.SetActive(false);}
             PeakParticles=Math.Max(PeakParticles,particles);
-            foreach(var s in scars)if(s!=null){float age=now-s.Born;s.Projector.fadeFactor=.6f*Mathf.Clamp01((2-age)/1.2f);if(age>=2)s.Go.SetActive(false);}
+            foreach(var s in scars)if(s!=null){float age=now-s.Born,fade=.6f*Mathf.Clamp01((2-age)/1.2f);s.Projector.fadeFactor=fade;if(s.FlatMat!=null)s.FlatMat.SetFloat("_Fade",fade);if(age>=2)s.Go.SetActive(false);}
         }
-        public void Dispose(){foreach(var b in bursts)if(b!=null){b.Attr.Dispose();UnityEngine.Object.Destroy(b.Go);}foreach(var s in scars)if(s!=null){UnityEngine.Object.Destroy(s.Mat);UnityEngine.Object.Destroy(s.Go);}}
+        public void Dispose(){foreach(var b in bursts)if(b!=null){b.Attr.Dispose();UnityEngine.Object.Destroy(b.Go);}foreach(var s in scars)if(s!=null){UnityEngine.Object.Destroy(s.Mat);if(s.FlatMat!=null)UnityEngine.Object.Destroy(s.FlatMat);UnityEngine.Object.Destroy(s.Go);}}
     }
 }

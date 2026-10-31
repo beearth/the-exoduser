@@ -79,7 +79,7 @@ namespace Exoduser.UnityPort
             rc.poisonFrames=skillRemaster.PoisonFrames;rc.thornFrames=skillRemaster.ThornFrames;rc.darkFrames=skillRemaster.DarkFrames;
             string traceText=trace.ToString();File.WriteAllText(Path.Combine(output,"core-trace.txt"),traceText);
             using(var sha=SHA256.Create())rc.coreTraceSha256=BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(traceText))).Replace("-","").ToLowerInvariant();
-            rc.passed=rc.world3D&&shot==480&&damage>0&&castKinds.Contains("spikeTrap")&&castKinds.Contains("giantSlam")&&castKinds.Contains("holyDome")&&castKinds.Contains("iceOrb")&&castKinds.Contains("fireball")&&(rc.baseline||rc.contacts>0&&rc.spawned>0&&rc.peakParticles>0&&rc.skillAssetsReady&&rc.drawnSkills.Length==5&&rc.skillGraphEvents>0&&rc.poisonFrames>0&&rc.thornFrames>0&&rc.darkFrames>0);
+            rc.passed=rc.world3D==NativeRemodel3D.Requested&&shot==480&&damage>0&&castKinds.Contains("spikeTrap")&&castKinds.Contains("giantSlam")&&castKinds.Contains("holyDome")&&castKinds.Contains("iceOrb")&&castKinds.Contains("fireball")&&(rc.baseline||rc.contacts>0&&rc.spawned>0&&rc.peakParticles>0&&rc.skillAssetsReady&&rc.drawnSkills.Length==5&&rc.skillGraphEvents>0&&rc.poisonFrames>0&&rc.thornFrames>0&&rc.darkFrames>0);
             File.WriteAllText(Path.Combine(output,"impact-review.json"),JsonUtility.ToJson(rc,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();
             yield return new WaitForSecondsRealtime(.8f);Application.Quit(rc.passed?0:2);

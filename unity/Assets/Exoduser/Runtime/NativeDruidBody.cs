@@ -73,8 +73,10 @@ namespace Exoduser.UnityPort
         }
 
         // returns true when the druid body was drawn (alive, art present)
-        public bool Draw(EnemyState e, DruidData d, bool newTick)
+        public bool Draw(EnemyState e, DruidData d, bool newTick, bool holdContact=false, float contactFlash=0)
         {
+            var impactTint=Color.Lerp(Color.white,new Color(1,.82f,.54f),Mathf.Clamp01(contactFlash)*.8f);
+            if(holdContact&&Visible&&main.sprite!=null){main.color=impactTint;glow.color=impactTint;return true;}
             float r = d.R > 0 ? (float)d.R : e.Radius;
             string s = d.S ?? "", key = MotionKey(e, d);
             double nowMs = Time.unscaledTime * 1000.0;
@@ -129,11 +131,13 @@ namespace Exoduser.UnityPort
             float ay = e.Y + BtScale * (-6 + breath);
             int order = (int)e.Y;
             Put(main, sprite, e.X, ay, dw, dh, order, 1f);
+            main.color=impactTint;
             hole.enabled = false;
             if (sheet != "base8")
             {
                 // two 'lighter' passes at alpha .42 (self-lighten so the boss reads in the dark arena)
                 Put(glow, sprite, e.X, ay, dw, dh, order + 1, 1f);
+                glow.color=impactTint;
                 glow.GetPropertyBlock(block); block.SetFloat(NativeDruidArt.Opacity, .84f); glow.SetPropertyBlock(block);
             }
             else glow.enabled = false;
