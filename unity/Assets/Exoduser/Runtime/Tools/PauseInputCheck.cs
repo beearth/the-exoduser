@@ -44,6 +44,12 @@ namespace Exoduser.UnityPort.Tools
    lobby.ShowLobby();lobby.SelectPreview();CheckThat(lobby.EnterNativeTest(),"일반 미리보기 진입");game.SetGameFocus(true);
    until=Time.realtimeSinceStartup+45;while((lobby.IsBlocking||!game.Running||NativeRemodel3D.Requested&&!NativeRemodel3D.Active)&&Time.realtimeSinceStartup<until)yield return null;
    CheckThat(game.Running,"진입 키 해제 후 실행");CheckThat(!NativeRemodel3D.Requested||NativeRemodel3D.Active,"요청된 숲 3D 로드");recording=true;StartCoroutine(Frames());
+   if(Arg("-pause-case")=="fallen"){
+    Call(game.Simulation,"PlayerDie");CheckThat(game.Simulation.Player.State=="fallen"&&game.Simulation.Player.Hp==0,"Core 실제 부활 대기 진입");
+    yield return PauseByFocus();yield return Shot("fallen-before-resume");yield return new WaitForSecondsRealtime(1);
+    float countdown=game.Simulation.Player.StateTicks;yield return Click(640,218);yield return Shot("fallen-after-resume");yield return new WaitForSecondsRealtime(.4f);
+    CheckThat(game.Running&&!(bool)Get(game,"menu")&&game.Simulation.Player.StateTicks<countdown,"HP0 부활 대기 계속하기 클릭과 실제 카운트 재개");Save();Application.Quit(0);yield break;
+   }
    yield return Key(UnityEngine.InputSystem.Key.Escape);CheckThat(!game.Running&&pause.SettingsOpen,"첫 ESC 설정 정지");int tick=game.Simulation.TickCount;yield return Shot("01-esc-paused");yield return new WaitForSecondsRealtime(.15f);CheckThat(game.Simulation.TickCount==tick,"설정 중 틱 정지");
    yield return Key(UnityEngine.InputSystem.Key.Escape);yield return AssertResumed("두 번째 ESC");yield return Shot("02-esc-resumed");
    yield return PauseByFocus();CheckThat(!game.Running&&(bool)Get(game,"menu"),"focus 복귀 자동 재개 없음");yield return Shot("03-before-resume-click");yield return Click(640,218);yield return AssertResumed("계속하기 실제 WM 클릭");yield return Shot("04-after-resume-click");
