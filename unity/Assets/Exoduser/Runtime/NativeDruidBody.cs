@@ -20,6 +20,8 @@ namespace Exoduser.UnityPort
         public bool Visible { get { return main != null && main.enabled; } }
         public Bounds Bounds { get { return main.bounds; } }
         public Vector3 Anchor { get { return main.transform.position; } }
+        // 표현용 크기. Core 반경·공격 판정과 독립이며 Put에서 누적 없이 적용.
+        public float PresentationScale=1f;
 
         public NativeDruidBody(Transform parent, Sprite discSprite)
         {
@@ -69,7 +71,7 @@ namespace Exoduser.UnityPort
         void Put(SpriteRenderer r, Sprite s, float x, float y, float widthPx, float heightPx, int order, float alpha)
         {
             r.enabled = true; r.sprite = s; r.sortingOrder = order;
-            r.transform.position = Point(x, y); r.transform.localScale = new Vector3(widthPx / s.rect.width, heightPx / s.rect.height, 1);
+            r.transform.position = Point(x, y); r.transform.localScale = new Vector3(widthPx / s.rect.width*PresentationScale, heightPx / s.rect.height*PresentationScale, 1);
             r.color = new Color(1, 1, 1, alpha);
             if(r==main)NativeHd2D.Actor(r,true,contactWidth);
         }

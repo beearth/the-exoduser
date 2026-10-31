@@ -160,3 +160,20 @@
 |다음인수|R5 1a3기술게이트는R2같은DLL/M1·실제field22로별도충족/전체아트RETOUCH. 순수맵+HD호환4함수정상병합후새실행검수. UI아직FAIL후보0. 공통·Desktop지정단독writer통합/단계2·3·리마스터채택은아직미완|
 
 실물판정/근거는 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/STAGE1_PURE_VISUAL_REVIEW_985_R2.md, STAGE1_PURE_BUILD_LINK_985_R2.json, stage1-pure-validation-985-r2/receipt.json, stage1-pure-review-985-r2/raw-png-audit.json. 옛087/실패내역은역사그대로보존하며새순수본증거로덮지않는다.
+
+
+## R5 순수맵과 HD-2D 1단계 정상 결합 — 새 실행 검수 전
+
+|구역|현재결합계약·검수경계|
+|---|---|
+|인수|맵source1a3d758352fb10b6facace12a61a64253b7a9e76는19c6공통기반순수맵. R5-R2 같은DLL/M1·field22 기술게이트PASS/전체아트RETOUCH. 실패중인UI확장후보는인수0. 이전순수985실행본에는이맵이없었음|
+|정상충돌해소|NativeDruidBody Anchor와PresentationScale를함께보존. R3최종marker→ManualUpdate→HDProjectActor순서유지, nonHD fallback은MapNativeEnemyFootprint를사용. NativeGame의Pause복귀/HD배우/Map·기존공통Sound를함께보존|
+|재질|HellLightingLate의actorMaterial대입과shadow해제를 !HD또는!IsActor에한정해최종HD SpriteLit/접지소유권을덮지않음. 기존환경주광·화로·불꽃보존|
+|일반적그림자|A2EnemyGrounding은기존AimWorld85px최근접target ID갱신후HD등록body/walk의추가메시만제외. HD그림자1개유지, 기존42출력px상태표시보존|
+|AA|A2Field는HD일때AntialiasingMode.None/legacy는기존SMAA. Source와point filtering/pixelSnap을후처리AA로흐리지않게구분|
+|아레나|HD는기존view의body-relative+hero프레임을그대로사용하고새MapHellArenaCamera는disabled. 드루이드PresentationScale=1/legacy=.72. Map별도zoom·viewmask0재적용은!HD경로만, Map중복boss/playercontact는HDoff. 원래arena지면·횃불·국소광·A2ArenaSetup보존|
+|입력불변|Core114/Pause기준수치·판정·저장변경0, SourceMap보행/LOS40000과Map좌표·목교상부변경0. 단계2Core/surface·단계3post/water·리마스터반영0|
+|현재검사|동결정상3way I후보 Core114/Runtime196/Editor55 C# API모두0. 실제merge소스와준비후보를byte로재대조. API는Shader·최종카메라·새Player·M1·실제화면검수가아님|
+|남은게이트|새소스정상commit/remote복구→새고유build→같은M1·실제1920/3840 field/arena·조작→제작자1x판정→MERGE_QUEUE→지정integrator common/Desktop. 기존35ab/985영수증을새Runtime에재사용하지않음|
+
+근거 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/stage1-map-r5-combined-api, 맵담당 R5-R2-기술검수-아트판정.json. 맵조형·카펫형바닥/반복원형뿌리/원경높이층은Map담당RETOUCH, 독액색·약반사·기포·실교각물결은Main3단계미완으로구분한다.

@@ -55,10 +55,10 @@ namespace Exoduser.UnityPort
             UnityEngine.Rendering.Universal.CameraExtensions.GetUniversalAdditionalCameraData(view).renderPostProcessing=true; // RM-1 VFX V0: HDR core + Bloom
             view.transform.position=new Vector3(40.2f,-74.2f,-10);
             var resource=Resources.Load<TextAsset>("Data/ch1_map");if(resource==null)throw new InvalidOperationException("Original map resource is missing");
-            Map=new SourceMap(JsonUtility.FromJson<MapData>(resource.text));
+            Map=A2FieldLayout.CreateMap(JsonUtility.FromJson<MapData>(resource.text));
             font=Resources.Load<Font>("Art/fonts/NotoSansKR");
             hud=new NativeHud();skills=new NativeSkills();stats=new NativeStatPanel();hud.SlotSelected=slot=>{if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected callback slot="+slot+" before menu="+menu+" hp="+Simulation.Player.Hp+" skillsOpen="+skills.Open);if(!menu&&Simulation.Player.Hp>0){SetSkills(true,slot);if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected result skillsOpen="+skills.Open+" menu="+menu);}};
-            NativePanelTabBar.Requested+=OnPanelRequested;forge=new NativeForgePanel();levelUp=new NativeLevelUpOverlay();death=new NativeDeathOverlay();death.OnRetry=RetryFromDeath;stageClear=new NativeStageClearOverlay();bossBar=new NativeBossBar();areaTitle=new NativeAreaTitle();objective=new NativeObjectivePanel();areaTitleAllowed=!Array.Exists(Environment.GetCommandLineArgs(),a=>a.StartsWith("--unity-",StringComparison.Ordinal)&&a!="--unity-world-3d"&&!NativeReviewArgs.IsReviewArgument(a));
+            NativePanelTabBar.Requested+=OnPanelRequested;forge=new NativeForgePanel();levelUp=new NativeLevelUpOverlay();death=new NativeDeathOverlay();death.OnRetry=RetryFromDeath;stageClear=new NativeStageClearOverlay();bossBar=new NativeBossBar();areaTitle=new NativeAreaTitle();objective=new NativeObjectivePanel();areaTitleAllowed=!Array.Exists(Environment.GetCommandLineArgs(),a=>a.StartsWith("--unity-",StringComparison.Ordinal)&&a!="--unity-world-3d"&&a!="--unity-a2-forest"&&!NativeReviewArgs.IsReviewArgument(a));
             inventory=new NativeInventory(()=>{Simulation.ApplyEquipment(inventory.State);hud.Refresh(Simulation.Player,Simulation.TickCount,true);RequestCombatSave();});
             BuildProps();
             var kiSheet=Resources.Load<Texture2D>("Art/vfx/ki_slash_silver_sheet");
@@ -70,6 +70,7 @@ namespace Exoduser.UnityPort
             impacts=new KiImpactView(transform,f=>SpriteFor("Art/vfx/ki_slash_hit_silver_sheet",f%2*627,f/2*627,627,627,new Vector2(.5f,.5f)));
             skillView=new NativeSkillView(transform);   // B03 skill effects
             sound=new NativeFeedbackAudio(transform,view);
+            gameObject.AddComponent<NativeUiSounds>().Initialize(sound,()=>lobby!=null&&!lobby.IsBlocking&&gameFocused);
             music=new NativeGameMusic(transform,sound.Bus);ambient=new NativeAmbientSources(transform,sound.Bus);   // RM-1 sound: BGM bus, forest bed, 3D environment sources
             sound.ListenerAt=ambient.ListenerAt=()=>Simulation!=null?Point(Simulation.Player.X,Simulation.Player.Y):Vector3.zero;   // the AudioListener sits on the player
             sound.OnScreen=world=>{var v=view.WorldToViewportPoint(world);return v.x>-.05f&&v.x<1.05f&&v.y>-.05f&&v.y<1.05f;};
@@ -83,7 +84,7 @@ namespace Exoduser.UnityPort
             pauseMenu.OptionChanged=OnSettingsOptionChanged;pauseMenu.LanguagePicked=code=>{lobby.SetLanguage(code);QueueSettingsSave();};pauseMenu.DiagLine=SettingsDiagLine;
             UpdateSettingsPersistenceNotice();
             var args=Environment.GetCommandLineArgs();
-            bool legacyFixture=Array.IndexOf(args,"--unity-playtest-capture")>=0||Array.IndexOf(args,"--unity-boss-text-smoke")>=0||Array.IndexOf(args,"--unity-exp-capture")>=0||Array.IndexOf(args,A15DirectArgument)>=0||Array.IndexOf(args,IntroSilenceFlag)>=0||Array.IndexOf(args,NativeSettingsStorageScope.FixtureArgument)>=0||Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0||Array.IndexOf(args,"--unity-pause-smoke")>=0||Array.IndexOf(args,"--unity-character-story-smoke")>=0||Array.IndexOf(args,"--unity-character-store-smoke")>=0||Array.IndexOf(args,"--unity-character-smoke")>=0||Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-hud-blend-smoke")>=0||Array.IndexOf(args,"--unity-drop-smoke")>=0||Array.IndexOf(args,"--unity-revive-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
+            bool legacyFixture=(A2Requested&&(Application.isEditor||Array.IndexOf(args,"--unity-steam-keyshot")>=0||Array.IndexOf(args,"--unity-field-screen")>=0))||Array.IndexOf(args,"--unity-playtest-capture")>=0||Array.IndexOf(args,"--unity-boss-text-smoke")>=0||Array.IndexOf(args,"--unity-exp-capture")>=0||Array.IndexOf(args,A15DirectArgument)>=0||Array.IndexOf(args,IntroSilenceFlag)>=0||Array.IndexOf(args,NativeSettingsStorageScope.FixtureArgument)>=0||Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0||Array.IndexOf(args,"--unity-pause-smoke")>=0||Array.IndexOf(args,"--unity-character-story-smoke")>=0||Array.IndexOf(args,"--unity-character-store-smoke")>=0||Array.IndexOf(args,"--unity-character-smoke")>=0||Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-hud-blend-smoke")>=0||Array.IndexOf(args,"--unity-drop-smoke")>=0||Array.IndexOf(args,"--unity-revive-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
             InitializeEntryFlowCapture(args);
             if(!legacyFixture){Running=false;if(Array.IndexOf(args,"--unity-quick-start")>=0)lobby.ShowLobby();else lobby.Begin();}
             if(Array.IndexOf(args,"--unity-entry-flow-capture")>=0)StartCoroutine(EntryFlowCapture());
@@ -97,6 +98,8 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,CombatSaveCaptureFlag)>=0){Running=false;StartCoroutine(CombatSaveCapture());}
             else if(Array.IndexOf(args,"--unity-c04-dump")>=0){Running=false;StartCoroutine(C04Dump());}
             else if(Array.IndexOf(args,"--unity-boss-text-smoke")>=0){Running=false;pauseSmoke=true;StartCoroutine(BossTextLocalityCapture());}
+            else if(Array.IndexOf(args,"--unity-field-screen")>=0){Running=false;pauseSmoke=true;StartCoroutine(A2FieldCapture());}
+            else if(Array.IndexOf(args,"--unity-steam-keyshot")>=0){Running=false;pauseSmoke=true;StartCoroutine(SteamKeyshotCapture());}
             else if(Array.IndexOf(args,"--unity-playtest-capture")>=0){Running=false;StartCoroutine(PlaytestCapture());}
             else if(Array.IndexOf(args,"--unity-ui-overlap-check")>=0){Running=false;StartCoroutine(UiOverlapCapture());}
             else if(Array.IndexOf(args,"--unity-hero-review")>=0){Running=false;StartCoroutine(HeroCapture());}
@@ -137,7 +140,7 @@ namespace Exoduser.UnityPort
             foreach(var e in enemies.Values){Destroy(e.body.gameObject);Destroy(e.walk.gameObject);}enemies.Clear();damage.Clear();damageFloaters.Clear();ResetFieldBossViews();
             kiView?.Reset();boltView?.Reset();impacts?.Reset();skillView?.Reset();sound?.Reset();
             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;if(settings!=null)config.DifficultyIndex=settings.Options.Get("diff");if(BuildFlavor.Current.DemoMode)config.LevelCap=BuildFlavor.Current.LevelCap;CombatBeginRun(config);
-            Simulation=new Simulation(config,SourceStarterFixture.Seed);revive.Reset();Simulation.ReviveTextRaised+=revive.Add;Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.Blocked;Simulation.LevelledUp+=OnLevelledUp;ReviewArgsApply();ApplySettingsOptions();
+            Simulation=new Simulation(config,SourceStarterFixture.Seed);revive.Reset();Simulation.ReviveTextRaised+=revive.Add;Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.ProjectileBlocked;Simulation.LevelledUp+=OnLevelledUp;ReviewArgsApply();ApplySettingsOptions();
             inventory.Reset();CombatRestoreState();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;death.Hide();deathShown=false;stageClear.Hide();bossBar.Hide();areaTitle.Hide();areaTitleShown=false;skillInputFence=false;Simulation.ApplyEquipment(inventory.State);CombatRestoreResources();
             Simulation.IsLootOnScreen=l=>{var p=view.WorldToViewportPoint(NativeRemodel3D.Point2D(l.X,l.Y));return p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1;};   // RM-INT: Core callback, always the 2D logic camera
             // D01: mkItem drops are real; R picks the highest rarity on screen (web 32936) into the bag. Persistent saves stay unimplemented.
@@ -188,8 +191,8 @@ namespace Exoduser.UnityPort
             // Web stat window: ESC blurs the search box first, then closes; K/TAB switch straight to skills/inventory (not while typing).
             if(stats.Open){
                 if(ExoInput.KeyDown(KeyCode.Escape)){if(stats.TextInputActive)stats.BlurSearch();else SetStats(false);}
-                else if(!stats.TextInputActive&&NativeKeyBindInput.Down("skill"))OnPanelRequested("skillPanel");
-                else if(!stats.TextInputActive&&NativeKeyBindInput.Down("inventory"))OnPanelRequested("invPanel");
+                else if(!stats.TextInputActive&&NativeKeyBindInput.Down("skill"))OnPanelHotkeyRequested("skillPanel");
+                else if(!stats.TextInputActive&&NativeKeyBindInput.Down("inventory"))OnPanelHotkeyRequested("invPanel");
                 else stats.HandleKeys(()=>SetStats(false));
                 return;
             }
@@ -200,21 +203,21 @@ namespace Exoduser.UnityPort
             // Web forge window (#forge): G toggles it in HandlePanelHotkeys; ESC closes (_panelBack); K / TAB switch directly to that window.
             if(forge.Open){
                 if(ExoInput.KeyDown(KeyCode.Escape)){SetForge(false);return;}
-                if(NativeKeyBindInput.Down("skill")){OnPanelRequested("skillPanel");return;}
-                if(NativeKeyBindInput.Down("inventory")){OnPanelRequested("invPanel");return;}
+                if(NativeKeyBindInput.Down("skill")){OnPanelHotkeyRequested("skillPanel");return;}
+                if(NativeKeyBindInput.Down("inventory")){OnPanelHotkeyRequested("invPanel");return;}
                 UpdateViews();return;
             }
             // Web togglePanel: pressing another window's key while a window is open switches directly to that window.
-            if(inventory.Open&&!inventoryKeysSmoke&&NativeKeyBindInput.Down("skill")){OnPanelRequested("skillPanel");return;}
+            if(inventory.Open&&!inventoryKeysSmoke&&NativeKeyBindInput.Down("skill")){OnPanelHotkeyRequested("skillPanel");return;}
             if(inventory.Open){if(!inventoryKeysSmoke&&inventory.PollKeys(Simulation.Player.Level))SetInventory(false);UpdateViews();return;}
             if(skillInputFence&&!ExoInput.Mouse(0))skillInputFence=false;
             if(ExoInput.KeyDown(KeyCode.Escape)||NativeKeyBindInput.Down("settings")){
                 if(skills.Open){SetSkills(false);return;}
                 if(inventory.Open)SetInventory(false);
-                else {menu=true;pauseMenu.OpenSettingsDirect();Running=false;}
+                else {string uiBefore=UiPanelState();menu=true;pauseMenu.OpenSettingsDirect();Running=false;UiPanelChanged(uiBefore);}
                 return;
             }
-            if(skills.Open&&NativeKeyBindInput.Down("inventory")){OnPanelRequested("invPanel");return;}
+            if(skills.Open&&NativeKeyBindInput.Down("inventory")){OnPanelHotkeyRequested("invPanel");return;}
             if(skills.Open){skills.HandleKeys(()=>SetSkills(false),EquipSelectedSkill);return;}
             if(!menu&&!inventory.Open&&Simulation.Player.Hp>0&&NativeKeyBindInput.Down("skill")){SetSkills(true);return;}
             if(!menu&&Simulation.Player.Hp>0&&NativeKeyBindInput.Down("inventory"))SetInventory(!inventory.Open);
@@ -370,6 +373,7 @@ namespace Exoduser.UnityPort
         }
         void UpdateEnemyShieldArc(EnemyState e,EnemyView ev)
         {
+            if(NativeRemodel3D.Requested){if(ev.arc!=null)ev.arc.enabled=false;return;}
             if(e.Web==null||e.IsBoss||e.MaxShield<=0||e.Web.eShieldMax<=0){if(ev.arc!=null)ev.arc.enabled=false;return;}
             if(ev.arc==null)ev.arc=CreateRenderer("Enemy shield "+e.Id);
             bool phys=e.Shield<=0;ev.arc.enabled=true;ev.arc.sprite=ArcSprite(Mathf.Max(1,Mathf.RoundToInt(e.Radius)),phys);
@@ -447,7 +451,7 @@ namespace Exoduser.UnityPort
             // 전환 중 전투 안내·지역 제목·레벨업이 중앙 명패를 덮지 않게 한다. 자원 HUD는 유지한다.
             if(Simulation.Stage.LoadPhase>0){GUI.matrix=old;return;}
             // game.html drawEn 54054: a 4 px bar (r*2+6 wide, r+16 above the centre) once the mob is hurt or its shield is down: black 60%, red hp, the blue shield laid over it
-            foreach(var e in Simulation.Enemies){if(!e.Alive||e.IsBoss||!(e.Hp<e.MaxHp||e.MaxShield>0&&e.Shield<e.MaxShield))continue;float ebw=e.Radius*2+6;var ebA=ToGUI(e.X-ebw/2,e.Y-e.Radius-16);var ebB=ToGUI(e.X+ebw/2,e.Y-e.Radius-16);float ebWid=ebB.x-ebA.x,ebHgt=Mathf.Max(2,4*ebWid/ebw);
+            foreach(var e in Simulation.Enemies){if(NativeRemodel3D.Active&&a2Field!=null){A2DrawEnemyStatus(e);continue;}if(!e.Alive||e.IsBoss||!(e.Hp<e.MaxHp||e.MaxShield>0&&e.Shield<e.MaxShield))continue;float ebw=e.Radius*2+6;var ebA=ToGUI(e.X-ebw/2,e.Y-e.Radius-16);var ebB=ToGUI(e.X+ebw/2,e.Y-e.Radius-16);float ebWid=ebB.x-ebA.x,ebHgt=Mathf.Max(2,4*ebWid/ebw);
                 Fill(new Rect(ebA.x,ebA.y,ebWid,ebHgt),new Color(0,0,0,.6f));Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Clamp01((float)e.Hp/e.MaxHp),ebHgt),new Color(.8f,0,0));if(e.MaxShield>0&&e.Shield>0)Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Min(1,e.Shield/e.MaxShield),ebHgt),new Color(.267f,.667f,1f));}
             DrawFieldBossBars();
             floatingTextLayout.BeginFrame(Time.unscaledTime);
@@ -478,32 +482,37 @@ namespace Exoduser.UnityPort
             GUI.matrix=old;
         }
         void SetSkills(bool open,int slot=6){
+            string uiBefore=UiPanelState();
             if(open&&firstPractice!=null)return;
             if(open){skillsWasRunning=Running;Running=false;}
             skills.SetOpen(open,slot);
             if(!open){skillInputFence=true;Running=gameFocused&&skillsWasRunning&&!menu&&!PlayerDown;}
+            UiPanelChanged(uiBefore);
         }
         void SetForge(bool open){
+            string uiBefore=UiPanelState();
             if(open&&firstPractice!=null)return;
             if(open){forgeWasRunning=Running;Running=false;}
             forge.SetOpen(open);
             if(!open){skillInputFence=true;Running=gameFocused&&forgeWasRunning&&!menu&&!PlayerDown;}
+            UiPanelChanged(uiBefore);
         }
         void SetStats(bool open){
+            string uiBefore=UiPanelState();
             if(open&&firstPractice!=null)return;
             if(open){statsWasRunning=Running;Running=false;}
             stats.SetOpen(open);
             if(!open){skillInputFence=true;Running=gameFocused&&statsWasRunning&&!menu&&!PlayerDown;}
+            UiPanelChanged(uiBefore);
         }
         // Web _injectPanelNav: a tab click opens that window (openPanel closes the others first); the active tab is ignored by the bar itself.
         // forge: the tab bar never requests the active window, so a request while open is the G key (toggle).
         // Web addExp -> _levelUpVfx.trigger(P,stage,lvd,demonic): one overlay trigger per addExp call that gained levels.
-        void OnLevelledUp(LevelUpEvent up){levelUp.Show(up.NewLevel);levelUpSeen=up.NewLevel;RequestCombatSave();}
+        void OnLevelledUp(LevelUpEvent up){sound?.PlayLevelUp();levelUp.Show(up.NewLevel);levelUpSeen=up.NewLevel;RequestCombatSave();}
         void OnPanelRequested(string id){
             if(Simulation==null||Simulation.Player.Hp<=0||firstPractice!=null)return;
             bool TabOpen(string tab){return tab=="settings"?menu:tab=="invPanel"?inventory.Open:tab=="skillPanel"?skills.Open:tab=="statPanel"?stats.Open:tab=="forge"?forge.Open:false;}
-            bool hadVisiblePanel=(lobby==null||!lobby.IsBlocking)&&(menu||inventory.Open||skills.Open||stats.Open||forge.Open);
-            bool targetWasOpen=TabOpen(id);
+            string uiBefore=UiPanelState();bool targetWasOpen=TabOpen(id);uiPanelTransaction=true;try{
             switch(id){
                 case "settings":
                     if(forge.Open)SetForge(false);
@@ -546,17 +555,17 @@ namespace Exoduser.UnityPort
                     break;
             }
             // 요청 자체가 아니라, 이미 보이던 다른 패널에서 대상 열기가 확정된 뒤에만 재생한다.
-            if(hadVisiblePanel&&!targetWasOpen&&!PlayerDown&&TabOpen(id))sound?.PlayUiTab();
+            }finally{uiPanelTransaction=false;}if(TabOpen(id)||targetWasOpen)UiPanelChanged(uiBefore);
         }
         // Web update() 32117~32122: window keys are processed while paused. G = forge, J = stats, F10 = settings toggle.
         // TAB/K switching between inventory and skills is in OnPanelRequested's callers; ESC follows _panelBack (close the open window, else open settings).
         bool HandlePanelHotkeys(){
             if(Simulation==null||Simulation.Player.Hp<=0||firstPractice!=null||stats.TextInputActive||pauseMenu.KeyCaptureActive)return false;   // A16: a key waiting in the binding page must not open windows
-            if(NativeKeyBindInput.Down("forge")){OnPanelRequested("forge");return true;}
-            if(NativeKeyBindInput.Down("stats")){OnPanelRequested("statPanel");return true;}
+            if(NativeKeyBindInput.Down("forge")){OnPanelHotkeyRequested("forge");return true;}
+            if(NativeKeyBindInput.Down("stats")){OnPanelHotkeyRequested("statPanel");return true;}
             if(ExoInput.KeyDown(KeyCode.F10)){
-                if(menu){if(gameFocused){menu=false;skillInputFence=true;Running=true;}}   // togglePanel('settings') while settings is open closes it
-                else OnPanelRequested("settings");
+                if(menu){if(gameFocused){string uiBefore=UiPanelState();menu=false;skillInputFence=true;Running=true;UiPanelChanged(uiBefore);}}   // togglePanel('settings') while settings is open closes it
+                else OnPanelHotkeyRequested("settings");
                 return true;
             }
             return false;
@@ -570,7 +579,7 @@ namespace Exoduser.UnityPort
         void ApplyFrameCap(int cap){QualitySettings.vSyncCount=0;Application.targetFrameRate=cap==0?-1:cap;}
         void ApplyPauseCommand(PauseMenuCommand command){
             switch(command){
-                case PauseMenuCommand.Resume: if(gameFocused&&!PlayerDown){menu=false;skillInputFence=true;Running=true;} break;
+                case PauseMenuCommand.Resume: if(gameFocused&&!PlayerDown){string uiBefore=UiPanelState();menu=false;skillInputFence=true;Running=true;UiPanelChanged(uiBefore);} break;
                 case PauseMenuCommand.Restart:if(gameFocused){ResetRun();skillInputFence=true;menu=false;Running=true;}break;
                 case PauseMenuCommand.ReturnLobby:SaveCombatNow();Running=false;menu=true;sound.Reset();pauseMenu.Reset();lobby.ShowLobby();break;
                 case PauseMenuCommand.Quit:if(gameFocused){SaveCombatNow();Application.Quit();}break;
@@ -636,9 +645,11 @@ namespace Exoduser.UnityPort
             if(Application.isBatchMode)Application.Quit(0);
         }
         void SetInventory(bool open){
+            string uiBefore=UiPanelState();
             if(open&&firstPractice!=null)return;
             if(open){inventoryWasRunning=Running;Running=false;}
             inventory.SetOpen(open);if(!open){skillInputFence=true;Running=gameFocused&&inventoryWasRunning&&!menu&&!PlayerDown;}
+            UiPanelChanged(uiBefore);
         }
         IEnumerator InventorySmoke(){
             string output=Argument("-output");if(string.IsNullOrEmpty(output))yield break;Directory.CreateDirectory(output);
