@@ -769,3 +769,5 @@ codex-web-statwin: 다섯 창 제목44px와 성장 머리225→44px, 기존 인�
 ### 2026-10-31 웹 로딩 초광폭 인수
 
 담당 codex-web-loading. 원본 잘림 재현 → 원본 보존 표시·배경 확장·상태 영역 분리 작업. 범위·전체 이미지 목록·검수 근거·반영 단계는 [로딩 초광폭 정본](../1전체그래픽세팅/LOADING_ULTRAWIDE_20261031.md)에 기록한다. Unity는 ui-ultrawide-brief.md 추가 인계 대상이며 웹 캡처를 Unity 증거로 대체하지 않는다.
+
+최종 보정 인수: 같은 담당의 새 브랜치 codex/web-loading-final35-20261031, fetch한 main baabceeae 시작. 전체35장 내장 생성·16/21/32판105개, 전체 화면 높이·폭 채움, 하단 검은 띠를 그라데이션 오버레이/뼈색 글자/금빛1px 진행 선으로 교체한다. 상세 최신 계약과 검수·원격 단계는 위 정본의 최종 보정 절과 I:/EXODUSER-Storage/web-loading/20261031-final35/REPORT.md를 따른다. Unity 실제 적용·실행은 별도다.
