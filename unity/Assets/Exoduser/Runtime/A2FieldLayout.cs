@@ -24,6 +24,8 @@ namespace Exoduser.UnityPort
         float[] surfaces;
         float[] terrainSamples;
         readonly System.Collections.Generic.List<DeckTriangle> deckTriangles=new System.Collections.Generic.List<DeckTriangle>();
+        readonly Dictionary<long,List<int>> deckCells=new Dictionary<long,List<int>>();
+        static long DeckCell(int x,int z) { return ((long)x<<32)|unchecked((uint)z); }
         float deckMinX=float.PositiveInfinity,deckMaxX=float.NegativeInfinity,deckMinZ=float.PositiveInfinity,deckMaxZ=float.NegativeInfinity;
         struct DeckTriangle { public float ax,ay,az,bx,by,bz,cx,cy,cz,inverse,minX,maxX,minZ,maxZ; }
         public A2FieldLayout(MapData data)
@@ -142,16 +144,24 @@ namespace Exoduser.UnityPort
                 float det=(bz-cz)*(ax-cx)+(cx-bx)*(az-cz);
                 if(Math.Abs(det)<.000001f||Math.Max(xyz[a+1],Math.Max(xyz[b+1],xyz[c+1]))>ceiling)continue;
                 float minX=Math.Min(ax,Math.Min(bx,cx)),maxX=Math.Max(ax,Math.Max(bx,cx)),minZ=Math.Min(az,Math.Min(bz,cz)),maxZ=Math.Max(az,Math.Max(bz,cz));
+                int triangle=deckTriangles.Count;
                 deckTriangles.Add(new DeckTriangle{ax=ax,ay=xyz[a+1],az=az,bx=bx,by=xyz[b+1],bz=bz,cx=cx,cy=xyz[c+1],cz=cz,inverse=1/det,minX=minX,maxX=maxX,minZ=minZ,maxZ=maxZ});
+                for(int cellZ=(int)Math.Floor((minZ-.0001f)*2);cellZ<=(int)Math.Floor((maxZ+.0001f)*2);cellZ++)
+                    for(int cellX=(int)Math.Floor((minX-.0001f)*2);cellX<=(int)Math.Floor((maxX+.0001f)*2);cellX++)
+                    {
+                        long key=DeckCell(cellX,cellZ);List<int> members;
+                        if(!deckCells.TryGetValue(key,out members)){members=new List<int>();deckCells.Add(key,members);}members.Add(triangle);
+                    }
                 deckMinX=Math.Min(deckMinX,minX);deckMaxX=Math.Max(deckMaxX,maxX);deckMinZ=Math.Min(deckMinZ,minZ);deckMaxZ=Math.Max(deckMaxZ,maxZ);
             }
         }
         bool DeckSample(float x,float z,out float height)
         {
             height=float.NegativeInfinity;
-            for(int i=0;i<deckTriangles.Count;i++)
+            List<int> members;if(!deckCells.TryGetValue(DeckCell((int)Math.Floor(x*2),(int)Math.Floor(z*2)),out members))return false;
+            for(int i=0;i<members.Count;i++)
             {
-                var t=deckTriangles[i];if(x<t.minX-.0001f||x>t.maxX+.0001f||z<t.minZ-.0001f||z>t.maxZ+.0001f)continue;
+                var t=deckTriangles[members[i]];if(x<t.minX-.0001f||x>t.maxX+.0001f||z<t.minZ-.0001f||z>t.maxZ+.0001f)continue;
                 float u=((t.bz-t.cz)*(x-t.cx)+(t.cx-t.bx)*(z-t.cz))*t.inverse;
                 float v=((t.cz-t.az)*(x-t.cx)+(t.ax-t.cx)*(z-t.cz))*t.inverse,w=1-u-v;
                 if(u<-.0001f||v<-.0001f||w<-.0001f)continue;

@@ -89,6 +89,14 @@ class Program
             Check((float)height.Invoke(deckField,new object[]{40.22f,-50f})<deckY-.2f,"발 접촉 범위 밖을 보행판으로 확장하지 않기");
             if(deck!=null){var rail=(float[])thin.Clone();for(int i=1;i<rail.Length;i+=3)rail[i]=deckY+.8f;deck.Invoke(deckField,new object[]{rail,quad,deckY+.1f});}
             Check(deck!=null&&Math.Abs((float)height.Invoke(deckField,new object[]{40.075f,-50f})-deckY)<.005f,"목교 난간은 보행판 높이에서 제외");
+            if(deck!=null)
+            {
+                var cellField=Activator.CreateInstance(type,new object[]{data});
+                var narrow=new float[]{40.52f,deckY,-50.02f,40.56f,deckY,-50.02f,40.52f,deckY,-49.98f,40.56f,deckY,-49.98f};
+                deck.Invoke(cellField,new object[]{narrow,quad,deckY+.1f});
+                Check(Math.Abs((float)height.Invoke(cellField,new object[]{40.54f,-50f})-deckY)<.005f,"음수Z 셀경계의 정확 목교 표면");
+                Check(Math.Abs((float)height.Invoke(cellField,new object[]{40.49f,-50f})-deckY)<.005f,"인접 공간셀의 3cm 틈 발 접촉 유지");
+            }
             var cover=type.GetMethod("GroundCover");
             Check(cover!=null,"구역 단위 연속 지면 식생 사용");
             if(cover!=null)
