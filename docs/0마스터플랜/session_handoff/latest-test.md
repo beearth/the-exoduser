@@ -103,7 +103,7 @@ HP0 fallen 부활 대기의 계속하기/패널 닫기, 직접 설정 마지막 
 | Desktop | C:/Users/심도진/Desktop/지옥의 길 (Unity).lnk → I:/EXODUSER-Storage/demo-art/pause-fix/build-final-r4/EXODUSER-Unity.exe |
 | 정상 인자/작업폴더 | -force-d3d11 --remodel3d / I:/EXODUSER-Storage/demo-art/pause-fix/build-final-r4 |
 | 바로가기 검증 | 원본25269dd792f17a476e7d665992408d1db4d3f8752ce17094ef0b1fa529d9ce81 정확백업→새471813f5685d0d8b7e9e514700857412ea00552eaf4804ba6aa978578e314149·필드/Runtime해시 readback. 앱자동기동0 |
-| 웹 원문 | 이번 main 인계 기준447bf66497edc03444bd24c20b92b040a4225246의 closePanel이 기존3검사 원문과 동일. 전체웹동등 판정 아님 |
+| 웹 원문 | 이번 main 인계 기준bb654cdb2d5e47856691fbee6c8f76655cbe2896의 closePanel이 기존3검사 원문과 동일. 전체웹동등 판정 아님 |
 | 보존 | 자동파생519 원본byte복구·착수미추적56 SHA동일·타인WIP/세이브보존·자기GPU예약반환·추가GPU0 |
 | 상세 | I:/EXODUSER-Storage/demo-art/pause-fix/REPORT.md·source-delivery-r4.json·quality-gate.json·desktop-delivery.json |
 

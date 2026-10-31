@@ -1,9 +1,11 @@
 import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
-import {foliageLayout,seeded,waterAt,plantHabitat} from './living-layout.mjs?v=20261031-layer2';
+import {waterAt,plantHabitat} from './living-layout.mjs?v=20261031-layer2';
 import {createRelief} from './living-relief.mjs?v=20261031-layer2';
-import {createMapLook} from './map-look-pass.mjs?v=20261031-maplook1';
-import {createForest} from './forest-layer.mjs?v=20261031-forest1';
+import {createMapLook} from './map-look-pass.mjs?v=20261031-light4';
+import {createForest} from './forest-layer.mjs?v=20261031-forest4';
 import {createGhosts} from './ghost-layer.mjs?v=20261031-ghost3';
+import {authoredFoliageLayout,puddleHabitat} from './foliage-layout.mjs?v=20261031-foliage4b';
+import {drawFoliageDebug} from './foliage-debug.mjs?v=20261031-foliage4';
 
 // The native map is the color source. This canvas contains ONLY added vegetation
 // and water highlights; actors, VFX, camera, lighting and HUD use their original pass.
@@ -18,6 +20,8 @@ export async function install(read){
   const source=await new THREE.TextureLoader().loadAsync('./assets/web3d/living/rotten-underbrush-atlas.png');
   source.colorSpace=THREE.NoColorSpace;source.minFilter=THREE.LinearFilter;source.magFilter=THREE.LinearFilter;
   const [lookData,lookAnchors]=await Promise.all(['map-look-ch1.json','map-look-anchors.json'].map(async file=>{const r=await fetch('./assets/web3d/'+file);if(!r.ok)throw Error(file+' '+r.status);return r.json();}));
+  const foliageResponse=await fetch('./assets/web3d/foliage-ch1.json?v=20261031-foliage4');if(!foliageResponse.ok)throw Error('foliage-ch1 '+foliageResponse.status);
+  const foliagePlan=await foliageResponse.json(),foliageDebug=new URLSearchParams(location.search).get('r3dFoliageDebug')==='1';
   const mapLook=createMapLook(renderer,canvas,uniforms,lookData,lookAnchors);
   const forestResponse=await fetch('./assets/web3d/forest-ch1.json');if(!forestResponse.ok)throw Error('forest-ch1 '+forestResponse.status);
   const forest=await createForest(renderer,canvas,uniforms,await forestResponse.json(),lookAnchors);
@@ -67,16 +71,11 @@ export async function install(read){
     }`});
   const waters=new THREE.Group();scene.add(waters);let waterMeshes=[],layout=[],mapRef=null,frame=0,lastTime=0,ema=16.7,density=1,enabled=true;
   const waterTextures=new Map(),seenProjectiles=new WeakMap(),seenBlasts=new WeakSet(),previousActors=new WeakMap(),hitPool=Array.from({length:8},()=>new THREE.Vector4(-1e5,-1e5,-100,0));let hitIndex=0;
-  const stats={frame:0,foliage:0,total:0,water:0,cpuMs:0,density:1,proxy,drawCalls:0,interactions:0};
+  const stats={foliagePlanned:true,foliageRegions:foliagePlan.regions.length,foliageZones:foliagePlan.regions.reduce((n,r)=>n+r.zones.length,0),foliageDebug,frame:0,foliage:0,total:0,water:0,cpuMs:0,density:1,proxy,drawCalls:0,interactions:0};
   function plane(cx,cy,w,h){const g=new THREE.PlaneGeometry(w,h);const p=g.attributes.position;for(let i=0;i<p.count;i++){p.setXYZ(i,p.getX(i)+cx,cy-p.getY(i),0);}return g;}
   function build(s){
-    mapRef=s.G.map;layout=foliageLayout(mapRef,s.tile,(s.G.seed||s.G._seed||0)^s.G.mw*73856093^s.G.mh*19349663);
-    const random=seeded(s.G.mw*31+s.G.mh);
-    for(const o of s.objects){if(!/tree|root|stump|rock/.test(o.type)||!o._hand)continue;
-      for(let j=0;j<7;j++){const a=random()*6.283,r=45+random()*85;layout.push({x:o.x+Math.cos(a)*r,y:o.y+Math.sin(a)*r*.45,scale:.45+random()*.6,phase:random()*6.283,variant:j%4});}}
+    mapRef=s.G.map;layout=authoredFoliageLayout(foliagePlan,s.hill,s.tile);
     const h=s.hill,t=s.tile;
-    // Reeds follow both authored banks, including the entire 32:9 view.
-    if(h)for(let i=0;i<140;i++){const a=(i+random()*.7)/140*6.283,d=(i%2?h.outer+.055:h.inner-.055)+(random()-.5)*.04,x=(h.cx+h.rx*d*Math.cos(a))*t,y=(h.cy+h.ry*d*Math.sin(a))*t;if(x<h.cx*t&&Math.abs(y-h.rampY*t)<130)continue;layout.push({x,y,scale:.44+random()*.55,phase:random()*6.283,variant:0});}
     for(const m of waterMeshes){waters.remove(m.mesh);m.mesh.geometry.dispose();}waterMeshes=[];
     const add=(x,y,w,h,descriptor)=>{const mesh=new THREE.Mesh(plane(x,y,w,h),waterMaterial);mesh.frustumCulled=false;waters.add(mesh);waterMeshes.push({mesh,x,y,w,h,...descriptor});};
     if(h)add(h.cx*t,h.cy*t,h.rx*t*2.2,h.ry*t*2.2,{mode:0});
@@ -89,10 +88,10 @@ export async function install(read){
     // Use the same original-alpha water mask for isolated puddles as for flow.
     const maskCanvas=document.createElement('canvas');maskCanvas.width=maskCanvas.height=64;const maskCtx=maskCanvas.getContext('2d',{willReadFrequently:true});
     for(const water of waterMeshes)if(water.mode===1){maskCtx.clearRect(0,0,64,64);maskCtx.drawImage(water.texture.image,0,0,64,64);water.mask=maskCtx.getImageData(0,0,64,64).data;}
-    let wet=0;for(const p of layout){const habitat=plantHabitat(p.x,p.y,h,t);let shore=habitat.shore;
-      for(const w of waterMeshes)if(w.mode===1&&Math.abs(p.x-w.x)<w.w*.48&&Math.abs(p.y-w.y)<w.h*.48){let u=(p.x-w.x)/w.w+.5,v=(p.y-w.y)/w.h+.5;if(w.flip<0)u=1-u;const i=(Math.min(63,Math.max(0,Math.floor(v*64)))*64+Math.min(63,Math.max(0,Math.floor(u*64))))*4,d=w.mask;if(d[i+1]-d[i]>4&&Math.max(d[i],d[i+1],d[i+2])<87&&d[i+3]>50)shore=true;}
-      if(shore){p.variant=0;p.scale*=.76;p.wet=true;wet++;}p.variant??=Math.floor(p.phase*11)%4;
-    }stats.total=layout.length;stats.aquatic=wet;
+    let wet=0;layout=layout.filter(p=>{const habitat=plantHabitat(p.x,p.y,h,t);let shore=habitat.shore;
+      for(const w of waterMeshes)if(w.mode===1){const habitat=puddleHabitat(p.x,p.y,w);if(habitat.deep)return false;if(habitat.shore)shore=true;}
+      if(shore){p.variant=0;p.scale*=.76;p.wet=true;wet++;}p.variant??=Math.floor(p.phase*11)%4;return true;
+    });stats.total=layout.length;stats.aquatic=wet;
   }
   function draw(ctx,s,view){
     if(!enabled||s.G.stage!==0||s.G._bossArena||!s.G.map)return;
@@ -117,13 +116,15 @@ export async function install(read){
     waterUniforms.hits.value=hitPool;
     const hill=s.hill,t=s.tile;waterUniforms.ramp.value.set(hill.rampX0*t,hill.rampX1*t,hill.rampY*t,0);waterUniforms.rampHalf.value.set(hill.rampHalf0*t,hill.rampHalf1*t);waterUniforms.band.value.set(hill.inner,hill.outer);
     let visibleWater=0;for(const water of waterMeshes){const visible=water.x+water.w/2>view.x&&water.x-water.w/2<view.x+view.w&&water.y+water.h/2>view.y&&water.y-water.h/2<view.y+view.h;water.mesh.visible=visible;if(visible)visibleWater++;water.mesh.onBeforeRender=()=>{waterUniforms.mode.value=water.mode;waterUniforms.center.value.set(water.x,water.y);waterUniforms.radii.value.set(water.mode===0?hill.rx*t:water.w/2,water.mode===0?hill.ry*t:water.h/2);waterUniforms.liquid.value=water.texture||source;waterUniforms.flip.value=water.flip||1;waterMaterial.uniformsNeedUpdate=true;};}
-    mapLook.draw(ctx,s,view);
-    // Already shaded cold forest: outside-only mask, after the terrain dimmer.
-    forest.draw(ctx,s,view);
+    // Plants, their roots and water share the native environment lighting.
     renderer.render(scene,camera);canvas._glVer=(canvas._glVer||0)+1;
     ctx.save();ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';ctx.drawImage(canvas,view.x,view.y,view.w,view.h);ctx.restore();
+    mapLook.draw(ctx,s,view);
+    // Outside-only cold forest is already shaded, before actors and danger marks.
+    forest.draw(ctx,s,view);
     ghosts.draw(ctx,s,view);
     relief.motes(ctx,s,view,low);
+    if(foliageDebug)drawFoliageDebug(ctx,foliagePlan,view);
     Object.assign(stats,{frame,foliage:count,water:visibleWater,cpuMs:performance.now()-start,density,drawCalls:renderer.info.render.calls});
   }
   let currentState;

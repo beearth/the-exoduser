@@ -2,16 +2,16 @@ import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
 import {mapLookLayout,holeLights,effectLights,renderEnergy,foregroundPose} from './map-look-layout.mjs';
 import {seeded,applyAffine} from './living-layout.mjs';
 import {lightingGLSL} from './lighting-model.mjs';
+import {createFrameSampler} from './frame-sampler.mjs';
 
 // A snapshot of the native environment BEFORE actors/VFX/HUD is the albedo.
 // Lighting never substitutes terrain art or recolors an actor sprite.
 export function createMapLook(renderer,canvas,shared,data,anchors){
  const plan=mapLookLayout(data,anchors),scene=new THREE.Scene(),camera=new THREE.Camera();
- const frameTexture=new THREE.Texture();frameTexture.colorSpace=THREE.NoColorSpace;
- frameTexture.minFilter=frameTexture.magFilter=THREE.LinearFilter;frameTexture.generateMipmaps=false;
+ const frameSampler=createFrameSampler(frame=>{const t=new THREE.Texture(frame);t.colorSpace=THREE.NoColorSpace;t.minFilter=t.magFilter=THREE.LinearFilter;t.generateMipmaps=false;return t;});
  const lights=Array.from({length:40},()=>new THREE.Vector4(-1e5,-1e5,1,0)),colors=lights.map(()=>new THREE.Vector3());
  const shafts=plan.shafts.map(s=>new THREE.Vector4(...s.position,s.width,s.length));
- const u={...shared,frameArt:{value:frameTexture},pixel:{value:new THREE.Vector2()},lights:{value:lights},colors:{value:colors},shafts:{value:shafts},ambient:{value:new THREE.Vector3()},flash:{value:0},lightCount:{value:0}};
+ const u={...shared,frameArt:{value:null},pixel:{value:new THREE.Vector2()},lights:{value:lights},colors:{value:colors},shafts:{value:shafts},ambient:{value:new THREE.Vector3()},flash:{value:0},lightCount:{value:0}};
  const material=new THREE.ShaderMaterial({uniforms:u,depthTest:false,depthWrite:false,
   vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}`,
   fragmentShader:`uniform sampler2D frameArt;uniform vec2 pixel;uniform vec4 view;uniform vec4 lights[40],shafts[8];uniform vec3 colors[40],ambient;uniform float time,flash;uniform int lightCount;varying vec2 vUv;
@@ -83,9 +83,12 @@ export function createMapLook(renderer,canvas,shared,data,anchors){
  }
  function draw(ctx,s,view){
   if(!s.frame||!s.flush)return;update(s,view);s.flush();
-  frameTexture.image=s.frame;frameTexture.needsUpdate=true;u.pixel.value.set(1/s.frame.width,1/s.frame.height);
+  const probe=window._Web3DFrameProbe;
+  if(probe&&!probe.input){probe.view={...view};probe.input=s.frame.toDataURL();}
+  u.frameArt.value=frameSampler.update(s.frame);u.pixel.value.set(1/s.frame.width,1/s.frame.height);
   shared.view.value.set(view.x,view.y,view.w,view.h);shared.time.value=s.now/1000;
   renderer.render(scene,camera);canvas._glVer=(canvas._glVer||0)+1;
+  if(probe&&!probe.output)probe.output=canvas.toDataURL();
   ctx.save();ctx.globalAlpha=1;ctx.drawImage(canvas,view.x,view.y,view.w,view.h);ctx.restore();
  }
  function motes(ctx,s,view,low){

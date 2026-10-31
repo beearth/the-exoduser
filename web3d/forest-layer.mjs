@@ -9,6 +9,12 @@ export async function createForest(renderer,canvas,shared,data,anchors){
  mx.fillStyle='white';mx.fillRect(0,0,1024,1024);mx.globalCompositeOperation='destination-out';mx.beginPath();
  anchors.boundary.forEach(([x,y],i)=>mx[i?'lineTo':'moveTo']((x*anchors.tile_size-origin)*k,(y*anchors.tile_size-origin)*k));mx.closePath();mx.filter='blur(5px)';mx.fill();mx.filter='none';
  const maskTex=new THREE.CanvasTexture(mask);maskTex.minFilter=maskTex.magFilter=THREE.LinearFilter;
+ // BACK mass: dim wood through cold haze, including alpha gaps under the roots.
+ // It is outside the walkable polygon and reuses the existing forest painting.
+ const backMaterial=new THREE.ShaderMaterial({uniforms:{...shared,art:{value:null},forestMask:{value:maskTex}},depthTest:false,depthWrite:false,transparent:true,
+  vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}`,
+  fragmentShader:`uniform vec4 view;uniform sampler2D art,forestMask;varying vec2 vUv;void main(){vec2 w=view.xy+vec2(vUv.x,1.-vUv.y)*view.zw;float outside=texture2D(forestMask,vec2((w.x+2400.)/12800.,1.-(w.y+2400.)/12800.)).a;if(outside<.005)discard;vec4 wood=texture2D(art,fract(w/vec2(1450.,2100.)));float haze=.92+.08*sin(w.x*.0013+w.y*.0008);vec3 c=(vec3(.028,.037,.049)+wood.rgb*wood.a*vec3(.07,.08,.09))*haze;gl_FragColor=vec4(c,outside*.96);}`});
+ const back=new THREE.Mesh(new THREE.PlaneGeometry(2,2),backMaterial);back.frustumCulled=false;back.renderOrder=-10;scene.add(back);
  const vertex=`uniform vec4 view;uniform float time,bend;attribute vec4 placement,detail;varying vec2 vUv,world;varying vec4 info;
  void main(){vUv=uv;info=detail;vec2 p=position.xy*placement.zw;float top=uv.y;
  p.x+=sin(time*.42+detail.w)*top*top*3.*bend*step(.5,detail.z);
@@ -23,6 +29,7 @@ export async function createForest(renderer,canvas,shared,data,anchors){
  gl_FragColor=vec4(color*.62,c.a*info.x*root*outside);}`;
  for(const [name,url]of Object.entries(data.textures)){
   const art=await new THREE.TextureLoader().loadAsync('./'+url);art.colorSpace=THREE.NoColorSpace;
+  if(name==='forest_stand')backMaterial.uniforms.art.value=art;
   art.minFilter=art.magFilter=THREE.LinearFilter;
   for(const layer of [3,2,1,0]){
    const rows=[...plan.trees,...plan.low].filter(p=>p.texture===name&&p.layer===layer);if(!rows.length)continue;
