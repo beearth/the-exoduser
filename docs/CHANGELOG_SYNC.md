@@ -55604,3 +55604,8 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 배경 확장 | 내장 image_gen으로 네메시아·핵터·디로이 좌우 배경, 무손실21/32 WebP6개. 기존 원본35장 유지, 미생성/실패는 동일 원본 블러 폴백 | img/lording/wide/ |
 | 패키지·검수 | FILES 공통런타임 명시, 회귀 test/loadingWide.test.js 및 tools/check-loading-wide.mjs. 전면 가시성·전체구도·하단 비중첩·비동기 요청/실패 검사 | I:/EXODUSER-Storage/web-loading/20261031-wide/ |
 | Unity 인계 | ui-ultrawide-brief.md 끝에 같은 이미지·표시계약·해상도 및 별도 Unity 검수 지시 | 웹 검수와 Unity 실행은 분리 |
+
+
+## 2026-10-31 웹 초광폭 월드
+
+stage=0은 실제200×200 본편으로 정정하고 과거 원화 판은 명시적 mapTest/plate 옵션으로 보존했다. 작은 판에는 production 청크/8000px 나무를 섞지 않는다. 본편 전체 VW/VH·세로 시야·1920 렌더는 유지한다. 리시는 기존2500px 초과·800~1200px 링을 유지하며 가시 영역+적 반경+100px 안 후보를 건너뛴다. 투사체 원거리 정리는 기존 거리제곱6250000 초과와 가시 영역+100px 밖을 모두 요구한다(즉시/일반탄 수명 연장 종료). 공격 수명·사거리·어그로는 유지한다. Unity/Godot 실행 반영을 의미하지 않는다. [정확한 현행 계약·검수](12퍼포먼스·최적화/WORLD_ULTRAWIDE_20261031.md).

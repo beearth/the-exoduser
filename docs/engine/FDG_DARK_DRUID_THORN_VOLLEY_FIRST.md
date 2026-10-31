@@ -41,7 +41,7 @@
 | pool / 밀도 | `_druidThornVolley` 기본/reset false, `_druidThornLane` 기본/reset−1. 이 instance만 modulo3 drop·생성 직후 decoy/ancestor 방향 재지정 제외. 전역 drop/유도 규칙은 그대로 |
 | 속도 | 입력4.4px/native f, 기존 후처리 physical5px/f(60Hz에서300px/s), magic500/60..600/60px/f(500..600px/s). magic 난수 유지. clip24FPS와 별개 |
 | 피해 / 속성 | n=floor(atk×1.3), physical=floor(floor(2n)×.5), magic=floor(2n). UNIT atk103은133/266, 실제 촬영 atk46은59/118. 기존 독 wrapper EL.P/col#66dd22·실제 HP 피해시 중독+3 유지. 색/EL은 parryClass를 바꾸지 않는다 |
-| 판정 / 수명 | 후처리 sz2.4·pool.r5.2. 일반탄 player 접촉 base `_pCollR=P.r+p.sz×3=P.r+7.2`, 기본 비패링 gate `_normalR=_pCollR+4=P.r+11.2`; 기존 Q/E 확장·현재/이전 플레이어 및 탄 선분 sweep 유지. nominal life/ml400, 기존 life−=sp×.667 및 magic 카메라2500px 내 life 연장/제거 규칙 유지. 정확400tick 종료로 표기하지 않는다 |
+| 판정 / 수명 | 후처리 sz2.4·pool.r5.2. 일반탄 player 접촉 base `_pCollR=P.r+p.sz×3=P.r+7.2`, 기본 비패링 gate `_normalR=_pCollR+4=P.r+11.2`; 기존 Q/E 확장·현재/이전 플레이어 및 탄 선분 sweep 유지. nominal life/ml400, life−=sp×.667 및 magic 카메라2500px 이내 또는 실제 가시 영역+100px 이내 life 연장, 두 범위 밖에서만 원거리 정리(2026-10-31 웹 기준). 정확400tick 종료로 표기하지 않는다 |
 | 시간 / cd | 기존 wind=floor(25×teleM)+extraDelay, phase0/1 base18/16native f. 발사 직후 recover45→다음 기존 update에서20 clamp. cd100 유지 |
 | scope 보존 | phase2+ 기존 요청수/드랍/black slots, 피날레·다른 보스·기본 main·Q/E/poise/자원·native AI·사용자 save 권위 유지. 어택티켓0 |
 | native loader | 새 gate만 bridge `?v=thorn-volley-first`, QA `?v=thorn-volley-first2`, 옵션 thornVolley:true. 기존 모듈 query는 그대로 |
