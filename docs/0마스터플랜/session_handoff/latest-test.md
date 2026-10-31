@@ -1,3 +1,5 @@
+> 2026-10-31 최신 후속: PC 일시정지·입력 복귀 수정은 검수149/M123·공통118a9421a·바탕화면 갱신까지 완료했다. 아래 이전 자연 플레이 총괄의 미검증은 유지한다. 상세는 문서 말미의 2026-10-31 전달 절을 따른다.
+
 # 최신버전 테스트 총괄 인계 — 2026-10-28 Codex 인수
 
 ## 현재 판정
@@ -81,3 +83,32 @@
 - 바탕화면 지옥의 길(Unity).lnk→I:/EXODUSER-Storage/demo-art/entry-flow/build/EXODUSER-Unity.exe, 인자 -force-d3d11 --remodel3d. 네속성/Runtime b5bfe912ccec2a1df294be8db777678354d255b7a28aabbf98163b119409d49a 확인·기존링크I백업·사용자앱자동기동0.
 - 추가일시정지캡처는메모리10GiB게이트미달로미실행(자기대기만취소). 전체UI/환경RETOUCH·Mac미확인. 숨은desktop촬영은명시expectedKill이며 기존종료지연해결/정상Quit PASS아님.
 - 근거 I:/EXODUSER-Storage/demo-art/entry-flow/REPORT.md·grid_after.png·검수.html·공통-반영.json·desktop-delivery.json.
+
+
+## 2026-10-31 일시정지·입력 복귀 전달 완료
+
+HP0 fallen 부활 대기의 계속하기/패널 닫기, 직접 설정 마지막 키보드 닫기, 안내 입력 해제와 메뉴 경합을 수정했다. 아래 한정 결과는 위 자연 플레이 총괄 미검증을 덮어쓰지 않는다.
+
+| 항목 | 실제 전달 |
+|---|---|
+| 실행 코드 | dc9ec87c5f1b83298b74f42124b4e4313f2473bf |
+| 공통 반영 | 이전15c8ed3c522de317d22cdbfd185b1ceca494b56f → unity/main 118a9421a67965905e89931b4d5faa9a8356f3bc, 비강제 fast-forward·원격 readback. 실제 commit 부모dc9ec87c5f1b83298b74f42124b4e4313f2473bf |
+| 최종 문서 | 118a9421a67965905e89931b4d5faa9a8356f3bc, 실행 코드와 Unity tree7e20520fdb1948e803a8677c341c10be9a605fed 동일 |
+| 정식 빌드 | 47a8c279, Unity6000.6.7f1 Win64, 실제 Editor DX11·remodel-scenes1·오류0·종료0 |
+| 같은 EXE M1 | a666ff75, 23/23, DX11·노출창/잔여/USER_SAVE 변경0 |
+| 입력 | startup41759079 21, fallen3D ad399d75 19, normal3D cb37e2bd 40, fallen2D02b324c9 19, normal2Da0243719 40, focus콜백608bfb4d 10. 합계149/149·런타임예외0 |
+| Runtime/Core | 8749e2670b7e50fcf6728e2a1a6c1797e25637d837178f1dd4d49306fbb39cb8 / 31763d3a33a6b94ed6ba5b5b471a5ca7660753a9b86e1d6cf4d32ec81b5e5505 |
+| Player MCP | 실제212파일·160DLL에서 MCP 파일0·MCPForUnity 참조0 |
+| 1x/영상 | 원본1600×900 전후픽셀 동일, 전환부분 자체PASS. 10fps 원본캡처 순서 영상4개 decode확인. 실제벽시계속도·자연플레이 영상과 구분 |
+| Desktop | C:/Users/심도진/Desktop/지옥의 길 (Unity).lnk → I:/EXODUSER-Storage/demo-art/pause-fix/build-final-r4/EXODUSER-Unity.exe |
+| 정상 인자/작업폴더 | -force-d3d11 --remodel3d / I:/EXODUSER-Storage/demo-art/pause-fix/build-final-r4 |
+| 바로가기 검증 | 원본25269dd792f17a476e7d665992408d1db4d3f8752ce17094ef0b1fa529d9ce81 정확백업→새471813f5685d0d8b7e9e514700857412ea00552eaf4804ba6aa978578e314149·필드/Runtime해시 readback. 앱자동기동0 |
+| 웹 원문 | 이번 main 인계 기준447bf66497edc03444bd24c20b92b040a4225246의 closePanel이 기존3검사 원문과 동일. 전체웹동등 판정 아님 |
+| 보존 | 자동파생519 원본byte복구·착수미추적56 SHA동일·타인WIP/세이브보존·자기GPU예약반환·추가GPU0 |
+| 상세 | I:/EXODUSER-Storage/demo-art/pause-fix/REPORT.md·source-delivery-r4.json·quality-gate.json·desktop-delivery.json |
+
+키는 Input System 가상 Keyboard→제품 Update/PollKeys, 클릭은 자기숨은창 WM Down/Up→제품 OnGUI/버튼이다. focus는 OnApplicationFocus 직접호출 fixture이며 실제 OS 전경 창 전환은 미검증이다. 원본14cc014d0 전체바이너리 직접입력 대신 관련함수 원문동일 진단 빌드로 재현했다. 초기 r3 startup18의 fixture예외4는 최종게이트 제외, 정상입장API의 r4 21검사/예외0으로 대체했다. 모든 원본 실패기록은 보존했다.
+
+기존 사용자 build_new 종료0xc0000005와 드루이드 처치 뒤 이동·ESC 동시 먹통은 동일원인/해결여부 미확정이다. C4 frame/tick/viewTick/XY만으로 해당 사용자 증상의 NativeGame Update/OnGUI/FixedUpdate 진입·복귀·실제poll을 증명했다고 쓰지 않는다. 이번 한정 입력149와 격리 Quit0으로 해당 증상 해결을 주장하지 않는다. 실제 손조작·자연전투 완주·전체아트·Mac 반영은 미검증/pending이다.
+
+현재 UI 복귀 계약은 unity/main의 [일시정지 SSOT](https://github.com/beearth/the-exoduser/blob/118a9421a67965905e89931b4d5faa9a8356f3bc/docs/engine/UNITY_PAUSE_SETTINGS_20261025.md)를 따른다. [인벤토리 현재 조건](https://github.com/beearth/the-exoduser/blob/118a9421a67965905e89931b4d5faa9a8356f3bc/docs/engine/UNITY_PC_INVENTORY_U04_20261026.md)도 같은 checkpoint에 반영했다. Native SSOT는 해당 Unity 줄기에 두고 main에는 이 인계만 기록한다. HDR은 APPLY_WAIT_PAUSE로 이 전달까지 common/Desktop 중복쓰기0을 합의했고, 후속은 이 checkpoint 위에서 기존 담당 한 명이 순수 범위 정상통합·새 동일빌드 검수를 수행한다.
