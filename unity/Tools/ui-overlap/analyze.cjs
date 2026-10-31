@@ -29,6 +29,12 @@ function analyze(frame){
   if(duplicate>=0){if(elements[duplicate].shadow&&!e.shadow)elements[duplicate]=e;continue;}
   elements.push(e);
  }
+ // Explicit production TxtGlow passes belong to their following body glyph. Keep ordinary duplicates and foreign text visible.
+ const glowSuffix=' / 명시 CSS text-shadow 광휘 패스',glowRadius=5.5*Math.min(frame.width/1920,frame.height/1080)+.01;
+ for(const e of elements){if(e.kind!=='text'||e.shadow!==true||!e.source?.endsWith(glowSuffix)||e.opacityKnown!==true||e.effectiveOpacity<0||e.effectiveOpacity>.03)continue;
+  const source=e.source.slice(0,-glowSuffix.length),body=elements.find(p=>p.kind==='text'&&!p.shadow&&p.text===e.text&&p.source===source&&p.depth===e.depth&&p.order>e.order&&JSON.stringify(p.clipRect)===JSON.stringify(e.clipRect)&&Math.hypot(p.rect.x-e.rect.x,p.rect.y-e.rect.y)<=glowRadius&&Math.abs(p.rect.width-e.rect.width)<.01&&Math.abs(p.rect.height-e.rect.height)<.01&&!elements.some(s=>s.kind==='surface'&&s.order>e.order&&s.order<p.order&&above(s,e)&&geometry.valid(geometry.intersect(shape(s),shape(e)))));
+  if(body)e.decorativeOwnerId=body.id;
+ }
  const masks=elements.filter(e=>(e.kind==='surface'||e.kind==='panel')&&opaque(e));
  const visible=elements.filter(e=>e.kind!=='surface').map(e=>{
   let visiblePolygons=[shape(e)].filter(geometry.valid);
@@ -41,7 +47,7 @@ function analyze(frame){
   if(a.visibleRects.some(r=>!inside(r,screen)))issues.push({type:'화면 이탈',a});
   for(let j=0;j<visible.length;j++){
    if(i===j)continue;const b=visible[j];const intersectionPolygons=a.visiblePolygons.flatMap(ar=>b.visiblePolygons.map(br=>geometry.intersect(ar,br))).filter(geometry.valid).filter(p=>{const r=geometry.bounds(p);return r.width>.5&&r.height>.5;});const intersections=intersectionPolygons.map(geometry.bounds);if(!intersections.length)continue;
-   if(b.kind==='text'){if(j>i)issues.push({type:'글자-글자',a,b,intersections,intersectionPolygons});}
+   if(b.kind==='text'){if((a.decorativeOwnerId||b.decorativeOwnerId)&&a.text===b.text&&(a.decorativeOwnerId||a.id)===(b.decorativeOwnerId||b.id))continue;if(j>i)issues.push({type:'글자-글자',a,b,intersections,intersectionPolygons});}
    else if(b.kind==='button'&&!(inside(a.rect,b.rect)&&above(a,b)))issues.push({type:'글자-버튼',a,b,intersections,intersectionPolygons});
    else if(b.kind==='panel'&&!inside(a.rect,b.rect))issues.push({type:'글자-판',a,b,intersections,intersectionPolygons});
    else if(b.kind==='control')issues.push({type:'글자-조작부',a,b,intersections,intersectionPolygons});
