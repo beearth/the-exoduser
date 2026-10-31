@@ -42,7 +42,8 @@ namespace Exoduser.UnityPort
                 if(tex==null){Debug.LogError("[A2 필드] 스캔 지면 누락 "+pair[1]);continue;}
                 a2FieldSoil.SetTexture(pair[0],tex);
             }
-            var moss=Resources.Load<Texture2D>("Art/map/a2/r3/Textures/RF3_Moss_Cushion_BaseColor");if(moss!=null)a2FieldSoil.SetTexture("_FieldMoss",moss);
+            foreach(var pair in new[]{new[]{"_FieldMoss","BaseColor"},new[]{"_FieldMossNormal","Normal"},new[]{"_FieldMossRough","Roughness"}})
+            {var moss=Resources.Load<Texture2D>("Art/map/a2/ground/A2_FieldMoss_"+pair[1]);if(moss==null)Debug.LogError("[A2 필드] 이끼 지면 누락 "+pair[1]);else a2FieldSoil.SetTexture(pair[0],moss);}
             var sdf=new Texture2D(200,200,TextureFormat.RGBA32,false,true){name="원본 보행 경계 시각 거리장",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
             var pixels=new Color[40000];
             for(int y=0;y<200;y++)for(int x=0;x<200;x++)pixels[y*200+x]=new Color(.5f+a2Field.Distance((x+.5f)*.4f,-(y+.5f)*.4f)/40,0,0,1);
@@ -172,6 +173,10 @@ namespace Exoduser.UnityPort
         }
         void A2FieldAtmosphere()
         {
+            var haze=new GameObject("A2 지면 높이 안개");haze.transform.SetParent(a2Root.transform,false);haze.layer=4;
+            var screen=new Mesh{name="높이 안개 화면 적분"};screen.vertices=new[]{new Vector3(-1,-1,0),new Vector3(1,-1,0),new Vector3(-1,1,0),new Vector3(1,1,0)};screen.triangles=new[]{0,2,1,1,2,3};
+            screen.bounds=new Bounds(Vector3.zero,Vector3.one*10000);
+            haze.AddComponent<MeshFilter>().sharedMesh=screen;var fog=haze.AddComponent<MeshRenderer>();fog.sharedMaterial=new Material(Shader.Find("EXODUSER/A2HeightFog"));fog.shadowCastingMode=ShadowCastingMode.Off;
             var shader=Shader.Find("EXODUSER/A2Atmosphere");
             foreach(var p in new[]{new Vector2(39,-70),new Vector2(26,-60),new Vector2(60,-58),new Vector2(21,-40),new Vector2(43,-34),new Vector2(64,-39),new Vector2(30,-18),new Vector2(53,-16),new Vector2(40,-6)})
             {
