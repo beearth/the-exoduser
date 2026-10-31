@@ -23,7 +23,7 @@ function setup(file,mode='kbm'){
   const ctx=vm.createContext({document,window:{},$:id=>id==='keyBindList'?list:null,_bindTab:mode,_gpActive:false,
     BINDS:{up:'KeyW',weapon:'mouse0',charge:'ShiftLeft'},BINDS2:{up:'ArrowUp',weapon:null,charge:null},listeningBind:null,_listenAlt:false,
     _T:s=>s,_L:(ko)=>ko,_bindName:s=>s,keyName:s=>s,_GP_KEY:{0:'mouse0',4:'ShiftLeft',5:'ControlLeft'},
-    renderSettings:()=>calls.push('render'),saveSettings:()=>calls.push('save'),notify:()=>{},_resetGpKeyMap:()=>{},_saveGpKeyMap:()=>{}});
+    renderSettings:()=>calls.push('render'),saveSettings:()=>calls.push('save'),notify:()=>{},_resetGpKeyMap:()=>{},_saveGpKeyMap:()=>{},_resetInteractInput:()=>{}});
   vm.runInContext('(function(){'+block+'})()',ctx);
   return {source,list,ctx,calls,rows:list.children.filter(n=>n.className==='set-row')};
 }

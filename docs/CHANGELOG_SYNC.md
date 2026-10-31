@@ -55494,3 +55494,14 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 소리 | Unity 대조표의 hover/confirm 샘플을 로비에도 연결. 효과음 설정·무음·장치/disabled·입장 전용 중복 제외. NW FILES에 새 모듈 포함 |
 | 검수 | 신규6 + 기존 UI/로비/설정 합325개 통과. 시작 SHA에서 같은12실패를 재현하고 오래된 금색 기대값과 누락된 window/QA-storage/input-reset/canvas 테스트 어댑터만 현행화. 제품 로직·보호 설계 변경0 |
 | 근거 | LOBBY_AAA_REFERENCE_STUDY 최신 표, I:/EXODUSER-Storage/design/web-uiux-20261031/ 전후1920/2560/3840·baseline/회귀 로그. 후속 공통 게임 UI와 최종 전체 캡처는 별도 단위 |
+
+## 2026-10-31 웹 UI·UX — 공통 창·HUD 최종
+
+| 범위 | 최종 구현·검수 |
+|---|---|
+| 공통 UI | web-uiux.css/js 및 game.html·NW FILES 연결. 중앙16:9 HUD/창/가이드·Hahmlet300/400·원화행동버튼·즉시도움말·동적키보드·초점복귀 |
+| 입력 수정 | 난이도 뒤로 Enter의 잘못된 진행을 기존버튼click으로 분리. 확인창 기본취소·반복키 차단·animationend초점복귀. 보스이름/시간겹침은 보스표시중타이머만아래로 |
+| 테스트 | 앞묶음의 신규6·325통과는 초기관측. 최종 로비신규9(title5+feedback4)·공통16 및 기존 관련분+패드HUD 포함347/347, project-check103/103. Chrome채널만고집하던패드HUD검수는설치Chromium/headless/mute로3/3 |
+| 시각 근거 | 33화면×1920/3840=66장·유효텍스트사각형겹침0, 21:9별도앵커확인. 타이틀/메뉴·로비·공통창요구/코드품질검토PASS. 원격/실제실행본/Steam은다른증거 |
+| 한계·보존 | 맵/캐릭터/몬스터/VFX원화·전투/경제/저장형식·사용자메인tracked변경0. 새번역키/28개lang변경0. UI상태를직접표시한격리headless검수이며 실제패드/NW실기/전체28언어/청취/자연전투완료주장안함 |
+| 산출·실행 | G:/exoduser/tmp/design-review/20261031_web_uiux/REPORT.md, 원본은I:/EXODUSER-Storage/design/web-uiux-20261031/. localhost3366자기작업본서버·격리save유지, Steam/DEMO/EA/외부배포0 |

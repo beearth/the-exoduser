@@ -24,7 +24,7 @@ function setup() {
   const nodes = {invPanel:root, invOssuaryPanel:ossuary, invStorageCol:storage, invCrystalsPanel:crystals};
   let ready = false, changes = 0;
   const context = {
-    document: {readyState:'complete', createElement:() => new Element(), getElementById:id => nodes[id]},
+    document: {readyState:'complete', createElement:tag => tag === 'canvas' ? {getContext:() => null} : new Element(), getElementById:id => nodes[id]},
     _invChangeCategory() {
       assert.ok(ready, 'Initial composition must not render player inventory');
       changes++;

@@ -15,7 +15,7 @@ function productionSettings(file){
 }
 function session(code,store,{load=true,getFails=false,setFails=false}={}){
   const ctx=vm.createContext({
-    IS_ELECTRON:false,BINDS:{weapon:'mouse0',shield:'KeyE',beam:'mouse2',charge:'ShiftLeft',forge:'KeyG',parry:'KeyQ',stats:'KeyJ',storage:'KeyN'},BINDS2:{},
+    window:{_FDGDruidQaStorage:{active:false}},IS_ELECTRON:false,BINDS:{weapon:'mouse0',shield:'KeyE',beam:'mouse2',charge:'ShiftLeft',forge:'KeyG',parry:'KeyQ',stats:'KeyJ',storage:'KeyN'},BINDS2:{},
     _xbowEquipped:false,localStorage:{getItem(k){if(getFails)throw Error('blocked');return store.get(k)||null;},setItem(k,v){if(setFails)throw Error('quota');store.set(k,String(v));}},
     BGM:{setVol(){}},_repairChainAttackBinds(){},applyUIScale(){},ExoduserI18n:{resolveLanguage(v){return ['ko','en','es','ptbr'].includes(v)?v:null;}}
   });

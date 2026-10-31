@@ -2609,6 +2609,8 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <link rel="stylesheet" href="inventory-gems-balance.css?v=20260927-half">
 <link rel="stylesheet" href="ui-quiet-tier.css?v=20261027-settings">
 <script src="stat-panel-ui.js?v=20261016-refund-totals"></script>
+<link rel="stylesheet" href="web-uiux.css?v=20261031-final5">
+<script src="web-uiux.js?v=20261031-final4" defer></script>
 </head>
 <body>
 <div id="gcModal"><div class="gc-box"><div class="gc-msg" id="gcMsg"></div><div class="gc-btns"><button class="gc-btn gc-ok" id="gcOk"></button><button class="gc-btn gc-cancel" id="gcCancel"></button></div></div></div>
@@ -63983,7 +63985,7 @@ function _showNextDiffPop(){
   pick(_ndSel);
   $('ndGo').onclick=go;$('ndBack').onclick=back;
   if(_ndKey)window.removeEventListener('keydown',_ndKey,true);
-  _ndKey=e=>{const k=e.key;if(k==='ArrowLeft'||k==='a'||k==='A')pick(_ndSel-1);else if(k==='ArrowRight'||k==='d'||k==='D')pick(_ndSel+1);else if(k==='Enter'||k===' ')go();else if(k==='Escape')back();else return;e.preventDefault();e.stopPropagation()};
+  _ndKey=e=>{if(e.isComposing||e.keyCode===229)return;const k=e.key;if(e.repeat&&(k==='Enter'||k===' '||k==='Escape')){e.preventDefault();e.stopPropagation();return;}if((k==='Enter'||k===' ')&&e.target instanceof Element&&e.target.closest('#ndBack,#ndGo'))return;if(k==='ArrowLeft'||k==='a'||k==='A')pick(_ndSel-1);else if(k==='ArrowRight'||k==='d'||k==='D')pick(_ndSel+1);else if(k==='Enter'||k===' ')go();else if(k==='Escape')back();else return;e.preventDefault();e.stopPropagation()};
   window.addEventListener('keydown',_ndKey,true);
   pop.style.opacity='1';pop.style.pointerEvents='all';
 }
