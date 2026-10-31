@@ -2259,7 +2259,7 @@
     "m_SourceType": 1,
     "m_FunctionName": "SkillGround",
     "m_FunctionSource": "",
-    "m_FunctionBody": "\nfloat2 p = (UV.xy - 0.5) * float2(SizeX, SizeY);\nfloat r = length(p);\nfloat a = atan2(p.y,p.x);\nfloat grain = saturate(0.5 + 0.3 * sin(p.x * 23.0 + sin(p.y * 31.0)) + 0.2 * sin(p.y * 47.0));\nfloat rough = Radius * (0.985 + 0.015 * sin(a * 19.0));\nfloat aa = max(fwidth(r),0.006);\nfloat inside = 1.0 - smoothstep(rough-aa,rough+aa,r);\nfloat rim = (1.0-smoothstep(0.012,0.028,abs(r-rough))) * smoothstep(0.25,0.6,grain);\nColor = lerp(FillColor,EdgeColor,rim);\nEmission = EdgeColor * rim * EdgeGlow;\nAlpha = saturate((inside * grain * 0.2 + rim * 0.35) * Progress);\n"
+    "m_FunctionBody": "\nfloat2 p = (UV.xy - 0.5) * float2(SizeX, SizeY);\nfloat r = length(p);\nfloat a = atan2(p.y,p.x);\nfloat grain = saturate(0.5 + 0.3 * sin(p.x * 23.0 + sin(p.y * 31.0)) + 0.2 * sin(p.y * 47.0));\nfloat rough = Radius * (0.985 + 0.015 * sin(a * 19.0));\nfloat aa = max(fwidth(r),0.006);\nfloat inside = 1.0 - smoothstep(rough-aa,rough+aa,r);\nfloat rim = (1.0-smoothstep(0.012,0.028,abs(r-rough))) * smoothstep(0.25,0.6,grain);\nColor = lerp(FillColor,EdgeColor,rim);\nEmission = EdgeColor * rim * EdgeGlow;\nAlpha = saturate(max(inside * (0.55 + 0.45 * grain), rim) * Progress);\n"
 }
 
 {

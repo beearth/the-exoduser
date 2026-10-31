@@ -49,14 +49,17 @@ float inside = 1.0 - smoothstep(rough-aa,rough+aa,r);
 float rim = (1.0-smoothstep(0.012,0.028,abs(r-rough))) * smoothstep(0.25,0.6,grain);
 Color = lerp(FillColor,EdgeColor,rim);
 Emission = EdgeColor * rim * EdgeGlow;
-Alpha = saturate((inside * grain * 0.2 + rim * 0.35) * Progress);
+Alpha = saturate(max(inside * (0.55 + 0.45 * grain), rim) * Progress);
 '''
 p=out/'SG_SkillGround.shadergraph';dump_multi(objs,str(p));meta(p)
 # The legacy boss arena is an XY sprite plane. DecalProjector cannot draw on its
 # sprite floor, so the same restrained floor language gets a transparent Lit quad.
 g=Graph(str(root/'Assets/Exoduser/Art/Characters/Shaders/HeroIronContrast.shadergraph'))
 g.strip();g.g['m_Path']='Exoduser/Impact'
-g.set_target(m_SurfaceType=1,m_AlphaMode=0,m_ZWriteControl=2,m_SupportVFX=False,m_RenderFace=0,m_AllowMaterialOverride=False)
+g.set_target(m_SurfaceType=1,m_AlphaMode=0,m_ZWriteControl=2,m_SupportVFX=False,m_RenderFace=0,m_AllowMaterialOverride=False,m_CastShadows=False)
+next(o for o in g.objs if o['m_Type'].endswith('.UniversalLitSubTarget'))['m_BlendModePreserveSpecular']=False
+for name in ['SurfaceDescription.Metallic','SurfaceDescription.Smoothness']:
+    slot=g.by[g.blocks[name]['m_Slots'][0]['m_Id']];slot['m_Value']=slot['m_DefaultValue']=0
 if 'SurfaceDescription.Emission' not in g.blocks:add_emission_block(g)
 fill=g.prop_color('FillColor',(.1,.08,.06,1));edge=g.prop_color('EdgeColor',(.3,.25,.18,1));glow=g.prop_float('EdgeGlow',0);fade=g.prop_float('Fade',.2)
 if 'SurfaceDescription.Alpha' not in g.blocks:
@@ -73,7 +76,7 @@ float inside = 1.0-smoothstep(0.96,1.0,r);
 float rim = (1.0-smoothstep(0.012,0.04,abs(r-0.975)))*smoothstep(0.25,0.6,grain);
 Color = lerp(FillColor,EdgeColor,rim);
 Emission = EdgeColor*rim*EdgeGlow;
-Alpha = saturate((inside*grain*0.2+rim*0.35)*Fade);
+Alpha = saturate(max(inside*(0.55+0.45*grain),rim)*Fade);
 ''',[('UV','vec2'),('FillColor','vec3'),('EdgeColor','vec3'),('EdgeGlow','float'),('Fade','float')],[('Color','vec3'),('Emission','vec3'),('Alpha','float')])
 uv=g.from_sample('UVNode');g.edge(uv,0,cf,'UV')
 for name,p in [('FillColor',fill),('EdgeColor',edge),('EdgeGlow',glow),('Fade',fade)]:g.edge(g.prop_node(p),0,cf,name)

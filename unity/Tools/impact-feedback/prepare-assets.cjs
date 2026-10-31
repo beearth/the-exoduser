@@ -8,7 +8,8 @@ function put(name,text,importer='DefaultImporter',sourceMeta){
  const meta=path.join(out,name+'.meta');
  fs.writeFileSync(meta,sourceMeta?fs.readFileSync(path.join(root,sourceMeta),'utf8').replace(/^guid: .+$/m,'guid: '+guid(name)):`fileFormatVersion: 2\nguid: ${guid(name)}\n${importer}:\n  externalObjects: {}\n`);
 }
-const graph=fs.readFileSync(path.join(root,'VFX/RM1/VFX_PoisonBurst.vfx'),'utf8').replace(/m_Name: VFX_PoisonBurst/g,'m_Name: VFX_ImpactBurst');
+let graph=fs.readFileSync(path.join(root,'VFX/RM1/VFX_PoisonBurst.vfx'),'utf8').replace(/m_Name: VFX_PoisonBurst/g,'m_Name: VFX_ImpactBurst');
+graph=graph.split(/(?=^--- !u!)/m).map(block=>block.includes('m_Label: Chunks quad')?block.replace('m_Label: Chunks quad','m_Label: Directional shards').replace('useBaseColorMap: 3','useBaseColorMap: 0').replace('primitiveType: 1','primitiveType: 0'):block).join('');
 put('VFX_ImpactBurst.vfx',graph,'VisualEffectImporter','VFX/RM1/VFX_PoisonBurst.vfx.meta');
 let stain=fs.readFileSync(path.join(root,'VFX/RM1/ShaderGraph/SG_GroundDecal.shadergraph'),'utf8');
 stain=stain.replace('Exoduser/RM1','Exoduser/Impact');

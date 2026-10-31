@@ -297,7 +297,7 @@
     "m_WorkflowMode": 1,
     "m_NormalDropOffSpace": 0,
     "m_ClearCoat": false,
-    "m_BlendModePreserveSpecular": true
+    "m_BlendModePreserveSpecular": false
 }
 
 {
@@ -310,8 +310,8 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Smoothness",
     "m_StageCapability": 2,
-    "m_Value": 0.5,
-    "m_DefaultValue": 0.5,
+    "m_Value": 0,
+    "m_DefaultValue": 0,
     "m_Labels": []
 }
 
@@ -470,7 +470,7 @@
     "m_AlphaMode": 0,
     "m_RenderFace": 0,
     "m_AlphaClip": false,
-    "m_CastShadows": true,
+    "m_CastShadows": false,
     "m_ReceiveShadows": true,
     "m_DisableTint": false,
     "m_AdditionalMotionVectorMode": 0,
@@ -1241,7 +1241,7 @@
     "m_SourceType": 1,
     "m_FunctionName": "SkillFloorFilm",
     "m_FunctionSource": "",
-    "m_FunctionBody": "\nfloat2 p = (UV-0.5)*2.0;\nfloat r = length(p);\nfloat grain = saturate(0.5 + 0.3*sin(p.x*23.0+sin(p.y*31.0)) + 0.2*sin(p.y*47.0));\nfloat inside = 1.0-smoothstep(0.96,1.0,r);\nfloat rim = (1.0-smoothstep(0.012,0.04,abs(r-0.975)))*smoothstep(0.25,0.6,grain);\nColor = lerp(FillColor,EdgeColor,rim);\nEmission = EdgeColor*rim*EdgeGlow;\nAlpha = saturate((inside*grain*0.2+rim*0.35)*Fade);\n"
+    "m_FunctionBody": "\nfloat2 p = (UV-0.5)*2.0;\nfloat r = length(p);\nfloat grain = saturate(0.5 + 0.3*sin(p.x*23.0+sin(p.y*31.0)) + 0.2*sin(p.y*47.0));\nfloat inside = 1.0-smoothstep(0.96,1.0,r);\nfloat rim = (1.0-smoothstep(0.012,0.04,abs(r-0.975)))*smoothstep(0.25,0.6,grain);\nColor = lerp(FillColor,EdgeColor,rim);\nEmission = EdgeColor*rim*EdgeGlow;\nAlpha = saturate(max(inside*(0.55+0.45*grain),rim)*Fade);\n"
 }
 
 {

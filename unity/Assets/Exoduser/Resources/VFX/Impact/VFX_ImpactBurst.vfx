@@ -1670,7 +1670,7 @@ MonoBehaviour:
   m_InputSlots:
   - {fileID: 8926484042661700104}
   m_OutputSlots: []
-  m_Label: Chunks quad
+  m_Label: Directional shards
   m_Data: {fileID: 8926484042661700098}
   m_InputFlowSlot:
   - link:
@@ -1689,7 +1689,7 @@ MonoBehaviour:
   m_SubOutputs:
   - {fileID: 8926484042661700105}
   - {fileID: 8926484042661700106}
-  useBaseColorMap: 3
+  useBaseColorMap: 0
   colorMapping: 0
   uvMode: 0
   flipbookLayout: 0
@@ -1715,7 +1715,7 @@ MonoBehaviour:
     m_PropertyNames: []
     m_PropertyValues: []
     renderQueue: -1
-  primitiveType: 1
+  primitiveType: 0
   useGeometryShader: 0
 --- !u!114 &8926484042661700090
 MonoBehaviour:

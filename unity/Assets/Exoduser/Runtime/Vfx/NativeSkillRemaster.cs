@@ -12,6 +12,13 @@ namespace Exoduser.UnityPort.Vfx
         static Mesh quad;
         public static Quaternion FloorRotation {get{return NativeRemodel3D.Active?Quaternion.identity:Quaternion.Euler(-90,0,0);}}
         public static Vector3 Point(float x,float y,float lift){return NativeRemodel3D.Active?RemodelWorld.ToWorld(x,y,lift):NativeRemodel3D.Point(x,y)+Vector3.back*lift;}
+        public static bool Visible(Camera camera,Vector3 world)
+        {
+            if(camera==null)return true;
+            if(!camera.enabled||(camera.cullingMask&1)==0)return false;
+            var p=camera.WorldToViewportPoint(world);
+            return p.z>=camera.nearClipPlane&&p.z<=camera.farClipPlane&&SkillPresentation.VisibleViewport(p.x,p.y,p.z);
+        }
         public static void Velocities(VisualEffect fx,PoisonPreset preset,Vector2 dir)
         {
             if(NativeRemodel3D.Active)return;
@@ -37,7 +44,7 @@ namespace Exoduser.UnityPort.Vfx
             public Light Light; public int Seen; public float Last=-99;
             public int Kind;
         }
-        sealed class Puff { public GameObject Go; public VisualEffect Fx; public VFXEventAttribute Attr; public float Born=-99; }
+        sealed class Puff { public GameObject Go; public VisualEffect Fx; public VFXEventAttribute Attr; public Renderer Render;public float Born=-99; }
         readonly Transform parent;
         readonly Material matter,ground,flat;
         readonly VisualEffectAsset graph;
@@ -52,6 +59,7 @@ namespace Exoduser.UnityPort.Vfx
         Simulation bound; int frame,events,lights; bool wasActive;
         public static NativeSkillRemaster Current {get;private set;}
         public bool Enabled=true;
+        public Camera RenderCamera {get;set;}
         public bool Active {get{return Enabled&&Ready;}}
         public bool Ready {get{return matter!=null&&ground!=null&&flat!=null&&graph!=null;}}
         public int GraphEvents {get;private set;}
@@ -129,7 +137,13 @@ namespace Exoduser.UnityPort.Vfx
         static void Surface(Handle h,uint baseColor,uint edge,float glow,float time)
         {
             h.Block.SetColor("_Base",Hex(baseColor));h.Block.SetColor("_Edge",Hex(edge));h.Block.SetFloat("_Glow",glow);h.Block.SetFloat("_Phase",time);
-            foreach(var p in h.Parts)p.GetComponent<MeshRenderer>().SetPropertyBlock(h.Block);
+            foreach(var p in h.Parts)
+            {
+                // Keep the Core XY footprint, but show upright matter at LOOK-001's
+                // elevation instead of pointing its height directly into the camera.
+                if(!NativeRemodel3D.Active&&h.Kind!=6)p.localRotation=Quaternion.Euler(90-NativeRemodel3D.Pitch*Mathf.Rad2Deg,0,0)*p.localRotation;
+                p.GetComponent<MeshRenderer>().SetPropertyBlock(h.Block);
+            }
         }
         static void Place(Handle h,float x,float y,float lift=0){h.Go.transform.position=ImpactSpace.Point(x,y,lift);h.Go.transform.rotation=ImpactSpace.FloorRotation;h.Go.transform.localScale=Vector3.one;}
         void Floor(Handle h,float radius,uint fill,uint edge,float alpha,float emission)
@@ -137,7 +151,7 @@ namespace Exoduser.UnityPort.Vfx
             if(!NativeRemodel3D.Active)
             {
                 if(h.Floor!=null)h.Floor.enabled=false;
-                if(h.Flat==null){var go=new GameObject("2D 스킬 바닥 반사");go.transform.SetParent(h.Go.transform,false);go.AddComponent<MeshFilter>().sharedMesh=ImpactSpace.FloorQuad;h.Flat=go.AddComponent<MeshRenderer>();h.FlatMat=new Material(flat);h.Flat.sharedMaterial=h.FlatMat;h.Flat.sortingOrder=-19000;}
+                if(h.Flat==null){var go=new GameObject("2D 스킬 바닥 반사");go.transform.SetParent(h.Go.transform,false);go.AddComponent<MeshFilter>().sharedMesh=ImpactSpace.FloorQuad;h.Flat=go.AddComponent<MeshRenderer>();h.FlatMat=new Material(flat);h.Flat.sharedMaterial=h.FlatMat;h.Flat.sortingOrder=-19000;h.Flat.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;}
                 h.Flat.enabled=alpha>0;h.Flat.transform.localPosition=new Vector3(0,.12f,0);h.Flat.transform.localScale=Vector3.one*(radius*2);
                 h.FlatMat.SetColor("_FillColor",Hex(fill));h.FlatMat.SetColor("_EdgeColor",Hex(edge));h.FlatMat.SetFloat("_Fade",alpha);h.FlatMat.SetFloat("_EdgeGlow",emission);return;
             }
@@ -154,17 +168,17 @@ namespace Exoduser.UnityPort.Vfx
         }
         void Light(Handle h,Color c,float range,float intensity)
         {
-            if(lights>=2)return;lights++;
+            if(lights>=2||!ImpactSpace.Visible(RenderCamera,h.Go.transform.position))return;lights++;
             if(h.Light==null){var go=new GameObject("국소 바닥 조명");go.transform.SetParent(h.Go.transform,false);go.transform.localPosition=new Vector3(0,.75f,0);h.Light=go.AddComponent<Light>();h.Light.type=LightType.Point;h.Light.shadows=LightShadows.None;}
             h.Light.enabled=true;h.Light.color=c;h.Light.range=range;h.Light.intensity=intensity;
         }
         void Emit(Handle h,float now,float x,float y,float lift,uint core,uint mid,uint dark,float size,float speed,float alpha,float period=.18f)
         {
-            if(now-h.Last<period||events>=6)return;
+            if(now-h.Last<period||events>=6||!ImpactSpace.Visible(RenderCamera,ImpactSpace.Point(x,y,lift)))return;
             Puff p=null;
             for(int i=0;i<puffs.Length;i++)
             {
-                if(puffs[i]==null){var go=new GameObject("스킬 미립자 Graph");go.transform.SetParent(parent,false);var fx=go.AddComponent<VisualEffect>();fx.visualEffectAsset=graph;puffs[i]=new Puff{Go=go,Fx=fx,Attr=fx.CreateVFXEventAttribute()};}
+                if(puffs[i]==null){var go=new GameObject("스킬 미립자 Graph");go.transform.SetParent(parent,false);var fx=go.AddComponent<VisualEffect>();fx.visualEffectAsset=graph;puffs[i]=new Puff{Go=go,Fx=fx,Attr=fx.CreateVFXEventAttribute(),Render=go.GetComponent<Renderer>()};}
                 if(now-puffs[i].Born>=.8f){p=puffs[i];break;}
             }
             if(p==null)return;events++;GraphEvents++;h.Last=now;p.Born=now;p.Go.SetActive(true);p.Fx.Reinit();
@@ -186,6 +200,7 @@ namespace Exoduser.UnityPort.Vfx
                 if(p.Fx.HasGradient("MistGradient"))p.Fx.SetGradient("MistGradient",PoisonBurstPresets.MistGradient(new PoisonPreset{PaletteMid=0x9a8a72,PaletteShadow=0x2a2220,MistAlpha=.12f}));
             }
             var world=ImpactSpace.Point(x,y,lift);p.Go.transform.position=world;
+            if(p.Render!=null)p.Render.sortingOrder=SkillPresentation.ResidualOrder(y);
             if(p.Attr.HasVector3("position"))p.Attr.SetVector3("position",world);
             p.Fx.SendEvent("OnBurst",p.Attr);
         }

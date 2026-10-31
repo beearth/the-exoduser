@@ -40,6 +40,15 @@ static class Program
             Check(SkillPresentation.BulletKind(false,false,1)==0, "범위 밖 원소탄은 기존 표시를 유지한다");
             Check(SkillPresentation.KiWidth(1,1)==192&&SkillPresentation.KiWidth(3,1)==252, "기검참 웹 외곽 크기를 보존한다");
             Check(SkillPresentation.KiWidth(3,1.5f)==378, "차지 크기 배율은 그대로 적용한다");
+            Check(SkillPresentation.ContactOrder(7420)>7422, "실제 접점은 표적 몸체·걷기·견갑보다 앞에 그린다");
+            Check(SkillPresentation.ContactOrder(7420.8f)==7424, "정렬 기준은 접점 오프셋이 아닌 표적의 Core Y다");
+            Check(SkillPresentation.ResidualOrder(7420)<7420, "긴 잔여 연기는 같은 깊이의 몸체를 덮지 않는다");
+            Check(SkillPresentation.ContactOrder(1e9f)<=32767&&SkillPresentation.ResidualOrder(-1e9f)>=-32768, "정렬은 Unity의 유효 범위를 넘지 않는다");
+            Check(SkillPresentation.VisibleViewport(0,0,10)&&SkillPresentation.VisibleViewport(1,1,10), "화면 가장자리의 접점을 유지한다");
+            Check(SkillPresentation.VisibleViewport(-.09f,1.09f,10), "가장자리 파편을 위한 여유를 유지한다");
+            Check(!SkillPresentation.VisibleViewport(-.11f,.5f,10)&&!SkillPresentation.VisibleViewport(1.11f,.5f,10), "화면 밖 효과는 예산을 차지하지 않는다");
+            Check(!SkillPresentation.VisibleViewport(.5f,.5f,-1), "카메라 뒤 접점은 반동을 만들지 않는다");
+            Check(!SkillPresentation.VisibleViewport(float.NaN,.5f,10), "잘못된 투영 좌표는 표시하지 않는다");
             foreach(uint c in new[]{SkillPresentation.EnemyPoisonCore,SkillPresentation.EnemyPoisonMid,SkillPresentation.EnemyPoisonShadow})Check(Hue(c)>=85&&Hue(c)<=95,"적 독은 맵 황록/금지대와 구분되는85~95도 팔레트여야 한다");
             foreach(uint c in new[]{SkillPresentation.EnemyDarkCore,SkillPresentation.EnemyDarkMid,SkillPresentation.EnemyDarkShadow})Check(Hue(c)>=270&&Hue(c)<=295,"적 어둠은 아군 마력의 푸른 보라와 구분해야 한다");
             Console.WriteLine($"타격·스킬 표현 계약 {checks}개 검사 통과"); return 0;
