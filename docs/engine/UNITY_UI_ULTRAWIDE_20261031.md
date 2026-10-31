@@ -28,3 +28,5 @@ C# 공통 좌표/포인터 회귀215개 통과. 실제 사용자32:9 이미지�
 월드 전체 피격/흰 섬광과 스테이지 로딩 암전은 물리 화면 전체를 칠하고, 명패/글자/HUD는 안전영역으로 합성한다. 사망 키아트 밖은 같은 fade의 검정으로 마감한다. 게임 카메라·전투 시야/색·알파/타이밍은 보존한다.
 
 검수 의존 실행기 보완: 예약이 있을 때 선두 Owner 우선, 예약이 없을 때 살아 있는 batch 티켓 FIFO. 실제 역순 UI/sound 교착 RED→15개 GREEN, 기존 Acquire-Slot 본문은 바이트 불변. 타인 프로세스/티켓/예약 조작0.
+
+2560×1600 검수는 1440px 물리 모니터의 Screen.SetResolution 높이 제한 때문에 Player 내부에서 자기 PID/UnityWndClass를 다시 확인하고 GetClientRect/GetWindowRect 차이만큼 SetWindowPos로 보정한다. NOMOVE|NOZORDER|NOACTIVATE이며 시스템 해상도·사용자 창 변경0. 실제 Screen 크기 불일치면 여전히 FAIL. 검수 전용 분기이며 일반 UI/플레이 경로에서는 호출하지 않는다. 이 제한을 먼저 확인하도록 16:10부터 캡처한다.

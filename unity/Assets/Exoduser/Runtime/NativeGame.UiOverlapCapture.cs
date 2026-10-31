@@ -76,6 +76,21 @@ namespace Exoduser.UnityPort
         [System.Runtime.InteropServices.DllImport("user32.dll",EntryPoint="GetWindowThreadProcessId")] static extern uint UiWideProcess(IntPtr window,out uint process);
         [System.Runtime.InteropServices.DllImport("user32.dll",EntryPoint="PostMessageW")] static extern bool UiWidePost(IntPtr window,uint message,IntPtr w,IntPtr l);
         [System.Runtime.InteropServices.DllImport("user32.dll",EntryPoint="GetClassNameW",CharSet=System.Runtime.InteropServices.CharSet.Unicode)] static extern int UiWideClass(IntPtr window,System.Text.StringBuilder name,int size);
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)] struct UiWideRect {public int left,top,right,bottom;}
+        [System.Runtime.InteropServices.DllImport("user32.dll",EntryPoint="GetClientRect")] static extern bool UiWideClient(IntPtr window,out UiWideRect rect);
+        [System.Runtime.InteropServices.DllImport("user32.dll",EntryPoint="GetWindowRect")] static extern bool UiWideRectOf(IntPtr window,out UiWideRect rect);
+        [System.Runtime.InteropServices.DllImport("user32.dll",EntryPoint="SetWindowPos",SetLastError=true)] static extern bool UiWideResize(IntPtr window,IntPtr after,int x,int y,int width,int height,uint flags);
+        static void UiWideSetClientSize(int width,int height)
+        {
+            IntPtr own=IntPtr.Zero;uint pid=(uint)System.Diagnostics.Process.GetCurrentProcess().Id;
+            UiWideWindows((w,s)=>{UiWideProcess(w,out uint id);var c=new System.Text.StringBuilder(128);UiWideClass(w,c,128);if(id==pid&&c.ToString()=="UnityWndClass"){own=w;return false;}return true;},IntPtr.Zero);
+            if(own==IntPtr.Zero)throw new InvalidOperationException("자기 숨은 Player 창 없음(크기 보정)");
+            UiWideProcess(own,out uint owner);if(owner!=pid)throw new InvalidOperationException("자기 창 소유권 불일치");
+            if(!UiWideClient(own,out var client)||!UiWideRectOf(own,out var frame))throw new InvalidOperationException("자기 창 크기 조회 실패");
+            int outerWidth=width+frame.right-frame.left-(client.right-client.left),outerHeight=height+frame.bottom-frame.top-(client.bottom-client.top);
+            if(!UiWideResize(own,IntPtr.Zero,0,0,outerWidth,outerHeight,0x16))throw new InvalidOperationException("자기 창 크기 보정 실패 "+System.Runtime.InteropServices.Marshal.GetLastWin32Error());
+            UiWideClient(own,out var after);Debug.Log("UI_CLIENT_RESIZE pid="+pid+" before="+(client.right-client.left)+"x"+(client.bottom-client.top)+" after="+(after.right-after.left)+"x"+(after.bottom-after.top)+" requested="+width+"x"+height+" flags=NOMOVE|NOZORDER|NOACTIVATE");
+        }
         IEnumerator UiWideClick(float x,float y){IntPtr own=IntPtr.Zero;uint pid=(uint)System.Diagnostics.Process.GetCurrentProcess().Id;UiWideWindows((w,s)=>{UiWideProcess(w,out uint id);var c=new System.Text.StringBuilder(128);UiWideClass(w,c,128);if(id==pid&&c.ToString()=="UnityWndClass"){own=w;return false;}return true;},IntPtr.Zero);if(own==IntPtr.Zero)throw new InvalidOperationException("자기 숨은 Player 창 없음");var a=NativeUiViewport.Current;int px=Mathf.RoundToInt(a.X+x*a.Scale),py=Mathf.RoundToInt(a.Y+y*a.Scale);IntPtr point=new IntPtr((py<<16)|(px&65535));lobby.AutomatedInput=false;
          if(!UiWidePost(own,0x200,IntPtr.Zero,point)||!UiWidePost(own,0x201,new IntPtr(1),point))throw new InvalidOperationException("자기 창 누름 전달 실패");yield return new WaitForSecondsRealtime(.12f);if(!UiWidePost(own,0x202,IntPtr.Zero,point))throw new InvalidOperationException("자기 창 해제 전달 실패");yield return new WaitForSecondsRealtime(.2f);lobby.AutomatedInput=true;
         }
@@ -90,11 +105,15 @@ namespace Exoduser.UnityPort
             overlapCoverage.unityVersion=Application.unityVersion;overlapCoverage.device=SystemInfo.graphicsDeviceName;overlapCoverage.deviceType=SystemInfo.graphicsDeviceType.ToString();
             smokeActive=true;pauseSmoke=true;lobby.AutomatedInput=true;lobby.SetPlaybackFocus(true);SetGameFocus(true);
             gameObject.AddComponent<NativeUiAudit.Host>();NativeUiAudit.Active=false;yield return null;yield return null;
-            foreach(var size in new[]{new Vector2Int(1920,1080),new Vector2Int(2560,1080),new Vector2Int(3840,1080),new Vector2Int(1600,900),new Vector2Int(2560,1600)})
+            foreach(var size in new[]{new Vector2Int(2560,1600),new Vector2Int(1920,1080),new Vector2Int(2560,1080),new Vector2Int(3840,1080),new Vector2Int(1600,900)})
             foreach(string language in overlapCoverage.languages)
             {
                 overlapLanguage=language;lobby.SetLanguage(language);stageClear.LocaleCode=language;
-                Debug.Log("UI_SIZE_REQUEST "+size+" before="+Screen.width+"x"+Screen.height+" display="+Screen.currentResolution);Screen.SetResolution(size.x,size.y,FullScreenMode.Windowed);yield return null;float sizeDeadline=Time.realtimeSinceStartup+5;while((Screen.width!=size.x||Screen.height!=size.y)&&Time.realtimeSinceStartup<sizeDeadline)yield return null;Debug.Log("UI_SIZE_OBSERVED "+Screen.width+"x"+Screen.height+" mode="+Screen.fullScreenMode);if(Screen.width!=size.x||Screen.height!=size.y)throw new InvalidOperationException("요청/실제 해상도 불일치 "+size+" actual="+Screen.width+"x"+Screen.height);
+                Debug.Log("UI_SIZE_REQUEST "+size+" before="+Screen.width+"x"+Screen.height+" display="+Screen.currentResolution);Screen.SetResolution(size.x,size.y,FullScreenMode.Windowed);yield return null;yield return null;
+#if UNITY_STANDALONE_WIN
+                if(Screen.width!=size.x||Screen.height!=size.y){UiWideSetClientSize(size.x,size.y);yield return null;}
+#endif
+                float sizeDeadline=Time.realtimeSinceStartup+5;while((Screen.width!=size.x||Screen.height!=size.y)&&Time.realtimeSinceStartup<sizeDeadline)yield return null;Debug.Log("UI_SIZE_OBSERVED "+Screen.width+"x"+Screen.height+" mode="+Screen.fullScreenMode);if(Screen.width!=size.x||Screen.height!=size.y)throw new InvalidOperationException("요청/실제 해상도 불일치 "+size+" actual="+Screen.width+"x"+Screen.height);
                 menu=false;Running=false;pauseMenu.Reset();stageClear.Hide();
                 lobby.ReplayIntro();typeof(NativeLobby).GetField("since",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(lobby,16f);
                 yield return UiOverlapShot("첫화면");
