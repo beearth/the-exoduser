@@ -6,7 +6,7 @@ namespace Exoduser.UnityPort
         Texture2D silverCornerTop,silverCornerBottom,silverVisualCancel,silverVisualCreate,silverVisualDisabled;
         Texture2D[] silverEmblems,silverPosters,silverPortraits;
         GUIStyle silverVisualTitle,silverVisualName,silverVisualDescription,silverVisualCaption,silverVisualAction,silverVisualTraitTitle,silverVisualTraitBody;
-        Texture2D silverVisualVignette,silverHeadingLine;
+        Texture2D silverVisualVignette,silverVisualSideShade,silverHeadingLine;
         void EnsureSilverVisual()
         {
             SilverStyles();
@@ -57,8 +57,9 @@ namespace Exoduser.UnityPort
             silverVisualAction.normal.textColor=NativeSilverHellUi.Text;
             silverVisualVignette=NativeSilverHellUi.Effect(256,144,(u,v)=>
             {
-                float a=u<.18f?Mathf.Lerp(.35f,0,u/.18f):u<.64f?0:Mathf.Lerp(0,.66f,Mathf.Clamp01((u-.64f)/.20f));float b=v>.7f?Mathf.Lerp(0,.72f,(v-.7f)/.3f):0;return new Color(0,0,0,b);
+                float b=v>.7f?Mathf.Lerp(0,.72f,(v-.7f)/.3f):0;return new Color(0,0,0,b);
             });
+            silverVisualSideShade=NativeSilverHellUi.Effect(256,1,(u,v)=>new Color(0,0,0,.66f*u));
         }
         void SilverCornerPanel(Rect r)
         {
@@ -107,7 +108,7 @@ namespace Exoduser.UnityPort
             NativeUiAudit.Region(new Rect(0,0,w,h),"panel");
             Fill(new Rect(0,0,w,h),Color.black);
             DrawSilverScene(new Rect(0,0,w,h),i);
-            Image(NativeUiViewport.ScreenInDesign,silverVisualVignette,ScaleMode.StretchToFill);var backdropMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.RightMatrix;Image(new Rect(1440,0,480,1080),lobbySilverShade,ScaleMode.StretchToFill);GUI.matrix=backdropMatrix;
+            Image(NativeUiViewport.ScreenInDesign,silverVisualVignette,ScaleMode.StretchToFill);var backdropMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.RightMatrix;var shade=new Rect(1440,0,480,1080);Image(shade,silverVisualSideShade,ScaleMode.StretchToFill);NativeUiAudit.Region(shade,"component","frontend-shade","캐릭터 오른쪽 음영480");GUI.matrix=backdropMatrix;
             string headingText=VisualSelectionLabel("캐릭터 선택","CHOOSE YOUR CHARACTER");
             float headingWidth=SpacedWidth(silverVisualTitle.font,18,headingText,3.6f)-3.6f;
             DrawSpaced((w-headingWidth)/2,30,26,headingText,silverVisualTitle.font,18,3.6f,NativeSilverHellUi.Text,true);
