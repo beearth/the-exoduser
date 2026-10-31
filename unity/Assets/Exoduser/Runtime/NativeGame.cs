@@ -142,7 +142,7 @@ namespace Exoduser.UnityPort
             // D01: mkItem drops are real; R picks the highest rarity on screen (web 32936) into the bag. Persistent saves stay unimplemented.
             Simulation.TryCollectLoot=CollectLoot;ClearDropViews();
             if(playerView==null)playerView=CreateRenderer("Player");
-            if(heroView==null)heroView=new NativeHeroView(transform);
+            if(!NativeHd2D.Enabled&&heroView==null)heroView=new NativeHeroView(transform);
             lastX=config.StartX;lastY=config.StartY;walkDistance=0;lastKillCount=0;renderedTick=-1;playerMoving=false;
             hud.Refresh(Simulation.Player,Simulation.TickCount,true);
             StageFlowAttach();   // C07: gate/exit tiles, arena flow reset for this run
@@ -304,7 +304,8 @@ namespace Exoduser.UnityPort
             playerView.transform.position=Point(p.X,p.Y);playerView.transform.localScale=Vector3.one*2*(NativeRemodel3D.Active?NativeRemodelCamera.HeroScale:1);playerView.sortingOrder=(int)p.Y;
             // web roll: the body curls up and turns once (360 degrees) over the 18 frames, dust trail
             playerView.transform.rotation=Simulation.RollActive?Quaternion.Euler(0,0,-360f*(1f-(float)Simulation.RollMoveT/RollRules.Frames)):Quaternion.identity;
-            heroView?.Sync(Simulation,playerMoving);playerView.enabled=heroView==null||!heroView.Ready;
+            heroView?.Sync(Simulation,playerMoving);playerView.enabled=NativeHd2D.Enabled||heroView==null||!heroView.Ready;
+            NativeHd2D.Actor(playerView,false,p.Radius*.02f*(NativeRemodel3D.Active?NativeRemodelCamera.HeroScale:1));
             foreach(var e in Simulation.Enemies)
             {
                 if(Simulation.IsRemodelProp(e)){if(enemies.TryGetValue(e.Id,out var pv)){pv.body.enabled=false;pv.walk.enabled=false;if(pv.arc!=null)pv.arc.enabled=false;}continue;}   // RM-B0b: a boss prop (sprout, cord knot) is no enemy: the boss presentation draws it from Simulation.RemodelProps
@@ -327,6 +328,8 @@ namespace Exoduser.UnityPort
                 if(e.IsBoss)tint=Color.Lerp(tint,new Color(1,.55f,.45f),.5f);   // C07: a boss actor without art of its own reads as a boss
                 if(Simulation.Config.EnemyAiEnabled&&e.Web!=null&&e.Web._spawnT>0)tint.a=Mathf.Max(0,1-(float)e.Web._spawnT/20);   // drawEn: 20 frame fade-in of a fresh spawn
                 ev.body.color=ev.walk.color=e.HurtTicks>0?new Color(1,.62f,.62f,tint.a):tint;
+                NativeHd2D.Actor(ev.body,false,e.Radius*.035f);NativeHd2D.Actor(ev.walk,false,e.Radius*.035f);
+                if(NativeHd2D.Enabled&&ev.moving)ev.body.enabled=false;
                 UpdateEnemyShieldArc(e,ev);
             }
             PruneEnemyViews();FieldBossViews();
@@ -336,6 +339,7 @@ namespace Exoduser.UnityPort
             impacts?.Update(Simulation.TickCount);
             skillView?.Update(Simulation,Time.time);
             hud?.Refresh(p,Simulation.TickCount);StageFlowBossBar();
+            if(NativeHd2D.Enabled&&!NativeRemodel3D.Active)NativeHd2D.ProjectFlatActors(view);
             renderedTick=Simulation.TickCount;damage.RemoveAll(d=>Time.unscaledTime>d.until);
         }
         // game.html drawEn (53853-53870): every mob with an energy shield carries a pulsing pale-blue arc (radius r+5, +-1.0 rad around shieldAng, 5 px stroke, 25% wedge fill);

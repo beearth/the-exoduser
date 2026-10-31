@@ -82,6 +82,7 @@ namespace Exoduser.UnityPort
         void Remodel3DSetActive(bool on)
         {
             Remodel3DRestoreBillboards();
+            NativeHd2D.BeginProjection();
             NativeRemodel3D.Active = on;
             if (r3Roots != null) foreach (var root in r3Roots) if (root != null) root.SetActive(on);
             if (!on) { r3Base.Clear(); view.cullingMask = worldMask; }   // back to the 2D camera: Update() re-applies the lobby / world mask next frame
@@ -130,6 +131,7 @@ namespace Exoduser.UnityPort
         {
             // 로비/일시정지 등 writer가 돌지 않은 프레임에도 한 번만 적용한다.
             if (r3Projected.Count != 0) return;
+            NativeHd2D.BeginProjection();
             float pitch = NativeRemodel3D.Pitch, cos = Mathf.Cos(pitch), sin = Mathf.Sin(pitch);
             var tilt = Quaternion.Euler(pitch * Mathf.Rad2Deg, 0, 0);
             foreach (var sr in FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None))
@@ -138,6 +140,8 @@ namespace Exoduser.UnityPort
                 var tr = sr.transform;
                 r3Base[sr] = new R3Base { localPosition = tr.localPosition, localRotation = tr.localRotation };
                 float roll = tr.rotation.eulerAngles.z;
+                if(NativeHd2D.Enabled&&NativeHd2D.IsActor(sr))
+                { NativeHd2D.ProjectActor(sr,r3Cam,roll);r3Projected.Add(sr);continue; }
                 float below = NativeSkillView.IsCenteredSkillSprite(sr) ? 0 : (sr == playerView ? NativeRemodelCamera.HeroFootLift(sr.sprite) : sr.sprite.pivot.y / sr.sprite.pixelsPerUnit) * Mathf.Abs(tr.lossyScale.y);
                 tr.SetPositionAndRotation(tr.position + new Vector3(0, below * cos, below * sin), tilt * Quaternion.Euler(0, 0, roll));
                 r3Projected.Add(sr);

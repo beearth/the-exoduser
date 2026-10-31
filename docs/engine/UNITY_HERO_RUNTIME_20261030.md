@@ -163,3 +163,7 @@ R3 수정 검수부터 `Time.captureDeltaTime=1/60`을 이 전용 fixture에만 
 | 시각 범위 | 원화/노레위동일크기·실제1x/12구간·M1의보스아레나/탄막/필드장면직접확인. R7 핵심개선확인, 전체아트RETOUCH(기존VFX가림/수평잘림). 독립검수·OS손조작·자연밀집전투·전체경사/천관통·Mac·실청각·장시간미검증. 문서/기능통과를AAA PASS로올리지않음 |
 | 입력·보존 | 자기27경로정확커밋·Core변경0. 기존WORK522는착수byte I:백업/SHA목록. 빌드재생성씬은새바이트보존/CAS확인뒤착수byte복원,522/522동일확인. 이복원은과거R5의누락원본복구가아님. 미커밋파생입력이있어Git tree만으로전체빌드byte동일이라고하지않음 |
 | 근거 | `I:/EXODUSER-Storage/demo-art/hero/r7-carry-20261031/gate-evidence.json`·`판정.md`·`검수.html`·영상/12종1x·`build-hashes.json`·`source.json`. 공통통합/Desktop은별도최종영수증 |
+
+## 2026-10-31 HD-2D 방향 확정 — 현행 표현 전환
+
+[본 적용 계약](UNITY_HD2D_RUNTIME_20261031.md)에 따라 현재 후보는 픽셀 스프라이트를 기본으로 사용한다. NativeHeroView 3D 연결 코드는 보존하고 --legacy-models에서만 생성한다. 캐릭터만 원본 알파 발선·출력1화소 스냅·URP 조명·접지 그림자를 적용한다. 드루이드 원본 시트의 중복 additive 발광은 기본 해제한다. 아래의 과거 3D 후보 검수와 Desktop 영수증은 당시 입력의 이력이며 HD2D 후보의 검증을 대신하지 않는다. 현 후보 Player·공통통합·Desktop은 아직 미완이다.
