@@ -124,7 +124,7 @@
 
 ## 2026-10-31 사용자 선택 A 간판 적용
 
-기존 codex-web-keyart-wide 담당이 A 선택 후4단계를 진행했다. 승인 원본7680×2160·웹16/21/32:9·구름/붉은 달빛/강/망자 손/머리·천 레이어 모션, 기존 임시 영상·crossfade 제거, 동일 A 오류 폴백과 모션 감소. 실제1920/2560/3840 및1920/3840 각10초·1x·6프레임 비교를 자체 확인했으며 이 범위 VISUAL VERDICT: PASS. 회귀17/17, project-check112/112, guard PASS. Steam/공모전13이미지·README·기존Hero비교 파일만 제작(업로드0). 소스/수치 SSOT는 스플래시 현행 A 계약, 증거/원격SHA/기존WIP 보존은 `I:/EXODUSER-Storage/codex-takeover/title-signboard/REPORT.md`. 최초 main173a70b9f 병합 후 이후 main 전진도 정상 병합해 인수하며 기존 월드 인트로·로고·ENTER 게이트 변경은 보존한다. NW.js·물리32:9모니터·Unity/배포는 미검수.
+기존 codex-web-keyart-wide 담당이 A 선택 후4단계를 진행했다. 승인 원본7680×2160·웹16/21/32:9·구름/붉은 달빛/강/망자 손/머리·천 레이어 모션, 기존 임시 영상·crossfade 제거, 동일 A 오류 폴백과 모션 감소. 실제1920/2560/3840 및1920/3840 각10초·1x·6프레임 비교를 자체 확인했으며 이 범위 VISUAL VERDICT: PASS. 최종 병합 회귀50/50, project-check111/111, guard PASS. Steam/공모전13이미지·README·기존Hero비교 파일만 제작(업로드0). 소스/수치 SSOT는 스플래시 현행 A 계약, 증거/원격SHA/기존WIP 보존은 `I:/EXODUSER-Storage/codex-takeover/title-signboard/REPORT.md`. 최초 main173a70b9f 병합 후 이후 main 전진도 정상 병합해 인수하며 기존 월드 인트로·로고·ENTER 게이트 변경은 보존한다. NW.js·물리32:9모니터·Unity/배포는 미검수.
 
 ## 2026-10-31 전체 화면 원화 확장 적용
 

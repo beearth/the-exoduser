@@ -1,12 +1,13 @@
 const fs=require('node:fs/promises'),path=require('node:path'),assert=require('node:assert/strict');
 const {chromium}=require(require.resolve('playwright',{paths:[process.cwd(),'G:/exoduser']}));
 const sharp=require(require.resolve('sharp',{paths:[process.cwd(),'G:/exoduser']}));
-const out='I:/EXODUSER-Storage/codex-takeover/title-signboard/runtime-A';
+const out=process.env.TITLE_QA_OUT||'I:/EXODUSER-Storage/codex-takeover/title-signboard/runtime-A';
 const url='http://127.0.0.1:3384/index.html?test=1';
 (async()=>{
  await fs.mkdir(out+'/temp',{recursive:true});
  const browser=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true,args:['--mute-audio','--autoplay-policy=no-user-gesture-required'],env:{...process.env,TEMP:out+'/temp',TMP:out+'/temp'}});
- const receipt={url,errors:[],http:[],sizes:[],videos:[]};
+ const receipt={url,errors:[],http:[],sizes:[],videos:[],source:{commit:require('node:child_process').execFileSync('C:/Program Files/Git/cmd/git.exe',['rev-parse','HEAD'],{cwd:path.resolve(__dirname,'..'),windowsHide:true}).toString().trim(),files:{}}};
+ for(const file of ['index.html','title-signboard.js','assets/title-signboard/A/manifest.json','build-nwjs.mjs'])receipt.source.files[file]=require('node:crypto').createHash('sha256').update(await fs.readFile(path.resolve(__dirname,'..',file))).digest('hex');
  try{
   const c=await browser.newContext({viewport:{width:1920,height:1080},deviceScaleFactor:1});
   const p=await c.newPage();p.on('pageerror',e=>receipt.errors.push(e.message));p.on('response',r=>{if(r.status()>=400&&r.url().startsWith('http://127.'))receipt.http.push({url:r.url(),status:r.status()});});

@@ -1,7 +1,7 @@
 ## 2026-10-31 사용자 선택 A 시작 메뉴·Steam 키트
 
 - 단일 7680×2160 A 마스터의 16/21/32:9 시작 메뉴, 구름3깊이·붉은 달빛·강·망자 손6개·머리/천 모션. 임시 영상/겹침/crossfade 제거, 동일 A 정지 폴백·모션 감소·자원 해제. 새 title-signboard.js를 Steam 빌드 FILES에 포함한다.
-- 실제1920/2560/3840 캡처·1920/3840 각10초 영상·1x/6연속프레임·같은 크기 승인원본 비교. 회귀17건·project-check112건·guard PASS, 페이지 오류/로컬404=0. 자체 시각 판정은 웹 시작 메뉴와13종 키트 범위 PASS이며 NW.js·실제32:9모니터·Unity/배포 검수를 대신하지 않는다.
+- 실제1920/2560/3840 캡처·1920/3840 각10초 영상·1x/6연속프레임·같은 크기 승인원본 비교. 최신 main 병합 후 타이틀/인트로 회귀50건·project-check111건·guard PASS, 페이지 오류/로컬404=0. 자체 시각 판정은 웹 시작 메뉴와13종 키트 범위 PASS이며 NW.js·실제32:9모니터·Unity/배포 검수를 대신하지 않는다.
 - 정확한 수치/생성 이력은 `3.1 ui hud 디자인/스플래시_인트로_시퀀스.md` 현행 A 계약. 실제 파일은 `G:/exoduser/tmp/design-review/20261031_title_signboard/steam_kit/`, 증거·최종 원격 SHA는 `I:/EXODUSER-Storage/codex-takeover/title-signboard/REPORT.md`. 게시·업로드·새 유료 생성0. 기존 unrelated game/living-scene WIP는 납품에서 제외하고 정확 bytes 보존.
 
 ## 2026-10-31 세계관 인트로 — 모든 경로 문 없는 v22b
