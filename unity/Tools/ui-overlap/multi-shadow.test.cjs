@@ -13,3 +13,8 @@ function stroke(){const frame=f(),suffix=' / 명시 CSS text-shadow 광휘 패�
 test('선언된 사망 제목4.2배율 이내 검정 외곽선은 이웃 본문과 별도 스타일',()=>assert.equal(analyze(stroke()).issues.length,0));
 test('사망 제목 외곽선 선언도 다른 실제 본문 충돌은 숨기지 않음',()=>{const frame=stroke();frame.elements.push(e('other','OTHER',100,100,100,false,'death'));assert.ok(analyze(frame).issues.length>0);});
 test('사망 제목 유계 밖 외곽선은 계속 검출',()=>{const frame=stroke();frame.elements[0].rect.x=120;assert.ok(analyze(frame).issues.length>0);});
+
+function frontend(){const frame=f(),suffix=' / 명시 CSS text-shadow 광휘 패스 / frontend-black-shadow',scale=frame.height/1080;for(const [i,dx,dy]of [[0,0,1],[1,.5,3],[2,-.5,3]]){const q=e('f'+i,'A',100+dx*scale,100+dy*scale,i,true,'front'+suffix);q.effectiveOpacity=.9;frame.elements.push(q);}frame.elements.push(e('body','A',100,100,10,false,'front'));return frame;}
+test('높이기준3px 전면 글자 그림자는 유계 선언으로 본문과 연결',()=>assert.equal(analyze(frontend()).issues.length,0));
+test('전면 그림자도 다른 실제 본문 충돌을 숨기지 않음',()=>{const frame=frontend();frame.elements.push(e('foreign','OTHER',100,100,20,false,'front'));assert.ok(analyze(frame).issues.length>0);});
+test('전면 그림자 유계 밖 패스는 계속 검출',()=>{const frame=frontend();frame.elements[0].rect.x=120;assert.ok(analyze(frame).issues.length>0);});

@@ -247,4 +247,6 @@ MERGE_QUEUE READY 뒤 expected공통202b32c85df19ce0b2a11db118e313298948a416을 
 2026-10-31 확장 검수 입력은 coverage가 살아 있는 동안 UiOverlapOwnsInput으로 AutomatedInput을 유지한다. 정상 신규 입장 API 호출 순간과 자기 PID WM 클릭 .12/.2초 표본만 명시적으로 입력을 연다. 매 프레임 일반 Update가 플래그를 덮어 캡처에 사용자 키가 섞일 수 있던 경로를 분리했다. 실제 검수는 새 동일 Player·5해상도 클릭 영수증으로 판정하며 CPU 확인으로 실제 입력 PASS를 대신하지 않는다.
 
 
-2026-10-31 R3: UI실제1225프레임은입력격리와함께simulationFrozenChecks=frames를필수로기록·검증한다. 작은검정stroke는후행본문과직접3.1physical유계로연결하고그림자끼리연쇄병합하지않는다. 명시광휘/외곽선은동일본문의스타일페인트로분리해decorationElements에보존하며이웃실제본문교차는계속검출한다. 기본광휘5.5s/.03·region9.2s/.064·death-black-outline4.2s/1.001프로필의source/순서/clip/치수/중간칠을대조한다. 추가9음성/양성회귀포함53PASS. 실제R3전화면/가림/PNG1x는별도필수이며R2의Guide/스킬FAIL을지우지않는다.
+2026-10-31 R3: UI실제1225프레임은입력격리와함께simulationFrozenChecks=frames를필수로기록·검증한다. 작은검정stroke는후행본문과직접3.1physical유계로연결하고그림자끼리연쇄병합하지않는다. 명시광휘/외곽선은동일본문의스타일페인트로분리해decorationElements에보존하며이웃실제본문교차는계속검출한다. 기본광휘5.5s/.03·region9.2s/.064·death-black-outline4.2s/1.001프로필의source/순서/clip/치수/중간칠을대조한다. 추가12음성/양성회귀포함56PASS. 실제R3전화면/가림/PNG1x는별도필수이며R2의Guide/스킬FAIL을지우지않는다.
+
+R3 전면자간글자의기존1px·±.5px/3px검정그림자는frontend-black-shadow/3.1×edgeScale/알파≤1.001명시프로필이다. 사망제목·펫대사동일source로명시stroke를연결한다. 일반미선언큰그림자허용범위는확대하지않았다.

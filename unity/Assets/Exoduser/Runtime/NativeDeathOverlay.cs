@@ -198,8 +198,8 @@ namespace Exoduser.UnityPort {
    const int size=22;const float lh=22.08f*1.25f;var st=Style(sansBold,size);var lines=Wrap(text,box.width,st);
    float y=box.y+(box.height-lines.Count*lh)/2f;
    foreach(var line in lines){
-    st.normal.textColor=new Color(0,0,0,.95f*a);foreach(var d in new[]{new Vector2(0,1.5f),new Vector2(-2,0),new Vector2(2,0),new Vector2(0,-1),new Vector2(0,3)})NativeUiAudit.Label(new Rect(box.x+d.x,y+d.y,box.width+8,lh),line,st);
-    st.normal.textColor=new Color(1,1,1,a);NativeUiAudit.Label(new Rect(box.x,y,box.width+8,lh),line,st);y+=lh;
+    st.normal.textColor=new Color(0,0,0,.95f*a);foreach(var d in new[]{new Vector2(0,1.5f),new Vector2(-2,0),new Vector2(2,0),new Vector2(0,-1),new Vector2(0,3)})PaintDeathGlyph(new Rect(box.x+d.x,y+d.y,box.width+8,lh),line,st,true);
+    st.normal.textColor=new Color(1,1,1,a);PaintDeathGlyph(new Rect(box.x,y,box.width+8,lh),line,st,false);y+=lh;
    }
   }
   static bool Hangul(char c){return c>=0xAC00&&c<=0xD7A3;}
