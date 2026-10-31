@@ -221,7 +221,7 @@ namespace Exoduser.UnityPort.Vfx
                     seenSkills.Add("iceOrb");Place(h,sim.IceOrbX,sim.IceOrbY);
                     float p=Mathf.Min(1,sim.IceOrbT/180f),r=(sim.Player.Radius+32+Mathf.Sin(p*Mathf.PI)*10)*(1+(Math.Max(1,sim.Skills.Level("iceOrb"))-1)*.1f)*.01f;
                     // Sparse crystals inside the web 6.6R envelope leave the player and enemy shots visible.
-                    for(int i=0;i<h.Parts.Length;i++){float a=i*Mathf.PI*2/h.Parts.Length+now*.15f;var t=h.Parts[i];t.localPosition=new Vector3(Mathf.Cos(a)*r*1.45f,.4f+(i%3)*.16f,Mathf.Sin(a)*r*1.45f);t.localRotation=Quaternion.Euler(12,i*137.5f,Mathf.Cos(a)*25);t.localScale=new Vector3(.1f,.28f+(i%3)*.09f,.12f);}
+                    for(int i=0;i<h.Parts.Length;i++){float a=i*Mathf.PI*2/h.Parts.Length+now*.15f;var t=h.Parts[i];t.localPosition=new Vector3(Mathf.Cos(a)*r*3.2f,.4f+(i%3)*.16f,Mathf.Sin(a)*r*3.2f);t.localRotation=Quaternion.Euler(12,i*137.5f,Mathf.Cos(a)*25);t.localScale=new Vector3(.1f,.28f+(i%3)*.09f,.12f);}
                     Surface(h,0x4f6c75,0xb7d1d2,.38f,now);Floor(h,r,0x263c43,0x718c92,.08f,.08f);
                     Emit(h,now,sim.IceOrbX,sim.IceOrbY,.5f,0xe4eeea,0x78959c,0x33434b,.45f,.4f,.045f,.25f);Light(h,new Color(.55f,.72f,.78f),1.8f,.45f);
                 }
@@ -230,7 +230,7 @@ namespace Exoduser.UnityPort.Vfx
             {
                 var h=Get("malice"+o.Id,3,5);if(h==null)continue;seenSkills.Add("fireball");Place(h,o.X,o.Y,.35f);
                 float r=o.R*.01f;
-                for(int i=0;i<5;i++){var p=h.Parts[i];float a=i*Mathf.PI*2/5+now*2;p.localPosition=new Vector3(Mathf.Cos(a)*r*.5f,Mathf.Sin(a*2)*r*.25f,Mathf.Sin(a)*r*.5f);p.localRotation=Quaternion.Euler(now*70+i*27,i*137,now*50);p.localScale=new Vector3(r*.65f,r*(1.2f+i*.12f),r*.6f);}
+                for(int i=0;i<5;i++){var p=h.Parts[i];float a=i*Mathf.PI*2/5+now*2;p.localPosition=new Vector3(Mathf.Cos(a)*r*2.25f,Mathf.Sin(a*2)*r*.25f,Mathf.Sin(a)*r*2.25f);p.localRotation=Quaternion.Euler(now*70+i*27,i*137,now*50);p.localScale=new Vector3(r*.65f,r*(1.2f+i*.12f),r*.6f);}
                 Surface(h,0x28232f,0xc5bad4,.65f,now);Emit(h,now,o.X,o.Y,.35f,0xe4dcf4,0x6a6381,0x211d2b,r*1.8f,.3f,.09f,.12f);Light(h,new Color(.62f,.53f,.72f),1.1f,.5f);
             }
             foreach(var p in sim.Projectiles)if(p.Active)
