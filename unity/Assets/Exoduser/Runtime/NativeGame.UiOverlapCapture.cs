@@ -89,12 +89,12 @@ namespace Exoduser.UnityPort
             using(var hash=System.Security.Cryptography.SHA256.Create())using(var binary=File.OpenRead(typeof(NativeGame).Assembly.Location))overlapCoverage.runtimeSha256=BitConverter.ToString(hash.ComputeHash(binary)).Replace("-","").ToLowerInvariant();
             overlapCoverage.unityVersion=Application.unityVersion;overlapCoverage.device=SystemInfo.graphicsDeviceName;overlapCoverage.deviceType=SystemInfo.graphicsDeviceType.ToString();
             smokeActive=true;pauseSmoke=true;lobby.AutomatedInput=true;lobby.SetPlaybackFocus(true);SetGameFocus(true);
-            gameObject.AddComponent<NativeUiAudit.Host>();NativeUiAudit.Active=false;
+            gameObject.AddComponent<NativeUiAudit.Host>();NativeUiAudit.Active=false;yield return null;yield return null;
             foreach(var size in new[]{new Vector2Int(1920,1080),new Vector2Int(2560,1080),new Vector2Int(3840,1080),new Vector2Int(1600,900),new Vector2Int(2560,1600)})
             foreach(string language in overlapCoverage.languages)
             {
                 overlapLanguage=language;lobby.SetLanguage(language);stageClear.LocaleCode=language;
-                Screen.SetResolution(size.x,size.y,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);if(Screen.width!=size.x||Screen.height!=size.y)throw new InvalidOperationException("요청/실제 해상도 불일치 "+size+" actual="+Screen.width+"x"+Screen.height);
+                Debug.Log("UI_SIZE_REQUEST "+size+" before="+Screen.width+"x"+Screen.height+" display="+Screen.currentResolution);Screen.SetResolution(size.x,size.y,FullScreenMode.Windowed);yield return null;float sizeDeadline=Time.realtimeSinceStartup+5;while((Screen.width!=size.x||Screen.height!=size.y)&&Time.realtimeSinceStartup<sizeDeadline)yield return null;Debug.Log("UI_SIZE_OBSERVED "+Screen.width+"x"+Screen.height+" mode="+Screen.fullScreenMode);if(Screen.width!=size.x||Screen.height!=size.y)throw new InvalidOperationException("요청/실제 해상도 불일치 "+size+" actual="+Screen.width+"x"+Screen.height);
                 menu=false;Running=false;pauseMenu.Reset();stageClear.Hide();
                 lobby.ReplayIntro();typeof(NativeLobby).GetField("since",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(lobby,16f);
                 yield return UiOverlapShot("첫화면");
