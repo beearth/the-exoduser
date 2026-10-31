@@ -673,7 +673,7 @@ const HUD_ICON = {
 
 **변경점**:
 - 캐릭터 이름+레벨+EXP바를 철 프레임 블록으로 묶음
-- 리소스(킬/악의구슬/SP)를 별도 블록으로
+- 리소스(킬/악의오브/SP)를 별도 블록으로
 - CP(전투력)를 별도 블록으로
 - "? 조작법" → 키보드 아이콘 "⌨"로 축소
 - `expBar`가 캐릭터 블록 안으로 이동
@@ -770,7 +770,7 @@ const HUD_ICON = {
 | 우측 상단 | `#hudLevelLabel` + `#lvLbl` | **레벨 10**처럼 이름+아라비아 숫자. `_hudRoman` 제거, 3999 표시 상한 제거 | `P.lv` | `updateHUD(true)`, `_hudReadableNumber()` |
 | 우측 상단 | `#hudExpLabel` + `#expTxt` → `경험치 {현재 EXP} / {필요 EXP}` | 천단위 쉼표, K/M 축약 없이 정확한 정수. 기존 경험치 라인 유지 | `P.exp`, `P.maxExp` | `updateHUD()` |
 | 우측 상단(목표 패널 `#mmLvl`) | `#hudKillLabel` + `#killCnt` → `지역 처치 {처치} / {총스폰}` | 아이콘 대신 뜻이 명확한 라벨과 천단위 쉼표를 표시. 현재 스테이지 진행도(`#stageProgressFill`과 동일 분모) | `G._stageKills / G._totalSpawned` | `updateHUD(true)`, `_hudPulse('killCnt',_stageK)` |
-| 우측 상단 | `#hudMaliceLabel` + `#matCnt` | `악의구슬 6,600,000`처럼 정수 전체와 천단위 쉼표 표시. 기존 K/M/B 축약 제거 | `G.mats` | `updateHUD(true)`, `_hudReadableNumber()` |
+| 우측 상단 | `#hudMaliceLabel` + `#matCnt` | `악의오브 6,600,000`처럼 정수 전체와 천단위 쉼표 표시. 기존 K/M/B 축약 제거 | `G.mats` | `updateHUD(true)`, `_hudReadableNumber()` |
 
 > **[2026-08-18 correctness fix] 처치 카운터 분자 stale (game.html:50934)**
 > - **버그**: `#killCnt`가 `G.kills`(런 전체 누적) / `G._totalSpawned`(스테이지별 스폰) 조합이라, 2번째 지역부터 분자>분모(예: `150 / 92`)로 100% 초과 표시. 바로 아래 진행바(`#stageProgressFill`)는 `G._stageKills/_totalSpawned`로 정상 → 카운터만 어긋남.
@@ -910,7 +910,7 @@ grep "hud.*::before" game.html  # 2개
 | 요소 | 변경 전 | 변경 후 |
 |---|---|---|
 | ✦SP/◇CP 자원 | `#hudTop` 상단 중앙 (시계 아래 나열) | 신설 `#hudCorner` 좌측 상단(미니맵 아래 top=`188px×--ui-scale + safe-area-top`), Cinzel .62rem, opacity **.48** |
-| 우측 목표 프레임 `.objective-frame` | `display:none` (킬/악의구슬 숨김) | 2026-09-10: `#mmLvl` 전체를 하나의 패널로 묶고 `.objective-frame`은 상단 구분선만 표시. 지역 처치/악의구슬 라벨 추가 |
+| 우측 목표 프레임 `.objective-frame` | `display:none` (킬/악의오브 숨김) | 2026-09-10: `#mmLvl` 전체를 하나의 패널로 묶고 `.objective-frame`은 상단 구분선만 표시. 지역 처치/악의오브 라벨 추가 |
 | `#killCnt` | JS가 `☠ 0 / 0` 기록 (아이콘 span과 중복) | 2026-09-10: `지역 처치` 라벨 + 천단위 쉼표 숫자 `0 / 1,100` |
 | `#expF` 경험치 라인 | 밝은 골드 그라디언트 | 뮤트 브론즈 rgba(122,101,72,.55)→rgba(196,171,124,.85), 2px 룬 라인 |
 | CP 숫자 | 원시값 그대로 | `1,584` 천단위 구분, 10만 이상은 `1.06M` 압축 |
@@ -925,7 +925,7 @@ grep "hud.*::before" game.html  # 2개
 - `#areaTitle` 지역 진입 타이틀: `제N구역 · 이름` + `THE ~` 영문 각인체, 3.1s fade in/out ✓
 - `#stageClock` 상단 중앙 `02:19` (TIME 텍스트 없음) + 2px 진행 룬 라인 (숫자 % 없음), opacity .57 ✓
 - TIME/CLEAR/TOTAL 나열 HUD는 1차 정비에서 이미 제거 — 구버전(_deployed_game.html 6/16)에만 존재. **배포 동기화 필요.**
-- 우측 상단은 2026-09-10 가독성 개선으로 `#mmLvl.on` opacity1, 레벨·경험치·지역 처치·악의구슬 라벨+정수 표기 적용.
+- 우측 상단은 2026-09-10 가독성 개선으로 `#mmLvl.on` opacity1, 레벨·경험치·지역 처치·악의오브 라벨+정수 표기 적용.
 
 ### 색상 규칙 (준수)
 dirty ivory `rgba(214,205,187)` / aged silver `rgba(196,187,168)` / dark iron `rgba(88,72,54)` / muted bronze `rgba(196,171,124)` — 순백·네온·시안 금지, 적색은 위험/최상위 티어 한정.
@@ -939,7 +939,7 @@ dirty ivory `rgba(214,205,187)` / aged silver `rgba(196,187,168)` / dark iron `r
 | 레벨 | `hudLevelLabel` + `lvLbl`: 레벨10 (기존 X). 로마숫자 함수 제거 |
 | 경험치 | `hudExpLabel` + `expTxt`: 경험치7 / 45. 현재/다음 레벨 필요 경험치 |
 | 지역 처치 | `hudKillLabel` + `killCnt`: 지역 처치0 / 1,100. `_stageKills / _totalSpawned` 유지 |
-| 악의구슬 | `hudMaliceLabel` + `matCnt`: 악의구슬6,600,000. K/M/B 대신 전체 정수 |
+| 악의오브 | `hudMaliceLabel` + `matCnt`: 악의오브6,600,000. K/M/B 대신 전체 정수 |
 | 포맷 | `_hudNumberFormatter`: 재사용 `Intl.NumberFormat('en-US',{maximumFractionDigits:0})`. `_hudReadableNumber`: `max(0,floor(Number(n)||0))`에 천단위 쉼표 |
 | 외형 | 최소200px, padding10px 12px, on opacity1, 바깥1px 브론즈 선. 레벨 .94rem/700, 라벨·행 .75rem, 행최소21px, 행간3px, 수치 tabular-nums |
 | 색상 | 수치 #eee4d4, 라벨 #cbbd9f, 레벨 #f2e6cb, 경험치 #dfcfaa(Lv1000+ #d6aaff). 배경 rgba(12,13,15,.88)→rgba(9,10,12,.76) |
@@ -1041,7 +1041,7 @@ dirty ivory `rgba(214,205,187)` / aged silver `rgba(196,187,168)` / dark iron `r
 | 항목 | 현재 계약 |
 |---|---|
 | 인벤토리 제목판 | 직계 헤더의 .ptitle display:none. 제목 이미지와 가상요소도 표시하지 않음 |
-| 정보행 | 전투력/악의구슬/닫기 유지. gap0, margin4px 0 8px |
+| 정보행 | 전투력/악의오브/닫기 유지. gap0, margin4px 0 8px |
 | 높이 배분 | 장비 탭 inv-wrap 첫 행270px, 가방 행 minmax(min-content,1fr). invCenter height:auto/min-height260px,invGrid height140px/flex1 1 140px. 필터 높이를 반영하며 나머지 높이는 가방에 배정. 작은 화면은 기존 바깥 세로 스크롤 사용 |
 | 적용 범위 | 인벤토리 내부 장비/유골함/보석/보관함 페이지 공통. 다른 메뉴 제목 유지 |
 
@@ -1090,7 +1090,7 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 
 | 대상 / id | 현행 구현·검수 |
 |---|---|
-| 사용자 기준 | 획득 배지가 없으면 HUD에 배지0/3·빈 버튼·자리 표시를 남기지 않는다. 지역 처치·악의구슬 수치를 가리지 않는다 |
+| 사용자 기준 | 획득 배지가 없으면 HUD에 배지0/3·빈 버튼·자리 표시를 남기지 않는다. 지역 처치·악의오브 수치를 가리지 않는다 |
 | 표시 조건 | tutorial-badges.js의 init에서 button.hidden=true로 시작. render에서 count=Object.keys(earned).length; count===0이면 button/panel hidden=true 및 aria-expanded=false. 1~3개 획득·복원 시 button.hidden=false. 언어 갱신에도 같은 조건 적용 |
 | 모음 열기 | toggle(open)은 button.hidden이면 열기를 거부하며 숨긴 버튼에 focus하지 않는다. 배지가 있으면 기존 닫기 초점/버튼 복귀·aria-expanded·3개 카드 정책 유지 |
 | 위치 | button과 collection을 #mmLvl의 자식으로 연결. 둘 모두 position:absolute/right0/pointer-events:auto; 버튼 top:calc(100% + 8px),모음 top:calc(100% + 46px). 상태창의 기존 크기·UI배율·safe-area 이동을 따라가며 수치 행과 겹치지 않음 |

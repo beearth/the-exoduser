@@ -222,7 +222,7 @@
     pDot:[row('지속 피해','Damage over time',15),row('지속 시간','Duration',10),row('축적률','Buildup',5)],
     pVital:[row('최대 MP','Maximum MP',50,''),row('MP 재생','MP regeneration',1)],
     pStamina:[row('최대 ST','Maximum ST',50,''),row('ST 재생','ST regeneration',1)],
-    pMalice:[row('악의구슬 획득량','Malice Sphere gained',8)],
+    pMalice:[row('악의오브 획득량','Orb of Malice gained',8)],
     pFortify:[row('최대 HP','Maximum HP',300,'')],
     pArmor:[row('물리 방어','Physical defense',20,'')],
     pHunter:[row('정예 / 보스 추가 피해','Elite / boss bonus damage',10)],

@@ -531,9 +531,10 @@
     if(x){
       const c=_skCtx(x);
       const row=mk('div','sf-info-cost',box);
-      if(!c.learned)mk('span','',row,L('습득 ','Learn ')+'SP '+x.spCost+(x.matCost?(' · '+L('악의구슬 ','Malice Sphere ')+_malCost(x.matCost)):''));
+      if((!c.learned&&x.matCost)||(c.learned&&x.upMat))row.insertAdjacentHTML('afterbegin',_currencyOrbIcon(24));
+      if(!c.learned)mk('span','',row,L('습득 ','Learn ')+'SP '+x.spCost+(x.matCost?(' · '+L('악의오브 ','Orb of Malice ')+_malCost(x.matCost)):''));
       else if(c._isFuseUp)mk('span','',row,L('합성 강화 ','Fusion up ')+'SP '+c._fuseUpSp);
-      else mk('span','',row,L('강화 ','Upgrade ')+'SP '+c._singleUpSp+(x.upMat?(' · '+L('악의구슬 ','Malice Sphere ')+_malCost(x.upMat)):''));
+      else mk('span','',row,L('강화 ','Upgrade ')+'SP '+c._singleUpSp+(x.upMat?(' · '+L('악의오브 ','Orb of Malice ')+_malCost(x.upMat)):''));
       if(c.learned&&c.slv>=c._skLvLock&&c.slv<20)mk('span','sf-warn',row,'Lv'+(c._skLvLock*50)+L(' 도달 시 해금',' to unlock'));
       const btns=mk('div','sf-info-btns',box);
       const up=mk('button','sf-btn sf-btn-fire',btns,c.learned?L('강화 +','Upgrade +'):L('습득','Learn'));up.type='button';
@@ -551,7 +552,8 @@
         b.onclick=()=>{for(const x of group(id))if(!st.staged.includes(x))st.staged.push(x);if(three)three.drop();render();const m2=forgeModel();if(m2.ready)doFuse(m2.ready)}}}
     if(!acts.childElementCount)acts.remove();
     const res=mk('div','sf-info-res',box);
-    res.textContent='SP '+P.sp+'  ·  '+L('악의구슬 ','Malice Sphere ')+(G.mats||0).toLocaleString()+'  ·  LV '+P.lv;
+    res.textContent='SP '+P.sp+'  ·  '+L('악의오브 ','Orb of Malice ')+(G.mats||0).toLocaleString()+'  ·  LV '+P.lv;
+    res.insertAdjacentHTML('afterbegin',_currencyOrbIcon(24));
   }
   function renderRoad(m){
     const box=parts.road;box.replaceChildren();

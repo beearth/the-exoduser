@@ -8,7 +8,7 @@
 
 | 항목 | 원본 근거 | 반영 |
 |---|---|---|
-| (a) 레슨 중 지옥강타 악의구슬 미소비 | 13010 게이트 `(window._parryLesson?.active‖G.mats>=_malCost(20))`·46454 `if(!window._parryLesson?.active)G.mats-=_malCost(20)` | `native_skill_slots.gd` `_is_parry_lesson_active()` — `main.source_intro_sequence.lesson_flow.active` **읽기 전용 getter**(레슨 파일 무수정). 게이트 면제+소비 면제 둘 다 적용 |
+| (a) 레슨 중 지옥강타 악의오브 미소비 | 13010 게이트 `(window._parryLesson?.active‖G.mats>=_malCost(20))`·46454 `if(!window._parryLesson?.active)G.mats-=_malCost(20)` | `native_skill_slots.gd` `_is_parry_lesson_active()` — `main.source_intro_sequence.lesson_flow.active` **읽기 전용 getter**(레슨 파일 무수정). 게이트 면제+소비 면제 둘 다 적용 |
 | (b) 인페르노 분출 크기 차이 | 56811 `X.globalCompositeOperation='screen'` | 원인=블렌드 차이(크기 식 `maxR×0.9×(.72+.28min(1,p3.5))`은 양쪽 동일·900px). `CanvasItemMaterial BLEND_MODE_ADD` 적용. 같은 위상 재캡처: 웹 t=13 vs Godot t=14(둘 다 grow=1.0·α=1 구간), `_out/p2-005c/compare_slam_t14.png`. 중앙 세로 극값 659px(웹)/593px(Godot) — 장면 요소 차이 범위, 시트·렉트 크기 동형 |
 
 ## 2. hurtE 집행자 DOT 확장 (`native_normal_enemy_hurte.gd`)
@@ -32,7 +32,7 @@
 
 | 항목 | 원본 | 포트 |
 |---|---|---|
-| 게이트 | 13021 `G.mats>=_malCost(10)&&P._gcCd<=0` (레슨 면제 없음) | 동일. 거절 시 cast_log rejected 기록(showPH '악의구슬 부족!' 토스트는 미이식 기록) |
+| 게이트 | 13021 `G.mats>=_malCost(10)&&P._gcCd<=0` (레슨 면제 없음) | 동일. 거절 시 cast_log rejected 기록(showPH '악의오브 부족!' 토스트는 미이식 기록) |
 | 비용·쿨 | 45512 `mats-=_malCost(10)=5`·`_gcCd=~~(600×(1+_cdRed 0))=600` | state `apply_native_skill_cast_cost` 5·`gc_cd=600` |
 | 피해 | 45507 `~~(magicRef×statInt(1)×pMagicMul×_skMul(14+(lv−1)×11.2×0.5)×0.75)` | provider bundle `reference.magic_ref()`+`formula.p_magic_mul()` READY 필수(NOT_READY=정지 기록), `js_to_int32` |
 | 존 | 45515~45517 `{r:300+15(lv−1), maxT:600, dmg, el:EL.P, lv}` | `G._fireZones`에 push (아래 §5) |
@@ -77,7 +77,7 @@
 
 ## 8. 검증
 
-- `test_p2005c_spike_holy` 20/0 (격리 EXODUSER-P2005C-Isolated-20261020): 악의구슬5·쿨600·존 수치·dmg식·25f 전 틱 없음·hurtE dot 경유·쉴드 흡수(42345)·dot 무스턴·_spikeSlow 90·재시전 거부·qs0 sweep / 돔 쿨1800·존 r520 maxT750·presence false→true·_gslCd 2배속·_gcCd 1배·재시전 거부·qs5 sweep.
+- `test_p2005c_spike_holy` 20/0 (격리 EXODUSER-P2005C-Isolated-20261020): 악의오브5·쿨600·존 수치·dmg식·25f 전 틱 없음·hurtE dot 경유·쉴드 흡수(42345)·dot 무스턴·_spikeSlow 90·재시전 거부·qs0 sweep / 돔 쿨1800·존 r520 maxT750·presence false→true·_gslCd 2배속·_gcCd 1배·재시전 거부·qs5 sweep.
 - 웹 교차(`_tmp/web_p2005c_shot.mjs`): mats 1000→995·gcCd 600·zone{r300,maxT600,dmg401=~~(23×1.66292×14×.75)}·_spikeSlow 85/lv1·쉴드 875→0 흡수·hdCd 1800·zone{r520,maxT750}·gcPerSec 59.9(가속 없음 확인).
 - 회귀: E 80/0·F 313/0·G 214/0·p2001a 31/0·b 38/0·c 16/0·e 18/0·j 21/0·p2002a 36/0·b 16/0·p2003a 10/0·p2004a 17/0·p2005a 27/0·b 12/0·contracts 5/0·초기화 117/2(선재)·시작 145/2(선재)·재생 88/0·레슨 30/0·regen binding 170/0·qe 0실패·authority 71/6(**선재** — stash 후 무변경 트리에서 동일 재현).
 - 화면: `_out/p2-005c/compare_{slam_t14,spike_cast,spike_tick,dome_cast}.png`(웹·Godot 같은 장면 합성), `godot_p2005c_skills.mp4`(5초: 가시덫→돔→돔 안 강타).

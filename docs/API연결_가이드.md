@@ -242,8 +242,8 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 | POST | `/api/save` | 게임 저장 `{slot, data}` |
 | GET | `/api/load/:slot` | 세이브 로드 |
 | DELETE | `/api/save/:slot` | 세이브 삭제 |
-| GET | `/api/mats` | 악의구슬(mats) 공유 풀 조회 |
-| POST | `/api/mats` | 악의구슬 공유 풀 업데이트 `{mats}` |
+| GET | `/api/mats` | 악의오브(mats) 공유 풀 조회 |
+| POST | `/api/mats` | 악의오브 공유 풀 업데이트 `{mats}` |
 | POST | `/api/gpt-image` | OpenAI 이미지 생성 프록시 |
 
 

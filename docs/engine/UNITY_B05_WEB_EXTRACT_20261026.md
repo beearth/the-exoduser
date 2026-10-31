@@ -115,7 +115,7 @@
 | _fireXbow 투사체 | 원점+방향×10, 속도 _autoBowSpec.spd, 사거리 spec.range, r=3, stagger0, kb0, pierce=XBOW_PIERCE?.5:0, normalBow=true, ghostXbow=true, el=bw.el | — | 28714 | _pierceRate 기본값 50+pierceFlat는 _resetPProj에서 부여(재활용 객체만, 아래 표 E) |
 | 전설 활 추가탄 | _lBowCrit>0 && random*100<statCrit() → ±.12rad 방향 한 발 추가 | — | 28715-28719 | - |
 | 발사 부수효과 | 펫 _ang 갱신, 터렛이면 playSampleAt('crossbow_shot',.15)+거리감쇠 else playSample('crossbow_shot',.2), poolPart 2개 | — | 28720-28724 | - |
-| 수동 fireBow | 악의구슬 1 소비, 피해 (~~(bowRef*pBowMul*10)+_bowBon)*3, 후딜 ~~(45/(pBowSpd*(1+bowAtkSpd))) | — | 28678-28703 | 호출처 없음(죽은 코드). crossbow 사운드 crossbow_shot .7 |
+| 수동 fireBow | 악의오브 1 소비, 피해 (~~(bowRef*pBowMul*10)+_bowBon)*3, 후딜 ~~(45/(pBowSpd*(1+bowAtkSpd))) | — | 28678-28703 | 호출처 없음(죽은 코드). crossbow 사운드 crossbow_shot .7 |
 
 ### A-4 투사체·충돌
 

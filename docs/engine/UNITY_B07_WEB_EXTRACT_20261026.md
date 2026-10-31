@@ -16,7 +16,7 @@
 4. **플레이어 포이즈 4칸**: 피격(비 DOT) -1, 무지개 폭발 -2, 패링 실패 -1, 패링 성공 +1(최대 4). 0이면 `pStun`=**240f × (1 − min(0.5, ccRes+stunRes))**(docs 480f/300f와 다름). 집중 상태(`_isFocusState`)는 면역(포이즈 0이면 1칸 복원 "집중!").
 5. **`hurtP`는 비-DOT 피격 시 `P.iframes=0`을 대입**한다(L43584) → docs의 "피격 후 30f 무적"은 코드에 없음(표 E).
 6. **적 포이즈 = 최대 HP와 같은 값**(`poise=maxPoise=_hp`, L31166). 보스 그로기 90f, 일반 180f, 그로기 종료 시 보스만 5초(300f) 면역.
-7. **패링 성공 보상**(`doParry`, L38472-38577): iframes 25, HP/ST/MP 각 `50×(1+parryBonus)×(1+pRegen×0.2)`(빨콩 ×0.5, 무지개 ×1.5, 물리탄 자원배율 ×3), 포이즈 +1, 기동게이지 +10/+5/+15(×2), 분노 ×2, 악의구슬 +1000~4000, 히트스톱 `_HS.parry`=6f, 슬로모 25f, 흔들림 14.
+7. **패링 성공 보상**(`doParry`, L38472-38577): iframes 25, HP/ST/MP 각 `50×(1+parryBonus)×(1+pRegen×0.2)`(빨콩 ×0.5, 무지개 ×1.5, 물리탄 자원배율 ×3), 포이즈 +1, 기동게이지 +10/+5/+15(×2), 분노 ×2, 악의오브 +1000~4000, 히트스톱 `_HS.parry`=6f, 슬로모 25f, 흔들림 14.
 
 ## 표 A. 정의·수치
 
@@ -215,7 +215,7 @@
 | 함수 | 줄 | 입력 | 출력·부작용 | 호출하는 곳 |
 |---|---|---|---|---|
 | `isPWin()` | 38471 | — | `(sBash && st2>20-_lParryWinTicks())||_kiParryT>0||(sBlock&&_sbParryT>0)||(peaceShield&&_sbParryT>0)||(P.s∉{whirlwind,beam,elecRepent}&&_sbParryT>0)` | 적 근접 패링 지점 20곳(표 A-8), 투사체 판정(34864) |
-| `doParry(inDmg,px,py,forceQ,parryEl,resourceMul,impactKind)` | 38472-38577 | 반사 전 데미지, 위치, Q 여부, 속성, 자원배율, 임팩트 종류 | 무적 25f, 회복, 포이즈+1, 기동/분노/악의구슬, 히트스톱/슬로모/흔들림, 사운드(`q_parry` 또는 `sword_parry`+`sword_back*`, `voice_parry*`), VFX(`_rainbowImpact`/`_dark02Impact`/`_addBoom(...,'physical')`/Lightning 콤보), 파티클 12, `⚡PARRY!`(`#ffdd00`,45) | 투사체 판정(34943~35064), sBash 반사(33397~33486), 적 근접(표 A-8), hurtP 해제/눌림(43445, 43453, 43477) |
+| `doParry(inDmg,px,py,forceQ,parryEl,resourceMul,impactKind)` | 38472-38577 | 반사 전 데미지, 위치, Q 여부, 속성, 자원배율, 임팩트 종류 | 무적 25f, 회복, 포이즈+1, 기동/분노/악의오브, 히트스톱/슬로모/흔들림, 사운드(`q_parry` 또는 `sword_parry`+`sword_back*`, `voice_parry*`), VFX(`_rainbowImpact`/`_dark02Impact`/`_addBoom(...,'physical')`/Lightning 콤보), 파티클 12, `⚡PARRY!`(`#ffdd00`,45) | 투사체 판정(34943~35064), sBash 반사(33397~33486), 적 근접(표 A-8), hurtP 해제/눌림(43445, 43453, 43477) |
 | `hurtP(dmg,opts)` | 43417-43609 | 피해, `{dot,redBean,ang,src,dtype,projHit,knockback,…}` | 즉시 return 조건(A89) → 해제패링(43443) → peaceShield(43450) → sBlock(43473) → DR·쉴드·HP 감소 → 포이즈/기절/경직 → 넉백·플래시 → 어픽스(counterHit/thorns/reflect/lastStand) → `die()` | 투사체 `_hurtProjectilePlayer`(16998), 적 근접, 장판 등 |
 | `_poiseHit(e,amt,label)` | 19974-19999 | 적, 포이즈 피해, 라벨 | `e.poise-=amt`; 0이면 그로기(보스 90/일반 180f), 보스 면역 300f, SFX/텍스트/파티클, 유니크 훅(`_uSkyPoiseRefund`,`_uPoiseOrbFracture`) | hurtE(42492), hitArc(37627), `_gSlamHit`(46545), `_detonateBlast`(43356), 적 패링 지점 |
 | `_poiseReset(e)` | 20002-20007 | 적 | `poise=maxPoise; poiseR=0` | 그로기 종료(34456, 38630) |
@@ -292,7 +292,7 @@
 | E4 | doParry "HP/ST/MP 회복 E=30, Q=50" | E·Q 모두 `50×(1+parryBonus)×(1+pRegen×0.2)`; 빨콩 ×0.5, 무지개 ×1.5, 물리 ×3 (L38485-38486) | **높음** |
 | E5 | "iframes 25프레임" | 18→25로 덮어써 최종 25 (L38473, 38487) — 일치 | 일치 |
 | E6 | "기동게이지 +10 (MAX 300 캡)" | `+(5/10/15)×resource×2` = 일반 +20(물리 +60), 빨콩 +10, 무지개 +30; 캡 `_HARP_GAUGE_MAX`(기본 225, 칸수에 따라 270~450+extraST) (L38493-38494, 12882) | **높음** |
-| E7 | "악의구슬 +1000" | `(500/1000/2000)×resource×2` → 일반 2000(물리 6000), 빨콩 1000, 무지개 4000 (L38544) | **높음** |
+| E7 | "악의오브 +1000" | `(500/1000/2000)×resource×2` → 일반 2000(물리 6000), 빨콩 1000, 무지개 4000 (L38544) | **높음** |
 | E8 | 패링 윈도우 "20프레임, 해제 후 12프레임" | Q 눌림 20f(`_lSbParryT`, 망토 보정 가능), 해제 12f — 일치. sBash는 별도 16틱 | 일치 |
 | E9 | sBash "뒤 4틱(st2≤4)" 후딜 / 다른 문단 "뒤 10틱" | 코드: 활성 `st2>20-_PARRY_WIN`(=st2>4) → **뒤 4틱**(L34854, 38471). 헛침 처벌 문단의 "10틱"은 코드와 불일치 | 중간 |
 | E10 | "`isPWin()`·투사체 반사 게이트 모두 `_PARRY_WIN`" | isPWin은 `_lParryWinTicks()`(망토 보정)를 쓰고, 투사체 게이트 `_sbActive`는 보정 없는 `_PARRY_WIN`(L38471 vs 34854) → 망토 장착 시 두 판정이 어긋남 | 중간 |

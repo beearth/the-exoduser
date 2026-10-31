@@ -345,7 +345,7 @@ POE2 설정 화면과 Diablo IV 장비 화면을 참고한 최신 표현 계약�
 | 제목판 | 제목 컨테이너 선·배경·그림자 제거. 제목판 ::after는 1px #806944 단일 선, #3c3422→#191b12 배경, 외부0 3px5px 그림자. border-image 제거 |
 | 설정 본문 | 1px #716047 선 하나. outline/inset 그림자 제거. 기존 패딩과 스크롤 유지 |
 | 인벤 헤더 | 제목과 정보행을 한 열 grid로 분리. 제목 폭100%/최소88px/padding54px 12px 8px. 중앙 문장204×68px. 제목판 top53/좌우24%/bottom0, 폭560px 이하 좌우18% |
-| 정보행 | 전투력·악의구슬·닫기 정렬. gap8px/padding0 4px 8px/아래선1px #65583f. 전투력·악의구슬의 중첩 박스 삭제. 문장과 충돌하지 않음 |
+| 정보행 | 전투력·악의오브·닫기 정렬. gap8px/padding0 4px 8px/아래선1px #65583f. 전투력·악의오브의 중첩 박스 삭제. 문장과 충돌하지 않음 |
 | 장비 구획 | 섹션 선1px #65583f, 중복 inset선 제거. 슬롯 안쪽 iskin 등급 그림자 제거, 바깥 슬롯 희귀도 테두리 유지. 슬롯 음영 inset0 2px5px, 라벨#e0d2b2 |
 | 캐시 | ui-refinement.css?v=20260927-4, 게임 두 HTML 및 로비 동기화 |
 
@@ -702,11 +702,11 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 공통 등급 | _itemEconomyRarity(r): 0 이상 정수이면 min(r,4), 나머지는0. 아이템 rarity 자체는 변경하지 않음 |
 | 사용 위치 | salvageVal 기본액·강화 환수, enhCost, 장비 교체 시 old._enhRefund 계산 |
 | 유니크 기준 | 기존 최상위 경제 등급4를 사용: 기본 분해50,000/강화배율1.8. 일반~전설 값 변경 없음 |
-| 유골함 | tier0/enh0/_enhRefund없음인 기본 전대의 유골함:50,000 악의구슬. 표시·개별분해·일괄분해 모두 salvageVal 공유 |
+| 유골함 | tier0/enh0/_enhRefund없음인 기본 전대의 유골함:50,000 악의오브. 표시·개별분해·일괄분해 모두 salvageVal 공유 |
 | dropItem | 없는 아이템·fav 잠금은 false. 지급액 비유한/음수이면 삭제·지급 없이false. 정상 삭제/저장 후true를 반환해 기존 onclick의 renderInv 실행 |
 | 상세 마감 | 빈 출처행 숨김,조작안내 받침,장착버튼 하단색,12px·34px최소높이·한줄 금속판 버튼,스크롤 거터. hover해도 선택/분해 테두리 유지 |
 
-앞선 슬롯과 상호작용 마감 절에서 기록한 유골함 분해 NaN 미해결 항목을 해결한다. 실제 소지품 화면의 유골함 선택에서 분해(악의구슬 +50000) 표시를 확인했다. 아이템을 실제로 삭제하는 분해 동작은 실행하지 않았다. 기존 저장 데이터의 이미 손상된 악의구슬 잔액은 이 변경으로 추정 복원하지 않는다. 자동 테스트 추가·실행 없음. 캐시 ui-refinement.css?v=20260927-4.
+앞선 슬롯과 상호작용 마감 절에서 기록한 유골함 분해 NaN 미해결 항목을 해결한다. 실제 소지품 화면의 유골함 선택에서 분해(악의오브 +50000) 표시를 확인했다. 아이템을 실제로 삭제하는 분해 동작은 실행하지 않았다. 기존 저장 데이터의 이미 손상된 악의오브 잔액은 이 변경으로 추정 복원하지 않는다. 자동 테스트 추가·실행 없음. 캐시 ui-refinement.css?v=20260927-4.
 
 
 ### 스타일 수치 원본
@@ -810,7 +810,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 항목 | 현재 계약 |
 |---|---|
 | 인벤토리 제목판 | 직계 헤더의 .ptitle display:none. 제목 이미지와 가상요소도 표시하지 않음 |
-| 정보행 | 전투력/악의구슬/닫기 유지. gap0, margin4px 0 8px |
+| 정보행 | 전투력/악의오브/닫기 유지. gap0, margin4px 0 8px |
 | 높이 배분 | 장비 탭 inv-wrap 첫 행270px, 가방 행 minmax(min-content,1fr). invCenter height:auto/min-height260px,invGrid height140px/flex1 1 140px. 필터 높이를 반영하며 나머지 높이는 가방에 배정. 작은 화면은 기존 바깥 세로 스크롤 사용 |
 | 적용 범위 | 인벤토리 내부 장비/유골함/보석/보관함 페이지 공통. 다른 메뉴 제목 유지 |
 
@@ -1915,7 +1915,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 항목 | 현행 계약 |
 |---|---|
 | 카테고리 | `renderSkillPanel()`이 4개 대분류 탭을 `#skillCategoryNav`에 렌더한다. 이 줄은 `.frame-inner-panel-stack` 첫 행에서 스킬 목록 스크롤 밖에 고정된다. 카테고리 전환과 강조는 기존 동작을 유지한다. |
-| 레벨·자원 정보 | `#skillInfo`(LV/SP/악의구슬/사슬)는 `#skillGridWrap`의 첫 자식이다. 휠로 목록을 내리면 요약도 스킬 카드와 함께 위로 이동한다. |
+| 레벨·자원 정보 | `#skillInfo`(LV/SP/악의오브/사슬)는 `#skillGridWrap`의 첫 자식이다. 휠로 목록을 내리면 요약도 스킬 카드와 함께 위로 이동한다. |
 | 스크롤 경계 | `#skillGridWrap`과 우측 `#skillDetail`만 각각 내부 스크롤한다. 높이 620px 이하에서도 바깥 `.skill-pbox`는 스크롤하지 않고 중앙 영역이 남는 높이를 사용한다. 게임패드 기본 스크롤 대상도 `#skillGridWrap`이다. |
 | 연결·검증 | `skill-workspace.css?v=20260928-fixed-categories5`를 사용한다. 1940×1158, 970×579, 390×844에서 휠 후 탭의 화면 y좌표 유지, 정보 y좌표 감소, 목록 scrollTop 증가, pageerror 0을 확인했다. 스킬 데이터·레벨업·합체·저장 형식은 변경하지 않았다. |
 
@@ -2714,7 +2714,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 
 | 대상 / id | 현행 구현·검수 |
 |---|---|
-| 사용자 기준 | 획득 배지가 없으면 HUD에 배지0/3·빈 버튼·자리 표시를 남기지 않는다. 지역 처치·악의구슬 수치를 가리지 않는다 |
+| 사용자 기준 | 획득 배지가 없으면 HUD에 배지0/3·빈 버튼·자리 표시를 남기지 않는다. 지역 처치·악의오브 수치를 가리지 않는다 |
 | 표시 조건 | tutorial-badges.js의 init에서 button.hidden=true로 시작. render에서 count=Object.keys(earned).length; count===0이면 button/panel hidden=true 및 aria-expanded=false. 1~3개 획득·복원 시 button.hidden=false. 언어 갱신에도 같은 조건 적용 |
 | 모음 열기 | toggle(open)은 button.hidden이면 열기를 거부하며 숨긴 버튼에 focus하지 않는다. 배지가 있으면 기존 닫기 초점/버튼 복귀·aria-expanded·3개 카드 정책 유지 |
 | 위치 | button과 collection을 #mmLvl의 자식으로 연결. 둘 모두 position:absolute/right0/pointer-events:auto; 버튼 top:calc(100% + 8px),모음 top:calc(100% + 46px). 상태창의 기존 크기·UI배율·safe-area 이동을 따라가며 수치 행과 겹치지 않음 |
@@ -3063,7 +3063,7 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 |---|---|
 | 파일 | `ui-quiet-tier.css`의 `#skillPanel` 절(설정 절 뒤에 추가). 선택자는 `#skillPanel#skillPanel …`(ID 2개, 기존 `skill-forge.css`·`skill-workspace.css`·`ui-refinement.css`와 특이도를 맞춤). `game.html`·`skill-forge.js` 변경 없음, `build-nwjs.mjs` 목록 변경 없음(같은 CSS 파일) |
 | 제목(K2) | 큰 돌 명패 "전투 스킬"(크레스트·명패 ::before/::after, `zoom:.78/.6`)을 분류 줄 + 세리프 제목 + 헤어라인으로 교체. 분류 줄은 `::before{content:'SKILL'}` 영문 고정(새 글자 없음, 번역 불요), 제목 `800 30px var(--font-hell)` `#ebdaba`. 줄어든 높이(약 43px)만큼 제단 상자가 커진다(`#skillForge`는 flex:1) |
-| 왼쪽 상세 판(K3) | `.sf-info`: 1px `rgba(164,147,115,.22)` + 바탕 `rgba(12,10,9,.72)`, 스킬 이름 `800 28px var(--font-hell)` `#ebdaba` + 헤더 헤어라인, Lv 줄 Cinzel 13px 보조색, 설명 `16px/1.75 #dfd6c2`, "강화 SP … / Lv50 도달 시 해금"은 2열 행(해금 조건 `#c9a39a`), 하단 `SP · 악의구슬 · LV` 줄 Cinzel |
+| 왼쪽 상세 판(K3) | `.sf-info`: 1px `rgba(164,147,115,.22)` + 바탕 `rgba(12,10,9,.72)`, 스킬 이름 `800 28px var(--font-hell)` `#ebdaba` + 헤더 헤어라인, Lv 줄 Cinzel 13px 보조색, 설명 `16px/1.75 #dfd6c2`, "강화 SP … / Lv50 도달 시 해금"은 2열 행(해금 조건 `#c9a39a`), 하단 `SP · 악의오브 · LV` 줄 Cinzel |
 | 오른쪽 로드맵(K4) | `.sf-road`: 같은 판 규칙, 제목 "합성 로드맵" = 구역 제목 서식(15px `#b6a58f` + 헤어라인), 행은 선만(왼쪽 2px 황동·행 아래 헤어라인), 진행 중/가능 행만 `rgba(172,121,83,.1)` |
 | 제단 명패(K5) | `.sf-field-head`(오른쪽 "넣을 수 있는 스킬 [LMB]")·`.sf-core-name`(왼쪽 모체 이름·★)에서 진홍 세로 막대·그라데이션 판 제거, 분류 줄 크기 글자 + 보조 문구. 진홍은 창 안에서 선택 슬롯 링 한 곳(현행 그대로) |
 | 버튼(K6) | `.sf-btn`(강화 +/−/리셋/분해/합성)·하단 `.pclose`(닫기·일괄 레벨업·추천 자동) = 높이 40 테두리 칩(`rgba(164,147,115,.5)`). 주 행동(`.sf-btn-fire`)만 `rgba(172,121,83,.18)`. 하단 버튼 줄은 `#skillForge{margin-bottom:18px}`·`.skill-close{margin:0 0 20px}`로 올려 바깥 틀에 걸려 잘리던 것도 정리 |
@@ -3115,3 +3115,7 @@ CSS 선·도형으로 그린 판·버튼을 생성 원화로 교체했다. 모�
 제작 전 직접 열람: 20261028_growth_tree/current_1920.png, 20261028_stat_summary/runtime_1920.png, gate_sigil 및 eye_crest 원본. 목표는 머리 장식보다 트리·양쪽 정보를 우선하고, 1x 제목·노드 가독성을 유지하는 것이다. 조기 실물 판정은 1920×1080의 머리/본문 높이와 인장 바탕 경계이며, 머리/본문·제목/AP 충돌 또는 가로 넘침·노드 잘림이면 FAIL로 되돌린다.
 
 검수 증거·최종 수치: G:/exoduser/tmp/design-review/20261031_stat_window/REPORT.md와 geometry.json. 강제 보스 테스트 상태·격리 API·headless 브라우저 검수이며 자연 플레이/Unity/NW.js/DEMO·EA 배포 검수와 구분한다. 같은 해상도의 전후 전체 화면과1x 크롭을 직접 판정한다.
+
+## 2026-10-31 악의오브 최종 정정
+
+화폐를 악의오브 / Orb of Malice로 개명하고 내장 imagegen의 둥근 유리 오브 4단계를 HUD·대장간·스킬 창·툴팁·획득 합체 연출에 연결했다. 색·구간·파일·픽셀 규격과 실패 폴백은 [화폐 SSOT](../3.2메타·진행시스템/CURRENCY_RENAME_20261031.md)를 따른다. 32/48px 원화와 실제 HUD 1x 판정 보드는 G:/exoduser/tmp/design-review/20261031_malice_orb/review-board.png. 웹의 UI 검수와 Unity 컴파일·Player/M1은 별도이며 최종 증거·원격 SHA는 I:/EXODUSER-Storage/demo-art/currency-rename/REPORT.md에 남긴다.

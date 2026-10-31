@@ -17,7 +17,7 @@
 
 ## Godot origin/main 대응
 
-`main.gd:18,89`의 `native_potion_recovery.gd`/QS-01 producer는 존재하고 `addPotion`은 hp→악의구슬+1(State:508)만 보인다. 자동 CD·HP writer·수동 slot input natural consumer는 gap D29 **통합 대기**다.
+`main.gd:18,89`의 `native_potion_recovery.gd`/QS-01 producer는 존재하고 `addPotion`은 hp→악의오브+1(State:508)만 보인다. 자동 CD·HP writer·수동 slot input natural consumer는 gap D29 **통합 대기**다.
 
 ## 관련 docs
 
