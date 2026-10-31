@@ -150,3 +150,17 @@ Resources/Shaders/HD2DGround 누락 또는 isSupported=false면 원래 SpriteRen
 |미완|새실제Editor192·build·M123·field16/actor336/hit150/각1080controls54·1x 탄/웹150·common/Desktop2. 이전후보 증거를 뒤source에 소급하지 않음|
 
 근거: I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/phase2-moving-bullet-fix 및 stage2-hit-diagnostic-review-5e9. Core114·보호RM5 변경0.
+
+
+## 2026-11-01 KST 중심형 탄 투영 크기 불변 보완
+
+|항목|계약|
+|---|---|
+|원근 크기|view-ray 깊이 이동에 따른 newCameraDepth/sourceCameraDepth를 원본localScale.x/y에 곱해 기존 화면상의 모양·크기를 유지. orthographic은1. sourceDepth<=nearClip은 원래위치/scale 유지하고 회전만 적용해 비가시 탄의 나눗셈0 방지|
+|지형 clearance|반복마다 위 scale 비율을 포함해 원본3x3 지점을 샘플. 기존 최대6회·목표.003m·nearClip+.02m 경계 유지|
+|반복 프레임|R3Base에 원래localScale도 저장·복원해 parent-only 이동이나 writer없는 프레임에서 크기 보정이 누적되지 않음. source position/rotation 복원과 같은 경계|
+|회귀 조건|CenteredBullets192에서4모서리의 Core중심 대비 상대화면벡터를 원래 camera-facing 크기와 비교, error<=.02px 추가. 기존 중심<=.72px/terrain>=.0027m도 유지. 실제Editor 전/API Runtime·Editor0|
+|실행 상태|0861 소스도 아직첫Editor대기 단계에서 자기PS29436만 정확PID/부모/명령·자식0/ownUnity0 확인 후 중단. Map의server58680/다른프로세스는보존. derived0/CAS/60·57/guard 안전, actual0861 Editor/build/Player/H5 실행0. 새source는별도검수|
+|Stage3|갱신전p3 자체원문3파일을I에정확보존한뒤카메라3 lifecycle hook을유지한국소변경만반영. 새API snapshot 재검증은별도. 기존보존실패이력소급무효화0|
+
+근거 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/phase2-centered-screen-size. Core114 변경0.

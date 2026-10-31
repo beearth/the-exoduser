@@ -24,7 +24,7 @@ namespace Exoduser.UnityPort
         public Camera Remodel3DCamera { get { return r3Cam; } }
 
         // base state of each billboarded sprite: the position / rotation the 2D code wrote last (so the lift and the tilt are re-derived every frame, never accumulated)
-        struct R3Base { public Vector3 localPosition; public Quaternion localRotation; }
+        struct R3Base { public Vector3 localPosition,localScale; public Quaternion localRotation; }
         readonly Dictionary<SpriteRenderer, R3Base> r3Base = new Dictionary<SpriteRenderer, R3Base>();
         readonly List<SpriteRenderer> r3Projected = new List<SpriteRenderer>();
 
@@ -134,7 +134,7 @@ namespace Exoduser.UnityPort
             NativeHd2DSurface.Restore();
             foreach (var sr in r3Projected)
                 if (sr != null && r3Base.TryGetValue(sr, out var pose))
-                { sr.transform.localPosition = pose.localPosition; sr.transform.localRotation = pose.localRotation; }
+                { sr.transform.localPosition = pose.localPosition; sr.transform.localRotation = pose.localRotation; sr.transform.localScale = pose.localScale; }
             r3Projected.Clear();
         }
 
@@ -149,7 +149,7 @@ namespace Exoduser.UnityPort
             {
                 if (sr == null || !sr.enabled || sr.sprite == null || sr.gameObject.scene == r3Scene) continue;
                 var tr = sr.transform;
-                r3Base[sr] = new R3Base { localPosition = tr.localPosition, localRotation = tr.localRotation };
+                r3Base[sr] = new R3Base { localPosition = tr.localPosition, localRotation = tr.localRotation,localScale=tr.localScale };
                 float roll = tr.rotation.eulerAngles.z;
                 if(NativeHd2D.Enabled&&NativeHd2DSurface.Project(sr,r3Cam))continue;
                 if(NativeHd2D.Enabled&&(NativeHd2D.IsCentered(sr)||NativeSkillView.IsCenteredSkillSprite(sr)))

@@ -213,3 +213,6 @@
 
 ### 2026-11-01 KST 이동탄 표시 재작업
 5e9 실제1x에서 이동탄이 바닥mesh로 분류되어 보이지 않은 결함을 확인했다. 이동탄/추적독구를 Center 빌보드로 분리하고 화면Core중심을 유지하는 view-ray 깊이 보정으로 전체그림의 지형가림을 방지한다. 장판/지뢰는 surface 유지, Actor발lift 미적용. 실제활성 SpriteRenderer 표시/중심 error<=1px 관측과 Editor192조건을 추가했다. API0이며 새 실제검수/common/Desktop2 미완. 수치/counter PASS를시각PASS로사용하지않는다. 상세 UNITY_HD2D_ALIGNMENT 최신절.
+
+
+중심형탄 view-ray 이동의 원근 화면크기까지 보존하도록 depth ratio scale 보정을 추가하고 R3Base 원본scale도 매프레임복원한다. Editor192에4모서리 상대투영 크기 error<=.02px 조건을 추가했다. 0861은Unity시작전자기대기취소·파생0이며 새source의 실제검수가 남았다. 상세 UNITY_HD2D_ALIGNMENT 최신절.

@@ -146,13 +146,15 @@ namespace Exoduser.UnityPort
         public static void ProjectCentered(SpriteRenderer sr,Camera camera,float roll)
         {
             if(sr==null||sr.sprite==null||camera==null)return;
-            var anchor=SnapAnchor(camera,sr.transform.position);var rotation=camera.transform.rotation*Quaternion.Euler(0,0,roll);
+            var rotation=camera.transform.rotation*Quaternion.Euler(0,0,roll);float sourceDepth=camera.WorldToScreenPoint(sr.transform.position).z;
+            if(sourceDepth<=camera.nearClipPlane){sr.transform.rotation=rotation;return;}
+            var anchor=SnapAnchor(camera,sr.transform.position);var sourceScale=sr.transform.localScale;var sourceLossyScale=sr.transform.lossyScale;
             var toward=camera.orthographic?-camera.transform.forward:(camera.transform.position-anchor).normalized;
             float forward=-Vector3.Dot(camera.transform.forward,toward),advance=0;
             float available=Mathf.Max(0,(camera.WorldToScreenPoint(anchor).z-camera.nearClipPlane-.02f)/Mathf.Max(.05f,forward));
             if(toward.y>.05f)for(int pass=0;pass<6;pass++)
             {
-                float minimum=float.PositiveInfinity;var bounds=sr.sprite.bounds;var scale=sr.transform.lossyScale;
+                float minimum=float.PositiveInfinity;var bounds=sr.sprite.bounds;float ratio=camera.orthographic?1:Mathf.Max(.001f,(sourceDepth-forward*advance)/sourceDepth);var scale=sourceLossyScale*ratio;
                 for(int iy=0;iy<3;iy++)for(int ix=0;ix<3;ix++)
                 {
                     var local=new Vector3(Mathf.Lerp(bounds.min.x,bounds.max.x,ix*.5f)*scale.x*(sr.flipX?-1:1),Mathf.Lerp(bounds.min.y,bounds.max.y,iy*.5f)*scale.y*(sr.flipY?-1:1),0);
@@ -160,6 +162,8 @@ namespace Exoduser.UnityPort
                 }
                 if(minimum>=.0029f)break;float step=Mathf.Min((.003f-minimum)/toward.y,available-advance);if(step<=0)break;advance+=step;
             }
+            float finalRatio=camera.orthographic?1:Mathf.Max(.001f,(sourceDepth-forward*advance)/sourceDepth);
+            sr.transform.localScale=new Vector3(sourceScale.x*finalRatio,sourceScale.y*finalRatio,sourceScale.z);
             sr.transform.SetPositionAndRotation(anchor+toward*advance,rotation);
         }
         public static float FootLift(Sprite sprite)
