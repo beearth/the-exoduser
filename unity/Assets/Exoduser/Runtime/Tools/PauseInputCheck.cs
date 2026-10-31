@@ -18,7 +18,7 @@ namespace Exoduser.UnityPort.Tools
   const string Flag="--unity-pause-input-check";
   [Serializable] sealed class Check {public string name,detail;public bool passed;}
   [Serializable] sealed class State {public string phase,playerState,page,practice;public int frame,tick,cursor;public float time,timeScale,hp,stateTicks,x,y;public bool running,menu,focus,navigationFocus,releaseFence,entryFence,inputFence,inventory,skills,stats,forge,remodel;}
-  [Serializable] sealed class Receipt {public string scope="격리 실제 Player: Input System 가상 키보드 → 제품 Update/PollKeys, 자기 숨은 Windows 창 WM 클릭 → 실제 OnGUI. focus callback 모델 전환. 사용자 손조작/OS 전환/자연 전투 검수와 구분",runtimeSha,coreSha,device,sandbox;public bool passed,quitRequested,quitObserved;public int mouseDown,mouseUp,frames;public List<Check> checks=new List<Check>();public List<State> states=new List<State>();}
+  [Serializable] sealed class Receipt {public string scope="격리 실제 Player: Input System 가상 키보드 → 제품 Update/PollKeys, 자기 숨은 Windows 창 WM 클릭 → 실제 OnGUI. focus callback 모델 전환, window-focus 사례는 자기 창 WM_ACTIVATEAPP→Unity 콜백. 사용자 손조작/실제 OS 창 전환/자연 전투와 구분",runtimeSha,coreSha,device,sandbox;public bool passed,quitRequested,quitObserved;public int mouseDown,mouseUp,frames,focusEvents;public List<Check> checks=new List<Check>();public List<State> states=new List<State>();}
   static bool Has(string flag)=>Array.IndexOf(Environment.GetCommandLineArgs(),flag)>=0;
   static string Arg(string flag){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,flag);return i>=0&&i+1<a.Length?a[i+1]:null;}
   [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)] static void Boot(){if(Has(Flag)&&!Has("--unity-m1-check"))new GameObject("Pause input isolated check").AddComponent<PauseInputCheck>();}
@@ -44,6 +44,14 @@ namespace Exoduser.UnityPort.Tools
    lobby.ShowLobby();lobby.SelectPreview();CheckThat(lobby.EnterNativeTest(),"일반 미리보기 진입");game.SetGameFocus(true);
    until=Time.realtimeSinceStartup+45;while((lobby.IsBlocking||!game.Running||NativeRemodel3D.Requested&&!NativeRemodel3D.Active)&&Time.realtimeSinceStartup<until)yield return null;
    CheckThat(game.Running,"진입 키 해제 후 실행");CheckThat(!NativeRemodel3D.Requested||NativeRemodel3D.Active,"요청된 숲 3D 로드");recording=true;StartCoroutine(Frames());
+   if(Arg("-pause-case")=="window-focus"){
+    IntPtr window=OwnWindow();CheckThat(window!=IntPtr.Zero,"focus 자기 숨은 창 확인");int events=receipt.focusEvents;
+    CheckThat(PostMessageW(window,0x001C,new IntPtr(1),IntPtr.Zero),"자기 창 활성 알림 전달");yield return new WaitForSecondsRealtime(.2f);
+    CheckThat(PostMessageW(window,0x001C,IntPtr.Zero,IntPtr.Zero),"자기 창 비활성 알림 전달");yield return new WaitForSecondsRealtime(.2f);
+    CheckThat(receipt.focusEvents>events&&!(bool)Get(game,"gameFocused")&&!game.Running&&(bool)Get(game,"menu"),"실제 Unity focus 콜백으로 정지");yield return Shot("window-focus-lost");events=receipt.focusEvents;
+    CheckThat(PostMessageW(window,0x001C,new IntPtr(1),IntPtr.Zero),"자기 창 재활성 알림 전달");yield return new WaitForSecondsRealtime(.2f);
+    CheckThat(receipt.focusEvents>events&&(bool)Get(game,"gameFocused")&&!game.Running&&(bool)Get(game,"menu"),"실제 focus 복귀 자동 재개 없음");yield return Key(UnityEngine.InputSystem.Key.Enter);yield return AssertResumed("focus 복귀 뒤 명시 Enter");yield return Shot("window-focus-resumed");Save();Application.Quit(0);yield break;
+   }
    if(Arg("-pause-case")=="startup"){
     lobby.ShowLobby();lobby.SetPlaybackFocus(true);var data=JsonUtility.FromJson<StartupIntroData>(Resources.Load<TextAsset>("Data/startup_intro").text);StartupIntroLine[] lines=null;foreach(var language in data.languages)if(language.code=="ko")lines=language.lines;
     CheckThat(lines!=null&&lines.Length>0,"실제 대화 원본 로드");lobby.StartupCaptureState.Begin(lines,false);
@@ -87,6 +95,7 @@ namespace Exoduser.UnityPort.Tools
   IntPtr OwnWindow(){IntPtr found=IntPtr.Zero;uint own=GetCurrentProcessId();EnumWindows((w,s)=>{GetWindowThreadProcessId(w,out uint pid);var name=new System.Text.StringBuilder(128);GetClassNameW(w,name,128);if(pid==own&&name.ToString()=="UnityWndClass"){found=w;return false;}return true;},IntPtr.Zero);return found;}
   IEnumerator Click(float x,float y){IntPtr window=OwnWindow();CheckThat(window!=IntPtr.Zero,"클릭 자기 Player 창 확인");int px=Mathf.RoundToInt(x*Screen.width/1280f),py=Mathf.RoundToInt(y*Screen.height/720f);IntPtr point=new IntPtr((py<<16)|(px&65535));int down=receipt.mouseDown,up=receipt.mouseUp;CheckThat(PostMessageW(window,0x200,IntPtr.Zero,point)&&PostMessageW(window,0x201,new IntPtr(1),point),"WM 클릭 누름 전달");yield return new WaitForSecondsRealtime(.12f);CheckThat(PostMessageW(window,0x202,IntPtr.Zero,point),"WM 클릭 해제 전달");yield return new WaitForSecondsRealtime(.15f);CheckThat(receipt.mouseDown>down&&receipt.mouseUp>up,"실제 OnGUI MouseDown/MouseUp 수신");}
   void OnGUI(){if(Event.current==null)return;if(Event.current.rawType==EventType.MouseDown)receipt.mouseDown++;if(Event.current.rawType==EventType.MouseUp)receipt.mouseUp++;}
+  void OnApplicationFocus(bool focus){receipt.focusEvents++;if(game!=null&&pause!=null)Snapshot("실제 Unity focus 콜백 "+focus);}
   void OnApplicationQuit(){recording=false;if(receipt.quitRequested){receipt.quitObserved=true;Save();}Cleanup();}
   void Cleanup(){if(keyboard!=null){InputSystem.RemoveDevice(keyboard);keyboard=null;}if(previousKeyboard!=null&&previousKeyboard.added)previousKeyboard.MakeCurrent();previousKeyboard=null;}
   void OnDestroy(){Cleanup();}
