@@ -15,7 +15,7 @@ class Program {
    if(a.X>0)Check(a.LocalX(a.X-1)<0&&a.LocalX(a.X+a.Width+1)>1920,"side bars excluded "+w);
    if(a.Y>0)Check(a.LocalY(h-a.Y+1,h)<0&&a.LocalY(h-a.Y-a.Height-1,h)>1080,"top bottom excluded "+w);
   }
-  var baseArea=NativeUiSafeArea.Fit(1920,1080);foreach(float w in new[]{2560f,3840f}){var wide=NativeUiSafeArea.Fit(w,1080);Check(Near(wide.Scale,baseArea.Scale)&&Near(wide.Width,1920)&&Near(wide.Height,1080),"same height same size "+w);}
+  for(int i=0;i<sizes.GetLength(0);i++){float w=sizes[i,0],h=sizes[i,1];var e=NativeUiEdgeArea.Fit(w,h);Check(Near(e.Scale,h/1080),"edge height scale");Check(Near(e.Width*e.Scale,w),"physical edge width");Check(Near(e.LocalX(w-20*e.Scale),e.Width-20),"right pointer");Check(Near(e.LocalY(h-16*e.Scale,h),16),"top pointer");Check(Near((e.Width-560)*e.Scale+560*e.Scale,w),"right panel hits screen edge");}var baseArea=NativeUiSafeArea.Fit(1920,1080);foreach(float w in new[]{2560f,3840f}){var wide=NativeUiSafeArea.Fit(w,1080);Check(Near(wide.Scale,baseArea.Scale)&&Near(wide.Width,1920)&&Near(wide.Height,1080),"same height same size "+w);}
   Console.WriteLine("PASS "+checks+" safe-area/pointer checks");
  }
 }

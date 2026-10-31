@@ -153,18 +153,7 @@ namespace Exoduser.UnityPort
                 if (flow.LoadPhase >= 2 && fade > .5f)
                 {
                     float nt = flow.LoadPhase == 2 ? Mathf.Min(1f, (float)flow.LoadT / 35f) : 1f;
-                    if (stageFontNanum == null) { stageFontNanum = NativeSilverHellUi.Font() ?? Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular") ?? font; }
-                    if(stageLoadSigil==null)stageLoadSigil=Resources.Load<Texture2D>("Art/ui/silver_hell/gate_sigil_20261028");
-                    var tint=GUI.color;GUI.color=new Color(tint.r,tint.g,tint.b,tint.a*nt);
-                    NativeSilverHellUi.Panel(new Rect(560,290,800,500),36,12,false);
-                    if(stageLoadSigil!=null)NativeUiAudit.DrawTexture(new Rect(760,310,400,225),stageLoadSigil,ScaleMode.StretchToFill,true);
-                    GUI.color=tint;
-                    string name = bossBar.BossNameForStage(Simulation.Config.StageIndex) ?? "???";
-                    var st = new GUIStyle(GUI.skin.label) { font = stageFontNanum, fontSize = 40, fontStyle = FontStyle.Normal, alignment = TextAnchor.MiddleCenter };
-                    st.normal.textColor = new Color(0, 0, 0, .8f * nt); NativeUiAudit.Label(new Rect(580,552,760,60), name, st);
-                    st.normal.textColor = new Color(242/255f,240/255f,236/255f,nt);NativeSilverHellUi.Label(new Rect(580,550,760,60),name,st);
-                    var sub = new GUIStyle(st) { fontSize = 15, fontStyle = FontStyle.Normal };
-                    sub.normal.textColor = new Color(138/255f,141/255f,141/255f,nt);NativeSilverHellUi.Label(new Rect(580,650,760,24),StageSubtitle(Simulation.Config.StageIndex),sub);
+                    string name=bossBar.BossNameForStage(Simulation.Config.StageIndex)??"???";NativeLoadingArtwork.Draw(Simulation.Config.StageIndex%19+1,name,StageSubtitle(Simulation.Config.StageIndex),Mathf.Clamp01((float)flow.LoadT/35),nt);
                 }
             }
         }

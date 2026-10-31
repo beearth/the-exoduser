@@ -97,7 +97,7 @@ namespace Exoduser.UnityPort
    if(startup.Page==FrontendEntryPage.Guide){DrawStartupGuide();return;}
    if(startup.Page==FrontendEntryPage.Curtain){var matrix=GUI.matrix;try{GUI.matrix=NativeUiViewport.Matrix;DrawStartupBarrier();}finally{GUI.matrix=matrix;}if(startup.Elapsed<.4)DrawStartupGuide(Mathf.Clamp01(1-(float)startup.Elapsed/.4f),false);}
   }
-  void DrawEntryLoadingLogo(){EnsureSilverArt();if(loadingLogo==null)loadingLogo=Resources.Load<Texture2D>("Art/Startup/loading_logo");Fill(new Rect(0,0,1920,1080),Color.black);NativeSilverHellUi.Panel(new Rect(600,250,720,540),36,12,false);Image(new Rect(660,280,600,337.5f),gateSigil??loadingLogo);var st=new GUIStyle(startupBody){font=NativeSilverHellUi.Font()??startupBody.font,fontSize=22,fontStyle=FontStyle.Normal};st.normal.textColor=NativeSilverHellUi.Bright;SilverLabel(new Rect(640,680,640,40),K("불러오는 중","LOADING"),st,TextAnchor.MiddleCenter);}
+  void DrawEntryLoadingLogo(){NativeLoadingArtwork.Draw(1,K("불러오는 중","LOADING"),"",Mathf.Clamp01((float)startup.Elapsed/2),1,true);}
   void DrawNemesis()
   {
    Fill(new Rect(0,0,1920,1080),Color.black);var l=startup.Line;if(l==null)return;float elapsed=(float)startup.Elapsed*1000;
@@ -191,9 +191,9 @@ namespace Exoduser.UnityPort
    float noteH=step==3?GuidePhysicalLines(note,guideText,15.2f,0,w).Count*20.52f:0,hintH=GuidePhysicalLines(hint,guideText,13.6f,.544f,w).Count*17;
    // Source normal line boxes: progress16; empty English line still contributes margin-top10.
    float total=2+34+16+12+dialogueH+10+24+22+titleH+14+bodyH+(step==3?16+noteH:0)+20+hintH+22+46+40;
-   float visibleH=Mathf.Min(total,Mathf.Max(80,sh-48)),left=(sw-panelW)/2,top=(sh-visibleH)/2;
-   NativeSilverHellUi.Panel(new Rect(left,top,panelW,visibleH));
-   guideScroll=NativeUiAudit.BeginScrollView(new Rect(left,top,panelW,visibleH),guideScroll,new Rect(0,0,panelW-(total>visibleH?16:0),total),false,total>visibleH);
+   var safe=NativeUiViewport.Current;float reservedTop=((NativeObjectivePanel.Top+NativeObjectivePanel.Height+16)*NativeUiViewport.Edges.Scale-safe.Y)/safe.Scale;var dock=NativeHudDockLayout.Create(sw,sh);float reservedBottom=Mathf.Min(dock.LeftFrame.y,dock.RightFrame.y)-16;float visibleH=Mathf.Min(total,Mathf.Max(180,reservedBottom-reservedTop)),left=(sw-panelW)/2,top=reservedTop+(reservedBottom-reservedTop-visibleH)/2;
+   NativeSilverHellUi.Panel(new Rect(left,top,panelW,visibleH));NativeUiAudit.Region(new Rect(left,top,panelW,visibleH),"component","startup-guide","초기 안내창 외곽");
+   guideScroll=NativeUiAudit.BeginScrollView(new Rect(left,top,panelW,visibleH-86),guideScroll,new Rect(0,0,panelW-(total>visibleH?16:0),total-86),false,total>visibleH);
    var hintStyle=new GUIStyle(guideText){font=serif};hintStyle.normal.textColor=new Color(141/255f,144/255f,144/255f);
    float x=53,y=35;GuidePhysicalText(new Rect(x,y,w,16),(step+1)+" / 4",guideProgress,12,3,16);y+=28;
    GuidePhysicalText(new Rect(x,y+10,w,dialogueH),K(GuideDialogue[step][0],GuideDialogue[step][1]),guideDialogue,dialogueFont,dialogueFont*.12f,dialogueH);y+=dialogueH+10+24;
@@ -202,10 +202,10 @@ namespace Exoduser.UnityPort
    for(int i=0;i<keys.Count;i++){GuidePhysicalText(new Rect(x,y+6,keyW,heights[i]),keys[i],guideKey,keyFont,keyFont*.08f,lineH);GuidePhysicalText(new Rect(x+keyW+20,y+6,descW,heights[i]),descriptions[i],guideText,bodyFont,bodyFont*.04f,lineH);y+=heights[i]+(i+1<keys.Count?9:0);}
    if(step==3){y+=16;GuidePhysicalText(new Rect(x,y,w,noteH),note,guideText,15.2f,0,20.52f);y+=noteH;}
    y+=20;GuidePhysicalText(new Rect(x,y,w,hintH),hint,hintStyle,13.6f,.544f,17);y+=hintH+22;
+   NativeUiAudit.EndScrollView();NativeUiAudit.Region(new Rect(left,top+visibleH-86,panelW,86),"component","guide-footer","초기 안내 고정 푸터");x=left+53;y=top+visibleH-68;
    Rect skip=new Rect(x,y,Language=="ko"?178.72f:168,46),next=new Rect(x+w-192,y,192,52);DrawGuideButton(skip,K("건너뛰기","Skip"),guideSkipFocus);DrawGuideButton(next,step==3?K("시작","Start"):K("다음","Next"),!guideSkipFocus,true);
    Fill(new Rect(skip.x,skip.y,skip.width*(float)startup.HoldProgress,skip.height),new Color(.72f,.74f,.74f,.20f*startupGuideOpacity));
-   var e=Event.current;if(insideSafe&&!startupInputFence&&e.type==EventType.MouseDown&&e.button==0){if(skip.Contains(e.mousePosition))startup.Skip();else startup.Advance();e.Use();}
-   NativeUiAudit.EndScrollView();
+   var e=Event.current;if(new Rect(left,top,panelW,visibleH).Contains(e.mousePosition)&&!startupInputFence&&e.type==EventType.MouseDown&&e.button==0){if(skip.Contains(e.mousePosition))startup.Skip();else startup.Advance();e.Use();}
   }
   void DrawGuideButton(Rect r,string text,bool focus,bool primary=false){bool hover=r.Contains(Event.current.mousePosition);var old=GUI.color;if(focus||hover)NativeSilverHellUi.ButtonFocus(r);NativeSilverHellUi.ActionPlate(r,primary,focus||hover?1:0,!AutomatedInput&&hover&&ExoInput.Mouse(0));GUI.color=old;var f=NativeSilverHellUi.Font()??guideText.font;float spacing=16*.24f,width=SpacedWidth(f,16,text,spacing)-spacing;DrawSpaced(r.center.x-width/2,r.y,r.height,text,f,16,spacing,(focus||hover)?new Color(242/255f,237/255f,226/255f):new Color(223/255f,214/255f,194/255f),true);}
  }

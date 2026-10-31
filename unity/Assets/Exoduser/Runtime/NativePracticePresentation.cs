@@ -18,9 +18,10 @@ namespace Exoduser.UnityPort
             foreach(var entry in practiceCopy.entries)if(entry.id==id)return lobby.Language=="ko"?entry.ko:entry.en;
             throw new InvalidOperationException("Missing source practice copy "+id);
         }
-        Rect PracticePanel(float width){return new Rect(width-LessonRight-LessonW,LessonTop,LessonW,LessonH);}
+        Vector2 practiceScroll;float practiceContentHeight=1400;
+        Rect PracticePanel(float width){var dock=NativeHudDockLayout.Create(1920,1080);float hudTop=Mathf.Min(NativeUiViewport.ToEdge(dock.LeftFrame).y,NativeUiViewport.ToEdge(dock.RightFrame).y);float top=NativeObjectivePanel.Top+NativeObjectivePanel.Height+16;return new Rect(NativeUiViewport.Edges.Width-LessonRight-LessonW,top,LessonW,Mathf.Max(220,hudTop-16-top));}
         bool PointerOverPractice()
-        {return PracticePanel(NativeUiSafeArea.DesignWidth).Contains(NativeUiViewport.Pointer(ExoInput.MousePosition));}
+        {return PracticePanel(NativeUiViewport.Edges.Width).Contains(NativeUiViewport.EdgePointer(ExoInput.MousePosition));}
         GUIStyle LessonStyle(int size,TextAnchor anchor,Color color,bool bold=false,bool wrap=false,bool key=false)
         {
             string id=size+"|"+anchor+"|"+ColorUtility.ToHtmlStringRGBA(color)+bold+wrap+key;GUIStyle s;if(lessonStyles.TryGetValue(id,out s))return s;
@@ -64,6 +65,7 @@ namespace Exoduser.UnityPort
         void DrawFirstPractice(float width)
         {
             if(firstPractice==null||menu||!gameFocused)return;
+            var practiceMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.EdgeMatrix;try{
             if(lessonBase==null){lessonBase=Resources.Load<Texture2D>("Art/ui/tutorial/lesson_base");lessonFont=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular");lessonKeyFont=Resources.Load<Font>("Art/fonts/CinzelDecorative-Bold")??lessonFont;}
             if(firstPractice.Step==PracticeStep.RageBurst&&firstPractice.Practising&&firstPractice.FocusTicks>0)
             {
@@ -73,7 +75,9 @@ namespace Exoduser.UnityPort
                 if(NativeUiAudit.Button(fb,GUIContent.none,GUIStyle.none))EndFirstPractice(true);
                 return;
             }
-            var rect=PracticePanel(width);NativeUiAudit.DrawTexture(rect,lessonBase,ScaleMode.StretchToFill,true);
+            var rect=PracticePanel(width);NativeUiAudit.Region(rect,"component","practice-panel","실습 안내 외곽");NativeSilverHellUi.Panel(rect,28,8);
+            bool hasFooter=firstPractice.Phase==FirstPracticePhase.Intro||firstPractice.Phase==FirstPracticePhase.Done;float footerHeight=hasFooter?145:100;
+            practiceScroll=NativeUiAudit.BeginScrollView(new Rect(rect.x,rect.y,rect.width,rect.height-footerHeight),practiceScroll,new Rect(rect.x,rect.y,rect.width-16,practiceContentHeight),false,true);
             var step=firstPractice.Step;int webStep=WebStepNumber(step);var phase=firstPractice.Phase;bool done=phase==FirstPracticePhase.Done,intro=phase==FirstPracticePhase.Intro;
             bool magic=webStep%2==0;Color accent=done||phase==FirstPracticePhase.Success?Hex(0xb2d6ac):magic?Hex(0xc5a4f2):Hex(0xe0c18b);
             float x=rect.x+24,w=348,y=rect.y+68;
@@ -116,9 +120,10 @@ namespace Exoduser.UnityPort
             }
             if(done){string note=PracticeCopy("doneHint");var ns=LessonStyle(14,TextAnchor.UpperLeft,Hex(0xe8d9c6),true,true);float nh=ns.CalcHeight(new GUIContent(note),w-16);NativeUiAudit.Label(new Rect(x+8,y+4,w-16,nh),note,ns);}
             y+=10;
+            practiceContentHeight=Mathf.Max(1,y-rect.y+40);NativeUiAudit.EndScrollView();
             // footer (bottom anchored): optional primary button, then skip, then the progress hairline
             float bottom=rect.yMax;float skipY=bottom-69,progressY=bottom-23;
-            float footerTop=intro||done?skipY-8-46-15:skipY-22;
+            float footerTop=intro||done?skipY-8-46-15:skipY-22;NativeUiAudit.Region(new Rect(rect.x,rect.yMax-footerHeight,rect.width,footerHeight),"component","guide-footer","실습 고정 푸터");
             Fill(new Rect(rect.x+24,footerTop-1,w,1),Hex(0x57413c));
             if(intro){var b=new Rect(x,skipY-8-46,w,46);Fill(b,Hex(0x4a1816));Fill(new Rect(b.x,b.y,b.width,b.height*.5f),Hex(0x5e201c,.8f));FrameRect(b,Hex(0xb6614b));
                 NativeUiAudit.Label(b,PracticeCopy("start"),LessonStyle(15,TextAnchor.MiddleCenter,Hex(0xfff0df),true));
@@ -132,6 +137,7 @@ namespace Exoduser.UnityPort
             // progress hairline = checked rows / 12
             Fill(new Rect(rect.x+24,progressY,w,2),Hex(0x39312a));int checks=0;foreach(var c in firstPractice.Checks)if(c)checks++;
             Fill(new Rect(rect.x+24,progressY,w*checks/12f,2),accent);
+            }finally{GUI.matrix=practiceMatrix;}
         }
         // chain step: caption + 8 px hold meter
         float DrawChainHold(float x,float y,float w,Color accent)

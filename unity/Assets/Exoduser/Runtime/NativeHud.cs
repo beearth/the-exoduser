@@ -82,6 +82,7 @@ namespace Exoduser.UnityPort
             if(values==null)return;Styles();ActiveSkill=activeAttack;float mid=width/2;
             const float scale=NativeHudDockLayout.ArtScale;
             var dock=NativeHudDockLayout.Create(width,height);
+            NativeUiAudit.Region(dock.LeftFrame,"component","hud-hp-frame","HP 원화 외곽");NativeUiAudit.Region(dock.RightFrame,"component","hud-mp-frame","MP/ST 원화 외곽");NativeUiAudit.Region(dock.SlotBar,"component","hud-skills","중앙 스킬바");
             Rect slotBar=dock.SlotBar;
             // Source bar includes Cinzel key labels; erase only those glyph pixels in a runtime copy.
             // The original imported PNG stays byte-identical and the common labels are drawn below.

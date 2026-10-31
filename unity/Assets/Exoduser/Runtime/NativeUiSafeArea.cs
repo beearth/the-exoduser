@@ -10,4 +10,5 @@ namespace Exoduser.UnityPort
   public float LocalX(float physicalX){return (physicalX-X)/Scale;}
   public float LocalY(float bottomOriginY,float screenHeight){return (screenHeight-bottomOriginY-Y)/Scale;}
  }
+ public struct NativeUiEdgeArea { public float Width,Scale; public static NativeUiEdgeArea Fit(float width,float height){float s=Math.Max(1,height)/1080f;return new NativeUiEdgeArea{Width=Math.Max(1,width)/s,Scale=s};} public float LocalX(float x){return x/Scale;} public float LocalY(float y,float height){return (height-y)/Scale;} }
 }

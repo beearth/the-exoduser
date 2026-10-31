@@ -133,10 +133,11 @@ namespace Exoduser.UnityPort
             Texture src = movie.Error.Length == 0 && movie.Prepared && movie.Frame >= 0 ? (Texture)movie.Texture : titleBg;   // a failed movie falls back to the still art (_titleArt)
             if (src == null) return;
             float tw = src.width, th = src.height, k = Mathf.Max(1920f / tw, 1080f / th), dw = tw * k, dh = th * k, dx = Mathf.Min(0, Mathf.Max(1920 - dw, (1920 - dw) * .62f)), dy = (1080 - dh) / 2;
-            NativeUiAudit.DrawTexture(new Rect(dx, dy, dw, dh), src, ScaleMode.StretchToFill, false); OriginalArtDrawn = true;
+            NativeUiViewport.DrawExtendedScene(src,new Rect(0,0,1920,1080)); OriginalArtDrawn = true;
             if (titleRowsBuiltFor != splash || titleRows.Count == 0) return;   // the menu is built by the first Update of this splash
             float fade = Mathf.Clamp01((Time.unscaledTime - titleStart) / 1f); var prev = GUI.color;
-            GUI.color = new Color(1, 1, 1, fade); NativeUiAudit.DrawTexture(new Rect(0, 0, 1920, 1080), titleVeil, ScaleMode.StretchToFill, true);
+            GUI.color = new Color(1, 1, 1, fade); NativeUiAudit.DrawTexture(NativeUiViewport.ScreenInDesign, titleVeil, ScaleMode.StretchToFill, true);
+            var menuMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.EdgeMatrix;
             if (titleLogo != null) { float lw = 520, lh = lw * titleLogo.height / titleLogo.width; GUI.color = new Color(0, 0, 0, .5f * fade); NativeUiAudit.DrawTexture(new Rect(96, 106, lw, lh), titleLogo, ScaleMode.StretchToFill, true); GUI.color = new Color(1, 1, 1, fade); NativeUiAudit.DrawTexture(new Rect(96, 96, lw, lh), titleLogo, ScaleMode.StretchToFill, true); }
             const float left = 116, top = 436, width = 400;
             var e = Event.current;
@@ -145,7 +146,7 @@ namespace Exoduser.UnityPort
                 float rowH=i==0?68:48;
                 var rect = new Rect(left, i==0?top:top+84+(i-1)*62, i==0?width:width-32, rowH);
                 if (e.type == EventType.MouseMove || e.type == EventType.Repaint) { if (rect.Contains(e.mousePosition) && e.type == EventType.MouseMove && !AutomatedInput && i != titleSel) SelectTitleRow(i); }
-                if (e.type == EventType.MouseDown && e.button == 0 && rect.Contains(e.mousePosition) && !AutomatedInput) { ActivateTitleRow(i); e.Use(); return; }
+                if (e.type == EventType.MouseDown && e.button == 0 && rect.Contains(e.mousePosition) && !AutomatedInput) { ActivateTitleRow(i); e.Use();GUI.matrix=menuMatrix; return; }
                 var row = titleRows[i]; float s = row.Sel;
                 GUI.color=new Color(1,1,1,fade);
                 NativeSilverHellUi.ActionPlate(rect,i==0,s,!AutomatedInput&&rect.Contains(e.mousePosition)&&ExoInput.Mouse(0));
@@ -157,9 +158,9 @@ namespace Exoduser.UnityPort
             // #splashTitleBuild: right 36, bottom 26, Cinzel 600 11 px / 1.7, letter-spacing .28em, rgba(230,227,221,.6), two lines right aligned
             string l1 = BuildFlavor.Current.Label + (string.IsNullOrEmpty(BuildFlavor.ReleaseVersion) ? "" : " · v" + BuildFlavor.ReleaseVersion), l2 = "FOR DEAR GAMERS"; float sp = 11 * .28f, lh2 = 11 * 1.7f;
             GUI.color = Color.white; var bc = new Color(230f / 255, 227f / 255, 221f / 255, .6f * fade);
-            DrawSpaced(1920 - 36 - SpacedWidth(titleBuildFont, 11, l1, sp) + sp, 1080 - 26 - lh2 * 2, lh2, l1, titleBuildFont, 11, sp, bc, true);
-            DrawSpaced(1920 - 36 - SpacedWidth(titleBuildFont, 11, l2, sp) + sp, 1080 - 26 - lh2, lh2, l2, titleBuildFont, 11, sp, bc, true);
-            GUI.color = prev;
+            DrawSpaced(NativeUiViewport.Edges.Width - 36 - SpacedWidth(titleBuildFont, 11, l1, sp) + sp, 1080 - 26 - lh2 * 2, lh2, l1, titleBuildFont, 11, sp, bc, true);
+            DrawSpaced(NativeUiViewport.Edges.Width - 36 - SpacedWidth(titleBuildFont, 11, l2, sp) + sp, 1080 - 26 - lh2, lh2, l2, titleBuildFont, 11, sp, bc, true);
+            GUI.color = prev;GUI.matrix=menuMatrix;
         }
     }
 }

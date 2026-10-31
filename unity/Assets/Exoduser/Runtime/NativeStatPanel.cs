@@ -27,7 +27,7 @@ namespace Exoduser.UnityPort {
   public bool Open {get;private set;}
   public bool TextInputActive {get{return Open&&searchFocused;}}
   const string NotPorted="미이식",SearchName="statSearch";
-  static readonly Rect Viewport=new Rect(271,317,1174,624),DetailRect=new Rect(1489,379,372,416.2f);
+  static readonly Rect Viewport=new Rect(271,136,1174,805),DetailRect=new Rect(1489,198,372,597.2f);
   static readonly Vector2 SceneCenter=new Vector2(500,400);
   readonly StatDefsFile defs;readonly Dictionary<string,StatDefsNode> nodeByKey=new Dictionary<string,StatDefsNode>();
   readonly Dictionary<string,Vector2> point=new Dictionary<string,Vector2>();readonly Dictionary<string,string> parentOf=new Dictionary<string,string>();
@@ -186,45 +186,46 @@ namespace Exoduser.UnityPort {
     GUI.matrix=Matrix4x4.identity;Fill(new Rect(0,0,Screen.width,Screen.height),Color.black);
     float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
-    NativeUiAudit.DrawTexture(new Rect(0,0,1920,1080),baseTex,ScaleMode.StretchToFill,false);
+    NativePanelTitle.Surface(new Rect(0,0,1920,1080));Fill(Viewport,C(6,11,9));
     ClampPan();
     HandleTreeInput();
     // The tree is drawn straight over the still and the still is then re-drawn around the viewport (IMGUI groups break rotated quads).
     DrawTree();CoverAround(new Rect(Viewport.x+1,Viewport.y+1,Viewport.width-2,Viewport.height-2));DrawPreview();
-    NativePanelTabBar.Draw(NativePanelTabBar.Preset.Stat,"statPanel");
+    DrawOutline();NativePanelTabBar.Draw(NativePanelTabBar.Preset.Stat,"statPanel");
     DrawHeader();DrawLeft();DrawToolbar();DrawInspector();DrawFooter(close);
    } finally {GUI.matrix=old;GUI.color=color;GUI.enabled=enabled;}
   }
 
   // Re-draws the window still in a rect (cuts off anything drawn there before).
-  void CoverRect(Rect r){if(r.width<=0||r.height<=0)return;NativeUiAudit.DrawTextureWithTexCoords(r,baseTex,new Rect(r.x/1920f,1f-r.yMax/1080f,r.width/1920f,r.height/1080f),false);}
+  void CoverRect(Rect r){if(r.width<=0||r.height<=0)return;NativePanelTitle.Surface(r);}
+  void DrawOutline(){foreach(var r in new[]{new Rect(0,0,1920,32),new Rect(0,1048,1920,32),new Rect(0,32,32,1016),new Rect(1888,32,32,1016)})NativeUiAudit.DrawTextureWithTexCoords(r,baseTex,new Rect(r.x/1920,1-r.yMax/1080,r.width/1920,r.height/1080),false);Border(Viewport,C(74,77,77));}
   void CoverAround(Rect hole){
    CoverRect(new Rect(0,0,1920,hole.y));CoverRect(new Rect(0,hole.yMax,1920,1080-hole.yMax));
    CoverRect(new Rect(0,hole.y,hole.x,hole.height));CoverRect(new Rect(hole.xMax,hole.y,1920-hole.xMax,hole.height));
   }
   void DrawHeader(){
    // "계획 후 AP" label is part of the still; its value is state (AP): not ported.
-   Text(new Rect(1777.2f,181.5f,97.8f,36),NotPorted,sans,16,C(202,199,193),FontStyle.Normal,0,TextAnchor.MiddleCenter);
+   NativePanelTitle.Draw(new Rect(700,72,520,64),"성장의 각인");Text(new Rect(1660,92,80,30),"AP",sans,14,C(165,168,168));Text(new Rect(1740,88,135,38),NotPorted,sans,24,C(202,199,193),FontStyle.Normal,0,TextAnchor.MiddleRight);
   }
 
   void DrawLeft(){
-   Text(new Rect(35,320.4f,150,25.2f),"전투의 길",serif,18,C(204,201,195),FontStyle.Bold);
+   Text(new Rect(35,139.4f,150,25.2f),"전투의 길",serif,18,C(204,201,195),FontStyle.Bold);
    // count: visible definition total (web "265 / 265" for the unfiltered tree); learned/pending numerators are state.
    int total=defs.totalNodes,shown=0;foreach(var n in defs.nodes)if(Visible(n))shown+=n.kind=="passive"?n.max:1;
-   Text(new Rect(188.4f,325,66.6f,16),(filter=="all"?shown.ToString():"–")+" / "+total,serif,14,C(188,185,179),FontStyle.Normal,0,TextAnchor.MiddleRight);
+   Text(new Rect(188.4f,144,66.6f,16),(filter=="all"?shown.ToString():"–")+" / "+total,serif,14,C(188,185,179),FontStyle.Normal,0,TextAnchor.MiddleRight);
    // search box: shape is in the still; text input and placeholder are drawn here.
-   var sr=new Rect(35,359,220,44);GUI.SetNextControlName(SearchName);
+   var sr=new Rect(35,178,220,44);GUI.SetNextControlName(SearchName);
    if(searchStyle==null){
     searchStyle=new GUIStyle(GUI.skin.textField){font=sans,fontSize=16,alignment=TextAnchor.MiddleLeft,padding=new RectOffset(11,11,0,0),margin=new RectOffset(),border=new RectOffset(),clipping=TextClipping.Clip};
     searchStyle.normal.background=null;searchStyle.hover.background=null;searchStyle.active.background=null;searchStyle.focused.background=null;
     searchStyle.normal.textColor=searchStyle.hover.textColor=searchStyle.active.textColor=searchStyle.focused.textColor=C(219,216,210);
    }
    if(blurSearch){GUI.FocusControl(null);blurSearch=false;}
-   string next=NativeSilverHellUi.TextField(sr,search,60,searchStyle);if(next!=search){search=next;}
+   Fill(sr,C(9,10,11));Border(sr,C(61,64,64));string next=NativeSilverHellUi.TextField(sr,search,60,searchStyle);if(next!=search){search=next;}
    searchFocused=GUI.GetNameOfFocusedControl()==SearchName;
-   if(search.Length==0&&!searchFocused)Text(new Rect(47,359,200,44),"이름 · 효과 · 영문명 검색",sans,16,C(137,140,140));
+   if(search.Length==0&&!searchFocused)Text(new Rect(47,178,200,44),"이름 · 효과 · 영문명 검색",sans,16,C(137,140,140));
    for(int i=0;i<7;i++){
-    float y=413+61.033f*i;var r=new Rect(35,y,220,58);StatDefsPath p=i==0?null:defs.paths[i-1];string id=p==null?"all":p.id;bool active=pathId==id;
+    float y=232+85.033f*i;var r=new Rect(35,y,220,58);StatDefsPath p=i==0?null:defs.paths[i-1];string id=p==null?"all":p.id;bool active=pathId==id;
     Color school=p!=null?HexColor(p.color):C(156,159,159);
     if(active){Grad(r,C(131,134,134,.2f),C(131,134,134,0f),90);Fill(new Rect(r.x,r.y,2,r.height),p!=null?school:C(156,159,159));}
     else if(Hot(r))Fill(r,new Color(1,1,1,.04f));
@@ -443,11 +444,11 @@ namespace Exoduser.UnityPort {
     detailContent=y+detailScroll+10;
     if(detailContent-rect.height<=0)detailScroll=0;
    } finally {GUI.matrix=oldM;}
-   CoverRect(new Rect(1466,318,418,61));CoverRect(new Rect(1466,rect.yMax,418,992-rect.yMax));
+   CoverRect(new Rect(1466,137,418,61));CoverRect(new Rect(1466,rect.yMax,418,992-rect.yMax));
    DrawDetailScrollbar(rect);
    // the still carries the passive title: blank it with a plain patch of the same panel, then draw the current one
-   NativeUiAudit.DrawTextureWithTexCoords(new Rect(1489,336,160,30),baseTex,new Rect(1689f/1920f,1f-366f/1080f,160f/1920f,30f/1080f),false);
-   Text(new Rect(1489,339,372,24),isStat?"능력치 분석":"패시브 분석",sans,16,C(199,196,190),FontStyle.Normal,2.56f);
+   NativePanelTitle.Surface(new Rect(1489,155,372,30));
+   Text(new Rect(1489,158,372,24),isStat?"능력치 분석":"패시브 분석",sans,16,C(199,196,190),FontStyle.Normal,2.56f);
    DrawActions(isStat);
   }
   // Web overflow:auto thin scroll bar (same face as the inventory lists): 10px track, 6px thumb, arrow tips; only when the content overflows.
@@ -471,7 +472,7 @@ namespace Exoduser.UnityPort {
   }
   void DrawActions(bool isStat){
    // The upgrade/refund buttons keep the web shapes (in the still); they do nothing yet (auto-invest reservation / refund plan are not ported).
-   Text(new Rect(1489,820.2f,372,49),isStat?"계획에 추가 · 1 SP":"자동 투자 예약 · "+NotPorted,sans,18,C(244,216,168),FontStyle.Bold,0,TextAnchor.MiddleCenter,true);
+   NativeSilverHellUi.ActionPlate(new Rect(1489,820.2f,372,49),true,0,false,20,6);Text(new Rect(1489,820.2f,372,49),isStat?"계획에 추가 · 1 SP":"자동 투자 예약 · "+NotPorted,sans,18,C(244,216,168),FontStyle.Bold,0,TextAnchor.MiddleCenter,true);
    Text(new Rect(1489,876.2f,372,22.4f),isStat?"현재 SP "+NotPorted:"현재 AP "+NotPorted+" · 예약 후 예상 레벨 "+NotPorted,sans,14,C(188,185,179),FontStyle.Normal,0,TextAnchor.MiddleCenter);
    Text(new Rect(1489,904.6f,372,22.4f),isStat?"":"AP가 부족해도 예약할 수 있습니다. 예약은 즉시 저장됩니다.",sans,14,C(188,185,179),FontStyle.Normal,0,TextAnchor.MiddleCenter);
    Text(new Rect(1489,927,372,44),isStat?"1포인트 환불 계획":"1레벨 환불 계획",sans,18,new Color(180/255f,160/255f,131/255f,.48f),FontStyle.Normal,0,TextAnchor.MiddleCenter);

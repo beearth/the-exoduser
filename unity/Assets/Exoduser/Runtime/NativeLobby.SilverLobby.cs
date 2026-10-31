@@ -42,6 +42,7 @@ namespace Exoduser.UnityPort
         void DrawSilverLobbyBody(bool enabled)
         {
             SilverStyles();
+            var edgeMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.RightMatrix;NativeUiAudit.Region(new Rect(1360,0,560,1080),"component","frontend-right","로비 오른쪽 레일");
             NativeUiAudit.DrawTexture(new Rect(1360,0,560,1080),lobbySilverShade);
             var lang=new Rect(1424,188,140,36);
             SilverLabel(lang,LobbyLanguageLabel(Language),silverMicro,TextAnchor.MiddleLeft);
@@ -109,6 +110,7 @@ namespace Exoduser.UnityPort
             DrawPatchNotesLauncher();
             DrawPower(new Rect(1812,870,36,36));
             if(NativeUiAudit.Button(new Rect(1812,870,36,36),"",GUIStyle.none))lobbyQuitPrompt=true;
+            GUI.matrix=edgeMatrix;
         }
     }
 }

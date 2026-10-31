@@ -53,7 +53,7 @@ namespace Exoduser.UnityPort
             NativeUiAudit.Save(Path.Combine(overlapOutput,name+".json"),page,overlapLanguage);
             ScreenCapture.CaptureScreenshot(Path.Combine(overlapOutput,name+".png"));
             NativeUiAudit.Active=false;
-            overlapCoverage.frames.Add(name);if(!overlapCoverage.pages.Contains(page))overlapCoverage.pages.Add(page);
+            overlapCoverage.frames.Add(name);if(!page.StartsWith("전환로딩",StringComparison.Ordinal)&&!overlapCoverage.pages.Contains(page))overlapCoverage.pages.Add(page);
             yield return null;
         }
         IEnumerator UiOverlapCapture()
@@ -91,7 +91,7 @@ namespace Exoduser.UnityPort
             if(!UiWideResize(own,IntPtr.Zero,0,0,outerWidth,outerHeight,0x16))throw new InvalidOperationException("자기 창 크기 보정 실패 "+System.Runtime.InteropServices.Marshal.GetLastWin32Error());
             UiWideClient(own,out var after);Debug.Log("UI_CLIENT_RESIZE pid="+pid+" before="+(client.right-client.left)+"x"+(client.bottom-client.top)+" after="+(after.right-after.left)+"x"+(after.bottom-after.top)+" requested="+width+"x"+height+" flags=NOMOVE|NOZORDER|NOACTIVATE");
         }
-        IEnumerator UiWideClick(float x,float y){IntPtr own=IntPtr.Zero;uint pid=(uint)System.Diagnostics.Process.GetCurrentProcess().Id;UiWideWindows((w,s)=>{UiWideProcess(w,out uint id);var c=new System.Text.StringBuilder(128);UiWideClass(w,c,128);if(id==pid&&c.ToString()=="UnityWndClass"){own=w;return false;}return true;},IntPtr.Zero);if(own==IntPtr.Zero)throw new InvalidOperationException("자기 숨은 Player 창 없음");var a=NativeUiViewport.Current;int px=Mathf.RoundToInt(a.X+x*a.Scale),py=Mathf.RoundToInt(a.Y+y*a.Scale);IntPtr point=new IntPtr((py<<16)|(px&65535));lobby.AutomatedInput=false;
+        IEnumerator UiWideClick(float x,float y){IntPtr own=IntPtr.Zero;uint pid=(uint)System.Diagnostics.Process.GetCurrentProcess().Id;UiWideWindows((w,s)=>{UiWideProcess(w,out uint id);var c=new System.Text.StringBuilder(128);UiWideClass(w,c,128);if(id==pid&&c.ToString()=="UnityWndClass"){own=w;return false;}return true;},IntPtr.Zero);if(own==IntPtr.Zero)throw new InvalidOperationException("자기 숨은 Player 창 없음");var a=NativeUiViewport.Edges;int px=Mathf.RoundToInt(Screen.width-(1920-x)*a.Scale),py=Mathf.RoundToInt(y*a.Scale);IntPtr point=new IntPtr((py<<16)|(px&65535));lobby.AutomatedInput=false;
          if(!UiWidePost(own,0x200,IntPtr.Zero,point)||!UiWidePost(own,0x201,new IntPtr(1),point))throw new InvalidOperationException("자기 창 누름 전달 실패");yield return new WaitForSecondsRealtime(.12f);if(!UiWidePost(own,0x202,IntPtr.Zero,point))throw new InvalidOperationException("자기 창 해제 전달 실패");yield return new WaitForSecondsRealtime(.2f);lobby.AutomatedInput=true;
         }
 #endif
@@ -135,6 +135,8 @@ namespace Exoduser.UnityPort
                 lobby.StartupCaptureState.Skip();lobby.SelectPreview();lobby.EnterNativeTest();
                 frontendEntryInputFence=false;Running=false;menu=false;EndFirstPractice(true);Running=false;
                 areaTitle.Hide();levelUp.Hide();yield return UiOverlapShot("HUD");
+                if(language=="ko"){var load=Simulation.Stage;int oldPhase=load.LoadPhase;double oldT=load.LoadT,oldFade=load.LoadFade;load.LoadPhase=2;load.LoadT=35;load.LoadFade=1;for(int image=1;image<=19;image++){NativeLoadingArtwork.ForcedImage=image;yield return UiOverlapShot("전환로딩"+image.ToString("00"));}NativeLoadingArtwork.ForcedImage=1;NativeLoadingArtwork.SimulateMissingWide=true;yield return UiOverlapShot("전환로딩폴백");NativeLoadingArtwork.ForcedImage=-1;NativeLoadingArtwork.SimulateMissingWide=false;load.LoadPhase=oldPhase;load.LoadT=oldT;load.LoadFade=oldFade;}
+                BeginFirstPractice();Running=false;yield return UiOverlapShot("실습안내");firstPractice.Start();yield return UiOverlapShot("실습진행");practiceScroll=new Vector2(0,9999);yield return UiOverlapShot("실습스크롤");EndFirstPractice(true);Running=false;practiceScroll=Vector2.zero;
                 menu=true;pauseMenu.Reset();pauseMenu.Navigation.ObserveReleased(false);yield return UiOverlapShot("일시정지");
                 pauseMenu.Navigation.PointAt(3);ApplyPauseCommand(pauseMenu.HandleKey(PauseKey.Accept,false,false));pauseMenu.Navigation.ObserveReleased(false);yield return UiOverlapShot("종료확인");
                 pauseMenu.Reset();pauseMenu.ShowSettings();
@@ -142,7 +144,7 @@ namespace Exoduser.UnityPort
                 pauseMenu.Navigation.SelectTab(2);pauseMenu.Navigation.ObserveReleased(false);pauseMenu.A15OpenSelectForQa("optBgmTrack");yield return UiOverlapShot("설정목록");
                 pauseMenu.Reset();menu=false;Running=false;
                 SetInventory(true);yield return UiOverlapShot("인벤토리");SetInventory(false);
-                SetSkills(true,6);yield return UiOverlapShot("스킬");SetSkills(false,6);
+                SetSkills(true,6);yield return UiOverlapShot("스킬");for(int slot=0;slot<16;slot++){if(slot==6)continue;skills.Select(slot);yield return UiOverlapShot("스킬슬롯"+slot.ToString("00"));}SetSkills(false,6);
                 SetForge(true);yield return UiOverlapShot("대장간");SetForge(false);
                 SetStats(true);yield return UiOverlapShot("능력치");SetStats(false);
                 stageClear.Show(new NativeStageClearOverlay.Input{kind=NativeStageClearOverlay.Kind.Zone,stageKills=137,totalSpawned=168,clearSeconds=88,regionsCleared=4,bossKilled=true,deaths=0,dmgTaken=120,comboMax=32,statPointsAwarded=10,statPointsBalance=20});stageClear.ForcedAge=2;
