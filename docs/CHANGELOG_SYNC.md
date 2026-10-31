@@ -55616,6 +55616,14 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 패키지·검수 | FILES 공통런타임 명시, 회귀 test/loadingWide.test.js 및 tools/check-loading-wide.mjs. 전면 가시성·전체구도·하단 비중첩·비동기 요청/실패 검사 | I:/EXODUSER-Storage/web-loading/20261031-wide/ |
 | Unity 인계 | ui-ultrawide-brief.md 끝에 같은 이미지·표시계약·해상도 및 별도 Unity 검수 지시 | 웹 검수와 Unity 실행은 분리 |
 
+## 2026-10-31 웹 로딩 최종 보정 — 전체35장
+
+| 변경 | 내용 | 정본/근거 |
+|---|---|---|
+| 전체 배경 | 모든35장 내장 배경 생성과 접합/중복 보정, 16/21/32 무손실 WebP105개. 인물·펫·로고 원본 전경 복원, 정상 화면의 블러 제거 | 1전체그래픽세팅/LOADING_ULTRAWIDE_20261031.md 최종 보정 |
+| 전체 높이·상태 | 그림 inset0, 하단 별도 검은 띠 제거. 투명 시작 어두운 그라데이션 위 font-hell/title·뼈색·금빛1px 진행 선 | loading-art.css |
+| 선택·폴백 | rd11.jpg 포함 전수 선택, resize/최신 요청 보호. 실제 다운로드 실패에만 원본 contain+블러 폴백 | loading-art.js, test/loadingWide.test.js |
+| 검수·인계 | 실제 로딩35×4해상도·로비·실패·1x 및 원격 영수증, 기존 Unity 브리프 최종 계약 전달 | I:/EXODUSER-Storage/web-loading/20261031-final35/ |
 
 ## 2026-10-31 웹 초광폭 월드
 

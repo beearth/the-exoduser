@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<link rel="stylesheet" href="loading-art.css?v=20261031-wide1">
-<script src="loading-art.js?v=20261031-wide1"></script>
+<link rel="stylesheet" href="loading-art.css?v=20261031-final35">
+<script src="loading-art.js?v=20261031-final35"></script>
 <script src="build-target.js"></script>
 <script src="release-version.js"></script>
 <script src="patch-notes.js"></script>
@@ -476,12 +476,12 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 .world-intro-active #worldIntroVideo{display:block}
 .world-intro-active .cin-text,.world-intro-active .cin-lb,.world-intro-active .ember{display:none!important}
 .world-intro-active #cinLang{display:block!important}
-#worldIntroVideo::cue{font-family:'Noto Serif','Noto Serif KR',serif;font-size:clamp(32px,5.4vh,50px);font-weight:500;color:#e9e6e0;background:transparent;text-shadow:1px 0 0 rgba(0,0,0,.95),-1px 0 0 rgba(0,0,0,.95),0 1px 0 rgba(0,0,0,.95),0 -1px 0 rgba(0,0,0,.95),0 2px 4px rgba(0,0,0,.85),0 0 12px rgba(0,0,0,.65)}
-#worldIntroVideo[data-subtitle-language="ja"]::cue{font-family:'Noto Serif JP','Noto Serif',serif}
-#worldIntroVideo[data-subtitle-language="zh"]::cue{font-family:'Noto Serif SC','Noto Serif',serif}
-#worldIntroVideo[data-subtitle-language="zht"]::cue{font-family:'Noto Serif TC','Noto Serif',serif}
-#worldIntroVideo[data-subtitle-language="ar"]::cue{font-family:'Noto Naskh Arabic','Noto Serif',serif}
-#worldIntroVideo[data-subtitle-language="th"]::cue{font-family:'Noto Serif Thai','Noto Serif',serif}
+#worldIntroVideo::cue,#characterStoryVideo::cue{font-family:'Noto Serif','Noto Serif KR',serif;font-size:clamp(32px,5.4vh,50px);font-weight:500;color:#e9e6e0;background:transparent;text-shadow:1px 0 0 rgba(0,0,0,.95),-1px 0 0 rgba(0,0,0,.95),0 1px 0 rgba(0,0,0,.95),0 -1px 0 rgba(0,0,0,.95),0 2px 4px rgba(0,0,0,.85),0 0 12px rgba(0,0,0,.65)}
+#worldIntroVideo[data-subtitle-language="ja"]::cue,#characterStoryOverlay:lang(ja) #characterStoryVideo::cue{font-family:'Noto Serif JP','Noto Serif',serif}
+#worldIntroVideo[data-subtitle-language="zh"]::cue,#characterStoryOverlay:lang(zh) #characterStoryVideo::cue{font-family:'Noto Serif SC','Noto Serif',serif}
+#worldIntroVideo[data-subtitle-language="zht"]::cue,#characterStoryOverlay:lang(zh-Hant) #characterStoryVideo::cue{font-family:'Noto Serif TC','Noto Serif',serif}
+#worldIntroVideo[data-subtitle-language="ar"]::cue,#characterStoryOverlay:lang(ar) #characterStoryVideo::cue{font-family:'Noto Naskh Arabic','Noto Serif',serif}
+#worldIntroVideo[data-subtitle-language="th"]::cue,#characterStoryOverlay:lang(th) #characterStoryVideo::cue{font-family:'Noto Serif Thai','Noto Serif',serif}
 #worldIntroMix{display:none;position:absolute;top:18px;left:18px;z-index:310;max-width:calc(100% - 36px);padding:10px 14px;background:rgba(0,0,0,.75);color:#ddd;font:12px sans-serif;border:1px solid #484b4b;border-radius:4px;gap:12px;align-items:center;flex-wrap:wrap}
 .world-intro-active #worldIntroMix{display:flex}
 #worldIntroMix label{display:flex;align-items:center;gap:6px}
@@ -1272,7 +1272,7 @@ function _gpDot(on){
 </script>
 <script>
 // ═══ 로비 배경: 트랜지션 이미지 중 랜덤 1장 ═══
-(function(){const n=~~(Math.random()*19)+1;const frame=document.createElement('div');frame.id='loadingBodyArt';frame.className='loading-art';frame.setAttribute('aria-hidden','true');const img=document.createElement('img');img.alt='';frame.appendChild(img);document.body.prepend(frame);LoadingArt.set(img,'img/lording/'+n+'.png?v=20260930-loading-remaster5');})();
+(function(){const _ok=[1,2,3,4,5,6,7,8,9,10,11,12,15,16,18,19];const n=_ok[~~(Math.random()*_ok.length)];const frame=document.createElement('div');frame.id='loadingBodyArt';frame.className='loading-art';frame.setAttribute('aria-hidden','true');const img=document.createElement('img');img.alt='';frame.appendChild(img);document.body.prepend(frame);LoadingArt.set(img,'img/lording/'+n+'.png?v=20260930-loading-remaster5');})();
 // 브라우저 줌 차단
 addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey)e.preventDefault()},{passive:false});
 // ── 빌드 버전 (demo.html → 'demo', ea.html → 'ea') ──
@@ -2814,7 +2814,7 @@ function pickRandomLoadingImage(){
 // - 1~19.png 19장 (game.html 부트 로딩 배경)
 function _preloadLoadingImgs(){
   _RD_IMGS.forEach(f=>{const i=new Image();i.src='img/lording/'+f+'?v=20261006-rd13-grip';});
-  for(let n=1;n<=19;n++){const i=new Image();i.src='img/lording/'+n+'.png?v=20260930-loading-remaster5';}
+  for(let n=1;n<=19;n++){if(n===13||n===14||n===17)continue;const i=new Image();i.src='img/lording/'+n+'.png?v=20260930-loading-remaster5';}
 }
 
 function showLoading(msg){
