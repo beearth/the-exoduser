@@ -298,7 +298,6 @@ namespace Exoduser.UnityPort
             float shk=Simulation.ShakeAmount*OptionShakeScale;   // B09: web G.shake -> camera offset (random +-shake px, game.html 51900)
             float camX=p.X/100,camY=-p.Y/100;BossCameraZoom();ClampCameraToMap(ref camX,ref camY);   // [CAM-CLAMP] web _clampCamToMap before the shake offset
             view.transform.position=new Vector3(camX+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),camY+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),-10);StageFlowSyncViews();if(!Simulation.Stage.InArena)StreamChunks(p.X,p.Y);
-            if(!NativeRemodel3D.Active)view.transform.position+=ImpactCameraOffset();
             bool newTick=renderedTick!=Simulation.TickCount;
             if(newTick){float dx=p.X-lastX,dy=p.Y-lastY;walkDistance+=Mathf.Sqrt(dx*dx+dy*dy);lastX=p.X;lastY=p.Y;playerMoving=dx*dx+dy*dy>.001f;}
             int direction=((int)Math.Floor((Math.PI/2-p.Facing)/(Math.PI/4)+.5)%8+8)%8;
@@ -323,7 +322,7 @@ namespace Exoduser.UnityPort
                 if(newTick){float ex=e.X-ev.lastX,ey=e.Y-ev.lastY;float travel=Mathf.Sqrt(ex*ex+ey*ey);ev.distance+=travel;ev.lastX=e.X;ev.lastY=e.Y;ev.moving=travel>.001f;}
                 if(BossBodyDraw(e,ev,newTick))continue;   // BX: the 1-1 druid has its own sheets (damage numbers and walk bookkeeping above already ran)
                 // Keep the struck body's last drawn pose for 55/75/90ms; Core movement and knockback continue unchanged.
-                if(contactVfx!=null&&contactVfx.EnemyFrozen(e.Id,ImpactNow)&&ev.body.sprite!=null){float flash=contactVfx.Flash(e.Id,ImpactNow);ev.walk.enabled=ev.moving;ev.body.color=ev.walk.color=Color.Lerp(Color.white,new Color(1,.82f,.54f),flash*.8f);continue;}
+                if(Impact3DActive&&contactVfx.EnemyFrozen(e.Id,ImpactNow)&&ev.body.sprite!=null){float flash=contactVfx.Flash(e.Id,ImpactNow);ev.walk.enabled=ev.moving;ev.body.color=ev.walk.color=Color.Lerp(Color.white,new Color(1,.82f,.54f),flash*.8f);continue;}
                 double faceAng=e.Facing;if(!ev.moving&&p.Hp>0&&Mathf.Sqrt((p.X-e.X)*(p.X-e.X)+(p.Y-e.Y)*(p.Y-e.Y))<800)faceAng=Math.Atan2(p.Y-e.Y,p.X-e.X);   // drawEnBody: standing mobs within 800 px look at the player
                 int dir=((int)Math.Floor(faceAng/(Math.PI/4)+.5)%8+8)%8,cellX=ev.skin%8,cellY=ev.skin/8;
                 ev.body.sprite=SpriteFor("Art/enemy/atlas_ch1_8dir_"+enemyDirections[dir],cellX*256,cellY*256,256,256,new Vector2(.5f,.5f));

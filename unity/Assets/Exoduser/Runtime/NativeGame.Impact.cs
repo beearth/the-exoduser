@@ -18,13 +18,13 @@ namespace Exoduser.UnityPort
         }
         Vector3 ImpactCameraOffset()
         {
-            if(contactVfx==null)return Vector3.zero;
+            if(!Impact3DActive)return Vector3.zero;
             var offset=contactVfx.CameraOffset(ImpactNow)*OptionShakeScale;
             return NativeRemodel3D.Active?new Vector3(offset.x,0,offset.y):new Vector3(offset.x,offset.y,0);
         }
         bool ImpactHeroHeld
         {
-            get {return contactVfx!=null&&contactVfx.HeroFrozen(ImpactNow)&&!Simulation.RollActive&&
+            get {return Impact3DActive&&contactVfx.HeroFrozen(ImpactNow)&&!Simulation.RollActive&&
                 (Simulation.Player.State=="wSwing"||Simulation.Player.State=="wRecover"||Simulation.Player.State=="gSlam1"||Simulation.Player.State=="sBash");}
         }
     }

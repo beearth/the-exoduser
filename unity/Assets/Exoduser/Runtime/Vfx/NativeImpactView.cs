@@ -24,6 +24,8 @@ namespace Exoduser.UnityPort.Vfx
         Simulation bound; int observedTick=-1,scarIndex; float heroUntil;
         public int Contacts {get;private set;}
         public int Dropped {get;private set;}
+        public int Spawned {get;private set;}
+        public int PeakParticles {get;private set;}
         public bool Enabled {get;set;}=true;
         public bool HeroFrozen(float now) { return Enabled && now<heroUntil; }
         public bool EnemyFrozen(int id,float now) { return Enabled && response.Frozen(id,now); }
@@ -40,7 +42,7 @@ namespace Exoduser.UnityPort.Vfx
         public void Reset()
         {
             health.Clear();response.Reset();observedTick=-1;bound=null;heroUntil=0;
-            Contacts=Dropped=0;
+            Contacts=Dropped=Spawned=PeakParticles=0;
             foreach(var b in bursts)if(b!=null){b.Go.SetActive(false);b.Born=-10;}
             foreach(var s in scars)if(s!=null){s.Go.SetActive(false);s.Born=-10;}
         }
@@ -54,7 +56,7 @@ namespace Exoduser.UnityPort.Vfx
             {
                 present.Add(e.Id);float total=e.Hp+e.Shield;
                 bool known=health.TryGetValue(e.Id,out var previous);
-                if(ImpactResponse.IsContact(known,previous,total,e.HurtTicks)&&Enabled)
+                if(ImpactResponse.IsContact(known,previous,total,e.HurtTicks)&&Enabled&&NativeRemodel3D.Active)
                 {
                     float angle=e.KnockbackX*e.KnockbackX+e.KnockbackY*e.KnockbackY>.001f?Mathf.Atan2(e.KnockbackY,e.KnockbackX):Mathf.Atan2(e.Y-sim.Player.Y,e.X-sim.Player.X);
                     bool heavy=sim.KiComboStep==3||sim.Player.State.StartsWith("gSlam",StringComparison.Ordinal)||sim.Player.State=="sBash";
@@ -94,6 +96,7 @@ namespace Exoduser.UnityPort.Vfx
             if(b.Attr.HasVector3("position"))b.Attr.SetVector3("position",world);
             if(b.Attr.HasVector3("direction"))b.Attr.SetVector3("direction",new Vector3(dir.x,0,dir.y));
             b.Fx.SendEvent("OnBurst",b.Attr);
+            Spawned++;
             b.Light.enabled=lights<2;b.Light.intensity=heavy?3:2;
             SpawnScar(x,y,angle,heavy,now);
         }
@@ -109,7 +112,9 @@ namespace Exoduser.UnityPort.Vfx
         }
         void Animate(float now)
         {
-            foreach(var b in bursts)if(b!=null){float age=now-b.Born;if(age>.1f)b.Light.enabled=false;else b.Light.intensity=Mathf.Max(0,1-age/.1f)*3;if(age>=.9f)b.Go.SetActive(false);}
+            int particles=0;
+            foreach(var b in bursts)if(b!=null){particles+=b.Fx.aliveParticleCount;float age=now-b.Born;if(age>.1f)b.Light.enabled=false;else b.Light.intensity=Mathf.Max(0,1-age/.1f)*3;if(age>=.9f)b.Go.SetActive(false);}
+            PeakParticles=Math.Max(PeakParticles,particles);
             foreach(var s in scars)if(s!=null){float age=now-s.Born;s.Projector.fadeFactor=.6f*Mathf.Clamp01((2-age)/1.2f);if(age>=2)s.Go.SetActive(false);}
         }
         public void Dispose(){foreach(var b in bursts)if(b!=null){b.Attr.Dispose();UnityEngine.Object.Destroy(b.Go);}foreach(var s in scars)if(s!=null){UnityEngine.Object.Destroy(s.Mat);UnityEngine.Object.Destroy(s.Go);}}
