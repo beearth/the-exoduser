@@ -38,10 +38,10 @@ namespace Exoduser.UnityPort
                 float interval = !alive || !f.BossAlive || stalled ? 2 : 10;
                 if (key == previous && now - reportedAt < interval) continue;
                 previous = key; reportedAt = now;
-                Debug.Log("[드루이드 흐름] frame=" + Time.frameCount + " tick=" + s.TickCount + " realtime=" + now
+                Debug.Log("[드루이드 흐름] frame=" + Time.frameCount + " tick=" + s.TickCount + " viewTick=" + renderedTick + " realtime=" + now
                     + " timescale=" + Time.timeScale + " running=" + Running + " focus=" + gameFocused + " appFocus=" + Application.isFocused
                     + " menu=" + menu + " frontend=" + frontend + " panels=" + inv + "," + sk + "," + stat + "," + craft + " fixture=" + m1ModeFlag
-                    + " player=" + p.State + " hp=" + p.Hp + "/" + p.MaxHp + " level=" + p.Level
+                    + " player=" + p.State + " xy=" + p.X + "," + p.Y + " hp=" + p.Hp + "/" + p.MaxHp + " level=" + p.Level
                     + " enabled=" + f.Enabled + " load=" + f.LoadPhase + " bossAlive=" + f.BossAlive + " actorAlive=" + alive
                     + " bossHp=" + (b == null ? 0 : b.Hp) + " bossState=" + (b == null ? "없음" : b.State)
                     + " revive=" + (b == null ? 0 : b.ReviveTimer) + " sink=" + (b != null && b.SinkDruid)

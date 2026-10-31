@@ -59,7 +59,7 @@ UseDeepBlack는 표시 전용 읽기이며 Col/ParryClass/Friendly/좌표/속도
 | 검사 | 결과·한계 |
 |---|---|
 | 이전 표시 검사 | 초기 resolver/픽셀 16검사 및 AI 관측 20검사는 당시 후보만 검증. 전체 충돌의 패링 불가를 증명하지 못했으므로 범위 합격 근거로 철회 |
-| 실제 전체 충돌 | 사용자 Core DLL에서 normal/remodel의 physical/magic/blackBean/forbidden Q/E 및 별도 Orbs/Web, 총 22관측. Vx=0 접촉 샘플로 실제 충돌·피해 훅을 실행. 상태·패링창·위치·HP를 통제했으며 손플레이 아님 |
+| 실제 전체 충돌 | 사용자 Core DLL에서 normal/remodel의 physical/magic/blackBean/forbidden Q/E 및 별도 Orbs/Web, 총 22관측. Vx=0/X+40/Sz2, Player.Radius15의 확장 반경 접촉 샘플. 일반 반경25 밖·패링 확장75 안이며 일반 반경 내 피해 표본으로 소급하지 않음. 별도 Orbs는X+30/R26로일반 반경41 안. 상태·패링창·위치·HP를 통제했으며 손플레이 아님 |
 | 범위 회귀 RED | 사용자 확인에 맞춘 11검사 중 초기 후보 6실패. 별도 Orbs의 녹색 복원도 검사 |
 | 범위 회귀 GREEN | 실제 전체 충돌 결과에 기반한 분류 및 명시 class/혼합 특수탄 경계 15검사, 실패 0 |
 | 추가 이동 경계 | Vx=-6 및 Web 명시 class/혼합 특수탄 추가 하니스는 SDK10의 NuGet path1 오류와 NETSDK1060으로 2회 실패해 해당 단위 중단. 이 결과를 게임 실패나 추가 이동 검사 통과로 세지 않음 |
@@ -81,21 +81,33 @@ UseDeepBlack는 표시 전용 읽기이며 Col/ParryClass/Friendly/좌표/속도
 | 연결 | 기존 소유 `NativeBossView.Update`에서 `EnsureDruidClearDiagnostics` 호출. 기존 NativeGame 객체에 코루틴 1개만 시작. 새 게임 객체·외부 감시 프로세스·작업자·관리 자동화 없음 |
 | 관측 주기 | unscaled 0.5초. 아레나 밖에서는 로그 없음. 상태 변화 즉시 다음 관측에 기록하며, 동일 상태는 보스 생존 중 10초·사망/부활 대기/틱 정지 중 2초 간격 |
 | 틱 정지 | 마지막 관측된 Core 틱 변경 이후 unscaled 2초 이상. 메뉴/포커스/패널/M1 여부와 함께 기록하며 정상 일시정지와 오류를 임의로 동일시하지 않음 |
-| 호스트 | 프레임·Core 틱·unscaled 시간·timeScale, Running·gameFocused·Application.isFocused, 메뉴·프런트엔드 차단·인벤토리/스킬/능력치/강화 패널, M1 여부 |
+| 호스트 | 프레임·Core 틱·마지막 완료 UpdateViews의 renderedTick(viewTick)·플레이어 현재 X/Y·unscaled 시간·timeScale, Running·gameFocused·Application.isFocused, 메뉴·프런트엔드 차단·인벤토리/스킬/능력치/강화 패널, M1 여부 |
 | 진행 | 플레이어 상태·HP/최대HP·레벨, Stage.Enabled·LoadPhase·BossAlive, 실제 보스 Alive/HP/상태·ReviveTimer·SinkDruid, 출구 수·StageCleared·결과 패널 표시 |
 | 로그 제한 | HP1 이하 진입/해제는 상태 변화로 기록. 일반 보스 HP 감소와 공격 자세마다 새 로그를 만들지 않음. 플레이어 이름·저장 내용·키 입력을 기록하지 않음 |
 | 보호 | 게임 입력·Running·timeScale·단계·캐릭터·저장 상태 쓰기 0. 로그는 Unity의 기존 로그 경로를 사용하며 QA는 공식 실행기의 I: 로그로 격리 |
-| CPU 검사 | 실제 관측 함수에 Unity 스케줄러/UI 경계만 스텁. 비활성 객체 제외·단일 코루틴·필드 무로그·Core 전후 동일·정상 진행 제한·호스트 정지/틱 정지·출구 기록 등 11검사 실패 0 |
+| CPU 검사 | 실제 관측 함수에 Unity 스케줄러/UI 경계만 스텁. 비활성 객체 제외·단일 코루틴·필드 무로그·Core 전후 동일·정상 진행 제한·호스트 정지/틱 정지·출구 기록 등 기존 11검사 실패 0. 뷰 관측 확장은 기존 코드에서 14검사 중3실패→추가 후14검사 실패0 |
 | 한계 | Unity 메인 스레드 전체가 막히면 관측 코루틴도 실행되지 않는다. 이때는 마지막 로그 이후 중단을 기록 근거로 남기며, 위 관측만으로 원인을 확정하지 않음. 실제 Player 로그는 아직 미검증 |
 
 ## 후속 실행 증거와 별도 인계
 
 | 항목 | 확인값·한계 |
 |---|---|
-| 최신 최소 표시·관측 | 소스36b4a74c1a788da40c101f8dcf30a45ec14fb2ef. 정확 4입력 SHA를 보존한 Runtime4ece426fa5bfc1387ef087f3fe1b946e85e00345575d789640c3d4822083e0d0. 사용자 Core51b 유지. 공식 Unity 새 빌드가 아닌 독립 C# 검수 사본 |
+| 직전 최소 표시·관측(범위 정정 시점) | 소스36b4a74c1a788da40c101f8dcf30a45ec14fb2ef. 정확 4입력 SHA를 보존한 Runtime4ece426fa5bfc1387ef087f3fe1b946e85e00345575d789640c3d4822083e0d0. 사용자 Core51b 유지. 공식 Unity 새 빌드가 아닌 독립 C# 검수 사본 |
 | 공식 원본 M1 | 첫 슬롯 대기06:24:17→07:04:23 UTC, WaitMin 기본40으로 종료1/Player 시작0. 두 번째07:07 UTC부터 WaitMin120으로 같은 예약 순번 유지. 실제 실행 결과 아직 없음. 두 번째 동일 대기 실패면 추가 반복하지 않음 |
 | 새 사용자 종료 크래시 | 같은 제품 경로. 덤프 PID30032, 시작06:56:39 UTC(15:56:39 KST), 충돌07:00:19 UTC(16:00:19 KST). Physics cleanup/Input Shutdown 뒤 UnityPlayer.dll+UIAutomationCore 스택. 최초 정지 캡처보다 뒤에 시작한 별도 실행이며 처치 정지 원인으로 확정하지 않음 |
 | Windows 교차 근거 | Application Error1000, 07:00:20 UTC c0000005 및07:00:24 UTC c000041d. PID0x7550=30032, UnityPlayer offset0x10d1432로 덤프와 일치 |
 | 원자료 보존 | REPORT 경로 아래 사용자-종료크래시-070018에 Player.log/덤프/구조화 이벤트. 덤프 원본·사본 SHA de1ff34203c05070aad84adc200a809ae3e5a169d3a7a2e736462ea0ba9196b6. 기존 일시정지 담당이 증거 인수, 실제 원인 수정 완료로 합산하지 않음 |
 | CPU 경계 | StageFlowSyncViews의 출구 아레나 Rebuild/텍스처 업로드, 실제 저장 IO, OS 입력·포커스는 CPU 호스트 스텁 검증으로 대체하지 않음. 현재 실제 Player 대기 |
 | 별도 Core 후속 | HD2D 담당이 미적용 2단계 6Core 후보에서 HurtProjectile/HurtOptions.Projectile을 시험한다는 인계를 받음. 우리 제품·Core 수정0/인수0. 새 Core 공식 채택 시 실제 생성탄 Q/E와 표시 범위를 다시 검증하며 구Core51b의15/22 관측을 새 후보에 소급하지 않음 |
+
+## 화면 갱신 관측 확장
+
+Core tick이 진행해도 UpdateViews가 완료되지 않으면 화면이 멈춰 보일 수 있으므로, 기존 로그에 viewTick과 현재 Player.X/Y를 읽어 기록한다. renderedTick은 기존 NativeGame의 마지막 뷰 갱신 표식이며 이번 코드가 쓰거나 강제로 맞추지 않는다. 좌표·viewTick은 상태변화 키에 넣지 않아 이동할 때마다 로그가 늘지 않는다. 입력 성공이나 렌더 정지를 이 숫자 하나로 단정하지 않고 호스트·패널·포커스·Core tick과 나란히 판단한다.
+
+| 검사 | 결과 |
+|---|---|
+| RED | 실제 관측 소스와 사용자 Core51b를 연결. 기존11검사는 유지되고 렌더틱/좌표/코어와뷰의독립기록3검사만실패: 14검사3실패 |
+| GREEN | 같은 실제 소스에 읽기 출력2곳만추가, 14검사0실패. Core 전후동일·단일코루틴·기존로그제한보존 |
+| 현재 컴파일 | 사용자14cc 원본+동일4입력/사용자Core51b, 설치참조컴파일오류0·Unity시작0. Runtime ebfeb4418d472e053c00af6770fff4647cb1c6003104f442ce277d6759c4f748 |
+| 보호 | NativeGame.cs/일시정지/임팩트/Core 수정0. 시뮬레이션·renderedTick·플레이어좌표쓰기0. 기존4입력컴파일범위유지 |
+| 한계 | 실제 Player로그와사용자멈춤원인미검증. 추가이동SDK2실패중단은별도단위로유지하며새관측GREEN을그실패에소급하지않음 |
