@@ -30,6 +30,6 @@
 
 ## 공통 제목 띠 후속 — 2026-10-31
 
-statwindow-brief 보정2에 따라 web-uiux.css에서 다섯 창 제목64px(40px 투명 원형 메달+24px 글자)·성장 머리64px를 공통화했다. 금빛 헤어라인 중앙을 끊어 은색 메달을 끼우고 중복되던 성장 배경 눈을 제거했다. 상세 수치와 원화 근거는 [UI_COMPOSITION 최신 절](UI_COMPOSITION_20260925.md#2026-10-31-성장-창과-공통-다섯-창의-얇은-제목-띠)에만 둔다. game.html CSS 캐시=20261031-round-medallion. tools/check-stat-window.mjs는 --url/--out/--modules 옵션으로 분리 server.cjs에서 두 해상도×다섯 창의 제목/본문/AP/노드 경계·검색·미리보기·요약 닫기·J 재열기·저장0과1x/3x 크롭을 검사·기록한다. 스킬 본문은 다른 담당 소유이며 이번 수정 범위가 아니다.
+statwindow-brief 보정2에 따라 web-uiux.css에서 다섯 창 제목64px(40px 투명 원형 메달+24px 글자)·성장 머리64px를 공통화했다. 금빛 헤어라인 중앙을 끊어 은색 메달을 끼우고 중복되던 성장·대장간 배경 눈을 제거했다. 상세 수치와 원화 근거는 [UI_COMPOSITION 최신 절](UI_COMPOSITION_20260925.md#2026-10-31-성장-창과-공통-다섯-창의-얇은-제목-띠)에만 둔다. game.html CSS 캐시=20261031-round-medallion. tools/check-stat-window.mjs는 --url/--out/--modules 옵션으로 분리 server.cjs에서 두 해상도×다섯 창의 제목/본문/AP/노드 경계·검색·미리보기·요약 닫기·J 재열기·저장0과1x/3x 크롭을 검사·기록한다. 스킬 본문은 다른 담당 소유이며 이번 수정 범위가 아니다.
 
 2026-10-31 최종 보정: 다섯 창의 눈을 제목 바로 위 중앙에 놓고 기존 원화 중심부의 금속 명암을 높였다. 왼쪽 luminance 마스크·오른쪽 flex 장식을 대체하며 제목 높이44px는 유지한다. 현행 위치·합성 수치는 UI_COMPOSITION의 CTO 최종 보정 절을 따른다.

@@ -55557,7 +55557,7 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 항목 | 내용 |
 |---|---|
 | 범위 | statwindow-brief.md 마지막 보정2만, 최신 origin/main09eec0076에서 새 브랜치 |
-| 코드·자산 | web-uiux.css의40px 투명 은색 원형 눈 메달·중앙을 끊은 금빛 헤어라인·성장 배경 중복 눈 제거. title_eye_medallion_20261031.png 256×256 RGBA, 기존 gate_sigil 참조 내장 이미지 편집1장. 제목64px/40+24행·아래margin0·성장margin4px·본문845px. game.html CSS 캐시20261031-round-medallion |
+| 코드·자산 | web-uiux.css의40px 투명 은색 원형 눈 메달·중앙을 끊은 금빛 헤어라인·성장·대장간 배경 중복 눈 제거. title_eye_medallion_20261031.png 256×256 RGBA, 기존 gate_sigil 참조 내장 이미지 편집1장. 제목64px/40+24행·아래margin0·성장margin4px·본문845px. game.html CSS 캐시20261031-round-medallion |
 | 검수 | tools/check-stat-window.mjs는 현행 규격과1x/3x 크롭 기록. 실제 game.html1920/3840×5창10건·기능 PASS, pageerror/저장0·관련 회귀36/36·guard PASS. 두3배 비교판 직접 열람 후 사각 모서리·검은 판·중복 눈·눈에 띄는 잔점/계단0 |
 | 판정·한계 | 제목 메달 부분 VISUAL PASS. 보스 테스트 강제 상태·headless·격리 API, 자연 플레이/Unity/NW.js/배포 증거 아님. 스킬 본문 변경0 |
 | 증거 | I:/EXODUSER-Storage/codex-web-statwin/medallion-20261031/REPORT.md·review_1920_3x.png·review_3840_3x.png·after/geometry.json·regression-final.log·guard.log |

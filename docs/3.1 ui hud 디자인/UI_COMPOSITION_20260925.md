@@ -3108,6 +3108,7 @@ CSS 선·도형으로 그린 판·버튼을 생성 원화로 교체했다. 모�
 | 성장 .growth-header | 높이·최소높이64px, padding0, 아래margin4px, gap16px, 한 줄. growth-kicker·growth-subtitle는 DOM/번역을 보존하고 숨김 |
 | 성장 .growth-wallet | 가로 정렬, 높이64px, gap12px, 좌우padding12px, 숫자24px/1.2. 좁은 화면은gap6px·padding6px·라벨11px. 기존 SP 숨김·AP 잔고 의미 유지 |
 | 성장 .growth-shell 배경 | 중복 눈을 만들던 gate_sigil 이미지 레이어 제거. 상부감광 #14131570→하부 #09090ae6 + 기존 iron.png 320px 반복 폴백. background-blend-mode:normal,normal |
+| 대장간 .pbox 배경 | 기존 #141315d9→#09090af2 감광·iron.png 320px 표면을 보존하고 큰 eye_crest 이미지 레이어만 제거 |
 | 인벤토리 | 제목64px, 폭auto·오른쪽margin16px·20px. 제목 포함행 최소64px, 기본nowrap·폭≤780 wrap. 기존 전투력/악의/닫기 보존 |
 | 캐시 | game.html web-uiux.css?v=20261031-round-medallion |
 | 원화 근거 | 보정2의 명시적 내장 이미지 편집 허용에 따라 gate_sigil_20261028.jpg를 참조해 투명 원형 메달 1장 생성. 검은 세로 동공·동심 고리·은빛 림을 유지. 생성 원본1254×1254 RGBA를256×256으로 축소. 기존 미채택 성장나무/스탯서랍 반입 없음 |

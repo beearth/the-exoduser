@@ -108,7 +108,10 @@ html body #statPanel#statPanel#statPanel .growth-subtitle{display:none!important
 html body #statPanel#statPanel#statPanel .growth-wallets{align-self:stretch;align-items:center}
 html body #statPanel#statPanel#statPanel .growth-wallet{flex-direction:row;gap:12px;min-width:0;height:var(--web-ui-title-height);padding:0 12px!important}
 html body #statPanel#statPanel#statPanel .growth-wallet strong{font-size:24px!important;line-height:1.2}
-/* The title medallion is the only eye: omit the former large background sigil. */
+/* The title medallion is the only eye: omit the former large background sigils. */
+html body #forge#forge#forge.panel .pbox{
+ background:linear-gradient(#141315d9,#09090af2),var(--ui-surface) center/320px!important;
+}
 html body #statPanel#statPanel#statPanel.panel .pbox.growth-shell{
  background:linear-gradient(#14131570,#09090ae6),var(--ui-surface) center/320px!important;
  background-blend-mode:normal,normal;

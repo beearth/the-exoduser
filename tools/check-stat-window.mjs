@@ -86,6 +86,7 @@ try {
         assert.doesNotMatch(geo.background, /gate_sigil_20261028/);
         assert.doesNotMatch(geo.background, /eye_crest_20261028/);
       }
+      if (id === 'forge') assert.doesNotMatch(geo.background, /eye_crest_20261028/, '대장간 중복 눈 제거');
       cases.push(geo);
       await page.mouse.move(1, 1);
       await page.screenshot({ path: path.join(out, `after_${width}_${id}.png`) });

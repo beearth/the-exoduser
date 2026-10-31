@@ -119,4 +119,4 @@
 
 ### 2026-10-31 보정2 — 투명 원형 메달
 
-앞선 눈 표시 방식과 자체 PASS는 CTO의09eec0076 반려로 대체한다. 최신 main에서 새 브랜치를 만들고, 보정2에 명시된 내장 이미지 편집으로 기존 gate_sigil의 단일 세로 동공·동심 고리를 투명 은색 원형 메달로 만들었다. 256×256 RGBA 원화를40×40px로 표시하고 금빛 헤어라인을 중앙±26px에서 끊었다. 제목64px(40+24), 여백0/성장4px, 성장 본문845px. 성장 배경의 두 번째 눈은 제거했다. 두 해상도×다섯 창의 전체/1x/3x 직접 검수에서 사각 모서리·검은 판·중복 눈·눈에 띄는 잔점/계단0, 경계/기능10건·회귀36/36·guard PASS, pageerror/저장호출0. VISUAL VERDICT: PASS(이번 제목 메달 부분만). 세부 자산/프롬프트와 수치는 UI_COMPOSITION, 증거·Git SHA·서버는 I:/EXODUSER-Storage/codex-web-statwin/medallion-20261031/REPORT.md. 스킬 본문·Unity·자연 플레이·배포는 범위 밖이다.
+앞선 눈 표시 방식과 자체 PASS는 CTO의09eec0076 반려로 대체한다. 최신 main에서 새 브랜치를 만들고, 보정2에 명시된 내장 이미지 편집으로 기존 gate_sigil의 단일 세로 동공·동심 고리를 투명 은색 원형 메달로 만들었다. 256×256 RGBA 원화를40×40px로 표시하고 금빛 헤어라인을 중앙±26px에서 끊었다. 제목64px(40+24), 여백0/성장4px, 성장 본문845px. 성장·대장간 배경의 두 번째 눈은 제거했다. 두 해상도×다섯 창의 전체/1x/3x 직접 검수에서 사각 모서리·검은 판·중복 눈·눈에 띄는 잔점/계단0, 경계/기능10건·회귀36/36·guard PASS, pageerror/저장호출0. VISUAL VERDICT: PASS(이번 제목 메달 부분만). 세부 자산/프롬프트와 수치는 UI_COMPOSITION, 증거·Git SHA·서버는 I:/EXODUSER-Storage/codex-web-statwin/medallion-20261031/REPORT.md. 스킬 본문·Unity·자연 플레이·배포는 범위 밖이다.

@@ -762,7 +762,7 @@ codex-web-statwin: 다섯 창 제목44px와 성장 머리225→44px, 기존 인�
 화폐를 악의오브 / Orb of Malice로 개명하고 내장 imagegen의 둥근 유리 오브 4단계를 HUD·대장간·스킬 창·툴팁·획득 합체 연출에 연결했다. 색·구간·파일·픽셀 규격과 실패 폴백은 [화폐 SSOT](../3.2메타·진행시스템/CURRENCY_RENAME_20261031.md)를 따른다. 32/48px 원화와 실제 HUD 1x 판정 보드는 G:/exoduser/tmp/design-review/20261031_malice_orb/review-board.png. 웹의 UI 검수와 Unity 컴파일·Player/M1은 별도이며 최종 증거·원격 SHA는 I:/EXODUSER-Storage/demo-art/currency-rename/REPORT.md에 남긴다.
 
 
-보정2 최신 인수: CTO가09eec0076의 사각 잘림/중복 눈을 반려했다. 새 브랜치codex/web-statwin-medallion-20261031에서 투명 원형 메달256×256 RGBA를40px로 표시하고 금빛 헤어라인 중앙에 배치, 성장 배경 눈을 제거했다. 제목64px·성장 본문845px. 1920/3840×5창의1x/3x 직접 열람·경계/기능10건·회귀36/36·guard PASS, pageerror/저장0. 제목 메달 부분 VISUAL PASS이며 앞선 자체 눈 PASS는 대체한다. 정확 증거/소스/원격 SHA는 I:/EXODUSER-Storage/codex-web-statwin/medallion-20261031/REPORT.md, 현행 수치는 UI_COMPOSITION 최신 표. 스킬 본문·Unity·배포 변경0.
+보정2 최신 인수: CTO가09eec0076의 사각 잘림/중복 눈을 반려했다. 새 브랜치codex/web-statwin-medallion-20261031에서 투명 원형 메달256×256 RGBA를40px로 표시하고 금빛 헤어라인 중앙에 배치, 성장·대장간 배경 눈을 제거했다. 제목64px·성장 본문845px. 1920/3840×5창의1x/3x 직접 열람·경계/기능10건·회귀36/36·guard PASS, pageerror/저장0. 제목 메달 부분 VISUAL PASS이며 앞선 자체 눈 PASS는 대체한다. 정확 증거/소스/원격 SHA는 I:/EXODUSER-Storage/codex-web-statwin/medallion-20261031/REPORT.md, 현행 수치는 UI_COMPOSITION 최신 표. 스킬 본문·Unity·배포 변경0.
 
 ## 2026-10-31 MCP와 API 목록 팀 공통 사용
 
