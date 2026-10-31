@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<link rel="stylesheet" href="loading-art.css?v=20261031-wide1">
+<script src="loading-art.js?v=20261031-wide1"></script>
 <script src="build-target.js"></script>
 <script src="player-attack-remaster.js?v=20260915-spin-speed15"></script>
 <script src="warrior-bat-swing.js?v=20260915-speed85"></script>
@@ -3276,14 +3278,12 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
   <div class="nd-actions"><button class="sh-btn" id="ndBack" type="button"><span>뒤로</span></button><button class="sh-btn on" id="ndGo" type="button"><span>다음 난관으로</span></button></div>
 </div>
 <div id="stageTransition" style="position:absolute;inset:0;z-index:38;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.80);opacity:0;pointer-events:none;transition:opacity .3s">
-  <img id="stRndImg" alt="transition" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;filter:saturate(1.1) brightness(1.05);">
-  <div style="position:absolute;bottom:5vh;left:0;right:0;pointer-events:none;font-size:1rem;text-align:center">
-    <div id="stNextName" style="color:#e6e3dc;font-family:var(--font-hell-title);font-size:2vw;font-weight:700;letter-spacing:.3em;margin-bottom:8px;text-shadow:0 0 15px rgba(0,0,0,.85)"></div>
-    <div id="stFloorInfo" style="color:#ccaa77;font-size:1.2vw;letter-spacing:.15em;margin-bottom:12px;text-shadow:0 0 10px rgba(0,0,0,.8)"></div>
-    <div style="width:240px;height:4px;background:rgba(255,255,255,.25);border-radius:4px;overflow:hidden;margin:0 auto 6px">
-      <div id="stLoadBar" style="height:100%;background:var(--c-accent);width:0%;transition:width .2s"></div>
-    </div>
-    <div id="stLoadTip" style="color:#888;font-size:.85rem;letter-spacing:.15em;transition:opacity .3s"></div>
+  <div class="loading-art"><img id="stRndImg" alt="" style="object-fit:contain"></div>
+  <div id="stLoadStatus" role="status" aria-live="polite">
+    <div id="stNextName"></div>
+    <div id="stFloorInfo"></div>
+    <div id="stLoadTrack"><div id="stLoadBar"></div></div>
+    <div id="stLoadTip"></div>
   </div>
 </div>
 <div class="ph" id="ph"></div>
@@ -63845,9 +63845,7 @@ function showStageTransition(callback){
   }
   if(img&&_STAGE_TRANSITION_RD.length>0){
     const idx=_pickTransitionRd();
-    img.src=_STAGE_TRANSITION_RD[idx];
-    img.style.objectFit='cover';
-    img.style.filter='saturate(1.1) brightness(1.05)';
+    LoadingArt.set(img,_STAGE_TRANSITION_RD[idx]);
   }
   el.style.opacity='1';el.style.pointerEvents='all';bar.style.width='0%';
   requestAnimationFrame(()=>{
@@ -63884,10 +63882,11 @@ function showBootLoading(msg){
   _bootLoadActive=true;_bootLoadKilled=false;
   _bootLoadShownAt=Date.now();
   name.textContent=msg||_T('불러오는 중...');
+  const info=$('stFloorInfo');if(info)info.textContent='';
   // 세션 당 한 장만 — 이미 골랐으면 교체 금지
   if(!_bootRdPicked&&img&&_STAGE_TRANSITION_RD.length>0){
     const _rdIdx=_pickTransitionRd();
-    img.src=_STAGE_TRANSITION_RD[_rdIdx];
+    LoadingArt.set(img,_STAGE_TRANSITION_RD[_rdIdx]);
     _bootRdPicked=true;
   }
   bar.style.width='8%';

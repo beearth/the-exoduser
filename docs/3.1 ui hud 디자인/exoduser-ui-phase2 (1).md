@@ -1075,3 +1075,7 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 | 해상도 복원 | 두HTML 최초 설정과 _loadPreset OPT 복원 뒤 rz(). 저장60%/프리셋70% 실제C/CT/burst 반영, 동일치수no-op |
 | 근거·경계 | 전투 경고의 font/measureText 약29~42ms 스택 확인. 저장본 새로고침100AI/1920×1080/10초 draw p99 4.1ms(직전31.9ms),max44.7ms 잔여2회. 전후CSS창 크기가 달라 평균FPS 개선율 확정하지 않음. 예열20초 연결중단/최종visual·Steam·보스 미검증 |
 | 검사·상태 | 관련57PASS,두HTML실행script각6구문PASS. 기존경고fixture의실제_projectileParryClass 누락복구. 커밋/패키지/Steam업로드미완료,타작업스테이징보존. [상세 계약·실측·검수 경계](../12퍼포먼스·최적화/FRAME_DROP_HUD_TEXT_20260928.md) |
+
+## 2026-10-31 WORK 5 현행 표시 계약
+
+위 WORK 5는 최초 구현 기획 예시다. 현재 원화 비율·하단 상태 영역·은빛 진행 선·초광폭 선택은 [로딩 초광폭 정본](../1전체그래픽세팅/LOADING_ULTRAWIDE_20261031.md)의 값과 game.html/loading-art.css를 따른다. 위 과거 색·폭·중앙 배치 예시를 현재 값으로 적용하지 않는다.

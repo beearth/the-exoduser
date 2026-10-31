@@ -55576,3 +55576,13 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 상세: [화폐 SSOT](3.2메타·진행시스템/CURRENCY_RENAME_20261031.md), 증거 I:/EXODUSER-Storage/demo-art/currency-rename/REPORT.md.
 
 최신 스킬 창 병합에서 추가된 미습득 소켓의 비용 번역 키도 악의오브로 정렬했다. test/skillForge.test.js를 포함한 통합 회귀29/29가 통과했다. 스킬 창 기능·새 빈 소켓 원화는 원작성자 변경을 보존한다.
+
+
+## 2026-10-31 웹 로딩 초광폭 원본 보존
+
+| 변경 | 내용 | 정본/근거 |
+|---|---|---|
+| 로딩 표시 | game/index의 원본 contain, 공통 loading-art.js/css, 별도 하단 상태 영역. 폭에 따른 글자 확대 제거 | 1전체그래픽세팅/LOADING_ULTRAWIDE_20261031.md |
+| 배경 확장 | 내장 image_gen으로 네메시아·핵터·디로이 좌우 배경, 무손실21/32 WebP6개. 기존 원본35장 유지, 미생성/실패는 동일 원본 블러 폴백 | img/lording/wide/ |
+| 패키지·검수 | FILES 공통런타임 명시, 회귀 test/loadingWide.test.js 및 tools/check-loading-wide.mjs. 전면 가시성·전체구도·하단 비중첩·비동기 요청/실패 검사 | I:/EXODUSER-Storage/web-loading/20261031-wide/ |
+| Unity 인계 | ui-ultrawide-brief.md 끝에 같은 이미지·표시계약·해상도 및 별도 Unity 검수 지시 | 웹 검수와 Unity 실행은 분리 |
