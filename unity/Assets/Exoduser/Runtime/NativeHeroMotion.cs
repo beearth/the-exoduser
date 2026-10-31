@@ -406,18 +406,34 @@ namespace Exoduser.UnityPort
             float rightReach=Vector3.Distance(rightUpper.position,rightFore.position)+Vector3.Distance(rightFore.position,rightHand.position)-.002f;
             float leftReach=Vector3.Distance(leftUpper.position,leftFore.position)+Vector3.Distance(leftFore.position,leftHand.position)-.002f;
             var normal=transform.up;
-            var ca=rightUpper.position;var cb=leftUpper.position-delta;
+            var originalA=rightUpper.position;var originalB=leftUpper.position-delta;
+            var ca=originalA;var cb=originalB;
             float ha=Vector3.Dot(requested-ca,normal),hb=Vector3.Dot(requested-cb,normal);
             ca+=normal*ha;cb+=normal*hb;
             float ra=Mathf.Sqrt(Mathf.Max(0,rightReach*rightReach-ha*ha)),rb=Mathf.Sqrt(Mathf.Max(0,leftReach*leftReach-hb*hb));
             Vector3 ClampCircle(Vector3 p,Vector3 center,float radius){var d=p-center;return d.sqrMagnitude<=radius*radius?p:center+d.normalized*radius;}
+            Vector3 FitSpheres(){
+                var first=ClampCircle(requested,originalA,rightReach);if((first-originalB).sqrMagnitude<=leftReach*leftReach)return first;
+                var second=ClampCircle(requested,originalB,leftReach);if((second-originalA).sqrMagnitude<=rightReach*rightReach)return second;
+                var direction=originalB-originalA;float length=direction.magnitude;
+                if(length<.00001f)return ClampCircle(requested,originalA,Mathf.Min(rightReach,leftReach));
+                if(length>rightReach+leftReach)return first;
+                direction/=length;float x=(rightReach*rightReach-leftReach*leftReach+length*length)/(2*length);
+                var center=originalA+direction*x;float radius=Mathf.Sqrt(Mathf.Max(0,rightReach*rightReach-x*x));
+                var radial=Vector3.ProjectOnPlane(requested-center,direction);
+                if(radial.sqrMagnitude<.000001f)radial=Vector3.Cross(direction,transform.up);
+                if(radial.sqrMagnitude<.000001f)radial=Vector3.Cross(direction,transform.right);
+                return center+radial.normalized*radius;
+            }
+            // 낮은 되베기 등에서 높이 고정 자체가 불가능하면 도달구의 교차 원으로 재타깃한다.
+            if(Mathf.Abs(ha)>rightReach||Mathf.Abs(hb)>leftReach)return FitSpheres();
             // 손 높이와 칼 방향을 유지한 채 양팔 도달 원의 교집합으로 맞춘다.
             if((requested-ca).sqrMagnitude<=ra*ra&&(requested-cb).sqrMagnitude<=rb*rb)return requested;
             var a=ClampCircle(requested,ca,ra);if((a-cb).sqrMagnitude<=rb*rb)return a;
             var b=ClampCircle(requested,cb,rb);if((b-ca).sqrMagnitude<=ra*ra)return b;
             var axis=cb-ca;float distance=axis.magnitude;
             if(distance<.00001f)return ClampCircle(requested,ca,Mathf.Min(ra,rb));
-            if(distance>ra+rb)return a; // 수직 목표 자체가 도달 불가능하면 검수에서 드러내며 팔을 늘리지 않는다.
+            if(distance>ra+rb)return FitSpheres();
             axis/=distance;float along=(ra*ra-rb*rb+distance*distance)/(2*distance);
             float side=Mathf.Sqrt(Mathf.Max(0,ra*ra-along*along));var middle=ca+axis*along;var across=Vector3.Cross(normal,axis).normalized*side;
             var first=middle+across;var second=middle-across;

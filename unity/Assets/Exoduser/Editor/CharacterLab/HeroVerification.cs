@@ -10,7 +10,7 @@ namespace Exoduser.CharacterLab {
    VerifyR7();var holder=new GameObject("R7 실제 파지 검사");
    try {
     var view=new NativeHeroView(holder.transform);
-    foreach(var sample in new[]{("wSwing",3), ("sBash",12), ("sBlock",1)}){
+    foreach(var sample in new[]{("wSwing",5),("wSwing",3),("wSwing",1),("sBash",20),("sBash",12),("sBash",1),("sBlock",1)}){
      var sim=new Simulation(SourceStarterFixture.CreateBasicWeapon());sim.Player.State=sample.Item1;sim.Player.StateTicks=sample.Item2;
      view.Sync(sim,false);
      typeof(NativeHeroMotion).GetMethod("LateUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(view.Motion,null);
@@ -31,6 +31,10 @@ namespace Exoduser.CharacterLab {
    try {
     var skin=instance.GetComponentsInChildren<SkinnedMeshRenderer>(true).OrderByDescending(s=>s.sharedMesh.vertexCount).First();
     var mesh=skin.sharedMesh;
+    var weaponSocket=instance.GetComponentsInChildren<Transform>(true).First(t=>t.name=="Socket_Weapon_R");
+    var weapon=weaponSocket.GetComponentsInChildren<Renderer>(true).First();
+    float diagonal=weapon.bounds.size.magnitude;
+    if(diagonal<1||diagonal>2.5f||Vector3.Distance(weapon.bounds.center,weaponSocket.position)>1.2f)throw new Exception("R7 대검 월드 크기/파지 원점 오류: 대각m="+diagonal);
     if(!mesh.isReadable)throw new Exception("R7 구르기·망토 접점 검사를 위한 스킨 읽기 누락");
     foreach(string part in new[]{"Iron","Hair","Skin","Cloth","Leather"})
      if(!skin.sharedMaterials.Any(m=>m!=null&&m.name=="HeroR7_"+part))throw new Exception("R7 부위별 물성 누락: "+part);

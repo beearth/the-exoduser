@@ -186,6 +186,18 @@ PrefabInstance:
       propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7723869506456310326, guid: bacac45a31f555f469d426aa26239fb5, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.9999993
+      objectReference: {fileID: 0}
+    - target: {fileID: 7723869506456310326, guid: bacac45a31f555f469d426aa26239fb5, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.9999998
+      objectReference: {fileID: 0}
+    - target: {fileID: 7723869506456310326, guid: bacac45a31f555f469d426aa26239fb5, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.9999996
+      objectReference: {fileID: 0}
     - target: {fileID: 8111781155169087978, guid: bacac45a31f555f469d426aa26239fb5, type: 3}
       propertyPath: m_UpdateWhenOffscreen
       value: 1

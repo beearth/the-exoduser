@@ -37,6 +37,9 @@ namespace Exoduser.CharacterLab {
     var cape=instance.AddComponent<CapeSpring>();EditorUtility.CopySerialized(old.GetComponent<CapeSpring>(),cape);
     // Blender에서 손 본에 직접 붙인 파지 원점을 그대로 사용한다.
     var socket=instance.GetComponentsInChildren<Transform>(true).First(t=>t.name=="Socket_Weapon_R");
+    var scale=socket.lossyScale;
+    if(Mathf.Abs(scale.x)<.000001f||Mathf.Abs(scale.y)<.000001f||Mathf.Abs(scale.z)<.000001f)throw new Exception("R7 대검 소켓 배율 오류");
+    socket.localScale=Vector3.Scale(socket.localScale,new Vector3(1/scale.x,1/scale.y,1/scale.z));
     if(!instance.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="Grip_L"))throw new Exception("Blender 본 부착 왼손 파지 원점 누락");
     var weapon=UnityEngine.Object.Instantiate(oldWeapon.gameObject,socket);
     weapon.name=oldWeapon.name;weapon.transform.localPosition=oldWeapon.localPosition;weapon.transform.localRotation=oldWeapon.localRotation;weapon.transform.localScale=oldWeapon.localScale;
