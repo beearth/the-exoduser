@@ -28,6 +28,7 @@ namespace Exoduser.Hd2d
             float approach = Mathf.SmoothStep(0, 1, Mathf.Clamp01(t / 4f));
             Vector3 forward = anchors[1] - anchors[0]; forward.y = 0; forward.Normalize();
             Vector3 hp = anchors[0] + forward * approach * 1.4f;
+            hp = Ground(hp);
             bool fighting = t >= 4f;
             float swing = Mathf.Repeat(t - 4f, 1.45f);
             Material hm = hero.sharedMaterial;
@@ -55,7 +56,7 @@ namespace Exoduser.Hd2d
             {
                 Vector3 p = anchors[i + 1];
                 if (fighting) p += (hp - p).normalized * (.35f + .1f * Mathf.Sin(t * 2 + i));
-                p.y = anchors[i + 1].y;
+                p = Ground(p);
                 Place(enemies[i].transform, p + view.transform.up * (i == 1 ? 1.22f : 1.14f), step);
                 enemies[i].transform.rotation = view.transform.rotation;
                 enemies[i].sharedMaterial.SetColor("_Tint", fighting && swing > .33f && swing < .42f && i == 0 ? new Color(1.45f, 1.25f, 1.1f) : Color.white);
@@ -76,6 +77,12 @@ namespace Exoduser.Hd2d
             local.x = Mathf.Round(local.x / step) * step;
             local.y = Mathf.Round(local.y / step) * step;
             tr.position = view.transform.TransformPoint(local);
+        }
+
+        static Vector3 Ground(Vector3 p)
+        {
+            if (Physics.Raycast(new Vector3(p.x,100,p.z),Vector3.down,out var hit,200)) p.y=hit.point.y+.018f;
+            return p;
         }
     }
 }

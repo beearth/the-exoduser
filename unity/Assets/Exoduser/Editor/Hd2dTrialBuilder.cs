@@ -72,7 +72,10 @@ namespace Exoduser
                     mm[i] = m;
                 }
                 r.sharedMaterials = mm;
+                if (r.name.Contains("Continuous_Bank_Terrain") || r.name.Contains("Rotten_Wood_Bridge"))
+                    r.gameObject.AddComponent<MeshCollider>().sharedMesh = r.GetComponent<MeshFilter>().sharedMesh;
             }
+            Physics.SyncTransforms();
             Transform Anchor(string name) { return world.GetComponentsInChildren<Transform>(true).First(t => t.name == name); }
             var co = new GameObject("HD2D_TrialCamera"); var cam = co.AddComponent<Camera>();
             cam.transform.position = Anchor("HD2D_Camera").position;
@@ -102,7 +105,7 @@ namespace Exoduser
             AssetDatabase.CreateAsset(vol.sharedProfile, Root + "/TrialVolume.asset");
             var riverMat = Mat("TrialRiver", "EXODUSER/HD2DTrial/PoisonRiver");
             var river = Quad("HD2D_ToxicRiver", riverMat); river.transform.rotation = Quaternion.Euler(90, 0, 0);
-            river.transform.position = new Vector3(0, .06f, 0); river.transform.localScale = new Vector3(120, 180, 1);
+            river.transform.position = new Vector3(0, -.08f, 0); river.transform.localScale = new Vector3(120, 180, 1);
             // Lit height fog is integrated in a 24-step raymarch; no stochastic noise/dither.
             var fog = GameObject.CreatePrimitive(PrimitiveType.Cube); fog.name = "HD2D_VolumetricFog";
             UnityEngine.Object.DestroyImmediate(fog.GetComponent<Collider>());
