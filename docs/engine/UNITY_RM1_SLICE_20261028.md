@@ -1,5 +1,12 @@
 # Unity RM-1 슬라이스 (1-1 R1 START ~ R2) 구현 현황 — 2026-10-28
 
+## 2026-10-31 현행 순수 맵 분기 — 미인수 UI 재질 제외
+
+기존맵분기에상속된 c253ec3b0/1c985c88e 재질시안은현공통15c8 및현재순수UI01dbc의조상이아니며현행채택근거가없다. UI담당과대조후정확8파일을I: `steam-keyshot/a2/field-screen-20261031/미인수UI-원본/`에보존하고, Overlay/Presentation은승인공통15c8의정확byte로복원·MaterialLayout/Material.Capture의cs/meta 및전용tests2파일은현행맵입력에서제외했다. 원격6771672c9와기존이력은보존했다.
+
+현재클리어표시는공통의기존평면패널/버튼을사용하며 MaterialReady/Pieces/UV재질helper는없다. scale=min(1,max(1,W−32)/560,max(1,H−32)/LogicalHeight). 별도UI담당의SafeLayout·물리버튼후보는아직인수하지않았다. 아래2026-10-30재질절과그수치·검사·Player는당시private후보이력으로만보존하며현재구현/맵PASS로소급하지않는다. 현재전체필드계약은 `UNITY_KEYSHOT_A2_20261030.md` R4표를따른다. 새R4Unity/Player·M1·시각은순수입력으로검수전이다.
+
+
 브랜치 `claude/unity-pc-rm1-20261027`. 명세 `E:/exoduser-wt/_out/rm1/SPEC.md`(맵 총괄), 판정: 맵 총괄(구조), 디자인총괄(시각), 톤은 ① VFX 렌더 병합(Linear·후처리) 뒤.
 
 ## 생성 방법 (멱등)

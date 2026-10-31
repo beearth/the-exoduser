@@ -1,5 +1,12 @@
 # Unity 스테이지 클리어 결과 화면 (분모 A22, 웹 `#stageClear`/`#clearResult`) — PC-A22 (2026-10-26)
 
+## 2026-10-31 현행 순수 맵 분기 — 미인수 UI 재질 제외
+
+기존맵분기에상속된 c253ec3b0/1c985c88e 재질시안은현공통15c8 및현재순수UI01dbc의조상이아니며현행채택근거가없다. UI담당과대조후정확8파일을I: `steam-keyshot/a2/field-screen-20261031/미인수UI-원본/`에보존하고, Overlay/Presentation은승인공통15c8의정확byte로복원·MaterialLayout/Material.Capture의cs/meta 및전용tests2파일은현행맵입력에서제외했다. 원격6771672c9와기존이력은보존했다.
+
+현재클리어표시는공통의기존평면패널/버튼을사용하며 MaterialReady/Pieces/UV재질helper는없다. scale=min(1,max(1,W−32)/560,max(1,H−32)/LogicalHeight). 별도UI담당의SafeLayout·물리버튼후보는아직인수하지않았다. 아래2026-10-30재질절과그수치·검사·Player는당시private후보이력으로만보존하며현재구현/맵PASS로소급하지않는다. 현재전체필드계약은 `UNITY_KEYSHOT_A2_20261030.md` R4표를따른다. 새R4Unity/Player·M1·시각은순수입력으로검수전이다.
+
+
 > §1~8과 맥북 검수는 2026-10-26 초기 이식 이력이다. 당시 “이벤트 없음/미이식”은 현재 일반 실행 상태가 아니다. 현행 계약은 맨 아래 2026-10-30 절을 따른다.
 
 기준: 사용자 확정 "UI는 일단 그대로 이식". 웹 기준 `G:/exoduser/game.html`(main 1770c2698, 아래 줄 번호). 구현: 단순작업2. 브랜치 `claude/unity-pc-overlays-20261026`(A21 위, Unity 6000.6.7f1). 커밋은 맥북 총괄 검수 뒤.
