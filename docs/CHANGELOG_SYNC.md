@@ -55624,3 +55624,6 @@ stage=0은 실제200×200 본편으로 정정하고 과거 원화 판은 명시�
 - `img/logo_exoduser.png` byte와 원래 불투명 금속 115,815픽셀을 보존하고, 같은1506×719 `img/logo_exoduser_solid.png`를 추가했다. 글자·눈 고리·머리 내부 흑철 바탕과 어두운 외곽/그림자로 인장 관통을 막는다.
 - `index.html` 10곳·`game.html` 1곳 PNG 참조 교체. 위치·크기·fade·게임 규칙은 유지. 규격·검수 도구: `docs/3.1 ui hud 디자인/LOGO_SOLID_20261031.md`, `tools/build-logo-solid.py`, `tools/verify-logo-solid.py`.
 - main 소스 반영만 수행하고 DEMO/EA 복사·배포·Unity 실행·유료 생성은 하지 않는다. 실제 원격·캡처·겹침·회귀·guard 결과는 `G:/exoduser/tmp/design-review/20261031_logo_solid/REPORT.md`에 기록한다. 과거 원본/영상 제작 영수증은 보존한다.
+
+- 2026-10-31 combat-feel: game.html 접점 그림2틱·피격 가장자리/HP 표시140ms·동시 처치음2보이스, feel=0/1 비교 및 reduceMotion 설정. 보호된 전투 규칙 불변. VFX·스킬·설정·기본공격 문서 동기화, test/combatFeel.test.js.
+- 검수 보충: 피격음 VM의 OFF 표현 환경을 명시. 기존 Ki 홀드 VM은 _uEq/ _eqAffix 의존성 누락으로 2회 실패해 해당 단위를 중단하고 원본 byte를 복원; 실제 기검참 함수 무변경을 대조.
