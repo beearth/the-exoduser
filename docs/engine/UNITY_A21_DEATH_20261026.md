@@ -69,3 +69,12 @@ death.ForcedAge, death.PulseOffset                                 // 검증용
 ## 7. 검수 반영 (2026-10-26)
 
 맥북 총괄 검수: 일어나지 않는 EXP 손실을 숫자로 보이면 가짜 상태 → `Info.expLoss=-1`이면 `EXP 미이식`, patch도 `expLoss=-1`. 10개 순서 `git apply --check` 재통과(11번째 A22 포함 11개도 통과), 정보 줄 캡처 1장 재촬영.
+
+
+## 2026-10-31 R3 부활 대기와 사망 제목 계측
+
+|항목|변경|
+|---|---|
+|부활 대기|NativeRevive의중앙panel은cx−140/cy−56/폭280/높이136, 보조문구는cx−140/cy+50/폭280/높이22. 기존카운트56px/확률/해제·실패·저장규칙불변. 실제R2의3s와쓰러짐교차를해소하는UI수정후보|
+|사망제목외곽선|실제그림은유지하고PaintDeathGlyph로같은본문과검정outline의호출source를맞춤. death-black-outline프로필은실제후행본문/동일clip·치수·반경4.2×safeScale/알파≤1.001이증명될때만스타일페인트로분리. 다른본문충돌·미선언/유계밖그림자검출유지|
+|검수|그림자53회귀PASS. 실제R3 Player·동일DLL M1·5해상도글자/컴포넌트/1x전에는완료아님. [현재전범위계약](UNITY_UI_ULTRAWIDE_20261031.md)|

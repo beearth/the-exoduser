@@ -26,14 +26,13 @@ function analyze(frame){
   const e={...input,order:input.order??elements.length,orderKnown:Number.isFinite(input.order)};
   if(!e.rect||e.rect.width<=0||e.rect.height<=0)continue;
   if(e.hasClip){if(!e.clipRect)continue;e.rect=intersection(e.rect,e.clipRect);if(!positive(e.rect))continue;}
-  // 같은 문자열의 1px 외곽선/그림자만 통합한다. 다른 내용은 제외하지 않는다.
-  const duplicate=elements.findIndex(p=>p.kind==='text'&&e.kind==='text'&&p.text===e.text&&(p.shadow||e.shadow)&&p.depth===e.depth&&JSON.stringify(p.clipRect)===JSON.stringify(e.clipRect)&&!elements.some(s=>s.kind==='surface'&&s.order>p.order&&s.order<e.order&&above(s,p)&&geometry.valid(geometry.intersect(shape(s),shape(p))))&&['x','y','width','height'].every(k=>Math.abs(p.rect[k]-e.rect[k])<=3.1));
-  if(duplicate>=0){if(elements[duplicate].shadow&&!e.shadow)elements[duplicate]=e;continue;}
   elements.push(e);
  }
+ // Small black stroke passes must match the final body directly, never a transitive shadow cluster.
+ for(const e of elements){if(e.kind!=='text'||e.shadow!==true||e.source?.includes(' / 명시 CSS text-shadow 광휘 패스')||e.opacityKnown===false)continue;const body=elements.find(p=>p.kind==='text'&&!p.shadow&&p.text===e.text&&p.depth===e.depth&&p.order>e.order&&p.source?.split(':')[0]===e.source?.split(':')[0]&&JSON.stringify(p.clipRect)===JSON.stringify(e.clipRect)&&['x','y'].every(k=>Math.abs(p.rect[k]-e.rect[k])<=3.1)&&['width','height'].every(k=>Math.abs(p.rect[k]-e.rect[k])<=3.1)&&!elements.some(s=>s.kind==='surface'&&s.order>e.order&&s.order<p.order&&above(s,e)&&geometry.valid(geometry.intersect(shape(s),shape(e)))));if(body)e.decorativeOwnerId=body.id;}
  // Explicit production TxtGlow passes belong to their following body glyph. Keep ordinary duplicates and foreign text visible.
- const glowSuffix=' / 명시 CSS text-shadow 광휘 패스',regionSuffix=glowSuffix+' / region-banner-black-shadow',scale=Math.min(frame.width/1920,frame.height/1080);
- for(const e of elements){const region=e.source?.endsWith(regionSuffix),suffix=region?regionSuffix:glowSuffix,glowRadius=(region?9.2:5.5)*scale+.01;if(e.kind!=='text'||e.shadow!==true||!e.source?.endsWith(suffix)||e.opacityKnown!==true||e.effectiveOpacity<0||e.effectiveOpacity>(region ? .064 : .03))continue;
+ const glowSuffix=' / 명시 CSS text-shadow 광휘 패스',regionSuffix=glowSuffix+' / region-banner-black-shadow',strokeSuffix=glowSuffix+' / death-black-outline',scale=Math.min(frame.width/1920,frame.height/1080);
+ for(const e of elements){const region=e.source?.endsWith(regionSuffix),stroke=e.source?.endsWith(strokeSuffix),suffix=region?regionSuffix:stroke?strokeSuffix:glowSuffix,glowRadius=(region?9.2:stroke?4.2:5.5)*scale+.01;if(e.kind!=='text'||e.shadow!==true||!e.source?.endsWith(suffix)||e.opacityKnown!==true||e.effectiveOpacity<0||e.effectiveOpacity>(region ? .064 : stroke ? 1.001 : .03))continue;
   const source=e.source.slice(0,-suffix.length),body=elements.find(p=>p.kind==='text'&&!p.shadow&&p.text===e.text&&p.source===source&&p.depth===e.depth&&p.order>e.order&&JSON.stringify(p.clipRect)===JSON.stringify(e.clipRect)&&Math.hypot(p.rect.x-e.rect.x,p.rect.y-e.rect.y)<=glowRadius&&Math.abs(p.rect.width-e.rect.width)<.01&&Math.abs(p.rect.height-e.rect.height)<.01&&!elements.some(s=>s.kind==='surface'&&s.order>e.order&&s.order<p.order&&above(s,e)&&geometry.valid(geometry.intersect(shape(s),shape(e)))));
   if(body)e.decorativeOwnerId=body.id;
  }
@@ -45,10 +44,10 @@ function analyze(frame){
  }).filter(e=>e.visibleRects.length);
  const issues=[],screen={x:0,y:0,width:frame.width,height:frame.height};
  for(let i=0;i<visible.length;i++){
-  const a=visible[i];if(a.kind!=='text')continue;
+  const a=visible[i];if(a.kind!=='text'||a.decorativeOwnerId)continue;
   if(a.visibleRects.some(r=>!inside(r,screen)))issues.push({type:'화면 이탈',a});
   for(let j=0;j<visible.length;j++){
-   if(i===j)continue;const b=visible[j];const intersectionPolygons=a.visiblePolygons.flatMap(ar=>b.visiblePolygons.map(br=>geometry.intersect(ar,br))).filter(geometry.valid).filter(p=>{const r=geometry.bounds(p);return r.width>.5&&r.height>.5;});const intersections=intersectionPolygons.map(geometry.bounds);if(!intersections.length)continue;
+   if(i===j)continue;const b=visible[j];if(b.decorativeOwnerId)continue;const intersectionPolygons=a.visiblePolygons.flatMap(ar=>b.visiblePolygons.map(br=>geometry.intersect(ar,br))).filter(geometry.valid).filter(p=>{const r=geometry.bounds(p);return r.width>.5&&r.height>.5;});const intersections=intersectionPolygons.map(geometry.bounds);if(!intersections.length)continue;
    if(b.kind==='text'){if((a.decorativeOwnerId||b.decorativeOwnerId)&&a.text===b.text&&(a.decorativeOwnerId||a.id)===(b.decorativeOwnerId||b.id))continue;if(j>i)issues.push({type:'글자-글자',a,b,intersections,intersectionPolygons});}
    else if(b.kind==='button'&&!(inside(a.rect,b.rect)&&above(a,b)))issues.push({type:'글자-버튼',a,b,intersections,intersectionPolygons});
    else if(b.kind==='panel'&&!inside(a.rect,b.rect))issues.push({type:'글자-판',a,b,intersections,intersectionPolygons});
@@ -61,7 +60,7 @@ function analyze(frame){
   if(!Number.isFinite(e.depth)||!e.orderKnown||e.clipKnown!==true)auditWarnings.push(e.id+': 깊이/순서/클립 미충족');
   if(e.kind==='surface'&&(!e.opacityKnown||!e.opacityProof||!shapeKnown(e)))auditWarnings.push(e.id+': 불투명도 또는 칠 도형 증명 불명');
  }
- return {...frame,elements:visible,surfaces:elements.filter(e=>e.kind==='surface'),issues,auditWarnings,visibilityComplete:auditWarnings.length===0};
+ return {...frame,elements:visible.filter(e=>!e.decorativeOwnerId),decorationElements:visible.filter(e=>e.decorativeOwnerId),surfaces:elements.filter(e=>e.kind==='surface'),issues,auditWarnings,visibilityComplete:auditWarnings.length===0};
 }
 function run(dir){
  const manifest=JSON.parse(fs.readFileSync(path.join(dir,'coverage.json'),'utf8')),missing=[],observed=new Set();

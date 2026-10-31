@@ -19,7 +19,7 @@ namespace Exoduser.UnityPort
             throw new InvalidOperationException("Missing source practice copy "+id);
         }
         Vector2 practiceScroll;float practiceContentHeight=1400;
-        Rect PracticePanel(float width){var dock=NativeHudDockLayout.Create(1920,1080);float hudTop=Mathf.Min(NativeUiViewport.ToEdge(dock.LeftFrame).y,NativeUiViewport.ToEdge(dock.RightFrame).y);float top=NativeObjectivePanel.Top+NativeObjectivePanel.Height+16+8;return new Rect(NativeUiViewport.Edges.Width-LessonRight-LessonW,top,LessonW,Mathf.Max(220,hudTop-16-8-top));}
+        Rect PracticePanel(float width){var dock=NativeHudDockLayout.Create(1920,1080);float hudTop=Mathf.Min(NativeUiViewport.ToEdge(dock.LeftFrame).y,NativeUiViewport.ToEdge(dock.RightFrame).y);float gap=Mathf.Max(16,16/NativeUiViewport.Edges.Scale);float top=NativeObjectivePanel.Top+NativeObjectivePanel.Height+gap+8;return new Rect(NativeUiViewport.Edges.Width-LessonRight-LessonW,top,LessonW,Mathf.Max(220,hudTop-gap-8-top));}
         bool PointerOverPractice()
         {var r=PracticePanel(NativeUiViewport.Edges.Width);return new Rect(r.x-8,r.y-8,r.width+16,r.height+16).Contains(NativeUiViewport.EdgePointer(ExoInput.MousePosition));}
         GUIStyle LessonStyle(int size,TextAnchor anchor,Color color,bool bold=false,bool wrap=false,bool key=false)

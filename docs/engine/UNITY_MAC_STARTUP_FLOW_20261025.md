@@ -106,7 +106,7 @@ GUI depth 경계: `DrawStartupEntry`는 진입 당시 `GUI.depth`를 저장하�
 |---|---|
 | 금빛 배경의 정체 | CSS gold seal이 아니라 main canvas의 화톳불 barrier. game55323–55335의 `sprites/bonfire_barrier.png` |
 | 동일 자산 인수 | origin/main blob과 Mac 자산원본이 동일 SHA256 `1d5e27c507c869df1f978ac9935ab70e31f3daf43c96489d5102c82169490678`,2527752B. Resources/Art/Startup/bonfire_barrier.png로 동일 bytes+meta 인수. ledger는 전체27자산/87727845B |
-| 크기/위치/음영 | 화면 중앙 physical560px 정사각형×`1+sin(now/300)*.03`, alpha.9. 그 위 source #introKeys gradient alpha.9→.68(46%)→.82. Guide에서 기존 native world를 렌더하고 HUD는 숨김 |
+| 크기/위치/음영 | 화면 중앙 physical560px 정사각형×`1+sin(now/300)*.03`, alpha.9. 그 위 source #introKeys gradient alpha.9→.68(46%)→.82. Guide에서 기존 native world를 렌더하고 HUD는 숨김(2026-10-25 이력; 아래2026-10-31 계약으로대체) |
 | 실제 curtain 표시 | 부모 actual DOM2회: inline transform translateY(0px), computed display:none. CSS 기본 display:none에 style.display=''가 적용되어 보이지 않음. 의도상800ms 검정 커튼을 추가하지 않음. 종료는 world/barrier+HUD 위 안내400ms fade만 재현 |
 | 전투/저장 경계 | 새 bonfire 보호효과·반경 판정·t·무적·스폰·세이브 값 변경0. barrier는 source bitmap을 그리는 presentation에만 존재. 기존 준비된 Simulation은 전환900ms 동안 정지 |
 | 좌표 보정 | clip group 안 GUI.matrix/TRS를 제거. 최종 glyph font만 GUIStyle 정수pixel로 반올림(최대.5px)하며 기존 physical box·line-height·letterspacing과 text/rule/button 좌표계를 통일 |
@@ -118,3 +118,8 @@ GUI depth 경계: `DrawStartupEntry`는 진입 당시 `GUI.depth`를 저장하�
 ## 2026-10-30 PC 안내 원화 반영 후보
 
 기존4단계·문구·입장transaction은유지한다. 안내판은웹원화 `panel_frame_20261029.png`(150slice→75px/outset24),버튼은 `btn_plaque_20261029.png`(174slice→40px/outset14),본문·제목의 기존 Nanum Myeongjo는 유지하고 버튼을 Hahmlet 400으로 연결했다. 폭720상한·좌우padding52·버튼168×46. [현재계약·검수](UNITY_UI_ASSETS_20261030.md). PC실제비교진행중이며Mac반영·전체튜토리얼완료를뜻하지않는다.
+
+
+## 2026-10-31 실제 Guide HUD 누락 수정 후보
+
+이 절은 위 과거Guide HUD숨김/중앙판/전체gradient 설명을 대체한다. Guide와Curtain에서실제상태·미니맵·HPMP/스킬HUD를그린다. 초기안내는높이기준EdgeMatrix의오른쪽56/폭최대720이며Panel외곽24포함 상태판아래16·구슬장식위16을예약한다. 전체화면gradient를제거하고기존Panel폭의검정바탕으로한정한다. 중앙barrier·4단계·문구·입력fence·Core정지는유지하며내용scroll/고정footer86이다. R2실제1225캡처에서발견한누락60프레임을R3새Player로재검수한다. CPU/과거Mac검수는새UI검수완료가아니다. [현재계약](UNITY_UI_ULTRAWIDE_20261031.md).

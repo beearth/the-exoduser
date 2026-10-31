@@ -78,7 +78,7 @@ namespace Exoduser.UnityPort {
             float wx=oss?518:12,ww=oss?1390:1896,lx=oss?548:42,lw=oss?1330:1836;
             DrawWindow(new Rect(wx,12,ww,1056),oss);
             DrawNavigation(lx,lw);
-            NativePanelTitle.Draw(new Rect(oss?920:700,72,520,64),"인벤토리");DrawHeaderLine(power,lx-42,close);
+            NativePanelTitle.Draw(new Rect(700,72,520,64),"인벤토리");DrawHeaderLine(power,lx-42,close);
             DrawBody(new Rect(lx,182,lw,tall?858:802),lx,lw);
             if(oss)DrawOssuaryPage(level,power);
             else if(Page==PageCrystals)DrawCrystalsPage(level,power);

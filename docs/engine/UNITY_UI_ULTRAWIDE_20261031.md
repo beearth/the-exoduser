@@ -194,3 +194,25 @@ UI/월드 캡처 coverage가 생성된 동안 NativeGame.Update는 UiOverlapOwns
 |원인|DrawLobby의뒤선택전사 DrawSelectedCharacter와앞직업모달 DrawSilverScene이 같은 재생기를 한OnGUI에서0/1로반복Open. 로그OPEN7..12로재현|
 |수정|characterStep==1인 전체화면 직업선택 모달 동안 뒤 로비 DrawSelectedCharacter의 영상갱신을 건너뛰어 앞모달이 재생기를소유. 타임아웃10초/실제Prepared·프레임진행 필수유지|
 |재검수|새 source/build/M1/실제5직업/8미디어/전체해상도 캡처로재검수. 이전M1/field22는이전DLL범위만증명하며새DLL PASS로소급0|
+
+
+## R3 실제 결함 수정·검수 계약 — 2026-10-31
+
+R2 source e357a344/정식build feecb283/M1 07fa19ed 23/23/field bb5d6a48 22장/맵 담당 동일EXE 기술PASS·전체아트RETOUCH를 확보했다. UI24f2c0ec는1225PNG·입력격리1225·실제영상120·5해상도 실제WM선택을 수집했으나 품질FAIL이다. 컴포넌트199건은 초기Guide HUD누락120·전환로딩64·봉안함제목15다. 월드41168019는56PNG+1920 raw24장/실제 이동·FPS를 수집했으나 raw자기차이최대65145/viewport차이64413으로FAIL. 이 결과를 새DLL 증거로 소급하지 않는다.
+
+|항목|R3 계약|
+|---|---|
+|초기Guide HUD|StartupHudVisible은Guide와Curtain에true. 상태판/미니맵/중앙구슬·스킬바를 실제로 페인트. Core규칙·4단계·입력 fence/시계불변|
+|초기Guide 위치|EdgeMatrix/높이1080기준 폭최대720·오른쪽56. 실제Panel outset24를 포함해 상태판 아래16·실제구슬장식 위16 예약. top=상태Top+Height+16+24, bottom=min(ToEdge(HP/MP장식).y)−16−24. 내용만scroll/고정footer86|
+|초기Guide 음영|화면전체startupGuideGradient 제거. 기존검정Panel의폭으로한정. 중앙bonfire barrier는기존중앙Matrix로계속그림|
+|스킬본문|NativeSkillBodyArea.Top=max(308,(safe.Y+300s)/e+8), Bottom=min(974,(safe.Y+998s)/e−24), Height=max(300,Bottom−Top). 중앙슬롯상태잉크의294끝과실제닫기998을독립예약. e=H/1080, s=min(W/1920,H/1080). 설명·트리·로드맵은같은Top오프셋. 중앙최대1800/좌설명270/도로접힘은유지|
+|스킬글자|fieldSub와오브Lv를기존값보다4design아래로옮겨실제서체잉크가교차하지않게함. 설명뒤강화/SP와실제학습/키계약유지|
+|봉안함|공통제목rect는다른인벤페이지와같이x700/y72/w520/h64. 기존본문x518/폭1390설계와분리|
+|부활대기|중앙panel cy−56/높이136, 보조문구cy+50. 숫자56px/부활확률·카운트수명·저장규칙불변|
+|UI QA 틱격리|overlapUiFreeze+coverage가있는UI fixture만FixedUpdate를정지. 각실제샷전후Simulation.TickCount일치를검증하고simulationFrozenChecks=frames필수. 정상게임/직접틱월드 fixture는변경0. 새전환로딩전수실제원화·fallback계측필수|
+|raw 결정성|URP ffe395a3a1d1 AAOPass118/GTAOPass443의blue-noise index가요청마다증가하는원인확인. QA3요청전같은실제AO pass index를snapshot/restore하고finally원상복원. AO효과/셰이더/패키지/게임RNG비활성화0. aoExpected·aoSamplerStates를기록하고AO활성일때0이면FAIL. 실제self/viewport차이0기준유지|
+|그림자검사|작은검정stroke는그림자끼리연쇄병합하지않고실제후행본문에3.1physical이내직접대조. 명시region광휘는반경9.2s/알파.064, 기본광휘5.5s/.03, 사망외곽선death-black-outline4.2s/알파최대1.001. source/내용/후행순서/동일clip/치수/중간칠을대조하며다른본문·미선언큰그림자·중복본문은계속검출. 원본계측과decorationElements에스타일페인트근거보존|
+|CPU 회귀|스킬구역은기존식에서실제2560×1600 RED→수정436검사PASS. 그림자회귀는추가9개를포함한53개PASS. 월드검수기는정상및14음성계약을검증. 실제R3 Player/M1/해상도캡처는별도필수|
+|순번|R2종료후UI공식반환. 기존Main→impact뒤UI후순번으로재등록. 타인Unity·공통·Desktop중복writer0|
+
+안내의 예약 gap은최소물리16px다. `gap=max(16,16/e)`를edge단위로사용해1600×900 축소에서도상태판/구슬 외곽사이를최소16px비운다. 1080p이상은기존높이기준16design이상유지. R2 1600×900실제실습위/아래13.333px를RED로보존하고새실제Player로확인한다.

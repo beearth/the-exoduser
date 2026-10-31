@@ -75,7 +75,7 @@ namespace Exoduser.UnityPort
             Fill(new Rect(0, 0, 1920, 1080), new Color(.067f, 0, 0, .25f + dead * .35f));
             { var old = GUI.color; GUI.color = new Color(.5f, 0, 0, Mathf.Clamp01(.4f + dead * .45f + pulse * .08f)); NativeUiAudit.DrawTexture(new Rect(0, 0, 1920, 1080), Vignette(), ScaleMode.StretchToFill); GUI.color = old; } // radial vignette, edges darker red
             Fill(new Rect(0, 0, 1920, 1080), new Color(.67f, 0, 0, (.04f + dead * .1f) * pulse));
-            float cx = 960, cy = 1080 * .42f; var panel = new Rect(cx - 140, cy - 52, 280, 88);
+            float cx = 960, cy = 1080 * .42f; var panel = new Rect(cx - 140, cy - 56, 280, 136);
             Fill(panel, new Color(0, 0, 0, .78f));
             Fill(new Rect(panel.x, panel.y, panel.width, 2), new Color(.7f, .12f, .12f, .8f)); Fill(new Rect(panel.x, panel.yMax - 2, panel.width, 2), new Color(.7f, .12f, .12f, .8f));
             Fill(new Rect(panel.x, panel.y, 2, panel.height), new Color(.7f, .12f, .12f, .8f)); Fill(new Rect(panel.xMax - 2, panel.y, 2, panel.height), new Color(.7f, .12f, .12f, .8f));
@@ -86,7 +86,7 @@ namespace Exoduser.UnityPort
             big.fontSize = 56; big.normal.textColor = sec <= 1 ? new Color(1, .2f, .2f) : sec <= 2 ? new Color(1, .47f, .27f) : new Color(1, .8f, .27f);
             NativeUiAudit.Label(new Rect(cx - 140, cy - 20, 280, 64), sec + "s", big);
             label.fontSize = 18; label.normal.textColor = new Color(.8f, .53f, .4f, .5f + pulse * .2f);
-            NativeUiAudit.Label(new Rect(cx - 140, cy + 14, 280, 22), English ? "Fallen..." : "쓰러짐...", label);
+            NativeUiAudit.Label(new Rect(cx - 140, cy + 50, 280, 22), English ? "Fallen..." : "쓰러짐...", label);
             float bw = 480, bx = cx - bw / 2, by = 1080 * .85f;
             Fill(new Rect(bx, by, bw, 8), new Color(.13f, 0, 0, .7f));
             Fill(new Rect(bx, by, bw * prog, 8), sec <= 1 ? new Color(1, .13f, .13f, .85f) : new Color(1, .4f, .27f, .85f));

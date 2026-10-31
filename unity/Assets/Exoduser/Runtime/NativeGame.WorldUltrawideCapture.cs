@@ -16,8 +16,8 @@ namespace Exoduser.UnityPort
   [Serializable] sealed class WideWorldEnemySample {public List<WideWorldEnemy> enemies=new List<WideWorldEnemy>();}
   string WideEnemySample(){var sample=new WideWorldEnemySample();foreach(var e in Simulation.Enemies)sample.enemies.Add(new WideWorldEnemy{id=e.Id,etype=e.Etype,hp=e.Hp,maxHp=e.MaxHp,level=e.Level,x=e.X,y=e.Y,radius=e.Radius,speed=e.Speed,facing=e.Facing,stateTicks=e.StateTicks});return JsonUtility.ToJson(sample);}
   [Serializable] sealed class WideWorldFps {public string initialSample,initialSampleSha256;public long seed;public int width,height,frames,ticks,enemiesBefore,enemiesAfter;public float seconds,fps;public List<float> frameMs=new List<float>();}
-  [Serializable] sealed class WideWorldPixelCase {public string name;public int difference,selfDifference,nonBlackPixels,maxChannel;}
-  [Serializable] sealed class WideWorldReceipt {public string runtimeSha256,source;public string pixelRenderApi="URP SingleCameraRequest/SubmitRenderRequest";public string scope="격리 Player, 기존 legacyFixture로 전투 진입(제품 입장은 UI 검수 별도), API 위치·무적·스폰홀 제거·직접60Hz 입력·적32/가장자리 피해글자 표본; 자연 플레이/완주와 구분";public int mapWidth,mapHeight,tileSize;public List<WideWorldShot> shots=new List<WideWorldShot>();public List<WideWorldMove> movement=new List<WideWorldMove>();public List<WideWorldFps> performance=new List<WideWorldFps>();public int pixelDifference=-1,pixelSelfDifference=-1;public List<WideWorldPixelCase> pixelCases=new List<WideWorldPixelCase>();}
+  [Serializable] sealed class WideWorldPixelCase {public string name;public int difference,selfDifference,nonBlackPixels,maxChannel,aoSamplerStates;public bool aoExpected;}
+  [Serializable] sealed class WideWorldReceipt {public string runtimeSha256,source;public string pixelRenderApi="URP SingleCameraRequest/SubmitRenderRequest";public string pixelDeterminism="같은 프레임의 세 요청에 실제 URP AO blue-noise sampler snapshot/restore; 효과 비활성화 없음";public string scope="격리 Player, 기존 legacyFixture로 전투 진입(제품 입장은 UI 검수 별도), API 위치·무적·스폰홀 제거·직접60Hz 입력·적32/가장자리 피해글자 표본; 자연 플레이/완주와 구분";public int mapWidth,mapHeight,tileSize;public List<WideWorldShot> shots=new List<WideWorldShot>();public List<WideWorldMove> movement=new List<WideWorldMove>();public List<WideWorldFps> performance=new List<WideWorldFps>();public int pixelDifference=-1,pixelSelfDifference=-1;public List<WideWorldPixelCase> pixelCases=new List<WideWorldPixelCase>();}
   WideWorldReceipt wideWorld;
 
   IEnumerator WorldWideCapture()
@@ -77,10 +77,21 @@ namespace Exoduser.UnityPort
   }
   static int WidePixelDifference(Color32[] a,Color32[] b){int count=0;for(int i=0;i<a.Length;i++)if(a[i].r!=b[i].r||a[i].g!=b[i].g||a[i].b!=b[i].b||a[i].a!=b[i].a)count++;return count;}
   void WideSavePixels(string name,Color32[] pixels){var image=new Texture2D(1920,1080,TextureFormat.RGBA32,false);try{image.SetPixels32(pixels);image.Apply();File.WriteAllBytes(Path.Combine(overlapOutput,name+".png"),image.EncodeToPNG());}finally{Destroy(image);}}
+  sealed class WideAoSampler {public object pass;public System.Reflection.FieldInfo field;public object value;public void Restore(){field.SetValue(pass,value);}}
+  List<WideAoSampler> WideAoSnapshot()
+  {
+   var states=new List<WideAoSampler>();var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+   foreach(var feature in Resources.FindObjectsOfTypeAll<HellSsaoFeature>())foreach(string name in new[]{"m_AAOPass","m_GTAOPass"})
+   {
+    var field=typeof(ScreenSpaceAmbientOcclusion).GetField(name,flags);if(field==null)throw new InvalidOperationException("설치 URP AO pass 필드 누락 "+name);var pass=field.GetValue(feature);if(pass==null)continue;var index=pass.GetType().GetField("m_BlueNoiseTextureIndex",flags);if(index==null)throw new InvalidOperationException("설치 URP AO blue-noise index 필드 누락");states.Add(new WideAoSampler{pass=pass,field=index,value=index.GetValue(pass)});
+   }
+   if(HellAtmosphereEnabled&&states.Count==0)throw new InvalidOperationException("실제 AO sampler 고정 증거 없음");return states;
+  }
+  static void WideAoRestore(List<WideAoSampler> states){foreach(var state in states)state.Restore();}
   void WideWorldPixelCheck(string name)
   {
-   var camera=HudCamera;var target=new RenderTexture(1920,1080,24,RenderTextureFormat.ARGB32);target.Create();var viewport=camera.rect;
-   try{camera.rect=new Rect(0,0,1,1);var reference=WideWorldPixels(camera,target);var self=WideWorldPixels(camera,target);camera.rect=viewport;var current=WideWorldPixels(camera,target);WideSavePixels("1920-"+name+"-reference",reference);WideSavePixels("1920-"+name+"-self",self);WideSavePixels("1920-"+name+"-current",current);var result=new WideWorldPixelCase{name=name,difference=WidePixelDifference(reference,current),selfDifference=WidePixelDifference(reference,self)};foreach(var p in current){int channel=Mathf.Max(p.r,Mathf.Max(p.g,p.b));if(channel>0)result.nonBlackPixels++;result.maxChannel=Mathf.Max(result.maxChannel,channel);}wideWorld.pixelCases.Add(result);wideWorld.pixelSelfDifference=Mathf.Max(wideWorld.pixelSelfDifference,result.selfDifference);wideWorld.pixelDifference=Mathf.Max(wideWorld.pixelDifference,result.difference);}finally{camera.rect=viewport;target.Release();Destroy(target);}
+   var camera=HudCamera;var samplers=WideAoSnapshot();var target=new RenderTexture(1920,1080,24,RenderTextureFormat.ARGB32);target.Create();var viewport=camera.rect;
+   try{camera.rect=new Rect(0,0,1,1);WideAoRestore(samplers);var reference=WideWorldPixels(camera,target);WideAoRestore(samplers);var self=WideWorldPixels(camera,target);camera.rect=viewport;WideAoRestore(samplers);var current=WideWorldPixels(camera,target);WideSavePixels("1920-"+name+"-reference",reference);WideSavePixels("1920-"+name+"-self",self);WideSavePixels("1920-"+name+"-current",current);var result=new WideWorldPixelCase{name=name,aoSamplerStates=samplers.Count,aoExpected=HellAtmosphereEnabled,difference=WidePixelDifference(reference,current),selfDifference=WidePixelDifference(reference,self)};foreach(var p in current){int channel=Mathf.Max(p.r,Mathf.Max(p.g,p.b));if(channel>0)result.nonBlackPixels++;result.maxChannel=Mathf.Max(result.maxChannel,channel);}wideWorld.pixelCases.Add(result);wideWorld.pixelSelfDifference=Mathf.Max(wideWorld.pixelSelfDifference,result.selfDifference);wideWorld.pixelDifference=Mathf.Max(wideWorld.pixelDifference,result.difference);}finally{WideAoRestore(samplers);camera.rect=viewport;target.Release();Destroy(target);}
   }
   IEnumerator WorldWideBody()
   {

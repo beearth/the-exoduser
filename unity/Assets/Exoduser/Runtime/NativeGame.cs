@@ -228,7 +228,7 @@ namespace Exoduser.UnityPort
         }
         void FixedUpdate()
         {
-            if(practiceScripted||!Running||!gameFocused||Simulation==null||lobby!=null&&lobby.IsBlocking)return;
+            if(practiceScripted||UiOverlapFreezesSimulation||!Running||!gameFocused||Simulation==null||lobby!=null&&lobby.IsBlocking)return;
             var p=Simulation.Player;var aim=AimWorld();
             float x=(NativeKeyBindInput.Held("right")?1:0)-(NativeKeyBindInput.Held("left")?1:0);
             float y=(NativeKeyBindInput.Held("down")?1:0)-(NativeKeyBindInput.Held("up")?1:0);

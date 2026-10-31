@@ -91,15 +91,16 @@ namespace Exoduser.UnityPort {
 
   // text: centred run list, letter-spaced, with optional shadow copies
   float Width(Font f,int size,string text,float ls,bool bold=false){var st=Style(f,size,bold);float w=0;foreach(char ch in text)w+=st.CalcSize(new GUIContent(ch.ToString())).x+ls;return w;}
+  void PaintDeathGlyph(Rect box,string glyph,GUIStyle style,bool outline){bool previous=NativeUiAudit.DrawingTextShadow;string profile=NativeUiAudit.DrawingTextShadowProfile;try{if(outline){NativeUiAudit.DrawingTextShadow=true;NativeUiAudit.DrawingTextShadowProfile="death-black-outline";}NativeUiAudit.Label(box,glyph,style);}finally{NativeUiAudit.DrawingTextShadow=previous;NativeUiAudit.DrawingTextShadowProfile=profile;}}
   float Text(float x,float y,float h,string text,Font f,int size,Color c,float ls,float shadowAlpha=0,float shadowY=1,float shadowSpread=0,bool bold=false){
    var st=Style(f,size,bold);float w=0;
    foreach(char ch in text){
     var g=ch.ToString();float cw=st.CalcSize(new GUIContent(g)).x;
     if(shadowAlpha>0){
-     st.normal.textColor=new Color(0,0,0,shadowAlpha*c.a);NativeUiAudit.Label(new Rect(x+w,y+shadowY,60,h),g,st);
-     if(shadowSpread>0)foreach(var d in new[]{new Vector2(-1,0),new Vector2(1,0),new Vector2(0,-1),new Vector2(0,1)}){st.normal.textColor=new Color(0,0,0,shadowAlpha*.35f*c.a);NativeUiAudit.Label(new Rect(x+w+d.x*shadowSpread,y+shadowY+d.y*shadowSpread,60,h),g,st);}
+     st.normal.textColor=new Color(0,0,0,shadowAlpha*c.a);PaintDeathGlyph(new Rect(x+w,y+shadowY,60,h),g,st,shadowSpread>0);
+     if(shadowSpread>0)foreach(var d in new[]{new Vector2(-1,0),new Vector2(1,0),new Vector2(0,-1),new Vector2(0,1)}){st.normal.textColor=new Color(0,0,0,shadowAlpha*.35f*c.a);PaintDeathGlyph(new Rect(x+w+d.x*shadowSpread,y+shadowY+d.y*shadowSpread,60,h),g,st,true);}
     }
-    st.normal.textColor=c;NativeUiAudit.Label(new Rect(x+w,y,60,h),g,st);w+=cw+ls;
+    st.normal.textColor=c;PaintDeathGlyph(new Rect(x+w,y,60,h),g,st,false);w+=cw+ls;
    }
    return w;
   }
