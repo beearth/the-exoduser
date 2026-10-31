@@ -42,10 +42,13 @@ namespace Exoduser.UnityPort.Core
 
         private bool CanStartMagic { get { return Player.State == "idle" && !HarpActive && !DashActive && !idleChainDetonation && Player.Mana >= MagicMpCost(); } }
 
+        // 원문 idle은 무기 자원을 실제로 낼 수 있을 때만 E/마법보다 무기를 먼저 선택한다.
+        private bool IdleWeaponHasPriority { get { return attackHeldForMagic && Player.Stamina >= (Config.ActiveAttack == "kiSlash" ? 10 + (Math.Max(1, Config.KiSlashLevel) - 1) * 2 : 5); } }
+
         // idle branch of the web state machine: `else if(isHeld('beam')&&P.mp>=mpCost('magic')) _execMagicE()`, after the weapon / shield / Q branches
         private void TickMagicIdle()
         {
-            if (!magicHeld || attackHeldForMagic || playerActionBranchConsumed || !CanStartMagic) return;
+            if (!magicHeld || IdleWeaponHasPriority || playerActionBranchConsumed || !CanStartMagic) return;
             MovePlayerAction(1, true);
             ExecMagicE();
         }

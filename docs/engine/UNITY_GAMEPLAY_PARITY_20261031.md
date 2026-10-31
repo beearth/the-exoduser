@@ -305,3 +305,9 @@ Player 검수에 `-playtest-ticks 1..600` 명시적 길이 인자와 현재 파�
 ### 2026-10-31 기동불꽃 현행 소스 범위
 
 [상세 계약](UNITY_CHAINASSAULT_PARITY_20261031.md) — 기동불꽃 비합체 소스 후보를 추가해 현재 Core 실행·학습·저장 소유12종/미이식43종이다. MP20+Lv×2 예약, 직격450+(Lv−1)×25, 중첩3/6/9배 수명·20틱DOT·3기폭 호출·구형별칭/숙련 복원·실제키마소비를 대조했다. 고정55묶음10,989,987단위0·설치참조 오류0. 원본 착지/기폭시트·장판 묶음mesh·24틱광원·기동불꽃 SFX 후보 연결, 실제Player/M1/UI3단계/영상/1x/공통/Desktop/Mac은 미완료 NOT_READY다.
+
+### 2026-10-31 재개·입력 우선순위와 실제 실행 차단
+
+현재 원격main bd0345dc7의 game.html SHA256은38e5b2ce…c33706으로 기존 원문과 같다. [입력 소비 계약](UNITY_SOURCE_INPUT_CONSUMPTION_20261031.md)의 비사슬 동시입력128차이를 수정했고 성장6,144조건36,864값0·설치Unity참조 Core/Runtime 오류0이다. 소유12종/미이식43종 경계는 유지한다.
+
+수정 전 고정8ad6356ed의 정식빌드187ae4c6은6000.6.7f1·오류0·3D씬 포함·MCP제외 통과다. 이전HID실패 뒤00:00:39UTC 재부팅을 확인했으나 같은 hidden M1은00:14:28UTC HiddenDesktop.psm1:53의 CreateProcess 실패5(접근거부)로 Player 생성 전 실패했다. 이 입력수정의 정식빌드나 M1 통과 증거로 재사용하지 않는다. 실행방법/권한 우회0, 사용자창·Player생성0, 자기예약 반환. 자동임포트530파일은 I:동일byte 보존 후 허용경로만 복구했고 기존미추적119·guard WIP를 보존했다. 전체 실제Player/영상/1x/공통/Desktop은 미완료 NOT_READY다. 근거 gameplay-parity/resume-20261031-0900/ 및 resume0900-동일M1.log.
