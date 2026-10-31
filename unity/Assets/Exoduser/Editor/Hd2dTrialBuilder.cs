@@ -149,7 +149,7 @@ namespace Exoduser
 
         public static void CaptureStills()
         {
-            var tl = UnityEngine.Object.FindFirstObjectByType<Hd2dTrialTimeline>();
+            var tl = UnityEngine.Object.FindAnyObjectByType<Hd2dTrialTimeline>();
             if (!tl) throw new Exception("HD2D trial scene is not active");
             Capture(tl,1,Output+"/01-exploration.png"); Capture(tl,5.82f,Output+"/02-combat.png");
             tl.SetTime(1);
@@ -160,7 +160,7 @@ namespace Exoduser
         public static void BeginMcpCapture()
         {
             if(mcpTarget)throw new Exception("MCP capture target already owned");
-            var tl=UnityEngine.Object.FindFirstObjectByType<Hd2dTrialTimeline>();
+            var tl=UnityEngine.Object.FindAnyObjectByType<Hd2dTrialTimeline>();
             if(!tl)throw new Exception("HD2D trial scene is not active");
             mcpCamera=tl.view;mcpPrevious=mcpCamera.targetTexture;mcpAspect=mcpCamera.aspect;
             mcpTarget=new RenderTexture(1920,1080,24);mcpCamera.targetTexture=mcpTarget;mcpCamera.aspect=16f/9f;tl.SetTime(1);
@@ -174,7 +174,7 @@ namespace Exoduser
         public static void CaptureSequence()
         {
             if (sequence != null) throw new Exception("HD2D sequence already running");
-            sequence = UnityEngine.Object.FindFirstObjectByType<Hd2dTrialTimeline>();
+            sequence = UnityEngine.Object.FindAnyObjectByType<Hd2dTrialTimeline>();
             if (!sequence) throw new Exception("HD2D trial scene is not active");
             Directory.CreateDirectory(Output+"/frames");
             sequenceFrame=0; EditorApplication.update += SequenceStep;

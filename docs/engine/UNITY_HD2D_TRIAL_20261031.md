@@ -7,7 +7,7 @@
 | 소유 | G:/exoduser-wt/codex-hd2d, codex/pc-hd2d-trial-20261031 |
 | 범위 | CH1-1 승인 A2 목교 구도의 독립 장면. Core·게임 규칙·저장·제품 빌드 설정 변경0 |
 | 원본 | Blender woodbridge-r3/source/승인구도_납품동일.blend에서 보이는 Baked 재질 메시를 FBX로 추출. 원본·타인 WIP 변경0. R3 텍스처·재질 GUID 보존 |
-| 장면 | Assets/Exoduser/HD2DTrial/HD2D_A2_Trial.unity, Editor/Hd2dTrialBuilder.cs로 제작. 전용 HD2DTrial asmref→Exoduser.Runtime |
+| 장면 | Assets/Exoduser/HD2DTrial/HD2D_A2_Trial.unity, Editor/Hd2dTrialBuilder.cs로 제작. 전용 HD2DTrial asmref→Exoduser.Runtime. 단일 타임라인은 FindAnyObjectByType으로 조회 |
 | 스프라이트 | 기존 player/north-east.png(1008×48,48셀), attack-bat-v1.png(720×640,80셀·북동3행), enemy/atlas_ch1_8dir_south_west.png(2048×1280,256셀·0/1/9번) |
 | 픽셀 | URP GlobalSamplers의 단일 sampler_PointClamp·LOD0·TAA/MSAA 없음. 정사영 반높이13.5u,1080p에서.025u/화소. 영웅4.8u/48셀·공격8u/80셀=원본1픽셀당4화소. 적4.8u/64격자=3화소. 카메라/액터 화면좌표를1화소 격자에 정렬 |
 | 조명 | URP 실제 주광·추가 점광. 주광1.05/차가운 RGB(.71,.81,1), 횃불4.5±(.25sin6t+.12sin11t),반경7u; 접점광5/5u |
