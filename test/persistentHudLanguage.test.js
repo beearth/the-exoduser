@@ -11,7 +11,7 @@ for(const file of ['game.html','game-easy-test.html'])test(file+' refreshes paus
  nodes.mmLvl.children.push({textContent:'123 / 456'});
  const context={document:{getElementById:id=>nodes[id]},_L:(ko,en)=>lang==='ko'?ko:en,window:{_tutorialBadges:{refreshLanguage(){badgeRefresh++;}}}};
  vm.runInNewContext(code+';_refreshPersistentHudLanguage();',context);
- assert.equal(nodes.hudKillLabel.textContent,'Area kills');assert.equal(nodes.hudMaliceLabel.textContent,file==='game.html'?'Malice Sphere':'Malice');
+ assert.equal(nodes.hudKillLabel.textContent,'Area kills');assert.equal(nodes.hudMaliceLabel.textContent,file==='game.html'?'Orb of Malice':'Malice');
  assert.equal(nodes.mmLvl.children[0].textContent,'123 / 456');assert.equal(nodes.mmLvl.attrs['aria-label'],'Player status');assert.equal(badgeRefresh,1);
  lang='ko';context._refreshPersistentHudLanguage();assert.equal(nodes.hudKillLabel.textContent,'지역 처치');
  assert.match(source.slice(source.indexOf('function _applyLang()'),source.indexOf('function _applyLang()')+300),/_refreshPersistentHudLanguage\(\)/);

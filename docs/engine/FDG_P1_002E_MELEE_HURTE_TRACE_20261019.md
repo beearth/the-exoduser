@@ -187,7 +187,7 @@ etype 0↔4 차이는 각 행에 표기. **etype4(눈알 육괴)가 Godot 구현
 | 43092~43096 | **물약**: `rand<1`(항상 true·소비) → `pt=ptypes[~~(rand*3)]`(소비) → `addPotion(pt,1)` 성공 시 텍스트 | — | 물약 +1 | **RNG #8,#9** | 롤 소비 ✅, addPotion(물약/퀵슬롯 시스템) 🚫 미이식 — 선택 결과 telemetry 기록 |
 | 43098 | 보스 추가 물약 | e.ib | — | — | ✂ |
 | 43099~43101 | `_comboPct=⌊combo/100⌋×.05; _diffPct=max(0,_diffSigned())×.10; _comboBonus` | State.G, signed_difficulty | 로컬 | — | ✅ 계산 (소비자는 addExp/엘리트 — 아래) |
-| 43103 | `G.mats+=4` | State.G | **악의구슬 +4** | — | ✅ State G owner |
+| 43103 | `G.mats+=4` | State.G | **악의오브 +4** | — | ✅ State G owner |
 | 43105~43108 | 엘리트/보스 추가 악의 | ib/elite | — | — | ✂ |
 | 43110 | `rollDrop(e)` | — | 장비 드롭 | **내부 RNG 다수** | 🚫 **아이템 드롭 시스템 미이식 — RNG 미소비** (이후 이 호출 경로에 추가 RNG 소비 없음 → 스트림 영향 없음) |
 | 43112~43114 | `eLv=1; _expMul=1×_comboBonus;` `addExp(~~(max(5,~~(1×.4))×_expMul))` = addExp(5) | — | 경험치 +5 | — | 🚫 addExp(레벨업 체계) 미이식 — 기대값 telemetry 기록 |

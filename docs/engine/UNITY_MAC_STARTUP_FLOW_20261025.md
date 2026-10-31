@@ -6,7 +6,7 @@ PC UI/QA 확정에 따라 `NativeLobby.StartupPresentation.cs`의 4쪽 하단 no
 |---|---|---|---|
 | Guide 4/4 하단 `note` | ko | `물약은 자동 사용` | HP% 설정값·임계값 표시 없음 |
 | Guide 4/4 하단 `note` | en | `Potions activate automatically` | HP% 설정값·임계값 표시 없음 |
-| B11 자동 물약 조건 | Core `AutoPotion.Tick` | 안내문이 아닌 실행 조건 | 부족 HP ≥ `HealAmount`, HP>0, 악의구슬>0, 쿨다운≤0, 패링 실습 중 아님 |
+| B11 자동 물약 조건 | Core `AutoPotion.Tick` | 안내문이 아닌 실행 조건 | 부족 HP ≥ `HealAmount`, HP>0, 악의오브>0, 쿨다운≤0, 패링 실습 중 아님 |
 
 원본 웹/기존 Godot 문구는 그쪽 이력으로 남기며 이 Mac UI 변경과 동일한 구현 상태로 간주하지 않는다. Mac Game 설정 탭은 현재 전체 화면 카드만 제공하고 HP% 설정 API가 없다. 코드 한 줄 문구 변경만 소스 대조했으며 새 Player 화면·청각 검수는 하지 않았다.
 

@@ -211,7 +211,7 @@ export async function createForge3D(container){
     if(Math.abs(s.width-W)>.5||Math.abs(s.height-H)>.5)resize(s.width,s.height);
     // slots
     while(slotObjs.length<s.slots.length)slotObjs.push(makeOrb());
-    slotObjs.forEach((o,i)=>{const d=s.slots[i];o.visible=!!d;if(!d)return;const u=o.userData;
+    slotObjs.forEach((o,i)=>{const d=s.slots[i];o.visible=!!d&&!d.domArt;if(!d||d.domArt)return;const u=o.userData;
       toWorld(d.x,d.y,d.on?36:20,u.tgt);/* 선택 시 앞으로 띄우되 그 깊이에서 같은 화면 위치(원근으로 위로 밀리던 문제) */if(!u.s)u.cur.copy(u.tgt);u.ts=d.r*(d.on?1.08:1);u.on=d.on;u.empty=d.empty;u.host=d.host;u.fused=d.fused;setIcon(o,d.icon)});
     // altar
     const a=s.altar;

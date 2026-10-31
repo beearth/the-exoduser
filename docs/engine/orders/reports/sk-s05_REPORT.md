@@ -22,7 +22,7 @@
 |---|---|
 | 공통 / 3913~3930 | S01 SP reader 그대로 재사용: 일반1SP, 합체 base+member/star−1, cur≥9 cap(4성 이상8·2성 이상6), 습득SP+강화분 누적. 새 SP 공식/레시피 authority 생성0 |
 | 악의 / 28080~28085 | registry의 정수 원가만 `0이하→0, 양수→max(1,ceil(raw×.5))`. QS-01은 latest-main potion_recovery_source에 `_malCost` API가 없으므로 새 **전용 내부** reader에 원식을 이식. QS 소유 파일/전역 할인수치 변경0; 전체 JS Number coercion 지원을 주장하지 않음 |
-| S05a / 47274~47294, 47743~47748, 47768~47793 | `learn.ui_gate`는 _skCtx.canLearn의 미보유/requires/reqLv/SP/악의구슬. `preview(mode=ui)`는 구 row의 visibility도 확인, `direct`는 미학습 handler의 자원 gate만, `auto`는 _learnSkillAuto 그대로(보유/req/reqLv 재검사 없음). 이미보유 direct는 upgrade 경로이므로 명시 NR; auto는 중복 호출하면 원본처럼 Lv1·재과금 가능. 추천 caller가 중복을 막음 |
+| S05a / 47274~47294, 47743~47748, 47768~47793 | `learn.ui_gate`는 _skCtx.canLearn의 미보유/requires/reqLv/SP/악의오브. `preview(mode=ui)`는 구 row의 visibility도 확인, `direct`는 미학습 handler의 자원 gate만, `auto`는 _learnSkillAuto 그대로(보유/req/reqLv 재검사 없음). 이미보유 direct는 upgrade 경로이므로 명시 NR; auto는 중복 호출하면 원본처럼 Lv1·재과금 가능. 추천 caller가 중복을 막음 |
 | S05a 슬롯 / 47279~47292 | chainAssault 습득→chainSlam 없을 때1 부여, 원 active 변경은 shadow에서 계산 후 제안으로 분리. getAllAbsorbed는 numeric6칸만 해제(여기서 ULT 자동 해제하지 않음). ult는 빈 경우만, 일반 act는 S04 auto 규칙. 실제 입력/소유 슬롯 쓰기0 |
 | S05b / 47678~47765 | 원 _skCtx의 **62개 bool 조건과30개 선택 우선순위**로 host/group 감지(원 source에서 기계적으로 옮김). `context`는 learned/lock/fusion_key·표시SP·canUp. bladeEcho의 별도 합체 강화 분기 누락도 유지. 신규 요구조건 추가0 |
 | S05b / 47794~47817 | `upgrade.preview(ui/direct)`는 max20, 일반 lock=min(20,ToInt32(P.lv/50)+1)·SP/악의, fused는 멤버 최소Lv 및 max로 처리. **표시 비용은 star override, 실제 fused 강화는 멤버수**. direct fused handler에는 player lock/minLv 재검사가 없음. ui는 context/구 row gate로 거부 가능. shieldFuse도 readonly 수치 projection만, 실제 Q/E 강화 적용 없음 |
@@ -32,7 +32,7 @@
 | S05d / 47884~47954 | `reset_preview(confirmed)`: **GEM 정의 순서** 최대그룹→실제 활성 _fused 중 스킬셋이 겹치는 모든 그룹의 생성/강화SP 환불→그룹 멤버0·slots/ULT 해제→해당 flag들만 삭제. 일반 reset은 습득+강화SP, spikeTrap/kiSlash/fireball은 습득SP 제외·Lv1 유지. 일반 reset의 악의 반환0. cancel은 원본/복사 원장 진행0 |
 | S05d 보호 | 선택 그룹 shieldFuse이면 `_wingStrikeLevel/_resetWingStrikeUpgrades` 담당 코드를 새로 복제하지 않고 **HOLD_protected_base_shieldFuse_reset**. 이 NR 계약 검사 통과를 해당 reset 구현 완료로 세지 않음 |
 | S05e / 47192~47233 | `batch_preview`: 활성 그룹을 멤버수 내림차순(동률은 JS stable sort의 원 순서)→전부 claimed면 skip·일부만 겹치면 원본처럼 처리→멤버수 SP 강화→미claim 습득/up 개별 강화. player lock/max20·SP·현재 upMat0의 무료 악의 gate. source에는 별도 gem minLv gate가 없음 |
-| S05e / 47299~47326·44094~44110 | `recommend_preview`: 기존 **15단계** 선언순, 보유면 skip·reqLv 부족 skip·부분 진행, pick은 해당 ult 중 보유가 없을 때 첫 blackStar, demo22 canFuse 후 동일 fuse shadow core. 강화는 안 함. 반복 추천 SP/악의구슬 추가 과금0 검증 |
+| S05e / 47299~47326·44094~44110 | `recommend_preview`: 기존 **15단계** 선언순, 보유면 skip·reqLv 부족 skip·부분 진행, pick은 해당 ult 중 보유가 없을 때 첫 blackStar, demo22 canFuse 후 동일 fuse shadow core. 강화는 안 함. 반복 추천 SP/악의오브 추가 과금0 검증 |
 | shadow active / 44644~44661 | 원 sync host whitelist/기본값/RMB reset을 내부 deep copy에서 계산. finish는 input의 active8필드 값/키 부재를 fixture에 복원하고 변동만 `protected_active_proposals`로 반환. 실제 State patch/저장/QE writer가 아니다 |
 
 `mode=ui`는 **구 row 초기 visibility + _skCtx 수치 gate** 범위다. 기본 Forge UI의 전체 표시/제단/확인창/입력/그리기를 구현한 것이 아니다. `_execFuse`의 G.shake, SFX, voice, text, transient 선택변수, refresh/dbSave는 원장 밖 효과이므로 실행하지 않는다.
@@ -43,7 +43,7 @@
 |---|---|
 | fixture | 명시적 `{p,g,slots,ultimate}`. p.skills·p._fused Dictionary, p.sp/lv·g.mats 필수. slots는 정확6칸 null/String, ultimate는 명시 null/String. P/G/권위 getter를 자동 생성/호출하지 않음 |
 | numeric 지원 | 스킬level은 정수0..20, SP/mats/P.lv는 finite safe integer(native int/float). String/bool/NaN/Infinity·분수 스킬레벨·StringName/prototype key·비bool fused flag·누락 상태는 NOT_READY. 원 게임 상태를 clamp/정정하지 않음 |
-| JS 연산 | SP/mats는 **복사 shadow에서 double Number 연산**으로 소비하여 각 연산의 JS 반올림을 유지, 원 입력의 int/float는 변경0. 안전정수 상한 입력3개 포함, SP/악의구슬 결과 **14620개 double bit** 독립 원본과 일치. 범위 밖 전체 JS coercion·object/getter는 미확인 |
+| JS 연산 | SP/mats는 **복사 shadow에서 double Number 연산**으로 소비하여 각 연산의 JS 반올림을 유지, 원 입력의 int/float는 변경0. 안전정수 상한 입력3개 포함, SP/악의오브 결과 **14620개 double bit** 독립 원본과 일치. 범위 밖 전체 JS coercion·object/getter는 미확인 |
 | 결과 | READY/value에 fixture, applied(복사 진행), branch, details, protected_active_proposals, runtime_writer=NOT_IMPLEMENTED. NOT_READY/reason에는 value 없음. 실패·미준비를 성공/무료처리/기본 자원으로 대체하지 않음 |
 | 순수성 | 원 p/g/skills/fused/slots 및 nested identity 보존, 반환값 변경이 원 입력/카탈로그를 바꾸지 않음. 실제 Main/Node/RNG/clock/InputMap/IO/DB/actor/피해/자원 owner 호출0. 내부 _apply_shadow는 prepare한 private copy용이며 live owner용 API가 아님 |
 | 남은 실제 제품 | 실제 skills/SP/mats·일반slot commit, 고정 active 승인, shieldFuse 전용 reset, full UI·save·자연 입력·시각/청감·PC 동기화는 미구현/미확인. 신규 core 통과가 게임에서 학습/합체가 된다는 증거가 아님 |
@@ -92,7 +92,7 @@ Godot4.7.2 stable 원앱 headless. 매 실행 전 정확히 `pgrep -f "Godot.app
 | 큰 정수 검증 | 추가 경계3개가 NR가 되어9533단정/3실패. safe integer 상한을 float 리터럴 하나로 비교하던 구현을 int 상수/int 분기+명시 float 변환으로 수정, 최종 전체 신규9533/0. `s05-safe-integer-boundary-failure.*` 보존. 허용오차·원본 숫자 수정0 |
 | QS-01 의존 계획 | 추적 S05a의 ‘QS-01 할인 의존’과 달리 현재 main의 QS-01 API는 물약회복/CD이고 malCost 공급자가 없음(원문 byte 보존). 기존 QS 파일을 수정/임의 이송하지 않고 이번 core의 registry 정수 원가만 원28080식을 소비. 전체 공용 할인 서비스 완료 주장이 아님 |
 | 표시/실차감 차이 | stormBeam 표시star4 vs apply멤버6, siegeGhost 표시3 vs apply2를 보존. source direct fused handler에 lock/minLv 재검사가 없는 점과 batch 별도 minLv 부재를 계획상 자동 보완하지 않음. 실제 UI와 handler 차이는 별도 caller 계약 |
-| 현재 upMat | 현55정의 upMat은0. 원식의 일반 minus 악의구슬 환불 계산은 구현했으나 **실제 양수 upMat 스킬의 자연 실행은 미확인**. 가짜 양수 registry 값으로 제품을 바꾸지 않음 |
+| 현재 upMat | 현55정의 upMat은0. 원식의 일반 minus 악의오브 환불 계산은 구현했으나 **실제 양수 upMat 스킬의 자연 실행은 미확인**. 가짜 양수 registry 값으로 제품을 바꾸지 않음 |
 | 기존 ice 종료 오류 | `mainqa-test_p2005d_ice_orb.err`: `2 ObjectDB instances were leaked at exit`, `1 resources still in use at exit`. 실제 최초 실패와 verbose 재현되지 않은 진단을 각각 보존. owner 공용파일/기존 테스트 수정 불가, 오류 원인은 미확인 |
 | 이전 총괄 제공 로비 이력 | 이전 배정의 로비 전체8실패/QA-005 진단 중은 이번에 재실행/수정하지 않았고 PASS에 포함하지 않음. 그 상태의 독립 최신 검증은 미확인 |
 | **다음 단위 중지** | main 추적문서 **184행 SK-S06**은 실제 State skills/SP/mats/slot writer와 main configure가 필요. 정확 접점은 native_source_new_run_state.gd·main.gd(추적§5). **공용/타담당0줄 지시에 따라 SK-S06 착수0·여기서 중지**, 순서안 끝 아님. `stop-boundary.json`에 원 행/근거 보존 |

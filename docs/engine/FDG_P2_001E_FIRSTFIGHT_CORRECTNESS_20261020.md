@@ -33,7 +33,7 @@ P2-001d 대조표의 결함 추정 3건을 원본 행 단위로 재조사. **①
 - DR 없음도 양판 일치: 적용치=원시 공식값(웹 940=875흡수+65hp 전액, Godot journal
   absorbed+dmg_to_hp=base_damage). 눈알 육괴 계약(hp875·eShield875·attack31) 동일.
 
-## ⑤ 시작 HP 미충전·악의구슬 0 → **실결함, 수정**
+## ⑤ 시작 HP 미충전·악의오브 0 → **실결함, 수정**
 | 원본 | 내용 | 수정 |
 |---|---|---|
 | 63956 | 로컬 새 게임 `G.mats=_loadSharedMats()||1000` — 공유 저장소(48527, localStorage)는 미이식 → `0‖1000=1000` 경로 | `native_source_new_run_state.initialize_new_run`에서 `_g["mats"]=1000` |

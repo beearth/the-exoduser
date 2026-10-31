@@ -34,7 +34,7 @@
 | 적 이동 흐름장 | (없음) · Simulation.EnemyAi의 `_ffMoveE` 대체 | `_ffBuild` 32030~32079, `_ffDir` 32080, `_ffMoveE` 32090~, 갱신 32335, Worker 오프로드 31929~ | 없음 | — | **이식 안 됨 + oracle 없음** |
 | 적 피격 앞·중간 `hurtE` H1·H2 | EnemyHurt·EnemyHurt.Body·EnemyHurtContext·EnemyPoiseRules | `hurtE` 42310~42700 (`데미지 → HP 직행` 42554) | enemy-hurt-oracle 688,490/0 (보스전 보드 기록: H1 933,221/0, H2 2,437,201/0) | 원문 | 없음 |
 | 적 피격 사망부 앞 (H3a: 디코이·부활·On-Kill·침강·콤보·문지기) | unity/main에 **없음** | `if(e.hp<=0){` 42701~42951 | CX-04c1 4,225,618/0 — **c01 브랜치 6496a5660에만 있음** | 원문(브랜치) | **unity/main 미병합.** 지금은 ReviveRules·Simulation.Revive(부활 일부)와 `Simulation.KillEnemy`(손 조립)이 대신한다 |
-| 적 피격 사망부 뒤 (잔해 드롭~끝) | Simulation.KillEnemy (손) | 42952~43325 | 없음 (CX-04c2 = 0) | **손** | **oracle 없음.** 처치 수·콤보 틱(보스 1800 / 일반 +60, 최대 1200)·악의구슬 +4·킬 드랍·엘리트 악의구슬·장비 드랍·경험치의 **순서와 난수 소비 순서**를 웹과 맞춰 본 적이 없다 |
+| 적 피격 사망부 뒤 (잔해 드롭~끝) | Simulation.KillEnemy (손) | 42952~43325 | 없음 (CX-04c2 = 0) | **손** | **oracle 없음.** 처치 수·콤보 틱(보스 1800 / 일반 +60, 최대 1200)·악의오브 +4·킬 드랍·엘리트 악의오브·장비 드랍·경험치의 **순서와 난수 소비 순서**를 웹과 맞춰 본 적이 없다 |
 | 에너지쉴드 | EnergyShield | hurtE 쉴드 블록, hurtP 쉴드 블록, 쉴드 재생 32939~ | enemy-hurt / player-hurt / shield-revive oracle 안에서 | 원문 | 없음 |
 | 부활·구울·드루이드 피날레 | ReviveRules·Simulation.Revive | `_druidFinaleReviveChance` 17244, `_reviveDruidFinale` 17247, `_spawnGhoul` 41801, `GHOUL_DEFS` 41790 | shield-revive-oracle (문서에 최근 수 없음) | 원문 | 사망부 전체(H3) 안에서의 호출 순서는 위 "사망부" 행과 같은 빈 곳 |
 

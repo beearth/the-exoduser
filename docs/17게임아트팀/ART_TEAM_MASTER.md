@@ -272,6 +272,10 @@
 
 MagicLight 마지막 조회 59,540 (2026-10-01, emg1 2차 후). 이번 마감 구간 ART 사용: cin_remember 200 + emg1 200×2 = 600. 다른 세션 사용분이 섞일 수 있음.
 
+## 2026-10-31 악의오브 최종 정정
+
+화폐를 악의오브 / Orb of Malice로 개명하고 내장 imagegen의 둥근 유리 오브 4단계를 HUD·대장간·스킬 창·툴팁·획득 합체 연출에 연결했다. 색·구간·파일·픽셀 규격과 실패 폴백은 [화폐 SSOT](../3.2메타·진행시스템/CURRENCY_RENAME_20261031.md)를 따른다. 32/48px 원화와 실제 HUD 1x 판정 보드는 G:/exoduser/tmp/design-review/20261031_malice_orb/review-board.png. 웹의 UI 검수와 Unity 컴파일·Player/M1은 별도이며 최종 증거·원격 SHA는 I:/EXODUSER-Storage/demo-art/currency-rename/REPORT.md에 남긴다.
+
 ### 2026-10-31 로딩 초광폭 표시 후속
 
 활성 로딩 원화19장·대기 후보16장을 전수 조사했다. 네메시아·핵터·디로이 원본 보존 배경 확장6개와 나머지 원본 contain/블러 폴백, 별도 하단 상태 영역은 [로딩 초광폭 정본](../1전체그래픽세팅/LOADING_ULTRAWIDE_20261031.md)을 따른다. 인물 디자인 리마스터·Unity 적용·배포 완료와 구분한다.

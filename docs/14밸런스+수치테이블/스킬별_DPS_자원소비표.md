@@ -88,8 +88,8 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 |---|---|---|---|---|---|---|
 | kiSlash | 기검참 | ST | 10+(Lv-1)×2 = **10→28** (Lv20=48), 할인 미적용 | 없음 | meleeRef×7×statStr×pAtkMul×_skMul(b:12,g:10.08)×M, 3타 홀드만 T=min(3,⌊충전f/40⌋), M=2^T | 무충전 Lv1=84×/타, Lv10=401.52×/타, Lv20=754.32×/타. 3타 40/80/120f 충전 시 각각 2/4/8배. ST 비용 불변 |
 | whirlwind | 회전참 | ST(틱) | **30+(Lv-1)×5 ST/초** (Lv1=30, Lv10=75, Lv20=125) | 없음 (홀드) | meleeRef × statStr × pAtkMul × _skMul × _fuseMul | 360도 광역, Lv당 범위+5 뎀+5% |
-| giantSlam | 지옥강타 1 | ST + 악의구슬20 | stCost(giantSlam), 기준장비 Lv1=50 | max(60,1800-(Lv-1)×12)f × (1+_cdRed()) | `floor(floor(meleeRef×statStr×(20+(Lv−1)×19×0.5)×_rageMul)×pAtkMul)+_atkBon`; pAtkMul은 _gSlamHit에서1회. 분노100 기본20배 | 일반몹 분노100 1방 목표, 보스 포이즈25% |
-| giantSlam2 | 지옥강타 2 | ST + 악의구슬20 | giantSlam과 동일 | 동일 | 동일 | infernoSlam 합체용 복제 |
+| giantSlam | 지옥강타 1 | ST + 악의오브20 | stCost(giantSlam), 기준장비 Lv1=50 | max(60,1800-(Lv-1)×12)f × (1+_cdRed()) | `floor(floor(meleeRef×statStr×(20+(Lv−1)×19×0.5)×_rageMul)×pAtkMul)+_atkBon`; pAtkMul은 _gSlamHit에서1회. 분노100 기본20배 | 일반몹 분노100 1방 목표, 보스 포이즈25% |
+| giantSlam2 | 지옥강타 2 | ST + 악의오브20 | giantSlam과 동일 | 동일 | 동일 | infernoSlam 합체용 복제 |
 
 ---
 
@@ -118,7 +118,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | ~~bladeShot~~ | ~~붉은꽃~~ | — | — | — | — | **삭제됨 (2026-04-10 석궁개편)** |
 | needleShot | 만화방창 II | ST | 8 고정 | **90f (1.5초)** | DEX × bowRef × pBowMul × **_skMul('needleShot')** (b:4, g:3.2) | 1.3hit/s → DPS 5.2(Lv1)→45(Lv20). 2발+5렙당1발 (2026-05-29 밸런스 평균화) |
 | ~~blastShot~~ | ~~폭산탄~~ | — | — | — | — | **삭제됨 (2026-04-10 석궁개편)** |
-| 석궁 기본 (fireBow) | 악의구슬1/발 | — | 없음 | (floor(bowRef×pBowMul×10)+_bowBon)×3 | 단일탄·관통0, 기존 데미지3배 |
+| 석궁 기본 (fireBow) | 악의오브1/발 | — | 없음 | (floor(bowRef×pBowMul×10)+_bowBon)×3 | 단일탄·관통0, 기존 데미지3배 |
 | shieldThrow | 불꽃칼날 | ST | 0 (E키 칼등에서 이미 차감) | **단독720f (12초), 기본 합체 Lv1 705f (11.75초)** | STR 스케일 | 합체 전용, 제자리 처내기+충격파, Lv당 뎀+12%, **넉백 1.5** |
 | ghostXbowTurret | 공성쇠뇌 | ST | 설치 100 고정, 철거 무료 | 설치 20초(1200f), 철거 무관 | DEX × (뎀+50%, 공속+50%, 사거리+50%) | Lv500 해금, 터렛이 설치 전 세팅된 석궁 스킬(bladeShot/fanShot 등)을 사용하여 발사 |
 
@@ -139,7 +139,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | fireBeam | 업화선 | MP | floor(50×(1+(Lv-1)×0.12))/차징 시작 | floor(60/pMagicSpd())프레임 | magicRef×INT×pMagic×pBeam×_skMul×_fuseMul×max(10,차징초×40) | 최대5초 차징, 직선 관통+폭발+화상; 고정 DPS는 차징 조건 없이 산정 불가 |
 | fireAura | 지옥진 | MP | **100** 고정 | **720f (12초)** | magicRef × INT × pMagicMul × _skMul('fireAura')(b:10,g:8) × _fuseMul, 12f마다 그 2% | 10초간 용암기둥, 범위 400+floor(400×(Lv-1)×0.1) |
 | maliceMortar | 폭풍소환 | MP | mpCost('mortar')=50×(1+(Lv-1)×0.35)×pMagicCost (Lv1 50, Lv10 207) | **660f (11초)** | magicRef × INT × pMagicMul × _skMul('maliceMortar')(b:10,g:8) × _fuseMul | 6.5초간 소용돌이, 범위 400+(Lv-1)×18 (1렙400, 20렙742), **흡인력 2.0+Lv×0.1** — lv1=2.1, lv20=4.0, 랩당 +0.1 선형 (2026-05-13 수정), 마우스 조준 클릭 설치 (사거리 1000px) (2026-04-21 범위×2) |
-| plagueBurst | 폭독칼날 | 악의구슬 | **15** 고정 (원가, 실소비 8) | **900f (15초, 최소10초)** | magicRef × INT × pMagicMul × _skMul('plagueBurst')(b:7,g:5.6) | 관통률 **800+(Lv-1)×20 + bowPierce×300 + pPierce×30 +100**, **적중뎀 10% 출혈(무한중첩)**, 전염+처형, 사거리 **2000+(Lv-1)×100** |
+| plagueBurst | 폭독칼날 | 악의오브 | **15** 고정 (원가, 실소비 8) | **900f (15초, 최소10초)** | magicRef × INT × pMagicMul × _skMul('plagueBurst')(b:7,g:5.6) | 관통률 **800+(Lv-1)×20 + bowPierce×300 + pPierce×30 +100**, **적중뎀 10% 출혈(무한중첩)**, 전염+처형, 사거리 **2000+(Lv-1)×100** |
 | maliceStorm | 악의폭풍 | 없음 | 0 (해골번개 합체 분기만 MP 50) | **1200f (20초)** | magicRef × INT × pMagicMul × **_skMul('maliceStorm')** (b:14, g:11.2) × _fuseMul | 18f 틱=3.33tick/s → DPS 46.7(Lv1)→401(Lv20). 10초 암전나선, 범위 200+(Lv-1)×22 (2026-05-29 밸런스 평균화) |
 | darkPillar | 악의기둥 | 없음 | 0 | **900f (15초)** ×(1+_cdRed) | magicRef × INT × pMagicMul × _skMul('darkPillar')(b:20,g:16), 30f 틱 | 9기둥 각각10초, 범위 250+(Lv-1)×22 |
 | blueShot | 푸른비 | MP | 토글 입력 floor(100+(Lv-1)×1.5) + barrage마다 floor(100+(Lv-1)×11.1) (1렙100, 10렙199) | **300f (5초)** | INT × magicRef × pMagicMul × _skMul('blueShot') (b=1.8, g=1.44) ÷5 | barrage 100발 순차유도(3f), Lv300 해금. **Lv1=1.8×, Lv10=8.28×, Lv20=15.48×** |
@@ -153,8 +153,8 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 
 | ID | 이름 | 자원 | 비용 | 쿨다운 | 효과 | 지속시간 |
 |---|---|---|---|---|---|---|
-| spikeTrap | 가시덫 (phys 탭) | 악의구슬 | **10** | **600f (10초)** | INT×magicRef×pMagic×**_skMul('spikeTrap')×0.75** (b:14, g:11.2; `_skMul=14+(Lv-1)×11.2×0.5`), 슬로우 Lv1 91%(기존 대비 ×1.3)+Lv당2%p(최대95%)+출혈 | 25f 간격(초당2.4틱): 틱 계수10.5→90.3, 초당 계수25.2→216.72(Lv1→Lv20). 실제 DPS는 `floor(INT×magicRef×pMagic×틱계수)×2.4`, 출혈 별도. 직전 피해의50%. 범위 300→585 (Lv1→Lv20, slope +15/Lv — 코드 실측 `300+(Lv-1)*15`; 2026-05-29 밸런스로 base 200→300, slope는 +15 유지. 과거 문서/툴팁 +22 표기는 코드 불일치로 정정 2026-08-18) |
-| boneWall | 해골무덤 | 악의구슬 | **12** | 25초/스택 (2→3스택) | floor(meleeRef×STR×pAtkMul×(9+(Lv-1)×3.6)) 솟을 때 | min(30,3+(Lv-1)×0.2)초 |
+| spikeTrap | 가시덫 (phys 탭) | 악의오브 | **10** | **600f (10초)** | INT×magicRef×pMagic×**_skMul('spikeTrap')×0.75** (b:14, g:11.2; `_skMul=14+(Lv-1)×11.2×0.5`), 슬로우 Lv1 91%(기존 대비 ×1.3)+Lv당2%p(최대95%)+출혈 | 25f 간격(초당2.4틱): 틱 계수10.5→90.3, 초당 계수25.2→216.72(Lv1→Lv20). 실제 DPS는 `floor(INT×magicRef×pMagic×틱계수)×2.4`, 출혈 별도. 직전 피해의50%. 범위 300→585 (Lv1→Lv20, slope +15/Lv — 코드 실측 `300+(Lv-1)*15`; 2026-05-29 밸런스로 base 200→300, slope는 +15 유지. 과거 문서/툴팁 +22 표기는 코드 불일치로 정정 2026-08-18) |
+| boneWall | 해골무덤 | 악의오브 | **12** | 25초/스택 (2→3스택) | floor(meleeRef×STR×pAtkMul×(9+(Lv-1)×3.6)) 솟을 때 | min(30,3+(Lv-1)×0.2)초 |
 | holyDome | 회복의 영역 | 없음 | 무료 | **1800f (30초)** | HP/MP/ST 플랫 리젠 초당 10+Lv×2 (코드 32709), 자연회복×2, 스킬 쿨×2(`_gcCd`·돔 자체 `_hdCd`는 가속 제외 — 36517/36679) | 12+Lv×0.5초 |
 | holyPrison | 구속의 영역 | 없음 | 무료 | **1800f (30초)** | 부활력 -15%~30%(Lv1=15%, Lv10=30%) | 10+Lv×0.5초 |
 | iceStorm | 아이스스톰 | MP | **40** | 25초/스택 (1500f, 2→3스택) | 빙결저항 -50%, 게이지 축적+10%/Lv | 10초 (600f) |
@@ -185,11 +185,11 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 |---|---|---|---|---|
 | kiSlash 기검참 | 좌클릭 | 10 (Lv1, +2/Lv) | 무충전 ~0.45초 (공속); 3타 홀드 시 충전 시간 추가 | **무충전 ~22.2** (홀드 DPS는 충전 시간 포함 재산정) |
 | whirlwind 회전참 | 홀드 | Lv스케일 | 매 프레임 | **30→75/초** (Lv1→10) |
-| giantSlam 지옥강타 1 | `floor(floor(meleeRef×statStr×(20+(Lv−1)×19×0.5)×_rageMul)×pAtkMul)+_atkBon`; pAtkMul은 _gSlamHit에서1회. 분노100 기본20배 | ST=stCost(giantSlam), 악의구슬=_malCost(20) | 기본30초, 레벨당12f 감소·최소60f | 단위시간 효율은 실제 쿨/할인/명중 조건으로 측정 |
+| giantSlam 지옥강타 1 | `floor(floor(meleeRef×statStr×(20+(Lv−1)×19×0.5)×_rageMul)×pAtkMul)+_atkBon`; pAtkMul은 _gSlamHit에서1회. 분노100 기본20배 | ST=stCost(giantSlam), 악의오브=_malCost(20) | 기본30초, 레벨당12f 감소·최소60f | 단위시간 효율은 실제 쿨/할인/명중 조건으로 측정 |
 | bladeShot 붉은꽃 | T자동 | 1+floor(Lv/2) (Lv1 1) | 0.5초 | **2** |
 | fanShot 만화방창 | T자동 | 2+Lv (Lv1 3) | 자동간격 | 자동간격 의존 |
 | needleShot 만화방창II | T자동 | 8 | 1.5초 | **5.3** |
-| blastShot 폭산탄 | T자동 | 1+floor(Lv/2) + 악의구슬 원가5 | 0.5초 | **2 ST + 10악의구슬(원가)** |
+| blastShot 폭산탄 | T자동 | 1+floor(Lv/2) + 악의오브 원가5 | 0.5초 | **2 ST + 10악의오브(원가)** |
 
 ### MP 소비 스킬 (초당)
 | 스킬 | 발동방식 | MP/회 | 발동간격 | **MP/초** |
@@ -206,15 +206,15 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | iceStorm 아이스스톰 | 스택 | 40 | 25초/스택 | **1.6** |
 | ancestorSummon 전대 소환 | 액티브 | 최대MP 30% | 25초 | **최대MP×1.2%/초** (예: mmp 1000 → 12/초) |
 
-### 악의구슬 소비 스킬 (초당)
-| 스킬 | 악의구슬/회 | 발동간격 | **악의구슬/초** |
+### 악의오브 소비 스킬 (초당)
+| 스킬 | 악의오브/회 | 발동간격 | **악의오브/초** |
 |---|---|---|---|
 | maliceHunt 악의 사냥 | 30 + ST 50 | **15초(최소10초)** | **2.0** (+출혈DOT 10초, DEX×bowRef) |
 | plagueBurst 폭독칼날 | 15 | **15초(최소10초)** | **1.0** |
 | boneWall 해골무덤 | 12 | 25초/스택 | **0.48** |
 | spikeTrap 가시덫 | 10 | 10초 | **1.0** |
 | blastShot 폭산탄 | 5 | 0.5초 | **10.0** (최다 소비) |
-| giantSlam 지옥강타 1 | `floor(floor(meleeRef×statStr×(20+(Lv−1)×19×0.5)×_rageMul)×pAtkMul)+_atkBon`; pAtkMul은 _gSlamHit에서1회. 분노100 기본20배 | ST=stCost(giantSlam), 악의구슬=_malCost(20) | 기본30초, 레벨당12f 감소·최소60f | 단위시간 효율은 실제 쿨/할인/명중 조건으로 측정 |
+| giantSlam 지옥강타 1 | `floor(floor(meleeRef×statStr×(20+(Lv−1)×19×0.5)×_rageMul)×pAtkMul)+_atkBon`; pAtkMul은 _gSlamHit에서1회. 분노100 기본20배 | ST=stCost(giantSlam), 악의오브=_malCost(20) | 기본30초, 레벨당12f 감소·최소60f | 단위시간 효율은 실제 쿨/할인/명중 조건으로 측정 |
 
 ---
 

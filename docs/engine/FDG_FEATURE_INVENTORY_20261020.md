@@ -1109,7 +1109,7 @@
 | META-save-local | 로컬 슬롯 저장·로드·삭제 | `game.html:3533` | 일부 | `godot/port_modules/save_adapter/source_save_lifecycle_owner.gd:1` | 저장 lifecycle pure event pump·Main_connected:false; 실제 user IO 없음 | P4 후속 |
 | META-save-cloud | 온라인 DB 저장·로드 | `game.html:3588` | 없음 | `godot/scripts/main.gd:1` | 네이티브 Main에 웹 DB 저장 IO 없음 | P4 후속 |
 | META-autosave | 자동저장·강제저장·종료저장 | `game.html:3941` | 일부 | `godot/port_modules/save_adapter/source_save_lifecycle_owner.gd:1` | pure interval/ticket 모듈만; engine timer/user IO 없음 | P4 후속 |
-| META-shared-currency | 공유 악의구슬·보관함 지속성 | `game.html:48529` | 없음 | `godot/scripts/main.gd:1` | 현재 G.mats 표시와 계정/슬롯 공유 저장은 별개 | P4 후속 |
+| META-shared-currency | 공유 악의오브·보관함 지속성 | `game.html:48529` | 없음 | `godot/scripts/main.gd:1` | 현재 G.mats 표시와 계정/슬롯 공유 저장은 별개 | P4 후속 |
 | META-ap-sp | 스탯/SP/AP 획득·투자 | `game.html:27699` | 일부 | `godot/scripts/native_source_new_run_state.gd:1` · `godot/tests/test_p2001c_kill_rewards.gd:1` | 기본 상태·경험치 보상 일부. 투자 UI·모든 패시브 해금 미완 | P4 후속 |
 | META-transcend | 1000+ 초월 진행·강화 | `game.html:43128` | 없음 | `godot/scripts/native_normal_enemy_hurte.gd:1` | P2-001c 경계에 초월 미이식 명시; 기본 XP만으로 대체 금지 | P4 후속 |
 | META-difficulty | 난이도 선택·보상·차회 난이도 | `game.html:9273` | 일부 | `godot/port_modules/kill_reward/source_difficulty_signed.gd:1` | 현재 기본 난이도/보상 signed reader 일부. 선택 UI/다음 회차 전환 없음 | P4 후속 |
@@ -1127,7 +1127,7 @@
 |---|---|---|---|---|---|---|
 | HUD-lv | 우상 레벨 숫자 표시 | `game.html:60325` | 완료(격리 검수) | `godot/scripts/hud.gd:1` · `godot/tests/test_p2002a_hud.gd:1` · `docs/engine/FDG_P2_002A_HUD_20261020.md:1` | 현재 state 레벨을 표시하는 좁은 leaf만; 레벨 진행 자체는 별도 | P2-002a/b |
 | HUD-exp | 우상 경험치 숫자/바 표시 | `game.html:60310` | 완료(격리 검수) | `godot/scripts/hud.gd:1` · `godot/tests/test_p2002a_hud.gd:1` · `docs/engine/FDG_P2_002A_HUD_20261020.md:1` | 현재 state exp/maxExp 표시만; XP 마이그레이션 아님 | P2-002a/b |
-| HUD-mats | 우상 악의구슬 숫자 표시 | `game.html:60323` | 완료(격리 검수) | `godot/scripts/hud.gd:1` · `godot/tests/test_p2002a_hud.gd:1` · `docs/engine/FDG_P2_002A_HUD_20261020.md:1` | 현재 state mats 표시만; 공유저장/경제 아님 | P2-002a/b |
+| HUD-mats | 우상 악의오브 숫자 표시 | `game.html:60323` | 완료(격리 검수) | `godot/scripts/hud.gd:1` · `godot/tests/test_p2002a_hud.gd:1` · `docs/engine/FDG_P2_002A_HUD_20261020.md:1` | 현재 state mats 표시만; 공유저장/경제 아님 | P2-002a/b |
 | HUD-currency | SP/CP 코너 표시 | `game.html:60325` | 완료(격리 검수) | `godot/scripts/hud.gd:1` · `godot/tests/test_p2002b_minimap_corner.gd:1` · `docs/engine/FDG_P2_002B_MINIMAP_CORNER_20261020.md:1` | SP/AP·CP 계산/문자 표시만; 글꼴/클릭 패널/모든 캐릭터 CP는 별도 | P2-002a/b |
 | HUD-slots | 스킬 슬롯 아이콘·키캡·쿨다운 | `game.html:44134` | 일부 | `godot/scripts/hud.gd:1` · `godot/tests/test_p2002a_hud.gd:1` · `docs/engine/FDG_P2_002A_HUD_20261020.md:1` | 시작 아이콘·4종 쿨다운 일부. 전체 스킬 드래그 배정·active 표시 미완 | P2-002a/b |
 | HUD-timer | stage 타이머·진행바 | `game.html:60336` | 일부 | `godot/scripts/hud.gd:1` · `godot/tests/test_p2001j_lesson_clock.gd:1` · `docs/engine/FDG_P2_001J_LESSON_FLOW_AND_CLOCK_20261020.md:1` | 커튼/레슨 이후 시계 일부; 지역 진행/총 분모는 미연결 | P2-001j |

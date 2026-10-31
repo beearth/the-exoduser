@@ -109,7 +109,7 @@ Mac·다른 호스트에서 I:에 접근할 수 없으면 중앙 CTO에게 필�
 | POST | `/api/save` | 저장 |
 | GET | `/api/load/:slot` | 로드 |
 | DELETE | `/api/save/:slot` | 슬롯 삭제. 별도 삭제 권한 준수 |
-| GET / POST | `/api/mats` | 악의구슬 공유 풀 조회·수정 |
+| GET / POST | `/api/mats` | 악의오브 공유 풀 조회·수정 |
 | POST | `/api/gpt-image` | OpenAI 이미지 생성 프록시. 별도 유료 작업 |
 
 기존 에셋 프롬프트·파일 규격·게임 반영은 각 아트·사운드·맵 SSOT를 따른다. 이 목록이 캐릭터 생성 금지, 맵 제작 가이드, 보호된 전투·저장 설계, 세이브 격리 및 실제 게임 검수 기준을 바꾸지 않는다.
@@ -121,3 +121,4 @@ Mac·다른 호스트에서 I:에 접근할 수 없으면 중앙 CTO에게 필�
 - 10/30 OpenAI 공식 `GET /v1/models`: HTTP 200. 생성 요청은 하지 않음.
 - 10/30 ElevenLabs·Higgsfield 계정 화면과 로컬 지출 원장: 당시 권한·잔액·구독 관측.
 - 현행 `server.cjs`: 로컬 API 경로. 실제 서버·저장 호출 검증과 별개.
+
