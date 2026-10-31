@@ -3,7 +3,7 @@
   if (!art) return;
   const gate = document.getElementById('gateWideArt');
   if (gate) {
-    art.picture(gate, 'assets/fullscreen-wide/20261031/gate-original.png');
+    // The approved gate keeps its black background; never reload the retired cave plate.
     art.atmosphere(gate.parentElement, { tone: 'gate' });
   }
   const originalGate = document.querySelector('#cinGate>img');

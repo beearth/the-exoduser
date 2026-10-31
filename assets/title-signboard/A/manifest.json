@@ -1,0 +1,33 @@
+{
+  "approved": "A",
+  "sourceMaster": "master-7680x2160.png",
+  "sourceSHA256": "c6565cf4050d3ae33d3d65acdd5becf0cfe0114a77a7dd2b4e03cb29e6858548",
+  "master": [
+    7680,
+    2160
+  ],
+  "runtime": [
+    5760,
+    1620
+  ],
+  "mask": [
+    1920,
+    540
+  ],
+  "hands": {
+    "cells": 6,
+    "cell": [
+      256,
+      456
+    ]
+  },
+  "sourceNote": "Approved composite; background originally 2048x768, upscaled/reframed. Not native 8K generation.",
+  "files": {
+    "background.webp": "362a958050f3b8e1023663a3ce3f0ece85a863e159dcf53f98ac907367728fbd",
+    "hands.png": "a80f746ea6230ef4022af323713e790ba33acc0d57f9cc6141137f81b03c6492",
+    "master-7680x2160.png": "c6565cf4050d3ae33d3d65acdd5becf0cfe0114a77a7dd2b4e03cb29e6858548",
+    "motion-mask.png": "bdfec8117c7fbdd79d80cb034e71a0f5b974ba5908dde8016dccb4449d92e79c",
+    "silvertail.webp": "b27ca31257064946670d906a0a6423339eeffa22f291655c48e2c45a604c49e4",
+    "still.webp": "116b68d672f7180fc435d2e0be907b4687e300cf64549da6bef962718621ff39"
+  }
+}

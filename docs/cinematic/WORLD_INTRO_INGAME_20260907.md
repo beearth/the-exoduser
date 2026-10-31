@@ -1,6 +1,8 @@
-# 세계관 인트로 v13 — 인게임 적용 / BGM 확인
+# 세계관 인트로 v22b — 문 장면 폐지 / 인게임 적용
 
-> **2026-10-12:** 영상 파일 `video/world_intro_v15_clean_en.mp4`(2026-10-14 C13·C14 블록 제거, 이전 v14)(v13 음성 그대로, A01·A02 새 영상, 1080p). [v14 기록](WORLD_INTRO_REMASTER_MODEL_TEST_20261012.md).
+> **현행 2026-10-31:** `video/world_intro_v22b_steam.mp4`로 모든 ENTER 경로를 통일. `gateLock` 존재 조건·구 `video/intro.mp4` 재생/프리로드·`cinGate`/`cin-door` 배경과 예약 진동을 폐지했다. 원본 영상 파일·승인 인장 화면·시청 기록은 보존한다. 아래 v13/v15 검수는 당시 이력이다.
+
+> **2026-10-12 이력:** 영상 파일 `video/world_intro_v15_clean_en.mp4`(2026-10-14 C13·C14 블록 제거, 이전 v14)(v13 음성 그대로, A01·A02 새 영상, 1080p). [v14 기록](WORLD_INTRO_REMASTER_MODEL_TEST_20261012.md).
 
 > **2026-09-09 현행 언어 계약:** Steam 31개 항목은 지역 공통 번역을 포함한 내부 29개 언어(말레이어 ms 추가)로 처리한다. 세계관 29×32=928큐·SRT/VTT 총58개, 캐릭터 서사 28개 번역 언어에 KO 기준 21+18문장을 적용한다. UI779키 등록, MAIN13,300개·EXTRA1,782개·성장화면3,699개 번역 보완 및 29언어 화면 검증을 완료했다. [구현 상태·검증 기록](../16번역·로컬라이제이션/STEAM_LANGUAGE_SCOPE_20260909.md)이 과거 완료 기록보다 우선한다.
 
@@ -17,15 +19,16 @@
 | 항목 | 현행 값 / 적용 위치 |
 |---|---|
 | 위치 | `index.html` 세계관 시네마틱. `game.html` 전쟁 복수 서사는 변경 없음 |
-| 흐름 | 기존 ENTER → `video/intro.mp4` 문 열림 → `startWorldIntro()` → v13 전체 영상 → 기존 로그인/로비 라우팅 |
-| 게임 에셋 | `video/world_intro_v13_exodus_en.mp4`, 32,381,760바이트 |
+| 흐름 | 첫 실행·시작 메뉴 재감상·로비 재감상·계정 첫 진입·미리보기 → 승인 인장 ENTER → `startWorldIntro()` → v22b → 기존 로그인/로비 라우팅. 언어/DEMO·EA·full과 무관 |
+| 게임 에셋 | `video/world_intro_v22b_steam.mp4`, 102,204,634바이트, SHA256 `3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f`. 무자막 EN 정본 동일 byte. 앞의 별도 문 장면은 폐지, v22b 내부 컷은 재편집하지 않음 |
 | 보존 원본 | `output/cinematic/world_intro_auto_v3_en_ko.mp4` 및 `video/world_intro_v3_en_ko.mp4` 유지. v4·v5는 별도 파일 |
-| 규격 | H.264 + AAC, 1280×720, 24fps, 2719프레임, 컨테이너 113.292초 / 브라우저 비디오 duration 113.291667초 |
+| 규격 | H.264 High + AAC 48kHz stereo, 1920×1080, 30fps, 3410프레임. 영상 113.666667초 / 컨테이너 113.701초 |
 | 음성·자막 | ElevenLabs 영어 음성 193단어, 29언어 × 32큐 네이티브 선택형 자막. 기존 `introVoice` 별도 재생 금지 |
-| 타이틀 | 109.291667~113.291667초, 기존 img/logo_exoduser.png 단독 중앙 배치, HELL ROAD 없음. 109.6~111.1초는 마지막 자막과 동시 표시, 이후 자막 없이 로고만 유지. 0.75초 등장·3.6초부터 0.4초 소멸 |
+| 타이틀 | 109.691667초부터 영상 끝까지, 기존 img/logo_exoduser.png 단독 중앙 배치, HELL ROAD 없음. 110.0~111.5초는 마지막 자막과 동시 표시, 이후 자막 없이 로고만 유지. 0.75초 등장·3.6초부터 0.4초 소멸 |
 | 화면 | `#worldIntroVideo`, contain, z-index 21, preload none. 기존 정지 이미지 자막·레터박스·불씨는 숨김. cinLang은 표시, 네이티브 TextTrack으로 선택 언어만 표시 |
-| 이전 구현 | `CIN_LINES`, 정지 이미지 DOM·원본은 보존. 문 이후 `showLine(0)` 호출 및 사용하지 않는 18장 지연 프리로드는 중지 |
+| 이전 구현 | 빈 `cinVideo`는 중지 정리 호환용 hidden/preload none/src 없음. `CIN_LINES`, 정지 이미지 DOM·원본은 보존. 구 정지 이미지 `showLine(0)` 호출 및 사용하지 않는 18장 지연 프리로드는 중지 |
 | 번역 범위 | 이 영상은 EN 보이스 고정 / 29언어 선택형 자막. 기존 28언어 CIN_LINES는 보존 자료이며 영상의 실시간 번역/자막으로 사용하지 않음. 로비·게임 번역은 유지 |
+| 패키지 | NW `FILES`에 indexdemo·기존 플레이어/자막3개 포함, `DIRS`의 video 전체 복사. full/demo 공식 builder, ea는 legacy UI 경로·의존성 staging 검수. 전체 NW/Steam 실행·배포는 별도 |
 | 플레이어 | `world-intro-player.js`, `WorldIntroPlayer.create`, `start/stop/next/toggle/setVolumes` |
 | Steam 음성 디코딩 (2026-09-09) | 기본 NW.js 0.111.2에서 AAC 무음 재현. 같은 버전 `vendor/nwjs-ffmpeg/0.111.2/ffmpeg.dll`을 빌드에 포함하여 복구, 영상/보이스 원본 변경 없음. 실제 AAC 디코딩·WebAudio 신호 검증과 배포 상태는 [Steam 기록](../13출시·마케팅/STEAM_LATEST_DEPLOY_20260909.md) 참조 |
 | 백업 | `output/cinematic/index_before_world_intro_v3_20260907.html` |
@@ -35,10 +38,10 @@
 | 항목 | 수치·동작 |
 |---|---|
 | 기존 트랙 풀 | `bgm/cutscene/prologue_theme.mp3`, `prologue_theme_abyssal_fracture.mp3`, `prologue_theme_rebirth_gate_1.mp3`, `prologue_theme_rebirth_gate_2.mp3` 중 1곡 랜덤 |
-| 문 열림 | 기존 ENTER 제스처에서 BGM 시작, 기존 gain 0.6 유지 |
-| 본편 믹스 초기값 | 영상/내레이션 gain 1.0(100%). BGM은 문 열림의 재생 위치·gain 0.6을 그대로 인계하고, 본편 첫 playing에서 1000ms 동안 gain 0.22(22%)로 선형 감소(50ms 간격, Date.now 경과시간 기준). 최종 믹스 승인 아님 |
+| ENTER | 승인 인장 ENTER 제스처에서 BGM 시작, 기존 gain 0.6 유지 |
+| 본편 믹스 초기값 | 영상/내레이션 gain 1.0(100%). BGM은 ENTER의 재생 위치·gain 0.6을 그대로 인계하고, 본편 첫 playing에서 1000ms 동안 gain 0.22(22%)로 선형 감소(50ms 간격, Date.now 경과시간 기준). 최종 믹스 승인 아님 |
 | 믹서 | `?cinematic=1`에서 VOICE/BGM 각각 0~100, step 1. 컨트롤러 gain은 유한수만 0~1 clamp. 재진입 시 100/22로 초기화, 저장 없음 |
-| 연속 재생 | 문 열림 때 시작한 같은 Audio 객체·곡·currentTime을 유지. 본편 start에서 pause/seek/재시작 금지. 영상 초기 로딩·waiting·seeking 및 컷 넘김에도 BGM은 계속 진행 |
+| 연속 재생 | ENTER 때 시작한 같은 Audio 객체·곡·currentTime을 유지. 본편 start에서 pause/seek/재시작 금지. 영상 초기 로딩·waiting·seeking 및 컷 넘김에도 BGM은 계속 진행 |
 | 루프·시계 | music.loop=true, 음악은 독립 시계·속도로 재생. 영상 시각으로 음악을 되감거나 건너뛰지 않음. 기존 0초 초기화·modulo 시각 동기화·0.25초 오차 보정은 제거 |
 | 사용자 정지·재개 | 영상 pause(일시정지 버튼 포함)는 BGM도 pause. playing/seeked 및 재시도에서 음악이 paused일 때만 play, 기존 음악 위치 보존 |
 | 페이드 수명 | `fadeTimer`/`mixStarted`로 시작 페이드 1회. 사용자 BGM 조절 시 페이드를 취소하고 선택값 즉시 적용. stop/이탈에서도 타이머 해제. 초기 UI 라벨 갱신은 setVolumes를 호출하지 않음 |
@@ -50,7 +53,9 @@
 | 미리보기 | `http://127.0.0.1:3333/?cinematic=1`; 스플래시·로그인·이미 봄 게이트를 우회하여 ENTER 표시. 계정/로컬 시청 완료 플래그를 기록하지 않음 |
 | 정상 진입 | 기존 `_cinSeenChk()` 및 `_cinSeenSet()` 계정 시청 기록 유지. 미리보기 외 게임 저장 구조 변경 없음 |
 
-## 컷 경계 — 초
+## 원본 컷 경계 — 초
+
+아래 CUTS는 보존 원본 시계다. v22b 실제 `next()` 탐색은 0초 시작점은 탐색에서 제외하고 나머지 각 값에 **+0.400초**를 적용한다(도입 직후 입력도 첫 컷 4.441667초로 점프). `#worldIntroVideo[data-timing-offset="0.4"]` 하나를 플레이어와 네이티브 자막이 함께 사용한다. 예: 4.041667→4.441667, 87.791667→88.191667, 109.291667→109.691667초. SRT/VTT 58개와 번역 데이터는 원본 시계 그대로 보존한다.
 
 | 컷 | 시작 |
 |---|---:|
@@ -72,7 +77,7 @@
 | C14 | 102.791667 |
 | EXODUSER 단독 타이틀 | 109.291667 |
 
-`next()`는 현재 시각 + 0.05초보다 큰 첫 경계로 이동한다. B01/B02는 “지옥은 시대를 묻지 않는다” 음성과 자막이 이어지는 v3 편집 그대로다. 이전 117.292초 합본·폐기 컷은 런타임에 넣지 않는다.
+`next()`는 현재 시각 + 0.05초보다 큰 첫 보정 경계로 이동한다. B01/B02는 “지옥은 시대를 묻지 않는다” 음성과 자막이 이어지는 v3 편집 그대로다. 이전 117.292초 합본·폐기 컷은 런타임에 넣지 않는다.
 
 ## 검증
 
@@ -130,3 +135,24 @@
 | 테스트 | 온라인/로컬×이전 요청 완료/숨긴 로비 완료4회귀 수정 전 실패→통과 및 정상 완료2건 통과. 데모 경로·목록·동기화·영화 handoff·패드63개 통과 |
 | 브라우저 | Chromium960×540 실제 HTML/CSS/로비 진입·로딩 DOM 함수,대기 목록 Promise 격리. 전후8조건: 수정 전 이전 완료가 loading/chapterGate none·프리로드1회,수정 후 새 로딩 block 유지·프리로드0회. 최신 완료는 none·프리로드1회 확인 |
 | 범위·기록 | 실계정/저장 API·사용자 데이터·로딩 에셋 변경 없음. tmp/lobby-loading-owner/browser-report.json,changes.patch. 기존 Git 쓰기 제한으로 커밋 미완료 |
+
+## 2026-10-31 모든 경로의 문 연출 폐지·최신 v22b
+
+| 진입 | 실제 라우팅·유지 계약 |
+|---|---|
+| 구 DEMO URL | `indexdemo.html`은 쿼리·fragment를 보존해 `index.html`로 이동. 중복 문·정지 시네마틱 구현 폐지. NW FILES에도 이 기존 엔트리 포함 |
+| 첫 실행 / test / NW.js 오프라인 미시청 | `_cinSeenChk()` 미시청 → `_goCinematic()` → 승인 인장 ENTER → v22b. full·demo·ea 공통 |
+| 타이틀 다시 보기 | 메뉴 → `_goCinematic()` → ENTER → v22b. 기존 시청 기록은 삭제하지 않음 |
+| 로비 재감상 / 게임에서 로비 복귀 | 복귀 자동 재생 없음. `replayCinBtn`을 누르면 `_goCinematic()` → ENTER → v22b |
+| 계정 첫 진입 / SIGNED_IN | `cin_seen` 또는 UID 캐시로 기존 판단. 미시청이면 `_goCinematic()` → ENTER → v22b, 기시청은 로비 |
+| `?cinematic=1` | 미리보기 ENTER → v22b. `_cinSeenSet()`는 쓰기 없이 return |
+| 언어 | KO·EN 포함 29언어 × 32큐. `cinLang` 변경 시 동일 v22b 위 자막만 교체 |
+| 새 캐릭터 첫 생성 | 세계관 인트로 자동 재생 없음. 전사 외형 0은 기존 `warrior_story_v23_clean.mp4`, 그 외 목록 갱신. 별도 개인사 계약 유지 |
+| 조작 / 종료 | 클릭·Space·Enter 다음 컷, ESC/Space 5000ms 홀드, ended/skip 후 기존 로그인/로비. 계정 메타데이터·UID 캐시·전역 seen 유지 |
+
+- 브라우저는 headless/무음, 별도 3467 서버와 격리 saves/브라우저 저장소. 구 `intro.mp4`·`hellgate.png` 요청 0을 검사한다. 계정은 대역이며 실제 계정 서비스 변경은 하지 않는다.
+- v17 중단 작업의 340/340 기록은 과거 증거다. 최신 v22b 직접 회귀 33/33 PASS(DEMO 엔트리 포함). 최종 확대 회귀351 PASS·2 SKIP·0 FAIL. 최초 검사의 기존 실패2건(Chrome 채널 미설치, nw-boot 기대값 불일치)은 원격 main과 동일한 테스트·설정임을 확인하고 최종 실행에서는 이름으로 제외했다.
+- 1600×900·1920×1080 재생 시각 판정: 문 없는 v22b 직접 재생 PASS. 2560×1080·3840×1080도 동일 경로 PASS이나 기존 contain 좌우 여백은 RETOUCH. 영상 확장/재편집·청취/NW.js·Steam 실행을 검증한 것으로 확대하지 않는다.
+- 경로별 0.3/1.5/3초 캡처·언어별 3시점·v17/v22b 같은 시점 비교·한계·원격 SHA: `I:/EXODUSER-Storage/codex-takeover/intro-nodoor/REPORT.md`. 요청된 G: REPORT는 같은 보고서 안내 사본이다.
+
+- 최종 병합 source `3c6e076977fa702e46712fdde335b3b7a7752627`: full 3840×1080·indexdemo 일본어 1600×900 재진입/다음 컷 PASS. 29언어×3시점87/87 PASS. v22b 1배속 자연끝113.701초·ended1회·재생중 seek0·미리보기 seen 미기록·로그인 전환 PASS(0.6초 이후 실측113.135초). 종료 후0초 정리 seek2회는 재생중 점프와 구분. 실제 스피커 청취는 하지 않음. 영수증 `v22b-review/natural-playback.json`, `merged-routes.json`.

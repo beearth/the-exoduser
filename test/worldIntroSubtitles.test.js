@@ -25,7 +25,7 @@ test('subtitle ranges preserve narration boundaries and leave the final title cl
 });
 test('runtime uses clean movie and language-aware subtitle layer',()=>{
  const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
- assert.ok(html.includes('video/world_intro_v15_clean_en.mp4'));
+ assert.ok(html.includes('video/world_intro_v22b_steam.mp4'));
  assert.ok(html.includes('world-intro-subtitles.js'));
  assert.ok(html.includes('WorldIntroSubtitles.attach(movie)'));
  assert.ok(!html.includes('.world-intro-active #cinLang,'),'language choice remains visible');
@@ -61,21 +61,21 @@ test('only the mage subtitle moves to follow the three-second psychic shot',()=>
 test('cinema captions use double-size type and an elevated bottom anchor',()=>{
  const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
  const controller=readFileSync(new URL('../world-intro-subtitles.js',import.meta.url),'utf8');
- assert.match(html,/#worldIntroVideo::cue\{[^}]*font-size:clamp\(32px,5\.4vh,50px\)/);
+ assert.match(html,/#worldIntroVideo::cue,#characterStoryVideo::cue\{[^}]*font-size:clamp\(32px,5\.4vh,50px\)/);
  assert.match(controller,/cue\.snapToLines=true;cue\.line=-3/);
  assert.match(controller,/cue\.position=50;cue\.positionAlign='center'/);
 });
 test('cinematic subtitles use ivory serif text with a transparent background and dark contour',()=>{
  const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
- const style=html.match(/#worldIntroVideo::cue\{([^}]+)\}/)?.[1];
+ const style=html.match(/#worldIntroVideo::cue,#characterStoryVideo::cue\{([^}]+)\}/)?.[1];
  assert.ok(style,'scoped native cue style exists');
  assert.match(style,/font-family:'Noto Serif','Noto Serif KR',serif/);
  assert.match(style,/font-weight:500/);
- assert.match(style,/color:#eee5d5/);
+ assert.match(style,/color:#e9e6e0/);
  assert.match(style,/background:transparent/);
  assert.match(style,/text-shadow:[^;]*1px 0 0[^;]*0 2px 4px[^;]*0 0 12px/);
  for(const [lang,font] of Object.entries({ja:'Noto Serif JP',zh:'Noto Serif SC',zht:'Noto Serif TC',ar:'Noto Naskh Arabic',th:'Noto Serif Thai'}))
-  assert.ok(html.includes(`#worldIntroVideo[data-subtitle-language="${lang}"]::cue{font-family:'${font}'`),lang);
+  assert.ok(html.includes(`#worldIntroVideo[data-subtitle-language="${lang}"]::cue,#characterStoryOverlay:lang(${({zht:"zh-Hant"})[lang]||lang}) #characterStoryVideo::cue{font-family:'${font}'`),lang);
 });
 test('locale aliases cover Brazilian Portuguese, traditional Chinese and Norwegian',()=>{
  const ctx={WorldIntroSubtitleData:readData()};vm.createContext(ctx);
@@ -94,4 +94,16 @@ test('all SRT and WebVTT exports match the runtime translations and timings',()=
   const expected=(ext==='vtt'?'WEBVTT\n\n':'')+lines.map((line,i)=>`${i+1}\n${stamp(d.timings[i][0],sep)} --> ${stamp(d.timings[i][1],sep)}\n${line}\n`).join('\n');
   assert.equal(content.trim(),expected.trim(),`${lang}.${ext}`);
  }
+});
+
+test('v22b native captions shift all 928 cues by 400ms and leave source exports intact',()=>{
+ const d=readData(),ctx={WorldIntroSubtitleData:d,VTTCue:class {constructor(start,end,text){this.startTime=start;this.endTime=end;this.text=text;}}};vm.createContext(ctx);
+ vm.runInContext(readFileSync(new URL('../world-intro-subtitles.js',import.meta.url),'utf8'),ctx);
+ const tracks=[],video={dataset:{timingOffset:'0.4'},addTextTrack(kind,label,language){const t={language,cues:[],addCue(c){this.cues.push(c)}};tracks.push(t);return t;}};
+ const captions=ctx.WorldIntroSubtitles.attach(video);
+ for(const language of languages){captions.setLanguage(language);const track=tracks.at(-1);assert.equal(track.cues.length,32);
+  track.cues.forEach((cue,i)=>{assert.equal(cue.startTime,d.timings[i][0]+.4);assert.equal(cue.endTime,d.timings[i][1]+.4);assert.equal(cue.text,d.languages[language][i]);});
+  assert.equal(tracks.filter(t=>t.mode==='showing').length,1);
+ }
+ const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');assert.match(html,/id="worldIntroVideo"[^>]*data-timing-offset="0.4"/);
 });

@@ -62,13 +62,7 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 .cin-lb-t{top:0;height:10vh}
 .cin-lb-b{bottom:0;height:10vh}
 
-/* 문 이미지 (시네마틱 배경) */
-.cin-gate{position:absolute;inset:0;opacity:0;transition:opacity 2s ease}
-.cin-gate img{width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.15) translateX(5%)}
-.cin-gate.show{opacity:1}
-.cin-gate.zoom{transform:scale(1.6);transition:transform 0s}
-.cin-gate.zoom-out{transform:scale(1);transition:transform 6s cubic-bezier(0.15,0.5,0.3,1)}
-
+/* 2026-10-31: 구 문 배경/문 열림 스타일 폐지. 원본 미디어는 보존. */
 /* 비네팅 */
 .cin-vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 20%,rgba(0,0,0,.85) 100%);z-index:2;pointer-events:none}
 
@@ -120,15 +114,6 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 /* 세계관 프롤로그 스틸 (2026-07-27 인트로 스왑) — 공통 규칙 사용 */
 /* 타이틀 로고 컷 (cinImg19): 마스크/암전 없이 중앙 로고 */
 #cinImg19 img{width:min(52vw,900px);height:auto;object-fit:contain;filter:none;mask-image:none;-webkit-mask-image:none}
-
-/* 문 열림 씬 */
-.cin-door-scene{position:absolute;inset:0;perspective:1800px;opacity:0;transition:opacity 1.5s ease;z-index:5}
-.cin-door-scene.show{opacity:1}
-.cin-door{position:absolute;inset:0;background-image:url('img/hellgate.png');background-size:cover;background-position:center 40%;transform:scale(1.15) translateX(5%);transition:transform 2.5s cubic-bezier(0.4,0,0.1,1);will-change:transform}
-.cin-door-l{clip-path:polygon(0 0,calc(40% + 1px) 0,calc(40% + 1px) 100%,0 100%);transform-origin:left center}
-.cin-door-r{clip-path:polygon(calc(40% - 1px) 0,100% 0,100% 100%,calc(40% - 1px) 100%);transform-origin:right center}
-.cin-door-scene.open .cin-door-l{transform:scale(1.15) translateX(5%) rotateY(-105deg)}
-.cin-door-scene.open .cin-door-r{transform:scale(1.15) translateX(5%) rotateY(105deg)}
 
 /* 문 중앙 빛줄기 */
 .cin-glow{position:absolute;top:5%;left:50%;width:3px;height:90%;transform:translateX(-50%);background:linear-gradient(180deg,transparent,rgba(255,100,20,.5),rgba(255,60,10,.7),rgba(255,100,20,.5),transparent);z-index:6;pointer-events:none;opacity:0;filter:blur(4px);transition:opacity 1.5s}
@@ -498,10 +483,9 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 <style>
 /* 첫 화면 타이틀 메뉴 (2026-10-27 디자인총괄 시안 채택) — 로고 C + 흑철 판 버튼 줄. 1920x1080 무대를 화면에 맞춰 축소 */
 #splashTitleUI{position:absolute;inset:0;display:none;z-index:2;pointer-events:none;overflow:hidden;
-  background:radial-gradient(ellipse 46% 78% at 24% 56%,rgba(2,5,5,.62) 0%,rgba(2,5,5,.38) 55%,rgba(2,5,5,0) 100%),
-    linear-gradient(90deg,rgba(2,5,5,.55) 0%,rgba(2,5,5,.18) 38%,rgba(2,5,5,0) 55%),
-    linear-gradient(0deg,rgba(2,5,5,.7) 0%,rgba(2,5,5,0) 26%),
-    radial-gradient(ellipse 120% 100% at 50% 50%,rgba(0,0,0,0) 62%,rgba(0,0,0,.55) 100%)}
+  background:radial-gradient(ellipse 340px 340px at 220px 500px,rgba(2,5,5,.40),rgba(2,5,5,0)),
+    linear-gradient(90deg,rgba(2,5,5,.24),rgba(2,5,5,0) 560px),
+    linear-gradient(0deg,rgba(2,5,5,.28),rgba(2,5,5,0) 18%)}
 #splashTitleStage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
 #splashTitleLogo{position:absolute;left:96px;top:96px;width:520px;height:auto;user-select:none;
   filter:drop-shadow(0 10px 26px rgba(0,0,0,.8)) drop-shadow(0 0 2px rgba(0,0,0,.6))}
@@ -605,7 +589,6 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 <!-- ═══ Splash Sequence (경고문 → 로고 → 타이틀) ═══ -->
 <div id="splashOverlay" style="position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;opacity:1;transition:opacity 0.5s">
   <canvas id="splashCanvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
-  <video id="splashTitleVideo" muted playsinline loop preload="none" aria-hidden="true" style="display:none"></video>
   <div id="splashTitleUI">
     <div id="splashTitleStage">
       <img id="splashTitleLogo" src="img/logo_exoduser_solid.png" alt="EXODUSER — HELL LORD" draggable="false">
@@ -648,11 +631,9 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
   <div class="cin-lb cin-lb-t"></div>
   <div class="cin-lb cin-lb-b"></div>
 
-  <!-- 인트로 비디오 (THE EXODUSER) -->
-  <video id="cinVideo" muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;z-index:20;opacity:1;transition:opacity 1.5s ease;pointer-events:none">
-    <source src="video/intro.mp4" type="video/mp4">
-  </video>
-  <video id="worldIntroVideo" src="video/world_intro_v17_blood_en.mp4" playsinline preload="none" aria-label="World intro — English voice, selectable subtitles"></video>
+  <!-- 2026-10-31: 옛 문 영상은 폐지. 중지 정리용 빈 노드만 유지하며 원본 파일은 보존한다. -->
+  <video id="cinVideo" muted playsinline preload="none" hidden style="display:none"></video>
+  <video id="worldIntroVideo" src="video/world_intro_v22b_steam.mp4" data-timing-offset="0.4" playsinline preload="none" aria-label="World intro — English voice, selectable subtitles"></video>
   <div id="worldIntroMix" aria-label="인트로 오디오 확인">
     <button id="worldIntroToggle" type="button">일시정지</button>
     <label>BGM <input id="worldIntroMusicGain" type="range" min="0" max="100" value="22"><output id="worldIntroMusicValue">22%</output></label>
@@ -670,11 +651,7 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
     </div>
   </div>
 
-  <!-- 문 배경 (줌 인/아웃) -->
-  <div class="cin-gate zoom" id="cinGate">
-    <img src="img/hellgate.png" alt="">
-    <div class="cin-vig"></div>
-  </div>
+  <!-- 문 배경/문 열림 장면 폐지: 모든 경로는 v17을 사용한다. -->
 
   <!-- 세계관 프롤로그 이미지 p01~p17 + 타이틀 로고 (2026-07-27 인트로 스왑) -->
   <div class="cin-img" id="cinImg1"><img data-src="assets/cutscene/prologue/p01.jpg" alt=""></div>
@@ -1140,12 +1117,13 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 <script src="lobby_i18n.js"></script>
 <script src="lobby-stage-info.js"></script>
 <script src="character-story-player.js?v=20261027-killu-bloodtears-v3"></script>
-<script src="world-intro-player.js?v=20260907-v12-fullscene-newvoice"></script>
+<script src="world-intro-player.js?v=20261031-v22b-offset"></script>
 <script src="world-intro-subtitles-data.js?v=20260907-v13-exodus-ko-escape"></script>
-<script src="world-intro-subtitles.js?v=20260907-v6-cinema-size"></script>
+<script src="world-intro-subtitles.js?v=20261031-v22b-offset"></script>
 <link rel="stylesheet" href="cin-enter-engraved.css?v=20261029-enter2">
 <link rel="stylesheet" href="fullscreen-art.css?v=20261031-motion1">
 <script src="fullscreen-art-dom.js?v=20261031-motion1" defer></script>
+<script src="title-signboard.js?v=20261031-A"></script>
 <script>
 // ═══ 글로벌 게임패드 매니저 (전 화면 공통) ═══
 const _GP = {
@@ -2539,12 +2517,8 @@ function playCinematic(){
     else if(currentUser||_testMode){_goLobby({fromCinematic:true});}else{_goLogin({fromCinematic:true});}
   }
 
-  // 인트로 비디오: 첫 프레임(문 닫힘)에서 멈춤, 클릭 시 재생
-  vid.style.opacity='1';
-  vid.currentTime=0;
-  // 첫 프레임 로드 후 pause
-  vid.addEventListener('loadeddata',()=>{vid.pause()},{once:true});
-  vid.load();
+  // 인트로 비디오: 문 장면은 폐지. 빈 구버전 노드는 재생/프리로드하지 않는다.
+  stopMediaVideo(vid);
 
   // 스킵 버튼 즉시 표시
   skipBtn.classList.add('show');
@@ -2560,36 +2534,11 @@ function playCinematic(){
     try{_stopHover();}catch(e){}
     try{playEnterSFX();}catch(e){} // ENTER 클릭 사운드 — 로비 입장버튼과 동일 (2026-08-11)
     setTimeout(()=>{prompt.style.display='none'},1200);
-    // 2026-10-29 사용자 "세계관 인트로 왜 구버전연결돼있냐": 인장 첫 화면에서는 옛 문 열림 영상(video/intro.mp4, 2026-07 판화)을 건너뛰고 현행 세계관 인트로로 바로 간다. 근거 LOBBY_AAA_REFERENCE_STUDY §17-2
-    if(document.getElementById('gateLock')){window._introVoiceUnlocked=true;startCinBgm();skipBtn.classList.add('show');_cinReady=true;startWorldIntro();return;}
-    vid.muted=false; // 영상 자체 사운드(문 열림) 재생
-    vid.volume=0.6;
-    vid.style.display='';vid.style.opacity='1';
-    vid.play().catch(()=>{});
-    // 문 열림 진동 — 4초 페이드아웃
-    try{if(_GP.vibRef&&_GP.vibRef.vibrationActuator){
-      const _v=_GP.vibRef.vibrationActuator;const _steps=[[0,200,.5,.7],[200,500,.45,.6],[700,500,.35,.5],[1200,500,.25,.35],[1700,500,.18,.25],[2200,500,.12,.15],[2700,500,.06,.08],[3200,800,.02,.03]];
-      _steps.forEach(s=>{setTimeout(()=>{try{_v.playEffect('dual-rumble',{startDelay:0,duration:s[1],weakMagnitude:s[2],strongMagnitude:s[3]}).catch(()=>{})}catch(e){}},s[0])});
-    }}catch(e){}
-    // 사용자 제스처 컨텍스트에서 오디오 언락
+    // 2026-10-31: 장식 DOM·언어·빌드·재방문 여부와 무관하게 문 없이 v22b로 바로 진입한다.
     window._introVoiceUnlocked=true;
-    startCinBgm(); // 주제가 BGM 시작 (제스처 컨텍스트)
+    startCinBgm();
     skipBtn.classList.add('show');
-    // 문 영상 → 프롤로그: 실제 재생 시간 기반 + 재생 실패 시 3초 내 폴백 (2026-07-27)
-    vid.onended=()=>{vid.style.opacity='0'};
-    let _vidFadeDone=false;const _vidWatchT0=performance.now();
-    _vidStartTimer=setInterval(()=>{
-      if(_cinDone){clearInterval(_vidStartTimer);return}
-      const _el=performance.now()-_vidWatchT0;
-      const _d=(isFinite(vid.duration)&&vid.duration>0)?vid.duration:8;
-      const _fail=(_el>3000&&vid.currentTime<0.2)||vid.error; // 코덱/로드 실패: 3초 내 진행 없으면 영상 스킵
-      const _stall=_el>15000; // 최후 안전장치
-      if(!_vidFadeDone&&(vid.ended||_fail||_stall||vid.currentTime>=_d-1.5)){_vidFadeDone=true;vid.style.opacity='0'}
-      if(vid.ended||_fail||_stall||vid.currentTime>=_d-0.05){
-        clearInterval(_vidStartTimer);
-        _cinReady=true;startWorldIntro();
-      }
-    },100);
+    _cinReady=true;startWorldIntro();
   }
   
   function startWorldIntro(){
@@ -2907,15 +2856,12 @@ function _goCinematic(){
   stopLobbyBgm(); // 로비BGM 정지 — 시네마틱은 주제가만 (겹침 방지)
   // v3 movie replaces the old still sequence; do not preload unused stills.
   const vid=$('cinVideo');
-  vid.currentTime=0;vid.style.opacity='1';vid.muted=false;vid.volume=0.6;
+  stopMediaVideo(vid); // 폐지된 문 영상은 재시작하지 않는다.
   // 자막/이미지 초기화
   const cImgs=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19].map(i=>$('cinImg'+i));
   cImgs.forEach(el=>{if(el){el.classList.remove('show');el.style.zIndex=3}});
   $('cinTextInner').innerHTML='';
   const prompt=$('cinClickPrompt');if(prompt){prompt.style.display='';const frame=prompt.querySelector('.cin-hell-frame');if(frame)frame.classList.remove('dissolve');}
-  // 문 초기화 (닫힌 상태)
-  const dl=$('cinDoorL'),dr=$('cinDoorR');
-  if(dl)dl.style.transform='';if(dr)dr.style.transform='';
   // 화면 전환
   $('cinScene').style.display='';
   $('mainWrap').classList.remove('show','cinematic-handoff');
@@ -4598,10 +4544,9 @@ function showCharGate(charId,storySeen=false){
      <div id="splashBlink" style="font:14px sans-serif;color:#444;margin-top:40px">${_warnCont}</div>`;
 
   // ── SCREEN 3: 타이틀 키아트 (여캐 고정, 클릭/키 입력 시 진행) ──
-  const _titleArt=new Image();
-  _titleArt.src='img/title_bg_20261028.jpg';
-  let _titleWideBackdrop=null;let _titleVideoFade=null;
-  const _titleVideo=document.getElementById('splashTitleVideo');
+  const _titleScene=globalThis.TitleSignboard.create(overlay);
+  const _titleArt=_titleScene.still;
+  _titleArt.onerror=()=>{_titleScene.stats.stillError=true;};
   const _titleUI=document.getElementById('splashTitleUI'),_titleStage=document.getElementById('splashTitleStage');
   const _titleMenu=document.getElementById('splashTitleMenu');
   // 타이틀 메뉴: 실제로 동작하는 항목만 둔다. 찜하기=데모, 종료=NW.js/Electron 실행본에서만.
@@ -4663,12 +4608,6 @@ function showCharGate(charId,storySeen=false){
     _titleStage.style.transform=`translate(0px,${(h-1080*k)/2}px) scale(${k})`;
   }
   window.addEventListener('resize',_fitTitleStage);
-  // 영상 오류 시 titleLoop가 같은 장면의 정지 그림(_titleArt)으로 그린다.
-  function syncTitlePlayback(){
-    if(done||phase!==2||document.hidden){_titleVideo.pause();return;}
-    _titleVideo.play().catch(()=>{});
-  }
-  document.addEventListener('visibilitychange',syncTitlePlayback);
 
   // ── SCREEN 2: FDG 영상 인트로 (3.2초) ──
   const FDG_DUR=3200;
@@ -4747,90 +4686,26 @@ function showCharGate(charId,storySeen=false){
       showFDGScreen();
       return;
     } else if(phase===2){
-      // 무음 타이틀 영상 반복, 로딩/실패 시 기존 키아트. 입력 전까지 유지.
-      _titleVideo.src='video/title_motion_20261028.mp4?v=20261028';
-      _titleVideo.muted=true;
+      // 사용자 승인 A: 단일 32:9 원화, 마스크 레이어 모션과 동일 A 정지 폴백.
       _buildTitleMenu();_fitTitleStage();
-      syncTitlePlayback();
+      _titleScene.start();
       t0=performance.now();
       console.log('[SPLASH] TITLE screen shown (art: '+_titleArt.src.split('/').pop()+')');
-      let titleHasVideoFrame=false,lastTitleFrame=-1,lastTitleW=0,lastTitleH=0;
+      let lastStillW=0,lastStillH=0,hadStill=false;
       function titleLoop(){
         if(done||phase!==2)return;
-        if(!_titleVideo.error&&_titleVideo.readyState>=2)titleHasVideoFrame=true;
-        // 루프 seek 중 readyState가 잠깐 낮아져도 정지 원본으로 되돌리지 않는다.
-        if(titleHasVideoFrame&&!_titleVideo.error&&_titleVideo.readyState<2){
-          rafId=requestAnimationFrame(titleLoop);return;
-        }
-        const elapsed=performance.now()-t0;
-        const w=cv.offsetWidth,h=cv.offsetHeight;
-        const fadeIn=Math.min(1,elapsed/1000);
-        // Keep UI text native and avoid redrawing an identical 24fps video frame at monitor refresh rate.
-        const widePlate=w/h>2?globalThis.FullscreenArt?.get('img/title_bg_20261028.jpg',w,h):null;
-        const hasOutpaint=!!(widePlate?.complete&&widePlate.naturalWidth&&widePlate.naturalWidth/widePlate.naturalHeight>2);
-        const frame=_titleVideo.readyState>=2&&!_titleVideo.error?Math.floor(_titleVideo.currentTime*60):(hasOutpaint?widePlate.naturalWidth:-1);
-        const uiReady=_titleVideo.readyState>=2||_titleArt.complete&&_titleArt.naturalWidth>0;
-        if(uiReady&&_titleUI.style.display!=='block'){_titleUI.style.display='block';_fitTitleLabels();}
-        else if(!uiReady)_titleUI.style.display='none';
+        const fadeIn=Math.min(1,(performance.now()-t0)/1000),w=cv.offsetWidth,h=cv.offsetHeight;
+        const hasStill=_titleArt.complete&&_titleArt.naturalWidth>0;
+        const ready=hasStill||_titleScene.stats.ready||_titleScene.stats.stillError;
+        if(ready&&_titleUI.style.display!=='block'){_titleUI.style.display='block';_fitTitleLabels();}
         _titleUI.style.opacity=String(fadeIn);
-        if(elapsed>1000&&frame>=0&&frame===lastTitleFrame&&w===lastTitleW&&h===lastTitleH&&
-           !(w/h>2&&!hasOutpaint&&!_titleWideBackdrop&&_titleArt.complete&&_titleArt.naturalWidth>0)){
-          rafId=requestAnimationFrame(titleLoop);return;
+        const sceneCanvas=document.getElementById('titleSignboardCanvas');
+        if(sceneCanvas)sceneCanvas.style.opacity=String(fadeIn);
+        if(fadeIn<1||lastStillW!==w||lastStillH!==h||hadStill!==hasStill){
+          cx.clearRect(0,0,w,h);
+          if(hasStill){const r=TitleSignboard.rect(w,h);cx.save();cx.globalAlpha=fadeIn;cx.drawImage(_titleArt,r.x,r.y,r.width,r.height);cx.restore();}
+          lastStillW=w;lastStillH=h;hadStill=hasStill;
         }
-        lastTitleFrame=frame;lastTitleW=w;lastTitleH=h;
-        cx.clearRect(0,0,w,h);cx.fillStyle='#000';cx.fillRect(0,0,w,h);
-        cx.save();cx.globalAlpha=fadeIn;
-        const titleSource=hasOutpaint?widePlate:(!_titleVideo.error&&_titleVideo.readyState>=2?_titleVideo:_titleArt);
-        const titleWidth=titleSource.videoWidth||titleSource.naturalWidth;
-        const titleHeight=titleSource.videoHeight||titleSource.naturalHeight;
-        if(titleWidth&&titleHeight){
-          // 화면비 2:1 초과에서는 위아래가 잘리지 않도록 원화를 세로 기준으로 맞춘다.
-          const wide=w/h>2;
-          if(wide&&!hasOutpaint&&_titleArt.complete&&_titleArt.naturalWidth&&_titleArt.naturalHeight){
-            const bw=Math.ceil(w),bh=Math.ceil(h);
-            if(!_titleWideBackdrop||_titleWideBackdrop.width!==bw||_titleWideBackdrop.height!==bh){
-              _titleWideBackdrop=document.createElement('canvas');
-              _titleWideBackdrop.width=bw;_titleWideBackdrop.height=bh;
-              const bc=_titleWideBackdrop.getContext('2d');
-              const bk=Math.max(w/_titleArt.naturalWidth,h/_titleArt.naturalHeight);
-              bc.filter='blur(48px) brightness(.38)';
-              bc.drawImage(_titleArt,(w-_titleArt.naturalWidth*bk)/2,(h-_titleArt.naturalHeight*bk)/2,
-                _titleArt.naturalWidth*bk,_titleArt.naturalHeight*bk);
-            }
-            cx.drawImage(_titleWideBackdrop,0,0,w,h);
-          }
-          // 화면비 2:1 이하는 기존 cover와 오른쪽 인물을 살리는 62% 가로 포커스를 유지한다.
-          const k=wide&&!hasOutpaint?Math.min(w/titleWidth,h/titleHeight):Math.max(w/titleWidth,h/titleHeight);
-          const dw=titleWidth*k,dh=titleHeight*k;
-          const dx=wide?(w-dw)/2:Math.min(0,Math.max(w-dw,(w-dw)*0.62)),dy=(h-dh)/2;
-          cx.drawImage(titleSource,dx,dy,dw,dh);
-          // 초광폭 확장판 위에 원본 16:9 구간만 움직이는 타이틀 영상을 겹치고, 원본/확장 경계를 흐림 띠로 감춘다(2026-10-31 사용자 "왜 애니메이션, 경계는 뭐고").
-          if(hasOutpaint){
-            const ox=dx+(widePlate.naturalWidth-widePlate.naturalHeight*16/9)/2*k,ow=widePlate.naturalHeight*16/9*k;
-            if(!_titleVideo.error&&_titleVideo.readyState>=2){
-              // 영상 가장자리 14%를 확장판으로 서서히 넘겨 밝기 단차가 선으로 보이지 않게 한다.
-              const vw=Math.max(1,Math.round(ow)),vh=Math.max(1,Math.round(dh));
-              if(!_titleVideoFade||_titleVideoFade.width!==vw||_titleVideoFade.height!==vh){_titleVideoFade=document.createElement('canvas');_titleVideoFade.width=vw;_titleVideoFade.height=vh;}
-              const fc=_titleVideoFade.getContext('2d');fc.globalCompositeOperation='source-over';fc.clearRect(0,0,vw,vh);fc.drawImage(_titleVideo,0,0,vw,vh);
-              const g=fc.createLinearGradient(0,0,vw,0);g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(.14,'rgba(0,0,0,1)');g.addColorStop(.86,'rgba(0,0,0,1)');g.addColorStop(1,'rgba(0,0,0,0)');
-              fc.globalCompositeOperation='destination-in';fc.fillStyle=g;fc.fillRect(0,0,vw,vh);fc.globalCompositeOperation='source-over';
-              cx.drawImage(_titleVideoFade,ox,dy,ow,dh);
-            }
-            const band=Math.max(24,ow*0.035);
-            for(const sx of [ox,ox+ow]){
-              for(let i=0;i<4;i++){
-                const bw=band*(1-i*0.22);
-                cx.save();cx.globalAlpha=fadeIn*0.55;cx.beginPath();cx.rect(sx-bw,0,bw*2,h);cx.clip();
-                cx.filter='blur('+Math.round(6+i*5)+'px)';cx.drawImage(widePlate,dx,dy,dw,dh);cx.restore();
-              }
-            }
-          }
-        }else{
-          cx.textAlign='center';cx.textBaseline='middle';
-          cx.font="700 72px 'Cinzel Decorative','Cinzel',Georgia,serif";
-          cx.fillStyle='#b62116';cx.fillText('EXODUSER',w/2,h*0.42);
-        }
-        cx.restore();
         rafId=requestAnimationFrame(titleLoop);
       }
       titleLoop();return;
@@ -4842,7 +4717,7 @@ function showCharGate(charId,storySeen=false){
   function nextPhase(){
     clearInterval(blinkId);cancelAnimationFrame(rafId);
     _titleUI.style.display='none';
-    _titleVideo.pause();
+    _titleScene.stop();
     hideFDGScreen();
     content.style.opacity='0';
     cx.clearRect(0,0,cv.offsetWidth,cv.offsetHeight);
@@ -4854,8 +4729,7 @@ function showCharGate(charId,storySeen=false){
 
   function endSplash(){
     done=true;clearInterval(blinkId);cancelAnimationFrame(rafId);
-    document.removeEventListener('visibilitychange',syncTitlePlayback);
-    _titleVideo.pause();_titleVideo.removeAttribute('src');_titleVideo.load();
+    _titleScene.destroy();
     hideFDGScreen();
     overlay.style.opacity='0';
     overlay.style.pointerEvents='none';

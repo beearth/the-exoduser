@@ -3,6 +3,8 @@
   'use strict';
   const CUTS=Object.freeze([0,4.041667,12.75,17.291667,27.791667,46.291667,56.291667,69.291667,76.291667,78.041667,80.291667,84.791667,87.791667,90.791667,95.791667,102.791667,109.291667]);
   function create({video,getMusic,onEnded=()=>{},onError=()=>{},onState=()=>{}}){
+    const offset=Number(video.dataset?.timingOffset);
+    const cuts=CUTS.slice(1).map(t=>t+(Number.isFinite(offset)?offset:0));
     let active=true,started=false,playing=false,music=null,voiceGain=1,musicGain=.22;
     let fadeTimer=null,mixStarted=false;
     const listeners=[];
@@ -63,7 +65,7 @@
       stop,
       next(){
         if(!active||!started)return;
-        const next=CUTS.find(t=>t>video.currentTime+.05);
+        const next=cuts.find(t=>t>video.currentTime+.05);
         if(next===undefined){finish();return;}
         video.currentTime=next;
       },

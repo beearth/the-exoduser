@@ -13,7 +13,8 @@
 @media(min-aspect-ratio:2001/1000){
   .fullscreen-wide-plate[data-wide-ready="true"]{display:block}
   #csWideArt{z-index:0;filter:saturate(.96) brightness(.82)}
-  #lobbyWideArt{z-index:0}
+  #lobby{isolation:isolate}
+  #lobbyWideArt{z-index:0} /* 확장 배경은 원본 영상·소환체·UI 뒤에 둔다. */
   #lobbyAmbientVideo[data-wide-video="true"]{z-index:1}
   #lobbyAncestorSprite,#lobbyAncestorShadow{z-index:2}
   #charVisualPop #csSceneVid[data-wide-video="true"]{z-index:1}
@@ -22,7 +23,7 @@
     -webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)!important;mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)!important}
   #charVisualPop:has(#csWideArt[data-wide-ready="true"]) #csPortrait,
   #lobby:has(>#lobbyWideArt[data-wide-ready="true"]) #lobbyCharKeyart{visibility:hidden}
-  #gateWideArt{z-index:-1}
+  #gateWideArt{display:none!important} /* 승인된 첫 화면은 검은 배경+로고. 확장 동굴 그림(문 조각 포함)을 쓰지 않는다 (2026-10-31 사용자 "문 삐져나온 건 뭐냐") */
   #charVisualPop.release-locked #csWideArt{filter:grayscale(.8) brightness(.45)}
   .cin-img img[data-wide-art="outpaint"],.cin-gate>img[data-wide-art="outpaint"]{object-fit:cover;object-position:center}
 }
