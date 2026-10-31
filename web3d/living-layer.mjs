@@ -118,6 +118,8 @@ export async function install(read){
     const hill=s.hill,t=s.tile;waterUniforms.ramp.value.set(hill.rampX0*t,hill.rampX1*t,hill.rampY*t,0);waterUniforms.rampHalf.value.set(hill.rampHalf0*t,hill.rampHalf1*t);waterUniforms.band.value.set(hill.inner,hill.outer);
     let visibleWater=0;for(const water of waterMeshes){const visible=water.x+water.w/2>view.x&&water.x-water.w/2<view.x+view.w&&water.y+water.h/2>view.y&&water.y-water.h/2<view.y+view.h;water.mesh.visible=visible;if(visible)visibleWater++;water.mesh.onBeforeRender=()=>{waterUniforms.mode.value=water.mode;waterUniforms.center.value.set(water.x,water.y);waterUniforms.radii.value.set(water.mode===0?hill.rx*t:water.w/2,water.mode===0?hill.ry*t:water.h/2);waterUniforms.liquid.value=water.texture||source;waterUniforms.flip.value=water.flip||1;waterMaterial.uniformsNeedUpdate=true;};}
     mapLook.draw(ctx,s,view);
+    // Already shaded cold forest: outside-only mask, after the terrain dimmer.
+    forest.draw(ctx,s,view);
     renderer.render(scene,camera);canvas._glVer=(canvas._glVer||0)+1;
     ctx.save();ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';ctx.drawImage(canvas,view.x,view.y,view.w,view.h);ctx.restore();
     ghosts.draw(ctx,s,view);
@@ -127,7 +129,7 @@ export async function install(read){
   let currentState;
   const active=s=>enabled&&s.G.stage===0&&!s.G._bossArena;
   const api={draw:(ctx,view)=>{try{draw(ctx,read(),view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D living layer]',error);}},
-    surface:(ctx,view)=>{const s=currentState=read();if(!active(s))return;try{const low=proxy||s.quality==='low',w=Math.max(1,Math.round(view.pw*(low?.65:1))),h=Math.max(1,Math.round(view.ph*(low?.65:1)));if(canvas.width!==w||canvas.height!==h)renderer.setSize(w,h,false);forest.draw(ctx,s,view);relief.surface(ctx,s,view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D surface]',error);}},
+    surface:(ctx,view)=>{const s=currentState=read();if(!active(s))return;try{const low=proxy||s.quality==='low',w=Math.max(1,Math.round(view.pw*(low?.65:1))),h=Math.max(1,Math.round(view.ph*(low?.65:1)));if(canvas.width!==w||canvas.height!==h)renderer.setSize(w,h,false);relief.surface(ctx,s,view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D surface]',error);}},
     beginObject:(ctx,o,m)=>{const s=currentState||read();return active(s)?relief.beginObject(ctx,o,m,s):false;},
     snapshot:()=>({...stats,...relief.snapshot(),...forest.snapshot(),...ghosts.snapshot(),enabled,error:api.error||null}),setEnabled:value=>{enabled=!!value;},setGhostsEnabled:value=>ghosts.setEnabled(value),canvas};
   return api;
