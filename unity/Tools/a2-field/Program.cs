@@ -57,7 +57,7 @@ class Program
             foreach(int width in new[]{1920,3840})
             {
                 int outside=0;double minHit=1e9,maxHit=-1e9;
-                for(int i=0;i<cameras.GetLength(0);i++)foreach(float raised in new[]{0f,.9f})foreach(int sx in new[]{-1,1})foreach(int sy in new[]{-1,1})
+                for(int i=0;i<cameras.GetLength(0);i++)foreach(float raised in new[]{0f,1.1f})foreach(int sx in new[]{-1,1})foreach(int sy in new[]{-1,1})
                 {
                     double cx=cameras[i,0],cz=cameras[i,1]+lookAhead-16.5*cs,cy=(float)height.Invoke(field,new object[]{cameras[i,0],cameras[i,1]})+raised+16.5*sn;
                     double dx=sx*(width/1080.0)*tan,dy=-sn+sy*cs*tan,dz=cs+sy*sn*tan,low=0,high=300;
@@ -77,6 +77,18 @@ class Program
                 register.Invoke(field,new object[]{new float[]{39,baseY+.5f,-51,41,baseY+.5f,-51,39,baseY+.5f,-49,41,baseY+.5f,-49},new int[]{0,2,1,1,2,3}});
                 Check((float)height.Invoke(field,new object[]{40f,-50f})>baseY+.4f,"낮은 목질을 관통하지 않고 위에 접지");
             }
+            // 실제 목교에서 재현된 0.16u 격자 사이의 얇은 널빤지: 격자 점에 정점이 없어도 접지해야 한다.
+            var deckField=Activator.CreateInstance(type,new object[]{data});
+            float deckBase=(float)height.Invoke(deckField,new object[]{40.075f,-50f}),deckY=deckBase+.3f;
+            var deck=type.GetMethod("RegisterDeckSurface");
+            var thin=new float[]{40.05f,deckY,-50.1f,40.10f,deckY,-50.1f,40.05f,deckY,-49.9f,40.10f,deckY,-49.9f};
+            var quad=new int[]{0,2,1,1,2,3};
+            if(deck==null)register.Invoke(deckField,new object[]{thin,quad});else deck.Invoke(deckField,new object[]{thin,quad,deckY+.1f});
+            Check(Math.Abs((float)height.Invoke(deckField,new object[]{40.075f,-50f})-deckY)<.005f,"16cm 격자 사이 5cm 널빤지의 실제 표면 접지");
+            Check(Math.Abs((float)height.Invoke(deckField,new object[]{40.12f,-50f})-deckY)<.005f,"널빤지 틈 2cm는 발 접촉 범위로 잇기");
+            Check((float)height.Invoke(deckField,new object[]{40.22f,-50f})<deckY-.2f,"발 접촉 범위 밖을 보행판으로 확장하지 않기");
+            if(deck!=null){var rail=(float[])thin.Clone();for(int i=1;i<rail.Length;i+=3)rail[i]=deckY+.8f;deck.Invoke(deckField,new object[]{rail,quad,deckY+.1f});}
+            Check(deck!=null&&Math.Abs((float)height.Invoke(deckField,new object[]{40.075f,-50f})-deckY)<.005f,"목교 난간은 보행판 높이에서 제외");
             var cover=type.GetMethod("GroundCover");
             Check(cover!=null,"구역 단위 연속 지면 식생 사용");
             if(cover!=null)
@@ -86,6 +98,20 @@ class Program
                 Check(Cover(-5,-40)>.5f,"외곽 숲의 낮은 식생 연속");
                 double total=0;for(int y=0;y<20;y++)for(int x=0;x<20;x++)total+=Cover(30+x,-60+y);
                 Check(total/400>.3,"중간 전투구역 주변의 연속 바닥 질량 "+total/400);
+            }
+            if(args.Length>1)
+            {
+                using var model=JsonDocument.Parse(File.ReadAllText(args[1]));var mr=model.RootElement;
+                var xyz=JsonSerializer.Deserialize<float[]>(mr.GetProperty("vertices").GetRawText());var indices=JsonSerializer.Deserialize<int[]>(mr.GetProperty("triangles").GetRawText());
+                var originalModel=Activator.CreateInstance(type,new object[]{data});var addDeck=type.GetMethod("RegisterDeckSurface");
+                addDeck.Invoke(originalModel,new object[]{xyz,indices,mr.GetProperty("ceiling").GetSingle()});
+                float maxSupport=0;foreach(var p in mr.GetProperty("samples").EnumerateArray())
+                {
+                    float h=(float)height.Invoke(originalModel,new object[]{p.GetProperty("worldX").GetSingle(),p.GetProperty("worldZ").GetSingle()});
+                    h=Math.Max(h,p.GetProperty("actorY").GetSingle());maxSupport=Math.Max(maxSupport,Math.Abs(h-p.GetProperty("actualTop").GetSingle()));
+                }
+                Check(mr.GetProperty("maxSourceDifference").GetDouble()<.001,"원형FBX와실제Unity15점 좌표대조 1mm미만 "+mr.GetProperty("maxSourceDifference"));
+                Check(maxSupport<.035f,"동일목교15점의원형삼각형접지 3.5cm미만 "+maxSupport);
             }
         }
         Environment.ExitCode=failures==0?0:1;

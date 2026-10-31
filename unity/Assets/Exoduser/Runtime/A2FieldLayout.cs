@@ -23,6 +23,9 @@ namespace Exoduser.UnityPort
         const float SurfaceStep=.16f;
         float[] surfaces;
         float[] terrainSamples;
+        readonly System.Collections.Generic.List<DeckTriangle> deckTriangles=new System.Collections.Generic.List<DeckTriangle>();
+        float deckMinX=float.PositiveInfinity,deckMaxX=float.NegativeInfinity,deckMinZ=float.PositiveInfinity,deckMaxZ=float.NegativeInfinity;
+        struct DeckTriangle { public float ax,ay,az,bx,by,bz,cx,cy,cz,inverse,minX,maxX,minZ,maxZ; }
         public A2FieldLayout(MapData data)
         {
             this.data=data;tile=data.tileSize/100f;
@@ -69,10 +72,13 @@ namespace Exoduser.UnityPort
             float along=Math.Abs(A2ForestLayout.Along(x,z)),across=Math.Abs(A2ForestLayout.Across(x,z));
             float deck=(1-Smooth(Clamp((along-3.8f)/.8f,0,1)))*(1-Smooth(Clamp((across-1.4f)/.3f,0,1)));
             ground=Math.Max(ground,Lerp(ground,.12f,deck));
-            if(surfaces==null||x<0||x>80||z>0||z< -80)return ground;
-            float u=x/SurfaceStep,v=-z/SurfaceStep;int ix=Math.Min((int)u,SurfaceCells-2),iy=Math.Min((int)v,SurfaceCells-2);
-            float a=Surface(ix,iy),b=Surface(ix+1,iy),c=Surface(ix,iy+1),d=Surface(ix+1,iy+1);
-            return Math.Max(ground,Lerp(Lerp(a,b,u-ix),Lerp(c,d,u-ix),v-iy));
+            if(surfaces!=null&&x>=0&&x<=80&&z<=0&&z>=-80)
+            {
+                float u=x/SurfaceStep,v=-z/SurfaceStep;int ix=Math.Min((int)u,SurfaceCells-2),iy=Math.Min((int)v,SurfaceCells-2);
+                float a=Surface(ix,iy),b=Surface(ix+1,iy),c=Surface(ix,iy+1),d=Surface(ix+1,iy+1);
+                ground=Math.Max(ground,Lerp(Lerp(a,b,u-ix),Lerp(c,d,u-ix),v-iy));
+            }
+            return DeckHeight(x,z,ground);
         }
         float Surface(int x,int y)
         {
@@ -124,6 +130,48 @@ namespace Exoduser.UnityPort
                     int n=y*SurfaceCells+x;if(float.IsNaN(surfaces[n])||height>surfaces[n])surfaces[n]=height;
                 }
             }
+        }
+        // 목교의 얇은 널빤지는 16cm 격자에 투영하지 않고 원형 삼각형을 그대로 조회한다.
+        // ceiling은 해당 모델의 상판 상한이며 높은 난간을 발판으로 등록하지 않는다.
+        public void RegisterDeckSurface(float[] xyz,int[] indices,float ceiling)
+        {
+            for(int i=0;i<indices.Length;i+=3)
+            {
+                int a=indices[i]*3,b=indices[i+1]*3,c=indices[i+2]*3;
+                float ax=xyz[a],az=xyz[a+2],bx=xyz[b],bz=xyz[b+2],cx=xyz[c],cz=xyz[c+2];
+                float det=(bz-cz)*(ax-cx)+(cx-bx)*(az-cz);
+                if(Math.Abs(det)<.000001f||Math.Max(xyz[a+1],Math.Max(xyz[b+1],xyz[c+1]))>ceiling)continue;
+                float minX=Math.Min(ax,Math.Min(bx,cx)),maxX=Math.Max(ax,Math.Max(bx,cx)),minZ=Math.Min(az,Math.Min(bz,cz)),maxZ=Math.Max(az,Math.Max(bz,cz));
+                deckTriangles.Add(new DeckTriangle{ax=ax,ay=xyz[a+1],az=az,bx=bx,by=xyz[b+1],bz=bz,cx=cx,cy=xyz[c+1],cz=cz,inverse=1/det,minX=minX,maxX=maxX,minZ=minZ,maxZ=maxZ});
+                deckMinX=Math.Min(deckMinX,minX);deckMaxX=Math.Max(deckMaxX,maxX);deckMinZ=Math.Min(deckMinZ,minZ);deckMaxZ=Math.Max(deckMaxZ,maxZ);
+            }
+        }
+        bool DeckSample(float x,float z,out float height)
+        {
+            height=float.NegativeInfinity;
+            for(int i=0;i<deckTriangles.Count;i++)
+            {
+                var t=deckTriangles[i];if(x<t.minX-.0001f||x>t.maxX+.0001f||z<t.minZ-.0001f||z>t.maxZ+.0001f)continue;
+                float u=((t.bz-t.cz)*(x-t.cx)+(t.cx-t.bx)*(z-t.cz))*t.inverse;
+                float v=((t.cz-t.az)*(x-t.cx)+(t.ax-t.cx)*(z-t.cz))*t.inverse,w=1-u-v;
+                if(u<-.0001f||v<-.0001f||w<-.0001f)continue;
+                height=Math.Max(height,u*t.ay+v*t.by+w*t.cy);
+            }
+            return !float.IsNegativeInfinity(height);
+        }
+        static readonly float[,] FootprintDirections=new float[,]{{1,0},{.70710678f,.70710678f},{0,1},{-.70710678f,.70710678f},{-1,0},{-.70710678f,-.70710678f},{0,-1},{.70710678f,-.70710678f}};
+        float DeckHeight(float x,float z,float ground)
+        {
+            if(deckTriangles.Count==0||x<deckMinX-.06f||x>deckMaxX+.06f||z<deckMinZ-.06f||z>deckMaxZ+.06f)return ground;
+            float top;if(DeckSample(x,z,out top))return Math.Max(ground,top);
+            // 실제 발의 작은 접촉 폭으로만 판자 틈을 잇는다. 이미 표면이 있으면 이웃 최대값을 섞지 않는다.
+            for(int ring=1;ring<=3;ring++)
+            {
+                float sum=0;int hits=0;
+                for(int j=0;j<8;j++)if(DeckSample(x+FootprintDirections[j,0]*ring*.02f,z+FootprintDirections[j,1]*ring*.02f,out top)){sum+=top;hits++;}
+                if(hits>0)return Math.Max(ground,sum/hits);
+            }
+            return ground;
         }
         public bool TreeSite(float x,float z,float radius) { return Distance(x,z)<-radius-.6f; }
         public static readonly float[,] Regions=new float[,]{{33,-70},{53,-61},{22,-59},{40,-50},{16,-40},{41,-35},{65,-38},{40,-25},{25,-19},{58,-17},{40,-7}};

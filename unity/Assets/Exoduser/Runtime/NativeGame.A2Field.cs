@@ -48,6 +48,9 @@ namespace Exoduser.UnityPort
             var pixels=new Color[40000];
             for(int y=0;y<200;y++)for(int x=0;x<200;x++)pixels[y*200+x]=new Color(.5f+a2Field.Distance((x+.5f)*.4f,-(y+.5f)*.4f)/40,0,0,1);
             sdf.SetPixels(pixels);sdf.Apply(false,true);a2FieldSoil.SetTexture("_FieldSdf",sdf);
+            var cover=new Texture2D(256,256,TextureFormat.RGBA32,false,true){name="A2 전투중심을 비운 연결 이끼 지면",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
+            var coverPixels=new Color[256*256];for(int y=0;y<256;y++)for(int x=0;x<256;x++)coverPixels[y*256+x]=new Color(a2Field.GroundCover((x+.5f)/256*80,-(y+.5f)/256*80),0,0,1);
+            cover.SetPixels(coverPixels);cover.Apply(false,true);a2FieldSoil.SetTexture("_FieldCover",cover);
             A2FieldOuterMass();A2FieldLandmarks();A2FieldConnections();A2FieldGround();A2FieldGroundCover();A2FieldAtmosphere();
             var aa=r3Cam.GetUniversalAdditionalCameraData();aa.antialiasing=AntialiasingMode.SubpixelMorphologicalAntiAliasing;aa.antialiasingQuality=AntialiasingQuality.High;
             aa.requiresDepthTexture=true;r3Cam.depthTextureMode|=DepthTextureMode.Depth;
@@ -108,7 +111,8 @@ namespace Exoduser.UnityPort
                     float zz=z+Mathf.Sin(row*1.7f+layer*1.3f)*.8f;
                     if(!a2Field.TreeSite(x,zz,1.1f))continue;
                     float scale=.65f+.15f*Mathf.Sin(row*2.13f+layer*.7f);
-                    var tree=A2Module(layer==0&&(row%3!=1)?"Hollow_Loft_Tree":"Ancient_Rotten_Tree",x,zz,layer==0?.48f:scale,1.2f+layer*.16f+.2f*Mathf.Sin(row*.9f),layer==0?.48f:scale,row*137+layer*71+side*23);
+                    bool opening=layer==0&&row%3!=1;float treeYaw=opening?-25+35*Mathf.Sin(row*1.7f+side*.5f):row*137+layer*71+side*23;
+                    var tree=A2Module(opening?"Hollow_Loft_Tree":"Ancient_Rotten_Tree",x,zz,layer==0?.48f:scale,1.2f+layer*.16f+.2f*Mathf.Sin(row*.9f),layer==0?.48f:scale,treeYaw);
                     if(tree!=null)tree.name="A2 外곽 "+side+"/"+layer+"/"+row;
                     if(layer==0)
                     {
@@ -137,9 +141,10 @@ namespace Exoduser.UnityPort
             {
                 float x=c.x/100,z=-c.y/100,r=Mathf.Min(c.rx,c.ry)/100;
                 if(r<.45f)continue;
-                var tree=r>=1.2f?A2Module("Hollow_Loft_Tree",x,z,.38f*r,1.1f,.38f*r,index*97):A2Module("Scanned_Stump",x,z,.6f*r,.6f*r,.6f*r,index*97);
+                float treeYaw=r>=1.2f?(x<40?-25:23)+15*Mathf.Sin(index*1.3f):index*97;
+                var tree=r>=1.2f?A2Module("Hollow_Loft_Tree",x,z,.38f*r,1.1f,.38f*r,treeYaw):A2Module("Scanned_Stump",x,z,.6f*r,.6f*r,.6f*r,treeYaw);
                 if(tree!=null)A2FieldDressTree(tree,index);
-                A2FieldRoots(x,z,Mathf.Clamp(r*1.5f,1.6f,3.1f),index*97);index++;
+                A2FieldRoots(x,z,Mathf.Clamp(r*1.5f,1.6f,3.1f),treeYaw);index++;
             }
             // 시작 갈림길의 낮은 목교는 통로와 나란히 놓이며 별도 충돌을 만들지 않는다.
             var bridge=A2Module("Rotten_Wood_Bridge",43.2f,-71.8f,.96f,.55f,.85f,24,.02f);
@@ -181,7 +186,7 @@ namespace Exoduser.UnityPort
             if(a2FieldRootMaterial==null)
             {
                 a2FieldRootMaterial=new Material(Resources.Load<Material>("Art/map/a2/rootrelief/Materials/A2_Root_Cluster_Patch"));
-                foreach(var key in new[]{"_BaseMap","_BumpMap","_RockMap","_AshMap","_RockNormal","_RockRough","_ForestMap","_ForestNormal","_ForestRough","_SoilMap","_SoilNormal","_SoilRough","_RootMap","_RootNormal","_RootRough","_FieldSdf","_FieldMoss","_FieldMossNormal","_FieldMossRough"})
+                foreach(var key in new[]{"_BaseMap","_BumpMap","_RockMap","_AshMap","_RockNormal","_RockRough","_ForestMap","_ForestNormal","_ForestRough","_SoilMap","_SoilNormal","_SoilRough","_RootMap","_RootNormal","_RootRough","_FieldSdf","_FieldCover","_FieldMoss","_FieldMossNormal","_FieldMossRough"})
                     if(a2FieldRootMaterial.HasProperty(key))a2FieldRootMaterial.SetTexture(key,a2FieldSoil.GetTexture(key));
                 foreach(var key in new[]{"_ForestBlend","_ForestTextureMix","_SoilTextureMix","_FullField"})if(a2FieldRootMaterial.HasProperty(key))a2FieldRootMaterial.SetFloat(key,a2FieldSoil.GetFloat(key));
                 a2FieldRootMaterial.SetColor("_ScanColor",new Color(.9f,.8f,.63f,1));
@@ -197,14 +202,14 @@ namespace Exoduser.UnityPort
             }
             foreach(var r in go.GetComponentsInChildren<MeshRenderer>())r.sharedMaterial=a2FieldRootMaterial;A2FieldRegister(go);
         }
-        void A2FieldRegister(GameObject go)
+        void A2FieldRegister(GameObject go,bool deck=false)
         {
             foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
             {
                 var mesh=mf.sharedMesh;if(!mesh.isReadable){Debug.LogError("[A2 필드] 접지 표면 읽기 누락 "+go.name);continue;}
                 var vertices=mesh.vertices;var xyz=new float[vertices.Length*3];
                 for(int i=0;i<vertices.Length;i++){var p=mf.transform.TransformPoint(vertices[i]);xyz[i*3]=p.x;xyz[i*3+1]=p.y;xyz[i*3+2]=p.z;}
-                a2Field.RegisterSurface(xyz,mesh.triangles);
+                if(deck)a2Field.RegisterDeckSurface(xyz,mesh.triangles,go.transform.position.y+.4f);else a2Field.RegisterSurface(xyz,mesh.triangles);
             }
         }
         void A2FieldDressTree(GameObject tree,int variation)

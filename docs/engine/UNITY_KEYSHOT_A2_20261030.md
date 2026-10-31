@@ -1,3 +1,27 @@
+## R4 지면 질량/거목 방향 재제작 — 2026-10-31
+
+| 항목 | 현재 코드 계약/실제검수 전 |
+|---|---|
+| 전환 | R3 전역1.05u 알파식생산포·8u식생청크는실제검수FAIL로제거. 기존forest_leaves_02 CC0스캔을유지하며 지면재질의연속질량과원본통행밖목질덤불로복귀. 새이미지생성·유료0 |
+| 구역마스크 | GroundCover(x,z)를80×80u/256² RGBA32 linear/bilinear/clamp `_FieldCover`로전달. 실제보행·수면변경0. 목교/수면·11전투중심을비우는동일순수함수 사용. HellGroundPBR/A2RootSurface·스캔뿌리접합재질에동일Texture연결 |
+| 이끼/재질 | 기존실내부이끼최대.15→`cover×(.48+.35×macro)`. 흙RGB(.55,.48,.36)/뿌리(.60,.48,.32)/낙엽(.47,.38,.24)/이끼(.50,.56,.34). Soil/Root노멀.65와Moss노멀.55. FullField smoothness=lerp(.44−.24×soilRough,.24+.18×(1−mossRough),mossMix). 실제색·광택은다음게임검수대상 |
+| 경계덤불 | 43×43 후보/간격2.2u, staggerX.28sin(row×.81)/Z.25sin(col×.77). SDF거리−2.2..−.45u·비수면만배치. 폭1.25+.15sin(row×1.7+col×.9)/세로.50/원형고사가지3종공유. 주전투안전공간·SourceMap불변/실제개수로그로확인전 |
+| 거목구도 | 근경외곽속빈거목의개구방향을−25+35sin(row×1.7+side×.5)°로정돈. 원본충돌거목은X<40이면−25°/그외23°에15sin(index×1.3)°변화. 높이·XY·충돌경계불변/하부스캔뿌리동일yaw. 먼AncientTree층은기존방향유지. 실제구멍·실루엣검수전 |
+| 원형대조 | 기존FBX 8663정점/16938삼각형의Unity좌표(X=−BlenderX,Z=−BlenderY)를직전실제Unity15점으로검증. 최대원형차.0003256958m/0.326mm. 현재정확접지함수+직전낮은표면최대값으로15점차최대.012486607m/1.25cm. 25순수회귀+원형2항목=27PASS. R4실제Unity/Player재검수대체아님. 선택두번째테스트인자는I: R4-목교-원형.json 데이터셋 |
+| 실행기 | UI소유공식start의선택ForceD3D11 인수인수. CLI SHA68b7a0c7bf27e11f35b699661e466d0f9fcc2c962e61c8d23e8feda59dbddde2/QueueTurn8a00a15e…/AcquireSlot byte동일. 기본/명시DryRun·자기검사PASS·새실제GPU0. 맵후속start에ForceD3D11, 독립batch buildArgs에-force-d3d11 명시. UI제품코드인수0 |
+
+## R3 실제 실패와 R4 목교 접지 전환 — 2026-10-31
+
+| 항목 | 실제 근거/현재 상태 |
+|---|---|
+| R3 actual | a5491d8c0/Editor54388·MCP 자기 경로/144지면청크·565504정점·1095200삼각형·RFloat1024 shore·7셰이더지원 확인. 실제1920 시작/중간/보스·3840보스 촬영. HUD는 RT범위밖/Player검수아님 |
+| 시각 FAIL | 넓어진 뿌리는 개선됐으나 낮은 식생이 전역 산포·검은 조각처럼 반복됨. 큰형태/연결 관점 FAIL 유지. 확산 배치 방법을 접고 바닥 재질과 경계 식생 질량으로 복귀 |
+| 목교 RED | 현재Unity 원형삼각형과 배우Y 독립수직교차15점/최대차0.209757268m. 16cm격자 점 사이의 얇은 판자 누락. 격자3×3최대보간 시안은 최대0.0678180158m 과상승으로 채택0 |
+| R4 접지 | RegisterDeckSurface로 원형삼각형 직접조회. 모델원점Y+.4m 상한으로 높은 난간 제외. 정확한 교차가 없을 때만 반경2/4/6cm·8방향 최초접촉높이평균으로 작은판자틈을 잇는다. 기존 낮은나무/고목은501²·16cm격자/.9m 상한 유지. Core XY/SourceMap 변경0 |
+| 회귀 | 5cm폭 얇은판자·2cm틈·범위밖·난간제외4항목 추가. RED22PASS/3FAIL→현재25PASS. 화면모서리광선의 낮은목질 안전여유는1.1m로 넓혀1920/3840 각64개 실패0. 실제 R4 Unity/Player·15점 재검수 전 |
+| Editor 충돌 | 08:23UTC StreamChunks/Resources.Load→D3D12 TextureUpload에서887a0005/removedReason887a0006. 로그는 VRAM 부족 아님. Editor PID없음/공식stop/잠금없음 확인. 동일API재실행0, 다음실행D3D11. 충돌dump·로그I:SHA보존/원본G:정리. 글로벌HALT 없음·우회0 |
+| 자원/보존 | CPU 재작업 동안 steam-keyshot-a2 예약 공식반환/다음HD2D담당 전달. Editor705파생파일 I보존·Git정확byte복원/guard SHA동일. 전체VISUAL FAIL/공통·Desktop 채택0 |
+
 ## 필드 실제 렌더 부하 기록 — 2026-10-31
 
 | 항목 | 계약 |
