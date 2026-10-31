@@ -480,3 +480,121 @@ G:/blander/blender.exe의 파일 존재를 확인했다. 이번 조사에서 실
 담당 09:19 기록상 두 거목 생성은 FAIL/게임 인수0이며, PC Unity/Player 실행은 종료 안전 확인 전 대기다. 이번 연구에서도 Unity·Player·Blender를 새 실행하지 않았고, 기존 파일·세이브·잠금·유료 한도를 바꾸지 않았다. 이 상태를 해제하거나 최신 후보를 실게임 검수했다는 의미는 없다.
 
 **제작 판단:** 우리에게 필요한 작업은 승인 콘셉트의 큰 형태를 직접 조형하고 실제 카메라에서 채색·접합·빛·동작을 계속 맞추는 것이다. AI 생성/스캔은 적합한 초벌·재료로 쓸 수 있지만, 장면과 어긋난 형태를 최종 품질로 만들어 주지는 않는다. 이번 완료 범위는 제작 분석과 기존 문서 갱신이며, A2/보스의 시각 판정은 실제 후보 검수 전까지 승격하지 않는다.
+
+## 23. 설치 파일 직접 분석 — 맵·보스 모션·임팩트·컬러
+
+사용자 최신 범위: NRFTW의 전체 게임 설계나 캐릭터 외형을 따라 만드는 것이 아니라, 마음에 든 **맵 제작·보스 모션·임팩트·컬러/빛의 표현 방식**을 배운다. 물약 제작·경제·서사·전투 규칙 이식은 이번 범위에서 제외한다. 아래 수치는 설치 BuildID **22928553**의 읽기 전용 파일 조사 결과다.
+
+### 23.1 실제로 읽은 파일과 해석 검증
+
+- 설치 루트: E:/steam/steamapps/common/NoRestForTheWicked. 게임 설치본·세이브·설정 변경0, 새 게임/Unity/Blender 실행0.
+- aa/settings.json: Addressables **2.6.0**. catalog.bin **8,486,363 bytes**를 Unity 공식 동일 버전 패키지의 공개 카탈로그 구조와 대조하여 파싱했다.
+- 카탈로그: 키 **88,969**, 리소스 위치 **48,250**, 씬 위치 **2,078**. 위치는 internalId+type 조합 기준이다. FBX의 GameObject·AnimationClip·Avatar처럼 한 경로에 다른 타입의 하위 자산이 있을 수 있으므로 파일/모델/완성 콘텐츠 수로 해석하지 않는다.
+- 의존 위치 오프셋 오류 **0**. world_scenes의 실제 SceneHashes **2,077개**는 모두 내부 CAB 파일과 대응했다. 나머지 static 씬과 월드 씬을 구분한다.
+- 번들 **11개**의 UnityFS 헤더·블록/파일 목차를 읽었다. 헤더 revision은 모두 **6000.1.15f1**. 메타데이터 목차는 LZ4 계열 압축이며, 조사한 본문 블록은 모두 비압축이었다. 큰 파일을 통째로 풀지 않고 필요한 범위만 읽었다.
+- 번들 선언 크기, 실제 크기, 본문 경계와 내부 파일 경계를 11개 전부 대조했다. 숲 표본의 GameObject/Transform/MeshFilter/MeshRenderer/Light, 모션/클립, 효과 프리팹 구성과 대표 재질은 객체 크기와 해석 소비 바이트가 일치했다.
+- 일부 고급 조명 컬렉션의 managed-reference 본문과 packed Mesh 본문은 완전히 해석하지 못했다. 해당 값·정점 수·셰이더 작동 수식은 확정하지 않는다.
+
+[Unity 공식 번들 구조 설명](https://docs.unity3d.com/6000.0/Documentation/Manual/assetbundles-file-format.html), [공식 Addressables 2.6.0 소스 패키지](https://packages.unity.com/com.unity.addressables/-/com.unity.addressables-2.6.0.tgz)를 포맷 기준으로 삼았다. 직렬화 읽기는 [UnityPy의 SerializedFile 구현](https://raw.githubusercontent.com/K0lb3/UnityPy/master/UnityPy/files/SerializedFile.py)·[ObjectReader 구현](https://raw.githubusercontent.com/K0lb3/UnityPy/master/UnityPy/files/ObjectReader.py)과 대조하고, 공통 타입 문자열은 [AssetStudio의 표](https://raw.githubusercontent.com/Perfare/AssetStudio/master/AssetStudio/CommonString.cs)를 참고했다. 도구 설치나 실행 파일 디컴파일은 하지 않았다.
+
+| 주요 물리 번들 | 실제 크기 bytes | 의미와 주의 |
+|---|---:|---|
+| world_scenes_all | 20,580,439,296 | 많은 월드 씬/공유 자원을 담는 물리 묶음. 하나의 거대 씬이나 동시 상주량이 아님 |
+| pooled_prefabs_assets_all | 10,852,288,624 | 효과·배우 등 프리팹과 공유 자원. 이름만으로 모든 객체의 실제 풀링/동시 실행을 증명하지 않음 |
+| duplicateassetisolation_assets_all | 6,993,370,736 | 공유 메시·재질·애니메이션 등 참조 확인. 모든 자산이 중복 제거됐다는 뜻은 아님 |
+| qdb_assets_all | 1,396,531,376 | 청크/레이어/액션 등 데이터 자산의 연결점 |
+| static_scenes_all | 631,725,568 | static 씬 묶음 |
+| world_assets_all | 329,725,136 | 월드 관련 프리셋·효과 등의 데이터/자산 |
+
+### 23.2 맵은 청크 안의 여러 제작 레이어로 나뉜다
+
+카탈로그의 타입으로 WorldDataAsset **2**, WorldAreaDataAsset **20**, WorldChunkDataAsset **62**, NuggetDataAsset **1,331**, WorldLayerDataAsset **2,076**를 확인했다. 이는 포함된 리소스 위치의 타입 집계이며, 플레이 가능한 지역/맵의 개수·동시 로드 개수와 다르다.
+
+직접 표본으로 고른 경로는 Assets/worlds/isolaSacra/marinWoods/marinWoodsA/다. 이 안에는 artMarinWoodsCentral·artOpeningArea·artGiantStump·artSacramentBridge·artWatermill 같은 장소별 아트 씬과, lighting·effects·audio·enemies·interactives·loot 씬이 따로 있다. 같은 공간에도 default/harvester/prisoner 등의 상태별 상호작용 레이어가 존재한다. marinWoodsA.chunk의 참조가 실제 데이터 자산 객체로 이어지는 것도 확인했다.
+
+**배울 제작법:** 큰 맵의 완성품을 한 번에 생성하는 대신, 고정되는 공간 조형·조명·효과·상태별 물체를 나눠 같은 지역에서 조립/수정한다. 물리 번들이 큰 것과 제작 단위가 큰 것은 다르다. EXODUSER에서는 기존 SourceMap과 충돌·동선은 유지하고, 기존 담당의 환경 모듈·접합·조명·VFX 레이어를 활용한다. 새 청크 스트리밍 엔진이나 원본 맵 재설계를 먼저 만들 이유는 없다.
+
+### 23.3 숲 한 구간의 실제 조립 방법
+
+표본 씬: Assets/worlds/isolaSacra/marinWoods/marinWoodsA/artMarinWoodsCentral/artMarinWoodsCentral.unity. 내부 CAB-c35779c63875f832652154361c7179f6과 SceneHashes로 대응시켰다.
+
+| 표본에서 확인 | 수치/내용 | 우리 제작에 적용할 방법 |
+|---|---|---|
+| 객체 구성 | GameObject 2,037 / Transform 2,037 / MeshFilter 1,242 / MeshRenderer 1,209 | 큰 형태용 모듈과 접합용 표면을 조립. 이 수치를 우리의 개수 목표·드로콜 목표로 사용하지 않음 |
+| 메시 재사용 | MeshFilter 1,242개 중 유효 참조 1,241개가 고유 메시 참조 191개를 사용. 빈 참조 1개는 제외 | 대표 거목·뿌리·강둑·벽 등 키트를 만들고 배치별 크기/기울기/접합을 조정. 무조건 고유 모델을 늘릴 필요 없음 |
+| 공유 데칼 메시 | decalBox라는 메시 참조를 328개 MeshFilter가 공유. 이름·참조는 확인, 기하 본문은 미해석 | dirt/leaf/moss/road-edge를 나누고 접합과 표면 흐름에 맞춰 사용. 데칼만으로 나무/뿌리 부피를 대신하지 않음 |
+| 표면 연결의 실물 이름 | dirtTrimGroundDry_A_4, decalDirtMixA, marinLeafDecalC, leavesDecalB, decalMossFloorB, marinRoadEdgeDecalH, decalRedBrickRoadE 등 | 흙·낙엽·이끼·길 가장자리의 서로 다른 접합 표현을 별도로 제작하고 위치별로 연결 |
+| 큰 조형의 실물 이름 | hugeStumpBigBModel, hugeStumpMediumSmallDModel, fortressSetRubble09Model, setWallDetailMedium00Model 등 | 큰 밑동/바위/폐허 조형이 먼저 있고 그 사이를 중간 덩어리·데칼이 잇는 방식 |
+| 가림 처리 단서 | MeshRenderer 1,209개 중 저장 m_Fadable=true 605개, FaderGroup/Bounds 관련 구성 | 카메라와 영웅 사이의 가림을 제작 때 함께 다룸. 실제 페이드 동작/우선순위는 실행 검증 전 미확정 |
+| 지형 표현 단서 | 이 표본은 다수 MeshFilter/MeshRenderer를 포함. LightmapIndex는 해당 렌더러 전부 65535 | 이 씬에서 Unity Terrain/일반 라이트맵만으로 화면을 만든다는 주장은 근거 부족. 커스텀 조명·다른 레이어와 함께 봐야 함 |
+
+보행용 충돌 메시도 별도로 발견했다. 시각 메시와 충돌을 같은 세부 수준으로 강제하지 않는 제작 분리가 보이지만, 전체 월드의 이동/물리 알고리즘까지 해석한 것은 아니다.
+
+우리 A2의 다음 제작물은 기존 §22처럼 **대표 거목→굵은 뿌리→지면/강둑→접합 데칼→표면/조명** 순서다. 참고 게임의 데칼Box·메시·텍스처는 반입하지 않고 자체 키트로 같은 역할을 만든다.
+
+### 23.4 컬러는 지역 조명·대상별 빛·재질·효과 변화의 조합이다
+
+같은 지역의 lighting/lighting.unity는 내부 CAB-7bc8ebd978a6c92e952b1191fd88d95d에 대응한다. 이 레이어에는 저장 Light 객체 **929개**, MeshRenderer **420개**, ParticleSystem **44개**가 있다. 광원은 넓은 지역·조건·가림/활성 구성에 걸친 저장 객체이며, **한 화면에서 929개를 동시에 계산한다는 의미가 아니다.** 등록된 m_Enabled만으로 런타임 가시/활성 여부를 확정하지 않는다.
+
+직접 읽은 광원 이름에는 areaLightWoodsMainLight, areaLightWoodsCentralRim, areaLightMainWallCharacterOnly, areaLightRimFeathers, pointLightFillClimbable 등이 있다. 이름은 의도에 대한 단서이며 실제 대상 마스킹의 실행 증명은 아니다. 주변색·외곽광·특정 면·인물·등반 위치의 읽힘을 나누어 다루는 제작 관점을 배울 수 있다.
+
+또한 표본의 실제 컴포넌트 타입에는 AffectingObjectTypes, MainLightColorTint, RimIntensity, RoughnessOffset, DiffuseReduction, VolumetricFogEnabled 등 전용 필드가 있다. Renderer/Material에도 Moon 전용 필드가 있어, 표준 Unity 조명 파라미터 숫자를 그대로 옮겨 같은 결과가 난다고 가정할 수 없다.
+
+marinWoodsDawnLighting_new03 / DayLighting_new02 / DuskLighting_new03 / NightLightingTeal 같은 컬렉션 자산이 별도로 연결된다. 카탈로그에는 ColorGrading·Bloom·SCPE.LUT·SCPE.Kuwahara 등의 타입도 존재한다. **포함됨은 확인했지만 현재 활성 여부·실제 최종 컬러·회화풍에 대한 기여도는 확인하지 못했다.** “Kuwahara 하나가 화면의 비결”이라고 결론 내리지 않는다.
+
+**우리 제작 적용:** 승인 A2의 녹황 수면·부패 목질·차가운 원경·따뜻한 횃불을 같은 화면에서 조율한다. 전체 LUT보다 먼저 어떤 면/인물/접점에 어떤 빛이 필요한지 정하고, 지형과 캐릭터의 재질 반응을 맞춘다. 광원 수·원본 RGB·RimIntensity를 복사하지 않는다. §22의 카메라/노출 고정 대조와 실제 Player 검수가 필요하다.
+
+### 23.5 보스 모션은 클립에 전환·보조 레이어·이동 곡선이 붙는다
+
+| 실제 읽은 자산 | 확인된 구조/값 | 해석 한계 |
+|---|---|---|
+| models/characters/bosses/darak/darakMoonAnimatorDefinition.asset | UpperBodyAdditive / FullBodyAdditive 레이어와 마스크 참조 | 모든 공격이 이 레이어를 쓴다는 뜻 아님. 실제 블렌딩·최종 포즈는 실행 영상 필요 |
+| animations/bosses/executioner/executionerShield/attacks/jumpForward.asset | Moon.ClipAnimation 래퍼. 전환/블렌드 설정, Clip 참조, 루트 위치/회전 곡선, Speed 저장값 1 | 원본 런타임의 속도 변경·클립 구간 제한·동작 선택은 미계측 |
+| 해당 jumpForward AnimationClip | m_SampleRate=60, 시작0 / 종료 약4.1000004초. 객체 전체 소비 바이트 일치 | 최종 게임 공격이 항상4.1초라는 뜻 아님. 샘플링60은 게임 FPS 증거 아님 |
+| 해당 래퍼의 이벤트 배열 | Events/WwiseEvents가 이 표본에서는 비어 있음 | 동작 전체에 효과/소리가 없다는 뜻 아님. 별도 액션/시간축에서 실행될 수 있음 |
+
+원본 클립·키프레임·루트 이동 곡선은 내보내지 않았다. **우리에게 필요한 것은 시간에 따른 체중/가속/무기 접점, 클립 전환과 보조 동작의 역할 분리**다. EXODUSER는 기존 Core의 이동/판정/예고 계약을 유지하고 같은 후보의 골격 동작·VFX·소리를 정렬한다. 원본의 루트 이동량·4.1초·전환 기본값을 우리 보스의 전투 상수로 쓰지 않는다.
+
+### 23.6 임팩트는 짧은 핵심과 재질 반응을 층으로 나눈다
+
+직접 읽은 프리팹: Assets/prefabs/effects/impacts/effectImpactDarakMutantSlam.prefab. 이 안의 GameObject **16개**, ParticleSystem **11개**, ParticleSystemRenderer **11개**, MeshRenderer **1개**와 관련 컴포넌트를 참조로 따라가 전체 객체 소비 바이트를 대조했다.
+
+| 실제 하위 구성 | 역할 해석 / 배울 방법 |
+|---|---|
+| glow | 짧은 접점의 빛. 저장 startLifetime은 상수 모드0·약0.1초, 시간에 따른 색/알파 변화 활성, Burst 1개·rateOverTime0. 빨리 나타났다 사라지는 핵심을 별도 제작 |
+| largeSmoke / Dust 여러 개 | 여러 방향/크기/시간의 먼지·연기를 따로 제작하는 구성. 이름만으로 정확한 화면 역할/부하까지 확정하지 않음 |
+| DebrisMesh / debrisColliding / impactSparks | 파편·충돌·스파크 역할의 독립 레이어. 큰 섬광의 크기를 늘리는 대신 재질 반응과 진행 방향을 보강 |
+| decal / taDecalAlpha / taDecalCutout | 바닥 접촉·잔흔에 대응하는 메시/구성 단서. 실제 수명·최종 합성은 별도 검증 |
+| glow 연결 재질 | effectImpactGlowAdditive라는 재질 이름, 저장된 컬러/HDR 관련 속성 및 텍스처 슬롯 확인. 실제 shader pass·blend 수식은 해석하지 않음 |
+
+중요한 구분: glow의 ParticleSystem.lengthInSec는 **5초**지만 개별 파티클 시작 수명은 **0.1초**다. 저장 시스템 길이를 눈에 보이는 섬광 지속시간으로 읽으면 틀린다. 색 변화는 황색 계열에서 붉은 주황 계열로 가는 두 컬러 키와 알파 키4개를 갖지만, 재질·조명·후처리까지 적용된 화면의 최종 색과 같다고 단정하지 않는다.
+
+**우리 제작 적용:** 기존 명중 이벤트에 짧은 접점/무기 궤적/파편/먼지/바닥 잔흔을 각각 연결하고 시간·방향·색·소멸을 따로 조절한다. 참고 프리팹의 파티클11개를 우리 기본 개수로 지정하지 않는다. 일반 타격과 보스 강타의 시각적 크기를 구분하고, 밀집전에서 영웅·예고·Q 신호가 남는 실제 장면으로 검수한다.
+
+### 23.7 EXODUSER의 후속 제작 단위
+
+| 우선 | 기존 담당이 이어갈 제작 단위 | 실제 산출물 / 완료 판단 |
+|---|---|---|
+| 1 | 승인 A2 대표 거목·뿌리·지면/물가 접합 | 큰 조형 키트 + 자체 흙/이끼/낙엽/물가 마스크. 같은 카메라의 전체/1x에서 접합과 깊이 검수 |
+| 2 | 같은 화면의 컬러/광원 역할 분리 | 주광·인물 분리·횃불·원경·수면 반응을 같은 노출로 대조. LUT/블룸은 마지막 마감 |
+| 3 | 기존 보스 대표 공격 한 개 | 리그/포즈/속도 곡선/전환/접점/후속 동작을 실제 게임 연속 영상으로 검수 |
+| 4 | 해당 공격의 임팩트 | 짧은 핵심→파편/먼지→잔흔과 소리의 시간축. 일반/밀집/보스 장면에서 가독성·오버드로 확인 |
+
+새 담당/다중 writer를 띄우거나 현재 PC 실행 대기를 해제하는 지시가 아니다. 기존 제작자·소스·실행 안전 조건과 통합 게이트를 유지한다. 분석 문서를 작업 지시 수신·제작 완료로 세지 않는다.
+
+### 23.8 증거 위치와 조사 한계
+
+출력 루트: I:/EXODUSER-Storage/reference-study/nrftw-20261031/file-analysis/.
+
+| 파일 | 내용 |
+|---|---|
+| ANALYSIS.json | 맵·조명·보스 클립·효과의 확인된 메타데이터와 범위 |
+| bundle-inventory.json | 11개 번들 헤더·블록·내부 파일 목차. 그림/모델 본문 없음 |
+| catalog-locations.json | 카탈로그의 키·경로·타입·의존 위치 복원 |
+| validation.json | 경계 검사, 의존 참조 오류0, SceneHashes 대응, 표본 객체 소비 바이트 검증 |
+| provenance.json | BuildID·catalog/settings SHA256·파싱 포맷 출처·미실행 범위 |
+| addressables-format-provenance.json | 공식 동일 버전 포맷 소스의 URL·SHA·사용 파일 |
+
+셰이더 역어셈블·실행 파일 디컴파일·GPU 프레임 계측·전체 보스/모든 씬 해석은 수행하지 않았다. 특정 장면에서 사용하지 않는 테스트/미사용 자산도 설치본에 포함될 수 있다. 원본 텍스처·모델·클립·셰이더 코드의 추출/재사용/프로젝트 반입은 없으며, Git에는 이 분석 설명과 관련 관리 기록만 남긴다.
+
+**연구 결론:** 맵은 장소별 조립과 접합 표면, 빛은 지역/대상별 역할, 보스는 클립/전환/보조 레이어, 임팩트는 짧은 핵심과 여러 재질 반응으로 나눠 제작한다는 실물 근거를 얻었다. 이 구조를 자체 아트와 기존 전투 계약 안에서 적용하는 것이 다음 단계다. 현재 게임의 미술/동작 PASS를 선언하는 결과는 아니다.
