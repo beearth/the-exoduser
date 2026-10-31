@@ -157,3 +157,6 @@ R7의 `Grip_L` 마커가 있는 새 모델에는 기본 Animator 표본 뒤와 �
 실제 선택 프레임에서 R4 접점지연 핵심FAIL은 해소됐지만, 전체 시각 **RETOUCH**는 유지한다. 큰 판금 명암 묶음·1/2타 하체 이동·2D 발밑 대비는 전사 담당, 임팩트 파지가림은 VFX 후속이다. OS손조작·Mac·장시간 플레이·경사 지형/망토의 모든 관통 상황은 미검증이다. 손가락 없는 리그의 파지 확인은 선택1x 범위이며 전상태 무관통 증명은 아니다. 기존 TM-A 유료 원형을 재생성하거나 새 크레딧을 사용하지 않았다.
 
 R7 현재같은제품의 실제검수·입력보존·전체아트RETOUCH경계는 `UNITY_HERO_RUNTIME_20261030.md`의 R7최종검수와 `I:/EXODUSER-Storage/demo-art/hero/r7-carry-20261031/gate-evidence.json`·`판정.md`를 따른다. 실제보조파지최대.011612mm·발가락고정최대.008815mm, tick827강타피해461/wave1/실제칼끝1.0001164cm이다. 현재M1은23d18d3e23/23이며과거M1대체가아니다.
+
+
+2026-10-31 HD2D 보완: 이 파일의 NativeHeroMotionClock/3D Animator 계약은 유지한다. 같은 NativeHeroMotion.cs에 원본 warrior-bat-swing.js의 순수 NativeHeroSpriteMotion(.85, 일반5틱/E20틱, 회복6/7/8)을 추가했고 기본 픽셀 표현은 실제 Core 상태/남은틱으로9셀을 선택한다. 상세 수치와1344조건 대조는 UNITY_HD2D_RUNTIME_20261031.md의 원본 전사 공격 표시 복원을 따른다. Core나3D모션 길이변경은없다.

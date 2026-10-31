@@ -19,7 +19,7 @@ namespace Exoduser.UnityPort
         const string R3SceneName = "RM1_Slice";
         sealed class R3Late : MonoBehaviour { public System.Action Late; void LateUpdate() { if (Late != null) Late(); } }
         bool r3Loaded, r3Loading, r3Failed; Scene r3Scene; GameObject[] r3Roots;
-        Camera r3Cam; Transform r3Marker; CinemachineCamera r3Vcam; R3Late r3Late;
+        Camera r3Cam; Transform r3Marker; CinemachineCamera r3Vcam; CinemachineBrain r3Brain; R3Late r3Late;
         public bool Remodel3DReady { get { return r3Loaded; } }
         public Camera Remodel3DCamera { get { return r3Cam; } }
 
@@ -53,6 +53,8 @@ namespace Exoduser.UnityPort
             Transform camT = R3Find("Main Camera"), markerT = R3Find("Player Marker"), vcamT = R3Find("CM LOOK-001"), terrT = R3Find("Terrain");
             if (camT == null || markerT == null || terrT == null || terrT.GetComponent<Terrain>() == null) { Debug.LogWarning("[RM-INT] RM-1 scene rig / terrain not found: staying 2D"); r3Failed = true; r3Loading = false; yield break; }
             r3Cam = camT.GetComponent<Camera>(); r3Marker = markerT; r3Vcam = vcamT != null ? vcamT.GetComponent<CinemachineCamera>() : null;
+            r3Brain=r3Cam.GetComponent<CinemachineBrain>();
+            if(NativeHd2D.Enabled&&r3Brain!=null)r3Brain.UpdateMethod=CinemachineBrain.UpdateMethods.ManualUpdate;
             NativeRemodel3D.Ground = terrT.GetComponent<Terrain>();
             var listener = camT.GetComponent<AudioListener>(); if (listener != null) listener.enabled = false;   // the game's own camera keeps the listener
             var markerSprite = markerT.Find("Marker Sprite"); if (markerSprite != null) markerSprite.gameObject.SetActive(false);   // the slice's stand-in sprite: the game's player sprite replaces it
@@ -82,6 +84,7 @@ namespace Exoduser.UnityPort
         void Remodel3DSetActive(bool on)
         {
             Remodel3DRestoreBillboards();
+            NativeHd2D.BeginProjection();
             NativeRemodel3D.Active = on;
             if (r3Roots != null) foreach (var root in r3Roots) if (root != null) root.SetActive(on);
             if (!on) { r3Base.Clear(); view.cullingMask = worldMask; }   // back to the 2D camera: Update() re-applies the lobby / world mask next frame
@@ -96,6 +99,7 @@ namespace Exoduser.UnityPort
             r3Cam.enabled = !hidden;
             Remodel3DViewport();
             var p = Simulation.Player; r3Marker.position = NativeRemodel3D.Point(p.X, p.Y) + NativeRemodelCamera.TargetOffset;   // CM LOOK-001 follows the marker (offset 0, 10.52, -9.24, no damping)
+            if(NativeHd2D.Enabled&&r3Brain!=null)r3Brain.ManualUpdate(); // 최종 카메라 pose 뒤에만 픽셀 스냅한다.
             foreach (var r in props) if (r != null) r.enabled = false;
             foreach (var c in chunks.Values) if (c.renderer != null) c.renderer.enabled = false;
             Remodel3DBillboards();
@@ -130,6 +134,7 @@ namespace Exoduser.UnityPort
         {
             // 로비/일시정지 등 writer가 돌지 않은 프레임에도 한 번만 적용한다.
             if (r3Projected.Count != 0) return;
+            NativeHd2D.BeginProjection();
             float pitch = NativeRemodel3D.Pitch, cos = Mathf.Cos(pitch), sin = Mathf.Sin(pitch);
             var tilt = Quaternion.Euler(pitch * Mathf.Rad2Deg, 0, 0);
             foreach (var sr in FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None))
@@ -138,6 +143,8 @@ namespace Exoduser.UnityPort
                 var tr = sr.transform;
                 r3Base[sr] = new R3Base { localPosition = tr.localPosition, localRotation = tr.localRotation };
                 float roll = tr.rotation.eulerAngles.z;
+                if(NativeHd2D.Enabled&&NativeHd2D.IsActor(sr))
+                { NativeHd2D.ProjectActor(sr,r3Cam,roll);r3Projected.Add(sr);continue; }
                 float below = NativeSkillView.IsCenteredSkillSprite(sr) ? 0 : (sr == playerView ? NativeRemodelCamera.HeroFootLift(sr.sprite) : sr.sprite.pivot.y / sr.sprite.pixelsPerUnit) * Mathf.Abs(tr.lossyScale.y);
                 tr.SetPositionAndRotation(tr.position + new Vector3(0, below * cos, below * sin), tilt * Quaternion.Euler(0, 0, roll));
                 r3Projected.Add(sr);

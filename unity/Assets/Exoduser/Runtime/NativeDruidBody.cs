@@ -15,10 +15,11 @@ namespace Exoduser.UnityPort
         readonly SpriteRenderer main, glow, hole;
         readonly Sprite disc;
         readonly MaterialPropertyBlock block = new MaterialPropertyBlock();
-        float lastX, lastY; bool haveLast;
+        float lastX, lastY, contactWidth; bool haveLast;
         public int Stamp;
         public bool Visible { get { return main != null && main.enabled; } }
         public Bounds Bounds { get { return main.bounds; } }
+        public Vector3 Anchor { get { return main.transform.position; } }
 
         public NativeDruidBody(Transform parent, Sprite discSprite)
         {
@@ -70,18 +71,20 @@ namespace Exoduser.UnityPort
             r.enabled = true; r.sprite = s; r.sortingOrder = order;
             r.transform.position = Point(x, y); r.transform.localScale = new Vector3(widthPx / s.rect.width, heightPx / s.rect.height, 1);
             r.color = new Color(1, 1, 1, alpha);
+            if(r==main)NativeHd2D.Actor(r,true,contactWidth);
         }
 
         // returns true when the druid body was drawn (alive, art present)
         public bool Draw(EnemyState e, DruidData d, bool newTick)
         {
-            float r = d.R > 0 ? (float)d.R : e.Radius;
+            float r = d.R > 0 ? (float)d.R : e.Radius;contactWidth=r*.0465f;
             string s = d.S ?? "", key = MotionKey(e, d);
             double nowMs = Time.unscaledTime * 1000.0;
             int dir = Dir(e, d);
             if (newTick || !haveLast) { lastX = e.X; lastY = e.Y; haveLast = true; }
             if (s == "bossDruidUnder")
             {
+                NativeHd2D.ReleaseActor(main); // 잠복 중 흙더미는 배우 발선/접지 그림자를 쓰지 않는다.
                 // fully underground: no sprite, just the soil mound that travels (procedural in the web, drawn here with the same flattened discs)
                 float mr = r * 5.5f;
                 hole.enabled = true; hole.sprite = disc; hole.sortingOrder = (int)e.Y - 2; hole.transform.position = Point(e.X, e.Y + mr * .13f);
@@ -130,7 +133,7 @@ namespace Exoduser.UnityPort
             int order = (int)e.Y;
             Put(main, sprite, e.X, ay, dw, dh, order, 1f);
             hole.enabled = false;
-            if (sheet != "base8")
+            if (!NativeHd2D.Enabled && sheet != "base8")
             {
                 // two 'lighter' passes at alpha .42 (self-lighten so the boss reads in the dark arena)
                 Put(glow, sprite, e.X, ay, dw, dh, order + 1, 1f);
@@ -143,7 +146,7 @@ namespace Exoduser.UnityPort
         // _drawDruidSink: the dead druid sinks through the emerge sheet (8 cells over the body ticks), holds on the last cell, then fades 1 -> 0 while sinking a little more
         public void DrawSink(EnemyState e, int t, int bodyTicks, int holdTicks, int fadeTicks)
         {
-            float r = e.Radius, dh = r * SpecDh, dw = r * SpecDw;
+            float r = e.Radius, dh = r * SpecDh, dw = r * SpecDw;contactWidth=r*.0465f;
             int frame = Math.Min(7, (int)(t / (bodyTicks / 8f)));
             float fadeP = Mathf.Clamp01((t - bodyTicks - holdTicks) / (float)fadeTicks);
             float a = 1 - fadeP, dy = fadeP * dh * .08f, ay = e.Y + BtScale * -6 + dy;
@@ -162,6 +165,7 @@ namespace Exoduser.UnityPort
                 Put(main, sprite, e.X, ay, dw, dh, (int)e.Y, a);
                 Put(glow, sprite, e.X, ay, dw, dh, (int)e.Y + 1, 1f);
                 glow.GetPropertyBlock(block); block.SetFloat(NativeDruidArt.Opacity, .84f * a); glow.SetPropertyBlock(block);
+                if(NativeHd2D.Enabled)glow.enabled=false;
             }
             else { main.enabled = false; glow.enabled = false; }
         }

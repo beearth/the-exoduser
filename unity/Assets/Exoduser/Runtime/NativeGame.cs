@@ -102,6 +102,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-hero-review")>=0){Running=false;StartCoroutine(HeroCapture());}
             else if(Array.IndexOf(args,"--unity-m1-check")>=0){Running=false;StartCoroutine(M1Check());}
             else if(Array.IndexOf(args,"--unity-review-args-capture")>=0){Running=false;StartCoroutine(ReviewArgsCapture());}
+            else if(Array.IndexOf(args,"--unity-hd2d-capture")>=0){Running=false;StartCoroutine(Hd2dCapture());}
             else if(Array.IndexOf(args,"--unity-field-compare")>=0){Running=false;StartCoroutine(FieldCompare());}
             else if(Array.IndexOf(args,"--unity-cam-capture")>=0){Running=false;StartCoroutine(CameraClampCapture());}
             else if(Array.IndexOf(args,"--unity-rmint-check")>=0){Running=false;StartCoroutine(RemodelIntCheck());}
@@ -142,7 +143,7 @@ namespace Exoduser.UnityPort
             // D01: mkItem drops are real; R picks the highest rarity on screen (web 32936) into the bag. Persistent saves stay unimplemented.
             Simulation.TryCollectLoot=CollectLoot;ClearDropViews();
             if(playerView==null)playerView=CreateRenderer("Player");
-            if(heroView==null)heroView=new NativeHeroView(transform);
+            if(!NativeHd2D.Enabled&&heroView==null)heroView=new NativeHeroView(transform);
             lastX=config.StartX;lastY=config.StartY;walkDistance=0;lastKillCount=0;renderedTick=-1;playerMoving=false;
             hud.Refresh(Simulation.Player,Simulation.TickCount,true);
             StageFlowAttach();   // C07: gate/exit tiles, arena flow reset for this run
@@ -290,21 +291,26 @@ namespace Exoduser.UnityPort
         }
         void UpdateViews()
         {
-            if(Simulation==null||view==null)return;Remodel3DRestoreBillboards();var p=Simulation.Player;
+            if(Simulation==null||view==null)return;Remodel3DRestoreBillboards();NativeHd2D.RestoreSourcePoses();var p=Simulation.Player;
             float shk=Simulation.ShakeAmount*OptionShakeScale;   // B09: web G.shake -> camera offset (random +-shake px, game.html 51900)
             float camX=p.X/100,camY=-p.Y/100;BossCameraZoom();ClampCameraToMap(ref camX,ref camY);   // [CAM-CLAMP] web _clampCamToMap before the shake offset
-            view.transform.position=new Vector3(camX+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),camY+(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0),-10);StageFlowSyncViews();if(!Simulation.Stage.InArena)StreamChunks(p.X,p.Y);
+            hd2dCameraShake=new Vector3(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0,shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0,0);
+            view.transform.position=new Vector3(camX,camY,-10)+hd2dCameraShake;StageFlowSyncViews();if(!Simulation.Stage.InArena)StreamChunks(p.X,p.Y);
             bool newTick=renderedTick!=Simulation.TickCount;
             if(newTick){float dx=p.X-lastX,dy=p.Y-lastY;walkDistance+=Mathf.Sqrt(dx*dx+dy*dy);lastX=p.X;lastY=p.Y;playerMoving=dx*dx+dy*dy>.001f;}
             int direction=((int)Math.Floor((Math.PI/2-p.Facing)/(Math.PI/4)+.5)%8+8)%8;
-            bool attack=p.State=="wSwing"||p.KiChargeActive;bool moving=playerMoving;
-            int frame=p.KiChargeActive?0:attack?Mathf.Clamp((int)(p.SwingProgress*9),0,8):moving?2+(int)(walkDistance/32)%8:(Simulation.TickCount/48)%2;
+            bool attack=NativeHeroSpriteMotion.UsesAttackSheet(p.State);bool moving=playerMoving;
+            double windup=Math.Max(1,(int)(10/(Simulation.Config.WeaponSpeed!=0?Simulation.Config.WeaponSpeed:1)));
+            double recovery=p.State=="sRecover"?Core.Combat.ParryRules.SRecoverTicks(Simulation.PParry):Math.Max(1,(int)(16/((Simulation.Config.WeaponSpeed!=0?Simulation.Config.WeaponSpeed:.3f)*Simulation.Config.AttackSpeedMultiplier)));
+            int frame=attack?NativeHeroSpriteMotion.Frame(p.State,p.StateTicks,windup,recovery):moving?2+(int)(walkDistance/32)%8:(Simulation.TickCount/48)%2;
             playerView.sprite=attack?SpriteFor("Art/player/attack-bat-v1",frame*80,direction*80,80,80,new Vector2(.5f,45f/80)):
                 SpriteFor("Art/player/"+directions[direction],frame*48,0,48,48,new Vector2(.5f,.5f));
-            playerView.transform.position=Point(p.X,p.Y);playerView.transform.localScale=Vector3.one*2*(NativeRemodel3D.Active?NativeRemodelCamera.HeroScale:1);playerView.sortingOrder=(int)p.Y;
+            float heroPresentationScale=NativeHd2D.Enabled||NativeRemodel3D.Active?NativeRemodelCamera.HeroScale:1;
+            playerView.transform.position=Point(p.X,p.Y);playerView.transform.localScale=Vector3.one*2*heroPresentationScale;playerView.sortingOrder=(int)p.Y;
             // web roll: the body curls up and turns once (360 degrees) over the 18 frames, dust trail
             playerView.transform.rotation=Simulation.RollActive?Quaternion.Euler(0,0,-360f*(1f-(float)Simulation.RollMoveT/RollRules.Frames)):Quaternion.identity;
-            heroView?.Sync(Simulation,playerMoving);playerView.enabled=heroView==null||!heroView.Ready;
+            heroView?.Sync(Simulation,playerMoving);playerView.enabled=NativeHd2D.Enabled||heroView==null||!heroView.Ready;
+            NativeHd2D.Actor(playerView,false,p.Radius*.02f*heroPresentationScale);
             foreach(var e in Simulation.Enemies)
             {
                 if(Simulation.IsRemodelProp(e)){if(enemies.TryGetValue(e.Id,out var pv)){pv.body.enabled=false;pv.walk.enabled=false;if(pv.arc!=null)pv.arc.enabled=false;}continue;}   // RM-B0b: a boss prop (sprout, cord knot) is no enemy: the boss presentation draws it from Simulation.RemodelProps
@@ -327,6 +333,7 @@ namespace Exoduser.UnityPort
                 if(e.IsBoss)tint=Color.Lerp(tint,new Color(1,.55f,.45f),.5f);   // C07: a boss actor without art of its own reads as a boss
                 if(Simulation.Config.EnemyAiEnabled&&e.Web!=null&&e.Web._spawnT>0)tint.a=Mathf.Max(0,1-(float)e.Web._spawnT/20);   // drawEn: 20 frame fade-in of a fresh spawn
                 ev.body.color=ev.walk.color=e.HurtTicks>0?new Color(1,.62f,.62f,tint.a):tint;
+                NativeHd2D.Actor(ev.body,false,e.Radius*.035f);NativeHd2D.Overlay(ev.walk,ev.body);
                 UpdateEnemyShieldArc(e,ev);
             }
             PruneEnemyViews();FieldBossViews();
@@ -336,6 +343,9 @@ namespace Exoduser.UnityPort
             impacts?.Update(Simulation.TickCount);
             skillView?.Update(Simulation,Time.time);
             hud?.Refresh(p,Simulation.TickCount);StageFlowBossBar();
+            if(NativeHd2D.Enabled&&!NativeRemodel3D.Active)Hd2dArenaFrame();
+            teleView?.Update(Simulation,view); // 최종 flat camera의 화면 장판 clip 경계를 사용한다.
+            if(NativeHd2D.Enabled&&!NativeRemodel3D.Active)NativeHd2D.ProjectFlatActors(view);
             renderedTick=Simulation.TickCount;damage.RemoveAll(d=>Time.unscaledTime>d.until);
         }
         // game.html drawEn (53853-53870): every mob with an energy shield carries a pulsing pale-blue arc (radius r+5, +-1.0 rad around shieldAng, 5 px stroke, 25% wedge fill);
