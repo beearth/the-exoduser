@@ -53,3 +53,8 @@ NativeHud/Layout와 NativeInventory/Dock의 표현만 변경한다. InventorySta
 [Mac HUD 실제 화면](previews/ui-composition-20261024/mac-hud.png) · [Mac 인벤토리 실제 화면](previews/ui-composition-20261024/mac-inventory.png) · [검수 영수증](UNITY_MAC_UI_VERIFICATION_20261024.json)
 
 QA 원본: `/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1`. HTML미리보기는 브라우저file URL보안정책으로 열리지 않았고 우회하지 않았다. 이후 실제Unity Player출력으로 검수했다. 과거 코드/도킹후보와 실패한키표시 후보는 보존했다.
+
+
+## 2026-10-31 안전 영역 후속
+
+현행 UI는 논리1920×1080을 중앙16:9 안전 영역에 균등 fit한다. 초광폭 여분으로 구슬·받침·상태판·인벤 열을 확장하지 않는다. 위 과거 전체폭 좌표/검수는 이력이며 현행 위치식은 origin+logical×min(W/1920,H/1080)이다. 16:10에는 위아래80px(2560×1600), 32:9에는 좌우960px(3840×1080) 순검정. 5개 해상도·파일명 W×H·글자 검사/실제 입력·검수 상태는 [현행 안전 영역 계약](UNITY_UI_ULTRAWIDE_20261031.md)을 따른다.

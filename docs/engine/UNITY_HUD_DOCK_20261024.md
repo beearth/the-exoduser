@@ -66,3 +66,8 @@
 
 
 2026-10-25: K skill UI, 13 slot inspection and live Ki Slash HUD state: [current scope and verification](UNITY_MAC_SKILL_UI_20261025.md). Other skill executors remain unavailable.
+
+
+## 2026-10-31 안전 영역 후속
+
+현행 UI는 논리1920×1080을 중앙16:9 안전 영역에 균등 fit한다. 초광폭 여분으로 구슬·받침·상태판·인벤 열을 확장하지 않는다. 위 과거 전체폭 좌표/검수는 이력이며 현행 위치식은 origin+logical×min(W/1920,H/1080)이다. 16:10에는 위아래80px(2560×1600), 32:9에는 좌우960px(3840×1080) 순검정. 5개 해상도·파일명 W×H·글자 검사/실제 입력·검수 상태는 [현행 안전 영역 계약](UNITY_UI_ULTRAWIDE_20261031.md)을 따른다.

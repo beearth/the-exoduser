@@ -1,0 +1,1374 @@
+{
+  "schemaVersion": 2,
+  "page": "인벤토리",
+  "language": "ko",
+  "alphaReaderProof": "실제 RGBAFloat/3밉/RenderTexture 대조군 원소별 완전 일치",
+  "alphaReaderVerified": true,
+  "alphaProbe": [
+    0,
+    0.25,
+    0.5,
+    1
+  ],
+  "alphaMipProbe": [
+    1,
+    0.5,
+    0
+  ],
+  "alphaRtProbe": [
+    0,
+    0.25,
+    0.5,
+    1
+  ],
+  "width": 2560,
+  "height": 1600,
+  "repaintFrames": 1,
+  "capturedFrame": 810,
+  "elements": [
+    {
+      "id": "107",
+      "kind": "text",
+      "text": "1656",
+      "source": "NativeLobby.SilverHell.cs:11 / 명시 CSS text-shadow 광휘 패스",
+      "ownerId": "",
+      "opacityProof": "GUI.color × GUI.contentColor × 실제 글자색 알파",
+      "textureName": "",
+      "opacitySampling": "",
+      "rect": {
+        "serializedVersion": "2",
+        "x": 123.99996185302734,
+        "y": 211.05996704101562,
+        "width": 64.97333526611328,
+        "height": 40.54669189453125
+      },
+      "unclippedRect": {
+        "serializedVersion": "2",
+        "x": 123.99996185302734,
+        "y": 211.05996704101562,
+        "width": 64.97333526611328,
+        "height": 40.54669189453125
+      },
+      "clipRect": {
+        "serializedVersion": "2",
+        "x": -10000,
+        "y": -10000,
+        "width": 40000,
+        "height": 40000
+      },
+      "quad": [
+        {
+          "x": 123.99996185302734,
+          "y": 211.05996704101562
+        },
+        {
+          "x": 188.97329711914062,
+          "y": 211.05996704101562
+        },
+        {
+          "x": 188.97329711914062,
+          "y": 251.60665893554688
+        },
+        {
+          "x": 123.99996185302734,
+          "y": 251.60665893554688
+        }
+      ],
+      "order": 107,
+      "depth": 1,
+      "shadow": true,
+      "hasClip": true,
+      "clipKnown": true,
+      "opacityKnown": true,
+      "axisAligned": true,
+      "effectiveOpacity": 0.02550000138580799,
+      "minimumTextureAlpha": 0,
+      "maximumTextureAlpha": 0,
+      "mipLevels": 0,
+      "guiEnabled": true,
+      "guiColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "contentColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "backgroundColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      }
+    },
+    {
+      "id": "108",
+      "kind": "text",
+      "text": "1656",
+      "source": "NativeLobby.SilverHell.cs:11 / 명시 CSS text-shadow 광휘 패스",
+      "ownerId": "",
+      "opacityProof": "GUI.color × GUI.contentColor × 실제 글자색 알파",
+      "textureName": "",
+      "opacitySampling": "",
+      "rect": {
+        "serializedVersion": "2",
+        "x": 127.33329772949219,
+        "y": 211.05996704101562,
+        "width": 64.97334289550781,
+        "height": 40.54669189453125
+      },
+      "unclippedRect": {
+        "serializedVersion": "2",
+        "x": 127.33329772949219,
+        "y": 211.05996704101562,
+        "width": 64.97334289550781,
+        "height": 40.54669189453125
+      },
+      "clipRect": {
+        "serializedVersion": "2",
+        "x": -10000,
+        "y": -10000,
+        "width": 40000,
+        "height": 40000
+      },
+      "quad": [
+        {
+          "x": 127.33329772949219,
+          "y": 211.05996704101562
+        },
+        {
+          "x": 192.306640625,
+          "y": 211.05996704101562
+        },
+        {
+          "x": 192.306640625,
+          "y": 251.60665893554688
+        },
+        {
+          "x": 127.33329772949219,
+          "y": 251.60665893554688
+        }
+      ],
+      "order": 108,
+      "depth": 1,
+      "shadow": true,
+      "hasClip": true,
+      "clipKnown": true,
+      "opacityKnown": true,
+      "axisAligned": true,
+      "effectiveOpacity": 0.012000000104308128,
+      "minimumTextureAlpha": 0,
+      "maximumTextureAlpha": 0,
+      "mipLevels": 0,
+      "guiEnabled": true,
+      "guiColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "contentColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "backgroundColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      }
+    },
+    {
+      "id": "109",
+      "kind": "text",
+      "text": "1656",
+      "source": "NativeLobby.SilverHell.cs:11 / 명시 CSS text-shadow 광휘 패스",
+      "ownerId": "",
+      "opacityProof": "GUI.color × GUI.contentColor × 실제 글자색 알파",
+      "textureName": "",
+      "opacitySampling": "",
+      "rect": {
+        "serializedVersion": "2",
+        "x": 122.8283920288086,
+        "y": 213.88839721679688,
+        "width": 64.97333526611328,
+        "height": 40.54669189453125
+      },
+      "unclippedRect": {
+        "serializedVersion": "2",
+        "x": 122.8283920288086,
+        "y": 213.88839721679688,
+        "width": 64.97333526611328,
+        "height": 40.54669189453125
+      },
+      "clipRect": {
+        "serializedVersion": "2",
+        "x": -10000,
+        "y": -10000,
+        "width": 40000,
+        "height": 40000
+      },
+      "quad": [
+        {
+          "x": 122.8283920288086,
+          "y": 213.88839721679688
+        },
+        {
+          "x": 187.80172729492188,
+          "y": 213.88839721679688
+        },
+        {
+          "x": 187.80172729492188,
+          "y": 254.43508911132812
+        },
+        {
+          "x": 122.8283920288086,
+          "y": 254.43508911132812
+        }
+      ],
+      "order": 109,
+      "depth": 1,
+      "shadow": true,
+      "hasClip": true,
+      "clipKnown": true,
+      "opacityKnown": true,
+      "axisAligned": true,
+      "effectiveOpacity": 0.02550000138580799,
+      "minimumTextureAlpha": 0,
+      "maximumTextureAlpha": 0,
+      "mipLevels": 0,
+      "guiEnabled": true,
+      "guiColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "contentColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "backgroundColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      }
+    },
+    {
+      "id": "110",
+      "kind": "text",
+      "text": "1656",
+      "source": "NativeLobby.SilverHell.cs:11 / 명시 CSS text-shadow 광휘 패스",
+      "ownerId": "",
+      "opacityProof": "GUI.color × GUI.contentColor × 실제 글자색 알파",
+      "textureName": "",
+      "opacitySampling": "",
+      "rect": {
+        "serializedVersion": "2",
+        "x": 125.18540954589844,
+        "y": 216.24542236328125,
+        "width": 64.97334289550781,
+        "height": 40.546661376953125
+      },
+      "unclippedRect": {
+        "serializedVersion": "2",
+        "x": 125.18540954589844,
+        "y": 216.24542236328125,
+        "width": 64.97334289550781,
+        "height": 40.546661376953125
+      },
+      "clipRect": {
+        "serializedVersion": "2",
+        "x": -10000,
+        "y": -10000,
+        "width": 40000,
+        "height": 40000
+      },
+      "quad": [
+        {
+          "x": 125.18540954589844,
+          "y": 216.24542236328125
+        },
+        {
+          "x": 190.15875244140625,
+          "y": 216.24542236328125
+        },
+        {
+          "x": 190.15875244140625,
+          "y": 256.7920837402344
+        },
+        {
+          "x": 125.18540954589844,
+          "y": 256.7920837402344
+        }
+      ],
+      "order": 110,
+      "depth": 1,
+      "shadow": true,
+      "hasClip": true,
+      "clipKnown": true,
+      "opacityKnown": true,
+      "axisAligned": true,
+      "effectiveOpacity": 0.012000000104308128,
+      "minimumTextureAlpha": 0,
+      "maximumTextureAlpha": 0,
+      "mipLevels": 0,
+      "guiEnabled": true,
+      "guiColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "contentColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "backgroundColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      }
+    },
+    {
+      "id": "111",
+      "kind": "text",
+      "text": "1656",
+      "source": "NativeLobby.SilverHell.cs:11 / 명시 CSS text-shadow 광휘 패스",
+      "ownerId": "",
+      "opacityProof": "GUI.color × GUI.contentColor × 실제 글자색 알파",
+      "textureName": "",
+      "opacitySampling": "",
+      "rect": {
+        "serializedVersion": "2",
+        "x": 119.99996185302734,
+        "y": 215.05996704101562,
+        "width": 64.97333526611328,
+        "height": 40.54669189453125
+      },
+      "unclippedRect": {
+        "serializedVersion": "2",
+        "x": 119.99996185302734,
+        "y": 215.05996704101562,
+        "width": 64.97333526611328,
+        "height": 40.54669189453125
+      },
+      "clipRect": {
+        "serializedVersion": "2",
+        "x": -10000,
+        "y": -10000,
+        "width": 40000,
+        "height": 40000
+      },
+      "quad": [
+        {
+          "x": 119.99996185302734,
+          "y": 215.05996704101562
+        },
+        {
+          "x": 184.97329711914062,
+          "y": 215.05996704101562
+        },
+        {
+          "x": 184.97329711914062,
+          "y": 255.60665893554688
+        },
+        {
+          "x": 119.99996185302734,
+          "y": 255.60665893554688
+        }
+      ],
+      "order": 111,
+      "depth": 1,
+      "shadow": true,
+      "hasClip": true,
+      "clipKnown": true,
+      "opacityKnown": true,
+      "axisAligned": true,
+      "effectiveOpacity": 0.02550000138580799,
+      "minimumTextureAlpha": 0,
+      "maximumTextureAlpha": 0,
+      "mipLevels": 0,
+      "guiEnabled": true,
+      "guiColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "contentColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "backgroundColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      }
+    },
+    {
+      "id": "112",
+      "kind": "text",
+      "text": "1656",
+      "source": "NativeLobby.SilverHell.cs:11 / 명시 CSS text-shadow 광휘 패스",
+      "ownerId": "",
+      "opacityProof": "GUI.color × GUI.contentColor × 실제 글자색 알파",
+      "textureName": "",
+      "opacitySampling": "",
+      "rect": {
+        "serializedVersion": "2",
+        "x": 119.99996185302734,
+        "y": 218.393310546875,
+        "width": 64.97333526611328,
+        "height": 40.546661376953125
+      },
+      "unclippedRect": {
+        "serializedVersion": "2",
+        "x": 119.99996185302734,
+        "y": 218.393310546875,
+        "width": 64.97333526611328,
+        "height": 40.546661376953125
+      },
+      "clipRect": {
+        "serializedVersion": "2",
+        "x": -10000,
+        "y": -10000,
+        "width": 40000,
+        "height": 40000
+      },
+      "quad": [
+        {
+          "x": 119.99996185302734,
+          "y": 218.393310546875
+        },
+        {
+          "x": 184.97329711914062,
+          "y": 218.393310546875
+        },
+        {
+          "x": 184.97329711914062,
+          "y": 258.9399719238281
+        },
+        {
+          "x": 119.99996185302734,
+          "y": 258.9399719238281
+        }
+      ],
+      "order": 112,
+      "depth": 1,
+      "shadow": true,
+      "hasClip": true,
+      "clipKnown": true,
+      "opacityKnown": true,
+      "axisAligned": true,
+      "effectiveOpacity": 0.012000000104308128,
+      "minimumTextureAlpha": 0,
+      "maximumTextureAlpha": 0,
+      "mipLevels": 0,
+      "guiEnabled": true,
+      "guiColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "contentColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "backgroundColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      }
+    },
+    {
+      "id": "113",
+      "kind": "text",
+      "text": "1656",
+      "source": "NativeLobby.SilverHell.cs:11 / 명시 CSS text-shadow 광휘 패스",
+      "ownerId": "",
+      "opacityProof": "GUI.color × GUI.contentColor × 실제 글자색 알파",
+      "textureName": "",
+      "opacitySampling": "",
+      "rect": {
+        "serializedVersion": "2",
+        "x": 117.1715316772461,
+        "y": 213.88839721679688,
+        "width": 64.97333526611328,
+        "height": 40.54669189453125
+      },
+      "unclippedRect": {
+        "serializedVersion": "2",
+        "x": 117.1715316772461,
+        "y": 213.88839721679688,
+        "width": 64.97333526611328,
+        "height": 40.54669189453125
+      },
+      "clipRect": {
+        "serializedVersion": "2",
+        "x": -10000,
+        "y": -10000,
+        "width": 40000,
+        "height": 40000
+      },
+      "quad": [
+        {
+          "x": 117.1715316772461,
+          "y": 213.88839721679688
+        },
+        {
+          "x": 182.14486694335938,
+          "y": 213.88839721679688
+        },
+        {
+          "x": 182.14486694335938,
+          "y": 254.43508911132812
+        },
+        {
+          "x": 117.1715316772461,
+          "y": 254.43508911132812
+        }
+      ],
+      "order": 113,
+      "depth": 1,
+      "shadow": true,
+      "hasClip": true,
+      "clipKnown": true,
+      "opacityKnown": true,
+      "axisAligned": true,
+      "effectiveOpacity": 0.02550000138580799,
+      "minimumTextureAlpha": 0,
+      "maximumTextureAlpha": 0,
+      "mipLevels": 0,
+      "guiEnabled": true,
+      "guiColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "contentColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "backgroundColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      }
+    },
+    {
+      "id": "114",
+      "kind": "text",
+      "text": "1656",
+      "source": "NativeLobby.SilverHell.cs:11 / 명시 CSS text-shadow 광휘 패스",
+      "ownerId": "",
+      "opacityProof": "GUI.color × GUI.contentColor × 실제 글자색 알파",
+      "textureName": "",
+      "opacitySampling": "",
+      "rect": {
+        "serializedVersion": "2",
+        "x": 114.81452178955078,
+        "y": 216.24542236328125,
+        "width": 64.97332000732422,
+        "height": 40.546661376953125
+      },
+      "unclippedRect": {
+        "serializedVersion": "2",
+        "x": 114.81452178955078,
+        "y": 216.24542236328125,
+        "width": 64.97332000732422,
+        "height": 40.546661376953125
+      },
+      "clipRect": {
+        "serializedVersion": "2",
+        "x": -10000,
+        "y": -10000,
+        "width": 40000,
+        "height": 40000
+      },
+      "quad": [
+        {
+          "x": 114.81452178955078,
+          "y": 216.24542236328125
+        },
+        {
+          "x": 179.787841796875,
+          "y": 216.24542236328125
+        },
+        {
+          "x": 179.787841796875,
+          "y": 256.7920837402344
+        },
+        {
+          "x": 114.81452178955078,
+          "y": 256.7920837402344
+        }
+      ],
+      "order": 114,
+      "depth": 1,
+      "shadow": true,
+      "hasClip": true,
+      "clipKnown": true,
+      "opacityKnown": true,
+      "axisAligned": true,
+      "effectiveOpacity": 0.012000000104308128,
+      "minimumTextureAlpha": 0,
+      "maximumTextureAlpha": 0,
+      "mipLevels": 0,
+      "guiEnabled": true,
+      "guiColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "contentColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "backgroundColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      }
+    },
+    {
+      "id": "115",
+      "kind": "text",
+      "text": "1656",
+      "source": "NativeLobby.SilverHell.cs:11 / 명시 CSS text-shadow 광휘 패스",
+      "ownerId": "",
+      "opacityProof": "GUI.color × GUI.contentColor × 실제 글자색 알파",
+      "textureName": "",
+      "opacitySampling": "",
+      "rect": {
+        "serializedVersion": "2",
+        "x": 115.99996185302734,
+        "y": 211.05996704101562,
+        "width": 64.97333526611328,
+        "height": 40.54669189453125
+      },
+      "unclippedRect": {
+        "serializedVersion": "2",
+        "x": 115.99996185302734,
+        "y": 211.05996704101562,
+        "width": 64.97333526611328,
+        "height": 40.54669189453125
+      },
+      "clipRect": {
+        "serializedVersion": "2",
+        "x": -10000,
+        "y": -10000,
+        "width": 40000,
+        "height": 40000
+      },
+      "quad": [
+        {
+          "x": 115.99996185302734,
+          "y": 211.05996704101562
+        },
+        {
+          "x": 180.97329711914062,
+          "y": 211.05996704101562
+        },
+        {
+          "x": 180.97329711914062,
+          "y": 251.60665893554688
+        },
+        {
+          "x": 115.99996185302734,
+          "y": 251.60665893554688
+        }
+      ],
+      "order": 115,
+      "depth": 1,
+      "shadow": true,
+      "hasClip": true,
+      "clipKnown": true,
+      "opacityKnown": true,
+      "axisAligned": true,
+      "effectiveOpacity": 0.02550000138580799,
+      "minimumTextureAlpha": 0,
+      "maximumTextureAlpha": 0,
+      "mipLevels": 0,
+      "guiEnabled": true,
+      "guiColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "contentColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "backgroundColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      }
+    },
+    {
+      "id": "116",
+      "kind": "text",
+      "text": "1656",
+      "source": "NativeLobby.SilverHell.cs:11 / 명시 CSS text-shadow 광휘 패스",
+      "ownerId": "",
+      "opacityProof": "GUI.color × GUI.contentColor × 실제 글자색 알파",
+      "textureName": "",
+      "opacitySampling": "",
+      "rect": {
+        "serializedVersion": "2",
+        "x": 112.66663360595703,
+        "y": 211.05996704101562,
+        "width": 64.97332000732422,
+        "height": 40.54669189453125
+      },
+      "unclippedRect": {
+        "serializedVersion": "2",
+        "x": 112.66663360595703,
+        "y": 211.05996704101562,
+        "width": 64.97332000732422,
+        "height": 40.54669189453125
+      },
+      "clipRect": {
+        "serializedVersion": "2",
+        "x": -10000,
+        "y": -10000,
+        "width": 40000,
+        "height": 40000
+      },
+      "quad": [
+        {
+          "x": 112.66663360595703,
+          "y": 211.05996704101562
+        },
+        {
+          "x": 177.63995361328125,
+          "y": 211.05996704101562
+        },
+        {
+          "x": 177.63995361328125,
+          "y": 251.60665893554688
+        },
+        {
+          "x": 112.66663360595703,
+          "y": 251.60665893554688
+        }
+      ],
+      "order": 116,
+      "depth": 1,
+      "shadow": true,
+      "hasClip": true,
+      "clipKnown": true,
+      "opacityKnown": true,
+      "axisAligned": true,
+      "effectiveOpacity": 0.012000000104308128,
+      "minimumTextureAlpha": 0,
+      "maximumTextureAlpha": 0,
+      "mipLevels": 0,
+      "guiEnabled": true,
+      "guiColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "contentColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "backgroundColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      }
+    },
+    {
+      "id": "117",
+      "kind": "text",
+      "text": "1656",
+      "source": "NativeLobby.SilverHell.cs:11 / 명시 CSS text-shadow 광휘 패스",
+      "ownerId": "",
+      "opacityProof": "GUI.color × GUI.contentColor × 실제 글자색 알파",
+      "textureName": "",
+      "opacitySampling": "",
+      "rect": {
+        "serializedVersion": "2",
+        "x": 117.1715316772461,
+        "y": 208.23153686523438,
+        "width": 64.97333526611328,
+        "height": 40.54669189453125
+      },
+      "unclippedRect": {
+        "serializedVersion": "2",
+        "x": 117.1715316772461,
+        "y": 208.23153686523438,
+        "width": 64.97333526611328,
+        "height": 40.54669189453125
+      },
+      "clipRect": {
+        "serializedVersion": "2",
+        "x": -10000,
+        "y": -10000,
+        "width": 40000,
+        "height": 40000
+      },
+      "quad": [
+        {
+          "x": 117.1715316772461,
+          "y": 208.23153686523438
+        },
+        {
+          "x": 182.14486694335938,
+          "y": 208.23153686523438
+        },
+        {
+          "x": 182.14486694335938,
+          "y": 248.77822875976562
+        },
+        {
+          "x": 117.1715316772461,
+          "y": 248.77822875976562
+        }
+      ],
+      "order": 117,
+      "depth": 1,
+      "shadow": true,
+      "hasClip": true,
+      "clipKnown": true,
+      "opacityKnown": true,
+      "axisAligned": true,
+      "effectiveOpacity": 0.02550000138580799,
+      "minimumTextureAlpha": 0,
+      "maximumTextureAlpha": 0,
+      "mipLevels": 0,
+      "guiEnabled": true,
+      "guiColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "contentColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "backgroundColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      }
+    },
+    {
+      "id": "118",
+      "kind": "text",
+      "text": "1656",
+      "source": "NativeLobby.SilverHell.cs:11 / 명시 CSS text-shadow 광휘 패스",
+      "ownerId": "",
+      "opacityProof": "GUI.color × GUI.contentColor × 실제 글자색 알파",
+      "textureName": "",
+      "opacitySampling": "",
+      "rect": {
+        "serializedVersion": "2",
+        "x": 114.81452178955078,
+        "y": 205.87451171875,
+        "width": 64.97332000732422,
+        "height": 40.546661376953125
+      },
+      "unclippedRect": {
+        "serializedVersion": "2",
+        "x": 114.81452178955078,
+        "y": 205.87451171875,
+        "width": 64.97332000732422,
+        "height": 40.546661376953125
+      },
+      "clipRect": {
+        "serializedVersion": "2",
+        "x": -10000,
+        "y": -10000,
+        "width": 40000,
+        "height": 40000
+      },
+      "quad": [
+        {
+          "x": 114.81452178955078,
+          "y": 205.87451171875
+        },
+        {
+          "x": 179.787841796875,
+          "y": 205.87451171875
+        },
+        {
+          "x": 179.787841796875,
+          "y": 246.42117309570312
+        },
+        {
+          "x": 114.81452178955078,
+          "y": 246.42117309570312
+        }
+      ],
+      "order": 118,
+      "depth": 1,
+      "shadow": true,
+      "hasClip": true,
+      "clipKnown": true,
+      "opacityKnown": true,
+      "axisAligned": true,
+      "effectiveOpacity": 0.012000000104308128,
+      "minimumTextureAlpha": 0,
+      "maximumTextureAlpha": 0,
+      "mipLevels": 0,
+      "guiEnabled": true,
+      "guiColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "contentColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "backgroundColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      }
+    },
+    {
+      "id": "119",
+      "kind": "text",
+      "text": "1656",
+      "source": "NativeLobby.SilverHell.cs:11 / 명시 CSS text-shadow 광휘 패스",
+      "ownerId": "",
+      "opacityProof": "GUI.color × GUI.contentColor × 실제 글자색 알파",
+      "textureName": "",
+      "opacitySampling": "",
+      "rect": {
+        "serializedVersion": "2",
+        "x": 119.99996185302734,
+        "y": 207.05996704101562,
+        "width": 64.97333526611328,
+        "height": 40.54669189453125
+      },
+      "unclippedRect": {
+        "serializedVersion": "2",
+        "x": 119.99996185302734,
+        "y": 207.05996704101562,
+        "width": 64.97333526611328,
+        "height": 40.54669189453125
+      },
+      "clipRect": {
+        "serializedVersion": "2",
+        "x": -10000,
+        "y": -10000,
+        "width": 40000,
+        "height": 40000
+      },
+      "quad": [
+        {
+          "x": 119.99996185302734,
+          "y": 207.05996704101562
+        },
+        {
+          "x": 184.97329711914062,
+          "y": 207.05996704101562
+        },
+        {
+          "x": 184.97329711914062,
+          "y": 247.60665893554688
+        },
+        {
+          "x": 119.99996185302734,
+          "y": 247.60665893554688
+        }
+      ],
+      "order": 119,
+      "depth": 1,
+      "shadow": true,
+      "hasClip": true,
+      "clipKnown": true,
+      "opacityKnown": true,
+      "axisAligned": true,
+      "effectiveOpacity": 0.02550000138580799,
+      "minimumTextureAlpha": 0,
+      "maximumTextureAlpha": 0,
+      "mipLevels": 0,
+      "guiEnabled": true,
+      "guiColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "contentColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "backgroundColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      }
+    },
+    {
+      "id": "120",
+      "kind": "text",
+      "text": "1656",
+      "source": "NativeLobby.SilverHell.cs:11 / 명시 CSS text-shadow 광휘 패스",
+      "ownerId": "",
+      "opacityProof": "GUI.color × GUI.contentColor × 실제 글자색 알파",
+      "textureName": "",
+      "opacitySampling": "",
+      "rect": {
+        "serializedVersion": "2",
+        "x": 119.99996185302734,
+        "y": 203.72665405273438,
+        "width": 64.97333526611328,
+        "height": 40.546661376953125
+      },
+      "unclippedRect": {
+        "serializedVersion": "2",
+        "x": 119.99996185302734,
+        "y": 203.72665405273438,
+        "width": 64.97333526611328,
+        "height": 40.546661376953125
+      },
+      "clipRect": {
+        "serializedVersion": "2",
+        "x": -10000,
+        "y": -10000,
+        "width": 40000,
+        "height": 40000
+      },
+      "quad": [
+        {
+          "x": 119.99996185302734,
+          "y": 203.72665405273438
+        },
+        {
+          "x": 184.97329711914062,
+          "y": 203.72665405273438
+        },
+        {
+          "x": 184.97329711914062,
+          "y": 244.2733154296875
+        },
+        {
+          "x": 119.99996185302734,
+          "y": 244.2733154296875
+        }
+      ],
+      "order": 120,
+      "depth": 1,
+      "shadow": true,
+      "hasClip": true,
+      "clipKnown": true,
+      "opacityKnown": true,
+      "axisAligned": true,
+      "effectiveOpacity": 0.012000000104308128,
+      "minimumTextureAlpha": 0,
+      "maximumTextureAlpha": 0,
+      "mipLevels": 0,
+      "guiEnabled": true,
+      "guiColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "contentColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "backgroundColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      }
+    },
+    {
+      "id": "121",
+      "kind": "text",
+      "text": "1656",
+      "source": "NativeLobby.SilverHell.cs:11 / 명시 CSS text-shadow 광휘 패스",
+      "ownerId": "",
+      "opacityProof": "GUI.color × GUI.contentColor × 실제 글자색 알파",
+      "textureName": "",
+      "opacitySampling": "",
+      "rect": {
+        "serializedVersion": "2",
+        "x": 122.8283920288086,
+        "y": 208.23153686523438,
+        "width": 64.97333526611328,
+        "height": 40.54669189453125
+      },
+      "unclippedRect": {
+        "serializedVersion": "2",
+        "x": 122.8283920288086,
+        "y": 208.23153686523438,
+        "width": 64.97333526611328,
+        "height": 40.54669189453125
+      },
+      "clipRect": {
+        "serializedVersion": "2",
+        "x": -10000,
+        "y": -10000,
+        "width": 40000,
+        "height": 40000
+      },
+      "quad": [
+        {
+          "x": 122.8283920288086,
+          "y": 208.23153686523438
+        },
+        {
+          "x": 187.80172729492188,
+          "y": 208.23153686523438
+        },
+        {
+          "x": 187.80172729492188,
+          "y": 248.77822875976562
+        },
+        {
+          "x": 122.8283920288086,
+          "y": 248.77822875976562
+        }
+      ],
+      "order": 121,
+      "depth": 1,
+      "shadow": true,
+      "hasClip": true,
+      "clipKnown": true,
+      "opacityKnown": true,
+      "axisAligned": true,
+      "effectiveOpacity": 0.02550000138580799,
+      "minimumTextureAlpha": 0,
+      "maximumTextureAlpha": 0,
+      "mipLevels": 0,
+      "guiEnabled": true,
+      "guiColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "contentColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "backgroundColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      }
+    },
+    {
+      "id": "122",
+      "kind": "text",
+      "text": "1656",
+      "source": "NativeLobby.SilverHell.cs:11 / 명시 CSS text-shadow 광휘 패스",
+      "ownerId": "",
+      "opacityProof": "GUI.color × GUI.contentColor × 실제 글자색 알파",
+      "textureName": "",
+      "opacitySampling": "",
+      "rect": {
+        "serializedVersion": "2",
+        "x": 125.18541717529297,
+        "y": 205.87454223632812,
+        "width": 64.97333526611328,
+        "height": 40.546661376953125
+      },
+      "unclippedRect": {
+        "serializedVersion": "2",
+        "x": 125.18541717529297,
+        "y": 205.87454223632812,
+        "width": 64.97333526611328,
+        "height": 40.546661376953125
+      },
+      "clipRect": {
+        "serializedVersion": "2",
+        "x": -10000,
+        "y": -10000,
+        "width": 40000,
+        "height": 40000
+      },
+      "quad": [
+        {
+          "x": 125.18541717529297,
+          "y": 205.87454223632812
+        },
+        {
+          "x": 190.15875244140625,
+          "y": 205.87454223632812
+        },
+        {
+          "x": 190.15875244140625,
+          "y": 246.42120361328125
+        },
+        {
+          "x": 125.18541717529297,
+          "y": 246.42120361328125
+        }
+      ],
+      "order": 122,
+      "depth": 1,
+      "shadow": true,
+      "hasClip": true,
+      "clipKnown": true,
+      "opacityKnown": true,
+      "axisAligned": true,
+      "effectiveOpacity": 0.012000000104308128,
+      "minimumTextureAlpha": 0,
+      "maximumTextureAlpha": 0,
+      "mipLevels": 0,
+      "guiEnabled": true,
+      "guiColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "contentColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "backgroundColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      }
+    },
+    {
+      "id": "123",
+      "kind": "text",
+      "text": "1656",
+      "source": "NativeLobby.SilverHell.cs:11",
+      "ownerId": "",
+      "opacityProof": "GUI.color × GUI.contentColor × 실제 글자색 알파",
+      "textureName": "",
+      "opacitySampling": "",
+      "rect": {
+        "serializedVersion": "2",
+        "x": 119.99996185302734,
+        "y": 211.05996704101562,
+        "width": 64.97333526611328,
+        "height": 40.54669189453125
+      },
+      "unclippedRect": {
+        "serializedVersion": "2",
+        "x": 119.99996185302734,
+        "y": 211.05996704101562,
+        "width": 64.97333526611328,
+        "height": 40.54669189453125
+      },
+      "clipRect": {
+        "serializedVersion": "2",
+        "x": -10000,
+        "y": -10000,
+        "width": 40000,
+        "height": 40000
+      },
+      "quad": [
+        {
+          "x": 119.99996185302734,
+          "y": 211.05996704101562
+        },
+        {
+          "x": 184.97329711914062,
+          "y": 211.05996704101562
+        },
+        {
+          "x": 184.97329711914062,
+          "y": 251.60665893554688
+        },
+        {
+          "x": 119.99996185302734,
+          "y": 251.60665893554688
+        }
+      ],
+      "order": 123,
+      "depth": 1,
+      "shadow": false,
+      "hasClip": true,
+      "clipKnown": true,
+      "opacityKnown": true,
+      "axisAligned": true,
+      "effectiveOpacity": 1,
+      "minimumTextureAlpha": 0,
+      "maximumTextureAlpha": 0,
+      "mipLevels": 0,
+      "guiEnabled": true,
+      "guiColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "contentColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "backgroundColor": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      }
+    }
+  ],
+  "fixtureSource": "candidate4/overlap/2560x1600-ko-인벤토리.json; source 17c6c202aec17994a2be56813f3a2946dfd7c32b"
+}

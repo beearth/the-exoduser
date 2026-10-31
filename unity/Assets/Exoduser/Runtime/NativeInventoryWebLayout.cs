@@ -122,11 +122,12 @@ namespace Exoduser.UnityPort {
         }
         // CSS text-shadow: 0 0 8px color (cheap two-ring halo).
         void TxtGlow(Rect r,string s,int size,Color halo,int weight){
-            for(int k=0;k<8;k++){
+            bool priorShadow=NativeUiAudit.DrawingTextShadow;
+            try{NativeUiAudit.DrawingTextShadow=true;for(int k=0;k<8;k++){
                 float a=k*Mathf.PI/4,ca=Mathf.Cos(a),sa=Mathf.Sin(a);
                 Txt(new Rect(r.x+ca*3,r.y+sa*3,r.width,r.height),s,size,new Color(halo.r,halo.g,halo.b,halo.a*.085f),weight);
                 Txt(new Rect(r.x+ca*5.5f,r.y+sa*5.5f,r.width,r.height),s,size,new Color(halo.r,halo.g,halo.b,halo.a*.04f),weight);
-            }
+            }}finally{NativeUiAudit.DrawingTextShadow=priorShadow;}
         }
         static float Erfc(float x){
             float t=1f/(1f+.3275911f*Mathf.Abs(x));

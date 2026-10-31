@@ -10,7 +10,7 @@ namespace Exoduser.UnityPort {
   public static bool StatusShouldDisplay(bool hovering,bool charging,bool selectionActive){return hovering||charging||selectionActive;}
   public static Rect SkillSlotRect(NativeHudDockLayout dock,int index){return dock.SlotRect(index);}
   // Normal bottom-origin screen input -> the same scaled HUD space used for drawing.
-  public static bool PointerOverSlots(Vector3 screenPoint){float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);var point=new Vector2(screenPoint.x/s,(Screen.height-screenPoint.y)/s);var dock=NativeHudDockLayout.Create(Screen.width/s,Screen.height/s);for(int i=0;i<13;i++)if(SkillSlotRect(dock,i).Contains(point))return true;return false;}
+  public static bool PointerOverSlots(Vector3 screenPoint){var point=NativeUiViewport.Pointer(screenPoint);var dock=NativeHudDockLayout.Create(NativeUiSafeArea.DesignWidth,NativeUiSafeArea.DesignHeight);for(int i=0;i<13;i++)if(SkillSlotRect(dock,i).Contains(point))return true;return false;}
   GUIStyle rageText;
   // Web updateHUD (28534-28547): the Space (rage burst) slot gets a red fill rising from the bottom (height = rage / _rageMax) with the raw "N%" at the top,
   // a border that warms at 50 / 100 and an inner glow at 100. Nothing is drawn while rage is 0.
@@ -56,7 +56,7 @@ namespace Exoduser.UnityPort {
   }
   void DrawSkillSlots(NativeHudDockLayout dock,float width,float height,Simulation simulation){
    if(TracePointerEvents&&(Event.current.type==EventType.MouseDown||Event.current.type==EventType.MouseUp)){
-    int eventHit=-1,screenHit=-1;Vector2 guiPoint=Event.current.mousePosition;float scale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);Vector2 screenPoint=new Vector2(ExoInput.MousePosition.x/scale,(Screen.height-ExoInput.MousePosition.y)/scale);
+    int eventHit=-1,screenHit=-1;Vector2 guiPoint=Event.current.mousePosition;Vector2 screenPoint=NativeUiViewport.Pointer(ExoInput.MousePosition);
     for(int i=0;i<13;i++){var r=SkillSlotRect(dock,i);if(eventHit<0&&r.Contains(guiPoint))eventHit=i;if(screenHit<0&&r.Contains(screenPoint))screenHit=i;}
     Debug.Log("[HUD POINTER TRACE] type="+Event.current.type+" button="+Event.current.button+" eventPos="+guiPoint+" inputScreen="+ExoInput.MousePosition+" screenAsGui="+screenPoint+" eventSlot="+eventHit+" screenSlot="+screenHit+" screen="+Screen.width+"x"+Screen.height+" matrix="+GUI.matrix+" enabled="+GUI.enabled+" depth="+GUI.depth);
    }
