@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 namespace Exoduser.UnityPort
 {
@@ -15,7 +17,7 @@ namespace Exoduser.UnityPort
   string WideEnemySample(){var sample=new WideWorldEnemySample();foreach(var e in Simulation.Enemies)sample.enemies.Add(new WideWorldEnemy{id=e.Id,etype=e.Etype,hp=e.Hp,maxHp=e.MaxHp,level=e.Level,x=e.X,y=e.Y,radius=e.Radius,speed=e.Speed,facing=e.Facing,stateTicks=e.StateTicks});return JsonUtility.ToJson(sample);}
   [Serializable] sealed class WideWorldFps {public string initialSample,initialSampleSha256;public long seed;public int width,height,frames,ticks,enemiesBefore,enemiesAfter;public float seconds,fps;public List<float> frameMs=new List<float>();}
   [Serializable] sealed class WideWorldPixelCase {public string name;public int difference,selfDifference,nonBlackPixels,maxChannel;}
-  [Serializable] sealed class WideWorldReceipt {public string runtimeSha256,source;public string scope="격리 Player, 기존 legacyFixture로 전투 진입(제품 입장은 UI 검수 별도), API 위치·무적·스폰홀 제거·직접60Hz 입력·적32/가장자리 피해글자 표본; 자연 플레이/완주와 구분";public int mapWidth,mapHeight,tileSize;public List<WideWorldShot> shots=new List<WideWorldShot>();public List<WideWorldMove> movement=new List<WideWorldMove>();public List<WideWorldFps> performance=new List<WideWorldFps>();public int pixelDifference=-1,pixelSelfDifference=-1;public List<WideWorldPixelCase> pixelCases=new List<WideWorldPixelCase>();}
+  [Serializable] sealed class WideWorldReceipt {public string runtimeSha256,source;public string pixelRenderApi="URP SingleCameraRequest/SubmitRenderRequest";public string scope="격리 Player, 기존 legacyFixture로 전투 진입(제품 입장은 UI 검수 별도), API 위치·무적·스폰홀 제거·직접60Hz 입력·적32/가장자리 피해글자 표본; 자연 플레이/완주와 구분";public int mapWidth,mapHeight,tileSize;public List<WideWorldShot> shots=new List<WideWorldShot>();public List<WideWorldMove> movement=new List<WideWorldMove>();public List<WideWorldFps> performance=new List<WideWorldFps>();public int pixelDifference=-1,pixelSelfDifference=-1;public List<WideWorldPixelCase> pixelCases=new List<WideWorldPixelCase>();}
   WideWorldReceipt wideWorld;
 
   IEnumerator WorldWideCapture()
@@ -46,7 +48,7 @@ namespace Exoduser.UnityPort
    var camera=HudCamera;var midL=WideGround(camera,0,.5f);var midR=WideGround(camera,1,.5f);var top=WideGround(camera,.5f,1);var bottom=WideGround(camera,.5f,0);
    wideWorld.shots.Add(new WideWorldShot{name=name,width=Screen.width,height=Screen.height,playerX=p.X,playerY=p.Y,fov=camera.orthographic?camera.orthographicSize:camera.fieldOfView,viewport=camera.rect,pixelRect=camera.pixelRect,cameraPosition=camera.transform.position,cameraEuler=camera.transform.eulerAngles,targetWidth=camera.targetTexture!=null?camera.targetTexture.width:Screen.width,targetHeight=camera.targetTexture!=null?camera.targetTexture.height:Screen.height,renderTarget=camera.targetTexture!=null,remodel=NativeRemodel3D.Active,chunks=LoadedChunks,enemies=Simulation.Enemies.Count,walkable=Map.CanMove(p.X,p.Y,p.Radius),horizontalSpan=Vector2.Distance(midL,midR),verticalSpan=Vector2.Distance(top,bottom),groundCorners=new[]{WideGround(camera,0,0),WideGround(camera,1,0),WideGround(camera,1,1),WideGround(camera,0,1)}});
    if(combat){var left=WideGround(camera,.07f,.55f);var right=WideGround(camera,.93f,.55f);damageFloaters.Add(left.x,left.y,"101","#ead7ac","ultrawide-qa-left",NativeFloatingTextLayout.DamagePriority,Time.unscaledTime,2,true,101);damageFloaters.Add(right.x,right.y,"202","#ead7ac","ultrawide-qa-right",NativeFloatingTextLayout.DamagePriority,Time.unscaledTime,2,true,202);}
-   yield return UiOverlapShot(name);if(Screen.width==1920&&Screen.height==1080)WideWorldPixelCheck(name);
+   yield return UiOverlapShot(name);if(Screen.width==1920&&Screen.height==1080){yield return new WaitForEndOfFrame();WideWorldPixelCheck(name);}
   }
   void WideSpawnSample()
   {
@@ -71,7 +73,7 @@ namespace Exoduser.UnityPort
   }
   Color32[] WideWorldPixels(Camera camera,RenderTexture target)
   {
-   var oldTarget=camera.targetTexture;var oldActive=RenderTexture.active;try{camera.targetTexture=target;camera.Render();RenderTexture.active=target;var image=new Texture2D(target.width,target.height,TextureFormat.RGBA32,false);try{image.ReadPixels(new Rect(0,0,target.width,target.height),0,0);image.Apply();return image.GetPixels32();}finally{Destroy(image);}}finally{camera.targetTexture=oldTarget;RenderTexture.active=oldActive;}
+   var oldTarget=camera.targetTexture;var oldActive=RenderTexture.active;try{var request=new UniversalRenderPipeline.SingleCameraRequest{destination=target};if(!RenderPipeline.SupportsRenderRequest(camera,request))throw new InvalidOperationException("실제 URP 단일 카메라 렌더 요청 미지원");RenderPipeline.SubmitRenderRequest(camera,request);RenderTexture.active=target;var image=new Texture2D(target.width,target.height,TextureFormat.RGBA32,false);try{image.ReadPixels(new Rect(0,0,target.width,target.height),0,0);image.Apply();return image.GetPixels32();}finally{Destroy(image);}}finally{camera.targetTexture=oldTarget;RenderTexture.active=oldActive;}
   }
   static int WidePixelDifference(Color32[] a,Color32[] b){int count=0;for(int i=0;i<a.Length;i++)if(a[i].r!=b[i].r||a[i].g!=b[i].g||a[i].b!=b[i].b||a[i].a!=b[i].a)count++;return count;}
   void WideSavePixels(string name,Color32[] pixels){var image=new Texture2D(1920,1080,TextureFormat.RGBA32,false);try{image.SetPixels32(pixels);image.Apply();File.WriteAllBytes(Path.Combine(overlapOutput,name+".png"),image.EncodeToPNG());}finally{Destroy(image);}}

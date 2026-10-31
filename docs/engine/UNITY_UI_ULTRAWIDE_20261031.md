@@ -154,3 +154,7 @@ C# 공통 좌표/포인터 회귀215개 통과. 실제 사용자32:9 이미지�
 UI/월드 캡처 coverage가 생성된 동안 NativeGame.Update는 UiOverlapOwnsInput을 보존해 AutomatedInput을 매 프레임 유지한다. 자기 PID UnityWndClass의 WM Down/Up 역변환 표본(.12초 누름/.2초 해제 대기) 동안만 overlapPhysicalClick으로 입력을 열고 finally에서 회수한다. BeginCharacterEntry(false)는 정상 신규 입장 API가 검수 shortcut으로 빠지지 않도록 호출 순간에만 AutomatedInput=false로 두며, 호출 직후 true로 복귀해 실제 상태의 Tick/재생과 검수 API 전환만 진행한다. 일반 플레이는 coverage=null로 기존 입력 규칙이 같다. 실제 5해상도 클릭과 신규 Loading→Nemesis→Guide, 시네마틱은 새 동일 Player에서 확인한다.
 
 각 실제 Repaint 저장 직전 UiOverlapOwnsInput·AutomatedInput을 확인하며, 입력 소유권이 없으면 해당 캡처를 실패시킨다. coverage.inputIsolationChecks는 실제 PNG frame 수와 같아야 한다. 월드 전용 검수는 lobby 비활성 상태이므로 UI 입력 카운트 조건에서 제외한다.
+
+### URP 원시 픽셀 비교 경로
+
+1920 여덟 위치의 reference/self/current는 실제 프레임 렌더 종료(WaitForEndOfFrame) 뒤 URP SingleCameraRequest(destination=1920×1080 RenderTexture)와 RenderPipeline.SubmitRenderRequest로 동기 렌더한다. SupportsRenderRequest가 false면 실패이며 빈 타깃끼리 일치를 통과시키지 않는다. 이후 ReadPixels/PNG를 보존하고 targetTexture·RenderTexture.active·camera.rect를 원복한다. 본편 상시 카메라/렌더 코드는 변경하지 않는다. 설치 URP ffe395a3a1d1 UniversalRenderPipeline.cs의 IsRenderRequestSupported/ProcessRenderRequests와 [Unity 공식 사용법](https://docs.unity.com/en-us/engine/6000.0/manual/cameras/urp/multiple/user-render-requests)을 대조했다. 실제 픽셀0·비검정 렌더 검수는 새 Player에서 별도다.
