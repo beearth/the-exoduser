@@ -18,14 +18,16 @@ Shader "EXODUSER/HD2DTrial/PixelLit"
  struct A { float4 p:POSITION; float2 uv:TEXCOORD0; float3 n:NORMAL; };
  struct V { float4 p:SV_POSITION; float2 uv:TEXCOORD0; float3 w:TEXCOORD1; float3 n:TEXCOORD2; };
  V vert(A i) { V o; o.w=TransformObjectToWorld(i.p.xyz);o.p=TransformWorldToHClip(o.w);o.uv=i.uv;o.n=TransformObjectToWorldNormal(i.n);return o; }
+ float alphaAt(float2 uv) {uv=clamp(uv,.5/_GridSize,1-.5/_GridSize);return SAMPLE_TEXTURE2D_LOD(_BaseMap,sampler_PointClamp,_UVRect.xy+uv*_UVRect.zw,0).a;}
  half4 frag(V i):SV_Target {
  float2 uv=(floor(saturate(i.uv)*(_GridSize-.001))+.5)/_GridSize;
  half4 c=SAMPLE_TEXTURE2D_LOD(_BaseMap,sampler_PointClamp,_UVRect.xy+uv*_UVRect.zw,0)*_Tint;clip(c.a-.35);
  Light l=GetMainLight(); half3 light=.48+ l.color*(.24+.48*saturate(dot(normalize(i.n),l.direction)));
  uint count=GetAdditionalLightsCount();
  for(uint k=0;k<count;k++){Light a=GetAdditionalLight(k,i.w);light+=a.color*a.distanceAttenuation*(.25+.75*saturate(dot(normalize(i.n),a.direction)));}
- float rim=pow(1-saturate(dot(normalize(i.n),normalize(GetWorldSpaceViewDir(i.w)))),3);
- return half4(c.rgb*light+rim*c.rgb*.12,1);
+ float pixel=1/_GridSize;
+ float rim=saturate(1-min(min(alphaAt(uv+float2(pixel,0)),alphaAt(uv-float2(pixel,0))),min(alphaAt(uv+float2(0,pixel)),alphaAt(uv-float2(0,pixel)))));
+ return half4(c.rgb*light+rim*half3(.10,.13,.16)*l.color,1);
  }
  ENDHLSL
  }
