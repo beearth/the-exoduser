@@ -55,18 +55,6 @@ function Read-Json([string]$p) {
     return $null
 }
 
-# 종료 지연 로그도 기존 writer와 공유해 읽는다. 읽기 권한만 요청하며 실행·권한·성공 판정은 바꾸지 않는다.
-function Read-RunLogShared([string]$path) {
-    $runLogStream = [IO.File]::Open($path, [IO.FileMode]::Open, [IO.FileAccess]::Read, [IO.FileShare]::ReadWrite)
-    $runLogReader = $null
-    try {
-        $runLogReader = [IO.StreamReader]::new($runLogStream, [Text.Encoding]::UTF8, $true)
-        return $runLogReader.ReadToEnd()
-    } finally {
-        if ($runLogReader) { $runLogReader.Dispose() } else { $runLogStream.Dispose() }
-    }
-}
-
 function Write-JsonAtomic([string]$p, $obj) {
     $dir = Split-Path $p -Parent
     if (-not (Test-Path -LiteralPath $dir)) { New-Item -ItemType Directory -Force -Path $dir | Out-Null }
@@ -660,7 +648,7 @@ function Parse-BatchLog([string]$log, [string]$id, [string]$method, [int]$exit, 
     $refreshMs = 0; $compileMs = 0; $errs = @(); $note = ''
     $crash = $false; $failed = $false; $errLogs = 0
     if (Test-Path -LiteralPath $log) {
-        $txt = Read-RunLogShared $log
+        $txt = [IO.File]::ReadAllText($log)
         $m = [regex]::Match($txt, 'Total: ([0-9.]+) seconds - Initiated by InitialRefreshV2')
         if ($m.Success) { $refreshMs = [long]([double]::Parse($m.Groups[1].Value, [Globalization.CultureInfo]::InvariantCulture) * 1000) }
         $m2 = [regex]::Match($txt, 'compile time=([0-9.]+)')
@@ -991,7 +979,7 @@ function Cmd-Player {
         if ($crashCause) { New-Halt $crashCause 'player' $logsUsed $t0c }
         $gpu = ''; $nullGfx = $false
         if (Test-Path -LiteralPath $log) {
-            $txt = Read-RunLogShared $log
+            $txt = [IO.File]::ReadAllText($log)
             $m = [regex]::Match($txt, '(?m)^\s*Renderer:\s*(.+?)\s*(\(ID=|$)')
             if ($m.Success) { $gpu = $m.Groups[1].Value.Trim() }
             if ($txt.Contains('Forcing GfxDevice: Null')) { $nullGfx = $true }
@@ -999,7 +987,7 @@ function Cmd-Player {
         $fail = ''
         $extraOk = $true
         if ($nullGfx) { $extraOk = $false; $fail = 'Forcing GfxDevice: Null - GPU 렌더링 아님' }
-        elseif (-not $gpu) { $extraOk = $false; $fail = '그래픽 장치 이름을 로그에서 찾지 못함(GPU 확인 불가)' }
+        elseif (-not $gpu) { $fail = '그래픽 장치 이름을 로그에서 찾지 못함(GPU 확인 불가)' }
         Finish-Guarded 'player' $id $g ([ordered]@{ exe = $exeFull; args = @($ia); gpu = $gpu; gfxNull = $nullGfx; log = $log; desktop = $Desktop; hiddenWindows = $g.hiddenWindows; hiddenTitles = @($g.hiddenTitles); desktopClosed = $g.desktopClosed }) $extraOk $fail
     } finally { Release-Lock $PID }
     if ($rejected) { $script:ExitRc = 2 }

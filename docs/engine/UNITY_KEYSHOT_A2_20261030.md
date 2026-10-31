@@ -16,7 +16,7 @@
 | 수면 진단 | R4보스 우상단 파랑 영역은 수면재질만 빨강으로 바꾼 대조에서 그대로 빨강이 되어 실제 원경 수면임을 확인. 진단재질은 즉시 복원·파괴. 지면 구멍으로 보고하지 않음. 녹흑 독액/약한반사/기포/교각물결의 마감은 HD2D Main Stage3 소유 |
 | CPU | 기존32+몸통3+지지목2=37PASS. 실제 원본충돌 주변8860점 맞춤후 통행침범0/중심통행시 수정0. 40000타일×3반경 이동·미니맵·LOS 불일치0. Core/Runtime 독립컴파일0/0. CPU성공을 시각PASS/FPS로 올리지 않음 |
 | 동일 Player 증거 | --unity-field-screen 도구는 기존8곳×1920/3840 HUD16장과 실제60프레임 렌더부하를 유지. 실제필드-메시검수.json에 자기 큰거목/전경 하부 통행정점수, 실제지면청크수, 실제목교 모든 world정점/삼각형/bounds/수면교차를 저장. QA정지·순간이동·AIoff이며 자연완주와 구분 |
-| 배제/실행 | 미인수상속 StageClear8경로 공통차이0/Trial·actor추가·HOLD모델 인수0. 실제 lifecycle은 UI소유 frozen exo SHA68b7a0c7/Queue8a00a15e. 해당Tools CLI를 맵 공통입력으로 인수하지 않음. source/build/M1/실제1x가 일치한 뒤 지정통합자에게 전달 |
+| 배제/실행 | 미인수상속 StageClear8경로 공통차이0/Trial·actor추가·HOLD모델 인수0. 실제 lifecycle은 UI소유 frozen exo SHA68b7a0c7/Queue8a00a15e. 제품브랜치의 Tools/devtools/exo-unity.ps1·README도 이전 정확byte를I에 보존하고 승인공통19c6 byte로 정상후속복원하여 맵 netdiff에서 제외. frozen 실제 실행기와 구분. source/build/M1/실제1x가 일치한 뒤 지정통합자에게 전달 |
 | 현재 판정 | R4 VISUAL FAIL. R5는 공동 Player 검수 전 SourceReady 기술후보이며 전체아트 판정 미검증. 실제화면에서 큰형태/재질/접지/가림을 다시 보고 잔여 결함을 수정한다 |
 
 ## R4 지면 질량/거목 방향 재제작 — 2026-10-31
