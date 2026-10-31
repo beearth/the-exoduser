@@ -5,7 +5,7 @@
 | 범위·공용 변경 | 근거·계약 |
 |---|---|
 | 기준·의존 | fetch/원격 main `0105159934d0c2a8b167bd51518dca1e0fafe50a`. QS-01 main 모듈 재사용(인수 ref56dbc46a). 미병합 브랜치 반입/merge/rebase0. gap `61ab71be:130`의 “기존 QS-02/03”은 사용자 정정에 따라 신규 구현으로 해석. 이전 BLOCKED ac283e13은 이번 제품 의존이 아님 |
-| 순수 phase | 신규 `godot/port_modules/potion_recovery_source/auto_phase.gd`. G35893 양수CD만 `-=sp`/음수허용 →35894 임계 level/affix 조회 →35895 lesson/CD/hp/mats/부족HP short-circuit →35896 before →35897 악의1 →35899–35902 장갑/벨트/pRegen/CD →35903 회복 재조회 →35904 HP →35905–35910 후속순서. QS-01 `enhanced_heal/auto_cooldown`을 호출하며 공식을 재작성하지 않음. callback 실패 시 수행 prefix 유지, refund/자동 retry 없음 |
+| 순수 phase | 신규 `godot/port_modules/potion_recovery_source/auto_phase.gd`. G35893 양수CD만 `-=sp`/음수허용 →35894 임계 level/affix 조회 →35895 lesson/CD/hp/mats/부족HP short-circuit →35896 before →35897 악의구슬1 →35899–35902 장갑/벨트/pRegen/CD →35903 회복 재조회 →35904 HP →35905–35910 후속순서. QS-01 `enhanced_heal/auto_cooldown`을 호출하며 공식을 재작성하지 않음. callback 실패 시 수행 prefix 유지, refund/자동 retry 없음 |
 | 런타임 | 신규 `godot/scripts/native_potion_recovery.gd`: Main 약한참조·physics serial 중복방지·read/write callback 조립·마지막 사용/미이식 영수증. threshold 미발동 시 장갑/벨트/패시브/두 번째 heal reader0. OPT.autoPotThr/qsAuto/수동 물약/새 RNG0 |
 | Main 공용 추가 | **17, 84, 1007행**만 추가(기존 줄 수정/삭제0): preload·인스턴스·`_physics_process`의 deferred 호출 한 줄. physics delta×60을 sp로 사용해 렌더FPS가 CD를 가속하지 않음. 같은 physics serial 중복 호출 거절. 기존 source-clock stage/playTime CONTINUE·sp 통과를 확인하고, 현재 G.on/paused 및 tree pause도 재확인 |
 | State 공용 추가 | `native_source_new_run_state.gd` **1227–1260행(+34)**만 추가. CD0/HP강화레벨0은 G27684/28071·fresh63950/63952의 별도 런타임 소유. 악의/CD/조건부 통계 write, HP는 resource sink로 위임 후 실제 P.hp readback. 기존 addPotion·addExp·Q/E·P/INV schema 변경0 |
@@ -17,7 +17,7 @@
 | 검증 | 결과·원로그 |
 |---|---|
 | 원본 JS·신규 | 최종 **2,560단정/0실패**, exit0·ERROR0·Camera2D WARNING1·종료누수0 (`new-final.*`). UTF-8 파일 oracle은 최신 main G35893–35911을 그대로 추출·vm 실행한 **420사례**. HP/악의/CD·장비/패시브·두 번 heal의 조회 순서·조건부통계 대조. 전체 원본/큰 JSON 출력 없이 파일 전달, Node --node-bin, 진단 출력 join |
-| 실제 Main·writer | 신규 테스트는 `EXODUSER-demo11-25b-Isolated-20261021`. production intro owner/기존 skip 동작→자연 발동, HP/P 동기화·악의1·CD·조건부 통계·미연결 SFX 영수증·HP-only ST/MP 불변·외부 writer 거절·physics cadence/serial·on/paused/tree pause 검증 |
+| 실제 Main·writer | 신규 테스트는 `EXODUSER-demo11-25b-Isolated-20261021`. production intro owner/기존 skip 동작→자연 발동, HP/P 동기화·악의구슬1·CD·조건부 통계·미연결 SFX 영수증·HP-only ST/MP 불변·외부 writer 거절·physics cadence/serial·on/paused/tree pause 검증 |
 | 직접 회귀(각1회) | QS-01 **318/0**, `test_p2005d_regen_wiring` **10/0**, `test_p2001j_lesson_clock` **21/0**, contracts **5그룹/0**. 기존 격리명/기대값/테스트 파일 무수정. reg-*-first.meta.json 및 원출력 파일 |
 | 실패 이력·종료 | 최초 신규 2555단정/5실패 및 진단 재실행 동일: 휴면 하니스의 parry_lesson prefix halt 때문. production intro 하니스로 2556/0 확인했으나 MP3 종료누수 ERROR1, 다음 2558/0에서도 동일. verbose로 voice_wakeup MP3 playback/stream 2객체 확인→테스트가 음성 stop/AudioServer 해제 대기하도록 수정. 검사를 삭제/약화하거나 오류를 PASS로 계산하지 않음. 회귀 launcher 초기 충돌4건은 override 보호 assert로 **Godot 실행 전 중단**, 이후 각 suite 실제1회 |
 | 정적·보호·제출 | diff-check/docs-sync/정상 pre-commit을 거쳐 자기 branch만 push하고 실제 원격SHA를 대조한다. 보호 파일/R 비교·DONE 뒤 자기 worktree 제거 결과는 외부 DONE.txt에 기록한다. 원로그 `~/exoduser-wt/_out/demo11-25b/`, bounded 원본 source-lines.txt·common-file-ranges.diff. Camera2D 기존 interpolation WARNING은 그대로 기록, ERROR0을 전체 이력으로 확대하지 않음 |

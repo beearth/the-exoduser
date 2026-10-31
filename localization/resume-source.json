@@ -890,13 +890,13 @@
     "file": "system-lesson.js"
   },
   {
-    "key": "악의로 자동 회복합니다",
-    "en": "Malice fuels auto-healing",
+    "key": "악의구슬로 자동 회복합니다",
+    "en": "Malice Sphere fuels auto-healing",
     "file": "system-lesson.js"
   },
   {
-    "key": "부족한 체력이 물약 회복량 이상이고 재사용 대기시간이 끝나면 악의 1개를 소비해 자동 회복합니다. 악의를 남겨두고 평소처럼 전투하세요. 일부러 피해를 받을 필요는 없으며, 이 항목은 건너뛸 수 있습니다.",
-    "en": "When your missing HP reaches the potion healing amount and its cooldown is over, auto-healing consumes 1 Malice. Keep some Malice and fight normally. You do not need to take damage on purpose; you can skip this step.",
+    "key": "부족한 체력이 물약 회복량 이상이고 재사용 대기시간이 끝나면 악의구슬 1개를 소비해 자동 회복합니다. 악의구슬을 남겨두고 평소처럼 전투하세요. 일부러 피해를 받을 필요는 없으며, 이 항목은 건너뛸 수 있습니다.",
+    "en": "When your missing HP reaches the potion healing amount and its cooldown is over, auto-healing consumes 1 Malice Sphere. Keep some Malice Sphere and fight normally. You do not need to take damage on purpose; you can skip this step.",
     "file": "system-lesson.js"
   },
   {

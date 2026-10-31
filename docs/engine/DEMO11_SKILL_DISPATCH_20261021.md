@@ -4,9 +4,9 @@
 
 `Main.dispatch_native_skill_slot(key)` → 실제 World/NativeSkillSlots → `native_skill_dispatch.select` → SK-S04 `slot_rules.slot_value/can_equip`, fusion absorbed 독해 → 기존 4cast 순서다. 1~4는 skillSlots[0..3], Space는[4], F는[5], Ctrl은 activeCtSk, Z는 ultSlot이다. 키 반복은 무시한다. 빈칸/미보유/부적합/흡수/paused/dead/fallen/ghostWalk/iceOrb 차단은 자원을 쓰지 않는다. Space 보주 파쇄는 슬롯 선택보다 우선하고 Ctrl 재입력 파쇄는 기존 실행자를 호출한다. 고정 4키는 새 게임의 현재 배정으로 유지된다. 실제 슬롯 변경 UI·저장·자동 repair writer는 이 단위에서 만들지 않는다.
 
-비용은 `native_skill_dispatch.quote`에서 한 번 산출한다. 현재 passive/affix/legend 공급자는 Main의 좁은 reader로 읽으며, 공급자 미준비 시 0 폴백을 사용하지 않는다. giantSlam ST는 원문 G31960–31996의 `min(ToInt32(50*(1+.45*(lv−1))*stDisc),ToInt32(mst*.9))`, 악의는 G28080–28085의10(레슨0)이다. spikeTrap 악의5, holyDome0, iceOrb MP는 `ToInt32(50*(1+.35*(lv−1))*pMagicCost)`다.
+비용은 `native_skill_dispatch.quote`에서 한 번 산출한다. 현재 passive/affix/legend 공급자는 Main의 좁은 reader로 읽으며, 공급자 미준비 시 0 폴백을 사용하지 않는다. giantSlam ST는 원문 G31960–31996의 `min(ToInt32(50*(1+.45*(lv−1))*stDisc),ToInt32(mst*.9))`, 악의구슬은 G28080–28085의10(레슨0)이다. spikeTrap 악의구슬5, holyDome0, iceOrb MP는 `ToInt32(50*(1+.35*(lv−1))*pMagicCost)`다.
 
-기존 시전자들이 State의 `commit_native_skill_dispatch_cost`만 사용한다. State는 실제 owner와 악의를 검사하고 ResourceAuthority의 추가 메서드가 ST/MP 양쪽을 모두 검사한 뒤 이벤트·외부 호출 없이 함께 쓴다. 성공 뒤에만 악의를 차감한다. 기존 Q/E/회복/공격의 자원 API와 피해 경로는 변경하지 않는다. 현재 어댑터가 소유하던 쿨(gsl/gc/hd/io)을 그대로 유일 writer로 쓰고 HUD는 실제 슬롯 배정으로 이 쿨을 읽는다. giantSlam/spikeTrap 시작 쿨에 원문 G28065의 _cdRed를 반영하고 holyDome1800/iceOrb 파쇄 쿨과 기존 tick/영역 보너스는 유지한다.
+기존 시전자들이 State의 `commit_native_skill_dispatch_cost`만 사용한다. State는 실제 owner와 악의구슬을 검사하고 ResourceAuthority의 추가 메서드가 ST/MP 양쪽을 모두 검사한 뒤 이벤트·외부 호출 없이 함께 쓴다. 성공 뒤에만 악의구슬을 차감한다. 기존 Q/E/회복/공격의 자원 API와 피해 경로는 변경하지 않는다. 현재 어댑터가 소유하던 쿨(gsl/gc/hd/io)을 그대로 유일 writer로 쓰고 HUD는 실제 슬롯 배정으로 이 쿨을 읽는다. giantSlam/spikeTrap 시작 쿨에 원문 G28065의 _cdRed를 반영하고 holyDome1800/iceOrb 파쇄 쿨과 기존 tick/영역 보너스는 유지한다.
 
 **미연결 경계:** Main/Player 기존 LMB/RMB/Shift/Q/E 입력은 PC 보호 owner가 계속 소유한다. 이 경로를 공통 dispatcher로 넘기려면 PC가 현재 selection→기존 실행자 호출과 release/hold/시계 우선순위를 제공해야 한다. pStun 스킬 탈출의 poise4/poiseR0 역시 해당 owner 인터페이스가 필요해 이 dispatcher는 거절한다. 해당 입력·분노·방패·돌진·사슬·피해 경로는 수정0이다.
 

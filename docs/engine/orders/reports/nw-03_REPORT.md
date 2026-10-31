@@ -1,6 +1,6 @@
 # NW-03 — MAP_OBJS action reducer의 독립 명령 계획
 
-작업ID `nw-03`, 브랜치 `codex/nw-03-20261020`. 추적 순서안 3번에 따라 lore → breakable → altar → bonfire를 구분해 원문 효과·쓰기 순서를 검수하는 **fixture용 순수 proposal**을 구현했다. 실제 MAP_OBJS·HP·악의·버프·난수·오디오·입력·저장 consumer 연결은 하지 않았다. 공용6·다른 담당 파일·기존 제품/테스트 변경은 모두 0줄이다. 실제 연결은 아래 접점의 별도 승인 전까지 BLOCKED이며 임시 State/지갑/자원 owner를 만들지 않았다.
+작업ID `nw-03`, 브랜치 `codex/nw-03-20261020`. 추적 순서안 3번에 따라 lore → breakable → altar → bonfire를 구분해 원문 효과·쓰기 순서를 검수하는 **fixture용 순수 proposal**을 구현했다. 실제 MAP_OBJS·HP·악의구슬·버프·난수·오디오·입력·저장 consumer 연결은 하지 않았다. 공용6·다른 담당 파일·기존 제품/테스트 변경은 모두 0줄이다. 실제 연결은 아래 접점의 별도 승인 전까지 BLOCKED이며 임시 State/지갑/자원 owner를 만들지 않았다.
 
 ## 기준·의존·제출 범위
 
@@ -24,7 +24,7 @@
 | altar | 32846–32852 | used=true → mmDirty=1 → 난수1개 → 선택 stat 누적 → 축복명! → 입자12 → pickup |
 | altar 값/후속 | 32848–32850,27927,28005,28019,31567 | _altAtk+.15 / _altDef+.20 / _altSpd+.15. 선택값의 null/false/없음은0. DEF의 후속 +6과 속도 갱신시점은 별도 applyStats consumer; 이번엔 호출하지 않음 |
 | bonfire | 32830–32833 | hp=mhp → st=mst → mp=mmp → shield=mshield → lit=true → mmDirty=1 → 회복 텍스트 → 입자12 → pickup. lit=true여도 다시 회복 가능 |
-| HP addPotion 의존 | 28250–28258 | 원문 HP 분기 관측은 true·악의+1. producer에 이 함수 본문을 복제하지 않음. 실제 오디오/텍스트/mats 처리는 기존 owner가 필요 |
+| HP addPotion 의존 | 28250–28258 | 원문 HP 분기 관측은 true·악의구슬+1. producer에 이 함수 본문을 복제하지 않음. 실제 오디오/텍스트/mats 처리는 기존 owner가 필요 |
 
 bonfire의 정상 생성 코드 G25793–25808은 주석 상태다. fixture 지원이 자연 생성 활성화를 뜻하지 않는다. trap·상자·잔해·R hold·인벤 반입·저장·비문 본문 UI는 구현하지 않았다. `break_scope="map_objs"`는 MAP loop 종료만 뜻하며 같은 입력의 이후 상자·수거 블록을 소진하지 않는다.
 
@@ -47,7 +47,7 @@ bonfire의 정상 생성 코드 G25793–25808은 주석 상태다. fixture 지�
 
 부족한 의존을 0·난수·가짜 성공으로 대체하지 않는다. 전체 계획을 반환하기 전 검증하므로 NR에 부분 쓰기를 싣지 않는다. 이는 native 지원 도메인의 방어 계약이며, 원본 JS의 모든 coercion·prototype/getter·예외/부분 실행 순서 동등성은 미확인이다. `{key}` 번역 토큰과 효과 args를 보존하며 실제 번역·FX dispatch는 없다.
 
-addPotion의 false 상황은 **호출 반환 계약 fixture**로 검사한 것으로, 현재 원본 HP 함수가 실제 false를 반환한다고 주장하지 않는다. 실제 연결 시 예상 반환과 실제 권위/결과가 일치하는 owner가 필요하다. 반환값을 먼저 추측해 실제 HP/악의 거래를 적용하는 consumer는 이번에 만들지 않았다.
+addPotion의 false 상황은 **호출 반환 계약 fixture**로 검사한 것으로, 현재 원본 HP 함수가 실제 false를 반환한다고 주장하지 않는다. 실제 연결 시 예상 반환과 실제 권위/결과가 일치하는 owner가 필요하다. 반환값을 먼저 추측해 실제 HP/악의구슬 거래를 적용하는 consumer는 이번에 만들지 않았다.
 
 ## 검증
 

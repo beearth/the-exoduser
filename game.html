@@ -2625,7 +2625,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
   <div class="objective-frame">
     <div id="expBar" class="objective-exp"><div id="expF" style="width:0%"></div></div>
     <div class="objective-row"><span id="hudKillLabel">지역 처치</span><div id="killCnt">0 / 0</div></div>
-    <div class="objective-row"><span id="hudMaliceLabel">악의</span><div id="matCnt">0</div></div>
+    <div class="objective-row"><span id="hudMaliceLabel">악의구슬</span><div id="matCnt">0</div></div>
   </div>
 </div>
 <div id="mmWrap"><canvas id="mm" width="130" height="130" style="z-index:2"></canvas><img id="mmFrame" src="img/mm_frame_ring_20261028.png" alt=""></div>
@@ -3065,8 +3065,8 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
   <div class="pbox" style="display:flex;flex-direction:column;overflow:hidden;">
     <div class="ptitle">복수의 대장간</div>
     <div class="frame-inner-panel frame-inner-panel-stack">
-      <div id="forgeMats" style="text-align:center;margin-bottom:6px;padding:4px 12px;background:rgba(120,0,200,.08);border:1px solid #553388;font-size:1rem;color:#cc66ff;font-weight:700">악의: 0</div>
-      <div id="forgeLore" style="color:#665544;font-size:.8rem;text-align:center;margin-bottom:8px">🔴화염→빙결 2배 | 🔵빙결→화염 2배 | ⚪물리=중립 | 악마 처치 시 악의 영혼 드롭</div>
+      <div id="forgeMats" style="text-align:center;margin-bottom:6px;padding:4px 12px;background:rgba(120,0,200,.08);border:1px solid #553388;font-size:1rem;color:#cc66ff;font-weight:700">악의구슬: 0</div>
+      <div id="forgeLore" style="color:#665544;font-size:.8rem;text-align:center;margin-bottom:8px">🔴화염→빙결 2배 | 🔵빙결→화염 2배 | ⚪물리=중립 | 악마 처치 시 악의구슬 영혼 드롭</div>
       <div class="fg-tabs" id="fgTabs"></div>
       <div class="fg-grid" id="fgGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;max-height:36vh;overflow-y:auto"></div>
       <div id="forgeConfirm" style="display:none;margin-top:8px;padding:8px;background:rgba(174,177,177,.06);border:1px solid #535656;text-align:center">
@@ -6411,8 +6411,8 @@ const _EN={
 '하나 죽었군.':'One down.',
 '유령쇠뇌야. 인사해.':"That's the ghost crossbow. Say hello.",
 '보물상자를 열었군. 보스급 장비가 쏟아진다.':"You opened a treasure chest. Boss-tier gear pours out.",
-'잔해도 부숴서 열어. 악의와 장비가 숨어있다.':'Break the debris open too. Malice and gear hide inside.',
-'잔해에서 악의가 나온다! 보이면 다 주워!':'Debris drops malice! Grab every one you see!',
+'잔해도 부숴서 열어. 악의구슬과 장비가 숨어있다.':'Break the debris open too. Malice Sphere and gear hide inside.',
+'잔해에서 악의구슬이 나온다! 보이면 다 주워!':'Debris drops Malice Sphere! Grab every one you see!',
 '흰색 탄을 무서워하지 마. 악의가 강하다.':"Don't fear white bullets. Malice is strong.",
 '빨간 탄을 무서워하지 마. 악의가 강하다.':"Don't fear red bullets. Malice is strong.",
 '빨간 탄은 E. 무지개는 Q.':"Red shots: E. Rainbow: Q.",
@@ -6464,9 +6464,9 @@ const _EN={
 '...버리기 아까운 건 창고에.':"...Stash what's too good to drop.",
 '...살아남은 것만으로도 대단하군. 설정을 확인해.':'...Surviving alone is impressive. Check settings.',
 // --- System Messages ---
-'MP 부족!':'Not enough MP!','ST 부족!':'Not enough ST!','악의 부족!':'Not enough Malice!',
+'MP 부족!':'Not enough MP!','ST 부족!':'Not enough ST!','악의구슬 부족!':'Not enough Malice Sphere!',
 '충전 중...':'Charging...','캔슬':'Cancel','아이템 선택 필요':'Select an item',
-'악의 소진...':'Malice depleted...','비문 발견...':'Inscription found...',
+'악의구슬 소진...':'Malice Sphere depleted...','비문 발견...':'Inscription found...',
 'HP물약!':'HP Potion!','HP물약 +1':'HP Potion +1','HP물약 +2':'HP Potion +2',
 'HP/MP/ST 회복!':'HP/MP/ST Restored!','보물상자 개봉!':'Chest Opened!',
 '익사!':'Drowning!','피웅덩이!':'Blood Pool!','독혈!':'Toxic Blood!','잡힘!':'Grabbed!',
@@ -6567,7 +6567,7 @@ const _EN={
 '낡은 석궁':'Worn Crossbow','강철 석궁':'Steel Crossbow','흑요석 석궁':'Obsidian Crossbow',
 '대검':'Greatsword','석궁':'Crossbow','연사석궁':'Repeater','마력석궁':'Arcane Crossbow',
 // --- Misc ---
-'악의 추출':'Malice Extract','악의':'Malice','필살기':'Ultimate','필살기 해제':'Ultimate Unset',
+'악의구슬 추출':'Malice Sphere Extract','악의구슬':'Malice Sphere','필살기':'Ultimate','필살기 해제':'Ultimate Unset',
 '이전':'Transfer','강화':'Enhance','개봉!':'Opened!',
 '여신의 가호':'Goddess\'s Blessing',
 '과부하!':'Overload!',
@@ -6611,14 +6611,14 @@ const _EN={
 '가방에 공간이 없습니다!':'No space in bag!','가방이 가득 찼습니다!':'Bag is full!',
 '창고가 가득 찼습니다!':'Storage is full!','퀵슬롯이 가득 찼습니다!':'Quick slot is full!',
 '유물 주머니가 가득 찼습니다!':'Relic pouch is full!','유물 주머니 가득!':'Relic pouch full!',
-'악의가 부족합니다!':'Not enough Malice!','가방이 비어있습니다':'Bag is empty',
+'악의구슬이 부족합니다!':'Not enough Malice Sphere!','가방이 비어있습니다':'Bag is empty',
 '창고가 비어있습니다':'Storage is empty','비어있음':'Empty','어픽스 없음':'No affix',
 '장착!':'Equipped!','해제':'Unequipped','보관':'Deposit','꺼내기':'Withdraw',
 '현재 장착':'Currently equipped','없음 — 제작하세요!':'None — Craft one!',
 '리셋할 포인트가 없습니다':'No points to reset',
 '키 설정 초기화 완료':'Key settings reset',
 // --- Forge/Craft ---
-'제작 확률':'Craft chance','제작 비용':'Craft cost','보유 악의':'Malice owned',
+'제작 확률':'Craft chance','제작 비용':'Craft cost','보유 악의구슬':'Malice Sphere owned',
 // --- Canvas UI ---
 '보스방':'Boss Room','안식처':'Sanctuary','회복':'Recover','점화':'Ignite',
 '비석':'Stele','읽기':'Read','파괴':'Destroy','제단':'Altar','기원':'Pray',
@@ -6695,9 +6695,9 @@ const _EN={
 '공격':'Attack','보호막':'Shield','필살기':'Ultimate',
 '합체 스킬로 통합됨':'Merged into fused skill','얼음보주 안에선 사용 불가!':'Cannot use inside Ice Orb!',
 'Shift+키로 폭파':'Shift+key to detonate','취소':'Cancel','충전 중...':'Charging...',
-'쿨다운 중...':'Cooldown...','시전 중...':'Casting...','악의 부족!':'Not enough Malice!',
-'악의 부족! (12)':'Not enough Malice! (12)','악의 부족! (15)':'Not enough Malice! (15)',
-'악의 부족! (20)':'Not enough Malice! (20)','악의 부족! (10)':'Not enough Malice! (10)',
+'쿨다운 중...':'Cooldown...','시전 중...':'Casting...','악의구슬 부족!':'Not enough Malice Sphere!',
+'악의구슬 부족! (12)':'Not enough Malice Sphere! (12)','악의구슬 부족! (15)':'Not enough Malice Sphere! (15)',
+'악의구슬 부족! (20)':'Not enough Malice Sphere! (20)','악의구슬 부족! (10)':'Not enough Malice Sphere! (10)',
 'ST 부족!':'Not enough ST!','HP 부족!':'Not enough HP!',
 '필살기 슬롯 클릭하여 배정!':'Click ultimate slot to assign!',
 '필살기 스킬을 습득하세요':'Learn an ultimate skill',
@@ -6813,14 +6813,14 @@ const _EN={
 '기동칼날개 AUTO ON':'Bladewing AUTO ON','기동칼날개 AUTO OFF':'Bladewing AUTO OFF',
 '콤보 종료: ':'Combo End: ','익사!':'Drowning!',
 '피웅덩이!':'Blood Pool!','독혈!':'Toxic Blood!','비문 발견...':'Inscription found...',
-'보물상자 개봉!':'Chest Opened!','악의 +':'Malice +','잡힘!':'Grabbed!',
+'보물상자 개봉!':'Chest Opened!','악의구슬 +':'Malice Sphere +','잡힘!':'Grabbed!',
 '저주 ':'Curse ','충전 중...':'Charging...','불발...':'Misfire...',
 '사슬 약점!':'Chain Weakness!',
 '전염 x':'Plague x','흡수 완료!':'Absorb Complete!',
 '부활 성공!':'Revive Success!','부활 실패...':'Revive Failed...',
 '산호가시':'Coral Spike','가시!':'Spike!','차원 이동!':'Dimensional Shift!','독!':'Poison!',
 '탈출!':'Escaped!','기절 해제':'Stun Released',
-'아이템 선택 필요':'Select an item','악의 부족':'Not enough Malice','악의 소진...':'Malice depleted...',
+'아이템 선택 필요':'Select an item','악의구슬 부족':'Not enough Malice Sphere','악의구슬 소진...':'Malice Sphere depleted...',
 '스킬 미습득':'No skills learned','펼치기':'Expand','접기':'Collapse',
 '조건 미달!':' not met!','해제!':' Unfused!',
 '슬롯':'Slot','자동 ON':' Auto ON','자동 OFF':' Auto OFF','스킬 해제':' skill unset',
@@ -6830,7 +6830,7 @@ const _EN={
 // --- Phase 13: massive batch — skill activation ---
 '클릭으로 선택 · ESC로 닫기':'Click to select · ESC to close',
 '선택됨':'Selected',
-'MP 부족!':'Not enough MP!','악의 부족! (30)':'Not enough Malice! (30)',
+'MP 부족!':'Not enough MP!','악의구슬 부족! (30)':'Not enough Malice Sphere! (30)',
 'MP 부족! (40)':'Not enough MP! (40)','MP 부족! (100)':'Not enough MP! (100)','MP 부족! (10)':'Not enough MP! (10)',
 'MP 부족! (':'Not enough MP! (',
 '✟ 시전...':'✟ Casting...','🌋 시전...':'🌋 Casting...','⛧ 시전...':'⛧ Casting...',
@@ -6840,7 +6840,7 @@ const _EN={
 ' 장착!':' Equipped!',
 '가방에 공간이 없습니다!':'No space in bag!',
 ' 해제':' Unequipped',
-'👿 악의 추출: +':'👿 Malice Extract: +',
+'👿 악의구슬 추출: +':'👿 Malice Sphere Extract: +',
 'F 슬롯 해제':'F Slot unset',
 '💫 집중...':'💫 Focus...',
 '⚡ 마력연사!':'⚡ Arcane Barrage!',
@@ -6961,7 +6961,7 @@ const _EN={
 '💀💀 전멸 폭발!':'💀💀 Annihilation Blast!',
 '⚡ 쐐기 소멸!':'⚡ Wedge Extinction!',
 '🌊충격파!':'🌊Shockwave!',
-'👿악의+100':'👿Malice+100',
+'👿악의구슬+100':'👿Malice Sphere+100',
 '💥패링폭발!':'💥Parry Blast!',
 '⚡ 1단!':'⚡ Lv1!',
 '⚡ 2단!':'⚡ Lv2!',
@@ -7008,7 +7008,7 @@ const _EN={
 '전방위 빔!':'Omni-Beam!','회피!':'Dodge!',
 // --- Phase 13: rare mob / merchant ---
 '[F] 상점':'[F] Shop','거래 성공!':'Trade Success!',
-'악의 부족! (':'Not enough Malice! (',
+'악의구슬 부족! (':'Not enough Malice Sphere! (',
 '상인이 떠납니다...':'The merchant leaves...',
 '사슬 해방!':'Chain Liberation!','완전 해방!':'Full Liberation!',
 '⏪ 시간 되감기!':'⏪ Time Rewind!','전환!':'Switch!',
@@ -7135,14 +7135,14 @@ const _EN={
 '장착된 장비가 없습니다.':'No equipped gear.',
 '충분':'Enough','더 필요':'Need More',
 '장비 선택':'Select Gear','목표치 설정':'Set Target',
-'악의 투입':'Invest Malice','자동 시도':'Auto Attempt',
+'악의구슬 투입':'Invest Malice Sphere','자동 시도':'Auto Attempt',
 '목표 강화치':'Target Enhancement',
-'예상 필요 악의':'Est. Malice Needed',
+'예상 필요 악의구슬':'Est. Malice Sphere Needed',
 '보유':'Owned','강화 시작':'Start Enhance',
 '위에서 장비를 선택하세요':'Select gear above',
 '⬆ 물약 강화 (최대 10단)':'⬆ Potion Enhance (max level 10)',
 '필요':'Required',
-'악의의 분해로 — 장비를 악의로 갈아버려라':'Malice Furnace — Grind gear into malice',
+'악의구슬의 분해로 — 장비를 악의구슬로 갈아버려라':'Malice Sphere Furnace — Grind gear into Malice Sphere',
 '전체 선택':'Select All','전체 해제':'Deselect All',
 '희귀 이하':'Rare or Below',
 '어픽스 리롤!':'Affix Reroll!',
@@ -7173,7 +7173,7 @@ const _EN={
 '심연의 앵글러':'Abyssal Angler','필드보스 처치!':'Field Boss Slain!','💥심해강타!':'💥Abyssal Smash!',
 '아무 키나 눌러 시작':'Press any key to start',
 '다시 시작':'Restart',
-'장비 분해하면 악의를 얻는다. 쓰레기도 자원이야.':'Dismantling gear gives Malice. Even junk is resources.',
+'장비 분해하면 악의구슬을 얻는다. 쓰레기도 자원이야.':'Dismantling gear gives Malice Sphere. Even junk is resources.',
 'TAB 열어서 안 쓰는 장비 분해해!':'Open TAB and salvage unused gear!',
 '그로기 상태의 적에겐 1.5배 데미지가 들어간다.':'Groggy enemies take 1.5x damage.',
 '무릎 꿇으면 전력으로 때려!':'When they kneel, hit with everything!',
@@ -7191,16 +7191,16 @@ const _EN={
 '우리한테 고마워해~ 안 주우면 썩잖아.':'Thank us~ Items rot if nobody picks them up.',
 'LCK를 올리면 레어 드롭률이 오른다.':'LCK boosts rare drop rate.',
 '운빨 게임이긴 하지~ LCK 올려봐!':'It\'s all luck~ Try raising LCK!',
-'강화하면 공격력이 쭉쭉 올라가! 악의만 있으면 돼!':'Enhancement boosts ATK fast! Just need Malice!',
+'강화하면 공격력이 쭉쭉 올라가! 악의구슬만 있으면 돼!':'Enhancement boosts ATK fast! Just need Malice Sphere!',
 '강화 확률은 +1에서 99%. 높을수록 떨어진다.':'Enhancement chance starts at 99% for +1. Drops as it goes.',
-'실패하면 악의만 날아가~ 장비는 안 부서져!':'On fail, only Malice is lost~ Gear survives!',
-'대장간에서 장비 제작도 된다. 악의 30000개면 영웅급 이상.':'Forge can craft gear too. 30000 Malice for Heroic+.',
+'실패하면 악의구슬만 날아가~ 장비는 안 부서져!':'On fail, only Malice Sphere is lost~ Gear survives!',
+'대장간에서 장비 제작도 된다. 악의구슬 30000개면 영웅급 이상.':'Forge can craft gear too. 30000 Malice Sphere for Heroic+.',
 '랜덤이지만 좋은 거 나올 수도 있어!':'Random, but you might get something great!',
 '쉴드는 추가 HP다. 쉴드부터 깎인다.':'Shield is extra HP. Shield takes damage first.',
 '쉴드 있으면 HP 안 닳아! 쉴드 먼저 깨야 해!':'While shield is up, HP stays safe! Break shield first!',
 '장비에 접두사, 접미사가 붙으면 특수 효과가 생긴다.':'Gear with prefix/suffix gets special effects.',
 '영웅급 이상 장비에만 붙어! 좋은 거 나오면 강화해!':'Only on Heroic+ gear! Enhance the good rolls!',
-'강화는 장비를 바꿔도 자동 이전된다. 악의만 있으면.':'Enhancement auto-transfers to new gear. Just costs Malice.',
+'강화는 장비를 바꿔도 자동 이전된다. 악의구슬만 있으면.':'Enhancement auto-transfers to new gear. Just costs Malice Sphere.',
 '더 좋은 장비 나오면 바로 장착해! 강화 수치 그대로 옮겨가!':'Equip better gear right away! Enhancement carries over!',
 // --- Phase 14: additional tutorial lines ---
 '패링을 써야 자원을 흡수한다고!':'You need to parry to absorb resources!',
@@ -7214,8 +7214,8 @@ const _EN={
 '...힘이 없으면 여기서 끝이야.':'...Without power, this is where it ends.',
 '...쓸 거 아니면 분해해.':'...Salvage what you don\'t need.',
 '아이템 넘쳐나네~ 우리가 주워줄게!':'So many items~ We\'ll collect for you!',
-'악의가 바닥이다.':'Out of Malice.',
-'TAB 열어서 장비 분해해! 쓰레기도 악의가 돼!':'Open TAB and salvage gear! Even junk becomes Malice!',
+'악의구슬이 바닥이다.':'Out of Malice Sphere.',
+'TAB 열어서 장비 분해해! 쓰레기도 악의구슬이 돼!':'Open TAB and salvage gear! Even junk becomes Malice Sphere!',
 '좋은 장비가 있네! G 눌러서 대장간 가봐!':'Nice gear! Press G for the forge!',
 '...강화 안 하면 그냥 고철이야.':'...Without enhancement, it\'s just scrap.',
 '...멈추지 마. 여신은 기다리지 않는다.':'...Don\'t stop. The goddess doesn\'t wait.',
@@ -7229,7 +7229,7 @@ const _EN={
 'TAB을 눌러. 가방을 열고 장비를 입어야 한다.':'Press TAB. Open your bag and equip your gear.',
 '주웠으면 껴야지! TAB!':'Picked it up? Equip it! TAB!',
 'G. 대장간에서 물약도 제작할 수 있다.':'G. You can craft potions at the forge too.',
-'악의로 물약 만들어! G키야!':'Craft potions with Malice! Press G!',
+'악의구슬로 물약 만들어! G키야!':'Craft potions with Malice Sphere! Press G!',
 // ── Stun warning ──
 '기절이야! Ctrl 눌러!':'Stunned! Press Ctrl!',
 'Ctrl 유령걸음으로 탈출!':'Ctrl Ghost Walk to escape!',
@@ -7714,7 +7714,7 @@ const _EN={
 '종결쿨감의':'End CD Red',
 '종결경험의':'End EXP',
 '종결약탈의':'End Loot',
-'종결악의의':'End Malice',
+'종결악의구슬의':'End Malice Sphere',
 '종결힘의':'End STR',
 '종결민첩의':'End DEX',
 '종결지능의':'End INT',
@@ -7968,7 +7968,7 @@ const _EN={
 '스킬쿨-':'Skill CD-',
 '물약쿨-':'Potion CD-',
 '강화성공+':'Craft Rate+',
-'악의획득+':'Malice Gain+',
+'악의구슬획득+':'Malice Sphere Gain+',
 '악마화뎀+':'Demon DMG+',
 '악마화DR':'Demon DR',
 '영혼수확+':'Soul Harvest+',
@@ -8024,7 +8024,7 @@ const _EN={
 '분노최대치+':'Max Rage+','분노뎀%+':'Rage DMG%+',
 // --- Skill Info Panel (CAT-82) ---
 '스킬 정보':'Skill Info','타입':'Type','미습득':'Not Learned',
-'SP 비용':'SP Cost','악의 비용':'Malice Cost','쿨다운':'Cooldown',
+'SP 비용':'SP Cost','악의구슬 비용':'Malice Sphere Cost','쿨다운':'Cooldown',
 '요구 레벨':'Req. Lv','기본 참조뎀':'Base Reference','스탯 배율':'Stat Mult',
 '패시브 배율':'Passive Mult','레벨 배율':'Skill Lv Mult',
 '예상 평균 뎀':'Estimated Avg DMG','치명타':'Critical',
@@ -8045,7 +8045,7 @@ const _EN={
 '정말 모든 진행을 초기화하시겠습니까?':'Really reset all progress?',
 '검출 중...':'Detecting...',
 '마우스 커서':'Mouse Cursor','그래픽 품질':'Graphics Quality','하드웨어 진단':'Hardware Diagnostics',
-'🔴화염→빙결 2배 | 🔵빙결→화염 2배 | ⚪물리=중립 | 악마 처치 시 악의 영혼 드롭':'🔴Fire→Ice 2x | 🔵Ice→Fire 2x | ⚪Phys=Neutral | Kill demons for malice souls',
+'🔴화염→빙결 2배 | 🔵빙결→화염 2배 | ⚪물리=중립 | 악마 처치 시 악의구슬 영혼 드롭':'🔴Fire→Ice 2x | 🔵Ice→Fire 2x | ⚪Phys=Neutral | Kill demons for Malice Sphere souls',
 '블룸 효과':'Bloom Effect','잔상 트레일':'Afterimage Trail','슬래시 이펙트':'Slash Effect',
 '후처리 효과':'Post-Process Effect','사망 이펙트':'Death Effect','동적 조명':'Dynamic Lighting',
 '횃불 조명 (어둠)':'Torch Lighting (Dark)','앰비언트 파티클':'Ambient Particles','안개 효과':'Fog Effect',
@@ -8148,7 +8148,7 @@ const _EN={
 '우리가 해냈어! 다음 챕터 가자!':'We did it! On to the next chapter!',
 '자원이 반이다. F키로 회복해.':'Resources at half. Press F to recover.',
 '잡힌다! 옆으로 빠져!':'Getting grabbed! Step to the side!',
-'장비 분해해! 쓰레기도 악의!':'Dismantle gear! Even junk gives malice!',
+'장비 분해해! 쓰레기도 악의구슬!':'Dismantle gear! Even junk gives Malice Sphere!',
 '좋은 거 나왔다! TAB!':'Good loot dropped! TAB!',
 '체력 반 남았어! 물약 마실 타이밍!':'Half HP left! Time to drink a potion!',
 '큰 거 온다! 도망쳐!':'Big attack coming! Run!',
@@ -8168,8 +8168,8 @@ const _EN={
 '전투':'Combat','이동 / 상호작용':'Move / Interact','메뉴':'Menu','시스템':'System',
 '아무 키를 눌러 시작':'Press any key to start',
 // --- Phase 33: Auto-enhance / Skill / Tutorial ---
-'목표 달성!':'Goal Achieved!','악의 고갈':'Malice Depleted','시도':'Attempts','소비':'Spent','목표':'Goal','미달':'Not reached',
-'악의를 더 모아 재시도하세요':'Gather more Malice and try again',
+'목표 달성!':'Goal Achieved!','악의구슬 고갈':'Malice Sphere Depleted','시도':'Attempts','소비':'Spent','목표':'Goal','미달':'Not reached',
+'악의구슬을 더 모아 재시도하세요':'Gather more Malice Sphere and try again',
 '습득':'Learn','레벨업':'Lv Up','⚡기동+10':'⚡Dash+10','게임 종료':'Quit Game',
 '영역스킬':'Area Skill','석궁자동':'Auto Xbow',
 '데빌포스 흡수 (HP→에너지)':'Devil Force Absorb (HP→Energy)',
@@ -8217,7 +8217,7 @@ const _EN={
 '☠ 부활력 고갈!':'☠ Revival Depleted!','독안개':'Poison Fog','뇌전창':'Thunder Spear',
 '🔥 업화선 시전...':'🔥 Hellfire Beam casting...','💥 기동파괴 그로기!':'💥 Chain Crush Groggy!',
 '💥 칼등 그로기!':'💥 Blade Groggy!','⚡ 순간이동 준비!':'⚡ Teleport Ready!',
-'👿악의+1000':'👿Malice+1000','💀 내려찍기!':'💀 Slam!',
+'👿악의구슬+1000':'👿Malice Sphere+1000','💀 내려찍기!':'💀 Slam!',
 '✟ 신성력 억제! +':'✟ Holy Suppressed! +','✟ 신성력 억제!':'✟ Holy Suppressed!',
 '✟ 신성력 억제! (':'✟ Holy Suppressed! (',
 '💥 지진그로기!':'💥 Quake Groggy!','💥 기폭그로기!':'💥 Blast Groggy!',
@@ -8499,7 +8499,7 @@ const _EN={
 '☠ 침식':'☠ Corrosion',
 '💎 마력그릇':'💎 Mana Vessel',
 '💪 힘의그릇':'💪 Stamina Vessel',
-'👿 악의중독':'👿 Malice Addict',
+'👿 악의구슬중독':'👿 Malice Sphere Addict',
 '❤️ 강인':'❤️ Fortify',
 '🛡 철벽':'🛡 Iron Wall',
 '🎯 사냥꾼':'🎯 Hunter',
@@ -8602,7 +8602,7 @@ const _EN={
 '🛡️쉴드+15%':'🛡️Shield+15%',
 '🚀 미사일!':'🚀 Missile!',
 '🔥분노+':'🔥Rage+',
-'👿악의+':'👿Malice+',
+'👿악의구슬+':'👿Malice Sphere+',
 '❄유니크 빙결!':'❄Unique Freeze!',
 '🔨방어무시!':'🔨DEF Ignore!',
 '💀 ':'💀 ',
@@ -9620,7 +9620,7 @@ function _checkPetDialogue(){
     if(!_petTut.firstKill&&_petKillCnt>=1){_petTut.firstKill=true;_petSayCD('tut_1stkill','crow','하나 죽었군.',4,9999,'cat','…고기 냄새. 싫진 않네.',5);return}
     if(!_petTut.bowIntro&&_petKillCnt>=3){_petTut.bowIntro=true;_petSayCD('tut_bow','crow','유령쇠뇌야. 인사해.',3,9999,'cat','…말은 못해.',4);return}
     if(!_petTut.firstItem&&INV.bag.length>=1){if(_petSayCD('tut_firstItem','crow','TAB을 눌러. 가방을 열고 장비를 입어야 한다.',5,9999,'cat','주웠으면 껴야지! TAB!',4)){_petTut.firstItem=true;return}}
-    if(!_petTut.potionCraft&&P.lv>=100){_petTut.potionCraft=true;_petSayCD('tut_potionCraft','crow','G. 대장간에서 물약도 제작할 수 있다.',5,9999,'cat','악의로 물약 만들어! G키야!',4);return}
+    if(!_petTut.potionCraft&&P.lv>=100){_petTut.potionCraft=true;_petSayCD('tut_potionCraft','crow','G. 대장간에서 물약도 제작할 수 있다.',5,9999,'cat','악의구슬로 물약 만들어! G키야!',4);return}
   }
   // 탄막 기본 가이드 — 첫 적 투사체 등장 시 (표시 성공까지 재시도)
   if(!_petTut.bulletGuide){for(let i=0;i<projs.length;i++){if(projs[i].alive&&!projs[i].friendly){if(_petSayCD('tut_bullets','crow','빨간 탄은 악의 덩어리다. 쳐내서 이용해.',5,9999,'cat','무지개탄은 Q 패링이다. E는 안 통해.',5))_petTut.bulletGuide=true;break}}}
@@ -9672,7 +9672,7 @@ function _checkPetDialogue(){
   if(P.lv>=5&&P.sp>0)_petBidCD('has_sp','cat','스킬 포인트 있어! K!',5,180,'crow','L키로 스킬 슬롯에 넣어야 쓸 수 있어.',4);
   if((P.ap||0)>=3)_petBidCD('has_ap','crow','J키. 패시브 포인트가 쌓여있다.',4,240,'cat','J키! 패시브 강해져!',4);
   if(INV.bag.length>=15)_petBidCD('bag_full','crow','…쓸 거 아니면 분해해.',4,120,'cat','가방이 꽉 찼어. 정리 좀 해.',4);
-  if(G.mats<10)_petBidCD('low_mats','crow','악의가 바닥이다.',3,240,'cat','장비 분해해! 쓰레기도 악의!',5);
+  if(G.mats<10)_petBidCD('low_mats','crow','악의구슬이 바닥이다.',3,240,'cat','장비 분해해! 쓰레기도 악의구슬!',5);
   if(G.mats>=50){let _uE=false;for(const sl in INV.equipped){const it=INV.equipped[sl];if(it&&it.rarity>=3&&(it.enhLv||0)===0){_uE=true;break}}
     if(_uE)_petBidCD('enh_hint','crow','…강화 안 하면 그냥 고철이야.',4,300,'cat','G 눌러서 대장간 가봐!',4)}
 
@@ -9690,7 +9690,7 @@ function _checkPetDialogue(){
         const _nags=[['시간이 없어. 움직여.','멍하게 서있으면 안 돼!'],['…뭘 기다리는 거야?','가. 서 있으면 저것들이 먼저 와.'],['여기 오래 있으면 위험해.','가만있으면 둘러싸여!'],['쉬는 건 죽고 나서 해.','살아있을 때 쉬면 안 돼!'],['적이 몰려오고 있어.','냄새 맡고 올 거야. 빨리!'],['…아직 살아있는 거 맞지?','…설마 또 잠든 거야?']];
         const _ni=_petBagNext(_petNagBag,_nags.length);_petBidCD('idle_nag'+_ni,'crow',_nags[_ni][0],4,30,'cat',_nags[_ni][1],4);
       }else if(Math.random()<.5){
-        const _tips=[['사슬을 땅에 꽂으면 끌려간다.','Shift로 사슬 던져봐!'],['패링 성공하면 ST가 회복된다.','패링을 많이 하면 ST 걱정은 없어.'],['장비 분해하면 악의를 얻는다.','TAB 열어서 안 쓰는 장비 분해!'],['그로기 적은 1.5배 데미지.','무릎 꿇으면 전력으로 때려!'],['화염은 빙결, 암전은 암흑에 약하다.','무기 속성 바꿔가며 싸워!'],['빙결 적은 1.5배 데미지.','얼리고 때리는 게 기본!'],['물리탄은 E, 보라·무지개 마법탄은 Q.','무지개도 Q로 받아쳐!'],['VIT 올리면 최대 HP.','STR 근접, DEX 활, INT 마법!'],['우클릭 길게 = 빔, 짧게 = 투사체.','MP 잘 봐! 빔은 연속으로 깎여!'],['R키로 아이템을 줍는다.','R 눌러서 다 주워!'],['LCK 올리면 레어 드롭률.','운도 실력이야. LCK를 올려.'],['G 누르면 대장간.','강화하면 공격력이 올라.'],['강화 +1에서 99%. 높을수록 떨어져.','실패해도 장비 안 부서져!'],['대장간 제작도 가능. 악의 30000개+.','영웅급 이상 나올 수 있어!'],['쉴드는 추가 HP다. 쉴드부터 깎인다.','쉴드 있으면 HP 안 닳아!'],['영웅급+ 장비에 접두/접미사.','좋은 거 나오면 강화!'],['강화는 장비 바꿔도 자동 이전.','더 좋은 거 나오면 바로 장착!'],['패링은 타이밍이다. 헛치면 빈틈이 생겨.','잘못 패링하면 그로기가 쌓인다!']];
+        const _tips=[['사슬을 땅에 꽂으면 끌려간다.','Shift로 사슬 던져봐!'],['패링 성공하면 ST가 회복된다.','패링을 많이 하면 ST 걱정은 없어.'],['장비 분해하면 악의구슬을 얻는다.','TAB 열어서 안 쓰는 장비 분해!'],['그로기 적은 1.5배 데미지.','무릎 꿇으면 전력으로 때려!'],['화염은 빙결, 암전은 암흑에 약하다.','무기 속성 바꿔가며 싸워!'],['빙결 적은 1.5배 데미지.','얼리고 때리는 게 기본!'],['물리탄은 E, 보라·무지개 마법탄은 Q.','무지개도 Q로 받아쳐!'],['VIT 올리면 최대 HP.','STR 근접, DEX 활, INT 마법!'],['우클릭 길게 = 빔, 짧게 = 투사체.','MP 잘 봐! 빔은 연속으로 깎여!'],['R키로 아이템을 줍는다.','R 눌러서 다 주워!'],['LCK 올리면 레어 드롭률.','운도 실력이야. LCK를 올려.'],['G 누르면 대장간.','강화하면 공격력이 올라.'],['강화 +1에서 99%. 높을수록 떨어져.','실패해도 장비 안 부서져!'],['대장간 제작도 가능. 악의구슬 30000개+.','영웅급 이상 나올 수 있어!'],['쉴드는 추가 HP다. 쉴드부터 깎인다.','쉴드 있으면 HP 안 닳아!'],['영웅급+ 장비에 접두/접미사.','좋은 거 나오면 강화!'],['강화는 장비 바꿔도 자동 이전.','더 좋은 거 나오면 바로 장착!'],['패링은 타이밍이다. 헛치면 빈틈이 생겨.','잘못 패링하면 그로기가 쌓인다!']];
         const ti=_petBagNext(_petTipBag,_tips.length);_petBidCD('idle_tip'+ti,'crow',_tips[ti][0],5,30,'cat',_tips[ti][1],5);
       }
     }
@@ -9838,7 +9838,7 @@ function _petCheckMultiKill(){if(_petKillsRecent>=5&&(G.frame-_petKillsRecentT)<
 // [18] 강화 +100
 function _petOnEnh100(){_petSayCD('enh_plus100','crow','100강. 이제 뭔가 다르게 보이는군.',4,9999,'cat','+100 찍었어! 진짜 강해진 거 보여!',4)}
 // [18] 강화 5연속 실패
-function _petOnEnhFail(){_petEnhStreakFail++;if(_petEnhStreakFail>=5){_petEnhStreakFail=0;_petSayCD('enh_fail5','crow','…운이 없는 날이야.',4,600,'cat','5번 연속 실패?! 악의 아끼고 다음에!',4)}}
+function _petOnEnhFail(){_petEnhStreakFail++;if(_petEnhStreakFail>=5){_petEnhStreakFail=0;_petSayCD('enh_fail5','crow','…운이 없는 날이야.',4,600,'cat','5번 연속 실패?! 악의구슬 아끼고 다음에!',4)}}
 function _petOnEnhSuccess(){_petEnhStreakFail=0}
 // [18] 첫 전설 드롭
 function _petOnFirstLegend(){_petSayCD('first_legend','crow','…전설이다. 이런 건 처음 본다.',4,9999,'cat','전설이야. 잘 챙겨.',4)}
@@ -10974,7 +10974,7 @@ function _drawDruidGroundRing(ctx,x,y,r,alpha,angle=0,innerFraction=0){
 const _BOSS_LINES={intro0:'새 거름이 떨어졌군.',sink0:'숲은 아직 배고프다. 둥지에서 보자.',die1:'…아직 거둘 때가 아닌데.',die2:'…밥 먹을 시간인데.',die3:'…죽기 싫었을 뿐이다.',intro4:'여기는 아무도 지나가지 못한다.',die4:'…이번엔… 열지 않았다.',die5:'…셈이… 아직 안 끝났다.',die6:'…결과를 보지 못했군.',die8:'…박자가… 끊겼어.',intro9:'무릎 꿇어라. 너도 곧 내 신도다.',die9:'…아직 기도가 끝나지 않았다.',intro10:'열을 맞춰라. 전투는 아직 끝나지 않았다.',die10:'…이겼다고… 전해라.',die11:'…명령이었다. 명령이었어.',die12:'…이제 눈을 감아도 되는가.',intro13:'누가 얼음을 깼느냐.',die13:'…아직… 다 먹지 못했다.'}; // [STY-15] 2장 키 7개(die7 없음 — 소리로만) · [STY-17] 3장 키 6개(intro10·die10~12·intro13·die13, 트리거 무변경)
 Object.assign(_EN,{'다크드루이드':'Dark Druid',"…달아났다. 숲 깊은 곳으로.":"…It fled. Deeper into the forest.",'새 거름이 떨어졌군.':'Fresh compost has fallen.','숲은 아직 배고프다. 둥지에서 보자.':'The forest is still hungry. See you at the nest.','…아직 거둘 때가 아닌데.':"…It isn't harvest time yet.",'…밥 먹을 시간인데.':"…It's time to eat.",'…죽기 싫었을 뿐이다.':"…I just didn't want to die."});
 // [STY-14 B2] 번역 누락 대사 영어 131키 (번역대상 No.3599~, 펫·로딩 팁·엔딩)
-Object.assign(_EN,{"패링 성공하면 ST가 회복된다.":"A successful parry restores ST.","장비 분해하면 악의를 얻는다.":"Dismantling gear yields Malice.","TAB 열어서 안 쓰는 장비 분해!":"Open TAB and dismantle the gear you don't use!","그로기 적은 1.5배 데미지.":"Groggy enemies take 1.5x damage.","화염은 빙결, 암전은 암흑에 약하다.":"Fire is weak to Ice, Lightning to Dark.","무기 속성 바꿔가며 싸워!":"Switch weapon elements as you fight!","빙결 적은 1.5배 데미지.":"Frozen enemies take 1.5x damage.","얼리고 때리는 게 기본!":"Freeze first, then hit. That's the basics!","물리탄은 E, 보라·무지개 마법탄은 Q.":"Physical shots: E. Purple and rainbow magic shots: Q.","무지개도 Q로 받아쳐!":"Hit the rainbow ones back with Q too!","VIT 올리면 최대 HP.":"VIT raises max HP.","STR 근접, DEX 활, INT 마법!":"STR for melee, DEX for bows, INT for magic!","우클릭 길게 = 빔, 짧게 = 투사체.":"Hold right-click = beam. Tap = projectile.","MP 잘 봐! 빔은 연속으로 깎여!":"Watch your MP! Beams drain it nonstop!","R키로 아이템을 줍는다.":"Press R to pick up items.","R 눌러서 다 주워!":"Press R and grab it all!","LCK 올리면 레어 드롭률.":"LCK raises rare drop rate.","G 누르면 대장간.":"Press G for the forge.","강화 +1에서 99%. 높을수록 떨어져.":"Enhancing +1 is 99%. The higher you go, the lower it drops.","실패해도 장비 안 부서져!":"Gear won't break even if you fail!","대장간 제작도 가능. 악의 30000개+.":"The forge can craft too. 30000+ Malice.","영웅급 이상 나올 수 있어!":"You could get Heroic or higher!","쉴드 있으면 HP 안 닳아!":"While you have a shield, HP doesn't drop!","영웅급+ 장비에 접두/접미사.":"Heroic+ gear gets prefixes and suffixes.","좋은 거 나오면 강화!":"Got a good one? Enhance it!","강화는 장비 바꿔도 자동 이전.":"Enhancement carries over when you swap gear.","더 좋은 거 나오면 바로 장착!":"Found something better? Equip it right away!","핵터, 너 좀 친절하게 말할 줄 모르냐?":"Hector, can't you talk a little nicer?","…친절은 살아남고 나서 따져.":"...Worry about nice after we survive.","…디로이. 너무 떠들면 적이 몰린다.":"...Diroy. Talk too loud and the enemies swarm us.","…아직 멀었어. 지옥성까지 봐야 안다.":"...Not yet. We'll know once we reach the Hell Citadel.","디로이. 또 길 잘못 알려줬지.":"Diroy. You gave the wrong directions again.","…핵터, 우린 죽으면 어디 가?":"...Hector, where do we go when we die?","…질문이 너무 많아. 일단 살아.":"...Too many questions. Just stay alive.","…발밑이 움직이고 있다.":"...The ground is moving beneath us.","입김이 얼어. 오래 있으면 못 나간다.":"Our breath is freezing. Stay long and we won't get out.","손가락 안 움직여… 빨리 끝내!":"I can't move my fingers... Finish this fast!","공기가 타. 숨도 데인다.":"The air burns. Even breathing scalds.","…수가 끝이 없어. 길을 뚫어.":"...There's no end to them. Break through.","끝이 안 보여! 한꺼번에 쓸어!":"I can't see the end! Sweep them all at once!","…벽 너머에서 보고 있어.":"...Something's watching from beyond the wall.","여기서 죽어도 돌아갈 곳은 없어.":"Even if we die here, there's nowhere to return to.","마지막이야… 끝까지 가자.":"This is the last one... Let's see it through.","…첫 번째다. 부담 갖지 마. 죽어도 다시 와.":"...The first one. Don't sweat it. If you die, come back.","…빙결 마법을 쓴다. 화염 무기로 가.":"...It uses ice magic. Go with a fire weapon.","얼음 보스! 화염 칼 꺼내!":"Ice boss! Pull out the fire blade!","군단의 우두머리다. 잡몹부터 정리해.":"The legion's chief. Clear the regular mobs first.","부하 먼저! 안 그럼 끝없이 나와!":"Minions first! Or they'll keep coming forever!","…사도다. 패턴이 복잡해. 집중해.":"...An apostle. Its patterns are complex. Focus.","…벌레굴을 빠져나왔어. 발에 뭐 묻은 거 같다.":"...We made it out of the worm nest. Something's stuck to my feet.","얼음을 깨고 나왔다. 다음은… 불이야.":"We broke out of the ice. Next is... fire.","손가락 다시 움직여!":"I can move my fingers again!","화염을 통과했다. 절반 왔어.":"We passed through the flames. Halfway there.","군단을 무너뜨렸어. …수가 줄긴 했군.":"We broke the legion. ...Their numbers did shrink.","진짜 끝없었어! 한꺼번에 쓸었어!":"They were endless! We swept them all at once!","사도들의 영역을 지났다. 마지막이 가까워.":"We've crossed the apostles' domain. The end is near.","거의 다 왔어! 마지막 한 장!":"Almost there! One last chapter!","…지옥성을 무너뜨렸어. 끝이야.":"...We brought down the Hell Citadel. It's over.","우리가 해냈어! 진짜 끝났어!!":"We did it! It's really over!!","…뭘 기다리는 거야?":"...What are you waiting for?","가만있으면 둘러싸여!":"Stand still and they'll surround you!","적이 몰려오고 있어.":"Enemies are closing in.","…아직 살아있는 거 맞지?":"...You're still alive, right?","…따라오는 거 아니야. 같은 방향일 뿐이지.":"...I'm not following you. We're just going the same way.","여기부터는 악마 영역이야. …맘대로 해.":"From here on it's demon territory. ...Do as you please.","…이 냄새. 살점이 썩는 냄새야.":"...This smell. It's rotting flesh.","이 길의 끝에 뭐가 있을까.":"What lies at the end of this road?","…여기가 끝이야. 돌아갈 길은 없어.":"...This is the end. There's no road back.","…적이 강해져. 정신 차려.":"...The enemies grow stronger. Stay sharp.","보상도 좋아지지만 죽기 쉬워!":"Rewards get better, but you'll die easier!","…너도 강해졌단 뜻이야.":"...It means you've grown stronger too.","…아직 살아있단 게 신기하군.":"...It's a wonder you're still alive.","+5단. …너는 이제 인간이 아니야.":"+5 tiers. ...You're no longer human.","무릎 꿇었다. 지금 처형해. X.":"It kneels. Execute it now. X.","처형각이야!! X 눌러!!":"Execution window!! Press X!!","…분노가 끓어넘친다. 스페이스로 적들에게 폭발시켜!":"...Rage overflows. Unleash it on the enemies with Space!","다섯 번째군. 이번엔 바뀐 게 있어야지.":"The fifth time. Something had better change this round.","…전설을 잡았다. 보상도 전설이겠지.":"...You slew a legend. The reward should be legendary too.","오패링! 폭발 강하지만 맞고 죽으면 끝!":"Over-parry! The blast is strong, but if you get hit and die, it's over!","패링뱅크 풀! 스킬 한 방 더 박아!":"Parry bank full! Slam in one more skill!","위험했어! 사슬무적 없었으면 죽었어!":"That was close! Without chain invincibility you'd be dead!","엘리트야! 색깔 봐! 강해진 거야!":"An elite! Look at the color! It's stronger!","엘리트 잡았어! 좋은 거 떨어진다!":"Elite down! Good stuff drops!","미니보스! 광역기 아껴두자!":"Mini-boss! Let's save the area skills!","우리가 잡았어! 보상 챙겨!":"We got it! Grab the rewards!","+100 찍었어! 진짜 강해진 거 보여!":"You hit +100! I can see how much stronger you are!","5번 연속 실패?! 악의 아끼고 다음에!":"5 fails in a row?! Save your Malice for next time!","…유니크?! 이건… 말도 안 돼.":"...Unique?! This is... impossible.","분노가 차오른다…":"Rage is building...","네 복수는 이제 완성됐다.":"Your revenge is now complete.","이제 너의 아이들을 구하러 가거라.":"Now go and save your children.","낡은 지도를 건네받았다...":"You were handed a worn map...","💡 스킬을 합체하면 더 강한 공격이 된다":"💡 Fuse skills to make stronger attacks","💡 보스의 패턴을 읽으면 패링 타이밍이 보인다":"💡 Read boss patterns and the parry timing shows","💡 대장간에서 장비 강화·분해":"💡 Enhance and dismantle gear at the forge","💡 R키로 아이템 수거":"💡 Press R to collect items","위층으로 오르는 중...":"Climbing to the floor above...","분노 {rage}%! 패링으로 분노 더 쌓아!":"Rage {rage}%! Parry to build up more Rage!"});
+Object.assign(_EN,{"패링 성공하면 ST가 회복된다.":"A successful parry restores ST.","장비 분해하면 악의구슬을 얻는다.":"Dismantling gear yields Malice Sphere.","TAB 열어서 안 쓰는 장비 분해!":"Open TAB and dismantle the gear you don't use!","그로기 적은 1.5배 데미지.":"Groggy enemies take 1.5x damage.","화염은 빙결, 암전은 암흑에 약하다.":"Fire is weak to Ice, Lightning to Dark.","무기 속성 바꿔가며 싸워!":"Switch weapon elements as you fight!","빙결 적은 1.5배 데미지.":"Frozen enemies take 1.5x damage.","얼리고 때리는 게 기본!":"Freeze first, then hit. That's the basics!","물리탄은 E, 보라·무지개 마법탄은 Q.":"Physical shots: E. Purple and rainbow magic shots: Q.","무지개도 Q로 받아쳐!":"Hit the rainbow ones back with Q too!","VIT 올리면 최대 HP.":"VIT raises max HP.","STR 근접, DEX 활, INT 마법!":"STR for melee, DEX for bows, INT for magic!","우클릭 길게 = 빔, 짧게 = 투사체.":"Hold right-click = beam. Tap = projectile.","MP 잘 봐! 빔은 연속으로 깎여!":"Watch your MP! Beams drain it nonstop!","R키로 아이템을 줍는다.":"Press R to pick up items.","R 눌러서 다 주워!":"Press R and grab it all!","LCK 올리면 레어 드롭률.":"LCK raises rare drop rate.","G 누르면 대장간.":"Press G for the forge.","강화 +1에서 99%. 높을수록 떨어져.":"Enhancing +1 is 99%. The higher you go, the lower it drops.","실패해도 장비 안 부서져!":"Gear won't break even if you fail!","대장간 제작도 가능. 악의구슬 30000개+.":"The forge can craft too. 30000+ Malice Sphere.","영웅급 이상 나올 수 있어!":"You could get Heroic or higher!","쉴드 있으면 HP 안 닳아!":"While you have a shield, HP doesn't drop!","영웅급+ 장비에 접두/접미사.":"Heroic+ gear gets prefixes and suffixes.","좋은 거 나오면 강화!":"Got a good one? Enhance it!","강화는 장비 바꿔도 자동 이전.":"Enhancement carries over when you swap gear.","더 좋은 거 나오면 바로 장착!":"Found something better? Equip it right away!","핵터, 너 좀 친절하게 말할 줄 모르냐?":"Hector, can't you talk a little nicer?","…친절은 살아남고 나서 따져.":"...Worry about nice after we survive.","…디로이. 너무 떠들면 적이 몰린다.":"...Diroy. Talk too loud and the enemies swarm us.","…아직 멀었어. 지옥성까지 봐야 안다.":"...Not yet. We'll know once we reach the Hell Citadel.","디로이. 또 길 잘못 알려줬지.":"Diroy. You gave the wrong directions again.","…핵터, 우린 죽으면 어디 가?":"...Hector, where do we go when we die?","…질문이 너무 많아. 일단 살아.":"...Too many questions. Just stay alive.","…발밑이 움직이고 있다.":"...The ground is moving beneath us.","입김이 얼어. 오래 있으면 못 나간다.":"Our breath is freezing. Stay long and we won't get out.","손가락 안 움직여… 빨리 끝내!":"I can't move my fingers... Finish this fast!","공기가 타. 숨도 데인다.":"The air burns. Even breathing scalds.","…수가 끝이 없어. 길을 뚫어.":"...There's no end to them. Break through.","끝이 안 보여! 한꺼번에 쓸어!":"I can't see the end! Sweep them all at once!","…벽 너머에서 보고 있어.":"...Something's watching from beyond the wall.","여기서 죽어도 돌아갈 곳은 없어.":"Even if we die here, there's nowhere to return to.","마지막이야… 끝까지 가자.":"This is the last one... Let's see it through.","…첫 번째다. 부담 갖지 마. 죽어도 다시 와.":"...The first one. Don't sweat it. If you die, come back.","…빙결 마법을 쓴다. 화염 무기로 가.":"...It uses ice magic. Go with a fire weapon.","얼음 보스! 화염 칼 꺼내!":"Ice boss! Pull out the fire blade!","군단의 우두머리다. 잡몹부터 정리해.":"The legion's chief. Clear the regular mobs first.","부하 먼저! 안 그럼 끝없이 나와!":"Minions first! Or they'll keep coming forever!","…사도다. 패턴이 복잡해. 집중해.":"...An apostle. Its patterns are complex. Focus.","…벌레굴을 빠져나왔어. 발에 뭐 묻은 거 같다.":"...We made it out of the worm nest. Something's stuck to my feet.","얼음을 깨고 나왔다. 다음은… 불이야.":"We broke out of the ice. Next is... fire.","손가락 다시 움직여!":"I can move my fingers again!","화염을 통과했다. 절반 왔어.":"We passed through the flames. Halfway there.","군단을 무너뜨렸어. …수가 줄긴 했군.":"We broke the legion. ...Their numbers did shrink.","진짜 끝없었어! 한꺼번에 쓸었어!":"They were endless! We swept them all at once!","사도들의 영역을 지났다. 마지막이 가까워.":"We've crossed the apostles' domain. The end is near.","거의 다 왔어! 마지막 한 장!":"Almost there! One last chapter!","…지옥성을 무너뜨렸어. 끝이야.":"...We brought down the Hell Citadel. It's over.","우리가 해냈어! 진짜 끝났어!!":"We did it! It's really over!!","…뭘 기다리는 거야?":"...What are you waiting for?","가만있으면 둘러싸여!":"Stand still and they'll surround you!","적이 몰려오고 있어.":"Enemies are closing in.","…아직 살아있는 거 맞지?":"...You're still alive, right?","…따라오는 거 아니야. 같은 방향일 뿐이지.":"...I'm not following you. We're just going the same way.","여기부터는 악마 영역이야. …맘대로 해.":"From here on it's demon territory. ...Do as you please.","…이 냄새. 살점이 썩는 냄새야.":"...This smell. It's rotting flesh.","이 길의 끝에 뭐가 있을까.":"What lies at the end of this road?","…여기가 끝이야. 돌아갈 길은 없어.":"...This is the end. There's no road back.","…적이 강해져. 정신 차려.":"...The enemies grow stronger. Stay sharp.","보상도 좋아지지만 죽기 쉬워!":"Rewards get better, but you'll die easier!","…너도 강해졌단 뜻이야.":"...It means you've grown stronger too.","…아직 살아있단 게 신기하군.":"...It's a wonder you're still alive.","+5단. …너는 이제 인간이 아니야.":"+5 tiers. ...You're no longer human.","무릎 꿇었다. 지금 처형해. X.":"It kneels. Execute it now. X.","처형각이야!! X 눌러!!":"Execution window!! Press X!!","…분노가 끓어넘친다. 스페이스로 적들에게 폭발시켜!":"...Rage overflows. Unleash it on the enemies with Space!","다섯 번째군. 이번엔 바뀐 게 있어야지.":"The fifth time. Something had better change this round.","…전설을 잡았다. 보상도 전설이겠지.":"...You slew a legend. The reward should be legendary too.","오패링! 폭발 강하지만 맞고 죽으면 끝!":"Over-parry! The blast is strong, but if you get hit and die, it's over!","패링뱅크 풀! 스킬 한 방 더 박아!":"Parry bank full! Slam in one more skill!","위험했어! 사슬무적 없었으면 죽었어!":"That was close! Without chain invincibility you'd be dead!","엘리트야! 색깔 봐! 강해진 거야!":"An elite! Look at the color! It's stronger!","엘리트 잡았어! 좋은 거 떨어진다!":"Elite down! Good stuff drops!","미니보스! 광역기 아껴두자!":"Mini-boss! Let's save the area skills!","우리가 잡았어! 보상 챙겨!":"We got it! Grab the rewards!","+100 찍었어! 진짜 강해진 거 보여!":"You hit +100! I can see how much stronger you are!","5번 연속 실패?! 악의구슬 아끼고 다음에!":"5 fails in a row?! Save your Malice Sphere for next time!","…유니크?! 이건… 말도 안 돼.":"...Unique?! This is... impossible.","분노가 차오른다…":"Rage is building...","네 복수는 이제 완성됐다.":"Your revenge is now complete.","이제 너의 아이들을 구하러 가거라.":"Now go and save your children.","낡은 지도를 건네받았다...":"You were handed a worn map...","💡 스킬을 합체하면 더 강한 공격이 된다":"💡 Fuse skills to make stronger attacks","💡 보스의 패턴을 읽으면 패링 타이밍이 보인다":"💡 Read boss patterns and the parry timing shows","💡 대장간에서 장비 강화·분해":"💡 Enhance and dismantle gear at the forge","💡 R키로 아이템 수거":"💡 Press R to collect items","위층으로 오르는 중...":"Climbing to the floor above...","분노 {rage}%! 패링으로 분노 더 쌓아!":"Rage {rage}%! Parry to build up more Rage!"});
 // [STY-18] 보스 표시명 영어 30키 (BOSS_NAME_EN_20261028.md §3 — 군주=Sovereign, 번역대상 No.3729~3758)
 Object.assign(_EN,{"벌레 수호자":"Worm Guardian","점액 괴수":"Slime Beast","기생충 모체":"Parasite Mother","거대 알주머니":"Great Egg Sac","살벽의 군주":"Sovereign of the Flesh Wall","여왕 구더기":"Maggot Queen","얼음 망령":"Ice Wraith","서리의 기사":"Frost Knight","얼어붙은 감시자":"Frozen Warden","얼음 속 봉인 괴물":"Sealed Beast in Ice","화염 악마":"Flame Demon","불기둥 수호자":"Fire Pillar Guardian","용암의 심장":"Heart of Magma","화염 전사":"Flame Warrior","화염 쌍두":"Twin-Headed Flame","불벌레 군주":"Firebug Sovereign","화염 감옥지기":"Flame Jailer","전쟁의 잔해":"Remnant of War","뼈산의 왕":"King of the Bone Mountain","악마 사령관":"Demon Commander","철벽 기사단장":"Ironwall Knight-Commander","군단 지휘관":"Legion Commander","살점의 수호자":"Guardian of Flesh","인간뼈 감시자":"Human-Bone Watcher","뒤틀린 자":"The Twisted","촉수의 어미":"Mother of Tentacles","불완전 사도":"Imperfect Apostle","대사도":"Grand Apostle","검은 성의 수호자":"Guardian of the Black Castle","지옥 군주":"Sovereign of Hell"});
 // [STY-17] 3장 보스 한 줄 6키 + 디로이 4줄 + si13 처치 2줄 (번역대상 No.3721~3728 신규 · 0856·3635·3646·2959 번호 유지 갱신)
@@ -13158,12 +13158,12 @@ function _dispatchSkillSlot(slotIdx,keyCode){
         }
         _skOk=true;
       }
-      else showPH(_T('악의 부족! (')+_malCost(12)+')','#ff4444');break;
+      else showPH(_T('악의구슬 부족! (')+_malCost(12)+')','#ff4444');break;
     case 'maliceHunt':
       if(_bladeEchoTryStart())break;
       if((P._mhCd||0)>0){break}
       if(G.mats>=_malCost(30)){if(activateMaliceHunt()===true){P._mhCd=Math.max(600,~~(900*(1+_cdRed())));_skOk=true}}
-      else showPH(_T('악의 부족! (')+_malCost(30)+')','#ff4444');break;
+      else showPH(_T('악의구슬 부족! (')+_malCost(30)+')','#ff4444');break;
     case 'venomBlade':
       if((P._vbCd||0)>0){showPH(_T('쿨다운 중...'),'#44dd44');break}
       if(activateVenomBlade()===true){P._vbCd=Math.max(600,~~(900*(1+_cdRed())));_skOk=true}break;
@@ -13199,7 +13199,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
     case 'ghostWalk':
       if((P._gwCd||0)<=0&&!P._gwActive){activateGhostWalk();_skOk=true}else if(P._gwActive){_finishGhostWalk();_skOk=true}break;
     case 'plagueBurst':
-      if(G.mats>=_malCost(15)&&(P._pbCd||0)<=0){activatePlagueBurst();_skOk=true}else if(G.mats<_malCost(15))showPH(_T('악의 부족! (')+_malCost(15)+')','#ff4444');break;
+      if(G.mats>=_malCost(15)&&(P._pbCd||0)<=0){activatePlagueBurst();_skOk=true}else if(G.mats<_malCost(15))showPH(_T('악의구슬 부족! (')+_malCost(15)+')','#ff4444');break;
     case 'weakRev':
       if((P._wrCd||0)<=0){activateWeakZone('weakRev');_skOk=true}break;
     case 'weakPhys':
@@ -13217,17 +13217,17 @@ function _dispatchSkillSlot(slotIdx,keyCode){
       if((P._hpCd||0)<=0){activateHolyPrison();_skOk=true}break;
     case 'giantSlam':
       if(P.st>=stCost('giantSlam')&&(window._parryLesson?.active||G.mats>=_malCost(20))&&(P._gslCd||0)<=0){activateGiantSlam();_skOk=true}
-      else if(P.st<stCost('giantSlam'))showPH(_T('ST 부족!'),'#ff4444');else if(G.mats<_malCost(20))showPH(_T('악의 부족! (')+_malCost(20)+')','#ff4444');break;
+      else if(P.st<stCost('giantSlam'))showPH(_T('ST 부족!'),'#ff4444');else if(G.mats<_malCost(20))showPH(_T('악의구슬 부족! (')+_malCost(20)+')','#ff4444');break;
     case 'giantSlam2':
       if(P.st>=stCost('giantSlam')&&(window._parryLesson?.active||G.mats>=_malCost(20))&&(P._gslCd||0)<=0){activateGiantSlam('giantSlam2');_skOk=true}
-      else if(P.st<stCost('giantSlam'))showPH(_T('ST 부족!'),'#ff4444');else if(G.mats<_malCost(20))showPH(_T('악의 부족! (')+_malCost(20)+')','#ff4444');break;
+      else if(P.st<stCost('giantSlam'))showPH(_T('ST 부족!'),'#ff4444');else if(G.mats<_malCost(20))showPH(_T('악의구슬 부족! (')+_malCost(20)+')','#ff4444');break;
     // earthBreaker 삭제됨
     // quakeStride 삭제됨
     case 'skyCrusher':
       if(P.mp>=80&&_skyCrusherChargeCount()>0){activateSkyCrusher();_skOk=true}
       else if(P.mp<80)showPH(_T('MP 부족! (80)'),'#4488ff');else showPH(_T('충전 중...'),'#ff8844');break;
     case 'spikeTrap':
-      if(G.mats>=_malCost(10)&&(P._gcCd||0)<=0){activateSpikeTrap();_skOk=true}else if(G.mats<_malCost(10))showPH(_T('악의 부족! (')+_malCost(10)+')','#ff4444');break;
+      if(G.mats>=_malCost(10)&&(P._gcCd||0)<=0){activateSpikeTrap();_skOk=true}else if(G.mats<_malCost(10))showPH(_T('악의구슬 부족! (')+_malCost(10)+')','#ff4444');break;
     case 'thunderStake':
       if(P._tsAiming){P._tsAiming=false;showPH(_T('취소'),'#888');break}
       {const _tsMax=(P.skills.thunderStake>=10)?6:5;
@@ -15160,7 +15160,7 @@ dodgeChance:'회피의',dodgeCooldown:'회피쿨감의',
   arcAssassinCrit:'암살회심의',arcAssassinBack:'암살후방의',arcAssassinPoison:'암살독의',arcAssassinDodge:'암살회피의',
   endBossKiller:'종결자의',endSurvival:'생존자의',endShield:'종결수호의',endCritDmg:'종결회심의',endAtkFlat:'종결공격의',
   endAllRes:'종결저항의',endAllDmg:'종결파괴의',endAllDR:'종결보호의',endLeech:'종결흡혈의',endPoise:'종결인내의',
-  endCooldownAll:'종결쿨감의',endExpBonus:'종결경험의',endDropBonus:'종결약탈의',endMaliceGain:'종결악의의',
+  endCooldownAll:'종결쿨감의',endExpBonus:'종결경험의',endDropBonus:'종결약탈의',endMaliceGain:'종결악의구슬의',
   endSTR:'종결힘의',endDEX:'종결민첩의',endINT:'종결지능의',endLCK:'종결행운의',endGrit:'종결근성의',endKillChain:'종결연살의',
   healthyAtk:'건강공세의',injuredDmg:'중상폭발의',injuredLeech:'중상흡혈의',vsBossDmg:'토벌의',vsEliteDmg:'정예토벌의',
   sharpAtk:'예리한',brutalAtk:'맹렬한',ruinAtk:'파멸의',
@@ -15211,7 +15211,7 @@ const _AFFIX_DESC={
   strFlat:'STR+',dexFlat:'DEX+',intFlat:'INT+',vitFlat:'VIT+',allStat:'전스탯+',
   maxSTPct:'ST%+',maxMPPct:'MP%+',resourceOnHit:'적중자원+',
   fireResMax:'화염최대저항+',iceResMax:'빙결최대저항+',lightResMax:'뇌전최대저항+',darkResMax:'암흑최대저항+',poisonResMax:'독최대저항+',
-  skillCdRed:'스킬쿨-',potionCdRed:'물약쿨-',craftBonus:'강화성공+',goldFind:'악의획득+',expBonusRing:'경험치+',dropRateAcc:'드롭률+',
+  skillCdRed:'스킬쿨-',potionCdRed:'물약쿨-',craftBonus:'강화성공+',goldFind:'악의구슬획득+',expBonusRing:'경험치+',dropRateAcc:'드롭률+',
   demonDmg:'악마화뎀+',demonDR:'악마화DR',soulHarvest:'영혼수확+',lifeLeechBr:'생명흡혈%',overhealShield:'과치유→쉴드',
   onFullManaDmg:'만마나뎀+',whileMovingDR:'이동DR',whileStationaryDmg:'정지뎀+',afterDodgeDmg:'회피후뎀+',afterParryShield:'패링쉴드+',comboThreshold:'콤보보너스+',
   abundDmg:'HP≥70%뎀+',predDmg:'적HP≤30%뎀+',
@@ -16531,11 +16531,11 @@ function equipItem(item){
       // 강화 투자분 기록: 분해 시 50% 환불용
       {const _rMul=[0.5,0.7,1.0,1.3,1.8][_itemEconomyRarity(old.rarity)];let _tc=0;for(let _i=0;_i<fromE;_i++)_tc+=Math.ceil(Math.max(1,Math.ceil((1+_i*0.15)*1.5))*_rMul);old._enhRefund=~~(_tc*0.5);}
       old.enh=0;
-      notify(`⚒ +${fromE} `+_L('강화 이전 완료','Enhancement transferred')+` (-${xc.toLocaleString()}`+_L('악의)',' Malice)'));
+      notify(`⚒ +${fromE} `+_L('강화 이전 완료','Enhancement transferred')+` (-${xc.toLocaleString()}`+_L('악의구슬)',' Malice Sphere)'));
       try{addTxt(P.x,P.y-25,'⚒ +'+fromE+_L(' 이전',' Transfer'),enhColor(fromE),80)}catch(_e){}
     }else{
       // 악의 부족 → 강화 이전 불가, 교체 차단
-      notify(_L('악의 부족! 강화 이전 비용 ','Not enough Malice! Transfer cost ')+xc.toLocaleString()+_L('악의 (보유: ',' (Have: ')+(G.mats||0).toLocaleString()+')');
+      notify(_L('악의구슬 부족! 강화 이전 비용 ','Not enough Malice Sphere! Transfer cost ')+xc.toLocaleString()+_L('악의구슬 (보유: ',' (Have: ')+(G.mats||0).toLocaleString()+')');
       _uiFail();return;
     }
   }
@@ -27912,7 +27912,7 @@ function _buildStreamChunk(cx,cy){
 
 // ═══ 자원 추출 (EVIL EXTRACTION) 시스템 ═══
 const POT={
-  hp:{name:'악의 추출',emoji:'👿',col:'#33cc66',colG:'#66ff99',base:100,per:20,desc:'악의를 소모해 지옥의 힘으로 회복합니다 (+100 HP)'},
+  hp:{name:'악의구슬 추출',emoji:'👿',col:'#33cc66',colG:'#66ff99',base:100,per:20,desc:'악의구슬을 소모해 지옥의 힘으로 회복합니다 (+100 HP)'},
 };
 let QSLOTS=[{type:'hp',count:1},{type:null,count:0},{type:null,count:0},{type:null,count:0}];
 let SKILL_SLOTS=[null,null,null,null,null,null]; // 스킬슬롯 (1~4,SP,F)
@@ -27954,7 +27954,7 @@ const PASSIVE_DEF=[
   {key:'pDot',    name:'☠ 침식',nameEn:'☠ Corrosion',desc:'DOT 틱뎀 +15%/lv, DOT 지속시간 +10%/lv, DOT 축적률 +5%/lv',descEn:'DOT tick DMG +15%/lv, DOT duration +10%/lv, DOT pool rate +5%/lv',max:10, icon:'☠',col:'#88cc22'},
   {key:'pVital',  name:'💎 마력그릇',nameEn:'💎 Mana Vessel',desc:'MP +50/lv, MP회복 +1%/lv',descEn:'MP +50/lv, MP regen +1%/lv',max:10, icon:'💎',col:'#4488ff'},
   {key:'pStamina',name:'💪 힘의그릇',nameEn:'💪 Stamina Vessel',desc:'ST +50/lv, ST회복 +1%/lv',descEn:'ST +50/lv, ST regen +1%/lv',max:10, icon:'💪',col:'#ff8844'},
-  {key:'pMalice', name:'👿 악의중독',nameEn:'👿 Malice Addict',desc:'악의 드롭 +8%/lv',descEn:'Malice drop +8%/lv',max:10, icon:'👿',col:'#cc66ff'},
+  {key:'pMalice', name:'👿 악의구슬중독',nameEn:'👿 Malice Sphere Addict',desc:'악의구슬 드롭 +8%/lv',descEn:'Malice Sphere drop +8%/lv',max:10, icon:'👿',col:'#cc66ff'},
   {key:'pFortify',name:'❤️ 강인',nameEn:'❤️ Fortify',desc:'HP +300/lv',descEn:'HP +300/lv',max:10, icon:'❤️',col:'#ff4444'},
   {key:'pArmor',  name:'🛡 철벽',nameEn:'🛡 Iron Wall',desc:'DEF +20/lv',descEn:'DEF +20/lv',max:10, icon:'🛡',col:'#8899aa'},
   {key:'pHunter', name:'🎯 사냥꾼',nameEn:'🎯 Hunter',desc:'엘리트/보스 추가뎀 +10%/lv',descEn:'Elite/Boss bonus DMG +10%/lv',max:10, icon:'🎯',col:'#ff6600'},
@@ -28361,7 +28361,7 @@ function aiEnhance(item,targetEnh,budget){
   if(!item)return{ok:false,msg:'아이템 없음'};
   const startEnh=item.enh||0;
   if(startEnh>=targetEnh)return{ok:false,msg:'이미 목표 달성'};
-  if(budget<=0||G.mats<budget)return{ok:false,msg:'악의 부족'};
+  if(budget<=0||G.mats<budget)return{ok:false,msg:'악의구슬 부족'};
   let used=0,tries=0,n=startEnh;
   while(n<targetEnh&&used<budget){
     const{rate,cost}=enhCost(n,item.rarity||0);
@@ -28380,7 +28380,7 @@ function _doAiEnhance(){
   const target=G._aiTarget||((_aiItem.enh||0)+100);
   let _expBudget=0;for(let i=(_aiItem.enh||0);i<target;i++){const ec=enhCost(i,_aiItem.rarity||0);_expBudget+=ec.cost/ec.rate}
   const budget=Math.min(Math.ceil(_expBudget)||1000,G.mats||0);
-  if(budget<=0){addTxt(P.x,P.y-20,_T('악의 부족'),'#cc4444',50);return}
+  if(budget<=0){addTxt(P.x,P.y-20,_T('악의구슬 부족'),'#cc4444',50);return}
   const res=aiEnhance(_aiItem,target,budget);
   applyStats();
   const rDiv=$('aiEnhResult');
@@ -28393,7 +28393,7 @@ function _doAiEnhance(){
         '<span style="color:'+enhColor(res.from)+'">+'+res.from+'</span> → '+
         '<span style="color:'+col+';font-weight:700">+'+res.to+'</span>'+
         ' | '+_T('시도')+' '+res.tries.toLocaleString()+_T('회')+
-        ' | '+_T('소비')+' <span style="color:#ffaa44">'+res.used.toLocaleString()+_T('악의')+'</span>'+
+        ' | '+_T('소비')+' <span style="color:#ffaa44">'+res.used.toLocaleString()+_T('악의구슬')+'</span>'+
         '</div></div>';
       SFX.forge();
       shake(8);
@@ -28402,18 +28402,18 @@ function _doAiEnhance(){
     }else{
       const col=enhColor(res.to);
       rDiv.innerHTML='<div style="border:1px solid #aa4444;background:rgba(80,0,0,.2);padding:10px;border-radius:4px">'+
-        '<div style="color:#ff6644;font-weight:700;font-size:1rem">'+_T('악의 고갈')+'</div>'+
+        '<div style="color:#ff6644;font-weight:700;font-size:1rem">'+_T('악의구슬 고갈')+'</div>'+
         '<div style="font-size:.85rem;color:#ffaaaa;margin-top:4px">'+
         '<span style="color:'+enhColor(res.from)+'">+'+res.from+'</span> → '+
         '<span style="color:'+col+'">+'+res.to+'</span>'+
         ' ('+_T('목표')+' <span style="color:#cc4444">+'+res.target+'</span> '+_T('미달')+')'+
         ' | '+_T('시도')+' '+res.tries.toLocaleString()+_T('회')+
-        ' | '+_T('소비')+' <span style="color:#ffaa44">'+res.used.toLocaleString()+_T('악의')+'</span>'+
+        ' | '+_T('소비')+' <span style="color:#ffaa44">'+res.used.toLocaleString()+_T('악의구슬')+'</span>'+
         '</div>'+
-        '<div style="font-size:.78rem;color:#664444;margin-top:6px">'+_T('악의를 더 모아 재시도하세요')+'</div>'+
+        '<div style="font-size:.78rem;color:#664444;margin-top:6px">'+_T('악의구슬을 더 모아 재시도하세요')+'</div>'+
         '</div>';
       SFX.hurt();
-      addTxt(P.x,P.y-25,_T('악의 소진...'),'#cc4444',70);
+      addTxt(P.x,P.y-25,_T('악의구슬 소진...'),'#cc4444',70);
     }
   }
   renderForge();
@@ -28445,7 +28445,7 @@ function useQuickslot(idx){
 
   // HP 회복: 악의(G.mats) 소모 방식으로 변경
   if(s.type==='hp'){
-    if(G.mats<=0){showPH(_T('악의 부족!'),'#ff4444');return}
+    if(G.mats<=0){showPH(_T('악의구슬 부족!'),'#ff4444');return}
     if(P.hp>=P.mhp*.99){showPH(_T('HP 99% 이상!'),'#888');return}
     if(G._pStats)G._pStats._hC++;if(G._sStats)G._sStats.potions++;
     G.mats--;
@@ -28468,7 +28468,7 @@ function useQuickslot(idx){
   if(s.type==='hp'){
     const v=~~(potHeal('hp')*(1+_eqAffix('potionPower')));
     P.hp=Math.min(P.mhp,P.hp+v);
-    addTxt(P.x,P.y-25,_T('👿 악의 추출: +')+v+' HP','#33ff33',40);
+    addTxt(P.x,P.y-25,_T('👿 악의구슬 추출: +')+v+' HP','#33ff33',40);
   }
   
   addParts(P.x,P.y,p.col,8);
@@ -32808,7 +32808,7 @@ function update(){
     if(_isFused('dimBlast')&&P.skills.giantSlam>=1&&isAct('charge')&&!P._chainBlastReady&&!P._chainAssaultReady&&!P._chainSlamReady){
       MBjust[0]=false;
       const _cbCost=30+(P.skills.giantSlam||1)*3;
-      if(P.st<_cbCost||G.mats<_malCost(20)){addTxt(P.x,P.y-25,(P.st<_cbCost?'ST':_L('악의','Malice'))+_L(' 부족!',' needed!'),'#ff4444',30)}
+      if(P.st<_cbCost||G.mats<_malCost(20)){addTxt(P.x,P.y-25,(P.st<_cbCost?'ST':_L('악의구슬','Malice Sphere'))+_L(' 부족!',' needed!'),'#ff4444',30)}
       else{P.st-=_cbCost;G.mats-=_malCost(20);P._chainBlastReady=true;P._csBlastOX=_harpX||P.x;P._csBlastOY=_harpY||P.y;
       shake(4)}
     }
@@ -33128,8 +33128,8 @@ function update(){
           SFX.pickup();
           // 악의 보상
           const _dMat=[3,8,15][_dt]+~~(G.stage*[.5,1,2][_dt]);G.mats+=_dMat;
-          addTxt(it.x,it.y-30,_T('악의 +')+_dMat,'#cc66ff',30);
-          if(!_petTut.firstDebris){_petTut.firstDebris=true;_petSayCD('tut_debris','crow','잔해도 부숴서 열어. 악의와 장비가 숨어있다.',5,9999,'cat','잔해에서 악의가 나온다! 보이면 다 주워!',5)}
+          addTxt(it.x,it.y-30,_T('악의구슬 +')+_dMat,'#cc66ff',30);
+          if(!_petTut.firstDebris){_petTut.firstDebris=true;_petSayCD('tut_debris','crow','잔해도 부숴서 열어. 악의구슬과 장비가 숨어있다.',5,9999,'cat','잔해에서 악의구슬이 나온다! 보이면 다 주워!',5)}
           // 장비 드롭
           const _dCnt=[0,1,2][_dt]+(_dt>=1&&Math.random()<.5?1:0);
           for(let _ci=0;_ci<_dCnt;_ci++){
@@ -36146,7 +36146,7 @@ function update(){
     SFX.potion();
     // ═══ 전설 벨트(_lBeltBuff): 자동 물약도 5초간 피해 +15% ═══
     if(_lEq('_lBeltBuff')>0){P._lBeltT=300;addTxt(P.x,P.y-45,_T('🧪피해 증가!'),'#ff8844',35)}
-    addTxt(P.x,P.y-25,_T('👿 악의 추출: +')+v+' HP','#33ff33',40);
+    addTxt(P.x,P.y-25,_T('👿 악의구슬 추출: +')+v+' HP','#33ff33',40);
     if(G._pStats)G._pStats._hC++;if(G._sStats)G._sStats.potions++;
   }
   // ─── [S16c] SKILL_CD — 스킬 쿨다운 + 자동발사 ───
@@ -38791,7 +38791,7 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl,_resourceMul,_impactKind){const
   if(P.rage>=100)_petSayCD('rage_full','crow','…분노가 끓어넘친다. 스페이스로 적들에게 폭발시켜!',4,300,'cat','분노가 찼어! 스페이스로 분노 스킬을 터뜨려!',4);
   else if(P.rage>=50)_petSayCD('rage_half','crow','분노가 차오른다…',3,300,'cat',ExoduserI18n.format(_T('분노 {rage}%! 패링으로 분노 더 쌓아!'),{rage:P.rage}),3);
   const _matsAdd=(_isRedParry?500:_isRainbowParry?2000:1000)*_resourceBonus*2; // 획득량 2배; 빨콩 500, 무지개 2000, 일반 1000, 대형탄 ×10
-  G.mats+=_matsAdd;addTxt(P.x,P.y-60,_T('👿악의+')+_matsAdd,'#cc44ff',40);
+  G.mats+=_matsAdd;addTxt(P.x,P.y-60,_T('👿악의구슬+')+_matsAdd,'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true,shieldHit:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
   // 패링 임팩트: 무지개=무지개폭발, Q=Dark 02, 물리 투사체 E=흰 Fire Impact, 나머지 E=Lightning
@@ -40556,7 +40556,7 @@ function updateE(e,sp){
             const _mcI=mkItem(_mcSlot,Math.min(SI_TO_HELL[G.stage]+2,4),[EL.P,EL.F,EL.I,EL.D,EL.L][~~(Math.random()*5)],_mcR);
             _wiPush({x:e.x+(Math.random()-.5)*16,y:e.y+20,type:'item',item:_mcI,picked:false});
             addTxt(e.x,e.y-20,_T('거래 성공!'),'#44ff44',50);SFX.levelup();
-          }else{addTxt(e.x,e.y-20,_T('악의 부족! (')+_mcCost+')','#ff4444',50)}
+          }else{addTxt(e.x,e.y-20,_T('악의구슬 부족! (')+_mcCost+')','#ff4444',50)}
           addTxt(e.x,e.y-35,_T('상인이 떠납니다...'),'#886644',60);
           // 거래 후 유유히 퇴장 (2초 대기)
           e._mcFleeDelay=120;
@@ -40618,7 +40618,7 @@ function updateE(e,sp){
         e._grGrowth=Math.min(2,1+e._grGold*.002);
         e.r=Math.min(30,(RARE_ETYPE[96].r+2)*e._grGrowth);
         e.atk=~~(e.baseAtk*e._grGrowth);e.hp=Math.min(~~(e.mhp*e._grGrowth),e.hp+~~(e.mhp*.05));
-        e._grAbsorbCd=120;addTxt(P.x,P.y-20,'-'+steal+_L(' 악의!',' Malice!'),'#ddcc00',30);addTxt(e.x,e.y-15,_T('탐욕!'),'#ffd700',25);
+        e._grAbsorbCd=120;addTxt(P.x,P.y-20,'-'+steal+_L(' 악의구슬!',' Malice Sphere!'),'#ddcc00',30);addTxt(e.x,e.y-15,_T('탐욕!'),'#ffd700',25);
       }
     }
     // ── 97:쌍둥이 — 물리/마법 전환 ──
@@ -43237,7 +43237,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       // 91 보물악마: 대량 악의 + 보장 영웅이상 장비
       if(e.etype===91){
         const _tmMat=50+~~(G.stage*3);G.mats+=_tmMat;
-        addTxt(e.x,e.y-20,_T('악의 +')+_tmMat,'#ddaa00',50);
+        addTxt(e.x,e.y-20,_T('악의구슬 +')+_tmMat,'#ddaa00',50);
         const _tmSlot=SLOT_NAMES[~~(Math.random()*SLOT_NAMES.length)];
         const _tmR=Math.random()<.25?4:3;
         const _tmI=mkItem(_tmSlot,e.dropTier||0,[EL.P,EL.F,EL.I,EL.D,EL.L][~~(Math.random()*5)],_tmR);
@@ -43340,7 +43340,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
      // 즉시 수급 + 트레일 이펙트 (worldItems 우회)
      const _matAmt=~~(matCnt*(1+_eqAffix('goldBonus'))*_maliceMul());
      G.mats+=_matAmt;
-     addTxt(e.x,e.y-15,_T('악의 +')+_matAmt,'#cc66ff',30);
+     addTxt(e.x,e.y-15,_T('악의구슬 +')+_matAmt,'#cc66ff',30);
      // 트레일 파티클: 드롭 위치 → 플레이어 방향
      const _mtAng=Math.atan2(P.y-e.y,P.x-e.x);
      for(let _mi=0;_mi<4;_mi++){const _md=8+_mi*6;
@@ -44190,7 +44190,7 @@ function addParts(x,y,col,n){const orig=n;n=~~(n*.6);for(let i=0;i<n&&_partCnt<P
 // ── 텍스트 풀 (zero-alloc ring buffer) ──
 var _FLOAT_TEXT_ENABLED=true; // true=플로팅텍스트 표시, false=전부 스킵
 // ── 반복 전투 텍스트 블랙리스트 (5초에 5회 이상 뜨는 것만) ──
-var _FLOAT_TEXT_BLACKLIST=['관통','약점','광역','칼날','기동불꽃','방어','저항','반사','흡수','반격','기절','빙결','감전','화상','중독','독!','가시','독혈','피웅덩이','잡힘','익사','속박','사슬 약점','폭발','☠','충격파','프리즌','블루콩','빨콩','무지개','유도반사','반사 폭발','콤보 종료','포효','강화','악의 추출','암전','균열','구울','웅덩이','소환','발광','울화','나선','파편','결정','획득','증표','🔥','🩸','🟢','DOUBLE','TRIPLE','MULTI','악의+','PARRY','패링','패링폭발','Penetrate','Weakness','AoE','Blade','Defense','Resist','Reflect','Absorb','Counter','Stun','Freeze','Shock','Burn','Poison','Thorn','Drown','Bind','Parry','Malice+'];
+var _FLOAT_TEXT_BLACKLIST=['관통','약점','광역','칼날','기동불꽃','방어','저항','반사','흡수','반격','기절','빙결','감전','화상','중독','독!','가시','독혈','피웅덩이','잡힘','익사','속박','사슬 약점','폭발','☠','충격파','프리즌','블루콩','빨콩','무지개','유도반사','반사 폭발','콤보 종료','포효','강화','악의구슬 추출','암전','균열','구울','웅덩이','소환','발광','울화','나선','파편','결정','획득','증표','🔥','🩸','🟢','DOUBLE','TRIPLE','MULTI','악의구슬+','PARRY','패링','패링폭발','Penetrate','Weakness','AoE','Blade','Defense','Resist','Reflect','Absorb','Counter','Stun','Freeze','Shock','Burn','Poison','Thorn','Drown','Bind','Parry','Malice+'];
 let _txtNext=0;
 // 떠오르는 글자에서 이모지 제거(실버 헬 — 이모지를 아이콘 대용으로 쓰지 않음). 번역 키는 그대로 두고 그릴 글자만 바꾼다
 const _TXT_EMO_T=/\p{Extended_Pictographic}/u,_TXT_EMO_G=/\p{Extended_Pictographic}️?\s?/gu;
@@ -44436,11 +44436,11 @@ const SKILL_LIST=[
   {id:'elemMissile',name:'원소추적탄',cat:'bow',desc:'우클릭 탭 마법을 6원소 유도 미사일로 변경. 곡선 궤적으로 적을 추적. 레벨당 사거리+20 (뎀은 _skMul 계수 적용)',descEn:'Changes RMB-tap magic to 6-element homing missiles. Curved trajectory tracking enemies. Per Lv range+20 (DMG uses _skMul)',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
 
   {id:'guardian',name:'악의 보호자',cat:'summon',noDmg:true,desc:'3초마다 악의 구체 생성(1렙 2개). 몸에 밀착하여 적 투사체를 자동 방어(파괴). 레벨당 구체+1',descEn:'Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
-  {id:'maliceHunt',name:'악의 사냥',cat:'bow',act:true,emoji:'⚔',desc:'유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초',descEn:'1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s',spCost:10,matCost:100,cd:300,up:true,upSp:5,upMat:0},
+  {id:'maliceHunt',name:'악의 사냥',cat:'bow',act:true,emoji:'⚔',desc:'유도 물리 칼날 1발 (악의구슬30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초',descEn:'1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s',spCost:10,matCost:100,cd:300,up:true,upSp:5,upMat:0},
   {id:'venomBlade',name:'독사',cat:'bow',act:true,emoji:'🐍',desc:'유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초',descEn:'Homing venom snake 1+Lv shots (ST40). DEX+bow base. Minimal direct DMG, Poison DOT. Pierce 800+Lv×20+gear (91gtd+9rng). Poison 10s, +50%/stk, 50stk cap. CD 15s',spCost:10,matCost:0,cd:900,up:true,upSp:5,upMat:0},
   {id:'ltnChaser',name:'뇌전추격자',cat:'bow',act:true,emoji:'⚡',desc:'전기 칼날 1+Lv발 발사 (ST40). DEX 기반. 유도+관통. 관통 시 체인라이트닝 발생. 쿨 12초. Lv당 뎀+12% 칼날+1 체인+1',descEn:'Lightning blade 1+Lv shots (ST40). DEX base. Homing+pierce. Chain lightning on pierce. CD 12s. Per Lv DMG+12% blade+1 chain+1',spCost:10,matCost:80,cd:720,up:true,upSp:5,upMat:0},
   {id:'maliceMortar',name:'폭풍소환',cat:'magic',act:true,emoji:'🌪️',desc:'어둠 소용돌이 소환 (마우스 조준 설치, MP 소모, 쿨 11초, INT 스케일링, 1렙 400범위 +18/렙, 6.5초 지속, 적 흡인)',descEn:'Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
-  {id:'boneWall',name:'해골무덤',cat:'magic',act:true,emoji:'🦴',desc:'스킬 키로 마우스 위치에 즉시 소환 (최대 1000px, 패드: 조준 후 확정). 2스택 (25초/1충전, Lv10→3스택). 원형 해골벽이 적/투사체 차단. 솟을 때 데미지. 악의 12. 반경 280px+12.6px/Lv, 지속 3초+0.2초/Lv (최대 30초)',descEn:'Press skill key to summon at cursor (max 1000px; gamepad: aim and confirm). 2 stocks (25s/charge, Lv10: 3). Circular bone wall blocks enemies/projectiles. DMG on rise. Malice 12. Radius 280px +12.6px/level; duration 3s +0.2s/level (max 30s).',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
+  {id:'boneWall',name:'해골무덤',cat:'magic',act:true,emoji:'🦴',desc:'스킬 키로 마우스 위치에 즉시 소환 (최대 1000px, 패드: 조준 후 확정). 2스택 (25초/1충전, Lv10→3스택). 원형 해골벽이 적/투사체 차단. 솟을 때 데미지. 악의구슬 12. 반경 280px+12.6px/Lv, 지속 3초+0.2초/Lv (최대 30초)',descEn:'Press skill key to summon at cursor (max 1000px; gamepad: aim and confirm). 2 stocks (25s/charge, Lv10: 3). Circular bone wall blocks enemies/projectiles. DMG on rise. Malice 12. Radius 280px +12.6px/level; duration 3s +0.2s/level (max 30s).',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'blackStar',name:'블랙',cat:'ult',act:true,ult:true,noDmg:true,emoji:'⛧',desc:'검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)',descEn:'Summon black pentagram. 7s (+0.5s/Lv) strong pull (no DMG, pure utility). Range 1500+Lv×100px. Pull force base 5+0.5/Lv. (MP 30%, CD 120s)',spCost:10,matCost:100,cd:7200,up:true,upSp:5,upMat:0},
   {id:'lavaSummon',name:'탄막블랙홀',cat:'ult',act:true,ult:true,emoji:'🕳',desc:'작은 탄막블랙홀을 즉시 설치해 5초 동안 넓은 흡수장(1000~1475px) 안의 적 탄막을 제거한 뒤 흡수량 비례 범위폭발(900~1470px). 기본 ATK×8(Lv당×10 성장), 탄막 1발당 뎀+3%(최대+300%)+흡수 탄막 피해 저장(기본 피해의 최대 100%), 스턴, 거리감쇠 30%. (MP 30%, 쿨 120초)',descEn:'Instantly deploy a small Bullet Black Hole. For 5s it clears hostile bullets in a wide 1000-1475px field, then detonates in a 900-1470px area based on absorbed bullets. Base ATK×8(×10 by Lv), +3% DMG per bullet(max +300%) plus stored bullet damage capped at 100% base damage, stun, 30% falloff. (MP 30%, CD 120s)',spCost:10,matCost:100,cd:7200,up:true,upSp:5,upMat:0},
   {id:'execution',name:'처형',cat:'ult',act:true,ult:true,emoji:'⚔',desc:'X키: 그로기 보스 전용. 보스 현재HP 20%(+2%/Lv) + 무기뎀×30(+21%/Lv, 20Lv=150배) + 보스HP 30% 순수뎀. 섬광 돌진 연출. HP/MP/ST 10% 소모. 쿨 5초',descEn:'X key: Groggy boss only. Boss current HP 20%(+2%/Lv) + weapon DMG×30(+21%/Lv, Lv20=150×) + boss HP 30% pure DMG. Flash dash. HP/MP/ST 10% cost. CD 5s',spCost:10,matCost:100,cd:300,up:true,upSp:5,upMat:0},
@@ -44453,7 +44453,7 @@ const SKILL_LIST=[
   {id:'fireBeam',name:'업화선',cat:'bow',emoji:'🔥',desc:'우클릭: 최대 5초 차징, 재입력 시 발사. 직선 관통+폭발+화상. MP ⌊50×(1+(Lv-1)×0.12)⌋. CD = 1 / (시전속도 배율) 초.',descEn:'RMB: charge up to 5s; press again to fire. Straight piercing shot + explosion + burn. MP ⌊50×(1+(Lv-1)×0.12)⌋. CD = 1 / (cast speed multiplier) s.',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'maliceDome',name:'신의영역',cat:'def',act:true,noDmg:true,emoji:'✟',desc:'현재 위치에 신성 보호돔 설치 (8초+Lv당0.5초). 돔 안: 적 접근 불가+탄막 무효화. 보스 무시. MP 60. 쿨 25초. Lv당 범위+15',descEn:'Place divine dome at current pos (8s+0.5s/Lv). Inside: block enemy entry + nullify projectiles. Boss ignores. MP 60. CD 25s. Per Lv range+15',spCost:10,matCost:100,cd:1500,up:true,upSp:5,upMat:0},
   {id:'fireAura',name:'지옥진',cat:'magic',emoji:'🌋',desc:'우클릭: 10초간 대지 진동. 범위 내 용암 기둥이 순차적으로 솟아올라 화상+틱 데미지. MP 100. 쿨 12초. Lv당 범위+10% 뎀+12%',descEn:'RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
-  {id:'plagueBurst',name:'폭독칼날',cat:'bow',act:true,emoji:'🩸',desc:'독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)',descEn:'Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)',spCost:10,matCost:80,cd:1200,up:true,upSp:5,upMat:0},
+  {id:'plagueBurst',name:'폭독칼날',cat:'bow',act:true,emoji:'🩸',desc:'독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의구슬 15. 사거리 4000. 쿨 15초(Lv당-0.5초)',descEn:'Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)',spCost:10,matCost:80,cd:1200,up:true,upSp:5,upMat:0},
   {id:'maliceStorm',name:'악의폭풍',cat:'magic',act:true,emoji:'🌀',desc:'마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가',descEn:'Mouse-aim placement. CD 20s. Dark spiral at click pos (10s duration, tick every 18f, INT/_skMul scale). Per Lv range+22. No stacking same area',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
   {id:'darkPillar',name:'악의기둥',cat:'magic',act:true,emoji:'🏛️',desc:'현재 위치에 9개 기둥 순차 발동. 10초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 지옥강타 2와 합체→기둥강타. 쿨 15초',descEn:'9 pillars activate sequentially at current pos. 10s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Hell Slam II → Pillar Strike. CD 15s',spCost:10,matCost:100,cd:900,up:true,upSp:5,upMat:0},
   {id:'holyDome',name:'회복의 영역',cat:'tech',act:true,noDmg:true,emoji:'🛡',desc:'현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초',descEn:'Place holy domain at current pos (12s duration). On ground: HP/MP/ST +10/s regen + 2x recovery + 2x CD speed. CD 30s. Per Lv range+20 duration+0.5s',spCost:10,matCost:90,cd:1800,up:true,upSp:5,upMat:0},
@@ -44475,7 +44475,7 @@ const SKILL_LIST=[
   {id:'weakMag',name:'침식의 영역',cat:'tech',act:true,noDmg:true,emoji:'🔮',desc:'현재 위치에 침식 영역 설치 (10초). 범위 내 적 마법저항력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',descEn:'Place corrosion domain at current pos (10s). Enemy magic resist -10% in range. CD 25s. Per Lv range+22 effect+1% duration+0.3s',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
   {id:'weakPj',name:'관통의 영역',cat:'tech',act:true,noDmg:true,emoji:'🏹',desc:'현재 위치에 관통 영역 설치 (10초). 범위 내 적 투사체저항력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',descEn:'Place pierce domain at current pos (10s). Enemy projectile resist -10% in range. CD 25s. Per Lv range+22 effect+1% duration+0.3s',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
   {id:'weakRev',name:'부활의 영역',cat:'tech',act:true,noDmg:true,emoji:'💀',desc:'현재 위치에 부활 영역 설치 (10초). 영역 안에서 부활력 +10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',descEn:'Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
-  {id:'spikeTrap',name:'가시덫',cat:'phys',act:true,emoji:'🌿',desc:'[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×pMagicMul×(14+5.6×(Lv-1))×0.75. 악의 10, 쿨 10초. Lv당 범위+15',descEn:'[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×pMagicMul×(14+5.6×(Lv-1))×0.75. Malice 10, CD 10s. Per Lv range+15',spCost:10,matCost:80,cd:600,up:true,upSp:5,upMat:0},
+  {id:'spikeTrap',name:'가시덫',cat:'phys',act:true,emoji:'🌿',desc:'[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×pMagicMul×(14+5.6×(Lv-1))×0.75. 악의구슬 10, 쿨 10초. Lv당 범위+15',descEn:'[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×pMagicMul×(14+5.6×(Lv-1))×0.75. Malice 10, CD 10s. Per Lv range+15',spCost:10,matCost:80,cd:600,up:true,upSp:5,upMat:0},
   {id:'blueShot',name:'푸른비',cat:'bow',fixed:true,emoji:'💎',desc:'[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)',descEn:'[Fixed: E, unlock Lv300] 50 homing blue shots fired sequentially (over 5s). MP 100(+1.5/Lv) cost. Tracks enemies. CD 5s. Per Lv range+30 (DMG uses _skMul)',spCost:10,matCost:100,up:true,upSp:5,upMat:0,reqLv:300},
   {id:'burstLoop',name:'버스트루프',cat:'magic',fixed:true,hidden:true,emoji:'💫',desc:'[히든: 우클릭, Lv700 해금] 홀드 시 3단계 차지 범위폭발 (0.5/1.0/1.5초). 범위 600/1000/1400px. 3단 만충 자동폭발. INT 스케일, 무속성',descEn:'[Hidden: RMB, unlock Lv700] Hold for 3-stage charge AoE explosion (0.5/1.0/1.5s). Range 600/1000/1400px. Stage 3 full charge auto-detonates. INT scale, no element',spCost:0,matCost:0,up:true,upSp:5,upMat:0,reqLv:700},
   {id:'voidScarecrow',name:'유령 허수아비',cat:'summon',act:true,emoji:'👻',desc:'유령 허수아비를 소환하여 유도탄막 어그로를 끈다. 탄막을 흡수해 자원 축적 (기본 20개, Lv당+3). 1개당 HP/MP/ST 각 100. R키로 회수. 쿨 20초',descEn:'Summon phantom scarecrow to draw homing projectile aggro. Absorbs projectiles for resource buildup (base 20, +3/Lv). Per absorbed: HP/MP/ST +100 each. R key to retrieve. CD 20s',spCost:10,matCost:100,cd:600,up:true,upSp:5,upMat:0},
@@ -44555,14 +44555,14 @@ const SKILL_SLOT_DEFS={
   bow:{name:'석궁 자동(T)',nameEn:'Crossbow Auto(T)',key:'bow',skills:['normal','bladeShot','blastShot','fanShot','needleShot'],
     info:{normal:{name:'일반사격',nameEn:'Normal Shot',emoji:'🏹',desc:'T자동: 기본 화살',descEn:'T auto: Basic arrow'},
           bladeShot:{name:'붉은꽃',nameEn:'Red Bloom',emoji:'🌹',desc:'T자동: 붉은 꽃잎 칼날 (ST50)',descEn:'T auto: Red petal blade (ST50)'},
-          blastShot:{name:'폭산탄',nameEn:'Blast Shot',emoji:'💥',desc:'T자동: 폭탄 (악의5, 쿨0.5초)',descEn:'T auto: Bomb (malice 5, cd 0.5s)'},
+          blastShot:{name:'폭산탄',nameEn:'Blast Shot',emoji:'💥',desc:'T자동: 폭탄 (악의구슬5, 쿨0.5초)',descEn:'T auto: Bomb (malice 5, cd 0.5s)'},
           fanShot:{name:'만화방창',nameEn:'Barrage',emoji:'✨',desc:'T자동: 물리 바늘 3방향 3발 (관통X)',descEn:'T auto: 3 physical needles 3-way (no pierce)'},
           needleShot:{name:'만화방창 II',nameEn:'Barrage II',emoji:'✨',desc:'T자동: 초고속 바늘 2발+5렙당1 (ST8, 쿨1.5초)',descEn:'T auto: Ultra-fast 2 needles +1/5lv (ST8, cd 1.5s)'},
           ltnChaser:{name:'뇌전추격자',nameEn:'Lightning Chaser',emoji:'⚡',desc:'전기 유도칼날 (ST40, 쿨12초). 관통+체인라이트닝',descEn:'Lightning homing blades (ST40, CD 12s). Pierce+chain lightning'},
           ghostXbowTurret:{name:'공성쇠뇌',nameEn:'Siege Ballista',emoji:'🏹',desc:'선택스킬: 터렛 설치/철거 (Lv500, ST100, 설치 쿨20초)',descEn:'Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)'},
           }},
   tech:{name:'영역 스킬',nameEn:'Area Skill',key:'tech',skills:['giantSlam'],
-    info:{giantSlam:{name:'지옥강타 1',nameEn:'Hell Slam I',emoji:'🔨',desc:'Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)',descEn:'Space: AoE shockwave (ST+malice20, poise focus, cd 30s)'},
+    info:{giantSlam:{name:'지옥강타 1',nameEn:'Hell Slam I',emoji:'🔨',desc:'Space: 원형 진동파 (ST+악의구슬20, 포이즈 특화, 쿨30초)',descEn:'Space: AoE shockwave (ST+malice20, poise focus, cd 30s)'},
           }},
   lmb:{name:'좌클 스킬',nameEn:'LMB Skill',key:'lmb',skills:['kiSlash','whirlwind'],
     info:{kiSlash:{name:'기검참',nameEn:'Ki Slash',emoji:'⚔',desc:'좌클 3타 홀드: 2초에 최대 3단(약 0.67초당 1단). 검기 피해 2/4/8배. ST 10+Lv당2',descEn:'Hold 3rd LMB hit: up to 3 stages over 2 seconds (~0.67s each). Blade damage ×2/×4/×8. ST 10+2/Lv'},
@@ -44971,7 +44971,7 @@ function _skDetailHTML(sk, slv){
     [_L('타입','Type'),(sk.noDmg&&!sk.act)?(_L('패시브','Passive')):_isPhys?(_L('물리','Physical')):_isBow?(_L('활','Bow')):(_L('마법','Magic')),(sk.noDmg&&!sk.act)?'#cccc88':_isPhys?'#ffaa44':_isBow?'#88cc88':'#88aaff'],
     [_L('레벨','Level'),learned?'Lv.'+slv+'/10':(_L('미습득','Not Learned')),learned?'#44cc44':'#888'],
     [_L('SP 비용','SP Cost'),'⭐'+sk.spCost,'#ffcc44'],
-    [_L('악의 비용','Malice Cost'),'👿'+_malCost(sk.matCost||0),'#cc66ff'],
+    [_L('악의구슬 비용','Malice Sphere Cost'),'👿'+_malCost(sk.matCost||0),'#cc66ff'],
     sk.cd?[_L('쿨다운','Cooldown'),_cdF,'#aaccff']:null,
     sk.reqLv?[_L('요구 레벨','Req. Lv'),'Lv.'+sk.reqLv,(P&&P.lv>=sk.reqLv)?'#44cc44':'#cc4444']:null,
   ]);
@@ -45047,7 +45047,7 @@ function _skSpecificDetails(sk,slv){
       [_L('투사체 관통 보정','Projectile Pierce Bonus'),_L('bowPierce×300 + pPierce×30','bowPierce×300 + pPierce×30'),'#88cc88'],
       [_L('지속뎀','DOT Duration'),'5s','#ffcc44'],
       [_L('사거리','Range'),_L('무한','Infinite'),'#ddaa66'],
-      [_L('악의 비용','Malice Cost'),String(_malCost(30)),'#cc66ff'],
+      [_L('악의구슬 비용','Malice Sphere Cost'),String(_malCost(30)),'#cc66ff'],
     ];
   }
   if(id==='giantSlam'||id==='giantSlam2'){
@@ -45355,7 +45355,7 @@ function _drawBladeEchoVfx(ctx,run,px,py,t,fade=1){
 
 // ═══ 악의 사냥 발동 (선택기술) ═══
 function activateMaliceHunt(){
-  if(G.mats<_malCost(30)){showPH(_T('악의 부족! (')+_malCost(30)+')','#ff4444');return false}
+  if(G.mats<_malCost(30)){showPH(_T('악의구슬 부족! (')+_malCost(30)+')','#ff4444');return false}
   const _mhStCost=50;
   const _mhLv=P.skills.maliceHunt||1;
   const _bladeEchoCast=_isFused('bladeEcho')&&P.skills.bladeDash>=1?(P._bladeEchoCast=(P._bladeEchoCast||0)+1):0;
@@ -45537,7 +45537,7 @@ function fireBoneWall(tx,ty){
   try{
   P._bwAiming=false;
   if((P._bwStk||0)<=0){showPH(_T('충전 중...'),'#ff8844');return}
-  if(G.mats<_malCost(12)){showPH(_T('악의 부족!'),'#ff4444');return}
+  if(G.mats<_malCost(12)){showPH(_T('악의구슬 부족!'),'#ff4444');return}
   G.mats-=_malCost(12);
   const slv=P.skills.boneWall||1;
   P._bwStk--;const _bwMx2=(P.skills.boneWall>=10)?3:2;if(P._bwStk<_bwMx2&&!P._bwRech)P._bwRech=1500;
@@ -46764,7 +46764,7 @@ function activateGiantSlam(srcId){
   srcId=srcId||'giantSlam';
   const slv=P.skills[srcId]||P.skills.giantSlam||1;
   _addSkProf(srcId);
-  if(!window._parryLesson?.active&&G.mats<_malCost(20)){showPH(_T('악의 부족!'),'#ff4444');return}
+  if(!window._parryLesson?.active&&G.mats<_malCost(20)){showPH(_T('악의구슬 부족!'),'#ff4444');return}
   useStPct('giantSlam');if(!window._parryLesson?.active)G.mats-=_malCost(20);
   const _gslBase=(srcId==='giantSlam2'&&_isFused('pillarSlam'))?420:(srcId==='giantSlam2'&&_isFused('infernoSlam'))?420:Math.max(60,1800-(slv-1)*12);
   P._gslCd=~~(_gslBase*(1+_cdRed()));
@@ -47569,7 +47569,7 @@ function _execFuse(key){
     addTxt(P.x,P.y-60,_T('🕊️ 히든: 평화의보호 해금!'),'#aaffaa',80);
     addTxt(P.x,P.y-80,_T('⚡ 히든: 참회 해금!'),'#ffd700',80);
   }
-  let _fTxt=_fuseName(key)+(_L(' 완성!',' Complete!'));if(_refSp>0||_refMat>0)_fTxt+=' (SP+'+_refSp+(_L(' 악의+',' Malice+'))+_refMat+')';
+  let _fTxt=_fuseName(key)+(_L(' 완성!',' Complete!'));if(_refSp>0||_refMat>0)_fTxt+=' (SP+'+_refSp+(_L(' 악의구슬+',' Malice Sphere+'))+_refMat+')';
   addTxt(P.x,P.y-30,_fTxt,_grpColor,80);
   const absorbed=_getAbsorbed(key);
   absorbed.forEach(rid=>{for(let j=0;j<SKILL_SLOTS.length;j++){if(SKILL_SLOTS[j]===rid)SKILL_SLOTS[j]=null}if(ULT_SLOT===rid)ULT_SLOT=null});
@@ -47683,7 +47683,7 @@ function renderSkillPanel(){
   // [SKILL FORGE] 3D 합성 창 (끄기 ?skillForge=0) — 구 카드형 창은 폴백으로 유지
   if(globalThis.SkillForge&&SkillForge.active()){SkillForge.render();return}
   const _si=$('skillInfo');
-  _si.innerHTML='LV.'+P.lv+' | SP: '+P.sp+_L(' | 악의: ',' | Malice: ')+G.mats+_L(' | 사슬: ',' | Chain: ')+~~_harpGauge+'/'+_HARP_GAUGE_MAX;
+  _si.innerHTML='LV.'+P.lv+' | SP: '+P.sp+_L(' | 악의구슬: ',' | Malice Sphere: ')+G.mats+_L(' | 사슬: ',' | Chain: ')+~~_harpGauge+'/'+_HARP_GAUGE_MAX;
   const _oldGritBtn=$('gritBtn');if(_oldGritBtn)_oldGritBtn.remove();
   const _cb=$('skCompBtn');if(_cb)_cb.textContent=_skCompact?_L('펼치기 [K]','Expand [K]'):_L('접기 [K]','Collapse [K]');
   const grid=$('skillGrid');grid.innerHTML='';
@@ -48254,7 +48254,7 @@ async function _skResetSkill(sk){
             const _isFreeBase=(sk.id==='spikeTrap'||sk.id==='kiSlash'||sk.id==='fireball'); // 기본 무료 스킬
             const _rSp=_isFreeBase?_skillSpentSp(sk,_slv)-(_skillSpentSp(sk,1)):_skillSpentSp(sk,_slv);
             if(_rSp<=0&&_isFreeBase){notify(_T(sk.name)+_L('은 기본 스킬입니다 (리셋 불가)',' is a base skill (no reset)'));return}
-            if(!await gameConfirm(_T(sk.name)+(_isFreeBase?_L(' 강화분 리셋',' reset upgrades'):_L(' 리셋',' reset'))+'?\n⭐ SP +'+_rSp+_L(' 환불 (👿 악의는 반납되지 않습니다)',' refund (Malice not returned)')))return;
+            if(!await gameConfirm(_T(sk.name)+(_isFreeBase?_L(' 강화분 리셋',' reset upgrades'):_L(' 리셋',' reset'))+'?\n⭐ SP +'+_rSp+_L(' 환불 (👿 악의구슬은 반납되지 않습니다)',' refund (Malice Sphere not returned)')))return;
             P.skills[sk.id]=_isFreeBase?1:0;P.sp+=_rSp;
             const _rfk=_getFuseKey(sk.id);if(_rfk&&P._fused[_rfk])delete P._fused[_rfk];
             for(let j=0;j<SKILL_SLOTS.length;j++){if(SKILL_SLOTS[j]===sk.id)SKILL_SLOTS[j]=null}
@@ -48527,7 +48527,7 @@ function _renderSkillRow(sk,grid){
     }else{
       d.innerHTML='<div style="color:'+(_fGrp?_fGrp.color:'#ffcc66')+';font-size:.9rem;font-weight:700;margin-bottom:4px">'+_dispName+'</div>'
         +'<div style="color:#aa9966;font-size:.85rem;margin-bottom:6px">'+_dispDesc+'</div>'
-        +'<div style="color:#886644;font-size:.8rem;margin-bottom:4px">'+(learned?'':_L('필요: ⭐','Need: ⭐')+sk.spCost+' SP | 👿'+_malCost(sk.matCost||0)+_L(' 악의',' Malice'))+'</div>'
+        +'<div style="color:#886644;font-size:.8rem;margin-bottom:4px">'+(learned?'':_L('필요: ⭐','Need: ⭐')+sk.spCost+' SP | 👿'+_malCost(sk.matCost||0)+_L(' 악의구슬',' Malice Sphere'))+'</div>'
         +'<div>'+lockTxt+'</div>';
     }
 
@@ -49231,7 +49231,7 @@ function _localizedControlKey(key){
   return ({'좌클릭':_L('좌클릭','LMB'),'우클릭':_L('우클릭','RMB'),'E 탭':_L('E 탭','E Tap'),'E 홀드':_L('E 홀드','E Hold')})[key]||key;
 }
 function _refreshPersistentHudLanguage(){
-  const labels=[['hudLevelLabel','레벨','Level'],['hudExpLabel','경험치','Experience'],['hudKillLabel','지역 처치','Area kills'],['hudMaliceLabel','악의','Malice']];
+  const labels=[['hudLevelLabel','레벨','Level'],['hudExpLabel','경험치','Experience'],['hudKillLabel','지역 처치','Area kills'],['hudMaliceLabel','악의구슬','Malice Sphere']];
   for(const [id,ko,en] of labels){const el=document.getElementById(id);if(el&&el.children.length===0)el.textContent=_L(ko,en);}
   const panel=document.getElementById('mmLvl');if(panel)panel.setAttribute('aria-label',_L('플레이어 상태','Player status'));
   window._tutorialBadges?.refreshLanguage?.();
@@ -49951,8 +49951,8 @@ function _invRenderDetail(idx,source,preview=false){
       const _fe=_oeq?(_oeq.enh||0):0;
       const _xc=_fe>0?xferCost(_fe):0;
       const _reqFail=it.reqLv&&P&&P.lv<it.reqLv;
-      const _lbl=it.slot==='bonePart'?_T('도감 등록'):_reqFail?'⚠ '+_L('Lv.'+it.reqLv+' 필요','Req. Lv.'+it.reqLv):_fe>0?_T('장착')+' (\u2692+'+_fe+' \u2192 '+_xc.toLocaleString()+_L('악의',' Malice')+((G.mats||0)<_xc?' \u26A0':'')+')'  :_T('장착');
-_actB.innerHTML=`<div class="id-btns" style="display:flex;gap:6px"><button type="button" class="id-btn equip${_reqFail?' dis':''}" style="${_reqFail?'color:#ff4444;border-color:#ff444466':''}" onclick="equipItem(INV.bag[${idx}]);renderInv()">${_lbl}</button><button type="button" class="id-btn" onclick="if(dropItem(${idx}))renderInv()">${_T('분해')} (${_T('악의')}+${_salV})</button></div>`;
+      const _lbl=it.slot==='bonePart'?_T('도감 등록'):_reqFail?'⚠ '+_L('Lv.'+it.reqLv+' 필요','Req. Lv.'+it.reqLv):_fe>0?_T('장착')+' (\u2692+'+_fe+' \u2192 '+_xc.toLocaleString()+_L('악의구슬',' Malice Sphere')+((G.mats||0)<_xc?' \u26A0':'')+')'  :_T('장착');
+_actB.innerHTML=`<div class="id-btns" style="display:flex;gap:6px"><button type="button" class="id-btn equip${_reqFail?' dis':''}" style="${_reqFail?'color:#ff4444;border-color:#ff444466':''}" onclick="equipItem(INV.bag[${idx}]);renderInv()">${_lbl}</button><button type="button" class="id-btn" onclick="if(dropItem(${idx}))renderInv()">${_T('분해')} (${_T('악의구슬')}+${_salV})</button></div>`;
       if(_earringSlot(it.slot)){
         const choices=document.createElement('div');choices.className='id-btns';
         for(const slot of ['headband','headband2']){
@@ -50255,7 +50255,7 @@ function _invBuildCompare(item,curEq){
   const _fromE=curEq.enh||0;
   const _xc=_fromE>0?xferCost(_fromE):0;
   const _xferNote=_fromE>0
-    ?'<div style="font-size:.8rem;color:#886644;margin-bottom:6px">\u2692 장착 시 +'+_fromE+' 자동 이전 | 비용 <span style="color:#ffaa44">'+_xc.toLocaleString()+'악의</span>'+((G.mats||0)<_xc?' <span style="color:#cc4444">악의 부족 \u2192 장착 불가</span>':'')+'</div>'
+    ?'<div style="font-size:.8rem;color:#886644;margin-bottom:6px">\u2692 장착 시 +'+_fromE+' 자동 이전 | 비용 <span style="color:#ffaa44">'+_xc.toLocaleString()+'악의구슬</span>'+((G.mats||0)<_xc?' <span style="color:#cc4444">악의구슬 부족 → 장착 불가</span>':'')+'</div>'
     :'';
   const diffsHtml=(diffs||_xferNote)
     ?'<div style="border-bottom:1px solid #332211;padding-bottom:8px;margin-bottom:8px">'
@@ -50479,7 +50479,7 @@ function renderInv(){
   $('invSocketCount').textContent=`${_socketFilled} / ${_socketTotal}`;
   $('invEquipPower').textContent=cp.total;
   // ── 리소스 바 ──
-{if(!isFinite(G.mats))G.mats=0;const _rb=$('invResBar');if(_rb)_rb.textContent=_L('악의: ','Malice: ')+G.mats}
+{if(!isFinite(G.mats))G.mats=0;const _rb=$('invResBar');if(_rb)_rb.textContent=_L('악의구슬: ','Malice Sphere: ')+G.mats}
   if($('invPanel')?.dataset.inventoryPage==='crystals'){renderInvCrystals();_invLastPlacement=_invPlacement();if(_placementMoved)_invClearHover();return;}
   // ── 창고 컬럼 (항상 렌더) ──
   try{renderInvStorage()}catch(e){console.error('창고 렌더 오류:',e)}
@@ -50676,12 +50676,12 @@ function renderInv(){
     const _isCnt=_invSalSel.size;
     if(_isCnt>0){
       let _isTot=0;for(const idx of _invSalSel){const it=INV.bag[idx];if(it)_isTot+=salvageVal(it)}
-_isBtn.style.display='';_isBtn.textContent=_L("선택분해 ({p0}개 -> 악의 +{p1})","Salvage ({p0} -> +{p1} Malice)",{p0:_isCnt,p1:_isTot});
+_isBtn.style.display='';_isBtn.textContent=_L("선택분해 ({p0}개 -> 악의구슬 +{p1})","Salvage ({p0} -> +{p1} Malice Sphere)",{p0:_isCnt,p1:_isTot});
       _isBtn.onclick=async()=>{
         const _canSelected=it=>{if(!it||it.fav||!INV.bag.includes(it)||Object.values(INV.equipped).includes(it))return false;const _value=salvageVal(it);return Number.isFinite(_value)&&_value>=0;};
         const _pendingSelected=[...new Set([..._invSalSel].map(idx=>INV.bag[idx]))].filter(_canSelected);if(!_pendingSelected.length)return;
         const _pendingTotal=_pendingSelected.reduce((sum,it)=>sum+salvageVal(it),0);if(!Number.isFinite(_pendingTotal)||_pendingTotal<0)return;
-        if(!await gameConfirm(_L("{p0}개 아이템을 분해합니다.<br>{p1} {p2} 악의 획득.<br><br>{p3} 복구 불가!","Salvage {p0} items.<br>{p1} {p2} Malice gained.<br><br>{p3} Cannot undo!",{p0:_pendingSelected.length,p1:_glyph('demon','#cc66ff',15),p2:_pendingTotal,p3:_glyph('warn','#ff6644',15)}),null,null,true))return;
+        if(!await gameConfirm(_L("{p0}개 아이템을 분해합니다.<br>{p1} {p2} 악의구슬 획득.<br><br>{p3} 복구 불가!","Salvage {p0} items.<br>{p1} {p2} Malice Sphere gained.<br><br>{p3} Cannot undo!",{p0:_pendingSelected.length,p1:_glyph('demon','#cc66ff',15),p2:_pendingTotal,p3:_glyph('warn','#ff6644',15)}),null,null,true))return;
         const _currentSelected=_pendingSelected.filter(_canSelected);if(!_currentSelected.length)return;
         const _currentTotal=_currentSelected.reduce((sum,it)=>sum+salvageVal(it),0);if(!Number.isFinite(_currentTotal)||_currentTotal<0)return;
         INV.bag=INV.bag.filter(it=>!_currentSelected.includes(it));
@@ -50706,12 +50706,12 @@ _jkSelBtn.style.display='';_jkSelBtn.textContent=_L("전체 쓰레기 지정 ({p
     const _jkItems=filtered.map(i=>INV.bag[i]).filter(it=>it&&it.junk&&!it.fav);
     if(_jkItems.length>0){
       let _jkTot=0;for(const it of _jkItems)_jkTot+=salvageVal(it);
-_jkBtn.style.display='';_jkBtn.textContent=_L("쓰레기 전부 분해 ({p0}개 -> 악의 +{p1})","Salvage all junk ({p0} -> +{p1} Malice)",{p0:_jkItems.length,p1:_jkTot});
+_jkBtn.style.display='';_jkBtn.textContent=_L("쓰레기 전부 분해 ({p0}개 -> 악의구슬 +{p1})","Salvage all junk ({p0} -> +{p1} Malice Sphere)",{p0:_jkItems.length,p1:_jkTot});
       _jkBtn.onclick=async()=>{
         const _canJunk=it=>{if(!it||!it.junk||it.fav||!INV.bag.includes(it)||Object.values(INV.equipped).includes(it))return false;const _value=salvageVal(it);return Number.isFinite(_value)&&_value>=0;};
         const _pendingJunk=_jkItems.filter(_canJunk);if(!_pendingJunk.length)return;
         const _pendingTotal=_pendingJunk.reduce((sum,it)=>sum+salvageVal(it),0);
-        if(!await gameConfirm(_L("{p0} 쓰레기 {p1}개를 일괄 분해합니다.<br>{p2} {p3} 악의 획득.<br><br>{p4} 중요잠금 아이템은 제외됩니다.<br>{p5} 복구 불가!","{p0} Bulk salvage {p1} junk items.<br>{p2} {p3} Malice gained.<br><br>{p4} Favorited items excluded.<br>{p5} Cannot undo!",{p0:_glyph('trash','#cc9944',15),p1:_pendingJunk.length,p2:_glyph('demon','#cc66ff',15),p3:_pendingTotal,p4:_glyph('warn','#ffaa33',15),p5:_glyph('warn','#ff6644',15)}),null,null,true))return;
+        if(!await gameConfirm(_L("{p0} 쓰레기 {p1}개를 일괄 분해합니다.<br>{p2} {p3} 악의구슬 획득.<br><br>{p4} 중요잠금 아이템은 제외됩니다.<br>{p5} 복구 불가!","{p0} Bulk salvage {p1} junk items.<br>{p2} {p3} Malice Sphere gained.<br><br>{p4} Favorited items excluded.<br>{p5} Cannot undo!",{p0:_glyph('trash','#cc9944',15),p1:_pendingJunk.length,p2:_glyph('demon','#cc66ff',15),p3:_pendingTotal,p4:_glyph('warn','#ffaa33',15),p5:_glyph('warn','#ff6644',15)}),null,null,true))return;
         const _currentJunk=_pendingJunk.filter(_canJunk);if(!_currentJunk.length)return;
         const _currentTotal=_currentJunk.reduce((sum,it)=>sum+salvageVal(it),0);
         INV.bag=INV.bag.filter(it=>!_currentJunk.includes(it));
@@ -50784,7 +50784,7 @@ function _fgCraft(e){
     if(G.mats<s.cost)break;
     s.fn();_done++;
   }
-  if(_done===0){notify(_T('악의가 부족합니다!'));return}
+  if(_done===0){notify(_T('악의구슬이 부족합니다!'));return}
   _forgeSel=null;renderForge();dbSaveNow();
 }
 const _fgAtlasState={v1:false,v2:false,v1Req:false,v2Req:false,lastTry:0};
@@ -50832,8 +50832,8 @@ function renderForge(){requestAnimationFrame(()=>_uiStripEmoji($('forge')));
   G.forgeOpen=true;
   _ensureForgeAtlasLoad();
   BGM.play('forge');
-$('forgeMats').textContent=`${_T('악의')}: ${G.mats}`;
-$('forgeLore').textContent=_T('🔴화염→빙결 2배 | 🔵빙결→화염 2배 | ⚪물리=중립 | 악마 처치 시 악의 영혼 드롭');
+$('forgeMats').textContent=`${_T('악의구슬')}: ${G.mats}`;
+$('forgeLore').textContent=_T('🔴화염→빙결 2배 | 🔵빙결→화염 2배 | ⚪물리=중립 | 악마 처치 시 악의구슬 영혼 드롭');
   const tabs=$('fgTabs');tabs.replaceChildren();
   tabs.classList.add('atlas-v1-ready','atlas-v2-ready');
   const _fgTabMeta={
@@ -50890,7 +50890,7 @@ $('forgeLore').textContent=_T('🔴화염→빙결 2배 | 🔵빙결→화염 2�
     const ok=G.mats>=_forgeSel.cost;
     cfm.style.display='';
     $('fgSelName').textContent=_T(_forgeSel.name);
-$('fgSelDesc').textContent=_forgeSel.desc+' — '+_T('악의')+' '+_forgeSel.cost;
+$('fgSelDesc').textContent=_forgeSel.desc+' — '+_T('악의구슬')+' '+_forgeSel.cost;
     $('fgCraftBtn').style.opacity=ok?'1':'.4';
     $('fgCraftBtn').style.borderColor=ok?'#878a8a':'#333636';
     $('fgCraftBtn').onclick=_fgCraft;
@@ -50935,10 +50935,10 @@ uhdr.textContent=_T('장비 강화 (실패 시 재료만 소멸)');grid.appendCh
         if(_enhStSlots.has(it.slot))bonusTxt+=(bonusTxt?' | ':'')+`ST +${~~(enh*0.2)} → +${~~((enh+1)*0.2)}`;
         if(_enhMpSlots.has(it.slot))bonusTxt+=(bonusTxt?' | ':'')+`MP +${~~(enh*0.2)} → +${~~((enh+1)*0.2)}`;
         if(!bonusTxt)bonusTxt=_T('강화 보너스 적용');
-d.innerHTML=`<div class="fg-in" style="color:${rc}">${label} <span style="color:${ec}">+${enh}</span></div><div class="fg-id">${bonusTxt}</div><div class="fg-ic" style="display:flex;justify-content:space-between"><span style="color:${rateCol};font-weight:700">${_T('성공률')} ${ratePct}%</span><span>${_T('악의')} ${cost}</span></div>`;
+d.innerHTML=`<div class="fg-in" style="color:${rc}">${label} <span style="color:${ec}">+${enh}</span></div><div class="fg-id">${bonusTxt}</div><div class="fg-ic" style="display:flex;justify-content:space-between"><span style="color:${rateCol};font-weight:700">${_T('성공률')} ${ratePct}%</span><span>${_T('악의구슬')} ${cost}</span></div>`;
         d.onclick=()=>{
           const {rate:r2,cost:c2}=enhCost(it.enh||0,it.rarity);
-          if(G.mats<c2){notify(_T('악의가 부족합니다!'));return}
+          if(G.mats<c2){notify(_T('악의구슬이 부족합니다!'));return}
           G.mats-=c2;
           if(Math.random()<r2){
             it.enh=(it.enh||0)+1;
@@ -50982,10 +50982,10 @@ d.innerHTML=`<div class="fg-in" style="color:${rc}">${label} <span style="color:
       let _expHtml='';
       if(_aiItem){
         const _enoughMats=(G.mats||0)>=Math.ceil(_autoExpCost);
-        _expHtml='<div style="font-size:.8rem;color:#696c6c;margin-top:6px">+'+_curEnh+' \u2192 +'+_t+' | '+_T('보유 악의')+' '+(_enoughMats?'<span style="color:#e6e3dd">\u2714 '+_T('충분')+'</span>':'<span style="color:#b8b5af">\u2716 '+_T('부족')+' ('+Math.ceil(_autoExpCost-(G.mats||0)).toLocaleString()+' '+_T('더 필요')+')</span>')+'</div>';
+        _expHtml='<div style="font-size:.8rem;color:#696c6c;margin-top:6px">+'+_curEnh+' \u2192 +'+_t+' | '+_T('보유 악의구슬')+' '+(_enoughMats?'<span style="color:#e6e3dd">\u2714 '+_T('충분')+'</span>':'<span style="color:#b8b5af">\u2716 '+_T('부족')+' ('+Math.ceil(_autoExpCost-(G.mats||0)).toLocaleString()+' '+_T('더 필요')+')</span>')+'</div>';
       }
       aiSec.innerHTML='<div style="color:#cc4d44;font-weight:700;font-size:.95rem;margin-bottom:6px">\u26A1 '+_T('AI 자동 강화')+'</div>'+
-        '<div style="font-size:.8rem;color:#696c6c;margin-bottom:8px">'+_T('장비 선택')+' \u2192 '+_T('목표치 설정')+' \u2192 '+_T('악의 투입')+' \u2192 '+_T('자동 시도')+'</div>'+
+        '<div style="font-size:.8rem;color:#696c6c;margin-bottom:8px">'+_T('장비 선택')+' \u2192 '+_T('목표치 설정')+' \u2192 '+_T('악의구슬 투입')+' \u2192 '+_T('자동 시도')+'</div>'+
         '<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px">'+_slotBtns+'</div>'+
         (_aiItem?
         '<div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:4px">'+
@@ -50994,7 +50994,7 @@ d.innerHTML=`<div class="fg-in" style="color:${rc}">${label} <span style="color:
             '<input id="aiTargetInp" type="number" min="'+(_curEnh+1)+'" max="9999" value="'+_t+'" style="width:100%;background:#060909;border:1px solid #333636;color:#ffcc88;padding:5px 8px;border-radius:3px;font-size:.9rem;box-sizing:border-box" oninput="G._aiTarget=Math.max('+(_curEnh+1)+',parseInt(this.value)||'+(_curEnh+1)+')" onchange="renderForge()">'+
           '</div>'+
           '<div style="flex:1;min-width:100px">'+
-            '<div style="font-size:.78rem;color:#666;margin-bottom:3px">'+_T('예상 필요 악의')+'</div>'+
+            '<div style="font-size:.78rem;color:#666;margin-bottom:3px">'+_T('예상 필요 악의구슬')+'</div>'+
             '<div style="background:#060909;border:1px solid #333636;color:#ffaa44;padding:5px 8px;border-radius:3px;font-size:.9rem">'+Math.ceil(_autoExpCost).toLocaleString()+' <span style="color:#666;font-size:.75rem">/ '+_T('보유')+' '+(G.mats||0).toLocaleString()+'</span></div>'+
           '</div>'+
           '<div><div class="id-btn equip" style="white-space:nowrap" onclick="_doAiEnhance()">'+_T('강화 시작')+'</div></div>'+
@@ -51018,7 +51018,7 @@ d.innerHTML=`<div class="fg-in" style="color:${rc}">${label} <span style="color:
       const sel=_forgeSel&&_forgeSel.name===label;
       const d=document.createElement('div');d.className='fg-i'+(sel?' fg-sel':'');
       const _lvTxt=maxed?'':(!lvOk?' <span style="color:#ff4444">⚠ Lv.'+reqLv+' '+_T('필요')+'</span>':'');
-d.innerHTML=`<div class="fg-in" style="color:${item.col}">${label}</div><div class="fg-id">${maxed?_T('최대 강화'):_T('회복량')+' '+cur+' → '+nxt}${_lvTxt}</div>${maxed?'':'<div class="fg-ic">'+_T('악의')+' '+cost+'</div>'}`;
+d.innerHTML=`<div class="fg-in" style="color:${item.col}">${label}</div><div class="fg-id">${maxed?_T('최대 강화'):_T('회복량')+' '+cur+' → '+nxt}${_lvTxt}</div>${maxed?'':'<div class="fg-ic">'+_T('악의구슬')+' '+cost+'</div>'}`;
       if(!maxed&&lvOk)d.onclick=()=>_fgSelect(label,item.n+_L(' 강화 Lv.',' Enhance Lv.')+(lv+1),cost,()=>{POT_LV[item.type]++;G.mats-=cost;addTxt(P.x,P.y-20,item.n+' Lv.'+POT_LV[item.type]+'!','#ffcc00',50);renderForge()});
       grid.appendChild(d);
     });
@@ -51038,7 +51038,7 @@ d.innerHTML=`<div class="fg-in" style="color:${item.col}">${label}</div><div cla
     };
     // 헤더
     const shdr=document.createElement('div');shdr.style.cssText='color:#ff6644;font-size:1rem;font-weight:700;margin-bottom:8px;letter-spacing:.1em;text-align:center';
-shdr.textContent=_T('악의의 분해로 — 장비를 악의로 갈아버려라');grid.appendChild(shdr);
+shdr.textContent=_T('악의구슬의 분해로 — 장비를 악의구슬로 갈아버려라');grid.appendChild(shdr);
     // 필터 - 레어리티
     const fBar=document.createElement('div');fBar.style.cssText='display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;align-items:center';
     fBar.innerHTML='<span style="color:#666969;font-size:.8rem;margin-right:2px">'+_T('레어')+':</span>';
@@ -51074,7 +51074,7 @@ shdr.textContent=_T('악의의 분해로 — 장비를 악의로 갈아버려라
       d.style.cssText=`border:1px solid ${sel?'#cc3322':'#222525'};background:${sel?'rgba(204,51,34,.12)':'rgba(0,0,0,.25)'};cursor:pointer;position:relative;padding:6px`;
       d.innerHTML=`${sel?'<div style="position:absolute;top:2px;right:6px;color:#ff4444;font-weight:700;font-size:.9rem">✗</div>':''}
         <div class="fg-in" style="color:${rc}">${_itemIco(it,rc,15)} ${itemDispName(it)}${it.enh?' <span style="color:'+enhColor(it.enh)+'">+'+it.enh+'</span>':''}</div>
-<div class="fg-id">${_rarName(it.rarity||0)} T${it.tier||0} → ${_T('악의')} ${val}</div>`;
+<div class="fg-id">${_rarName(it.rarity||0)} T${it.tier||0} → ${_T('악의구슬')} ${val}</div>`;
       d.onclick=()=>{if(_salSel.has(i))_salSel.delete(i);else _salSel.add(i);renderForge()};
       itemGrid.appendChild(d);
     });
@@ -51084,20 +51084,20 @@ shdr.textContent=_T('악의의 분해로 — 장비를 악의로 갈아버려라
     const selArr=[..._salSel].filter(i=>i<INV.bag.length);
     const totalMats=selArr.reduce((s,i)=>s+_salVal(INV.bag[i]),0);
     const sumDiv=document.createElement('div');sumDiv.style.cssText='text-align:center;padding:10px;border-top:1px solid #222525';
-sumDiv.innerHTML=`<div style="color:#8a8d8d;font-size:.9rem;margin-bottom:6px">`+_L('선택','Selected')+` <span style="color:#ff6644;font-weight:700">${selArr.length}</span>`+_L('개 ->','  ->')+` <span style="color:#cc66ff;font-weight:700">${totalMats}</span> `+_L('악의 획득 예상','Malice expected')+`</div>`;
+sumDiv.innerHTML=`<div style="color:#8a8d8d;font-size:.9rem;margin-bottom:6px">`+_L('선택','Selected')+` <span style="color:#ff6644;font-weight:700">${selArr.length}</span>`+_L('개 ->','  ->')+` <span style="color:#cc66ff;font-weight:700">${totalMats}</span> `+_L('악의구슬 획득 예상','Malice Sphere expected')+`</div>`;
     if(selArr.length>0){
       const btn=document.createElement('button');
       btn.style.cssText='display:block;margin:0 auto;padding:10px 28px;font-size:1rem;font-family:"Noto Sans KR";font-weight:700;cursor:pointer;border:2px solid #cc3322;background:linear-gradient(180deg,rgba(204,51,34,.2),rgba(100,20,10,.4));color:#ff6644;border-radius:6px;letter-spacing:.1em';
-btn.textContent=_L("분해 ({p0}개 -> 악의 {p1})","Salvage ({p0} -> {p1} Malice)",{p0:selArr.length,p1:totalMats});
+btn.textContent=_L("분해 ({p0}개 -> 악의구슬 {p1})","Salvage ({p0} -> {p1} Malice Sphere)",{p0:selArr.length,p1:totalMats});
       btn.onmouseenter=()=>{btn.style.borderColor='#ff6644';btn.style.boxShadow='0 0 16px #cc332244'};
       btn.onmouseleave=()=>{btn.style.borderColor='#cc3322';btn.style.boxShadow='none'};
       btn.onclick=async()=>{
-        if(!await gameConfirm(_L("{p0}개 아이템을 분해합니다.<br>{p1} {p2} 악의 획득.<br><br>{p3} 복구 불가!","Salvage {p0} items.<br>{p1} {p2} Malice gained.<br><br>{p3} Cannot undo!",{p0:selArr.length,p1:_glyph('demon','#cc66ff',15),p2:totalMats,p3:_glyph('warn','#ff6644',15)}),null,null,true))return;
+        if(!await gameConfirm(_L("{p0}개 아이템을 분해합니다.<br>{p1} {p2} 악의구슬 획득.<br><br>{p3} 복구 불가!","Salvage {p0} items.<br>{p1} {p2} Malice Sphere gained.<br><br>{p3} Cannot undo!",{p0:selArr.length,p1:_glyph('demon','#cc66ff',15),p2:totalMats,p3:_glyph('warn','#ff6644',15)}),null,null,true))return;
         const idxs=[...selArr].sort((a,b)=>b-a);
         idxs.forEach(i=>INV.bag.splice(i,1));
         G.mats+=totalMats;
         _salSel.clear();
-        playSample('ui_salvage',.5,1);addTxt(P.x,P.y-20,'+'+totalMats+_L(' 악의',' Malice'),'#cc66ff',80);addParts(P.x,P.y,'#ff4422',20);
+        playSample('ui_salvage',.5,1);addTxt(P.x,P.y-20,'+'+totalMats+_L(' 악의구슬',' Malice Sphere'),'#cc66ff',80);addParts(P.x,P.y,'#ff4422',20);
         G.shake=3;renderForge();dbSaveNow();
       };
       sumDiv.appendChild(btn);
@@ -51108,7 +51108,7 @@ btn.textContent=_L("분해 ({p0}개 -> 악의 {p1})","Salvage ({p0} -> {p1} Mali
     // ═══ 리롤 — 접두/접미 재설정 ═══
     grid.style.gridTemplateColumns='1fr';
     const rHdr=document.createElement('div');rHdr.style.cssText='color:#44ccff;font-size:1rem;font-weight:700;margin-bottom:8px;letter-spacing:.1em;text-align:center';
-rHdr.textContent=_L('리롤 — 접두/접미 재설정 | 악의 '+REROLL_COST,'Reroll — Reset prefix/suffix | Malice '+REROLL_COST);grid.appendChild(rHdr);
+rHdr.textContent=_L('리롤 — 접두/접미 재설정 | 악의구슬 '+REROLL_COST,'Reroll — Reset prefix/suffix | Malice Sphere '+REROLL_COST);grid.appendChild(rHdr);
     const eqList=document.createElement('div');eqList.style.cssText='display:flex;flex-direction:column;gap:4px;margin-bottom:8px;max-height:280px;overflow-y:auto';
     SLOT_NAMES.forEach((slot,i)=>{
       const it=INV.equipped[slot];
@@ -51150,7 +51150,7 @@ rHdr.textContent=_L('리롤 — 접두/접미 재설정 | 악의 '+REROLL_COST,'
         if(ok){b.onmouseenter=()=>{b.style.borderColor='#88eeff';b.style.boxShadow='0 0 12px #44ccff44'};b.onmouseleave=()=>{b.style.borderColor='#44ccff';b.style.boxShadow='none'};b.onclick=fn}
         return b;
       };
-      btnRow.appendChild(mkBtn(_L('어픽스 리롤','Affix Reroll'),REROLL_COST,()=>{if(G.mats<REROLL_COST){notify(_T('악의 부족!'));return}G.mats-=REROLL_COST;rerollAffixes(rIt);SFX.forge();addTxt(P.x,P.y-20,_T('어픽스 리롤!'),'#44ccff',60);recalcSt();applyStats();renderForge();dbSaveNow()}));
+      btnRow.appendChild(mkBtn(_L('어픽스 리롤','Affix Reroll'),REROLL_COST,()=>{if(G.mats<REROLL_COST){notify(_T('악의구슬 부족!'));return}G.mats-=REROLL_COST;rerollAffixes(rIt);SFX.forge();addTxt(P.x,P.y-20,_T('어픽스 리롤!'),'#44ccff',60);recalcSt();applyStats();renderForge();dbSaveNow()}));
       detDiv.appendChild(btnRow);
       grid.appendChild(detDiv);
     }
@@ -51167,7 +51167,7 @@ rHdr.textContent=_L('리롤 — 접두/접미 재설정 | 악의 '+REROLL_COST,'
     grid.appendChild(cSubBar);
     // 보유 표시
     const cInfo=document.createElement('div');cInfo.style.cssText='text-align:center;font-size:.85rem;color:#777a7a;margin-bottom:6px';
-cInfo.innerHTML=_L('보유: ','Owned: ')+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+' | '+_L('가루: ','Dust: ')+'<span style="color:#cc88ff">'+CRYSTAL_DUST+'</span> | '+_L('악의: ','Malice: ')+'<span style="color:#cc66ff">'+G.mats+'</span>';
+cInfo.innerHTML=_L('보유: ','Owned: ')+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+' | '+_L('가루: ','Dust: ')+'<span style="color:#cc88ff">'+CRYSTAL_DUST+'</span> | '+_L('악의구슬: ','Malice Sphere: ')+'<span style="color:#cc66ff">'+G.mats+'</span>';
     grid.appendChild(cInfo);
     const cFilters=document.createElement('div');cFilters.id='crForgeFilters';
     cFilters.style.cssText='display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:6px';
@@ -51254,10 +51254,10 @@ cInfo.innerHTML=_L('보유: ','Owned: ')+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+
           +(maxed?'<div style="color:#ffaa00;font-size:.85rem;margin-top:4px">'+_T('최대 강화 달성 (+20)')+'</div>'
           :'<div style="color:#aaaaaa;font-size:.85rem;margin-top:4px">'+_T('강화 시')+': '+_crValStr({...cr,enh:(cr.enh||0)+1})+'</div>'
           +'<div style="color:#cc66ff;font-size:.85rem">'+_L('비용','Cost')+': 👿'+cost+' + 💎'+_crStarN(s)+' '+_crDefN(d)+' ×1'
-          +(ok?'':(!hasFeed?' <span style="color:#ff4444">'+_L('(재료 유물 없음)','(no feed relic)')+'</span>':' <span style="color:#ff4444">'+_L('(악의 부족)','(insufficient)')+'</span>'))+'</div>');
+          +(ok?'':(!hasFeed?' <span style="color:#ff4444">'+_L('(재료 유물 없음)','(no feed relic)')+'</span>':' <span style="color:#ff4444">'+_L('(악의구슬 부족)','(insufficient)')+'</span>'))+'</div>');
         if(!maxed){
           const btn=document.createElement('button');btn.style.cssText='margin-top:6px;padding:6px 24px;font-size:.9rem;font-family:"Noto Sans KR";font-weight:700;cursor:'+(ok?'pointer':'not-allowed')+';border:2px solid '+(ok?'#bb88ff':'#333636')+';background:'+(ok?'rgba(187,136,255,.15)':'rgba(0,0,0,.2)')+';color:'+(ok?'#ffcc44':'#444747')+';border-radius:6px';
-          btn.textContent=_T('강화')+' ('+_L('악의 ','Malice ')+cost+' + '+_L('유물 ×1','Relic ×1')+')';
+          btn.textContent=_T('강화')+' ('+_L('악의구슬 ','Malice Sphere ')+cost+' + '+_L('유물 ×1','Relic ×1')+')';
           btn.onclick=()=>{if(G.mats<cost||!hasFeed)return;G.mats-=cost;
             // 재료 결정 소모 (다시 찾기 — 인덱스 변동 대비)
             const _fi=CRYSTAL_BAG.findIndex((c,ci)=>ci!==_crForgeSel&&c.id===cr.id&&c.star===cr.star);
@@ -51383,7 +51383,7 @@ const secHdr1=document.createElement('div');secHdr1.style.cssText='color:#ff8844
       }
       // ── 악의로 1성 결정 직접 제작 ──
       const _crMatsCost=_malCost(50);
-const secHdr3=document.createElement('div');secHdr3.style.cssText='color:#cc66ff;font-size:.9rem;font-weight:700;margin-bottom:4px;margin-top:8px;border-top:1px solid #332211;padding-top:6px';secHdr3.textContent=_L('악의로 1성 유물 제작 ('+_crMatsCost+' 악의)','Craft 1★ Relic ('+_crMatsCost+' Malice)');grid.appendChild(secHdr3);
+const secHdr3=document.createElement('div');secHdr3.style.cssText='color:#cc66ff;font-size:.9rem;font-weight:700;margin-bottom:4px;margin-top:8px;border-top:1px solid #332211;padding-top:6px';secHdr3.textContent=_L('악의구슬로 1성 유물 제작 ('+_crMatsCost+' 악의구슬)','Craft 1★ Relic ('+_crMatsCost+' Malice Sphere)');grid.appendChild(secHdr3);
       const mBar=document.createElement('div');mBar.style.cssText='display:flex;flex-wrap:wrap;gap:3px;margin-bottom:4px';
       CRYSTAL_IDS.forEach(id=>{
         const d=CRYSTAL_DEFS[id];
@@ -51391,7 +51391,7 @@ const secHdr3=document.createElement('div');secHdr3.style.cssText='color:#cc66ff
         const ok2=G.mats>=_crMatsCost&&CRYSTAL_BAG.length<CRYSTAL_BAG_MAX;
         const b=document.createElement('span');b.style.cssText='cursor:'+(ok2?'pointer':'not-allowed')+';padding:2px 6px;font-size:.8rem;border:1px solid '+(ok2?'#cc66ff':'#332211')+';color:'+(ok2?'#ddaaff':'#554433')+';background:'+(ok2?'rgba(200,100,255,.1)':'rgba(0,0,0,.2)')+';border-radius:3px';
         b.innerHTML=_crIco(d,14)+' '+_crDefN(d);
-        b.onclick=()=>{if(G.mats<_crMatsCost){notify(_T('악의가 부족합니다!'));return}if(CRYSTAL_BAG.length>=CRYSTAL_BAG_MAX){notify(_T('유물 주머니 가득!'));return}G.mats-=_crMatsCost;CRYSTAL_BAG.push({id,star:0,enh:0,q:_qRoll()});SFX.forge();addTxt(P.x,P.y-20,d.emoji+' '+_crStarN(CRYSTAL_STAR[0])+' '+_crDefN(d)+' '+_T('제작!'),'#cc66ff',50);renderForge();dbSaveNow()};
+        b.onclick=()=>{if(G.mats<_crMatsCost){notify(_T('악의구슬이 부족합니다!'));return}if(CRYSTAL_BAG.length>=CRYSTAL_BAG_MAX){notify(_T('유물 주머니 가득!'));return}G.mats-=_crMatsCost;CRYSTAL_BAG.push({id,star:0,enh:0,q:_qRoll()});SFX.forge();addTxt(P.x,P.y-20,d.emoji+' '+_crStarN(CRYSTAL_STAR[0])+' '+_crDefN(d)+' '+_T('제작!'),'#cc66ff',50);renderForge();dbSaveNow()};
         mBar.appendChild(b);
       });
       grid.appendChild(mBar);
@@ -51408,7 +51408,7 @@ const secHdr3=document.createElement('div');secHdr3.style.cssText='color:#cc66ff
     grid.appendChild(chdr);
     // 비용·확률 정보
     const cInfo=document.createElement('div');cInfo.style.cssText='text-align:center;padding:4px 8px;font-size:.85rem;color:#887766;margin-bottom:8px';
-    cInfo.innerHTML=_L('비용: ','Cost: ')+'<span style="color:#ffaa44;font-weight:700">'+CRAFT_COST+'</span> '+_L('악의 &nbsp;|&nbsp; 보유: ','Malice per craft &nbsp;|&nbsp; Malice: ')+'<span style="color:#cc66ff;font-weight:700">'+G.mats+'</span><br><span style="color:'+RARITY_C[3]+'">'+_T('영웅')+'90%</span> &nbsp; <span style="color:'+RARITY_C[4]+'">'+_T('전설')+'10%</span>';
+    cInfo.innerHTML=_L('비용: ','Cost: ')+'<span style="color:#ffaa44;font-weight:700">'+CRAFT_COST+'</span> '+_L('악의구슬 &nbsp;|&nbsp; 보유: ','Malice Sphere per craft &nbsp;|&nbsp; Malice Sphere: ')+'<span style="color:#cc66ff;font-weight:700">'+G.mats+'</span><br><span style="color:'+RARITY_C[3]+'">'+_T('영웅')+'90%</span> &nbsp; <span style="color:'+RARITY_C[4]+'">'+_T('전설')+'10%</span>';
     grid.appendChild(cInfo);
     // 장비 카드 그리드
     const cGrid=document.createElement('div');cGrid.style.cssText='display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:4px';
@@ -51458,7 +51458,7 @@ const secHdr3=document.createElement('div');secHdr3.style.cssText='color:#cc66ff
     // 보유 악의 표시
     const matsDiv=document.createElement('div');
     matsDiv.style.cssText='text-align:center;padding:4px;font-size:.95rem;color:#776655';
-matsDiv.innerHTML=_L('보유 악의: ','Malice: ')+`<span style="color:#cc66ff;font-weight:700">${G.mats}</span> &nbsp;|&nbsp; `+_L('제작 비용: ','Cost: ')+`<span style="color:#ffaa44;font-weight:700">${CRAFT_COST}</span>`;
+matsDiv.innerHTML=_L('보유 악의구슬: ','Malice Sphere: ')+`<span style="color:#cc66ff;font-weight:700">${G.mats}</span> &nbsp;|&nbsp; `+_L('제작 비용: ','Cost: ')+`<span style="color:#ffaa44;font-weight:700">${CRAFT_COST}</span>`;
     grid.appendChild(matsDiv);
 
     // 레어리티 확률 (영웅 90%, 전설 10%)
@@ -51496,7 +51496,7 @@ matsDiv.innerHTML=_L('보유 악의: ','Malice: ')+`<span style="color:#cc66ff;f
         }
         _done++;
       }
-      if(_done===0){notify(_T('악의가 부족합니다!'));return}
+      if(_done===0){notify(_T('악의구슬이 부족합니다!'));return}
       if(_done>1)notify(_done+_L('개 제작 완료!',' items crafted!'));
       G.shake=4;SFX.pickup();
       renderForge();
@@ -51721,7 +51721,7 @@ function renderStatSummary(){
     `<div style="${_sLn}">☠ ${_L('악마력(부활력)','Demon Power(Revive)')}: <span style="color:#ff4444">${Math.max(0,Math.min(100,~~(P.lv*0.03)+(PASSIVES.pDemon||0)*2+~~((_af('revivePow')+_eqImplicit('_iRevPow')*.01)*100)-(PASSIVES.pHuman||0)*10))}%</span> <span style="color:#887766;font-size:1.1rem">(${_L('자연','natural')}${~~(P.lv*0.03)}+${_L('악마성','Demon')}${(PASSIVES.pDemon||0)*2}+${_L('장비','gear')}${~~((_af('revivePow')+_eqImplicit('_iRevPow')*.01)*100)}${(PASSIVES.pHuman||0)>0?'-'+_L('인간성','Humanity')+(PASSIVES.pHuman*10):''})</span></div>`+
     // ── 전투 통계 ──
     `<div style="${_sHd}">📈 ${_L('전투 통계','Combat Stats')}</div>`+
-    `<div style="${_sLn}">${_L('처치','Kills')}: <span style="color:#ff6644">${G.kills||0}</span> | ${_L('악의','Malice')}: <span style="color:#cc66ff">${G.mats||0}</span> | ${_L('스테이지','Stage')}: <span style="color:#ffaa44">${(G.stage||0)+1}</span> | Lv: <span style="color:#ffcc44">${P.lv||1}</span></div>`;
+    `<div style="${_sLn}">${_L('처치','Kills')}: <span style="color:#ff6644">${G.kills||0}</span> | ${_L('악의구슬','Malice Sphere')}: <span style="color:#cc66ff">${G.mats||0}</span> | ${_L('스테이지','Stage')}: <span style="color:#ffaa44">${(G.stage||0)+1}</span> | Lv: <span style="color:#ffcc44">${P.lv||1}</span></div>`;
   }
   
   const _spCntEl=$('spCnt');if(_spCntEl)_spCntEl.onclick=()=>{if(G.on)togglePanel('statPanel')};
@@ -60645,7 +60645,7 @@ function updateHUD(slow){
   // ── 느린 경로: 시네마틱 HUD + 장비 innerHTML (매 30프레임 = ~2회/초) ──
   const _s=STG[G.stage];_showHudAreaTitle(G.stage,_s);
   _hset($('hudLevelLabel'),'text',_L('레벨','Level'));_hset($('hudExpLabel'),'text',_L('경험치','Experience'));
-  _hset($('hudKillLabel'),'text',_L('지역 처치','Area kills'));_hset($('hudMaliceLabel'),'text',_L('악의','Malice'));
+  _hset($('hudKillLabel'),'text',_L('지역 처치','Area kills'));_hset($('hudMaliceLabel'),'text',_L('악의구슬','Malice Sphere'));
   // [REGION] '지역 처치' = 현재 지역 처치/총량 (지역 없는 맵은 스테이지 전체 폴백). 클리어 지역은 총량으로 캡 표기
   const _regCur=(G._regions&&G._regCurIdx>=0)?G._regions[G._regCurIdx]:null;
   const _killTotal=_regCur?_regCur.total:(G._totalSpawned||0);const _stageK=_regCur?Math.min(_regCur.kills,_regCur.total):(G._stageKills||0);_hudPulse('killCnt',_stageK);$('killCnt').textContent=`${_hudReadableNumber(_stageK)} / ${_hudReadableNumber(_killTotal)}`;

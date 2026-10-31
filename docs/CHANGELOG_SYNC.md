@@ -134,7 +134,7 @@
 | 항목 | 구현·검수 근거 |
 |---|---|
 | 기준·의존 | main8dbbf2b0에서 인수25b최종a03a0cbc 정상merge. META-02 견적·META-03 refund 재사용. META-07의 과거 State 권한 BLOCKED를 이번 허용 범위에서 해소. DEMO11-26은 원본 폐지로 불필요/취소 |
-| 구현 | 장비 live견적→악의차감→World RNG1→성공+1, 실패단계유지. HP물약Lv100/cost3/회복150 연결. Main18/86/294–296 추가5행·State1261–1302 추가42행, 전투핵심0. 이전은 실제equip caller 없으므로 거래prefix/API·견적만/실장착 HOLD |
+| 구현 | 장비 live견적→악의구슬차감→World RNG1→성공+1, 실패단계유지. HP물약Lv100/cost3/회복150 연결. Main18/86/294–296 추가5행·State1261–1302 추가42행, 전투핵심0. 이전은 실제equip caller 없으므로 거래prefix/API·견적만/실장착 HOLD |
 | 검증·화면 | 신규1918/0·원본336강화+48이전, 직접회귀 META02 70/0·META03 68/0·auto2560/0·contracts5그룹/0 각1회. Camera 기존WARNING 기록·ERROR0. Hell Gothic/게임폰트/이모지0, KO/EN35쌍등록. 1920×1080+1320×960 1x crop, 실제UI/State+촬영자금fixture/총괄눈검수대기 |
 | 잔여·인계 | SFX/입자/펫/실저장·교체후통계는 별도. [DEMO11-27 보고서](engine/orders/reports/demo11-27_REPORT.md) 2표, 3.2메타·2_8 갱신. 자기branch push/원격SHA/DONE 후 자기WT제거, R보호 |
 
@@ -646,7 +646,7 @@
 |---|---|
 | 기준 / 의존 | 최신main8524bbbb, NW-02 미병합으로2cc27d09 끝에서 분기. 신규 producer/test/oracle·자기UID2·보고서만. 공용6·다른 담당·기존 제품/테스트·저장·원본·R 변경0 |
 | 계약 / 원본 | NW01 첫 대상 query 재사용. G32829–32853 lore/breakable/altar/bonfire의 쓰기/FX 순서, mat U1·선택 buff .15/.20/.15·리필4필드. 실제 난수/HP/State/입력 연결0 |
-| 의존 경계 | sample/mats/addPotion bool 반환은 명시 주입. 원문 HP addPotion은 악의+1/true 별도 관측, 본문 복제0. 의존 부족은 부분 명령 없는 NR, actual writer/epoch/owner 연결 BLOCKED |
+| 의존 경계 | sample/mats/addPotion bool 반환은 명시 주입. 원문 HP addPotion은 악의구슬+1/true 별도 관측, 본문 복제0. 의존 부족은 부분 명령 없는 NR, actual writer/epoch/owner 연결 BLOCKED |
 | 검수 | 원문VM141상황+native 계약98상황, 신규3060/0. NW01 2304/0·NW02 1851/0·contracts5그룹/0·물약계산318/0. 결함주입5종에서27/204/36/24/2실패 검출 |
 | 선재 종료 문제 / 실패 기록 | p2001c 45/0이나 MP3/PlaybackMP3 각1 누수(ObjectDB1). 신규 파일 제외 부모 기준도 동일, 종료 깨끗함 PASS 아님. 초기 Node 발췌/하니스 비교 오류 로그 보존, 검사 약화0 |
 | 격리 / 제출 | Godot15회 매launch count1, count2시30초 대기2회·파일상수 userdir·override finally0byte. AppSupport68파일 보존. [NW-03 보고서](engine/orders/reports/nw-03_REPORT.md), 원로그 `~/exoduser-wt/_out/nw-03/`. push·원격SHA·DONE 후 자기worktree 제거 |
@@ -2073,7 +2073,7 @@ test/eliteTelegraphVisibility.test.js와 test/rareMobNameplates.test.js에서 �
 | 인벤 | 결정 버튼·상시 목록·관리 버튼 제거, 헤더 악의만 표시. 장비 소켓 장착/탈착 유지 |
 | 대장간 | 전체/공격/방어/자원 필터, 동일 종류·성급·강화 묶음, 단일 분해 명시. 일괄 작업은 선택 분류만 처리 |
 | 보존 | `CRYSTAL_BAG` 구조·객체·배열 순서, 한도9999, 강화/합성/제작/분해 비용·재료 규칙 보존 |
-| 테스트 | 신규 회귀8개(번역 포함) 수정 전 실패 → 수정 후 통과. 인라인 구문·장착 SFX 포함 관련10개 PASS. 저장 IO 없는 252개 결정 UI에서 필터·강화·단일 분해·장착/탈착·영문·1280×720 표시 확인. 악의 회귀의 기존 패링 assertion 1개는 수정 전 백업에서도 실패 |
+| 테스트 | 신규 회귀8개(번역 포함) 수정 전 실패 → 수정 후 통과. 인라인 구문·장착 SFX 포함 관련10개 PASS. 저장 IO 없는 252개 결정 UI에서 필터·강화·단일 분해·장착/탈착·영문·1280×720 표시 확인. 악의구슬 회귀의 기존 패링 assertion 1개는 수정 전 백업에서도 실패 |
 | 문서 | 결정·인벤·3파트·UI·번역 문서 동기화. grep 미설치 확인 후 docs 전체 rg 검색 (`tmp/crystal_forge_20260918/docs-matches.txt`) |
 
 ## 2026-09-18 — 개발용 캐릭터 슬롯 식별·무제한
@@ -2085,7 +2085,7 @@ test/eliteTelegraphVisibility.test.js와 test/rareMobNameplates.test.js에서 �
 | 로비 | 개발용 `MAX_CHARS=Infinity`, 기존 2개 표시·스크롤 유지. `developerSaveNotice`에 ‘개발자용 · 테스트 캐릭터 · 슬롯 무제한’ 표시. 공개 오프라인·온라인5개, 데모 고정1개 유지 |
 | 보호 | 조회 실패·온라인 진입 시 개발 상태 해제. 출하 서버 `node-main.js` 미수정. Steam Build25341487 재패키징·재업로드 없음 |
 | 저장 | ASDASDAS 레벨10 개발 원본·백업 보존. 승인 후 APPDATA 테스트3개를 개발 `steam_` 접두 사본과 원본 보관 폴더로 분리, 해시 검증. 기존 슬롯 덮어쓰기 없음. saves/userdata 업로드 제외, 이번 보관 폴더 Git 제외 |
-| 검증 | 수정 전2개 실패 확인 → 신규6개 및 기존 캐릭터 생성·동기화·공유악의 포함34개 PASS. 서버 구문·diff 검사 통과. 재시작 후 실제 API와 브라우저 로비에서 development:true, 8개 슬롯, Lv.10, 개발자용 표시, 새 캐릭터 칸 확인 |
+| 검증 | 수정 전2개 실패 확인 → 신규6개 및 기존 캐릭터 생성·동기화·공유악의구슬 포함34개 PASS. 서버 구문·diff 검사 통과. 재시작 후 실제 API와 브라우저 로비에서 development:true, 8개 슬롯, Lv.10, 개발자용 표시, 새 캐릭터 칸 확인 |
 | docs | 전체 관련 키워드 rg 검색, 저장 구조·캐릭터 선택 UI·API 가이드 동기화 |
 
 ## 2026-09-17 — Shift 홀드 잔여 게이지 비례 이동
@@ -2357,8 +2357,8 @@ test/eliteTelegraphVisibility.test.js와 test/rareMobNameplates.test.js에서 �
 |---|---|
 | doParry | Q기본100/E기본60 → Q/E 모두50. HP/MP/ST 각각 적용, 기존 최종2배 제거 |
 | 보정 | 장비·회복력 패시브·빨콩0.5/무지개1.5·물리탄3/대형탄10 배율 유지. 각 최대치 캡 |
-| 유지 | 기동력·분노·악의2배 수급, 해골눈1개, 쿨다운 회복 및 반사 피해·판정 |
-| 검증 | 패링 수급·대형탄·악의29개 검사 PASS. 두 HTML 공통 적용 |
+| 유지 | 기동력·분노·악의구슬2배 수급, 해골눈1개, 쿨다운 회복 및 반사 피해·판정 |
+| 검증 | 패링 수급·대형탄·악의구슬29개 검사 PASS. 두 HTML 공통 적용 |
 | 문서 | docs/14밸런스+수치테이블/PARRY_RESOURCE_DOUBLE_20260912.md |
 
 ## 2026-09-13 자원2단 자동 연결 복구
@@ -5024,7 +5024,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 
 | ID | 한글명 | 최상위 탭 | 하위 분류 | 선택 슬롯 | 적용 위치 | 전투 수치·공식 |
 |---|---|---|---|---|---|---|
-| `giantSlam` | 지옥강타 1 | 특수 (`spec`) | 분노 (`rage`) | Space (`SKILL_SLOTS[4]`) 전용 | `SKILL_LIST`, `SKILL_HIER`, `_isRageBurstSkillId()` | 변경 없음: ST+악의20, 범위·포이즈·피해·쿨다운·`_rageMul` 유지 |
+| `giantSlam` | 지옥강타 1 | 특수 (`spec`) | 분노 (`rage`) | Space (`SKILL_SLOTS[4]`) 전용 | `SKILL_LIST`, `SKILL_HIER`, `_isRageBurstSkillId()` | 변경 없음: ST+악의구슬20, 범위·포이즈·피해·쿨다운·`_rageMul` 유지 |
 | `giantSlam2` | 지옥강타 2 / 기둥강타 호스트 | 특수 (`spec`) | 분노 (`rage`) | Space (`SKILL_SLOTS[4]`) 전용 | `SKILL_LIST`, `SKILL_HIER`, `pillarSlam` | 변경 없음: `giantSlam` 복제 공식, `pillarSlam`/`infernoSlam` 호스트 유지 |
 | `skyCrusher` | 천공쇄기 | 특수 (`spec`) | 분노 (`rage`) | Space (`SKILL_SLOTS[4]`) 전용 | 기존 분노 목록 | 변경 없음: MP80, 3충전, 충전당 900f |
 
@@ -5399,8 +5399,8 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 
 | ID/대상 | 이전 시각 | 현재 시각 | 프레임·크기 | 적용 위치 | 게임플레이 불변 |
 |---|---|---|---|---|---|
-| `boneWall` 해골무덤 | 원주에 8px 사각 뼈기둥·해골 문자 반복 | 보스 `cageTrap`과 같은 투명 3×2/6f 뼈감옥 링 | `riseT=60f` 동안 0→5, 유지 frame5, 마지막 60f `5→0` 역재생+페이드; `size=ringR×3.35` | `G._boneWalls` 렌더 | 반경·생성 피해·지속·스택·악의12·적/투사체 차단 |
-| `boneStorm` 해골번개 | 절차식 해골벽 + 내부 녹색 이오닉 스톰 | 공용 6f 뼈감옥 링 + 기존 내부 이오닉 스톰/DOT | 해골무덤과 동일 | `maliceStorm` 합체가 생성하는 `G._boneWalls` + `G._fireZones(type='boneStorm')` | MP50·악의12·10초·DOT·합체 판정 |
+| `boneWall` 해골무덤 | 원주에 8px 사각 뼈기둥·해골 문자 반복 | 보스 `cageTrap`과 같은 투명 3×2/6f 뼈감옥 링 | `riseT=60f` 동안 0→5, 유지 frame5, 마지막 60f `5→0` 역재생+페이드; `size=ringR×3.35` | `G._boneWalls` 렌더 | 반경·생성 피해·지속·스택·악의구슬12·적/투사체 차단 |
+| `boneStorm` 해골번개 | 절차식 해골벽 + 내부 녹색 이오닉 스톰 | 공용 6f 뼈감옥 링 + 기존 내부 이오닉 스톰/DOT | 해골무덤과 동일 | `maliceStorm` 합체가 생성하는 `G._boneWalls` + `G._fireZones(type='boneStorm')` | MP50·악의구슬12·10초·DOT·합체 판정 |
 | 로딩 실패 | 절차식 렌더만 사용 | 새 시트 미준비 시 기존 절차식 해골벽 유지 | `pilCnt=floor(2π×ringR/18)` | 플레이어 해골벽 렌더 폴백 | 기능 유지 |
 
 - 원인: 직전 뼈감옥 시트 교체는 보스 배열 `G._cageTraps`에만 연결되어, 플레이어 해골무덤/해골번개의 별도 배열 `G._boneWalls`는 계속 구형 절차식 렌더를 사용했다. 합체가 시트를 막은 것이 아니라 두 렌더 경로가 분리되어 있던 것이 원인이다.
@@ -5454,7 +5454,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 | 분열탄 피해 | 총 반사 피해 ÷10 | **총 반사 피해 ÷5** | 개별 `dmg=max(1,floor(totalDmg/5))`; 총 피해 배율 불변 |
 | HP/ST/MP 회복 | 일반 Q ×1 | **일반 Q ×10** | `doParry(...,_resourceMul=10)`, 각 최대치 캡 |
 | 작살/분노 | +10 / +10 | **+100 / +100** | 각 게이지 상한 적용; `_uShieldRage`는 배율 뒤 가산 |
-| 악의 | +1000 | **+10000** | `G.mats`, 일반 Q 기본값 ×10 |
+| 악의구슬 | +1000 | **+10000** | `G.mats`, 일반 Q 기본값 ×10 |
 | `parryBank` | 반사 피해량 ×1 | **반사 피해량 ×10** | `_resolveBigEnergyParry`; 기폭용 |
 | 제외 대상 | — | 분열탄 총 피해, 포이즈 +1, 무적 25f, VFX/사운드 | 자원회수 배율과 분리 |
 
@@ -6705,7 +6705,7 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 ### 신규 스킬: 인간성 (`humanity`)
 - **카테고리**: 패시브 탭 (`cat:'passive'`, noDmg, emoji:'✦')
 - **효과**: 부활력 -10/Lv, 전체 데미지 +5%/Lv, HP/MP/ST +100/Lv
-- **습득비**: SP 10, 악의 100 / 강화비: SP 5/Lv
+- **습득비**: SP 10, 악의구슬 100 / 강화비: SP 5/Lv
 - **적용 위치**: _passDmgSum (전체뎀), mhp/mmp/mst (자원), _demonPow (부활력)
 - **컨셉**: 악마화를 거부하고 인간의 의지로 전투력+생존력 강화하는 트레이드오프
 
@@ -7055,7 +7055,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 ## 2026-04-12
 
-### 악의 과수급/누적 폭증 회귀 수정
+### 악의구슬 과수급/누적 폭증 회귀 수정
 - 코드: game.html`r
 - 변경:
   - doParry() 공통 패링 보상 악의를 +100에서 +10으로 복구
@@ -51395,7 +51395,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 ## 2026-09-10 물리탄 표시·패링 자원 3배
 - 적대 physical 본체·꼬리 굵기×3; 원본 물리 드루이드 독탄도 전용 렌더×3. 반사/마법/장판은 기존 표시.
-- 일반 충돌, 칼등치기, 실버테일 전진, 파워웨이브의 기존 보상 호출에 반사 전 물리 배율3을 전달. 기본 빨콩 HP/MP/ST 각45·작살/분노15·악의1500, 일반 물리 각90·30·3000. 상한/장비/패시브 적용, 판정·피해·탄속·포이즈 불변.
+- 일반 충돌, 칼등치기, 실버테일 전진, 파워웨이브의 기존 보상 호출에 반사 전 물리 배율3을 전달. 기본 빨콩 HP/MP/ST 각45·작살/분노15·악의구슬1500, 일반 물리 각90·30·3000. 상한/장비/패시브 적용, 판정·피해·탄속·포이즈 불변.
 - docs 전체 관련 키워드 검색 후 탄막/몬스터 공격/총관리/VFX/드루이드 계약 동기화. 수정 금지 2_3 문서는 보존, 최신 물리 배율은 전용 계약을 우선.
 - 새 회복/상한/분류/실제 Canvas 스프라이트 크기 테스트 및 관련 회귀 검증. 기존 대형탄 테스트의 오래된 hurtP 정규식을 현행 _hurtProjectilePlayer 호출에 맞춤(작업 전에도 존재한 호출, 구현 변경 없음).
 
@@ -51405,7 +51405,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 |---|---|
 | `_physicalProjectileMultiplier(p,physicalScale=3)` | 적대 physical은 지정 배율, 그 외1. 렌더 3곳만 `(p,2)` 호출 |
 | 본체 `_sSc` / 궤적 `_hr` / 드루이드 dw·dh | 원래 크기의2배 (직전3배에서 축소) |
-| 패링 자원 `_physicalResourceMul` | 인자 없는 기본3배 유지; HP/MP/ST 빨콩45·일반90, 작살/분노15·30, 악의1500·3000 |
+| 패링 자원 `_physicalResourceMul` | 인자 없는 기본3배 유지; HP/MP/ST 빨콩45·일반90, 작살/분노15·30, 악의구슬1500·3000 |
 | 판정·피해·속도·수명 | 기존값 유지 |
 | 검증 | `physicalProjectileScaleReward.test.js` 7개 통과: 실제 Canvas 크기2배·자원3배·드루이드·기타 분류 유지 |
 
@@ -51442,7 +51442,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 |---|---|
 | 입력 / 적용 위치 | `boneWall`, `_dispatchSkillSlot`: KBM은 스킬 키 입력 즉시 `fireBoneWall(tx,ty)` 호출. 추가 클릭 없음 |
 | 좌표 / 사거리 | `mouse.x-VW/2+G.cam.x`, `mouse.y-VH/2+G.cam.y`; 플레이어 기준1000px 밖은 같은 방향으로 클램프 |
-| 기존 제한 | 스택0·악의부족·일시정지·사망·얼음보주 안에서는 생성/소모 없음. 패드 조준 확정 유지 |
+| 기존 제한 | 스택0·악의구슬부족·일시정지·사망·얼음보주 안에서는 생성/소모 없음. 패드 조준 확정 유지 |
 | 자원 / 충전 | `_malCost(12)` 악의, 스택1. 최대2개(Lv10부터3), 충전1500f=25초 |
 | 기존 실제 수치 문서 정정 | 반경 `floor((400+(Lv-1)×18)×0.7)`; 지속 `min(1800,180+(Lv-1)×12)`f. 게임의 수치는 변경하지 않음 |
 | 검증 | `boneWallQuickCast.test.js` 4개 + `bossCageTrapSprite.test.js` 4개 통과. 즉발 좌표·사거리·차단 조건·패드·공용 시트/음향 확인 |
@@ -51505,14 +51505,14 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 | 설명 | KO/EN 및 localization-data.js 28언어의 해당 스킬 설명 지속값만5→10초, 한국어 조회키도 동기화. 쿨15초 유지 |
 | 검증 | 실제 생성 함수와80f 순차 큐 실행으로9개 모두 t0/maxT600 확인. 기존 시각/소환음 회귀 검증 |
 
-## 2026-09-10 우측 HUD 숫자에 레벨·경험치·지역 처치·악의 라벨
+## 2026-09-10 우측 HUD 숫자에 레벨·경험치·지역 처치·악의구슬 라벨
 
 | 변경 전 | 변경 후 |
 |---|---|
 | X | 레벨10 |
 | 7 / 45 | 경험치7 / 45 |
 | ☠ 0 / 1100 | 지역 처치0 / 1,100 |
-| ◆ 6.60M | 악의6,600,000 |
+| ◆ 6.60M | 악의구슬6,600,000 |
 
 기존 ID/수치 원본/이벤트를 보존하며 리프 라벨4개만 추가했다. 전체 숫자 천단위 쉼표 포맷, 로마숫자 제거, 패널 최소200px·opacity1·.75rem 라벨로 가독성을 높였다. 기존 `_L` 언어 폴백을 적용하고 정보 패널의 aria-hidden을 제거했다. HUD 테스트5개·인라인 JS 문법 검사 통과, 실제 CSS/DOM Chrome 미리보기에서 네 행 확인. 상세 수치·색상·DOM 계약은 UI HUD 문서에 동기화했다.
 
@@ -51747,7 +51747,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 | 항목 | 현재 계약 |
 |---|---|
 | 인벤토리 제목판 | 직계 헤더의 .ptitle display:none. 제목 이미지와 가상요소도 표시하지 않음 |
-| 정보행 | 전투력/악의/닫기 유지. gap0, margin4px 0 8px |
+| 정보행 | 전투력/악의구슬/닫기 유지. gap0, margin4px 0 8px |
 | 높이 배분 | 장비 탭 inv-wrap 첫 행270px, 가방 행 minmax(min-content,1fr). invCenter height:auto/min-height260px,invGrid height140px/flex1 1 140px. 필터 높이를 반영하며 나머지 높이는 가방에 배정. 작은 화면은 기존 바깥 세로 스크롤 사용 |
 | 적용 범위 | 인벤토리 내부 장비/유골함/보석/보관함 페이지 공통. 다른 메뉴 제목 유지 |
 
@@ -52072,7 +52072,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 
 | 대상 | 현행 변경·검증 |
 |---|---|
-| `game.html` | 일반 단일 옵션 결정 18종을 각각 2~3개 실효 옵션의 이름 있는 보석으로 교체. 드롭/가루 제작/악의 제작은 신규 id만 사용. 기존 id는 `dbRestore()`에서 보유·장착·가방·창고 홈 모두 1:1 변환하며 성급/강화/위치를 보존 |
+| `game.html` | 일반 단일 옵션 결정 18종을 각각 2~3개 실효 옵션의 이름 있는 보석으로 교체. 드롭/가루 제작/악의구슬 제작은 신규 id만 사용. 기존 id는 `dbRestore()`에서 보유·장착·가방·창고 홈 모두 1:1 변환하며 성급/강화/위치를 보존 |
 | `inventory-gems-finish.css`, 보석 UI | 18개 고유 실루엣·각인·색, 성급 테두리 분리. 보석함·피커·장비 상세·대장간 강화 전후에 모든 옵션 표시. CSS 캐시 `20260927-unique1` |
 | 검증 | 메인 JS 구문, 18종 모두 2~3옵션과 5성+20강 배율, 실제 게임 세이브 보유17/장착1 변환 및 능력치 3개 적용, 보석함 17부위 확인. `test/crystalForgeManagement.test.js` 11개·`test/crystalEquipment.browser.js` 1개 통과 |
 | 문서 | `docs/2_9 결정슬롯시스템/2_9 결정슬롯시스템.md` 현행 18종 표, 장비 파트·UI·번역 문서 동기화. 이전 일반 결정표는 이력으로 명시 |
@@ -53940,7 +53940,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 
 | 대상 / id | 현행 구현·검수 |
 |---|---|
-| 사용자 기준 | 획득 배지가 없으면 HUD에 배지0/3·빈 버튼·자리 표시를 남기지 않는다. 지역 처치·악의 수치를 가리지 않는다 |
+| 사용자 기준 | 획득 배지가 없으면 HUD에 배지0/3·빈 버튼·자리 표시를 남기지 않는다. 지역 처치·악의구슬 수치를 가리지 않는다 |
 | 표시 조건 | tutorial-badges.js의 init에서 button.hidden=true로 시작. render에서 count=Object.keys(earned).length; count===0이면 button/panel hidden=true 및 aria-expanded=false. 1~3개 획득·복원 시 button.hidden=false. 언어 갱신에도 같은 조건 적용 |
 | 모음 열기 | toggle(open)은 button.hidden이면 열기를 거부하며 숨긴 버튼에 focus하지 않는다. 배지가 있으면 기존 닫기 초점/버튼 복귀·aria-expanded·3개 카드 정책 유지 |
 | 위치 | button과 collection을 #mmLvl의 자식으로 연결. 둘 모두 position:absolute/right0/pointer-events:auto; 버튼 top:calc(100% + 8px),모음 top:calc(100% + 46px). 상태창의 기존 크기·UI배율·safe-area 이동을 따라가며 수치 행과 겹치지 않음 |
@@ -54823,7 +54823,7 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | 항목 | 현행 계약 |
 |---|---|
 | 위치 / id | _invBuildCompare의 _xferNote, 후보 장착 시 강화 자동 이전 설명 |
-| 표시 문구 | 기존 '악의 부족 → 강화 소멸'을 원 R대로 '악의 부족 → 장착 불가'로 수정 |
+| 표시 문구 | 기존 '악의구슬 부족 → 강화 소멸'을 원 R대로 '악의구슬 부족 → 장착 불가'로 수정 |
 | 표시 조건 | _fromE=curEq.enh 또는0. _fromE>0일 때 이전 안내를 만들고 _xc=xferCost(_fromE). (G.mats 또는0)<_xc일 때 위 경고 표시 |
 | 실제 권위 | 기존 equipItem은 이전 비용이 부족하면 알림 후 return하여 교체를 차단. 문구를 이 기존 동작에 맞췄으며 새 장착/강화/차감/소멸 규칙은 없음 |
 | 보존 | 금액·비용식·조건·원 강화 값·아이템/자원/저장·반환/예외·CP 공식/공급자·스타일·화살표/기존 표시 포맷·locale/사전 코드는 그대로 |
@@ -55510,5 +55510,5 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 # 2026-10-31 전투 스킬 창 공간·고정 기술
 
 - `skill-forge.js/css`: 설명판270px/내용 높이, 빈 로드맵 접기, 초광폭 좌우 끝·중앙1800px. 구르기·X처형·T자동석궁을 추가 표시하고 E/RMB 실제 배정·기절 탈출·미습득 조건을 맞췄다. 전투·6개 장착 슬롯·세이브 구조는 유지한다.
-- No.3588~3595를 EN+27개 lang에 전파. `SKILL_FORGE_20261010.md` §12, 스킬2_1·키바인딩3.3·번역 목록/가이드 동기화. 캐시 `20261031-fixed-layout1`, guard 기준선은 실제 줄 수만 갱신.
+- No.3820~3827를 EN+27개 lang에 전파. `SKILL_FORGE_20261010.md` §12, 스킬2_1·키바인딩3.3·번역 목록/가이드 동기화. 캐시 `20261031-fixed-layout1`, guard 기준선은 실제 줄 수만 갱신.
 - 검수 근거·서버·정확 SHA: `G:/exoduser/tmp/design-review/20261031_skill_window/REPORT.md`. Unity 브리프에 같은 지시 인계, 웹 검수를 Unity 검수로 세지 않음.
