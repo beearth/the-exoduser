@@ -20,6 +20,7 @@ namespace Exoduser.UnityPort
             public int captureWidth,captureHeight;
             public int killedTargets;public bool killContactSeen;
             public bool kiThirdCastSeen,kiThirdHitSeen;public int kiThirdTier;
+            public string[] graphSkills;public int coreMaliceBlasts,maliceBlastGraphEvents,droppedCritical;
             public bool skillAssetsReady;public string[] sections,castKinds,drawnSkills;
         }
         IEnumerator ImpactReview()
@@ -42,7 +43,7 @@ namespace Exoduser.UnityPort
             var rc=new ImpactReviewReceipt{device=SystemInfo.graphicsDeviceName,world3D=NativeRemodel3D.Active,baseline=!contactVfx.Enabled,
                 captureWidth=Screen.width,captureHeight=Screen.height,
                 sections=new[]{"일반공격","기검참3타·완전충전","가시덫","지옥강타","회복영역","얼음보주","악의구"}};
-            var trace=new StringBuilder();int frame=0,damage=0,shot=0;
+            var trace=new StringBuilder();int frame=0,damage=0,shot=0,blastsBefore=sim.MaliceOrbBlasts;
             var castKinds=new HashSet<string>();Action<string> castSeen=id=>castKinds.Add(id);sim.SkillCast+=castSeen;
             foreach(string section in rc.sections)
             {
@@ -70,7 +71,7 @@ namespace Exoduser.UnityPort
                     impactReviewClock=frame/60f;
                     sim.Stage.Enabled=false;
                     sim.SetPlayerCombatInput(false,false,false);sim.SetMagicInput(section=="악의구"&&f<96);
-                    sim.SetSkillInput(section=="가시덫"&&f==0,false,false,false,section=="지옥강타"&&f==0||section=="얼음보주"&&f==110,section=="회복영역"&&f==0,section=="얼음보주"&&f==0,false);
+                    sim.SetSkillInput(section=="가시덫"&&f==0,false,false,false,section=="지옥강타"&&f==0||section=="얼음보주"&&f==80,section=="회복영역"&&f==0,section=="얼음보주"&&f==0,false);
                     sim.Tick(0,0,p.X+300,p.Y,sectionIndex==0||sectionIndex==1&&f<220,false);
                     foreach(var feedback in sim.Feedback)if(feedback.Step==3)
                     {
@@ -93,9 +94,10 @@ namespace Exoduser.UnityPort
             sim.SkillCast-=castSeen;rc.castKinds=new List<string>(castKinds).ToArray();rc.spawned=contactVfx.Spawned;rc.peakParticles=contactVfx.PeakParticles;
             rc.skillAssetsReady=skillRemaster.Ready;rc.skillGraphEvents=skillRemaster.GraphEvents;rc.peakSkillHandles=skillRemaster.PeakHandles;rc.drawnSkills=skillRemaster.SeenSkills;
             rc.poisonFrames=skillRemaster.PoisonFrames;rc.thornFrames=skillRemaster.ThornFrames;rc.darkFrames=skillRemaster.DarkFrames;
+            rc.graphSkills=skillRemaster.SeenGraphSkills;rc.coreMaliceBlasts=sim.MaliceOrbBlasts-blastsBefore;rc.maliceBlastGraphEvents=skillRemaster.MaliceBlastEvents;rc.droppedCritical=skillRemaster.DroppedCritical;
             string traceText=trace.ToString();File.WriteAllText(Path.Combine(output,"core-trace.txt"),traceText);
             using(var sha=SHA256.Create())rc.coreTraceSha256=BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(traceText))).Replace("-","").ToLowerInvariant();
-            rc.passed=rc.captureWidth==width&&rc.captureHeight==height&&rc.world3D==NativeRemodel3D.Requested&&shot==480&&damage>0&&rc.killedTargets>=1&&rc.kiThirdCastSeen&&rc.kiThirdHitSeen&&rc.kiThirdTier==3&&castKinds.Contains("spikeTrap")&&castKinds.Contains("giantSlam")&&castKinds.Contains("holyDome")&&castKinds.Contains("iceOrb")&&castKinds.Contains("fireball")&&(rc.baseline||rc.killContactSeen&&rc.contacts>0&&rc.spawned>0&&rc.peakParticles>0&&rc.skillAssetsReady&&rc.drawnSkills.Length==5&&rc.skillGraphEvents>0&&rc.poisonFrames>0&&rc.thornFrames>0&&rc.darkFrames>0);
+            rc.passed=rc.captureWidth==width&&rc.captureHeight==height&&rc.world3D==NativeRemodel3D.Requested&&shot==480&&damage>0&&rc.killedTargets>=1&&rc.kiThirdCastSeen&&rc.kiThirdHitSeen&&rc.kiThirdTier==3&&rc.coreMaliceBlasts>0&&castKinds.Contains("spikeTrap")&&castKinds.Contains("giantSlam")&&castKinds.Contains("holyDome")&&castKinds.Contains("iceOrb")&&castKinds.Contains("fireball")&&(rc.baseline||rc.killContactSeen&&rc.contacts>0&&rc.spawned>0&&rc.peakParticles>0&&rc.skillAssetsReady&&rc.drawnSkills.Length==5&&rc.graphSkills.Length==5&&rc.maliceBlastGraphEvents>0&&rc.skillGraphEvents>0&&rc.poisonFrames>0&&rc.thornFrames>0&&rc.darkFrames>0);
             File.WriteAllText(Path.Combine(output,"impact-review.json"),JsonUtility.ToJson(rc,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();
             yield return new WaitForSecondsRealtime(.8f);Application.Quit(rc.passed?0:2);

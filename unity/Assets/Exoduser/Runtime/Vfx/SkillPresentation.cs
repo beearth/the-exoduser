@@ -19,6 +19,10 @@ namespace Exoduser.UnityPort.Vfx
             if(age<0||age>=.085)return 0;
             return (float)(age<.045?1:1-(age-.045)/.04);
         }
+        public static bool PuffCanYield(double age,bool existingCritical,bool incomingCritical)
+        {
+            return age>=.8||incomingCritical&&!existingCritical&&age>=.15;
+        }
         static int Order(float y,int offset) { if(float.IsNaN(y))return offset;return (int)System.Math.Min(32767-offset,System.Math.Max(-32768-offset,(double)y))+offset; }
         public static int ContactOrder(float actorY) { return Order(actorY,4); }
         public static int ResidualOrder(float actorY) { return Order(actorY,-4); }

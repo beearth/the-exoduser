@@ -41,9 +41,9 @@ namespace Exoduser.UnityPort.Vfx
             public MaterialPropertyBlock Block=new MaterialPropertyBlock();
             public ImpactGroundPatch Patch;
             public Light Light; public int Seen; public float Last=-99;
-            public int Kind;
+            public int Kind;public string Skill;
         }
-        sealed class Puff { public GameObject Go; public VisualEffect Fx; public VFXEventAttribute Attr; public Renderer Render;public float Born=-99; }
+        sealed class Puff { public GameObject Go; public VisualEffect Fx; public VFXEventAttribute Attr; public Renderer Render;public float Born=-99;public bool Critical; }
         readonly Transform parent;
         readonly Material matter,ground,flat;
         readonly VisualEffectAsset graph;
@@ -54,6 +54,7 @@ namespace Exoduser.UnityPort.Vfx
         readonly Puff[] puffs=new Puff[12];
         readonly HashSet<BossProjectile> drawn=new HashSet<BossProjectile>();
         readonly HashSet<string> seenSkills=new HashSet<string>();
+        readonly HashSet<string> graphSkills=new HashSet<string>();
         readonly Queue<Vector3> blasts=new Queue<Vector3>();int blastSerial;
         Simulation bound; int frame,events,lights; bool wasActive;
         public static NativeSkillRemaster Current {get;private set;}
@@ -66,7 +67,10 @@ namespace Exoduser.UnityPort.Vfx
         public int PoisonFrames {get;private set;}
         public int ThornFrames {get;private set;}
         public int DarkFrames {get;private set;}
+        public int MaliceBlastEvents {get;private set;}
+        public int DroppedCritical {get;private set;}
         public string[] SeenSkills {get{var a=new string[seenSkills.Count];seenSkills.CopyTo(a);return a;}}
+        public string[] SeenGraphSkills {get{var a=new string[graphSkills.Count];graphSkills.CopyTo(a);return a;}}
         public bool Drawn(BossProjectile p) {return Active&&drawn.Contains(p);}
 
         public NativeSkillRemaster(Transform parent)
@@ -125,7 +129,7 @@ namespace Exoduser.UnityPort.Vfx
             // If full, leave enemy bullets on their original readable drawing path.
             if(live.Count>=96)return null;
             h=free.Count>0?free.Pop():new Handle {Go=new GameObject("스킬 물질")};
-            h.Go.transform.SetParent(parent,false);h.Go.name=key;h.Kind=kind;h.Seen=frame;h.Last=-99;
+            h.Go.transform.SetParent(parent,false);h.Go.name=key;h.Kind=kind;h.Skill=null;h.Seen=frame;h.Last=-99;
             if(h.Parts==null||h.Parts.Length!=count)
             {
                 if(h.Parts!=null)foreach(var p in h.Parts)UnityEngine.Object.Destroy(p.gameObject);
@@ -167,16 +171,20 @@ namespace Exoduser.UnityPort.Vfx
             if(h.Light==null){var go=new GameObject("국소 바닥 조명");go.transform.SetParent(h.Go.transform,false);go.transform.localPosition=new Vector3(0,.75f,0);h.Light=go.AddComponent<Light>();h.Light.type=LightType.Point;h.Light.shadows=LightShadows.None;}
             h.Light.enabled=true;h.Light.color=c;h.Light.range=range;h.Light.intensity=intensity;
         }
-        void Emit(Handle h,float now,float x,float y,float lift,uint core,uint mid,uint dark,float size,float speed,float alpha,float period=.18f)
+        void Emit(Handle h,float now,float x,float y,float lift,uint core,uint mid,uint dark,float size,float speed,float alpha,float period=.18f,bool critical=false)
         {
-            if(now-h.Last<period||events>=6||!ImpactSpace.Visible(RenderCamera,ImpactSpace.Point(x,y,lift)))return;
+            if(now-h.Last<period||!ImpactSpace.Visible(RenderCamera,ImpactSpace.Point(x,y,lift)))return;
+            // Two of the existing six event slots remain available for one-shot
+            // slams/blasts. The Core still resolves every attack without limits.
+            if(events>=(critical?6:4)){if(critical)DroppedCritical++;return;}
             Puff p=null;
             for(int i=0;i<puffs.Length;i++)
             {
                 if(puffs[i]==null){var go=new GameObject("스킬 미립자 Graph");go.transform.SetParent(parent,false);var fx=go.AddComponent<VisualEffect>();fx.visualEffectAsset=graph;puffs[i]=new Puff{Go=go,Fx=fx,Attr=fx.CreateVFXEventAttribute(),Render=go.GetComponent<Renderer>()};}
-                if(now-puffs[i].Born>=.8f){p=puffs[i];break;}
+                if(SkillPresentation.PuffCanYield(now-puffs[i].Born,puffs[i].Critical,false)){p=puffs[i];break;}
             }
-            if(p==null)return;events++;GraphEvents++;h.Last=now;p.Born=now;p.Go.SetActive(true);p.Fx.Reinit();
+            if(p==null&&critical)foreach(var candidate in puffs)if(candidate!=null&&SkillPresentation.PuffCanYield(now-candidate.Born,candidate.Critical,true)&&(p==null||candidate.Born<p.Born))p=candidate;
+            if(p==null){if(critical)DroppedCritical++;return;}events++;GraphEvents++;h.Last=now;p.Born=now;p.Critical=critical;p.Go.SetActive(true);p.Fx.Reinit();
             var preset=new PoisonPreset{HdrCore=core,CoreHdr=1.5f,CoreSize=size*.24f,PaletteMid=mid,PaletteShadow=dark,
                 ChunkSizeMin=size*.06f,ChunkSizeMax=size*.12f,ChunkSpeed=speed,ChunkBias=0,MistSize=size*.8f,MistLifeMin=.24f,MistLifeMax=.5f,MistAlpha=alpha,TaintCount=0};
             // Healing is a quiet ground film and broad vapour, never seven tiny
@@ -198,6 +206,8 @@ namespace Exoduser.UnityPort.Vfx
             if(p.Render!=null)p.Render.sortingOrder=SkillPresentation.ResidualOrder(y);
             if(p.Attr.HasVector3("position"))p.Attr.SetVector3("position",world);
             p.Fx.SendEvent("OnBurst",p.Attr);
+            if(SkillPresentation.Supports(h.Skill))graphSkills.Add(h.Skill);
+            if(critical&&h.Skill=="fireball")MaliceBlastEvents++;
         }
         public void Update(Simulation sim,float now)
         {
@@ -209,7 +219,7 @@ namespace Exoduser.UnityPort.Vfx
             foreach(var z in sim.FireZones)
             {
                 bool spikes=z.Type=="spikeTrap";if(!spikes&&z.Type!="holyDome")continue;
-                var h=Get(z.Type+z.Id,spikes?1:4,spikes?18:0);if(h==null)continue;seenSkills.Add(z.Type);Place(h,z.X,z.Y);
+                var h=Get(z.Type+z.Id,spikes?1:4,spikes?18:0);if(h==null)continue;h.Skill=z.Type;seenSkills.Add(z.Type);Place(h,z.X,z.Y);
                 float fade=Mathf.Clamp01((z.MaxT-z.T)/30f),deploy=Mathf.Min(1,z.T/(spikes?12f:15f)),r=z.R*.01f*deploy;
                 for(int i=0;i<h.Parts.Length;i++)
                 {
@@ -224,16 +234,16 @@ namespace Exoduser.UnityPort.Vfx
             }
             foreach(var w in sim.SlamWaves)
             {
-                var h=Get("slam"+w.Id,5,14);if(h==null)continue;seenSkills.Add("giantSlam");Place(h,w.X,w.Y);
+                var h=Get("slam"+w.Id,5,14);if(h==null)continue;h.Skill=w.Bash?null:"giantSlam";seenSkills.Add("giantSlam");Place(h,w.X,w.Y);
                 float progress=w.T/(float)Math.Max(1,w.MaxT),fade=Mathf.Clamp01((1-progress)/.38f),r=w.MaxR*.01f*.45f*(.72f+.28f*Mathf.Min(1,progress*3.5f));
                 for(int i=0;i<h.Parts.Length;i++){float a=i*Mathf.PI*2/h.Parts.Length;var p=h.Parts[i];p.localPosition=new Vector3(Mathf.Cos(a)*r,.03f+Mathf.Sin(progress*Mathf.PI)*.17f,Mathf.Sin(a)*r);p.localRotation=Quaternion.Euler(i*37,now*28+i*39,i*17);p.localScale=Vector3.one*(.12f+.04f*(i%3))*fade;}
                 Surface(h,w.Bash?0x393026U:0x3a2117U,w.Bash?0x91a7acU:0xd8562aU,w.Bash?.1f:.8f*(1-progress),now);Floor(h,r,0x251b13,0xc8995c,fade*.28f,.05f);
-                Emit(h,now,w.X,w.Y,.15f,w.Bash?0xfff4d0U:0xffd9a0U,w.Bash?0x9a8a72U:0xd8562aU,w.Bash?0x2a2220U:0x4a1610U,Mathf.Min(2,r),3,.12f,9);
+                Emit(h,now,w.X,w.Y,.15f,w.Bash?0xfff4d0U:0xffd9a0U,w.Bash?0x9a8a72U:0xd8562aU,w.Bash?0x2a2220U:0x4a1610U,Mathf.Min(2,r),3,.12f,9,true);
                 if(progress<.2f)Light(h,w.Bash?Hex(0xe8f3f8):new Color(1,.63f,.28f),Mathf.Min(4,r*1.5f),2*(1-progress/.2f));
             }
             foreach(var b in sim.SkillBlades)if(b.Active)
             {
-                var h=Get("iceblade"+b.Id,3,1);if(h==null)continue;Place(h,b.X,b.Y,.35f);h.Go.transform.rotation=ImpactSpace.FloorRotation*Quaternion.Euler(0,Mathf.Atan2(b.Vy,b.Vx)*Mathf.Rad2Deg+90,80);
+                var h=Get("iceblade"+b.Id,3,1);if(h==null)continue;h.Skill="iceOrb";Place(h,b.X,b.Y,.35f);h.Go.transform.rotation=ImpactSpace.FloorRotation*Quaternion.Euler(0,Mathf.Atan2(b.Vy,b.Vx)*Mathf.Rad2Deg+90,80);
                 h.Parts[0].localPosition=Vector3.zero;h.Parts[0].localRotation=Quaternion.identity;h.Parts[0].localScale=new Vector3(.11f,.4f,.11f);Surface(h,0x1a2a36,0xe8f3f8,.4f,now);
                 Emit(h,now,b.X,b.Y,.35f,0xe8f3f8,0x5f98c0,0x1a2a36,.16f,.2f,.02f,.2f);
             }
@@ -241,7 +251,7 @@ namespace Exoduser.UnityPort.Vfx
             {
                 var h=Get("ice-shell",3,14);if(h!=null)
                 {
-                    seenSkills.Add("iceOrb");Place(h,sim.IceOrbX,sim.IceOrbY);
+                    h.Skill="iceOrb";seenSkills.Add("iceOrb");Place(h,sim.IceOrbX,sim.IceOrbY);
                     float p=Mathf.Min(1,sim.IceOrbT/180f),r=(sim.Player.Radius+32+Mathf.Sin(p*Mathf.PI)*10)*(1+(Math.Max(1,sim.Skills.Level("iceOrb"))-1)*.1f)*.01f;
                     // Sparse crystals inside the web 6.6R envelope leave the player and enemy shots visible.
                     for(int i=0;i<h.Parts.Length;i++){float a=i*Mathf.PI*2/h.Parts.Length+now*.15f;var t=h.Parts[i];t.localPosition=new Vector3(Mathf.Cos(a)*r*3.2f,.4f+(i%3)*.16f,Mathf.Sin(a)*r*3.2f);t.localRotation=Quaternion.Euler(12,i*137.5f,Mathf.Cos(a)*25);t.localScale=new Vector3(.1f,.28f+(i%3)*.09f,.12f);}
@@ -251,7 +261,7 @@ namespace Exoduser.UnityPort.Vfx
             }
             foreach(var o in sim.MaliceOrbs)if(o.Active)
             {
-                var h=Get("malice"+o.Id,8,4);if(h==null)continue;seenSkills.Add("fireball");Place(h,o.X,o.Y,.35f);
+                var h=Get("malice"+o.Id,8,4);if(h==null)continue;h.Skill="fireball";seenSkills.Add("fireball");Place(h,o.X,o.Y,.35f);
                 float r=o.R*.01f;
                 for(int i=0;i<4;i++){var p=h.Parts[i];float a=i*Mathf.PI*2/3+now*1.2f;p.localPosition=i==0?Vector3.zero:new Vector3(Mathf.Cos(a)*r*2.1f,Mathf.Sin(a*2)*r*.25f,Mathf.Sin(a)*r*2.1f);p.localRotation=Quaternion.Euler(now*35+i*27,i*137,now*25);p.localScale=i==0?Vector3.one*r*2.75f:new Vector3(r*.7f,r*1.35f,r*.65f);}
                 Surface(h,0x6a56a8,0xe4dcf4,.5f,now);Emit(h,now,o.X,o.Y,.35f,0xe4dcf4,0x6a56a8,0x161226,r*1.8f,.3f,.09f,.12f);Light(h,new Color(.62f,.53f,.72f),1.1f,.5f);
@@ -271,7 +281,7 @@ namespace Exoduser.UnityPort.Vfx
             }
             while(blasts.Count>0)
             {
-                var v=blasts.Dequeue();var h=Get("malice-blast"+(blastSerial++),3,0);if(h!=null)Emit(h,now,v.x,v.y,.3f,0xe4dcf4,0x6a56a8,0x161226,Mathf.Min(1.8f,v.z*.01f),2,.14f,9);
+                var v=blasts.Dequeue();var h=Get("malice-blast"+(blastSerial++),3,0);if(h!=null){h.Skill="fireball";Emit(h,now,v.x,v.y,.3f,0xe4dcf4,0x6a56a8,0x161226,Mathf.Min(1.8f,v.z*.01f),2,.14f,9,true);}
             }
             if(sim.Druid!=null)foreach(var p in sim.Druid.Projectiles)
             {
@@ -296,7 +306,7 @@ namespace Exoduser.UnityPort.Vfx
             foreach(var p in puffs)if(p!=null&&now-p.Born>.8f)p.Go.SetActive(false);
         }
         void OnMaliceExploded(MaliceOrb o){if(Active)blasts.Enqueue(new Vector3(o.X,o.Y,o.ExplR));}
-        public void Reset(){if(bound!=null)bound.MaliceOrbExploded-=OnMaliceExploded;foreach(var h in live.Values){h.Go.SetActive(false);free.Push(h);}live.Clear();drawn.Clear();seenSkills.Clear();blasts.Clear();GraphEvents=PeakHandles=PoisonFrames=ThornFrames=DarkFrames=0;foreach(var p in puffs)if(p!=null){p.Go.SetActive(false);p.Born=-99;}bound=null;}
+        public void Reset(){if(bound!=null)bound.MaliceOrbExploded-=OnMaliceExploded;foreach(var h in live.Values){h.Go.SetActive(false);free.Push(h);}live.Clear();drawn.Clear();seenSkills.Clear();graphSkills.Clear();blasts.Clear();GraphEvents=PeakHandles=PoisonFrames=ThornFrames=DarkFrames=MaliceBlastEvents=DroppedCritical=0;foreach(var p in puffs)if(p!=null){p.Go.SetActive(false);p.Born=-99;}bound=null;}
         public void Dispose(){Reset();while(free.Count>0){var h=free.Pop();if(h.Patch!=null)h.Patch.Dispose();UnityEngine.Object.Destroy(h.Go);}foreach(var p in puffs)if(p!=null){p.Attr.Dispose();UnityEngine.Object.Destroy(p.Go);}UnityEngine.Object.Destroy(crystal);UnityEngine.Object.Destroy(thorn);UnityEngine.Object.Destroy(crescent);UnityEngine.Object.Destroy(orb);if(Current==this)Current=null;}
     }
 }

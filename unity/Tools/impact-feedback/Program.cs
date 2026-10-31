@@ -47,6 +47,12 @@ static class Program
             Check(Math.Abs(SkillPresentation.EnemyWidth(false,true,false,1.1)-56.02905)<.001, "물리탄은 기존 입 시트의2:1 외곽폭을 유지한다");
             Check(SkillPresentation.EnemyWidth(false,false,true,1)==192, "원소보주의2:1 시트 외곽폭을 유지한다");
             Check(SkillPresentation.ContactOpacity(.02)>0.9&&SkillPresentation.ContactOpacity(.09)==0, "선명한 접점 본체는20ms에 보이고90ms 전에 사라진다");
+            Check(!SkillPresentation.PuffCanYield(.1,false,true), "막 생긴 잔여 효과를 일회성 폭발이 즉시 잘라내지 않는다");
+            Check(SkillPresentation.PuffCanYield(.2,false,true), "중요 폭발은 오래된 잔여 슬롯을 양보받을 수 있다");
+            Check(!SkillPresentation.PuffCanYield(.2,true,true), "다른 중요한 폭발은 유지한다");
+            Check(!SkillPresentation.PuffCanYield(.79,false,false), "일반 연기는 원래0.8초 예산을 지킨다");
+            Check(SkillPresentation.PuffCanYield(.8,true,false), "수명이 끝난 중요 슬롯은 정상 재사용한다");
+            Check(!SkillPresentation.PuffCanYield(-.01,false,true), "시계가 되돌아간 슬롯을 임의 재사용하지 않는다");
             Check(SkillPresentation.ContactOrder(7420)>7422, "실제 접점은 표적 몸체·걷기·견갑보다 앞에 그린다");
             Check(SkillPresentation.ContactOrder(7420.8f)==7424, "정렬 기준은 접점 오프셋이 아닌 표적의 Core Y다");
             Check(SkillPresentation.ResidualOrder(7420)<7420, "긴 잔여 연기는 같은 깊이의 몸체를 덮지 않는다");
