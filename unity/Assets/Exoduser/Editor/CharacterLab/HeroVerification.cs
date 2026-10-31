@@ -6,6 +6,24 @@ using Exoduser.UnityPort;
 using Exoduser.UnityPort.Core;
 namespace Exoduser.CharacterLab {
  public static class HeroVerification {
+  public static void VerifyR7All(){VerifyR7Grip();VerifyR7Carry();}
+  public static void VerifyR7Carry(){
+   VerifyR7();var holder=new GameObject("R7 운반 자세 검사");
+   try {
+    var view=new NativeHeroView(holder.transform);var sim=new Simulation(SourceStarterFixture.CreateBasicWeapon());
+    foreach(bool moving in new[]{false,true}){
+     if(moving)sim.Tick(1,0,sim.Player.X+300,sim.Player.Y,false,false);
+     view.Sync(sim,moving);typeof(NativeHeroMotion).GetMethod("LateUpdate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(view.Motion,null);
+     var socket=view.Model.GetComponentsInChildren<Transform>(true).First(t=>t.name=="Socket_Weapon_R");
+     float down=Vector3.Dot(-socket.up,view.Model.transform.up);
+     if(down>-.30f)throw new Exception("R7 운반 칼끝이 아래를 향하지 않음: "+down);
+     if(!view.Motion.TryGetBladeTip(out var tip))throw new Exception("R7 운반 칼끝 누락");
+     float height=Vector3.Dot(tip-view.Model.transform.position,view.Model.transform.up);
+     if(height<.02f||height>.45f)throw new Exception("R7 운반 칼끝 접지 여유 오류: "+height);
+     Debug.Log("HERO_R7_CARRY_PASS moving="+moving+" down="+down+" height="+height);
+    }
+   } finally {UnityEngine.Object.DestroyImmediate(holder);}
+  }
   public static void VerifyR7Grip(){
    VerifyR7();var holder=new GameObject("R7 실제 파지 검사");
    try {
@@ -31,6 +49,9 @@ namespace Exoduser.CharacterLab {
    try {
     var skin=instance.GetComponentsInChildren<SkinnedMeshRenderer>(true).OrderByDescending(s=>s.sharedMesh.vertexCount).First();
     var mesh=skin.sharedMesh;
+    Debug.Log("R7 실제 하위메시 면수 "+string.Join(",",Enumerable.Range(0,mesh.subMeshCount).Select(i=>skin.sharedMaterials[i].name+":"+(mesh.GetIndexCount(i)/3))));
+    var expectedFaces=new System.Collections.Generic.Dictionary<string,int>{{"HeroR7_Iron",43352},{"HeroR7_Hair",7416},{"HeroR7_Skin",1653},{"HeroR7_Cloth",38126},{"HeroR7_Leather",2890}};
+    for(int i=0;i<mesh.subMeshCount;i++)if(mesh.GetIndexCount(i)/3!=expectedFaces[skin.sharedMaterials[i].name])throw new Exception("R7 부위별 하위메시 재질 오배정: "+skin.sharedMaterials[i].name);
     var weaponSocket=instance.GetComponentsInChildren<Transform>(true).First(t=>t.name=="Socket_Weapon_R");
     var weapon=weaponSocket.GetComponentsInChildren<Renderer>(true).First();
     float diagonal=weapon.bounds.size.magnitude;

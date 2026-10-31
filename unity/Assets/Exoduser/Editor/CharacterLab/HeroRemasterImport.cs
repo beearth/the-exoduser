@@ -9,6 +9,7 @@ namespace Exoduser.CharacterLab {
   const string Dir="Assets/Exoduser/Art/Characters/Warrior/RemasterR7";
   const string Model=Dir+"/Warrior_R7.fbx";
   static readonly string[] Parts={"Iron","Hair","Skin","Cloth","Leather"};
+  static readonly int[] FaceCounts={43352,7416,1653,38126,2890};
   static readonly (string human,string bone)[] Bones={
    ("Hips","Hips"),("Spine","Spine02"),("Chest","Spine01"),("UpperChest","Spine"),("Neck","neck"),("Head","Head"),
    ("LeftShoulder","LeftShoulder"),("LeftUpperArm","LeftArm"),("LeftLowerArm","LeftForeArm"),("LeftHand","LeftHand"),
@@ -32,7 +33,13 @@ namespace Exoduser.CharacterLab {
     var materials=Parts.Select(MakeMaterial).ToArray();
     foreach(var skin in instance.GetComponentsInChildren<SkinnedMeshRenderer>(true)){
      if(skin.sharedMesh.subMeshCount!=Parts.Length)throw new Exception("R7 부위별 하위 메시 순서/개수 불일치");
-     skin.sharedMaterials=materials;skin.updateWhenOffscreen=true;
+     var mapped=new Material[Parts.Length];
+     for(int i=0;i<mapped.Length;i++){
+      int part=Array.IndexOf(FaceCounts,(int)(skin.sharedMesh.GetIndexCount(i)/3));
+      if(part<0)throw new Exception("Blender 부위 분류와 Unity 하위 메시 면수 불일치");
+      mapped[i]=materials[part];
+     }
+     skin.sharedMaterials=mapped;skin.updateWhenOffscreen=true;
     }
     var cape=instance.AddComponent<CapeSpring>();EditorUtility.CopySerialized(old.GetComponent<CapeSpring>(),cape);
     // Blender에서 손 본에 직접 붙인 파지 원점을 그대로 사용한다.

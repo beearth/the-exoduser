@@ -349,6 +349,24 @@ namespace Exoduser.UnityPort
                 animator.Play(holdStateHash,holdLayer,NativeHeroMotionClock.LocomotionTime(observed.Tick,holdSeconds,moving));
             }
             animator.Update(0f);
+            if(leftGrip!=null)ApplyCarryPose(moving);
+        }
+
+        void ApplyCarryPose(bool moving)
+        {
+            float cycle=NativeHeroMotionClock.LocomotionTime(observed.Tick,runSeconds,moving);
+            float swing=moving?Mathf.Sin(cycle*Mathf.PI*2)*.08f:0;
+            var rightTarget=transform.TransformPoint(new Vector3(.30f,1.10f,.06f));
+            var direction=transform.TransformDirection(new Vector3(.16f,-.58f,-.80f).normalized);
+            SolveArm(rightUpper,rightFore,rightHand,rightTarget,transform.right+transform.forward*.10f);
+            rightHand.rotation=Quaternion.FromToRotation(-socket.up,direction)*rightHand.rotation;
+            var rotation=rightHand.rotation;
+            if(TryGetBladeTip(out var tip))
+            {
+                float height=Vector3.Dot(tip-transform.position,transform.up);
+                if(height<.06f){rightTarget+=transform.up*(.06f-height);SolveArm(rightUpper,rightFore,rightHand,rightTarget,transform.right+transform.forward*.10f);rightHand.rotation=rotation;}
+            }
+            SolveArm(leftUpper,leftFore,leftHand,transform.TransformPoint(new Vector3(-.30f,1.08f,.03f+swing)),-transform.right+transform.forward*.10f);
         }
 
         struct GripPose
@@ -461,7 +479,7 @@ namespace Exoduser.UnityPort
                 case HeroMotionKind.Run:
                     // 승인된 보행/무기 홀드 포즈를 유지하고 흉곽 호흡만 더한다.
                     SetMuscle(chestBend,Mathf.Sin(observed.Tick*.025f)*.025f);
-                    poseHandler.SetHumanPose(ref pose);return;
+                    poseHandler.SetHumanPose(ref pose);if(leftGrip!=null)ApplyCarryPose(current.Kind==HeroMotionKind.Run);return;
                 case HeroMotionKind.Swing:grip=SwingPose(current.Combo,t,current.ContactPhase);break;
                 case HeroMotionKind.Recover:grip=Lerp(SwingPose(current.Combo,1,current.ContactPhase),ReadyPose(),t);break;
                 case HeroMotionKind.Bash:grip=BashPose(t);break;
