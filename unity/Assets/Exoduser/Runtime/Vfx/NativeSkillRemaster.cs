@@ -181,7 +181,7 @@ namespace Exoduser.UnityPort.Vfx
                 ChunkSizeMin=size*.06f,ChunkSizeMax=size*.12f,ChunkSpeed=speed,ChunkBias=0,MistSize=size*.8f,MistLifeMin=.24f,MistLifeMax=.5f,MistAlpha=alpha,TaintCount=0};
             // Healing is a quiet ground film and broad vapour, never seven tiny
             // glitter dots. Its user-selected web green remains unchanged.
-            if(h.Kind==4){preset.CoreHdr=0;preset.CoreSize=0;preset.ChunkSizeMin=preset.ChunkSizeMax=0;preset.MistSize=.9f;preset.MistAlpha=.035f;preset.PaletteMid=0xb6ff54;preset.PaletteShadow=0x3d571c;}
+            if(h.Kind==4){preset.CoreHdr=0;preset.CoreSize=0;preset.ChunkSizeMin=preset.ChunkSizeMax=0;preset.MistSize=.9f;preset.MistAlpha=.012f;preset.PaletteMid=0xb6ff54;preset.PaletteShadow=0x3d571c;}
             PoisonBurstPresets.Apply(p.Fx,preset,Vector2.zero,1);
             ImpactSpace.Velocities(p.Fx,preset,Vector2.zero);
             if(h.Kind==5)
@@ -219,7 +219,7 @@ namespace Exoduser.UnityPort.Vfx
                     float size=spikes?(.28f+.18f*(i%3)):.045f;p.localScale=new Vector3(spikes?.22f:size,spikes?size*deploy*fade:size*fade,spikes?.22f:size);
                 }
                 Surface(h,spikes?0x30281bU:0xb6ff54U,spikes?0xb3a17cU:0xd5ff72U,spikes?.12f:0,now);
-                Floor(h,r,spikes?0x1c1610U:0xb6ff54U,spikes?0x66513aU:0xd5ff72U,fade*(spikes?.2f:.11f),spikes?0:.03f);
+                Floor(h,r,spikes?0x1c1610U:0xb6ff54U,spikes?0x66513aU:0xd5ff72U,fade*(spikes?.2f:.016f),spikes?0:.03f);
                 Emit(h,now,z.X+Mathf.Cos(now*2)*r*45,z.Y+Mathf.Sin(now*2)*r*45,.12f,spikes?0xd9c8a2U:0xc8dda0U,spikes?0x766449U:0x708151U,0x26251c,.35f,.3f,.05f,.36f);
             }
             foreach(var w in sim.SlamWaves)
