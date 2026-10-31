@@ -29,7 +29,7 @@ namespace Exoduser.UnityPort
             {
                 if(light.type==LightType.Directional)
                 {
-                    light.intensity=1.65f;light.color=new Color(.77f,.85f,1);light.shadows=LightShadows.Soft;
+                    light.intensity=1.9f;light.color=new Color(.85f,.90f,1);light.shadows=LightShadows.Soft;
                     light.shadowStrength=.82f;light.shadowBias=.035f;light.shadowNormalBias=.12f;light.transform.rotation=Quaternion.Euler(49,-32,0);
                 }
                 else if(light.name.StartsWith("Pool_",StringComparison.Ordinal))light.enabled=false;
@@ -48,7 +48,7 @@ namespace Exoduser.UnityPort
             var pixels=new Color[40000];
             for(int y=0;y<200;y++)for(int x=0;x<200;x++)pixels[y*200+x]=new Color(.5f+a2Field.Distance((x+.5f)*.4f,-(y+.5f)*.4f)/40,0,0,1);
             sdf.SetPixels(pixels);sdf.Apply(false,true);a2FieldSoil.SetTexture("_FieldSdf",sdf);
-            A2FieldGround();A2FieldOuterMass();A2FieldLandmarks();A2FieldConnections();A2FieldAtmosphere();
+            A2FieldOuterMass();A2FieldLandmarks();A2FieldConnections();A2FieldGround();A2FieldAtmosphere();
             var aa=r3Cam.GetUniversalAdditionalCameraData();aa.antialiasing=AntialiasingMode.SubpixelMorphologicalAntiAliasing;aa.antialiasingQuality=AntialiasingQuality.High;
             aa.requiresDepthTexture=true;r3Cam.depthTextureMode|=DepthTextureMode.Depth;
             r3Cam.backgroundColor=new Color(.105f,.145f,.17f);r3Cam.farClipPlane=220;
@@ -62,7 +62,7 @@ namespace Exoduser.UnityPort
             for(int y=0;y<n;y++)for(int x=0;x<n;x++)
             {
                 float wx=minX+x*step,wz=minZ+y*step;int i=y*n+x;
-                vertices[i]=new Vector3(wx,a2Field.Height(wx,wz),wz);uv[i]=new Vector2(wx/80,-wz/80);
+                vertices[i]=new Vector3(wx,a2Field.TerrainHeight(wx,wz),wz);uv[i]=new Vector2(wx/80,-wz/80);
                 if(x==n-1||y==n-1)continue;
                 triangles[k++]=i;triangles[k++]=i+n;triangles[k++]=i+1;triangles[k++]=i+1;triangles[k++]=i+n;triangles[k++]=i+n+1;
             }
@@ -88,18 +88,18 @@ namespace Exoduser.UnityPort
                 foreach(int side in new[]{-1,1})for(int layer=0;layer<3;layer++)
                 {
                     float edge=(side<0?left:right+1)*.4f;
-                    float x=edge+side*(2.8f+layer*4.8f+.65f*Mathf.Sin(row*.73f+layer*2));
+                    float x=edge+side*(2.0f+layer*4.8f+.3f*Mathf.Sin(row*.73f+layer*2));
                     float zz=z+Mathf.Sin(row*1.7f+layer*1.3f)*.8f;
-                    if(!a2Field.TreeSite(x,zz,1.4f))continue;
+                    if(!a2Field.TreeSite(x,zz,1.1f))continue;
                     float scale=.65f+.15f*Mathf.Sin(row*2.13f+layer*.7f);
-                    var tree=A2Module((row+layer)%4==0?"Hollow_Loft_Tree":"Ancient_Rotten_Tree",x,zz,scale,1.1f+layer*.16f+.2f*Mathf.Sin(row*.9f),scale,row*137+layer*71+side*23);
+                    var tree=A2Module(layer==0&&(row%3!=1)?"Hollow_Loft_Tree":"Ancient_Rotten_Tree",x,zz,layer==0?.48f:scale,1.2f+layer*.16f+.2f*Mathf.Sin(row*.9f),layer==0?.48f:scale,row*137+layer*71+side*23);
                     if(tree!=null)tree.name="A2 外곽 "+side+"/"+layer+"/"+row;
                     if(layer==0)
                     {
                         A2Module("Fallen_Log",x-side*.7f,zz+.7f,.8f,.65f,.9f,row*57+side*33,-.05f);
                         A2Module("Withered_Shrub",x-side*1.1f,zz-.6f,1.25f,1.1f,1.1f,row*73);
                         A2Module("Moss_Cushion",x-side*1.2f,zz+.2f,1.6f,.65f,1.5f,row*31,-.08f);
-                        if(row%2==0)A2Module("Hanging_Moss",x,zz-.8f,1,1.1f,.8f,side*40,2.8f);
+                        if(tree!=null)A2FieldDressTree(tree,row);
                     }
                 }
             }
@@ -120,9 +120,9 @@ namespace Exoduser.UnityPort
             {
                 float x=c.x/100,z=-c.y/100,r=Mathf.Min(c.rx,c.ry)/100;
                 if(r<.45f)continue;
-                if(r>1.7f)A2Module("Scanned_Stump",x,z,.6f*r,.45f*r,.6f*r,index*97,-.08f);
-                else A2Module("Ancient_Rotten_Tree",x,z,.17f*r,.6f+.35f*r,.17f*r,index*97);
-                A2FieldRoots(x,z,Mathf.Max(.6f,r),index*97);index++;
+                var tree=r>=1.2f?A2Module("Hollow_Loft_Tree",x,z,.38f*r,1.1f,.38f*r,index*97):A2Module("Ancient_Rotten_Tree",x,z,.35f*r,1.1f,.35f*r,index*97);
+                if(tree!=null)A2FieldDressTree(tree,index);
+                A2FieldRoots(x,z,Mathf.Max(.6f,r)*.9f,index*97);index++;
             }
             // 시작 갈림길의 낮은 목교는 통로와 나란히 놓이며 별도 충돌을 만들지 않는다.
             var bridge=A2Module("Rotten_Wood_Bridge",43.2f,-71.8f,.96f,.55f,.85f,24,.02f);
@@ -134,42 +134,82 @@ namespace Exoduser.UnityPort
         void A2FieldConnections()
         {
             // 각 전투 구역은 서로 다른 지면 결/낮은 목질로 연결한다. 높은 장식은 원본 경계 밖이다.
-            var centers=new[]{new Vector2(33,-70),new Vector2(53,-61),new Vector2(22,-59),new Vector2(16,-40),new Vector2(41,-35),new Vector2(65,-38),new Vector2(25,-19),new Vector2(58,-17),new Vector2(40,-7)};
+            var centers=new[]{new Vector2(33,-70),new Vector2(53,-61),new Vector2(22,-59),new Vector2(40,-50),new Vector2(16,-40),new Vector2(41,-35),new Vector2(65,-38),new Vector2(40,-25),new Vector2(25,-19),new Vector2(58,-17),new Vector2(40,-7)};
             for(int region=0;region<centers.Length;region++)
             {
                 var center=centers[region];
+                for(int side=-1;side<=1;side+=2)
+                {
+                    float x=center.x+side*(3.8f+.8f*Mathf.Sin(region*2.1f)),z=center.y+side*(2.8f+.6f*Mathf.Cos(region));
+                    if(a2Field.Distance(x,z)<.8f||a2Field.Water(x,z))continue;
+                    A2FieldRoots(x,z,1.2f,region*71+side*37);
+                    var log=A2Module("Fallen_Log",x,z,.9f,.45f,.9f,region*79+side*51,-.05f);
+                    if(log!=null){log.name="A2 전투구역 쓰러진 목질 "+region+"/"+side;A2FieldRegister(log);}
+                }
                 for(int j=0;j<7;j++)
                 {
                     float angle=(j*51+region*37)*Mathf.Deg2Rad;
                     float x=center.x+Mathf.Cos(angle)*(2.3f+j*.55f),z=center.y+Mathf.Sin(angle)*(1.7f+j*.37f);
                     if(a2Field.Distance(x,z)<.4f)continue;
                     A2Module("Dead_Leaf_Litter",x,z,1.1f,.7f,1.1f,j*137+region*31,.01f);
-                    if(j%3==0)A2FieldRoots(x,z,.65f,region*53+j*71);
+                    if(j%3==0)A2FieldRoots(x,z,.9f,region*53+j*71);
                 }
             }
         }
+        Material a2FieldRootMaterial;
         void A2FieldRoots(float x,float z,float scale,float yaw)
         {
-            var material=Resources.Load<Material>("Art/map/a2/hollow/Materials/A2_Loft_Bark");if(material==null)return;
-            var points=new List<Vector3>();var uv=new List<Vector2>();var triangles=new List<int>();
-            for(int branch=0;branch<5;branch++)
+            if(a2Field.Water(x,z))return;
+            var source=Resources.Load<GameObject>("Art/map/a2/rootrelief/Models/A2_Root_Cluster_Patch");
+            if(source==null){Debug.LogError("[A2 필드] 스캔 뿌리 지면 누락");return;}
+            if(a2FieldRootMaterial==null)
             {
-                float a=(yaw+branch*72+13*Mathf.Sin(branch*3.7f))*Mathf.Deg2Rad;
-                var direction=new Vector3(Mathf.Cos(a),0,Mathf.Sin(a));var side=Vector3.Cross(Vector3.up,direction);int start=points.Count;
-                for(int ring=0;ring<=10;ring++)
-                {
-                    float u=ring/10f,length=(2.2f+.8f*Mathf.Sin(branch*2.4f))*scale;
-                    var p=new Vector3(x,0,z)+direction*(u*length)+side*(Mathf.Sin(u*3.14f)*.35f);
-                    p.y=a2Field.Height(p.x,p.z)+.025f;float radius=Mathf.Lerp(.15f,.008f,u)*Mathf.Min(scale,1.6f);
-                    for(int step=0;step<6;step++)
-                    {
-                        float b=step*Mathf.PI/3;points.Add(p+side*(Mathf.Cos(b)*radius)+Vector3.up*(Mathf.Sin(b)*radius*.65f));uv.Add(new Vector2(step/6f,u*length*.7f));
-                        if(ring<10){int v=start+ring*6+step,n=start+ring*6+(step+1)%6;triangles.Add(v);triangles.Add(n);triangles.Add(v+6);triangles.Add(n);triangles.Add(n+6);triangles.Add(v+6);}
-                    }
-                }
+                a2FieldRootMaterial=new Material(Resources.Load<Material>("Art/map/a2/rootrelief/Materials/A2_Root_Cluster_Patch"));
+                foreach(var key in new[]{"_BaseMap","_BumpMap","_RockMap","_AshMap","_RockNormal","_RockRough","_ForestMap","_ForestNormal","_ForestRough","_SoilMap","_SoilNormal","_SoilRough","_RootMap","_RootNormal","_RootRough","_FieldSdf","_FieldMoss","_FieldMossNormal","_FieldMossRough"})
+                    if(a2FieldRootMaterial.HasProperty(key))a2FieldRootMaterial.SetTexture(key,a2FieldSoil.GetTexture(key));
+                foreach(var key in new[]{"_ForestBlend","_ForestTextureMix","_SoilTextureMix","_FullField"})if(a2FieldRootMaterial.HasProperty(key))a2FieldRootMaterial.SetFloat(key,a2FieldSoil.GetFloat(key));
+                a2FieldRootMaterial.SetColor("_ScanColor",new Color(.58f,.48f,.35f,1));
             }
-            var mesh=new Mesh{name="흙에 매몰된 낮은 부패 뿌리"};mesh.SetVertices(points);mesh.SetUVs(0,uv);mesh.SetTriangles(triangles,0);mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();
-            var go=new GameObject("A2 보행면 낮은 뿌리");go.transform.SetParent(a2Root.transform,false);go.AddComponent<MeshFilter>().sharedMesh=mesh;go.AddComponent<MeshRenderer>().sharedMaterial=material;
+            float baseY=a2Field.TerrainHeight(x,z);var go=Instantiate(source,a2Root.transform);go.name="A2 흙에 이어진 스캔 뿌리";
+            go.transform.SetPositionAndRotation(new Vector3(x,baseY,z),Quaternion.Euler(0,yaw,0));go.transform.localScale=new Vector3(scale,.8f,scale);
+            foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
+            {
+                if(!mf.sharedMesh.isReadable){Debug.LogError("[A2 필드] 뿌리 메시 읽기 누락");continue;}
+                var mesh=Instantiate(mf.sharedMesh);var vertices=mesh.vertices;var center=mf.transform.TransformPoint(mesh.bounds.center);var shift=new Vector3(center.x-x,0,center.z-z);
+                for(int i=0;i<vertices.Length;i++){var v=mf.transform.TransformPoint(vertices[i])-shift;v.y=a2Field.TerrainHeight(v.x,v.z)+Mathf.Max(0,v.y-baseY);vertices[i]=mf.transform.InverseTransformPoint(v);}
+                mesh.vertices=vertices;mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();mf.sharedMesh=mesh;
+            }
+            foreach(var r in go.GetComponentsInChildren<MeshRenderer>())r.sharedMaterial=a2FieldRootMaterial;A2FieldRegister(go);
+        }
+        void A2FieldRegister(GameObject go)
+        {
+            foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
+            {
+                var mesh=mf.sharedMesh;if(!mesh.isReadable){Debug.LogError("[A2 필드] 접지 표면 읽기 누락 "+go.name);continue;}
+                var vertices=mesh.vertices;var xyz=new float[vertices.Length*3];
+                for(int i=0;i<vertices.Length;i++){var p=mf.transform.TransformPoint(vertices[i]);xyz[i*3]=p.x;xyz[i*3+1]=p.y;xyz[i*3+2]=p.z;}
+                a2Field.RegisterSurface(xyz,mesh.triangles);
+            }
+        }
+        void A2FieldDressTree(GameObject tree,int variation)
+        {
+            var filters=tree.GetComponentsInChildren<MeshFilter>();
+            foreach(var mf in filters)
+            {
+                if(!mf.sharedMesh.isReadable)continue;
+                var points=mf.sharedMesh.vertices;var normals=mf.sharedMesh.normals;
+                for(int j=0;j<3;j++)
+                {
+                    var desired=tree.transform.position+new Vector3((j-1)*.45f,1.5f+j*.8f,-.8f);float best=float.MaxValue;var hit=Vector3.zero;
+                    for(int i=0;i<points.Length;i++){var p=mf.transform.TransformPoint(points[i]);var n=mf.transform.TransformDirection(normals[i]);if(n.z>-.12f)continue;float score=(p-desired).sqrMagnitude;if(score<best){best=score;hit=p;}}
+                    if(best>9)continue;
+                    var moss=A2Module("Hanging_Moss",hit.x,hit.z,.4f,.55f,.4f,variation*37+j*67);if(moss==null)continue;
+                    var rs=moss.GetComponentsInChildren<Renderer>();var bounds=rs[0].bounds;foreach(var r in rs)bounds.Encapsulate(r.bounds);
+                    moss.transform.position+=hit-new Vector3(bounds.center.x,bounds.max.y,bounds.center.z);moss.name="A2 수피 표면에 붙은 이끼";
+                    if(j==0)A2Module("Fungal_Colony",hit.x,hit.z,.6f,.55f,.6f,variation*71,.3f);
+                }
+                break;
+            }
         }
         void A2FieldAtmosphere()
         {

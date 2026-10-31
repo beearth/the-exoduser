@@ -40,6 +40,18 @@ class Program
             Check(!Bar(true,false,false,false),"멀쩡한 비조준 적 표시 숨김");
             Check(Bar(true,false,true,false)&&Bar(true,false,false,true),"피해 적·조준 적 작은 바 표시");
             Check(!Bar(false,false,true,true)&&!Bar(true,true,true,true),"죽은 적·보스 일반 바 제외");
+            var water=type.GetMethod("Water");
+            Check(!(bool)water.Invoke(field,new object[]{-5f,-40f})&&!(bool)water.Invoke(field,new object[]{40f,-86f}),"서측·시작 외곽은 침수 섬이 아닌 연속 숲");
+            var terrain=type.GetMethod("TerrainHeight");
+            Check(terrain!=null&&(float)height.Invoke(field,new object[]{43.2f,-71.8f})-(float)terrain.Invoke(field,new object[]{43.2f,-71.8f})>.12f,"목교는 얕은 수로 위를 가로지름");
+            var register=type.GetMethod("RegisterSurface");
+            Check(register!=null,"실제 쓰러진 목질 표면을 보행 높이에 연결");
+            if(register!=null)
+            {
+                float baseY=(float)height.Invoke(field,new object[]{40f,-50f});
+                register.Invoke(field,new object[]{new float[]{39,baseY+.5f,-51,41,baseY+.5f,-51,39,baseY+.5f,-49,41,baseY+.5f,-49},new int[]{0,2,1,1,2,3}});
+                Check((float)height.Invoke(field,new object[]{40f,-50f})>baseY+.4f,"낮은 목질을 관통하지 않고 위에 접지");
+            }
         }
         Environment.ExitCode=failures==0?0:1;
     }
