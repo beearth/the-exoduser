@@ -14,10 +14,11 @@ namespace Exoduser.UnityPort
     {
         [Serializable] sealed class ImpactReviewReceipt
         {
-            public string scope="실제 GPU Player 16초: 고정 입력·AI 중지·불사 표적·현행 5스킬과 독/가시/어둠 탄 겹침 fixture. 자연 전투·미이식 스킬 증거 아님";
+            public string scope="실제 GPU Player 16초: 고정 입력·AI 중지·첫 표적1회 실제 처치/나머지 불사 표적·현행 5스킬과 독/가시/어둠 탄 겹침 fixture. 자연 전투·미이식 스킬 증거 아님";
             public string device,coreTraceSha256; public bool world3D,baseline,passed;
             public int frames,contacts,dropped,damage,casts,spawned,peakParticles,skillGraphEvents,peakSkillHandles,poisonFrames,thornFrames,darkFrames;
             public int captureWidth,captureHeight;
+            public int killedTargets;public bool killContactSeen;
             public bool skillAssetsReady;public string[] sections,castKinds,drawnSkills;
         }
         IEnumerator ImpactReview()
@@ -52,7 +53,7 @@ namespace Exoduser.UnityPort
                 // must not create repeated hits that hide the next skill's cue.
                 // This explicit fixture reset is identical in both render paths.
                 sim.FireZones.Clear();sim.SlamWaves.Clear();sim.SkillBlades.Clear();sim.MaliceOrbs.Clear();sim.Projectiles.Clear();sim.IceOrbActive=false;
-                for(int k=0;k<3;k++)sim.Enemies.Add(new EnemyState{Id=-91000-sectionIndex*10-k,Etype=0,Hp=1000000,MaxHp=1000000,Level=1,X=p.X+48+k*28,Y=p.Y+(k-1)*18,Radius=15,Poise=1000,MaxPoise=1000});
+                for(int k=0;k<3;k++)sim.Enemies.Add(new EnemyState{Id=-91000-sectionIndex*10-k,Etype=0,Hp=sectionIndex==0&&k==0?1:1000000,MaxHp=1000000,Level=1,X=p.X+(k<2?48:104),Y=p.Y+(k==0?-28:k==1?28:0),Radius=15,Poise=1000,MaxPoise=1000});
                 // Deliberate synthetic hazard lane, below the player. Actual Core projectile
                 // stepping is retained, so both render paths see the identical moving shots.
                 if(sim.Druid!=null)
@@ -71,6 +72,7 @@ namespace Exoduser.UnityPort
                     sim.SetSkillInput(section=="가시덫"&&f==0,false,false,false,section=="지옥강타"&&f==0||section=="얼음보주"&&f==110,section=="회복영역"&&f==0,section=="얼음보주"&&f==0,false);
                     sim.Tick(0,0,p.X+300,p.Y,sectionIndex==0||sectionIndex==1&&f<100,false);
                     DispatchFeedback();UpdateViews();Running=false;
+                    if(sectionIndex==0&&!sim.Enemies[0].Alive&&contactVfx.EnemyFrozen(sim.Enemies[0].Id,ImpactNow)&&contactVfx.Spawned>0)rc.killContactSeen=true;
                     trace.Append(sim.TickCount).Append('|').Append(p.State).Append('|').Append(p.X.ToString("R",CultureInfo.InvariantCulture)).Append('|').Append(p.Y.ToString("R",CultureInfo.InvariantCulture)).Append('|')
                         .Append(p.Stamina.ToString("R",CultureInfo.InvariantCulture)).Append('|').Append(p.Mana.ToString("R",CultureInfo.InvariantCulture)).Append('|').Append(sim.SkillCastCount);
                     foreach(var e in sim.Enemies)trace.Append('|').Append(e.Id).Append(':').Append(e.Hp).Append(':').Append(e.X.ToString("R",CultureInfo.InvariantCulture)).Append(':').Append(e.Y.ToString("R",CultureInfo.InvariantCulture));
@@ -79,7 +81,7 @@ namespace Exoduser.UnityPort
                     yield return null;yield return new WaitForEndOfFrame();
                     if(frame%2==0)ScreenCapture.CaptureScreenshot(Path.Combine(output,"frames","impact-"+(shot++).ToString("0000")+".png"));
                 }
-                int hpAfter=0;foreach(var e in sim.Enemies)hpAfter+=e.Hp;damage+=hpBefore-hpAfter;
+                int hpAfter=0;foreach(var e in sim.Enemies){hpAfter+=e.Hp;if(!e.Alive)rc.killedTargets++;}damage+=hpBefore-hpAfter;
             }
             rc.frames=shot;rc.contacts=contactVfx.Contacts;rc.dropped=contactVfx.Dropped;rc.damage=damage;rc.casts=sim.SkillCastCount;
             sim.SkillCast-=castSeen;rc.castKinds=new List<string>(castKinds).ToArray();rc.spawned=contactVfx.Spawned;rc.peakParticles=contactVfx.PeakParticles;
@@ -87,7 +89,7 @@ namespace Exoduser.UnityPort
             rc.poisonFrames=skillRemaster.PoisonFrames;rc.thornFrames=skillRemaster.ThornFrames;rc.darkFrames=skillRemaster.DarkFrames;
             string traceText=trace.ToString();File.WriteAllText(Path.Combine(output,"core-trace.txt"),traceText);
             using(var sha=SHA256.Create())rc.coreTraceSha256=BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(traceText))).Replace("-","").ToLowerInvariant();
-            rc.passed=rc.captureWidth==width&&rc.captureHeight==height&&rc.world3D==NativeRemodel3D.Requested&&shot==480&&damage>0&&castKinds.Contains("spikeTrap")&&castKinds.Contains("giantSlam")&&castKinds.Contains("holyDome")&&castKinds.Contains("iceOrb")&&castKinds.Contains("fireball")&&(rc.baseline||rc.contacts>0&&rc.spawned>0&&rc.peakParticles>0&&rc.skillAssetsReady&&rc.drawnSkills.Length==5&&rc.skillGraphEvents>0&&rc.poisonFrames>0&&rc.thornFrames>0&&rc.darkFrames>0);
+            rc.passed=rc.captureWidth==width&&rc.captureHeight==height&&rc.world3D==NativeRemodel3D.Requested&&shot==480&&damage>0&&rc.killedTargets>=1&&castKinds.Contains("spikeTrap")&&castKinds.Contains("giantSlam")&&castKinds.Contains("holyDome")&&castKinds.Contains("iceOrb")&&castKinds.Contains("fireball")&&(rc.baseline||rc.killContactSeen&&rc.contacts>0&&rc.spawned>0&&rc.peakParticles>0&&rc.skillAssetsReady&&rc.drawnSkills.Length==5&&rc.skillGraphEvents>0&&rc.poisonFrames>0&&rc.thornFrames>0&&rc.darkFrames>0);
             File.WriteAllText(Path.Combine(output,"impact-review.json"),JsonUtility.ToJson(rc,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();
             yield return new WaitForSecondsRealtime(.8f);Application.Quit(rc.passed?0:2);
