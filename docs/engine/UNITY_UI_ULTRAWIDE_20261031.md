@@ -20,11 +20,15 @@
 | 로딩 실제 목록 | 웹 승인 main f3086ea61f4215ada6365655ba974ece0469eb36에서 활성19×3 확장57판 반입. 기존19원본은 byte 보존/실패 폴백용. 메달1·빈소켓3·부츠1·석궁1·흑철로고1까지 새 런타임PNG83종. rd 대기후보16장은 미참조라 반입0. manifest SHA·활성 전경 보호RGB·WebP→PNG decodedRGBA SHA57개 모두 일치 |
 | 로딩 선택 / 구도 | W/H>2560/1080이면32, >1920/1080이면21, 그 외16. 승인 확장판은 전체 화면 cover하되 원래 보호 피사체 영역을 유지. 누락만 동일 원본 블러 밝기.28+전체 contain. 실제 없는 리소스를 요청해 폴백 검사 |
 | 로딩 상태 | 전체 높이 원화 위 하단 clamp(150px,22vh,300px), rgba(5,5,6,0)→.32@35%→.78 그라데이션. 상단여백 clamp(44px,7vh,96px), 하단 clamp(18px,3vh,44px), 뼈색 제목400 clamp(16px,2.1vh,26px)/1.5·자간.12em, 층정보400 clamp(11px,1.35vh,17px)/1.4·자간.08em, 실제 항목을 하단 정렬·8px 간격, 금빛 진행선1px·폭min(32vh,80vw). 전환 callback/LoadPhase/시간 변경0 |
-| 실제 컴포넌트 검사 | 감사기의 실제 OnGUI 변환 후 frontend-right, hud-minimap/objective/hp-frame/mp-frame/skills, startup-guide/practice-panel/guide-frame/content/footer, loading-art/source-canvas/status, common-title 경계를 기록. 글자 검사와 별도로 가장자리 앵커·중앙 정렬·안내/구슬/상태판 충돌 검사 |
-| 새 캡처 목표 | 공통69상태×5해상도×ko/de/fr=1035 + 한국어 전환원화19종/확장실패1종×5=100, 합1135 PNG. 5해상도는1920×1080,2560×1080,3840×1080,1600×900,2560×1600. 보관함/봉안함/결정체·대장간6탭·일반알림·부활·사망·지역유도8방향도 포함. 기존 전투 펫 대화는 Unity 런타임에 경로가 없어 웹 전투 펫 완료로 확대하지 않으며, 실제 구현된 사망 펫 대화는 사망 화면에서 검수. 이전480장은 변경 전 이력 |
+| 실제 컴포넌트 검사 | 감사기의 실제 OnGUI 변환 후 frontend-right, hud-minimap/objective/hp-frame/mp-frame/skills, startup-guide/practice-panel/guide-frame/content/footer, loading-art/source-canvas/status/title, frontend-subject-canvas, common-title 경계를 기록. 글자 검사와 별도로 가장자리 앵커·중앙 정렬·안내/구슬/상태판 충돌 검사 |
+| 새 캡처 목표 | 공통71상태×5해상도×ko/de/fr=1065 + 한국어 전환원화19종/확장실패1종×5=100, 합1165 PNG(실제 최장 언어 선택 결과가3언어일 때). 5해상도는1920×1080,2560×1080,3840×1080,1600×900,2560×1600. 보관함/봉안함/결정체·대장간6탭·일반알림·부활·사망·지역유도8방향·지역진입/정화 배너도 포함. 기존 전투 펫 대화는 Unity 런타임에 경로가 없어 웹 전투 펫 완료로 확대하지 않으며, 실제 구현된 사망 펫 대화는 사망 화면에서 검수. 이전480장은 변경 전 이력 |
 | 보호 / 검증 경계 | Core 투사체·적 가시/리시의 선택 callback 경계5파일만 아래 월드 계약대로 변경. 전투 수치·저장 형식 변경0. 미이식 고정기술·성장 상태는 이 UI 변경으로 이식 완료가 되지 않음. 기존 미채택3D 무대·원본520WIP는 보존하며 순수 후보에서 제외. 정식 -remodel-scenes 1 빌드→동일 빌드 M1→PNG/1x/웹 비교→MERGE_QUEUE→unity/main 비강제 병합→Desktop 순서 유지 |
 
 웹 비교 기준은 기존3f19b0b·월드9780db0c·불투명로고7dc96cd·최종35장 로딩을 포함한 승인 원격 main f3086ea61f4215ada6365655ba974ece0469eb36으로 동결한다. 초기31파일 반입 영수증과 신규 로고 영수증은 I:/EXODUSER-Storage/demo-art/unity-ui/ultrawide/에 보존한다. 최종로딩_반입영수증.json의 활성57판 decoded 픽셀 동일 확인은 Player 화면 검수를 대신하지 않는다.
+
+직업5종×해상도5×실제 선택언어의 영상은 VideoPlayer 준비·실제Texture 규격·파일명·0.35초 전후 프레임 진행과 isPlaying을 따로 기록한다. 정지 포스터로 동영상 재생을 대신하지 않는다. 화면 캡처 제한시간은1800초이며 기존 고정 실행기 파일은 변경하지 않는다.
+
+분석 보고서는 프레임을 하나씩 읽고 전체 원소/가림/교차 근거를 JSON에 순차 기록하며, 요약만 overlap-summary.json에 둔다. 전체1165장을 배열에 누적하지 않는다. 지역 배너의 실제 검정 그림자(radius5/dy4)는 명시 region-banner-black-shadow일 때만 최대alpha0.064·본문반경9.2s로 연결한다. 일반 CP 광휘의alpha0.03/5.5s 및 다른 글자/일반 중복 검출은 그대로다. 이 계측은 배너 실제 픽셀/호출/알파를 바꾸지 않는다. 새 그림자 회귀7건을 포함한 보고서 순차 기록1건을 포함한 분석 회귀43건 PASS.
 
 ## 인게임 월드 초광폭 — 실제 Player 검수 대기
 

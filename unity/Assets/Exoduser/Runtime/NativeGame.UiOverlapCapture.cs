@@ -10,7 +10,8 @@ namespace Exoduser.UnityPort
 {
     public sealed partial class NativeGame
     {
-        [Serializable] sealed class UiOverlapCoverage {public int schemaVersion=2;public string runtimeSha256,unityVersion,device,deviceType;public string scope="실제 Player OnGUI·원본 API 상태 전환, OS 입력/자연 클리어와 구분";public string[] resolutions={"1920x1080","2560x1080","3840x1080","1600x900","2560x1600"};public string[] languages={"ko","de"};public List<string> pages=new List<string>(),frames=new List<string>();}
+        [Serializable] sealed class UiOverlapCoverage {public int schemaVersion=2;public string runtimeSha256,unityVersion,device,deviceType;public string scope="실제 Player OnGUI·제품 API 상태 전환/검수 시계/8방향 투영 표본, OS 입력/자연 클리어와 구분";public string[] resolutions={"1920x1080","2560x1080","3840x1080","1600x900","2560x1600"};public string[] languages={"ko","de"};public List<string> pages=new List<string>(),frames=new List<string>();public List<UiWideMovie> movies=new List<UiWideMovie>();}
+        [Serializable] sealed class UiWideMovie {public int width,height,visual,textureWidth,textureHeight;public string language,file;public long frameBefore,frameAfter;public double timeBefore,timeAfter;public bool prepared,playing;}
         [Serializable] sealed class UiWideInputCheck {public int width,height;public bool lockedBlocked,nameOpened;}
         [Serializable] sealed class UiWideInputReport {public List<UiWideInputCheck> checks;}
         readonly List<UiWideInputCheck> wideInputChecks=new List<UiWideInputCheck>();
@@ -63,7 +64,7 @@ namespace Exoduser.UnityPort
             {
                 object current=null;bool more=false;Exception error=null;
                 try{more=pending.Peek().MoveNext();if(more)current=pending.Peek().Current;}catch(Exception caught){error=caught;}
-                if(error!=null){Debug.LogError("UI_OVERLAP_FAILED "+error);Application.Quit(2);yield break;}
+                if(error!=null){Debug.LogError("UI_OVERLAP_FAILED "+error);lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);Application.Quit(2);yield break;}
                 if(!more){pending.Pop();continue;}
                 if(current is IEnumerator child){pending.Push(child);continue;}
                 yield return current;
@@ -96,6 +97,14 @@ namespace Exoduser.UnityPort
         }
 #endif
 
+        IEnumerator UiWaitCharacterMovie(int visual)
+        {
+            yield return null;var field=typeof(NativeLobby).GetField("characterPresentationPlayback",BindingFlags.Instance|BindingFlags.NonPublic);NativeLobbyVideo video=null;float deadline=Time.realtimeSinceStartup+10;
+            while(Time.realtimeSinceStartup<deadline){lobby.SetPlaybackFocus(true);var playback=field.GetValue(lobby) as NativeCharacterPresentationPlayback;video=playback==null?null:playback.Video;if(video!=null&&video.Error.Length>0)throw new InvalidOperationException("직업 영상 오류 "+visual+" "+video.Error);if(video!=null&&video.Prepared&&video.Frame>=0)break;yield return null;}
+            if(video==null||!video.Prepared||video.Frame<0)throw new InvalidOperationException("실제 직업 영상 준비 시간초과 "+visual);var row=new UiWideMovie{width=Screen.width,height=Screen.height,visual=visual,language=overlapLanguage,file=Path.GetFileName(video.Player.url),frameBefore=video.Frame,timeBefore=video.Time,prepared=video.Prepared,textureWidth=video.Texture.width,textureHeight=video.Texture.height};
+            yield return new WaitForSecondsRealtime(.35f);row.frameAfter=video.Frame;row.timeAfter=video.Time;row.playing=video.Player.isPlaying;overlapCoverage.movies.Add(row);if(!row.playing||row.frameAfter==row.frameBefore)throw new InvalidOperationException("실제 직업 영상 프레임 정지 "+visual);
+        }
+
         IEnumerator UiArrowShots()
         {
             var prior=regionHud.ToGUI;string[] names={"raT","raHas","raX","raY","raLabel"};var fields=new FieldInfo[names.Length];var values=new object[names.Length];for(int i=0;i<names.Length;i++){fields[i]=typeof(NativeRegionHud).GetField(names[i],BindingFlags.Instance|BindingFlags.NonPublic);values[i]=fields[i].GetValue(regionHud);}
@@ -126,7 +135,7 @@ namespace Exoduser.UnityPort
                 lobby.Begin();yield return UiOverlapShot("브랜드인트로");lobby.AdvanceSplash();yield return new WaitForSecondsRealtime(1.1f);yield return UiOverlapShot("메뉴");
                 lobby.ShowLobby();lobby.Characters.TryRestore(new[]{"검수"+overlapCoverage.frames.Count.ToString("000")},0);yield return UiOverlapShot("로비");
                 lobby.OpenCharacterCreation();
-                for(int n=0;n<5;n++){lobby.ChooseCharacterVisual(n);yield return UiOverlapShot("캐릭터선택"+n);}
+                for(int n=0;n<5;n++){lobby.ChooseCharacterVisual(n);yield return UiWaitCharacterMovie(n);yield return UiOverlapShot("캐릭터선택"+n);}
                 #if UNITY_STANDALONE_WIN
                 if(language=="ko"){var field=typeof(NativeLobby).GetField("characterStep",BindingFlags.Instance|BindingFlags.NonPublic);var check=new UiWideInputCheck{width=Screen.width,height=Screen.height};yield return UiWideClick(1790,1018);check.lockedBlocked=(int)field.GetValue(lobby)==1;lobby.ChooseCharacterVisual(0);yield return null;yield return UiWideClick(1790,1018);check.nameOpened=(int)field.GetValue(lobby)==2;wideInputChecks.Add(check);File.WriteAllText(Path.Combine(overlapOutput,"실제_마우스_역변환.json"),JsonUtility.ToJson(new UiWideInputReport{checks=wideInputChecks},true));if(!check.lockedBlocked||!check.nameOpened)throw new InvalidOperationException("실제 마우스 안전영역 역변환 실패");}
                 else
@@ -140,7 +149,7 @@ namespace Exoduser.UnityPort
                 for(int n=0;n<4;n++){yield return new WaitForSecondsRealtime(.3f);if(lobby.StartupCaptureState.Page!=FrontendEntryPage.Guide||lobby.StartupCaptureState.GuideStep!=n)throw new InvalidOperationException("튜토리얼 상태 누락 "+n);yield return UiOverlapShot("튜토리얼"+n);lobby.StartupCaptureState.Advance();}
                 lobby.StartupCaptureState.Skip();lobby.SelectPreview();lobby.EnterNativeTest();
                 frontendEntryInputFence=false;Running=false;menu=false;EndFirstPractice(true);Running=false;
-                areaTitle.Hide();levelUp.Hide();yield return UiOverlapShot("HUD");yield return UiArrowShots();
+                areaTitle.Hide();levelUp.Hide();yield return UiOverlapShot("HUD");yield return UiArrowShots();regionHud.ForcedBannerAge=1;regionHud.ShowBanner(Simulation,0,false);yield return UiOverlapShot("지역진입");regionHud.ShowBanner(Simulation,0,true);yield return UiOverlapShot("지역정화");regionHud.ForcedBannerAge=null;regionHud.Reset();
                 if(language=="ko"){var load=Simulation.Stage;int oldPhase=load.LoadPhase;double oldT=load.LoadT,oldFade=load.LoadFade;load.LoadPhase=2;load.LoadT=35;load.LoadFade=1;for(int image=1;image<=19;image++){NativeLoadingArtwork.ForcedImage=image;yield return UiOverlapShot("전환로딩"+image.ToString("00"));}NativeLoadingArtwork.ForcedImage=1;NativeLoadingArtwork.SimulateMissingWide=true;yield return UiOverlapShot("전환로딩폴백");NativeLoadingArtwork.ForcedImage=-1;NativeLoadingArtwork.SimulateMissingWide=false;load.LoadPhase=oldPhase;load.LoadT=oldT;load.LoadFade=oldFade;}
                 BeginFirstPractice();Running=false;yield return UiOverlapShot("실습안내");firstPractice.Start();yield return UiOverlapShot("실습진행");practiceScroll=new Vector2(0,9999);yield return UiOverlapShot("실습스크롤");EndFirstPractice(true);Running=false;practiceScroll=Vector2.zero;
                 menu=true;pauseMenu.Reset();pauseMenu.Navigation.ObserveReleased(false);yield return UiOverlapShot("일시정지");

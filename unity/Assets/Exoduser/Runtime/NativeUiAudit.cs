@@ -20,6 +20,7 @@ namespace Exoduser.UnityPort
         [Serializable] internal sealed class Frame { public int schemaVersion=2;public string page,language,alphaReaderProof; public bool alphaReaderVerified;public float[] alphaProbe,alphaMipProbe,alphaRtProbe; public int width,height,repaintFrames,capturedFrame; public List<Element> elements=new List<Element>(); }
         internal static bool Active;
         internal static bool DrawingTextShadow;
+        internal static string DrawingTextShadowProfile;
         [DefaultExecutionOrder(-31999)] internal sealed class Host:MonoBehaviour { void OnGUI(){if(Event.current.type==EventType.Repaint)BeginFrame();} }
         static Frame frame;
         static Vector2 origin;
@@ -180,7 +181,7 @@ namespace Exoduser.UnityPort
             Color ink=style.normal.textColor;
             Rect inkRect=new Rect(x+style.contentOffset.x,y+style.contentOffset.y,width,height);if(!overflow)inkRect=Intersect(inkRect,rect);
             Color actualInk=ink*GUI.color*GUI.contentColor;
-            var e=Record(inkRect,"text",content.text,source+(DrawingTextShadow?" / 명시 CSS text-shadow 광휘 패스":""),DrawingTextShadow||(actualInk.r<.001f&&actualInk.g<.001f&&actualInk.b<.001f));
+            var e=Record(inkRect,"text",content.text,source+(DrawingTextShadow?" / 명시 CSS text-shadow 광휘 패스"+(DrawingTextShadowProfile==null?"":" / "+DrawingTextShadowProfile):""),DrawingTextShadow||(actualInk.r<.001f&&actualInk.g<.001f&&actualInk.b<.001f));
             if(e!=null){e.opacityKnown=true;e.effectiveOpacity=GUI.color.a*GUI.contentColor.a*ink.a;e.opacityProof="GUI.color × GUI.contentColor × 실제 글자색 알파";}
         }
         internal static void Save(string path,string page,string language)

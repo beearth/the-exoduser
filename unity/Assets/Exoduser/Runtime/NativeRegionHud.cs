@@ -156,7 +156,7 @@ namespace Exoduser.UnityPort
   // soft shadow / blur approximation: ring of offset copies with the total alpha preserved
   void Ring(string s, float cx, float cy, int size, float ls, Font lc, Color col, float radius, float dy)
   {
-   for (int i = 0; i < 8; i++) { float a = i * Mathf.PI / 4; SpacedLine(s, cx, cy, size, ls, new Color(col.r, col.g, col.b, col.a * .07f), lc, new Vector2(Mathf.Cos(a) * radius, dy + Mathf.Sin(a) * radius)); }
+   bool previous=NativeUiAudit.DrawingTextShadow;string profile=NativeUiAudit.DrawingTextShadowProfile;try{if(col.r==0&&col.g==0&&col.b==0&&radius==5&&dy==4){NativeUiAudit.DrawingTextShadow=true;NativeUiAudit.DrawingTextShadowProfile="region-banner-black-shadow";}for (int i = 0; i < 8; i++) { float a = i * Mathf.PI / 4; SpacedLine(s, cx, cy, size, ls, new Color(col.r, col.g, col.b, col.a * .07f), lc, new Vector2(Mathf.Cos(a) * radius, dy + Mathf.Sin(a) * radius)); }}finally{NativeUiAudit.DrawingTextShadow=previous;NativeUiAudit.DrawingTextShadowProfile=profile;}
   }
   static float Ease(float x)   // cubic-bezier(.42,0,.58,1) by bisection
   {

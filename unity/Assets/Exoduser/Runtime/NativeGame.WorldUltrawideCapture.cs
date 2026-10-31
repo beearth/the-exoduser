@@ -8,7 +8,7 @@ namespace Exoduser.UnityPort
 {
  public sealed partial class NativeGame
  {
-  [Serializable] sealed class WideWorldShot {public string name;public int width,height,chunks,enemies;public float playerX,playerY,fov,verticalSpan,horizontalSpan;public Rect viewport,pixelRect;public bool remodel,renderTarget,walkable;public Vector2[] groundCorners;}
+  [Serializable] sealed class WideWorldShot {public string name;public int width,height,chunks,enemies;public float playerX,playerY,fov,verticalSpan,horizontalSpan;public Rect viewport,pixelRect;public Vector3 cameraPosition,cameraEuler;public int targetWidth,targetHeight;public bool remodel,renderTarget,walkable;public Vector2[] groundCorners;}
   [Serializable] sealed class WideWorldMove {public int width,height;public string axis;public Vector2 start,end;public float distance;}
   [Serializable] sealed class WideWorldFps {public int width,height,frames,ticks,enemiesBefore,enemiesAfter;public float seconds,fps;public List<float> frameMs=new List<float>();}
   [Serializable] sealed class WideWorldPixelCase {public string name;public int difference,selfDifference,nonBlackPixels,maxChannel;}
@@ -41,7 +41,7 @@ namespace Exoduser.UnityPort
    menu=false;Running=false;UpdateViews();yield return new WaitForSecondsRealtime(.35f);
    if(combat){for(int n=0;n<8;n++){StepInput(0,0,p.X+300,p.Y,true,false);yield return null;}}
    var camera=HudCamera;var midL=WideGround(camera,0,.5f);var midR=WideGround(camera,1,.5f);var top=WideGround(camera,.5f,1);var bottom=WideGround(camera,.5f,0);
-   wideWorld.shots.Add(new WideWorldShot{name=name,width=Screen.width,height=Screen.height,playerX=p.X,playerY=p.Y,fov=camera.orthographic?camera.orthographicSize:camera.fieldOfView,viewport=camera.rect,pixelRect=camera.pixelRect,renderTarget=camera.targetTexture!=null,remodel=NativeRemodel3D.Active,chunks=LoadedChunks,enemies=Simulation.Enemies.Count,walkable=Map.CanMove(p.X,p.Y,p.Radius),horizontalSpan=Vector2.Distance(midL,midR),verticalSpan=Vector2.Distance(top,bottom),groundCorners=new[]{WideGround(camera,0,0),WideGround(camera,1,0),WideGround(camera,1,1),WideGround(camera,0,1)}});
+   wideWorld.shots.Add(new WideWorldShot{name=name,width=Screen.width,height=Screen.height,playerX=p.X,playerY=p.Y,fov=camera.orthographic?camera.orthographicSize:camera.fieldOfView,viewport=camera.rect,pixelRect=camera.pixelRect,cameraPosition=camera.transform.position,cameraEuler=camera.transform.eulerAngles,targetWidth=camera.targetTexture!=null?camera.targetTexture.width:Screen.width,targetHeight=camera.targetTexture!=null?camera.targetTexture.height:Screen.height,renderTarget=camera.targetTexture!=null,remodel=NativeRemodel3D.Active,chunks=LoadedChunks,enemies=Simulation.Enemies.Count,walkable=Map.CanMove(p.X,p.Y,p.Radius),horizontalSpan=Vector2.Distance(midL,midR),verticalSpan=Vector2.Distance(top,bottom),groundCorners=new[]{WideGround(camera,0,0),WideGround(camera,1,0),WideGround(camera,1,1),WideGround(camera,0,1)}});
    if(combat){var left=WideGround(camera,.07f,.55f);var right=WideGround(camera,.93f,.55f);damageFloaters.Add(left.x,left.y,"101","#ead7ac","ultrawide-qa-left",NativeFloatingTextLayout.DamagePriority,Time.unscaledTime,2,true,101);damageFloaters.Add(right.x,right.y,"202","#ead7ac","ultrawide-qa-right",NativeFloatingTextLayout.DamagePriority,Time.unscaledTime,2,true,202);}
    yield return UiOverlapShot(name);if(Screen.width==1920&&Screen.height==1080)WideWorldPixelCheck(name);
   }
