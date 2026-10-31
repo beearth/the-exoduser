@@ -31,16 +31,29 @@ namespace Exoduser.UnityPort.Core
             p.BlueBean = r.BlueBean; p.ParryBlueBean = r.ParryBlueBean; p.Magic = r.Magic; p.Homing = r.Homing; p.FromRainbow = r.FromRainbow; p.ElemBall = r.ElemBall; p.AoeR = r.AoeR; p.AoeDmg = r.AoeDmg;
         }
 
-        // an enemy bullet reached the player's parry reach: if the web would turn it around (E strike / Q parry), do it. Returns true when the bullet was reflected (it stays in the list).
-        bool TryReflect(BossProjectile p, double px, double py, double pr, double ox, double oy, double nx, double ny)
+        // The web Q centre consumes without rewards; a physical-mouth Q error hurts with redBean:true. Other Consumed effects remain separate.
+        // true means handled; only an active reflected bullet stays in the list.
+        bool TryHandleProjectile(BossProjectile p, in ParryReflect.ResolveInput inp)
         {
             if (Remodel) return false;                   // RM-B1 (boss-battle lead 2026-10-28): the only remodel bullet move, #5 spore fan, is not parryable (spec §3), so no remodel bullet is turned around
-            if (p.Friendly || p.Mine) return false;
-            double pd = Math.Min(Dst(px, py, p.X, p.Y), SegDist(ox, oy, nx, ny, px, py));
-            if (pd > 400) return false;                  // the web skips the whole collision part beyond 400 px (the Q band is checked below)
+            if (p.Friendly) return false;
             var rp = ToReflect(p);
-            var inp = reflectHost.ReflectInput(pd);
             var res = ParryReflect.Resolve(rp, inp);
+            if(res.Outcome==ReflectOutcome.Absorb){p.Active=false;return true;}
+            if(res.Outcome==ReflectOutcome.Consumed&&p.BlackBean&&host is IBossRainbowContactHost rainbowHost){rainbowHost.RainbowContact(p);p.Active=false;return true;}
+            if(res.Outcome==ReflectOutcome.Consumed&&ParryRules.IsPhysicalMouthProjectile(rp.Flags)&&inp.S=="sBlock"&&inp.SbParryT>0&&inp.PDist<ParryReflect.WrongInputRadius&&inp.Iframes<=0&&!inp.IoActive)
+            {
+                HurtProjectile(I(p.Dmg),true,true,p.DruidPoison,true);host.PIframes=3;RmText(p.X,p.Y-15,"E키로! -"+I(p.Dmg),"#eeeeee",50);p.Active=false;return true;
+            }
+            if(res.Outcome==ReflectOutcome.Consumed&&p.RedBean&&ParryRules.ProjectileParryClass(rp.Flags)==ParryRules.ProjClass.Physical&&inp.S=="sBlock"&&inp.SbParryT>0&&inp.PDist<ParryReflect.WrongInputRadius&&inp.Iframes<=0&&!inp.IoActive)
+            {
+                HurtProjectile(I(p.Dmg),true,true,p.DruidPoison,true);
+                if(host is IBossRedBeanWrongInputHost wrongHost)wrongHost.RedBeanWrongInput(p.Dmg,p.X,p.Y);
+                host.PIframes=3;
+                double angle=Atan2(host.PY-p.Y,host.PX-p.X);host.KnockPlayer(Cos(angle)*6,Sin(angle)*6);
+                RmText(p.X,p.Y-15,"E키로! -"+I(p.Dmg),"#ff4444",50);host.Shake(12);host.Fx("red-bean-wrong-input",p.X,p.Y,100);
+                p.Active=false;return true;
+            }
             if (res.Outcome != ReflectOutcome.Reflect) return false;
             FromReflect(rp, p);
             reflectHost.PayReflectParry(res);

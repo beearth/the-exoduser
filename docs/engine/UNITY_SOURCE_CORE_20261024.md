@@ -107,3 +107,8 @@ A2 SourceMap3인수 생성자에서 보행 경계와 투사체 경계를 분리�
 
 ### 2026-10-31 실제 Player 회귀 후속
 현재26수면/침수정점/다리/출구/앵글러회귀PASS·독립C#0. SourceMap수면은보행만/거목은투사체·시야도차단계약유지. 이전erosion실제3장촬영기능통과와210정점읽기오류/시각FAIL을분리한다. 정확3FBX읽기·침수경계·원본높이캐시대조·실제활성영웅측정·A2전용기본보스카메라/Repeat바닥/낮은프레임을재작업중이다. 실제새Player/M1전채택0, 상세숫자는A2 SSOT.
+
+
+## 2026-10-31 HD2D 2단계 판정·표시 정렬 — 소스 적용/실제검수 전
+
+1단계는공통b673/설치경로M1b8e40eba23항목·창SAVE잔여0까지확인했다. 그뒤일반탄접촉/sweep·HurtOptions·화상/무지개pool·지뢰캐시와표시역할/지형조준31경로를정확적용했다. 최신수치·범위·26코드및meta5·검증/미완료는 [HD2D 판정 정렬](UNITY_HD2D_ALIGNMENT_20261031.md)을따른다. Core13suite입력114개동일/API0는actualEditor·Shader·새Player·웹피격·common/Desktop2완료증거가아니다. NativeRemodel3D 맵표시와Druid.Remodel 보호flag를구분하고ParryRules·보호2_3수치는변경하지않았다. 기존과거영수증은각당시입력범위로유지한다.

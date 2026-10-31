@@ -83,7 +83,7 @@ namespace Exoduser.UnityPort
                 var r=tiers[i];r.transform.position=Point(player.X+x*c-y*s,player.Y+x*s+y*c);
                 r.transform.rotation=Quaternion.Euler(0,0,-(player.Facing+Mathf.Atan2(-12,9))*Mathf.Rad2Deg);
                 r.transform.localScale=new Vector3(15,i<tier?4:2,1);
-                r.color=i<tier?new Color(244f/255,245f/255,247f/255,.9f):new Color(58f/255,58f/255,64f/255,.45f);
+                r.color=i<tier?new Color(244f/255,245f/255,247f/255,.9f):new Color(58f/255,58f/255,64f/255,.45f);NativeHd2DSurface.Bind(r);
             }
         }
         void Set(SpriteRenderer r,int cell,float x,float y,float angle,float width,float height,float alpha)
@@ -93,7 +93,7 @@ namespace Exoduser.UnityPort
             r.transform.localScale=new Vector3(width/r.sprite.rect.width,height/r.sprite.rect.height,1);r.color=Color.white;
             // Explicit per-renderer opacity avoids relying on pipeline-specific
             // SpriteRenderer color uniforms or multiplying its alpha twice.
-            r.GetPropertyBlock(properties);properties.SetFloat(Opacity,alpha);r.SetPropertyBlock(properties);
+            r.GetPropertyBlock(properties);properties.SetFloat(Opacity,alpha);r.SetPropertyBlock(properties);NativeHd2DSurface.Bind(r,r.sharedMaterial==additive);
         }
         static Vector3 Point(float x,float y){return NativeRemodel3D.Point(x,y);}
         public void Dispose(){Reset();foreach(var r in charge)UnityEngine.Object.Destroy(r.gameObject);foreach(var r in tiers)UnityEngine.Object.Destroy(r.gameObject);UnityEngine.Object.Destroy(line);UnityEngine.Object.Destroy(additive);UnityEngine.Object.Destroy(ink);}

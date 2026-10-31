@@ -11,8 +11,8 @@ namespace Exoduser.UnityPort.Vfx
 
         public static Vector3 ToWorld(double x, double y, float height = 0f)
         {
-            return new Vector3((float)x * MetresPerPixel, height,
-                -(float)y * MetresPerPixel);
+            float wx=(float)x*MetresPerPixel,wz=-(float)y*MetresPerPixel;
+            return new Vector3(wx,(NativeRemodel3D.Active?NativeRemodel3D.GroundY(wx,wz):0)+height,wz);
         }
 
         public static Vector3 ToWorldMetres(Vector2 ground, float height = 0f)

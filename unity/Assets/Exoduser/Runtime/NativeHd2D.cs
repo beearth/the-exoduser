@@ -24,6 +24,8 @@ namespace Exoduser.UnityPort
         static readonly Dictionary<SpriteRenderer,SpriteRenderer> overlayBases = new Dictionary<SpriteRenderer,SpriteRenderer>();
         static readonly Dictionary<SpriteRenderer,float> contactWidths = new Dictionary<SpriteRenderer,float>();
         static readonly HashSet<SpriteRenderer> pivotFeet = new HashSet<SpriteRenderer>();
+        static readonly Dictionary<SpriteRenderer,Material> originalMaterials=new Dictionary<SpriteRenderer,Material>();
+        static readonly Dictionary<SpriteRenderer,int> centered=new Dictionary<SpriteRenderer,int>();
         static Material lit, contact;
         static readonly MaterialPropertyBlock shadowBlock = new MaterialPropertyBlock();
         static readonly Dictionary<SpriteRenderer, MeshRenderer> shadows = new Dictionary<SpriteRenderer, MeshRenderer>();
@@ -58,6 +60,7 @@ namespace Exoduser.UnityPort
         public static void Actor(SpriteRenderer sr,bool pivotIsFoot=false,float contactWidth=0f)
         {
             if (!Enabled || sr == null) return;
+            NativeHd2DSurface.Unbind(sr);centered.Remove(sr);if(!originalMaterials.ContainsKey(sr))originalMaterials[sr]=sr.sharedMaterial;
             CapturePose(sr);contactWidths[sr]=contactWidth;overlayBases.Remove(sr);
             if(pivotIsFoot)pivotFeet.Add(sr);else pivotFeet.Remove(sr);
             if (sr.sprite != null) sr.sprite.texture.filterMode = FilterMode.Point;
@@ -74,12 +77,22 @@ namespace Exoduser.UnityPort
         {
             Actor(overlay);if(Enabled&&overlay!=null&&body!=null)overlayBases[overlay]=body;
         }
+        public static bool IsCentered(SpriteRenderer sr){return centered.TryGetValue(sr,out var frame)&&frame==Time.frameCount;}
+        public static void Center(SpriteRenderer sr)
+        {
+            if(!Enabled||sr==null)return;NativeHd2DSurface.Unbind(sr);RemoveActor(sr);centered[sr]=Time.frameCount;
+        }
+        public static void Grounded(SpriteRenderer sr){if(!Enabled||sr==null)return;NativeHd2DSurface.Unbind(sr);RemoveActor(sr);centered.Remove(sr);}
+        public static void ForgetActorForSurface(SpriteRenderer sr){if(ReferenceEquals(sr,null))return;RemoveActor(sr);centered.Remove(sr);}
         static void RemoveActor(SpriteRenderer sr)
         {
+            if(sr!=null&&actors.TryGetValue(sr,out var pose)&&pose.projected){sr.transform.localPosition=pose.position;sr.transform.localRotation=pose.rotation;pose.projected=false;}
             if(shadows.TryGetValue(sr,out var shadow)&&shadow!=null)
             {
+                shadow.enabled=false;
                 if(Application.isPlaying)UnityEngine.Object.Destroy(shadow.gameObject);else UnityEngine.Object.DestroyImmediate(shadow.gameObject);
             }
+            if(sr!=null&&originalMaterials.TryGetValue(sr,out var original)&&sr.sharedMaterial==lit)sr.sharedMaterial=original;originalMaterials.Remove(sr);
             actors.Remove(sr);contactWidths.Remove(sr);pivotFeet.Remove(sr);overlayBases.Remove(sr);shadows.Remove(sr);
         }
         static void PruneActors()
@@ -89,7 +102,7 @@ namespace Exoduser.UnityPort
         }
         public static void BeginProjection()
         {
-            PruneActors();foreach(var shadow in shadows.Values)if(shadow!=null)shadow.enabled=false;
+            PruneActors();deadActors.Clear();foreach(var pair in centered)if(pair.Key==null)deadActors.Add(pair.Key);foreach(var key in deadActors)centered.Remove(key);deadActors.Clear();foreach(var shadow in shadows.Values)if(shadow!=null)shadow.enabled=false;
         }
         public static void ProjectFlatActors(Camera camera)
         {

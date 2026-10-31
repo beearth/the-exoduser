@@ -29,6 +29,7 @@ namespace Exoduser.UnityPort
             float until=Time.realtimeSinceStartup+45;
             while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<until){UpdateViews();yield return null;}
             if(NativeRemodel3D.Requested&&!NativeRemodel3D.Active)rc.failures.Add("requested field scene not ready");
+            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--hd2d-hit-frames")>=0){yield return Hd2dHitCapture(output,rc.failures);yield break;}
             foreach(int width in new[]{1920,3840})
             {
                 Screen.SetResolution(width,1080,FullScreenMode.Windowed);until=Time.realtimeSinceStartup+10;

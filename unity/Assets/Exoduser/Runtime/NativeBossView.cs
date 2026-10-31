@@ -87,21 +87,21 @@ namespace Exoduser.UnityPort
         void Put(Sprite s, double x, double y, double radius, Color c, int order)
         {
             var r = Next(); r.sprite = s; r.color = c; r.sortingOrder = order; r.transform.rotation = Quaternion.identity;
-            r.transform.position = Point(x, y); r.transform.localScale = Vector3.one * (float)(radius * 2 / s.rect.width);
+            r.transform.position = Point(x, y); r.transform.localScale = Vector3.one * (float)(radius * 2 / s.rect.width);NativeHd2DSurface.Bind(r);
         }
 
         // a sprite stretched to w x h web pixels, optionally rotated (canvas rotate is clockwise on screen, Unity z-rotation counter-clockwise)
         void PutBox(Sprite s, double x, double y, double w, double h, Color c, int order, double angle = 0)
         {
             var r = Next(); r.sprite = s; r.color = c; r.sortingOrder = order; r.transform.rotation = Quaternion.Euler(0, 0, -(float)(angle * Mathf.Rad2Deg));
-            r.transform.position = Point(x, y); r.transform.localScale = new Vector3((float)w / s.rect.width, (float)h / s.rect.height, 1);
+            r.transform.position = Point(x, y); r.transform.localScale = new Vector3((float)w / s.rect.width, (float)h / s.rect.height, 1);NativeHd2DSurface.Bind(r);
         }
 
-        void PutAdd(Sprite s, double x, double y, double w, double h, float opacity, int order, double angle = 0, Color? tint = null)
+        void PutAdd(Sprite s, double x, double y, double w, double h, float opacity, int order, double angle = 0, Color? tint = null,bool ground=true)
         {
             var r = NextAdd(); r.sprite = s; r.sortingOrder = order; r.color = tint??Color.white; r.transform.rotation = Quaternion.Euler(0, 0, -(float)(angle * Mathf.Rad2Deg));
             r.transform.position = Point(x, y); r.transform.localScale = new Vector3((float)w / s.rect.width, (float)h / s.rect.height, 1);
-            r.GetPropertyBlock(block); block.SetFloat(NativeDruidArt.Opacity, opacity); r.SetPropertyBlock(block);
+            r.GetPropertyBlock(block); block.SetFloat(NativeDruidArt.Opacity, opacity); r.SetPropertyBlock(block);if(ground)NativeHd2DSurface.Bind(r,true);else NativeHd2D.Grounded(r);
         }
 
         static Sprite ClipSprite(Clip c, int frame) { return NativeDruidArt.ClipFrame(NativeDruidArt.VfxDir + c.Res, c.Cols, c.Rows, frame); }
@@ -243,7 +243,7 @@ namespace Exoduser.UnityPort
                 var v = vfx[i]; int age = t - v.Born, life = v.FrameTime * v.MaxFrames;
                 if (age >= life) { vfx.RemoveAt(i); continue; }
                 int legacy = age / v.FrameTime, frame = Math.Min(v.Clip.Frames - 1, (int)((double)age / life * v.Clip.Frames));
-                PutAdd(ClipSprite(v.Clip, frame), v.X, v.Y, v.W, v.H, 1f - (float)legacy / v.MaxFrames * .3f, (int)v.Y + 20);
+                PutAdd(ClipSprite(v.Clip, frame), v.X, v.Y, v.W, v.H, 1f - (float)legacy / v.MaxFrames * .3f, (int)v.Y + 20,0,null,v.Clip.Res!=RootsClip.Res&&v.Clip.Res!=HitClip.Res);
                 i++;
             }
             Finish();

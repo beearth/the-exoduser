@@ -380,6 +380,7 @@ namespace Exoduser.UnityPort
             float now=Time.unscaledTime*1000f,ratio=Mathf.Clamp01(e.Shield/e.MaxShield),pulse=.5f+Mathf.Sin(now/150)*.15f;
             ev.arc.color=phys?Color.white:new Color(1,1,1,(.4f+ratio*.4f)*pulse);
             ev.arc.transform.position=Point(e.X,e.Y);ev.arc.transform.rotation=Quaternion.Euler(0,0,-(float)e.Web.shieldAng*Mathf.Rad2Deg);ev.arc.sortingOrder=(int)e.Y+2;
+            NativeHd2DSurface.Bind(ev.arc);
         }
         SpriteRenderer CreateRenderer(string name){var go=new GameObject(name);go.transform.SetParent(transform);return go.AddComponent<SpriteRenderer>();}
         Sprite SpriteFor(string resource,int x,int top,int width,int height,Vector2 pivot)

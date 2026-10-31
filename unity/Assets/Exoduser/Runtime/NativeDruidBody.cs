@@ -90,9 +90,9 @@ namespace Exoduser.UnityPort
                 // fully underground: no sprite, just the soil mound that travels (procedural in the web, drawn here with the same flattened discs)
                 float mr = r * 5.5f;
                 hole.enabled = true; hole.sprite = disc; hole.sortingOrder = (int)e.Y - 2; hole.transform.position = Point(e.X, e.Y + mr * .13f);
-                hole.transform.localScale = new Vector3(mr * 1.12f * 2 / 128f, mr * .42f * 2 / 128f, 1); hole.color = new Color(.035f, .05f, .04f, .42f);
+                hole.transform.localScale = new Vector3(mr * 1.12f * 2 / 128f, mr * .42f * 2 / 128f, 1); hole.color = new Color(.035f, .05f, .04f, .42f);NativeHd2DSurface.Bind(hole);
                 main.enabled = true; main.sprite = disc; main.sortingOrder = (int)e.Y - 1; main.transform.position = Point(e.X, e.Y);
-                main.transform.localScale = new Vector3(mr * 2 / 128f, mr * .34f * 2 / 128f, 1); main.color = new Color(.2f, .26f, .18f, .9f);
+                main.transform.localScale = new Vector3(mr * 2 / 128f, mr * .34f * 2 / 128f, 1); main.color = new Color(.2f, .26f, .18f, .9f);NativeHd2DSurface.Bind(main);
                 glow.enabled = false;
                 return true;
             }
@@ -131,7 +131,7 @@ namespace Exoduser.UnityPort
             if (sheet == "base8") dw = dh * cw / ch;
             if (boxScaled) dw = dh * (cw / ch) * 1.12f;
             float breath = sheet == "base8" ? (float)Math.Sin(nowMs * .003) * 2 : 0;
-            float ay = e.Y + BtScale * (-6 + breath);
+            float ay = NativeHd2D.Enabled?e.Y:e.Y + BtScale * (-6 + breath);
             int order = (int)e.Y;
             Put(main, sprite, e.X, ay, dw, dh, order, 1f);
             hole.enabled = false;
@@ -151,7 +151,7 @@ namespace Exoduser.UnityPort
             float r = e.Radius, dh = r * SpecDh, dw = r * SpecDw;contactWidth=r*.0465f;
             int frame = Math.Min(7, (int)(t / (bodyTicks / 8f)));
             float fadeP = Mathf.Clamp01((t - bodyTicks - holdTicks) / (float)fadeTicks);
-            float a = 1 - fadeP, dy = fadeP * dh * .08f, ay = e.Y + BtScale * -6 + dy;
+            float a = 1 - fadeP, dy = fadeP * dh * .08f, ay = (NativeHd2D.Enabled?e.Y:e.Y + BtScale * -6) + dy;
             var sprite = NativeDruidArt.EmergeCell(frame);
             if (t > bodyTicks * .55f)
             {
@@ -159,7 +159,7 @@ namespace Exoduser.UnityPort
                 hole.enabled = true; hole.sprite = disc; hole.sortingOrder = (int)e.Y - 1;
                 hole.transform.position = Point(e.X, e.Y + dh * .1f);
                 hole.transform.localScale = new Vector3(dw * .4f / 128f, dw * .14f / 128f, 1);
-                hole.color = new Color(.027f, .035f, .02f, .5f * holeA);
+                hole.color = new Color(.027f, .035f, .02f, .5f * holeA);NativeHd2DSurface.Bind(hole);
             }
             else hole.enabled = false;
             if (a > .01f)

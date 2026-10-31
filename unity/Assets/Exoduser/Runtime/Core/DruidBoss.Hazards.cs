@@ -4,6 +4,14 @@ using Exoduser.UnityPort.Core.Combat;
 
 namespace Exoduser.UnityPort.Core
 {
+    // Optional: the web projectile loop also checks the player position before this tick's action.
+    public interface IBossProjectileSweepHost { double PPrevX{get;} double PPrevY{get;} }
+
+    public interface IBossProjectileHurtHost { void HurtProjectile(int damage,bool magic,bool redBean=false,bool druidPoison=false,bool wrongInput=false); }
+    public interface IBossProjectileBodyHurtHost { void HurtProjectileBody(BossProjectile projectile,int damage,double knockX,double knockY); }
+    public interface IBossRainbowContactHost { void RainbowContact(BossProjectile projectile); }
+    public interface IBossRedBeanWrongInputHost { void RedBeanWrongInput(double rawDamage,double x,double y); }
+
     public sealed class ProjSpec
     {
         public double X, Y, Vx, Vy, Dmg, Life, Ml, Sz = 1, R = 4;
@@ -157,6 +165,37 @@ namespace Exoduser.UnityPort.Core
             UpdateLavaPools();
         }
 
+        double ProjectilePlayerDistance(double px,double py,double ox,double oy,double nx,double ny)
+        {
+            var previous=host as IBossProjectileSweepHost;double prevX=previous!=null?previous.PPrevX:px,prevY=previous!=null?previous.PPrevY:py;
+            double distance=Math.Min(Dst(px,py,nx,ny),Dst(prevX,prevY,nx,ny));
+            double dx=nx-ox,dy=ny-oy;
+            if(dx*dx+dy*dy>1){distance=Math.Min(distance,SegDist(ox,oy,nx,ny,px,py));distance=Math.Min(distance,SegDist(ox,oy,nx,ny,prevX,prevY));}
+            return distance;
+        }
+
+        void HurtProjectile(int damage,bool magic,bool redBean=false,bool druidPoison=false,bool wrongInput=false)
+        {
+            if(host is IBossProjectileHurtHost projectileHost)projectileHost.HurtProjectile(damage,magic,redBean,druidPoison,wrongInput);else host.HurtPlayer(damage,magic);
+        }
+
+
+        static double OrdinaryContactRadius(in ParryReflect.ResolveInput input,double collR,out bool qParryActive)
+        {
+            var gate=ParryRules.ComputeGate(new ParryRules.GateInput{S=input.S,St2=input.St2,KiParryT=input.KiParryT,SbParryT=input.SbParryT,SbReleaseR=input.SbReleaseR,SBashChgMul=input.SBashChgMul,Detonate=input.Detonate,MaliceSwipe=input.MaliceSwipe,ShieldThrow=input.ShieldThrow,BonusRange=input.BonusRange,PParry=input.PParry,ParryBonus=input.ParryBonus,WRange=input.WRange,WpBonusRange=input.WpBonusRange,PCollR=collR});
+            var zone=input.S=="sBlock"?ParryRules.SBlockProjectileZone(input.PDist,input.SbParryT):gate.ReleasePW&&input.PDist<=input.SbReleaseR?ParryRules.Zone.Parry:ParryRules.Zone.None;
+            qParryActive=gate.AnyPW||zone==ParryRules.Zone.Parry;
+            double normal=gate.SbActive?(collR*3+12)*ParryRules.SkillRangeMul(input.MaliceSwipe,input.ShieldThrow):gate.SbPWDet?collR*3+12:gate.AnyPW?collR*3+8:collR+4;
+            return gate.QPulseR>0?gate.QPulseR:input.S=="whirlwind"&&input.WhirlDet?90:normal;
+        }
+        void HurtOrdinaryProjectile(BossProjectile p,int damage,double px,double py)
+        {
+            double kx=p.Vx,ky=p.Vy,length=Math.Sqrt(kx*kx+ky*ky);
+            if(length<=.001){kx=px-p.X;ky=py-p.Y;length=Math.Sqrt(kx*kx+ky*ky);}
+            if(length<=.001){kx=0;ky=2;}else{kx=kx/length*2;ky=ky/length*2;}
+            if(host is IBossProjectileBodyHurtHost bodyHost)bodyHost.HurtProjectileBody(p,damage,kx,ky);else HurtProjectile(damage,true,p.RedBean,p.DruidPoison);
+        }
+
         void UpdateProjectiles()
         {
             double px = host.PX, py = host.PY, pr = host.PRadius;
@@ -165,17 +204,20 @@ namespace Exoduser.UnityPort.Core
             {
                 var p = Projectiles[i]; bool dead = false;
                 p.Life -= 0.667;
+                var mineReflection=default(ParryReflect.ResolveInput);bool mineReflectInput=false;
                 if (p.Mine)
                 {
+                    if(!Remodel&&reflectHost!=null){mineReflection=reflectHost.ReflectInput(Dst(px,py,p.X,p.Y));mineReflectInput=true;}
+                    if(!Remodel&&(p.Friendly||p.BlueBean)){p.Active=false;continue;} // reflected stationary source mines are collected on the next tick
                     p.Vx = 0; p.Vy = 0;
-                    if (Dst(px, py, p.X, p.Y) < 30 && host.PIframes <= 0)
+                    if (Dst(px, py, p.X, p.Y) < 30 && host.PIframes <= 0 && (!mineReflectInput||mineReflection.S!="charge"))
                     {
-                        host.HurtPlayer(I(p.Dmg), true);
+                        if(!Remodel)HurtProjectile(I(p.Dmg*(ElementMul!=null?ElementMul(p.El):1)),true,false,p.DruidPoison,true);else HurtProjectile(I(p.Dmg),true);
                         double ka = Atan2(py - p.Y, px - p.X); host.KnockPlayer(Cos(ka) * 10, Sin(ka) * 10); RmText(px, py - 20, "💥 지뢰!", "#ffcc00", 40); host.Shake(6); dead = true;
                     }
                     else if (p.Life <= 0) dead = true;
                     if (dead) { p.Active = false; continue; }
-                    Projectiles[w++] = p; continue;
+                    if(Remodel||reflectHost==null){Projectiles[w++]=p;continue;} // keep the legacy RM5/oracle path; ordinary mines reach the source Q loop
                 }
                 if (p.Life <= 0)
                 {
@@ -201,14 +243,24 @@ namespace Exoduser.UnityPort.Core
                     if (reflectHost != null && ReflectContact(p)) { p.Active = false; continue; }
                     Projectiles[w++] = p; continue;
                 }
-                if (reflectHost != null && TryReflect(p, px, py, pr, ox, oy, nx, ny)) { Projectiles[w++] = p; continue; }
+                double pd = ProjectilePlayerDistance(px,py,ox,oy,nx,ny);
+                var reflection = mineReflectInput?mineReflection:reflectHost != null ? reflectHost.ReflectInput(pd) : default(ParryReflect.ResolveInput);
+                if(mineReflectInput)reflection.PDist=pd; // same state snapshot, original current/previous-player contact distance
+                // Original web broad phase precedes segment contact. Q release expands its endpoint scan up to the existing release radius.
+                double qScan = reflection.S == "sBlock" && reflection.SbParryT > 0 ? 100 : reflection.SbParryT > 0 ? reflection.SbReleaseR : 0;
+                double scanR = Math.Max(400,qScan), scanR2 = scanR*scanR;
+                var previous = host as IBossProjectileSweepHost;double prevX = previous != null ? previous.PPrevX : px,prevY = previous != null ? previous.PPrevY : py;
+                if ((nx-px)*(nx-px)+(ny-py)*(ny-py)>scanR2 && (nx-prevX)*(nx-prevX)+(ny-prevY)*(ny-prevY)>scanR2) { Projectiles[w++] = p; continue; }
+                if(!Remodel&&reflectHost!=null&&reflection.IoActive){Projectiles[w++]=p;continue;} // source excludes player contact/reflection while inside ice orb
+                if (reflectHost != null && TryHandleProjectile(p,reflection)) { if(p.Active)Projectiles[w++] = p; continue; }
                 double collR = pr + (p.Sz != 0 ? p.Sz : 1) * 3;
-                double pd = Math.Min(Dst(px, py, p.X, p.Y), SegDist(ox, oy, nx, ny, px, py));
                 double hitR = host.ParryWindowOpen() ? collR * 3 + 12 : collR + 4;
-                if (pd < hitR && (host.ParryWindowOpen() || host.PIframes <= 0))
+                bool contact=pd<hitR&&(host.ParryWindowOpen()||host.PIframes<=0);
+                if(reflectHost!=null&&!Remodel){hitR=OrdinaryContactRadius(reflection,collR,out var qParryActive);contact=pd<hitR&&(qParryActive||reflection.Iframes<=0)&&!reflection.IoActive&&reflection.S!="charge";}
+                if (contact)
                 {
                     if (p.Web) { host.PlayerPoison(0, 90); RmText(px, py - 20, "🕸둔화!", "#aaaaaa", 30); }   // spider web: 1.5 s slow, no damage
-                    else host.HurtPlayer(I((p.Dmg != 0 ? p.Dmg : 10) * (ElementMul != null ? ElementMul(p.El) : 1)), true);
+                    else {int amount=I((p.Dmg!=0?p.Dmg:10)*(ElementMul!=null?ElementMul(p.El):1));if(!Remodel)HurtOrdinaryProjectile(p,amount,px,py);else HurtProjectile(amount,true);}
                     p.Active = false; continue;
                 }
                 Projectiles[w++] = p;

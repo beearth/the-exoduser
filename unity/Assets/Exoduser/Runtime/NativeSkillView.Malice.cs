@@ -11,7 +11,7 @@ namespace Exoduser.UnityPort
         // 지면에 놓는 캐릭터와 달리 구체·폭발은 중심 앵커다. 반경이 커져도 접지 보정으로 떠오르지 않는다.
         static readonly HashSet<SpriteRenderer> centeredMaliceSprites = new HashSet<SpriteRenderer>();
         public static bool IsCenteredMaliceSprite(SpriteRenderer sprite) { return centeredMaliceSprites.Contains(sprite); }
-        public static Vector3 MalicePosition(float x, float y) { return Point(x, y) + (NativeRemodel3D.Active ? Vector3.up * .25f : Vector3.zero); }
+        public static Vector3 MalicePosition(float x, float y) { return Point(x, y) + (NativeRemodel3D.Active&&!NativeHd2D.Enabled ? Vector3.up * .25f : Vector3.zero); }
         readonly Sprite[][] maliceBurstFrames = new Sprite[3][];
         readonly List<MaliceBurst> maliceBursts = new List<MaliceBurst>();
         public static bool MaliceTrailDefaultColorSpace { get; private set; }

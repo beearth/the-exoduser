@@ -5,7 +5,7 @@ namespace Exoduser.UnityPort.Core
 {
     // Optional `opts` of the web hurtP(dmg, opts): damage over time, energy (magic / parry) damage type, knock-back direction.
     // The etype0 contact attack calls hurtP(dmg) without opts, so the knock-back direction is a random angle (game.html 43745).
-    public struct HurtOptions { public bool Dot, Magic, HasAngle, HasSource; public float Angle, SrcX, SrcY; }
+    public struct HurtOptions { public bool Dot, Magic, HasAngle, HasSource, Projectile, RedBean, DruidPoison, HasKnockback; public float Angle, SrcX, SrcY, KnockX, KnockY; }
 
     // PC-B09: the player-hurt pipeline of hurtP (game.html 43563-43754): guards, dodge, shield-block branch (B07), defence / hit cap / minimum, B08 energy shield, HP,
     // poise stagger (B07 PlayerPoise), damage floater, damage-proportional knock-back, screen flash and shake, hit sound. Not ported (inputs the equipment / affix /
@@ -61,7 +61,7 @@ namespace Exoduser.UnityPort.Core
                 if (NextRandom() * 100 < dodgePct) { DodgeCount++; return; }
             }
             BlockFx blk;
-            if (CombatBeforeHurt(ref damage, o.Dot, out blk)) return;
+            if (CombatBeforeHurt(ref damage, o.Dot, out blk, o.Projectile, o.RedBean)) return;
             if (blk.Active)
             {
                 // sBlock / peaceShield absorb (B07 ShieldBranch did the maths): failed-parry floater, knock-back, shake, sound, flash, rate floater
@@ -91,6 +91,7 @@ namespace Exoduser.UnityPort.Core
             else if (sh.FullBlock) HurtText(Player.X, Player.Y - 25, "-" + a, "-" + a, "#4488ff", 20);
             a = (int)sh.Damage;
             Player.Hp -= a; HurtDamage += a; HurtCount++; LastHurtAmount = a;
+            if(a>0&&o.DruidPoison)PlayerPoison+=3;
             if (o.Dot) { Player.Iframes = 0; }
             else
             {
@@ -98,9 +99,13 @@ namespace Exoduser.UnityPort.Core
                 CombatApplyHitPoise();
                 if (a > 0) HurtText(Player.X, Player.Y - 10, "-" + a, "-" + a, "#ff3333", 28);
                 // damage-proportional knock-back (1..12), away from the source; the etype0 contact call has none -> random direction
+                if(o.HasKnockback){Player.KnockbackX+=o.KnockX;Player.KnockbackY+=o.KnockY;}
+                else
+                {
                 double kbStr = Math.Min(12, Math.Max(1, a / (double)Player.MaxHp * 30));
                 double kbAng = o.HasAngle ? o.Angle + Math.PI : o.HasSource ? Math.Atan2(Player.Y - o.SrcY, Player.X - o.SrcX) : NextRandom() * Math.PI * 2;
                 Player.KnockbackX += (float)(Math.Cos(kbAng) * kbStr); Player.KnockbackY += (float)(Math.Sin(kbAng) * kbStr);
+                }
                 ScreenFlashAlpha = .25f;
                 ShakeAmount = (float)(Math.Max(4, Math.Min(16, Js.Int(a / (double)Player.MaxHp * 60))) * OptShake / 100);
                 FlashTicks = Math.Max(FlashTicks, 2);

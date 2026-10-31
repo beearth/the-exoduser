@@ -48,9 +48,9 @@ namespace Exoduser.UnityPort
 
         static void Place(SpriteRenderer r, double x, double y, float angle, float length, float thickness, Color color)
         {
-            r.transform.position = new Vector3((float)x / 100, -(float)y / 100, 0);
+            r.transform.position = NativeRemodel3D.Point(x,y);
             r.transform.rotation = Quaternion.Euler(0, 0, -angle * Mathf.Rad2Deg);
-            r.transform.localScale = new Vector3(length / 100, thickness / 100, 1); r.color = color;
+            r.transform.localScale = new Vector3(length / 100, thickness / 100, 1); r.color = color;NativeHd2DSurface.Bind(r);
         }
         public void Dispose() { Reset(); UnityEngine.Object.Destroy(pixel); }
     }

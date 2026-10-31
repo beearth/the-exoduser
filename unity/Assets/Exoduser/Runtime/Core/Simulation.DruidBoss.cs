@@ -79,8 +79,76 @@ namespace Exoduser.UnityPort.Core
             Druid.TickWorld(Stage.Enabled && Stage.InArena && Stage.BossAlive);
         }
 
+        // Web Q-error aftermath is independent of whether hurtP dodged or shielded the hit.
+        public sealed class RedBeanBurnStack { public double Total, Ticks, Tick; }
+        public readonly List<RedBeanBurnStack> RedBeanBurns=new List<RedBeanBurnStack>();
+        void AddRedBeanBurn(double rawDamage)
+        {
+            if(RedBeanBurns.Count<10){RedBeanBurns.Add(new RedBeanBurnStack{Total=rawDamage*2,Ticks=600,Tick=0});HurtText(Player.X,Player.Y-30,"화상!×"+RedBeanBurns.Count,"Burn!×"+RedBeanBurns.Count,"#ff4400",30);}
+        }
+        void OnRedBeanWrongInput(double rawDamage,double x,double y)
+        {
+            AddRedBeanBurn(rawDamage);
+            DoHitFlash("#ff2200",.25);ScreenFlashAlpha=.3f;QueueLogicalSound("detonate","red bean Q wrong input",x,y);
+        }
+        // Source update switch: these stacks advance only in the idle branch, before walking/attacking.
+        void TickRedBeanBurns()
+        {
+            TickRainbowPoisons();
+            int write=0;for(int i=0;i<RedBeanBurns.Count;i++)
+            {
+                var burn=RedBeanBurns[i];burn.Ticks-=1;burn.Tick+=1;if(burn.Ticks<=0)continue;
+                if(burn.Tick>=30){burn.Tick=0;int amount=Math.Max(1,Js.Int(burn.Total/20));HurtPlayer(amount,new HurtOptions{Dot=true});HurtText(Player.X,Player.Y-15-i*12,"화상 "+amount,"Burn "+amount,"#ff4400",18);}
+                RedBeanBurns[write++]=burn;
+            }
+            if(write<RedBeanBurns.Count)RedBeanBurns.RemoveRange(write,RedBeanBurns.Count-write);
+        }
+
+
+        public sealed class RainbowPoisonStack { public double Total,Ticks,Tick; }
+        public readonly List<RainbowPoisonStack> RainbowPoisons=new List<RainbowPoisonStack>();
+        void TickRainbowPoisons()
+        {
+            int write=0;for(int i=0;i<RainbowPoisons.Count;i++)
+            {
+                var poison=RainbowPoisons[i];poison.Ticks-=1;poison.Tick+=1;if(poison.Ticks<=0)continue;
+                if(poison.Tick>=30){poison.Tick=0;int amount=Math.Max(1,Js.Int(poison.Total/20));HurtPlayer(amount,new HurtOptions{Dot=true});HurtText(Player.X,Player.Y-15-i*12,"중독 "+amount,"Poison "+amount,"#88cc44",18);}
+                RainbowPoisons[write++]=poison;
+            }
+            if(write<RainbowPoisons.Count)RainbowPoisons.RemoveRange(write,RainbowPoisons.Count-write);
+        }
+        void OnRainbowContact(BossProjectile p)
+        {
+            double angle=Math.Atan2(Player.Y-p.Y,Player.X-p.X);
+            if(Player.Iframes>0&&Player.State!="whirlwind"){BossFx?.Invoke("rainbow",p.X,p.Y,80);return;}
+            if(Player.Iframes>0&&Player.State=="whirlwind")
+            {
+                // ReflectInput exposes no whirlwind fusion in this port; retain the source base absorption.
+                const double absorb=.20;
+                int absorbed=Math.Max(1,Js.Int(p.Dmg*.3*(1-absorb)*(1-ParryRules.ParryRainbowDamageReduction(PParry))));
+                HurtPlayer(absorbed,new HurtOptions{Magic=true,Projectile=true,DruidPoison=p.DruidPoison,HasSource=true,SrcX=Player.X,SrcY=Player.Y});
+                ParryBank+=Js.Int(p.Dmg*.3*absorb);Player.KnockbackX+=(float)(Math.Cos(angle)*2);Player.KnockbackY+=(float)(Math.Sin(angle)*2);
+                HurtShake(3);DoHitFlash("#ff00ff",.1);return;
+            }
+            double dr=ParryRules.ParryRainbowDamageReduction(PParry);
+            int damage=Math.Max(Js.Int(Player.MaxHp*.15*(1-dr)),Js.Int(p.Dmg*.7*(1-dr)));
+            HurtPlayer(damage,new HurtOptions{Magic=true,Projectile=true,DruidPoison=p.DruidPoison,HasSource=true,SrcX=Player.X,SrcY=Player.Y});
+            if(RainbowPoisons.Count<10){RainbowPoisons.Add(new RainbowPoisonStack{Total=damage*2,Ticks=600,Tick=0});HurtText(Player.X,Player.Y-30,"중독!×"+RainbowPoisons.Count,"Poison!×"+RainbowPoisons.Count,"#33aa22",30);}
+            Player.Poise=(float)Math.Max(0,Js.Or(Player.Poise,4)-2);
+            if(Player.Poise<=0)
+            {
+                if(PlayerPoise.IsFocusState(Player.State)){Player.Poise=1;HurtText(Player.X,Player.Y-20,"집중!","Focus!","#44ddff",20);}
+                else{Player.State="pStun";Player.StateTicks=PlayerPoise.StunFrames(CcRes,StunRes);Player.Iframes=60;CancelKiCharge();}
+            }
+            Player.KnockbackX+=(float)(Math.Cos(angle)*7);Player.KnockbackY+=(float)(Math.Sin(angle)*7);Player.Iframes=Math.Max(Player.Iframes,15);
+            HurtShake(14);DoHitFlash("#ff00ff",.3);ScreenFlashAlpha=.35f;QueueLogicalSound("detonate","rainbow explosion",p.X,p.Y);
+            var targets=Enemies.ToArray();int areaDamage=Math.Max(120,Js.Int(p.Dmg*2));
+            foreach(var enemy in targets)if(enemy!=null&&enemy.Alive){double dx=enemy.X-p.X,dy=enemy.Y-p.Y;if(dx*dx+dy*dy<=120*120)ApplyEnemyDamage(enemy,areaDamage,(float)Math.Atan2(dy,dx),false,1,atkEl:p.El);}
+            BossFx?.Invoke(p.DruidPoison?"druid_poison_hit":"rainbow_light",p.X,p.Y,120);
+        }
+
         // ---- IBossHost ------------------------------------------------------------------------------------------------------------------------------------
-        sealed class BossHostAdapter : IBossHost, IBossReflectHost
+        sealed class BossHostAdapter : IBossHost, IBossReflectHost, IBossProjectileSweepHost, IBossProjectileHurtHost, IBossRedBeanWrongInputHost, IBossProjectileBodyHurtHost, IBossRainbowContactHost
         {
             readonly Simulation s;
             public BossHostAdapter(Simulation sim) { s = sim; }
@@ -90,6 +158,8 @@ namespace Exoduser.UnityPort.Core
             public double ArenaH { get { return (s.Stage.InArena ? BossArenaLayout.Height : 42) * 40.0; } }
             public double PX { get { return s.Player.X; } set { s.Player.X = (float)value; } }
             public double PY { get { return s.Player.Y; } set { s.Player.Y = (float)value; } }
+            public double PPrevX { get { return s.executingFirstPracticeTick?s.projectileStepStartX:s.Player.X; } }
+            public double PPrevY { get { return s.executingFirstPracticeTick?s.projectileStepStartY:s.Player.Y; } }
             public double PRadius { get { return s.Player.Radius; } }
             public double PFacing { get { return s.Player.Facing; } }
             public double PIframes { get { return s.Player.Iframes; } set { s.Player.Iframes = (float)value; } }
@@ -112,6 +182,15 @@ namespace Exoduser.UnityPort.Core
             public bool FlowDir(double x, double y, out double dx, out double dy) { double a = Math.Atan2(s.Player.Y - y, s.Player.X - x); dx = Math.Cos(a); dy = Math.Sin(a); return true; }
             public bool Los(double x, double y, double tx, double ty) { return s.HasLineOfSight == null || s.HasLineOfSight((float)x, (float)y, (float)tx, (float)ty); }
             public void HurtPlayer(int damage, bool magic) { s.HurtPlayer(damage, new HurtOptions { Magic = magic }); }
+            public void HurtProjectile(int damage,bool magic,bool redBean=false,bool druidPoison=false,bool wrongInput=false) { s.HurtPlayer(damage,new HurtOptions { Magic=magic,Projectile=true,RedBean=redBean,DruidPoison=druidPoison,HasSource=wrongInput,SrcX=s.Player.X,SrcY=s.Player.Y }); }
+            public void HurtProjectileBody(BossProjectile p,int damage,double knockX,double knockY)
+            {
+                s.HurtPlayer(damage,new HurtOptions{Magic=true,Projectile=true,RedBean=p.RedBean,DruidPoison=p.DruidPoison,HasKnockback=true,KnockX=(float)knockX,KnockY=(float)knockY});
+                if(p.RedBean&&!p.DruidPoison)s.AddRedBeanBurn(damage);
+                if(p.WaterBean)s.PlayerFreezeSlow=Math.Max(s.PlayerFreezeSlow,60);
+            }
+            public void RainbowContact(BossProjectile p) { s.OnRainbowContact(p); }
+            public void RedBeanWrongInput(double rawDamage,double x,double y) { s.OnRedBeanWrongInput(rawDamage,x,y); }
             public void KnockPlayer(double kx, double ky) { s.Player.KnockbackX += (float)kx; s.Player.KnockbackY += (float)ky; }
             public void StopPlayerKnock() { s.Player.KnockbackX = 0; s.Player.KnockbackY = 0; }
             public void PlayerPoison(double stacks, double webSlow) { s.PlayerPoison += (float)stacks; s.PlayerWebSlow = Math.Max(s.PlayerWebSlow, (float)webSlow); }

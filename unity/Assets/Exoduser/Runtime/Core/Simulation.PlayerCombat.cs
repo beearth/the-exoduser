@@ -172,15 +172,15 @@ namespace Exoduser.UnityPort.Core
         private struct BlockFx { public bool Active, Peace, Failed, FocusKeep; public double Rate, KbMagnitude, Shake; }
 
         // HurtPlayer hook: true = the hit was fully handled (parry success). `damage` may be reduced by a failed-parry absorb.
-        private bool CombatBeforeHurt(ref int damage, bool dot, out BlockFx fx)
+        private bool CombatBeforeHurt(ref int damage, bool dot, out BlockFx fx, bool projectile = false, bool redBean = false)
         {
             fx = default(BlockFx);
             if (!PlayerCombatWired) return false;
             if (HarpActive || DashActive) return true;   // web: no damage while the chain move runs
-            // E strike window (sBash): isPWin
-            if (ParryRules.IsParryWindow(Player.State, Player.StateTicks, 0, SbParryT, CapeParry) && Player.State == "sBash") { ApplyParrySuccess(false); return true; }
+            // Legacy melee E window only. Original hurtP has no generic E rescue for a rejected projectile.
+            if (!projectile && ParryRules.IsParryWindow(Player.State, Player.StateTicks, 0, SbParryT, CapeParry) && Player.State == "sBash") { ApplyParrySuccess(false); return true; }
             string stateBefore = Player.State; double parryBefore = SbParryT, poiseBefore = Player.Poise;
-            var b = PlayerPoise.ShieldBranch(new PlayerPoise.BlockInput { S = Player.State, SbParryT = SbParryT, Dmg = damage, Poise = Player.Poise, PGuard = PGuard, ShieldBlockDR = ShieldBlockDR, CcRes = CcRes, StunRes = StunRes, Dot = dot, RedBean = false });
+            var b = PlayerPoise.ShieldBranch(new PlayerPoise.BlockInput { S = Player.State, SbParryT = SbParryT, Dmg = damage, Poise = Player.Poise, PGuard = PGuard, ShieldBlockDR = ShieldBlockDR, CcRes = CcRes, StunRes = StunRes, Dot = dot, RedBean = redBean });
             if (!b.ReachedDamage) { SbParryT = b.SbParryT; ApplyParrySuccess(true); return true; }
             if (stateBefore == "sBlock" || stateBefore == "peaceShield")
             {

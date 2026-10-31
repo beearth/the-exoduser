@@ -105,7 +105,8 @@ namespace Exoduser.UnityPort
         static void SetRing(LineRenderer l, float radiusPx, Color c)
         {
             l.startColor = l.endColor = c;
-            for (int i = 0; i < 72; i++) { float a = i * Mathf.PI * 2 / 72; l.SetPosition(i, new Vector3(Mathf.Cos(a) * radiusPx / 100, Mathf.Sin(a) * radiusPx / 100, 0)); }
+            bool ground=NativeHd2D.Enabled&&NativeRemodel3D.Active;l.useWorldSpace=ground;var centre=l.transform.parent.position;
+            for (int i = 0; i < 72; i++) { float a = i * Mathf.PI * 2 / 72,dx=Mathf.Cos(a)*radiusPx/100,dz=Mathf.Sin(a)*radiusPx/100;if(ground){float x=centre.x+dx,z=centre.z+dz;l.SetPosition(i,new Vector3(x,NativeRemodel3D.GroundY(x,z)+.003f,z));}else l.SetPosition(i,new Vector3(dx,dz,0)); }
         }
 
         public void Update(Simulation sim, float time)
@@ -188,6 +189,16 @@ namespace Exoduser.UnityPort
                 SetOrb(orb.a, fl, draw, new Color(1, 1, 1, (.85f + .1f * Mathf.Sin(ioP * 6)) * (1 - mix)), order); SetOrb(orb.b, Mathf.Min(8, fl + 1), draw, new Color(1, 1, 1, (.85f + .1f * Mathf.Sin(ioP * 6)) * mix), order);
                 SetOrb(glow0, fl, draw, new Color(1, 1, 1, (.2f + .12f * Mathf.Sin(ioP * 8)) * (1 - mix)), order + 1); SetOrb(glow1, Mathf.Min(8, fl + 1), draw, new Color(1, 1, 1, (.2f + .12f * Mathf.Sin(ioP * 8)) * mix), order + 1);
             }
+            if(NativeHd2D.Enabled){foreach(var item in zones.Values)Hd2dGround(item);foreach(var item in waves.Values)Hd2dGround(item);foreach(var item in blades.Values)Hd2dGround(item);if(OrbShown)Hd2dGround(orb);}
+        }
+        static void Hd2dGround(Item item)
+        {
+            if(item==null)return;
+            Hd2dGroundRenderer(item.a);Hd2dGroundRenderer(item.b);
+        }
+        static void Hd2dGroundRenderer(SpriteRenderer r)
+        {
+            if(r==null)return;string shader=r.sharedMaterial!=null?r.sharedMaterial.shader.name:"";NativeHd2DSurface.Bind(r,shader=="EXODUSER/SkillAdditive"||shader=="EXODUSER/KiSlashAdditive");
         }
         SpriteRenderer glow0, glow1;
         void SetOrb(SpriteRenderer r, int frame, float drawPx, Color c, int order)

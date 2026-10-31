@@ -471,3 +471,8 @@ Shore는 고정앵글러 주변을 피한 후 z−52~−42에서 다시28u 굽�
 |인수 상태|제작자선택1x검수완료/공통·Desktop지정integrator 신청준비. 공통병합·Desktop갱신·설치본M1은이문서만으로완료아님. 자연완주·실측FPS·OSfocus·Mac동기화 미검증|
 
 근거 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/STAGE1_R5_VISUAL_REVIEW_KO.md, STAGE1_R5_BUILD_LINK.json, stage1-r5-validation-8dbdf205a/receipt.json, stage1-r5-review-8dbdf205a, scope-cleanup-after-r5. 이전순수985/087·실패validator 이력은덮지않는다.
+
+
+## 2026-10-31 HD2D 2단계 판정·표시 정렬 — 소스 적용/실제검수 전
+
+1단계는공통b673/설치경로M1b8e40eba23항목·창SAVE잔여0까지확인했다. 그뒤일반탄접촉/sweep·HurtOptions·화상/무지개pool·지뢰캐시와표시역할/지형조준31경로를정확적용했다. 최신수치·범위·26코드및meta5·검증/미완료는 [HD2D 판정 정렬](UNITY_HD2D_ALIGNMENT_20261031.md)을따른다. Core13suite입력114개동일/API0는actualEditor·Shader·새Player·웹피격·common/Desktop2완료증거가아니다. NativeRemodel3D 맵표시와Druid.Remodel 보호flag를구분하고ParryRules·보호2_3수치는변경하지않았다. 기존과거영수증은각당시입력범위로유지한다.

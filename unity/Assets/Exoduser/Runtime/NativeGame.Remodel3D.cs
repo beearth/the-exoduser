@@ -85,6 +85,7 @@ namespace Exoduser.UnityPort
         void Remodel3DSetActive(bool on)
         {
             Remodel3DRestoreBillboards();
+            NativeHd2DSurface.Invalidate();
             NativeHd2D.BeginProjection();
             NativeRemodel3D.Active = on;
             if(a2EnemyShadowRoot!=null)a2EnemyShadowRoot.SetActive(on);
@@ -130,6 +131,7 @@ namespace Exoduser.UnityPort
         // 부모만 이동하는 악의구·얼음 파편도 이전 프레임의 lift를 다시 더하지 않는다.
         void Remodel3DRestoreBillboards()
         {
+            NativeHd2DSurface.Restore();
             foreach (var sr in r3Projected)
                 if (sr != null && r3Base.TryGetValue(sr, out var pose))
                 { sr.transform.localPosition = pose.localPosition; sr.transform.localRotation = pose.localRotation; }
@@ -142,17 +144,18 @@ namespace Exoduser.UnityPort
             if (r3Projected.Count != 0) return;
             NativeHd2D.BeginProjection();
             float pitch = NativeRemodel3D.Pitch, cos = Mathf.Cos(pitch), sin = Mathf.Sin(pitch);
-            var tilt = Quaternion.Euler(pitch * Mathf.Rad2Deg, 0, 0);
+            var tilt = NativeHd2D.Enabled?r3Cam.transform.rotation:Quaternion.Euler(pitch * Mathf.Rad2Deg, 0, 0);
             foreach (var sr in FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None))
             {
                 if (sr == null || !sr.enabled || sr.sprite == null || sr.gameObject.scene == r3Scene) continue;
                 var tr = sr.transform;
                 r3Base[sr] = new R3Base { localPosition = tr.localPosition, localRotation = tr.localRotation };
                 float roll = tr.rotation.eulerAngles.z;
+                if(NativeHd2D.Enabled&&NativeHd2DSurface.Project(sr,r3Cam))continue;
                 if(NativeHd2D.Enabled&&NativeHd2D.IsActor(sr))
                 { NativeHd2D.ProjectActor(sr,r3Cam,roll);r3Projected.Add(sr);continue; }
-                float below = NativeSkillView.IsCenteredSkillSprite(sr) ? 0 : (sr == playerView ? NativeRemodelCamera.HeroFootLift(sr.sprite) : NativeEnemyFootprint.FootLift(sr.sprite)) * Mathf.Abs(tr.lossyScale.y);
-                tr.SetPositionAndRotation(tr.position + new Vector3(0, below * cos, below * sin), tilt * Quaternion.Euler(0, 0, roll));
+                float below = NativeHd2D.IsCentered(sr)||NativeSkillView.IsCenteredSkillSprite(sr) ? 0 : (sr == playerView ? NativeRemodelCamera.HeroFootLift(sr.sprite) : NativeEnemyFootprint.FootLift(sr.sprite)) * Mathf.Abs(tr.lossyScale.y);
+                tr.SetPositionAndRotation(tr.position + (NativeHd2D.Enabled?r3Cam.transform.up*below:new Vector3(0, below * cos, below * sin)), tilt * Quaternion.Euler(0, 0, roll));
                 r3Projected.Add(sr);
             }
             if (r3Base.Count > 4096) { var dead = new List<SpriteRenderer>(); foreach (var k in r3Base.Keys) if (k == null) dead.Add(k); foreach (var k in dead) r3Base.Remove(k); }
@@ -164,7 +167,14 @@ namespace Exoduser.UnityPort
             if (hellArenaCamera != null && hellArenaCamera.isActiveAndEnabled) return hellArenaCamera.ScreenToWorldPoint(Input.mousePosition);
             if (NativeRemodel3D.Active && r3Cam != null && r3Cam.enabled && r3Marker != null)
             {
-                var ray = r3Cam.ScreenPointToRay(ExoInput.MousePosition); var plane = new Plane(Vector3.up, r3Marker.position); float d;
+                var ray = r3Cam.ScreenPointToRay(ExoInput.MousePosition);
+                if(NativeHd2D.Enabled)
+                {
+                    var p=Simulation.Player;
+                    if(NativeHd2DAim.TryRay(ray,NativeRemodel3D.Point(p.X,p.Y),r3Cam.farClipPlane,out var ground))return new Vector3(ground.x,ground.z,0);
+                    return new Vector3(p.X/100,-p.Y/100,0);
+                }
+                var plane = new Plane(Vector3.up, r3Marker.position); float d;
                 if (plane.Raycast(ray, out d)) { var h = ray.GetPoint(d); return new Vector3(h.x, h.z, 0); }
             }
             return view.ScreenToWorldPoint(ExoInput.MousePosition);

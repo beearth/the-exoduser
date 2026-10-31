@@ -60,7 +60,7 @@ namespace Exoduser.UnityPort
                 if(cell>=f.source.FrameCount){Remove(list,i);continue;}
                 f.renderer.sprite=frame(cell);f.renderer.sortingOrder=(ink?24000:27000)+i;
                 float alpha=ink?.85f*(1-cell*.18f):1-(float)cell/f.source.FrameCount*.3f;
-                f.renderer.GetPropertyBlock(properties);properties.SetFloat(Opacity,alpha);f.renderer.SetPropertyBlock(properties);
+                f.renderer.GetPropertyBlock(properties);properties.SetFloat(Opacity,alpha);f.renderer.SetPropertyBlock(properties);f.renderer.transform.position=NativeRemodel3D.Point(f.source.X,f.source.Y);NativeHd2DSurface.Bind(f.renderer,!ink);
                 Receipt.drawnFrames++;i++;
             }
         }

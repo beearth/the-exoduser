@@ -30,7 +30,7 @@ namespace Exoduser.UnityPort.Core
             {
                 S = Player.State, St2 = Player.StateTicks, KiParryT = 0, SbParryT = SbParryT, SbReleaseR = SbReleaseR, Iframes = Player.Iframes, SBashChgMul = SBashChgMul, Detonate = Skills.Level("detonate"),
                 MaliceSwipe = MaliceSwipeLevel, ShieldThrow = ShieldThrowLevel, BonusRange = 0, PParry = PParry, ParryBonus = ParryBonus, WRange = 0, WpBonusRange = 0, PR = Player.Radius, PX = Player.X, PY = Player.Y,
-                IoActive = false, WhirlDet = false, PDist = playerDistance,
+                IoActive = IceOrbActive, WhirlDet = false, PDist = playerDistance,
                 Counter = new ParryRules.CounterInput { MeleeRef = MeleeReference(), StatStr = 1, PAtkMul = Config.DamageMultiplier, MagicRef = MagicReference(), StatInt = 1, PMagicMul = MagicDamageMultiplier(), PParry = PParry, ParryBonus = ParryBonus, LegShieldParry = 0 },
             };
             var tgt = NearestEnemy(Player.X, Player.Y, ReflectAimRange);

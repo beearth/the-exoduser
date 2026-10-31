@@ -70,10 +70,12 @@ namespace Exoduser.UnityPort.Core
             try { TickFirstPracticeObserved(moveX,moveY,aimX,aimY,attack,pickup); }
             finally { executingFirstPracticeTick=false; }
         }
+        float projectileStepStartX,projectileStepStartY;
         private void TickFirstPracticeObserved(float moveX,float moveY,float aimX,float aimY,bool attack,bool pickup)
         {
             if (!Finite(moveX) || !Finite(moveY) || !Finite(aimX) || !Finite(aimY)) throw new ArgumentException("Non-finite input");
             if (Stage.Enabled && Stage.LoadPhase > 0) { moveX = 0; moveY = 0; attack = false; pickup = false; }   // C07: the boss-arena load screen freezes the player (web 43568, 61395)
+            projectileStepStartX=Player.X;projectileStepStartY=Player.Y;
             TickCount++;
             if (hitSfxCd > 0) hitSfxCd--; TickScheduledSounds();   // RM-1 sound cooldowns (web _hitSfxCd / _critSfxCd)
             LastHitDamage = 0;
@@ -91,6 +93,7 @@ namespace Exoduser.UnityPort.Core
             actionMoveX = moveX; actionMoveY = moveY; playerActionBranchConsumed = false;
             TickPlayerShieldAndRevive();
             ConsumeRollTrigger();
+            if(Player.State=="idle")TickRedBeanBurns(); // source idle DOT precedes new Q/E, after the global roll trigger
             TickPlayerCombat();
             TickRoll();
             TickSkills();   // B03: skill keys, cooldowns, zones, ice orb
