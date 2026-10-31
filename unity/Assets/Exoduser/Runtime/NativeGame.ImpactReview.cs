@@ -48,6 +48,10 @@ namespace Exoduser.UnityPort
                 p.State="idle";p.StateTicks=0;p.Stamina=p.MaxStamina;p.Mana=p.MaxMana;
                 sim.Config.ActiveAttack=sectionIndex==0?"weapon":"kiSlash";
                 sim.Enemies.Clear();
+                // Independent controlled sections: an earlier ten-second trap
+                // must not create repeated hits that hide the next skill's cue.
+                // This explicit fixture reset is identical in both render paths.
+                sim.FireZones.Clear();sim.SlamWaves.Clear();sim.SkillBlades.Clear();sim.MaliceOrbs.Clear();sim.Projectiles.Clear();sim.IceOrbActive=false;
                 for(int k=0;k<3;k++)sim.Enemies.Add(new EnemyState{Id=-91000-sectionIndex*10-k,Etype=0,Hp=1000000,MaxHp=1000000,Level=1,X=p.X+48+k*28,Y=p.Y+(k-1)*18,Radius=15,Poise=1000,MaxPoise=1000});
                 // Deliberate synthetic hazard lane, below the player. Actual Core projectile
                 // stepping is retained, so both render paths see the identical moving shots.
