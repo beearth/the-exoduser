@@ -1,22 +1,49 @@
 # 데모 v0 전사 3D 런타임 — 2026-10-30
 
-전사 LOCK은 `origin/main:docs/11내러티브·로어디자인/WARRIOR_DESIGN_LOCK.md`, 제작 현황은 `UNITY_CHARACTER_BOARD_20261027.md`를 따른다. 기존 R4 접점 FAIL은 철회 뒤 R5·중심 앵커에서 수정·전달했으며 전체 아트는 RETOUCH다. **2026-10-31 R6 정지1·2타 발 회전은 자기 브랜치의 미검증 후보**다. 순수482·설치API C# 오류/경고0·기존 Player 입력 기반 Runtime C# 오류0/타경로경고15만 확인했고, 정식 Editor/셰이더·새 빌드·Player1x/영상·M1·공통 병합·Desktop 전달은 미완료다. 공식 메모리 게이트9.1GB<Editor12GB/Player10GB로 실행을 시작하지 않았으며, 기존검수 재사용으로 새 후보 PASS를 주장하지 않는다. 현재 WORK522개는 이번 수정 전에 I:에 전 파일 바이트 백업·SHA 대조했다(과거 첫씬 원본4a97… 미확보 이력은 유지). 근거 `I:/EXODUSER-Storage/demo-art/hero/20261031-takeover/`. 아래 R4/R5 표와 전달은 당시 이력으로 보존한다.
+## 2026-10-31 R7 공통 반영·검증 실행본·Desktop 전달 완료
+
+지정Unity통합담당이expected `0ced574ef082bcef1e6969a329b91e5454d49574`에서 `15c8ed3c522de317d22cdbfd185b1ceca494b56f`로비강제FF했고,전사담당도fetch/원격readback을확인했다. 검증입력4c9cddec와공통의Unity tree `5c6d87809eae0c0b69fc0f1214acc9b87e81ffa7`동일,아래정확Git입력빌드5b3b6d6c/Playera6c94a87/영상/M13112dc4f를채택했다. 새통합빌드/중복M1실행0이다.
+
+통합담당이새빌드212파일·3,102,299,948바이트를staging에복사하고전파일SHA256일치212/212를확인한뒤 `I:/EXODUSER-Storage/unity-latest/build`에채택했다. 이전실행본은 `build_prev_before_heroR7_20261031`에보존했고삭제하지않았다. 일반바탕화면 `C:/Users/심도진/Desktop/지옥의 길 (Unity).lnk`의Target은위폴더 `EXODUSER-Unity.exe`,인자 `-force-d3d11 --remodel3d`,작업폴더EXE부모·아이콘EXE,0이다. 기존일반링크는통합담당조회시없었고다른바로가기는변경하지않았다. 전사담당의별도PowerShell프로세스도실제네속성/Runtime·Core·EXE SHA를독립readback해검증본과일치를확인했다. 앱자동기동/사용자세이브쓰기0.
+
+근거 `I:/EXODUSER-Storage/codex-takeover/integrator-final/hero-r7-adoption-20261031.md`·`I:/EXODUSER-Storage/unity-latest/hero-r7-stage-verify.json`, 전사 `r7-gitinput-20261031/공통반영-실측.json`·`desktop-readback.json`·`gate-evidence.json`·`판정.md`,최종보고 `I:/EXODUSER-Storage/codex-takeover/hero/REPORT.md`. 전사브리프의제작/실제검수/공통/실행본전달순서를완료했으며,**전체화면RETOUCH(VFX기존가림/잘림)**·Mac반영/실행pending·첫Player시작실패원인미확정은유지한다. 전체게임AAA·독립디자인PASS로올리지않는다.
+
+
+## 2026-10-31 R7 정확 Git 입력 최종 검수
+
+현재 채택 요청의 입력은 `4c9cddec0e557b34c111f9a2dcbb023106b49e7e`, Unity tree `5c6d87809eae0c0b69fc0f1214acc9b87e81ffa7`이다. 이전 WIP포함 빌드52ace112의검수는정확Git입력검수로재사용하지않았다. 기존NTFS소유작업본에서521개Unity파생tracked/56개미추적을I백업·해시/CAS후일시격리하고, **실행전Unity tracked WORK0·빌드영향미추적0**을증명했다.
+
+| 항목 | 실제 새 영수증 |
+|---|---|
+| 빌드 | `5b3b6d6c`6000.6.7f1·컴파일/셰이더/예외0·정상exit0·USER_SAVE변경0. errorLogs2는빌드포함Exception.cs파일명2개이며실제오류가아님 |
+| 실제 Player | `a6c94a87`38/38·579PNG·실제높이9.146869%, 보조파지최대.011612mm·발가락고정최대.008815mm. 첫강타tick827피해461·wave1·실제칼끝1.0001164cm |
+| 영상→같은 EXE M1 | 새실제19.3초/비교3초영상을생성하고12종1x/동일크기/인코딩디코드직접확인뒤 `3112dc4f`23/23. D3D11 RX9070XT·정상exit0·창/잔여/USER_SAVE변경0. 새M1보스아레나/탄막/필드1600×900도직접확인 |
+| 파생·복원 | 이번Unity실행의519tracked/56untracked자동파생을별도byte/SHA보존. 종료후착수522WORK/미추적56모두원byte복원·INDEX0. 과거R5누락원본복구가아님·기존파생일괄채택0 |
+| 정확DLL·재사용 | Runtime9844b6c3…b91b4e·Core0f103172…096266·EXE9806abde…ea57a2. 정확Core독립11/11·동일순수모션482/재현141만재사용, 과거187275재사용0. 이전WIP포함빌드와DLL이같아도장면/에셋포함새Player/영상/M1을실행함 |
+| 실패·진단 | 첫Player호출은무로그exit1·실행완료영수증없음/원인미확정. 읽기자원/세이브/숨은데스크톱정상확인후UTF8·Transcript·Trace단일진단경로에서위Player정상완료. 최초실패/로그/stale자기잠금근거보존, 전역환경/공통실행기/권한/제품변경0 |
+| 판정 경계 | R7모델/천/재질/운반/양손/발가락·구르기기립/사망/즉시접점핵심개선확인. 전체화면RETOUCH=기존VFX흰arc가림/강타수평잘림. M1필드검은바닥은직전채택night-anchor동일장면에서도직접확인한별도맵/fixture후속. 독립디자인PASS·전체AAA·OS손조작·Mac·자연밀집전투/모든경사·천관통/장시간/실청각미검증 |
+| 근거·전달 | `I:/EXODUSER-Storage/demo-art/hero/r7-gitinput-20261031/gate-evidence.json`·`판정.md`·`정확입력-실행전.json`·`정확입력-빌드후-자동파생.json`·`기존입력-복원영수증.json`. **이검수작성시점의공통통합/Desktop은대기**, 최종상태는캐릭터보드/인계·hero/REPORT.md의후속전달영수증으로확인 |
+
+## R7 사전 제작·검수 이력
+
+전사 LOCK과 캐릭터 보드를 따르는 현재 후보는 **2026-10-31 R7 모델·물성·파지 보강 + R6 정지 베기 발 회전**이다. Meshy 7.1 원화3뷰·Ultra2K/PBR4K 35cr와 리깅5cr, 누적40cr. Blender에서 망토9본·비금속 머리/천·양손 파지를 보정했고 첫 실제 빌드a1374dca/Player20080e35는 대검 배율/파지/칼끝4검사 FAIL로 미채택했다. 본 부착 소켓의 프리팹 월드 배율을1로 정상화하고 도달 불가 높이는 양팔3D 도달구로 재타깃했다. 수정 제품5f034ce92·빌드bbc656ca·실제Player295ba483은38/38 통과했으나 1x에서 위로 든 운반 대검과 왼팔 벌어짐, 하위메시 순서 오인에 따른 망토/피부 재질 오연결을 발견해 시각 FAIL·미채택했다. 부위별 면수로 재질을 연결하고 Core틱 기반 아래·뒤 운반 자세를 추가했다. 임포트05a88da9·실제 리그 양손7표본/대기·달리기/재질 계약61d29406은 오류0으로 통과했다. 수정 제품`faa2595c8`·빌드`52ace112` 오류0, 실제Player`9b9b972b`38/38·579PNG·높이9.1469%, 비교 영상 생성 뒤 같은빌드M1`23d18d3e`23/23을 완료했다. 현재12종1x에서 대검 운반/재질 연결/양손/구르기·사망/즉시 강타 핵심 결함 개선을 직접 확인했으며 전체 화면은 기존 VFX 가림/수평잘림 때문에 **RETOUCH**다. 독립 검수자PASS는 없고 **공통 병합·Desktop은 미완료**다. 원본/보정/실패 이력은 `I:/EXODUSER-Storage/demo-art/hero/r7-meshy-20261031/`, R6 이전 검사는 `20261031-takeover/`에 보존한다. 초기 UPM743d1067 실패는 자기 자식의 PROGRAMDATA/ALLUSERSPROFILE 보완 뒤 공식5c2474fd 성공으로 해소했으며 전역/공통 실행기는 변경하지 않았다. 기존522 WORK는 전바이트 I:백업·임포트 후522/522 동일, 과거 첫씬 원본 미확보 이력은 유지한다. 아래 R1~R5 결과는 당시 입력의 이력이다.
 
 | 항목 | 소유·현재 값 |
 |---|---|
 | 작업본 | `G:/exoduser-wt/codex-hero`, `codex/pc-hero-quality-20261030`, 시작 `10c49850f85dca6365cbf67b8067e6fa749b026d` |
 | 자산 인수 | `I:/exoduser-wt/pc-unity-char/unity/Assets/Exoduser/`의 Warrior·CapeSpring·기존 캐릭터 셰이더 45개, 동일 바이트·SHA 불일치 0. 원본에는 쓰지 않음 |
 | 인수 근거 | `I:/EXODUSER-Storage/demo-art/hero/asset-transfer.json` |
-| 런타임 프리팹 | `Resources/Characters/Warrior.prefab`; `HeroSetup.Prepare`가 기존 프리팹에서 구성. 본체는 URP Lit 기반 `HeroIronContrast.shadergraph`, 대검은 URP/Lit. 기존 PBR 맵은 그대로 사용 |
+| 런타임 프리팹 | `Resources/Characters/Warrior.prefab`, 새 본체 `Art/Characters/Warrior/RemasterR7/Warrior_R7.fbx`. `HeroRemasterImport.Import`가 원래 Art/Characters/Warrior 프리팹에서 controller·대검·CapeSpring 설정만 인수한다. 새 FBX의 손 본 부착 소켓(프리팹 월드 배율1, 게임 루트배율 별도)을 사용하며 본체5부위·대검은 URP/Lit |
 | 게임 연결 | `ResetRun`에서 한 번 만들고 `UpdateViews`에서 `NativeHeroView.Sync` 호출. 로드 성공 시 기존 플레이어 SpriteRenderer를 숨김, 누락 시 기존 스프라이트 폴백 |
 | 망토 재설정 | 새 Simulation·2D/3D 바닥 기준 전환·앵커2u 초과 이동 시 CapeSpring 입자 재설정. 이전 장소의 천이 새 시작점으로 늘어지는 상태를 막음 |
 | 발 본 진단 | FootError는 모델 로컬 발 본 높이에서0.055u를 뺀 진단값. 메시 발바닥·지면 관통의 실측 PASS가 아니며 실제 프레임으로 함께 판정 |
 | 3D 필드 | Core 픽셀→`NativeRemodel3D.Point`, yaw=`atan2(cos(Facing),-sin(Facing))`, 모델 배율 0.87. R1 0.90/10.57%, R2 0.81/8.36%, R3 0.81/7.98%의 실제 스킨·천 실측을 보존하며 화면 높이8~10% 안에 여유를 주는 R3 수정 후보 |
 | 기존 2D 아레나 | 같은 Core 발밑 앵커, 모델 앞쪽 깊이 -3, 바닥 기준 X 회전 -35도, 배율 0.80. R3fix M1 원본에서0.65가 약7% 높이로 작게 읽혀 보강. 아레나 자체의 3D화는 별도 |
 | 보조광 | 전사 layer30·렌더링 마스크3, Point 전사 마스크2. 중성 `(1,.97,.94)` 강도6 범위5, 차가운 가장자리 `(.62,.75,.86)` 강도1.6 범위4. 그림자 없는 보조광이며 주광·카메라·Core는 변경하지 않음 |
-| 재질 보강 | 본체 normal강도0.35·smoothness0.68, 대검 normal강도0.55·smoothness0.75. 전사 전용 그래프는 `albedo *= 1 - 0.75*sqrt(metallicMap.R)`: 금속 마스크0인 피부·천의 원본 색을 보존하고 금속만0.25~1배로 낮춘다. 기존 PBR·노멀·직접광·그림자는 유지, 기존 풀 림 발광 연결은0. 원본 ShaderGraph·비트맵 수정/새 생성0. R4 현재1x 제작자·독립 판정은 RETOUCH |
-| 모션 | `NativeHeroMotion.Sync(Simulation,bool)`, 실행순서90→기존 `CapeSpring`100. R6 정지1·2타 뒷발12°/∓16° 회전·실제발가락3mm 진단 후보, 다른 동작/이동 보행 불변. 상세 상태·타이밍·수치는 `UNITY_HERO_MOTION_20261030.md` |
-| 실제 Player 검수 | `--unity-hero-review -output <고유경로>`·필수 `--unity-qa-sandbox`. 대기60·방향160(8방향×20틱)·달리기90·구르기36·대검3타180·검기3타180·E충전강타120·시전90·보조시전60·패링45·피격45·사망90틱, 2틱마다 1600×900 PNG. 적 AI/자연 소환을 끄고 이동 충돌을 유지한 제어 검수. E 두 번째 입력을70틱 누른 뒤 해제하며 Charge/Bash/BashRecover를 해당 구간에서 검사. heroReviewActive는 이 fixture의 사망/일시정지 메뉴 그리기만 분리하며 일반 실행은 불변. 피격은 HurtPlayer(80), 사망은 별도 상태주입이므로 자연 플레이로 세지 않음 |
+| 재질 보강 | R7 Iron/Hair/Skin/Cloth/Leather, 같은 원본 Base/Normal(4096², 런타임 임포트최대2048)·금속R/매끄러움A(2048², A=1−원본거칠기). Iron만 금속맵·Metallic1, tint(.60,.65,.70), smoothness.80, normal.32. Hair: tint(.36,.34,.33), metal0/smooth.12/normal.18; Skin: white/0/.37/.18; Cloth: (.85,.72,.74)/0/.13/.24; Leather: (.76,.72,.68)/0/.20/.25. 비금속4부위는 금속맵 없음, 발광0. 하위메시 삼각형 수로 연결: Iron43352·Cloth38126·Leather2890·Skin1653·Hair7416. 배열의 부위 순서를 FBX 순서로 가정하지 않으며 불명 면수는 임포트 실패. R1~R6의 HeroIronContrast는 과거 자산으로 보존 |
+| 모션 | `NativeHeroMotion.Sync(Simulation,bool)`, 실행순서90→CapeSpring100. R6 정지1·2타 발 회전·발가락3mm 검수와 R7 `Grip_L` 실제 중심 보정·양팔 도달 원 교집합을 사용한다. 팔 길이합−.002m, 가능한 모델 높이 평면/칼 방향 유지, 평면 교집합이 없으면3D 도달구의 교차 원에서 가장 가까운 점 선택. 마커 없는 기존 모델은 이전 파지 폴백. Core·루트·조준·기간 불변. 상세는 HERO_MOTION 문서 |
+| R7 운반 자세 | 대기/달리기는 오른손(.30,1.10,.06)m·칼 방향(.16,−.58,−.80) 정규화, 실제 칼끝 최소.06m를 위해 우손 목표를 올림. 왼손(−.30,1.08,.03+sin(보행절대시각×2π)×.08)m, 대기 진폭0. 팔꿈치 힌트는 ±right+forward×.10. 기본 Animator 표본 및 대기/달리기 호흡 뒤에 적용, 마커 없는 구형 모델에는 미적용. 회복 끝은 이 운반 기저로 복귀. Editor 계약: 칼 하향내적<−.30·끝높이.02~.45m. 실제 영상 검수는 별도 |
+| 실제 Player 검수 | `--unity-hero-review -output <고유경로>`·필수 `--unity-qa-sandbox`. 대기60·방향160(8방향×20틱)·달리기90·구르기36·대검3타180·검기3타180·E충전강타120·시전90·보조시전60·패링45·피격45·사망90틱, 2틱마다 1600×900 PNG. R7의 `leftGripError/leftGripMeasured`는 베기·충전·E·방어·강타의 실제 장갑 중심과 소켓+up×.09m 거리를 기록하고 대검/검기/E/강타 각 구간 최대3mm를 검사한다. 적 AI/자연 소환을 끄고 이동 충돌을 유지한 제어 검수. E 두 번째 입력을70틱 누른 뒤 해제하며 Charge/Bash/BashRecover를 해당 구간에서 검사. heroReviewActive는 이 fixture의 사망/일시정지 메뉴 그리기만 분리하며 일반 실행은 불변. 피격은 HurtPlayer(80), 사망은 별도 상태주입이므로 자연 플레이로 세지 않음 |
 | 기존 수정 보존 | 이동·조준 `ef75f883e`는 시작 HEAD의 조상. Core 파일 변경0 |
 | 빌드 준비 파생 입력 | Unity 첫 임포트/빌드 준비로 생긴 자기64개 밖 변경522개는 `r2/import-meta.json`에 경로·SHA·diff를 보존. 메타만이 아니라 생성 Main씬·URP 프리필터·guard 기준도 포함한다. 자동 인수/일괄스테이징/원복하지 않으며 자기64개 WORK 변경0을 별도로 검사 |
 
@@ -131,3 +158,17 @@ R3 수정 검수부터 `Time.captureDeltaTime=1/60`을 이 전용 fixture에만 
 지정 통합 담당이 expected968f2a324에서 bf9b2d25c28a44d4a90e8f2017a27f8d5f657394로 비강제FF했고원격SHA를읽어대조했다. 제품ccde13cb9와공통Unity tree동일, 새빌드b970760a·M1aaf2078e/실제3바이너리동일로 COMMON_RULES의유효검수재사용을적용했다. 새통합빌드/추가M1반복0이다.
 
 일반Desktop은 `I:/EXODUSER-Storage/demo-art/hero/night-anchor-20261031/build/EXODUSER-Unity.exe`, 인자 `-force-d3d11 --remodel3d`, 작업폴더는EXE부모·아이콘EXE,0이다. 이전게임대조소스bce000073이현재제품조상임을확인한뒤현재링크SHA를CAS검사하고이전링크동일byteI백업→전달→별도PowerShell프로세스4속성/Runtime·Core·EXE SHAreadback을완료했다. 앱자동기동/사용자세이브쓰기0. 근거 night-anchor-20261031/validated-adoption.json·desktop-delivery.json·desktop-readback.json. Mac실제반영/실행은pending, 전체아트RETOUCH및위생성씬이전byte복구미완료는유지한다.
+
+## R7 새 모델·망토·물성·운반 최종 검수 — 2026-10-31
+
+| 항목 | 현재 같은 후보의 근거 |
+|---|---|
+| 제품·정식 빌드 | `faa2595c85342948466484e6aed010749d40442a` / `52ace112`, Unity6000.6.7f1·컴파일/셰이더/예외0·정상exit0. 실행기 errorLogs3은 Exception.cs 파일명2와 종료 Curl42이며 실제 엔진예외/셰이더 오류가 아님 |
+| 실제 Player | `9b9b972b`38/38·579PNG·1600×900·실제스킨높이9.146869%, 보조파지최대.000011612m·발가락고정최대.000008815m. 첫 강타tick827 피해461·파동1·실제 칼끝높이.010001164m |
+| 영상→같은빌드M1 | 실제19.3초579프레임/비교3초90프레임(각30fps) 생성·현재12종1x/비교6시점 직접확인 뒤 `23d18d3e`23/23. D3D11 RX9070XT, Player/M1정상exit0·사용자창/잔여/USER_SAVE변경0 |
+| 모델·천 | 새 리깅1.85m·Humanoid·판금/머리/피부/천/가죽5부위·Cape9본, 다리 망토가중치제거·현재Cape정점30765. 망토하단폭최대10%·뒤2.5cm 보강, 장갑손가락150° 파지 보정. 원본/Blender수정/실패검수는I:보존, Meshy모델35+리깅5=40cr |
+| 이전 실패 | Player20080e35 대검100배 상속/파지/접점4실패, Player295ba483기능38/38이지만 운반/재질순서 시각FAIL·미채택. 소켓월드1/3D도달구→실제면수매핑/운반IK로 방법을 구분해 수정. 현재 증거와 혼용0 |
+| 재사용 검사 | 정확Core DLL `0f103172…096266`는 night-anchor/현재Core-단독의 독립접점11/11과 byte동일. 과거`b2acc241`187275는현재DLL과달라재사용0. 순수모션prefix는R6`2c9310456`동일이라기존482/재현141재사용·새실행으로표시0. Unity 리그/재질/운반/파지새검사61d29406은오류0 |
+| 시각 범위 | 원화/노레위동일크기·실제1x/12구간·M1의보스아레나/탄막/필드장면직접확인. R7 핵심개선확인, 전체아트RETOUCH(기존VFX가림/수평잘림). 독립검수·OS손조작·자연밀집전투·전체경사/천관통·Mac·실청각·장시간미검증. 문서/기능통과를AAA PASS로올리지않음 |
+| 입력·보존 | 자기27경로정확커밋·Core변경0. 기존WORK522는착수byte I:백업/SHA목록. 빌드재생성씬은새바이트보존/CAS확인뒤착수byte복원,522/522동일확인. 이복원은과거R5의누락원본복구가아님. 미커밋파생입력이있어Git tree만으로전체빌드byte동일이라고하지않음 |
+| 근거 | `I:/EXODUSER-Storage/demo-art/hero/r7-carry-20261031/gate-evidence.json`·`판정.md`·`검수.html`·영상/12종1x·`build-hashes.json`·`source.json`. 공통통합/Desktop은별도최종영수증 |

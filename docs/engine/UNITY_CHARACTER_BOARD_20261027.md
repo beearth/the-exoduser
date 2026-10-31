@@ -1,14 +1,12 @@
 # Unity 캐릭터 총괄 보드 (2026-10-27~)
 
-## 2026-10-31 R6 정지 베기 후보와 직전 중심 앵커 이력
+## 2026-10-31 R7 새 모델·물성·운반·실제 검수
 
-- **현재 R6는 미채택·실게임 미검증**이다. 자기 후보 `2c93104569879423bda0aea4825da466f3ad1920`(7경로·원격SHA대조), 정지1·2타의 지지발 유지/반대 발가락본 중심12°·∓16° 회전과 실제발가락3mm 검수 후보다. 순수482통과·Runtime C#오류0/타경로경고15이며 정식 Editor/셰이더/새빌드/Player1x·영상/M1/공통병합/Desktop은 미완료. 공식 메모리9.1GB<Editor12GB/Player10GB로 신규실행/예약0, 사용자에 여유확보를 요청했다. WORK522개 현재바이트는이번수정전 I:백업/SHA일치, 과거씬원본미확보는유지. 증거 `I:/EXODUSER-Storage/demo-art/hero/20261031-takeover/`, 계약은 기존 HERO_MOTION/RUNTIME 문서다. **이하 기존 중심앵커 이력:** 전사 담당 최소수정: wave/flash에명시적중심registry를두어캐릭터발끝lift에서제외했다. 웹중심계약 RED7실패→GREEN14/14, 악의구중심·일반캐릭터발끝·2D·히트/기간/피해·크기/알파/밝기·카메라불변이다.
-- 제품ccde13cb9, 공통bf9b2d25c28a44d4a90e8f2017a27f8d5f657394(지정담당정상FF/원격확인). 새빌드b970760a, 실제전후/대조30/30·579PNG·각39표본, 정확새Core독립11/11, 같은빌드M1aaf2078e23/23. 구R5완료M1재사용아님.
-- 같은틱1600×900/1x직접판정: **중심앵커/머리·견갑개선PASS / 전체아트RETOUCH**. 3종×8=정지탄24(위치·속도0·실제틱고정)에서형태가독성확인. 자연밀집전투/움직이는탄막PASS아님. VFX담당후속=바닥경계수평잘림·강한화염명암·기존흰arc파지가림. 독립검수자PASS·AAA완성으로올리지않는다.
-- 일반Desktop `I:/EXODUSER-Storage/demo-art/hero/night-anchor-20261031/build/EXODUSER-Unity.exe`, 인자-force-d3d11 --remodel3d. 이전게임대조링크I동일byte백업→CAS전달→별도프로세스네속성/3SHAreadback, 앱자동기동0. 동일Unitytree/정확바이너리검수재사용으로새통합빌드·추가M1반복0. 자기예약공식반환·타잠금/예약변경0.
-- 보존제약: 기존파생522중521byte동일, 빌드재생성씬1변경. 이전씬byte백업누락으로정확복구미완료, 현재씬/diff/전후SHA를I:에보존하고추정복구·전체초기화·씬커밋하지않음. 최초current무로그실행실패와최초control정리잔여2는원본보존·재검증성공만채택했다.
-- 근거 `I:/EXODUSER-Storage/demo-art/hero/night-anchor-20261031/`의새입력-게이트.json·판정.md·comparison/검수.html·desktop-readback.json·생성씬-보존/영수증.json, 한국어총괄보고hero/REPORT.md. Mac실제반영/실행pending.08:34KST이후새야간단위0.
-
+- 현재 제품 `4c9cddec0e557b34c111f9a2dcbb023106b49e7e`, 검수문서 포함 원격 `15c8ed3c522de317d22cdbfd185b1ceca494b56f`(`codex/pc-hero-quality-20261030`). R6 발 회전은 R7 실제검수에서 확인됐으며 더 이상 단독 미검증 후보가 아니다. 원화3뷰→Meshy7.1 모델35cr+리깅5cr→Blender망토9본/손/재질 보정. 전사 실제지출40cr, 다른담당A2 35cr는별도·공용합계75cr/승인500cr(10:05:39KST 조회잔액4303, 리셋11-20T17:41:54Z). 추가유료호출0.
+- 임포트05a88da9·실제리그61d29406오류0. 정식빌드5b3b6d6c컴파일/셰이더오류0, 실제Playera6c94a8738/38·579PNG·스킨높이9.1469%·보조파지최대.011612mm·발가락고정최대.008815mm. 첫강타tick827피해461/wave1/실제칼끝1.0001164cm. 실제/노레위비교영상생성→같은빌드M13112dc4f23/23·정상exit0·창/잔여/USER_SAVE변경0.
+- 제작자는 현재12종1x·원화/노레위동일크기·완성비교영상디코드·M1보스아레나/탄막/필드를직접확인했다. 위로운반검/벌어진왼팔/하위메시재질오연결FAIL을수정했고망토·판금분리/양손/구르기기립/사망유지/즉시접점핵심개선확인. **전체화면RETOUCH**: 기존VFX흰arc파지/견갑가림·강타화염수평잘림은VFX후속. 독립검수/OS손조작/자연밀집전투/모든경사·천관통/Mac/실청각/장시간·전체AAA미검증.
+- Core/이동/조준/판정시간변경0. 정확Core0f103172 DLL은독립접점11/11재사용, 과거b2acc241의187275는재사용0. 순수모션은R62c9310456동일입력482/재현141재사용. 기존522WORK전바이트I백업·최종522/522동일, 빌드생성씬보존/CAS후이번착수byte복원. 과거R5이전씬누락원본복구를주장하지않는다. 이전WIP포함검수는입력불일치HOLD로구분하고,새검수는521Unitytracked/56미추적일시격리→실행전UnityWORK/미추적0증명→공식빌드로실행했다.519tracked/56미추적자동파생을별도byte/SHA보존한뒤기존522/56을원byte복원했다.첫무로그Player실패/진단경로정상완료와원인미확정은별도기록한다. INDEX/자기WORK0·타인WIP/예약변경0·자기예약공식반환.
+- 이전Player20080e35의대검배율/파지/접점FAIL, 다음295ba483의기능38PASS·시각운반/재질FAIL은I:에보존·미채택. 현재증거 `I:/EXODUSER-Storage/demo-art/hero/r7-gitinput-20261031/gate-evidence.json`·`판정.md`·`검수.html`·`integration-request.json`, 원본/Blender보정은`r7-meshy-20261031/`. 지정통합담당이expected0ced574ef→공통15c8ed3c5정상FF/원격확인.정확검증빌드212/212SHA대조후unity-latest/build채택·일반Desktop전달완료,전사담당별도프로세스네속성/Runtime·Core·EXE SHA독립readback완료.새통합빌드/추가M1반복0.근거integrator-final/hero-r7-adoption-20261031.md·r7-gitinput-20261031/desktop-readback.json·공통반영-실측.json.
 
 ## 2026-10-31 전사 R5 실제 검수·공통 반영·Desktop 전달
 
@@ -36,7 +34,7 @@ R4 전달·철회 이력은 `hero/r4/delivery-history/`와 `desktop-withdrawal.j
 
 | id | 캐릭터 | 원화 상태 | Unity 단계 |
 |---|---|---|---|
-| warrior | 대검전사 | LOCK 확정(앵커) | R5첫틱접점수정·공통/실행본전달, 전체아트RETOUCH |
+| warrior | 대검전사 | LOCK 확정(앵커) | R7새모델/물성/운반·실제38검사/M123, 공통/Desktop완료·전체화면RETOUCH |
 | silvertail | 실버테일 | LOCK v1.2(단검 1·왼쪽 허벅지) | UCH-01 시트 |
 | ivan | 아이반(검은 연기) | T8 r4 확정 | UCH-01 시트 |
 | spearmage | 창법사 | 원화 RETOUCH 중 | 원화 채택 뒤 |
@@ -55,11 +53,11 @@ R4 전달·철회 이력은 `hero/r4/delivery-history/`와 `desktop-withdrawal.j
 | UCH-03d | Hero Light(캐릭터 전용 보조광, 바이블 §8 L-9 캐릭터 총괄 소유)·웅덩이 림광·RM-0 확정 조명(unity/main b280ddf6) 재촬영 | **완료** (Hero 0.6 PASS, L-4 테두리 색 미해결, 디자인총괄 2차 판정 대기) |
 | UCH-03e | 웅덩이 테두리광 재설계: 림 Point 재배치 1회 → 안 되면 웅덩이 색 Fresnel(Shader Graph). 이번 단위는 구조만(세기는 Linear 뒤) | **완료** (림 Point 반려, Fresnel 구조 PASS, 세기·지표는 03f) |
 | UCH-03f | VFX 병합(Linear·후처리) + RM0-LIGHT-L 뒤 재조정: Hero·Fresnel 세기 확정, ACES 색 밀림(350~12°)·블룸 번짐 확인, Hero Light 브랜치 merge·재캡처·병합 요청 | 대기 |
-| UCH-03c | Animator 기본과 Core틱 전투·피격·사망 모션 | R5실제30/30·즉발접점수정·M1/공통/전달, 시각RETOUCH |
+| UCH-03c | Animator 기본과 Core틱 전투·피격·사망 모션 | R7실제38/38·양손/운반/발가락·즉시접점·새M123/공통/Desktop완료, 전체화면RETOUCH |
 | UCH-05 | 실버테일 Meshy body 3D·리깅(1.72m)·단검 3D 각 1건 → Unity 임포트·캡처 | 진행 (Meshy 3건 완료 65cr, Unity는 메모리 여유 대기) |
 | UCH-06 | 아이반 Meshy body 3D·리깅(1.85m)·총 3D 각 1건 → Unity 임포트·캡처 | 진행 (Meshy 3건 완료 65cr, Unity는 메모리 여유 대기) |
-| UCH-A1 | 애니메이션 공급원 비교 시범(보스전 총괄 공동): 무료 1단계 = 문서 조사·Unity 수동 키 "내려찍기"(예비 48f·발동 6f·회복 70f), 유료 2단계는 사용자 확인 후 | 공급원 결정 완료(§3 10-28). 다음 = 전사 TM-A 원형을 Unity에서 재타이밍·IK 손질(UCH-03c 공격 1과 함께, Unity 순번 필요) |
-| UCH-04 | 인게임 판정: 1-1 맵·1x·원화/장르 레퍼런스 비교 | 전사R5 1600×900 실제Player·1x/독립검토·전달 RETOUCH, 실버테일 대기 |
+| UCH-A1 | 애니메이션 공급원 비교 시범(보스전 총괄 공동): 무료 1단계 = 문서 조사·Unity 수동 키 "내려찍기"(예비 48f·발동 6f·회복 70f), 유료 2단계는 사용자 확인 후 | 공급원 결정 완료(§3 10-28). 전사 후속 R7 = 기존 Humanoid 보행/운반 클립 위 Core틱 재타이밍·양손/발가락/운반 IK를 실제 게임에 연결·검수/전달(상단 최신 영수증). 이 행의 유료시범 공급원 결정은10-28 이력 |
+| UCH-04 | 인게임 판정: 1-1 맵·1x·원화/장르 레퍼런스 비교 | 전사R7 1600×900 실제Player·12종1x/비교영상·M1·공통/Desktop완료, 전체화면RETOUCH·독립디자인PASS없음. 실버테일 대기 |
 
 ## 3. 결정 기록
 
