@@ -66,7 +66,7 @@ Shader "EXODUSER/A2RootSurface"
     {
      float edge=(SAMPLE_TEXTURE2D(_FieldSdf,sampler_FieldCover,float2(i.world.x/80,-i.world.z/80)).r-.5)*40;
      float macro=smoothstep(-.7,.7,sin(i.world.x*.11+sin(i.world.z*.09)*2)+cos(i.world.z*.13-i.world.x*.05)*.6);
-     wetness=smoothstep(.32,.82,macro)*(1-.35*saturate(edge/5));
+     wetness=smoothstep(.32,.82,macro)*(1-.35*saturate(edge/5))*(1-.8*smoothstep(.15,.85,i.world.y));
      float fringe=1-smoothstep(.1,5,edge);
      float2 soilFine=i.world.xz/2.3;
      half3 dirt=SAMPLE_TEXTURE2D(_SoilMap,sampler_ForestMap,soilFine).rgb*half3(.48,.39,.30);
