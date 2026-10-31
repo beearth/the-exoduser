@@ -148,3 +148,7 @@ C# 공통 좌표/포인터 회귀215개 통과. 실제 사용자32:9 이미지�
 |신규 연출 캡처|실제 BeginCharacterEntry(false)로 Nemesis 상태 확인 후1초에 OnGUI/PNG 수집. 정지 원화 교체나 문자열 주입0|
 
 대사 완료 표식은 대사 오른쪽 Rect(1794,min(984,1080−subH×0.2),40,30)에 둔다. 본문 오른쪽1766.4와27.6px를 비우고, 건너뛰기 hint 위18px 이상을 확보한다. 원래 x1740/하단 위치가16:9에서 hint와 같은 공간을 쓰던 경로를 분리했다. 제품의0.5초 blink 주기는 유지하고 검수에만 ForceStartupContinue=true로 완료 표식을 고정한다. 신규연출완료는 실제 Advance API로 전문 표시 후1초 안정·실제 본문/표식/hint 컴포넌트 교차0을 요구한다.
+
+### 장시간 캡처의 입력 소유권
+
+UI/월드 캡처 coverage가 생성된 동안 NativeGame.Update는 UiOverlapOwnsInput을 보존해 AutomatedInput을 매 프레임 유지한다. 자기 PID UnityWndClass의 WM Down/Up 역변환 표본(.12초 누름/.2초 해제 대기) 동안만 overlapPhysicalClick으로 입력을 열고 finally에서 회수한다. BeginCharacterEntry(false)는 정상 신규 입장 API가 검수 shortcut으로 빠지지 않도록 호출 순간에만 AutomatedInput=false로 두며, 호출 직후 true로 복귀해 실제 상태의 Tick/재생과 검수 API 전환만 진행한다. 일반 플레이는 coverage=null로 기존 입력 규칙이 같다. 실제 5해상도 클릭과 신규 Loading→Nemesis→Guide, 시네마틱은 새 동일 Player에서 확인한다.

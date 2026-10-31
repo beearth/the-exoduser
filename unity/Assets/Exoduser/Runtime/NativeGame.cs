@@ -167,7 +167,7 @@ namespace Exoduser.UnityPort
         void Update()
         {
             UpdateSettingsPersistence();UpdateCombatSave();
-            lobby.AutomatedInput=lobbySmoke&&!introKeysSmoke;
+            lobby.AutomatedInput=UiOverlapOwnsInput||lobbySmoke&&!introKeysSmoke;
             if(lobbySmoke&&!lobbyControlsSmoke)lobby.SetPlaybackFocus(true); // Natural-playback fixture only; controls fixture owns focus transitions.
             if(lobby!=null&&lobby.IsBlocking){if(firstPractice!=null)EndFirstPractice(true);Running=false;view.cullingMask=lobby.StartupWorldVisible?worldMask:0;UpdateGameMusic();return;}
             view.cullingMask=worldMask;UpdateGameMusic();
