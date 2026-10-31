@@ -101,7 +101,7 @@ namespace Exoduser.UnityPort
             var enterText=K("입장","ENTER");float enterSpacing=22*.14f,enterWidth=SpacedWidth(silverName.font,22,enterText,enterSpacing)-enterSpacing;
             DrawSpaced(play.center.x-enterWidth/2,play.y,play.height,enterText,silverName.font,22,enterSpacing,canEnter?NativeSilverHellUi.Bright:NativeSilverHellUi.Dim,true);
             GUI.enabled=controls&&Characters.SelectedIndex>=0;
-            if(NativeUiAudit.Button(play,"",GUIStyle.none))EnterSelectedCharacter();
+            DrawEntryHover(play,canEnter);if(NativeUiAudit.Button(play,"",GUIStyle.none))EnterSelectedCharacter();
             GUI.enabled=controls;
             SilverLabel(new Rect(1424,866,100,42),K("▶ 시네마틱","▶ Cinematic"),silverMicro,TextAnchor.MiddleLeft);
             if(NativeUiAudit.Button(new Rect(1424,866,100,42),"",GUIStyle.none))ReplayIntro();

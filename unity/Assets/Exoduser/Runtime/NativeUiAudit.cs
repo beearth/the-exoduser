@@ -215,7 +215,7 @@ namespace Exoduser.UnityPort
         internal static void Label(Rect r,string s){Label(r,s,GUI.skin.label);}
         internal static void Label(Rect r,GUIContent s){Label(r,s,GUI.skin.label);}
         internal static bool Button(Rect r,string s,GUIStyle style){return Button(r,new GUIContent(s),style);}
-        internal static bool Button(Rect r,GUIContent s,GUIStyle style){StyleBackground(r,style);if(style!=GUIStyle.none)Region(r,"button");Text(r,s,style,"버튼 글자");return GUI.Button(r,s,style);}
+        internal static bool Button(Rect r,GUIContent s,GUIStyle style){StyleBackground(r,style);if(style!=GUIStyle.none)Region(r,"button");Text(r,s,style,"버튼 글자");NativeUiSounds.Current?.BeforeButton(r,s.text);bool clicked=GUI.Button(r,s,style);if(clicked)NativeUiSounds.Current?.Clicked();return clicked;}
         internal static bool Button(Rect r,string s){return Button(r,s,GUI.skin.button);}
         internal static bool Button(Rect r,GUIContent s){return Button(r,s,GUI.skin.button);}
         internal static void Box(Rect r,string s,GUIStyle style){StyleBackground(r,style);Region(r,"panel");Text(r,new GUIContent(s),style,"판 글자");GUI.Box(r,s,style);}

@@ -139,6 +139,7 @@ namespace Exoduser.UnityPort
         {
             string message;
             if (!inventory.Pickup(loot.Item, out message)) { Toast(message); return false; }
+            sound?.PlayItemPickup();
             Toast(RarityNames[Mathf.Clamp(loot.Item.rarity, 0, 5)] + " " + loot.Item.name + " 획득!");
             return true;
         }
