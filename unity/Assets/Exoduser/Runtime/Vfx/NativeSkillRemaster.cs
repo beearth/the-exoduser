@@ -175,6 +175,16 @@ namespace Exoduser.UnityPort.Vfx
             if(h.Kind==4){preset.CoreHdr=0;preset.CoreSize=0;preset.ChunkSizeMin=preset.ChunkSizeMax=0;preset.MistSize=.9f;preset.MistAlpha=.035f;preset.PaletteMid=0xb6ff54;preset.PaletteShadow=0x3d571c;}
             PoisonBurstPresets.Apply(p.Fx,preset,Vector2.zero,1);
             ImpactSpace.Velocities(p.Fx,preset,Vector2.zero);
+            if(h.Kind==5)
+            {
+                // Slam: hot directional fragments rise out of the ground, while
+                // the longer residual plume stays soot-coloured.
+                var rotation=ImpactSpace.FloorRotation;
+                Vector3 va=rotation*new Vector3(-speed,1.2f,-speed),vb=rotation*new Vector3(speed,3.5f,speed);
+                if(p.Fx.HasVector3("ChunkVelMin"))p.Fx.SetVector3("ChunkVelMin",Vector3.Min(va,vb));
+                if(p.Fx.HasVector3("ChunkVelMax"))p.Fx.SetVector3("ChunkVelMax",Vector3.Max(va,vb));
+                if(p.Fx.HasGradient("MistGradient"))p.Fx.SetGradient("MistGradient",PoisonBurstPresets.MistGradient(new PoisonPreset{PaletteMid=0x9a8a72,PaletteShadow=0x2a2220,MistAlpha=.12f}));
+            }
             var world=ImpactSpace.Point(x,y,lift);p.Go.transform.position=world;
             if(p.Attr.HasVector3("position"))p.Attr.SetVector3("position",world);
             p.Fx.SendEvent("OnBurst",p.Attr);
@@ -207,9 +217,9 @@ namespace Exoduser.UnityPort.Vfx
                 var h=Get("slam"+w.Id,5,14);if(h==null)continue;seenSkills.Add("giantSlam");Place(h,w.X,w.Y);
                 float progress=w.T/(float)Math.Max(1,w.MaxT),fade=Mathf.Clamp01((1-progress)/.38f),r=w.MaxR*.01f*.45f*(.72f+.28f*Mathf.Min(1,progress*3.5f));
                 for(int i=0;i<h.Parts.Length;i++){float a=i*Mathf.PI*2/h.Parts.Length;var p=h.Parts[i];p.localPosition=new Vector3(Mathf.Cos(a)*r,.03f+Mathf.Sin(progress*Mathf.PI)*.17f,Mathf.Sin(a)*r);p.localRotation=Quaternion.Euler(i*37,now*28+i*39,i*17);p.localScale=Vector3.one*(.12f+.04f*(i%3))*fade;}
-                Surface(h,0x393026,w.Bash?0x91a7acU:0xc3a87aU,.1f,now);Floor(h,r,0x251b13,0x7e6340,fade*.28f,.05f);
-                Emit(h,now,w.X,w.Y,.15f,0xffedc9,0x9a8567,0x29221d,Mathf.Min(2,r),3,.12f,9);
-                if(progress<.2f)Light(h,new Color(1,.63f,.28f),Mathf.Min(4,r*1.5f),2*(1-progress/.2f));
+                Surface(h,w.Bash?0x393026U:0x3a2117U,w.Bash?0x91a7acU:0xd8562aU,w.Bash?.1f:.8f*(1-progress),now);Floor(h,r,0x251b13,0xc8995c,fade*.28f,.05f);
+                Emit(h,now,w.X,w.Y,.15f,w.Bash?0xfff4d0U:0xffd9a0U,w.Bash?0x9a8a72U:0xd8562aU,w.Bash?0x2a2220U:0x4a1610U,Mathf.Min(2,r),3,.12f,9);
+                if(progress<.2f)Light(h,w.Bash?Hex(0xe8f3f8):new Color(1,.63f,.28f),Mathf.Min(4,r*1.5f),2*(1-progress/.2f));
             }
             foreach(var b in sim.SkillBlades)if(b.Active)
             {
