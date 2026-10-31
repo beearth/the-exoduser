@@ -55542,3 +55542,14 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - 기존 API 연결 가이드를 26개 MCP 그룹·직접 API·주력 용도·연결 증거·월간 크레딧 분할 사용 기준으로 갱신했다. Kling은 10/31 인증과 회원/크레딧 조회를 확인했고, OpenAI는 10/30 모델 목록 인증만 확인했다.
 - AGENTS.md·CLAUDE.md·공통 작업 매뉴얼·총괄대장에 같은 목록을 연결했다. 공개 저장소에는 인증값·개인 결제·계정 잔액을 추가하지 않고 내부 지출 MD/JSON을 참조한다.
 - 범위는 문서와 사용자 승인 팀 공유이며 생성·결제·Unity·빌드·배포·공용 인덱스 변경은 없다. 실제 전달 수락과 팀 인수·적용은 별도 기록한다.
+
+
+## 2026-10-31 웹 제목 인장 보정2 — 투명 원형 메달
+
+| 항목 | 내용 |
+|---|---|
+| 범위 | statwindow-brief.md 마지막 보정2만, 최신 origin/main09eec0076에서 새 브랜치 |
+| 코드·자산 | web-uiux.css의40px 투명 은색 원형 눈 메달·중앙을 끊은 금빛 헤어라인·성장 배경 중복 눈 제거. title_eye_medallion_20261031.png 256×256 RGBA, 기존 gate_sigil 참조 내장 이미지 편집1장. 제목64px/40+24행·아래margin0·성장margin4px·본문845px. game.html CSS 캐시20261031-round-medallion |
+| 검수 | tools/check-stat-window.mjs는 현행 규격과1x/3x 크롭 기록. 실제 game.html1920/3840×5창10건·기능 PASS, pageerror/저장0·관련 회귀36/36·guard PASS. 두3배 비교판 직접 열람 후 사각 모서리·검은 판·중복 눈·눈에 띄는 잔점/계단0 |
+| 판정·한계 | 제목 메달 부분 VISUAL PASS. 보스 테스트 강제 상태·headless·격리 API, 자연 플레이/Unity/NW.js/배포 증거 아님. 스킬 본문 변경0 |
+| 증거 | I:/EXODUSER-Storage/codex-web-statwin/medallion-20261031/REPORT.md·review_1920_3x.png·review_3840_3x.png·after/geometry.json·regression-final.log·guard.log |

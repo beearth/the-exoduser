@@ -80,38 +80,38 @@ body:has(#bossBar.on) #stageClock{top:calc(var(--ui-inset-top,0px) + env(safe-ar
 #globeHP .globe-val #hpMax{margin-top:4px!important;line-height:1.2!important}
 
 /* 2026-10-31: one title band for the five sibling windows. Keep skill content owned by its author. */
-:root{--web-ui-title-height:44px}
+:root{--web-ui-title-height:64px}
 html body :is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel).panel .pbox .ptitle{
- display:grid!important;position:relative!important;isolation:auto!important;grid-template-rows:20px 24px;align-items:center!important;justify-content:center!important;justify-items:center;gap:0!important;
+ display:grid!important;position:relative!important;isolation:auto!important;grid-template-rows:40px 24px;align-items:center!important;justify-content:center!important;justify-items:center;gap:0!important;
  height:var(--web-ui-title-height)!important;min-height:var(--web-ui-title-height)!important;max-height:none!important;
  width:min(520px,100%)!important;max-width:100%!important;flex:0 0 auto!important;
- padding:0 12px!important;margin:0 auto 10px!important;zoom:1!important;
+ padding:0 12px!important;margin:0 auto 0!important;zoom:1!important;
  font-size:22px!important;line-height:1.2!important;letter-spacing:.04em!important;
  background:none!important;border:0!important;box-shadow:none!important;overflow:visible!important;
 }
 html body :is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel).panel .pbox .ptitle::before{
- content:''!important;display:block!important;position:static!important;inset:auto!important;transform:none!important;
- width:64px!important;height:20px!important;z-index:auto!important;
- background:url('img/ui/silver_hell/gate_sigil_20261028.jpg') center/240px auto no-repeat!important;
- mask:radial-gradient(ellipse,#000 32%,#000a 60%,transparent 80%)!important;mask-mode:alpha;mix-blend-mode:screen;
- border:0!important;box-shadow:none!important;filter:grayscale(1) brightness(3) contrast(1.1)!important;pointer-events:none;
+ content:''!important;display:block!important;position:relative!important;inset:auto!important;transform:none!important;
+ width:40px!important;height:40px!important;z-index:1!important;
+ background:url('img/ui/silver_hell/title_eye_medallion_20261031.png') center/contain no-repeat!important;
+ mask:none!important;mix-blend-mode:normal;
+ border:0!important;box-shadow:none!important;filter:none!important;pointer-events:none;
 }
 html body :is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel).panel .pbox .ptitle::after{
- content:''!important;display:none!important;position:static!important;inset:auto!important;transform:none!important;
- width:54px!important;height:1px!important;flex:0 0 54px!important;z-index:auto!important;
- background:linear-gradient(90deg,var(--sh-line),transparent)!important;border:0!important;border-image:none!important;box-shadow:none!important;pointer-events:none;
+ content:''!important;display:block!important;position:absolute!important;inset:20px 0 auto!important;transform:none!important;
+ width:100%!important;height:1px!important;z-index:0!important;
+ background:linear-gradient(90deg,transparent,rgba(189,169,122,.65) calc(50% - 26px),transparent calc(50% - 26px),transparent calc(50% + 26px),rgba(189,169,122,.65) calc(50% + 26px),transparent)!important;border:0!important;border-image:none!important;box-shadow:none!important;pointer-events:none;
 }
-html body #statPanel#statPanel#statPanel.panel .pbox .growth-header{height:var(--web-ui-title-height);min-height:var(--web-ui-title-height);padding:0!important;margin:0 0 12px!important;gap:16px;flex-wrap:nowrap;border:0}
+html body #statPanel#statPanel#statPanel.panel .pbox .growth-header{height:var(--web-ui-title-height);min-height:var(--web-ui-title-height);padding:0!important;margin:0 0 4px!important;gap:16px;flex-wrap:nowrap;border:0}
 html body #statPanel#statPanel#statPanel.panel .pbox .growth-title{margin-bottom:0!important}
 html body #statPanel#statPanel#statPanel .growth-kicker,
 html body #statPanel#statPanel#statPanel .growth-subtitle{display:none!important}
 html body #statPanel#statPanel#statPanel .growth-wallets{align-self:stretch;align-items:center}
 html body #statPanel#statPanel#statPanel .growth-wallet{flex-direction:row;gap:12px;min-width:0;height:var(--web-ui-title-height);padding:0 12px!important}
 html body #statPanel#statPanel#statPanel .growth-wallet strong{font-size:24px!important;line-height:1.2}
-/* Replace the vector compass and red needle with the approved first-screen engraved eye. Native aspect ratio is 16:9. */
+/* The title medallion is the only eye: omit the former large background sigil. */
 html body #statPanel#statPanel#statPanel.panel .pbox.growth-shell{
- background:linear-gradient(#14131570,#09090ae6),url('img/ui/silver_hell/gate_sigil_20261028.jpg') 30% -72px/620px auto no-repeat,var(--ui-surface) center/320px!important;
- background-blend-mode:normal,screen,normal;
+ background:linear-gradient(#14131570,#09090ae6),var(--ui-surface) center/320px!important;
+ background-blend-mode:normal,normal;
 }
 html body #invPanel#invPanel#invPanel.panel .pbox>div:has(>.ptitle){min-height:var(--web-ui-title-height)!important;flex-wrap:nowrap!important}
 html body #invPanel#invPanel#invPanel.panel .pbox .ptitle{width:auto!important;margin:0 16px 0 0!important;font-size:20px!important}

@@ -758,6 +758,8 @@ CTO가 2026-10-29 `body_game.png`와 `gaunt_v2_game.png`를 직접 열어 확인
 codex-web-statwin: 다섯 창 제목44px와 성장 머리225→44px, 기존 인장 원화 눈·181px 본문 반환.1920/3840×5 실화면10건·관련회귀39/39·project-check103/103·guard PASS, 겹침/예외/저장0. 제작자 시각판정은 변경 제목·인장·1x 범위 PASS이며 자연플레이·전체 게임·Unity 판정과 구분한다. 상세 계약 UI_COMPOSITION_20260925.md 최신 절, 근거·원격 SHA·분리 서버는 G:/exoduser/tmp/design-review/20261031_stat_window/REPORT.md. Unity 후속은 기존 ui-ultrawide-brief 끝에 전달했으며 중복 실행/새 writer는 만들지 않았다.
 
 
+보정2 최신 인수: CTO가09eec0076의 사각 잘림/중복 눈을 반려했다. 새 브랜치codex/web-statwin-medallion-20261031에서 투명 원형 메달256×256 RGBA를40px로 표시하고 금빛 헤어라인 중앙에 배치, 성장 배경 눈을 제거했다. 제목64px·성장 본문845px. 1920/3840×5창의1x/3x 직접 열람·경계/기능10건·회귀36/36·guard PASS, pageerror/저장0. 제목 메달 부분 VISUAL PASS이며 앞선 자체 눈 PASS는 대체한다. 정확 증거/소스/원격 SHA는 I:/EXODUSER-Storage/codex-web-statwin/medallion-20261031/REPORT.md, 현행 수치는 UI_COMPOSITION 최신 표. 스킬 본문·Unity·배포 변경0.
+
 ## 2026-10-31 MCP와 API 목록 팀 공통 사용
 
 사용자 직접 지시에 따라 기존 [API 연결 가이드](../API연결_가이드.md)를 전체 팀 공통 목록으로 갱신하고 AGENTS·CLAUDE·작업 매뉴얼의 진입점을 연결했다. Kling 직접 MCP 인증·조회와 OpenAI 직접 API의 모델 목록 인증을 구분했으며, 도구 노출을 각 호스트의 계정 인증으로 확대하지 않는다. 실제 결제·잔액은 공개 Git 밖의 내부 MD·JSON 원장에 두고 월간 크레딧을 기간별로 나누어 예약·차감한다. 기존 팀·CTO에 문서와 원격 SHA를 공유하며 전달 수락·실제 인수·적용은 구분한다. 공유 기록은 가이드의 내부 원장 경로에 남긴다. 이번 범위는 문서와 공지이며 새 생성·결제·Unity·빌드·배포는 실행하지 않는다.
