@@ -60,7 +60,7 @@ UseDeepBlack는 표시 전용 읽기이며 Col/ParryClass/Friendly/좌표/속도
 |---|---|
 | 이전 표시 검사 | 초기 resolver/픽셀 16검사 및 AI 관측 20검사는 당시 후보만 검증. 전체 충돌의 패링 불가를 증명하지 못했으므로 범위 합격 근거로 철회 |
 | 실제 전체 충돌 | 사용자 Core DLL에서 normal/remodel의 physical/magic/blackBean/forbidden Q/E 및 별도 Orbs/Web, 총 22관측. Vx=0/X+40/Sz2, Player.Radius15의 확장 반경 접촉 샘플. 일반 반경25 밖·패링 확장75 안이며 일반 반경 내 피해 표본으로 소급하지 않음. 별도 Orbs는X+30/R26로일반 반경41 안. 상태·패링창·위치·HP를 통제했으며 손플레이 아님 |
-| 범위 회귀 RED | 사용자 확인에 맞춘 11검사 중 초기 후보 6실패. 별도 Orbs의 녹색 복원도 검사 |
+| 범위 회귀 RED | 사용자 확인에 맞춘 11검사 중 초기 후보 6실패. 별도 Orbs의 녹색 복원도 검사. 기존07:19:02 UTC 도구응답을 분류-RED2-기존도구출력회수.json으로 회수했으며 재실행0. 최초stdout파일은GREEN과경로를공유해덮였으므로원파일복원으로부르지않음 |
 | 범위 회귀 GREEN | 실제 전체 충돌 결과에 기반한 분류 및 명시 class/혼합 특수탄 경계 15검사, 실패 0 |
 | 추가 이동 경계 | Vx=-6 및 Web 명시 class/혼합 특수탄 추가 하니스는 SDK10의 NuGet path1 오류와 NETSDK1060으로 2회 실패해 해당 단위 중단. 이 결과를 게임 실패나 추가 이동 검사 통과로 세지 않음 |
 | 호스트 흐름 | 사용자 DLL·실제 호스트 함수의 처치/출구/클리어와 fallen 성공/실패 4경로 통과. 저장 4건 읽기 전용 복원 통과. 검기탭/충전반복/E/마법/혼합 5공격 경로 최종처치→클리어 단회 통과 |
@@ -93,7 +93,7 @@ UseDeepBlack는 표시 전용 읽기이며 Col/ParryClass/Friendly/좌표/속도
 | 항목 | 확인값·한계 |
 |---|---|
 | 직전 최소 표시·관측(범위 정정 시점) | 소스36b4a74c1a788da40c101f8dcf30a45ec14fb2ef. 정확 4입력 SHA를 보존한 Runtime4ece426fa5bfc1387ef087f3fe1b946e85e00345575d789640c3d4822083e0d0. 사용자 Core51b 유지. 공식 Unity 새 빌드가 아닌 독립 C# 검수 사본 |
-| 공식 원본 M1 | 첫 슬롯 대기06:24:17→07:04:23 UTC, WaitMin 기본40으로 종료1/Player 시작0. 두 번째07:07 UTC부터 WaitMin120으로 같은 예약 순번 유지. 실제 실행 결과 아직 없음. 두 번째 동일 대기 실패면 추가 반복하지 않음 |
+| 공식 원본 M1 | 1차06:24:17→07:04:23 UTC(40분), 2차07:07:07.518→09:07:28.572 UTC(120분), 모두 공식FIFO슬롯획득전종료1·우리Player시작0. 사용자2실패중단지시로세번째요청0. 09:07:54 UTC 자기예약만반환, 타인6예약SHA동일 |
 | 새 사용자 종료 크래시 | 같은 제품 경로. 덤프 PID30032, 시작06:56:39 UTC(15:56:39 KST), 충돌07:00:19 UTC(16:00:19 KST). Physics cleanup/Input Shutdown 뒤 UnityPlayer.dll+UIAutomationCore 스택. 최초 정지 캡처보다 뒤에 시작한 별도 실행이며 처치 정지 원인으로 확정하지 않음 |
 | Windows 교차 근거 | Application Error1000, 07:00:20 UTC c0000005 및07:00:24 UTC c000041d. PID0x7550=30032, UnityPlayer offset0x10d1432로 덤프와 일치 |
 | 원자료 보존 | REPORT 경로 아래 사용자-종료크래시-070018에 Player.log/덤프/구조화 이벤트. 덤프 원본·사본 SHA de1ff34203c05070aad84adc200a809ae3e5a169d3a7a2e736462ea0ba9196b6. 기존 일시정지 담당이 증거 인수, 실제 원인 수정 완료로 합산하지 않음 |
@@ -119,3 +119,19 @@ Core tick이 진행해도 UpdateViews가 완료되지 않으면 화면이 멈춰
 정지원인미확정·수정완료0, 자연AI에서블랙대상미관측, 실제Player/1x/웹Unity영상/공통인수/Desktop갱신미완료다. 독립 C# 검수패키지를정식Unity빌드나전달완료로사용하지않는다. 현재소유branch전체통합은16스킬을끼워넣으므로금지하며, 기존통합담당의승인범위에서최신7경로누적패치만인수해야한다. 원본14cc checkout은읽기전용참조이므로우리담당이수정하지않았다. 같은실행즉시재요청없이공식자원반환·중앙인수경계의후속지시를기다린다.
 
 최종근거는REPORT및최종-중단경계-영수증.json, current-product-m1-wait2.실행.json, resource-return.실행.json이다.
+
+## 동일 사용자 답변 answer-1 적용 대조와 관측 소유 경계
+
+확정 증상은 **이동과 ESC 메뉴 모두 응답하지 않음**이다. 메뉴가 열리는 Resume-only로 축소하지 않는다. 확정 블랙 대상은 **Q/E 모두 패링 불가인 탄만**이며, 접촉 패링·흡수·유도 반사의 결과를 구분한다. c1단독채택금지/Orbs녹색복원/분류15검사0실패는이미36b4에반영돼있다. 현재4소스는7ed59 컴파일입력과동일하며, 이번답변수신으로기존검수나Player를반복하지않는다.
+
+아래 줄은 읽기전용 사용자14cc의 NativeGame.cs 기준이며, 공유 함수에 새 관측 훅을 적용했다는 뜻이 아니다. 현재 관측만으로 아래 미검증 항목을 통과 처리하지 않는다.
+
+| 구분 | 현재 확보한 관측 | 남은 실제 위치 확인과 소유 경계 |
+|---|---|---|
+| Main Update(167행) | Unity frame/Running/focus/패널/좌표 샘플 | frame은NativeGame.Update의진입·정상복귀증거가아님. UpdateSettingsPersistence/UpdateCombatSave 뒤·프런트엔드/포커스가드·패널/ESC처리전후를분리할필요. NativeGame.cs공유구역은기존담당인수전편집0 |
+| OnGUI(408행) | 메뉴·결과패널의논리Active 상태 | 실제OnGUI호출·Event유형·조기반환경로·메뉴Draw/ApplyPauseCommand전후는현재로그에없음. Active=true만으로메뉴가그려지거나ESC가전달됐다고주장0 |
+| FixedUpdate(226행) | Core tick/플레이어상태/호스트가드일부 | Tick은StepInput fixture로도진행하므로FixedUpdate진입증거로소급0. practiceScripted/Running/focus/lobby/Simulation가드와AimWorld→실제키조회→Tick→StageFlowPump→DispatchFeedback를구분할필요 |
+| 입력 폴링(230행이후) | 현재로그는키입력을읽거나기록하지않음 | 기존WASD x/y와ESC/패널명령의조회결과·실제조회단계도달여부를소유담당에서관측해야함. 추가입력조회로기존단축평가순서·입력소비를바꾸지않음 |
+| 장시간 전투·최종처치 | 0.5초샘플의BossAlive/HP/Revive/Sink/출구/클리어 | 샘플은같은프레임의정지직전지점을보장하지않음. 처치전후Core Tick/이벤트소비/뷰갱신의단계경계와Main/OnGUI/Fixed의진입·복귀를함께확인할필요. 직접치명타/무적/AI-off fixture로사용자장시간증상해결선언0 |
+
+공유훅의검토안은진단전용진입/복귀표식과기존poll결과읽기이며, Running/timeScale/PlayerDown/피해/Q-E/저장값쓰기·예외삼키기·강제복귀를포함하지않는다. 현재검수패키지에는이공유훅이미적용이다. 기존일시정지/임팩트담당과중앙인수경계에관측공백을인계하고, 이답변을새실행·추가예약또는두실패중단해제지시로해석하지않는다.
