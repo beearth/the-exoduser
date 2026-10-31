@@ -7,7 +7,7 @@ const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const require=createRequire(process.env.EXODUSER_TOOLS_PACKAGE||'G:/exoduser/package.json');
 const {chromium}=require('playwright');
 const mode=process.argv[2]||'smoke',suite=process.argv[3]||'index';
-const recording=mode.startsWith('record'),fadeOnly=mode==='record-fade',entryOnly=mode==='record-entry',narrationOnly=mode==='record-narration';
+const recording=mode.startsWith('record'),fadeOnly=mode==='record-fade',entryOnly=mode==='record-entry',narrationOnly=mode==='record-narration',resultsOnly=mode.endsWith('results');
 const output=process.env.WIDE_QA_OUTPUT||'I:/EXODUSER-Storage/wide-animation/20261031';
 const base=process.env.WIDE_QA_URL||'http://127.0.0.1:3458';
 const dir=path.join(output,mode,suite);fs.mkdirSync(dir,{recursive:true});
@@ -86,7 +86,16 @@ try{
    await page.goto(base+'/game.html?forgelab=1&tutorial=0&resourceTutorial=0',{waitUntil:'domcontentloaded'});
    await page.waitForFunction(()=>typeof P!=='undefined'&&P?.lv===1000&&!_bootLoadActive&&G.on,null,{timeout:180000});
    await page.evaluate(()=>{window._btFramePause=true;G.on=false;G.paused=true;_benchDone=true;_hwTier='A';OPT.atmos=2;FullscreenArt.setMotionPolicy?.(()=>_hwTier!=='C'&&OPT.atmos!==0);_cutsceneState=null;_cutC.style.display='none';for(const id of ['stageTransition','introKeys','introDiff','tutorial','death','demoEnd','stageClear']){const e=document.getElementById(id);if(e){e.style.display='none';e.style.opacity='0';}}});
-   for(const seq of (narrationOnly?['PRO']:['INTRO','PRO'])){
+    if(resultsOnly){
+     // The forge fixture opens its skill panel after 700ms. Close it before
+     // judging the lower-z native clear panel; do not lift production z-index.
+     await page.waitForTimeout(1000);
+     await page.evaluate(()=>{closeAllPanels(true);G.paused=true;G.stageCleared=true;G._bossClearT=127;G._stageKills=80;_showClearResult();const e=document.getElementById('stageClear');e.style.display='block';e.style.opacity='1';e.style.pointerEvents='all';});
+     await page.waitForFunction(()=>{const e=document.getElementById('nextBtn'),r=e.getBoundingClientRect();return document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)===e;});
+     await snap('clear');
+     await page.evaluate(()=>{document.getElementById('stageClear').style.display='none';const e=document.getElementById('demoEnd');e.style.display='flex';e.style.opacity='1';});await snap('demo-end');
+    }else{
+    for(const seq of (narrationOnly?['PRO']:['INTRO','PRO'])){
     await page.evaluate(seq=>{_cutSeq=seq;const lns=_cutsceneGetLines();const narr=seq==='PRO'?lns.findIndex(x=>x.img&&x.narr&&x.text&&x.cam?.zs!==x.cam?.ze):-1;_cutLineIdx=narr>=0?narr:lns.findIndex(x=>x.img);_cutsceneIdx=_cutLineIdx;_cutsceneState='INTRO_CUTSCENE';_cutLineStartMs=performance.now();const line=lns[_cutLineIdx];window.__qaOldDur=line.dur;line.dur=30000;_getCutsceneImg(line.img);},seq);
     await page.waitForTimeout(1300);await snap('cutscene-'+seq.toLowerCase());
     await page.evaluate(()=>{_cutsceneGetLines()[_cutLineIdx].dur=window.__qaOldDur;_cutsceneState=null;_cutC.style.display='none';});
@@ -97,6 +106,7 @@ try{
    await page.evaluate(()=>{document.getElementById('stageClear').style.display='none';const e=document.getElementById('demoEnd');e.style.display='flex';e.style.opacity='1';});await snap('demo-end');
    await page.evaluate(()=>{document.getElementById('demoEnd').style.display='none';showBootLoading('에셋 로딩 중...');const e=document.getElementById('stageTransition');e.style.display='flex';e.style.opacity='1';e.style.zIndex='1000000';LoadingArt.set(document.getElementById('stRndImg'),'img/lording/1.png');document.getElementById('stLoadBar').style.width='65%';});await snap('loading');
    }
+    }
   }
   const segments=receipt.screens.filter(s=>s.width===width);
   await context.close();
