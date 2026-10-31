@@ -48,7 +48,7 @@ test('centered resource readout has no panel frame or ornamental separators', as
 test('right HUD labels every value and spells out large numbers', async () => {
   const game = await readFile(path.join(rootDir, 'game.html'), 'utf8');
 
-  for (const [id,label] of [['hudLevelLabel','레벨'],['hudExpLabel','경험치'],['hudKillLabel','지역 처치'],['hudMaliceLabel','악의']]) {
+  for (const [id,label] of [['hudLevelLabel','레벨'],['hudExpLabel','경험치'],['hudKillLabel','지역 처치'],['hudMaliceLabel','악의구슬']]) {
     assert.match(game,new RegExp(`id="${id}"[^>]*>${label}</span>`));
     assert.ok(game.includes(`_hset($('${id}'),'text',_L(`),'labels use localization');
   }

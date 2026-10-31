@@ -52,3 +52,5 @@
 statwindow-brief에 따라 web-uiux.css에서 다섯 창 제목44px·성장 머리44px를 공통화하고, 기존 첫 화면 인장의 눈을 성장 배경에 연결했다. 상세 수치와 원화 근거는 [UI_COMPOSITION 최신 절](UI_COMPOSITION_20260925.md#2026-10-31-성장-창과-공통-다섯-창의-얇은-제목-띠)에만 둔다. 해당 후보의 game.html CSS 캐시는20261031-compact-title1이었으며, 사이드 판 통합본은20261031-edge3으로 두 변경을 함께 연결한다. tools/check-stat-window.mjs는 --url/--out/--modules 옵션으로 분리 server.cjs에서 두 해상도×다섯 창의 제목/본문/AP/노드 경계·검색·미리보기·요약 닫기·J 재열기·저장0을 검사한다. 스킬 본문은 다른 담당 소유이며 이번 수정 범위가 아니다.
 
 - 최신 origin/main 9f5db2ac6의 악의구슬 명칭·성장 제목/눈 원화·스킬 창 변경과 정상 병합했다. 공통 CSS의 양쪽 독립 구역과 양쪽 문서 이력을 모두 보존했고, game.html guard 줄수는66032다. 검수는 이 통합본에서 다시 수행한다.
+
+- 병합 후 cinematicGameplayHud의 hudMaliceLabel 기대값만 최신 화폐 SSOT(악의구슬)에 맞췄다. 기존 스테이지/숫자/지역 처치 검증과 게임 동작은 보존했다. 이 테스트 정합은 원격 화폐 표시명 변경을 되돌리지 않기 위한 것이다.
