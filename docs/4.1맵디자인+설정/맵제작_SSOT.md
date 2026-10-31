@@ -490,3 +490,8 @@ North of the rotten forest, hell gate or ruined chapel silhouette on the horizon
 완성 production_finish 화면이 전체 뷰포트를 불투명 ready청크로 덮으면 _ch1StartOuterCoversView가 가려진 _fillVoidWithFloor·20개 _oriFireflies·기존 맵캐시 분기3그룹을 렌더에서 제외한다. 매 프레임 줌/흔들림/가장자리·1026² ready를 검사하며, 로딩·오류·맵 밖 노출·다른stage/보스아레나/outer·Rootworld·초기폴백은 원래 바닥을 유지한다. ?ch1LegacyUnderlay=1은 비교용. visible 생체/언덕/소품/ATMO·19빌드레이어/이미지·충돌 삭제0. 캐시 메모리 전체해제나FPS개선율을 주장하지 않는다.
 
 현행 공식·수치·검수는 [가려진 레이어 정리 SSOT](CH1_HIDDEN_UNDERLAY_20260929.md)를 따른다. 앞선 날짜별 회귀·FPS·아트 수치는 당시 검수 이력이다.
+
+
+### 2026-10-31 키트 테스트 URL 현행 정정
+
+위 stage=0→55×31 PROD는 과거 임시 경로다. 현행 stage=0은 실제 200×200 본편이다. PROD 원화 검토는 mapTest=1/v4 또는 stage=0&plate=prod, FIELD_ONE은 stage=0&plate=fieldone/v1로 열며 classic=1은 원화 판을 끈다. 16:9 원화 테스트를 본편 초광폭 검수로 사용하지 않는다. [현행 런타임·검수](../12퍼포먼스·최적화/WORLD_ULTRAWIDE_20261031.md).

@@ -161,3 +161,8 @@ UW 6fps는 첫 프레임 로딩 스파이크(ftMax 370~430ms). 지속 FPS로 쓰
 오브젝트 에셋·4K·추가 분할은 이 판정 전에 하지 않는다.
 
 복구: `?stage=0&plate=fieldone`
+
+
+### 2026-10-31 경로 정정 (기존 검수는 당시 이력)
+
+현행 stage=0은 200×200 본편이다. 이 문서의 55×31 PROD 원화는 mapTest=1/v4 또는 stage=0&plate=prod, 36×27 FIELD_ONE은 stage=0&plate=fieldone/v1로 명시한다. 본편 청크·나무 혼입을 차단했으며 원화 판의 과거 성능·시각 판정을 본편에 전용하지 않는다. [현행 계약](../../12퍼포먼스·최적화/WORLD_ULTRAWIDE_20261031.md).

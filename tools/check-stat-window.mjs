@@ -9,6 +9,7 @@ const args = Object.fromEntries(process.argv.slice(2).map(a => {
 }));
 const require = createRequire(args['--modules'] ? path.resolve(args['--modules'], 'package.json') : import.meta.url);
 const { chromium } = require('playwright');
+const sharp = require('sharp');
 const out = path.resolve(args['--out'] || 'tmp/stat-window-review');
 const base = args['--url'] || 'http://127.0.0.1:3333';
 await fs.mkdir(out, { recursive: true });
@@ -34,7 +35,7 @@ try {
   await page.addStyleTag({ content: '#_btPanel{display:none!important}' });
   await page.evaluate(() => document.fonts.load('300 22px Hahmlet').then(() => true));
   console.log('한글 제목 글꼴 확인');
-  const sigil = await page.request.get(base + '/img/ui/silver_hell/gate_sigil_20261028.jpg');
+  const sigil = await page.request.get(base + '/img/ui/silver_hell/title_eye_medallion_20261031.png');
   assert.equal(sigil.status(), 200, '승인 인장 로딩');
   for (const width of [1920, 3840]) {
     await page.setViewportSize({ width, height: 1080 });
@@ -74,20 +75,24 @@ try {
           textClipped: text.left < titleBox.left - 1 || text.right > titleBox.right + 1 || text.height > titleBox.height + 1,
           escapedNodes, background: getComputedStyle(shell).backgroundImage };
       }, id);
-      assert.equal(geo.title.height, 44, `${width} ${id}: 제목 44px`);
+      assert.equal(geo.title.height, 64, `${width} ${id}: 제목 64px`);
       assert.equal(geo.overflow, false, `${width} ${id}: 가로 넘침`);
       assert.deepEqual(geo.collisions, [], `${width} ${id}: 제목 겹침`);
       assert.equal(geo.textClipped, false, `${width} ${id}: 제목 잘림`);
       assert.deepEqual(geo.escapedNodes, [], `${width} ${id}: 트리 노드 이탈`);
       if (id === 'statPanel') {
-        assert.equal(geo.header.height, 44);
-        assert.ok(geo.body.height >= 850, '반환된 세로 공간');
-        assert.match(geo.background, /gate_sigil_20261028/);
+        assert.equal(geo.header.height, 64);
+        assert.ok(geo.body.height >= 830, '반환된 세로 공간');
+        assert.doesNotMatch(geo.background, /gate_sigil_20261028/);
         assert.doesNotMatch(geo.background, /eye_crest_20261028/);
       }
+      if (id === 'forge') assert.doesNotMatch(geo.background, /eye_crest_20261028/, '대장간 중복 눈 제거');
       cases.push(geo);
       await page.mouse.move(1, 1);
       await page.screenshot({ path: path.join(out, `after_${width}_${id}.png`) });
+      const clip = { x: Math.round(geo.title.x + geo.title.width / 2 - 280), y: Math.max(0, Math.round(geo.title.y - 12)), width: 560, height: 100 };
+      const crop = await page.screenshot({ clip, path: path.join(out, `after_${width}_${id}_1x.png`) });
+      await sharp(crop).resize(1680, 300).png().toFile(path.join(out, `after_${width}_${id}_3x.png`));
     }
   }
   await page.setViewportSize({ width: 1920, height: 1080 });

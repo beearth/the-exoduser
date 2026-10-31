@@ -55515,6 +55515,18 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 산출·실행 | G:/exoduser/tmp/design-review/20261031_web_uiux/REPORT.md, 원본은I:/EXODUSER-Storage/design/web-uiux-20261031/. localhost3366자기작업본서버·격리save유지, Steam/DEMO/EA/외부배포0 |
 
 - 최종 커밋 훅이 자동 생성한 tools/guard.baseline.json의 lines를 기존65880→현행66030으로 동기화했다. 게임루프136행·보스idx·강화확률 해시는 그대로이며 guard PASS, 새 검사 우회0이다.
+
+
+## 2026-10-31 초광폭 사이드 판·인게임 가장자리 사용자 정정
+
+| 범위 | 구현·검수 계약 |
+|---|---|
+| 로비·캐릭터 선택·타이틀 메뉴 | 사이드 정보판은 실제 화면 끝, 높이 기준 축척. 중앙 제목·무대·모달 유지. 로비 어둠은 판 폭, 선택창 우측 비네트480px 한정 |
+| 인게임 전체 UI | 미니맵·자원·레벨/처치·튜토리얼·시스템/키 안내·알림·펫은 화면 가장자리. HP/MP·스킬바 묶음과 큰 메뉴는 중앙16:9 유지. 실습 중 상태판 표시, 실제 bounds로 상태판 아래·구슬 위 공간 예약 |
+| 검수·인계 | test/webUiux.test.mjs의 21개 회귀, tools/check-web-sidepanel.mjs의 네 해상도 실제 페이지·텍스트/컴포넌트 충돌·HTTP 입력 일치 검사. 기존 원본에서도 실패하는 inventoryPaperdollLayout/petGateLockedDialogue 2건은 별도 기록. Unity ui-ultrawide-brief.md 끝에 확장 지시 추가 |
+
+상세 좌표·수치·최종 캡처/원격 근거는 WEB_UIUX_GAME_20261031.md 및 지정 sidepanel/REPORT.md를 따른다.
+
 # 2026-10-31 전투 스킬 창 공간·고정 기술
 
 - `skill-forge.js/css`: 설명판270px/내용 높이, 빈 로드맵 접기, 초광폭 좌우 끝·중앙1800px. 구르기·X처형·T자동석궁을 추가 표시하고 E/RMB 실제 배정·기절 탈출·미습득 조건을 맞췄다. 전투·6개 장착 슬롯·세이브 구조는 유지한다.
@@ -55535,6 +55547,8 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 
 성장 검수 보강: 최초 통합1920 캡처의 외부 갑옷 배경이 로딩 중인 것을 직접 확인해 최종 시각 증거에서 제외했다. tools/check-stat-window.mjs는 CSS 배경 원화 decode를30초 한도로 기다린 뒤 캡처하며, 같은 소스의1920/3840 화면을 다시 검수한다.
 
+사이드 판 통합 후 HUD 회귀의 화폐 라벨 기대값을 현행 악의구슬 SSOT로 동기화했다. 숫자·지역 처치 검증과 런타임은 바꾸지 않았다.
+
 ## 2026-10-31 CTO 최종 보정 — 다섯 창 제목 중앙의 눈
 
 | 항목 | 보정 범위·근거 |
@@ -55550,6 +55564,21 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - 기존 API 연결 가이드를 26개 MCP 그룹·직접 API·주력 용도·연결 증거·월간 크레딧 분할 사용 기준으로 갱신했다. Kling은 10/31 인증과 회원/크레딧 조회를 확인했고, OpenAI는 10/30 모델 목록 인증만 확인했다.
 - AGENTS.md·CLAUDE.md·공통 작업 매뉴얼·총괄대장에 같은 목록을 연결했다. 공개 저장소에는 인증값·개인 결제·계정 잔액을 추가하지 않고 내부 지출 MD/JSON을 참조한다.
 - 범위는 문서와 사용자 승인 팀 공유이며 생성·결제·Unity·빌드·배포·공용 인덱스 변경은 없다. 실제 전달 수락과 팀 인수·적용은 별도 기록한다.
+
+사이드 판 최종 검수는 구슬 .globe-glass 외곽 장식까지 포함한 실제 경계로 강화했다. 안내창이 장식 프레임 위16px를 비우고 내부 목록만 스크롤한다.
+
+사이드 판 검수 도구는 중앙 정렬용 구슬 본체와 충돌용 외곽 원화 좌표를 분리해 기록한다. 실제 UI 배치는 유지하고 이 구분의 회귀2건을 검수한다.
+
+
+## 2026-10-31 웹 제목 인장 보정2 — 투명 원형 메달
+
+| 항목 | 내용 |
+|---|---|
+| 범위 | statwindow-brief.md 마지막 보정2만, 최신 origin/main09eec0076에서 새 브랜치 |
+| 코드·자산 | web-uiux.css의40px 투명 은색 원형 눈 메달·중앙을 끊은 금빛 헤어라인·성장·대장간 배경 중복 눈 제거. title_eye_medallion_20261031.png 256×256 RGBA, 기존 gate_sigil 참조 내장 이미지 편집1장. 제목64px/40+24행·아래margin0·성장margin4px·본문845px. game.html CSS 캐시20261031-round-medallion |
+| 검수 | tools/check-stat-window.mjs는 현행 규격과1x/3x 크롭 기록. 실제 game.html1920/3840×5창10건·기능 PASS, pageerror/저장0·관련 회귀36/36·guard PASS. 두3배 비교판 직접 열람 후 사각 모서리·검은 판·중복 눈·눈에 띄는 잔점/계단0 |
+| 판정·한계 | 제목 메달 부분 VISUAL PASS. 보스 테스트 강제 상태·headless·격리 API, 자연 플레이/Unity/NW.js/배포 증거 아님. 스킬 본문 변경0 |
+| 증거 | I:/EXODUSER-Storage/codex-web-statwin/medallion-20261031/REPORT.md·review_1920_3x.png·review_3840_3x.png·after/geometry.json·regression-final.log·guard.log |
 
 ## 2026-10-31 악의오브 최종 개명·원화·음성 검수
 
@@ -55584,3 +55613,14 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 전체 높이·상태 | 그림 inset0, 하단 별도 검은 띠 제거. 투명 시작 어두운 그라데이션 위 font-hell/title·뼈색·금빛1px 진행 선 | loading-art.css |
 | 선택·폴백 | rd11.jpg 포함 전수 선택, resize/최신 요청 보호. 실제 다운로드 실패에만 원본 contain+블러 폴백 | loading-art.js, test/loadingWide.test.js |
 | 검수·인계 | 실제 로딩35×4해상도·로비·실패·1x 및 원격 영수증, 기존 Unity 브리프 최종 계약 전달 | I:/EXODUSER-Storage/web-loading/20261031-final35/ |
+
+## 2026-10-31 웹 초광폭 월드
+
+stage=0은 실제200×200 본편으로 정정하고 과거 원화 판은 명시적 mapTest/plate 옵션으로 보존했다. 작은 판에는 production 청크/8000px 나무를 섞지 않는다. 본편 전체 VW/VH·세로 시야·1920 렌더는 유지한다. 리시는 기존2500px 초과·800~1200px 링을 유지하며 가시 영역+적 반경+100px 안 후보를 건너뛴다. 투사체 원거리 정리는 기존 거리제곱6250000 초과와 가시 영역+100px 밖을 모두 요구한다(즉시/일반탄 수명 연장 종료). 공격 수명·사거리·어그로는 유지한다. Unity/Godot 실행 반영을 의미하지 않는다. [정확한 현행 계약·검수](12퍼포먼스·최적화/WORLD_ULTRAWIDE_20261031.md).
+
+
+## 2026-10-31 — EXODUSER 로고 불투명 흑철 바탕
+
+- `img/logo_exoduser.png` byte와 원래 불투명 금속 115,815픽셀을 보존하고, 같은1506×719 `img/logo_exoduser_solid.png`를 추가했다. 글자·눈 고리·머리 내부 흑철 바탕과 어두운 외곽/그림자로 인장 관통을 막는다.
+- `index.html` 10곳·`game.html` 1곳 PNG 참조 교체. 위치·크기·fade·게임 규칙은 유지. 규격·검수 도구: `docs/3.1 ui hud 디자인/LOGO_SOLID_20261031.md`, `tools/build-logo-solid.py`, `tools/verify-logo-solid.py`.
+- main 소스 반영만 수행하고 DEMO/EA 복사·배포·Unity 실행·유료 생성은 하지 않는다. 실제 원격·캡처·겹침·회귀·guard 결과는 `G:/exoduser/tmp/design-review/20261031_logo_solid/REPORT.md`에 기록한다. 과거 원본/영상 제작 영수증은 보존한다.
