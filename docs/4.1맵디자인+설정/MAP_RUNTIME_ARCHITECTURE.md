@@ -270,7 +270,7 @@ kit builders (24417~24507)   ─┘        │
 ## 11. 카메라 & 렌더 컬링 (Q7/Q8)
 
 - 카메라: `VW/VH`(3856/3932), 팔로우 29730–29742(룩어헤드 `P.v*25`, 보스 중간점, boss zoom 0.80), `[CAM-CLAMP]` 29743–29746(**zoom-aware 맵경계 클램프 → 코너 void 노출 방지**), 렌더보간 52219–52228, 월드 transform 43532.
-- 컬링: 적 AI ±300px(28577) / 적 draw pad 120~200px(44371) / 투사체 despawn 2500px(28771) / 타일 뷰포트 범위(43533) / 아이템 ±40~150px.
+- 컬링: 적 AI ±300px(28577) / 적 draw pad 120~200px(44371) / 투사체 원거리 despawn은 거리제곱6250000 초과 및 실제 가시 영역+100px 밖(2026-10-31; 기존28771은 옛 라인) / 타일 뷰포트 범위(43533) / 아이템 ±40~150px.
 - **Q7(스테이지를 더 큰 seamless로 만들 때 병목)**:
   1. `buildMapCache` 텍스처 크기 — `_shouldStreamMapCache`(20289)가 ≥1000²타일/>texLimit/>64Mpx에서 스트리밍 전환. 200×200=8000²는 이미 스트리밍/타일캐시 처리됨.
   2. **적 하드캡 700**(28487) — 대형 존일수록 밀도 분산 튜닝 필요.
@@ -542,3 +542,8 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 | FDG-TEX-ENTRY | index badge v0.17 / studio.js 및 이번변경8개파일의 관련 dependency query0.17.1. CSS0.16.1·다른 collision/adapter/height/physical/AST/World entry들은 기존값 유지. 독립 SourcePreviewRuntime 소비만 추가, game.html/본편save/combat/START/nav/geometry/sourcePNG 권위 변경0 |
 | FDG-TEX-ACCEPTANCE | 실제 revised entry/mid/summit/reopened 화면에서 위쪽soil·경사·어두운south옆면·발 높이와 외부 전경 보존 확인. **이번 높이 지형 노출 VISUAL PASS / 전체 production FAIL·UNADOPTED.** full assembly/native anchor/crop/origin/UV/물리Z·다른3재질·본편/관문/1-2·Windows/FPS/GPU는 미인수 |
 | FDG-TEX-EVIDENCE | 외부 E=engine-stage0-terrain-exposure-final. actual-terrain-*.revised.png / revised.qa.png, public-ui-trace.json, actual-terrain-reopened.revised-export.fdg.json, new-save-reopen-revised-contract-proof.json, terrain-exposure revised test receipts, pixel-preservation-revised-qa.json, engine-review.md. 첫 실패 증거 보존. own8code+1test+15docs=24 checkpoint, 공유Git rollback0/oldseal 재검사0 |
+
+
+## 2026-10-31 stage=0 초광폭 진입 계약
+
+stage=0은 실제 CH1-1 200×200 본편을 선택한다. 과거 55×31 원화 QA는 mapTest=1/v4 또는 stage=0&plate=prod, 36×27은 stage=0&plate=fieldone/v1로 명시한다. 작은 원화 판에는 production 청크와 8000px 좌표 나무를 섞지 않는다. 기존 전체 VW/VH 시야·카메라 클램프·geometry·충돌·스폰 예산·루트는 유지한다. [화면 밖 처리·실제 4해상도 검수](../12퍼포먼스·최적화/WORLD_ULTRAWIDE_20261031.md).

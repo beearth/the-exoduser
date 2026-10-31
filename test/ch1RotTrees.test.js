@@ -101,7 +101,7 @@ test('rot trees: bake tree_fade — 0 deep in the walkable floor, 1 deep outside
 
 test('rot trees: wiring — game.html tag + ground call + map object hook + start warmup; packaging',()=>{
   assert.match(gameSrc,/<script src="ch1-rot-trees\.js\?v=20261019-retire13"><\/script>/);
-  assert.match(gameSrc,/Ch1FaceLife\.draw\([^\n]*\n\s*if\(globalThis\.Ch1RotTrees\)Ch1RotTrees\.draw\(X,G,_now,_CH1_START_ROOT,VW,VH\);/,'ground pass right after face life');
+  assert.match(gameSrc,/Ch1FaceLife\.draw\([^\n]*\n\s*if\(_ch1StartOuterEnabled\(\)&&globalThis\.Ch1RotTrees\)Ch1RotTrees\.draw\(X,G,_now,_CH1_START_ROOT,VW,VH\);/,'production-only ground pass right after face life');
   for(const s of [gameSrc,easySrc]){
     assert.match(s,/_meta\.rotTree&&globalThis\.Ch1RotTrees&&Ch1RotTrees\.drawObj\(X,mo,_meta\.rotTree,sz,_now\)\)\)X\.drawImage\(_spr,mo\.x-sz\/2,mo\.y-sz\/2,sz,sz\)/,'map object hook keeps the plain drawImage fallback');
     assert.match(s,/_OBJ_META\[_k\]\.rotTree=_rtObj\[_k\]/);

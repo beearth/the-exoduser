@@ -45,7 +45,7 @@
 | rd15.png | 2170×725 | 로비 후보 프리로드(현재 표시 안 함) | 원본 전체 contain + 어둡고 흐린 같은 그림 폴백 |
 | rd16.png | 2560×1440 | 로비 후보 프리로드(현재 표시 안 함) | 원본 전체 contain + 어둡고 흐린 같은 그림 폴백 |
 | rd17.png | 1536×1024 | 로비 후보 프리로드(현재 표시 안 함) | 원본 전체 contain + 어둡고 흐린 같은 그림 폴백 |
-| img/logo_exoduser.png | 로고 원본 | index.html chapterGate 실제 진입 대기 | 원본 contain, 별도 하단 상태 문구 |
+| img/logo_exoduser_solid.png | 불투명 흑철 바탕 보정본(원본 logo_exoduser.png 보존) | index.html chapterGate 실제 진입 대기 | 원본 contain, 별도 하단 상태 문구 |
 
 _RD_IMGS 16장은 목록·preload 후보이며 showLoading의 현재 실제 그림은 로고다. 챕터 진입과 장 사이 전환은 위 gate·stageTransition을 사용한다. 별도 장 시작 원화 배열은 없다. rd1·rd2의 적 스프라이트 참조는 로딩 화면 대상이 아니므로 보존한다. 난이도 선택 카드의 art 9·7·11·15·19는 기존 제한 카드 구도이며 화면 폭에 따라 확대되는 전체 화면 로딩과 구분한다. 디스크의 그 외 미참조 파일은 새 랜덤 풀에 추가하지 않는다.
 

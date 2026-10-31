@@ -771,3 +771,15 @@ codex-web-statwin: 다섯 창 제목44px와 성장 머리225→44px, 기존 인�
 ### 2026-10-31 웹 로딩 초광폭 인수
 
 담당 codex-web-loading. 원본 잘림 재현 → 원본 보존 표시·배경 확장·상태 영역 분리 작업. 범위·전체 이미지 목록·검수 근거·반영 단계는 [로딩 초광폭 정본](../1전체그래픽세팅/LOADING_ULTRAWIDE_20261031.md)에 기록한다. Unity는 ui-ultrawide-brief.md 추가 인계 대상이며 웹 캡처를 Unity 증거로 대체하지 않는다.
+
+
+### 2026-10-31 웹 초광폭 월드 인수
+
+담당 codex-web-world-wide. HUD 초광폭 캡처의 55×31 원화 테스트와 본편 나무 혼입을 분리하고 stage=0을 실제 200×200 본편으로 정정했다. 본편 전체 VW/VH 시야·geometry·충돌·전투 수치를 유지하며 화면 안 리시 재배치와 탄 원거리 정리를 보호한다. [현행 계약·최종 증거](../12퍼포먼스·최적화/WORLD_ULTRAWIDE_20261031.md). Unity는 별도 ui-ultrawide 브리프 인계로 구분한다.
+
+
+### 2026-10-31 WEB 로고 알파 보정
+
+| 담당·범위 | 결과·근거 | 반영 경계 |
+|---|---|---|
+| codex-web-logo, 첫 화면·로비·시네마틱/챕터/컷 로고 | 원본 금속 보존, 불투명 흑철 보정 PNG로 11참조 통일. [규격·검수](../3.1%20ui%20hud%20디자인/LOGO_SOLID_20261031.md), `G:/exoduser/tmp/design-review/20261031_logo_solid/REPORT.md` | main만 정상 반영. DEMO/EA·배포·Unity 적용과 구분. Unity 기존 브리프에 같은 PNG 사용 인계 |
