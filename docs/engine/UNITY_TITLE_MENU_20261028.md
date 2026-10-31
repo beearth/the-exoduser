@@ -88,3 +88,8 @@
 일반 실행은 cinSeen과 무관하게 FDG→타이틀 메뉴→인장 ENTER→canonical WorldMovie→로비다. 세계관 재생 중 명시 홀드5초/기존 수동 컷 이동은 유지한다. 옛 intro.mp4 단계는 복원하지 않는다. 로비 직행은 --unity-quick-start 정확 인자에서만 허용하며 바탕화면 기본 인자에는 넣지 않는다. UI2584e36e4·007568f94와 스킬ef75f883e를 정상 병합한 후보의 실제90초·1x·M1·바로가기 영수증은 I:/EXODUSER-Storage/demo-art/entry-flow/REPORT.md를 따른다.
 
 진입 복구6623d4bc1의 실제90장/6회귀/M123단계 통과·영상오류0·1600/1x 직접판정은 위 출력 REPORT.md 참조. 일반 바로가기에는 --unity-quick-start/QA 인자를 넣지 않는다.
+
+
+## 2026-10-31 전체 화면 원화 확장 적용
+
+이 문서의 과거 이미지·영상 제작 및 판정은 당시 이력이다. 현행 웹은 `fullscreen-art.js`의 경로 등록으로 64종의 원본/21:9/32:9 판을 선택한다. 화면비 2 이하의 원본 경로와 MP4 파일은 보존하고, 초광폭에서는 중앙 원본 픽셀을 보존한 확장 정지판을 쓴다. 출력·사용 위치·규격·생성 정보·검수 근거는 `docs/3.1 ui hud 디자인/FULLSCREEN_ART_ULTRAWIDE_20261031.md` 및 `assets/fullscreen-wide/20261031/manifest.json`이 현행 기준이다. 로딩35장은 별도 담당이며 Unity 반영·실행 검수는 이 웹 적용으로 완료되지 않는다.

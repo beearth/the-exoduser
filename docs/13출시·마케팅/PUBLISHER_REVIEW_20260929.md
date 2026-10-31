@@ -232,3 +232,8 @@ ZIP Drive 파일: https://drive.google.com/file/d/18n85EKH1guc2jJ_b9Z08luQ_Ez25M
 | 발송 | 기존9시 Gmail 예약2건 유지. 발송 시점 Drive 버전과 로컬 r2를 혼동하지 않음 |
 
 상세 원인·실측·남은 드롭/창 변경 지연·MAP PRODUCTION REPORT(VISUAL VERDICT RETOUCH)는 [전투 렉 수정 SSOT](../12퍼포먼스·최적화/COMBAT_TEXTURE_WARMUP_20260929.md). 이번 성능 수정은 Steam 배포 완료나 장시간/모든 보스 무끊김 보장을 뜻하지 않는다.
+
+
+## 2026-10-31 전체 화면 원화 확장 적용
+
+이 문서의 과거 이미지·영상 제작 및 판정은 당시 이력이다. 현행 웹은 `fullscreen-art.js`의 경로 등록으로 64종의 원본/21:9/32:9 판을 선택한다. 화면비 2 이하의 원본 경로와 MP4 파일은 보존하고, 초광폭에서는 중앙 원본 픽셀을 보존한 확장 정지판을 쓴다. 출력·사용 위치·규격·생성 정보·검수 근거는 `docs/3.1 ui hud 디자인/FULLSCREEN_ART_ULTRAWIDE_20261031.md` 및 `assets/fullscreen-wide/20261031/manifest.json`이 현행 기준이다. 로딩35장은 별도 담당이며 Unity 반영·실행 검수는 이 웹 적용으로 완료되지 않는다.

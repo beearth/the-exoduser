@@ -58,3 +58,8 @@
 | 제한 |15개 정지 표본 시각 검토. 전체 실시간 시청·스피커 청취 승인 및 게임 적용은 미실시 |
 | 재현·증거 | render_identity.py, manifest.json, qa.json, visual_review.json, contact.jpg/frames, prompts.md |
 | Git 제외 | 중복 backup/, 재다운로드 가능한 fonts/, 재현 가능한 segments/ 및 replacement_clean.mp4. 로컬 파일은 보존 |
+
+
+## 2026-10-31 전체 화면 원화 확장 적용
+
+이 문서의 과거 이미지·영상 제작 및 판정은 당시 이력이다. 현행 웹은 `fullscreen-art.js`의 경로 등록으로 64종의 원본/21:9/32:9 판을 선택한다. 화면비 2 이하의 원본 경로와 MP4 파일은 보존하고, 초광폭에서는 중앙 원본 픽셀을 보존한 확장 정지판을 쓴다. 출력·사용 위치·규격·생성 정보·검수 근거는 `docs/3.1 ui hud 디자인/FULLSCREEN_ART_ULTRAWIDE_20261031.md` 및 `assets/fullscreen-wide/20261031/manifest.json`이 현행 기준이다. 로딩35장은 별도 담당이며 Unity 반영·실행 검수는 이 웹 적용으로 완료되지 않는다.

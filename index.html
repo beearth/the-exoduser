@@ -3,6 +3,9 @@
 <head>
 <link rel="stylesheet" href="loading-art.css?v=20261031-final35">
 <script src="loading-art.js?v=20261031-final35"></script>
+<script src="fullscreen-art-data.js?v=20261031"></script>
+<script src="fullscreen-art.js?v=20261031"></script>
+
 <script src="build-target.js"></script>
 <script src="release-version.js"></script>
 <script src="patch-notes.js"></script>
@@ -657,6 +660,7 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
   </div>
   <!-- 클릭 안내 -->
   <div id="cinClickPrompt" style="position:absolute;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.1)">
+    <img id="gateWideArt" class="fullscreen-wide-plate" alt="" aria-hidden="true">
     <div class="cin-hell-frame">
       <div id="gateFx" aria-hidden="true"><i></i></div>
       <div id="gateLock" aria-hidden="true"><div class="gl-in"><img class="gl-sigil" src="img/ui/silver_hell/gate_sigil_20261028.jpg" alt="" draggable="false"><i class="gl-halo"></i><img class="gl-logo" src="img/logo_exoduser_solid.png" alt="" draggable="false"></div></div>
@@ -764,6 +768,7 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
   <canvas class="lobby-ancestor-sprite" id="lobbyAncestorSprite" width="384" height="624" aria-hidden="true"></canvas>
     <video class="lobby-char-preview" id="lobbyCharPreview" muted loop playsinline></video>
     <img class="lobby-char-preview lobby-char-keyart" id="lobbyCharKeyart" alt="" aria-hidden="true">
+    <img id="lobbyWideArt" class="fullscreen-wide-plate" alt="" aria-hidden="true">
   <!-- 패치노트 패널 (버전 오버레이 클릭) — Hell Gothic: 흑철 반투명 + 금빛 헤어라인 + 뼈색 문자 -->
   <style>
   #patchNotesBackdrop{display:none;position:absolute;inset:0;z-index:220;background:rgba(0,2,2,.66)}
@@ -1090,7 +1095,7 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
     @media(min-width:761px) and (max-width:900px){.cs-side{flex-basis:min(30vw,220px)}.cs-thumb-wrap{display:none}}
   </style>
   <div class="cs-panel">
-    <div class="cs-scene"><div class="cs-scene-img" id="csScene"></div><video class="cs-scene-vid" id="csSceneVid" muted loop playsinline preload="auto"></video><video class="cs-idle-vid" id="csIdleVid" muted loop playsinline preload="auto"></video></div>
+    <div class="cs-scene"><div class="cs-scene-img" id="csScene"></div><video class="cs-scene-vid" id="csSceneVid" muted loop playsinline preload="auto"></video><video class="cs-idle-vid" id="csIdleVid" muted loop playsinline preload="auto"></video><img id="csWideArt" class="fullscreen-wide-plate" alt="" aria-hidden="true"></div>
     <div class="cs-side-texture" aria-hidden="true"></div>
     <div class="cs-aura" id="csAura"></div>
     <div class="cs-vig"></div>
@@ -1138,6 +1143,8 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 <script src="world-intro-subtitles-data.js?v=20260907-v13-exodus-ko-escape"></script>
 <script src="world-intro-subtitles.js?v=20260907-v6-cinema-size"></script>
 <link rel="stylesheet" href="cin-enter-engraved.css?v=20261029-enter2">
+<link rel="stylesheet" href="fullscreen-art.css?v=20261031">
+<script src="fullscreen-art-dom.js?v=20261031" defer></script>
 <script>
 // ═══ 글로벌 게임패드 매니저 (전 화면 공통) ═══
 const _GP = {
@@ -2420,7 +2427,7 @@ function playCinematic(){
       if(i===idx){
         el.style.zIndex=4;el.classList.add('show');
         // 슬로우 줌 (컷씬 느낌)
-        const im=el.querySelector('img');if(im){im.style.animation='cinZoomSlow 4s ease-out forwards';}
+        const im=el.querySelector('img');if(im){if(im.dataset.src)globalThis.FullscreenArt?.picture(im,im.dataset.src);im.style.animation='cinZoomSlow 4s ease-out forwards';}
       }
       else if(i===_prevImg){el.style.zIndex=3;setTimeout(()=>{el.classList.remove('show');const im2=el.querySelector('img');if(im2)im2.style.animation=''},800);}
       else{el.classList.remove('show');el.style.zIndex=3;const im3=el.querySelector('img');if(im3)im3.style.animation='';}
@@ -3341,6 +3348,7 @@ function selectVisual(ci){
   const changed=_pendingVisualIdx!==ci;
   const request=++_visualPreviewSeq,isCurrent=()=>request===_visualPreviewSeq&&pop.style.display==='flex';
   _pendingVisualIdx=ci;
+  globalThis.FullscreenArt?.picture($('csWideArt'),ch.poster||ch.scene);
   $('csPortrait').parentElement.classList.toggle('silvertail-keyart',!!ch.keyart);
   const locked=!!ch.comingSoon;
   $('charVisualPop').classList.toggle('release-locked',locked);
@@ -3735,6 +3743,7 @@ function _updateCharDisplay(s){
   if(sub)sub.textContent=s?_TL(visual?.job||visual?.cls||''):_lobbyAncestorCaption();
   if(detail)detail.textContent=s?'':_lobbyAncestorDetail();
   _swapLobbyBg(0);
+  globalThis.FullscreenArt?.picture($('lobbyWideArt'),visual?.poster||'assets/lobby/lobby_varkan_crypt_poster_v2.webp');
   if(scene&&visual?.scene)scene.style.backgroundImage="url('"+visual.scene+"')";
   if(scene&&visual?.scene)scene.style.backgroundImage="url('"+visual.scene+"')";
   // Label/language refreshes keep the current character's playback and fallback state.
@@ -3775,6 +3784,7 @@ function _swapLobbyBg(stage){
   const bg=$('lobbyBgImg');if(!bg)return;
   const url='assets/lobby/lobby_varkan_crypt_poster_v2.webp?v=20260928-stable2';
   _curBg='varkan-crypt-v2';
+  globalThis.FullscreenArt?.picture($('lobbyWideArt'),url);
   bg.style.backgroundImage="url('"+url+"')";
   bg.style.opacity='1';
 }
@@ -4741,25 +4751,27 @@ function showCharGate(charId,storySeen=false){
         const w=cv.offsetWidth,h=cv.offsetHeight;
         const fadeIn=Math.min(1,elapsed/1000);
         // Keep UI text native and avoid redrawing an identical 24fps video frame at monitor refresh rate.
-        const frame=_titleVideo.readyState>=2?Math.floor(_titleVideo.currentTime*60):-1;
+        const widePlate=w/h>2?globalThis.FullscreenArt?.get('img/title_bg_20261028.jpg',w,h):null;
+        const hasOutpaint=!!(widePlate?.complete&&widePlate.naturalWidth&&widePlate.naturalWidth/widePlate.naturalHeight>2);
+        const frame=hasOutpaint?widePlate.naturalWidth:(_titleVideo.readyState>=2?Math.floor(_titleVideo.currentTime*60):-1);
         const uiReady=_titleVideo.readyState>=2||_titleArt.complete&&_titleArt.naturalWidth>0;
         if(uiReady&&_titleUI.style.display!=='block'){_titleUI.style.display='block';_fitTitleLabels();}
         else if(!uiReady)_titleUI.style.display='none';
         _titleUI.style.opacity=String(fadeIn);
         if(elapsed>1000&&frame>=0&&frame===lastTitleFrame&&w===lastTitleW&&h===lastTitleH&&
-           !(w/h>2&&!_titleWideBackdrop&&_titleArt.complete&&_titleArt.naturalWidth>0)){
+           !(w/h>2&&!hasOutpaint&&!_titleWideBackdrop&&_titleArt.complete&&_titleArt.naturalWidth>0)){
           rafId=requestAnimationFrame(titleLoop);return;
         }
         lastTitleFrame=frame;lastTitleW=w;lastTitleH=h;
         cx.clearRect(0,0,w,h);cx.fillStyle='#000';cx.fillRect(0,0,w,h);
         cx.save();cx.globalAlpha=fadeIn;
-        const titleSource=!_titleVideo.error&&_titleVideo.readyState>=2?_titleVideo:_titleArt;
+        const titleSource=hasOutpaint?widePlate:(!_titleVideo.error&&_titleVideo.readyState>=2?_titleVideo:_titleArt);
         const titleWidth=titleSource.videoWidth||titleSource.naturalWidth;
         const titleHeight=titleSource.videoHeight||titleSource.naturalHeight;
         if(titleWidth&&titleHeight){
           // 화면비 2:1 초과에서는 위아래가 잘리지 않도록 원화를 세로 기준으로 맞춘다.
           const wide=w/h>2;
-          if(wide&&_titleArt.complete&&_titleArt.naturalWidth&&_titleArt.naturalHeight){
+          if(wide&&!hasOutpaint&&_titleArt.complete&&_titleArt.naturalWidth&&_titleArt.naturalHeight){
             const bw=Math.ceil(w),bh=Math.ceil(h);
             if(!_titleWideBackdrop||_titleWideBackdrop.width!==bw||_titleWideBackdrop.height!==bh){
               _titleWideBackdrop=document.createElement('canvas');
@@ -4773,7 +4785,7 @@ function showCharGate(charId,storySeen=false){
             cx.drawImage(_titleWideBackdrop,0,0,w,h);
           }
           // 화면비 2:1 이하는 기존 cover와 오른쪽 인물을 살리는 62% 가로 포커스를 유지한다.
-          const k=wide?Math.min(w/titleWidth,h/titleHeight):Math.max(w/titleWidth,h/titleHeight);
+          const k=wide&&!hasOutpaint?Math.min(w/titleWidth,h/titleHeight):Math.max(w/titleWidth,h/titleHeight);
           const dw=titleWidth*k,dh=titleHeight*k;
           const dx=wide?(w-dw)/2:Math.min(0,Math.max(w-dw,(w-dw)*0.62)),dy=(h-dh)/2;
           cx.drawImage(titleSource,dx,dy,dw,dh);

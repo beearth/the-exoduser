@@ -1,0 +1,16 @@
+/* Background plates expand; menus and side panels retain their existing geometry. */
+.fullscreen-wide-plate{display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none;user-select:none}
+/* The side panel reaches the edge; its contents retain an inner safety margin. */
+#splashTitleBuild{right:max(48px,4.5vh)!important;bottom:max(48px,4.5vh)!important}
+@media(min-width:1100px){
+ #charVisualPop .cs-foot{padding:0 calc((max(48px,4vh) - 40px) / var(--cs-side-scale,1)) calc((max(48px,4vh) - 40px) / var(--cs-side-scale,1)) 0!important}
+ #charVisualPop #csRight{padding-right:max(8px,calc((max(48px,4vh) - 40px) / var(--cs-side-scale,1)))!important}
+}
+@media(min-aspect-ratio:2001/1000){
+  .fullscreen-wide-plate[data-wide-ready="true"]{display:block}
+  #csWideArt{z-index:2}
+  #lobbyWideArt{z-index:2}
+  #gateWideArt{z-index:-1}
+  #charVisualPop.release-locked #csWideArt{filter:grayscale(.8) brightness(.45)}
+  .cin-img img[data-wide-art="outpaint"],.cin-gate>img[data-wide-art="outpaint"]{object-fit:cover;object-position:center}
+}
