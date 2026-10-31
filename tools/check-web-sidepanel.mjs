@@ -33,6 +33,29 @@ export async function textGeometry(page,selector){
   return {texts:items.length,overlaps};
  },selector);
 }
+export function assessRows(rows){
+ const failures=[];
+ const overlap=(a,b)=>a&&b&&a.visible&&b.visible&&Math.min(a.right,b.right)-Math.max(a.left,b.left)>1&&Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)>1;
+ for(const row of rows){
+  if(!row.texts)failures.push({screen:row.screen,width:row.width,height:row.height,kind:'empty-capture'});
+  if(row.overlaps.length)failures.push({screen:row.screen,width:row.width,height:row.height,kind:'text',overlaps:row.overlaps});
+  const g=row.geometry;
+  if(row.screen==='lobby'&&Math.abs(g['#lobby .lobby-right'].right-row.width)>1)failures.push({...row,kind:'lobby-edge'});
+  if(row.screen==='charselect')for(const id of ['#csLeft','#csRight','.cs-foot'])if(Math.abs(g[id].right-(row.width-40))>1)failures.push({screen:row.screen,width:row.width,kind:'character-edge',id});
+  if(row.screen==='hud'){
+   if(g['#mmWrap'].left>32||row.width-g['#mmLvl'].right>40)failures.push({screen:row.screen,width:row.width,kind:'hud-edge'});
+   if(Math.abs(((g['#globeHP'].bodyRect||g['#globeHP']).left+(g['#globeMP'].bodyRect||g['#globeMP']).right)/2-row.width/2)>1)failures.push({screen:row.screen,width:row.width,kind:'hud-center'});
+  }
+  if(['practice','system-guide','key-guide'].includes(row.screen)){
+   const guide=g[row.screen==='practice'?'#parryLesson':row.screen==='system-guide'?'#systemLesson':'#keyGuide'];
+   if(!g['#mmLvl'].visible)failures.push({screen:row.screen,width:row.width,kind:'status-hidden'});
+   for(const id of ['#mmLvl','#globeHP','#globeMP','#skBar','#petSubtitle'])if(overlap(guide,g[id]))failures.push({screen:row.screen,width:row.width,kind:'component-overlap',id});
+   if(guide.top<0||guide.bottom>row.height)failures.push({screen:row.screen,width:row.width,kind:'guide-offscreen'});
+  }
+  if(row.screen==='notification'&&overlap(g['#notif'],g['#petSubtitle']))failures.push({screen:row.screen,width:row.width,kind:'notification-pet-overlap'});
+ }
+ return failures;
+}
 export async function captureMatrix({lobby,game,output}){
  await fs.mkdir(output,{recursive:true});const rows=[];
  async function capture(page,name,selectors,edges=[]){
@@ -40,7 +63,7 @@ export async function captureMatrix({lobby,game,output}){
   const viewport=page.viewportSize(),file=name+'-'+viewport.width+'x'+viewport.height+'.png';
   let text=await textGeometry(page,selectors);
   for(let retry=0;!text.texts&&retry<12;retry++){await page.waitForTimeout(250);text=await textGeometry(page,selectors);}
-  const geometry=await page.evaluate(selectors=>Object.fromEntries(selectors.map(selector=>{const e=document.querySelector(selector);if(!e)return[selector,null];const visual=e.querySelector('.globe-glass')||e;const r=visual.getBoundingClientRect(),s=getComputedStyle(e);return[selector,{...r.toJSON(),visible:r.width>0&&r.height>0&&s.display!=='none'&&s.visibility!=='hidden'&&+s.opacity>0}]})),edges);
+  const geometry=await page.evaluate(selectors=>Object.fromEntries(selectors.map(selector=>{const e=document.querySelector(selector);if(!e)return[selector,null];const visual=e.querySelector('.globe-glass')||e;const r=visual.getBoundingClientRect(),s=getComputedStyle(e);return[selector,{...r.toJSON(),bodyRect:e.getBoundingClientRect().toJSON(),visible:r.width>0&&r.height>0&&s.display!=='none'&&s.visibility!=='hidden'&&+s.opacity>0}]})),edges);
   await page.screenshot({path:path.join(output,file)});rows.push({screen:name,...viewport,file,...text,geometry});
  }
  const clean=()=>game.evaluate(()=>{
@@ -81,26 +104,7 @@ export async function captureMatrix({lobby,game,output}){
   await clean();await game.evaluate(()=>_showNextDiffPop());await capture(game,'difficulty','#nextDiffPop',['#nextDiffPop .nd-inner']);
   await clean();await game.evaluate(()=>showTutorial());await capture(game,'tutorial','#tutorial',['#tutorial']);
  }
- const failures=[];
- const overlap=(a,b)=>a&&b&&a.visible&&b.visible&&Math.min(a.right,b.right)-Math.max(a.left,b.left)>1&&Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)>1;
- for(const row of rows){
-  if(!row.texts)failures.push({screen:row.screen,width:row.width,height:row.height,kind:'empty-capture'});
-  if(row.overlaps.length)failures.push({screen:row.screen,width:row.width,height:row.height,kind:'text',overlaps:row.overlaps});
-  const g=row.geometry;
-  if(row.screen==='lobby'&&Math.abs(g['#lobby .lobby-right'].right-row.width)>1)failures.push({...row,kind:'lobby-edge'});
-  if(row.screen==='charselect')for(const id of ['#csLeft','#csRight','.cs-foot'])if(Math.abs(g[id].right-(row.width-40))>1)failures.push({screen:row.screen,width:row.width,kind:'character-edge',id});
-  if(row.screen==='hud'){
-   if(g['#mmWrap'].left>32||row.width-g['#mmLvl'].right>40)failures.push({screen:row.screen,width:row.width,kind:'hud-edge'});
-   if(Math.abs((g['#globeHP'].left+g['#globeMP'].right)/2-row.width/2)>1)failures.push({screen:row.screen,width:row.width,kind:'hud-center'});
-  }
-  if(['practice','system-guide','key-guide'].includes(row.screen)){
-   const guide=g[row.screen==='practice'?'#parryLesson':row.screen==='system-guide'?'#systemLesson':'#keyGuide'];
-   if(!g['#mmLvl'].visible)failures.push({screen:row.screen,width:row.width,kind:'status-hidden'});
-   for(const id of ['#mmLvl','#globeHP','#globeMP','#skBar','#petSubtitle'])if(overlap(guide,g[id]))failures.push({screen:row.screen,width:row.width,kind:'component-overlap',id});
-   if(guide.top<0||guide.bottom>row.height)failures.push({screen:row.screen,width:row.width,kind:'guide-offscreen'});
-  }
-  if(row.screen==='notification'&&overlap(g['#notif'],g['#petSubtitle']))failures.push({screen:row.screen,width:row.width,kind:'notification-pet-overlap'});
- }
+ const failures=assessRows(rows);
  const result={sizes,mode:'실제 index.html·game.html 1-1, 독립 테스트 캐릭터·강제 UI 표시·게임 일시정지. 자연 플레이 증거와 구분.',rows,failures};
  await fs.writeFile(path.join(output,'geometry.json'),JSON.stringify(result,null,2));return result;
 }
