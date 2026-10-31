@@ -344,6 +344,7 @@ namespace Exoduser.UnityPort
             litter=wet=0;if(Water(x,z)||Math.Abs(A2ForestLayout.Along(x,z))<5&&Math.Abs(A2ForestLayout.Across(x,z))<2)return;
             float width=1.55f+.35f*(float)Math.Sin(x*.19+z*.13);
             float lane=1-Smooth(Clamp((GroundRouteDistance(x,z)-width*.45f)/(width*.75f),0,1));
+            lane=treeBoundary.CanMove(x*100,-z*100,0)?lane*Smooth(Clamp(Distance(x,z)/.8f,0,1)):0;
             float patch=.5f+.3f*(float)Math.Sin(x*.31+1.7*Math.Sin(z*.18))+.2f*(float)Math.Cos(z*.37-x*.11);
             patch=Smooth(Clamp((patch-.12f)/.76f,0,1));
             litter=(.2f+.75f*patch)*(1-.65f*lane);

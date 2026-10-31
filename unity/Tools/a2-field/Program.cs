@@ -211,13 +211,14 @@ class Program
                 float[] Layers(float x,float z){var a=new object[]{x,z,0f,0f};layers.Invoke(field,a);return new[]{(float)a[2],(float)a[3]};}
                 var bridgeLayer=Layers(43.2f,-71.8f);Check(bridgeLayer[0]==0&&bridgeLayer[1]==0,"R8 목교에는 낙엽 퇴적과 흙 웅덩이 없음");
                 var lane=Layers(40,-50);Check(lane[0]<.08f&&lane[1]>.1f,"R8 중간 주동선은 밟힌 젖은 흙/낙엽"+lane[0]+" 젖음"+lane[1]);
-                float minLeaf=1,maxLeaf=0;bool valid=true;
+                float minLeaf=1,maxLeaf=0;bool valid=true;int blockedWet=0;
                 for(int row=0;row<40;row++)for(int col=0;col<40;col++)
                 {
                     var a=Layers(10+col*1.6f,-78+row*1.8f);foreach(var v in a)valid&=float.IsFinite(v)&&v>=0&&v<=1;
-                    minLeaf=Math.Min(minLeaf,a[0]);maxLeaf=Math.Max(maxLeaf,a[0]);
+                    minLeaf=Math.Min(minLeaf,a[0]);maxLeaf=Math.Max(maxLeaf,a[0]);if(!original.CanMove((10+col*1.6f)*100,-(-78+row*1.8f)*100,0)&&a[1]>.00001f)blockedWet++;
                 }
                 Check(valid&&maxLeaf-minLeaf>.5f,"R8 전역 가중 범위0..1/큰 재질 구역 변별"+(maxLeaf-minLeaf));
+                Check(blockedWet==0,"R8 막힌 원본영역을 밟힌 동선으로 표시하지 않기 "+blockedWet);
             }
             var rootHeight=type.GetMethod("RootReliefHeight");
             Check(rootHeight!=null,"스캔 흙 둘레를 지면에 연결하는 높이 가중");
