@@ -6,7 +6,7 @@
 |---|---|---|
 | 32:9 가장자리 HUD가 중앙으로 밀림 | 2026-10-31 사용자 정정: 미니맵·자원·레벨/처치는 실제 화면 가장자리 | mmWrap=왼쪽 inset+safe-area+8px×ui-scale, mmLvl=오른쪽 inset+safe-area+10px×ui-scale, hudCorner=왼쪽 inset+safe-area+16px×ui-scale. HP·MP 구슬/스킬바 묶음과 모달만 중앙 16:9 유지 |
 | 펫·실습/시스템 안내가 중앙으로 밀리거나 구슬을 덮음 | 펫과 안내는 실제 화면 끝, 상태판·하단 HUD 공간 예약 | 펫20px; 고양이는 parryLesson/systemLesson/keyGuide가 열리면 왼쪽20px. 실습 right=clamp(18px,5.185185dvh,56px)/guide-scale, 시스템18px(좁은 화면10px), 키 안내10px. Hahmlet400 유지 |
-| 인벤토리·스킬 창이 초광폭 전체로 늘어남 | 기존 창 자체 폭과 좌우 패딩 제한 | 3840×1080에서 중앙 영역 x960~2880. 인벤토리 내용 x996~2868, 설정 x972~2868. 기존 설정 zoom에는 안내 배율 분모 유지 |
+| 인벤토리 등 공통 전체 창이 초광폭 전체로 늘어남 | 기존 창 자체 폭과 좌우 패딩 제한(현행 스킬 창 예외는 아래 통합 계약) | 3840×1080에서 중앙 영역 x960~2880. 인벤토리 내용 x996~2868, 설정 x972~2868. 기존 설정 zoom에는 안내 배율 분모 유지 |
 | 상단 공통 메뉴가 클릭 전용 div | 기존 노드·onclick 보존, role=button·tabIndex=0 | Tab/Shift+Tab 순환, Enter/Space 한 번 활성. 동적 재생성 메뉴·대장간 fg-tab/fg-i·슬롯팝업 sk-pop-tab/sk-opt·기존 패드 분류의 property onclick과 위임형 sf-orb에도 적용. locked/dis/aria-disabled 제외 |
 | 패널 밖으로 Tab 이동·닫은 뒤 초점 유실 | 가장 위의 열린 모달 안에서 Tab 순환 및 단계별 초점 복귀 | gcModal·유물 주머니·스킬 팝업·초기 안내·난이도·클리어·사망·데모 종료·성장 안내 포함. 키 재지정 대기는 기존 입력 담당 우선. 확인창 첫 초점은 gcCancel, 확인·취소 버튼의 Enter/Space repeat만 차단. gc-box 등장 애니메이션의 opacity0 때문에 처음 비었던 컨트롤은 animationend에서 재시도 |
 | 사망·데모 종료·레벨업에서 ESC가 설정을 엶 | 기존 버튼 동작으로 연결 | death→toLobbyBtn, demoEnd→demoEndLobby, lvUpScreen→lvUpClose. 난이도 선택·다음 구역 진행을 임의 실행하지 않음. 기존 _panelBack는 유지. nextDiff capture는 초점이 ndBack/ndGo이면 native 버튼 행동에 맡기며 IME 및 Enter/Space/ESC repeat를 차단 |
@@ -54,3 +54,5 @@ statwindow-brief에 따라 web-uiux.css에서 다섯 창 제목44px·성장 머�
 - 최신 origin/main 9f5db2ac6의 악의구슬 명칭·성장 제목/눈 원화·스킬 창 변경과 정상 병합했다. 공통 CSS의 양쪽 독립 구역과 양쪽 문서 이력을 모두 보존했고, game.html guard 줄수는66032다. 검수는 이 통합본에서 다시 수행한다.
 
 - 병합 후 cinematicGameplayHud의 hudMaliceLabel 기대값만 최신 화폐 SSOT(악의구슬)에 맞췄다. 기존 스테이지/숫자/지역 처치 검증과 게임 동작은 보존했다. 이 테스트 정합은 원격 화폐 표시명 변경을 되돌리지 않기 위한 것이다.
+
+- 병합된 스킬 창은 skill-forge 담당의 최신 전체 화면·좌우 가장자리 정보판·중앙1800px 구성 예외를 보존한다. 인벤토리·설정·상점·성장은 기존 중앙 전체 창이며, 스킬의 좌우 설명/합성 로드맵은 실제 화면 끝이다. 최종 sidepanel 해상도 검수에 이 스킬 창도 포함한다.
