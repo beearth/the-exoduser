@@ -55507,3 +55507,12 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 산출·실행 | G:/exoduser/tmp/design-review/20261031_web_uiux/REPORT.md, 원본은I:/EXODUSER-Storage/design/web-uiux-20261031/. localhost3366자기작업본서버·격리save유지, Steam/DEMO/EA/외부배포0 |
 
 - 최종 커밋 훅이 자동 생성한 tools/guard.baseline.json의 lines를 기존65880→현행66030으로 동기화했다. 게임루프136행·보스idx·강화확률 해시는 그대로이며 guard PASS, 새 검사 우회0이다.
+
+## 2026-10-31 웹 로딩 초광폭 원본 보존
+
+| 변경 | 내용 | 정본/근거 |
+|---|---|---|
+| 로딩 표시 | game/index의 원본 contain, 공통 loading-art.js/css, 별도 하단 상태 영역. 폭에 따른 글자 확대 제거 | 1전체그래픽세팅/LOADING_ULTRAWIDE_20261031.md |
+| 배경 확장 | 내장 image_gen으로 네메시아·핵터·디로이 좌우 배경, 무손실21/32 WebP6개. 기존 원본35장 유지, 미생성/실패는 동일 원본 블러 폴백 | img/lording/wide/ |
+| 패키지·검수 | FILES 공통런타임 명시, 회귀 test/loadingWide.test.js 및 tools/check-loading-wide.mjs. 전면 가시성·전체구도·하단 비중첩·비동기 요청/실패 검사 | I:/EXODUSER-Storage/web-loading/20261031-wide/ |
+| Unity 인계 | ui-ultrawide-brief.md 끝에 같은 이미지·표시계약·해상도 및 별도 Unity 검수 지시 | 웹 검수와 Unity 실행은 분리 |

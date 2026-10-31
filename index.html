@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<link rel="stylesheet" href="loading-art.css?v=20261031-wide1">
+<script src="loading-art.js?v=20261031-wide1"></script>
 <script src="build-target.js"></script>
 <script src="release-version.js"></script>
 <script src="patch-notes.js"></script>
@@ -707,7 +709,8 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 
 <!-- ═══ 챕터 입장 문 열림 (동영상) ═══ -->
 <div id="chapterGate" style="position:fixed;inset:0;z-index:200;display:none;background:#000;overflow:hidden">
-  <img id="chGateImg" src="img/logo_exoduser.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center center;z-index:20;background:#000">
+  <div class="loading-art"><img id="chGateImg" src="img/logo_exoduser.png" alt=""></div>
+  <p id="chGateStatus" role="status" aria-live="polite"></p>
   <div class="cin-lb cin-lb-t"></div>
   <div class="cin-lb cin-lb-b"></div>
   <div class="cin-vig" style="z-index:21"></div>
@@ -1269,7 +1272,7 @@ function _gpDot(on){
 </script>
 <script>
 // ═══ 로비 배경: 트랜지션 이미지 중 랜덤 1장 ═══
-(function(){const n=~~(Math.random()*19)+1;const _base='img/lording/';const img=new Image();img.onload=function(){document.body.style.backgroundImage='linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),url('+img.src+')'};img.src=_base+n+'.png?v=20260930-loading-remaster5'})();
+(function(){const n=~~(Math.random()*19)+1;const frame=document.createElement('div');frame.id='loadingBodyArt';frame.className='loading-art';frame.setAttribute('aria-hidden','true');const img=document.createElement('img');img.alt='';frame.appendChild(img);document.body.prepend(frame);LoadingArt.set(img,'img/lording/'+n+'.png?v=20260930-loading-remaster5');})();
 // 브라우저 줌 차단
 addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey)e.preventDefault()},{passive:false});
 // ── 빌드 버전 (demo.html → 'demo', ea.html → 'ea') ──
@@ -2822,6 +2825,7 @@ function showLoading(msg){
   }
   const gate = $('chapterGate');
   const gateImg = $('chGateImg');
+  const status=$('chGateStatus');if(status)status.textContent=msg||_TL('불러오는 중...');
   if(!gate || !gateImg) return;
   // 이미지 완전히 로드된 후 게이트 표시 (반쪽 렌더 방지)
   gateImg.style.opacity = '0';
