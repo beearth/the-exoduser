@@ -2,9 +2,9 @@
 
 ## 2026-10-31 Web3D 수풀·물 레이어 (기본 OFF)
 
-`game.html?r3d=1`의 현행 `web3d/living-layer.mjs`는 같은 정규화 URL의 로컬 r160 코어를 사용한다. 원본 native 렌더 사이에 투명 WebGL canvas를 합성하며 수풀 인스턴스1draw·보이는 수면별1draw다. software GPU/low에서는 수풀1/3·상한160·변형OFF·해상도.65, 일반은상한800×적응density다. 추가 context와 canvas 업로드 비용을 포함해 측정한다. 기존 후처리13모듈·지형 대체는 r3dLegacy=1 추가의 퇴역 시험에만 해당하며 vendor SHA는 기존 provenance에 보존된다.
+`game.html?r3d=1`의 현행 `web3d/living-layer.mjs`는 같은 정규화 URL의 로컬 r160 코어를 사용한다. native 렌더 사이에 수풀1draw/뿌리그림자1draw·보이는 수면별1draw·환경조명1draw·숲최대8+BACK1draw·보이는 유령별1draw를 합성한다. software GPU/low는 수풀1/3·상한160·변형OFF·해상도.65, 일반은상한800×적응density다. 추가context·canvas업로드 포함 실측. 퇴역 목교13후처리는 r3dLegacy=1만 해당하며 vendor SHA는 기존 provenance에 보존한다.
 
-상세 현행 계약은 [웹3D 레이어 SSOT](../4.1맵디자인+설정/WEB3D_TRIAL_20261031.md)를 따른다. 현행 cache key는 `v=20261031-live2`, 기본 OFF·원본 actor/VFX/HUD 사용. 아래9월 수치와 퇴역 목교의 별도 효과1024²·2x몸체·UV view·반사/SSAO 최적화는 현행 성능의 증거가 아니다. 회귀 후 main 반영과 기본값 전환·패키징·배포는 구분한다.
+상세 현행 계약은 [웹3D 레이어 SSOT](../4.1맵디자인+설정/WEB3D_TRIAL_20261031.md)를 따른다. 현행 cache key는 `v=20261031-foliage5-lit`, 기본 OFF·원본 actor/VFX/HUD 사용. 입력 canvas 해상도가 바뀔 때 frame-sampler가 GPU texture를 재할당하고 같은 크기에서는 재사용한다. 아래9월/퇴역 목교 최적화 수치는 현행 증거가 아니다. main 반영과 기본값 전환·패키징·배포는 구분한다.
 
 이 문서는 game.html과 game-easy-test.html의 Three.js 엔진 로딩·색상·배포 계약 SSOT다. 이전 안개 소실 보호/보스 GLB 수명 정리 단계의 r128+r160 중복 경고 기록은 당시 결과이며, 현행 계약은 아래 로컬 r160 단일 엔진으로 대체한다. ERR_INSUFFICIENT_RESOURCES 전체의 유일 원인을 증명하거나 장시간 메모리 누수가 모두 해소됐다고 판정한 작업은 아니다.
 
