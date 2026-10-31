@@ -115,7 +115,7 @@ namespace Exoduser.UnityPort {
    if(!active)return;Init();
    var old=GUI.matrix;var color=GUI.color;bool enabled=GUI.enabled;
    try {
-    float age=Age;float fade=EaseOut(age/defs.timing.fade);
+    float age=Age;float fade=EaseOut(age/defs.timing.fade);NativeUiViewport.FillScreen(new Color(0,0,0,fade));
     GUI.matrix=NativeUiViewport.Matrix;
     // background: "url(cin_remember_wide) center/cover" over the viewport; the dark radial gradient behind it is fully covered
     float sc=Mathf.Max(NativeUiSafeArea.DesignWidth/bg.width,NativeUiSafeArea.DesignHeight/bg.height);float iw=bg.width*sc,ih=bg.height*sc;

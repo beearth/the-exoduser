@@ -6,6 +6,7 @@ namespace Exoduser.UnityPort
   internal static NativeUiSafeArea Current=>NativeUiSafeArea.Fit(Screen.width,Screen.height);
   internal static Matrix4x4 Matrix {get{var a=Current;return Matrix4x4.TRS(new Vector3(a.X,a.Y,0),Quaternion.identity,new Vector3(a.Scale,a.Scale,1));}}
   internal static Vector2 Pointer(Vector3 screenPoint){var a=Current;return new Vector2(a.LocalX(screenPoint.x),a.LocalY(screenPoint.y,Screen.height));}
+  internal static void FillScreen(Color tint){var old=GUI.matrix;var color=GUI.color;try{GUI.matrix=Matrix4x4.identity;GUI.color=tint;NativeUiAudit.DrawTexture(new Rect(0,0,Screen.width,Screen.height),Texture2D.whiteTexture);}finally{GUI.matrix=old;GUI.color=color;}}
   // 전면 로비/시네마틱의 넘침은 웹과 같은 순검정으로 마감한다. 월드는 기존 시야를 유지하고 HUD만 안전영역에 배치한다.
   [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
   static void Boot(){if(Object.FindFirstObjectByType<Bars>()==null)new GameObject("16:9 UI safe area").AddComponent<Bars>();}

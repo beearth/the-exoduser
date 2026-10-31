@@ -422,9 +422,9 @@ namespace Exoduser.UnityPort
             InitGUI();var old=GUI.matrix;GUI.matrix=NativeUiViewport.Matrix;
             var p=Simulation.Player;
             // B09: web draws the hit flash (_hitFlash) and the red damage flash (scrFlash) over the canvas, under the DOM HUD (game.html 55077-55078)
-            if(Simulation.HitFlashAlpha>0){Color hc=Color.white;ColorUtility.TryParseHtmlString(Simulation.HitFlashColor,out hc);hc.a=Simulation.HitFlashAlpha;Fill(new Rect(0,0,1920,1080),hc);}
+            if(Simulation.HitFlashAlpha>0){Color hc=Color.white;ColorUtility.TryParseHtmlString(Simulation.HitFlashColor,out hc);hc.a=Simulation.HitFlashAlpha;NativeUiViewport.FillScreen(hc);}
             // 웹 rgba(200,0,0,.25)의 색 알파와 globalAlpha를 함께 적용한다. Core 감쇠는 그대로 둔다.
-            if(Simulation.ScreenFlashAlpha>0)Fill(new Rect(0,0,1920,1080),new Color(200f/255,0,0,Simulation.ScreenFlashAlpha*.25f));
+            if(Simulation.ScreenFlashAlpha>0)NativeUiViewport.FillScreen(new Color(200f/255,0,0,Simulation.ScreenFlashAlpha*.25f));
             StageFlowDrawLoad();   // C07: black load screen under the HUD (the web draws it on the canvas, below the DOM HUD)
             var baseMatrix=GUI.matrix;
             GUI.matrix=NativeUiViewport.Matrix;

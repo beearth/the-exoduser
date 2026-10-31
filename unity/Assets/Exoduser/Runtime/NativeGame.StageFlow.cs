@@ -149,7 +149,7 @@ namespace Exoduser.UnityPort
             var flow = Simulation.Stage;
             if (flow.LoadPhase > 0)
             {
-                float fade = (float)flow.LoadFade; Fill(new Rect(0, 0, 1920, 1080), new Color(0, 0, 0, fade));
+                float fade = (float)flow.LoadFade; NativeUiViewport.FillScreen(new Color(0, 0, 0, fade));
                 if (flow.LoadPhase >= 2 && fade > .5f)
                 {
                     float nt = flow.LoadPhase == 2 ? Mathf.Min(1f, (float)flow.LoadT / 35f) : 1f;
