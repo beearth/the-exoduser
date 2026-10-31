@@ -1,8 +1,8 @@
 > 진행 프로젝트: [MAP_IMPROVEMENT_PROJECT.md](MAP_IMPROVEMENT_PROJECT.md) · 2.5D 깊이 기준: [DEPTH_2_5D_BENCHMARK_20260930.md](DEPTH_2_5D_BENCHMARK_20260930.md)
 
-## 2026-10-31 — 웹 3D 목교 분리 시험 (기본 OFF)
+## 2026-10-31 — 웹 3D 목교 1단계 (기본 OFF)
 
-`codex/web3d-trial-20261031`의 `?r3d=1`은 기존 Core 맵을 그대로 읽는 3D 렌더, `&r3dScene=bridge`는 R3 목교의 명시적 native Core 비교 맵이다. 기존 1-1 완주·본편 맵 채택·Unity 통합과 구분한다. [렌더·입력·에셋·검수 SSOT](WEB3D_TRIAL_20261031.md). 기본 웹 경로와 main은 변경하지 않는다.
+같은 `codex/web3d-trial-20261031`에서 main 악의오브/UI를 병합하고 렌더·환경·VFX를 보완한다. `?r3d=1`은 기존 Core 맵, `&r3dScene=bridge`는 R3 목교 비교 맵이다. 기본 OFF·기존 1-1 완주/Unity 채택과 구분한다. [현행 계약·시험 이력](WEB3D_TRIAL_20261031.md), 현재 실제 판정은 `20261031_web3d_main/REPORT.md`를 따른다. 브리프의 회귀 후 main 비강제 반영 권한과 실제 반영 SHA를 구분한다.
 
 ## 2026-10-20 — MAPLOOK-HOLE Godot 독립 소환굴 오버레이
 
