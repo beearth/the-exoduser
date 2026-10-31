@@ -12,7 +12,7 @@
 | 항목 | 값 |
 |---|---|
 | 폴더 | G:\hell-DEMO\ |
-| 진입 파일 | indexdemo.html → gamedemo.html |
+| 진입 파일 | 현행 indexdemo.html → index.html(쿼리·fragment 보존), build-target.js로 데모/정식 구분. 세계관은 v22b+29언어 자막(+0.4초 보정), 아래 gamedemo 구성은 과거 이력 |
 | 세이브 | localStorage `hellsave_demo_0~2` (3슬롯) |
 | 레벨 캡 | 100 (`_DEMO_LV_CAP=100`) |
 | 스테이지 | 1-1만 (`_DEMO_LAST_STAGE=0`) |

@@ -57,7 +57,7 @@ test('natural end calls completion once and pauses BGM',async()=>{
 test('lobby wires the metal title movie and bypasses old still-image narration',()=>{
   const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
   assert.match(html,/id="worldIntroVideo"/);
-  assert.ok(html.includes('video/world_intro_v15_clean_en.mp4'),'lobby must preserve the full ending with a continuous new voice take');
+  assert.ok(html.includes('video/world_intro_v22b_steam.mp4'),'lobby must preserve the full ending with a continuous new voice take');
   assert.match(html,/_cinReady=true;startWorldIntro\(\);/);
   assert.match(html,/if\(_worldIntroPlayer\)\{_worldIntroPlayer\.next\(\);return;\}/);
 });
@@ -103,4 +103,12 @@ test('initial movie loading does not pause the music already playing at the door
   const p=load().create({video,getMusic:()=>music});t.after(()=>p.stop());await p.start();
   video.dispatchEvent(new Event('waiting'));video.dispatchEvent(new Event('seeking'));
   assert.equal(music.paused,false);assert.equal(music.currentTime,8);
+});
+
+test('v22b lead-in shifts cut jumps by 400ms without changing the score clock',async(t)=>{
+ const video=new Media(),music=new Media();video.dataset={timingOffset:'0.4'};
+ const p=load().create({video,getMusic:()=>music});t.after(()=>p.stop());await p.start();
+ video.currentTime=.1;p.next();assert.ok(Math.abs(video.currentTime-4.441667)<.000001);
+ video.currentTime=4.2;music.currentTime=17;p.next();assert.ok(Math.abs(video.currentTime-4.441667)<.000001);assert.equal(music.currentTime,17);
+ video.currentTime=109;p.next();assert.ok(Math.abs(video.currentTime-109.691667)<.000001);
 });

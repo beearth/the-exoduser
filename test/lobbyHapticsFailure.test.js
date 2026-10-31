@@ -28,22 +28,9 @@ test('a rejected rumble request has a production rejection handler',async()=>{
  await Promise.resolve();
  assert.equal(handled,true);
 });
-test('each scheduled doorway rumble handles asynchronous rejection',async()=>{
- const result=Promise.reject(new Error('actuator disconnected'));
- const nativeThen=result.then.bind(result);nativeThen(undefined,()=>{});
- let handled=0;result.then=(fulfilled,rejected)=>{
-  if(typeof rejected==='function')handled++;
-  return nativeThen(fulfilled,rejected);
- };
- const timers=[];
- const ctx=vm.createContext({_GP:{vibRef:{vibrationActuator:{playEffect:()=>result}}},setTimeout:fn=>timers.push(fn)});
- const start=html.indexOf('const _v=_GP.vibRef.vibrationActuator;');
- const end=html.indexOf('    }}catch(e){}',start);
- vm.runInContext(html.slice(start,end),ctx);
- assert.ok(timers.length>0);
- for(const fire of timers)fire();
- await Promise.resolve();
- assert.equal(handled,timers.length);
+test('retired doorway does not schedule rumble after ENTER',()=>{
+ assert.equal(html.includes('const _v=_GP.vibRef.vibrationActuator;'),false);
+ assert.equal(html.includes('const _steps=[[0,200'),false);
 });
 test('a synchronous actuator failure does not interrupt lobby actions',()=>{
  const pad=setup({playEffect(){throw new Error('unavailable')}});

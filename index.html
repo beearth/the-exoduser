@@ -62,13 +62,7 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 .cin-lb-t{top:0;height:10vh}
 .cin-lb-b{bottom:0;height:10vh}
 
-/* 문 이미지 (시네마틱 배경) */
-.cin-gate{position:absolute;inset:0;opacity:0;transition:opacity 2s ease}
-.cin-gate img{width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.15) translateX(5%)}
-.cin-gate.show{opacity:1}
-.cin-gate.zoom{transform:scale(1.6);transition:transform 0s}
-.cin-gate.zoom-out{transform:scale(1);transition:transform 6s cubic-bezier(0.15,0.5,0.3,1)}
-
+/* 2026-10-31: 구 문 배경/문 열림 스타일 폐지. 원본 미디어는 보존. */
 /* 비네팅 */
 .cin-vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 20%,rgba(0,0,0,.85) 100%);z-index:2;pointer-events:none}
 
@@ -120,15 +114,6 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 /* 세계관 프롤로그 스틸 (2026-07-27 인트로 스왑) — 공통 규칙 사용 */
 /* 타이틀 로고 컷 (cinImg19): 마스크/암전 없이 중앙 로고 */
 #cinImg19 img{width:min(52vw,900px);height:auto;object-fit:contain;filter:none;mask-image:none;-webkit-mask-image:none}
-
-/* 문 열림 씬 */
-.cin-door-scene{position:absolute;inset:0;perspective:1800px;opacity:0;transition:opacity 1.5s ease;z-index:5}
-.cin-door-scene.show{opacity:1}
-.cin-door{position:absolute;inset:0;background-image:url('img/hellgate.png');background-size:cover;background-position:center 40%;transform:scale(1.15) translateX(5%);transition:transform 2.5s cubic-bezier(0.4,0,0.1,1);will-change:transform}
-.cin-door-l{clip-path:polygon(0 0,calc(40% + 1px) 0,calc(40% + 1px) 100%,0 100%);transform-origin:left center}
-.cin-door-r{clip-path:polygon(calc(40% - 1px) 0,100% 0,100% 100%,calc(40% - 1px) 100%);transform-origin:right center}
-.cin-door-scene.open .cin-door-l{transform:scale(1.15) translateX(5%) rotateY(-105deg)}
-.cin-door-scene.open .cin-door-r{transform:scale(1.15) translateX(5%) rotateY(105deg)}
 
 /* 문 중앙 빛줄기 */
 .cin-glow{position:absolute;top:5%;left:50%;width:3px;height:90%;transform:translateX(-50%);background:linear-gradient(180deg,transparent,rgba(255,100,20,.5),rgba(255,60,10,.7),rgba(255,100,20,.5),transparent);z-index:6;pointer-events:none;opacity:0;filter:blur(4px);transition:opacity 1.5s}
@@ -646,11 +631,9 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
   <div class="cin-lb cin-lb-t"></div>
   <div class="cin-lb cin-lb-b"></div>
 
-  <!-- 인트로 비디오 (THE EXODUSER) -->
-  <video id="cinVideo" muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;z-index:20;opacity:1;transition:opacity 1.5s ease;pointer-events:none">
-    <source src="video/intro.mp4" type="video/mp4">
-  </video>
-  <video id="worldIntroVideo" src="video/world_intro_v17_blood_en.mp4" playsinline preload="none" aria-label="World intro — English voice, selectable subtitles"></video>
+  <!-- 2026-10-31: 옛 문 영상은 폐지. 중지 정리용 빈 노드만 유지하며 원본 파일은 보존한다. -->
+  <video id="cinVideo" muted playsinline preload="none" hidden style="display:none"></video>
+  <video id="worldIntroVideo" src="video/world_intro_v22b_steam.mp4" data-timing-offset="0.4" playsinline preload="none" aria-label="World intro — English voice, selectable subtitles"></video>
   <div id="worldIntroMix" aria-label="인트로 오디오 확인">
     <button id="worldIntroToggle" type="button">일시정지</button>
     <label>BGM <input id="worldIntroMusicGain" type="range" min="0" max="100" value="22"><output id="worldIntroMusicValue">22%</output></label>
@@ -668,11 +651,7 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
     </div>
   </div>
 
-  <!-- 문 배경 (줌 인/아웃) -->
-  <div class="cin-gate zoom" id="cinGate">
-    <img src="img/hellgate.png" alt="">
-    <div class="cin-vig"></div>
-  </div>
+  <!-- 문 배경/문 열림 장면 폐지: 모든 경로는 v17을 사용한다. -->
 
   <!-- 세계관 프롤로그 이미지 p01~p17 + 타이틀 로고 (2026-07-27 인트로 스왑) -->
   <div class="cin-img" id="cinImg1"><img data-src="assets/cutscene/prologue/p01.jpg" alt=""></div>
@@ -1138,9 +1117,9 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 <script src="lobby_i18n.js"></script>
 <script src="lobby-stage-info.js"></script>
 <script src="character-story-player.js?v=20261027-killu-bloodtears-v3"></script>
-<script src="world-intro-player.js?v=20260907-v12-fullscene-newvoice"></script>
+<script src="world-intro-player.js?v=20261031-v22b-offset"></script>
 <script src="world-intro-subtitles-data.js?v=20260907-v13-exodus-ko-escape"></script>
-<script src="world-intro-subtitles.js?v=20260907-v6-cinema-size"></script>
+<script src="world-intro-subtitles.js?v=20261031-v22b-offset"></script>
 <link rel="stylesheet" href="cin-enter-engraved.css?v=20261029-enter2">
 <link rel="stylesheet" href="fullscreen-art.css?v=20261031">
 <script src="fullscreen-art-dom.js?v=20261031" defer></script>
@@ -2538,12 +2517,8 @@ function playCinematic(){
     else if(currentUser||_testMode){_goLobby({fromCinematic:true});}else{_goLogin({fromCinematic:true});}
   }
 
-  // 인트로 비디오: 첫 프레임(문 닫힘)에서 멈춤, 클릭 시 재생
-  vid.style.opacity='1';
-  vid.currentTime=0;
-  // 첫 프레임 로드 후 pause
-  vid.addEventListener('loadeddata',()=>{vid.pause()},{once:true});
-  vid.load();
+  // 인트로 비디오: 문 장면은 폐지. 빈 구버전 노드는 재생/프리로드하지 않는다.
+  stopMediaVideo(vid);
 
   // 스킵 버튼 즉시 표시
   skipBtn.classList.add('show');
@@ -2559,36 +2534,11 @@ function playCinematic(){
     try{_stopHover();}catch(e){}
     try{playEnterSFX();}catch(e){} // ENTER 클릭 사운드 — 로비 입장버튼과 동일 (2026-08-11)
     setTimeout(()=>{prompt.style.display='none'},1200);
-    // 2026-10-29 사용자 "세계관 인트로 왜 구버전연결돼있냐": 인장 첫 화면에서는 옛 문 열림 영상(video/intro.mp4, 2026-07 판화)을 건너뛰고 현행 세계관 인트로로 바로 간다. 근거 LOBBY_AAA_REFERENCE_STUDY §17-2
-    if(document.getElementById('gateLock')){window._introVoiceUnlocked=true;startCinBgm();skipBtn.classList.add('show');_cinReady=true;startWorldIntro();return;}
-    vid.muted=false; // 영상 자체 사운드(문 열림) 재생
-    vid.volume=0.6;
-    vid.style.display='';vid.style.opacity='1';
-    vid.play().catch(()=>{});
-    // 문 열림 진동 — 4초 페이드아웃
-    try{if(_GP.vibRef&&_GP.vibRef.vibrationActuator){
-      const _v=_GP.vibRef.vibrationActuator;const _steps=[[0,200,.5,.7],[200,500,.45,.6],[700,500,.35,.5],[1200,500,.25,.35],[1700,500,.18,.25],[2200,500,.12,.15],[2700,500,.06,.08],[3200,800,.02,.03]];
-      _steps.forEach(s=>{setTimeout(()=>{try{_v.playEffect('dual-rumble',{startDelay:0,duration:s[1],weakMagnitude:s[2],strongMagnitude:s[3]}).catch(()=>{})}catch(e){}},s[0])});
-    }}catch(e){}
-    // 사용자 제스처 컨텍스트에서 오디오 언락
+    // 2026-10-31: 장식 DOM·언어·빌드·재방문 여부와 무관하게 문 없이 v22b로 바로 진입한다.
     window._introVoiceUnlocked=true;
-    startCinBgm(); // 주제가 BGM 시작 (제스처 컨텍스트)
+    startCinBgm();
     skipBtn.classList.add('show');
-    // 문 영상 → 프롤로그: 실제 재생 시간 기반 + 재생 실패 시 3초 내 폴백 (2026-07-27)
-    vid.onended=()=>{vid.style.opacity='0'};
-    let _vidFadeDone=false;const _vidWatchT0=performance.now();
-    _vidStartTimer=setInterval(()=>{
-      if(_cinDone){clearInterval(_vidStartTimer);return}
-      const _el=performance.now()-_vidWatchT0;
-      const _d=(isFinite(vid.duration)&&vid.duration>0)?vid.duration:8;
-      const _fail=(_el>3000&&vid.currentTime<0.2)||vid.error; // 코덱/로드 실패: 3초 내 진행 없으면 영상 스킵
-      const _stall=_el>15000; // 최후 안전장치
-      if(!_vidFadeDone&&(vid.ended||_fail||_stall||vid.currentTime>=_d-1.5)){_vidFadeDone=true;vid.style.opacity='0'}
-      if(vid.ended||_fail||_stall||vid.currentTime>=_d-0.05){
-        clearInterval(_vidStartTimer);
-        _cinReady=true;startWorldIntro();
-      }
-    },100);
+    _cinReady=true;startWorldIntro();
   }
   
   function startWorldIntro(){
@@ -2906,15 +2856,12 @@ function _goCinematic(){
   stopLobbyBgm(); // 로비BGM 정지 — 시네마틱은 주제가만 (겹침 방지)
   // v3 movie replaces the old still sequence; do not preload unused stills.
   const vid=$('cinVideo');
-  vid.currentTime=0;vid.style.opacity='1';vid.muted=false;vid.volume=0.6;
+  stopMediaVideo(vid); // 폐지된 문 영상은 재시작하지 않는다.
   // 자막/이미지 초기화
   const cImgs=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19].map(i=>$('cinImg'+i));
   cImgs.forEach(el=>{if(el){el.classList.remove('show');el.style.zIndex=3}});
   $('cinTextInner').innerHTML='';
   const prompt=$('cinClickPrompt');if(prompt){prompt.style.display='';const frame=prompt.querySelector('.cin-hell-frame');if(frame)frame.classList.remove('dissolve');}
-  // 문 초기화 (닫힌 상태)
-  const dl=$('cinDoorL'),dr=$('cinDoorR');
-  if(dl)dl.style.transform='';if(dr)dr.style.transform='';
   // 화면 전환
   $('cinScene').style.display='';
   $('mainWrap').classList.remove('show','cinematic-handoff');

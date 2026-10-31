@@ -65,7 +65,7 @@
 
 | 파일 | 참조 |
 |---|---|
-| `img/cin_nemesia_hd.png` | `index.html` L137 CSS `.cin-nemesia-bg` 규칙(이 클래스를 쓰는 요소는 index.html에 없음 — 규칙 정의 1건뿐). 루트 `indexdemo.html` L99 CSS + L144 `<img id=cinImg8>`, `index_backup_logoanim.html` L100·L334 (두 파일은 5월 수정본, build-nwjs.mjs·tools/build-web.mjs에서 파일명 참조 0건) |
+| `img/cin_nemesia_hd.png` | `index.html` L137 CSS `.cin-nemesia-bg` 규칙(이 클래스를 쓰는 요소는 index.html에 없음 — 규칙 정의 1건뿐). 당시 루트 `indexdemo.html` L99 CSS + L144 `<img id=cinImg8>`(2026-10-31 정본 로비 redirect로 대체, NW FILES 포함), `index_backup_logoanim.html` L100·L334 (두 파일은 5월 수정본, build-nwjs.mjs·tools/build-web.mjs에서 파일명 참조 0건) |
 | `assets/cutscene/warintro/cin_nemesia_hd.png` | 코드·도구·테스트 참조 0건 |
 | `assets/cutscene/images/cin_nemesia_appear1.png` | `tools/verify_image_texture_cleanup.py` 목록 1건 |
 
