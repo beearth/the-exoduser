@@ -81,7 +81,7 @@ Shader "EXODUSER/A2RootSurface"
     }
     
     float3 n=normalize(i.normal),t=normalize(float3(1,0,0)-n*n.x),b=-normalize(cross(n,t));
-    float scanWeight=_FullField>.5?smoothstep(.25,1,i.color.r):saturate(i.color.r);float3 scanT=normalize(i.tangent.xyz),scanB=cross(n,scanT)*i.tangent.w;
+    float scanWeight=_FullField>.5?smoothstep(.25,1,i.color.r)*smoothstep(.12,.55,1-abs(n.y)):saturate(i.color.r);float3 scanT=normalize(i.tangent.xyz),scanB=cross(n,scanT)*i.tangent.w;
     half3 scanN=UnpackNormalScale(SAMPLE_TEXTURE2D(_ScanNormal,sampler_ScanMap,i.uv),.7);float3 scanWorld=normalize(mul(scanN,float3x3(scanT,scanB,n)));
     InputData input=(InputData)0;input.positionWS=i.world;input.normalWS=normalize(lerp(normalize(mul(nt,float3x3(t,b,n))),scanWorld,scanWeight));input.viewDirectionWS=GetWorldSpaceNormalizeViewDir(i.world);
     input.shadowCoord=TransformWorldToShadowCoord(i.world);input.bakedGI=SampleSH(input.normalWS);input.normalizedScreenSpaceUV=GetNormalizedScreenSpaceUV(i.positionCS);input.shadowMask=1;
