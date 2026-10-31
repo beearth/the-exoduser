@@ -74,12 +74,15 @@ namespace Exoduser.UnityPort
 
         void A2BridgeMoss()
         {
+            var bridge=a2Field==null?null:GameObject.Find("A2 시작 목교");
             foreach(float side in new[]{-1f,1f})for(int j=0;j<5;j++)
             {
                 float u=-3.4f+j*1.7f,w=side*1.58f;
                 float x=A2ForestLayout.BridgeX+u*A2ForestLayout.SinYaw+w*A2ForestLayout.CosYaw,z=A2ForestLayout.BridgeZ+u*A2ForestLayout.CosYaw-w*A2ForestLayout.SinYaw;
+                Vector3 attachment=Vector3.zero;
+                if(a2Field!=null&&(bridge==null||!A2UpperSurfaceVertex(bridge,new Vector3(x,0,z),out attachment))){Debug.LogError("[A2 목교 이끼] 실제 윗면 누락");continue;}
                 var go=A2Module("Hanging_Moss",x,z,.30f,.38f,.25f,24+side*90);if(go==null)continue;go.name="A2 다리 회갈색 이끼";
-                var renderer=go.GetComponentInChildren<MeshRenderer>();var bounds=renderer.bounds;go.transform.position+=new Vector3(0,.65f-bounds.max.y,0);
+                var renderer=go.GetComponentInChildren<MeshRenderer>();var bounds=renderer.bounds;if(a2Field!=null)go.transform.position+=attachment-Vector3.up*.02f-new Vector3(bounds.center.x,bounds.max.y,bounds.center.z);else go.transform.position+=new Vector3(0,.65f-bounds.max.y,0);
                 var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.62f,.63f,.43f,1));renderer.SetPropertyBlock(block);
             }
         }

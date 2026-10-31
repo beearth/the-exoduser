@@ -181,7 +181,7 @@ namespace Exoduser.UnityPort
             var m=new Mesh{name="먼 숲 연속 지면"};m.vertices=new[]{new Vector3(-30,-2,-100),new Vector3(110,-2,-100),new Vector3(-30,-2,70),new Vector3(110,-2,70)};m.triangles=new[]{0,2,1,1,2,3};m.RecalculateNormals();m.RecalculateBounds();floor.AddComponent<MeshFilter>().sharedMesh=m;
             var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));material.SetColor("_BaseColor",new Color(.055f,.064f,.046f));material.SetFloat("_Smoothness",.08f);floor.AddComponent<MeshRenderer>().sharedMaterial=material;
         }
-        GameObject A2Module(string id,float x,float z,float sx,float sy,float sz,float yaw,float lift=0)
+        GameObject A2Module(string id,float x,float z,float sx,float sy,float sz,float yaw,float lift=0,bool registerSurface=true)
         {
             string source=id;float units=1;
             if(id=="Ancient_Rotten_Tree"){source=Mathf.Sin(x*7.13f+z*3.17f)>0?"Ancient_Tree_B":"Ancient_Tree_A";units=.45f;}
@@ -209,7 +209,7 @@ namespace Exoduser.UnityPort
             var go=Instantiate(prefab,a2Root.transform);go.name="A2_"+id;
             go.transform.SetPositionAndRotation(new Vector3(x,height,z),Quaternion.Euler(0,yaw,0));
             go.transform.localScale=new Vector3(sx,sy,sz)*units;
-            if(roots||stump||hollow||id=="Dead_Leaf_Litter")foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
+            if(roots||stump||hollow||id=="Dead_Leaf_Litter"||foreground&&a2Field!=null)foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
             {
                 if(!mf.sharedMesh.isReadable){if(a2UnreadableMeshes.Add(id))Debug.LogError("[A2] 지면 접합 정점읽기 누락. 원본 메시 유지: "+id);continue;}
                 var mesh=Instantiate(mf.sharedMesh);var points=mesh.vertices;
@@ -230,7 +230,7 @@ namespace Exoduser.UnityPort
                 if(id=="Fungal_Colony"){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.65f,.55f,.40f,1));r.SetPropertyBlock(block);}
                 if(stump){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.85f,.78f,.65f,1));r.SetPropertyBlock(block);}
             }
-            if(a2Field!=null&&(roots||stump||hollow||id=="Fallen_Log"||id=="Rotten_Wood_Bridge"))A2FieldRegister(go,id=="Rotten_Wood_Bridge");
+            if(registerSurface&&a2Field!=null&&(roots||stump||hollow||id=="Fallen_Log"||id=="Rotten_Wood_Bridge"))A2FieldRegister(go,id=="Rotten_Wood_Bridge");
             if(id=="Withered_Shrub")A2Bramble(go,x,z);
             return go;
         }

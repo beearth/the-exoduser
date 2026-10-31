@@ -11,6 +11,9 @@
 | 빛기둥 | R3고정(-5,13,+5) 꼭짓점은실제주광49°/−32°의방향과불일치했고화면에서희미함. R4는실제enabled DirectionalLight.forward 반대방향으로13m높이의윗점을계산/주광없을때만49°/−32°fallback. RGB(1.1,1.4,1.65)/alpha.035→.065. 9곳·폭위.6m/아래3m·기존깊이fade유지. 실제현재화면검수전/진짜볼륨레이마치로보고0 |
 | 목교 공간조회 | 원형교차는그대로두고0.5m월드셀 Dictionary로삼각형인덱스등록/조회. 셀경계여유.0001m·음수Z Floor·인접셀발접촉회귀추가. 동일원형5000좌표 checksum1651.1453 동일,독립NET8 CPU1773.8455→45.6289ms(38.9배).240조회단순환산85.1446→2.1902ms/자연전투·UnityFPS미검증. 보관소스중복컴파일시안1건은무효보존/Program.cs명시와동일참조DLL SHA확인후측정 |
 | 수피 이끼 | R3근경의흰종이같은수피이끼를field전용MPB RGB(.60,.62,.40)로정리. 기존사진/알파/형상유지·Legacy키샷MPB는불변. 실제R4색·접합검수전 |
+| 남측 전경 | 전체필드조립에서빠진기존A2Foreground를grounded=true로재사용. 거목(31,−84)/scale(.75,1.15,.75)/yaw−25/lift−.2, 목질1개(34.5,−80.7)/scale(1.7,1.1,.8)/yaw8/lift.08. Legacy2개목질의+Y2.2/+Y1부양은field에서사용0. Field스캔목질만실제지형차로정점접합·원본UV보존. 전체renderer.maxZ≤−80.05로뒤이동/새전경의접지표면등록false로이동전유령발판0. Legacy기본호출은기존배치유지 |
+| 전경 수염 | grounded목질의기존실제윗면정점선택/상단hit−Y.02/offsetX−1.2,−.2,.8 유지,field규격(.3,.4,.3). maxZ>−80.05이면제외. 실제부착개수·구도는다음실게임로그/1x확인대상 |
+| 다리 수염 | 전체필드목교에기존양측×5=10곳을연결. Field에서는고정Y.65 대신현재목교읽기정점·world normal.y≥.25/score=dx²+dz²−.05Y의윗면에상단hit−Y.02로부착. scale(.30,.38,.25)/tint(.62,.63,.43)유지. 실제윗면없으면오류기록후그이끼제외/공중부착0. Legacy비field는기존.65규칙유지 |
 | 실행기 | UI소유공식start의선택ForceD3D11 인수인수. CLI SHA68b7a0c7bf27e11f35b699661e466d0f9fcc2c962e61c8d23e8feda59dbddde2/QueueTurn8a00a15e…/AcquireSlot byte동일. 기본/명시DryRun·자기검사PASS·새실제GPU0. 맵후속start에ForceD3D11, 독립batch buildArgs에-force-d3d11 명시. UI제품코드인수0 |
 
 ## R3 실제 실패와 R4 목교 접지 전환 — 2026-10-31

@@ -4,20 +4,21 @@ namespace Exoduser.UnityPort
 {
     public sealed partial class NativeGame
     {
-        void A2Foreground()
+        void A2Foreground(bool grounded=false)
         {
-            var tree=A2Module("Hollow_Loft_Tree",31,-84,.75f,1.15f,.75f,-25,-.2f);
+            var tree=A2Module("Hollow_Loft_Tree",31,-84,.75f,1.15f,.75f,-25,-.2f,false);
             if(tree!=null){tree.name="A2 전경 바깥 거목";A2OutsidePlay(tree);}
             int placed=0,attached=0;
-            foreach(var p in new[]{new Vector4(36.7f,-81.5f,2.2f,-20),new Vector4(33.4f,-81,1.75f,62)})
+            var sites=grounded?new[]{new Vector4(34.5f,-80.7f,1.7f,8)}:new[]{new Vector4(36.7f,-81.5f,2.2f,-20),new Vector4(33.4f,-81,1.75f,62)};
+            foreach(var p in sites)
             {
-                var log=A2Module("Scanned_Foreground_Log",p.x,p.y,p.z,p.x>35?2:1.7f,1.4f,p.w,-.25f);if(log==null)continue;
-                log.name="A2 전경 부패목질";A2OutsidePlay(log);log.transform.position+=Vector3.up*(p.x>35?2.2f:1);placed++;
+                var log=A2Module("Scanned_Foreground_Log",p.x,p.y,p.z,grounded?1.1f:p.x>35?2:1.7f,grounded?.8f:1.4f,p.w,grounded?.08f:-.25f,false);if(log==null)continue;
+                log.name="A2 전경 부패목질";A2OutsidePlay(log);if(!grounded)log.transform.position+=Vector3.up*(p.x>35?2.2f:1);placed++;
                 foreach(float offset in new[]{-1.2f,-.2f,.8f})
                 {
                     var desired=log.transform.TransformPoint(new Vector3(offset,0,0));Vector3 hit;
                     if(!A2UpperSurfaceVertex(log,desired,out hit))continue;
-                    var moss=A2Module("Hanging_Moss",hit.x,hit.z,.55f,.7f,.5f,p.w+90);if(moss==null)continue;moss.name="A2 전경 목질 수염이끼";
+                    var moss=A2Module("Hanging_Moss",hit.x,hit.z,grounded?.3f:.55f,grounded?.4f:.7f,grounded?.3f:.5f,p.w+90);if(moss==null)continue;moss.name="A2 전경 목질 수염이끼";
                     var renderers=moss.GetComponentsInChildren<MeshRenderer>();var bounds=renderers[0].bounds;foreach(var renderer in renderers)bounds.Encapsulate(renderer.bounds);
                     moss.transform.position+=hit-Vector3.up*.02f-new Vector3(bounds.center.x,bounds.max.y,bounds.center.z);
                     bounds=renderers[0].bounds;foreach(var renderer in renderers)bounds.Encapsulate(renderer.bounds);
