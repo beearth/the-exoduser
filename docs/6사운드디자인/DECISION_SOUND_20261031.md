@@ -22,7 +22,7 @@
 | D03 | index.html showCharGate | enter | 슬롯 선택 후 입장. 단순 슬롯 탐색 제외. 기존 playEnterSFX 중복 제거 |
 | D04 | index.html _afterCharacterCreated → showCharGate(storySeen=true) | new-game | 새 캐릭터 이야기 종료·건너뛰기 뒤 실제 새 게임 입장. 별도 새 게임 버튼을 만들지 않음 |
 | D05 | game.html _showNextDiffPop의 go / ndGo | difficulty | 현행 로비에는 난이도 확정창이 없음. 실제 선택 확정이 있는 다음 난관 난이도 창에 적용. 카드 탐색·설정 슬라이더 제외. 연타 시 진행도 1회 |
-| D06 | index.html delConfirmYes / data-decision-sound=delete | delete | 캐릭터 이름이 있는 삭제 확인창만 어두운 변형. 같은 확인창을 쓰는 게임 종료·취소 제외 |
+| D06 | index.html delConfirmYes / data-decision-sound=delete | delete | 캐릭터 이름이 있는 삭제 확인창만 어두운 변형. 같은 확인창을 쓰는 게임 종료·취소 제외(종료 확인의 기존 일반 클릭음은 유지) |
 
 첫 화면 인장 ENTER와 승인된 게이트 그림은 그대로 유지한다. 메뉴·탭·설정·호버는 기존 UI 소리이며 두둥을 호출하지 않는다. lobby-ui-feedback.js는 D01·D02·D06의 일반 확인음을 중복 재생하지 않는다.
 
@@ -43,7 +43,7 @@
 
 ## 검수와 남은 경계
 
-관련 로비·생성·저장경로·오디오·패키징 회귀 340개 통과(29파일), 프로젝트 검사 110/110, 보호 guard PASS. 추출 함수 테스트는 음성 모듈 미노출이어도 확정/저장 흐름을 보존하도록 optional 호출한다. 기존 테스트의 full/demo 입력 누락 2곳을 실제 의도와 맞췄다.
+관련 로비·생성·저장경로·오디오·패키징 회귀 341개 통과(29파일), 프로젝트 검사 110/110, 보호 guard PASS. 추출 함수 테스트는 음성 모듈 미노출이어도 확정/저장 흐름을 보존하도록 optional 호출한다. 기존 테스트의 full/demo 입력 누락 2곳을 실제 의도와 맞췄다.
 
 비교 서버 127.0.0.1:3357은 전용 작업본의 server.cjs를 PowerShell Start-Process -WindowStyle Hidden으로 분리 실행하며 세이브는 I:/EXODUSER-Storage/decision-sound/review-saves. 비교 주소·영상·1920×1080/2560×1080/3840×1080 화면·최종 HTTP 증거는 G:/exoduser/tmp/design-review/20261031_decision_sound/REPORT.md에 기록한다. 실제 화면을 확인했지만 기존 슈퍼와이드 아트 완성도까지 이번 사운드 작업의 PASS로 올리지 않는다.
 

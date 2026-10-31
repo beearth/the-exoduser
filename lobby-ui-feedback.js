@@ -4,7 +4,7 @@
   const samples={hover:'sfx/ui/button_hover.mp3',confirm:'sfx/ui/button_confirm.mp3'};
   const pool=new Map();
   let hovered=null,hoverAt=-Infinity,confirmAt=-Infinity;
-  const ownSound=b=>['visualCreateBtn','createBtn','delConfirmYes','enterGameBtn','steamWishBtn','lobbySteamLink','lobbyWishlistBtn'].includes(b.id)||b.dataset?.uiOwnSound==='true'||b.matches('.cin-enter-btn');
+  const ownSound=b=>['visualCreateBtn','createBtn','enterGameBtn','steamWishBtn','lobbySteamLink','lobbyWishlistBtn'].includes(b.id)||(b.id==='delConfirmYes'&&b.closest('#delConfirmModal')?.dataset?.decisionSound==='delete')||b.dataset?.uiOwnSound==='true'||b.matches('.cin-enter-btn');
   function control(target){
     const b=target?.closest?.('button,[role="menuitem"],.cs-ico');
     return b&&!b.disabled&&!b.classList.contains('disabled')&&b.getClientRects().length?b:null;
