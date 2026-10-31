@@ -36,3 +36,5 @@ sample의 웹 전역 playbackRate .92~1.08 변동을 UI sample에 적용한다. 
 | 공통 병합·Desktop | 미반영. 영수증 이후 지정 통합 담당이 정상 병합하고 -remodel-scenes 1로 갱신 |
 
 AudioRenderer.Start가 성공하기 전에는 Listener를 열지 않는다. 녹음 모드 동안 장치는 silence를 출력하고 실제 mixed PCM은 AudioRenderer.Render로 WAV에 보존한다. 종료/예외 시 Listener volume0/pause부터 적용한 뒤 녹음을 종료한다. 근거: [Unity AudioRenderer.Start](https://docs.unity.com/en-us/engine/6000.5/script-reference/unityengine/audiorenderer/start). 기존 --unity-mute, 공식 실행기, 숨은 Desktop, 세이브 격리/사용자세이브 전후 대조를 유지한다. 영상은 생산 콜백을 스크립트로 실행하는 범위이며 자연플레이/사용자 청음 PASS로 보고하지 않는다.
+
+영상 fixture는 전투 Update를 끈 상태에서 생산 NativeGame.OnGUI를 실제 GUI 이벤트마다 호출해 패널/HUD도 그대로 그린다. 로비는 기존 NativeLobby.OnGUI를 사용한다. 검수 설명 자막 외의 화면을 대체해서 그리지 않는다.
