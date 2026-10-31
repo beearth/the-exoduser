@@ -77,7 +77,7 @@ namespace Exoduser.UnityPort.Core
         }
 
         // ---- save (web `skills`, `skillSlots`, `ultSlot`, `activeCtSk`): only the skills this executor runs are owned by Unity ----
-        public static readonly string[] PortedSkillIds = { "kiSlash", "spikeTrap", "giantSlam", "holyDome", "iceOrb", "fireball", "maliceSwipe", "shieldThrow", "chargeBoost", "magicBlink", "chainSlam", "chainAssault" };
+        public static readonly string[] PortedSkillIds = { "kiSlash", "spikeTrap", "giantSlam", "holyDome", "iceOrb", "fireball", "maliceSwipe", "shieldThrow", "chargeBoost", "magicBlink", "chainSlam", "chainAssault", "weakPhys", "weakMag", "weakPj", "weakRev" };
         static bool IsPorted(string id) { return id != null && Array.IndexOf(PortedSkillIds, id) >= 0; }
         public void CaptureSkills(out Dictionary<string, double> skills, out string[] slots, out string ult, out string ct)
         {
@@ -187,6 +187,7 @@ namespace Exoduser.UnityPort.Core
                 case "spikeTrap": total = SkillRules.SpikeTrapCooldown(CooldownReduction); return SpikeTrapCd;
                 case "giantSlam": total = SkillRules.GiantSlamCooldown(GiantSlamLevel > 0 ? GiantSlamLevel : lv, CooldownReduction); return GiantSlamCd;
                 case "holyDome": total = SkillRules.HolyDomeCooldown; return HolyDomeCd;
+                case "weakPhys": case "weakMag": case "weakPj": case "weakRev": total = 1500; return WeakZoneCooldown(id);
                 case "iceOrb": total = SkillRules.IceOrbCooldown(lv); return IceOrbCd;
                 case "maliceSwipe":case "shieldThrow":total=ShieldFuse?Math.Max(120,720-Math.Max(1,Math.Min(Skills.Level("maliceSwipe"),Skills.Level("shieldThrow")))*15):720;return (float)ShieldThrowCd;
             }
@@ -235,6 +236,7 @@ namespace Exoduser.UnityPort.Core
                 case "spikeTrap": return CastSpikeTrap();
                 case "giantSlam": return CastGiantSlam("giantSlam");
                 case "holyDome": return CastHolyDome();
+                case "weakPhys": case "weakMag": case "weakPj": case "weakRev": return CastWeakZone(sid);
                 case "iceOrb": return CastIceOrb();
             }
             return false;
@@ -447,6 +449,7 @@ namespace Exoduser.UnityPort.Core
             if (GiantSlamCd > 0) GiantSlamCd -= 1 + bonus;         // 36819
             if (HolyDomeCd > 0) HolyDomeCd -= 1;                   // 36820: the dome's own cooldown is not accelerated
             if (IceOrbCd > 0) IceOrbCd -= 1 + bonus;               // 36828
+            TickWeakZoneCooldowns(bonus);
         }
 
         // 원문32934: 첫 회복 영역의 평탄 회복 뒤 기본 자원 재생을2배로 적용한다.
@@ -475,6 +478,12 @@ namespace Exoduser.UnityPort.Core
             for (int i = 0; i < FireZones.Count; i++)
             {
                 var z = FireZones[i]; z.T++;
+                if (IsWeakZoneSkill(z.Type))
+                {
+                    if (z.T >= z.MaxT) { FireZones.RemoveAt(i--); continue; }
+                    TickWeakZone(z);
+                    continue;
+                }
                 if (z.Type == "spikeTrap")
                 {
                     z.TickTimer += 1;

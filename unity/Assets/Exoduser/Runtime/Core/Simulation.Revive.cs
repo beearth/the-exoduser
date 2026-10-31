@@ -66,7 +66,7 @@ namespace Exoduser.UnityPort.Core
             if (Player.State == "fallen" || Player.State == "dead") return;
             var fall = ReviveRules.PlayerFall(new ReviveRules.PlayerFallInput {
                 Level = Player.Level, RevivePow = Config.RevivePow, ReviveCdAffix = Config.ReviveCdAffix, ReviveOnceAffix = Config.ReviveOnceAffix,
-                PassiveDemon = Config.PassiveDemon, PassiveHuman = Config.PassiveHuman, WeakRevZone = WeakRevZoneBonus == null ? 0 : WeakRevZoneBonus(),
+                PassiveDemon = Config.PassiveDemon, PassiveHuman = Config.PassiveHuman, WeakRevZone = WeakRevZoneBonus == null ? WeakRevBonusAtPlayer() : WeakRevZoneBonus(),
                 ReviveOnceUsed = Player.ReviveOnceUsed, DemonReviveCd = Player.DemonReviveCd, Roll = Config.ReviveOnceAffix > 0 && !Player.ReviveOnceUsed ? 0 : NextRandom() * 100 });
             if (fall.ReviveOnce)
             { // 1-life revive affix: full resources, no fall

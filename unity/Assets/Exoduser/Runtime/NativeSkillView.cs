@@ -28,6 +28,7 @@ namespace Exoduser.UnityPort
         // Web lighting presses the ring band (.62~.90 r) down to almost 0, so the two rings are practically invisible there (web|Unity capture 10-28).
         const float WebLitHolyDomeRing = .03f;
         Sprite spike, dome, shard, disc; readonly Sprite[] slamFrames = new Sprite[4], orbFrames = new Sprite[9], maliceFrames = new Sprite[20];
+        Sprite weakZone; Material weakZoneMaterial;
         Item orb;
         public int ActiveZones, ActiveWaves, ActiveBlades, ActiveMaliceOrbs; public bool OrbShown;
 
@@ -42,6 +43,12 @@ namespace Exoduser.UnityPort
             malice.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
             malice.SetInt("_DepthTest", (int)UnityEngine.Rendering.CompareFunction.Always);
             spike = Whole("Art/vfx/skill_spike_thorn"); dome = Whole("Art/vfx/skill_holy_dome");
+            var weakTexture = Resources.Load<Texture2D>("Art/vfx/skill_zone_single");
+            if (weakTexture != null) weakZone = Sprite.Create(weakTexture, new Rect(0, 0, weakTexture.width, weakTexture.height), new Vector2(.5f, .5f), 100, 0, SpriteMeshType.FullRect);
+            else Debug.LogWarning("원본 영역 십자 문양을 불러오지 못했습니다.");
+            var weakShader = Resources.Load<Shader>("Shaders/WeakZoneTint");
+            if (weakShader != null) weakZoneMaterial = new Material(weakShader);
+            else Debug.LogWarning("영역 source-atop 틴트 셰이더를 불러오지 못했습니다.");
             var slam = Resources.Load<Texture2D>("Art/vfx/skill_inferno_slam_sheet"); int hw = slam.width / 2, hh = slam.height / 2;
             for (int i = 0; i < 4; i++) slamFrames[i] = Sprite.Create(slam, new Rect(i % 2 * hw, slam.height - (i / 2 + 1) * hh, hw, hh), new Vector2(.5f, .5f), 100, 0, SpriteMeshType.FullRect);
             var orbTex = Resources.Load<Texture2D>("Art/vfx/skill_ice_orb_sheet"); int fw = orbTex.width / 3, fh = orbTex.height / 3;
@@ -119,6 +126,7 @@ namespace Exoduser.UnityPort
             // 중심형 효과는 Canvas의 전체 영역을 보존하고, 지면 장판은 XZ면에 놓는다.
             int depth=NativeRemodel3D.Active?(int)UnityEngine.Rendering.CompareFunction.Always:(int)UnityEngine.Rendering.CompareFunction.LessEqual;
             add.SetInt("_DepthTest",depth); addFlat.SetInt("_DepthTest",depth); alpha.SetInt("_DepthTest",depth);
+            if (weakZoneMaterial != null) weakZoneMaterial.SetInt("_DepthTest", depth);
             BindMaliceBursts(sim); UpdateMaliceBursts(sim.TickCount); BindIceShatter(sim); UpdateIceShatter(sim.TickCount); UpdateQeVisuals(sim,time);
             ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0; var p = sim.Player;
             UpdateFireTrails(sim, time); UpdateChainSlamView(sim); UpdateChainAssaultView(sim, time);
@@ -130,7 +138,21 @@ namespace Exoduser.UnityPort
                 stale.Remove(z.Id); Item it; if (!zones.TryGetValue(z.Id, out it)) { it = NewItem(z.Type + z.Id); zones[z.Id] = it; BuildZone(it, z); }
                 ActiveZones++; it.go.transform.position = Point(z.X, z.Y) + (NativeRemodel3D.Active ? Vector3.up * .025f : Vector3.zero);
                 float fade = Mathf.Clamp01((z.MaxT - z.T) / 30f), deploy = Mathf.Min(1f, z.T / (z.Type == "holyDome" ? 15f : 12f));
-                if (z.Type == "spikeTrap")
+                if (Simulation.IsWeakZoneSkill(z.Type))
+                {
+                    it.a.enabled = weakZone != null && weakZoneMaterial != null;
+                    if (it.a.enabled)
+                    {
+                        it.a.transform.localRotation = (NativeRemodel3D.Active ? Quaternion.Euler(90, 0, 0) : Quaternion.identity) * Quaternion.Euler(0, 0, -time * .05f * Mathf.Rad2Deg);
+                        float size = z.R * 2 * Mathf.Min(1, z.T / 15f);
+                        it.a.transform.localScale = new Vector3(size / weakZone.rect.width, size / weakZone.rect.height, 1);
+                        // 원문 source-atop은 RGB를 색으로 교체하고 원본 알파를 보존한다.
+                        Color tint = z.Type == "weakPhys" ? new Color(1, .4f, 68 / 255f) : z.Type == "weakMag" ? new Color(170 / 255f, .4f, 1) : z.Type == "weakPj" ? new Color(68 / 255f, 170 / 255f, 1) : new Color(1, 68 / 255f, 136 / 255f);
+                        float weakFade = Mathf.Clamp01((z.MaxT - z.T) / (z.MaxT * .2f)) * .3f;
+                        tint.a = (.5f + .3f * Mathf.Sin(time * 3)) * weakFade; it.a.color = tint;
+                    }
+                }
+                else if (z.Type == "spikeTrap")
                 {
                     it.a.transform.localRotation = (NativeRemodel3D.Active ? Quaternion.Euler(90, 0, 0) : Quaternion.identity) * Quaternion.Euler(0, 0, -time * 1000f * 0.00005f * Mathf.Rad2Deg);
                     Fit(it.a, z.R * 2 * deploy, spike.rect.width); it.a.color = new Color(1, 1, 1, (.43f + .04f * Mathf.Sin(time * 1000f * .003f)) * fade);
@@ -208,6 +230,7 @@ namespace Exoduser.UnityPort
         }
         void BuildZone(Item it, FireZone z)
         {
+            if (Simulation.IsWeakZoneSkill(z.Type)) { it.a = NewRenderer(it, "weak zone", weakZone, weakZoneMaterial != null ? weakZoneMaterial : alpha, -19000); groundSkillSprites.Add(it.a); return; }
             if (z.Type == "spikeTrap") { it.a = NewRenderer(it, "thorn", spike, add, -19000); groundSkillSprites.Add(it.a); return; }
             it.a = NewRenderer(it, "dome", dome, addFlat, -19000);
             groundSkillSprites.Add(it.a);
@@ -247,6 +270,8 @@ namespace Exoduser.UnityPort
         {
             Reset(); DisposeMaliceVisuals(); DisposeIceShatter(); DisposeQeVisuals(); if (trailFrames != null) foreach (var sprite in trailFrames) UnityEngine.Object.Destroy(sprite); if (orb != null) { ForgetSkillSprites(orb); UnityEngine.Object.Destroy(orb.go); }
             UnityEngine.Object.Destroy(add); UnityEngine.Object.Destroy(addFlat); UnityEngine.Object.Destroy(alpha); UnityEngine.Object.Destroy(malice);
+            if (weakZone != null) UnityEngine.Object.Destroy(weakZone);
+            if (weakZoneMaterial != null) UnityEngine.Object.Destroy(weakZoneMaterial);
         }
     }
 }

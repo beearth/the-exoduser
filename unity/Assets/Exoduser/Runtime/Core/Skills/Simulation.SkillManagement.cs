@@ -14,19 +14,19 @@ namespace Exoduser.UnityPort.Core
             foreach (int i in new[] { 5, 4 })
             {
                 string id = Skills.Slots[i];
-                if (id != null && !(i == 5 ? id == "holyDome" : id == "giantSlam")) { displaced.Add(id); Skills.Slots[i] = null; }
+                if (id != null && !(i == 5 ? IsPortedAreaSkill(id) : id == "giantSlam")) { displaced.Add(id); Skills.Slots[i] = null; }
             }
             for (int i = 0; i < 4; i++)
             {
                 string id = Skills.Slots[i]; if (id == null || id == "spikeTrap") continue;
                 Skills.Slots[i] = null;
-                if (id == "holyDome" && empty(5)) Skills.Slots[5] = id;
+                if (IsPortedAreaSkill(id) && empty(5)) Skills.Slots[5] = id;
                 else if (id == "giantSlam" && empty(4)) Skills.Slots[4] = id;
             }
             foreach (string id in displaced)
             {
                 if (Array.IndexOf(Skills.Slots, id) >= 0) continue;
-                if (id == "holyDome" && empty(5)) { Skills.Slots[5] = id; continue; }
+                if (IsPortedAreaSkill(id) && empty(5)) { Skills.Slots[5] = id; continue; }
                 if (id == "giantSlam" && empty(4)) { Skills.Slots[4] = id; continue; }
                 if (id == "spikeTrap") for (int i = 0; i < 4; i++) if (empty(i)) { Skills.Slots[i] = id; break; }
             }
@@ -53,7 +53,7 @@ namespace Exoduser.UnityPort.Core
             if (!Skills.Learned(id)) return false;
             if (windowSlot == 8) return id == "magicBlink";
             if (windowSlot >= 0 && windowSlot < 4) return id == "spikeTrap" || id == "iceOrb";
-            if (windowSlot == 4) return id == "holyDome";
+            if (windowSlot == 4) return IsPortedAreaSkill(id);
             if (windowSlot == 7) return id == "maliceSwipe";
             if (windowSlot == 11) return id == "iceOrb";
             return windowSlot == 12 && id == "giantSlam";
@@ -103,7 +103,7 @@ namespace Exoduser.UnityPort.Core
             int slot = -1;
             if (Array.IndexOf(Skills.Slots, id) < 0)
             {
-                if (id == "holyDome") { if (Skills.Slots[5] == null) slot = 5; }
+                if (IsPortedAreaSkill(id)) { if (Skills.Slots[5] == null) slot = 5; }
                 else if (id == "giantSlam") { if (Skills.Slots[4] == null) slot = 4; }
                 else if (id == "spikeTrap" || id == "iceOrb")
                     for (int i = 0; i < 4; i++) if (Skills.Slots[i] == null) { slot = i; break; }
