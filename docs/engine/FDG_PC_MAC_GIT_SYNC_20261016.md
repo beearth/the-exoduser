@@ -492,7 +492,7 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | R 선택 / 미채택 | h237 update의 glove/belt potCd unary+/falsy0 두 변환만. h188은 현행 수동 포션 UI 폐지·본편 caller0 근거로 미채택/원R9a 보존 |
 | 실제 누락 | truthy 비숫자 gear potCd가 기존 Math.min→NaN→~~0 경로로 최소6 CD를 만드는 입력. 실제 생산 CD 문장으로 재현 |
 | 사전 보존 | code1/docs4의 5경로 WORK/HEAD를 첫 코드 수정 전에 바이트 백업 |
-| 신규 검사 | 실제 const4/대입1 + 합성 gear/passive/cooldown 신규6군·구문1 PASS. 전체update/트리거·실HP/회복·악의구슬/clock/save/API/UI/native0 |
+| 신규 검사 | 실제 const4/대입1 + 합성 gear/passive/cooldown 신규6군·구문1 PASS. 전체update/트리거·실HP/회복·악의오브/clock/save/API/UI/native0 |
 | 선행 설명 정정 | 최초 계획의 regen cap0.5는 미확인 오기였으며 첫 제품쓰기 전 실제 pRegen*0.03/cap0.3으로 정정·fixture는 실제 선언 추출. 이를 맞추기 위한 코드/통과검사 변경0 |
 | 보존 | 기존420 CD기준/6최소·glove/belt각0.2·regen0.03/0.3·~~/Math·실발동/소비/HPQE/효과/튜토리얼/autoPotThr·수동UI/데이터형식 그대로 |
 
@@ -736,7 +736,7 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 항목 | 현행 계약 |
 |---|---|
 | 위치 / id | _invBuildCompare의 _xferNote, 후보 장착 시 강화 자동 이전 설명 |
-| 표시 문구 | 기존 '악의구슬 부족 → 강화 소멸'을 원 R대로 '악의구슬 부족 → 장착 불가'로 수정 |
+| 표시 문구 | 기존 '악의오브 부족 → 강화 소멸'을 원 R대로 '악의오브 부족 → 장착 불가'로 수정 |
 | 표시 조건 | _fromE=curEq.enh 또는0. _fromE>0일 때 이전 안내를 만들고 _xc=xferCost(_fromE). (G.mats 또는0)<_xc일 때 위 경고 표시 |
 | 실제 권위 | 기존 equipItem은 이전 비용이 부족하면 알림 후 return하여 교체를 차단. 문구를 이 기존 동작에 맞췄으며 새 장착/강화/차감/소멸 규칙은 없음 |
 | 보존 | 금액·비용식·조건·원 강화 값·아이템/자원/저장·반환/예외·CP 공식/공급자·스타일·화살표/기존 표시 포맷·locale/사전 코드는 그대로 |

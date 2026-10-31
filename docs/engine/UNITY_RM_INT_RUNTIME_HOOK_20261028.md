@@ -109,7 +109,7 @@ Core(`Runtime/Core`)는 바꾸지 않았다.
 |---|---|
 | 기준 | 승인 A2 woodbridge 이미지 직접 열람, 동일16:9 비교. 각도48.7014126°·거리14u 유지, FOV46.9453°·영웅2배·전방1.45u로 큰 전투 시야와 영웅 초점을 조정. 실제 시각 판정은 후속 캡처로 확정 |
 | 발 접지 | 원본 전사9시트의 알파>64인 발끝240프레임을 오프라인 측정해 같은 JSON에 저장. 투명 하단 여백만 제외, 런타임GPU readback0. 피벗/소스 그림·판정 크기 변경0 |
-| Space+이동 | 기존 어댑터는 스킬 키를 먼저 채워 구르기1회와 강타1회가 함께 발동·악의구슬1000→990·gSlamWindup. `SetRollInput` 뒤 `SetSkillKeys`로 순서를 맞춰 구르기1회·시전0·악의구슬1000·bladeDash. Core 수식 변경0 |
+| Space+이동 | 기존 어댑터는 스킬 키를 먼저 채워 구르기1회와 강타1회가 함께 발동·악의오브1000→990·gSlamWindup. `SetRollInput` 뒤 `SetSkillKeys`로 순서를 맞춰 구르기1회·시전0·악의오브1000·bladeDash. Core 수식 변경0 |
 | 연속 검수 | 기존13입력+이동Space 구르기=14항목, 고정60Hz 실행·3틱 간격20fps PNG. Ctrl150틱으로 자동파쇄·파편도 확인. batch는 동일 Remodel3DLate/Cinemachine ManualUpdate 후 실제 월드카메라 RT1600×900을 저장하며 HUD는 미포함 |
 | 시점 보정 | 첫 수정 fb88e95e는 조준최대0.03104px·나머지입력통과, 악의구는 Late 전 측정으로 매번고정0.300u 검사실패. 최종 검수는 Late 후 측정으로 수정. exit2/창·잔여·USER_SAVE0, 실패를 PASS로 바꾸지 않음 |
 

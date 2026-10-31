@@ -14,7 +14,7 @@
 | 분노 | `hit`, `tick`, `rageCast` | 패링 축적 100%, 확대 안내 후 이동 키 없이 Space |
 | 아이템 줍기 | `game.html`: `BINDS.interact`, 월드 아이템 키 안내 | 기본 R |
 | 장비 | `BINDS.inventory`, `equipItem`, `renderInv` 장착 버튼 | 기본 Tab, 조건 확인 후 장착 |
-| 자동 회복 | `autoPotCd`, `_apHealAmt` 사용 분기 | 생존, 악의구슬 보유, 쿨다운 종료, 부족 HP ≥ 회복량; 악의구슬 1개 소모 |
+| 자동 회복 | `autoPotCd`, `_apHealAmt` 사용 분기 | 생존, 악의오브 보유, 쿨다운 종료, 부족 HP ≥ 회복량; 악의오브 1개 소모 |
 | 회복의 영역 | F 슬롯 디스패치, `activateHolyDome` | 해당 스킬 장착 시 F로 생성 후 영역 내 회복 |
 | 얼음보주 | `_dispatchCtSkill`, `activateIceOrb`, `activateIceShatter` | 해당 스킬 선택 시 왼쪽 Ctrl 진입/재입력 파쇄 |
 | 설정 | `BINDS.settings` | 기본 Esc; 키 변경 시 현재 배정 우선 |
@@ -31,7 +31,7 @@
 |---|---|---|
 | F 회복의 영역 (구현 완료) | 2단5번째, F 입력·새 `holyDome` 생성 및 영역 내 HP/MP/ST 실제 회복 | 슬롯 5와 `P._hdCd` 보존/복구, 연습 중 자동 자원 보충 제한 |
 | Ctrl 얼음보주 | 보주 진입 후 사용자 재입력에 따른 실제 파쇄 | `P.activeCtSk`, 보주 관련 상태/쿨다운 보존, 자동 파쇄를 재입력 성공으로 오인하지 않도록 구분 |
-| 자동 악의구슬 추출 | `G.mats` 1 감소, HP 증가, `autoPotCd` 상승 | 재료/HP/쿨다운 보존·복구, 연습 매틱 HP 복원과 충돌 방지 |
+| 자동 악의오브 추출 | `G.mats` 1 감소, HP 증가, `autoPotCd` 상승 | 재료/HP/쿨다운 보존·복구, 연습 매틱 HP 복원과 충돌 방지 |
 
 현재 실행기의 `actions`/`allowKey`는 바인딩 기반이다. F와 왼쪽 Ctrl은 게임에서 직접 디스패치하므로 전용 입력 허용이 필요하다. 기존 실행기 담당 작업과 연결 지점을 맞춘 뒤 통합할 대상으로, 이 페이지 추가만으로 연습 단계가 늘어나지는 않는다.
 

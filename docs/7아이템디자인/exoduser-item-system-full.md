@@ -305,7 +305,7 @@ Object.freeze(AFFIX_POOL);
 | lastStand | 불굴의 | SUFFIX | 0/0/1 | val | arm | 1회 사망 방지(HP=1, 무적2초), 스테이지 리셋 |
 | reviveOnce | 부활의 | SUFFIX | 0/0/30% | pct | arm | 1회 즉시 부활(HP/MP/ST=각 최대치), 스테이지 리셋 |
 | expBonus | 경험의 | SUFFIX | 10%/18%/28% | pct | hlm,nck | 경험치 ×(1+배율) |
-| goldBonus | 골드의 | SUFFIX | 15%/25%/40% | pct | bts,rng | 악의구슬 획득 ×(1+배율) |
+| goldBonus | 골드의 | SUFFIX | 15%/25%/40% | pct | bts,rng | 악의오브 획득 ×(1+배율) |
 | potionPower | 포션강화의 | SUFFIX | 20%/35%/55% | pct | pnt | HP 물약 회복량 ×(1+배율) |
 | sharpAtk | 예리한 | PREFIX | 50/170/330 | val | wpn,hlm | 플랫 ATK+ (skewRoll:3, 고뎀 극악) |
 | brutalAtk | 맹렬한 | PREFIX | 50/170/330 | val | wpn,hlm | 플랫 ATK+ (skewRoll:3, 고뎀 극악) |
@@ -755,7 +755,7 @@ applyStats();
 기존 레벨 보정/엘리트 보정은 제거 — 몹 분류 자체가 보정 역할.
 
 ### 픽업 방식 (v2)
-- **모든 아이템**: R키 수동 수거 (악의구슬/물약/장비 전부)
+- **모든 아이템**: R키 수동 수거 (악의오브/물약/장비 전부)
 - **펫 자동수거**: 제거됨 (2026-05-01)
 
 ### 빔 라이트
