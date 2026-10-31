@@ -15,6 +15,8 @@ namespace Exoduser.UnityPort
         {
             public string scope="동일 실제 Player의 생성 완료 메시. 카메라 RT 시안과 구분";
             public float waterY=-.45f;public int trunkBodyVerticesInOriginalWalk,fieldTrees,groundChunks;
+            public int rootPatches,rootBlendColorMissing,rootSoilVertices,rootRaisedWoodVertices;
+            public float rootSoilMaxGap,rootWoodMaxHeight,groundSampleMaxError;
             public System.Collections.Generic.List<A2BridgeFilter> filters=new System.Collections.Generic.List<A2BridgeFilter>();
         }
         void A2FieldCaptureGeometry(string output)
@@ -28,6 +30,19 @@ namespace Exoduser.UnityPort
                 var ancestor=filter.transform;while(ancestor.parent!=null&&ancestor.parent!=a2Root.transform)ancestor=ancestor.parent;
                 bool trunk=ancestor.name=="A2_Hollow_Loft_Tree"||ancestor.name=="A2 전경 바깥 거목";
                 var points=mesh.vertices;
+                if(renderer!=null&&renderer.sharedMaterial==a2FieldSoil)
+                    for(int j=0;j<points.Length;j+=17){var p=filter.transform.TransformPoint(points[j]);result.groundSampleMaxError=Mathf.Max(result.groundSampleMaxError,Mathf.Abs(p.y-a2Field.TerrainHeight(p.x,p.z)));}
+                if(ancestor.name=="A2 흙에 이어진 스캔 뿌리")
+                {
+                    result.rootPatches++;var colors=mesh.colors;
+                    if(colors.Length!=points.Length)result.rootBlendColorMissing++;
+                    else for(int j=0;j<points.Length;j++)
+                    {
+                        var p=filter.transform.TransformPoint(points[j]);float h=p.y-a2Field.TerrainHeight(p.x,p.z);
+                        if(colors[j].r<=.2f){result.rootSoilVertices++;result.rootSoilMaxGap=Mathf.Max(result.rootSoilMaxGap,Mathf.Abs(h-.006f));}
+                        if(colors[j].r>=.99f){result.rootWoodMaxHeight=Mathf.Max(result.rootWoodMaxHeight,h);if(h>.05f)result.rootRaisedWoodVertices++;}
+                    }
+                }
                 if(trunk)
                 {
                     result.fieldTrees++;
