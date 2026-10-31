@@ -3,6 +3,10 @@
 <head>
 <link rel="stylesheet" href="loading-art.css?v=20261031-wide1">
 <script src="loading-art.js?v=20261031-wide1"></script>
+<script src="fullscreen-art-data.js?v=20261031"></script>
+<script src="fullscreen-art.js?v=20261031"></script>
+<link rel="stylesheet" href="fullscreen-art.css?v=20261031">
+<script src="fullscreen-art-dom.js?v=20261031" defer></script>
 <script src="build-target.js"></script>
 <script src="player-attack-remaster.js?v=20260915-spin-speed15"></script>
 <script src="warrior-bat-swing.js?v=20260915-speed85"></script>
@@ -63171,12 +63175,10 @@ const _cutX=_cutC.getContext('2d');
 
 function _getCutsceneImg(filename){
   if(!filename)return null;
-  if(_cutsceneImgCache[filename])return _cutsceneImgCache[filename];
-  const img=new Image();
-  img.src=filename.indexOf('/')>=0?'assets/cutscene/'+filename+'?v=20261001-warstills2':'assets/cutscene/images/'+filename+'?v=20261004-intro-lock8';
-  if(img.decode)img.decode().catch(()=>{}); // 첫 drawImage 디코딩 스파이크 제거 (2026-07-27)
-  _cutsceneImgCache[filename]=img;
-  return img;
+  const source=filename.indexOf('/')>=0?'assets/cutscene/'+filename+'?v=20261001-warstills2':'assets/cutscene/images/'+filename+'?v=20261004-intro-lock8';
+  if(globalThis.FullscreenArt)return globalThis.FullscreenArt.get(source);
+  if(!_cutsceneImgCache[filename]){const img=new Image();img.src=source;_cutsceneImgCache[filename]=img;}
+  return _cutsceneImgCache[filename];
 }
 
 // ── VFX 헬퍼 ──
@@ -63318,7 +63320,11 @@ function _renderIntroCutscene(){
 
   // 검은 배경 (전체 + 레터박스)
   cx.fillStyle='#000';cx.fillRect(0,0,_fullW,_fullH);
-  cx.save();cx.beginPath();cx.rect(_lbX,_lbY,cw,ch);cx.clip();cx.translate(_lbX,_lbY);
+  const _plate=ln.img?_getCutsceneImg(ln.img):null;
+  const _wideCut=_curAR>2&&_plate?.complete&&_plate.naturalWidth/_plate.naturalHeight>2;
+  cx.save();
+  if(!_wideCut){cx.beginPath();cx.rect(_lbX,_lbY,cw,ch);cx.clip();}
+  cx.translate(_lbX,_lbY);
 
   // SFX/Voice (라인 전환 시 1회)
   if(_cutsceneIdx!==_cutLineIdx){
@@ -63372,8 +63378,13 @@ function _renderIntroCutscene(){
       cx.drawImage(img,dx,dy,dw,dh);
       cx.restore();
       // VFX 후처리
-      _cutColorGrade(cx,cw,ch,vfx.grade);
-      _cutVignette(cx,cw,ch,vfx.vig||0);
+      if(_wideCut){
+        cx.save();cx.translate(-_lbX,-_lbY);
+        _cutColorGrade(cx,_fullW,_fullH,vfx.grade);_cutVignette(cx,_fullW,_fullH,vfx.vig||0);
+        cx.restore();
+      }else{
+        _cutColorGrade(cx,cw,ch,vfx.grade);_cutVignette(cx,cw,ch,vfx.vig||0);
+      }
     }
   }
 

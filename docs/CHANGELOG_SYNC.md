@@ -55616,3 +55616,8 @@ stage=0은 실제200×200 본편으로 정정하고 과거 원화 판은 명시�
 - `img/logo_exoduser.png` byte와 원래 불투명 금속 115,815픽셀을 보존하고, 같은1506×719 `img/logo_exoduser_solid.png`를 추가했다. 글자·눈 고리·머리 내부 흑철 바탕과 어두운 외곽/그림자로 인장 관통을 막는다.
 - `index.html` 10곳·`game.html` 1곳 PNG 참조 교체. 위치·크기·fade·게임 규칙은 유지. 규격·검수 도구: `docs/3.1 ui hud 디자인/LOGO_SOLID_20261031.md`, `tools/build-logo-solid.py`, `tools/verify-logo-solid.py`.
 - main 소스 반영만 수행하고 DEMO/EA 복사·배포·Unity 실행·유료 생성은 하지 않는다. 실제 원격·캡처·겹침·회귀·guard 결과는 `G:/exoduser/tmp/design-review/20261031_logo_solid/REPORT.md`에 기록한다. 과거 원본/영상 제작 영수증은 보존한다.
+
+
+## 2026-10-31 전체 화면 원화 확장 적용
+
+이 문서의 과거 이미지·영상 제작 및 판정은 당시 이력이다. 현행 웹은 `fullscreen-art.js`의 경로 등록으로 64종의 원본/21:9/32:9 판을 선택한다. 화면비 2 이하의 원본 경로와 MP4 파일은 보존하고, 초광폭에서는 중앙 원본 픽셀을 보존한 확장 정지판을 쓴다. 출력·사용 위치·규격·생성 정보·검수 근거는 `docs/3.1 ui hud 디자인/FULLSCREEN_ART_ULTRAWIDE_20261031.md` 및 `assets/fullscreen-wide/20261031/manifest.json`이 현행 기준이다. 로딩35장은 별도 담당이며 Unity 반영·실행 검수는 이 웹 적용으로 완료되지 않는다.

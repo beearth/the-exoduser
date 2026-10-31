@@ -1,0 +1,2349 @@
+{
+  "date": "2026-10-31",
+  "provider": "사용자 지정 Codex 내장 이미지 생성",
+  "externalPaidCalls": 0,
+  "centerContract": "decoded original RGB pixels are preserved; only generated exterior pixels receive boundary color correction",
+  "selection": {
+    "originalMaxAspect": 2,
+    "wide21MaxAspect": 2.37137037037037
+  },
+  "commonPrompt": "Fill missing gray background only. Keep reference position and scale. Continue same lighting, texture and perspective. No new characters, faces, body parts, weapons, lettering, symbols, repeated motifs, dither or blur fill.",
+  "assets": [
+    {
+      "id": 0,
+      "source": "img/title_bg_20261028.jpg",
+      "use": "시작 메뉴",
+      "original": {
+        "width": 2560,
+        "height": 1440,
+        "sha256": "ef7ab7e54d5b5911fa52c95789fbb242b0587fab9b6b1955a2d47ab90816b6ce"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/00-title_bg_20261028-32.webp",
+          "width": 5120,
+          "height": 1440,
+          "sha256": "6aeda6917767550cf108fda586299fd967880c266f98d1bb6bb0424fc16fb8a1",
+          "centerX": 1280,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/00-title_bg_20261028-21.webp",
+          "width": 3414,
+          "height": 1440,
+          "sha256": "c0ce7ae4ffc66cf69d17510068ee0e2ce4730f990e4969e8de34074993f38bf9",
+          "centerX": 427,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "independent left/right outpaint",
+        "files": {
+          "left": "exec-28b472a0-0385-4390-9bce-14bdc52f2ccc.png",
+          "right": "exec-79361070-1a7a-4e3c-8ebe-a3e496fedc9b.png"
+        }
+      },
+      "boundaryJoin": "원래 합성 유지"
+    },
+    {
+      "id": 1,
+      "source": "img/hellgate.png",
+      "use": "구형 cinGate 정지 배경",
+      "original": {
+        "width": 2560,
+        "height": 1664,
+        "sha256": "62f66723586d5eb957a060912e507dac21a43495c8b63078aaba61b3bc7b8761"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/01-hellgate-32.webp",
+          "width": 5918,
+          "height": 1664,
+          "sha256": "6e2973044181553b69e6e52ef8d19f7c23f329f98e3a146655a8c70190c2ddca",
+          "centerX": 1679,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/01-hellgate-21.webp",
+          "width": 3945,
+          "height": 1664,
+          "sha256": "76598f4f1b9670e869195dc583df07aec06271af85ebfd8d4eb2c07c4eebbf1e",
+          "centerX": 693,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "128px edge reference, independent left/right outpaint",
+        "left": {
+          "file": "exec-5ab90e59-83da-45e3-85e7-3045301192e7.png",
+          "prompt": "Outpaint the GRAY MISSING AREA ONLY. The narrow RIGHT strip is the exact locked original edge. Extend its existing environment LEFT into the gray area. Keep that strip in exactly the same position and scale and preserve its edge shapes. This is a BACKGROUND fragment: nearly BLACK cavern void matching the existing black border, with faint natural cavern rock barely visible only farther away; no floor lit brighter than reference. The join at the reference strip must be perfectly continuous, same brightness, texture and perspective. No new people, animals, toys, gate, weapons, lettering, objects or symbols. No white margins, frames, mirror/repeat fill, blurry bands or grain. Use the exact input canvas proportions."
+        },
+        "right": {
+          "file": "exec-8dd9f2c6-0bd3-4b23-b023-2364739565ce.png",
+          "prompt": "Outpaint the GRAY MISSING AREA ONLY. The narrow LEFT strip is the exact locked original edge. Extend its existing environment RIGHT into the gray area. Keep that strip in exactly the same position and scale and preserve its edge shapes. This is a BACKGROUND fragment: nearly BLACK cavern void matching the existing black border, with faint natural cavern rock barely visible only farther away; no floor lit brighter than reference. The join at the reference strip must be perfectly continuous, same brightness, texture and perspective. No new people, animals, toys, gate, weapons, lettering, objects or symbols. No white margins, frames, mirror/repeat fill, blurry bands or grain. Use the exact input canvas proportions."
+        }
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 2,
+      "source": "img/cin_nemesia_hd.png",
+      "use": "cin-nemesia-bg 정지 배경",
+      "original": {
+        "width": 1536,
+        "height": 1024,
+        "sha256": "3fc25736b90fad0178154ec2cf2af355f09c35ede2d2d2e72bc25914a381c177"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/02-cin_nemesia_hd-32.webp",
+          "width": 3642,
+          "height": 1024,
+          "sha256": "3b9da2b62999994792054f031eaabe2cf1e285c355f2230d565e281d7c5638fe",
+          "centerX": 1053,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/02-cin_nemesia_hd-21.webp",
+          "width": 2428,
+          "height": 1024,
+          "sha256": "fa076ba5d479e8cfa909bc6911d4c267d3d30bf9fd31f2427ca25bec596eea23",
+          "centerX": 446,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-93170ec7-b0ab-4bda-ac4f-79789eb7692a.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 3,
+      "source": "img/cin_remember_wide.png",
+      "use": "사망 화면",
+      "original": {
+        "width": 1931,
+        "height": 814,
+        "sha256": "46c279e0a5de953ee751564e39c5548f3988a033b630ec9827721b2d149d2494"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/03-cin_remember_wide-32.webp",
+          "width": 2895,
+          "height": 814,
+          "sha256": "73eb427292af0c37ceb4398838b42a2221d926a0136a0c2121fa2e29e71aea47",
+          "centerX": 482,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/03-cin_remember_wide-21.webp",
+          "width": 1931,
+          "height": 814,
+          "sha256": "9d9215c9f73ce30bf63968b2fbcc23ffa4950847f9d9ea45fa67d351317b7515",
+          "centerX": 0,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-a786414f-5c90-421b-b380-edcd6473e4a1.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 4,
+      "source": "assets/lobby/lobby_varkan_crypt_poster_v2.webp",
+      "use": "로비 기본 신전",
+      "original": {
+        "width": 1920,
+        "height": 1088,
+        "sha256": "c79e0e0d40954b1ea924c8a48c06eacd38f9c7884bcba792803986c6429d961f"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/04-lobby_varkan_crypt_poster_v2-32.webp",
+          "width": 3870,
+          "height": 1088,
+          "sha256": "9a6de99d8868048b945638eea3de68bdf707a10231d9fe9e9e7b939486166bbe",
+          "centerX": 975,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/04-lobby_varkan_crypt_poster_v2-21.webp",
+          "width": 2579,
+          "height": 1088,
+          "sha256": "350792ec04b381418dd997e67fb5b91630352dfaea968ab41fdec72daa08647a",
+          "centerX": 330,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-a280f2d3-3d3b-4fbc-afb0-2fd682d60d4f.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 5,
+      "source": "assets/charselect/bg_scene1.png",
+      "use": "캐릭터 선택 기본 장면",
+      "original": {
+        "width": 1536,
+        "height": 1024,
+        "sha256": "db0d355bb920d39bddf48ef95f91e2c22389babdfaa174b4c3b4730ca73c1ccf"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/05-bg_scene1-32.webp",
+          "width": 3642,
+          "height": 1024,
+          "sha256": "0c0402a6c67b703488179df26368d0cd17d44c55acf7ee15045adb2db3f3a586",
+          "centerX": 1053,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/05-bg_scene1-21.webp",
+          "width": 2428,
+          "height": 1024,
+          "sha256": "78445207b240a66f56a8234e56711e5d6ea3cc4b5f58dfa74a13c4dccd5cd415",
+          "centerX": 446,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "128px edge reference, independent left/right outpaint",
+        "left": {
+          "file": "exec-b430eb87-4d28-44c6-b0e3-6a4b834731a3.png",
+          "prompt": "Outpaint the GRAY MISSING AREA ONLY. The narrow RIGHT strip is the exact locked original edge. Extend its existing environment LEFT into the gray area. Keep that strip in exactly the same position and scale and preserve its edge shapes. This is a BACKGROUND fragment: very dark gothic ruined masonry and purple-black smoky air, same nearly black edge illumination; only a faint distant muted red horizon farther away, no bright sunset. The join at the reference strip must be perfectly continuous, same brightness, texture and perspective. No new people, animals, toys, gate, weapons, lettering, objects or symbols. No white margins, frames, mirror/repeat fill, blurry bands or grain. Use the exact input canvas proportions."
+        },
+        "right": {
+          "file": "exec-33d65908-b853-4350-b326-2c2e8b2e32bd.png",
+          "prompt": "Outpaint the GRAY MISSING AREA ONLY. The narrow LEFT strip is the exact locked original edge. Extend its existing environment RIGHT into the gray area. Keep that strip in exactly the same position and scale and preserve its edge shapes. This is a BACKGROUND fragment: very dark gothic ruined masonry and purple-black smoky air, same nearly black edge illumination; only a faint distant muted red horizon farther away, no bright sunset. The join at the reference strip must be perfectly continuous, same brightness, texture and perspective. No new people, animals, toys, gate, weapons, lettering, objects or symbols. No white margins, frames, mirror/repeat fill, blurry bands or grain. Use the exact input canvas proportions."
+        }
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 6,
+      "source": "assets/charselect/bg_scene2.png",
+      "use": "캐릭터 선택 기본 장면",
+      "original": {
+        "width": 1536,
+        "height": 1024,
+        "sha256": "79d64993d3cf9604480ef90df91fb2c5bd2aaa7dad815a26026e10866f547a06"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/06-bg_scene2-32.webp",
+          "width": 3642,
+          "height": 1024,
+          "sha256": "470ad9e3e46731b0f8546e471b0467553255f42344debbcc3d821b6aa6f91d0a",
+          "centerX": 1053,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/06-bg_scene2-21.webp",
+          "width": 2428,
+          "height": 1024,
+          "sha256": "44afee65223eedc7504db31ad32711ba96db32c49e43f6b1d1c9d48eaef1cf16",
+          "centerX": 446,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "128px edge reference, independent left/right outpaint",
+        "left": {
+          "file": "exec-4de69f7b-1d65-467f-bc5e-c6e0c5b904bf.png",
+          "prompt": "Outpaint the GRAY MISSING AREA ONLY. The narrow RIGHT strip is the exact locked original edge. Extend its existing environment LEFT into the gray area. Keep that strip in exactly the same position and scale and preserve its edge shapes. This is a BACKGROUND fragment: grey-green overcast sky, low distant rocky horizon and dark muddy battlefield ground; continue source sky brightness and cloud heights. The join at the reference strip must be perfectly continuous, same brightness, texture and perspective. No new people, animals, toys, gate, weapons, lettering, objects or symbols. No white margins, frames, mirror/repeat fill, blurry bands or grain. Use the exact input canvas proportions."
+        },
+        "right": {
+          "file": "exec-f176c200-0217-4031-98cc-5e27ec5c9e2d.png",
+          "prompt": "Outpaint the GRAY MISSING AREA ONLY. The narrow LEFT strip is the exact locked original edge. Extend its existing environment RIGHT into the gray area. Keep that strip in exactly the same position and scale and preserve its edge shapes. This is a BACKGROUND fragment: grey-green overcast sky, low distant rocky horizon and dark muddy battlefield ground; continue source sky brightness and cloud heights. The join at the reference strip must be perfectly continuous, same brightness, texture and perspective. No new people, animals, toys, gate, weapons, lettering, objects or symbols. No white margins, frames, mirror/repeat fill, blurry bands or grain. Use the exact input canvas proportions."
+        }
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 7,
+      "source": "assets/cutscene/prologue/p01.jpg",
+      "use": "프롤로그 컷신",
+      "original": {
+        "width": 2688,
+        "height": 1520,
+        "sha256": "6c0aa699511748bd7bd4849fb687d58f6e5ce9da130762ecc848af7f6a5c77c9"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/07-p01-32.webp",
+          "width": 5406,
+          "height": 1520,
+          "sha256": "179c0ffaa55fbea76ef5d2e4919baf90510aac0524e23c49ac104d395034c7b6",
+          "centerX": 1359,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/07-p01-21.webp",
+          "width": 3603,
+          "height": 1520,
+          "sha256": "fd6a451ec8b88f9682b03cb2de52b505c44ca631905ad663b71485184de99d1d",
+          "centerX": 458,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-7e147e4f-e10a-4404-8977-9678790c63cc.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 8,
+      "source": "assets/cutscene/prologue/p01b.jpg",
+      "use": "프롤로그 컷신",
+      "original": {
+        "width": 2688,
+        "height": 1520,
+        "sha256": "082b997d236524423ca04fa09f3b511dded6f3d31673ae89e0f448f66a79d775"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/08-p01b-32.webp",
+          "width": 5406,
+          "height": 1520,
+          "sha256": "cdfde601bafc06668a418eb842ee905d616530cd6b96d5d471060fee3a43569f",
+          "centerX": 1359,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/08-p01b-21.webp",
+          "width": 3603,
+          "height": 1520,
+          "sha256": "1c2c5e277aee4648fdef62f7a5267ff2c18f55ea1e911177b4a17204b3f4508b",
+          "centerX": 458,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-0bf99554-b68c-42f3-bbbd-bc505aceace7.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 9,
+      "source": "assets/cutscene/prologue/p02.jpg",
+      "use": "프롤로그 컷신",
+      "original": {
+        "width": 2688,
+        "height": 1520,
+        "sha256": "dc54aca21cef6f6c2d22b237572fb1b2a4114d35fdac41850a505df7282ac307"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/09-p02-32.webp",
+          "width": 5406,
+          "height": 1520,
+          "sha256": "4adadc56026d23684cad32255d7e0a53271d384b178a88d7fcd185da4456c822",
+          "centerX": 1359,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/09-p02-21.webp",
+          "width": 3603,
+          "height": 1520,
+          "sha256": "d48c6b0dc996e994d7420a8991edc9bb417d0e278ae1f8f9fc84a1611d3f055a",
+          "centerX": 458,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-eb4a3b61-2ce7-4ab1-92d8-2ee99b8c9a42.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 10,
+      "source": "assets/cutscene/prologue/p03.jpg",
+      "use": "프롤로그 컷신",
+      "original": {
+        "width": 2688,
+        "height": 1520,
+        "sha256": "31c21ae69f4af491533d2f914f4bcc30576ffa6edc1e7d91fbe4623f63b0325f"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/10-p03-32.webp",
+          "width": 5406,
+          "height": 1520,
+          "sha256": "2664454ac2d1b1665d330cfa6f850a510a8c55c8f3a097b0dcaa137d31ad7279",
+          "centerX": 1359,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/10-p03-21.webp",
+          "width": 3603,
+          "height": 1520,
+          "sha256": "aad91c35bce84c907db65cd591ef9f42224225240a8d79103733d64e400ffab4",
+          "centerX": 458,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-53691bdb-61e4-46a1-bbc2-1aa0897189fc.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 11,
+      "source": "assets/cutscene/prologue/p04.jpg",
+      "use": "프롤로그 컷신",
+      "original": {
+        "width": 2688,
+        "height": 1520,
+        "sha256": "e3743c39c8303c4fe8d97bfd513dced428603d50a968c0f882d8fb98d8696139"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/11-p04-32.webp",
+          "width": 5406,
+          "height": 1520,
+          "sha256": "3623375070e6b59dd4e0e40efb9d8d0de17c563f0f54151efd194d4c2946a681",
+          "centerX": 1359,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/11-p04-21.webp",
+          "width": 3603,
+          "height": 1520,
+          "sha256": "86efc824eebfe4dfd63ccea15af063e3ff3d9833739b2e5f69f1d8aa5da3461e",
+          "centerX": 458,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-0b93fe5d-684b-4f08-be3f-c059bad671e6.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 12,
+      "source": "assets/cutscene/prologue/p05.jpg",
+      "use": "프롤로그 컷신",
+      "original": {
+        "width": 2688,
+        "height": 1520,
+        "sha256": "afc39ace9735934e49cc218a5d97f18187db81f911a044313412810b4eeda137"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/12-p05-32.webp",
+          "width": 5406,
+          "height": 1520,
+          "sha256": "66bb1a8e00cf64ef33d29ee1954913f14c525e7ecc0049c0e05f55978c3cf963",
+          "centerX": 1359,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/12-p05-21.webp",
+          "width": 3603,
+          "height": 1520,
+          "sha256": "40ad030b5c42acefec7430d00efd197807e1223b3b1e987e58f7b2d0372ce437",
+          "centerX": 458,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-957a512a-07d5-4ddc-8d27-2e69996e26d1.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 13,
+      "source": "assets/cutscene/prologue/p06.jpg",
+      "use": "프롤로그 컷신",
+      "original": {
+        "width": 2688,
+        "height": 1520,
+        "sha256": "2e02ef5607365c6cbcd24cd2561b6443fd9b6c6290d3f41ace87fdbfd4543f96"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/13-p06-32.webp",
+          "width": 5406,
+          "height": 1520,
+          "sha256": "1d02220f12bc91191d9a1e91ab895b36cd16b3b041c5a3cf76972204f7d11ff1",
+          "centerX": 1359,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/13-p06-21.webp",
+          "width": 3603,
+          "height": 1520,
+          "sha256": "87ce9e82f64321fed66e52d67c1d124da726568b8f883ffdf7a1bd2d39636922",
+          "centerX": 458,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-40945852-fce8-4bd8-ba5f-e5c3040a3e16.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 14,
+      "source": "assets/cutscene/prologue/p07.jpg",
+      "use": "프롤로그 컷신",
+      "original": {
+        "width": 2688,
+        "height": 1520,
+        "sha256": "790e08a1e3f85e831d028773e04bbf59fc714794dd0a60e14075d4a884337f43"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/14-p07-32.webp",
+          "width": 5406,
+          "height": 1520,
+          "sha256": "c91969302b38661cac19a34c523647a5f09fc031f79149d40e5800c5a4062808",
+          "centerX": 1359,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/14-p07-21.webp",
+          "width": 3603,
+          "height": 1520,
+          "sha256": "14c8640cdfc95689d145f2357b91879e28085c5f024d4813d7ae3519e472083a",
+          "centerX": 458,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-ea36b59c-f644-4d28-9c8c-13cbb0fbe9c7.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 15,
+      "source": "assets/cutscene/prologue/p08.jpg",
+      "use": "프롤로그 컷신",
+      "original": {
+        "width": 2688,
+        "height": 1520,
+        "sha256": "7543d75a5b9f62eb46a898475132b162739608ced93adf255a7a91b39da131e4"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/15-p08-32.webp",
+          "width": 5406,
+          "height": 1520,
+          "sha256": "eb5bd42050eb302ce7212f677b36042bd7418700e23ef309a8b64b92a73306f3",
+          "centerX": 1359,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/15-p08-21.webp",
+          "width": 3603,
+          "height": 1520,
+          "sha256": "e428a8a9a8ebfc6172f4e917737cfa9ce0c125755733ab4527924d6cdd0cc987",
+          "centerX": 458,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-7c2434af-1ad4-41b4-8fd0-5bcb9f71b82a.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 16,
+      "source": "assets/cutscene/prologue/p09.jpg",
+      "use": "프롤로그 컷신",
+      "original": {
+        "width": 2688,
+        "height": 1520,
+        "sha256": "32210650aacba4191e42ae53df35ae82f68adcb34e9580f3747d0f02126541f2"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/16-p09-32.webp",
+          "width": 5406,
+          "height": 1520,
+          "sha256": "8e7fc288427addeb64cd515e1a22f76b09b4b9796867f5d18bf159717f842ca2",
+          "centerX": 1359,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/16-p09-21.webp",
+          "width": 3603,
+          "height": 1520,
+          "sha256": "6c177b46969a3aa4a8f90587b8cc99c615a9ed425c57e24157731ce16cfa5793",
+          "centerX": 458,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-f0cbd694-3467-4c4e-bd58-eed69fccb8c3.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 17,
+      "source": "assets/cutscene/prologue/p10.jpg",
+      "use": "프롤로그 컷신",
+      "original": {
+        "width": 2688,
+        "height": 1520,
+        "sha256": "45bdcb2ecf12ae206d44c506f04065af22b30a49c6665ca836bf2c7efee0d9a5"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/17-p10-32.webp",
+          "width": 5406,
+          "height": 1520,
+          "sha256": "721fa1f074f2af2064831fb0fe99ad3356c4bf52349301727a7b80a3838e5e20",
+          "centerX": 1359,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/17-p10-21.webp",
+          "width": 3603,
+          "height": 1520,
+          "sha256": "26c729adea473d1f115f260d9050304e4410d5d5ce55c682d22a280dcefeabb1",
+          "centerX": 458,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-5bf12510-7322-4515-9457-558b7f447f1d.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 18,
+      "source": "assets/cutscene/prologue/p11.jpg",
+      "use": "프롤로그 컷신",
+      "original": {
+        "width": 2688,
+        "height": 1520,
+        "sha256": "a22e257e002d267d0dd319c014637ee70bd71cc13ed1f095887c12b475a3a8b1"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/18-p11-32.webp",
+          "width": 5406,
+          "height": 1520,
+          "sha256": "0d3b002d2a126bbd29da60762d79b9b8f954bb6cda0d732d1b88cc235e794259",
+          "centerX": 1359,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/18-p11-21.webp",
+          "width": 3603,
+          "height": 1520,
+          "sha256": "5623f0e40fddbe929163f99ec9a440f48ee7b9467a0ca6f2728c61c0bf73f67c",
+          "centerX": 458,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-5adaa20f-68ce-493f-af41-352e6d9ba6c0.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 19,
+      "source": "assets/cutscene/prologue/p12.jpg",
+      "use": "프롤로그 컷신",
+      "original": {
+        "width": 2688,
+        "height": 1520,
+        "sha256": "0f107348b01744ac5ce1f9ee97c76e4767a104699452f093847721f7f9e4e0d5"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/19-p12-32.webp",
+          "width": 5406,
+          "height": 1520,
+          "sha256": "3f11a95e564137c5fc9563aba983408bb1f6697d1ffa67204406f24852a80cba",
+          "centerX": 1359,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/19-p12-21.webp",
+          "width": 3603,
+          "height": 1520,
+          "sha256": "255605b7996df206e70f9dafd39f17922ebecda81b499dca719c28b21f80f29e",
+          "centerX": 458,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-11cd3297-52a4-4f3e-8a3c-445c52e07a70.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 20,
+      "source": "assets/cutscene/prologue/p13.jpg",
+      "use": "프롤로그 컷신",
+      "original": {
+        "width": 2688,
+        "height": 1520,
+        "sha256": "7812e875502a3bc77d816ba7e9602ec3e681f31bc335ab8cc8ae763fcba91e85"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/20-p13-32.webp",
+          "width": 5406,
+          "height": 1520,
+          "sha256": "fe08c34efeceac25d3aead0a2e4ff2aced586d6999f211a59fc9a933dce30e21",
+          "centerX": 1359,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/20-p13-21.webp",
+          "width": 3603,
+          "height": 1520,
+          "sha256": "d0c98fb1aac3a02b47b637a9ba64d20769a149927a78350d17db5e04d0bd3a2d",
+          "centerX": 458,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-3075a6d2-acd5-4971-9544-4c8646f684e6.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 21,
+      "source": "assets/cutscene/prologue/p14.jpg",
+      "use": "프롤로그 컷신",
+      "original": {
+        "width": 2688,
+        "height": 1520,
+        "sha256": "217c0e820d1545e79cf1aa1a43047781afe89d95f09fd980ea74cbf587079796"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/21-p14-32.webp",
+          "width": 5406,
+          "height": 1520,
+          "sha256": "682ca95e4afa6038bfcfd05f3197e342471ea6c345e6b2deef9fbfd9d946dc72",
+          "centerX": 1359,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/21-p14-21.webp",
+          "width": 3603,
+          "height": 1520,
+          "sha256": "007ef412534e12a1ba643b7bc239eedd498e569e458f613fda54597492ed9e5b",
+          "centerX": 458,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-a996e2cb-f751-4834-940e-8bd931d4aa70.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 22,
+      "source": "assets/cutscene/prologue/p15.jpg",
+      "use": "프롤로그 컷신",
+      "original": {
+        "width": 2688,
+        "height": 1520,
+        "sha256": "0adae5bb57785b10633708a2ff168fea28a2d958cbe3090da29d0797ce8bc388"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/22-p15-32.webp",
+          "width": 5406,
+          "height": 1520,
+          "sha256": "b06848d71e7772ee211bf2eddf29e6c126eaf91e46e3fcab91103ecd6cdc9ccb",
+          "centerX": 1359,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/22-p15-21.webp",
+          "width": 3603,
+          "height": 1520,
+          "sha256": "2ae94943fce393441b623404cee3fd550861680f48a6c6acce5b918efcd8ee6e",
+          "centerX": 458,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-1e0dc11e-52ef-438e-9714-c1285625d39f.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 23,
+      "source": "assets/cutscene/prologue/p16.jpg",
+      "use": "프롤로그 컷신",
+      "original": {
+        "width": 2688,
+        "height": 1520,
+        "sha256": "090f4c6dc4e5d7162db017afaac89d9f7435442f149023043985ef6a68a01c17"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/23-p16-32.webp",
+          "width": 5406,
+          "height": 1520,
+          "sha256": "160627f19ac7a29abcc9af3d121c16c9c3f3fc9baa6fb93db70080427847d7ed",
+          "centerX": 1359,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/23-p16-21.webp",
+          "width": 3603,
+          "height": 1520,
+          "sha256": "28a236dbf1f7fdc462db3f34cab6595e69ce90dd68fe80c3db54d533f17e4911",
+          "centerX": 458,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-b8b37784-6bb5-420d-a1e7-9f04dd4c7e9b.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 24,
+      "source": "assets/cutscene/prologue/p17.jpg",
+      "use": "프롤로그 컷신",
+      "original": {
+        "width": 2688,
+        "height": 1520,
+        "sha256": "953cd9fbcd0e8a6b7b924d9b48794c7fe39574396bbd742ecdbcc4078ab9f23b"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/24-p17-32.webp",
+          "width": 5406,
+          "height": 1520,
+          "sha256": "94dba446560e598182d615d0c0b976a1ebdc39e6e74e7b936689786912bc972d",
+          "centerX": 1359,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/24-p17-21.webp",
+          "width": 3603,
+          "height": 1520,
+          "sha256": "d8721abfefba5eb6f8095c23184e1470e408ac43ea15f146e56b7805f921b357",
+          "centerX": 458,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-6b19a6ef-cd90-46e8-9b9f-c6e76eaccf15.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 25,
+      "source": "assets/cutscene/warintro/cin_war.jpg",
+      "use": "전쟁 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "2d67b5edf5624077cc5acc69fb7910c5a172e4236c82a11fdf6ea3e7f4ae98c2"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/25-cin_war-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "87fd82023967773df8525d0ba0ee40e3de8bc14f6fab0b11071ac3d3e14fc341",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/25-cin_war-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "89394304f4ab50a09d1c59c47256149d378edb17e077f1fe77974e14d208124e",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-f93c4164-42d1-468a-bd9d-4af9725f0bef.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 26,
+      "source": "assets/cutscene/warintro/cin_ruins.jpg",
+      "use": "전쟁 인트로 컷신",
+      "original": {
+        "width": 1536,
+        "height": 1024,
+        "sha256": "2d04a81505c754dec9be6e8b3ace24ab6547173518f61c8cdf9b17f9a26c007f"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/26-cin_ruins-32.webp",
+          "width": 3642,
+          "height": 1024,
+          "sha256": "b20487f8c455fc158ad6486e01a164df027a25c0a0387fe5bc04ff558973d20a",
+          "centerX": 1053,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/26-cin_ruins-21.webp",
+          "width": 2428,
+          "height": 1024,
+          "sha256": "5743d46c3da71b482ec407ab0e0af7bb4b36000665b3548173c05ffd11bd340c",
+          "centerX": 446,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-56fedd81-139d-4228-afdf-9aee7a8be739.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 27,
+      "source": "assets/cutscene/warintro/cin_throne.jpg",
+      "use": "전쟁 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "2e9c42b1757352b7bf18c7e78413d1b819abc4f11505c586446cc634544004dc"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/27-cin_throne-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "6d9e1bee98fba4f5d7022df00e000cd4847dcc1cfcd5ec893f96a670ef46e784",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/27-cin_throne-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "345a6a7ea15073346755ae734467511c172333008db6abaa8d2a8334aafc5ff0",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-46ff9cf6-7a38-4940-a3ee-0c596ed98809.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 28,
+      "source": "assets/cutscene/warintro/cin_bystanders.jpg",
+      "use": "전쟁 인트로 컷신",
+      "original": {
+        "width": 1536,
+        "height": 1024,
+        "sha256": "79afede1d19710126d9aaafa571504f61330d912e2f3c1a10e57661a939f74b6"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/28-cin_bystanders-32.webp",
+          "width": 3642,
+          "height": 1024,
+          "sha256": "c5b91e2a9aa8aecab7ff37f312e6f5b0a780b0d87a8c68bda3e6930a0d0569b3",
+          "centerX": 1053,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/28-cin_bystanders-21.webp",
+          "width": 2428,
+          "height": 1024,
+          "sha256": "d246544865da6f18a80724ffdf7affd7a97131e7299e86b5b22a6d63532cb7b4",
+          "centerX": 446,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-f7c77b94-b468-4a50-98af-b85cdd7752c7.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 29,
+      "source": "assets/cutscene/warintro/cin_bloodbath.jpg",
+      "use": "전쟁 인트로 컷신",
+      "original": {
+        "width": 1536,
+        "height": 1024,
+        "sha256": "36dba530beabbd60f37b20d1bd132bd793025c98e4497921872c887e06b6eaa3"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/29-cin_bloodbath-32.webp",
+          "width": 3642,
+          "height": 1024,
+          "sha256": "66e97504e2672e619bd2cfab72f0924073c7c1c529b3a68edccb5842346ae9e7",
+          "centerX": 1053,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/29-cin_bloodbath-21.webp",
+          "width": 2428,
+          "height": 1024,
+          "sha256": "d077b8bc3a135751614fc822e0cd73cecf07922f0f08b6bec658b6c811b86233",
+          "centerX": 446,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-ff6756d3-f861-4050-923a-fe863b681b3d.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 30,
+      "source": "assets/cutscene/warintro/cin_torture.jpg",
+      "use": "전쟁 인트로 컷신",
+      "original": {
+        "width": 1536,
+        "height": 1024,
+        "sha256": "0f70c4bf29df113eae1c6a5c994064515469cb0e479c75a1a5a46926578b655a"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/30-cin_torture-32.webp",
+          "width": 3642,
+          "height": 1024,
+          "sha256": "46c0b6bbae3fc68ee9778f72b3377fe6f75e1b51ce6ee22347cf33ca435dd323",
+          "centerX": 1053,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/30-cin_torture-21.webp",
+          "width": 2428,
+          "height": 1024,
+          "sha256": "3380c9c89aeaaf6238a5a921d43b87146a341e73ac60887f6b45b4b0a4999f0c",
+          "centerX": 446,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-8200f788-eb6a-4154-b88d-6e9073565d10.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 31,
+      "source": "assets/cutscene/warintro/cin_remember.jpg",
+      "use": "전쟁 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "df26c95cccdeb299bcd37eb18914a95714659ed2ff06cfa65af94903a17b56cf"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/31-cin_remember-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "d5a07beb11e0ad46345dcfe0e912af11ae2e21726bf91b0a2044a8ae6000d81c",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/31-cin_remember-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "617036dd21c35b932e6066cfe6ca71d8322dbd26739d4e16fba52e3b683fa8a6",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-c5de3b7a-f768-41cf-93a3-29da9c3ad1a5.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: empty rough black stone ground and smoky night sky, warm amber haze for the top-row left extension, cool stormy moonlit rock for bottom-row right extension; no additional moons, cages, figures or people. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 32,
+      "source": "assets/cutscene/warintro/cin_fallhell_custom.jpg",
+      "use": "전쟁 인트로 컷신",
+      "original": {
+        "width": 2560,
+        "height": 1440,
+        "sha256": "4c7795eac653e43a97e907b4188f7a935ba09977d11b5f6eb0b2af420853d5db"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/32-cin_fallhell_custom-32.webp",
+          "width": 5120,
+          "height": 1440,
+          "sha256": "fec46e768ead46e94c149b259f92acdabd5601201d0415cb4f0235dce969202c",
+          "centerX": 1280,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/32-cin_fallhell_custom-21.webp",
+          "width": 3414,
+          "height": 1440,
+          "sha256": "72edfd3608e1352fddabb2dec0f05269fa9303e2218a5e72934b487860e206d0",
+          "centerX": 427,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-536a5d5e-471f-479d-81a4-bd53d2d9eda7.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: immense dark gothic tower side walls, rough stone steps and craggy foreground beneath a smoky red-gray storm sky; no extra portals or eyes. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 33,
+      "source": "assets/cutscene/warintro/emg1.jpg",
+      "use": "전쟁 인트로 컷신",
+      "original": {
+        "width": 1536,
+        "height": 1024,
+        "sha256": "96e5e41900c60292488bb4cd3a2becf2e98297e522143177143f0be3b31fabf1"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/33-emg1-32.webp",
+          "width": 3642,
+          "height": 1024,
+          "sha256": "3dcba9fd4d1f11977fb4f962b106e30b7055b6a0e236da9b444ec6d7c52bc29d",
+          "centerX": 1053,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/33-emg1-21.webp",
+          "width": 2428,
+          "height": 1024,
+          "sha256": "b7347915821a7b1c5ab8e6a3b22b8f2c315554ab002588ddbcdacf8050bce74b",
+          "centerX": 446,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "96px edge, two-row outpaint",
+        "file": "exec-6b4fa386-cdfe-466a-aec1-ec4885e0f453.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: barren charred volcanic stone terrain viewed from high above, sparse faint reflected warm light and smoky ground haze, maintaining existing isometric overhead camera; absolutely no new characters or combat effects. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 34,
+      "source": "assets/cutscene/warintro/cin_demonbattle.jpg",
+      "use": "전쟁 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "4ca0d372f174173b03e7c30261589cb7f21724c0801aba2c40948cb07de1cf5f"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/34-cin_demonbattle-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "086931801083fdea31fa4c8357320be23ff13b54e3780c2548d8d8305712cbac",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/34-cin_demonbattle-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "f56159100d04f11c5f6258b01ecfeed485d8a377643c78b245c661ca2f8a2d08",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-f9848a61-e403-407c-bc33-0c071862ba73.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: empty black craggy rock and smoke, dim amber reflections around the existing battle closeup; do not extend any creature, warrior, weapons or body parts. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 35,
+      "source": "assets/cutscene/warintro/cin_demonfight.jpg",
+      "use": "전쟁 인트로 컷신",
+      "original": {
+        "width": 1536,
+        "height": 1024,
+        "sha256": "3b225bdf0341b62849ce45de4b8255e6504255ff0fe48db049a95620b6170563"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/35-cin_demonfight-32.webp",
+          "width": 3642,
+          "height": 1024,
+          "sha256": "6113601ecc49e2f685a240763074383e89c6986a2dad7ec7a0cefda19ec00e1c",
+          "centerX": 1053,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/35-cin_demonfight-21.webp",
+          "width": 2428,
+          "height": 1024,
+          "sha256": "10fb5ae4c66676117e896bed0a98330869f35d29973aae1e1c88eba322ec02ca",
+          "centerX": 446,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-c2ddc7b3-578a-4db2-8dd3-d64eb4a7fa07.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: empty rugged volcanic rock ledges and smoky amber-red sky around the existing warrior; no additional people or bodies. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 36,
+      "source": "assets/cutscene/warintro/cin_nemesia_hd.jpg",
+      "use": "전쟁 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "8c5ca0f142731a619389d0c68b8019ec5f04ff0708c4ad4c7f0253746522c952"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/36-cin_nemesia_hd-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "f710d6d74f03c73aa8616575d124fd535abe3648aff156751b5a2a51b995bddc",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/36-cin_nemesia_hd-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "54d152e1daef86fa2c7dd2effa15ba80bcd7e14d41f6746d377cb412f17cddb0",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-54ed4840-9b84-48f1-90a9-78d5700089fe.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: empty ancient dark gothic cathedral walls, charcoal stone steps and tall shadowed side columns, subtle purple haze and restrained warm reflected light; no new statues, thrones, figures or characters. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 37,
+      "source": "assets/cutscene/images/00.png",
+      "use": "여신 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "85037b0ee327dd9d3a4b17c5a0bdc86611c24e1741f977a05213fe1a3147894b"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/37-00-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "cd40f5bc798caca1ac799457891cb552c1b605e85d3642010df00e6cde04a9b7",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/37-00-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "33526d75aa0ef540ec53c60030ad7acf92adac2b45b8efd1eac67611a666dfb5",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-30dd9f58-899c-423e-9ec0-a5ec817627be.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: empty dark twisted forest trunks, jagged charcoal cavern rock and deep violet fog, faint matching purple glow; no extra people or faces. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 38,
+      "source": "assets/cutscene/images/01.png",
+      "use": "여신 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "0cb2941e3080768c89aef7ca224b91579fe46f3cced2c84039f29794107ff3d6"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/38-01-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "9aa0ad4eb1cee82cb50393a0b6d938c306ef696fabf91486983c740c5374d209",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/38-01-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "7d286295e51faebc29feac97e59c1baeb0648fe26324fcbf598bc0cf7f33f69c",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-c273a49c-eb5e-49b2-8863-807910ab233c.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: empty smoky violet-black cavern space, dark rough rock and subtle soft purple reflected light behind the existing face closeup; no additional faces or anatomy. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 39,
+      "source": "assets/cutscene/images/02.png",
+      "use": "여신 인트로 컷신",
+      "original": {
+        "width": 1672,
+        "height": 941,
+        "sha256": "eceb9dfb3d49a377dca3edc1ea940127dce1e1cf741cf38f2b9b21b7fd2e3ccc"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/39-02-32.webp",
+          "width": 3346,
+          "height": 941,
+          "sha256": "f98dd16a15a956c51cee134d00696054bdf777cc1c6b53cfc1d62aa0b00cf65e",
+          "centerX": 837,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/39-02-21.webp",
+          "width": 2231,
+          "height": 941,
+          "sha256": "3cd2cb9cc771d87587863f7b88b302f84faeb62f087b6d1727139e10f4b89a16",
+          "centerX": 280,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-2b60b29f-e815-4cfb-8c63-4ce9bf2fcb0e.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: empty dark violet haze and craggy charcoal rock behind the existing closeup, matching dim atmospheric light; no extra faces, hair, clothing or anatomy. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 40,
+      "source": "assets/cutscene/images/03.png",
+      "use": "여신 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "c1cb86d2d9fb171220c6c7e89ec7bcdabe4cbdbfc37be8bb2b505fcc4025cc31"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/40-03-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "0c72960272a65bf75eec8b1b605b2214e45b2c0a2764767410645a39260a3ead",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/40-03-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "2927f681648ec5e0a74cd1d8b0308efc71990e452ed7d817cfe6ffe7738be5da",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-701c7dc6-d4b9-44d3-8f85-fb539311d8da.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: empty ancient gothic stone wall fragments, deep violet mist and dark cavern rock around the existing portrait; no new characters or anatomy. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 41,
+      "source": "assets/cutscene/images/04.png",
+      "use": "여신 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "3ccd9d840deaa1f6b5d9772cd2b5e91430afa93f10e1bf21718b7b9d44c4f6be"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/41-04-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "7374c25f06b78a508e6523620c1bb206e7ee42134102ed7cdb6fda2adc14ae7f",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/41-04-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "6ab4088be96836dc96cd6ec304a60d7207c9a239fc14e65038c107a6dad27191",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "128px edge reference, independent left/right outpaint",
+        "left": {
+          "file": "exec-01452f4b-85b7-4a03-9d0c-27808e3bc77d.png",
+          "prompt": "Outpaint the GRAY MISSING AREA ONLY. The narrow RIGHT strip is the exact locked original edge. Extend its existing environment LEFT into the gray area. Keep that strip in exactly the same position and scale and preserve its edge shapes. This is a BACKGROUND fragment: purple-black gnarled forest and stone ground with matching dim violet lighting and same shallow depth of field. The join at the reference strip must be perfectly continuous, same brightness, texture and perspective. No new people, animals, toys, gate, weapons, lettering, objects or symbols. No white margins, frames, mirror/repeat fill, blurry bands or grain. Use the exact input canvas proportions."
+        },
+        "right": {
+          "file": "exec-380bcc0d-45cb-4a10-99db-9c6a34242683.png",
+          "prompt": "Outpaint the GRAY MISSING AREA ONLY. The narrow LEFT strip is the exact locked original edge. Extend its existing environment RIGHT into the gray area. Keep that strip in exactly the same position and scale and preserve its edge shapes. This is a BACKGROUND fragment: purple-black gnarled forest and stone ground with matching dim violet lighting and same shallow depth of field. The join at the reference strip must be perfectly continuous, same brightness, texture and perspective. No new people, animals, toys, gate, weapons, lettering, objects or symbols. No white margins, frames, mirror/repeat fill, blurry bands or grain. Use the exact input canvas proportions."
+        }
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 42,
+      "source": "assets/cutscene/images/05.png",
+      "use": "여신 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "45697aa3825ee05bcd0b76f443d68cd662b53929d5e8feb94112cf55aabb35f6"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/42-05-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "78b4d35fdaf7df0c828f31e85a5cb4e5ca002ce27dbb127710151a23bf423990",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/42-05-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "34133dc88e45eb090468b8444e5d576b8717483159bd9bfcb83a58c91958f52e",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-e295d197-ee98-44bf-859c-cd684abd199c.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: empty worn rough black stone floor and shadowed purple forest behind the existing prone warrior; no additional bodies, hands, weapons or toys. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 43,
+      "source": "assets/cutscene/images/06.png",
+      "use": "여신 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "3aaca09a5a1e546358a53b6cb9d085106478e342baa22020f9e4f2f9f2caad41"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/43-06-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "da8a94c504e6cc96a8ccc904227452b9fe7380d490a4a137a55741bb79079123",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/43-06-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "3464e8859a4819daa15c29cd1554dbc9970c223d00ca7072ea526342cc789918",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-77488835-452a-435e-a613-ca335a48cbbd.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: empty dark worn ground stones, twisted charcoal tree trunks and subtle purple mist around the existing warrior; no new people, body parts, toys or animals. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 44,
+      "source": "assets/cutscene/images/07.png",
+      "use": "여신 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "c5ee0bbe42a72395dc4c640693a7dcab72062ea35f9d71ecf340b58cc19bac37"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/44-07-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "664ae38f4e7c3aab7d105b37a5a11ce22410d51d5779b8713422e09b9ca19fe9",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/44-07-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "0fff31ca7e6ffe112ce020e801964d52f41183160dfb546b0b84aa212ab56633",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-886cc839-fedc-4446-83d7-0579e39552eb.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: empty black stone ground and violet forest surrounding a prone warrior, only empty ground and distant tree background, no bodies hands or toys. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 45,
+      "source": "assets/cutscene/images/08.png",
+      "use": "여신 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "6ffe82091b31c5f0ada1586b1f4bfd6787f334b5e90ff73d2c649afb0c304e23"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/45-08-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "a36432a1f5355162da57d7c14cac3366cce49830cbd39aa7ec707aeab90353b0",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/45-08-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "44c32e9f9e5c3bb811226359e2d6ea2e4c410375de980aeaa7c0e3f43ed17255",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-d8554046-f9b0-4fdd-9bc5-e1de94b33eac.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: empty purple cavern and forest behind the deity's outstretched hand, no additional anatomy. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 46,
+      "source": "assets/cutscene/images/09.png",
+      "use": "여신 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "1170f53c0a2d743902bf9afd8c6bc6d38b793032aca85c7cc47b9100607d714d"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/46-09-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "0860103ced4630056c7bc1b9cc7f85ec8cfbd6aeb8af134c7e2be5374f8b4695",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/46-09-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "4861748770db8d2a7977e96c19cb1e7892f31b47a8e8036c399460346bc96807",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-496d5be2-5798-4f80-ac51-51034d6a45cb.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: empty violet mist, rough rock and twisted forest behind the deity, no people. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 47,
+      "source": "assets/cutscene/images/10.png",
+      "use": "여신 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "2655eb252661279557a19916a1edec578835ba0c39a39e60e20568901957cc77"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/47-10-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "3c8299b261d8e0583139906599f609b8ad1532f7b0f2ae1486538c7045568bcb",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/47-10-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "46013b4ebd2d075ad121900f662ed5a8a719bbb909aad882ff7f220c6597496f",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-d60cedec-2bef-4322-91cb-7dd2b3044256.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: dark violet forest and rock behind a black cat closeup, no animals eyes or cats. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 48,
+      "source": "assets/cutscene/images/11.png",
+      "use": "여신 인트로 컷신",
+      "original": {
+        "width": 1672,
+        "height": 941,
+        "sha256": "8a4ca66d95c9cd7015cb8483695656a825f667df26d42ceadaa28d838c451569"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/48-11-32.webp",
+          "width": 3346,
+          "height": 941,
+          "sha256": "6ab5e5982f5cb2c3a7c86926e81a03d2423523a372a545a3313dfbf8945e9a10",
+          "centerX": 837,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/48-11-21.webp",
+          "width": 2231,
+          "height": 941,
+          "sha256": "f3c8768d2c5d4c9781016498800c2619a40bf24e035f3f6b329216108f124362",
+          "centerX": 280,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-7081026c-5462-4905-b00d-96b91ca6561c.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: dark gothic hall with subtle warm torch reflections behind the crow closeup, no birds. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 49,
+      "source": "assets/cutscene/images/12.png",
+      "use": "여신 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "2f5a7dd20c95d253c0c017f7f97b221fa7568fb4e39ad3e8112207f7ac8d2ab9"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/49-12-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "40bc4d07e36dd3f09d1936a2ca5f51abb2f62a6ff91dbbc0155f47cd8d903247",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/49-12-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "763814d6c2c9f4018267febf5d4ed5278d271525013900a59528261dd1419704",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-2374628c-9838-49f9-a58d-298574109b02.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: empty mist, black trees and rock in the purple forest around the black cat, no animals. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 50,
+      "source": "assets/cutscene/images/13.png",
+      "use": "여신 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "8595aa0670b061d813b25d39ab3971132945a9749e727d100b336f6385e319b9"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/50-13-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "98f6909f14aef3546ef3ada403a00bb6ebadc59bfde8798624d79c63101bf1c1",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/50-13-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "463e7348ebb68fa2ae3fb30ec76bfacd1fc321b165ae542c79b3efbedcc4dd04",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-9693a2bc-6713-4e42-841c-460fd969c493.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: dark warm gothic hall behind crow closeup, no birds or eyes. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 51,
+      "source": "assets/cutscene/images/14.png",
+      "use": "여신 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "c70649bb753549fd99aea8158034d2065c1726833a657dc7452738551ddc63c1"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/51-14-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "c48a7c13ec65646576b5d5e3a51b66ce07d9d6b0ea6cf12d4d6e7823dbfb6639",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/51-14-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "8a311c4ec527f65fe16cee6a0c7363ce65147c2037053f48f969596dad124160",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-ecc50261-3bf2-43a3-8784-f16bd2358fe3.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: empty purple forest landscape, no new silhouettes or figures. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 52,
+      "source": "assets/cutscene/images/15.png",
+      "use": "여신 인트로 컷신",
+      "original": {
+        "width": 1672,
+        "height": 941,
+        "sha256": "6bf8d2cfa3479b1f1f9fe05941e2731a8e22782f445637df072b233111704331"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/52-15-32.webp",
+          "width": 3346,
+          "height": 941,
+          "sha256": "44fa8c0d91acb10e666ad6cfe7ca80ab495b5c6a88525106383698a0623f6bee",
+          "centerX": 837,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/52-15-21.webp",
+          "width": 2231,
+          "height": 941,
+          "sha256": "b8ec311e84b4ef4f96c5f844c2a624d598c95f01489cfe808f6dcd6a868e0d17",
+          "centerX": 280,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-73e7381e-a41d-46d6-82cc-83c616dff4e3.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: empty forest ground and mist around the cat and weapons, no cats or weapons. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 53,
+      "source": "assets/cutscene/images/16.png",
+      "use": "여신 인트로 컷신",
+      "original": {
+        "width": 1672,
+        "height": 941,
+        "sha256": "56e68c9a91b8a3c58070fbfabaea02c1f50f0a86554bed32c6f4e3b54f4135a0"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/53-16-32.webp",
+          "width": 3346,
+          "height": 941,
+          "sha256": "eeae3b6841a0f794f1c1c920419b2e31d3cbc293c875eaafcedbee9f31e488df",
+          "centerX": 837,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/53-16-21.webp",
+          "width": 2231,
+          "height": 941,
+          "sha256": "a572b5d8bbffa6a2b5cd04ffba590cc3591c5e01078d9ba0a5a99b8dbf55291c",
+          "centerX": 280,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-3153ddde-e0fc-438f-b9d9-d608228bf1e1.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: empty stone altar and forest around the crow crossbow blue glow, no birds or weapons. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 54,
+      "source": "assets/cutscene/images/17.png",
+      "use": "여신 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "2c7716f923a75021472344d249f0e8168e8741f754df05a2f353c69fde5b1c7f"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/54-17-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "12c7f86425c687a28f28be5c40fe09f97d0b993225988b93647bf3a519f3b806",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/54-17-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "89accab358c412bc4fbdf84c812afd6acda9b7f9fb0dab4b8811c9efd49ff5c7",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-e3d82078-82db-4e9f-938d-98e467ef5c5b.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: empty ground and forest around weapons resting on stones, no new weapons or symbols. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 55,
+      "source": "assets/cutscene/images/18.png",
+      "use": "여신 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "90fce26672bdb5d3ab8631c6db60acd72f95f5eb148123c9bc3a970fdcf3fd0e"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/55-18-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "587f6c2c485950432266a05bc6bf6049a79eb9e4828a6d79b6da5698f3b0eb97",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/55-18-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "2c2580d8658e7171562b79144891b864c2de2608f961f0ae229123594d41946f",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-15299c1a-e352-4822-9f7b-97bf833cbd45.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: empty black stone ground and purple mist around circlet and jewel, no new jewelry or weapons. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 56,
+      "source": "assets/cutscene/images/19.png",
+      "use": "여신 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "f2885a2441dd2ace72204f761b593f79279bc63389a004e3f31d0e1dbb4d99d3"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/56-19-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "ef3da13b642fc07bc086e0fb136f07ba72f48e2bbed405e0179e68f5907f031e",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/56-19-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "7dcbeae7e3dd248e0038f614400d0f10ebe826c205e716dd41d853c7ab04a999",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-a4cf49fc-34a0-4eb9-81d7-8737c5743522.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: empty forest around kneeling warrior, no people. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 57,
+      "source": "assets/cutscene/images/20.png",
+      "use": "여신 인트로 컷신",
+      "original": {
+        "width": 2048,
+        "height": 1152,
+        "sha256": "8c3579884626acf6396fb1b129db8a7a122ae15780e2fa2b9af31073a7f83690"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/57-20-32.webp",
+          "width": 4096,
+          "height": 1152,
+          "sha256": "9d26966e99d4e40555e1df28efea342ffe69262b1ee88fca4473db4d127f59d5",
+          "centerX": 1024,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/57-20-21.webp",
+          "width": 2731,
+          "height": 1152,
+          "sha256": "8fe2d571bc3966c2fa9fbab0a8d3243b3348474d524c1c136eba8e82768d7106",
+          "centerX": 342,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-fa381104-eca6-4798-867b-dde6b8146d04.png",
+        "prompt": "Fill gray zones of this TWO ROW outpainting sheet. TOP row extend LEFT from the existing right reference; BOTTOM row extend RIGHT from the existing left reference. Keep exact two equal rows, reference positions, proportions and scale unchanged. Extend BACKGROUND ONLY: empty forest around prone warrior cat and crow, no additional figures or animals. Match edge brightness, colors, texture, perspective and horizon seamlessly. NO new people, characters, faces, body parts, weapons, text, symbols or focal objects. Do not extend lettering. No mirror fill, tiling, repeated motifs, grain, dithering or blur fill. Preserve original painted reference areas unchanged. Same two-row canvas proportions."
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 58,
+      "source": "assets/charselect/poster_idle_warrior_cs3_4k.jpg",
+      "use": "영웅별 캐릭터 선택·로비",
+      "original": {
+        "width": 3840,
+        "height": 2160,
+        "sha256": "56269fec6f59bfd1a42fcb28f6eaad44921582e777c045a34c865671dabc6654"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/58-poster_idle_warrior_cs3_4k-32.webp",
+          "width": 7680,
+          "height": 2160,
+          "sha256": "6a62d0ed60ca35186fa7db2fa0a3b5e45647a6462d76efd9c9872a6acee36824",
+          "centerX": 1920,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/58-poster_idle_warrior_cs3_4k-21.webp",
+          "width": 5120,
+          "height": 2160,
+          "sha256": "a9d6ecabc4e195d508364be370a43bb575ee3cd154a471d9cd24eff52e952550",
+          "centerX": 640,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-fc58d816-ac56-43a4-8efc-3e41c9d764c7.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 59,
+      "source": "assets/charselect/poster_idle_silvertail_4k.jpg",
+      "use": "영웅별 캐릭터 선택·로비",
+      "original": {
+        "width": 3840,
+        "height": 2160,
+        "sha256": "bbf45686195c79d752b5a3173ad16bd0e19ea12e35157ec6c382cdd63a88fc45"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/59-poster_idle_silvertail_4k-32.webp",
+          "width": 7680,
+          "height": 2160,
+          "sha256": "312151761aab508baf1850fca701c6f458425bd75157d2b650694ad4a28ab338",
+          "centerX": 1920,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/59-poster_idle_silvertail_4k-21.webp",
+          "width": 5120,
+          "height": 2160,
+          "sha256": "295859a85f895b99d277dc32f9a506eed65bfe2f8d240206fda6a73e7e5c51b5",
+          "centerX": 640,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-ae083bfe-9e71-4f9f-ac26-957764412f66.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 60,
+      "source": "assets/charselect/poster_idle_hellgunner.jpg",
+      "use": "영웅별 캐릭터 선택·로비",
+      "original": {
+        "width": 1600,
+        "height": 900,
+        "sha256": "656c6220a4864bad3f2db44c238f4ec203f5a118787724ad1615dd9e22c46429"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/60-poster_idle_hellgunner-32.webp",
+          "width": 3200,
+          "height": 900,
+          "sha256": "a5a58b6eec20b9b0b9147bf5d7f4a395396db814d85fcf82fa70d44e7d91bbe0",
+          "centerX": 800,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/60-poster_idle_hellgunner-21.webp",
+          "width": 2134,
+          "height": 900,
+          "sha256": "4ffea5f24f88f8574edd315eca4de300685e2c0b77d6de46da4c6c1a817774eb",
+          "centerX": 267,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-3963661b-baac-437c-9653-32d526963162.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 61,
+      "source": "assets/charselect/poster_idle_transmuter.jpg",
+      "use": "영웅별 캐릭터 선택·로비",
+      "original": {
+        "width": 1600,
+        "height": 900,
+        "sha256": "9826156cf8ce8b746605eee34f85a6cb33146fc6261bfcf924a9acd2cb206bd6"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/61-poster_idle_transmuter-32.webp",
+          "width": 3200,
+          "height": 900,
+          "sha256": "2b6452843de3e03bcdd95875e79562dfbdeeac6c039524b8a30f2bf2e595db35",
+          "centerX": 800,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/61-poster_idle_transmuter-21.webp",
+          "width": 2134,
+          "height": 900,
+          "sha256": "36c54d54a50f9bb862b53151ae6225f0ef7b836b07ec9a69c5f33193e9894ac3",
+          "centerX": 267,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-659d0c73-1e68-42b1-87b3-eacadc9ee553.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 62,
+      "source": "assets/charselect/poster_idle_spearmage.jpg",
+      "use": "영웅별 캐릭터 선택·로비",
+      "original": {
+        "width": 1600,
+        "height": 900,
+        "sha256": "a97d989ac5af65adfe667063961434072bba3a957d5177fce37dd35de1edf7ff"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/62-poster_idle_spearmage-32.webp",
+          "width": 3200,
+          "height": 900,
+          "sha256": "eebe9edd9789c66df157e35bea68875853408e574d32adca8c1b9d3f76c709ba",
+          "centerX": 800,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/62-poster_idle_spearmage-21.webp",
+          "width": 2134,
+          "height": 900,
+          "sha256": "1c7bca659ffe54335264e6d4541ff60945ec68ee2611266198be65dbab1d871e",
+          "centerX": 267,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "two-row edge reference outpaint",
+        "file": "exec-0677c543-e1a1-4760-9148-3b6fcdd7858e.png",
+        "prompt": "초기 제작분: 공통 지시와 해당 원본 가장자리 참조 시트 사용"
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    },
+    {
+      "id": 63,
+      "source": "assets/fullscreen-wide/20261031/gate-original.png",
+      "use": "첫 gate 대기 화면",
+      "original": {
+        "width": 1200,
+        "height": 700,
+        "sha256": "373be6f94430491fb148b40941ff519ae6e15690ff4997a96bc133bbcdf9ff9d"
+      },
+      "outputs": [
+        {
+          "label": "32",
+          "path": "assets/fullscreen-wide/20261031/63-gate-original-32.webp",
+          "width": 2490,
+          "height": 700,
+          "sha256": "fcc70c4b8fda49bdef7f5eda8c247edc3520fbbd58d80e2f40bdc14b0c3a3c34",
+          "centerX": 645,
+          "centerEqual": true
+        },
+        {
+          "label": "21",
+          "path": "assets/fullscreen-wide/20261031/63-gate-original-21.webp",
+          "width": 1660,
+          "height": 700,
+          "sha256": "345d2da40d026e06475ec925a65e9b10e807732eb418d9351ebd19f56b41fdec",
+          "centerX": 230,
+          "centerEqual": true
+        }
+      ],
+      "generation": {
+        "method": "128px edge reference, independent left/right outpaint",
+        "left": {
+          "file": "exec-1eeb7c3c-33e3-4553-8c79-a54af360fbd7.png",
+          "prompt": "Outpaint the GRAY MISSING AREA ONLY. The narrow RIGHT strip is the exact locked original edge. Extend its existing environment LEFT into the gray area. Keep that strip in exactly the same position and scale and preserve its edge shapes. This is a BACKGROUND fragment: nearly BLACK cavern void matching the existing black border, with faint natural cavern rock barely visible only farther away; no floor lit brighter than reference. The join at the reference strip must be perfectly continuous, same brightness, texture and perspective. No new people, animals, toys, gate, weapons, lettering, objects or symbols. No white margins, frames, mirror/repeat fill, blurry bands or grain. Use the exact input canvas proportions."
+        },
+        "right": {
+          "file": "exec-cc8fdf4c-7870-4da9-a77b-debdc895b1b7.png",
+          "prompt": "Outpaint the GRAY MISSING AREA ONLY. The narrow LEFT strip is the exact locked original edge. Extend its existing environment RIGHT into the gray area. Keep that strip in exactly the same position and scale and preserve its edge shapes. This is a BACKGROUND fragment: nearly BLACK cavern void matching the existing black border, with faint natural cavern rock barely visible only farther away; no floor lit brighter than reference. The join at the reference strip must be perfectly continuous, same brightness, texture and perspective. No new people, animals, toys, gate, weapons, lettering, objects or symbols. No white margins, frames, mirror/repeat fill, blurry bands or grain. Use the exact input canvas proportions."
+        }
+      },
+      "boundaryJoin": "생성 영역만 조정; 중앙 원본 불변; 세로 색차 저주파 연결 폭 높이의 24%, 미세 차이 5px 감쇠"
+    }
+  ]
+}
