@@ -34,6 +34,8 @@
 
 원본 `updateCrescents`는 1/2타 `G.hitStop>=3`, 3타 `>=6`과 `shake(8)`을 요청한다. 그러나 실제 소비부 **32585행에서 `G.hitStop=0`으로 매번 초기화**한 뒤 `_hsActive`를 결정하여 히트스톱은 비활성이다. 이 작업은 임의의 scheduler freeze를 추가하지 않았다. 별도의 카메라 shake는 이 코어 이벤트 계약에 포함하지 않았다.
 
+2026-10-31 임팩트 브리프의 50~100ms 요구는 별도 표현 후보 `ImpactResponse`가 일반55/치명프로필75/강공90ms의 뷰 정지로 다룬다. 이 문서의 Core·웹 scheduler 계약은 그대로다. 치명 프로필 실제 연결·정식 Player 검수는 미완료이며 상세 수치는 [RM-1 구현 기록](../5.1임펙트디자인/UNITY_RM1_VFX_IMPLEMENTATION_20261028.md)을 따른다.
+
 명중 잉크는 19375행 `floor((_gameFrame-f0)/3)`으로 4프레임이다. additive는 `playVFXAng`(19328행) 생성 시 `bornGameTime`이 없으므로 54583행 fallback인 `v.t+=_dtSp; if(v.t>=frameTime){v.t=0;v.frame++}`를 사용한다. 이 경로는 남은 시간 버림 및 한 render에서 한 프레임 진행 규칙이다. 고정 60Hz TickCount에 대응하는 이벤트 수명 정보만 전달하며, 가변 render cadence/고FPS 시계 전체 동치로 보고하지 않는다.
 
 ## 검증과 남은 범위

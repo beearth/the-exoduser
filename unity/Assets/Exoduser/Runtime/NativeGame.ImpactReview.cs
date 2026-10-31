@@ -1,0 +1,75 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Security.Cryptography;
+using System.Text;
+using UnityEngine;
+using Exoduser.UnityPort.Core;
+
+namespace Exoduser.UnityPort
+{
+    public sealed partial class NativeGame
+    {
+        [Serializable] sealed class ImpactReviewReceipt
+        {
+            public string scope="실제 GPU Player의 고정 입력·AI 중지·불사 표적·5스킬 시전 fixture. 자연 전투·전체 스킬 완료 증거 아님";
+            public string device,coreTraceSha256; public bool world3D,baseline,passed;
+            public int frames,contacts,dropped,damage,casts; public string[] sections;
+        }
+        IEnumerator ImpactReview()
+        {
+            string output=Argument("-output");
+            if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))){Debug.LogError("임팩트 검수는 명시적 출력·격리 세이브가 필요");Application.Quit(2);yield break;}
+            Directory.CreateDirectory(output);Directory.CreateDirectory(Path.Combine(output,"frames"));
+            AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;Application.targetFrameRate=60;Time.captureDeltaTime=1f/60;
+            smokeActive=true;dropSmoke=true;pauseSmoke=true;Running=false;
+            Screen.SetResolution(1600,900,FullScreenMode.Windowed);lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();
+            EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;
+            yield return new WaitForSecondsRealtime(.6f);
+            float deadline=Time.realtimeSinceStartup+45;
+            while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
+            var sim=Simulation;var p=sim.Player;
+            sim.Config.EnemyAiEnabled=false;sim.SpawnHoles=null;sim.CrossbowAuto=false;sim.Stage.Enabled=false;
+            sim.Enemies.Clear();p.Iframes=10000;sim.Materials=1000;
+            var rc=new ImpactReviewReceipt{device=SystemInfo.graphicsDeviceName,world3D=NativeRemodel3D.Active,baseline=!contactVfx.Enabled,
+                sections=new[]{"일반공격","기검참3타","가시덫","지옥강타","회복영역","얼음보주","악의구"}};
+            var trace=new StringBuilder();int frame=0,damage=0,shot=0;
+            foreach(string section in rc.sections)
+            {
+                int sectionIndex=Array.IndexOf(rc.sections,section),length=sectionIndex<2?180:72;
+                p.State="idle";p.StateTicks=0;p.Stamina=p.MaxStamina;p.Mana=p.MaxMana;
+                sim.Config.ActiveAttack=sectionIndex==0?"weapon":"kiSlash";
+                sim.Enemies.Clear();
+                for(int k=0;k<3;k++)sim.Enemies.Add(new EnemyState{Id=-91000-sectionIndex*10-k,Etype=0,Hp=1000000,MaxHp=1000000,Level=1,X=p.X+48+k*28,Y=p.Y+(k-1)*18,Radius=15,Poise=1000,MaxPoise=1000});
+                // Seed actor observations before damage; no fabricated hit is sent to the VFX view.
+                UpdateViews();
+                int hpBefore=0;foreach(var e in sim.Enemies)hpBefore+=e.Hp;
+                for(int f=0;f<length;f++,frame++)
+                {
+                    impactReviewClock=frame/60f;
+                    sim.Stage.Enabled=false;
+                    sim.SetPlayerCombatInput(false,false,false);sim.SetMagicInput(section=="악의구"&&f<54);
+                    sim.SetSkillInput(section=="가시덫"&&f==0,false,false,false,section=="지옥강타"&&f==0,section=="회복영역"&&f==0,section=="얼음보주"&&f==0,false);
+                    sim.Tick(0,0,p.X+300,p.Y,sectionIndex==0||sectionIndex==1&&f<130,false);
+                    DispatchFeedback();UpdateViews();Running=false;
+                    trace.Append(sim.TickCount).Append('|').Append(p.State).Append('|').Append(p.X.ToString("R",CultureInfo.InvariantCulture)).Append('|').Append(p.Y.ToString("R",CultureInfo.InvariantCulture)).Append('|')
+                        .Append(p.Stamina.ToString("R",CultureInfo.InvariantCulture)).Append('|').Append(p.Mana.ToString("R",CultureInfo.InvariantCulture)).Append('|').Append(sim.SkillCastCount);
+                    foreach(var e in sim.Enemies)trace.Append('|').Append(e.Id).Append(':').Append(e.Hp).Append(':').Append(e.X.ToString("R",CultureInfo.InvariantCulture)).Append(':').Append(e.Y.ToString("R",CultureInfo.InvariantCulture));
+                    trace.Append('\n');
+                    yield return null;yield return new WaitForEndOfFrame();
+                    if(frame%2==0)ScreenCapture.CaptureScreenshot(Path.Combine(output,"frames","impact-"+(shot++).ToString("0000")+".png"));
+                }
+                int hpAfter=0;foreach(var e in sim.Enemies)hpAfter+=e.Hp;damage+=hpBefore-hpAfter;
+            }
+            rc.frames=shot;rc.contacts=contactVfx.Contacts;rc.dropped=contactVfx.Dropped;rc.damage=damage;rc.casts=sim.SkillCastCount;
+            string traceText=trace.ToString();File.WriteAllText(Path.Combine(output,"core-trace.txt"),traceText);
+            using(var sha=SHA256.Create())rc.coreTraceSha256=BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(traceText))).Replace("-","").ToLowerInvariant();
+            rc.passed=rc.world3D&&shot==360&&damage>0&&sim.SkillCastCount>=5&&(rc.baseline||rc.contacts>0);
+            File.WriteAllText(Path.Combine(output,"impact-review.json"),JsonUtility.ToJson(rc,true));
+            lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();
+            yield return new WaitForSecondsRealtime(.8f);Application.Quit(rc.passed?0:2);
+        }
+    }
+}
