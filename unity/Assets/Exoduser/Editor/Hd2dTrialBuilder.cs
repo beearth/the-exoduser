@@ -20,7 +20,11 @@ namespace Exoduser
         static Material Mat(string name, string shader)
         {
             var s = Shader.Find(shader); if (!s) throw new Exception("Missing shader: " + shader);
-            var m = new Material(s); AssetDatabase.CreateAsset(m, Root + "/" + name + ".mat"); return m;
+            var path = Root + "/" + name + ".mat";
+            var m = AssetDatabase.LoadAssetAtPath<Material>(path);
+            if (!m) { m = new Material(s); AssetDatabase.CreateAsset(m,path); }
+            else m.shader = s;
+            EditorUtility.SetDirty(m); return m;
         }
         static GameObject Quad(string name, Material m, Transform parent = null)
         {
@@ -64,14 +68,16 @@ namespace Exoduser
                     // Use private materials so the shared R3 import contract stays intact.
                     if (!privateMaterials.TryGetValue(id, out var m))
                     {
-                        m = new Material(mapped);
+                        m = Mat("Trial_"+id,mapped.shader.name);
+                        m.CopyPropertiesFromMaterial(mapped);
                         m.SetFloat("_Smoothness", .14f); m.SetFloat("_BumpScale", .35f);
-                        AssetDatabase.CreateAsset(m,Root+"/Trial_"+id+".mat");
+                        EditorUtility.SetDirty(m);
                         privateMaterials.Add(id,m);
                     }
                     mm[i] = m;
                 }
                 r.sharedMaterials = mm;
+                if(mm.Any(m=>m.name.StartsWith("Trial_RF3_Hanging_Moss"))) r.enabled=false;
                 if (r.name.Contains("Continuous_Bank_Terrain") || r.name.Contains("Rotten_Wood_Bridge"))
                     r.gameObject.AddComponent<MeshCollider>().sharedMesh = r.GetComponent<MeshFilter>().sharedMesh;
             }
@@ -80,38 +86,41 @@ namespace Exoduser
             var co = new GameObject("HD2D_TrialCamera"); var cam = co.AddComponent<Camera>();
             cam.transform.position = Anchor("HD2D_Camera").position;
             cam.transform.LookAt(Anchor("HD2D_Target").position);
-            cam.orthographic = true; cam.orthographicSize = 13.5f; cam.nearClipPlane = .2f; cam.farClipPlane = 180;
+            cam.orthographic = true; cam.orthographicSize = 8.4375f; cam.nearClipPlane = .2f; cam.farClipPlane = 180;
             cam.backgroundColor = new Color(.055f, .075f, .09f); cam.clearFlags = CameraClearFlags.SolidColor;
             cam.allowHDR = true; cam.allowMSAA = false;
             var cd = cam.GetUniversalAdditionalCameraData(); cd.renderPostProcessing = true;
             cd.requiresDepthTexture = true; cd.antialiasing = AntialiasingMode.None;
             var key = new GameObject("HD2D_ColdCanopyLight").AddComponent<Light>(); key.type = LightType.Directional;
-            key.color = new Color(.71f, .81f, 1); key.intensity = 1.05f;
-            key.transform.rotation = Quaternion.Euler(45, -38, 0); key.shadows = LightShadows.Soft; key.shadowStrength = .7f;
+            key.color = new Color(.84f, .88f, 1); key.intensity = 1.65f;
+            key.transform.rotation = cam.transform.rotation * Quaternion.Euler(12, -25, 0); key.shadows = LightShadows.Soft; key.shadowStrength = .7f;
             RenderSettings.ambientMode = AmbientMode.Trilight;
             RenderSettings.ambientSkyColor = new Color(.24f, .31f, .38f);
             RenderSettings.ambientEquatorColor = new Color(.13f, .15f, .15f);
             RenderSettings.ambientGroundColor = new Color(.075f, .065f, .045f);
+            var ambient = new SphericalHarmonicsL2(); ambient.AddAmbientLight(new Color(.24f,.27f,.30f)); RenderSettings.ambientProbe = ambient;
             RenderSettings.fog = true; RenderSettings.fogMode = FogMode.ExponentialSquared;
             RenderSettings.fogColor = new Color(.10f, .15f, .18f); RenderSettings.fogDensity = .013f;
             var vol = new GameObject("HD2D_TiltShiftBloom").AddComponent<Volume>(); vol.isGlobal = true;
-            vol.sharedProfile = ScriptableObject.CreateInstance<VolumeProfile>();
+            vol.sharedProfile = AssetDatabase.LoadAssetAtPath<VolumeProfile>(Root+"/TrialVolume.asset");
+            if(!vol.sharedProfile){vol.sharedProfile=ScriptableObject.CreateInstance<VolumeProfile>();AssetDatabase.CreateAsset(vol.sharedProfile,Root+"/TrialVolume.asset");}
+            else {foreach(var c in vol.sharedProfile.components.ToArray()) UnityEngine.Object.DestroyImmediate(c,true);vol.sharedProfile.components.Clear();}
             var bloom = vol.sharedProfile.Add<Bloom>(); bloom.active = true; bloom.threshold.Override(1.05f); bloom.intensity.Override(.22f); bloom.scatter.Override(.65f);
             var dof = vol.sharedProfile.Add<DepthOfField>(); dof.active = true; dof.mode.Override(DepthOfFieldMode.Gaussian);
             float focus = Vector3.Dot(Anchor("HD2D_Hero").position - cam.transform.position, cam.transform.forward);
             dof.gaussianStart.Override(focus + 5); dof.gaussianEnd.Override(focus + 23); dof.gaussianMaxRadius.Override(1.2f); dof.highQualitySampling.Override(true);
             var tone = vol.sharedProfile.Add<Tonemapping>(); tone.mode.Override(TonemappingMode.ACES);
             var color = vol.sharedProfile.Add<ColorAdjustments>(); color.saturation.Override(-10); color.postExposure.Override(.30f);
-            AssetDatabase.CreateAsset(vol.sharedProfile, Root + "/TrialVolume.asset");
+            foreach(var component in vol.sharedProfile.components){if(!AssetDatabase.Contains(component))AssetDatabase.AddObjectToAsset(component,vol.sharedProfile);EditorUtility.SetDirty(component);}
+            EditorUtility.SetDirty(vol.sharedProfile);
+            Lamp("HD2D_PoisonGlowLeft",new Vector3(-4,.4f,0),new Color(.48f,.65f,.08f),.75f,8);
+            Lamp("HD2D_PoisonGlowRight",new Vector3(4,.4f,-2),new Color(.48f,.65f,.08f),.75f,8);
             var riverMat = Mat("TrialRiver", "EXODUSER/HD2DTrial/PoisonRiver");
             var river = Quad("HD2D_ToxicRiver", riverMat); river.transform.rotation = Quaternion.Euler(90, 0, 0);
             river.transform.position = new Vector3(0, -.08f, 0); river.transform.localScale = new Vector3(120, 180, 1);
             // Lit height fog is integrated in a 24-step raymarch; no stochastic noise/dither.
-            var fog = GameObject.CreatePrimitive(PrimitiveType.Cube); fog.name = "HD2D_VolumetricFog";
-            UnityEngine.Object.DestroyImmediate(fog.GetComponent<Collider>());
-            fog.transform.position = Vector3.zero; fog.transform.localScale = Vector3.one * 220;
-            fog.GetComponent<Renderer>().sharedMaterial = Mat("TrialFog", "EXODUSER/HD2DTrial/VolumeFog");
-            fog.GetComponent<Renderer>().shadowCastingMode = ShadowCastingMode.Off;
+            var fog = Quad("HD2D_VolumetricFog",Mat("TrialFog", "EXODUSER/HD2DTrial/VolumeFog"),cam.transform);
+            fog.transform.localPosition=new Vector3(0,0,1);fog.transform.localScale=new Vector3(40,24,1);
             var tl = new GameObject("HD2D_ScriptedPreview").AddComponent<Hd2dTrialTimeline>();
             tl.view = cam; tl.cameraOrigin = cam.transform.position;
             tl.walkSheet = Texture("Assets/Exoduser/Resources/Art/player/north-east.png");
@@ -127,21 +136,21 @@ namespace Exoduser
                 if (i == 0) tl.hero = o.GetComponent<Renderer>();
                 else
                 {
-                    tl.enemies[i - 1] = o.GetComponent<Renderer>(); o.transform.localScale = Vector3.one * 4.8f;
+                    tl.enemies[i - 1] = o.GetComponent<Renderer>(); o.transform.localScale = Vector3.one * 3;
                     sm.SetTexture("_BaseMap", tl.enemySheet); sm.SetFloat("_GridSize", 64);
                     int cell = new[] { 0, 1, 9 }[i - 1];
                     sm.SetVector("_UVRect", new Vector4(cell % 8 * 256f / tl.enemySheet.width, 1 - (cell / 8 + 1) * 256f / tl.enemySheet.height, 256f / tl.enemySheet.width, 256f / tl.enemySheet.height));
                 }
                 var shadow = Quad("HD2D_ContactShadow" + i, shadowMat); shadow.transform.rotation = Quaternion.Euler(90, 0, 0);
-                shadow.transform.localScale = new Vector3(i == 0 ? 1.35f : 2, .85f, 1); tl.shadows[i] = shadow.transform;
+                shadow.transform.localScale = new Vector3(i == 0 ? .84375f : 1.25f, .53125f, 1); tl.shadows[i] = shadow.transform;
             }
             var slashMat = Mat("TrialSlash", "EXODUSER/HD2DTrial/SoftSurface"); slashMat.SetFloat("_Mode", 2); slashMat.SetColor("_Color", new Color(2.8f, 2.5f, 1.4f, .9f));
-            tl.slash = Quad("HD2D_PreviewSlash", slashMat).transform; tl.slash.localScale = Vector3.one * 3.6f;
+            tl.slash = Quad("HD2D_PreviewSlash", slashMat).transform; tl.slash.localScale = Vector3.one * 2.25f;
             tl.impact = Lamp("HD2D_ContactLight", tl.anchors[0], new Color(1,.76f,.37f),0,5);
             var torchAnchors = world.GetComponentsInChildren<Transform>().Where(t => t.name.StartsWith("HD2D_Torch_")).ToArray();
             tl.torches = torchAnchors.Select((t,i) => Lamp("HD2D_TorchLight"+i,t.position,new Color(1,.45f,.12f),4.5f,7)).ToArray();
             var flameMat = Mat("TrialFlame", "EXODUSER/HD2DTrial/SoftSurface"); flameMat.SetFloat("_Mode",1);flameMat.SetColor("_Color",new Color(3.8f,1.7f,.35f,.95f));
-            foreach(var a in torchAnchors){var q=Quad("HD2D_CleanFlame",flameMat);q.transform.position=a.position;q.transform.rotation=cam.transform.rotation;q.transform.localScale=new Vector3(.4f,.85f,1);}
+            foreach(var a in torchAnchors){var q=Quad("HD2D_CleanFlame",flameMat);q.transform.position=a.position;q.transform.rotation=cam.transform.rotation;q.transform.localScale=new Vector3(.25f,.53125f,1);}
             tl.automatic = false; tl.SetTime(1);
             EditorSceneManager.SaveScene(scene, ScenePath); AssetDatabase.SaveAssets();
             Debug.Log("[HD2D] isolated scene built: " + ScenePath);
@@ -201,7 +210,7 @@ namespace Exoduser
         static void Capture(Hd2dTrialTimeline tl,float t,string path)
         {
             var cam=tl.view;var old=cam.targetTexture;float aspect=cam.aspect;var active=RenderTexture.active;
-            var rt=new RenderTexture(1920,1080,24,RenderTextureFormat.ARGBHalf);var blurred=new RenderTexture(1920,1080,0,RenderTextureFormat.ARGB32);var tex=new Texture2D(1920,1080,TextureFormat.RGB24,false);
+            var rt=new RenderTexture(1920,1080,24,RenderTextureFormat.ARGB32);var blurred=new RenderTexture(1920,1080,0,RenderTextureFormat.ARGB32);var tex=new Texture2D(1920,1080,TextureFormat.RGB24,false);
             var tilt=new Material(Shader.Find("EXODUSER/HD2DTrial/TiltShift"));
             try {cam.targetTexture=rt;cam.aspect=16f/9f;tl.SetTime(t);cam.Render();Graphics.Blit(rt,blurred,tilt);RenderTexture.active=blurred;tex.ReadPixels(new Rect(0,0,1920,1080),0,0);tex.Apply();File.WriteAllBytes(path,tex.EncodeToPNG());}
             finally {cam.targetTexture=old;cam.aspect=aspect;RenderTexture.active=active;rt.Release();blurred.Release();UnityEngine.Object.DestroyImmediate(rt);UnityEngine.Object.DestroyImmediate(blurred);UnityEngine.Object.DestroyImmediate(tilt);UnityEngine.Object.DestroyImmediate(tex);}

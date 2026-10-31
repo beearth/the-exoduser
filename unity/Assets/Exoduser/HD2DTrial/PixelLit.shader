@@ -27,7 +27,7 @@ Shader "EXODUSER/HD2DTrial/PixelLit"
  for(uint k=0;k<count;k++){Light a=GetAdditionalLight(k,i.w);light+=a.color*a.distanceAttenuation*(.25+.75*saturate(dot(normalize(i.n),a.direction)));}
  float pixel=1/_GridSize;
  float rim=saturate(1-min(min(alphaAt(uv+float2(pixel,0)),alphaAt(uv-float2(pixel,0))),min(alphaAt(uv+float2(0,pixel)),alphaAt(uv-float2(0,pixel)))));
- return half4(c.rgb*light+rim*half3(.10,.13,.16)*l.color,1);
+ return half4(c.rgb*light+rim*c.rgb*.25*l.color,1);
  }
  ENDHLSL
  }

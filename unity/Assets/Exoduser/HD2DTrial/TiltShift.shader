@@ -12,7 +12,7 @@ Shader "EXODUSER/HD2DTrial/TiltShift" {
  float4 c=tex2D(_MainTex,i.uv)*.28;
  c+=(tex2D(_MainTex,i.uv+r*float2(1,0))+tex2D(_MainTex,i.uv-r*float2(1,0))+tex2D(_MainTex,i.uv+r*float2(0,1))+tex2D(_MainTex,i.uv-r*float2(0,1)))*.12;
  c+=(tex2D(_MainTex,i.uv+r)+tex2D(_MainTex,i.uv-r)+tex2D(_MainTex,i.uv+r*float2(1,-1))+tex2D(_MainTex,i.uv+r*float2(-1,1)))*.06;
- return c;
+ return float4(c.rgb,1);
  }
  ENDHLSL
  }}}
