@@ -110,3 +110,5 @@ C# 공통 좌표/포인터 회귀215개 통과. 실제 사용자32:9 이미지�
 여백 정밀검수 재작업: candidate4의 로비/캐릭터에서 바깥 장식16px(32:9)·44px(16:10) FAIL을 보존했다. 별도 RuntimeInitialize Bars Host는 실제 감사 페인트가 없었다. 마스킹은 NativeLobby.Draw 마지막의 NativeUiViewport.MaskFrontend 직접 호출로 바꾸고 독립 Boot/Host를 제거한다. 바깥 픽셀 허용치0은 유지한다. 최종 새 Player 검수 전에는 여백 PASS/전달 완료를 선언하지 않는다.
 
 예약 대기 보완: 선두 예약 전에는 batch 티켓을 생성하지 않아 다른 구버전 FIFO 담당을 막지 않는다. 같은 실제 우선순위 함수를 재사용하고 WaitMin/PollSec으로 대기한다. 원래 Acquire-Slot 안전 게이트는 그대로이며 다른 담당의 잠금/티켓/프로세스는 변경하지 않는다.
+
+공식 실행기 후속(08시대 UTC): A2 D3D12 장치제거/Editor 종료 보고에 따라 start 전용 ForceD3D11 선택 인수를 추가했다. 생략 시 graphics 빈 배열, 명시 시 -force-d3d11 한 개이며 실제 -File DryRun 두 건 exit0. Acquire-Slot 구간/QueueTurn byte 불변. 기존14인수/15예약 재실행 명령은 spawn EPERM으로 미실행이며 이전 통과 이력과 구분한다. 실제 GPU 실행 성공은 각 담당이 따로 검수한다. 실행기 새 안정 경계는 I:실행기_안정경계.json.

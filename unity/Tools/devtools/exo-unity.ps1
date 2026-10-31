@@ -9,6 +9,7 @@ param(
     [string]$ArgsJson,
     [int]$TimeoutSec = 600,
     [switch]$NoRefresh,
+    [switch]$ForceD3D11,
     [switch]$Json,
     [switch]$Takeover,
     [int]$WaitMin = 40,
@@ -424,6 +425,8 @@ function Q([string]$s) { if ($s -match '\s') { return '"' + $s + '"' } return $s
 
 function Cmd-Start {
     $wt = Norm-Worktree $Worktree
+    $editorGraphics = @(); if ($ForceD3D11) { $editorGraphics += '-force-d3d11' }
+    if ($DryRun) { Write-Output ('[dryrun] start graphics=' + (Format-ArgList $editorGraphics)); return }
     $qd = Get-QueueDir $wt
     $sv = Read-Json (Join-Path $qd 'server.json')
     if ($sv -and (Test-Alive $sv.pid)) { Say ("이미 실행 중: pid {0} state={1}" -f $sv.pid, $sv.state); return }
@@ -437,6 +440,7 @@ function Cmd-Start {
         $log = Join-Path $qd ('logs\server-' + (Stamp) + '.log')
         $a = @('-batchmode', '-projectPath', (Q (Join-Path $wt 'unity')), '-exoJobServer', (Q $qd), '-logFile', (Q $log))
         $a += @('--unity-qa-sandbox', (Q (New-Sandbox ('server-' + (Stamp)))))
+        $a += $editorGraphics
         $p = Start-Process -FilePath $UnityExe -ArgumentList $a -PassThru -WindowStyle Hidden
         # 잠금 소유자를 서버로 바꾼다(이 CLI 가 끝나도 서버 pid 로 stale 판정)
         [IO.File]::WriteAllText($LockPath, ([ordered]@{ owner = 'devtools-server'; pid = $p.Id; worktree = $wt; queueDir = $qd; startedAt = (NowIso); startedBy = $PID; reservedAs = [string]$Owner; token = $script:LockToken } | ConvertTo-Json), $Utf8NoBom)
