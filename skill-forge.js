@@ -74,6 +74,12 @@
     const key=mouse[code]||(code&&typeof keyName==='function'?keyName(code,true):s.k);
     return s.intrinsic==='roll'?'↑↓←→ + '+key:key;
   }
+  // 미장착 전용 칸의 안내용 아이콘. 습득/장착/합체 상태에는 쓰지 않는다.
+  function slotPreview(s){
+    if(slotValue(s)||!(s.kind==='ult'||s.kind==='num'&&s.idx===4))return null;
+    const ids=slotEligible(s),preferred=s.kind==='ult'?'blackStar':'giantSlam';
+    return ids.find(id=>lv(id))||(ids.includes(preferred)?preferred:ids[0])||null;
+  }
   function slotCondition(s){
     if(s.kind==='intrinsic')return L('고정','Fixed')+(s.intrinsic==='execution'&&!lv('execution')?' · '+L('습득 필요','Learn'):'');
     if(s.def==='charge'||s.def==='ct')return L('기절 탈출','Stun escape');
@@ -81,10 +87,13 @@
     const candidates=slotEligible(s),reqs=candidates.map(id=>sk(id)).filter(Boolean).map(x=>x.reqLv||0);
     const req=reqs.length?Math.min(...reqs):0;
     if(req>P.lv)return'Lv'+req+L(' 도달 시 해금',' to unlock');
+    const preview=slotPreview(s),x=preview&&sk(preview);
+    if(x&&!lv(preview))return L('습득 ','Learn ')+'SP '+x.spCost+(x.matCost?'\n'+L('악의구슬 ','Malice Sphere ')+_malCost(x.matCost):'');
     return candidates.some(id=>lv(id))?L('이 슬롯에 장착','Equip to this slot'):L('스킬 습득 후 장착','Learn a skill to equip it');
   }
   function slotName(s){
     const v=slotValue(s);if(v)return displayName(v);
+    const preview=slotPreview(s);if(preview)return skName(preview);
     if(s.kind==='ult')return T('필살기');
     if(s.idx===4)return T('분노 폭발 스킬 전용');
     if(s.idx===5)return T('영역 스킬');
@@ -203,17 +212,20 @@
   function renderSlots(){
     const box=parts.slots;box.replaceChildren();
     SLOTS.forEach((s,i)=>{
-      const v=slotValue(s),b=mk('button','sf-slot',box);
+      const v=slotValue(s),preview=slotPreview(s),socket=!v&&s.kind==='num'&&s.idx>=1&&s.idx<4,b=mk('button','sf-slot',box);
       b.type='button';b.dataset.slot=i;b.setAttribute('role','tab');b.setAttribute('aria-selected',i===st.slot?'true':'false');
       if(i===st.slot)b.classList.add('on');if(!v)b.classList.add('empty');
       if(s.kind==='intrinsic')b.classList.add('intrinsic');
       const h=v&&(isHost(v)||(s.def==='charge'&&lv('chargeBoost')>=1));
       if(h)b.classList.add('host');if(v&&groupKey(v))b.classList.add('fused');
-      const disc=mk('span','sf-slot-disc',b);if(v)icon(disc,v);
+      const disc=mk('span','sf-slot-disc',b);if(v||preview)icon(disc,v||preview);
+      if(preview)b.classList.add('preview');
+      if(socket){b.classList.add('socket-art');const im=mk('img','sf-empty-socket',disc);im.src='img/ui/skill-forge/empty-socket-'+s.k+'.png';im.alt='';im.draggable=false;im.onerror=()=>{im.hidden=true;b.classList.add('art-failed')};}
       mk('span','sf-slot-key',b,slotKey(s));
       mk('span','sf-slot-name',b,slotName(s));
       mk('span','sf-slot-state',b,slotCondition(s));
       b.title=slotName(s)+' ['+slotKey(s)+'] — '+slotCondition(s)+(s.kind==='intrinsic'?' · '+L('고정 기술은 교체할 수 없습니다','Fixed abilities cannot be replaced'):'');
+      if(preview)b.title+='\n'+(s.kind==='ult'?T('필살기'):T('분노 폭발 스킬 전용'))+' — '+slotEligible(s).map(skName).join(' / ');
       b.setAttribute('aria-label',b.title);
       b.onclick=()=>{if(st.slot!==i){st.slot=i;st.staged=[];st.sel=null}render()};
     });
@@ -651,7 +663,7 @@
   function want3d(){return qs.get('skillForge3d')!=='0'}
   function load3d(){
     if(threeTried||!want3d())return;threeTried=true;
-    import('./skill-forge-3d.js?v=20261010-forge6').then(mod=>mod.createForge3D(parts.canvasWrap)).then(t=>{
+    import('./skill-forge-3d.js?v=20261031-sockets1').then(mod=>mod.createForge3D(parts.canvasWrap)).then(t=>{
       three=t;if(three){el.classList.add('sf-3d');layout3d();}
     }).catch(err=>{root.console&&root.console.warn('[SkillForge] 3D unavailable, 2D fallback',err);el.classList.remove('sf-3d')});
   }
@@ -660,7 +672,7 @@
     const base=parts.canvasWrap.getBoundingClientRect();
     const rel=r=>({x:r.left+r.width/2-base.left,y:r.top+r.height/2-base.top,r:r.width/2});
     const slots=[...parts.slots.querySelectorAll('.sf-slot')].map((b,i)=>{const d=b.querySelector('.sf-slot-disc');const p=rel(d.getBoundingClientRect());
-      const s=SLOTS[i],v=slotValue(s);return{...p,icon:iconUrl(v),on:i===st.slot,empty:!v,host:b.classList.contains('host'),fused:b.classList.contains('fused')}});
+      const s=SLOTS[i],v=slotValue(s);return{...p,icon:iconUrl(v),domArt:b.classList.contains('preview')||b.classList.contains('socket-art'),on:i===st.slot,empty:!v,host:b.classList.contains('host'),fused:b.classList.contains('fused')}});
     const ar=parts.altar.getBoundingClientRect();
     const m=forgeModel(),k=m.ready||groupKey(m.host||'');const g=_FUSE_GEM_GROUPS[k]||{};
     const focus=m.host||(SLOTS[st.slot].kind==='intrinsic'?slotValue(SLOTS[st.slot]):null);
