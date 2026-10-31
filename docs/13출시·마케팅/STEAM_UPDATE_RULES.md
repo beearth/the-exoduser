@@ -133,6 +133,8 @@ schtasks /Create /TN "EXODUSER_DailySteamRelease" /TR "cmd /c G:\exoduser-steam\
 
 | 2026-10-28 | 사용자 지시: 자동 실행이 창·브라우저를 띄우거나 소리를 내지 말 것 | 예약 작업이 Interactive 로그온으로 `cmd.exe`를 직접 실행해 09:00에 콘솔 창이 뜸, 끝날 때 `msg.exe` 팝업, smoke Chromium에 음소거 옵션 없음, setlive가 브라우저를 자동으로 엶 | §7.3 무창·무음 실행 표대로 수정 |
 
+| 2026-10-31 | 09:00 실행 로그·당일 요약 없음, 최근 시도 09:10:34·2147946720(**0x800710E0**) | System 로그: 08:59:58 종료→09:00:39 부팅으로 정각 재부팅 겹침. StartWhenAvailable=false·InteractiveToken. 실제 코드는 Win32 4320 실행 요청 거부이며 0x8004131F가 아님. TaskScheduler/Operational 비활성으로 09:10 거부의 세부 조건·당시 중복 여부는 확정 불가(현재 Ready·릴리스 잔여 프로세스 없음) | 예약 설정·수동 릴리스·프로세스/공용 잠금 변경 없음. 11/01 09:00 전에 PC 켜짐·재부팅/절전 없음·등록 사용자 로그온·AC 전원·작업 Enabled/Ready·중복 실행 없음·네트워크/Git/캐시 로그인/출력 공간이 필요. 다음 예정은 11/01 09:00이나 정상 실행 보장 아님. 증거: I:/EXODUSER-Storage/steam-prep/20261031/REPORT.md. 필요 시 누락 실행 보충 설정·이력 활성화는 제안만 검토 |
+
 **9009 점검법**: 예약 작업 `LastTaskResult`가 9009이고 `logs\daily_release_<오늘>-*.log`가 없으면 PATH 문제다. 레지스트리 PATH로 새 cmd를 띄워 `where powershell`이 되는지 확인한다(이미 떠 있는 셸은 예전 PATH를 물려받으므로 판정에 쓰지 않는다).
 
 ## 10. 10-29 v0.7.10 사전 준비 (2026-10-28 Codex 인수)
@@ -179,3 +181,17 @@ schtasks /Create /TN "EXODUSER_DailySteamRelease" /TR "cmd /c G:\exoduser-steam\
 | 근거 | `I:\EXODUSER-Storage\codex-takeover\steam\evidence-20261029-preflight\재확인.json`·`예약작업.xml` |
 
 브리프의 사전 준비는 완료다. 빌드 뒤 실제 source SHA·BuildID·검증 결과와 게임 내 노트 화면을 확인하는 후속 절차는 그대로 유지한다. 기존 공용 사용자 확인 항목은 유효하므로 같은 요청을 중복 추가하지 않았다.
+
+
+## 11. v0.7.11 사전 준비 — 2026-10-31
+
+| 항목 | 결과·남은 조건 |
+|---|---|
+| 범위 | v0.7.10 `7b80603d8` 이후 `origin/main fd8d727671cd673d99062dd69e69cf398f933952`. 검수 중 추가된 전체 화면 원화 확장도 포함. 선택형 `?r3d=1`·확인 기능·Unity·내부 도구는 플레이어 노트에서 제외 |
+| 패치노트 | `patch_notes/v0.7.11.md`, 한·영 각18항목·`status: draft`. 날짜11/01은 다음 예약 예정일이며 출시 이력 아님. 파서 검증 PASS. 원격 버전은0.7.10 유지, 버전·게임 내 생성물·태그 변경 없음. draft는 자동 게임 내 노트 생성에서 제외되므로 문구 확정 후 final 전환과 생성물 반영 필요 |
+| 원본 스모크 | `fd8d727671cd673d99062dd69e69cf398f933952` 별도 전체 체크아웃·빈 포트58561·I: 격리 저장에서 1920×1080·3840×1080 각각 첫 화면→로비→캐릭터 생성→1-1 로딩/진입→일시정지→재개→재로딩 PASS. pageerror0·404 0(예외 처리 없이 원시 수집), HTTP/디스크 핵심12파일 SHA256 일치. 브라우저 기본 웹/demo 경로이며 Steam full 패키지·자연 완주·청취 검수는 별도 |
+| 출시 차단 결함 | 새 HTML의 `fullscreen-art-data.js`·`fullscreen-art.js`·`fullscreen-art.css`·`fullscreen-art-dom.js`가 현재 `build-nwjs.mjs`의 FILES에서 누락. 원본 파일 존재와 패키지 포함은 별개이며 현 목록으로 패키징하면 해당 참조404가 발생할 것으로 정적 판정. 출시 패키징 담당이 목록·관련 docs를 보완한 뒤 다음 승인 빌드에서 확인해야 함. 이번 문서 준비 범위에서 패키징 코드 수정·실제 빌드는 하지 않음 |
+| DEMO·EA | 각 대상 신규366경로 누락·기존37경로 차이. 403경로×2대상 개별 목록은 외부 TSV. 루트 신규11개는 기존 에셋 폴더 복사 외 별도 동기화가 필요. 대상별 빌드 상수·DEMO 별칭 치환은 유지해야 하며 복사0회 |
+| 내일09시 | 작업 Enabled·Ready, 다음11/01 09:00. v0.7.11 로컬 태그·11/01 빌드 작업 경로 충돌 없음. 정각 재부팅·로그온 등 §9 조건을 충족해야 하고 현재 패키징 누락도 남아 있어 **출시 준비 완료·정상 성공을 보장하지 않음**. 계정 재인증·예약 실행 재현은 미실행 |
+| 사용자 확인 | 실제 다음 BuildID·검수 결과와 노트 문구를 확인한 뒤 Set Live·Steam 패치노트 게시. 새 BuildID를 임의 지정하지 않음 |
+| 권한 경계 | 빌드·preview·업로드·Steam 로그인·Set Live·Steam 게시·예약 작업 설정·공용 실행기/잠금 변경0회. 예약 XML 전후 SHA256 동일, 자기 스모크 서버/브라우저 종료 확인. 기존 latest-web·사용자 소스·세이브 보존. 증거: `I:/EXODUSER-Storage/steam-prep/20261031/REPORT.md` |
