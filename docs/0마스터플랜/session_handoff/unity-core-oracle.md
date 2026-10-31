@@ -17,7 +17,7 @@
 1. 판정 불변·기록만 추가한 진단 패치가 두 판에 이미 적용됨(미커밋): `I:\EXODUSER-Storage\qa\o1-killtail\diag-09b.cjs`.
    - O-1: `E:/exoduser-wt/o1-killtail` / 기준판: `E:/exoduser-wt/o1-base-c7b4` (detach c7b497131, 영상 2개 복원 완료).
 2. 가드 스크립트 `run-diag.ps1 -Tag o1|base -Project <worktree>` = Unity 0개 확인 → 빌드 → receipt 출력==exe 확인 → m1 1회. 산출물 `I:\EXODUSER-Storage\qa\o1-killtail\diag-<tag>\`.
-3. 두 판의 09b 메모(DIAG 시작 cd·potions·hp·mats / 종료 potions·kills·mats·악의 이벤트·처치 목록) 표 비교 → ①갈린 원인 ③테스트 기대값 vs Core 수정 판정(웹 줄 근거) → 유니티 총괄 보고.
+3. 두 판의 09b 메모(DIAG 시작 cd·potions·hp·mats / 종료 potions·kills·mats·악의구슬 이벤트·처치 목록) 표 비교 → ①갈린 원인 ③테스트 기대값 vs Core 수정 판정(웹 줄 근거) → 유니티 총괄 보고.
 4. 판정 뒤 커밋. Unity가 자동으로 바꾼 tracked 파일(.meta·URP asset·ProjectSettings·FirstPlayable.unity)은 커밋 제외. 기준판 worktree는 junction 0 확인 후 삭제.
 5. 범위 밖 후보(총괄 접수): 균열 소환·poisonZone 틱·잔해 줍기·_hitSfxCd. 필드 적 탄은 실제 게임에서 정상(StageFlowAttach가 투사체 호스트 부착).
 

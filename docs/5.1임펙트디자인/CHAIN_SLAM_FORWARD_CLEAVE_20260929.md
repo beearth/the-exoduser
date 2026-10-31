@@ -53,7 +53,7 @@ Create a production-ready transparent GAME VFX SPRITE ATLAS for a realistic dark
 | 보스 | `hurtE` kbMult .8; 별도 `floor(maxPoise*.30)` 체간 피해 |
 | 일반몹 | kbMult .8, poiseMult 1.5, `stunned=max(stunned,300)` (5초) |
 | 추가 넉백 | 착지점→적 방향으로 x/y 각각 `cos/sin(ang)*5` 추가 |
-| 비용 | 준비 시 ST `20+Lv*2`; 추가 악의 비용 없음 |
+| 비용 | 준비 시 ST `20+Lv*2`; 추가 악의구슬 비용 없음 |
 | 착지 패링 | 기존 반경 `150+(Lv-1)*15` 유지. 공격의 세 경로와 별도 판정 |
 | 기동불꽃 연계 | 기존 `_detonateAssaultFlames()` 일괄 기폭 유지 |
 | 보관·정리 | `G._gSlamWave`의 `kind:chainSlam`, `hits`에 적 객체 기록; 기존 스테이지/재시작 정리 적용 |

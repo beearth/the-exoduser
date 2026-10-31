@@ -14,7 +14,7 @@
 | 43157 | 패시브 예약 큐 자동 투자(51222) | 포트에 큐 시스템 부재 → 0 투자 (목록) |
 
 ## 2) 물약 — 원본 추적
-- 43092~43096: 게이트 `rand<1`(항상)·종류 롤(기존 provider 소비 그대로) → `addPotion(pt,1)` 성공 시 `addTxt(e.x,e.y-8, POT[pt].name+' +1', POT[pt].col, 30)` — POT(27677)는 **hp('악의 추출', #33cc66)만 존재**.
+- 43092~43096: 게이트 `rand<1`(항상)·종류 롤(기존 provider 소비 그대로) → `addPotion(pt,1)` 성공 시 `addTxt(e.x,e.y-8, POT[pt].name+' +1', POT[pt].col, 30)` — POT(27677)는 **hp('악의구슬 추출', #33cc66)만 존재**.
 - addPotion(28250~28263): `hp` → **G.mats+=count** + `addTxt(P.x,P.y-20,'+N','#cc66ff',25)` + SFX.pickup(사운드 미이식 목록) / st·mp → POT에 없어 **버림**(2026-10-10 퀵슬롯 폐지 원문). → QSLOTS owner 불필요(첫 전투 경로에서 도달 불가; HUD 연결 대상 없음 — 목록).
 - state `apply_native_add_potion`이 G owner 쓰기·텍스트 사양 반환, 실행자가 방출.
 
@@ -88,5 +88,5 @@ assets/sfx/death 21파일/테스트 1신규+4갱신(E/F/G·P2-001b — drop 꼬�
 
 ## 잔여
 바닥 드랍 표시·줍기·인벤 반입 / 레벨업·픽업 연출(사운드·showPH·VFX) / 초월(1000+) /
-보스 드랍 경로 실사용 / HUD(경험치 바·악의 카운터 — 기존 HUD에 exp 표시 없음: 목록) /
+보스 드랍 경로 실사용 / HUD(경험치 바·악의구슬 카운터 — 기존 HUD에 exp 표시 없음: 목록) /
 팬 지원 / 유골 도감(ossCollect) 반입.

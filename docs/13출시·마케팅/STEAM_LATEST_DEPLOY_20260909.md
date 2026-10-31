@@ -26,7 +26,7 @@
 | 추가 Cloud 점검 항목 | 16:05 로그의 AutoCloud 실제 탐색 경로가 `%APPDATA%/ EXODUSER-HELL/saves`로 폴더명 앞에 공백 포함, 파일 0개. 현행 코드 저장 경로 `%APPDATA%/EXODUSER-HELL/saves`와 다름. 이번에는 경로/원격 세이브를 변경하지 않았으며 정상 로그인 복구 후 Cloud 설정 별도 점검 필요 |
 | 인증 유지 | `G:/exoduser-steam/builder/config/config.vdf`를 보존하고 다음 실행도 `+login shsia`만 사용. 암호·인증코드를 배포 명령에 넣지 않음. 계정 비밀번호 변경/세션 철회 등에 의한 서버 측 인증 만료까지 보장할 수는 없음 |
 | 패키지 목록 | SteamPipe 제외 규칙 적용 후 5,850개 파일·5,944,762,551바이트. 파일별 SHA-256은 `output/steam_20260909/package_manifest.json`에 기록 |
-| 단위 회귀 | 패키징·공유 악의·Range·인트로 player/subtitles/handoff 28개 PASS. 단위 테스트는 작업본의 후속 29언어도 포함하며 위 실제 패키지 브라우저 검증은 빌드 시점의 28언어 기준 |
+| 단위 회귀 | 패키징·공유 악의구슬·Range·인트로 player/subtitles/handoff 28개 PASS. 단위 테스트는 작업본의 후속 29언어도 포함하며 위 실제 패키지 브라우저 검증은 빌드 시점의 28언어 기준 |
 | 검증 패키지 기준 | 전체 빌드 시점의 index.html/game.html/stat-panel-ui.js와 에셋을 고정하고, 이후 발견한 패키지 누락·node-main.js API/Range·ffmpeg.dll만 보완. 배포 도중 시작된 별도 번역 WIP는 이 검증 패키지에 아직 포함하지 않음 |
 | 영상 탐색 | node-main.js가 Range를 무시해 78.041667초 컷 이동 실패 재현. 단일 `bytes=start-end`, `bytes=start-`, `bytes=-suffix`를 206/Content-Range로 응답하고 잘못된 구간은 416 처리. HEAD는 본문 없음, 연결 종료 시 스트림 해제. 일반 응답 Content-Length/Accept-Ranges, HTML no-cache/no-store 적용 |
 | 인트로 회귀 | `tmp/verify_shipped_intro_20260909.py` PASS: 문→본편 BGM pause/seek 0, 100% VO/22% BGM, 정지·재개·믹스·컷 넘김·28언어 마지막 큐·로고·자연 종료·재진입·ESC 종료. pageerror 0. `output/steam_20260909/` 캡처에서 아이보리 명조 자막 직접 확인 |
