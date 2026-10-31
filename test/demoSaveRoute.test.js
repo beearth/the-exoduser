@@ -32,13 +32,14 @@ test('demo entry URL never labels the browser-only save as a cloud character', (
   let destination = '';
   const ctx = vm.createContext({
     _LOBBY_BUILD: 'demo', _testMode: false, _selectedSlotName: 'account-character',
+    _characterLoadSeq: 0, _demoActivateSlot: () => true,
     _TL: s => s, showLoading() {}, Image: class { set src(value) {} },
     setTimeout: fn => fn(), window: { location: { set href(value) { destination = value; } } },
   });
   const code = html.slice(html.indexOf('function showCharGate('), html.indexOf('// ═══ 펫 말풍선 시스템'));
   vm.runInContext(code, ctx);
   ctx.showCharGate('account-uuid');
-  assert.equal(destination, 'game.html?test=1&slot=demo&demo=1');
+  assert.equal(destination, 'game.html?test=1&slot=demo&demo=1&ddung=1');
 });
 
 function loadingLobby(offline){

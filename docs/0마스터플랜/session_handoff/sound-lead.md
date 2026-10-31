@@ -48,3 +48,7 @@ origin/main 기준 sparse worktree(`MSYS_NO_PATHCONV=1`, 자기 경로 + `/tools
 - main 문서만 비강제 push: `_startLoop` 중복 정적 실사 `6b7c73120`(오디오 헬퍼 호출 0, 지금은 재생 결함 근거 없음), 1-1 SND-04 오디오 디렉터 계약 초안 `d2d1431fe`, 2~7장 SND-06 BGM 10슬롯 계획 `3622a222b`. 두 계획은 설계 완료이며 전 장 구현·유료 생성·사용자 청음은 미완이다.
 - SND-10 AD2 3단계의 확인창·상태 토글·`.dis` 버튼·패드 포커스 소리 계약을 `SND10_AD2_STAGE3_CONTRACT_20261028.md`에 정리했다. 설계만 완료했고 코드·청음·실물 패드 검증은 미착수다.
 - 다음 행동: 공용 Unity 큐가 정상 해소되면 **최신 `9a9067b29` 기준**으로 허용된 `exo-unity.ps1`의 빌드·oracle·m1-check 영수증을 받고, 실패 원인 수정 후 1회만 재실행한다. 통합 담당이 병합한 다음 통합 빌드·GPU/Player 실제 청음·unity-latest 여부를 별도 확인한다. 사용자가 `pick_r4`를 제출하면 선택 파일을 확인해 드루이드 slam만 별도 교체한다. 웹 UI 분해·장착 실패·탭 일부 실제 클릭과 게임 안 청음, AD2 3단계, pageerror 재현 대조는 별도 미완이다.
+
+## 2026-10-31 웹 중요한 결정 두둥 전용 작업
+
+전용 codex/web-ddung-20261031, 작업본 G:/exoduser-wt/codex-web-ddung. 후보 3종·삭제 변형 3종, 실제 생성 화면 비교와 소리 포함 영상 3개. 임시 기본 1, 사용자 청음 최종 선택 전. 상세는 docs/6사운드디자인/DECISION_SOUND_20261031.md, 전달물은 G:/exoduser/tmp/design-review/20261031_decision_sound/REPORT.md. Unity 소스는 변경하지 않고 ui-sound-brief.md 끝에 같은 계약을 전달한다.

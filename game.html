@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="loading-art.css?v=20261031-final35">
 <script src="loading-art.js?v=20261031-final35"></script>
+<script src="decision-sound.js?v=20261031"></script>
 <script src="fullscreen-art-data.js?v=20261031"></script>
 <script src="fullscreen-art.js?v=20261031"></script>
 <link rel="stylesheet" href="fullscreen-art.css?v=20261031">
@@ -4125,13 +4126,13 @@ const BGM={
   _cacheLRU:[],
   _CACHE_MAX:6, // .wav 트랙이 커서 무제한 캐시 시 세션 메모리 단조 증가 → 최근 6트랙만 유지
   _getAudio(src){
-    if(!this._cache[src]){const a=new Audio(src);a.preload='auto';a.onerror=()=>{BGM._badSrcs[src]=1;delete BGM._cache[src];const i=BGM._cacheLRU.indexOf(src);if(i>=0)BGM._cacheLRU.splice(i,1);if(BGM._cur===a){BGM._cur=null;setTimeout(BGM._onEnded,300)}};this._cache[src]=a}
+    if(!this._cache[src]){const a=new Audio(src);a.preload='auto';DecisionSound.attachMusic(a);a.onerror=()=>{DecisionSound.detachMusic(a);BGM._badSrcs[src]=1;delete BGM._cache[src];const i=BGM._cacheLRU.indexOf(src);if(i>=0)BGM._cacheLRU.splice(i,1);if(BGM._cur===a){BGM._cur=null;setTimeout(BGM._onEnded,300)}};this._cache[src]=a}
     const li=this._cacheLRU.indexOf(src);if(li>=0)this._cacheLRU.splice(li,1);this._cacheLRU.push(src);
     while(this._cacheLRU.length>this._CACHE_MAX){
       const idx=this._cacheLRU.findIndex(s=>this._cache[s]!==this._cur); // 재생 중 트랙은 축출 제외
       if(idx<0)break;
       const old=this._cacheLRU.splice(idx,1)[0],oa=this._cache[old];
-      if(oa){oa.pause();oa.removeAttribute('src');oa.load()}
+      if(oa){oa.pause();DecisionSound.detachMusic(oa);oa.removeAttribute('src');oa.load()}
       delete this._cache[old];
     }
     return this._cache[src];
@@ -64031,7 +64032,8 @@ function _showNextDiffPop(){
   const prev=NEXT_DIFF_OPTS.findIndex(o=>o.off===(G._stageDiffOff||0));_ndSel=prev>=0?prev:2;
   wrap.replaceChildren();
   const pick=i=>{_ndSel=(i+NEXT_DIFF_OPTS.length)%NEXT_DIFF_OPTS.length;[...wrap.children].forEach((c,k)=>{c.classList.toggle('sel',k===_ndSel);c.setAttribute('aria-selected',String(k===_ndSel))})};
-  const go=()=>{G._stageDiffOff=NEXT_DIFF_OPTS[_ndSel].off;_closeNextDiffPop();_proceedNextStage()};
+  let committed=false;
+  const go=()=>{if(committed)return;committed=true;DecisionSound.configure({getVolume:()=>OPT.sfxVol});DecisionSound.play('difficulty');G._stageDiffOff=NEXT_DIFF_OPTS[_ndSel].off;_closeNextDiffPop();_proceedNextStage()};
   const back=()=>{_closeNextDiffPop();const nb=$('nextBtn');nb.disabled=false;nb.style.opacity='1'};
   for(let i=0;i<NEXT_DIFF_OPTS.length;i++){
     const o=NEXT_DIFF_OPTS[i];

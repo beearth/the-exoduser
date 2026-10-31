@@ -15,7 +15,7 @@ function declaration(file,name){
 }
 function creationContext({offline=true,fallback=false,rejected=false}={}){
   const nodes=new Map();const calls=[];const ls=new Map();
-  const ctx=vm.createContext({console,_characterLoadSeq:0,_testMode:offline,_pendingVisualIdx:0,currentUser:{id:'user'},
+  const ctx=vm.createContext({console,_characterLoadSeq:0,_testMode:offline,_pendingVisualIdx:0,currentUser:{id:'user'},_LOBBY_BUILD:'full',
     $:id=>{if(!nodes.has(id))nodes.set(id,{value:id==='charName'?'테스트전사':'',classList:{add(){},remove(){}},focus(){},style:{}});return nodes.get(id);},
     _TL:s=>s,setStatus(){},_goLobby(){},loadLocalCharacters:async()=>{},loadCharacters:async()=>{},
     _afterCharacterCreated:async(...a)=>calls.push(a),
