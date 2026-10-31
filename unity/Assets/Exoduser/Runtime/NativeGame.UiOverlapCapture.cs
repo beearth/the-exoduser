@@ -10,7 +10,7 @@ namespace Exoduser.UnityPort
 {
     public sealed partial class NativeGame
     {
-        [Serializable] sealed class UiOverlapCoverage {public int schemaVersion=2;public string runtimeSha256,unityVersion,device,deviceType;public string scope="실제 Player OnGUI·제품 API 상태 전환/검수 시계/실제 미디어 seek/8방향 투영 표본, OS 입력/자연 클리어와 구분";public string[] resolutions={"1920x1080","2560x1080","3840x1080","1600x900","2560x1600"};public string[] languages={"ko","de"};public List<string> pages=new List<string>(),frames=new List<string>();public List<UiWideMovie> movies=new List<UiWideMovie>();public List<UiWideCue> worldCues=new List<UiWideCue>();public int[] loadingImages=new List<int>(NativeLoadingSelection.Images).ToArray();}
+        [Serializable] sealed class UiOverlapCoverage {public int schemaVersion=2,inputIsolationChecks;public string runtimeSha256,unityVersion,device,deviceType;public string scope="실제 Player OnGUI·제품 API 상태 전환/검수 시계/실제 미디어 seek/8방향 투영 표본, OS 입력/자연 클리어와 구분";public string[] resolutions={"1920x1080","2560x1080","3840x1080","1600x900","2560x1600"};public string[] languages={"ko","de"};public List<string> pages=new List<string>(),frames=new List<string>();public List<UiWideMovie> movies=new List<UiWideMovie>();public List<UiWideCue> worldCues=new List<UiWideCue>();public int[] loadingImages=new List<int>(NativeLoadingSelection.Images).ToArray();}
         [Serializable] sealed class UiWideCue {public int width,height;public string language,caption;public double start,end,requested,observed;}
         [Serializable] sealed class UiWideMovie {public int width,height,visual,textureWidth,textureHeight;public string language,file;public long frameBefore,frameAfter;public double timeBefore,timeAfter;public bool prepared,playing;}
         [Serializable] sealed class UiWideInputCheck {public int width,height;public bool lockedBlocked,nameOpened;}
@@ -53,6 +53,7 @@ namespace Exoduser.UnityPort
         IEnumerator UiOverlapShot(string page)
         {
             yield return new WaitForSecondsRealtime(.18f);NativeUiAudit.Active=true;yield return null;yield return new WaitForEndOfFrame();
+            if(lobby.enabled){if(!UiOverlapOwnsInput||!lobby.AutomatedInput)throw new InvalidOperationException("실제 캡처 입력 소유권 누락 "+page);overlapCoverage.inputIsolationChecks++;}
             string name=Screen.width+"x"+Screen.height+"-"+overlapLanguage+"-"+page;
             NativeUiAudit.Save(Path.Combine(overlapOutput,name+".json"),page,overlapLanguage);
             ScreenCapture.CaptureScreenshot(Path.Combine(overlapOutput,name+".png"));
