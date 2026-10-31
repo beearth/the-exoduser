@@ -473,8 +473,7 @@ namespace Exoduser.UnityPort
             if(open&&firstPractice!=null)return;
             if(open){skillsWasRunning=Running;Running=false;}
             skills.SetOpen(open,slot);
-            if(!open){skillInputFence=true;Running=skillsWasRunning&&!menu&&Simulation.Player.Hp>0;}
-
+            if(!open){skillInputFence=true;Running=gameFocused&&skillsWasRunning&&!menu&&!PlayerDown;}
             UiPanelChanged(uiBefore);
         }
         void SetForge(bool open){
@@ -482,8 +481,7 @@ namespace Exoduser.UnityPort
             if(open&&firstPractice!=null)return;
             if(open){forgeWasRunning=Running;Running=false;}
             forge.SetOpen(open);
-            if(!open){skillInputFence=true;Running=forgeWasRunning&&!menu&&Simulation.Player.Hp>0;}
-
+            if(!open){skillInputFence=true;Running=gameFocused&&forgeWasRunning&&!menu&&!PlayerDown;}
             UiPanelChanged(uiBefore);
         }
         void SetStats(bool open){
@@ -491,8 +489,7 @@ namespace Exoduser.UnityPort
             if(open&&firstPractice!=null)return;
             if(open){statsWasRunning=Running;Running=false;}
             stats.SetOpen(open);
-            if(!open){skillInputFence=true;Running=statsWasRunning&&!menu&&Simulation.Player.Hp>0;}
-
+            if(!open){skillInputFence=true;Running=gameFocused&&statsWasRunning&&!menu&&!PlayerDown;}
             UiPanelChanged(uiBefore);
         }
         // Web _injectPanelNav: a tab click opens that window (openPanel closes the others first); the active tab is ignored by the bar itself.
@@ -569,7 +566,7 @@ namespace Exoduser.UnityPort
         void ApplyFrameCap(int cap){QualitySettings.vSyncCount=0;Application.targetFrameRate=cap==0?-1:cap;}
         void ApplyPauseCommand(PauseMenuCommand command){
             switch(command){
-                case PauseMenuCommand.Resume: if(gameFocused&&Simulation.Player.Hp>0){string uiBefore=UiPanelState();menu=false;skillInputFence=true;Running=true;UiPanelChanged(uiBefore);} break;
+                case PauseMenuCommand.Resume: if(gameFocused&&!PlayerDown){string uiBefore=UiPanelState();menu=false;skillInputFence=true;Running=true;UiPanelChanged(uiBefore);} break;
                 case PauseMenuCommand.Restart:if(gameFocused){ResetRun();skillInputFence=true;menu=false;Running=true;}break;
                 case PauseMenuCommand.ReturnLobby:SaveCombatNow();Running=false;menu=true;sound.Reset();pauseMenu.Reset();lobby.ShowLobby();break;
                 case PauseMenuCommand.Quit:if(gameFocused){SaveCombatNow();Application.Quit();}break;
@@ -638,8 +635,7 @@ namespace Exoduser.UnityPort
             string uiBefore=UiPanelState();
             if(open&&firstPractice!=null)return;
             if(open){inventoryWasRunning=Running;Running=false;}
-            inventory.SetOpen(open);if(!open){skillInputFence=true;Running=gameFocused&&inventoryWasRunning&&!menu&&Simulation.Player.Hp>0;}
-
+            inventory.SetOpen(open);if(!open){skillInputFence=true;Running=gameFocused&&inventoryWasRunning&&!menu&&!PlayerDown;}
             UiPanelChanged(uiBefore);
         }
         IEnumerator InventorySmoke(){

@@ -78,4 +78,20 @@ AudioRenderer.Start가 성공하기 전에는 Listener를 열지 않는다. 녹�
 | 원인과 최소 수정 | Core `LevelExp.Add`는 일반 경험치를 정수 나누기3으로 처리한다. 도구의 `AddExperience(MaxExperience)`는 레벨업에 부족했다. frame330(영상22초)의 입력만 `checked(MaxExperience*3)`으로 수정하고 실제 Level 상승·ui_levelup 이벤트1회를 함께 검사한다. 기존 NativeLevelUpOverlay.Capture와 같은 일반 경험치 경로이며 Core 공식·제품 재생 경로·음원/볼륨 변경0 |
 | 보존 / 새 검수 | R5 빌드 자동변경519개·신규56파일을 I:에 SHA보존한 뒤 원래 byte/부재 상태로 복구, INDEX/기존WIP 보존. 수정한 Tools와 관련 문서만 새 checkpoint에 포함하며 새 Runtime의 공식 빌드·M1·TAB·녹음·영상으로 재검수한다. R5 영수증을 새 Runtime 검수로 재사용하지 않는다 |
 
-근거: `I:/EXODUSER-Storage/demo-art/ui-sound/build-r5-receipt.json`, `r5-player-mcp.json`, `m1-r5/`, `tab-r5/`, `capture-r5/`, `r5-generated-preservation.json`, `r5-restoration-proof.json`. 현재는 캡처 도구 재작업·NOT_READY이며 공통 병합/Desktop은 아직 미반영이다.
+근거: `I:/EXODUSER-Storage/demo-art/ui-sound/build-r5-receipt.json`, `r5-player-mcp.json`, `m1-r5/`, `tab-r5/`, `capture-r5/`, `r5-generated-preservation.json`, `r5-restoration-proof.json`. 당시 캡처 도구 재작업·NOT_READY이며 공통 병합/Desktop 미반영 상태였다.
+
+## 2026-10-31 최신 Pause 공통 변경과 정상 병합
+
+R6 `8fd2b1a09`의 공식 빌드6640993b·M1 23/23·TAB74/74·녹음476/476·overlap168프레임/문제0·30초 유음 영상 검수를 완료했다. 녹음은450프레임/15fps, 48kHz stereo 2879488샘플/29.994667초이며 영상 길이30.000초·전체 FFmpeg 디코드0오류다. 사람 청음이나 자연 플레이의 증거는 아니다. 첫 R6 M1 셸 호출은 종료1·출력없음으로 미실행이며 원인은 미확정, 이후 공식 재실행20522b0c만 M1 근거로 사용한다.
+
+검수 중 공통 `origin/unity/main`이15c8ed3c5에서118a9421a로 진행했음을 확인했다. 후보가 Pause 파일을 제거한 것으로 판단하지 않고, 새 공통의 Pause 최종 수정 전체를 정상 merge한다. 충돌은 NativeGame.cs의 패널 닫기와 Resume에 한정되며 아래 계약을 함께 보존한다.
+
+| 경로 | 병합 계약 |
+|---|---|
+| 인벤토리·스킬·능력치·대장간 닫기 | 공통의 `gameFocused && WasRunning && !menu && !PlayerDown` 유지, 같은 상태 변경 전후 `UiPanelState/UiPanelChanged`로 기존 사운드1회만 처리 |
+| Resume | 공통의 `gameFocused && !PlayerDown` 유지, 메뉴 닫기 사운드 처리 유지 |
+| HP0 부활 대기·최종 사망·안내 fence | 공통의 `PlayerDown`·Core PauseNavigation·StartupFlow 원문 보존. fallen 재개와 최종 dead 차단을 유지 |
+| 공통 검수 도구 | PauseInputCheck·host-resume·Core 테스트를 최신 공통 그대로 인수. Node child_process 기반 도구를 실행하지 않으며 Player 검수는 셸→공식 exo-unity만 사용 |
+| 새 게이트 | 병합 Runtime/Core로 새 R7 공식 빌드·M1·TAB·녹음/영상·overlap 및 관련 Pause Player 회귀. R6 바이너리 영수증으로 병합본을 PASS 처리하지 않음 |
+
+R5/R6 생성 파생파일은 각각 tracked519·new56을 I:에 SHA보존한 뒤 사전 원본 byte/부재로 복귀했다. 기존 guard.baseline WIP·INDEX를 보존한다. 최신 공통 계약의 상세는 [Pause SSOT](UNITY_PAUSE_SETTINGS_20261025.md)를 따른다.
