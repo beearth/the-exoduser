@@ -25,6 +25,8 @@ r2는 기술 검사와 별개로 **3D 접점/탄막 가독성 FAIL**이다. 같�
 | 일회성 Graph 우선 | 기존12슬롯/0.8초·프레임6이벤트 한도는 유지. 일반 연기/잔여는 프레임4까지 사용하여 강타/악의구 폭발용2이벤트를 남긴다. 중요 요청은 만료 슬롯이 없으면 최소0.15초 지난 일반 잔여 중 가장 오래된 슬롯을 재사용하며, 진행 중인 다른 중요 효과는0.8초까지 보존한다. Core 공격/피해/발사는 제한하지 않는다. `PuffCanYield` 계약6개 RED→GREEN 추가(총456). 화면 안 중요 요청 누락 `DroppedCritical`·악의구 폭발 전송 `MaliceBlastEvents`를 별도 기록 |
 | Graph 전송과 본체 구분 | 핸들의 실제 원인 스킬ID를 붙여 `SendEvent` 이후 `SeenGraphSkills`에 기록한다. 적탄/기검참/충전이 같은 kind를 쓰더라도 현행5스킬로 오인 집계하지 않는다. review PASS는 본체5종과 별도로 Graph 전송5종·실제 Core 악의구 폭발·해당 폭발 Graph 전송을 요구한다. 전송 카운터는 실제 GPU 표시/시각 PASS를 대신하지 않는다 |
 | 현재 기술 검증 | 표현 계약456개 RED→GREEN. 설치 Unity 참조125·runtime287소스 독립 C# 오류0·기존경고437. ContactFlash Graph47객체·누락참조0·재질GUID 일치. 실제 Core960틱 입력 예행에서 처치1·3타 발사/명중 Tier3·악의구폭발6·5스킬 발동 PASS. 지형/GPU/자연플레이 증거가 아니며 정식 Unity 임포트/Player/M1/시각 판정은 아직 r3 미검증 |
+| 첫 r3 공식 컴파일 FAIL | source599afc45a, 10:47:56UTC 공식 start가 UPM정상 연결 후 CS0246 두 건으로 준비 전exit1. `ImpactGroundPatch.cs.meta`의 GUID를33자리 `a9dc74cf92824d56a066173f2734c96c7`로 잘못 작성해 Unity가 파일을 무시했다. 실제 로그의 invalid GUID/ignored asset와 `Exoduser.Runtime.rsp`의 해당 소스 누락으로 확인했다. 독립 C# 검사는 메타 임포트를 포함하지 않아 잡지 못했다. 잘못된 원본 byte/SHA를 I:before-guid-fix-r3에 보존하고32자리 `a9dc74cf92824d56a066173f2734c96c`로 최소 수정。 자기 메타20개 형식/중복 검사는 RED1→GREEN0·중복0으로 확인했으며 정식 Unity 재컴파일 전에는 해결 PASS로 올리지 않는다 |
+| 실패 뒤 자원 반환 | 공식 대기68128 종료·Unity0/잠금없음 확인 후 자기예약만 unreserve하여 Map선두로 반환했다. 자동파생55파일 byte/SHA 보존·GUID참조0인 자기신규55개 정리·tracked source파생0. 산출물 `import-derived/editor-r3-fail1`. Library 삭제/캐시 초기화·타인 프로세스 변경0, 새 GPU검수는 수정 checkpoint 뒤 큐끝으로 재접수 |
 | 소유권·반환 | r2 종료08:15 UTC 자기 예약 해제·잠금 비어있음 확인·다음 기존 담당에게 반환. 파생575파일 byte/SHA 보존→기존519 정확복구·자기신규56 GUID참조0 정리·자기 source 변화0. CPU 재작업 중 Unity 점유0. 새 writer/세션/작업본0 |
 
 ## r2 후보와 실패 이력
