@@ -55512,3 +55512,17 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - `skill-forge.js/css`: 설명판270px/내용 높이, 빈 로드맵 접기, 초광폭 좌우 끝·중앙1800px. 구르기·X처형·T자동석궁을 추가 표시하고 E/RMB 실제 배정·기절 탈출·미습득 조건을 맞췄다. 전투·6개 장착 슬롯·세이브 구조는 유지한다.
 - No.3820~3827를 EN+27개 lang에 전파. `SKILL_FORGE_20261010.md` §12, 스킬2_1·키바인딩3.3·번역 목록/가이드 동기화. 캐시 `20261031-fixed-layout1`, guard 기준선은 실제 줄 수만 갱신.
 - 검수 근거·서버·정확 SHA: `G:/exoduser/tmp/design-review/20261031_skill_window/REPORT.md`. Unity 브리프에 같은 지시 인계, 웹 검수를 Unity 검수로 세지 않음.
+
+
+
+## 2026-10-31 웹 성장 창 머리 축소·인장의 눈
+
+| 항목 | 변경·검수 |
+|---|---|
+| 코드 | web-uiux.css의 다섯 창44px 제목띠·성장44px 머리·기존 gate_sigil 원화 합성. game.html 해당 CSS 캐시만 변경 |
+| 화면 | 1920/3840×1080·5창10건, 성장 본문181px 반환. 제목/본문/AP 충돌·가로넘침·노드이탈0, 원화/제목/트리1x 직접 비교 |
+| 검수 | tools/check-stat-window.mjs·검색/미리보기/요약 ESC/J 재열기·저장0·pageerror0, 기존관련39/39·project-check103/103·guard PASS |
+| 문서·인계 | UI_COMPOSITION 최신 절·능력치 SSOT·WEB_UIUX·디자인 인계·총괄 동기화. ui-ultrawide-brief 끝에 Unity 전달. 원격 SHA와 서버 주소는 20261031_stat_window/REPORT.md |
+| 범위 | 웹 변경 부위 자체 시각판정 PASS. 자연플레이·Unity·NW.js·DEMO/EA·전체 게임/디자인총괄 별도 판정은 미검증 |
+
+성장 검수 보강: 최초 통합1920 캡처의 외부 갑옷 배경이 로딩 중인 것을 직접 확인해 최종 시각 증거에서 제외했다. tools/check-stat-window.mjs는 CSS 배경 원화 decode를30초 한도로 기다린 뒤 캡처하며, 같은 소스의1920/3840 화면을 다시 검수한다.

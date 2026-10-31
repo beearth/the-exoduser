@@ -26,3 +26,8 @@
 근거: I:/EXODUSER-Storage/design/web-uiux-20261031/game-ui/의 final-*.png, final-geometry.json, tests.txt. final 접두사가 없는 초기 캡처는 부트/컷씬에 가렸으므로 채택 근거에서 제외한다. docs 전체 관련 키워드 검색899행은 docs-keyword-search.txt로 보존했다. 초기 skillBarGamepadDisplay 3건은 지정 Chrome 채널 부재로 실행 실패했다. 최종에는 테스트 실행기를 설치된 Playwright Chromium·headless·mute로 정합하여 같은 3건 모두 통과했다. 실제 게임패드·NW.js 실기·전체 언어 장문·청취 검수는 별도다.
 
 최종 전체 통합: 신규 로비9개·공통16개 및 관련 기존분·패드HUD를 포함해 347/347, project-check 103/103. 최종 캐시 CSS=20261031-final5, JS=20261031-final4. 33화면×1920/3840=66장, 유효 텍스트 범위에서 겹침0. 검수 상태 직접 표시·bosstest 도구 숨김은 자연플레이 증거와 구분한다.
+
+
+## 공통 제목 띠 후속 — 2026-10-31
+
+statwindow-brief에 따라 web-uiux.css에서 다섯 창 제목44px·성장 머리44px를 공통화하고, 기존 첫 화면 인장의 눈을 성장 배경에 연결했다. 상세 수치와 원화 근거는 [UI_COMPOSITION 최신 절](UI_COMPOSITION_20260925.md#2026-10-31-성장-창과-공통-다섯-창의-얇은-제목-띠)에만 둔다. game.html CSS 캐시=20261031-compact-title1. tools/check-stat-window.mjs는 --url/--out/--modules 옵션으로 분리 server.cjs에서 두 해상도×다섯 창의 제목/본문/AP/노드 경계·검색·미리보기·요약 닫기·J 재열기·저장0을 검사한다. 스킬 본문은 다른 담당 소유이며 이번 수정 범위가 아니다.
