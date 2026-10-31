@@ -150,6 +150,11 @@ namespace Exoduser.UnityPort.Vfx
         static void Surface(Handle h,uint baseColor,uint edge,float glow,float time)
         {
             h.Block.SetColor("_Base",Hex(baseColor));h.Block.SetColor("_Edge",Hex(edge));h.Block.SetFloat("_Glow",glow);h.Block.SetFloat("_Phase",time);
+            // Organic enemy matter keeps its dark albedo. Ice and the thin Ki
+            // blade may reflect more of their pale edge palette without painting
+            // bright repeating lines across poison/dark projectile bodies.
+            float edgeMix=h.Kind==7||h.Kind==8?.025f:h.Kind==2?.04f:h.Kind==1?.06f:h.Kind==3?.25f:h.Kind==6?.55f:.12f;
+            h.Block.SetFloat("_EdgeMix",edgeMix);
             foreach(var p in h.Parts)
             {
                 // Keep the Core XY footprint, but show upright matter at LOOK-001's

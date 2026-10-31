@@ -19,15 +19,27 @@ base=g.prop_color('Base',(0.18,0.14,0.11,1))
 edge=g.prop_color('Edge',(0.55,0.48,0.35,1))
 glow=g.prop_float('Glow',0,(0,2))
 phase=g.prop_float('Phase',0)
+edge_mix=g.prop_float('EdgeMix',.12,(0,1))
 body='''
-float veins = pow(saturate(0.5 + 0.5 * sin(Pos.x * 29.0 + sin(Pos.y * 37.0 + Pos.z * 19.0) * 2.3)), 12.0);
-float grain = 0.84 + 0.16 * sin(dot(Pos, float3(43.0,37.0,41.0)));
-Color = lerp(Base * grain, Edge, 0.22 + veins * 0.28);
-Emission = Edge * Glow * (0.22 + veins * 0.35) * (0.94 + 0.06 * sin(Phase * 7.0));
+float3 q = Pos * 11.0;
+float3 cell = floor(q), f = frac(q);
+float3 u = f * f * (3.0 - 2.0 * f);
+float n000 = frac(sin(dot(cell, float3(127.1,311.7,74.7))) * 43758.5453);
+float n100 = frac(sin(dot(cell+float3(1,0,0), float3(127.1,311.7,74.7))) * 43758.5453);
+float n010 = frac(sin(dot(cell+float3(0,1,0), float3(127.1,311.7,74.7))) * 43758.5453);
+float n110 = frac(sin(dot(cell+float3(1,1,0), float3(127.1,311.7,74.7))) * 43758.5453);
+float n001 = frac(sin(dot(cell+float3(0,0,1), float3(127.1,311.7,74.7))) * 43758.5453);
+float n101 = frac(sin(dot(cell+float3(1,0,1), float3(127.1,311.7,74.7))) * 43758.5453);
+float n011 = frac(sin(dot(cell+float3(0,1,1), float3(127.1,311.7,74.7))) * 43758.5453);
+float n111 = frac(sin(dot(cell+float3(1,1,1), float3(127.1,311.7,74.7))) * 43758.5453);
+float grain = lerp(lerp(lerp(n000,n100,u.x),lerp(n010,n110,u.x),u.y),lerp(lerp(n001,n101,u.x),lerp(n011,n111,u.x),u.y),u.z);
+float edge = saturate(EdgeMix);
+Color = lerp(Base * (0.56 + 0.44 * grain), Edge, edge * (0.35 + 0.65 * grain));
+Emission = Edge * Glow * (0.006 + edge * 0.35) * (0.84 + 0.16 * grain) * (0.94 + 0.06 * sin(Phase * 7.0));
 '''
-cf=g.custom_function('VeinedMaterial',body,[('Pos','vec3'),('Base','vec3'),('Edge','vec3'),('Glow','float'),('Phase','float')],[('Color','vec3'),('Emission','vec3')])
+cf=g.custom_function('RoughMaterial',body,[('Pos','vec3'),('Base','vec3'),('Edge','vec3'),('Glow','float'),('Phase','float'),('EdgeMix','float')],[('Color','vec3'),('Emission','vec3')])
 pos=g.from_sample('PositionNode',m_Space=0);g.edge(pos,0,cf,'Pos')
-for name,p in [('Base',base),('Edge',edge),('Glow',glow),('Phase',phase)]:g.edge(g.prop_node(p),0,cf,name)
+for name,p in [('Base',base),('Edge',edge),('Glow',glow),('Phase',phase),('EdgeMix',edge_mix)]:g.edge(g.prop_node(p),0,cf,name)
 g.edge(cf,'Color',g.block('SurfaceDescription.BaseColor'),0);g.edge(cf,'Emission',g.block('SurfaceDescription.Emission'),0)
 # Existing Lit blocks retain physically lit normals, smoothness .35 and nonmetal surface.
 for name,val in [('SurfaceDescription.Metallic',0),('SurfaceDescription.Smoothness',.35),('SurfaceDescription.Alpha',1)]:

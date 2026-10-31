@@ -1,5 +1,25 @@
 # RM-1 VFX 통합 구현 기록 — 2026-10-28
 
+## 2026-10-31 r3 실제 검수와 r4 재질 재작업
+
+이 절이 아래 r3 검수 전/이전 후보 기록보다 우선한다. r3는 접점 가림과 바닥 표시를 개선했지만 **적탄 재질 FAIL**로 통합 제출하지 않았다. r4는 밝은 반복 줄무늬 방법을 제거하는 재작업이며 실제 Unity·Player 품질은 검수 전이다.
+
+| 항목 | 실제 근거·현행 수치 |
+|---|---|
+| r3 원본 | `6cda46abeb2f4e2ad63fa6ad1d7ed496da13d34a`·Unity tree `c8467c71b8d6bcb83d8682adbfa2989a88bf6fd6`·수락 공통19c 대비 자체 Core변경0 |
+| r3 MCP/빌드 | 실제6000.6.7f1·자기root·RX9070XT/D3D11·ImpactGroundPatch 타입/셰이더지원·오류0 확인. 고정7Core틱/피해208·20ms 접점 캡처는 진단이며 자연플레이/전체PASS 아님. `PortVerification.Build` `2f4ebedc`, remodel-scenes1·오류0·3,109,886,741바이트. Player MCP파일/관리참조0 |
+| 같은 빌드 M1 | `72363307`·23/23 ok·첫차단없음·사용자창0/잔류0/USER_SAVE0/숨은Desktop종료. 내부숨은창9개와 사용자노출0을 구분. DLL·리소스 해시는 I: `빌드-소스-연결-r3.json` |
+| 실제 영상 | 3D 전/후 `71aa99b8`/`b8adbb2d`, XY 전/후 `7cc3bc24`/`0fd9781e`, 21:9 `5061ca9c`, 32:9 `40668222`. 각16초·480PNG·30fps. 실제Screen와PNG1600×900/2560×1080/3840×1080 일치. 전부Core SHA `dc9493fefc26ba10139a71abf26c17a5e9c01d593f12bc7d4969083e5a095861`·피해84083 동일 |
+| r3 신호/제약 | after접점37/생성37/drop0·Graph197·Core악의구폭발6/Graph폭발6/critical누락0·실행5스킬 cast/drawn/Graph 일치·완전충전3타발사/명중Tier3·처치1/새처치접점true. AI중지·고정입력·첫표적1HP/나머지100만HP fixture이며 자연플레이·미이식스킬·최소사양FPS 증거 아님 |
+| 영상 판정 | 실제30fps 접점 연속1~3프레임에서3D 본체 식별·4프레임 뒤 소멸. 지형밀착 회복막 확인. 반면 밝은 민트/라벤더 본체의 흰 지그재그가 만화풍으로 읽혀 적탄재질FAIL. `임팩트-전후-r3-16초.mp4`/`노레위-임팩트-r3-나란히-16초.mp4` 및XY·원본와이드 영상 보존. NoRest는 공식720p를같은1600×900으로 확대한6전투구간16초 스타일참조·마지막2초재사용이며 동등카메라/성능 증거 아님 |
+| r4 표면 함수 | `RoughMaterial`·Lit·금속0/매끈함0.35 유지. `q=Pos*11`, cell=floor(q), f=frac(q), u=f²(3−2f). 8셀 해시 `frac(sin(dot(cell+corner,(127.1,311.7,74.7)))*43758.5453)`를 u로 삼선형 보간한 grain 사용. corner는 x/y/z각0/1 조합. 밝은선/pow12 균열 제거 |
+| r4 밝기 계약 | `e=saturate(EdgeMix)`, `Color=lerp(Base*(0.56+0.44*grain),Edge,e*(0.35+0.65*grain))`, `Emission=Edge*Glow*(0.006+e*0.35)*(0.84+0.16*grain)*(0.94+0.06*sin(Phase*7))`. 팔레트·Core폭/판정R·이동/수명·Graph 예산은 기존 그대로 |
+| `_EdgeMix` | Shader 기본0.12/범위0~1. Native 물질kind7/8(독·어둠·악의구)0.025, kind2(적가시)0.04, kind1(덫)0.06, kind3(얼음·충전)0.25, kind6(얇은기검참)0.55, 나머지(강타)0.12. 얼음/검기는 밝은 가장자리 성격을 유지하고 유기탄은 어두운 알베도 유지 |
+| r4 변경 경계 | 자기 SG_SkillMatter·NativeSkillRemaster·생성기만 수정. 기존 Graph ID/연결을 유지하고 EdgeMix속성·입력만 추가, 나머지Graph/재질 재생성0. 수정전5파일 원byte/SHA는 I:before-material-r4. 독립 Runtime292소스/참조125·오류0/경고438·기존표현계약456 통과. 실제 셰이더컴파일/GPU는 별도검수 전 |
+| 자원/보존 | r3 마지막촬영 후 own예약해제·Unity0/잠금없음·다음UI에 공식반환 통보. build파생575 byte/SHA보존·기존519정확복구·자기신규56 참조0정리·입력3326변경0. 별도MCP캡처는 I:보관·기존G경로는 검증된Junction. 추가GPU는 큐끝 재접수하며 타인예약/프로세스 변경0 |
+
+컴파일·oracle·카운터는 시각 판정을 대신하지 않는다. r3 공식 원본영수증과 사본SHA는 I: `r3-통합검수.json`/`official-r3/`, 실제 무창CPU MP4재생 ended/디코드 기록은 `playback-r3-attempt2/재생-영수증.json`이다. 첫 로컬 재생의 두번째파일 networkidle 대기실패도 보존했으며 정적HTML은 media ready/ended로 검증했다. 게임 성능 측정과 구분한다. r4 정식검수→비교영상→지정통합→바탕화면까지 미완료다.
+
 ## 2026-10-31 r3 표시 구조 재작업 — 정식 Player 재검수 전
 
 r2는 기술 검사와 별개로 **3D 접점/탄막 가독성 FAIL**이다. 같은 접점의 핵심 결함이 두 후보에 남아, Graph 수치 반복 대신 본체/잔여와 바닥 표시 구조를 분리한다. 아래 r2 표는 실패 후보의 이력이며 현행 후보 수치는 이 절이 우선한다.

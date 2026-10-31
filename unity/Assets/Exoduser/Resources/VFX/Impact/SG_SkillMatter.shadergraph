@@ -14,6 +14,9 @@
         },
         {
             "m_Id": "04b5b029baa24740a46df20d3a0af8a9"
+        },
+        {
+            "m_Id": "cee6f6ae24144583a6a476ecab066c7b"
         }
     ],
     "m_Keywords": [],
@@ -68,6 +71,9 @@
         },
         {
             "m_Id": "3836473c87ce44d9bdd95fea74ae12ce"
+        },
+        {
+            "m_Id": "5fa03c10822d458d88b95f058c187621"
         }
     ],
     "m_GroupDatas": [],
@@ -169,6 +175,20 @@
                     "m_Id": "54aea33b803742679a1cf270fbe20cdd"
                 },
                 "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "5fa03c10822d458d88b95f058c187621"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "c226ccbac15e4e67afcc65e1cca58240"
+                },
+                "m_SlotId": 7
             }
         }
     ],
@@ -669,6 +689,9 @@
         },
         {
             "m_Id": "04b5b029baa24740a46df20d3a0af8a9"
+        },
+        {
+            "m_Id": "cee6f6ae24144583a6a476ecab066c7b"
         }
     ]
 }
@@ -1105,7 +1128,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "VeinedMaterial (Custom Function)",
+    "m_Name": "RoughMaterial (Custom Function)",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -1137,6 +1160,9 @@
         },
         {
             "m_Id": "d8c023bfd7d9405799251edfbc7d8650"
+        },
+        {
+            "m_Id": "73fa7006c6024d1eb97df407e926a524"
         }
     ],
     "synonyms": [
@@ -1151,9 +1177,9 @@
         "m_SerializableColors": []
     },
     "m_SourceType": 1,
-    "m_FunctionName": "VeinedMaterial",
+    "m_FunctionName": "RoughMaterial",
     "m_FunctionSource": "",
-    "m_FunctionBody": "\nfloat veins = pow(saturate(0.5 + 0.5 * sin(Pos.x * 29.0 + sin(Pos.y * 37.0 + Pos.z * 19.0) * 2.3)), 12.0);\nfloat grain = 0.84 + 0.16 * sin(dot(Pos, float3(43.0,37.0,41.0)));\nColor = lerp(Base * grain, Edge, 0.22 + veins * 0.28);\nEmission = Edge * Glow * (0.22 + veins * 0.35) * (0.94 + 0.06 * sin(Phase * 7.0));\n"
+    "m_FunctionBody": "\nfloat3 q = Pos * 11.0;\nfloat3 cell = floor(q), f = frac(q);\nfloat3 u = f * f * (3.0 - 2.0 * f);\nfloat n000 = frac(sin(dot(cell, float3(127.1,311.7,74.7))) * 43758.5453);\nfloat n100 = frac(sin(dot(cell+float3(1,0,0), float3(127.1,311.7,74.7))) * 43758.5453);\nfloat n010 = frac(sin(dot(cell+float3(0,1,0), float3(127.1,311.7,74.7))) * 43758.5453);\nfloat n110 = frac(sin(dot(cell+float3(1,1,0), float3(127.1,311.7,74.7))) * 43758.5453);\nfloat n001 = frac(sin(dot(cell+float3(0,0,1), float3(127.1,311.7,74.7))) * 43758.5453);\nfloat n101 = frac(sin(dot(cell+float3(1,0,1), float3(127.1,311.7,74.7))) * 43758.5453);\nfloat n011 = frac(sin(dot(cell+float3(0,1,1), float3(127.1,311.7,74.7))) * 43758.5453);\nfloat n111 = frac(sin(dot(cell+float3(1,1,1), float3(127.1,311.7,74.7))) * 43758.5453);\nfloat grain = lerp(lerp(lerp(n000,n100,u.x),lerp(n010,n110,u.x),u.y),lerp(lerp(n001,n101,u.x),lerp(n011,n111,u.x),u.y),u.z);\nfloat edge = saturate(EdgeMix);\nColor = lerp(Base * (0.56 + 0.44 * grain), Edge, edge * (0.35 + 0.65 * grain));\nEmission = Edge * Glow * (0.006 + edge * 0.35) * (0.84 + 0.16 * grain) * (0.94 + 0.06 * sin(Phase * 7.0));\n"
 }
 
 {
@@ -1443,5 +1469,114 @@
     },
     "m_Property": {
         "m_Id": "04b5b029baa24740a46df20d3a0af8a9"
+    }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_ObjectId": "73fa7006c6024d1eb97df407e926a524",
+    "m_Id": 7,
+    "m_DisplayName": "EdgeMix",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "EdgeMix",
+    "m_StageCapability": 3,
+    "m_Labels": [],
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_Value": 0.12,
+    "m_DefaultValue": 0.12
+}
+
+{
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "cee6f6ae24144583a6a476ecab066c7b",
+    "m_Guid": {
+        "m_GuidSerialized": "39e115fd-415c-4675-845d-f6399730088f"
+    },
+    "promotedFromAssetID": "",
+    "promotedFromCategoryName": "",
+    "promotedOrdering": -1,
+    "m_Name": "EdgeMix",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "EdgeMix",
+    "m_DefaultReferenceName": "_EdgeMix",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "hideConnector": false,
+    "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
+    "m_Value": 0.12,
+    "m_FloatType": 1,
+    "m_LiteralFloatMode": false,
+    "m_RangeValues": {
+        "x": 0,
+        "y": 1
+    },
+    "m_SliderType": 0,
+    "m_SliderPower": 3.0,
+    "m_EnumType": 0,
+    "m_CSharpEnumString": "",
+    "m_EnumNames": [],
+    "m_EnumValues": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "77adb8ab5b0149ba9e6a4fa2cca1a1c4",
+    "m_Id": 0,
+    "m_DisplayName": "EdgeMix",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_HideConnector": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Labels": [],
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_LiteralMode": false
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "5fa03c10822d458d88b95f058c187621",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -900.0,
+            "y": 120.0,
+            "width": 200.0,
+            "height": 120.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "77adb8ab5b0149ba9e6a4fa2cca1a1c4"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "cee6f6ae24144583a6a476ecab066c7b"
     }
 }

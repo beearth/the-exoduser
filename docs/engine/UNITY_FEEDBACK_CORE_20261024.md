@@ -46,6 +46,8 @@ r2 source `597c3b9b8d6300a6554abd9543ac08a78bed58bf`의 정식 Win64 빌드 `c1b
 
 ## 검증과 남은 범위
 
+2026-10-31 추가: source `6cda46abeb2f4e2ad63fa6ad1d7ed496da13d34a`의 r3 공식6000.6.7f1 빌드 `2f4ebedc` 오류0·동일 M1 `72363307` 23/23 ok·3D/XY 전후와21:9/32:9 각16초480PNG를 완료했다. 여섯 Core SHA `dc9493fefc26ba10139a71abf26c17a5e9c01d593f12bc7d4969083e5a095861`·피해84083 동일·안전검사통과다. 3D 접점 본체 가림은 개선됐지만 적탄의 밝은 반복무늬가 만화풍으로 보여 **해당재질FAIL**, 통합제출하지 않았다. r4는 거친 알베도 명암과 물질별 `_EdgeMix`로 바꾸는 표현 재작업이며 Core 변경0이다. 상세 HLSL 수식·kind별0.025/0.04/0.06/0.25/0.55/0.12 값은 [RM-1 구현 기록](../5.1임펙트디자인/UNITY_RM1_VFX_IMPLEMENTATION_20261028.md)의 r4표를 따른다. r4 독립Runtime292소스 C#오류0/경고438·표현계약456통과와 실제 Unity/GPU미검증을 구분한다. 이전 대기/실패 기록은 이력으로 보존하며 새 입력의 같은 빌드M1·영상·공통/Desktop 인수까지 완료로 올리지 않는다.
+
 | 검사 | 결과 | 영수증 |
 |---|---|---|
 |실제 source 함수 오프라인 실행|10함수, cast3·charge4시점·release·hit2·kill/벽/LOS, 현재 G 원문10/10 동일|`unity/Tools/feedback-oracle/oracle.json`|
