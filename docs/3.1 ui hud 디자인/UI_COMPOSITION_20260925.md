@@ -3102,14 +3102,14 @@ CSS 선·도형으로 그린 판·버튼을 생성 원화로 교체했다. 모�
 
 | id / 적용 위치 | 현행 값·방법 |
 |---|---|
-| --web-ui-title-height / 설정·인벤토리·대장간·스킬·능력치 .ptitle | 높이·최소높이 44px, zoom1, 최대폭520px/부모100%, Hahmlet300 22px/1.2, 자간.04em, 좌우padding12px·gap12px, 아래margin10px. 폭≤780은18px·gap6px·좌우4px |
-| 제목의 작은 원화 문장 ::before | gate_sigil_20261028.jpg 원본 밝기 마스크, 영역54×40px, 원화폭94px·높이auto, luminance, 밝기1.65. 바탕 은빛 #e3e0da→#929595. CSS 도형으로 눈을 만들지 않음 |
-| 제목 ::after | 54×1px 은빛→투명 헤어라인. 큰 투구와 제목판은 표시하지 않음 |
+| --web-ui-title-height / 설정·인벤토리·대장간·스킬·능력치 .ptitle | 높이·최소높이44px, zoom1, 최대폭520px/부모100%, Hahmlet300 22px/1.2, 자간.04em. display:grid, 행20px/24px, 가로·세로중앙 정렬, gap0, 위아래padding0·좌우12px, 아래margin10px. 폭≤780은18px·gap0·좌우4px |
+| 제목 중앙 위의 원화 눈 ::before | gate_sigil_20261028.jpg 중심부, 영역64×20px·원화폭240px/높이auto. static, 첫째 grid행 중앙, inset:auto·transform:none. 가장자리 알파 감쇠 radial-gradient(ellipse,#000 32%,#000a 60%,transparent 80%), mask-mode:alpha. grayscale(1) brightness(3) contrast(1.1), screen 합성. 기존 luminance 마스크/왼쪽 flex 장식을 대체. CSS 도형으로 눈을 만들지 않음 |
+| 제목 ::after | display:none. 오른쪽 flex 헤어라인을 숨겨 제목 글자 중심과 눈 중심을 일치시킴. 큰 투구와 제목판은 표시하지 않음 |
 | 성장 .growth-header | 높이·최소높이44px, padding0, 아래margin12px, gap16px, 한 줄. growth-kicker·growth-subtitle는 DOM/번역을 보존하고 숨김 |
 | 성장 .growth-wallet | 가로 정렬, 높이44px, gap12px, 좌우padding12px, 숫자24px/1.2. 좁은 화면은gap6px·padding6px·라벨11px. 기존 SP 숨김·AP 잔고 의미 유지 |
 | 성장 .growth-shell 배경 | 붉은 삼각 바늘의 eye_crest 대신 첫 화면 gate_sigil_20261028.jpg(2048×1152)를 30% -72px / 620px auto로 원비율 표시. 상부감광 #14131570→하부 #09090ae6, image layer screen 합성으로 검정 사각 경계 제거. 기존 iron.png 320px 반복 폴백 유지 |
 | 인벤토리 | 제목을44px 한 줄로 표시, 폭auto·오른쪽margin16px·20px. 제목 포함행 최소44px, 기본nowrap·폭≤780 wrap. 기존 전투력/악의/닫기 보존 |
-| 캐시 | game.html web-uiux.css?v=20261031-compact-title1 |
+| 캐시 | game.html web-uiux.css?v=20261031-centered-eye2 |
 | 원화 근거 | DESIGN_REVIEW_APPLY.md는 성장나무/스탯서랍을 미채택 후보로 분류. 후보 PNG·무채색 필터는 반입하지 않음. 브리프가 지정한 첫 화면 인장과 기존 실버 헬 패키지를 재사용. 신규 생성·유료 지출0 |
 
 제작 전 직접 열람: 20261028_growth_tree/current_1920.png, 20261028_stat_summary/runtime_1920.png, gate_sigil 및 eye_crest 원본. 목표는 머리 장식보다 트리·양쪽 정보를 우선하고, 1x 제목·노드 가독성을 유지하는 것이다. 조기 실물 판정은 1920×1080의 머리/본문 높이와 인장 바탕 경계이며, 머리/본문·제목/AP 충돌 또는 가로 넘침·노드 잘림이면 FAIL로 되돌린다.
@@ -3119,3 +3119,8 @@ CSS 선·도형으로 그린 판·버튼을 생성 원화로 교체했다. 모�
 ## 2026-10-31 악의오브 최종 정정
 
 화폐를 악의오브 / Orb of Malice로 개명하고 내장 imagegen의 둥근 유리 오브 4단계를 HUD·대장간·스킬 창·툴팁·획득 합체 연출에 연결했다. 색·구간·파일·픽셀 규격과 실패 폴백은 [화폐 SSOT](../3.2메타·진행시스템/CURRENCY_RENAME_20261031.md)를 따른다. 32/48px 원화와 실제 HUD 1x 판정 보드는 G:/exoduser/tmp/design-review/20261031_malice_orb/review-board.png. 웹의 UI 검수와 Unity 컴파일·Player/M1은 별도이며 최종 증거·원격 SHA는 I:/EXODUSER-Storage/demo-art/currency-rename/REPORT.md에 남긴다.
+
+### 2026-10-31 CTO 최종 보정 — 제목 중앙 눈의 1x 가시성
+
+statwindow-brief 마지막 보정만 수행한다. 시작 원격/HEAD는 9f5db2ac6223cd1696870865057f37721922ecae, tracked INDEX/WORK는 깨끗했다. 직접 본 gate_sigil 원본·현재 1920/3840의 다섯 창에서 왼쪽 치우침과 낮은 휘도 마스크를 확인했다. 목표는 통과한 44px 머리를 유지하며 제목 바로 위 중앙에 금속 눈을 분리 표시하는 것이다. 기존 원화의 눈 중심을 CSS로 확대해 screen 합성하며 신규 이미지·유료 생성은 없다. 눈/제목 중심 불일치·눈과 글자/탭 충돌·1x 동공 불명료이면 FAIL이다. 실제 브라우저 전후 전체·1x와 수치/기능 판정, 최신 원격 SHA는 I:/EXODUSER-Storage/codex-web-statwin/eye-center-20261031/REPORT.md에 남긴다. 이 보정은 앞 절의 최초 자체 눈 가시성 PASS를 대체하며 총괄 재판정은 별도다.
+
