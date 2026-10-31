@@ -1,0 +1,11 @@
+const fs=require('node:fs/promises'),path=require('node:path'),sharp=require('sharp');
+const root=path.resolve(__dirname,'..'),out=process.argv[2]||'I:/EXODUSER-Storage/web3d-maplook-20261031';
+(async()=>{await fs.mkdir(out,{recursive:true});const a=JSON.parse(await fs.readFile(root+'/assets/web3d/map-look-anchors.json')),f=JSON.parse(await fs.readFile(root+'/assets/web3d/forest-ch1.json'));
+const k=.2,off=360,size=2320,xy=([x,y])=>[off+x*40*k,off+y*40*k].join(',');
+let marks='<path d="M '+a.boundary.map(xy).join(' L ')+' Z" fill="none" stroke="#ff7777" stroke-width="16" opacity=".14"/><path d="M '+a.boundary.map(xy).join(' L ')+' Z" fill="none" stroke="#ffb5a5" stroke-width="2"/>';
+for(const p of f.lowMass)marks+='<ellipse cx="'+(off+p.x*k)+'" cy="'+(off+p.y*k)+'" rx="'+(p.width*k*.35)+'" ry="'+(p.height*k*.22)+'" fill="#b2a872" opacity=".32"/>';
+for(const p of f.groves)marks+='<circle cx="'+(off+p.x*k)+'" cy="'+(off+p.y*k)+'" r="'+(p.layer===1?7:p.layer===2?6:5)+'" fill="'+['','#a8c898','#80b2c4','#8997c6'][p.layer]+'" opacity=".8"/>';
+marks+='<rect x="25" y="25" width="1300" height="100" fill="#101820" opacity=".9"/><text x="50" y="62" fill="white" font-size="26" font-family="Malgun Gothic">1-1 경계 배치: 붉은 선 ±40px / 황토 낮은 질량 / 초록·청색 외부 나무 3층</text><text x="50" y="100" fill="#dde5df" font-size="23" font-family="Malgun Gothic">큰 나무 밑동 '+f.groves.length+'곳: ±40px 띠 0 / 원본 내부 충돌나무 유지 / 표시 전용</text>';
+const bg=await sharp(root+'/assets/map/ch1/production_finish/CH1_1_PRODUCTION_MASTER.png').resize(1600,1600).png().toBuffer();
+await sharp({create:{width:size,height:size,channels:4,background:'#11191f'}}).composite([{input:bg,left:off,top:off},{input:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="'+size+'" height="'+size+'">'+marks+'</svg>'),left:0,top:0}]).png().toFile(out+'/forest-collision-layout.png');console.log('배치도 생성: '+out+'/forest-collision-layout.png');
+})().catch(e=>{console.error(e);process.exitCode=1});

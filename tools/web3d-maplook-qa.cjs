@@ -7,7 +7,7 @@ async function ready(p){
  for(let i=0;i<150;i++){const s=await p.evaluate(()=>({on:G.on,cutscene:_cutsceneState,guide:getComputedStyle(document.getElementById('introKeys')).opacity==='1'}));if(s.on)break;if(s.guide)await p.locator('#ikSkip').click();else if(s.cutscene==='INTRO_CUTSCENE')await p.keyboard.press('Escape');await p.waitForTimeout(150);}
  await p.waitForFunction(()=>G.on&&window._Web3DLivingLayer?.snapshot().frame>5&&getComputedStyle(document.getElementById('stageTransition')).opacity==='0',null,{timeout:90000});
  // Native save/status polling may keep the network active after terrain is ready.
- await p.waitForLoadState('networkidle',{timeout:5000}).catch(()=>console.log('지속 API polling: 게임 warm/frame/청크 ready 조건으로 검수')); 
+ await p.waitForLoadState('networkidle',{timeout:5000}).catch(()=>console.log('지속 API polling: 게임 warm/frame/청크 ready 조건으로 검수'));
 }
 (async()=>{
  await fs.mkdir(out+'/temp',{recursive:true});const result={url,errors:[],http:[],source:{},cameras:[]};
