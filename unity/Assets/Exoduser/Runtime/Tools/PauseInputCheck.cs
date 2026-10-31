@@ -61,10 +61,10 @@ namespace Exoduser.UnityPort.Tools
     until=Time.realtimeSinceStartup+5;while((lobby.IsBlocking||!game.Running)&&Time.realtimeSinceStartup<until)yield return null;CheckThat(!lobby.IsBlocking&&game.Running&&!(bool)Get(game,"frontendEntryInputFence"),"안내 종료 후 키 해제·입력 복귀");
     // 경합 조건만 명시적으로 준비하고, 해제·정지·재개는 제품 Update/PollKeys가 처리한다.
     game.GetType().GetField("frontendEntryInputFence",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(game,true);game.SetGameFocus(false);game.SetGameFocus(true);int pausedTick=game.Simulation.TickCount;yield return null;yield return null;
-    CheckThat(!(bool)Get(game,"frontendEntryInputFence")&&(bool)Get(game,"menu")&&!game.Running&&game.Simulation.TickCount==pausedTick,"안내 입력 해제와 focus 메뉴 경합에서 틱 정지 유지");yield return Shot("startup-focus-paused");yield return Key(UnityEngine.InputSystem.Key.Enter);yield return AssertResumed("안내 경합 뒤 명시 계속하기");
+    CheckThat(!(bool)Get(game,"frontendEntryInputFence")&&(bool)Get(game,"menu")&&!game.Running&&game.Simulation.TickCount==pausedTick,"안내 입력 해제와 focus 메뉴 경합에서 틱 정지 유지");yield return Shot("startup-focus-paused");yield return Key(UnityEngine.InputSystem.Key.Enter);CheckThat(game.Running&&!(bool)Get(game,"menu"),"안내 경합 뒤 명시 계속하기 상태");
     var player=game.Simulation.Player;float x=player.X,y=player.Y;var move=UnityEngine.InputSystem.Key.None;
     foreach(var direction in new[]{new Vector2(1,0),new Vector2(-1,0),new Vector2(0,-1),new Vector2(0,1)})if(game.Map.CanMove(x+direction.x*12,y+direction.y*12,player.Radius)){move=direction.x>0?UnityEngine.InputSystem.Key.D:direction.x<0?UnityEngine.InputSystem.Key.A:direction.y<0?UnityEngine.InputSystem.Key.W:UnityEngine.InputSystem.Key.S;break;}
-    CheckThat(move!=UnityEngine.InputSystem.Key.None,"실제 맵의 열린 이동 방향");yield return Key(move);CheckThat(player.X!=x||player.Y!=y,"안내 뒤 실제 방향키 이동");yield return Shot("startup-input-restored");Save();Application.Quit(0);yield break;
+    CheckThat(move!=UnityEngine.InputSystem.Key.None,"실제 맵의 열린 이동 방향");int moveTick=game.Simulation.TickCount;yield return Key(move);CheckThat((player.X!=x||player.Y!=y)&&game.Simulation.TickCount>moveTick,"안내 뒤 실제 방향키 이동·틱 재개");yield return Shot("startup-input-restored");Save();Application.Quit(0);yield break;
    }
    if(Arg("-pause-case")=="fallen"){
     Call(game.Simulation,"PlayerDie");CheckThat(game.Simulation.Player.State=="fallen"&&game.Simulation.Player.Hp==0,"Core 실제 부활 대기 진입");
