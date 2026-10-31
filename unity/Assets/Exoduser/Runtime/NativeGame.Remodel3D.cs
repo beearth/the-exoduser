@@ -19,7 +19,7 @@ namespace Exoduser.UnityPort
         const string R3SceneName = "RM1_Slice";
         sealed class R3Late : MonoBehaviour { public System.Action Late; void LateUpdate() { if (Late != null) Late(); } }
         bool r3Loaded, r3Loading, r3Failed; Scene r3Scene; GameObject[] r3Roots;
-        Camera r3Cam; Transform r3Marker; CinemachineCamera r3Vcam; R3Late r3Late;
+        Camera r3Cam; Transform r3Marker; CinemachineCamera r3Vcam; CinemachineBrain r3Brain; R3Late r3Late;
         public bool Remodel3DReady { get { return r3Loaded; } }
         public Camera Remodel3DCamera { get { return r3Cam; } }
 
@@ -53,6 +53,8 @@ namespace Exoduser.UnityPort
             Transform camT = R3Find("Main Camera"), markerT = R3Find("Player Marker"), vcamT = R3Find("CM LOOK-001"), terrT = R3Find("Terrain");
             if (camT == null || markerT == null || terrT == null || terrT.GetComponent<Terrain>() == null) { Debug.LogWarning("[RM-INT] RM-1 scene rig / terrain not found: staying 2D"); r3Failed = true; r3Loading = false; yield break; }
             r3Cam = camT.GetComponent<Camera>(); r3Marker = markerT; r3Vcam = vcamT != null ? vcamT.GetComponent<CinemachineCamera>() : null;
+            r3Brain=r3Cam.GetComponent<CinemachineBrain>();
+            if(NativeHd2D.Enabled&&r3Brain!=null)r3Brain.UpdateMethod=CinemachineBrain.UpdateMethods.ManualUpdate;
             NativeRemodel3D.Ground = terrT.GetComponent<Terrain>();
             var listener = camT.GetComponent<AudioListener>(); if (listener != null) listener.enabled = false;   // the game's own camera keeps the listener
             var markerSprite = markerT.Find("Marker Sprite"); if (markerSprite != null) markerSprite.gameObject.SetActive(false);   // the slice's stand-in sprite: the game's player sprite replaces it
@@ -97,6 +99,7 @@ namespace Exoduser.UnityPort
             r3Cam.enabled = !hidden;
             Remodel3DViewport();
             var p = Simulation.Player; r3Marker.position = NativeRemodel3D.Point(p.X, p.Y) + NativeRemodelCamera.TargetOffset;   // CM LOOK-001 follows the marker (offset 0, 10.52, -9.24, no damping)
+            if(NativeHd2D.Enabled&&r3Brain!=null)r3Brain.ManualUpdate(); // 최종 카메라 pose 뒤에만 픽셀 스냅한다.
             foreach (var r in props) if (r != null) r.enabled = false;
             foreach (var c in chunks.Values) if (c.renderer != null) c.renderer.enabled = false;
             Remodel3DBillboards();

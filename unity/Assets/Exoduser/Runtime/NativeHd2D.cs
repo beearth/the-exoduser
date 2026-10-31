@@ -10,18 +10,22 @@ namespace Exoduser.UnityPort
         public static readonly bool Enabled = Array.IndexOf(Environment.GetCommandLineArgs(), "--legacy-models") < 0;
         [Serializable] sealed class Foot { public string texture; public int x, y; public float bottom; }
         [Serializable] sealed class Feet { public Foot[] feet; }
+        static readonly Dictionary<Sprite,float> footCache = new Dictionary<Sprite,float>();
         static readonly Dictionary<string, float> bottoms = new Dictionary<string, float>();
         static readonly Dictionary<SpriteRenderer, int> actors = new Dictionary<SpriteRenderer, int>();
+        static readonly Dictionary<SpriteRenderer,SpriteRenderer> overlayBases = new Dictionary<SpriteRenderer,SpriteRenderer>();
         static readonly Dictionary<SpriteRenderer,float> contactWidths = new Dictionary<SpriteRenderer,float>();
         static readonly HashSet<SpriteRenderer> pivotFeet = new HashSet<SpriteRenderer>();
         static Material lit, contact;
+        static readonly MaterialPropertyBlock shadowBlock = new MaterialPropertyBlock();
         static readonly Dictionary<SpriteRenderer, MeshRenderer> shadows = new Dictionary<SpriteRenderer, MeshRenderer>();
         static bool loaded;
+        static readonly List<SpriteRenderer> deadActors = new List<SpriteRenderer>();
         public static bool IsActor(SpriteRenderer sr) { return actors.TryGetValue(sr,out var frame)&&frame==Time.frameCount; }
         public static void Actor(SpriteRenderer sr,bool pivotIsFoot=false,float contactWidth=0f)
         {
             if (!Enabled || sr == null) return;
-            actors[sr] = Time.frameCount;contactWidths[sr]=contactWidth;
+            actors[sr] = Time.frameCount;contactWidths[sr]=contactWidth;overlayBases.Remove(sr);
             if(pivotIsFoot)pivotFeet.Add(sr);else pivotFeet.Remove(sr);
             if (sr.sprite != null) sr.sprite.texture.filterMode = FilterMode.Point;
             if (lit == null)
@@ -31,22 +35,28 @@ namespace Exoduser.UnityPort
                 lit = new Material(shader) { name = "HD2D pixel actors" };
             }
             sr.sharedMaterial = lit;
-            if (actors.Count > 2048)
+            if(actors.Count>2048)PruneActors();
+        }
+        public static void Overlay(SpriteRenderer overlay,SpriteRenderer body)
+        {
+            Actor(overlay);if(Enabled&&overlay!=null&&body!=null)overlayBases[overlay]=body;
+        }
+        static void RemoveActor(SpriteRenderer sr)
+        {
+            if(shadows.TryGetValue(sr,out var shadow)&&shadow!=null)
             {
-                var dead = new List<SpriteRenderer>();
-                foreach (var pair in actors) if (pair.Key == null) dead.Add(pair.Key);
-                foreach (var r in dead) actors.Remove(r);
+                if(Application.isPlaying)UnityEngine.Object.Destroy(shadow.gameObject);else UnityEngine.Object.DestroyImmediate(shadow.gameObject);
             }
+            actors.Remove(sr);contactWidths.Remove(sr);pivotFeet.Remove(sr);overlayBases.Remove(sr);shadows.Remove(sr);
+        }
+        static void PruneActors()
+        {
+            deadActors.Clear();foreach(var actor in actors.Keys)if(actor==null)deadActors.Add(actor);
+            foreach(var actor in deadActors)RemoveActor(actor);deadActors.Clear();
         }
         public static void BeginProjection()
         {
-            var dead=new List<SpriteRenderer>();
-            foreach(var pair in shadows)
-            {
-                if(pair.Value!=null)pair.Value.enabled=false;
-                if(pair.Key==null){if(pair.Value!=null){if(Application.isPlaying)UnityEngine.Object.Destroy(pair.Value.gameObject);else UnityEngine.Object.DestroyImmediate(pair.Value.gameObject);}dead.Add(pair.Key);}
-            }
-            foreach(var key in dead){shadows.Remove(key);actors.Remove(key);pivotFeet.Remove(key);contactWidths.Remove(key);}
+            PruneActors();foreach(var shadow in shadows.Values)if(shadow!=null)shadow.enabled=false;
         }
         public static void ProjectFlatActors(Camera camera)
         {
@@ -58,8 +68,10 @@ namespace Exoduser.UnityPort
         {
             var anchor=SnapAnchor(camera,sr.transform.position);
             var rotation=camera.transform.rotation*Quaternion.Euler(0,0,roll);
-            float below=(pivotFeet.Contains(sr)?0:FootLift(sr.sprite))*Mathf.Abs(sr.transform.lossyScale.y);
-            sr.transform.SetPositionAndRotation(anchor+rotation*Vector3.up*below,rotation);
+            var footSource=overlayBases.TryGetValue(sr,out var body)&&body!=null?body:sr;
+            float below=(pivotFeet.Contains(footSource)?0:FootLift(footSource.sprite))*Mathf.Abs(footSource.transform.lossyScale.y);
+            sr.transform.SetPositionAndRotation(anchor+camera.transform.up*below,rotation);
+            if(footSource!=sr)return; // 원본보행은 부분 overlay다. 같은발선·그림자1개를 공유한다.
             if(!shadows.TryGetValue(sr,out var shadow)||shadow==null)
             {
                 var go=GameObject.CreatePrimitive(PrimitiveType.Quad);go.name="HD2D contact: "+sr.name;
@@ -71,15 +83,17 @@ namespace Exoduser.UnityPort
                 shadow.sharedMaterial=contact;shadows[sr]=shadow;
             }
             shadow.enabled=true;
+            shadowBlock.Clear();shadowBlock.SetFloat("_Opacity",sr.color.a);shadow.SetPropertyBlock(shadowBlock);
             shadow.sortingOrder=sr.sortingOrder-1;
             shadow.transform.SetPositionAndRotation(anchor+(ground3D?Vector3.up:Vector3.forward)*.018f,ground3D?Quaternion.Euler(90,0,0):Quaternion.identity);
             float width=contactWidths.TryGetValue(sr,out var fixedWidth)&&fixedWidth>0?fixedWidth:sr.sprite.rect.width/sr.sprite.pixelsPerUnit*Mathf.Abs(sr.transform.lossyScale.x)*.5f;
             width=Mathf.Clamp(width,.24f,2.8f);
             shadow.transform.localScale=new Vector3(width,width*.6f,1);
-            if(shadows.Count>2048){var dead=new List<SpriteRenderer>();foreach(var pair in shadows)if(pair.Key==null){if(pair.Value!=null)UnityEngine.Object.Destroy(pair.Value.gameObject);dead.Add(pair.Key);}foreach(var key in dead)shadows.Remove(key);}
+
         }
         public static float FootLift(Sprite sprite)
         {
+            if(footCache.TryGetValue(sprite,out var cached))return cached;
             if (!loaded)
             {
                 var json = Resources.Load<TextAsset>("Data/hd2d_feet");
@@ -90,9 +104,8 @@ namespace Exoduser.UnityPort
             }
             var rect = sprite.rect;
             float bottom;
-            if (bottoms.TryGetValue(sprite.texture.name + ":" + (int)rect.x + ":" + (int)rect.y, out bottom))
-                return (sprite.pivot.y - bottom) / sprite.pixelsPerUnit;
-            return sprite.pivot.y / sprite.pixelsPerUnit;
+            if(!bottoms.TryGetValue(sprite.texture.name+":"+(int)rect.x+":"+(int)rect.y,out bottom))bottom=0;
+            float lift=(sprite.pivot.y-bottom)/sprite.pixelsPerUnit;footCache[sprite]=lift;return lift;
         }
         public static Vector3 SnapAnchor(Camera camera, Vector3 anchor)
         {

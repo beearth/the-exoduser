@@ -22,7 +22,7 @@ namespace Exoduser
             var actor=new GameObject("HD2D test actor").AddComponent<SpriteRenderer>();actor.sprite=sprite;
             int cases=0;float worst=0;
             foreach(bool orthographic in new[]{false,true}) foreach(float pitch in new[]{35f,48.7014126f,65f})
-            foreach(float scale in new[]{2f,4f})foreach(float roll in new[]{0f,90f,180f})
+            foreach(float scale in new[]{2f,4f})foreach(float roll in new[]{0f})
             {
                 camera.orthographic=orthographic;camera.orthographicSize=5.4f;camera.fieldOfView=46.9453f;
                 camera.transform.rotation=Quaternion.Euler(pitch,0,0);camera.transform.position=-camera.transform.forward*14;
@@ -38,6 +38,25 @@ namespace Exoduser
             }
             camera.targetTexture=null;rt.Release();UnityEngine.Object.DestroyImmediate(rt);
             Debug.Log("[HD2D] ACTOR_ANCHORS PASS cases="+cases+" worstPx="+worst);
+        }
+        public static void RollCentre()
+        {
+            EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
+            var camera=new GameObject("HD2D roll camera").AddComponent<Camera>();
+            camera.transform.SetPositionAndRotation(new Vector3(0,8,-8),Quaternion.Euler(48.7014126f,0,0));
+            var rt=new RenderTexture(1920,1080,24);camera.targetTexture=rt;
+            var texture=Resources.Load<Texture2D>("Art/player/north-east");
+            var sprite=Sprite.Create(texture,new Rect(0,0,48,48),new Vector2(.5f,.5f),100,0,SpriteMeshType.FullRect);
+            var actor=new GameObject("HD2D roll actor").AddComponent<SpriteRenderer>();actor.sprite=sprite;
+            var ground=new Vector3(.137f,.41f,.263f);
+            foreach(float roll in new[]{0f,90f,180f,270f})
+            {
+                actor.transform.position=ground;actor.transform.localScale=Vector3.one*4;NativeHd2D.Actor(actor,false,.72f);
+                NativeHd2D.BeginProjection();NativeHd2D.ProjectActor(actor,camera,roll);
+                Check(actor.transform.position.y>ground.y+.4f,"rolling actor centre sank into terrain at "+roll);
+            }
+            camera.targetTexture=null;rt.Release();UnityEngine.Object.DestroyImmediate(rt);
+            Debug.Log("[HD2D] ROLL_CENTRE PASS 4 quadrants; full silhouette requires Player sequence");
         }
         public static void DruidPivotFoot()
         {

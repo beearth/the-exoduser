@@ -7,9 +7,9 @@
 | 소유 | G:/exoduser-wt/codex-hd2d, 기존 codex/pc-hd2d-trial-20261031; 시험 writer의 Trial/Editor/Hd2dTrialBuilder/시험 docs 변경은 보존 |
 | 기준 | origin/unity/main 15c8ed3c5, 착수 HEAD ae4777860. A2 승인 이미지와 기존 실게임 탐험 이미지를 직접 열어 비교. 기존은 3D 전사 표시로 HD2D 표현 요구 FAIL |
 | 표현 | NativeHd2D.Enabled 기본 true. --legacy-models에서만 기존 NativeHeroView 연결. 기존 3D 코드 삭제0. 전사·CH1 적·드루이드 원본 시트를 유지 |
-| 픽셀·발밑 | Point 샘플링, alpha>64 오프라인 발끝 1,848건(영웅240+적1,600+앵글러8). 캐릭터 카메라 facing·출력 화면1화소 스냅. 구르기 회전도 발밑 기준. 원본 드루이드 pivot(.5,.14) 유지 |
+| 픽셀·발밑 | Point 샘플링, alpha>64 오프라인 발끝 1,848건(영웅240+적1,600+앵글러8). 캐릭터 카메라 facing·출력 화면1화소 스냅. 정지 발선 정렬; 구르기 회전은 접지점/그림자를 유지하고 중심 lift는 비회전 카메라up 기준. 원본 드루이드 pivot(.5,.14) 유지 |
 | 광원 | URP 주광+추가광, ambient RGB(.55,.58,.63), rim(.12,.16,.20), 조명 상한2.2. 드루이드 additive 복제광은 HD2D에서 비활성화. 시각 수치는 실게임 검수 후 조정 |
-| 그림자 | 월드XZ 평면의 부드러운 타원. alpha.58, 높이.018u, 고정폭=영웅Radius×.02×필드HeroScale(아레나1), 적Radius×.035, 드루이드Radius×.0465, 앵글러1.5u; .24~2.8u clamp, 깊이=폭×.6. body/walk 중 실제 표시된 프레임만 그림자 |
+| 그림자 | 월드XZ 평면의 부드러운 타원. alpha=.58×actor.color.a, 높이.018u, 고정폭=영웅Radius×.02×필드HeroScale(아레나1), 적Radius×.035, 드루이드Radius×.0465, 앵글러1.5u; .24~2.8u clamp, 깊이=폭×.6. 원본 idle베이스+부분보행overlay 합성을 유지하며 공통 발선·그림자1개 공유 |
 | 2단계 | 탄·장판 중심 정렬 / 지면 높이·조준 역변환 / 프레임 대조는 아직 구현·검수 전 |
 | 3단계 | 틸트시프트·블룸·높이 안개·점광원·카메라는 시험 실물 판정 이후 이식 예정 |
 | 보존 | I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/baseline에 변경 전 정확 바이트·SHA. Core 변경0, 사용자세이브 변경0 |
@@ -26,3 +26,13 @@
 앵글러1774×887의 반화소 셀(443.5px)8개도 원본 알파로 발선을 측정했다. 발선은 float로 보존해 소수 셀 경계 절삭에 의한 접지 오차를 피한다.
 
 1단계 정적명세 검수: 아레나 접지/스냅·드루이드 명시발선·앵글러8셀·고정그림자폭 보완 확인. Runtime/Editor 최종 격리 csc 오류0. 아래 체크포인트는 빌드전 원격복구용이며 제품완료 영수증이 아니다. 실제Unity/Player/M1·같은크기1x·통합/Desktop은 미완료다.
+
+카메라 실행순서 보완: HD2D필드의 CinemachineBrain을 ManualUpdate로 두고 매LateUpdate에서 marker/lens→Brain.ManualUpdate→actor스냅 순서를 보장한다. 기본 LateUpdate 순서에 의존한 이전 카메라 기준 스냅을 방지한다. Legacy모델 경로는 기존 순서를 유지한다. 실제 이동영상/연속프레임 검수는 별도다.
+
+코드품질 검수 보완: 원본 보행시트에 투명/부분셀이 있으므로 웹처럼 idle body+walk overlay를 유지한다. overlay는 base프레임의 발선/보정을 공유하고 접지그림자를 중복 생성하지 않는다. 빈셀 이동에서 적이 사라지는 회귀를 방지한다.
+
+코드품질 후속: 구르기180°에서 lift가뒤집혀 땅아래로 내려가지 않도록 회전과lift를분리했다. 배우가회전하는중심은지면위, 논리접지점/그림자는고정한다. spawn/sink 그림자alpha도 actor알파를따라 fade한다. 원본부분보행/수명/카메라순서보완을함께검수하며 실제구르기전체실루엣은 Player연속프레임으로확인한다.
+
+실제Player 검수: --unity-hd2d-capture -output <I출력>는1920×1080/3840×1080에서 탐험·전투·드루이드,90틱이동/구르기45장씩과hd2d-player.json을기록한다. 탐험AI정지/추가적·아레나ForceUnlock을표시하는시각fixture이며 자연완주/OS손조작증거가아니다. 최종Late카메라기준발밑/Core gap≤.75px·정수화소gap≤.02px를검사하고격리세이브가없으면실행하지않는다. M1은같은빌드별도공식실행기로검수한다.
+
+검수fixture 구르기구간은 시작에 HP/idle·Harp225만 격리상태에서 정리하고 충돌이유지되는300px직선 방향을 찾아 실제Core roll발생을확인한다. 제품기본값변경0. FootLift는Sprite별캐시로 다수적의매프레임문자열할당을제거했다.
