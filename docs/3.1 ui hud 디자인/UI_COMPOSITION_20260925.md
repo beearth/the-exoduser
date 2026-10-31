@@ -3094,3 +3094,24 @@ CSS 선·도형으로 그린 판·버튼을 생성 원화로 교체했다. 모�
 | `img/ui/silver_hell/btn_plaque_20261029.png` | 1024×198 | 튜토리얼 건너뛰기·다음 | 3-slice `0 174 fill / 0 40px`, 글자 Hahmlet 400 16px 뼈색 자간 .24em |
 
 다음: 같은 프레임·버튼판을 공통 창(설정·인벤·대장간 등)과 로비 패널로 넓힌다. 창 비율이 4:3에서 멀면 가운데 장식이 늘어나므로 가로형 프레임을 따로 만든다.
+
+
+## 2026-10-31 성장 창과 공통 다섯 창의 얇은 제목 띠
+
+사용자 statwindow-brief의 “머리 부분 축소·가운데 눈알” 지시에 따른 현행 계약이다. 이 절은 앞선 투구 문장+큰 제목판의 세로 적층 및 인벤토리 제목 숨김 규격을 대체한다. 상세 작업은 web-uiux.css, game.html의 해당 CSS 캐시 URL, tools/check-stat-window.mjs에 한정한다. 스킬 창은 제목 높이만 공통화하며 제단·슬롯·본문 담당은 codex-web-skillwin이다.
+
+| id / 적용 위치 | 현행 값·방법 |
+|---|---|
+| --web-ui-title-height / 설정·인벤토리·대장간·스킬·능력치 .ptitle | 높이·최소높이 44px, zoom1, 최대폭520px/부모100%, Hahmlet300 22px/1.2, 자간.04em, 좌우padding12px·gap12px, 아래margin10px. 폭≤780은18px·gap6px·좌우4px |
+| 제목의 작은 원화 문장 ::before | gate_sigil_20261028.jpg 원본 밝기 마스크, 영역54×40px, 원화폭94px·높이auto, luminance, 밝기1.65. 바탕 은빛 #e3e0da→#929595. CSS 도형으로 눈을 만들지 않음 |
+| 제목 ::after | 54×1px 은빛→투명 헤어라인. 큰 투구와 제목판은 표시하지 않음 |
+| 성장 .growth-header | 높이·최소높이44px, padding0, 아래margin12px, gap16px, 한 줄. growth-kicker·growth-subtitle는 DOM/번역을 보존하고 숨김 |
+| 성장 .growth-wallet | 가로 정렬, 높이44px, gap12px, 좌우padding12px, 숫자24px/1.2. 좁은 화면은gap6px·padding6px·라벨11px. 기존 SP 숨김·AP 잔고 의미 유지 |
+| 성장 .growth-shell 배경 | 붉은 삼각 바늘의 eye_crest 대신 첫 화면 gate_sigil_20261028.jpg(2048×1152)를 30% -72px / 620px auto로 원비율 표시. 상부감광 #14131570→하부 #09090ae6, image layer screen 합성으로 검정 사각 경계 제거. 기존 iron.png 320px 반복 폴백 유지 |
+| 인벤토리 | 제목을44px 한 줄로 표시, 폭auto·오른쪽margin16px·20px. 제목 포함행 최소44px, 기본nowrap·폭≤780 wrap. 기존 전투력/악의/닫기 보존 |
+| 캐시 | game.html web-uiux.css?v=20261031-compact-title1 |
+| 원화 근거 | DESIGN_REVIEW_APPLY.md는 성장나무/스탯서랍을 미채택 후보로 분류. 후보 PNG·무채색 필터는 반입하지 않음. 브리프가 지정한 첫 화면 인장과 기존 실버 헬 패키지를 재사용. 신규 생성·유료 지출0 |
+
+제작 전 직접 열람: 20261028_growth_tree/current_1920.png, 20261028_stat_summary/runtime_1920.png, gate_sigil 및 eye_crest 원본. 목표는 머리 장식보다 트리·양쪽 정보를 우선하고, 1x 제목·노드 가독성을 유지하는 것이다. 조기 실물 판정은 1920×1080의 머리/본문 높이와 인장 바탕 경계이며, 머리/본문·제목/AP 충돌 또는 가로 넘침·노드 잘림이면 FAIL로 되돌린다.
+
+검수 증거·최종 수치: G:/exoduser/tmp/design-review/20261031_stat_window/REPORT.md와 geometry.json. 강제 보스 테스트 상태·격리 API·headless 브라우저 검수이며 자연 플레이/Unity/NW.js/DEMO·EA 배포 검수와 구분한다. 같은 해상도의 전후 전체 화면과1x 크롭을 직접 판정한다.

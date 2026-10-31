@@ -55507,3 +55507,14 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 산출·실행 | G:/exoduser/tmp/design-review/20261031_web_uiux/REPORT.md, 원본은I:/EXODUSER-Storage/design/web-uiux-20261031/. localhost3366자기작업본서버·격리save유지, Steam/DEMO/EA/외부배포0 |
 
 - 최종 커밋 훅이 자동 생성한 tools/guard.baseline.json의 lines를 기존65880→현행66030으로 동기화했다. 게임루프136행·보스idx·강화확률 해시는 그대로이며 guard PASS, 새 검사 우회0이다.
+
+
+## 2026-10-31 웹 성장 창 머리 축소·인장의 눈
+
+| 항목 | 변경·검수 |
+|---|---|
+| 코드 | web-uiux.css의 다섯 창44px 제목띠·성장44px 머리·기존 gate_sigil 원화 합성. game.html 해당 CSS 캐시만 변경 |
+| 화면 | 1920/3840×1080·5창10건, 성장 본문181px 반환. 제목/본문/AP 충돌·가로넘침·노드이탈0, 원화/제목/트리1x 직접 비교 |
+| 검수 | tools/check-stat-window.mjs·검색/미리보기/요약 ESC/J 재열기·저장0·pageerror0, 기존관련39/39·project-check103/103·guard PASS |
+| 문서·인계 | UI_COMPOSITION 최신 절·능력치 SSOT·WEB_UIUX·디자인 인계·총괄 동기화. ui-ultrawide-brief 끝에 Unity 전달. 원격 SHA와 서버 주소는 20261031_stat_window/REPORT.md |
+| 범위 | 웹 변경 부위 자체 시각판정 PASS. 자연플레이·Unity·NW.js·DEMO/EA·전체 게임/디자인총괄 별도 판정은 미검증 |
