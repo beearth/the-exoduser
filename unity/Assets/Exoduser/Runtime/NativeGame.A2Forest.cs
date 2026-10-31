@@ -149,8 +149,8 @@ namespace Exoduser.UnityPort
         }
         static void A2Ambient()
         {
-            RenderSettings.ambientMode=AmbientMode.Trilight;RenderSettings.ambientSkyColor=new Color(.22f,.26f,.31f);
-            RenderSettings.ambientEquatorColor=new Color(.14f,.14f,.135f);RenderSettings.ambientGroundColor=new Color(.04f,.035f,.03f);
+            RenderSettings.ambientMode=AmbientMode.Trilight;RenderSettings.ambientSkyColor=new Color(.26f,.28f,.30f);
+            RenderSettings.ambientEquatorColor=new Color(.20f,.19f,.16f);RenderSettings.ambientGroundColor=new Color(.075f,.065f,.05f);
         }
         void A2Torch(float x,float z)
         {

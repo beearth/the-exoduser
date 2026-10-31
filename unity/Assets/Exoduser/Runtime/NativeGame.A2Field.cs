@@ -30,7 +30,7 @@ namespace Exoduser.UnityPort
                 if(light.type==LightType.Directional)
                 {
                     light.intensity=1.9f;light.color=new Color(.85f,.90f,1);light.shadows=LightShadows.Soft;
-                    light.shadowStrength=.82f;light.shadowBias=.035f;light.shadowNormalBias=.12f;light.transform.rotation=Quaternion.Euler(49,-32,0);
+                    light.shadowStrength=.70f;light.shadowBias=.035f;light.shadowNormalBias=.12f;light.transform.rotation=Quaternion.Euler(49,-32,0);
                 }
                 else if(light.name.StartsWith("Pool_",StringComparison.Ordinal))light.enabled=false;
             }
@@ -48,7 +48,7 @@ namespace Exoduser.UnityPort
             var pixels=new Color[40000];
             for(int y=0;y<200;y++)for(int x=0;x<200;x++)pixels[y*200+x]=new Color(.5f+a2Field.Distance((x+.5f)*.4f,-(y+.5f)*.4f)/40,0,0,1);
             sdf.SetPixels(pixels);sdf.Apply(false,true);a2FieldSoil.SetTexture("_FieldSdf",sdf);
-            A2FieldOuterMass();A2FieldLandmarks();A2FieldConnections();A2FieldGround();A2FieldAtmosphere();
+            A2FieldOuterMass();A2FieldLandmarks();A2FieldConnections();A2FieldGround();A2FieldGroundCover();A2FieldAtmosphere();
             var aa=r3Cam.GetUniversalAdditionalCameraData();aa.antialiasing=AntialiasingMode.SubpixelMorphologicalAntiAliasing;aa.antialiasingQuality=AntialiasingQuality.High;
             aa.requiresDepthTexture=true;r3Cam.depthTextureMode|=DepthTextureMode.Depth;
             r3Cam.backgroundColor=new Color(.105f,.145f,.17f);r3Cam.farClipPlane=220;
@@ -120,7 +120,7 @@ namespace Exoduser.UnityPort
             {
                 float x=c.x/100,z=-c.y/100,r=Mathf.Min(c.rx,c.ry)/100;
                 if(r<.45f)continue;
-                var tree=r>=1.2f?A2Module("Hollow_Loft_Tree",x,z,.38f*r,1.1f,.38f*r,index*97):A2Module("Ancient_Rotten_Tree",x,z,.35f*r,1.1f,.35f*r,index*97);
+                var tree=r>=1.2f?A2Module("Hollow_Loft_Tree",x,z,.38f*r,1.1f,.38f*r,index*97):A2Module("Scanned_Stump",x,z,.6f*r,.6f*r,.6f*r,index*97);
                 if(tree!=null)A2FieldDressTree(tree,index);
                 A2FieldRoots(x,z,Mathf.Max(.6f,r)*.9f,index*97);index++;
             }
@@ -134,10 +134,9 @@ namespace Exoduser.UnityPort
         void A2FieldConnections()
         {
             // 각 전투 구역은 서로 다른 지면 결/낮은 목질로 연결한다. 높은 장식은 원본 경계 밖이다.
-            var centers=new[]{new Vector2(33,-70),new Vector2(53,-61),new Vector2(22,-59),new Vector2(40,-50),new Vector2(16,-40),new Vector2(41,-35),new Vector2(65,-38),new Vector2(40,-25),new Vector2(25,-19),new Vector2(58,-17),new Vector2(40,-7)};
-            for(int region=0;region<centers.Length;region++)
+            for(int region=0;region<A2FieldLayout.Regions.GetLength(0);region++)
             {
-                var center=centers[region];
+                var center=new Vector2(A2FieldLayout.Regions[region,0],A2FieldLayout.Regions[region,1]);
                 for(int side=-1;side<=1;side+=2)
                 {
                     float x=center.x+side*(3.8f+.8f*Mathf.Sin(region*2.1f)),z=center.y+side*(2.8f+.6f*Mathf.Cos(region));
@@ -168,7 +167,7 @@ namespace Exoduser.UnityPort
                 foreach(var key in new[]{"_BaseMap","_BumpMap","_RockMap","_AshMap","_RockNormal","_RockRough","_ForestMap","_ForestNormal","_ForestRough","_SoilMap","_SoilNormal","_SoilRough","_RootMap","_RootNormal","_RootRough","_FieldSdf","_FieldMoss","_FieldMossNormal","_FieldMossRough"})
                     if(a2FieldRootMaterial.HasProperty(key))a2FieldRootMaterial.SetTexture(key,a2FieldSoil.GetTexture(key));
                 foreach(var key in new[]{"_ForestBlend","_ForestTextureMix","_SoilTextureMix","_FullField"})if(a2FieldRootMaterial.HasProperty(key))a2FieldRootMaterial.SetFloat(key,a2FieldSoil.GetFloat(key));
-                a2FieldRootMaterial.SetColor("_ScanColor",new Color(.58f,.48f,.35f,1));
+                a2FieldRootMaterial.SetColor("_ScanColor",new Color(.9f,.8f,.63f,1));
             }
             float baseY=a2Field.TerrainHeight(x,z);var go=Instantiate(source,a2Root.transform);go.name="A2 흙에 이어진 스캔 뿌리";
             go.transform.SetPositionAndRotation(new Vector3(x,baseY,z),Quaternion.Euler(0,yaw,0));go.transform.localScale=new Vector3(scale,.8f,scale);

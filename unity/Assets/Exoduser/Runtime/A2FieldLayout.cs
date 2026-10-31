@@ -114,6 +114,20 @@ namespace Exoduser.UnityPort
             }
         }
         public bool TreeSite(float x,float z,float radius) { return Distance(x,z)<-radius-.6f; }
+        public static readonly float[,] Regions=new float[,]{{33,-70},{53,-61},{22,-59},{40,-50},{16,-40},{41,-35},{65,-38},{40,-25},{25,-19},{58,-17},{40,-7}};
+        public float GroundCover(float x,float z)
+        {
+            if(Water(x,z)||Math.Abs(A2ForestLayout.Along(x,z))<5&&Math.Abs(A2ForestLayout.Across(x,z))<2)return 0;
+            float d=Distance(x,z);if(d<0)return 1;
+            float clear=1;
+            for(int i=0;i<Regions.GetLength(0);i++)
+            {
+                float dx=(x-Regions[i,0])/2.8f,dz=(z-Regions[i,1])/2.4f;
+                clear=Math.Min(clear,Smooth(Clamp(((float)Math.Sqrt(dx*dx+dz*dz)-.8f)/.6f,0,1)));
+            }
+            float grove=.72f+.2f*(float)Math.Sin(x*.23+Math.Sin(z*.19));
+            return clear*Lerp(1,grove,Smooth(Clamp(d/5,0,1)));
+        }
         public static SourceMap CreateMap(MapData map) { return new SourceMap(map); }
         public static bool ShowEnemyStatus(bool alive,bool boss,bool damaged,bool targeted) { return alive&&!boss&&(damaged||targeted); }
         static float Clamp(float x,float min,float max) { return Math.Max(min,Math.Min(max,x)); }

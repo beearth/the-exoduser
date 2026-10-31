@@ -52,6 +52,16 @@ class Program
                 register.Invoke(field,new object[]{new float[]{39,baseY+.5f,-51,41,baseY+.5f,-51,39,baseY+.5f,-49,41,baseY+.5f,-49},new int[]{0,2,1,1,2,3}});
                 Check((float)height.Invoke(field,new object[]{40f,-50f})>baseY+.4f,"낮은 목질을 관통하지 않고 위에 접지");
             }
+            var cover=type.GetMethod("GroundCover");
+            Check(cover!=null,"구역 단위 연속 지면 식생 사용");
+            if(cover!=null)
+            {
+                float Cover(float x,float z)=>(float)cover.Invoke(field,new object[]{x,z});
+                Check(Cover(40,-50)==0&&Cover(43.2f,-71.8f)==0,"주 전투 중심·목교 통행면 식생 제외");
+                Check(Cover(-5,-40)>.5f,"외곽 숲의 낮은 식생 연속");
+                double total=0;for(int y=0;y<20;y++)for(int x=0;x<20;x++)total+=Cover(30+x,-60+y);
+                Check(total/400>.3,"중간 전투구역 주변의 연속 바닥 질량 "+total/400);
+            }
         }
         Environment.ExitCode=failures==0?0:1;
     }
