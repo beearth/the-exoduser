@@ -83,3 +83,8 @@
 - GUI 큐 게시 방식은 제품 OnGUI 추적에서도 Down/Up=0으로 확인되어 폐기했다. 다음 검수는 첫 UnityWndClass를 고르지 않고 자기 PID+게임 제목+실제 클라이언트 크기가 모두 맞는 창을 선택한다. 각 후보 창의 클래스/제목/크기를 로그로 남기며 로비 AutomatedInput=false와 playback focus를 명시한다. 상태에는 Application.isFocused와 AutomatedInput도 포함한다. 자기 창의 app activation 알림도 같은 엄격한 창 선택으로 검수하며 콜백이 실제 증가하지 않으면 실패다.
 
 - 2D 원본 진단의 실제 WM 클릭 뒤 menu=false/Running=true가 관측됐으나 별도 helper OnGUI 카운터는0이었다. 따라서 helper 카운터0은 마우스 전달 전체 실패를 뜻하지 않는다. 최종 WM 검수는 제품 NativeGame.OnGUI 추적과 실제 상태 변화를 기준으로 판정한다.
+
+- 실제 r5 제품 로그는 raw=mouseDown/mouseUp(소문자 enum 별칭)였다. 대문자 문자열 비교 오류를 OrdinalIgnoreCase로 수정한다. 원본 JSON을 바꾸지 않고 before-r5-click-verdict.json에 실제 Down1/Up1과 HP0/fallen/menu=true/Running=false/카운트300 유지 재현을 재판독했다.
+- window-focus 실제 OS 검수는 현재 thread desktop 이름이 공식 ExoDesk 접두사이고 현재 전경 창이 자기 게임 창일 때만 64x64 네이티브 검수 창을 같은 숨은 desktop/자기 PID에 만들고 전경을 왕복한다. 사용자 Default desktop, 타 PID, SwitchDesktop, AttachThreadInput은 사용하지 않는다. 생성 창은 종료/실패 모두 정리한다. 실제 Application.isFocused·Unity 콜백·제품 상태가 함께 바뀌어야 nativeFocusVerified=true이다. 별도 focus-callback 사례는 제품 OnApplicationFocus 직접호출 fixture로 명시하며 OS 검수와 구분한다.
+
+- private desktop/네이티브 창 API 근거: https://learn.microsoft.com/en-us/windows/win32/winstation/desktops , https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setforegroundwindow , https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createwindowexw . 전경/desktop 사전 조건 실패 시 다른 창을 시도하지 않고 검수 실패로 끝낸다.

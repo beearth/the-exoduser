@@ -19,11 +19,11 @@ namespace Exoduser.UnityPort.Tools
   const string Flag="--unity-pause-input-check";
   [Serializable] sealed class Check {public string name,detail;public bool passed;}
   [Serializable] sealed class State {public string phase,playerState,page,practice;public int frame,tick,cursor;public float time,timeScale,hp,stateTicks,x,y;public bool nativeAppFocus,lobbyAutomated,running,menu,focus,navigationFocus,releaseFence,entryFence,inputFence,inventory,skills,stats,forge,remodel;}
-  [Serializable] sealed class Receipt {public string scope="격리 실제 Player: Input System 가상 키보드 → 제품 Update/PollKeys, 제목·클라이언트 크기로 검증한 자기 숨은 창 WM 마우스 → 제품 OnGUI/버튼. focus 모델 및 자기 창 앱 활성 알림→Unity 콜백 검수. 사용자 손조작/전역 OS 창 전환/자연 전투와 구분",runtimeSha,coreSha,device,sandbox;public bool passed,quitRequested,quitObserved;public int width,height,mouseDown,mouseUp,productMouseDown,productMouseUp,guiQueued,layoutEvents,repaintEvents,frames,focusEvents;public List<Check> checks=new List<Check>();public List<State> states=new List<State>();}
+  [Serializable] sealed class Receipt {public string focusMethod,desktopName;public bool nativeFocusVerified;public string scope="격리 실제 Player: Input System 가상 키보드 → 제품 Update/PollKeys, 제목·클라이언트 크기로 검증한 자기 숨은 창 WM 마우스 → 제품 OnGUI/버튼. 제품 focus 콜백 fixture 및 자기 숨은 데스크톱 네이티브 포커스 검수(방법 별도 기록). 사용자 손조작/전역 OS 창 전환/자연 전투와 구분",runtimeSha,coreSha,device,sandbox;public bool passed,quitRequested,quitObserved;public int width,height,mouseDown,mouseUp,productMouseDown,productMouseUp,guiQueued,layoutEvents,repaintEvents,frames,focusEvents;public List<Check> checks=new List<Check>();public List<State> states=new List<State>();}
   static bool Has(string flag)=>Array.IndexOf(Environment.GetCommandLineArgs(),flag)>=0;
   static string Arg(string flag){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,flag);return i>=0&&i+1<a.Length?a[i+1]:null;}
   [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)] static void Boot(){if(Has(Flag)&&!Has("--unity-m1-check"))new GameObject("Pause input isolated check").AddComponent<PauseInputCheck>();}
-  NativeGame game;NativeLobby lobby;NativePauseMenu pause;Keyboard keyboard,previousKeyboard;Receipt receipt=new Receipt();string output,phase="준비";bool failed,recording;float nextFrame;
+  NativeGame game;NativeLobby lobby;NativePauseMenu pause;Keyboard keyboard,previousKeyboard;Receipt receipt=new Receipt();string output,phase="준비";bool failed,recording;float nextFrame;IntPtr focusProbe,focusMain;bool privateFocusScope;
   static object Get(object o,string k)=>o.GetType().GetField(k,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(o);
   static object Call(object o,string k,params object[] a)=>o.GetType().GetMethod(k,BindingFlags.Instance|BindingFlags.NonPublic).Invoke(o,a);
   static string Hash(string p){using(var h=SHA256.Create())using(var f=File.OpenRead(p))return BitConverter.ToString(h.ComputeHash(f)).Replace("-","").ToLowerInvariant();}
@@ -49,13 +49,16 @@ namespace Exoduser.UnityPort.Tools
    CheckThat(!lobby.IsBlocking&&!(bool)Get(game,"frontendEntryInputFence"),"정상 진입 키 해제");game.SetGameFocus(false);game.SetGameFocus(true);CheckThat(!game.Running&&(bool)Get(game,"menu"),"숲 로드 중 제품 메뉴로 정지");
    until=Time.realtimeSinceStartup+45;while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<until)yield return null;
    CheckThat(!NativeRemodel3D.Requested||NativeRemodel3D.Active,"요청된 숲 3D 로드");yield return null;yield return null;yield return Key(UnityEngine.InputSystem.Key.Enter);CheckThat(game.Running,"준비 뒤 명시 계속하기");receipt.width=Screen.width;receipt.height=Screen.height;CheckThat(receipt.width==1600&&receipt.height==900,"실제 캡처 화면 크기",receipt.width+"x"+receipt.height);recording=true;StartCoroutine(Frames());
+   if(Arg("-pause-case")=="focus-callback"){
+    receipt.focusMethod="제품 OnApplicationFocus 직접호출 fixture; OS 전달과 구분";Call(game,"OnApplicationFocus",false);yield return null;CheckThat(!(bool)Get(game,"gameFocused")&&!game.Running&&(bool)Get(game,"menu"),"제품 focus 이탈 콜백 정지");yield return Shot("focus-callback-lost");Call(game,"OnApplicationFocus",true);yield return null;CheckThat((bool)Get(game,"gameFocused")&&!game.Running&&(bool)Get(game,"menu"),"제품 focus 복귀 콜백 자동 재개 없음");yield return Key(UnityEngine.InputSystem.Key.Enter);yield return AssertResumed("제품 focus 콜백 뒤 명시 재개");yield return Shot("focus-callback-resumed");Save();Application.Quit(0);yield break;
+   }
    if(Arg("-pause-case")=="window-focus"){
-    IntPtr window=OwnWindow();CheckThat(window!=IntPtr.Zero,"focus 자기 게임 창 확인");
-    CheckThat(PostMessageW(window,0x001C,new IntPtr(1),IntPtr.Zero),"자기 게임 창 활성 알림");yield return new WaitForSecondsRealtime(.2f);int events=receipt.focusEvents;
-    CheckThat(PostMessageW(window,0x001C,IntPtr.Zero,IntPtr.Zero),"자기 게임 창 비활성 알림");yield return new WaitForSecondsRealtime(.2f);
-    CheckThat(receipt.focusEvents>events&&!(bool)Get(game,"gameFocused")&&!game.Running&&(bool)Get(game,"menu"),"실제 Unity focus 콜백으로 정지");yield return Shot("window-focus-lost");events=receipt.focusEvents;
-    CheckThat(PostMessageW(window,0x001C,new IntPtr(1),IntPtr.Zero),"자기 게임 창 재활성 알림");yield return new WaitForSecondsRealtime(.2f);
-    CheckThat(receipt.focusEvents>events&&(bool)Get(game,"gameFocused")&&!game.Running&&(bool)Get(game,"menu"),"실제 focus 복귀 자동 재개 없음");yield return Key(UnityEngine.InputSystem.Key.Enter);yield return AssertResumed("focus 복귀 뒤 명시 Enter");yield return Shot("window-focus-resumed");Save();Application.Quit(0);yield break;
+    focusMain=OwnWindow();CheckThat(focusMain!=IntPtr.Zero,"focus 자기 게임 창 확인");receipt.desktopName=CurrentDesktopName();receipt.focusMethod="자기 숨은 데스크톱의 네이티브 전경 창 교체→Unity 콜백";
+    CheckThat(receipt.desktopName.StartsWith("ExoDesk",StringComparison.Ordinal)&&GetForegroundWindow()==focusMain,"공식 private desktop과 자기 전경 창 확인",receipt.desktopName+" foreground="+GetForegroundWindow()+" main="+focusMain);privateFocusScope=true;
+    focusProbe=CreateWindowExW(0x80,"STATIC","EXODUSER Pause QA Focus Probe",0x90000000,0,0,64,64,IntPtr.Zero,IntPtr.Zero,IntPtr.Zero,IntPtr.Zero);CheckThat(focusProbe!=IntPtr.Zero,"자기 숨은 데스크톱 포커스 검수 창 생성");GetWindowThreadProcessId(focusProbe,out uint pid);CheckThat(pid==GetCurrentProcessId(),"포커스 검수 창 자기 PID");int events=receipt.focusEvents;
+    SetForegroundWindow(focusProbe);yield return new WaitForSecondsRealtime(.3f);CheckThat(GetForegroundWindow()==focusProbe&&!Application.isFocused&&receipt.focusEvents>events&&!(bool)Get(game,"gameFocused")&&!game.Running&&(bool)Get(game,"menu"),"실제 Unity focus 콜백으로 정지");yield return Shot("window-focus-lost");events=receipt.focusEvents;
+    SetForegroundWindow(focusMain);yield return new WaitForSecondsRealtime(.3f);CheckThat(GetForegroundWindow()==focusMain&&Application.isFocused&&receipt.focusEvents>events&&(bool)Get(game,"gameFocused")&&!game.Running&&(bool)Get(game,"menu"),"실제 focus 복귀 자동 재개 없음");DestroyWindow(focusProbe);focusProbe=IntPtr.Zero;receipt.nativeFocusVerified=true;
+    yield return Key(UnityEngine.InputSystem.Key.Enter);yield return AssertResumed("focus 복귀 뒤 명시 Enter");yield return Shot("window-focus-resumed");Save();Application.Quit(0);yield break;
    }
    if(Arg("-pause-case")=="startup"){
     lobby.ShowLobby();lobby.SetPlaybackFocus(true);var data=JsonUtility.FromJson<StartupIntroData>(Resources.Load<TextAsset>("Data/startup_intro").text);StartupIntroLine[] lines=null;foreach(var language in data.languages)if(language.code=="ko")lines=language.lines;
@@ -106,17 +109,24 @@ namespace Exoduser.UnityPort.Tools
   [DllImport("kernel32.dll")] static extern uint GetCurrentThreadId();
   [DllImport("user32.dll",CharSet=CharSet.Unicode)] static extern int GetClassNameW(IntPtr window,System.Text.StringBuilder name,int size);
   [DllImport("kernel32.dll")] static extern uint GetCurrentProcessId();
+  [DllImport("user32.dll")] static extern IntPtr GetThreadDesktop(uint thread);
+  [DllImport("user32.dll",CharSet=CharSet.Unicode)] static extern bool GetUserObjectInformationW(IntPtr handle,int index,System.Text.StringBuilder name,uint length,out uint needed);
+  [DllImport("user32.dll")] static extern IntPtr GetForegroundWindow();
+  [DllImport("user32.dll")] static extern bool SetForegroundWindow(IntPtr window);
+  [DllImport("user32.dll",CharSet=CharSet.Unicode,SetLastError=true)] static extern IntPtr CreateWindowExW(uint ex,string kind,string title,uint style,int x,int y,int width,int height,IntPtr parent,IntPtr menu,IntPtr instance,IntPtr parameter);
+  [DllImport("user32.dll")] static extern bool DestroyWindow(IntPtr window);
+  static string CurrentDesktopName(){var name=new System.Text.StringBuilder(256);return GetUserObjectInformationW(GetThreadDesktop(GetCurrentThreadId()),2,name,512,out uint length)?name.ToString():"";}
   [DllImport("user32.dll",CharSet=CharSet.Unicode)] static extern int GetWindowTextW(IntPtr window,System.Text.StringBuilder title,int size);
   [StructLayout(LayoutKind.Sequential)] struct ClientRect{public int left,top,right,bottom;}
   [DllImport("user32.dll")] static extern bool GetClientRect(IntPtr window,out ClientRect rect);
   [DllImport("user32.dll")] static extern bool PostMessageW(IntPtr window,uint message,IntPtr w,IntPtr l);
   IntPtr OwnWindow(){IntPtr found=IntPtr.Zero;uint own=GetCurrentProcessId();EnumWindows((w,state)=>{GetWindowThreadProcessId(w,out uint pid);if(pid!=own)return true;var name=new System.Text.StringBuilder(128);var title=new System.Text.StringBuilder(256);GetClassNameW(w,name,128);GetWindowTextW(w,title,256);GetClientRect(w,out ClientRect r);Debug.Log("PAUSE_OWN_WINDOW hwnd="+w+" class="+name+" title="+title+" client="+(r.right-r.left)+"x"+(r.bottom-r.top));if(name.ToString()=="UnityWndClass"&&title.ToString()==Application.productName&&r.right-r.left==Screen.width&&r.bottom-r.top==Screen.height){found=w;return false;}return true;},IntPtr.Zero);return found;}
   IEnumerator Click(float x,float y){IntPtr window=OwnWindow();CheckThat(window!=IntPtr.Zero,"제목·크기·PID가 맞는 실제 게임 창");lobby.AutomatedInput=false;lobby.SetPlaybackFocus(true);int px=Mathf.RoundToInt(x*Screen.width/1280f),py=Mathf.RoundToInt(y*Screen.height/720f);IntPtr point=new IntPtr((py<<16)|(px&65535));int down=receipt.productMouseDown,up=receipt.productMouseUp;CheckThat(PostMessageW(window,0x200,IntPtr.Zero,point)&&PostMessageW(window,0x201,new IntPtr(1),point),"검증된 게임 창 마우스 누름 전달");yield return new WaitForSecondsRealtime(.12f);CheckThat(PostMessageW(window,0x202,IntPtr.Zero,point),"검증된 게임 창 마우스 해제 전달");yield return new WaitForSecondsRealtime(.2f);CheckThat(receipt.productMouseDown>down&&receipt.productMouseUp>up,"제품 OnGUI MouseDown/MouseUp 수신","down="+(receipt.productMouseDown-down)+" up="+(receipt.productMouseUp-up)+" automated="+lobby.AutomatedInput);}
-  void ProductLog(string condition,string stack,LogType type){if(!condition.StartsWith("A15_HIT_ROOT phase=before ",StringComparison.Ordinal))return;if(condition.Contains("raw=MouseDown"))receipt.productMouseDown++;if(condition.Contains("raw=MouseUp"))receipt.productMouseUp++;}
+  void ProductLog(string condition,string stack,LogType type){if(!condition.StartsWith("A15_HIT_ROOT phase=before ",StringComparison.Ordinal))return;if(condition.IndexOf("raw=MouseDown",StringComparison.OrdinalIgnoreCase)>=0)receipt.productMouseDown++;if(condition.IndexOf("raw=MouseUp",StringComparison.OrdinalIgnoreCase)>=0)receipt.productMouseUp++;}
   void OnGUI(){if(Event.current==null)return;if(Event.current.rawType==EventType.MouseDown)receipt.mouseDown++;if(Event.current.rawType==EventType.MouseUp)receipt.mouseUp++;if(Event.current.rawType==EventType.Layout)receipt.layoutEvents++;if(Event.current.rawType==EventType.Repaint)receipt.repaintEvents++;}
   void OnApplicationFocus(bool focus){receipt.focusEvents++;if(game!=null&&pause!=null)Snapshot("실제 Unity focus 콜백 "+focus);}
   void OnApplicationQuit(){recording=false;if(receipt.quitRequested){receipt.quitObserved=true;Save();}Cleanup();}
-  void Cleanup(){Application.logMessageReceived-=ProductLog;if(keyboard!=null){InputSystem.RemoveDevice(keyboard);keyboard=null;}if(previousKeyboard!=null&&previousKeyboard.added)previousKeyboard.MakeCurrent();previousKeyboard=null;}
+  void Cleanup(){if(focusProbe!=IntPtr.Zero){if(privateFocusScope&&focusMain!=IntPtr.Zero)SetForegroundWindow(focusMain);DestroyWindow(focusProbe);focusProbe=IntPtr.Zero;}Application.logMessageReceived-=ProductLog;if(keyboard!=null){InputSystem.RemoveDevice(keyboard);keyboard=null;}if(previousKeyboard!=null&&previousKeyboard.added)previousKeyboard.MakeCurrent();previousKeyboard=null;}
   void OnDestroy(){Cleanup();}
  }
 }
