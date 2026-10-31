@@ -89,3 +89,46 @@ body:has(#parryLesson) #mmLvl{visibility:visible}
 }
 /* Transient system notifications occupy the outer left rail above the pet portrait. */
 #notif{left:calc(var(--ui-inset-left,0px) + env(safe-area-inset-left,0px) + 20px)!important;right:auto;top:calc(var(--ui-inset-top,0px) + 270px * var(--ui-scale,1));bottom:auto!important;transform:none;max-width:min(440px,calc(100vw - 40px));text-align:left}
+
+/* 2026-10-31: one title band for the five sibling windows. Keep skill content owned by its author. */
+:root{--web-ui-title-height:44px}
+html body :is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel).panel .pbox .ptitle{
+ display:flex!important;position:relative!important;isolation:auto!important;align-items:center!important;justify-content:center!important;gap:12px!important;
+ height:var(--web-ui-title-height)!important;min-height:var(--web-ui-title-height)!important;max-height:none!important;
+ width:min(520px,100%)!important;max-width:100%!important;flex:0 0 auto!important;
+ padding:0 12px!important;margin:0 auto 10px!important;zoom:1!important;
+ font-size:22px!important;line-height:1.2!important;letter-spacing:.04em!important;
+ background:none!important;border:0!important;box-shadow:none!important;overflow:visible!important;
+}
+html body :is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel).panel .pbox .ptitle::before{
+ content:''!important;display:block!important;position:static!important;inset:auto!important;transform:none!important;
+ width:54px!important;height:40px!important;flex:0 0 54px!important;z-index:auto!important;
+ background:linear-gradient(#e3e0da,#929595)!important;
+ mask:url('img/ui/silver_hell/gate_sigil_20261028.jpg') center/94px auto no-repeat;mask-mode:luminance;
+ border:0!important;box-shadow:none!important;filter:brightness(1.65)!important;pointer-events:none;
+}
+html body :is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel).panel .pbox .ptitle::after{
+ content:''!important;display:block!important;position:static!important;inset:auto!important;transform:none!important;
+ width:54px!important;height:1px!important;flex:0 0 54px!important;z-index:auto!important;
+ background:linear-gradient(90deg,var(--sh-line),transparent)!important;border:0!important;border-image:none!important;box-shadow:none!important;pointer-events:none;
+}
+html body #statPanel#statPanel#statPanel.panel .pbox .growth-header{height:var(--web-ui-title-height);min-height:var(--web-ui-title-height);padding:0!important;margin:0 0 12px!important;gap:16px;flex-wrap:nowrap;border:0}
+html body #statPanel#statPanel#statPanel.panel .pbox .growth-title{margin-bottom:0!important}
+html body #statPanel#statPanel#statPanel .growth-kicker,
+html body #statPanel#statPanel#statPanel .growth-subtitle{display:none!important}
+html body #statPanel#statPanel#statPanel .growth-wallets{align-self:stretch;align-items:center}
+html body #statPanel#statPanel#statPanel .growth-wallet{flex-direction:row;gap:12px;min-width:0;height:var(--web-ui-title-height);padding:0 12px!important}
+html body #statPanel#statPanel#statPanel .growth-wallet strong{font-size:24px!important;line-height:1.2}
+/* Replace the vector compass and red needle with the approved first-screen engraved eye. Native aspect ratio is 16:9. */
+html body #statPanel#statPanel#statPanel.panel .pbox.growth-shell{
+ background:linear-gradient(#14131570,#09090ae6),url('img/ui/silver_hell/gate_sigil_20261028.jpg') 30% -72px/620px auto no-repeat,var(--ui-surface) center/320px!important;
+ background-blend-mode:normal,screen,normal;
+}
+html body #invPanel#invPanel#invPanel.panel .pbox>div:has(>.ptitle){min-height:var(--web-ui-title-height)!important;flex-wrap:nowrap!important}
+html body #invPanel#invPanel#invPanel.panel .pbox .ptitle{width:auto!important;margin:0 16px 0 0!important;font-size:20px!important}
+@media(max-width:780px){
+ html body :is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel).panel .pbox .ptitle{font-size:18px!important;gap:6px!important;padding-inline:4px!important}
+ html body #statPanel#statPanel#statPanel .growth-wallet{padding-inline:6px!important;gap:6px}
+ html body #statPanel#statPanel#statPanel .growth-wallet span{font-size:11px!important}
+ html body #invPanel#invPanel#invPanel.panel .pbox>div:has(>.ptitle){flex-wrap:wrap!important}
+}

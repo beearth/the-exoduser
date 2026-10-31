@@ -216,8 +216,8 @@
 | system-lesson.js | 강화 메뉴를 확인하세요 | Explore upgrades |
 | system-lesson.js | [{key}]로 대장간을 열어 강화 메뉴와 필요한 비용을 살펴보세요. 실제 강화를 하지 않아도 이 안내는 완료됩니다. | Press [{key}] to visit the forge and inspect upgrades and their costs. You do not need to perform an upgrade to complete this step. |
 | system-lesson.js | 자동 회복 경험 | Experience auto-healing |
-| system-lesson.js | 악의로 자동 회복합니다 | Malice fuels auto-healing |
-| system-lesson.js | 부족한 체력이 물약 회복량 이상이고 재사용 대기시간이 끝나면 악의 1개를 소비해 자동 회복합니다. 악의를 남겨두고 평소처럼 전투하세요. 일부러 피해를 받을 필요는 없으며, 이 항목은 건너뛸 수 있습니다. | When your missing HP reaches the potion healing amount and its cooldown is over, auto-healing consumes 1 Malice. Keep some Malice and fight normally. You do not need to take damage on purpose; you can skip this step. |
+| system-lesson.js | 악의구슬로 자동 회복합니다 | Malice fuels auto-healing |
+| system-lesson.js | 부족한 체력이 물약 회복량 이상이고 재사용 대기시간이 끝나면 악의구슬 1개를 소비해 자동 회복합니다. 악의구슬을 남겨두고 평소처럼 전투하세요. 일부러 피해를 받을 필요는 없으며, 이 항목은 건너뛸 수 있습니다. | When your missing HP reaches the potion healing amount and its cooldown is over, auto-healing consumes 1 Malice Sphere. Keep some Malice Sphere and fight normally. You do not need to take damage on purpose; you can skip this step. |
 | system-lesson.js | 설정에서 키 배정 | Assign a key in Settings |
 | system-lesson.js | 시스템 튜토리얼 | System tutorial |
 | system-lesson.js | 시스템 안내 접기 | Collapse system guide |

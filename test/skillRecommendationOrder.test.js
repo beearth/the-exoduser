@@ -10,15 +10,14 @@ test('recommended build preserves all 15 approved phases, skills, fusions and ul
   const end = gameHtml.indexOf('];', start);
   assert.ok(start >= 0 && end > start, 'SKILL_REC_PATH must exist');
   const source = gameHtml.slice(start, end);
-  // game.html:44094-44110 and 추천빌드_SKILL_REC_PATH.md:15-29,50-51.
-  // Pillar Spike was inserted before Bone Lightning; the old 14-phase snapshot was stale.
+  // 추천빌드_SKILL_REC_PATH.md의 2026-10-27 전사 경로: 마법사 전용 bladeDash 제외.
   const phases = JSON.parse(JSON.stringify(vm.runInNewContext(
     gameHtml.slice(start + 'const SKILL_REC_PATH='.length, end + 1),
   )));
   const expected = [
     ['1. 악의기둥+가시덫', ['darkPillar', 'spikeTrap'], 'pillarSpike', false],
     ['2. 해골무덤+악의폭풍', ['boneWall', 'maliceStorm'], 'boneStorm', false],
-    ['3. 전격의창+아이스스톰', ['thunderStake', 'bladeDash', 'iceStorm'], 'thunderGhost', false],
+    ['3. 뇌전창+아이스스톰', ['thunderStake', 'iceStorm'], null, false],
     ['4. 이동+사슬', ['chargeBoost', 'magicBlink', 'chainAssault', 'chainSlam'], 'dimBreach', false],
     ['5. 칼날+역병', ['maliceHunt', 'guardian', 'plagueBurst'], 'bladeFuse', false],
     ['6. 💀 필살기 선택', ['blackStar', 'lavaSummon', 'execution'], null, true],
@@ -38,5 +37,7 @@ test('recommended build preserves all 15 approved phases, skills, fusions and ul
   assert.deepEqual(phaseNumbers, consecutive);
   assert.deepEqual(phases.map(({ phaseEn }) => Number(/^(\d+)\./u.exec(phaseEn)?.[1])), consecutive);
   assert.ok(source.indexOf("fuse:'pillarSpike'") < source.indexOf("fuse:'boneStorm'"));
-  assert.ok(source.indexOf("fuse:'boneStorm'") < source.indexOf("fuse:'thunderGhost'"));
+  assert.ok(source.indexOf("fuse:'boneStorm'") < source.indexOf("fuse:'dimBreach'"));
+  assert.ok(!phases[2].skills.includes('bladeDash'),'mage-only movement stays out of the warrior recommendation');
+  assert.equal(phases[2].fuse,null,'warrior cannot fuse the mage-only thunderGhost');
 });

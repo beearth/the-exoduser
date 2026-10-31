@@ -115,7 +115,7 @@ export async function run(output,url='http://127.0.0.1:3366'){
   await lobby.locator('#splashTitleMenu .stm-btn').first().click();await lobby.locator('#demoEnterBtn').click();await lobby.locator('#lobby').waitFor({state:'visible'});
   const game=await context.newPage();await game.goto(url+'/game.html?forgelab=1&stage=0',{waitUntil:'domcontentloaded'});await game.waitForFunction(()=>typeof G!=='undefined'&&G.stage===0&&!_bootLoadActive&&P&&P.lv>=500,null,{timeout:180000});await game.waitForTimeout(500);
   const result=await captureMatrix({lobby,game,output});result.errors=errors;
-  const files=['index.html','game.html','lobby-silver-hell.css','charselect-silver-hell.css','web-uiux.css','web-uiux.js'];result.source={};
+  const files=['index.html','game.html','lobby-silver-hell.css','charselect-silver-hell.css','web-uiux.css','web-uiux.js','ui-foundation.css','ui-refinement.css','ui-quiet-tier.css','skill-forge.css','skill-forge.js','stat-panel-ui.css','stat-panel-ui.js','system-lesson.js','parry-lesson.css','parry-lesson.js','ui-panels.js'];result.source={};
   for(const file of files){const disk=await fs.readFile(path.join(sourceRoot,file)),http=Buffer.from(await(await fetch(url+'/'+file)).arrayBuffer());const sha=data=>createHash('sha256').update(data).digest('hex');result.source[file]={disk:sha(disk),http:sha(http),match:sha(disk)===sha(http)};}
   await fs.writeFile(path.join(output,'geometry.json'),JSON.stringify(result,null,2));return result;
  }finally{await browser.close();}

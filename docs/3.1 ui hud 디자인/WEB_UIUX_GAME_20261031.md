@@ -40,9 +40,15 @@
 | 시스템·키 안내 | 같은 상/하단 예약을 사용. keyGuide는 overflow-y:auto·border-box. 안내 내용은 기존 내부 스크롤·푸터 동작 유지 |
 | 펫 | game.html _petBubbleShow의 _guideOpen은 parryLesson/systemLesson/keyGuide가 hidden=false, display!=none, visibility!=hidden인지 확인. 까마귀 또는 안내 있음이면 _petAtLeft=true, left20px/right auto/transform-origin left bottom. 그 외 고양이는 right20px/left auto/right bottom. 기존 원화480px·ui-scale×ui-text-scale×1.5 보존 |
 | 일반 알림 notif | left=왼쪽 inset+safe-area+20px, top=상단 inset+270px×ui-scale, max-width=min(440px,100vw−40px), 왼쪽 정렬. 펫·자원 사이에 배치. 전투 피드백 ph는 중앙·안전 폭 유지 |
-| 캐시 | game.html의 web-uiux.css·web-uiux.js=20261031-edge1 |
+| 캐시 | game.html의 web-uiux.css=20261031-edge3, web-uiux.js=20261031-edge1 |
 | 검수 도구 | tools/check-web-sidepanel.mjs: 1920×1080,2560×1080,3840×1080,2560×1600 실제 페이지 캡처·가시 텍스트 Range 겹침·HUD 중앙/가장자리·안내/구슬/상태판/펫 충돌 검사. 각 캡처 페이지를 bringToFront한 뒤 전환 완료를 기다려 가시 텍스트0을 실패 처리하고, 실제 게임 캔버스를 다시 그린다. HTTP와 디스크 SHA256 비교. 로컬 forgelab=1&stage=0 Lv1000 테스트 경로·독립 브라우저 저장소를 사용하고 서버 save API는 검수 응답으로 격리. 자연 플레이 검수와 구분 |
 
 대상 화면: 로비·캐릭터 선택·타이틀 메뉴·설정4탭·1-1 HUD·실습·시스템/키 안내·알림·인벤토리/보관함·스킬·대장간/물약 상점·성장·일시정지·클리어·난이도·조작 안내. 최종 실측·이미지·원격 SHA는 지정 sidepanel/REPORT.md와 source-receipt.json에 기록한다.
 
 - sidepanel 체크포인트 a8bd2059c의 pre-commit guard.js가 game.html 줄수 기준을66030→66027로 자동 갱신했다. 이 갱신은 자기 pet 앵커 정리3줄 감소에 대응하며 보호 블록 해시는 바뀌지 않았다. 최종 원격 병합 줄수는 별도 최종 영수증에 기록한다.
+
+## 공통 제목 띠 후속 — 2026-10-31
+
+statwindow-brief에 따라 web-uiux.css에서 다섯 창 제목44px·성장 머리44px를 공통화하고, 기존 첫 화면 인장의 눈을 성장 배경에 연결했다. 상세 수치와 원화 근거는 [UI_COMPOSITION 최신 절](UI_COMPOSITION_20260925.md#2026-10-31-성장-창과-공통-다섯-창의-얇은-제목-띠)에만 둔다. 해당 후보의 game.html CSS 캐시는20261031-compact-title1이었으며, 사이드 판 통합본은20261031-edge3으로 두 변경을 함께 연결한다. tools/check-stat-window.mjs는 --url/--out/--modules 옵션으로 분리 server.cjs에서 두 해상도×다섯 창의 제목/본문/AP/노드 경계·검색·미리보기·요약 닫기·J 재열기·저장0을 검사한다. 스킬 본문은 다른 담당 소유이며 이번 수정 범위가 아니다.
+
+- 최신 origin/main 9f5db2ac6의 악의구슬 명칭·성장 제목/눈 원화·스킬 창 변경과 정상 병합했다. 공통 CSS의 양쪽 독립 구역과 양쪽 문서 이력을 모두 보존했고, game.html guard 줄수는66032다. 검수는 이 통합본에서 다시 수행한다.

@@ -104,3 +104,10 @@
 - 메뉴 글자 매몰(GUI.color 구분선 알파0.1 잔류)·붉은 띠/점을 수정해 Hahmlet300·고대비 글자·16×1 은빛 헤어라인 적용. Unity 제품7eacb120b/공통 6a196f4840e574c4dce55f0d1c3bdf7b932ff19b 정상 비강제반영·원격 확인, 일반 바탕화면 지옥의 길 (Unity).lnk는 정확 검수본에 연결·네속성/Managed 해시 readback했다. 기존 미리보기·실행창·세이브 보존.
 - 빌드510c4322 오류0, 첫인상790d5292 21/21, 정확Runtime 전체M1 53970f75 23/23·32프레임, 실제키8211c6e7 인장→현행세계관영상→5초skip→Lobby. 전부D3D11 RX9070XT·창/잔여/USER_SAVE0. 1920/1x 직접판정 메뉴핵심결함 해소·큰차이0, 글리프/선택70ms 미세차이·전체게임/실시간3D무대 RETOUCH는 유지.
 - H5 동일CSS후보 d22ce8bd1은 별도 브랜치/코드반영대기. 최신보고·실행본·비교·정확DLL 영수증 I:/EXODUSER-Storage/demo-art/unity-ui/title-priority-2026-10-30T01-19-03-079Z/. 26폴더표·미채택4격자와USER_CONFIRM 유지, 전체시안/3D/Mac/손조작/배포 PASS 아님. 상세 [Unity UI 원화](../../engine/UNITY_UI_ASSETS_20261030.md).
+
+
+## 2026-10-31 웹 성장 창 — 머리 축소·인장의 눈
+
+- statwindow-brief 담당 codex-web-statwin. 직접 열람한 성장나무/서랍 시안은 승인 대조표상 미채택이므로 새 자산으로 쓰지 않고, 브리프 지정 gate_sigil 원화의 금속 음각 눈을 사용했다. 공통 다섯 창 제목44px, 성장 머리225→44px·본문676→857px. 원화 종횡비 유지·검정 바탕 합성·제목 luminance 마스크로1x 경계 수정.
+- 실제 game.html의1920×1080/3840×1080×5창10건: 제목/탭·머리/본문·제목/AP 충돌0, 가로넘침0·노드이탈0·pageerror0·저장호출0. 검색·미리보기·요약 ESC·J 재열기 PASS. 관련 회귀39/39·project-check103/103·guard PASS. 부트 종료/보스 테스트 강제 상태이며 자연플레이·NW.js·Unity·전체 게임 디자인 합격은 별도다.
+- 제작자 직접 판정 VISUAL VERDICT: PASS(웹 제목 축소·원화 인장 표시·변경 부위1x 범위). 총괄 별도 판정은 꾸미지 않는다. 소스/문서의 경로 지정 커밋→원격 main 비강제 반영 및 최종 SHA는 G:/exoduser/tmp/design-review/20261031_stat_window/REPORT.md. 분리 서버 주소도 같은 보고서에 기록한다. Unity 지시는 I:/EXODUSER-Storage/codex-takeover/ui-ultrawide-brief.md 끝에 추가했다.

@@ -1,5 +1,5 @@
 /* Skill Forge — K 스킬 창 (2026-10-10, 전면 교체).
-   위: HUD와 같은 13개 키 슬롯(원형). 슬롯을 고르면 그 슬롯의 스킬이 가운데 "합성 제단"의 모체가 되고,
+   위: HUD의 13개 키 슬롯 + 구르기/X처형/T자동석궁(2026-10-31). 슬롯을 고르면 해당 스킬이 가운데 "합성 제단"의 모체가 되고,
    아래 트레이에 그 슬롯에 넣을 수 있는 스킬(장착)과 모체와 합성할 수 있는 재료가 나온다.
    재료를 제단으로 끌어 넣으면 소켓이 개수대로 자동 배치된다(2=위아래, 3=세 방향, 4=네 방향 … 최대 10).
    합성 규칙은 기존 합체 레시피(_FUSE_PAIRS) 그대로 — 넣은 세트가 레시피와 같아지면 확인 후 _execFuse.
@@ -15,14 +15,17 @@
   const T=s=>typeof _T==='function'?_T(s):s;
   const qs=new URLSearchParams(root.location?root.location.search:'');
   const ENABLED=qs.get('skillForge')!=='0';
-  // HUD 순서·실제 배정 변수 (updateMagicSlot→qsE=activeMagicSk, updateRMBSlot→skSlotRMB=activeRMBSk)
+  // 실제 입력: RMB=마법(activeMagicSk), E=처내기(activeRMBSk). 레거시 DOM 이름과 구분한다.
   const SLOTS=[
     {k:'1',kind:'num',idx:0},{k:'2',kind:'num',idx:1},{k:'3',kind:'num',idx:2},{k:'4',kind:'num',idx:3},
     {k:'F',kind:'num',idx:5},{k:'Z',kind:'ult'},
-    {k:'LMB',kind:'fixed',def:'lmb',v:'activeLMBSk'},{k:'RMB',kind:'fixed',def:'rmb',v:'activeRMBSk'},
-    {k:'Shift',kind:'fixed',def:'charge',v:'activeChargeSk'},{k:'E',kind:'fixed',def:'magic',v:'activeMagicSk'},
-    {k:'Q',kind:'fixed',def:'q',v:'activeQSk'},{k:'Ctrl',kind:'fixed',def:'ct',v:'activeCtSk'},
-    {k:'Space',kind:'num',idx:4}
+    {k:'LMB',kind:'fixed',def:'lmb',v:'activeLMBSk',bind:'weapon'},{k:'RMB',kind:'fixed',def:'magic',v:'activeMagicSk',bind:'beam'},
+    {k:'Shift',kind:'fixed',def:'charge',v:'activeChargeSk',bind:'charge'},{k:'E',kind:'fixed',def:'rmb',v:'activeRMBSk',bind:'shield'},
+    {k:'Q',kind:'fixed',def:'q',v:'activeQSk',bind:'parry'},{k:'Ctrl',kind:'fixed',def:'ct',v:'activeCtSk'},
+    {k:'Space',kind:'num',idx:4},
+    {k:'Space',kind:'intrinsic',intrinsic:'roll',bind:'roll'},
+    {k:'X',kind:'intrinsic',intrinsic:'execution'},
+    {k:'T',kind:'fixed',def:'bow',v:'activeBowSk'}
   ];
   // ── 데이터 헬퍼 (게임 전역을 호출 시점에 읽는다) ──
   const sk=id=>typeof _skById==='function'?_skById(id):null;
@@ -45,23 +48,50 @@
   function demoLocked(k){return typeof _DEMO_MODE!=='undefined'&&_DEMO_MODE&&typeof _DEMO_FUSE_ALLOWED!=='undefined'&&!_DEMO_FUSE_ALLOWED.has(k)}
   function hiddenKey(k){const g=_FUSE_GEM_GROUPS[k]||{};return!!g.hidden&&!_isFused(k)}
   function skName(id){
+    if(id==='roll')return L('구르기','Roll');
     if(!id)return'';const s=sk(id);
     if(s)return L(T(s.name),s.nameEn||T(s.name));
     for(const d of Object.values(SKILL_SLOT_DEFS)){if(d.info&&d.info[id])return typeof _skN==='function'?_skN(d.info[id]):d.info[id].name}
     return id;
   }
   function iconUrl(id){ // 게임 공용 아이콘 해석(_skIcon: 합체 호스트 아이콘 대체 포함)을 그대로 따른다
+    if(id==='roll')return'img/ui/item-cutouts/boots_phys_cutout.png';
+    if(id==='normal')id='fanShot';
     if(!id||typeof _skIcon!=='function')return'';
     const m=/src="([^"]+)"/.exec(_skIcon(id)||'');return m?m[1]:'';
   }
   function displayName(id){const k=groupKey(id);return k&&hostOf(k)===id?_fuseName(k):skName(id)}
   // ── 슬롯 ──
   function slotValue(s){
+    if(s.kind==='intrinsic')return s.intrinsic==='roll'&&typeof _mobilityKind==='function'&&_mobilityKind()==='bladeDash'?'bladeDash':s.intrinsic;
     if(s.kind==='num')return SKILL_SLOTS[s.idx]||null;
     if(s.kind==='ult')return ULT_SLOT||null;
     return P[s.v]||null;
   }
+  function slotKey(s){
+    const code=s.bind&&typeof BINDS!=='undefined'&&BINDS[s.bind];
+    const mouse={mouse0:'LMB',mouse1:'MMB',mouse2:'RMB'};
+    const key=mouse[code]||(code&&typeof keyName==='function'?keyName(code,true):s.k);
+    return s.intrinsic==='roll'?'↑↓←→ + '+key:key;
+  }
+  function slotCondition(s){
+    if(s.kind==='intrinsic')return L('고정','Fixed')+(s.intrinsic==='execution'&&!lv('execution')?' · '+L('습득 필요','Learn'):'');
+    if(s.def==='charge'||s.def==='ct')return L('기절 탈출','Stun escape');
+    if(slotValue(s))return s.kind==='fixed'?L('전용','Dedicated'):'';
+    const candidates=slotEligible(s),reqs=candidates.map(id=>sk(id)).filter(Boolean).map(x=>x.reqLv||0);
+    const req=reqs.length?Math.min(...reqs):0;
+    if(req>P.lv)return'Lv'+req+L(' 도달 시 해금',' to unlock');
+    return candidates.some(id=>lv(id))?L('이 슬롯에 장착','Equip to this slot'):L('스킬 습득 후 장착','Learn a skill to equip it');
+  }
+  function slotName(s){
+    const v=slotValue(s);if(v)return displayName(v);
+    if(s.kind==='ult')return T('필살기');
+    if(s.idx===4)return T('분노 폭발 스킬 전용');
+    if(s.idx===5)return T('영역 스킬');
+    return T('스킬')+' '+s.k;
+  }
   function slotEligible(s){
+    if(s.kind==='intrinsic')return[];
     const out=[];
     if(s.kind==='fixed'){const d=SKILL_SLOT_DEFS[s.def];for(const id of(d?d.skills:[]))out.push(id);}
     else if(s.kind==='ult'){for(const x of SKILL_LIST)if(x.ult)out.push(x.id);}
@@ -70,7 +100,7 @@
     return out.filter(id=>!_isAbsorbed(id)&&!(sk(id)&&sk(id).hidden&&!lv(id)&&!sk(id).reqLv));
   }
   function canEquip(s,id){
-    if(!id)return false;
+    if(!id||s.kind==='intrinsic')return false;
     if(s.kind==='fixed'){const d=SKILL_SLOT_DEFS[s.def];if(!d||!d.skills.includes(id))return false;return!sk(id)||lv(id)>=1||id==='charge'||id==='parry'||id==='normal'||id==='fireball'||id==='kiSlash'||id==='ghostWalk'}
     if(s.kind==='ult'){const x=sk(id);return!!(x&&x.ult&&lv(id)>=1)}
     return lv(id)>=1&&!_isAbsorbed(id)&&_canAssignSkillSlot(id,s.idx);
@@ -96,7 +126,7 @@
   }
   // ── 합성 제단 상태 ──
   const st={slot:6,staged:[],sel:null,trayTab:'all',dirty:true};
-  function forgeHost(){const s=SLOTS[st.slot];const v=slotValue(s);if(!v)return null;
+   function forgeHost(){const s=SLOTS[st.slot];const v=slotValue(s);if(!v||s.kind==='intrinsic')return null;
     if(isHost(v))return v;
     // SH 'charge'(기본 사슬)는 합체 모체가 아니다 — 사슬기동:충돌(chargeBoost)이 모체
     if(s.def==='charge'&&lv('chargeBoost')>=1)return'chargeBoost';
@@ -176,12 +206,15 @@
       const v=slotValue(s),b=mk('button','sf-slot',box);
       b.type='button';b.dataset.slot=i;b.setAttribute('role','tab');b.setAttribute('aria-selected',i===st.slot?'true':'false');
       if(i===st.slot)b.classList.add('on');if(!v)b.classList.add('empty');
+      if(s.kind==='intrinsic')b.classList.add('intrinsic');
       const h=v&&(isHost(v)||(s.def==='charge'&&lv('chargeBoost')>=1));
       if(h)b.classList.add('host');if(v&&groupKey(v))b.classList.add('fused');
       const disc=mk('span','sf-slot-disc',b);if(v)icon(disc,v);
-      mk('span','sf-slot-key',b,s.k);
-      mk('span','sf-slot-name',b,v?displayName(v):L('비어 있음','Empty'));
-      b.title=(v?displayName(v):L('비어 있음','Empty'))+' ['+s.k+']';
+      mk('span','sf-slot-key',b,slotKey(s));
+      mk('span','sf-slot-name',b,slotName(s));
+      mk('span','sf-slot-state',b,slotCondition(s));
+      b.title=slotName(s)+' ['+slotKey(s)+'] — '+slotCondition(s)+(s.kind==='intrinsic'?' · '+L('고정 기술은 교체할 수 없습니다','Fixed abilities cannot be replaced'):'');
+      b.setAttribute('aria-label',b.title);
       b.onclick=()=>{if(st.slot!==i){st.slot=i;st.staged=[];st.sel=null}render()};
     });
   }
@@ -210,8 +243,10 @@
     st.geo={cx,cy,R,nodeSize,W,H,nodes:[],discR,coreR:coreSize/2};
     const k=m.ready||groupKey(m.host||'');
     if(!m.host){
-      parts.core.className='sf-core empty';parts.coreName.textContent=L('슬롯이 비어 있습니다','Empty slot');parts.coreStar.textContent='';
-      parts.altarHint.textContent=L('아래에서 스킬을 끌어 위의 슬롯에 넣으세요','Drag a skill from below onto a slot above');
+      const s=SLOTS[st.slot],fixed=s.kind==='intrinsic',id=fixed?slotValue(s):null;
+      parts.core.className='sf-core'+(fixed?'':' empty');parts.core.replaceChildren();if(id)icon(parts.core,id,'sf-core-ico');
+      parts.coreName.textContent=fixed?slotName(s):L('슬롯이 비어 있습니다','Empty slot');parts.coreStar.textContent='';
+      parts.altarHint.textContent=fixed?L('고정 기술은 교체할 수 없습니다','Fixed abilities cannot be replaced'):slotCondition(s);
       return;
     }
     const ring=m.set.length>1?m.set:[];
@@ -306,8 +341,8 @@
     const s=SLOTS[st.slot],g=st.geo;
     // 제단 오른쪽 위 명패: 넣을 수 있는 스킬 [키] — 왼쪽 위 모체 명패와 대칭
     parts.fieldHead.replaceChildren();
-    mk('span','sf-field-title',parts.fieldHead,L('넣을 수 있는 스킬','Skills for this slot')+'  ['+s.k+']');
-    mk('span','sf-field-sub',parts.fieldHead,L('끌어서 위 슬롯에 장착 · 빛나는 재료는 제단으로','Drag to a slot to equip · glowing materials go to the altar'));
+    mk('span','sf-field-title',parts.fieldHead,(s.kind==='intrinsic'?L('고정','Fixed'):L('넣을 수 있는 스킬','Skills for this slot'))+'  ['+slotKey(s)+']');
+    mk('span','sf-field-sub',parts.fieldHead,s.kind==='intrinsic'?L('고정 기술은 교체할 수 없습니다','Fixed abilities cannot be replaced'):L('끌어서 위 슬롯에 장착 · 빛나는 재료는 제단으로','Drag to a slot to equip · glowing materials go to the altar'));
     parts.orbs.replaceChildren();fx.orbs=[];fx.edges=[];
     const items=orbItems(m),list=[...items.values()];
     const edges=orbEdges(m,items);
@@ -474,21 +509,31 @@
   }
   function renderInfo(){
     const box=parts.info;box.replaceChildren();
-    const id=st.sel||forgeHost();
+    const selected=SLOTS[st.slot],intrinsic=selected.kind==='intrinsic';
+    const id=st.sel||(intrinsic?slotValue(selected):forgeHost());
     if(!id){mk('div','sf-info-empty',box,L('스킬을 고르면 정보가 표시됩니다','Select a skill to see details'));return}
     const x=sk(id);
     const head=mk('div','sf-info-head',box);icon(head,id,'sf-info-ico');
     const ht=mk('div','sf-info-title',head);mk('div','sf-info-name',ht,displayName(id));
     const k=groupKey(id);
     mk('div','sf-info-sub',ht,(k?_fuseName(k)+' · ':'')+(x?(L('Lv ','Lv ')+lv(id)+' / 20'):''));
-    if(x){mk('p','sf-info-desc',box,L(x.desc||'',x.descEn||x.desc||''));}
+    if(x){
+      let desc=L(x.desc||'',x.descEn||x.desc||'');
+      // 일부 원본 마법 설명의 스왑 전 E/RMB 안내만 현행 입력으로 표시한다.
+      if(SKILL_SLOT_DEFS.magic&&SKILL_SLOT_DEFS.magic.skills.includes(id))desc=desc.replace(/\b(?:E|RMB)\b/g,slotKey(SLOTS.find(s=>s.def==='magic')));
+      mk('p','sf-info-desc',box,desc);
+    }
     else{for(const d of Object.values(SKILL_SLOT_DEFS)){if(d.info&&d.info[id]){mk('p','sf-info-desc',box,_skD(d.info[id]));break}}}
+    if(id==='roll')mk('p','sf-info-desc',box,L('방향키와 함께 사용 · 기절 탈출','Use with movement keys · stun escape'));
+    if(intrinsic)mk('p','sf-info-fixed',box,L('고정 기술은 교체할 수 없습니다','Fixed abilities cannot be replaced'));
+    if(selected.def==='charge'||selected.def==='ct')mk('p','sf-info-fixed',box,L('기절 탈출','Stun escape')+' ['+slotKey(selected)+']');
+    if(selected.intrinsic==='execution')mk('p','sf-info-fixed',box,L('그로기 보스 전용','Groggy bosses only'));
     if(x){
       const c=_skCtx(x);
       const row=mk('div','sf-info-cost',box);
-      if(!c.learned)mk('span','',row,L('습득 ','Learn ')+'SP '+x.spCost+(x.matCost?(' · '+L('악의 ','Malice ')+_malCost(x.matCost)):''));
+      if(!c.learned)mk('span','',row,L('습득 ','Learn ')+'SP '+x.spCost+(x.matCost?(' · '+L('악의구슬 ','Malice Sphere ')+_malCost(x.matCost)):''));
       else if(c._isFuseUp)mk('span','',row,L('합성 강화 ','Fusion up ')+'SP '+c._fuseUpSp);
-      else mk('span','',row,L('강화 ','Upgrade ')+'SP '+c._singleUpSp+(x.upMat?(' · '+L('악의 ','Malice ')+_malCost(x.upMat)):''));
+      else mk('span','',row,L('강화 ','Upgrade ')+'SP '+c._singleUpSp+(x.upMat?(' · '+L('악의구슬 ','Malice Sphere ')+_malCost(x.upMat)):''));
       if(c.learned&&c.slv>=c._skLvLock&&c.slv<20)mk('span','sf-warn',row,'Lv'+(c._skLvLock*50)+L(' 도달 시 해금',' to unlock'));
       const btns=mk('div','sf-info-btns',box);
       const up=mk('button','sf-btn sf-btn-fire',btns,c.learned?L('강화 +','Upgrade +'):L('습득','Learn'));up.type='button';
@@ -506,10 +551,12 @@
         b.onclick=()=>{for(const x of group(id))if(!st.staged.includes(x))st.staged.push(x);if(three)three.drop();render();const m2=forgeModel();if(m2.ready)doFuse(m2.ready)}}}
     if(!acts.childElementCount)acts.remove();
     const res=mk('div','sf-info-res',box);
-    res.textContent='SP '+P.sp+'  ·  '+L('악의 ','Malice ')+(G.mats||0).toLocaleString()+'  ·  LV '+P.lv;
+    res.textContent='SP '+P.sp+'  ·  '+L('악의구슬 ','Malice Sphere ')+(G.mats||0).toLocaleString()+'  ·  LV '+P.lv;
   }
   function renderRoad(m){
     const box=parts.road;box.replaceChildren();
+    const empty=!m.host||!m.keys.length;box.hidden=empty;parts.mid.classList.toggle('sf-no-road',empty);
+    if(empty)return;
     mk('div','sf-road-title',box,L('합성 로드맵','Fusion Roadmap'));
     if(!m.host||!m.keys.length){mk('div','sf-empty',box,L('이 스킬은 합성 계열이 없습니다','No fusion line for this skill'));return}
     for(const k of m.keys){
@@ -614,12 +661,13 @@
       const s=SLOTS[i],v=slotValue(s);return{...p,icon:iconUrl(v),on:i===st.slot,empty:!v,host:b.classList.contains('host'),fused:b.classList.contains('fused')}});
     const ar=parts.altar.getBoundingClientRect();
     const m=forgeModel(),k=m.ready||groupKey(m.host||'');const g=_FUSE_GEM_GROUPS[k]||{};
+    const focus=m.host||(SLOTS[st.slot].kind==='intrinsic'?slotValue(SLOTS[st.slot]):null);
     const nodes=(st.geo?st.geo.nodes:[]).map(n=>({id:n.id||'ghost',kind:n.kind,x:n.x+ar.left-base.left,y:n.y+ar.top-base.top,icon:iconUrl(n.id)}));
     const coreP=rel(parts.core.getBoundingClientRect());
     three.setState({width:base.width,height:base.height,slots,
       // 원판 중심 = 소켓 고리 중심(st.geo.cx/cy). 영역 정중앙을 쓰면 아래 안내 띠만큼 어긋나 고리와 원판이 틀어진다
       altar:{x:ar.left+(st.geo?st.geo.cx:ar.width/2)-base.left,y:ar.top+(st.geo?st.geo.cy:ar.height/2)-base.top,R:st.geo?st.geo.R:120,nodeR:st.geo?st.geo.nodeSize/2:40,
-        core:{...coreP,icon:iconUrl(m.set.length>1&&k?hostOf(k):m.host),ready:!!m.ready,fused:!!k,empty:!m.host},
+        core:{...coreP,icon:iconUrl(m.set.length>1&&k?hostOf(k):focus),ready:!!m.ready,fused:!!k,empty:!focus},
         color:g.color||'#ec7958',color2:g.color2||'#ffb070',nodes}});
   }
   // ── 공개 ──
@@ -635,7 +683,7 @@
     const m=forgeModel();
     // 대기 재료 정합성: 이미 흡수/세트에 들어간 것 제거
     st.staged=st.staged.filter(id=>!m.base.includes(id));
-    renderSlots();layoutAltar(m);renderInfo();renderRoad(m);
+    renderSlots();renderRoad(m);layoutAltar(m);renderInfo();
     load3d();
     requestAnimationFrame(()=>{renderAltarGeoOnly();layout3d()});
   }

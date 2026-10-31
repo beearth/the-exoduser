@@ -11,8 +11,8 @@
 | SP | `P.sp` 투자 포인트. 스탯·근성·스킬 습득/강화/합체에 사용 | `game.html:29018,3913–3924,47200–47282,51204–51274` |
 | AP | `P.ap` 패시브 투자 포인트. SP와 별도 잔액 | `game.html:29018,43153,51269–51274`; `stat-panel-ui.js:4–23` |
 | CP | `calcCP()`로 산출하는 **전투력**. 화폐·지갑·교환 재화가 아님 | `game.html:49487–49510,60325` |
-| 악의 | 실제 공유 소비 재화 `G.mats`. 장비 경제·HP 추출·스킬 등에서 사용 | `game.html:28080–28091,28209–28234,48520–48536` |
-| 영구 진행 | 확인된 것은 캐릭터 저장 진행과 공유 악의·창고. 뉴게임+·환전·환생 메타 계층의 실행 경로는 **미확인** | 저장/복원 `3533–3811`; `docs/3.2메타·진행시스템/3.2메타·진행시스템.md:3,20–25` |
+| 악의구슬 | 실제 공유 소비 재화 `G.mats`. 장비 경제·HP 추출·스킬 등에서 사용 | `game.html:28080–28091,28209–28234,48520–48536` |
+| 영구 진행 | 확인된 것은 캐릭터 저장 진행과 공유 악의구슬·창고. 뉴게임+·환전·환생 메타 계층의 실행 경로는 **미확인** | 저장/복원 `3533–3811`; `docs/3.2메타·진행시스템/3.2메타·진행시스템.md:3,20–25` |
 
 작업 요청의 “화폐 SP/CP”와 개발 계획의 같은 표현을 그대로 데이터 모델로 옮기면 CP 지갑을 잘못 만들게 된다. 기존 화면의 SP/CP 표기는 보존하며 의미만 구분한다. `cp()`라는 이름은 망토 장비 accessor에도 쓰이므로 `calcCP()`와 구별한다.
 
@@ -42,7 +42,7 @@
 | `P._passiveQueue` | 유효 패시브 키의 순서 목록, 최대260개 | `51219–51233,51251–51260` | 예약/취소·레벨업 후 자동 투자. 저장 키 `passiveQueue` |
 | `P._transLvDate/_transLvCount` | 로컬 날짜·그날 초월 레벨업 횟수 | `43122–43127,43154` | 날짜 변경 때 count0, 도달Lv>1000이면 count+1 |
 | `P._apBossCleared/_goddessGift/_lvStatMigrated` | 레거시 저장 필드 | `3546,3612` | 전자는 복원 확인. 현재 신규 지급·마이그레이션 실행 소비는 검색상 **미확인** |
-| `G.mats` | 악의 잔액. 보통 신규 `_loadSharedMats()||1000`, 일반 데모 신규1000 | `62126,62476,63956,64105` | 보상·수집·소비, 공유 저장 |
+| `G.mats` | 악의구슬 잔액. 보통 신규 `_loadSharedMats()||1000`, 일반 데모 신규1000 | `62126,62476,63956,64105` | 보상·수집·소비, 공유 저장 |
 | `UPGRADES` | `{hp,atk,def,mp,st,spd}:0`, “이전 호환” 선언 | `28069–28070` | 저장·복원·초기화는 있음. `UPGRADES.*` 성장 효과 실행 소비는 **미확인** |
 | `POT_LV` | `{hp:0}`, 일반 UI 최대10 | `28070–28071,50690–50705` | 물약 강화. TRACE-QUICKSLOT 접점 |
 | `INV.equipped/bag` | 장비 `enh`, `rarity`, `tier`, `_enhRefund`, 유물/홈 | `16302–16344,28185–28201,3549–3551` | 장착·이전·분해·강화. TRACE-INVENTORY 접점 |
@@ -85,14 +85,14 @@
 
 | 저장/복원 분기 | 행·실제 경계 | 차이 |
 |---|---|---|
-| 클라우드 캐릭터 | `dbSave:3533–3585`, `dbLoad:3588–3594`, `dbRestore:3603–3811` | SP/AP/mats 정규화 `3501–3506`; 공유 악의·창고는 별도, 캐릭터 `game.mats=0` |
+| 클라우드 캐릭터 | `dbSave:3533–3585`, `dbLoad:3588–3594`, `dbRestore:3603–3811` | SP/AP/mats 정규화 `3501–3506`; 공유 악의구슬·창고는 별도, 캐릭터 `game.mats=0` |
 | 로컬 서버 | `63899–63940` | `/api/save`, 실패 시 `hellsave_<slot>`; 메타 필드 `63905–63918` |
 | 독립 웹 | `64056–64092` | `hellsave_web`; 메타 필드 `64062–64075` |
 | 일반 데모 | `62110–62160`, 복원 `62164–62175` | `hellsave_demo`; **game.mats에 실제 잔액 저장**. 일반 공유 저장과 임의 통합 금지 |
 | Demo500 QA | `61993–62052` | `hellsave_demo500`; SP/AP·슬롯 위주 복원, 일반 분기와 다른 초기/보정. 공개 신규 상태로 사용 금지 |
 | 초월 XP 구버전 복구 | `_restoreExpProgress:3597–3601` | 정상 저장 maxExp 유지. Lv1000+ 비정상 값만 원본 곡선으로 복구. **보호** |
 | 구 근성·패시브 복구 | `3684–3715` | 삭제 패시브 AP 환급, 구 스킬 이관, `legacySpent=g*3+(g-1)*g/2`, SP 환급 `max(0,legacySpent-g)`. **보호** |
-| 공유 악의 이관 | `3721–3737` | 옛 캐릭터 잔액과 공유 잔액은 **합산이 아니라 max**, 옛 `d.game.mats=0`. **보호** |
+| 공유 악의구슬 이관 | `3721–3737` | 옛 캐릭터 잔액과 공유 잔액은 **합산이 아니라 max**, 옛 `d.game.mats=0`. **보호** |
 | 공유 창고·결정 복구 | `3738–3769` | 창고 최대200, 결정 품질/홈·upgrades/potLv 이관. **보호** |
 
 `_loadSharedMats:48527`은 음수/비유한값 방어·안전 정수 상한을 두며 `_saveSharedMats:48529`는 `floor→0이상→Number.MAX_SAFE_INTEGER(9,007,199,254,740,991)`로 제한한다. 같은 값 저장/POST는 생략한다. 로컬 `/api/mats` POST/GET은 `48533/48536`, `_matsDirty:48535`는 3000ms 디바운스, 변경 감지는 `61927`이다. 이 저장 경계는 TRACE-SAVE에 전달할 **보호 의존**이다.
@@ -162,7 +162,7 @@ lv >=1000: floor(5,000,000 + (lv-999)^2 * 10,000)
 | ST 예외 | `recalcSt`는 raw `STATS.dex*2` 사용. 유효 DEX 전체를 여기 대입하면 원본과 달라짐. 근성의 레벨분은 별도 합산 | `16425–16431` |
 | 성장의 외부 소비 | 적 레벨 하한 `max(1,P.lv+offsets)`; 레벨 부활력 `min(100,floor(P.lv*.03))` | `31125–31130`; `43741–43747` **부활 담당/보호 접점** |
 
-## 3. 악의 수입·소비·강화 경제
+## 3. 악의구슬 수입·소비·강화 경제
 
 ### 3.1 공유 비용·강화·분해의 순수 규칙
 
@@ -185,15 +185,15 @@ lv >=1000: floor(5,000,000 + (lv-999)^2 * 10,000)
 |---|---|---|
 | 수동 강화 | 17장착칸, `isMax=false`. 클릭 시 현재 견적/잔액 재검사→성패 무관 비용 차감→성공만 enh+1. 실패 파괴·단계 하락 없음 | `50582–50645` |
 | AI 강화 | 아이템 없음/이미 목표/비양수 budget/잔액<budget 거부. 예산 내 각 시도에서 차감 후 성공판정 RNG1회, 성공만 n++. 종료 시 mats−used/item.enh=n | `28123–28138` |
-| AI UI·후처리 | 기대예산 `ceil(sum(cost/rate))`를 보유 악의로 제한. target 기본 현재+100, 입력 UI max9999. applyStats/renderForge, used>0일 때 저장 | `28139–28184,50646–50687`. UI max는 알고리즘 강화 상한이 아님 |
+| AI UI·후처리 | 기대예산 `ceil(sum(cost/rate))`를 보유 악의구슬로 제한. target 기본 현재+100, 입력 UI max9999. applyStats/renderForge, used>0일 때 저장 | `28139–28184,50646–50687`. UI max는 알고리즘 강화 상한이 아님 |
 | 장착 강화 이전 | old.enh>0이면 이전 비용을 내야 교체. new.enh=old.enh (**max 아님**), old._enhRefund 기록, old.enh=0 | `16302–16318`; 유물 이전 `16320–16344` 별도 |
 | 공격 강화 소비 | weapon/bow/helmet의 ATK 참조에 enh*.25 flat | `28770–28772` |
 | 방어·자원 강화 소비 | DEF/eDef는 shield/armor/cape 합강*.25 절삭, HP는 gloves/pants/boots 강당1, MP는 bracelet/necklace/headband/headband2/ossuary 강당.2, ST는 ring1/ring2/belt 강당.2 | `43508–43512,27916–27931,16429–16431` |
-| 인벤 분해 | 단품은 1000ms 재진입 제한·fav 차단·유한/비음수 확인→악의 가산→가방 삭제→저장. 일괄은 확인 후 현물 재검사, fav/장착 제외 | `16381–16396,50359–50407`; 대장간 `50709–50786` |
+| 인벤 분해 | 단품은 1000ms 재진입 제한·fav 차단·유한/비음수 확인→악의구슬 가산→가방 삭제→저장. 일괄은 확인 후 현물 재검사, fav/장착 제외 | `16381–16396,50359–50407`; 대장간 `50709–50786` |
 | 펫 분해 | 필터 이하/가방 가득 찬 비전설은 salvage, 최소1. rarity>=4는 바닥 보존 | `41445–41464` |
 | 유물 강화 | 효과 `base*starMul*(1+enh*.1)*(.75+.5*q/100)`, starMul `[1,2,3.5,6,10]`, costMul `[1,1.5,2.5,4,7]`; 비용 `_malCost(ceil(500*(1+enh*.5)*costMul))` | `15276–15300` |
-| 유물 합성·소비 | 같은 id/star 재료1+악의로 강화(enh<20), 3개 합성→성급+1/enh0/q평균. 수동·일괄 별도 | `15347–15379,50869–51021` |
-| 유물 분해·제작 | dust 비용 `[50,200,500,1500,5000]`; 분해는 해당 성급 비용50% 절삭(강화/q 환급 없음). 악의25로 HP/MP/ST 1성 제작 | `15380,51024–51077` |
+| 유물 합성·소비 | 같은 id/star 재료1+악의구슬로 강화(enh<20), 3개 합성→성급+1/enh0/q평균. 수동·일괄 별도 | `15347–15379,50869–51021` |
+| 유물 분해·제작 | dust 비용 `[50,200,500,1500,5000]`; 분해는 해당 성급 비용50% 절삭(강화/q 환급 없음). 악의구슬25로 HP/MP/ST 1성 제작 | `15380,51024–51077` |
 | 소켓 공명 | q1..40 bronze/41..80 silver/81..100 gold **3등급 일치**. 과거10티어 설명과 구분 | `15308–15325` |
 
 ### 3.2 악의·SP 수입/소비 진입 전수 분류
@@ -202,7 +202,7 @@ lv >=1000: floor(5,000,000 + (lv-999)^2 * 10,000)
 
 | 분류 | 경로·실제 값 | 원본 행 |
 |---|---|---|
-| 처치 공통 | 모든 처치 기본 악의+4. 콤보/난이도 보너스는 별도 | `43098–43113` |
+| 처치 공통 | 모든 처치 기본 악의구슬+4. 콤보/난이도 보너스는 별도 | `43098–43113` |
 | 정예·보스 | `floor((12+stage*3)*12*(1+elite.dropBonus)*(1+goldBonus)*_maliceMul)` 및 `floor((2+floor(rand*2))*10*comboBonus*2)` 추가 | `43076–43108`; `_maliceMul=1+pMalice*.08` at `27888` |
 | 레어·도난 반환 | 91:50+floor(stage*3), 93:30+floor(stage*2), 96:훔친 금액×2, 99:200+floor(stage*5) | `42977–42990,43008–43012,43032–43038` |
 | 슬라임 | 실제 `floor32(matDrop*2)` 반환. “30%” 주석과 구분 | `43066–43068` |
@@ -210,7 +210,7 @@ lv >=1000: floor(5,000,000 + (lv-999)^2 * 10,000)
 | 상자·오브젝트·잔해 | 오브젝트1..3, 상자 기본5+floor(stage*2)+HP물약2, 잔해 `[3,8,15]+floor(stage*[.5,1,2])` | `32837–32904` |
 | 바닥 수집 | `matVal*(1+goldBonus)*_maliceMul` 절삭, 플레이어/펫 경로 | `32950,32975,41463` |
 | 패링 보상 | **Q/E 보호 접점** | `38542–38543` — 계약·분류·배율 변경안 제외 |
-| 자동 석궁 | 악의1/발 | `28675–28689` |
+| 자동 석궁 | 악의구슬1/발 | `28675–28689` |
 | 기술 소비 | chainBlast `_malCost(20)`, boneStorm 직접12 감산(max0); 다른 개별 스킬은 `_malCost` 호출부 | `32574–32575,36425,45109,45170,45278,45316,45512,46167,46454`. **Q/E 소비는 보호** |
 | 상인·도난 | 상인 `_malCost(100+floor(stage*5))`, 영웅70%/전설30%; 탐욕사도 접촉 `max(1,floor(mats*.1))`, cd120 | `40295–40306,40358–40368` |
 | 가방 확장 | `_malCost(floor(BAG_MAX/6))`, +6칸 | `50236–50245` — TRACE-INVENTORY 접점 |
@@ -225,7 +225,7 @@ lv >=1000: floor(5,000,000 + (lv-999)^2 * 10,000)
 | 클라우드/로컬/웹 신규 | mkP 초기값, mats=`_loadSharedMats()||1000`(0잔액도1000 폴백) | `62465–62481,63944–63956,64094–64112` |
 | DemoTest/개발 캐릭터 | 일반 상태가 아닌 고레벨·대량 재화. `_startDemoTest`의 실제 G.mats 선언999999와 별도 후속 초기화/저장 분기를 일반 신규값에 혼합하지 않음 | `61935–61955,62022–62052`; `_startTestChar:62350–62409` |
 | FORGE_LAB | Lv1000/SP99999/AP200/mats99999999, save no-op | `62217–62238` |
-| 전체 진행 초기화 버튼 | 현재 캐릭터 저장 DELETE/DB data{} 또는 hellsave_web 삭제 후 로비. 공유 악의·창고 삭제 경로는 확인되지 않음 | `49449–49464` — 파괴 버튼 실행 안 함 |
+| 전체 진행 초기화 버튼 | 현재 캐릭터 저장 DELETE/DB data{} 또는 hellsave_web 삭제 후 로비. 공유 악의구슬·창고 삭제 경로는 확인되지 않음 | `49449–49464` — 파괴 버튼 실행 안 함 |
 
 ## 4. CP·HUD·로비 UI
 
@@ -302,7 +302,7 @@ lv >=1000: floor(5,000,000 + (lv-999)^2 * 10,000)
 | `28102–28103` | 이전100강=10만악의 | `_malCost` 적용 실제5만 | 할인 전 주석과 구분 |
 | `50608–50621` | Forge ATK 강화량을% 표시 | `28770–28772` flat 가산 | UI 표시 불일치 후보, 밸런스 수정으로 해결 금지 |
 | `49758–49759` | tooltip ATK는flat, DPS는곱셈 | 실전 참조식은flat | 원본 내부 표시 혼재, 별도 UI 검토 |
-| `43066–43067` | 슬라임 악의30% 회수 | 실제 matDrop×2 | 주석/계산 불일치, 부활 담당 경계 |
+| `43066–43067` | 슬라임 악의구슬30% 회수 | 실제 matDrop×2 | 주석/계산 불일치, 부활 담당 경계 |
 
 ## 6. Godot 실제 이식 의존·미이식 경계
 
@@ -315,7 +315,7 @@ lv >=1000: floor(5,000,000 + (lv-999)^2 * 10,000)
 | 레벨 증가·곡선 | State `:491–525`; `:505–506`에 일반식 inline, `:507–510` SP/AP | 위 테스트 `:162–176`: 신규Lv1/0/15에 final20→Lv2/exp5/max20/SP3/AP1 | **999→1000의 maxExp가 일반식142679 vs 원본5010000**. 기존 테스트에 이 경계 단정 미확인 |
 | 초월 미이식 가드 | State `:494` EXP 가산 후 `:497` while 진입, `:499–500`에서 lv>=1000이면 미이식 거부 | 관련 경계 전용 테스트 미확인 | **함수 입구의 무조건 거부가 아님**. 임계 미만 EXP는 누적 가능, 임계 도달 거부 때도 이미 EXP는 써진다. §8에서 이 순서 보존 |
 | 레벨업 자원·해금 | State `:513`→`godot/scripts/native_source_resource_authority.gd:169–180`; `:520–522` 300/700 키 | p2001c `:175–176` HP20% 회복 | 전체 자원·300/700 각 경계 검수, 날짜/예약큐/연출/저장은 별도 |
-| 악의 | State `:147–149` 신규1000, `:447–454` 비용 차감, `:476–485` hp물약 악의 변환. `native_skill_slots.gd:247,325` 소비 호출 | p2001c `:153–161,255–258`, `test_p2001e_natural_lmb.gd:114` | 공유 악의 저장·서버 동기화 미이식. native 초기1000을 계정 잔액 로드와 동일시 금지 |
+| 악의구슬 | State `:147–149` 신규1000, `:447–454` 비용 차감, `:476–485` hp물약 악의구슬 변환. `native_skill_slots.gd:247,325` 소비 호출 | p2001c `:153–161,255–258`, `test_p2001e_natural_lmb.gd:114` | 공유 악의구슬 저장·서버 동기화 미이식. native 초기1000을 계정 잔액 로드와 동일시 금지 |
 | 악의·성장 HUD | `godot/scripts/hud.gd:832–833,1139–1149` 현재 State 값 표시 | `godot/tests/test_p2002a_hud.gd:93`, `test_p2002b_minimap_corner.gd:153–178` | 표시·획득과 투자/소비 UI는 별개 |
 | CP P2-002b | `hud.gd:1089–1121` 원본식→`:1148–1149` 표시 | `test_p2002b_minimap_corner.gd:153–178`, 독립 재계산·레벨업 후 표시 | 기존 파생 계산 있음. CP 지갑·신규 CP 재화 모듈 불필요 |
 | 근성 계획·환불 | `godot/port_modules/save_adapter/raw_grit_restore.gd:5,44–92` initialize/restore/apply_plan/refund_all | `test_native_main_source_starter_state.gd:129,172`의 **간접 의존** | 반환 `main_connected:false`, 해당 투자 writer의 실제 caller 검색상 없음. helper 존재≠성장패널 연결 |
@@ -343,13 +343,13 @@ lv >=1000: floor(5,000,000 + (lv-999)^2 * 10,000)
 | 7 / META-07 | **강화 1회 메모리 거래** 생성 `native_meta_enhancement_transaction.gd`, `test_meta_enhancement_transaction.gd`; State에 쓸 경우 새 메서드의 mats/enh 범위만 별도 등록 | `50582–50645`; live견적→잔액검사→성패무관차감→성공만+1 | 부족액이면 RNG/차감0, paid시 성공판정 RNG1, `<rate` 성공/같으면실패, 실패enh유지·파괴0. 원본에 없는 장착 identity 재검증/낡은선택거부는 추가하지 않음. `EXODUSER-TraceMeta-EnhAttempt-Isolated-20261020` | META-02, **실제 INV 장비 쓰기 owner 선행**. writer 없으면 이 단위 연결 HOLD; 임시 가짜 equipped provider 금지. 저장은 별도보호 의존 |
 | 8 / META-08 | **장착 강화 이전 거래** 생성 `native_meta_enhancement_transfer.gd`, `test_meta_enhancement_transfer.gd`; 실제 equip caller는 TRACE-INVENTORY 후속 담당 exactscope | `16302–16344`; 비용500n·new.enh=old.enh·old.enh0·legacy_refund 기록 | 잔액부족교체0, old0/positive, 새기존강화보다낮아져도source대입유지, 유물전승은별도. `EXODUSER-TraceMeta-Transfer-Isolated-20261020` | META-02·03·07/장착 owner. 새/구 아이템 identity·공용 INV 충돌. 세이브 형식 **보호** |
 | 9 / META-09 | **AI 강화 반복 정책** 생성 `native_meta_ai_enhancement.gd`, `test_meta_ai_enhancement.gd` | `28123–28184,50646–50687`; target/budget gate, 매paid try 성공판정 RNG1, sum(cost/rate)ceil 예산·기본+100 | 예산경계·실패유지·목표도달종료·미달used/tries·미지출잔액유지. `EXODUSER-TraceMeta-AiEnh-Isolated-20261020` | META-02·07. 주입 RNG는 실제 owner 사용, default0/고정성공 금지. UI9999를 강화max로 만들지 않음 |
-| 10 / META-10 | **유물 강화·합성·분해 경제 정책** 생성 `native_meta_crystal_economy.gd`, `test_meta_crystal_economy.gd` | `15276–15380,50869–51077`; 별/비용배율·enh<20·재료1·3합성·dust표·q평균·악의25 | 같은id/star·live 입력의 재료/악의부족 조건, 강화q유지·합성enh0/q평균 round·1..100 clamp·먼지50%·삼등급공명. 낡은 클릭의 재료 재검색 실패를 새 거부/환급으로 일반화하지 않음(`50944–50948`). `EXODUSER-TraceMeta-CrystalEco-Isolated-20261020` | META-02, 현재 crystal 효과 provider·TRACE-INVENTORY. 정책별로 테스트 묶고 실제 배열 쓰기는 해당 owner 선행 |
+| 10 / META-10 | **유물 강화·합성·분해 경제 정책** 생성 `native_meta_crystal_economy.gd`, `test_meta_crystal_economy.gd` | `15276–15380,50869–51077`; 별/비용배율·enh<20·재료1·3합성·dust표·q평균·악의구슬25 | 같은id/star·live 입력의 재료/악의구슬부족 조건, 강화q유지·합성enh0/q평균 round·1..100 clamp·먼지50%·삼등급공명. 낡은 클릭의 재료 재검색 실패를 새 거부/환급으로 일반화하지 않음(`50944–50948`). `EXODUSER-TraceMeta-CrystalEco-Isolated-20261020` | META-02, 현재 crystal 효과 provider·TRACE-INVENTORY. 정책별로 테스트 묶고 실제 배열 쓰기는 해당 owner 선행 |
 | 11 / META-11 | **성장 패널 소비 연결** 예정 생성 `godot/scripts/native_meta_growth_panel.gd`, `godot/scenes/meta_growth_panel.tscn`, `test_meta_growth_panel.gd`; Main/HUD 열기 접점은 정확 배정 필요 | `3035–3076,51204–51279,51327–51336`; SP/AP/초안확인·환불·예약·원본표시 | 적용전 base/live plan 재검사·취소무변경·같은 plan 재적용 거부/중복차감0·source잔액갱신(별도 거래ID 저장소 아님). `EXODUSER-TraceMeta-GrowthUi-Isolated-20261020` | META-04·05, 실제 point writer/기존자원소비 연결 선행. 실화면/키보드/패드 인수는 별도. 세이브 자동 호출 연결은 **보호/HOLD** |
 | 12 / META-12 | **클리어 진행·기록 정책** 생성 `native_meta_clear_progress.gd`, `test_meta_clear_progress.gd`; exit/world 연결은 별도 | `41893,41919–42003,42024–42067`; !stageCleared gate·SP10·90%타임·점수/랭크/최고기록·hellCleared | 89.9/90%·동률/최단·최고점수·랭크독립병합·동일클리어중복0. `EXODUSER-TraceMeta-Clear-Isolated-20261020` | P3-003 지역+P3-002 분모/보스/출구 선행. 기록·해금 배열은 **저장 보호**. 지급원인/호출owner 확인 전 월드 연결 금지 |
 
 단위 2~10의 `native_*.gd`는 `godot/scripts/`, `test_*.gd`는 `godot/tests/` 아래다. 경로 표에서 파일명이 겹치지 않도록 고정했다. 단위 11의 테스트도 `godot/tests/`다. 새 파일 경로의 충돌은 다음 착수 시 재검색한다.
 
-**별도 선행/HOLD:** 공유 악의 repository·캐릭터 저장/복원·기존 세이브 마이그레이션·새 로비 저장 형식은 이식 단위로 설계하지 않는다(**보호**, TRACE-SAVE 의존). 물약 강화/자동추출은 TRACE-QUICKSLOT, 인벤 수집·분해 삭제·장착은 TRACE-INVENTORY, 죽음/부활 UI와 실재시도 XP 차감은 TRACE-REVIVE-SHIELD 접점이다. 그 담당이 확정한 원본 계약을 받아야 실제 끝까지 지속되는 메타 흐름이 된다. 순수 정책 fixture 통과만으로 저장·UI·전체 경제 인수를 선언하지 않는다.
+**별도 선행/HOLD:** 공유 악의구슬 repository·캐릭터 저장/복원·기존 세이브 마이그레이션·새 로비 저장 형식은 이식 단위로 설계하지 않는다(**보호**, TRACE-SAVE 의존). 물약 강화/자동추출은 TRACE-QUICKSLOT, 인벤 수집·분해 삭제·장착은 TRACE-INVENTORY, 죽음/부활 UI와 실재시도 XP 차감은 TRACE-REVIVE-SHIELD 접점이다. 그 담당이 확정한 원본 계약을 받아야 실제 끝까지 지속되는 메타 흐름이 된다. 순수 정책 fixture 통과만으로 저장·UI·전체 경제 인수를 선언하지 않는다.
 
 ## 8. 1번 단위 구현 지시서 — META-01
 
