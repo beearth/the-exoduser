@@ -28,6 +28,7 @@ namespace Exoduser.UnityPort
                 if(!e.Alive||e.IsBoss||!enemies.TryGetValue(e.Id,out var ev))continue;
                 float target=(e.X-aim.x*100)*(e.X-aim.x*100)+(e.Y+aim.y*100)*(e.Y+aim.y*100);
                 if(target<nearest){nearest=target;a2TargetEnemy=e.Id;}
+                if(NativeHd2D.Enabled&&(NativeHd2D.IsActor(ev.body)||NativeHd2D.IsActor(ev.walk)))continue; // preserve target ID; HD2D owns the only actor contact shadow
                 var vp=r3Cam.WorldToViewportPoint(Point(e.X,e.Y));if(vp.z<=0||vp.x<-.1f||vp.x>1.1f||vp.y<-.1f||vp.y>1.1f)continue;
                 float radius=Mathf.Clamp(e.Radius*.012f,.16f,.48f),x=e.X/100,z=-e.Y/100;
                 int n=a2EnemyShadowVertices.Count;

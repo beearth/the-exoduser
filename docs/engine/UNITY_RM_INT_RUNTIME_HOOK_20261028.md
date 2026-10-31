@@ -427,6 +427,15 @@ A2 이전824b67a99 실제빌드599c790b/M1dab0f945 23단계 통과, 촬영adc6e9
 
 일반Desktop은 `I:/EXODUSER-Storage/demo-art/hero/night-anchor-20261031/build/EXODUSER-Unity.exe`, 인자 `-force-d3d11 --remodel3d`, 작업폴더는EXE부모·아이콘EXE,0이다. 이전게임대조소스bce000073이현재제품조상임을확인한뒤현재링크SHA를CAS검사하고이전링크동일byteI백업→전달→별도PowerShell프로세스4속성/Runtime·Core·EXE SHAreadback을완료했다. 앱자동기동/사용자세이브쓰기0. 근거 night-anchor-20261031/validated-adoption.json·desktop-delivery.json·desktop-readback.json. Mac실제반영/실행은pending, 전체아트RETOUCH및위생성씬이전byte복구미완료는유지한다.
 
+## 2026-10-31 HD-2D 방향 확정 — 현행 표현 전환
+
+[본 적용 계약](UNITY_HD2D_RUNTIME_20261031.md)에 따라 현재 후보는 픽셀 스프라이트를 기본으로 사용한다. NativeHeroView 3D 연결 코드는 보존하고 --legacy-models에서만 생성한다. 캐릭터만 원본 알파 발선·출력1화소 스냅·URP 조명·접지 그림자를 적용한다. 드루이드 원본 시트의 중복 additive 발광은 기본 해제한다. 아래의 과거 3D 후보 검수와 Desktop 영수증은 당시 입력의 이력이며 HD2D 후보의 검증을 대신하지 않는다. 현 후보 Player·공통통합·Desktop은 아직 미완이다.
+
+
+### 순수 HD-2D 985 같은빌드 재검수
+
+[현재1단계실물검수](UNITY_HD2D_RUNTIME_20261031.md#순수1단계-같은빌드-재검수--985daefcf-r2)의새build35ab5195·M1ecddc37a(23/23)·Player9bf3b4da(336PNG)·E/LMB98695705(54PNG/7checks0)로순수제품입력을검수했다. 원본1x선택프레임의배우전환·발선/재질·표시연결만범위한정PASS/전체아트RETOUCH. 기존3D코드off보존, 리마스터채택0. R5맵결합/단계2·3/공통·Desktop은새소스별도미완이며옛3D/087실행영수증으로대체하지않는다. 상세I: STAGE1_PURE_VISUAL_REVIEW_985_R2.md.
+
 ### 2026-10-31 검정 촬영의 직접 원인
 A2CaptureFrame이 정상 LateUpdate 이후 Remodel3DLate를 다시 불러 이미0으로 비운 view mask를 로비 숨김으로 오독했다. r3Cam을 끄고 HudCamera가 mask0인2D카메라로 폴백하여 검정3장이 저장됐다. 두 번째 Late 호출을 제거하고 실제 활성3D 경로는 r3Cam을 직접 선택한다. URP SingleCameraRequest/휘도>.01 검증도 함께 적용한다. 현재 독립Core/C#0이며 실제 새Player 재검수 전이다.
 
@@ -438,3 +447,31 @@ Shore는 고정앵글러 주변을 피한 후 z−52~−42에서 다시28u 굽�
 
 ### A2 해시 성능·D3D12 회피
 현재높이캐시원본오차2.384186E−07u를실제Editor에서확인했으나조립100831ms는남았다. 그리드변long해시편중을49,408변에서614ms→2ms로재현·교정했다. A2MeshEdgeComparer는변동등성/경계512보존. 실제Unity속도는재검수전이다. D3D12 SubmitRenderRequest nativeRT크래시를관측해해당backend만환경반사폴백, D3D11실제반사는유지한다. Shader/프리팹/사용자세이브변경0. 자세한증거/범위는A2 SSOT.
+
+
+### R5 HD-2D 호환 결합
+
+현재HD2D1단계는R5기술인수후별도후보를정상결합했다. HD등록배우SpriteLit/접지하나·최종카메라한곳·원래body-relative아레나프레임을보존한다. 정확4표현분기와아트RETOUCH/새실행미검수경계는[HD2D SSOT](UNITY_HD2D_RUNTIME_20261031.md)를따른다. source1a3의수면/목교실geometry/배치와Core수치변경0.
+
+
+## R5+HD-2D 1단계 같은 실행본 검수 및 순수 인수 범위 확정
+
+|항목|실제 결과와 범위|
+|---|---|
+|동결 입력|source 8dbdf205a802ffe060c355f4641ff302083eedac, Unitytree dc195627806caa74375bd1991f5b312d1a539b0f. 순수맵1a3+HD1단계. 단계2·3·리마스터 인수0|
+|빌드|e9e3dd61 / Succeeded / 6000.6.7f1 Windows x64 / builder errors0 / 3,833,058,971bytes. 원로그 errorLogs2 보존, 전체로그0으로 주장하지 않음|
+|같은 실행본|Runtime65b7a1a7c67e32c4e9dc7db51153b89102272d6eebd0fe6fbe804fee29e8d0a8 / Core1b251fe8717afa6ecf520499e43d05cf8e71b12291dd3c5cb73a1f095932d997. 212파일·DLL160·MCP파일/참조0|
+|규칙|현재Core114는 순수985 실제4oracle 입력과 SHA114/114 동일. Core DLL도 동일. 드루이드5,421,635·실제패링26·특수탄48,708·피격47,559 검사 불일치0, 새 규칙 추가0|
+|M1|10323a74 / D3D11 / 23항목ok. batch기능검수|
+|필드|d4727f94 /1920·3840×1080 /16PNG /passedtrue·unityErrors0. 원래1a3 계약8위치×2=16; UI만 추가한3위치22계약은 미인수. 초기validator22 오류·중단기록 보존 후 기대값만 정정, M1/field 재실행0|
+|실제 지형|144청크·9거목·원본보행 내 몸통점0. 목교16206정점/16875삼각형/수면145교차. 실제 생성완료 메시 arrays는 앞서 검수된 R5 참조와 완전히 동일|
+|배우|4a93a908 /336PNG·336frame /footMax .6661922336px /pixelMax .00030517578125px /actorShaderFailures0. 원본SpriteLit/영웅3D모델false, 두 해상도드루이드360틱 종료HP526|
+|입력 표시|6b099347 /1600×900 /54PNG·7checks0. LMB 조준0px/224px전진·E짧게누르기강타. 가상InputSystem→FixedUpdate이며 실제손조작·자연패링 검수 아님|
+|보존/운영|3915 trackedUnity 입력 I보관, 빌드유래709 실제파일 I보존·원본CAS709 복원. INDEXclean/UnityWORK0·기존guard SHA9414 및 원래untracked57 불변. 4실행 창/USER_SAVE/잔여 각0. 정식unreserve exit0→Map/Impact/UI|
+|원본 감사|406PNG(16+336+54)·1,391,347,478bytes IHDR/IEND/규격/SHA 실패0. 선택원본과 부분을 native1x로 직접 확인|
+|시각 판정|배우전환·재질·발선·기본프레임·입력표시 표본은 범위한정PASS. 전체맵/아트/모션은 RETOUCH. A2는1664×936 원본을1920셀에패딩, Player는1920원본 그대로 옆배치하여 양쪽리샘플0|
+|남은 결함/담당|원본드루이드0055 뿔/지팡이 상단수평절단·회피강직→sprite writer. 작은얼굴/어두운몸통·접지대비/황록독액/안개·블룸·아레나평면→Main3단계. 원형반복/카펫지면/외곽높이층→Map R6 별도. 분리surface/탄-판정정렬→Main2단계. 새리마스터 승인전채택0|
+|순수 범위 정리|과거tools/blender-env84는I 원본전체SHA보존 후 G Junction링크만비재귀제거/정상forward제외. StageClear문서는승인공통19c6의정확blob c59e213fa로복귀, SharedLog문서는공통부재대로제외하되정확원본I보존. Unitytree변경0이므로새동작수정으로주장하지않음|
+|인수 상태|제작자선택1x검수완료/공통·Desktop지정integrator 신청준비. 공통병합·Desktop갱신·설치본M1은이문서만으로완료아님. 자연완주·실측FPS·OSfocus·Mac동기화 미검증|
+
+근거 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/STAGE1_R5_VISUAL_REVIEW_KO.md, STAGE1_R5_BUILD_LINK.json, stage1-r5-validation-8dbdf205a/receipt.json, stage1-r5-review-8dbdf205a, scope-cleanup-after-r5. 이전순수985/087·실패validator 이력은덮지않는다.

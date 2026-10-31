@@ -1,3 +1,21 @@
+## R5 실제 공동 Player 기술 검수 — 2026-10-31 12시 UTC
+
+**맵 기술 범위 PASS / VISUAL VERDICT: RETOUCH. 전체 맵 아트 완료가 아니다.**
+
+| 항목 | 실제 새 근거 |
+|---|---|
+| 순수맵 입력 | codex/pc-unity-steam-keyshot-20261030 @1a3d758352fb10b6facace12a61a64253b7a9e76/승인공통19c6·fcaa조상. 제품633경로/미인수StageClear8·CLI2 공통netdiff0/Map자체Core0 |
+| 공동 R1 | source9ff5faa577419ef3a460b5580ea5749bfea37ef5/build8c2231be/errors0/M1c6d771b1 23/23/field e4e64f52 22장·안전0. Runtime93cc86d75bae0a3c8f0b50a4351d149bf7d87d3e0b257938aa5bf3ab603790b0. UI 공유영상소유버그발견으로후속R2실제검수를별도실행/소급0 |
+| 현행 공동 R2 | sourcee357a344e14d3a4849cef1979c084835a270db29/buildfeecb283 errors0/2scene·remodel-scenes1. Runtime6afa6bbe0bae20e2db8fe7e3f4ec89dc3931b9c051c4a186c7bb24d593bd2616/Corecf277366bd0ae827507de776b81331128fe0f54a844d2e4057e247c1bcc6f934를실제파일에서해시. 전체212파일·160DLL(Managed153)/MCP파일·관리참조0 |
+| 같은 M1 | 07fa19ed/23단계ok/Direct3D11·RX9070XT. 같은R2 Runtime의정상exit0/timeout0/노출창0/잔여0/USER_SAVE변경0/hiddenDesktop닫힘. 실제자연완주/OS입력QA와구분 |
+| 같은 필드 | bb5d6a48/11곳×1920·3840x1080=22장 모두최종HUD·actualScreen=true/Unity오류0/정상exit0·안전0. Map담당이새22개원본을모두직접봄. R1의사진·M1을새DLL에재사용하지않음 |
+| 메시 독립검수 | 실제지면144청크·거목9개존재/하부원본통행침범정점0. 목교16206정점/16875삼각형과원형인덱스동일, XZ이동0(1e−5m 허용), y>=.10m 상판·난간 최대float차3.813476567e−6m. 하부168정점연장/minY−.6699999571m/수면−.45m 실제교차145삼각형·145segment. R1/R2 메시JSON SHA5ad34ce807ad33e29e65bf4dddc06e6a8e8e44ed2da3c9c6304c74e2581e6fa9 동일 |
+| 직접 판정 | 09거목몸통재현과10/11왼전경 경계에서영웅중심·발을판독가능/이전몸통내매몰해소. 05동측가지·09우측수피의화면점유는크므로전지도자연이동가림PASS로일반화0. 검은외곽·옛둥근바위·상시파란반달표시가해당22표본에서없음. 보스입구원본16초기적겹침은정지fixture 한계/적주입0 |
+| 렌더 부하 | AIoff·정지구도·실제60PlayerLoop프레임/120cap. 1920 평균109.9126..120.0298fps/p95최대14.6074ms,3840 98.6126..119.4038fps/p95최대14.8108ms. 자연전투·완주FPS 보장으로보고하지않음 |
+| 아트 재작업 | Map: 안쪽카펫재질·원형뿌리스캔반복·외곽높이층을다음제작방법으로개선. HD2D Main: Stage3 녹흑독액/약한반사/기포/실제교각물결/물가마감, Stage1픽셀배우맵결합. 기술PASS를아트PASS로승격하지않음 |
+| 통합 상태 | UI는별도HUD/스킬겹침을실제발견해자기R3재작업중. Map1a3기술의존은충족되어순수맵/HD2D후속인수가능하나UI미완료후보의공통채택근거가아님. 최종common·Desktop는지정단독writer가자기현재게이트를마친뒤수행. 현재신규Map common/Desktop전달0 |
+| 근거 경로 | I:steam-keyshot/a2/field-screen-20261031/R5-R2-기술검수-아트판정.json·R5-R2-실제Player-메시독립검수.json. 원본Player는 I:demo-art/unity-ui/ultrawide/expanded-r2/field. 기존R4FAIL과R1이력보존 |
+
 ## R5 통행 맞춤과 동일 Player 공동 검수 입력 — 2026-10-31
 
 현재 코드는 최신 승인 공통 19c6ccec8f7056acdc554b45de72d43a78c12ec6(Sound fcaa 포함)을 정상 병합한 순수 맵 후보다. SourceReady는 공동 기술 검수 입력이며 release READY/아트 PASS가 아니다. 아래 R4 표는 R4 당시 값과 실패 이력이다. 현행 변경값은 이 절이 우선한다.
@@ -541,3 +559,8 @@ GP 원작성자 edf12c419의 exo-unity.ps1·devtools/README·UNITY_DEVTOOLS_SHAR
 | 1차 FAIL | 7.1/PBR4k, 작업01a18f4e-6905-75ff-b5fd-9474de181d46. 승인원화알파크롭. 실제폭1.902916·두께.041771·높이1.832239/22132정점·28769tri. 정면·측면직접확인: 입체거목이아닌판. Blender4방향/exit0·traceback0. Unity인수0 |
 | 2차 FAIL | 원화사각크롭/t2.5 SmartTopology 무텍스처, 작업01a18f50-feaa-7358-b7fc-efac03da68a8. 실제범위.951172/.940430/.860352·16155정점·29999tri·604연결그룹. 정면·측면·후면직접확인: 주변이끼·배경이기둥/막/바닥판으로묶인큰형태결함. Blender4방향/exit0·traceback0. Unity인수0 |
 | 중단·다음 입력 | 같은거목2후보FAIL/추가생성0. 깨끗한전체거목정면·측면입력또는검증된실제스캔원형이필요. 생성원본·PBR·Blender·해시·원화대조를 I:/EXODUSER-Storage/steam-keyshot/a2/meshy-hollow 에보존. 신규GPU검수·전체시각PASS·common·Desktop으로승격0 |
+
+
+## HD-2D Main의 R5 1단계 결합 경계
+
+맵1a3 기술게이트와아트RETOUCH를인수해Main의순수985/문서a2cfa8388과정상3way결합한다. HD actor재질덮기/일반적추가접지메시중복/field SMAA/아레나별도camera·.72축소의4호환을표현경로에만분기했다. 구체수치/소유권은[HD2D SSOT](UNITY_HD2D_RUNTIME_20261031.md#r5-순수맵과-hd-2d-1단계-정상-결합--새-실행-검수-전)를따른다. Core114/Map보행·LOS40000·배치/지형/메시·저장변경0. API0후보이며새build/M1/실제1x/공통/Desktop은미검증, UI실패후보/신규리마스터/단계2·3인수0. 과거FAIL/종료·생성모델미채택이력은위와같이보존한다.

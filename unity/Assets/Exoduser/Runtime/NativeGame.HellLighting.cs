@@ -90,8 +90,8 @@ namespace Exoduser.UnityPort
         void HellLightingLate()
         {
             if(hellActorMaterial==null)return;
-            if(playerView!=null){playerView.sharedMaterial=hellActorMaterial;playerView.shadowCastingMode=ShadowCastingMode.On;playerView.receiveShadows=true;}
-            foreach(var e in enemies.Values)foreach(var sr in new[]{e.body,e.walk})if(sr!=null){sr.sharedMaterial=hellActorMaterial;sr.shadowCastingMode=ShadowCastingMode.On;sr.receiveShadows=true;}
+            if(playerView!=null&&(!NativeHd2D.Enabled||!NativeHd2D.IsActor(playerView))){playerView.sharedMaterial=hellActorMaterial;playerView.shadowCastingMode=ShadowCastingMode.On;playerView.receiveShadows=true;}
+            foreach(var e in enemies.Values)foreach(var sr in new[]{e.body,e.walk})if(sr!=null&&(!NativeHd2D.Enabled||!NativeHd2D.IsActor(sr))){sr.sharedMaterial=hellActorMaterial;sr.shadowCastingMode=ShadowCastingMode.On;sr.receiveShadows=true;}
             for(int i=0;i<hellFlames.Count;i++)if(hellFlames[i]!=null)hellFlames[i].sprite=hellFlameFrames[((int)(Time.time*12)+i*3)%8];
             if(hellDiagnosticFilter>=1)foreach(var renderer in FindObjectsByType<MeshRenderer>(FindObjectsSortMode.None))renderer.enabled=false;
             if(hellDiagnosticFilter>=2)foreach(var renderer in FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None))if(renderer!=playerView)renderer.enabled=false;
