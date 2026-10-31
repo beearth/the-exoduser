@@ -301,3 +301,18 @@ I5의 현행 영상 기준 검수 결과는 §18에 기록한다. 위 표의 톤
 - 정렬 원인: `.cin-enter-btn` 기본 규칙의 `left:53.5%`(옛 문틈 기준)가 남아 있었다. 인장·로고는 화면 중심 50% → ENTER도 50%. 실측(1920×1080·1635×1190·3840×1080): 로고 눈 x = ENTER 글자 중심 x = 화면 중심(오차 0px, 끝 자간 보정 포함).
 - ENTER 디자인: 상자 띠·가로줄 제거. 로고 "— HELL LORD —" 장식선과 같은 은빛 헤어라인 + 안쪽 끝 마름모(SVG)를 글자 양옆에, 글자는 Cinzel 400 21px 뼈색 #dfd6c2 자간 .55em, 뒤에 가로로 번지는 어둠 + 옅은 진홍 열기, 4.2초 숨쉬기.
 - 인트로 원인: ENTER 뒤 8초 옛 문 열림 영상 `video/intro.mp4`(2026-07 흑백 판화)가 먼저 재생된 뒤 현행 `world_intro_v17_blood_en.mp4`가 나왔다. 옛 문 화면을 버렸으므로 인장 첫 화면(`#gateLock` 있음)에서는 문 영상을 건너뛰고 ENTER 즉시 `startWorldIntro()`(현행 v17). 검수: ENTER 0.6초 뒤 world-intro-active·v17 재생 중, 문 영상 currentTime 0 정지, pageerror 0.
+
+## 2026-10-31 웹 UI·UX 최신화
+
+| 구역 | 현행 계약·구현 | 검수 |
+|---|---|---|
+| 타이틀 | 승인된 d22ce8bd1 후보의 선택 띠·붉은 점을 제거하고 16×1px 은빛 헤어라인으로 교체. 380px 메뉴·48px 행 유지 | 1920·3840 실제 화면 |
+| 키보드·패드 | 메뉴 roving tabIndex, Tab/Shift+Tab·상하/W/S·Home/End로 선택과 실제 포커스 함께 이동. Enter/Space·패드 A는 같은 click 경로. IME·Ctrl/Meta/Alt 보존 | titleNavigation 5개 회귀·브라우저 입력 |
+| 초광폭 | 로비 우측 조작 열은 right=max(0,(100vw−177.777778dvh)/2), 선택창 우측 판·버튼은 right=40px+동일 inset. 무대 원화·영상은 기존 전체 화면 유지 | 1920/2560/3840×1080 좌표 실측 |
+| 선택창 버튼 | 승인 btn_plaque_20261029.png를 0 174 fill / 0 34px 3-slice로 적용, 기존 취소 왼쪽·생성 오른쪽 유지. 명조·비활성·hover·active·focus 상태 | 실제 1x·선택/취소 |
+| 로비 글자 | 언어·재생·Steam·버전 캡션도 Hahmlet, 캐릭터 이름·하단 링크 줄바꿈과 키보드 초점 허용 | 좁은 화면/긴 번역은 최종 검수표 참조 |
+| UI 소리 | lobby-ui-feedback.js: Unity 대조표의 button_hover.mp3(.25), button_confirm.mp3(.35), hellcave_settings.opt.sfxVol/100 적용. 60/80ms 간격, 동일 컨트롤 내부 이동·touch hover·disabled 제외. 기존 ENTER/Steam 전용 소리는 추가 확정음 제외 | lobbyUiFeedback 4개 회귀. 무창·무음 검수로 연결/음량 검증, 새 청음 판정 아님 |
+
+원화·맵·캐릭터·성장나무 미채택 시안은 변경하지 않았다. 새 게임 문구 0, 번역 키 추가 0. 상세 전후/차이 표·최종 판정은 I:/EXODUSER-Storage/design/web-uiux-20261031/ 및 지정 REPORT에 둔다.
+
+- 삭제/종료 확인창도 취소 왼쪽·확인 오른쪽, 패드 왼쪽=취소/오른쪽=확인으로 통일했다. 기본 취소·누른 채 진입 차단을 유지한다. 생성/확인창은 승인 원화 프레임·버튼을 재사용한다. 로비 무대·캡션의 원점은 유지하고 우측 조작 열만 옮겨 초광폭 캡션 밀림을 방지한다.

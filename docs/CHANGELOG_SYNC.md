@@ -55485,3 +55485,12 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 실제 자료 | 공식 Steam 스크린샷 21장과 공식 트레일러 4편을 I:/EXODUSER-Storage/codex-takeover/quality-reference-20261030/에 보존. 전체 개요 보드·스크린샷 4개 원본·임팩트 6구간 216표본 프레임을 직접 확인. 출처/해시/확인 범위는 manifest.json, 배운 특징과 EXODUSER 적용/탈락 조건은 기존 품질 기준 §1.2 |
 | 적용 경계 | 참고작의 자산·좁은 전투·색·판정 수치를 복제하지 않음. 맵 가이드 전체·CH1-1 피부/동맥/부패 생체나무·VFX 마스터의 기존 수치·Q/E·FAIL/RETOUCH·실패 카운터·NTFS·Mac·단일 writer·승인 경계 보존. 영상 편집 컷/시네마틱/검정 화면과 실제 플레이를 구분 |
 | 완료 경계 | 자료 수집·분석·지침 반영이며 게임 코드/에셋·실행본·게임 시각 품질 개선 완료는 아님. 외부 미디어 Git 반입·Unity 실행·새 비용·배포 0 |
+
+## 2026-10-31 웹 UI·UX 최신화 — 타이틀·로비
+
+| 범위 | 동기화·검증 |
+|---|---|
+| UI | 승인 타이틀 은빛 16×1px 선택선, 키보드 실제 포커스/Tab/Home/End·패드 공통 click, 로비/캐릭터선택 16:9 안전영역과 명조·원화버튼 적용. 맵·캐릭터 원본·전투·저장 데이터 변경 없음 |
+| 소리 | Unity 대조표의 hover/confirm 샘플을 로비에도 연결. 효과음 설정·무음·장치/disabled·입장 전용 중복 제외. NW FILES에 새 모듈 포함 |
+| 검수 | 신규6 + 기존 UI/로비/설정 합325개 통과. 시작 SHA에서 같은12실패를 재현하고 오래된 금색 기대값과 누락된 window/QA-storage/input-reset/canvas 테스트 어댑터만 현행화. 제품 로직·보호 설계 변경0 |
+| 근거 | LOBBY_AAA_REFERENCE_STUDY 최신 표, I:/EXODUSER-Storage/design/web-uiux-20261031/ 전후1920/2560/3840·baseline/회귀 로그. 후속 공통 게임 UI와 최종 전체 캡처는 별도 단위 |

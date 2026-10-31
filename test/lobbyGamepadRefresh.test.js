@@ -34,7 +34,7 @@ test('holding the right stick pages once until released',()=>{
 
 test('inserting a control before the highlighted button preserves its action',()=>{
  const s=setup(),target=s.items()[0];s.step();s.setItems([s.make('inserted'),target]);s.step(0);
- assert.deepEqual(s.clicked,['old']);assert.ok(target.classList.contains('gp-hover'));assert.equal(target.style.outline,'2px solid #C9A961');
+ assert.deepEqual(s.clicked,['old']);assert.ok(target.classList.contains('gp-hover'));assert.equal(target.style.outline,'2px solid #a9acac');
 });
 test('removing an earlier control preserves the highlighted button',()=>{
  const s=setup(),before=s.items()[0],target=s.make('target'),after=s.make('after');s.setItems([before,target,after]);s.step();s.step(13);

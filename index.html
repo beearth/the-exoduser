@@ -504,8 +504,8 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
   font:300 18px/1 'Hahmlet','Nanum Myeongjo','Noto Serif KR','Noto Serif',serif;letter-spacing:.14em;color:#c9c7c3;white-space:nowrap;
   text-shadow:0 1px 0 rgba(0,0,0,.9),0 0 10px rgba(0,0,0,.7);transition:color .18s;outline:none}
 #splashTitleMenu .stm-label{position:relative;padding-left:.16em}
-#splashTitleMenu .stm-btn.sel{color:#f2f0ec;background:linear-gradient(90deg,rgba(194,26,16,.48),rgba(194,26,16,.16) 55%,rgba(194,26,16,0));text-shadow:0 1px 0 #000}
-#splashTitleMenu .stm-dot{position:absolute;left:13px;top:50%;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:#ff6a50;box-shadow:0 0 8px 2px rgba(255,80,50,.8);opacity:0;transition:opacity .18s}
+#splashTitleMenu .stm-btn.sel{color:#f2f0ec;background:none;text-shadow:0 1px 0 #000}
+#splashTitleMenu .stm-dot{position:absolute;left:13px;top:50%;width:16px;height:1px;margin-top:-.5px;border-radius:0;background:rgba(230,227,220,.6);box-shadow:none;opacity:0;transition:opacity .18s}
 #splashTitleMenu .stm-btn.sel .stm-dot{opacity:1}
 #splashTitleRule{position:absolute;left:232px;width:248px;height:20px;display:none} /* 실버 헬 패키지: 장식선 없음 */
 #splashTitleBuild{position:absolute;right:36px;bottom:26px;text-align:right;font:600 11px/1.7 'Cinzel',serif;letter-spacing:.28em;
@@ -515,9 +515,10 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 <link rel="stylesheet" href="ui-foundation.css?v=20260927-enter-responsive">
 <link rel="stylesheet" href="ui-refinement.css?v=20261028-eye-crest">
 <link rel="stylesheet" href="silver-hell-ui-kit.css?v=20261029-frame">
-<link rel="stylesheet" href="lobby-silver-hell.css?v=20261029-patch-notes">
-<link rel="stylesheet" href="charselect-silver-hell.css?v=20261028-v1">
+<link rel="stylesheet" href="lobby-silver-hell.css?v=20261031-final4">
+<link rel="stylesheet" href="charselect-silver-hell.css?v=20261031-final4">
 <link rel="stylesheet" href="lobby-ancestor-art.css?v=20260929-slotart3">
+<script src="lobby-ui-feedback.js?v=20261031-final4" defer></script>
 <script src="lobby-ancestor-sprite.js?v=20260929-slotart2" defer></script>
 
 <style id="lobby-layout-20261016">
@@ -878,8 +879,8 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
   <div style="background:#131616;border:2px solid #663322;border-radius:8px;padding:24px 32px;max-width:400px;text-align:center">
     <p id="delConfirmMsg" style="color:#acafaf;font-size:1rem;margin-bottom:20px"></p>
     <div style="display:flex;gap:12px;justify-content:center">
-      <button id="delConfirmYes" style="padding:8px 28px;background:rgba(150,0,0,.3);border:1px solid #880000;color:#ff4444;font-family:'Noto Sans KR';font-size:1rem;font-weight:700;cursor:pointer;border-radius:4px">확인</button>
       <button id="delConfirmNo" style="padding:8px 28px;background:rgba(0,0,0,.3);border:1px solid #444747;color:#8b8e8e;font-family:'Noto Sans KR';font-size:1rem;font-weight:700;cursor:pointer;border-radius:4px">취소</button>
+      <button id="delConfirmYes" style="padding:8px 28px;background:rgba(150,0,0,.3);border:1px solid #880000;color:#ff4444;font-family:'Noto Sans KR';font-size:1rem;font-weight:700;cursor:pointer;border-radius:4px">확인</button>
     </div>
   </div>
 </div>
@@ -4257,8 +4258,8 @@ _GP.on('lobbyNav', (gp, just) => {
   // 삭제 확인 모달
   const delM = $('delConfirmModal');
   if(delM && delM.style.display === 'flex') {
-    if(just[14]||(_GP.axes[0]<-0.5&&!_GP.prev._dlL)){_delConfirmIdx=0;_delHighlight();}
-    if(just[15]||(_GP.axes[0]>0.5&&!_GP.prev._dlR)){_delConfirmIdx=1;_delHighlight();}
+    if(just[14]||(_GP.axes[0]<-0.5&&!_GP.prev._dlL)){_delConfirmIdx=1;_delHighlight();}
+    if(just[15]||(_GP.axes[0]>0.5&&!_GP.prev._dlR)){_delConfirmIdx=0;_delHighlight();}
     _GP.prev._dlL=_GP.axes[0]<-0.5;_GP.prev._dlR=_GP.axes[0]>0.5;
     if(just[0]){[$('delConfirmYes'),$('delConfirmNo')][_delConfirmIdx].click();return true;} // A = 선택
     if(just[1]){_hideDelConfirm();return true;} // B = 취소
@@ -4590,10 +4591,11 @@ function showCharGate(charId,storySeen=false){
     const H=48; // 메뉴 B(글자 목록 + 사라지는 선택 띠, 2026-10-28 사용자 승인 [승인-디자인-5]) 한 줄 높이
     _titleMenu.replaceChildren();
     _titleItems=defs.map((d,i)=>{
-      const li=document.createElement('li');li.className='stm-btn';li.setAttribute('role','menuitem');li.tabIndex=-1;
-      li.innerHTML='<i class="stm-dot" aria-hidden="true"></i>';
+      const li=document.createElement('li');li.className='stm-btn';li.setAttribute('role','menuitem');li.tabIndex=-1;li.dataset.uiOwnSound=String(d.label==='게임 시작'||d.label==='STEAM 위시리스트 추가');
+      const mark=document.createElement('i');mark.className='stm-dot';mark.setAttribute('aria-hidden','true');li.append(mark);
       const label=document.createElement('span');label.className='stm-label';label.textContent=_TL(d.label);li.appendChild(label);
       li.addEventListener('mouseenter',()=>_selectTitleItem(i));
+      li.addEventListener('focus',()=>_selectTitleItem(i));
       li.addEventListener('click',e=>{e.stopPropagation();_activateTitleItem(i)});
       _titleMenu.appendChild(li);
       return {li,label,act:d.act};
@@ -4616,10 +4618,11 @@ function showCharGate(charId,storySeen=false){
       if(label.offsetWidth>330)label.style.fontSize='14px';
     });
   }
-  function _selectTitleItem(i){
+  function _selectTitleItem(i,focus=false){
     if(!_titleItems.length)return;
     _titleSel=(i+_titleItems.length)%_titleItems.length;
-    _titleItems.forEach((it,j)=>it.li.classList.toggle('sel',j===_titleSel));
+    _titleItems.forEach((it,j)=>{it.li.classList.toggle('sel',j===_titleSel);it.li.tabIndex=j===_titleSel?0:-1;});
+    if(focus)_titleItems[_titleSel].li.focus({preventScroll:true});
   }
   function _activateTitleItem(i){
     if(done||phase!==2||!_titleItems[i])return;
@@ -4821,14 +4824,20 @@ function showCharGate(charId,storySeen=false){
   document.addEventListener('keydown',function splashKey(e){
     if(done){document.removeEventListener('keydown',splashKey);return}
     if(overlay.style.display==='none'&&fdgEl.style.display==='none')return;
-    e.preventDefault();
+    if(e.isComposing||e.keyCode===229||e.ctrlKey||e.metaKey||e.altKey)return;
     if(phase===2){
-      if(e.repeat&&(e.key==='Enter'||e.key===' '))return;
-      if(e.key==='ArrowUp'||e.key==='w'||e.key==='W')_selectTitleItem(_titleSel-1);
-      else if(e.key==='ArrowDown'||e.key==='s'||e.key==='S')_selectTitleItem(_titleSel+1);
-      else if(e.key==='Enter'||e.key===' ')_activateTitleItem(_titleSel);
+      let next=_titleSel;
+      if(e.key==='Tab')next+=e.shiftKey?-1:1;
+      else if(e.key==='Home')next=0;
+      else if(e.key==='End')next=_titleItems.length-1;
+      else if(e.key==='ArrowUp'||e.key==='w'||e.key==='W')next--;
+      else if(e.key==='ArrowDown'||e.key==='s'||e.key==='S')next++;
+      else if(e.key==='Enter'||e.key===' '){e.preventDefault();if(!e.repeat)_titleItems[_titleSel]?.li.click();return;}
+      else return;
+      e.preventDefault();_selectTitleItem(next);_titleItems[_titleSel]?.li.focus({preventScroll:true});
       return;
     }
+    e.preventDefault();
     skip();
   });
 
@@ -4838,10 +4847,10 @@ function showCharGate(charId,storySeen=false){
     if(phase===2){
       // 타이틀 메뉴: 십자키·왼쪽 스틱 위아래 이동, A 선택
       const up=_GP.axes[1]<-0.5,down=_GP.axes[1]>0.5;
-      if(just[12]||(up&&!_GP.prev._stmU))_selectTitleItem(_titleSel-1);
-      if(just[13]||(down&&!_GP.prev._stmD))_selectTitleItem(_titleSel+1);
+      if(just[12]||(up&&!_GP.prev._stmU))_selectTitleItem(_titleSel-1,true);
+      if(just[13]||(down&&!_GP.prev._stmD))_selectTitleItem(_titleSel+1,true);
       _GP.prev._stmU=up;_GP.prev._stmD=down;
-      if(just[0])_activateTitleItem(_titleSel);
+      if(just[0])_titleItems[_titleSel]?.li.click();
       return false;
     }
     // 아무 버튼 just pressed
