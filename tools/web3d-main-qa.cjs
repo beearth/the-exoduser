@@ -207,10 +207,11 @@ async function nativeFingerprint(page){
     });
     await page.waitForTimeout(2000);await page.screenshot({path:out+'/dense-fixture-1920x1080.png'});
     receipt.samples.push(await sample(page,'64적·96탄 고정 렌더 fixture 10초'));
-    await page.evaluate(()=>window._btFramePause=false);await page.mouse.down({button:'left'});
-    receipt.samples.push(await sample(page,'밀집 fixture 활성 Core·AI·공격 10초'));
+    receipt.denseFixture.activeHealthOverride=await page.evaluate(()=>{const before={hp:P.hp,mhp:P.mhp};P.hp=P.mhp=1000000;window._btFramePause=false;return {before,hp:P.hp,mhp:P.mhp,reason:'10초 내 사망으로 렌더가 중단되는 편향 방지. 스트레스 fixture만 적용, 자연 촬영에는 미적용. 피격/피해/AI는 활성.'};});await page.mouse.down({button:'left'});
+    receipt.samples.push(await sample(page,'밀집 fixture 활성 Core·AI·공격 10초 (HP100만)'));
     await page.mouse.up({button:'left'});
     receipt.denseAfter=await page.evaluate(()=>({stats:{...G._sStats},hp:P.hp,actors:ens.filter(e=>e?.alive&&e.hp>0).length,bullets:projs.length+pProjs.length,error:window._Web3DTrialError||null}));
+    if(receipt.denseAfter.hp<=0)throw Error('밀집 성능 구간의 사망: 유효한10초 렌더 측정 아님');
     for(const [file,hash]of Object.entries(receipt.source)){const after=crypto.createHash('sha256').update(await fs.readFile(path.join(root,file))).digest('hex');if(after!==hash)throw Error('검수 중 소스 변경 '+file);}
     if(receipt.errors.length||receipt.consoleErrors.length||receipt.httpFailures.length||!receipt.offParity.equal||receipt.denseAfter.error)throw Error('실행 검수 실패 '+JSON.stringify({errors:receipt.errors,console:receipt.consoleErrors,http:receipt.httpFailures,parity:receipt.offParity.equal,denseError:receipt.denseAfter.error}));
     await fs.writeFile(out+'/qa-receipt.json',JSON.stringify(receipt,null,2));

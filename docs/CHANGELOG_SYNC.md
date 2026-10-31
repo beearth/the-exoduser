@@ -5,7 +5,9 @@
 | 범위 | 기존 codex/web3d-trial-20261031 유지, origin/main7dc96cd43까지 정상 병합(615fb5086). 기본 OFF. 해당 main의 native 규칙/저장 함수는 기존 훅 외 원문 보존, 성공 프레임의 native 월드 이중 렌더 제거 |
 | 실제 변경 | 녹흑 독액·거품/기포/기둥 물결, 전경 축소와 부착물 정렬, bank socket을 시각 연결 지형으로 교체(Core 타일 불변), 원경 카드·안개·빛줄기, 2x 전사/CH1 idle·노멀·림광, 기존 바닥/탄/임팩트·사체·파티클·숫자, 초기 미니맵. 밀집 이동의 대형 atlas 재전송 병목은 공유 Source/개별 UV view로 수정. walk normal8개 오프라인 인수 |
 | 후속 수정 | native 부분 보행이 몸체를 대체하던 표현 오류를 2x 몸체+walk 단일 GPU 합성으로 수정. 낮은 수평 안개와 지면의 교차 등고선 제거, 거목 실제 하단·강 안 섬 접합, 마모 평판/못·저주파 목질 shader로 목교 보완. 변경 모듈 cache tag main2, Three 코어 단일 URL 유지 |
+| 최종 계측 보정 | 발밑을 보존하는 국소 가림, color당 shadow1회·환경만 반사로 중복 비용 제거. 사망 뒤 RAF가 섞인 활성83.09FPS는 성능 판정에서 제외. 일반 영상과 별개인 활성 스트레스 fixture만 HP100만/실제피격·AI로10초 생존을 강제 검증 |
 | 검수/상태 | 현행 계약과 실패 이력은 [목교 SSOT](4.1맵디자인+설정/WEB3D_TRIAL_20261031.md). 최종 회귀·guard·같은 소스의 영상·밀집 성능·폴백·원격/시각 판정은 G:/exoduser/tmp/design-review/20261031_web3d_main/REPORT.md에 기록. 기술 통과를 디자인 완료로 올리지 않음 |
+| 영수증 도구 | `tools/web3d-final-receipt.cjs`가 QA/폴백 SHA·현재 디스크·커밋 byte·3377 HTTP, 스프라이트30파일 인수 SHA, 회귀88/guard 로그와 원격 main HEAD를 대조. `--pending`은 main 반영 전 자료 준비용이며 main 완료 영수증으로 쓰지 않음 |
 
 ## 2026-10-31 웹 스킬 창 마지막 보정 — 잠김 기술·빈 소켓 원화
 

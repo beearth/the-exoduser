@@ -51,6 +51,7 @@ export async function install(read){
   renderer.outputColorSpace=THREE.SRGBColorSpace;
   renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;
   renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+  renderer.shadowMap.autoUpdate=false;
   renderer.info.autoReset=false;
   const scene=new THREE.Scene();scene.background=new THREE.Color('#182029');
   // The orthographic camera is 55m away. Exponential fog would wash out even the hero.
@@ -122,7 +123,11 @@ export async function install(read){
         shader.fragmentShader='uniform vec2 uActors[4];uniform float uOcclusionEnabled;varying float vFade;varying vec4 vActorClip;\n'+shader.fragmentShader
           .replace('#include <alphatest_fragment>',`#include <alphatest_fragment>
             float actorMask=0.;vec2 actorUv=vActorClip.xy/vActorClip.w;
-            for(int k=0;k<4;k++){float d=length((actorUv-uActors[k])/vec2(.065,.18));actorMask=max(actorMask,1.-smoothstep(.6,1.,d));}
+            for(int k=0;k<4;k++){
+              float d=length((actorUv-uActors[k]-vec2(0.,.08))/vec2(.065,.18));
+              float aboveFoot=smoothstep(.005,.055,actorUv.y-uActors[k].y);
+              actorMask=max(actorMask,(1.-smoothstep(.6,1.,d))*aboveFoot);
+            }
             diffuseColor.a*=mix(1.,vFade,actorMask*uOcclusionEnabled);`);
       };
     }
@@ -516,12 +521,17 @@ export async function install(read){
       reflectionCamera.copy(camera);reflectionCamera.position.y=water.position.y*2-camera.position.y;
       const rt=target.clone();rt.y=water.position.y*2-target.y;reflectionCamera.up.set(0,-1,0);reflectionCamera.lookAt(rt);reflectionCamera.updateMatrixWorld();
       reflectUniforms.uReflectMatrix.value.multiplyMatrices(reflectionCamera.projectionMatrix,reflectionCamera.matrixWorldInverse);
+      const reflectionHidden=[];
+      for(const o of [...sprites.values(),...shadows.values(),nativeEffects,...scene.children.filter(o=>o.isPoints)])if(o.visible){reflectionHidden.push(o);o.visible=false;}
       water.visible=false;renderer.clippingPlanes=[new THREE.Plane(new THREE.Vector3(0,1,0),-water.position.y)];
       occlusionUniforms.uOcclusionEnabled.value=0;
-      renderer.setRenderTarget(reflectionTarget);renderer.render(scene,reflectionCamera);renderer.setRenderTarget(null);renderer.clippingPlanes=[];water.visible=true;
-      occlusionUniforms.uOcclusionEnabled.value=1;
+      renderer.shadowMap.needsUpdate=frameId===1;
+      try{renderer.setRenderTarget(reflectionTarget);renderer.render(scene,reflectionCamera);}
+      finally{renderer.setRenderTarget(null);renderer.clippingPlanes=[];water.visible=true;occlusionUniforms.uOcclusionEnabled.value=1;for(const o of reflectionHidden)o.visible=true;}
     }
     const focus=target.clone().project(camera);grade.uniforms.focusDepth.value=focus.z*.5+.5;
+    // The color pass builds shadows once. SSAO's override render reuses that map.
+    renderer.shadowMap.needsUpdate=true;
     composer.render();
     labels.clearRect(0,0,state.width,state.height);
     labels.textAlign='center';labels.font='bold 16px serif';labels.lineWidth=3;labels.strokeStyle='#111314';

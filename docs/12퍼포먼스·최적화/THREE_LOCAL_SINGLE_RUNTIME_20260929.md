@@ -8,6 +8,8 @@
 
 이 문서는 game.html과 game-easy-test.html의 Three.js 엔진 로딩·색상·배포 계약 SSOT다. 이전 안개 소실 보호/보스 GLB 수명 정리 단계의 r128+r160 중복 경고 기록은 당시 결과이며, 현행 계약은 아래 로컬 r160 단일 엔진으로 대체한다. ERR_INSUFFICIENT_RESOURCES 전체의 유일 원인을 증명하거나 장시간 메모리 누수가 모두 해소됐다고 판정한 작업은 아니다.
 
+Web3D의 shadowMap은 autoUpdate=false/본 color 직전 needsUpdate=true로 SSAO override의 중복 갱신을 제거한다. 3프레임마다의 수면 반사는 환경만 그리고 액터·투사체·효과·Points는 복원 가능한 임시 제외다. 밀집 측정은 고정64적·96탄과 별도 HP100만 활성 스트레스를 구분하며, 사망 후 RAF는 렌더 FPS로 보고하지 않는다. 일반 입력 영상은 체력·무적·AI 보정0이다.
+
 ## 런타임 계약
 
 | id / 적용 위치 | 현행 값·동작 |
