@@ -55609,3 +55609,10 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 ## 2026-10-31 웹 초광폭 월드
 
 stage=0은 실제200×200 본편으로 정정하고 과거 원화 판은 명시적 mapTest/plate 옵션으로 보존했다. 작은 판에는 production 청크/8000px 나무를 섞지 않는다. 본편 전체 VW/VH·세로 시야·1920 렌더는 유지한다. 리시는 기존2500px 초과·800~1200px 링을 유지하며 가시 영역+적 반경+100px 안 후보를 건너뛴다. 투사체 원거리 정리는 기존 거리제곱6250000 초과와 가시 영역+100px 밖을 모두 요구한다(즉시/일반탄 수명 연장 종료). 공격 수명·사거리·어그로는 유지한다. Unity/Godot 실행 반영을 의미하지 않는다. [정확한 현행 계약·검수](12퍼포먼스·최적화/WORLD_ULTRAWIDE_20261031.md).
+
+
+## 2026-10-31 — EXODUSER 로고 불투명 흑철 바탕
+
+- `img/logo_exoduser.png` byte와 원래 불투명 금속 115,815픽셀을 보존하고, 같은1506×719 `img/logo_exoduser_solid.png`를 추가했다. 글자·눈 고리·머리 내부 흑철 바탕과 어두운 외곽/그림자로 인장 관통을 막는다.
+- `index.html` 10곳·`game.html` 1곳 PNG 참조 교체. 위치·크기·fade·게임 규칙은 유지. 규격·검수 도구: `docs/3.1 ui hud 디자인/LOGO_SOLID_20261031.md`, `tools/build-logo-solid.py`, `tools/verify-logo-solid.py`.
+- main 소스 반영만 수행하고 DEMO/EA 복사·배포·Unity 실행·유료 생성은 하지 않는다. 실제 원격·캡처·겹침·회귀·guard 결과는 `G:/exoduser/tmp/design-review/20261031_logo_solid/REPORT.md`에 기록한다. 과거 원본/영상 제작 영수증은 보존한다.
