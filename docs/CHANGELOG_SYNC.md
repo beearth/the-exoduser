@@ -55542,3 +55542,16 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - 기존 API 연결 가이드를 26개 MCP 그룹·직접 API·주력 용도·연결 증거·월간 크레딧 분할 사용 기준으로 갱신했다. Kling은 10/31 인증과 회원/크레딧 조회를 확인했고, OpenAI는 10/30 모델 목록 인증만 확인했다.
 - AGENTS.md·CLAUDE.md·공통 작업 매뉴얼·총괄대장에 같은 목록을 연결했다. 공개 저장소에는 인증값·개인 결제·계정 잔액을 추가하지 않고 내부 지출 MD/JSON을 참조한다.
 - 범위는 문서와 사용자 승인 팀 공유이며 생성·결제·Unity·빌드·배포·공용 인덱스 변경은 없다. 실제 전달 수락과 팀 인수·적용은 별도 기록한다.
+
+## 2026-10-31 악의오브 최종 개명·원화·음성 검수
+
+| 변경 | 동기화·검수 |
+|---|---|
+| 악의오브 / Orb of Malice | 기존 No.3761–3839, 27 lang 파일·EN·localization 원본/번들·관련 docs 전체 갱신. 스킬 악의구 / Malice Orb 유지 |
+| 원화·연출 | 내장 imagegen 유리 오브 4단계, HUD·대장간·스킬·툴팁·R 수거→HUD 합체 적용. 32/48px 및 실제 HUD 1x 판정 보드 |
+| 긴 번역명 | HUD 줄바꿈, 독일어 대장간 아이콘 잘림 수정·재캡처 |
+| 음성 | 일본어 일반/비용형 어순 차이를 포함해 29언어 부족 문구 7종 검수 |
+| 검사 | 핵심 회귀47/47, 언어 gaps0, guard PASS. 기존 대장간 fixture 실패4건은 원본8/12와 동일. 원본 스킬 합성 3D의 음수 반지름도 동일 재현해 별도 기록 |
+| 보존 | 웹 G.mats 대입/가감69곳 동일, Unity Core 문자열 제외 byte 동일. 빌드·Player·M1은 별도 영수증 |
+
+상세: [화폐 SSOT](3.2메타·진행시스템/CURRENCY_RENAME_20261031.md), 증거 I:/EXODUSER-Storage/demo-art/currency-rename/REPORT.md.

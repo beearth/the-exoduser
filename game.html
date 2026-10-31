@@ -43871,7 +43871,7 @@ function hurtP(dmg,opts){
   if(P.hp<=0&&_eqAffix('lastStand')>=1&&!P._lastStandUsed){P.hp=1;P._lastStandUsed=true;P.iframes=120;addTxt(P.x,P.y-25,_T('💀 불굴!'),'#ffdd44',60);return}
   if(P.hp<=0)die()}
 let scrFlash=null,scrFlashA=0;
-function _isResourceShortageMessage(t){return ['MP 부족!','ST 부족!','HP 부족!','악의오브 부족!','자원 부족!'].some(key=>t.startsWith(key)||t.startsWith(_T(key)))}
+function _isResourceShortageMessage(t){return ['MP 부족!','ST 부족!','HP 부족!','악의오브 부족!','악의오브 부족! (','악의오브 부족! (12)','악의오브 부족! (15)','악의오브 부족! (20)','악의오브 부족! (10)','악의오브 부족! (30)','자원 부족!'].some(key=>t.startsWith(key)||t.startsWith(_T(key)))}
 function showPH(t,c,duration=500){if(_charIdx===1&&t==='쿨다운 중...')playSample('voice_cooldown',1,1);if(_charIdx===1&&_isResourceShortageMessage(t))playSample('voice_resource_fail',1,1);if(_charIdx!==1&&(t==='쿨다운 중...'||_isResourceShortageMessage(t)))_uiFail();const el=$('ph');el.textContent=_T(t);el.style.color=c;el.classList.add('on');clearTimeout(showPH._timer);showPH._timer=setTimeout(()=>el.classList.remove('on'),duration)}
 function notify(msg){const el=$('notif');el.textContent=_T(msg);el.classList.add('on');el.style.bottom='260px';setTimeout(()=>{el.style.bottom='270px';el.classList.remove('on')},1500)}
 
