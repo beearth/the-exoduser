@@ -193,9 +193,9 @@ namespace Exoduser.UnityPort {
    GUI.color=Color.white;
    PetText(new Rect(369,935.5f,459,76.5f),CrowLine,a);PetText(new Rect(1152,955,285,63),CatLine,a);
   }
-  // 14.72px x 1.5 = 22.08px Malgun Gothic bold white, line-height 1.25, vertically centred, browser wrapping (breaks between Hangul syllables)
+  // 22px Noto Sans KR Bold white; minimum line step 27.6, actual CalcSize height + 4 if larger; vertically centred with Hangul wrapping
   void PetText(Rect box,string text,float a){
-   const int size=22;const float lh=22.08f*1.25f;var st=Style(sansBold,size);var lines=Wrap(text,box.width,st);
+   const int size=22;var st=Style(sansBold,size);var lines=Wrap(text,box.width,st);float lh=22.08f*1.25f;foreach(var line in lines)lh=Mathf.Max(lh,st.CalcSize(new GUIContent(line)).y+4);
    float y=box.y+(box.height-lines.Count*lh)/2f;
    foreach(var line in lines){
     st.normal.textColor=new Color(0,0,0,.95f*a);foreach(var d in new[]{new Vector2(0,1.5f),new Vector2(-2,0),new Vector2(2,0),new Vector2(0,-1),new Vector2(0,3)})PaintDeathGlyph(new Rect(box.x+d.x,y+d.y,box.width+8,lh),line,st,true);

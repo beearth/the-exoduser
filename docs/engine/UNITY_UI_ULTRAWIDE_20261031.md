@@ -218,3 +218,14 @@ R2 source e357a344/정식build feecb283/M1 07fa19ed 23/23/field bb5d6a48 22장/�
 안내의 예약 gap은최소물리16px다. `gap=max(16,16/e)`를edge단위로사용해1600×900 축소에서도상태판/구슬 외곽사이를최소16px비운다. 1080p이상은기존높이기준16design이상유지. R2 1600×900실제실습위/아래13.333px를RED로보존하고새실제Player로확인한다.
 
 전면 DrawSpaced의기존검정1px/±.5px·3px 패스도frontend-black-shadow로명시한다. 실제배율기준반경3.1×edgeScale·알파≤1.001·같은후행본문을검증하며큰일반그림자허용치를늘리지않는다. 사망제목과펫대사는기존stroke그림을유지하고death-black-outline에같은본문호출source를연결한다. 두패스모두원본paint자료/decorationElements를보존한다.
+
+
+## R4 실제 실패 보정 — 2026-10-31
+
+|항목|현행 계약|
+|---|---|
+|선택 URP pass|설치 URP ffe395a3a1d1의 m_AAOPass는 필수, m_GTAOPass는 MODERN_SSAO 컴파일 기호가 있을 때만 존재한다. GTAO 필드 부재만 건너뛰고 AAO 필드/실제 pass index 부재와 활성 AO sampler 0개는 계속 실패한다. 3요청 전 상태 복원/finally 원복·AO 활성·raw 차이0 요구 유지|
+|실제 RED|R3 24bf/Runtime15403e28/builda4c686b6/M1 1b7d828c 23/23/field8439c439 22장 뒤 world83c09328은 선택 m_GTAOPass 필드 부재로12초에 실패했다. 1PNG만 있으며 raw/FPS PASS 근거가 아니다|
+|펫 대사|NativeDeathOverlay.PetText는 size22 Noto Sans KR Bold, 줄간격 lh=max(27.6, 각 줄 GUIStyle.CalcSize 높이+4design). Wrap/본문/상자 위치/가운데 정렬/초상·로테이션 유지. 실제2560×1600의 본문 높이42.48px와 기존 줄간격36.8px가5.68px 교차한 RED를 보존|
+|검수|보정한 새 같은 DLL로 정식 remodel-scenes1 build→M1→field/UI/world/웹/1x를 다시 수행한다. R3 UI나 과거 M1을 새 DLL 증거로 소급하지 않는다|
+|순번|R3 UI 실행 직후 공식 unreserve. R4는 기존 Main/Map/Impact 뒤 큐 끝 재등록. 타인 예약·프로세스·공통/Desktop 쓰기0|

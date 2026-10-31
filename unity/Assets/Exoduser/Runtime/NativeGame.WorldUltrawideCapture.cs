@@ -83,7 +83,7 @@ namespace Exoduser.UnityPort
    var states=new List<WideAoSampler>();var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
    foreach(var feature in Resources.FindObjectsOfTypeAll<HellSsaoFeature>())foreach(string name in new[]{"m_AAOPass","m_GTAOPass"})
    {
-    var field=typeof(ScreenSpaceAmbientOcclusion).GetField(name,flags);if(field==null)throw new InvalidOperationException("설치 URP AO pass 필드 누락 "+name);var pass=field.GetValue(feature);if(pass==null)continue;var index=pass.GetType().GetField("m_BlueNoiseTextureIndex",flags);if(index==null)throw new InvalidOperationException("설치 URP AO blue-noise index 필드 누락");states.Add(new WideAoSampler{pass=pass,field=index,value=index.GetValue(pass)});
+    var field=typeof(ScreenSpaceAmbientOcclusion).GetField(name,flags);if(field==null){if(name=="m_GTAOPass")continue;throw new InvalidOperationException("설치 URP AO pass 필드 누락 "+name);}var pass=field.GetValue(feature);if(pass==null)continue;var index=pass.GetType().GetField("m_BlueNoiseTextureIndex",flags);if(index==null)throw new InvalidOperationException("설치 URP AO blue-noise index 필드 누락");states.Add(new WideAoSampler{pass=pass,field=index,value=index.GetValue(pass)});
    }
    if(HellAtmosphereEnabled&&states.Count==0)throw new InvalidOperationException("실제 AO sampler 고정 증거 없음");return states;
   }
