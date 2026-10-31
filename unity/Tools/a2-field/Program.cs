@@ -50,13 +50,16 @@ class Program
             float Limit(string name,float fallback){var value=type.GetField(name);return value==null?fallback:Convert.ToSingle(value.GetRawConstantValue());}
             float gx0=Limit("GroundMinX",-45),gx1=Limit("GroundMaxX",125),gz0=Limit("GroundMinZ",-125),gz1=Limit("GroundMaxZ",45);
             var terrainAt=(Func<float,float,float>)terrain.CreateDelegate(typeof(Func<float,float,float>),field);
+            var farMethod=type.GetMethod("DistantForestSites");var forestSites=new System.Collections.Generic.List<(float x,float z)>();
+            if(farMethod!=null){var points=(float[,])farMethod.Invoke(field,null);for(int i=0;i<points.GetLength(0);i++)forestSites.Add((points[i,0],points[i,1]));}
+            else for(int row=0;row<15;row++)for(int col=0;col<18;col++){float x=-34+col*8.5f+2.4f*(float)Math.Sin(row*.9f+col*1.7f),z=-110+row*10.3f,d=(float)distance.Invoke(field,new object[]{x,z});if(d<=-10&&d>=-34)forestSites.Add((x,z));}
             using var cameraJson=JsonDocument.Parse(File.ReadAllText(Path.Combine(Path.GetDirectoryName(args[0]),"remodel_camera.json")));
             double fov=cameraJson.RootElement.GetProperty("verticalFieldOfView").GetDouble(),lookAhead=cameraJson.RootElement.GetProperty("lookAhead").GetDouble();
             double pitch=34*Math.PI/180,sn=Math.Sin(pitch),cs=Math.Cos(pitch),tan=Math.Tan(fov*Math.PI/360);
             var cameras=new float[,]{{40.2f,-74.2f},{35,-62.5f},{40,-50},{22,-44},{64.63045f,-43.84693f},{46,-35},{40,-18.5f},{40.2f,-5}};
             foreach(int width in new[]{1920,3840})
             {
-                int outside=0;double minHit=1e9,maxHit=-1e9;
+                int outside=0,forestGaps=0,forestSamples=0;double minHit=1e9,maxHit=-1e9,worstForest=0;
                 for(int i=0;i<cameras.GetLength(0);i++)foreach(float raised in new[]{0f,1.1f})foreach(int sx in new[]{-1,1})foreach(int sy in new[]{-1,1})
                 {
                     double cx=cameras[i,0],cz=cameras[i,1]+lookAhead-16.5*cs,cy=(float)height.Invoke(field,new object[]{cameras[i,0],cameras[i,1]})+raised+16.5*sn;
@@ -64,8 +67,14 @@ class Program
                     for(int k=0;k<32;k++){double t=(low+high)/2,px=cx+dx*t,pz=cz+dz*t,bed=Math.Max(-.45f,terrainAt((float)px,(float)pz));if(cy+dy*t>bed)low=t;else high=t;}
                     double hitX=cx+dx*high,hitZ=cz+dz*high;minHit=Math.Min(minHit,hitX);maxHit=Math.Max(maxHit,hitX);
                     if(hitX<gx0||hitX>gx1||hitZ<gz0||hitZ>gz1)outside++;
+                    if((float)distance.Invoke(field,new object[]{(float)hitX,(float)hitZ})<-10&&!(bool)water.Invoke(field,new object[]{(float)hitX,(float)hitZ}))
+                    {
+                        double nearest=1e12;foreach(var site in forestSites){double forestDx=site.x-hitX,forestDz=site.z-hitZ;nearest=Math.Min(nearest,forestDx*forestDx+forestDz*forestDz);}
+                        nearest=Math.Sqrt(nearest);worstForest=Math.Max(worstForest,nearest);forestSamples++;if(nearest>12)forestGaps++;
+                    }
                 }
                 Check(outside==0,width+"x1080·8곳·4모서리·낮은목질상한의 지면/수면 구멍 없음 "+outside+" X["+minHit+","+maxHit+"]");
+                Check(forestGaps==0,width+"x1080 외부 육지의 원경숲 12m 연결/표본"+forestSamples+" 누락"+forestGaps+" 최장"+worstForest);
             }
 
             Check(terrain!=null&&(float)height.Invoke(field,new object[]{43.2f,-71.8f})-(float)terrain.Invoke(field,new object[]{43.2f,-71.8f})>.12f,"목교는 얕은 수로 위를 가로지름");

@@ -125,13 +125,15 @@ namespace Exoduser.UnityPort
                 }
             }
             // 北/SOUTH와 초광폭의 대각선까지 안개 속 겹친 숲으로 닫는다.
-            for(int row=0;row<15;row++)for(int col=0;col<18;col++)
+            var farSites=a2Field.DistantForestSites();
+            for(int i=0;i<farSites.GetLength(0);i++)
             {
-                float x=-34+col*8.5f+2.4f*Mathf.Sin(row*.9f+col*1.7f),z=-110+row*10.3f;
-                float d=a2Field.Distance(x,z);if(d>-10||d< -34)continue;
+                float x=farSites[i,0],z=farSites[i,1];int row=(int)farSites[i,2],col=(int)farSites[i,3];
                 float s=.5f+.22f*Mathf.Sin(col*3.4f+row*2.1f);
-                A2Module("Ancient_Rotten_Tree",x,z,s,1.2f+.55f*Mathf.Sin(row*.7f+col*.8f),s,row*127+col*83);
+                var tree=A2Module("Ancient_Rotten_Tree",x,z,s,1.2f+.55f*Mathf.Sin(row*.7f+col*.8f),s,row*127+col*83);
+                if(tree!=null){tree.name="A2 안개 원경 "+row+"/"+col;if(a2Field.Distance(x,z)<-28)foreach(var r in tree.GetComponentsInChildren<MeshRenderer>())r.shadowCastingMode=ShadowCastingMode.Off;}
             }
+            Debug.Log("[A2 원경 숲] "+farSites.GetLength(0)+"개/10u격자·80u밖시야연결/원본통행밖12..110u/28u밖그림자LOD");
         }
         void A2FieldLandmarks()
         {

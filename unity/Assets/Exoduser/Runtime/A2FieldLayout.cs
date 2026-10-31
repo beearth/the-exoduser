@@ -183,6 +183,19 @@ namespace Exoduser.UnityPort
             }
             return ground;
         }
+        // 화면 폭이 늘 때 지면만 확장하고 원경 숲을 옛 사각형에 남기지 않는다.
+        // 반환 열: X/Z/row/column. Core 통행과 독립인 안개 속 환경 질량이다.
+        public float[,] DistantForestSites()
+        {
+            var sites=new List<float[]>();
+            for(int row=0;row<=20;row++)for(int col=0;col<=25;col++)
+            {
+                float x=-85+col*10+2.4f*(float)Math.Sin(row*.9f+col*1.7f);
+                float z=-140+row*10+1.8f*(float)Math.Sin(col*.71f+row*.93f),d=Distance(x,z);
+                if(d>-12||d< -110)continue;sites.Add(new[]{x,z,(float)row,(float)col});
+            }
+            var result=new float[sites.Count,4];for(int i=0;i<sites.Count;i++)for(int j=0;j<4;j++)result[i,j]=sites[i][j];return result;
+        }
         public bool TreeSite(float x,float z,float radius) { return Distance(x,z)<-radius-.6f; }
         public static readonly float[,] Regions=new float[,]{{33,-70},{53,-61},{22,-59},{40,-50},{16,-40},{41,-35},{65,-38},{40,-25},{25,-19},{58,-17},{40,-7}};
         public float GroundCover(float x,float z)
