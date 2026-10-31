@@ -121,7 +121,7 @@ namespace Exoduser.UnityPort
    }
    bool pad=frontendPadQaEnabled||ExoInput.PadConnected;
    float hold=(float)startup.HoldProgress;var hintColor=GUI.color;GUI.color=new Color(1,1,1,hold>0?.8f:.25f+.1f*Mathf.Sin(Time.unscaledTime*2));Label(new Rect(1300,1032,600,24),pad?K("A 다음 / B 길게 / Start 건너뛰기","A Next / Hold B / Start Skip"):K("SPACE 길게 눌러 건너뛰기","Hold SPACE to skip"),startupHint,TextAnchor.MiddleRight);GUI.color=hintColor;Fill(new Rect(1780,1052,120,3),new Color(1,1,1,.15f));Fill(new Rect(1780,1052,120*hold,3),new Color(1,1,1,.8f));
-   var e=Event.current;if(insideSafe&&!startupInputFence&&e.type==EventType.MouseDown&&e.button==0){startup.Advance();e.Use();}
+   var e=Event.current;if(new Rect(0,0,1920,1080).Contains(e.mousePosition)&&!startupInputFence&&e.type==EventType.MouseDown&&e.button==0){startup.Advance();e.Use();}
   }
   static string RevealStartupText(string full,int count){int at=0,visible=0;while(at<full.Length&&(visible<count||full[at]=='\n')){if(full[at]!='\n')visible++;at++;}return full.Substring(0,at)+"<color=#00000000>"+full.Substring(at)+"</color>";}
   void DrawStartupVignette(float strength){if(strength<=0)return;if(startupShade==null){startupShade=new Texture2D(128,72,TextureFormat.RGBA32,false);for(int y=0;y<72;y++)for(int x=0;x<128;x++){float d=Vector2.Distance(new Vector2(x/127f,(y/71f)*.5625f),new Vector2(.5f,.28125f));startupShade.SetPixel(x,y,new Color(0,0,0,Mathf.Clamp01((d-.2f)/.5f)));}startupShade.Apply();}var c=GUI.color;GUI.color=new Color(1,1,1,strength);Image(new Rect(0,0,1920,1080),startupShade,ScaleMode.StretchToFill);GUI.color=c;}
@@ -204,7 +204,7 @@ namespace Exoduser.UnityPort
    y+=20;GuidePhysicalText(new Rect(x,y,w,hintH),hint,hintStyle,13.6f,.544f,17);y+=hintH+22;
    Rect skip=new Rect(x,y,Language=="ko"?178.72f:168,46),next=new Rect(x+w-192,y,192,52);DrawGuideButton(skip,K("건너뛰기","Skip"),guideSkipFocus);DrawGuideButton(next,step==3?K("시작","Start"):K("다음","Next"),!guideSkipFocus,true);
    Fill(new Rect(skip.x,skip.y,skip.width*(float)startup.HoldProgress,skip.height),new Color(.72f,.74f,.74f,.20f*startupGuideOpacity));
-   var e=Event.current;if(!startupInputFence&&e.type==EventType.MouseDown&&e.button==0){if(skip.Contains(e.mousePosition))startup.Skip();else startup.Advance();e.Use();}
+   var e=Event.current;if(insideSafe&&!startupInputFence&&e.type==EventType.MouseDown&&e.button==0){if(skip.Contains(e.mousePosition))startup.Skip();else startup.Advance();e.Use();}
    NativeUiAudit.EndScrollView();
   }
   void DrawGuideButton(Rect r,string text,bool focus,bool primary=false){bool hover=r.Contains(Event.current.mousePosition);var old=GUI.color;if(focus||hover)NativeSilverHellUi.ButtonFocus(r);NativeSilverHellUi.ActionPlate(r,primary,focus||hover?1:0,!AutomatedInput&&hover&&ExoInput.Mouse(0));GUI.color=old;var f=NativeSilverHellUi.Font()??guideText.font;float spacing=16*.24f,width=SpacedWidth(f,16,text,spacing)-spacing;DrawSpaced(r.center.x-width/2,r.y,r.height,text,f,16,spacing,(focus||hover)?new Color(242/255f,237/255f,226/255f):new Color(223/255f,214/255f,194/255f),true);}
