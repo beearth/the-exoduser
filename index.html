@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="loading-art.css?v=20261031-final35">
 <script src="loading-art.js?v=20261031-final35"></script>
+<script src="decision-sound.js?v=20261031"></script>
 <script src="fullscreen-art-data.js?v=20261031"></script>
 <script src="fullscreen-art.js?v=20261031"></script>
 
@@ -2306,6 +2307,7 @@ function _syncAllLangSelects(code){
 
 const lobbyBGM=new Audio('bgm/공통/lobby.mp3');
 lobbyBGM.preload='auto';lobbyBGM.loop=true;lobbyBGM.volume=0.65;
+DecisionSound.attachMusic(lobbyBGM);
 const introVoice=new Audio('bgm/공통/intro_voice.mp3');
 introVoice.preload='auto';introVoice.volume=0.7;
 introVoice.playbackRate=0.95;
@@ -2976,6 +2978,7 @@ function _enterOffline(){
     if(/[<>"'&\/\\]/.test(name)){setStatus(_TL('특수문자는 사용할 수 없습니다.'),true);return}
     const request=_characterLoadSeq,visualIdx=_pendingVisualIdx;
     try{
+    globalThis.DecisionSound?.play('create');
     $('createBtn').disabled=true;setStatus(_TL('생성 중...'));
     $('createModal').classList.remove('show');
     try{
@@ -3007,12 +3010,13 @@ function _enterOffline(){
     finally{$('createBtn').disabled=false;}
   };
   if($('logoutBtn'))$('logoutBtn').style.display='none';
-  _goLobby();
+  return _goLobby();
 }
 
 // ═══ Init ═══
 (async()=>{
   showLoading(_TL('데이터를 불러오는 중...'));
+  if(_qp.get('ddungReview')==='1'&&/^[123]$/.test(_qp.get('ddung')||'')&&['127.0.0.1','localhost'].includes(location.hostname)){setTimeout(async()=>{await _enterOffline();openVisualSelect();},0);return;}
   if(_cinPreview){_goCinematic();return;}
 
   // NW.js 데스크톱 빌드 → 자동 오프라인 (구글 로그인 불필요)
@@ -3461,6 +3465,7 @@ $('charVisualPop').addEventListener('keydown',_visualSelectKeydown);
 // 생성 확정 → 이름 입력 모달
 function _visualConfirm(){
   if(CHAR_VISUALS[_pendingVisualIdx]?.comingSoon)return;
+  globalThis.DecisionSound?.play('hero');
   _closeVisualSelect();
   $('createModal').classList.add('show');$('charName').value='';setStatus('');
   setTimeout(()=>{if($('createModal').classList.contains('show'))$('charName').focus()},50);
@@ -3497,6 +3502,7 @@ async function doCreateChar(name,visualIdx){
   if($('createBtn').disabled)return;
   if(CHAR_VISUALS[visualIdx]?.comingSoon){setStatus(_TL('출시 준비 중'),true);return}
   const request=_characterLoadSeq;
+  globalThis.DecisionSound?.play('create');
   $('createBtn').disabled=true;setStatus(_TL('생성 중...'));
   if(_testMode){
     try{
@@ -3891,7 +3897,7 @@ function _stopHover(){
 if($('enterGameBtn')){
   $('enterGameBtn').addEventListener('mouseenter',()=>{try{_startHover();}catch(e){}});
   $('enterGameBtn').addEventListener('mouseleave',()=>{try{_stopHover();}catch(e){}});
-  $('enterGameBtn').addEventListener('click',()=>{playEnterSFX();if(_selectedSlot)showCharGate(_selectedSlot)});
+  $('enterGameBtn').addEventListener('click',()=>{if(_selectedSlot)showCharGate(_selectedSlot)});
 }
 // 생성 모달
 $('createCancelBtn').addEventListener('click',()=>{
@@ -3937,6 +3943,7 @@ function _showDelConfirm(name,onYes,message){
   const m=$('delConfirmModal');if(!m)return;
   $('delConfirmMsg').textContent=message||name+_TL(' 캐릭터를 정말 삭제하시겠습니까?');
   _delConfirmReturnFocus=document.activeElement;
+  if(m.dataset)m.dataset.decisionSound=name?'delete':'';
   m.style.display='flex';_delConfirmCb=onYes;_delConfirmIdx=1; // 기본 취소에 포커스
   // Ignore a stick already held when entering the confirmation dialog.
   if(typeof _GP!=='undefined'){_GP.prev._dlL=_GP.axes[0]<-0.5;_GP.prev._dlR=_GP.axes[0]>0.5;}
@@ -3959,6 +3966,7 @@ function _delHighlight(){
 $('delConfirmYes').onclick=async()=>{
   if(_delConfirmBusy||!_delConfirmCb)return;
   const onYes=_delConfirmCb;
+  if($('delConfirmModal').dataset?.decisionSound==='delete')globalThis.DecisionSound?.play('delete');
   _delConfirmBusy=true;$('delConfirmModal').focus({preventScroll:true});$('delConfirmYes').disabled=true;$('delConfirmNo').disabled=true;
   try{await onYes()}
   catch(error){if(_delConfirmCb===onYes)setStatus(_TL('삭제 실패: ')+(error.message||_TL('알 수 없는 오류')),true)}
@@ -4419,8 +4427,9 @@ function showCharGate(charId,storySeen=false){
   const _slotName=_testMode?charId:(_selectedSlotName||charId);
   const _demoParam=_LOBBY_BUILD==='demo'?'&demo=1':'';
   if(_LOBBY_BUILD==='demo'&&!_demoActivateSlot(charId)){hideLoading();setStatus(_TL('알 수 없는 오류'),true);return}
+  globalThis.DecisionSound?.play(storySeen?'new-game':'enter');
   const _tp=(_LOBBY_BUILD==='demo'?'game.html?test=1&slot=demo':_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId+'&slot='+encodeURIComponent(_slotName))+_demoParam;
-  setTimeout(()=>{if(request!==_characterLoadSeq)return;window.location.href=_tp+(storySeen?'&story=warrior-v21':'')},1200);
+  setTimeout(()=>{if(request!==_characterLoadSeq)return;window.location.href=_tp+(storySeen?'&story=warrior-v21':'')+'&ddung='+(globalThis.DecisionSound?.candidate||1)},1200);
 }
 
 // ═══ 펫 말풍선 시스템 ═══
