@@ -28,6 +28,10 @@ namespace Exoduser.UnityPort
         public HeroSlamPose(float handX,float handY,float handZ,float bladeX,float bladeY,float bladeZ,float lower)
         {HandX=handX;HandY=handY;HandZ=handZ;BladeX=bladeX;BladeY=bladeY;BladeZ=bladeZ;Lower=lower;}
     }
+    public struct HeroFootwork
+    {
+        public float LeftPitch,LeftYaw,RightPitch,RightYaw;
+    }
     public sealed class NativeHeroMotionClock
     {
         int lastTick=-1,enteredTick,deathTick,skillTick=-1000,hurtTick=-1000,lastCast,basicCombo;
@@ -117,6 +121,20 @@ namespace Exoduser.UnityPort
                 default:return default(HeroBodyWeight);
             }
         }
+        public static HeroFootwork Footwork(HeroMotionSample sample,bool moving)
+        {
+            if(moving||(sample.Combo!=1&&sample.Combo!=2))return default(HeroFootwork);
+            float t=Clamp(sample.Phase),amount;
+            if(sample.Kind==HeroMotionKind.Swing)
+            {
+                float contact=Clamp(sample.ContactPhase);
+                amount=contact>0&&t<contact?Smooth(t/contact):1-.35f*Smooth((t-contact)/Math.Max(.01f,1-contact));
+            }
+            else if(sample.Kind==HeroMotionKind.Recover)amount=.65f*(1-Smooth(t));
+            else return default(HeroFootwork);
+            // 첫 베기는 왼발, 되베기는 오른발로 지지한다. 뒷발의 발끝을 고정한 작은 회전만 허용한다.
+            return sample.Combo==1?new HeroFootwork{RightPitch=12*amount,RightYaw=-16*amount}:new HeroFootwork{LeftPitch=12*amount,LeftYaw=16*amount};
+        }
         static HeroSlamPose SlamLerp(HeroSlamPose a,HeroSlamPose b,float t)
         {
             t=Smooth(t);float Mix(float x,float y){return x+(y-x)*t;}
@@ -199,10 +217,10 @@ namespace Exoduser.UnityPort
         HumanPoseHandler poseHandler;
         HumanPose pose;
         Simulation observedSimulation;
-        Transform rightUpper,rightFore,rightHand,leftUpper,leftFore,leftHand,socket;
+        Transform rightUpper,rightFore,rightHand,leftUpper,leftFore,leftHand,socket,leftGrip;
         Transform bladeTipTransform;
         Vector3 bladeTipLocal;
-        Transform hips,chest,head,leftThigh,leftShin,leftFoot,rightThigh,rightShin,rightFoot;
+        Transform hips,chest,head,leftThigh,leftShin,leftFoot,leftToes,rightThigh,rightShin,rightFoot,rightToes;
         SkinnedMeshRenderer bodyRenderer;
         Mesh rollBakeMesh;
         readonly List<Vector3> rollVertices=new List<Vector3>();
@@ -221,6 +239,8 @@ namespace Exoduser.UnityPort
         public HeroMotionKind MotionKind {get{return current.Kind;}}
         public float MotionPhase {get{return current.Phase;}}
         public int ComboStep {get{return current.Combo;}}
+        public float FootPlantError {get;private set;}
+        public bool FootPivotActive {get;private set;}
         public bool TryGetBladeTip(out Vector3 world)
         {
             if(bladeTipTransform==null){world=Vector3.zero;return false;}
@@ -246,7 +266,12 @@ namespace Exoduser.UnityPort
             hips=animator.GetBoneTransform(HumanBodyBones.Hips);chest=animator.GetBoneTransform(HumanBodyBones.Chest)??animator.GetBoneTransform(HumanBodyBones.Spine);head=animator.GetBoneTransform(HumanBodyBones.Head);
             leftThigh=animator.GetBoneTransform(HumanBodyBones.LeftUpperLeg);leftShin=animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg);leftFoot=animator.GetBoneTransform(HumanBodyBones.LeftFoot);
             rightThigh=animator.GetBoneTransform(HumanBodyBones.RightUpperLeg);rightShin=animator.GetBoneTransform(HumanBodyBones.RightLowerLeg);rightFoot=animator.GetBoneTransform(HumanBodyBones.RightFoot);
-            foreach(var t in GetComponentsInChildren<Transform>(true))if(t.name=="Socket_Weapon_R"){socket=t;break;}
+            leftToes=animator.GetBoneTransform(HumanBodyBones.LeftToes);rightToes=animator.GetBoneTransform(HumanBodyBones.RightToes);
+            foreach(var t in GetComponentsInChildren<Transform>(true))
+            {
+                if(t.name=="Socket_Weapon_R")socket=t;
+                else if(t.name=="Grip_L")leftGrip=t;
+            }
             if(rightHand==null||leftHand==null||socket==null)return;
             leftGripRelative=Quaternion.Inverse(rightHand.rotation)*leftHand.rotation;
             poseHandler=new HumanPoseHandler(animator.avatar,animator.transform);
@@ -324,6 +349,24 @@ namespace Exoduser.UnityPort
                 animator.Play(holdStateHash,holdLayer,NativeHeroMotionClock.LocomotionTime(observed.Tick,holdSeconds,moving));
             }
             animator.Update(0f);
+            if(leftGrip!=null)ApplyCarryPose(moving);
+        }
+
+        void ApplyCarryPose(bool moving)
+        {
+            float cycle=NativeHeroMotionClock.LocomotionTime(observed.Tick,runSeconds,moving);
+            float swing=moving?Mathf.Sin(cycle*Mathf.PI*2)*.08f:0;
+            var rightTarget=transform.TransformPoint(new Vector3(.30f,1.10f,.06f));
+            var direction=transform.TransformDirection(new Vector3(.16f,-.58f,-.80f).normalized);
+            SolveArm(rightUpper,rightFore,rightHand,rightTarget,transform.right+transform.forward*.10f);
+            rightHand.rotation=Quaternion.FromToRotation(-socket.up,direction)*rightHand.rotation;
+            var rotation=rightHand.rotation;
+            if(TryGetBladeTip(out var tip))
+            {
+                float height=Vector3.Dot(tip-transform.position,transform.up);
+                if(height<.06f){rightTarget+=transform.up*(.06f-height);SolveArm(rightUpper,rightFore,rightHand,rightTarget,transform.right+transform.forward*.10f);rightHand.rotation=rotation;}
+            }
+            SolveArm(leftUpper,leftFore,leftHand,transform.TransformPoint(new Vector3(-.30f,1.08f,.03f+swing)),-transform.right+transform.forward*.10f);
         }
 
         struct GripPose
@@ -370,12 +413,60 @@ namespace Exoduser.UnityPort
             return new GripPose(new Vector3(key.HandX,key.HandY,key.HandZ),new Vector3(key.BladeX,key.BladeY,key.BladeZ),0,0,key.Lower);
         }
 
+        Vector3 FitTwoHandTarget(Vector3 requested,Quaternion rightRotation)
+        {
+            if(leftGrip==null)return requested;
+            var socketRotation=rightRotation*(Quaternion.Inverse(rightHand.rotation)*socket.rotation);
+            var rightOffset=Quaternion.Inverse(rightHand.rotation)*(socket.position-rightHand.position);
+            var leftRotation=socketRotation*Quaternion.Inverse(Quaternion.Inverse(leftHand.rotation)*leftGrip.rotation);
+            var leftOffset=Quaternion.Inverse(leftHand.rotation)*(leftGrip.position-leftHand.position);
+            var delta=rightRotation*rightOffset+socketRotation*Vector3.up*.09f-leftRotation*leftOffset;
+            float rightReach=Vector3.Distance(rightUpper.position,rightFore.position)+Vector3.Distance(rightFore.position,rightHand.position)-.002f;
+            float leftReach=Vector3.Distance(leftUpper.position,leftFore.position)+Vector3.Distance(leftFore.position,leftHand.position)-.002f;
+            var normal=transform.up;
+            var originalA=rightUpper.position;var originalB=leftUpper.position-delta;
+            var ca=originalA;var cb=originalB;
+            float ha=Vector3.Dot(requested-ca,normal),hb=Vector3.Dot(requested-cb,normal);
+            ca+=normal*ha;cb+=normal*hb;
+            float ra=Mathf.Sqrt(Mathf.Max(0,rightReach*rightReach-ha*ha)),rb=Mathf.Sqrt(Mathf.Max(0,leftReach*leftReach-hb*hb));
+            Vector3 ClampCircle(Vector3 p,Vector3 center,float radius){var d=p-center;return d.sqrMagnitude<=radius*radius?p:center+d.normalized*radius;}
+            Vector3 FitSpheres(){
+                var first=ClampCircle(requested,originalA,rightReach);if((first-originalB).sqrMagnitude<=leftReach*leftReach)return first;
+                var second=ClampCircle(requested,originalB,leftReach);if((second-originalA).sqrMagnitude<=rightReach*rightReach)return second;
+                var direction=originalB-originalA;float length=direction.magnitude;
+                if(length<.00001f)return ClampCircle(requested,originalA,Mathf.Min(rightReach,leftReach));
+                if(length>rightReach+leftReach)return first;
+                direction/=length;float x=(rightReach*rightReach-leftReach*leftReach+length*length)/(2*length);
+                var center=originalA+direction*x;float radius=Mathf.Sqrt(Mathf.Max(0,rightReach*rightReach-x*x));
+                var radial=Vector3.ProjectOnPlane(requested-center,direction);
+                if(radial.sqrMagnitude<.000001f)radial=Vector3.Cross(direction,transform.up);
+                if(radial.sqrMagnitude<.000001f)radial=Vector3.Cross(direction,transform.right);
+                return center+radial.normalized*radius;
+            }
+            // 낮은 되베기 등에서 높이 고정 자체가 불가능하면 도달구의 교차 원으로 재타깃한다.
+            if(Mathf.Abs(ha)>rightReach||Mathf.Abs(hb)>leftReach)return FitSpheres();
+            // 손 높이와 칼 방향을 유지한 채 양팔 도달 원의 교집합으로 맞춘다.
+            if((requested-ca).sqrMagnitude<=ra*ra&&(requested-cb).sqrMagnitude<=rb*rb)return requested;
+            var a=ClampCircle(requested,ca,ra);if((a-cb).sqrMagnitude<=rb*rb)return a;
+            var b=ClampCircle(requested,cb,rb);if((b-ca).sqrMagnitude<=ra*ra)return b;
+            var axis=cb-ca;float distance=axis.magnitude;
+            if(distance<.00001f)return ClampCircle(requested,ca,Mathf.Min(ra,rb));
+            if(distance>ra+rb)return FitSpheres();
+            axis/=distance;float along=(ra*ra-rb*rb+distance*distance)/(2*distance);
+            float side=Mathf.Sqrt(Mathf.Max(0,ra*ra-along*along));var middle=ca+axis*along;var across=Vector3.Cross(normal,axis).normalized*side;
+            var first=middle+across;var second=middle-across;
+            return (first-requested).sqrMagnitude<(second-requested).sqrMagnitude?first:second;
+        }
+
         void LateUpdate()
         {
             if(!ready||observedSimulation==null)return;
+            FootPlantError=0;
+            FootPivotActive=false;
             SampleLocomotion();
             var leftFootPosition=leftFoot!=null?leftFoot.position:Vector3.zero;var rightFootPosition=rightFoot!=null?rightFoot.position:Vector3.zero;
             var leftFootRotation=leftFoot!=null?leftFoot.rotation:Quaternion.identity;var rightFootRotation=rightFoot!=null?rightFoot.rotation:Quaternion.identity;
+            var leftToePosition=leftToes!=null?leftToes.position:leftFootPosition;var rightToePosition=rightToes!=null?rightToes.position:rightFootPosition;
             // 이 Core tick의 기본포즈 위에 절대 자세를 덮는다. Core와 이동 루트에는 쓰지 않는다.
             poseHandler.GetHumanPose(ref pose);
             float t=current.Phase;
@@ -388,7 +479,7 @@ namespace Exoduser.UnityPort
                 case HeroMotionKind.Run:
                     // 승인된 보행/무기 홀드 포즈를 유지하고 흉곽 호흡만 더한다.
                     SetMuscle(chestBend,Mathf.Sin(observed.Tick*.025f)*.025f);
-                    poseHandler.SetHumanPose(ref pose);return;
+                    poseHandler.SetHumanPose(ref pose);if(leftGrip!=null)ApplyCarryPose(current.Kind==HeroMotionKind.Run);return;
                 case HeroMotionKind.Swing:grip=SwingPose(current.Combo,t,current.ContactPhase);break;
                 case HeroMotionKind.Recover:grip=Lerp(SwingPose(current.Combo,1,current.ContactPhase),ReadyPose(),t);break;
                 case HeroMotionKind.Bash:grip=BashPose(t);break;
@@ -422,23 +513,39 @@ namespace Exoduser.UnityPort
             }
             if(lowering>.00001f||bodyWeight.Active)
             {
-                // 골반 하강은 발목을 내리는 대신 무릎 굽힘으로 받는다. 이동의 원 Animator 발 위치는 보존한다.
+                // 정지 1·2타의 뒷발만 실제 발가락 본을 축으로 굴린다. 지지발과 이동 보행은 원 포즈를 보존한다.
+                var footwork=NativeHeroMotionClock.Footwork(current,observed.Moving);
+                bool leftPivot=leftToes!=null&&PivotFoot(ref leftFootPosition,ref leftFootRotation,leftToePosition,footwork.LeftPitch,footwork.LeftYaw);
+                bool rightPivot=rightToes!=null&&PivotFoot(ref rightFootPosition,ref rightFootRotation,rightToePosition,footwork.RightPitch,footwork.RightYaw);
                 SolveArm(leftThigh,leftShin,leftFoot,leftFootPosition,transform.forward-transform.right*.12f);
                 SolveArm(rightThigh,rightShin,rightFoot,rightFootPosition,transform.forward+transform.right*.12f);
                 if(leftFoot!=null)leftFoot.rotation=leftFootRotation;if(rightFoot!=null)rightFoot.rotation=rightFootRotation;
+                if(leftToes!=null&&rightToes!=null&&(leftPivot||rightPivot))
+                {
+                    FootPivotActive=true;
+                    FootPlantError=Mathf.Max(Vector3.Distance(leftToes.position,leftToePosition),Vector3.Distance(rightToes.position,rightToePosition));
+                }
             }
             var rightBaseUpper=rightUpper.localRotation;var rightBaseFore=rightFore.localRotation;var rightBaseHand=rightHand.localRotation;
             var desiredHand=transform.TransformPoint(grip.Hand);
             SolveArm(rightUpper,rightFore,rightHand,desiredHand,transform.right+transform.forward*.25f);
             var desiredBlade=transform.TransformDirection(grip.Blade.normalized);
             rightHand.rotation=Quaternion.FromToRotation(-socket.up,desiredBlade)*rightHand.rotation;
+            var fixedHandRotation=rightHand.rotation;
+            if(twoHands&&leftGrip!=null)
+            {
+                desiredHand=FitTwoHandTarget(desiredHand,fixedHandRotation);
+                SolveArm(rightUpper,rightFore,rightHand,desiredHand,transform.right+transform.forward*.25f);
+                rightHand.rotation=fixedHandRotation;
+            }
             if(current.Kind==HeroMotionKind.SlamWindup&&TryGetBladeTip(out var bladeTip))
             {
                 // 첫10틱의 접점만 실제 칼끝으로 맞춘다. 원래 손 목표에서 매번 재계산하여 누적하지 않는다.
                 float height=Vector3.Dot(bladeTip-transform.position,transform.up);
                 desiredHand+=transform.up*NativeHeroMotionClock.BladeContactLift(current.Kind,height,current.Phase);
+                if(twoHands&&leftGrip!=null)desiredHand=FitTwoHandTarget(desiredHand,fixedHandRotation);
                 SolveArm(rightUpper,rightFore,rightHand,desiredHand,transform.right+transform.forward*.25f);
-                rightHand.rotation=Quaternion.FromToRotation(-socket.up,desiredBlade)*rightHand.rotation;
+                rightHand.rotation=leftGrip!=null?fixedHandRotation:Quaternion.FromToRotation(-socket.up,desiredBlade)*rightHand.rotation;
             }
             BlendArm(rightUpper,rightFore,rightHand,rightBaseUpper,rightBaseFore,rightBaseHand,weight);
             var leftBaseUpper=leftUpper.localRotation;var leftBaseFore=leftFore.localRotation;var leftBaseHand=leftHand.localRotation;
@@ -446,14 +553,33 @@ namespace Exoduser.UnityPort
             {
                 // 손잡이 -0.15m의 오른손 중심보다 폼멜 쪽 9cm에 보조 손을 고정한다.
                 var target=socket.position+socket.up*.09f;
+                var handRotation=rightHand.rotation*leftGripRelative;
+                if(leftGrip!=null)
+                {
+                    // 새 장갑은 손목과 파지 중심이 다르다. 실제 모델의 본 부착 중심을 손잡이에 맞춘다.
+                    var gripRotation=Quaternion.Inverse(leftHand.rotation)*leftGrip.rotation;
+                    var gripOffset=Quaternion.Inverse(leftHand.rotation)*(leftGrip.position-leftHand.position);
+                    handRotation=socket.rotation*Quaternion.Inverse(gripRotation);
+                    target-=handRotation*gripOffset;
+                }
                 SolveArm(leftUpper,leftFore,leftHand,target,-transform.right+transform.forward*.20f);
-                leftHand.rotation=rightHand.rotation*leftGripRelative;
+                leftHand.rotation=handRotation;
             }
             else if(current.Kind==HeroMotionKind.Cast)
             {
                 SolveArm(leftUpper,leftFore,leftHand,transform.TransformPoint(new Vector3(-.18f,1.26f,.48f)),-transform.right);
             }
             BlendArm(leftUpper,leftFore,leftHand,leftBaseUpper,leftBaseFore,leftBaseHand,weight);
+        }
+
+        bool PivotFoot(ref Vector3 ankle,ref Quaternion rotation,Vector3 toe,float pitch,float yaw)
+        {
+            if(pitch==0&&yaw==0)return false;
+            var forward=Vector3.ProjectOnPlane(toe-ankle,transform.up);
+            if(forward.sqrMagnitude<.000001f)return false;
+            var axis=Vector3.Cross(transform.up,forward.normalized);
+            var turn=Quaternion.AngleAxis(yaw,transform.up)*Quaternion.AngleAxis(pitch,axis);
+            ankle=toe+turn*(ankle-toe);rotation=turn*rotation;return true;
         }
 
         void ApplyRollTuck(float phase)
