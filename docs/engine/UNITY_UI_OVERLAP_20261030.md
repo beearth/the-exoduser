@@ -250,3 +250,13 @@ MERGE_QUEUE READY 뒤 expected공통202b32c85df19ce0b2a11db118e313298948a416을 
 2026-10-31 R3: UI실제1225프레임은입력격리와함께simulationFrozenChecks=frames를필수로기록·검증한다. 작은검정stroke는후행본문과직접3.1physical유계로연결하고그림자끼리연쇄병합하지않는다. 명시광휘/외곽선은동일본문의스타일페인트로분리해decorationElements에보존하며이웃실제본문교차는계속검출한다. 기본광휘5.5s/.03·region9.2s/.064·death-black-outline4.2s/1.001프로필의source/순서/clip/치수/중간칠을대조한다. 추가12음성/양성회귀포함56PASS. 실제R3전화면/가림/PNG1x는별도필수이며R2의Guide/스킬FAIL을지우지않는다.
 
 R3 전면자간글자의기존1px·±.5px/3px검정그림자는frontend-black-shadow/3.1×edgeScale/알파≤1.001명시프로필이다. 사망제목·펫대사동일source로명시stroke를연결한다. 일반미선언큰그림자허용범위는확대하지않았다.
+
+
+## 2026-10-31 시네마틱 재생 버튼의 명시 바탕
+
+|항목|현재 계약|
+|---|---|
+|실제 RED|R3 UI bd9ff69e1225장 전수분석은사망펫본문15교차와시네마틱일시정지15장의GUIStyle내부바탕미증명으로FAIL. 계측미증명을제외하거나알파1로추정하지않음|
+|수정|NativeLobby의재생/재시도버튼은기존취소/종료에쓰던명시페인트공통함수LobbyActionButton을사용. NativeSilverHellUi.ActionPlate(edge28/outset6),호버Focus/pressed,글꼴공통/크기18/가운데배치,GUIStyle.none hit영역으로그림과클릭을분리. 회복Rect(28,26,240,48)·실제왼쪽위EdgeMatrix·TogglePlayback·오류재시도조건유지|
+|보존|기존취소/종료의기능/외형은같고공통함수명만변경. NativeUiAudit의불명상태차단·불투명도/가림판정엄격조건·actualGPU대조군은완화하지않음|
+|검수|새동일Player에서전5해상도/3언어시네마틱일시정지·실제영상·원시계측완전성·겹침0과1x를확인. R3의1225PNG/안전0/컴포넌트0/화면경계0을새DLL증거로소급하지않음|

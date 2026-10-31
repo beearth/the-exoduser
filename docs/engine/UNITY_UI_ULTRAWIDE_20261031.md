@@ -229,3 +229,13 @@ R2 source e357a344/정식build feecb283/M1 07fa19ed 23/23/field bb5d6a48 22장/�
 |펫 대사|NativeDeathOverlay.PetText는 size22 Noto Sans KR Bold, 줄간격 lh=max(27.6, 각 줄 GUIStyle.CalcSize 높이+4design). Wrap/본문/상자 위치/가운데 정렬/초상·로테이션 유지. 실제2560×1600의 본문 높이42.48px와 기존 줄간격36.8px가5.68px 교차한 RED를 보존|
 |검수|보정한 새 같은 DLL로 정식 remodel-scenes1 build→M1→field/UI/world/웹/1x를 다시 수행한다. R3 UI나 과거 M1을 새 DLL 증거로 소급하지 않는다|
 |순번|R3 UI 실행 직후 공식 unreserve. R4는 기존 Main/Map/Impact 뒤 큐 끝 재등록. 타인 예약·프로세스·공통/Desktop 쓰기0|
+
+
+## 2026-10-31 시네마틱 재생 버튼의 명시 바탕
+
+|항목|현재 계약|
+|---|---|
+|실제 RED|R3 UI bd9ff69e1225장 전수분석은사망펫본문15교차와시네마틱일시정지15장의GUIStyle내부바탕미증명으로FAIL. 계측미증명을제외하거나알파1로추정하지않음|
+|수정|NativeLobby의재생/재시도버튼은기존취소/종료에쓰던명시페인트공통함수LobbyActionButton을사용. NativeSilverHellUi.ActionPlate(edge28/outset6),호버Focus/pressed,글꼴공통/크기18/가운데배치,GUIStyle.none hit영역으로그림과클릭을분리. 회복Rect(28,26,240,48)·실제왼쪽위EdgeMatrix·TogglePlayback·오류재시도조건유지|
+|보존|기존취소/종료의기능/외형은같고공통함수명만변경. NativeUiAudit의불명상태차단·불투명도/가림판정엄격조건·actualGPU대조군은완화하지않음|
+|검수|새동일Player에서전5해상도/3언어시네마틱일시정지·실제영상·원시계측완전성·겹침0과1x를확인. R3의1225PNG/안전0/컴포넌트0/화면경계0을새DLL증거로소급하지않음|

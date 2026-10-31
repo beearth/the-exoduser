@@ -142,7 +142,7 @@ namespace Exoduser.UnityPort
    GUI.enabled=previousEnabled&&!showLanguages;
    // Source hides worldIntroMix during normal playback; show recovery only when paused/error.
    bool playing=movie.Prepared&&movie.Player!=null&&movie.Player.isPlaying;
-   var recoveryMatrix=GUI.matrix;try{GUI.matrix=NativeUiViewport.EdgeMatrix;if(VideoError.Length>0||(movie.Prepared&&!playing)){var recovery=new Rect(28,26,240,48);NativeUiAudit.Region(recovery,"component","cinematic-recovery","실제 왼쪽 위");if(NativeUiAudit.Button(recovery,VideoError.Length>0?K("재생 / 재시도","Play / retry"):K("재생","Play"),button))TogglePlayback();}
+   var recoveryMatrix=GUI.matrix;try{GUI.matrix=NativeUiViewport.EdgeMatrix;if(VideoError.Length>0||(movie.Prepared&&!playing)){var recovery=new Rect(28,26,240,48);NativeUiAudit.Region(recovery,"component","cinematic-recovery","실제 왼쪽 위");if(LobbyActionButton(recovery,VideoError.Length>0?K("재생 / 재시도","Play / retry"):K("재생","Play"),false))TogglePlayback();}
    if(VideoError.Length>0)Label(new Rect(28,86,1300,100),K("영상 재생 실패 — 재시도하거나 ESC를 길게 눌러 나가세요.","Video playback failed — retry or hold ESC to continue."),normal,TextAnchor.UpperLeft);}finally{GUI.matrix=recoveryMatrix;}
    GUI.enabled=previousEnabled;
    if(showLanguages){
@@ -199,10 +199,10 @@ namespace Exoduser.UnityPort
    Fill(new Rect(0,0,1920,1080),new Color(0,0,0,.75f));NativeSilverHellUi.Panel(new Rect(710,427,500,226),28,8);
    var heading=new GUIStyle(normal){font=NativeSilverHellUi.Font()??normal.font,fontSize=24,fontStyle=FontStyle.Normal,wordWrap=true};heading.normal.textColor=NativeSilverHellUi.Bright;
    Label(new Rect(740,457,440,60),K("게임을 종료하시겠습니까?","Quit the game?"),heading,TextAnchor.MiddleCenter);
-   if(LobbyQuitButton(new Rect(755,552,180,48),K("취소","Cancel"),false))lobbyQuitPrompt=false;
-   if(LobbyQuitButton(new Rect(985,548,200,56),K("종료","Quit"),true))Application.Quit();
+   if(LobbyActionButton(new Rect(755,552,180,48),K("취소","Cancel"),false))lobbyQuitPrompt=false;
+   if(LobbyActionButton(new Rect(985,548,200,56),K("종료","Quit"),true))Application.Quit();
   }
-  bool LobbyQuitButton(Rect r,string text,bool primary)
+  bool LobbyActionButton(Rect r,string text,bool primary)
   {
    bool hover=r.Contains(Event.current.mousePosition),pressed=!AutomatedInput&&hover&&ExoInput.Mouse(0);
    if(hover&&!pressed)NativeSilverHellUi.ButtonFocus(r);NativeSilverHellUi.ActionPlate(r,primary,hover?1:0,pressed,28,6);
