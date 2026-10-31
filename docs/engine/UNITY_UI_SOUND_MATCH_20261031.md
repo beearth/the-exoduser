@@ -20,7 +20,7 @@
 | 드랍 아이템 획득 | sfx/pickup/pickup_item.mp3 + pickup_rummage1~5.mp3 중 랜덤, gain .5, pitch _r(1,.05)×(.92~1.08), 지연 0 | 없음 | 같은 6파일을 가방 수용 성공 후 1회. 가방 실패는 재생 안 함 |
 | 골드·물약·보주 획득 원음 | SFX.pickup의 합성 1400/2000Hz FM + 3200Hz tone. 파일 없음 | 해당 독립 획득 경로 미이식 | 소리 자체는 ui_pickup_chime.wav로 보존. 존재하지 않는 획득 동작을 새로 만들지 않음 |
 
-sample의 웹 전역 playbackRate .92~1.08 변동을 UI sample에 적용한다. 기존 ui_tab의 고정 pitch 1 계약은 이 단위부터 웹 변동 범위로 갱신한다. 모든 신규 게임 UI sample은 기존 Master/SFX/UI(2D, loop false)에 연결하며 source gain=min(1,raw×SFX%), SfxVol bus에도 SFX%가 적용된다. 예: open/close/tab은 0/60/100%에서 source 0/.132/.22, bus -80/-4.436975/0dB. 웹 절차 합성은 SFX를 bus 한 번만 적용하므로 ui_levelup/ui_pickup_chime은 source 1, SfxVol bus만 따른다. 기존 전투 믹서/EQ/컴프레서 계약은 변경하지 않는다. 프런트엔드 ENTER/hover는 웹 index와 같이 게임 SFX%와 독립된 FrontendUI.mixer Master/UI를 쓴다.
+sample의 웹 전역 playbackRate .92~1.08 변동을 UI sample에 적용한다. 기존 ui_tab의 고정 pitch 1 계약은 이 단위부터 웹 변동 범위로 갱신한다. 모든 신규 게임 UI sample은 기존 Master/SFX/UI(2D, loop false)에 연결하며 source gain=min(1,raw×SFX%), SfxVol bus에도 SFX%가 적용된다. 예: open/close/tab은 0/60/100%에서 source 0/.132/.22, bus -80/-4.436975/0dB. 웹 절차 합성은 SFX를 bus 한 번만 적용하므로 ui_levelup/ui_pickup_chime은 SFX 0%에서 source 0, 그 외 source 1이며 SfxVol bus 한 번만 따른다. 기존 전투 믹서/EQ/컴프레서 계약은 변경하지 않는다. 프런트엔드 ENTER/hover는 웹 index와 같이 게임 SFX%와 독립된 FrontendUI.mixer Master/UI를 쓴다.
 
 ## 파일·검수
 
@@ -31,7 +31,7 @@ sample의 웹 전역 playbackRate .92~1.08 변동을 UI sample에 적용한다. 
 | 수정 전 재현 | tests/RED.log: 생산 패널 본문 6검사 중 열기/닫기 2실패 |
 | 생산본문 독립 회귀 | tests/matrix.json: 1206조합/2412검사/0실패. 선택·Running·입력 fence 등 기존 상태 일치. Unity 장치/패널 대체이므로 실제Player 증거와 구분 |
 | 실제 hover/button C# | hover 10검사 + button 11검사, 실패0. 진입100ms/종료80ms/빠른 재진입·포커스·60/80ms gate·고유음 중복·Layout/Repaint·로비 무음. 장치 대체 범위 |
-| 기존 ui_tab 독립 도구 | 새 UiPanelState/UiPanelChanged 보조본문·단조시간·추가 클립·피치 범위를 반영. 전체 NativeFeedbackAudio/NativeAudioMixer 실행 1176조합/2364검사/0실패. tab만 계수해 신규 open/close와 분리. legacy-tool-green/실제본문_행동회귀.json |
+| 기존 ui_tab 독립 도구 | 새 UiPanelState/UiPanelChanged 보조본문·단조시간·추가 클립·피치 범위를 반영. 전체 NativeFeedbackAudio/NativeAudioMixer 실행 1176조합/2370검사/0실패. tab만 계수해 신규 open/close와 분리. legacy-tool-green/실제본문_행동회귀.json |
 | 독립 C# | Core/Runtime 전체 현재 C# 컴파일 오류0. 기존 경고 유지. 공식 Unity 빌드와 구분 |
 | 공식 빌드·M1 | 순번 대기, 미검증. 후보 원격 복구점 5093a76cecd076cf13b6754aab37ac2c766d571b |
 | 출력 버퍼·30초 영상 | Tools/UiSoundCapture.cs의 명시적 --unity-ui-sound-capture, sandbox/output 필수. 검수 실행 대기 |
@@ -42,3 +42,5 @@ AudioRenderer.Start가 성공하기 전에는 Listener를 열지 않는다. 녹�
 영상 fixture는 전투 Update를 끈 상태에서 생산 NativeGame.OnGUI를 실제 GUI 이벤트마다 호출해 패널/HUD도 그대로 그린다. 로비는 기존 NativeLobby.OnGUI를 사용한다. 검수 설명 자막 외의 화면을 대체해서 그리지 않는다.
 
 빠른 입장 hover 재진입은 웹과 같이 이전 소스를 80ms로 내린 뒤 100ms에 정리하고 새 소스를 첫 샘플부터 100ms로 올린다. ENTER/hover PCM은 첫 클릭 전에 사전 로드한다. 영상에서 전투 Tick은 정지시키되 실제 UpdateViews와 카메라 원래 cullingMask를 적용해 UI 뒤 월드도 실제로 렌더한다.
+
+합성음 0% 회귀: 기존 소스1/버스−80dB의 잔여값 가능성을 실제 어댑터로 RED4실패 재현 후, source도0으로 설정해 2370검사/0실패. 이미 재생 중인 합성음의 60/100→0 변경도 즉시 source0이다. 실제 30초 캡처의 28초 지점에서 같은 Source 무음·출력버퍼를 별도 검사한다. 0보다 큰 SFX%에서 단일 bus gain 동작은 유지한다.

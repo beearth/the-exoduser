@@ -57,6 +57,7 @@ namespace Exoduser.UnityPort.Tools {
     if(frame==330){CueAt("레벨업 · 웹 합성 아르페지오");int n=sound.UiEvents.Count;game.Simulation.AddExperience(game.Simulation.Player.MaxExperience);CheckThat("실제 레벨업 이벤트",sound.UiEvents.Count==n+1&&sound.UiEvents[n].key=="ui_levelup");}
     if(frame==375){CueAt("드랍 아이템 획득 · 웹 6종 풀");var item=NativeInventorySeed.Load().equipped[0];int n=sound.UiEvents.Count;bool picked=(bool)Call(game,"CollectLoot",new LootState{Item=item,Rarity=item.rarity});CheckThat("실제 가방 획득",picked&&sound.UiEvents.Count==n+1&&sound.UiEvents[n].key.StartsWith("pickup_"));}
     if(frame==405){CueAt("SFX 0% · 창 열기는 무음");sound.SetVolumePercent(0);Call(game,"SetInventory",true);}
+    if(frame==420){CueAt("SFX 0% · 레벨업 합성음도 무음");int n=sound.UiEvents.Count;sound.PlayLevelUp();CheckThat("합성음 0퍼센트 소스 무음",sound.UiEvents.Count==n+1&&sound.UiEvents[n].sourceVolume==0);}
     if(frame>=180){Camera.main.cullingMask=(int)Get(game,"worldMask");Call(game,"UpdateViews");}
     yield return new WaitForEndOfFrame();
     var image=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(Path.Combine(output,"frame"+frame.ToString("D4")+".png"),image.EncodeToPNG());Destroy(image);

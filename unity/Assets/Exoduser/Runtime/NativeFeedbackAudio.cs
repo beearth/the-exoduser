@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort
         readonly System.Random rng=new System.Random(20261027);
         public NativeAudioMixer Bus{get{return bus;}}
         public Func<Vector3> ListenerAt;   // the AudioListener sits on the player (camera height must not bend the distance feel)
-        public void SetVolumePercent(int percent){volumeGain=Mathf.Clamp(percent,0,100)/100f;bus.SetSfxPercent(percent);foreach(var v in voices)v.source.volume=Mathf.Min(1,v.rawVolume*(v.busOnly?1:volumeGain));}
+        public void SetVolumePercent(int percent){volumeGain=Mathf.Clamp(percent,0,100)/100f;bus.SetSfxPercent(percent);foreach(var v in voices)v.source.volume=Mathf.Min(1,v.rawVolume*(v.busOnly?(volumeGain<=0?0:1):volumeGain));}
         readonly Dictionary<string,AudioClip> clips=new Dictionary<string,AudioClip>();
         readonly Dictionary<string,double> lastAt=new Dictionary<string,double>();
         readonly List<Req> pending=new List<Req>(),direct=new List<Req>();
@@ -322,7 +322,7 @@ namespace Exoduser.UnityPort
             var clip=clips[fileKey];if(clip.loadState!=AudioDataLoadState.Loaded){Receipt.dropped++;return;}
             var s=available.source;s.clip=clip;s.pitch=r.pitch;s.outputAudioMixerGroup=GroupFor(r.group);s.spatialBlend=r.blend;s.transform.position=r.pos;
             // OPT.sfxVol60: sample gain min(1,vol*.6); the master bus gain .6 is the mixer's SfxVol parameter.
-            available.rawVolume=r.volume;available.busOnly=r.key=="ui_levelup"||r.key=="ui_pickup_chime";s.volume=Mathf.Min(1,r.volume*(available.busOnly?1:volumeGain));s.panStereo=r.blend>0?0:Mathf.Clamp(r.pan,-1,1);
+            available.rawVolume=r.volume;available.busOnly=r.key=="ui_levelup"||r.key=="ui_pickup_chime";s.volume=Mathf.Min(1,r.volume*(available.busOnly?(volumeGain<=0?0:1):volumeGain));s.panStereo=r.blend>0?0:Mathf.Clamp(r.pan,-1,1);
             if(r.delay>0)s.PlayDelayed(r.delay);else s.Play();
             available.priority=r.priority;available.started=now;available.ends=now+r.delay+clip.length/Mathf.Max(.01f,r.pitch);
             if(r.group=="UI")UiEvents.Add(new UiAudioEvent{key=r.key,frame=Time.frameCount,time=Time.realtimeSinceStartupAsDouble,dspTime=AudioSettings.dspTime,gain=r.volume,sourceVolume=s.volume,pitch=s.pitch,group=s.outputAudioMixerGroup.name});
