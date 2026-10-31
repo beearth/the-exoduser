@@ -154,6 +154,23 @@ namespace Exoduser
             Capture(tl,1,Output+"/01-exploration.png"); Capture(tl,5.82f,Output+"/02-combat.png");
             tl.SetTime(1);
         }
+        static RenderTexture mcpTarget, mcpPrevious;
+        static Camera mcpCamera;
+        static float mcpAspect;
+        public static void BeginMcpCapture()
+        {
+            if(mcpTarget)throw new Exception("MCP capture target already owned");
+            var tl=UnityEngine.Object.FindFirstObjectByType<Hd2dTrialTimeline>();
+            if(!tl)throw new Exception("HD2D trial scene is not active");
+            mcpCamera=tl.view;mcpPrevious=mcpCamera.targetTexture;mcpAspect=mcpCamera.aspect;
+            mcpTarget=new RenderTexture(1920,1080,24);mcpCamera.targetTexture=mcpTarget;mcpCamera.aspect=16f/9f;tl.SetTime(1);
+        }
+        public static void EndMcpCapture()
+        {
+            if(!mcpTarget)return;
+            mcpCamera.targetTexture=mcpPrevious;mcpCamera.aspect=mcpAspect;
+            mcpTarget.Release();UnityEngine.Object.DestroyImmediate(mcpTarget);mcpTarget=null;mcpCamera=null;
+        }
         public static void CaptureSequence()
         {
             if (sequence != null) throw new Exception("HD2D sequence already running");
