@@ -4415,6 +4415,150 @@ let _dpr=1; // devicePixelRatio 캐시
 // _ssaa=1 이면 VW===C.width 로 기존과 완전 동일 (회귀 0)
 let VW=0, VH=0;       // 논리 시야 (전역 캐시)
 let _ssaa=1;          // 현재 적용 슈퍼샘플 배율 (1 / 1.5 / 2)
+// WEB_FX_TRIAL_BEGIN
+// 독립 H5 시험. 옵션 없음: 저장 접근/렌더 자원/시간축 변경 없음.
+const _webFx=new URLSearchParams(location.search).get('fx')==='1'?_createWebFxTrial():null;
+function _createWebFxTrial(){
+  const defaults={lighting:65,bloom:30,grade:45,vignette:28,fog:25,rays:18,tilt:20,hitstop:60,shake:45,flash:45,particles:50};
+  const labels={lighting:'국소 조명',bloom:'블룸',grade:'차가운 그늘 / 따뜻한 빛',vignette:'비네트',fog:'높이 안개',rays:'빛기둥',tilt:'상하 초점 흐림',hitstop:'타격 정지',shake:'방향성 흔들림',flash:'피격 플래시',particles:'입자 / 파편'};
+  const key='exoduser.webFxTrial.v1',settings={...defaults};
+  try{const saved=JSON.parse(localStorage.getItem(key));if(saved&&typeof saved==='object')for(const k of Object.keys(defaults))if(typeof saved[k]==='number'&&Number.isFinite(saved[k]))settings[k]=Math.max(0,Math.min(100,saved[k]));}catch(e){}
+  const stats={hits:0,particles:0,frames:0,cpuMs:0,lights:0,protected:0,renderer:'pending',error:''};
+  let enabled=true,stopUntil=0,lastStop=-1000,lastHit=-1000,hitAt=-1000,hitAngle=0,seed=731;
+  let gl=null,program=null,vao=null,scene=null,lightTex=null,guardTex=null,lightCanvas=null,guardCanvas=null,lx=null,gx=null,locations=null,sceneW=0,sceneH=0,uiBuilt=false,failed=false;
+  const debris=[],glows=[],stamps=new Map();
+  const rand=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
+  function set(k,v){if(!(k in defaults)||typeof v!=='number'||!Number.isFinite(v))return;settings[k]=Math.max(0,Math.min(100,v));try{localStorage.setItem(key,JSON.stringify(settings));}catch(e){}if(k==='hitstop'&&v===0)stopUntil=0;}
+  function hit(e,angle,critical){
+    if(!enabled)return;
+    const now=performance.now();if(now-lastHit<55)return;lastHit=now;stats.hits++;
+    if(settings.hitstop>0&&now-lastStop>=320){stopUntil=now+Math.max(50,settings.hitstop)*(critical?Math.min(100/Math.max(50,settings.hitstop),4/3):1);lastStop=now;}
+    hitAt=now;hitAngle=Number.isFinite(angle)?angle:0;
+    if(settings.flash>0)e._hitFlash=Math.max(e._hitFlash||0,6+settings.flash*.06);
+    glows.push({x:e.x,y:e.y-15,t:now});if(glows.length>8)glows.shift();
+    const count=Math.ceil(settings.particles*.14);
+    for(let i=0;i<count&&debris.length<96;i++){const a=hitAngle+(rand()-.5)*1.7,sp=65+rand()*130;debris.push({x:e.x,y:e.y-12,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-50,z:rand()*10,size:1.5+rand()*2,t:now,life:180+rand()*180,col:i%3===0?'#c7ac7f':i%3===1?'#744a36':'#9a382b'});}
+    stats.particles=debris.length;
+  }
+  function remaining(now){return enabled&&settings.hitstop>0?Math.max(0,stopUntil-now):0;}
+  function recoil(now){const age=(now-hitAt)/1000,a=enabled&&age>=0&&age<.22?settings.shake*.12*Math.exp(-age*19)*Math.cos(age*62):0;return{x:Math.cos(hitAngle)*a,y:Math.sin(hitAngle)*a};}
+  function drawParticles(ctx){
+    const now=performance.now();let w=0;ctx.save();
+    for(const d of debris){const age=now-d.t;if(age>=d.life)continue;debris[w++]=d;const t=age/1000;ctx.globalAlpha=(1-age/d.life)*settings.particles/100;ctx.fillStyle=d.col;const x=d.x+d.vx*t,y=d.y+d.vy*t+170*t*t;ctx.fillRect(x,y,d.size*2,d.size);}
+    debris.length=w;stats.particles=w;ctx.restore();
+  }
+  function buildUI(){
+    if(uiBuilt||new URLSearchParams(location.search).get('fxui')!=='1')return;uiBuilt=true;
+    const panel=document.createElement('details');panel.id='webFxPanel';panel.open=true;
+    panel.style.cssText='position:fixed;right:18px;top:170px;z-index:9000;width:296px;max-height:70vh;overflow:auto;padding:14px 16px;background:rgba(15,17,19,.96);color:#d6c9b5;border:1px solid #67533c;font:13px/1.5 "Malgun Gothic",sans-serif;box-shadow:0 8px 24px #0008;pointer-events:auto';
+    const title=document.createElement('summary');title.textContent='화면 효과 시험 · 강도 조절';title.style.cssText='cursor:pointer;font-size:15px;letter-spacing:.04em;color:#e2c18f';panel.appendChild(title);
+    const line=document.createElement('p');line.textContent='0% = 추가 효과 없음 · 이 브라우저에 자동 저장';line.style.cssText='font-size:11px;color:#9d968a';panel.appendChild(line);
+    const toggle=document.createElement('button');toggle.textContent='효과 켜짐 · 클릭하여 원본 비교';toggle.type='button';toggle.style.cssText='width:100%;margin:0 0 10px;padding:8px;background:#382c20;color:#eddbc1;border:1px solid #82633d;cursor:pointer';toggle.addEventListener('click',()=>{enabled=!enabled;stopUntil=0;toggle.textContent=enabled?'효과 켜짐 · 클릭하여 원본 비교':'효과 꺼짐 · 클릭하여 시험판 보기';});panel.appendChild(toggle);
+    const controls=[];
+    for(const k of Object.keys(defaults)){
+      const label=document.createElement('label');label.style.cssText='display:grid;grid-template-columns:1fr 40px;gap:3px 8px;margin:9px 0';
+      const name=document.createElement('span');name.textContent=labels[k];const value=document.createElement('output');value.textContent=settings[k]+'%';value.style.textAlign='right';
+      const slider=document.createElement('input');slider.type='range';slider.min='0';slider.max='100';slider.step='1';slider.value=settings[k];slider.id='webFx-'+k;slider.setAttribute('aria-label',labels[k]);slider.style.cssText='grid-column:1/3;width:100%;accent-color:#b99059';value.htmlFor=slider.id;
+      slider.addEventListener('input',()=>{set(k,Number(slider.value));value.textContent=settings[k]+'%';});label.append(name,value,slider);panel.appendChild(label);controls.push({k,slider,value});
+    }
+    const reset=document.createElement('button');reset.textContent='권장 강도로 복원';reset.type='button';reset.style.cssText='width:100%;padding:7px;background:#202327;color:#c8b99e;border:1px solid #514737;cursor:pointer';reset.addEventListener('click',()=>{for(const c of controls){set(c.k,defaults[c.k]);c.slider.value=settings[c.k];c.value.textContent=settings[c.k]+'%';}});panel.appendChild(reset);
+    for(const event of ['keydown','keyup','mousedown','mouseup','pointerdown','pointerup','wheel','contextmenu'])panel.addEventListener(event,e=>e.stopPropagation());
+    document.body.appendChild(panel);
+  }
+  const vertex=`#version 300 es
+  out vec2 uv;void main(){vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2);uv=p;gl_Position=vec4(p*2.-1.,0.,1.);}`;
+  const fragment=`#version 300 es
+  precision highp float;in vec2 uv;out vec4 frag;
+  uniform sampler2D sceneTex,lightMap,guardMap;uniform vec2 resolution,worldOrigin;uniform float clock;
+  uniform vec4 a;uniform vec3 b;
+  vec3 bright(vec2 p){vec3 c=texture(sceneTex,p).rgb;float y=max(c.r,max(c.g,c.b));return c*smoothstep(.55,.95,y);}
+  void main(){
+    vec3 raw=texture(sceneTex,uv).rgb;float guard=texture(guardMap,uv).r;
+    vec2 px=1./resolution;
+    float edge=smoothstep(.28,.49,abs(uv.y-.5));float blur=edge*b.z*3.5*(1.-guard);
+    vec3 col=raw;
+    if(blur>.01){vec2 d=px*blur;col=raw*.4+(texture(sceneTex,uv+vec2(d.x,d.y)).rgb+texture(sceneTex,uv-vec2(d.x,d.y)).rgb+texture(sceneTex,uv+vec2(d.x,-d.y)).rgb+texture(sceneTex,uv+vec2(-d.x,d.y)).rgb)*.15;}
+    vec3 light=clamp(texture(lightMap,uv).rgb*2.,vec3(.48),vec3(1.65));
+    col*=mix(vec3(1.),light,a.x);
+    float y=dot(col,vec3(.2126,.7152,.0722));
+    vec3 shadow=vec3(.88,.97,1.10),warm=vec3(1.07,1.01,.91);
+    col*=mix(vec3(1.),mix(shadow,warm,smoothstep(.08,.55,y)),a.z);
+    col=mix(vec3(y),col,1.-.12*a.z);
+    if(a.y>0.){vec3 bloom=vec3(0.);for(int i=0;i<8;i++){float angle=float(i)*.785398;vec2 d=vec2(cos(angle),sin(angle))*px; bloom+=bright(uv+d*5.)*.065+bright(uv+d*13.)*.035;}col+=bloom*a.y*.35;}
+    vec2 world=(vec2(uv.x,1.-uv.y)*resolution+worldOrigin);
+    float drift=sin(world.x*.004+world.y*.002+clock*.12)*.5+.5;
+    float wisps=sin(world.x*.008-world.y*.003-clock*.07)*.5+.5;
+    float ground=(.2+.8*smoothstep(.35,1.,1.-uv.y))*(.4+.6*drift*wisps);
+    float fog=ground*b.x*.13*(1.-guard);
+    col=mix(col,vec3(.30,.33,.35),fog);
+    float shaft=pow(max(0.,sin((world.x+world.y*.36)*.008+sin(world.y*.001)*.6)),14.);
+    float rays=shaft*b.y*.045*smoothstep(.02,.5,uv.y)*(1.-guard);
+    col+=vec3(.85,.78,.60)*rays;
+    float vig=smoothstep(.26,.74,length((uv-.5)*vec2(1.05,1.)));
+    col*=1.-vig*a.w*.32;
+    // 실탄 코어/주변부는 원본 색과 선명도를 보존한다. 보호 영역에는 블룸/안개를 더하지 않는다.
+    col=mix(col,raw,guard);
+    frag=vec4(clamp(col,0.,1.),1.);
+  }`;
+  function init(){
+    gl=GL;
+    if(!_useGL||!gl){stats.renderer='unsupported (WebGL2 required)';return false;}
+    const compile=(type,src)=>{const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){const msg=gl.getShaderInfoLog(s);gl.deleteShader(s);throw Error(msg);}return s;};
+    const vs=compile(gl.VERTEX_SHADER,vertex),fs=compile(gl.FRAGMENT_SHADER,fragment);program=gl.createProgram();gl.attachShader(program,vs);gl.attachShader(program,fs);gl.linkProgram(program);gl.deleteShader(vs);gl.deleteShader(fs);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(program));
+    vao=gl.createVertexArray();locations={};for(const k of ['sceneTex','lightMap','guardMap','resolution','worldOrigin','clock','a','b'])locations[k]=gl.getUniformLocation(program,k);
+    const tex=()=>{const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);return t;};
+    scene=tex();lightTex=tex();guardTex=tex();lightCanvas=document.createElement('canvas');guardCanvas=document.createElement('canvas');lightCanvas.width=guardCanvas.width=480;lightCanvas.height=guardCanvas.height=270;lx=lightCanvas.getContext('2d');gx=guardCanvas.getContext('2d');stats.renderer='WebGL2 framebuffer + 480x270 masks';
+    C.addEventListener('webglcontextlost',()=>{program=null;sceneW=sceneH=0;failed=false;stats.renderer='context lost';});
+    return true;
+  }
+  function stamp(color){
+    if(stamps.has(color))return stamps.get(color);const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d'),gr=x.createRadialGradient(64,64,0,64,64,64);gr.addColorStop(0,color);gr.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=gr;x.fillRect(0,0,128,128);stamps.set(color,c);return c;
+  }
+  function masks(now){
+    const w=lightCanvas.width,h=lightCanvas.height,sx=w/VW,sy=h/VH,z=G._camZoom||1;
+    const project=(x,y)=>[(VW*.5+(x-G.cam.x)*z)*sx,(VH*.5+(y-G.cam.y)*z)*sy];
+    lx.globalCompositeOperation='source-over';lx.globalAlpha=1;lx.fillStyle='#4a515b';lx.fillRect(0,0,w,h);lx.globalCompositeOperation='lighter';stats.lights=0;
+    function light(x,y,r,alpha,color){const p=project(x,y),rx=r*sx*z,ry=r*sy*z;if(p[0]<-rx||p[0]>w+rx||p[1]<-ry||p[1]>h+ry||stats.lights>=32)return;lx.globalAlpha=alpha;lx.drawImage(stamp(color),p[0]-rx,p[1]-ry,rx*2,ry*2);stats.lights++;}
+    light(P.x,P.y-20,420,.54,'#b79e77');
+    if(_slStage!==G.stage||_slDirty)_buildStaticLights();
+    for(const s of _slArr)light(s.x,s.y,s.r,s.a*.62*(.96+.04*Math.sin(now*.004+s.x)),s.cg>s.cr?'#96995b':s.cb>s.cr?'#738aa1':'#c29560');
+    for(let i=0;i<Math.min(pProjs.length,16);i++){const p=pProjs[i];light(p.x,p.y,95,.32,p.el===EL.F?'#c7945d':p.el===EL.I?'#7c9baf':'#a59a77');}
+    for(let i=0;i<Math.min(_vfxAnims.length,8);i++){const v=_vfxAnims[i];light(v.x,v.y,150,.25,/fire|flame/i.test(v.id)?'#c7945d':/ice|lightning/i.test(v.id)?'#7c9baf':'#a59a77');}
+    if(G._fireZones)for(const f of G._fireZones.slice(0,8))light(f.x,f.y,Math.min(260,(f.r||60)*2),.4,f.el===EL.F?'#bf8755':'#899b82');
+    let gw=0;for(const g of glows)if(now-g.t<140){glows[gw++]=g;light(g.x,g.y,135,(1-(now-g.t)/140)*settings.flash/100,'#c2ac87');}glows.length=gw;
+    lx.globalAlpha=1;lx.globalCompositeOperation='source-over';
+    gx.globalCompositeOperation='source-over';gx.globalAlpha=1;gx.fillStyle='#000';gx.fillRect(0,0,w,h);stats.protected=0;
+    const guardStamp=stamp('#ffffff');
+    function protect(x,y,r){const p=project(x,y),rx=r*sx*z,ry=r*sy*z;if(p[0]<-rx||p[0]>w+rx||p[1]<-ry||p[1]>h+ry)return;gx.drawImage(guardStamp,p[0]-rx,p[1]-ry,rx*2,ry*2);gx.fillStyle='#fff';gx.beginPath();gx.ellipse(p[0],p[1],Math.max(1,rx*.58),Math.max(1,ry*.58),0,0,Math.PI*2);gx.fill();stats.protected++;}
+    for(const p of projs)if(!p.friendly)protect(p.x,p.y,Math.max(26,Math.min(180,(p.r||p.sz||6)*2+18)));
+    for(const e of ens)if(e.alive&&/charge|tell|windup/i.test(e.s||''))protect(e.x,e.y,Math.max(60,e.r*3));
+  }
+  function render(){
+    buildUI();if(!enabled||failed)return;
+    if(!Object.keys(settings).some(k=>['lighting','bloom','grade','vignette','fog','rays','tilt'].includes(k)&&settings[k]>0))return;
+    if(!_useGL||!GL||GL.isContextLost())return;
+    const start=performance.now();_flush();
+    const g=GL,active=g.getParameter(g.ACTIVE_TEXTURE),oldProgram=g.getParameter(g.CURRENT_PROGRAM),oldVao=g.getParameter(g.VERTEX_ARRAY_BINDING),oldBlend=g.isEnabled(g.BLEND),flip=g.getParameter(g.UNPACK_FLIP_Y_WEBGL),premul=g.getParameter(g.UNPACK_PREMULTIPLY_ALPHA_WEBGL),textures=[];
+    for(let i=0;i<3;i++){g.activeTexture(g.TEXTURE0+i);textures[i]=g.getParameter(g.TEXTURE_BINDING_2D);}g.activeTexture(g.TEXTURE0);
+    try{
+      if(!program&&!init())return;
+      masks(start);g.bindTexture(g.TEXTURE_2D,scene);
+      if(sceneW!==C.width||sceneH!==C.height){sceneW=C.width;sceneH=C.height;const alpha=g.getContextAttributes().alpha;g.texImage2D(g.TEXTURE_2D,0,alpha?g.RGBA8:g.RGB8,sceneW,sceneH,0,alpha?g.RGBA:g.RGB,g.UNSIGNED_BYTE,null);}
+      g.copyTexSubImage2D(g.TEXTURE_2D,0,0,0,0,0,sceneW,sceneH);
+      g.pixelStorei(g.UNPACK_FLIP_Y_WEBGL,true);g.pixelStorei(g.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);
+      for(const [i,t,c] of [[1,lightTex,lightCanvas],[2,guardTex,guardCanvas]]){g.activeTexture(g.TEXTURE0+i);g.bindTexture(g.TEXTURE_2D,t);g.texImage2D(g.TEXTURE_2D,0,g.RGBA,g.RGBA,g.UNSIGNED_BYTE,c);}
+      g.useProgram(program);g.bindVertexArray(vao);g.disable(g.BLEND);
+      g.uniform1i(locations.sceneTex,0);g.uniform1i(locations.lightMap,1);g.uniform1i(locations.guardMap,2);g.uniform2f(locations.resolution,sceneW,sceneH);g.uniform2f(locations.worldOrigin,G.cam.x-VW/2,G.cam.y-VH/2);g.uniform1f(locations.clock,start/1000);
+      g.uniform4f(locations.a,settings.lighting/100,settings.bloom/100,settings.grade/100,settings.vignette/100);g.uniform3f(locations.b,settings.fog/100,settings.rays/100,settings.tilt/100);g.drawArrays(g.TRIANGLES,0,3);
+      stats.frames++;stats.cpuMs=stats.cpuMs*.9+(performance.now()-start)*.1;
+    }catch(e){failed=true;stats.error=String(e.message);console.warn('[WEB FX] 원본 렌더 유지:',e.message);}
+    finally{
+      for(let i=0;i<3;i++){g.activeTexture(g.TEXTURE0+i);g.bindTexture(g.TEXTURE_2D,textures[i]);}g.activeTexture(active);g.pixelStorei(g.UNPACK_FLIP_Y_WEBGL,flip);g.pixelStorei(g.UNPACK_PREMULTIPLY_ALPHA_WEBGL,premul);g.useProgram(oldProgram);g.bindVertexArray(oldVao);if(oldBlend)g.enable(g.BLEND);else g.disable(g.BLEND);
+    }
+  }
+  return{settings,defaults,stats,set,hit,remaining,shake:recoil,drawParticles,render,get enabled(){return enabled;},set enabled(v){enabled=!!v;stopUntil=0;}};
+}
+// WEB_FX_TRIAL_END
 // ss-aware 변환 헬퍼 (핫패스: new 없음)
 // _xIdentity(): 백킹 픽셀 식별 변환 (풀스크린 오버레이/포스트FX용). ss와 무관하게 백킹 1:1.
 function _xIdentity(){X.setTransform(1,0,0,1,0,0);}
@@ -42667,6 +42811,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       _addImpact(e.x,e.y,0,ang,_impType,e.ib,_impPerFrame>3);
       if(opts&&opts.explode&&!(_impPerFrame>3))_addBoom(e.x,e.y,20+(e.ib?15:0),16,'fire');
     }}}
+    if(_webFx&&!isDot&&!_quiet2)_webFx.hit(e,ang,_isCrit);
     // ═══ 어픽스 OnHit DoT ═══
     if(!isDot){
       const _apDot=_eqAffix('poisonDot'),_afDot=_eqAffix('fireDot'),_aiDot=_eqAffix('iceDot');
@@ -52060,6 +52205,7 @@ function draw(){
   X.fillStyle='#000';X.fillRect(0,0,C.width,C.height); // 항상 순수 검정으로 먼저 채움
   const stg=STG[G.stage];
   let sx=0,sy=0;if(G.shake>0&&!_EDITOR_MODE){sx=(Math.random()-.5)*G.shake*2;sy=(Math.random()-.5)*G.shake*2}
+  if(_webFx&&_webFx.enabled&&!_EDITOR_MODE){const recoil=_webFx.shake(performance.now());sx+=recoil.x;sy+=recoil.y;}
   const _ez=(_EDITOR_MODE&&G._edZoom)?G._edZoom:1;
   const _cz=(!_EDITOR_MODE)?(G._camZoom||1):1; // 보스 줌아웃
   const _tzoom=_ez*_cz;
@@ -55187,6 +55333,7 @@ function draw(){
       X.restore();
     }
   }X.globalAlpha=1;X.textBaseline='alphabetic'}if(_DEBUG_PERF)_dbgTxt=performance.now()-_t0;}
+  if(_webFx&&_webFx.enabled)_webFx.drawParticles(X);
   X.restore();
   if(_nativePerspective)X=_nativePerspective.end();
   if(_wantPlateTest()){
@@ -55722,6 +55869,7 @@ function draw(){
   const _brVal=(OPT.brightness||100)/100;
   const _css=(_wantGrain?'contrast(1.05) brightness('+(.97*_brVal)+')':_wantFx?'contrast(1.02) brightness('+_brVal+')':'brightness('+_brVal+')');
   if(C.style.filter!==_css)C.style.filter=_css}
+  if(_webFx)_webFx.render();
   _pC4=performance.now(); // grain+scanline end
   // [BOSS-CINE] 보스 등장 시네마틱
   if(_bossCine.active){const _csp=(G.slowMo>0?.35:1)*_dtSp;_bossCine.t+=_csp;const t=_bossCine.t;
@@ -62196,6 +62344,7 @@ function loop(timestamp){
   let _didUpdate=false;
   const _aiT0=_PERF_PROF.enabled?performance.now():0;
   while(_acc>=PHYS_STEP){
+    if(_webFx&&G.on&&_webFx.remaining(performance.now())>0){_acc=0;break;}
     _gameTime+=PHYS_STEP;
     _now=_gameTime;
     update();

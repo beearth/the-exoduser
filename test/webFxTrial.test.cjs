@@ -1,0 +1,13 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),{test}=require('node:test');
+const source=fs.readFileSync('game.html','utf8');
+function load(search='?fx=1',saved=null,blocked=false){
+ let reads=0,writes=0,now=1000;
+ const box={URLSearchParams,location:{search},performance:{now:()=>now},Math,Float32Array,localStorage:{getItem(){reads++;if(blocked)throw Error('blocked');return saved},setItem(){writes++;if(blocked)throw Error('blocked')}},window:{},document:{createElement(){throw Error('must remain lazy')}}};
+ const match=source.match(/\/\/ WEB_FX_TRIAL_BEGIN([\s\S]*?)\/\/ WEB_FX_TRIAL_END/);
+ assert.ok(match,'FX opt-in module must exist');vm.createContext(box);vm.runInContext(match[1]+';globalThis.fx=_webFx;',box);return{fx:box.fx,get reads(){return reads},get writes(){return writes},clock(t){now=t}};
+}
+test('off and fxui-only never access storage or allocate a renderer',()=>{for(const q of ['', '?fx=0','?fxui=1','?fx=true']){const s=load(q);assert.equal(s.fx,null);assert.equal(s.reads,0);assert.equal(s.writes,0)}});
+test('settings validate finite numeric values, clamp 0..100 and ignore foreign fields',()=>{const {fx}=load('?fx=1',JSON.stringify({lighting:200,bloom:-1,fog:'bad',rays:null,tilt:12,extra:99}));assert.equal(fx.settings.lighting,100);assert.equal(fx.settings.bloom,0);assert.equal(fx.settings.fog,25);assert.equal(fx.settings.rays,18);assert.equal(fx.settings.tilt,12);assert.equal(fx.settings.extra,undefined);fx.set('lighting',-4);assert.equal(fx.settings.lighting,0);fx.set('lighting',Infinity);assert.equal(fx.settings.lighting,0)});
+test('corrupt or unavailable localStorage does not prevent play',()=>{for(const s of [load('?fx=1','{broken'),load('?fx=1',null,true)]){assert.equal(s.fx.settings.hitstop,60);assert.doesNotThrow(()=>s.fx.set('fog',12))}});
+test('confirmed hits stop 60ms, use directional recoil, and cannot extend during cooldown',()=>{const s=load(),e={x:1,y:2,_hitFlash:0};s.fx.hit(e,0,false);assert.equal(s.fx.remaining(1000),60);assert.ok(s.fx.shake(1010).x>0);assert.equal(s.fx.shake(1010).y,0);s.clock(1020);s.fx.hit(e,1,false);assert.equal(s.fx.remaining(1020),40);assert.equal(s.fx.remaining(1061),0);s.clock(1400);s.fx.hit(e,1,true);assert.equal(s.fx.remaining(1400),80);assert.ok(s.fx.stats.hits>=2)});
+test('zero impact controls add no freeze, recoil, flash, or debris',()=>{const s=load();for(const k of ['hitstop','shake','flash','particles'])s.fx.set(k,0);const e={x:0,y:0,_hitFlash:3};s.fx.hit(e,0,false);assert.equal(s.fx.remaining(1000),0);assert.equal(s.fx.shake(1000).x,0);assert.equal(e._hitFlash,3);assert.equal(s.fx.stats.particles,0)});
