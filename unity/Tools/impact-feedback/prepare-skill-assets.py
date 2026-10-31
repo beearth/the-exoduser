@@ -89,4 +89,10 @@ for name in ['SG_SkillMatter','SG_SkillGround','SG_SkillFloor']:
 for name in ['SkillPresentation.cs','NativeSkillRemaster.cs']:
     p=root/'Assets/Exoduser/Runtime/Vfx'/name
     if p.exists():meta(p)
+# Windows Path.write_text defaults to CRLF; Unity's text assets are stored as LF.
+# Preserve quoted scalar content, remove only end-of-line formatting whitespace.
+files=list(out.glob('SG_Skill*'))+list(out.glob('M_Skill*'))+list(out.glob('VFX_SkillMatter*'))
+files += [root/'Assets/Exoduser/Runtime/Vfx'/n for n in ['SkillPresentation.cs.meta','NativeSkillRemaster.cs.meta']]
+for p in files:
+    if p.exists():p.write_text('\n'.join(line.rstrip(' \t') for line in p.read_text(encoding='utf-8').splitlines())+'\n',encoding='utf-8',newline='\n')
 print('스킬 Lit Shader Graph·별도 VFX Graph 생성')

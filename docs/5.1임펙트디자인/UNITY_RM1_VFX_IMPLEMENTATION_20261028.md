@@ -18,6 +18,8 @@ M1 `07e`는 원래17발 분류(물리/입4·혜성7·원소보주6)를 유지한
 
 필수 Graph·그을음·XY 바닥 재질 중 하나가 누락되면 접점의 새 관찰/정지/반동/기존 hit sprite 억제를 적용하지 않는다. 스킬 본체 역시 필수3재질·Graph 로드가 성공한 경우만 기존 경로를 대체한다. 누락 자산으로 `new Material(null)`을 호출하지 않는다.
 
+r2 생성기는 Windows에서도 신규 VFX/YAML/meta를 LF·행끝 공백 없이 저장한다. Graph 수치·재질 GUID를 바꾸지 않는 형식 정리의 이전 byte는 I: `format-before-a36b237e1/`에 보존했다.
+
 ### r2 스킬·탄막 표현 수치
 
 새 경로는 `NativeSkillRemaster`가 읽기 전용으로 관찰한다. 비교 baseline 또는 자산 누락 시 기존 경로를 사용한다. 현행 HD-2D 인물/적 스프라이트 방향을 변경하지 않는다. `SG_SkillMatter`는 기존 Lit 그래프 구조 기반·거친 결/약한 발광 혈관·금속0/매끈함0.35, `SG_SkillGround`는 끊긴 불규칙 가장자리와 낮은 채움. `VFX_SkillMatter`는 별도 Graph 자산의 코어·파편·먼지 시스템, 팔레트/크기는 아래 읽기 전용 프리셋으로 공급한다. `ImpactSpace`는 3D 지형의 XZ·높이 또는 기존 XY 아레나의 발밑과 카메라 방향 높이로 위치·파편속도·물질회전을 변환한다. XY 바닥은 DecalProjector 대신 같은 색·낮은 채움의 투명 Lit `SG_SkillFloor` 쿼드로 표시한다(바닥 레이어 -19000, 그을음 -18999). 기존 아레나 sprite가 데칼을 받는다고 가정하지 않는다.
