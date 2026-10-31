@@ -11,7 +11,7 @@ Shader "EXODUSER/HD2DTrial/PixelLit"
  #pragma multi_compile _ _ADDITIONAL_LIGHTS
  #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
  #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
- TEXTURE2D(_BaseMap); SAMPLER(sampler_PointClamp);
+ TEXTURE2D(_BaseMap);
  CBUFFER_START(UnityPerMaterial)
  float4 _UVRect, _Tint; float _GridSize;
  CBUFFER_END

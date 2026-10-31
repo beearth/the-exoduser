@@ -156,12 +156,30 @@ namespace Exoduser
         }
         public static void CaptureSequence()
         {
-            var tl = UnityEngine.Object.FindFirstObjectByType<Hd2dTrialTimeline>();
-            if (!tl) throw new Exception("HD2D trial scene is not active");
+            if (sequence != null) throw new Exception("HD2D sequence already running");
+            sequence = UnityEngine.Object.FindFirstObjectByType<Hd2dTrialTimeline>();
+            if (!sequence) throw new Exception("HD2D trial scene is not active");
             Directory.CreateDirectory(Output+"/frames");
-            for(int i=0;i<300;i++) Capture(tl,i/30f,Output+"/frames/"+i.ToString("D4")+".png");
-            tl.SetTime(1);
-            File.WriteAllText(Output+"/capture-receipt.json","{\"frames\":300,\"fps\":30,\"width\":1920,\"height\":1080,\"spriteFilter\":\"Point\",\"scripted\":true,\"userSaveChanged\":null,\"scope\":\"Editor camera scripted art trial; no Core gameplay\"}");
+            sequenceFrame=0; EditorApplication.update += SequenceStep;
+        }
+        static Hd2dTrialTimeline sequence;
+        static int sequenceFrame;
+        static void SequenceStep()
+        {
+            try
+            {
+                Capture(sequence,sequenceFrame/30f,Output+"/frames/"+sequenceFrame.ToString("D4")+".png");
+                sequenceFrame++;
+                if(sequenceFrame%30==0)File.WriteAllText(Output+"/sequence-progress.json","{\"frames\":"+sequenceFrame+"}");
+                if(sequenceFrame<300)return;
+                EditorApplication.update-=SequenceStep;sequence.SetTime(1);sequence=null;
+                File.WriteAllText(Output+"/capture-receipt.json","{\"frames\":300,\"fps\":30,\"width\":1920,\"height\":1080,\"spriteFilter\":\"Point\",\"scripted\":true,\"userSaveChanged\":null,\"scope\":\"Editor camera scripted art trial; no Core gameplay\"}");
+            }
+            catch(Exception e)
+            {
+                EditorApplication.update-=SequenceStep;sequence=null;
+                File.WriteAllText(Output+"/sequence-error.txt",e.ToString());Debug.LogException(e);
+            }
         }
         static void Capture(Hd2dTrialTimeline tl,float t,string path)
         {
