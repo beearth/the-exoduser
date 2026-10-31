@@ -52,6 +52,42 @@ class Program
         if(type!=null)
         {
             var field=Activator.CreateInstance(type,new object[]{data});
+
+            var fit=type.GetMethod("FitTreePoint");
+            Check(fit!=null,"나무 몸통을 원본 통행 밖으로 맞추는 시각 전용 경계 함수");
+            if(fit!=null)
+            {
+                int changed=0,leaks=0;float maxShift=0;
+                foreach(var c in data.colliders)
+                {
+                    float cx=c.x/100,cz=-c.y/100;if(original.CanMove(cx*100,-cz*100,0))continue;
+                    for(int row=-12;row<=12;row++)for(int col=-12;col<=12;col++)
+                    {
+                        float x=cx+col*.2f,z=cz+row*.2f;var input=new object[]{x,z,cx,cz,0f,0f};
+                        if(!(bool)fit.Invoke(field,input))continue;
+                        float fx=(float)input[4],fz=(float)input[5];changed++;
+                        if(original.CanMove(fx*100,-fz*100,0))leaks++;
+                        maxShift=Math.Max(maxShift,(float)Math.Sqrt((x-fx)*(x-fx)+(z-fz)*(z-fz)));
+                    }
+                }
+                Check(changed>100&&leaks==0,"원본 충돌 주변 실제 통행점 몸통 침범 제거/수정"+changed+" 잔존"+leaks+" 최대이동"+maxShift);
+                var safe=new object[]{40f,-50f,40f,-50f,0f,0f};
+                Check(!(bool)fit.Invoke(field,safe),"통행 가능한 중심에 가짜 충돌 질량을 만들지 않기");
+            }
+
+            if(args.Length>2)
+            {
+                var extend=type.GetMethod("ExtendBridgeSupports");Check(extend!=null,"기존 목교 지지목을 실제 강바닥까지 연장");
+                if(extend!=null)
+                {
+                    using var exported=JsonDocument.Parse(File.ReadAllText(args[2]));var filter=exported.RootElement.GetProperty("filters")[0];
+                    var xyz=JsonSerializer.Deserialize<float[]>(filter.GetProperty("vertices").GetRawText());var ids=JsonSerializer.Deserialize<int[]>(filter.GetProperty("triangles").GetRawText());var old=(float[])xyz.Clone();
+                    int count=(int)extend.Invoke(field,new object[]{xyz,ids});int crossings=0,upperChanged=0;
+                    for(int i=0;i<xyz.Length;i+=3)if(old[i+1]>=.10f&&(xyz[i]!=old[i]||xyz[i+1]!=old[i+1]||xyz[i+2]!=old[i+2]))upperChanged++;
+                    for(int i=0;i<ids.Length;i+=3){float a=xyz[ids[i]*3+1],b=xyz[ids[i+1]*3+1],c=xyz[ids[i+2]*3+1];if(Math.Min(a,Math.Min(b,c))<-.45f&&Math.Max(a,Math.Max(b,c))>-.45f)crossings++;}
+                    Check(count>0&&crossings>0&&upperChanged==0,"실제 수면 관통 지지목/수정"+count+" 교차삼각형"+crossings+" 상판·난간변경"+upperChanged);
+                }
+            }
             var distance=type.GetMethod("Distance");
             Check((float)distance.Invoke(field,new object[]{40.2f,-74.2f})>0,"시작점은 전투 지면");
             Check((float)distance.Invoke(field,new object[]{-20f,-40f})<0,"초광폭 외곽은 숲·심연");

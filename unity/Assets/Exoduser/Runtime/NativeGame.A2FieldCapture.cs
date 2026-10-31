@@ -6,6 +6,53 @@ namespace Exoduser.UnityPort
     public sealed partial class NativeGame
     {
         [System.Serializable] sealed class A2FieldRenderCost { public string scope="격리 QA 정지구도 렌더 부하. 자연 전투 FPS/기기 성능 보장과 구분";public int width,height,frames;public float elapsedSeconds,framesPerSecond,p95FrameMs; }
+        [System.Serializable] sealed class A2BridgeFilter
+        {
+            public string name;public float[] vertices;public int[] triangles;
+            public float minX,maxX,minY,maxY,minZ,maxZ;public int waterCrossingTriangles;
+        }
+        [System.Serializable] sealed class A2FieldGeometry
+        {
+            public string scope="동일 실제 Player의 생성 완료 메시. 카메라 RT 시안과 구분";
+            public float waterY=-.45f;public int trunkBodyVerticesInOriginalWalk,fieldTrees,groundChunks;
+            public System.Collections.Generic.List<A2BridgeFilter> filters=new System.Collections.Generic.List<A2BridgeFilter>();
+        }
+        void A2FieldCaptureGeometry(string output)
+        {
+            var result=new A2FieldGeometry();
+            foreach(var filter in a2Root.GetComponentsInChildren<MeshFilter>())
+            {
+                var mesh=filter.sharedMesh;if(!mesh.isReadable)continue;
+                var renderer=filter.GetComponent<MeshRenderer>();if(renderer!=null&&renderer.sharedMaterial==a2FieldSoil)result.groundChunks++;
+                // FBX 자식 이름 대신 생성 루트 이름으로 소유 범위를 확인한다.
+                var ancestor=filter.transform;while(ancestor.parent!=null&&ancestor.parent!=a2Root.transform)ancestor=ancestor.parent;
+                bool trunk=ancestor.name=="A2_Hollow_Loft_Tree"||ancestor.name=="A2 전경 바깥 거목";
+                var points=mesh.vertices;
+                if(trunk)
+                {
+                    result.fieldTrees++;
+                    foreach(var v in points)
+                    {
+                        var p=filter.transform.TransformPoint(v);float h=p.y-a2Field.Height(p.x,p.z);
+                        if(h>.25f&&h<1.6f&&Map.CanMove(p.x*100,-p.z*100,15))result.trunkBodyVerticesInOriginalWalk++;
+                    }
+                }
+                if(ancestor.name!="A2 시작 목교")continue;
+                var f=new A2BridgeFilter{name=filter.name,vertices=new float[points.Length*3],triangles=mesh.triangles,minX=float.PositiveInfinity,minY=float.PositiveInfinity,minZ=float.PositiveInfinity,maxX=float.NegativeInfinity,maxY=float.NegativeInfinity,maxZ=float.NegativeInfinity};
+                for(int i=0;i<points.Length;i++)
+                {
+                    var p=filter.transform.TransformPoint(points[i]);f.vertices[i*3]=p.x;f.vertices[i*3+1]=p.y;f.vertices[i*3+2]=p.z;
+                    f.minX=Mathf.Min(f.minX,p.x);f.maxX=Mathf.Max(f.maxX,p.x);f.minY=Mathf.Min(f.minY,p.y);f.maxY=Mathf.Max(f.maxY,p.y);f.minZ=Mathf.Min(f.minZ,p.z);f.maxZ=Mathf.Max(f.maxZ,p.z);
+                }
+                for(int i=0;i<f.triangles.Length;i+=3)
+                {
+                    float a=f.vertices[f.triangles[i]*3+1],b=f.vertices[f.triangles[i+1]*3+1],c=f.vertices[f.triangles[i+2]*3+1];
+                    if(Mathf.Min(a,Mathf.Min(b,c))<result.waterY&&Mathf.Max(a,Mathf.Max(b,c))>result.waterY)f.waterCrossingTriangles++;
+                }
+                result.filters.Add(f);
+            }
+            File.WriteAllText(Path.Combine(output,"실제필드-메시검수.json"),JsonUtility.ToJson(result,true));
+        }
         IEnumerator A2FieldCapture()
         {
             string output=Argument("-output");
@@ -19,6 +66,7 @@ namespace Exoduser.UnityPort
             float deadline=Time.realtimeSinceStartup+45;
             while(!Remodel3DReady&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
             if(!Remodel3DReady){Application.Quit(3);yield break;}
+            A2FieldCaptureGeometry(output);
             var locations=new[]{new Vector2(4020,7420),new Vector2(3500,6250),new Vector2(4000,5000),new Vector2(2200,4400),new Vector2(6500,4400),new Vector2(4600,3500),new Vector2(4000,1850),new Vector2(4020,500)};
             var names=new[]{"01-시작","02-초반","03-전투공터","04-서측","05-동측","06-랜드마크","07-후반","08-보스입구"};
             foreach(int width in new[]{1920,3840})

@@ -213,8 +213,28 @@ namespace Exoduser.UnityPort
             {
                 if(!mf.sharedMesh.isReadable){if(a2UnreadableMeshes.Add(id))Debug.LogError("[A2] 지면 접합 정점읽기 누락. 원본 메시 유지: "+id);continue;}
                 var mesh=Instantiate(mf.sharedMesh);var points=mesh.vertices;
-                for(int i=0;i<points.Length;i++){var p=mf.transform.TransformPoint(points[i]);float groundY=a2Field==null&&A2ForestLayout.Water(p.x,p.z)&&!A2ForestLayout.Island(p.x,p.z)?A2ForestLayout.WaterLevel-.18f:NativeRemodel3D.GroundY(p.x,p.z);float weight=hollow?1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(1,3,p.y-height)):1;p.y+=(groundY-placementGround)*weight;points[i]=mf.transform.InverseTransformPoint(p);}
+                for(int i=0;i<points.Length;i++){var p=mf.transform.TransformPoint(points[i]);float groundY=a2Field==null&&A2ForestLayout.Water(p.x,p.z)&&!A2ForestLayout.Island(p.x,p.z)?A2ForestLayout.WaterLevel-.18f:NativeRemodel3D.GroundY(p.x,p.z);float weight=hollow?1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(1,3,p.y-height)):1;p.y+=(groundY-placementGround)*weight;
+                    if(hollow&&a2Field!=null)
+                    {
+                        float bed=a2Field.TerrainHeight(p.x,p.z),above=p.y-bed,fx,fz;
+                        if(above>.18f&&above<4&&a2Field.FitTreePoint(p.x,p.z,x,z,out fx,out fz))
+                        {p.y+=a2Field.TerrainHeight(fx,fz)-bed;p.x=fx;p.z=fz;}
+                    }
+                    points[i]=mf.transform.InverseTransformPoint(p);}
                 mesh.vertices=points;mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();mf.sharedMesh=mesh;
+            }
+            if(id=="Rotten_Wood_Bridge"&&a2Field!=null)
+            {
+                foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
+                {
+                    if(!mf.sharedMesh.isReadable){Debug.LogError("[A2 목교] 지지목 읽기 누락");continue;}
+                    var mesh=Instantiate(mf.sharedMesh);var vertices=mesh.vertices;var xyz=new float[vertices.Length*3];
+                    for(int i=0;i<vertices.Length;i++){var p=mf.transform.TransformPoint(vertices[i]);xyz[i*3]=p.x;xyz[i*3+1]=p.y;xyz[i*3+2]=p.z;}
+                    int changed=a2Field.ExtendBridgeSupports(xyz,mesh.triangles);
+                    for(int i=0;i<vertices.Length;i++)vertices[i]=mf.transform.InverseTransformPoint(new Vector3(xyz[i*3],xyz[i*3+1],xyz[i*3+2]));
+                    mesh.vertices=vertices;mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();mf.sharedMesh=mesh;
+                    Debug.Log("[A2 목교] 실제 강바닥 지지목 연장 "+changed+"개/상판·난간·원본충돌 불변");
+                }
             }
             foreach(var r in go.GetComponentsInChildren<MeshRenderer>())
             {

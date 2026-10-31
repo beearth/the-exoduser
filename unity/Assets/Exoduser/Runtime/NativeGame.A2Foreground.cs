@@ -6,8 +6,8 @@ namespace Exoduser.UnityPort
     {
         void A2Foreground(bool grounded=false)
         {
-            var tree=A2Module("Hollow_Loft_Tree",31,-84,.75f,1.15f,.75f,-25,-.2f,false);
-            if(tree!=null){tree.name="A2 전경 바깥 거목";A2OutsidePlay(tree);}
+            var tree=A2Module("Hollow_Loft_Tree",31,grounded?-76:-84,.75f,1.15f,.75f,-25,-.2f,false);
+            if(tree!=null){tree.name="A2 전경 바깥 거목";if(!grounded)A2OutsidePlay(tree);}
             int placed=0,attached=0;
             var sites=grounded?new[]{new Vector4(34.5f,-80.7f,1.7f,8)}:new[]{new Vector4(36.7f,-81.5f,2.2f,-20),new Vector4(33.4f,-81,1.75f,62)};
             foreach(var p in sites)
@@ -26,7 +26,7 @@ namespace Exoduser.UnityPort
                     foreach(var renderer in renderers){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.65f,.62f,.48f,1));renderer.SetPropertyBlock(block);}attached++;
                 }
             }
-            Debug.Log("[A2] 전경 목질 "+placed+"개/실제 윗면 정점 이끼 "+attached+"개. 전체z<=-80.05/플레이영역침범0");
+            Debug.Log("[A2] 전경 목질 "+placed+"개/실제 윗면 정점 이끼 "+attached+"개. 통나무z<=-80.05/거목하부 원본통행 밖으로 접합");
         }
         static void A2OutsidePlay(GameObject root)
         {

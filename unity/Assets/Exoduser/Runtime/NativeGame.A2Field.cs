@@ -29,10 +29,15 @@ namespace Exoduser.UnityPort
             {
                 if(light.type==LightType.Directional)
                 {
-                    light.intensity=1.9f;light.color=new Color(.85f,.90f,1);light.shadows=LightShadows.Soft;
-                    light.shadowStrength=.70f;light.shadowBias=.035f;light.shadowNormalBias=.12f;light.transform.rotation=Quaternion.Euler(49,-32,0);
+                    light.intensity=3.2f;light.color=new Color(.85f,.90f,1);light.shadows=LightShadows.Soft;
+                    light.shadowStrength=.55f;light.shadowBias=.035f;light.shadowNormalBias=.12f;light.transform.rotation=Quaternion.Euler(49,-32,0);
                 }
                 else if(light.name.StartsWith("Pool_",StringComparison.Ordinal))light.enabled=false;
+            }
+            foreach(var root in r3Roots)foreach(var volume in root.GetComponentsInChildren<Volume>(true))
+            {
+                var profile=volume.profile;if(profile==null)continue;ColorAdjustments tone;
+                if(profile.TryGet<ColorAdjustments>(out tone)){tone.postExposure.Override(.55f);tone.contrast.Override(16);}
             }
             if(a2FieldSoil==null){Debug.LogError("[A2 필드] 지면 재질 누락");return;}
             a2FieldSoil.SetFloat("_ForestBlend",1);a2FieldSoil.SetFloat("_ForestTextureMix",.65f);a2FieldSoil.SetFloat("_SoilTextureMix",1);a2FieldSoil.SetFloat("_FullField",1);
@@ -49,7 +54,7 @@ namespace Exoduser.UnityPort
             for(int y=0;y<200;y++)for(int x=0;x<200;x++)pixels[y*200+x]=new Color(.5f+a2Field.Distance((x+.5f)*.4f,-(y+.5f)*.4f)/40,0,0,1);
             sdf.SetPixels(pixels);sdf.Apply(false,true);a2FieldSoil.SetTexture("_FieldSdf",sdf);
             var cover=new Texture2D(256,256,TextureFormat.RGBA32,false,true){name="A2 전투중심을 비운 연결 이끼 지면",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
-            var coverPixels=new Color[256*256];for(int y=0;y<256;y++)for(int x=0;x<256;x++)coverPixels[y*256+x]=new Color(a2Field.GroundCover((x+.5f)/256*80,-(y+.5f)/256*80),0,0,1);
+            var coverPixels=new Color[256*256];for(int y=0;y<256;y++)for(int x=0;x<256;x++)coverPixels[y*256+x]=new Color(a2Field.GroundCover((x+.5f)/256*80,-(y+.5f)/256*80)*Mathf.Lerp(1,.45f,Mathf.SmoothStep(0,1,Mathf.Clamp01(a2Field.Distance((x+.5f)/256*80,-(y+.5f)/256*80)/2))),0,0,1);
             cover.SetPixels(coverPixels);cover.Apply(false,true);a2FieldSoil.SetTexture("_FieldCover",cover);
             A2FieldOuterMass();A2Foreground(true);A2FieldLandmarks();A2FieldConnections();A2FieldGround();A2FieldGroundCover();A2BridgeMoss();A2FieldAtmosphere();
             var aa=r3Cam.GetUniversalAdditionalCameraData();aa.antialiasing=AntialiasingMode.SubpixelMorphologicalAntiAliasing;aa.antialiasingQuality=AntialiasingQuality.High;
@@ -138,14 +143,19 @@ namespace Exoduser.UnityPort
         void A2FieldLandmarks()
         {
             // 原본 충돌 타원에만 밑동을 둔다. 반경 작은 나무는 가는 고사목/그루터기로 번역한다.
-            int index=0;
+            int index=0;var tallCenters=new List<Vector2>();
             foreach(var c in Map.Data.colliders)
             {
                 float x=c.x/100,z=-c.y/100,r=Mathf.Min(c.rx,c.ry)/100;
                 if(r<.45f)continue;
+                if(r>=1.2f)
+                {
+                    bool duplicate=false;foreach(var previous in tallCenters)if((previous-new Vector2(x,z)).sqrMagnitude<.75f*.75f){duplicate=true;break;}
+                    if(duplicate)continue;tallCenters.Add(new Vector2(x,z));
+                }
                 float treeYaw=r>=1.2f?(x<40?-25:23)+15*Mathf.Sin(index*1.3f):index*97;
                 var tree=r>=1.2f?A2Module("Hollow_Loft_Tree",x,z,.38f*r,1.1f,.38f*r,treeYaw):A2Module("Scanned_Stump",x,z,.6f*r,.6f*r,.6f*r,treeYaw);
-                if(tree!=null)A2FieldDressTree(tree,index);
+                if(tree!=null&&r>=1.2f)A2FieldDressTree(tree,index);
                 A2FieldRoots(x,z,Mathf.Clamp(r*1.5f,1.6f,3.1f),treeYaw);index++;
             }
             // 시작 갈림길의 낮은 목교는 통로와 나란히 놓이며 별도 충돌을 만들지 않는다.
@@ -223,14 +233,23 @@ namespace Exoduser.UnityPort
                 var points=mf.sharedMesh.vertices;var normals=mf.sharedMesh.normals;
                 for(int j=0;j<3;j++)
                 {
-                    var desired=tree.transform.position+new Vector3((j-1)*.45f,1.5f+j*.8f,-.8f);float best=float.MaxValue;var hit=Vector3.zero;
-                    for(int i=0;i<points.Length;i++){var p=mf.transform.TransformPoint(points[i]);var n=mf.transform.TransformDirection(normals[i]);if(n.z>-.12f)continue;float score=(p-desired).sqrMagnitude;if(score<best){best=score;hit=p;}}
+                    var desired=tree.transform.position+new Vector3((j-1)*.45f,1.5f+j*.8f,-.8f);float best=float.MaxValue;var hit=Vector3.zero;var hitNormal=Vector3.back;
+                    for(int i=0;i<points.Length;i++){var p=mf.transform.TransformPoint(points[i]);var n=mf.transform.TransformDirection(normals[i]);if(n.z>-.12f)continue;float score=(p-desired).sqrMagnitude;if(score<best){best=score;hit=p;hitNormal=n.normalized;}}
                     if(best>9)continue;
                     var moss=A2Module("Hanging_Moss",hit.x,hit.z,.4f,.55f,.4f,variation*37+j*67);if(moss==null)continue;
                     var rs=moss.GetComponentsInChildren<Renderer>();var bounds=rs[0].bounds;foreach(var r in rs)bounds.Encapsulate(r.bounds);
                     moss.transform.position+=hit-new Vector3(bounds.center.x,bounds.max.y,bounds.center.z);moss.name="A2 수피 표면에 붙은 이끼";
                     foreach(var renderer in rs){var tint=new MaterialPropertyBlock();renderer.GetPropertyBlock(tint);tint.SetColor("_BaseColor",new Color(.60f,.62f,.40f,1));renderer.SetPropertyBlock(tint);}
-                    if(j==0)A2Module("Fungal_Colony",hit.x,hit.z,.6f,.55f,.6f,variation*71,.3f);
+                    if(j==0)
+                    {
+                        var fungus=A2Module("Fungal_Colony",hit.x,hit.z,.48f,.4f,.48f,variation*71,0,false);
+                        if(fungus!=null)
+                        {
+                            var fr=fungus.GetComponentsInChildren<Renderer>();if(fr.Length==0){Destroy(fungus);continue;}
+                            var fb=fr[0].bounds;foreach(var r in fr)fb.Encapsulate(r.bounds);
+                            fungus.transform.position+=hit+hitNormal*.06f-fb.center;fungus.name="A2 수피에 접합한 버섯";
+                        }
+                    }
                 }
                 break;
             }

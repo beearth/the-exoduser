@@ -16,6 +16,22 @@ namespace Exoduser.UnityPort
             for(float v=nearMax+2;v<max;v+=2)values.Add(v);
             values.Add(max);return values.ToArray();
         }
+        // 시각 메시만 원본 막힌 영역 쪽으로 접는다. SourceMap/Collider는 절대 바꾸지 않는다.
+        readonly SourceMap treeBoundary;
+        public bool FitTreePoint(float x,float z,float centerX,float centerZ,out float fittedX,out float fittedZ)
+        {
+            fittedX=x;fittedZ=z;
+            if(!treeBoundary.CanMove(x*100,-z*100,0)||treeBoundary.CanMove(centerX*100,-centerZ*100,0))return false;
+            float low=0,high=1;
+            for(int i=0;i<18;i++)
+            {
+                float t=(low+high)*.5f,px=Lerp(x,centerX,t),pz=Lerp(z,centerZ,t);
+                if(treeBoundary.CanMove(px*100,-pz*100,0))low=t;else high=t;
+            }
+            float dx=centerX-x,dz=centerZ-z,length=(float)Math.Sqrt(dx*dx+dz*dz);
+            float inset=Math.Min(1,high+.02f/Math.Max(.0001f,length));
+            fittedX=Lerp(x,centerX,inset);fittedZ=Lerp(z,centerZ,inset);return true;
+        }
         readonly MapData data;
         readonly float[] signed;
         readonly float tile;
@@ -30,7 +46,7 @@ namespace Exoduser.UnityPort
         struct DeckTriangle { public float ax,ay,az,bx,by,bz,cx,cy,cz,inverse,minX,maxX,minZ,maxZ; }
         public A2FieldLayout(MapData data)
         {
-            this.data=data;tile=data.tileSize/100f;
+            this.data=data;tile=data.tileSize/100f;treeBoundary=new SourceMap(data);
             var toLand=new float[data.tiles.Length];var toForest=new float[data.tiles.Length];
             for(int i=0;i<signedLength(data);i++)
             {
@@ -39,6 +55,43 @@ namespace Exoduser.UnityPort
             }
             Sweep(toLand);Sweep(toForest);signed=new float[data.tiles.Length];
             for(int i=0;i<signed.Length;i++)signed[i]=(data.tiles[i]!=1?toForest[i]-.5f:.5f-toLand[i])*tile;
+        }
+        static int BridgeRoot(int[] parents,int i)
+        {
+            while(parents[i]!=i){parents[i]=parents[parents[i]];i=parents[i];}return i;
+        }
+        // 기존 메시의 용접된 연결 성분 중 세로 지지목만 찾는다. 상판/난간/UV/인덱스는 보존한다.
+        public int ExtendBridgeSupports(float[] xyz,int[] triangles)
+        {
+            int n=xyz.Length/3;var parents=new int[n];var weld=new Dictionary<string,int>();
+            for(int i=0;i<n;i++)
+            {
+                parents[i]=i;string key=Math.Round(xyz[i*3]*10000)+"/"+Math.Round(xyz[i*3+1]*10000)+"/"+Math.Round(xyz[i*3+2]*10000);int other;
+                if(weld.TryGetValue(key,out other))parents[BridgeRoot(parents,i)]=BridgeRoot(parents,other);else weld.Add(key,i);
+            }
+            for(int i=0;i<triangles.Length;i+=3)
+            {
+                parents[BridgeRoot(parents,triangles[i])]=BridgeRoot(parents,triangles[i+1]);
+                parents[BridgeRoot(parents,triangles[i])]=BridgeRoot(parents,triangles[i+2]);
+            }
+            var groups=new Dictionary<int,List<int>>();
+            for(int i=0;i<n;i++){int key=BridgeRoot(parents,i);List<int> group;if(!groups.TryGetValue(key,out group)){group=new List<int>();groups.Add(key,group);}group.Add(i);}
+            int changed=0;
+            foreach(var pair in groups)
+            {
+                float minX=float.PositiveInfinity,minY=minX,minZ=minX,maxX=float.NegativeInfinity,maxY=maxX,maxZ=maxX;
+                foreach(int i in pair.Value){minX=Math.Min(minX,xyz[i*3]);maxX=Math.Max(maxX,xyz[i*3]);minY=Math.Min(minY,xyz[i*3+1]);maxY=Math.Max(maxY,xyz[i*3+1]);minZ=Math.Min(minZ,xyz[i*3+2]);maxZ=Math.Max(maxZ,xyz[i*3+2]);}
+                if(maxY-minY<.7f||maxX-minX>.6f||maxZ-minZ>.6f||minY>.05f||maxY<.6f)continue;
+                float floor=TerrainHeight((minX+maxX)*.5f,(minZ+maxZ)*.5f)-.12f;
+                if(floor>=minY-.03f)continue;
+                foreach(int i in pair.Value)
+                {
+                    float y=xyz[i*3+1];if(y>=.10f)continue;
+                    float weight=Smooth(Clamp((.10f-y)/(.10f-minY),0,1));xyz[i*3+1]=y+(floor-minY)*weight;
+                }
+                changed++;
+            }
+            return changed;
         }
         static int signedLength(MapData map) { return map.tiles.Length; }
         void Sweep(float[] values)
