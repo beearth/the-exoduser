@@ -9,8 +9,11 @@ namespace Exoduser.UnityPort
  public sealed partial class NativeGame
  {
   [Serializable] sealed class WideWorldShot {public string name;public int width,height,chunks,enemies;public float playerX,playerY,fov,verticalSpan,horizontalSpan;public Rect viewport,pixelRect;public Vector3 cameraPosition,cameraEuler;public int targetWidth,targetHeight;public bool remodel,renderTarget,walkable;public Vector2[] groundCorners;}
-  [Serializable] sealed class WideWorldMove {public int width,height;public string axis;public Vector2 start,end;public float distance;}
-  [Serializable] sealed class WideWorldFps {public int width,height,frames,ticks,enemiesBefore,enemiesAfter;public float seconds,fps;public List<float> frameMs=new List<float>();}
+  [Serializable] sealed class WideWorldMove {public int width,height;public string axis;public Vector2 start,end;public float distance;public int chunkCrossings;}
+  [Serializable] sealed class WideWorldEnemy {public int id,etype,hp,maxHp,level;public float x,y,radius,speed,facing,stateTicks;}
+  [Serializable] sealed class WideWorldEnemySample {public List<WideWorldEnemy> enemies=new List<WideWorldEnemy>();}
+  string WideEnemySample(){var sample=new WideWorldEnemySample();foreach(var e in Simulation.Enemies)sample.enemies.Add(new WideWorldEnemy{id=e.Id,etype=e.Etype,hp=e.Hp,maxHp=e.MaxHp,level=e.Level,x=e.X,y=e.Y,radius=e.Radius,speed=e.Speed,facing=e.Facing,stateTicks=e.StateTicks});return JsonUtility.ToJson(sample);}
+  [Serializable] sealed class WideWorldFps {public string initialSample,initialSampleSha256;public long seed;public int width,height,frames,ticks,enemiesBefore,enemiesAfter;public float seconds,fps;public List<float> frameMs=new List<float>();}
   [Serializable] sealed class WideWorldPixelCase {public string name;public int difference,selfDifference,nonBlackPixels,maxChannel;}
   [Serializable] sealed class WideWorldReceipt {public string runtimeSha256,source;public string scope="격리 Player, 기존 legacyFixture로 전투 진입(제품 입장은 UI 검수 별도), API 위치·무적·스폰홀 제거·직접60Hz 입력·적32/가장자리 피해글자 표본; 자연 플레이/완주와 구분";public int mapWidth,mapHeight,tileSize;public List<WideWorldShot> shots=new List<WideWorldShot>();public List<WideWorldMove> movement=new List<WideWorldMove>();public List<WideWorldFps> performance=new List<WideWorldFps>();public int pixelDifference=-1,pixelSelfDifference=-1;public List<WideWorldPixelCase> pixelCases=new List<WideWorldPixelCase>();}
   WideWorldReceipt wideWorld;
@@ -18,7 +21,7 @@ namespace Exoduser.UnityPort
   IEnumerator WorldWideCapture()
   {
    var stack=new Stack<IEnumerator>();stack.Push(WorldWideBody());
-   while(stack.Count>0){object value=null;bool more=false;Exception error=null;try{more=stack.Peek().MoveNext();if(more)value=stack.Peek().Current;}catch(Exception e){error=e;}if(error!=null){Debug.LogError("WORLD_ULTRA_FAILED "+error);Application.Quit(2);yield break;}if(!more){stack.Pop();continue;}if(value is IEnumerator next){stack.Push(next);continue;}yield return value;}
+   while(stack.Count>0){object value=null;bool more=false;Exception error=null;try{more=stack.Peek().MoveNext();if(more)value=stack.Peek().Current;}catch(Exception e){error=e;}if(error!=null){Debug.LogError("WORLD_ULTRA_FAILED "+error);SaveOverlapCaptureProgress();try{if(wideWorld!=null&&Directory.Exists(overlapOutput))File.WriteAllText(Path.Combine(overlapOutput,"world-receipt.json"),JsonUtility.ToJson(wideWorld,true));}catch(Exception saveError){Debug.LogWarning("WORLD_EVIDENCE_SAVE "+saveError);}lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);Application.Quit(2);yield break;}if(!more){stack.Pop();continue;}if(value is IEnumerator next){stack.Push(next);continue;}yield return value;}
   }
   Vector2 WideLegal(float x,float y)
   {
@@ -55,12 +58,12 @@ namespace Exoduser.UnityPort
    var point=WideLegal(x,y);var p=Simulation.Player;p.X=point.x;p.Y=point.y;Simulation.Enemies.Clear();Simulation.SpawnHoles=null;Simulation.CrossbowAuto=false;
    var move=new WideWorldMove{width=Screen.width,height=Screen.height,axis=axis,start=point};
    for(int n=1;n<=360;n++){StepInput(axis=="horizontal"?-1:0,axis=="vertical"?-1:0,p.X+300,p.Y,false,false);p.Iframes=1000000;yield return new WaitForFixedUpdate();if(n%120==0)yield return UiOverlapShot("월드이동-"+axis+"-"+n);}
-   move.end=new Vector2(p.X,p.Y);move.distance=Vector2.Distance(move.start,move.end);wideWorld.movement.Add(move);if(move.distance<40)throw new InvalidOperationException("실제 이동 부족 "+axis+" "+move.distance);
+   move.end=new Vector2(p.X,p.Y);move.distance=Vector2.Distance(move.start,move.end);move.chunkCrossings=axis=="horizontal"?Math.Abs(Mathf.FloorToInt(move.end.x/1000)-Mathf.FloorToInt(move.start.x/1000)):Math.Abs(Mathf.FloorToInt(move.end.y/1000)-Mathf.FloorToInt(move.start.y/1000));wideWorld.movement.Add(move);if(move.distance<40||move.chunkCrossings<1)throw new InvalidOperationException("실제 이동 부족 "+axis+" "+move.distance);
   }
   IEnumerator WideFpsSample()
   {
    ResetRun();practiceScripted=true;Running=false;Simulation.FieldBossesEnabled=false;Simulation.FieldBosses=null;var point=WideLegal(4020,4820);var p=Simulation.Player;p.X=point.x;p.Y=point.y;Simulation.Enemies.Clear();Simulation.SpawnHoles=null;Simulation.CrossbowAuto=false;WideSpawnSample();Simulation.Config.EnemyAiEnabled=true;
-   var sample=new WideWorldFps{width=Screen.width,height=Screen.height,enemiesBefore=Simulation.Enemies.Count};float warm=Time.realtimeSinceStartup+1,accumulator=0,last=Time.realtimeSinceStartup;
+   var sample=new WideWorldFps{width=Screen.width,height=Screen.height,enemiesBefore=Simulation.Enemies.Count,seed=Exoduser.UnityPort.Core.SourceStarterFixture.Seed,initialSample=WideEnemySample()};using(var hash=System.Security.Cryptography.SHA256.Create())sample.initialSampleSha256=BitConverter.ToString(hash.ComputeHash(System.Text.Encoding.UTF8.GetBytes(sample.initialSample))).Replace("-","").ToLowerInvariant();float warm=Time.realtimeSinceStartup+1,accumulator=0,last=Time.realtimeSinceStartup;
    while(Time.realtimeSinceStartup<warm){float now=Time.realtimeSinceStartup;accumulator+=now-last;last=now;while(accumulator>=1f/60){StepInput(0,0,p.X+300,p.Y,false,false);p.Iframes=1000000;accumulator-=1f/60;}yield return null;}
    float start=Time.realtimeSinceStartup;last=start;int tick=Simulation.TickCount;
    while(Time.realtimeSinceStartup-start<4){float now=Time.realtimeSinceStartup,delta=now-last;last=now;if(delta>0)sample.frameMs.Add(delta*1000);accumulator+=delta;while(accumulator>=1f/60){StepInput(0,0,p.X+300,p.Y,false,false);p.Iframes=1000000;accumulator-=1f/60;}sample.frames++;yield return null;}

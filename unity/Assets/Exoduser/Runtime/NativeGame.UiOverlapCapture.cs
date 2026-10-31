@@ -57,6 +57,7 @@ namespace Exoduser.UnityPort
             overlapCoverage.frames.Add(name);if(!page.StartsWith("전환로딩",StringComparison.Ordinal)&&!overlapCoverage.pages.Contains(page))overlapCoverage.pages.Add(page);
             yield return null;
         }
+        void SaveOverlapCaptureProgress(){if(overlapCoverage==null||string.IsNullOrEmpty(overlapOutput)||!Path.IsPathRooted(overlapOutput)||!Directory.Exists(overlapOutput))return;try{File.WriteAllText(Path.Combine(overlapOutput,"coverage.json"),JsonUtility.ToJson(overlapCoverage,true));}catch(Exception e){Debug.LogWarning("UI_EVIDENCE_SAVE "+e);}}
         IEnumerator UiOverlapCapture()
         {
             var pending=new Stack<IEnumerator>();pending.Push(UiOverlapCaptureBody());
@@ -64,7 +65,7 @@ namespace Exoduser.UnityPort
             {
                 object current=null;bool more=false;Exception error=null;
                 try{more=pending.Peek().MoveNext();if(more)current=pending.Peek().Current;}catch(Exception caught){error=caught;}
-                if(error!=null){Debug.LogError("UI_OVERLAP_FAILED "+error);lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);Application.Quit(2);yield break;}
+                if(error!=null){Debug.LogError("UI_OVERLAP_FAILED "+error);SaveOverlapCaptureProgress();lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);Application.Quit(2);yield break;}
                 if(!more){pending.Pop();continue;}
                 if(current is IEnumerator child){pending.Push(child);continue;}
                 yield return current;
