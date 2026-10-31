@@ -54,8 +54,9 @@ namespace Exoduser.UnityPort.Tools
    }
    if(Arg("-pause-case")=="window-focus")throw new NotSupportedException("무창 desktop은 실제 OS 전경 창 전환 검수 미지원; focus-callback은 별도 fixture");
    if(Arg("-pause-case")=="startup"){
-    lobby.ShowLobby();lobby.SetPlaybackFocus(true);var data=JsonUtility.FromJson<StartupIntroData>(Resources.Load<TextAsset>("Data/startup_intro").text);StartupIntroLine[] lines=null;foreach(var language in data.languages)if(language.code=="ko")lines=language.lines;
-    CheckThat(lines!=null&&lines.Length>0,"실제 대화 원본 로드");lobby.StartupCaptureState.Begin(lines,false);
+    lobby.ShowLobby();lobby.SetPlaybackFocus(true);
+    CheckThat(lobby.OpenCharacterCreation()&&lobby.ChooseCharacterVisual(0)&&lobby.ConfirmCharacterVisual(),"격리 신규 캐릭터 생성 화면");CheckThat(lobby.CreateCharacter("복귀"+(DateTime.Now.Ticks%100000).ToString("00000")),"격리 신규 캐릭터 저장");lobby.ShowLobby();
+    CheckThat(lobby.BeginCharacterEntry(false)&&lobby.StartupCaptureState.Page==FrontendEntryPage.Loading,"제품 신규 입장 API와 미디어 초기화");
     until=Time.realtimeSinceStartup+10;while(lobby.StartupCaptureState.Page!=FrontendEntryPage.Nemesis&&Time.realtimeSinceStartup<until)yield return null;
     CheckThat(lobby.IsBlocking&&!game.Running,"대화 창 전투 정지");yield return Shot("startup-dialogue");yield return Key(UnityEngine.InputSystem.Key.Escape);yield return new WaitForSecondsRealtime(.3f);CheckThat(lobby.StartupCaptureState.Page==FrontendEntryPage.Guide&&!game.Running,"대화 ESC 뒤 안내 진입");
     for(int step=0;step<4;step++){CheckThat(lobby.StartupCaptureState.GuideStep==step,"안내 판 "+(step+1));yield return Shot("startup-guide-"+(step+1));yield return Key(UnityEngine.InputSystem.Key.Enter);yield return new WaitForSecondsRealtime(.3f);}

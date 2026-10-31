@@ -94,3 +94,5 @@
 - 최종 r2의 HP0 실제 클릭/Enter/ESC 재개와 틱 진행은 통과했다. 직접 SetInventory(true) 직후 같은 프레임에 TAB를 누른 검수는 Navigation.Open의 정상 입력 해제 fence에 걸렸다. 검수는 빈 입력 2프레임을 실제 Update에 보내 WaitingForRelease=false를 확인한 뒤 TAB를 누른다. 제품 fence를 강제 해제하거나 닫기 검사를 완화하지 않는다.
 
 - 네이티브 포커스 run a8804308은 ExoDesk의 foreground=0으로 사전 조건 실패했다. 검수 창 생성/전경 변경/desktop 전환은0이다. 무창 환경에서 실제 OS 전환은 미검증으로 남기고, 미사용 전경/네이티브 창 생성 API는 QA 도구에서 제거했다. focus-callback 사례는 실제 Player 제품 OnApplicationFocus 본문→정지/복귀/Enter 재개의 기능 검수이며 실제 OS 이벤트 전달 PASS가 아니다.
+
+- 2026-10-31 시작 fixture 재작업: startup 상태 직접 Begin 호출은 BeginCharacterEntry의 nemesisArt 초기화를 건너뛰어 DrawNemesis 예외4회를 만들었다. 기존 startup18검사는 최종 gate에서 제외한다. 격리 새 캐릭터 생성→제품 BeginCharacterEntry(false)→Loading/Nemesis→실제 ESC/Enter 경로로 변경하고 새 빌드에서 확인한다. 제품 시작 연출 코드는 변경하지 않는다.
