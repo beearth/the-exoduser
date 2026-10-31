@@ -43,10 +43,12 @@ class Program {
  n.Reset();Check(Key(PauseKey.Back,true)==PauseAction.None,"dead Escape cannot resume");Check(Key(PauseKey.Accept,true)==PauseAction.Restart,"dead primary restarts");
  n.Reset();Key(PauseKey.Down);Key(PauseKey.Down);Check(Key(PauseKey.Accept)==PauseAction.ReturnLobby,"lobby action");
  n.Open(PausePage.Settings);n.SetFocus(false);var tab=n.Tab;var cursor=n.Cursor;n.SetFocus(true);Check(n.Page==PausePage.Settings&&n.Tab==tab&&n.Cursor==cursor,"settings focus preserved");
- n.Reset();n.DirectSettings=true;n.Open(PausePage.Settings);Key(PauseKey.Next);Key(PauseKey.End);
- Check(Key(PauseKey.Accept)==PauseAction.Resume,"direct settings keyboard Close resumes living player");
- n.Reset();n.DirectSettings=true;n.Open(PausePage.Settings);Key(PauseKey.Next);Key(PauseKey.End);
- Check(Key(PauseKey.Accept,true)==PauseAction.None,"direct settings Close cannot resume dead player");
+ for(int t=0;t<4;t++){
+ n.Reset();n.DirectSettings=true;n.Open(PausePage.Settings);n.SelectTab(t);while(n.Cursor<4)Key(PauseKey.Next);Key(PauseKey.End);
+ Check(Key(PauseKey.Accept)==PauseAction.Resume,"direct settings keyboard Close resumes living player tab "+t);
+ n.Reset();n.DirectSettings=true;n.Open(PausePage.Settings);n.SelectTab(t);while(n.Cursor<4)Key(PauseKey.Next);Key(PauseKey.End);
+ Check(Key(PauseKey.Accept,true)==PauseAction.None,"direct settings Close cannot resume dead player tab "+t);
+ }
  Console.WriteLine("PASS "+count+"/"+count);
  }
 }
