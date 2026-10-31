@@ -77,3 +77,5 @@
 
 - 2026-10-31 검수 방법 전환: 숨은 Player에서 WM_MOUSE 게시 2회는 Layout/Repaint만 수신하고 MouseDown/Up=0으로 미검증이다. 같은 방식을 반복하지 않고 설치 DLL에서 존재를 확인한 UnityEngine.Event.QueueEvent 합성 이벤트를 실제 제품 OnGUI/버튼으로 전달한다. 이는 실제 OS 마우스 조작 증거가 아니다. 키보드는 Input System 가상 장치→제품 Update/PollKeys를 유지한다. window-focus는 자기 PID/현재 thread 창에 한해 SetActiveWindow/SetFocus로 실제 Unity 콜백을 검수하며 사용자 foreground나 desktop은 바꾸지 않는다.
 - API 근거: https://raw.githubusercontent.com/Unity-Technologies/UnityCsReference/master/Modules/UICommon/Event.bindings.cs (QueueEvent), https://docs.unity3d.com/Packages/com.unity.inputsystem@1.14/manual/UISupport.html (IMGUI와 Input System 구분), https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setfocus 및 nf-winuser-setactivewindow (자기 thread focus). 설치6000.6 DLL 확인을 함께 적용한다.
+
+- 마우스 관측은 별도 MonoBehaviour OnGUI 카운터만으로 판정하지 않는다. 기존 제품 NativeGame.OnGUI의 TraceA15HitRoot(before)에서 MouseDown/Up을 모두 기록하도록 진단 필터를 확장하고, 명시 QA 도구만 a15HitTrace를 켠다. 제품 입력 로그의 Down/Up과 실제 메뉴/Running/틱 상태를 함께 검사한다. 별도 helper 카운터0/GUI 큐 게시만으로 클릭 성공을 주장하지 않는다.

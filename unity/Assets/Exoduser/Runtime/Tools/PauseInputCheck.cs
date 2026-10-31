@@ -19,7 +19,7 @@ namespace Exoduser.UnityPort.Tools
   const string Flag="--unity-pause-input-check";
   [Serializable] sealed class Check {public string name,detail;public bool passed;}
   [Serializable] sealed class State {public string phase,playerState,page,practice;public int frame,tick,cursor;public float time,timeScale,hp,stateTicks,x,y;public bool running,menu,focus,navigationFocus,releaseFence,entryFence,inputFence,inventory,skills,stats,forge,remodel;}
-  [Serializable] sealed class Receipt {public string scope="격리 실제 Player: Input System 가상 키보드 → 제품 Update/PollKeys, Unity Event.QueueEvent 합성 MouseDown/Up → 제품 OnGUI/버튼. focus 모델과 자기 숨은 창 thread focus 콜백 검수. 사용자 손조작/전역 OS 창 전환/자연 전투와 구분",runtimeSha,coreSha,device,sandbox;public bool passed,quitRequested,quitObserved;public int width,height,mouseDown,mouseUp,guiQueued,layoutEvents,repaintEvents,frames,focusEvents;public List<Check> checks=new List<Check>();public List<State> states=new List<State>();}
+  [Serializable] sealed class Receipt {public string scope="격리 실제 Player: Input System 가상 키보드 → 제품 Update/PollKeys, Unity Event.QueueEvent 합성 MouseDown/Up → 제품 OnGUI/버튼. focus 모델과 자기 숨은 창 thread focus 콜백 검수. 사용자 손조작/전역 OS 창 전환/자연 전투와 구분",runtimeSha,coreSha,device,sandbox;public bool passed,quitRequested,quitObserved;public int width,height,mouseDown,mouseUp,productMouseDown,productMouseUp,guiQueued,layoutEvents,repaintEvents,frames,focusEvents;public List<Check> checks=new List<Check>();public List<State> states=new List<State>();}
   static bool Has(string flag)=>Array.IndexOf(Environment.GetCommandLineArgs(),flag)>=0;
   static string Arg(string flag){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,flag);return i>=0&&i+1<a.Length?a[i+1]:null;}
   [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)] static void Boot(){if(Has(Flag)&&!Has("--unity-m1-check"))new GameObject("Pause input isolated check").AddComponent<PauseInputCheck>();}
@@ -41,6 +41,7 @@ namespace Exoduser.UnityPort.Tools
    float until=Time.realtimeSinceStartup+30;while(NativeGame.Instance==null&&Time.realtimeSinceStartup<until)yield return null;
    game=NativeGame.Instance;lobby=game.GetComponent<NativeLobby>();pause=(NativePauseMenu)Get(game,"pauseMenu");
    receipt.runtimeSha=Hash(typeof(NativeGame).Assembly.Location);receipt.coreSha=Hash(typeof(Simulation).Assembly.Location);receipt.device=SystemInfo.graphicsDeviceName;receipt.sandbox=NativeQaSandbox.Root;
+   game.GetType().GetField("a15HitTrace",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(game,true);Application.logMessageReceived+=ProductLog;
    previousKeyboard=Keyboard.current;keyboard=InputSystem.AddDevice<Keyboard>();keyboard.MakeCurrent();InputSystem.QueueStateEvent(keyboard,new KeyboardState());
    Screen.SetResolution(1600,900,FullScreenMode.Windowed);AudioListener.volume=0;AudioListener.pause=true;yield return new WaitForSecondsRealtime(.5f);
    lobby.ShowLobby();lobby.SelectPreview();CheckThat(lobby.EnterNativeTest(),"일반 미리보기 진입");game.SetGameFocus(true);
@@ -107,11 +108,12 @@ namespace Exoduser.UnityPort.Tools
   [DllImport("kernel32.dll")] static extern uint GetCurrentProcessId();
   IntPtr OwnWindow(){IntPtr found=IntPtr.Zero;uint own=GetCurrentProcessId();EnumWindows((w,s)=>{GetWindowThreadProcessId(w,out uint pid);var name=new System.Text.StringBuilder(128);GetClassNameW(w,name,128);if(pid==own&&name.ToString()=="UnityWndClass"){found=w;return false;}return true;},IntPtr.Zero);return found;}
   void QueueGui(EventType type,Vector2 point){var queue=typeof(Event).GetMethod("QueueEvent",BindingFlags.Static|BindingFlags.NonPublic);if(queue==null)throw new MissingMethodException("UnityEngine.Event.QueueEvent");queue.Invoke(null,new object[]{new Event{type=type,mousePosition=point,button=0,clickCount=1,displayIndex=0,pointerType=PointerType.Mouse}});receipt.guiQueued++;}
-  IEnumerator Click(float x,float y){var point=new Vector2(x*Screen.width/1280f,y*Screen.height/720f);int down=receipt.mouseDown,up=receipt.mouseUp;QueueGui(EventType.MouseMove,point);QueueGui(EventType.MouseDown,point);yield return new WaitForSecondsRealtime(.12f);QueueGui(EventType.MouseUp,point);yield return new WaitForSecondsRealtime(.15f);CheckThat(receipt.mouseDown>down&&receipt.mouseUp>up,"실제 OnGUI MouseDown/MouseUp 수신","down="+(receipt.mouseDown-down)+" up="+(receipt.mouseUp-up)+" queued="+receipt.guiQueued);}
+  IEnumerator Click(float x,float y){var point=new Vector2(x*Screen.width/1280f,y*Screen.height/720f);int down=receipt.productMouseDown,up=receipt.productMouseUp;QueueGui(EventType.MouseMove,point);QueueGui(EventType.MouseDown,point);yield return new WaitForSecondsRealtime(.12f);QueueGui(EventType.MouseUp,point);yield return new WaitForSecondsRealtime(.15f);CheckThat(receipt.productMouseDown>down&&receipt.productMouseUp>up,"제품 OnGUI MouseDown/MouseUp 수신","down="+(receipt.productMouseDown-down)+" up="+(receipt.productMouseUp-up)+" helper="+receipt.mouseDown+"/"+receipt.mouseUp+" queued="+receipt.guiQueued);}
+  void ProductLog(string condition,string stack,LogType type){if(!condition.StartsWith("A15_HIT_ROOT phase=before ",StringComparison.Ordinal))return;if(condition.Contains("raw=MouseDown"))receipt.productMouseDown++;if(condition.Contains("raw=MouseUp"))receipt.productMouseUp++;}
   void OnGUI(){if(Event.current==null)return;if(Event.current.rawType==EventType.MouseDown)receipt.mouseDown++;if(Event.current.rawType==EventType.MouseUp)receipt.mouseUp++;if(Event.current.rawType==EventType.Layout)receipt.layoutEvents++;if(Event.current.rawType==EventType.Repaint)receipt.repaintEvents++;}
   void OnApplicationFocus(bool focus){receipt.focusEvents++;if(game!=null&&pause!=null)Snapshot("실제 Unity focus 콜백 "+focus);}
   void OnApplicationQuit(){recording=false;if(receipt.quitRequested){receipt.quitObserved=true;Save();}Cleanup();}
-  void Cleanup(){if(keyboard!=null){InputSystem.RemoveDevice(keyboard);keyboard=null;}if(previousKeyboard!=null&&previousKeyboard.added)previousKeyboard.MakeCurrent();previousKeyboard=null;}
+  void Cleanup(){Application.logMessageReceived-=ProductLog;if(keyboard!=null){InputSystem.RemoveDevice(keyboard);keyboard=null;}if(previousKeyboard!=null&&previousKeyboard.added)previousKeyboard.MakeCurrent();previousKeyboard=null;}
   void OnDestroy(){Cleanup();}
  }
 }
