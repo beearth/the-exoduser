@@ -8,7 +8,7 @@ namespace Exoduser.UnityPort
         IEnumerator A2FieldCapture()
         {
             string output=Argument("-output");
-            if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))){Application.Quit(2);yield break;}
+            if(string.IsNullOrEmpty(output)||!NativeQaSandbox.Active){Application.Quit(2);yield break;}
             Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;
             smokeActive=true;pauseSmoke=true;keyshotErrors=0;Application.logMessageReceived+=KeyshotLog;
             lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();if(!lobby.Flow.EnterTest()){Application.Quit(2);yield break;}
@@ -23,6 +23,16 @@ namespace Exoduser.UnityPort
             foreach(int width in new[]{1920,3840})
             {
                 Screen.SetResolution(width,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.5f);
+#if UNITY_STANDALONE_WIN
+                if(Screen.width!=width||Screen.height!=1080)FieldCaptureResize(width,1080);
+#endif
+                float sizeDeadline=Time.realtimeSinceStartup+5;
+                while((Screen.width!=width||Screen.height!=1080)&&Time.realtimeSinceStartup<sizeDeadline)yield return null;
+                if(Screen.width!=width||Screen.height!=1080)
+                {
+                    File.WriteAllText(Path.Combine(output,"해상도-실패.json"),"{\"expectedWidth\":"+width+",\"expectedHeight\":1080,\"actualWidth\":"+Screen.width+",\"actualHeight\":"+Screen.height+"}");
+                    Debug.LogError("[A2 필드촬영] 요청/실제 해상도 불일치");Application.Quit(3);yield break;
+                }
                 string folder=Path.Combine(output,width+"x1080");Directory.CreateDirectory(folder);
                 for(int i=0;i<locations.Length;i++)
                 {
@@ -44,5 +54,29 @@ namespace Exoduser.UnityPort
             Application.logMessageReceived-=KeyshotLog;lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();
             yield return new WaitForSecondsRealtime(.5f);Application.Quit(receipt.passed?0:3);
         }
+#if UNITY_STANDALONE_WIN
+        delegate bool FieldWindowCallback(System.IntPtr window,System.IntPtr state);
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)] struct FieldWindowRect {public int left,top,right,bottom;}
+        [System.Runtime.InteropServices.DllImport("user32.dll",EntryPoint="EnumWindows")] static extern bool FieldWindows(FieldWindowCallback callback,System.IntPtr state);
+        [System.Runtime.InteropServices.DllImport("user32.dll",EntryPoint="GetWindowThreadProcessId")] static extern uint FieldWindowProcess(System.IntPtr window,out uint process);
+        [System.Runtime.InteropServices.DllImport("user32.dll",EntryPoint="GetClassNameW",CharSet=System.Runtime.InteropServices.CharSet.Unicode)] static extern int FieldWindowClass(System.IntPtr window,System.Text.StringBuilder name,int size);
+        [System.Runtime.InteropServices.DllImport("user32.dll",EntryPoint="GetClientRect")] static extern bool FieldWindowClient(System.IntPtr window,out FieldWindowRect rect);
+        [System.Runtime.InteropServices.DllImport("user32.dll",EntryPoint="GetWindowRect")] static extern bool FieldWindowFrame(System.IntPtr window,out FieldWindowRect rect);
+        [System.Runtime.InteropServices.DllImport("user32.dll",EntryPoint="SetWindowPos",SetLastError=true)] static extern bool FieldWindowResize(System.IntPtr window,System.IntPtr after,int x,int y,int width,int height,uint flags);
+        static void FieldCaptureResize(int width,int height)
+        {
+            // 격리 QA Player 자신의 창만 보정한다. 디스플레이/사용자 창/일반 설정은 변경하지 않는다.
+            if(!NativeQaSandbox.Active||Application.isBatchMode)return;
+            uint pid=(uint)System.Diagnostics.Process.GetCurrentProcess().Id;var own=System.IntPtr.Zero;
+            FieldWindows((window,state)=>{uint owner;FieldWindowProcess(window,out owner);if(owner!=pid)return true;var name=new System.Text.StringBuilder(128);FieldWindowClass(window,name,128);if(name.ToString()!="UnityWndClass")return true;own=window;return false;},System.IntPtr.Zero);
+            uint verified;FieldWindowRect client,frame;
+            if(own==System.IntPtr.Zero||FieldWindowProcess(own,out verified)==0||verified!=pid||!FieldWindowClient(own,out client)||!FieldWindowFrame(own,out frame))
+            {Debug.LogError("[A2 필드촬영] 자기 창 소유권/크기 조회 실패");return;}
+            int outerWidth=width+(frame.right-frame.left)-(client.right-client.left),outerHeight=height+(frame.bottom-frame.top)-(client.bottom-client.top);
+            bool resized=FieldWindowResize(own,System.IntPtr.Zero,0,0,outerWidth,outerHeight,0x16);
+            Debug.Log("[A2 필드촬영] 자기창 PID="+pid+" 크기 "+(client.right-client.left)+"x"+(client.bottom-client.top)+" → "+width+"x"+height+" 성공="+resized+" NOMOVE/NOZORDER/NOACTIVATE");
+        }
+#endif
+
     }
 }

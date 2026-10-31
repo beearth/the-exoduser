@@ -1,3 +1,11 @@
+## 2026-10-31 숨은 Player 초광폭 촬영 크기 검증
+
+| 항목 | 현재 촬영 전용 계약 |
+|---|---|
+| 진입 | --unity-field-screen은NativeQaSandbox.Active필수. 일반게임설정/사용자모니터/타인창변경0 |
+| 크기 | 각1920/3840×1080 요청후.5초대기. Windows에서불일치하면현재프로세스PID+UnityWndClass확인→GetClientRect/GetWindowRect의프레임차이만큼더해SetWindowPos1회. NOMOVE/NOZORDER/NOACTIVATE(0x16),소유권불일치면조작0. 기존UI담당의동일환경해상도제약을읽기전용으로확인해촬영fixture에만방어 |
+| 실패 | 실제Screen.width/height가5초안에일치하지않으면해상도-실패.json에기대/실제기록·로그오류·Quit3. 다른규격을요청규격으로보고하지않음. 현재독립C#0/0이며자기Player실제검수전 |
+
 ## 2026-10-31 낮은 지면 질량의 접합 보완
 
 | 항목 | 현재 계약·판정 |
