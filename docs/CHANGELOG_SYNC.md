@@ -55505,3 +55505,5 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 시각 근거 | 33화면×1920/3840=66장·유효텍스트사각형겹침0, 21:9별도앵커확인. 타이틀/메뉴·로비·공통창요구/코드품질검토PASS. 원격/실제실행본/Steam은다른증거 |
 | 한계·보존 | 맵/캐릭터/몬스터/VFX원화·전투/경제/저장형식·사용자메인tracked변경0. 새번역키/28개lang변경0. UI상태를직접표시한격리headless검수이며 실제패드/NW실기/전체28언어/청취/자연전투완료주장안함 |
 | 산출·실행 | G:/exoduser/tmp/design-review/20261031_web_uiux/REPORT.md, 원본은I:/EXODUSER-Storage/design/web-uiux-20261031/. localhost3366자기작업본서버·격리save유지, Steam/DEMO/EA/외부배포0 |
+
+- 최종 커밋 훅이 자동 생성한 tools/guard.baseline.json의 lines를 기존65880→현행66030으로 동기화했다. 게임루프136행·보스idx·강화확률 해시는 그대로이며 guard PASS, 새 검사 우회0이다.
