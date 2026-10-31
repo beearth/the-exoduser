@@ -55,6 +55,7 @@ namespace Exoduser.UnityPort.Tools
    if(Arg("-pause-case")=="window-focus")throw new NotSupportedException("무창 desktop은 실제 OS 전경 창 전환 검수 미지원; focus-callback은 별도 fixture");
    if(Arg("-pause-case")=="startup"){
     lobby.ShowLobby();lobby.SetPlaybackFocus(true);
+    CheckThat(string.Equals(Path.GetFullPath(lobby.CharacterStoreDirectory),Path.Combine(Path.GetFullPath(NativeQaSandbox.Root),"character-roster-v1"),StringComparison.OrdinalIgnoreCase),"캐릭터 저장의 공식 sandbox 격리");
     CheckThat(lobby.OpenCharacterCreation()&&lobby.ChooseCharacterVisual(0)&&lobby.ConfirmCharacterVisual(),"격리 신규 캐릭터 생성 화면");CheckThat(lobby.CreateCharacter("복귀"+(DateTime.Now.Ticks%100000).ToString("00000")),"격리 신규 캐릭터 저장");lobby.ShowLobby();
     CheckThat(lobby.BeginCharacterEntry(false)&&lobby.StartupCaptureState.Page==FrontendEntryPage.Loading,"제품 신규 입장 API와 미디어 초기화");
     until=Time.realtimeSinceStartup+10;while(lobby.StartupCaptureState.Page!=FrontendEntryPage.Nemesis&&Time.realtimeSinceStartup<until)yield return null;

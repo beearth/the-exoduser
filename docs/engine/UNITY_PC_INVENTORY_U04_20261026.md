@@ -1,3 +1,5 @@
+> 2026-10-31 현행 보충: 인벤토리 닫기는 `Running=gameFocused&&inventoryWasRunning&&!menu&&!PlayerDown`이다. `fallen` HP0 부활 대기는 재개하며 최종 `dead`는 재개하지 않는다. 아래 Hp>0 스모크 기록은 당시 이력이다. 현재 계약·Player 근거는 [일시정지·입력 복귀 SSOT](UNITY_PAUSE_SETTINGS_20261025.md)를 따른다.
+
 # Unity 인벤토리 U-04 웹 이식 (PC, 2026-10-26)
 
 기준: 웹 `#invPanel` 장비 페이지(1920x1080), 원자료 `_out/pc-unity-win/web_inv/inventory_layout.json`. 명세 `_out/pc-unity-win/INV_PORT_SPEC.md`.

@@ -1,16 +1,23 @@
 ## 2026-10-27 A15 후속
 
-2026-10-31 PC 복귀 수정 진행: 직접 연 설정의 키보드 마지막 `닫기`는 `BackPage()`가 부모 페이지를 닫지 않을 때 살아 있는 캐릭터에 `Resume`를 반환한다. 사망 상태에는 재개를 반환하지 않는다. 원본 소스 대상 RED 실패와 수정 후 네 탭 메뉴 논리 52/52를 확인했다. 실제 Player 클릭·키·focus 회귀 및 빌드 전달은 `I:/EXODUSER-Storage/demo-art/pause-fix/`에서 별도로 검증하며 CPU 통과를 완료 영수증으로 사용하지 않는다.
+2026-10-31 PC 복귀 수정: HP 0의 `fallen`은 최종 사망이 아닌 부활 대기 상태다. 기존 `Hp>0` 재개 조건이 이 상태의 계속하기와 패널 닫기를 차단했다. 직접 연 설정의 마지막 키보드 닫기도 부모 페이지가 없으면 재개하도록 보완했다. 현재 새 시작 fixture의 정상 API 검수와 최종 빌드 전달은 진행 중이다.
 
-| 2026-10-31 복귀 조건 | 현행 계약 |
+| 복귀 경로 | 현행 코드 계약 |
 |---|---|
-| `Resume` | `gameFocused && !PlayerDown`. `fallen`은 HP 0이지만 최종 사망이 아니므로 기존 300프레임 부활 대기 카운트를 다시 진행한다. `dead`는 재개하지 않는다 |
-| 인벤토리·스킬·능력치·대장간 닫기 | `gameFocused && 각 패널의 WasRunning && !menu && !PlayerDown`. 기존 실행 상태·포커스·사망 조건을 함께 보존한다 |
-| 대화·안내 뒤 입력 해제 | 키·마우스 해제 시 진입 fence만 해제한다. 메뉴·인벤토리·스킬·능력치·대장간이 열려 있거나 최종 사망이면 `Running=false`를 유지한다 |
-| 실습 초기 입력 | 기존 FirstPractice Intro는 방향키 입력 전까지 Core 틱을 진행하지 않는다. 검수는 계속하기 상태 복귀와 실제 방향키 이동·틱 재개를 구분한다 |
-| 검수 준비 | 정상 진입 키 해제 뒤 제품 focus 메뉴로 정지하고 숲 로드를 기다린다. 준비 후 Enter로 재개한다. AI·충돌·무적 설정은 바꾸지 않는다 |
-| 회귀 근거 | `unity/Tools/pause-navigation/host-resume.cjs`: 제품 함수 원문과 실제 Core 전체 소스의 36검사, 수정 전 13실패 → 수정 후 0. 화면/장치는 대역이며 실제 Player 증거와 구분한다 |
-| 실제 입력 후속 | `--unity-pause-input-check`: 실제 1600×900 크기를 확인한 자기 숨은 창 WM 클릭, Input System `Key.Enter`·ESC·TAB, 대화·안내 네 판, 부활 대기 복귀 상태/카운트 기록. 안내 뒤 이동은 맵 충돌을 유지하고 열린 방향을 검사한다. 안내 fence·focus 메뉴 경합은 명시적 검수 상태를 준비한 뒤 제품 Update/PollKeys에서 해제·틱 정지·재개를 검사한다. `-pause-case window-focus`는 자기 창 [WM_ACTIVATEAPP](https://learn.microsoft.com/en-us/windows/win32/winmsg/wm-activateapp) 알림부터 실제 Unity focus 콜백까지 검사한다. 자연 손조작·실제 OS 창 전환과 구분하며 현재 Player 실행은 대기 중 |
+| `PlayerDown` | `State=="dead" || (Hp<=0 && State!="fallen")` |
+| `Resume` | `gameFocused && !PlayerDown`. `fallen`의 기존 300프레임 부활 대기 카운트는 재개하고 최종 `dead`는 재개하지 않는다 |
+| 인벤토리·스킬·능력치·대장간 닫기 | `gameFocused && 각 패널의 WasRunning && !menu && !PlayerDown` |
+| 대화·안내 입력 해제 | 키·마우스 해제 뒤 진입 fence를 해제하며 메뉴/인벤토리/스킬/능력치/대장간 또는 `PlayerDown`이면 `Running=false` 유지 |
+| 직접 연 설정의 마지막 닫기 | `BackPage()` 성공이면 부모로만 복귀. 부모가 없고 최종 사망이 아니면 `Resume` 반환 |
+| 실습 초기 입력 | 기존 FirstPractice Intro의 방향 입력 전 Core 틱 정지는 보존. 상태 복귀와 실제 방향키 이동·틱 재개를 구분 |
+| Player 입력 검수 | Input System 가상 키→제품 Update/PollKeys, 자기 PID+UnityWndClass+제품 제목+실제1600×900 창 WM Down/Up→제품 OnGUI/버튼 |
+| focus 검수 | 실제 Player 제품 OnApplicationFocus(false/true) 본문 직접호출 fixture. OS 창 전환 전달은 무창 desktop foreground=0으로 미검증 |
+| 시작 검수 | 격리 신규 캐릭터 생성→제품 BeginCharacterEntry(false)→Loading/Nemesis→ESC·안내4판 Enter→키 해제→이동/틱 |
+| 검수 안전 | 공식 exo-unity, 숨은 desktop, 격리 세이브. 사용자 창/포인터/AI·충돌·무적 설정 변경0 |
+
+CPU 근거: 메뉴 원본 RED→52/52, 제품 함수 원문+실제 Core 36검사 RED13→0, 최신 웹 closePanel 3/3. 실제 Player r3은 M1 23/23과 입력146검사를 통과했으나 startup fixture 직접 Begin이 이미지 초기화를 건너뛰어 예외4회를 만들었으므로 해당 시작18검사는 최종 게이트에서 제외했다. 수정 fixture의 독립 Runtime 컴파일 오류0. 전체 Player 최종 영수증은 `I:/EXODUSER-Storage/demo-art/pause-fix/REPORT.md` 및 `quality-gate.json`을 따른다.
+
+원본14cc014d0 전체 바이너리 직접 입력 검수는 하지 못했으며 관련 제품 함수가 동일한 소스의 진단 빌드에서 HP0/fallen 클릭·Enter·ESC 실패를 재현했다. 전후 영상은 실제 캡처의10fps 순서 재생이며 벽시계 속도 영상은 아니다. 자연 손조작/자연 전투·실제 OS focus·Mac 반영·전체 아트 품질은 별도 미검증이다. 아래2026-10-25/27 설명과 접은 검수 과정은 당시 기록이며 현재 조건은 위 표를 따른다.
 
 현행 Mac 제품 소스는 게임/화면/사운드/조작 4탭에 지원된 FPS·fullscreen·SFX·BGM·키 목록을 연결한다. Game 탭의 전체 화면 버튼은 화면 탭과 동일한 실제 host 상태·설정 v2 저장을 사용한다. 이 문서 아래의 3탭/조작 안내·세션 전용 설명은 당시 구현 이력이다. 다른 게임 옵션·패드 재지정 미지원과 실제 검증 범위는 [A15 최소 연결](UNITY_MAC_A15_4TAB_20261027.md)을 따른다.
 
@@ -73,6 +80,10 @@
 
 2026-10-25 Mac 키보드 후속: 메뉴 선택·FPS/음량·뒤로/재개·종료 확인과 focus 복귀를 연결했다. 새 모델33/33·Player21/21, CUA 실제 키보드와 최소화→복귀를 확인했다. 이전의 “일반 메뉴 OS 입력/전체화면 미검수”는 당시 상태이며 이번 한정 경로는 [새 검수 기록](UNITY_MAC_PAUSE_KEYS_20261025.md)을 따른다. 마우스 슬라이더 정밀 좌표·전체 UI 인수와 구분한다. 조작 안내에는 K 스킬 창을 추가했다.
 
+
+<details>
+<summary>2026-10-31 검수 과정과 폐기 방법 이력</summary>
+
 - 2026-10-31 실제 Player 검수 관측 보완: PauseInputCheck는 실행 순서 -31000에서 GUI 이벤트를 제품 버튼 소비 전에 기록한다. 제품 Start 완료 뒤 준비하며 MouseDown/MouseUp 외 Layout/Repaint 횟수도 남긴다. 최초 진단은 WM 전달 성공이나 관측0으로 중단됐고, 제품 클릭 실패 증거로 올리지 않는다.
 
 - 2026-10-31 검수 방법 전환: 숨은 Player에서 WM_MOUSE 게시 2회는 Layout/Repaint만 수신하고 MouseDown/Up=0으로 미검증이다. 같은 방식을 반복하지 않고 설치 DLL에서 존재를 확인한 UnityEngine.Event.QueueEvent 합성 이벤트를 실제 제품 OnGUI/버튼으로 전달한다. 이는 실제 OS 마우스 조작 증거가 아니다. 키보드는 Input System 가상 장치→제품 Update/PollKeys를 유지한다. window-focus는 자기 PID/현재 thread 창에 한해 SetActiveWindow/SetFocus로 실제 Unity 콜백을 검수하며 사용자 foreground나 desktop은 바꾸지 않는다.
@@ -96,3 +107,7 @@
 - 네이티브 포커스 run a8804308은 ExoDesk의 foreground=0으로 사전 조건 실패했다. 검수 창 생성/전경 변경/desktop 전환은0이다. 무창 환경에서 실제 OS 전환은 미검증으로 남기고, 미사용 전경/네이티브 창 생성 API는 QA 도구에서 제거했다. focus-callback 사례는 실제 Player 제품 OnApplicationFocus 본문→정지/복귀/Enter 재개의 기능 검수이며 실제 OS 이벤트 전달 PASS가 아니다.
 
 - 2026-10-31 시작 fixture 재작업: startup 상태 직접 Begin 호출은 BeginCharacterEntry의 nemesisArt 초기화를 건너뛰어 DrawNemesis 예외4회를 만들었다. 기존 startup18검사는 최종 gate에서 제외한다. 격리 새 캐릭터 생성→제품 BeginCharacterEntry(false)→Loading/Nemesis→실제 ESC/Enter 경로로 변경하고 새 빌드에서 확인한다. 제품 시작 연출 코드는 변경하지 않는다.
+
+</details>
+
+- 신규 캐릭터 생성 전 CharacterStoreDirectory가 공식 NativeQaSandbox.Root/character-roster-v1과 같은 절대 경로인지 확인하며 불일치하면 쓰기 전에 실패한다.
