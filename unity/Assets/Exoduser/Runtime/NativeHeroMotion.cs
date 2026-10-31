@@ -217,7 +217,7 @@ namespace Exoduser.UnityPort
         HumanPoseHandler poseHandler;
         HumanPose pose;
         Simulation observedSimulation;
-        Transform rightUpper,rightFore,rightHand,leftUpper,leftFore,leftHand,socket;
+        Transform rightUpper,rightFore,rightHand,leftUpper,leftFore,leftHand,socket,leftGrip;
         Transform bladeTipTransform;
         Vector3 bladeTipLocal;
         Transform hips,chest,head,leftThigh,leftShin,leftFoot,leftToes,rightThigh,rightShin,rightFoot,rightToes;
@@ -267,7 +267,11 @@ namespace Exoduser.UnityPort
             leftThigh=animator.GetBoneTransform(HumanBodyBones.LeftUpperLeg);leftShin=animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg);leftFoot=animator.GetBoneTransform(HumanBodyBones.LeftFoot);
             rightThigh=animator.GetBoneTransform(HumanBodyBones.RightUpperLeg);rightShin=animator.GetBoneTransform(HumanBodyBones.RightLowerLeg);rightFoot=animator.GetBoneTransform(HumanBodyBones.RightFoot);
             leftToes=animator.GetBoneTransform(HumanBodyBones.LeftToes);rightToes=animator.GetBoneTransform(HumanBodyBones.RightToes);
-            foreach(var t in GetComponentsInChildren<Transform>(true))if(t.name=="Socket_Weapon_R"){socket=t;break;}
+            foreach(var t in GetComponentsInChildren<Transform>(true))
+            {
+                if(t.name=="Socket_Weapon_R")socket=t;
+                else if(t.name=="Grip_L")leftGrip=t;
+            }
             if(rightHand==null||leftHand==null||socket==null)return;
             leftGripRelative=Quaternion.Inverse(rightHand.rotation)*leftHand.rotation;
             poseHandler=new HumanPoseHandler(animator.avatar,animator.transform);
@@ -391,6 +395,35 @@ namespace Exoduser.UnityPort
             return new GripPose(new Vector3(key.HandX,key.HandY,key.HandZ),new Vector3(key.BladeX,key.BladeY,key.BladeZ),0,0,key.Lower);
         }
 
+        Vector3 FitTwoHandTarget(Vector3 requested,Quaternion rightRotation)
+        {
+            if(leftGrip==null)return requested;
+            var socketRotation=rightRotation*(Quaternion.Inverse(rightHand.rotation)*socket.rotation);
+            var rightOffset=Quaternion.Inverse(rightHand.rotation)*(socket.position-rightHand.position);
+            var leftRotation=socketRotation*Quaternion.Inverse(Quaternion.Inverse(leftHand.rotation)*leftGrip.rotation);
+            var leftOffset=Quaternion.Inverse(leftHand.rotation)*(leftGrip.position-leftHand.position);
+            var delta=rightRotation*rightOffset+socketRotation*Vector3.up*.09f-leftRotation*leftOffset;
+            float rightReach=Vector3.Distance(rightUpper.position,rightFore.position)+Vector3.Distance(rightFore.position,rightHand.position)-.002f;
+            float leftReach=Vector3.Distance(leftUpper.position,leftFore.position)+Vector3.Distance(leftFore.position,leftHand.position)-.002f;
+            var normal=transform.up;
+            var ca=rightUpper.position;var cb=leftUpper.position-delta;
+            float ha=Vector3.Dot(requested-ca,normal),hb=Vector3.Dot(requested-cb,normal);
+            ca+=normal*ha;cb+=normal*hb;
+            float ra=Mathf.Sqrt(Mathf.Max(0,rightReach*rightReach-ha*ha)),rb=Mathf.Sqrt(Mathf.Max(0,leftReach*leftReach-hb*hb));
+            Vector3 ClampCircle(Vector3 p,Vector3 center,float radius){var d=p-center;return d.sqrMagnitude<=radius*radius?p:center+d.normalized*radius;}
+            // 손 높이와 칼 방향을 유지한 채 양팔 도달 원의 교집합으로 맞춘다.
+            if((requested-ca).sqrMagnitude<=ra*ra&&(requested-cb).sqrMagnitude<=rb*rb)return requested;
+            var a=ClampCircle(requested,ca,ra);if((a-cb).sqrMagnitude<=rb*rb)return a;
+            var b=ClampCircle(requested,cb,rb);if((b-ca).sqrMagnitude<=ra*ra)return b;
+            var axis=cb-ca;float distance=axis.magnitude;
+            if(distance<.00001f)return ClampCircle(requested,ca,Mathf.Min(ra,rb));
+            if(distance>ra+rb)return a; // 수직 목표 자체가 도달 불가능하면 검수에서 드러내며 팔을 늘리지 않는다.
+            axis/=distance;float along=(ra*ra-rb*rb+distance*distance)/(2*distance);
+            float side=Mathf.Sqrt(Mathf.Max(0,ra*ra-along*along));var middle=ca+axis*along;var across=Vector3.Cross(normal,axis).normalized*side;
+            var first=middle+across;var second=middle-across;
+            return (first-requested).sqrMagnitude<(second-requested).sqrMagnitude?first:second;
+        }
+
         void LateUpdate()
         {
             if(!ready||observedSimulation==null)return;
@@ -464,13 +497,21 @@ namespace Exoduser.UnityPort
             SolveArm(rightUpper,rightFore,rightHand,desiredHand,transform.right+transform.forward*.25f);
             var desiredBlade=transform.TransformDirection(grip.Blade.normalized);
             rightHand.rotation=Quaternion.FromToRotation(-socket.up,desiredBlade)*rightHand.rotation;
+            var fixedHandRotation=rightHand.rotation;
+            if(twoHands&&leftGrip!=null)
+            {
+                desiredHand=FitTwoHandTarget(desiredHand,fixedHandRotation);
+                SolveArm(rightUpper,rightFore,rightHand,desiredHand,transform.right+transform.forward*.25f);
+                rightHand.rotation=fixedHandRotation;
+            }
             if(current.Kind==HeroMotionKind.SlamWindup&&TryGetBladeTip(out var bladeTip))
             {
                 // 첫10틱의 접점만 실제 칼끝으로 맞춘다. 원래 손 목표에서 매번 재계산하여 누적하지 않는다.
                 float height=Vector3.Dot(bladeTip-transform.position,transform.up);
                 desiredHand+=transform.up*NativeHeroMotionClock.BladeContactLift(current.Kind,height,current.Phase);
+                if(twoHands&&leftGrip!=null)desiredHand=FitTwoHandTarget(desiredHand,fixedHandRotation);
                 SolveArm(rightUpper,rightFore,rightHand,desiredHand,transform.right+transform.forward*.25f);
-                rightHand.rotation=Quaternion.FromToRotation(-socket.up,desiredBlade)*rightHand.rotation;
+                rightHand.rotation=leftGrip!=null?fixedHandRotation:Quaternion.FromToRotation(-socket.up,desiredBlade)*rightHand.rotation;
             }
             BlendArm(rightUpper,rightFore,rightHand,rightBaseUpper,rightBaseFore,rightBaseHand,weight);
             var leftBaseUpper=leftUpper.localRotation;var leftBaseFore=leftFore.localRotation;var leftBaseHand=leftHand.localRotation;
@@ -478,8 +519,17 @@ namespace Exoduser.UnityPort
             {
                 // 손잡이 -0.15m의 오른손 중심보다 폼멜 쪽 9cm에 보조 손을 고정한다.
                 var target=socket.position+socket.up*.09f;
+                var handRotation=rightHand.rotation*leftGripRelative;
+                if(leftGrip!=null)
+                {
+                    // 새 장갑은 손목과 파지 중심이 다르다. 실제 모델의 본 부착 중심을 손잡이에 맞춘다.
+                    var gripRotation=Quaternion.Inverse(leftHand.rotation)*leftGrip.rotation;
+                    var gripOffset=Quaternion.Inverse(leftHand.rotation)*(leftGrip.position-leftHand.position);
+                    handRotation=socket.rotation*Quaternion.Inverse(gripRotation);
+                    target-=handRotation*gripOffset;
+                }
                 SolveArm(leftUpper,leftFore,leftHand,target,-transform.right+transform.forward*.20f);
-                leftHand.rotation=rightHand.rotation*leftGripRelative;
+                leftHand.rotation=handRotation;
             }
             else if(current.Kind==HeroMotionKind.Cast)
             {

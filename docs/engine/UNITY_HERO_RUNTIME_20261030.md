@@ -1,22 +1,22 @@
 # 데모 v0 전사 3D 런타임 — 2026-10-30
 
-전사 LOCK은 `origin/main:docs/11내러티브·로어디자인/WARRIOR_DESIGN_LOCK.md`, 제작 현황은 `UNITY_CHARACTER_BOARD_20261027.md`를 따른다. 기존 R4 접점 FAIL은 철회 뒤 R5·중심 앵커에서 수정·전달했으며 전체 아트는 RETOUCH다. **2026-10-31 R6 정지1·2타 발 회전은 자기 브랜치의 미검증 후보**다. 순수482·설치API C# 오류/경고0·기존 Player 입력 기반 Runtime C# 오류0/타경로경고15만 확인했고, 정식 Editor/셰이더·새 빌드·Player1x/영상·M1·공통 병합·Desktop 전달은 미완료다. 공식 메모리 게이트9.1GB<Editor12GB/Player10GB로 실행을 시작하지 않았으며, 기존검수 재사용으로 새 후보 PASS를 주장하지 않는다. 현재 WORK522개는 이번 수정 전에 I:에 전 파일 바이트 백업·SHA 대조했다(과거 첫씬 원본4a97… 미확보 이력은 유지). 근거 `I:/EXODUSER-Storage/demo-art/hero/20261031-takeover/`. 아래 R4/R5 표와 전달은 당시 이력으로 보존한다.
+전사 LOCK과 캐릭터 보드를 따르는 현재 후보는 **2026-10-31 R7 모델·물성·파지 보강 + R6 정지 베기 발 회전**이다. Meshy 7.1 원화3뷰·Ultra2K/PBR4K 35cr와 리깅5cr, 누적40cr. Blender에서 망토9본·비금속 머리/천·양손 파지를 보정했고 실제 Unity 임포트/물성/스킨 계약99a8fde8, 실제 리그 베기·E강타·방어 파지 e0248027에서 오차최대3.90e-7m를 확인했다. **아직 새 빌드·Player/1x·영상·M1·공통 병합·Desktop은 미완료**다. 원본/보정/실패 이력은 `I:/EXODUSER-Storage/demo-art/hero/r7-meshy-20261031/`, R6 이전 검사는 `20261031-takeover/`에 보존한다. 초기 UPM743d1067 실패는 자기 자식의 PROGRAMDATA/ALLUSERSPROFILE 보완 뒤 공식5c2474fd 성공으로 해소했으며 전역/공통 실행기는 변경하지 않았다. 기존522 WORK는 전바이트 I:백업·임포트 후522/522 동일, 과거 첫씬 원본 미확보 이력은 유지한다. 아래 R1~R5 결과는 당시 입력의 이력이다.
 
 | 항목 | 소유·현재 값 |
 |---|---|
 | 작업본 | `G:/exoduser-wt/codex-hero`, `codex/pc-hero-quality-20261030`, 시작 `10c49850f85dca6365cbf67b8067e6fa749b026d` |
 | 자산 인수 | `I:/exoduser-wt/pc-unity-char/unity/Assets/Exoduser/`의 Warrior·CapeSpring·기존 캐릭터 셰이더 45개, 동일 바이트·SHA 불일치 0. 원본에는 쓰지 않음 |
 | 인수 근거 | `I:/EXODUSER-Storage/demo-art/hero/asset-transfer.json` |
-| 런타임 프리팹 | `Resources/Characters/Warrior.prefab`; `HeroSetup.Prepare`가 기존 프리팹에서 구성. 본체는 URP Lit 기반 `HeroIronContrast.shadergraph`, 대검은 URP/Lit. 기존 PBR 맵은 그대로 사용 |
+| 런타임 프리팹 | `Resources/Characters/Warrior.prefab`, 새 본체 `Art/Characters/Warrior/RemasterR7/Warrior_R7.fbx`. `HeroRemasterImport.Import`가 원래 Art/Characters/Warrior 프리팹에서 controller·대검·CapeSpring 설정만 인수한다. 새 FBX의 손 본 부착 소켓을 사용하며 본체5부위·대검은 URP/Lit |
 | 게임 연결 | `ResetRun`에서 한 번 만들고 `UpdateViews`에서 `NativeHeroView.Sync` 호출. 로드 성공 시 기존 플레이어 SpriteRenderer를 숨김, 누락 시 기존 스프라이트 폴백 |
 | 망토 재설정 | 새 Simulation·2D/3D 바닥 기준 전환·앵커2u 초과 이동 시 CapeSpring 입자 재설정. 이전 장소의 천이 새 시작점으로 늘어지는 상태를 막음 |
 | 발 본 진단 | FootError는 모델 로컬 발 본 높이에서0.055u를 뺀 진단값. 메시 발바닥·지면 관통의 실측 PASS가 아니며 실제 프레임으로 함께 판정 |
 | 3D 필드 | Core 픽셀→`NativeRemodel3D.Point`, yaw=`atan2(cos(Facing),-sin(Facing))`, 모델 배율 0.87. R1 0.90/10.57%, R2 0.81/8.36%, R3 0.81/7.98%의 실제 스킨·천 실측을 보존하며 화면 높이8~10% 안에 여유를 주는 R3 수정 후보 |
 | 기존 2D 아레나 | 같은 Core 발밑 앵커, 모델 앞쪽 깊이 -3, 바닥 기준 X 회전 -35도, 배율 0.80. R3fix M1 원본에서0.65가 약7% 높이로 작게 읽혀 보강. 아레나 자체의 3D화는 별도 |
 | 보조광 | 전사 layer30·렌더링 마스크3, Point 전사 마스크2. 중성 `(1,.97,.94)` 강도6 범위5, 차가운 가장자리 `(.62,.75,.86)` 강도1.6 범위4. 그림자 없는 보조광이며 주광·카메라·Core는 변경하지 않음 |
-| 재질 보강 | 본체 normal강도0.35·smoothness0.68, 대검 normal강도0.55·smoothness0.75. 전사 전용 그래프는 `albedo *= 1 - 0.75*sqrt(metallicMap.R)`: 금속 마스크0인 피부·천의 원본 색을 보존하고 금속만0.25~1배로 낮춘다. 기존 PBR·노멀·직접광·그림자는 유지, 기존 풀 림 발광 연결은0. 원본 ShaderGraph·비트맵 수정/새 생성0. R4 현재1x 제작자·독립 판정은 RETOUCH |
-| 모션 | `NativeHeroMotion.Sync(Simulation,bool)`, 실행순서90→기존 `CapeSpring`100. R6 정지1·2타 뒷발12°/∓16° 회전·실제발가락3mm 진단 후보, 다른 동작/이동 보행 불변. 상세 상태·타이밍·수치는 `UNITY_HERO_MOTION_20261030.md` |
-| 실제 Player 검수 | `--unity-hero-review -output <고유경로>`·필수 `--unity-qa-sandbox`. 대기60·방향160(8방향×20틱)·달리기90·구르기36·대검3타180·검기3타180·E충전강타120·시전90·보조시전60·패링45·피격45·사망90틱, 2틱마다 1600×900 PNG. 적 AI/자연 소환을 끄고 이동 충돌을 유지한 제어 검수. E 두 번째 입력을70틱 누른 뒤 해제하며 Charge/Bash/BashRecover를 해당 구간에서 검사. heroReviewActive는 이 fixture의 사망/일시정지 메뉴 그리기만 분리하며 일반 실행은 불변. 피격은 HurtPlayer(80), 사망은 별도 상태주입이므로 자연 플레이로 세지 않음 |
+| 재질 보강 | R7 Iron/Hair/Skin/Cloth/Leather, 같은 원본 Base/Normal(4096², 런타임 임포트최대2048)·금속R/매끄러움A(2048², A=1−원본거칠기). Iron만 금속맵·Metallic1, tint(.60,.65,.70), smoothness.80, normal.32. Hair: tint(.36,.34,.33), metal0/smooth.12/normal.18; Skin: white/0/.37/.18; Cloth: (.85,.72,.74)/0/.13/.24; Leather: (.76,.72,.68)/0/.20/.25. 비금속4부위는 금속맵 없음, 발광0. R1~R6의 HeroIronContrast는 과거 자산으로 보존 |
+| 모션 | `NativeHeroMotion.Sync(Simulation,bool)`, 실행순서90→CapeSpring100. R6 정지1·2타 발 회전·발가락3mm 검수와 R7 `Grip_L` 실제 중심 보정·양팔 도달 원 교집합을 사용한다. 팔 길이합−.002m, 모델 높이 평면/칼 방향 유지. 마커 없는 기존 모델은 이전 파지 폴백. Core·루트·조준·기간 불변. 상세는 HERO_MOTION 문서 |
+| 실제 Player 검수 | `--unity-hero-review -output <고유경로>`·필수 `--unity-qa-sandbox`. 대기60·방향160(8방향×20틱)·달리기90·구르기36·대검3타180·검기3타180·E충전강타120·시전90·보조시전60·패링45·피격45·사망90틱, 2틱마다 1600×900 PNG. R7의 `leftGripError/leftGripMeasured`는 베기·충전·E·방어·강타의 실제 장갑 중심과 소켓+up×.09m 거리를 기록하고 대검/검기/E/강타 각 구간 최대3mm를 검사한다. 적 AI/자연 소환을 끄고 이동 충돌을 유지한 제어 검수. E 두 번째 입력을70틱 누른 뒤 해제하며 Charge/Bash/BashRecover를 해당 구간에서 검사. heroReviewActive는 이 fixture의 사망/일시정지 메뉴 그리기만 분리하며 일반 실행은 불변. 피격은 HurtPlayer(80), 사망은 별도 상태주입이므로 자연 플레이로 세지 않음 |
 | 기존 수정 보존 | 이동·조준 `ef75f883e`는 시작 HEAD의 조상. Core 파일 변경0 |
 | 빌드 준비 파생 입력 | Unity 첫 임포트/빌드 준비로 생긴 자기64개 밖 변경522개는 `r2/import-meta.json`에 경로·SHA·diff를 보존. 메타만이 아니라 생성 Main씬·URP 프리필터·guard 기준도 포함한다. 자동 인수/일괄스테이징/원복하지 않으며 자기64개 WORK 변경0을 별도로 검사 |
 
