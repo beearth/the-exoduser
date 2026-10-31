@@ -15,6 +15,10 @@ stain=stain.replace('Exoduser/RM1','Exoduser/Impact');
 const old='float a = saturate(we + wf + wh);';
 if(!stain.includes(old))throw Error('원본 데칼 그래프의 마스크 진입점을 찾지 못했습니다.');
 stain=stain.replace(old,'float soot = saturate(0.62 + sin(p.x*29.0 + sin(p.y*13.0))*0.22 + sin(p.y*37.0 + p.x*11.0)*0.18);\\nfloat edgeBreak = smoothstep(0.0, max(Radius*0.35,0.015), d + sin(ang*7.0)*Radius*0.08);\\nfloat a = saturate(fillM * 0.36 * soot * edgeBreak);');
+// GroundDecal's normalized edge/fill mix is for telegraphs. Reusing that denominator
+// after cutting alpha would brighten soot at its torn edges. Keep soot albedo independent.
+stain=stain.replace('Color = (edgeCol * we + FillColor * wf + HairColor * wh) / max(a, 1e-4);','Color = FillColor;');
+stain=stain.replace(/Emission = \(edgeCol \* we[^\\]+/,'Emission = float3(0.0, 0.0, 0.0);');
 put('SG_ImpactScorch.shadergraph',stain,'ScriptedImporter','VFX/RM1/ShaderGraph/SG_GroundDecal.shadergraph.meta');
 put('M_ImpactScorch.mat',`%YAML 1.1\n%TAG !u! tag:unity3d.com,2011:\n--- !u!21 &2100000\nMaterial:\n  serializedVersion: 8\n  m_Name: M_ImpactScorch\n  m_Shader: {fileID: -6465566751694194690, guid: ${guid('SG_ImpactScorch.shadergraph')}, type: 3}\n  m_ValidKeywords: []\n  m_InvalidKeywords: []\n  m_LightmapFlags: 4\n  m_EnableInstancingVariants: 1\n  m_DoubleSidedGI: 0\n  m_CustomRenderQueue: -1\n  stringTagMap: {}\n  disabledShaderPasses: []\n  m_SavedProperties:\n    serializedVersion: 3\n    m_TexEnvs: []\n    m_Ints: []\n    m_Floats:\n    - _EdgeGlow: 0\n    - _Flash: 0\n    m_Colors: []\n  m_BuildTextureStacks: []\n`, 'NativeFormatImporter');
 const folder=out+'.meta';if(!fs.existsSync(folder))fs.writeFileSync(folder,`fileFormatVersion: 2\nguid: ${guid('folder')}\nfolderAsset: yes\nDefaultImporter:\n  externalObjects: {}\n`);
