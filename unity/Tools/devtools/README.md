@@ -87,3 +87,5 @@ $wt = 'E:\exoduser-wt\<내 워크트리>'
 ## 2026-10-31 예약과 batch 티켓 우선순위
 
 예약이 있으면 예약 선두 Owner만 batch 티켓 대기를 통과하고, 예약이 없으면 살아 있는 티켓 FIFO를 따른다. 통과 후 기존 Acquire-Slot이 잠금·현재 Unity/Player·메모리·예약을 다시 검사한다. 뒤 예약의 이른 티켓이 앞 예약의 새 batch를 막던 교착을 해소하며, 타인 티켓/예약/프로세스를 삭제하거나 종료하지 않는다. QueueTurn.psm1의 실제 판정 회귀는 selftest/ticket-order-test.ps1 15개다. 사용자 세이브·HALT·무창·미디어·단일 PC 검사 본문은 불변이다.
+
+예약 순번 전 batch 티켓을 먼저 만들면 구버전 FIFO 실행기의 선두를 막을 수 있으므로, 같은 Test-ExoTicketTurn 판정을 티켓 생성 전에도 적용한다. 이 단계는 예약 읽기만 하며 Lock/Unity/타인 티켓 변경0. WaitMin/PollSec 제한을 사용하고 실제 시작에는 원래 Acquire-Slot의 예약·단일잠금·실제프로세스·메모리 검사를 다시 통과해야 한다.

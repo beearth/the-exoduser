@@ -60,3 +60,5 @@ C# 공통 좌표/포인터 회귀215개 통과. 실제 사용자32:9 이미지�
 기술/안전/레이아웃 판정은 게임 전체 아트·번역 완성과 별도다. 기존 독일어 튜토리얼 영어 폴백, 프랑스어 직업명 분절 등 로컬라이징/일반아트 RETOUCH와 Arabic32자막 cue 전체 재검수 미실시는 그대로 남긴다. API 상태전환/M1 fixture이며 사용자 자연 클리어 증거로 쓰지 않는다. 최신 웹 비교 기준은 main513d14fb46a8ccb6679c05b512bc1c6bb4d9bfa3로 고정하며 웹 원본/INDEX/WIP를 교체하지 않는다.
 
 여백 정밀검수 재작업: candidate4의 로비/캐릭터에서 바깥 장식16px(32:9)·44px(16:10) FAIL을 보존했다. 별도 RuntimeInitialize Bars Host는 실제 감사 페인트가 없었다. 마스킹은 NativeLobby.Draw 마지막의 NativeUiViewport.MaskFrontend 직접 호출로 바꾸고 독립 Boot/Host를 제거한다. 바깥 픽셀 허용치0은 유지한다. 최종 새 Player 검수 전에는 여백 PASS/전달 완료를 선언하지 않는다.
+
+예약 대기 보완: 선두 예약 전에는 batch 티켓을 생성하지 않아 다른 구버전 FIFO 담당을 막지 않는다. 같은 실제 우선순위 함수를 재사용하고 WaitMin/PollSec으로 대기한다. 원래 Acquire-Slot 안전 게이트는 그대로이며 다른 담당의 잠금/티켓/프로세스는 변경하지 않는다.

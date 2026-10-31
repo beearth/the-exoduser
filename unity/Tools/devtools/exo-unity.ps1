@@ -587,6 +587,16 @@ function Cmd-Run {
     }
 
     # --- 서버 없음: 1회 batch 실행(같은 잠금 + 티켓 순번)
+    # 예약 순번 전에는 batch 티켓을 만들지 않는다. 구버전 FIFO 실행기의 앞을 막지 않기 위한 읽기 전용 대기다.
+    $turnDeadline = (Get-Date).AddMinutes($WaitMin); $lastFront = ''
+    while ($true) {
+        $reservationTurn = @(Get-Reservations)
+        $frontBeforeTicket = ''; if ($reservationTurn.Count -gt 0) { $frontBeforeTicket = [string]$reservationTurn[0].owner }
+        if (Test-ExoTicketTurn -FirstTicket '' -Ticket '' -Owner $Owner -FrontReservationOwner $frontBeforeTicket) { break }
+        if ((Get-Date) -gt $turnDeadline) { throw ('예약 순번 대기 시간 초과(' + $WaitMin + '분): ' + $frontBeforeTicket) }
+        if ($lastFront -ne $frontBeforeTicket) { Say ('티켓 생성 전 예약 대기: ' + $frontBeforeTicket + ' (batch 티켓 없음)'); $lastFront = $frontBeforeTicket }
+        Start-Sleep -Seconds $PollSec
+    }
     New-Item -ItemType Directory -Force -Path $Tickets | Out-Null
     $ticket = Join-Path $Tickets ((Stamp) + '_' + $id + '.json')
     [IO.File]::WriteAllText($ticket, ([ordered]@{ pid = $PID; worktree = $wt; method = $Method } | ConvertTo-Json), $Utf8NoBom)
