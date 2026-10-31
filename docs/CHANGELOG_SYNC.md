@@ -55518,3 +55518,5 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 검수 | tools/check-stat-window.mjs·검색/미리보기/요약 ESC/J 재열기·저장0·pageerror0, 기존관련39/39·project-check103/103·guard PASS |
 | 문서·인계 | UI_COMPOSITION 최신 절·능력치 SSOT·WEB_UIUX·디자인 인계·총괄 동기화. ui-ultrawide-brief 끝에 Unity 전달. 원격 SHA와 서버 주소는 20261031_stat_window/REPORT.md |
 | 범위 | 웹 변경 부위 자체 시각판정 PASS. 자연플레이·Unity·NW.js·DEMO/EA·전체 게임/디자인총괄 별도 판정은 미검증 |
+
+성장 검수 보강: 최초 통합1920 캡처의 외부 갑옷 배경이 로딩 중인 것을 직접 확인해 최종 시각 증거에서 제외했다. tools/check-stat-window.mjs는 CSS 배경 원화 decode를30초 한도로 기다린 뒤 캡처하며, 같은 소스의1920/3840 화면을 다시 검수한다.

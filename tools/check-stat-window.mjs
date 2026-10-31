@@ -42,6 +42,18 @@ try {
       await page.evaluate(id => openPanel(id), id);
       console.log(`${width} ${id} 확인`);
       await page.locator('#' + id + ' .ptitle').waitFor({ state: 'visible' });
+      if (id === 'statPanel') {
+        // CSS 배경도 디코드되어야 갑옷 인체도를 본 최종 화면으로 취급한다.
+        await page.evaluate(async () => {
+          const bg = getComputedStyle(document.getElementById('growthTreeViewport'), '::before').backgroundImage;
+          const urls = [...bg.matchAll(/url\("([^"]+)"\)/g)].map(m => m[1]);
+          if (!urls.length) throw new Error('성장 트리 원화 연결 없음');
+          await Promise.race([
+            Promise.all(urls.map(src => { const image = new Image(); image.src = src; return image.decode(); })),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('성장 트리 원화 디코드 시간 초과')), 30000))
+          ]);
+        });
+      }
       await page.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
       const geo = await page.evaluate(id => {
         const p = document.getElementById(id), shell = p.querySelector('.pbox'), title = p.querySelector('.ptitle');
