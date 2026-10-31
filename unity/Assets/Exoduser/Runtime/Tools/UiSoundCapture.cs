@@ -54,7 +54,7 @@ namespace Exoduser.UnityPort.Tools {
     if(frame==285){CueAt("활성 탭 재선택은 무음");int n=sound.UiEvents.Count;Call(game,"OnPanelRequested","invPanel");CheckThat("활성 탭 무음",sound.UiEvents.Count==n);}
     if(frame==300){Call(game,"SetInventory",false);CueAt("버튼 호버 · 웹 원음");sound.PlayUiSample("ui_button_hover",.25f);}
     if(frame==315){CueAt("버튼 확정 · 처리기 고유음 중복 억제");NativeUiSounds.Current.Clicked();}
-    if(frame==330){CueAt("레벨업 · 웹 합성 아르페지오");int n=sound.UiEvents.Count;game.Simulation.AddExperience(game.Simulation.Player.MaxExperience);CheckThat("실제 레벨업 이벤트",sound.UiEvents.Count==n+1&&sound.UiEvents[n].key=="ui_levelup");}
+    if(frame==330){CueAt("레벨업 · 웹 합성 아르페지오");int n=sound.UiEvents.Count,before=game.Simulation.Player.Level;game.Simulation.AddExperience(checked(game.Simulation.Player.MaxExperience*3));CheckThat("실제 레벨 상승",game.Simulation.Player.Level>before,before+" -> "+game.Simulation.Player.Level);CheckThat("실제 레벨업 이벤트",sound.UiEvents.Count==n+1&&sound.UiEvents[n].key=="ui_levelup","events="+n+" -> "+sound.UiEvents.Count);}
     if(frame==375){CueAt("드랍 아이템 획득 · 웹 6종 풀");var item=NativeInventorySeed.Load().equipped[0];int n=sound.UiEvents.Count;bool picked=(bool)Call(game,"CollectLoot",new LootState{Item=item,Rarity=item.rarity});CheckThat("실제 가방 획득",picked&&sound.UiEvents.Count==n+1&&sound.UiEvents[n].key.StartsWith("pickup_"));}
     if(frame==405){CueAt("SFX 0% · 창 열기는 무음");sound.SetVolumePercent(0);Call(game,"SetInventory",true);}
     if(frame==420){CueAt("SFX 0% · 레벨업 합성음도 무음");int n=sound.UiEvents.Count;sound.PlayLevelUp();CheckThat("합성음 0퍼센트 소스 무음",sound.UiEvents.Count==n+1&&sound.UiEvents[n].sourceVolume==0);}

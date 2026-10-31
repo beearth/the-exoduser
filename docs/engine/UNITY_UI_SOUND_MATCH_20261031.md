@@ -55,3 +55,27 @@ AudioRenderer.Start가 성공하기 전에는 Listener를 열지 않는다. 녹�
 - 남은 작업: 실행 권한/정상 자식 환경 확인 → 같은 후보 공식 빌드 → 같은 EXE 무창 M1 → 실제 ui_tab 회귀/30초 출력 녹음/1x 화면 검수 → 완료 MERGE_QUEUE → 지정 통합 담당의 비강제 unity/main 반영 → `-remodel-scenes 1` Desktop 빌드 갱신. 현재 Player·청음·영상·공통·Desktop PASS는 없다.
 
 근거: `I:/EXODUSER-Storage/unity-jobs/codex-ui-sound/done/b5f3eff0.json`, `logs/b5f3eff0.log`, `I:/EXODUSER-Storage/demo-art/ui-sound/final-exit.json`, `post-failed-build-input-check.json`, `reservation-return.json`. 코드 원격 복구점은 `59453c1ef30d237878f4f9c478225f98be72f450`이며 이 보충은 검수 상태 문서만 변경한다.
+
+
+## 2026-10-31 16:28 KST 재개 진단 — 동일 spawn 차단 2회 중단
+
+복구점 abcb62a745a82faf9e778d3b6d28d432e2390a21을 fetch·정상 fast-forward했다. 코드 변경0, 기존 tools/guard.baseline.json WORK 보존. 공용 슬롯은 codex-impact Editor67604/UPM5076/자식 임포트7116이 사용 중이었고 자기 프로젝트 Unity는 없었다. 자기 Temp/UnityLockfile 존재만 확인했으며 배타잠금·공유 패키지 캐시 잠금 및 이전 UPM 원인은 미확정이다.
+
+절대 경로 C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe의 -NoProfile -NonInteractive -WindowStyle Hidden -Command 진단은 초기 조회에서 성공했지만 이후 같은 읽기 전용 잠금 진단에서 연속 2회 spawn EPERM으로 프로세스 시작 전 실패했다. 두 번째 정확한 상세는 Error: spawn EPERM / code EPERM / errno -4048 / syscall spawn이다. 사용자 지정 중단 조건에 따라 추가 spawn·Unity 재시도·후속 검수를 중단했고, 자기 순번 예약만 원본/SHA256 검증 보존 후 반환했다. 권한·캐시·전역 환경·타인 프로세스·잠금 변경0.
+
+이번 공식 빌드/M1/tab/30초 영상은 미실행이며 완료 MERGE_QUEUE·unity/main·Desktop 갱신도 미진행이다. 상태 NOT_READY 유지. 전체 오류와 호출 명령: I:/EXODUSER-Storage/demo-art/ui-sound/resume-lock-diag-retry.json, resume-blocker.json. 슬롯 진단: resume-process-diag.json, 예약 반환: resume-reservation-return.json. 상세 한국어 인계: I:/EXODUSER-Storage/codex-takeover/ui-sound/REPORT.md. 이번 중단 기록은 로컬/I: 갱신이며 신규 commit/push는 하지 않았다.
+
+## 셸 직접 실행 재개와 캡처 도구 경험치 수정 — 2026-10-31
+
+복구점 abcb62a745a82faf9e778d3b6d28d432e2390a21에서 공식 예약을 기다린 뒤, 셸 도구의 CMD→시스템 Windows PowerShell `-NoProfile -Command`→`exo-unity.ps1` 경로로 실행했다. `node_repl`/`child_process` 직접 호출은 사용하지 않았다. 기본 셸의 WindowsApps pwsh 시작은 액세스 거부1회였으며 이후 직접 셸 호출은 정상이다. 추가 액세스 거부가 발생하면 사용자 지정2회 중단 조건을 적용한다.
+
+| 단계 / 소스 | 실제 결과와 적용 범위 |
+|---|---|
+| R5 공식 빌드 / abcb62a74 | 3d39ebe0: Unity6000.6.7f1 Win64 x64, BuildReport Succeeded·errors0·3109248783bytes, 정상exit0·USER_SAVE0. UPM IPC/list/resolve200. 패키지212파일·160DLL에서 MCP 파일/참조0, globalgamemanagers의 RM1_Slice 포함 확인 |
+| 같은 R5 M1 | d8d242f8: 23/23·32PNG, RX9070XT/D3D11, exit0·창0·잔여0·USER_SAVE0·숨은Desktop 닫힘. 스크립트 구동이며 OS 손조작은 아님 |
+| 같은 R5 TAB 입력 | 952daa1f: 실제 InputSystem F10·자기 숨은 창 WM 클릭3쌍·Layout/Repaint·SFX0/60/100%·활성탭 무음 통과, exit0·창0·잔여0. Runtime SHA8d675db0303b83c229bbb44c99d94f359125be10cc57736d7e9f728ab7f7b51e |
+| 같은 R5 녹음 / RED | 260ccf8f: frame330의 실제 레벨업 이벤트 검사 실패·exit2. 장치무음 녹음 시작·클립12개 디코드·출력버퍼0~329·ENTER/패널/TAB/confirm 이벤트까지 확인. 완성 영상/녹음 PASS 아님. USER_SAVE0·창0·잔여0 |
+| 원인과 최소 수정 | Core `LevelExp.Add`는 일반 경험치를 정수 나누기3으로 처리한다. 도구의 `AddExperience(MaxExperience)`는 레벨업에 부족했다. frame330(영상22초)의 입력만 `checked(MaxExperience*3)`으로 수정하고 실제 Level 상승·ui_levelup 이벤트1회를 함께 검사한다. 기존 NativeLevelUpOverlay.Capture와 같은 일반 경험치 경로이며 Core 공식·제품 재생 경로·음원/볼륨 변경0 |
+| 보존 / 새 검수 | R5 빌드 자동변경519개·신규56파일을 I:에 SHA보존한 뒤 원래 byte/부재 상태로 복구, INDEX/기존WIP 보존. 수정한 Tools와 관련 문서만 새 checkpoint에 포함하며 새 Runtime의 공식 빌드·M1·TAB·녹음·영상으로 재검수한다. R5 영수증을 새 Runtime 검수로 재사용하지 않는다 |
+
+근거: `I:/EXODUSER-Storage/demo-art/ui-sound/build-r5-receipt.json`, `r5-player-mcp.json`, `m1-r5/`, `tab-r5/`, `capture-r5/`, `r5-generated-preservation.json`, `r5-restoration-proof.json`. 현재는 캡처 도구 재작업·NOT_READY이며 공통 병합/Desktop은 아직 미반영이다.
