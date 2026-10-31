@@ -170,6 +170,9 @@ namespace Exoduser.UnityPort.Vfx
             if(p==null)return;events++;GraphEvents++;h.Last=now;p.Born=now;p.Go.SetActive(true);p.Fx.Reinit();
             var preset=new PoisonPreset{HdrCore=core,CoreHdr=1.5f,CoreSize=size*.24f,PaletteMid=mid,PaletteShadow=dark,
                 ChunkSizeMin=size*.06f,ChunkSizeMax=size*.12f,ChunkSpeed=speed,ChunkBias=0,MistSize=size*.8f,MistLifeMin=.24f,MistLifeMax=.5f,MistAlpha=alpha,TaintCount=0};
+            // Healing is a quiet ground film and broad vapour, never seven tiny
+            // glitter dots. Its user-selected web green remains unchanged.
+            if(h.Kind==4){preset.CoreHdr=0;preset.CoreSize=0;preset.ChunkSizeMin=preset.ChunkSizeMax=0;preset.MistSize=.9f;preset.MistAlpha=.035f;preset.PaletteMid=0xb6ff54;preset.PaletteShadow=0x3d571c;}
             PoisonBurstPresets.Apply(p.Fx,preset,Vector2.zero,1);
             ImpactSpace.Velocities(p.Fx,preset,Vector2.zero);
             var world=ImpactSpace.Point(x,y,lift);p.Go.transform.position=world;
@@ -186,7 +189,7 @@ namespace Exoduser.UnityPort.Vfx
             foreach(var z in sim.FireZones)
             {
                 bool spikes=z.Type=="spikeTrap";if(!spikes&&z.Type!="holyDome")continue;
-                var h=Get(z.Type+z.Id,spikes?1:4,spikes?18:7);if(h==null)continue;seenSkills.Add(z.Type);Place(h,z.X,z.Y);
+                var h=Get(z.Type+z.Id,spikes?1:4,spikes?18:0);if(h==null)continue;seenSkills.Add(z.Type);Place(h,z.X,z.Y);
                 float fade=Mathf.Clamp01((z.MaxT-z.T)/30f),deploy=Mathf.Min(1,z.T/(spikes?12f:15f)),r=z.R*.01f*deploy;
                 for(int i=0;i<h.Parts.Length;i++)
                 {
@@ -195,8 +198,8 @@ namespace Exoduser.UnityPort.Vfx
                     p.localRotation=Quaternion.Euler(spikes?12:0,i*137.5f,spikes?Mathf.Sin(i*3)*20:0);
                     float size=spikes?(.28f+.18f*(i%3)):.045f;p.localScale=new Vector3(spikes?.22f:size,spikes?size*deploy*fade:size*fade,spikes?.22f:size);
                 }
-                Surface(h,spikes?0x30281bU:0x627548U,spikes?0xb3a17cU:0xb6d58bU,spikes?.12f:.5f,now);
-                Floor(h,r,spikes?0x1c1610U:0x3b4a2aU,spikes?0x66513aU:0x9ab868U,fade*(spikes?.2f:.11f),spikes?0:.03f);
+                Surface(h,spikes?0x30281bU:0xb6ff54U,spikes?0xb3a17cU:0xd5ff72U,spikes?.12f:0,now);
+                Floor(h,r,spikes?0x1c1610U:0xb6ff54U,spikes?0x66513aU:0xd5ff72U,fade*(spikes?.2f:.11f),spikes?0:.03f);
                 Emit(h,now,z.X+Mathf.Cos(now*2)*r*45,z.Y+Mathf.Sin(now*2)*r*45,.12f,spikes?0xd9c8a2U:0xc8dda0U,spikes?0x766449U:0x708151U,0x26251c,.35f,.3f,.05f,.36f);
             }
             foreach(var w in sim.SlamWaves)
@@ -211,8 +214,8 @@ namespace Exoduser.UnityPort.Vfx
             foreach(var b in sim.SkillBlades)if(b.Active)
             {
                 var h=Get("iceblade"+b.Id,3,1);if(h==null)continue;Place(h,b.X,b.Y,.35f);h.Go.transform.rotation=ImpactSpace.FloorRotation*Quaternion.Euler(0,Mathf.Atan2(b.Vy,b.Vx)*Mathf.Rad2Deg+90,80);
-                h.Parts[0].localPosition=Vector3.zero;h.Parts[0].localRotation=Quaternion.identity;h.Parts[0].localScale=new Vector3(.11f,.4f,.11f);Surface(h,0x536f78,0xc5dcda,.4f,now);
-                Emit(h,now,b.X,b.Y,.35f,0xe0e9e3,0x8da7ac,0x334b53,.16f,.2f,.02f,.2f);
+                h.Parts[0].localPosition=Vector3.zero;h.Parts[0].localRotation=Quaternion.identity;h.Parts[0].localScale=new Vector3(.11f,.4f,.11f);Surface(h,0x1a2a36,0xe8f3f8,.4f,now);
+                Emit(h,now,b.X,b.Y,.35f,0xe8f3f8,0x5f98c0,0x1a2a36,.16f,.2f,.02f,.2f);
             }
             if(sim.IceOrbActive)
             {
@@ -222,8 +225,8 @@ namespace Exoduser.UnityPort.Vfx
                     float p=Mathf.Min(1,sim.IceOrbT/180f),r=(sim.Player.Radius+32+Mathf.Sin(p*Mathf.PI)*10)*(1+(Math.Max(1,sim.Skills.Level("iceOrb"))-1)*.1f)*.01f;
                     // Sparse crystals inside the web 6.6R envelope leave the player and enemy shots visible.
                     for(int i=0;i<h.Parts.Length;i++){float a=i*Mathf.PI*2/h.Parts.Length+now*.15f;var t=h.Parts[i];t.localPosition=new Vector3(Mathf.Cos(a)*r*3.2f,.4f+(i%3)*.16f,Mathf.Sin(a)*r*3.2f);t.localRotation=Quaternion.Euler(12,i*137.5f,Mathf.Cos(a)*25);t.localScale=new Vector3(.1f,.28f+(i%3)*.09f,.12f);}
-                    Surface(h,0x4f6c75,0xb7d1d2,.38f,now);Floor(h,r,0x263c43,0x718c92,.08f,.08f);
-                    Emit(h,now,sim.IceOrbX,sim.IceOrbY,.5f,0xe4eeea,0x78959c,0x33434b,.45f,.4f,.045f,.25f);Light(h,new Color(.55f,.72f,.78f),1.8f,.45f);
+                    Surface(h,0x1a2a36,0xe8f3f8,.38f,now);Floor(h,r,0x1a2a36,0x5f98c0,.08f,.08f);
+                    Emit(h,now,sim.IceOrbX,sim.IceOrbY,.5f,0xe8f3f8,0x5f98c0,0x1a2a36,.45f,.4f,.045f,.25f);Light(h,Hex(0xe8f3f8),1.8f,.45f);
                 }
             }
             foreach(var o in sim.MaliceOrbs)if(o.Active)
@@ -231,7 +234,7 @@ namespace Exoduser.UnityPort.Vfx
                 var h=Get("malice"+o.Id,3,5);if(h==null)continue;seenSkills.Add("fireball");Place(h,o.X,o.Y,.35f);
                 float r=o.R*.01f;
                 for(int i=0;i<5;i++){var p=h.Parts[i];float a=i*Mathf.PI*2/5+now*2;p.localPosition=new Vector3(Mathf.Cos(a)*r*2.25f,Mathf.Sin(a*2)*r*.25f,Mathf.Sin(a)*r*2.25f);p.localRotation=Quaternion.Euler(now*70+i*27,i*137,now*50);p.localScale=new Vector3(r*.65f,r*(1.2f+i*.12f),r*.6f);}
-                Surface(h,0x28232f,0xc5bad4,.65f,now);Emit(h,now,o.X,o.Y,.35f,0xe4dcf4,0x6a6381,0x211d2b,r*1.8f,.3f,.09f,.12f);Light(h,new Color(.62f,.53f,.72f),1.1f,.5f);
+                Surface(h,0x161226,0xe4dcf4,.65f,now);Emit(h,now,o.X,o.Y,.35f,0xe4dcf4,0x6a56a8,0x161226,r*1.8f,.3f,.09f,.12f);Light(h,new Color(.62f,.53f,.72f),1.1f,.5f);
             }
             foreach(var p in sim.Projectiles)if(p.Active)
             {
@@ -248,7 +251,7 @@ namespace Exoduser.UnityPort.Vfx
             }
             while(blasts.Count>0)
             {
-                var v=blasts.Dequeue();var h=Get("malice-blast"+(blastSerial++),3,0);if(h!=null)Emit(h,now,v.x,v.y,.3f,0xe4dcf4,0x6a6381,0x211d2b,Mathf.Min(1.8f,v.z*.01f),2,.14f,9);
+                var v=blasts.Dequeue();var h=Get("malice-blast"+(blastSerial++),3,0);if(h!=null)Emit(h,now,v.x,v.y,.3f,0xe4dcf4,0x6a56a8,0x161226,Mathf.Min(1.8f,v.z*.01f),2,.14f,9);
             }
             if(sim.Druid!=null)foreach(var p in sim.Druid.Projectiles)
             {
@@ -258,7 +261,7 @@ namespace Exoduser.UnityPort.Vfx
                 Place(h,(float)p.X,(float)p.Y,.3f);float r=Mathf.Clamp((float)p.R*.01f,.045f,.3f),a=Mathf.Atan2((float)p.Vy,(float)p.Vx);
                 h.Go.transform.rotation=ImpactSpace.FloorRotation*Quaternion.Euler(0,a*Mathf.Rad2Deg,0);
                 for(int i=0;i<h.Parts.Length;i++){var t=h.Parts[i];float b=i*Mathf.PI*2/h.Parts.Length+now*(kind==1?3:1);t.localPosition=kind==2?new Vector3(-i*r*.65f,0,0):new Vector3(Mathf.Cos(b)*r*.45f,Mathf.Sin(b*2)*r*.3f,Mathf.Sin(b)*r*.45f);t.localRotation=kind==2?Quaternion.Euler(0,0,-90):Quaternion.Euler(now*70+i*41,now*30,i*73);t.localScale=kind==2?new Vector3(r*.8f,r*3,r*.8f):new Vector3(r*1.4f,r*1.8f,r*1.4f);}
-                uint core=kind==1?0xc8d999U:kind==2?0xe0cf9cU:0xc7bed9U,mid=kind==1?0x788445U:kind==2?0x948460U:0x79708eU,dark=kind==1?0x28301cU:kind==2?0x352b1cU:0x211d2cU;
+                uint core=kind==1?SkillPresentation.EnemyPoisonCore:kind==2?0xefe6d2U:SkillPresentation.EnemyDarkCore,mid=kind==1?SkillPresentation.EnemyPoisonMid:kind==2?0x9a8a72U:SkillPresentation.EnemyDarkMid,dark=kind==1?SkillPresentation.EnemyPoisonShadow:kind==2?0x2a2220U:SkillPresentation.EnemyDarkShadow;
                 Surface(h,dark,core,kind==2?.35f:.9f,now);Emit(h,now,(float)p.X,(float)p.Y,.3f,core,mid,dark,r*1.3f,.22f,.07f,.24f);
                 if(kind==1)PoisonFrames++;else if(kind==2)ThornFrames++;else DarkFrames++;
             }

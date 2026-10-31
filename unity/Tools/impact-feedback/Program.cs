@@ -5,6 +5,7 @@ static class Program
 {
     static int checks;
     static void Check(bool ok, string message) { checks++; if (!ok) throw new Exception(message); }
+    static double Hue(uint c){double r=(c>>16&255)/255.0,g=(c>>8&255)/255.0,b=(c&255)/255.0,max=Math.Max(r,Math.Max(g,b)),min=Math.Min(r,Math.Min(g,b)),d=max-min;if(d==0)return 0;double h=max==r?(g-b)/d:max==g?(b-r)/d+2:(r-g)/d+4;return (h*60+360)%360;}
     static int Main()
     {
         try {
@@ -39,6 +40,8 @@ static class Program
             Check(SkillPresentation.BulletKind(false,false,1)==0, "범위 밖 원소탄은 기존 표시를 유지한다");
             Check(SkillPresentation.KiWidth(1,1)==192&&SkillPresentation.KiWidth(3,1)==252, "기검참 웹 외곽 크기를 보존한다");
             Check(SkillPresentation.KiWidth(3,1.5f)==378, "차지 크기 배율은 그대로 적용한다");
+            foreach(uint c in new[]{SkillPresentation.EnemyPoisonCore,SkillPresentation.EnemyPoisonMid,SkillPresentation.EnemyPoisonShadow})Check(Hue(c)>=85&&Hue(c)<=95,"적 독은 맵 황록/금지대와 구분되는85~95도 팔레트여야 한다");
+            foreach(uint c in new[]{SkillPresentation.EnemyDarkCore,SkillPresentation.EnemyDarkMid,SkillPresentation.EnemyDarkShadow})Check(Hue(c)>=270&&Hue(c)<=295,"적 어둠은 아군 마력의 푸른 보라와 구분해야 한다");
             Console.WriteLine($"타격·스킬 표현 계약 {checks}개 검사 통과"); return 0;
         } catch(Exception e) { Console.Error.WriteLine("실패: "+e.Message); return 1; }
     }
