@@ -1,6 +1,6 @@
-## 2026-10-27 A15 후속
+## 2026-10-31 PC 일시정지·입력 복귀 최종 검수
 
-2026-10-31 PC 복귀 수정: HP 0의 `fallen`은 최종 사망이 아닌 부활 대기 상태다. 기존 `Hp>0` 재개 조건이 이 상태의 계속하기와 패널 닫기를 차단했다. 직접 연 설정의 마지막 키보드 닫기도 부모 페이지가 없으면 재개하도록 보완했다. 현재 새 시작 fixture의 정상 API 검수와 최종 빌드 전달은 진행 중이다.
+2026-10-31 PC 복귀 수정: HP 0의 `fallen`은 최종 사망이 아닌 부활 대기 상태다. 기존 `Hp>0` 재개 조건이 이 상태의 계속하기와 패널 닫기를 차단했다. 직접 연 설정의 마지막 키보드 닫기도 부모 페이지가 없으면 재개하도록 보완했다. 최종 DX11 Win64 Player의 M1·입력·1x·영상 검수는 완료했으며 공통 반영과 바탕화면 전달 영수증은 아래 외부 보고서에서 확정한다.
 
 | 복귀 경로 | 현행 코드 계약 |
 |---|---|
@@ -15,9 +15,28 @@
 | 시작 검수 | 격리 신규 캐릭터 생성→제품 BeginCharacterEntry(false)→Loading/Nemesis→ESC·안내4판 Enter→키 해제→이동/틱 |
 | 검수 안전 | 공식 exo-unity, 숨은 desktop, 격리 세이브. 사용자 창/포인터/AI·충돌·무적 설정 변경0 |
 
-CPU 근거: 메뉴 원본 RED→52/52, 제품 함수 원문+실제 Core 36검사 RED13→0, 최신 웹 closePanel 3/3. 실제 Player r3은 M1 23/23과 입력146검사를 통과했으나 startup fixture 직접 Begin이 이미지 초기화를 건너뛰어 예외4회를 만들었으므로 해당 시작18검사는 최종 게이트에서 제외했다. 수정 fixture의 독립 Runtime 컴파일 오류0. 전체 Player 최종 영수증은 `I:/EXODUSER-Storage/demo-art/pause-fix/REPORT.md` 및 `quality-gate.json`을 따른다.
+CPU 근거: 메뉴 원본 RED→52/52, 제품 함수 원문+실제 Core 36검사 RED13→0, 웹 closePanel 3/3. 독립 Runtime 컴파일 오류0·기존 경고435. 웹 함수는 main7dc96cd43에서도 원문 동일성을 확인했다.
 
-원본14cc014d0 전체 바이너리 직접 입력 검수는 하지 못했으며 관련 제품 함수가 동일한 소스의 진단 빌드에서 HP0/fallen 클릭·Enter·ESC 실패를 재현했다. 전후 영상은 실제 캡처의10fps 순서 재생이며 벽시계 속도 영상은 아니다. 자연 손조작/자연 전투·실제 OS focus·Mac 반영·전체 아트 품질은 별도 미검증이다. 아래2026-10-25/27 설명과 접은 검수 과정은 당시 기록이며 현재 조건은 위 표를 따른다.
+| 최종 Player 영수증 | 실제 결과 |
+|---|---|
+| 실행 코드 | dc9ec87c5f1b83298b74f42124b4e4313f2473bf, 이후 관련 docs-only 변경은 Unity tree 동일성으로 연결 |
+| 정식 빌드 | 47a8c279, Unity6000.6.7f1 Win64, 실제 Editor DX11, -remodel-scenes1, BuildReport/컴파일 오류0·정상 종료 |
+| 엔진 로그 | 공식 errorLogs2(라이선스 갱신 로그 포함), compileErrors0. 런타임 M1+6입력 실행은 예외/오류0 |
+| 같은 EXE M1 | a666ff75, 23/23, Direct3D11, 노출창/잔여/USER_SAVE 변경0 |
+| 신규 입장·대화·안내 3D | 41759079, 21/21. 정상 캐릭터 생성·sandbox 경로 확인→BeginCharacterEntry→ESC/안내4판 Enter→진입 해제/실제 방향키 이동 |
+| HP0 부활 대기 3D/2D | ad399d75/02b324c9, 각19/19. WM 클릭·Enter·ESC·TAB 닫기와 실제 카운트 진행 |
+| 일반 메뉴 3D/2D | cb37e2bd/a0243719, 각40/40. ESC·직접 설정 닫기·WM 계속하기·K·TAB·로비 복귀/재진입·종료 취소/실제 Quit 정상 종료 |
+| 제품 focus 콜백 3D | 608bfb4d, 10/10. OnApplicationFocus(false/true) 직접호출 fixture→자동 재개 없음→Enter 재개 |
+| 입력 합계 | 6실행149/149, 모두 Runtime 8749e2670b7e50fcf6728e2a1a6c1797e25637d837178f1dd4d49306fbb39cb8·Core 31763d3a33a6b94ed6ba5b5b471a5ca7660753a9b86e1d6cf4d32ec81b5e5505 동일 |
+| Player MCP 제외 | 실제212파일/160DLL, MCP 파일0·MCPForUnity 참조0 |
+| 화면·영상 | 원본1600×900 1x, 비교 양쪽 픽셀 동일. pause-before-after-r4-1x.png, pause-before-sequence.mp4·pause-after-r4-sequence.mp4·pause-normal-r4-sequence.mp4·pause-startup-r4-sequence.mp4 |
+| 안전·보존 | 모든 최종 실행 정상 종료. 노출창/잔여/USER_SAVE 변경0. 자동 파생519파일 사전 원본 바이트 복귀, 착수 미추적56 SHA 보존. 자기 GPU예약 정상 반환 |
+
+산출물 루트는 I:/EXODUSER-Storage/demo-art/pause-fix/이다. 영상은 원본 연속 캡처10fps 순서 재생이며 실제 벽시계 속도와 다르다. 실제 입력 시각·상태는 각 pause-input.json의 states.time을 따른다. 초기 r3 startup18검사는 직접 Begin이 미디어 초기화를 건너뛰어 예외4회를 만든 검수 오류이므로 최종 게이트에서 제외했고, 정상 API로 보완한 r4의21검사/예외0으로 대체했다. 실패·폐기방법·원본 JSON은 그대로 보존했다.
+
+원본14cc014d0 전체 바이너리 직접 입력 검수는 하지 못했으며 관련 제품 함수 원문이 동일한 소스의 진단 빌드에서 HP0/fallen 클릭·Enter·ESC 실패를 재현했다. 실제 OS 포커스 전환, 사용자 손조작·자연 전투 완주, Mac 반영은 미검증이다. 전환 화면만 자체 부분 PASS이며 기존 전체 맵·캐릭터·VFX RETOUCH를 승격하지 않는다. 기존 사용자 build_new PID30032 종료0xc0000005와 드루이드 처치 뒤 이동·ESC 동시 먹통은 별도 인수한 증상이고 동일원인·해결 여부를 이번 검사로 확정하지 않는다. C4 frame/tick/viewTick/XY만으로 사용자 증상의 NativeGame Update/OnGUI/FixedUpdate 진입·복귀/실제 poll을 검증했다고 쓰지 않는다.
+
+## 2026-10-27 A15 후속 (이력)
 
 현행 Mac 제품 소스는 게임/화면/사운드/조작 4탭에 지원된 FPS·fullscreen·SFX·BGM·키 목록을 연결한다. Game 탭의 전체 화면 버튼은 화면 탭과 동일한 실제 host 상태·설정 v2 저장을 사용한다. 이 문서 아래의 3탭/조작 안내·세션 전용 설명은 당시 구현 이력이다. 다른 게임 옵션·패드 재지정 미지원과 실제 검증 범위는 [A15 최소 연결](UNITY_MAC_A15_4TAB_20261027.md)을 따른다.
 
