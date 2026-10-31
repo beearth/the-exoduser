@@ -97,7 +97,7 @@ namespace Exoduser.UnityPort.Vfx
                 float a=Mathf.Lerp(-1.3f,1.3f,i/(float)n),width=.025f*Mathf.Sin(i*Mathf.PI/n);
                 vs.Add(new Vector3(Mathf.Cos(a)*.5f,.12f,Mathf.Sin(a)*.5f));
                 vs.Add(new Vector3(Mathf.Cos(a)*(.5f-width),.12f,Mathf.Sin(a)*(.5f-width)));
-                if(i>0){int j=i*2;ts.Add(j-2);ts.Add(j);ts.Add(j-1);ts.Add(j-1);ts.Add(j);ts.Add(j+1);}
+                if(i>0){int j=i*2;ts.Add(j-2);ts.Add(j-1);ts.Add(j);ts.Add(j-1);ts.Add(j+1);ts.Add(j);}
             }
             var m=new Mesh{name="절제된 기검참 외곽"};m.SetVertices(vs);m.SetTriangles(ts,0);m.RecalculateNormals();m.RecalculateBounds();return m;
         }
