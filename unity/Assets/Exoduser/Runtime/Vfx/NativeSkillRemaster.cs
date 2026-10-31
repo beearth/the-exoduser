@@ -155,7 +155,7 @@ namespace Exoduser.UnityPort.Vfx
         void Light(Handle h,Color c,float range,float intensity)
         {
             if(lights>=2)return;lights++;
-            if(h.Light==null){h.Light=h.Go.AddComponent<Light>();h.Light.type=LightType.Point;h.Light.shadows=LightShadows.None;}
+            if(h.Light==null){var go=new GameObject("국소 바닥 조명");go.transform.SetParent(h.Go.transform,false);go.transform.localPosition=new Vector3(0,.75f,0);h.Light=go.AddComponent<Light>();h.Light.type=LightType.Point;h.Light.shadows=LightShadows.None;}
             h.Light.enabled=true;h.Light.color=c;h.Light.range=range;h.Light.intensity=intensity;
         }
         void Emit(Handle h,float now,float x,float y,float lift,uint core,uint mid,uint dark,float size,float speed,float alpha,float period=.18f)
