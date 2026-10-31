@@ -1,8 +1,8 @@
 > 진행 프로젝트: [MAP_IMPROVEMENT_PROJECT.md](MAP_IMPROVEMENT_PROJECT.md) · 2.5D 깊이 기준: [DEPTH_2_5D_BENCHMARK_20260930.md](DEPTH_2_5D_BENCHMARK_20260930.md)
 
-## 2026-10-31 — 웹 3D 목교 1단계 (기본 OFF)
+## 2026-10-31 — 웹 3D 방향 정정: 기존 1-1 수풀·물 흐름 (기본 OFF)
 
-같은 `codex/web3d-trial-20261031`에서 main 악의오브/UI를 병합하고 렌더·환경·VFX를 보완한다. `?r3d=1`은 기존 Core 맵, `&r3dScene=bridge`는 R3 목교 비교 맵이다. 기본 OFF·기존 1-1 완주/Unity 채택과 구분한다. [현행 계약·시험 이력](WEB3D_TRIAL_20261031.md), 현재 실제 판정은 `20261031_web3d_main/REPORT.md`를 따른다. 브리프의 회귀 후 main 비강제 반영 권한과 실제 반영 SHA를 구분한다.
+같은 브랜치에서 최신 main `afcb65b0a` 병합을 확인했다. `?r3d=1`은 원본 맵·인물·VFX·HUD를 그대로 렌더하고, 수풀 4종의 바람·접촉 변형과 기존 독액 도랑·물 표면의 흐름만 투명 GPU 레이어로 더한다. 목교 지형 대체는 퇴역(`r3dLegacy=1` 추가 없이는 작동하지 않음). [현행 수치·검수 계약](WEB3D_TRIAL_20261031.md), 최종 판정·OFF/ON 영상은 `I:/EXODUSER-Storage/web3d-layer1-20261031/REPORT.md`를 따른다. 기존 맵 전체 RETOUCH·Unity/Steam 미채택과 구분한다.
 
 ## 2026-10-20 — MAPLOOK-HOLE Godot 독립 소환굴 오버레이
 

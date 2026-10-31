@@ -52817,6 +52817,7 @@ function draw(){
   }
   if(_hellWinterTone)X.restore();
   if(globalThis.Ch1LivingDetail)Ch1LivingDetail.draw(X,G,MAP_OBJS,_now,VW,VH,true);
+  window._Web3DLivingLayer?.draw(X,{x:VW/2-VW/(2*_tzoom)-Math.round(VW/2-G.cam.x+sx),y:VH/2-VH/(2*_tzoom)-Math.round(VH/2-G.cam.y+sy),w:VW/_tzoom,h:VH/_tzoom,pw:C.width,ph:C.height});
   const _tWI=performance.now();
   if(_fc2d){var _dMobj=_PERF_PROF._delta(_snapMobj);_PERF_PROF._mobj_di=_dMobj.di}
   // World items (화면 내만 렌더)
@@ -66007,7 +66008,10 @@ if(window._FDGDruidQaStorage?.active&&new URLSearchParams(location.search).get('
 </script>
 
 <script type="module">
-if(new URLSearchParams(location.search).get('r3d')==='1'){
+if(new URLSearchParams(location.search).get('r3d')==='1'&&new URLSearchParams(location.search).get('r3dLegacy')!=='1'){
+  import('./web3d/living-layer.mjs?v=20261031-live2').then(m=>m.install(()=>({G,P,objects:MAP_OBJS,images:_OBJ_SPR,meta:_OBJ_META,hill:_CH1_HILL,tile:T,now:_now,quality:OPT.quality,enemies:ens,projectiles:[...projs,...pProjs],blasts:[..._fireExps,..._impacts]}))).then(api=>{window._Web3DLivingLayer=api;}).catch(error=>{window._Web3DLivingLayerError=error.message;console.error('[WEB3D living layer unavailable]',error);});
+}
+if(new URLSearchParams(location.search).get('r3d')==='1'&&new URLSearchParams(location.search).get('r3dLegacy')==='1'){
   const {renderFrame,advancePresentation}=await import('./web3d/presentation.mjs?v=20261031-main2');
   await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='./web3d/native-ground-effects.js?v=20261031-main2';script.onload=resolve;script.onerror=reject;document.body.append(script);});
   function prepare(){

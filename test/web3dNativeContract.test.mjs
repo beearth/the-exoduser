@@ -12,20 +12,24 @@ const main=html=>html.slice(html.indexOf('<script>\n// ┌')+9).split('</script>
 
 test('all native combat/save/AI declarations retain their exact baseline source',()=>{
   const git=process.platform==='win32'?'C:/Program Files/Git/cmd/git.exe':'git';
-  const baseline=execFileSync(git,['show','7dc96cd4360c382f3fa1b5b58da9aafd72b523f6:game.html'],{encoding:'utf8',maxBuffer:12e6,windowsHide:true});
+  const baseline=execFileSync(git,['show','e1e79ae680eb46915b42d06335af9f94163a30d4:game.html'],{encoding:'utf8',maxBuffer:12e6,windowsHide:true});
   const functions=s=>new Map(acorn.parse(s,{ecmaVersion:'latest'}).body.filter(n=>n.type==='FunctionDeclaration').map(n=>[n.id.name,s.slice(n.start,n.end)]));
   const before=functions(main(baseline)),after=functions(main(game));
   const adapterHooks=new Set(['genFromTemplate','initStage','_syncDruidFinaleMouse','loop']);
   let checked=0;
-  for(const [name,source]of before)if(!adapterHooks.has(name)){assert.equal(after.get(name),source,name+' changed');checked++;}
+  for(const [name,source]of before)if(!adapterHooks.has(name)){
+    // The only native draw addition is the optional transparent map composite.
+    const current=name==='draw'?after.get(name).replace(/^  window\._Web3DLivingLayer\?\.draw\(X,.*\);\r?\n/m,''):after.get(name);
+    assert.ok(current===source,name+' changed');checked++;
+  }
   assert.ok(checked>500);
 });
 
-test('comparison geometry is installed only by both explicit trial flags',()=>{
-  for(const search of ['', '?r3d=0&r3dScene=bridge','?r3d=1','?r3dScene=bridge']){
+test('retired comparison geometry additionally requires the explicit legacy flag',()=>{
+  for(const search of ['', '?r3d=0&r3dScene=bridge','?r3d=1','?r3dScene=bridge','?r3d=1&r3dScene=bridge']){
     const window={};vm.runInNewContext(mapScript,{window,URLSearchParams,location:{search}});assert.equal(window._Web3DTrialMap,undefined);
   }
-  const window={};vm.runInNewContext(mapScript,{window,URLSearchParams,location:{search:'?r3d=1&r3dScene=bridge'}});
+  const window={};vm.runInNewContext(mapScript,{window,URLSearchParams,location:{search:'?r3d=1&r3dScene=bridge&r3dLegacy=1'}});
   assert.equal(window._Web3DTrialMap.mw,200);
 });
 
