@@ -23,7 +23,7 @@ namespace Exoduser.UnityPort {
    Debug.Log("A15_QA_DIRECT phase="+phase+" root="+root+" sfx="+settings.SfxPercent+" up="+NativeKeyBindInput.Bindings.Primary("up")+" listening="+pauseMenu.KeyCaptureActive);
   }
   void TraceA15HitRoot(string phase){
-   if(!a15HitTrace||Event.current==null||Event.current.rawType!=EventType.MouseDown)return;
+   if(!a15HitTrace||Event.current==null||(Event.current.rawType!=EventType.MouseDown&&Event.current.rawType!=EventType.MouseUp))return;
    var list=pauseMenu.KeyListForTest;var m=GUI.matrix;var e=Event.current;
    Debug.Log("A15_HIT_ROOT phase="+phase+" frame="+Time.frameCount+" type="+e.type+" raw="+e.rawType+" button="+e.button+" mouse="+e.mousePosition.ToString("F3")+" screen="+Screen.width+"x"+Screen.height+" dpi="+Screen.dpi+" matrix="+m.m00+","+m.m11+","+m.m03+","+m.m13+" listening="+(list!=null&&list.Listening)+" action="+(list!=null?list.ListeningAction:"null")+" consumed="+(list!=null?list.CaptureConsumedFrame:-10));
   }
