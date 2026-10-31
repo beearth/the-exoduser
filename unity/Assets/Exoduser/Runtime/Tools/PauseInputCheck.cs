@@ -18,7 +18,7 @@ namespace Exoduser.UnityPort.Tools
   const string Flag="--unity-pause-input-check";
   [Serializable] sealed class Check {public string name,detail;public bool passed;}
   [Serializable] sealed class State {public string phase,playerState,page,practice;public int frame,tick,cursor;public float time,timeScale,hp,stateTicks,x,y;public bool running,menu,focus,navigationFocus,releaseFence,entryFence,inputFence,inventory,skills,stats,forge,remodel;}
-  [Serializable] sealed class Receipt {public string scope="격리 실제 Player: Input System 가상 키보드 → 제품 Update/PollKeys, 자기 숨은 Windows 창 WM 클릭 → 실제 OnGUI. focus callback 모델 전환, window-focus 사례는 자기 창 WM_ACTIVATEAPP→Unity 콜백. 사용자 손조작/실제 OS 창 전환/자연 전투와 구분",runtimeSha,coreSha,device,sandbox;public bool passed,quitRequested,quitObserved;public int mouseDown,mouseUp,frames,focusEvents;public List<Check> checks=new List<Check>();public List<State> states=new List<State>();}
+  [Serializable] sealed class Receipt {public string scope="격리 실제 Player: Input System 가상 키보드 → 제품 Update/PollKeys, 자기 숨은 Windows 창 WM 클릭 → 실제 OnGUI. focus callback 모델 전환, window-focus 사례는 자기 창 WM_ACTIVATEAPP→Unity 콜백. 사용자 손조작/실제 OS 창 전환/자연 전투와 구분",runtimeSha,coreSha,device,sandbox;public bool passed,quitRequested,quitObserved;public int width,height,mouseDown,mouseUp,frames,focusEvents;public List<Check> checks=new List<Check>();public List<State> states=new List<State>();}
   static bool Has(string flag)=>Array.IndexOf(Environment.GetCommandLineArgs(),flag)>=0;
   static string Arg(string flag){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,flag);return i>=0&&i+1<a.Length?a[i+1]:null;}
   [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)] static void Boot(){if(Has(Flag)&&!Has("--unity-m1-check"))new GameObject("Pause input isolated check").AddComponent<PauseInputCheck>();}
@@ -43,7 +43,7 @@ namespace Exoduser.UnityPort.Tools
    Screen.SetResolution(1600,900,FullScreenMode.Windowed);AudioListener.volume=0;AudioListener.pause=true;yield return new WaitForSecondsRealtime(.5f);
    lobby.ShowLobby();lobby.SelectPreview();CheckThat(lobby.EnterNativeTest(),"일반 미리보기 진입");game.SetGameFocus(true);
    until=Time.realtimeSinceStartup+45;while((lobby.IsBlocking||!game.Running||NativeRemodel3D.Requested&&!NativeRemodel3D.Active)&&Time.realtimeSinceStartup<until)yield return null;
-   CheckThat(game.Running,"진입 키 해제 후 실행");CheckThat(!NativeRemodel3D.Requested||NativeRemodel3D.Active,"요청된 숲 3D 로드");recording=true;StartCoroutine(Frames());
+   CheckThat(game.Running,"진입 키 해제 후 실행");CheckThat(!NativeRemodel3D.Requested||NativeRemodel3D.Active,"요청된 숲 3D 로드");receipt.width=Screen.width;receipt.height=Screen.height;CheckThat(receipt.width==1600&&receipt.height==900,"실제 캡처 화면 크기",receipt.width+"x"+receipt.height);recording=true;StartCoroutine(Frames());
    if(Arg("-pause-case")=="window-focus"){
     IntPtr window=OwnWindow();CheckThat(window!=IntPtr.Zero,"focus 자기 숨은 창 확인");int events=receipt.focusEvents;
     CheckThat(PostMessageW(window,0x001C,new IntPtr(1),IntPtr.Zero),"자기 창 활성 알림 전달");yield return new WaitForSecondsRealtime(.2f);
@@ -59,7 +59,9 @@ namespace Exoduser.UnityPort.Tools
     CheckThat(lobby.IsBlocking&&!game.Running,"대화 창 전투 정지");yield return Shot("startup-dialogue");yield return Key(UnityEngine.InputSystem.Key.Escape);yield return new WaitForSecondsRealtime(.3f);CheckThat(lobby.StartupCaptureState.Page==FrontendEntryPage.Guide&&!game.Running,"대화 ESC 뒤 안내 진입");
     for(int step=0;step<4;step++){CheckThat(lobby.StartupCaptureState.GuideStep==step,"안내 판 "+(step+1));yield return Shot("startup-guide-"+(step+1));yield return Key(UnityEngine.InputSystem.Key.Enter);yield return new WaitForSecondsRealtime(.3f);}
     until=Time.realtimeSinceStartup+5;while((lobby.IsBlocking||!game.Running)&&Time.realtimeSinceStartup<until)yield return null;CheckThat(!lobby.IsBlocking&&game.Running&&!(bool)Get(game,"frontendEntryInputFence"),"안내 종료 후 키 해제·입력 복귀");
-    float x=game.Simulation.Player.X;yield return Key(UnityEngine.InputSystem.Key.D);CheckThat(game.Simulation.Player.X!=x,"안내 뒤 실제 방향키 이동");yield return Shot("startup-input-restored");Save();Application.Quit(0);yield break;
+    var player=game.Simulation.Player;float x=player.X,y=player.Y;var move=UnityEngine.InputSystem.Key.None;
+    foreach(var direction in new[]{new Vector2(1,0),new Vector2(-1,0),new Vector2(0,-1),new Vector2(0,1)})if(game.Map.CanMove(x+direction.x*12,y+direction.y*12,player.Radius)){move=direction.x>0?UnityEngine.InputSystem.Key.D:direction.x<0?UnityEngine.InputSystem.Key.A:direction.y<0?UnityEngine.InputSystem.Key.W:UnityEngine.InputSystem.Key.S;break;}
+    CheckThat(move!=UnityEngine.InputSystem.Key.None,"실제 맵의 열린 이동 방향");yield return Key(move);CheckThat(player.X!=x||player.Y!=y,"안내 뒤 실제 방향키 이동");yield return Shot("startup-input-restored");Save();Application.Quit(0);yield break;
    }
    if(Arg("-pause-case")=="fallen"){
     Call(game.Simulation,"PlayerDie");CheckThat(game.Simulation.Player.State=="fallen"&&game.Simulation.Player.Hp==0,"Core 실제 부활 대기 진입");
