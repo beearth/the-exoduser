@@ -1,3 +1,44 @@
+## 2026-10-31 웹 3D 풀 배치 설계·레이어2 통합
+
+| 항목 | 변경·검수 |
+|---|---|
+| 풀 | 기존 WIP 인수: 8구역113다각형 JSON·3비움 영역·종/밀도/크기·디버그오버레이. 코드 전맵scatter를 제거하고 명시구역만 시드고정 표본. 배치도·구역표는 I:/EXODUSER-Storage/web3d-lighting-20261031/foliage |
+| 접지 | 늪 깊은 중심 제외/얕은물가갈대만, 원본색샘플·뿌리gradient·72×18접촉그림자. 풀/뿌리/물을 환경광 앞에 합성해 동일 수광. 기존미풍/물/포자·불씨/구름/소품높이·native가림 유지 |
+| 리사이즈 | 1920→3840에서 입력 texture immutable GPU 저장소가 갱신되지 않던 결함을 frame-sampler의 크기변경 dispose/재할당으로 수정. 환경 입력/출력 edge NCC .024→.739, 현재 카메라 지형으로 복귀. 실패한 입력복사/합성분리 시도는 채택0 |
+| BACK 질량 | 뿌리 아래 alpha 빈틈을 기존 숲 원화+어두운 회청 안개로 연결. 경계 밖 mask만·추가1draw, 새 원화/텍스처/충돌 변경0 |
+| 검수 | 원본계약·Core·표현·프레임수명78/78 PASS, tools/web3d-final-qa.cjs와web3d-route-qa.cjs의1920/3840·1x·10초·밀집·정상입력/디버그를 구분. [수치·영역표·성능계약](4.1맵디자인+설정/WEB3D_TRIAL_20261031.md) |
+
+## 2026-10-31 웹 3D 유령 — 새 조명에서 동작 재검수
+
+기존6d866468b의12유령나무/6영혼을 새 조명·경계 숲에서 재검수했다. 유령만 OFF/ON1920·3840 각각10초 영상/0·3·6·9초1x, 오류/HTTP실패0, 적·오브젝트 수/충돌맵 동일, 회귀3/3. 자동 하니스는 tools/web3d-ghost-motion-qa.cjs이며 산출은 I:/EXODUSER-Storage/web3d-lighting-20261031/ghost-motion. 표현시계 fixture/자연플레이 구분. [현행 계약](4.1맵디자인+설정/WEB3D_TRIAL_20261031.md).
+
+## 2026-10-31 웹 3D CTO 판정 보정 — 깊은 경계 숲
+
+| 항목 | 변경·검수 |
+|---|---|
+| 숲 | 지면 감광 뒤 자체 회청 안개/가지림 합성·최종×.62. 경계 마스크5px feather로 직선 잘림 완화. 기존238 낮은질량/236나무·충돌선 ±40px 밑동0·보행/원화 유지 |
+| 검수 | 경계 배치·숲 수광2/2 PASS, 실제3840 SIDE L 전후. I:/EXODUSER-Storage/web3d-lighting-20261031/forest-corrected 이후 증거. 첫 이중감광 후보는 미채택. [수치·렌더순서](4.1맵디자인+설정/WEB3D_TRIAL_20261031.md) |
+
+## 2026-10-31 웹 3D 최우선 조명 정정
+
+| 항목 | 변경·검수 |
+|---|---|
+| 환경 | 기존 원화에 RGB(.26,.28,.36) 차가운 감광 후 국소광 복원. 원본 라이트맵/비네트 이중 어둠은 정상 stage0 r3d에만 생략. 인물·탄막·HUD 원본 순서·sprite 유지 |
+| 빛 웅덩이 | authored×1.45/player×.8/fx×.7, 감쇠 max(0,1−d²)², 반경 밖0. 캠프·제단·시체나무·고치의 같은영역 밝기비8.48/3.33/4.15/3.90, Godot3.29/2.03/2.10/1.84. RGB8 화면 지표이며 물리조도 아님 |
+| 검수 | 조명/원본계약10·Core/패링37 PASS·guard PASS. 실제1920/3840 OFF·ON과 Godot 비교·1x·밀집64적96탄/격리sprite·HUD 검수: I:/EXODUSER-Storage/web3d-lighting-20261031/. [현행계약](4.1맵디자인+설정/WEB3D_TRIAL_20261031.md) |
+
+## 2026-10-31 웹 3D 방향 정정 — 원본 1-1 수풀·물 흐름
+
+| 항목 | 변경·검수 |
+|---|---|
+| 범위/원본 | 최신 main afcb65b0a 병합 확인/시작 e1e79ae. 기본 OFF의 r3d=1은 원본1-1·native draw·인물·VFX·HUD 유지. 기존 목교 지형 대체·2x인물/독자조명은 r3dLegacy=1 뒤의 퇴역 이력으로 분리 |
+| 수풀 | 실제1-1 경계·손배치나무·제단물가에 시드고정배치. 내장imagegen 투명4종 atlas1254²/셀627²,112×100분할card 인스턴싱1draw·고정밑동/미풍·hero접촉/공격충격·화면밖cull·저사양/성능밀도조절 |
+| 물 | 원래 제단 도랑·서쪽crossing/늪·독액 이미지 색/위치불변, 물영역만 흐름·약한반사·거품/기포·옅은안개. 실제entity 이동·투사체/impact진입의 잔물결·splash8개풀. 기존탄막/VFX는native그대로 |
+| 검수 | 관련38/38·guard PASS/라인66139→66144 외 보호영역불변. 확장50중48PASS/cloud저장harness2실패는시작SHA에서도동일. 원본sprite격리6draw/픽셀변경0·HUD DOM/스타일/배치동일·브라우저오류0 |
+| 실물/성능 | 1920/3840 OFF·ON각10초/동구도1x·native시작점 실제10초입력/피해75629·패링1. 녹화없는물가OFF/ON≈239FPS,64적96탄시작활성stress(HP100만)164.96FPS/최종122적11탄. 자연입력·시연fixture구분 |
+| 인수 | 자기미커밋 height-ray/painted-forest/alpha-frame-bounds·테스트/추출도구도 정확경로보존커밋. 현행renderer에서사용하지 않는퇴역지원기능. [현행수치·출처](4.1맵디자인+설정/WEB3D_TRIAL_20261031.md) |
+| 영수증/판정 | tools/web3d-living-qa.cjs·extra·delivery가 소스SHA/실제게임/격리sprite/영상·HTTP동일byte검증. I:/EXODUSER-Storage/web3d-layer1-20261031/REPORT.md 맨위3377URL/증거. 움직임레이어한정PASS/전체맵RETOUCH·Unity/Steam미채택 |
+
 ## 2026-10-31 웹 스킬 창 마지막 보정 — 잠김 기술·빈 소켓 원화
 
 | 항목 | 변경·근거 |
@@ -55605,6 +55646,14 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 패키지·검수 | FILES 공통런타임 명시, 회귀 test/loadingWide.test.js 및 tools/check-loading-wide.mjs. 전면 가시성·전체구도·하단 비중첩·비동기 요청/실패 검사 | I:/EXODUSER-Storage/web-loading/20261031-wide/ |
 | Unity 인계 | ui-ultrawide-brief.md 끝에 같은 이미지·표시계약·해상도 및 별도 Unity 검수 지시 | 웹 검수와 Unity 실행은 분리 |
 
+## 2026-10-31 웹 로딩 최종 보정 — 전체35장
+
+| 변경 | 내용 | 정본/근거 |
+|---|---|---|
+| 전체 배경 | 모든35장 내장 배경 생성과 접합/중복 보정, 16/21/32 무손실 WebP105개. 인물·펫·로고 원본 전경 복원, 정상 화면의 블러 제거 | 1전체그래픽세팅/LOADING_ULTRAWIDE_20261031.md 최종 보정 |
+| 전체 높이·상태 | 그림 inset0, 하단 별도 검은 띠 제거. 투명 시작 어두운 그라데이션 위 font-hell/title·뼈색·금빛1px 진행 선 | loading-art.css |
+| 선택·폴백 | rd11.jpg 포함 전수 선택, resize/최신 요청 보호. 실제 다운로드 실패에만 원본 contain+블러 폴백 | loading-art.js, test/loadingWide.test.js |
+| 검수·인계 | 실제 로딩35×4해상도·로비·실패·1x 및 원격 영수증, 기존 Unity 브리프 최종 계약 전달 | I:/EXODUSER-Storage/web-loading/20261031-final35/ |
 
 ## 2026-10-31 웹 초광폭 월드
 
@@ -55617,7 +55666,13 @@ stage=0은 실제200×200 본편으로 정정하고 과거 원화 판은 명시�
 - `index.html` 10곳·`game.html` 1곳 PNG 참조 교체. 위치·크기·fade·게임 규칙은 유지. 규격·검수 도구: `docs/3.1 ui hud 디자인/LOGO_SOLID_20261031.md`, `tools/build-logo-solid.py`, `tools/verify-logo-solid.py`.
 - main 소스 반영만 수행하고 DEMO/EA 복사·배포·Unity 실행·유료 생성은 하지 않는다. 실제 원격·캡처·겹침·회귀·guard 결과는 `G:/exoduser/tmp/design-review/20261031_logo_solid/REPORT.md`에 기록한다. 과거 원본/영상 제작 영수증은 보존한다.
 
+- 2026-10-31 combat-feel: game.html 접점 그림2틱·피격 가장자리/HP 표시140ms·동시 처치음2보이스, feel=0/1 비교 및 reduceMotion 설정. 보호된 전투 규칙 불변. VFX·스킬·설정·기본공격 문서 동기화, test/combatFeel.test.js.
+- 검수 보충: 피격음 VM의 OFF 표현 환경을 명시. 기존 Ki 홀드 VM은 _uEq/ _eqAffix 의존성 누락으로 2회 실패해 해당 단위를 중단하고 원본 byte를 복원; 실제 기검참 함수 무변경을 대조.
+- 같은 후보 실물 재작업: HP 피격 사각 외곽 제거→구슬 원형 내부 표식, 밀집 접점 합성 상태 전환16→2회로 배치. 실패 재현 테스트 후 수정 통과.
+- web3d 병합: 원본 함수 보존 검사의 기준을 검수한 feel0206fb14d로 갱신, 맵 연결 예외4개·500개 이상 함수 byte 일치 검사는 유지한다. 원격929169caa의 맵/3D 자산·코드는 보존한다.
+- combat-feel 전달: 빈 저장 고정 OFF/ON30초·슬로3편·슈퍼와이드·접근성·FPS/입력 측정과 f1ba81fec 병합 실게임 영수증을 전용 인계 combat-feel.md 및 요청 REPORT에 기록했다. 전체 회귀 PASS·자연 완주·실청취/재미 완료와 구분한다.
 
 ## 2026-10-31 전체 화면 원화 확장 적용
 
 이 문서의 과거 이미지·영상 제작 및 판정은 당시 이력이다. 현행 웹은 `fullscreen-art.js`의 경로 등록으로 64종의 원본/21:9/32:9 판을 선택한다. 화면비 2 이하의 원본 경로와 MP4 파일은 보존하고, 초광폭에서는 중앙 원본 픽셀을 보존한 확장 정지판을 쓴다. 출력·사용 위치·규격·생성 정보·검수 근거는 `docs/3.1 ui hud 디자인/FULLSCREEN_ART_ULTRAWIDE_20261031.md` 및 `assets/fullscreen-wide/20261031/manifest.json`이 현행 기준이다. 로딩35장은 별도 담당이며 Unity 반영·실행 검수는 이 웹 적용으로 완료되지 않는다.
+

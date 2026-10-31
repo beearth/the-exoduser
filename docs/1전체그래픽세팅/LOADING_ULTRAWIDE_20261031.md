@@ -1,5 +1,53 @@
 # 로딩·대기 화면 초광폭 수정 — 2026-10-31
 
+## 최종 보정 — 전체 35장 / 전체 화면 / 하단 오버레이
+
+사용자의 `loading-ultrawide-brief.md` 마지막 보정 지시가 아래 최초안보다 우선한다. 새 브랜치 `codex/web-loading-final35-20261031`의 시작은 fetch한 `origin/main` `baabceeae25cccb35f149223d9d540bc0499063b`이며 시작 tracked INDEX/WORK는 비어 있었다.
+
+직접 확인한 자료는 아래 목록 35장 원본 캔버스, 35회 내장 image_gen 생성 결과, 이전 실제 game.html 네 해상도 캡처다. 목표는 캐릭터·펫·로고 구도를 유지하고 배경을 끝까지 채우며 평평한 하단 검은 띠를 없애는 것이다. 생성된 캐릭터를 원본 대신 채택하지 않고 원본 전경 마스크를 복원한다. 사각 원본 패널을 합성한 4번의 접합 결함은 탈락시켜, 배경 위치/등비 크기 정렬과 전경 마스크 방식으로 전환했다. 보호 마스크의 불투명 픽셀은 원본 등비 리샘플 RGB와 무손실 WebP 디코드 RGB를 비교한다. 이 검사는 배경 전체가 원본 픽셀 그대로라는 뜻이 아니다.
+
+| 항목 | 최종 구현 계약 |
+|---|---|
+| 대상 | 아래 최초안 목록의 모든 35장: 1~19.png와 rd1,rd2,rd4~rd10.png,rd11.jpg,rd12~rd17.png. 활성 랜덤 풀 19장·프리로드 후보 16장 구분 유지 |
+| 공통 파일·캐시 | loading-art.js / loading-art.css, index.html·game.html 캐시 `20261031-final35` |
+| 파일 선택 | viewport W/H > 2560/1080이면 `-32.webp`, >1920/1080이면 `-21.webp`, 그 이외 `-16.webp`. rd11.jpg도 확장자 제거 후 같은 규칙 |
+| 32판 | `img/lording/wide/{id}-32.webp`, 35개, 3840×1080 |
+| 21판 | 같은 폴더 `{id}-21.webp`, 35개, 2560×1080 |
+| 16판 | 같은 폴더 `{id}-16.webp`, 35개, 1920×1200. 1920×1080에서는 추가 배경 위/아래 각60px만 화면 밖이며 원본 전경은 중앙1080px 안에 배치. 2560×1600에서는 전체 등비 표시 |
+| 원본·배경 | 원본 파일 byte 유지, 신규 105개 무손실 WebP. 원본 인물/펫/로고 마스크 복원, 새 배경은 장면별 내장 생성. 생성 배경의 정렬은 등비 변환, 이미지 가로 늘이기 없음 |
+| 화면 채움 | `.loading-art` inset0, `.loading-expanded` 성공 시 전면 생성 캔버스 cover. 위 네 해상도에서 원본 전경 영역은 가시 범위 안, 배경만 화면 비율에 맞춰 잘림. 정상 성공 시 블러 backdrop 숨김 |
+| 실패 폴백 | 실제 확장판 네트워크 실패 시에만 원본 contain + 같은 원본 blur24px/brightness .28. 최신 요청 ticket/state 확인 후 적용하고 resize마다 선택 |
+| 게임 상태 오버레이 | 그림 전체 높이 유지. 하단 최소높이 clamp(150px,22vh,300px), padding 위 clamp(44px,7vh,96px) / 좌우24px / 아래 clamp(18px,3vh,44px), gap8px. 배경 rgba(5,5,6,0) → .32(35%) → .78 그라데이션, 상단 경계선 없음 |
+| 제목 | `var(--font-hell-title,'Nanum Myeongjo',serif)`, 400 clamp(16px,2.1vh,26px)/1.5, 뼈색 #e6dfce, 자간 .12em |
+| 층 정보·팁 | `var(--font-hell,'Nanum Myeongjo',serif)`, 층 정보400 clamp(11px,1.35vh,17px)/1.4 #c0b8a6, 팁400 clamp(11px,1.25vh,16px)/1.4 #b2a996 |
+| 진행 선 | min(32vh,80vw) 폭·1px 높이, 바탕 rgba(176,145,82,.28), 금빛 #c7a76b, 광택 rgba(199,167,107,.4). 진행률·종료 콜백 유지 |
+| 로비 gate | 기존 로고 contain, 그림 inset0. 동일 투명 시작 그라데이션·뼈색·본문 font-hell 오버레이, 최소높이 clamp(150px,22vh,300px), padding 위 clamp(44px,7vh,96px)/좌우26px/아래 clamp(24px,4vh,56px) |
+| 접근성·DOM | 기존 status/aria-live, reduced-motion, 최신 요청 경쟁 보호. 부모 textContent 교체 없음 |
+
+### 생성·검수 자료
+
+내장 `image_gen` 기본 35회와 보정 2회 성공, 보정 1회 도구 거부. 외부 유료 서비스·직접 API 사용 없음. 기본 생성 파일은 Codex generated_images에 보존하고 프로젝트 파일은 위 wide 폴더에 둔다. 입력/생성/master/전후 화면/영수증은 `I:/EXODUSER-Storage/web-loading/20261031-final35/`에 보존한다. `final-selected-map.json`은 최종 35개 개별 배경 파일과 id를 연결한다. 공통 생성 지시: 회색 캔버스의 빈 영역을 같은 장면의 건축·지면·하늘·안개·색·조명으로 이어 그리기, 중앙 원본의 위치/크기/전체 구도 유지, DESIGN LOCK 인물·펫 재생성/추가 금지, 새 영역은 배경만, 늘이기·거울 반복·블러·검정 띠·문자 추가 금지. 1은 보라색 성채, 2는 대장간, 3은 석주/사슬을 구체화했고 나머지 각 원본을 독립 편집 입력으로 사용했다. rd15는 중복 인물을 제거한 빈 배경 위에 원본 전경을 복원했다. rd5는 직접 접합 보정 요청이 도구에 거부되어 인물 없는 회색 암석·안개 배경을 별도 생성하고 원본 중앙을 192px 경계 feather로 보존했다. 결과 전경과 보정 배경의 최종 채택 SHA256·규격은 `img/lording/wide/manifest.json`을 따른다.
+
+재현 도구 `tools/check-loading-wide.mjs`는 실제 game.html 로딩 DOM의 35장×4해상도 140화면과 로비4화면, 네트워크 실패, 최신 요청, resize를 확인한다. 검수에서만 로딩 DOM을 최상단으로 유지하며 자연 플레이·Unity 검수와 구분한다. 최종 상태는 아래 최종 보정 영수증 절에 기록한다.
+
+### 최종 보정 검수·인계 영수증
+
+| 범위 | 결과 | 근거 |
+|---|---|---|
+| 기본·보정 배경 | 35장·105개, 원본35개 byte 무변경, 모든 보호 마스크 RGB 일치 | img/lording/wide/manifest.json, asset-receipt.json |
+| 실제 game.html | 네 해상도×35장 140화면. 그림 폭·높이 채움, 전경 가시 영역, 정상 블러 숨김, 투명 시작 그라데이션, 평평한 상단 경계0, 금빛1px, 텍스트 폭 넘침0 | verified/receipt.json |
+| 로비·동적 처리 | 로비4화면 표시/닫기, 실패 시 원본 contain 복귀, 최신 요청·resize, pageerror0 | verified/receipt.json |
+| 실제 시각 확인 | 전체35장 보드, 70개 경계1x 스트립, 원본 동일 크기 비교, 실제 네 해상도 캡처. 4번 사각 합성·rd15 중복·rd5 접합은 수정 후 최종 비교 | review/, before/와 verified/ |
+| 코드·보호 | 관련회귀5/5, project-check105/105, guard PASS. guard가 쓴 baseline은 검사본을 외부에 보존하고 시작 원본 byte 복원 | 검수 로그 |
+| 패키지 | 공통 JS/CSS2개·105이미지 모두 웹 런타임 manifest 포함, 누락0 | packaging.json |
+| 원격·Unity | 경로 지정 커밋 뒤 최신 main 정상 통합·비강제 push와 ref 대조. Unity 추가 계약은 기존 ui-ultrawide-brief.md 끝에 전달하며 실제 Unity 실행은 별도 | remote-receipt.json, REPORT.md |
+
+VISUAL VERDICT: PASS — 위 네 해상도의 최종 로딩 화면·전체35장 배경 채움·전경 구도·하단 오버레이 범위. 생성 결과의 사각 패널 합성/인물 중복/수직 접합 실패를 그대로 채택하지 않았다. 웹 전체 게임·자연 플레이·Unity·NW.js 실행·Steam/웹 배포 판정은 포함하지 않는다. 최신 main 통합 이후 최종 확인은 REPORT.md와 별도 영수증을 따른다.
+
+## 최초안 이력 — 아래 표시 계약과 PASS는 최종 보정 이전 기록
+
+아래 3장 생성·32장 폴백·하단 별도 영역·은빛3px 선은 최초안 이력이며 현행 계약으로 적용하지 않는다. 현재는 위 전체35장·105파일·전체 높이·금빛1px 오버레이 계약을 따른다.
+
 ## 범위와 제작 기준
 
 사용자 브리프: I:/EXODUSER-Storage/codex-takeover/loading-ultrawide-brief.md. 담당 작업본 G:/exoduser-wt/codex-web-loading, 시작 source/origin main 513d14fb46a8ccb6679c05b512bc1c6bb4d9bfa3. tracked INDEX/WORK는 시작 시 깨끗했다. 기존 작업본·실행기·사용자 세이브는 보존했다.
@@ -107,3 +155,12 @@ VISUAL VERDICT: PASS — 지정 해상도에서 로딩 원본 구도·생성3장
 보완 검사 중 Node 도구 세션의30초 제한으로 격리 서버가 종료된 연결 거부는 supplement-v2.log에 보존했다. 동일 포트의 자기 QA 서버만 다시 준비해 HTTP200 확인 후 supplement-v3에서 최종 보완 검사를 완료했다. 사용자 서버/실행기는 변경하지 않았다.
 
 원격 통합 전 expected origin/main=9f5db2ac6223cd1696870865057f37721922ecae. 자기 변경을 먼저 경로 지정 커밋하고 최신 main을 정상 merge한 뒤, 검수·원격 ref 대조를 진행한다. 최종 SHA와 반영 결과는 외부 원격 영수증 remote-receipt.json 및 작업 완료 보고로 연결한다.
+
+## 순환 제외 (2026-10-31 사용자 폐기)
+| 번호 | 파일 | 사유 | 처리 |
+|---|---|---|---|
+| 13 | `img/lording/13.png` | 옛 텍스트 로고(EXODUSER · HELL LORD)가 그림에 박혀 있어 현행 로고와 다름 | 로딩 순환·프리로드에서 제외(파일은 보존) |
+| 14 | `img/lording/14.png` | 같음. 사용자가 32:9 로딩 화면에서 직접 지적("저 이미지는 버려라") | 같음 |
+| 17 | `img/lording/17.png` | 같음(붉은 큰 글자 로고) | 같음 |
+
+적용 위치: `index.html` 첫 로딩(`_ok` 목록)·`_preloadLoadingImgs`, `game.html` `_STAGE_TRANSITION_RD`. 순환 수는 19장에서 16장이 됐다. wide 확장판 파일은 그대로 두며, 참조만 끊는다.

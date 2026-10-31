@@ -12,11 +12,12 @@ const images=Array.from({length:19},(_,i)=>(i+1)+'.png').concat(['rd1.png','rd2.
 const browser=await chromium.launch({headless:true});
 const context=await browser.newContext({deviceScaleFactor:1});
 const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
-await page.route('**/*',route=>{const r=route.request();return new URL(r.url()).origin===new URL(base).origin&&r.method()==='GET'?route.continue():route.abort();});
+await page.route('**/*',route=>{const r=route.request(),url=new URL(r.url());return r.method()==='GET'&&(url.origin===new URL(base).origin||['fonts.googleapis.com','fonts.gstatic.com'].includes(url.hostname))?route.continue():route.abort();});
 const records=[];
 try{
  await page.goto(base+'/game.html',{waitUntil:'domcontentloaded'});
  await page.waitForFunction(()=>typeof showBootLoading==='function');
+ await page.evaluate(()=>document.fonts.ready);
  // Finish the asset loader before explicitly holding each real loading screen for visual inspection.
  await page.waitForFunction(()=>document.getElementById('stLoadBar').style.width==='100%' || typeof _cutsceneState!=='undefined' && _cutsceneState==='INTRO_CUTSCENE',{},{timeout:90000}).catch(()=>{});
  for(const [width,height] of (process.env.LOADING_QA_CHECKS_ONLY ? [] : sizes)){
@@ -33,15 +34,21 @@ try{
    await page.locator('#stRndImg').evaluate(i=>i.decode());
    const geometry=await page.evaluate(()=>{
     const i=document.getElementById('stRndImg'),a=i.parentElement.getBoundingClientRect(),s=document.getElementById('stLoadStatus').getBoundingClientRect();
-    const scale=Math.min(a.width/i.naturalWidth,a.height/i.naturalHeight);
+    const scale=Math.max(a.width/i.naturalWidth,a.height/i.naturalHeight);
     const rect={x:a.x+(a.width-i.naturalWidth*scale)/2,y:a.y+(a.height-i.naturalHeight*scale)/2,w:i.naturalWidth*scale,h:i.naturalHeight*scale};
     const text=document.getElementById('stNextName');
     const front=document.elementFromPoint(innerWidth/2,Math.min(a.bottom-1,innerHeight/2));
     const visible=document.getElementById('stageTransition').contains(front);
-    return {visible,fit:getComputedStyle(i).objectFit,rect,artBottom:a.bottom,statusTop:s.top,textOverflow:text.scrollWidth>text.clientWidth,src:i.getAttribute('src')};
+    const status=getComputedStyle(document.getElementById('stLoadStatus'));
+    const backdrop=getComputedStyle(i.parentElement.querySelector('.loading-backdrop'));
+    const safeWidth=i.src.includes('-16.webp')?1920:2440;
+    const sourceBounds={x:innerWidth/2-safeWidth*scale/2,y:innerHeight/2-1080*scale/2,w:safeWidth*scale,h:1080*scale};
+    return {visible,fit:getComputedStyle(i).objectFit,rect,sourceBounds,artTop:a.top,artBottom:a.bottom,statusTop:s.top,statusBackground:status.backgroundImage,statusBorder:status.borderTopWidth,backdrop:backdrop.visibility,barHeight:getComputedStyle(document.getElementById('stLoadTrack')).height,titleFont:getComputedStyle(text).fontFamily,textOverflow:text.scrollWidth>text.clientWidth,src:i.getAttribute('src')};
    });
-   assert.equal(geometry.visible,true);assert.equal(geometry.fit,'contain');assert.ok(geometry.artBottom<=geometry.statusTop+.01);assert.equal(geometry.textOverflow,false);
-   assert.ok(geometry.rect.x>=-.01&&geometry.rect.y>=-.01&&geometry.rect.x+geometry.rect.w<=width+.01&&geometry.rect.y+geometry.rect.h<=height+.01);
+   assert.equal(geometry.visible,true);assert.equal(geometry.fit,'cover');assert.equal(geometry.artTop,0);assert.equal(geometry.artBottom,height);assert.ok(geometry.statusTop>height*.65);assert.equal(geometry.textOverflow,false);
+   assert.equal(geometry.backdrop,'hidden');assert.equal(geometry.statusBorder,'0px');assert.equal(geometry.barHeight,'1px');assert.match(geometry.statusBackground,/rgba\(5, 5, 6, 0\)/);
+   assert.ok(geometry.rect.x<=.01&&geometry.rect.y<=.01&&geometry.rect.x+geometry.rect.w>=width-.01&&geometry.rect.y+geometry.rect.h>=height-.01);
+   assert.ok(geometry.sourceBounds.x>=-.01&&geometry.sourceBounds.y>=-.01&&geometry.sourceBounds.x+geometry.sourceBounds.w<=width+.01&&geometry.sourceBounds.y+geometry.sourceBounds.h<=height+.01);
    const file=name.replace('.','-')+'-'+width+'x'+height+'.png';await page.screenshot({path:output+'/'+file});
    records.push({name,width,height,file,...geometry});
   }
@@ -54,13 +61,15 @@ try{
  await page.evaluate(()=>LoadingArt.set(document.getElementById('stRndImg'),'img/lording/2.png?fallback=1'));
  await page.waitForFunction(()=>{const i=document.getElementById('stRndImg');return i.getAttribute('src')==='img/lording/2.png?fallback=1'&&i.complete;});
  await failed;
+ assert.equal(await page.locator('#stRndImg').evaluate(i=>i.parentElement.classList.contains('loading-expanded')),false);
+ assert.equal(await page.locator('#stRndImg').evaluate(i=>getComputedStyle(i).objectFit),'contain');
  assert.equal(await page.evaluate(()=>document.getElementById('stageTransition').contains(document.elementFromPoint(innerWidth/2,innerHeight/2))),true);
  await page.screenshot({path:output+'/fallback-3840x1080.png'});
  await page.unroute('**/wide/**');
  await page.evaluate(()=>{LoadingArt.set(document.getElementById('stRndImg'),'img/lording/1.png');LoadingArt.set(document.getElementById('stRndImg'),'img/lording/3.png');});
  await page.waitForFunction(()=>document.getElementById('stRndImg').src.includes('/3-32.webp'));
  // Resize must reselect without a second set() call.
- for(const [width,height,part]of [[1920,1080,'3.png'],[2560,1080,'3-21.webp'],[3840,1080,'3-32.webp'],[2560,1600,'3.png']]){
+ for(const [width,height,part]of [[1920,1080,'3-16.webp'],[2560,1080,'3-21.webp'],[3840,1080,'3-32.webp'],[2560,1600,'3-16.webp']]){
   await page.setViewportSize({width,height});
   await page.waitForFunction(part=>{const i=document.getElementById('stRndImg');return i.src.includes(part)&&i.complete;},part);
  }

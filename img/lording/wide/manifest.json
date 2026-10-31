@@ -1,0 +1,1307 @@
+{
+  "version": "20261031-final35",
+  "sourceBase": "baabceeae25cccb35f149223d9d540bc0499063b",
+  "provider": "builtin-image-gen",
+  "externalPaidServices": 0,
+  "sourceImages": 35,
+  "variants": 105,
+  "format": "lossless WebP",
+  "sourceForeground": "Original foreground restored by masks; opaque protected pixels verified against resampled source RGB.",
+  "images": [
+    {
+      "id": "1",
+      "source": "img/lording/1.png",
+      "sourceSHA256": "0dd895bf1a54682c900ae3cad6da6507c02f48ae4fdce44af2c59280020c5ccd",
+      "variants": [
+        {
+          "file": "img/lording/wide/1-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2365702,
+          "SHA256": "ca1702650f1ee1e9573ba802ded4c985fc397406b81f460beb4061a013284e11",
+          "protectedPixels": 1581887,
+          "protectedRGB": "7bed67af06a0c469acdfecd2069ff8c73d639a5d66c582f5363ae540134266a5",
+          "sourceRGB": "7bed67af06a0c469acdfecd2069ff8c73d639a5d66c582f5363ae540134266a5"
+        },
+        {
+          "file": "img/lording/wide/1-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2941332,
+          "SHA256": "4862da0d9f1bfdb9ecce770a374a071d5d8c26fb3348e6060fb1f69bb460e7cd",
+          "protectedPixels": 1581887,
+          "protectedRGB": "7bed67af06a0c469acdfecd2069ff8c73d639a5d66c582f5363ae540134266a5",
+          "sourceRGB": "7bed67af06a0c469acdfecd2069ff8c73d639a5d66c582f5363ae540134266a5"
+        },
+        {
+          "file": "img/lording/wide/1-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 4240890,
+          "SHA256": "6fce3e10e661776163c7656674b6db524621e3a00ac0b4fd4298857efa418248",
+          "protectedPixels": 1581887,
+          "protectedRGB": "7bed67af06a0c469acdfecd2069ff8c73d639a5d66c582f5363ae540134266a5",
+          "sourceRGB": "7bed67af06a0c469acdfecd2069ff8c73d639a5d66c582f5363ae540134266a5"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "source": "img/lording/2.png",
+      "sourceSHA256": "df65163c82ca0100174177df71701861d38e4ac102f502fb3eb604de44d8a60f",
+      "variants": [
+        {
+          "file": "img/lording/wide/2-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 1981278,
+          "SHA256": "d828df6bf13d8315861783c11a05da6711eb1fbf03edd5e8463f30dbafc26f9e",
+          "protectedPixels": 1172026,
+          "protectedRGB": "53530ae1e43188dcfc2be5ed7a1eedded5b87771c1dd88a690a3c17fd20fb282",
+          "sourceRGB": "53530ae1e43188dcfc2be5ed7a1eedded5b87771c1dd88a690a3c17fd20fb282"
+        },
+        {
+          "file": "img/lording/wide/2-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2414826,
+          "SHA256": "ce7522e7379d0881c47d3af55b083103833cdb3af8f6207b172443c37f32bc75",
+          "protectedPixels": 1172026,
+          "protectedRGB": "53530ae1e43188dcfc2be5ed7a1eedded5b87771c1dd88a690a3c17fd20fb282",
+          "sourceRGB": "53530ae1e43188dcfc2be5ed7a1eedded5b87771c1dd88a690a3c17fd20fb282"
+        },
+        {
+          "file": "img/lording/wide/2-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 3526476,
+          "SHA256": "dac49191709cca8f4494192414b1a65e47871a9618130ada41e250b3cf3031ed",
+          "protectedPixels": 1172026,
+          "protectedRGB": "53530ae1e43188dcfc2be5ed7a1eedded5b87771c1dd88a690a3c17fd20fb282",
+          "sourceRGB": "53530ae1e43188dcfc2be5ed7a1eedded5b87771c1dd88a690a3c17fd20fb282"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "source": "img/lording/3.png",
+      "sourceSHA256": "5ba4904f3f60b0cfd49ea65a3beaa60db281405f9c14f38fcec5b460719ebabd",
+      "variants": [
+        {
+          "file": "img/lording/wide/3-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 1529284,
+          "SHA256": "f09f1b5da2034b4c289249fe37cce854a1b2f05bca8ead0184f15b2e4aaa395e",
+          "protectedPixels": 1187885,
+          "protectedRGB": "32245894c83191072d49915162729749ef0eafadd72f69d6f8ad74c2a072e38a",
+          "sourceRGB": "32245894c83191072d49915162729749ef0eafadd72f69d6f8ad74c2a072e38a"
+        },
+        {
+          "file": "img/lording/wide/3-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 1901868,
+          "SHA256": "fb785552875ba5009376feb60a651a4b4027955a8644ba66df04e5285e979abe",
+          "protectedPixels": 1187885,
+          "protectedRGB": "32245894c83191072d49915162729749ef0eafadd72f69d6f8ad74c2a072e38a",
+          "sourceRGB": "32245894c83191072d49915162729749ef0eafadd72f69d6f8ad74c2a072e38a"
+        },
+        {
+          "file": "img/lording/wide/3-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 3008602,
+          "SHA256": "0161040cf7e41724d15cffc97445cd3725df1eadef52b20d8e3080b787ce886a",
+          "protectedPixels": 1187885,
+          "protectedRGB": "32245894c83191072d49915162729749ef0eafadd72f69d6f8ad74c2a072e38a",
+          "sourceRGB": "32245894c83191072d49915162729749ef0eafadd72f69d6f8ad74c2a072e38a"
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "source": "img/lording/4.png",
+      "sourceSHA256": "0e1e2f4657c83667b365214bc50802254ef1cbf7089862226b6d024ac5082e21",
+      "variants": [
+        {
+          "file": "img/lording/wide/4-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2057402,
+          "SHA256": "5b0ff60490d9095524afcbf11be0f4ced880301160af02fea3d1f8456a2e8232",
+          "protectedPixels": 117332,
+          "protectedRGB": "72326fb29a4be1b6e32053a56555bc294f099158427126acac646ccc95e6d764",
+          "sourceRGB": "72326fb29a4be1b6e32053a56555bc294f099158427126acac646ccc95e6d764"
+        },
+        {
+          "file": "img/lording/wide/4-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2394394,
+          "SHA256": "bafb304fe5934805a769512b47ef78c9ba724825d05d64682ba92f2bafaeeabb",
+          "protectedPixels": 180573,
+          "protectedRGB": "ba1b333daaa72c0217322551c907dd6aa73f7af6b138404f13fa813041416cbe",
+          "sourceRGB": "ba1b333daaa72c0217322551c907dd6aa73f7af6b138404f13fa813041416cbe"
+        },
+        {
+          "file": "img/lording/wide/4-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 3706066,
+          "SHA256": "9ba77672b12c09ba238866b257785d6f19ec40e8cc5390e66e00ec1aabf238e5",
+          "protectedPixels": 180573,
+          "protectedRGB": "ba1b333daaa72c0217322551c907dd6aa73f7af6b138404f13fa813041416cbe",
+          "sourceRGB": "ba1b333daaa72c0217322551c907dd6aa73f7af6b138404f13fa813041416cbe"
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "source": "img/lording/5.png",
+      "sourceSHA256": "bee7c885cdecbf779e17c44e60c2be794e50fe1fc460165fd8ceafd19867e049",
+      "variants": [
+        {
+          "file": "img/lording/wide/5-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2347980,
+          "SHA256": "b304a588e43bf56daf082c2d645c1909990d8cabd91588c62f72020d1e8d0233",
+          "protectedPixels": 11639,
+          "protectedRGB": "f8138352238060a230e62e892f43baf02f1112322fa90f4eaeeecb3eda7d178f",
+          "sourceRGB": "f8138352238060a230e62e892f43baf02f1112322fa90f4eaeeecb3eda7d178f"
+        },
+        {
+          "file": "img/lording/wide/5-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2719988,
+          "SHA256": "b157ac30846b207290e540f1a5ee2ebe7fe014bc2c2c9e17326cc3ab7ea29230",
+          "protectedPixels": 14142,
+          "protectedRGB": "e4400b140bed3415c0c44b3d36c8710606ca368bf2d2b29bb8593378d04df0bd",
+          "sourceRGB": "e4400b140bed3415c0c44b3d36c8710606ca368bf2d2b29bb8593378d04df0bd"
+        },
+        {
+          "file": "img/lording/wide/5-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 3961990,
+          "SHA256": "675b8843c76e7072cfba69e99a5b7987580bead09189c958706161ad7b67a1cc",
+          "protectedPixels": 14142,
+          "protectedRGB": "e4400b140bed3415c0c44b3d36c8710606ca368bf2d2b29bb8593378d04df0bd",
+          "sourceRGB": "e4400b140bed3415c0c44b3d36c8710606ca368bf2d2b29bb8593378d04df0bd"
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "source": "img/lording/6.png",
+      "sourceSHA256": "139b9d40e2efcbac42746d038985cb03e8809b9b1ff130b3f4df1b653f2f1dfb",
+      "variants": [
+        {
+          "file": "img/lording/wide/6-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2167906,
+          "SHA256": "c6c4b64c24cb16b542072c60f2c7dee88ea43385d7115bfcbfb89da22da0ff1a",
+          "protectedPixels": 478219,
+          "protectedRGB": "44229b5fac6166bba55e93238bab68bc19f672b601653170a9b47dff487b4275",
+          "sourceRGB": "44229b5fac6166bba55e93238bab68bc19f672b601653170a9b47dff487b4275"
+        },
+        {
+          "file": "img/lording/wide/6-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2558228,
+          "SHA256": "40849a5e42b6c43cbfc266d5b289258b554041d2d7f7cfb4259d95c4c95a76cc",
+          "protectedPixels": 515911,
+          "protectedRGB": "c52a4e78f5979a442a374b8e2958d53d73229497437dec512e32c16d6f9202f9",
+          "sourceRGB": "c52a4e78f5979a442a374b8e2958d53d73229497437dec512e32c16d6f9202f9"
+        },
+        {
+          "file": "img/lording/wide/6-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 3811836,
+          "SHA256": "a051aff498a2ddaf72155a20d6d3480a04861e426a54d57b38bc53b8f477d4bf",
+          "protectedPixels": 515911,
+          "protectedRGB": "c52a4e78f5979a442a374b8e2958d53d73229497437dec512e32c16d6f9202f9",
+          "sourceRGB": "c52a4e78f5979a442a374b8e2958d53d73229497437dec512e32c16d6f9202f9"
+        }
+      ]
+    },
+    {
+      "id": "7",
+      "source": "img/lording/7.png",
+      "sourceSHA256": "02ca067293d8da66e639d47a41c3018266914e0c87a76e373043eb58c371d67f",
+      "variants": [
+        {
+          "file": "img/lording/wide/7-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2315120,
+          "SHA256": "9f8a9e5f28a3b5098fd096e77d8e0bed3b85d0617af20ac75cc0bbd5419e52ed",
+          "protectedPixels": 320732,
+          "protectedRGB": "b09c1dac458bc4c036d3e59b6bb63996762aabdc78ceb3aa95d5c8463b37f39d",
+          "sourceRGB": "b09c1dac458bc4c036d3e59b6bb63996762aabdc78ceb3aa95d5c8463b37f39d"
+        },
+        {
+          "file": "img/lording/wide/7-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2806490,
+          "SHA256": "058e12c1160773fe09a0f54808a02e57cd229a6956dd090653137002833a3a47",
+          "protectedPixels": 312122,
+          "protectedRGB": "70ff7f282e74366ebac5663a7d0e5156b4bd3d38f29f46862dc5432f0c340375",
+          "sourceRGB": "70ff7f282e74366ebac5663a7d0e5156b4bd3d38f29f46862dc5432f0c340375"
+        },
+        {
+          "file": "img/lording/wide/7-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 4084198,
+          "SHA256": "14ba0704bfdf916e34228e8b9918b009f865aa098a5c62101ebabb8f33600b23",
+          "protectedPixels": 312122,
+          "protectedRGB": "70ff7f282e74366ebac5663a7d0e5156b4bd3d38f29f46862dc5432f0c340375",
+          "sourceRGB": "70ff7f282e74366ebac5663a7d0e5156b4bd3d38f29f46862dc5432f0c340375"
+        }
+      ]
+    },
+    {
+      "id": "8",
+      "source": "img/lording/8.png",
+      "sourceSHA256": "3ee1864f2f340661ac617aed0d736db96f4880d184b0a1ee8c40a0c31b2cfac2",
+      "variants": [
+        {
+          "file": "img/lording/wide/8-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2223626,
+          "SHA256": "1fdbf959f71b367c1be1c89758ea36218e56ac2d7f368d8f5af7ad56de1aab0f",
+          "protectedPixels": 48371,
+          "protectedRGB": "f64823b4eedd16bd69d2b9c0d2f036cd32ed29da095f686c0ac065c45a9887ef",
+          "sourceRGB": "f64823b4eedd16bd69d2b9c0d2f036cd32ed29da095f686c0ac065c45a9887ef"
+        },
+        {
+          "file": "img/lording/wide/8-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2654650,
+          "SHA256": "ea87332f4b1d6c7159686baa68fc9ecc4a26e6f0b8ea868d57abe37054724cfa",
+          "protectedPixels": 49312,
+          "protectedRGB": "2e3999fcd7312d3fc64462a63474cf4d32bf9a03b2f4ff2a09bec2901d23b6b2",
+          "sourceRGB": "2e3999fcd7312d3fc64462a63474cf4d32bf9a03b2f4ff2a09bec2901d23b6b2"
+        },
+        {
+          "file": "img/lording/wide/8-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 4043792,
+          "SHA256": "d95b5c8d65f0ae382352451c74d917ecd6a86644bb777b6d107acd90b3a88cbe",
+          "protectedPixels": 49312,
+          "protectedRGB": "2e3999fcd7312d3fc64462a63474cf4d32bf9a03b2f4ff2a09bec2901d23b6b2",
+          "sourceRGB": "2e3999fcd7312d3fc64462a63474cf4d32bf9a03b2f4ff2a09bec2901d23b6b2"
+        }
+      ]
+    },
+    {
+      "id": "9",
+      "source": "img/lording/9.png",
+      "sourceSHA256": "0550008e1324868c27d3d721509e8f5be09c0ae68270e298f8e565273662f897",
+      "variants": [
+        {
+          "file": "img/lording/wide/9-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2232200,
+          "SHA256": "b453f336b8135ad67e2b3fec4685b702729f67cfe4ca64caa9562f7871957f56",
+          "protectedPixels": 63402,
+          "protectedRGB": "676d4b864f617753152d4288a0c2f1e615b366c1d714b2adbf840134712cb373",
+          "sourceRGB": "676d4b864f617753152d4288a0c2f1e615b366c1d714b2adbf840134712cb373"
+        },
+        {
+          "file": "img/lording/wide/9-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2627450,
+          "SHA256": "8c68875efe30ee2b2a8926ec96eef1076bc1335d36ba052e7ea06ee82839d8bf",
+          "protectedPixels": 72333,
+          "protectedRGB": "d980391fb8a1112e260e6e040d5d803c6a770959f829e71d9699f1a86a1009c9",
+          "sourceRGB": "d980391fb8a1112e260e6e040d5d803c6a770959f829e71d9699f1a86a1009c9"
+        },
+        {
+          "file": "img/lording/wide/9-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 3961810,
+          "SHA256": "a4c1732f351887c337d48dba442a89cba4ea318d416301b2b4c9ae45d1edca6c",
+          "protectedPixels": 72333,
+          "protectedRGB": "d980391fb8a1112e260e6e040d5d803c6a770959f829e71d9699f1a86a1009c9",
+          "sourceRGB": "d980391fb8a1112e260e6e040d5d803c6a770959f829e71d9699f1a86a1009c9"
+        }
+      ]
+    },
+    {
+      "id": "10",
+      "source": "img/lording/10.png",
+      "sourceSHA256": "d601fd8c522307b9db890334b971f77d9ce199ed9cc2986ac0df31a3328cf727",
+      "variants": [
+        {
+          "file": "img/lording/wide/10-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2137978,
+          "SHA256": "c8b899efed713d54ab246d3abd468bab3a3a50e1fcf6570eadfa7d0dfcfb47ff",
+          "protectedPixels": 384459,
+          "protectedRGB": "4031514e76b7f7288004b8b475841ed3c542acdb5d08941a269ec92dee569670",
+          "sourceRGB": "4031514e76b7f7288004b8b475841ed3c542acdb5d08941a269ec92dee569670"
+        },
+        {
+          "file": "img/lording/wide/10-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2512464,
+          "SHA256": "b679bf656ec3687af3a5793a83f95f8555de53ebb3e8a4f05ded920c53bdfa7f",
+          "protectedPixels": 426927,
+          "protectedRGB": "a8f52d817f8607db7c863e7b59bc4d14213288ebd5c5ca6bc8a5ec5da0c6df28",
+          "sourceRGB": "a8f52d817f8607db7c863e7b59bc4d14213288ebd5c5ca6bc8a5ec5da0c6df28"
+        },
+        {
+          "file": "img/lording/wide/10-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 3706016,
+          "SHA256": "3014003c45205b04cd491f199da66dc3dec098d213c400af2ee6b1df5f35701b",
+          "protectedPixels": 426927,
+          "protectedRGB": "a8f52d817f8607db7c863e7b59bc4d14213288ebd5c5ca6bc8a5ec5da0c6df28",
+          "sourceRGB": "a8f52d817f8607db7c863e7b59bc4d14213288ebd5c5ca6bc8a5ec5da0c6df28"
+        }
+      ]
+    },
+    {
+      "id": "11",
+      "source": "img/lording/11.png",
+      "sourceSHA256": "ebcc9bb2c36420310a2b36d48aa1b674fa4bd1272c70ed4bbd606332f0c8a182",
+      "variants": [
+        {
+          "file": "img/lording/wide/11-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 1885914,
+          "SHA256": "2e80de4594000f7d74f4406a0537e14e8c833e9269068cabf867d9c59ebe8391",
+          "protectedPixels": 460611,
+          "protectedRGB": "2bd2bf1452f35e7de184f2a9dce7fa6f699391e6ec0c7cfa7e9b361f67794aaa",
+          "sourceRGB": "2bd2bf1452f35e7de184f2a9dce7fa6f699391e6ec0c7cfa7e9b361f67794aaa"
+        },
+        {
+          "file": "img/lording/wide/11-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2287004,
+          "SHA256": "0d591e0d18271d659c57ccc9aa1cbbdf4aaa4dbbd8ad2fc067a04b481a693df5",
+          "protectedPixels": 460611,
+          "protectedRGB": "2bd2bf1452f35e7de184f2a9dce7fa6f699391e6ec0c7cfa7e9b361f67794aaa",
+          "sourceRGB": "2bd2bf1452f35e7de184f2a9dce7fa6f699391e6ec0c7cfa7e9b361f67794aaa"
+        },
+        {
+          "file": "img/lording/wide/11-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 3591124,
+          "SHA256": "22fbc4fcb94ce92f7aec0ef7b7f9b2606c658afcf86f41bcbf776df46c81694f",
+          "protectedPixels": 460611,
+          "protectedRGB": "2bd2bf1452f35e7de184f2a9dce7fa6f699391e6ec0c7cfa7e9b361f67794aaa",
+          "sourceRGB": "2bd2bf1452f35e7de184f2a9dce7fa6f699391e6ec0c7cfa7e9b361f67794aaa"
+        }
+      ]
+    },
+    {
+      "id": "12",
+      "source": "img/lording/12.png",
+      "sourceSHA256": "942d60a7d6de2c95d3064bc3cde36cefbf0320da2d5a2b12bccdcb67433e530d",
+      "variants": [
+        {
+          "file": "img/lording/wide/12-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2327214,
+          "SHA256": "c352f5f9f8836358b5cb09dbb8ee4ceb893b3ae741138fbc71fc58ab32394452",
+          "protectedPixels": 171834,
+          "protectedRGB": "23cb4c4fd3452b899c69faf1a9f0399da5634f90d26a5c2aa9cf9f38d857ef06",
+          "sourceRGB": "23cb4c4fd3452b899c69faf1a9f0399da5634f90d26a5c2aa9cf9f38d857ef06"
+        },
+        {
+          "file": "img/lording/wide/12-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2693008,
+          "SHA256": "28bb134e86049f1db8ff897ae5071fa71021677f6d843bff24d82c937f8f29e4",
+          "protectedPixels": 185527,
+          "protectedRGB": "6a697ba850694c5629ce46a01867c2f6d88b3d3505f32eb90a2dae5eb0b62d04",
+          "sourceRGB": "6a697ba850694c5629ce46a01867c2f6d88b3d3505f32eb90a2dae5eb0b62d04"
+        },
+        {
+          "file": "img/lording/wide/12-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 3917168,
+          "SHA256": "c6fc92028b80ac80704736b3585340e1b236a8636b4e20ae2b9a658380e622b6",
+          "protectedPixels": 185527,
+          "protectedRGB": "6a697ba850694c5629ce46a01867c2f6d88b3d3505f32eb90a2dae5eb0b62d04",
+          "sourceRGB": "6a697ba850694c5629ce46a01867c2f6d88b3d3505f32eb90a2dae5eb0b62d04"
+        }
+      ]
+    },
+    {
+      "id": "13",
+      "source": "img/lording/13.png",
+      "sourceSHA256": "2dae6de6db0d013af86e7031cf3e3e3fd3ff650e10a41967acffb25e619b41ea",
+      "variants": [
+        {
+          "file": "img/lording/wide/13-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 1976086,
+          "SHA256": "143ed6e3f5b793d3fb9d24fe5e0c292e283a42528f8397e1ac159101c87a03c2",
+          "protectedPixels": 370393,
+          "protectedRGB": "38992c570d1fd03448a30c267713161c430425bb032e1943dafcee06357edc22",
+          "sourceRGB": "38992c570d1fd03448a30c267713161c430425bb032e1943dafcee06357edc22"
+        },
+        {
+          "file": "img/lording/wide/13-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2417728,
+          "SHA256": "14319529b5b6f158097e8020d8efb29a90cb7f42f001929992abb40c999d067d",
+          "protectedPixels": 370393,
+          "protectedRGB": "38992c570d1fd03448a30c267713161c430425bb032e1943dafcee06357edc22",
+          "sourceRGB": "38992c570d1fd03448a30c267713161c430425bb032e1943dafcee06357edc22"
+        },
+        {
+          "file": "img/lording/wide/13-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 3626736,
+          "SHA256": "ccd3cd3f2966d023cff8cd2f11fcb79ee0b7ad23c13b78fad619d3c555baf528",
+          "protectedPixels": 370393,
+          "protectedRGB": "38992c570d1fd03448a30c267713161c430425bb032e1943dafcee06357edc22",
+          "sourceRGB": "38992c570d1fd03448a30c267713161c430425bb032e1943dafcee06357edc22"
+        }
+      ]
+    },
+    {
+      "id": "14",
+      "source": "img/lording/14.png",
+      "sourceSHA256": "e59dfa85945bb019dc5421efe6ddf938cb6a08b32578dc43ff45bb8a4e758103",
+      "variants": [
+        {
+          "file": "img/lording/wide/14-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2289508,
+          "SHA256": "34071384078c953185b875aa9c224fe99b29c5e23d84ea75cc14fc666ab1e40e",
+          "protectedPixels": 306379,
+          "protectedRGB": "47441470a133f54f05d88d534e1b48d07458a2a5300bbeecbd10ad5b2ae374f4",
+          "sourceRGB": "47441470a133f54f05d88d534e1b48d07458a2a5300bbeecbd10ad5b2ae374f4"
+        },
+        {
+          "file": "img/lording/wide/14-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2525878,
+          "SHA256": "69ac1aa79cc8f5eb1d66b73ea54e6ed55a28f74c33dd8b83c0341841e08d76b9",
+          "protectedPixels": 481515,
+          "protectedRGB": "16ecceb33eac351f8e64bb85ff1e9136ff52bb5765768a9baa65b134a140bace",
+          "sourceRGB": "16ecceb33eac351f8e64bb85ff1e9136ff52bb5765768a9baa65b134a140bace"
+        },
+        {
+          "file": "img/lording/wide/14-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 3997060,
+          "SHA256": "308c2f0accadbd5a131e5a5c61b6c943f0e4e28b243039ed62b97213400b4740",
+          "protectedPixels": 481515,
+          "protectedRGB": "16ecceb33eac351f8e64bb85ff1e9136ff52bb5765768a9baa65b134a140bace",
+          "sourceRGB": "16ecceb33eac351f8e64bb85ff1e9136ff52bb5765768a9baa65b134a140bace"
+        }
+      ]
+    },
+    {
+      "id": "15",
+      "source": "img/lording/15.png",
+      "sourceSHA256": "ee9a79eaea57926bc65ca153a799cc604ffbcfd31bebc30ca4800aec18513602",
+      "variants": [
+        {
+          "file": "img/lording/wide/15-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2318890,
+          "SHA256": "e5ea629ced6c75cc8102a3917eac7f54eb63be92287ee419593bdead4084f673",
+          "protectedPixels": 264694,
+          "protectedRGB": "165f9f9c6c26567871dcf9f2e2d3bd3e9d3b70aefcf0be1a9256d874a156f687",
+          "sourceRGB": "165f9f9c6c26567871dcf9f2e2d3bd3e9d3b70aefcf0be1a9256d874a156f687"
+        },
+        {
+          "file": "img/lording/wide/15-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2801414,
+          "SHA256": "fb9cea9dc1cb78268c9b4f01a73ecde4f88964bd654ebeca56e9d74df914d787",
+          "protectedPixels": 272798,
+          "protectedRGB": "49ae0bdaf68e1c945600a0c552f4c4c0ca3a6f96cc48b1452e65d7e1670135bf",
+          "sourceRGB": "49ae0bdaf68e1c945600a0c552f4c4c0ca3a6f96cc48b1452e65d7e1670135bf"
+        },
+        {
+          "file": "img/lording/wide/15-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 4191356,
+          "SHA256": "3fa40e34b413f364613c218e38946db3420780d1dae3a8567a84c67fe21d68a7",
+          "protectedPixels": 272798,
+          "protectedRGB": "49ae0bdaf68e1c945600a0c552f4c4c0ca3a6f96cc48b1452e65d7e1670135bf",
+          "sourceRGB": "49ae0bdaf68e1c945600a0c552f4c4c0ca3a6f96cc48b1452e65d7e1670135bf"
+        }
+      ]
+    },
+    {
+      "id": "16",
+      "source": "img/lording/16.png",
+      "sourceSHA256": "99474b62a691b618928fc43860bece471fdce52d1dc1af4c420c43f0d21bd567",
+      "variants": [
+        {
+          "file": "img/lording/wide/16-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 1992304,
+          "SHA256": "6c6212b4d18946803542d6ed20108d141024cfff9a73b7b6f8380ef884e4a502",
+          "protectedPixels": 112566,
+          "protectedRGB": "ab3beb325da52ade3ab150a0d6f70c75abf9fe86e40a64c3e781fb2b74d2a065",
+          "sourceRGB": "ab3beb325da52ade3ab150a0d6f70c75abf9fe86e40a64c3e781fb2b74d2a065"
+        },
+        {
+          "file": "img/lording/wide/16-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2458538,
+          "SHA256": "312bbdfc246b3c79871ad35a2487bcbfe2635e3ef0590811d496251ca9b79218",
+          "protectedPixels": 118536,
+          "protectedRGB": "825b54d3ec7e5798ce2ec3bb83dc1f5b5d1607703fff825574aa4c376c9548a9",
+          "sourceRGB": "825b54d3ec7e5798ce2ec3bb83dc1f5b5d1607703fff825574aa4c376c9548a9"
+        },
+        {
+          "file": "img/lording/wide/16-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 3692626,
+          "SHA256": "2a90fcecfd0957b0175543f7d32ff455f92e9561fbc709e2ac549322b6c5936e",
+          "protectedPixels": 118536,
+          "protectedRGB": "825b54d3ec7e5798ce2ec3bb83dc1f5b5d1607703fff825574aa4c376c9548a9",
+          "sourceRGB": "825b54d3ec7e5798ce2ec3bb83dc1f5b5d1607703fff825574aa4c376c9548a9"
+        }
+      ]
+    },
+    {
+      "id": "17",
+      "source": "img/lording/17.png",
+      "sourceSHA256": "49390b06531e5a796376a83e3440c34438cd54286204cfde2df8e31dad7ded1b",
+      "variants": [
+        {
+          "file": "img/lording/wide/17-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2267578,
+          "SHA256": "58c39a945932e96765e0a6c50c6aa342d49748cf3a48caad65645cb39739f86e",
+          "protectedPixels": 578930,
+          "protectedRGB": "3b9635c319e0b37dd0aedc21f94017ed86d48ef8207e5c8d8f8f570b60ecb37c",
+          "sourceRGB": "3b9635c319e0b37dd0aedc21f94017ed86d48ef8207e5c8d8f8f570b60ecb37c"
+        },
+        {
+          "file": "img/lording/wide/17-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2729016,
+          "SHA256": "5ffa090df4b2056329bbdccf2b0e26a32b3da2250151df06cc8345e5fa4c3da3",
+          "protectedPixels": 578930,
+          "protectedRGB": "3b9635c319e0b37dd0aedc21f94017ed86d48ef8207e5c8d8f8f570b60ecb37c",
+          "sourceRGB": "3b9635c319e0b37dd0aedc21f94017ed86d48ef8207e5c8d8f8f570b60ecb37c"
+        },
+        {
+          "file": "img/lording/wide/17-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 3858204,
+          "SHA256": "18ad0655c3cda9cc1c2fcd22890f468c4bff4e0a23934cbadd79d3204c8aeb99",
+          "protectedPixels": 578930,
+          "protectedRGB": "3b9635c319e0b37dd0aedc21f94017ed86d48ef8207e5c8d8f8f570b60ecb37c",
+          "sourceRGB": "3b9635c319e0b37dd0aedc21f94017ed86d48ef8207e5c8d8f8f570b60ecb37c"
+        }
+      ]
+    },
+    {
+      "id": "18",
+      "source": "img/lording/18.png",
+      "sourceSHA256": "78a974aa7a1b02e7ed99b96b9b2b75629377f94fd3a8f8ebe10c64543e2a8b8a",
+      "variants": [
+        {
+          "file": "img/lording/wide/18-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 1864990,
+          "SHA256": "80635a251eb11463a144682952fdad7538a755425af62dc4f7c65a90a28d10a1",
+          "protectedPixels": 113001,
+          "protectedRGB": "8f37aaf274c9ae17fc8e019575a306640ac4df92b29058cb61729f552bdcd984",
+          "sourceRGB": "8f37aaf274c9ae17fc8e019575a306640ac4df92b29058cb61729f552bdcd984"
+        },
+        {
+          "file": "img/lording/wide/18-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2296028,
+          "SHA256": "c33a5c9602165d74c216459d3340b2b55b4dd87cb652f8c88ed109a5da896d42",
+          "protectedPixels": 118971,
+          "protectedRGB": "3ea07456ef231582ae6e15e4c047228c13e0e6324691480267036b427b952373",
+          "sourceRGB": "3ea07456ef231582ae6e15e4c047228c13e0e6324691480267036b427b952373"
+        },
+        {
+          "file": "img/lording/wide/18-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 3436634,
+          "SHA256": "2457b6953d67a2bae7b3d337e55fa2744b0e712da503e90bb1a900a4d7b4434b",
+          "protectedPixels": 118971,
+          "protectedRGB": "3ea07456ef231582ae6e15e4c047228c13e0e6324691480267036b427b952373",
+          "sourceRGB": "3ea07456ef231582ae6e15e4c047228c13e0e6324691480267036b427b952373"
+        }
+      ]
+    },
+    {
+      "id": "19",
+      "source": "img/lording/19.png",
+      "sourceSHA256": "d8d1dd609c99d23b50cde10d203af2cd8d3334803f5198e713565861701f60fb",
+      "variants": [
+        {
+          "file": "img/lording/wide/19-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2644410,
+          "SHA256": "c71970fac91106ccf22a81d027ec96db9154d3340ed2db6799359bf44bbde10b",
+          "protectedPixels": 889396,
+          "protectedRGB": "afbe80224441240c9eee10a7344e18ba7a27036f1dd18dce7fddcc06cd165b71",
+          "sourceRGB": "afbe80224441240c9eee10a7344e18ba7a27036f1dd18dce7fddcc06cd165b71"
+        },
+        {
+          "file": "img/lording/wide/19-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 3184264,
+          "SHA256": "8981304b3967ef918406cb106db57b0b149df4c21817af4772b4975f2b9cea48",
+          "protectedPixels": 938665,
+          "protectedRGB": "14050ea3b69c1b22b1e34b8c55d969b67a1d41206640dc28d36547a16a7f5709",
+          "sourceRGB": "14050ea3b69c1b22b1e34b8c55d969b67a1d41206640dc28d36547a16a7f5709"
+        },
+        {
+          "file": "img/lording/wide/19-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 4647526,
+          "SHA256": "08cbed4c19cc977f205016b0a0e64b40c80e1f9f94b8b052fa9054b12674ce82",
+          "protectedPixels": 938665,
+          "protectedRGB": "14050ea3b69c1b22b1e34b8c55d969b67a1d41206640dc28d36547a16a7f5709",
+          "sourceRGB": "14050ea3b69c1b22b1e34b8c55d969b67a1d41206640dc28d36547a16a7f5709"
+        }
+      ]
+    },
+    {
+      "id": "rd1",
+      "source": "img/lording/rd1.png",
+      "sourceSHA256": "3fc09ed70d8566c013eee65c55c627464493422c6756554ece897e8722791430",
+      "variants": [
+        {
+          "file": "img/lording/wide/rd1-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2524418,
+          "SHA256": "cbed3a2dc7c555ce84714792878e1bb7a651be9cc912bad0f6ec950ab131a932",
+          "protectedPixels": 809265,
+          "protectedRGB": "51d3e069b008e3952fd836c20b2016b049b6e25b79fed40315a38a3f73fe1978",
+          "sourceRGB": "51d3e069b008e3952fd836c20b2016b049b6e25b79fed40315a38a3f73fe1978"
+        },
+        {
+          "file": "img/lording/wide/rd1-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 3024216,
+          "SHA256": "02c7f117fa8192041549142aebd50077ffa8c05e7ba88ad0e022044cfe0845e3",
+          "protectedPixels": 809265,
+          "protectedRGB": "51d3e069b008e3952fd836c20b2016b049b6e25b79fed40315a38a3f73fe1978",
+          "sourceRGB": "51d3e069b008e3952fd836c20b2016b049b6e25b79fed40315a38a3f73fe1978"
+        },
+        {
+          "file": "img/lording/wide/rd1-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 4445258,
+          "SHA256": "f6916d4f4e1e4f8f4c7e161051bdd6c51580c36c5b9d5686e9ebcc1d24d78d26",
+          "protectedPixels": 809265,
+          "protectedRGB": "51d3e069b008e3952fd836c20b2016b049b6e25b79fed40315a38a3f73fe1978",
+          "sourceRGB": "51d3e069b008e3952fd836c20b2016b049b6e25b79fed40315a38a3f73fe1978"
+        }
+      ]
+    },
+    {
+      "id": "rd2",
+      "source": "img/lording/rd2.png",
+      "sourceSHA256": "9f9dde2348ddf34dbc9277889d6aedd6df9c409ee9ed61fbf6f2056495d355eb",
+      "variants": [
+        {
+          "file": "img/lording/wide/rd2-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2217040,
+          "SHA256": "4af79c5ae89f73c59f26c37a23e4c34f1395a0a71693f2264218c68c9bf7ed04",
+          "protectedPixels": 340807,
+          "protectedRGB": "d0dfa722dbdf5f2ab45a109ae4b701dfecc74d8f24a91ded1af88641fdc02d39",
+          "sourceRGB": "d0dfa722dbdf5f2ab45a109ae4b701dfecc74d8f24a91ded1af88641fdc02d39"
+        },
+        {
+          "file": "img/lording/wide/rd2-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2650900,
+          "SHA256": "06fc259c04e01b38f77b0ace2cce92b88e54cb90038a1c18995e41773a48c6b9",
+          "protectedPixels": 340807,
+          "protectedRGB": "d0dfa722dbdf5f2ab45a109ae4b701dfecc74d8f24a91ded1af88641fdc02d39",
+          "sourceRGB": "d0dfa722dbdf5f2ab45a109ae4b701dfecc74d8f24a91ded1af88641fdc02d39"
+        },
+        {
+          "file": "img/lording/wide/rd2-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 3835682,
+          "SHA256": "e602ba07bdd49dfbf8ff3522af0307d1567b600f185b3db8587e8cb9a9cf7f5e",
+          "protectedPixels": 340807,
+          "protectedRGB": "d0dfa722dbdf5f2ab45a109ae4b701dfecc74d8f24a91ded1af88641fdc02d39",
+          "sourceRGB": "d0dfa722dbdf5f2ab45a109ae4b701dfecc74d8f24a91ded1af88641fdc02d39"
+        }
+      ]
+    },
+    {
+      "id": "rd4",
+      "source": "img/lording/rd4.png",
+      "sourceSHA256": "70977a876c62a6edb35b98a35a638db94d2c7a72eae818e365c5bead09aa1564",
+      "variants": [
+        {
+          "file": "img/lording/wide/rd4-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2252314,
+          "SHA256": "b16c3fd3f15552569f2323908a89833c43c6a5a902bd0efc79a60fe878c3d845",
+          "protectedPixels": 884763,
+          "protectedRGB": "2104aa54e66c9c5f3a193babf2f1e2b438605caa1c734e97ebf649555dd348e0",
+          "sourceRGB": "2104aa54e66c9c5f3a193babf2f1e2b438605caa1c734e97ebf649555dd348e0"
+        },
+        {
+          "file": "img/lording/wide/rd4-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2717256,
+          "SHA256": "83e94131048110c367bc820e47c93735b0b85d96e8f2f29ab801e3138947e183",
+          "protectedPixels": 884763,
+          "protectedRGB": "2104aa54e66c9c5f3a193babf2f1e2b438605caa1c734e97ebf649555dd348e0",
+          "sourceRGB": "2104aa54e66c9c5f3a193babf2f1e2b438605caa1c734e97ebf649555dd348e0"
+        },
+        {
+          "file": "img/lording/wide/rd4-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 4053682,
+          "SHA256": "76d5261cc5e11d86f91514fece8a2c38cbe29ab444ca94c9eda5e51bf4c72cdc",
+          "protectedPixels": 884763,
+          "protectedRGB": "2104aa54e66c9c5f3a193babf2f1e2b438605caa1c734e97ebf649555dd348e0",
+          "sourceRGB": "2104aa54e66c9c5f3a193babf2f1e2b438605caa1c734e97ebf649555dd348e0"
+        }
+      ]
+    },
+    {
+      "id": "rd5",
+      "source": "img/lording/rd5.png",
+      "sourceSHA256": "37cca3e902308a8ac6ab2c82bfc972b1e7b05516eab5ddcb31ac2164419d0897",
+      "variants": [
+        {
+          "file": "img/lording/wide/rd5-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 3220794,
+          "SHA256": "a9091f86cbf552958ce8a289bdc38bd59539e117dc4ce9c6c2721a331b636603",
+          "protectedPixels": 1086976,
+          "protectedRGB": "841eb9fa283fcd3a0c41014334164e5620f89427c5b22af57321efa049f8c3f1",
+          "sourceRGB": "841eb9fa283fcd3a0c41014334164e5620f89427c5b22af57321efa049f8c3f1"
+        },
+        {
+          "file": "img/lording/wide/rd5-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 3703770,
+          "SHA256": "aca8911a5b03f845095198ae610e3394e85e67ddfd614c81141844ba0e187958",
+          "protectedPixels": 1086976,
+          "protectedRGB": "841eb9fa283fcd3a0c41014334164e5620f89427c5b22af57321efa049f8c3f1",
+          "sourceRGB": "841eb9fa283fcd3a0c41014334164e5620f89427c5b22af57321efa049f8c3f1"
+        },
+        {
+          "file": "img/lording/wide/rd5-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 4920300,
+          "SHA256": "bc950786ee8cc0e619e58fc6725f985371cb3e2c7da98c6bb1a2b00f51fe2520",
+          "protectedPixels": 1086976,
+          "protectedRGB": "841eb9fa283fcd3a0c41014334164e5620f89427c5b22af57321efa049f8c3f1",
+          "sourceRGB": "841eb9fa283fcd3a0c41014334164e5620f89427c5b22af57321efa049f8c3f1"
+        }
+      ]
+    },
+    {
+      "id": "rd6",
+      "source": "img/lording/rd6.png",
+      "sourceSHA256": "bdd9a1fb38ca78f0871b9c7ad13672920a8332dcab3c2ec162c09968edd01d79",
+      "variants": [
+        {
+          "file": "img/lording/wide/rd6-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2466674,
+          "SHA256": "0cf80223e2aac914a8391332e1ebfca284e2d4c5a14266b62cf6d382f721709c",
+          "protectedPixels": 809265,
+          "protectedRGB": "355fb990bf29e01e3a45df86909c965a18cac703ae1ad693bad6e17ccde3282d",
+          "sourceRGB": "355fb990bf29e01e3a45df86909c965a18cac703ae1ad693bad6e17ccde3282d"
+        },
+        {
+          "file": "img/lording/wide/rd6-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 3066672,
+          "SHA256": "b8af86e4f3009fdd11be9aa7f6cbe3b32cda4203209a05c1af7266da559fd2da",
+          "protectedPixels": 797236,
+          "protectedRGB": "2ce7ca95220e707e6bc238dec938882175eaf98ee6122eb6225b517e6b8b1648",
+          "sourceRGB": "2ce7ca95220e707e6bc238dec938882175eaf98ee6122eb6225b517e6b8b1648"
+        },
+        {
+          "file": "img/lording/wide/rd6-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 4602752,
+          "SHA256": "933075e771d9e23a6d5713661da3075a1d4efafe062a3bcfa5029af0a772f950",
+          "protectedPixels": 797236,
+          "protectedRGB": "2ce7ca95220e707e6bc238dec938882175eaf98ee6122eb6225b517e6b8b1648",
+          "sourceRGB": "2ce7ca95220e707e6bc238dec938882175eaf98ee6122eb6225b517e6b8b1648"
+        }
+      ]
+    },
+    {
+      "id": "rd7",
+      "source": "img/lording/rd7.png",
+      "sourceSHA256": "2ed4bcc24d44a913376413db0a951c1119e697794cf293eb54d0b70964bf343e",
+      "variants": [
+        {
+          "file": "img/lording/wide/rd7-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2521282,
+          "SHA256": "139a079052fbb6c788f518f7f206d517c10dc94d04cac007dd8a9616bb074d76",
+          "protectedPixels": 448359,
+          "protectedRGB": "0a46890a09046851b3aef6f69887b8a4fe509fc53558213da247c5211783fd15",
+          "sourceRGB": "0a46890a09046851b3aef6f69887b8a4fe509fc53558213da247c5211783fd15"
+        },
+        {
+          "file": "img/lording/wide/rd7-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 3058880,
+          "SHA256": "980f83d00b9397bb13fe49f09f6da88aa57f85b73ccbb112e83fdbadb1bb18ae",
+          "protectedPixels": 440999,
+          "protectedRGB": "4bd661ed21bb72706614af00fa2cfd6320d808a1e65fee4503e71cce0cf44df8",
+          "sourceRGB": "4bd661ed21bb72706614af00fa2cfd6320d808a1e65fee4503e71cce0cf44df8"
+        },
+        {
+          "file": "img/lording/wide/rd7-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 4519196,
+          "SHA256": "cf3fcb8439d74ba2fc4360035c2ba2057976edc024541fef73d5ba9bd4c57931",
+          "protectedPixels": 440999,
+          "protectedRGB": "4bd661ed21bb72706614af00fa2cfd6320d808a1e65fee4503e71cce0cf44df8",
+          "sourceRGB": "4bd661ed21bb72706614af00fa2cfd6320d808a1e65fee4503e71cce0cf44df8"
+        }
+      ]
+    },
+    {
+      "id": "rd8",
+      "source": "img/lording/rd8.png",
+      "sourceSHA256": "47b12289761c464cbdc2d292455fc91b8b93446cb93a0936ca82bdbec9b218c9",
+      "variants": [
+        {
+          "file": "img/lording/wide/rd8-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2350156,
+          "SHA256": "4fa96ccda659bb7561e5e4b28b75cce73cf31199fc3e7f2725c6a14a6cc58584",
+          "protectedPixels": 1683096,
+          "protectedRGB": "b85f0aee21a3ed10bf70a5606d9fdf16ff2a12f2e0b8d70de737c4674b7fdf2a",
+          "sourceRGB": "b85f0aee21a3ed10bf70a5606d9fdf16ff2a12f2e0b8d70de737c4674b7fdf2a"
+        },
+        {
+          "file": "img/lording/wide/rd8-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2887880,
+          "SHA256": "a05e62daf03355a7e334c388cb1e191e769d48cb6541236b2ce3aadac2bfcb08",
+          "protectedPixels": 1683096,
+          "protectedRGB": "b85f0aee21a3ed10bf70a5606d9fdf16ff2a12f2e0b8d70de737c4674b7fdf2a",
+          "sourceRGB": "b85f0aee21a3ed10bf70a5606d9fdf16ff2a12f2e0b8d70de737c4674b7fdf2a"
+        },
+        {
+          "file": "img/lording/wide/rd8-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 4381054,
+          "SHA256": "654604fcacf0cfb129988bfe54bc4478d6943d6a5a71ec616752e3581b6af899",
+          "protectedPixels": 1683096,
+          "protectedRGB": "b85f0aee21a3ed10bf70a5606d9fdf16ff2a12f2e0b8d70de737c4674b7fdf2a",
+          "sourceRGB": "b85f0aee21a3ed10bf70a5606d9fdf16ff2a12f2e0b8d70de737c4674b7fdf2a"
+        }
+      ]
+    },
+    {
+      "id": "rd9",
+      "source": "img/lording/rd9.png",
+      "sourceSHA256": "351da89c16ac04432872214b67fa1ff5d8925b46d6685922de9f63bf7bfd18ba",
+      "variants": [
+        {
+          "file": "img/lording/wide/rd9-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2599780,
+          "SHA256": "a112fb69cb158a3acc80dedee3ffcc69f6fd7434b3a15f08ca01f4e18f008134",
+          "protectedPixels": 345851,
+          "protectedRGB": "304ca9683f60adc5a1634982e9a739e4ad7278bde2178172d6f241e590bfb78f",
+          "sourceRGB": "304ca9683f60adc5a1634982e9a739e4ad7278bde2178172d6f241e590bfb78f"
+        },
+        {
+          "file": "img/lording/wide/rd9-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 3200196,
+          "SHA256": "ba7e5ce239ab81f9299cbd7da3e7a484368185d7621842b22123dc071a770f06",
+          "protectedPixels": 345851,
+          "protectedRGB": "304ca9683f60adc5a1634982e9a739e4ad7278bde2178172d6f241e590bfb78f",
+          "sourceRGB": "304ca9683f60adc5a1634982e9a739e4ad7278bde2178172d6f241e590bfb78f"
+        },
+        {
+          "file": "img/lording/wide/rd9-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 4681442,
+          "SHA256": "70753d17a6cbb27868ae309082f04396b2b33624415f8bf66fc5a8ecc1bc3fa4",
+          "protectedPixels": 345851,
+          "protectedRGB": "304ca9683f60adc5a1634982e9a739e4ad7278bde2178172d6f241e590bfb78f",
+          "sourceRGB": "304ca9683f60adc5a1634982e9a739e4ad7278bde2178172d6f241e590bfb78f"
+        }
+      ]
+    },
+    {
+      "id": "rd10",
+      "source": "img/lording/rd10.png",
+      "sourceSHA256": "395ffe77b95ba50198b7451008b22ec4b8c4b55e34f3b6ff7c1fb57d94d9d1b4",
+      "variants": [
+        {
+          "file": "img/lording/wide/rd10-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2421864,
+          "SHA256": "c8f94a7e57790f60c2a48d96291b8619677dd2e99f58fc1fb2820f8102255df1",
+          "protectedPixels": 0,
+          "protectedRGB": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sourceRGB": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "file": "img/lording/wide/rd10-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2955438,
+          "SHA256": "15b238014526fddacef5cd262814d53a7f145b319025e9449f4b0030888651de",
+          "protectedPixels": 0,
+          "protectedRGB": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sourceRGB": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "file": "img/lording/wide/rd10-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 4380086,
+          "SHA256": "2ab3f2270f31d7c333f34ebdad3dd7317e20b5b96d55e829836be84c48d64ad8",
+          "protectedPixels": 0,
+          "protectedRGB": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sourceRGB": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "id": "rd11",
+      "source": "img/lording/rd11.jpg",
+      "sourceSHA256": "e349a2407aa9a03fd3e88df84ebcfe4500a17d473b08a54efe80b3aeab94d015",
+      "variants": [
+        {
+          "file": "img/lording/wide/rd11-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2299166,
+          "SHA256": "3ce28a43940f7daae2bc1fdd51b118ab6f2f1998ef180594fdce1be628666d50",
+          "protectedPixels": 0,
+          "protectedRGB": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sourceRGB": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "file": "img/lording/wide/rd11-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2770450,
+          "SHA256": "cc8a65e7b16be055f5165504406cea2819053d9052a87b4ff539d245b976e3a9",
+          "protectedPixels": 0,
+          "protectedRGB": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sourceRGB": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "file": "img/lording/wide/rd11-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 4231630,
+          "SHA256": "84824aae9e0dbb060685aab96654458185ca2007554b06a47a31e50a0e646f1b",
+          "protectedPixels": 0,
+          "protectedRGB": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sourceRGB": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "id": "rd12",
+      "source": "img/lording/rd12.png",
+      "sourceSHA256": "0cd16c82daca2ea7e548dbc51cca03d67ba919bd0f8c37b892b9464679a3dad3",
+      "variants": [
+        {
+          "file": "img/lording/wide/rd12-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2029216,
+          "SHA256": "3c55b35460508234d99201544e9f6f6275352b220cdd12370e58a524ef8cdb3d",
+          "protectedPixels": 196206,
+          "protectedRGB": "61ac9dcb90923242dd9ddaea74328ee98a861336793bd2d56435344ad63cf54b",
+          "sourceRGB": "61ac9dcb90923242dd9ddaea74328ee98a861336793bd2d56435344ad63cf54b"
+        },
+        {
+          "file": "img/lording/wide/rd12-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2420222,
+          "SHA256": "cf32f812810e816e2ea5f072f2a2ee18810408936352f97392047c2e587c232a",
+          "protectedPixels": 196206,
+          "protectedRGB": "61ac9dcb90923242dd9ddaea74328ee98a861336793bd2d56435344ad63cf54b",
+          "sourceRGB": "61ac9dcb90923242dd9ddaea74328ee98a861336793bd2d56435344ad63cf54b"
+        },
+        {
+          "file": "img/lording/wide/rd12-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 3552796,
+          "SHA256": "478594a2a5257e65397c1584cea0eebd47af38e52b7ddec76c4c0efe5d19ed0a",
+          "protectedPixels": 196206,
+          "protectedRGB": "61ac9dcb90923242dd9ddaea74328ee98a861336793bd2d56435344ad63cf54b",
+          "sourceRGB": "61ac9dcb90923242dd9ddaea74328ee98a861336793bd2d56435344ad63cf54b"
+        }
+      ]
+    },
+    {
+      "id": "rd13",
+      "source": "img/lording/rd13.png",
+      "sourceSHA256": "bb85dabe4f1ef95c4c16da55cd432f6daabec3e05184225b1c8f6c3169e1c40e",
+      "variants": [
+        {
+          "file": "img/lording/wide/rd13-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2334710,
+          "SHA256": "1abb44007f38584c398b5b4cd7564a5cfeb05d29c1c2b1dec3877485c6c2e5c2",
+          "protectedPixels": 1099756,
+          "protectedRGB": "21b47d928fc3db8e15646865e218b55af630c06ef778cf6765b1ad617a9efd58",
+          "sourceRGB": "21b47d928fc3db8e15646865e218b55af630c06ef778cf6765b1ad617a9efd58"
+        },
+        {
+          "file": "img/lording/wide/rd13-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2824734,
+          "SHA256": "9ea1b02140598cc22803d514f37e9b2434343372198da6502446770bcba851f6",
+          "protectedPixels": 1099756,
+          "protectedRGB": "21b47d928fc3db8e15646865e218b55af630c06ef778cf6765b1ad617a9efd58",
+          "sourceRGB": "21b47d928fc3db8e15646865e218b55af630c06ef778cf6765b1ad617a9efd58"
+        },
+        {
+          "file": "img/lording/wide/rd13-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 4170940,
+          "SHA256": "24fbcb7077eb33cb04a2538b5b90f1ae19281fbceaf536a1c682f4cb18dba60b",
+          "protectedPixels": 1099756,
+          "protectedRGB": "21b47d928fc3db8e15646865e218b55af630c06ef778cf6765b1ad617a9efd58",
+          "sourceRGB": "21b47d928fc3db8e15646865e218b55af630c06ef778cf6765b1ad617a9efd58"
+        }
+      ]
+    },
+    {
+      "id": "rd14",
+      "source": "img/lording/rd14.png",
+      "sourceSHA256": "06036836f712381fb416d7a5dcfcc8610b303c575983099c753e7a8c03f1bf5b",
+      "variants": [
+        {
+          "file": "img/lording/wide/rd14-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2524162,
+          "SHA256": "5194f2527e198133a04fcd9ca21681d7301b6135071415a344a3017614a82e31",
+          "protectedPixels": 1243065,
+          "protectedRGB": "0bb83cd949fba76c2f66f399277dea78ac986869b0c6affe1c3ea7502d12fdcb",
+          "sourceRGB": "0bb83cd949fba76c2f66f399277dea78ac986869b0c6affe1c3ea7502d12fdcb"
+        },
+        {
+          "file": "img/lording/wide/rd14-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 3031520,
+          "SHA256": "56166c4459be633a7a6295c000bbff648bda768c82238cfcaf9829a5fd4429fd",
+          "protectedPixels": 1243065,
+          "protectedRGB": "0bb83cd949fba76c2f66f399277dea78ac986869b0c6affe1c3ea7502d12fdcb",
+          "sourceRGB": "0bb83cd949fba76c2f66f399277dea78ac986869b0c6affe1c3ea7502d12fdcb"
+        },
+        {
+          "file": "img/lording/wide/rd14-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 4409884,
+          "SHA256": "b3af5212dcf769b606bfa880fa91e23d0e848ba5814811bc9b6e1b4991517d43",
+          "protectedPixels": 1243065,
+          "protectedRGB": "0bb83cd949fba76c2f66f399277dea78ac986869b0c6affe1c3ea7502d12fdcb",
+          "sourceRGB": "0bb83cd949fba76c2f66f399277dea78ac986869b0c6affe1c3ea7502d12fdcb"
+        }
+      ]
+    },
+    {
+      "id": "rd15",
+      "source": "img/lording/rd15.png",
+      "sourceSHA256": "3d182a95a6ea9c89f9bbe92d3bc2a488985a935b7ee7d20a8d178110031b1bbd",
+      "variants": [
+        {
+          "file": "img/lording/wide/rd15-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2124686,
+          "SHA256": "4f0fd6163785471b357a7543794c053a912c15d8ef59549b49618e0a02bdaeaf",
+          "protectedPixels": 405167,
+          "protectedRGB": "42a13a6107b463066ec0764ad05dc3fb9b76507192d1e31ecedf062e3e2802d6",
+          "sourceRGB": "42a13a6107b463066ec0764ad05dc3fb9b76507192d1e31ecedf062e3e2802d6"
+        },
+        {
+          "file": "img/lording/wide/rd15-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2305862,
+          "SHA256": "f008af52302348bedd21c5d76ca7014b0f2f88e667ab333f669da2567d3bd0e5",
+          "protectedPixels": 415961,
+          "protectedRGB": "57199ae350362071578b8d1a8cb69c72dc984d7ef8f5286f2dcc82568eade9df",
+          "sourceRGB": "57199ae350362071578b8d1a8cb69c72dc984d7ef8f5286f2dcc82568eade9df"
+        },
+        {
+          "file": "img/lording/wide/rd15-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 3660376,
+          "SHA256": "963af023cd635ceb11168b9096581ae0b77d107dc61ddb909cd5d3e9b27045f3",
+          "protectedPixels": 415961,
+          "protectedRGB": "57199ae350362071578b8d1a8cb69c72dc984d7ef8f5286f2dcc82568eade9df",
+          "sourceRGB": "57199ae350362071578b8d1a8cb69c72dc984d7ef8f5286f2dcc82568eade9df"
+        }
+      ]
+    },
+    {
+      "id": "rd16",
+      "source": "img/lording/rd16.png",
+      "sourceSHA256": "15a16839a0d84f9b5a7b0bcc714f8c257a00610e543a129cefdb274a31670400",
+      "variants": [
+        {
+          "file": "img/lording/wide/rd16-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2257558,
+          "SHA256": "5e5154d4737a21458b2941951ce8f992cf1a5f1a7aaa0fde3447b1f4af9f4b52",
+          "protectedPixels": 256817,
+          "protectedRGB": "bfd5e1a1275c3060fc50415ecf65611ebb0e7713bcdc3c05d1b3e9a1ed53fd10",
+          "sourceRGB": "bfd5e1a1275c3060fc50415ecf65611ebb0e7713bcdc3c05d1b3e9a1ed53fd10"
+        },
+        {
+          "file": "img/lording/wide/rd16-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 2731234,
+          "SHA256": "6f84d5925a23482635fd070b6c4b7430df8bd20322443fe6b19e2fc8e5e25133",
+          "protectedPixels": 256817,
+          "protectedRGB": "bfd5e1a1275c3060fc50415ecf65611ebb0e7713bcdc3c05d1b3e9a1ed53fd10",
+          "sourceRGB": "bfd5e1a1275c3060fc50415ecf65611ebb0e7713bcdc3c05d1b3e9a1ed53fd10"
+        },
+        {
+          "file": "img/lording/wide/rd16-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 3974460,
+          "SHA256": "f117793b774b02daf5d84b9b7f4288e14065635143ac976630fb301cd6c25cc4",
+          "protectedPixels": 256817,
+          "protectedRGB": "bfd5e1a1275c3060fc50415ecf65611ebb0e7713bcdc3c05d1b3e9a1ed53fd10",
+          "sourceRGB": "bfd5e1a1275c3060fc50415ecf65611ebb0e7713bcdc3c05d1b3e9a1ed53fd10"
+        }
+      ]
+    },
+    {
+      "id": "rd17",
+      "source": "img/lording/rd17.png",
+      "sourceSHA256": "e1446cc81aa5aedf03e7ae17d4e8e86698bb5844c3414b9aca97d3f51ff98a12",
+      "variants": [
+        {
+          "file": "img/lording/wide/rd17-16.webp",
+          "width": 1920,
+          "height": 1200,
+          "bytes": 2643542,
+          "SHA256": "b36cfef41b8fe2b1104da6530096e426161226d9b89b541b5218d749deda9273",
+          "protectedPixels": 809265,
+          "protectedRGB": "736d009d59c0ccf47582681bbd008a39b99be646d829e04929cf32c9bf2d67b7",
+          "sourceRGB": "736d009d59c0ccf47582681bbd008a39b99be646d829e04929cf32c9bf2d67b7"
+        },
+        {
+          "file": "img/lording/wide/rd17-21.webp",
+          "width": 2560,
+          "height": 1080,
+          "bytes": 3256606,
+          "SHA256": "4c625af47dd5bef78a745b50a7e6e29ef124cacdcee4634c542132fdbf4d75cd",
+          "protectedPixels": 809265,
+          "protectedRGB": "736d009d59c0ccf47582681bbd008a39b99be646d829e04929cf32c9bf2d67b7",
+          "sourceRGB": "736d009d59c0ccf47582681bbd008a39b99be646d829e04929cf32c9bf2d67b7"
+        },
+        {
+          "file": "img/lording/wide/rd17-32.webp",
+          "width": 3840,
+          "height": 1080,
+          "bytes": 4736706,
+          "SHA256": "2aa28c70574f800f5ab569565abd211945d9aedf80582836b9e6088b4c8f5012",
+          "protectedPixels": 809265,
+          "protectedRGB": "736d009d59c0ccf47582681bbd008a39b99be646d829e04929cf32c9bf2d67b7",
+          "sourceRGB": "736d009d59c0ccf47582681bbd008a39b99be646d829e04929cf32c9bf2d67b7"
+        }
+      ]
+    }
+  ]
+}

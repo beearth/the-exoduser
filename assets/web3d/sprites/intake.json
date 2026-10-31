@@ -1,0 +1,203 @@
+{
+  "sourceReport": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/REPORT.md",
+  "status": "Existing owner RETOUCH candidates; web opt-in review only, not Unity approval. Native walk overlays retained.",
+  "normal": "Owner silhouette bevel normals, not sculpted surface normals. Walk normals prepared offline to avoid first-movement stalls.",
+  "files": [
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster-v2/warrior/atlas.png",
+      "path": "assets/web3d/sprites/warrior-base.png",
+      "sha256": "d60929e40fdb5b689676e1b4e4f5017181044d3357c38dd427c1f717dce2b641",
+      "bytes": 1576244
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster-v2/warrior/atlas.normal.png",
+      "path": "assets/web3d/sprites/warrior-base.normal.png",
+      "sha256": "4b7c293d41f9e2ebdd830c46ded47aa2fe108e7f6d92e1e85e0950f2dfbd9b2a",
+      "bytes": 752257
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster-v2/warrior-attack-r3/atlas.png",
+      "path": "assets/web3d/sprites/warrior-attack.png",
+      "sha256": "20e615843f39ba38c6be24a3f9c142f08e356be235dcf6b3bcea89cb43a6aadd",
+      "bytes": 579659
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster-v2/warrior-attack-r3/atlas.normal.png",
+      "path": "assets/web3d/sprites/warrior-attack.normal.png",
+      "sha256": "910d81bb2c17d48d2e38b190221ff15418765746b6792435faaa7adb2b91dceb",
+      "bytes": 324137
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster-v2/warrior-dash-r3/atlas.png",
+      "path": "assets/web3d/sprites/warrior-dash.png",
+      "sha256": "1e089d477a2ac1be852ee04e0dadbbde42f737aa77b7f711040d7e9d6c0e82e8",
+      "bytes": 338985
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster-v2/warrior-dash-r3/atlas.normal.png",
+      "path": "assets/web3d/sprites/warrior-dash.normal.png",
+      "sha256": "a15413e5f1e4c1e0f38515609b3b7abd8a73e52965a1d6a71a4bb06296cafcf8",
+      "bytes": 173468
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster/enemy-alpha-contract/atlas_ch1_8dir_south.png",
+      "path": "assets/web3d/sprites/enemy-south.png",
+      "sha256": "b9b0b5c1e1b3294c46f5e41f4b9331cc8b71c8b19795e2577db2387f87c06959",
+      "bytes": 1525812
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster/enemy-alpha-contract/atlas_ch1_8dir_south.normal.png",
+      "path": "assets/web3d/sprites/enemy-south.normal.png",
+      "sha256": "866063625ea065ab84d8babcf77cc155c4e95701342346a67a33faa7b6c8ae2f",
+      "bytes": 490412
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster/enemy-alpha-contract/atlas_ch1_8dir_south_east.png",
+      "path": "assets/web3d/sprites/enemy-south_east.png",
+      "sha256": "a494ced42255ac6e02bf0ea2a35379b6c2abbca751dd22f8c62e09c48db28893",
+      "bytes": 1464708
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster/enemy-alpha-contract/atlas_ch1_8dir_south_east.normal.png",
+      "path": "assets/web3d/sprites/enemy-south_east.normal.png",
+      "sha256": "7c24f05359949330dd45ceefc8368420b4fd47db056a1b7e55f786fa8ee0be7c",
+      "bytes": 468010
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster/enemy-alpha-contract/atlas_ch1_8dir_east.png",
+      "path": "assets/web3d/sprites/enemy-east.png",
+      "sha256": "65162fe57f6ecdf444d8d6969e96dc465bfe249332147f5578f62d4e0fc96b7f",
+      "bytes": 1342937
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster/enemy-alpha-contract/atlas_ch1_8dir_east.normal.png",
+      "path": "assets/web3d/sprites/enemy-east.normal.png",
+      "sha256": "5d1200f3defd2d448d83c3aca8eb64d9e07528858f8c9f202b906dd1c031d6c5",
+      "bytes": 407732
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster/enemy-alpha-contract/atlas_ch1_8dir_north_east.png",
+      "path": "assets/web3d/sprites/enemy-north_east.png",
+      "sha256": "971dd82f90c1492cbbc8aa470b2758538221e91651c06d51b9969f025ef3d44f",
+      "bytes": 1340982
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster/enemy-alpha-contract/atlas_ch1_8dir_north_east.normal.png",
+      "path": "assets/web3d/sprites/enemy-north_east.normal.png",
+      "sha256": "0c499856b3a694811a1e80ed78a3d7e3fb32cdcc5fea2539e0ac73662ae7fadb",
+      "bytes": 432307
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster/enemy-alpha-contract/atlas_ch1_8dir_north.png",
+      "path": "assets/web3d/sprites/enemy-north.png",
+      "sha256": "614833e5a653f8439f4150a39b8030daa8eb42f3e792bdb1242488a17708e6c3",
+      "bytes": 1477920
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster/enemy-alpha-contract/atlas_ch1_8dir_north.normal.png",
+      "path": "assets/web3d/sprites/enemy-north.normal.png",
+      "sha256": "c3fa14384426bcad28e614c3e7dcf45d8265f83ecb2e196833e2f69638b9e908",
+      "bytes": 457010
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster/enemy-alpha-contract/atlas_ch1_8dir_north_west.png",
+      "path": "assets/web3d/sprites/enemy-north_west.png",
+      "sha256": "e3fb262aa609c4f49f38f0f4c9c32a55d19ccfa33046fabd38e5f89d311b2efa",
+      "bytes": 1233451
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster/enemy-alpha-contract/atlas_ch1_8dir_north_west.normal.png",
+      "path": "assets/web3d/sprites/enemy-north_west.normal.png",
+      "sha256": "d9c64bd66c5dcd7d9673a882e49709fb117cd2da39f51e29a408477c2b3af032",
+      "bytes": 429035
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster/enemy-alpha-contract/atlas_ch1_8dir_west.png",
+      "path": "assets/web3d/sprites/enemy-west.png",
+      "sha256": "907d8b995c16267c08be4a5aa476727b1c883b0d91e112301da7c946735c99e3",
+      "bytes": 1196890
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster/enemy-alpha-contract/atlas_ch1_8dir_west.normal.png",
+      "path": "assets/web3d/sprites/enemy-west.normal.png",
+      "sha256": "c7d5718477b55edd4f1ce59372721570a7f9d57a5241b3c0564c009373a46e7b",
+      "bytes": 405667
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster/enemy-alpha-contract/atlas_ch1_8dir_south_west.png",
+      "path": "assets/web3d/sprites/enemy-south_west.png",
+      "sha256": "1324d3b7a8c06ab2e3cec4ebca906b4dd028e8c53e428de22285f0c265fdfadc",
+      "bytes": 1468311
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/remaster/enemy-alpha-contract/atlas_ch1_8dir_south_west.normal.png",
+      "path": "assets/web3d/sprites/enemy-south_west.normal.png",
+      "sha256": "8bbfb989bb6bf042e49078dd15a7f30673d8532e67f83fd7c8552c998026502a",
+      "bytes": 460940
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/technical-2x-v2/enemy/atlas_ch1_8dir_walk_south.normal.png",
+      "path": "assets/web3d/sprites/enemy-walk-south.normal.webp",
+      "sha256": "809ce5f025d0980840ebf20f1b9ad980f1ea37caf6180d50a9afd3223187c665",
+      "sourceSHA256": "97684d95c287d5c271f20751c7ce9ae1dfe8f3ee344bb2a48ed61bc8c55ec631",
+      "bytes": 232560,
+      "operation": "Existing technical normal 16384x2560 to native 8192x1280, nearest / lossless WebP. No painted art generated."
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/technical-2x-v2/enemy/atlas_ch1_8dir_walk_south_east.normal.png",
+      "path": "assets/web3d/sprites/enemy-walk-south_east.normal.webp",
+      "sha256": "b6ce4e66ec302c32479153048c37b49d416e83e82f303a0b8f9e6430e68b5552",
+      "sourceSHA256": "26af33c45a0fe8efa50e6a15b7109089064080127a12dd8b6b126faa266aa3a7",
+      "bytes": 250784,
+      "operation": "Existing technical normal 16384x2560 to native 8192x1280, nearest / lossless WebP. No painted art generated."
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/technical-2x-v2/enemy/atlas_ch1_8dir_walk_east.normal.png",
+      "path": "assets/web3d/sprites/enemy-walk-east.normal.webp",
+      "sha256": "9b1c8bc1fe0d0a8d0d64f87be5c513248f93fbd62d907cb6aa454f4ad1183db3",
+      "sourceSHA256": "83e9876e1562e63d320c028aba7dbe46b49d38518daac1d86fa1c381d644e6d0",
+      "bytes": 247994,
+      "operation": "Existing technical normal 16384x2560 to native 8192x1280, nearest / lossless WebP. No painted art generated."
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/technical-2x-v2/enemy/atlas_ch1_8dir_walk_north_east.normal.png",
+      "path": "assets/web3d/sprites/enemy-walk-north_east.normal.webp",
+      "sha256": "fcaebcced30dbe9a5157f8ea0c776df68d2e50d75ae505f34997225a654e95c2",
+      "sourceSHA256": "5da8182f71f53115d97b44cce03e4d288702065e30538c104e69ad9211cc532a",
+      "bytes": 256884,
+      "operation": "Existing technical normal 16384x2560 to native 8192x1280, nearest / lossless WebP. No painted art generated."
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/technical-2x-v2/enemy/atlas_ch1_8dir_walk_north.normal.png",
+      "path": "assets/web3d/sprites/enemy-walk-north.normal.webp",
+      "sha256": "92afa77a23ed7176cb0fce1e257a6fee1e97595182fbefd24974ec7dc62d537b",
+      "sourceSHA256": "2cfbd63204384d172789c5876934e6320aceb3db658901ecb24c854563f402fe",
+      "bytes": 232050,
+      "operation": "Existing technical normal 16384x2560 to native 8192x1280, nearest / lossless WebP. No painted art generated."
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/technical-2x-v2/enemy/atlas_ch1_8dir_walk_north_west.normal.png",
+      "path": "assets/web3d/sprites/enemy-walk-north_west.normal.webp",
+      "sha256": "fe553e5ca4d736dab838404c16c7a34cc898474b425f417fad44f54f272388df",
+      "sourceSHA256": "82877e05cc57c0ec5695efac690a65384bc0ae0b063047f224b0392023f1876f",
+      "bytes": 259304,
+      "operation": "Existing technical normal 16384x2560 to native 8192x1280, nearest / lossless WebP. No painted art generated."
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/technical-2x-v2/enemy/atlas_ch1_8dir_walk_west.normal.png",
+      "path": "assets/web3d/sprites/enemy-walk-west.normal.webp",
+      "sha256": "b2cc10891992f11f4abf1bfa6b53fbf0c224f5eeeb483895a17e806cc740638c",
+      "sourceSHA256": "7eedae24ccc345d6ba2133561439b05d2e765b1a89d928034176834563d0bc15",
+      "bytes": 250486,
+      "operation": "Existing technical normal 16384x2560 to native 8192x1280, nearest / lossless WebP. No painted art generated."
+    },
+    {
+      "source": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/technical-2x-v2/enemy/atlas_ch1_8dir_walk_south_west.normal.png",
+      "path": "assets/web3d/sprites/enemy-walk-south_west.normal.webp",
+      "sha256": "95562fe328a0e71a6876803718ee634ff92960f31123f940f0b510f26672ace6",
+      "sourceSHA256": "854eb578234378bda24fb38d0d5c796a91e9c58690c0936221df7afef136bdb6",
+      "bytes": 233532,
+      "operation": "Existing technical normal 16384x2560 to native 8192x1280, nearest / lossless WebP. No painted art generated."
+    }
+  ]
+}
