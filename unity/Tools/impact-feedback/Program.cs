@@ -40,6 +40,13 @@ static class Program
             Check(SkillPresentation.BulletKind(false,false,1)==0, "범위 밖 원소탄은 기존 표시를 유지한다");
             Check(SkillPresentation.KiWidth(1,1)==192&&SkillPresentation.KiWidth(3,1)==252, "기검참 웹 외곽 크기를 보존한다");
             Check(SkillPresentation.KiWidth(3,1.5f)==378, "차지 크기 배율은 그대로 적용한다");
+            Check(SkillPresentation.EnemyWidth(true,false,false,1.1)==96, "독탄 표시 외곽은 작은 충돌 반경과 분리된 웹 최소96px이다");
+            Check(SkillPresentation.EnemyWidth(true,true,false,1.1)==192, "물리 패링 독탄의 기존 표시2배를 유지한다");
+            Check(SkillPresentation.EnemyWidth(true,false,true,1)==240, "독 원소보주의 기존240px 외곽을 유지한다");
+            Check(Math.Abs(SkillPresentation.EnemyWidth(false,false,false,1.1)-50.82)<.001, "어둠 탄 표시 길이는 기존 ps와44 배율을 유지한다");
+            Check(Math.Abs(SkillPresentation.EnemyWidth(false,true,false,1.1)-56.02905)<.001, "물리탄은 기존 입 시트의2:1 외곽폭을 유지한다");
+            Check(SkillPresentation.EnemyWidth(false,false,true,1)==192, "원소보주의2:1 시트 외곽폭을 유지한다");
+            Check(SkillPresentation.ContactOpacity(.02)>0.9&&SkillPresentation.ContactOpacity(.09)==0, "선명한 접점 본체는20ms에 보이고90ms 전에 사라진다");
             Check(SkillPresentation.ContactOrder(7420)>7422, "실제 접점은 표적 몸체·걷기·견갑보다 앞에 그린다");
             Check(SkillPresentation.ContactOrder(7420.8f)==7424, "정렬 기준은 접점 오프셋이 아닌 표적의 Core Y다");
             Check(SkillPresentation.ResidualOrder(7420)<7420, "긴 잔여 연기는 같은 깊이의 몸체를 덮지 않는다");

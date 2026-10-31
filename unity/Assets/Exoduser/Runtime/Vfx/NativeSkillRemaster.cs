@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
-using UnityEngine.Rendering.Universal;
 using Exoduser.UnityPort.Core;
 
 namespace Exoduser.UnityPort.Vfx
@@ -11,7 +10,7 @@ namespace Exoduser.UnityPort.Vfx
     {
         static Mesh quad;
         public static Quaternion FloorRotation {get{return NativeRemodel3D.Active?Quaternion.identity:Quaternion.Euler(-90,0,0);}}
-        public static Vector3 Point(float x,float y,float lift){return NativeRemodel3D.Active?RemodelWorld.ToWorld(x,y,lift):NativeRemodel3D.Point(x,y)+Vector3.back*lift;}
+        public static Vector3 Point(float x,float y,float lift=0){return NativeRemodel3D.Active?RemodelWorld.ToWorld(x,y,lift):NativeRemodel3D.Point(x,y)+Vector3.back*lift;}
         public static bool Visible(Camera camera,Vector3 world)
         {
             if(camera==null)return true;
@@ -40,7 +39,7 @@ namespace Exoduser.UnityPort.Vfx
         {
             public GameObject Go; public Transform[] Parts;
             public MaterialPropertyBlock Block=new MaterialPropertyBlock();
-            public DecalProjector Floor; public Material FloorMat;public MeshRenderer Flat;public Material FlatMat;
+            public ImpactGroundPatch Patch;
             public Light Light; public int Seen; public float Last=-99;
             public int Kind;
         }
@@ -48,7 +47,7 @@ namespace Exoduser.UnityPort.Vfx
         readonly Transform parent;
         readonly Material matter,ground,flat;
         readonly VisualEffectAsset graph;
-        readonly Mesh crystal,thorn,crescent;
+        readonly Mesh crystal,thorn,crescent,orb;
         readonly Dictionary<string,Handle> live=new Dictionary<string,Handle>();
         readonly Stack<Handle> free=new Stack<Handle>();
         readonly List<string> stale=new List<string>();
@@ -77,7 +76,7 @@ namespace Exoduser.UnityPort.Vfx
             ground=Resources.Load<Material>("VFX/Impact/M_SkillGround");
             flat=Resources.Load<Material>("VFX/Impact/M_SkillFloor");
             graph=Resources.Load<VisualEffectAsset>("VFX/Impact/VFX_SkillMatter");
-            crystal=Crystal(false);thorn=Crystal(true);crescent=Crescent();
+            crystal=Crystal(false);thorn=Crystal(true);crescent=Crescent();orb=Orb();
             if(!Ready)Debug.LogError("[임팩트] 스킬 Graph/바닥/물질 재질 누락");
         }
         static Mesh Crystal(bool spike)
@@ -109,6 +108,17 @@ namespace Exoduser.UnityPort.Vfx
             }
             var m=new Mesh{name="절제된 기검참 외곽"};m.SetVertices(vs);m.SetTriangles(ts,0);m.RecalculateNormals();m.RecalculateBounds();return m;
         }
+        static Mesh Orb()
+        {
+            const int rows=8,cols=12;var vs=new List<Vector3>();var ts=new List<int>();
+            for(int j=0;j<=rows;j++)for(int i=0;i<=cols;i++)
+            {
+                float a=i*Mathf.PI*2/cols,b=j*Mathf.PI/rows,r=.5f*(1+.025f*Mathf.Sin(a*3)*Mathf.Sin(b*4));
+                vs.Add(new Vector3(Mathf.Cos(a)*Mathf.Sin(b),Mathf.Cos(b),Mathf.Sin(a)*Mathf.Sin(b))*r);
+            }
+            for(int j=0;j<rows;j++)for(int i=0;i<cols;i++){int a=j*(cols+1)+i,b=a+cols+1;ts.Add(a);ts.Add(a+1);ts.Add(b);ts.Add(a+1);ts.Add(b+1);ts.Add(b);}
+            var m=new Mesh{name="실체가 있는 불규칙 탄 본체"};m.SetVertices(vs);m.SetTriangles(ts,0);m.RecalculateNormals();m.RecalculateBounds();return m;
+        }
         Handle Get(string key,int kind,int count)
         {
             if(live.TryGetValue(key,out var h)){h.Seen=frame;return h;}
@@ -127,9 +137,8 @@ namespace Exoduser.UnityPort.Vfx
                     r.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;r.receiveShadows=true;h.Parts[i]=go.transform;
                 }
             }
-            foreach(var part in h.Parts)part.GetComponent<MeshFilter>().sharedMesh=kind==2||kind==1?thorn:kind==6?crescent:crystal;
-            if(h.Floor!=null)h.Floor.enabled=false;
-            if(h.Flat!=null)h.Flat.enabled=false;
+            for(int i=0;i<h.Parts.Length;i++)h.Parts[i].GetComponent<MeshFilter>().sharedMesh=kind==2||kind==1?thorn:kind==6?crescent:(kind==7||kind==8)&&i==0?orb:crystal;
+            if(h.Patch!=null)h.Patch.Hide();
             if(h.Light!=null)h.Light.enabled=false;
             h.Go.SetActive(true);live.Add(key,h);PeakHandles=Math.Max(PeakHandles,live.Count);return h;
         }
@@ -148,23 +157,9 @@ namespace Exoduser.UnityPort.Vfx
         static void Place(Handle h,float x,float y,float lift=0){h.Go.transform.position=ImpactSpace.Point(x,y,lift);h.Go.transform.rotation=ImpactSpace.FloorRotation;h.Go.transform.localScale=Vector3.one;}
         void Floor(Handle h,float radius,uint fill,uint edge,float alpha,float emission)
         {
-            if(!NativeRemodel3D.Active)
-            {
-                if(h.Floor!=null)h.Floor.enabled=false;
-                if(h.Flat==null){var go=new GameObject("2D 스킬 바닥 반사");go.transform.SetParent(h.Go.transform,false);go.AddComponent<MeshFilter>().sharedMesh=ImpactSpace.FloorQuad;h.Flat=go.AddComponent<MeshRenderer>();h.FlatMat=new Material(flat);h.Flat.sharedMaterial=h.FlatMat;h.Flat.sortingOrder=-19000;h.Flat.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;}
-                h.Flat.enabled=alpha>0;h.Flat.transform.localPosition=new Vector3(0,.12f,0);h.Flat.transform.localScale=Vector3.one*(radius*2);
-                h.FlatMat.SetColor("_FillColor",Hex(fill));h.FlatMat.SetColor("_EdgeColor",Hex(edge));h.FlatMat.SetFloat("_Fade",alpha);h.FlatMat.SetFloat("_EdgeGlow",emission);return;
-            }
-            if(h.Flat!=null)h.Flat.enabled=false;
-            if(h.Floor==null)
-            {
-                var go=new GameObject("스킬 바닥 반사");go.transform.SetParent(h.Go.transform,false);go.transform.localRotation=Quaternion.Euler(90,0,0);
-                h.Floor=go.AddComponent<DecalProjector>();h.FloorMat=new Material(ground);h.Floor.material=h.FloorMat;
-            }
-            float box=radius*2+.12f;var m=h.FloorMat;
-            m.SetFloat("_Shape",0);m.SetFloat("_Progress",1);m.SetFloat("_Radius",radius);m.SetFloat("_SizeX",box);m.SetFloat("_SizeY",box);
-            m.SetColor("_FillColor",Hex(fill));m.SetColor("_EdgeColor",Hex(edge));m.SetFloat("_EdgeGlow",emission);m.SetFloat("_Flash",0);
-            h.Floor.transform.localPosition=new Vector3(0,.12f,0);h.Floor.size=new Vector3(box,box,.3f);h.Floor.fadeFactor=alpha;h.Floor.enabled=alpha>0;
+            if(h.Patch==null)h.Patch=new ImpactGroundPatch(h.Go.transform,flat,-19000);
+            var core=NativeRemodel3D.Active?RemodelWorld.ToCore(h.Go.transform.position):new Vector2(h.Go.transform.position.x*100,-h.Go.transform.position.y*100);
+            h.Patch.Draw(core.x,core.y,radius,Hex(fill),Hex(edge),alpha,emission);
         }
         void Light(Handle h,Color c,float range,float intensity)
         {
@@ -256,10 +251,10 @@ namespace Exoduser.UnityPort.Vfx
             }
             foreach(var o in sim.MaliceOrbs)if(o.Active)
             {
-                var h=Get("malice"+o.Id,3,5);if(h==null)continue;seenSkills.Add("fireball");Place(h,o.X,o.Y,.35f);
+                var h=Get("malice"+o.Id,8,4);if(h==null)continue;seenSkills.Add("fireball");Place(h,o.X,o.Y,.35f);
                 float r=o.R*.01f;
-                for(int i=0;i<5;i++){var p=h.Parts[i];float a=i*Mathf.PI*2/5+now*2;p.localPosition=new Vector3(Mathf.Cos(a)*r*2.25f,Mathf.Sin(a*2)*r*.25f,Mathf.Sin(a)*r*2.25f);p.localRotation=Quaternion.Euler(now*70+i*27,i*137,now*50);p.localScale=new Vector3(r*.65f,r*(1.2f+i*.12f),r*.6f);}
-                Surface(h,0x161226,0xe4dcf4,.65f,now);Emit(h,now,o.X,o.Y,.35f,0xe4dcf4,0x6a56a8,0x161226,r*1.8f,.3f,.09f,.12f);Light(h,new Color(.62f,.53f,.72f),1.1f,.5f);
+                for(int i=0;i<4;i++){var p=h.Parts[i];float a=i*Mathf.PI*2/3+now*1.2f;p.localPosition=i==0?Vector3.zero:new Vector3(Mathf.Cos(a)*r*2.1f,Mathf.Sin(a*2)*r*.25f,Mathf.Sin(a)*r*2.1f);p.localRotation=Quaternion.Euler(now*35+i*27,i*137,now*25);p.localScale=i==0?Vector3.one*r*2.75f:new Vector3(r*.7f,r*1.35f,r*.65f);}
+                Surface(h,0x6a56a8,0xe4dcf4,.5f,now);Emit(h,now,o.X,o.Y,.35f,0xe4dcf4,0x6a56a8,0x161226,r*1.8f,.3f,.09f,.12f);Light(h,new Color(.62f,.53f,.72f),1.1f,.5f);
             }
             foreach(var p in sim.Projectiles)if(p.Active)
             {
@@ -282,12 +277,18 @@ namespace Exoduser.UnityPort.Vfx
             {
                 if(!p.Active||p.Mine||p.Friendly||p.BlueBean||p.BlackBean||p.BwBean)continue;
                 int kind=SkillPresentation.BulletKind(p.DruidPoison,p.ParryClass=="physical",p.El);if(kind==0)continue;
-                var h=Get("bullet"+System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(p),kind==2?2:3,kind==2?3:5);if(h==null)continue;drawn.Add(p);
-                Place(h,(float)p.X,(float)p.Y,.3f);float r=Mathf.Clamp((float)p.R*.01f,.045f,.3f),a=Mathf.Atan2((float)p.Vy,(float)p.Vx);
+                var h=Get("bullet"+System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(p),kind==2?2:kind==1?7:8,kind==2?3:4);if(h==null)continue;drawn.Add(p);
+                Place(h,(float)p.X,(float)p.Y,.3f);float width=(float)SkillPresentation.EnemyWidth(p.DruidPoison,p.ParryClass=="physical",p.ElemBall,p.Sz)*.01f,r=width*.5f,a=Mathf.Atan2((float)p.Vy,(float)p.Vx);
                 h.Go.transform.rotation=ImpactSpace.FloorRotation*Quaternion.Euler(0,a*Mathf.Rad2Deg,0);
-                for(int i=0;i<h.Parts.Length;i++){var t=h.Parts[i];float b=i*Mathf.PI*2/h.Parts.Length+now*(kind==1?3:1);t.localPosition=kind==2?new Vector3(-i*r*.65f,0,0):new Vector3(Mathf.Cos(b)*r*.45f,Mathf.Sin(b*2)*r*.3f,Mathf.Sin(b)*r*.45f);t.localRotation=kind==2?Quaternion.Euler(0,0,-90):Quaternion.Euler(now*70+i*41,now*30,i*73);t.localScale=kind==2?new Vector3(r*.8f,r*3,r*.8f):new Vector3(r*1.4f,r*1.8f,r*1.4f);}
+                for(int i=0;i<h.Parts.Length;i++)
+                {
+                    var t=h.Parts[i];float b=i*Mathf.PI*2/3+now;
+                    t.localPosition=kind==2?new Vector3(-i*width*.16f,0,(i-1)*width*.08f):i==0?Vector3.zero:new Vector3(Mathf.Cos(b)*width*.36f,Mathf.Sin(b*2)*width*.05f,Mathf.Sin(b)*width*.36f);
+                    t.localRotation=kind==2?Quaternion.Euler(0,0,-90):Quaternion.Euler(now*20+i*41,now*15,i*73);
+                    t.localScale=kind==2?new Vector3(width*(i==0?.22f:.14f),width*(i==0?.58f:.36f),width*.18f):i==0?(kind==1?Vector3.one*width*.66f:new Vector3(width*.72f,width*.28f,width*.34f)):new Vector3(width*.18f,width*.25f,width*.17f);
+                }
                 uint core=kind==1?SkillPresentation.EnemyPoisonCore:kind==2?0xefe6d2U:SkillPresentation.EnemyDarkCore,mid=kind==1?SkillPresentation.EnemyPoisonMid:kind==2?0x9a8a72U:SkillPresentation.EnemyDarkMid,dark=kind==1?SkillPresentation.EnemyPoisonShadow:kind==2?0x2a2220U:SkillPresentation.EnemyDarkShadow;
-                Surface(h,dark,core,kind==2?.35f:.9f,now);Emit(h,now,(float)p.X,(float)p.Y,.3f,core,mid,dark,r*1.3f,.22f,.07f,.24f);
+                Surface(h,mid,core,kind==2?.35f:.7f,now);Emit(h,now,(float)p.X,(float)p.Y,.3f,core,mid,dark,Mathf.Min(.5f,r),.22f,.04f,.24f);
                 if(kind==1)PoisonFrames++;else if(kind==2)ThornFrames++;else DarkFrames++;
             }
             stale.Clear();foreach(var kv in live)if(kv.Value.Seen!=frame)stale.Add(kv.Key);
@@ -296,6 +297,6 @@ namespace Exoduser.UnityPort.Vfx
         }
         void OnMaliceExploded(MaliceOrb o){if(Active)blasts.Enqueue(new Vector3(o.X,o.Y,o.ExplR));}
         public void Reset(){if(bound!=null)bound.MaliceOrbExploded-=OnMaliceExploded;foreach(var h in live.Values){h.Go.SetActive(false);free.Push(h);}live.Clear();drawn.Clear();seenSkills.Clear();blasts.Clear();GraphEvents=PeakHandles=PoisonFrames=ThornFrames=DarkFrames=0;foreach(var p in puffs)if(p!=null){p.Go.SetActive(false);p.Born=-99;}bound=null;}
-        public void Dispose(){Reset();while(free.Count>0){var h=free.Pop();if(h.FloorMat!=null)UnityEngine.Object.Destroy(h.FloorMat);if(h.FlatMat!=null)UnityEngine.Object.Destroy(h.FlatMat);UnityEngine.Object.Destroy(h.Go);}foreach(var p in puffs)if(p!=null){p.Attr.Dispose();UnityEngine.Object.Destroy(p.Go);}UnityEngine.Object.Destroy(crystal);UnityEngine.Object.Destroy(thorn);UnityEngine.Object.Destroy(crescent);if(Current==this)Current=null;}
+        public void Dispose(){Reset();while(free.Count>0){var h=free.Pop();if(h.Patch!=null)h.Patch.Dispose();UnityEngine.Object.Destroy(h.Go);}foreach(var p in puffs)if(p!=null){p.Attr.Dispose();UnityEngine.Object.Destroy(p.Go);}UnityEngine.Object.Destroy(crystal);UnityEngine.Object.Destroy(thorn);UnityEngine.Object.Destroy(crescent);UnityEngine.Object.Destroy(orb);if(Current==this)Current=null;}
     }
 }

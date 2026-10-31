@@ -20,10 +20,10 @@ edge=g.prop_color('Edge',(0.55,0.48,0.35,1))
 glow=g.prop_float('Glow',0,(0,2))
 phase=g.prop_float('Phase',0)
 body='''
-float veins = pow(saturate(0.5 + 0.5 * sin(Pos.x * 29.0 + sin(Pos.y * 37.0 + Pos.z * 19.0) * 2.3)), 18.0);
-float grain = 0.75 + 0.25 * sin(dot(Pos, float3(83.0,67.0,71.0)));
-Color = lerp(Base * grain, Edge, veins * 0.35);
-Emission = Edge * veins * Glow * (0.7 + 0.3 * sin(Phase * 7.0));
+float veins = pow(saturate(0.5 + 0.5 * sin(Pos.x * 29.0 + sin(Pos.y * 37.0 + Pos.z * 19.0) * 2.3)), 12.0);
+float grain = 0.84 + 0.16 * sin(dot(Pos, float3(43.0,37.0,41.0)));
+Color = lerp(Base * grain, Edge, 0.22 + veins * 0.28);
+Emission = Edge * Glow * (0.22 + veins * 0.35) * (0.94 + 0.06 * sin(Phase * 7.0));
 '''
 cf=g.custom_function('VeinedMaterial',body,[('Pos','vec3'),('Base','vec3'),('Edge','vec3'),('Glow','float'),('Phase','float')],[('Color','vec3'),('Emission','vec3')])
 pos=g.from_sample('PositionNode',m_Space=0);g.edge(pos,0,cf,'Pos')
@@ -82,10 +82,23 @@ uv=g.from_sample('UVNode');g.edge(uv,0,cf,'UV')
 for name,p in [('FillColor',fill),('EdgeColor',edge),('EdgeGlow',glow),('Fade',fade)]:g.edge(g.prop_node(p),0,cf,name)
 for name,slot in [('Color','BaseColor'),('Emission','Emission'),('Alpha','Alpha')]:g.edge(cf,name,g.block('SurfaceDescription.'+slot),0)
 p=out/'SG_SkillFloor.shadergraph';g.write(str(p));meta(p)
+# The front contact body is independent from the longer GPU debris system.
+objs=load_multi(str(p));fn=next(o for o in objs if o.get('m_FunctionBody'))
+fn['m_FunctionName']='ContactFace'
+fn['m_FunctionBody']='''
+float2 q=(UV-0.5)*2.0;
+float a=atan2(q.y,q.x);
+float radius=length(q)/ (0.92+0.055*sin(a*5.0)+0.025*cos(a*9.0));
+float body=1.0-smoothstep(0.65,1.0,radius);
+Color=lerp(FillColor,EdgeColor,saturate(radius));
+Emission=Color*EdgeGlow;
+Alpha=body*Fade;
+'''
+p=out/'SG_ContactFlash.shadergraph';dump_multi(objs,str(p));meta(p)
 # A separate graph asset for the sparse skill motes and debris; the proven four-system
 # event topology is retained, exposed values are supplied per skill at runtime.
 p=out/'VFX_SkillMatter.vfx';p.write_text((out/'VFX_ImpactBurst.vfx').read_text(encoding='utf-8').replace('VFX_ImpactBurst','VFX_SkillMatter'),encoding='utf-8');meta(p)
-for name in ['SG_SkillMatter','SG_SkillGround','SG_SkillFloor']:
+for name in ['SG_SkillMatter','SG_SkillGround','SG_SkillFloor','SG_ContactFlash']:
     p=out/(name+'.shadergraph');guid=Path(str(p)+'.meta').read_text().split('guid: ')[1].splitlines()[0]
     m=out/('M_'+name[3:]+'.mat')
     m.write_text('%YAML 1.1\n%TAG !u! tag:unity3d.com,2011:\n--- !u!21 &2100000\nMaterial:\n  serializedVersion: 8\n  m_ObjectHideFlags: 0\n  m_CorrespondingSourceObject: {fileID: 0}\n  m_PrefabInstance: {fileID: 0}\n  m_PrefabAsset: {fileID: 0}\n  m_Name: M_'+name[3:]+'\n  m_Shader: {fileID: -6465566751694194690, guid: '+guid+', type: 3}\n  m_Parent: {fileID: 0}\n  m_ModifiedSerializedProperties: 0\n  m_ValidKeywords: []\n  m_InvalidKeywords: []\n  m_LightmapFlags: 4\n  m_EnableInstancingVariants: 0\n  m_DoubleSidedGI: 0\n  m_CustomRenderQueue: -1\n  stringTagMap: {}\n  disabledShaderPasses: []\n  m_LockedProperties: \n  m_SavedProperties:\n    serializedVersion: 3\n    m_TexEnvs: []\n    m_Ints: []\n    m_Floats: []\n    m_Colors: []\n  m_BuildTextureStacks: []\n',encoding='utf-8');meta(m)
@@ -94,7 +107,7 @@ for name in ['SkillPresentation.cs','NativeSkillRemaster.cs']:
     if p.exists():meta(p)
 # Windows Path.write_text defaults to CRLF; Unity's text assets are stored as LF.
 # Preserve quoted scalar content, remove only end-of-line formatting whitespace.
-files=list(out.glob('SG_Skill*'))+list(out.glob('M_Skill*'))+list(out.glob('VFX_SkillMatter*'))
+files=list(out.glob('SG_Skill*'))+list(out.glob('M_Skill*'))+list(out.glob('SG_Contact*'))+list(out.glob('M_Contact*'))+list(out.glob('VFX_SkillMatter*'))
 files += [root/'Assets/Exoduser/Runtime/Vfx'/n for n in ['SkillPresentation.cs.meta','NativeSkillRemaster.cs.meta']]
 for p in files:
     if p.exists():p.write_text('\n'.join(line.rstrip(' \t') for line in p.read_text(encoding='utf-8').splitlines())+'\n',encoding='utf-8',newline='\n')

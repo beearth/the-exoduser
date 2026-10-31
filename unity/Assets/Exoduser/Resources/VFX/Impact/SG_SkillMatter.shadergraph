@@ -1153,7 +1153,7 @@
     "m_SourceType": 1,
     "m_FunctionName": "VeinedMaterial",
     "m_FunctionSource": "",
-    "m_FunctionBody": "\nfloat veins = pow(saturate(0.5 + 0.5 * sin(Pos.x * 29.0 + sin(Pos.y * 37.0 + Pos.z * 19.0) * 2.3)), 18.0);\nfloat grain = 0.75 + 0.25 * sin(dot(Pos, float3(83.0,67.0,71.0)));\nColor = lerp(Base * grain, Edge, veins * 0.35);\nEmission = Edge * veins * Glow * (0.7 + 0.3 * sin(Phase * 7.0));\n"
+    "m_FunctionBody": "\nfloat veins = pow(saturate(0.5 + 0.5 * sin(Pos.x * 29.0 + sin(Pos.y * 37.0 + Pos.z * 19.0) * 2.3)), 12.0);\nfloat grain = 0.84 + 0.16 * sin(dot(Pos, float3(43.0,37.0,41.0)));\nColor = lerp(Base * grain, Edge, 0.22 + veins * 0.28);\nEmission = Edge * Glow * (0.22 + veins * 0.35) * (0.94 + 0.06 * sin(Phase * 7.0));\n"
 }
 
 {
