@@ -46,7 +46,7 @@ AudioRenderer.Start가 성공하기 전에는 Listener를 열지 않는다. 녹�
 합성음 0% 회귀: 기존 소스1/버스−80dB의 잔여값 가능성을 실제 어댑터로 RED4실패 재현 후, source도0으로 설정해 2370검사/0실패. 이미 재생 중인 합성음의 60/100→0 변경도 즉시 source0이다. 실제 30초 캡처의 28초 지점에서 같은 Source 무음·출력버퍼를 별도 검사한다. 0보다 큰 SFX%에서 단일 bus gain 동작은 유지한다.
 
 
-## 2026-10-31 정식 실행 차단 — NOT_READY
+## 2026-10-31 이전 정식 실행 차단 이력 — 당시 NOT_READY
 
 - 공식 `exo-unity.ps1` 빌드 `b5f3eff0`(07:21 UTC)은 필수 영상 복구 뒤 Unity 6000.6.7f1을 시작했으나 `Upm-74280` IPC 연결이 30초에 실패해 exit1로 종료했다. 컴파일·실행 단계는 0ms이며 오류 목록이 비었다는 사실을 컴파일 성공으로 세지 않는다. 완료 JSON의 USER_SAVE 변경0·Editor 종료 확인을 보존했다.
 - 프로젝트/Packages 실체는 G: NTFS, Library는 아직 없고 UPM 기본 로그는 이번 실행보다 오래된 기록뿐이었다. 제한된 Node 자식 환경에 APPDATA/ALLUSERSPROFILE/PROGRAMDATA/COMSPEC가 없음을 관측했지만 UPM 직접 원인으로 확정하지 않았다. 공식 UPM의 전역 설정 경로는 [Unity Configuration files](https://docs.unity.com/en-us/engine/6000.6/manual/packages-list/upm-config/files)를 참고한다. 전역/시스템 환경·캐시·보안·권한 변경0.
@@ -95,3 +95,25 @@ R6 `8fd2b1a09`의 공식 빌드6640993b·M1 23/23·TAB74/74·녹음476/476·over
 | 새 게이트 | 병합 Runtime/Core로 새 R7 공식 빌드·M1·TAB·녹음/영상·overlap 및 관련 Pause Player 회귀. R6 바이너리 영수증으로 병합본을 PASS 처리하지 않음 |
 
 R5/R6 생성 파생파일은 각각 tracked519·new56을 I:에 SHA보존한 뒤 사전 원본 byte/부재로 복귀했다. 기존 guard.baseline WIP·INDEX를 보존한다. 최신 공통 계약의 상세는 [Pause SSOT](UNITY_PAUSE_SETTINGS_20261025.md)를 따른다.
+
+## 2026-10-31 R7 최종 공식 검수 — 공통 반영 준비 완료
+
+실행 소스57bb84b298ebfb41412662fc027ed18a84f8a802, Unity tree11dbc7dbb04a5897522d5f4ce5668a6fc987c977. 정상 merge의 두 부모는8fd2b1a09와 공통118a9421a다. 모든 빌드·Player·FFmpeg를 셸 도구의 시스템 PowerShell -NoProfile -Command 절대경로로 실행했고, Unity/Player는 공식 exo-unity를 거쳤다. node_repl/child_process 직접 호출0. 공유 예약이 선두가 될 때까지 기다렸으며 타인 예약·잠금·프로세스 변경0이다.
+
+| 최종 같은 빌드의 범위 | 실제 근거 |
+|---|---|
+| 공식 빌드 | 55871b90: Unity6000.6.7f1 Win64 x64·remodel-scenes1·BuildReport Succeeded/errors0·3109271135bytes, exit0·compileErrors0·USER_SAVE0. 공식 errorLogs2 및 비치명적 라이선스 Access token 갱신 오류 이력은 보존하며 엔진 로그 전체0오류로 표현하지 않음 |
+| 실제 패키지 | 212파일·160DLL, MCP 파일/참조0, globalgamemanagers에 RM1_Slice 포함 |
+| M1 | f7470af8: 23/23·Direct3D11/RX9070XT·32캡처. 스크립트/API fixture이며 자연 플레이 아님 |
+| TAB 입력 | 58236fdf: 74/74, 실제 InputSystem F10·자기 숨은 창 WM Down/Up3쌍·Layout252/Repaint246·SFX0/60/100·활성탭 무음 |
+| 출력버퍼 | 31f260ba: 476/476·450프레임/15fps·48kHz stereo·2879488샘플/29.994667초, 장치무음. 파일 내 SFX0%의27/28초 구간 peak/RMS0, 활성탭19초 구간0. 원래 ENTER gain2의 float peak2.000018/PCM16 peak1 유지 |
+| 화면 겹침 | 55c4e670: ko/de/fr·1600/1920·168프레임·문제0·누락0, 실제 Runtime SHA 및 Repaint 계측 |
+| Pause 일반3D / fallen3D | 1d349e98 40/40, 5dca24f4 19/19 |
+| Pause 신규 입장 / focus | 9b648249 21/21, 17fe52e3 10/10. focus는 제품 OnApplicationFocus 본문 fixture이며 실제 OS 전경 전환 아님 |
+| Pause 일반2D / fallen2D | 42d9211f 40/40, e3d50423 19/19. 합계6실행149/149, 정상 Quit까지 확인 |
+| 모든 Player 안전 | 정상exit0·노출창0·잔여0·USER_SAVE0·숨은desktop 닫힘, 같은 Runtime/Core 확인 |
+| 30초 유음 영상 | UI-sound-30s-r7.mp4: H2641600×900/15fps/450프레임·AAC48k stereo·30.000000초·8697318bytes·전체 FFmpeg 디코드0오류. SHA256 1b0af1f32af2a2effbfff60a6c7d2cced53244b287f39b2d99b9130ceaabbcc5 |
+| 1x 확인 | R7 frame0045 인장, frame0195 인벤토리, frame0335 실제Lv2/LEVELUP, fallen-after-resume, startup-input-restored의 실제1600×900 원본 확인. 영상은 고정15fps QA 프레임 순서/출력버퍼 결합이며 벽시계30초의 자연 조작 영상 아님 |
+| 소스 보존 | R7 자동 파생 tracked519·new56을 I:에 SHA보존 후 빌드 전 원본 byte/부재로 복귀. INDEX clean·원래 guard WIP SHA9414ce48870885726bd4bd6db7df52d6d3ad8aa63edcb7f67c6cb3f63c4bb8ca 유지 |
+
+Runtime SHA256 `32669c0d133674b36ce39b0ac72d838a8f5d995afd11f49818e1d267390e0a15`, Core SHA256 `7314f8d003150700548f191f0802371eab66f85ca19ed1c9247976c63e81e181`. 상세는 I:/EXODUSER-Storage/demo-art/ui-sound/r7-final-qa-audit.json·r7-suite-summary.json·r7-video-probe.json·r7-restoration-proof.json에 있다. 인간 청음·자연 전투 완주·Mac은 미검증이고 기존 전체 아트 RETOUCH 유지다. 이번 인수 범위는 복구 후보의 웹 fc9b6290d 기준 UI 매칭이며, 브리프 말미 웹 두둥1~3 청음 후보는 임의 최종 채택하지 않는다. 공통/바탕화면 전달 결과는 후속 영수증으로 별도 확정한다.
