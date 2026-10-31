@@ -90,3 +90,7 @@
 - private desktop/네이티브 창 API 근거: https://learn.microsoft.com/en-us/windows/win32/winstation/desktops , https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setforegroundwindow , https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createwindowexw . 전경/desktop 사전 조건 실패 시 다른 창을 시도하지 않고 검수 실패로 끝낸다.
 
 - 네이티브 포커스 콜백 기준 횟수는 검수 창 생성 전에 저장한다. CreateWindowEx 자체가 활성 전환을 발생시키는 경우도 빠짐없이 관측한다.
+
+- 최종 r2의 HP0 실제 클릭/Enter/ESC 재개와 틱 진행은 통과했다. 직접 SetInventory(true) 직후 같은 프레임에 TAB를 누른 검수는 Navigation.Open의 정상 입력 해제 fence에 걸렸다. 검수는 빈 입력 2프레임을 실제 Update에 보내 WaitingForRelease=false를 확인한 뒤 TAB를 누른다. 제품 fence를 강제 해제하거나 닫기 검사를 완화하지 않는다.
+
+- 네이티브 포커스 run a8804308은 ExoDesk의 foreground=0으로 사전 조건 실패했다. 검수 창 생성/전경 변경/desktop 전환은0이다. 무창 환경에서 실제 OS 전환은 미검증으로 남기고, 미사용 전경/네이티브 창 생성 API는 QA 도구에서 제거했다. focus-callback 사례는 실제 Player 제품 OnApplicationFocus 본문→정지/복귀/Enter 재개의 기능 검수이며 실제 OS 이벤트 전달 PASS가 아니다.
