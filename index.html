@@ -1272,7 +1272,7 @@ function _gpDot(on){
 </script>
 <script>
 // ═══ 로비 배경: 트랜지션 이미지 중 랜덤 1장 ═══
-(function(){const n=~~(Math.random()*19)+1;const frame=document.createElement('div');frame.id='loadingBodyArt';frame.className='loading-art';frame.setAttribute('aria-hidden','true');const img=document.createElement('img');img.alt='';frame.appendChild(img);document.body.prepend(frame);LoadingArt.set(img,'img/lording/'+n+'.png?v=20260930-loading-remaster5');})();
+(function(){const _ok=[1,2,3,4,5,6,7,8,9,10,11,12,15,16,18,19];const n=_ok[~~(Math.random()*_ok.length)];const frame=document.createElement('div');frame.id='loadingBodyArt';frame.className='loading-art';frame.setAttribute('aria-hidden','true');const img=document.createElement('img');img.alt='';frame.appendChild(img);document.body.prepend(frame);LoadingArt.set(img,'img/lording/'+n+'.png?v=20260930-loading-remaster5');})();
 // 브라우저 줌 차단
 addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey)e.preventDefault()},{passive:false});
 // ── 빌드 버전 (demo.html → 'demo', ea.html → 'ea') ──
@@ -2814,7 +2814,7 @@ function pickRandomLoadingImage(){
 // - 1~19.png 19장 (game.html 부트 로딩 배경)
 function _preloadLoadingImgs(){
   _RD_IMGS.forEach(f=>{const i=new Image();i.src='img/lording/'+f+'?v=20261006-rd13-grip';});
-  for(let n=1;n<=19;n++){const i=new Image();i.src='img/lording/'+n+'.png?v=20260930-loading-remaster5';}
+  for(let n=1;n<=19;n++){if(n===13||n===14||n===17)continue;const i=new Image();i.src='img/lording/'+n+'.png?v=20260930-loading-remaster5';}
 }
 
 function showLoading(msg){

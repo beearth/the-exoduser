@@ -63833,7 +63833,8 @@ function _pickTransitionRd(){
   return n;
 }
 // 1~19.png 랜덤 로딩 이미지
-for(let i=1;i<=19;i++)_STAGE_TRANSITION_RD.push('img/lording/'+i+'.png?v=20260930-loading-remaster5');
+// 13·14·17은 옛 텍스트 로고가 박힌 그림이라 제외 (2026-10-31 사용자 폐기)
+for(let i=1;i<=19;i++)if(i!==13&&i!==14&&i!==17)_STAGE_TRANSITION_RD.push('img/lording/'+i+'.png?v=20260930-loading-remaster5');
 // 프리로드 제거 — 스테이지 전환 시 lazy load (배포 초기 로딩 최적화)
 function showStageTransition(callback){
   const el=$('stageTransition'),bar=$('stLoadBar'),name=$('stNextName'),img=$('stRndImg'),info=$('stFloorInfo');

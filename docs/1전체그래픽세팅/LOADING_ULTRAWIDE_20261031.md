@@ -155,3 +155,12 @@ VISUAL VERDICT: PASS — 지정 해상도에서 로딩 원본 구도·생성3장
 보완 검사 중 Node 도구 세션의30초 제한으로 격리 서버가 종료된 연결 거부는 supplement-v2.log에 보존했다. 동일 포트의 자기 QA 서버만 다시 준비해 HTTP200 확인 후 supplement-v3에서 최종 보완 검사를 완료했다. 사용자 서버/실행기는 변경하지 않았다.
 
 원격 통합 전 expected origin/main=9f5db2ac6223cd1696870865057f37721922ecae. 자기 변경을 먼저 경로 지정 커밋하고 최신 main을 정상 merge한 뒤, 검수·원격 ref 대조를 진행한다. 최종 SHA와 반영 결과는 외부 원격 영수증 remote-receipt.json 및 작업 완료 보고로 연결한다.
+
+## 순환 제외 (2026-10-31 사용자 폐기)
+| 번호 | 파일 | 사유 | 처리 |
+|---|---|---|---|
+| 13 | `img/lording/13.png` | 옛 텍스트 로고(EXODUSER · HELL LORD)가 그림에 박혀 있어 현행 로고와 다름 | 로딩 순환·프리로드에서 제외(파일은 보존) |
+| 14 | `img/lording/14.png` | 같음. 사용자가 32:9 로딩 화면에서 직접 지적("저 이미지는 버려라") | 같음 |
+| 17 | `img/lording/17.png` | 같음(붉은 큰 글자 로고) | 같음 |
+
+적용 위치: `index.html` 첫 로딩(`_ok` 목록)·`_preloadLoadingImgs`, `game.html` `_STAGE_TRANSITION_RD`. 순환 수는 19장에서 16장이 됐다. wide 확장판 파일은 그대로 두며, 참조만 끊는다.
