@@ -5,9 +5,9 @@
 <script src="loading-art.js?v=20261031-final35"></script>
 <script src="decision-sound.js?v=20261031"></script>
 <script src="fullscreen-art-data.js?v=20261031"></script>
-<script src="fullscreen-art.js?v=20261031"></script>
-<link rel="stylesheet" href="fullscreen-art.css?v=20261031">
-<script src="fullscreen-art-dom.js?v=20261031" defer></script>
+<script src="fullscreen-art.js?v=20261031-motion1"></script>
+<link rel="stylesheet" href="fullscreen-art.css?v=20261031-motion1">
+<script src="fullscreen-art-dom.js?v=20261031-motion1" defer></script>
 
 <script src="build-target.js"></script>
 <script src="player-attack-remaster.js?v=20260915-spin-speed15"></script>
@@ -9287,6 +9287,7 @@ let _scanCvs=null,_scanW=0,_scanH=0;
 let _bossCine={active:false,t:0,maxT:180,name:'',phase:0,lastBossId:null};
 // ─── [S03c] HW_TIER — 하드웨어 티어 감지 ───
 let _hwTier='?',_hwGPU='unknown',_benchDone=false,_benchFrames=[],_benchStart=0;
+globalThis.FullscreenArt?.setMotionPolicy?.(()=>_hwTier!=='C');
 function detectTier(){
   // 1) GPU renderer string
   _hwGPU='unknown';
@@ -63395,7 +63396,7 @@ function _renderIntroCutscene(){
   _cutC.style.display='block';
   const cx=_cutX,_fullW=_cutC.width,_fullH=_cutC.height;
   cx.direction=OPT.lang==='ar'?'rtl':'ltr';
-  // 16:9 레터박스 — 와이드 화면에서 검은 띠
+  // 글자/로고는 16:9 안전 영역, 확장 원화와 분위기는 실제 전체 화면.
   const _maxAR=16/9;
   const _curAR=_fullW/_fullH;
   let _lbX=0,_lbY=0,cw=_fullW,ch=_fullH;
@@ -63472,9 +63473,15 @@ function _renderIntroCutscene(){
     }
   }
 
+  cx.save();cx.translate(-_lbX,-_lbY);
+  globalThis.FullscreenArt?.drawAtmosphere?.(cx,_fullW,_fullH,now,_cutSeq==='PRO'?'ash':'mist');
+  cx.restore();
+
   // 나레이션 렌더 (프롤로그 narr 전용 — 하단 중앙, 타이틀·화자 대사 경로 불변)
   if(ln.narr&&ln.text){
-    cx.fillStyle='rgba(0,0,0,0.35)';cx.fillRect(0,0,cw,ch); // 가독성 오버레이
+    cx.save();cx.translate(-_lbX,-_lbY);
+    cx.fillStyle='rgba(0,0,0,0.35)';cx.fillRect(0,0,_fullW,_fullH); // 전체 폭 가독성 오버레이
+    cx.restore();
     cx.save();
     cx.globalAlpha=fadeAlpha;
     let _logoDrawn=false;

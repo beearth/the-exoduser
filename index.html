@@ -5,7 +5,7 @@
 <script src="loading-art.js?v=20261031-final35"></script>
 <script src="decision-sound.js?v=20261031"></script>
 <script src="fullscreen-art-data.js?v=20261031"></script>
-<script src="fullscreen-art.js?v=20261031"></script>
+<script src="fullscreen-art.js?v=20261031-motion1"></script>
 
 <script src="build-target.js"></script>
 <script src="release-version.js"></script>
@@ -1144,8 +1144,8 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 <script src="world-intro-subtitles-data.js?v=20260907-v13-exodus-ko-escape"></script>
 <script src="world-intro-subtitles.js?v=20260907-v6-cinema-size"></script>
 <link rel="stylesheet" href="cin-enter-engraved.css?v=20261029-enter2">
-<link rel="stylesheet" href="fullscreen-art.css?v=20261031">
-<script src="fullscreen-art-dom.js?v=20261031" defer></script>
+<link rel="stylesheet" href="fullscreen-art.css?v=20261031-motion1">
+<script src="fullscreen-art-dom.js?v=20261031-motion1" defer></script>
 <script>
 // ═══ 글로벌 게임패드 매니저 (전 화면 공통) ═══
 const _GP = {
@@ -4488,12 +4488,18 @@ function showCharGate(charId,storySeen=false){
   const cx=cv.getContext('2d');
   const embers=[];const mist=[];
   const MAX_EMBERS=40;const MAX_MIST=6;
-  function resize(){cv.width=cv.parentElement.offsetWidth;cv.height=cv.parentElement.offsetHeight}
+  function resize(){
+    const w=cv.parentElement.offsetWidth||innerWidth,h=cv.parentElement.offsetHeight||innerHeight;
+    const sx=w/(cv.width||w),sy=h/(cv.height||h);
+    for(const p of embers){p.x*=sx;p.y*=sy;}
+    for(const p of mist){p.x*=sx;p.y*=sy;}
+    cv.width=w;cv.height=h;
+  }
   resize();window.addEventListener('resize',resize);
   // 불씨 초기화
   for(let i=0;i<MAX_EMBERS;i++){
     embers.push({
-      x:Math.random()*2000,y:Math.random()*1200,
+      x:Math.random()*cv.width,y:Math.random()*cv.height,
       vx:(Math.random()-.5)*.3,vy:-(Math.random()*.8+.2),
       sz:Math.random()*2.5+.5,
       life:Math.random(),decay:Math.random()*.003+.001,
@@ -4503,7 +4509,7 @@ function showCharGate(charId,storySeen=false){
   // 안개 초기화
   for(let i=0;i<MAX_MIST;i++){
     mist.push({
-      x:Math.random()*2000,y:cv.height*(0.5+Math.random()*.5),
+      x:Math.random()*cv.width,y:cv.height*(0.5+Math.random()*.5),
       r:150+Math.random()*200,
       vx:(Math.random()-.5)*.15,
       alpha:Math.random()*.04+.01,
