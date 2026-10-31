@@ -1,7 +1,7 @@
 const fs=require('node:fs'),path=require('node:path');
 const geometry=require('./geometry.cjs');
 const requiredPages=['첫화면','브랜드인트로','메뉴','로비',...Array.from({length:5},(_,i)=>'캐릭터선택'+i),'이름입력','로딩',...Array.from({length:4},(_,i)=>'튜토리얼'+i),'HUD','일시정지','종료확인',...Array.from({length:4},(_,i)=>'설정'+i),...Array.from({length:4},(_,i)=>'설정스크롤'+i),'설정목록','인벤토리','스킬','대장간','능력치','클리어'];
-requiredPages.push(...Array.from({length:16},(_,i)=>i).filter(i=>i!==6).map(i=>'스킬슬롯'+String(i).padStart(2,'0')),'실습안내','실습진행','실습스크롤','봉안함','결정체','보관함',...['potion','salvage','reroll','crystal','craft'].map(t=>'대장간-'+t),'일반알림','부활대기','사망',...Array.from({length:8},(_,i)=>'지역유도'+i),'지역진입','지역정화');
+requiredPages.push(...Array.from({length:16},(_,i)=>i).filter(i=>i!==6).map(i=>'스킬슬롯'+String(i).padStart(2,'0')),'실습안내','실습진행','실습스크롤','봉안함','결정체','보관함',...['potion','salvage','reroll','crystal','craft'].map(t=>'대장간-'+t),'일반알림','부활대기','사망',...Array.from({length:8},(_,i)=>'지역유도'+i),'지역진입','지역정화','시네마틱','시네마틱언어','시네마틱일시정지','신규연출','신규연출완료');
 const loadingImages=[1,2,3,4,5,6,7,8,9,10,11,12,15,16,18,19];
 const right=r=>r.x+r.width,bottom=r=>r.y+r.height;
 const inside=(a,b,t=.5)=>a.x>=b.x-t&&a.y>=b.y-t&&right(a)<=right(b)+t&&bottom(a)<=bottom(b)+t;

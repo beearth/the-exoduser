@@ -11,7 +11,7 @@ namespace Exoduser.UnityPort {
    if(Flow.Page==LobbyPage.Title){DrawSilverGate();return;}
    var color=GUI.color;GUI.color=new Color(color.r,color.g,color.b,color.a*GateMovieOpacity);
    // The next decoder is preparing: keep black, never flash the closed door.
-   DrawMovie(new Rect(0,0,1920,1080),UsesGatePoster?gatePoster:null,false);GUI.color=color;
+   DrawMovie(new Rect(0,0,1920,1080),UsesGatePoster?gatePoster:null,false);NativeUiAudit.Region(new Rect(0,0,1920,1080),"component","cinematic-stage","중앙16:9 영상");GUI.color=color;
   }
   Texture2D gateShade,invitationShade;GUIStyle cinematicMicro,cinematicTiny,cinematicLanguage;
   void DrawGatePresentation(){
@@ -49,19 +49,23 @@ namespace Exoduser.UnityPort {
    cinematicLanguage=new GUIStyle(lobbyText){fontSize=14,alignment=TextAnchor.MiddleLeft};
   }
   void DrawCinematicLanguage(){
+   var savedMatrix=GUI.matrix;try{GUI.matrix=NativeUiViewport.RightMatrix;
    CinematicStyles();var rect=new Rect(1683.2f,32.4f,160,29);Fill(rect,new Color(0,0,0,.7f));
    var border=new Color(1,1,1,.2f);Line(new Vector2(rect.x,rect.y),new Vector2(rect.xMax,rect.y),border,1);Line(new Vector2(rect.x,rect.yMax),new Vector2(rect.xMax,rect.yMax),border,1);
    Line(new Vector2(rect.x,rect.y),new Vector2(rect.x,rect.yMax),border,1);Line(new Vector2(rect.xMax,rect.y),new Vector2(rect.xMax,rect.yMax),border,1);
    cinematicLanguage.normal.textColor=new Color(1,1,1,.7f);Label(new Rect(rect.x+12,rect.y,130,29),LobbyLanguageLabel(Language),cinematicLanguage,TextAnchor.MiddleLeft);
    Line(new Vector2(rect.xMax-16,rect.y+12),new Vector2(rect.xMax-12,rect.y+16),new Color(1,1,1,.7f),1);Line(new Vector2(rect.xMax-12,rect.y+16),new Vector2(rect.xMax-8,rect.y+12),new Color(1,1,1,.7f),1);
-   if(NativeUiAudit.Button(rect,"",GUIStyle.none))ToggleLanguages();
+   NativeUiAudit.Region(rect,"component","cinematic-language","실제 오른쪽/높이기준");if(NativeUiAudit.Button(rect,"",GUIStyle.none))ToggleLanguages();
+   }finally{GUI.matrix=savedMatrix;}
   }
   void DrawCinematicSkip(){
+   var savedMatrix=GUI.matrix;try{GUI.matrix=NativeUiViewport.RightMatrix;
    CinematicStyles();float a=holdDelta>0?1:.5f;var center=new Vector2(1830,990);
    DrawCinematicArc(center,34,1,new Color(68/255f,68/255f,68/255f,a*.5f));
    if(holdDelta>0)DrawCinematicArc(center,34,holdDelta,new Color(232/255f,224/255f,208/255f,a));
    cinematicMicro.normal.textColor=new Color(136/255f,136/255f,136/255f,a*.8f);Label(new Rect(1770,980,120,20),"SPACE / ESC",cinematicMicro,TextAnchor.MiddleCenter);
-   cinematicTiny.normal.textColor=new Color(.4f,.4f,.4f,a*.6f);Label(new Rect(1770,1030,120,20),"HOLD TO SKIP",cinematicTiny,TextAnchor.MiddleCenter);
+   cinematicTiny.normal.textColor=new Color(.4f,.4f,.4f,a*.6f);Label(new Rect(1770,1030,120,20),"HOLD TO SKIP",cinematicTiny,TextAnchor.MiddleCenter);NativeUiAudit.Region(new Rect(1770,954.5f,120,95.5f),"component","cinematic-skip","실제 오른쪽 아래");
+   }finally{GUI.matrix=savedMatrix;}
   }
   static void DrawCinematicArc(Vector2 center,float radius,float fraction,Color color){
    int n=Mathf.CeilToInt(120*fraction);for(int i=0;i<n;i++){float a=-Mathf.PI/2+2*Mathf.PI*i/120,b=-Mathf.PI/2+2*Mathf.PI*Mathf.Min(i+1,120*fraction)/120;Line(center+new Vector2(Mathf.Cos(a),Mathf.Sin(a))*radius,center+new Vector2(Mathf.Cos(b),Mathf.Sin(b))*radius,color,3);}

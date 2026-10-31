@@ -8,6 +8,7 @@ namespace Exoduser.UnityPort
  {
   readonly FrontendEntryFlow startup=new FrontendEntryFlow();StartupIntroData startupData;
   Texture2D[] nemesisArt;Texture2D loadingLogo,startupBarrier,startupShade,startupSubtitleGradient,startupGuideGradient;AudioSource startupAudio;AudioClip enterSound,wakeupSound;
+  internal bool? ForceStartupContinue;
   FrontendEntryPage startupShown;int startupLine=-1;float nemesisMusicDelay=-1,stageMusicDelay=-1,startupSfxGain=.6f;bool guideSkipFocus,startupInputFence,keepStartupStageMusic,startupVoiceWasPlaying;
   readonly FrontendPadPolicy frontendPad=new FrontendPadPolicy();
   FrontendPadFrame ReadFrontendPadFrame(){if(frontendPadQaEnabled)return ReadFrontendPadQaFrame();return new FrontendPadFrame{
@@ -116,11 +117,12 @@ namespace Exoduser.UnityPort
     Color c=l.speaker=="GODDESS"?new Color(.753f,.518f,.988f):l.speaker=="HECTOR"?new Color(.984f,.573f,.235f):new Color(.91f,.831f,.722f);startupName.normal.textColor=c;
     string who=l.speaker=="GODDESS"?K("네메시아","Nemesia"):l.speaker=="HECTOR"?K("핵터","Hector"):K("디로이","Diroy");float y=top+subH*.25f;
     Label(new Rect(153.6f,y-14,1612.8f,32),who,startupName,TextAnchor.MiddleLeft);Fill(new Rect(153.6f,y+16.2f,startupName.CalcSize(new GUIContent(who)).x,1),new Color(c.r,c.g,c.b,.4f));
-    string visible=RevealStartupText(l.text,startup.VisibleCharacters);Label(new Rect(153.6f,y+37.8f,1612.8f,bodyH+20),visible,startupBody,TextAnchor.UpperLeft);
-    if(startup.VisibleCharacters>=l.text.Replace("\n","").Length&&((int)(Time.unscaledTime*2)%2)==1)Label(new Rect(1740,1080-subH*.2f,40,30),"▼",startupHint,TextAnchor.MiddleCenter);
+    string visible=RevealStartupText(l.text,startup.VisibleCharacters);var captionRect=new Rect(153.6f,y+37.8f,1612.8f,bodyH+20);Label(captionRect,visible,startupBody,TextAnchor.UpperLeft);NativeUiAudit.Region(captionRect,"component","cinematic-startup-caption","중앙 전체 대사 공간");
+    if(startup.VisibleCharacters>=l.text.Replace("\n","").Length&&(ForceStartupContinue??(((int)(Time.unscaledTime*2)%2)==1))){var indicator=new Rect(1794,Mathf.Min(984,1080-subH*.2f),40,30);Label(indicator,"▼",startupHint,TextAnchor.MiddleCenter);NativeUiAudit.Region(indicator,"component","cinematic-continue","대사 공간 오른쪽/건너뛰기 위18");}
    }
+   NativeUiViewport.MaskFrontend();var hintMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.RightMatrix;
    bool pad=frontendPadQaEnabled||ExoInput.PadConnected;
-   float hold=(float)startup.HoldProgress;var hintColor=GUI.color;GUI.color=new Color(1,1,1,hold>0?.8f:.25f+.1f*Mathf.Sin(Time.unscaledTime*2));Label(new Rect(1300,1032,600,24),pad?K("A 다음 / B 길게 / Start 건너뛰기","A Next / Hold B / Start Skip"):K("SPACE 길게 눌러 건너뛰기","Hold SPACE to skip"),startupHint,TextAnchor.MiddleRight);GUI.color=hintColor;Fill(new Rect(1780,1052,120,3),new Color(1,1,1,.15f));Fill(new Rect(1780,1052,120*hold,3),new Color(1,1,1,.8f));
+   float hold=(float)startup.HoldProgress;var hintColor=GUI.color;GUI.color=new Color(1,1,1,hold>0?.8f:.25f+.1f*Mathf.Sin(Time.unscaledTime*2));Label(new Rect(1300,1032,600,24),pad?K("A 다음 / B 길게 / Start 건너뛰기","A Next / Hold B / Start Skip"):K("SPACE 길게 눌러 건너뛰기","Hold SPACE to skip"),startupHint,TextAnchor.MiddleRight);GUI.color=hintColor;Fill(new Rect(1780,1052,120,3),new Color(1,1,1,.15f));Fill(new Rect(1780,1052,120*hold,3),new Color(1,1,1,.8f));NativeUiAudit.Region(new Rect(1300,1032,600,24),"component","cinematic-startup-skip","실제 오른쪽 아래");GUI.matrix=hintMatrix;
    var e=Event.current;if(new Rect(0,0,1920,1080).Contains(e.mousePosition)&&!startupInputFence&&e.type==EventType.MouseDown&&e.button==0){startup.Advance();e.Use();}
   }
   static string RevealStartupText(string full,int count){int at=0,visible=0;while(at<full.Length&&(visible<count||full[at]=='\n')){if(full[at]!='\n')visible++;at++;}return full.Substring(0,at)+"<color=#00000000>"+full.Substring(at)+"</color>";}

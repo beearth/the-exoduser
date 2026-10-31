@@ -10,7 +10,8 @@ namespace Exoduser.UnityPort
 {
     public sealed partial class NativeGame
     {
-        [Serializable] sealed class UiOverlapCoverage {public int schemaVersion=2;public string runtimeSha256,unityVersion,device,deviceType;public string scope="실제 Player OnGUI·제품 API 상태 전환/검수 시계/8방향 투영 표본, OS 입력/자연 클리어와 구분";public string[] resolutions={"1920x1080","2560x1080","3840x1080","1600x900","2560x1600"};public string[] languages={"ko","de"};public List<string> pages=new List<string>(),frames=new List<string>();public List<UiWideMovie> movies=new List<UiWideMovie>();public int[] loadingImages=new List<int>(NativeLoadingSelection.Images).ToArray();}
+        [Serializable] sealed class UiOverlapCoverage {public int schemaVersion=2;public string runtimeSha256,unityVersion,device,deviceType;public string scope="실제 Player OnGUI·제품 API 상태 전환/검수 시계/실제 미디어 seek/8방향 투영 표본, OS 입력/자연 클리어와 구분";public string[] resolutions={"1920x1080","2560x1080","3840x1080","1600x900","2560x1600"};public string[] languages={"ko","de"};public List<string> pages=new List<string>(),frames=new List<string>();public List<UiWideMovie> movies=new List<UiWideMovie>();public List<UiWideCue> worldCues=new List<UiWideCue>();public int[] loadingImages=new List<int>(NativeLoadingSelection.Images).ToArray();}
+        [Serializable] sealed class UiWideCue {public int width,height;public string language,caption;public double start,end,requested,observed;}
         [Serializable] sealed class UiWideMovie {public int width,height,visual,textureWidth,textureHeight;public string language,file;public long frameBefore,frameAfter;public double timeBefore,timeAfter;public bool prepared,playing;}
         [Serializable] sealed class UiWideInputCheck {public int width,height;public bool lockedBlocked,nameOpened;}
         [Serializable] sealed class UiWideInputReport {public List<UiWideInputCheck> checks;}
@@ -106,6 +107,21 @@ namespace Exoduser.UnityPort
             yield return new WaitForSecondsRealtime(.35f);row.frameAfter=video.Frame;row.timeAfter=video.Time;row.playing=video.Player.isPlaying;overlapCoverage.movies.Add(row);if(!row.playing||row.frameAfter==row.frameBefore)throw new InvalidOperationException("실제 직업 영상 프레임 정지 "+visual);
         }
 
+        IEnumerator UiWaitRootMovie(int visual,string expected)
+        {
+            yield return null;var video=lobby.CurrentVideo;float deadline=Time.realtimeSinceStartup+10;
+            while(Time.realtimeSinceStartup<deadline&&(!video.Prepared||video.Frame<0)){lobby.SetPlaybackFocus(true);if(video.Error.Length>0)throw new InvalidOperationException("전면 영상 오류 "+expected+" "+video.Error);yield return null;}
+            if(!video.Prepared||video.Frame<0||Path.GetFileName(video.Player.url)!=expected)throw new InvalidOperationException("실제 전면 영상 준비 실패 "+expected);
+            var movie=new UiWideMovie{width=Screen.width,height=Screen.height,visual=visual,language=overlapLanguage,file=Path.GetFileName(video.Player.url),frameBefore=video.Frame,timeBefore=video.Time,prepared=true,textureWidth=video.Texture.width,textureHeight=video.Texture.height};yield return new WaitForSecondsRealtime(.35f);movie.frameAfter=video.Frame;movie.timeAfter=video.Time;movie.playing=video.Player.isPlaying;overlapCoverage.movies.Add(movie);if(!movie.playing||movie.frameAfter<0||movie.frameAfter==movie.frameBefore||Path.GetFileName(video.Player.url)!=expected)throw new InvalidOperationException("전면 영상 프레임 정지/교체 "+expected);
+        }
+        IEnumerator UiCinematicShots()
+        {
+            lobby.StartGate();yield return UiWaitRootMovie(-1,NativeLobby.WorldMovie);var video=lobby.CurrentVideo;float deadline;
+            var catalog=JsonUtility.FromJson<LobbySubtitleData>(Resources.Load<TextAsset>("Data/lobby_frontend").text);LobbyCaptionLanguage selected=null,english=null;foreach(var language in catalog.captions){if(language.code=="en")english=language;if(language.code==lobby.Language)selected=language;}selected=selected??english;LobbyCaptionCue longest=null;foreach(var cue in selected.cues)if(!string.IsNullOrEmpty(cue.text)&&(longest==null||cue.text.Length>longest.text.Length))longest=cue;if(longest==null)throw new InvalidOperationException("실제 자막 cue 누락");
+            double seek=longest.start+NativeLobby.WorldCueOffset+Math.Min(.5,(longest.end-longest.start)*.25);video.Seek(seek);deadline=Time.realtimeSinceStartup+10;while(Time.realtimeSinceStartup<deadline&&(video.Time<longest.start+NativeLobby.WorldCueOffset||video.Time>longest.end+NativeLobby.WorldCueOffset))yield return null;yield return new WaitForSecondsRealtime(.35f);if(lobby.SubtitleText.Length==0)throw new InvalidOperationException("실제 시네마틱 자막 미표시");overlapCoverage.worldCues.Add(new UiWideCue{width=Screen.width,height=Screen.height,language=overlapLanguage,start=longest.start,end=longest.end,requested=seek,observed=video.Time,caption=lobby.SubtitleText});
+            yield return UiOverlapShot("시네마틱");var toggle=typeof(NativeLobby).GetMethod("ToggleLanguages",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic);toggle.Invoke(lobby,null);if(!(bool)typeof(NativeLobby).GetField("showLanguages",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(lobby))throw new InvalidOperationException("시네마틱 실제 언어목록 미개방");yield return UiOverlapShot("시네마틱언어");toggle.Invoke(lobby,null);lobby.TogglePlayback();yield return UiOverlapShot("시네마틱일시정지");lobby.ReplayIntro();
+        }
+
         IEnumerator UiArrowShots()
         {
             var prior=regionHud.ToGUI;string[] names={"raT","raHas","raX","raY","raLabel"};var fields=new FieldInfo[names.Length];var values=new object[names.Length];for(int i=0;i<names.Length;i++){fields[i]=typeof(NativeRegionHud).GetField(names[i],BindingFlags.Instance|BindingFlags.NonPublic);values[i]=fields[i].GetValue(regionHud);}
@@ -132,8 +148,8 @@ namespace Exoduser.UnityPort
                 float sizeDeadline=Time.realtimeSinceStartup+5;while((Screen.width!=size.x||Screen.height!=size.y)&&Time.realtimeSinceStartup<sizeDeadline)yield return null;Debug.Log("UI_SIZE_OBSERVED "+Screen.width+"x"+Screen.height+" mode="+Screen.fullScreenMode);if(Screen.width!=size.x||Screen.height!=size.y)throw new InvalidOperationException("요청/실제 해상도 불일치 "+size+" actual="+Screen.width+"x"+Screen.height);
                 menu=false;Running=false;pauseMenu.Reset();stageClear.Hide();
                 lobby.ReplayIntro();typeof(NativeLobby).GetField("since",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(lobby,16f);
-                yield return UiOverlapShot("첫화면");
-                lobby.Begin();yield return UiOverlapShot("브랜드인트로");lobby.AdvanceSplash();yield return new WaitForSecondsRealtime(1.1f);yield return UiOverlapShot("메뉴");
+                yield return UiOverlapShot("첫화면");yield return UiCinematicShots();
+                lobby.Begin();yield return UiWaitRootMovie(-3,"fdg_intro.mp4");yield return UiOverlapShot("브랜드인트로");lobby.AdvanceSplash();yield return new WaitForSecondsRealtime(1.1f);yield return UiWaitRootMovie(-2,NativeLobby.TitleMovie);yield return UiOverlapShot("메뉴");
                 lobby.ShowLobby();lobby.Characters.TryRestore(new[]{"검수"+overlapCoverage.frames.Count.ToString("000")},0);yield return UiOverlapShot("로비");
                 lobby.OpenCharacterCreation();
                 for(int n=0;n<5;n++){lobby.ChooseCharacterVisual(n);yield return UiWaitCharacterMovie(n);yield return UiOverlapShot("캐릭터선택"+n);}
@@ -146,7 +162,7 @@ namespace Exoduser.UnityPort
                 if(!lobby.BeginCharacterEntry(false)||lobby.StartupCaptureState.Page!=FrontendEntryPage.Loading)throw new InvalidOperationException("실제 신규 캐릭터 로딩 진입 누락");
                 yield return UiOverlapShot("로딩");
                 float deadline=Time.realtimeSinceStartup+12;while(lobby.StartupCaptureState.Page!=FrontendEntryPage.Nemesis&&Time.realtimeSinceStartup<deadline)yield return null;
-                lobby.StartupCaptureState.Skip();yield return null;
+                if(lobby.StartupCaptureState.Page!=FrontendEntryPage.Nemesis)throw new InvalidOperationException("신규 연출 실제 상태 누락");yield return new WaitForSecondsRealtime(1);yield return UiOverlapShot("신규연출");for(int attempt=0;attempt<32&&(lobby.StartupCaptureState.Line==null||string.IsNullOrEmpty(lobby.StartupCaptureState.Line.text)||string.IsNullOrEmpty(lobby.StartupCaptureState.Line.speaker));attempt++){lobby.StartupCaptureState.Advance();yield return null;}var line=lobby.StartupCaptureState.Line;if(line==null||string.IsNullOrEmpty(line.text)||string.IsNullOrEmpty(line.speaker))throw new InvalidOperationException("신규 연출 실제 대사 누락");if(lobby.StartupCaptureState.VisibleCharacters<line.text.Replace("\n","").Length)lobby.StartupCaptureState.Advance();lobby.ForceStartupContinue=true;yield return new WaitForSecondsRealtime(1);yield return UiOverlapShot("신규연출완료");lobby.ForceStartupContinue=null;lobby.StartupCaptureState.Skip();yield return null;
                 for(int n=0;n<4;n++){yield return new WaitForSecondsRealtime(.3f);if(lobby.StartupCaptureState.Page!=FrontendEntryPage.Guide||lobby.StartupCaptureState.GuideStep!=n)throw new InvalidOperationException("튜토리얼 상태 누락 "+n);yield return UiOverlapShot("튜토리얼"+n);lobby.StartupCaptureState.Advance();}
                 lobby.StartupCaptureState.Skip();lobby.SelectPreview();lobby.EnterNativeTest();
                 frontendEntryInputFence=false;Running=false;menu=false;EndFirstPractice(true);Running=false;
