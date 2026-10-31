@@ -77,6 +77,7 @@ namespace Exoduser.UnityPort
             }
             var rect=PracticePanel(width);NativeUiAudit.Region(rect,"component","practice-panel","실습 안내 외곽");NativeSilverHellUi.Panel(rect,28,8);
             bool hasFooter=firstPractice.Phase==FirstPracticePhase.Intro||firstPractice.Phase==FirstPracticePhase.Done;float footerHeight=hasFooter?145:100;
+            NativeUiAudit.Region(new Rect(rect.x,rect.y,rect.width,rect.height-footerHeight),"component","guide-content","실습 내용 스크롤 viewport");
             practiceScroll=NativeUiAudit.BeginScrollView(new Rect(rect.x,rect.y,rect.width,rect.height-footerHeight),practiceScroll,new Rect(rect.x,rect.y,rect.width-16,practiceContentHeight),false,true);
             var step=firstPractice.Step;int webStep=WebStepNumber(step);var phase=firstPractice.Phase;bool done=phase==FirstPracticePhase.Done,intro=phase==FirstPracticePhase.Intro;
             bool magic=webStep%2==0;Color accent=done||phase==FirstPracticePhase.Success?Hex(0xb2d6ac):magic?Hex(0xc5a4f2):Hex(0xe0c18b);

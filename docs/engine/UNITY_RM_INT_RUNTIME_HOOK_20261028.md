@@ -1,5 +1,9 @@
 # UNITY RM-INT — 리모델 3D 씬 런타임 연결 (1단계: RM-1 필드) — 2026-10-28
 
+## 2026-10-31 초광폭 화면 경계 보정 — Player 검수 대기
+
+사용자 world-ultrawide 추가 지시로 화면 기반 사격·루팅은 기존 논리2D 카메라 대신 실제 HudCamera(2D/리모델3D)의 viewport를 따른다. NativeGame.WorldViewport의 WorldPointVisible은 Core margin을 네 모서리로 투영한다. FieldEnemyCanShoot는−64px(모두 안), IsLootOnScreen은0px다. 사격·수거·어그로 거리 수치와 저장 구조는 그대로다. DruidBoss.WorldPointVisible 선택 callback만 Core에 추가하여 일반 투사체가 기존 거리제곱6250000 밖에서도 화면 R+100px에 보이면 유지하며, null/offscreen·지뢰·빨콩·강제만료는 기존 계약을 보존한다. 실제Core/청크 회귀2364 PASS, 정식 새 Player/M1/4해상도 화면은 미검증이다. 상세 현행 계약은 UNITY_UI_ULTRAWIDE_20261031.md를 따른다. 아래2026-10-28의 Core무변경·항상2D 설명은 최초 연결 이력이며 위 경계는 후속 보정이다.
+
 배정: 유니티 총괄(local_59ad835c). 판정: 맵 총괄(걷기·충돌 일치) · 디자인총괄(톤). 브랜치 `claude/unity-pc-rm-int-20261028`(`4ceb18b51`에서 분기). 이 문서는 구현 상태이고, 검증 결과는 §6에 채운다.
 
 ## 1. 결정 기록 (유니티 총괄 2026-10-28, 그대로)
@@ -24,7 +28,7 @@
 | `Runtime/NativeGame.Remodel3D.cs` (신규) | 씬 additive 로드, 카메라 리그 연결, 켜기/끄기, 빌보드, 조준 |
 | `Runtime/NativeGame.Remodel3DCheck.cs` (신규) | `--unity-rmint-check` 하네스(§5) |
 | `NativeGame.StageFlow.cs` | `StageFlowSyncViews` 첫 줄에 `Remodel3DSync();` |
-| `NativeGame.cs` | `Point` → `NativeRemodel3D.Point`, `ToGUI`·레벨업 폭발은 `HudCamera`, 마우스 조준은 `AimWorld()`, `IsLootOnScreen`은 `Point2D`(Core 콜백이라 항상 2D), 실행 인자 한 줄 |
+| `NativeGame.cs` | `Point` → `NativeRemodel3D.Point`, `ToGUI`·레벨업 폭발은 `HudCamera`, 마우스 조준은 `AimWorld()`, `IsLootOnScreen`은 초기 Point2D였으며 2026-10-31 실제 HudCamera/WorldPointVisible(0)로 보정, 실행 인자 한 줄 |
 | `KiSlashView`·`NativeBossView`·`NativeDruidBody`·`NativeSkillView`·`KiImpactView` | 각자의 private `Point`가 `NativeRemodel3D.Point`를 부르도록 한 줄 |
 | `Editor/PortVerification.cs` | 위 `-remodel-scenes 1` 한 줄 |
 
@@ -40,7 +44,7 @@ Core(`Runtime/Core`)는 바꾸지 않았다.
 | 높이 | `Terrain.SampleHeight(wx,0,wz) + terrain.transform.position.y`. 지형은 타일 x48~152·y126~200 창만 덮어서 질의를 그 창 안으로 클램프한다(창 밖은 가장자리 높이). Core의 z는 0 그대로 |
 | 카메라 | 현행 수치는 `Resources/Data/remodel_camera.json` 한 곳. 피치48.7014126°, 거리14u, 세로FOV46.9453° 고정, 영웅 표시배율2, 북쪽 전방 추적1.45u. `NativeRemodelCamera`를 실제 게임과 `Rm1SliceBuilder`가 공유. 화면 높이에 따른 FOV 변경을 제거해 영웅의 화면 비율을 유지한다. 논리 2D 카메라·Core 판정은 그대로다 |
 | 리그 이름 | 구운 씬(루트에 `Main Camera`·`Player Marker`·`CM LOOK-001` 따로) 과 다시 구운 씬(`RM1_CameraRig` 아래)을 모두 이름으로 찾는다. 씬 안 `AudioListener`와 `Marker Sprite`(대역 스프라이트)는 끈다 |
-| 2D 카메라 `view` | 지우지 않는다. 카메라 클램프·보스 줌·`FieldEnemyCanShoot`(Core 콜백) 같은 **논리 카메라**로 그대로 갱신되고, 3D가 켜진 동안 컬링 마스크 0으로 화면만 지우는 역할을 한다. 로비가 월드를 숨기는 마스크는 3D 카메라가 따라 한다 |
+| 2D 카메라 `view` | 지우지 않는다. 카메라 클램프·보스 줌 같은 **논리 카메라**로 갱신되고(`FieldEnemyCanShoot`은2026-10-31 실제 HudCamera로 분리), 3D가 켜진 동안 컬링 마스크 0으로 화면만 지우는 역할을 한다. 로비가 월드를 숨기는 마스크는 3D 카메라가 따라 한다 |
 | HUD 앵커 | `ToGUI`와 레벨업 폭발은 3D가 켜져 있으면 씬 카메라로 변환 |
 | 마우스 조준 | 3D가 켜져 있으면 카메라 광선을 플레이어 높이의 수평면에 맞춰 Core 입력 좌표로 변환 |
 | 아레나 | `Stage.InArena`이면 3D 층이 물러나고(씬 루트 비활성, `view` 복구) 기존 2D 아레나 뷰가 그대로 나온다. 1단계 PASS 뒤 A1(`RM1_Arena`)을 같은 훅에 붙인다 |

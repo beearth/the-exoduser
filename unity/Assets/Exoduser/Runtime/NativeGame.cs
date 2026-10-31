@@ -442,7 +442,10 @@ namespace Exoduser.UnityPort
                 Fill(new Rect(ebA.x,ebA.y,ebWid,ebHgt),new Color(0,0,0,.6f));Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Clamp01((float)e.Hp/e.MaxHp),ebHgt),new Color(.8f,0,0));if(e.MaxShield>0&&e.Shield>0)Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Min(1,e.Shield/e.MaxShield),ebHgt),new Color(.267f,.667f,1f));}
             DrawFieldBossBars();
             floatingTextLayout.BeginFrame(Time.unscaledTime);
-            floatingTextLayout.Reserve(new NativeFloatingTextLayout.Box(0,0,160,176));floatingTextLayout.Reserve(new NativeFloatingTextLayout.Box(1600,0,320,190));
+            var textViewport=NativeUiViewport.ScreenInDesign;floatingTextLayout.SetHorizontalBounds(textViewport.x+8,textViewport.xMax-8);
+            ReserveEdgeFeedback(new Rect(0,0,160,176));ReserveEdgeFeedback(new Rect(16,188,108,58.3f));ReserveEdgeFeedback(new Rect(NativeUiViewport.Edges.Width-NativeObjectivePanel.RightMargin-NativeObjectivePanel.Width,NativeObjectivePanel.Top,NativeObjectivePanel.Width,NativeObjectivePanel.Height));
+            if(firstPractice!=null&&!menu&&gameFocused)ReserveEdgeFeedback(PracticePanel(NativeUiViewport.Edges.Width));
+            if(Time.unscaledTime<noticeUntil){var ns=new GUIStyle(label){alignment=TextAnchor.UpperLeft,wordWrap=true};ReserveEdgeFeedback(new Rect(20,270,440,ns.CalcHeight(new GUIContent(notice),440)));}
             if(Simulation.Stage.InArena&&druidBody!=null&&druidBody.Visible){var bounds=druidBody.Bounds;var a=HudCamera.WorldToScreenPoint(new Vector3(bounds.min.x,bounds.max.y,bounds.center.z));var b=HudCamera.WorldToScreenPoint(new Vector3(bounds.max.x,bounds.min.y,bounds.center.z));var ga=NativeUiViewport.Pointer(a);var gb=NativeUiViewport.Pointer(b);floatingTextLayout.Reserve(new NativeFloatingTextLayout.Box(ga.x,ga.y,gb.x-ga.x,gb.y-ga.y));}
             foreach(var d in damage)if(!d.submitted){d.submitted=true;damageFloaters.Add(d.x,d.y,d.amount.ToString(),d.shield?"#66ddff":"#ead7ac",d.shield?"enemy-shield":"enemy-hp",NativeFloatingTextLayout.DamagePriority,d.until-1,1,true,d.amount);}
             foreach(var n in damageFloaters.Live(Time.unscaledTime))NativeReviveHud.Offer(floatingTextLayout,n,ToGUI(n.X,n.Y),center);

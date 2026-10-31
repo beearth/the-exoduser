@@ -6,6 +6,7 @@ namespace Exoduser.UnityPort
  public sealed partial class NativeGame
  {
   DruidBoss worldVisibleDruid;
+  void ReserveEdgeFeedback(Rect edge){var r=NativeUiViewport.FromEdge(edge);floatingTextLayout.Reserve(new NativeFloatingTextLayout.Box(r.x,r.y,r.width,r.height));}
   void BindWorldViewport()
   {
    if(Simulation.Druid!=null&&worldVisibleDruid!=Simulation.Druid){worldVisibleDruid=Simulation.Druid;worldVisibleDruid.WorldPointVisible=WorldPointVisible;}

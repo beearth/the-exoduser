@@ -8,6 +8,7 @@ namespace Exoduser.UnityPort
   internal static Matrix4x4 RightMatrix=>EdgeMatrix*Matrix4x4.Translate(new Vector3(Edges.Width-1920,0,0));
   internal static Vector2 EdgePointer(Vector3 p){var a=Edges;return new Vector2(a.LocalX(p.x),a.LocalY(p.y,Screen.height));}
   internal static Rect ScreenInDesign{get{var a=Current;return new Rect(-a.X/a.Scale,-a.Y/a.Scale,Screen.width/a.Scale,Screen.height/a.Scale);}}
+  internal static Rect FromEdge(Rect r){var a=Current;float e=Edges.Scale;return new Rect((r.x*e-a.X)/a.Scale,(r.y*e-a.Y)/a.Scale,r.width*e/a.Scale,r.height*e/a.Scale);}
   internal static Rect ToEdge(Rect r){var a=Current;float s=Edges.Scale;return new Rect((a.X+r.x*a.Scale)/s,(a.Y+r.y*a.Scale)/s,r.width*a.Scale/s,r.height*a.Scale/s);}
   internal static NativeUiSafeArea Current=>NativeUiSafeArea.Fit(Screen.width,Screen.height);
   internal static Matrix4x4 Matrix {get{var a=Current;return Matrix4x4.TRS(new Vector3(a.X,a.Y,0),Quaternion.identity,new Vector3(a.Scale,a.Scale,1));}}

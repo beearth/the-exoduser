@@ -5,6 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
+    <Compile Include="../../Assets/Exoduser/Runtime/NativeRegionArrowLayout.cs" />
     <Compile Include="../../Assets/Exoduser/Runtime/NativeFloatingTextLayout.cs" />
   </ItemGroup>
 </Project>

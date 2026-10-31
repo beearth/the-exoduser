@@ -96,6 +96,12 @@ namespace Exoduser.UnityPort
         }
 #endif
 
+        IEnumerator UiArrowShots()
+        {
+            var prior=regionHud.ToGUI;string[] names={"raT","raHas","raX","raY","raLabel"};var fields=new FieldInfo[names.Length];var values=new object[names.Length];for(int i=0;i<names.Length;i++){fields[i]=typeof(NativeRegionHud).GetField(names[i],BindingFlags.Instance|BindingFlags.NonPublic);values[i]=fields[i].GetValue(regionHud);}
+            try{for(int direction=0;direction<8;direction++){float angle=direction*Mathf.PI/4;var screen=NativeUiViewport.ScreenInDesign;var target=screen.center+new Vector2(Mathf.Cos(angle)*screen.width,Mathf.Sin(angle)*screen.height);regionHud.ToGUI=(x,y)=>target;fields[0].SetValue(regionHud,1000000);fields[1].SetValue(regionHud,true);fields[2].SetValue(regionHud,Simulation.Player.X+2000);fields[3].SetValue(regionHud,Simulation.Player.Y-2000);fields[4].SetValue(regionHud,lobby.Language=="ko"?"북동 · 번개":"Northeast · Lightning");yield return UiOverlapShot("지역유도"+direction);}}finally{regionHud.ToGUI=prior;for(int i=0;i<fields.Length;i++)fields[i].SetValue(regionHud,values[i]);}
+        }
+
         IEnumerator UiOverlapCaptureBody()
         {
             overlapOutput=Argument("-output");
@@ -134,7 +140,7 @@ namespace Exoduser.UnityPort
                 for(int n=0;n<4;n++){yield return new WaitForSecondsRealtime(.3f);if(lobby.StartupCaptureState.Page!=FrontendEntryPage.Guide||lobby.StartupCaptureState.GuideStep!=n)throw new InvalidOperationException("튜토리얼 상태 누락 "+n);yield return UiOverlapShot("튜토리얼"+n);lobby.StartupCaptureState.Advance();}
                 lobby.StartupCaptureState.Skip();lobby.SelectPreview();lobby.EnterNativeTest();
                 frontendEntryInputFence=false;Running=false;menu=false;EndFirstPractice(true);Running=false;
-                areaTitle.Hide();levelUp.Hide();yield return UiOverlapShot("HUD");
+                areaTitle.Hide();levelUp.Hide();yield return UiOverlapShot("HUD");yield return UiArrowShots();
                 if(language=="ko"){var load=Simulation.Stage;int oldPhase=load.LoadPhase;double oldT=load.LoadT,oldFade=load.LoadFade;load.LoadPhase=2;load.LoadT=35;load.LoadFade=1;for(int image=1;image<=19;image++){NativeLoadingArtwork.ForcedImage=image;yield return UiOverlapShot("전환로딩"+image.ToString("00"));}NativeLoadingArtwork.ForcedImage=1;NativeLoadingArtwork.SimulateMissingWide=true;yield return UiOverlapShot("전환로딩폴백");NativeLoadingArtwork.ForcedImage=-1;NativeLoadingArtwork.SimulateMissingWide=false;load.LoadPhase=oldPhase;load.LoadT=oldT;load.LoadFade=oldFade;}
                 BeginFirstPractice();Running=false;yield return UiOverlapShot("실습안내");firstPractice.Start();yield return UiOverlapShot("실습진행");practiceScroll=new Vector2(0,9999);yield return UiOverlapShot("실습스크롤");EndFirstPractice(true);Running=false;practiceScroll=Vector2.zero;
                 menu=true;pauseMenu.Reset();pauseMenu.Navigation.ObserveReleased(false);yield return UiOverlapShot("일시정지");
@@ -143,12 +149,15 @@ namespace Exoduser.UnityPort
                 for(int n=0;n<4;n++){pauseMenu.Navigation.SelectTab(n);pauseMenu.Navigation.ObserveReleased(false);yield return UiOverlapShot("설정"+n);pauseMenu.A15SetScrollForQa(9999);yield return UiOverlapShot("설정스크롤"+n);pauseMenu.A15SetScrollForQa(0);}
                 pauseMenu.Navigation.SelectTab(2);pauseMenu.Navigation.ObserveReleased(false);pauseMenu.A15OpenSelectForQa("optBgmTrack");yield return UiOverlapShot("설정목록");
                 pauseMenu.Reset();menu=false;Running=false;
-                SetInventory(true);yield return UiOverlapShot("인벤토리");SetInventory(false);
+                SetInventory(true);yield return UiOverlapShot("인벤토리");for(int page=1;page<=3;page++){typeof(NativeInventory).GetMethod("SetPage",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(inventory,new object[]{page});yield return UiOverlapShot(page==1?"봉안함":page==2?"결정체":"보관함");}SetInventory(false);
                 SetSkills(true,6);yield return UiOverlapShot("스킬");for(int slot=0;slot<16;slot++){if(slot==6)continue;skills.Select(slot);yield return UiOverlapShot("스킬슬롯"+slot.ToString("00"));}SetSkills(false,6);
-                SetForge(true);yield return UiOverlapShot("대장간");SetForge(false);
+                SetForge(true);forge.SelectTab("upgrade");yield return UiOverlapShot("대장간");foreach(string tab in new[]{"potion","salvage","reroll","crystal","craft"}){forge.SelectTab(tab);yield return UiOverlapShot("대장간-"+tab);}SetForge(false);
                 SetStats(true);yield return UiOverlapShot("능력치");SetStats(false);
                 stageClear.Show(new NativeStageClearOverlay.Input{kind=NativeStageClearOverlay.Kind.Zone,stageKills=137,totalSpawned=168,clearSeconds=88,regionsCleared=4,bossKilled=true,deaths=0,dmgTaken=120,comboMax=32,statPointsAwarded=10,statPointsBalance=20});stageClear.ForcedAge=2;
                 yield return UiOverlapShot("클리어");stageClear.Hide();
+                Toast(language=="ko"?"희귀한 전리품을 획득했습니다. 가장자리 알림 배치를 확인합니다.":"Rare loot collected. The notification remains at the physical screen edge.");yield return UiOverlapShot("일반알림");noticeUntil=0;
+                var oldHp=Simulation.Player.Hp;string oldState=Simulation.Player.State;var oldTicks=Simulation.Player.StateTicks;Simulation.Player.Hp=0;Simulation.Player.State="fallen";Simulation.Player.StateTicks=180;yield return UiOverlapShot("부활대기");
+                Simulation.Player.State="dead";death.Show(new NativeDeathOverlay.Info{kills=Simulation.Kills,chapter=0,expLoss=-1,maxCombo=-1,deaths=1,damageLog=null});death.ForcedAge=3;yield return UiOverlapShot("사망");death.Hide();death.ForcedAge=null;Simulation.Player.Hp=oldHp;Simulation.Player.State=oldState;Simulation.Player.StateTicks=oldTicks;
             }
             NativeUiAudit.Active=false;File.WriteAllText(Path.Combine(overlapOutput,"coverage.json"),JsonUtility.ToJson(overlapCoverage,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);

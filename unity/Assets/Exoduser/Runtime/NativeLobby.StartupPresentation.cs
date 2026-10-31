@@ -193,6 +193,7 @@ namespace Exoduser.UnityPort
    float total=2+34+16+12+dialogueH+10+24+22+titleH+14+bodyH+(step==3?16+noteH:0)+20+hintH+22+46+40;
    var safe=NativeUiViewport.Current;float reservedTop=((NativeObjectivePanel.Top+NativeObjectivePanel.Height+16)*NativeUiViewport.Edges.Scale-safe.Y)/safe.Scale;var dock=NativeHudDockLayout.Create(sw,sh);float reservedBottom=Mathf.Min(dock.LeftFrame.y,dock.RightFrame.y)-16;float visibleH=Mathf.Min(total,Mathf.Max(180,reservedBottom-reservedTop)),left=(sw-panelW)/2,top=reservedTop+(reservedBottom-reservedTop-visibleH)/2;
    NativeSilverHellUi.Panel(new Rect(left,top,panelW,visibleH));NativeUiAudit.Region(new Rect(left,top,panelW,visibleH),"component","startup-guide","초기 안내창 외곽");
+   NativeUiAudit.Region(new Rect(left,top,panelW,visibleH-86),"component","guide-content","초기 안내 내용 스크롤 viewport");
    guideScroll=NativeUiAudit.BeginScrollView(new Rect(left,top,panelW,visibleH-86),guideScroll,new Rect(0,0,panelW-(total>visibleH?16:0),total-86),false,total>visibleH);
    var hintStyle=new GUIStyle(guideText){font=serif};hintStyle.normal.textColor=new Color(141/255f,144/255f,144/255f);
    float x=53,y=35;GuidePhysicalText(new Rect(x,y,w,16),(step+1)+" / 4",guideProgress,12,3,16);y+=28;

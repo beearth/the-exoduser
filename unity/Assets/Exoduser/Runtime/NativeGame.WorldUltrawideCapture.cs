@@ -11,7 +11,7 @@ namespace Exoduser.UnityPort
   [Serializable] sealed class WideWorldShot {public string name;public int width,height,chunks,enemies;public float playerX,playerY,fov,verticalSpan,horizontalSpan;public Rect viewport,pixelRect;public bool remodel,renderTarget,walkable;public Vector2[] groundCorners;}
   [Serializable] sealed class WideWorldMove {public int width,height;public string axis;public Vector2 start,end;public float distance;}
   [Serializable] sealed class WideWorldFps {public int width,height,frames,ticks,enemiesBefore,enemiesAfter;public float seconds,fps;public List<float> frameMs=new List<float>();}
-  [Serializable] sealed class WideWorldReceipt {public string runtimeSha256,source;public string scope="격리 Player, API 위치·무적·스폰홀 제거·직접60Hz 입력·적32 표본; 자연 플레이/완주와 구분";public int mapWidth,mapHeight,tileSize;public List<WideWorldShot> shots=new List<WideWorldShot>();public List<WideWorldMove> movement=new List<WideWorldMove>();public List<WideWorldFps> performance=new List<WideWorldFps>();public int pixelDifference=-1,pixelSelfDifference=-1;}
+  [Serializable] sealed class WideWorldReceipt {public string runtimeSha256,source;public string scope="격리 Player, API 위치·무적·스폰홀 제거·직접60Hz 입력·적32/가장자리 피해글자 표본; 자연 플레이/완주와 구분";public int mapWidth,mapHeight,tileSize;public List<WideWorldShot> shots=new List<WideWorldShot>();public List<WideWorldMove> movement=new List<WideWorldMove>();public List<WideWorldFps> performance=new List<WideWorldFps>();public int pixelDifference=-1,pixelSelfDifference=-1;}
   WideWorldReceipt wideWorld;
 
   IEnumerator WorldWideCapture()
@@ -34,13 +34,14 @@ namespace Exoduser.UnityPort
   IEnumerator WideWorldShotAt(string name,float x,float y,bool combat=false)
   {
    var point=WideLegal(x,y);var p=Simulation.Player;p.X=point.x;p.Y=point.y;p.State="idle";p.Iframes=1000000;p.Hp=p.MaxHp;
-   Simulation.Enemies.Clear();Simulation.SpawnHoles=null;Simulation.CrossbowAuto=false;
+   Simulation.Enemies.Clear();Simulation.SpawnHoles=null;Simulation.CrossbowAuto=false;damageFloaters.Clear();
    if(combat)WideSpawnSample();
    for(int n=0;n<6;n++){StepInput(0,0,p.X+300,p.Y,false,false);yield return null;}
    menu=false;Running=false;UpdateViews();yield return new WaitForSecondsRealtime(.35f);
    if(combat){for(int n=0;n<8;n++){StepInput(0,0,p.X+300,p.Y,true,false);yield return null;}}
    var camera=HudCamera;var midL=WideGround(camera,0,.5f);var midR=WideGround(camera,1,.5f);var top=WideGround(camera,.5f,1);var bottom=WideGround(camera,.5f,0);
    wideWorld.shots.Add(new WideWorldShot{name=name,width=Screen.width,height=Screen.height,playerX=p.X,playerY=p.Y,fov=camera.orthographic?camera.orthographicSize:camera.fieldOfView,viewport=camera.rect,pixelRect=camera.pixelRect,renderTarget=camera.targetTexture!=null,remodel=NativeRemodel3D.Active,chunks=LoadedChunks,enemies=Simulation.Enemies.Count,walkable=Map.CanMove(p.X,p.Y,p.Radius),horizontalSpan=Vector2.Distance(midL,midR),verticalSpan=Vector2.Distance(top,bottom),groundCorners=new[]{WideGround(camera,0,0),WideGround(camera,1,0),WideGround(camera,1,1),WideGround(camera,0,1)}});
+   if(combat){var left=WideGround(camera,.07f,.55f);var right=WideGround(camera,.93f,.55f);damageFloaters.Add(left.x,left.y,"101","#ead7ac","ultrawide-qa-left",NativeFloatingTextLayout.DamagePriority,Time.unscaledTime,2,true,101);damageFloaters.Add(right.x,right.y,"202","#ead7ac","ultrawide-qa-right",NativeFloatingTextLayout.DamagePriority,Time.unscaledTime,2,true,202);}
    yield return UiOverlapShot(name);
   }
   void WideSpawnSample()

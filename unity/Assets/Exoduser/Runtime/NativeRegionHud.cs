@@ -314,7 +314,7 @@ namespace Exoduser.UnityPort
    g.SetPixels32(px); g.Apply(false, true); glowCache[key] = g; return g;
   }
 
-  public struct Safe { public Rect clock; public float bottomTop; public Rect[] blocks; }
+  public struct Safe { public Rect screen,clock; public float bottomTop; public Rect[] blocks; }
   public Func<float, float, Vector2> ToGUI;   // world px -> 1920x1080 design space
   public Func<Safe> SafeZone;
 
@@ -325,30 +325,14 @@ namespace Exoduser.UnityPort
    var flow = sim.Stage; if (flow.InArena || flow.LoadPhase > 0 || flow.StageCleared) return;
    if (--raT <= 0) { raT = 20; ArrowTarget(sim); }
    if (!raHas) return;
-   const float VW = 1920, VH = 1080, mIn = 52;
-   Vector2 sp = ToGUI(raX, raY); float sx = sp.x, sy = sp.y;
-   if (sx > mIn && sx < VW - mIn && sy > mIn && sy < VH - mIn) return;   // target on screen: hidden
-   var sz = SafeZone != null ? SafeZone() : new Safe { clock = new Rect(0, 0, 0, 0), bottomTop = VH, blocks = new Rect[0] };
-   const float M = 24, pad = 12;
-   float x0 = M, y0 = M, x1 = VW - M, y1 = VH - M;
-   if (sz.clock.width > 0) y0 = Mathf.Max(y0, sz.clock.yMax + pad);
-   if (sz.bottomTop < VH) y1 = Mathf.Min(y1, sz.bottomTop - pad);
-   float sx0 = x0, sy0 = Mathf.Min(y0, VH * .4f), sx1 = Mathf.Max(x1, x0 + 40), sy1 = Mathf.Max(y1, VH * .55f);
-   float cx = VW / 2, cy = VH / 2, dx = sx - cx, dy = sy - cy;
-   float t = Mathf.Min((VW / 2 - mIn) / (Mathf.Abs(dx) > 1e-6f ? Mathf.Abs(dx) : 1e-6f), (VH / 2 - mIn) / (Mathf.Abs(dy) > 1e-6f ? Mathf.Abs(dy) : 1e-6f));
-   float ax = cx + dx * t, ay = cy + dy * t; float ang = Mathf.Atan2(dy, dx);
-   ax = Mathf.Clamp(ax, sx0, sx1); ay = Mathf.Clamp(ay, sy0, sy1);
-   foreach (var rc0 in sz.blocks)
-   {
-    var rc = new Rect(rc0.x - pad, rc0.y - pad, rc0.width + pad * 2, rc0.height + pad * 2);
-    if (ax > rc.x && ax < rc.xMax && ay > rc.y && ay < rc.yMax)
-    {
-     float dl = ax - rc.x, dr = rc.xMax - ax, dt = ay - rc.y, db = rc.yMax - ay, mv = Mathf.Min(Mathf.Min(dl, dr), Mathf.Min(dt, db));
-     if (mv == dl) ax = rc.x; else if (mv == dr) ax = rc.xMax; else if (mv == dt) ay = rc.y; else ay = rc.yMax;
-    }
-   }
-   ax = Mathf.Clamp(ax, sx0, sx1); ay = Mathf.Clamp(ay, sy0, sy1);
-   ArrowShown = true; ArrowPos = new Vector2(ax, ay);
+   const float mIn=52;var sz=SafeZone!=null?SafeZone():new Safe{screen=new Rect(0,0,1920,1080),bottomTop=1080,blocks=new Rect[0]};var screen=sz.screen.width>0?sz.screen:new Rect(0,0,1920,1080);
+   Vector2 sp=ToGUI(raX,raY);if(sp.x>screen.x+mIn&&sp.x<screen.xMax-mIn&&sp.y>screen.y+mIn&&sp.y<screen.yMax-mIn)return;
+   float cx=screen.center.x,cy=screen.center.y,dx=sp.x-cx,dy=sp.y-cy,ang=Mathf.Atan2(dy,dx);float t=Mathf.Min((screen.width/2-mIn)/Mathf.Max(Mathf.Abs(dx),.000001f),(screen.height/2-mIn)/Mathf.Max(Mathf.Abs(dy),.000001f));
+   float dm=Mathf.Floor(Mathf.Sqrt((raX-sim.Player.X)*(raX-sim.Player.X)+(raY-sim.Player.Y)*(raY-sim.Player.Y))/64f);var footprint=ArrowFootprint(ang,dm);
+   var blocks=new List<NativeFloatingTextLayout.Box>();if(sz.blocks!=null)foreach(var b in sz.blocks)blocks.Add(new NativeFloatingTextLayout.Box(b.x,b.y,b.width,b.height));if(sz.clock.width>0)blocks.Add(new NativeFloatingTextLayout.Box(sz.clock.x,sz.clock.y,sz.clock.width,sz.clock.height));
+   float bottom=Mathf.Min(screen.yMax-24,sz.bottomTop-12);var allowed=new NativeFloatingTextLayout.Box(screen.x+24,screen.y+24,screen.width-48,bottom-screen.y-24);
+   if(!NativeRegionArrowLayout.TryPlace(cx+dx*t,cy+dy*t,allowed,new NativeFloatingTextLayout.Box(footprint.x,footprint.y,footprint.width,footprint.height),blocks,12,out float ax,out float ay))return;
+   ArrowShown=true;ArrowPos=new Vector2(ax,ay);NativeUiAudit.Region(new Rect(ax+footprint.x,ay+footprint.y,footprint.width,footprint.height),"component","hud-region-arrow","실제 회전 화살표/글로우/두줄라벨 외곽");
    float pulse = .72f + .16f * Mathf.Sin(sim.TickCount * .09f);
    var oldM = GUI.matrix; var oldC = GUI.color;
    RotateLocal(new Vector2(ax, ay), ang * Mathf.Rad2Deg);   // translate(ax,ay) rotate(ang)
@@ -362,10 +346,15 @@ namespace Exoduser.UnityPort
    GUI.color = new Color(1, 1, 1, Mathf.Min(1, pulse + .2f)); NativeUiAudit.DrawTexture(new Rect(ox, ay - H / 2, W, H), arrowTex);
    GUI.matrix = oldM; GUI.color = oldC;
    // label: Nanum Myeongjo 700 14px bone, Cinzel 12px distance, 8-direction black offsets
-   float dm = Mathf.Floor(Mathf.Sqrt((raX - sim.Player.X) * (raX - sim.Player.X) + (raY - sim.Player.Y) * (raY - sim.Player.Y)) / 64f);
    float lx = ax - Mathf.Cos(ang) * 68, ly = ay - Mathf.Sin(ang) * 68;
    if (!string.IsNullOrEmpty(raLabel)) OutlinedCenter(raLabel, lx, ly, nanum, 14, FontStyle.Bold, C(218,215,209, .96f), 1.5f);
    OutlinedCenter(dm + "m", lx, ly + 16, cinzel, 12, FontStyle.Bold, C(188,185,179, .92f), 1.4f);
+  }
+  Rect ArrowFootprint(float angle,float distance)
+  {
+   float w=96,h=w*arrowTex.height/arrowTex.width,k=w/arrowTex.width,c=Mathf.Cos(angle),s=Mathf.Sin(angle);var r=new Rect(40-w-18*k,-h/2-18*k,w+36*k,h+36*k);float x0=float.MaxValue,y0=float.MaxValue,x1=float.MinValue,y1=float.MinValue;
+   for(int i=0;i<4;i++){float x=i%2==0?r.x:r.xMax,y=i<2?r.y:r.yMax,rx=x*c-y*s,ry=x*s+y*c;x0=Mathf.Min(x0,rx);x1=Mathf.Max(x1,rx);y0=Mathf.Min(y0,ry);y1=Mathf.Max(y1,ry);}
+   var a=St(nanum,14,TextAnchor.MiddleCenter,FontStyle.Bold).CalcSize(new GUIContent(raLabel));var b=St(cinzel,12,TextAnchor.MiddleCenter,FontStyle.Bold).CalcSize(new GUIContent(distance+"m"));float lx=-c*68,ly=-s*68;float tw=Mathf.Max(a.x,b.x)/2+2;x0=Mathf.Min(x0,lx-tw);x1=Mathf.Max(x1,lx+tw);y0=Mathf.Min(y0,ly-Mathf.Max(a.y,b.y)/2-2);y1=Mathf.Max(y1,ly+16+b.y/2+2);return Rect.MinMaxRect(x0,y0,x1,y1);
   }
   void OutlinedCenter(string s, float x, float y, Font f, int size, FontStyle fs, Color col, float o)
   {

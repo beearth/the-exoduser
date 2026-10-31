@@ -10,7 +10,7 @@ using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort
 {
     // RM-INT stage 1: the remodel 3D presentation of the 1-1 field behind the `--remodel3d` switch (design: docs/engine/UNITY_RM_INT_RUNTIME_HOOK_20261028.md).
-    // Presentation only. The Core tick, the 2D logic camera (`view`: camera clamp, FieldEnemyCanShoot, boss zoom) and every oracle stay as they are; Off = no code of this file runs
+    // Presentation hook. The 2D logic camera still supplies clamp/boss zoom; screen visibility now uses HudCamera (NativeGame.WorldViewport). Off = no code of this file runs
     // (NativeRemodel3D.Active stays false, Point() is the old 2D mapping). On: the RM-1 scene (RM1_Slice, additive) draws the ground; the 2D ground chunks and props are hidden;
     // the existing sprites become billboards standing on the terrain; the scene's LOOK-001 rig (Main Camera + CinemachineBrain + CM LOOK-001, follow target "Player Marker") renders.
     // In the boss arena (`Stage.InArena`) the 3D layer steps back and the 2D arena view is shown as before (A1 / RM-3 / RM-2 / RM-4 hook in here later).
@@ -103,7 +103,7 @@ namespace Exoduser.UnityPort
 
         void Remodel3DViewport()
         {
-            // 웹의 월드 1px : 화면 1px 기준. 논리 카메라와 전투 판정은 그대로 유지한다.
+            // Fixed vertical FOV, full physical camera viewport. Screen visibility is projected through HudCamera.
             if (r3Vcam == null) return;
             var lens = r3Vcam.Lens;
             float fov = NativeRemodelCamera.FieldOfView;
