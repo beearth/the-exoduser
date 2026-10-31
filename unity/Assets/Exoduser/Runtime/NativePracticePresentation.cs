@@ -19,9 +19,9 @@ namespace Exoduser.UnityPort
             throw new InvalidOperationException("Missing source practice copy "+id);
         }
         Vector2 practiceScroll;float practiceContentHeight=1400;
-        Rect PracticePanel(float width){var dock=NativeHudDockLayout.Create(1920,1080);float hudTop=Mathf.Min(NativeUiViewport.ToEdge(dock.LeftFrame).y,NativeUiViewport.ToEdge(dock.RightFrame).y);float top=NativeObjectivePanel.Top+NativeObjectivePanel.Height+16;return new Rect(NativeUiViewport.Edges.Width-LessonRight-LessonW,top,LessonW,Mathf.Max(220,hudTop-16-top));}
+        Rect PracticePanel(float width){var dock=NativeHudDockLayout.Create(1920,1080);float hudTop=Mathf.Min(NativeUiViewport.ToEdge(dock.LeftFrame).y,NativeUiViewport.ToEdge(dock.RightFrame).y);float top=NativeObjectivePanel.Top+NativeObjectivePanel.Height+16+8;return new Rect(NativeUiViewport.Edges.Width-LessonRight-LessonW,top,LessonW,Mathf.Max(220,hudTop-16-8-top));}
         bool PointerOverPractice()
-        {return PracticePanel(NativeUiViewport.Edges.Width).Contains(NativeUiViewport.EdgePointer(ExoInput.MousePosition));}
+        {var r=PracticePanel(NativeUiViewport.Edges.Width);return new Rect(r.x-8,r.y-8,r.width+16,r.height+16).Contains(NativeUiViewport.EdgePointer(ExoInput.MousePosition));}
         GUIStyle LessonStyle(int size,TextAnchor anchor,Color color,bool bold=false,bool wrap=false,bool key=false)
         {
             string id=size+"|"+anchor+"|"+ColorUtility.ToHtmlStringRGBA(color)+bold+wrap+key;GUIStyle s;if(lessonStyles.TryGetValue(id,out s))return s;
@@ -75,7 +75,7 @@ namespace Exoduser.UnityPort
                 if(NativeUiAudit.Button(fb,GUIContent.none,GUIStyle.none))EndFirstPractice(true);
                 return;
             }
-            var rect=PracticePanel(width);NativeUiAudit.Region(rect,"component","practice-panel","실습 안내 외곽");NativeSilverHellUi.Panel(rect,28,8);
+            var rect=PracticePanel(width);NativeUiAudit.Region(rect,"component","practice-panel","실습 안내 안쪽");NativeUiAudit.Region(new Rect(rect.x-8,rect.y-8,rect.width+16,rect.height+16),"component","guide-frame","실습 실제 Panel outset8 포함 외곽");NativeSilverHellUi.Panel(rect,28,8);
             bool hasFooter=firstPractice.Phase==FirstPracticePhase.Intro||firstPractice.Phase==FirstPracticePhase.Done;float footerHeight=hasFooter?145:100;
             NativeUiAudit.Region(new Rect(rect.x,rect.y,rect.width,rect.height-footerHeight),"component","guide-content","실습 내용 스크롤 viewport");
             practiceScroll=NativeUiAudit.BeginScrollView(new Rect(rect.x,rect.y,rect.width,rect.height-footerHeight),practiceScroll,new Rect(rect.x,rect.y,rect.width-16,practiceContentHeight),false,true);

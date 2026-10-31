@@ -175,7 +175,7 @@ namespace Exoduser.UnityPort
   {
    float sw=NativeUiSafeArea.DesignWidth,sh=NativeUiSafeArea.DesignHeight;bool insideSafe=new Rect(0,0,sw,sh).Contains(Event.current.mousePosition);
    if(startupGuideDrawBarrier)DrawStartupBarrier();
-   EnsureStartupGradients();NativeUiAudit.DrawTexture(new Rect(0,0,sw,sh),startupGuideGradient);
+   EnsureStartupGradients();NativeUiAudit.DrawTexture(NativeUiViewport.ScreenInDesign,startupGuideGradient);
    int step=startup.Page==FrontendEntryPage.Curtain?Mathf.Clamp(guidePhysicalStep,0,3):startup.GuideStep;if(guidePhysicalStep!=step){guidePhysicalStep=step;guideScroll=Vector2.zero;}
    bool pad=ExoInput.PadConnected;
    float panelW=Mathf.Min(720,Mathf.Max(120,sw-96)),w=panelW-106,keyW=Mathf.Max(160,w*.38f),descW=Mathf.Max(20,w-keyW-20);
@@ -191,8 +191,8 @@ namespace Exoduser.UnityPort
    float noteH=step==3?GuidePhysicalLines(note,guideText,15.2f,0,w).Count*20.52f:0,hintH=GuidePhysicalLines(hint,guideText,13.6f,.544f,w).Count*17;
    // Source normal line boxes: progress16; empty English line still contributes margin-top10.
    float total=2+34+16+12+dialogueH+10+24+22+titleH+14+bodyH+(step==3?16+noteH:0)+20+hintH+22+46+40;
-   var safe=NativeUiViewport.Current;float reservedTop=((NativeObjectivePanel.Top+NativeObjectivePanel.Height+16)*NativeUiViewport.Edges.Scale-safe.Y)/safe.Scale;var dock=NativeHudDockLayout.Create(sw,sh);float reservedBottom=Mathf.Min(dock.LeftFrame.y,dock.RightFrame.y)-16;float visibleH=Mathf.Min(total,Mathf.Max(180,reservedBottom-reservedTop)),left=(sw-panelW)/2,top=reservedTop+(reservedBottom-reservedTop-visibleH)/2;
-   NativeSilverHellUi.Panel(new Rect(left,top,panelW,visibleH));NativeUiAudit.Region(new Rect(left,top,panelW,visibleH),"component","startup-guide","초기 안내창 외곽");
+   var safe=NativeUiViewport.Current;float reservedTop=((NativeObjectivePanel.Top+NativeObjectivePanel.Height+16)*NativeUiViewport.Edges.Scale-safe.Y)/safe.Scale+24;var dock=NativeHudDockLayout.Create(sw,sh);float reservedBottom=Mathf.Min(dock.LeftFrame.y,dock.RightFrame.y)-16-24;float visibleH=Mathf.Min(total,Mathf.Max(180,reservedBottom-reservedTop)),left=(sw-panelW)/2,top=reservedTop+(reservedBottom-reservedTop-visibleH)/2;
+   NativeSilverHellUi.Panel(new Rect(left,top,panelW,visibleH));NativeUiAudit.Region(new Rect(left,top,panelW,visibleH),"component","startup-guide","초기 안내창 안쪽");NativeUiAudit.Region(new Rect(left-24,top-24,panelW+48,visibleH+48),"component","guide-frame","초기 안내 실제 Panel outset24 포함 외곽");
    NativeUiAudit.Region(new Rect(left,top,panelW,visibleH-86),"component","guide-content","초기 안내 내용 스크롤 viewport");
    guideScroll=NativeUiAudit.BeginScrollView(new Rect(left,top,panelW,visibleH-86),guideScroll,new Rect(0,0,panelW-(total>visibleH?16:0),total-86),false,total>visibleH);
    var hintStyle=new GUIStyle(guideText){font=serif};hintStyle.normal.textColor=new Color(141/255f,144/255f,144/255f);

@@ -54,12 +54,12 @@ namespace Exoduser.UnityPort
   {
    var point=WideLegal(x,y);var p=Simulation.Player;p.X=point.x;p.Y=point.y;Simulation.Enemies.Clear();Simulation.SpawnHoles=null;Simulation.CrossbowAuto=false;
    var move=new WideWorldMove{width=Screen.width,height=Screen.height,axis=axis,start=point};
-   for(int n=1;n<=180;n++){StepInput(axis=="horizontal"?-1:0,axis=="vertical"?-1:0,p.X+300,p.Y,false,false);p.Iframes=1000000;yield return new WaitForFixedUpdate();if(n%60==0)yield return UiOverlapShot("월드이동-"+axis+"-"+n);}
+   for(int n=1;n<=360;n++){StepInput(axis=="horizontal"?-1:0,axis=="vertical"?-1:0,p.X+300,p.Y,false,false);p.Iframes=1000000;yield return new WaitForFixedUpdate();if(n%120==0)yield return UiOverlapShot("월드이동-"+axis+"-"+n);}
    move.end=new Vector2(p.X,p.Y);move.distance=Vector2.Distance(move.start,move.end);wideWorld.movement.Add(move);if(move.distance<40)throw new InvalidOperationException("실제 이동 부족 "+axis+" "+move.distance);
   }
   IEnumerator WideFpsSample()
   {
-   ResetRun();practiceScripted=true;Running=false;var point=WideLegal(4020,4820);var p=Simulation.Player;p.X=point.x;p.Y=point.y;Simulation.Enemies.Clear();Simulation.SpawnHoles=null;Simulation.CrossbowAuto=false;WideSpawnSample();Simulation.Config.EnemyAiEnabled=true;
+   ResetRun();practiceScripted=true;Running=false;Simulation.FieldBossesEnabled=false;Simulation.FieldBosses=null;var point=WideLegal(4020,4820);var p=Simulation.Player;p.X=point.x;p.Y=point.y;Simulation.Enemies.Clear();Simulation.SpawnHoles=null;Simulation.CrossbowAuto=false;WideSpawnSample();Simulation.Config.EnemyAiEnabled=true;
    var sample=new WideWorldFps{width=Screen.width,height=Screen.height,enemiesBefore=Simulation.Enemies.Count};float warm=Time.realtimeSinceStartup+1,accumulator=0,last=Time.realtimeSinceStartup;
    while(Time.realtimeSinceStartup<warm){float now=Time.realtimeSinceStartup;accumulator+=now-last;last=now;while(accumulator>=1f/60){StepInput(0,0,p.X+300,p.Y,false,false);p.Iframes=1000000;accumulator-=1f/60;}yield return null;}
    float start=Time.realtimeSinceStartup;last=start;int tick=Simulation.TickCount;
@@ -95,9 +95,13 @@ namespace Exoduser.UnityPort
     if(Screen.width!=size.x||Screen.height!=size.y)throw new InvalidOperationException("월드 실제 해상도 불일치");
     yield return WideWorldShotAt("월드시작",Map.Data.startX,Map.Data.startY);yield return WideWorldShotAt("월드전투",4020,4820,true);yield return WideWorldShotAt("월드보스앞",4020,620);
     yield return WideMove("horizontal",Map.Data.startX,Map.Data.startY);yield return WideMove("vertical",Map.Data.startX,Map.Data.startY);
-    if(size.x==1920||size.x==3840)yield return WideFpsSample();
     File.WriteAllText(Path.Combine(overlapOutput,"world-receipt.json"),JsonUtility.ToJson(wideWorld,true));
    }
+   foreach(int width in new[]{1920,3840}){Screen.SetResolution(width,1080,FullScreenMode.Windowed);yield return null;yield return null;
+#if UNITY_STANDALONE_WIN
+    if(Screen.width!=width||Screen.height!=1080){UiWideSetClientSize(width,1080);yield return null;}
+#endif
+    if(Screen.width!=width||Screen.height!=1080)throw new InvalidOperationException("FPS 실제 해상도 불일치");yield return WideFpsSample();}
    File.WriteAllText(Path.Combine(overlapOutput,"coverage.json"),JsonUtility.ToJson(overlapCoverage,true));File.WriteAllText(Path.Combine(overlapOutput,"world-receipt.json"),JsonUtility.ToJson(wideWorld,true));
    lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);bool pixels=wideWorld.pixelCases.Count==3;foreach(var p in wideWorld.pixelCases)pixels&=p.difference==0&&p.selfDifference==0&&p.nonBlackPixels>1000&&p.maxChannel>16;Application.Quit(pixels?0:2);
   }

@@ -444,7 +444,7 @@ namespace Exoduser.UnityPort
             floatingTextLayout.BeginFrame(Time.unscaledTime);
             var textViewport=NativeUiViewport.ScreenInDesign;floatingTextLayout.SetHorizontalBounds(textViewport.x+8,textViewport.xMax-8);
             ReserveEdgeFeedback(new Rect(0,0,160,176));ReserveEdgeFeedback(new Rect(16,188,108,58.3f));ReserveEdgeFeedback(new Rect(NativeUiViewport.Edges.Width-NativeObjectivePanel.RightMargin-NativeObjectivePanel.Width,NativeObjectivePanel.Top,NativeObjectivePanel.Width,NativeObjectivePanel.Height));
-            if(firstPractice!=null&&!menu&&gameFocused)ReserveEdgeFeedback(PracticePanel(NativeUiViewport.Edges.Width));
+            if(firstPractice!=null&&!menu&&gameFocused){var pr=PracticePanel(NativeUiViewport.Edges.Width);ReserveEdgeFeedback(new Rect(pr.x-8,pr.y-8,pr.width+16,pr.height+16));}
             if(Time.unscaledTime<noticeUntil){var ns=new GUIStyle(label){alignment=TextAnchor.UpperLeft,wordWrap=true};ReserveEdgeFeedback(new Rect(20,270,440,ns.CalcHeight(new GUIContent(notice),440)));}
             if(Simulation.Stage.InArena&&druidBody!=null&&druidBody.Visible){var bounds=druidBody.Bounds;var a=HudCamera.WorldToScreenPoint(new Vector3(bounds.min.x,bounds.max.y,bounds.center.z));var b=HudCamera.WorldToScreenPoint(new Vector3(bounds.max.x,bounds.min.y,bounds.center.z));var ga=NativeUiViewport.Pointer(a);var gb=NativeUiViewport.Pointer(b);floatingTextLayout.Reserve(new NativeFloatingTextLayout.Box(ga.x,ga.y,gb.x-ga.x,gb.y-ga.y));}
             foreach(var d in damage)if(!d.submitted){d.submitted=true;damageFloaters.Add(d.x,d.y,d.amount.ToString(),d.shield?"#66ddff":"#ead7ac",d.shield?"enemy-shield":"enemy-hp",NativeFloatingTextLayout.DamagePriority,d.until-1,1,true,d.amount);}
