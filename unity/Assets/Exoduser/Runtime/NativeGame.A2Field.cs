@@ -100,6 +100,7 @@ namespace Exoduser.UnityPort
                         A2Module("Withered_Shrub",x-side*1.1f,zz-.6f,1.25f,1.1f,1.1f,row*73);
                         A2Module("Moss_Cushion",x-side*1.2f,zz+.2f,1.6f,.65f,1.5f,row*31,-.08f);
                         if(tree!=null)A2FieldDressTree(tree,row);
+                        A2FieldRoots(x-side*.7f,zz,1.8f,row*79+side*31);
                     }
                 }
             }
@@ -122,7 +123,7 @@ namespace Exoduser.UnityPort
                 if(r<.45f)continue;
                 var tree=r>=1.2f?A2Module("Hollow_Loft_Tree",x,z,.38f*r,1.1f,.38f*r,index*97):A2Module("Scanned_Stump",x,z,.6f*r,.6f*r,.6f*r,index*97);
                 if(tree!=null)A2FieldDressTree(tree,index);
-                A2FieldRoots(x,z,Mathf.Max(.6f,r)*.9f,index*97);index++;
+                A2FieldRoots(x,z,Mathf.Clamp(r*1.5f,1.6f,3.1f),index*97);index++;
             }
             // 시작 갈림길의 낮은 목교는 통로와 나란히 놓이며 별도 충돌을 만들지 않는다.
             var bridge=A2Module("Rotten_Wood_Bridge",43.2f,-71.8f,.96f,.55f,.85f,24,.02f);
@@ -141,7 +142,7 @@ namespace Exoduser.UnityPort
                 {
                     float x=center.x+side*(3.8f+.8f*Mathf.Sin(region*2.1f)),z=center.y+side*(2.8f+.6f*Mathf.Cos(region));
                     if(a2Field.Distance(x,z)<.8f||a2Field.Water(x,z))continue;
-                    A2FieldRoots(x,z,1.2f,region*71+side*37);
+                    A2FieldRoots(x,z,2.05f,region*71+side*37);
                     var log=A2Module("Fallen_Log",x,z,.9f,.45f,.9f,region*79+side*51,-.05f);
                     if(log!=null){log.name="A2 전투구역 쓰러진 목질 "+region+"/"+side;A2FieldRegister(log);}
                 }
@@ -175,7 +176,7 @@ namespace Exoduser.UnityPort
             {
                 if(!mf.sharedMesh.isReadable){Debug.LogError("[A2 필드] 뿌리 메시 읽기 누락");continue;}
                 var mesh=Instantiate(mf.sharedMesh);var vertices=mesh.vertices;var center=mf.transform.TransformPoint(mesh.bounds.center);var shift=new Vector3(center.x-x,0,center.z-z);
-                for(int i=0;i<vertices.Length;i++){var v=mf.transform.TransformPoint(vertices[i])-shift;v.y=a2Field.TerrainHeight(v.x,v.z)+Mathf.Max(0,v.y-baseY);vertices[i]=mf.transform.InverseTransformPoint(v);}
+                for(int i=0;i<vertices.Length;i++){var v=mf.transform.TransformPoint(vertices[i])-shift;v.y=a2Field.TerrainHeight(v.x,v.z)+Mathf.Max(0,v.y-baseY)+.006f;vertices[i]=mf.transform.InverseTransformPoint(v);}
                 mesh.vertices=vertices;mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();mf.sharedMesh=mesh;
             }
             foreach(var r in go.GetComponentsInChildren<MeshRenderer>())r.sharedMaterial=a2FieldRootMaterial;A2FieldRegister(go);
