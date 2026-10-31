@@ -1,6 +1,6 @@
 # 세계관 인트로 v6 — 전체 29언어 선택형 자막
 
-> **2026-10-31 현행:** 런타임은 문 연출 없이 v17. 음성·29언어×32큐·타임코드 계약은 유지하며 아래 영상 파일 표는 제작 당시 이력이다. [현행 재생 계약](WORLD_INTRO_INGAME_20260907.md).
+> **2026-10-31 현행:** 런타임은 문 연출 없이 v22b 정본. 29언어×32큐의 원본 번역·VTT/SRT 시각은 보존하며 `data-timing-offset="0.4"`로 런타임 시작·종료와 컷 점프에 +0.4초를 적용한다. 아래 영상 파일 표는 제작 당시 이력이다. [현행 재생 계약](WORLD_INTRO_INGAME_20260907.md).
 
 > **2026-09-09 현행 언어 계약:** Steam 31개 항목은 지역 공통 번역을 포함한 내부 29개 언어(말레이어 ms 추가)로 처리한다. 세계관 29×32=928큐·SRT/VTT 총58개, 캐릭터 서사 28개 번역 언어에 KO 기준 21+18문장을 적용한다. UI779키 등록, MAIN13,300개·EXTRA1,782개·성장화면3,699개 번역 보완 및 29언어 화면 검증을 완료했다. [구현 상태·검증 기록](../16번역·로컬라이제이션/STEAM_LANGUAGE_SCOPE_20260909.md)이 과거 완료 기록보다 우선한다.
 
@@ -10,7 +10,7 @@
 
 | 항목 | 현행 값 |
 |---|---|
-| 영상 | `video/world_intro_v13_exodus_en.mp4`, 32,381,760바이트 |
+| 영상 | 현행 `video/world_intro_v22b_steam.mp4`. 아래 규격·편집 경위는 v13 제작 시점 기록 |
 | 규격 | H.264/AAC, 1280×720, 24fps, 2719프레임, 영상 113.291667초 / 컨테이너 113.292초 |
 | 원본 복원 | v10 전통 마법 합본의 전체 영상 비트스트림·2719프레임 보존. v11의 마지막 C14 73프레임 삭제를 취소하고 기존 로고 시점 109.291667초로 복원. B04 초능력/마법 각 3초 및 큐1~30 유지 |
 | 지옥문 | 12.75~17.291667초, 원본 96프레임 → 109프레임, 영상만 109/96 배율 |
@@ -18,7 +18,7 @@
 | 음성 | v10 마법사 대사 이동·이전 내레이션 유지. 마지막 문장은 ElevenLabs 동일 보이스로 2.8초 SSML 쉼을 포함해 한 번에 생성, 105.927초에 연속 배치. 내부 분할·타임스트레치 없음. [v12 검수](WORLD_INTRO_V12_FULLSCENE_NEWVOICE_20260907.md) |
 | 자막 데이터 | `world-intro-subtitles-data.js` → `WorldIntroSubtitleData`, version v13, languages/timings/sourceGroups |
 | 자막 제어 | `world-intro-subtitles.js` → `WorldIntroSubtitles.attach/resolveLanguage/normalizeLanguage`. index.html `_worldIntroSubtitles`가 setLanguage/disable 호출, video.dataset.subtitleLanguage에 선택 코드 기록 |
-| 표시 | 브라우저 네이티브 TextTrack + VTTCue. 선택 언어만 showing, 나머지는 disabled. 최초 선택 때 해당 트랙 생성, WeakMap으로 비디오별 재사용 |
+| 표시 | 브라우저 네이티브 TextTrack + VTTCue(start+timeOffset,end+timeOffset). timeOffset은 video.dataset.timingOffset의 유한수(현행0.4초, 없으면0). 선택 언어만 showing, 나머지는 disabled. 최초 선택 때 해당 트랙 생성, WeakMap으로 비디오별 재사용 |
 | 타이밍 | 원문 38개를 32개 표시 큐로 구성. 원문38만 큐31(우리는 그들을…)과 큐32(엑소듀서라 부른다.)로 분할, 마지막 sourceGroups [38] 두 번 유지. v12는 마지막 두 큐 시각만 재녹음에 맞춤, 큐1~30 내용·시각 보존 |
 | 자막 수 | 29언어 × 32큐 = 928개. 한국어 원문·영어 승인 녹음 원고 포함, 나머지 27언어 번역 |
 | 스타일 | Noto Serif / Noto Serif KR / serif, weight 500, clamp(32px,5.4vh,50px), 아이보리 #eee5d5, background transparent. 4방향 1px 검정 윤곽 + 2중 부드러운 그림자. align center / size 84 / snapToLines true / line -3 / position 50 / positionAlign center 유지. 언어별 서체·그림자 수치는 아래 표 |
@@ -31,7 +31,7 @@
 | 별도 납본 | `video/subtitles/world_intro_v6_<code>.srt` 및 .vtt, 29개씩 총 58개. 런타임 JS와 내용·시각 동일 |
 | 편집 소스 | output/cinematic/world_intro_v12_audio_recipe.py; v10 source.mp4 영상 스트림 복사 + 연속 신규 음성 합성. 기존 v11 편집 파일은 폐기 이력 |
 | 백업 | `output/cinematic/index_before_world_intro_v6_subtitles_20260907.html`, v3/v4/v5 MP4 보존 |
-| 캐시 | player: 20260907-v12-fullscene-newvoice, subtitle data: 20260907-v13-exodus-ko-escape, subtitle controller: 20260907-v6-cinema-size |
+| 캐시 | player: 20261031-v22b-offset, subtitle data: 20260907-v13-exodus-ko-escape, subtitle controller: 20261031-v22b-offset |
 | 범위 밖 | game.html 전쟁 복수 서사, 국가별 보이스 재녹음, 계정 데이터 변경, 배포·커밋 |
 
 ## 영화 자막 크기·위치 조정 (2026-09-07)

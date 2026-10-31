@@ -72,5 +72,5 @@ CTO local_7072229c · 디자인총괄 local_eb8a8577 · 보스전 총괄 local_a
 
 ## 2026-10-31 세계관 인트로 문 장면 폐지
 
-- 담당: `codex/web-intro-nodoor-20261031`, 작업본 `G:/exoduser-wt/codex-web-intro`. 모든 세계관 ENTER는 `video/world_intro_v17_blood_en.mp4`로 통일. 구 문 미디어 파일은 보존, 소스/재생/배경/예약 진동만 폐지. 새 캐릭터 전사 개인사 v23은 별도 유지.
-- [현행 재생 계약](../../cinematic/WORLD_INTRO_INGAME_20260907.md), 세부 경로표·첫 3초 캡처·검수 결과: `G:/exoduser/tmp/design-review/20261031_intro_nodoor/REPORT.md`. 관련 회귀 340/340·guard PASS. 실제 계정 서비스/NW.js·Steam 패키지/열린 사용자 실행본 검수와 구분한다.
+- 담당: `codex/web-intro-nodoor-20261031`, 작업본 `G:/exoduser-wt/codex-web-intro`. 모든 세계관 ENTER는 `video/world_intro_v22b_steam.mp4`로 통일(102,204,634B, SHA256 3b99d59b…). 원본 VTT/SRT 58개는 보존하고 928큐·17컷에 +0.4초 런타임 보정. `indexdemo.html` 구 URL은 쿼리·fragment를 보존해 정본 index로 연결(NW FILES 포함). 구 문 미디어 파일은 보존, 소스/재생/배경/예약 진동만 폐지. 새 캐릭터 전사 개인사 v23은 별도 유지.
+- [현행 재생 계약](../../cinematic/WORLD_INTRO_INGAME_20260907.md), 세부 경로표·첫 3초 캡처·검수 결과: `G:/exoduser/tmp/design-review/20261031_intro_nodoor/REPORT.md`. v22b 직접 회귀33/33 PASS, 3구간 음성 정렬 +0.4초(상관계수>.999996). 최종 확대 회귀345 PASS/2 SKIP, 기존 실패2건은 최종 실행에서 제외해 REPORT에 분리. 실제 계정 서비스/NW.js·Steam 패키지/열린 사용자 실행본 검수와 구분한다.

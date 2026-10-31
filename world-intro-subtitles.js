@@ -16,6 +16,8 @@
   function attach(video){
     if(instances.has(video))return instances.get(video);
     const tracks=new Map();
+    const offset=Number(video.dataset?.timingOffset);
+    const timeOffset=Number.isFinite(offset)?offset:0;
     const api={
       setLanguage(value){
         const code=normalizeLanguage(value);
@@ -24,7 +26,7 @@
           track=video.addTextTrack('subtitles',code,tags[code]||code);
           track.mode='hidden';
           data.timings.forEach(([start,end],i)=>{
-            const cue=new root.VTTCue(start,end,data.languages[code][i]);
+            const cue=new root.VTTCue(start+timeOffset,end+timeOffset,data.languages[code][i]);
             cue.id=String(i+1);cue.align='center';cue.size=84;
             cue.snapToLines=true;cue.line=-3;
             cue.position=50;cue.positionAlign='center';
