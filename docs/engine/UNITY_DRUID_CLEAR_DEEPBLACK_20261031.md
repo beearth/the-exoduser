@@ -11,7 +11,7 @@
 | Runtime SHA-256 | `4671345cf2c80632c2319a220d462303f92d1bd3d577f74e7ba9bda0851bd748` |
 | Core SHA-256 | `51b7ae0699b5aa041d5c02160fad61f78003e26d8aab02876206f0fb7d1c84bc` |
 | 소유 작업본 기준 | `a5ff550499b61697753ac2f091c6cfe61c78cf16`, 시작 INDEX 0. 타인 `tools/guard.baseline.json` 보존 |
-| 분리 가능한 입력 | 변경 전 `NativeBossView.cs`, `NativeDruidArt.cs`는 사용자 원본과 바이트 동일. 해당 두 파일과 신규 `DruidProjectileAppearance.cs`만 사용자 원본에 적용하여 설치 Unity 참조로 컴파일 오류 0 |
+| 분리 가능한 입력 | 변경 전 `NativeBossView.cs`, `NativeDruidArt.cs`는 사용자 원본과 바이트 동일. 해당 두 파일과 신규 DruidProjectileAppearance/NativeGame.DruidClearDiagnostics의 총 4파일을 사용자 원본에 적용. 현재 표시 소스 36b4a74c1, 설치 Unity 참조 컴파일 오류 0. 원본 Runtime tracked 변경 0을 08:03 UTC 재확인 |
 | 금지 범위 | Core 수정 0, Q/E 판정 수정 0, 저장 수정 0, 일시정지·임팩트 담당 파일 수정 0. 기존 스킬 16종의 전체 브랜치 통합 금지 |
 
 ## 원인 조사
@@ -23,7 +23,7 @@
 | 호스트·레벨업 | 사용자 원본의 `FixedUpdate`, `StageFlowPump`, `OnLevelledUp` 본문을 추출해 실행. 두 모드 모두 `Running=true`, 결과 패널 표시, 레벨업 표시 1회, 출구 SP +10 1회 | Unity·실제 UI·저장 경계는 명시적 스텁. GPU·포커스·OS 입력·실제 저장 완료를 증명하지 않음 |
 | 플레이어 부활·사망 | 저체력에서 실제 `HurtPlayer`로 fallen 진입. 300틱 대기 동안 Running 유지, 성공은 idle/HP100/Running=true, 실패는 dead/HP0/Running=false | 첫 전HP 검사에서는 기존 한방캡으로 stagger여서 검사 전제가 실패. 저체력 전제만 수정했으며 프로덕션 피해 규칙 수정 0 |
 | 사용자 스크린샷 | 원본을 직접 열어 확인·I: 보존. 보스 바가 없는 정지 장면만으로 죽음·정지 원인을 확정하지 않음 | 단일 정지 이미지로 틱/Running/포커스/마지막 예외 판단 불가 |
-| 사용자 로그 | 실행 경로가 일치하는 기존 Player.log 사본 보존. 예외 기록 없음 | 로그 수정시각이 요청 전이므로 해당 정지 순간의 무예외 증거로 재사용 불가 |
+| 초기 사용자 로그 | 실행 경로가 일치하는 04:11 UTC 로그 사본 보존. 예외 기록 없음 | 최초 정지 순간과 동일 실행인지 미확정. 이후 새 종료 크래시 기록은 아래와 분리 |
 
 출구 규칙은 `BossDefeated → ExitOpened → 출구 타일 이동 → StageCleared`다. 처치 직후 자동 클리어로 바꾸거나 Running을 강제로 재개하는 우회 수정은 하지 않았다. 실제 정지 순간의 호스트·렌더·포커스 관측이 다음 진단에 필요하다. 다른 active 담당의 일시정지 파일은 보존한다.
 
@@ -59,9 +59,10 @@ UseDeepBlack는 표시 전용 읽기이며 Col/ParryClass/Friendly/좌표/속도
 | 검사 | 결과·한계 |
 |---|---|
 | 이전 표시 검사 | 초기 resolver/픽셀 16검사 및 AI 관측 20검사는 당시 후보만 검증. 전체 충돌의 패링 불가를 증명하지 못했으므로 범위 합격 근거로 철회 |
-| 실제 전체 충돌 | 사용자 Core DLL에서 normal/remodel의 physical/magic/blackBean/forbidden Q/E 및 별도 Orbs/Web, 총 22관측. 상태·패링창·위치·HP를 통제한 CPU 검사이며 손플레이 아님 |
+| 실제 전체 충돌 | 사용자 Core DLL에서 normal/remodel의 physical/magic/blackBean/forbidden Q/E 및 별도 Orbs/Web, 총 22관측. Vx=0 접촉 샘플로 실제 충돌·피해 훅을 실행. 상태·패링창·위치·HP를 통제했으며 손플레이 아님 |
 | 범위 회귀 RED | 사용자 확인에 맞춘 11검사 중 초기 후보 6실패. 별도 Orbs의 녹색 복원도 검사 |
 | 범위 회귀 GREEN | 실제 전체 충돌 결과에 기반한 분류 및 명시 class/혼합 특수탄 경계 15검사, 실패 0 |
+| 추가 이동 경계 | Vx=-6 및 Web 명시 class/혼합 특수탄 추가 하니스는 SDK10의 NuGet path1 오류와 NETSDK1060으로 2회 실패해 해당 단위 중단. 이 결과를 게임 실패나 추가 이동 검사 통과로 세지 않음 |
 | 호스트 흐름 | 사용자 DLL·실제 호스트 함수의 처치/출구/클리어와 fallen 성공/실패 4경로 통과. 저장 4건 읽기 전용 복원 통과. 검기탭/충전반복/E/마법/혼합 5공격 경로 최종처치→클리어 단회 통과 |
 | 강타 단독 | 12000틱/7시전은 실제 치명피해 후 7회 부활하여 최종처치 미도달. 틱 진행·idle·좌표 유한. 정지로 세지 않음 |
 | 컴파일 | 사용자 원본 Runtime + 표시 3파일/진단 1파일, 사용자 Core51b 그대로 설치 Unity C# 참조 컴파일. 정식 Unity 빌드와 구별 |
@@ -86,3 +87,16 @@ UseDeepBlack는 표시 전용 읽기이며 Col/ParryClass/Friendly/좌표/속도
 | 보호 | 게임 입력·Running·timeScale·단계·캐릭터·저장 상태 쓰기 0. 로그는 Unity의 기존 로그 경로를 사용하며 QA는 공식 실행기의 I: 로그로 격리 |
 | CPU 검사 | 실제 관측 함수에 Unity 스케줄러/UI 경계만 스텁. 비활성 객체 제외·단일 코루틴·필드 무로그·Core 전후 동일·정상 진행 제한·호스트 정지/틱 정지·출구 기록 등 11검사 실패 0 |
 | 한계 | Unity 메인 스레드 전체가 막히면 관측 코루틴도 실행되지 않는다. 이때는 마지막 로그 이후 중단을 기록 근거로 남기며, 위 관측만으로 원인을 확정하지 않음. 실제 Player 로그는 아직 미검증 |
+
+## 후속 실행 증거와 별도 인계
+
+| 항목 | 확인값·한계 |
+|---|---|
+| 최신 최소 표시·관측 | 소스36b4a74c1a788da40c101f8dcf30a45ec14fb2ef. 정확 4입력 SHA를 보존한 Runtime4ece426fa5bfc1387ef087f3fe1b946e85e00345575d789640c3d4822083e0d0. 사용자 Core51b 유지. 공식 Unity 새 빌드가 아닌 독립 C# 검수 사본 |
+| 공식 원본 M1 | 첫 슬롯 대기06:24:17→07:04:23 UTC, WaitMin 기본40으로 종료1/Player 시작0. 두 번째07:07 UTC부터 WaitMin120으로 같은 예약 순번 유지. 실제 실행 결과 아직 없음. 두 번째 동일 대기 실패면 추가 반복하지 않음 |
+| 새 사용자 종료 크래시 | 같은 제품 경로. 덤프 PID30032, 시작06:56:39 UTC(15:56:39 KST), 충돌07:00:19 UTC(16:00:19 KST). Physics cleanup/Input Shutdown 뒤 UnityPlayer.dll+UIAutomationCore 스택. 최초 정지 캡처보다 뒤에 시작한 별도 실행이며 처치 정지 원인으로 확정하지 않음 |
+| Windows 교차 근거 | Application Error1000, 07:00:20 UTC c0000005 및07:00:24 UTC c000041d. PID0x7550=30032, UnityPlayer offset0x10d1432로 덤프와 일치 |
+| 원자료 보존 | REPORT 경로 아래 사용자-종료크래시-070018에 Player.log/덤프/구조화 이벤트. 덤프 원본·사본 SHA de1ff34203c05070aad84adc200a809ae3e5a169d3a7a2e736462ea0ba9196b6. 기존 일시정지 담당이 증거 인수, 실제 원인 수정 완료로 합산하지 않음 |
+| CPU 경계 | StageFlowSyncViews의 출구 아레나 Rebuild/텍스처 업로드, 실제 저장 IO, OS 입력·포커스는 CPU 호스트 스텁 검증으로 대체하지 않음. 현재 실제 Player 대기 |
+| 별도 Core 후속 | HD2D 담당이 미적용 2단계 6Core 후보에서 HurtProjectile/HurtOptions.Projectile을 시험한다는 인계를 받음. 우리 제품·Core 수정0/인수0. 새 Core 공식 채택 시 실제 생성탄 Q/E와 표시 범위를 다시 검증하며 구Core51b의15/22 관측을 새 후보에 소급하지 않음 |
+
