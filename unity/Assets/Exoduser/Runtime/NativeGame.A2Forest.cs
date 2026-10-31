@@ -214,7 +214,7 @@ namespace Exoduser.UnityPort
                 if(!mf.sharedMesh.isReadable){if(a2UnreadableMeshes.Add(id))Debug.LogError("[A2] 지면 접합 정점읽기 누락. 원본 메시 유지: "+id);continue;}
                 var mesh=Instantiate(mf.sharedMesh);var points=mesh.vertices;
                 for(int i=0;i<points.Length;i++){var p=mf.transform.TransformPoint(points[i]);float groundY=a2Field==null&&A2ForestLayout.Water(p.x,p.z)&&!A2ForestLayout.Island(p.x,p.z)?A2ForestLayout.WaterLevel-.18f:NativeRemodel3D.GroundY(p.x,p.z);float weight=hollow?1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(1,3,p.y-height)):1;p.y+=(groundY-placementGround)*weight;
-                    if(hollow&&a2Field!=null)
+                    if((hollow||stump||roots||foreground&&!registerSurface)&&a2Field!=null)
                     {
                         float bed=a2Field.TerrainHeight(p.x,p.z),above=p.y-bed,fx,fz;
                         if(above>.18f&&above<4&&a2Field.FitTreePoint(p.x,p.z,x,z,out fx,out fz))

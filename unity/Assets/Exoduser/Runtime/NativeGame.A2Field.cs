@@ -56,7 +56,7 @@ namespace Exoduser.UnityPort
             var cover=new Texture2D(256,256,TextureFormat.RGBA32,false,true){name="A2 전투중심을 비운 연결 이끼 지면",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
             var coverPixels=new Color[256*256];for(int y=0;y<256;y++)for(int x=0;x<256;x++)coverPixels[y*256+x]=new Color(a2Field.GroundCover((x+.5f)/256*80,-(y+.5f)/256*80),0,0,1);
             cover.SetPixels(coverPixels);cover.Apply(false,true);a2FieldSoil.SetTexture("_FieldCover",cover);
-            A2FieldOuterMass();A2Foreground(true);A2FieldLandmarks();A2FieldConnections();A2FieldGround();A2FieldGroundCover();A2BridgeMoss();A2FieldAtmosphere();
+            A2FieldOuterMass();A2FieldBanks();A2Foreground(true);A2FieldLandmarks();A2FieldConnections();A2FieldGround();A2FieldGroundCover();A2BridgeMoss();A2FieldAtmosphere();
             var aa=r3Cam.GetUniversalAdditionalCameraData();aa.antialiasing=NativeHd2D.Enabled?AntialiasingMode.None:AntialiasingMode.SubpixelMorphologicalAntiAliasing;aa.antialiasingQuality=AntialiasingQuality.High;
             aa.requiresDepthTexture=true;r3Cam.depthTextureMode|=DepthTextureMode.Depth;
             r3Cam.backgroundColor=new Color(.105f,.145f,.17f);r3Cam.farClipPlane=220;
@@ -117,7 +117,7 @@ namespace Exoduser.UnityPort
                     if(!a2Field.TreeSite(x,zz,1.1f))continue;
                     float scale=.65f+.15f*Mathf.Sin(row*2.13f+layer*.7f);
                     bool opening=layer==0&&row%3!=1;float treeYaw=opening?-25+35*Mathf.Sin(row*1.7f+side*.5f):row*137+layer*71+side*23;
-                    var tree=A2Module(opening?"Hollow_Loft_Tree":"Ancient_Rotten_Tree",x,zz,layer==0?.48f:scale,1.2f+layer*.16f+.2f*Mathf.Sin(row*.9f),layer==0?.48f:scale,treeYaw);
+                    var tree=A2Module(opening?"Hollow_Loft_Tree":"Ancient_Rotten_Tree",x,zz,layer==0?.62f:scale,.84f+layer*.12f+.14f*Mathf.Sin(row*.9f),layer==0?.62f:scale,treeYaw);
                     if(tree!=null)tree.name="A2 外곽 "+side+"/"+layer+"/"+row;
                     if(layer==0)
                     {
@@ -139,6 +139,25 @@ namespace Exoduser.UnityPort
                 if(tree!=null){tree.name="A2 안개 원경 "+row+"/"+col;if(a2Field.Distance(x,z)<-28)foreach(var r in tree.GetComponentsInChildren<MeshRenderer>())r.shadowCastingMode=ShadowCastingMode.Off;}
             }
             Debug.Log("[A2 원경 숲] "+farSites.GetLength(0)+"개/10u격자·80u밖시야연결/원본통행밖12..110u/28u밖그림자LOD");
+        }
+        void A2FieldBanks()
+        {
+            var sites=a2Field.BankSites();
+            for(int i=0;i<sites.GetLength(0);i++)
+            {
+                float x=sites[i,0],z=sites[i,1],yaw=sites[i,2],s=sites[i,3];
+                // 실제 스캔 밑동+뿌리를 같은 접점에 묶어 가는 나무기둥과 맨흙 사이의 질량을 만든다.
+                var stump=A2Module("Scanned_Stump",x,z,1.55f*s,.95f*s,1.25f*s,yaw,-.06f,false);
+                if(stump!=null)stump.name="A2 R7 연결 목질 둑 밑동 "+i;
+                var roots=A2Module(i%2==0?"PineRoots_A":"PineRoots_B",x,z,2.1f*s,1.8f*s,1.7f*s,yaw+29,-.09f,false);
+                if(roots!=null)roots.name="A2 R7 연결 목질 둑 뿌리 "+i;
+                if(i%3==1)
+                {
+                    var log=A2Module("Scanned_Foreground_Log",x,z,.65f*s,.55f*s,.55f*s,yaw+78,-.05f,false);
+                    if(log!=null)log.name="A2 R7 연결 목질 둑 쓰러진 고목 "+i;
+                }
+            }
+            Debug.Log("[A2 R7 연결 둑] "+sites.GetLength(0)+"군집/원본통행밖·마른둑/중심간3.8m/콜라이더·등록발판0");
         }
         void A2FieldLandmarks()
         {

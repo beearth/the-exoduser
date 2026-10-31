@@ -254,6 +254,24 @@ namespace Exoduser.UnityPort
             }
             var result=new float[sites.Count,4];for(int i=0;i<sites.Count;i++)for(int j=0;j<4;j++)result[i,j]=sites[i][j];return result;
         }
+        // R7: 전투면에 장식을 흩뿌리지 않고 마른 비보행 둑을 중간 높이 목질 군집으로 연결한다.
+        // 중심끼리 3.8m 이상. 원본 보행/수면/높이 함수는 바꾸지 않는다.
+        public float[,] BankSites()
+        {
+            var sites=new List<float[]>();
+            for(int row=0;row<=32;row++)for(int col=0;col<=32;col++)
+            {
+                float x=-10+col*3.1f+1.1f*(float)Math.Sin(row*2.13+col*5.71);
+                float z=-90+row*3.1f+1.1f*(float)Math.Sin(col*1.37+row*4.79),d=Distance(x,z);
+                if(d> -1.3f||d< -4.8f||Water(x,z))continue;
+                bool near=false;foreach(var p in sites){float dx=p[0]-x,dz=p[1]-z;if(dx*dx+dz*dz<3.8f*3.8f){near=true;break;}}
+                if(near)continue;
+                float gx=Distance(x+.1f,z)-Distance(x-.1f,z),gz=Distance(x,z+.1f)-Distance(x,z-.1f);
+                float yaw=(float)(Math.Atan2(gx,gz)*180/Math.PI)+35*(float)Math.Sin(row*3.17+col*1.91);
+                sites.Add(new[]{x,z,yaw,.9f+.2f*(float)Math.Sin(col*2.71+row*1.39)});
+            }
+            var result=new float[sites.Count,4];for(int i=0;i<sites.Count;i++)for(int j=0;j<4;j++)result[i,j]=sites[i][j];return result;
+        }
         public bool TreeSite(float x,float z,float radius) { return Distance(x,z)<-radius-.6f; }
         public static readonly float[,] Regions=new float[,]{{33,-70},{53,-61},{22,-59},{40,-50},{16,-40},{41,-35},{65,-38},{40,-25},{25,-19},{58,-17},{40,-7}};
         public static float RootReliefHeight(float height,float red)

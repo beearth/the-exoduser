@@ -190,6 +190,20 @@ class Program
                 Check(walkGroundChange==0,"원본 통행점 지형 높이 불변/변경"+walkGroundChange+" 최대차"+maxWalk);
                 Check(raisedOutside>500,"비보행숲에만 연속 높이층 제작/15cm이상"+raisedOutside);
             }
+            var bankMethod=type.GetMethod("BankSites");
+            Check(bankMethod!=null,"R7 원본통행 밖에 이어지는 비대칭 목질 둑 배치");
+            if(bankMethod!=null)
+            {
+                var banks=(float[,])bankMethod.Invoke(field,null);int leaks=0,wet=0;float minGap=float.PositiveInfinity,minZ=float.PositiveInfinity,maxZ=float.NegativeInfinity;
+                for(int i=0;i<banks.GetLength(0);i++)
+                {
+                    float x=banks[i,0],z=banks[i,1];if(original.CanMove(x*100,-z*100,0))leaks++;
+                    if((bool)water.Invoke(field,new object[]{x,z}))wet++;minZ=Math.Min(minZ,z);maxZ=Math.Max(maxZ,z);
+                    for(int j=0;j<i;j++){float dx=x-banks[j,0],dz=z-banks[j,1];minGap=Math.Min(minGap,(float)Math.Sqrt(dx*dx+dz*dz));}
+                }
+                Check(banks.GetLength(0)>25&&leaks==0&&wet==0,"R7 목질 둑은 마른 비보행면에만 배치/개수"+banks.GetLength(0)+" 보행"+leaks+" 수면"+wet);
+                Check(minGap>=3.8f&&maxZ-minZ>65,"R7 연결군집 간격3.8m/시작부터보스전역/최소"+minGap+" 범위"+(maxZ-minZ));
+            }
             var rootHeight=type.GetMethod("RootReliefHeight");
             Check(rootHeight!=null,"스캔 흙 둘레를 지면에 연결하는 높이 가중");
             if(rootHeight!=null)

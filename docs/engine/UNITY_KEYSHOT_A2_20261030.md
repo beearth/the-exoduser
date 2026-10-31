@@ -1,3 +1,26 @@
+## R7 연결 목질 둑 — 2026-10-31 (제작 후보·미검증)
+
+R6의 실제 Player 24장과 전투3장을 원본1x로 직접 확인했다. 뿌리 흙둘레 접합은 개선됐지만 넓은 전투면의 반복 입자와 외곽의 가는 기둥·빈 둑이 남아 전체아트 RETOUCH다. 같은 지면 파라미터 조정을 반복하지 않고 기존 스캔 목질의 중간 높이 질량으로 제작 단계를 되돌린다.
+
+| 항목 | 현행 값·검증 구분 |
+|---|---|
+| BankSites | row/col=0..32, 3.1m 격자에 각축 1.1sin 지터. x=-10+3.1col+1.1sin(2.13row+5.71col), z=-90+3.1row+1.1sin(1.37col+4.79row). Distance −4.8..−1.3m·비수면만 선택, 앞선 군집 중심과3.8m 미만 제외 |
+| 방향·크기 | 거리장 중앙차분 .1m의 외곽 법선 방향+35sin(3.17row+1.91col)°. s=.9+.2sin(2.71col+1.39row). 원본맵 실제38군집·최소간격3.8258224m·Z범위87.560455m·보행/수면중심0 |
+| 실제 스캔 군집 | 군집마다 Scanned_Stump scale(1.55,.95,1.25)×s/yaw/lift−.06; PineRoots_A/B 교대 scale(2.1,1.8,1.7)×s/yaw+29/lift−.09. i%3=1에 Scanned_Foreground_Log scale(.65,.55,.55)×s/yaw+78/lift−.05. 기존 source 모델·UV·재질 보존/신규 생성·다운로드0 |
+| 보행 보존 | 새군집은 registerSurface=false·Collider0. hollow 외 stump/roots 및 registerSurface=false foreground도 runtime 복제 메시 정점의 지면위 .18..4m를 기존 FitTreePoint로 원본 비보행면에 맞춘다. 낮은 뿌리/쓰러진목질의 실제 바닥은 TerrainHeight에 접합. Core·SourceMap 변경0 |
+| 외곽 비례 | layer0 Hollow x/z=.48→.62, 높이배율1.2+.16layer+.2sin(.9row)→.84+.12layer+.14sin(.9row). layer1/2의 기존 x/z scale 유지. 고정9랜드마크·전경·원형목교는 기존배치 유지 |
+| 실제 검수 계측 | A2FieldGeometry에 bankMeshFilters/bankBodyVerticesInOriginalWalk/bankMaxHeight 추가. 실제 생성루트가 A2 R7 연결 목질 둑인 메시의 지면위 .18..4m 정점을 원본 CanMove(radius0)로 검사. CPU 배치 계약과 실제 메시 침입을 구분 |
+| 회귀 | 검사 RED=BankSites없음1FAIL/기존42PASS → 구현후45PASS. 원본40000타일×3반경/LOS/미니맵 불일치0·42960기준점 보행높이/수면 변경0·원형목교 접지 기존값 유지. Runtime196 독립컴파일 오류0. Editor/실제 Player 시각·성능은 아직미검증 |
+| 현재판정 | R7 후보 미검증, R6 전체 RETOUCH. 물·안개·최종조명은 Main3과 결합 후 재판정. R7 코드나 CPU PASS만으로 common/Desktop READY를 선언하지 않음 |
+
+### R6 실제 동일 빌드 영수증 (현재 후보와 구분)
+
+- 입력85fa5ab79519c0da8881a7f1a47a2ccb203a45cf, 승인공통 b673. 빌드44364a73 Succeeded/오류0/remodel-scenes1, 실제212파일·3,833,077,395B·Managed153/MCP0. Runtime cedb9d9f47eb0bc27093f1d4510893898e8c2e1e33c632c903a02d799c9ebab4/Core1b643fe893ecc7304d8d3038cce389d32ed911f500e2e6d7b5798ff2df8225d5.
+- 동일EXE M1890a420b 23/23/exit0, 전체필드99a586c0 12곳×2비율24 actualHUD/exit0/Unity오류0. 창·잔여·사용자세이브 변경0, Player hiddenDesktop닫힘. M1 batch는 별도 hiddenDesktop이 없어 desktopClosed=false=N/A.
+- 실제 지면144청크/거목9/몸통침입0/뿌리78/색누락0, 흙275028정점 gap1.5320256e−6m/목질574782정점 최대.29482055m. 목교16206정점16875삼각형·상판변경0·XZ변경0·하부168점연장·수면교차145 독립대조PASS.
+- 전투c1420519는02탄수2<기준3으로exit3/FAIL 보존. 탐험·전투·드루이드3실화면 직접확인, 영웅높이8.59..8.73%/드루이드16탄·가시성/분리true. 창·잔여·사용자세이브0/timeout없음/hiddenDesktop닫힘. 자연손조작 완주나 전투FPS 증거가 아니다.
+- R6 actual24장 전수1x와 전투3장·A2원화 비교로 전체아트RETOUCH. sourceREADY/common/Desktop0 유지. 촬영뒤공식예약반납. 상세 I:/EXODUSER-Storage/steam-keyshot/a2/field-screen-20261031/r6-runtime/원본1x-시각판정.json.
+
 ## R6 지면·뿌리 제작 방식 변경 — 2026-10-31 (실제 화면 검수 전)
 
 R5의 카펫형 재질과 둥근 뿌리 패치가 남아 있어 전역 이끼량 조절을 끝내고 목질 접점 중심의 국소 배치·메시 높이 접합으로 제작 방식을 변경했다. 아래 CPU 결과는 실제 Player 아트 합격이 아니다. R5 인수 입력1a3은 이 후보로 자동 교체하지 않는다.

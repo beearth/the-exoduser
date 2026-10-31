@@ -17,6 +17,7 @@ namespace Exoduser.UnityPort
             public float waterY=-.45f;public int trunkBodyVerticesInOriginalWalk,fieldTrees,groundChunks;
             public int rootPatches,rootBlendColorMissing,rootSoilVertices,rootRaisedWoodVertices;
             public float rootSoilMaxGap,rootWoodMaxHeight,groundSampleMaxError;
+            public int bankMeshFilters,bankBodyVerticesInOriginalWalk;public float bankMaxHeight;
             public System.Collections.Generic.List<A2BridgeFilter> filters=new System.Collections.Generic.List<A2BridgeFilter>();
         }
         void A2FieldCaptureGeometry(string output)
@@ -41,6 +42,15 @@ namespace Exoduser.UnityPort
                         var p=filter.transform.TransformPoint(points[j]);float h=p.y-a2Field.TerrainHeight(p.x,p.z);
                         if(colors[j].r<=.2f){result.rootSoilVertices++;result.rootSoilMaxGap=Mathf.Max(result.rootSoilMaxGap,Mathf.Abs(h-.006f));}
                         if(colors[j].r>=.99f){result.rootWoodMaxHeight=Mathf.Max(result.rootWoodMaxHeight,h);if(h>.05f)result.rootRaisedWoodVertices++;}
+                    }
+                }
+                if(ancestor.name.StartsWith("A2 R7 연결 목질 둑 ",System.StringComparison.Ordinal))
+                {
+                    result.bankMeshFilters++;
+                    foreach(var v in points)
+                    {
+                        var p=filter.transform.TransformPoint(v);float h=p.y-a2Field.TerrainHeight(p.x,p.z);result.bankMaxHeight=Mathf.Max(result.bankMaxHeight,h);
+                        if(h>.18f&&h<4&&Map.CanMove(p.x*100,-p.z*100,0))result.bankBodyVerticesInOriginalWalk++;
                     }
                 }
                 if(trunk)
