@@ -11,7 +11,7 @@ namespace Exoduser.UnityPort
         float impactReviewClock=-1;
         int heroContactSeen=-1;
         float ImpactNow {get{return impactReviewClock>=0?impactReviewClock:Time.unscaledTime;}}
-        bool ImpactActive {get{return contactVfx!=null&&contactVfx.Enabled;}}
+        bool ImpactActive {get{return contactVfx!=null&&contactVfx.Enabled&&contactVfx.Ready;}}
         void ImpactInitialize()
         {
             contactVfx=new NativeImpactView(transform);

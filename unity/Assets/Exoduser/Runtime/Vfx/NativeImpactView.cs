@@ -14,7 +14,7 @@ namespace Exoduser.UnityPort.Vfx
         sealed class Scar { public GameObject Go; public Material Mat,FlatMat; public DecalProjector Projector;public MeshRenderer Flat; public float Born=-10; }
         readonly Transform parent;
         readonly VisualEffectAsset asset;
-        readonly Material scarBase;
+        readonly Material scarBase,scarFlatBase;
         readonly Burst[] bursts=new Burst[8];
         readonly Scar[] scars=new Scar[8];
         readonly Dictionary<int,float> health=new Dictionary<int,float>();
@@ -27,6 +27,7 @@ namespace Exoduser.UnityPort.Vfx
         public int Spawned {get;private set;}
         public int PeakParticles {get;private set;}
         public bool Enabled {get;set;}=true;
+        public bool Ready {get{return asset!=null&&scarBase!=null&&scarFlatBase!=null;}}
         public bool HeroFrozen(float now) { return Enabled && now<heroUntil; }
         public bool EnemyFrozen(int id,float now) { return Enabled && response.Frozen(id,now); }
         public float Flash(int id,float now) { return Enabled?(float)response.Flash(id,now):0; }
@@ -37,7 +38,8 @@ namespace Exoduser.UnityPort.Vfx
             this.parent=parent;
             asset=Resources.Load<VisualEffectAsset>("VFX/Impact/VFX_ImpactBurst");
             scarBase=Resources.Load<Material>("VFX/Impact/M_ImpactScorch");
-            if(asset==null||scarBase==null)Debug.LogError("[임팩트] 필수 타격 Graph/Shader Graph 재질 누락");
+            scarFlatBase=Resources.Load<Material>("VFX/Impact/M_SkillFloor");
+            if(!Ready)Debug.LogError("[임팩트] 필수 타격 Graph/Shader Graph 재질 누락, 기존 접점 표시 유지");
         }
         public void Reset()
         {
@@ -56,7 +58,7 @@ namespace Exoduser.UnityPort.Vfx
             {
                 present.Add(e.Id);float total=e.Hp+e.Shield;
                 bool known=health.TryGetValue(e.Id,out var previous);
-                if(ImpactResponse.IsContact(known,previous,total,e.HurtTicks)&&Enabled)
+                if(ImpactResponse.IsContact(known,previous,total,e.HurtTicks)&&Enabled&&Ready)
                 {
                     float angle=e.KnockbackX*e.KnockbackX+e.KnockbackY*e.KnockbackY>.001f?Mathf.Atan2(e.KnockbackY,e.KnockbackX):Mathf.Atan2(e.Y-sim.Player.Y,e.X-sim.Player.X);
                     bool heavy=sim.KiComboStep==3||sim.Player.State.StartsWith("gSlam",StringComparison.Ordinal)||sim.Player.State=="sBash";
@@ -110,7 +112,7 @@ namespace Exoduser.UnityPort.Vfx
             if(!NativeRemodel3D.Active)
             {
                 s.Projector.enabled=false;
-                if(s.Flat==null){var go=new GameObject("2D 타격 그을음");go.transform.SetParent(s.Go.transform,false);go.AddComponent<MeshFilter>().sharedMesh=ImpactSpace.FloorQuad;s.Flat=go.AddComponent<MeshRenderer>();s.FlatMat=new Material(Resources.Load<Material>("VFX/Impact/M_SkillFloor"));s.Flat.sharedMaterial=s.FlatMat;s.Flat.sortingOrder=-18999;}
+                if(s.Flat==null){var go=new GameObject("2D 타격 그을음");go.transform.SetParent(s.Go.transform,false);go.AddComponent<MeshFilter>().sharedMesh=ImpactSpace.FloorQuad;s.Flat=go.AddComponent<MeshRenderer>();s.FlatMat=new Material(scarFlatBase);s.Flat.sharedMaterial=s.FlatMat;s.Flat.sortingOrder=-18999;}
                 s.Flat.enabled=true;s.Flat.transform.localScale=Vector3.one*(radius*2);s.FlatMat.SetColor("_FillColor",new Color32(27,20,16,255));s.FlatMat.SetColor("_EdgeColor",new Color32(27,20,16,255));s.FlatMat.SetFloat("_EdgeGlow",0);s.FlatMat.SetFloat("_Fade",.6f);
                 s.Go.transform.SetPositionAndRotation(ImpactSpace.Point(x,y,.12f),ImpactSpace.FloorRotation*Quaternion.Euler(0,angle*Mathf.Rad2Deg,0));s.Go.SetActive(true);s.Born=now;return;
             }
