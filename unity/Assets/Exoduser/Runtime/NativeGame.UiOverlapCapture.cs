@@ -11,6 +11,9 @@ namespace Exoduser.UnityPort
     public sealed partial class NativeGame
     {
         [Serializable] sealed class UiOverlapCoverage {public int schemaVersion=2;public string runtimeSha256,unityVersion,device,deviceType;public string scope="실제 Player OnGUI·원본 API 상태 전환, OS 입력/자연 클리어와 구분";public string[] resolutions={"1920x1080","2560x1080","3840x1080","1600x900","2560x1600"};public string[] languages={"ko","de"};public List<string> pages=new List<string>(),frames=new List<string>();}
+        [Serializable] sealed class UiWideInputCheck {public int width,height;public bool lockedBlocked,nameOpened;}
+        [Serializable] sealed class UiWideInputReport {public List<UiWideInputCheck> checks;}
+        readonly List<UiWideInputCheck> wideInputChecks=new List<UiWideInputCheck>();
         UiOverlapCoverage overlapCoverage;
         string overlapOutput,overlapLanguage;
         [Serializable] sealed class OverlapOptionBundle {public string[] codes;public OverlapOptionEntry[] entries;}
@@ -66,6 +69,18 @@ namespace Exoduser.UnityPort
                 yield return current;
             }
         }
+
+#if UNITY_STANDALONE_WIN
+        delegate bool UiWideWindowCallback(IntPtr window,IntPtr state);
+        [System.Runtime.InteropServices.DllImport("user32.dll",EntryPoint="EnumWindows")] static extern bool UiWideWindows(UiWideWindowCallback callback,IntPtr state);
+        [System.Runtime.InteropServices.DllImport("user32.dll",EntryPoint="GetWindowThreadProcessId")] static extern uint UiWideProcess(IntPtr window,out uint process);
+        [System.Runtime.InteropServices.DllImport("user32.dll",EntryPoint="PostMessageW")] static extern bool UiWidePost(IntPtr window,uint message,IntPtr w,IntPtr l);
+        [System.Runtime.InteropServices.DllImport("user32.dll",EntryPoint="GetClassNameW",CharSet=System.Runtime.InteropServices.CharSet.Unicode)] static extern int UiWideClass(IntPtr window,System.Text.StringBuilder name,int size);
+        IEnumerator UiWideClick(float x,float y){IntPtr own=IntPtr.Zero;uint pid=(uint)System.Diagnostics.Process.GetCurrentProcess().Id;UiWideWindows((w,s)=>{UiWideProcess(w,out uint id);var c=new System.Text.StringBuilder(128);UiWideClass(w,c,128);if(id==pid&&c.ToString()=="UnityWndClass"){own=w;return false;}return true;},IntPtr.Zero);if(own==IntPtr.Zero)throw new InvalidOperationException("자기 숨은 Player 창 없음");var a=NativeUiViewport.Current;int px=Mathf.RoundToInt(a.X+x*a.Scale),py=Mathf.RoundToInt(a.Y+y*a.Scale);IntPtr point=new IntPtr((py<<16)|(px&65535));lobby.AutomatedInput=false;
+         if(!UiWidePost(own,0x200,IntPtr.Zero,point)||!UiWidePost(own,0x201,new IntPtr(1),point))throw new InvalidOperationException("자기 창 누름 전달 실패");yield return new WaitForSecondsRealtime(.12f);if(!UiWidePost(own,0x202,IntPtr.Zero,point))throw new InvalidOperationException("자기 창 해제 전달 실패");yield return new WaitForSecondsRealtime(.2f);lobby.AutomatedInput=true;
+        }
+#endif
+
         IEnumerator UiOverlapCaptureBody()
         {
             overlapOutput=Argument("-output");
@@ -87,7 +102,11 @@ namespace Exoduser.UnityPort
                 lobby.ShowLobby();lobby.Characters.TryRestore(new[]{"검수"+overlapCoverage.frames.Count.ToString("000")},0);yield return UiOverlapShot("로비");
                 lobby.OpenCharacterCreation();
                 for(int n=0;n<5;n++){lobby.ChooseCharacterVisual(n);yield return UiOverlapShot("캐릭터선택"+n);}
-                lobby.ChooseCharacterVisual(0);lobby.ConfirmCharacterVisual();yield return UiOverlapShot("이름입력");lobby.CloseCharacterCreation();
+                #if UNITY_STANDALONE_WIN
+                if(language=="ko"){var field=typeof(NativeLobby).GetField("characterStep",BindingFlags.Instance|BindingFlags.NonPublic);var check=new UiWideInputCheck{width=Screen.width,height=Screen.height};yield return UiWideClick(1790,1018);check.lockedBlocked=(int)field.GetValue(lobby)==1;lobby.ChooseCharacterVisual(0);yield return null;yield return UiWideClick(1790,1018);check.nameOpened=(int)field.GetValue(lobby)==2;wideInputChecks.Add(check);File.WriteAllText(Path.Combine(overlapOutput,"실제_마우스_역변환.json"),JsonUtility.ToJson(new UiWideInputReport{checks=wideInputChecks},true));if(!check.lockedBlocked||!check.nameOpened)throw new InvalidOperationException("실제 마우스 안전영역 역변환 실패");}
+                else
+#endif
+                {lobby.ChooseCharacterVisual(0);lobby.ConfirmCharacterVisual();}yield return UiOverlapShot("이름입력");lobby.CloseCharacterCreation();
                 lobby.AutomatedInput=false;
                 if(!lobby.BeginCharacterEntry(false)||lobby.StartupCaptureState.Page!=FrontendEntryPage.Loading)throw new InvalidOperationException("실제 신규 캐릭터 로딩 진입 누락");
                 yield return UiOverlapShot("로딩");
