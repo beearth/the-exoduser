@@ -171,7 +171,7 @@ W01의 기존 카탈로그·coercion helper·원본 수식은 이 진행으로 �
 | 발사 부수효과 | pet._ang, 공간 음향·pitch RNG, poolPart2회 | G:28718–28723 |
 | dispatch | `_autoFireBowSkill`: normal·ghostXbowTurret slot fallback, 선택 skill/cd/fusion gate; 방향·상태 임시 변경 후 복구; 자동 ltnChaser/설치는 금지 | G:28725–28765 |
 | 실제 자동 비용 | normal 포함 `(1.5+(fanShotLv\|\|0)*1.5)*_stDisc('bow')`를 발사 전 ST에서 차감, 0 clamp. cd 대기 return과 turret fallback 순서 보존 | G:28729–28734,28748–28764 |
-| 수동 `fireBow` | G:28676–28701. `game.html` 식별자 출현은 정의1회, 현재 입력 caller 미발견. 악의1, `(~~(bowRef*pBowMul*10)+bowBon)*3`, 회수 `~~(45/(pBowSpd*(1+bowAtkSpd)))` | 현재 자동 경로와 다른 잔존 함수 |
+| 수동 `fireBow` | G:28676–28701. `game.html` 식별자 출현은 정의1회, 현재 입력 caller 미발견. 악의구슬1, `(~~(bowRef*pBowMul*10)+bowBon)*3`, 회수 `~~(45/(pBowSpd*(1+bowAtkSpd)))` | 현재 자동 경로와 다른 잔존 함수 |
 | pool | `_mkPProj/_resetPProj/_recyclePProj/_getPProj` | G:17309–17362 |
 | pool 관통 | reset은 `_pierceRate=50+eqAffix('pierceFlat')` G:17348. 새 객체 fallback의 `_mkPProj`에는 해당 기본값이 없어 pool 고갈 분기 동등성은 런타임 **미확인** | 선언 PIERCE=false만으로 실제 무관통 단정 금지 |
 | 이동·유도 | normalBow는 일반 homing에서 제외 G:35185–35186; `x+=vx*sp,y+=vy*sp,dist+=speed*sp` G:35207 | clock은 기존 source frame 소유 |
@@ -323,7 +323,7 @@ EL enum 범위와 이름·그래픽·생성 분모는 서로 다르다. `_BULLET
 | baseAtk | F:272 `15+(stage-1)*2` | G:27926 G.on·stage fallback, 생성 G:29019는8 | **조건·시점 누락** |
 | 강화 확률 식 | D14:96 `max(.5,99*.99^n)%` | G:28077–28078 동일 | 일치 |
 | 강화 확률 예시 | D14:103 +831=.023% | 실제 최소.5% | **식과 모순**. TRACE-META |
-| 강화 비용 | D14:94–102 | G:28080–28091 raw→등급→악의.5 올림 | 핵심 식 일치. 경제 이식 중복 금지 |
+| 강화 비용 | D14:94–102 | G:28080–28091 raw→등급→악의구슬.5 올림 | 핵심 식 일치. 경제 이식 중복 금지 |
 | implicit·bonusRange | D22/14 상세 대응 표 미발견 | G:15017–15018/15970/15984/16116–16123 | 상세 누락. 생성과 실제 소비를 구분해 §3에 보충 |
 | 카드 DPS/발사속도 | 설계의 실제 전투식과 단일 값으로 보기 어려움 | G:49732–49742/49759/49767 vs G:28771/35151 | **원본 UI와 실행식 차이**. 원본 결함 판정/수정은 별도, UI 담당에 전달 |
 | 터렛 +50%·빙결 보스 주석 | 원본 인접 설명도 의도와 실행이 다를 수 있음 | G:17464–17465 선언만,35156 실효1;42452–42454 frozen180 | 원본 자체 불일치. 조용히 의도값으로 고치지 않음 |
@@ -416,7 +416,7 @@ headless test는 `USERDIR` 상수를 실제 project 설정의 격리 이름과 �
 | W05c | 새 `scripts/native_normal_bow_world_consumer.gd`; world의 source projectile phase·W05a owner 연결부 | G:35174–35629. 비유도·벽반사·통일 관통·kill pierce·재활용 순서 | `test_native_main_normal_bow.gd`; 실제 Main 발사→이동→벽/적 충돌→hurtE→회수, query 순서·hitSet·상성1회·no duplicate tick | `EXODUSER-W05c-MainNormalBow-Isolated-20261020` | W05a/b, source clock/query/map/펫 실제 seam 확인. 기존 fireball consumer는 nonfireball skip이므로 새 좁은 owner 필요. main/world 담당과 충돌·missing seam면 HOLD |
 | W06a | 새 `port_modules/fan_shot_source/producer.gd`+W05 dispatch 연결부 | G:44942–44963,28725–28765. §4.4 fan 공식·3발·ST·임시상태 복구 | `test_native_fan_shot_source.gd`; 3각·dmg 정수화2곳·ST부족·자동 outerST 차감이 innerST를 대체하는 순서 | `EXODUSER-W06a-FanShot-Isolated-20261020` | W02/03/05, fusion gate는 기존 owner. skill/affix/회복 합류 충돌 |
 | W06b | 새 `port_modules/blade_shot_source/producer.gd`+기존 projectile owner의 bladeOrb 구역 | G:45294–45309 및 pProjs 해당 branch. §4.4 orb/shard·lv .11·cd30·blueShell multiplier key | `test_native_blade_shot_source.gd`; bladeShot/blueShell 레벨 분리·orb/shard 별도trunc·cd gate·자동복구·실제 orb tick과 hit set | `EXODUSER-W06b-BladeShot-Isolated-20261020` | W05/skill multiplier/projectile branch 추적. shared pProjs 소유 합의 전 HOLD |
-| W06c | 새 `port_modules/blast_shot_source/producer.gd`+새 `scripts/native_blast_shot_owner.gd` | G:45312–45327,36158–36191. _malCost5·ST·cd30·spread.2·spd18·range500·폭발원문 | `test_native_blast_shot_source.gd`; lv1/5/6/10 발수=1/1/2/5, 악의gate=차감원가, bsBombs≠gsBombs, fly→explode 순서 | `EXODUSER-W06c-BlastShot-Isolated-20261020` | W05/META의 비용reader/폭발hurtE·world. 폭발 세부 receipt의 필드별 재추적이 선행 조건 |
+| W06c | 새 `port_modules/blast_shot_source/producer.gd`+새 `scripts/native_blast_shot_owner.gd` | G:45312–45327,36158–36191. _malCost5·ST·cd30·spread.2·spd18·range500·폭발원문 | `test_native_blast_shot_source.gd`; lv1/5/6/10 발수=1/1/2/5, 악의구슬gate=차감원가, bsBombs≠gsBombs, fly→explode 순서 | `EXODUSER-W06c-BlastShot-Isolated-20261020` | W05/META의 비용reader/폭발hurtE·world. 폭발 세부 receipt의 필드별 재추적이 선행 조건 |
 | W06d | 새 `port_modules/needle_shot_source/producer.gd`+기존 source frame burst seam | G:45329–45341,36088–36099,36102–36104/36196–36197. ST8·cd90·count2+~~((lv−1)/5)·interval2·range600·spd30 | `test_native_needle_shot_source.gd`; lv1/5/6/10/11 횟수, frame당순서·방향snapshot·cooldown exact | `EXODUSER-W06d-NeedleShot-Isolated-20261020` | W05/source clock. frame driver 변경은 공용 충돌 확인 |
 | W06e | 새 `port_modules/ltn_chaser_source/producer.gd`+기존 lightning/homing projectile seam | G:45216–45251·§4.4, pProjs의 chain/mhBlade 분기. ST40·countcap12·chaincap8·pierce500+20/lv, 실제 cutoff35210 | `test_native_ltn_chaser_source.gd`; lv1/5/cap, 수동만·auto금지, query/hitSet/chain RNG순서, 원점 메타 보존과 현재 P기준1000 cutoff 구분 | `EXODUSER-W06e-LtnChaser-Isolated-20261020` | W05/기존 skill/fusion/chain owner. 해당 branch 전체 이식 확인 전 HOLD |
 | W07 | 새 `port_modules/ghost_xbow_turret_source/producer.gd`+W05 owner/pet seam | G:45523–45543,35139–35173,13083–13084. ST100·y−40·inputcd1200·caller gxFiring1·P상태복구 | `test_native_ghost_xbow_turret.gd`; 방향/좌표finally복구·신규탄만fromTurret·activeBowSk유지·자동설치금지·1.5 선언 미소비 | `EXODUSER-W07-GhostXbow-Isolated-20261020` | W05/06, voidScarecrow/fusion/input 기존 owner. 미이식 합체는 명시 halt; Q/E 수정 없음 |

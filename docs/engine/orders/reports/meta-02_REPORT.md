@@ -2,7 +2,7 @@
 
 ## 판정·의존
 
-**STATUS=REVIEW_PENDING.** 최신 origin/main의 `docs/engine/FDG_SOURCE_TRACE_META_20261020.md` §7 순서2를 구현했다. 강화 견적 계산만 추가했으며 RNG·악의 차감·장비 변경·UI·State·저장 연결은0이다. 이 단위에는 공용 수정이 필요하지 않다. 거래 실행/제품 State 연결은 META-07 이후 정확한 owner 배정 범위이며 이번 완료로 취급하지 않는다.
+**STATUS=REVIEW_PENDING.** 최신 origin/main의 `docs/engine/FDG_SOURCE_TRACE_META_20261020.md` §7 순서2를 구현했다. 강화 견적 계산만 추가했으며 RNG·악의구슬 차감·장비 변경·UI·State·저장 연결은0이다. 이 단위에는 공용 수정이 필요하지 않다. 거래 실행/제품 State 연결은 META-07 이후 정확한 owner 배정 범위이며 이번 완료로 취급하지 않는다.
 
 기존 `~/exoduser-wt/meta-02`, 브랜치 `codex/meta-02-20261020`을 발견해 이어서 작업했다. 재개 HEAD `c428ef209efed89df62bb34452b58ccdbba3634c`는 META-01 끝이다. 명시 fetch한 최신 origin/main은 `284d7faf49295b2f5061937a47ce96038032ed3c`이며 **META-01은 아직 main에 없다**. 사용자 지정대로 해당 parent를 유지하고 main 병합/체리픽 없이 META-01 의존을 기록한다. 새 강화 견적 API 자체가 XP API를 호출하는 의존은 없다.
 

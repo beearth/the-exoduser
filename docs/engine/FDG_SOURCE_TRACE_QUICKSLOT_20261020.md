@@ -26,7 +26,7 @@
 
 | ID | 데이터/함수 | `game.html` 행 | 실제 구조·상수·공식·소비 |
 |---|---|---|---|
-| D01 | `POT` | 27677~27679 | hp 1종. name=`악의 추출`, emoji=`👿`, col=`#33cc66`, colG=`#66ff99`, base=100, per=20, desc=`악의를 소모해 지옥의 힘으로 회복합니다 (+100 HP)`. `base/per`를 `potHeal` 식으로 오인하지 않음 |
+| D01 | `POT` | 27677~27679 | hp 1종. name=`악의구슬 추출`, emoji=`👿`, col=`#33cc66`, colG=`#66ff99`, base=100, per=20, desc=`악의구슬을 소모해 지옥의 힘으로 회복합니다 (+100 HP)`. `base/per`를 `potHeal` 식으로 오인하지 않음 |
 | D02 | `QSLOTS` | 27680 | 4객체 `[{type:'hp',count:1},{type:null,count:0}×3]`. hp 사용 비용은 count가 아니라 `G.mats`. 구조 **보호** |
 | D03 | `SKILL_SLOTS`, `ULT_SLOT` | 27681~27682 | 6칸/null. 0~3=1~4, 4=Space, 5=F, 별도 R 필살기. 물약 전역과 별개 |
 | D04 | 잔여 CD/토글/선택 | 27683~27686 | `qsCooldown=[0,0,0,0]`, `autoPotCd=0`, `qsAuto=[true,true,true,true]`, `_qsSwapSel=-1`. 자동 물약은 qsAuto를 읽지 않음. autoPotCd 주석의 5초/300f는 현행 실행식과 다름 |
@@ -74,7 +74,7 @@
 | tooltip | 28635~28673 | `_slotSkId`→스킬 정보→`skBarTip`, 스킬 없으면 숨김. 물약 tooltip 아님 |
 | 배정/해제 | 44276~, 44965~44995, 46969~, 44879~44931 | 스킬 배정 팝업과 슬롯 비우기·updateSkSlot. 본 문서는 물약 표시 복원 대신 현재 Godot `skillSlots`·쿨다운 구현과 경계를 유지 |
 | HP CD 텍스트 | 2630, 60244, 60307~60309 | `hpPotCd`는 QSLOTS 앞4칸의 hp 타입과 **qsCooldown**만 읽어 `POT n.ns`. **autoPotCd는 표시하지 않음** |
-| 악의/HP 표시 | 2582, 2625~2627, 60323, 60246~60309 | mats/HP 현재값은 일반 HUD 갱신 소비. 새 물약 전용 슬롯이 필요하다는 근거 아님 |
+| 악의구슬/HP 표시 | 2582, 2625~2627, 60323, 60246~60309 | mats/HP 현재값은 일반 HUD 갱신 소비. 새 물약 전용 슬롯이 필요하다는 근거 아님 |
 | 설정 | 2818, 49039, 49338, 48876 | 30~99% slider·표시·`hellcave_settings.opt` 저장만. 트리거 미배선 상태를 그대로 보고하며 기능화 제안 없음 |
 
 ### 1.4 저장·초기화 필드 (**보호: 변경 제안 없음**)
@@ -85,7 +85,7 @@
 | 후행 dbSave override | 63898~63920 | 실제 파일 후반에서 dbSave 재할당. qslots63914/potLv63918/game.mats0, shared mats63903. 선행 함수만 조사해 저장 범위를 단정하지 않음 |
 | 다른 직렬화 | 62004/62007, 62141/62147, 64071/64075 | 데모·신규 저장 producer에도 qslots/potLv. 각각 mats 저장 방식은 위 선행/override와 동일하다고 가정하지 않음 |
 | dbRestore | 3603~, 3717~3719, 3769, 3880~3892 | truthy qslots이면 배열 길이 max(4,len), 비배열4; 원소 primitive/null/array→빈 객체; truthy unknown POT type→빈; 유효 객체 reference/count/extra field 보존. potLv는 POT에 있는 키만 대입, 숫자변환/0~10 clamp 없음. 스킬 슬롯 별도 복원. **보호** |
-| 공유 악의 | 3540~3541, 3724~3729, 63903 | 공유 localStorage와 구 game.mats 최대값 동기화, hp 자동 사용은 실제 G.mats를 소비. 원본 저장 형식과 Godot 런타임 상태가 동일하다고 주장하지 않음 |
+| 공유 악의구슬 | 3540~3541, 3724~3729, 63903 | 공유 localStorage와 구 game.mats 최대값 동기화, hp 자동 사용은 실제 G.mats를 소비. 원본 저장 형식과 Godot 런타임 상태가 동일하다고 주장하지 않음 |
 | fresh/reset 전수 | 61944~61947, 62119~62122, 62357~62360, 62469~62472, 63949~63952, 64098~64101 | demo test/test char는 hp count5, 나머지 주요 fresh/DB부팅 초기값은 count1. 모두 qsCooldown4개0/autoPotCd0/POT_LV.hp0. 이후 복원·보정과 구분 |
 | 저장하지 않는 잔여 timer | §7 전수 검색 | autoPotCd/qsCooldown/qsAuto/_qsSwapSel는 이 두 파일의 saveData property에 없음. qsAuto는 선언+도달하지 않는 표시 reader만. 보호 대상인 저장 형식에 새 필드를 추가하는 계획 없음 |
 | index.html | 전체1~4742, 특히4348 | 핵심 물약 식별자/한글 명칭 검색0. 해당 데이터/함수/UI/저장 producer 발견0. 4348에서 game.html로 slot/char/test 라우팅만 확인. 서버·외부 script를 포함한 런타임 부재의 증명은 **미확인** |

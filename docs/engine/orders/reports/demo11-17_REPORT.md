@@ -16,9 +16,9 @@ Main 최소 호출 `request_native_skill_management({request_id,action,skill_id,
 
 ## transaction과 원문 근거
 
-최신 main game.html SHA256 `4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4`. source 비교기는 전체 파일을 스트리밍 해시하고 필요한 좁은 범위만 메모리에 추출한다. G3913–3931 SP 비용·환불, G28080–28085 악의 할인, G47768–47816 학습/강화, G47819–47882 감소, G47884–47954 reset, G44644–44661 active 동기화를 기존 policy가 구현한다. source helper의 UI/audio/save만 외부 미집행으로 두고 resource gate/수식/ledger 원문을 실제 VM에서 실행한다. 기대값·기존 policy/테스트 수정0이다.
+최신 main game.html SHA256 `4d911cdd92fb55dc7c687ca7ed7146e6339687300f41e7585fe8e83dc685e5d4`. source 비교기는 전체 파일을 스트리밍 해시하고 필요한 좁은 범위만 메모리에 추출한다. G3913–3931 SP 비용·환불, G28080–28085 악의구슬 할인, G47768–47816 학습/강화, G47819–47882 감소, G47884–47954 reset, G44644–44661 active 동기화를 기존 policy가 구현한다. source helper의 UI/audio/save만 외부 미집행으로 두고 resource gate/수식/ledger 원문을 실제 VM에서 실행한다. 기대값·기존 policy/테스트 수정0이다.
 
-학습/강화는 UI 게이트를 따른다. darkPillar 예는 SP10·악의50, Lv50에서 개별 강화1SP, 감소 시1SP 환불이다. 전체 reset은 SP만 반환하고 악의는 반환하지 않는다. 기본 무료3종은 Lv1 유지, `shieldFuse` 전용 reset은 기존 명시 HOLD로 무변경 거절한다. 학습 때의 active 제안은 실행자를 새로 만드는 것이 아니라 P의 선택 데이터만 반영한다.
+학습/강화는 UI 게이트를 따른다. darkPillar 예는 SP10·악의구슬50, Lv50에서 개별 강화1SP, 감소 시1SP 환불이다. 전체 reset은 SP만 반환하고 악의구슬은 반환하지 않는다. 기본 무료3종은 Lv1 유지, `shieldFuse` 전용 reset은 기존 명시 HOLD로 무변경 거절한다. 학습 때의 active 제안은 실행자를 새로 만드는 것이 아니라 P의 선택 데이터만 반영한다.
 
 **한 transaction 실패 prefix**: 실제 원장→active 선택→slots를 반영한 뒤 최종 presentation handoff가 실패하면 `accepted:false, committed:true, status:COMMITTED_HANDOFF_FAILED` 및 반영 prefix를 반환한다. 이 경계는 원문의 최종 render/update/save(G47816/47882/47953)보다 ledger가 앞선 순서다. 이미 반영된 값을 rollback하거나 같은 요청 재시도에서 다시 차감하지 않는다. 원장 전 resource/정책/owner 거절은 committed=false·prefix=[]다. 중간 SFX 예외 등 모든 웹 helper 실패를 이식했다고 주장하지 않는다.
 

@@ -36,7 +36,7 @@
 | hudLevelLabel | 레벨 | Level |
 | hudExpLabel | 경험치 | Experience |
 | hudKillLabel | 지역 처치 | Area kills |
-| hudMaliceLabel | 악의 | Malice |
+| hudMaliceLabel | 악의구슬 | Malice |
 
 `_L`로 기존 번역을 재사용하며 없는 언어는 영어로 표시한다. 새 27개 언어 번역을 추가했다는 의미는 아니다. 숫자는 언어 공통 천단위 쉼표 정수로 표시한다.
 

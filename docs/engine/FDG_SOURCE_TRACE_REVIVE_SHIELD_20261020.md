@@ -58,7 +58,7 @@
 | E10 | 41602–41627 | `_spawnGhoul` 전체 레코드 | HP=mhp=`origE.mhp*2`, ATK=baseAtk=`origE.baseAtk*2`(정의표 hpMul/atkMul 미소비), speed=gd.spd+rand*.08, EL.D, poise/maxPoise=~~(HP*.4), room=origE.room\|\|G.curRoom, lv=origE.lv\|\|((stage+1)*100), idle/st2=30+rand*20, facing=플레이어 방향. elite0/mods[]/aura null, 주요 공격/보스 타이머9999, eShield/eShieldMax=새 HP, DOT 풀 초기0, exp=origE.exp\|\|5, matDrop=~~((origE.matDrop\|\|1)*.5), `_isGhoul=true,_revived=true,_reviveChase=true,_alerted=true`, ens.push |
 | E11 | 38676–38679;34425–34442;38589–38590 | 추적·구출·무적 감소 | 추적은 d>200 & idle/recover에서 `_ffMoveE(e,sp,2)`, 이동 후 d<=200이면 false. 일반 벽 구출5링 실패 시 사망·드랍·EXP, 보스만 확장6~12링→canMv(P) fallback. 무적 감소는 상위34456과 updateE38590 두 위치(실제 경로별 호출 횟수 동등성은 미확인) |
 | E12 | 38890;38943–38954;39738–39747;40381–40388;42506–42509 | 인접 부활 경로 | 적 실드 리젠은 삭제 주석. 주술사: 시체 HP50%·실드0, 화염사제: HP40%·실드0, 쌍둥이 복구, etype87 도플갱어1회 HP50%·실드0도 존재. 일반 `_revived` 타이머와 별도이며 이번 첫 이식 단위에 묶지 않음 |
-| E13 | 41629–41743(부록 `_spawnMatSlime` 참조) | 악의 슬라임 인접 시스템 | 부활 VFX/새 실드·생성 경로를 공유. 별도 객체 목록·합체·성장 시스템이므로 일반 구울 구현 완료로 슬라임까지 완료 처리하지 않음 |
+| E13 | 41629–41743(부록 `_spawnMatSlime` 참조) | 악의구슬 슬라임 인접 시스템 | 부활 VFX/새 실드·생성 경로를 공유. 별도 객체 목록·합체·성장 시스템이므로 일반 구울 구현 완료로 슬라임까지 완료 처리하지 않음 |
 
 ### 1.3 보스 즉시 부활·폴백·피날레
 
