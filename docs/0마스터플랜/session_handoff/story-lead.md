@@ -69,3 +69,8 @@ CTO local_7072229c · 디자인총괄 local_eb8a8577 · 보스전 총괄 local_a
 - **STY-10 대기 근거**: 디자인총괄의 T8 r4 투명 컷·초상은 E:에 있지만 현행 `index.html`의 scene/idleVid/poster/emblemImg가 옛 헬거너다. 문구·초상만 교체하면 두 인물이 한 카드에 섞인다. 아이반 장면/영상 시각 판정과 로비 전용 `localization/resume-source.json`·27개 `localization/resume/*.json`·목록 동기화가 필요하다. H5 `index.html`은 자기 브랜치까지만 push, main 반영은 별도 검수/큐.
 - 다음 작업 순서: (1) STY-10의 전체 카드 시각 소스가 확정되면 29언어와 함께 후보 브랜치 구현·1600×900 검수, (2) 맵의 si8·si12 비문 자리 확정 때 STY-19, (3) STY-D25 영웅별 엔딩/사망 대사 분기 명세와 실제 구현, (4) STY-13 P1 검토 뒤 P2~P6. STY-D2·D3·D20·D25는 `STORY_LEAD_MASTER`의 권고/미결 경계를 따른다.
 - 원격 `main`은 각 문서 단위를 비강제 fast-forward로 반영했고, 마지막 인계 커밋 SHA는 본 항목 아래 후속 보고서에 적는다. 실제 PC Player·Steam·Unity 동기화/배포를 주장하지 않는다.
+
+## 2026-10-31 세계관 인트로 문 장면 폐지
+
+- 담당: `codex/web-intro-nodoor-20261031`, 작업본 `G:/exoduser-wt/codex-web-intro`. 모든 세계관 ENTER는 `video/world_intro_v17_blood_en.mp4`로 통일. 구 문 미디어 파일은 보존, 소스/재생/배경/예약 진동만 폐지. 새 캐릭터 전사 개인사 v23은 별도 유지.
+- [현행 재생 계약](../../cinematic/WORLD_INTRO_INGAME_20260907.md), 세부 경로표·첫 3초 캡처·검수 결과: `G:/exoduser/tmp/design-review/20261031_intro_nodoor/REPORT.md`. 관련 회귀 340/340·guard PASS. 실제 계정 서비스/NW.js·Steam 패키지/열린 사용자 실행본 검수와 구분한다.

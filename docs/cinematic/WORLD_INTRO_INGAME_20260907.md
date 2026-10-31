@@ -1,6 +1,8 @@
-# 세계관 인트로 v13 — 인게임 적용 / BGM 확인
+# 세계관 인트로 v17 — 문 장면 폐지 / 인게임 적용
 
-> **2026-10-12:** 영상 파일 `video/world_intro_v15_clean_en.mp4`(2026-10-14 C13·C14 블록 제거, 이전 v14)(v13 음성 그대로, A01·A02 새 영상, 1080p). [v14 기록](WORLD_INTRO_REMASTER_MODEL_TEST_20261012.md).
+> **현행 2026-10-31:** `video/world_intro_v17_blood_en.mp4`로 모든 ENTER 경로를 통일. `gateLock` 존재 조건·구 `video/intro.mp4` 재생/프리로드·`cinGate`/`cin-door` 배경과 예약 진동을 폐지했다. 원본 영상 파일·승인 인장 화면·시청 기록은 보존한다. 아래 v13/v15 검수는 당시 이력이다.
+
+> **2026-10-12 이력:** 영상 파일 `video/world_intro_v15_clean_en.mp4`(2026-10-14 C13·C14 블록 제거, 이전 v14)(v13 음성 그대로, A01·A02 새 영상, 1080p). [v14 기록](WORLD_INTRO_REMASTER_MODEL_TEST_20261012.md).
 
 > **2026-09-09 현행 언어 계약:** Steam 31개 항목은 지역 공통 번역을 포함한 내부 29개 언어(말레이어 ms 추가)로 처리한다. 세계관 29×32=928큐·SRT/VTT 총58개, 캐릭터 서사 28개 번역 언어에 KO 기준 21+18문장을 적용한다. UI779키 등록, MAIN13,300개·EXTRA1,782개·성장화면3,699개 번역 보완 및 29언어 화면 검증을 완료했다. [구현 상태·검증 기록](../16번역·로컬라이제이션/STEAM_LANGUAGE_SCOPE_20260909.md)이 과거 완료 기록보다 우선한다.
 
@@ -17,14 +19,14 @@
 | 항목 | 현행 값 / 적용 위치 |
 |---|---|
 | 위치 | `index.html` 세계관 시네마틱. `game.html` 전쟁 복수 서사는 변경 없음 |
-| 흐름 | 기존 ENTER → `video/intro.mp4` 문 열림 → `startWorldIntro()` → v13 전체 영상 → 기존 로그인/로비 라우팅 |
-| 게임 에셋 | `video/world_intro_v13_exodus_en.mp4`, 32,381,760바이트 |
+| 흐름 | 첫 실행·시작 메뉴 재감상·로비 재감상·계정 첫 진입·미리보기 → 승인 인장 ENTER → `startWorldIntro()` → v17 → 기존 로그인/로비 라우팅. 언어/DEMO·EA·full과 무관 |
+| 게임 에셋 | `video/world_intro_v17_blood_en.mp4`, 77,065,370바이트. 문 장면 폐지는 앞에 붙던 구 문 연출을 뜻하며 v17 내부 편집·음성·컷 경계는 수정하지 않음 |
 | 보존 원본 | `output/cinematic/world_intro_auto_v3_en_ko.mp4` 및 `video/world_intro_v3_en_ko.mp4` 유지. v4·v5는 별도 파일 |
-| 규격 | H.264 + AAC, 1280×720, 24fps, 2719프레임, 컨테이너 113.292초 / 브라우저 비디오 duration 113.291667초 |
+| 규격 | H.264 + AAC, 1920×1080, 24fps, 2719프레임, 컨테이너 113.292초 / 브라우저 비디오 duration 113.291667초 |
 | 음성·자막 | ElevenLabs 영어 음성 193단어, 29언어 × 32큐 네이티브 선택형 자막. 기존 `introVoice` 별도 재생 금지 |
 | 타이틀 | 109.291667~113.291667초, 기존 img/logo_exoduser.png 단독 중앙 배치, HELL ROAD 없음. 109.6~111.1초는 마지막 자막과 동시 표시, 이후 자막 없이 로고만 유지. 0.75초 등장·3.6초부터 0.4초 소멸 |
 | 화면 | `#worldIntroVideo`, contain, z-index 21, preload none. 기존 정지 이미지 자막·레터박스·불씨는 숨김. cinLang은 표시, 네이티브 TextTrack으로 선택 언어만 표시 |
-| 이전 구현 | `CIN_LINES`, 정지 이미지 DOM·원본은 보존. 문 이후 `showLine(0)` 호출 및 사용하지 않는 18장 지연 프리로드는 중지 |
+| 이전 구현 | 빈 `cinVideo`는 중지 정리 호환용 hidden/preload none/src 없음. `CIN_LINES`, 정지 이미지 DOM·원본은 보존. 구 정지 이미지 `showLine(0)` 호출 및 사용하지 않는 18장 지연 프리로드는 중지 |
 | 번역 범위 | 이 영상은 EN 보이스 고정 / 29언어 선택형 자막. 기존 28언어 CIN_LINES는 보존 자료이며 영상의 실시간 번역/자막으로 사용하지 않음. 로비·게임 번역은 유지 |
 | 플레이어 | `world-intro-player.js`, `WorldIntroPlayer.create`, `start/stop/next/toggle/setVolumes` |
 | Steam 음성 디코딩 (2026-09-09) | 기본 NW.js 0.111.2에서 AAC 무음 재현. 같은 버전 `vendor/nwjs-ffmpeg/0.111.2/ffmpeg.dll`을 빌드에 포함하여 복구, 영상/보이스 원본 변경 없음. 실제 AAC 디코딩·WebAudio 신호 검증과 배포 상태는 [Steam 기록](../13출시·마케팅/STEAM_LATEST_DEPLOY_20260909.md) 참조 |
@@ -130,3 +132,21 @@
 | 테스트 | 온라인/로컬×이전 요청 완료/숨긴 로비 완료4회귀 수정 전 실패→통과 및 정상 완료2건 통과. 데모 경로·목록·동기화·영화 handoff·패드63개 통과 |
 | 브라우저 | Chromium960×540 실제 HTML/CSS/로비 진입·로딩 DOM 함수,대기 목록 Promise 격리. 전후8조건: 수정 전 이전 완료가 loading/chapterGate none·프리로드1회,수정 후 새 로딩 block 유지·프리로드0회. 최신 완료는 none·프리로드1회 확인 |
 | 범위·기록 | 실계정/저장 API·사용자 데이터·로딩 에셋 변경 없음. tmp/lobby-loading-owner/browser-report.json,changes.patch. 기존 Git 쓰기 제한으로 커밋 미완료 |
+
+## 2026-10-31 모든 경로의 문 연출 폐지
+
+| 진입 | 실제 라우팅·유지 계약 |
+|---|---|
+| 첫 실행 / test / NW.js 오프라인 미시청 | `_cinSeenChk()` 미시청 → `_goCinematic()` → 승인 인장 ENTER → v17. full·demo·ea 공통 |
+| 타이틀 다시 보기 | 메뉴 → `_goCinematic()` → ENTER → v17. 기존 시청 기록은 삭제하지 않음 |
+| 로비 재감상 / 게임에서 로비 복귀 | 복귀 자동 재생 없음. `replayCinBtn`을 누르면 `_goCinematic()` → ENTER → v17 |
+| 계정 첫 진입 / SIGNED_IN | `cin_seen` 또는 UID 캐시로 기존 판단. 미시청이면 `_goCinematic()` → ENTER → v17, 기시청은 로비 |
+| `?cinematic=1` | 미리보기 ENTER → v17. `_cinSeenSet()`는 쓰기 없이 return |
+| 언어 | KO·EN 포함 29언어 × 32큐. `cinLang` 변경 시 동일 v17 위 자막만 교체 |
+| 새 캐릭터 첫 생성 | 세계관 인트로 자동 재생 없음. 전사 외형 0은 기존 `warrior_story_v23_clean.mp4`, 그 외 목록 갱신. 별도 개인사 계약 유지 |
+| 조작 / 종료 | 클릭·Space·Enter 다음 컷, ESC/Space 5000ms 홀드, ended/skip 후 기존 로그인/로비. 계정 메타데이터·UID 캐시·전역 seen 유지 |
+
+- 브라우저는 headless/무음, 별도 3467 서버와 격리 saves/브라우저 저장소. 구 `intro.mp4`·`hellgate.png` 요청 0을 검사한다. 계정은 대역이며 실제 계정 서비스 변경은 하지 않는다.
+- 관련 회귀 340/340, guard PASS, index 인라인 4개 문법 통과. 기존 unrelated Steam entrypoint 검사(nw-boot 도입 전 기대값)는 별도 실패로 보존하고 이번 변경으로 고치지 않는다.
+- 1600×900·1920×1080 재생 시각 판정: 문 없는 v17 직접 재생 PASS. 2560×1080·3840×1080도 동일 경로 PASS이나 기존 contain 좌우 여백은 RETOUCH. 영상 확장/재편집·청취/NW.js·Steam 실행을 검증한 것으로 확대하지 않는다.
+- 경로별 0.3/1.5/3초 캡처·언어별 화면·기준 영상과 실제 화면 비교·한계·원격 SHA: `G:/exoduser/tmp/design-review/20261031_intro_nodoor/REPORT.md`.

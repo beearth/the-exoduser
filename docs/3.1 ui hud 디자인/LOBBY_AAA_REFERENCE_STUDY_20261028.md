@@ -300,7 +300,7 @@ I5의 현행 영상 기준 검수 결과는 §18에 기록한다. 위 표의 톤
 - 사용자: "엔터 저거 디자인도 좀 엉성하지만 왜 중앙정렬도 틀어졌냐", "세계관 인트로 왜 구버전연결돼있냐".
 - 정렬 원인: `.cin-enter-btn` 기본 규칙의 `left:53.5%`(옛 문틈 기준)가 남아 있었다. 인장·로고는 화면 중심 50% → ENTER도 50%. 실측(1920×1080·1635×1190·3840×1080): 로고 눈 x = ENTER 글자 중심 x = 화면 중심(오차 0px, 끝 자간 보정 포함).
 - ENTER 디자인: 상자 띠·가로줄 제거. 로고 "— HELL LORD —" 장식선과 같은 은빛 헤어라인 + 안쪽 끝 마름모(SVG)를 글자 양옆에, 글자는 Cinzel 400 21px 뼈색 #dfd6c2 자간 .55em, 뒤에 가로로 번지는 어둠 + 옅은 진홍 열기, 4.2초 숨쉬기.
-- 인트로 원인: ENTER 뒤 8초 옛 문 열림 영상 `video/intro.mp4`(2026-07 흑백 판화)가 먼저 재생된 뒤 현행 `world_intro_v17_blood_en.mp4`가 나왔다. 옛 문 화면을 버렸으므로 인장 첫 화면(`#gateLock` 있음)에서는 문 영상을 건너뛰고 ENTER 즉시 `startWorldIntro()`(현행 v17). 검수: ENTER 0.6초 뒤 world-intro-active·v17 재생 중, 문 영상 currentTime 0 정지, pageerror 0.
+- 인트로 원인: ENTER 뒤 8초 옛 문 열림 영상 `video/intro.mp4`(2026-07 흑백 판화)가 먼저 재생된 뒤 현행 `world_intro_v17_blood_en.mp4`가 나왔다. 옛 문 화면을 버렸으므로 2026-10-31에는 `gateLock` 조건과 구 영상 소스·문 배경·재생 분기를 제거해 모든 경로에서 ENTER 즉시 `startWorldIntro()`(현행 v17). 검수: ENTER 0.6초 뒤 world-intro-active·v17 재생 중, 문 영상 currentTime 0 정지, pageerror 0.
 
 ## 2026-10-31 웹 UI·UX 최신화
 

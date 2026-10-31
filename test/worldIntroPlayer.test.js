@@ -57,7 +57,7 @@ test('natural end calls completion once and pauses BGM',async()=>{
 test('lobby wires the metal title movie and bypasses old still-image narration',()=>{
   const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
   assert.match(html,/id="worldIntroVideo"/);
-  assert.ok(html.includes('video/world_intro_v15_clean_en.mp4'),'lobby must preserve the full ending with a continuous new voice take');
+  assert.ok(html.includes('video/world_intro_v17_blood_en.mp4'),'lobby must preserve the full ending with a continuous new voice take');
   assert.match(html,/_cinReady=true;startWorldIntro\(\);/);
   assert.match(html,/if\(_worldIntroPlayer\)\{_worldIntroPlayer\.next\(\);return;\}/);
 });
