@@ -50,3 +50,18 @@
 2026-10-31 촬영밀도 보완: 빠른공격을3.3fps의정지목록만으로판단하지않도록드루이드간격을18→3틱으로변경했다. 360틱/60Hz=6초·120고유PNG를20fps논리시간영상으로검토한다. 영웅은90틱/2=45장·30fps다. 촬영IO와수동틱때문에실제벽시계fps/프레임성능증거로세지않는다. 원시기존코드/문서는I:capture20fps-before-*에보존,제품Core/밸런스변경0이며실제Player촬영은아직미실행이다.
 
 최종재질검수범위: 각캡처프레임의활성·현재등록된모든Sprite배우에서actorCount/actorShaderFailures를기록하고SpriteLit이외재질을실패로잡는다. 표시중인드루이드본체의bossMaterial도별도실패검사한다. 주인공만확인해서적/보스의Late재질덮어쓰기를놓치는것을방지한다. 아직실제Player실행결과가아닌검수fixture보완이다.
+
+
+## 2026-10-31 원본 전사 공격 표시 복원
+
+| 항목 | 구현 계약 |
+|---|---|
+| 적용 상태 | wWindup / wSwing / wRecover / sBash / sRecover 모두 기존 attack-bat-v1 80px·9셀·8방향 사용 |
+| 원본 | 최신 웹62bae8a50의 warrior-bat-swing.js SHA256 6a1d0932a4e39584f31b2cb6e73b622c165b105a36a7d443969d8c9228040921 |
+| 속도 | 원본 .85. 회복 초반 duration×(1/.85−1) 지연으로 베기를 끝낸 뒤 6/7/8로 검을 내림 |
+| 일반/기검참 | wSwing duration5, 원본 windup=max(1,Int(10/(WeaponSpeed 또는1))), recovery=max(1,Int(16/((WeaponSpeed 또는.3)×AttackSpeedMultiplier))) |
+| E 공격 | sBash duration20, 경과2/4/7/8/11/14 경계로0…6. sRecover는 기존 ParryRules.SRecoverTicks(PParry)만 읽음 |
+| 검증 범위 | 원본JS에서5상태×windup3종×recovery5종의모든정수남은틱1,344조건추출. 기존표시1,234불일치(일반화windup입력포함), 순수제품표시함수0불일치. 실제게임경로1,234건고장이라는뜻이아님 |
+| 보존 | Core·피해·공격/회복시간·공속·E패링 규칙 변경0. 기존3D모션코드유지. 실제Player프레임검수는별도미완 |
+
+기존 표시가 wSwing/KiCharge만 공격시트를 쓰고 회복/E에서 기본시트로 즉시 바뀌던 차이를 복원했다. 원본 byte와 RED/GREEN 검사·API 로그는 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/sprite-attack-timing에 보관한다. 로비/Core는 현재 전사만 해금되어 있으므로 이 수정으로5영웅플레이완료를주장하지않는다.
