@@ -1,4 +1,8 @@
+> 2026-10-31 field-screen 현재: NativeGame은 A2FieldLayout.CreateMap의 원본 SourceMap(MapData)를 사용한다. 이전 A2 additionalBlocked/SolidCore의 수로·거목 차단은 게임 연결에서 제외했다. 원본 JSON/Core 변경0. 전체 타일 이동·표시·시야 불일치0; 아래 A2 콜백 기록은 이전 후보 이력이다. 현행 수치/실제검수는 UNITY_KEYSHOT_A2_20261030.md 첫 절.
+
 # Unity 원본 기반 기본 무기·기검참 코어 — 2026-10-24
+
+> 2026-10-31 A2 표현 경로 보충: 기존 `SourceMap(MapData)` 생성자를 보존하고 `SourceMap(MapData, Func<float,float,bool> additionalBlocked)`를 추가했다. 선택 경계는 `Blocked` 입구에서 검사하며 비A2는 null로 기존 질의를 보존한다. A2만 `A2ForestLayout.BlockedCore`로 수로/다리/거목 보행을, 세 번째 콜백 `SolidCore`로 거목 시야/투사체 경계를 적용하며, 원본 JSON과 Core 전투 코드는 변경하지 않는다. 경계 수치·회귀·실제 화면 상태는 `UNITY_KEYSHOT_A2_20261030.md`를 따른다. 수치 회귀 통과를 시각·Player 검수 통과로 해석하지 않는다.
 
 사용자 최신 지시에 따라 Godot를 보존하고 Unity도 비교 시험한다. 최종 엔진 선택은 미확정이다. 이 문서는 Unity용 순수 C# 코어의 실제 구현 범위와 검증을 기록한다. Godot 파일, 웹 게임 코드, 세이브는 수정하지 않았다. 초기 license 차단 뒤 부모가 실제 Editor import/compile/asset 검사를 통과했다. Windows Player/시각/수동 플레이는 별도 게이트다. 아래 .NET 검사와 전체 이식 완료를 혼동하지 않는다.
 
@@ -93,3 +97,13 @@ Unity 이식 후보의 원본 기본 공격 모드는 `SourceStarterFixture.Crea
 | 실제 엔진 후속 | 부모가 Editor 검사·Windows build 및 Player 자동이동/120f차지/해제·4처치·PNG4종을 확인. 수동 플레이/전체 게임 검증과 구분 | `UNITY_PORT_20261024.md`의 실제 산출물 표 |
 
 변경 소유권은 Core C# 4파일, `Tools/ki-slash-oracle/`, 이 문서다. 다른 작업자의 SourceMap·에디터·렌더러·Resources·공용 Git index는 수정하지 않는다. 이 Tools의 실체는 I: Junction이다.
+
+### 2026-10-31 선택 지형의 미니맵 일치
+
+SourceMap.DisplayTile(x,y)는 원본 타일을 반환하며, 선택적 additionalBlocked가 타일 중심을 차단할 때만1(비보행)로 표시한다. NativeFieldHud의 기존 원형 미니맵은 이 값을 사용한다. 비A2의 원본 타일 색/모양은 그대로이며 A2 수면을 길로 표시하던 불일치를 고쳤다. 수로/다리/비A2 표시 회귀3검사 통과, 원본 MapData와 JSON 변경0.
+
+### 2026-10-31 A2 촬영·낮은 수로 회귀
+A2 SourceMap3인수 생성자에서 보행 경계와 투사체 경계를 분리한다. 기존1/2인수 계약은 보존. ProjectileBlocked는 기본JSON/타일/언덕/타원+추가실벽을 조회하며 LineOfSight와 Simulation.IsProjectileWall이 사용한다. 수면은 이동만 차단, 거목은 이동·시야·탄 모두 차단. Core 전투/JSON 변경0. 25경계/높이/출구/앵글러 회귀PASS.
+
+### 2026-10-31 실제 Player 회귀 후속
+현재26수면/침수정점/다리/출구/앵글러회귀PASS·독립C#0. SourceMap수면은보행만/거목은투사체·시야도차단계약유지. 이전erosion실제3장촬영기능통과와210정점읽기오류/시각FAIL을분리한다. 정확3FBX읽기·침수경계·원본높이캐시대조·실제활성영웅측정·A2전용기본보스카메라/Repeat바닥/낮은프레임을재작업중이다. 실제새Player/M1전채택0, 상세숫자는A2 SSOT.

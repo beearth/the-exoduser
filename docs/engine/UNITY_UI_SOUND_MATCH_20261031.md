@@ -96,7 +96,7 @@ R6 `8fd2b1a09`의 공식 빌드6640993b·M1 23/23·TAB74/74·녹음476/476·over
 
 R5/R6 생성 파생파일은 각각 tracked519·new56을 I:에 SHA보존한 뒤 사전 원본 byte/부재로 복귀했다. 기존 guard.baseline WIP·INDEX를 보존한다. 최신 공통 계약의 상세는 [Pause SSOT](UNITY_PAUSE_SETTINGS_20261025.md)를 따른다.
 
-## 2026-10-31 R7 최종 공식 검수 — 공통 반영 준비 완료
+## 2026-10-31 R7 최종 공식 검수 — 공통·Desktop 전달 완료
 
 실행 소스57bb84b298ebfb41412662fc027ed18a84f8a802, Unity tree11dbc7dbb04a5897522d5f4ce5668a6fc987c977. 정상 merge의 두 부모는8fd2b1a09와 공통118a9421a다. 모든 빌드·Player·FFmpeg를 셸 도구의 시스템 PowerShell -NoProfile -Command 절대경로로 실행했고, Unity/Player는 공식 exo-unity를 거쳤다. node_repl/child_process 직접 호출0. 공유 예약이 선두가 될 때까지 기다렸으며 타인 예약·잠금·프로세스 변경0이다.
 
@@ -116,4 +116,17 @@ R5/R6 생성 파생파일은 각각 tracked519·new56을 I:에 SHA보존한 뒤 
 | 1x 확인 | R7 frame0045 인장, frame0195 인벤토리, frame0335 실제Lv2/LEVELUP, fallen-after-resume, startup-input-restored의 실제1600×900 원본 확인. 영상은 고정15fps QA 프레임 순서/출력버퍼 결합이며 벽시계30초의 자연 조작 영상 아님 |
 | 소스 보존 | R7 자동 파생 tracked519·new56을 I:에 SHA보존 후 빌드 전 원본 byte/부재로 복귀. INDEX clean·원래 guard WIP SHA9414ce48870885726bd4bd6db7df52d6d3ad8aa63edcb7f67c6cb3f63c4bb8ca 유지 |
 
-Runtime SHA256 `32669c0d133674b36ce39b0ac72d838a8f5d995afd11f49818e1d267390e0a15`, Core SHA256 `7314f8d003150700548f191f0802371eab66f85ca19ed1c9247976c63e81e181`. 상세는 I:/EXODUSER-Storage/demo-art/ui-sound/r7-final-qa-audit.json·r7-suite-summary.json·r7-video-probe.json·r7-restoration-proof.json에 있다. 인간 청음·자연 전투 완주·Mac은 미검증이고 기존 전체 아트 RETOUCH 유지다. 이번 인수 범위는 복구 후보의 웹 fc9b6290d 기준 UI 매칭이며, 브리프 말미 웹 두둥1~3 청음 후보는 임의 최종 채택하지 않는다. 공통/바탕화면 전달 결과는 후속 영수증으로 별도 확정한다.
+Runtime SHA256 `32669c0d133674b36ce39b0ac72d838a8f5d995afd11f49818e1d267390e0a15`, Core SHA256 `7314f8d003150700548f191f0802371eab66f85ca19ed1c9247976c63e81e181`. 상세는 I:/EXODUSER-Storage/demo-art/ui-sound/r7-final-qa-audit.json·r7-suite-summary.json·r7-video-probe.json·r7-restoration-proof.json에 있다. 인간 청음·자연 전투 완주·Mac은 미검증이고 기존 전체 아트 RETOUCH 유지다. 이번 인수 범위는 복구 후보의 웹 fc9b6290d 기준 UI 매칭이며, 브리프 말미 웹 두둥1~3 청음 후보는 임의 최종 채택하지 않는다. 공통/바탕화면 전달 결과는 아래 영수증을 따른다.
+
+### 공통 반영·설치본 전달 영수증
+
+| 전달 경계 | 실제 결과 |
+|---|---|
+| 공통 Git | expected118a9421a→unity/main fcaa8832c007415309a15bc3f65bb8d0a7b89aff 정상 비강제 반영, 자기 브랜치/공통 원격 SHA 직접 readback 일치. 이 절의 후속 commit은 문서만 변경하며 Unity tree11dbc7db 불변 |
+| 전파일 설치 | build-r7의212개·전파일 SHA/목록을 unity-latest의 새 staging과 대조, 원본 변경 없음 확인. 기존 build를 `build_previous_ui_sound_r7_20261031T104527853`에 보존한 뒤 새 build를 정상 이동, 설치 후 전파일 SHA 재대조 일치 |
+| 설치본 M1 | f6c580ec: 설치 경로의 같은 Runtime/Core, 23/23·D3D11·정상exit0·노출창0·잔여0·USER_SAVE0·숨은desktop 닫힘 |
+| 기존 Desktop | 기존 `지옥의 길 (Unity).lnk` 한 개를 `I:/EXODUSER-Storage/unity-latest/build/EXODUSER-Unity.exe`로 연결, 작업폴더 동일·기존 `-force-d3d11 --remodel3d` 인자 보존·COM readback 일치. 사용자 화면 자동 실행0 |
+| 이전 Desktop 보존 | 직전 Pause build-final-r4는 그대로 유지, 원래 lnk는 desktop-before-r7.lnk에 byte/SHA보존. 새·이전 build-commit 메타데이터도 I:에 보존 |
+| 자원 반환 | 자기 예약 한 건만 공식 unreserve로 반환하고 원본 SHA/파일 부재·자기 잠금 없음 직접 확인. 추가 unreserve/프로세스 종료0. 후속 GPU 작업 없음 |
+
+근거: `I:/EXODUSER-Storage/demo-art/ui-sound/r7-common-publication.json`, `r7-stage-verification.json`, `r7-install-verification.json`, `r7-desktop-refresh.json`, `r7-reservation-return.json`. 현재 바탕화면 검수본의 실제 빌드 소스는57bb84b29이며 최종 docs-only 공통 SHA와 구분한다. PC 소유 checkout·GitHub·해당 Windows Player 전달은 확인했으나 Mac 반영을 확인한 것은 아니다.

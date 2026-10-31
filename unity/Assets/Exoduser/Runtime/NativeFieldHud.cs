@@ -31,10 +31,10 @@ namespace Exoduser.UnityPort
    texFor=map;int mw=map.Data.width,mh=map.Data.height;float sc=Mathf.Min(122f/mw,122f/mh);mapSc=sc;
    mapW=Mathf.Max(1,(int)(mw*sc));mapH=Mathf.Max(1,(int)(mh*sc));
    var px=new Color32[mapW*mapH];Color32 a=new Color32(119,122,122,255),b=new Color32(68,51,85,255),c=new Color32(85,88,88,255);
-   var tiles=map.Data.tiles;int size=Mathf.Max(1,Mathf.CeilToInt(sc));
+    int size=Mathf.Max(1,Mathf.CeilToInt(sc));
    for(int ty=0;ty<mh;ty++)for(int tx=0;tx<mw;tx++)
    {
-    int tv=tiles[ty*mw+tx];if(tv==1)continue;Color32 col=tv==2?a:tv==4?b:c;
+     int tv=map.DisplayTile(tx,ty);if(tv==1)continue;Color32 col=tv==2?a:tv==4?b:c;
     int x0=(int)(tx*sc),y0=(int)(ty*sc);
     for(int dy=0;dy<size;dy++)for(int dx=0;dx<size;dx++){int x=x0+dx,y=y0+dy;if(x<mapW&&y<mapH)px[(mapH-1-y)*mapW+x]=col;}
    }

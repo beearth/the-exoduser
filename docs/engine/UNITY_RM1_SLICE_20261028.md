@@ -1,5 +1,12 @@
 # Unity RM-1 슬라이스 (1-1 R1 START ~ R2) 구현 현황 — 2026-10-28
 
+## 2026-10-31 현행 순수 맵 분기 — 미인수 UI 재질 제외
+
+기존맵분기에상속된 c253ec3b0/1c985c88e 재질시안은현공통15c8 및현재순수UI01dbc의조상이아니며현행채택근거가없다. UI담당과대조후정확8파일을I: `steam-keyshot/a2/field-screen-20261031/미인수UI-원본/`에보존하고, Overlay/Presentation은승인공통15c8의정확byte로복원·MaterialLayout/Material.Capture의cs/meta 및전용tests2파일은현행맵입력에서제외했다. 원격6771672c9와기존이력은보존했다.
+
+현재클리어표시는공통의기존평면패널/버튼을사용하며 MaterialReady/Pieces/UV재질helper는없다. scale=min(1,max(1,W−32)/560,max(1,H−32)/LogicalHeight). 별도UI담당의SafeLayout·물리버튼후보는아직인수하지않았다. 아래2026-10-30재질절과그수치·검사·Player는당시private후보이력으로만보존하며현재구현/맵PASS로소급하지않는다. 현재전체필드계약은 `UNITY_KEYSHOT_A2_20261030.md` R4표를따른다. R4 실제 D3D11/6구도는 FAIL 이력이며 R5 통행맞춤·강바닥지지목·전경/수피접합·노출+.55EV/달빛3.2·이끼안쪽.45는 첫문서 R5절을 따른다. 순수회귀37PASS/원본Core·타일·이동·LOS불변. 동일 Player 공동 build/M1/UI·월드 및 지정통합은 검수전이다.
+
+
 브랜치 `claude/unity-pc-rm1-20261027`. 명세 `E:/exoduser-wt/_out/rm1/SPEC.md`(맵 총괄), 판정: 맵 총괄(구조), 디자인총괄(시각), 톤은 ① VFX 렌더 병합(Linear·후처리) 뒤.
 
 ## 생성 방법 (멱등)
@@ -71,7 +78,7 @@
 | 피격막 | 원본 색 알파 .25×Core ScreenFlashAlpha. 처음 유효 알파 .0625, Core 감쇠 불변 | NativeGame.OnGUI, B07 정본 |
 | 보스 바닥·외곽 | 토양 Bilinear, 시각용 바깥 여백32타일, 점유 한 타일 확장 후 Px8 기준 반경10의 가로·세로 box blur3회로 벽 알파 감쇠. 원래 충돌·걷기·출구는 그대로 | NativeArenaView |
 | 피해·상태 문자 | 아래 보스 문자 근거리 재작업 계약으로 교체. 실제몸 예약·유형별거리144/176/208·.18초합계/횟수·필수경고3→수치2→일반예고1→반복0·이동오프셋 유지 | NativeFloatingTextLayout, NativeGame, NativeReviveHud |
-| 결과 화면 | 2026-10-30 제작 후보: 실제 시간/처치→보상→측정 통계→저장·로비 행동. 폭560/실제 일반 높이546, 화면여백32 적응 중앙 패널, 표시/포인터 좌표 공유. A22 현행 계약 참조 | NativeStageClearOverlay / NativeStageClearPresentation |
+| 결과 화면 | 현재private재질후보: 본문560×546/원화외곽592×578, 화면여백16에맞춘축소·UV모서리픽셀보정. 시간/처치→SP→로비·표시/입력공유유지. A22 최신계약 참조 | NativeStageClearOverlay / Presentation / MaterialLayout |
 
 - 문자 배치 회귀: 변경 전 두 번째 문자에서 중첩 실패, 변경 후 40개 밀집 문자·HUD 경계·프레임 초기화·화면 밖 클램프 통과. `unity/Tools/visual-parity-tests`.
 - 기준 빌드 `f4642f85` 오류0, 숨은 D3D11 M1 `3c4f97a5` 23/23·종료0·창0·잔여0·USER_SAVE 변경0. 이 증거는 수정 전 기준이며 위 수정 후보의 검수로 재사용하지 않는다.
@@ -256,6 +263,13 @@ root가 candidate2-caps/natural-medium.png·synthetic-high.png·synthetic-moving
 
 이번 변경Runtime 최초전체M1 **47961226 23/23**·D3D11 RX9070XT·정상종료0·창0/잔여0/USER_SAVE0, 실제13은137/168·88초·지역4·SP10. Simulation.Tick/API 가속 하네스로 손조작E2E 아님. 이전M1소급/기통과표적QA·번역·빌드/Coreoracle 반복0. expected unity/main a2f5058652a91b10ca1357f4a9c39db99a0cbadf를 다시 대조한 이번 지정integrator만 후보+필요docs 비강제 반영·일반바로가기 고유백업후candidate3 연결을 진행한다. 최종소스/연결readback은 `I:/EXODUSER-Storage/unity-visual/stageclear-20261030/통합-최종영수증.json`, A22의 지정통합절과 `통합-새M1-단계영수증.json`에 연결. root 수신의 failed키 혼동은 실제 failures=0/170 확인으로 정정, 제품실패/카운터증가0. 기존실패·7공백예외/WIP·guard·oldI·MP4/구실행본·세이브 보존, 전체PASS0.
 
+## 2026-10-30 클리어 재질·프레임 마감 제작 후보
+
+기존원화 forge/window_base의바깥금속모서리/마모테와inventory/iron_480본문을직접열고A22의WORK_QUALITY§1.1기획을먼저기록했다. 첫사전실물의불투명사각모서리/본문입자경쟁을반려하고2px행UV클립·균일축소/한구간crop·본문iron단일cover로수정한두번째1x를확인했다. 전체forge/기사/원형문양/기능칸내용·반복tile·새이미지생성0. 본문560×546/원화외곽592×578, screen scale=min(1,(W-32)/592,(H-32)/578), 시간→처치→SP→로비·실제데이터/콜백유지. 원화/다른창byte불변. 세부UV/명암/소유/탈락조건/새최소캡처는A22최신절. 이단위는private제작후보만, unity/main/바로가기교체0·전체RETOUCH유지. I산출물 `I:/EXODUSER-Storage/unity-visual/stageclear-material-20261030/`.
+
+- 첫 재질native5512bc8f는35경계검사통과라도960모서리가로줄무늬로시각반려. 2px행→1.381117화면px의소수배율에서공유픽셀경계/UV역보정경로로한번수정하고1240연속성검사통과. 원화/색/코너크기/행개수만바꾸는변형아님. 다음실화면에서같은결함이면HOLD. 기존실패/프레임보존, 최종시각판정은후속새실행영수증과구분.
+
+- 최종재질후보 빌드입력881c1e17737ceefd1e785c3918e58411cb2bbeaf/Unity tree8c9c45ac9b0d63f2027b68c617a70cf4b245a41f, 빌드5b891d6a오류0·새Runtime d13a3619ddf0cd55decf3e5856ec871ca3af271d93e51818ce8b85eb7045dcc8. 최종193a42a4는같은값1/168·16초·SP10의1600/960표시전용11/11·창0/잔여0/USER_SAVE0. 직전수정후9e671e00의재질/7언어35검사는별도Runtime/동일3렌더소스blob근거로구분. 원화PNG/meta전후byte동일·450임포트보존. 1x직접판정은원화재질/마감국소개선확인·전체RETOUCH/root독립검수대기, 새M1미실행/현재47961226소급0. 후보-제출영수증.json과전후_동일값_1600.png/960.png·1x_프레임_전후.png 참조. 이번private만/main·바로가기0.
 
 ## 2026-10-30 사용자 플레이 결함 수정 최종 실행 증거
 
