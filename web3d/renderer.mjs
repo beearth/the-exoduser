@@ -7,12 +7,14 @@ import { ShaderPass } from '../assets/vendor/three-r160/examples/jsm/postprocess
 import { UnrealBloomPass } from '../assets/vendor/three-r160/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from '../assets/vendor/three-r160/examples/jsm/postprocessing/OutputPass.js';
 import { trialEnabled } from './core.mjs';
-import { riverMaterial,addForestDepth } from './river.mjs';
-import { drawEffects,createParticles } from './effects.mjs';
-import { presentationActors } from './presentation.mjs';
-import { loadRemasters,remasterFrame,normalTextureSize } from './remaster.mjs';
-import { textureView } from './texture-views.mjs';
-import { bankGeometry,shoreline } from './banks.mjs';
+import { riverMaterial,addForestDepth } from './river.mjs?v=20261031-main2';
+import { drawEffects,createParticles } from './effects.mjs?v=20261031-main2';
+import { presentationActors } from './presentation.mjs?v=20261031-main2';
+import { loadRemasters,remasterFrame,normalTextureSize } from './remaster.mjs?v=20261031-main2';
+import { textureView } from './texture-views.mjs?v=20261031-main2';
+import { bankGeometry,islandGeometry,shoreline } from './banks.mjs?v=20261031-main2';
+import { addWoodDeck } from './wood-deck.mjs?v=20261031-main2';
+import { compositeBounds } from './walk-composite.mjs?v=20261031-main2';
 
 const q=new URLSearchParams(location.search);
 const bridgeScene=q.get('r3dScene')==='bridge';
@@ -107,6 +109,7 @@ export async function install(read){
     // Baked plant alpha, including the silhouette card, stays clipped in the depth and shadow passes.
     if(/Dead_Leaf/.test(id))m.color.set('#89837c');
     if(/Moss_(Cushion|Rock)/.test(id))m.color.set('#6d7865');
+    if(/Ancient_Tree/.test(id)){m.color.setRGB(1.8,1.7,1.5);m.aoMapIntensity=.35;}
     m.name=id;materials.set(id,m);
     if(isOccluder(id)){
       m.transparent=true;m.depthWrite=false;
@@ -129,8 +132,11 @@ export async function install(read){
   const treeTransforms=new Map();
   gltf.scene.traverse(o=>{if(!o.isMesh)return;const id=o.userData.web3dModule||o.parent?.userData.web3dModule;if(!/Ancient_Tree/.test(id))return;
     const old=o.matrixWorld.clone(),position=new THREE.Vector3(),rotation=new THREE.Quaternion(),scale=new THREE.Vector3();old.decompose(position,rotation,scale);const anchor=position.clone();
-    const close=position.z>53;scale.multiplyScalar(close?.60:.42);if(close){position.x+=position.x<40?-2:2;position.y-=.6;}else if(position.x>33&&position.x<47)position.x+=position.x<40?-5:5;
-    const matrix=new THREE.Matrix4().compose(position,rotation,scale);treeTransforms.set(o.uuid,{anchor,matrix,delta:matrix.clone().multiply(old.clone().invert())});
+    const close=position.z>53;scale.multiplyScalar(close?.60:.65);if(close)position.x+=position.x<40?-2:2;
+    const matrix=new THREE.Matrix4().compose(position,rotation,scale);o.geometry.computeBoundingBox();
+    const bottom=o.geometry.boundingBox.clone().applyMatrix4(matrix).min.y;
+    position.y+=Math.max(.45,height(position.x*U,position.z*U))-.08-bottom;matrix.compose(position,rotation,scale);
+    treeTransforms.set(o.uuid,{anchor,matrix,delta:matrix.clone().multiply(old.clone().invert())});
   });
   const bank=materials.get('RF3_Continuous_Bank_Terrain');
   const soil=await loadTexture('./assets/map/ch1/ground_dark_soil.png',true);soil.wrapS=soil.wrapT=THREE.RepeatWrapping;
@@ -141,7 +147,9 @@ export async function install(read){
     if(!o.isMesh)return;
     const id=o.userData.web3dModule||o.parent?.userData.web3dModule;
     const material=materials.get(id);if(!material)throw Error('Unknown R3 module: '+o.name);
-    if(/Continuous_Bank/.test(id))return;
+    if(/Continuous_Bank/.test(id)){
+      const island=new THREE.Mesh(islandGeometry(o.geometry,o.matrixWorld),bank);island.receiveShadow=true;island.userData.module='RF3_Root_Islands';environment.add(island);island.updateMatrixWorld();pick.push(island);return;
+    }
     if(!nativePrototypes.has(id))nativePrototypes.set(id,{geometry:o.geometry,material,matrix:o.matrixWorld.clone()});
     // Rebuild the large silhouette before adding detail: keep the bridge and banks exact.
     const position=new THREE.Vector3(),rotation=new THREE.Quaternion(),scale=new THREE.Vector3();o.matrixWorld.decompose(position,rotation,scale);
@@ -174,6 +182,16 @@ export async function install(read){
   for(const south of [false,true]){
     const surface=new THREE.Mesh(bankGeometry(south,height),bank);surface.receiveShadow=true;surface.userData.module='RF3_Connected_Bank_'+(south?'South':'North');environment.add(surface);surface.updateMatrixWorld();pick.push(surface);
   }
+  for(const tree of treeTransforms.values()){
+    const p=new THREE.Vector3().setFromMatrixPosition(tree.matrix);
+    if(p.z<=shoreline(p.x,false)||p.z>=shoreline(p.x,true))continue;
+    const geometry=new THREE.SphereGeometry(1,24,8,0,Math.PI*2,0,Math.PI/2);
+    geometry.scale(2.7,.72,3.3);geometry.translate(p.x,-.12,p.z);
+    const pos=geometry.attributes.position,uv=geometry.attributes.uv;
+    for(let i=0;i<uv.count;i++)uv.setXY(i,pos.getX(i)*.28,pos.getZ(i)*.28);
+    const mound=new THREE.Mesh(geometry,bank);mound.receiveShadow=true;mound.userData.module='RF3_Root_Mound';environment.add(mound);mound.updateMatrixWorld();pick.push(mound);
+  }
+  pick.push(...addWoodDeck(environment,height));
   environment.visible=bridgeScene;
   const reflectionCamera=new THREE.OrthographicCamera(),reflectionTarget=new THREE.WebGLRenderTarget(960,540,{type:THREE.HalfFloatType});
   const reflectUniforms={uReflect:{value:reflectionTarget.texture},uReflectMatrix:{value:new THREE.Matrix4()}};
@@ -202,7 +220,9 @@ export async function install(read){
       float f=.55+.25*sin(vUv.x*10.+sin(vUv.y*8.)+time*.09);gl_FragColor=vec4(tint,pow(edge,1.4)*f*.12);}`});
   const fogs=[];for(let i=0;i<8;i++){
     const f=new THREE.Mesh(new THREE.PlaneGeometry(45,9),fogMaterial);f.rotation.x=-Math.PI/2;
-    f.position.set(40+(i%2)*5,.35+i*.13,39+i*4.4);scene.add(f);fogs.push(f);
+    // Keep ribbons above the 1.1m terrain crest. Intersecting horizontal fog
+    // with the bank made its height contours look like huge black tree arches.
+    f.position.set(40+(i%2)*5,1.8+i*.16,39+i*4.4);scene.add(f);fogs.push(f);
   }
   const dustGeo=new THREE.BufferGeometry(),dust=new Float32Array(140*3);
   for(let i=0;i<140;i++){dust[i*3]=28+(i*7.731%28);dust[i*3+1]=.7+(i*.173%5);dust[i*3+2]=38+(i*3.347%34);}
@@ -250,10 +270,11 @@ export async function install(read){
   }
   const normalTextures=new WeakMap();
   const importedNormals=new WeakMap();
-  function importedNormal(image){
+  function importedNormalSource(image){
     if(!importedNormals.has(image)){const t=new THREE.Texture(image);t.colorSpace=THREE.NoColorSpace;t.magFilter=t.minFilter=THREE.NearestFilter;t.generateMipmaps=false;t.needsUpdate=true;importedNormals.set(image,t);}
-    return textureView(importedNormals.get(image));
+    return importedNormals.get(image);
   }
+  const importedNormal=image=>textureView(importedNormalSource(image));
   function normalTexture(image){
     if(normalTextures.has(image))return textureView(normalTextures.get(image));
     const dimensions=normalTextureSize(image.naturalWidth||image.width,image.naturalHeight||image.height),c=document.createElement('canvas');c.width=dimensions.width;c.height=dimensions.height;
@@ -280,8 +301,9 @@ export async function install(read){
   }
   for(const art of remasters.values()){
     if(art.image)renderer.initTexture(sourceTexture(art.image));
-    if(art.normal){const temporary=importedNormal(art.normal);temporary.dispose();renderer.initTexture(importedNormals.get(art.normal));}
+    if(art.normal)renderer.initTexture(importedNormalSource(art.normal));
   }
+  for(const entry of Object.values(read().enemyAtlas?.walkDirs||{}))if(entry.ready&&entry.img?.width)renderer.initTexture(sourceTexture(entry.img));
   let frameId=0,current=null,ready=true,lastNativeMap=null,lastSize='',hidden=false,lastRenderMs=0,lastDrawCalls=0,lastFadeTime=performance.now();
   const occlusionBox=new THREE.Box3(),occlusionCenter=new THREE.Vector3(),occlusionDirection=new THREE.Vector3(),occlusionCorner=new THREE.Vector3();
   function updateOcclusion(state){
@@ -310,7 +332,9 @@ export async function install(read){
   }
   function sprite(key,image,frame,x,y,scale,options={}){
     if(!image||!(image.width||image.naturalWidth)||!frame)return;
-    const b=options.trim===false?frame:bounds(image,frame),iw=image.naturalWidth||image.width,ih=image.naturalHeight||image.height;
+    const overlay=options.overlay;
+    const bodyBounds=options.trim===false?frame:bounds(image,frame),b=overlay?compositeBounds(frame,bodyBounds,overlay.frame,bounds(overlay.image,overlay.frame)):bodyBounds;
+    const iw=image.naturalWidth||image.width,ih=image.naturalHeight||image.height;
     const source=sourceTexture(image);let mesh=sprites.get(key);
     if(!mesh){
       const tex=textureView(source);
@@ -318,12 +342,29 @@ export async function install(read){
       const material=options.unlit?new THREE.MeshBasicMaterial(settings):new THREE.MeshStandardMaterial({...settings,
         roughness:.9,metalness:0,emissive:'#8f9baf',emissiveIntensity:.13});
       if(!options.unlit){
-        const uniforms={uSpriteTexel:{value:new THREE.Vector2(1/iw,1/ih)},uSpriteRim:{value:options.hero?.8:.12}};
-        material.userData.rim=uniforms;material.customProgramCacheKey=()=> 'web3d-actor-rim-v1';
+        const uniforms={uSpriteTexel:{value:new THREE.Vector2(1/iw,1/ih)},uSpriteRim:{value:options.hero?.8:.12},
+          uWalkEnabled:{value:0},uWalkMap:{value:null},uWalkNormal:{value:null},uWalkRect:{value:new THREE.Vector4()},uBaseRect:{value:new THREE.Vector4()}};
+        material.userData.rim=uniforms;material.customProgramCacheKey=()=> 'web3d-actor-walk-composite-v2';
         material.onBeforeCompile=shader=>{
           Object.assign(shader.uniforms,uniforms);
-          shader.fragmentShader='uniform vec2 uSpriteTexel;uniform float uSpriteRim;\n'+shader.fragmentShader;
+          shader.fragmentShader='uniform vec2 uSpriteTexel;uniform float uSpriteRim,uWalkEnabled;uniform sampler2D uWalkMap,uWalkNormal;uniform vec4 uWalkRect,uBaseRect;\n'+shader.fragmentShader;
+          shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',`#include <map_fragment>
+            vec3 spriteAlbedo=texture2D(map,vMapUv).rgb;
+            if(uWalkEnabled>.5){
+              vec2 localUv=(vMapUv-uBaseRect.xy)/uBaseRect.zw;
+              vec4 basePixel=texture2D(map,vMapUv),walkPixel=texture2D(uWalkMap,uWalkRect.xy+localUv*uWalkRect.zw);
+              float a=walkPixel.a+basePixel.a*(1.-walkPixel.a);
+              spriteAlbedo=(walkPixel.rgb*walkPixel.a+basePixel.rgb*basePixel.a*(1.-walkPixel.a))/max(a,.0001);
+              diffuseColor=vec4(diffuse*spriteAlbedo,opacity*a);
+            }`);
+          const normalChunk=THREE.ShaderChunk.normal_fragment_maps.replace('mapN.xy *= normalScale;',`if(uWalkEnabled>.5){
+            vec2 walkUv=uWalkRect.xy+(vMapUv-uBaseRect.xy)/uBaseRect.zw*uWalkRect.zw;
+            vec4 walkPixel=texture2D(uWalkMap,walkUv);vec3 walkN=texture2D(uWalkNormal,walkUv).xyz*2.-1.;
+            mapN=normalize(mix(mapN,walkN,walkPixel.a));
+          }mapN.xy *= normalScale;`);
+          shader.fragmentShader=shader.fragmentShader.replace('#include <normal_fragment_maps>',normalChunk);
           shader.fragmentShader=shader.fragmentShader.replace('#include <emissivemap_fragment>',`#include <emissivemap_fragment>
+            totalEmissiveRadiance=emissive*spriteAlbedo;
             float edge=1.-min(min(texture2D(map,vMapUv+vec2(uSpriteTexel.x,0.)).a,texture2D(map,vMapUv-vec2(uSpriteTexel.x,0.)).a),min(texture2D(map,vMapUv+vec2(0.,uSpriteTexel.y)).a,texture2D(map,vMapUv-vec2(0.,uSpriteTexel.y)).a));
             totalEmissiveRadiance+=vec3(.26,.40,.50)*edge*uSpriteRim;`);
         };
@@ -339,6 +380,15 @@ export async function install(read){
     }
     if(!options.unlit&&!mesh.material.normalMap){mesh.material.normalMap=options.normalImage?importedNormal(options.normalImage):normalTexture(image);mesh.material.normalScale=new THREE.Vector2(.65,.65);mesh.material.needsUpdate=true;}
     if(mesh.material.emissive){mesh.material.emissiveMap=mesh.material.map;mesh.material.userData.rim?.uSpriteTexel.value.set(1/iw,1/ih);}
+    const walkUniforms=mesh.material.userData.rim;
+    if(walkUniforms){walkUniforms.uWalkEnabled.value=overlay?1:0;if(overlay){
+      const ow=overlay.image.naturalWidth||overlay.image.width,oh=overlay.image.naturalHeight||overlay.image.height,f=overlay.frame;
+      walkUniforms.uWalkMap.value=sourceTexture(overlay.image);
+      if(!overlay.normalImage&&!normalTextures.has(overlay.image))normalTexture(overlay.image).dispose();
+      walkUniforms.uWalkNormal.value=overlay.normalImage?importedNormalSource(overlay.normalImage):normalTextures.get(overlay.image);
+      walkUniforms.uBaseRect.value.set(frame.x/iw,1-(frame.y+frame.h)/ih,frame.w/iw,frame.h/ih);
+      walkUniforms.uWalkRect.value.set(f.x/ow,1-(f.y+f.h)/oh,f.w/ow,f.h/oh);
+    }}
     if(mesh.material.normalMap){const n=mesh.material.normalMap;n.repeat.set(b.w/iw,b.h/ih);n.offset.set(b.x/iw,1-(b.y+b.h)/ih);}
     const tex=mesh.material.map;tex.repeat.set(b.w/iw,b.h/ih);tex.offset.set(b.x/iw,1-(b.y+b.h)/ih);
     if(options.dynamic)tex.needsUpdate=true;
@@ -353,7 +403,7 @@ export async function install(read){
     mesh.position.set(x/U,height(x,y)+(options.lift||0),y/U);if(!options.center&&!options.ground)mesh.position.addScaledVector(up,h/2);
     if(mesh.material.emissive){mesh.material.emissiveIntensity=options.flash?1.1:options.hero?.34:.18;mesh.material.emissive.set(options.flash?'#ffffff':options.hero?'#b0c4d4':'#8f9baf');}
     mesh.material.color.set(options.tint||'#ffffff');
-    mesh.visible=true;mesh.userData.frame=frameId;mesh.userData.core={x,y};
+    mesh.visible=true;mesh.userData.frame=frameId;mesh.userData.core={x,y};mesh.userData.walkOverlay=!!overlay;
     if(options.shadow!==false){
       let shadow=shadows.get(key);if(!shadow){shadow=new THREE.Mesh(unitPlane,shadowMaterial);shadow.rotation.x=-Math.PI/2;scene.add(shadow);shadows.set(key,shadow);}
       shadow.position.set(x/U,height(x,y)+.015,y/U);shadow.scale.set(Math.min(w*.7,.75),Math.min(w*.42,.45),1);shadow.visible=true;shadow.userData.frame=frameId;
@@ -433,12 +483,12 @@ export async function install(read){
       const cell=atlas.meta?.cell||256,col=e._mob8Col||0,row=e._mob8Row||0,sz=Math.max(e.r*7,80);
       const remaster=remasters.get('enemy-'+dir.replaceAll('-','_'));
       let image=remaster?.image||entry.img,frame={x:col*cell*(remaster?2:1),y:row*cell*(remaster?2:1),w:cell*(remaster?2:1),h:cell*(remaster?2:1)},normalImage=remaster?.normal,frameScale=remaster?2:1;
-      const idx=row*state.mobCols+col,walk=atlas.walkDirs?.[dir];
+      const idx=row*state.mobCols+col,walk=atlas.walkDirs?.[dir];let overlay=null;
       if(e._isMoving&&walk?.ready&&atlas.walkMeta?._idxSet?.has(idx)){
         const n=atlas.walkMeta.framesPerMob||4,f=Math.floor((e._walkDist||0)/128)%n;
-        image=walk.img;frame={x:(col*n+f)*cell,y:row*cell,w:cell,h:cell};normalImage=remasters.get('enemy-walk-'+dir.replaceAll('-','_'))?.normal;frameScale=1;
+        overlay={image:walk.img,frame:{x:(col*n+f)*cell,y:row*cell,w:cell,h:cell},normalImage:remasters.get('enemy-walk-'+dir.replaceAll('-','_'))?.normal};
       }
-      sprite(e,image,frame,e.x,e.y,sz/cell*1.8/frameScale,{normalImage,flash:e._hitFlash>0});
+      sprite(e,image,frame,e.x,e.y,sz/cell*1.8/frameScale,{normalImage,overlay,flash:e._hitFlash>0});
     }
     for(const p of [...state.projs,...state.pProjs]){
       if(p.alive===false||p.life<=0)continue;
@@ -490,9 +540,9 @@ export async function install(read){
   }
   function project(x,y){const p=new THREE.Vector3(x/U,height(x,y),y/U).project(camera);return {x:(p.x*.5+.5)*current.width,y:(-.5*p.y+.5)*current.height};}
   function snapshot(){return {ready,bridgeScene,frame:frameId,camera:{angle:52,yaw,zoom:bridgeScene?.47:.72},
-    environment:{instances:environment.children.reduce((n,m)=>n+(m.count||0),0),meshes:groups.size,materials:materials.size},renderer:{memory:{...renderer.info.memory},programs:renderer.info.programs.length,drawCalls:lastDrawCalls,cpuDispatchMs:lastRenderMs},
+    environment:{instances:environment.children.reduce((n,m)=>n+(m.count||1),0),meshes:environment.children.length,materials:new Set(environment.children.map(m=>m.material)).size},renderer:{memory:{...renderer.info.memory},programs:renderer.info.programs.length,drawCalls:lastDrawCalls,cpuDispatchMs:lastRenderMs},
     player:current?{core:{x:current.P.x,y:current.P.y},screen:project(current.P.x,current.P.y),height:height(current.P.x,current.P.y)}:null,
-    activeSprites:[...sprites.values()].filter(m=>m.visible).length};}
+    activeSprites:[...sprites.values()].filter(m=>m.visible).length,walkComposites:[...sprites.values()].filter(m=>m.visible&&m.userData.walkOverlay).length};}
   function safeRender(){
     if(!ready)return false;
     try{return render();}catch(error){

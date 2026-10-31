@@ -1,5 +1,5 @@
 import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
-import { shoreline } from './banks.mjs';
+import { shoreline } from './banks.mjs?v=20261031-main2';
 
 // The shoreline field follows the visual banks; Core collision stays separate.
 // It is visual data; it never writes a collision tile or changes a water hit test.
@@ -77,7 +77,7 @@ export function addForestDepth(scene,prototypes){
     const tree=prototypes.get(id);if(!tree)continue;
     const material=new THREE.MeshStandardMaterial({map:tree.material.map,normalMap:tree.material.normalMap,aoMap:tree.material.aoMap,
       aoMapIntensity:.3,normalScale:new THREE.Vector2(.4,.4),color:'#d1c8b7',roughness:.94,metalness:0});
-    const positions=index?[[30,32,.38],[61,29,.34],[52,18,.30]]:[[20,38,.42],[50,35,.40],[35,20,.32]];
+    const positions=index?[[33,44,.38],[53,41,.34],[52,28,.30]]:[[27,46,.42],[47,44,.40],[34,31,.32]];
     const mesh=new THREE.InstancedMesh(tree.geometry,material,positions.length),dummy=new THREE.Object3D(),pos=new THREE.Vector3(),rotation=new THREE.Quaternion(),scale=new THREE.Vector3();
     tree.matrix.decompose(pos,rotation,scale);
     positions.forEach(([x,z,s],i)=>{dummy.position.set(x,.35,z);dummy.quaternion.copy(rotation);dummy.rotateY((i+index)*.7);dummy.scale.copy(scale).multiplyScalar(s);dummy.updateMatrix();mesh.setMatrixAt(i,dummy.matrix);});
@@ -85,7 +85,7 @@ export function addForestDepth(scene,prototypes){
   }
   const shafts=new THREE.ShaderMaterial({transparent:true,depthWrite:false,side:THREE.DoubleSide,blending:THREE.AdditiveBlending,
     uniforms:{time:{value:0}},vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
-    fragmentShader:`varying vec2 vUv;uniform float time;void main(){float beam=pow(sin(vUv.x*3.14159),2.)*pow(sin(vUv.y*3.14159),.8);float broken=.72+.18*sin(vUv.y*19.+vUv.x*9.+time*.08);gl_FragColor=vec4(.32,.43,.48,beam*broken*.075);}`});
+    fragmentShader:`varying vec2 vUv;uniform float time;void main(){float beam=pow(sin(vUv.x*3.14159),2.)*pow(sin(vUv.y*3.14159),.8);float broken=.72+.18*sin(vUv.y*19.+vUv.x*9.+time*.08);gl_FragColor=vec4(.32,.43,.48,beam*broken*.14);}`});
   for(const [x,z,w,h]of [[31,46,2.4,18],[36,39,1.3,21],[48,35,3.3,24]]){
     const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),shafts);m.position.set(x,8,z);m.rotation.set(-.22,-.15,-.24);group.add(m);
   }

@@ -12,7 +12,7 @@ const main=html=>html.slice(html.indexOf('<script>\n// ┌')+9).split('</script>
 
 test('all native combat/save/AI declarations retain their exact baseline source',()=>{
   const git=process.platform==='win32'?'C:/Program Files/Git/cmd/git.exe':'git';
-  const baseline=execFileSync(git,['show','3f19b0bd1884ce22eaeab3c6f70e74a145762530:game.html'],{encoding:'utf8',maxBuffer:12e6,windowsHide:true});
+  const baseline=execFileSync(git,['show','7dc96cd4360c382f3fa1b5b58da9aafd72b523f6:game.html'],{encoding:'utf8',maxBuffer:12e6,windowsHide:true});
   const functions=s=>new Map(acorn.parse(s,{ecmaVersion:'latest'}).body.filter(n=>n.type==='FunctionDeclaration').map(n=>[n.id.name,s.slice(n.start,n.end)]));
   const before=functions(main(baseline)),after=functions(main(game));
   const adapterHooks=new Set(['genFromTemplate','initStage','_syncDruidFinaleMouse','loop']);

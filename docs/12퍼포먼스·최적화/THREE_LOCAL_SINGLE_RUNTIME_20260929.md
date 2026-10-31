@@ -4,7 +4,7 @@
 
 `codex/web3d-trial-20261031`의 `game.html?r3d=1`만 기존과 같은 정규화 URL의 r160 코어를 사용한다. 별도 버전의 Three 엔진을 추가하지 않는다. EffectComposer/RenderPass/SSAO/Bloom/Output 및 관련 shader/math의 공식 r160 모듈13개를 추가했으며, 정확한 URL·바이트·SHA는 `web3d/vendor-provenance.json`에 있다. 기본 OFF 경로와 `game-easy-test.html`의 기존 계약은 유지한다. 추가 WebGLRenderer·1920×1080 후처리는 이 시험의 비용이며, 라이브러리 단일화가 컨텍스트나 렌더 비용을 제거했다는 뜻이 아니다.
 
-상세 좌표·색 공간·장면·실측·실패 폴백은 [웹3D 목교 SSOT](../4.1맵디자인+설정/WEB3D_TRIAL_20261031.md). 본편1단계는 3D 성공 시 native 월드 draw를 생략하고 효과 레이어만 재사용한다. 플래그 비활성/실패/다른 stage는 원본 draw다. 브리프의 회귀 후 main 반영과 기본값 전환·패키징·배포를 구분한다. 아래 9월 검증 수치는 당시 경로의 이력이며 현재 성능으로 재사용하지 않는다.
+상세 좌표·색 공간·장면·실측·실패 폴백은 [웹3D 목교 SSOT](../4.1맵디자인+설정/WEB3D_TRIAL_20261031.md). 본편1단계는 3D 성공 시 native 월드 draw를 생략하고 효과 레이어만 재사용한다. 플래그 비활성/실패/다른 stage는 원본 draw다. r160 Texture.clone의 공유 Source dirty/대형 atlas 재전송은 독립 UV view로 대체하고, native 부분 보행은 2x 몸체 위에 한 GPU pass로 합성한다. Web3D 모듈만 `v=20261031-main2`, Three 코어는 단일 정규화 URL 유지. 브리프의 회귀 후 main 반영과 기본값 전환·패키징·배포를 구분한다. 아래 9월 검증 수치는 당시 경로의 이력이며 현재 성능으로 재사용하지 않는다.
 
 이 문서는 game.html과 game-easy-test.html의 Three.js 엔진 로딩·색상·배포 계약 SSOT다. 이전 안개 소실 보호/보스 GLB 수명 정리 단계의 r128+r160 중복 경고 기록은 당시 결과이며, 현행 계약은 아래 로컬 r160 단일 엔진으로 대체한다. ERR_INSUFFICIENT_RESOURCES 전체의 유일 원인을 증명하거나 장시간 메모리 누수가 모두 해소됐다고 판정한 작업은 아니다.
 

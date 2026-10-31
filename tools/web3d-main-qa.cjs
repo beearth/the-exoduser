@@ -32,9 +32,9 @@ async function ready(page,three=false){
 async function sample(page,label){
   return page.evaluate(async label=>{
     const start=performance.now(),startFrame=window._Web3DTrial?.snapshot().frame||0;
-    const times=[],cpu=[],fps=[],actors=[],bullets=[];let last=start;
+    const times=[],cpu=[],fps=[],actors=[],bullets=[],walks=[];let last=start;
     await new Promise(resolve=>{function tick(now){times.push(now-last);last=now;fps.push(_fpsCur);
-      if(window._Web3DTrial)cpu.push(window._Web3DTrial.snapshot().renderer.cpuDispatchMs);
+      if(window._Web3DTrial){const s=window._Web3DTrial.snapshot();cpu.push(s.renderer.cpuDispatchMs);walks.push(s.walkComposites||0);}
       actors.push(ens.filter(e=>e?.alive&&e.hp>0).length);bullets.push(projs.length+pProjs.length);
       if(now-start<10000)requestAnimationFrame(tick);else resolve();}requestAnimationFrame(tick);});
     const elapsed=last-start,sorted=times.slice().sort((a,b)=>a-b);
@@ -43,7 +43,7 @@ async function sample(page,label){
       p95FrameMs:sorted[Math.floor(sorted.length*.95)],over33ms:times.filter(x=>x>33.34).length,
       cpuDispatchMeanMs:cpu.length?cpu.reduce((a,b)=>a+b,0)/cpu.length:null,
       actors:ens.filter(e=>e?.alive&&e.hp>0).length,projectiles:projs.length+pProjs.length,
-      actorRange:[Math.min(...actors),Math.max(...actors)],projectileRange:[Math.min(...bullets),Math.max(...bullets)],hp:P.hp,trial:window._Web3DTrial?.snapshot()};
+      actorRange:[Math.min(...actors),Math.max(...actors)],projectileRange:[Math.min(...bullets),Math.max(...bullets)],walkCompositeRange:walks.length?[Math.min(...walks),Math.max(...walks)]:null,fpsCap:OPT.fpsCap,hp:P.hp,trial:window._Web3DTrial?.snapshot()};
   },label);
 }
 async function nativeFingerprint(page){
@@ -66,7 +66,7 @@ async function nativeFingerprint(page){
   const browser=persistent.browser();
   await persistent.route('**/*',route=>route.continue()); // Disable stale disk/module cache during source-coupled QA.
   const receipt={browser:browser.version(),errors:[],consoleErrors:[],httpFailures:[],samples:[],source:{}};
-  for(const file of ['game.html','web3d/renderer.mjs','web3d/bridge-map.js','web3d/presentation.mjs','web3d/native-ground-effects.js','web3d/effects.mjs','web3d/river.mjs','web3d/remaster.mjs','web3d/banks.mjs','web3d/texture-views.mjs','assets/web3d/sprites/intake.json','assets/map/ch1/ground_dark_soil.png','assets/web3d/forest-assembly.glb']){
+  for(const file of ['game.html','web3d/renderer.mjs','web3d/bridge-map.js','web3d/presentation.mjs','web3d/native-ground-effects.js','web3d/effects.mjs','web3d/river.mjs','web3d/remaster.mjs','web3d/banks.mjs','web3d/texture-views.mjs','web3d/wood-deck.mjs','web3d/walk-composite.mjs','assets/web3d/sprites/intake.json','assets/map/ch1/ground_dark_soil.png','assets/web3d/forest-assembly.glb']){
     receipt.source[file]=crypto.createHash('sha256').update(await fs.readFile(path.join(root,file))).digest('hex');
   }
   const attach=p=>{p.on('pageerror',e=>receipt.errors.push(e.message));p.on('console',m=>{if(m.type()==='error')receipt.consoleErrors.push(m.text());});p.on('response',r=>{if(r.status()>=400)receipt.httpFailures.push({url:r.url(),status:r.status()});});};
@@ -177,7 +177,7 @@ async function nativeFingerprint(page){
     const cdp=await browser.newBrowserCDPSession();const gpu=await cdp.send('SystemInfo.getInfo');receipt.gpu=gpu.gpu.devices;
 
     await status('기존 웹 OFF 원본 대조');
-    const before=await fs.readFile(store+'/source/game.before.html','utf8');
+    const before=await fs.readFile(store+'/source/game.main-7dc96cd43.html','utf8');
     await page.route('**/game.html?**',route=>route.fulfill({status:200,contentType:'text/html',body:before}));
     await page.goto(url+'&baseline=1',{waitUntil:'domcontentloaded',timeout:60000});await ready(page);
     const baseline=await nativeFingerprint(page);

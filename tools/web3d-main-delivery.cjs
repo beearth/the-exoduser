@@ -38,5 +38,5 @@ async function video(){
  await fs.writeFile(out+'/index.html',html);
  const names=['comparison-exploration-1920.png','comparison-combat-1920.png','crop-1x-bridge.png','crop-1x-water.png','crop-1x-forest.png','exploration-1920x1080.png','combat-1920x1080.png','dense-fixture-1920x1080.png','web3d-main-10s.webm'];const files=[];
  for(const name of names){try{const b=await fs.readFile(out+'/'+name);files.push({name,bytes:b.length,sha256:crypto.createHash('sha256').update(b).digest('hex')});}catch(e){if(e.code!=='ENOENT')throw e;}}
- await fs.writeFile(out+'/artifact-manifest.json',JSON.stringify({comparison,timing,files},null,2));console.log('비교판·1x크롭·실제10초 영상·디코드 검증 완료');
+ await fs.writeFile(out+'/artifact-manifest.json',JSON.stringify({comparison,timing,files},null,2));console.log(timing?'비교판·1x크롭·실제10초 영상·디코드 검증 완료':'비교판·1x크롭 생성 완료(영상 제외)');
 })().catch(e=>{console.error(e.stack);process.exitCode=1;});

@@ -66007,8 +66007,8 @@ if(window._FDGDruidQaStorage?.active&&new URLSearchParams(location.search).get('
 
 <script type="module">
 if(new URLSearchParams(location.search).get('r3d')==='1'){
-  const {renderFrame,advancePresentation}=await import('./web3d/presentation.mjs');
-  await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='./web3d/native-ground-effects.js?v=20261031-main1';script.onload=resolve;script.onerror=reject;document.body.append(script);});
+  const {renderFrame,advancePresentation}=await import('./web3d/presentation.mjs?v=20261031-main2');
+  await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='./web3d/native-ground-effects.js?v=20261031-main2';script.onload=resolve;script.onerror=reject;document.body.append(script);});
   function prepare(){
     if(!window._ossGrantChk&&P&&INV.equipped){window._ossGrantChk=1;_grantOssuaryIfNeeded();}
   const _playerAtlasNoWarmupNeeded=_atlasP_img&&typeof _atlasP_img.getContext==='function';
@@ -66124,7 +66124,7 @@ if(new URLSearchParams(location.search).get('r3d')==='1'){
       }}
       return nativeProjectile();
     }});
-  import('./web3d/renderer.mjs?v=20261031-main1').then(m=>m.install(read)).then(api=>{
+  import('./web3d/renderer.mjs?v=20261031-main2').then(m=>m.install(read)).then(api=>{
     window._Web3DFrame=()=>renderFrame(api,draw,prepare);
   }).catch(error=>{
     console.error('[WEB3D] renderer unavailable; native renderer retained',error);
