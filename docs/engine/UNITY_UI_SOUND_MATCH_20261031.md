@@ -31,10 +31,10 @@ sample의 웹 전역 playbackRate .92~1.08 변동을 UI sample에 적용한다. 
 | 수정 전 재현 | tests/RED.log: 생산 패널 본문 6검사 중 열기/닫기 2실패 |
 | 생산본문 독립 회귀 | tests/matrix.json: 1206조합/2412검사/0실패. 선택·Running·입력 fence 등 기존 상태 일치. Unity 장치/패널 대체이므로 실제Player 증거와 구분 |
 | 실제 hover/button C# | hover 10검사 + button 11검사, 실패0. 진입100ms/종료80ms/빠른 재진입·포커스·60/80ms gate·고유음 중복·Layout/Repaint·로비 무음. 장치 대체 범위 |
-| 기존 ui_tab 독립 도구 | 새 UiPanelState/UiPanelChanged 보조본문·단조시간·추가 클립·피치 범위를 반영. 전체 NativeFeedbackAudio/NativeAudioMixer 실행 1176조합/2370검사/0실패. tab만 계수해 신규 open/close와 분리. legacy-tool-green/실제본문_행동회귀.json |
+| 기존 ui_tab 독립 도구 | 새 UiPanelState/UiPanelChanged 보조본문·단조시간·추가 클립·피치 범위를 반영. 전체 NativeFeedbackAudio/NativeAudioMixer 실행 1176조합/2370검사/0실패. tab만 계수해 신규 open/close와 분리. synth-zero-green/실제본문_행동회귀.json |
 | 독립 C# | Core/Runtime 전체 현재 C# 컴파일 오류0. 기존 경고 유지. 공식 Unity 빌드와 구분 |
-| 공식 빌드·M1 | 순번 대기, 미검증. 후보 원격 복구점 5093a76cecd076cf13b6754aab37ac2c766d571b |
-| 출력 버퍼·30초 영상 | Tools/UiSoundCapture.cs의 명시적 --unity-ui-sound-capture, sandbox/output 필수. 검수 실행 대기 |
+| 공식 빌드·M1 | 후보 59453c1ef의 공식 빌드 b5f3eff0: UPM IPC 30초 실패/exit1, compile/exec 0ms. 컴파일 진입 전 실패이며 M1 미실행 |
+| 출력 버퍼·30초 영상 | Tools/UiSoundCapture.cs의 명시적 --unity-ui-sound-capture, sandbox/output 필수. 실제 Player·출력버퍼·30초 영상 미생성 |
 | 공통 병합·Desktop | 미반영. 영수증 이후 지정 통합 담당이 정상 병합하고 -remodel-scenes 1로 갱신 |
 
 AudioRenderer.Start가 성공하기 전에는 Listener를 열지 않는다. 녹음 모드 동안 장치는 silence를 출력하고 실제 mixed PCM은 AudioRenderer.Render로 WAV에 보존한다. 종료/예외 시 Listener volume0/pause부터 적용한 뒤 녹음을 종료한다. 근거: [Unity AudioRenderer.Start](https://docs.unity.com/en-us/engine/6000.5/script-reference/unityengine/audiorenderer/start). 기존 --unity-mute, 공식 실행기, 숨은 Desktop, 세이브 격리/사용자세이브 전후 대조를 유지한다. 영상은 생산 콜백을 스크립트로 실행하는 범위이며 자연플레이/사용자 청음 PASS로 보고하지 않는다.
@@ -44,3 +44,14 @@ AudioRenderer.Start가 성공하기 전에는 Listener를 열지 않는다. 녹�
 빠른 입장 hover 재진입은 웹과 같이 이전 소스를 80ms로 내린 뒤 100ms에 정리하고 새 소스를 첫 샘플부터 100ms로 올린다. ENTER/hover PCM은 첫 클릭 전에 사전 로드한다. 영상에서 전투 Tick은 정지시키되 실제 UpdateViews와 카메라 원래 cullingMask를 적용해 UI 뒤 월드도 실제로 렌더한다.
 
 합성음 0% 회귀: 기존 소스1/버스−80dB의 잔여값 가능성을 실제 어댑터로 RED4실패 재현 후, source도0으로 설정해 2370검사/0실패. 이미 재생 중인 합성음의 60/100→0 변경도 즉시 source0이다. 실제 30초 캡처의 28초 지점에서 같은 Source 무음·출력버퍼를 별도 검사한다. 0보다 큰 SFX%에서 단일 bus gain 동작은 유지한다.
+
+
+## 2026-10-31 정식 실행 차단 — NOT_READY
+
+- 공식 `exo-unity.ps1` 빌드 `b5f3eff0`(07:21 UTC)은 필수 영상 복구 뒤 Unity 6000.6.7f1을 시작했으나 `Upm-74280` IPC 연결이 30초에 실패해 exit1로 종료했다. 컴파일·실행 단계는 0ms이며 오류 목록이 비었다는 사실을 컴파일 성공으로 세지 않는다. 완료 JSON의 USER_SAVE 변경0·Editor 종료 확인을 보존했다.
+- 프로젝트/Packages 실체는 G: NTFS, Library는 아직 없고 UPM 기본 로그는 이번 실행보다 오래된 기록뿐이었다. 제한된 Node 자식 환경에 APPDATA/ALLUSERSPROFILE/PROGRAMDATA/COMSPEC가 없음을 관측했지만 UPM 직접 원인으로 확정하지 않았다. 공식 UPM의 전역 설정 경로는 [Unity Configuration files](https://docs.unity.com/en-us/engine/6000.6/manual/packages-list/upm-config/files)를 참고한다. 전역/시스템 환경·캐시·보안·권한 변경0.
+- 이어 같은 Windows PowerShell 경로의 읽기 전용 기본 폴더 진단 자체가 `spawn EPERM`으로 2회 차단됐다. 실행 경로 변경·상승·직접 UPM 실행·추가 Unity 재시도로 우회하지 않았다. 원인 수정 뒤 허용된 한 번의 정식 재검수는 아직 사용하지 않았다.
+- 실패 뒤 현재 후보의 Unity 입력3279파일/1733282317bytes를 다시 SHA256 전수 대조해 차이0·누락0을 확인했다. `post-failed-build-input-check.json`에 기록했고 실제 원본 복사본도 I:에 유지한다. 공용 잠금 없음과 자기 실행기 종료 영수증을 확인한 뒤 자기 예약만 byte/SHA 보존 후 반환했다(`reservation-return.json`).
+- 남은 작업: 실행 권한/정상 자식 환경 확인 → 같은 후보 공식 빌드 → 같은 EXE 무창 M1 → 실제 ui_tab 회귀/30초 출력 녹음/1x 화면 검수 → 완료 MERGE_QUEUE → 지정 통합 담당의 비강제 unity/main 반영 → `-remodel-scenes 1` Desktop 빌드 갱신. 현재 Player·청음·영상·공통·Desktop PASS는 없다.
+
+근거: `I:/EXODUSER-Storage/unity-jobs/codex-ui-sound/done/b5f3eff0.json`, `logs/b5f3eff0.log`, `I:/EXODUSER-Storage/demo-art/ui-sound/final-exit.json`, `post-failed-build-input-check.json`, `reservation-return.json`. 코드 원격 복구점은 `59453c1ef30d237878f4f9c478225f98be72f450`이며 이 보충은 검수 상태 문서만 변경한다.
