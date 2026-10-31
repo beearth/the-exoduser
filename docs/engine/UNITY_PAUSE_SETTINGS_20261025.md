@@ -8,6 +8,7 @@
 | 인벤토리·스킬·능력치·대장간 닫기 | `gameFocused && 각 패널의 WasRunning && !menu && !PlayerDown`. 기존 실행 상태·포커스·사망 조건을 함께 보존한다 |
 | 대화·안내 뒤 입력 해제 | 키·마우스 해제 시 진입 fence만 해제한다. 메뉴·인벤토리·스킬·능력치·대장간이 열려 있거나 최종 사망이면 `Running=false`를 유지한다 |
 | 회귀 근거 | `unity/Tools/pause-navigation/host-resume.cjs`: 제품 함수 원문과 실제 Core 전체 소스의 36검사, 수정 전 13실패 → 수정 후 0. 화면/장치는 대역이며 실제 Player 증거와 구분한다 |
+| 실제 입력 후속 | `--unity-pause-input-check`: 1600×900 자기 숨은 창 WM 클릭, Input System `Key.Enter`·ESC·TAB, 대화·안내 네 판, 부활 대기 복귀 상태/카운트 기록. 자연 손조작·OS 창 전환과 구분하며 현재 실제 Player 실행은 대기 중 |
 
 현행 Mac 제품 소스는 게임/화면/사운드/조작 4탭에 지원된 FPS·fullscreen·SFX·BGM·키 목록을 연결한다. Game 탭의 전체 화면 버튼은 화면 탭과 동일한 실제 host 상태·설정 v2 저장을 사용한다. 이 문서 아래의 3탭/조작 안내·세션 전용 설명은 당시 구현 이력이다. 다른 게임 옵션·패드 재지정 미지원과 실제 검증 범위는 [A15 최소 연결](UNITY_MAC_A15_4TAB_20261027.md)을 따른다.
 
