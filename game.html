@@ -9287,7 +9287,7 @@ let _scanCvs=null,_scanW=0,_scanH=0;
 let _bossCine={active:false,t:0,maxT:180,name:'',phase:0,lastBossId:null};
 // ─── [S03c] HW_TIER — 하드웨어 티어 감지 ───
 let _hwTier='?',_hwGPU='unknown',_benchDone=false,_benchFrames=[],_benchStart=0;
-globalThis.FullscreenArt?.setMotionPolicy?.(()=>_hwTier!=='C');
+globalThis.FullscreenArt?.setMotionPolicy?.(()=>_hwTier!=='C'&&OPT.atmos!==0);
 function detectTier(){
   // 1) GPU renderer string
   _hwGPU='unknown';

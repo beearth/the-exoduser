@@ -24,3 +24,13 @@ test('narration shading does not leave vertical brightness seams at the safe-are
  const calls=frame(3840);
  assert.ok(calls.some(c=>c[0]==='fillRect'&&c[1]==='rgba(0,0,0,0.35)'&&c[4]===3840&&c[5]===1080));
 });
+
+test('the actual game consumer stops added motion when a fast GPU uses atmosphere-off settings',()=>{
+ let policy;
+ const line=source.split(/\r?\n/).find(x=>x.startsWith('globalThis.FullscreenArt?.setMotionPolicy'));
+ const context={FullscreenArt:{setMotionPolicy(fn){policy=fn;}},_hwTier:'S',OPT:{atmos:0}};
+ vm.runInNewContext(line,context);
+ assert.equal(policy(),false);
+ context.OPT.atmos=2;assert.equal(policy(),true);
+ context._hwTier='C';assert.equal(policy(),false);
+});

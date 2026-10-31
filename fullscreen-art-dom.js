@@ -39,4 +39,12 @@
   }
   document.querySelectorAll('.cin-img').forEach(host => art.atmosphere(host));
   ['stageTransition', 'chapterGate', 'demoEnd'].forEach(id => art.atmosphere(document.getElementById(id)));
+  const entryArt = document.getElementById('loadingBodyArt');
+  if (entryArt) {
+    const blockers = ['lobby', 'cinScene', 'splashOverlay'].map(id => document.getElementById(id)).filter(Boolean);
+    art.atmosphere(entryArt, { isActive: () => !blockers.some(el =>
+      el.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true })) });
+    const observer = new MutationObserver(() => art.refreshAtmosphere());
+    blockers.forEach(el => observer.observe(el, { attributes: true, attributeFilter: ['style', 'class'] }));
+  }
 })();

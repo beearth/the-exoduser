@@ -7,11 +7,11 @@ const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const require=createRequire(process.env.EXODUSER_TOOLS_PACKAGE||'G:/exoduser/package.json');
 const {chromium}=require('playwright');
 const mode=process.argv[2]||'smoke',suite=process.argv[3]||'index';
-const recording=mode.startsWith('record'),fadeOnly=mode==='record-fade';
+const recording=mode.startsWith('record'),fadeOnly=mode==='record-fade',entryOnly=mode==='record-entry',narrationOnly=mode==='record-narration';
 const output=process.env.WIDE_QA_OUTPUT||'I:/EXODUSER-Storage/wide-animation/20261031';
 const base=process.env.WIDE_QA_URL||'http://127.0.0.1:3458';
 const dir=path.join(output,mode,suite);fs.mkdirSync(dir,{recursive:true});
-const baseline='63b31bb3f1cff6597e91115989aa45f940234e85';
+const baseline=process.argv[4]||'207b35600';
 const sizes=fadeOnly?[[1920,1080]]:recording?[[1920,1080],[2560,1080],[3840,1080]]:[[3840,1080]];
 const receipt={mode,suite,root,baseline,screens:[],errors:[],missing:[],failures:[],forced:'화면 유지/컷신 시간 fixture, headless·무음·격리 서버/브라우저 저장. 자연 플레이 증거 아님.'};
 process.env.TEMP=output;process.env.TMP=output;
@@ -58,7 +58,9 @@ try{
   if(suite==='index'){
    await page.goto(base+'/index.html?test=1&lobby=1',{waitUntil:'domcontentloaded'});
    await page.waitForFunction(()=>typeof openVisualSelect==='function');
-   if(fadeOnly){
+   if(entryOnly){
+    await snap('entry');
+   }else if(fadeOnly){
     await page.evaluate(()=>{document.getElementById('splashOverlay').style.display='none';document.getElementById('mainWrap').style.display='none';document.getElementById('lobby').style.display='none';document.getElementById('cinScene').style.display='block';document.getElementById('cinClickPrompt').style.display='none';document.getElementById('cinVideo').style.display='none';const el=document.getElementById('cinImg1');el.classList.add('show');const im=el.querySelector('img');FullscreenArt.picture(im,im.dataset.src);im.style.animation='cinZoomSlow 14s ease-out forwards';});
     await snap('world-legacy');
    }else{
@@ -83,16 +85,18 @@ try{
   }else{
    await page.goto(base+'/game.html?forgelab=1&tutorial=0&resourceTutorial=0',{waitUntil:'domcontentloaded'});
    await page.waitForFunction(()=>typeof P!=='undefined'&&P?.lv===1000&&!_bootLoadActive&&G.on,null,{timeout:180000});
-   await page.evaluate(()=>{window._btFramePause=true;G.on=false;G.paused=true;_benchDone=true;_hwTier='A';FullscreenArt.setMotionPolicy?.(()=>_hwTier!=='C');_cutsceneState=null;_cutC.style.display='none';for(const id of ['stageTransition','introKeys','introDiff','tutorial','death','demoEnd','stageClear']){const e=document.getElementById(id);if(e){e.style.display='none';e.style.opacity='0';}}});
-   for(const seq of ['INTRO','PRO']){
-    await page.evaluate(seq=>{_cutSeq=seq;const lns=_cutsceneGetLines();_cutLineIdx=lns.findIndex(x=>x.img);_cutsceneIdx=_cutLineIdx;_cutsceneState='INTRO_CUTSCENE';_cutLineStartMs=performance.now();const line=lns[_cutLineIdx];window.__qaOldDur=line.dur;line.dur=30000;_getCutsceneImg(line.img);},seq);
+   await page.evaluate(()=>{window._btFramePause=true;G.on=false;G.paused=true;_benchDone=true;_hwTier='A';OPT.atmos=2;FullscreenArt.setMotionPolicy?.(()=>_hwTier!=='C'&&OPT.atmos!==0);_cutsceneState=null;_cutC.style.display='none';for(const id of ['stageTransition','introKeys','introDiff','tutorial','death','demoEnd','stageClear']){const e=document.getElementById(id);if(e){e.style.display='none';e.style.opacity='0';}}});
+   for(const seq of (narrationOnly?['PRO']:['INTRO','PRO'])){
+    await page.evaluate(seq=>{_cutSeq=seq;const lns=_cutsceneGetLines();const narr=seq==='PRO'?lns.findIndex(x=>x.img&&x.narr&&x.text&&x.cam?.zs!==x.cam?.ze):-1;_cutLineIdx=narr>=0?narr:lns.findIndex(x=>x.img);_cutsceneIdx=_cutLineIdx;_cutsceneState='INTRO_CUTSCENE';_cutLineStartMs=performance.now();const line=lns[_cutLineIdx];window.__qaOldDur=line.dur;line.dur=30000;_getCutsceneImg(line.img);},seq);
     await page.waitForTimeout(1300);await snap('cutscene-'+seq.toLowerCase());
     await page.evaluate(()=>{_cutsceneGetLines()[_cutLineIdx].dur=window.__qaOldDur;_cutsceneState=null;_cutC.style.display='none';});
    }
+   if(!narrationOnly){
    await page.evaluate(()=>{const e=document.getElementById('death');e.style.display='flex';e.classList.add('on');e.style.opacity='1';});await snap('death');
    await page.evaluate(()=>{document.getElementById('death').style.display='none';const e=document.getElementById('stageClear');e.style.display='block';e.style.opacity='1';});await snap('clear');
    await page.evaluate(()=>{document.getElementById('stageClear').style.display='none';const e=document.getElementById('demoEnd');e.style.display='flex';e.style.opacity='1';});await snap('demo-end');
    await page.evaluate(()=>{document.getElementById('demoEnd').style.display='none';showBootLoading('에셋 로딩 중...');const e=document.getElementById('stageTransition');e.style.display='flex';e.style.opacity='1';e.style.zIndex='1000000';LoadingArt.set(document.getElementById('stRndImg'),'img/lording/1.png');document.getElementById('stLoadBar').style.width='65%';});await snap('loading');
+   }
   }
   const segments=receipt.screens.filter(s=>s.width===width);
   await context.close();

@@ -147,3 +147,9 @@ test('a screen that becomes opaque through a CSS transition wakes its stopped at
   listeners.transitionend();
   assert.equal(callbacks.length, 1);
 });
+
+test('menus honor the saved atmosphere-off preference without changing the saved settings', () => {
+  const saved = JSON.stringify({ opt: { atmos: 0 }, binds: { custom: 'KeyV' } });
+  const { art } = setup({ localStorage: { getItem(key) { assert.equal(key, 'hellcave_settings');return saved; } } });
+  assert.equal(art.motionAllowed(), false);
+});

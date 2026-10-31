@@ -55713,3 +55713,4 @@ stage=0은 실제200×200 본편으로 정정하고 과거 원화 판은 명시�
 - `fullscreen-art.js`·DOM/CSS가 manifest 중앙 좌표/높이로 원본 영상을 확장판 위에 표시하고 양끝14%를 혼합한다. 기존 로비 입자를 전체 canvas에 초기화하며, 컷신 안개/재·가독성 명암도 전체 폭이다. 추가 효과는20Hz·가로최대960px·톤별256px 캐시, 저사양/동작줄이기/숨김에서 정지한다.
 - 63b31bb3f 기준 신규 동작 검사13개 PASS, 브라우저 계약17/17 PASS, game함수1630개 중 컷신 렌더 외 byte 해시 동일, guard PASS. 전체 테스트 신규 실패0/기존281실패·35skip은 보존한다. 초기 RED3개는 이번 신규 검사였으며 기존 결함을 고친 수치로 세지 않는다.
 - 검수/전후표·최종 원격SHA는 `G:/exoduser/tmp/design-review/20261031_wide_animation/REPORT.md`, 실제 영상/1x·실패 근거는 `I:/EXODUSER-Storage/wide-animation/20261031/`. 최신 승인 타이틀A·게이트 검정 배경·v22b 인트로를 정상 병합해 보존하고 영향 범위를 재검수한다. Steam/Unity 배포0.
+- 후속 연결: 입장/로그인 배경도 전체 폭 분위기를 사용하되 로비·시네마틱·타이틀 뒤에서는 정지한다. 게임은 하드웨어C/OPT.atmos0, 메뉴는 저장 hellcave_settings.opt.atmos0을 존중한다. 새 저장옵션2검사를 포함해 표적27/27·브라우저19/19 PASS, 최종 전체2482검사에서 신규 실패0·기존277실패/35skip. 영상은 시스템Chrome GPU 경로로 정리하며 초기 headless-shell/RED 이력은 보존한다.

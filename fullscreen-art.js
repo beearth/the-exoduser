@@ -4,7 +4,12 @@
   const cache = new Map(), backgrounds = new Map(), pictures = new Map(), videos = new Map();
   const layouts = new Map(), atmospheres = new Map(), fogTextures = new Map();
   const reducedMotion = scope.matchMedia?.('(prefers-reduced-motion: reduce)');
-  let motionPolicy = () => true, atmosphereFrame = 0, lastAtmosphereTime = -Infinity, visibilityDirty = true;
+  function readStoredMotion() {
+    try { return JSON.parse(scope.localStorage?.getItem('hellcave_settings') || 'null')?.opt?.atmos !== 0; }
+    catch (_) { return true; }
+  }
+  let storedMotionAllowed = readStoredMotion(), motionPolicy = () => storedMotionAllowed;
+  let atmosphereFrame = 0, lastAtmosphereTime = -Infinity, visibilityDirty = true;
   const clean = source => String(source || '').split(/[?#]/)[0].replace(/^\.\//, '');
   function select(source, width = scope.innerWidth, height = scope.innerHeight) {
     const entry = scope.EXODUSER_FULLSCREEN_ART?.[clean(source)];
@@ -211,6 +216,11 @@
   reducedMotion?.addEventListener?.('change', wakeAtmosphere);
   scope.document?.addEventListener?.('visibilitychange', wakeAtmosphere);
   if (scope.addEventListener) {
+    scope.addEventListener('storage', event => {
+      if (event.key === 'hellcave_settings' || event.key === null) {
+        storedMotionAllowed = readStoredMotion();wakeAtmosphere();
+      }
+    });
     scope.addEventListener('resize', () => {
       backgrounds.forEach((source, el) => background(el, source));
       pictures.forEach((source, el) => picture(el, source));
