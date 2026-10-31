@@ -83,3 +83,7 @@ $wt = 'E:\exoduser-wt\<내 워크트리>'
 - 시작 조건(유니티 총괄 승인 10-28, 실측 근거는 `I:\EXODUSER-Storage\devtools\dt01\RESULT.md`): 커밋 여유 에디터 Library 있음 12GB / Library 없음 20GB / 플레이어 10GB, 동시 실행 1(잠금). `status` 가 이 값과 현재 여유를 함께 출력한다. 프로세스 종료 정리는 자손 + 생성 시각이 같은 프로세스만 한다(pid 재사용으로 남의 프로세스를 건드리지 않음).
 - 빌드 전 필수 영상: `run -Method PortVerification.Build` 또는 `build -Worktree <wt> -Args '-output,<dir>,-receipt,<file>'`(자동으로 `-buildTarget Win64` 추가) 는 Unity 를 띄우기 전에 `restore-lobby-media.cjs`·`restore-warrior-story.cjs` 를 실행하고, `StreamingAssets\Lobby` 필수 영상 9개(각 1MB 이상, buildloop `smoke-rules.json` 의 `requiredMedia` 가 있으면 그 목록)가 하나라도 없으면 실패한다(종료 코드 6, `필수 영상 누락`).
 - 인자 해석 점검: `-DryRun` 은 잠금·Unity·영상 복원 없이 해석된 method/args 만 출력하고 끝난다. 단위 시험: `powershell -File unity\Tools\devtools\selftest\args-test.ps1` (run·player·build × 쉼표/배열/-ArgsJson/-File 14건). `build` 는 인자를 먼저 쪼갠 뒤 `-buildTarget Win64` 를 붙인다(쉼표 형식 `-Args '-output,X,-receipt,Y'` 지원).
+
+## 2026-10-31 예약과 batch 티켓 우선순위
+
+예약이 있으면 예약 선두 Owner만 batch 티켓 대기를 통과하고, 예약이 없으면 살아 있는 티켓 FIFO를 따른다. 통과 후 기존 Acquire-Slot이 잠금·현재 Unity/Player·메모리·예약을 다시 검사한다. 뒤 예약의 이른 티켓이 앞 예약의 새 batch를 막던 교착을 해소하며, 타인 티켓/예약/프로세스를 삭제하거나 종료하지 않는다. QueueTurn.psm1의 실제 판정 회귀는 selftest/ticket-order-test.ps1 15개다. 사용자 세이브·HALT·무창·미디어·단일 PC 검사 본문은 불변이다.

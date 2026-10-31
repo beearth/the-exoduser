@@ -29,6 +29,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
 $Root      = 'I:\EXODUSER-Storage\unity-jobs'
 $LockPath  = Join-Path $Root '_pc_lock.json'
@@ -599,7 +600,12 @@ function Cmd-Run {
                 if ($tj -and (Test-Alive $tj.pid)) { $first = $t.FullName; break }
                 if ($tj -or $t.LastWriteTimeUtc -lt [DateTime]::UtcNow.AddMinutes(-2)) { Remove-Item -LiteralPath $t.FullName -Force -ErrorAction SilentlyContinue }
             }
-            if ($first -eq $ticket) { break }
+            $reservations = @(Get-Reservations)
+            $frontOwner = ''; if ($reservations.Count -gt 0) { $frontOwner = [string]$reservations[0].owner }
+            if (Test-ExoTicketTurn -FirstTicket $first -Ticket $ticket -Owner $Owner -FrontReservationOwner $frontOwner) {
+                if ($first -ne $ticket) { Say ('예약 선두 우선: ' + $Owner + ' (단일 PC 잠금 재확인)') }
+                break
+            }
             if ($lastMsg -ne $first) { Say ("순번 대기: 앞 티켓 " + (Split-Path $first -Leaf)); $lastMsg = $first }
             Start-Sleep -Seconds 2
         }
