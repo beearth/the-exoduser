@@ -29,7 +29,7 @@ namespace Exoduser.UnityPort
   {
    if(!frontendEntryInputFence)return false;
    Running=false;
-   if(gameFocused&&!ExoInput.AnyKey&&!ExoInput.Mouse(0)&&!ExoInput.Mouse(1)&&!ExoInput.Mouse(2)){frontendEntryInputFence=false;frontendFenceReleasedFrame=Time.frameCount;Running=true;}
+   if(gameFocused&&!ExoInput.AnyKey&&!ExoInput.Mouse(0)&&!ExoInput.Mouse(1)&&!ExoInput.Mouse(2)){frontendEntryInputFence=false;frontendFenceReleasedFrame=Time.frameCount;Running=!menu&&!inventory.Open&&!skills.Open&&!stats.Open&&!forge.Open&&!PlayerDown;}
    return true;
   }
   void DrawStartupWorldHud()

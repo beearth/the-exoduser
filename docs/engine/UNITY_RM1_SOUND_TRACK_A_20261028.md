@@ -203,3 +203,8 @@ BGM 되감김이 사라져 음악이 제대로 깔려서 이 표의 그룹 RMS�
 사용자 선택 r3c 동일byte(3386B/SHA3a693839af04190e6255f3098c92528d95812fa5b4a84e4be1a01a5bf66a1a4b)를 Audio/UI/ui_tab으로 추가했다. NativeFeedbackAudio는 Audio/UI도 로드하며 ui_tab을 UI/2D·우선순위10으로 명시한다. 이미 열린 다른 창으로 실제 전환 확정 후 PlayUiTab이 raw gain.22/pitch1/loopfalse로 즉시1회 재생한다. 최초열기·활성탭·거부·Layout/Repaint0, 기존SFX설정/믹서계약 유지. 전체branch에 중단3D가 있어 오디오 단일diff만 통합 가능하며 순수 NTFS 호스트의 38114e2b 컴파일0오류·d4c880b6 실제 입력/voice74검사 통과·동일새빌드41a87de7 M1 23/23을 확인했다. 사용자청음은 미검증이며 지정통합의 공통/Desktop 반영 대기다. 상세는 UNITY_UI_TAB_AUDIO_20261031.md.
 
 2026-10-31 Mac 후속: 위 마지막 공통 반영 대기는 PC 당시 상태다. 현재 공통 `b9491cf58`에서 선택 sample SHA/제품 오디오 계약을 유지한 Mac 새 ARM64 앱은 지원 Source·버스·설정·전환 46/46, M1 23/23을 통과했다. Mac 무창 Player의 Windows WM 클릭/GUI 캡처는 별도 미지원 2항목이며 영수증 전체는 `partial-unsupported`·exit4다. 청음/물리 마우스는 미검증. 근거는 `UNITY_UI_TAB_AUDIO_20261031.md`와 `UNITY_MAC_A15_M1_FINAL_20261029.md`의 Mac 후속이다.
+
+
+## 2026-10-31 ENTER·UI 웹 일치 후속
+
+[현재 동작·음원·볼륨·검수 계약](UNITY_UI_SOUND_MATCH_20261031.md)을 따른다. 기존 ui_tab 단일 범위의 고정 pitch 1은 웹 전역 .92~1.08로 갱신하며 최초열기/닫기는 별도 open/close 소리를 추가한다. 과거 영수증을 이 확대 단위의 검수로 재사용하지 않는다. 기존 ui_tab 검수 Tools는 탭 이벤트만 세고 30ms gate를 넘긴 별도 동작을 검사한다. 전체 ENTER/버튼/패널/레벨업/획득 검수는 새 출력버퍼·영상 영수증을 따른다.

@@ -42,6 +42,8 @@ r2 source `597c3b9b8d6300a6554abd9543ac08a78bed58bf`의 정식 Win64 빌드 `c1b
 
 명중 잉크는 19375행 `floor((_gameFrame-f0)/3)`으로 4프레임이다. additive는 `playVFXAng`(19328행) 생성 시 `bornGameTime`이 없으므로 54583행 fallback인 `v.t+=_dtSp; if(v.t>=frameTime){v.t=0;v.frame++}`를 사용한다. 이 경로는 남은 시간 버림 및 한 render에서 한 프레임 진행 규칙이다. 고정 60Hz TickCount에 대응하는 이벤트 수명 정보만 전달하며, 가변 render cadence/고FPS 시계 전체 동치로 보고하지 않는다.
 
+2026-10-31 r3의 최신 공통 인수 기준은 `19c6ccec8f7056acdc554b45de72d43a78c12ec6`다. 승인된 일시정지·UI 음원 변경을 전용 후보에 정상 병합했으며 공통 대비 자체 Core 변경은 0이다. 새 입력의 피드백26/0·기검참93/0·스킬13,216/0과 독립 Runtime292소스 C#오류0(경고438)을 `I:/EXODUSER-Storage/demo-art/impact/oracle-common19c/` 및 `runtime-compile-common19c/`에 별도 보존했다. 첫 r3 공식 시작의 CS0246 두 건은33자리 메타 GUID 때문에 새 소스가 무시된 것으로 확인해32자리로 최소 수정했다. 메타20개 형식/중복 검사는 GREEN이지만 실제 Unity 임포트·새 빌드M1·영상은 아직 미검증이다.
+
 ## 검증과 남은 범위
 
 | 검사 | 결과 | 영수증 |

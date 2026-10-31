@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort
   public string StartupStage{get{return startup.Active?startup.Page.ToString():"";}}
   public void SetStartupSfxPercent(int percent){startupSfxGain=Mathf.Clamp(percent,0,100)/100f;}
   void EnsureStartupMedia(){if(startupAudio!=null)return;startupAudio=gameObject.AddComponent<AudioSource>();startupAudio.playOnAwake=false;startupAudio.spatialBlend=0;enterSound=Resources.Load<AudioClip>("Audio/Startup/enter");wakeupSound=Resources.Load<AudioClip>("Audio/Startup/wakeup");}
-  void PlayStartupEnter(){EnsureStartupMedia();startupAudio.Stop();startupAudio.clip=enterSound;startupAudio.volume=1;if(enterSound!=null)startupAudio.PlayOneShot(enterSound,2);}
+  void PlayStartupEnter(){EnsureStartupMedia();startupAudio.Stop();startupAudio.clip=enterSound;startupAudio.outputAudioMixerGroup=EntryUiGroup();startupAudio.volume=1;StopEntryHover();EntryAudioEvents++;Debug.Log("UI_AUDIO enter frame="+Time.frameCount+" time="+Time.realtimeSinceStartupAsDouble+" gain=2 group=FrontendUI/UI");if(enterSound!=null)startupAudio.PlayOneShot(enterSound,2);}
   bool LegacyFrontendFixture(){foreach(var arg in Environment.GetCommandLineArgs())if(arg.StartsWith("--unity-",StringComparison.Ordinal)&&arg.EndsWith("-smoke",StringComparison.Ordinal))return true;return false;}
   // E03: set by NativeGame. A character with a combat save continues straight into the run (the story / first practice belong to a new character).
   public System.Func<string,bool> HasCombatSave;
@@ -38,17 +38,18 @@ namespace Exoduser.UnityPort
    if(Flow.Page!=LobbyPage.Lobby||startup.Active||Characters.SelectedIndex<0)return false;
    ActiveCharacterName=Characters.SelectedName;
    if(AutomatedInput||LegacyFrontendFixture()){Flow.SelectPreview();return EnterNativeTest();}
+   if(!loadingAlreadyShown)PlayStartupEnter();
    if(HasCombatSave!=null&&HasCombatSave(ActiveCharacterName)){StartupGameplayPrepared=false;keepStartupStageMusic=false;CancelCharacterStory();Flow.SelectPreview();return EnterNativeTest();}
    if(startupData==null){var source=Resources.Load<TextAsset>("Data/startup_intro");if(source!=null)startupData=JsonUtility.FromJson<StartupIntroData>(source.text);}
    StartupIntroLine[] lines=null;if(startupData!=null&&startupData.languages!=null){foreach(var language in startupData.languages)if(language.code==Language)lines=language.lines;if(lines==null)foreach(var language in startupData.languages)if(language.code=="en")lines=language.lines;}
    if(lines==null||lines.Length==0){characterError=K("입장 이야기 자료를 읽지 못했습니다.","Entry story data could not be loaded.");return false;}
    if(nemesisArt==null){nemesisArt=new Texture2D[21];for(int i=0;i<21;i++)nemesisArt[i]=Resources.Load<Texture2D>("Art/Startup/Nemesis/"+i.ToString("00"));loadingLogo=Resources.Load<Texture2D>("Art/Startup/loading_logo");}
    keepStartupStageMusic=false;StartupGameplayPrepared=false;
-   if(!loadingAlreadyShown)PlayStartupEnter();CloseCharacterPresentationVideo();CancelCharacterStory();movie.Close();StopMusic();
+   CloseCharacterPresentationVideo();CancelCharacterStory();movie.Close();StopMusic();
    startup.Begin(lines,loadingAlreadyShown);startupShown=FrontendEntryPage.Idle;startupLine=-1;guideSkipFocus=false;startupInputFence=true;frontendPad.Reset();nemesisMusicDelay=-1;stageMusicDelay=-1;EnsureStartupMedia();return true;
   }
   void StartStartupMusic(string key,float gain){StopMusic();music.clip=Resources.Load<AudioClip>("Audio/Startup/"+key);MusicGain(gain);if(music.clip!=null)music.Play();}
-  void SetStartupAudioFocus(bool focus){if(startupAudio==null)return;if(!focus){startupVoiceWasPlaying=startupAudio.isPlaying;startupAudio.Pause();}else if(startupVoiceWasPlaying){startupAudio.UnPause();startupVoiceWasPlaying=false;}}
+  void SetStartupAudioFocus(bool focus){if(startupAudio==null)return;if(!focus){StopEntryHover();startupVoiceWasPlaying=startupAudio.isPlaying;startupAudio.Pause();}else if(startupVoiceWasPlaying){startupAudio.UnPause();startupVoiceWasPlaying=false;}}
   public void StopStageMusic(){keepStartupStageMusic=false;StopMusic();}   // RM-1 sound: the in-game BGM bus takes over from the startup stage music
   void CancelStartupEntry(){StartupGameplayPrepared=false;keepStartupStageMusic=false;startup.Cancel();frontendPad.Reset();if(startupAudio!=null)startupAudio.Stop();nemesisMusicDelay=-1;stageMusicDelay=-1;}
   void UpdateStartupEntry(float delta)
