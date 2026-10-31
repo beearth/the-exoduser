@@ -125,7 +125,7 @@
 
 ### 지금 받은 지시 ①→②→③ (미착수. 사용자가 pick_druid2·pick_ui를 제출함, 백업 `_picks_backup/*_20261028_final.json`)
 - 결과 — 드루이드 2차: `druid_hit`=**v3d**, `druid_hit_heavy`=**v3d**, `druid_whip`=**v3a** / `druid_slam`·`druid_spore`=**2회 연속 전부 안 맞음**(메모 없음). UI: `ui_cancel`=**s10b**, `ui_panel_open`=**s10c**, `ui_panel_close`=**s10c**, `ui_fail`=**s10a**, `ui_salvage`=**s10a** / `ui_tab`=전부 안 맞음. (정확한 파일 경로는 `picks_druid2.json`·`picks_ui.json`의 `pick`)
-- **① 웹 반영(SND-10 2단계, game.html, origin/main 기준 sparse worktree)**: UI 5키를 promote해 `sfx/ui/`에 넣고 `_sampleFiles`에 등록. 연결은 `SND10_UI_NEW_SOUNDS_20261028.md` §4 「채택 후 반영 계획」대로. `ui_cancel`=사슬 캔슬 호출(키 이름이 이미 있음, 파일만 등록). `ui_panel_open/close`=`togglePanel`·`openPanel`·`_panelBack`·`closeAllPanels`, 실제로 열고 닫힐 때 1회씩, 이미 열린 패널 전환에서는 open만. `ui_fail`=전사의 `showPH` "MP/ST/HP 부족!"·"악의 부족!"·"쿨다운 중..." + 장착 실패 notify 3곳(요구 레벨·악의 부족·주머니 가득); 실버테일은 기존 음성 그대로이고 음성이 나는 경우 ui_fail 안 냄; 쿨다운 400ms. `ui_salvage`=가방 분해 완료(50633·50663·16572)·대장간 분해 완료(51041)의 기존 `SFX.pickup`/`SFX.forge` 대체(줄 번호는 당시 기준, 함수명으로 다시 찾기). 음량은 기존 UI 버튼음(hover .25·confirm .35) 기준으로 정해 문서 표에 적기. 검증=헤드리스·음소거로 각 키 `playSample` 호출 1회씩 확인(실패하면 재실행 말고 원인 보고). docs=6사운드디자인.md·AD2 인벤토리 해당 행·SND10 문서 채택표. 번역 목록 불필요. DEMO/EA는 같은 곳만 패치(G: 파일 통째 복사 금지). 커밋은 기존 방식. 끝나면 SHA·확인한 것·못 한 것 보고(Unity 빌드 미확인 여부 병기).
+- **① 웹 반영(SND-10 2단계, game.html, origin/main 기준 sparse worktree)**: UI 5키를 promote해 `sfx/ui/`에 넣고 `_sampleFiles`에 등록. 연결은 `SND10_UI_NEW_SOUNDS_20261028.md` §4 「채택 후 반영 계획」대로. `ui_cancel`=사슬 캔슬 호출(키 이름이 이미 있음, 파일만 등록). `ui_panel_open/close`=`togglePanel`·`openPanel`·`_panelBack`·`closeAllPanels`, 실제로 열고 닫힐 때 1회씩, 이미 열린 패널 전환에서는 open만. `ui_fail`=전사의 `showPH` "MP/ST/HP 부족!"·"악의구슬 부족!"·"쿨다운 중..." + 장착 실패 notify 3곳(요구 레벨·악의구슬 부족·주머니 가득); 실버테일은 기존 음성 그대로이고 음성이 나는 경우 ui_fail 안 냄; 쿨다운 400ms. `ui_salvage`=가방 분해 완료(50633·50663·16572)·대장간 분해 완료(51041)의 기존 `SFX.pickup`/`SFX.forge` 대체(줄 번호는 당시 기준, 함수명으로 다시 찾기). 음량은 기존 UI 버튼음(hover .25·confirm .35) 기준으로 정해 문서 표에 적기. 검증=헤드리스·음소거로 각 키 `playSample` 호출 1회씩 확인(실패하면 재실행 말고 원인 보고). docs=6사운드디자인.md·AD2 인벤토리 해당 행·SND10 문서 채택표. 번역 목록 불필요. DEMO/EA는 같은 곳만 패치(G: 파일 통째 복사 금지). 커밋은 기존 방식. 끝나면 SHA·확인한 것·못 한 것 보고(Unity 빌드 미확인 여부 병기).
 - **② 기록**: `DRUID_BOSS_SOUND_REMAKE_20261028.md` §6 아래 "2차 결과" 표. `druid_hit`은 d 1개만 채택 → 변형 순환 안 하고 rate ±6%·연타 감쇠로 감(총괄 결정). a·b는 쓰지 않음.
 - **③ 3차 후보(생성만, 사용자에게 알리지 말 것)**: `druid_slam`·`druid_spore` 각 4후보 + `ui_tab` 4후보. slam·spore: 후보 4개 중 2개는 게임에 이미 있는 소리(`sfx/boss`·`sfx/hit`·`sfx/monster` 등에서 장면에 맞는 웹 원본), 가공은 35Hz HPF→−1dBTP만; 나머지 2개는 ElevenLabs 새 생성, 1·2차와 다른 해석(slam="거대한 나무 둥치가 땅을 내려쳐 땅이 울림", spore="축축한 버섯갓이 터지며 쉭 퍼짐"). 장면 카드에 "웹 기존 소리"/"새로 만듦" 표기. `ui_tab`: 기존 채택 버튼음(`ui_button_hover`/`confirm`)을 짧게 잘라 높낮이를 바꾼 변형 2개 + 새로 만든 2개, 0.15초 이하. 고르기 `pick_druid3.html`(3카드), serve.cjs PICKSETS `r3`. 서버 재시작은 총괄이 함.
 
@@ -152,7 +152,7 @@
 
 ### 대기·미완
 - **서버 재시작 필요(총괄이 함)**: `_tools/serve.cjs` PICKSETS에 `r3`(`picks_r3.json`)를 추가했다. 실행 중인 서버(3399)는 옛 코드라 `?set=r3`가 400이다. 헤드리스 점검은 3413 포트 복사본 + `/api/picks` 모의로 했고 실서버·picks 파일은 건드리지 않았다.
-- 못 한 것: 선택분해·쓰레기 일괄분해·대장간 분해 버튼 3곳과 장착 실패 중 악의 부족·주머니 가득 2곳 실제 클릭 확인, 게임 안 청음, Unity 빌드(웹 UI 소리는 Unity에 그대로 이식 범위 — 미확인). 계측 중 `createRadialGradient` r0<0 pageerror 1건(변경 전 재현 대조 안 함).
+- 못 한 것: 선택분해·쓰레기 일괄분해·대장간 분해 버튼 3곳과 장착 실패 중 악의구슬 부족·주머니 가득 2곳 실제 클릭 확인, 게임 안 청음, Unity 빌드(웹 UI 소리는 Unity에 그대로 이식 범위 — 미확인). 계측 중 `createRadialGradient` r0<0 pageerror 1건(변경 전 재현 대조 안 함).
 - `ui_tab`·3차 후보 선택 뒤 반영, 드루이드 채택 3키 Unity 브랜치 추가·녹음 v4는 총괄 지시를 받아 진행.
 - 남은 임시 파일(rm 권한 거부): `G:\exoduser\tmp\snd10_ui_smoke.mjs`·`pick_r3_check.mjs`(gitignored). staging은 저장소 밖 `G:\exoduser-wt\_out\sfx_forge\`(`_preview_r3/`, `_r3/src/`, `_druid/mkcat_r3.py`·`mk_pick_r3.py`·`scan_existing.py`, `_analysis/r3_proc.py`·`metrics_r3.json`).
 
@@ -197,7 +197,7 @@
 | 2 | `druid_slam` 반영 | 사용자 청음 결과 `picks_r4.json` → 선택본 `_preview_r4/druid_slam_r4{d,e1,e2,e3}_proc.mp3` | **사용자 청음 전 반영 금지**(필수 승인 게이트). 선택 뒤 `sfx/boss/druid_slam.mp3` 등 기존 키 위치에 복사(Unity 브랜치는 총괄 지시). `druid_hit`은 변형 순환 없이 rate ±6%·연타 감쇠 |
 | 3 | `druid_spore` 반영 | r3a = 웹 기존 `pickup_rummage2.mp3`의 35Hz HPF→−1dBTP 가공본 `_preview_r3/druid_spore_r3a_proc.mp3` | 총괄 지시 받으면 드루이드 키로 연결(Unity 포함) |
 | 4 | `ui_tab` 확인 못 한 곳 | `game.html` 결정 서브탭(`_crForgeTab`), 스킬 대분류 탭(구 카드형 창만 — 기본 3D 합성 창 `SkillForge` 내부 탭은 미연결), 게임패드·키보드 탭 이동 | 헤드리스 계측으로 `ui_tab` 1회, 같은 탭 재클릭 0회. SkillForge 탭에 소리를 넣을지는 총괄 결정 |
-| 5 | SND-10 2단계 확인 못 한 곳 | 선택분해·쓰레기 일괄분해·대장간 분해 버튼 3곳(`gameConfirm` 거침), 장착 실패 중 악의 부족·주머니 가득 | 실제 클릭 계측으로 `ui_salvage`·`ui_fail` 1회 |
+| 5 | SND-10 2단계 확인 못 한 곳 | 선택분해·쓰레기 일괄분해·대장간 분해 버튼 3곳(`gameConfirm` 거침), 장착 실패 중 악의구슬 부족·주머니 가득 | 실제 클릭 계측으로 `ui_salvage`·`ui_fail` 1회 |
 | 6 | 게임 안 실제 청음·Unity 빌드 | 웹 UI 소리 6키·AD3·SND-02 | Unity 이식 범위라 빌드→플레이 판정은 CTO 완료 규칙(`UNITY_DONE_BUILD_PLAYTEST_RULE_20261028.md`)에 따름 |
 | 7 | AD2 3단계 | `AD2_UI_SOUND_INVENTORY_20261028.md` §후속(확인창 `gameConfirm`·on/off 구분·`.dis` 버튼 확정음·게임패드 포커스) | 총괄 명세 먼저 |
 | 8 | AD3 2단계(보류) | `tell_melee`·`tell_ranged`·`tell_boss` Forge 생성 → 사용자 청음 → 3단계 우선순위 재배열 | 사용자 청음 뒤 |

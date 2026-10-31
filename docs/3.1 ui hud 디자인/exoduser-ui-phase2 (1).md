@@ -23,7 +23,7 @@
 | 영역 | 현재 동작 |
 |---|---|
 | 인벤 가방 | `invCrystalRow` 결정 목록·분해·일괄합성·일괄강화 UI 제거. 장비 그리드 공간 확보 |
-| 인벤 헤더 | 결정 주머니 바로가기 제거. `invResBar`에는 악의만 표시 |
+| 인벤 헤더 | 결정 주머니 바로가기 제거. `invResBar`에는 악의구슬만 표시 |
 | 장착 장비 소켓 | 빈 소켓에서 호환 결정 선택 팝업, 장착 결정 클릭으로 무료 탈착 유지. `_selectedCrystal` 선선택 분기 삭제 |
 | 대장간 → 결정 | 보유 결정 및 강화·합성·분해·제작 관리 통합. 전체/공격/방어/자원 필터, 같은 종류·성급·강화는 묶음 표시 |
 | 저장·선택 | 인벤 렌더가 `CRYSTAL_BAG`를 정렬하지 않음. 저장 배열·보유량 보존. 피커 열 때 이전 필터 초기화 |
@@ -100,7 +100,7 @@
 
 ### 문제 4: HUD 정보 밀도 불균형
 
-- 상단 HUD: 캐릭이름, LV, 킬수, 악의, SP, CP, 조작법 — **7개 항목 일렬 나열**
+- 상단 HUD: 캐릭이름, LV, 킬수, 악의구슬, SP, CP, 조작법 — **7개 항목 일렬 나열**
 - 작은 화면에서 겹침/잘림 가능
 - CP(전투력)가 상단에도 있고 인벤토리에도 있음 — 불필요한 중복?
 
@@ -296,13 +296,13 @@ style 맨 아래에 추가:
 
 | 항목 | 변경 내용 | 위치 |
 |---|---|---|
-| 디자인 방향 | `Diablo IV` 계층감 + `Path of Exile` 정보 밀도 + `Darkest Dungeon` 대비 + `Hades` 버튼 식별성을 참조한 `검은 금속 / 피빛 봉합선 / 악의 보라 코어` 세트로 통일 | 구현 의도 |
+| 디자인 방향 | `Diablo IV` 계층감 + `Path of Exile` 정보 밀도 + `Darkest Dungeon` 대비 + `Hades` 버튼 식별성을 참조한 `검은 금속 / 피빛 봉합선 / 악의구슬 보라 코어` 세트로 통일 | 구현 의도 |
 | 타이포그래피 | 공통 본문은 `Noto Sans KR`, 타이틀/핵심 라벨은 `Black Han Sans`로 분리 (`--font-display`) | `game.html` `@import`, `:root`, `.ptitle`, `#bossBar .bn`, `#forge #forgeMats` |
 | HUD 상단 | 자원/정보칸을 뼈빛 텍스트 + 혈흔 금속 캡슐 배경으로 재정의 | `game.html` `#hud`, `.hud-top`, `.st-b`, `#matCnt`, `#goldCnt` |
 | 보스바 | 이름은 디스플레이 폰트, 체력/포이즈 바는 혈흔-뼈색 그라데이션으로 재정의 | `game.html` `#bossBar .bn`, `.bhw`, `.bhf`, `.bpw`, `.bpf` |
 | 공통 패널 | 모든 `pbox`에 검은 금속 배경, 주홍 반사광, 봉합선 텍스처, 라운드 18px 프레임 적용 | `game.html` `.panel`, `.pbox`, `.pbox::before`, `.ptitle`, `.pclose` |
 | 퀵슬롯 | 슬롯 프레임을 둥근 금속 조각 형태로 변경하고 키캡/카운트 가독성 강화 | `game.html` `.qs`, `.qs .qs-key`, `.qs .qs-cnt`, `.sk-pop`, `.sk-opt` |
-| 대장간 성소화 | 대장간 패널 폭 확대, 보라 악의 바, 4열 탭, 고어 금속 카드, 강화된 제작 확인 바 적용 | `game.html` `#forge .pbox`, `#forge #forgeMats`, `#forge #forgeLore`, `#forge .fg-tabs`, `#forge .fg-i`, `#forge #forgeConfirm`, `#forge #fgCraftBtn` |
+| 대장간 성소화 | 대장간 패널 폭 확대, 보라 악의구슬 바, 4열 탭, 고어 금속 카드, 강화된 제작 확인 바 적용 | `game.html` `#forge .pbox`, `#forge #forgeMats`, `#forge #forgeLore`, `#forge .fg-tabs`, `#forge .fg-i`, `#forge #forgeConfirm`, `#forge #fgCraftBtn` |
 | 인벤/스탯 카드 | 인벤 슬롯과 스탯/패시브 행에 동일한 검은 금속 카드 재질과 좌측 혈흔 액센트 추가 | `game.html` `#invPanel .inv-grid>div`, `#statPanel .stat-row`, `#statPanel .passive-row` |
 
 ### 2026-04-16 스킬 슬롯 아이콘 인셋 보정
@@ -373,7 +373,7 @@ style 맨 아래에 추가:
 
 **변경점**:
 - 이름+레벨+경험치바를 한 그룹으로
-- 리소스(킬/악의/SP/CP)를 한 그룹으로
+- 리소스(킬/악의구슬/SP/CP)를 한 그룹으로
 - expBar를 상단 HUD 안으로 이동 (기존 별도 div 제거)
 - 조작법 버튼은 우측 끝
 
@@ -586,7 +586,7 @@ Space 슬롯(`SKILL_SLOTS[4]`)은 지옥강타 계열과 `cat:'rage'` 분노 스
 | 대장간 탭 | 중앙 정렬 텍스트 카드형6탭, active는 레퍼런스처럼 붉은 동테두리만 약하게 점등 | `#forge .fg-tab*` |
 | 인벤/창고 셀 | 인벤 슬롯/장비칸/창고칸을 검정 배경 + 은회색 테두리로 통일 | `#invPanel .inv-*`, `#storagePanel #storageGrid>div` |
 | 스킬 패널 | 카테고리 헤더/스킬 카드/설명 박스를 동일한 지옥 유물 프레임 톤으로 정렬 | `#skillGrid*`, `#skillInfo`, `#skillGridWrap` |
-| 이모지 제거 | `결정`, `지옥창고`, `능력치 요약`, `키 설정 초기화`, `장비 강화`, `악의의 분해로`, `결정 분해` 등 패널 UI 텍스트에서 이모지 제거 | 정적 HTML + `_applyLang()` + `_T()` 번역 키 |
+| 이모지 제거 | `결정`, `지옥창고`, `능력치 요약`, `키 설정 초기화`, `장비 강화`, `악의구슬의 분해로`, `결정 분해` 등 패널 UI 텍스트에서 이모지 제거 | 정적 HTML + `_applyLang()` + `_T()` 번역 키 |
 
 #### 패널 텍스트 정리 규칙
 
@@ -597,7 +597,7 @@ Space 슬롯(`SKILL_SLOTS[4]`)은 지옥강타 계열과 `cat:'rage'` 분노 스
 | 능력치 요약 | `📋 능력치 요약` | `능력치 요약` |
 | 키 설정 초기화 | `⟲ 키 설정 초기화 (또는 F5 키)` | `키 설정 초기화 (또는 F5 키)` |
 | 대장간 강화 헤더 | `⚒️ 장비 강화 (실패 시 재료만 소멸)` | `장비 강화 (실패 시 재료만 소멸)` |
-| 악의 분해 헤더 | `🔥 악의의 분해로 — 장비를 악의로 갈아버려라` | `악의의 분해로 — 장비를 악의로 갈아버려라` |
+| 악의구슬 분해 헤더 | `🔥 악의구슬의 분해로 — 장비를 악의구슬로 갈아버려라` | `악의구슬의 분해로 — 장비를 악의구슬로 갈아버려라` |
 | 결정 분해 헤더 | `🔥 결정 분해 → 결정 가루` | `결정 분해 → 결정 가루` |
 
 > 확인 포인트: 패널은 더 이상 전부 같은 배경을 쓰지 않고, `창별로 다른 프레임 이미지`를 배정한다. 공통으로 남기는 것은 `텍스트/카드/버튼의 톤`뿐이다.
@@ -864,7 +864,7 @@ L키(`skillCycle`)로 여는 스킬 슬롯 배정 팝업(`#skSlotPop`, `openSkSl
 | 레벨 | `hudLevelLabel` + `lvLbl`: 레벨10 (기존 X). 로마숫자 함수 제거 |
 | 경험치 | `hudExpLabel` + `expTxt`: 경험치7 / 45. 현재/다음 레벨 필요 경험치 |
 | 지역 처치 | `hudKillLabel` + `killCnt`: 지역 처치0 / 1,100. `_stageKills / _totalSpawned` 유지 |
-| 악의 | `hudMaliceLabel` + `matCnt`: 악의6,600,000. K/M/B 대신 전체 정수 |
+| 악의구슬 | `hudMaliceLabel` + `matCnt`: 악의구슬6,600,000. K/M/B 대신 전체 정수 |
 | 포맷 | `_hudNumberFormatter`: 재사용 `Intl.NumberFormat('en-US',{maximumFractionDigits:0})`. `_hudReadableNumber`: `max(0,floor(Number(n)||0))`에 천단위 쉼표 |
 | 외형 | 최소200px, padding10px 12px, on opacity1, 바깥1px 브론즈 선. 레벨 .94rem/700, 라벨·행 .75rem, 행최소21px, 행간3px, 수치 tabular-nums |
 | 색상 | 수치 #eee4d4, 라벨 #cbbd9f, 레벨 #f2e6cb, 경험치 #dfcfaa(Lv1000+ #d6aaff). 배경 rgba(12,13,15,.88)→rgba(9,10,12,.76) |
@@ -961,7 +961,7 @@ L키(`skillCycle`)로 여는 스킬 슬롯 배정 팝업(`#skSlotPop`, `openSkSl
 | 항목 | 현재 계약 |
 |---|---|
 | 인벤토리 제목판 | 직계 헤더의 .ptitle display:none. 제목 이미지와 가상요소도 표시하지 않음 |
-| 정보행 | 전투력/악의/닫기 유지. gap0, margin4px 0 8px |
+| 정보행 | 전투력/악의구슬/닫기 유지. gap0, margin4px 0 8px |
 | 높이 배분 | 장비 탭 inv-wrap 첫 행270px, 가방 행 minmax(min-content,1fr). invCenter height:auto/min-height260px,invGrid height140px/flex1 1 140px. 필터 높이를 반영하며 나머지 높이는 가방에 배정. 작은 화면은 기존 바깥 세로 스크롤 사용 |
 | 적용 범위 | 인벤토리 내부 장비/유골함/보석/보관함 페이지 공통. 다른 메뉴 제목 유지 |
 

@@ -11,7 +11,7 @@ test('parry grants 2000 base malice and applies the optional resource multiplier
   );
   assert.match(
     gameHtml,
-    /function _resolveBigEnergyParry[\s\S]*?const _bigResourceMul=10;[\s\S]*?doParry\(totalDmg,p\.x,p\.y,true,p\.el,_bigResourceMul\);/
+    /function _resolveBigEnergyParry[\s\S]*?const _bigResourceMul=10;[\s\S]*?doParry\(totalDmg,p\.x,p\.y,true,p\.el,_bigResourceMul,p\.fbEnergy&&p\.el===EL\.I\?'waterEnergy':p\.fdEnergy&&p\.el===EL\.F\?'fireEnergy':undefined\);/
   );
 });
 

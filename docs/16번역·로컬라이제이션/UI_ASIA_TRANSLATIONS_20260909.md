@@ -26,7 +26,7 @@ Steam 자막·인터페이스 지원 목표 중 일본어·말레이어·인도�
 |---|---|---|---|---|---|
 | 뇌전창: 설치형 기본 스킬 | 雷の杭 | Pancang Petir | Pasak Petir | เสาสายฟ้า | Cọc Sét |
 | 전격의창: 합체 스킬 | 雷撃の槍 | Lembing Petir | Tombak Petir | หอกสายฟ้า | Thương Sét |
-| 악의 | 悪意 | Niat Jahat | Niat Jahat | ความอาฆาต | Ác Ý |
+| 악의구슬 | 悪意 | Niat Jahat | Niat Jahat | ความอาฆาต | Ác Ý |
 | 선택 버튼 | 選択 | Pilih | Pilih | เลือก | Chọn |
 | 도감 등록 동작 | 図鑑に登録 | Daftar dalam kodeks | Daftarkan ke kodeks | ลงทะเบียนสารานุกรม | Đăng ký vào từ điển |
 | SP 부족 경고 | SP不足 | SP tidak mencukupi | SP tidak cukup | SP ไม่พอ | Không đủ SP |

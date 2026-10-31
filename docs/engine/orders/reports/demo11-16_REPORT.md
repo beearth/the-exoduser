@@ -6,7 +6,7 @@
 
 최종 기준 main은 `aa1eaea5a1fa70b31eae6fd907662ee13471c08d`다. 최초 일반 fetch가 제한된 ref 설정으로 main을 갱신하지 않아 `01051599`에서 착수한 것을 제출 전 ls-remote 대조로 발견했다. main ref를 명시 fetch하고 `git merge origin/main`의 정상 fast-forward로 수정했다. PC 메서드 캐시 최적화의 tested dependency 2파일이 달라져 최종 신규 검증만 최신 main에서 실행했다. 기존 5회귀는 01051599 기반에서 각1회이며 아래에 구분한다. rebase/reset/force/main push0이다.
 
-Main 공개 API 및 1~4/Space/F/Ctrl/Z 실제 입력이 State의 현재 skillSlots/activeCtSk/ultSlot을 읽고 SK-S04 slot_value/can_equip·absorbed 독해를 재사용한다. 기존 4cast를 호출하고, HUD는 실제 배정에서 동일 쿨 owner를 읽는다. 비용은 현재 공급자→순수 quote→State의 악의 선검증→ResourceAuthority의 ST/MP 동시 선검증 후 무콜백 쓰기→악의 차감 한 경로다. 기존 피해 본문·hurtE/hurtP 경로·Q/E·이동/돌진/사슬/전격이동/방패/분노·맵·UI 배치·저장/에셋 변경0이다.
+Main 공개 API 및 1~4/Space/F/Ctrl/Z 실제 입력이 State의 현재 skillSlots/activeCtSk/ultSlot을 읽고 SK-S04 slot_value/can_equip·absorbed 독해를 재사용한다. 기존 4cast를 호출하고, HUD는 실제 배정에서 동일 쿨 owner를 읽는다. 비용은 현재 공급자→순수 quote→State의 악의구슬 선검증→ResourceAuthority의 ST/MP 동시 선검증 후 무콜백 쓰기→악의구슬 차감 한 경로다. 기존 피해 본문·hurtE/hurtP 경로·Q/E·이동/돌진/사슬/전격이동/방패/분노·맵·UI 배치·저장/에셋 변경0이다.
 
 ## 공용 변경 구역
 
@@ -31,7 +31,7 @@ Main 공개 API 및 1~4/Space/F/Ctrl/Z 실제 입력이 State의 현재 skillSlo
 | 실패 보존 | Node 하니스 VM const 재선언/주석 뒤 brace 오류를 수정한 로그 보존. 신규 new-01은 G.on=false 하니스 진입 및 누락 원본 이미지2개로 단정3실패/리소스 ERROR2. 기존 intro owner begin/finish와 이미지 byte 참조 후 new-02 393/0. 제품 가드 완화0 |
 | 보호·실행 | giant 피해 구간 및 physics tick/존 틱/파쇄/칼날 함수 byte 동일. 매 Godot 지정 pgrep gate·2이상30초 대기, run별 override 종료0byte. 신규 정확 격리명, 기존 각 파일 상수. UTF-8 fixture/OS.execute join/명시 node-bin·source-game. 기존 Camera2D physics interpolation 경고는 원문 보존 |
 
-신규 검증은 원문 비용/쿨 72조합, 실제 Main의 1/Space/F/Ctrl 입력, 1→3 배정·HUD 쿨 이동, 중복/쿨 차단, 보주 재입력 파쇄, ULT 미집행·무소비를 검사한다. 핵심 거부 경계는 provider/선택, 외부 owner, ST 부족, MP 부족, 악의 부족 5종이며 자원 일부만 먼저 소비하지 않는지 readback으로 확인한다. 테스트 소유 슬롯 재배정·쿨 reset은 격리 Main의 fixture이고 제품에 테스트 override를 넣지 않았다.
+신규 검증은 원문 비용/쿨 72조합, 실제 Main의 1/Space/F/Ctrl 입력, 1→3 배정·HUD 쿨 이동, 중복/쿨 차단, 보주 재입력 파쇄, ULT 미집행·무소비를 검사한다. 핵심 거부 경계는 provider/선택, 외부 owner, ST 부족, MP 부족, 악의구슬 부족 5종이며 자원 일부만 먼저 소비하지 않는지 readback으로 확인한다. 테스트 소유 슬롯 재배정·쿨 reset은 격리 Main의 fixture이고 제품에 테스트 override를 넣지 않았다.
 
 ## HOLD·PC 인터페이스 요청
 
