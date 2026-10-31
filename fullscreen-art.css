@@ -9,7 +9,8 @@
 @media(min-aspect-ratio:2001/1000){
   .fullscreen-wide-plate[data-wide-ready="true"]{display:block}
   #csWideArt{z-index:2}
-  #lobbyWideArt{z-index:2}
+  #lobby{isolation:isolate}
+  #lobbyWideArt{z-index:-1} /* 확장판은 움직이는 로비 영상·소환체·UI 뒤 배경으로만 (2026-10-31 사용자 "로비도 안 나오네") */
   #gateWideArt{z-index:-1}
   #charVisualPop.release-locked #csWideArt{filter:grayscale(.8) brightness(.45)}
   .cin-img img[data-wide-art="outpaint"],.cin-gate>img[data-wide-art="outpaint"]{object-fit:cover;object-position:center}
