@@ -64,3 +64,8 @@ M1은 기존 실제 NativeGame/API·Simulation.Tick 범위다. actual 입력은 
 공통 `b9491cf58bf47277b40f3497d684e46deee1c59c`/Unity tree `ae7c0d6cdec3d4013bc880399893c07031a7af98`의 Mac 첫 검수는 실제 `UiTabAudioCheck.MouseClick→OwnWindow→kernel32.GetCurrentProcessId`에서 `EntryPointNotFoundException`으로 24/25·exit2였다. 제품 `NativeGame`/`NativeFeedbackAudio`의 실패가 아니라 검수 Tools의 Windows 전용 P/Invoke다. `UiTabAudioCheck.cs`만 Mac 컴파일 분기에서 Windows WM 클릭3쌍과 창 없는 GUI/1600×900 캡처를 `unsupported`로 기록하고, 나머지 실제 Source·버스·설정 검사는 계속 실행하도록 수정했다. `supportedPassed=true`라도 `unsupported`가 있으면 전체 `passed=false`, `status=partial-unsupported`, 의도적 exit4다. Windows 검사 본문은 유지된다.
 
 새 Mac ARM64 Settings QA 빌드 `5cc64bf3afa747709a011676c40142a8f6fd31913c2c94ba04a4a4385e40e376`(실행 파일 SHA), Runtime DLL `301bb40880c049c0533fb607937bf46593ed94929b341f49f434292bb7528bd9`에서 실제 무음·격리 Player는 **지원 46/46 통과, 미지원 2항목, 전체 PASS 아님**. 영수증 `_out/UNITY-MAC-UI-TAB-PORT-20261031-0634/ui-tab/Player_오디오_회귀.json` SHA `116dfff9eff3ed7516df235cc073b4e77d188f9a303978762728bbd552d5bd36`. 클립 9216samples/1ch/44100Hz 디코드, 가상 InputSystem F10 다음 정상 Update의 전환1회, 최초/활성/거부0, 실제 `SetSfxPercent` 0/60/100%, SfxVol −80/−4.436975/0dB, `AudioSource` UI버스·2D0·loopfalse·pitch1·raw gain .22·source volume 0/.132/.22, Flush 중복0이 통과했다. 같은 앱 M1은 23/23·Metal·exit0이다. `LayoutRepaint추가0`라는 기존 check id는 Mac에서 **4프레임 무입력 중 추가 사운드0**만 증명한다. 실제 Layout/Repaint 발생은 0회라 미지원이며 마우스 이벤트/1600×900 GUI PNG/사용자 손입력/청음 PASS는 아니다. 제품 코드·샘플 byte·소리 계약은 변경0이다.
+
+
+## 2026-10-31 ENTER·UI 웹 일치 후속
+
+[현재 동작·음원·볼륨·검수 계약](UNITY_UI_SOUND_MATCH_20261031.md)을 따른다. 기존 ui_tab 단일 범위의 고정 pitch 1은 웹 전역 .92~1.08로 갱신하며 최초열기/닫기는 별도 open/close 소리를 추가한다. 과거 영수증을 이 확대 단위의 검수로 재사용하지 않는다. 기존 ui_tab 검수 Tools는 탭 이벤트만 세고 30ms gate를 넘긴 별도 동작을 검사한다. 전체 ENTER/버튼/패널/레벨업/획득 검수는 새 출력버퍼·영상 영수증을 따른다.

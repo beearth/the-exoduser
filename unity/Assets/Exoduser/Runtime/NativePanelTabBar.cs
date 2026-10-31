@@ -72,7 +72,7 @@ namespace Exoduser.UnityPort {
                 // :hover{filter:brightness(1.16)}
                 if(GUI.enabled&&r.Contains(Event.current.mousePosition))Fill(r,new Color(1,1,1,.05f));
                 Label(r,Labels[i],(int)s.size,s.spacing,active?C(244,230,203):C(194,191,185));
-                if(NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none)&&!active)clicked=Ids[i];
+                if(NativeUiSounds.SilentButton(()=>NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none))&&!active)clicked=Ids[i];
             }
             Fill(new Rect(s.x,s.y+s.h-1,s.w,1),s.line);
             if(clicked!=null)Requested?.Invoke(clicked);

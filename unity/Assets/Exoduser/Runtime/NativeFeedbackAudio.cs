@@ -20,7 +20,7 @@ namespace Exoduser.UnityPort
     {
         // web _SFX_PRI (TELL 12, SKILL 10, VOICE 9, PLAYER_HIT 8, DEATH 4, STEP 3, HIT 2, PROJ 1, AMB 0)
         public const int PriTell=12,PriSkill=10,PriVoice=9,PriPlayerHit=8,PriDeath=4,PriStep=3,PriHit=2,PriProj=1,PriAmb=0;
-        sealed class Voice {public AudioSource source;public int priority;public double started,ends;public float rawVolume;}
+        sealed class Voice {public AudioSource source;public int priority;public double started,ends;public float rawVolume;public bool busOnly;}
         sealed class Req {public string key,category,group,logical,source,note,fileKey;public int tick;public float volume,pitch,blend,delay,pan;public int priority;public Vector3 pos;public bool front;}
         readonly Transform parent;float volumeGain=.6f;
         readonly NativeAudioMixer bus;readonly GameObject listenerObject;
@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort
         readonly System.Random rng=new System.Random(20261027);
         public NativeAudioMixer Bus{get{return bus;}}
         public Func<Vector3> ListenerAt;   // the AudioListener sits on the player (camera height must not bend the distance feel)
-        public void SetVolumePercent(int percent){volumeGain=Mathf.Clamp(percent,0,100)/100f;bus.SetSfxPercent(percent);foreach(var v in voices)v.source.volume=Mathf.Min(1,v.rawVolume*volumeGain);}
+        public void SetVolumePercent(int percent){volumeGain=Mathf.Clamp(percent,0,100)/100f;bus.SetSfxPercent(percent);foreach(var v in voices)v.source.volume=Mathf.Min(1,v.rawVolume*(v.busOnly?1:volumeGain));}
         readonly Dictionary<string,AudioClip> clips=new Dictionary<string,AudioClip>();
         readonly Dictionary<string,double> lastAt=new Dictionary<string,double>();
         readonly List<Req> pending=new List<Req>(),direct=new List<Req>();
@@ -71,7 +71,7 @@ namespace Exoduser.UnityPort
         static void Classify(string key,out int priority,out string group,out float blend,out bool front)
         {
             front=key.StartsWith("sword_swing",StringComparison.Ordinal)||key=="sword_parry";blend=0;
-            if(key=="ui_tab"){priority=PriSkill;group="UI";}
+            if(key.StartsWith("ui_",StringComparison.Ordinal)||key.StartsWith("pickup_",StringComparison.Ordinal)){priority=PriSkill;group="UI";}
             else if(front||key=="q_parry"||key=="scarecrow_charge"||key=="spike_trap"||key=="fireball"||key=="heavy_hit"||key=="ice_storm"){priority=PriSkill;group="Skill";}
             else if(key.StartsWith("sword_back",StringComparison.Ordinal)){priority=PriHit;group="PlayerHit";}   // web: HIT class
             else if(key.StartsWith("player_hit",StringComparison.Ordinal)){priority=PriPlayerHit;group="PlayerHit";}
@@ -265,7 +265,19 @@ namespace Exoduser.UnityPort
         // 1-1 druid sink: called by the sink drawing (NativeGame.BossSinkDraw) when the hole shows; same routing and Receipt line as a Core sample event
         public void PlaySinkHole(float x,float y,int tick){Handle(new FeedbackEvent{Kind=FeedbackKind.Sample,Tick=tick,X=x,Y=y,SampleKey="druid_sink",Source=SinkViewSource,Rate=1,QueuedRate=1});}
         // UI 탭은 전투 Tick이 멈춘 패널에서도 즉시 1회. SFX/UI와 기존 사용자 음량을 따른다.
-        public void PlayUiTab(){Receipt.requested++;Play(Make("ui_tab",.22f,1f,Vector3.zero));}
+        [Serializable] public sealed class UiAudioEvent {public string key,group;public int frame;public double time,dspTime;public float gain,sourceVolume,pitch;}
+        public readonly List<UiAudioEvent> UiEvents=new List<UiAudioEvent>();
+        public int UiRevision {get;private set;}
+        readonly Dictionary<string,double> uiLast=new Dictionary<string,double>();
+        public void PlayUiTab(){PlayUiSample("ui_tab",.22f);}
+        public void PlayUiSample(string key,float volume,float pitch=1f){
+            double now=Time.realtimeSinceStartupAsDouble;
+            if(uiLast.TryGetValue(key,out double last)&&now-last<.03)return;
+            uiLast[key]=now;UiRevision++;Receipt.requested++;
+            Play(Make(key,volume,Jitter(pitch,.08f),Vector3.zero));
+        }
+        public void PlayItemPickup(){PlayUiSample(new[]{"pickup_item","pickup_rummage1","pickup_rummage2","pickup_rummage3","pickup_rummage4","pickup_rummage5"}[rng.Next(6)],.5f,Jitter(1,.05f));}
+        public void PlayLevelUp(){UiRevision++;Receipt.requested++;Play(Make("ui_levelup",1f,1f,Vector3.zero));}
         public void PlayNow(string key,float volume,float pitch,Vector3 world){Receipt.requested++;direct.Add(Make(key,volume,pitch,world));}
         public void Flush()
         {
@@ -310,9 +322,10 @@ namespace Exoduser.UnityPort
             var clip=clips[fileKey];if(clip.loadState!=AudioDataLoadState.Loaded){Receipt.dropped++;return;}
             var s=available.source;s.clip=clip;s.pitch=r.pitch;s.outputAudioMixerGroup=GroupFor(r.group);s.spatialBlend=r.blend;s.transform.position=r.pos;
             // OPT.sfxVol60: sample gain min(1,vol*.6); the master bus gain .6 is the mixer's SfxVol parameter.
-            available.rawVolume=r.volume;s.volume=Mathf.Min(1,r.volume*volumeGain);s.panStereo=r.blend>0?0:Mathf.Clamp(r.pan,-1,1);
+            available.rawVolume=r.volume;available.busOnly=r.key=="ui_levelup"||r.key=="ui_pickup_chime";s.volume=Mathf.Min(1,r.volume*(available.busOnly?1:volumeGain));s.panStereo=r.blend>0?0:Mathf.Clamp(r.pan,-1,1);
             if(r.delay>0)s.PlayDelayed(r.delay);else s.Play();
             available.priority=r.priority;available.started=now;available.ends=now+r.delay+clip.length/Mathf.Max(.01f,r.pitch);
+            if(r.group=="UI")UiEvents.Add(new UiAudioEvent{key=r.key,frame=Time.frameCount,time=Time.realtimeSinceStartupAsDouble,dspTime=AudioSettings.dspTime,gain=r.volume,sourceVolume=s.volume,pitch=s.pitch,group=s.outputAudioMixerGroup.name});
             Lines.Add(Line(r.tick,r.logical??r.key,r.source??"host",r.group,r.volume,r.note??"file ok")+(r.logical!=null&&r.logical!=fileKey?" played="+fileKey:""));
             Receipt.played++;if(!Receipt.keys.Contains(r.logical??r.key))Receipt.keys.Add(r.logical??r.key);if(!Receipt.groups.Contains(r.group))Receipt.groups.Add(r.group);Receipt.voicesPeak=Math.Max(Receipt.voicesPeak,active+1);
         }
