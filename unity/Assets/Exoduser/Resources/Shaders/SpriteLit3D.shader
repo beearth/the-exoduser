@@ -24,6 +24,8 @@ Shader "EXODUSER/SpriteLit3D"
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
+            #pragma multi_compile_fog
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
             TEXTURE2D(_MainTex); SAMPLER(sampler_MainTex);
@@ -58,7 +60,10 @@ Shader "EXODUSER/SpriteLit3D"
                 }
                 #endif
                 light += SampleSH(n) + _Ambient;
-                return half4(tex.rgb * light, tex.a);
+                half rim=pow(1-saturate(dot(n,toCam)),3)*.22h;
+                half3 color=tex.rgb*light+tex.rgb*half3(.37,.48,.57)*rim;
+                color=MixFog(color,ComputeFogFactor(TransformWorldToHClip(i.positionWS).z));
+                return half4(color,tex.a);
             }
             ENDHLSL
         }

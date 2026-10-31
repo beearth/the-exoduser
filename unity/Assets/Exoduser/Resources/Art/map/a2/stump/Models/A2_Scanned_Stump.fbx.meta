@@ -1,0 +1,43 @@
+fileFormatVersion: 2
+guid: 6254e8413525e280b1e1284f130c4d37
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: A2_Scanned_Stump
+    second: {fileID: 2100000, guid: afb48f338ab93e07c0755cab69796098, type: 2}
+  materials:
+    materialImportMode: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  meshes:
+    isReadable: 1
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 1
+    importCameras: 0
+    importLights: 0
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 1
+    weldVertices: 1
+    indexFormat: 0
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  animationType: 0
+  importAnimation: 0
+  userData: CC0_PolyHaven_PineRoots_실게임미검증
+  assetBundleName:
+  assetBundleVariant:
