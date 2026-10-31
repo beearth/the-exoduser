@@ -57,7 +57,7 @@ namespace Exoduser.UnityPort
         void A2FieldGround()
         {
             // 32:9의 수평 시야와 최북단까지 이어지는 하나의 표면. 청크마다 다른 베이스를 쓰지 않는다.
-            const int n=341;const float minX=-45,minZ=-125,step=.5f;
+            const int n=681;const float minX=-45,minZ=-125,step=.25f;
             var vertices=new Vector3[n*n];var uv=new Vector2[vertices.Length];var triangles=new int[(n-1)*(n-1)*6];int k=0;
             for(int y=0;y<n;y++)for(int x=0;x<n;x++)
             {
@@ -69,7 +69,7 @@ namespace Exoduser.UnityPort
             var mesh=new Mesh{name="1-1 전체 젖은 흙·침식 둑",indexFormat=IndexFormat.UInt32};mesh.vertices=vertices;mesh.uv=uv;mesh.triangles=triangles;mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();
             var go=new GameObject("A2 전체 필드 지면");go.transform.SetParent(a2Root.transform,false);go.AddComponent<MeshFilter>().sharedMesh=mesh;
             var r=go.AddComponent<MeshRenderer>();r.sharedMaterial=a2FieldSoil;r.receiveShadows=true;
-            a2Water=new Material(Shader.Find("EXODUSER/A2ToxicRiver"));
+            a2Water=new Material(Shader.Find("EXODUSER/A2ToxicRiver"));A2ShoreField();
             var waterMesh=new Mesh{name="숲 외곽 독액 수면"};waterMesh.vertices=new[]{new Vector3(-45,-.45f,-125),new Vector3(125,-.45f,-125),new Vector3(-45,-.45f,45),new Vector3(125,-.45f,45)};
             waterMesh.uv=new[]{Vector2.zero,Vector2.right,Vector2.up,Vector2.one};waterMesh.triangles=new[]{0,2,1,1,2,3};waterMesh.RecalculateNormals();waterMesh.RecalculateBounds();
             var water=new GameObject("A2 원본 보행 밖 독액 개울");water.transform.SetParent(a2Root.transform,false);water.layer=4;

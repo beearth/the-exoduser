@@ -42,6 +42,9 @@ class Program
             Check(!Bar(false,false,true,true)&&!Bar(true,true,true,true),"죽은 적·보스 일반 바 제외");
             var water=type.GetMethod("Water");
             Check(!(bool)water.Invoke(field,new object[]{-5f,-40f})&&!(bool)water.Invoke(field,new object[]{40f,-86f}),"서측·시작 외곽은 침수 섬이 아닌 연속 숲");
+            int accidentalPools=0;
+            for(int z=-78;z<=-4;z++)for(int x=10;x<=70;x++)if((float)distance.Invoke(field,new object[]{(float)x,(float)z})>1&&A2ForestLayout.BranchDistance(x,z)>2&&(bool)water.Invoke(field,new object[]{(float)x,(float)z}))accidentalPools++;
+            Check(accidentalPools==0,"수로 밖 전투 지면의 우발적 둥근 웅덩이 제거 "+accidentalPools);
             var terrain=type.GetMethod("TerrainHeight");
             Check(terrain!=null&&(float)height.Invoke(field,new object[]{43.2f,-71.8f})-(float)terrain.Invoke(field,new object[]{43.2f,-71.8f})>.12f,"목교는 얕은 수로 위를 가로지름");
             var register=type.GetMethod("RegisterSurface");

@@ -80,6 +80,7 @@ namespace Exoduser.UnityPort
                 float dx=(x-h.cx*tile)/(h.rx*tile),dz=(-z-h.cy*tile)/(h.ry*tile);
                 surface+=1.7f*(1-Smooth(Clamp(((float)Math.Sqrt(dx*dx+dz*dz)-.65f)/.7f,0,1)));
             }
+            surface=Math.Max(surface,-.25f);
             float outside=Smooth(Clamp(-d/2.8f,0,1));
             float east=Smooth(Clamp((x-43)/6,0,1))*(1-Smooth(Clamp((z+58)/12,0,1)));
             float northEast=Smooth(Clamp((x-62)/6,0,1))*Smooth(Clamp((z+34)/10,0,1));

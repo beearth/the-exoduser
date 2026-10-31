@@ -1,6 +1,6 @@
 using UnityEditor;
 
-// 실제 Player에서 지면 접합과 표면 검수에 사용하는 여덟 메시만 CPU 읽기를 유지한다.
+// 실제 Player에서 지면 접합과 표면 검수에 사용하는 열 메시만 CPU 읽기를 유지한다.
 public sealed class A2GroundCoverImporter : AssetPostprocessor
 {
     public override uint GetVersion() { return 5; }
