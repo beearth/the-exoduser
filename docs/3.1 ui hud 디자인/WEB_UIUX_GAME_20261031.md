@@ -35,12 +35,12 @@
 | 적용 위치 | 현행 좌표·동작 계약 |
 |---|---|
 | 가장자리와 중앙 구분 | 미니맵·자원·레벨/처치·튜토리얼/시스템/키 안내·펫·일반 알림은 실제 화면 끝. HP·MP 구슬+스킬바 묶음, 대화 모달, 인벤토리·상점·설정·성장 전체 창, 클리어·다음 난관은 중앙 16:9 영역 유지. 큰 모달 안의 내비게이션 열은 그 모달 구성 요소 |
-| 실습창 충돌 회피 | web-uiux.js placeGuides()가 mmLvl의 실제 bottom+16px를 상단으로, globeHP/globeMP/skBar 중 가장 높은 top−16px를 하단으로 예약. resize·관찰한 노드 크기 변경 때 재측정. CSS --web-ui-guide-top/--web-ui-guide-bottom, 초기 폴백190px/220px. 실습창 top 및 max-height는 guide-scale로 나누어 zoom 후 실제 경계를 보존. max-height=(100dvh−상단 예약−하단 예약)/guide-scale. min-width761px에서 적용 |
+| 실습창 충돌 회피 | web-uiux.js placeGuides()가 mmLvl의 실제 bottom+16px를 상단으로, globeHP/globeMP 본체와 .globe-glass 외곽 장식, skBar 중 가장 높은 top−16px를 하단으로 예약. resize·관찰한 노드 크기 변경 때 재측정. CSS --web-ui-guide-top/--web-ui-guide-bottom, 초기 폴백190px/220px. 실습창 top 및 max-height는 guide-scale로 나누어 zoom 후 실제 경계를 보존. max-height=(100dvh−상단 예약−하단 예약)/guide-scale. min-width761px에서 적용 |
 | 레벨·처치 | 실습 중 mmLvl visibility=visible. 기존 패널 열린 동안 HUD를 숨기는 규칙은 유지. 실습 중 훈장 버튼 숨김은 유지하여 보조 팝업 충돌 방지 |
 | 시스템·키 안내 | 같은 상/하단 예약을 사용. keyGuide는 overflow-y:auto·border-box. 안내 내용은 기존 내부 스크롤·푸터 동작 유지 |
 | 펫 | game.html _petBubbleShow의 _guideOpen은 parryLesson/systemLesson/keyGuide가 hidden=false, display!=none, visibility!=hidden인지 확인. 까마귀 또는 안내 있음이면 _petAtLeft=true, left20px/right auto/transform-origin left bottom. 그 외 고양이는 right20px/left auto/right bottom. 기존 원화480px·ui-scale×ui-text-scale×1.5 보존 |
 | 일반 알림 notif | left=왼쪽 inset+safe-area+20px, top=상단 inset+270px×ui-scale, max-width=min(440px,100vw−40px), 왼쪽 정렬. 펫·자원 사이에 배치. 전투 피드백 ph는 중앙·안전 폭 유지 |
-| 캐시 | game.html의 web-uiux.css=20261031-edge4, web-uiux.js=20261031-edge1 |
+| 캐시 | game.html의 web-uiux.css=20261031-edge4, web-uiux.js=20261031-edge2 |
 | 검수 도구 | tools/check-web-sidepanel.mjs: 1920×1080,2560×1080,3840×1080,2560×1600 실제 페이지 캡처·가시 텍스트 Range 겹침·HUD 중앙/가장자리·안내/구슬/상태판/펫 충돌 검사. 각 캡처 페이지를 bringToFront한 뒤 전환 완료를 기다려 가시 텍스트0을 실패 처리하고, 실제 게임 캔버스를 다시 그린다. HTTP와 디스크 SHA256 비교. 로컬 forgelab=1&stage=0 Lv1000 테스트 경로·독립 브라우저 저장소를 사용하고 서버 save API는 검수 응답으로 격리. 자연 플레이 검수와 구분 |
 
 대상 화면: 로비·캐릭터 선택·타이틀 메뉴·설정4탭·1-1 HUD·실습·시스템/키 안내·알림·인벤토리/보관함·스킬·대장간/물약 상점·성장·일시정지·클리어·난이도·조작 안내. 최종 실측·이미지·원격 SHA는 지정 sidepanel/REPORT.md와 source-receipt.json에 기록한다.
@@ -60,3 +60,5 @@ statwindow-brief에 따라 web-uiux.css에서 다섯 창 제목44px·성장 머�
 2026-10-31 최종 보정: 다섯 창의 눈을 제목 바로 위 중앙에 놓고 기존 원화 중심부의 금속 명암을 높였다. 왼쪽 luminance 마스크·오른쪽 flex 장식을 대체하며 제목 높이44px는 유지한다. 현행 위치·합성 수치는 UI_COMPOSITION의 CTO 최종 보정 절을 따른다.
 
 - origin/main09eec0076의 제목 중앙 눈 보정도 보존 병합했으며 최종 CSS 캐시는20261031-edge4다. 웹 검수 source는 해당 통합 커밋과 HTTP/디스크17파일 SHA256으로 고정한다.
+
+- 최종 장식 경계 보강: 구슬 본체 밖으로44px 나오는 .globe-glass의 변환 후 실제 rect까지 HUD 예약/충돌검사에 포함했다. 1920×1080에서 안내창 하단이 본체뿐 아니라 바깥 프레임 위16px까지 비우도록 한다. 내부 체크리스트 스크롤·시작/건너뛰기 푸터는 유지한다.

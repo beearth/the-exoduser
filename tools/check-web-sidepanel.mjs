@@ -40,7 +40,7 @@ export async function captureMatrix({lobby,game,output}){
   const viewport=page.viewportSize(),file=name+'-'+viewport.width+'x'+viewport.height+'.png';
   let text=await textGeometry(page,selectors);
   for(let retry=0;!text.texts&&retry<12;retry++){await page.waitForTimeout(250);text=await textGeometry(page,selectors);}
-  const geometry=await page.evaluate(selectors=>Object.fromEntries(selectors.map(selector=>{const e=document.querySelector(selector);if(!e)return[selector,null];const r=e.getBoundingClientRect(),s=getComputedStyle(e);return[selector,{...r.toJSON(),visible:r.width>0&&r.height>0&&s.display!=='none'&&s.visibility!=='hidden'&&+s.opacity>0}]})),edges);
+  const geometry=await page.evaluate(selectors=>Object.fromEntries(selectors.map(selector=>{const e=document.querySelector(selector);if(!e)return[selector,null];const visual=e.querySelector('.globe-glass')||e;const r=visual.getBoundingClientRect(),s=getComputedStyle(e);return[selector,{...r.toJSON(),visible:r.width>0&&r.height>0&&s.display!=='none'&&s.visibility!=='hidden'&&+s.opacity>0}]})),edges);
   await page.screenshot({path:path.join(output,file)});rows.push({screen:name,...viewport,file,...text,geometry});
  }
  const clean=()=>game.evaluate(()=>{

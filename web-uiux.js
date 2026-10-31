@@ -67,7 +67,7 @@
     if(!status)return;
     const root=document.documentElement;
     const statusRect=status.getBoundingClientRect();
-    const hudRects=['globeHP','globeMP','skBar'].map(id=>document.getElementById(id)).filter(node=>node&&getComputedStyle(node).display!=='none').map(node=>node.getBoundingClientRect()).filter(rect=>rect.height>0);
+    const hudRects=['globeHP','globeMP','skBar'].map(id=>document.getElementById(id)).filter(node=>node&&getComputedStyle(node).display!=='none').flatMap(node=>[node,node.querySelector('.globe-glass')].filter(Boolean)).map(node=>node.getBoundingClientRect()).filter(rect=>rect.height>0);
     const top=Math.ceil(statusRect.bottom+16);
     const bottom=Math.ceil(Math.max(16,...hudRects.map(rect=>innerHeight-rect.top+16)));
     for(const [name,value] of [['--web-ui-guide-top',top],['--web-ui-guide-bottom',bottom]]){
