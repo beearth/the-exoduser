@@ -55523,6 +55523,18 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 산출·실행 | G:/exoduser/tmp/design-review/20261031_web_uiux/REPORT.md, 원본은I:/EXODUSER-Storage/design/web-uiux-20261031/. localhost3366자기작업본서버·격리save유지, Steam/DEMO/EA/외부배포0 |
 
 - 최종 커밋 훅이 자동 생성한 tools/guard.baseline.json의 lines를 기존65880→현행66030으로 동기화했다. 게임루프136행·보스idx·강화확률 해시는 그대로이며 guard PASS, 새 검사 우회0이다.
+
+
+## 2026-10-31 초광폭 사이드 판·인게임 가장자리 사용자 정정
+
+| 범위 | 구현·검수 계약 |
+|---|---|
+| 로비·캐릭터 선택·타이틀 메뉴 | 사이드 정보판은 실제 화면 끝, 높이 기준 축척. 중앙 제목·무대·모달 유지. 로비 어둠은 판 폭, 선택창 우측 비네트480px 한정 |
+| 인게임 전체 UI | 미니맵·자원·레벨/처치·튜토리얼·시스템/키 안내·알림·펫은 화면 가장자리. HP/MP·스킬바 묶음과 큰 메뉴는 중앙16:9 유지. 실습 중 상태판 표시, 실제 bounds로 상태판 아래·구슬 위 공간 예약 |
+| 검수·인계 | test/webUiux.test.mjs의 21개 회귀, tools/check-web-sidepanel.mjs의 네 해상도 실제 페이지·텍스트/컴포넌트 충돌·HTTP 입력 일치 검사. 기존 원본에서도 실패하는 inventoryPaperdollLayout/petGateLockedDialogue 2건은 별도 기록. Unity ui-ultrawide-brief.md 끝에 확장 지시 추가 |
+
+상세 좌표·수치·최종 캡처/원격 근거는 WEB_UIUX_GAME_20261031.md 및 지정 sidepanel/REPORT.md를 따른다.
+
 # 2026-10-31 전투 스킬 창 공간·고정 기술
 
 - `skill-forge.js/css`: 설명판270px/내용 높이, 빈 로드맵 접기, 초광폭 좌우 끝·중앙1800px. 구르기·X처형·T자동석궁을 추가 표시하고 E/RMB 실제 배정·기절 탈출·미습득 조건을 맞췄다. 전투·6개 장착 슬롯·세이브 구조는 유지한다.
@@ -55543,6 +55555,8 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 
 성장 검수 보강: 최초 통합1920 캡처의 외부 갑옷 배경이 로딩 중인 것을 직접 확인해 최종 시각 증거에서 제외했다. tools/check-stat-window.mjs는 CSS 배경 원화 decode를30초 한도로 기다린 뒤 캡처하며, 같은 소스의1920/3840 화면을 다시 검수한다.
 
+사이드 판 통합 후 HUD 회귀의 화폐 라벨 기대값을 현행 악의구슬 SSOT로 동기화했다. 숫자·지역 처치 검증과 런타임은 바꾸지 않았다.
+
 ## 2026-10-31 CTO 최종 보정 — 다섯 창 제목 중앙의 눈
 
 | 항목 | 보정 범위·근거 |
@@ -55559,6 +55573,21 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 - AGENTS.md·CLAUDE.md·공통 작업 매뉴얼·총괄대장에 같은 목록을 연결했다. 공개 저장소에는 인증값·개인 결제·계정 잔액을 추가하지 않고 내부 지출 MD/JSON을 참조한다.
 - 범위는 문서와 사용자 승인 팀 공유이며 생성·결제·Unity·빌드·배포·공용 인덱스 변경은 없다. 실제 전달 수락과 팀 인수·적용은 별도 기록한다.
 
+사이드 판 최종 검수는 구슬 .globe-glass 외곽 장식까지 포함한 실제 경계로 강화했다. 안내창이 장식 프레임 위16px를 비우고 내부 목록만 스크롤한다.
+
+사이드 판 검수 도구는 중앙 정렬용 구슬 본체와 충돌용 외곽 원화 좌표를 분리해 기록한다. 실제 UI 배치는 유지하고 이 구분의 회귀2건을 검수한다.
+
+
+## 2026-10-31 웹 제목 인장 보정2 — 투명 원형 메달
+
+| 항목 | 내용 |
+|---|---|
+| 범위 | statwindow-brief.md 마지막 보정2만, 최신 origin/main09eec0076에서 새 브랜치 |
+| 코드·자산 | web-uiux.css의40px 투명 은색 원형 눈 메달·중앙을 끊은 금빛 헤어라인·성장·대장간 배경 중복 눈 제거. title_eye_medallion_20261031.png 256×256 RGBA, 기존 gate_sigil 참조 내장 이미지 편집1장. 제목64px/40+24행·아래margin0·성장margin4px·본문845px. game.html CSS 캐시20261031-round-medallion |
+| 검수 | tools/check-stat-window.mjs는 현행 규격과1x/3x 크롭 기록. 실제 game.html1920/3840×5창10건·기능 PASS, pageerror/저장0·관련 회귀36/36·guard PASS. 두3배 비교판 직접 열람 후 사각 모서리·검은 판·중복 눈·눈에 띄는 잔점/계단0 |
+| 판정·한계 | 제목 메달 부분 VISUAL PASS. 보스 테스트 강제 상태·headless·격리 API, 자연 플레이/Unity/NW.js/배포 증거 아님. 스킬 본문 변경0 |
+| 증거 | I:/EXODUSER-Storage/codex-web-statwin/medallion-20261031/REPORT.md·review_1920_3x.png·review_3840_3x.png·after/geometry.json·regression-final.log·guard.log |
+
 ## 2026-10-31 악의오브 최종 개명·원화·음성 검수
 
 | 변경 | 동기화·검수 |
@@ -55573,3 +55602,13 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 상세: [화폐 SSOT](3.2메타·진행시스템/CURRENCY_RENAME_20261031.md), 증거 I:/EXODUSER-Storage/demo-art/currency-rename/REPORT.md.
 
 최신 스킬 창 병합에서 추가된 미습득 소켓의 비용 번역 키도 악의오브로 정렬했다. test/skillForge.test.js를 포함한 통합 회귀29/29가 통과했다. 스킬 창 기능·새 빈 소켓 원화는 원작성자 변경을 보존한다.
+
+
+## 2026-10-31 웹 로딩 초광폭 원본 보존
+
+| 변경 | 내용 | 정본/근거 |
+|---|---|---|
+| 로딩 표시 | game/index의 원본 contain, 공통 loading-art.js/css, 별도 하단 상태 영역. 폭에 따른 글자 확대 제거 | 1전체그래픽세팅/LOADING_ULTRAWIDE_20261031.md |
+| 배경 확장 | 내장 image_gen으로 네메시아·핵터·디로이 좌우 배경, 무손실21/32 WebP6개. 기존 원본35장 유지, 미생성/실패는 동일 원본 블러 폴백 | img/lording/wide/ |
+| 패키지·검수 | FILES 공통런타임 명시, 회귀 test/loadingWide.test.js 및 tools/check-loading-wide.mjs. 전면 가시성·전체구도·하단 비중첩·비동기 요청/실패 검사 | I:/EXODUSER-Storage/web-loading/20261031-wide/ |
+| Unity 인계 | ui-ultrawide-brief.md 끝에 같은 이미지·표시계약·해상도 및 별도 Unity 검수 지시 | 웹 검수와 Unity 실행은 분리 |

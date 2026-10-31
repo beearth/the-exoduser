@@ -115,3 +115,8 @@
 ### 2026-10-31 CTO 눈 인장 판정에 따른 최종 보정
 
 앞 절의 최초 눈 가시성 자체 PASS는 CTO 1x 보정 지시로 대체한다. 웹 다섯 창 공통으로 제목 바로 위 중앙64×20px 원화 눈을 표시하고 명암을 높이며 제목44px는 유지한다. 현행 상세 계약은 UI_COMPOSITION 최신 보정 절, 전후 실화면·검수·원격 상태는 I:/EXODUSER-Storage/codex-web-statwin/eye-center-20261031/REPORT.md에 기록한다. 스킬 본문·Unity 구현은 이번 범위에 포함하지 않는다.
+
+
+### 2026-10-31 보정2 — 투명 원형 메달
+
+앞선 눈 표시 방식과 자체 PASS는 CTO의09eec0076 반려로 대체한다. 최신 main에서 새 브랜치를 만들고, 보정2에 명시된 내장 이미지 편집으로 기존 gate_sigil의 단일 세로 동공·동심 고리를 투명 은색 원형 메달로 만들었다. 256×256 RGBA 원화를40×40px로 표시하고 금빛 헤어라인을 중앙±26px에서 끊었다. 제목64px(40+24), 여백0/성장4px, 성장 본문845px. 성장·대장간 배경의 두 번째 눈은 제거했다. 두 해상도×다섯 창의 전체/1x/3x 직접 검수에서 사각 모서리·검은 판·중복 눈·눈에 띄는 잔점/계단0, 경계/기능10건·회귀36/36·guard PASS, pageerror/저장호출0. VISUAL VERDICT: PASS(이번 제목 메달 부분만). 세부 자산/프롬프트와 수치는 UI_COMPOSITION, 증거·Git SHA·서버는 I:/EXODUSER-Storage/codex-web-statwin/medallion-20261031/REPORT.md. 스킬 본문·Unity·자연 플레이·배포는 범위 밖이다.
