@@ -209,3 +209,7 @@
 
 ### 2026-11-01 KST 단계2 M1 교정 진행
 5e9 실제 Editor96+8+shader와build는 통과했으나 M1 b1439857 07b에서 DOT와 접촉 간격을 섞어22/23 FAIL. 같은 빌드의 추가field16/actor336/hit150/두1080controls각54 검사는 진단 증거로만 보존했다. NativeGame.M1Check의 접촉timer전이·첫접촉직전HP·독립 치명접촉 관측을 교정했으며 Core규칙 변경0. 새source 실제build/M1/H5프레임대조·common/Desktop2가 남았다. 상세는 UNITY_HD2D_ALIGNMENT_20261031.md 최신절.
+
+
+### 2026-11-01 KST 이동탄 표시 재작업
+5e9 실제1x에서 이동탄이 바닥mesh로 분류되어 보이지 않은 결함을 확인했다. 이동탄/추적독구를 Center 빌보드로 분리하고 화면Core중심을 유지하는 view-ray 깊이 보정으로 전체그림의 지형가림을 방지한다. 장판/지뢰는 surface 유지, Actor발lift 미적용. 실제활성 SpriteRenderer 표시/중심 error<=1px 관측과 Editor192조건을 추가했다. API0이며 새 실제검수/common/Desktop2 미완. 수치/counter PASS를시각PASS로사용하지않는다. 상세 UNITY_HD2D_ALIGNMENT 최신절.

@@ -35,6 +35,8 @@ namespace Exoduser.UnityPort
         // game.html playVFXAng: a once-clip lives maxFrames x frameTime ticks and is stretched over that time; additive ('lighter'), alpha 1 - frame/maxFrames*.3
         sealed class Vfx { public Clip Clip; public float X, Y, W, H; public int Born, FrameTime, MaxFrames; }
         readonly List<Vfx> vfx = new List<Vfx>();
+        readonly Dictionary<BossProjectile,SpriteRenderer> projectileRenderers=new Dictionary<BossProjectile,SpriteRenderer>();
+        public bool TryProjectileRenderer(BossProjectile p,out SpriteRenderer renderer){return projectileRenderers.TryGetValue(p,out renderer)&&renderer!=null;}
         Simulation bound; int boundTick;
         readonly HashSet<ChaseZone> zoneHit = new HashSet<ChaseZone>();
         readonly Dictionary<Fissure, int> fissureExploded = new Dictionary<Fissure, int>();
@@ -84,17 +86,17 @@ namespace Exoduser.UnityPort
         }
 
         // radius in web pixels (the 128 px sprite is 1.28 world units wide at scale 1)
-        void Put(Sprite s, double x, double y, double radius, Color c, int order)
+        void Put(Sprite s, double x, double y, double radius, Color c, int order,bool ground=true)
         {
             var r = Next(); r.sprite = s; r.color = c; r.sortingOrder = order; r.transform.rotation = Quaternion.identity;
-            r.transform.position = Point(x, y); r.transform.localScale = Vector3.one * (float)(radius * 2 / s.rect.width);NativeHd2DSurface.Bind(r);
+            r.transform.position = Point(x, y); r.transform.localScale = Vector3.one * (float)(radius * 2 / s.rect.width);if(ground)NativeHd2DSurface.Bind(r);else NativeHd2D.Center(r);
         }
 
         // a sprite stretched to w x h web pixels, optionally rotated (canvas rotate is clockwise on screen, Unity z-rotation counter-clockwise)
-        void PutBox(Sprite s, double x, double y, double w, double h, Color c, int order, double angle = 0)
+        void PutBox(Sprite s, double x, double y, double w, double h, Color c, int order, double angle = 0,bool ground=true)
         {
             var r = Next(); r.sprite = s; r.color = c; r.sortingOrder = order; r.transform.rotation = Quaternion.Euler(0, 0, -(float)(angle * Mathf.Rad2Deg));
-            r.transform.position = Point(x, y); r.transform.localScale = new Vector3((float)w / s.rect.width, (float)h / s.rect.height, 1);NativeHd2DSurface.Bind(r);
+            r.transform.position = Point(x, y); r.transform.localScale = new Vector3((float)w / s.rect.width, (float)h / s.rect.height, 1);if(ground)NativeHd2DSurface.Bind(r);else NativeHd2D.Center(r);
         }
 
         void PutAdd(Sprite s, double x, double y, double w, double h, float opacity, int order, double angle = 0, Color? tint = null,bool ground=true)
@@ -142,7 +144,7 @@ namespace Exoduser.UnityPort
 
         public void Update(Simulation sim)
         {
-            used = 0; addUsed = 0; MineSpritesDrawn = 0; MineArtFallbacks = 0; FieldMouthsDrawn = 0; FieldCometsDrawn = 0; FieldOrbsDrawn = 0; FieldBulletFallbacks = 0;
+            projectileRenderers.Clear();used = 0; addUsed = 0; MineSpritesDrawn = 0; MineArtFallbacks = 0; FieldMouthsDrawn = 0; FieldCometsDrawn = 0; FieldOrbsDrawn = 0; FieldBulletFallbacks = 0;
             if (bound != sim) { if (bound != null) bound.BossFx -= OnFx; bound = sim; sim.BossFx += OnFx; }
             DrawFieldZones(sim);
             var druid = sim.Druid; if (druid == null) { Finish(); return; }
@@ -222,7 +224,7 @@ namespace Exoduser.UnityPort
             foreach (var o in druid.Orbs)
             {
                 double R = o.R * 2.4;   // _drawDruidOrbClip: o.t/60 s into the looping clip, 2.4 r
-                PutBox(ClipSprite(OrbClip, LoopFrame(OrbClip, o.T)), o.X, o.Y, R * 2, R * 2, Color.white, (int)o.Y + 4);
+                PutBox(ClipSprite(OrbClip, LoopFrame(OrbClip, o.T)), o.X, o.Y, R * 2, R * 2, Color.white, (int)o.Y + 4,ground:false);
             }
             foreach (var p in druid.Projectiles)
             {
@@ -232,10 +234,10 @@ namespace Exoduser.UnityPort
                 {
                     // _drawDruidPoisonShot: 16-frame orb at 70 ms/frame, 96..180 px by Sz (240 for mines / element balls), doubled for physical-parry shots
                     double size = (p.Mine || p.ElemBall ? 240 : Math.Max(96, Math.Min(180, p.Sz * 24))) * (p.ParryClass == "physical" ? 2 : 1);
-                    PutBox(NativeDruidArt.PoisonShot((int)(nowMs / 70) % 16), p.X, p.Y, size, size, Color.white, (int)p.Y + 6);
+                    PutBox(NativeDruidArt.PoisonShot((int)(nowMs / 70) % 16), p.X, p.Y, size, size, Color.white, (int)p.Y + 6,ground:false);projectileRenderers[p]=pool[used-1];
                     continue;
                 }
-                DrawFieldBullet(p, t);   // VFX-D18: field enemies' bullets, per kind as game.html pass 2 (NativeBossView.FieldBullets.cs)
+                int firstBulletRenderer=used;DrawFieldBullet(p, t);if(used>firstBulletRenderer)projectileRenderers[p]=pool[used-1];   // VFX-D18: field enemies' bullets, per kind as game.html pass 2 (NativeBossView.FieldBullets.cs)
             }
             // once-clips (additive)
             for (int i = 0; i < vfx.Count;)

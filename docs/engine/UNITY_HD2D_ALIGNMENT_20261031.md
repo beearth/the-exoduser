@@ -131,3 +131,22 @@ Resources/Shaders/HD2DGround 누락 또는 isSupported=false면 원래 SpriteRen
 |현재 제한|M1 수정 source의 새빌드/실제M1/같은Player 전체검수·실제H5 피격프레임 나란히·common/Desktop2 미완료. 위5e9 캡처를 뒤 source의 증거로 소급하지 않음|
 
 근거는 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/stage2-m1-contact-diagnostic, stage2-validation-5e9dd88d9, stage2-diagnostic-remaining-5e9dd88d9. Core114·게임 규칙은 이 교정으로 변경하지 않는다.
+
+
+## 2026-11-01 KST 이동탄 실제 1x 결함 재작업
+
+5e9 피격150 fixture는 수치/렌더카운터가 통과했으나 실제1920 PNG12/13/14/15 1x에서 탄이 읽히지 않았다. 공용 PutBox가 이동탄까지 지면mesh로 분류한 결함이다. 실패를 보존하고 d8f013e98의 아직 Unity가 시작되지 않은 자기 대기PS만 PID/부모/명령/PC-lock없음/자식0 확인 후 중단했다. 취소후 파생0/원본3925·60/57/guard 안전. d8f 빌드 생성/성공0이며 API/원격source만 존재한다.
+
+|경계|최신 계약|
+|---|---|
+|지면 역할|장판·균열·텔레그래프·지뢰·트랩은 기존 surface mesh/높이함수 유지|
+|중심 역할|물리입탄·마법혜성·원소구·원본드루이드독탄·추적독구는 Put/PutBox ground=false로 surface Unbind 후 Center. 원본크기·UV·pivot·roll·tint·정렬 유지|
+|풀 재사용|지면 source.forceRenderingOff를 복구하고 프록시 파괴 후 중심 역할. Actor 발밑lift를 이동탄에 적용하지 않음|
+|전체 그림 지형가림|Core 중심을 카메라화소에 snap 후 같은 view ray의 카메라방향으로만 당김. perspective는 카메라→중심ray, ortho는 -forward. 화면Core중심 유지|
+|깊이 계산|원본sprite.bounds/pivot/flip/현재scale/roll의3x3과 실제GroundY 비교. 최대6회/목표clearance.003m/종료.0029m/ray상향성분>.05. nearClip+.02m 여유를 넘지 않음. 지형/Core좌표·탄속·접촉반경 변경0|
+|실제 피격 관측|BossProjectile→실제 SpriteRenderer map의 projected transform/forceRenderingOff/Center 역할 기록. 활성탄은 source visible/centered와 Core screen error<=1px 필수. Drawn 카운트만으로 표시PASS 판정하지 않음|
+|Editor 추가|CenteredBullets:1920/3840×perspective/ortho×pitch34/48.7014×roll0/37/90×flip2×scale1/3=192. pivot(.62,.5), 지면→중심 풀전환, screen error<=.72px,9지점 clearance>=.0027m. 실제Editor 전/API Runtime·Editor0까지만|
+|소스 범위|초기31 code/meta에 NativeGame.M1Check.cs·NativeBossView.FieldBullets.cs 2기존파일 추가=현재33 code/meta. 초기plan은 이력이며 뒤source manifest·실제build/Player를 별도로 연결|
+|미완|새실제Editor192·build·M123·field16/actor336/hit150/각1080controls54·1x 탄/웹150·common/Desktop2. 이전후보 증거를 뒤source에 소급하지 않음|
+
+근거: I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/phase2-moving-bullet-fix 및 stage2-hit-diagnostic-review-5e9. Core114·보호RM5 변경0.

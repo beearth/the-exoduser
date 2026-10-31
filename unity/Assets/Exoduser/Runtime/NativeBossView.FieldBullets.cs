@@ -64,7 +64,7 @@ namespace Exoduser.UnityPort
         {
             if (!HasArt(MouthRes)) { FieldFallback(p, h * .35, order); return; }
             int n = MouthFrameCount[0], fi = (((tick >> 2) + (int)(p.X * .03)) % n + n) % n;
-            PutBox(NativeDruidArt.Rect(MouthRes, fi * MouthW, 0, MouthW, MouthH, new Vector2(.5f, .5f)), p.X, p.Y, h * MouthW / MouthH, h, Color.white, order, ang);
+            PutBox(NativeDruidArt.Rect(MouthRes, fi * MouthW, 0, MouthW, MouthH, new Vector2(.5f, .5f)), p.X, p.Y, h * MouthW / MouthH, h, Color.white, order, ang,ground:false);
             FieldMouthsDrawn++;
         }
 
@@ -74,7 +74,7 @@ namespace Exoduser.UnityPort
             if (frames == null) { FieldFallback(p, len * .2, order); return; }
             int fi = (((int)(tick * .12 + p.X * .013)) % CometFrameCount + CometFrameCount) % CometFrameCount;
             var s = frames[fi];
-            PutBox(s, p.X, p.Y, len, len * s.rect.height / s.rect.width, Color.white, order, ang);
+            PutBox(s, p.X, p.Y, len, len * s.rect.height / s.rect.width, Color.white, order, ang,ground:false);
             FieldCometsDrawn++;
         }
 
@@ -82,7 +82,7 @@ namespace Exoduser.UnityPort
         {
             if (!HasArt(OrbRes)) { FieldFallback(p, h * .3, order); return; }
             int fi = (((tick >> 2) + (int)(p.X * .03)) % 6 + 6) % 6;
-            PutBox(NativeDruidArt.Rect(OrbRes, fi * OrbW, row * OrbH, OrbW, OrbH, new Vector2(.5f, .5f)), p.X, p.Y, h * OrbW / OrbH, h, Color.white, order, ang);
+            PutBox(NativeDruidArt.Rect(OrbRes, fi * OrbW, row * OrbH, OrbW, OrbH, new Vector2(.5f, .5f)), p.X, p.Y, h * OrbW / OrbH, h, Color.white, order, ang,ground:false);
             FieldOrbsDrawn++;
         }
 
@@ -90,7 +90,7 @@ namespace Exoduser.UnityPort
         void FieldFallback(BossProjectile p, double radius, int order)
         {
             Color c; ColorUtility.TryParseHtmlString(EnemyFactory.ElementColors[p.El >= 0 && p.El < EnemyFactory.ElementColors.Length ? p.El : 0], out c);
-            Put(disc, p.X, p.Y, Math.Max(3, radius), new Color(c.r, c.g, c.b, .9f), order); FieldBulletFallbacks++;
+            Put(disc, p.X, p.Y, Math.Max(3, radius), new Color(c.r, c.g, c.b, .9f), order,ground:false); FieldBulletFallbacks++;
         }
 
         // game.html enemy-projectile pass 2 for a bullet that is not a druid poison shot and not a seeker mine

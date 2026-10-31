@@ -152,6 +152,8 @@ namespace Exoduser.UnityPort
                 r3Base[sr] = new R3Base { localPosition = tr.localPosition, localRotation = tr.localRotation };
                 float roll = tr.rotation.eulerAngles.z;
                 if(NativeHd2D.Enabled&&NativeHd2DSurface.Project(sr,r3Cam))continue;
+                if(NativeHd2D.Enabled&&(NativeHd2D.IsCentered(sr)||NativeSkillView.IsCenteredSkillSprite(sr)))
+                { NativeHd2D.ProjectCentered(sr,r3Cam,roll);r3Projected.Add(sr);continue; }
                 if(NativeHd2D.Enabled&&NativeHd2D.IsActor(sr))
                 { NativeHd2D.ProjectActor(sr,r3Cam,roll);r3Projected.Add(sr);continue; }
                 float below = NativeHd2D.IsCentered(sr)||NativeSkillView.IsCenteredSkillSprite(sr) ? 0 : (sr == playerView ? NativeRemodelCamera.HeroFootLift(sr.sprite) : NativeEnemyFootprint.FootLift(sr.sprite)) * Mathf.Abs(tr.lossyScale.y);

@@ -8,7 +8,7 @@ namespace Exoduser.UnityPort
 {
  public sealed partial class NativeGame
  {
-  [Serializable] sealed class Hd2dHitFrame { public string key,kind;public int frame,tick,width,height,hurt,mouths,comets,fallbacks;public float px,py,radius,iframes,hp,shield,ground;public double x,y,vx,vy,sz;public bool active,expectedHit,everHit;public Vector3 footScreen,bulletScreen; }
+  [Serializable] sealed class Hd2dHitFrame { public string key,kind;public int frame,tick,width,height,hurt,mouths,comets,fallbacks;public float px,py,radius,iframes,hp,shield,ground;public double x,y,vx,vy,sz;public bool active,expectedHit,everHit;public Vector3 footScreen,bulletScreen,actualBulletScreen;public bool bulletRendererFound,bulletSourceVisible,bulletCentered;public float bulletCenterError; }
   [Serializable] sealed class Hd2dHitReceipt { public string scope="실제 Core·Player 렌더의 정지 플레이어/적탄 피격 전후 fixture. AI정지·이동없음·초기HP/idle/iframe0·직접 생성한 실제 BossProjectile. 자연플레이·생성확률·이동입력·전체피해식 동등성 증거 아님. PNG는 HUD 포함, 논리틱 좌표와 실제 카메라 투영값 별도.";public bool passed,fieldRequested,fieldLoaded,fieldActive;public List<string> failures=new List<string>();public List<Hd2dHitFrame> frames=new List<Hd2dHitFrame>(); }
   IEnumerator Hd2dHitCapture(string output,List<string> prerequisiteFailures)
   {
@@ -55,7 +55,10 @@ namespace Exoduser.UnityPort
       if(hitNow!=expectedConsumed)receipt.failures.Add("actual Core HurtCount/contact disagreement "+prefix+" frame="+frame);
       if(shot.Active&&(bossView==null||bossView.FieldMouthsDrawn+bossView.FieldCometsDrawn!=1||bossView.FieldBulletFallbacks!=0))receipt.failures.Add("actual projectile original art missing "+prefix+" frame="+frame);
       var camera=HudCamera;var ground=NativeRemodel3D.Active?NativeRemodel3D.GroundY(p.X/100,-p.Y/100):0;
-      receipt.frames.Add(new Hd2dHitFrame{key=prefix,kind=kind,frame=frame,tick=sim.TickCount,width=Screen.width,height=Screen.height,px=p.X,py=p.Y,radius=p.Radius,iframes=p.Iframes,hp=p.Hp,shield=p.Shield,hurt=sim.HurtCount-hurt0,mouths=bossView!=null?bossView.FieldMouthsDrawn:0,comets=bossView!=null?bossView.FieldCometsDrawn:0,fallbacks=bossView!=null?bossView.FieldBulletFallbacks:0,x=shot.X,y=shot.Y,vx=shot.Vx,vy=shot.Vy,sz=shot.Sz,active=shot.Active,expectedHit=expectedConsumed,everHit=observed,ground=ground,footScreen=camera.WorldToScreenPoint(Point(p.X,p.Y)),bulletScreen=camera.WorldToScreenPoint(Point((float)shot.X,(float)shot.Y))});
+      SpriteRenderer actualRenderer=null;bool found=bossView!=null&&bossView.TryProjectileRenderer(shot,out actualRenderer);var expectedScreen=camera.WorldToScreenPoint(Point((float)shot.X,(float)shot.Y));var actualScreen=found?camera.WorldToScreenPoint(actualRenderer.transform.position):default;
+      bool visible=found&&actualRenderer.enabled&&actualRenderer.gameObject.activeInHierarchy&&!actualRenderer.forceRenderingOff;bool centered=found&&NativeHd2D.IsCentered(actualRenderer);float centerError=found?Vector2.Distance(actualScreen,expectedScreen):0;
+      if(shot.Active&&(!visible||!centered||centerError>1))receipt.failures.Add("actual moving bullet role/centre invalid "+prefix+" frame="+frame+" visible="+visible+" centered="+centered+" errorPx="+centerError);
+      receipt.frames.Add(new Hd2dHitFrame{bulletRendererFound=found,bulletSourceVisible=visible,bulletCentered=centered,actualBulletScreen=actualScreen,bulletCenterError=centerError,key=prefix,kind=kind,frame=frame,tick=sim.TickCount,width=Screen.width,height=Screen.height,px=p.X,py=p.Y,radius=p.Radius,iframes=p.Iframes,hp=p.Hp,shield=p.Shield,hurt=sim.HurtCount-hurt0,mouths=bossView!=null?bossView.FieldMouthsDrawn:0,comets=bossView!=null?bossView.FieldCometsDrawn:0,fallbacks=bossView!=null?bossView.FieldBulletFallbacks:0,x=shot.X,y=shot.Y,vx=shot.Vx,vy=shot.Vy,sz=shot.Sz,active=shot.Active,expectedHit=expectedConsumed,everHit=observed,ground=ground,footScreen=camera.WorldToScreenPoint(Point(p.X,p.Y)),bulletScreen=camera.WorldToScreenPoint(Point((float)shot.X,(float)shot.Y))});
       Hd2dQueue(files,Path.Combine(folder,frame.ToString("D4")+".png"));
      }
      if(observed==kind.EndsWith("miss"))receipt.failures.Add("hit/miss outcome "+prefix);

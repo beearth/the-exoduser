@@ -142,6 +142,26 @@ namespace Exoduser.UnityPort
             shadow.transform.localScale=new Vector3(width,width*.6f,1);
 
         }
+        // 중심형 이동탄은 Core 투영점을 유지하며 view ray로만 당겨 전체 그림을 지형 위에 둔다.
+        public static void ProjectCentered(SpriteRenderer sr,Camera camera,float roll)
+        {
+            if(sr==null||sr.sprite==null||camera==null)return;
+            var anchor=SnapAnchor(camera,sr.transform.position);var rotation=camera.transform.rotation*Quaternion.Euler(0,0,roll);
+            var toward=camera.orthographic?-camera.transform.forward:(camera.transform.position-anchor).normalized;
+            float forward=-Vector3.Dot(camera.transform.forward,toward),advance=0;
+            float available=Mathf.Max(0,(camera.WorldToScreenPoint(anchor).z-camera.nearClipPlane-.02f)/Mathf.Max(.05f,forward));
+            if(toward.y>.05f)for(int pass=0;pass<6;pass++)
+            {
+                float minimum=float.PositiveInfinity;var bounds=sr.sprite.bounds;var scale=sr.transform.lossyScale;
+                for(int iy=0;iy<3;iy++)for(int ix=0;ix<3;ix++)
+                {
+                    var local=new Vector3(Mathf.Lerp(bounds.min.x,bounds.max.x,ix*.5f)*scale.x*(sr.flipX?-1:1),Mathf.Lerp(bounds.min.y,bounds.max.y,iy*.5f)*scale.y*(sr.flipY?-1:1),0);
+                    var point=anchor+toward*advance+rotation*local;minimum=Mathf.Min(minimum,point.y-NativeRemodel3D.GroundY(point.x,point.z));
+                }
+                if(minimum>=.0029f)break;float step=Mathf.Min((.003f-minimum)/toward.y,available-advance);if(step<=0)break;advance+=step;
+            }
+            sr.transform.SetPositionAndRotation(anchor+toward*advance,rotation);
+        }
         public static float FootLift(Sprite sprite)
         {
             if(footCache.TryGetValue(sprite,out var cached))return cached;

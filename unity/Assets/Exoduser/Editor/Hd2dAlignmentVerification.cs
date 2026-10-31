@@ -95,6 +95,36 @@ namespace Exoduser
             }
             finally{camera.targetTexture=null;foreach(var rt in ownedRts)if(rt!=null){rt.Release();UnityEngine.Object.DestroyImmediate(rt);}NativeHd2DSurface.DisposeAll();NativeRemodel3D.Active=false;NativeRemodel3D.Ground=null;UnityEngine.Object.DestroyImmediate(sr.gameObject);UnityEngine.Object.DestroyImmediate(camera.gameObject);UnityEngine.Object.DestroyImmediate(sprite);UnityEngine.Object.DestroyImmediate(texture);UnityEngine.Object.DestroyImmediate(terrain.gameObject);UnityEngine.Object.DestroyImmediate(data);}
         }
+        public static void CenteredBullets()
+        {
+            NativeHd2DSurface.DisposeAll();EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
+            var data=new TerrainData{heightmapResolution=129,size=new Vector3(12,2,12)};var heights=new float[129,129];
+            for(int z=0;z<129;z++)for(int x=0;x<129;x++)heights[z,x]=.15f+.2f*x/128f+.08f*Mathf.Sin(z/128f*Mathf.PI);
+            data.SetHeights(0,0,heights);var terrain=Terrain.CreateTerrainGameObject(data).GetComponent<Terrain>();NativeRemodel3D.Ground=terrain;NativeRemodel3D.Active=true;
+            var camera=new GameObject("centred projectile camera").AddComponent<Camera>();camera.farClipPlane=80;
+            var texture=new Texture2D(64,64);var sprite=Sprite.Create(texture,new Rect(0,0,64,64),new Vector2(.62f,.5f),100,0,SpriteMeshType.FullRect);
+            var sr=new GameObject("asymmetric moving bullet pivot").AddComponent<SpriteRenderer>();sr.sprite=sprite;var ownedRts=new System.Collections.Generic.List<RenderTexture>();int cases=0;float worst=0,lowest=float.PositiveInfinity;
+            try
+            {
+                foreach(int width in new[]{1920,3840})foreach(bool ortho in new[]{false,true})foreach(float pitch in new[]{34f,48.7014f})
+                {
+                    var rt=new RenderTexture(width,1080,24);ownedRts.Add(rt);camera.targetTexture=rt;camera.aspect=width/1080f;camera.orthographic=ortho;camera.orthographicSize=5.4f;camera.fieldOfView=46.9453f;
+                    var anchor=new Vector3(5.137f,NativeRemodel3D.GroundY(5.137f,5.263f),5.263f);camera.transform.rotation=Quaternion.Euler(pitch,0,0);camera.transform.position=anchor-camera.transform.forward*14-camera.transform.right*1.1f;
+                    foreach(float roll in new[]{0f,37f,90f})foreach(bool flip in new[]{false,true})foreach(float scale in new[]{1f,3f})
+                    {
+                        sr.transform.SetPositionAndRotation(anchor,Quaternion.Euler(0,0,roll));sr.transform.localScale=new Vector3(scale,scale*.75f,1);sr.flipX=flip;sr.forceRenderingOff=false;
+                        NativeHd2DSurface.Bind(sr);Check(NativeHd2DSurface.Project(sr,camera),"ground pool setup");Check(sr.forceRenderingOff,"ground pool source not hidden");NativeHd2D.Center(sr);Check(!sr.forceRenderingOff&&NativeHd2D.IsCentered(sr),"ground to moving role transition failed");
+                        NativeHd2D.ProjectCentered(sr,camera,roll);float error=Vector2.Distance(camera.WorldToScreenPoint(anchor),camera.WorldToScreenPoint(sr.transform.position));worst=Mathf.Max(worst,error);Check(error<=.72f,"moving centre screen drift "+error);
+                        var bounds=sprite.bounds;for(int yi=0;yi<3;yi++)for(int xi=0;xi<3;xi++)
+                        {var local=new Vector3(Mathf.Lerp(bounds.min.x,bounds.max.x,xi*.5f)*(flip?-1:1),Mathf.Lerp(bounds.min.y,bounds.max.y,yi*.5f),0);var point=sr.transform.TransformPoint(local);float clearance=point.y-NativeRemodel3D.GroundY(point.x,point.z);lowest=Mathf.Min(lowest,clearance);Check(clearance>=.0027f,"moving image intersects ground "+clearance);}
+                        Check(sr.enabled&&!sr.forceRenderingOff,"moving source still hidden");NativeHd2D.Grounded(sr);cases++;
+                    }
+                    camera.targetTexture=null;rt.Release();UnityEngine.Object.DestroyImmediate(rt);
+                }
+                Debug.Log("[HD2D] CENTERED_BULLETS PASS cases="+cases+" worstPx="+worst+" minGroundClearance="+lowest);
+            }
+            finally{camera.targetTexture=null;foreach(var rt in ownedRts)if(rt!=null){rt.Release();UnityEngine.Object.DestroyImmediate(rt);}NativeHd2D.Grounded(sr);NativeHd2DSurface.DisposeAll();NativeRemodel3D.Active=false;NativeRemodel3D.Ground=null;UnityEngine.Object.DestroyImmediate(sr.gameObject);UnityEngine.Object.DestroyImmediate(camera.gameObject);UnityEngine.Object.DestroyImmediate(sprite);UnityEngine.Object.DestroyImmediate(texture);UnityEngine.Object.DestroyImmediate(terrain.gameObject);UnityEngine.Object.DestroyImmediate(data);}
+        }
         public static void Shaders()
         {
             var shader=Resources.Load<Shader>("Shaders/HD2DGround");Check(shader!=null,"ground shader missing");foreach(var msg in ShaderUtil.GetShaderMessages(shader))Check(msg.severity!=UnityEditor.Rendering.ShaderCompilerMessageSeverity.Error,msg.message);
