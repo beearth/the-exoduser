@@ -476,12 +476,12 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 .world-intro-active #worldIntroVideo{display:block}
 .world-intro-active .cin-text,.world-intro-active .cin-lb,.world-intro-active .ember{display:none!important}
 .world-intro-active #cinLang{display:block!important}
-#worldIntroVideo::cue{font-family:'Noto Serif','Noto Serif KR',serif;font-size:clamp(32px,5.4vh,50px);font-weight:500;color:#e9e6e0;background:transparent;text-shadow:1px 0 0 rgba(0,0,0,.95),-1px 0 0 rgba(0,0,0,.95),0 1px 0 rgba(0,0,0,.95),0 -1px 0 rgba(0,0,0,.95),0 2px 4px rgba(0,0,0,.85),0 0 12px rgba(0,0,0,.65)}
-#worldIntroVideo[data-subtitle-language="ja"]::cue{font-family:'Noto Serif JP','Noto Serif',serif}
-#worldIntroVideo[data-subtitle-language="zh"]::cue{font-family:'Noto Serif SC','Noto Serif',serif}
-#worldIntroVideo[data-subtitle-language="zht"]::cue{font-family:'Noto Serif TC','Noto Serif',serif}
-#worldIntroVideo[data-subtitle-language="ar"]::cue{font-family:'Noto Naskh Arabic','Noto Serif',serif}
-#worldIntroVideo[data-subtitle-language="th"]::cue{font-family:'Noto Serif Thai','Noto Serif',serif}
+#worldIntroVideo::cue,#characterStoryVideo::cue{font-family:'Noto Serif','Noto Serif KR',serif;font-size:clamp(32px,5.4vh,50px);font-weight:500;color:#e9e6e0;background:transparent;text-shadow:1px 0 0 rgba(0,0,0,.95),-1px 0 0 rgba(0,0,0,.95),0 1px 0 rgba(0,0,0,.95),0 -1px 0 rgba(0,0,0,.95),0 2px 4px rgba(0,0,0,.85),0 0 12px rgba(0,0,0,.65)}
+#worldIntroVideo[data-subtitle-language="ja"]::cue,#characterStoryOverlay:lang(ja) #characterStoryVideo::cue{font-family:'Noto Serif JP','Noto Serif',serif}
+#worldIntroVideo[data-subtitle-language="zh"]::cue,#characterStoryOverlay:lang(zh) #characterStoryVideo::cue{font-family:'Noto Serif SC','Noto Serif',serif}
+#worldIntroVideo[data-subtitle-language="zht"]::cue,#characterStoryOverlay:lang(zh-Hant) #characterStoryVideo::cue{font-family:'Noto Serif TC','Noto Serif',serif}
+#worldIntroVideo[data-subtitle-language="ar"]::cue,#characterStoryOverlay:lang(ar) #characterStoryVideo::cue{font-family:'Noto Naskh Arabic','Noto Serif',serif}
+#worldIntroVideo[data-subtitle-language="th"]::cue,#characterStoryOverlay:lang(th) #characterStoryVideo::cue{font-family:'Noto Serif Thai','Noto Serif',serif}
 #worldIntroMix{display:none;position:absolute;top:18px;left:18px;z-index:310;max-width:calc(100% - 36px);padding:10px 14px;background:rgba(0,0,0,.75);color:#ddd;font:12px sans-serif;border:1px solid #484b4b;border-radius:4px;gap:12px;align-items:center;flex-wrap:wrap}
 .world-intro-active #worldIntroMix{display:flex}
 #worldIntroMix label{display:flex;align-items:center;gap:6px}
