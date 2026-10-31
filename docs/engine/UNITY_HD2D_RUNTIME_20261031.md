@@ -9,7 +9,7 @@
 | 표현 | NativeHd2D.Enabled 기본 true. --legacy-models에서만 기존 NativeHeroView 연결. 기존 3D 코드 삭제0. 전사·CH1 적·드루이드 원본 시트를 유지 |
 | 픽셀·발밑 | Point 샘플링, alpha>64 오프라인 발끝 1,848건(영웅240+적1,600+앵글러8). 캐릭터 카메라 facing·출력 화면1화소 스냅. 정지 발선 정렬; 구르기 회전은 접지점/그림자를 유지하고 중심 lift는 비회전 카메라up 기준. 원본 드루이드 pivot(.5,.14) 유지 |
 | 광원 | URP 주광+추가광, ambient RGB(.55,.58,.63), rim(.12,.16,.20), 조명 상한2.2. 드루이드 additive 복제광은 HD2D에서 비활성화. 시각 수치는 실게임 검수 후 조정 |
-| 그림자 | 월드XZ 평면의 부드러운 타원. alpha=.58×actor.color.a, 높이.018u, 고정폭=영웅Radius×.02×필드HeroScale(아레나1), 적Radius×.035, 드루이드Radius×.0465, 앵글러1.5u; .24~2.8u clamp, 깊이=폭×.6. 원본 idle베이스+부분보행overlay 합성을 유지하며 공통 발선·그림자1개 공유 |
+| 그림자 | 월드XZ 평면의 부드러운 타원. alpha=.58×actor.color.a, 높이.018u, 고정폭=영웅Radius×.02×HD2D HeroScale(필드/아레나 모두2), 적Radius×.035, 드루이드Radius×.0465, 앵글러1.5u; .24~2.8u clamp, 깊이=폭×.6. 원본 idle베이스+부분보행overlay 합성을 유지하며 공통 발선·그림자1개 공유 |
 | 2단계 | 탄·장판 중심 정렬 / 지면 높이·조준 역변환 / 프레임 대조는 아직 구현·검수 전 |
 | 3단계 | 틸트시프트·블룸·높이 안개·점광원·카메라는 시험 실물 판정 이후 이식 예정 |
 | 보존 | I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/baseline에 변경 전 정확 바이트·SHA. Core 변경0, 사용자세이브 변경0 |
@@ -78,3 +78,23 @@
 | RED | 실제 D3D11 Editor의 같은 원본 2회 투영에서 76px, 카메라 왕복에서 228px 오차 재현. 당시 제품 소스와 실행 영수증은 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/editor-repeat-projection에 보존. |
 | GREEN | 동일 최소 재현의 반복/왕복 오차 각각0px. 확장 RepeatedProjection 640회(평면/필드, 원근/직교, pivot-foot/alpha-foot, roll4방향, 카메라 왕복/부모 이동/위치-only writer), 최대0.0002441406px. 기존 ActorAnchors 12건 최대0.474586px, RollCentre 4방향, DruidPivotFoot 0.42429px, Shaders 통과. |
 | 한계 | 실제 Editor 기술검수다. Player 연속 프레임·전투/이동/구르기 실루엣·시각 품질·같은 build M1·공통 통합·Desktop은 이 결과만으로 완료하지 않는다. 실패 상태 Map a5491d8c0 인수0. |
+
+
+## 첫 Player 실패와 원거리 스냅·아레나 재작업
+
+| 항목 | 현재 계약·검수 범위 |
+|---|---|
+| 첫 빌드6f2e16b15 | BuildSucceeded/오류0, 212파일3,102,459,308bytes, 실제DLL160 MCP파일·참조0. 현재제품Core114개 고정바이트로 druid48조건/54,400틱/5,421,635검사,실제패링26,특수탄48,708,피격3,000조건/47,559검사 모두불일치0. |
+| M1 | 같은 빌드 f9ddef48 D3D11·batch 23항목모두ok, 사용자창/잔류/세이브변경0. remodel의batch 캡처는 비활성view 참조로 검은화면이며GUI Repaint/bridge0이다. 기능 검수만 인정하고 실화면/HUD 검수는별도hidden ScreenCapture를쓴다. |
+| 실제 Player FAIL | b4945464는1920/3840의드루이드360틱중292틱에서사망하여PNG292장. motion8 스냅0.02069488px가한계0.02px초과. druid 정지화면은상단잘림·작은영웅도직접확인. 같은 실패본과5개failure/모든rawPNG 보존. 합격으로올리지않음. |
+| 원거리 역투영 | SnapAnchor의ScreenToWorldPoint 후카메라평면에서출력화소잔차를3회보정한다. projection.m00/m11·pixelWidth/Height·depth로원근/직교world/화소단위를구한다. original camera depth를유지하고기존0.02px허용치를늘리지않음. |
+| 실제 Editor 스냅 | Player범위와먼좌표를포함한원근1024조건 RED332/max0.07608262px. 수정후원근/직교·1920/3840·4X×4Z×32높이 총2048조건 max0.001556396px/실패0. 반복투영640 max0.00006103516px, 기존앵커12 max0.4744214px·회전4·드루이드0.42429px·shader PASS. |
+| 영웅 표시 크기 | HD2D는field/arena/flat에서2×HeroScale2=scale4. legacy는기존2×(field일때HeroScale2,그외1)보존. 접지폭의배율도같다. Core Radius/히트박스/이동/공격 수치변경0. |
+| 아레나 구도 | 기존 view 카메라를사용한다. writer가드루이드/영웅을갱신한뒤,실제드루이드bounds와영웅예정foot-lift bounds union을x.08~.92/y.20~.88 안전영역에맞춘다. halfHeight=max(기존줌,높이/(2×.68),너비/(2×.84×aspect)). centreY.54,전투중필요최대half유지·필드복귀시초기화. 새카메라0. |
+| 카메라 순서·흔들림 | 최종아레나카메라→teleView.Update 1회→flat actor projection. 원본피격shake의같은2난수offset을구도centre에더해보존. field/legacy의기존카메라동작은유지. |
+| 아레나 Editor | 실제body sprite/idle·fanWind·charge·dive·플레이어3위치·두해상도24조건:전신viewport안전영역,흔들림offset보존,ortho AimWorld XY왕복 통과. 실제arena edge/background·연속카메라품질은재Player에서판정. |
+| 촬영 fixture 입력 | boss 정지/모션시작을보스동쪽650px의실제CanMove점으로옮긴다. 모션시작Harp225 한회설정후,거리650 유지원회피+70틱중30틱에실제SetRollInput,회피당45소모. EnemyAi=true/360틱·120샘플유지. Core/피해식변경0. 자연플레이검증아님. |
+| 전술 사전검사 | Play모드 없이실제Editor의제품Simulation·SourceStarterFixture·원본맵·초기shield0/iframes0에서16seed 모두360틱생존,실제5roll·최저HP254.7343. 이는전체Player 진입RNG와동일하지않으며다음빌드합격증거아님. y구간제한arc는1seed사망하여채택하지않음. |
+| Map 후속 | Map은현재18507b9543/NOT_READY 인수0. 이후HellArenaCamera와view 구도를동시에적용하지않고실제최종HudCamera한곳에통합한다. 뒤늦은Clamp로다시잘리지않도록edge/telegraph/Aim·원본흔들림을같은후보로검수. |
+
+다음 새소스빌드·같은M1·336PNG·실물구도/이동/전투·MERGE_QUEUE/공통/Desktop은아직미완료다. 기록경로는 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/editor-translated-snap, stage1-product-oracle-6f2e16b15, build-input-6f2e16b15를따른다.

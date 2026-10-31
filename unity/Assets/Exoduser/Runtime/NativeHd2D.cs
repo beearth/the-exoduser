@@ -150,7 +150,18 @@ namespace Exoduser.UnityPort
             if (camera == null || camera.pixelHeight <= 0) return anchor;
             var screen = camera.WorldToScreenPoint(anchor);
             screen.x = Mathf.Round(screen.x); screen.y = Mathf.Round(screen.y);
-            return camera.ScreenToWorldPoint(screen);
+            var snapped=camera.ScreenToWorldPoint(screen);
+            // 원점에서 먼 world 좌표의 native 역투영 잔차를 카메라 평면에서 보정한다.
+            // 허용치를 늘리지 않고 최종 출력 화소에 맞춘다. 기존 source depth는 유지한다.
+            var projection=camera.projectionMatrix;
+            for(int i=0;i<3;i++)
+            {
+                var actual=camera.WorldToScreenPoint(snapped);
+                float ux=camera.orthographic?2*camera.orthographicSize*camera.aspect/camera.pixelWidth:2*actual.z/(projection.m00*camera.pixelWidth);
+                float uy=camera.orthographic?2*camera.orthographicSize/camera.pixelHeight:2*actual.z/(projection.m11*camera.pixelHeight);
+                snapped+=camera.transform.right*((screen.x-actual.x)*ux)+camera.transform.up*((screen.y-actual.y)*uy);
+            }
+            return snapped;
         }
     }
 }

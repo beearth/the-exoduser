@@ -16,7 +16,7 @@ namespace Exoduser.UnityPort
         [Serializable] sealed class Hd2dFile { public string path;public int width,height; }
         [Serializable] sealed class Hd2dReceipt
         {
-            public string scope="실제 hidden Player·격리세이브·실제Core/렌더/HUD. 시각검수 fixture: 탐험AI정지/고정추가적, 전투AI재개, 이동전HP/idle·Harp225정리·아레나gate강제개방·수동Core틱/목표60fps, 60Hz Core시간 기준 영웅30fps·드루이드20fps 샘플(실측GPU fps 아님). 자연완주·OS손조작 증거 아님";
+            public string scope="실제 hidden Player·격리세이브·실제Core/렌더/HUD. 시각검수 fixture: 탐험AI정지/고정추가적, 전투AI재개, 이동전HP/idle·Harp225정리·아레나gate강제개방·수동Core틱/목표60fps, 60Hz Core시간 기준 영웅30fps·드루이드20fps 샘플(실측GPU fps 아님). 보스모션 시작은650px동쪽 실제통행점·게이지225 1회설정,70틱주기 실제Core회피입력(1회45소모,무한갱신없음). 자연완주·OS손조작 증거 아님";
             public List<Hd2dFile> screenshots=new List<Hd2dFile>();public bool passed;public List<string> failures=new List<string>();public List<Hd2dFrame> frames=new List<Hd2dFrame>();
         }
         IEnumerator Hd2dCapture()
@@ -70,7 +70,7 @@ namespace Exoduser.UnityPort
                     for(int i=0;i<400&&!sim.Stage.InArena;i++){StepInput(0,0,p.X+100,p.Y,false,false);if(i%20==0)yield return null;}
                     for(int i=0;i<360&&sim.Stage.LoadPhase!=0;i++){StepInput(0,0,p.X+100,p.Y,false,false);if(i%20==0)yield return null;}
                     var boss=sim.Stage.FindBoss();
-                    if(boss!=null){p.X=boss.X;p.Y=boss.Y+220;UpdateViews();for(int i=0;i<8;i++)yield return null;yield return Hd2dShot(output,width+"-druid",rc);yield return Hd2dDruidMotion(output,width,boss,rc);}
+                    if(boss!=null){p.X=boss.X+650;p.Y=boss.Y;if(!sim.CanMove(p.X,p.Y,p.Radius))rc.failures.Add("druid motion start blocked: "+width);UpdateViews();for(int i=0;i<8;i++)yield return null;yield return Hd2dShot(output,width+"-druid",rc);yield return Hd2dDruidMotion(output,width,boss,rc);}
                     else rc.failures.Add("arena druid missing "+width);
                 }
                 else rc.failures.Add("field gate missing "+width);
@@ -83,11 +83,15 @@ namespace Exoduser.UnityPort
         }
         IEnumerator Hd2dDruidMotion(string output,int width,EnemyState boss,Hd2dReceipt rc)
         {
-            string directory=Path.Combine(output,width+"-druid-motion");Directory.CreateDirectory(directory);int completed=0;Simulation.Config.EnemyAiEnabled=true;
+            string directory=Path.Combine(output,width+"-druid-motion");Directory.CreateDirectory(directory);int completed=0;Simulation.Config.EnemyAiEnabled=true;Simulation.HarpGauge=225;
             for(int i=0;i<360;i++)
             {
                 if(Simulation.Player.Hp<=0){rc.failures.Add("druid motion ended by player death at "+i+": "+width);yield break;}
-                StepInput(i<180?.6f:-.6f,0,boss.X,boss.Y,false,false);completed++;yield return null;yield return new WaitForEndOfFrame();
+                var p=Simulation.Player;var away=new Vector2(p.X-boss.X,p.Y-boss.Y);float distance=away.magnitude;
+                if(distance<1)away=Vector2.up;else away/=distance;
+                var move=new Vector2(-away.y,away.x)+away*Mathf.Clamp((650-distance)/180f,-.5f,.8f);move.Normalize();
+                Simulation.SetRollInput(move.y<-.25f,move.y>.25f,move.x<-.25f,move.x>.25f,i%70==30);
+                StepInput(move.x,move.y,boss.X,boss.Y,false,false);completed++;yield return null;yield return new WaitForEndOfFrame();
                 if(i%3==0){Hd2dRecord(rc,width+"-druid-motion-"+i);Hd2dQueue(rc,Path.Combine(directory,(i/3).ToString("D4")+".png"));}
             }
             if(completed!=360||Simulation.Player.Hp<=0)rc.failures.Add("druid motion incomplete or final-tick death: "+width+" ticks="+completed);
