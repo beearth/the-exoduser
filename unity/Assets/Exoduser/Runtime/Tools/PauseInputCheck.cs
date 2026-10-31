@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort.Tools
  {
   const string Flag="--unity-pause-input-check";
   [Serializable] sealed class Check {public string name,detail;public bool passed;}
-  [Serializable] sealed class State {public string phase,playerState,page,practice;public int frame,tick,cursor;public float time,timeScale,hp,x,y;public bool running,menu,focus,navigationFocus,releaseFence,entryFence,inputFence,inventory,skills,stats,forge,remodel;}
+  [Serializable] sealed class State {public string phase,playerState,page,practice;public int frame,tick,cursor;public float time,timeScale,hp,stateTicks,x,y;public bool running,menu,focus,navigationFocus,releaseFence,entryFence,inputFence,inventory,skills,stats,forge,remodel;}
   [Serializable] sealed class Receipt {public string scope="격리 실제 Player: Input System 가상 키보드 → 제품 Update/PollKeys, 자기 숨은 Windows 창 WM 클릭 → 실제 OnGUI. focus callback 모델 전환. 사용자 손조작/OS 전환/자연 전투 검수와 구분",runtimeSha,coreSha,device,sandbox;public bool passed,quitRequested,quitObserved;public int mouseDown,mouseUp,frames;public List<Check> checks=new List<Check>();public List<State> states=new List<State>();}
   static bool Has(string flag)=>Array.IndexOf(Environment.GetCommandLineArgs(),flag)>=0;
   static string Arg(string flag){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,flag);return i>=0&&i+1<a.Length?a[i+1]:null;}
@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort.Tools
   static string Hash(string p){using(var h=SHA256.Create())using(var f=File.OpenRead(p))return BitConverter.ToString(h.ComputeHash(f)).Replace("-","").ToLowerInvariant();}
   void Save(){receipt.passed=!failed&&receipt.checks.Count>0&&receipt.checks.TrueForAll(c=>c.passed);File.WriteAllText(Path.Combine(output,"pause-input.json"),JsonUtility.ToJson(receipt,true));}
   void CheckThat(bool ok,string name,string detail=""){receipt.checks.Add(new Check{name=name,passed=ok,detail=detail});Snapshot(name);Save();if(!ok)throw new InvalidOperationException(name+" "+detail);}
-  State Snapshot(string label){var p=game.Simulation.Player;var s=new State{phase=label,frame=Time.frameCount,time=Time.realtimeSinceStartup,timeScale=Time.timeScale,tick=game.Simulation.TickCount,hp=p.Hp,playerState=p.State,x=p.X,y=p.Y,running=game.Running,menu=(bool)Get(game,"menu"),focus=(bool)Get(game,"gameFocused"),page=pause.Navigation.Page.ToString(),cursor=pause.Navigation.Cursor,navigationFocus=pause.Navigation.Focused,releaseFence=pause.Navigation.WaitingForRelease,entryFence=(bool)Get(game,"frontendEntryInputFence"),inputFence=(bool)Get(game,"skillInputFence"),inventory=((NativeInventory)Get(game,"inventory")).Open,skills=((NativeSkills)Get(game,"skills")).Open,stats=((NativeStatPanel)Get(game,"stats")).Open,forge=((NativeForgePanel)Get(game,"forge")).Open,practice=game.FirstPracticeStage,remodel=NativeRemodel3D.Active};receipt.states.Add(s);Debug.Log("PAUSE_INPUT_STATE "+JsonUtility.ToJson(s));return s;}
+  State Snapshot(string label){var p=game.Simulation.Player;var s=new State{phase=label,frame=Time.frameCount,time=Time.realtimeSinceStartup,timeScale=Time.timeScale,tick=game.Simulation.TickCount,hp=p.Hp,stateTicks=p.StateTicks,playerState=p.State,x=p.X,y=p.Y,running=game.Running,menu=(bool)Get(game,"menu"),focus=(bool)Get(game,"gameFocused"),page=pause.Navigation.Page.ToString(),cursor=pause.Navigation.Cursor,navigationFocus=pause.Navigation.Focused,releaseFence=pause.Navigation.WaitingForRelease,entryFence=(bool)Get(game,"frontendEntryInputFence"),inputFence=(bool)Get(game,"skillInputFence"),inventory=((NativeInventory)Get(game,"inventory")).Open,skills=((NativeSkills)Get(game,"skills")).Open,stats=((NativeStatPanel)Get(game,"stats")).Open,forge=((NativeForgePanel)Get(game,"forge")).Open,practice=game.FirstPracticeStage,remodel=NativeRemodel3D.Active};receipt.states.Add(s);Debug.Log("PAUSE_INPUT_STATE "+JsonUtility.ToJson(s));return s;}
   IEnumerator Start(){output=Arg("-output");if(!NativeQaSandbox.Active||string.IsNullOrEmpty(output)||!Path.IsPathRooted(output)){Debug.LogError("PAUSE_INPUT_REJECT: sandbox/output required");Application.Quit(3);yield break;}Directory.CreateDirectory(output);Directory.CreateDirectory(Path.Combine(output,"frames"));yield return Guard(Run());}
   IEnumerator Guard(IEnumerator run){while(true){bool more=false;object current=null;Exception error=null;try{more=run.MoveNext();if(more)current=run.Current;}catch(Exception e){error=e;}if(error!=null){failed=true;receipt.checks.Add(new Check{name="검수 예외",passed=false,detail=error.ToString()});Save();Cleanup();Debug.LogError("PAUSE_INPUT_FAILED "+error);Application.Quit(2);yield break;}if(!more)yield break;if(current is IEnumerator nested){yield return Guard(nested);if(failed)yield break;}else yield return current;}}
   IEnumerator Key(Key key){phase="키 "+key;Snapshot(phase+" 전");keyboard.MakeCurrent();InputSystem.QueueStateEvent(keyboard,new KeyboardState(key));yield return null;yield return null;InputSystem.QueueStateEvent(keyboard,new KeyboardState());yield return null;yield return null;Snapshot(phase+" 후");}
@@ -40,15 +40,27 @@ namespace Exoduser.UnityPort.Tools
    game=NativeGame.Instance;lobby=game.GetComponent<NativeLobby>();pause=(NativePauseMenu)Get(game,"pauseMenu");
    receipt.runtimeSha=Hash(typeof(NativeGame).Assembly.Location);receipt.coreSha=Hash(typeof(Simulation).Assembly.Location);receipt.device=SystemInfo.graphicsDeviceName;receipt.sandbox=NativeQaSandbox.Root;
    previousKeyboard=Keyboard.current;keyboard=InputSystem.AddDevice<Keyboard>();keyboard.MakeCurrent();InputSystem.QueueStateEvent(keyboard,new KeyboardState());
-   Screen.SetResolution(1600,900,FullScreenMode.Windowed);AudioListener.volume=0;AudioListener.pause=true;
+   Screen.SetResolution(1600,900,FullScreenMode.Windowed);AudioListener.volume=0;AudioListener.pause=true;yield return new WaitForSecondsRealtime(.5f);
    lobby.ShowLobby();lobby.SelectPreview();CheckThat(lobby.EnterNativeTest(),"일반 미리보기 진입");game.SetGameFocus(true);
    until=Time.realtimeSinceStartup+45;while((lobby.IsBlocking||!game.Running||NativeRemodel3D.Requested&&!NativeRemodel3D.Active)&&Time.realtimeSinceStartup<until)yield return null;
    CheckThat(game.Running,"진입 키 해제 후 실행");CheckThat(!NativeRemodel3D.Requested||NativeRemodel3D.Active,"요청된 숲 3D 로드");recording=true;StartCoroutine(Frames());
+   if(Arg("-pause-case")=="startup"){
+    lobby.ShowLobby();lobby.SetPlaybackFocus(true);var data=JsonUtility.FromJson<StartupIntroData>(Resources.Load<TextAsset>("Data/startup_intro").text);StartupIntroLine[] lines=null;foreach(var language in data.languages)if(language.code=="ko")lines=language.lines;
+    CheckThat(lines!=null&&lines.Length>0,"실제 대화 원본 로드");lobby.StartupCaptureState.Begin(lines,false);
+    until=Time.realtimeSinceStartup+10;while(lobby.StartupCaptureState.Page!=FrontendEntryPage.Nemesis&&Time.realtimeSinceStartup<until)yield return null;
+    CheckThat(lobby.IsBlocking&&!game.Running,"대화 창 전투 정지");yield return Shot("startup-dialogue");yield return Key(UnityEngine.InputSystem.Key.Escape);yield return new WaitForSecondsRealtime(.3f);CheckThat(lobby.StartupCaptureState.Page==FrontendEntryPage.Guide&&!game.Running,"대화 ESC 뒤 안내 진입");
+    for(int step=0;step<4;step++){CheckThat(lobby.StartupCaptureState.GuideStep==step,"안내 판 "+(step+1));yield return Shot("startup-guide-"+(step+1));yield return Key(UnityEngine.InputSystem.Key.Return);yield return new WaitForSecondsRealtime(.3f);}
+    until=Time.realtimeSinceStartup+5;while((lobby.IsBlocking||!game.Running)&&Time.realtimeSinceStartup<until)yield return null;CheckThat(!lobby.IsBlocking&&game.Running&&!(bool)Get(game,"frontendEntryInputFence"),"안내 종료 후 키 해제·입력 복귀");
+    float x=game.Simulation.Player.X;yield return Key(UnityEngine.InputSystem.Key.D);CheckThat(game.Simulation.Player.X!=x,"안내 뒤 실제 방향키 이동");yield return Shot("startup-input-restored");Save();Application.Quit(0);yield break;
+   }
    if(Arg("-pause-case")=="fallen"){
     Call(game.Simulation,"PlayerDie");CheckThat(game.Simulation.Player.State=="fallen"&&game.Simulation.Player.Hp==0,"Core 실제 부활 대기 진입");
     yield return PauseByFocus();yield return Shot("fallen-before-resume");yield return new WaitForSecondsRealtime(1);
     float countdown=game.Simulation.Player.StateTicks;yield return Click(640,218);yield return Shot("fallen-after-resume");yield return new WaitForSecondsRealtime(.4f);
-    CheckThat(game.Running&&!(bool)Get(game,"menu")&&game.Simulation.Player.StateTicks<countdown,"HP0 부활 대기 계속하기 클릭과 실제 카운트 재개");Save();Application.Quit(0);yield break;
+    CheckThat(game.Running&&!(bool)Get(game,"menu")&&game.Simulation.Player.StateTicks<countdown,"HP0 부활 대기 계속하기 클릭과 실제 카운트 재개");
+    yield return PauseByFocus();yield return Key(UnityEngine.InputSystem.Key.Return);yield return AssertResumed("부활 대기 계속하기 Enter");
+    yield return Key(UnityEngine.InputSystem.Key.Escape);yield return Key(UnityEngine.InputSystem.Key.Escape);yield return AssertResumed("부활 대기 ESC 두 번");
+    Call(game,"SetInventory",true);yield return Key(UnityEngine.InputSystem.Key.Tab);yield return AssertResumed("부활 대기 인벤토리 닫기");Save();Application.Quit(0);yield break;
    }
    yield return Key(UnityEngine.InputSystem.Key.Escape);CheckThat(!game.Running&&pause.SettingsOpen,"첫 ESC 설정 정지");int tick=game.Simulation.TickCount;yield return Shot("01-esc-paused");yield return new WaitForSecondsRealtime(.15f);CheckThat(game.Simulation.TickCount==tick,"설정 중 틱 정지");
    yield return Key(UnityEngine.InputSystem.Key.Escape);yield return AssertResumed("두 번째 ESC");yield return Shot("02-esc-resumed");
