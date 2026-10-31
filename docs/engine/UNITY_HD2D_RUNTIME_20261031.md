@@ -109,3 +109,24 @@
 | 현행 구도 | NativeDruidBody.Anchor를기준으로드루이드local상대bounds의형태최댓값만보존한다. 이를현재anchor로옮긴뒤현재영웅bounds와union하여매번halfHeight/centre를다시계산한다. 입구거리최댓값은저장하지않는다. 필드복귀시형태cache초기화. 안전영역/기존기본줌·shake·telegraph순서는그대로다. |
 | actualEditor GREEN | 입구18.9520321→근접6.75,새근접6.75로같음. 기존24조건전신/흔들림/조준왕복도통과. 형태변화때본체가잘리지않도록body-relative bounds만남겼다. |
 | 미완료 | 이수정의새소스build/same M1/실제1920·3840 336PNG/영웅가독성·arenaedge는재검수전. 이전e623기술PASS를새소스시각합격으로대체하지않는다. Core114개변경0/리마스터채택0/Map인수0. |
+
+
+## 1단계 최종 제품 검수 — 087d32acb
+
+| 항목 | 실제 결과·한계 |
+|---|---|
+| 소스/빌드 | 087d32acbeceee2c345e5c1128d703964b10efab → 공식 build04000ad8, D3D11, 오류0. I:/EXODUSER-Storage/unity-builds/hd2d-main/087d32acb-stage1. 212파일/3,102,460,844bytes, DLL160/MCP파일·참조0. Runtime DLL SHA256 7c78af66ece98cc77a22857d88ddd3bc7048892c54595c138d1d734e506af0fd. |
+| 같은빌드 M1 | 0a4f412f, 23/23 ok. 실제 D3D11, 사용자창0/잔류0/사용자세이브변경0. 기능검수이며 batch 검은화면을 시각근거로 쓰지 않음. |
+| 같은빌드 Player | cb4326ac,1920×1080/3840×1080 탐험·전투·드루이드336PNG. 각360틱완료/종료HP526, 실제roll샘플74. foot최대0.6646174788px/pixel최대0.00048828125px/actorShaderFailures0. 오류·누락0. |
+| 입력 표시 보충 | 970c117b,1600×900 E/LMB54PNG/160frames/7checks/실패0. 가상InputSystem→FixedUpdate 경로. AIoff·iframes100000 fixture이므로 자연플레이·피격·패링합격증거아님. |
+| PNG 원본 | 390파일1,697,030,764bytes의IHDR/IEND/해상도/SHA 전수감사PASS. 플레이원본1x와A2옆비교에서플레이픽셀변경0. 참조A2는1664×936→1920×1080로만규격화했다고명시. |
+| 규칙 검증 | 제품Core114파일이 기존actual oracle입력과바이트동일. druid48/54,400틱/5,421,635검사,actualparry26,특수탄48,708,피격3,000/47,559 모두불일치0. 현재공통15c8ed3c5대비Core diff0. |
+| 직접 시각 판정 | 정지6장과선택이동/구르기/드루이드공격/E/LMB 원본·native crop을제작자와독립검수자가확인. 1단계배우전환/기본구도/표시연결샘플PASS, 전체아트RETOUCH. 336장전체연속재생·자연완주·실측fps검증은아님. |
+| 잔여·담당 | 원본드루이드공격셀상단절단→sprite writer, 구르기서있는몸회전→모션/리마스터, 영웅대비/접지→3단계조명, 분리된파란shield arc→2단계, 옛RM1/황록수면/3840검은외곽→Map인수·3단계. 리마스터사용자승인전채택0. |
+| 상속범위 | 사용자가시험브랜치계속사용지시. 공통대비262경로에Trial77/WoodbridgeR3 161가상속됨. 제품build scenes는FirstPlayable+RM1_Slice이며Trial제외. 이두장면에서상속시험/RF3의120GUID직접참조0. Map R4 런타임인수0과상속RF3에셋존재를구분. 임의삭제/되돌림0. |
+| 보존/운영 | build유래tracked538개정확바이트I보존후CAS원본복원,초기untracked57바이트동일/기존guard WIP보존/INDEX0. 공식GPU예약반환/자기Unity·Player0. |
+| 인수경계 | SOURCE_READY / COMMON_APPLY_WAIT_PAUSE. Pause가현사용자지시로공통/Desktop단독소유,종료영수증전중복쓰기0. 공통정상병합후새공통빌드·동일M1·Desktop갱신은아직미완료. 단계2/3도아직미적용이며이번PASS에포함하지않음. |
+
+상세 근거: I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/STAGE1_FINAL_VISUAL_REVIEW.md, stage1-review-087d32acb/raw-png-audit.json, inherited-trial-audit.json, STAGE1_GPU_RETURNED.json. 앞 절의각과거미완료는해당당시상태이며이절의087실검수로갱신한다. 기능상수·밸런스변경0.
+
+순수공통인수 보충: 상속Trial/RF3는자기branch에보존하고공통전체branch무조건병합하지않는다. MainRuntime10+Resources6+Editor검수2+관련docs4(Trialdoc제외) 총22경로의정확바이트manifest를인수범위로제안한다. 087빌드는Trial코드가컴파일된실검수원본이다. 순수공통에서DLL이바뀌므로새빌드/같은M1/Player/실화면/Desktop을필수로재검증하며087영수증을순수본동일입력이라주장하지않는다. manifest는stage1-review-087d32acb/pure-intake-manifest.json.
