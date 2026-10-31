@@ -11,7 +11,7 @@ namespace Exoduser.UnityPort
     {
         [Serializable] sealed class Hd2dFrame
         {
-            public string key,state,playerMaterial,bossState,bossTexture,bossMaterial;public Vector4 bossRect;public bool bossSprite,contact;public int tick,width,height;public bool sprite,model,roll;public float footError,pixelError,hp;public Vector3 camera,centre;
+            public string key,state,playerMaterial,bossState,bossTexture,bossMaterial;public Vector4 bossRect;public bool bossSprite,contact;public int tick,width,height,actorCount,actorShaderFailures;public bool sprite,model,roll;public float footError,pixelError,hp;public Vector3 camera,centre;
         }
         [Serializable] sealed class Hd2dFile { public string path;public int width,height; }
         [Serializable] sealed class Hd2dReceipt
@@ -133,6 +133,11 @@ namespace Exoduser.UnityPort
             frame.playerMaterial=playerView.sharedMaterial!=null?playerView.sharedMaterial.shader.name:"missing";
             var contactObject=GameObject.Find("HD2D contact: "+playerView.name);var contactRenderer=contactObject!=null?contactObject.GetComponent<MeshRenderer>():null;frame.contact=contactRenderer!=null&&contactRenderer.enabled;
             var boss=Simulation.Stage.FindBoss();if(boss!=null&&Simulation.Druid!=null&&Simulation.Druid.Data.TryGetValue(boss,out var data)){frame.bossState=data.S;var body=GameObject.Find("Druid body");if(body!=null){var sr=body.GetComponent<SpriteRenderer>();frame.bossSprite=sr.enabled;if(sr.sprite!=null){frame.bossTexture=sr.sprite.texture.name;var r=sr.sprite.rect;frame.bossRect=new Vector4(r.x,r.y,r.width,r.height);}frame.bossMaterial=sr.sharedMaterial!=null?sr.sharedMaterial.shader.name:"missing";}}
+            foreach(var actor in FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None))
+                if(actor!=null&&actor.enabled&&actor.gameObject.activeInHierarchy&&NativeHd2D.IsActor(actor))
+                {frame.actorCount++;if(actor.sharedMaterial==null||actor.sharedMaterial.shader.name!="EXODUSER/HD2D/SpriteLit")frame.actorShaderFailures++;}
+            if(frame.actorShaderFailures>0)rc.failures.Add("final actor shader overwritten: "+key+" count="+frame.actorShaderFailures+"/"+frame.actorCount);
+            if(frame.bossSprite&&frame.bossMaterial!="EXODUSER/HD2D/SpriteLit")rc.failures.Add("final druid shader overwritten: "+key+" "+frame.bossMaterial);
             rc.frames.Add(frame);
             if(frame.playerMaterial!="EXODUSER/HD2D/SpriteLit")rc.failures.Add("final player shader overwritten: "+key+" "+frame.playerMaterial);
             if(!frame.contact)rc.failures.Add("player contact missing: "+key);
