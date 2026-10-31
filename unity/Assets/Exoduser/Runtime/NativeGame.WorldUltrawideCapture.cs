@@ -96,7 +96,7 @@ namespace Exoduser.UnityPort
     if(Screen.width!=size.x||Screen.height!=size.y){UiWideSetClientSize(size.x,size.y);yield return null;}
 #endif
     if(Screen.width!=size.x||Screen.height!=size.y)throw new InvalidOperationException("월드 실제 해상도 불일치");
-    yield return WideWorldShotAt("월드시작",Map.Data.startX,Map.Data.startY);yield return WideWorldShotAt("월드전투",4020,4820,true);yield return WideWorldShotAt("월드보스앞",4020,620);
+    yield return WideWorldShotAt("월드시작",Map.Data.startX,Map.Data.startY);yield return WideWorldShotAt("월드초반",3500,6250);yield return WideWorldShotAt("월드전투",4020,4820,true);yield return WideWorldShotAt("월드좌측",2200,4400);yield return WideWorldShotAt("월드우측",6500,4400);yield return WideWorldShotAt("월드랜드마크",4600,3500);yield return WideWorldShotAt("월드후반",4000,1850);yield return WideWorldShotAt("월드보스앞",4020,620);
     yield return WideMove("horizontal",Map.Data.startX,Map.Data.startY);yield return WideMove("vertical",Map.Data.startX,Map.Data.startY);
     File.WriteAllText(Path.Combine(overlapOutput,"world-receipt.json"),JsonUtility.ToJson(wideWorld,true));
    }
@@ -106,7 +106,7 @@ namespace Exoduser.UnityPort
 #endif
     if(Screen.width!=width||Screen.height!=1080)throw new InvalidOperationException("FPS 실제 해상도 불일치");yield return WideFpsSample();}
    File.WriteAllText(Path.Combine(overlapOutput,"coverage.json"),JsonUtility.ToJson(overlapCoverage,true));File.WriteAllText(Path.Combine(overlapOutput,"world-receipt.json"),JsonUtility.ToJson(wideWorld,true));
-   lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);bool pixels=wideWorld.pixelCases.Count==3;foreach(var p in wideWorld.pixelCases)pixels&=p.difference==0&&p.selfDifference==0&&p.nonBlackPixels>1000&&p.maxChannel>16;Application.Quit(pixels?0:2);
+   lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);bool pixels=wideWorld.pixelCases.Count==8;foreach(var p in wideWorld.pixelCases)pixels&=p.difference==0&&p.selfDifference==0&&p.nonBlackPixels>1000&&p.maxChannel>16;Application.Quit(pixels?0:2);
   }
  }
 }
