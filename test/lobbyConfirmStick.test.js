@@ -18,8 +18,8 @@ test('held left stick cannot arm quit confirmation on opening',()=>{
  const h=setup(-1);h.ctx.step({});assert.equal(h.document.activeElement,h.els.delConfirmNo);
  h.ctx.step({0:true});assert.equal(h.calls(),0);assert.equal(h.els.delConfirmModal.style.display,'none');
 });
-test('neutral then fresh left input can deliberately confirm',async()=>{
- const h=setup(-1);h.ctx._GP.axes[0]=0;h.ctx.step({});h.ctx._GP.axes[0]=-1;h.ctx.step({});
+test('neutral then fresh right input can deliberately confirm',async()=>{
+ const h=setup(-1);h.ctx._GP.axes[0]=0;h.ctx.step({});h.ctx._GP.axes[0]=1;h.ctx.step({});
  assert.equal(h.document.activeElement,h.els.delConfirmYes);h.ctx.step({0:true});await Promise.resolve();assert.equal(h.calls(),1);
 });
 

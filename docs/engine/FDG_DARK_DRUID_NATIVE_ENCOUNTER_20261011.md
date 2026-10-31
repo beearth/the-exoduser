@@ -29,7 +29,7 @@
 |---|---|
 | `engine/fdg/druid-qa-storage.js` | 첫 support script 전에 classic 로드. `window._FDGDruidQaStorage` 별도 frozen API. 기본 inactive 초기화/호출의 실제 localStorage 접근0 |
 | active | pathname `/game.html`, host `localhost` 또는 `127.0.0.1`, port `3333`, `test=1`, `testchar=1`, `bosstest=0`, `fdgDruidQa=r4` 모두 필요. `editor/demo/bic/char/booth/mapqa/projectilelab/dropPreview/stage` query가 있으면 inactive |
-| 메모리 초기값 | `hellcave_sharedStorage=[]`, `hellcave_sharedMats=0`, `_charIdx=0`, `inputMode=kbm`, `hellLang=ko`. 다른 user settings/slot/창고/악의 import0 |
+| 메모리 초기값 | `hellcave_sharedStorage=[]`, `hellcave_sharedMats=0`, `_charIdx=0`, `inputMode=kbm`, `hellLang=ko`. 다른 user settings/slot/창고/악의오브 import0 |
 | memory API | `getItem/setItem/removeItem`은 별도 Map만 사용. native `localStorage`, `Storage.prototype`, `fetch` 객체 교체0 |
 | native 저장 호출 | dbSave 원본/local/web override, startAutoSave, sharedStorage/Mats 초기화·deferred sync, settings·tier·캐릭터·input·gp·screen·preset·language·dcprof, tutorial-badges/parry-lesson 각 실제 caller에서 active 명시 분기 |
 | 외부 경계 | r4 `/api/save`, `/api/load`, GET/POST `/api/mats`, reset DELETE 호출0. character save와 user reset/lobby 이동은 QA에서 return. actor snapshot을 저장했다고 표기하지 않음 |

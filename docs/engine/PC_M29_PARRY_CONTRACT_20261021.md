@@ -116,7 +116,7 @@ interfaces.merge(main.get_native_m29_services(), true)   # 4개 키만 덮어씀
 
 | 항목 | 상태 |
 |---|---|
-| doParry 나머지 | `full_doparry:false`. pet, 통계, 사운드·보이스(원본 `Math.random` 2~3회 소비 — 이식 시 RNG 순서 함께 처리), hitStop/slowMo/shake/진동, 하프 게이지, 분노+20·텍스트, 분노스킬 쿨 감소, 유니크 트리거(u_d01/03/12/20), 펫 대사, 악의(mats)+2000, parryExplosion, 패링 임팩트 VFX/플래시/파티클, PARRY 텍스트 — Q 반사 경로 remaining과 같은 묶음 |
+| doParry 나머지 | `full_doparry:false`. pet, 통계, 사운드·보이스(원본 `Math.random` 2~3회 소비 — 이식 시 RNG 순서 함께 처리), hitStop/slowMo/shake/진동, 하프 게이지, 분노+20·텍스트, 분노스킬 쿨 감소, 유니크 트리거(u_d01/03/12/20), 펫 대사, 악의오브(mats)+2000, parryExplosion, 패링 임팩트 VFX/플래시/파티클, PARRY 텍스트 — Q 반사 경로 remaining과 같은 묶음 |
 | `_poiseHit` 연출 꼬리 | G19984–19997(천공쇄기 환급·`_uPoiseOrbFracture` 토큰·SFX.groggy·그로기 텍스트·slowMo·파티클) 미이식 |
 | '⚡패링!' 텍스트 | 표시 소비자 미연결 |
 | 쓰기 도중 실패 롤백 | 없음(사전 검사로 차단, `partial_writes` 기록) |

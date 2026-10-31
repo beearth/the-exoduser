@@ -1,6 +1,6 @@
 # B03 웹 원본 추출표 1차 — 스킬 실행기 (기검참 외)
 
-> **맥북 총괄 검수 (2026-10-26)**: 작성 = 단순작업4(Sonnet, 읽기·문서만). 원본 대조로 확인한 줄 — 악의 비용 `_malCost(v)=max(1,ceil(v*0.5))` 28082-28087(SKILL_LIST·docs 원값의 절반 올림이 실제 비용). docs 2_1·14 수치표와 코드가 다른 43건(배율·쿨·지속·조준 미리보기 반경·HUD 쿨 분모)은 **코드가 이식 기준**이다. docs 쪽 동기화(웹 프로젝트 docs 규칙)는 별도 판단. 1차 범위 = 전체 55종 목록 + 데모 도달 51종 상세, 2차 후보는 문서 끝. 수치 JSON: `docs/engine/unity_b03/b03_web_values_1.json`.
+> **맥북 총괄 검수 (2026-10-26)**: 작성 = 단순작업4(Sonnet, 읽기·문서만). 원본 대조로 확인한 줄 — 악의오브 비용 `_malCost(v)=max(1,ceil(v*0.5))` 28082-28087(SKILL_LIST·docs 원값의 절반 올림이 실제 비용). docs 2_1·14 수치표와 코드가 다른 43건(배율·쿨·지속·조준 미리보기 반경·HUD 쿨 분모)은 **코드가 이식 기준**이다. docs 쪽 동기화(웹 프로젝트 docs 규칙)는 별도 판단. 1차 범위 = 전체 55종 목록 + 데모 도달 51종 상세, 2차 후보는 문서 끝. 수치 JSON: `docs/engine/unity_b03/b03_web_values_1.json`.
 
 - 작성: 단순작업4 (읽기·문서만) · 2026-10-26
 - 추출 시점 `git -C G:/exoduser rev-parse HEAD` = `1770c2698d67a72b5b6febcf0ebeedb4fa5061f2`
@@ -75,13 +75,13 @@
 
 | 스킬 | 항목 | 값 | game.html 줄 | 설명 |
 |---|---|---|---|---|
-| COMMON | 악의 비용 환산 _malCost(v) | max(1,ceil(v×0.5)) (_MALICE_COST_MUL=0.5) | 28082-28087 | 모든 악의(G.mats) 소비·습득 비용에 적용. 30→15, 20→10, 15→8, 12→6, 10→5, 5→3 |
+| COMMON | 악의오브 비용 환산 _malCost(v) | max(1,ceil(v×0.5)) (_MALICE_COST_MUL=0.5) | 28082-28087 | 모든 악의오브(G.mats) 소비·습득 비용에 적용. 30→15, 20→10, 15→8, 12→6, 10→5, 5→3 |
 | COMMON | 스킬 배율 _skMul(id) | b+(Lv-1)×g×0.5, Lv=P.skills[id] 또는 1, 표에 없으면 1 | 44558 | _SK_MUL 표 L44509-44556 (아래 각 스킬 행에 b,g 기재) |
 | COMMON | 합체 배율 _fuseMul(id) | (별 s≥2면 1+(s-1)×0.2)×(1+_eqAffix('skillBoost')); chargeBoost/magicBlink는 skillBoost 제외 | 44559 | 합체 상세는 B04 |
 | COMMON | 쿨감 _cdRed() | cooldownRed+helmCooldown+endCooldownAll+skillCdRed - 전설투구(_lHelmFree) - (HP≤50%면 전설목걸이 _lNeckLow) | 28067 | 쿨 = ~~(기준f×(1+_cdRed())) (음수일수록 감소) |
 | COMMON | 스킬 Lv 상한 _skLvLock | min(20, ~~(P.lv/50)+1) | 47196/47752/48033 | 데모 Lv캡 100 → 스킬 Lv ≤3 (Lv1·50→2·100→3) |
 | COMMON | 스킬 Lv 최대 | 20 (_skMaxLv) | 47751 | 단일 강화 SP 비용 _skillUpSpCost(curLv)=1 고정(표 [0,1×10]) L3913-3917 |
-| COMMON | 습득 조건 | !learned && requires충족 && (reqLv?P.lv≥reqLv) && P.sp≥spCost && G.mats≥_malCost(matCost) | 47745-47750 | SKILL_LIST spCost/matCost(원값)→ 악의는 _malCost 적용 후 차감(47772-47774) |
+| COMMON | 습득 조건 | !learned && requires충족 && (reqLv?P.lv≥reqLv) && P.sp≥spCost && G.mats≥_malCost(matCost) | 47745-47750 | SKILL_LIST spCost/matCost(원값)→ 악의오브는 _malCost 적용 후 차감(47772-47774) |
 | COMMON | 강화 조건(단일) | learned && up && slv<20 && slv<_skLvLock && P.sp≥1 && G.mats≥_malCost(upMat=0) && !합체묶음 | 47764 | SKILL_LIST upSp:5는 코드 미사용(실비용 1). upMat 전부 0 |
 | COMMON | 디스패치 공통 가드 | _MAP_QA_MODE/!G.on/paused/fallen·dead 차단, pStun이면 poise=4 복구 후 시전, 합체 흡수 스킬은 슬롯 비움, 뇌전걸음 중 타 스킬 차단, 얼음보주 중 iceOrb 외 차단 | 12905-12917 | 게임패드 시 _gpAutoAim(400) |
 | COMMON | 숙련 적립 _addSkProf(id) | 성공 시 cat별 +쿨(초) (cd 없으면 5초) | 44579-44587 | _CATPROF_REQ=600초(합체 해금용, B04) |
@@ -118,13 +118,13 @@
 | spikeTrap (가시덫) | 슬로우 | _spikeTrapSlowPct = min(0.95, 0.91+(Lv-1)×0.02); _spikeSlow 90f 갱신; 출혈 300f 스택≤10 | 45508, 37467-37474 | 슬로우 실제 적용 위치(적 이동)는 미확인(2차) |
 | spikeTrap (가시덫) | SFX | playSample('spike_trap',.8), shake 4 | 45521-45522 | 특이사항 없음(코드 직접 확인) |
 | maliceHunt (악의 사냥) | SKILL_LIST | spCost10 matCost100 cd300(데이터) act bow | 44178 | 코드 실제 쿨 900. 데모 O |
-| maliceHunt (악의 사냥) | 자원 | 악의 _malCost(30)=15, ST 50 고정 | 45097-45098, 45111 | 특이사항 없음(코드 직접 확인) |
+| maliceHunt (악의 사냥) | 자원 | 악의오브 _malCost(30)=15, ST 50 고정 | 45097-45098, 45111 | 특이사항 없음(코드 직접 확인) |
 | maliceHunt (악의 사냥) | 쿨다운 _mhCd | max(600, ~~(900×(1+_cdRed()))) f | 12946 | 합체(독혈해방) 시 _pbCd 공유 |
 | maliceHunt (악의 사냥) | 투사체 단독 | 1발, 속도 18, 반경 10, stagger 8, 최대사거리 2000+(Lv-1)×100, 관통 800+(Lv-1)×20+장비(bowPierce×300+pPierce×30+pierceFlat), maxBounce 10 | 45172-45178 | desc 관통 800+Lv×20은 -1 차이 |
 | maliceHunt (악의 사냥) | 피해식 | ~~(meleeRef×statStr×pAtkMul×_skMul('maliceHuntBurst')), b28 g22.4 (Lv1 28, Lv3 61.6) | 45173, 44518 | _SK_MUL.maliceHunt(b1 g0.8)는 채널링용 별도 |
 | maliceHunt (악의 사냥) | 합체(칼날해방) | guardian 궤도 칼날 전부 발사(≤8발), 폭발 반경 80+Lv×5, bombAtk=피해×0.5 | 45103-45132 | B04 상세 |
 | venomBlade (독사) | SKILL_LIST | spCost10 matCost0 cd900 act bow | 44179 | 데모 O |
-| venomBlade (독사) | 자원·쿨 | ST 40, 쿨 _vbCd=max(600,~~(900×(1+_cdRed()))) | 45187, 12950 | 악의 소비 없음 |
+| venomBlade (독사) | 자원·쿨 | ST 40, 쿨 _vbCd=max(600,~~(900×(1+_cdRed()))) | 45187, 12950 | 악의오브 소비 없음 |
 | venomBlade (독사) | 발수·각도 | min(6,1+Lv) 발(Lv1 2발), 0.12 rad 간격 부채꼴, 속도 18, 반경 8 | 45194-45205 | desc '1+Lv발' (캡 6 미기재) |
 | venomBlade (독사) | 사거리·관통 | 6000+(Lv-1)×300 px, 관통 800+(Lv-1)×20+장비 | 45191-45193 | 직타 dmg=1, 독 풀 _venomPool 로 피해 |
 | venomBlade (독사) | 피해 풀 | ~~(bowRef×statDex×pBowMul×_skMul('venomBlade')×_fuseMul) b3.0 g2.4 (Lv1 3, Lv3 7.8) | 45190, 44533 | 독 DOT 세부(10초·스택50%·캡50) 투사체 히트 처리부 — 미확인(2차) |
@@ -151,7 +151,7 @@
 | maliceStorm (악의폭풍) | 조준·설치 | 클릭(또는 키 놓기)으로 설치, 사거리 1000 px 클램프, 같은 폭풍 장판과 거리<(기존r+새r)면 '이미 폭풍 지역!' | 36377-36405 | 특이사항 없음(코드 직접 확인) |
 | maliceStorm (악의폭풍) | 장판 | 반경 200+(Lv-1)×22, maxT 600f(10초), 틱 18f, 번개 속성, 감속 _webSlow 20 | 36394, 36444-36445, 37415, 37446-37449 | 특이사항 없음(코드 직접 확인) |
 | maliceStorm (악의폭풍) | 피해식 | ~~(magicRef×statInt×pMagicMul×_skMul×_fuseMul) b14 g11.2 (Lv1 14, Lv3 36.4) | 36407, 44521 | 특이사항 없음(코드 직접 확인) |
-| maliceStorm (악의폭풍) | 자원 | 비합체 MP·악의 소비 없음(코드); 합체 시 MP 50 + 악의 12(raw, 로 G.mats-=12) | 36410-36427 | 특이사항 없음(코드 직접 확인) |
+| maliceStorm (악의폭풍) | 자원 | 비합체 MP·악의오브 소비 없음(코드); 합체 시 MP 50 + 악의오브 12(raw, 로 G.mats-=12) | 36410-36427 | 특이사항 없음(코드 직접 확인) |
 | darkPillar (악의기둥) | SKILL_LIST | spCost10 matCost100 cd900 act magic | 44197 | 데모 O |
 | darkPillar (악의기둥) | 자원·쿨 | 비용 없음(디스패치가 바로 activateDarkPillar), 쿨 _dpCd=~~(900×(1+_cdRed())) | 12962-12964, 46292 | 특이사항 없음(코드 직접 확인) |
 | darkPillar (악의기둥) | 배치 | 9기둥: 중앙 1 + 내원 4(반경 R×0.3) + 외원 4(R×0.75), R=250+(Lv-1)×22, 개별 반경 R×0.5, 순차 간격 10f | 46267-46288, 36461-36475 | 특이사항 없음(코드 직접 확인) |
@@ -308,21 +308,21 @@
 | _addSkProf | 44579-44587 | skId, v? | cat별 숙련(초) 누적(패링연습 중엔 무시) | _dispatchSkillSlot 13090 등 |
 | _skCtx | 47700대-47766 | sk | 습득/강화/잠금 컨텍스트(_skLvLock 등) | 스킬 패널 렌더, _skLearnUp |
 | _skLearnUp | 47769-47810대 | sk | 습득: sp·mats 차감, 슬롯 자동 배정/ult 배정; 강화: sp 1 차감, Lv+1 | 스킬 패널 클릭 |
-| activateMaliceHunt | 45096-45182 | — | 악의/ST 차감 후 투사체(pProjs) 생성, true/false | _dispatchSkillSlot 12946 |
+| activateMaliceHunt | 45096-45182 | — | 악의오브/ST 차감 후 투사체(pProjs) 생성, true/false | _dispatchSkillSlot 12946 |
 | activateVenomBlade | 45185-45215 | — | ST 40, 유도 독 투사체 min(6,1+Lv)발 | 12950 |
 | activateLtnChaser | 45218-45253 | — | ST 40, 번개 칼날 min(12,2+2Lv)발 | 12953 |
 | fireMaliceMortar | 45256-45272 | _tx,_ty | MP 차감, G._mmBomb 생성, 쿨 660f | 조준 루프 36567 |
 | (G._mmBomb 갱신) | 36819-36860 | sp | 투척 후 vortex 장판 생성(maxT 390) | 메인 update |
-| fireBoneWall | 45275-45293 | tx,ty | 악의 6, 스택-1, G._boneWalls.push | 12938, 조준 36579 |
+| fireBoneWall | 45275-45293 | tx,ty | 악의오브 6, 스택-1, G._boneWalls.push | 12938, 조준 36579 |
 | (G._boneWalls 갱신) | 37157-37193 | sp | rise/stand/crumble, 링 적 1회 피해+스턴 | 메인 update |
 | activateNeedleShot | 45331-45343 | — | ST 8, P._needleBurst 설정 | T 자동 라우터(줄 미확인) |
 | _skyCrusherSpec | 45468-45473 | lv | 쿨/반경/충격시간 스펙 객체 | activateSkyCrusher, HUD |
 | _skyCrusherChargeCount/_tickSkyCrusherRecharge | 45474-45487 | frames | 3충전 관리 | 36521 update |
 | activateSkyCrusher | 45494-45505 | — | MP 80, 충전-1, G._skyCrushers.push | 13008 |
 | (G._skyCrushers 갱신) | 36522-36555 | sp | 착탄·화염 DOT·파편 2차타 | 메인 update |
-| activateSpikeTrap | 45510-45523 | — | 악의 5, G._fireZones spikeTrap | 13011 |
+| activateSpikeTrap | 45510-45523 | — | 악의오브 5, G._fireZones spikeTrap | 13011 |
 | activateDarkPillar | 46265-46308 | — | 9기둥 큐+즉시 1기, 쿨 설정 | 12964, 큐 처리 36461 |
-| activateGiantSlam | 46450-46526 | srcId | ST·악의 차감, 분노 소모, _gSlamHit, 진동파 | 13001/13004 |
+| activateGiantSlam | 46450-46526 | srcId | ST·악의오브 차감, 분노 소모, _gSlamHit, 진동파 | 13001/13004 |
 | _gSlamHit | 46529-46571 | dir,range,arcW,dmg,el,kbM,psM | 원형 피해+포이즈/스턴 | 지옥강타·불꽃칼날 |
 | activateGhostWalk/_finishGhostWalk | 46634-46674 | — | 유령 상태 시작/종료 폭발 | 12981, 13108 |
 | activateWeakZone | 46677-46691 | type | 영역 장판 생성(쿨 1500) | 12985-12991 |
@@ -332,7 +332,7 @@
 | activateIceOrb / activateIceShatter | 46758-46822 | — | 얼음 속 진입 / 파쇄(칼날·AoE) | 12921-12922, 36697 |
 | activateVoidScarecrow | 45547-45564 | — | 허수아비 설치/재배치, 쿨 1200 | 13041 |
 | activateExplodeScarecrow / _detonateExplodeScarecrow / _doExplodeScarecrowBoom / _fireExsBoom | 46090-46165 | — | 설치/기폭/폭발 | 13046-13048 |
-| activatePlagueBurst | 46167-46179 | — | 악의 8, 유도 관통 칼날 1발 | 12983 |
+| activatePlagueBurst | 46167-46179 | — | 악의오브 8, 유도 관통 칼날 1발 | 12983 |
 | fireBlackStar | 46825- | — | 블랙 종료(스턴+넉백) | 36768 |
 | fireLavaSummon / _bulletBlackHole* | 46868-46939 | — | 탄막블랙홀 종료 폭발 | 36721 |
 | fireHellfireBeam / _startFireBeamCast | 46941-46964 / 28868-28881 | — | 업화선 차징 시작/발사 | magicCast 33637 |
@@ -354,19 +354,19 @@
 
 | 단계 | 내용 | 근거 줄 | 비고 |
 |---|---|---|---|
-| 1 획득 | P.skills[id]=1, P.sp-=spCost(10), G.mats-=_malCost(matCost) | 47745-47750, 47772-47774 | reqLv·requires·SP·악의 충족 시. chainAssault 습득 시 chainSlam 자동 부여(47776) |
+| 1 획득 | P.skills[id]=1, P.sp-=spCost(10), G.mats-=_malCost(matCost) | 47745-47750, 47772-47774 | reqLv·requires·SP·악의오브 충족 시. chainAssault 습득 시 chainSlam 자동 부여(47776) |
 | 2 슬롯 자동 배정 | act && !흡수 → _findAutoSkillSlot, ult → ULT_SLOT, 이동/마법/석궁/영역/Q 슬롯형은 active*Sk 자동 설정 | 47779-47795 | 습득 직후 addTxt "슬롯 N 배정!" |
 | 3 수동 슬롯 변경 | 번호 팝업(_openSkillSlotPop)·SKILL_SLOT_DEFS 탭 | 44967-47033 | 영역=F, 분노=Space 고정 규칙 |
 | 4 사용(수동) | keydown → _dispatchSkillSlot(slot) / _dispatchCtSkill / 마우스·E·T 상태머신(magicCast, whirlwind 등) | 12905-13119, 33590-33650 | 조준형(mortar/storm/iceStorm/thunderStake)은 조준 모드 진입 후 클릭/놓기로 확정 |
 | 5 사용(자동) | T 석궁 자동(fanShot/needleShot), guardian 패시브, 장판 틱, X키 처형은 수동 | 36772, 44944 | 자동 발사 라우터 _autoFireBowSkill 28727 (세부 미확인) |
-| 6 자원 차감 | MP/ST/악의 차감은 스킬별 함수 내(디스패치 케이스에 선검사) | 12920-13085 | 악의는 _malCost 적용 후 차감 |
+| 6 자원 차감 | MP/ST/악의오브 차감은 스킬별 함수 내(디스패치 케이스에 선검사) | 12920-13085 | 악의오브는 _malCost 적용 후 차감 |
 | 7 쿨다운 개시 | P._xxCd 프레임 값 설정(예: _mhCd 12946) | 12946-12953, 46292 등 | 틱 감소: 메인 update 36370대(P._msCd/_dpCd/…−=sp) |
 | 8 쿨다운 진행 | sp(프레임 보정) 단위 감소; holyDome 안에서는 +_hdCdBonus 가속(일부 스킬만) | 36370-36372, 35938-35939, 36521 | _hdCdBonus 적용 대상: skyCrusher 충전, timeWarp (36691) |
 | 9 HUD 갱신 | updateQS: 슬롯별 쿨 sweep(%)·초 텍스트·스택 숫자; ULT 슬롯 별도 | 28269-28375 | sweep 분모가 일부 스킬에서 고정값/데이터 cd라 코드 쿨과 어긋남(표 E) |
 | 10 조준 UI | 캔버스 인디케이터(반경 원·십자선·텍스트) | 55570-55750 | 악의폭풍/폭풍소환 정확, 아이스스톰·해골무덤 반경 불일치 |
 | 11 저장 | skills, fused, skProf, catProf, activeChargeSk/BowSk/TechSk/MagicSk/LMBSk/RMBSk/QSk/CtSk, skillSlots, ultSlot | 3562-3573 | 쿨다운·스택·장판은 저장 안 함(로드 시 초기화) |
 | 12 복원 | d.skillSlots→SKILL_SLOTS[0..5], d.ultSlot→ULT_SLOT, 흡수 스킬 활성슬롯 동기화 | 3865-3884, 62037 | _repairAreaSkillSlot로 규칙 재정규화 |
-| 13 Lv 상한 | _skLvLock=min(20,~~(P.lv/50)+1), 데모 캡 100 → ≤3 | 47752, 16649 | 단일 강화 SP 1/Lv, 악의 0 |
+| 13 Lv 상한 | _skLvLock=min(20,~~(P.lv/50)+1), 데모 캡 100 → ≤3 | 47752, 16649 | 단일 강화 SP 1/Lv, 악의오브 0 |
 | 14 데모 제한 | _DEMO_LV_CAP=100, _DEMO_FUSE_ALLOWED 22종; 스킬 자체 제한 코드(_DEMO_MODE 분기) 미확인 | 16649-16651 | 500렙 테스트 프리셋은 스킬 50종 Lv10 부여(61958-61968) |
 
 ## 표 D. HUD·UI·피드백(VFX/SFX/히트스톱)
@@ -395,7 +395,7 @@
 
 | # | 대상 | docs·SKILL_LIST 값 | 코드 값 | 코드 줄 | 비고 |
 |---|---|---|---|---|---|
-| 1 | 악의 비용 전반 | docs/데이터: 악의 30(사냥)·15(폭독)·12(해골)·10(가시덫)·20(지옥강타) | 코드: _malCost(v)=max(1,ceil(v×0.5)) → 15·8·6·5·10 | 28082-28087, 45097, 12983, 45279, 45512, 46455 | 악의 소비 50% 할인(_MALICE_COST_MUL). SKILL_LIST desc·docs 2_1·14표 모두 원값 표기 |
+| 1 | 악의오브 비용 전반 | docs/데이터: 악의오브 30(사냥)·15(폭독)·12(해골)·10(가시덫)·20(지옥강타) | 코드: _malCost(v)=max(1,ceil(v×0.5)) → 15·8·6·5·10 | 28082-28087, 45097, 12983, 45279, 45512, 46455 | 악의오브 소비 50% 할인(_MALICE_COST_MUL). SKILL_LIST desc·docs 2_1·14표 모두 원값 표기 |
 | 2 | SKILL_LIST upSp | 데이터 upSp:5, 문서 "일반 1,1,1/2,2,2/3,3,3/5"(주석 3911) | 코드 _skillUpSpCost 항상 1 | 3913-3917, 47763 | upSp 필드 미사용 |
 | 3 | maliceHunt 쿨 | SKILL_LIST cd:300(5초) | 코드 max(600,~~(900×(1+cdRed))) = 15초(최소 10초); desc "쿨 15초"와 docs 일치 | 44178, 12946 | 데이터 cd만 틀림 |
 | 4 | venomBlade 발수 | desc "1+Lv발" | 코드 min(6,1+Lv) — Lv5부터 6발 캡 | 45194 | desc 캡 미기재 |
@@ -406,7 +406,7 @@
 | 9 | iceOrb 피해 성장 | desc "뎀+15%/Lv" | 코드 _skMul b8 g6.4 → Lv당 +3.2(≈+40%) | 44513, 46773 | - |
 | 10 | iceStorm 범위 | desc "범위+22/Lv"; 조준 미리보기 200+(Lv-1)×22 | 코드 실제 장판 400+(Lv-1)×18 | 36492 vs 55658 | 미리보기가 실제의 절반 크기 |
 | 11 | iceStorm 지속 | docs §6 "3초" | 코드 maxT 600f=10초 (desc도 10초) | 36507-36508, 14표 160행 | - |
-| 12 | boneWall 악의 | desc·docs "악의 12" | 코드 _malCost(12)=6 | 12932, 45279 | - |
+| 12 | boneWall 악의오브 | desc·docs "악의오브 12" | 코드 _malCost(12)=6 | 12932, 45279 | - |
 | 13 | boneWall 미리보기 | 조준 반경 ~~((200+(Lv-1)×22)×1.5) (Lv1 300) | 실제 링 ~~((400+(Lv-1)×18)×0.7) (Lv1 280) | 55682 vs 45284 | Lv이 오를수록 격차 확대(Lv3: 미리보기 378 vs 실제 ~316) |
 | 14 | maliceStorm 배율 | docs 14표 "_skMul b:7 g:5.6, DPS 23→198" | 코드 b14 g11.2 (2026-05-30 장판 2배 버프 주석) | 44521, docs 14표 143행 | docs 스테일 |
 | 15 | darkPillar 배율/비용 | docs "INT×(4+(Lv-1)), MP mpCost 기반" | 코드 _skMul b20 g16, 자원 소비 없음 | 44523, 12962-12964, 46268 | SKILL_LIST matCost100은 습득비 |
@@ -448,7 +448,7 @@
 | SkillUiState.cs | UI 입장 가드: LmbSlot=6, SlotCount=13, StaminaCost(기검참 10+Lv×2), TryEquipKiSlash | 일부 — 슬롯 상수만, 스킬 데이터 없음 | Core/SkillUiState.cs:7-25 |
 | NativeHudSkills.cs | 스킬 슬롯 13칸 렌더, 상태 텍스트(기검참), 쿨다운 sweep 없음 | 일부 — 기검참 상태만 | NativeHudSkills.cs:11-34 |
 | NativeHud/NativeGame | ActiveSkill 문자열, 슬롯 입력 클릭 처리 | 일부 — 기검참 장착만 | NativeHud.cs:37, 82-99; NativeGame.cs:352 |
-| 자원 악의(G.mats) | Player.Mana/Stamina/Hp는 있음, 악의(mats) 자원 없음 | 미이식 | HudValues.cs, SimulationState.cs |
+| 자원 악의오브(G.mats) | Player.Mana/Stamina/Hp는 있음, 악의오브(mats) 자원 없음 | 미이식 | HudValues.cs, SimulationState.cs |
 | SKILL_LIST 데이터 | 55개 스킬 정의 테이블 | 미이식 (b03_web_values_1.json 대조 입력용 준비) | — |
 | _skMul/_fuseMul/_cdRed | 배율·쿨감 스칼라 | 미이식 (기검참만 인라인) | KiSlash.cs:38 |
 | G._fireZones 장판 엔진 | 틱 타이머, 겹침 캡, 감속/출혈/화상 부여 | 미이식 | — |

@@ -2,7 +2,7 @@
 
 ## 2026-10-10 K 스킬 창 = Skill Forge — 현행
 
-`#skillPanel` 본문은 `#skillForge`(skill-forge.css/js, 3D skill-forge-3d.js·three r186)로 전면 교체. 13 키 슬롯 원형·합성 제단·로드맵, 넣을 수 있는 스킬은 2026-10-21부터 아래로 내린 제단 원 둘레의 떠다니는 구슬 + 합성 전류(가로 스크롤 트레이 삭제), 구 카드형 본문과 `#skSlotBar`는 숨김(폴백 `?skillForge=0`). 상세·검수: [SKILL_FORGE_20261010.md](SKILL_FORGE_20261010.md). 아래 2026-09-27~28 스킬 작업공간 절은 구 카드형 창 이력이다.
+`#skillPanel` 본문은 `#skillForge`(skill-forge.css/js, 3D skill-forge-3d.js·three r186)로 전면 교체. **2026-10-31 현행: 16키 슬롯(기존13+구르기/X/T), 설명270px·내용 높이, 빈 로드맵 접기, 초광폭 사이드는 실제 끝·중앙 최대1800px.** 떠다니는 구슬+합성 전류·기존 원화/표면 유지. 구 카드형 본문과 `#skSlotBar`는 숨김(폴백 `?skillForge=0`). 상세·검수·기존 치수의 대체 범위: [SKILL_FORGE_20261010.md §12](SKILL_FORGE_20261010.md#12-공간-재배분고정-기술-표시-2026-10-31-사용자-지시). 아래 스킬 작업공간·quiet-tier 수치는 날짜별 제작 이력이다.
 
 
 ## 2026-10-02 공통 제목 명패 S/M/L — 현행 SSOT
@@ -345,7 +345,7 @@ POE2 설정 화면과 Diablo IV 장비 화면을 참고한 최신 표현 계약�
 | 제목판 | 제목 컨테이너 선·배경·그림자 제거. 제목판 ::after는 1px #806944 단일 선, #3c3422→#191b12 배경, 외부0 3px5px 그림자. border-image 제거 |
 | 설정 본문 | 1px #716047 선 하나. outline/inset 그림자 제거. 기존 패딩과 스크롤 유지 |
 | 인벤 헤더 | 제목과 정보행을 한 열 grid로 분리. 제목 폭100%/최소88px/padding54px 12px 8px. 중앙 문장204×68px. 제목판 top53/좌우24%/bottom0, 폭560px 이하 좌우18% |
-| 정보행 | 전투력·악의·닫기 정렬. gap8px/padding0 4px 8px/아래선1px #65583f. 전투력·악의의 중첩 박스 삭제. 문장과 충돌하지 않음 |
+| 정보행 | 전투력·악의오브·닫기 정렬. gap8px/padding0 4px 8px/아래선1px #65583f. 전투력·악의오브의 중첩 박스 삭제. 문장과 충돌하지 않음 |
 | 장비 구획 | 섹션 선1px #65583f, 중복 inset선 제거. 슬롯 안쪽 iskin 등급 그림자 제거, 바깥 슬롯 희귀도 테두리 유지. 슬롯 음영 inset0 2px5px, 라벨#e0d2b2 |
 | 캐시 | ui-refinement.css?v=20260927-4, 게임 두 HTML 및 로비 동기화 |
 
@@ -702,11 +702,11 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 공통 등급 | _itemEconomyRarity(r): 0 이상 정수이면 min(r,4), 나머지는0. 아이템 rarity 자체는 변경하지 않음 |
 | 사용 위치 | salvageVal 기본액·강화 환수, enhCost, 장비 교체 시 old._enhRefund 계산 |
 | 유니크 기준 | 기존 최상위 경제 등급4를 사용: 기본 분해50,000/강화배율1.8. 일반~전설 값 변경 없음 |
-| 유골함 | tier0/enh0/_enhRefund없음인 기본 전대의 유골함:50,000 악의. 표시·개별분해·일괄분해 모두 salvageVal 공유 |
+| 유골함 | tier0/enh0/_enhRefund없음인 기본 전대의 유골함:50,000 악의오브. 표시·개별분해·일괄분해 모두 salvageVal 공유 |
 | dropItem | 없는 아이템·fav 잠금은 false. 지급액 비유한/음수이면 삭제·지급 없이false. 정상 삭제/저장 후true를 반환해 기존 onclick의 renderInv 실행 |
 | 상세 마감 | 빈 출처행 숨김,조작안내 받침,장착버튼 하단색,12px·34px최소높이·한줄 금속판 버튼,스크롤 거터. hover해도 선택/분해 테두리 유지 |
 
-앞선 슬롯과 상호작용 마감 절에서 기록한 유골함 분해 NaN 미해결 항목을 해결한다. 실제 소지품 화면의 유골함 선택에서 분해(악의 +50000) 표시를 확인했다. 아이템을 실제로 삭제하는 분해 동작은 실행하지 않았다. 기존 저장 데이터의 이미 손상된 악의 잔액은 이 변경으로 추정 복원하지 않는다. 자동 테스트 추가·실행 없음. 캐시 ui-refinement.css?v=20260927-4.
+앞선 슬롯과 상호작용 마감 절에서 기록한 유골함 분해 NaN 미해결 항목을 해결한다. 실제 소지품 화면의 유골함 선택에서 분해(악의오브 +50000) 표시를 확인했다. 아이템을 실제로 삭제하는 분해 동작은 실행하지 않았다. 기존 저장 데이터의 이미 손상된 악의오브 잔액은 이 변경으로 추정 복원하지 않는다. 자동 테스트 추가·실행 없음. 캐시 ui-refinement.css?v=20260927-4.
 
 
 ### 스타일 수치 원본
@@ -810,7 +810,7 @@ CSS 변경만 적용. 기존 에셋 재사용. 자동 테스트 추가·실행 �
 | 항목 | 현재 계약 |
 |---|---|
 | 인벤토리 제목판 | 직계 헤더의 .ptitle display:none. 제목 이미지와 가상요소도 표시하지 않음 |
-| 정보행 | 전투력/악의/닫기 유지. gap0, margin4px 0 8px |
+| 정보행 | 전투력/악의오브/닫기 유지. gap0, margin4px 0 8px |
 | 높이 배분 | 장비 탭 inv-wrap 첫 행270px, 가방 행 minmax(min-content,1fr). invCenter height:auto/min-height260px,invGrid height140px/flex1 1 140px. 필터 높이를 반영하며 나머지 높이는 가방에 배정. 작은 화면은 기존 바깥 세로 스크롤 사용 |
 | 적용 범위 | 인벤토리 내부 장비/유골함/보석/보관함 페이지 공통. 다른 메뉴 제목 유지 |
 
@@ -1915,7 +1915,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | 항목 | 현행 계약 |
 |---|---|
 | 카테고리 | `renderSkillPanel()`이 4개 대분류 탭을 `#skillCategoryNav`에 렌더한다. 이 줄은 `.frame-inner-panel-stack` 첫 행에서 스킬 목록 스크롤 밖에 고정된다. 카테고리 전환과 강조는 기존 동작을 유지한다. |
-| 레벨·자원 정보 | `#skillInfo`(LV/SP/악의/사슬)는 `#skillGridWrap`의 첫 자식이다. 휠로 목록을 내리면 요약도 스킬 카드와 함께 위로 이동한다. |
+| 레벨·자원 정보 | `#skillInfo`(LV/SP/악의오브/사슬)는 `#skillGridWrap`의 첫 자식이다. 휠로 목록을 내리면 요약도 스킬 카드와 함께 위로 이동한다. |
 | 스크롤 경계 | `#skillGridWrap`과 우측 `#skillDetail`만 각각 내부 스크롤한다. 높이 620px 이하에서도 바깥 `.skill-pbox`는 스크롤하지 않고 중앙 영역이 남는 높이를 사용한다. 게임패드 기본 스크롤 대상도 `#skillGridWrap`이다. |
 | 연결·검증 | `skill-workspace.css?v=20260928-fixed-categories5`를 사용한다. 1940×1158, 970×579, 390×844에서 휠 후 탭의 화면 y좌표 유지, 정보 y좌표 감소, 목록 scrollTop 증가, pageerror 0을 확인했다. 스킬 데이터·레벨업·합체·저장 형식은 변경하지 않았다. |
 
@@ -2714,7 +2714,7 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 
 | 대상 / id | 현행 구현·검수 |
 |---|---|
-| 사용자 기준 | 획득 배지가 없으면 HUD에 배지0/3·빈 버튼·자리 표시를 남기지 않는다. 지역 처치·악의 수치를 가리지 않는다 |
+| 사용자 기준 | 획득 배지가 없으면 HUD에 배지0/3·빈 버튼·자리 표시를 남기지 않는다. 지역 처치·악의오브 수치를 가리지 않는다 |
 | 표시 조건 | tutorial-badges.js의 init에서 button.hidden=true로 시작. render에서 count=Object.keys(earned).length; count===0이면 button/panel hidden=true 및 aria-expanded=false. 1~3개 획득·복원 시 button.hidden=false. 언어 갱신에도 같은 조건 적용 |
 | 모음 열기 | toggle(open)은 button.hidden이면 열기를 거부하며 숨긴 버튼에 focus하지 않는다. 배지가 있으면 기존 닫기 초점/버튼 복귀·aria-expanded·3개 카드 정책 유지 |
 | 위치 | button과 collection을 #mmLvl의 자식으로 연결. 둘 모두 position:absolute/right0/pointer-events:auto; 버튼 top:calc(100% + 8px),모음 top:calc(100% + 46px). 상태창의 기존 크기·UI배율·safe-area 이동을 따라가며 수치 행과 겹치지 않음 |
@@ -3063,7 +3063,7 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 |---|---|
 | 파일 | `ui-quiet-tier.css`의 `#skillPanel` 절(설정 절 뒤에 추가). 선택자는 `#skillPanel#skillPanel …`(ID 2개, 기존 `skill-forge.css`·`skill-workspace.css`·`ui-refinement.css`와 특이도를 맞춤). `game.html`·`skill-forge.js` 변경 없음, `build-nwjs.mjs` 목록 변경 없음(같은 CSS 파일) |
 | 제목(K2) | 큰 돌 명패 "전투 스킬"(크레스트·명패 ::before/::after, `zoom:.78/.6`)을 분류 줄 + 세리프 제목 + 헤어라인으로 교체. 분류 줄은 `::before{content:'SKILL'}` 영문 고정(새 글자 없음, 번역 불요), 제목 `800 30px var(--font-hell)` `#ebdaba`. 줄어든 높이(약 43px)만큼 제단 상자가 커진다(`#skillForge`는 flex:1) |
-| 왼쪽 상세 판(K3) | `.sf-info`: 1px `rgba(164,147,115,.22)` + 바탕 `rgba(12,10,9,.72)`, 스킬 이름 `800 28px var(--font-hell)` `#ebdaba` + 헤더 헤어라인, Lv 줄 Cinzel 13px 보조색, 설명 `16px/1.75 #dfd6c2`, "강화 SP … / Lv50 도달 시 해금"은 2열 행(해금 조건 `#c9a39a`), 하단 `SP · 악의 · LV` 줄 Cinzel |
+| 왼쪽 상세 판(K3) | `.sf-info`: 1px `rgba(164,147,115,.22)` + 바탕 `rgba(12,10,9,.72)`, 스킬 이름 `800 28px var(--font-hell)` `#ebdaba` + 헤더 헤어라인, Lv 줄 Cinzel 13px 보조색, 설명 `16px/1.75 #dfd6c2`, "강화 SP … / Lv50 도달 시 해금"은 2열 행(해금 조건 `#c9a39a`), 하단 `SP · 악의오브 · LV` 줄 Cinzel |
 | 오른쪽 로드맵(K4) | `.sf-road`: 같은 판 규칙, 제목 "합성 로드맵" = 구역 제목 서식(15px `#b6a58f` + 헤어라인), 행은 선만(왼쪽 2px 황동·행 아래 헤어라인), 진행 중/가능 행만 `rgba(172,121,83,.1)` |
 | 제단 명패(K5) | `.sf-field-head`(오른쪽 "넣을 수 있는 스킬 [LMB]")·`.sf-core-name`(왼쪽 모체 이름·★)에서 진홍 세로 막대·그라데이션 판 제거, 분류 줄 크기 글자 + 보조 문구. 진홍은 창 안에서 선택 슬롯 링 한 곳(현행 그대로) |
 | 버튼(K6) | `.sf-btn`(강화 +/−/리셋/분해/합성)·하단 `.pclose`(닫기·일괄 레벨업·추천 자동) = 높이 40 테두리 칩(`rgba(164,147,115,.5)`). 주 행동(`.sf-btn-fire`)만 `rgba(172,121,83,.18)`. 하단 버튼 줄은 `#skillForge{margin-bottom:18px}`·`.skill-close{margin:0 0 20px}`로 올려 바깥 틀에 걸려 잘리던 것도 정리 |
@@ -3094,3 +3094,33 @@ CSS 선·도형으로 그린 판·버튼을 생성 원화로 교체했다. 모�
 | `img/ui/silver_hell/btn_plaque_20261029.png` | 1024×198 | 튜토리얼 건너뛰기·다음 | 3-slice `0 174 fill / 0 40px`, 글자 Hahmlet 400 16px 뼈색 자간 .24em |
 
 다음: 같은 프레임·버튼판을 공통 창(설정·인벤·대장간 등)과 로비 패널로 넓힌다. 창 비율이 4:3에서 멀면 가운데 장식이 늘어나므로 가로형 프레임을 따로 만든다.
+
+
+## 2026-10-31 성장 창과 공통 다섯 창의 얇은 제목 띠
+
+사용자 statwindow-brief의 “머리 부분 축소·가운데 눈알” 지시에 따른 현행 계약이다. 이 절은 앞선 투구 문장+큰 제목판의 세로 적층 및 인벤토리 제목 숨김 규격을 대체한다. 상세 작업은 web-uiux.css, game.html의 해당 CSS 캐시 URL, tools/check-stat-window.mjs에 한정한다. 스킬 창은 제목 높이만 공통화하며 제단·슬롯·본문 담당은 codex-web-skillwin이다.
+
+| id / 적용 위치 | 현행 값·방법 |
+|---|---|
+| --web-ui-title-height / 설정·인벤토리·대장간·스킬·능력치 .ptitle | 높이·최소높이44px, zoom1, 최대폭520px/부모100%, Hahmlet300 22px/1.2, 자간.04em. display:grid, 행20px/24px, 가로·세로중앙 정렬, gap0, 위아래padding0·좌우12px, 아래margin10px. 폭≤780은18px·gap0·좌우4px |
+| 제목 중앙 위의 원화 눈 ::before | gate_sigil_20261028.jpg 중심부, 영역64×20px·원화폭240px/높이auto. static, 첫째 grid행 중앙, inset:auto·transform:none. 가장자리 알파 감쇠 radial-gradient(ellipse,#000 32%,#000a 60%,transparent 80%), mask-mode:alpha. grayscale(1) brightness(3) contrast(1.1), screen 합성. 기존 luminance 마스크/왼쪽 flex 장식을 대체. CSS 도형으로 눈을 만들지 않음 |
+| 제목 ::after | display:none. 오른쪽 flex 헤어라인을 숨겨 제목 글자 중심과 눈 중심을 일치시킴. 큰 투구와 제목판은 표시하지 않음 |
+| 성장 .growth-header | 높이·최소높이44px, padding0, 아래margin12px, gap16px, 한 줄. growth-kicker·growth-subtitle는 DOM/번역을 보존하고 숨김 |
+| 성장 .growth-wallet | 가로 정렬, 높이44px, gap12px, 좌우padding12px, 숫자24px/1.2. 좁은 화면은gap6px·padding6px·라벨11px. 기존 SP 숨김·AP 잔고 의미 유지 |
+| 성장 .growth-shell 배경 | 붉은 삼각 바늘의 eye_crest 대신 첫 화면 gate_sigil_20261028.jpg(2048×1152)를 30% -72px / 620px auto로 원비율 표시. 상부감광 #14131570→하부 #09090ae6, image layer screen 합성으로 검정 사각 경계 제거. 기존 iron.png 320px 반복 폴백 유지 |
+| 인벤토리 | 제목을44px 한 줄로 표시, 폭auto·오른쪽margin16px·20px. 제목 포함행 최소44px, 기본nowrap·폭≤780 wrap. 기존 전투력/악의/닫기 보존 |
+| 캐시 | game.html web-uiux.css?v=20261031-centered-eye2 |
+| 원화 근거 | DESIGN_REVIEW_APPLY.md는 성장나무/스탯서랍을 미채택 후보로 분류. 후보 PNG·무채색 필터는 반입하지 않음. 브리프가 지정한 첫 화면 인장과 기존 실버 헬 패키지를 재사용. 신규 생성·유료 지출0 |
+
+제작 전 직접 열람: 20261028_growth_tree/current_1920.png, 20261028_stat_summary/runtime_1920.png, gate_sigil 및 eye_crest 원본. 목표는 머리 장식보다 트리·양쪽 정보를 우선하고, 1x 제목·노드 가독성을 유지하는 것이다. 조기 실물 판정은 1920×1080의 머리/본문 높이와 인장 바탕 경계이며, 머리/본문·제목/AP 충돌 또는 가로 넘침·노드 잘림이면 FAIL로 되돌린다.
+
+검수 증거·최종 수치: G:/exoduser/tmp/design-review/20261031_stat_window/REPORT.md와 geometry.json. 강제 보스 테스트 상태·격리 API·headless 브라우저 검수이며 자연 플레이/Unity/NW.js/DEMO·EA 배포 검수와 구분한다. 같은 해상도의 전후 전체 화면과1x 크롭을 직접 판정한다.
+
+## 2026-10-31 악의오브 최종 정정
+
+화폐를 악의오브 / Orb of Malice로 개명하고 내장 imagegen의 둥근 유리 오브 4단계를 HUD·대장간·스킬 창·툴팁·획득 합체 연출에 연결했다. 색·구간·파일·픽셀 규격과 실패 폴백은 [화폐 SSOT](../3.2메타·진행시스템/CURRENCY_RENAME_20261031.md)를 따른다. 32/48px 원화와 실제 HUD 1x 판정 보드는 G:/exoduser/tmp/design-review/20261031_malice_orb/review-board.png. 웹의 UI 검수와 Unity 컴파일·Player/M1은 별도이며 최종 증거·원격 SHA는 I:/EXODUSER-Storage/demo-art/currency-rename/REPORT.md에 남긴다.
+
+### 2026-10-31 CTO 최종 보정 — 제목 중앙 눈의 1x 가시성
+
+statwindow-brief 마지막 보정만 수행한다. 시작 원격/HEAD는 9f5db2ac6223cd1696870865057f37721922ecae, tracked INDEX/WORK는 깨끗했다. 직접 본 gate_sigil 원본·현재 1920/3840의 다섯 창에서 왼쪽 치우침과 낮은 휘도 마스크를 확인했다. 목표는 통과한 44px 머리를 유지하며 제목 바로 위 중앙에 금속 눈을 분리 표시하는 것이다. 기존 원화의 눈 중심을 CSS로 확대해 screen 합성하며 신규 이미지·유료 생성은 없다. 눈/제목 중심 불일치·눈과 글자/탭 충돌·1x 동공 불명료이면 FAIL이다. 실제 브라우저 전후 전체·1x와 수치/기능 판정, 최신 원격 SHA는 I:/EXODUSER-Storage/codex-web-statwin/eye-center-20261031/REPORT.md에 남긴다. 이 보정은 앞 절의 최초 자체 눈 가시성 PASS를 대체하며 총괄 재판정은 별도다.
+

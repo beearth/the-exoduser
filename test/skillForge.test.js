@@ -24,11 +24,43 @@ function load(state){
     _isFused:k=>!!P._fused[k],_isAbsorbed:()=>false,_canFuse:k=>!P._fused[k]&&FUSE_PAIRS[k].every(id=>(P.skills[id]||0)>=1),
     _fuseName:k=>k,_skById:()=>null,_L:(ko)=>ko,_T:s=>s,_canAssignSkillSlot:()=>true};
   g.globalThis=g;
-  vm.runInNewContext(forgeSrc,g);
-  return{api:g.SkillForge,P};
+  vm.runInNewContext(forgeSrc.replace('root.SkillForge=Object.freeze', 'root.slotPreview=typeof slotPreview===\'function\'?slotPreview:null;root.slotCondition=slotCondition;root.SkillForge=Object.freeze'),g);
+  return{api:g.SkillForge,P,g};
 }
 const J=v=>JSON.parse(JSON.stringify(v));
 const learn=ids=>Object.fromEntries(ids.map(id=>[id,3]));
+
+test('empty dedicated slots preview real eligible skills without equipping them; costs follow live acquisition rules',()=>{
+  const {api,P,g}=load({lv:1,skills:{}});
+  assert.equal(typeof g.slotPreview,'function','empty dedicated slot must resolve a display-only skill preview');
+  g.SKILL_LIST=[{id:'blackStar',name:'블랙',ult:true,act:true,spCost:10,matCost:100},{id:'lavaSummon',ult:true,act:true,spCost:10,matCost:100},{id:'giantSlam',act:true,cat:'rage',spCost:10,matCost:120},{id:'skyCrusher',act:true,cat:'rage',spCost:10,matCost:120}];
+  g._skById=id=>g.SKILL_LIST.find(s=>s.id===id);g._malCost=n=>Math.ceil(n*.5);
+  g._canAssignSkillSlot=(id,idx)=>idx===4?g._skById(id).cat==='rage':!g._skById(id).ult&&g._skById(id).cat!=='rage';
+  const z=api._slots[5],space=api._slots[12],before=JSON.stringify({P,slots:g.SKILL_SLOTS,ult:g.ULT_SLOT});
+  assert.equal(g.slotPreview(z),'blackStar');assert.equal(g.slotPreview(space),'giantSlam');
+  assert.match(g.slotCondition(z),/SP 10.*50/s);assert.match(g.slotCondition(space),/SP 10.*60/s);
+  for(const i of [1,2,3])assert.equal(g.slotPreview(api._slots[i]),null,'unassigned general skills stay empty');
+  assert.equal(JSON.stringify({P,slots:g.SKILL_SLOTS,ult:g.ULT_SLOT}),before);
+  P.skills.lavaSummon=1;assert.equal(g.slotPreview(z),'lavaSummon','prefer learned candidate when slot is unequipped');assert.match(g.slotCondition(z),/장착/);
+  g.ULT_SLOT='blackStar';assert.equal(g.slotPreview(z),null,'equipped icon is never a preview');
+  g.ULT_SLOT=null;P.skills={};g.SKILL_LIST[0].reqLv=50;g.SKILL_LIST[1].reqLv=80;assert.match(g.slotCondition(z),/Lv50/);
+});
+
+test('skill forge: E and RMB follow the actual Blade Parry and magic bindings',()=>{
+  const {api}=load();
+  assert.equal(api._slots.find(s=>s.k==='RMB').v,'activeMagicSk');
+  assert.equal(api._slots.find(s=>s.k==='E').v,'activeRMBSk');
+});
+
+test('skill forge: intrinsic mobility and execution are inspectable, never equip candidates',()=>{
+  const {api}=load();
+  for(const id of ['roll','execution']){
+    const i=api._slots.findIndex(s=>s.intrinsic===id);assert.ok(i>=0,id+' fixed action is visible');
+    api._state.slot=i;assert.equal(api._model().host,null);
+    assert.equal(api._orbItems(api._model()).size,0,'fixed action cannot be replaced');
+  }
+  assert.ok(api._slots.some(s=>s.k==='T'&&s.v==='activeBowSk'),'automatic crossbow is represented');
+});
 
 test('skill forge: clean checkout includes both required three r186 runtime modules',()=>{
   const dir='assets/vendor/three-r186/build/';
@@ -158,7 +190,7 @@ test('skill forge orbs: no horizontal tray, one rAF loop that stops when the pan
   assert.match(forgeSrc,/prefers-reduced-motion: reduce/);
   assert.match(forgeSrc,/_close\(\)\{if\(three\)three\.pause\(\);fxStop\(\)\}/);
   assert.match(css,/canvas\.sf-bolts\{[^}]*position:absolute!important/,'game-wide fixed canvas rule overridden');
-  assert.match(gameSrc,/skill-forge\.css\?v=20261021-orbs\d+/);
+  assert.match(gameSrc,/skill-forge\.css\?v=20261031-fixed-layout\d+/);
 });
 
 test('skill forge orbs (2nd pass): slot spacing leaves room for the floating drift — orbs never touch even at full amplitude',()=>{

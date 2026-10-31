@@ -24,7 +24,7 @@
 
 - `read_storage(mode, observation)` / `read_mats(mode, observation)`: `{state:"value",value:String|null}` 또는 `{state:"error"}`라는 **공급된 읽기 결과**만 소비한다. mode는 `browser_origin` 또는 `qa_fixture`를 명시하며 URL·OS·계정·저장소 위치를 자동 선택하지 않는다.
 - `plan_store(current_storage, mode, observation)`: `_getStore`의 읽기 조건, 배열 병합/200캡, 원래 반환 참조를 사본에서 계산한다. 이미 synced인 유효 빈 배열은 재조회/병합하지 않는 원문 차이도 유지한다.
-- `plan_restore(serialized, current, observations)`: 현재 G.mats snapshot과 `mode/mats_reads/storage_reads` 순서를 요구한다. 공유 악의는 합산 없이 max 후보를 계산하고, 빈 공유 창고일 때만 legacy slice 후보를 만든다. **쓰기 후 재조회 관측값이 없으면 HOLD**이며 성공을 가정해 저장값을 갱신하지 않는다.
+- `plan_restore(serialized, current, observations)`: 현재 G.mats snapshot과 `mode/mats_reads/storage_reads` 순서를 요구한다. 공유 악의오브는 합산 없이 max 후보를 계산하고, 빈 공유 창고일 때만 legacy slice 후보를 만든다. **쓰기 후 재조회 관측값이 없으면 HOLD**이며 성공을 가정해 저장값을 갱신하지 않는다.
 
 `plan_restore.plan`은 detached `serialized/mats/storage`, `plan_store.plan`은 `storage/store`다. `intents`는 원본 setter **호출 지점과 인자의 계산 기록**으로 `execute_authorized=false`; 실행기/callback은 없다. actual setter의 중복 캐시 생략·서버 POST·ACK 여부를 뜻하지 않는다. 저장 후보와 실제 값은 구분되며 실제 값은 공급된 다음 readback을 따른다. 원본이 `d.storage={}`/`d.game.mats=0`을 하는 조건도 결과 사본에만 반영하고 원본 입력은 보존한다.
 
@@ -38,12 +38,12 @@
 |---|---|
 | 48521–48523 | 키 `hellcave_sharedStorage`/`hellcave_sharedMats`. 일반 창고는 get/parse 예외·비배열 JSON→[]; QA는 `JSON.parse(raw\|\|'[]')`의 타입을 그대로 반환하고 예외를 catch하지 않음 |
 | 48527 | 일반 악의 `parseInt(v,10)`+finite/음수 검사+MAX_SAFE cap. QA는 Number 변환→`\|\|0`→0~MAX_SAFE clamp로 소수를 유지. "12.9"는 일반12/QA12.9, "0x10"은 일반0/QA16 |
-| 3726–3729 | 저장 악의 `max(0,floor(+saved\|\|0))`. 양수이고 shared와 다를 때만 max 인자 후보·세이브 사본 mats0. 다음 `_loadSharedMats`를 다시 읽어 G.mats를 결정. saved가 shared보다 작아도 setter 호출 조건과 실제 writer의 캐시 생략을 혼동하지 않음 |
+| 3726–3729 | 저장 악의오브 `max(0,floor(+saved\|\|0))`. 양수이고 shared와 다를 때만 max 인자 후보·세이브 사본 mats0. 다음 `_loadSharedMats`를 다시 읽어 G.mats를 결정. saved가 shared보다 작아도 setter 호출 조건과 실제 writer의 캐시 생략을 혼동하지 않음 |
 | 48529의 정규화 표현식 | 후보의 `max(0,min(floor(+v\|\|0),MAX_SAFE))`만 readonly 계산. `_saveSharedMats` 본문/LS setter/server helper 실행0. `_matsSavedVal` 수정0 |
 | 3741–3752 | slot storage[0]가 비어 있지 않을 때 shared 조회→비어 있을 때만 slice(0,200) 후보→이관 여부와 무관하게 d.storage={} 사본 계산. STORAGE 새 객체/_synced=false 후 다시 조회하는 원문 순서 유지 |
 | 48537–48548,16259 | 최초 `_getStore`는 shared를 0번에 바인딩→다른 Array 층을 JS 숫자 key 순서대로 concat/비움→200캡→setter 호출 후보. store와 STORAGE[0]은 결과 내 같은 배열 참조. valid Array 경로에서 getStore 후 3752 초과조건은 이미 cap되어 false |
 
-재조회가 이전 값/빈 배열/getter 실패를 돌려주는 fixture도 원문과 대조했다. 예를 들어 이관 후보가 있어도 다음 조회가 []면 계산상 창고는 []이며, 원문은 세이브 사본 storage를 비운다. 이를 실제 이관 성공으로 보고하거나 기존 실패 정책을 바꾸지 않는다. 반대 방향으로 공유에 항목이 이미 있으면 slot 항목을 합치지 않는다. 반복 복원에서 공유 악의는 누적 합산되지 않는다.
+재조회가 이전 값/빈 배열/getter 실패를 돌려주는 fixture도 원문과 대조했다. 예를 들어 이관 후보가 있어도 다음 조회가 []면 계산상 창고는 []이며, 원문은 세이브 사본 storage를 비운다. 이를 실제 이관 성공으로 보고하거나 기존 실패 정책을 바꾸지 않는다. 반대 방향으로 공유에 항목이 이미 있으면 slot 항목을 합치지 않는다. 반복 복원에서 공유 악의오브는 누적 합산되지 않는다.
 
 ## 숫자·입력 보존과 부분 지원
 

@@ -153,15 +153,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -297,8 +297,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -393,8 +393,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -601,8 +601,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -617,8 +617,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -657,8 +657,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -733,8 +733,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -829,8 +829,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -853,8 +853,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -981,8 +981,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -1005,8 +1005,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -1221,8 +1221,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -1469,8 +1469,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -1485,8 +1485,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -1505,7 +1505,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -1529,16 +1529,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -2087,15 +2087,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -2231,8 +2231,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -2327,8 +2327,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -2535,8 +2535,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -2551,8 +2551,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -2591,8 +2591,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -2667,8 +2667,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -2763,8 +2763,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -2787,8 +2787,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -2915,8 +2915,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -2939,8 +2939,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -3155,8 +3155,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -3403,8 +3403,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -3419,8 +3419,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -3439,7 +3439,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -3463,16 +3463,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -4041,15 +4041,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -4185,8 +4185,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -4281,8 +4281,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -4489,8 +4489,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -4505,8 +4505,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -4545,8 +4545,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -4621,8 +4621,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -4717,8 +4717,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -4741,8 +4741,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -4869,8 +4869,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -4893,8 +4893,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -5109,8 +5109,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -5357,8 +5357,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -5373,8 +5373,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -5393,7 +5393,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -5417,16 +5417,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -5995,15 +5995,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -6139,8 +6139,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -6235,8 +6235,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -6443,8 +6443,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -6459,8 +6459,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -6499,8 +6499,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -6575,8 +6575,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -6671,8 +6671,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -6695,8 +6695,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -6823,8 +6823,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -6847,8 +6847,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -7063,8 +7063,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -7311,8 +7311,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -7327,8 +7327,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -7347,7 +7347,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -7391,16 +7391,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -7949,15 +7949,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -8093,8 +8093,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -8189,8 +8189,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -8397,8 +8397,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -8413,8 +8413,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -8453,8 +8453,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -8529,8 +8529,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -8625,8 +8625,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -8649,8 +8649,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -8777,8 +8777,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -8801,8 +8801,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -9017,8 +9017,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -9265,8 +9265,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -9281,8 +9281,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -9301,7 +9301,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -9345,16 +9345,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -9903,15 +9903,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -10047,8 +10047,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -10143,8 +10143,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -10351,8 +10351,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -10367,8 +10367,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -10407,8 +10407,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -10483,8 +10483,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -10579,8 +10579,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -10603,8 +10603,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -10731,8 +10731,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -10755,8 +10755,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -10971,8 +10971,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -11219,8 +11219,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -11235,8 +11235,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -11255,7 +11255,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -11299,16 +11299,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -11857,15 +11857,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -12001,8 +12001,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -12097,8 +12097,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -12305,8 +12305,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -12321,8 +12321,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -12361,8 +12361,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -12437,8 +12437,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -12533,8 +12533,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -12557,8 +12557,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -12685,8 +12685,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -12709,8 +12709,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -12925,8 +12925,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -13173,8 +13173,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -13189,8 +13189,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -13209,7 +13209,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -13253,16 +13253,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -13811,15 +13811,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -13955,8 +13955,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -14051,8 +14051,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -14259,8 +14259,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -14275,8 +14275,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -14315,8 +14315,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -14391,8 +14391,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -14487,8 +14487,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -14511,8 +14511,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -14639,8 +14639,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -14663,8 +14663,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -14879,8 +14879,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -15127,8 +15127,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -15143,8 +15143,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -15163,7 +15163,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -15207,16 +15207,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -15769,15 +15769,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -15913,8 +15913,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -16009,8 +16009,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -16217,8 +16217,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -16233,8 +16233,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -16273,8 +16273,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -16349,8 +16349,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -16445,8 +16445,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -16469,8 +16469,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -16597,8 +16597,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -16621,8 +16621,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -16837,8 +16837,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -17085,8 +17085,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -17101,8 +17101,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -17121,7 +17121,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -17165,16 +17165,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -17743,15 +17743,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -17887,8 +17887,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -17983,8 +17983,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -18191,8 +18191,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -18207,8 +18207,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -18247,8 +18247,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -18323,8 +18323,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -18419,8 +18419,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -18443,8 +18443,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -18571,8 +18571,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -18595,8 +18595,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -18811,8 +18811,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -19059,8 +19059,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -19075,8 +19075,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -19095,7 +19095,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -19139,16 +19139,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -19717,15 +19717,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -19861,8 +19861,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -19957,8 +19957,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -20165,8 +20165,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -20181,8 +20181,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -20221,8 +20221,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -20297,8 +20297,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -20393,8 +20393,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -20417,8 +20417,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -20545,8 +20545,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -20569,8 +20569,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -20785,8 +20785,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -21033,8 +21033,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -21049,8 +21049,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -21069,7 +21069,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -21113,16 +21113,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -21691,15 +21691,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -21835,8 +21835,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -21931,8 +21931,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -22139,8 +22139,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -22155,8 +22155,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -22195,8 +22195,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -22271,8 +22271,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -22367,8 +22367,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -22391,8 +22391,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -22519,8 +22519,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -22543,8 +22543,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -22759,8 +22759,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -23007,8 +23007,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -23023,8 +23023,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -23043,7 +23043,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -23087,16 +23087,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -23645,15 +23645,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -23789,8 +23789,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -23885,8 +23885,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -24093,8 +24093,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -24109,8 +24109,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -24149,8 +24149,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -24225,8 +24225,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -24321,8 +24321,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -24345,8 +24345,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -24473,8 +24473,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -24497,8 +24497,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -24713,8 +24713,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -24961,8 +24961,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -24977,8 +24977,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -24997,7 +24997,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -25041,16 +25041,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -25599,15 +25599,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -25743,8 +25743,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -25839,8 +25839,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -26047,8 +26047,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -26063,8 +26063,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -26103,8 +26103,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -26179,8 +26179,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -26275,8 +26275,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -26299,8 +26299,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -26427,8 +26427,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -26451,8 +26451,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -26667,8 +26667,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -26915,8 +26915,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -26931,8 +26931,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -26951,7 +26951,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -26995,16 +26995,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -27553,15 +27553,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -27697,8 +27697,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -27793,8 +27793,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -28001,8 +28001,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -28017,8 +28017,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -28057,8 +28057,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -28133,8 +28133,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -28229,8 +28229,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -28253,8 +28253,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -28381,8 +28381,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -28405,8 +28405,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -28621,8 +28621,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -28869,8 +28869,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -28885,8 +28885,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -28905,7 +28905,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -28949,16 +28949,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -29507,15 +29507,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -29651,8 +29651,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -29747,8 +29747,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -29955,8 +29955,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -29971,8 +29971,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -30011,8 +30011,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -30087,8 +30087,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -30183,8 +30183,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -30207,8 +30207,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -30335,8 +30335,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -30359,8 +30359,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -30575,8 +30575,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -30823,8 +30823,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -30839,8 +30839,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -30859,7 +30859,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -30903,16 +30903,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -31461,15 +31461,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -31605,8 +31605,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -31701,8 +31701,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -31909,8 +31909,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -31925,8 +31925,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -31965,8 +31965,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -32041,8 +32041,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -32137,8 +32137,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -32161,8 +32161,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -32289,8 +32289,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -32313,8 +32313,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -32529,8 +32529,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -32777,8 +32777,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -32793,8 +32793,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -32813,7 +32813,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -32857,16 +32857,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -33415,15 +33415,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -33559,8 +33559,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -33655,8 +33655,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -33863,8 +33863,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -33879,8 +33879,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -33919,8 +33919,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -33995,8 +33995,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -34091,8 +34091,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -34115,8 +34115,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -34243,8 +34243,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -34267,8 +34267,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -34483,8 +34483,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -34731,8 +34731,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -34747,8 +34747,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -34767,7 +34767,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -34811,16 +34811,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -35369,15 +35369,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -35513,8 +35513,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -35609,8 +35609,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -35817,8 +35817,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -35833,8 +35833,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -35873,8 +35873,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -35949,8 +35949,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -36045,8 +36045,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -36069,8 +36069,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -36197,8 +36197,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -36221,8 +36221,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -36437,8 +36437,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -36685,8 +36685,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -36701,8 +36701,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -36721,7 +36721,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -36765,16 +36765,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -37323,15 +37323,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -37467,8 +37467,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -37563,8 +37563,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -37771,8 +37771,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -37787,8 +37787,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -37827,8 +37827,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -37903,8 +37903,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -37999,8 +37999,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -38023,8 +38023,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -38151,8 +38151,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -38175,8 +38175,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -38391,8 +38391,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -38639,8 +38639,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -38655,8 +38655,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -38675,7 +38675,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -38719,16 +38719,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -39277,15 +39277,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -39421,8 +39421,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -39517,8 +39517,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -39725,8 +39725,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -39741,8 +39741,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -39781,8 +39781,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -39857,8 +39857,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -39953,8 +39953,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -39977,8 +39977,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -40105,8 +40105,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -40129,8 +40129,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -40345,8 +40345,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -40593,8 +40593,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -40609,8 +40609,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -40629,7 +40629,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -40673,16 +40673,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -41231,15 +41231,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -41375,8 +41375,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -41471,8 +41471,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -41679,8 +41679,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -41695,8 +41695,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -41735,8 +41735,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -41811,8 +41811,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -41907,8 +41907,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -41931,8 +41931,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -42059,8 +42059,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -42083,8 +42083,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -42299,8 +42299,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -42547,8 +42547,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -42563,8 +42563,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -42583,7 +42583,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -42627,16 +42627,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -43185,15 +43185,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -43329,8 +43329,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -43425,8 +43425,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -43633,8 +43633,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -43649,8 +43649,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -43689,8 +43689,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -43765,8 +43765,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -43861,8 +43861,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -43885,8 +43885,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -44013,8 +44013,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -44037,8 +44037,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -44253,8 +44253,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -44501,8 +44501,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -44517,8 +44517,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -44537,7 +44537,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -44581,16 +44581,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -45143,15 +45143,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -45287,8 +45287,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -45383,8 +45383,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -45591,8 +45591,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -45607,8 +45607,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -45647,8 +45647,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -45723,8 +45723,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -45819,8 +45819,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -45843,8 +45843,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -45971,8 +45971,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -45995,8 +45995,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -46211,8 +46211,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -46459,8 +46459,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -46475,8 +46475,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -46495,7 +46495,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -46539,16 +46539,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -47097,15 +47097,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -47241,8 +47241,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -47337,8 +47337,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -47545,8 +47545,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -47561,8 +47561,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -47601,8 +47601,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -47677,8 +47677,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -47773,8 +47773,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -47797,8 +47797,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -47925,8 +47925,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -47949,8 +47949,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -48165,8 +48165,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -48413,8 +48413,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -48429,8 +48429,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -48449,7 +48449,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -48493,16 +48493,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -49071,15 +49071,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -49215,8 +49215,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -49311,8 +49311,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -49519,8 +49519,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -49535,8 +49535,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -49575,8 +49575,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -49651,8 +49651,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -49747,8 +49747,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -49771,8 +49771,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -49899,8 +49899,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -49923,8 +49923,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -50139,8 +50139,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -50387,8 +50387,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -50403,8 +50403,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -50423,7 +50423,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -50467,16 +50467,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",
@@ -51325,15 +51325,15 @@
       "en": "Enhancement transferred"
     },
     {
-      "key": "악의)",
-      "en": " Malice)"
+      "key": "악의오브)",
+      "en": " Orb of Malice)"
     },
     {
-      "key": "악의 부족! 강화 이전 비용 ",
-      "en": "Not enough Malice! Transfer cost "
+      "key": "악의오브 부족! 강화 이전 비용 ",
+      "en": "Not enough Orb of Malice! Transfer cost "
     },
     {
-      "key": "악의 (보유: ",
+      "key": "악의오브 (보유: ",
       "en": " (Have: "
     },
     {
@@ -51469,8 +51469,8 @@
       "en": "ST +50/lv, ST regen +1%/lv"
     },
     {
-      "key": "악의 드롭 +8%/lv",
-      "en": "Malice drop +8%/lv"
+      "key": "악의오브 드롭 +8%/lv",
+      "en": "Orb of Malice drop +8%/lv"
     },
     {
       "key": "엘리트/보스 추가뎀 +10%/lv",
@@ -51565,8 +51565,8 @@
       "en": "Forest predator"
     },
     {
-      "key": " 악의!",
-      "en": " Malice!"
+      "key": " 악의오브!",
+      "en": " Orb of Malice!"
     },
     {
       "key": "🔥 지옥문이 열렸습니다",
@@ -51773,8 +51773,8 @@
       "en": "Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1"
     },
     {
-      "key": "유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
-      "en": "1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
+      "key": "유도 물리 칼날 1발 (악의오브30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초",
+      "en": "1 homing physical blade (Orb of Malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s"
     },
     {
       "key": "유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초",
@@ -51789,8 +51789,8 @@
       "en": "Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 400 +18/Lv, 6.5s duration, pulls enemies)"
     },
     {
-      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초",
-      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s"
+      "key": "포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의오브 12. Lv당 범위+5% 지속+0.3초",
+      "en": "Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Orb of Malice 12. Per Lv range+5% duration+0.3s"
     },
     {
       "key": "검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)",
@@ -51829,8 +51829,8 @@
       "en": "RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%"
     },
     {
-      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
-      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
+      "key": "독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의오브 15. 사거리 4000. 쿨 15초(Lv당-0.5초)",
+      "en": "Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Orb of Malice 15. Range 4000. CD 15s (-0.5s/Lv)"
     },
     {
       "key": "마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (10초 지속, 18f마다 틱뎀, INT/_skMul 스케일). Lv당 범위+22. 같은 지역 중복 불가",
@@ -51905,8 +51905,8 @@
       "en": "Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s"
     },
     {
-      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의 10, 쿨 10초. Lv당 범위+15",
-      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Malice 10, CD 10s. Per Lv range+15"
+      "key": "[선택: 1~4번] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 91%(+2%/Lv, 최대95%)+출혈. INT×magicRef×3(+10%/Lv)×0.5. 악의오브 10, 쿨 10초. Lv당 범위+15",
+      "en": "[Select: 1-4] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 91%(+2%/Lv, max 95%)+bleed. INT×magicRef×3(+10%/Lv)×0.5. Orb of Malice 10, CD 10s. Per Lv range+15"
     },
     {
       "key": "[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)",
@@ -52001,8 +52001,8 @@
       "en": "T auto: Red petal blade (ST50)"
     },
     {
-      "key": "T자동: 폭탄 (악의5, 쿨0.5초)",
-      "en": "T auto: Bomb (malice 5, cd 0.5s)"
+      "key": "T자동: 폭탄 (악의오브5, 쿨0.5초)",
+      "en": "T auto: Bomb (Orb of Malice 5, cd 0.5s)"
     },
     {
       "key": "T자동: 물리 바늘 3방향 3발 (관통X)",
@@ -52025,8 +52025,8 @@
       "en": "Select skill: Deploy/remove turret (Lv500, ST100, placement CD 20s)"
     },
     {
-      "key": "Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)",
-      "en": "Space: AoE shockwave (ST+malice20, poise focus, cd 30s)"
+      "key": "Space: 원형 진동파 (ST+악의오브20, 포이즈 특화, 쿨30초)",
+      "en": "Space: AoE shockwave (ST+Orb of Malice20, poise focus, cd 30s)"
     },
     {
       "key": "좌클 스킬",
@@ -52153,8 +52153,8 @@
       "en": " Complete!"
     },
     {
-      "key": " 악의+",
-      "en": " Malice+"
+      "key": " 악의오브+",
+      "en": " Orb of Malice+"
     },
     {
       "key": " 슬롯 배정!",
@@ -52177,8 +52177,8 @@
       "en": "← Back"
     },
     {
-      "key": " | 악의: ",
-      "en": " | Malice: "
+      "key": " | 악의오브: ",
+      "en": " | Orb of Malice: "
     },
     {
       "key": " | 사슬: ",
@@ -52393,8 +52393,8 @@
       "en": " reset upgrades"
     },
     {
-      "key": " 환불 (👿 악의는 반납되지 않습니다)",
-      "en": " refund (Malice not returned)"
+      "key": " 환불 (👿 악의오브는 반납되지 않습니다)",
+      "en": " refund (Orb of Malice not returned)"
     },
     {
       "key": " 배정!",
@@ -52641,8 +52641,8 @@
       "en": "Dust: "
     },
     {
-      "key": "악의: ",
-      "en": "Malice: "
+      "key": "악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "결정 없음",
@@ -52657,8 +52657,8 @@
       "en": "  ->"
     },
     {
-      "key": "악의 획득 예상",
-      "en": "Malice expected"
+      "key": "악의오브 획득 예상",
+      "en": "Orb of Malice expected"
     },
     {
       "key": "어픽스 리롤",
@@ -52677,7 +52677,7 @@
       "en": "(no feed crystal)"
     },
     {
-      "key": "(악의 부족)",
+      "key": "(악의오브 부족)",
       "en": "(insufficient)"
     },
     {
@@ -52721,16 +52721,16 @@
       "en": "Cost: "
     },
     {
-      "key": "악의 &nbsp;|&nbsp; 보유: ",
-      "en": "Malice per craft &nbsp;|&nbsp; Malice: "
+      "key": "악의오브 &nbsp;|&nbsp; 보유: ",
+      "en": "Orb of Malice per craft &nbsp;|&nbsp; Orb of Malice: "
     },
     {
       "key": "슬롯을 클릭하면 제작, 좌측에서 개별 선택도 가능",
       "en": "Click a slot to craft, or expand ▶ to pick from sidebar"
     },
     {
-      "key": "보유 악의: ",
-      "en": "Malice: "
+      "key": "보유 악의오브: ",
+      "en": "Orb of Malice: "
     },
     {
       "key": "제작 비용: ",

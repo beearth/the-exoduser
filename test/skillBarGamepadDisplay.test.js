@@ -8,7 +8,7 @@ const slots=html.match(/const _SK_SLOTS=\[[\s\S]*?\n\];/)[0];
 const update=html.match(/function _updateSkBarKeyLabels\(\)\{[\s\S]*?\n\}/)[0];
 const art=fs.readFileSync(new URL('../img/ui_bar_only.png',import.meta.url)).toString('base64');
 let browser,page;
-before(async()=>{browser=await chromium.launch({channel:'chrome',headless:true});page=await browser.newPage({viewport:{width:1280,height:720}});});
+before(async()=>{browser=await chromium.launch({headless:true,args:['--mute-audio']});page=await browser.newPage({viewport:{width:1280,height:720}});});
 after(async()=>{await browser?.close();});
 beforeEach(async()=>{
   await page.goto('about:blank');

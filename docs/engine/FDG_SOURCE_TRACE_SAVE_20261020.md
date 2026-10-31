@@ -43,7 +43,7 @@
 
 | ID | 함수·구간 | admission / 대상 / 성공 시각 / 복원 |
 |---|---|---|
-| S01 | 기본 `dbSave`, game:3533–3585 | QA early return, parryLesson.active return(**보호**), charId/dbReady/saving/P 가드. sanitize→공유 악의/dirty창고 flush→payload→`characters.update({data,updated_at}).eq(id).select(id)`. 요청 id와 일치하는 정확1행만 `_lastSaveTime`. finally 상당 꼬리에서 pending drain/force |
+| S01 | 기본 `dbSave`, game:3533–3585 | QA early return, parryLesson.active return(**보호**), charId/dbReady/saving/P 가드. sanitize→공유 악의오브/dirty창고 flush→payload→`characters.update({data,updated_at}).eq(id).select(id)`. 요청 id와 일치하는 정확1행만 `_lastSaveTime`. finally 상당 꼬리에서 pending drain/force |
 | S02 | `dbLoad`, game:3588–3594 / `startGameFromDB` 62443–62564 | id 조회·이름 읽기. SDK·인증·dbLoad 성공을 확인한 뒤 mkP/reset/restore. 실패를 새 캐릭터로 대체해 자동저장하지 않음. 생성 메타만 있는 객체는 유효 신규 슬롯 |
 | S03 | local `dbSave` override, game:63892–63941 | local게스트 또는 test=1, slot URL 없으면 t1, `_serverOk` null/true/false. P/saving 가드, 공유 flush→`POST /api/save {slot,data}`. HTTP non-ok 시 localStorage `hellsave_<slot>` 폴백. 응답 j.ok 또는 실제 localStorage write 후 성공 시각. throw 경로의 정적 범위 문제는 §2 별도 기록 |
 | S04 | local load, game:63944–64044 | mkP/reset→GET `/api/load/<slot>`→있으면 dbRestore. `_foundSave`는 player 없는 메타도 true이므로 오래된 LS 사본을 우선하지 않음. 서버 복원 성공 시 `/api/mats` 동기화. 없을 때만 `hellsave_<slot>` 로드. 미복원 시 신규 장비·가방 생성→applyStats→initStage→dbReady/auto/3초 부트 저장 |
@@ -81,7 +81,7 @@
 |---|---|---|
 | T01 | `_load/_saveSharedStorage`, 48523–48524 | 배열 JSON, parse/IO 오류시 load[], 쓰기 오류 삼킴. QA일 때 QA storage 경로 |
 | T02 | `_load/_saveSharedMats`, 48527–48529 | 일반 load parseInt10 + finite/음수 검사 + MAX_SAFE_INTEGER=9007199254740991. save floor/clamp 후 unchanged 생략, LS 캐시 후 서버 POST. 사용자 계정 인증 기반 cloud storage라는 뜻은 아님(origin 공유) |
-| T03 | `_saveSharedMatsToServer`, `_matsDirty`, `_loadSharedMatsFromServer`, 48531–48536 | 로컬 host/file에서 API. dirty3초 게이트, NaN 감지0. GET 정상 n≥0이면 서버값으로 캐시 갱신, 실패시 LS. POST는 fire-and-forget이므로 `_lastSaveTime`이 공유악의 서버 ACK를 증명하지 않음. 루프 감지61927 |
+| T03 | `_saveSharedMatsToServer`, `_matsDirty`, `_loadSharedMatsFromServer`, 48531–48536 | 로컬 host/file에서 API. dirty3초 게이트, NaN 감지0. GET 정상 n≥0이면 서버값으로 캐시 갱신, 실패시 LS. POST는 fire-and-forget이므로 `_lastSaveTime`이 공유악의오브 서버 ACK를 증명하지 않음. 루프 감지61927 |
 | T04 | `_getStore/_persist/_flush`, 48537–48553 | 최초 load/legacy 층 concat 캡200/쓰기, dirty flag일 때만 캐릭터 저장의 flush. 실제 공유 저장 분리 유지 |
 | T05 | `doAutoSave/startAutoSave`, 3935–3945 | 마지막 성공 후10,000ms 이상 AND G.on/dbReady. interval30,000ms, QA는 timer skip. 주석의 60초/10초와 실제 interval을 구분 |
 | T06 | `dbSaveNow/_drainPendingSaveNow`, 3948–3966 | debounce500ms. charId/charIdx/P identity/함수 identity 캡처, 콜백 시 재확인. saving 중이면 pending에 해당 요청을 보존, 완료후 drain도 같은 owner 검증. 서로 다른 캐릭터로 늦은 저장하지 않음 |
@@ -120,7 +120,7 @@
 | POST /api/save | 216–222 `{slot,data}`, data없음400. atomicSaveJSON(95–116): stringify→동일dir `.tmp-<pid>-<serial>` wx→fd write/close→rename; 자기 temp만 finally 정리. 성공200 `{ok:true,slot}` | 129–139 직접 writeFileSync(JSON pretty2), parse/write예외500 JSON, data없음400, 성공200. 원자적 rename과 동일하다고 간주하지 않음 |
 | GET /api/load/:slot | 225–230 파일없음404, 있으면 `{ok:true,data}` | 142–146 파일없음404, parse 후 같은 envelope |
 | DELETE /api/save/:slot | 308–312 파일있으면unlink, `{ok:true}` | 149–153 동일 |
-| 공유악의 | 234–249 _sharedMats.json GET/POST. floor/clamp 0..MAX_SAFE_INTEGER/ts; GET 파일없거나오류0 | 158–177 같은 정제·저장; POST오류500 JSON |
+| 공유악의오브 | 234–249 _sharedMats.json GET/POST. floor/clamp 0..MAX_SAFE_INTEGER/ts; GET 파일없거나오류0 | 158–177 같은 정제·저장; POST오류500 JSON |
 | 검수 한계 | 이 작업에서 두 서버 시작·API 요청·사용자 JSON 열기 없음 | 실행판/저장 위치/네트워크 성공은 미확인 |
 
 ## 2. 설계 docs와 원본의 불일치·정보 누락 (수정 없음)
@@ -191,7 +191,7 @@
 | 2/SV-TRANSPORT-READ | server198–213·225–230, node118–126·142–146; index3522–3550 | `godot/port_modules/save_adapter/source_slot_reader.gd` | 격리 fixture 응답으로 목록 fields/default·손상JSON제외·development marker,404/500/parse failure/new metadata/완전저장 구분. 실제 user save/API 사용0 | target이 dev server인지 native namespace인지 먼저 확정. 경로권위 임의결정·외부계정 우회 없음 |
 | 3/SV-RESTORE-PLAYER | 3597–3626,3685–3715 | `godot/port_modules/save_adapter/source_player_restore.gd`; 기존 raw_grit_restore.gd 재사용 검토 | EXP overflow·SP/AP 저장값·수치문자/0·queue배열/아님·legacy환급 순서/두번로드 비교. actor HP/ST·authority MP 실제 readback 검사 | restore writer 계약을 State/Resource/Player 담당과 인수. constructor 재호출로 대체 금지. Q/E/rage 관련 보호 지점은 변경 제안 없이 총괄 별도 보호검토 대기 |
 | 4/SV-RESTORE-ITEMS | 3628–3683,3735–3769 | `godot/port_modules/save_adapter/source_inventory_restore.gd` | 17키/구키누락·affix/bracelet/weapon 표시/속도 마커·uniqueArt 보존·crystal/socketQ/stoneBag 순서. 원 아이템 객체의 동적 필드/중복·identity 비교 | P2-006a 드랍/줍기/INV 인수와 의존성 조정. shared 창고 정본 필요. 세이브 형식/기존migration은 보호 |
-| 5/SV-SHARED-READ | 3721–3752,48521–48553 | `godot/port_modules/save_adapter/source_shared_store.gd` | 공유/슬롯 악의 max 비가산·반복restore·비어있는창고만1회이관·200캡·MAX_SAFE_INTEGER·로컬IO 실패. serializer의 storage{} 유지 확인 | platform namespace 및 사용자 격리 정책 인수. 실사용자 데이터 병합·삭제·재저장 제외 |
+| 5/SV-SHARED-READ | 3721–3752,48521–48553 | `godot/port_modules/save_adapter/source_shared_store.gd` | 공유/슬롯 악의오브 max 비가산·반복restore·비어있는창고만1회이관·200캡·MAX_SAFE_INTEGER·로컬IO 실패. serializer의 storage{} 유지 확인 | platform namespace 및 사용자 격리 정책 인수. 실사용자 데이터 병합·삭제·재저장 제외 |
 | 6/SV-RESTORE-FLOW | 3771–3908,62479–62517/63959–64025/64108–64146/62164–62201 | `godot/port_modules/save_adapter/source_restore_flow.gd` | 스킬→fused→숙련도→active→slots→sanitize 순서·부분실패·신규메타와 완전저장·잘못된저장 구분, applyStats/initStage 후 최종표시 확인 | 스킬/합체/성장 owner와 원본 known key tables 확보. Q/E/2_3 보호 블록은 변경범위로 배정하지 않음. 미확정/미인수면 연결HOLD |
 | 7/SV-SAVE-PRIMITIVE | 3533–3585,63932–63940,64089–64092; server95–116·216–222 | `godot/port_modules/save_adapter/source_save_primitive.gd` | 격리 self-owned 저장소에 성공/쓰기실패·ACK불일치·같은slot 경쟁·다른캐릭터 늦은응답·원본catch범위 차이 관측. 성공일때만 lastSave 갱신 | read/collector/restore 인수 및 제품쓰기 허용 필요. dev atomic/NW 직접write 차이 보존. 실제 사용자 쓰기/자동서버재시작은 제외 |
 | 8/SV-LIFECYCLE | 3935–3977/부트4지점/63673–63692 | 기존 source_save_lifecycle_owner.gd + 후보 `source_save_request_owner.gd` | 가상 wall-clock으로 30s/10s/3s 및500ms/5s·pending drain·current P/function/slot 바뀜·저장중 강제요청을 정확1회. beforeunload는 ‘시도’와‘ACK’ 구분 | primitive+6개 actual Callable 준비. event pump 일부 있음과 dbSaveNow/Force 전체구현을 혼동하지 않음. 제품 clock/frame 작업과 담당협의 |
@@ -284,14 +284,14 @@
 | 50474 | `_forgeSel=null;renderForge();dbSaveNow();` |
 | 50640 | `renderForge();dbSaveNow();` |
 | 50784 | `G.shake=3;renderForge();dbSaveNow();` |
-| 50836 | `btnRow.appendChild(mkBtn(_L('어픽스 리롤','Affix Reroll'),REROLL_COST,()=>{if(G.mats<REROLL_COST){notify(_T('악의 부족!'));return}G.mats-=REROLL_COST;rerollAffixes(rIt);SFX.forge();addTxt(P.x,P.y-20,_T('어픽스 리롤!'),'#44ccff',60);recalcSt();applyStats();renderForge();dbSaveNow()}));` |
+| 50836 | `btnRow.appendChild(mkBtn(_L('어픽스 리롤','Affix Reroll'),REROLL_COST,()=>{if(G.mats<REROLL_COST){notify(_T('악의오브 부족!'));return}G.mats-=REROLL_COST;rerollAffixes(rIt);SFX.forge();addTxt(P.x,P.y-20,_T('어픽스 리롤!'),'#44ccff',60);recalcSt();applyStats();renderForge();dbSaveNow()}));` |
 | 50912 | `_crForgeSel=-1;applyStats();renderForge();dbSaveNow()}` |
 | 50948 | `cr.enh=(cr.enh\|\|0)+1;SFX.forge();addTxt(P.x,P.y-20,_crDefN(d)+' +'+cr.enh+'!','#bb88ff',50);applyStats();renderForge();dbSaveNow()};` |
 | 50998 | `_crForgeSel=-1;applyStats();renderForge();dbSaveNow();` |
 | 51017 | `_crForgeSel=-1;applyStats();renderForge();dbSaveNow();` |
 | 51032 | `row.onclick=()=>{CRYSTAL_BAG.splice(i,1);CRYSTAL_DUST+=dustGet;_crForgeSel=-1;SFX.forge();addTxt(P.x,P.y-20,_T('분해! 가루 +')+dustGet,'#ff8844',50);renderForge();dbSaveNow()};` |
 | 51064 | `btn.onclick=()=>{if(!ok)return;CRYSTAL_DUST-=dustCost;CRYSTAL_BAG.push({id:_crCraftType,star:_crCraftStar,enh:0,q:_qRoll()});SFX.forge();addTxt(P.x,P.y-20,_crStarN(s)+' '+_crDefN(cd)+' '+_T('제작!'),s.color,60);renderForge();dbSaveNow()};` |
-| 51077 | `b.onclick=()=>{if(G.mats<_crMatsCost){notify(_T('악의가 부족합니다!'));return}if(CRYSTAL_BAG.length>=CRYSTAL_BAG_MAX){notify(_T('유물 주머니 가득!'));return}G.mats-=_crMatsCost;CRYSTAL_BAG.push({id,star:0,enh:0,q:_qRoll()});SFX.forge();addTxt(P.x,P.y-20,d.emoji+' '+_crStarN(CRYSTAL_STAR[0])+' '+_crDefN(d)+' '+_T('제작!'),'#cc66ff',50);renderForge();dbSaveNow()};` |
+| 51077 | `b.onclick=()=>{if(G.mats<_crMatsCost){notify(_T('악의오브가 부족합니다!'));return}if(CRYSTAL_BAG.length>=CRYSTAL_BAG_MAX){notify(_T('유물 주머니 가득!'));return}G.mats-=_crMatsCost;CRYSTAL_BAG.push({id,star:0,enh:0,q:_qRoll()});SFX.forge();addTxt(P.x,P.y-20,d.emoji+' '+_crStarN(CRYSTAL_STAR[0])+' '+_crDefN(d)+' '+_T('제작!'),'#cc66ff',50);renderForge();dbSaveNow()};` |
 | 51215 | `applyStats();SFX.pickup();renderStatPanel();dbSaveNow();` |
 | 51249 | `applyStats();SFX.levelup();renderStatPanel();dbSaveNow();return true;` |
 | 51256 | `P._passiveQueue=queue;renderStatPanel();dbSaveNow();return true;` |

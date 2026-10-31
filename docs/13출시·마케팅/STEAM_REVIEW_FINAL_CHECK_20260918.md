@@ -83,7 +83,7 @@ AppID 4749590. 이 문서는 2026-09-16 기록 이후 이번 세션에서 직접
 | IPv4 슬롯 API | localhost를 IPv4로 호출 시 00_(16), map-test-0(621), t1(510) 반환. APPDATA 저장 파일과 일치 |
 | IPv6 슬롯 API | localhost를 IPv6로 호출 시 ASDASDAS(10), map-test-0(628), map-test-14(500), map-test-4(500), probe-10(500). 개발 저장 파일과 일치 |
 | 레벨 10 후보 파일 | `G:/exoduser/saves/ASDASDAS.json`, 34675바이트, 수정 시각 2026-09-18 15:27:16, 레벨 10, stage 0, 처치 308, JSON 파싱 성공 |
-| 보존 사본 | `output/steam_save_incident_20260918_1542/ASDASDAS.json`. 원본/사본 SHA-256 `54B826F2CC9F30752D97AE4DA6BCB666531EB59016637B9B9974B8AFCB5A83C0` 일치. 개발 공유 악의 파일도 별도 이름으로 보존 |
+| 보존 사본 | `output/steam_save_incident_20260918_1542/ASDASDAS.json`. 원본/사본 SHA-256 `54B826F2CC9F30752D97AE4DA6BCB666531EB59016637B9B9974B8AFCB5A83C0` 일치. 개발 공유 악의오브 파일도 별도 이름으로 보존 |
 | 기존 파일·백업 | 2026-09-16 백업 보존. 후속 승인으로 APPDATA 테스트3개를 개발 사본+원본 보관으로 분리. 아래 기록 참조 |
 | 대상 확인 및 최신 지시 | 사용자가 ASDASDAS 레벨10이 맞다고 확인. 이후 테스트 캐릭터는 개발용으로 분리하고 개발용 슬롯을 무제한으로 하라고 지시. 공개용 APPDATA로 복사하는 복구 계획은 취소, 개발 원본·백업 보존 |
 

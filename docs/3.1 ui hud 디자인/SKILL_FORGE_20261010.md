@@ -43,7 +43,7 @@
 
 | 영역 | 계약 |
 |---|---|
-| 13 키 슬롯 | HUD와 같은 순서·같은 변수: 1~4=`SKILL_SLOTS[0..3]`, F=`[5]`, Z=`ULT_SLOT`, LMB=`activeLMBSk`, RMB=`activeRMBSk`, Shift=`activeChargeSk`, E=`activeMagicSk`, Q=`activeQSk`, Ctrl=`activeCtSk`, Space=`SKILL_SLOTS[4]`. (구 K창 슬롯바는 습득 여부로 추정해 표시했고 RMB/E 라벨이 어긋나 있었다 — 새 창은 실제 변수) |
+| 키 슬롯(2026-10-31 현행 16개) | 1~4=`SKILL_SLOTS[0..3]`, F=`[5]`, Z=`ULT_SLOT`, LMB=`activeLMBSk`, **RMB=`activeMagicSk`**, Shift=`activeChargeSk`, **E=`activeRMBSk`**, Q=`activeQSk`, Ctrl=`activeCtSk`, Space=`SKILL_SLOTS[4]` 뒤에 구르기·X 처형·T 자동 석궁. 구 키 표기의 E/RMB 뒤바뀜을 수정했으며 아래 §12가 우선한다. |
 | 모체 판정 | 슬롯 값이 어떤 합체의 호스트(`_FUSE_PAIRS` 첫 원소, `elemFuse`만 `omniBeam`)면 모체. Shift의 기본 `charge`(사슬)는 모체가 아니므로 `chargeBoost`(사슬기동:충돌) 습득 시 그것이 모체 |
 | 제단 세트 | 모체가 속한 **가장 큰 완성 합체**의 구성(없으면 모체 혼자) + 대기(staged) 재료 |
 | 재료 단위 | 재료가 이미 다른 합체의 호스트면 그 합체 묶음 전체가 한 번에 들어간다 (예: 지진폭풍 + 멸살광선[추적암전 묶음] = 암전나선) |
@@ -147,7 +147,7 @@
 |---|---|
 | 실행 | 저장소 루트 `forge-lab.cmd` → 포트 **3334** 서버 + 브라우저 자동 오픈 `http://localhost:3334/game.html?forgelab=1&tutorial=0&resourceTutorial=0`. 기존 3333 서버에서 같은 쿼리로도 가능 (`server.cjs`가 `PORT` 환경변수 지원) |
 | 조건 | `_FORGE_LAB` = localhost·127.0.0.1·file: 이고 `?forgelab=1` (배포 사이트에서는 꺼짐) |
-| 상태 | Lv1000, SP 99999, 악의 99,999,999, **전 스킬 55개 Lv1(숨김 포함)**, **합체 0**, `_DEMO_FUSE_ALLOWED`에 32종 전부 추가(로컬 웹이 데모 빌드로 판정돼도 전부 합성 가능), 숫자 슬롯에 모체 스킬(악의 사냥·악의폭풍·폭풍소환·악의기둥·지옥강타 2·회복의 영역) |
+| 상태 | Lv1000, SP 99999, 악의오브 99,999,999, **전 스킬 55개 Lv1(숨김 포함)**, **합체 0**, `_DEMO_FUSE_ALLOWED`에 32종 전부 추가(로컬 웹이 데모 빌드로 판정돼도 전부 합성 가능), 숫자 슬롯에 모체 스킬(악의 사냥·악의폭풍·폭풍소환·악의기둥·지옥강타 2·회복의 영역) |
 | 부팅 | 기존 `_startTestChar` 재사용 + `_forgeLabState()`로 덮기. 로컬 웹은 데모 판정이라 데모 분기보다 먼저 분기 |
 | 저장 | `dbSave/dbSaveNow/dbSaveForce` 무력화 — 실제 세이브 슬롯을 덮지 않는다. 새로고침 = 처음 상태 |
 | 진입 후 | 패링 연습 생략, 적 제거, K 창 자동 오픈, 안내 알림 1회 |
@@ -353,3 +353,37 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 ### 변경 정리 운영의 구분
 
 `ExoduserAutoCleanup50`은 2026-09-27 팝업 문제로 삭제됐으며 AGENTS.md의 재등록 금지를 유지한다. 승인 없이 전체 변경을 add/commit/ignore/삭제하는 자동 정리는 하지 않는다. 완료·진행·보류 작업의 검토와 인수는 이와 별개다. 이번에는 스킬창 1건의 보류 해제·검수·docs·원격 전달을 묶어 정리한다. 새 예약 작업을 등록했다고 보고하지 않는다.
+
+## 12. 공간 재배분·고정 기술 표시 (2026-10-31 사용자 지시)
+
+| 항목 | 현행 계약 |
+|---|---|
+| 목표·대조 | 사용자 지적의 빈 설명/로드맵 판을 줄여 중앙 스킬을 넓힌다. 동일 실제 게임 `forgelab`의 수정 전 화면을 기준으로 1920×1080·3840×1080/1x 전후 비교. 기존 실버 헬 표면·글꼴·원화·3D 원판 유지 |
+| 설명판 | 폭 270px, 내용 높이만 사용(`align-self:start`, `max-height:100%`, 넘치면 내부 스크롤). 패딩 14px 16px, 제목23px, 설명15px/1.65. 강화·SP는 설명 바로 아래, 버튼 최소폭64px·좌우 패딩12px |
+| 로드맵·중앙 | 합성 계열이 없으면 `[hidden]`+`.sf-no-road`로 오른쪽 판 제거. 기본 270px/가변/270px, 빈 판은 270px/가변. 초광폭(21:9 이상)은 좌우270px를 실제 화면 끝에 두고 중앙 최대1800px·좌우 가변 여백으로 정확히 중앙 정렬 |
+| 전체·슬롯 줄 | 스킬창만 전폭−16px/패널 스케일, 바깥 패딩8px. 슬롯 줄 중앙 최대1800px, 슬롯 최대100px, 이름12px/1.35·상태10px/1.3·상태 최소높이28px. 폭1180px 이하 8개씩 줄바꿈·설명230px 유지 |
+| 구르기 | `kind:intrinsic`, 영웅의 `_mobilityKind()`에 따라 roll/bladeDash. `BINDS.roll` 키 + 방향 기호, 이름·아이콘·고정 표식. 기존 부츠 컷아웃 `img/ui/item-cutouts/boots_phys_cutout.png` 재사용(새 생성 없음). 교체·탈착·제단 재료 배치 불가, 기절 탈출 용도. 별도 SP·저장 슬롯 생성 없음 |
+| 처형 | `kind:intrinsic`, X 고정, `execution` 기존 아이콘·설명·습득/강화 경로만 사용. 미습득 표시와 그로기 보스 전용 조건. 교체·탈착 불가. Z에 넣을 수 있는 기존 필살기 선택 규칙은 유지 |
+| T·기존 전용 | T=`activeBowSk`, `SKILL_SLOT_DEFS.bow`; 기본 일반사격 아이콘은 HUD와 같은 fanShot. 기존 LMB/RMB/Shift/E/Q/Ctrl/T는 키별 후보 교체 가능하므로 `전용`으로 표시. Shift/Ctrl은 `기절 탈출` 표시. 고정 기술 두 개와 교체 가능한 전용 슬롯을 구분 |
+| 실제 키·설명 | 재지정 가능한 슬롯은 `BINDS`와 `keyName(code,true)`로 표시(마우스는 언어별 긴 이름의 넘침을 막도록 LMB/MMB/RMB 키캡). 키·상태 글자는 슬롯폭 상한, 긴 키는 말줄임+전체 툴팁. RMB=magic, E=rmb. 마법 계열 상세의 과거 E/RMB 입력 토큰만 현재 마법 키로 표시하며 원본 수치·전투 코드는 유지 |
+| 빈 슬롯 | 2·3·4는 음각 숫자가 있는 빈 소켓 원화. 미장착 Z·Space는 실제 후보의 어두운 아이콘·이름과 습득/장착 조건(아래 §13). 그 외 빈 슬롯은 기존 역할/조건 유지. 후보 전원의 최소 실제 `reqLv`가 현재 레벨보다 높을 때만 `LvN 도달 시 해금`. 숫자/Z에 존재하지 않는 Lv50 슬롯 잠금은 만들지 않음(기존 Lv50은 스킬 강화2레벨 조건) |
+| 합성·저장 | 기존 `equip/canEquip/canUnequip`와 합성 계약 유지. intrinsic은 장착 후보 없음·모체 없음. 고유 기술 코어는 설명만 제공하고 드래그로 변경 불가. 빈 코어의 이전 아이콘 잔류도 제거 |
+| 번역·검수 | No.3820~3827, EN+27개 lang에 전파. 실제29언어 최종 `_T` 병합과 슬롯/구슬 겹침·로드아웃 보존 검사. 최종 결과·SHA·서버 주소는 `G:/exoduser/tmp/design-review/20261031_skill_window/REPORT.md` |
+| 범위 | 웹 스킬 창 자체 검수. Unity 구현·플레이·Steam 배포 완료가 아니며 Unity 담당 브리프에 동일 지시·웹 근거만 인계 |
+
+## 13. 빈 칸 원화·전용 기술 잠김 표시 보정 (2026-10-31)
+
+CTO의 `9f5db2ac6` 이후 마지막 보정 절만 적용한다. 기준은 실제 `before-1920/3840-slots-1x.png`의 회색 원과 옆 장착 아이콘의 흑철 테두리다. 목표는 1x에서 깊이 있는 완성된 빈 소켓과 미습득 전용 기술을 구별하는 것. 원화 생성→256px 런타임 준비→실제 70px 슬롯에서 조기 판정하며 숫자/재질/그림자/주변 테두리가 어울리지 않으면 재작업한다. 같은 핵심 결함 두 후보 연속 실패 시 제작법을 바꾼다. 기존 레이아웃 재작업·Unity 수정은 포함하지 않는다.
+
+| 대상 | 현행 표시·코드 계약 |
+|---|---|
+| Z 미장착 | `slotPreview()`가 `slotEligible()` 후보 중 습득한 첫 기술, 없으면 `blackStar`, 해당 후보가 없으면 첫 유효 후보를 선택. 현재 후보 `blackStar` 블랙 / `lavaSummon` 탄막블랙홀 / `execution` 처형. 전체 후보 이름은 툴팁에 표시 |
+| Space 미장착 | 같은 규칙으로 습득 기술 우선, 기본 `giantSlam` 지옥강타 1. 현재 후보 `giantSlam` / `giantSlam2` 지옥강타 2 / `skyCrusher` 천공쇄기. 흡수/숨김 필터는 기존 후보 규칙 유지 |
+| 습득 조건 | 미습득 대표의 실제 `spCost`, `_malCost(matCost)`로 두 줄 표시. 현재 Z 대표 SP10·악의오브50(원가100), Space 대표 SP10·악의오브60(원가120). 둘 다 `reqLv` 없음. 이미 습득했지만 비어 있으면 기존 `이 슬롯에 장착`. 전 후보의 최소 `reqLv`가 현재 레벨 초과일 때는 기존 Lv 안내 우선 |
+| 잠김 원화 | `.preview .sf-ico`에 brightness .58 / saturate .35. 대표 이름·키·조건·후보 툴팁만 보여 주고 실제 장착/습득 상태를 변경하지 않음. 장착하면 즉시 기존 정상 아이콘 렌더로 복귀 |
+| 2·3·4 | `img/ui/skill-forge/empty-socket-2.png`, `-3.png`, `-4.png`. 각 256×256 RGBA, 흑철 원형 테두리·음각 홈·안쪽 그림자·각 숫자가 그려진 실제 원화. 기존 슬롯 치수(최대70px)와 키/이름/장착 안내 유지. 원화1.12배로 주변3D 테두리의 외경에 맞춤. 장착 시 원화를 제거 |
+| 생성·가공 | 사용자 최신 지시로 내장 `image_gen` 사용. 2172×724 RGBA 가로3셀(각724px). 셀을 정확히 분리하고 투명 여백 trim 후256px contain 축소. 투명 알파 보존. 마스터와 재현 도구는 `I:/EXODUSER-Storage/codex-takeover/skillwindow-correction/` |
+| 생성 프롬프트 | EXODUSER dark fantasy ARPG empty ability socket sprite sheet; exactly three identical circular sockets in one horizontal row, engraved 2/3/4; front orthographic; restrained black iron thin rounded rim, weathered dark silver metal, concave graphite interior, subtle inner shadow, upper-left neutral silver light; numerals readable at70px; transparent outside; no gem, sphere, spikes, filigree, gold, colored glow, extra text. 원본 생성ID `01a19090-8a1d-7861-ad9e-9fb42fde5042` |
+| 3D·폴백 | 해당 미장착 다섯 칸은 DOM 원화로 그리며 `domArt`가3D의 평평한 회색 orb를 숨김. 나머지3D 원판/장착 구슬 유지. 2D에서도 동일 원화 사용. 소켓 이미지 로딩 실패 때만 원래 흑철 CSS 홈으로 폴백하고 깨진 이미지 숨김 |
+| 번역·캐시 | 새 번역 키 없음. 기존 `습득 `, `악의오브 `, `이 슬롯에 장착` 및 스킬명/역할 키 재사용. JS/CSS `20261031-fixed-layout2`, 3D `20261031-sockets1` |
+| 검수·범위 | 1920×1080·3840×1080 실제 forgelab 화면/1x 전후 비교, 다국어 슬롯 경계·선택/습득/장착 전환·상태 불변·관련 회귀·guard. 저장 없는 UI 검수이며 자연 전투 검수 아님. 결과는 위 외부 폴더 `REPORT.md` |

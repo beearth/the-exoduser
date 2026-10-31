@@ -78,3 +78,20 @@
 #lobby #enterGameBtn::before,#lobby #enterGameBtn::after{content:none!important;display:none!important}
 #lobby #enterGameBtn:disabled{background:none!important;filter:grayscale(1) brightness(.5)!important}
 #lobby #enterGameBtn:not(:disabled):hover{filter:brightness(1.14) drop-shadow(0 0 18px rgba(194,26,16,.45)) drop-shadow(0 8px 16px rgba(0,0,0,.75))!important}
+
+/* 2026-10-31: control layout stays in the central 16:9 viewport; stage art remains full width. */
+#lobby{--lobby-safe-inset:max(0px,calc((100vw - 177.777778dvh)/2));box-sizing:border-box}
+#lobby .lobby-bottom-actions{flex-wrap:wrap;row-gap:10px!important}
+#lobby .lobby-right .char-name{min-width:0;flex-wrap:wrap;row-gap:4px!important}
+#lobby .lobby-right .char-name-label{overflow-wrap:anywhere;max-width:100%}
+#lobby .lobby-right :is(button,a,[tabindex]):focus-visible{outline:1px solid var(--sh-text-hi);outline-offset:4px}
+#lobby :is(#lobbyLangSelect,#replayCinBtn,.lobby-steam-link,.ll-version-txt){font-family:var(--sh-font)!important}
+
+#lobby>.lobby-right{right:var(--lobby-safe-inset)}
+#delConfirmModal>div,.create-modal .create-modal-inner{font-family:var(--sh-font)!important;border:0!important;border-radius:0!important;border-image:url('img/ui/silver_hell/panel_frame_20261029.png') 150 / 46px / 16px stretch!important;background:#0b0c0df5!important;padding:36px 38px!important;max-width:min(520px,calc(100vw - 64px))!important;box-sizing:border-box}
+#delConfirmModal button,.create-modal-btns button{font:400 15px/1.4 var(--sh-font)!important;min-height:44px;padding:8px 32px!important;min-width:128px;border:0!important;border-radius:0!important;border-image:url('img/ui/silver_hell/btn_plaque_20261029.png') 0 174 fill / 0 28px / 0 6px stretch!important;background:none!important;color:var(--sh-text)!important}
+#delConfirmModal button:hover,.create-modal-btns button:hover{filter:brightness(1.18)}
+#delConfirmModal button:focus-visible,.create-modal-btns button:focus-visible{outline:1px solid var(--sh-text-hi)!important;outline-offset:4px}
+#delConfirmModal #delConfirmYes{color:var(--sh-text-hi)!important}
+#delConfirmModal #delConfirmMsg{font:400 17px/1.7 var(--sh-font)!important;color:var(--sh-text-hi)!important;overflow-wrap:anywhere}
+#delConfirmModal>div>div,.create-modal-btns{flex-wrap:wrap;row-gap:14px!important}

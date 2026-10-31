@@ -2,7 +2,7 @@
 
 ## 판정·의존
 
-**STATUS=REVIEW_PENDING.** origin/main `FDG_SOURCE_TRACE_META_20261020.md` §7의 META-03을 구현했다. 레거시 강화 환급·분해 가치 계산만 추가했다. 장비 삭제·악의 입금·State/UI/저장 연결은0이며 이 단위에는 공용 수정이 필요하지 않다. 이후 거래/writer 연결 권한으로 확대하지 않는다.
+**STATUS=REVIEW_PENDING.** origin/main `FDG_SOURCE_TRACE_META_20261020.md` §7의 META-03을 구현했다. 레거시 강화 환급·분해 가치 계산만 추가했다. 장비 삭제·악의오브 입금·State/UI/저장 연결은0이며 이 단위에는 공용 수정이 필요하지 않다. 이후 거래/writer 연결 권한으로 확대하지 않는다.
 
 명시 fetch 후 최신 main=`284d7faf49295b2f5061937a47ce96038032ed3c`, META-02 끝=`8171e715ca274207b4d83d9be639436d39c755b1`을 확인했다. META-02가 main에 없으므로 사용자 지시대로 후자에서 새 `codex/meta-03-20261020` / `~/exoduser-wt/meta-03`을 생성했다. META-01 `c428ef20`도 parent 계보에 포함된다. main 병합·체리픽·다른 담당 파일 인수는 없다.
 

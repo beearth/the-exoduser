@@ -1,0 +1,123 @@
+/* H5 UI accessibility and centered 16:9 composition; world/canvas are untouched. */
+:root{--web-ui-safe-width:min(100vw,calc(100dvh * 16 / 9));--web-ui-gutter:max(0px,calc((100vw - var(--web-ui-safe-width)) / 2));--font-hell:var(--sh-font,'Hahmlet','Nanum Myeongjo','Noto Serif KR',serif)}
+#mmWrap{left:calc(var(--web-ui-gutter) + 8px * var(--ui-scale,1))!important}
+#mmLvl{right:calc(var(--web-ui-gutter) + var(--ui-inset-right,0px) + env(safe-area-inset-right,0px) + 10px * var(--ui-scale,1))!important}
+#hudCorner{left:calc(var(--web-ui-gutter) + var(--ui-inset-left,0px) + env(safe-area-inset-left,0px) + 16px * var(--ui-scale,1))!important}
+#keyGuide{right:calc(var(--web-ui-gutter) + 10px)!important}
+#dDmgLog{right:calc(var(--web-ui-gutter) + 24px)!important}
+/* Full-screen veils remain full screen; only their actual content is bounded. */
+html body :is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel).panel{padding-left:calc(var(--web-ui-gutter) + 12px)!important;padding-right:calc(var(--web-ui-gutter) + 12px)!important}
+html body :is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel).panel .pbox{min-width:0!important;max-width:calc((var(--web-ui-safe-width) - 48px) / var(--web-ui-panel-scale,1))!important}
+#settings{--web-ui-panel-scale:var(--ui-guide-scale,1)}
+#stageClear,#nextDiffPop>.nd-inner,#stLoad>div,#bossLine,#areaTitle,#regionBanner{max-width:calc(var(--web-ui-safe-width) - 48px)!important}
+:is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel,#gcModal,#death,#lvUpScreen,#demoEnd) :is(button,input,select){font-family:var(--sh-font,'Hahmlet','Nanum Myeongjo',serif)!important}
+:is(.panel,#gcModal,#death,#nextDiffPop) :is(button,[role=button],[tabindex]):focus-visible{outline:1px solid #e6e3dc!important;outline-offset:3px!important;box-shadow:0 0 0 4px rgba(0,0,0,.8)!important}
+.panel-nav-tab{cursor:pointer}
+.panel-nav-tab:focus-visible{color:#f2f0ec!important}
+/* The approved 4:3 artwork is reused only on the compact confirmation box. */
+#gcModal .gc-box{min-width:0;max-width:min(600px,calc(var(--web-ui-safe-width) - 72px));border:1px solid transparent;border-radius:0;background:linear-gradient(180deg,rgba(16,15,15,.97),rgba(8,8,9,.98)) padding-box;border-image:url('img/ui/silver_hell/panel_frame_20261029.png') 150 / 52px / 18px stretch;padding:38px 42px}
+#gcModal .gc-msg{font-family:var(--sh-font,'Hahmlet','Nanum Myeongjo',serif);font-weight:400;color:#e6e3dc;overflow-wrap:anywhere}
+#gcModal .gc-btns{flex-wrap:wrap;gap:16px}
+#gcModal .gc-cancel{order:0}
+#gcModal .gc-ok{order:1}
+#gcModal .gc-btn{min-width:128px;min-height:44px;border:0;border-radius:0;background:none;border-image:url('img/ui/silver_hell/btn_plaque_20261029.png') 0 174 fill / 0 32px / 0 8px stretch;box-shadow:none;padding:10px 32px;font-weight:400;color:#d6d3cd}
+#gcModal .gc-ok{color:#f2f0ec;filter:drop-shadow(0 0 8px rgba(194,26,16,.22))}
+#gcModal .gc-btn:hover{background:none;filter:brightness(1.18);box-shadow:none}
+#webUiuxTooltip{position:fixed;z-index:100000;max-width:min(440px,calc(var(--web-ui-safe-width) - 32px));padding:10px 14px;pointer-events:none;white-space:pre-line;overflow-wrap:anywhere;font:400 14px/1.65 var(--sh-font,'Hahmlet','Nanum Myeongjo',serif);color:#e6e3dc;background:#0b0c0df5;border:1px solid #727575;box-shadow:0 8px 24px #000b;text-shadow:0 1px 2px #000}
+#webUiuxTooltip[hidden]{display:none}
+@media(max-width:600px){html body :is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel).panel .pbox{max-width:calc((100vw - 16px) / var(--web-ui-panel-scale,1))!important}#gcModal .gc-box{padding:28px 24px}}
+
+/* Approved plaque artwork; small skill controls keep their compact hit area. */
+html body :is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel) .pbox .pclose,
+html body #skillPanel#skillPanel #skillForge .sf-btn{border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;border-image:url('img/ui/silver_hell/btn_plaque_20261029.png') 0 174 fill / 0 28px / 0 6px stretch!important;padding-left:30px!important;padding-right:30px!important;min-height:40px!important;line-height:1.4!important;color:#d6d3cd!important}
+html body #skillPanel#skillPanel #skillForge .sf-btn{min-width:86px;padding-left:22px!important;padding-right:22px!important;border-image-width:0 22px!important}
+html body :is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel) .pbox .pclose:hover,
+html body #skillPanel#skillPanel #skillForge .sf-btn:hover:not(:disabled){background:none!important;color:#f2f0ec!important;filter:brightness(1.18)!important}
+html body #skillPanel#skillPanel #skillForge .sf-btn-fire{color:#f2f0ec!important;filter:drop-shadow(0 0 7px rgba(194,26,16,.24))}
+#nextDiffPop #ndBtns{max-width:calc(var(--web-ui-safe-width) - 48px)!important}
+#stageTransition :is(#stNextName,#stLoadTip){max-width:calc(var(--web-ui-safe-width) - 48px);overflow-wrap:anywhere;margin-left:auto;margin-right:auto}
+
+/* The approved Hahmlet weights prevent synthetic bold in dense menus. */
+html body :is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel) .ptitle{font-family:var(--sh-font)!important;font-weight:300!important}
+html body :is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel) :is(button,.panel-nav-tab,.ui-section-tab,.set-name,.set-label,.ui-section-heading){font-weight:400!important}
+#death .dt,#demoEnd .de-title,#lvUpScreen #lvUpTitle{font-weight:300!important}
+
+/* Existing quiet-tier shorthands use duplicated IDs; match their ownership explicitly. */
+html body :is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel).panel .pbox .ptitle{font-family:var(--sh-font)!important;font-weight:300!important}
+html body :is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel).panel .pbox :is(button,.panel-nav-tab,.ui-section-tab,.set-name,.set-label,.ui-section-heading){font-family:var(--sh-font)!important;font-weight:400!important}
+
+/* Settings' legacy action rule includes an ID inside :is(); preserve its exact scope. */
+html body #settings#settings.panel.ui-composed .pbox :is(button,#setClose){font-family:var(--sh-font)!important;font-weight:400!important}
+html body #settings#settings.panel.ui-composed .pbox :is(#saveP1,#loadP1,#saveP2,#loadP2,#toLobbyBtn2,#resetBtn,#quitBtn,#resetYes,#resetNo,#btnRedetect,#setClose,button[onclick="toggleFullscreen()"]){border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;border-image:url('img/ui/silver_hell/btn_plaque_20261029.png') 0 174 fill / 0 28px / 0 6px stretch!important;padding-left:30px!important;padding-right:30px!important;min-height:40px!important;line-height:1.4!important;color:#d6d3cd!important}
+
+/* Preserve each pet portrait's original side and its guide-avoidance calculation. */
+#petSubtitle{font-family:var(--sh-font,'Hahmlet','Nanum Myeongjo',serif)!important}
+#petSubtitle #petBubbleTxt{font-family:inherit!important;font-weight:400!important}
+#petSubtitle[style*="left: 20px"],#petSubtitle[style*="left:20px"]{left:calc(var(--web-ui-gutter) + 20px)!important}
+#petSubtitle[style*="right: 20px"],#petSubtitle[style*="right:20px"]{right:calc(var(--web-ui-gutter) + 20px)!important}
+#parryLesson{right:calc((var(--web-ui-gutter) + clamp(18px,3vw,56px)) / var(--ui-guide-scale,1))!important;font-family:var(--sh-font,'Hahmlet','Nanum Myeongjo',serif)!important}
+#systemLesson{right:calc(var(--web-ui-gutter) + 18px)!important;font-family:var(--sh-font,'Hahmlet','Nanum Myeongjo',serif)!important}
+#webUiuxTooltip{background:linear-gradient(rgba(7,8,9,.88),rgba(7,8,9,.94)),url('img/ui/hell_gothic/iron.png') center/480px repeat,#0b0c0d}
+@media(max-width:760px){#systemLesson{right:calc(var(--web-ui-gutter) + 10px)!important}}
+
+#notif,#ph{max-width:calc(var(--web-ui-safe-width) - 48px);white-space:normal;overflow-wrap:anywhere;text-align:center}
+
+/* UI text only: keep explicit Latin/keycap Cinzel while removing legacy sans overrides. */
+html body :is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel).panel :where(*:not([style*="Cinzel"])){font-family:var(--sh-font,'Hahmlet','Nanum Myeongjo',serif)!important}
+html body :is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel):is(#settings,#invPanel,#forge,#statPanel,#skillPanel,#storagePanel).panel :is(kbd,.set-key,.sh-cap,.sf-slot-key){font-family:var(--sh-latin,'Cinzel','Hahmlet',serif)!important}
+:is(#gcModal,#death,#demoEnd,#stageClear,#lvUpScreen,#notif,#ph,#hud,#hudTop,#skBarTip,#mmLvl,#globeHP,#globeMP,#introKeys,#introDiff,#skSlotPop,#crBagPop),
+:is(#gcModal,#death,#demoEnd,#stageClear,#lvUpScreen,#notif,#ph,#hud,#hudTop,#skBarTip,#mmLvl,#globeHP,#globeMP,#introKeys,#introDiff,#skSlotPop,#crBagPop) :where(*:not([style*="Cinzel"])){font-family:var(--sh-font,'Hahmlet','Nanum Myeongjo',serif)!important}
+:is(#parryLesson,#systemLesson):is(#parryLesson,#systemLesson),
+:is(#parryLesson,#systemLesson):is(#parryLesson,#systemLesson) :where(*){font-family:var(--sh-font,'Hahmlet','Nanum Myeongjo',serif)!important;font-weight:400!important}
+:is(#parryLesson,#systemLesson):is(#parryLesson,#systemLesson) :is(h1,h2,h3,.lesson-title,.system-lesson-title){font-weight:300!important}
+:is(#parryLesson,#systemLesson):is(#parryLesson,#systemLesson) :is(kbd,.lesson-key,.lesson-keycap){font-family:var(--sh-latin,'Cinzel','Hahmlet',serif)!important}
+#introKeys :is(#ikProgress,#introTextEn),#stageClear #clearTitleEn,#death #dInfo{font-family:var(--sh-latin,'Cinzel','Hahmlet',serif)!important}
+
+/* Boss plate and stage clock share the center rail without overlapping. */
+body:has(#bossBar.on) #stageClock{top:calc(var(--ui-inset-top,0px) + env(safe-area-inset-top,0px) + 128px * var(--ui-scale,1))!important}
+#bossBar,#bossBar#bossBar :is(.bn,#bossName){font-family:var(--sh-font,'Hahmlet','Nanum Myeongjo',serif)!important}
+#bossBar#bossBar :is(.bn,#bossName){font-weight:300!important}
+#globeHP .globe-val #hpMax{margin-top:4px!important;line-height:1.2!important}
+
+/* 2026-10-31: one title band for the five sibling windows. Keep skill content owned by its author. */
+:root{--web-ui-title-height:44px}
+html body :is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel).panel .pbox .ptitle{
+ display:grid!important;position:relative!important;isolation:auto!important;grid-template-rows:20px 24px;align-items:center!important;justify-content:center!important;justify-items:center;gap:0!important;
+ height:var(--web-ui-title-height)!important;min-height:var(--web-ui-title-height)!important;max-height:none!important;
+ width:min(520px,100%)!important;max-width:100%!important;flex:0 0 auto!important;
+ padding:0 12px!important;margin:0 auto 10px!important;zoom:1!important;
+ font-size:22px!important;line-height:1.2!important;letter-spacing:.04em!important;
+ background:none!important;border:0!important;box-shadow:none!important;overflow:visible!important;
+}
+html body :is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel).panel .pbox .ptitle::before{
+ content:''!important;display:block!important;position:static!important;inset:auto!important;transform:none!important;
+ width:64px!important;height:20px!important;z-index:auto!important;
+ background:url('img/ui/silver_hell/gate_sigil_20261028.jpg') center/240px auto no-repeat!important;
+ mask:radial-gradient(ellipse,#000 32%,#000a 60%,transparent 80%)!important;mask-mode:alpha;mix-blend-mode:screen;
+ border:0!important;box-shadow:none!important;filter:grayscale(1) brightness(3) contrast(1.1)!important;pointer-events:none;
+}
+html body :is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel).panel .pbox .ptitle::after{
+ content:''!important;display:none!important;position:static!important;inset:auto!important;transform:none!important;
+ width:54px!important;height:1px!important;flex:0 0 54px!important;z-index:auto!important;
+ background:linear-gradient(90deg,var(--sh-line),transparent)!important;border:0!important;border-image:none!important;box-shadow:none!important;pointer-events:none;
+}
+html body #statPanel#statPanel#statPanel.panel .pbox .growth-header{height:var(--web-ui-title-height);min-height:var(--web-ui-title-height);padding:0!important;margin:0 0 12px!important;gap:16px;flex-wrap:nowrap;border:0}
+html body #statPanel#statPanel#statPanel.panel .pbox .growth-title{margin-bottom:0!important}
+html body #statPanel#statPanel#statPanel .growth-kicker,
+html body #statPanel#statPanel#statPanel .growth-subtitle{display:none!important}
+html body #statPanel#statPanel#statPanel .growth-wallets{align-self:stretch;align-items:center}
+html body #statPanel#statPanel#statPanel .growth-wallet{flex-direction:row;gap:12px;min-width:0;height:var(--web-ui-title-height);padding:0 12px!important}
+html body #statPanel#statPanel#statPanel .growth-wallet strong{font-size:24px!important;line-height:1.2}
+/* Replace the vector compass and red needle with the approved first-screen engraved eye. Native aspect ratio is 16:9. */
+html body #statPanel#statPanel#statPanel.panel .pbox.growth-shell{
+ background:linear-gradient(#14131570,#09090ae6),url('img/ui/silver_hell/gate_sigil_20261028.jpg') 30% -72px/620px auto no-repeat,var(--ui-surface) center/320px!important;
+ background-blend-mode:normal,screen,normal;
+}
+html body #invPanel#invPanel#invPanel.panel .pbox>div:has(>.ptitle){min-height:var(--web-ui-title-height)!important;flex-wrap:nowrap!important}
+html body #invPanel#invPanel#invPanel.panel .pbox .ptitle{width:auto!important;margin:0 16px 0 0!important;font-size:20px!important}
+@media(max-width:780px){
+ html body :is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel):is(#settings,#invPanel,#forge,#skillPanel,#statPanel).panel .pbox .ptitle{font-size:18px!important;gap:0!important;padding-inline:4px!important}
+ html body #statPanel#statPanel#statPanel .growth-wallet{padding-inline:6px!important;gap:6px}
+ html body #statPanel#statPanel#statPanel .growth-wallet span{font-size:11px!important}
+ html body #invPanel#invPanel#invPanel.panel .pbox>div:has(>.ptitle){flex-wrap:wrap!important}
+}

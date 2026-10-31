@@ -63,7 +63,7 @@ const FILES = [
   'ui-foundation.css',
   'ui-refinement.css',
   // 실버 헬 UI 패키지 v1 (2026-10-28 사용자 승인) — 부품·로비·캐릭터 선택 CSS + Hahmlet 글꼴(OFL 1.1, 라이선스 문서 동봉)
-  'silver-hell-ui-kit.css', 'lobby-silver-hell.css', 'charselect-silver-hell.css',
+  'silver-hell-ui-kit.css', 'lobby-silver-hell.css', 'charselect-silver-hell.css', 'lobby-ui-feedback.js',
   'fonts/hahmlet/Hahmlet-300-ko.woff', 'fonts/hahmlet/Hahmlet-400-ko.woff', 'fonts/hahmlet/OFL.txt',
   'ui-quiet-tier.css',
   'inventory-gems.css',
@@ -73,7 +73,7 @@ const FILES = [
   'inventory-oss-balance.css', 'inventory-gems-balance.css',
   'skill-workspace.css',
   'skill-forge.css', 'skill-forge.js', 'skill-forge-3d.js',
-  'ui-panels.js',
+  'ui-panels.js', 'web-uiux.css', 'web-uiux.js',
   'localization-runtime.js', 'localization-data.js', 'localization.css',
   'lobby-stage-info.js', 'character-story-player.js', 'level-up-vfx.js',
   'lobby-ancestor-art.css', 'lobby-ancestor-sprite.js',

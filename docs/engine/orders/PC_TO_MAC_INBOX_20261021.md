@@ -145,7 +145,7 @@
 
 > 아래 ★★★★★(`f9636b021`, patch 12개)를 **이 항목으로 대체**한다(+1커밋, patch +1). INBOX는 main과 `codex/unity-mac-20261024` 두 곳에 같은 내용으로 올린다.
 
-- **대상 SHA: `6c8ed9d91`** — 브랜치 `claude/unity-pc-inventory-u04-20261026`. `f9636b021` 위에 A24 구역 진입 제목 `#areaTitle`(3.1초 연출, 35구역 이름표) + 오른쪽 위 목표 패널 `#mmLvl`(레벨·경험치 바·지역 처치·악의 = Unity 값, 지역 처치 총량은 "미이식") 1커밋. 문서 `docs/engine/UNITY_A24_AREATITLE_20261026.md`(그 브랜치).
+- **대상 SHA: `6c8ed9d91`** — 브랜치 `claude/unity-pc-inventory-u04-20261026`. `f9636b021` 위에 A24 구역 진입 제목 `#areaTitle`(3.1초 연출, 35구역 이름표) + 오른쪽 위 목표 패널 `#mmLvl`(레벨·경험치 바·지역 처치·악의오브 = Unity 값, 지역 처치 총량은 "미이식") 1커밋. 문서 `docs/engine/UNITY_A24_AREATITLE_20261026.md`(그 브랜치).
 - **Codex 적용 patch 13개 — 이 순서로**(그 브랜치 `docs/engine/unity_patches/`): 1 U04B → 2 U08 nativegame → 3 U08 pausemenu → 4 U05 → 5 A07B nativegame → 6 A07B pausemenu → 7 A13 → 8 A14 → 9 A20 → 10 A21 → 11 A22 → 12 A23 → **13 `A24_nativegame_areatitle`**.
   - patch 13: 구역 전환 이벤트가 없어 **실행 시작 때 1회만** 구역 제목 `Show(0)`(`--unity-*` 검증 실행에서는 띄우지 않음), 기존 임시 상태 라벨 3줄을 새 목표 패널 호출로 교체. A23과 같은 줄을 고쳐 3-way로 재생성했고, 그리기 순서는 웹 z-index대로 구역 제목(19) 다음 보스 바(22).
 - **PC 검증**(6000.6.7f1, 각 1회): patch 13개 순서 apply 전부 통과 → Win64 errors 0·warning CS 0 → `--unity-overlay-capture area` 종료 0·15/15, `boss` 종료 0·12/12 → 역순 `apply -R` 13개 후 `NativeGame*`·`NativePauseMenu*` 변경 0.

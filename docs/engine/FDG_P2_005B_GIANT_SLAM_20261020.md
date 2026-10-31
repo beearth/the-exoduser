@@ -11,7 +11,7 @@
 |---|---|---|
 | 입력 | Space → _dispatchSkillSlot(4) 13286, 공통 가드 12905~12917 | paused·dead·스킬 보유 |
 | 게이트 | 13010 | ST≥stCost(50=_COST_BASE 31960×_dpsCostMul lv1 1×_stDisc 1)·악의≥_malCost(20)=10(28080 ×0.5 할인)·_gslCd≤0 |
-| 비용 | 46454 useStPct(31991)·G.mats−=10 | ST50(authority 신규 commit)·악의10(state 신규 apply) |
+| 비용 | 46454 useStPct(31991)·G.mats−=10 | ST50(authority 신규 commit)·악의오브10(state 신규 apply) |
 | 쿨 | 46456 | ~~(max(60,1800−12(lv−1))×(1+_cdRed 0))=1800f — 소유=어댑터(원본 P._gslCd, 펫 선례 기록) |
 | 피해 | 46464~46470·44509 | dmg=~~(meleeRef×statStr 1×(20+(lv−1)×19×.5)×rageMul 1) — rage 0(신규), rage>0 분기 미이식 기록 |
 | 히트 | _gSlamHit 46527~46566 | ×pAtkMul(+_atkBon 0 기록) → r=500+15(lv−1) → elMul → **hurtE owner 경로** opts {kbMult:0, noPoise:true, noImpact:true}·atkEl=wp.el(0) → kb+8 → 일반몹 stunned=max(,60)(8668)·poise≤0 풀스턴 min(300,150+15(lv−1)) + '체간 붕괴!'/'미니스턴!' 텍스트 |
@@ -22,12 +22,12 @@
 - 미구현 스킬(1/F/Ctrl) 무반응 유지 — 원본과 다른 동작 생성 없음.
 
 ## 문서 수치 대조 (CLAUDE.md 필수 — 정정 불필요 확인)
-- 2_1 §421: 범위 500+(Lv−1)×15·쿨 30초(−12f/Lv)·ST=stCost+악의20·공식 — **코드와 일치**.
-- 스킬별_DPS_자원소비표 §91·헤더 교정(2026-09-10): 동일 공식·쿨·비용 — **일치**. '악의20'은
+- 2_1 §421: 범위 500+(Lv−1)×15·쿨 30초(−12f/Lv)·ST=stCost+악의오브20·공식 — **코드와 일치**.
+- 스킬별_DPS_자원소비표 §91·헤더 교정(2026-09-10): 동일 공식·쿨·비용 — **일치**. '악의오브20'은
   _malCost 인자 표기(실소비 10 = 전역 _MALICE_COST_MUL 0.5 — 28080). 정정 사항 없음.
 
 ## 검증 (원로그 G:\exoduser-wt\_out\p2-005b\logs\)
-- test_p2005b_giant_slam **12/0 PASS**: ①ST 50·악의 10 소비·쿨 1800·hurtE 경유 히트·
+- test_p2005b_giant_slam **12/0 PASS**: ①ST 50·악의오브 10 소비·쿨 1800·hurtE 경유 히트·
   피해식 ~~(~~(meleeRef×20)×pAtkMul) 정수 일치·쉴드+HP 합산 일치(비크리)·미니스턴 60
   ②HUD sweep 공급(pct≈1·'N.Ns')·쿨 게이트 재시전 거부·슬롯 sweep 반영.
 - **웹 실측 교차검증**(web_slam_shot.mjs): Space 시전 → ST 281.6→230.7(−50)·악의
