@@ -40,5 +40,5 @@ export function foregroundPose(row,center,hero,walkable,parallax){
  return {position,alpha:.28+(row.alpha-.28)*k};
 }
 
-// Preserve landmark hue; the additive web pass already retains native ambient.
-export function renderEnergy(row,time){return animatedEnergy(row,time)*(row.id==='player'?.22:row.id==='fx'?.5:.95);}
+// Restore the player pool after the cold ambient pass; authored hue stays local.
+export function renderEnergy(row,time){return animatedEnergy(row,time)*(row.id==='player'?.8:row.id==='fx'?.7:1.45);}

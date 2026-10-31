@@ -52114,7 +52114,7 @@ function drawAtmosphere(ctx,w,h){
   ctx.fillStyle=PP_GRAD_TOP;ctx.fillRect(0,0,w,h*0.4);
   }
   // L3 비네트 — 방사형 중심 투명→가장자리 검정 (세기=PP_A_VIG)
-  if(_ATMDBG.vig){
+  if(_ATMDBG.vig&&!(G.stage===0&&!G._bossArena&&window._Web3DLivingLayer?.snapshot().enabled)){
   ctx.globalCompositeOperation='source-over';ctx.globalAlpha=PP_A_VIG;
   ctx.fillStyle=PP_GRAD_VIG;ctx.fillRect(0,0,w,h);
   }
@@ -55554,9 +55554,10 @@ function draw(){
     X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=.04;
     X.drawImage(_cq,-_csh,0,C.width,C.height);X.drawImage(_cq,_csh,0,C.width,C.height);
     X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore();G._chromaT-=_dtSp}}
+  const _web3dAmbient=G.stage===0&&!G._bossArena&&window._Web3DLivingLayer?.snapshot().enabled;
   // ═══ 동적 조명 패스 (정지 시 3프레임, 카메라 이동/리사이즈 시 즉시 갱신) ═══
   if(!G._litFrame)G._litFrame=0;G._litFrame++;
-  {const _l0=performance.now();if(_gameFrame%3===0||!_lightCvs||_lightW!==~~(C.width/2)||_lightH!==~~(C.height/2)||_litCamX!==G.cam.x||_litCamY!==G.cam.y){if(_useGPU||_useGL)_glFlush();_collectLights();_renderLighting();_litCamX=G.cam.x;_litCamY=G.cam.y}if(_lightCvs){X.save();X.setTransform(1,0,0,1,0,0);X.drawImage(_lightCvs,_litCamX-G.cam.x,_litCamY-G.cam.y,C.width,C.height);if(_litColCvs&&OPT.quality!=='low'){X.globalCompositeOperation='lighter';X.globalAlpha=LIT_COL_MIX;X.drawImage(_litColCvs,_litCamX-G.cam.x,_litCamY-G.cam.y,C.width,C.height);X.globalCompositeOperation='source-over';X.globalAlpha=1}X.restore()}if(_DEBUG_PERF){_dbgLight=performance.now()-_l0;_dbgDLit=_dbgLight}}
+  {const _l0=performance.now();if(_gameFrame%3===0||!_lightCvs||_lightW!==~~(C.width/2)||_lightH!==~~(C.height/2)||_litCamX!==G.cam.x||_litCamY!==G.cam.y){if(_useGPU||_useGL)_glFlush();_collectLights();_renderLighting();_litCamX=G.cam.x;_litCamY=G.cam.y}if(_lightCvs&&!_web3dAmbient){X.save();X.setTransform(1,0,0,1,0,0);X.drawImage(_lightCvs,_litCamX-G.cam.x,_litCamY-G.cam.y,C.width,C.height);if(_litColCvs&&OPT.quality!=='low'){X.globalCompositeOperation='lighter';X.globalAlpha=LIT_COL_MIX;X.drawImage(_litColCvs,_litCamX-G.cam.x,_litCamY-G.cam.y,C.width,C.height);X.globalCompositeOperation='source-over';X.globalAlpha=1}X.restore()}if(_DEBUG_PERF){_dbgLight=performance.now()-_l0;_dbgDLit=_dbgLight}}
   // ═══ 블룸 패스 (3프레임마다 계산 — 라이팅과 1프레임 오프셋) ═══
   {const _bl0=performance.now();const _hasGlow=G.bossAlive||_blCnt>0||(G.pets&&G.pets.iris&&!G._irisOff);if(_hasGlow){if(_gameFrame%3===1){if(_useGPU||_useGL)_glFlush();_renderBloom()}else if(_bloomCvs&&OPT.bloom&&OPT.quality!=='low'&&OPT.quality!=='mid'){X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=G.bossAlive?.15:.08;X.drawImage(_bloomCvs,0,0,C.width,C.height);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore()}}if(_DEBUG_PERF)_dbgDBloom=performance.now()-_bl0}
   // [TORCH] 횃불 조명 어둠 오버레이 (정지 시 frame%3===2, 카메라 이동 시 즉시 갱신)
@@ -55762,7 +55763,7 @@ function draw(){
     const _bRef=G._bossRef;
     if(_bRef&&_bRef.alive&&_bRef.hp<_bRef.mhp*.5){_vAlpha=.5+.15*(1-_bRef.hp/_bRef.mhp)}
   }
-  X.save();X.setTransform(1,0,0,1,0,0);X.globalAlpha=_vAlpha;X.drawImage(G._dvgCvs,0,0);X.restore()}
+  X.save();X.setTransform(1,0,0,1,0,0);X.globalAlpha=_web3dAmbient?0:_vAlpha;X.drawImage(G._dvgCvs,0,0);X.restore()}
   _pC3=performance.now(); // envLight+vignette end
   // [GRAIN] 필름 그레인
   // [GRAIN+SCANLINE] CSS filter로 대체 (putImageData 제거 → 0ms)
@@ -66076,7 +66077,7 @@ if(window._FDGDruidQaStorage?.active&&new URLSearchParams(location.search).get('
 
 <script type="module">
 if(new URLSearchParams(location.search).get('r3d')==='1'&&new URLSearchParams(location.search).get('r3dLegacy')!=='1'){
-  import('./web3d/living-layer.mjs?v=20261031-ghost3').then(m=>m.install(()=>({G,P,objects:MAP_OBJS,images:_OBJ_SPR,meta:_OBJ_META,ground:_ch1StartOuterCache,hill:_CH1_HILL,tile:T,now:_now,quality:OPT.quality,enemies:ens,projectiles:[...projs,...pProjs],blasts:[..._fireExps,..._impacts],frame:C,flush:_glFlush}))).then(api=>{window._Web3DLivingLayer=api;}).catch(error=>{window._Web3DLivingLayerError=error.message;console.error('[WEB3D living layer unavailable]',error);});
+  import('./web3d/living-layer.mjs?v=20261031-light4').then(m=>m.install(()=>({G,P,objects:MAP_OBJS,images:_OBJ_SPR,meta:_OBJ_META,ground:_ch1StartOuterCache,hill:_CH1_HILL,tile:T,now:_now,quality:OPT.quality,enemies:ens,projectiles:[...projs,...pProjs],blasts:[..._fireExps,..._impacts],frame:C,flush:_glFlush}))).then(api=>{window._Web3DLivingLayer=api;}).catch(error=>{window._Web3DLivingLayerError=error.message;console.error('[WEB3D living layer unavailable]',error);});
 }
 if(new URLSearchParams(location.search).get('r3d')==='1'&&new URLSearchParams(location.search).get('r3dLegacy')==='1'){
   const {renderFrame,advancePresentation}=await import('./web3d/presentation.mjs?v=20261031-main2');

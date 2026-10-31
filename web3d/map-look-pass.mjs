@@ -1,6 +1,7 @@
 import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
 import {mapLookLayout,holeLights,effectLights,renderEnergy,foregroundPose} from './map-look-layout.mjs';
 import {seeded,applyAffine} from './living-layout.mjs';
+import {lightingGLSL} from './lighting-model.mjs';
 
 // A snapshot of the native environment BEFORE actors/VFX/HUD is the albedo.
 // Lighting never substitutes terrain art or recolors an actor sprite.
@@ -14,20 +15,21 @@ export function createMapLook(renderer,canvas,shared,data,anchors){
  const material=new THREE.ShaderMaterial({uniforms:u,depthTest:false,depthWrite:false,
   vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}`,
   fragmentShader:`uniform sampler2D frameArt;uniform vec2 pixel;uniform vec4 view;uniform vec4 lights[40],shafts[8];uniform vec3 colors[40],ambient;uniform float time,flash;uniform int lightCount;varying vec2 vUv;
+   ${lightingGLSL}
    float lum(vec2 uv){return dot(texture2D(frameArt,uv).rgb,vec3(.299,.587,.114));}
    void main(){vec4 original=texture2D(frameArt,vUv);vec2 world=view.xy+vec2(vUv.x,1.-vUv.y)*view.zw;
     vec2 e=pixel*1.5;vec3 normal=normalize(vec3((lum(vUv-vec2(e.x,0.))-lum(vUv+vec2(e.x,0.)))*2.8,(lum(vUv-vec2(0.,e.y))-lum(vUv+vec2(0.,e.y)))*2.8,1.));
     float cloud=.5+.24*sin(world.x*.002+world.y*.0012-time*.055)+.18*sin(world.y*.003-world.x*.0007-time*.037);
-    vec3 added=ambient*(.55+.45*(1.-smoothstep(.25,.9,cloud)))+vec3(.07,.09,.14)*flash;
+    vec3 added=vec3(.07,.09,.14)*flash;
     for(int i=0;i<40;i++){if(i>=lightCount)break;vec2 delta=lights[i].xy-world;float d=length(delta)/lights[i].z;if(d>=1.)continue;
-     float fall=pow(max(0.,1.-d*d),2.);vec3 dir=normalize(vec3(delta.x,-delta.y,lights[i].z*.45));
+     float fall=poolFalloff(d);vec3 dir=normalize(vec3(delta.x,-delta.y,lights[i].z*.45));
      float bump=.28+.72*max(0.,dot(normal,dir));added+=colors[i]*lights[i].w*fall*bump;}
     for(int i=0;i<8;i++){vec2 q=world-shafts[i].xy;float co=.848048,si=-.529919;vec2 p=vec2(co*q.x+si*q.y,-si*q.x+co*q.y);float v=p.y/shafts[i].w+.5;
      float along=smoothstep(0.,.25,v)*( .55+.45*smoothstep(.55,.9,v))*(1.-smoothstep(.9,1.,v));
      float across=pow(1.-smoothstep(0.,1.,abs(p.x)/shafts[i].z*2.),1.6);
      added+=vec3(.88,.84,.74)*.17*along*across*(.75+.25*sin(time*.37+float(i)*1.7));}
-    // Additive reflectance with the original image underneath; no ambient dimmer.
-    vec3 albedo=max(original.rgb,vec3(.035));vec3 color=original.rgb+added*(.10+albedo*.95);
+    // Cold darkness belongs to environment only. Actors/VFX/HUD draw afterwards.
+    vec3 color=shadeEnvironment(original.rgb,ambient*(.88+.12*(1.-smoothstep(.25,.9,cloud))),added);
     gl_FragColor=vec4(clamp(color,0.,1.),original.a);
    }`});
  scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),material));
@@ -73,7 +75,7 @@ export function createMapLook(renderer,canvas,shared,data,anchors){
   const rows=[player,...fx,...plan.lights,...holeRows].filter(l=>visible(...l.position,l.radius,view));
   let count=0;for(const l of rows.slice(0,40)){lights[count].set(...l.position,l.radius,renderEnergy(l,time));colors[count].set(...l.color);count++;}u.lightCount.value=count;
   const idx=(s.P.y/s.tile<(s.G._regMidY||100)?0:2)+(s.P.x/s.tile<(s.G._regMidX||100)?0:1);
-  region=region.map((v,i)=>v+(data.region_ambient[idx][i]-v)*Math.min(1,dt*.6));u.ambient.value.set(...region.map(v=>v*.018));
+  region=region.map((v,i)=>v+(data.region_ambient[idx][i]-v)*Math.min(1,dt*.6));u.ambient.value.set(...region);
   if(idx===data.lightning.region){flashNext-=dt;if(flashNext<=0){flashLeft=data.lightning.duration;flashNext=7+(Math.sin(++flashIndex*127.1)*.5+.5)*9;}}
   flashLeft=Math.max(0,flashLeft-dt);const t=1-flashLeft/data.lightning.duration;
   u.flash.value=flashLeft?Math.max(0,Math.sin(t*Math.PI*4))*(t<.5?1:.6)*data.lightning.strength:0;

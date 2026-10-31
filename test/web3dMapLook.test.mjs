@@ -33,6 +33,7 @@ test('foreground parallax fades on walkable floor and near the player',async()=>
 test('landmark lighting keeps the authored color dominant over the moving player light',async()=>{
  const {renderEnergy}=await import(moduleURL);
  assert.equal(typeof renderEnergy,'function','renderer energy adapter required');
- assert.ok(renderEnergy({...data.player_light,id:'player',position:[0,0]},0)<.3);
+ assert.ok(renderEnergy({...data.player_light,id:'player',position:[0,0]},0)>.75);
+ assert.ok(renderEnergy({...data.player_light,id:'player',position:[0,0]},0)<1);
  assert.ok(renderEnergy({...data.lights[0],id:'camp_fire',position:[1820,4010]},0)>1);
 });

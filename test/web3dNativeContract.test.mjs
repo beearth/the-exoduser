@@ -21,10 +21,15 @@ test('all native combat/save/AI declarations retain their exact baseline source'
   for(const [name,source]of before)if(!adapterHooks.has(name)){
     // Optional environment hooks: ground light, original-object relief, foliage.
     // Actor/VFX/input/save declarations and the rest of draw remain byte-exact.
-    const current=name==='draw'?after.get(name)
+    const restored=after.get(name)
+      .replace(/^  const _web3dAmbient=G.stage===0&&!G._bossArena&&window\._Web3DLivingLayer\?\.snapshot\(\)\.enabled;\r?\n/m,'')
+      .replace('if(_lightCvs&&!_web3dAmbient)','if(_lightCvs)')
+      .replace('X.globalAlpha=_web3dAmbient?0:_vAlpha','X.globalAlpha=_vAlpha')
+      .replace('if(_ATMDBG.vig&&!(G.stage===0&&!G._bossArena&&window._Web3DLivingLayer?.snapshot().enabled))','if(_ATMDBG.vig)');
+    const current=name==='draw'?restored
       .replace(/^  window\._Web3DLivingLayer\?\.(?:draw|surface)\(X,.*\);\r?\n/gm,'')
       .replace(/^    const _livingRelief=window\._Web3DLivingLayer\?\.beginObject\(X,mo,_OBJ_META\[mo.type\]\);\r?\n/m,'')
-      .replace(/^    if\(_livingRelief\)X.restore\(\);\r?\n/m,''):after.get(name);
+      .replace(/^    if\(_livingRelief\)X.restore\(\);\r?\n/m,''):restored;
     assert.ok(current===source,name+' changed');checked++;
   }
   assert.ok(checked>500);
