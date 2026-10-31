@@ -55526,3 +55526,12 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 범위 | 웹 변경 부위 자체 시각판정 PASS. 자연플레이·Unity·NW.js·DEMO/EA·전체 게임/디자인총괄 별도 판정은 미검증 |
 
 성장 검수 보강: 최초 통합1920 캡처의 외부 갑옷 배경이 로딩 중인 것을 직접 확인해 최종 시각 증거에서 제외했다. tools/check-stat-window.mjs는 CSS 배경 원화 decode를30초 한도로 기다린 뒤 캡처하며, 같은 소스의1920/3840 화면을 다시 검수한다.
+
+## 2026-10-31 CTO 최종 보정 — 다섯 창 제목 중앙의 눈
+
+| 항목 | 보정 범위·근거 |
+|---|---|
+| 코드 | web-uiux.css의 공통 제목띠44px 안에 눈20px/글자24px 두 행을 중앙 배치. 기존 gate_sigil 중심부64×20px·원화폭240px, grayscale1·brightness3·contrast1.1·screen·가장자리 알파 감쇠. 왼쪽 휘도마스크/오른쪽 flex장식 대체. game.html CSS 캐시20261031-centered-eye2 |
+| 경계 | statwindow-brief 마지막 보정만 수행. 머리 전체 크기·트리·스킬 본문·전투·세이브·신규 이미지 생성 변경0 |
+| 문서 | UI_COMPOSITION 현행 표·WEB_UIUX·디자인 인계에서 위치/재질 및 최초 자체 눈 가시성 판정 경계를 정정 |
+| 검수·원격 | 두 해상도×다섯 창10건·기능 PASS, 중심오차≤0.0078125px·제목44px·탭/제목/노드 경계·저장0 확인. 관련 회귀36/36·guard PASS. 전후1x 직접 판정(변경 부위 PASS)·정확 SHA는 I:/EXODUSER-Storage/codex-web-statwin/eye-center-20261031/REPORT.md. 확인 서버127.0.0.1:3417, 격리 save 유지 |
