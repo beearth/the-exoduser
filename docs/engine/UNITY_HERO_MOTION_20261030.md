@@ -157,3 +157,34 @@ R7의 `Grip_L` 마커가 있는 새 모델에는 기본 Animator 표본 뒤와 �
 실제 선택 프레임에서 R4 접점지연 핵심FAIL은 해소됐지만, 전체 시각 **RETOUCH**는 유지한다. 큰 판금 명암 묶음·1/2타 하체 이동·2D 발밑 대비는 전사 담당, 임팩트 파지가림은 VFX 후속이다. OS손조작·Mac·장시간 플레이·경사 지형/망토의 모든 관통 상황은 미검증이다. 손가락 없는 리그의 파지 확인은 선택1x 범위이며 전상태 무관통 증명은 아니다. 기존 TM-A 유료 원형을 재생성하거나 새 크레딧을 사용하지 않았다.
 
 R7 현재같은제품의 실제검수·입력보존·전체아트RETOUCH경계는 `UNITY_HERO_RUNTIME_20261030.md`의 R7최종검수와 `I:/EXODUSER-Storage/demo-art/hero/r7-carry-20261031/gate-evidence.json`·`판정.md`를 따른다. 실제보조파지최대.011612mm·발가락고정최대.008815mm, tick827강타피해461/wave1/실제칼끝1.0001164cm이다. 현재M1은23d18d3e23/23이며과거M1대체가아니다.
+
+
+2026-10-31 HD2D 보완: 이 파일의 NativeHeroMotionClock/3D Animator 계약은 유지한다. 같은 NativeHeroMotion.cs에 원본 warrior-bat-swing.js의 순수 NativeHeroSpriteMotion(.85, 일반5틱/E20틱, 회복6/7/8)을 추가했고 기본 픽셀 표현은 실제 Core 상태/남은틱으로9셀을 선택한다. 상세 수치와1344조건 대조는 UNITY_HD2D_RUNTIME_20261031.md의 원본 전사 공격 표시 복원을 따른다. Core나3D모션 길이변경은없다.
+
+
+### 순수 HD-2D 985 같은빌드 재검수
+
+[현재1단계실물검수](UNITY_HD2D_RUNTIME_20261031.md#순수1단계-같은빌드-재검수--985daefcf-r2)의새build35ab5195·M1ecddc37a(23/23)·Player9bf3b4da(336PNG)·E/LMB98695705(54PNG/7checks0)로순수제품입력을검수했다. 원본1x선택프레임의배우전환·발선/재질·표시연결만범위한정PASS/전체아트RETOUCH. 기존3D코드off보존, 리마스터채택0. R5맵결합/단계2·3/공통·Desktop은새소스별도미완이며옛3D/087실행영수증으로대체하지않는다. 상세I: STAGE1_PURE_VISUAL_REVIEW_985_R2.md.
+
+
+## R5+HD-2D 1단계 같은 실행본 검수 및 순수 인수 범위 확정
+
+|항목|실제 결과와 범위|
+|---|---|
+|동결 입력|source 8dbdf205a802ffe060c355f4641ff302083eedac, Unitytree dc195627806caa74375bd1991f5b312d1a539b0f. 순수맵1a3+HD1단계. 단계2·3·리마스터 인수0|
+|빌드|e9e3dd61 / Succeeded / 6000.6.7f1 Windows x64 / builder errors0 / 3,833,058,971bytes. 원로그 errorLogs2 보존, 전체로그0으로 주장하지 않음|
+|같은 실행본|Runtime65b7a1a7c67e32c4e9dc7db51153b89102272d6eebd0fe6fbe804fee29e8d0a8 / Core1b251fe8717afa6ecf520499e43d05cf8e71b12291dd3c5cb73a1f095932d997. 212파일·DLL160·MCP파일/참조0|
+|규칙|현재Core114는 순수985 실제4oracle 입력과 SHA114/114 동일. Core DLL도 동일. 드루이드5,421,635·실제패링26·특수탄48,708·피격47,559 검사 불일치0, 새 규칙 추가0|
+|M1|10323a74 / D3D11 / 23항목ok. batch기능검수|
+|필드|d4727f94 /1920·3840×1080 /16PNG /passedtrue·unityErrors0. 원래1a3 계약8위치×2=16; UI만 추가한3위치22계약은 미인수. 초기validator22 오류·중단기록 보존 후 기대값만 정정, M1/field 재실행0|
+|실제 지형|144청크·9거목·원본보행 내 몸통점0. 목교16206정점/16875삼각형/수면145교차. 실제 생성완료 메시 arrays는 앞서 검수된 R5 참조와 완전히 동일|
+|배우|4a93a908 /336PNG·336frame /footMax .6661922336px /pixelMax .00030517578125px /actorShaderFailures0. 원본SpriteLit/영웅3D모델false, 두 해상도드루이드360틱 종료HP526|
+|입력 표시|6b099347 /1600×900 /54PNG·7checks0. LMB 조준0px/224px전진·E짧게누르기강타. 가상InputSystem→FixedUpdate이며 실제손조작·자연패링 검수 아님|
+|보존/운영|3915 trackedUnity 입력 I보관, 빌드유래709 실제파일 I보존·원본CAS709 복원. INDEXclean/UnityWORK0·기존guard SHA9414 및 원래untracked57 불변. 4실행 창/USER_SAVE/잔여 각0. 정식unreserve exit0→Map/Impact/UI|
+|원본 감사|406PNG(16+336+54)·1,391,347,478bytes IHDR/IEND/규격/SHA 실패0. 선택원본과 부분을 native1x로 직접 확인|
+|시각 판정|배우전환·재질·발선·기본프레임·입력표시 표본은 범위한정PASS. 전체맵/아트/모션은 RETOUCH. A2는1664×936 원본을1920셀에패딩, Player는1920원본 그대로 옆배치하여 양쪽리샘플0|
+|남은 결함/담당|원본드루이드0055 뿔/지팡이 상단수평절단·회피강직→sprite writer. 작은얼굴/어두운몸통·접지대비/황록독액/안개·블룸·아레나평면→Main3단계. 원형반복/카펫지면/외곽높이층→Map R6 별도. 분리surface/탄-판정정렬→Main2단계. 새리마스터 승인전채택0|
+|순수 범위 정리|과거tools/blender-env84는I 원본전체SHA보존 후 G Junction링크만비재귀제거/정상forward제외. StageClear문서는승인공통19c6의정확blob c59e213fa로복귀, SharedLog문서는공통부재대로제외하되정확원본I보존. Unitytree변경0이므로새동작수정으로주장하지않음|
+|인수 상태|제작자선택1x검수완료/공통·Desktop지정integrator 신청준비. 공통병합·Desktop갱신·설치본M1은이문서만으로완료아님. 자연완주·실측FPS·OSfocus·Mac동기화 미검증|
+
+근거 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/STAGE1_R5_VISUAL_REVIEW_KO.md, STAGE1_R5_BUILD_LINK.json, stage1-r5-validation-8dbdf205a/receipt.json, stage1-r5-review-8dbdf205a, scope-cleanup-after-r5. 이전순수985/087·실패validator 이력은덮지않는다.

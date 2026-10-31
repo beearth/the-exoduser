@@ -6,6 +6,30 @@ using Exoduser.UnityPort.Core;
 #endif
 namespace Exoduser.UnityPort
 {
+    // Original warrior-bat-swing.js frame(), including the .85-speed follow-through during recovery.
+    public static class NativeHeroSpriteMotion
+    {
+        const double Speed=.85;
+        public static bool UsesAttackSheet(string state) => state=="wWindup"||state=="wSwing"||state=="wRecover"||state=="sBash"||state=="sRecover";
+        public static int Frame(string state,double left,double windupTicks,double recoveryTicks)
+        {
+            if(state=="wWindup")return BaseFrame(state,windupTicks-(windupTicks-left)*Speed,windupTicks,recoveryTicks);
+            bool bash=state=="sBash"||state=="sRecover";double duration=bash?20:5;
+            if(state=="wSwing"||state=="sBash")return BaseFrame(state,duration-(duration-left)*Speed,windupTicks,recoveryTicks);
+            if(left<=0)return 8;
+            double recovery=Math.Max(1,recoveryTicks),elapsed=recovery-left,delay=duration*(1/Speed-1);
+            if(elapsed<delay)return BaseFrame(bash?"sBash":"wSwing",duration-(duration+elapsed)*Speed,windupTicks,recoveryTicks);
+            return BaseFrame(state,left,windupTicks,Math.Max(.001,recovery-delay));
+        }
+        static int BaseFrame(string state,double left,double windupTicks,double recoveryTicks)
+        {
+            double Clamp(double value)=>Math.Max(0,Math.Min(1,value));
+            if(state=="wWindup")return Math.Min(2,(int)Math.Floor(Clamp(1-left/Math.Max(1,windupTicks))*3));
+            if(state=="wSwing")return Math.Min(6,2+(int)Math.Floor(Math.Max(0,5-left)));
+            if(state=="sBash"){double elapsed=20-left;return elapsed<2?0:elapsed<4?1:elapsed<7?2:elapsed<8?3:elapsed<11?4:elapsed<14?5:6;}
+            double progress=Clamp(1-left/Math.Max(1,recoveryTicks));return progress<.45?6:progress<.8?7:8;
+        }
+    }
     public enum HeroMotionKind { Idle,Run,Roll,Swing,Recover,Charge,SlamWindup,SlamStrike,SlamRecover,Cast,Hurt,Dead,Guard,Bash,BashRecover }
     public struct HeroMotionInput
     {
