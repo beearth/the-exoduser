@@ -12,7 +12,8 @@ const main=html=>html.slice(html.indexOf('<script>\n// ┌')+9).split('</script>
 
 test('all native combat/save/AI declarations retain their exact baseline source',()=>{
   const git=process.platform==='win32'?'C:/Program Files/Git/cmd/git.exe':'git';
-  const baseline=execFileSync(git,['show','e1e79ae680eb46915b42d06335af9f94163a30d4:game.html'],{encoding:'utf8',maxBuffer:12e6,windowsHide:true});
+  // 검수된 전투 표현 후보를 기준으로 3D 병합이 새 feel 함수까지 보존하는지 검사한다.
+  const baseline=execFileSync(git,['show','0206fb14df311c1b911ae76ee2921082f7787a10:game.html'],{encoding:'utf8',maxBuffer:12e6,windowsHide:true});
   const functions=s=>new Map(acorn.parse(s,{ecmaVersion:'latest'}).body.filter(n=>n.type==='FunctionDeclaration').map(n=>[n.id.name,s.slice(n.start,n.end)]));
   const before=functions(main(baseline)),after=functions(main(game));
   const adapterHooks=new Set(['genFromTemplate','initStage','_syncDruidFinaleMouse','loop']);

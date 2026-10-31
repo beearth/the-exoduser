@@ -16,7 +16,7 @@ test('projectile damage marks its sound source without changing poison or damage
 });
 function fixture(){
   const hits=[];let now=1000;
-  const ctx=vm.createContext({console,window:{},_now:0,performance:{now:()=>now},_projectileHitSfxAt:-Infinity,
+  const ctx=vm.createContext({console,window:{},_FEEL_ENABLED:false,_feelReduced:()=>false,_now:0,performance:{now:()=>now},_projectileHitSfxAt:-Infinity,
     P:{s:'idle',hp:100,mhp:100,shield:0,mshield:0,baseDef:0,skills:{},kb:{x:0,y:0},poise:4},G:{},STATS:{dex:0},INV:{equipped:{}},PASSIVES:{},OPT:{hitStop:0,shake:0,parts:0},DR_CAP:.75,
     _harpActive:false,_dashActive:false,_petOnHit(){},_lvB:()=>0,_eqStat:()=>0,_eqAffix:()=>0,_eqImplicit:()=>0,_gritTotal:()=>0,
     SFX:{},_isFused:()=>false,enhMul:()=>0,pDefAdd:()=>0,_isFocusState:()=>true,

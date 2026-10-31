@@ -1462,3 +1462,24 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | 4 / 현재 완료 범위 | 실제 제품 entry의 SourceState→Player→기존 projectile 배율 consumer 연결까지. full inventory/equip UI·affix·저장/장비복원·보상·전체 bootstrap·모든 탄/보스·시각/청감·240FPS·최신 전체게임 완료는 아니다. 기존 HOLD/2_3·MAP/ART/STORY/rig/native3387/NativeHUD 등 보호 불변. |
 
 > **2026-10-29 사용자 지시 "모든지뢰는 어둠지뢰 저걸로 바꿔라 디자인을 일단":** 지뢰 외형을 탄막 시험장 "어둠 지뢰"(진홍 결계진, `img/vfx/mine_trap_ward_sheet.png` 왼쪽 칸)로 통일했다. `p.mine` 탄(보스 지뢰 설치 포함)은 원래 이 외형이고, 이번에 **추적지뢰 `G._seekerMines`**(일반 보스의 주황 원 + 드루이드 si0/si3의 녹색 독 구슬)도 같은 결계진(지름 = 폭발 반경 r×2, 무장 전 불투명도 .46·무장 뒤 .78~.96 맥동, 0.00035rad/ms 회전)으로 그린다. 위 "드루이드 독탄 녹색 통일" 계약 중 **추적지뢰만 예외**로 바뀐다(이동탄 독탄은 그대로). 판정·이동·피해는 변경 없음. 코드 `game.html` "추적지뢰 렌더". 검수 `tmp/design-review/20261029_mines/mines_1600.png`.
+
+## 웹 전투 표현 A/B — 2026-10-31
+
+| id / 적용 위치 | 값·공식 | 계약 |
+|---|---|---|
+| _FEEL_ENABLED | feel=0 OFF / feel=1 또는 생략 ON | 전투 시계·HP·피해·쿨다운·패링·사슬 규칙 불변 |
+| contactHold / contactLife | 2 / 8틱 (60Hz: 33.33 / 133.33ms) | 접점 스프라이트 첫 셀만 유지. 전역 hitStop은 계속 0, 입력·AI·탄막은 멈추지 않음 |
+| contactMax | 8 | 같은 적은 갱신, 초과 시 가장 오래된 항목 교체 |
+| contactSize / killSize | 64 / 72px | 기존 실버/블랙 2×2·4프레임 시트 재사용, 적 탄막·예고 전에 렌더 |
+| contactAlpha / contactPop | .88 / .04 | alpha=.88×(1-age/8), size×(1+.04×shakeScale×(1-age/8)) |
+| 프레임·앵커 | min(3,floor(max(0,age-hold)×4/(8-hold))); x=e.x,y=e.y-.35×(e.r 또는20) | age=(_gameTime-born)/(1000/60). stage 변경·8틱 만료 시 제거, RNG 소비0 |
+| _feelShakeScale | clamp(OPT.shake/100,0,1), 움직임 줄이기면0 | 화면 흔들림0에서 추가 크기 팝0. 추가 카메라 흔들림 없음 |
+| hurtMs / edgePx / edgeAlpha | 140ms / 6px / .24 | 비DOT 피격은 전체 화면 색 덮기 대신 가장자리 #a63225와 HP 구슬 고정 표식. 실제 피격음·포이즈·넉백 불변 |
+| HP 표식 | inset 3px #dfb49c + inset 22px #b83022 | 이동·레이아웃 재배치·점멸 애니메이션 없음. 140ms 뒤 제거 |
+| deathVoices | 일반 동시 처치 보이스6→2, 보스1 유지 | 기존 분기·피치/종류 RNG를 모두 소비한 뒤 오디오 노드 생성만 제한. 큐·음량 설정은 기존 경로 사용 |
+| 움직임 줄이기 | OPT.reduceMotion=true 또는 prefers-reduced-motion | 새 접점 홀드0·크기 팝0, 카메라 흔들림·큰 피격 색수차 억제. 접점/HP 정적 표식 유지 |
+| 제외 | DOT·beam·bladeShard·maliceHunt·iceBlade·lightning·ltnChaser | 연속 피해는 새 접점 누적에서 제외. 기존 표현 유지 |
+
+비교 서버: http://127.0.0.1:3347/game.html?feel=0 / ?feel=1. 전용 저장소는 I:/EXODUSER-Storage/combat-feel/20261031/saves. 실제 검수와 남은 한계는 같은 폴더 REPORT.md 및 전용 인계 combat-feel.md. 재미의 최종 판정은 사용자 직접 플레이다.
+
+- 실물 재작업: 접점 그림자 전체→가산광 전체 두 패스로 묶어 8접점에서 합성 전환16→2회. HP 표식은 외곽 아트의 사각 바운드 대신 원형 globe-liquid-wrap::after 안쪽에만 표시한다.
