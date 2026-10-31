@@ -1,0 +1,97 @@
+{
+  "status": "사용자 청음 선택 대기; 브리프 지정 임시 기본 후보 1",
+  "model": "eleven_text_to_sound_v2",
+  "created": "2026-10-31",
+  "defaultCandidate": 1,
+  "format": {
+    "container": "WAV",
+    "codec": "PCM s16le",
+    "sampleRate": 44100,
+    "channels": 2,
+    "duration": 1.8
+  },
+  "processing": "각 생성 소스 첫 0.35초 타격을 추출. HPF 45Hz, 후보별 LPF 1350/800/1800Hz, 두 타격 0.42/0.46/0.38초, 두 번째 타격 gain 1 / 첫 타격 .78. 71/139/227/359/510ms 짧은 잔향. RMS -23dBFS, peak 상한 -6dBFS. 삭제용 pitch .9, LPF600Hz. 초기 attack 4ms, 마지막 130ms 감쇠.",
+  "candidates": [
+    {
+      "id": 1,
+      "name": "흑철의 서약",
+      "text": "Exactly two deep cinematic trailer impacts: DOOM, DOOM. First heavy low drum at 0.00 seconds, second stronger iron gate impact at 0.42 seconds. Dark gothic hell, dense low-mid body, dry rusted metal transient and a short ominous stone chamber tail. Important irreversible game decision. No voice, melody, music, extra hits, bright chimes, sustained drone or sub bass wash.",
+      "files": [
+        {
+          "id": 1,
+          "dark": false,
+          "file": "sfx/ui/decision/ddung_1.wav",
+          "duration": 1.8,
+          "gapSeconds": 0.42,
+          "peakDb": -6.778295502409733,
+          "rmsDb": -23,
+          "sha256": "5e7d4f334b328e5b002f9e5cb1077f81ec79dd0a64950bdc5829b47c210eb844"
+        },
+        {
+          "id": 1,
+          "dark": true,
+          "file": "sfx/ui/decision/ddung_1_dark.wav",
+          "duration": 1.8,
+          "gapSeconds": 0.42,
+          "peakDb": -7.622964286892248,
+          "rmsDb": -23,
+          "sha256": "7f77edb7982679a5039275798d729ddc5bf4c87dc32c1185c093c763e31d3bad"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "심연의 봉인",
+      "text": "Exactly two heavy ominous impacts at 0.00 and 0.46 seconds: DUM, DOOM. Ancient massive stone seal locking, deep tight trailer drum under a muted iron strike, second hit heavier and lower. Dark beautiful hell fantasy, brief cavern resonance with a clean end. Decisive ritual confirmation. No speech, music, melody, extra beats, sharp treble or muddy sub bass rumble.",
+      "files": [
+        {
+          "id": 2,
+          "dark": false,
+          "file": "sfx/ui/decision/ddung_2.wav",
+          "duration": 1.8,
+          "gapSeconds": 0.46,
+          "peakDb": -6.781924314282691,
+          "rmsDb": -23,
+          "sha256": "3efe7b96e89e49d51952392a8a9e297fb33baf7481509e08e59ac8240d8fd3b4"
+        },
+        {
+          "id": 2,
+          "dark": true,
+          "file": "sfx/ui/decision/ddung_2_dark.wav",
+          "duration": 1.8,
+          "gapSeconds": 0.46,
+          "peakDb": -6.982893351665263,
+          "rmsDb": -23,
+          "sha256": "2bdbf0e113ac9bc2a2dcc01337396d15961f3fdec0e449e8d195f9098283235e"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "지옥문의 판결",
+      "text": "Two powerful short cinematic hits only, at 0.00 seconds then 0.38 seconds: DOOM DOOM. Large hide war drum layered with dull black iron door slam, gritty attack and restrained infernal reverb that fades rapidly. Weighty dark gothic menu decision. First hit compact, second hit broad and commanding. No voice, music, melody, extra strikes, riser, bell or continuous drone.",
+      "files": [
+        {
+          "id": 3,
+          "dark": false,
+          "file": "sfx/ui/decision/ddung_3.wav",
+          "duration": 1.8,
+          "gapSeconds": 0.38,
+          "peakDb": -8.14438411883124,
+          "rmsDb": -23,
+          "sha256": "c036e83289d9199d83cede65800b42c29d364aeed1da9bb708c08fc487ee9b53"
+        },
+        {
+          "id": 3,
+          "dark": true,
+          "file": "sfx/ui/decision/ddung_3_dark.wav",
+          "duration": 1.8,
+          "gapSeconds": 0.38,
+          "peakDb": -8.451044837680255,
+          "rmsDb": -23,
+          "sha256": "854d88c9bb2f4b5923eb5177d6c4ad494e78db9e53b6198c2f564f791007c0fc"
+        }
+      ]
+    }
+  ]
+}
