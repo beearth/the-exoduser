@@ -158,3 +158,15 @@ UI/월드 캡처 coverage가 생성된 동안 NativeGame.Update는 UiOverlapOwns
 ### URP 원시 픽셀 비교 경로
 
 1920 여덟 위치의 reference/self/current는 실제 프레임 렌더 종료(WaitForEndOfFrame) 뒤 URP SingleCameraRequest(destination=1920×1080 RenderTexture)와 RenderPipeline.SubmitRenderRequest로 동기 렌더한다. SupportsRenderRequest가 false면 실패이며 빈 타깃끼리 일치를 통과시키지 않는다. 이후 ReadPixels/PNG를 보존하고 targetTexture·RenderTexture.active·camera.rect를 원복한다. 본편 상시 카메라/렌더 코드는 변경하지 않는다. 설치 URP ffe395a3a1d1 UniversalRenderPipeline.cs의 IsRenderRequestSupported/ProcessRenderRequests와 [Unity 공식 사용법](https://docs.unity.com/en-us/engine/6000.0/manual/cameras/urp/multiple/user-render-requests)을 대조했다. 실제 픽셀0·비검정 렌더 검수는 새 Player에서 별도다.
+
+### 빌드 입력의 후보 밖 코드 차단
+
+현재 디스크와 후보 Git tree의 Unity 파일을 전수 대조한 뒤, Assets/Packages/ProjectSettings에서 현재 HEAD tracked 파일·미추적 파일도 후보 밖에 남아 있지 않은지 검사한다. Assets 아래 실제 .cs/.shader/.compute/.hlsl/.cginc/.asmdef/.asmref도 별도로 스캔해 gitignore 여부에 기대지 않는다. 새 확인 영수증은 extraHeadTracked/extraUntracked/extraCompiled/influencingExtras가 모두0이며 passed=true여야 한다. 기존 브랜치에서만 tracked인 미채택 NativeLobby.CharacterStage.cs 한 파일을 원본byte로 잠시 둔 실제 음성 표본에서 구 검사 exit0(누락)→신 검사 exit1(차단)을 확인했다. 표본은 SHA보관 후 정확히 회수했고, 순수 입력3454파일·후보 밖0으로 재확인했다. 이 검사는 자기 Unity/Player를 실행하지 않는다. Source별 실제 개수는 최신 source-input.json을 따른다.
+
+| 입력 안전 항목 | 확인 경계 |
+|---|---|
+| Git tree·실제 디스크 | Assets뿐 아니라 Packages/ProjectSettings/Tools 포함 Unity tracked 파일 전체 byte 대조 |
+| 후보 밖 compiled 입력 | 기존 HEAD tracked·미추적·실제 소스 파일 스캔의 합집합을 실패 처리 |
+| 원본 WIP | 초기520 tracked·56미추적을 별도 보존. 최초격리60 중4개는 이번 작업 신규 safearea/viewport cs/meta |
+| 최신공통 뒤 복원 | 구 restore-input5는 사용 차단. 원본 브랜치 정상병합과 원 WIP 정확byte 복원으로 승인공통 신규파일 유지 |
+| 독립 컴파일 | 최신 전체 Runtime 신규 partial/검수 파일도 실제 플레이어 RSP 입력에 포함. 정식 Unity build/Player 증거와 분리 |
