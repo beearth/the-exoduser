@@ -15,6 +15,7 @@ namespace Exoduser.UnityPort.Core
         // --- globals (web names in comments) ---
         public double PlayerX, PlayerY;                  // P.x, P.y
         public double CamX, CamY, ViewW = 1600, ViewH = 900; // G.cam, VW, VH
+        public Func<double,double,double,bool> WorldPointVisible; // optional actual camera; null preserves the original rectangle
         public bool IsMobile;                            // IS_MOBILE
         public int MapWidth, MapHeight; public int[][] Map; // G.mw, G.mh, G.map (tile 1 = wall)
         public List<EnemyRift> Rifts = new List<EnemyRift>(); // G.rifts

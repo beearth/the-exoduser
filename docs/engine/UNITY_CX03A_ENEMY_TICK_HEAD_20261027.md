@@ -244,3 +244,8 @@ oracle 케이스 1240개(U1 891 · L1 349, 적 7,232마리, 난수 383회): 명�
 ## 2026-10-31 최신 원본의 이전 상태 마커 후속
 
 현행 변경·원본 수치·검수 및 미완료 게이트는 [게임 동작 웹 대조](UNITY_GAMEPLAY_PARITY_20261031.md)를 따른다. 과거 검수 수치는 이번 Player·전체 스킬 완료 근거로 소급하지 않는다.
+
+
+## 2026-10-31 초광폭 호스트 화면 경계 후속
+
+EnemyTickContext.WorldPointVisible 선택 callback을 추가했다. null은 본 문서의 원래 직사각형/리시 경로와 같고, NativeGame은 실제 HudCamera 투영을 Simulation.WorldPointVisible→tickCtx로 공급한다. 일반 적의 가시 여유300·보스/피격/commit/30px 예외와 티어는 유지한다. 리시 후보800~1200은 기존 난수2회를 먼저 쓴 뒤 화면 R+100 여유와 겹치면 canMv/이동을 하지 않는다. 2500px 조건·사거리·어그로 수치는 변경0. 새 실제 Core/청크/Simulation연결2373 PASS. 저장된 오래된 원문1240케이스는 승인 공통15c8ed3c도 현재도3261210검사/889실패(_tellS 기본0/undefined 등)이며 기록 표본은 같다. 기존 전체 oracle PASS라고 하지 않는다. 새 Player 검수는 대기이며 상세는 UNITY_UI_ULTRAWIDE_20261031.md를 따른다.

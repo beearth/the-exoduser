@@ -5,10 +5,11 @@ namespace Exoduser.UnityPort
 {
  public sealed partial class NativeGame
  {
-  DruidBoss worldVisibleDruid;
+  DruidBoss worldVisibleDruid;Simulation worldViewportSimulation;
   void ReserveEdgeFeedback(Rect edge){var r=NativeUiViewport.FromEdge(edge);floatingTextLayout.Reserve(new NativeFloatingTextLayout.Box(r.x,r.y,r.width,r.height));}
   void BindWorldViewport()
   {
+   if(worldViewportSimulation!=Simulation){worldViewportSimulation=Simulation;Simulation.WorldPointVisible=WorldPointVisible;}
    if(Simulation.Druid!=null&&worldVisibleDruid!=Simulation.Druid){worldVisibleDruid=Simulation.Druid;worldVisibleDruid.WorldPointVisible=WorldPointVisible;}
   }
   // Core px의 여유를 실제 카메라에 투영한다. 양수는 교차, 음수는 네 모서리가 전부 화면 안일 때만 허용한다.

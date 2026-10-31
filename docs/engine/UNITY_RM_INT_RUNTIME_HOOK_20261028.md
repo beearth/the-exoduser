@@ -2,7 +2,7 @@
 
 ## 2026-10-31 초광폭 화면 경계 보정 — Player 검수 대기
 
-사용자 world-ultrawide 추가 지시로 화면 기반 사격·루팅은 기존 논리2D 카메라 대신 실제 HudCamera(2D/리모델3D)의 viewport를 따른다. NativeGame.WorldViewport의 WorldPointVisible은 Core margin을 네 모서리로 투영한다. FieldEnemyCanShoot는−64px(모두 안), IsLootOnScreen은0px다. 사격·수거·어그로 거리 수치와 저장 구조는 그대로다. DruidBoss.WorldPointVisible 선택 callback만 Core에 추가하여 일반 투사체가 기존 거리제곱6250000 밖에서도 화면 R+100px에 보이면 유지하며, null/offscreen·지뢰·빨콩·강제만료는 기존 계약을 보존한다. 실제Core/청크 회귀2364 PASS, 정식 새 Player/M1/4해상도 화면은 미검증이다. 상세 현행 계약은 UNITY_UI_ULTRAWIDE_20261031.md를 따른다. 아래2026-10-28의 Core무변경·항상2D 설명은 최초 연결 이력이며 위 경계는 후속 보정이다.
+사용자 world-ultrawide 추가 지시로 화면 기반 사격·루팅은 기존 논리2D 카메라 대신 실제 HudCamera(2D/리모델3D)의 viewport를 따른다. NativeGame.WorldViewport의 WorldPointVisible은 Core margin을 네 모서리로 투영한다. FieldEnemyCanShoot는−64px(모두 안), IsLootOnScreen은0px다. 사격·수거·어그로 거리 수치와 저장 구조는 그대로다. NativeGame→Simulation/EnemyTickContext.WorldPointVisible 선택 callback으로 가시 활성/화면 안 리시 방지를 연결하고, DruidBoss.WorldPointVisible 선택 callback으로 일반 투사체가 기존 거리제곱6250000 밖에서도 화면 R+100px에 보이면 유지하며, null/offscreen·지뢰·빨콩·강제만료는 기존 계약을 보존한다. 실제Core/청크/적 가시·리시·Simulation연결 회귀2373 PASS, 정식 새 Player/M1/4해상도 화면은 미검증이다. 상세 현행 계약은 UNITY_UI_ULTRAWIDE_20261031.md를 따른다. 아래2026-10-28의 Core무변경·항상2D 설명은 최초 연결 이력이며 위 경계는 후속 보정이다.
 
 배정: 유니티 총괄(local_59ad835c). 판정: 맵 총괄(걷기·충돌 일치) · 디자인총괄(톤). 브랜치 `claude/unity-pc-rm-int-20261028`(`4ceb18b51`에서 분기). 이 문서는 구현 상태이고, 검증 결과는 §6에 채운다.
 

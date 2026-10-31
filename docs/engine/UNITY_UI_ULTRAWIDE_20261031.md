@@ -22,7 +22,7 @@
 | 로딩 상태 | 전체 높이 원화 위 하단 clamp(150px,22vh,300px), rgba(5,5,6,0)→.32@35%→.78 그라데이션. 상단여백 clamp(44px,7vh,96px), 하단 clamp(18px,3vh,44px), 뼈색 제목 clamp(16px,2.1vh,26px), 층정보 clamp(11px,1.35vh,17px), 금빛 진행선1px·폭min(32vh,80vw). 전환 callback/LoadPhase/시간 변경0 |
 | 실제 컴포넌트 검사 | 감사기의 실제 OnGUI 변환 후 frontend-right, hud-minimap/objective/hp-frame/mp-frame/skills, startup-guide/practice-panel/guide-footer, loading-art/source-canvas/status, common-title 경계를 기록. 글자 검사와 별도로 가장자리 앵커·중앙 정렬·안내/구슬/상태판 충돌 검사 |
 | 새 캡처 목표 | 공통69상태×5해상도×ko/de/fr=1035 + 한국어 전환원화19종/확장실패1종×5=100, 합1135 PNG. 5해상도는1920×1080,2560×1080,3840×1080,1600×900,2560×1600. 보관함/봉안함/결정체·대장간6탭·일반알림·부활·사망·지역유도8방향도 포함. 기존 전투 펫 대화는 Unity 런타임에 경로가 없어 웹 전투 펫 완료로 확대하지 않으며, 실제 구현된 사망 펫 대화는 사망 화면에서 검수. 이전480장은 변경 전 이력 |
-| 보호 / 검증 경계 | Core 투사체 화면 정리 경계2파일만 아래 월드 계약대로 변경. 전투 수치·저장 형식 변경0. 미이식 고정기술·성장 상태는 이 UI 변경으로 이식 완료가 되지 않음. 기존 미채택3D 무대·원본520WIP는 보존하며 순수 후보에서 제외. 정식 -remodel-scenes 1 빌드→동일 빌드 M1→PNG/1x/웹 비교→MERGE_QUEUE→unity/main 비강제 병합→Desktop 순서 유지 |
+| 보호 / 검증 경계 | Core 투사체·적 가시/리시의 선택 callback 경계5파일만 아래 월드 계약대로 변경. 전투 수치·저장 형식 변경0. 미이식 고정기술·성장 상태는 이 UI 변경으로 이식 완료가 되지 않음. 기존 미채택3D 무대·원본520WIP는 보존하며 순수 후보에서 제외. 정식 -remodel-scenes 1 빌드→동일 빌드 M1→PNG/1x/웹 비교→MERGE_QUEUE→unity/main 비강제 병합→Desktop 순서 유지 |
 
 웹 비교 기준은 기존3f19b0b에 월드9780db0c·불투명 로고7dc96cd를 포함한 승인 원격 main이며 최종35장 로딩 반영 SHA까지 확정 후 동결한다. 초기31파일 반입 영수증과 신규 로고 영수증은 I:/EXODUSER-Storage/demo-art/unity-ui/ultrawide/에 보존한다. 실제 전체 확장판 인수·Player 검수 전에는 완료가 아니다.
 
@@ -32,11 +32,13 @@
 |---|---|
 | 카메라 | 실제 HudCamera를 사용. 3D 카메라 세로FOV46.9453·pitch48.7014·distance14·lookAhead1.45 보존, rect전체·RT없음·가로 시야 확대를 4해상도에서 계측. 월드에 중앙 UI 마스크 적용0 |
 | 적 사격 / 루팅 | FieldEnemyCanShoot는 실제 2D/3D 카메라에 Core64px 사방을 투영하여 네 모서리가 모두 안일 때 허용. IsLootOnScreen은 동일 카메라0margin. 사격·어그로·수거 거리 규칙 수치 변경0 |
+| 일반 적 활성 / 리시 | Simulation.EnemyAi의 고정1600×900 기본 컬링을 실제 카메라 callback으로 대체. EnemyTickContext.WorldPointVisible은 null이면 원래 직사각형. 시야 여유300, 보스/피격/돌진 commit/30px 예외와 AI 거리/티어 유지. 리시2500px 밖의800~1200 후보가 실제 화면 R+100에 보이면 이동하지 않으며 기존 난수2회는 먼저 소비. 소환굴은 화면 기반이 아니라 기존2000px 거리 트리거라 변경0. EnemyHurt의 전역1e6 넉백 문맥도 변경0 |
 | 일반 투사체 | DruidBoss.WorldPointVisible 선택 callback, null이면 기존 로직. Life<=0일 때 기존 거리제곱6250000 밖이어도 실제 화면과 R+100px 영역이 겹치면 Life=1로 유지. 화면 밖/강제만료Life<=−900은 기존 정리. 지뢰·빨콩 별도 수명 그대로 |
 | 2D 청크 | camera Core중심의 floor(x/1000),floor(y/1000), radiusX=max(2,ceil(halfWidth/1000)), radiusY=max(1,ceil(halfHeight/1000)). 기존1920 기본 반경2/1 유지, 확대/광폭 화면의 보이는 청크를 보존 |
 | 월드 피해 글자 | NativeFloatingTextLayout.SetHorizontalBounds는 기본8..1912를 보존하며 실제 실행은 ScreenInDesign의 좌우+8/−8을 전달. 중앙으로 끌어오지 않고 기존 사건 반경·집계·수명·세로128..864 유지. 실제 가장자리 미니맵/자원/상태판·실습·알림을 중앙 논리좌표로 역변환해 공간 예약. 1920 기본 좌표 동일·광폭 양쪽 표시·화면 밖 미표시·실제 상태판 회피 회귀 포함 |
 | 지역 방향표시 | NativeRegionHud.Safe.screen은 실제 물리 화면의 중앙 논리 좌표. 대상이 실제 화면 안이면 숨김. 회전96px 원화·18px소스 패딩 글로우·실측 두줄 라벨을 합친 footprint 전체가 화면24px/하단 구슬장식12px 및 실제 미니맵/자원/상태/시계/알림12px 밖인 가장 가까운 후보를 선택. 기준점만 밀었다가 다시 clamp해 패널 안으로 돌아오던 경로 제거. 3비율×8방향과 기존 글자 배치 총96검사 PASS, 실제 Player8방향×5×3언어는 대기 |
-| Core 회귀 | 실제 UpdateProjectiles RED→GREEN 및 4비율×3zoom×5X×3Y 청크 포함 검사 총2364 PASS. 기본 null/offscreen 동작·2500 정확 경계·지뢰/빨콩/강제수명 검사 |
+| Core 회귀 | 실제 UpdateProjectiles RED→GREEN 및 4비율×3zoom×5X×3Y 청크 포함 검사 총2373 PASS. 기본 null/offscreen 동작·2500 정확 경계·지뢰/빨콩/강제수명·실제 Simulation callback 연결·광폭 가시 적 활성·화면 안 리시 거부/난수순서 검사 |
+| 기존 원문 oracle | 저장된2acaa1b8 원문1240케이스는 승인 공통15c8ed3c와 현재 모두3,261,210검사/889실패(_tellS 기본0/undefined 등), 기록된 실패/통과 표본 동일. 기존 원문 전수PASS로 주장하지 않음. 새 callback 실제동작2373검사와 별도이며 I:기존oracle_공통대조.json 보존 |
 | 전체 맵 의존 | 공통 기존 RM1 지형은 원본200² 중 일부 범위뿐임을 확인. A2 R3 전체80×80u가 담당 검수·공통 인수 전 NOT_READY이므로 미검수 후보 직접 채택0. 지형/충돌/장식 WIP 수정0 |
 | 실화면 목표 | 1920×1080·2560×1080·3840×1080·2560×1600의 시작/전투/보스앞12장과 가로·세로 이동24장. 카메라 실제 viewport/픽셀Rect/FOV/지면범위·보행가능 위치 기록. 1920/3840은 같은 seed·적32·4초·직접60Hz 입력 표본 FPS, 자연 플레이/장시간 보증과 별도 |
 | 픽셀 증거 한계 | 동일 결합 후보의1920 렌더 반복/viewport 유지 비교를 기록. 과거 다른 빌드와의 변경픽셀0 증거로 확대하지 않음. 최종 비교 범위는 실제 영수증 기준 |
