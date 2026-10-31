@@ -55563,3 +55563,5 @@ Main 실제 _process 진입에 Time.get_ticks_usec()/1000.0 primitive sample과 
 | 보존 | 웹 G.mats 대입/가감69곳 동일, Unity Core 문자열 제외 byte 동일. 빌드·Player·M1은 별도 영수증 |
 
 상세: [화폐 SSOT](3.2메타·진행시스템/CURRENCY_RENAME_20261031.md), 증거 I:/EXODUSER-Storage/demo-art/currency-rename/REPORT.md.
+
+최신 스킬 창 병합에서 추가된 미습득 소켓의 비용 번역 키도 악의오브로 정렬했다. test/skillForge.test.js를 포함한 통합 회귀29/29가 통과했다. 스킬 창 기능·새 빈 소켓 원화는 원작성자 변경을 보존한다.

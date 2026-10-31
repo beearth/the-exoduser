@@ -379,11 +379,11 @@ CTO의 `9f5db2ac6` 이후 마지막 보정 절만 적용한다. 기준은 실제
 |---|---|
 | Z 미장착 | `slotPreview()`가 `slotEligible()` 후보 중 습득한 첫 기술, 없으면 `blackStar`, 해당 후보가 없으면 첫 유효 후보를 선택. 현재 후보 `blackStar` 블랙 / `lavaSummon` 탄막블랙홀 / `execution` 처형. 전체 후보 이름은 툴팁에 표시 |
 | Space 미장착 | 같은 규칙으로 습득 기술 우선, 기본 `giantSlam` 지옥강타 1. 현재 후보 `giantSlam` / `giantSlam2` 지옥강타 2 / `skyCrusher` 천공쇄기. 흡수/숨김 필터는 기존 후보 규칙 유지 |
-| 습득 조건 | 미습득 대표의 실제 `spCost`, `_malCost(matCost)`로 두 줄 표시. 현재 Z 대표 SP10·악의구슬50(원가100), Space 대표 SP10·악의구슬60(원가120). 둘 다 `reqLv` 없음. 이미 습득했지만 비어 있으면 기존 `이 슬롯에 장착`. 전 후보의 최소 `reqLv`가 현재 레벨 초과일 때는 기존 Lv 안내 우선 |
+| 습득 조건 | 미습득 대표의 실제 `spCost`, `_malCost(matCost)`로 두 줄 표시. 현재 Z 대표 SP10·악의오브50(원가100), Space 대표 SP10·악의오브60(원가120). 둘 다 `reqLv` 없음. 이미 습득했지만 비어 있으면 기존 `이 슬롯에 장착`. 전 후보의 최소 `reqLv`가 현재 레벨 초과일 때는 기존 Lv 안내 우선 |
 | 잠김 원화 | `.preview .sf-ico`에 brightness .58 / saturate .35. 대표 이름·키·조건·후보 툴팁만 보여 주고 실제 장착/습득 상태를 변경하지 않음. 장착하면 즉시 기존 정상 아이콘 렌더로 복귀 |
 | 2·3·4 | `img/ui/skill-forge/empty-socket-2.png`, `-3.png`, `-4.png`. 각 256×256 RGBA, 흑철 원형 테두리·음각 홈·안쪽 그림자·각 숫자가 그려진 실제 원화. 기존 슬롯 치수(최대70px)와 키/이름/장착 안내 유지. 원화1.12배로 주변3D 테두리의 외경에 맞춤. 장착 시 원화를 제거 |
 | 생성·가공 | 사용자 최신 지시로 내장 `image_gen` 사용. 2172×724 RGBA 가로3셀(각724px). 셀을 정확히 분리하고 투명 여백 trim 후256px contain 축소. 투명 알파 보존. 마스터와 재현 도구는 `I:/EXODUSER-Storage/codex-takeover/skillwindow-correction/` |
 | 생성 프롬프트 | EXODUSER dark fantasy ARPG empty ability socket sprite sheet; exactly three identical circular sockets in one horizontal row, engraved 2/3/4; front orthographic; restrained black iron thin rounded rim, weathered dark silver metal, concave graphite interior, subtle inner shadow, upper-left neutral silver light; numerals readable at70px; transparent outside; no gem, sphere, spikes, filigree, gold, colored glow, extra text. 원본 생성ID `01a19090-8a1d-7861-ad9e-9fb42fde5042` |
 | 3D·폴백 | 해당 미장착 다섯 칸은 DOM 원화로 그리며 `domArt`가3D의 평평한 회색 orb를 숨김. 나머지3D 원판/장착 구슬 유지. 2D에서도 동일 원화 사용. 소켓 이미지 로딩 실패 때만 원래 흑철 CSS 홈으로 폴백하고 깨진 이미지 숨김 |
-| 번역·캐시 | 새 번역 키 없음. 기존 `습득 `, `악의구슬 `, `이 슬롯에 장착` 및 스킬명/역할 키 재사용. JS/CSS `20261031-fixed-layout2`, 3D `20261031-sockets1` |
+| 번역·캐시 | 새 번역 키 없음. 기존 `습득 `, `악의오브 `, `이 슬롯에 장착` 및 스킬명/역할 키 재사용. JS/CSS `20261031-fixed-layout2`, 3D `20261031-sockets1` |
 | 검수·범위 | 1920×1080·3840×1080 실제 forgelab 화면/1x 전후 비교, 다국어 슬롯 경계·선택/습득/장착 전환·상태 불변·관련 회귀·guard. 저장 없는 UI 검수이며 자연 전투 검수 아님. 결과는 위 외부 폴더 `REPORT.md` |

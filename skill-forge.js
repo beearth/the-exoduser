@@ -88,7 +88,7 @@
     const req=reqs.length?Math.min(...reqs):0;
     if(req>P.lv)return'Lv'+req+L(' 도달 시 해금',' to unlock');
     const preview=slotPreview(s),x=preview&&sk(preview);
-    if(x&&!lv(preview))return L('습득 ','Learn ')+'SP '+x.spCost+(x.matCost?'\n'+L('악의구슬 ','Malice Sphere ')+_malCost(x.matCost):'');
+    if(x&&!lv(preview))return L('습득 ','Learn ')+'SP '+x.spCost+(x.matCost?'\n'+L('악의오브 ','Orb of Malice ')+_malCost(x.matCost):'');
     return candidates.some(id=>lv(id))?L('이 슬롯에 장착','Equip to this slot'):L('스킬 습득 후 장착','Learn a skill to equip it');
   }
   function slotName(s){
