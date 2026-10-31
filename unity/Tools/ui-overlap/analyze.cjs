@@ -2,6 +2,7 @@ const fs=require('node:fs'),path=require('node:path');
 const geometry=require('./geometry.cjs');
 const requiredPages=['첫화면','브랜드인트로','메뉴','로비',...Array.from({length:5},(_,i)=>'캐릭터선택'+i),'이름입력','로딩',...Array.from({length:4},(_,i)=>'튜토리얼'+i),'HUD','일시정지','종료확인',...Array.from({length:4},(_,i)=>'설정'+i),...Array.from({length:4},(_,i)=>'설정스크롤'+i),'설정목록','인벤토리','스킬','대장간','능력치','클리어'];
 requiredPages.push(...Array.from({length:16},(_,i)=>i).filter(i=>i!==6).map(i=>'스킬슬롯'+String(i).padStart(2,'0')),'실습안내','실습진행','실습스크롤','봉안함','결정체','보관함',...['potion','salvage','reroll','crystal','craft'].map(t=>'대장간-'+t),'일반알림','부활대기','사망',...Array.from({length:8},(_,i)=>'지역유도'+i),'지역진입','지역정화');
+const loadingImages=[1,2,3,4,5,6,7,8,9,10,11,12,15,16,18,19];
 const right=r=>r.x+r.width,bottom=r=>r.y+r.height;
 const inside=(a,b,t=.5)=>a.x>=b.x-t&&a.y>=b.y-t&&right(a)<=right(b)+t&&bottom(a)<=bottom(b)+t;
 const intersects=(a,b)=>Math.min(right(a),right(b))-Math.max(a.x,b.x)>.5&&Math.min(bottom(a),bottom(b))-Math.max(a.y,b.y)>.5;
@@ -65,6 +66,7 @@ function analyze(frame){
 function run(dir){
  const manifest=JSON.parse(fs.readFileSync(path.join(dir,'coverage.json'),'utf8')),missing=[],observed=new Set();
  if(manifest.schemaVersion!==2||!/^[0-9a-f]{64}$/.test(manifest.runtimeSha256)||!manifest.device||manifest.deviceType==='Null')missing.push('계측 스키마/실제 Runtime SHA/GPU 영수증 누락');
+ if(JSON.stringify(manifest.loadingImages)!==JSON.stringify(loadingImages))missing.push('승인16장 실제 로딩 목록 불일치');
  const languages=new Set(['ko','de',...manifest.languages]),languagePath=path.join(dir,'최장언어_실측.json');
  if(!fs.existsSync(languagePath))missing.push('최장 언어의 실제 서체 폭 측정 없음');
  else{const scores=JSON.parse(fs.readFileSync(languagePath,'utf8')).scores;for(const category of ['설정','직업선택']){const rows=scores.filter(s=>s.category===category).sort((a,b)=>b.measuredWidth-a.measuredWidth);if(rows.length<28)missing.push(category+' 언어 폭 표 누락');else languages.add(rows[0].code);}}
@@ -80,7 +82,7 @@ function run(dir){
    const png=path.join(dir,name+'.png');if(!fs.existsSync(png))missing.push('PNG 누락 '+path.basename(png));else{const pngFd=fs.openSync(png,'r'),header=Buffer.alloc(24);try{fs.readSync(pngFd,header,0,24,0);}finally{fs.closeSync(pngFd);}if(header.readUInt32BE(16)!==f.width||header.readUInt32BE(20)!==f.height)missing.push('실제 PNG 해상도 불일치 '+path.basename(png));}
    for(const i of f.issues)fs.writeSync(rowFd,'|'+f.page+'|'+f.width+'×'+f.height+'|'+f.language+'|'+i.type+'|'+(i.a.text||'').replaceAll('|','/')+'|'+(i.b?.text||i.b?.kind||'')+'|'+(i.a.source||'')+'|\n');
   }
-  for(const [width,height]of [[1920,1080],[2560,1080],[3840,1080],[1600,900],[2560,1600]])for(const lang of languages){for(const page of requiredPages)if(!observed.has([width,height,lang,page].join('/')))missing.push(width+'x'+height+'/'+lang+'/'+page);if(lang==='ko')for(const page of [...Array.from({length:19},(_,i)=>'전환로딩'+String(i+1).padStart(2,'0')),'전환로딩폴백'])if(!observed.has([width,height,lang,page].join('/')))missing.push(width+'x'+height+'/'+lang+'/'+page);}
+  for(const [width,height]of [[1920,1080],[2560,1080],[3840,1080],[1600,900],[2560,1600]])for(const lang of languages){for(const page of requiredPages)if(!observed.has([width,height,lang,page].join('/')))missing.push(width+'x'+height+'/'+lang+'/'+page);if(lang==='ko')for(const page of [...loadingImages.map(i=>'전환로딩'+String(i).padStart(2,'0')),'전환로딩폴백'])if(!observed.has([width,height,lang,page].join('/')))missing.push(width+'x'+height+'/'+lang+'/'+page);}
   result={passed:missing.length===0&&issueCount===0,frameCount,issueCount,missing};
   fs.writeSync(fd,'\n],\n'+Object.entries(result).map(([key,value])=>JSON.stringify(key)+':'+JSON.stringify(value)).join(',\n')+'\n}\n');fs.fsyncSync(fd);
  }finally{fs.closeSync(fd);fs.closeSync(rowFd);}
@@ -90,4 +92,4 @@ function run(dir){
  fs.unlinkSync(rowsPath);console.log(JSON.stringify({passed:result.passed,frames:frameCount,issues:issueCount,missing}));return result.passed;
 }
 
-module.exports={analyze,run,alphaReaderValid,requiredPages};if(require.main===module)process.exitCode=run(process.argv[2])?0:2;
+module.exports={analyze,run,alphaReaderValid,requiredPages,loadingImages};if(require.main===module)process.exitCode=run(process.argv[2])?0:2;
