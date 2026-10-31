@@ -74,3 +74,6 @@
 2026-10-25 Mac 키보드 후속: 메뉴 선택·FPS/음량·뒤로/재개·종료 확인과 focus 복귀를 연결했다. 새 모델33/33·Player21/21, CUA 실제 키보드와 최소화→복귀를 확인했다. 이전의 “일반 메뉴 OS 입력/전체화면 미검수”는 당시 상태이며 이번 한정 경로는 [새 검수 기록](UNITY_MAC_PAUSE_KEYS_20261025.md)을 따른다. 마우스 슬라이더 정밀 좌표·전체 UI 인수와 구분한다. 조작 안내에는 K 스킬 창을 추가했다.
 
 - 2026-10-31 실제 Player 검수 관측 보완: PauseInputCheck는 실행 순서 -31000에서 GUI 이벤트를 제품 버튼 소비 전에 기록한다. 제품 Start 완료 뒤 준비하며 MouseDown/MouseUp 외 Layout/Repaint 횟수도 남긴다. 최초 진단은 WM 전달 성공이나 관측0으로 중단됐고, 제품 클릭 실패 증거로 올리지 않는다.
+
+- 2026-10-31 검수 방법 전환: 숨은 Player에서 WM_MOUSE 게시 2회는 Layout/Repaint만 수신하고 MouseDown/Up=0으로 미검증이다. 같은 방식을 반복하지 않고 설치 DLL에서 존재를 확인한 UnityEngine.Event.QueueEvent 합성 이벤트를 실제 제품 OnGUI/버튼으로 전달한다. 이는 실제 OS 마우스 조작 증거가 아니다. 키보드는 Input System 가상 장치→제품 Update/PollKeys를 유지한다. window-focus는 자기 PID/현재 thread 창에 한해 SetActiveWindow/SetFocus로 실제 Unity 콜백을 검수하며 사용자 foreground나 desktop은 바꾸지 않는다.
+- API 근거: https://raw.githubusercontent.com/Unity-Technologies/UnityCsReference/master/Modules/UICommon/Event.bindings.cs (QueueEvent), https://docs.unity3d.com/Packages/com.unity.inputsystem@1.14/manual/UISupport.html (IMGUI와 Input System 구분), https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setfocus 및 nf-winuser-setactivewindow (자기 thread focus). 설치6000.6 DLL 확인을 함께 적용한다.
