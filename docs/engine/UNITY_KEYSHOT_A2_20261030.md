@@ -8,6 +8,7 @@
 | 경계덤불 | 43×43 후보/간격2.2u, staggerX.28sin(row×.81)/Z.25sin(col×.77). SDF거리−2.2..−.45u·비수면만배치. 폭1.25+.15sin(row×1.7+col×.9)/세로.50/원형고사가지3종공유. 주전투안전공간·SourceMap불변/실제개수로그로확인전 |
 | 거목구도 | 근경외곽속빈거목의개구방향을−25+35sin(row×1.7+side×.5)°로정돈. 원본충돌거목은X<40이면−25°/그외23°에15sin(index×1.3)°변화. 높이·XY·충돌경계불변/하부스캔뿌리동일yaw. 먼AncientTree층은기존방향유지. 실제구멍·실루엣검수전 |
 | 원형대조 | 기존FBX 8663정점/16938삼각형의Unity좌표(X=−BlenderX,Z=−BlenderY)를직전실제Unity15점으로검증. 최대원형차.0003256958m/0.326mm. 현재정확접지함수+직전낮은표면최대값으로15점차최대.012486607m/1.25cm. 25순수회귀+원형2항목=27PASS. R4실제Unity/Player재검수대체아님. 선택두번째테스트인자는I: R4-목교-원형.json 데이터셋 |
+| 빛기둥 | R3고정(-5,13,+5) 꼭짓점은실제주광49°/−32°의방향과불일치했고화면에서희미함. R4는실제enabled DirectionalLight.forward 반대방향으로13m높이의윗점을계산/주광없을때만49°/−32°fallback. RGB(1.1,1.4,1.65)/alpha.035→.065. 9곳·폭위.6m/아래3m·기존깊이fade유지. 실제현재화면검수전/진짜볼륨레이마치로보고0 |
 | 실행기 | UI소유공식start의선택ForceD3D11 인수인수. CLI SHA68b7a0c7bf27e11f35b699661e466d0f9fcc2c962e61c8d23e8feda59dbddde2/QueueTurn8a00a15e…/AcquireSlot byte동일. 기본/명시DryRun·자기검사PASS·새실제GPU0. 맵후속start에ForceD3D11, 독립batch buildArgs에-force-d3d11 명시. UI제품코드인수0 |
 
 ## R3 실제 실패와 R4 목교 접지 전환 — 2026-10-31
