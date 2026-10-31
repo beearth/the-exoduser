@@ -75,6 +75,80 @@ namespace Exoduser
             camera.targetTexture=null;rt.Release();UnityEngine.Object.DestroyImmediate(rt);
             Debug.Log("[HD2D] DRUID_PIVOT PASS gapPx="+error);
         }
+        public static void RepeatedProjection()
+        {
+            EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
+            var camera=new GameObject("HD2D repeat camera").AddComponent<Camera>();
+            new GameObject("HD2D repeat light").AddComponent<Light>().type=LightType.Directional;
+            var rt=new RenderTexture(1920,1080,24);camera.targetTexture=rt;
+            var texture=Resources.Load<Texture2D>("Art/player/north-east");
+            var sprite=Sprite.Create(texture,new Rect(0,0,48,48),new Vector2(.5f,.5f),100,0,SpriteMeshType.FullRect);
+            int cases=0;float worst=0;
+            try
+            {
+                foreach(bool flat in new[]{false,true})foreach(bool ortho in new[]{false,true})
+                foreach(bool footPivot in new[]{false,true})foreach(float roll in new[]{0f,90f,180f,270f})
+                {
+                    var parent=new GameObject("source parent");
+                    var actor=new GameObject("repeat actor").AddComponent<SpriteRenderer>();
+                    var overlay=new GameObject("repeat overlay").AddComponent<SpriteRenderer>();
+                    actor.transform.SetParent(parent.transform,false);overlay.transform.SetParent(parent.transform,false);
+                    actor.sprite=overlay.sprite=sprite;
+                    var raw=new Vector3(.137f,.41f,.263f);
+                    var rawRotation=Quaternion.Euler(0,0,roll);
+                    actor.transform.localPosition=overlay.transform.localPosition=raw;
+                    actor.transform.localRotation=overlay.transform.localRotation=rawRotation;
+                    actor.transform.localScale=overlay.transform.localScale=Vector3.one*4;
+                    NativeHd2D.Actor(actor,footPivot,.72f);NativeHd2D.Overlay(overlay,actor);
+                    camera.orthographic=ortho;camera.fieldOfView=46.9453f;camera.orthographicSize=5.4f;
+                    camera.transform.SetPositionAndRotation(new Vector3(0,0,-14),Quaternion.identity);
+                    for(int phase=0;phase<5;phase++)
+                    {
+                        if(phase==1){camera.orthographicSize=6.8f;camera.transform.rotation=Quaternion.Euler(48.7f,13f,0);}
+                        if(phase==2){camera.orthographicSize=5.4f;camera.transform.rotation=Quaternion.identity;}
+                        if(phase==3){parent.transform.SetPositionAndRotation(new Vector3(.29f,.17f,.11f),Quaternion.Euler(0,0,17));}
+                        if(phase==4)
+                        {
+                            NativeHd2D.RestoreSourcePoses();
+                            raw+=new Vector3(.37f,-.19f,.13f);
+                            // 적 writer처럼 rotation을 다시 쓰지 않고 위치만 갱신한다.
+                            actor.transform.localPosition=overlay.transform.localPosition=raw;
+                            NativeHd2D.Actor(actor,footPivot,.72f);NativeHd2D.Overlay(overlay,actor);
+                        }
+                        float sourceRoll=(parent.transform.rotation*rawRotation).eulerAngles.z;
+                        var source=parent.transform.TransformPoint(raw);
+                        var control=new GameObject("fresh control").AddComponent<SpriteRenderer>();
+                        control.sprite=sprite;control.transform.position=source;
+                        control.transform.rotation=Quaternion.Euler(0,0,sourceRoll);control.transform.localScale=Vector3.one*4;
+                        NativeHd2D.Actor(control,footPivot,.72f);
+                        NativeHd2D.ProjectActor(control,camera,sourceRoll,!flat);
+                        var expected=control.transform.position;
+                        var expectedRotation=control.transform.rotation;
+                        for(int repeat=0;repeat<4;repeat++)
+                        {
+                            NativeHd2D.BeginProjection();
+                            NativeHd2D.ProjectActor(actor,camera,sourceRoll,!flat);
+                            NativeHd2D.ProjectActor(overlay,camera,sourceRoll,!flat);
+                            float px=Vector2.Distance(camera.WorldToScreenPoint(expected),camera.WorldToScreenPoint(actor.transform.position));
+                            worst=Mathf.Max(worst,px);
+                            Check(px<.02f,"repeat/source-parent error "+px+"px phase="+phase);
+                            Check(Quaternion.Angle(actor.transform.rotation,expectedRotation)<.02f,"original roll lost");
+                            Check((overlay.transform.position-actor.transform.position).sqrMagnitude<1e-10f,"overlay foot separated");
+                            Check(GameObject.Find("HD2D contact: repeat overlay")==null,"overlay duplicated contact");
+                            cases++;
+                        }
+                        UnityEngine.Object.DestroyImmediate(control.gameObject);
+                    }
+                    UnityEngine.Object.DestroyImmediate(parent);NativeHd2D.BeginProjection();
+                }
+            }
+            finally
+            {
+                camera.targetTexture=null;rt.Release();UnityEngine.Object.DestroyImmediate(rt);
+                UnityEngine.Object.DestroyImmediate(sprite);
+            }
+            Debug.Log("[HD2D] REPEATED_PROJECTION PASS cases="+cases+" worstPx="+worst);
+        }
         public static void CollisionCentre()
         {
             EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);

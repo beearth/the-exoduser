@@ -83,6 +83,7 @@ namespace Exoduser.UnityPort
             if (newTick || !haveLast) { lastX = e.X; lastY = e.Y; haveLast = true; }
             if (s == "bossDruidUnder")
             {
+                NativeHd2D.ReleaseActor(main); // 잠복 중 흙더미는 배우 발선/접지 그림자를 쓰지 않는다.
                 // fully underground: no sprite, just the soil mound that travels (procedural in the web, drawn here with the same flattened discs)
                 float mr = r * 5.5f;
                 hole.enabled = true; hole.sprite = disc; hole.sortingOrder = (int)e.Y - 2; hole.transform.position = Point(e.X, e.Y + mr * .13f);

@@ -65,3 +65,16 @@
 | 보존 | Core·피해·공격/회복시간·공속·E패링 규칙 변경0. 기존3D모션코드유지. 실제Player프레임검수는별도미완 |
 
 기존 표시가 wSwing/KiCharge만 공격시트를 쓰고 회복/E에서 기본시트로 즉시 바뀌던 차이를 복원했다. 원본 byte와 RED/GREEN 검사·API 로그는 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/sprite-attack-timing에 보관한다. 로비/Core는 현재 전사만 해금되어 있으므로 이 수정으로5영웅플레이완료를주장하지않는다.
+
+
+## 반복 투영·writer 원본 자세 (2026-10-31 실제 Editor 검수)
+
+| 항목 | 현재 계약·근거 |
+|---|---|
+| 원본 pose | NativeHd2D registry는 renderer의 원본 parent/localPosition/localRotation과 최초 source roll을 보존한다. ProjectActor는 저장 원본에서 매번 화면 스냅/lift/카메라 회전을 재계산한다. 현재 투영된 transform을 누적 입력으로 쓰지 않는다. |
+| writer 경계 | UpdateViews 시작의 기존 Remodel3DRestoreBillboards 다음에 RestoreSourcePoses를 실행하고, 기존 Core Point writer 뒤 Actor가 새 원본을 확정한다. 위치만 쓰는 일반적·드루이드에도 이전 billboard 회전이 섞이지 않는다. |
+| 소유권 | IsActor는 frameCount 대신 살아 있는 registry 등록을 판별한다. writer 없는 프레임에도 재질 소유권·카메라 재투영을 유지한다. destroy 시 원본 pose와 자기 접지 그림자를 함께 정리한다. |
+| 역할 전환 | bossDruidUnder는 ReleaseActor(main) 후 기존 흙더미 표현을 사용한다. 잠복 mound를 이전 배우 foot/contact로 재투영하지 않는다. |
+| RED | 실제 D3D11 Editor의 같은 원본 2회 투영에서 76px, 카메라 왕복에서 228px 오차 재현. 당시 제품 소스와 실행 영수증은 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/editor-repeat-projection에 보존. |
+| GREEN | 동일 최소 재현의 반복/왕복 오차 각각0px. 확장 RepeatedProjection 640회(평면/필드, 원근/직교, pivot-foot/alpha-foot, roll4방향, 카메라 왕복/부모 이동/위치-only writer), 최대0.0002441406px. 기존 ActorAnchors 12건 최대0.474586px, RollCentre 4방향, DruidPivotFoot 0.42429px, Shaders 통과. |
+| 한계 | 실제 Editor 기술검수다. Player 연속 프레임·전투/이동/구르기 실루엣·시각 품질·같은 build M1·공통 통합·Desktop은 이 결과만으로 완료하지 않는다. 실패 상태 Map a5491d8c0 인수0. |
