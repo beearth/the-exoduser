@@ -16,7 +16,7 @@ namespace Exoduser.UnityPort {
   // web _fgCraft: Shift/Ctrl repeats up to 10 times with the cost fixed at selection time; nothing done -> notify("악의가 부족합니다!") and the selection stays
   int CraftPotion(Simulation sim,bool repeat){
    int mats=sim.Materials;int done=AutoPotion.ForgeEnhance(sim.PotionState,ref mats,potionSelectedCost,repeat);
-   if(done==0){potionNotice="악의가 부족합니다!";potionNoticeUntil=Time.unscaledTime+2f;return 0;}
+   if(done==0){potionNotice="악의오브가 부족합니다!";potionNoticeUntil=Time.unscaledTime+2f;return 0;}
    sim.Materials=mats;potionSelected=false;potionNotice=null;return done;
   }
 

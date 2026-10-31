@@ -96,7 +96,7 @@ namespace Exoduser.UnityPort.Core
             o.Hp = ToIntClamped(w.hp); o.Attack = ToIntClamped(w.atk); o.BaseAttack = ToIntClamped(w.baseAtk); o.Speed = (float)w.speed; o.Radius = (float)w.r;
         }
 
-        static readonly EnemyPotDef PotHp = new EnemyPotDef { name = "악의 추출", col = "#33cc66" };   // POT (game.html 27860-27862): hp only
+        static readonly EnemyPotDef PotHp = new EnemyPotDef { name = "악의오브 추출", col = "#33cc66" };   // POT (game.html 27860-27862): hp only
 
         // hurtE `if(e.hp<=0){ .. }` for a Unity enemy. `c` is the hurt context of the hit that killed it (head / middle already ran on `w`).
         void RunWebDeath(EnemyState enemy, EnemyHurtContext c, EnemySpawn w, double? ang, EnemyHurtOpts opts, EnemyHurtBodyResult body, bool suppressRevive)

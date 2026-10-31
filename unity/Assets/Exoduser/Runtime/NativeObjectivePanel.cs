@@ -14,8 +14,8 @@ namespace Exoduser.UnityPort {
   string lvText,killText,matText;float lvT=-9,killT=-9,matT=-9;
   public float? ForcedPulseAge;   // verification only: freeze the count-pulse animation at this age
   public const float Width=216f,Height=153.39f,RightMargin=20f,Top=16f;
-  public static readonly string[] Words={"레벨","경험치","지역 처치","악의"};
-  static readonly string[] WordsEn={"Level","Experience","Area kills","Malice"};
+  public static readonly string[] Words={"레벨","경험치","지역 처치","악의오브"};
+  static readonly string[] WordsEn={"Level","Experience","Area kills","Orb of Malice"};
 
   static Color C(int r,int g,int b,float a=1f){return new Color(r/255f,g/255f,b/255f,a);}
   void Init(){
@@ -76,7 +76,9 @@ namespace Exoduser.UnityPort {
    if(pct>0){var old=GUI.color;GUI.color=Color.white;NativeUiAudit.DrawTexture(new Rect(bar.x,bar.y,bar.width*pct,3),expTex);GUI.color=old;}
    Text(L,y0+91.55f,17.69f,W[2],13,false,C(192,189,183),0);
    RightText(R,y0+91.55f,17.69f,kill,13,false,C(226,223,217),0,PulseAge(killT));
-   Text(L,y0+118.55f,17.69f,W[3],13,false,C(192,189,183),0);
+   var orbRect=new Rect(L,y0+111,32,32);NativeCurrencyOrb.Draw(orbRect,info.materials);
+   Text(L+38,y0+118.55f,17.69f,W[3],info.english?11:13,false,C(192,189,183),0);
+   NativeCurrencyOrb.DrawFlights(orbRect,hudWidth,Screen.height*hudWidth/Screen.width);
    RightText(R-6,y0+118.55f,17.69f,mat,13,false,C(226,223,217),0,PulseAge(matT));
   }
  }

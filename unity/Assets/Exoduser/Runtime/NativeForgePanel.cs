@@ -134,7 +134,8 @@ namespace Exoduser.UnityPort {
   void DrawHeader(Simulation sim){
    // 현행 웹 정적판에 제목 원문이 포함돼 있다. 중복 덧쓰기로 두꺼워지지 않게 원본을 그대로 표시한다.
    // #forgeMats: "악의: N" 14px 600 ls .08em
-   Txt(new Rect(500,267,920,41),defs.matsLabel+": "+sim.Materials,F.SansSemi,14,C(211,208,202),false,TextAnchor.MiddleCenter,1.12f);
+   NativeCurrencyOrb.Draw(new Rect(760,271,32,32),sim.Materials);
+   Txt(new Rect(800,267,600,41),defs.matsLabel+": "+sim.Materials,F.SansSemi,14,C(211,208,202),false,TextAnchor.MiddleCenter,1.12f);
    // #forgeLore: 12px italic, opacity .85, emoji crops inline, centred
    float total=0;foreach(var run in defs.lore)total+=run.g!=null?GlyphW(run.g):Meas(run.t,F.NM,12,false,0,true);
    float x=732+(688-total)/2f;

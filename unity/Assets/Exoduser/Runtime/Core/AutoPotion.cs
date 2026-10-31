@@ -115,7 +115,7 @@ namespace Exoduser.UnityPort.Core
                 state.BeltBuffTicks = BeltBuffFrames;
                 lines.Add(new AutoPotionFeedback { Text = "피해 증가!", Color = "#ff8844", Ttl = 35, DY = -45 });
             }
-            lines.Add(new AutoPotionFeedback { Text = "악의 추출: +" + heal + " HP", Color = "#33ff33", Ttl = 40, DY = -25 });
+            lines.Add(new AutoPotionFeedback { Text = "악의오브 추출: +" + heal + " HP", Color = "#33ff33", Ttl = 40, DY = -25 });
             result.Feedback = lines.ToArray();
             state.PotionsUsed++;
             return result;
@@ -172,7 +172,7 @@ namespace Exoduser.UnityPort.Core
                 {
                     malice += count;
                     texts.Add(Pickup(count));
-                    texts.Add(new DropText { Text = "악의 추출 +" + count, Color = "#33cc66", Ttl = 30, Anchor = DropAnchor.Source, DY = -8 });
+                    texts.Add(new DropText { Text = "악의오브 추출 +" + count, Color = "#33cc66", Ttl = 30, Anchor = DropAnchor.Source, DY = -8 });
                 }
             }
             if (isBoss)

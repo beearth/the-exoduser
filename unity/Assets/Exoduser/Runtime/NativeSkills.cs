@@ -216,7 +216,7 @@ namespace Exoduser.UnityPort {
    float y=638.64f;if(ki&&SelectedSlot==SkillUiState.LmbSlot&&!lmb){if(WebButton(new Rect(74,y,240,40),"이 슬롯에 장착 [LMB]",C(33,36,36),C(16,19,19),C(89,92,92),C(217,214,208),true))equip();y+=52;}DrawInfoResources(sim,y);
   }
   bool WebButton(Rect r,string label,Color top,Color bottom,Color border,Color text,bool active=false){if(top.a>0)Grad(r,top,bottom);if(active&&GUI.enabled&&r.Contains(Event.current.mousePosition))Fill(r,new Color(1,1,1,.06f));Border(r,border);Fill(new Rect(r.x+1,r.y+1,r.width-2,1),new Color(1,1,1,.07f));Text(r,label,serif,16,text,FontStyle.Bold,0,TextAnchor.MiddleCenter);return NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none)&&active;}
-  void DrawInfoResources(Simulation sim,float y){Fill(new Rect(74,y,284,1),C(146,149,149,.5f));string malice=sim.Materials.ToString("N0",System.Globalization.CultureInfo.InvariantCulture);Mixed(new Rect(74,y+8,284,23),"SP "+sim.Player.StatPoints+"  ·  악의 "+malice+"  ·  LV "+sim.Player.Level,13,C(165,168,168),.78f,TextAnchor.MiddleLeft);}
+  void DrawInfoResources(Simulation sim,float y){Fill(new Rect(74,y,284,1),C(146,149,149,.5f));string malice=sim.Materials.ToString("N0",System.Globalization.CultureInfo.InvariantCulture);NativeCurrencyOrb.Draw(new Rect(74,y+8,24,24),sim.Materials);Mixed(new Rect(104,y+8,254,23),"SP "+sim.Player.StatPoints+"  ·  악의오브 "+malice+"  ·  LV "+sim.Player.Level,13,C(165,168,168),.78f,TextAnchor.MiddleLeft);}
 
   void DrawAltar(bool lmb,int level){
    var slot=defs.slots[SelectedSlot];bool equipped=SelectedSlot==SkillUiState.LmbSlot&&lmb;

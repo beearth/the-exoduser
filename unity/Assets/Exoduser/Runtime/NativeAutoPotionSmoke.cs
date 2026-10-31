@@ -41,7 +41,7 @@ namespace Exoduser.UnityPort {
     Check(drunk.Count==1&&sim.Materials==4&&sim.PotionState.PotionsUsed==1,"first tick: potion drunk, malice 5 -> 4 ("+drunk.Count+", "+sim.Materials+")");
     Check(Mathf.Abs(p.Hp-(before+100+sim.Config.PlayerHpRegen/8f))<.05f||Mathf.Abs(p.Hp-(before+100))<2f,"first tick: HP +100 ("+before+" -> "+p.Hp+")");
     Check(sim.PotionState.Cooldown==420,"cooldown set to 420 frames ("+sim.PotionState.Cooldown+")");
-    Check(drunk.Count==1&&drunk[0].Feedback.Length==1&&drunk[0].Feedback[0].Text=="악의 추출: +100 HP"&&drunk[0].Feedback[0].Color=="#33ff33","feedback text without emoji: "+(drunk.Count>0&&drunk[0].Feedback.Length>0?drunk[0].Feedback[0].Text:"-"));
+    Check(drunk.Count==1&&drunk[0].Feedback.Length==1&&drunk[0].Feedback[0].Text=="악의오브 추출: +100 HP"&&drunk[0].Feedback[0].Color=="#33ff33","feedback text without emoji: "+(drunk.Count>0&&drunk[0].Feedback.Length>0?drunk[0].Feedback[0].Text:"-"));
     // HP drops again immediately, cooldown must still hold for 419 more frames
     p.Hp=maxHp-300;int potionsMid=0;
     for(int i=0;i<419;i++){p.Hp=Mathf.Min(p.Hp,maxHp-300);sim.Tick(0,0,p.X+100,p.Y,false,false);potionsMid=sim.PotionState.PotionsUsed;}

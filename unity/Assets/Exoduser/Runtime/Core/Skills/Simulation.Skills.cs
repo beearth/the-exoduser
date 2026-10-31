@@ -199,7 +199,7 @@ namespace Exoduser.UnityPort.Core
         // ---- 가시덫 (13146 + activateSpikeTrap 45656) ----
         private bool CastSpikeTrap()
         {
-            if (Materials < MaliceCost(SkillRules.SpikeTrapMalice)) { RaisePlayerText(Player.X, Player.Y - 30, "악의 부족! (" + MaliceCost(SkillRules.SpikeTrapMalice) + ")", "#ff4444", 40); DenySkill("spikeTrap", "malice"); return false; }
+            if (Materials < MaliceCost(SkillRules.SpikeTrapMalice)) { RaisePlayerText(Player.X, Player.Y - 30, "악의오브 부족! (" + MaliceCost(SkillRules.SpikeTrapMalice) + ")", "#ff4444", 40); DenySkill("spikeTrap", "malice"); return false; }
             if (SpikeTrapCd > 0) { DenySkill("spikeTrap", "cooldown"); return false; }
             int paid; TrySpendMalice(SkillRules.SpikeTrapMalice, out paid);
             SpikeTrapCd = SkillRules.SpikeTrapCooldown(CooldownReduction);
@@ -216,7 +216,7 @@ namespace Exoduser.UnityPort.Core
         {
             int stCost = SkillStCost("giantSlam", "giantSlam");
             if (Player.Stamina < stCost) { DenySkill(srcId, "stamina"); return false; }
-            if (Materials < MaliceCost(SkillRules.GiantSlamMalice)) { RaisePlayerText(Player.X, Player.Y - 30, "악의 부족!", "#ff4444", 40); DenySkill(srcId, "malice"); return false; }
+            if (Materials < MaliceCost(SkillRules.GiantSlamMalice)) { RaisePlayerText(Player.X, Player.Y - 30, "악의오브 부족!", "#ff4444", 40); DenySkill(srcId, "malice"); return false; }
             if (GiantSlamCd > 0) { DenySkill(srcId, "cooldown"); return false; }
             int slv = Math.Max(1, Skills.Level(srcId) > 0 ? Skills.Level(srcId) : Skills.Level("giantSlam"));
             Player.Stamina = Math.Max(0, Player.Stamina - stCost);
