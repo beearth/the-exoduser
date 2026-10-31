@@ -1,3 +1,15 @@
+## 2026-10-31 웹 3D 방향 정정 — 원본 1-1 수풀·물 흐름
+
+| 항목 | 변경·검수 |
+|---|---|
+| 범위/원본 | 최신 main afcb65b0a 병합 확인/시작 e1e79ae. 기본 OFF의 r3d=1은 원본1-1·native draw·인물·VFX·HUD 유지. 기존 목교 지형 대체·2x인물/독자조명은 r3dLegacy=1 뒤의 퇴역 이력으로 분리 |
+| 수풀 | 실제1-1 경계·손배치나무·제단물가에 시드고정배치. 내장imagegen 투명4종 atlas1254²/셀627²,112×100분할card 인스턴싱1draw·고정밑동/미풍·hero접촉/공격충격·화면밖cull·저사양/성능밀도조절 |
+| 물 | 원래 제단 도랑·서쪽crossing/늪·독액 이미지 색/위치불변, 물영역만 흐름·약한반사·거품/기포·옅은안개. 실제entity 이동·투사체/impact진입의 잔물결·splash8개풀. 기존탄막/VFX는native그대로 |
+| 검수 | 관련38/38·guard PASS/라인66139→66144 외 보호영역불변. 확장50중48PASS/cloud저장harness2실패는시작SHA에서도동일. 원본sprite격리6draw/픽셀변경0·HUD DOM/스타일/배치동일·브라우저오류0 |
+| 실물/성능 | 1920/3840 OFF·ON각10초/동구도1x·native시작점 실제10초입력/피해75629·패링1. 녹화없는물가OFF/ON≈239FPS,64적96탄시작활성stress(HP100만)164.96FPS/최종122적11탄. 자연입력·시연fixture구분 |
+| 인수 | 자기미커밋 height-ray/painted-forest/alpha-frame-bounds·테스트/추출도구도 정확경로보존커밋. 현행renderer에서사용하지 않는퇴역지원기능. [현행수치·출처](4.1맵디자인+설정/WEB3D_TRIAL_20261031.md) |
+| 영수증/판정 | tools/web3d-living-qa.cjs·extra·delivery가 소스SHA/실제게임/격리sprite/영상·HTTP동일byte검증. I:/EXODUSER-Storage/web3d-layer1-20261031/REPORT.md 맨위3377URL/증거. 움직임레이어한정PASS/전체맵RETOUCH·Unity/Steam미채택 |
+
 ## 2026-10-31 웹 스킬 창 마지막 보정 — 잠김 기술·빈 소켓 원화
 
 | 항목 | 변경·근거 |
@@ -55628,3 +55640,4 @@ stage=0은 실제200×200 본편으로 정정하고 과거 원화 판은 명시�
 - 2026-10-31 combat-feel: game.html 접점 그림2틱·피격 가장자리/HP 표시140ms·동시 처치음2보이스, feel=0/1 비교 및 reduceMotion 설정. 보호된 전투 규칙 불변. VFX·스킬·설정·기본공격 문서 동기화, test/combatFeel.test.js.
 - 검수 보충: 피격음 VM의 OFF 표현 환경을 명시. 기존 Ki 홀드 VM은 _uEq/ _eqAffix 의존성 누락으로 2회 실패해 해당 단위를 중단하고 원본 byte를 복원; 실제 기검참 함수 무변경을 대조.
 - 같은 후보 실물 재작업: HP 피격 사각 외곽 제거→구슬 원형 내부 표식, 밀집 접점 합성 상태 전환16→2회로 배치. 실패 재현 테스트 후 수정 통과.
+- web3d 병합: 원본 함수 보존 검사의 기준을 검수한 feel0206fb14d로 갱신, 맵 연결 예외4개·500개 이상 함수 byte 일치 검사는 유지한다. 원격929169caa의 맵/3D 자산·코드는 보존한다.

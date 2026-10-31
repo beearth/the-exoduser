@@ -3292,6 +3292,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <div class="ph" id="ph"></div>
 <div class="notif" id="notif"></div>
 
+<script src="web3d/bridge-map.js?v=20261031-r3"></script>
 <script>
 // ┌─────────────────────────────────────────────────────────────────────┐
 // │  TABLE OF CONTENTS — Ctrl+F "[S##]" 로 점프                        │
@@ -17410,6 +17411,11 @@ function _druidFinaleFrame(e,px,py,vw,vh,out){
 let _fdgNativePerspective=null; // only installed by exact r4 + fdgPerspective=first
 function _syncDruidFinaleMouse(){
   if(_gpActive||!Number.isFinite(mouse._screenX)||!Number.isFinite(mouse._screenY))return;
+  if(window._Web3DTrial?.active){
+    const target=window._Web3DTrial.inversePointer(mouse._screenX,mouse._screenY);
+    if(target){mouse.x=target.x-G.cam.x+VW/2;mouse.y=target.y-G.cam.y+VH/2;}
+    return;
+  }
   if(_fdgNativePerspective){
     const target=_fdgNativePerspective.inversePointer(mouse._screenX,mouse._screenY);
     if(target){mouse.x=target.x;mouse.y=target.y;}
@@ -30570,6 +30576,13 @@ function genFromTemplate(tmpl,si){
     for(let y=1;y<mh-1;y++)for(let x=1;x<mw-1;x++)if(map[y][x]===0)G._floorTiles.push({tx:x,ty:y});
   }
 
+  // Web3D authored comparison scene: use the native tile collision without stage geometry postprocessing.
+  if(tmpl===window._Web3DTrialMap){
+    G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=[];_cacheExitCenter();
+    G._testbed=true;G._pathImgTerrain=false;G._mapPaint=false;G._plateSrc=null;G._kitField=false;G._plateNative=false;
+    G.bossAlive=false;G.bossGate=[];G.bossGateOpen=true;G.bossSealed=false;G.spawnHoles=[];MAP_OBJS=[];
+    return;
+  }
   // Independent template consumes native tiles/crops without importing a stage gate.
   if(_FDG_RUINED_FOREST_FIRST&&tmpl._fdgIndependentScene==='ruined-forest-first'){
     G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=[];_cacheExitCenter();
@@ -31860,7 +31873,7 @@ function initStage(si){
   G._rewindMarks=[];G._gravityWells=[];G._wallPushes=[];G._poisonPools=[];G._cageTraps=[];
   G._chainLights=[];G._orbWeaves=[];G._soulAnchors=[];G._chaseAoes=[];G._lavaPools=[];G._fireRains=[];G._shockGrids=[];G._donutSlams=[];G._safeCorners=[];G._crossWipes=[];G._tidalWipes=[];G._gSlamWave=[];G._skyCrushers=[];G._lavaField=null;G._gwPillar=null;
   if(_FDG_RUINED_FOREST_FIRST)return _initRuinedForestNativeScene();
-  let _fixedMap=_getFixedMapForStage(si);G._fieldRebuildQA=false;G._fieldRebuildRegions=null;
+  let _fixedMap=(si===0&&window._Web3DTrialMap)?window._Web3DTrialMap:_getFixedMapForStage(si);G._fieldRebuildQA=false;G._fieldRebuildRegions=null;
   if(_DIABLO_FIELD_QA&&si===0&&_fixedMap){const _field=_buildDiabloField(0,200,200);_fixedMap=Object.assign({},_fixedMap,{tileRLE:_field.tileRLE,rooms:_field.rooms,corridors:[],spawnHoles:_field.spawnHoles.map(h=>({x:h.x,y:h.y,size:h.type})),portals:[],objects:[],_testbed:true});G._fieldRebuildQA=true;G._fieldRebuildRegions=_field.regions}
   if(_fixedMap){genFromTemplate(_fixedMap,si);G.mapType=_fixedMap._testbed?'fixed_testbed':'fixed'}
   else{genGauntlet(si);G.mapType='gauntlet'}
@@ -52866,6 +52879,7 @@ function draw(){
   }
   if(_hellWinterTone)X.restore();
   if(globalThis.Ch1LivingDetail)Ch1LivingDetail.draw(X,G,MAP_OBJS,_now,VW,VH,true);
+  window._Web3DLivingLayer?.draw(X,{x:VW/2-VW/(2*_tzoom)-Math.round(VW/2-G.cam.x+sx),y:VH/2-VH/(2*_tzoom)-Math.round(VH/2-G.cam.y+sy),w:VW/_tzoom,h:VH/_tzoom,pw:C.width,ph:C.height});
   const _tWI=performance.now();
   if(_fc2d){var _dMobj=_PERF_PROF._delta(_snapMobj);_PERF_PROF._mobj_di=_dMobj.di}
   // World items (화면 내만 렌더)
@@ -62253,9 +62267,9 @@ function loop(timestamp){
     G.cam.y=_prevCamY+(_realCy-_prevCamY)*_alpha;
     P.x=_prevPx+(_realPx-_prevPx)*_alpha;
     P.y=_prevPy+(_realPy-_prevPy)*_alpha;
-    draw();
+    if(window._Web3DFrame)window._Web3DFrame();else draw();
     G.cam.x=_realCx;G.cam.y=_realCy;P.x=_realPx;P.y=_realPy;
-  }else{draw()}
+  }else{if(window._Web3DFrame)window._Web3DFrame();else draw()}
   if(_PERF_PROF.enabled)_PERF_PROF._renderAcc+=performance.now()-_rndT0;
   const _p2=performance.now();
   const _domT0=_PERF_PROF.enabled?performance.now():0;
@@ -66054,6 +66068,139 @@ if(window._FDGDruidQaStorage?.active&&new URLSearchParams(location.search).get('
       });
       window._FDGNativePerspectiveQa=_fdgNativePerspective;
     }).catch(error=>console.error('[FDG native perspective]',error));
+}
+</script>
+
+<script type="module">
+if(new URLSearchParams(location.search).get('r3d')==='1'&&new URLSearchParams(location.search).get('r3dLegacy')!=='1'){
+  import('./web3d/living-layer.mjs?v=20261031-live2').then(m=>m.install(()=>({G,P,objects:MAP_OBJS,images:_OBJ_SPR,meta:_OBJ_META,hill:_CH1_HILL,tile:T,now:_now,quality:OPT.quality,enemies:ens,projectiles:[...projs,...pProjs],blasts:[..._fireExps,..._impacts]}))).then(api=>{window._Web3DLivingLayer=api;}).catch(error=>{window._Web3DLivingLayerError=error.message;console.error('[WEB3D living layer unavailable]',error);});
+}
+if(new URLSearchParams(location.search).get('r3d')==='1'&&new URLSearchParams(location.search).get('r3dLegacy')==='1'){
+  const {renderFrame,advancePresentation}=await import('./web3d/presentation.mjs?v=20261031-main2');
+  await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='./web3d/native-ground-effects.js?v=20261031-main2';script.onload=resolve;script.onerror=reject;document.body.append(script);});
+  function prepare(){
+    if(!window._ossGrantChk&&P&&INV.equipped){window._ossGrantChk=1;_grantOssuaryIfNeeded();}
+  const _playerAtlasNoWarmupNeeded=_atlasP_img&&typeof _atlasP_img.getContext==='function';
+  if(_atlasPReady&&(_playerAtlasGpuWarmDone||_playerAtlasNoWarmupNeeded)&&(P._sa||(P._sa=SpriteAnimator.create(_atlasP_img,_atlasP_frames,'idle')))){
+    // ── Atlas P 스프라이트 렌더링 (8방향) + Ori 영혼 글로우 ──
+    const _apDead=P.hp<=0;const _apMv=P.s==='idle'&&P._walkMoving===true;
+    if(_harpLandT>0){_harpLandT-=_dtSp;if(_harpLandT<=0)_dashPhase=0;}
+    let _apAnim=_P_ANIM_MAP[P.s]||'idle';
+    if(_apDead)_apAnim='die';
+    // earthSlam/earthBreaker 애니 삭제됨
+    else if(P._chainSlamReady&&(_harpActive||_dashActive))_apAnim='chain';
+    else if(P._chainAssaultReady&&(_harpActive||_dashActive))_apAnim='atk1';
+    else if(_harpActive&&!_dashActive)_apAnim=_dashPhase===1?'dash_start':'dash_fly';
+    else if(_dashActive)_apAnim='dash_fly';
+    else if(_harpLandT>0&&(_charIdx>=2||typeof WarriorDashFlight==='undefined'||WarriorDashFlight.landing(true,P.s,_apMv)))_apAnim='dash_land';
+    else if(_apMv)_apAnim='run';
+    const _dashFlightPose=_charIdx<2&&typeof WarriorDashFlight!=='undefined'&&_apAnim.startsWith('dash');
+    const _worldSpriteDir=_dashFlightPose?_facingDir8(WarriorDashFlight.direction(_dashActive,_harpActive,_harpLandT,_dashVX,_dashVY,_harpVX,_harpVY,P.facing)):_playerSpriteDirection(P);
+    const _spriteFacing=window._Web3DTrial?.active?window._Web3DTrial.viewFacing(P.facing):P.facing;
+    const _worldSpriteDirIndex=_DIR8.indexOf(_worldSpriteDir);
+    const _apDir=window._Web3DTrial?.active&&_worldSpriteDirIndex>=0?_facingDir8(window._Web3DTrial.viewFacing(_worldSpriteDirIndex*Math.PI/4)):_worldSpriteDir;
+    const _apHasDir=!!P._sa.fm[_apAnim+'_'+_apDir];
+    if(!_apHasDir&&!P._sa.fm[_apAnim])_apAnim=(_apAnim==='whirlwind'||_apAnim==='stun'||_apAnim==='cast'||_apAnim==='ghost'||_apAnim.startsWith('gSlam')||_apAnim.startsWith('charge')||_apAnim==='atk3'||_apAnim.startsWith('dash'))?'dash':'idle';
+    if(!P._sa.fm[_apAnim]&&!P._sa.fm[_apAnim+'_'+_apDir])_apAnim='idle';
+    const _isHarp=(_harpActive||_dashActive||_harpLandT>0)&&_apAnim.startsWith('dash');
+    const _isChainAtk=P._chainAssaultReady&&(_harpActive||_dashActive);
+    const _apSpd=_apDead?12:(_isHarp?4:(_isChainAtk?3:(_apAnim==='idle'?48:(_apAnim==='run'?12:8))));
+    SpriteAnimator.play(P._sa,_apAnim,_apSpd,_isHarp?(_apAnim==='dash_fly'):!_apDead);
+    if(_isChainAtk){
+      // 기동칼날개: atk 프레임 2배속 빠른 칼질 루프
+      P._sa.spd=2;P._sa.loop=true;
+      SpriteAnimator.update(P._sa,_dtSp,_apHasDir?_apDir:null);
+      SpriteAnimator.update(P._sa,_dtSp,_apHasDir?_apDir:null);
+    }else if(_isHarp){
+      // 사슬기동: 3단계 (start→fly loop→land)
+      SpriteAnimator.update(P._sa,_dtSp,_apHasDir?_apDir:null);
+      // start 끝나면 fly로 전환
+      if(_dashPhase===1&&P._sa.done)_dashPhase=2;
+    }else if(_charIdx===0&&!_apDead&&(P.s==='wWindup'||P.s==='wSwing'||P.s==='wRecover'||P.s==='sBash'||P.s==='sRecover')){
+      const _wFr=SpriteAnimator._fr(P._sa,_apHasDir?_apDir:null);
+      const _wWind=~~(10/(wp().spd||1))||1;
+      const _wRecovery=P.s==='sRecover'?(~~(28/pParryRmbSpd())||1):(~~(16/((wp().spd||.3)*statDex()*(1+_eqAffix('meleeAtkSpd')+_eqAffix('glovesAtkSpd'))))||1);
+      if(_wFr&&_wFr.length)P._sa.f=Math.min(_wFr.length-1,_wFr.length===9&&typeof WarriorBatSwing!=='undefined'?WarriorBatSwing.frame(P.s,P.st2,_wWind,_wRecovery):_warriorAttackFrame(P.s,P.st2,_wWind,_wRecovery));
+    }else if(P.s==='wWindup'||P.s==='wSwing'||P.s==='wRecover'){
+      const _mFr=SpriteAnimator._fr(P._sa,_apHasDir?_apDir:null);
+      const _mWind=~~(10/(wp().spd||1))||1;
+      const _mRecover=~~(16/((wp().spd||.3)*statDex()*(1+_eqAffix('meleeAtkSpd')+_eqAffix('glovesAtkSpd'))))||1;
+      const _mProgress=_playerMeleeProgress(P.s,P.st2,_mWind,_mRecover);
+      if(_mFr&&_mFr.length)P._sa.f=Math.min(_mFr.length-1,Math.floor(_mProgress*_mFr.length));
+    }else if(_apMv){
+      const _dFr=SpriteAnimator._fr(P._sa,_apHasDir?_apDir:null);
+      // 전사 8프레임·실버테일 4프레임 모두 256px 이동마다 보행 한 주기.
+      if(_dFr&&_dFr.length)P._sa.f=~~((P._walkDist||0)*_dFr.length/256)%_dFr.length;
+    }else{SpriteAnimator.update(P._sa,_dtSp,_apHasDir?_apDir:null);}
+
+    P._web3DDir=_apDir;
+  }
+
+    for(const e of ens)if(e?.alive){
+      if(e._mobSkinPending&&e._mobCh){const a=_ch8Atlas[e._mobCh];if(a?.mobList?.length){const id=a.mobList[_skinSeqIdx++%a.mobList.length],m=a.meta?.mobs[id];e._mob8dir=true;e._mob8Skin=id;if(m){e._mob8Col=m.col;e._mob8Row=m.row;}e._mobSkinPending=false;}}
+      if(e._isMoving&&e._moveAng!=null)e.facing=e._moveAng;else if(P.hp>0&&Math.hypot(P.x-e.x,P.y-e.y)<800)e.facing=Math.atan2(P.y-e.y,P.x-e.x);
+    }
+    advancePresentation({dt:_dtSp,gameTime:_gameTime,step:PHYS_STEP,vfx:_vfxAnims,fire:_fireExps,fx:_fxAnims,fxFrames:_FX_FRAMES,
+      G,player:P,esFrames:_ES_FRAMES,flash:_hitFlash,speedLines:_speedLines,tvfx2:window._tvfx2,tvfxActive:window._tvfxActive});
+    for(const p of projs){if(p._sprFr==null)p._sprFr=Math.random()*8;p._sprFr+=.12;}
+    for(const p of pProjs){if(p._sprFr==null)p._sprFr=Math.random()*8;p._sprFr+=.15;}
+    if(P.s==='sBlock'){if(++_saTimer>=8){_saTimer=0;_saFrame=(_saFrame+1)%2;}}
+    if(P.s==='peaceShield'){if(++_paTimer>=8){_paTimer=0;_paFrame=(_paFrame+1)%2;}}
+    scrFlashA=Math.max(0,scrFlashA-.018*_dtSp);
+    _refreshPetBubbleInput();drawMM();
+    if(!_mmInitDone){while(!_mmInitDone)_mmTickBuild();_mmSkip=20;drawMM();}
+    const mm=document.getElementById('mm');if(mm)mm.style.background='rgba(8,14,15,.94)';
+  }
+  const proceduralProjectiles=new WeakMap();
+  const read=()=>({G,P,ens,projs,pProjs,objects:MAP_OBJS,objectImages:_OBJ_SPR,objectMeta:_OBJ_META,
+    width:VW,height:VH,tile:T,now:_now,gameTime:_gameTime,step:PHYS_STEP,charIndex:_charIdx,worldItems,parts:G.parts,particles:_partPool,particleCount:_partCnt,corpses:_corpses,
+    vfx:_vfxAnims,sheets:_VFX_SHEETS,impacts:_impacts,impactSource:_impactSpriteFor,
+    fire:_fireExps,fireImages:_fireExpFrames,hitPool:_hitVfx,hitImage:_PS_IMG,
+    elecPool:_elecVfx,elecImage:_EB_IMG,mmPool:_mmExpVfx,mmImages:_MM_EXP_IMGS,
+    darkPool:_darkBurstVfx,darkImage:_DB_IMG,lightningPool:_lbVfx,lightningImage:_LB_IMG,
+    tvfx2:window._tvfx2||[],tvfxActive:window._tvfxActive||[],
+    drawGround:ctx=>window._Web3DDrawNativeGround?.(ctx),
+    qRadius:P.s==='peaceShield'?P._psShieldR:P.s==='sBlock'?_sBlockChargeRadius(P._sbHoldT):P._sbParryT>0?P._sbReleaseR:0,
+    qAura:_saReady?{image:_SA_IMG,frame:{x:_saFrame%_SA_COLS*_SA_CW,y:Math.floor(_saFrame/_SA_COLS)*_SA_CH,w:_SA_CW,h:_SA_CH}}:null,
+    itemSource:it=>{if(it.type!=='item')return null;const image=_worldItemSkin(it.item);return image?{image,scale:34/(image.naturalWidth||image.width)}:null;},
+    drawLabel:(ctx,t,x,y)=>{ctx.save();if(t.sz>=28&&t._numStr){const color=t.c==='#66ddff'?2:['#dd2200','#cc0000','#ff0000'].includes(t.c)?1:0;drawNumStr(ctx,t._numStr,x,y,color,(t.sz||48)/48*.72);}else{ctx.font='900 '+Math.max(14,(t.sz||18)*.72)+'px "Noto Sans KR","Malgun Gothic",sans-serif';ctx.strokeStyle='#090c0e';ctx.lineWidth=3;ctx.strokeText(t.t||'',x,y);ctx.fillStyle=t.c||'#e5dbc5';ctx.fillText(t.t||'',x,y);}ctx.restore();},
+    enemyAtlas:_ch8Atlas[1],mobCols:_MOB8_COLS,
+    playerFacing:P.s==='idle'&&P._walkMoving?P._walkFacing:P.facing,
+    direction:_facingDir8,mobDirection:_mobFacingDir8,syncMouse:()=>{_syncDruidFinaleMouse();_setMouseFacing();},
+    projectile:p=>{
+      const nativeProjectile=()=>{
+        let canvas=proceduralProjectiles.get(p);if(!canvas){canvas=document.createElement('canvas');canvas.width=canvas.height=256;proceduralProjectiles.set(p,canvas);}
+        const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,256,256);ctx.save();ctx.setTransform(.5,0,0,.5,128-p.x*.5,128-p.y*.5);
+        try{window._Web3DDrawNativeProjectile(ctx,{...p},pProjs.includes(p));}finally{ctx.restore();}
+        return {image:canvas,frame:{x:0,y:0,w:256,h:256},scale:2,dynamic:true,ground:!!(p.trap||p.mine||p.iceZone||p.blizzard)};
+      };
+      if(pProjs.includes(p))return nativeProjectile();
+      const sc=Math.max(1.2,Math.min(4,(p.sz||1)*1.5))*.7*_physicalProjectileMultiplier(p,2);
+      if(p.blackBean||p.blueBean||p.gbBean||p.waterBean){
+        let canvas=proceduralProjectiles.get(p);if(!canvas){canvas=document.createElement('canvas');canvas.width=canvas.height=256;proceduralProjectiles.set(p,canvas);}
+        const ctx=canvas.getContext('2d',{willReadFrequently:true}),previous=X;ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,256,256);ctx.save();ctx.translate(128-p.x,128-p.y);
+        try{X=ctx;if(p.blackBean||p.blueBean)_drawClassicRainbow(p,1,sc);else if(p.gbBean)_drawDarkSphere(p,1,sc);else _drawWaterBean({...p},1,sc);}
+        finally{X=previous;ctx.restore();}
+        return {image:canvas,frame:{x:0,y:0,w:256,h:256},scale:1,dynamic:true};
+      }
+      if(_projectileParryClass(p)==='physical'&&_physMouthReady){
+        const fi=((_gameFrame>>2)+Math.floor(p.x*.03))%8;
+        return {image:_physMouthImg,frame:{x:fi*768,y:0,w:768,h:384},scale:22.05*sc*.55/384};
+      }
+      if(_elemOrbReady){const row=_ELEM_ORB_ROW[p.el||1];if(row>=0){
+        const fi=((_gameFrame>>2)+Math.floor(p.x*.03))%6;
+        return {image:_elemOrbImg,frame:{x:fi*512,y:row*256,w:512,h:256},scale:(p.elemBall?Math.max(96,(p.sz||18)*5.3):18*sc)/256};
+      }}
+      return nativeProjectile();
+    }});
+  import('./web3d/renderer.mjs?v=20261031-main2').then(m=>m.install(read)).then(api=>{
+    window._Web3DFrame=()=>renderFrame(api,draw,prepare);
+  }).catch(error=>{
+    console.error('[WEB3D] renderer unavailable; native renderer retained',error);
+    const c=document.getElementById('web3dWorld');if(c)c.remove();
+    window._Web3DTrial=null;document.getElementById('c').style.opacity='';
+    window._Web3DTrialError=error.message;
+  });
 }
 </script>
 </body>

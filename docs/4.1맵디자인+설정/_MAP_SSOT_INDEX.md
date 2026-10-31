@@ -1,5 +1,9 @@
 > 진행 프로젝트: [MAP_IMPROVEMENT_PROJECT.md](MAP_IMPROVEMENT_PROJECT.md) · 2.5D 깊이 기준: [DEPTH_2_5D_BENCHMARK_20260930.md](DEPTH_2_5D_BENCHMARK_20260930.md)
 
+## 2026-10-31 — 웹 3D 방향 정정: 기존 1-1 수풀·물 흐름 (기본 OFF)
+
+같은 브랜치에서 최신 main `afcb65b0a` 병합을 확인했다. `?r3d=1`은 원본 맵·인물·VFX·HUD를 그대로 렌더하고, 수풀 4종의 바람·접촉 변형과 기존 독액 도랑·물 표면의 흐름만 투명 GPU 레이어로 더한다. 목교 지형 대체는 퇴역(`r3dLegacy=1` 추가 없이는 작동하지 않음). [현행 수치·검수 계약](WEB3D_TRIAL_20261031.md), 최종 판정·OFF/ON 영상은 `I:/EXODUSER-Storage/web3d-layer1-20261031/REPORT.md`를 따른다. 기존 맵 전체 RETOUCH·Unity/Steam 미채택과 구분한다.
+
 ## 2026-10-20 — MAPLOOK-HOLE Godot 독립 소환굴 오버레이
 
 게임플레이·원본 시트는 불변. 실제 G.spawnHoles 위치·size·트리거·제거만 읽어 림 왜곡·맥동·7개 흡입 streak·0.85초 잔광을 별도 world 자식에 표시한다. 신규 이미지·광원 0, 기본 실행 미연결. [정확한 표시 계약](MAPLOOK_HOLE_20261020.md) · [실창·성능·미검수 경계 보고](../engine/orders/reports/MAPLOOK-HOLE_REPORT.md).

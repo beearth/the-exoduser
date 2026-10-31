@@ -1,0 +1,16 @@
+{
+  "file": "rotten-underbrush-atlas.png",
+  "sha256": "bb27bc07f99c758531fdabd3161815b6e1a8146bdaec793705359518fd9d6216",
+  "width": 1254,
+  "height": 1254,
+  "layout": {"columns": 2, "rows": 2, "cellWidth": 627, "cellHeight": 627},
+  "cells": ["마른 갈대", "시든 고사리", "가시 덤불", "이끼 잔가지"],
+  "provider": "Codex 내장 imagegen",
+  "mode": "신규 생성, transparent_background=true",
+  "generationCount": 1,
+  "paidExternalApiCalls": 0,
+  "authorization": "web3d-main-brief.md 마지막 수풀 절의 Codex 내장 투명 PNG 생성 허용",
+  "source": "C:/Users/심도진/.codex/generated_images/01a190fe-7e8d-7753-9695-63455327fab5/exec-a418fdf5-877b-4147-9ed9-31cc728dad89.png",
+  "processing": "원본 파일을 그대로 복사. 알파/색/크기 변경 없음. GPU에서 셀 UV 선택/축소/색감쇠만 적용.",
+  "prompt": "Use case: stylized-concept. Asset type: production environment sprite atlas for an existing dark isometric ARPG, genuine transparent PNG. Create exactly FOUR separate low vegetation clumps, arranged in a precise 2 by 2 grid on a square transparent canvas; each occupies its own equal quadrant with generous empty transparent margins, no overlap. Upper left: dense but low clump of dry slender marsh reeds with muted olive brown blades and a few drooping seed heads. Upper right: withered woodland fern with gently arching narrow fronds and small sparse ragged leaflets, desaturated gray olive and dark umber. Lower left: low twisted thorn bramble with a handful of shriveled gray brown leaves, irregular tangled branches. Lower right: low mossy twig and dying grass clump, smoky brown olive. View: fixed isometric game camera, looking down approximately 45 degrees, front sides of foliage visible, all stems converge at a compact ground anchor near the lower center of each quadrant. Style: detailed painterly realistic game cutouts with coherent broad silhouettes and smooth organic edges, textured leaves, soft diffuse lighting from upper left, restrained highlights so it fits a very dark rotten forest with gray mauve skin-like soil. Most colors medium dark taupe, smoky gray olive, umber, dead ochre. No vivid green, no neon, no glow. Each clump should remain beautiful and legible when displayed only 90 pixels tall. No soil slab, no ground plane, no contact shadow outside the plant, no scenery, no characters, no rocks, no background, no text, no labels, no dithering, no pixel noise, no tiny repeating pointillist specks. Do not make trees or triangular christmas tree silhouettes. Do not include a checkered pattern; background must be actually transparent."
+}

@@ -1,0 +1,47 @@
+{
+  "source": "I:\\EXODUSER-Storage\\demo-art\\blender-env\\woodbridge-r3\\source\\승인구도_납품동일.blend",
+  "objects": 1582,
+  "meshes": 52,
+  "modules": [
+    "RF3_Ancient_Tree_A",
+    "RF3_Ancient_Tree_B",
+    "RF3_Bridge_Torch_Holder",
+    "RF3_Continuous_Bank_Terrain",
+    "RF3_Dead_Leaf_Litter",
+    "RF3_Fallen_Log",
+    "RF3_Foreground_Branch_Frame",
+    "RF3_Forest_Vista_Card",
+    "RF3_Fungal_Colony",
+    "RF3_Hanging_Moss",
+    "RF3_Moss_Cushion",
+    "RF3_Moss_Rock_1",
+    "RF3_Moss_Rock_2",
+    "RF3_Moss_Rock_3",
+    "RF3_River_Stake_Cluster",
+    "RF3_Root_Stump",
+    "RF3_Rotten_Wood_Bridge",
+    "RF3_Withered_Shrub"
+  ],
+  "nav_cells": 21241,
+  "start": [
+    100,
+    158
+  ],
+  "camera": [
+    15.0,
+    -25.0,
+    23.0
+  ],
+  "torches": [
+    [
+      -2.299999952316284,
+      -4.699999809265137,
+      2.2200000286102295
+    ],
+    [
+      2.299999952316284,
+      4.699999809265137,
+      2.2200000286102295
+    ]
+  ]
+}
