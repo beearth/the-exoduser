@@ -18,8 +18,12 @@ test('all native combat/save/AI declarations retain their exact baseline source'
   const adapterHooks=new Set(['genFromTemplate','initStage','_syncDruidFinaleMouse','loop']);
   let checked=0;
   for(const [name,source]of before)if(!adapterHooks.has(name)){
-    // The only native draw addition is the optional transparent map composite.
-    const current=name==='draw'?after.get(name).replace(/^  window\._Web3DLivingLayer\?\.draw\(X,.*\);\r?\n/m,''):after.get(name);
+    // Optional environment hooks: ground light, original-object relief, foliage.
+    // Actor/VFX/input/save declarations and the rest of draw remain byte-exact.
+    const current=name==='draw'?after.get(name)
+      .replace(/^  window\._Web3DLivingLayer\?\.(?:draw|surface)\(X,.*\);\r?\n/gm,'')
+      .replace(/^    const _livingRelief=window\._Web3DLivingLayer\?\.beginObject\(X,mo,_OBJ_META\[mo.type\]\);\r?\n/m,'')
+      .replace(/^    if\(_livingRelief\)X.restore\(\);\r?\n/m,''):after.get(name);
     assert.ok(current===source,name+' changed');checked++;
   }
   assert.ok(checked>500);

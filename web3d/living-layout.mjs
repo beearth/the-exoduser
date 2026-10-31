@@ -8,9 +8,28 @@ export function foliageLayout(map,tile=40,seed=1){
       const v=map[y+dy]?.[x+dx];if(v===0)open=true;if(v===1)wall=true;
     }
     if(!open||!wall)continue;
-    out.push({x:(x+.5)*tile+(random()-.5)*tile,y:(y+.5)*tile+(random()-.5)*tile,scale:.72+random()*.5,phase:random()*Math.PI*2});
+    const cx=(x+.5)*tile,cy=(y+.5)*tile;
+    for(let k=0;k<3;k++){
+      const px=cx+(random()-.5)*tile*1.7,py=cy+(random()-.5)*tile*.9;
+      out.push({x:px,y:py,scale:k===0?.86+random()*.32:.42+random()*.35,phase:random()*Math.PI*2,variant:Math.floor(random()*4)});
+    }
   }
   return out;
+}
+// A terrestrial crown must not overhang the water even when its root is dry.
+// Both banks and the west land crossing share the exact original water contract.
+export function plantHabitat(x,y,h,tile=40){
+  const wet=waterAt(x,y,h,tile),shore=wet||[-36,0,36].some(dx=>[-16,0,16].some(dy=>waterAt(x+dx,y+dy,h,tile)));
+  return {wet,shore,variant:shore?0:null};
+}
+// Height-only oblique projection. The native ground plane, input ray and actors
+// retain their projection; the root is invariant under this affine transform.
+export function objectRelief(o,m,hero,time=0){
+  if(!m||m.sheet||m.anim||m.touchAnim||m.trackEye||!(/tree|rock|bone|cliff|wall|stump/.test(o.type)||m.occ))return null;
+  const size=(m.sz||32)*(o.scale||1);if(size<120)return null;
+  const foot=o.y+size*(m.footYF??.28),tree=/tree/.test(o.type);
+  const parallax=Math.max(-1,Math.min(1,(o.x-hero.x)/1400))*.018;
+  return {foot,shear:parallax+(tree?Math.sin(time*.48+o.x*.003+o.y*.002)*.0035:0),lift:tree?1.045:1.025};
 }
 export function waterAt(x,y,h,tile=40){
   if(!h)return false;

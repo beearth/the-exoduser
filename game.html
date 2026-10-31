@@ -52258,6 +52258,7 @@ function draw(){
   }
   }
   }
+  window._Web3DLivingLayer?.surface(X,{x:VW/2-VW/(2*_tzoom)-Math.round(VW/2-G.cam.x+sx),y:VH/2-VH/(2*_tzoom)-Math.round(VH/2-G.cam.y+sy),w:VW/_tzoom,h:VH/_tzoom,pw:C.width,ph:C.height});
   _drawCh1BakedSpike(X);
   if(globalThis.Ch1ForestSway)Ch1ForestSway.draw(X,G,_now,_ch1StartOuterCache,_ch1StartOuterStats.drawnIds,G.mw*T/8,_CH1_START_ROOT,VW,VH);
   if(globalThis.Ch1FaceLife)Ch1FaceLife.draw(X,G,_now,_ch1StartOuterCache,_ch1StartOuterStats.drawnIds,G.mw*T/8,_CH1_START_ROOT,VW,VH);
@@ -52636,6 +52637,7 @@ function draw(){
   // [DEPTH-SLICE] MAP_OBJS 루프 본문을 프레임-로컬 함수로 추출 — 백 패스(기존 위치)와 프런트 패스(drawP 뒤)가
   // 완전히 동일한 렌더 경로를 공유한다. 플래그 OFF에서는 기존과 같은 순서로 전 오브젝트가 이 함수로 그려진다.
   _drawMapObjOne=function(mo,_hellWinterTone){
+    const _livingRelief=window._Web3DLivingLayer?.beginObject(X,mo,_OBJ_META[mo.type]);
     const b=Math.sin(_now/300+mo.x)*2;X.textAlign='center';
     switch(mo.type){
       case 'bonfire':{
@@ -52803,6 +52805,7 @@ function draw(){
     }
     if(G._fieldRebuildQA&&mo.type==='diablo_hell_torch')_drawDiabloTorchFrame(X,mo.x,mo.y,_now,mo.x*.13+mo.y*.07,mo.scale);
     X.globalAlpha=1;
+    if(_livingRelief)X.restore();
   };
   for(let _moi=0;_moi<MAP_OBJS.length;_moi++){const mo=MAP_OBJS[_moi];
     if(_RETIRED_MAP_OBJECT_TYPES.has(mo.type))continue;
@@ -66009,7 +66012,7 @@ if(window._FDGDruidQaStorage?.active&&new URLSearchParams(location.search).get('
 
 <script type="module">
 if(new URLSearchParams(location.search).get('r3d')==='1'&&new URLSearchParams(location.search).get('r3dLegacy')!=='1'){
-  import('./web3d/living-layer.mjs?v=20261031-live2').then(m=>m.install(()=>({G,P,objects:MAP_OBJS,images:_OBJ_SPR,meta:_OBJ_META,hill:_CH1_HILL,tile:T,now:_now,quality:OPT.quality,enemies:ens,projectiles:[...projs,...pProjs],blasts:[..._fireExps,..._impacts]}))).then(api=>{window._Web3DLivingLayer=api;}).catch(error=>{window._Web3DLivingLayerError=error.message;console.error('[WEB3D living layer unavailable]',error);});
+  import('./web3d/living-layer.mjs?v=20261031-layer2').then(m=>m.install(()=>({G,P,objects:MAP_OBJS,images:_OBJ_SPR,meta:_OBJ_META,ground:_ch1StartOuterCache,hill:_CH1_HILL,tile:T,now:_now,quality:OPT.quality,enemies:ens,projectiles:[...projs,...pProjs],blasts:[..._fireExps,..._impacts]}))).then(api=>{window._Web3DLivingLayer=api;}).catch(error=>{window._Web3DLivingLayerError=error.message;console.error('[WEB3D living layer unavailable]',error);});
 }
 if(new URLSearchParams(location.search).get('r3d')==='1'&&new URLSearchParams(location.search).get('r3dLegacy')==='1'){
   const {renderFrame,advancePresentation}=await import('./web3d/presentation.mjs?v=20261031-main2');
