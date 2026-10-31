@@ -31,7 +31,7 @@
 
 ## 전체 스킬 이식 경계
 
-현재 실제 원문 SKILL_LIST55개를 모두 표시한다. Native 메타데이터는 이55개와 기본표시charge/parry2개를 합친57정의·중복0이다. 실행/저장 소유는16개이며 나머지39개는 미이식이다. 메타데이터 추가를 실행 통과로 보지 않는다. 사슬충돌·후반 E·저장·재시도 후속은 [현재 계약](UNITY_CHARGEBOOST_PARITY_20261031.md)을 따른다. 기동불꽃 포함 현행 후보는 CPU55묶음10,989,987비교 단위0·설치참조 Core/Runtime 오류0이며 실제 동일빌드 검수는 미완료다.
+현재 실제 원문 SKILL_LIST55개를 모두 표시한다. Native 메타데이터는 이55개와 기본표시charge/parry2개를 합친57정의·중복0이다. 실행/저장 소유는16개이며 나머지39개는 미이식이다. 메타데이터 추가를 실행 통과로 보지 않는다. 사슬충돌·후반 E·저장·재시도 후속은 [현재 계약](UNITY_CHARGEBOOST_PARITY_20261031.md)을 따른다. 영역 후속 현행 후보는 CPU64묶음11,062,891비교 단위0·설치참조 Core/Runtime 오류0이며 실제 동일빌드 검수는 미완료다.
 
 | id | 이름 | 현재 상태 |
 |---|---|---|
@@ -329,3 +329,5 @@ Player 검수에 `-playtest-ticks 1..600` 명시적 길이 인자와 현재 파�
 기존 공통스킬문서의 반경250을 실제 원문200으로, 세 약화영역의 방어력 차감 설명을 실제 피격증가 태그로 동기화했다. 보호된2_3 문서는 수정하지 않았다. 원문 fixture의 누락 dst/장판배열·검수진입경로/JsonValue.Null 타입 오류는 제품 RED가 아니며 실패 로그를 보존했다. 현재 설치Unity참조 Core128/Runtime176소스 오류0(기존경고2/17)이다. 근거는 `I:/EXODUSER-Storage/demo-art/gameplay-parity/resume-20261031-0900/`의 weak-GREEN1, weak-management-GREEN2, weak-effects-GREEN5·SAVEfinal·CDfinal, weak-product-independent와 영역4종-docs전체검색.log. 실제 Player CreateProcess5 차단이 유지돼 M1·실게임·영상·1x·공통/Desktop은 미완료 NOT_READY다.
 
 영역 네 종 후속 고정CPU는 기존55묶음+동시입력성장1+영역8을 합친 **64묶음 11,062,891비교단위 불일치0**이다. 원문·제품 입력과 경계는 영역4종-최종CPU.json·영역4종-제품소스.json에 고정했다. 수치·관리 검수이며 실제 화면·음향 통과로 올리지 않는다.
+
+영역 후보 f8f7c892edee1a0f78e895b0790bdfd503c588d3의 정식빌드0fa73cbb(6000.6.7f1 Win64)는 Succeeded·build.errors0·새 EXODUSER/WeakZoneTint DX11/12 컴파일·3D씬·필수영상·Player MCP제외를 통과했다. 실행기 Editor errorLogs2는 별도 보존했고 컴파일오류로 치환하지 않는다. 정확한 EXE/Core/Runtime SHA는 영역4종-전달상태.json에 있다. 자동임포트531파일 I:검증보존·허용경로복구, 기존미추적119/guard동일·사용자세이브변경0·Unity프로세스/잠금/예약0을 확인했다. 접근거부가 난 Player는 재시도하지 않았고 같은M1·실제영상/1x·공통unity/main·Desktop은 미완료다. 빌드/CPU 통과를 전체 브리프 완료나 아트 PASS로 보고하지 않는다.
