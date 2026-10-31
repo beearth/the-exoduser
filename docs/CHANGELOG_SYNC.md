@@ -4,7 +4,7 @@
 |---|---|
 | 재생 | `gateLock` 존재 조건 제거. 첫 실행·타이틀/로비 다시 보기·계정 첫 진입·미리보기 모두 ENTER → v22b. 언어/full·demo·ea 분기와 독립 |
 | 폐지·보존 | v22b 102,204,634B 정본 동일 byte, 자막/컷 +0.4초 보정. 구 `intro.mp4` source/프리로드/재생 분기·문 배경 CSS/DOM·문 열림 예약 진동 폐지. 원본 파일·승인 인장·29언어×32큐·계정/로컬 seen·다음 컷/홀드 종료·개인사 v23 보존 |
-| 검증 | v22b 경로·928큐/컷 오프셋 RED → GREEN 33/33. 음성5/51/99초 각각 +0.4초 실측. 최종 확대 회귀345 PASS·2 SKIP, 기존 실패2건은 원격 main 동일성을 확인해 최종 실행에서 제외(Chrome 채널 부재/nw-boot 기대값). [현행 계약](cinematic/WORLD_INTRO_INGAME_20260907.md), 경로별 첫 3초/1920·2560·3840 캡처와 실동작 영수증은 `G:/exoduser/tmp/design-review/20261031_intro_nodoor/REPORT.md` |
+| 검증 | 29언어×3시점87/87·113.701초 자연끝/재생중seek0·기시청/미리보기 보존 PASS. v22b 경로·928큐/컷 오프셋 RED → GREEN 33/33. 음성5/51/99초 각각 +0.4초 실측. 최종 확대 회귀351 PASS·2 SKIP, 기존 실패2건은 원격 main 동일성을 확인해 최종 실행에서 제외(Chrome 채널 부재/nw-boot 기대값). [현행 계약](cinematic/WORLD_INTRO_INGAME_20260907.md), 경로별 첫 3초/1920·2560·3840 캡처와 실동작 영수증은 `G:/exoduser/tmp/design-review/20261031_intro_nodoor/REPORT.md` |
 
 ## 2026-10-31 중요한 결정 두둥 사운드
 

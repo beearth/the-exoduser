@@ -151,6 +151,8 @@
 | 조작 / 종료 | 클릭·Space·Enter 다음 컷, ESC/Space 5000ms 홀드, ended/skip 후 기존 로그인/로비. 계정 메타데이터·UID 캐시·전역 seen 유지 |
 
 - 브라우저는 headless/무음, 별도 3467 서버와 격리 saves/브라우저 저장소. 구 `intro.mp4`·`hellgate.png` 요청 0을 검사한다. 계정은 대역이며 실제 계정 서비스 변경은 하지 않는다.
-- v17 중단 작업의 340/340 기록은 과거 증거다. 최신 v22b 직접 회귀 33/33 PASS(DEMO 엔트리 포함). 최종 확대 회귀345 PASS·2 SKIP·0 FAIL. 최초 검사의 기존 실패2건(Chrome 채널 미설치, nw-boot 기대값 불일치)은 원격 main과 동일한 테스트·설정임을 확인하고 최종 실행에서는 이름으로 제외했다.
+- v17 중단 작업의 340/340 기록은 과거 증거다. 최신 v22b 직접 회귀 33/33 PASS(DEMO 엔트리 포함). 최종 확대 회귀351 PASS·2 SKIP·0 FAIL. 최초 검사의 기존 실패2건(Chrome 채널 미설치, nw-boot 기대값 불일치)은 원격 main과 동일한 테스트·설정임을 확인하고 최종 실행에서는 이름으로 제외했다.
 - 1600×900·1920×1080 재생 시각 판정: 문 없는 v22b 직접 재생 PASS. 2560×1080·3840×1080도 동일 경로 PASS이나 기존 contain 좌우 여백은 RETOUCH. 영상 확장/재편집·청취/NW.js·Steam 실행을 검증한 것으로 확대하지 않는다.
 - 경로별 0.3/1.5/3초 캡처·언어별 3시점·v17/v22b 같은 시점 비교·한계·원격 SHA: `I:/EXODUSER-Storage/codex-takeover/intro-nodoor/REPORT.md`. 요청된 G: REPORT는 같은 보고서 안내 사본이다.
+
+- 최종 병합 source `3c6e076977fa702e46712fdde335b3b7a7752627`: full 3840×1080·indexdemo 일본어 1600×900 재진입/다음 컷 PASS. 29언어×3시점87/87 PASS. v22b 1배속 자연끝113.701초·ended1회·재생중 seek0·미리보기 seen 미기록·로그인 전환 PASS(0.6초 이후 실측113.135초). 종료 후0초 정리 seek2회는 재생중 점프와 구분. 실제 스피커 청취는 하지 않음. 영수증 `v22b-review/natural-playback.json`, `merged-routes.json`.
