@@ -204,6 +204,21 @@ class Program
                 Check(banks.GetLength(0)>25&&leaks==0&&wet==0,"R7 목질 둑은 마른 비보행면에만 배치/개수"+banks.GetLength(0)+" 보행"+leaks+" 수면"+wet);
                 Check(minGap>=3.8f&&maxZ-minZ>65,"R7 연결군집 간격3.8m/시작부터보스전역/최소"+minGap+" 범위"+(maxZ-minZ));
             }
+            var layers=type.GetMethod("GroundLayerWeights");
+            Check(layers!=null,"R8 주동선과 낙엽 퇴적을 분리하는 지면 가중");
+            if(layers!=null)
+            {
+                float[] Layers(float x,float z){var a=new object[]{x,z,0f,0f};layers.Invoke(field,a);return new[]{(float)a[2],(float)a[3]};}
+                var bridgeLayer=Layers(43.2f,-71.8f);Check(bridgeLayer[0]==0&&bridgeLayer[1]==0,"R8 목교에는 낙엽 퇴적과 흙 웅덩이 없음");
+                var lane=Layers(40,-50);Check(lane[0]<.08f&&lane[1]>.1f,"R8 중간 주동선은 밟힌 젖은 흙/낙엽"+lane[0]+" 젖음"+lane[1]);
+                float minLeaf=1,maxLeaf=0;bool valid=true;
+                for(int row=0;row<40;row++)for(int col=0;col<40;col++)
+                {
+                    var a=Layers(10+col*1.6f,-78+row*1.8f);foreach(var v in a)valid&=float.IsFinite(v)&&v>=0&&v<=1;
+                    minLeaf=Math.Min(minLeaf,a[0]);maxLeaf=Math.Max(maxLeaf,a[0]);
+                }
+                Check(valid&&maxLeaf-minLeaf>.5f,"R8 전역 가중 범위0..1/큰 재질 구역 변별"+(maxLeaf-minLeaf));
+            }
             var rootHeight=type.GetMethod("RootReliefHeight");
             Check(rootHeight!=null,"스캔 흙 둘레를 지면에 연결하는 높이 가중");
             if(rootHeight!=null)

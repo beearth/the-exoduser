@@ -54,7 +54,7 @@ namespace Exoduser.UnityPort
             for(int y=0;y<200;y++)for(int x=0;x<200;x++)pixels[y*200+x]=new Color(.5f+a2Field.Distance((x+.5f)*.4f,-(y+.5f)*.4f)/40,0,0,1);
             sdf.SetPixels(pixels);sdf.Apply(false,true);a2FieldSoil.SetTexture("_FieldSdf",sdf);
             var cover=new Texture2D(256,256,TextureFormat.RGBA32,false,true){name="A2 전투중심을 비운 연결 이끼 지면",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};
-            var coverPixels=new Color[256*256];for(int y=0;y<256;y++)for(int x=0;x<256;x++)coverPixels[y*256+x]=new Color(a2Field.GroundCover((x+.5f)/256*80,-(y+.5f)/256*80),0,0,1);
+            var coverPixels=new Color[256*256];for(int y=0;y<256;y++)for(int x=0;x<256;x++){float wx=(x+.5f)/256*80,wz=-(y+.5f)/256*80,litter,wet;a2Field.GroundLayerWeights(wx,wz,out litter,out wet);coverPixels[y*256+x]=new Color(a2Field.GroundCover(wx,wz),litter,wet,1);}
             cover.SetPixels(coverPixels);cover.Apply(false,true);a2FieldSoil.SetTexture("_FieldCover",cover);
             A2FieldOuterMass();A2FieldBanks();A2Foreground(true);A2FieldLandmarks();A2FieldConnections();A2FieldGround();A2FieldGroundCover();A2BridgeMoss();A2FieldAtmosphere();
             var aa=r3Cam.GetUniversalAdditionalCameraData();aa.antialiasing=NativeHd2D.Enabled?AntialiasingMode.None:AntialiasingMode.SubpixelMorphologicalAntiAliasing;aa.antialiasingQuality=AntialiasingQuality.High;

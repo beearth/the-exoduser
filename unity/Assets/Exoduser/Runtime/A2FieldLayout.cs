@@ -306,6 +306,38 @@ namespace Exoduser.UnityPort
             }
             return clear*moss;
         }
+        static readonly int[,] GroundLinks=new int[,]{{0,1},{0,2},{0,3},{1,3},{1,6},{2,3},{2,4},{3,5},{4,5},{4,8},{5,6},{5,7},{6,9},{7,8},{7,9},{7,10},{8,10},{9,10}};
+        static void GroundWarp(float x,float z,out float wx,out float wz)
+        {wx=x+.65f*(float)Math.Sin(z*.29f)+.3f*(float)Math.Sin(x*.19f);wz=z+.55f*(float)Math.Sin(x*.25f)+.3f*(float)Math.Sin(z*.16f);}
+        static float GroundSegment(float x,float z,float ax,float az,float bx,float bz)
+        {
+            float dx=bx-ax,dz=bz-az,t=Clamp(((x-ax)*dx+(z-az)*dz)/Math.Max(.00001f,dx*dx+dz*dz),0,1);
+            dx=x-ax-dx*t;dz=z-az-dz*t;return dx*dx+dz*dz;
+        }
+        public static float GroundRouteDistance(float x,float z)
+        {
+            float wx,wz;GroundWarp(x,z,out wx,out wz);float distance=float.PositiveInfinity;
+            for(int i=0;i<GroundLinks.GetLength(0);i++)
+            {
+                int a=GroundLinks[i,0],b=GroundLinks[i,1];float ax,az,bx,bz;
+                GroundWarp(Regions[a,0],Regions[a,1],out ax,out az);GroundWarp(Regions[b,0],Regions[b,1],out bx,out bz);
+                distance=Math.Min(distance,GroundSegment(wx,wz,ax,az,bx,bz));
+            }
+            for(int j=0;j<2;j++){float ax,az,bx,bz;GroundWarp(40.2f,-74.2f,out ax,out az);GroundWarp(Regions[j,0],Regions[j,1],out bx,out bz);distance=Math.Min(distance,GroundSegment(wx,wz,ax,az,bx,bz));}
+            return (float)Math.Sqrt(distance);
+        }
+        // G=낙엽 퇴적/B=밟힌 젖은 흙. 녹색 이끼 R과 독립인 큰 재질 구역이다.
+        public void GroundLayerWeights(float x,float z,out float litter,out float wet)
+        {
+            litter=wet=0;if(Water(x,z)||Math.Abs(A2ForestLayout.Along(x,z))<5&&Math.Abs(A2ForestLayout.Across(x,z))<2)return;
+            float width=1.55f+.35f*(float)Math.Sin(x*.19+z*.13);
+            float lane=1-Smooth(Clamp((GroundRouteDistance(x,z)-width*.45f)/(width*.75f),0,1));
+            float patch=.5f+.3f*(float)Math.Sin(x*.31+1.7*Math.Sin(z*.18))+.2f*(float)Math.Cos(z*.37-x*.11);
+            patch=Smooth(Clamp((patch-.12f)/.76f,0,1));
+            litter=(.2f+.75f*patch)*(1-.93f*lane);
+            float damp=.55f+.25f*(float)Math.Sin(x*.22-z*.29)+.2f*(float)Math.Cos(z*.41+x*.09);
+            wet=Clamp(lane*(.3f+.7f*damp),0,1);
+        }
         public static SourceMap CreateMap(MapData map) { return new SourceMap(map); }
         public static bool ShowEnemyStatus(bool alive,bool boss,bool damaged,bool targeted) { return alive&&!boss&&(damaged||targeted); }
         static float Clamp(float x,float min,float max) { return Math.Max(min,Math.Min(max,x)); }

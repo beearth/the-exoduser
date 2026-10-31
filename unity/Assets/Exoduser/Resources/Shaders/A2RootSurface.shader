@@ -1,6 +1,6 @@
 Shader "EXODUSER/A2RootSurface"
 {
- Properties { _BaseMap("피부 컬러맵",2D)="white"{} _BaseColor("색",Color)=(1,1,1,1) _BumpMap("피부 노멀",2D)="bump"{} _RockMap("젖은 돌",2D)="white"{} _AshMap("탄화토",2D)="white"{} _RockNormal("돌 노멀",2D)="bump"{} _RockRough("돌 러프니스",2D)="white"{} _ForestMap("숲 낙엽/흙",2D)="white"{} _ForestNormal("숲 노멀",2D)="bump"{} _ForestRough("숲 러프니스",2D)="white"{} _ForestTextureMix("낙엽 혼합",Range(0,1))=0 _FullField("전체 숲 지면",Float)=0 _FieldSdf("원본 외곽 거리장",2D)="gray"{} _FieldCover("전투공간 지면 이끼",2D)="black"{} _FieldMoss("이끼",2D)="white"{} _FieldMossNormal("이끼 노멀",2D)="bump"{} _FieldMossRough("이끼 러프니스",2D)="white"{} _Cutoff("잘림",Float)=.5 _Smoothness("매끈함",Float)=.24 _Metallic("금속",Float)=0 _ForestBlend("A2 젖은 숲 바닥",Range(0,1))=0
+ Properties { _BaseMap("피부 컬러맵",2D)="white"{} _BaseColor("색",Color)=(1,1,1,1) _BumpMap("피부 노멀",2D)="bump"{} _RockMap("젖은 돌",2D)="white"{} _AshMap("탄화토",2D)="white"{} _RockNormal("돌 노멀",2D)="bump"{} _RockRough("돌 러프니스",2D)="white"{} _ForestMap("숲 낙엽/흙",2D)="white"{} _ForestNormal("숲 노멀",2D)="bump"{} _ForestRough("숲 러프니스",2D)="white"{} _ForestTextureMix("낙엽 혼합",Range(0,1))=0 _FullField("전체 숲 지면",Float)=0 _FieldSdf("원본 외곽 거리장",2D)="gray"{} _FieldCover("이끼·낙엽·젖은흙 RGB",2D)="black"{} _FieldMoss("이끼",2D)="white"{} _FieldMossNormal("이끼 노멀",2D)="bump"{} _FieldMossRough("이끼 러프니스",2D)="white"{} _Cutoff("잘림",Float)=.5 _Smoothness("매끈함",Float)=.24 _Metallic("금속",Float)=0 _ForestBlend("A2 젖은 숲 바닥",Range(0,1))=0
  _SoilTextureMix("A2 스캔 지면 사용",Range(0,1))=0 _SoilMap("A2 숲 자갈흙",2D)="white"{} _SoilNormal("A2 자갈흙 노멀",2D)="bump"{} _SoilRough("A2 자갈흙 러프니스",2D)="white"{} _RootMap("A2 노출 뿌리흙",2D)="white"{} _RootNormal("A2 뿌리흙 노멀",2D)="bump"{} _RootRough("A2 뿌리흙 러프니스",2D)="white"{} _ScanMap("스캔 수피",2D)="white"{} _ScanNormal("스캔 노멀",2D)="bump"{} _ScanARM("스캔 AO·러프니스·금속",2D)="white"{} _ScanColor("스캔 색",Color)=(.9,.85,.75,1) _Cull("뒷면 제거",Float)=2 }
  SubShader
  {
@@ -61,23 +61,25 @@ Shader "EXODUSER/A2RootSurface"
     nt=normalize(lerp(nt,UnpackNormalScale(SAMPLE_TEXTURE2D(_SoilNormal,sampler_ForestMap,soilUV),.6),soilMix));
     nt=normalize(lerp(nt,UnpackNormalScale(SAMPLE_TEXTURE2D(_RootNormal,sampler_ForestMap,rootUV),.7),rootMix));
     half3 leafN=UnpackNormalScale(SAMPLE_TEXTURE2D(_ForestNormal,sampler_ForestMap,leafUV),.3);nt=normalize(lerp(nt,leafN,leafMix));
-    float mossMix=0,wetness=0;
+    float mossMix=0,wetness=0,litterMix=0;
     if(_FullField>.5)
     {
      float edge=(SAMPLE_TEXTURE2D(_FieldSdf,sampler_FieldCover,float2(i.world.x/80,-i.world.z/80)).r-.5)*40;
      float macro=smoothstep(-.7,.7,sin(i.world.x*.11+sin(i.world.z*.09)*2)+cos(i.world.z*.13-i.world.x*.05)*.6);
-     wetness=smoothstep(.32,.82,macro)*(1-.35*saturate(edge/5))*(1-.8*smoothstep(.15,.85,i.world.y));
-     float fringe=1-smoothstep(.1,5,edge);
-     float2 soilFine=i.world.xz/2.3;
-     half3 dirt=SAMPLE_TEXTURE2D(_SoilMap,sampler_ForestMap,soilFine).rgb*half3(.48,.39,.30);
-     half3 roots=SAMPLE_TEXTURE2D(_RootMap,sampler_ForestMap,i.world.xz/3.8).rgb*half3(.45,.35,.26);
-     half3 leaves=SAMPLE_TEXTURE2D(_ForestMap,sampler_ForestMap,i.world.xz/1.8).rgb*half3(.36,.29,.21);
+     float3 fieldWeights=SAMPLE_TEXTURE2D(_FieldCover,sampler_FieldCover,float2(i.world.x/80,-i.world.z/80)).rgb;
+     wetness=max(.35*smoothstep(.32,.82,macro),.9*fieldWeights.b)*(1-.35*saturate(edge/5))*(1-.8*smoothstep(.15,.85,i.world.y));
+     float fringe=1-smoothstep(.1,5,edge);float2 soilFine=i.world.xz/3.6,soilCoarse=i.world.xz/8.3+float2(.173,.419);
+     half3 dirt=lerp(SAMPLE_TEXTURE2D(_SoilMap,sampler_ForestMap,soilFine).rgb,SAMPLE_TEXTURE2D(_SoilMap,sampler_ForestMap,soilCoarse).rgb,.35)*half3(.48,.39,.30);
+     half3 roots=SAMPLE_TEXTURE2D(_RootMap,sampler_ForestMap,i.world.xz/4.8).rgb*half3(.45,.35,.26);
+     half3 leaves=SAMPLE_TEXTURE2D(_ForestMap,sampler_ForestMap,i.world.xz/4.2).rgb*half3(.36,.29,.21);
      half3 moss=SAMPLE_TEXTURE2D(_FieldMoss,sampler_ForestMap,i.world.xz/2.6).rgb*half3(.31,.35,.23);
-     mossMix=SAMPLE_TEXTURE2D(_FieldCover,sampler_FieldCover,float2(i.world.x/80,-i.world.z/80)).r*(.58+.22*macro);
-     a=lerp(dirt,roots,.18+.22*fringe);a=lerp(a,leaves,(1-macro)*.22);a*=lerp(1,.60,wetness);a=lerp(a,moss,mossMix);
-     nt=normalize(lerp(UnpackNormalScale(SAMPLE_TEXTURE2D(_SoilNormal,sampler_ForestMap,soilFine),.65),UnpackNormalScale(SAMPLE_TEXTURE2D(_RootNormal,sampler_ForestMap,i.world.xz/3.8),.65),.18+.22*fringe));
-     nt=normalize(lerp(nt,UnpackNormalScale(SAMPLE_TEXTURE2D(_FieldMossNormal,sampler_ForestMap,i.world.xz/2.6),.55),mossMix));
-     a*=lerp(.88,1.06,macro);
+     litterMix=.95*fieldWeights.g;mossMix=fieldWeights.r*(.58+.22*macro);
+     a=lerp(dirt,roots,.12+.28*fringe*(1-.5*fieldWeights.g));a=lerp(a,leaves,litterMix);a*=lerp(1,.50,wetness);a=lerp(a,moss,mossMix);
+     nt=normalize(lerp(UnpackNormalScale(SAMPLE_TEXTURE2D(_SoilNormal,sampler_ForestMap,soilFine),.65),UnpackNormalScale(SAMPLE_TEXTURE2D(_SoilNormal,sampler_ForestMap,soilCoarse),.65),.35));
+     nt=normalize(lerp(nt,UnpackNormalScale(SAMPLE_TEXTURE2D(_RootNormal,sampler_ForestMap,i.world.xz/4.8),.65),.12+.28*fringe*(1-.5*fieldWeights.g)));
+     nt=normalize(lerp(nt,UnpackNormalScale(SAMPLE_TEXTURE2D(_ForestNormal,sampler_ForestNormal,i.world.xz/4.2),.65),litterMix));
+     nt=normalize(lerp(nt,UnpackNormalScale(SAMPLE_TEXTURE2D(_FieldMossNormal,sampler_ForestNormal,i.world.xz/2.6),.55),mossMix));
+     a*=lerp(.82,1.10,macro);
     }
     
     float3 n=normalize(i.normal),t=normalize(float3(1,0,0)-n*n.x),b=-normalize(cross(n,t));
@@ -92,7 +94,7 @@ Shader "EXODUSER/A2RootSurface"
     surface.smoothness=lerp(surface.smoothness,.12+.18*(1-SAMPLE_TEXTURE2D(_RootRough,sampler_ForestMap,rootUV).r),rootMix);
     half leafRough=SAMPLE_TEXTURE2D(_ForestRough,sampler_ForestMap,leafUV).r;surface.smoothness=lerp(surface.smoothness,.12+.18*(1-leafRough),leafMix);
     surface.smoothness=lerp(surface.smoothness,.22+.23*(1-SAMPLE_TEXTURE2D(_FieldMossRough,sampler_ForestMap,i.world.xz/2.6).r),mossMix);
-    if(_FullField>.5)surface.smoothness=lerp(lerp(.24-.10*SAMPLE_TEXTURE2D(_SoilRough,sampler_ForestMap,i.world.xz/2.3).r,.67,wetness),.18+.16*(1-SAMPLE_TEXTURE2D(_FieldMossRough,sampler_ForestMap,i.world.xz/2.6).r),mossMix);
+    if(_FullField>.5)surface.smoothness=lerp(lerp(lerp(.24-.10*SAMPLE_TEXTURE2D(_SoilRough,sampler_ForestMap,i.world.xz/3.6).r,.14+.14*(1-SAMPLE_TEXTURE2D(_ForestRough,sampler_ForestMap,i.world.xz/4.2).r),litterMix),.63,wetness),.18+.16*(1-SAMPLE_TEXTURE2D(_FieldMossRough,sampler_ForestMap,i.world.xz/2.6).r),mossMix);
     half3 scanARM=SAMPLE_TEXTURE2D(_ScanARM,sampler_ScanMap,i.uv).rgb;
     surface.albedo=lerp(surface.albedo,SAMPLE_TEXTURE2D(_ScanMap,sampler_ScanMap,i.uv).rgb*_ScanColor.rgb,scanWeight);surface.occlusion=lerp(1,scanARM.r,scanWeight);surface.smoothness=lerp(surface.smoothness,1-scanARM.g,scanWeight);
     half4 color=UniversalFragmentPBR(input,surface);color.rgb=MixFog(color.rgb,i.fog);return color;
