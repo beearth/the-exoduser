@@ -90,11 +90,22 @@
 | 원거리 역투영 | SnapAnchor의ScreenToWorldPoint 후카메라평면에서출력화소잔차를3회보정한다. projection.m00/m11·pixelWidth/Height·depth로원근/직교world/화소단위를구한다. original camera depth를유지하고기존0.02px허용치를늘리지않음. |
 | 실제 Editor 스냅 | Player범위와먼좌표를포함한원근1024조건 RED332/max0.07608262px. 수정후원근/직교·1920/3840·4X×4Z×32높이 총2048조건 max0.001556396px/실패0. 반복투영640 max0.00006103516px, 기존앵커12 max0.4744214px·회전4·드루이드0.42429px·shader PASS. |
 | 영웅 표시 크기 | HD2D는field/arena/flat에서2×HeroScale2=scale4. legacy는기존2×(field일때HeroScale2,그외1)보존. 접지폭의배율도같다. Core Radius/히트박스/이동/공격 수치변경0. |
-| 아레나 구도 | 기존 view 카메라를사용한다. writer가드루이드/영웅을갱신한뒤,실제드루이드bounds와영웅예정foot-lift bounds union을x.08~.92/y.20~.88 안전영역에맞춘다. halfHeight=max(기존줌,높이/(2×.68),너비/(2×.84×aspect)). centreY.54,전투중필요최대half유지·필드복귀시초기화. 새카메라0. |
+| 아레나 구도 (e623 당시·아래 방식으로 대체) | 기존 view 카메라를사용한다. writer가드루이드/영웅을갱신한뒤,실제드루이드bounds와영웅예정foot-lift bounds union을x.08~.92/y.20~.88 안전영역에맞춘다. halfHeight=max(기존줌,높이/(2×.68),너비/(2×.84×aspect)). centreY.54,전투중필요최대half유지·필드복귀시초기화. 새카메라0. |
 | 카메라 순서·흔들림 | 최종아레나카메라→teleView.Update 1회→flat actor projection. 원본피격shake의같은2난수offset을구도centre에더해보존. field/legacy의기존카메라동작은유지. |
 | 아레나 Editor | 실제body sprite/idle·fanWind·charge·dive·플레이어3위치·두해상도24조건:전신viewport안전영역,흔들림offset보존,ortho AimWorld XY왕복 통과. 실제arena edge/background·연속카메라품질은재Player에서판정. |
 | 촬영 fixture 입력 | boss 정지/모션시작을보스동쪽650px의실제CanMove점으로옮긴다. 모션시작Harp225 한회설정후,거리650 유지원회피+70틱중30틱에실제SetRollInput,회피당45소모. EnemyAi=true/360틱·120샘플유지. Core/피해식변경0. 자연플레이검증아님. |
 | 전술 사전검사 | Play모드 없이실제Editor의제품Simulation·SourceStarterFixture·원본맵·초기shield0/iframes0에서16seed 모두360틱생존,실제5roll·최저HP254.7343. 이는전체Player 진입RNG와동일하지않으며다음빌드합격증거아님. y구간제한arc는1seed사망하여채택하지않음. |
-| Map 후속 | Map은현재18507b9543/NOT_READY 인수0. 이후HellArenaCamera와view 구도를동시에적용하지않고실제최종HudCamera한곳에통합한다. 뒤늦은Clamp로다시잘리지않도록edge/telegraph/Aim·원본흔들림을같은후보로검수. |
+| Map 후속 | Map은담당전달최신f54534e664/NOT_READY이며인수0. 이후HellArenaCamera와view 구도를동시에적용하지않고실제최종HudCamera한곳에통합한다. 뒤늦은Clamp로다시잘리지않도록edge/telegraph/Aim·원본흔들림을같은후보로검수. |
 
 다음 새소스빌드·같은M1·336PNG·실물구도/이동/전투·MERGE_QUEUE/공통/Desktop은아직미완료다. 기록경로는 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/editor-translated-snap, stage1-product-oracle-6f2e16b15, build-input-6f2e16b15를따른다.
+
+
+## 입구 거리 고정 줌 재작업 (e623 실제336장 뒤)
+
+| 항목 | 현행·근거 |
+|---|---|
+| e623 기술/시각 분리 | build fb08b284 오류0, same-build M1 b4fc7fea 23ok, hidden Player06945194는336PNG/360틱2회완료·foot최대.67703664px/pixel최대.00048828125px/배우shader0fail. 창/잔류/세이브변경0. 실제1920드루이드에서배우가작고화면외검은영역이커시각FAIL. |
+| 원인 RED | halfHeight의encounter전체최댓값에입구~보스거리까지저장해근접해도줌이돌아오지않음. actualEditor 입구2000px→근접650px에서18.952446→18.952446,새근접장면6.75와달라실패. |
+| 현행 구도 | NativeDruidBody.Anchor를기준으로드루이드local상대bounds의형태최댓값만보존한다. 이를현재anchor로옮긴뒤현재영웅bounds와union하여매번halfHeight/centre를다시계산한다. 입구거리최댓값은저장하지않는다. 필드복귀시형태cache초기화. 안전영역/기존기본줌·shake·telegraph순서는그대로다. |
+| actualEditor GREEN | 입구18.9520321→근접6.75,새근접6.75로같음. 기존24조건전신/흔들림/조준왕복도통과. 형태변화때본체가잘리지않도록body-relative bounds만남겼다. |
+| 미완료 | 이수정의새소스build/same M1/실제1920·3840 336PNG/영웅가독성·arenaedge는재검수전. 이전e623기술PASS를새소스시각합격으로대체하지않는다. Core114개변경0/리마스터채택0/Map인수0. |

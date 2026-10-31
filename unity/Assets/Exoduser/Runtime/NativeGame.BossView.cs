@@ -24,11 +24,12 @@ namespace Exoduser.UnityPort
         }
 
         // web camera: zoom target 0.80 while a boss is alive (1.0 otherwise), eased zoom += (target - zoom) * (1 - .94^dt); orthographicSize 5.4 is zoom 1
-        float camZoom = 1f,hd2dArenaHalf;
+        float camZoom = 1f;
+        Bounds hd2dArenaBody;bool hd2dArenaBodyKnown;
         Vector3 hd2dCameraShake;
         void BossCameraZoom()
         {
-            if(!Simulation.Stage.InArena)hd2dArenaHalf=0;
+            if(!Simulation.Stage.InArena)hd2dArenaBodyKnown=false;
             var d = Simulation.Druid; bool boss = d != null && d.Boss != null && d.Boss.Alive;
             camZoom += ((boss ? .8f : 1f) - camZoom) * (1f - Mathf.Pow(.94f, Mathf.Min(Time.unscaledDeltaTime * 60f, 3f)));
             view.orthographicSize = 5.4f / camZoom;
@@ -39,15 +40,19 @@ namespace Exoduser.UnityPort
         {
             if(!NativeHd2D.Enabled||NativeRemodel3D.Active||Simulation==null||!Simulation.Stage.InArena||
                 view==null||druidBody==null||!druidBody.Visible||playerView==null||!playerView.enabled)return;
-            var bounds=druidBody.Bounds;
+            var bounds=druidBody.Bounds;var anchor=druidBody.Anchor;
+            bounds.center-=anchor;
+            if(hd2dArenaBodyKnown)hd2dArenaBody.Encapsulate(bounds);
+            else{hd2dArenaBody=bounds;hd2dArenaBodyKnown=true;}
+            bounds=hd2dArenaBody;bounds.center+=anchor;
             var playerBounds=playerView.bounds;
             // 원본 writer는 발 anchor를 쓴다. 곧 적용할 lift까지 포함한 최종 bounds를 예측한다.
             playerBounds.center+=view.transform.up*(NativeHd2D.FootLift(playerView.sprite)*Mathf.Abs(playerView.transform.lossyScale.y));
             bounds.Encapsulate(playerBounds);
             const float usableWidth=.84f,usableHeight=.68f,safeCentreY=.54f;
             float half=Mathf.Max(view.orthographicSize,Mathf.Max(bounds.size.y/(2*usableHeight),bounds.size.x/(2*usableWidth*Mathf.Max(.1f,view.aspect))));
-            hd2dArenaHalf=Mathf.Max(hd2dArenaHalf,half);view.orthographicSize=hd2dArenaHalf;
-            view.transform.position=new Vector3(bounds.center.x,bounds.center.y-(safeCentreY-.5f)*2*hd2dArenaHalf,view.transform.position.z)+hd2dCameraShake;
+            view.orthographicSize=half;
+            view.transform.position=new Vector3(bounds.center.x,bounds.center.y-(safeCentreY-.5f)*2*half,view.transform.position.z)+hd2dCameraShake;
         }
 
         void BossViewUpdate()

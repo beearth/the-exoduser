@@ -19,6 +19,7 @@ namespace Exoduser.UnityPort
         public int Stamp;
         public bool Visible { get { return main != null && main.enabled; } }
         public Bounds Bounds { get { return main.bounds; } }
+        public Vector3 Anchor { get { return main.transform.position; } }
 
         public NativeDruidBody(Transform parent, Sprite discSprite)
         {

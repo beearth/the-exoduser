@@ -226,6 +226,41 @@ Check(errors.Count==0,"arena framing "+(errors.Count>0?errors[0]:""));Debug.Log(
 }finally{camera.targetTexture=null;rt.Release();UnityEngine.Object.DestroyImmediate(rt);UnityEngine.Object.DestroyImmediate(host);UnityEngine.Object.DestroyImmediate(camera.gameObject);UnityEngine.Object.DestroyImmediate(light.gameObject);UnityEngine.Object.DestroyImmediate(sprite);Exoduser.UnityPort.NativeHd2D.BeginProjection();}
 
         }
+        public static void ArenaApproach()
+        {
+UnityEditor.SceneManagement.EditorSceneManager.NewScene(UnityEditor.SceneManagement.NewSceneSetup.EmptyScene,UnityEditor.SceneManagement.NewSceneMode.Single);
+var host=new GameObject("HD2D framing fixture");var game=host.AddComponent<Exoduser.UnityPort.NativeGame>();
+var camera=new GameObject("HD2D framing camera").AddComponent<Camera>();camera.orthographic=true;camera.orthographicSize=6.75f;
+var light=new GameObject("HD2D framing light").AddComponent<Light>();light.type=LightType.Directional;
+var rt=new RenderTexture(1920,1080,24);camera.targetTexture=rt;
+var texture=Resources.Load<Texture2D>("Art/player/north-east");var sprite=Sprite.Create(texture,new Rect(0,0,48,48),new Vector2(.5f,.5f),100,0,SpriteMeshType.FullRect);
+var player=new GameObject("framing hero").AddComponent<SpriteRenderer>();player.transform.SetParent(host.transform,false);player.sprite=sprite;player.transform.localScale=Vector3.one*4;
+var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+var gt=typeof(Exoduser.UnityPort.NativeGame);
+gt.GetField("view",flags).SetValue(game,camera);gt.GetField("playerView",flags).SetValue(game,player);
+var sim=new Exoduser.UnityPort.Core.Simulation(Exoduser.UnityPort.Core.SourceStarterFixture.CreateKiSlash(),1);
+sim.AttachDruidBoss();var boss=sim.Stage.BossSpawners[0](sim,2560,2560);sim.Stage.InArena=true;
+gt.GetProperty("Simulation").SetValue(game,sim,null);
+var bodyType=gt.Assembly.GetType("Exoduser.UnityPort.NativeDruidBody");
+var body=System.Activator.CreateInstance(bodyType,new object[]{host.transform,sprite});gt.GetField("druidBody",flags).SetValue(game,body);
+var draw=bodyType.GetMethod("Draw");var fit=gt.GetMethod("Hd2dArenaFrame",flags);
+var d=sim.Druid.Data[boss];int cases=0;float minY=1,maxY=0,minX=1,maxX=0;var errors=new System.Collections.Generic.List<string>();
+try{
+var sizes=new System.Collections.Generic.List<float>();
+for(int phase=0;phase<3;phase++){
+Exoduser.UnityPort.NativeHd2D.RestoreSourcePoses();
+if(phase==2){sim.Stage.InArena=false;gt.GetMethod("BossCameraZoom",flags).Invoke(game,null);sim.Stage.InArena=true;}
+sim.Player.X=boss.X+(phase==0?0:650);sim.Player.Y=boss.Y+(phase==0?2000:0);
+player.transform.position=Exoduser.UnityPort.NativeRemodel3D.Point2D(sim.Player.X,sim.Player.Y);player.transform.rotation=Quaternion.identity;
+Exoduser.UnityPort.NativeHd2D.Actor(player);
+d.S="idle";draw.Invoke(body,new object[]{boss,d,true});
+camera.transform.position=new Vector3(sim.Player.X/100,-sim.Player.Y/100,-10);camera.orthographicSize=6.75f;
+fit.Invoke(game,null);sizes.Add(camera.orthographicSize);Exoduser.UnityPort.NativeHd2D.ProjectFlatActors(camera);
+}
+Check(sizes[1]<=sizes[2]+.001f,"arena entrance zoom retained "+sizes[1]+" vs "+sizes[2]);Debug.Log("[HD2D] ARENA_APPROACH PASS entry="+sizes[0]+" approach="+sizes[1]+" fresh="+sizes[2]);
+}finally{camera.targetTexture=null;rt.Release();UnityEngine.Object.DestroyImmediate(rt);UnityEngine.Object.DestroyImmediate(host);UnityEngine.Object.DestroyImmediate(camera.gameObject);UnityEngine.Object.DestroyImmediate(light.gameObject);UnityEngine.Object.DestroyImmediate(sprite);Exoduser.UnityPort.NativeHd2D.BeginProjection();}
+
+        }
         public static void CollisionCentre()
         {
             EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
