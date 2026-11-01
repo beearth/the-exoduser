@@ -128,3 +128,9 @@ URL와 MIME 지정은 [Vercel Build Output API 공식 configuration](https://ver
 `082521de3955726df006d22ad284e57b103cebe1` 정상 main push 뒤 기존 GitHub Actions [#1404](https://github.com/beearth/the-exoduser/actions/runs/41297655242)가 실제 실행됐다. 원격 Vercel build·Unicode 경로 준비·파일별/전체 업로드 검사는 모두 성공했고 Linux 산출도 3,088파일 / 3,945,183,602B로 Windows·Mac 검수와 일치했다. 마지막 `Deploy to Vercel` 단계는 2026-11-01T10:34:06Z에 **팀 미결제 잔액으로 계정 재활성화가 필요하다**는 CLI 원문으로 exit1 거절됐다. 공개 서비스 최신화 완료가 아니다.
 
 Vercel 계정 관리자의 결제 문제 해소가 선행한다. 에이전트는 결제·요금제·카드·보안 설정을 변경하지 않았다. 이 외부 조건이 바뀌기 전 같은 배포를 무한 재시도하지 않는다. 원문 로그/영수증: root diagnostics `web-ci-1404-job.log`, `web-ci-1404-job-receipt.json`. PC Unity Desktop 갱신은 별도 기존 owner의 c336 frozen 입력·Win64 build·same-app 검수·바로가기 readback 단위로 진행 중이다.
+
+## 2026-11-02 CH1 보행 아틀라스 후보 정렬
+
+`unity/main` `18b99a70768cfe235e1474aefe9fe4fbf6439258`의 walk JSON 1개와 방향 PNG 8개를 웹 후보의 같은 `img/` 경로에 Git blob 동일하게 반영했다. 기존 웹 코드의 Canvas/WebGL은 이동 중인 해당 39종의 방향·idx 셀을 `floor(_walkDist/128)%4` 순서로 소비한다. 메타의 17종 `sampleIndicesByMob=[0,1,2,3]`은 원본 6프레임에서 저장할 4프레임을 고른 제작 기록이고, 다른 22종은 전역 `[0,1,3,5]`를 유지한다. 같은 커밋의 Unity 미러 PNG 8개와 blob이 일치한다.
+
+9개 파일의 원천 blob·PNG 디코드·39종 배치·다른 22종 픽셀 불변을 검증했다. 선택 목록은 3,095파일·4,629,181,769B에서 파일 수 그대로 4,631,135,335B(+1,953,566B)다. 이 결과는 정적 후보이며 실제 1x 자연 이동, artifact/HTTP, 사용자 서버·Unity Player, 공개 웹의 개선이나 배포를 증명하지 않는다. 원본 프레임 폴더·게임 코드·저장·사용자 실행본은 변경하지 않았다.
