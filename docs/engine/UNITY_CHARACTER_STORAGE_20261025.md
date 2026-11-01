@@ -1,5 +1,7 @@
 # Unity 캐릭터 슬롯 목록 영속 저장 — 2026-10-25
 
+> 2026-11-01 사용자 “우리도 다 풀어버려” 적용 후보: 생성·복원·저장의 개수 제한 제거. 폴더/파일명/schema는 유지하고 새 payload만 version2를 사용한다. 아래 2026-10-25 검사 기록은 당시 이력이며 현재후보 검수·실행미반영 상태는 마지막 절을 따른다.
+
 > Integration completed after this module handoff. Current accepted scope and restart/restore evidence: [final slots](UNITY_MAC_CHARACTER_SLOTS_20261025.md), source67d1904c6. The integration-pending gates below are historical. Full game-progress storage remains outside this module.
 
 상태: 지원 담당의 새 저장 모듈과 격리 파일 I/O53검사 완료. 기존 Mac 담당이 정상 Unity JsonUtility/캐릭터 UI에 통합해야 실제 기능 완료다. 캐릭터 이름·전사 슬롯·선택만 저장하며 전체 전투 진행·P/G/INV·온라인 계정을 이식한 것이 아니다.
@@ -22,12 +24,12 @@
 | 필드 | 값 / 유효성 |
 |---|---|
 | schema | `exoduser.unity.character-roster` 정확히일치 |
-| version | 1. 큰버전은UnsupportedVersion으로보류하고backup을통해옛버전으로강등하지않음 |
+| version | 2026-11-01 후보: 새 저장2, 기존1/2 읽기. 읽을 때는 원문불변, 정상저장 시2로승격. 2초과는UnsupportedVersion으로보류하고backup을통해강등하지않음 |
 | revision | 디스크에는1이상, 성공Save마다+1. snapshot/Capture는0. 로드한expected revision과현재파일이다르면Conflict |
-| names | 최대5개, CharacterRoster.TryCreate(name,0) 원본검증을임시모델에서소비. UTF-16 2~8/Ordinal중복/금지문자·정규화규칙그대로. trim이필요한디스크이름은자동개명대신InvalidData |
+| names | 개수 제한 없음. CharacterRoster.TryCreate(name,0) 검증을임시모델에서소비. UTF-16 2~8/Ordinal중복/금지문자·정규화규칙그대로. trim이필요한디스크이름은자동개명대신InvalidData |
 | selectedIndex | -1 또는names범위. 빈목록은-1만,비어있지않은목록도선택해제-1허용 |
 | character index | v1은기존확정전사0의이름목록만지원. 잠긴다른직업을새로허용하거나이름으로직업을추정하지않음 |
-| payload | UTF-8/BOM없음,최대65,536bytes. 공백포함전체JSON상한. oversized파일은truncate/빈목록으로대체하지않음 |
+| payload | UTF-8/BOM없음, 임의64KiB상한 제거. 읽기byte배열이 표현할 수 없는 int.MaxValue초과만TooLarge로거부·원본보존. 슬롯 수 제한 없음 |
 | codec | `Func<Snapshot,string>`/`Func<string,Snapshot>` 주입. product는Unity JsonUtility, 격리검사는System.Text.Json 사용. serializer가필드/이름을손실하면roundtrip불일치CodecError로파일쓰기0 |
 
 ## API
@@ -62,3 +64,10 @@
 코드작성후전체docs를CharacterRoster/캐릭터저장/슬롯저장/최대5/세션캐릭터로grep해83문서매칭을보존했다. 원본SV-LOBBY는슬롯선택과전체P/G/INV로드를다른단계로분리하므로이번목록저장을전체세이브이식으로표시하지않는다. 관련Unity캐릭터/세션문구·작업보드·changelog는제품owner가통합checkpoint에같이갱신한다.
 
 다음제품gate: UnityJsonUtility codec실행·격리root에서app재시작→목록/선택복원,생성/삭제실패시live불변,기존smoke정상namespace쓰기0,정상앱생성/삭제취소·확인과저장범위안내. 전체gameprogress/다른직업/계정은별도미완료다.
+
+
+## 2026-11-01 제한 해제·구버전 보호 후보
+
+캐릭터 names 수 제한과64KiB상한을 제거했다. version1/2 목록을 읽고 다음정상저장에서version2로승격하며 직전v1원문은기존bak에남긴다. 구버전은 version2를UnsupportedVersion으로거부하므로5개backup으로강등·덮어쓰기하지않는다. 이름중복·순서·선택·잠금·revision충돌·codec왕복·손상원본보존은유지한다.
+
+격리저장59검사 PASS:5,000개/64KiB초과실제파일 저장·새store재로드·선택복원·v1무변경읽기→v2저장→v1backup보존 포함. 모델생성42/복원15·최종삭제58 검사는 별도근거. 실제JsonUtility/Unity컴파일/Player/M1·실제사용자세이브는미검증·수정0이다. 도타보호로새Unity0, 지정통합담당의정식인수전NOT_READY. `I:/EXODUSER-Storage/character-capacity/20261101-unlimited/REPORT.md`.

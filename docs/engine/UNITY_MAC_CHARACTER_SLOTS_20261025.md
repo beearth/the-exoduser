@@ -13,7 +13,7 @@
 | 선택 슬롯 삭제 | 삭제 위치의 다음 슬롯, 없으면 이전 슬롯 선택 |
 | 마지막 슬롯 삭제 | Count0, SelectedIndex -1. 바르칸 표시와 비활성 입장으로 복귀 |
 | 오래된 확인 | 열 때의 인덱스와 이름이 모두 일치해야 삭제. 다른 이름으로 이동한 슬롯 삭제 거부 |
-| 재생성 | 삭제로 빈 용량·동일 이름 재사용 가능. 원본 최대5 제한 유지 |
+| 재생성 | 삭제한 동일 이름 재사용 가능. 2026-11-01 후보는 개수 제한 없음 |
 
 NativeLobby/CharacterRoster/삭제 UI·통합 소유는 기존 Mac 담당. 기존 지원 담당은 지원 폴더에서 새 슬롯 목록 영속 모듈과 I/O 검사만 작성한다. 기존 공통 파일·INDEX·GPU는 공유하지 않는다. 저장 통합은 검증된 후보를 파일에 성공적으로 쓴 뒤 live 목록으로 교체해 파일 실패와 UI 성공이 갈라지지 않도록 한다.
 
@@ -52,16 +52,17 @@ NativeLobby/CharacterRoster/삭제 UI·통합 소유는 기존 Mac 담당. 기�
 2026-10-29 현재 ARM64 Settings QA 빌드로 5/5 생성·여섯 번째 거부·실제 OS 삭제 취소/확인·빈 용량 재사용·선택 재시작 복원을 새 격리 목록에서 확인했다. 이름, revision, 화면 및 입력 제한은 [A04 실기 검수](UNITY_MAC_A04_FIVE_SLOTS_OS_QA_20261029.md)에 기록했다.
 
 
-## 2026-11-01 PC Unity 로비 슬롯 가득 참 안내 후보
+## 2026-11-01 PC Unity 캐릭터 개수 제한 해제 후보
 
-사용자 오류 보고의 원인은 최대5개에 도달한 뒤에도 로비가 “+ 새 캐릭터”를 계속 표시하면서 클릭만 비활성화한 것이었다. `NativeLobby.SilverLobby.cs` 표현만 수정했다.
+사용자 “없음 우리도 다 풀어버려”에 따라 이전 가득참안내028260c89를대체한다.
 
-| 상태 / 적용 위치 | 후보 동작 |
+| 위치 | 후보 동작 |
 |---|---|
-| 생성 행 오른쪽 수량 | (1750,609,78,64)에 `Characters.Count / CharacterRoster.Capacity`를 매 GUI 갱신마다 표시. 글꼴·색상은 기존 silverBody 사용 |
-| 0~4개 | 기존 “+ 새 캐릭터”와 생성 권한·모달 입력 조건 유지 |
-| 5개 / 생성 행 | 기존 `CharacterError(Full)`의 언어별 “슬롯이 가득 찼습니다.”로 대체. (1450,609,286,64)·15px·자동 줄바꿈. 비활성 버튼보다 먼저 안내를 그려 문구가 불필요하게 흐려지지 않음 |
-| 빈 용량 복귀 | 기존 삭제 확인·저장 성공으로 Count가 줄면 다음 GUI에서 원래 문구·생성 활성 조건으로 자동 복귀 |
-| 번역 / 저장 | 기존 full/캐릭터/새 캐릭터 키 재사용. 새 표시 문자열·번역 키·에셋 없음. 최대5·이름 검증·저장 포맷·전투·세이브 파일 변경0 |
+| CharacterRoster | Capacity=5 제거, 생성/전체복원 count guard없음. Ordinal HashSet으로이름중복을검사하고생성/삭제/Clear/복원에서동기화. 이름2~8·금지문자·출시잠금·선택검증유지 |
+| NativeLobby.Characters | OpenCharacterCreation의개수guard와 /5표시제거, 기존창/저장권한조건유지 |
+| SilverLobby 생성행 | 기존 +새캐릭터와현재Count만표시. count에따른비활성/가득참안내없음. 라벨286×64·15px자동줄바꿈/수량78×64·13px, 기존2개뷰포트/스크롤유지 |
+| CharacterRosterStore | 개수/64KiB상한제거. payloadversion2신규저장·v1/2읽기·v1읽기원문무변경·저장승격/backup보존. 기존파일명과schema/충돌·원자교체·손상보존유지 |
+| CharacterSmoke | 6개생성후에도생성창열림을검사하도록수정. fixture작성만, 실제Player실행0 |
+| 검증·한계 | 생성42/복원15/저장59(5,000개·64KiB초과·v1호환)·삭제58모델검사PASS, Core/Runtime311독립compile오류0. 도타실행보호로정식Unity/Player/M1·1920/2560/3840실제시각·실행본반영0/NOT_READY |
 
-검증은 기존 이름/5개 한도41검사, 삭제/용량 재사용58검사와 Runtime/Core311개 독립 컴파일이다. 독립 컴파일은 Unity Editor/Player 컴파일 검수가 아니다. 현재 도타 실행으로 새 Unity/Player/빌드·M1·1920/2560/3840 실제 시각 검수 및 실행본 갱신은 하지 않았다. 상태 NOT_READY/시각 미검수. 지정 통합 담당이 이 소스1파일만 기존 NTFS 입력에 인수하고 공식 실행기·격리저장·무창/무음으로 실제 다국어·5/5 안내·빈 용량 복귀 검수 뒤 정상 반영한다. 근거 `I:/EXODUSER-Storage/character-capacity/20261101/REPORT.md`.
+source개인브랜치`codex/unity-character-capacity-20261101`, 웹은별도`codex/web-character-unlimited-20261101`. 지정통합담당은최종후보를사용하고이전5/5안내만따로채택하지않는다. 최신SHA·검수원문·잔여는`I:/EXODUSER-Storage/character-capacity/20261101-unlimited/REPORT.md`.
