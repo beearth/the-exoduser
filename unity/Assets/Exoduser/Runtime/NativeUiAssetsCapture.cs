@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Video;
 using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort
 {
@@ -21,7 +22,7 @@ namespace Exoduser.UnityPort
             if(srgbProbe==null){srgbProbe=new Texture2D(1,1,TextureFormat.RGBA32,false,false);linearProbe=new Texture2D(1,1,TextureFormat.RGBA32,false,true);srgbProbe.SetPixel(0,0,new Color(.5f,.5f,.5f,1));linearProbe.SetPixel(0,0,new Color(.5f,.5f,.5f,1));srgbProbe.Apply();linearProbe.Apply();}
             GUI.color=new Color(.5f,.5f,.5f,1);NativeUiAudit.DrawTexture(new Rect(100,100,200,200),Texture2D.whiteTexture);GUI.color=Color.white;NativeUiAudit.DrawTexture(new Rect(400,100,200,200),srgbProbe);NativeUiAudit.DrawTexture(new Rect(700,100,200,200),linearProbe);
             var style=new GUIStyle{font=NativeSilverHellUi.Font(),fontSize=60};style.normal.textColor=new Color(.5f,.5f,.5f,1);NativeUiAudit.Label(new Rect(100,400,1000,100),"가나다 TEXT 0.5",style);style.normal.textColor=NativeSilverHellUi.TextColor(new Color(.5f,.5f,.5f,1));NativeUiAudit.Label(new Rect(100,700,1000,100),"가나다 TEXT 보정 0.5",style);style.normal.textColor=Color.white;NativeUiAudit.Label(new Rect(100,550,1000,100),"가나다 TEXT 1.0",style);
-            var logo=Resources.Load<Texture2D>("Art/lobby/logo_exoduser");NativeUiAudit.DrawTexture(new Rect(1100,100,310,148),logo,ScaleMode.ScaleToFit,true);
+            var logo=Resources.Load<Texture2D>("Art/lobby/logo_exoduser_solid");NativeUiAudit.DrawTexture(new Rect(1100,100,310,148),logo,ScaleMode.ScaleToFit,true);
             GUI.color=Color.white;
         }
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]static void Begin()
@@ -36,6 +37,9 @@ namespace Exoduser.UnityPort
             public int failures;
             public string scope;
             public string[] checks;
+            public bool listenerPaused;
+            public float listenerVolume,outputPeak;
+            public int directVideoPlayers;
         }
         void Check(bool ok,string name)
         {
@@ -152,9 +156,17 @@ namespace Exoduser.UnityPort
             }
             Check(lobby.StartupCaptureState.Page==FrontendEntryPage.Curtain,"안내 4단계 완료 후 실제 커튼 전환");
             lobby.CloseStartupCaptureMedia();
+            var audio=new float[1024];AudioListener.GetOutputData(audio,0);
+            float outputPeak=0;foreach(float value in audio)outputPeak=Mathf.Max(outputPeak,Mathf.Abs(value));
+            int directVideoPlayers=0;
+            foreach(var video in Resources.FindObjectsOfTypeAll<VideoPlayer>())
+                if(video!=null&&video.audioOutputMode==VideoAudioOutputMode.Direct)directVideoPlayers++;
+            Check(AudioListener.pause&&AudioListener.volume==0&&outputPeak==0&&directVideoPlayers==0,
+                "격리 GUI 무음 Listener pause/volume/output peak 및 Direct VideoPlayer 0");
             File.WriteAllText(Path.Combine(output,"화면검수.json"),JsonUtility.ToJson(new Receipt
             {
-                passed=failures==0,failures=failures,scope="실제 Player 렌더·API/격리 메모리 슬롯. OS 입력·수동 플레이 검증과 구분.",checks=checks.ToArray()
+                passed=failures==0,failures=failures,scope="실제 Player 렌더·API/격리 메모리 슬롯. OS 입력·수동 플레이 검증과 구분.",checks=checks.ToArray(),
+                listenerPaused=AudioListener.pause,listenerVolume=AudioListener.volume,outputPeak=outputPeak,directVideoPlayers=directVideoPlayers
             },true));
             // 기존 설정 저장 QA와 같은 1초 배출: 지연 Destroy를 엔진 종료 전에 완료한다.
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();yield return new WaitForSecondsRealtime(1);

@@ -23,6 +23,7 @@
 |---|---|---|
 | img/ui/silver_hell/gate_sigil_20261028.jpg | Art/ui/silver_hell/gate_sigil_20261028.jpg | 동일 바이트 |
 | img/logo_exoduser.png | Art/lobby/logo_exoduser.png·title_logo.png·brand_logo.png | 동일 눈알 로고, 이전두곳갱신 |
+| img/logo_exoduser_solid.png | Art/lobby/logo_exoduser_solid.png | 2026-11-01 승인 불투명 흑철 로고 동일 bytes; 타이틀·인장·기본 게이트·시네마틱의 현행 소비. 위 구 로고 자산은 이력으로 보존 |
 | assets/lobby/lobby_enter_btn_silver_20261029.png | Art/ui/silver_hell/lobby_enter_btn_silver_20261029.png | 동일 바이트; 비활성은CSS grayscale1·brightness.5 파생 |
 | img/ui/silver_hell/panel_frame_20261029.png | Art/ui/silver_hell/panel_frame_20261029.png | 동일 바이트·9-slice |
 | img/ui/silver_hell/btn_plaque_20261029.png | Art/ui/silver_hell/btn_plaque_20261029.png | 동일 바이트·3-slice |
