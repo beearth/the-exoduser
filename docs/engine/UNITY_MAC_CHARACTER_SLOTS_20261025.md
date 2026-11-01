@@ -50,3 +50,18 @@ NativeLobby/CharacterRoster/삭제 UI·통합 소유는 기존 Mac 담당. 기�
 [기계 영수증](UNITY_MAC_CHARACTER_SLOTS_20261025.json). 최종 실행본은 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-character-slots-final/EXODUSER-Unity.app`. 생성·선택·확인삭제·재실행 목록 복원 단위 완료. 전투 진행 저장과 캐릭터별 P/G/INV 복원은 미이식이며, IME 직접 조합/정밀 자동 마우스/전체화면은 별도 미검수다. 다음 전사 이야기의 원본 JS/93MiB 영상 경로·22cue·생성 성공 뒤 showCharGate 흐름을 확인했고 기존 지원 담당의 독립 자료 추출이 진행 중이다.
 
 2026-10-29 현재 ARM64 Settings QA 빌드로 5/5 생성·여섯 번째 거부·실제 OS 삭제 취소/확인·빈 용량 재사용·선택 재시작 복원을 새 격리 목록에서 확인했다. 이름, revision, 화면 및 입력 제한은 [A04 실기 검수](UNITY_MAC_A04_FIVE_SLOTS_OS_QA_20261029.md)에 기록했다.
+
+
+## 2026-11-01 PC Unity 로비 슬롯 가득 참 안내 후보
+
+사용자 오류 보고의 원인은 최대5개에 도달한 뒤에도 로비가 “+ 새 캐릭터”를 계속 표시하면서 클릭만 비활성화한 것이었다. `NativeLobby.SilverLobby.cs` 표현만 수정했다.
+
+| 상태 / 적용 위치 | 후보 동작 |
+|---|---|
+| 생성 행 오른쪽 수량 | (1750,609,78,64)에 `Characters.Count / CharacterRoster.Capacity`를 매 GUI 갱신마다 표시. 글꼴·색상은 기존 silverBody 사용 |
+| 0~4개 | 기존 “+ 새 캐릭터”와 생성 권한·모달 입력 조건 유지 |
+| 5개 / 생성 행 | 기존 `CharacterError(Full)`의 언어별 “슬롯이 가득 찼습니다.”로 대체. (1450,609,286,64)·15px·자동 줄바꿈. 비활성 버튼보다 먼저 안내를 그려 문구가 불필요하게 흐려지지 않음 |
+| 빈 용량 복귀 | 기존 삭제 확인·저장 성공으로 Count가 줄면 다음 GUI에서 원래 문구·생성 활성 조건으로 자동 복귀 |
+| 번역 / 저장 | 기존 full/캐릭터/새 캐릭터 키 재사용. 새 표시 문자열·번역 키·에셋 없음. 최대5·이름 검증·저장 포맷·전투·세이브 파일 변경0 |
+
+검증은 기존 이름/5개 한도41검사, 삭제/용량 재사용58검사와 Runtime/Core311개 독립 컴파일이다. 독립 컴파일은 Unity Editor/Player 컴파일 검수가 아니다. 현재 도타 실행으로 새 Unity/Player/빌드·M1·1920/2560/3840 실제 시각 검수 및 실행본 갱신은 하지 않았다. 상태 NOT_READY/시각 미검수. 지정 통합 담당이 이 소스1파일만 기존 NTFS 입력에 인수하고 공식 실행기·격리저장·무창/무음으로 실제 다국어·5/5 안내·빈 용량 복귀 검수 뒤 정상 반영한다. 근거 `I:/EXODUSER-Storage/character-capacity/20261101/REPORT.md`.

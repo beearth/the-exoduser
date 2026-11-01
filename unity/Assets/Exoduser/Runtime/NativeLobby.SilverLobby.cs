@@ -79,11 +79,14 @@ namespace Exoduser.UnityPort
             var create=new Rect(1428,609,400,64);
             var createStyle=new GUIStyle(silverName)
             {
-                fontSize=15
+                fontSize=15,wordWrap=true
             };
-            SilverLabel(new Rect(1450,609,360,64),"+ "+K("새 캐릭터","New character"),createStyle,TextAnchor.MiddleLeft);
+            bool slotsFull=Characters.Count>=CharacterRoster.Capacity;
+            string createLabel=slotsFull?CharacterError(CharacterCreateError.Full):"+ "+K("새 캐릭터","New character");
+            SilverLabel(new Rect(1450,609,286,64),createLabel,createStyle,TextAnchor.MiddleLeft);
+            SilverLabel(new Rect(1750,609,78,64),Characters.Count+" / "+CharacterRoster.Capacity,silverBody,TextAnchor.MiddleRight);
             Fill(new Rect(1428,672,400,1),new Color(.61f,.62f,.62f,.13f));
-            GUI.enabled=controls&&characterWritesAllowed&&Characters.Count<CharacterRoster.Capacity;
+            GUI.enabled=controls&&characterWritesAllowed&&!slotsFull;
             GUI.SetNextControlName("character-create-card");
             if(NativeUiAudit.Button(create,"",GUIStyle.none))OpenCharacterCreation();
             if(characterRestoreCreateFocus&&Event.current.type==EventType.Repaint)
