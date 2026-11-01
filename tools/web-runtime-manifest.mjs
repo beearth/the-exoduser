@@ -12,7 +12,7 @@ function isRetiredWebSource(path) {
 }
 
 function isWebAuthoringSource(path) {
-  return isMapAuthoringSource(path)
+  return /^assets\/web-derived\//.test(path) || isMapAuthoringSource(path)
     || isRetiredWebSource(path)
     || /\/(?:[^/]*_sources|_unity_preview|_p11_candidates|_grok_qa)\//.test(path)
     || /^assets\/video-(?:bases|tests)\//.test(path)

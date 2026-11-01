@@ -72,3 +72,21 @@
 | 전달 경계 | 같은 private 후보에 code/test/docs만 정상 보존한다. main·workflow·공개 배포·G: 사용자 작업본 변경0. 4,629,181,769B 총량의629,181,769B 초과, 월드 인트로102,204,634B의100MB 초과 및 공개402는 별도 해결·검수 대상이며 이 수정으로 배포 완료라 하지 않는다. |
 
 RED/GREEN 및 현재 목록 검증 원문: `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-stale-assert-{red,green,current-selection}.log`. 원본 영상·음악·그림의 byte와 게임 내용은 바꾸지 않았다.
+
+## 2026-11-01 승인 웹 파생 미디어 연결 — 원본 URL·실제 MIME 보존 후보
+
+사용자는 원본을 보존한 웹 전용 파생본 제작과 최신 웹 commit/push/배포를 승인했다. 이번 코드는 파생 미디어를 기존 정적 배포 경로에 연결하며 게임 HTML·JS 내용, 원본 미디어, Unity 및 사용자 실행본은 수정하지 않는다. 실제 대형 artifact·브라우저·공개 배포 판정은 별도 인수한다.
+
+| 항목 | 배포 계약·검증 범위 |
+|---|---|
+| 입력 schema | `assets/web-derived/20261101/manifest.json`의 `version:1`, `assets[]`를 사용한다. 각 행 필수값은 `source_path`, `source_git_blob`(Git SHA-1), `source_sha256`, `source_bytes`, `derivative_path`, `sha256`, `bytes`, `mime`다. 파생 경로는 동일 `assets/web-derived/20261101/` 안에만 둔다. |
+| 허용 변환 | WAV→FLAC(`audio/flac`), PNG→WebP(`image/webp`), MP4→MP4(`video/mp4`)만 허용한다. 원본·파생의 실제 size/SHA-256, 원본 Git blob, 파생 확장자/MIME와 파일 magic을 대조한다. 이 검사는 PCM/RGBA/ICC·영상 시각 동등성이나 브라우저 decode 검수를 대신하지 않는다. |
+| 원래 URL | `build-web.mjs`는 선택된 원본 대신 `_web_derived/<원래 NFC 경로 SHA256>.<실제 파생 확장자>`에 한 번만 staging한다. `prepare-vercel-output.mjs`가 Build Output API `overrides[실파일].path`에 원래 URL, `contentType`에 실제 MIME을 명시한다. PNG/WAV 파일명에 다른 포맷 byte를 저장하지 않는다. |
+| 동적·JSON 의존성 | 기존 selector로 먼저 원본 소비 목록을 확정한 후 정확 source mapping만 치환한다. 기존 로딩35·wide105/전체화면64·wide128·언어·동적 음원 선택 계약은 유지한다. `assets/web-derived/`는 broad-prefix/직접 정적 선택에서 제외해 원본·파생을 이중 export하지 않는다. |
+| Unicode 동일 byte | 원본 NFC/NFD logical 행은 원본 blob/SHA/bytes·파생 canonical 경로/SHA/bytes/MIME가 모두 같을 때만 하나의 물리 alias로 묶는다. 모든 실제 tracked source/derivative spelling의 byte도 대조한다. `source_aliases`에 원문 경로들을 남기고 `logicalDerived`와 물리 `derived` 수를 분리한다. 다른 byte·다른 변환·중복 동일 행은 실패한다. |
+| 안전·용량 | 경로 이탈·backslash/colon/percent/query/fragment/control·symlink file·미추적/누락/미선택 source·변조·기존 URL override 충돌·원본과파생 동시 staging은 실패한다. 최초 출력 생성 전에 파일15,000개(config 포함), 개별100,000,000B, 합계4,000,000,000B를 검사한다. staging size 변화 및 prepare에서 실제 파생 hash도 다시 검사한다. 상한 완화0. |
+| artifact 근거 | build의 `__web-derived-output.json`에는 원본/파생 hash·bytes·실제 staging path·원래 URL·MIME·Unicode aliases를 기록한다. prepare가 config 적용 후 이를 `.vercel/output/web-derived-output.json`으로 옮겨 정적 공개 파일에서 제외한다. 원본 저장소 byte는 그대로다. |
+| 의미 있는 회귀 | 작은 실제 build→prepare fixture, 실제 MIME/원래 URL, 기존 Unicode 보존, 누락·SHA/Git blob·size·magic·위험경로·상한·변조·충돌을 검증한다. Mac과 같은 NFC/NFD 2논리→1물리는 기존 거절 RED 후 동일 byte 조건으로 GREEN, 다른 파생 byte는 거절한다. 기존14 + upload5 + 신규10 =29검사 대상이다. |
+| 미검증 경계 | Mac 보고 73logical/72physical 파생본의 전체 입력 hash·실산출물과 공개 HTTP/MIME/Range·WebP/FLAC/MP4 decode·실제 게임 화면은 이 소형 fixture와 별도로 root/Mac이 인수한다. raw web-dist 서버는 overrides를 적용하지 않으므로 배포 URL 재현 증거로 사용하지 않는다. main push·production workflow·공개 배포는 이 코드 작성 단위에서 수행하지 않는다. |
+
+URL와 MIME 지정은 [Vercel Build Output API 공식 configuration](https://vercel.com/docs/build-output-api/configuration)의 `overrides.path`·`contentType` 계약을 따른다. 별도 proxy/streaming 함수를 추가하지 않으며 실제 Range 지원은 배포/override-aware preview의 HTTP 응답으로 확인해야 한다. 원문 회귀는 `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-derived-link-*.log`, Unicode 실제 조건 RED는 `web-derived-unicode-alias-red.log`에 보존한다.

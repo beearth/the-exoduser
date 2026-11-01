@@ -151,7 +151,7 @@ function runtimeBuildFixture(t,{missing}={}) {
     'assets/vendor/three-r160/examples/jsm/utils/BufferGeometryUtils.js'];
   const media=['video/fdg_intro.mp4','video/world_intro_v22b_steam.mp4','video/warrior_story_v23_clean.mp4'];
   mkdirSync(join(dir,'tools'));
-  for(const name of ['build-web.mjs','web-runtime-manifest.mjs'])copyFileSync(new URL('../tools/'+name,import.meta.url),join(dir,'tools',name));
+  for(const name of ['build-web.mjs','web-runtime-manifest.mjs','web-derived-assets.mjs'])copyFileSync(new URL('../tools/'+name,import.meta.url),join(dir,'tools',name));
   writeFileSync(join(dir,'build-nwjs.mjs'),'const FILES = ['+entries.map(name=>"'"+name+"'").join(',')+'];');
   for(const path of [...entries,...media]) {
     if(path===missing)continue;
