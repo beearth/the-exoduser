@@ -139,3 +139,18 @@ URL와 MIME 지정은 [Vercel Build Output API 공식 configuration](https://ver
 `082521de3955726df006d22ad284e57b103cebe1` 정상 main push 뒤 기존 GitHub Actions [#1404](https://github.com/beearth/the-exoduser/actions/runs/41297655242)가 실제 실행됐다. 원격 Vercel build·Unicode 경로 준비·파일별/전체 업로드 검사는 모두 성공했고 Linux 산출도 3,088파일 / 3,945,183,602B로 Windows·Mac 검수와 일치했다. 마지막 `Deploy to Vercel` 단계는 2026-11-01T10:34:06Z에 **팀 미결제 잔액으로 계정 재활성화가 필요하다**는 CLI 원문으로 exit1 거절됐다. 공개 서비스 최신화 완료가 아니다.
 
 Vercel 계정 관리자의 결제 문제 해소가 선행한다. 에이전트는 결제·요금제·카드·보안 설정을 변경하지 않았다. 이 외부 조건이 바뀌기 전 같은 배포를 무한 재시도하지 않는다. 원문 로그/영수증: root diagnostics `web-ci-1404-job.log`, `web-ci-1404-job-receipt.json`. PC Unity Desktop 갱신은 별도 기존 owner의 c336 frozen 입력·Win64 build·same-app 검수·바로가기 readback 단위로 진행 중이다.
+
+## 2026-11-02 정적 직접 참조 브리지 선택 누락 교정 후보
+
+후보 `70c76d36fd1c3a8ff76090ae175e759e18cd027f`의 실제 브라우저 검수에서 `game.html`이 직접 요청하는 `web3d/bridge-map.js?v=20261031-r3`가 정적 출력에 없어 HTTP 404였다. 원인은 선택기의 런타임 리터럴 경로 허용 목록에 `web3d/`가 없었던 것이다. 기존 담당의 9개 걷기 자원 인수 완료 뒤 같은 기존 체크아웃에서 CTO가 해당 선택기·회귀·관련 문서만 한정 수정했다. 다른 제작 원본이나 폴더 전체를 포함하지 않는다.
+
+| 항목 | 현재 검증 범위 |
+|---|---|
+| 선택 규칙 | 실제 참조한 `web3d/` 리터럴을 고정점 탐색에 포함. 선택된 스크립트의 기존 assets/img 등 참조도 계속 탐색 |
+| 실제 후보 선택 차이 | 3,095 → 3,096개. 추가는 `web3d/bridge-map.js` 1개·6,479바이트, 제외된 기존 파일 0개 |
+| 원본 선택 용량 | 4,631,135,335 → 4,631,141,814바이트. 이는 파생본 적용 전 원본 선택 용량이며 실제 정적 업로드 용량과 다름 |
+| 회귀 | 직접 참조 스크립트 포함·그 스크립트의 실제 자원 포함·미참조 같은 폴더 스크립트 제외를 먼저 실패 재현 후 수정. 웹 배포·파생본·파일 스테이징 30개 검사 통과 |
+| 보존 | 걷기 PNG 8개와 JSON, 게임 HTML/JS·설정·세이브·기존 배포 제한·외부 guard baseline 바이트 유지 |
+| 남은 검수 | 새 후보 정적 산출의 실제 브리지 URL 200/SHA와 브라우저 대표 실행은 아직 미검증. 이전 70c76 산출의 404를 새 후보 PASS로 대체하지 않음 |
+| 별도 문제 | 로비 `_slotScrollIdx` 초기화 전 접근 3건 원인 미확정, QA 조건부 `engine/fdg/druid-encounter-qa.js` 누락은 별도. 이번에 전체 engine 폴더를 추가하지 않음 |
+| 전달 | 같은 후보 브랜치에 정상 commit/push 후 새 정확 소스를 Mac에서 검수. 웹 main·공개 배포·Windows 실행본 변경 없음 |

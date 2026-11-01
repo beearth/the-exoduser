@@ -55723,3 +55723,5 @@ stage=0은 실제200×200 본편으로 정정하고 과거 원화 판은 명시�
 - 검수/전후표·최종 원격SHA는 `G:/exoduser/tmp/design-review/20261031_wide_animation/REPORT.md`, 실제 영상/1x·실패 근거는 `I:/EXODUSER-Storage/wide-animation/20261031/`. 최신 승인 타이틀A·게이트 검정 배경·v22b 인트로를 정상 병합해 보존하고 영향 범위를 재검수한다. Steam/Unity 배포0.
 - 후속 연결: 입장/로그인 배경도 전체 폭 분위기를 사용하되 로비·시네마틱·타이틀 뒤에서는 정지한다. 게임은 하드웨어C/OPT.atmos0, 메뉴는 저장 hellcave_settings.opt.atmos0을 존중한다. 새 저장옵션2검사를 포함해 표적27/27·브라우저19/19 PASS, 최종 전체2482검사에서 신규 실패0·기존277실패/35skip. 영상은 시스템Chrome GPU 경로로 정리하며 초기 headless-shell/RED 이력은 보존한다.
 - 마감 검수:22유형×1920/2560/3840의 약10초66편(9.96~10.00초),0·4·8초 동작·전후·1x 및 기존63원화 경계 확인. 스킬 창에 가린 초기 클리어/종료 표본은 native closeAllPanels·_showClearResult·버튼hit-test 후 교체하고 이력 보존. 자체 시각 PASS는 이번 원본 모션/경계 범위이며 컷신 시간 유지·정지 월드 fixture와 자연 플레이를 구분한다. SSOT 최종 검수 표와 인계 design-director.md, REPORT/Git 영수증을 동기화한다.
+
+- 2026-11-02: 웹 직접 참조 web3d/bridge-map.js 정적 선택 누락을 한정 교정한 후보. 회귀 먼저 실패 재현→웹 배포/파생본/스테이징 30검사 통과, 실제 추가 1파일 6479B·기존 제외0. 새 후보 산출·브라우저 재검수/main/공개 배포는 아직 별도. docs/13출시·마케팅/WEB_DEPLOYMENT_REPAIR_20261002.md 및 docs/engine/WEB_UNITY_PARITY_20261101.md의 같은 날짜 절 참조.

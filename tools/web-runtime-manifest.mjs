@@ -35,7 +35,7 @@ export function selectWebRuntimeFiles(tracked,entryFiles,readSource) {
     for(const path of selected) {
       if(scanned.has(path)||! /\.(html|js|css|mjs)$/.test(path))continue;
       scanned.add(path);const source=readSource(path);
-      for(const match of source.matchAll(/["'`]((?:assets|img|sprites|bgm|sfx|video|output)\/[^"'`\r\n]*)["'`]/g)) {
+      for(const match of source.matchAll(/["'`]((?:assets|img|sprites|bgm|sfx|video|output|web3d)\/[^"'`\r\n]*)["'`]/g)) {
         const ref=match[1].split(/[?#]/)[0].split('${')[0].normalize('NFC');
         if(ref.split('/')[1]||available.has(ref))references.add(ref);
       }

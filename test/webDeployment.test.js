@@ -183,3 +183,13 @@ test('current web build rejects a missing video actually referenced by runtime H
     assert.ok(run.stderr.includes('Missing required runtime file: '+video),run.stderr);
   }
 });
+
+test('web selection includes a directly referenced bridge script and its live assets without the unused bridge directory',()=>{
+  const paths=['game.html','web3d/bridge-map.js','web3d/unused.js','img/live-bridge.png'];
+  const source={'game.html':'<script src="web3d/bridge-map.js?v=20261031-r3"></script>',
+    'web3d/bridge-map.js':"const texture='img/live-bridge.png';"};
+  const selected=manifest.selectWebRuntimeFiles(paths,['game.html'],path=>source[path]||'');
+  assert.ok(selected.includes('web3d/bridge-map.js'),'the direct game script must ship');
+  assert.ok(selected.includes('img/live-bridge.png'),'a selected script must close over its live asset');
+  assert.ok(!selected.includes('web3d/unused.js'),'an unrelated bridge script must remain excluded');
+});
