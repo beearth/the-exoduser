@@ -920,3 +920,16 @@ I 전체 src/href/data-src/poster 및 assets/img/video/bgm/sfx/sprites 상대 �
 ## 2026-10-31 전체 화면 원화 확장 적용
 
 이 문서의 과거 이미지·영상 제작 및 판정은 당시 이력이다. 현행 웹은 `fullscreen-art.js`의 경로 등록으로 64종의 원본/21:9/32:9 판을 선택한다. 화면비 2 이하의 원본 경로와 MP4 파일은 보존하고, 초광폭에서는 확장판을 배경으로 쓰고 원래 영상·카메라·CSS 움직임을 유지한다. 로비·캐릭터 영상은 manifest 중앙 좌표와 높이에 맞춰 겹치며 양끝14%를 크로스페이드한다. 전체 폭 분위기 효과는 움직임 줄이기·저사양·숨김 화면에서 정지한다. 출력·사용 위치·규격·생성 정보·검수 근거는 `docs/3.1 ui hud 디자인/FULLSCREEN_ART_ULTRAWIDE_20261031.md` 및 `assets/fullscreen-wide/20261031/manifest.json`이 현행 기준이다. 로딩35장은 별도 담당이며 Unity 반영·실행 검수는 이 웹 적용으로 완료되지 않는다.
+
+
+## 2026-11-02 빠른 오프라인 로비 슬롯 초기화 순서 교정 후보
+
+| 항목 | 구현·검수 범위 |
+|---|---|
+| 실제 재현 | `sb`가 없는 초기 진입은 Init IIFE → `_enterOffline` → `_goLobby` → `loadLocalCharacters` → `_renderSlotList`를 호출. demo 목록 경로는 await 이전에 완료될 수 있어 뒤에 있던 `let _slotScrollIdx=0`의 TDZ에 도달. 실제 HTML의 Init·4개 함수·선언을 원래 순서로 VM 실행해 `Cannot access ... before initialization` RED 재현 |
+| 최소 수정 | `_slotScrollIdx` 선언·초기값 0을 기존 공용 `_localSlots` 옆으로 이동해 Init 이전에 초기화. let scope·스크롤 clamp·VIEW 2·개발자 무제한/일반 5칸·목록 API·캐릭터 선택·세이브 key/쓰기 규칙 불변 |
+| 회귀 | 신규 실제 조기 진입 회귀와 기존 developerCharacterSlots/demoSaveRoute 총42/42 PASS. 기존 함수 추출 fixture는 이동한 실제 선언도 함께 읽도록 보완. 새 dependency 설치 없이 Node VM으로 실행 |
+| 현재 경계 | 재현된 빠른 demo fallback의 소스/VM 오류 교정. 이전70c 브라우저 오류3건 전체와 동일한 trigger임은 아직 단정하지 않음. 새 정확 후보의 격리 실제 브라우저/시네마틱→오프라인·로비→게임 왕복은 후속 검수 |
+| 보존·배포 | 원본/파생 미디어·game.html·Unity·슬롯/저장 내용·기존 서버/사용자 profile 변경0. private 후보 정상 commit/push만; 웹 main·공개 배포·Windows 실행본 변경 없음 |
+
+원문 RED/GREEN·수정 전 HTML: `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-module-closure-20261102/lobby-early-init/`. 최초 acorn 패키지 해석 실패는 회귀 실행환경 오류로 구분했고, 새 설치 없이 실제 함수/초기 호출 구간을 읽는 방식으로 전환해 제품 TDZ를 별도로 재현했다.

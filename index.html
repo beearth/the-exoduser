@@ -1280,6 +1280,7 @@ const _LOBBY_VER_LIMITS={
 var _selectedSlot=null,_selectedSlotName=null,_selectedCharDisplay=null;
 var _characterLoadSeq=0;
 var _localSlots=[];
+let _slotScrollIdx=0; // 캐릭터 뷰포트 상단 인덱스
 var _developerSlots=false;
 var _curBg=null;
 var _spriteOk={};// 캐릭터 스프라이트 존재 캐시
@@ -3571,7 +3572,6 @@ async function loadLocalCharacters(){
 }
 
 // 슬롯 스크롤 상태
-let _slotScrollIdx=0; // 캐릭터 뷰포트 상단 인덱스
 
 function _renderSlotList(){
   const cl=$('charList');if(!cl)return;cl.replaceChildren();

@@ -35,7 +35,7 @@ function lobby({ build = 'full', count = 5, development = false, demoSave = null
     fetch: async url => { requests.push(url); return { ok: true, json: async () => ({ ok: true, slots, development }) }; },
   });
   const ancestorCode=['_lobbyAncestorName','_lobbyAncestorCaption','_lobbyAncestorDetail','_lobbyDemoCharacterName'].map(name=>html.match(new RegExp('function '+name+'[^\\n]+'))[0]).join('\n');
-  vm.runInContext(stageCode+'\n'+ancestorCode+'\n'+demoCode+'\n'+localCode, ctx);
+  vm.runInContext(stageCode+'\n'+ancestorCode+'\n'+demoCode+'\n'+html.match(/let _slotScrollIdx=0;[^\n]*/)[0]+'\n'+localCode, ctx);
   return { ctx, els, storage, requests, opened: () => opened, displayed: () => displayed };
 }
 function cards(els) {

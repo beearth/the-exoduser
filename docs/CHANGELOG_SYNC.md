@@ -55743,3 +55743,16 @@ stage=0은 실제200×200 본편으로 정정하고 과거 원화 판은 명시�
 | 별도 실패 | 로비 `_slotScrollIdx`는 fa 단독 실행에서는 미재현·이전 70c 오류 3건은 유지. 선택형 3D 전체 품질·게임 API·자연 전투·Windows 배송·공개 배포 PASS 아님 |
 
 원문: `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-module-closure-20261102/`의 red.log, green.log, selection-delta.json, docs-search-before.txt. 코드1·회귀1·관련 docs3만 같은 private 후보에서 정상 commit/push하며 main·Unity common·사용자 서버/저장·외부 guard baseline은 보존한다.
+
+
+## 2026-11-02 빠른 오프라인 로비 슬롯 초기화 순서 교정 후보
+
+| 항목 | 구현·검수 범위 |
+|---|---|
+| 실제 재현 | `sb`가 없는 초기 진입은 Init IIFE → `_enterOffline` → `_goLobby` → `loadLocalCharacters` → `_renderSlotList`를 호출. demo 목록 경로는 await 이전에 완료될 수 있어 뒤에 있던 `let _slotScrollIdx=0`의 TDZ에 도달. 실제 HTML의 Init·4개 함수·선언을 원래 순서로 VM 실행해 `Cannot access ... before initialization` RED 재현 |
+| 최소 수정 | `_slotScrollIdx` 선언·초기값 0을 기존 공용 `_localSlots` 옆으로 이동해 Init 이전에 초기화. let scope·스크롤 clamp·VIEW 2·개발자 무제한/일반 5칸·목록 API·캐릭터 선택·세이브 key/쓰기 규칙 불변 |
+| 회귀 | 신규 실제 조기 진입 회귀와 기존 developerCharacterSlots/demoSaveRoute 총42/42 PASS. 기존 함수 추출 fixture는 이동한 실제 선언도 함께 읽도록 보완. 새 dependency 설치 없이 Node VM으로 실행 |
+| 현재 경계 | 재현된 빠른 demo fallback의 소스/VM 오류 교정. 이전70c 브라우저 오류3건 전체와 동일한 trigger임은 아직 단정하지 않음. 새 정확 후보의 격리 실제 브라우저/시네마틱→오프라인·로비→게임 왕복은 후속 검수 |
+| 보존·배포 | 원본/파생 미디어·game.html·Unity·슬롯/저장 내용·기존 서버/사용자 profile 변경0. private 후보 정상 commit/push만; 웹 main·공개 배포·Windows 실행본 변경 없음 |
+
+원문 RED/GREEN·수정 전 HTML: `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-module-closure-20261102/lobby-early-init/`. 최초 acorn 패키지 해석 실패는 회귀 실행환경 오류로 구분했고, 새 설치 없이 실제 함수/초기 호출 구간을 읽는 방식으로 전환해 제품 TDZ를 별도로 재현했다.
