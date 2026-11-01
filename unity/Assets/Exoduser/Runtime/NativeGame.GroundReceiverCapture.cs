@@ -26,6 +26,10 @@ namespace Exoduser.UnityPort
             public string graphicsDevice, graphicsApi, renderer, technique, decalShader, error;
             public int mrtCount, directVideoPlayers, screenWidth, screenHeight;
             public float listenerVolume, outputPeak;
+            public bool quadActive, quadEnabled, quadInFrustum, probeInFrustum;
+            public string cameraRenderType;
+            public Vector3 quadScreen, probeScreen, quadNormal;
+            public Color probePixel;
             public GroundReceiverSample[] samples = new GroundReceiverSample[6];
         }
 
@@ -61,7 +65,7 @@ namespace Exoduser.UnityPort
                 smokeActive=true; pauseSmoke=true; Running=false; menu=false;
                 lobby.ShowLobby();lobby.SelectPreview();
                 if(!lobby.EnterNativeTest())throw new InvalidOperationException("QA native preview entry failed");
-                lobby.CloseStartupCaptureMedia();EndFirstPractice(true);
+                lobby.CloseStartupCaptureMedia();lobby.enabled=false;EndFirstPractice(true);
                 if(view!=null)view.enabled=false;
                 Screen.SetResolution(1920,1080,FullScreenMode.Windowed);
                 float deadline=Time.realtimeSinceStartup+15;
@@ -91,6 +95,20 @@ namespace Exoduser.UnityPort
                 cam.cullingMask=1<<layer;cam.clearFlags=CameraClearFlags.SolidColor;cam.backgroundColor=new Color(.035f,.035f,.04f);
                 cam.nearClipPlane=.1f;cam.farClipPlane=20;cam.allowHDR=false;
                 var cameraData=cam.gameObject.AddComponent<UniversalAdditionalCameraData>();cameraData.renderPostProcessing=false;
+                cameraData.renderType=CameraRenderType.Base;
+                receipt.cameraRenderType=cameraData.renderType.ToString();
+                var probe=GameObject.CreatePrimitive(PrimitiveType.Cube);probe.name="QA Frustum Probe";probe.layer=layer;
+                probe.transform.position=new Vector3(0,.4f,2.2f);probe.transform.localScale=Vector3.one*.5f;
+                probe.GetComponent<MeshRenderer>().sharedMaterial=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+                foreach(var other in FindObjectsByType<Camera>(FindObjectsSortMode.None))if(other!=cam)other.enabled=false;
+                var planes=GeometryUtility.CalculateFrustumPlanes(cam);
+                var quadRenderer=grounds[1].GetComponent<MeshRenderer>();
+                receipt.quadActive=grounds[1].activeInHierarchy;receipt.quadEnabled=quadRenderer.enabled;
+                receipt.quadInFrustum=GeometryUtility.TestPlanesAABB(planes,quadRenderer.bounds);
+                receipt.probeInFrustum=GeometryUtility.TestPlanesAABB(planes,probe.GetComponent<MeshRenderer>().bounds);
+                receipt.quadScreen=cam.WorldToScreenPoint(grounds[1].transform.position);
+                receipt.probeScreen=cam.WorldToScreenPoint(probe.transform.position);
+                receipt.quadNormal=grounds[1].GetComponent<MeshFilter>().sharedMesh.normals[0];
                 var sourceDecal=Resources.Load<Material>("QA/GroundDecal");
                 if(sourceDecal==null)throw new InvalidOperationException("Bundled QA decal material unavailable");
                 var decalMaterial=new Material(sourceDecal);receipt.decalShader=decalMaterial.shader.name;
@@ -136,6 +154,12 @@ namespace Exoduser.UnityPort
                         var old=RenderTexture.active;RenderTexture.active=target;
                         images[state]=new Texture2D(width,height,TextureFormat.RGB24,false);
                         images[state].ReadPixels(new Rect(0,0,width,height),0,0);images[state].Apply();RenderTexture.active=old;
+                        if(width==1920 && state==0)
+                        {
+                            int px=Mathf.Clamp(Mathf.RoundToInt(receipt.probeScreen.x),0,width-1);
+                            int py=Mathf.Clamp(Mathf.RoundToInt(receipt.probeScreen.y),0,height-1);
+                            receipt.probePixel=images[state].GetPixel(px,py);
+                        }
                         File.WriteAllBytes(Path.Combine(output,width+"x1080-"+(state==0?"off":"on")+".png"),images[state].EncodeToPNG());
                         if(width==1920)
                         {
