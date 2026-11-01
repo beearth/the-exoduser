@@ -25,3 +25,17 @@
 |줄 높이|`max(fontPixels × 1.4, GUIStyle.CalcSize(tip).y + 4)` 물리 px|
 
 이 화면은 PC 후보의 진행선과 전체 원화 구성이 아직 없다. 그러므로 PC 후보의 `진행선 아래 8px` 배치와 1395 PNG·실기기 1x 검수는 Mac에서 통과했다고 주장하지 않는다. 실제 보이는 화면, 키 변경 중 전환 화면, 세 언어 폴백은 별도 Player 검수가 필요하다.
+
+## 실제 Player 전환 화면 검수 도구
+
+`--unity-loading-tip-capture -output <절대 폴더> --unity-qa-sandbox <절대 폴더> --unity-mute`는 비배치 Player에서만 실행한다. `NativeGame.LoadingTipCapture.cs`가 본 게임의 `OnGUI`를 1920×1080 창과 Mac 내장 화면 3024×1964 전체 창에서 캡처한다. 각 크기에서 `ko/en/fr` × 기본 팁 4개·실제 재바인딩 2개·두 슬롯 모두 미지정 2개, 합계 48개 GUI JSON과 PNG를 생성한다. 수치 검사뿐 아니라 PNG의 실제 가독성과 겹침을 1x에서 별도로 판정한다.
+
+|검수 상태|값·격리|
+|---|---|
+|네 팁|QA 전용으로 `StageIndex=0..3`, `LoadPhase=2`, `LoadFade=1`, `LoadT=35`를 잠시 설정; 자연 플레이에서 stage 0 외 노출을 주장하지 않음|
+|변경 키|제품 `KeyBindings.TrySet`으로 인벤토리 `KeyV`, 수거 `F2`; 캡처 직후 원래 primary·secondary 복원|
+|미지정 키|각 action의 primary·secondary를 모두 null로 설정; 일반 보스 팁 대체 확인|
+|오디오|`AudioListener.pause=true`, volume=0, 출력 샘플 peak=0, 살아 있는 `VideoPlayer` Direct 경로 0 검사. 제품의 기본 영화 출력은 AudioSource이고 예외 플래그 `--unity-video-direct`는 사용하지 않음. 물리 청음 검사는 별도|
+|저장·종료|QA sandbox에서만 실행, 영상 닫고 1초 drain 후 정상 `Application.Quit(0)`|
+
+검수 산출물과 실제 판정은 새 Player 실행 뒤 기록한다. 이 도구의 API로 만든 화면은 실제 Player 렌더이며 OS 손조작이나 자연 구역 진행을 뜻하지 않는다.
