@@ -39,3 +39,18 @@
 |저장·종료|QA sandbox에서만 실행, 영상 닫고 1초 drain 후 정상 `Application.Quit(0)`|
 
 검수 산출물과 실제 판정은 새 Player 실행 뒤 기록한다. 이 도구의 API로 만든 화면은 실제 Player 렌더이며 OS 손조작이나 자연 구역 진행을 뜻하지 않는다.
+
+## Mac 새 Player 결과 — 2026-11-01 KST
+
+|항목|실제 결과|
+|---|---|
+|기존 사용자 앱 3개|PID 38141·48476·52157 각각 요청 직전 PID/시작시각/실행 파일 일치 확인. AppKit `NSRunningApplication.terminate()` 일반 Quit 반환 1/1/1, 이후 세 PID와 다른 EXODUSER Player 0. 강제 종료 0. 38141 지정 로그에는 Physics/InputSystem/CodeReloadManager 정리 기록, 나머지 두 앱의 개별 teardown 로그는 없으므로 요청 수락·프로세스 소멸 범위로 한정|
+|소스·빌드|`071cb00e950812f3d259af1eda47c7b74a1e480f`의 `unity/` 파일을 APFS 복제한 QA 프로젝트에서 공식 `PortVerification.Build -settingsQa true`; Unity 6000.6.7f1/ARM64, Succeeded, 오류0, 3,668,445,454 bytes. 빌드 영수증 SHA-256 `64ee4337cd6381cf4f5453a2d254072f63e350d8a1037cb6a12509447baf3e26`|
+|같은 새 앱|실행 파일 SHA-256 `86ed207d41b6b62afee3aef393d4ddc322590f1120fd53a3324f9644390458ba`; Runtime DLL `6a79503146e5d4c4e930dfcc01f6b7bb62a3fa273571064a6c92a720d79515aa`이며 GUI 영수증의 실행 중 Runtime SHA와 같음|
+|격리 M1|같은 앱 `-batchmode --unity-mute --unity-m1-check` exit0, Apple M5 Pro/Metal, 23/23 `ok`, `firstBlocked=""`, 32 월드 캡처. `guiRepaints=0`이므로 GUI 증거로 사용하지 않음. 영수증 SHA-256 `189d8c07c4add9e820d7970f66d4096023d29fe2c1e39e5aac655836241f6f54`|
+|실제 GUI|같은 앱 비배치 `--unity-loading-tip-capture`, exit0. PNG 48장·각 프레임 실제 OnGUI Repaint 1회인 audit 48개. 1920×1080 24장(font 14 물리 px), 3024×1964 24장(font 16 물리 px). ko/en/fr 각 16장, 기본4·키 변경2·미지정2 케이스를 크기별로 확인. GUI 영수증 SHA-256 `590a2b2f272150577b16f133d823487d0a4d87f6fd8dfe26ae09fb15659c85ee`|
+|키·언어|실제 제품 바인딩 API로 `KeyV`→표시 `V`, `F2`→표시 `F2`; 두 슬롯 모두 비면 ko/en의 보스 패턴 일반 팁. fr은 네 팁 모두 영어 문구. 48 audit에서 기대 문구의 본문·2px 그림자 쌍 모두 확인|
+|1x 가독·겹침|실제 원본 픽셀 PNG의 1920 ko 기본·변경 키, 3024 fr 기본을 육안 확인. 모든 48 audit에서 팁 잉크와 다른 텍스트 교차 0; 대표 잉크 높이 1920에서 20.28px, 3024에서 23.17px, 알파1·캡처 파일 최소 434,849bytes. 중앙 패널 안에서 판독 가능. **팁 영역 VISUAL VERDICT: PASS**|
+|무음·저장·종료|GUI 영수증 `batchMode=false`, `listenerPaused=true`, volume0, 실제 Listener 출력 샘플 peak0, 활성 Direct VideoPlayer 0. 영화 기본 출력은 AudioSource이며 예외 Direct 플래그 미사용. M1·GUI에 별도 `--unity-qa-sandbox` 절대 경로를 지정했고 사용자 저장 경로를 직접 열거나 정리하지 않음. 앱 `QA_MEDIA_DRAIN_COMPLETE LOADING_TIPS` 후 exit0, 잔여 Unity/EXODUSER 프로세스0. OS 물리 출력 루프백·청음과 사용자 저장 파일의 전후 바이트 비교는 미검증|
+
+산출물은 `/Users/fordeargamers/exoduser-wt/_out/mac-loading-ui-qa-20261101/`의 `build-receipt.json`, `m1/m1-check.json`, `gui/loading-tip-receipt.json`, 각 PNG/JSON, Player/Editor 로그에 있다. 비배치 캡처는 실제 새 Player가 생성했지만 `StageIndex`와 키를 QA에서 설정했다. 자연 구역 진행에서 노출된 것은 stage0뿐이며 1~3번 팁의 자연 플레이·OS 입력은 입증하지 않는다. 다른 HUD의 번역이나 전체 게임 화면을 PASS로 확대하지 않는다.
