@@ -20,3 +20,5 @@
 코드 커밋 `04c9f9744588837b3b4690cb5901a1598f0a49b0`에서 새 소스 QA 복제본과 이전 자기 Library 캐시를 사용했다. 제품 소스·승인 PNG/메타·주요 설정 28항목은 후보와 byte 일치했다. Unity 6000.6.7f1 공식 Settings QA ARM64 빌드 `Succeeded`/errors0, 실행 파일 SHA-256 `9802ffee0d403a9897c3c559fce52c441cba801b79e1e29b20dfbdddf59c0dd8`. 같은 앱 M1 23/23·차단0·exit0; UI 자산 캡처 31/31·exit0·정상 `QA_MEDIA_DRAIN_COMPLETE UI`. 영수증의 Listener pause=true, volume=0, outputPeak=0, Direct VideoPlayer=0. 일반 사용자 저장 11항목은 사전·M1 후·GUI 후 존재/크기/SHA-256이 모두 같다. 종료 후 잔여 Unity/Settings QA Player 0.
 
 실제 1920×1080 1x 원본은 `/Users/fordeargamers/exoduser-wt/_out/mac-loading-art-overlay-20261101/gui-logo-final/Unity_타이틀_1920.png`, `Unity_인장_1920.png`, `Unity_로비_1920.png`다. 타이틀·인장·로비에서 승인 흑철 글자 내부로 배경/인장 고리 관통0, 기존 배치·크기 보존. **로고 영역 VISUAL VERDICT: PASS.** 이 판정은 MP4 내 합성 로고나 FDG 인트로의 변경을 뜻하지 않는다.
+
+일반 제품 앱 빌드·공통 반영 상태와 Preferences 게이트의 한계는 [로딩 원화 문서의 공통 반영 절](UNITY_MAC_LOADING_ART_OVERLAY_20261101.md#공통-반영과-일반-제품-앱--2026-11-01)을 따른다. 로고 시각 PASS는 앞 절의 Settings QA 앱 실제 PNG에 귀속하며, 일반 제품 앱의 GUI PASS로 확대하지 않는다.
