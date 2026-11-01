@@ -12,3 +12,5 @@
 기존 `title_logo.png`, `brand_logo.png`, `logo_exoduser.png`, 영상에 합성된 로고 및 FDG 인트로는 건드리지 않는다. 기본 시작 로딩의 `Art/Startup/loading_logo`도 별도 장면 자산이다. 타이틀·인장·로비 배치 계산과 애니메이션·입력·저장·Core·씬·URP는 그대로다.
 
 검수는 새 후보 커밋의 공식 ARM64 Settings QA 앱에서 실제 타이틀/splash/인장 1x PNG, 원본 SHA와 실행 앱 SHA, 같은 앱 M1, 무음 Listener 출력, Direct VideoPlayer 0, 일반 저장 11항목 전후 동일, 정상 media drain 및 종료를 각각 기록한다. 로딩 원화 116표본은 선행 후보의 별도 통과 결과이며 로고 수정 후 전수 중복 실행하지 않는다.
+
+첫 로고 후보 `b29522969df6774c888bfc7502d95d2f5cb3f73f`의 공식 ARM64 빌드는 Succeeded/오류0, M1 23단계/차단0, UI 자산 캡처 30/30·종료0이다. 타이틀·인장·로비 1920×1080 원본 PNG를 육안 확인했고, 인장 고리의 글자 내부 관통0·기존 위치/폭 유지로 판정했다. 일반 저장 11항목 전후 동일. 이 UI 캡처 영수증에는 Listener 출력 peak/Direct 개수 항목이 없어 그 계측만 QA 코드에 추가한 후속 앱에서 검증한다.
