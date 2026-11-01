@@ -91,3 +91,19 @@ r4 빌드·M1 기술 PASS와 회복 바닥/가시 접지/강타 점선 테두리
 | 기존 CPU 검증 | r5 Runtime317소스·Unity참조125 C#오류0/기존경고473, 표현계약456 통과 | 이미 통과한 동일 검사를 반복하지 않음. Unity 임포트·M1·새 영상·공통/Desktop 검증을 대신하지 않음 |
 
 진단 원문: I:/EXODUSER-Storage/demo-art/impact/MCP-r5-가시-유효대조-결과.json, MCP-r5-회복-同프레임-결과.json, mcp-r3-captures/MCP-r5-*.png. 수정 전 원본은 before-ground-r5/와 before-knockback-r5/에 보존했다. 사용자 도타 보호 조건에 따라 dota2가 어느 PID로든 살아 있으면 새 Unity/Player/빌드/인코딩/무거운 검수를 시작하지 않는다. 가벼운 소스·문서·안전 체크포인트만 진행하며, 재개 전 실제 프로세스 부재와 기존 FIFO/메모리/무음·세이브 조건을 확인한다.
+
+
+### 2026-11-01 r5 맵 표준 데칼 수신 소스 인수 — 실제 검수 전
+
+맵 담당 d19847702111b7d5b2cf77059c198f1f9d78aae6에서 전달한 공통 b673 기준 receiver-only 패치만 r5 작업 브랜치에 인수했다. R8 전체 브랜치·재질·배치 반입0, 공통 unity/main/Desktop 채택0이다.
+
+| 확인 | 결과 |
+|---|---|
+| 입력 경계 | 인수 전 r5 HEAD3a78311e9/INDEX0·외부 guard WORK1. HellGroundPBR/A2RootSurface 원문은 공통b673 byte와 동일·맵 영수증 base SHA 일치. 패치SHA256 720a0e1fc8f22354b556cb45a58ec8ba659bca2c9bb30a76ca35909211059fed·git apply --check 무충돌 |
+| 인수 범위 | 기존 두 Opaque UniversalForward 셰이더에 _DBUFFER_MRT1/2/3 변종·DBuffer.hlsl include·최종 표면 계산 뒤 guarded ApplyDecalToSurfaceData/법선 반영 SampleSH 추가. 두 수신 추가를 제거하면 원래 byte와 완전 일치. 재질 GUID/속성·geometry·shadow/depth·Core·기존 r5 VFX 불변 |
+| 후보 SHA256 | HellGroundPBR 93896381f9dc33efaa0bf1a02c7942f170402192e272a977c4e82c02f077a218, A2RootSurface e49e7350cd96de8385feb53e6aa5aaac0d43f17c99aebecbd1104c85fca9c6ec. 분리 문서 UNITY_A2_DECAL_RECEIVER_20261101.md는 맵 원문9e09c8ce42758cf88910253b62af4ce5ebff5932804153e2b0ec399232123c5b과 일치 |
+| 설치 계약 | 자기 설치 URP com.unity.render-pipelines.universal@ffe395a3a1d1의 Lit.shader/LitForwardPass.hlsl/DBuffer.hlsl 원문에서 변종·인수 SurfaceData/InputData·수신→GI→PBR 순서를 대조. 이 소스 대조는 Shader 컴파일 통과가 아님 |
+| 현재 미완료 | 이전의 '맵 수신 코드 준비 대기'는 이 소스 후보 인수로 해소했다. 실제 Unity import/변종0오류·동일프레임 지면/뿌리/목교 off/on·무데칼 회귀·r5 접지/회복/넉백1x·새빌드/M1/16초 전후·초광폭·최종 판정은 모두 미완료. r4 VISUAL FAIL/MQ READY0 유지 |
+| 사용자 보호 | 실제 dota2 PID4892 생존을 인수 전에 재확인. 새 Unity/MCP Editor/Player/빌드/대기자/인코딩/무거운 검사0·passed CPU검사 반복0. 소스/문서/원격 복구점만 진행 |
+
+원본·인수 영수증: I:/EXODUSER-Storage/demo-art/impact/decal-receiver-intake-r5/. 별도 맵 수신 계약은 [UNITY_A2_DECAL_RECEIVER_20261101.md](../engine/UNITY_A2_DECAL_RECEIVER_20261101.md)를 따른다. 소스 인수와 실제 표시 성공을 구분하며, 도타 부재와 기존 실행 안전조건 확인 전에는 검수 실행을 재개하지 않는다.
