@@ -1,11 +1,31 @@
 // Dependency-free web staging. Never copy the repository root as static output.
 import {execFileSync} from 'node:child_process';
-import {readFileSync,mkdirSync,existsSync,linkSync,copyFileSync,statSync,writeFileSync} from 'node:fs';
+import {readFileSync,mkdirSync,existsSync,linkSync,copyFileSync,statSync,writeFileSync,lstatSync,constants} from 'node:fs';
 import {resolve,dirname,sep} from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {selectWebRuntimeFiles} from './web-runtime-manifest.mjs';
 import {planWebDerivedAssets,WEB_DERIVED_SIDECAR} from './web-derived-assets.mjs';
 
-const root=process.cwd(),out=resolve(root,process.argv[2]||'web-dist');
+export function stageWebRuntimeFile(source,dest,io={}) {
+ const {linkSync:link=linkSync,copyFileSync:copy=copyFileSync,lstatSync:lstat=lstatSync}=io;
+ const regularFile=path=>{const stat=lstat(path);if(!stat.isFile()||stat.isSymbolicLink())throw new Error('Staging source/destination must be a regular non-symlink file: '+path);return stat;};
+ regularFile(source);
+ try{link(source,dest);return 'hardlink';}catch(error){
+  const sourceStat=regularFile(source); // EISDIR can describe an unsupported link on exFAT; recheck its actual source.
+  if(error.code==='EEXIST'){
+   const destStat=regularFile(dest);
+   // A zero inode is not proof of identity on filesystems without hard links.
+   if(sourceStat.ino>0&&sourceStat.dev===destStat.dev&&sourceStat.ino===destStat.ino)return 'existing-hardlink';
+   throw error;
+  }
+  if(!['EXDEV','ENOTSUP','EISDIR'].includes(error.code))throw error; // Permission errors remain failures.
+  try{lstat(dest);}catch(destinationError){if(destinationError.code!=='ENOENT')throw destinationError;copy(source,dest,constants.COPYFILE_EXCL);return 'copy';}
+  throw error; // Never overwrite a pre-existing file, directory, or symlink.
+ }
+}
+
+export function buildWebRuntime(outputDirectory='web-dist') {
+const root=process.cwd(),out=resolve(root,outputDirectory);
 if(!out.startsWith(root+sep)||out===root)throw new Error('Output must be a child of the workspace');
 if(existsSync(out))throw new Error('Use a fresh output directory; existing files are never deleted');
 // Reuse the reviewed desktop runtime manifest, without its Node/NW bootstrap.
@@ -37,16 +57,13 @@ mkdirSync(out,{recursive:true});let bytes=0;
 for(const entry of plan.entries){
   const p=entry.sourcePath,dest=resolve(out,entry.outputPath);if(!dest.startsWith(out+sep))throw new Error('Unsafe output path');
   mkdirSync(dirname(dest),{recursive:true});
-  try{linkSync(resolve(root,p),dest)}catch(e){
-    // macOS resolves NFC/NFD spellings to one file; accept only an identical hard link.
-    if(e.code==='EEXIST'){
-      const sourceStat=statSync(resolve(root,p)),destStat=statSync(dest);
-      if(sourceStat.dev!==destStat.dev||sourceStat.ino!==destStat.ino)throw e;
-    }else{if(!['EXDEV','EPERM','EACCES','ENOTSUP'].includes(e.code))throw e;copyFileSync(resolve(root,p),dest)}
-  }
+  stageWebRuntimeFile(resolve(root,p),dest);
   const stagedBytes=statSync(dest).size;if(stagedBytes!==entry.bytes)throw new Error('Staged media size changed: '+entry.outputPath);
   bytes+=stagedBytes;
 }
 if(plan.sidecar){writeFileSync(resolve(out,WEB_DERIVED_SIDECAR),plan.sidecar);bytes+=Buffer.byteLength(plan.sidecar);}
 if(bytes!==plan.bytes)throw new Error('Static output byte count changed during staging');
 console.log(JSON.stringify({output:out,files:plan.entries.length+(plan.sidecar?1:0),bytes,derived:plan.derived,logicalDerived:plan.logicalDerived,excluded:'source archives, cinematic work files, backups, tools, dependencies, Git history'}));
+}
+
+if(resolve(process.argv[1]||'')===fileURLToPath(import.meta.url))buildWebRuntime(process.argv[2]||'web-dist');

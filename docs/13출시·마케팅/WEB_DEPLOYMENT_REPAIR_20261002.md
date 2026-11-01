@@ -101,3 +101,17 @@ RED/GREEN 및 현재 목록 검증 원문: `I:/EXODUSER-Storage/codex-takeover/c
 | 미검증 경계 | Mac 보고 73logical/72physical 파생본의 전체 입력 hash·실산출물과 공개 HTTP/MIME/Range·WebP/FLAC/MP4 decode·실제 게임 화면은 이 소형 fixture와 별도로 root/Mac이 인수한다. raw web-dist 서버는 overrides를 적용하지 않으므로 배포 URL 재현 증거로 사용하지 않는다. main push·production workflow·공개 배포는 이 코드 작성 단위에서 수행하지 않는다. |
 
 URL와 MIME 지정은 [Vercel Build Output API 공식 configuration](https://vercel.com/docs/build-output-api/configuration)의 `overrides.path`·`contentType` 계약을 따른다. 별도 proxy/streaming 함수를 추가하지 않으며 실제 Range 지원은 배포/override-aware preview의 HTTP 응답으로 확인해야 한다. 원문 회귀는 `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-derived-link-*.log`, Unicode 실제 조건 RED는 `web-derived-unicode-alias-red.log`에 보존한다.
+
+## 2026-11-01 exFAT EISDIR staging 실패 한정 복구
+
+| 항목 | 정확한 동작·검증 범위 |
+|---|---|
+| 실제 장애 | 후보 `5df3c4b8216f8d4ee92e56e0cecfd12cc2f54c4e`의 전체 artifact 생성 중 I:의 `GLTFLoader.js`(96,550B)가 일반 파일임에도 hardlink에서 `EISDIR`로 중단했다. 권한 거부 또는 실제 디렉터리라고 단정하지 않는다. 기존 partial output은 삭제하거나 재사용하지 않는다. |
+| 복사 조건 | `stageWebRuntimeFile`로 I/O를 분리했다. source를 lstat로 일반 non-symlink 파일인지 확인하고 link 실패 직후 다시 확인한다. `EXDEV`·`ENOTSUP`·`EISDIR`만 목적지가 없을 때 `COPYFILE_EXCL`로 복사한다. 디렉터리·symlink·이미 있는 파일은 덮어쓰지 않는다. |
+| 권한·중복 | `EACCES`·`EPERM`은 복사로 전환하지 않고 원문 오류로 중단한다. `EEXIST`는 양쪽 일반 파일의 양수 inode와 dev가 같아 실제 동일 hardlink일 때만 허용한다. inode0만 같다는 이유로 동일 파일로 판정하지 않는다. 전역 권한·파일시스템 설정 변경0. |
+| 기존 gate | source/derivative hash·blob·size, 선택 목록·MIME·Unicode·업로드 상한 검사는 유지한다. 복사 후 실제 size 및 전체 staging byte 합계 검사도 유지한다. CLI는 직접 실행 때만 빌드하고, 테스트에서 helper import는 artifact를 만들지 않는다. |
+| 작은 회귀 | 기존 동작으로 실제 일반 파일 mock-link `EISDIR`를 RED로 재현했다(신규7개 중2PASS/5FAIL). 수정 후 일반 파일의 크기·SHA 보존, 실제 directory·mock lstat symlink 거절, 권한 오류, 기존 목적지 보존, 실패 중 source 유형 변경, 실제 동일 hardlink를 검증해 신규7/7 및 기존29 포함36/36·exit0이다. |
+| 실제 I: 확인 | 새 고유 소형 fixture에서 기본 Node I/O의 method=`copy`, source/destination 각각4,200B·SHA-256 `e6286da8fb5b7aea3223a0877935f0dbfe622c5010d5ce05b0ab0bc53ff991b3` 일치, source byte 변화0을 확인했다. 이 검사는 전체 약3.95GB artifact 완료·HTTP·브라우저 검수가 아니다. |
+| 반영 경계 | code1·test1·관련 docs2만 기존 후보 위에 정상 commit/push한다. 원본/파생 미디어·game/index·main·공개 배포·이전 partial artifact·G: 사용자 작업본을 변경하지 않는다. 전체 새 고유 output 및 Mac 1x/decode/HTTP 검수는 root/Mac 후속 인수 대상이다. |
+
+근거: `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-eisdir-stage-red.log`, `web-eisdir-stage-green.log`, `web-eisdir-real-fixture.json`.
