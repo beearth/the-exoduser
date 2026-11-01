@@ -14,11 +14,22 @@ const files=extract('FILES');
 const tracked=execFileSync('git',['ls-files','-z'],{maxBuffer:16*1024*1024}).toString().split('\0').filter(Boolean);
 const selected=selectWebRuntimeFiles(tracked,files,p=>readFileSync(resolve(root,p),'utf8'));
 for(const p of selected)if(!existsSync(resolve(root,p)))throw new Error('Missing tracked web runtime file: '+p);
-for(const p of ['index.html','game.html','stat-panel-ui.js','localization-runtime.js','video/title_motion_20261028.mp4',
+for(const p of ['index.html','game.html','stat-panel-ui.js','localization-runtime.js',
   'three-runtime.js','assets/vendor/three-r160/build/three.module.js',
   'assets/vendor/three-r160/examples/jsm/loaders/GLTFLoader.js',
   'assets/vendor/three-r160/examples/jsm/utils/BufferGeometryUtils.js']){
   if(!selected.includes(p))throw new Error('Missing required runtime file: '+p);
+}
+// Require the videos consumed by selected runtime sources, not a retired filename.
+const selectedCanonical=new Set(selected.map(p=>p.normalize('NFC')));
+for(const p of selected){
+  if(!/\.(html|js|css|mjs)$/.test(p))continue;
+  const source=readFileSync(resolve(root,p),'utf8');
+  for(const match of source.matchAll(/["'`](video\/[^"'`\r\n]+\.(?:mp4|webm)(?:[?#][^"'`\r\n]*)?)["'`]/gi)){
+    const video=match[1].split(/[?#]/)[0].normalize('NFC');
+    if(video.includes('${'))continue; // Dynamic prefixes remain the selector's responsibility.
+    if(!selectedCanonical.has(video))throw new Error('Missing required runtime file: '+video);
+  }
 }
 mkdirSync(out,{recursive:true});let bytes=0;
 for(const p of selected){

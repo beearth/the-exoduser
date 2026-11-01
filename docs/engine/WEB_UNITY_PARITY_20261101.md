@@ -59,3 +59,16 @@
 | 실제 전달 경계 | 복사 전 선택·정적 검증 결과다. 실제 web-dist, HTTP 검수, Actions/Vercel 업로드·공개 서비스 갱신은 아직 완료되지 않았다. user Player·기존3333 서버·G: 사용자 작업본·Unity 공통은 변경하지 않았다. |
 
 경로별 JSON과 RED/GREEN 원문은 `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-json-closure-selection.json`, `web-json-closure-root-red.log`, `web-json-closure-root-green.log`에 보존한다.
+
+## 2026-11-01 구 타이틀 필수 경로 차단 수정 — 후보 검수, main 미반영
+
+| 항목 | 변경과 실제 검증 범위 |
+|---|---|
+| 확인된 장애 | Actions #1402(41194496954)·#1403(41198389177)는 `tools/build-web.mjs`가 현재 소비되지 않는 `video/title_motion_20261028.mp4`를 필수로 요구해 Build에서 실패하고 Deploy를 건너뛰었다. |
+| 최소 수정 | 고정 핵심 진입·스크립트·Three 의존성 8경로의 필수 검사는 유지한다. 선택된 HTML/JS/CSS/MJS의 정적 `video/…mp4`·`video/…webm` 참조를 필수로 검사한다. 쿼리·fragment는 제거하고 NFC/NFD를 동일하게 대조한다. 동적 template prefix는 기존 선택기가 담당하며 미해석 경로를 고정 파일로 오판하지 않는다. |
+| 현행 영상 | `index.html`의 `video/fdg_intro.mp4`·`video/world_intro_v22b_steam.mp4`, `character-story-player.js`의 `video/warrior_story_v23_clean.mp4`가 현재 정적 소비 영상이다. 옛 타이틀 파일은 참조가 없으면 필수가 아니며 새 참조가 생기면 다시 필수다. |
+| 회귀 | 작은 임시 Git fixture에서 실제 build 스크립트를 실행했다. 옛 영상이 없는 정상 빌드 성공, 핵심 entry 누락 실패, 현행 세 영상 각각의 누락 실패를 검증했다. 기존 11검사를 유지해 총14/14·exit0. 최초 RED는12/14·exit1이며 실제 stale 오류를 재현했다. |
+| 실제 선택 검증 | 원본 전체 복사 없이 현행 선택3,095파일에 같은 사전 검증을 적용해 exit0. 선택 파일/미디어 byte 변화0. 검사 harness의 최초 모듈 상대경로 오류와 command-local safe.directory 미지정은 harness만 정정했으며 전역 설정 변경0이다. |
+| 전달 경계 | 같은 private 후보에 code/test/docs만 정상 보존한다. main·workflow·공개 배포·G: 사용자 작업본 변경0. 4,629,181,769B 총량의629,181,769B 초과, 월드 인트로102,204,634B의100MB 초과 및 공개402는 별도 해결·검수 대상이며 이 수정으로 배포 완료라 하지 않는다. |
+
+RED/GREEN 및 현재 목록 검증 원문: `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-stale-assert-{red,green,current-selection}.log`. 원본 영상·음악·그림의 byte와 게임 내용은 바꾸지 않았다.

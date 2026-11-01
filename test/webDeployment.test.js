@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {mkdtempSync,mkdirSync,writeFileSync,readFileSync,rmSync} from 'node:fs';
+import {mkdtempSync,mkdirSync,writeFileSync,readFileSync,rmSync,copyFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
+import {execFileSync,spawnSync} from 'node:child_process';
 import {join,resolve,sep} from 'node:path';
 import * as manifest from '../tools/web-runtime-manifest.mjs';
 import {checkStaticOutput} from '../tools/check-vercel-output.mjs';
@@ -140,4 +141,45 @@ test('the production workflow targets the existing project explicitly and serial
   assert.match(workflow,/VERCEL_ORG_ID: team_2BOa3cZFRrB3zZbZXIIdKhsf/);
   assert.match(workflow,/group: exoduser-vercel-production\s+cancel-in-progress: true/);
   assert.ok(workflow.indexOf('node tools/prepare-vercel-output.mjs')<workflow.indexOf('node tools/check-vercel-output.mjs'));
+});
+
+function runtimeBuildFixture(t,{missing}={}) {
+  const dir=fixture(t);
+  const entries=['index.html','game.html','stat-panel-ui.js','localization-runtime.js','three-runtime.js',
+    'assets/vendor/three-r160/build/three.module.js',
+    'assets/vendor/three-r160/examples/jsm/loaders/GLTFLoader.js',
+    'assets/vendor/three-r160/examples/jsm/utils/BufferGeometryUtils.js'];
+  const media=['video/fdg_intro.mp4','video/world_intro_v22b_steam.mp4','video/warrior_story_v23_clean.mp4'];
+  mkdirSync(join(dir,'tools'));
+  for(const name of ['build-web.mjs','web-runtime-manifest.mjs'])copyFileSync(new URL('../tools/'+name,import.meta.url),join(dir,'tools',name));
+  writeFileSync(join(dir,'build-nwjs.mjs'),'const FILES = ['+entries.map(name=>"'"+name+"'").join(',')+'];');
+  for(const path of [...entries,...media]) {
+    if(path===missing)continue;
+    mkdirSync(join(dir,...path.split('/').slice(0,-1)),{recursive:true});
+    writeFileSync(join(dir,path),path==='index.html'?'<source src="video/fdg_intro.mp4"><video src="video/world_intro_v22b_steam.mp4?rev=current"></video>':path==='game.html'?"const story='video/warrior_story_v23_clean.mp4';":'fixture');
+  }
+  if(missing)rmSync(join(dir,missing),{force:true});
+  execFileSync('git',['init','--quiet'],{cwd:dir,windowsHide:true});
+  execFileSync('git',['add','--','build-nwjs.mjs','tools','index.html','game.html','stat-panel-ui.js','localization-runtime.js','three-runtime.js','assets','video'].filter(path=>path!==missing),{cwd:dir,windowsHide:true});
+  return spawnSync(process.execPath,[join(dir,'tools/build-web.mjs'),'web-dist'],{cwd:dir,encoding:'utf8',windowsHide:true});
+}
+
+test('current web build succeeds without the unreferenced legacy title video',t=>{
+  const run=runtimeBuildFixture(t);
+  assert.equal(run.status,0,run.stderr);
+  assert.equal(JSON.parse(run.stdout).files,11);
+});
+
+test('current web build rejects a missing required entry',t=>{
+  const run=runtimeBuildFixture(t,{missing:'stat-panel-ui.js'});
+  assert.notEqual(run.status,0);
+  assert.match(run.stderr,/Missing required runtime file: stat-panel-ui.js/);
+});
+
+test('current web build rejects a missing video actually referenced by runtime HTML or JS',t=>{
+  for(const video of ['video/fdg_intro.mp4','video/world_intro_v22b_steam.mp4','video/warrior_story_v23_clean.mp4']){
+    const run=runtimeBuildFixture(t,{missing:video});
+    assert.notEqual(run.status,0);
+    assert.ok(run.stderr.includes('Missing required runtime file: '+video),run.stderr);
+  }
 });
