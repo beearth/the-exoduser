@@ -1,5 +1,13 @@
 # 웹 자동 배포 실패 복구 — 2026-10-02
 
+## 2026-11-01 배포 선택기 후속 후보 — 제작 원본 18파일만 제외
+
+`codex/h5-web-delivery-20261101`의 `tools/web-runtime-manifest.mjs` 후보는 현재 웹 진입 HTML·JS·CSS·선택된 JSON에서 실제 소비가 확인되지 않은 프롤로그 구판 `assets/cutscene/prologue/_old_20260727/` 15PNG(99,072,910바이트), SOUTH 수정 전 제작 베이스 `assets/map/ch1/baked_spike/south_visual_pass/CH1_SOUTH_BASE.png`(31,877,268바이트), 맵 백업 `assets/map/ch1/boss_room_bg_old.png`(2,754,665바이트)와 `assets/map/ch1/ground_dark_soil_backup.png`(2,749,740바이트)만 정적 선택에서 뺀다. [프롤로그 원본](../cinematic/PROLOGUE_PROMPTS_GPT.md)은 `_old_20260727/`를 구판 백업으로, [SOUTH 제작 기록](../4.1맵디자인+설정/CH1_PAINTED_PHASE2_SOUTH_CANARY.md)은 `CH1_SOUTH_BASE.png`를 build base로 분류한다. 실제 `game.html`은 SOUTH `chunk_*.png`를 참조한다. 원본 파일 byte·게임 코드·음악·영상은 바꾸지 않는다. 향후 이 네 범주의 파일을 정확한 런타임 경로로 직접 참조하면 선택기가 다시 포함한다.
+
+선택 목록 계산은 **3,134파일·4,829,417,882바이트 → 3,116파일·4,692,963,299바이트**, 18파일·136,454,583바이트 절감, 새 선택 파일0이다. 로고, 로딩 35장×3비율=105이미지와 manifest, 프롤로그 현행 p01.jpg·CH1 실행 chunk, 음악77·sfx346·언어27은 보존됐다. 경로별 전후 목록은 `I:/EXODUSER-Storage/design/web-unity-parity-20261101/candidate-selection-manifest.json`; 작은 정상/정확 참조 회귀는 `test/webDeployment.test.js` 7/7 PASS. 이는 **후보 선택 계산**이며 4.8GB 실복사·배포·실게임 검수는 아니다.
+
+남은 차단: 총량이 프로젝트 사전 예산 4,000,000,000바이트를 **692,963,299바이트 초과**하고 `video/world_intro_v22b_steam.mp4` 102,204,634바이트가 개별100,000,000바이트 검사도 넘는다. `ffprobe` 헤더는 H.264 1920×1080+AAC, 113.701초·7,191,115bps로 확인했고 원본 SHA-256은 `3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f`이다. 현재 영상·음원 재인코딩, 필수 파일 삭제, 임의 상한 변경은 하지 않는다. 별도 단위에서 실제 사용 자원을 더 증명하거나 동일 스트림 보존 remux/배포 경로를 검증해야 하며, 이 후보를 main에 넣어도 즉시 정상 배포할 수 있다는 뜻은 아니다.
+
 ## 2026-10-27 킬루가문 영상 교체 배포의 용량 검사 복구
 
 - 교체 영상이 포함된 `main/0a81912b2e4e86e326538afd7f91626ea1729671`의 [Deploy and Build 실행](https://github.com/beearth/the-exoduser/actions/runs/40450295727)은 정적 업로드 합계 4,003,685,155바이트로 프로젝트 사전 예산 4,000,000,000바이트를 초과해 실패했다. 영상 파일의 게임 로컬 적용과 GitHub main 반영은 이 실패와 구분한다.

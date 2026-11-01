@@ -5,8 +5,15 @@ export function isMapAuthoringSource(path) {
     || /^assets\/map\/ch1\/(?:rottenwood_field_rootworld_master_v2|rottenwood_poison_master_higgsfield_v2_wide|rottenwood_poison_tree_detail_v3_source)\.png$/.test(normalized);
 }
 
+function isRetiredWebSource(path) {
+  const normalized=path.replaceAll('\\','/').normalize('NFC');
+  return /^assets\/cutscene\/prologue\/_old_20260727\//.test(normalized)
+    || /^assets\/map\/ch1\/(?:baked_spike\/south_visual_pass\/CH1_SOUTH_BASE|boss_room_bg_old|ground_dark_soil_backup)\.png$/.test(normalized);
+}
+
 function isWebAuthoringSource(path) {
   return isMapAuthoringSource(path)
+    || isRetiredWebSource(path)
     || /\/(?:[^/]*_sources|_unity_preview|_p11_candidates|_grok_qa)\//.test(path)
     || /^assets\/video-(?:bases|tests)\//.test(path)
     || /^assets\/map\/.*\/(?:master\.png|[^/]*_MASTER\.png)$/i.test(path)
@@ -40,9 +47,9 @@ export function selectWebRuntimeFiles(tracked,entryFiles,readSource) {
     const exact=new Set([...references].filter(ref=>available.has(ref)));
     const prefixes=[...references].filter(ref=>!available.has(ref));
     for(const {path,canonical} of paths) {
-      if(selected.has(path)||isWebAuthoringSource(path))continue;
+      if(selected.has(path)||(isWebAuthoringSource(path)&&!(isRetiredWebSource(path)&&exact.has(canonical))))continue;
       if(exact.has(canonical)||prefixes.some(ref=>canonical.startsWith(ref))){selected.add(path);changed=true;}
     }
   }
-  return tracked.filter(path=>selected.has(path)&&!isWebAuthoringSource(path));
+  return tracked.filter(path=>selected.has(path)&&(!isWebAuthoringSource(path)||(isRetiredWebSource(path)&&references.has(path.normalize('NFC')))));
 }
