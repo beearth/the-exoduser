@@ -67,3 +67,5 @@ UI 최종 Desktop 완료 전 Unity/Player/빌드/선예약0. 완료 후 최신�
 
 ## 2026-11-01 바닥 장판 역할의 별도 수정 후보
 중심형 강타/악의구의 lift0 계약은 유지한다. 사용자가 보고한 가시덫은 바닥 장판이므로, 별도 NativeGroundSkillSurface 메시로 지면+.025u를 정점마다 따르며 공통 SpriteRenderer billboard에서 제외한다. 회복 영역 링72점은 지면+.03u다. 2D/중심형/전투 수치는 유지. [원인·규격·659검사와 실제Player 미검수 경계](UNITY_RM_INT_RUNTIME_HOOK_20261028.md#2026-11-01-사용자-장판-공중-배치-결함--수정-후보). 이 후보의 빌드/실화면/공통/Desktop은 NOT_READY이며 위 이전 전사 후보의 PASS를 재사용하지 않는다.
+
+2026-11-01 Mac 선택 이식 후속: 위 `NOT_READY`는 PC 원시 후보 시점이다. Mac 개인 브랜치 공식 ARM64 Settings QA 빌드·Metal M1·실제 1x 창 검수는 완료했다. 평지/목교 가시덫은 지면 배치가 보이며, 경사 표본 가림과 성역 3D 식별성 부족으로 전체 `VISUAL VERDICT: RETOUCH`이다. 공통/Desktop은 미반영. [Mac 실물 결과](UNITY_RM_INT_RUNTIME_HOOK_20261028.md#mac-실물-결과--2026-11-01).

@@ -491,3 +491,18 @@ Shore는 고정앵글러 주변을 피한 후 z−52~−42에서 다시28u 굽�
 | Player 검사 진입 | `--unity-facing-ground-qa`는 절대 `-output` 및 별도 `--unity-qa-sandbox`와 `NativeQaSandbox.Active`가 있어야 시작한다. 가시덫은 평면·경사·목교, 성역은 메시·링을 검사한다. 적은 정지/미세이동/세로방향/실제역전/공격 상태를 Player 안에 주입하여 1920×1080 실제 창을 캡처한다. 목교는 직접 세계 카메라 3840×1080 캡처도 저장한다. 주입 검사이므로 자연 플레이 판정은 별개다. |
 | 실물 신원 | 공식 `PortVerification.Build -settingsQa true`의 `EXODUSER Settings QA` / `com.fordeargamers.exoduser.settingsqa` ARM64 앱을 개인 입력 복사본에서 만들고, 개인 브랜치 커밋·비강제 푸시·원격 SHA 재확인 뒤에만 빌드한다. 일반 앱/사용자 저장과 분리한다. |
 | 남은 검수 | 위 표의 Player/M1/GPU/캡처·음향·저장 전후 결과는 빌드 완료 후 별도 기록한다. 여기의 순수 검사만으로 시각 PASS를 선언하지 않는다. |
+
+### Mac 실물 결과 — 2026-11-01
+
+위의 `검수0` 및 `NOT_READY`는 PC 원시 후보 시점의 기록이다. 후속 Mac 선택 이식의 실제 판정은 아래와 같다.
+
+| 항목 | 실제 결과 |
+|---|---|
+| 소스·빌드 | 개인 브랜치 `codex/mac-facing-ground-qa-20261101` 코드 커밋 `d0576e2fbd03f2da6f9e6b77aab8a599f331ee56` 원격 SHA 일치 후 별도 APFS 프로젝트에 소스 8표본 SHA 대조. 공식 Unity 6000.6.7f1 ARM64 `PortVerification.Build -settingsQa true -remodel-scenes 1`: `Succeeded`, errors0, `com.fordeargamers.exoduser.settingsqa`. 일반 제품 앱 실행/교체0. |
+| M1·GPU | 동일 QA 앱 `-batchmode` + Metal Apple M5 Pro, 23/23 `ok`, firstBlocked 빈값, exit0. 캡처는 headless world RT이며 HUD Repaint0이므로 이 표본을 GUI 합성 증거로 쓰지 않는다. |
+| 실제 창 3D | 비배치 1920×1080 창, 5방향 프레임+가시덫 평면/경사/등록 목교+성역 각1장, 목교 직접 세계 RT 3840×1080. receipt passed true; 방향 인덱스 4→4(미세이동)→6→0→0. 가시덫 메시289정점/512삼각형, 지면 높이 최대오차 0.000000084u, 목교 상판−지형 약1.001u. 성역 링 각72점/세계좌표/높이오차 0.000000002u. |
+| 실제 창 2D | 비배치 1920×1080 가시덫 원본 SpriteRenderer 활성, receipt passed true. 화면에서도 원본 붉은 원 표시. |
+| 무음·저장 | 3D/2D QA listener output peak0·직접 VideoPlayer0·drain 로그. 일반 제품 저장/roster/combat/settings/Preferences 11항목의 QA 전→M1 후→GUI 후 존재·크기·SHA 변경0. 각 QA 저장은 명시 절대 sandbox. |
+| 시각 판정 | `RETOUCH`: 평지 가시덫과 목교 널빤지의 장판은 지면에 붙어 보이고 기존 공중 billboard는 보이지 않는다. 경사 표본은 큰 나무 구조물에 가려져 화면 판정 불가. 성역은 메시/링 구조·높이 숫자는 정상이나 실제 3D 화면에서 식별할 만큼 보이지 않는다. 따라서 전체 장판 visual PASS는 보류. 후보가 성역 가시성을 새로 악화시켰는지는 기존 3D 비교 프레임이 없어 단정하지 않는다. 자연 전투·다수 동시 장판·성능은 미검수. |
+
+증거: `/Users/fordeargamers/exoduser-wt/_out/mac-facing-ground-qa-20261101/`의 `build-receipt.json`, `m1/m1-check.json`, `gui-3d/facing-ground-qa.json`, `gui-2d/facing-ground-qa.json`, 원본 PNG, `ordinary-before.json`·`ordinary-after-m1.json`·`ordinary-after-gui.json`.
