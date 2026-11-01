@@ -282,3 +282,19 @@ R4의전환로딩팁행누락을수정한다. NativeLoadingTips 승인4종/실�
 |재개 전제|실제 도타 부재와 기존 공식FIFO·메모리·무음·세이브 조건을 확인한 뒤 현재 빌드/3핵심SHA·새소스Unity tree 일치를 다시 대조. 기존 실패 원인을 먼저 확인하고 같은 패키지 M1부터 인수하며 성공 빌드를 자동 재빌드하지 않음. 그후 실제필드/월드/UI·같은크기/1x·MQ READY·기존단독통합자 공통/Desktop·정상 원본복원 필요|
 
 R4는 필수 로딩팁 누락 FAIL을 유지한다. R5는 소스/빌드 준비와 부분이식4팁만 확인되었고 실제시각 PASS·공통/바탕화면 완료가 아니다. 새 main API목록을 이 Unity 후보 위로 자동 merge하지 않았고, 외부 생성·유료 API 사용0이다.
+
+
+## 2026-11-01 R5 M1 시작 연결 읽기 진단 — 새 실행 없음
+
+|구분|근거와 한계|
+|---|---|
+|확인|기존 Windows PowerShell 이벤트에서 PID34712의 실제 m1-expanded-r5.ps1 호출과 EngineAvailable 16:14:00.5425824Z를 회수했다. 마지막 기록된 파이프라인은 HiddenDesktop.psm1 Add-Type(16:14:01.2998662Z)이다. 새 sandbox75644772 생성16:14:01.300Z·기존잠금16:14:01.402Z·부모실패처리16:14:02.829Z까지 연결된다. sandbox의 M1ID 귀속은 동시각 유일성에 따른 추론이다|
+|종료코드|관찰된 exit1은 바깥 Node package/M1 작업 결과다. 당시 자식 PowerShell의 exit/signal/close를 따로 기록하지 않아 원시자식종료코드1이나 강제종료를 확정하지 않는다. 실제 Player 생성·게임크래시·기능FAIL 모두 미확인|
+|메모리/로그|입구표본 commitFree34.2GB/Unity0, 반환표본34.3GB/Unity0. 기록된입구표본이지 전구간 원인배제는 아니다. 후보ID의 Player로그/guarddone/M1결과/기존trap파일은 없다. Application1000/1001/1026은16:13:50~16:14:10Z 창에서0건, EngineStopped403도해당창에없으나 종료원인의확증으로쓰지않음|
+|한도가설|확인가능한사용한도오류16:09:25/26Z보다276.829초뒤 후속실패다. 그사이빌드완료와뒤의Node실패처리·예약반환이실행됐다. 사용한도오류가직접원인이라는가설은확인되지않았고 지연정리·외부종료까지완전배제하지않음|
+|범위축소|진입스크립트전체미실행/패키지검사에서중단한것은아니다. 잠금쓰기 이후 슬롯확인·SaveSnapshot·숨은데스크톱/프로세스생성·guard후처리 중 정확지점은 원문오류부재로미확정. 빈sandbox는이전성공M1도같아Player미실행의증명이아님|
+|최소보완|I: 소유 package-and-m1-r5-tip.cjs와 m1-expanded-r5.ps1만 보완. 다음실행에서실제argv/cwd/스크립트SHA·자식PID/exit/signal/close/error·원문stdout/stderr·PS script-enter/before-cli/after-cli/terminating-error 위치/stack를별도파일로남긴다. 기존상위로그tee와도타차단을보존. 현재는문법만확인하고본문실행0|
+|다음M1만|기존package-and-m1-r5-tip.cjs --m1-only 선택경로를준비했다. 기존패키지검사반복없이저장된근거/Unity tree/실행전3핵심SHA를대조한뒤M1만시작하는미실행경로다. 전체212파일재해시나새패키지검사PASS주장0. 도타부재·기존공식FIFO/메모리/무음/세이브조건확인전사용금지|
+|보존|frozenCli68b7/Queue8a00·제품Core/Runtime소스·공용INDEX0/WORK635·원본3overlay불변. 새Unity/Player/빌드/브라우저/인코딩/대형검수·예약·대기자·재시도0. 진단보완은게임실행이나전체완료가아니다|
+
+원문근거와가설구분은 I:/EXODUSER-Storage/demo-art/unity-ui/ultrawide/R5_M1_읽기진단.json 및 recovery-20261101/m1-readonly/PowerShell_PID34712_기존이벤트.json을 따른다. 기존 R4 로딩팁누락FAIL·R5실화면/공통/Desktop미완료는유지한다.
