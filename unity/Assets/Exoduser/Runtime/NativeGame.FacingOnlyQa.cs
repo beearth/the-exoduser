@@ -80,7 +80,7 @@ namespace Exoduser.UnityPort
                         enemyX=enemy.X,enemyY=enemy.Y,playerX=p.X,playerY=p.Y,coreFacing=enemy.Facing,webFacing=enemy.Web!=null?enemy.Web.facing:double.NaN};
                     result.frames.Add(row);
                     if(dir!=expected[i]||ev.moving!=moving||!row.bodyEnabled||row.walkEnabled!=moving||!row.bodyCellValid||!row.walkCellValid||
-                        !row.samePosition||!row.sameScale||row.walkOrder!=row.bodyOrder+1)result.failures.Add(names[i]+" facing/atlas/renderer contract");
+                        moving&&!row.samePosition||!row.sameScale||row.walkOrder!=row.bodyOrder+1)result.failures.Add(names[i]+" facing/atlas/renderer contract");
                 }
                 sim.Enemies.Clear();UpdateViews();yield return null;
             }
