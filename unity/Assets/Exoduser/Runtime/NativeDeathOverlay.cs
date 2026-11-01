@@ -91,15 +91,16 @@ namespace Exoduser.UnityPort {
 
   // text: centred run list, letter-spaced, with optional shadow copies
   float Width(Font f,int size,string text,float ls,bool bold=false){var st=Style(f,size,bold);float w=0;foreach(char ch in text)w+=st.CalcSize(new GUIContent(ch.ToString())).x+ls;return w;}
+  void PaintDeathGlyph(Rect box,string glyph,GUIStyle style,bool outline){bool previous=NativeUiAudit.DrawingTextShadow;string profile=NativeUiAudit.DrawingTextShadowProfile;try{if(outline){NativeUiAudit.DrawingTextShadow=true;NativeUiAudit.DrawingTextShadowProfile="death-black-outline";}NativeUiAudit.Label(box,glyph,style);}finally{NativeUiAudit.DrawingTextShadow=previous;NativeUiAudit.DrawingTextShadowProfile=profile;}}
   float Text(float x,float y,float h,string text,Font f,int size,Color c,float ls,float shadowAlpha=0,float shadowY=1,float shadowSpread=0,bool bold=false){
    var st=Style(f,size,bold);float w=0;
    foreach(char ch in text){
     var g=ch.ToString();float cw=st.CalcSize(new GUIContent(g)).x;
     if(shadowAlpha>0){
-     st.normal.textColor=new Color(0,0,0,shadowAlpha*c.a);NativeUiAudit.Label(new Rect(x+w,y+shadowY,60,h),g,st);
-     if(shadowSpread>0)foreach(var d in new[]{new Vector2(-1,0),new Vector2(1,0),new Vector2(0,-1),new Vector2(0,1)}){st.normal.textColor=new Color(0,0,0,shadowAlpha*.35f*c.a);NativeUiAudit.Label(new Rect(x+w+d.x*shadowSpread,y+shadowY+d.y*shadowSpread,60,h),g,st);}
+     st.normal.textColor=new Color(0,0,0,shadowAlpha*c.a);PaintDeathGlyph(new Rect(x+w,y+shadowY,60,h),g,st,shadowSpread>0);
+     if(shadowSpread>0)foreach(var d in new[]{new Vector2(-1,0),new Vector2(1,0),new Vector2(0,-1),new Vector2(0,1)}){st.normal.textColor=new Color(0,0,0,shadowAlpha*.35f*c.a);PaintDeathGlyph(new Rect(x+w+d.x*shadowSpread,y+shadowY+d.y*shadowSpread,60,h),g,st,true);}
     }
-    st.normal.textColor=c;NativeUiAudit.Label(new Rect(x+w,y,60,h),g,st);w+=cw+ls;
+    st.normal.textColor=c;PaintDeathGlyph(new Rect(x+w,y,60,h),g,st,false);w+=cw+ls;
    }
    return w;
   }
@@ -115,11 +116,11 @@ namespace Exoduser.UnityPort {
    if(!active)return;Init();
    var old=GUI.matrix;var color=GUI.color;bool enabled=GUI.enabled;
    try {
-    float age=Age;float fade=EaseOut(age/defs.timing.fade);
-    GUI.matrix=Matrix4x4.identity;
+    float age=Age;float fade=EaseOut(age/defs.timing.fade);NativeUiViewport.FillScreen(new Color(0,0,0,fade));
+    GUI.matrix=NativeUiViewport.Matrix;
     // background: "url(cin_remember_wide) center/cover" over the viewport; the dark radial gradient behind it is fully covered
-    float sc=Mathf.Max(Screen.width/(float)bg.width,Screen.height/(float)bg.height);float iw=bg.width*sc,ih=bg.height*sc;
-    GUI.color=new Color(1,1,1,fade);NativeUiAudit.DrawTexture(new Rect((Screen.width-iw)/2,(Screen.height-ih)/2,iw,ih),bg,ScaleMode.StretchToFill,false);
+    float sc=Mathf.Max(NativeUiSafeArea.DesignWidth/bg.width,NativeUiSafeArea.DesignHeight/bg.height);float iw=bg.width*sc,ih=bg.height*sc;
+    GUI.color=new Color(1,1,1,fade);NativeUiAudit.DrawTexture(new Rect((NativeUiSafeArea.DesignWidth-iw)/2,(NativeUiSafeArea.DesignHeight-ih)/2,iw,ih),bg,ScaleMode.StretchToFill,false);
     float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
     DrawLight(age,fade);
@@ -192,13 +193,13 @@ namespace Exoduser.UnityPort {
    GUI.color=Color.white;
    PetText(new Rect(369,935.5f,459,76.5f),CrowLine,a);PetText(new Rect(1152,955,285,63),CatLine,a);
   }
-  // 14.72px x 1.5 = 22.08px Malgun Gothic bold white, line-height 1.25, vertically centred, browser wrapping (breaks between Hangul syllables)
+  // 22px Noto Sans KR Bold white; minimum line step 27.6, actual CalcSize height + 4 if larger; vertically centred with Hangul wrapping
   void PetText(Rect box,string text,float a){
-   const int size=22;const float lh=22.08f*1.25f;var st=Style(sansBold,size);var lines=Wrap(text,box.width,st);
+   const int size=22;var st=Style(sansBold,size);var lines=Wrap(text,box.width,st);float lh=22.08f*1.25f;foreach(var line in lines)lh=Mathf.Max(lh,st.CalcSize(new GUIContent(line)).y+4);
    float y=box.y+(box.height-lines.Count*lh)/2f;
    foreach(var line in lines){
-    st.normal.textColor=new Color(0,0,0,.95f*a);foreach(var d in new[]{new Vector2(0,1.5f),new Vector2(-2,0),new Vector2(2,0),new Vector2(0,-1),new Vector2(0,3)})NativeUiAudit.Label(new Rect(box.x+d.x,y+d.y,box.width+8,lh),line,st);
-    st.normal.textColor=new Color(1,1,1,a);NativeUiAudit.Label(new Rect(box.x,y,box.width+8,lh),line,st);y+=lh;
+    st.normal.textColor=new Color(0,0,0,.95f*a);foreach(var d in new[]{new Vector2(0,1.5f),new Vector2(-2,0),new Vector2(2,0),new Vector2(0,-1),new Vector2(0,3)})PaintDeathGlyph(new Rect(box.x+d.x,y+d.y,box.width+8,lh),line,st,true);
+    st.normal.textColor=new Color(1,1,1,a);PaintDeathGlyph(new Rect(box.x,y,box.width+8,lh),line,st,false);y+=lh;
    }
   }
   static bool Hangul(char c){return c>=0xAC00&&c<=0xD7A3;}

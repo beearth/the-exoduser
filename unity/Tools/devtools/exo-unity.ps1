@@ -9,6 +9,7 @@ param(
     [string]$ArgsJson,
     [int]$TimeoutSec = 600,
     [switch]$NoRefresh,
+    [switch]$ForceD3D11,
     [switch]$Json,
     [switch]$Takeover,
     [int]$WaitMin = 40,
@@ -29,6 +30,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
 $Root      = 'I:\EXODUSER-Storage\unity-jobs'
 $LockPath  = Join-Path $Root '_pc_lock.json'
@@ -423,6 +425,8 @@ function Q([string]$s) { if ($s -match '\s') { return '"' + $s + '"' } return $s
 
 function Cmd-Start {
     $wt = Norm-Worktree $Worktree
+    $editorGraphics = @(); if ($ForceD3D11) { $editorGraphics += '-force-d3d11' }
+    if ($DryRun) { Write-Output ('[dryrun] start graphics=' + (Format-ArgList $editorGraphics)); return }
     $qd = Get-QueueDir $wt
     $sv = Read-Json (Join-Path $qd 'server.json')
     if ($sv -and (Test-Alive $sv.pid)) { Say ("이미 실행 중: pid {0} state={1}" -f $sv.pid, $sv.state); return }
@@ -436,6 +440,7 @@ function Cmd-Start {
         $log = Join-Path $qd ('logs\server-' + (Stamp) + '.log')
         $a = @('-batchmode', '-projectPath', (Q (Join-Path $wt 'unity')), '-exoJobServer', (Q $qd), '-logFile', (Q $log))
         $a += @('--unity-qa-sandbox', (Q (New-Sandbox ('server-' + (Stamp)))))
+        $a += $editorGraphics
         $p = Start-Process -FilePath $UnityExe -ArgumentList $a -PassThru -WindowStyle Hidden
         # 잠금 소유자를 서버로 바꾼다(이 CLI 가 끝나도 서버 pid 로 stale 판정)
         [IO.File]::WriteAllText($LockPath, ([ordered]@{ owner = 'devtools-server'; pid = $p.Id; worktree = $wt; queueDir = $qd; startedAt = (NowIso); startedBy = $PID; reservedAs = [string]$Owner; token = $script:LockToken } | ConvertTo-Json), $Utf8NoBom)
@@ -586,6 +591,16 @@ function Cmd-Run {
     }
 
     # --- 서버 없음: 1회 batch 실행(같은 잠금 + 티켓 순번)
+    # 예약 순번 전에는 batch 티켓을 만들지 않는다. 구버전 FIFO 실행기의 앞을 막지 않기 위한 읽기 전용 대기다.
+    $turnDeadline = (Get-Date).AddMinutes($WaitMin); $lastFront = ''
+    while ($true) {
+        $reservationTurn = @(Get-Reservations)
+        $frontBeforeTicket = ''; if ($reservationTurn.Count -gt 0) { $frontBeforeTicket = [string]$reservationTurn[0].owner }
+        if (Test-ExoTicketTurn -FirstTicket '' -Ticket '' -Owner $Owner -FrontReservationOwner $frontBeforeTicket) { break }
+        if ((Get-Date) -gt $turnDeadline) { throw ('예약 순번 대기 시간 초과(' + $WaitMin + '분): ' + $frontBeforeTicket) }
+        if ($lastFront -ne $frontBeforeTicket) { Say ('티켓 생성 전 예약 대기: ' + $frontBeforeTicket + ' (batch 티켓 없음)'); $lastFront = $frontBeforeTicket }
+        Start-Sleep -Seconds $PollSec
+    }
     New-Item -ItemType Directory -Force -Path $Tickets | Out-Null
     $ticket = Join-Path $Tickets ((Stamp) + '_' + $id + '.json')
     [IO.File]::WriteAllText($ticket, ([ordered]@{ pid = $PID; worktree = $wt; method = $Method } | ConvertTo-Json), $Utf8NoBom)
@@ -599,7 +614,12 @@ function Cmd-Run {
                 if ($tj -and (Test-Alive $tj.pid)) { $first = $t.FullName; break }
                 if ($tj -or $t.LastWriteTimeUtc -lt [DateTime]::UtcNow.AddMinutes(-2)) { Remove-Item -LiteralPath $t.FullName -Force -ErrorAction SilentlyContinue }
             }
-            if ($first -eq $ticket) { break }
+            $reservations = @(Get-Reservations)
+            $frontOwner = ''; if ($reservations.Count -gt 0) { $frontOwner = [string]$reservations[0].owner }
+            if (Test-ExoTicketTurn -FirstTicket $first -Ticket $ticket -Owner $Owner -FrontReservationOwner $frontOwner) {
+                if ($first -ne $ticket) { Say ('예약 선두 우선: ' + $Owner + ' (단일 PC 잠금 재확인)') }
+                break
+            }
             if ($lastMsg -ne $first) { Say ("순번 대기: 앞 티켓 " + (Split-Path $first -Leaf)); $lastMsg = $first }
             Start-Sleep -Seconds 2
         }

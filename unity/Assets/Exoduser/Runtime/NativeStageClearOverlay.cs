@@ -33,7 +33,8 @@ namespace Exoduser.UnityPort {
   readonly NativeStageClearPresentation.NextAction nextAction=new NativeStageClearPresentation.NextAction();
   bool keyboardReady;
   public NativeStageClearPresentation.Layout LastLayout{get;private set;}
-  public Rect ButtonScreenRect{get{if(DiagnosticDetails){float ds=Mathf.Min(1f,Mathf.Min(Screen.width/1280f,Screen.height/900f));return new Rect((Screen.width-1920*ds)/2+850*ds,Screen.height-1080*ds+956*ds,220*ds,44*ds);}var l=NativeStageClearPresentation.Arrange(Screen.width,Screen.height,PresentationModel());return new Rect(l.Next.X,l.Next.Y,l.Next.Width,l.Next.Height);}}
+  NativeStageClearPresentation.Layout SafeLayout(){var l=NativeStageClearPresentation.Arrange(NativeUiSafeArea.DesignWidth,NativeUiSafeArea.DesignHeight,PresentationModel());var a=NativeUiViewport.Current;l.Panel=new NativeStageClearPresentation.Area(a.X+l.Panel.X*a.Scale,a.Y+l.Panel.Y*a.Scale,l.Panel.Width*a.Scale,l.Panel.Height*a.Scale);l.Next=new NativeStageClearPresentation.Area(a.X+l.Next.X*a.Scale,a.Y+l.Next.Y*a.Scale,l.Next.Width*a.Scale,l.Next.Height*a.Scale);l.Scale*=a.Scale;return l;}
+  public Rect ButtonScreenRect{get{if(DiagnosticDetails){var a=NativeUiViewport.Current;return new Rect(a.X+850*a.Scale,a.Y+956*a.Scale,220*a.Scale,44*a.Scale);}var l=SafeLayout();return new Rect(l.Next.X,l.Next.Y,l.Next.Width,l.Next.Height);}}
   public bool RequestNext(){return nextAction.Request(active,Age,OnNext);}
   public Kind ShownKind{get{return input.kind;}}
   // B11: the "물약 N회" stat is G._sStats.potions = AutoPotionState.PotionsUsed (Unity value; null stays 미이식 for callers without a potion state)
@@ -165,10 +166,10 @@ namespace Exoduser.UnityPort {
    try{
     float a=Mathf.SmoothStep(0,1,Mathf.Clamp01(Age/defs.timing.fade));GUI.matrix=Matrix4x4.identity;GUI.color=Color.white;LayoutOverflowCount=0;MissingGlyphs=0;VisibleTexts.Clear();
     if(DiagnosticDetails){
-     float ds=Mathf.Min(1f,Mathf.Min(Screen.width/1280f,Screen.height/900f));GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*ds)/2,Screen.height-1080*ds,0),Quaternion.identity,Vector3.one*ds);Layout(a);GUI.matrix=Matrix4x4.identity;
-     Paint(new Rect(16,16,Mathf.Max(1,Screen.width-32),32),"진단 모드 · 원본 점수/통계 입력 상태",BodyFont(),16,C(255,190,120),TextAnchor.MiddleLeft);return;
+     GUI.matrix=NativeUiViewport.Matrix;Layout(a);GUI.matrix=NativeUiViewport.Matrix;
+     Paint(new Rect(16,16,1888,32),"진단 모드 · 원본 점수/통계 입력 상태",BodyFont(),16,C(255,190,120),TextAnchor.MiddleLeft);return;
     }
-    var m=PresentationModel();var l=NativeStageClearPresentation.Arrange(Screen.width,Screen.height,m);LastLayout=l;var labels=CurrentLabels();var body=BodyFont();
+    var m=PresentationModel();var l=SafeLayout();LastLayout=l;var labels=CurrentLabels();var body=BodyFont();
     Fill(new Rect(0,0,Screen.width,Screen.height),new Color(0,0,0,.68f*a));
     GUI.matrix=Matrix4x4.TRS(new Vector3(l.Panel.X,l.Panel.Y,0),Quaternion.identity,Vector3.one*l.Scale);
     GUI.color=new Color(1,1,1,a);Grad(new Rect(0,0,560,l.LogicalHeight),C(20,14,11,.96f),C(8,6,5,.98f));GUI.color=Color.white;

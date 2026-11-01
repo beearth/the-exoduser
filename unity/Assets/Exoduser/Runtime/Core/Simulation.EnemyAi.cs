@@ -11,6 +11,7 @@ namespace Exoduser.UnityPort.Core
         sealed class ShotWarning { public EnemySpawn Owner; public double T = 60; public bool Dead; public double X, Y; public readonly List<ProjSpec> Shots = new List<ProjSpec>(); }
         public sealed class FieldZone { public string Kind; public double X, Y, Life, R, Dmg, El; }
 
+        public Func<double,double,double,bool> WorldPointVisible; // actual host camera for view culling/leash only
         public float PlayerFreezeSlow;                              // P._freezeSlow (frames, halves the walk like _webSlow)
         public readonly List<FieldZone> FieldZones = new List<FieldZone>();   // trap / iceZone / blizzard bullets (zero-speed projectiles of the web): TickFieldZones is their projectile-loop half
         public float PlayerTrapSlow;                                // P._trapSlowT (frames, halves the walk like _webSlow)
@@ -92,6 +93,7 @@ namespace Exoduser.UnityPort.Core
         {
             EnsureEnemyLoop();
             tickMs += 16.6667;
+            tickCtx.WorldPointVisible=WorldPointVisible;
             tickCtx.PlayerX = Player.X; tickCtx.PlayerY = Player.Y; tickCtx.CamX = Player.X; tickCtx.CamY = Player.Y;
             tickCtx.Stage = Config.StageIndex; tickCtx.Kills = Kills; tickCtx.ParryLessonActive = false;
             webEns.Clear();

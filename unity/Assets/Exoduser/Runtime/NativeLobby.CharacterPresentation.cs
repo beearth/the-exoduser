@@ -83,8 +83,8 @@ namespace Exoduser.UnityPort
   void CloseCharacterPresentationVideo(){if(characterPresentationPlayback!=null&&characterPresentationPlayback.Video!=null)characterPresentationPlayback.Video.Close();presentationVideoVisual=-1;}
   void DrawCharacterVisualPresentation()
   {
-   if(Screen.width>=1100){DrawSilverCharacterVisual();return;}
-   CharacterStyles();float w=Screen.width,h=Screen.height;int i=Mathf.Clamp(characterVisual,0,4);bool locked=i!=0;
+   if(NativeUiSafeArea.DesignWidth>=1100){DrawSilverCharacterVisual();return;}
+   CharacterStyles();float w=NativeUiSafeArea.DesignWidth,h=NativeUiSafeArea.DesignHeight;int i=Mathf.Clamp(characterVisual,0,4);bool locked=i!=0;
    float px=Mathf.Min(w*.04f,64),side=Mathf.Min(w*.26f,340),gap=Mathf.Min(w*.02f,28);
    float bodyY=Mathf.LerpUnclamped(128.467f,143.992f,(h-720f)/360f),actionY=h-Mathf.Min(h*.03f,30)-46.5f;
    float railHeight=122.5f+(h-720f)*.004167f,railY=actionY-18-railHeight,bodyHeight=Mathf.LerpUnclamped(384.211f,717.508f,(h-720f)/360f);
@@ -132,7 +132,7 @@ namespace Exoduser.UnityPort
   void DrawCharacterNamePresentation()
   {
    if(silverNamePanel==null){silverNamePanel=Resources.Load<Texture2D>("Art/ui/silver_hell/name_panel");silverNameInput=Resources.Load<Texture2D>("Art/ui/silver_hell/name_input");}
-   float w=Screen.width,h=Screen.height;Fill(new Rect(0,0,w,h),new Color(0,0,0,.90f));Rect panel=new Rect((w-440)/2,(h-335)/2,440,335);NativeUiAudit.Region(panel,"panel");Image(panel,silverNamePanel,ScaleMode.StretchToFill);
+   float w=NativeUiSafeArea.DesignWidth,h=NativeUiSafeArea.DesignHeight;Fill(new Rect(0,0,w,h),new Color(0,0,0,.90f));Rect panel=new Rect((w-440)/2,(h-335)/2,440,335);NativeUiAudit.Region(panel,"panel");Image(panel,silverNamePanel,ScaleMode.StretchToFill);
    float x=panel.x+41,y=panel.y;var noto=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular");
    string heading=CharacterDialogLabel("title",K("새 캐릭터 생성","Create Character"));
    var title=new GUIStyle(presentationNameTitle){font=NativeSilverHellUi.TextFont(NativeSilverHellUi.Font(),heading),fontStyle=FontStyle.Normal,fontSize=24,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset()};
@@ -173,7 +173,7 @@ namespace Exoduser.UnityPort
   }
   void DrawTraitFrame(Rect r,int visual,float railY)
   {
-   float viewT=(Screen.height-720f)/360f,baseHeight=Mathf.LerpUnclamped(312.75f,325.594f,viewT),yOffset=Mathf.LerpUnclamped(36.998f,195.953f,viewT);
+   float viewT=(NativeUiSafeArea.DesignHeight-720f)/360f,baseHeight=Mathf.LerpUnclamped(312.75f,325.594f,viewT),yOffset=Mathf.LerpUnclamped(36.998f,195.953f,viewT);
    float boxY=r.y+yOffset,boxWidth=r.width-16,firstRow=67.5f,baseRow=Mathf.LerpUnclamped(74.75f,79.031f,viewT);
    float textWidth=boxWidth-109;string[] titles=new string[3],bodies=new string[3];float[] titleHeights=new float[3],bodyHeights=new float[3],rowHeights=new float[3];float contentHeight=0;
    for(int i=0;i<3;i++){string[] bits=presentationTraits[visual,i].Split('|');titles[i]=VisualSelectionLabel(bits[1],TraitEnglish(visual,i));bodies[i]=VisualSelectionLabel(bits[2],TraitEnglishBody(visual,i));titleHeights[i]=PresentationWrappedHeight(presentationTraitTitle,presentationTraitTitleMeasure,titles[i],textWidth,21);bodyHeights[i]=PresentationWrappedHeight(presentationTraitBody,presentationTraitBodyMeasure,bodies[i],textWidth,34);rowHeights[i]=Mathf.Max(baseRow,titleHeights[i]+2+bodyHeights[i]+7);contentHeight+=rowHeights[i];}

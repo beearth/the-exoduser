@@ -1,5 +1,7 @@
 # 타이틀 메뉴 이식 (웹 index.html phase 2 → Unity NativeLobby) — 2026-10-28
 
+> 2026-11-02 현행 적용: [승인 A 파노라마·레이어 모션](UNITY_TITLE_SIGNBOARD_A_20261101.md). 타이틀은 전체 물리 화면을 비율 유지 cover하며 구형 영상/블러·중앙16:9 설명은 이력이다. 기존 R5 금속 버튼/입력 유지. 최종Windows b43c5804/errors0·같은M1 23단계·5120×1440 포함90실화면·설치본M1·기존Desktop 바로가기4속성 확인, 최종각실행 USER_SAVE0. Mac 수신·전체게임 아트 완료로 확대하지 않는다.
+
 브랜치 `claude/unity-pc-title-menu-20261028` (intro-skip `65e14f1bb`의 `LobbyKeys` 위에서). 웹 기준 = origin/main `index.html` 494~511(CSS)·4560~4810(`_buildTitleMenu`·`_selectTitleItem`·`_activateTitleItem`·`splashKey`). 디자인 = 디자인총괄 시안(2026-10-27), 사용자 승인 [승인-디자인-5].
 
 ## 값 대조 (웹 CSS → Unity `NativeLobby.TitleMenu.cs`, 1920×1080 무대)

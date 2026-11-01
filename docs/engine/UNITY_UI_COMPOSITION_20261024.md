@@ -1,5 +1,7 @@
 # 중앙 HUD와 양측 인벤토리 설계 — 2026-10-24
 
+> 2026-10-31 최신: 사이드 판·미니맵·상태·알림·실습은 실제 화면 끝, 무대·제목·모달·구슬/스킬바는 중앙. 다섯 창64px 메달 제목·성장 본문181px 확대·스킬16표시·원본 전체 로딩 규격은 [초광폭 현행 SSOT](UNITY_UI_ULTRAWIDE_20261031.md)의 첫 절을 따른다. 아래 이전 수치/검수는 이력이며 새 Player 검수 대기.
+
 상태: 구현 전 목표 구도. 실제 Mac Player 렌더·직접 입력·사용자 디자인 인수와 구분한다. 사용자 최신 “디아블로식이 나은거같아 저렇게하면 전체화면 디자인이 너무 어려워”를 따른다. 특정 작품의 고유 아트를 복제하지 않는다. 이전 전체폭 도킹은 2c37d3817에서 복구 가능하다.
 
 ## 확인된 문제
@@ -53,3 +55,8 @@ NativeHud/Layout와 NativeInventory/Dock의 표현만 변경한다. InventorySta
 [Mac HUD 실제 화면](previews/ui-composition-20261024/mac-hud.png) · [Mac 인벤토리 실제 화면](previews/ui-composition-20261024/mac-inventory.png) · [검수 영수증](UNITY_MAC_UI_VERIFICATION_20261024.json)
 
 QA 원본: `/Users/fordeargamers/Documents/Codex/2026-10-24/unity-mac-qa/ui-composition-6000.6.7f1`. HTML미리보기는 브라우저file URL보안정책으로 열리지 않았고 우회하지 않았다. 이후 실제Unity Player출력으로 검수했다. 과거 코드/도킹후보와 실패한키표시 후보는 보존했다.
+
+
+## 2026-10-31 안전 영역 후속
+
+현행 UI의 중앙 제목·모달·HP/MP/스킬 묶음은 논리1920×1080을 min(W/1920,H/1080)로 균등 fit하고 origin에 배치한다. 로비/캐릭터 정보판·미니맵·상태·안내·알림은 높이기준 H/1080 배율로 실제 화면 끝에 붙이며 가로폭으로 늘이지 않는다. 2560×1600의 중앙 origin은 y80, 3840×1080은 x960이다. 이 중앙 origin을 전체화면 검정 띠로 해석하지 않는다. 월드는 전체 physical viewport/고정세로FOV·수평확장이고, 배경·승인 확장 로딩은 각각의 비율/cover 계약을 따른다. 위 과거 전체폭/순검정 검수는 이력이다. 5개 해상도·파일명 W×H·글자 검사/실제 입력·검수 상태는 [현행 안전 영역 계약](UNITY_UI_ULTRAWIDE_20261031.md)을 따른다.

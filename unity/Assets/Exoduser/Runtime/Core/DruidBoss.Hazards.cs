@@ -180,7 +180,7 @@ namespace Exoduser.UnityPort.Core
                 if (p.Life <= 0)
                 {
                     if (p.RedBean) dead = true;
-                    else { double cdx = p.X - px, cdy = p.Y - py; if (cdx * cdx + cdy * cdy > 6250000) dead = true; else p.Life = 1; }
+                    else { double cdx = p.X - px, cdy = p.Y - py; if (cdx * cdx + cdy * cdy > 6250000 && (WorldPointVisible == null || p.Life <= -900 || !WorldPointVisible(p.X,p.Y,p.R+100))) dead = true; else p.Life = 1; }
                 }
                 if (dead) { p.Active = false; continue; }
                 double ox = p.X, oy = p.Y;

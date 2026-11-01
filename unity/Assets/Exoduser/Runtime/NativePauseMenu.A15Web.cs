@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort
   static readonly OptionDef DefBgm=new OptionDef("optBgm","bgmVol",2,OptionKind.Range,0,100,1,60,"pct");
   static readonly Color Bone=new Color32(217,214,208,255),Title=new Color32(222,219,213,255),Sub=new Color32(165,168,168,255),Dim=new Color32(129,132,132,255),Brass=new Color32(127,130,130,255);
   static readonly Color Line=new Color32(146,149,149,128),LineSoft=new Color32(146,149,149,46),LineTab=new Color32(146,149,149,77),BoxLine=new Color32(146,149,149,153),Danger=new Color32(176,40,28,255);
-  const float PagesX=96,PagesY=256,PagesW=1728,PagesH=727;
+  const float PagesX=96,PagesY=196,PagesW=1728,PagesH=787;
   readonly Dictionary<int,List<It>> a15Items=new Dictionary<int,List<It>>();
   readonly Dictionary<string,GUIStyle> a15Styles=new Dictionary<string,GUIStyle>();
   string a15ItemsLocale="";Texture2D windowBase,checkTex;Font myeongjo,cinzel;
@@ -186,23 +186,21 @@ namespace Exoduser.UnityPort
    Texture2D tex=windowBase;if(tex!=null)NativeUiAudit.DrawTexture(new Rect(0,0,1920,1080),tex,ScaleMode.StretchToFill,true);
    NativePanelTabBar.Draw(NativePanelTabBar.Preset.Settings,"settings");
    // Title block: SETTINGS (Cinzel) over the serif title, hairline 120% of the title width.
-   Spaced(new Rect(96,111,300,16),"SETTINGS",13,Sub,1.8f,FontStyle.Bold,true);
-   string title=W("title",T("설정","Settings"));float tw=TW(title,40,FontStyle.Bold);
-   Txt(new Rect(96,137,700,48),title,40,Title,TextAnchor.MiddleLeft,FontStyle.Bold);HLine(96,196,Mathf.Max(60,tw*1.2f),Line);
+   NativePanelTitle.Surface(new Rect(40,82,1840,120));NativePanelTitle.Draw(new Rect(700,72,520,64),W("title",T("설정","Settings")));
    // Tabs.
    bool navOn=GUI.enabled;if(keyList!=null&&keyList.Listening)GUI.enabled=false;
    string[] keys={"tab.game","tab.display","tab.audio","tab.controls"};string[] fb={T("게임","Game"),T("화면","Display"),T("사운드","Audio"),T("조작","Controls")};
    float x=96;
    for(int i=0;i<4;i++)
    {
-    string s=W(keys[i],fb[i]);float w=TW(s,18,FontStyle.Bold)+4;var r=new Rect(x,213,w,42);bool sel=tab==i;
+    string s=W(keys[i],fb[i]);float w=TW(s,18,FontStyle.Bold)+4;var r=new Rect(x,153,w,42);bool sel=tab==i;
     PointAt(r,i);bool focus=navigation.Focused&&navigation.Cursor==i;
-    Txt(new Rect(x+2,213+8,w,22),s,18,sel?Title:focus?Bone:Sub,TextAnchor.MiddleLeft,FontStyle.Bold);
-    if(sel)Fill(new Rect(x,253,w,2),new Color32(176,40,28,255));else if(focus)Fill(new Rect(x,253,w,1),Line);
+    Txt(new Rect(x+2,153+8,w,22),s,18,sel?Title:focus?Bone:Sub,TextAnchor.MiddleLeft,FontStyle.Bold);
+    if(sel)Fill(new Rect(x,193,w,2),new Color32(176,40,28,255));else if(focus)Fill(new Rect(x,193,w,1),Line);
     if(NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none)){if(tab!=i){tab=i;openSelect=-1;}navigation.Fence();}
     x+=w+40;
    }
-   HLine(96,255,1728,LineTab);
+   HLine(96,195,1728,LineTab);
    GUI.enabled=navOn;
    var items=Items();
    var pages=new Rect(PagesX,PagesY,PagesW,PagesH);

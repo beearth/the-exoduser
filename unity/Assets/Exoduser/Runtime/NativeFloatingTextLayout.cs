@@ -45,6 +45,8 @@ namespace Exoduser.UnityPort
         public sealed class Request {public Notice Notice;public float X,Y,Width,Height;public Box Box;}
         sealed class Slot {public float DX,DY,Seen;}
         readonly List<Box> occupied=new List<Box>();readonly List<Request> requests=new List<Request>();readonly Dictionary<long,Slot> slots=new Dictionary<long,Slot>();
+        float leftBound=8,rightBound=1912;
+        public void SetHorizontalBounds(float left,float right){if(float.IsNaN(left)||float.IsNaN(right)||float.IsInfinity(left)||float.IsInfinity(right)||right<=left)throw new ArgumentOutOfRangeException("right");leftBound=left;rightBound=right;}
         float now;public IList<Request> Requests{get{return requests;}}
         public void Clear(){BeginFrame(now);}
         public void BeginFrame(float time){now=time;occupied.Clear();requests.Clear();var dead=new List<long>();foreach(var s in slots)if(time-s.Value.Seen>2)dead.Add(s.Key);foreach(var id in dead)slots.Remove(id);}
@@ -56,7 +58,7 @@ namespace Exoduser.UnityPort
             float dx=box.X+box.Width/2-x,dy=box.Y+box.Height/2-y;if(dx*dx+dy*dy>radius*radius+.1f)return false;
             foreach(var o in occupied)if(new Box(box.X-2,box.Y-2,box.Width+4,box.Height+4).Overlaps(o))return false;return true;
         }
-        Box At(float x,float y,float width,float height){return new Box(Math.Max(8,Math.Min(1912-width,x-width/2)),Math.Max(128,Math.Min(864-height,y-height/2)),width,height);}
+        Box At(float x,float y,float width,float height){return new Box(Math.Max(leftBound,Math.Min(rightBound-width,x-width/2)),Math.Max(128,Math.Min(864-height,y-height/2)),width,height);}
         public Box Place(long id,float x,float y,float width,float height,int priority=DamagePriority){
             width=Math.Min(312,Math.Max(1,width));height=Math.Min(68,Math.Max(1,height));float radius=Radius(priority);Slot keep;
             if(slots.TryGetValue(id,out keep)){var held=At(x+keep.DX,y+keep.DY,width,height);if(Fits(held,x,y,radius)){occupied.Add(held);keep.Seen=now;return held;}}

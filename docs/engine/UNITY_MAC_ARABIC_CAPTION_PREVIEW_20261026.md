@@ -142,3 +142,8 @@ Unity 6000.6.7f1 `StandaloneOSX` ARM64의 `atg-fit-9cc2759c1-build-receipt.json`
 | 일반 실행 전환 | 현재 일반 `ar`는 기존 IMGUI, ATG는 플래그 전용 | **채택 HOLD**. 위 최종 fit 전수와 별도 제품 결정을 거친 뒤 적용/빌드/회귀 검수 필요 |
 
 이번 A02에서 새 빌드0, 일반 `ar` 활성화0, 공용 Core 변경0, 기존 Player 종료0이다.
+
+
+## 2026-10-31 초광폭 합성 좌표 후속
+
+UI 안전 영역 단위에서 자막 RenderTexture를 논리1920×1080으로 고정했다. fontSize는 논리50px(1080×.054의 상한50)이며 최종 물리 크기는 안전 영역 배율min(W/1920,H/1080)을 따른다. 84% 위치 영역·내용 폭 Label·padding각2px·alpha.46·ATG shaping/RTL·32cue원문/시각·preview진입계약은 보존한다. 위 Mac32cue/720p 판정은 당시 입력의 이력이며 이 새 합성 비율의 Mac/Arabic32cue 실화면 통과로 재사용하지 않는다. PC 일반UI5해상도 검수와 이 preview32cue의 인수는 별도다. [현행 비율 계약](UNITY_UI_ULTRAWIDE_20261031.md).

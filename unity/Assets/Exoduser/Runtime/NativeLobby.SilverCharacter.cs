@@ -6,7 +6,7 @@ namespace Exoduser.UnityPort
         Texture2D silverCornerTop,silverCornerBottom,silverVisualCancel,silverVisualCreate,silverVisualDisabled;
         Texture2D[] silverEmblems,silverPosters,silverPortraits;
         GUIStyle silverVisualTitle,silverVisualName,silverVisualDescription,silverVisualCaption,silverVisualAction,silverVisualTraitTitle,silverVisualTraitBody;
-        Texture2D silverVisualVignette,silverHeadingLine;
+        Texture2D silverVisualVignette,silverVisualSideShade,silverHeadingLine;
         void EnsureSilverVisual()
         {
             SilverStyles();
@@ -57,8 +57,9 @@ namespace Exoduser.UnityPort
             silverVisualAction.normal.textColor=NativeSilverHellUi.Text;
             silverVisualVignette=NativeSilverHellUi.Effect(256,144,(u,v)=>
             {
-                float a=u<.18f?Mathf.Lerp(.35f,0,u/.18f):u<.64f?0:Mathf.Lerp(0,.66f,Mathf.Clamp01((u-.64f)/.20f));float b=v>.7f?Mathf.Lerp(0,.72f,(v-.7f)/.3f):0;return new Color(0,0,0,a+b*(1-a));
+                float b=v>.7f?Mathf.Lerp(0,.72f,(v-.7f)/.3f):0;return new Color(0,0,0,b);
             });
+            silverVisualSideShade=NativeSilverHellUi.Effect(256,1,(u,v)=>new Color(0,0,0,.66f*u));
         }
         void SilverCornerPanel(Rect r)
         {
@@ -79,13 +80,13 @@ namespace Exoduser.UnityPort
                 if(i==0&&playback.Prepared&&playback.Player!=null)playback.Player.playbackSpeed=.75f;
                 if(playback.Error.Length==0&&playback.Prepared&&playback.Frame>=0)src=playback.Texture;
             }
-            Image(box,src,ScaleMode.ScaleAndCrop);
+            if(src!=null)NativeUiViewport.DrawExtendedScene(src,box,silverPosters[i]??silverPortraits[i]??presentationCutouts[i]);
         }
         void DrawSilverCharacterVisual()
         {
             CharacterStyles();
             EnsureSilverVisual();
-            float w=Screen.width,h=Screen.height;
+            float w=NativeUiSafeArea.DesignWidth,h=NativeUiSafeArea.DesignHeight;
             int i=Mathf.Clamp(characterVisual,0,4);
             bool locked=i!=0,shortScreen=h<=940;
             float x=w-420,bodyY=62,top=bodyY+(shortScreen?190:300),size=shortScreen?54:64;
@@ -107,12 +108,13 @@ namespace Exoduser.UnityPort
             NativeUiAudit.Region(new Rect(0,0,w,h),"panel");
             Fill(new Rect(0,0,w,h),Color.black);
             DrawSilverScene(new Rect(0,0,w,h),i);
-            Image(new Rect(0,0,w,h),silverVisualVignette,ScaleMode.StretchToFill);
+            Image(NativeUiViewport.ScreenInDesign,silverVisualVignette,ScaleMode.StretchToFill);var backdropMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.RightMatrix;var shade=new Rect(1440,0,480,1080);Image(shade,silverVisualSideShade,ScaleMode.StretchToFill);NativeUiAudit.Region(shade,"component","frontend-shade","캐릭터 오른쪽 음영480");GUI.matrix=backdropMatrix;
             string headingText=VisualSelectionLabel("캐릭터 선택","CHOOSE YOUR CHARACTER");
             float headingWidth=SpacedWidth(silverVisualTitle.font,18,headingText,3.6f)-3.6f;
             DrawSpaced((w-headingWidth)/2,30,26,headingText,silverVisualTitle.font,18,3.6f,NativeSilverHellUi.Text,true);
             Image(new Rect((w-headingWidth)/2-238,45,220,1),silverHeadingLine,ScaleMode.StretchToFill);
             NativeUiAudit.DrawTextureWithTexCoords(new Rect((w+headingWidth)/2+18,45,220,1),silverHeadingLine,new Rect(1,0,-1,1),true);
+            var centerMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.RightMatrix;NativeUiAudit.Region(new Rect(1500,0,420,1080),"component","frontend-right","캐릭터 선택 오른쪽 레일");
             var info=new Rect(x,bodyY,380,shortScreen?156:148.5f);
             SilverCornerPanel(info);
             SilverLabel(new Rect(x+28,bodyY+26,324,16),VisualSelectionLabel(presentationJobs[i],new[]
@@ -186,7 +188,7 @@ namespace Exoduser.UnityPort
             GUI.enabled=prior&&!locked;
             GUI.SetNextControlName("visual-create");
             SilverLabel(create,locked?CharacterDialogLabel("comingSoon",K("출시 준비 중","COMING SOON")):CharacterDialogLabel("create",K("생성","CREATE")),silverVisualAction,TextAnchor.MiddleCenter);if(NativeUiAudit.Button(create,"",GUIStyle.none))ConfirmCharacterVisual();
-            GUI.enabled=prior;
+            GUI.enabled=prior;GUI.matrix=centerMatrix;
             if(characterVisualFocusPending&&Event.current.type==EventType.Repaint)
             {
                 GUI.FocusControl("visual-icon-"+i);

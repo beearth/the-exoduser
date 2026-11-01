@@ -64,9 +64,9 @@ namespace Exoduser.UnityPort
   void EnsureTarget()
   {
    if(panel==null)return;
-   if(target!=null&&target.width==Screen.width&&target.height==Screen.height)return;
+   if(target!=null&&target.width==1920&&target.height==1080)return;
    if(target!=null){panel.targetTexture=null;target.Release();Destroy(target);}
-   target=new RenderTexture(Screen.width,Screen.height,0,RenderTextureFormat.ARGB32);
+   target=new RenderTexture(1920,1080,0,RenderTextureFormat.ARGB32);
    target.name="ArabicCaptionOverlay";target.Create();
    panel.clearColor=true;panel.colorClearValue=Color.clear;panel.targetTexture=target;
   }
@@ -85,7 +85,7 @@ namespace Exoduser.UnityPort
    if(!visible)return;
    if(caption.text!=lobby.SubtitleText)caption.text=lobby.SubtitleText;
    caption.languageDirection=ContainsArabicScript(lobby.SubtitleText)?LanguageDirection.RTL:LanguageDirection.LTR;
-   caption.style.fontSize=Mathf.Clamp(Screen.height*.054f,32f,50f);
+   caption.style.fontSize=Mathf.Clamp(NativeUiSafeArea.DesignHeight*.054f,32f,50f);
   }
 
   static bool ContainsArabicScript(string text)

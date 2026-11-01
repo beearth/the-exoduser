@@ -52,6 +52,7 @@ namespace Exoduser.UnityPort {
 
   // hudWidth = the HUD design width (screen width / HUD scale); the panel sits 20px from the right edge, 16px from the top.
   public void Draw(float hudWidth,Info info){
+   var matrix=GUI.matrix;GUI.matrix=NativeUiViewport.EdgeMatrix;hudWidth=NativeUiViewport.Edges.Width;
    Init();var W=info.english?WordsEn:Words;
    string lv=Num(info.level);
    string exp=Num(info.exp)+" / "+Num(info.maxExp);
@@ -60,6 +61,7 @@ namespace Exoduser.UnityPort {
    if(lvText!=null&&lv!=lvText)lvT=Time.unscaledTime;if(killText!=null&&kill!=killText)killT=Time.unscaledTime;if(matText!=null&&mat!=matText)matT=Time.unscaledTime;
    lvText=lv;killText=kill;matText=mat;
    float x0=hudWidth-Width-RightMargin,y0=Top;var r=new Rect(x0,y0,Width,Height);
+   NativeUiAudit.Region(r,"component","hud-objective","레벨/지역 처치 외곽");
    var oldColor=GUI.color;
    NativeSilverHellUi.Panel(r,12,0);GUI.color=oldColor;
    float L=x0+15,R=x0+201;   // content box x 1699..1885 in the web dump (panel x 1684)
@@ -77,7 +79,7 @@ namespace Exoduser.UnityPort {
    Text(L,y0+91.55f,17.69f,W[2],13,false,C(192,189,183),0);
    RightText(R,y0+91.55f,17.69f,kill,13,false,C(226,223,217),0,PulseAge(killT));
    Text(L,y0+118.55f,17.69f,W[3],13,false,C(192,189,183),0);
-   RightText(R-6,y0+118.55f,17.69f,mat,13,false,C(226,223,217),0,PulseAge(matT));
+   RightText(R-6,y0+118.55f,17.69f,mat,13,false,C(226,223,217),0,PulseAge(matT));GUI.matrix=matrix;
   }
  }
 }

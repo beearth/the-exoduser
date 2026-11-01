@@ -62,12 +62,12 @@ namespace Exoduser.UnityPort
   {
    if(info.sim==null||info.map==null)return;Init();
    if(texFor!=info.map||mapTex==null)BuildMap(info.map);
-   DrawMinimap(info);DrawCorner(info);DrawClock(hudWidth,info);
+   var matrix=GUI.matrix;GUI.matrix=NativeUiViewport.EdgeMatrix;DrawMinimap(info);DrawCorner(info);GUI.matrix=matrix;DrawClock(hudWidth,info);
   }
   void DrawMinimap(Info info)
   {
    var old=GUI.color;
-   var canvas=new Rect(23.3f,23.3f,110.5f,110.5f);const float k=.85f;
+   NativeUiAudit.Region(new Rect(8,8,141.1f,141.1f),"component","hud-minimap","미니맵 외곽");var canvas=new Rect(23.3f,23.3f,110.5f,110.5f);const float k=.85f;
    float ox=(130-mapW)/2f,oy=4,sourceH=mapH+8,ys=130f/sourceH;
    GUI.color=new Color(1,1,1,.94f);NativeUiAudit.DrawTexture(canvas,mapTex);GUI.color=old;
    var sim=info.sim;int T=info.map.Data.tileSize;if(T<=0)T=64;int shown=0;

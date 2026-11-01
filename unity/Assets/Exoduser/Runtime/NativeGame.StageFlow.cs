@@ -151,20 +151,11 @@ namespace Exoduser.UnityPort
                 if (flow.LoadPhase >= 2 && fade > .5f)
                 {
                     float nt = flow.LoadPhase == 2 ? Mathf.Min(1f, (float)flow.LoadT / 35f) : 1f;
-                    string name = bossBar.BossNameForStage(Simulation.Config.StageIndex) ?? "???";
-                    string tip = NativeLoadingTips.Pick(Simulation.Config.StageIndex, English,
-                        LoadingTipKey("inventory"), LoadingTipKey("interact"));
-                    NativeLoadingArtwork.Draw(NativeLoadingSelection.ForStage(Simulation.Config.StageIndex),
-                        name, StageSubtitle(Simulation.Config.StageIndex), Mathf.Clamp01((float)flow.LoadT/35f), nt, tip);
+                    string name=bossBar.BossNameForStage(Simulation.Config.StageIndex)??"???";NativeLoadingArtwork.Draw(NativeLoadingSelection.ForStage(Simulation.Config.StageIndex),name,StageSubtitle(Simulation.Config.StageIndex),Mathf.Clamp01((float)flow.LoadT/35),nt,false,NativeLoadingTips.Pick(NativeLoadingArtwork.ForcedTip>=0?NativeLoadingArtwork.ForcedTip:Simulation.Config.StageIndex,English,LoadingTipKey("inventory"),LoadingTipKey("interact")));
                 }
             }
         }
-        string LoadingTipKey(string action)
-        {
-            var bindings = NativeKeyBindInput.Bindings;
-            string code = bindings.Primary(action) ?? bindings.Secondary(action);
-            return code == null ? null : KeyBindings.KeyName(code, English);
-        }
+        string LoadingTipKey(string action){var keys=NativeKeyBindInput.Bindings;string key=keys.Primary(action)??keys.Secondary(action);return key==null?null:KeyBindings.KeyName(key,English);}
         static void DiamondMark(float x, float y, Color c)
         {   // web fillRect 8x8 rotated 45 degrees: approximated by a 3-row stack (GUI cannot rotate cheaply), 1px hairline scale
             Fill(new Rect(x - 1, y - 4, 2, 8), c); Fill(new Rect(x - 3, y - 2, 6, 4), c); Fill(new Rect(x - 4, y - 1, 8, 2), c);
@@ -192,37 +183,6 @@ namespace Exoduser.UnityPort
             p.Hp = p.MaxHp; p.Mana = p.MaxMana; p.Stamina = p.MaxStamina; p.Shield = p.MaxShield; p.State = "idle"; p.StateTicks = 0; p.Iframes = 120;
             death.Hide(); deathShown = false; bossBar.Hide(); BossBarShown = false; skillInputFence = true; menu = false; Running = true;
             return true;
-        }
-    }
-    internal static class NativeLoadingTips
-    {
-        internal const int Count = 4;
-        // Approved web _LOAD_TIPS entries 10, 11, 13, 14: only ported Native abilities.
-        static readonly string[] Ko = {
-            "보스의 패턴을 읽으면 패링 타이밍이 보인다",
-            "인벤토리({0})에서 장비를 비교하고 장착",
-            "{0}키로 아이템 수거",
-            "물약은 설정한 HP% 이하에서 자동 사용"
-        };
-        static readonly string[] En = {
-            "Read boss patterns and the parry timing shows",
-            "{0} for inventory — compare and equip gear",
-            "Press {0} to collect items",
-            "Potions auto-use when HP falls below set %"
-        };
-        internal static int FontPixels(float height)
-        {
-            return (int)Math.Round(Math.Max(11, Math.Min(16, height * .0125f)), MidpointRounding.AwayFromZero);
-        }
-        internal static string Pick(int stage, bool english, string inventoryKey, string pickupKey)
-        {
-            int index = (stage % Count + Count) % Count;
-            if ((index == 1 && string.IsNullOrEmpty(inventoryKey)) ||
-                (index == 2 && string.IsNullOrEmpty(pickupKey))) index = 0;
-            string label = (english ? En : Ko)[index];
-            if (index == 1) label = string.Format(label, inventoryKey);
-            if (index == 2) label = string.Format(label, pickupKey);
-            return "◆ " + label;
         }
     }
 }

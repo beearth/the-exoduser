@@ -20,7 +20,7 @@ namespace Exoduser.UnityPort {
   const string NotPorted="미이식";
   static readonly Rect WinRect=new Rect(470,12,980,1056);
   // padding box of #fgGrid (border 6px inside 732,382.4,688x581.6) and its content origin (+8 padding)
-  static readonly Rect GridView=new Rect(738,388.4f,676,570);
+  static readonly Rect GridView=new Rect(738,388.4f,676,687);
   const float CX=746,CY=396.4f,CW=650;
   readonly ForgeDefs defs;readonly Dictionary<string,ForgeGlyph> glyphs=new Dictionary<string,ForgeGlyph>();
   readonly Dictionary<string,AffixDef> affixById=new Dictionary<string,AffixDef>();readonly Dictionary<string,string> unitById=new Dictionary<string,string>();
@@ -123,8 +123,8 @@ namespace Exoduser.UnityPort {
     float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
     NativeUiAudit.DrawTexture(WinRect,windowBase,ScaleMode.StretchToFill,false);
-    NativePanelTabBar.Draw(NativePanelTabBar.Preset.Forge,"forge");
-    DrawHeader(sim);
+    NativePanelTitle.Surface(new Rect(500,32,920,1006));NativePanelTabBar.Draw(NativePanelTabBar.Preset.Forge,"forge");
+    NativePanelTitle.Surface(new Rect(500,92,920,170));NativePanelTitle.Draw(new Rect(700,72,520,64),"대장간");DrawHeader(sim);
     DrawLeftTabs();
     DrawContent(sim,inv);
     DrawClose(close);
@@ -152,7 +152,7 @@ namespace Exoduser.UnityPort {
   }
   void DrawLeftTabs(){
    for(int i=0;i<defs.tabs.Length;i++){
-    var t=defs.tabs[i];var r=new Rect(500,518+46*i,216,40);bool act=Tab==t.id;
+    var t=defs.tabs[i];var r=new Rect(500,388+46*i,216,40);bool act=Tab==t.id;
     PlateFace(r,act,true);
     // .fg-tab-txt 12.48px 700 ls .624, text-shadow 0 2px 4px rgba(0,0,0,.95)
     Txt(new Rect(512,r.y+11,192,18),t.label,F.NM,12.48f,act?C(244,230,203):C(194,191,185),true,TextAnchor.MiddleCenter,.624f,1f,new Color(0,0,0,.9f),2f);
@@ -213,7 +213,7 @@ namespace Exoduser.UnityPort {
    }
    off=Vector2.zero;NativeUiAudit.EndGroup();
    // panel scrollbar sits in the padding box column x 1404..1414
-   ScrollBar(1,new Rect(1404,388.4f,10,570),GridView.height,contentH,ref scroll);
+   ScrollBar(1,new Rect(1404,388.4f,10,687),GridView.height,contentH,ref scroll);
    gridScroll[Tab]=scroll;
    if(Tab=="potion")DrawPotionConfirm(sim);   // web #forgeConfirm sits below the grid, outside the scroll area
   }

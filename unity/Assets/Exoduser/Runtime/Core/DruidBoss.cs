@@ -72,6 +72,7 @@ namespace Exoduser.UnityPort.Core
         public EnemyState Boss;                             // G._bossRef (alive druid)
         public int Tick;                                    // frames ticked (G.frame for the %6 trail gates)
         public double HitSp = 1;
+        public Func<double,double,double,bool> WorldPointVisible; // 선택적 실제 카메라 가시성. null은 기존 oracle 계약.
         public int ScoreEvals;                              // oracle counter
 
         public DruidBoss(IBossHost h) { host = h; reflectHost = h as IBossReflectHost; }
