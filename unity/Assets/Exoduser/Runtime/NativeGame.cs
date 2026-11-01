@@ -103,6 +103,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-playtest-capture")>=0){Running=false;StartCoroutine(PlaytestCapture());}
             else if(Array.IndexOf(args,"--unity-ui-overlap-check")>=0){Running=false;StartCoroutine(UiOverlapCapture());}
             else if(Array.IndexOf(args,"--unity-loading-tip-capture")>=0){Running=false;StartCoroutine(LoadingTipCapture());}
+            else if(Array.IndexOf(args,"--unity-ground-receiver-capture")>=0){Running=false;groundReceiverQaActive=true;StartCoroutine(GroundReceiverCapture());}
             else if(Array.IndexOf(args,"--unity-hero-review")>=0){Running=false;StartCoroutine(HeroCapture());}
             else if(Array.IndexOf(args,"--unity-m1-check")>=0){Running=false;StartCoroutine(M1Check());}
             else if(Array.IndexOf(args,"--unity-review-args-capture")>=0){Running=false;StartCoroutine(ReviewArgsCapture());}
@@ -421,6 +422,7 @@ namespace Exoduser.UnityPort
         }
         void OnGUI()
         {
+            if(groundReceiverQaActive)return;
             if(Simulation==null)return;
             if(lobby!=null&&lobby.IsBlocking){if(lobby.StartupHudVisible)DrawStartupWorldHud();return;}
             if(stageClear.Active){stageClear.LocaleCode=lobby.Language;stageClear.DiagnosticDetails=lobby.DiagnosticUiEnabled;stageClear.Draw();return;}
