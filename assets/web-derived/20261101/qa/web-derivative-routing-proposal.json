@@ -1,0 +1,749 @@
+{
+  "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+  "source_tree": "1ba1c6ca9ee1fd5239f209b659dd7dfa54c79b37",
+  "selected_file_count": 3095,
+  "selected_bytes": 4629181769,
+  "replacement_count": 73,
+  "saving_bytes": 668059278,
+  "effective_bytes": 3961122491,
+  "transfer_limit_bytes": 4000000000,
+  "remaining_headroom_bytes": 38877509,
+  "largest_effective_file_bytes": 94795327,
+  "largest_effective_file_path": "video/warrior_story_v23_clean.mp4",
+  "per_file_limit_bytes": 100000000,
+  "loading_wide_webp_untouched": 105,
+  "fullscreen_wide_webp_untouched": 128,
+  "web_runtime_integration": "PENDING: explicit request URL mapping and MIME, 16:9/21:9/32:9 browser preview",
+  "aliases": [
+    {
+      "request_path": "bgm/1장_썩은숲/Ashes Under the Banner (Remastered).wav",
+      "candidate_path": "candidates/bgm/1장_썩은숲/Ashes Under the Banner (Remastered).flac",
+      "mime": "audio/flac",
+      "source_blob": "0283a639b05810a589b47ae7e2a98447ddd902ce",
+      "source_sha256": "52581e0a4e4df5437c119a179706e82bcb7b5c2ed9341c7966ff01e863cf9e90",
+      "candidate_sha256": "861390fa5f0c11c79e3b887f39e78ec938723a73834bf476b3ea9245781b012d",
+      "source_bytes": 80640172,
+      "candidate_bytes": 38247198
+    },
+    {
+      "request_path": "bgm/1장_썩은숲/Cathedral of Steel (Remastered).wav",
+      "candidate_path": "candidates/bgm/1장_썩은숲/Cathedral of Steel (Remastered).flac",
+      "mime": "audio/flac",
+      "source_blob": "faa2986df772fb5639a172444c59316a7ed49571",
+      "source_sha256": "6f501c4ff30d289c9c18f83fd11d35cf29029a6b72e0742d4ddb2373cc207b8c",
+      "candidate_sha256": "eac41fc959be3a305916dbfd7a8066be5bd8ff0322d0a3fcff0427f63469406e",
+      "source_bytes": 55465132,
+      "candidate_bytes": 27449734
+    },
+    {
+      "request_path": "bgm/1장_썩은숲/Iron Oath Under Ash (Remastered).wav",
+      "candidate_path": "candidates/bgm/1장_썩은숲/Iron Oath Under Ash (Remastered).flac",
+      "mime": "audio/flac",
+      "source_blob": "44d872244a0d539d21500396095967b63e11b92e",
+      "source_sha256": "12441cd4f0592039f1fe2879a7049e3c9ee113076bc6bc13b4f15795389a660a",
+      "candidate_sha256": "f72ff46b60c6959eac28d5ed2e0e6a9328073fe846f0c30420c49d7c88f72243",
+      "source_bytes": 47470252,
+      "candidate_bytes": 25606015
+    },
+    {
+      "request_path": "bgm/1장_썩은숲/Neon Hellfire Protocol (Remastered).wav",
+      "candidate_path": "candidates/bgm/1장_썩은숲/Neon Hellfire Protocol (Remastered).flac",
+      "mime": "audio/flac",
+      "source_blob": "d6a6e7244020bcec20cb14fa286dfc5c57db8269",
+      "source_sha256": "4fdd2ce78c2ccbec7c96dfbdef501ec31b3c3d979e2b22ff132d7f557cf92272",
+      "candidate_sha256": "75a8b57d4233f18353f46369a8229b37384874ea6a10033dacb22880c9484b19",
+      "source_bytes": 44997292,
+      "candidate_bytes": 24041000
+    },
+    {
+      "request_path": "bgm/1장_썩은숲/Neon Hellfire Protocol2(Remastered).wav",
+      "candidate_path": "candidates/bgm/1장_썩은숲/Neon Hellfire Protocol2(Remastered).flac",
+      "mime": "audio/flac",
+      "source_blob": "1bf721a905867fa70c33220886615f3a0cd94738",
+      "source_sha256": "4955d79b9c5568b6bbf5299d4047d3a6e45b9021fcbd49771aef8f7ff034abeb",
+      "candidate_sha256": "29be9fc2afbb39a635e6a34e1e080e520ff96ef35406c75b6e9dd32e05b0c343",
+      "source_bytes": 44836012,
+      "candidate_bytes": 22809273
+    },
+    {
+      "request_path": "bgm/1장_썩은숲/Wrath of the Golden Age (Remastered).wav",
+      "candidate_path": "candidates/bgm/1장_썩은숲/Wrath of the Golden Age (Remastered).flac",
+      "mime": "audio/flac",
+      "source_blob": "fed3e4244553baa13680a1967e0591b4895f09ee",
+      "source_sha256": "3a25f61afa366f93417f59d0d3ec096f117df31a6716c0f3ae909f549f79d2af",
+      "candidate_sha256": "3fd9c85e6cb6491e7067ddc8108c60f7f9868219b15a0d8b6583bcb9b1542498",
+      "source_bytes": 38238892,
+      "candidate_bytes": 20818671
+    },
+    {
+      "request_path": "bgm/3장_얼음굴/흰눈의 맹세 (Remastered).wav",
+      "candidate_path": "candidates/bgm/3장_얼음굴/흰눈의 맹세 (Remastered).flac",
+      "mime": "audio/flac",
+      "source_blob": "c1bf6a7e47701750ac7eee2953564f2c21b1dd8a",
+      "source_sha256": "bc46d93391fd7183c4ff6f5a7e9ce0ca64b024080039febd016313ce48fe0595",
+      "candidate_sha256": "553d9717bb5a42c5f7a7dbf804ef6e39ced6711fce388907188023a892d5c11f",
+      "source_bytes": 66716332,
+      "candidate_bytes": 33342667
+    },
+    {
+      "request_path": "bgm/3장_얼음굴/흰눈의 맹세2 (Remastered).wav",
+      "candidate_path": "candidates/bgm/3장_얼음굴/흰눈의 맹세2 (Remastered).flac",
+      "mime": "audio/flac",
+      "source_blob": "c1bf6a7e47701750ac7eee2953564f2c21b1dd8a",
+      "source_sha256": "bc46d93391fd7183c4ff6f5a7e9ce0ca64b024080039febd016313ce48fe0595",
+      "candidate_sha256": "553d9717bb5a42c5f7a7dbf804ef6e39ced6711fce388907188023a892d5c11f",
+      "source_bytes": 66716332,
+      "candidate_bytes": 33342667
+    },
+    {
+      "request_path": "bgm/공통/Coronam Ferro (Remastered).wav",
+      "candidate_path": "candidates/bgm/공통/Coronam Ferro (Remastered).flac",
+      "mime": "audio/flac",
+      "source_blob": "16b567713b28b1c3885bd99fb737023f09700fb2",
+      "source_sha256": "4c53fd8ffad49efe485ff44d9d3c85850d35c30594bded7ab58ca1bdf239e1fd",
+      "candidate_sha256": "640bd74b11604ca3f3a40f7783eab04785d2e3f6243bfadc96d4c98e02e45854",
+      "source_bytes": 38730412,
+      "candidate_bytes": 20426606
+    },
+    {
+      "request_path": "bgm/공통/Coronam Ferro2(Remastered).wav",
+      "candidate_path": "candidates/bgm/공통/Coronam Ferro2(Remastered).flac",
+      "mime": "audio/flac",
+      "source_blob": "16b567713b28b1c3885bd99fb737023f09700fb2",
+      "source_sha256": "4c53fd8ffad49efe485ff44d9d3c85850d35c30594bded7ab58ca1bdf239e1fd",
+      "candidate_sha256": "640bd74b11604ca3f3a40f7783eab04785d2e3f6243bfadc96d4c98e02e45854",
+      "source_bytes": 38730412,
+      "candidate_bytes": 20426606
+    },
+    {
+      "request_path": "bgm/공통/Just One More Hill (Remastered) 2.wav",
+      "candidate_path": "candidates/bgm/공통/Just One More Hill (Remastered) 2.flac",
+      "mime": "audio/flac",
+      "source_blob": "5f9d227d9668fb65455c1269b3442eca8acb9def",
+      "source_sha256": "e5e8293624f0b48d5ad7677e5e5f5a2b31a85cfbf50b3880625b859dfcfaf250",
+      "candidate_sha256": "c3fe03810d986f7f9a9f51e7cf3e44bf0eaacdfb9fccfbd563381c00af304d16",
+      "source_bytes": 52393132,
+      "candidate_bytes": 20885847
+    },
+    {
+      "request_path": "bgm/공통/Just One More Hill (Remastered).wav",
+      "candidate_path": "candidates/bgm/공통/Just One More Hill (Remastered).flac",
+      "mime": "audio/flac",
+      "source_blob": "52b8a82e3fbbeaba736048f2f32afdb00dfaf317",
+      "source_sha256": "952597ad2833e98f8d466b3293b5d0cc8d28693e2113eabd3a5bac0fa8932f25",
+      "candidate_sha256": "488d3d8e38cb102c31bfbe14e736d8767559ca2aa0abeca91f4b673346fdbfb6",
+      "source_bytes": 55680172,
+      "candidate_bytes": 23207674
+    },
+    {
+      "request_path": "bgm/공통/고개 하나만 (Remastered) 2.wav",
+      "candidate_path": "candidates/bgm/공통/고개 하나만 (Remastered) 2.flac",
+      "mime": "audio/flac",
+      "source_blob": "c4b39bdf0693d67489c4d647c753f2ab769d3c63",
+      "source_sha256": "b0775aed5ebdc18bb5cfb14ac18c0c05c6f8323f94fe854bb50e55717ff880f8",
+      "candidate_sha256": "c5cfafcf17462cd1f364d8c5f26f83fdaa1a5c00308b05e3ca3932c007be3112",
+      "source_bytes": 50811052,
+      "candidate_bytes": 21936747
+    },
+    {
+      "request_path": "bgm/공통/고개 하나만 (Remastered).wav",
+      "candidate_path": "candidates/bgm/공통/고개 하나만 (Remastered).flac",
+      "mime": "audio/flac",
+      "source_blob": "d214f9400045b7e7cca0f37645a387eecf2ea395",
+      "source_sha256": "471443fc309308a63f387e463667435a1eefe6ce7a19aaafbfb474957826ede7",
+      "candidate_sha256": "994325195531fca21b359cd3418f149194b74d7ce0e71718da06ed7550b1c44d",
+      "source_bytes": 57423532,
+      "candidate_bytes": 21821280
+    },
+    {
+      "request_path": "bgm/공통/네메시아 강림 (Remastered).wav",
+      "candidate_path": "candidates/bgm/공통/네메시아 강림 (Remastered).flac",
+      "mime": "audio/flac",
+      "source_blob": "612c8a7230a0ea1c84166e72cac29a69090836e6",
+      "source_sha256": "2557b0e9c419a8ae4b194b638cf8514463165f8a5fb742767e284f67993da413",
+      "candidate_sha256": "49e67f3f05fbcecaaa98f0bbd2d3fc8cdfb174f5f07b1f559ab021cba5e60b82",
+      "source_bytes": 57369772,
+      "candidate_bytes": 21798284
+    },
+    {
+      "request_path": "bgm/공통/네메시아의 강림2 (Remastered).wav",
+      "candidate_path": "candidates/bgm/공통/네메시아의 강림2 (Remastered).flac",
+      "mime": "audio/flac",
+      "source_blob": "8482ad3204c79f2510d4a56059d81af26ea47b8d",
+      "source_sha256": "c2edb06bb1a10f749b6cbed883ca7f36db35437ff2dc7abb526e608b8bea4d61",
+      "candidate_sha256": "be00f2a9b88fa8a82239fb911edcc9768c5d269e8206275dd2342b4549eebffb",
+      "source_bytes": 27840172,
+      "candidate_bytes": 12802992
+    },
+    {
+      "request_path": "bgm/공통/네메시아의 강림3(Remastered).wav",
+      "candidate_path": "candidates/bgm/공통/네메시아의 강림3(Remastered).flac",
+      "mime": "audio/flac",
+      "source_blob": "80789ebee8d1b16f458b7b2883b405e97dfa7a22",
+      "source_sha256": "1f9b3fea4fbb738d8ee96ecddc21af51b5cc6585a774eb84c132d0008a986581",
+      "candidate_sha256": "6e75ae1e8c06b9c6929a5bf49a688b5bb7e21b17a1e512be12d249bdca019e36",
+      "source_bytes": 45035692,
+      "candidate_bytes": 22941623
+    },
+    {
+      "request_path": "img/lording/1.png",
+      "candidate_path": "candidates/img/lording/1.webp",
+      "mime": "image/webp",
+      "source_blob": "1b30c6b9cef88597171f8cf69fd93c463bcda86a",
+      "source_sha256": "0dd895bf1a54682c900ae3cad6da6507c02f48ae4fdce44af2c59280020c5ccd",
+      "candidate_sha256": "967274dc4a580653d9ae20d63d43109c8c0d26345c1ff8d05343b6a32ebe66d4",
+      "source_bytes": 2577016,
+      "candidate_bytes": 1805732
+    },
+    {
+      "request_path": "img/lording/10.png",
+      "candidate_path": "candidates/img/lording/10.webp",
+      "mime": "image/webp",
+      "source_blob": "56a232d09a596f04ffc0887fc42948068d2ed5cb",
+      "source_sha256": "d601fd8c522307b9db890334b971f77d9ce199ed9cc2986ac0df31a3328cf727",
+      "candidate_sha256": "3e7f4665a463b0aa959d3a055edd345d57ac2966ff6869a9e6cdccc61c0bccc9",
+      "source_bytes": 2040647,
+      "candidate_bytes": 1538658
+    },
+    {
+      "request_path": "img/lording/11.png",
+      "candidate_path": "candidates/img/lording/11.webp",
+      "mime": "image/webp",
+      "source_blob": "9fef47425a22f9016bd90fd58d8f6c4580b894ab",
+      "source_sha256": "ebcc9bb2c36420310a2b36d48aa1b674fa4bd1272c70ed4bbd606332f0c8a182",
+      "candidate_sha256": "aa40752ba42bb50e67f6879291ee11e45621a94c42803b9de9b5dcf4ada605a2",
+      "source_bytes": 1955440,
+      "candidate_bytes": 1370230
+    },
+    {
+      "request_path": "img/lording/12.png",
+      "candidate_path": "candidates/img/lording/12.webp",
+      "mime": "image/webp",
+      "source_blob": "a566753631809d971ca3a5c44c894160a5f68be5",
+      "source_sha256": "942d60a7d6de2c95d3064bc3cde36cefbf0320da2d5a2b12bccdcb67433e530d",
+      "candidate_sha256": "79fb318a215020b583d35b9e7205ba0f369a1357dc4a00baf96c8ded0aa0ebd8",
+      "source_bytes": 7777256,
+      "candidate_bytes": 5055938
+    },
+    {
+      "request_path": "img/lording/13.png",
+      "candidate_path": "candidates/img/lording/13.webp",
+      "mime": "image/webp",
+      "source_blob": "ce565df96702fd216a64b684b76b8083bf998715",
+      "source_sha256": "2dae6de6db0d013af86e7031cf3e3e3fd3ff650e10a41967acffb25e619b41ea",
+      "candidate_sha256": "498d5447fd34aedf5f8e62f182ad552f53d1d84395288d3b702ccc5779ce0908",
+      "source_bytes": 1939473,
+      "candidate_bytes": 1495548
+    },
+    {
+      "request_path": "img/lording/14.png",
+      "candidate_path": "candidates/img/lording/14.webp",
+      "mime": "image/webp",
+      "source_blob": "eef72039e7aeaf52fb538f0c185fa81e4dda59b5",
+      "source_sha256": "e59dfa85945bb019dc5421efe6ddf938cb6a08b32578dc43ff45bb8a4e758103",
+      "candidate_sha256": "eab01b3690ca2ffd1d0020c0c18acaf72052b647891491d744c835982801c646",
+      "source_bytes": 2164864,
+      "candidate_bytes": 1678012
+    },
+    {
+      "request_path": "img/lording/15.png",
+      "candidate_path": "candidates/img/lording/15.webp",
+      "mime": "image/webp",
+      "source_blob": "17c1e5335d284a546920504fb42cd2bb1bc216da",
+      "source_sha256": "ee9a79eaea57926bc65ca153a799cc604ffbcfd31bebc30ca4800aec18513602",
+      "candidate_sha256": "b90ccf80a840f56e88ffe77587c8c71373185f163dfbe6b2a41233087062476b",
+      "source_bytes": 2035450,
+      "candidate_bytes": 1539806
+    },
+    {
+      "request_path": "img/lording/16.png",
+      "candidate_path": "candidates/img/lording/16.webp",
+      "mime": "image/webp",
+      "source_blob": "8f2fa5d101ff9312990b6eb6b5d3d63bbd82319e",
+      "source_sha256": "99474b62a691b618928fc43860bece471fdce52d1dc1af4c420c43f0d21bd567",
+      "candidate_sha256": "59a25a757803503b73a4068691aaffbb78d81fe5d76b9f05b64475e386c9b082",
+      "source_bytes": 1978737,
+      "candidate_bytes": 1545150
+    },
+    {
+      "request_path": "img/lording/17.png",
+      "candidate_path": "candidates/img/lording/17.webp",
+      "mime": "image/webp",
+      "source_blob": "600e83284baea886af4cc53dd5ddfa5150256c12",
+      "source_sha256": "49390b06531e5a796376a83e3440c34438cd54286204cfde2df8e31dad7ded1b",
+      "candidate_sha256": "99e414509a4328d7b63dc7611510068c070f518c50523c7e888c14027d0de73e",
+      "source_bytes": 2112356,
+      "candidate_bytes": 1622150
+    },
+    {
+      "request_path": "img/lording/18.png",
+      "candidate_path": "candidates/img/lording/18.webp",
+      "mime": "image/webp",
+      "source_blob": "d4382cfd14244364a4b0241811ee757a9dc6e1c1",
+      "source_sha256": "78a974aa7a1b02e7ed99b96b9b2b75629377f94fd3a8f8ebe10c64543e2a8b8a",
+      "candidate_sha256": "6ed08b347deda9a622d8cb0e271b0b082202c54a7b2fe7308ec265251c2a4407",
+      "source_bytes": 1939611,
+      "candidate_bytes": 1533558
+    },
+    {
+      "request_path": "img/lording/19.png",
+      "candidate_path": "candidates/img/lording/19.webp",
+      "mime": "image/webp",
+      "source_blob": "6fb2fb99fe82d75fb2b6178fbb8df0b9f9f1fe90",
+      "source_sha256": "d8d1dd609c99d23b50cde10d203af2cd8d3334803f5198e713565861701f60fb",
+      "candidate_sha256": "f6593aa993eb55d49c8f1dc4684bad541354fddb522a80bc183bfb7632dca4bc",
+      "source_bytes": 2625166,
+      "candidate_bytes": 2005416
+    },
+    {
+      "request_path": "img/lording/2.png",
+      "candidate_path": "candidates/img/lording/2.webp",
+      "mime": "image/webp",
+      "source_blob": "844ceda04e1d4bd56e81b05dd8988e6829e654cc",
+      "source_sha256": "df65163c82ca0100174177df71701861d38e4ac102f502fb3eb604de44d8a60f",
+      "candidate_sha256": "1764c17d7925326b21640844417add9efb58eb44fb7d6e5ace19b29031f809e4",
+      "source_bytes": 2062050,
+      "candidate_bytes": 1525048
+    },
+    {
+      "request_path": "img/lording/3.png",
+      "candidate_path": "candidates/img/lording/3.webp",
+      "mime": "image/webp",
+      "source_blob": "520ecc85149f4c108e025458e438f198c30bbed3",
+      "source_sha256": "5ba4904f3f60b0cfd49ea65a3beaa60db281405f9c14f38fcec5b460719ebabd",
+      "candidate_sha256": "2d79c7b7710800550417acb5ec4a32d693623f1b90a532336a2243afbac87a66",
+      "source_bytes": 3338484,
+      "candidate_bytes": 1250544
+    },
+    {
+      "request_path": "img/lording/4.png",
+      "candidate_path": "candidates/img/lording/4.webp",
+      "mime": "image/webp",
+      "source_blob": "1356b6b9eb7d529376e0167aa5c3e6e758e8d7ff",
+      "source_sha256": "0e1e2f4657c83667b365214bc50802254ef1cbf7089862226b6d024ac5082e21",
+      "candidate_sha256": "de52d0daebb16ae2ea6de7ec09b9f2b4d0b882f0f6c8e158e280e006fcc99785",
+      "source_bytes": 2028309,
+      "candidate_bytes": 1606264
+    },
+    {
+      "request_path": "img/lording/5.png",
+      "candidate_path": "candidates/img/lording/5.webp",
+      "mime": "image/webp",
+      "source_blob": "f112a6ee4f03da0ef916f4cf7c2adb7fa4c5ed40",
+      "source_sha256": "bee7c885cdecbf779e17c44e60c2be794e50fe1fc460165fd8ceafd19867e049",
+      "candidate_sha256": "5f25689e80b364568ee4a5e573594f3ee6d53ec00b7f2c59a944d2f0811b3609",
+      "source_bytes": 8290263,
+      "candidate_bytes": 5126206
+    },
+    {
+      "request_path": "img/lording/6.png",
+      "candidate_path": "candidates/img/lording/6.webp",
+      "mime": "image/webp",
+      "source_blob": "c51c9e0577da6fff2909022b3763545291fe9123",
+      "source_sha256": "139b9d40e2efcbac42746d038985cb03e8809b9b1ff130b3f4df1b653f2f1dfb",
+      "candidate_sha256": "cc17600b22ddd0dee600f62c0bba31ec7b2e5b1d9a153a54b886a2fa050831a2",
+      "source_bytes": 6500846,
+      "candidate_bytes": 4105806
+    },
+    {
+      "request_path": "img/lording/7.png",
+      "candidate_path": "candidates/img/lording/7.webp",
+      "mime": "image/webp",
+      "source_blob": "596e984f075781c5f4c2c05bfd558dc93d10c813",
+      "source_sha256": "02ca067293d8da66e639d47a41c3018266914e0c87a76e373043eb58c371d67f",
+      "candidate_sha256": "a84146d7390ffc8b314bd66aff294f3111b3009cc09749f6063f8b49518a16f5",
+      "source_bytes": 8211709,
+      "candidate_bytes": 5191372
+    },
+    {
+      "request_path": "img/lording/8.png",
+      "candidate_path": "candidates/img/lording/8.webp",
+      "mime": "image/webp",
+      "source_blob": "6244217e0df0716aaa876458d36bc6cac7576420",
+      "source_sha256": "3ee1864f2f340661ac617aed0d736db96f4880d184b0a1ee8c40a0c31b2cfac2",
+      "candidate_sha256": "3bd6bf8e40b734bb89506c0c25c37e4e7240cfdbefcf1f895de584db2cafc597",
+      "source_bytes": 7014282,
+      "candidate_bytes": 4771420
+    },
+    {
+      "request_path": "img/lording/9.png",
+      "candidate_path": "candidates/img/lording/9.webp",
+      "mime": "image/webp",
+      "source_blob": "192ab073b89f03ba448f4355428d0ae7512fdd15",
+      "source_sha256": "0550008e1324868c27d3d721509e8f5be09c0ae68270e298f8e565273662f897",
+      "candidate_sha256": "3f843fe841834f48fabc9ff8a4162cad69328c2071866e08943adb0c2b00f941",
+      "source_bytes": 7490668,
+      "candidate_bytes": 4690048
+    },
+    {
+      "request_path": "img/lording/rd1.png",
+      "candidate_path": "candidates/img/lording/rd1.webp",
+      "mime": "image/webp",
+      "source_blob": "0adf5b13952c24a99d15cb39719993647932d503",
+      "source_sha256": "3fc09ed70d8566c013eee65c55c627464493422c6756554ece897e8722791430",
+      "candidate_sha256": "13eee540bfc23f8fc1afd452881f9bd9043b6e7af8617106381c062a50e82afe",
+      "source_bytes": 2749418,
+      "candidate_bytes": 2013834
+    },
+    {
+      "request_path": "img/lording/rd10.png",
+      "candidate_path": "candidates/img/lording/rd10.webp",
+      "mime": "image/webp",
+      "source_blob": "fdadf013f92036daa253a7cd2dc120ebf09613b3",
+      "source_sha256": "395ffe77b95ba50198b7451008b22ec4b8c4b55e34f3b6ff7c1fb57d94d9d1b4",
+      "candidate_sha256": "5544490571f02d7cf0f87ae33df9377b1b0d17f4ace6794bbb83b85a3434e8ba",
+      "source_bytes": 3182493,
+      "candidate_bytes": 2206776
+    },
+    {
+      "request_path": "img/lording/rd12.png",
+      "candidate_path": "candidates/img/lording/rd12.webp",
+      "mime": "image/webp",
+      "source_blob": "de3d6e1daf8e5fa321b25c2d849ec93f22a2bfba",
+      "source_sha256": "0cd16c82daca2ea7e548dbc51cca03d67ba919bd0f8c37b892b9464679a3dad3",
+      "candidate_sha256": "f9d19d99c3ffaae0bf5c474d31ee00271b618340d80d7c1555e0223e12c11ee4",
+      "source_bytes": 5821565,
+      "candidate_bytes": 5408492
+    },
+    {
+      "request_path": "img/lording/rd13.png",
+      "candidate_path": "candidates/img/lording/rd13.webp",
+      "mime": "image/webp",
+      "source_blob": "d51789884130a8c6e382620e2d35e0d236dac993",
+      "source_sha256": "bb85dabe4f1ef95c4c16da55cd432f6daabec3e05184225b1c8f6c3169e1c40e",
+      "candidate_sha256": "03a235045db0b44f16b65ef81ce815632ae188d28f8d27e2ed4f1bcbc68e4663",
+      "source_bytes": 5327676,
+      "candidate_bytes": 2441370
+    },
+    {
+      "request_path": "img/lording/rd14.png",
+      "candidate_path": "candidates/img/lording/rd14.webp",
+      "mime": "image/webp",
+      "source_blob": "16e1df6bb05296e41b2e372d7f194c0be5b45f21",
+      "source_sha256": "06036836f712381fb416d7a5dcfcc8610b303c575983099c753e7a8c03f1bf5b",
+      "candidate_sha256": "95e8102b93eb7393f9b9c0e58ddd766377d345d42db8d8265d12e8a019806032",
+      "source_bytes": 5031968,
+      "candidate_bytes": 2505042
+    },
+    {
+      "request_path": "img/lording/rd15.png",
+      "candidate_path": "candidates/img/lording/rd15.webp",
+      "mime": "image/webp",
+      "source_blob": "e0ee28852733349641ae233f9753050cee738a39",
+      "source_sha256": "3d182a95a6ea9c89f9bbe92d3bc2a488985a935b7ee7d20a8d178110031b1bbd",
+      "candidate_sha256": "e536a3f4fef333e05e32ad140e7e00191982661a395db2d2f3722553d5981b77",
+      "source_bytes": 1887904,
+      "candidate_bytes": 1396428
+    },
+    {
+      "request_path": "img/lording/rd16.png",
+      "candidate_path": "candidates/img/lording/rd16.webp",
+      "mime": "image/webp",
+      "source_blob": "b811c21fd49c47cccae7be209a9427ecfe3365f1",
+      "source_sha256": "15a16839a0d84f9b5a7b0bcc714f8c257a00610e543a129cefdb274a31670400",
+      "candidate_sha256": "296213be49eab3c13734645b1e9a74e676186be3b8bc11a30d3b8d6c26b53ea6",
+      "source_bytes": 6177869,
+      "candidate_bytes": 5551846
+    },
+    {
+      "request_path": "img/lording/rd17.png",
+      "candidate_path": "candidates/img/lording/rd17.webp",
+      "mime": "image/webp",
+      "source_blob": "3a0645beecd60704e1531e7bf8b644f4eba2115f",
+      "source_sha256": "e1446cc81aa5aedf03e7ae17d4e8e86698bb5844c3414b9aca97d3f51ff98a12",
+      "candidate_sha256": "8f6d050f2896bb3f65bfaaf4662d29ed6f01bbb7bdba6e88662597c042d21fc0",
+      "source_bytes": 3172044,
+      "candidate_bytes": 2096458
+    },
+    {
+      "request_path": "img/lording/rd2.png",
+      "candidate_path": "candidates/img/lording/rd2.webp",
+      "mime": "image/webp",
+      "source_blob": "b39ef9e6a4633d9c3ecc2e61a2da19cd0e15bbdc",
+      "source_sha256": "9f9dde2348ddf34dbc9277889d6aedd6df9c409ee9ed61fbf6f2056495d355eb",
+      "candidate_sha256": "e715e92c0f5a47531976856b0bdf356adb344cc13949dcb1661102bd01bace30",
+      "source_bytes": 6127851,
+      "candidate_bytes": 5864718
+    },
+    {
+      "request_path": "img/lording/rd4.png",
+      "candidate_path": "candidates/img/lording/rd4.webp",
+      "mime": "image/webp",
+      "source_blob": "e646a4c6d8b59d12a49c096d056963b89c2dbd30",
+      "source_sha256": "70977a876c62a6edb35b98a35a638db94d2c7a72eae818e365c5bead09aa1564",
+      "candidate_sha256": "3d9915ac078105c5807bdef86f047d842da52a3ea8ebb23b086a95bcc69a4571",
+      "source_bytes": 5292394,
+      "candidate_bytes": 2142442
+    },
+    {
+      "request_path": "img/lording/rd5.png",
+      "candidate_path": "candidates/img/lording/rd5.webp",
+      "mime": "image/webp",
+      "source_blob": "8b95fd217b8df6b44b5233e859c8857f7ed5ffd1",
+      "source_sha256": "37cca3e902308a8ac6ab2c82bfc972b1e7b05516eab5ddcb31ac2164419d0897",
+      "candidate_sha256": "b6d42054fc32f5b59bcacaab08647351e59f64ab7a642c3d6a2dbb241d5b1a00",
+      "source_bytes": 7074212,
+      "candidate_bytes": 5967834
+    },
+    {
+      "request_path": "img/lording/rd6.png",
+      "candidate_path": "candidates/img/lording/rd6.webp",
+      "mime": "image/webp",
+      "source_blob": "0be358c0df7f6dbb79301fc8223c5d2d99652ec4",
+      "source_sha256": "bdd9a1fb38ca78f0871b9c7ad13672920a8332dcab3c2ec162c09968edd01d79",
+      "candidate_sha256": "a12f4d23cb80483339db8e82ff13e093d75975888ca45a30d3af84208ed8d049",
+      "source_bytes": 2745961,
+      "candidate_bytes": 2015862
+    },
+    {
+      "request_path": "img/lording/rd7.png",
+      "candidate_path": "candidates/img/lording/rd7.webp",
+      "mime": "image/webp",
+      "source_blob": "7ef00c2708ba0d5a8eb2aa5b4b1037123a8e6af3",
+      "source_sha256": "2ed4bcc24d44a913376413db0a951c1119e697794cf293eb54d0b70964bf343e",
+      "candidate_sha256": "36ddcc328c97471397dc783d9d838169eb68a049c2366fde34ca4d0132154dc2",
+      "source_bytes": 2922957,
+      "candidate_bytes": 2023338
+    },
+    {
+      "request_path": "img/lording/rd8.png",
+      "candidate_path": "candidates/img/lording/rd8.webp",
+      "mime": "image/webp",
+      "source_blob": "b328e84dfa6eced860c03a5a7dd3494384a78e2b",
+      "source_sha256": "47b12289761c464cbdc2d292455fc91b8b93446cb93a0936ca82bdbec9b218c9",
+      "candidate_sha256": "ebdaf513c06baa8ff3821a5d60dfeb3b1dd4a576d16f3a5c0c5de26ca295b6bd",
+      "source_bytes": 4850874,
+      "candidate_bytes": 2320380
+    },
+    {
+      "request_path": "img/lording/rd9.png",
+      "candidate_path": "candidates/img/lording/rd9.webp",
+      "mime": "image/webp",
+      "source_blob": "5d6fbc7e264c81f519feb1653c60e3e902746d31",
+      "source_sha256": "351da89c16ac04432872214b67fa1ff5d8925b46d6685922de9f63bf7bfd18ba",
+      "candidate_sha256": "c917fb8a0791aac95370fbf0fcf7b82d5f9cfc025424df305216994626a3b2b1",
+      "source_bytes": 3159046,
+      "candidate_bytes": 2105040
+    },
+    {
+      "request_path": "assets/title-signboard/A/master-7680x2160.png",
+      "candidate_path": "candidates/assets/title-signboard/A/master-7680x2160.webp",
+      "mime": "image/webp",
+      "source_blob": "9de6838ffa2d465407e893397ef586611ef67461",
+      "source_sha256": "c6565cf4050d3ae33d3d65acdd5becf0cfe0114a77a7dd2b4e03cb29e6858548",
+      "candidate_sha256": "47cfbf675ba1bcffb88f6d1b24c01efaecd29dc5c0da9d602a6132a89652a69f",
+      "source_bytes": 21882735,
+      "candidate_bytes": 8213492
+    },
+    {
+      "request_path": "assets/lobby/varkan_idle_v3.png",
+      "candidate_path": "candidates/assets/lobby/varkan_idle_v3.webp",
+      "mime": "image/webp",
+      "source_blob": "90c396dbf3b4647e6922433c21e3e7e863a0e2dd",
+      "source_sha256": "12a5dec2194c21715f5c57ecd73c5621759e4d3e7a11b99d8543ebbca6776df4",
+      "candidate_sha256": "fdbfee62c5940e74ff6b0156cb64b27a2bdaf5c17ec2a7c2101508029c23df67",
+      "source_bytes": 18349778,
+      "candidate_bytes": 15518272
+    },
+    {
+      "request_path": "assets/map/ch1/rottenwood_poison_master_v3_detail.png",
+      "candidate_path": "candidates/assets/map/ch1/rottenwood_poison_master_v3_detail.webp",
+      "mime": "image/webp",
+      "source_blob": "21f9360827eb31b39d35a77c9a58bb0f67d68c32",
+      "source_sha256": "38f4a21e558781f143b7edff8c4df6686f41b2ac7369cb699efb7c30aef5d532",
+      "candidate_sha256": "349fc0b2020e1a13ab1fe0ca33becde01074cc03999436d607858d52ff2520b5",
+      "source_bytes": 17307458,
+      "candidate_bytes": 11858760
+    },
+    {
+      "request_path": "assets/map/ch1/다운로드 (15).png",
+      "candidate_path": "candidates/assets/map/ch1/다운로드 (15).webp",
+      "mime": "image/webp",
+      "source_blob": "dc697b79a0b4b9e2d1759e8955f9cc6940381313",
+      "source_sha256": "5d132a583f3872e86f15cacf099c476f9f9176e1cbe2874512571e678ffcbfe3",
+      "candidate_sha256": "f69c756e0bc5a36c131404bc05d852c1b7bb1f1bcc5caf801ea9d86e8c8d50bd",
+      "source_bytes": 17116425,
+      "candidate_bytes": 7209002
+    },
+    {
+      "request_path": "assets/map/ch1/다운로드 (15).png",
+      "candidate_path": "candidates/assets/map/ch1/다운로드 (15).webp",
+      "mime": "image/webp",
+      "source_blob": "dc697b79a0b4b9e2d1759e8955f9cc6940381313",
+      "source_sha256": "5d132a583f3872e86f15cacf099c476f9f9176e1cbe2874512571e678ffcbfe3",
+      "candidate_sha256": "f69c756e0bc5a36c131404bc05d852c1b7bb1f1bcc5caf801ea9d86e8c8d50bd",
+      "source_bytes": 17116425,
+      "candidate_bytes": 7209002
+    },
+    {
+      "request_path": "assets/map/ch1/rottenwood_poison_master_higgsfield_v1.png",
+      "candidate_path": "candidates/assets/map/ch1/rottenwood_poison_master_higgsfield_v1.webp",
+      "mime": "image/webp",
+      "source_blob": "2e31adb97a25b507c38096d1b23d437558d2071d",
+      "source_sha256": "23344f4cb651786fbd6a80bbe359732fa778489fd44d17299df8d513ab5a9fca",
+      "candidate_sha256": "a5c39866233d5e03593c7383c883ffa7de515fcf6f83fdc8196f8df53cd003e9",
+      "source_bytes": 17101959,
+      "candidate_bytes": 10848758
+    },
+    {
+      "request_path": "assets/map/ch1/bg_scenery.png",
+      "candidate_path": "candidates/assets/map/ch1/bg_scenery.webp",
+      "mime": "image/webp",
+      "source_blob": "b5727849bbe72f792374cdf24f594d055d318248",
+      "source_sha256": "98944a1ae2e87e8b36b825bef5e9964abc4671864301846233411412bcebf1ae",
+      "candidate_sha256": "7eb01e597288e2397b54c1ff5f62f302af62205b9bd5f56cc6b27d40558e35d4",
+      "source_bytes": 17044418,
+      "candidate_bytes": 5473016
+    },
+    {
+      "request_path": "assets/map/ch1/boss_room_bg.png",
+      "candidate_path": "candidates/assets/map/ch1/boss_room_bg.webp",
+      "mime": "image/webp",
+      "source_blob": "0052cbdca4169c9ed12259c7da457a425d6cc95f",
+      "source_sha256": "222132c9491337a8a2ce7ab4f18a881cf3e1b2b59ec8e3b9beb84955f1949c61",
+      "candidate_sha256": "b8ad68f0ecba92ad87875ca7e0a5bb4bc36c1bb0460b906cda85b867f610db16",
+      "source_bytes": 16419640,
+      "candidate_bytes": 6856466
+    },
+    {
+      "request_path": "assets/map/ch1/image_c437b417-a480-4682-845c-daf493bd60a4.png",
+      "candidate_path": "candidates/assets/map/ch1/image_c437b417-a480-4682-845c-daf493bd60a4.webp",
+      "mime": "image/webp",
+      "source_blob": "0052cbdca4169c9ed12259c7da457a425d6cc95f",
+      "source_sha256": "222132c9491337a8a2ce7ab4f18a881cf3e1b2b59ec8e3b9beb84955f1949c61",
+      "candidate_sha256": "b8ad68f0ecba92ad87875ca7e0a5bb4bc36c1bb0460b906cda85b867f610db16",
+      "source_bytes": 16419640,
+      "candidate_bytes": 6856466
+    },
+    {
+      "request_path": "assets/vfx/fieldboss/kraken_water_orb_24_20261010.png",
+      "candidate_path": "candidates/assets/vfx/fieldboss/kraken_water_orb_24_20261010.webp",
+      "mime": "image/webp",
+      "source_blob": "05380ee5a0b1b529ed3491ab8a789dca84a737dc",
+      "source_sha256": "9bc15c964036f8b838b8b854a2f8ce58b5f51d682b637dda4f0b763c68ec1faf",
+      "candidate_sha256": "701d94d968f278b9a861011b9e9558ae94551842bb656a827dbb3979e04cc7de",
+      "source_bytes": 14733227,
+      "candidate_bytes": 11081238
+    },
+    {
+      "request_path": "assets/map/ch1/map_1-2.png",
+      "candidate_path": "candidates/assets/map/ch1/map_1-2.webp",
+      "mime": "image/webp",
+      "source_blob": "8d98053e979f132502835b701113a99f2f98bf17",
+      "source_sha256": "10262cdd09e6b7637d85d25e1fe186bf2f75ed830a44bc09e42efd1722fd8499",
+      "candidate_sha256": "48d04f7935201e130ffda9a0b10e3a8cdb232af0a4a10b5c0368e062cab6567e",
+      "source_bytes": 14557313,
+      "candidate_bytes": 4955172
+    },
+    {
+      "request_path": "img/hellgate.png",
+      "candidate_path": "candidates/img/hellgate.webp",
+      "mime": "image/webp",
+      "source_blob": "caadbeaaa4972753514bc6b8c6618d7f6e554880",
+      "source_sha256": "62f66723586d5eb957a060912e507dac21a43495c8b63078aaba61b3bc7b8761",
+      "candidate_sha256": "22eb3a0328dbb8f70e66c1bfed21c13dbc124823b371cfaf0ec5abc6fbe51f1f",
+      "source_bytes": 11735664,
+      "candidate_bytes": 4969868
+    },
+    {
+      "request_path": "assets/vfx/fieldboss/firedevil_orb_24_20261010.png",
+      "candidate_path": "candidates/assets/vfx/fieldboss/firedevil_orb_24_20261010.webp",
+      "mime": "image/webp",
+      "source_blob": "aef99ad87eca70737d6fdccb8108d62ea846de85",
+      "source_sha256": "b755bf10635eb94bd457e393d3e8966f7b37b3d4e731fac2c8c448456dd09b17",
+      "candidate_sha256": "9ec0184dfd9a506f5cc358a870ff32fbd8f02dd2d8d7f9076b8ad466998c7ca1",
+      "source_bytes": 11348701,
+      "candidate_bytes": 8542736
+    },
+    {
+      "request_path": "assets/map/ch1/rottenwood_living_hell_v6_right_layer.png",
+      "candidate_path": "candidates/assets/map/ch1/rottenwood_living_hell_v6_right_layer.webp",
+      "mime": "image/webp",
+      "source_blob": "185b7cf565a4fd725b3fff77c61f337a0300ffa0",
+      "source_sha256": "8915c1b47436bd602a111902fbb331cf5850e94fc101ae8e2f086e0294947623",
+      "candidate_sha256": "57afe416d9989c0d18ff7cd8074dd7fcfa5e44dc86f0deb4ada3e89444c85a6a",
+      "source_bytes": 10959555,
+      "candidate_bytes": 5728390
+    },
+    {
+      "request_path": "assets/map/ch1/rottenwood_living_hell_v7_ground_layer.png",
+      "candidate_path": "candidates/assets/map/ch1/rottenwood_living_hell_v7_ground_layer.webp",
+      "mime": "image/webp",
+      "source_blob": "236c644fe4ce528a3df21f655853f7bea79113de",
+      "source_sha256": "1c66259721e7d5182aa3f2133c436edd59064640a4e9a03432cba9d201480412",
+      "candidate_sha256": "cb7d01e96d4fc2fd56cf2e55c0699b2e87d17c026ae644ba8a2cd965dbe304fc",
+      "source_bytes": 10935833,
+      "candidate_bytes": 5571902
+    },
+    {
+      "request_path": "assets/map/ch1/rottenwood_living_hell_v6_left_layer.png",
+      "candidate_path": "candidates/assets/map/ch1/rottenwood_living_hell_v6_left_layer.webp",
+      "mime": "image/webp",
+      "source_blob": "9f463b503b24b70ce35d7bbc4473bb71abbc3066",
+      "source_sha256": "7787fe634f68364099f365a5a3fc8aedb2baf3d0bf73c6a8d887c48ed4566089",
+      "candidate_sha256": "8027631834de1994889f21095608ca2cb3e612858c93edd132a2dd50bea77add",
+      "source_bytes": 10891542,
+      "candidate_bytes": 5722900
+    },
+    {
+      "request_path": "assets/map/ch1/rottenwood_living_hell_v7_right_layer.png",
+      "candidate_path": "candidates/assets/map/ch1/rottenwood_living_hell_v7_right_layer.webp",
+      "mime": "image/webp",
+      "source_blob": "c75b1b8dd5e3b722fdaf396c853eaa60da5db51b",
+      "source_sha256": "b0e821ac43a5cfce9f3ec68c604421467cdcd2215d7dfafd439504f2173de5f9",
+      "candidate_sha256": "99df384d514a964acc8232dc7c170aa4e7057bff72ac6fb87a8a376103ae6437",
+      "source_bytes": 10785470,
+      "candidate_bytes": 5518282
+    },
+    {
+      "request_path": "assets/map/ch1/rottenwood_living_hell_v7_left_layer.png",
+      "candidate_path": "candidates/assets/map/ch1/rottenwood_living_hell_v7_left_layer.webp",
+      "mime": "image/webp",
+      "source_blob": "6c07b01af053ecd6a5fbf8a9ddc96e0501e38bcc",
+      "source_sha256": "10e9009d1b5e8b341702ccb2713c17791ba196065f5602b92a854d0ebb5ef001",
+      "candidate_sha256": "11f36877f5f27e6ce2087cd65f395a894e160cdff3bb6db235b715c1cdba67b0",
+      "source_bytes": 10711359,
+      "candidate_bytes": 5640880
+    },
+    {
+      "request_path": "assets/vfx/boss/druid_hit_24_20261010.png",
+      "candidate_path": "candidates/assets/vfx/boss/druid_hit_24_20261010.webp",
+      "mime": "image/webp",
+      "source_blob": "4d05da8624e121e29b06b8a07353e07ab37fb042",
+      "source_sha256": "23f5f802365575c2b7024fe3910c289798ff8162e55a0b373ab1b726c41f16b1",
+      "candidate_sha256": "59d4d6d21322df59d689ecb016c05b3a5f9d4ba28261716f8d48337d7e10a088",
+      "source_bytes": 10563300,
+      "candidate_bytes": 7921248
+    },
+    {
+      "request_path": "assets/map/ch1/rottenwood_living_hell_v7_north_layer.png",
+      "candidate_path": "candidates/assets/map/ch1/rottenwood_living_hell_v7_north_layer.webp",
+      "mime": "image/webp",
+      "source_blob": "9a8ac324e78ec24c5c89aec8568802c4a52aead9",
+      "source_sha256": "8732e603ee535f4d69160143a65597322c2b5de82207f24a4e647b3fbcbdc0d7",
+      "candidate_sha256": "fd868b0f79a5530ce2c746b98dabdac4b72b8c33cd146e3f6f96f28354b9bfad",
+      "source_bytes": 10487181,
+      "candidate_bytes": 5620842
+    },
+    {
+      "request_path": "assets/map/ch1/rottenwood_living_hell_v6.png",
+      "candidate_path": "candidates/assets/map/ch1/rottenwood_living_hell_v6.webp",
+      "mime": "image/webp",
+      "source_blob": "0409845158ae63913d0fc35b77cadec6d20f0964",
+      "source_sha256": "904ab136d5383541ef425dbabad43a4a31315cf1077e6e286214520a409dc2ac",
+      "candidate_sha256": "20a643fbbd8c9008c4654ea2db8e41f5bb19dcf7ad83a53e4bb07b56ca9c74fd",
+      "source_bytes": 10415351,
+      "candidate_bytes": 5737798
+    },
+    {
+      "request_path": "video/world_intro_v22b_steam.mp4",
+      "candidate_path": "candidates/world_intro_v22b_steam.web.mp4",
+      "mime": "video/mp4",
+      "source_blob": "2b4770ff9ccba8d496673af52bdd6c8f37e8491e",
+      "source_sha256": "3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f",
+      "candidate_sha256": "c2795c9014b8a2035f307807666a1a952b5c2962acb6c4f31d319cd73345ae28",
+      "source_bytes": 102204634,
+      "candidate_bytes": 75253813
+    }
+  ]
+}

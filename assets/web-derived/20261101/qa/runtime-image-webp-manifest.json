@@ -1,0 +1,1110 @@
+{
+  "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+  "selected_files": 3095,
+  "entries": [
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/1.png",
+      "source_git_blob": "1b30c6b9cef88597171f8cf69fd93c463bcda86a",
+      "source_sha256": "0dd895bf1a54682c900ae3cad6da6507c02f48ae4fdce44af2c59280020c5ccd",
+      "source_bytes": 2577016,
+      "candidate_path": "candidates/img/lording/1.webp",
+      "candidate_sha256": "967274dc4a580653d9ae20d63d43109c8c0d26345c1ff8d05343b6a32ebe66d4",
+      "candidate_bytes": 1805732,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "413c43160ab6618e2d03b8141dd5f69c7e76387b871e01443b5993f6d9103d2e",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/10.png",
+      "source_git_blob": "56a232d09a596f04ffc0887fc42948068d2ed5cb",
+      "source_sha256": "d601fd8c522307b9db890334b971f77d9ce199ed9cc2986ac0df31a3328cf727",
+      "source_bytes": 2040647,
+      "candidate_path": "candidates/img/lording/10.webp",
+      "candidate_sha256": "3e7f4665a463b0aa959d3a055edd345d57ac2966ff6869a9e6cdccc61c0bccc9",
+      "candidate_bytes": 1538658,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2170,
+        725
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "6c8b334be456cb3c6eb3aab650930e9bd9cb146879176d25b37414c224c19bdf",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/11.png",
+      "source_git_blob": "9fef47425a22f9016bd90fd58d8f6c4580b894ab",
+      "source_sha256": "ebcc9bb2c36420310a2b36d48aa1b674fa4bd1272c70ed4bbd606332f0c8a182",
+      "source_bytes": 1955440,
+      "candidate_path": "candidates/img/lording/11.webp",
+      "candidate_sha256": "aa40752ba42bb50e67f6879291ee11e45621a94c42803b9de9b5dcf4ada605a2",
+      "candidate_bytes": 1370230,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "18ccd20c9d7fe076ce894e7bae1a082b7f70a76d0be82471f104c39f17fcdf1c",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/12.png",
+      "source_git_blob": "a566753631809d971ca3a5c44c894160a5f68be5",
+      "source_sha256": "942d60a7d6de2c95d3064bc3cde36cefbf0320da2d5a2b12bccdcb67433e530d",
+      "source_bytes": 7777256,
+      "candidate_path": "candidates/img/lording/12.webp",
+      "candidate_sha256": "79fb318a215020b583d35b9e7205ba0f369a1357dc4a00baf96c8ded0aa0ebd8",
+      "candidate_bytes": 5055938,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        5119,
+        1439
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "b01332f3614b6512a3e2fe09f5f0412104bb4c5154bf99bfa24724af5ba96788",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/13.png",
+      "source_git_blob": "ce565df96702fd216a64b684b76b8083bf998715",
+      "source_sha256": "2dae6de6db0d013af86e7031cf3e3e3fd3ff650e10a41967acffb25e619b41ea",
+      "source_bytes": 1939473,
+      "candidate_path": "candidates/img/lording/13.webp",
+      "candidate_sha256": "498d5447fd34aedf5f8e62f182ad552f53d1d84395288d3b702ccc5779ce0908",
+      "candidate_bytes": 1495548,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2170,
+        725
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "40a7bfdb269d13f1763940b2f5ddcf3341cd50ddc152def177e7accd781ffc3d",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/14.png",
+      "source_git_blob": "eef72039e7aeaf52fb538f0c185fa81e4dda59b5",
+      "source_sha256": "e59dfa85945bb019dc5421efe6ddf938cb6a08b32578dc43ff45bb8a4e758103",
+      "source_bytes": 2164864,
+      "candidate_path": "candidates/img/lording/14.webp",
+      "candidate_sha256": "eab01b3690ca2ffd1d0020c0c18acaf72052b647891491d744c835982801c646",
+      "candidate_bytes": 1678012,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2171,
+        724
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "eef13da3b4811f1fe9773a4093dd270fd00df8048e79a75c62eaa6004097d1fa",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/15.png",
+      "source_git_blob": "17c1e5335d284a546920504fb42cd2bb1bc216da",
+      "source_sha256": "ee9a79eaea57926bc65ca153a799cc604ffbcfd31bebc30ca4800aec18513602",
+      "source_bytes": 2035450,
+      "candidate_path": "candidates/img/lording/15.webp",
+      "candidate_sha256": "b90ccf80a840f56e88ffe77587c8c71373185f163dfbe6b2a41233087062476b",
+      "candidate_bytes": 1539806,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2170,
+        725
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "2f5000df8b1766931c836ca8c1676a3269af7e1b5e04f822d69389c41669f85a",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/16.png",
+      "source_git_blob": "8f2fa5d101ff9312990b6eb6b5d3d63bbd82319e",
+      "source_sha256": "99474b62a691b618928fc43860bece471fdce52d1dc1af4c420c43f0d21bd567",
+      "source_bytes": 1978737,
+      "candidate_path": "candidates/img/lording/16.webp",
+      "candidate_sha256": "59a25a757803503b73a4068691aaffbb78d81fe5d76b9f05b64475e386c9b082",
+      "candidate_bytes": 1545150,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "9ce271466828de70a9a5df05f3afb5f461d6b01034afe5ccfa0f080b7b76193e",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/17.png",
+      "source_git_blob": "600e83284baea886af4cc53dd5ddfa5150256c12",
+      "source_sha256": "49390b06531e5a796376a83e3440c34438cd54286204cfde2df8e31dad7ded1b",
+      "source_bytes": 2112356,
+      "candidate_path": "candidates/img/lording/17.webp",
+      "candidate_sha256": "99e414509a4328d7b63dc7611510068c070f518c50523c7e888c14027d0de73e",
+      "candidate_bytes": 1622150,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2170,
+        725
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "964a80267ff9ef192274a7afcdf3c06ccd21a8f91c001892515a861f95a2a208",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/18.png",
+      "source_git_blob": "d4382cfd14244364a4b0241811ee757a9dc6e1c1",
+      "source_sha256": "78a974aa7a1b02e7ed99b96b9b2b75629377f94fd3a8f8ebe10c64543e2a8b8a",
+      "source_bytes": 1939611,
+      "candidate_path": "candidates/img/lording/18.webp",
+      "candidate_sha256": "6ed08b347deda9a622d8cb0e271b0b082202c54a7b2fe7308ec265251c2a4407",
+      "candidate_bytes": 1533558,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2170,
+        725
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "a4a277d707da26aaa07b35fc108d481df4a380a1d3f6aaa25becc0a7b415e4d9",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/19.png",
+      "source_git_blob": "6fb2fb99fe82d75fb2b6178fbb8df0b9f9f1fe90",
+      "source_sha256": "d8d1dd609c99d23b50cde10d203af2cd8d3334803f5198e713565861701f60fb",
+      "source_bytes": 2625166,
+      "candidate_path": "candidates/img/lording/19.webp",
+      "candidate_sha256": "f6593aa993eb55d49c8f1dc4684bad541354fddb522a80bc183bfb7632dca4bc",
+      "candidate_bytes": 2005416,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2170,
+        725
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "3a17650ca7deb8f286567c6bf4448ce5e526c45cd0ef81d04f3c73357829900f",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/2.png",
+      "source_git_blob": "844ceda04e1d4bd56e81b05dd8988e6829e654cc",
+      "source_sha256": "df65163c82ca0100174177df71701861d38e4ac102f502fb3eb604de44d8a60f",
+      "source_bytes": 2062050,
+      "candidate_path": "candidates/img/lording/2.webp",
+      "candidate_sha256": "1764c17d7925326b21640844417add9efb58eb44fb7d6e5ace19b29031f809e4",
+      "candidate_bytes": 1525048,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "d0d2df9558cb911c67cfa86a2275bb7b884e398ddf60736e5e22d8e5dc838214",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/3.png",
+      "source_git_blob": "520ecc85149f4c108e025458e438f198c30bbed3",
+      "source_sha256": "5ba4904f3f60b0cfd49ea65a3beaa60db281405f9c14f38fcec5b460719ebabd",
+      "source_bytes": 3338484,
+      "candidate_path": "candidates/img/lording/3.webp",
+      "candidate_sha256": "2d79c7b7710800550417acb5ec4a32d693623f1b90a532336a2243afbac87a66",
+      "candidate_bytes": 1250544,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2048,
+        1152
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "4d5c1b32eb28ec7cc194c9ad95c33dbbba391ee4e5745402ac0f1fff5e1d9dfc",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/4.png",
+      "source_git_blob": "1356b6b9eb7d529376e0167aa5c3e6e758e8d7ff",
+      "source_sha256": "0e1e2f4657c83667b365214bc50802254ef1cbf7089862226b6d024ac5082e21",
+      "source_bytes": 2028309,
+      "candidate_path": "candidates/img/lording/4.webp",
+      "candidate_sha256": "de52d0daebb16ae2ea6de7ec09b9f2b4d0b882f0f6c8e158e280e006fcc99785",
+      "candidate_bytes": 1606264,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2170,
+        725
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "47aefe9a1a3a4f41ea10cf9fe263ff322992adf8b16e6e2ef156ad8ed0fe36d4",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/5.png",
+      "source_git_blob": "f112a6ee4f03da0ef916f4cf7c2adb7fa4c5ed40",
+      "source_sha256": "bee7c885cdecbf779e17c44e60c2be794e50fe1fc460165fd8ceafd19867e049",
+      "source_bytes": 8290263,
+      "candidate_path": "candidates/img/lording/5.webp",
+      "candidate_sha256": "5f25689e80b364568ee4a5e573594f3ee6d53ec00b7f2c59a944d2f0811b3609",
+      "candidate_bytes": 5126206,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        5119,
+        1439
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "4c7b5348b51eaab2eaeec7c522b4702d5186c2262a15e34ffaac2714827bea43",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/6.png",
+      "source_git_blob": "c51c9e0577da6fff2909022b3763545291fe9123",
+      "source_sha256": "139b9d40e2efcbac42746d038985cb03e8809b9b1ff130b3f4df1b653f2f1dfb",
+      "source_bytes": 6500846,
+      "candidate_path": "candidates/img/lording/6.webp",
+      "candidate_sha256": "cc17600b22ddd0dee600f62c0bba31ec7b2e5b1d9a153a54b886a2fa050831a2",
+      "candidate_bytes": 4105806,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        5119,
+        1439
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "ecff37ef7139bbb6dfb8c22a1856c0348e26f82ed55a1df8c115891a03727ea9",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/7.png",
+      "source_git_blob": "596e984f075781c5f4c2c05bfd558dc93d10c813",
+      "source_sha256": "02ca067293d8da66e639d47a41c3018266914e0c87a76e373043eb58c371d67f",
+      "source_bytes": 8211709,
+      "candidate_path": "candidates/img/lording/7.webp",
+      "candidate_sha256": "a84146d7390ffc8b314bd66aff294f3111b3009cc09749f6063f8b49518a16f5",
+      "candidate_bytes": 5191372,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        5119,
+        1439
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "0336e9aed724244a63f1fc938684af69df2b56b750329f0f3b18a3eede567718",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/8.png",
+      "source_git_blob": "6244217e0df0716aaa876458d36bc6cac7576420",
+      "source_sha256": "3ee1864f2f340661ac617aed0d736db96f4880d184b0a1ee8c40a0c31b2cfac2",
+      "source_bytes": 7014282,
+      "candidate_path": "candidates/img/lording/8.webp",
+      "candidate_sha256": "3bd6bf8e40b734bb89506c0c25c37e4e7240cfdbefcf1f895de584db2cafc597",
+      "candidate_bytes": 4771420,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        5119,
+        1439
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "cd0c5d9c4cc9f15c84222f193e3b8b3f77e157938479a8a76c57e27dd254d7d6",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/9.png",
+      "source_git_blob": "192ab073b89f03ba448f4355428d0ae7512fdd15",
+      "source_sha256": "0550008e1324868c27d3d721509e8f5be09c0ae68270e298f8e565273662f897",
+      "source_bytes": 7490668,
+      "candidate_path": "candidates/img/lording/9.webp",
+      "candidate_sha256": "3f843fe841834f48fabc9ff8a4162cad69328c2071866e08943adb0c2b00f941",
+      "candidate_bytes": 4690048,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        5119,
+        1439
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "562a962ef18a5382132033577aacdf58acbd0b88fa4dfff26111969c6e7b33ff",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/rd1.png",
+      "source_git_blob": "0adf5b13952c24a99d15cb39719993647932d503",
+      "source_sha256": "3fc09ed70d8566c013eee65c55c627464493422c6756554ece897e8722791430",
+      "source_bytes": 2749418,
+      "candidate_path": "candidates/img/lording/rd1.webp",
+      "candidate_sha256": "13eee540bfc23f8fc1afd452881f9bd9043b6e7af8617106381c062a50e82afe",
+      "candidate_bytes": 2013834,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "bb7b3f237e2cd8d47e4b715630bb2dae630042d649d80a3ca4c887e6116af967",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/rd10.png",
+      "source_git_blob": "fdadf013f92036daa253a7cd2dc120ebf09613b3",
+      "source_sha256": "395ffe77b95ba50198b7451008b22ec4b8c4b55e34f3b6ff7c1fb57d94d9d1b4",
+      "source_bytes": 3182493,
+      "candidate_path": "candidates/img/lording/rd10.webp",
+      "candidate_sha256": "5544490571f02d7cf0f87ae33df9377b1b0d17f4ace6794bbb83b85a3434e8ba",
+      "candidate_bytes": 2206776,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "d310749069e3cf9a14a8f4e9917abf78e64511c20617d0c4538bb9e1533369df",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/rd12.png",
+      "source_git_blob": "de3d6e1daf8e5fa321b25c2d849ec93f22a2bfba",
+      "source_sha256": "0cd16c82daca2ea7e548dbc51cca03d67ba919bd0f8c37b892b9464679a3dad3",
+      "source_bytes": 5821565,
+      "candidate_path": "candidates/img/lording/rd12.webp",
+      "candidate_sha256": "f9d19d99c3ffaae0bf5c474d31ee00271b618340d80d7c1555e0223e12c11ee4",
+      "candidate_bytes": 5408492,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "d6b5fb4013c28b6263ef3aae60f867fd27dac59a47c76ba4be5bf4105eb232e7",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/rd13.png",
+      "source_git_blob": "d51789884130a8c6e382620e2d35e0d236dac993",
+      "source_sha256": "bb85dabe4f1ef95c4c16da55cd432f6daabec3e05184225b1c8f6c3169e1c40e",
+      "source_bytes": 5327676,
+      "candidate_path": "candidates/img/lording/rd13.webp",
+      "candidate_sha256": "03a235045db0b44f16b65ef81ce815632ae188d28f8d27e2ed4f1bcbc68e4663",
+      "candidate_bytes": 2441370,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2048,
+        1152
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "9672b97f868b5b7ccb554f9e70bd12c1797a57af349cbe373c8943cb92ba0d20",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/rd14.png",
+      "source_git_blob": "16e1df6bb05296e41b2e372d7f194c0be5b45f21",
+      "source_sha256": "06036836f712381fb416d7a5dcfcc8610b303c575983099c753e7a8c03f1bf5b",
+      "source_bytes": 5031968,
+      "candidate_path": "candidates/img/lording/rd14.webp",
+      "candidate_sha256": "95e8102b93eb7393f9b9c0e58ddd766377d345d42db8d8265d12e8a019806032",
+      "candidate_bytes": 2505042,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2048,
+        1152
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "4143f51b8afd1c29d52d6cf670df1104ffb922561f9555d62df7ae86e4d1a061",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/rd15.png",
+      "source_git_blob": "e0ee28852733349641ae233f9753050cee738a39",
+      "source_sha256": "3d182a95a6ea9c89f9bbe92d3bc2a488985a935b7ee7d20a8d178110031b1bbd",
+      "source_bytes": 1887904,
+      "candidate_path": "candidates/img/lording/rd15.webp",
+      "candidate_sha256": "e536a3f4fef333e05e32ad140e7e00191982661a395db2d2f3722553d5981b77",
+      "candidate_bytes": 1396428,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2170,
+        725
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "09c1faa789d33c196ca7eaf2683d6bd4f1db0f7f76c5d15e520d20707c19d885",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/rd16.png",
+      "source_git_blob": "b811c21fd49c47cccae7be209a9427ecfe3365f1",
+      "source_sha256": "15a16839a0d84f9b5a7b0bcc714f8c257a00610e543a129cefdb274a31670400",
+      "source_bytes": 6177869,
+      "candidate_path": "candidates/img/lording/rd16.webp",
+      "candidate_sha256": "296213be49eab3c13734645b1e9a74e676186be3b8bc11a30d3b8d6c26b53ea6",
+      "candidate_bytes": 5551846,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "91d4e49f276fa8c3d41a205546f25c41bf8f7ddc4d08c2ddbc46f5e6a473626e",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/rd17.png",
+      "source_git_blob": "3a0645beecd60704e1531e7bf8b644f4eba2115f",
+      "source_sha256": "e1446cc81aa5aedf03e7ae17d4e8e86698bb5844c3414b9aca97d3f51ff98a12",
+      "source_bytes": 3172044,
+      "candidate_path": "candidates/img/lording/rd17.webp",
+      "candidate_sha256": "8f6d050f2896bb3f65bfaaf4662d29ed6f01bbb7bdba6e88662597c042d21fc0",
+      "candidate_bytes": 2096458,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "e24f02343b9333e847abd1f7a2be2dbbb81875602b7a19327db2fba22f791eeb",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/rd2.png",
+      "source_git_blob": "b39ef9e6a4633d9c3ecc2e61a2da19cd0e15bbdc",
+      "source_sha256": "9f9dde2348ddf34dbc9277889d6aedd6df9c409ee9ed61fbf6f2056495d355eb",
+      "source_bytes": 6127851,
+      "candidate_path": "candidates/img/lording/rd2.webp",
+      "candidate_sha256": "e715e92c0f5a47531976856b0bdf356adb344cc13949dcb1661102bd01bace30",
+      "candidate_bytes": 5864718,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "2112db17c31f34d0289da6c3702efeb9b73ab7cd6f16ae93f1d844cc10ab8b4b",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/rd4.png",
+      "source_git_blob": "e646a4c6d8b59d12a49c096d056963b89c2dbd30",
+      "source_sha256": "70977a876c62a6edb35b98a35a638db94d2c7a72eae818e365c5bead09aa1564",
+      "source_bytes": 5292394,
+      "candidate_path": "candidates/img/lording/rd4.webp",
+      "candidate_sha256": "3d9915ac078105c5807bdef86f047d842da52a3ea8ebb23b086a95bcc69a4571",
+      "candidate_bytes": 2142442,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2048,
+        1152
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "01ebc403bcb43d04be5223413027b76ff9b7bb3704b89e9a30764e1a9d0855f1",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/rd5.png",
+      "source_git_blob": "8b95fd217b8df6b44b5233e859c8857f7ed5ffd1",
+      "source_sha256": "37cca3e902308a8ac6ab2c82bfc972b1e7b05516eab5ddcb31ac2164419d0897",
+      "source_bytes": 7074212,
+      "candidate_path": "candidates/img/lording/rd5.webp",
+      "candidate_sha256": "b6d42054fc32f5b59bcacaab08647351e59f64ab7a642c3d6a2dbb241d5b1a00",
+      "candidate_bytes": 5967834,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "66c2d5bc899d6e1f828e7c5cc56d03b2931c5af1cdf3249956568af2d6771306",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/rd6.png",
+      "source_git_blob": "0be358c0df7f6dbb79301fc8223c5d2d99652ec4",
+      "source_sha256": "bdd9a1fb38ca78f0871b9c7ad13672920a8332dcab3c2ec162c09968edd01d79",
+      "source_bytes": 2745961,
+      "candidate_path": "candidates/img/lording/rd6.webp",
+      "candidate_sha256": "a12f4d23cb80483339db8e82ff13e093d75975888ca45a30d3af84208ed8d049",
+      "candidate_bytes": 2015862,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "d9b10eb5a2c98b40c725c180e6fb888c4619bf5e1f75d74c815eae555bf64bf4",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/rd7.png",
+      "source_git_blob": "7ef00c2708ba0d5a8eb2aa5b4b1037123a8e6af3",
+      "source_sha256": "2ed4bcc24d44a913376413db0a951c1119e697794cf293eb54d0b70964bf343e",
+      "source_bytes": 2922957,
+      "candidate_path": "candidates/img/lording/rd7.webp",
+      "candidate_sha256": "36ddcc328c97471397dc783d9d838169eb68a049c2366fde34ca4d0132154dc2",
+      "candidate_bytes": 2023338,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "65747c20cc691ae86521ddb4e15682d488615a46aca575cbaa3ea2962ba401f7",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/rd8.png",
+      "source_git_blob": "b328e84dfa6eced860c03a5a7dd3494384a78e2b",
+      "source_sha256": "47b12289761c464cbdc2d292455fc91b8b93446cb93a0936ca82bdbec9b218c9",
+      "source_bytes": 4850874,
+      "candidate_path": "candidates/img/lording/rd8.webp",
+      "candidate_sha256": "ebdaf513c06baa8ff3821a5d60dfeb3b1dd4a576d16f3a5c0c5de26ca295b6bd",
+      "candidate_bytes": 2320380,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2048,
+        1152
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "b546097783052955b7ef7f0e1ebf848204e2480496eef90c83a96497854f8c2f",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/lording/rd9.png",
+      "source_git_blob": "5d6fbc7e264c81f519feb1653c60e3e902746d31",
+      "source_sha256": "351da89c16ac04432872214b67fa1ff5d8925b46d6685922de9f63bf7bfd18ba",
+      "source_bytes": 3159046,
+      "candidate_path": "candidates/img/lording/rd9.webp",
+      "candidate_sha256": "c917fb8a0791aac95370fbf0fcf7b82d5f9cfc025424df305216994626a3b2b1",
+      "candidate_bytes": 2105040,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "62bdeca36653efeb7430c9a77ef6768246b68e592dbace1826584b47043dc66a",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "assets/title-signboard/A/master-7680x2160.png",
+      "source_git_blob": "9de6838ffa2d465407e893397ef586611ef67461",
+      "source_sha256": "c6565cf4050d3ae33d3d65acdd5becf0cfe0114a77a7dd2b4e03cb29e6858548",
+      "source_bytes": 21882735,
+      "candidate_path": "candidates/assets/title-signboard/A/master-7680x2160.webp",
+      "candidate_sha256": "47cfbf675ba1bcffb88f6d1b24c01efaecd29dc5c0da9d602a6132a89652a69f",
+      "candidate_bytes": 8213492,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        7680,
+        2160
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "e6554cd9278c4284eec177d51cdabd31e028390a08c991c05a666282dd7a43c0",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "assets/lobby/varkan_idle_v3.png",
+      "source_git_blob": "90c396dbf3b4647e6922433c21e3e7e863a0e2dd",
+      "source_sha256": "12a5dec2194c21715f5c57ecd73c5621759e4d3e7a11b99d8543ebbca6776df4",
+      "source_bytes": 18349778,
+      "candidate_path": "candidates/assets/lobby/varkan_idle_v3.webp",
+      "candidate_sha256": "fdbfee62c5940e74ff6b0156cb64b27a2bdaf5c17ec2a7c2101508029c23df67",
+      "candidate_bytes": 15518272,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        3072,
+        7488
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "2ba8dccabdf09f277a66b554ad94792a578121c9864a113d475b7796b45f282c",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "assets/map/ch1/rottenwood_poison_master_v3_detail.png",
+      "source_git_blob": "21f9360827eb31b39d35a77c9a58bb0f67d68c32",
+      "source_sha256": "38f4a21e558781f143b7edff8c4df6686f41b2ac7369cb699efb7c30aef5d532",
+      "source_bytes": 17307458,
+      "candidate_path": "candidates/assets/map/ch1/rottenwood_poison_master_v3_detail.webp",
+      "candidate_sha256": "349fc0b2020e1a13ab1fe0ca33becde01074cc03999436d607858d52ff2520b5",
+      "candidate_bytes": 11858760,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2880,
+        2880
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "08b2789735b9b2af082bc9be1c9dd239dc3613091a41fc0edd27f73d7d73c44f",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "assets/map/ch1/다운로드 (15).png",
+      "source_git_blob": "dc697b79a0b4b9e2d1759e8955f9cc6940381313",
+      "source_sha256": "5d132a583f3872e86f15cacf099c476f9f9176e1cbe2874512571e678ffcbfe3",
+      "source_bytes": 17116425,
+      "candidate_path": "candidates/assets/map/ch1/다운로드 (15).webp",
+      "candidate_sha256": "f69c756e0bc5a36c131404bc05d852c1b7bb1f1bcc5caf801ea9d86e8c8d50bd",
+      "candidate_bytes": 7209002,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        3072,
+        3072
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "6e769b305844b8e8bb4e6e9b760436a4eb9a5bbff40d0c8a432d474e7cc0ea77",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "assets/map/ch1/다운로드 (15).png",
+      "source_git_blob": "dc697b79a0b4b9e2d1759e8955f9cc6940381313",
+      "source_sha256": "5d132a583f3872e86f15cacf099c476f9f9176e1cbe2874512571e678ffcbfe3",
+      "source_bytes": 17116425,
+      "candidate_path": "candidates/assets/map/ch1/다운로드 (15).webp",
+      "candidate_sha256": "f69c756e0bc5a36c131404bc05d852c1b7bb1f1bcc5caf801ea9d86e8c8d50bd",
+      "candidate_bytes": 7209002,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        3072,
+        3072
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "6e769b305844b8e8bb4e6e9b760436a4eb9a5bbff40d0c8a432d474e7cc0ea77",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "assets/map/ch1/rottenwood_poison_master_higgsfield_v1.png",
+      "source_git_blob": "2e31adb97a25b507c38096d1b23d437558d2071d",
+      "source_sha256": "23344f4cb651786fbd6a80bbe359732fa778489fd44d17299df8d513ab5a9fca",
+      "source_bytes": 17101959,
+      "candidate_path": "candidates/assets/map/ch1/rottenwood_poison_master_higgsfield_v1.webp",
+      "candidate_sha256": "a5c39866233d5e03593c7383c883ffa7de515fcf6f83fdc8196f8df53cd003e9",
+      "candidate_bytes": 10848758,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2880,
+        2880
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "decb1f4caac81edce90bda79da17c0bc14f73d7e1fd1b7265c80575721e9a415",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "assets/map/ch1/bg_scenery.png",
+      "source_git_blob": "b5727849bbe72f792374cdf24f594d055d318248",
+      "source_sha256": "98944a1ae2e87e8b36b825bef5e9964abc4671864301846233411412bcebf1ae",
+      "source_bytes": 17044418,
+      "candidate_path": "candidates/assets/map/ch1/bg_scenery.webp",
+      "candidate_sha256": "7eb01e597288e2397b54c1ff5f62f302af62205b9bd5f56cc6b27d40558e35d4",
+      "candidate_bytes": 5473016,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        3072,
+        3072
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "442654b7ce5912928fdfec3de0c62d4707d38d2f3b32880d651a07b804f8440c",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "assets/map/ch1/boss_room_bg.png",
+      "source_git_blob": "0052cbdca4169c9ed12259c7da457a425d6cc95f",
+      "source_sha256": "222132c9491337a8a2ce7ab4f18a881cf3e1b2b59ec8e3b9beb84955f1949c61",
+      "source_bytes": 16419640,
+      "candidate_path": "candidates/assets/map/ch1/boss_room_bg.webp",
+      "candidate_sha256": "b8ad68f0ecba92ad87875ca7e0a5bb4bc36c1bb0460b906cda85b867f610db16",
+      "candidate_bytes": 6856466,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        3072,
+        3072
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "23d6f73997cdf6e73f0898eb10a099c2dc4655922656f9ae466a56562e8d37f9",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "assets/map/ch1/image_c437b417-a480-4682-845c-daf493bd60a4.png",
+      "source_git_blob": "0052cbdca4169c9ed12259c7da457a425d6cc95f",
+      "source_sha256": "222132c9491337a8a2ce7ab4f18a881cf3e1b2b59ec8e3b9beb84955f1949c61",
+      "source_bytes": 16419640,
+      "candidate_path": "candidates/assets/map/ch1/image_c437b417-a480-4682-845c-daf493bd60a4.webp",
+      "candidate_sha256": "b8ad68f0ecba92ad87875ca7e0a5bb4bc36c1bb0460b906cda85b867f610db16",
+      "candidate_bytes": 6856466,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        3072,
+        3072
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "23d6f73997cdf6e73f0898eb10a099c2dc4655922656f9ae466a56562e8d37f9",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "assets/vfx/fieldboss/kraken_water_orb_24_20261010.png",
+      "source_git_blob": "05380ee5a0b1b529ed3491ab8a789dca84a737dc",
+      "source_sha256": "9bc15c964036f8b838b8b854a2f8ce58b5f51d682b637dda4f0b763c68ec1faf",
+      "source_bytes": 14733227,
+      "candidate_path": "candidates/assets/vfx/fieldboss/kraken_water_orb_24_20261010.webp",
+      "candidate_sha256": "701d94d968f278b9a861011b9e9558ae94551842bb656a827dbb3979e04cc7de",
+      "candidate_bytes": 11081238,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        3840,
+        2560
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "21e290a87592f9e4950ecc881f91365cb030ab91576b885159150cc2e99f3e2b",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "assets/map/ch1/map_1-2.png",
+      "source_git_blob": "8d98053e979f132502835b701113a99f2f98bf17",
+      "source_sha256": "10262cdd09e6b7637d85d25e1fe186bf2f75ed830a44bc09e42efd1722fd8499",
+      "source_bytes": 14557313,
+      "candidate_path": "candidates/assets/map/ch1/map_1-2.webp",
+      "candidate_sha256": "48d04f7935201e130ffda9a0b10e3a8cdb232af0a4a10b5c0368e062cab6567e",
+      "candidate_bytes": 4955172,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        3072,
+        3072
+      ],
+      "source_mode": "RGB",
+      "decoded_rgba_sha256": "2c94941f5c65a9c9abbf5f0246adee5f14c25d79b89978b1a9787a85e29fe6d3",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "img/hellgate.png",
+      "source_git_blob": "caadbeaaa4972753514bc6b8c6618d7f6e554880",
+      "source_sha256": "62f66723586d5eb957a060912e507dac21a43495c8b63078aaba61b3bc7b8761",
+      "source_bytes": 11735664,
+      "candidate_path": "candidates/img/hellgate.webp",
+      "candidate_sha256": "22eb3a0328dbb8f70e66c1bfed21c13dbc124823b371cfaf0ec5abc6fbe51f1f",
+      "candidate_bytes": 4969868,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2560,
+        1664
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "5df1871abc2a4679d876679c38af128e49b7b8737680a614159234aaa875e8d9",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "assets/vfx/fieldboss/firedevil_orb_24_20261010.png",
+      "source_git_blob": "aef99ad87eca70737d6fdccb8108d62ea846de85",
+      "source_sha256": "b755bf10635eb94bd457e393d3e8966f7b37b3d4e731fac2c8c448456dd09b17",
+      "source_bytes": 11348701,
+      "candidate_path": "candidates/assets/vfx/fieldboss/firedevil_orb_24_20261010.webp",
+      "candidate_sha256": "9ec0184dfd9a506f5cc358a870ff32fbd8f02dd2d8d7f9076b8ad466998c7ca1",
+      "candidate_bytes": 8542736,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        3840,
+        2560
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "ee07218b00c7a5d643e19ed789d6508d4c311a6019373b73099c46f7c19d172c",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "assets/map/ch1/rottenwood_living_hell_v6_right_layer.png",
+      "source_git_blob": "185b7cf565a4fd725b3fff77c61f337a0300ffa0",
+      "source_sha256": "8915c1b47436bd602a111902fbb331cf5850e94fc101ae8e2f086e0294947623",
+      "source_bytes": 10959555,
+      "candidate_path": "candidates/assets/map/ch1/rottenwood_living_hell_v6_right_layer.webp",
+      "candidate_sha256": "57afe416d9989c0d18ff7cd8074dd7fcfa5e44dc86f0deb4ada3e89444c85a6a",
+      "candidate_bytes": 5728390,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "1c582e7e2429babb697ec4a429493660143f94e836d6270f85af000d49838704",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "assets/map/ch1/rottenwood_living_hell_v7_ground_layer.png",
+      "source_git_blob": "236c644fe4ce528a3df21f655853f7bea79113de",
+      "source_sha256": "1c66259721e7d5182aa3f2133c436edd59064640a4e9a03432cba9d201480412",
+      "source_bytes": 10935833,
+      "candidate_path": "candidates/assets/map/ch1/rottenwood_living_hell_v7_ground_layer.webp",
+      "candidate_sha256": "cb7d01e96d4fc2fd56cf2e55c0699b2e87d17c026ae644ba8a2cd965dbe304fc",
+      "candidate_bytes": 5571902,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "321e27d9e827711ec8ef148fcd653a8fc52effcca30a78703c80543ac75ae8d6",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "assets/map/ch1/rottenwood_living_hell_v6_left_layer.png",
+      "source_git_blob": "9f463b503b24b70ce35d7bbc4473bb71abbc3066",
+      "source_sha256": "7787fe634f68364099f365a5a3fc8aedb2baf3d0bf73c6a8d887c48ed4566089",
+      "source_bytes": 10891542,
+      "candidate_path": "candidates/assets/map/ch1/rottenwood_living_hell_v6_left_layer.webp",
+      "candidate_sha256": "8027631834de1994889f21095608ca2cb3e612858c93edd132a2dd50bea77add",
+      "candidate_bytes": 5722900,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "3339ce6ebb89d878b076758f5e9ab0fff182a7af000f74f989b7aefd064b2b83",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "assets/map/ch1/rottenwood_living_hell_v7_right_layer.png",
+      "source_git_blob": "c75b1b8dd5e3b722fdaf396c853eaa60da5db51b",
+      "source_sha256": "b0e821ac43a5cfce9f3ec68c604421467cdcd2215d7dfafd439504f2173de5f9",
+      "source_bytes": 10785470,
+      "candidate_path": "candidates/assets/map/ch1/rottenwood_living_hell_v7_right_layer.webp",
+      "candidate_sha256": "99df384d514a964acc8232dc7c170aa4e7057bff72ac6fb87a8a376103ae6437",
+      "candidate_bytes": 5518282,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "659224ad4818c00e2096a42b14d42625005bb58305f3a14bda9ad31c42f18ec9",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "assets/map/ch1/rottenwood_living_hell_v7_left_layer.png",
+      "source_git_blob": "6c07b01af053ecd6a5fbf8a9ddc96e0501e38bcc",
+      "source_sha256": "10e9009d1b5e8b341702ccb2713c17791ba196065f5602b92a854d0ebb5ef001",
+      "source_bytes": 10711359,
+      "candidate_path": "candidates/assets/map/ch1/rottenwood_living_hell_v7_left_layer.webp",
+      "candidate_sha256": "11f36877f5f27e6ce2087cd65f395a894e160cdff3bb6db235b715c1cdba67b0",
+      "candidate_bytes": 5640880,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "534f080b2a637ed77ecfed02b5e1f4fb7fa4fb244f66d45343344418abf4e530",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "assets/vfx/boss/druid_hit_24_20261010.png",
+      "source_git_blob": "4d05da8624e121e29b06b8a07353e07ab37fb042",
+      "source_sha256": "23f5f802365575c2b7024fe3910c289798ff8162e55a0b373ab1b726c41f16b1",
+      "source_bytes": 10563300,
+      "candidate_path": "candidates/assets/vfx/boss/druid_hit_24_20261010.webp",
+      "candidate_sha256": "59d4d6d21322df59d689ecb016c05b3a5f9d4ba28261716f8d48337d7e10a088",
+      "candidate_bytes": 7921248,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        3072,
+        3072
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "48aa71496207cea8268710d313904a0f954cfc009a719e4ab8dab2839bbe9b0d",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "assets/map/ch1/rottenwood_living_hell_v7_north_layer.png",
+      "source_git_blob": "9a8ac324e78ec24c5c89aec8568802c4a52aead9",
+      "source_sha256": "8732e603ee535f4d69160143a65597322c2b5de82207f24a4e647b3fbcbdc0d7",
+      "source_bytes": 10487181,
+      "candidate_path": "candidates/assets/map/ch1/rottenwood_living_hell_v7_north_layer.webp",
+      "candidate_sha256": "fd868b0f79a5530ce2c746b98dabdac4b72b8c33cd146e3f6f96f28354b9bfad",
+      "candidate_bytes": 5620842,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "5675017e587a7cae52ccf1cddb7a547dd926d7cf445c03f9ee22c5626f22cd55",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    },
+    {
+      "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+      "source_path": "assets/map/ch1/rottenwood_living_hell_v6.png",
+      "source_git_blob": "0409845158ae63913d0fc35b77cadec6d20f0964",
+      "source_sha256": "904ab136d5383541ef425dbabad43a4a31315cf1077e6e286214520a409dc2ac",
+      "source_bytes": 10415351,
+      "candidate_path": "candidates/assets/map/ch1/rottenwood_living_hell_v6.webp",
+      "candidate_sha256": "20a643fbbd8c9008c4654ea2db8e41f5bb19dcf7ad83a53e4bb07b56ca9c74fd",
+      "candidate_bytes": 5737798,
+      "codec": "WebP lossless",
+      "mime": "image/webp",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "source_mode": "RGBA",
+      "decoded_rgba_sha256": "ce72ba24d2e31b1b9bf6dbce635d2bce9efdbe868d61fced05f0206df0277643",
+      "decoded_rgba_identical": true,
+      "icc_identical": true
+    }
+  ],
+  "exclusions": [],
+  "source_bytes": 436489833,
+  "candidate_bytes": 252571256,
+  "savings_bytes": 183918577
+}
