@@ -74,11 +74,17 @@ namespace Exoduser.UnityPort
                 lobby.CloseStartupCaptureMedia(); SetGameFocus(true);
                 Running = true; menu = false; areaTitle.Hide(); levelUp.Hide();
                 gameObject.AddComponent<NativeUiAudit.Host>();
-                foreach (var size in new[] { new Vector2Int(1920,1080), new Vector2Int(3024,1964) })
+                // Keep windowed sizes before fullscreen: macOS does not reliably return
+                // from FullScreenWindow to a requested smaller window in this Player.
+                foreach (var size in new[] { new Vector2Int(1920,1080),new Vector2Int(2560,1080),
+                    new Vector2Int(2880,810),new Vector2Int(3024,1964) })
                 {
-                    var mode = size.x == 3024 ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
-                    Screen.SetResolution(size.x, size.y, mode);
+                    Screen.SetResolution(size.x,size.y,size.x==3024?FullScreenMode.FullScreenWindow:FullScreenMode.Windowed);
                     yield return new WaitForSecondsRealtime(.8f);
+                    if(Screen.width!=size.x||Screen.height!=size.y)
+                        throw new InvalidOperationException("Requested art window unavailable: "+size+" actual "+Screen.width+"x"+Screen.height);
+                    if(size.x==1920||size.x==3024)
+                    {
                     foreach (string language in new[] { "ko", "en", "fr" })
                     {
                         lobby.SetLanguage(language);
@@ -111,15 +117,8 @@ namespace Exoduser.UnityPort
                             if (!sample.visibleInAudit || !sample.pngWritten) throw new InvalidOperationException("Missing real GUI tip: " + id);
                         }
                     }
-                }
-                // The same visible Player paints all approved art and the missing-wide fallback.
-                foreach (var size in new[] { new Vector2Int(1920,1080),new Vector2Int(2560,1080),
-                    new Vector2Int(2880,810),new Vector2Int(3024,1964) })
-                {
-                    Screen.SetResolution(size.x,size.y,size.x==3024?FullScreenMode.FullScreenWindow:FullScreenMode.Windowed);
-                    yield return new WaitForSecondsRealtime(.8f);
-                    if(Screen.width!=size.x||Screen.height!=size.y)
-                        throw new InvalidOperationException("Requested art window unavailable: "+size+" actual "+Screen.width+"x"+Screen.height);
+                    }
+                    // The same visible Player paints all approved art and a missing-wide fallback.
                     lobby.SetLanguage("ko");
                     int variant=size.x/(float)size.y>2560f/1080?32:size.x/(float)size.y>1920f/1080?21:16;
                     for(int n=0;n<=NativeLoadingSelection.Images.Count;n++)
