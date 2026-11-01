@@ -510,3 +510,16 @@ Shore는 고정앵글러 주변을 피한 후 z−52~−42에서 다시28u 굽�
 ### Mac 시각 RETOUCH 원인 진단 추가 — 같은 개인 브랜치
 
 `--unity-facing-ground-qa --unity-facing-ground-diagnose`는 기존 절대 출력·저장 sandbox 게이트를 그대로 요구한다. 제품 스킬의 원화/alpha/RGB/반경/전투·맵 계약은 바꾸지 않고 QA에서만 성역을 같은 시뮬레이션 상태·카메라·광원·프레임에 두고 `off`, 현행 mesh, c336 동등 SpriteRenderer billboard 경로를 1920×1080 및 3840×1080 직접 GPU RenderTexture로 각각 캡처한다. off 반복 프레임은 GPU 변동 바닥값이다. 원화 texture·material `_Flat`/depth/render queue·property block `_MainTex`·메시 UV/vertex alpha·source alpha와 실제 지면 높이를 영수증에 남긴다. 이 동등 경로는 같은 빌드에서 QA로 renderer만 교체한 표본이며 별도 c336 제품 앱을 빌드한 것은 아니다. 가시덫은 평지 인근 보행 가능한 경사 네 표본의 실제 1920 창과 3840 직접 세계 RT를 별도로 찍고 좌표·기울기·높이·정점 오차를 기록한다. 새 QA의 on/off GPU 차이는 실제 PNG 픽셀로 분석하며 자동 메시 높이 통과와 시각 PASS를 혼동하지 않는다. 결과는 빌드 후 별도 표로 기록한다.
+
+### Mac 시각 RETOUCH 실제 진단 결과 — 2026-11-01
+
+| 항목 | 같은 입력·실행본에서 확인한 값 | 판정 |
+|---|---|---|
+| 소스→QA 입력 | 개인 브랜치 코드·문서 커밋 `bb46963309d5a3e9c3178c85fe65c9b56dce3f87` 비강제 푸시/원격 SHA 일치 뒤 새 APFS 입력 복사. 빌드 직전 `Assets/Packages/ProjectSettings` 전수 3,496경로 동일, 불일치0 (`unity-inputs-diagnostic-before-build.json`, SHA256 `8e1578a3d198f17d47d166faeb84848c064923f966ff5714bcb6a5f550242138`). `Library`는 입력 범위 밖. 이전 8표본을 전수로 재해석하지 않는다. | 입력 입증 |
+| 공식 앱 | Unity 6000.6.7f1 `PortVerification.Build -settingsQa true -remodel-scenes 1`: `Succeeded`, errors0, ARM64, `EXODUSER Settings QA`/`com.fordeargamers.exoduser.settingsqa`. 별도 `build-diagnostic` 앱. Runtime DLL SHA256 `10cc07fe75f02ea0db8c3d90e2b72f91937281f0c72e5269fe53240896035b50`. | 빌드 PASS |
+| M1/실창 | 같은 앱 Metal Apple M5 Pro M1 23/23 `ok`, firstBlocked 빈값, exit0. 비배치 실제 1920×1080 창의 기존 방향/장판 receipt `passed=true`, exit0, Listener peak0/Direct VideoPlayer0/drain 완료. 일반 제품 저장·Preferences 11항목 전후 byte 동일. | 검사 PASS |
+| 성역 원화·재질 | 원본 1254² RGBA, 알파 비영0 픽셀 992,087/1,572,516, 비영0 평균 알파 66.857/255. 현행 source/mesh vertex alpha 둘 다 0.04584218; `EXODUSER/SkillAdditive`, `_Flat=1`, `_DepthTest=4`, queue3000, UV0..1, 원본 texture/material 참조 동일, 메시289정점/512삼각형·활성, source 숨김. 셰이더는 `p.a × vertex alpha × max(p.rgb)`를 적용한다. | 텍스처 누락·비활성·UV 파손 근거 없음 |
+| 동일 상태 GPU 돔 | 1920 직접 세계 RT 중심 ROI x750..1169/y390..749, 151,200픽셀. off→off 반복 평균 RGB 절대차/채널 0.00055, 차≥8 픽셀0. off→현행 mesh 0.40937/≥8 픽셀7,793; off→c336 동등 sprite 0.41573/≥8 픽셀8,769. 두 경로 모두 GPU에 기여하지만, 실제 화면에서 sprite의 옅은 녹색 면은 보이고 mesh는 식별이 어렵다. 둘의 숫자만으로 웹 원본과 시각 동등성을 증명하지 않는다. | 성역 visual RETOUCH 유지 |
+| 경사 재촬영 | 보행 가능 x33,z−48 / x34,z−50 / x32,z−50 / x36,z−50; 지면 기울기 0.05943/0.07107/0.08775/0.19640. 실제 창 1920 4장 중 x33,z−48과 x32,z−50은 나무 몸통 가림 없이 붉은 장판이 지면에 보인다. 정점 높이 최대오차 2.05e−8u. 3840 직접 세계 on/off 중심 ROI 357,200픽셀의 RGB차≥8 픽셀은 6,600/5,836/6,804/5,271. | 기존 가림 미판정 해소; 경사 표본 PASS |
+
+진단 결론: 성역은 메쉬가 아예 그려지지 않는 결함이 아니다. 현행 낮은 source alpha와 원화의 낮은 알파/밝기가 `_Flat` 셰이더에서 곱해지고, 지면으로 눕힌 투영에서는 같은 총 픽셀 기여가 화면상 넓게 퍼져 식별성이 약해진 것으로 해석한다. 원본 웹 밝기 계수 `WebLitHolyDome=.11`과 링 `.03`은 기존 2026-10-28 비교로 정한 값이어서 근거 없는 배율 상향은 적용하지 않았다. 별도 c336 빌드의 동위치 GPU 프레임, 웹 기준과 동일 카메라 비교, 자연 전투/다수 장판/성능은 이 진단의 범위 밖이다. 따라서 전체 장판 시각 판정은 **RETOUCH**로 유지하며, 경사 가림 문제만 해결됐다. 원본과 영수증: `/Users/fordeargamers/exoduser-wt/_out/mac-facing-ground-qa-20261101/gui-diagnostic/` 및 `REPORT_DIAGNOSTIC_KO.md`.
