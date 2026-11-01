@@ -71,3 +71,8 @@
 캐릭터 names 수 제한과64KiB상한을 제거했다. version1/2 목록을 읽고 다음정상저장에서version2로승격하며 직전v1원문은기존bak에남긴다. 구버전은 version2를UnsupportedVersion으로거부하므로5개backup으로강등·덮어쓰기하지않는다. 이름중복·순서·선택·잠금·revision충돌·codec왕복·손상원본보존은유지한다.
 
 격리저장59검사 PASS:5,000개/64KiB초과실제파일 저장·새store재로드·선택복원·v1무변경읽기→v2저장→v1backup보존 포함. 모델생성42/복원15·최종삭제58 검사는 별도근거. 실제JsonUtility/Unity컴파일/Player/M1·실제사용자세이브는미검증·수정0이다. 도타보호로새Unity0, 지정통합담당의정식인수전NOT_READY. `I:/EXODUSER-Storage/character-capacity/20261101-unlimited/REPORT.md`.
+
+
+### 2026-11-01 Mac 무제한 목록 실물 검수 준비
+
+현재 제품 후보 a9ddfbff의 한도 제거 계약을 보존하고, 독립 QA 입력에서 실제 여섯째 입장/재실행·v1 raw backup·5,000개 JsonUtility 검수를 준비한다. [전용 검수 계약](UNITY_MAC_CHARACTER_CAPACITY_QA_20261101.md)의 실행전/NOT_READY와 과거 실행 영수증을 구분한다. 이 단계는 실제 ARM64/Win64 빌드나 Player 통과 증거가 아니다.

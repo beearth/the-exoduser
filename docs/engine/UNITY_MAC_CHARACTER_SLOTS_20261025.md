@@ -66,3 +66,8 @@ NativeLobby/CharacterRoster/삭제 UI·통합 소유는 기존 Mac 담당. 기�
 | 검증·한계 | 생성42/복원15/저장59(5,000개·64KiB초과·v1호환)·삭제58모델검사PASS, Core/Runtime311독립compile오류0. 도타실행보호로정식Unity/Player/M1·1920/2560/3840실제시각·실행본반영0/NOT_READY |
 
 source개인브랜치`codex/unity-character-capacity-20261101`, 웹은별도`codex/web-character-unlimited-20261101`. 지정통합담당은최종후보를사용하고이전5/5안내만따로채택하지않는다. 최신SHA·검수원문·잔여는`I:/EXODUSER-Storage/character-capacity/20261101-unlimited/REPORT.md`.
+
+
+### 2026-11-01 Mac 무제한 목록 실물 검수 준비
+
+현재 제품 후보 a9ddfbff의 한도 제거 계약을 보존하고, 독립 QA 입력에서 실제 여섯째 입장/재실행·v1 raw backup·5,000개 JsonUtility 검수를 준비한다. [전용 검수 계약](UNITY_MAC_CHARACTER_CAPACITY_QA_20261101.md)의 실행전/NOT_READY와 과거 실행 영수증을 구분한다. 이 단계는 실제 ARM64/Win64 빌드나 Player 통과 증거가 아니다.
