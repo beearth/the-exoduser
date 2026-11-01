@@ -54,3 +54,17 @@
 |무음·저장·종료|GUI 영수증 `batchMode=false`, `listenerPaused=true`, volume0, 실제 Listener 출력 샘플 peak0, 활성 Direct VideoPlayer 0. 영화 기본 출력은 AudioSource이며 예외 Direct 플래그 미사용. M1·GUI에 별도 `--unity-qa-sandbox` 절대 경로를 지정했고 사용자 저장 경로를 직접 열거나 정리하지 않음. 앱 `QA_MEDIA_DRAIN_COMPLETE LOADING_TIPS` 후 exit0, 잔여 Unity/EXODUSER 프로세스0. OS 물리 출력 루프백·청음과 사용자 저장 파일의 전후 바이트 비교는 미검증|
 
 산출물은 `/Users/fordeargamers/exoduser-wt/_out/mac-loading-ui-qa-20261101/`의 `build-receipt.json`, `m1/m1-check.json`, `gui/loading-tip-receipt.json`, 각 PNG/JSON, Player/Editor 로그에 있다. 비배치 캡처는 실제 새 Player가 생성했지만 `StageIndex`와 키를 QA에서 설정했다. 자연 구역 진행에서 노출된 것은 stage0뿐이며 1~3번 팁의 자연 플레이·OS 입력은 입증하지 않는다. 다른 HUD의 번역이나 전체 게임 화면을 PASS로 확대하지 않는다.
+
+## 일반 사용자 저장 전후 바이트 게이트 — 2026-11-01 KST
+
+위 첫 실행에는 사용자 파일의 **실행 전** 기준이 없었다. 아래 비교는 별도 후속 M1·GUI 각 1회의 전후만 입증하며 첫 실행을 소급해 증명하지 않는다. `071cb00e`와 위 최종 문서 커밋 `5ba542b6` 사이 Unity tree 차이는 0이고 같은 ARM64 앱 실행 파일 SHA `86ed207d41b6b62afee3aef393d4ddc322590f1120fd53a3324f9644390458ba`, Runtime DLL SHA `6a79503146e5d4c4e930dfcc01f6b7bb62a3fa273571064a6c92a720d79515aa`를 재사용했다. 새 빌드·제품 코드 변경은 없다.
+
+세 일반 앱의 실제 `CFBundleIdentifier`는 `com.ForDearGamers.EXODUSER----Unity-----------------`, 프로젝트 company/product는 `ForDearGamers` / `EXODUSER · Unity 이식 검증판`이다. 일반 저장 루트 `/Users/fordeargamers/Library/Application Support/com.ForDearGamers.EXODUSER----Unity-----------------`만 재귀로 읽고, 해당 일반 앱의 Preferences plist 두 개만 지정해 읽었다. `com.fordeargamers.exoduser.settingsqa`와 모든 QA sandbox는 일반 사용자 비교 대상이 아니다. 파일 내용은 출력하지 않고 상대경로·존재·바이트 크기·SHA-256만 `/Users/fordeargamers/exoduser-wt/_out/mac-loading-save-gate-20261101/`에 보존했다.
+
+|비교 단계|읽기 전용 목록·검수 결과|
+|---|---|
+|실행 전|11항목: 저장 루트·roster 폴더 2개, 실제 파일 4개(roster JSON 160B·lock 0B·일반 plist 834B/131B), 없는 경로 5개(combat save 폴더·shared 파일, native settings 폴더·settings JSON/lock). `before.json`|
+|같은 앱 격리 M1 종료 후|새 `m1`·`m1-sandbox`, exit0, 23/23 `ok`, `firstBlocked=""`, `QA_MEDIA_DRAIN_COMPLETE M1`, 잔여 Player0. `after-m1.json`과 `before.json`의 경로·존재·크기·SHA 비교 변경 **0건**, `diff-after-m1.json`|
+|같은 앱 비배치 GUI 종료 후|새 `gui`·`gui-sandbox`, exit0, 실제 GUI 48장, Runtime DLL SHA 일치, Listener pause=true/volume0/outputPeak0, Direct VideoPlayer0, `QA_MEDIA_DRAIN_COMPLETE LOADING_TIPS`, 잔여 Player/Editor0. `after-gui.json`과 `before.json` 비교 변경 **0건**, `diff-after-gui.json`|
+
+두 명령 원문은 `m1.argv.txt`·`gui.argv.txt`, 관측 PID 47905/47941과 종료 코드는 `run-processes.json`·exit 파일, 무음·정리 완료는 Player 로그와 GUI 영수증에 보존했다. 세 목록 파일의 SHA-256은 모두 `49430f957d9e0bd61788949cce3a206367e879a01d3068e0b04403bb5eff3ca0`로 같다. 이 후속은 **이번 두 QA 실행에서** 일반 사용자 파일의 생성·삭제·바이트 변경 0을 확인한다. macOS 물리 출력 루프백·청음, 앱 외 다른 저장 위치의 전수 조사, 자연 플레이는 범위 밖이다.
