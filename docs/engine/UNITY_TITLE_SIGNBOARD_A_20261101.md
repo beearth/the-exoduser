@@ -1,8 +1,8 @@
 # Unity 울트라와이드 타이틀 A — 2026-11-01
 
-사용자가 `스크린샷 2026-11-01 185307.png`의 울트라와이드 버전 제작을 현재 Codex에 직접 지정했다. 실행 중인 PC 패키지는 `I:/EXODUSER-Storage/unity-builds/hd2d-main/8dbdf205a-stage1-r5/EXODUSER-Unity.exe`이며, 새 소스가 그 실행본에 적용됐다고 간주하지 않는다.
+사용자가 지정한 스크린샷의 울트라와이드 제작을 완료했다. 실제 Desktop 바로가기의 EXE·인수·작업폴더·아이콘을 검수한 설치본 `I:/EXODUSER-Storage/unity-builds/ui-ultrawide/d8a089fbbad3/EXODUSER-Unity.exe`로 연결하고4속성을 다시 읽었다. 이전 바로가기와 실행본은 보존했다.
 
-**현재 상태: 5120×1440 포함90장 타이틀·같은빌드 M1 통과 / 최신 결합 검수 중.** 487c16e8/227b2e2a의 e1c07df6 M1 필수23단계, cd69a542 타이틀90장/모션·정지·재개·양끝 무띠 검사 통과. 두 실행 정상종료/창0/잔여0/USER_SAVE0. 최신 공통babada0923의 적 시각방향을 함께 보존하므로 전달용 새 같은빌드 검수를 이어간다. 공통/Desktop 전달은 최종 근거 전 미완료다.
+**현재 상태: 타이틀 울트라와이드 PASS / PC Desktop 전달 완료.** 소스d8a089fbb·빌드b43c5804·같은 M1 61c33a75 필수23단계, 실제5120×1440 포함6해상도/3언어/5상태90장과 움직임·정지·재개·양끝 무띠·글자겹침/잘림0 통과. 필드22/월드56+직접비교24·캐릭터6개 저장/재실행·시각방향7행 통과. 설치212파일 전부SHA 일치·설치경로M1 7c35c639 23단계 통과. 모든 최종 실행 창/잔여/USER_SAVE0. Mac 수신·무음 외 청음·장시간 자연플레이·전체맵 시각PASS는 이번 완료 범위가 아님.
 
 ## 현행 타이틀 계약
 
@@ -47,12 +47,12 @@
 | RED→GREEN | 기존 코드에서 승인 A 전용 렌더러 호출 assertion 실패. 연결 후 `unity/Tools/title-signboard/contract.test.cjs` 통과: 구형 영상/블러 경로 제거·자원해제·전용 캡처 경로 |
 | 좌표·시계 | 실제 C# layout71검사 통과. 새 `check-title-grid.cjs`는5120 실캡처 누락 RED를 확인했다. 실제6해상도/3언어/5상태90장, 양끝각3열 최대RGB≥4·전체 캔버스, 패널 밖 x.36W/폭.62W·y.04H/높이.89H에서 모션·재개50픽셀초과/정지0픽셀을 검증. 227b2e2a 실제90장 검사 GREEN. 정지1/2의 source는 reduced-motion, 나머지는 layered가 정확한 계약이며 검사기만 이를 바로잡음. 같은5120 화면 육안 확인 |
 | 독립 Runtime | Player RSP와 기존 Core35 참조로 Runtime205소스 컴파일 exit0/errors0. 기존 범위의 경고28개는 보존. Unity 셰이더 컴파일/Player 실행/M1 증거가 아님 |
-| 자산 | 승인5개 원본 SHA대조·PNG 변환 후 decoded RGBA 일치. import된 실제GPU/메모리/색공간 검수는 아직 수행하지 않음 |
+| 자산 | 승인5원본 SHA/decoded RGBA 일치. 실제D3D11/RX9070XT의5120×1440·3840×1080·1920×1080·21:9·16:10 출력과 메뉴/얼굴/발1x에서 방향·비율·전체원화·메뉴가독성 확인. 동일크기 승인원화/결과 보드 보관 |
 | 실제 전체UI 목표 | 원후보 UI1395/팁255/키30·동영상105/타이틀15는86cb08bb의 범위다. 결합 후보는 QA 전용 `--unity-ui-overlap-check --unity-title-a-check`에서5120×1440/1920×1080/2560×1080/3840×1080/1600×900/2560×1600 ×선택ko/de/fr×메뉴·모션·정지1·정지2·재개=90PNG/타이틀18행·입력90/틱정지90을 추가 검증. 페이드1.1초·모션대기.5·정지후.15·두정지사이.35·재개후.5초, 실제 해상도 최대5초. 제품 기본 경로/저장/입력은 변경0 |
-| 실제 새 빌드 | R5 기존00078cc6와 다른 Unity tree이므로 새 고유출력 정식빌드→같은M1→필드/월드/UI/타이틀1x 필요. 기존 R4/R5 사진과 과거 M1을 이번 새DLL 증거로 소급하지 않음 |
-| 전달 | 사용자 실행창 종료 허가·도타부재·공식FIFO·메모리·무음·격리세이브 확인 후 실행. 이후 최신 unity/main 정상통합/실행 검수·지정 통합자 Desktop·Mac 수신은 각 별도. 이번 소스 체크포인트만으로 배포완료/시각PASS를 선언하지 않음 |
+| 실제 새 빌드 | d8a089fbbad317a999e2519488e5b83360b804bb / Unity tree 3de6097bba9259e5ad2b9f0e0e7f55cd3625261f, Git 입력4128·컴파일소스488 동일. b43c5804/Succeeded/errors0/USER_SAVE0, Runtime `5e619a67af6a3322b084fc806610194321a897e538b4ed29a63cd4dea8b46079`. 최종7종 Player 검수와 설치본 M1은 모두 같은 DLL SHA. 임시 입력 원본714+제외57=771 exact 복원 |
+| 전달 | 도타부재·공식FIFO·무음·격리세이브로 실행. 위 설치 경로로 기존 Desktop .lnk4속성 정상 교체/읽기검증, 이전 대상/바로가기 byte 보존. 최신 공통babada092를 정상부모로 보존한 후보를 unity/main에 비강제 반영하며 원격SHA는 delivery/integration.json으로 확인. Mac 수신·Steam배포는 미실행 |
 
-원본 보존·소유 범위·자산·독립 컴파일·조회 영수증: `I:/EXODUSER-Storage/demo-art/unity-ui/ultrawide/takeover-20261101/title-A/`. 외부 생성/결제/Steam 배포/사용자 세이브 변경0.
+원본 보존·소스/패키지/실제GPU/설치/Desktop 영수증: `I:/EXODUSER-Storage/demo-art/unity-ui/ultrawide/takeover-20261101/title-A/delivery-20261102/formal/`, 같은크기 보드·실제1x는 review/. 이전86cb08bb의 UI1395 기능·시각0건과74f49763의 로그2파일 guardFAIL은 그대로 보존한다. 최종 실행의 안전PASS로 과거FAIL을 덮지 않는다.
 
 ## 최신 공통 정상 병합 준비 — 2026-11-01
 
