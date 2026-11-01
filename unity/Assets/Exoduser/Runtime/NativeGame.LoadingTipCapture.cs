@@ -22,6 +22,13 @@ namespace Exoduser.UnityPort
             public int directVideoPlayers;
             public string runtimeSha256, graphicsDevice, error;
             public List<LoadingTipSample> samples = new List<LoadingTipSample>();
+            public List<LoadingArtSample> artSamples = new List<LoadingArtSample>();
+        }
+        [Serializable] sealed class LoadingArtSample
+        {
+            public string id, audit, png, source, tip;
+            public int imageId, width, height;
+            public bool fallback, sourceSeen, tipSeen, pngWritten;
         }
         IEnumerator LoadingTipCapture()
         {
@@ -30,7 +37,13 @@ namespace Exoduser.UnityPort
             {
                 bool more; object current;
                 try { more = body.MoveNext(); current = more ? body.Current : null; }
-                catch (Exception ex) { Debug.LogError("LOADING_TIP_QA_FAILED " + ex); Application.Quit(2); yield break; }
+                catch (Exception ex) {
+                    Debug.LogError("LOADING_TIP_QA_FAILED " + ex);
+                    string output=Argument("-output");
+                    if(!string.IsNullOrEmpty(output)&&Path.IsPathRooted(output)&&Directory.Exists(output))
+                        File.WriteAllText(Path.Combine(output,"loading-tip-failure.txt"),ex.ToString());
+                    Application.Quit(2); yield break;
+                }
                 if (!more) yield break;
                 yield return current;
             }
@@ -99,18 +112,58 @@ namespace Exoduser.UnityPort
                         }
                     }
                 }
+                // The same visible Player paints all approved art and the missing-wide fallback.
+                foreach (var size in new[] { new Vector2Int(1920,1080),new Vector2Int(2560,1080),
+                    new Vector2Int(2880,810),new Vector2Int(3024,1964) })
+                {
+                    Screen.SetResolution(size.x,size.y,size.x==3024?FullScreenMode.FullScreenWindow:FullScreenMode.Windowed);
+                    yield return new WaitForSecondsRealtime(.8f);
+                    if(Screen.width!=size.x||Screen.height!=size.y)
+                        throw new InvalidOperationException("Requested art window unavailable: "+size+" actual "+Screen.width+"x"+Screen.height);
+                    lobby.SetLanguage("ko");
+                    int variant=size.x/(float)size.y>2560f/1080?32:size.x/(float)size.y>1920f/1080?21:16;
+                    for(int n=0;n<=NativeLoadingSelection.Images.Count;n++)
+                    {
+                        bool fallback=n==NativeLoadingSelection.Images.Count;
+                        int imageId=fallback?1:NativeLoadingSelection.Images[n];
+                        NativeLoadingArtwork.ForcedImage=imageId;
+                        NativeLoadingArtwork.SimulateMissingWide=fallback;
+                        int stage=fallback?0:n;
+                        Simulation.Config.StageIndex=stage;Simulation.Stage.LoadPhase=2;
+                        Simulation.Stage.LoadFade=1;Simulation.Stage.LoadT=35;
+                        yield return new WaitForSecondsRealtime(.22f);
+                        NativeUiAudit.Active=true;yield return null;yield return new WaitForEndOfFrame();
+                        string id=size.x+"x"+size.y+"-art-"+imageId.ToString("00")+(fallback?"-fallback":"");
+                        string audit=Path.Combine(output,id+".json"),png=Path.Combine(output,id+".png");
+                        NativeUiAudit.Save(audit,"전환로딩",lobby.Language);
+                        ScreenCapture.CaptureScreenshot(png);NativeUiAudit.Active=false;
+                        string text=File.ReadAllText(audit);
+                        string source="mode="+(fallback?"fallback:"+imageId.ToString("00"):"expanded:"+imageId.ToString("00")+"-"+variant);
+                        string tip=NativeLoadingTips.Pick(stage,false,LoadingTipKey("inventory"),LoadingTipKey("interact"));
+                        yield return new WaitForSecondsRealtime(.35f);
+                        var sample=new LoadingArtSample{id=id,audit=audit,png=png,source=source,tip=tip,
+                            imageId=imageId,width=Screen.width,height=Screen.height,fallback=fallback,
+                            sourceSeen=text.Contains(source),tipSeen=text.Contains(tip),
+                            pngWritten=File.Exists(png)&&new FileInfo(png).Length>1000};
+                        report.artSamples.Add(sample);
+                        if(!sample.sourceSeen||!sample.tipSeen||!sample.pngWritten)
+                            throw new InvalidOperationException("Missing art/status/tip in real GUI: "+id+" source="+source);
+                    }
+                    NativeLoadingArtwork.ForcedImage=-1;NativeLoadingArtwork.SimulateMissingWide=false;
+                }
                 report.listenerPaused = AudioListener.pause; report.listenerVolume = AudioListener.volume;
                 var audio = new float[1024]; AudioListener.GetOutputData(audio,0);
                 foreach (float value in audio) report.outputPeak = Mathf.Max(report.outputPeak,Mathf.Abs(value));
                 foreach (var video in Resources.FindObjectsOfTypeAll<VideoPlayer>())
                     if (video != null && video.audioOutputMode == VideoAudioOutputMode.Direct) report.directVideoPlayers++;
-                report.passed = report.samples.Count == 48 && report.listenerPaused && report.listenerVolume == 0 && report.outputPeak == 0 && report.directVideoPlayers == 0;
+                report.passed = report.samples.Count == 48 && report.artSamples.Count == 68 && report.listenerPaused && report.listenerVolume == 0 && report.outputPeak == 0 && report.directVideoPlayers == 0;
                 File.WriteAllText(Path.Combine(output,"loading-tip-receipt.json"),JsonUtility.ToJson(report,true));
                 if (!report.passed) throw new InvalidOperationException("Loading tip receipt failed");
             }
             finally
             {
                 NativeUiAudit.Active = false;
+                NativeLoadingArtwork.ForcedImage=-1;NativeLoadingArtwork.SimulateMissingWide=false;
                 binds.TrySet("inventory", inv, false, out rejected); binds.TrySet("inventory", inv2, true, out rejected);
                 binds.TrySet("interact", pickup, false, out rejected); binds.TrySet("interact", pickup2, true, out rejected);
                 Simulation.Config.StageIndex=originalStage;Simulation.Stage.LoadPhase=originalPhase;

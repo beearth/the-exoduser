@@ -14,8 +14,6 @@ namespace Exoduser.UnityPort
         readonly List<WorldText> worldTexts = new List<WorldText>();
         NativeArenaView arenaView; bool arenaViewWasOpen;
         public NativeBossBar.Input LastBossBarInput; public bool BossBarShown;
-        Font stageFontNanum, stageFontCinzel;
-        Texture2D stageLoadSigil;
         bool English { get { return lobby != null && lobby.Language != "ko"; } }
 
         void WorldTextAdd(float x, float y, string ko, string en, Color color, float seconds = 1.6f)
@@ -149,41 +147,15 @@ namespace Exoduser.UnityPort
             var flow = Simulation.Stage;
             if (flow.LoadPhase > 0)
             {
-                float fade = (float)flow.LoadFade; Fill(new Rect(0, 0, 1920, 1080), new Color(0, 0, 0, fade));
+                float fade = (float)flow.LoadFade; NativeUiViewport.FillScreen(new Color(0, 0, 0, fade));
                 if (flow.LoadPhase >= 2 && fade > .5f)
                 {
                     float nt = flow.LoadPhase == 2 ? Mathf.Min(1f, (float)flow.LoadT / 35f) : 1f;
-                    if (stageFontNanum == null) { stageFontNanum = NativeSilverHellUi.Font() ?? Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular") ?? font; }
-                    if(stageLoadSigil==null)stageLoadSigil=Resources.Load<Texture2D>("Art/ui/silver_hell/gate_sigil_20261028");
-                    var tint=GUI.color;GUI.color=new Color(tint.r,tint.g,tint.b,tint.a*nt);
-                    NativeSilverHellUi.Panel(new Rect(560,290,800,500),36,12,false);
-                    if(stageLoadSigil!=null)NativeUiAudit.DrawTexture(new Rect(760,310,400,225),stageLoadSigil,ScaleMode.StretchToFill,true);
-                    GUI.color=tint;
                     string name = bossBar.BossNameForStage(Simulation.Config.StageIndex) ?? "???";
-                    var st = new GUIStyle(GUI.skin.label) { font = stageFontNanum, fontSize = 40, fontStyle = FontStyle.Normal, alignment = TextAnchor.MiddleCenter };
-                    st.normal.textColor = new Color(0, 0, 0, .8f * nt); NativeUiAudit.Label(new Rect(580,552,760,60), name, st);
-                    st.normal.textColor = new Color(242/255f,240/255f,236/255f,nt);NativeSilverHellUi.Label(new Rect(580,550,760,60),name,st);
-                    var sub = new GUIStyle(st) { fontSize = 15, fontStyle = FontStyle.Normal };
-                    sub.normal.textColor = new Color(138/255f,141/255f,141/255f,nt);NativeSilverHellUi.Label(new Rect(580,650,760,24),StageSubtitle(Simulation.Config.StageIndex),sub);
                     string tip = NativeLoadingTips.Pick(Simulation.Config.StageIndex, English,
                         LoadingTipKey("inventory"), LoadingTipKey("interact"));
-                    int tipPixels = NativeLoadingTips.FontPixels(Screen.height);
-                    var tipStyle = new GUIStyle(GUI.skin.label) {
-                        font = NativeSilverHellUi.TextFont(NativeSilverHellUi.Font(), tip),
-                        fontSize = tipPixels, fontStyle = FontStyle.Normal,
-                        alignment = TextAnchor.MiddleCenter, clipping = TextClipping.Clip
-                    };
-                    var previousMatrix = GUI.matrix;
-                    try {
-                        GUI.matrix = Matrix4x4.identity;
-                        var tipRect = new Rect(Screen.width * 580f / 1920f, Screen.height * 700f / 1080f,
-                            Screen.width * 760f / 1920f, Mathf.Max(tipPixels * 1.4f, tipStyle.CalcSize(new GUIContent(tip)).y + 4f));
-                        tipStyle.normal.textColor = new Color(0, 0, 0, .8f * nt);
-                        NativeUiAudit.Label(new Rect(tipRect.x + 2, tipRect.y + 2, tipRect.width, tipRect.height), tip, tipStyle);
-                        tipStyle.normal.textColor = new Color(178/255f,169/255f,150/255f,nt);
-                        NativeSilverHellUi.Label(tipRect, tip, tipStyle);
-                    }
-                    finally { GUI.matrix = previousMatrix; }
+                    NativeLoadingArtwork.Draw(NativeLoadingSelection.ForStage(Simulation.Config.StageIndex),
+                        name, StageSubtitle(Simulation.Config.StageIndex), Mathf.Clamp01((float)flow.LoadT/35f), nt, tip);
                 }
             }
         }
