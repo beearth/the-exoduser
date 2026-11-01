@@ -1,0 +1,27 @@
+const fs=require('fs'),path=require('path'),cp=require('child_process'),crypto=require('crypto');
+const root='G:/exoduser',out=__dirname,desktop='C:/Users/심도진/Desktop/엑소듀서_검토/캐릭터_스타일변주_20261101';
+function g(args,env=process.env,input){const r=cp.spawnSync('git',args,{cwd:root,env,input,encoding:'utf8',windowsHide:true,maxBuffer:8e6});if(r.error||r.status!==0)throw Error('git '+args[0]+' '+(r.error||r.stderr||r.stdout));return r.stdout;}
+const sha=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
+const parent='2b815ac93368367fc0e6c89eecc4c079a3813583',previous='refs/heads/codex/backup-20261101-161140682-approved-magic-spears-clean';
+if(g(['ls-remote','origin',previous]).trim().split(/\s+/)[0]!==parent)throw Error('previous remote backup changed');
+const head=g(['rev-parse','HEAD']).trim(),index=path.resolve(root,g(['rev-parse','--git-path','index']).trim()),indexHash=sha(index);
+if(fs.existsSync(index+'.lock'))throw Error('shared index locked');
+const art='docs/17게임아트팀/ART_TEAM_MASTER.md',doc='docs/17게임아트팀/CHARACTER_STYLE_VARIATIONS_REVIEW_20261101.md',local=fs.readFileSync(path.join(root,art),'utf8');
+const row=local.split(/\r?\n/).find(l=>l.startsWith('| 신규 헤어 전신 3세트 v14'));
+if(!row)throw Error('owned row missing');const oldArt=g(['show',parent+':'+art]),anchor='| 마법창 외형 3종 v13 (2026-11-02) |';
+if(!oldArt.includes(anchor)||oldArt.includes(row))throw Error('parent art mismatch');const nextArt=oldArt.replace(anchor,row+'\n'+anchor);
+if(nextArt.replace(row+'\n','')!==oldArt)throw Error('art preservation check');
+const oldDoc=g(['show',parent+':'+doc]),newDoc=fs.readFileSync(path.join(root,doc),'utf8');
+if(!newDoc.startsWith(oldDoc))throw Error('review doc has unexpected preexisting changes');
+const names=['hair_fullbody_set01_halfup_bob.png','hair_fullbody_set02_ponytail_sidebraid.png','hair_fullbody_set03_layered_braidedupdo.png','hair_fullbody_history_set01_old_disc.png','hair_fullbody_sets_20261102.input.json','hair_fullbody_sets_20261102.receipt.json','hair_fullbody_sets_20261102.verify.json','new_hairstyle_fullbody_sets.html','save-hair-fullbody-sets-20261102.cjs','finalize-hair-fullbody-sets-20261102.cjs','backup-hair-fullbody-sets-20261102.cjs'];
+const files=names.map(n=>'output/character_style_variations_20261101/'+n),allow=[art,doc,...files],before=Object.fromEntries(allow.map(p=>[p,sha(path.join(root,p))]));
+const tag=new Date().toISOString().replace(/[-:.]/g,'').replace('T','-').replace('Z',''),branch='codex/backup-'+tag+'-hairstyle-fullbody-sets',ref='refs/heads/'+branch,env={...process.env,GIT_INDEX_FILE:path.join(out,'hair-backup-'+tag+'.index')};
+g(['read-tree',parent],env);const blob=g(['hash-object','-w','--stdin'],env,nextArt).trim();g(['update-index','--add','--cacheinfo','100644,'+blob+','+art],env);g(['add','--',doc,...files],env);
+const tree=g(['write-tree'],env).trim(),changed=g(['-c','core.quotepath=false','diff','--name-only',parent,tree],env).trim().split(/\r?\n/);
+if(changed.some(p=>!allow.includes(p)))throw Error('unowned path');g(['diff','--check',parent,tree],env);
+for(const p of allow)if(before[p]!==sha(path.join(root,p)))throw Error('source changed '+p);
+const commit=g(['commit-tree',tree,'-p',parent],env,'art: save six new hairstyle fullbody review looks\n\nThree paired adult-character plates, complete prompts, history and Korean review docs. No runtime integration. Shared index and checkout preserved.\n').trim();
+if(sha(index)!==indexHash)throw Error('shared index changed');g(['update-ref',ref,commit,'0000000000000000000000000000000000000000']);
+g(['push','origin',ref+':'+ref]);const remote=g(['ls-remote','origin',ref]).trim().split(/\s+/)[0];if(remote!==commit)throw Error('remote mismatch');
+const receipt={branch,commit,remoteSha:remote,remoteVerified:true,parent,files:changed,sharedIndexUnchanged:sha(index)===indexHash,checkoutHeadUnchanged:g(['rev-parse','HEAD']).trim()===head,runtimeApplied:false};
+for(const folder of [out,desktop])fs.writeFileSync(path.join(folder,'hair_fullbody_sets_20261102.remote-backup.json'),JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify(receipt,null,2));

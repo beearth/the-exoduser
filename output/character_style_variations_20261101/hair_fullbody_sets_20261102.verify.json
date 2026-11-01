@@ -1,0 +1,32 @@
+{
+  "createdAt": "2026-11-01T23:58:34.506Z",
+  "http": [
+    {
+      "name": "new_hairstyle_fullbody_sets.html",
+      "status": 200,
+      "bytes": 3882
+    },
+    {
+      "name": "hair_fullbody_set01_halfup_bob.png",
+      "status": 200,
+      "bytes": 2274112
+    },
+    {
+      "name": "hair_fullbody_set02_ponytail_sidebraid.png",
+      "status": 200,
+      "bytes": 2351023
+    },
+    {
+      "name": "hair_fullbody_set03_layered_braidedupdo.png",
+      "status": 200,
+      "bytes": 2302214
+    },
+    {
+      "name": "hair_fullbody_sets_20261102.receipt.json",
+      "status": 200,
+      "bytes": 25304
+    }
+  ],
+  "shaCopiesMatch": true,
+  "scope": "Saved candidates only; no game runtime or 3D integration"
+}
