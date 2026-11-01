@@ -527,3 +527,15 @@ Shore는 고정앵글러 주변을 피한 후 z−52~−42에서 다시28u 굽�
 ### Mac 성역 단독 원인 분리 QA — 후속 계약
 
 `--unity-facing-ground-qa --unity-facing-ground-diagnose --unity-facing-ground-holy-only`는 기존 절대 출력/저장 sandbox 게이트와 1920×1080 실제 창을 유지하되, 이미 PASS한 방향·경사·목교 표본과 3840 RT를 반복하지 않는다. 성역 x34,z−48만 주입한다. 같은 프레임에 직접 GPU RT `off` 반복, 현행 mesh+링, 동등 sprite+링 외에 mesh 단독, 링 단독, sprite 단독 및 mesh 단독 `_DepthTest=Always`를 추가한다. 깊이 진단 때 재질 값을 일시 변경하고 즉시 원값4로 복구한다. 원본 원화/색/알파/반경/전투와 일반 제품 렌더 경로 변경0. 이 진단으로 링 기여·지형 깊이 가림·평면 투영을 구분한 뒤 수정 근거가 확인된 경우에만 제품 코드를 고친다. `NativeGame.FacingGroundQa.cs`와 `NativeGame.FacingGroundDiagnose.cs`의 QA 분기만 바꾼 첫 단계로서, 실제 Player 수치는 별도 기록한다.
+
+### Mac 성역 단독 Player 결과와 제품 수정 판단 — 2026-11-01
+
+| 항목 | 실제 결과 |
+|---|---|
+| 입력·빌드 | 개인 브랜치 `4c041fc75fc1b2bc8698d5b5bd3bded968f49dc1` 비강제 푸시/원격 SHA 일치 뒤 새 입력 복사. 빌드 전 Assets/Packages/ProjectSettings 전수 3,496/3,496 일치, manifest SHA256 `bcec74b35ea01ea685a5616d3943b749a5f7fe94c0cdefd91380afcc9baee647`. 독립 Roslyn Runtime 오류0. 공식 Unity 6000.6.7f1 Settings QA ARM64 build `Succeeded`, errors0; 같은 앱 Runtime DLL SHA256 `e0a25397b3bb18a08981c8203e8b9e40ed35d91ab6ca8aa8cf7dc3ca85a7683b`. |
+| 실제 Player | 비배치 1920×1080 GUI exit0, 성역 전용 receipt `passed=true`, failures0, 성역 표본1/방향0/경사0, Listener peak0/Direct VideoPlayer0, 진단 error 빈값. QA용 Preferences 두 plist는 실행 전 원문 백업·종료 후 정확 SHA 복원, 일반 제품 저장/Preferences 11항목 전후 동일. |
+| 동일 상태 직접 GPU RT | 화면 중심 x760..1159/y300..799의 200,000픽셀. off 반복 평균 RGB 절대차/채널 0.002267. off→mesh+링 0.383158, sprite+링 0.456448, mesh 단독 0.290832, 링 단독 0.095358, sprite 단독 0.363412, mesh 단독 depth Always 0.288737. 차≥8 픽셀은 각각 1 / 8,518 / 11,676 / 6,150 / 2,691 / 9,117 / 6,149. 마지막 depth 전환은 기본 메쉬 0.290832와 사실상 같아 지형 ZTest 가림 가설을 지지하지 않는다. |
+| 화면 위치 | off→mesh+링 RGB 절대차 합계는 화면 y<550에 11,031, y≥550에 218,864. off→sprite+링은 위쪽 208,115, 아래쪽 65,754. 같은 원화·재질·alpha의 실제 차이는 메쉬의 지면 투영과 기존 billboard의 화면 위치다. 이 시점 source/vertex alpha는 둘 다 0.05942257, texture/material/UV 동일, 원본 1254² 유지. |
+| 시각·수정 | 1920 실제 창에서 성역은 여전히 알아보기 어렵다. 링·깊이 가림·texture/vertex alpha 전달의 누락이나 중복 감쇠는 증명되지 않았다. 원본 배율·색·크기·시간을 그대로 두고 지면 접촉을 유지하는 코드 수정으로 기존 billboard의 위쪽 화면 면적을 재현할 수 없다. 따라서 제품 `NativeGroundSkillSurface.cs`, `NativeSkillView.cs`, shader 변경0; QA 전용 분리 계측만 보존. **VISUAL VERDICT: RETOUCH.** 밝기/보조 수직 표현 변경은 원본 웹 기준과 같은 카메라의 새 승인 비교가 필요하다. |
+
+증거: `/Users/fordeargamers/exoduser-wt/_out/mac-facing-ground-qa-20261101/REPORT_HOLY_ONLY_KO.md`, `gui-holy-only/` 원본 PNG/JSON, 공식 build receipt 및 source→QA manifest. 이 단독 결과는 앞서 통과한 경사 표본을 다시 검증하지 않으며 전체 맵/자연 전투/성능 인수도 아니다.
