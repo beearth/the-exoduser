@@ -3159,3 +3159,18 @@ statwindow-brief 마지막 보정만 수행한다. 시작 원격/HEAD는 9f5db2a
 | 보존·배포 | 원본/파생 미디어·game.html·Unity·슬롯/저장 내용·기존 서버/사용자 profile 변경0. private 후보 정상 commit/push만; 웹 main·공개 배포·Windows 실행본 변경 없음 |
 
 원문 RED/GREEN·수정 전 HTML: `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-module-closure-20261102/lobby-early-init/`. 최초 acorn 패키지 해석 실패는 회귀 실행환경 오류로 구분했고, 새 설치 없이 실제 함수/초기 호출 구간을 읽는 방식으로 전환해 제품 TDZ를 별도로 재현했다.
+
+
+## 2026-11-02 초기 진입 순서 전체 교정 — 실제 저장 helper 회귀
+
+| 항목 | 확인·변경·검수 경계 |
+|---|---|
+| 추가로 입증한 결함 | `_slotScrollIdx`만 먼저 초기화해도 조기 demo fallback의 실제 `_demoSyncActiveSave`는 뒤쪽 const `_DEMO_ACTIVE_KEY`를 읽어 catch 경고를 내고 첫 로비의 기존 저장 동기화를 건너뛸 수 있음. 앞선 축소 회귀가 이 helper를 stub한 한계를 보존 |
+| 방법 전환 | 선언을 하나씩 옮기는 보완 대신 기존 Init async IIFE 전체를 같은 script의 상태·저장 helper·UI 정의가 끝난 맨 뒤로 이동. Init 본문은 byte 그대로이며 타이머/재시도/새 저장 writer·저장공식·캐릭터 제한을 추가하지 않음 |
+| 실제 회귀 | 실제 Init·오프라인/로비/목록/렌더 함수와 demo save helper를 원래 소스 순서로 실행. 빈 저장·기존 단일 demo 저장 2경우에서 초기화 전 접근 경고 RED 재현 → 위치 교정 후 경고0/로비 렌더/초기 스크롤0 PASS |
+| 저장 보존 | 테스트의 메모리 Map에서만 기존 lv46/stage12/kills1795 전체 진행을 hellsave_demo → hellsave_demo_0에 기존 규칙대로 이전해 검증. 빈 시작의 save쓰기0. 사용자 실제 저장 파일/profile에는 접근·변경하지 않음. 키·5칸·개발자 정책·마이그레이션 함수 본문 불변 |
+| 전체 검사 | 웹 배포/파생본/staging 및 로비·저장 회귀 총75/75 PASS. 실제 브라우저 최종 후보 검수는 별도 gate |
+| 선행 후보 한계 | ab924449 및 선행 dae 복합 패키지 검수는 이 새 Init 순서 변경을 포함하지 않음. 모듈/용량/대표 Canvas의 기존 근거는 범위 내 보존하되 최종 새 HEAD의 로비/저장 동기화 실제 브라우저 PASS로 재사용하지 않음 |
+| 자산·상한 | PNG/WebP·95매핑·game.html/Unity/WIP/서버 불변. HTML 설명 주석 포함83B 증가의 예측만으로 한도 PASS 주장하지 않고 다음 정확 artifact의 plan/최종 bytes를 실측 |
+
+원문 RED/GREEN·수정 전 HTML/테스트는 root recovery `web-final-asset-intake-20261102/startup-order/`에 보존. 기존 scope의 74/42 PASS를 새 저장 helper까지 검증한 것으로 소급하지 않는다. 정상 후보 commit/push 후 같은 Mac 담당의 최종 실브라우저 인수를 거쳐야 하며 main·공개 배포·Windows 전달은 별개다.

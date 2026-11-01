@@ -2960,59 +2960,7 @@ function _enterOffline(){
   return _goLobby();
 }
 
-// ═══ Init ═══
-(async()=>{
-  showLoading(_TL('데이터를 불러오는 중...'));
-  if(_qp.get('ddungReview')==='1'&&/^[123]$/.test(_qp.get('ddung')||'')&&['127.0.0.1','localhost'].includes(location.hostname)){setTimeout(async()=>{await _enterOffline();openVisualSelect();},0);return;}
-  if(_cinPreview){_goCinematic();return;}
 
-  // NW.js 데스크톱 빌드 → 자동 오프라인 (구글 로그인 불필요)
-  const _isNW=typeof nw!=='undefined';
-  if(_isNW&&!_testMode)_testMode=true;
-
-  // 오프라인 버튼: Vercel 웹에서만 숨김 (로컬/NW.js/test는 표시)
-  const _isVercel=location.hostname.includes('vercel.app');
-  if($('offlineBtn')){
-    if(_isVercel&&!_testMode){$('offlineBtn').style.display='none'}
-    else{$('offlineBtn').onclick=()=>_enterOffline()}
-  }
-
-  // ?test=1 또는 NW.js → 강제 오프라인
-  if(_testMode){
-    if(_LOBBY_BUILD==='demo'){
-      // 데모 빌드: 시네마틱 후 데모 입장 화면 표시
-      if(_fromGame||_cinSeenChk()){_goLogin();return}
-      else{_goCinematic();return}
-    }
-    if(_fromGame||_cinSeenChk()){_enterOffline();return}
-    else{_goCinematic();return}
-  }
-
-  // ── Supabase 모드 (웹 전용) ──
-  if(!sb){_enterOffline();return}
-  const{data:{session}}=await sb.auth.getSession();
-  if(session) currentUser=session.user;
-
-  if(_fromGame){
-    if(session) await _goLobby(); else{_testMode=true;await _goLobby();}
-  }else if(session){
-    if(_cinSeenChk()){await _goLobby();}
-    else{_goCinematic();}
-  }else{
-    _goLogin();
-  }
-
-  sb.auth.onAuthStateChange((event,session)=>{
-    if(event==='SIGNED_IN'&&session){
-      currentUser=session.user;
-      if(_cinSeenChk()){_goLobby();}
-      else{_goCinematic();}
-    }else if(event==='SIGNED_OUT'){
-      currentUser=null;
-      _goLogin();
-    }
-  });
-})();
 
 $('googleBtn').onclick=async()=>{
   const{error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin+'/',queryParams:{prompt:'select_account'}}});
@@ -4516,6 +4464,61 @@ function showCharGate(charId,storySeen=false){
   obs.observe(document.getElementById('lobby'),{attributes:true,attributeFilter:['style']});
   // 즉시 시작 시도
   if(document.getElementById('lobby').style.display==='flex'){resize();requestAnimationFrame(loop)}
+})();
+
+// 상태·저장 helper·UI 정의가 끝난 뒤 초기 진입을 시작한다.
+// ═══ Init ═══
+(async()=>{
+  showLoading(_TL('데이터를 불러오는 중...'));
+  if(_qp.get('ddungReview')==='1'&&/^[123]$/.test(_qp.get('ddung')||'')&&['127.0.0.1','localhost'].includes(location.hostname)){setTimeout(async()=>{await _enterOffline();openVisualSelect();},0);return;}
+  if(_cinPreview){_goCinematic();return;}
+
+  // NW.js 데스크톱 빌드 → 자동 오프라인 (구글 로그인 불필요)
+  const _isNW=typeof nw!=='undefined';
+  if(_isNW&&!_testMode)_testMode=true;
+
+  // 오프라인 버튼: Vercel 웹에서만 숨김 (로컬/NW.js/test는 표시)
+  const _isVercel=location.hostname.includes('vercel.app');
+  if($('offlineBtn')){
+    if(_isVercel&&!_testMode){$('offlineBtn').style.display='none'}
+    else{$('offlineBtn').onclick=()=>_enterOffline()}
+  }
+
+  // ?test=1 또는 NW.js → 강제 오프라인
+  if(_testMode){
+    if(_LOBBY_BUILD==='demo'){
+      // 데모 빌드: 시네마틱 후 데모 입장 화면 표시
+      if(_fromGame||_cinSeenChk()){_goLogin();return}
+      else{_goCinematic();return}
+    }
+    if(_fromGame||_cinSeenChk()){_enterOffline();return}
+    else{_goCinematic();return}
+  }
+
+  // ── Supabase 모드 (웹 전용) ──
+  if(!sb){_enterOffline();return}
+  const{data:{session}}=await sb.auth.getSession();
+  if(session) currentUser=session.user;
+
+  if(_fromGame){
+    if(session) await _goLobby(); else{_testMode=true;await _goLobby();}
+  }else if(session){
+    if(_cinSeenChk()){await _goLobby();}
+    else{_goCinematic();}
+  }else{
+    _goLogin();
+  }
+
+  sb.auth.onAuthStateChange((event,session)=>{
+    if(event==='SIGNED_IN'&&session){
+      currentUser=session.user;
+      if(_cinSeenChk()){_goLobby();}
+      else{_goCinematic();}
+    }else if(event==='SIGNED_OUT'){
+      currentUser=null;
+      _goLogin();
+    }
+  });
 })();
 </script>
 <script>
