@@ -63,3 +63,7 @@ UI 최종 Desktop 완료 전 Unity/Player/빌드/선예약0. 완료 후 최신�
 지정 통합 담당이 expected968f2a324에서 bf9b2d25c28a44d4a90e8f2017a27f8d5f657394로 비강제FF했고원격SHA를읽어대조했다. 제품ccde13cb9와공통Unity tree동일, 새빌드b970760a·M1aaf2078e/실제3바이너리동일로 COMMON_RULES의유효검수재사용을적용했다. 새통합빌드/추가M1반복0이다.
 
 일반Desktop은 `I:/EXODUSER-Storage/demo-art/hero/night-anchor-20261031/build/EXODUSER-Unity.exe`, 인자 `-force-d3d11 --remodel3d`, 작업폴더는EXE부모·아이콘EXE,0이다. 이전게임대조소스bce000073이현재제품조상임을확인한뒤현재링크SHA를CAS검사하고이전링크동일byteI백업→전달→별도PowerShell프로세스4속성/Runtime·Core·EXE SHAreadback을완료했다. 앱자동기동/사용자세이브쓰기0. 근거 night-anchor-20261031/validated-adoption.json·desktop-delivery.json·desktop-readback.json. Mac실제반영/실행은pending, 전체아트RETOUCH및위생성씬이전byte복구미완료는유지한다.
+
+
+## 2026-11-01 바닥 장판 역할의 별도 수정 후보
+중심형 강타/악의구의 lift0 계약은 유지한다. 사용자가 보고한 가시덫은 바닥 장판이므로, 별도 NativeGroundSkillSurface 메시로 지면+.025u를 정점마다 따르며 공통 SpriteRenderer billboard에서 제외한다. 회복 영역 링72점은 지면+.03u다. 2D/중심형/전투 수치는 유지. [원인·규격·659검사와 실제Player 미검수 경계](UNITY_RM_INT_RUNTIME_HOOK_20261028.md#2026-11-01-사용자-장판-공중-배치-결함--수정-후보). 이 후보의 빌드/실화면/공통/Desktop은 NOT_READY이며 위 이전 전사 후보의 PASS를 재사용하지 않는다.

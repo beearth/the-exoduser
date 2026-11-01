@@ -10,7 +10,7 @@ namespace Exoduser.UnityPort
     // web draw code (G._fireZones render, _gSlamWave render, ICE ORB render, iceBlade projectile polygons). 'lighter' / 'screen' layers use EXODUSER/SkillAdditive.
     public sealed partial class NativeSkillView : IDisposable
     {
-        sealed class Item { public GameObject go; public SpriteRenderer a, b; public LineRenderer[] rings; public SpriteRenderer[] embers; }
+        sealed class Item { public GameObject go; public SpriteRenderer a, b; public LineRenderer[] rings; public SpriteRenderer[] embers; public NativeGroundSkillSurface ground; }
         readonly Transform parent; readonly Material add, addFlat, alpha, malice;
         readonly Dictionary<int, Item> zones = new Dictionary<int, Item>(), waves = new Dictionary<int, Item>(), blades = new Dictionary<int, Item>(), orbs = new Dictionary<int, Item>();
         readonly Dictionary<int, List<Vector3>> orbTrails = new Dictionary<int, List<Vector3>>();
@@ -102,10 +102,18 @@ namespace Exoduser.UnityPort
             var l = go.AddComponent<LineRenderer>(); l.useWorldSpace = false; l.loop = true; l.positionCount = 72; l.widthMultiplier = .03f; l.sharedMaterial = add;
             l.startColor = l.endColor = color; l.sortingOrder = -18990; return l;
         }
-        static void SetRing(LineRenderer l, float radiusPx, Color c)
+        static void SetRing(LineRenderer l, float radiusPx, Color c, float px, float py)
         {
             l.startColor = l.endColor = c;
-            for (int i = 0; i < 72; i++) { float a = i * Mathf.PI * 2 / 72; l.SetPosition(i, new Vector3(Mathf.Cos(a) * radiusPx / 100, Mathf.Sin(a) * radiusPx / 100, 0)); }
+            l.useWorldSpace = NativeRemodel3D.Active;
+            for (int i = 0; i < 72; i++) {
+                float a = i * Mathf.PI * 2 / 72;
+                float dx=Mathf.Cos(a)*radiusPx/100,dy=Mathf.Sin(a)*radiusPx/100;
+                if(NativeRemodel3D.Active) {
+                    var p=NativeGroundSkillGeometry.Place(px,py,dx,dy,0,NativeRemodel3D.GroundY,NativeGroundSkillGeometry.RingLift);
+                    l.SetPosition(i,new Vector3(p.X,p.Y,p.Z));
+                } else l.SetPosition(i,new Vector3(dx,dy,0));
+            }
         }
 
         public void Update(Simulation sim, float time)
@@ -132,9 +140,14 @@ namespace Exoduser.UnityPort
                     for (int ri = 0; ri < 2; ri++)
                     {
                         float rp = (Mathf.Sin(t * (2.1f + ri * .35f) + ri * 2.4f) + 1) * .5f;
-                        SetRing(it.rings[ri], z.R * (.62f + ri * .19f + rp * .09f) * deploy, new Color(213 / 255f, 1f, 114 / 255f, (.64f + rp * .18f) * fade * WebLitHolyDomeRing));
+                        SetRing(it.rings[ri], z.R * (.62f + ri * .19f + rp * .09f) * deploy, new Color(213 / 255f, 1f, 114 / 255f, (.64f + rp * .18f) * fade * WebLitHolyDomeRing),z.X,z.Y);
                     }
                 }
+                // Flat mode retains the original sprite. 3D uses the same art,
+                // alpha, rotation and size on a sampled ground mesh, never a billboard.
+                if(NativeRemodel3D.Active&&it.ground==null)it.ground=new NativeGroundSkillSurface(it.go.transform);
+                it.ground?.Sync(it.a,z.X,z.Y);
+                it.a.enabled=!NativeRemodel3D.Active;
             }
             Drop(zones, stale);
             // ---- giant slam waves ----
@@ -202,13 +215,13 @@ namespace Exoduser.UnityPort
         }
         void Drop(Dictionary<int, Item> map, List<int> ids)
         {
-            foreach (int id in ids) { ForgetMaliceSprites(map[id]); ForgetCenteredSlamSprites(map[id]); UnityEngine.Object.Destroy(map[id].go); map.Remove(id); }
+            foreach (int id in ids) { ForgetMaliceSprites(map[id]); ForgetCenteredSlamSprites(map[id]); map[id].ground?.Dispose(); UnityEngine.Object.Destroy(map[id].go); map.Remove(id); }
         }
 
         public void Reset()
         {
             ResetMaliceBursts();
-            foreach (var m in new[] { zones, waves, blades, orbs }) { foreach (var it in m.Values) { ForgetMaliceSprites(it); ForgetCenteredSlamSprites(it); UnityEngine.Object.Destroy(it.go); } m.Clear(); }
+            foreach (var m in new[] { zones, waves, blades, orbs }) { foreach (var it in m.Values) { ForgetMaliceSprites(it); ForgetCenteredSlamSprites(it); it.ground?.Dispose(); UnityEngine.Object.Destroy(it.go); } m.Clear(); }
             if (orb != null) orb.go.SetActive(false);
             orbTrails.Clear(); ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0;
         }

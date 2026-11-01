@@ -471,3 +471,23 @@ Shore는 고정앵글러 주변을 피한 후 z−52~−42에서 다시28u 굽�
 |인수 상태|제작자선택1x검수완료/공통·Desktop지정integrator 신청준비. 공통병합·Desktop갱신·설치본M1은이문서만으로완료아님. 자연완주·실측FPS·OSfocus·Mac동기화 미검증|
 
 근거 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/STAGE1_R5_VISUAL_REVIEW_KO.md, STAGE1_R5_BUILD_LINK.json, stage1-r5-validation-8dbdf205a/receipt.json, stage1-r5-review-8dbdf205a, scope-cleanup-after-r5. 이전순수985/087·실패validator 이력은덮지않는다.
+
+## 2026-11-01 사용자 장판 공중 배치 결함 — 수정 후보
+
+| 항목 | 원인·현재 후보 계약 |
+|---|---|
+| 직접 근거 | 사용자 ground-user-report.png의 붉은 원은 기존 skill_spike_thorn(가시덫) 원화와 일치한다. 기존 NativeSkillView의 ground zone도 SpriteRenderer였고, Remodel3DBillboards가 카메라 tilt와 캐릭터 FootLift를 적용해 세워 올렸다. 중심형 강타의 lift0 수정만으로 이 바닥 역할은 고쳐지지 않았다. |
+| 수정 역할 | 3D의 spikeTrap/holyDome는 기존 원화·RGB/alpha·회전·deploy·크기를 NativeGroundSkillSurface MeshRenderer에 옮기고 원 SpriteRenderer는 숨긴다. Mesh는 공통 SpriteRenderer billboard/발끝 lift 경로에 들어가지 않는다. 2D는 기존 SpriteRenderer를 그대로 쓴다. 강타 중심형/얼음보주/투사체 역할 변경0. |
+| 실제 높이/규격 | Core(x,y)→(x/100,−y/100)의 XZ. 16×16칸=289정점/512삼각형의 각 정점을 회전 후 기존 NativeRemodel3D.GroundY(x,z)+.025u에 둔다. 실제 A2 질의는 Field.Height→DeckHeight로 등록 상판을 포함한다. 회복 영역 링72점도 각 지면+.03u, 3D에서는 worldSpace/2D에서는 기존 local XY. 지도 geometry/SourceMap/통행/충돌/판정/반경/피해/지속 수치 변경0. |
+| 수명/성능 | 메시·정점/UV/색 버퍼는 zone당1회 생성·재사용, Drop/Reset에서 메시 해제. 회전/크기 갱신 때 정점의 높이를 다시 질의한다. 같은 material와 _MainTex를 사용하며 vertex color로 기존 tint/alpha 유지. 실게임의 다수 장판 성능·급격한 단차의 삼각형/블렌딩은 새Player에서 검수해야 한다. |
+| 검수 경계 | 평면·경사·회전/반경·시험 다리 높이·링72점 등659좌표검사PASS. 동시 방향 후보 포함 PC 초기 Runtime312파일 독립API컴파일 오류0/기존경고473; 최종 공통 병합 후 Runtime+Core315파일 독립API컴파일 오류0/기존경고472. 실제 Unity Editor/Win빌드/M1·사용자화면/1x·목교·2D↔3D·수명 반복·GPU/음향·세이브 안전 검수0. 사용자의 화면은 수정 전 근거이며 수정 후 캡처로 사용하지 않는다. |
+| 상태·재개 | NOT_READY/실행본·Desktop 미반영. 현소유 I 작업본에서 Editor/Library/UPM 생성0. 새worktree/CLI/team/Player0·사용자게임 조작0. 기존 승인 NTFS 작업본·소유/공식FIFO·자원·실오디오무음·격리저장을 증명한 경로에서 정식 검수 후 인수해야 한다. 근거 I:/EXODUSER-Storage/mobility-hud/20261101/ground-red.log, ground-green.log, facing-ground-compile.log, ground-user-report.png. |
+### 2026-11-01 Mac 선택 이식과 격리 검수 계약
+
+| 항목 | Mac 선택 이식 값 |
+|---|---|
+| 범위 | PC 방향 커밋 `fc6309946285e506ce8f6e220bcc93fbb37cb4c9`의 8경로와 장판 커밋 `1684eaa4cdc4249d3db2ad69f1fef4b605dce152`의 11경로만 선택. HUD/맵 색조/일반 앱 설정은 제외. |
+| 구현 검산 | Mac Unity 6000.6.7f1 독립 Roslyn Runtime 컴파일 오류 0, 경고 27(기존 코드 경고 포함). 방향 순수 검사 220개, 장판 순수 기하 검사 659개 통과. 이는 Player 화면 판정이 아니다. |
+| Player 검사 진입 | `--unity-facing-ground-qa`는 절대 `-output` 및 별도 `--unity-qa-sandbox`와 `NativeQaSandbox.Active`가 있어야 시작한다. 가시덫은 평면·경사·목교, 성역은 메시·링을 검사한다. 적은 정지/미세이동/세로방향/실제역전/공격 상태를 Player 안에 주입하여 1920×1080 실제 창을 캡처한다. 목교는 직접 세계 카메라 3840×1080 캡처도 저장한다. 주입 검사이므로 자연 플레이 판정은 별개다. |
+| 실물 신원 | 공식 `PortVerification.Build -settingsQa true`의 `EXODUSER Settings QA` / `com.fordeargamers.exoduser.settingsqa` ARM64 앱을 개인 입력 복사본에서 만들고, 개인 브랜치 커밋·비강제 푸시·원격 SHA 재확인 뒤에만 빌드한다. 일반 앱/사용자 저장과 분리한다. |
+| 남은 검수 | 위 표의 Player/M1/GPU/캡처·음향·저장 전후 결과는 빌드 완료 후 별도 기록한다. 여기의 순수 검사만으로 시각 PASS를 선언하지 않는다. |
