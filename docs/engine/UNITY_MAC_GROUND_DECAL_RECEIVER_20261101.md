@@ -1,6 +1,6 @@
 # Mac 지면 데칼 receiver 후보 — 2026-11-01 KST
 
-상태: **후보 브랜치 전용, GPU receiver fixture 미성립**. 공통 `unity/main` 채택이나 맵 전체 완료를 뜻하지 않는다. 맵 제작 가이드 v0.9 전체와 `_MAP_SSOT_INDEX.md`를 선행 확인했다. 지면 수신은 구조물과 흙의 접지 기술 의존성일 뿐, geometry·collision·배치·카메라 설계·R8 아트 수정은 이번 범위가 아니다.
+상태: **후보 브랜치 전용, 격리 GPU receiver 평면 fixture PASS**. 공통 `unity/main` 채택이나 맵 전체 완료를 뜻하지 않는다. 맵 제작 가이드 v0.9 전체와 `_MAP_SSOT_INDEX.md`를 선행 확인했다. 지면 수신은 구조물과 흙의 접지 기술 의존성일 뿐, geometry·collision·배치·카메라 설계·R8 아트 수정은 이번 범위가 아니다.
 
 |항목|정확 계약|
 |---|---|
@@ -15,7 +15,7 @@
 
 승인 Renderer의 실제 실행 technique/DBuffer keyword/MRT4·DepthNormals를 원문으로 기록한다. 동일 카메라·광원·projector·재질의 off/on에서 HellGround 흙, A2Root 뿌리, 표준 Lit 목교 양성대조의 native 픽셀 ROI 내부 변화와 투영 외 영향, 접지·경계를 분리 확인한다. 1920×1080 실화면과 3840×1080 직접 RenderTexture는 출처를 구분하고 1x로 판정한다. 기존 `VfxRm1DecalCapture.Run`의 표준 Lit 단독 결과를 두 custom receiver 증거로 사용하지 않는다. 새 ARM64 build → 같은 앱 M1 → receiver GPU 순서이며, 자동 수치 PASS가 전체 맵 VISUAL PASS는 아니다.
 
-최종 실측과 `MAP PRODUCTION REPORT`는 이 문서에 후속 기록한다.
+최종 실측은 아래에 기록한다. 맵 제작 범위와 visual 판정은 마지막 `MAP PRODUCTION REPORT`에 구분했다.
 
 ## 14:44 KST 중간 복구점 — 빈 fixture 보존
 
@@ -33,4 +33,66 @@
 
 후속 진단: 실패 PNG의 1920×1080 모든 픽셀은 카메라 배경색 `(9,9,10)`으로 확인됐다. 따라서 투영 안팎 픽셀차0은 수신 여부가 아니라 메시가 아예 그려지지 않은 결과다. 다음 fixture는 URP Base 카메라를 명시하고 다른 카메라·로비를 격리하며, 별도 Lit 큐브의 frustum/실제 픽셀 및 바닥의 활성·frustum·스크린 좌표를 영수증에 추가한다. 이 진단 전에는 같은 빈 화면을 receiver 결과로 사용하지 않는다.
 
-진단 결과: Quad는 활성·renderer enabled·camera frustum 내부이며 중심은 화면 `(960,540)`, z≈8이었다. 별도 Lit 큐브도 frustum 내부이고 실제 픽셀 `(0.953,0.988,1.000)`으로 렌더됐다. Unity 내장 Quad의 로컬 법선은 `(0,0,-1)`이라 fixture의 `Euler(-90,0,0)`이 바닥 뒷면을 위로 향하게 했다. `Euler(90,0,0)`으로 수정했다. 이 수정 후의 receiver 판정은 아직 실행 전이다.
+진단 결과: Quad는 활성·renderer enabled·camera frustum 내부이며 중심은 화면 `(960,540)`, z≈8이었다. 별도 Lit 큐브도 frustum 내부이고 실제 픽셀 `(0.953,0.988,1.000)`으로 렌더됐다. Unity 내장 Quad의 로컬 법선은 `(0,0,-1)`이라 fixture의 `Euler(-90,0,0)`이 바닥 뒷면을 위로 향하게 했다. `Euler(90,0,0)`으로 수정한 뒤 아래 최종 fixture를 실행했다.
+
+## 최종 격리 Player GPU 결과 — 2026-11-01 KST
+
+후보 HEAD `21145ce94a491c6717c42a7f555e0bb0402c73a3`의 QA fixture를 APFS 복제 프로젝트에서 공식 `PortVerification.Build -settingsQa true -remodel-scenes 1`로 빌드했다. [빌드 영수증](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-20261101/build-facing-receipt.json)은 Unity 6000.6.7f1, StandaloneOSX ARM64, Settings QA 식별자, 오류0이다. 같은 앱의 [M1 영수증](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-20261101/facing-m1/m1-check.json)은 23/23 `ok`, 종료코드0. 이어서 1920×1080 실제 창에서 세 평면 receiver와 같은 RM1 데칼 projector, 같은 카메라·방향광·재질 설정의 off/on을 캡처했다. 3840×1080은 동일 Player의 직접 GPU RenderTexture이며 물리적 3840 창이 아니다.
+
+| receiver (shader) | 1920 내부 최대 채널차 | 3840 내부 최대 채널차 | 경계 안쪽 차 (두 해상도 동일) | 투영 밖·경계 밖 차 | 판정 |
+|---|---:|---:|---:|---:|---|
+| HellGround 흙 (`EXODUSER/HellGroundPBR`) | 0.203922 | 0.203922 | 0.203922 | 0 | PASS |
+| A2Root 지면 (`EXODUSER/A2RootSurface`) | 0.176471 | 0.176471 | 0.176471 | 0 | PASS |
+| 목교 양성대조 (`Universal Render Pipeline/Lit`) | 0.337255 | 0.337255 | 0.337255 | 0 | PASS |
+
+[GPU 영수증](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-20261101/facing-receiver/ground-receiver-receipt.json)은 Apple M5 Pro/Metal, UniversalRenderer, active DecalRendererFeature, 내부 `GetTechnique=DBuffer`, MRT8, RM1 ShaderGraph 정상 로드, 창 1920×1080을 기록했다. [실창 on](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-20261101/facing-receiver/window-1920x1080-on.png), [1920 RT on](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-20261101/facing-receiver/1920x1080-on.png), [3840 RT on](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-20261101/facing-receiver/3840x1080-on.png), [A2 경계 1920 1x](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-20261101/facing-receiver/a2-edge-1x.png), [A2 경계 3840 1x](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-20261101/facing-receiver/a2-edge-3840-1x.png)에서 세 바닥의 동일 투영 띠와 끊김 없는 경계를 육안 확인했다. ROI는 각 바닥의 중심, 투영 밖 z=1.2, 경계 안 z=.34·밖 z=.46이다. 실창과 RT는 같은 Player 출력이지만 별도 캡처다.
+
+두 custom shader의 실제 바이트 SHA는 위 원본 인수표와 일치하고, 공통 대비 각 6줄 추가·삭제0이다. 기존 `UsePass .../ShadowCaster`, `.../DepthOnly`, `.../DepthNormals`는 보존됐으며 Metal 빌드에 포함됐다. URP 패키지의 `DecalRendererFeature.GetTechnique` 결과와 화면상 효과가 DBuffer 사용을 지지한다. `Shader.IsKeywordEnabled("_DBUFFER_MRT3")`를 `Camera.Render` 반환 후 조회한 값은 false로, **패스 실행 중 global keyword를 직접 계측한 증거는 없다**. DepthNormals 개별 GPU draw call도 별도 캡처하지 않았다. 이 두 항목과 실제 맵 메시/텍스처/목교 접지·충돌/카메라 시퀀스는 후속 통합 QA 범위다. 이 평면 fixture PASS를 전체 맵 READY로 확장하지 않는다.
+
+`--unity-mute`, `AudioListener.pause=true`, volume0, listener output sample peak0, Direct Video Player0을 기록했다. QA sandbox와 앱 정체성을 분리했고, 빌드·M1·GPU 각각 전후 개인 앱 저장 루트/설정 plist의 11개 항목(파일4·부재5) SHA·존재 상태가 동일했다. GPU Player는 `QA_MEDIA_DRAIN_COMPLETE GROUND_RECEIVER` 후 정상 `Application.Quit(0)`, 잔여 Editor/Player 프로세스0. 청각·OS 물리 출력 루프백을 주장하지 않는다.
+
+## MAP PRODUCTION REPORT (§23)
+
+```text
+================= MAP PRODUCTION REPORT =================
+STAGE: CH1/A2 GROUND receiver 기술 후보, 분리 QA 평면 fixture
+MASTER
+- silhouette: 기존 맵 미변경·이번 범위 밖
+- regions: 기존 맵 미변경·이번 범위 밖
+- main route: 기존 맵 미변경·이번 범위 밖
+- side spaces: 기존 맵 미변경·이번 범위 밖
+OUTER MASS
+- LEFT/RIGHT/TOP/SOUTH/major holes: 제작·수정·검수 없음
+LARGE
+- source assets: 기존 RM1 데칼 ShaderGraph 및 기존 두 custom ground shader
+- composites/overlap/repeated silhouette: 제작·수정·검수 없음
+MEDIUM
+- connections/remaining holes: 제작·수정·검수 없음
+GROUND
+- shadow: 기존 ShadowCaster/DepthOnly/DepthNormals UsePass 보존; 실제 맵 그림자 검수 별도
+- contamination: 평면 fixture 투영 밖·경계 밖 off/on 최대 채널차 0
+- structure integration: HellGround/A2Root/Lit 동시 투영 PASS; 실제 목교·지면 접지 별도
+PLAYABLE
+- main arenas/travel space/breathing space/threat space/combat readability: 맵 변경·검수 없음
+LANDMARK
+- primary/secondary/tertiary: 맵 변경·검수 없음
+CAMERA QA
+- START: 고정 QA 카메라 1920×1080 실창 및 3840×1080 직접 RT 확인
+- EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT: 실제 맵 카메라 검수 없음
+TECH QA
+- route/collision/pageerror/404: 변경·검수 없음
+- seam: 평면 투영 경계 1x 시각 및 ROI PASS, 실제 맵 seam 별도
+- loading: 같은 ARM64 Player M1 23/23 ok
+- performance: GPU 시간·FPS 계측 없음
+FILES
+- stage-owned: 두 custom shader(각 +6/-0), NativeGame QA hook/fixture, Resources/QA material, docs
+- concurrent touched: 없음
+- unrelated touched: 없음
+GIT
+- staged: 최종 보고 문서와 changelog만 후속 stage
+- commit: 후보 브랜치 원본 및 QA checkpoint 완료; 최종 보고 commit 별도
+- push: 후보 브랜치만 비강제 push, common unity/main 미변경
+- deploy: 없음
+VISUAL VERDICT: RETOUCH (평면 receiver fixture PASS; 실제 맵 통합 visual 미검수)
+NEXT PASS: 패스 중 DBuffer keyword/DepthNormals draw 관찰, 실제 맵 지면·목교 접지/카메라 QA
+```
