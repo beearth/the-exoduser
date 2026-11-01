@@ -41,6 +41,41 @@ test('CH1 dynamic map prefix excludes source paintovers while retaining runtime 
   for(const source of sources)assert.ok(!selected.includes(source),source);
 });
 
+test('web selection omits retired cutscene and map build inputs without losing live dynamic assets',()=>{
+  const wide=Array.from({length:35},(_,id)=>['16','21','32'].map(ratio=>`img/lording/wide/${id+1}-${ratio}.webp`)).flat();
+  const retired=[
+    'assets/cutscene/prologue/_old_20260727/p01.png',
+    'assets/map/ch1/baked_spike/south_visual_pass/CH1_SOUTH_BASE.png',
+    'assets/map/ch1/boss_room_bg_old.png',
+    'assets/map/ch1/ground_dark_soil_backup.png'
+  ];
+  const live=[
+    'assets/cutscene/prologue/p01.jpg',
+    'assets/map/ch1/baked_spike/south_visual_pass/chunk_0_5.png',
+    'img/logo_exoduser_solid.png',
+    'img/lording/wide/manifest.json',
+    'bgm/1장_썩은숲/current.wav',
+    'sfx/death/random_1.mp3',
+    'lang_es.js'
+  ];
+  const paths=['index.html','game.html','loading-art.css',...retired,...live,...wide];
+  const source={
+    'index.html':`<img src="img/logo_exoduser_solid.png"><script>const prologueRoot='assets/cutscene/prologue/';const wideRoot='img/lording/wide/';</script>`,
+    'game.html':`const chunkRoot='assets/map/ch1/baked_spike/south_visual_pass';const music='bgm/1장_썩은숲/current.wav';`,
+    'loading-art.css':`.loading{background:url(img/lording/wide/1-16.webp)}`
+  };
+  const select=()=>manifest.selectWebRuntimeFiles(paths,['index.html','game.html','loading-art.css'],p=>source[p]||'');
+  const selected=select();
+  for(const path of live)assert.ok(selected.includes(path),path);
+  assert.equal(wide.filter(path=>selected.includes(path)).length,105,'all 35 three-ratio loading images stay selected');
+  for(const path of retired)assert.ok(!selected.includes(path),path);
+  source['game.html']+=`const fallback='assets/map/ch1/boss_room_bg_old.png';`;
+  source['index.html']+=`<img src="assets/cutscene/prologue/_old_20260727/p01.png">`;
+  const withCallers=select();
+  assert.ok(withCallers.includes('assets/map/ch1/boss_room_bg_old.png'),'a new exact runtime caller must keep the file');
+  assert.ok(withCallers.includes('assets/cutscene/prologue/_old_20260727/p01.png'),'a new exact cutscene caller must keep the file');
+});
+
 test('ASCII upload aliases preserve Korean public URLs and collapse identical NFC/NFD files',async t=>{
   const dir=fixture(t),staticDir=join(dir,'static');mkdirSync(staticDir);
   writeFileSync(join(dir,'config.json'),JSON.stringify({version:3}));
