@@ -215,3 +215,15 @@ Vercel 계정 관리자의 결제 문제 해소가 선행한다. 에이전트는
 | 자산·상한 | PNG/WebP·95매핑·game.html/Unity/WIP/서버 불변. HTML 설명 주석 포함83B 증가의 예측만으로 한도 PASS 주장하지 않고 다음 정확 artifact의 plan/최종 bytes를 실측 |
 
 원문 RED/GREEN·수정 전 HTML/테스트는 root recovery `web-final-asset-intake-20261102/startup-order/`에 보존. 기존 scope의 74/42 PASS를 새 저장 helper까지 검증한 것으로 소급하지 않는다. 정상 후보 commit/push 후 같은 Mac 담당의 최종 실브라우저 인수를 거쳐야 하며 main·공개 배포·Windows 전달은 별개다.
+
+
+## 2026-11-02 06:20 KST 단일 후보 6008 실제 웹 시작·테스트 저장 검수 인수
+
+| 항목 | 실제 결과와 한계 |
+|---|---|
+| 입력·공식 산출 | source 6008f3d87d6fd77986ae0eba2dd9409e723f733e, selected3242/고유3343경로 Git blob 차이0. 공식 build/prepare/check 각1회. static3235파일/3999408690B, 4GB 여유591310B, 최대94795327B. 95논리/94물리 파생행 및 기존73행 유지 |
+| 실제 Chrome 시작 | ab baseline의 _DEMO_ACTIVE_KEY 초기화 전 경고1회 재현. 새6008의 빈 저장·허구 legacy 초기화와 타이틀→시네마틱 스킵→데모→로비에서 pageerror/저장 TDZ 경고0. 빈 저장 쓰기0 |
+| 허구 저장 범위 | 독립 QA localStorage의 Lv46/stage12/kills1795/ts 값이 기존 규칙으로 slot0에 동일 이관, 원키 제거·카드표시·선택 후 게임용 저장 활성화 확인. 실제 사용자 데이터 이관·자연 플레이 검수 아님 |
+| 시각·도구 한계 | 담당자가 실제1920 원본 빈/이관 로비2장을 직접 확인. root는 raw와 imageView 기록 인수만/원본 직접픽셀뷰0. 게임 스프라이트는 기존 VFX 가림 INCONCLUSIVE 유지. 최초 화면 fixture 순서 timeout은 올바른 UI 순서로 전환; 입장 클릭 검사는 AudioContext 자동재생 경고1로 exit1, 저장 payloadExact=true/pageerror0와 분리. 오디오 경고를 지우거나 전체PASS로 합산하지 않음 |
+| 보존·전달 | 일반 저장11항목/current Preferences2 SHA 불변, 자기 Chrome 종료·port53619 닫힘. 제품 Mac checkout350034 및 외부 WIP 보존. H5 main416/Unity18b/Windows D8 불변, public402 미납 및 Windows external writer 잠금으로 새 공개/Windows 전달0 |
+| 증거 | Mac _out/web-startup-order-final-qa-20261102/{REPORT.md,FINAL_RECEIPT.json,input-audit.json,static-full-manifest.json,browser-startup-results.json,browser-ui-results.json,browser-activation-results.json,ordinary-before.json,ordinary-after.json}; static manifest aggregate(items) SHA1a33914ca392a975fd0c35f93b6cd3f812d1f02c5e28d26f0b7bcff1cfb75531/config148c7f6eb86c0a937d9425e2aa3badeec133b148ac4d5000aa1e7f325c70f4b8 |
