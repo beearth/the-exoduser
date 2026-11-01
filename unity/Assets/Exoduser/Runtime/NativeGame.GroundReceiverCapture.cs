@@ -81,7 +81,7 @@ namespace Exoduser.UnityPort
                     var shader=Shader.Find(groundShaders[k]);if(shader==null)throw new InvalidOperationException("Missing receiver "+groundShaders[k]);
                     grounds[k]=GameObject.CreatePrimitive(PrimitiveType.Quad);grounds[k].name="QA "+groundShaders[k];grounds[k].layer=layer;
                     grounds[k].transform.position=new Vector3((k-1)*3f,0,0);
-                    grounds[k].transform.rotation=Quaternion.Euler(-90,0,0);
+                    grounds[k].transform.rotation=Quaternion.Euler(90,0,0);
                     grounds[k].transform.localScale=new Vector3(2.6f,3.4f,1);
                     var mat=new Material(shader);mat.SetColor("_BaseColor",new Color(.28f,.27f,.26f,1));
                     if(mat.HasProperty("_FullField"))mat.SetFloat("_FullField",0);
