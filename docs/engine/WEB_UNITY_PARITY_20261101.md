@@ -31,7 +31,9 @@
 
 `vercel.json`은 `node tools/build-web.mjs`→`web-dist`를 공식 빌드로 지정한다. `selectWebRuntimeFiles`로 최신 작업본을 사전 계산한 결과는 **3,134파일·4,829,417,882바이트**다. 승인 로고, `loading-art.js/css`, `img/lording/wide/`의 manifest 포함 106파일(이미지 105장)이 선택됐다. 전체 선택 경로·크기와 핵심 6파일 SHA-256은 `I:/EXODUSER-Storage/design/web-unity-parity-20261101/web-selection-manifest.json`에 기록했다. 이 JSON은 **복사 전 선택 목록**이며 `web-dist`나 실제 배포 artifact가 아니다. 웹 원본은 원격 main에서 재현 가능하다.
 
-실행 중인 PC Unity Player PID 42820과 작업 지시의 대형 빌드 금지 경계 때문에 4.83GB 전체 복사는 시작하지 않았다. `tools/build-web.mjs`는 기존 출력 폴더를 덮어쓰지 않으며, exFAT 작업본은 hardlink가 지원되지 않아 전체 파일 복사가 필요하다. Unity 실행이 끝난 뒤 고유한 새 출력 경로에서 공식 빌드를 실행하고 3,134파일/핵심 SHA/HTTP 및 실제 정적 참조를 검증해야 배포 가능 산출물로 승격할 수 있다. 현재 3333 서버·DEMO/EA 패키지·Vercel 프로젝트 설정은 그대로다.
+실행 중인 PC Unity Player PID 42820과 작업 지시의 대형 빌드 금지 경계 때문에 4.83GB 전체 복사는 시작하지 않았다. `tools/build-web.mjs`는 기존 출력 폴더를 덮어쓰지 않으며, exFAT 작업본은 hardlink가 지원되지 않아 전체 파일 복사가 필요하다. 현재 선택 목록은 [Vercel 업로드 검사](../../tools/check-vercel-output.mjs)의 4,000,000,000바이트 상한을 **829,417,882바이트 초과**하고 `video/world_intro_v22b_steam.mp4` 102,204,634바이트가 단일 파일 100,000,000바이트 상한도 넘는다. NFC 중복 10파일을 모두 제거하더라도 절감 상한은 32,669,676바이트이므로 총량 초과는 해소되지 않는다. 이 상태에서 4.83GB를 복사해도 공식 배포 검사를 통과할 수 없다. 사용 중인 WAV와 인트로 영상을 임의로 빼거나 재인코딩하지 않았다. 런타임 참조·청취·영상 동등성을 지키는 별도 최적화와 검수 후 고유 출력 경로에서 공식 빌드·해시·HTTP 검증을 해야 배포 가능 산출물로 승격한다. 현재 3333 서버·DEMO/EA 패키지·Vercel 프로젝트 설정은 그대로다.
+
+`.github/workflows/deploy.yml`은 main의 `docs/**`·`**/*.md`만 변경한 push를 무시한다. 2026-10-02 [배포 복구 기록](../13출시·마케팅/WEB_DEPLOYMENT_REPAIR_20261002.md)에 따르면 기존 Git 기본 연결은 해제했고 `the-exoduser`의 Actions 경로가 정본이다. 이번 문서 반영은 실제 웹 배포를 시작하지 않는다. 공개 서비스 HTTP 402와 계정/프로젝트 재개는 별도 hosting owner의 확인 대상이다.
 
 ## 다음 반영 경계
 
