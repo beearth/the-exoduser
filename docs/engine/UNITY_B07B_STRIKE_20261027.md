@@ -15,6 +15,7 @@ B07 Core(`UNITY_B07_CORE_20261026.md` §6 "구현하지 않은 것")의 후속. 
 | kiGather 해방 | `_kgRelease`가 `_sBashChgMul`(1~3)을 세팅하고 같은 sBash로 진입 → 같은 타격에 배율만 곱해짐 | 기존 `SBashChgMul` 경로 그대로, 타격이 이 배율을 읽음 |
 | Q 캔슬 | `sRecover` 중 Q → 보호막 | `TickPlayerCombat` Q 진입 조건에 `sRecover` 추가 |
 | parryBank | 적 근접 패링 `P.parryBank += e.atk||10`, 보스 반격 `+= _pd` | `Simulation.ParryBank`, `Parry`(`e.atk||10`)·`TryParry`(반격 피해) |
+| 플레이어 패링 성공 VFX — 2026-11-01 결함 확인 | 배포 `8dbdf205a-stage1-r5`에서 `FeedbackKind.Parry`를 생성하지만 `DispatchFeedback`은 `KiImpactView.Handle`과 `NativeFeedbackAudio.Handle`만 호출한다. 전자는 `KiSlashHit/KiChargeFlash` 외 이벤트를 버리므로 패링 성공 전용 시각 consumer가 없다. `PARRY!` 글자·패링 음향과 시각 구현을 구분한다. | 소스 확인만 완료. 웹 `doParry`의 Q Dark02/E Lightning/물리투사체 흰 임팩트·특수 원소 분기와 성공 지점 전달을 이식해야 함. Unity Resources에도 해당 전용 에셋 미포함. 보스의 `ParryGlint` 전조는 플레이어 패링 성공 효과가 아님. 코드 수정·새 빌드·실화면 검수0. 기존 공식 실행기 status 오류를 보존하며, 장판 접지 문제와 구별해 후속 검수. |
 | 기동 게이지 HUD | Shift 슬롯 아래 3px 막대, 폭 = 게이지/최대, 색 `#44ffaa`(가득) / `#88ccff`(반 이상) / `#ff8844`. 2026-11-01 후보는 우측 오브의 노란 분할 링을 추가, 실제 Player·공통·Desktop 미검수/미반영 | `NativeHud.DrawChainGauge` + 후보 `DrawMobilityRing`/`NativeMobilityRing`; [계약·26검사·실행기 차단](../3.1%20ui%20hud%20디자인/exoduser-hud-redesign.md#unity-이동-자원-표시-수정-후보--2026-11-01) |
 
 ## 2. 검증
