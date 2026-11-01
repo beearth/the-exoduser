@@ -327,8 +327,9 @@ namespace Exoduser.UnityPort
                 int dealtHp=Mathf.RoundToInt(ev.hp-e.Hp),dealtShield=Mathf.RoundToInt(ev.shield-e.Shield);if(dealtShield>0)damage.Add(new DamageText{x=e.X,y=e.Y-24,amount=dealtShield,shield=true,until=Time.unscaledTime+1});if(dealtHp>0)damage.Add(new DamageText{x=e.X,y=e.Y,amount=dealtHp,until=Time.unscaledTime+1});ev.hp=e.Hp;ev.shield=e.Shield;
                 if(newTick){float ex=e.X-ev.lastX,ey=e.Y-ev.lastY;float travel=Mathf.Sqrt(ex*ex+ey*ey);ev.distance+=travel;ev.lastX=e.X;ev.lastY=e.Y;ev.moving=travel>.001f;}
                 if(BossBodyDraw(e,ev,newTick))continue;   // BX: the 1-1 druid has its own sheets (damage numbers and walk bookkeeping above already ran)
-                double faceAng=e.Facing;if(!ev.moving&&p.Hp>0&&Mathf.Sqrt((p.X-e.X)*(p.X-e.X)+(p.Y-e.Y)*(p.Y-e.Y))<800)faceAng=Math.Atan2(p.Y-e.Y,p.X-e.X);   // drawEnBody: standing mobs within 800 px look at the player
-                int dir=((int)Math.Floor(faceAng/(Math.PI/4)+.5)%8+8)%8,cellX=ev.skin%8,cellY=ev.skin/8;
+                // One visual-facing writer for both idle and walk. Core facing
+                // is untouched; a tiny movement must not reveal its stale snapshot.
+                int dir=NativeEnemyVisualFacing.Direction(e,p),cellX=ev.skin%8,cellY=ev.skin/8;
                 ev.body.sprite=SpriteFor("Art/enemy/atlas_ch1_8dir_"+enemyDirections[dir],cellX*256,cellY*256,256,256,new Vector2(.5f,.5f));
                 ev.walk.sprite=SpriteFor("Art/enemy/atlas_ch1_8dir_walk_"+enemyDirections[dir],cellX*1024+((int)(ev.distance/128)%4)*256,cellY*256,256,256,new Vector2(.5f,.5f));
                 float size=e.Radius*7/256;ev.body.transform.position=ev.walk.transform.position=Point(e.X,e.Y);ev.body.transform.localScale=ev.walk.transform.localScale=Vector3.one*size;
