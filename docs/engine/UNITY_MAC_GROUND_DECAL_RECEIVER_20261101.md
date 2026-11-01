@@ -166,3 +166,11 @@ GIT
 VISUAL VERDICT: RETOUCH (실제 세 지점 GPU 수신 PASS; 난간/옆면 침범과 뿌리 경계 보정 필요)
 NEXT PASS: 실제 효과의 projector 범위/receiver 분리 설계, 자연 이동·전투 접지와 카메라 순회, 가능하면 패스 중 DBuffer keyword/DepthNormals 직접 trace. 기존 Impact R4 FAIL 별도 유지.
 ```
+
+## 실제 맵 QA projector 제한 후보 — 빌드 전 계약
+
+기존 실제맵 영수증의 `insideChanged/outsideChanged`는 raw 픽셀 불일치 수가 아니다. `GroundMapMeasure`는 off-A/off-B의 채널 최대차 `self > 4`를 반복 변화로 세고, off-B/on의 채널 최대차 `effect > self + 4`인 픽셀만 내부/외부 효과로 센다. 따라서 이전 `outsideChanged=0`은 정의한 ROI 밖에서 이 **필터 기준**을 넘은 픽셀0이라는 뜻이다. 새 후보는 같은 필터 수치와 별도로 `rawSelfChanged/rawEffectChanged/rawOutsideChanged`(채널 최대차 >0), `rawSelfMax/rawEffectMax`를 기록한다. 기존 캡처의 raw 값은 같은 이미지 파일에서 별도 산출해 나란히 비교한다.
+
+원인 가설: 기존 QA projector는 `(x,surfaceY+2,z)`, 크기 `(3,1.4,6)`, pivot0, 90° 하향, URP 기본 `startAngleFade=endAngleFade=180°`(각도 제한 비활성)였다. URP 17.6 설치 소스의 `DecalProjector`는 깊이를 `size.z`, 표면 법선 각도 감쇠를 `startAngleFade/endAngleFade`로 제공하고 `DecalEntityManager`는 180°에서 감쇠를 끈다. 이 넓은 투영 상자가 목교 난간과 수직 옆면을 포함한 것이 1x 침범의 근거다. 두 custom receiver의 6줄 DBuffer 수신은 평면 양성대조와 실제 흙/뿌리에서 작동하므로, 현 증거만으로 shader 자체의 침범 결함으로 단정하지 않는다. 제품 `VfxBridge` 일반 projector는 깊이2u, poison stain도 깊이2u, Ki scar도 깊이2u이고 각도 감쇠는 별도로 지정하지 않는다. 이 비교는 제품 효과의 실제 침범 측정이 아니다.
+
+이번 제한 후보는 **QA helper만** `(x,surfaceY+.04,z)`, 크기 `(3,1.4,.45)`, 시작각45°·끝각70°로 둔다. 같은 projector 재질/색·footprint x/y·세 anchor·실제 카메라·ROI·`GroundMapMeasure` 필터와 판정 기준은 유지한다. 투영 두께 .45u는 root anchor의 지형 차이 .164466u를 포함한다. 상향 흙/뿌리/판재 수신이 유지되고 난간/수직면 침범이 줄어드는지 **새 GPU/1x**로 판정하며, 경계 잘림이 생기면 실패로 기록한다. 제품 projector·Renderer·맵 mesh/material/transform·두 shader blob은 바꾸지 않는다. 이 후보를 자연 VFX 완성으로 부르지 않는다.

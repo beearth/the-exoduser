@@ -208,6 +208,7 @@ namespace Exoduser.UnityPort
         {
             public string id, receiver, material, shader, offA, offB, on, window;
             public int width, height, selfChanged, insideChanged, outsideChanged, selfMax, insideMax, outsideMax;
+            public int rawSelfChanged, rawEffectChanged, rawOutsideChanged, rawSelfMax, rawEffectMax;
             public bool passed, coreWalkable;
             public float terrainY, actorGroundY, bridgeTopY;
             public Vector3 anchor, cameraPosition, cameraEuler, screenAnchor, receiverPosition, receiverEuler;
@@ -218,7 +219,7 @@ namespace Exoduser.UnityPort
             public string scope="기존 A2 실제 필드/목교/HD2D 픽셀 배우. QA projector만 주입, 플레이·전투 자연완주 아님";
             public string error, graphicsDevice, graphicsApi, renderer, technique, soilShader, rootShader, bridgeRenderers;
             public int screenWidth, screenHeight, mrtCount, groundChunks, rootRenderers, directVideoPlayers;
-            public float listenerVolume, outputPeak;
+            public float listenerVolume, outputPeak, projectorDepth, projectorHeightOffset, startAngleFade, endAngleFade;
             public bool passed, hd2d, remodel, featureActive, listenerPaused;
             public List<GroundMapSite> sites=new List<GroundMapSite>();
         }
@@ -264,6 +265,10 @@ namespace Exoduser.UnityPort
             {
                 int index=y*w+x;int self=GroundMapDifference(a[index],b[index]);int effect=GroundMapDifference(b[index],c[index]);
                 bool inside=x>=x0&&x<x1&&y>=y0&&y<y1;
+                if(self>0)site.rawSelfChanged++;
+                if(effect>0){site.rawEffectChanged++;if(!inside)site.rawOutsideChanged++;}
+                site.rawSelfMax=Mathf.Max(site.rawSelfMax,self);
+                site.rawEffectMax=Mathf.Max(site.rawEffectMax,effect);
                 if(self>4)site.selfChanged++;site.selfMax=Mathf.Max(site.selfMax,self);
                 if(effect<=self+4)continue;
                 if(inside){site.insideChanged++;site.insideMax=Mathf.Max(site.insideMax,effect);}
@@ -329,8 +334,12 @@ namespace Exoduser.UnityPort
             decalMaterial.SetFloat("_Progress",1);decalMaterial.SetFloat("_Grow",1);decalMaterial.SetFloat("_Flash",0);decalMaterial.SetFloat("_EdgeGlow",0);
             decalMaterial.SetColor("_FillColor",new Color(.1f,.9f,.8f,.75f));
             var projector=new GameObject("QA Actual Map Projector").AddComponent<DecalProjector>();
-            projector.material=decalMaterial;projector.size=new Vector3(3,1.4f,6);projector.pivot=Vector3.zero;
+            const float projectorDepth=.45f,projectorHeightOffset=.04f;
+            projector.material=decalMaterial;projector.size=new Vector3(3,1.4f,projectorDepth);projector.pivot=Vector3.zero;
+            projector.startAngleFade=45f;projector.endAngleFade=70f;
             projector.transform.rotation=Quaternion.Euler(90,0,0);projector.enabled=false;
+            receipt.projectorDepth=projectorDepth;receipt.projectorHeightOffset=projectorHeightOffset;
+            receipt.startAngleFade=projector.startAngleFade;receipt.endAngleFade=projector.endAngleFade;
             var anchors=new[]{new Vector2(40.2f,-77f),new Vector2(root.bounds.center.x,root.bounds.center.z),new Vector2(43.2f,-71.8f)};
             var ids=new[]{"start","passage-root-boundary","actual-wood-bridge"};
             for(int siteIndex=0;siteIndex<anchors.Length;siteIndex++)
@@ -341,7 +350,7 @@ namespace Exoduser.UnityPort
                 float terrainY=a2Field.TerrainHeight(x,z),actorY=NativeRemodel3D.GroundY(x,z),bridgeY=-999f;
                 Vector3 bridgeTop;if(siteIndex==2&&A2UpperSurfaceVertex(bridge,new Vector3(x,0,z),out bridgeTop))bridgeY=bridgeTop.y;
                 float surfaceY=bridgeY< -900?actorY:Mathf.Max(actorY,bridgeY);
-                projector.transform.position=new Vector3(x,surfaceY+2,z);
+                projector.transform.position=new Vector3(x,surfaceY+projectorHeightOffset,z);
                 foreach(int width in new[]{1920,3840})
                 {
                     var site=new GroundMapSite{id=ids[siteIndex],width=width,height=1080,
