@@ -35,8 +35,8 @@ namespace Exoduser.UnityPort
         }
         void FgMode(SpriteRenderer source,MeshRenderer mesh,LineRenderer[] rings,string mode)
         {
-            Remodel3DRestoreBillboards();source.enabled=mode=="sprite";mesh.enabled=mode=="mesh";
-            foreach(var ring in rings)ring.enabled=mode!="off";
+            Remodel3DRestoreBillboards();source.enabled=mode=="sprite"||mode=="sprite-only";mesh.enabled=mode=="mesh"||mode=="mesh-only"||mode=="mesh-always-depth";
+            foreach(var ring in rings)ring.enabled=mode=="mesh"||mode=="sprite"||mode=="rings-only";
             Remodel3DBillboards();
         }
         IEnumerator FacingGroundDiagnose(string output,Vector2 holy,PlayerState player,Simulation sim)
@@ -62,12 +62,22 @@ namespace Exoduser.UnityPort
             foreach(var uv in shape.uv){row.uvMinX=Mathf.Min(row.uvMinX,uv.x);row.uvMaxX=Mathf.Max(row.uvMaxX,uv.x);row.uvMinY=Mathf.Min(row.uvMinY,uv.y);row.uvMaxY=Mathf.Max(row.uvMaxY,uv.y);}
             row.worldX=holy.x;row.worldY=NativeRemodel3D.GroundY(holy.x,holy.y);row.worldZ=holy.y;
             var ringArray=rings.ToArray();
-            foreach(int width in new[]{1920,3840}) {
+            bool isolate=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-facing-ground-holy-only")>=0;
+            foreach(int width in isolate?new[]{1920}:new[]{1920,3840}) {
                 FgMode(source,mesh,ringArray,"off");FgDirect(output,"holy-off",width,1080);FgDirect(output,"holy-off-repeat",width,1080);
                 FgMode(source,mesh,ringArray,"mesh");FgDirect(output,"holy-mesh",width,1080);
                 FgMode(source,mesh,ringArray,"sprite");FgDirect(output,"holy-c336-equivalent-sprite",width,1080);
+                if(isolate) {
+                    FgMode(source,mesh,ringArray,"mesh-only");FgDirect(output,"holy-mesh-only",width,1080);
+                    FgMode(source,mesh,ringArray,"rings-only");FgDirect(output,"holy-rings-only",width,1080);
+                    FgMode(source,mesh,ringArray,"sprite-only");FgDirect(output,"holy-sprite-only",width,1080);
+                    int depth=material.GetInt("_DepthTest");
+                    try {material.SetInt("_DepthTest",(int)CompareFunction.Always);FgMode(source,mesh,ringArray,"mesh-always-depth");FgDirect(output,"holy-mesh-always-depth",width,1080);}
+                    finally {material.SetInt("_DepthTest",depth);}
+                }
             }
             FgMode(source,mesh,ringArray,"mesh");
+            if(isolate){File.WriteAllText(Path.Combine(output,"facing-ground-diagnosis.json"),JsonUtility.ToJson(row,true));yield break;}
             sim.FireZones.Clear();
             var options=new List<KeyValuePair<float,Vector2>>();
             for(float x=27;x<=42;x++)for(float z=-57;z<=-40;z++) {

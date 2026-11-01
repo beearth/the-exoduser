@@ -93,8 +93,10 @@ namespace Exoduser.UnityPort
             result.screenWidth=Screen.width;result.screenHeight=Screen.height;
             if(Screen.width!=1920||Screen.height!=1080)result.failures.Add("actual 1920x1080 window unavailable");
             var sim=Simulation;var p=sim.Player;sim.Config.EnemyAiEnabled=false;sim.Enemies.Clear();sim.FireZones.Clear();sim.SpawnHoles=null;p.Hp=p.MaxHp;p.Iframes=100000;
+            bool holyOnly=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-facing-ground-holy-only")>=0;
             if(NativeRemodel3D.Requested&&Remodel3DReady)
             {
+                if(!holyOnly){
                 p.X=4000;p.Y=5000;lastX=p.X;lastY=p.Y;UpdateViews();
                 var e=sim.SpawnEnemy(p.X+200,p.Y,0,null,false);
                 if(e==null)result.failures.Add("controlled ordinary enemy spawn failed");
@@ -132,7 +134,8 @@ namespace Exoduser.UnityPort
                     if(i==1&&surface.gradient<.035f)result.failures.Add("slope point is too flat");
                     if(i==2)FgWorldRt(output,names[i]);
                 }
-                var holy=points[0];p.X=holy.x*100;p.Y=-holy.y*100;lastX=p.X;lastY=p.Y;
+                }
+                var holy=FgTerrainPoint(false);p.X=holy.x*100;p.Y=-holy.y*100;lastX=p.X;lastY=p.Y;
                 sim.FireZones.Clear();sim.FireZones.Add(new FireZone{Id=7099,Type="holyDome",X=p.X,Y=p.Y,R=175,T=20,MaxT=600,Lv=1});
                 for(int j=0;j<5;j++){renderedTick=-1;UpdateViews();yield return null;}
                 yield return new WaitForEndOfFrame();FgShot(output,"holy-dome-actual-window-1920x1080");

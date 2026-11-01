@@ -523,3 +523,7 @@ Shore는 고정앵글러 주변을 피한 후 z−52~−42에서 다시28u 굽�
 | 경사 재촬영 | 보행 가능 x33,z−48 / x34,z−50 / x32,z−50 / x36,z−50; 지면 기울기 0.05943/0.07107/0.08775/0.19640. 실제 창 1920 4장 중 x33,z−48과 x32,z−50은 나무 몸통 가림 없이 붉은 장판이 지면에 보인다. 정점 높이 최대오차 2.05e−8u. 3840 직접 세계 on/off 중심 ROI 357,200픽셀의 RGB차≥8 픽셀은 6,600/5,836/6,804/5,271. | 기존 가림 미판정 해소; 경사 표본 PASS |
 
 진단 결론: 성역은 메쉬가 아예 그려지지 않는 결함이 아니다. 현행 낮은 source alpha와 원화의 낮은 알파/밝기가 `_Flat` 셰이더에서 곱해지고, 지면으로 눕힌 투영에서는 같은 총 픽셀 기여가 화면상 넓게 퍼져 식별성이 약해진 것으로 해석한다. 원본 웹 밝기 계수 `WebLitHolyDome=.11`과 링 `.03`은 기존 2026-10-28 비교로 정한 값이어서 근거 없는 배율 상향은 적용하지 않았다. 별도 c336 빌드의 동위치 GPU 프레임, 웹 기준과 동일 카메라 비교, 자연 전투/다수 장판/성능은 이 진단의 범위 밖이다. 따라서 전체 장판 시각 판정은 **RETOUCH**로 유지하며, 경사 가림 문제만 해결됐다. 원본과 영수증: `/Users/fordeargamers/exoduser-wt/_out/mac-facing-ground-qa-20261101/gui-diagnostic/` 및 `REPORT_DIAGNOSTIC_KO.md`.
+
+### Mac 성역 단독 원인 분리 QA — 후속 계약
+
+`--unity-facing-ground-qa --unity-facing-ground-diagnose --unity-facing-ground-holy-only`는 기존 절대 출력/저장 sandbox 게이트와 1920×1080 실제 창을 유지하되, 이미 PASS한 방향·경사·목교 표본과 3840 RT를 반복하지 않는다. 성역 x34,z−48만 주입한다. 같은 프레임에 직접 GPU RT `off` 반복, 현행 mesh+링, 동등 sprite+링 외에 mesh 단독, 링 단독, sprite 단독 및 mesh 단독 `_DepthTest=Always`를 추가한다. 깊이 진단 때 재질 값을 일시 변경하고 즉시 원값4로 복구한다. 원본 원화/색/알파/반경/전투와 일반 제품 렌더 경로 변경0. 이 진단으로 링 기여·지형 깊이 가림·평면 투영을 구분한 뒤 수정 근거가 확인된 경우에만 제품 코드를 고친다. `NativeGame.FacingGroundQa.cs`와 `NativeGame.FacingGroundDiagnose.cs`의 QA 분기만 바꾼 첫 단계로서, 실제 Player 수치는 별도 기록한다.
