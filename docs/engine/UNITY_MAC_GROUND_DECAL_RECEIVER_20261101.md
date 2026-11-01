@@ -1,6 +1,6 @@
 # Mac 지면 데칼 receiver 후보 — 2026-11-01 KST
 
-상태: **후보 브랜치 전용, 격리 GPU receiver 평면 fixture PASS**. 공통 `unity/main` 채택이나 맵 전체 완료를 뜻하지 않는다. 맵 제작 가이드 v0.9 전체와 `_MAP_SSOT_INDEX.md`를 선행 확인했다. 지면 수신은 구조물과 흙의 접지 기술 의존성일 뿐, geometry·collision·배치·카메라 설계·R8 아트 수정은 이번 범위가 아니다.
+상태: **후보 브랜치 전용, 평면 fixture 및 실제 A2 세 지점 GPU 수신 PASS; 실제 맵 VISUAL VERDICT RETOUCH**. 공통 `unity/main` 채택이나 맵 전체 완료를 뜻하지 않는다. 맵 제작 가이드 v0.9 전체와 `_MAP_SSOT_INDEX.md`를 선행 확인했다. 지면 수신은 구조물과 흙의 접지 기술 의존성일 뿐, geometry·collision·배치·카메라 설계·R8 아트 수정은 이번 범위가 아니다.
 
 |항목|정확 계약|
 |---|---|
@@ -107,4 +107,62 @@ NEXT PASS: 패스 중 DBuffer keyword/DepthNormals draw 관찰, 실제 맵 지�
 | 통로/경계 | 실제 활성 `A2RootSurface` renderer 중 목교 중심 `(43.2,-71.8)`에 가장 가까운 것의 bounds 중심 | 실제 뿌리 renderer 이름·material/shader/transform |
 | 목교 접지 | 실제 `A2 시작 목교` 중심 `(43.2,-71.8)` | 자식 renderer 전부와 실제 윗면 vertex, actor ground/terrain 높이 |
 
-각 지점은 Core 보행 여부, 지형·배우·목교 윗면 높이, 실제 카메라 pose, receiver transform, 화면 anchor/ROI 안팎 변동 픽셀·최대 채널차를 영수증에 남긴다. projector가 만든 변화는 자연 회복/강타 VFX 증거가 아니다. 실제 1x 경계·발밑·부양·침범 판정과 PASS 여부는 새 Player 결과 후 보충한다. 기존 평면 fixture PASS나 과거 A2 아트 RETOUCH/Impact R4 FAIL을 실제 맵 PASS로 소급하지 않는다.
+각 지점은 Core 보행 여부, 지형·배우·목교 윗면 높이, 실제 카메라 pose, receiver transform, 화면 anchor/ROI 안팎 변동 픽셀·최대 채널차를 영수증에 남긴다. projector가 만든 변화는 자연 회복/강타 VFX 증거가 아니다. 이 checkpoint 시점에 열려 있던 1x 경계·발밑·부양·침범 판정은 아래 새 Player 결과로 보충한다. 기존 평면 fixture PASS나 과거 A2 아트 RETOUCH/Impact R4 FAIL을 실제 맵 PASS로 소급하지 않는다.
+
+## 실제 A2 맵 Player GPU·1x 결과 — 2026-11-01 KST
+
+후보 코드 checkpoint `b0d5eb2d3270106e9cdff5f5e865fd41437fc8e7`의 QA hook 두 파일을 APFS 복제 프로젝트에 byte 일치로 넣고 공식 `PortVerification.Build -settingsQa true -remodel-scenes 1`로 새 ARM64 앱을 만들었다. [빌드 영수증](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-map-20261101/build-receipt.json)은 Unity 6000.6.7f1과 오류0을 기록한다. 별도 측정한 앱 실행파일 SHA-256은 `46bb5f84cd61361ef0ffde663926ab1ef3c803fad27891eed82e5d25ac889b17`이다. 같은 앱의 [M1 영수증](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-map-20261101/m1/m1-check.json)은 23/23 `ok`, 종료코드0. 그 다음 같은 앱에서 `--remodel3d --unity-ground-map-capture --unity-mute`로 실제 A2 필드를 띄웠다. [실제 맵 GPU 영수증](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-map-20261101/map/ground-map-receipt.json)은 Apple M5 Pro/Metal, UniversalRenderer, active DecalRendererFeature, `GetTechnique=DBuffer`, MRT8, HD2D pixel billboard, 지면 청크144·뿌리 renderer79·실제 Lit 목교 renderer와 1920×1080 창을 기록한다. 3840×1080은 같은 Player의 직접 GPU RT이며 물리적 화면 크기가 아니다.
+
+각 해상도·지점마다 projector off-A/off-B/on을 같은 프레임의 동일 카메라와 world 상태에서 직접 RT로 읽었다. `off-A↔off-B`는 반복 드리프트, `off-A↔on`은 수신 효과다. 표의 `밖0`은 정의한 화면 ROI 바깥의 픽셀 수이며, ROI 안에 있는 난간·뿌리 부위가 모두 적절한 수신 대상이라는 뜻은 아니다.
+
+| 지점·실제 receiver | world `(x,y,z)` / Core | 1920 RT 내부 변화 픽셀·최대 채널차 / 반복 변화 | 3840 RT 내부 변화 픽셀·최대 채널차 / 반복 변화 | ROI 밖 | 1x 시각 판정 |
+|---|---|---:|---:|---:|---|
+| 시작부 `HellGroundPBR` 지면 | `(40.2,.291918,-77)`, 보행 가능, 배우 접지Y=.291918 | 16,130·160 / 0 | 15,890·160 / 0 | 양쪽 0 | 흙 표면 수신 확인. 시험용 사각 투영 형태가 선명하므로 자연 VFX 외관 판정 아님 |
+| 통로/경계 `A2_Root_Cluster_Patch`, `A2RootSurface` | `(36.291599,.404789,-73.171349)`, 보행 가능, 지형Y=.240323·배우 접지Y=.404789 | 9,720·176 / 3 | 9,723·176 / 0 | 양쪽 0 | 실제 솟은 뿌리와 경사 끝까지 수신. 경계에 날카로운 청록 쐐기가 보이므로 자연 접지 외관은 RETOUCH |
+| 실제 `A2 시작 목교`, `RF3_Rotten_Wood_Bridge`/URP Lit | `(43.2,.294636,-71.8)`, 보행 가능, 물바닥Y=-.55·배우 접지Y=.291008·목교 윗면Y=.294636 | 16,246·189 / 2 | 15,954·189 / 0 | 양쪽 0 | 판재 발밑 수신과 높이차 .003628u 확인. 1x에서 난간 기둥·옆면에도 청록색이 침범해 **RETOUCH** |
+
+반복 변화 최대 채널차는 1920/3840 순서로 시작 4/4, 뿌리 6/4, 목교 5/4다. 수신 효과의 최대 채널차 160/176/189보다 작으며, 각 지점의 자동 `passed=true`는 해당 ROI 차이에 한정된다. [시작 실창](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-map-20261101/map/start-window-1920-on.png), [뿌리 실창](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-map-20261101/map/passage-root-boundary-window-1920-on.png), [목교 실창](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-map-20261101/map/actual-wood-bridge-window-1920-on.png)은 실제 1920 창·HUD의 별도 프레임 스크린샷이다. [뿌리 1920 1x](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-map-20261101/map/passage-root-boundary-1920-1x.png), [목교 1920 1x](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-map-20261101/map/actual-wood-bridge-1920-1x.png), [목교 3840 1x](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-map-20261101/map/actual-wood-bridge-3840-1x.png)을 원본 픽셀 크기로 비교했다. 배우 발 위치는 수치·화면상 윗면에 가깝지만, 자연 이동·전투 중 관통/부양 검사는 아니다.
+
+빌드·M1·맵 Player 각각 전후 개인 앱 저장 루트/설정 plist 11개 항목(파일4·부재5)의 존재·크기·SHA가 동일했다. 독립 QA sandbox를 사용했으며 맵 Player는 `QA_MEDIA_DRAIN_COMPLETE GROUND_MAP` 뒤 정상 종료코드0, 잔여 게임 Player/Editor0이다. `AudioListener.pause=true`, volume0, listener output sample peak0, Direct Video Player0을 기록했다. OS 물리 출력의 청각 검사는 아니다. 제품 Renderer/맵 mesh·material·transform·Core·충돌·기존 에셋은 수정하지 않았다. 패스 중 `_DBUFFER_MRT3` keyword와 개별 DepthNormals draw call은 현 Player 계측으로 직접 추적하지 않았으므로 `GetTechnique=DBuffer`와 시각 변화에서 추론해 확정하지 않는다.
+
+## MAP PRODUCTION REPORT (§23) — 실제 A2 세 지점
+
+```text
+================= MAP PRODUCTION REPORT =================
+STAGE: CH1/A2 실제 시작 흙·뿌리 경계·시작 목교의 지면 데칼 수신 후보 QA
+MASTER
+- silhouette/regions/main route/side spaces: 기존 A2 유지; 전체 구성 시각 검수 없음
+OUTER MASS
+- LEFT/RIGHT/TOP/SOUTH/major holes: 제작·수정·검수 없음
+LARGE
+- source assets: 기존 HellGroundPBR/A2RootSurface, 기존 RF3 목교, 기존 RM1 QA projector
+- composites/overlap/repeated silhouette: 제작·수정 없음; 세 접지 지점만 1x 확인
+MEDIUM
+- connections/remaining holes: 시작부와 목교 주변 뿌리 경계만 확인; 연결 전체 검수 없음
+GROUND
+- shadow: 실제 세 지점 표면 관찰, 그림자 단독 비교·DepthNormals draw 계측 없음
+- contamination: 정의한 ROI 바깥 off/on 변화0; ROI 안 난간/옆면 투영 침범 관찰
+- structure integration: 시작 흙·솟은 뿌리·실제 목교 판재 수신 확인, 목교 측면과 뿌리 경사 경계 RETOUCH
+PLAYABLE
+- main arenas/travel space/breathing space/threat space/combat readability: Core 보행 가능 세 anchor; 자연 이동·전투 검수 없음
+LANDMARK
+- primary/secondary/tertiary: 기존 랜드마크 미변경·검수 없음
+CAMERA QA
+- START: 실제 카메라 Euler(34,0,0), 세 anchor 중심의 1920 실창·1920/3840 RT 1x 확인
+- EARLY: 시작 통로 뿌리 경계 정지 화면 확인
+- ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT: 순회·검수 없음
+TECH QA
+- route/collision/pageerror/404: 세 anchor Core 보행 가능; 전체 route·collision·API 검수 없음
+- seam: 흙/뿌리 및 목교 주변 1x 확인, 난간/옆면 침범·뿌리 쐐기 RETOUCH
+- loading: 동일 ARM64 앱 M1 23/23 ok, 실제 맵 Player 정상 종료
+- performance: GPU 시간·FPS 계측 없음
+FILES
+- stage-owned: 기존 두 custom shader 후보, QA hook/helper, docs
+- concurrent touched: 없음
+- unrelated touched: 없음
+GIT
+- staged/commit/push: 후보 브랜치 checkpoint b0d5eb2d와 이 보고 commit; common unity/main 미변경
+- deploy: 없음
+VISUAL VERDICT: RETOUCH (실제 세 지점 GPU 수신 PASS; 난간/옆면 침범과 뿌리 경계 보정 필요)
+NEXT PASS: 실제 효과의 projector 범위/receiver 분리 설계, 자연 이동·전투 접지와 카메라 순회, 가능하면 패스 중 DBuffer keyword/DepthNormals 직접 trace. 기존 Impact R4 FAIL 별도 유지.
+```
