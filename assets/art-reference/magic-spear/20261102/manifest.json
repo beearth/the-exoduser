@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "kind": "approved-art-reference-library",
+  "approvedAt": "2026-11-02",
+  "approvalScope": "Three visual designs approved for future magic-spear art production",
+  "approvalText": "다 저장해두고 써라 저런게 더 좋지 이전거는 이상해",
+  "designStatus": "USER_APPROVED_DESIGN_SET",
+  "technicalStatus": "RETOUCH_PENDING",
+  "runtimeApplied": false,
+  "sourceBoard": "approved-design-set.png",
+  "sourceReceipt": "generation.receipt.json",
+  "generationPrompt": "generation-prompt.txt",
+  "rigidityPrompt": "metal-rigidity-prompt.txt",
+  "geometryGuide": "rigid-axis-guide.png",
+  "variants": [
+    {
+      "id": "magic_spear_void_rift",
+      "displayLabel": "공허 균열",
+      "position": "left",
+      "sourceRegion": {
+        "x": 0,
+        "y": 0,
+        "width": 512,
+        "height": 1024
+      },
+      "description": "넓은 어두운 창날과 중심의 공허 균열, 열린 원호"
+    },
+    {
+      "id": "magic_spear_astral",
+      "displayLabel": "성좌",
+      "position": "center",
+      "sourceRegion": {
+        "x": 512,
+        "y": 0,
+        "width": 512,
+        "height": 1024
+      },
+      "description": "긴 수정 창날과 기하학적 성좌 구조"
+    },
+    {
+      "id": "magic_spear_eclipse",
+      "displayLabel": "월식",
+      "position": "right",
+      "sourceRegion": {
+        "x": 1024,
+        "y": 0,
+        "width": 512,
+        "height": 1024
+      },
+      "description": "크기가 다른 초승달 판과 월식 형태의 빛 틈"
+    }
+  ],
+  "usageRules": [
+    "Use this whole board or the identified region as the design identity reference in subsequent image work.",
+    "Three designs are all approved; none is discarded or silently assigned an item tier or skill.",
+    "Old plain circular-disc-on-shaft appearance is superseded and must not be used as current style authority.",
+    "Geometry-only straight-spear guides remain usable for rigid axis alignment; do not confuse them with approved appearance.",
+    "Keep rigid metal axes and approved fixed curves, use the common negative prompt, reject warped output.",
+    "Top tip framing, full assembly alignment, hand grips and final production/runtime preparation remain separate technical work."
+  ],
+  "limitations": [
+    "Variant ids are reference-library keys, not gameplay item/skill ids.",
+    "sourceRegion entries identify columns on the unmodified original board; no independent cropped PNGs or transparent runtime textures were produced.",
+    "Visual approval does not certify the original board's tight upper margins or all geometric checks."
+  ],
+  "sourceSha256": "62da50c0d8eb551051d36f915b79b9daaaa3746b93f6e41fd97885054f1791af",
+  "geometryGuideSha256": "0f33f99af49ada08ff43b36ea294bd08063de411edc618e090985e3a01d49a11"
+}

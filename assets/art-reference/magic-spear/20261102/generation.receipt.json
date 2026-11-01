@@ -1,0 +1,216 @@
+{
+  "date": "2026-11-02",
+  "file": "magic_spear_fantasy_variants_v13.png",
+  "source": "C:\\Users\\심도진\\.codex\\generated_images\\01a194cc-8301-70f1-80f8-a4e5f1090c22\\exec-c928f09b-436b-4acf-b75d-d06038cbeba7.png",
+  "prompt": "Create a PREMIUM ORIGINAL DARK-FANTASY MAGICAL SPEAR DESIGN EXPLORATION: ONE wide 3:2 landscape concept-art plate showing THREE complete distinct magic spears upright, equal height, separate columns, each full spear including pointed butt, generous whitespace above/below and between. No characters or hands. This redesign should feel astonishing and fantastic, sophisticated and authored, not a plain shaft with a circular badge attached and not piles of cheap gold jewelry.\n\nThe supplied image is ONLY a RIGID STRUCTURAL ALIGNMENT GUIDE. Do NOT copy its plain disc-and-stick design, flat diagram look or simple head shape. For ALL THREE designs, one perfectly ruler-straight rigid shaft centerline runs through the piercing tip, magical head's center, entire staff length, grip and pointed butt. Use that one axis from the reference, then freely REDESIGN head silhouette and arcane mechanism. The whole metal structure must feel hard, intentionally constructed, and physically crisp. Shafts have parallel edges and consistent thickness except designed fittings; no curves, no melted metal. All three near-frontal, no foreshortening or waving/motion, no action shot. Every spear is clearly a PIERCING POLEARM, not a wizard wand, trident or axe. The heads are dominant bold designed shapes, not tiny finials. Keep the original class identity of an integrated concentric arcane mechanism below or around the blade, but reinterpret it boldly.\n\nLEFT — VOID IRIS: a long broad OBSIDIAN-DARK METAL SPEAR BLADE, its clean faceted rigid spear silhouette split by a narrow glowing WHITE-VIOLET spatial fissure down the central spine. Below the blade root, two incomplete concentric rigid black-steel annuli unfold like a restrained mechanical iris around ONE aligned dark core/negative-space aperture. Large purposeful openings and thin silver edges, inward-directed rigid tapered plates, no little gems or spokes everywhere. A thin crisp violet geometric sigil suspended inside the aperture creates a sense of impossible depth, like a narrow view into a dark other-space. Blade point stays straight on shaft axis. Shape should read as an occult weapon that opens a controlled void, not a big glowing round clock. Shaft is dark brushed steel with a few broad recessed rune bands, long quiet grip section and a simple long butt spike. Localized subtle violet light, no smoke cloud.\n\nCENTER — ASTRAL NEEDLE: a very long elegant SILVER-EDGE/BLACK-STEEL NEEDLE SPEARHEAD that becomes a slender translucent pale-violet crystal near its tip, all one centered axis. Its head base has two clean concentric arc segments framed by a rigid elongated pointed-diamond cradle, creating a tall narrow instrument-like silhouette distinct from the left. Inside the open negative-space head structure are precisely etched geometric constellation lines and a thin floating violet optical plane, NOT random glitter or decorative dots. Angular black-metal structural shoulders and crisp silver chamfers suggest an ancient arcane measuring instrument capable of pinning a star. Elegant controlled length, a refined dark shaft with one or two asymmetric rigid sleeve fittings attached concentrically (not off-axis), long purposeful grip and a faceted pointed butt. Fantasy arcane relic, not futuristic LED tech or firearm. Very pale lavender light confined to the blade and geometric linework.\n\nRIGHT — ECLIPSE SPEAR: a single centered LONG rigid black-crystal diamond spear blade aligned to the straight shaft, flanked at its lower root by TWO unequal fixed CRESCENT PLATES that together form the negative silhouette of an eclipse around an aligned concentric inner ring. One broad sculptural dark crescent and one thinner bright silver crescent, clearly rigid fixed curves, not bending/reaching tentacles. A narrow ivory-violet corona runs in the gap between the crescent plates and inner annulus, like an eclipse caught in metal. Bold simple iconic silhouette, powerful clean broad planes and a few engraved deep plum rune cuts; no gold filigree, no all-over spikes. The head should feel like an impossible moon fragment made into a precise piercing weapon. Substantial dark steel shaft with tasteful faceted transition and a sharp simple counterweight butt, coaxial throughout.\n\nArt direction: high-end hand-painted PBR-aware fantasy production concept, beautifully controlled hard metal and crystalline optics, visible material depth, not flat vector, not plastic toy. THREE DIFFERENT authored head silhouettes: broad split-void blade/iris, tall narrow astral diamond, bold eclipse crescents. Magic adds spatial depth and a few clean light traces, not noise, particles or fog hiding geometry. Color family charcoal, black silver, pale violet and small plum accents; substantial dark material still visible under magic. No excessive gold, tiny ornamental chains, gems everywhere, generic MMO gear catalog, rainbow glow, sparkles, speckle/grain, captions, logos, watermark. Mid-light neutral grey studio backdrop so dark metal and pale energy remain readable. Props are same full length for useful comparison; at least 7% blank margin around every tip.\n\nRIGID METAL WEAPON GEOMETRY — HARD CONSTRAINT:\nAll metal parts are rigid solids. Preserve the approved straight axes, fixed designed curves, cross-sections and assembly. A straight shaft/blade spine/receiver-barrel axis must remain ruler-straight from end to end. The two silhouette edges of a cylindrical shaft remain parallel except for an explicitly designed taper. The weapon tip, head center, shaft, grip segments and pommel/butt must be collinear whenever the design specifies one axis. Continue the SAME centerline and tangent behind every occluding hand; hands wrap around the existing rigid object and do not bend, pinch, offset or reshape it. Head, rings, collars and end fittings attach concentrically on that axis. Circular parts remain regular circles or coherent perspective ellipses. Use one consistent perspective for the whole object. Preserve intentional fixed bow/saber curves exactly; do not invent elastic deformation. If the pose conflicts with rigid geometry, adjust the hands/arms/pose instead of deforming the weapon. Keep every metal edge crisp and structurally continuous. Full weapon endpoints inside frame.\n\nNEGATIVE: rubbery metal, flexible shaft, bending at grips, bowed or banana-shaped straight components, S-curves, kinks, melted or sagging steel, wavy barrel/blade edges, bulging or pinched tubing, offset sections, misaligned tip and shaft, off-center concentric rings, inconsistent perspective, disconnected fittings, motion-warped metal.",
+  "references": [
+    {
+      "file": "rigid_spear_vertical_20261102.png",
+      "role": "rigid centerline only; not head design or rendering reference"
+    }
+  ],
+  "tool": "built-in image_gen",
+  "internal_model_id": "not exposed",
+  "cost": "not exposed",
+  "status": "USER_APPROVED_DESIGN_SET / TECHNICAL_RETOUCH_PENDING",
+  "variants": [
+    {
+      "position": "left",
+      "name": "공허 균열",
+      "observed": "Broad split dark spearblade, violet fissure and open annuli around an aperture"
+    },
+    {
+      "position": "center",
+      "name": "성좌",
+      "observed": "Long crystal needle, pointed diamond cradle and geometric celestial linework"
+    },
+    {
+      "position": "right",
+      "name": "월식",
+      "observed": "Strong unequal crescent plates, centered spear point and eclipse gap"
+    }
+  ],
+  "shaft_sampling": {
+    "size": [
+      1536,
+      1024
+    ],
+    "results": [
+      {
+        "column": 384,
+        "samples": [
+          {
+            "y": 480,
+            "left": 376,
+            "right": 399,
+            "center": 387.5
+          },
+          {
+            "y": 520,
+            "left": 376,
+            "right": 399,
+            "center": 387.5
+          },
+          {
+            "y": 560,
+            "left": 376,
+            "right": 399,
+            "center": 387.5
+          },
+          {
+            "y": 600,
+            "left": 376,
+            "right": 399,
+            "center": 387.5
+          },
+          {
+            "y": 660,
+            "left": 375,
+            "right": 399,
+            "center": 387
+          },
+          {
+            "y": 700,
+            "left": 375,
+            "right": 399,
+            "center": 387
+          },
+          {
+            "y": 740,
+            "left": 375,
+            "right": 399,
+            "center": 387
+          },
+          {
+            "y": 800,
+            "left": 375,
+            "right": 399,
+            "center": 387
+          }
+        ],
+        "maximum_center_residual_px": 0.1916236374067921
+      },
+      {
+        "column": 768,
+        "samples": [
+          {
+            "y": 480,
+            "left": 756,
+            "right": 781,
+            "center": 768.5
+          },
+          {
+            "y": 520,
+            "left": 757,
+            "right": 780,
+            "center": 768.5
+          },
+          {
+            "y": 560,
+            "left": 757,
+            "right": 780,
+            "center": 768.5
+          },
+          {
+            "y": 600,
+            "left": 757,
+            "right": 780,
+            "center": 768.5
+          },
+          {
+            "y": 660,
+            "left": 757,
+            "right": 780,
+            "center": 768.5
+          },
+          {
+            "y": 700,
+            "left": 757,
+            "right": 780,
+            "center": 768.5
+          },
+          {
+            "y": 740,
+            "left": 757,
+            "right": 780,
+            "center": 768.5
+          },
+          {
+            "y": 800,
+            "left": 754,
+            "right": 782,
+            "center": 768
+          }
+        ],
+        "maximum_center_residual_px": 0.2765347102696296
+      },
+      {
+        "column": 1152,
+        "samples": [
+          {
+            "y": 480,
+            "left": 1140,
+            "right": 1163,
+            "center": 1151.5
+          },
+          {
+            "y": 520,
+            "left": 1140,
+            "right": 1163,
+            "center": 1151.5
+          },
+          {
+            "y": 560,
+            "left": 1140,
+            "right": 1163,
+            "center": 1151.5
+          },
+          {
+            "y": 600,
+            "left": 1140,
+            "right": 1163,
+            "center": 1151.5
+          },
+          {
+            "y": 660,
+            "left": 1140,
+            "right": 1163,
+            "center": 1151.5
+          },
+          {
+            "y": 700,
+            "left": 1140,
+            "right": 1163,
+            "center": 1151.5
+          },
+          {
+            "y": 740,
+            "left": 1140,
+            "right": 1163,
+            "center": 1151.5
+          },
+          {
+            "y": 800,
+            "left": 1137,
+            "right": 1166,
+            "center": 1151.5
+          }
+        ],
+        "maximum_center_residual_px": 0
+      }
+    ]
+  },
+  "limits": "Three visual designs are user-approved for future art use; labels are reference keys, not gameplay ids. Original upper tip whitespace and full geometric/hand/3D/runtime checks remain pending. No runtime integration.",
+  "sha256": "62da50c0d8eb551051d36f915b79b9daaaa3746b93f6e41fd97885054f1791af",
+  "visualApproval": {
+    "date": "2026-11-02",
+    "status": "USER_APPROVED_DESIGN_SET",
+    "scope": "Three visual designs approved for future magic-spear art production",
+    "userText": "다 저장해두고 써라 저런게 더 좋지 이전거는 이상해",
+    "variants": [
+      "magic_spear_void_rift",
+      "magic_spear_astral",
+      "magic_spear_eclipse"
+    ]
+  }
+}
