@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Video;
 using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort
 {
@@ -36,6 +37,9 @@ namespace Exoduser.UnityPort
             public int failures;
             public string scope;
             public string[] checks;
+            public bool listenerPaused;
+            public float listenerVolume,outputPeak;
+            public int directVideoPlayers;
         }
         void Check(bool ok,string name)
         {
@@ -152,9 +156,17 @@ namespace Exoduser.UnityPort
             }
             Check(lobby.StartupCaptureState.Page==FrontendEntryPage.Curtain,"안내 4단계 완료 후 실제 커튼 전환");
             lobby.CloseStartupCaptureMedia();
+            var audio=new float[1024];AudioListener.GetOutputData(audio,0);
+            float outputPeak=0;foreach(float value in audio)outputPeak=Mathf.Max(outputPeak,Mathf.Abs(value));
+            int directVideoPlayers=0;
+            foreach(var video in Resources.FindObjectsOfTypeAll<VideoPlayer>())
+                if(video!=null&&video.audioOutputMode==VideoAudioOutputMode.Direct)directVideoPlayers++;
+            Check(AudioListener.pause&&AudioListener.volume==0&&outputPeak==0&&directVideoPlayers==0,
+                "격리 GUI 무음 Listener pause/volume/output peak 및 Direct VideoPlayer 0");
             File.WriteAllText(Path.Combine(output,"화면검수.json"),JsonUtility.ToJson(new Receipt
             {
-                passed=failures==0,failures=failures,scope="실제 Player 렌더·API/격리 메모리 슬롯. OS 입력·수동 플레이 검증과 구분.",checks=checks.ToArray()
+                passed=failures==0,failures=failures,scope="실제 Player 렌더·API/격리 메모리 슬롯. OS 입력·수동 플레이 검증과 구분.",checks=checks.ToArray(),
+                listenerPaused=AudioListener.pause,listenerVolume=AudioListener.volume,outputPeak=outputPeak,directVideoPlayers=directVideoPlayers
             },true));
             // 기존 설정 저장 QA와 같은 1초 배출: 지연 Destroy를 엔진 종료 전에 완료한다.
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();yield return new WaitForSecondsRealtime(1);

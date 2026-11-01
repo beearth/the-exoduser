@@ -2,7 +2,7 @@
 
 사용자가 `스크린샷 2026-11-01 185307.png`의 울트라와이드 버전 제작을 현재 Codex에 직접 지정했다. 실행 중인 PC 패키지는 `I:/EXODUSER-Storage/unity-builds/hd2d-main/8dbdf205a-stage1-r5/EXODUSER-Unity.exe`이며, 새 소스가 그 실행본에 적용됐다고 간주하지 않는다.
 
-**현재 상태: 소스 후보 / NOT_READY.** R5 `e7c75293ba35379eb6d15aeb51051e9fb1f47fcd`에서 타이틀 범위만 후속 제작했다. Unity 셰이더 컴파일·새 Player 빌드·같은 빌드 M1·실제 화면·공통 반영·Desktop 전달은 아직 완료되지 않았다. 사용자가 열어 둔 게임은 보존하며 종료 허가를 요청한 상태다.
+**현재 상태: 소스 후보 / NOT_READY.** R5 `e7c75293ba35379eb6d15aeb51051e9fb1f47fcd`에서 타이틀 범위를 후속 제작했다. Unity 셰이더 컴파일·새 Player 빌드·같은 빌드 M1·실제 화면·공통 반영·Desktop 전달은 아직 완료되지 않았다. 사용자 일반 게임은 현재 없고 다른 담당자의 Desktop 검수가 진행 중이므로, 기존 Owner `unity-ui-ultrawide`로 공식 FIFO 뒤에 등록했다. 이전 게임 종료 허가 대기를 현재 장애로 재사용하지 않는다.
 
 ## 현행 타이틀 계약
 
@@ -53,3 +53,17 @@
 | 전달 | 사용자 실행창 종료 허가·도타부재·공식FIFO·메모리·무음·격리세이브 확인 후 실행. 이후 최신 unity/main 정상통합/실행 검수·지정 통합자 Desktop·Mac 수신은 각 별도. 이번 소스 체크포인트만으로 배포완료/시각PASS를 선언하지 않음 |
 
 원본 보존·소유 범위·자산·독립 컴파일·조회 영수증: `I:/EXODUSER-Storage/demo-art/unity-ui/ultrawide/takeover-20261101/title-A/`. 외부 생성/결제/Steam 배포/사용자 세이브 변경0.
+
+## 최신 공통 정상 병합 준비 — 2026-11-01
+
+| 항목 | 현재 결합 계약과 검수 |
+|---|---|
+| 부모 | 타이틀 후보3c543372c와 승인 공통c3362d2df를 두 부모로 정상 병합. 공용HEAD38edf98a·공용INDEX0·타인 예약/프로세스/작업본 보존 |
+| 충돌6파일 | NativeGame.StageFlow/NativeGame/NativeLoadingSelection/NativeLobby.TitleMenu/NativeUiSafeArea/NativeUiViewport. R5의 실제 화면 가장자리·중앙 변환·ForcedTip과 A 전용 렌더를 유지하고 공통의 최신 로딩/로고/독립Mac 캡처를 함께 보존 |
+| 팁 정의 | 공통이 StageFlow 끝에 추가한 같은 NativeLoadingTips 중복 정의만 제거. 기존 NativeLoadingSelection에 한 번만 유지. KO/EN4종·실제 바인딩·미지정키 fallback·FontPixels 수치는 동일 |
+| 로딩 합성 | 전체 HUD 뒤 최종 전환로딩을 그리는 공통 순서 유지. FillScreen과 NativeLoadingArtwork.Draw는 원래 GUI.enabled를 저장하고 페인트 중true, finally에 원복. 로딩 audit에 rendered=실제팁을 추가해 공통 독립 캡처가 원문 전체를 대조 가능 |
+| API 연결 | 공통의 Draw(index,title,detail,progress,alpha,string tip) 6인자 호출은 기존 R5 Draw(index,title,detail,progress,alpha,false,tip)로 위임. 기존 gate·ForcedTip·원화 선택·시계/입력 계약 보존 |
+| 반입 범위 | common-merge-before에 덮기 전 정확 byte를 보관하고 후보와 동일한 경로만 반영. 공통 NativeGame.LoadingTipCapture와 관련 문서는 그대로 인수. 신규 셰이더/원화 외의 새 생성이나 다른 게임시스템 변경0 |
+| 독립 검증 | 결합 Runtime206소스/errors0·경고28, 실제 C# 안전영역/키/로딩702검사와 A 연결 계약 통과. 앞205소스 결과는 이전 후보 이력. 새 정식빌드·Player/M1·실제1x를 대체하지 않음 |
+
+이 병합은 타이틀 작업 브랜치의 소스 결합이며 `unity/main` 게시·다른 PC/Mac 반영·실행 중인 Desktop의 최신화가 아니다. 실제 FIFO·잠금·도타 부재·메모리·무음·격리세이브 조건을 새 실행 직전에 재확인한다.

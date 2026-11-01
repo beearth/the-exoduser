@@ -14,8 +14,6 @@ namespace Exoduser.UnityPort
         readonly List<WorldText> worldTexts = new List<WorldText>();
         NativeArenaView arenaView; bool arenaViewWasOpen;
         public NativeBossBar.Input LastBossBarInput; public bool BossBarShown;
-        Font stageFontNanum, stageFontCinzel;
-        Texture2D stageLoadSigil;
         bool English { get { return lobby != null && lobby.Language != "ko"; } }
 
         void WorldTextAdd(float x, float y, string ko, string en, Color color, float seconds = 1.6f)
