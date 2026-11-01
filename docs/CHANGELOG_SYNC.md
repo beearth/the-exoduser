@@ -55725,3 +55725,21 @@ stage=0은 실제200×200 본편으로 정정하고 과거 원화 판은 명시�
 - 마감 검수:22유형×1920/2560/3840의 약10초66편(9.96~10.00초),0·4·8초 동작·전후·1x 및 기존63원화 경계 확인. 스킬 창에 가린 초기 클리어/종료 표본은 native closeAllPanels·_showClearResult·버튼hit-test 후 교체하고 이력 보존. 자체 시각 PASS는 이번 원본 모션/경계 범위이며 컷신 시간 유지·정지 월드 fixture와 자연 플레이를 구분한다. SSOT 최종 검수 표와 인계 design-director.md, REPORT/Git 영수증을 동기화한다.
 
 - 2026-11-02: 웹 직접 참조 web3d/bridge-map.js 정적 선택 누락을 한정 교정한 후보. 회귀 먼저 실패 재현→웹 배포/파생본/스테이징 30검사 통과, 실제 추가 1파일 6479B·기존 제외0. 새 후보 산출·브라우저 재검수/main/공개 배포는 아직 별도. docs/13출시·마케팅/WEB_DEPLOYMENT_REPAIR_20261002.md 및 docs/engine/WEB_UNITY_PARITY_20261101.md의 같은 날짜 절 참조.
+
+
+## 2026-11-02 상대 모듈 의존성 선택 교정 후보 — 업로드 예산 HOLD
+
+실제 fa519424 정적 패키지에서 필수 브리지 URL/실행과 Canvas 대표 걷기는 통과했지만, opt-in 3D 경로의 `import('./web3d/presentation.mjs?v=20261031-main2')`가 HTTP404였다. 원인은 루트 리터럴만 읽던 선택기가 `./` 문서 상대 경로와 모듈별 `./`, `../` import를 해석하지 못한 것이다. 게임 분기·Canvas 기본 경로·3D 활성화 조건·원본 미디어는 변경하지 않는다.
+
+| 항목 | 현재 계약·검수 범위 |
+|---|---|
+| 문서 상대 경로 | 기존 런타임 assets/img 등 허용 루트의 `./` 접두 경로도 선택. `./web3d/native-ground-effects.js` 같은 실제 script URL 포함 |
+| 모듈 의존성 | 리터럴 dynamic import, 정적 import/부작용 import, export-from의 상대 경로를 **각 importing 파일 디렉터리 기준** POSIX 정규화. query/fragment 제거·NFC 대조·실제 tracked 정확 파일만 포함. 순환 참조는 기존 scanned 고정점으로 종료 |
+| 선택 경계 | bare package·외부 URL·저장소 밖 상대 경로를 파일 선택으로 해석하지 않음. 미참조 같은 폴더 파일과 제작 원본 제외 유지. 전체 web3d/engine 폴더를 일괄 포함하지 않음 |
+| RED/GREEN | 기존 코드에서 신규 2개 회귀가 실제 누락으로 실패(13 PASS/2 FAIL). 수정 후 웹 배포·파생본·staging 32/32 PASS. transitive 상대 모듈·side-effect·export-from·순환/정확선택·범위 밖 제외를 검증 |
+| 실제 선택 | 3,096 → 3,242개, 추가 146개/59,335,835B·제외 0개. 원본 선택 4,631,141,814 → 4,690,477,649B. 추가 파일은 JSON/PNG/WebP/GLB 및 실제 모듈과 그 전이 자원이며 원문·목록은 selection-delta.json |
+| 예산 HOLD | 이전 fa 최종 static 3,947,143,647B에 새 원본 추가량을 더한 **예상** static 4,006,479,482B로 4,000,000,000B 한도를 6,479,482B 초과. 새 실제 패키지 완성 수치가 아님. sidecar/alias 및 파생 계획은 새 실제 산출로 재확인. 상한 완화·필수 자원 임의 삭제·원본 재인코딩 없음 |
+| 다음 검수 | 기승인 원본 보존 웹 전용 파생 방식으로 새 PNG의 무손실 WebP RGBA/ICC 동등성을 Mac에서 계측. 충분한 절감 증명 및 정확 manifest 연결 후에만 새 공식 artifact/실브라우저 모듈 의존성·대표 Canvas를 검사 |
+| 별도 실패 | 로비 `_slotScrollIdx`는 fa 단독 실행에서는 미재현·이전 70c 오류 3건은 유지. 선택형 3D 전체 품질·게임 API·자연 전투·Windows 배송·공개 배포 PASS 아님 |
+
+원문: `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-module-closure-20261102/`의 red.log, green.log, selection-delta.json, docs-search-before.txt. 코드1·회귀1·관련 docs3만 같은 private 후보에서 정상 commit/push하며 main·Unity common·사용자 서버/저장·외부 guard baseline은 보존한다.

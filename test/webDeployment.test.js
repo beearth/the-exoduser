@@ -193,3 +193,27 @@ test('web selection includes a directly referenced bridge script and its live as
   assert.ok(selected.includes('img/live-bridge.png'),'a selected script must close over its live asset');
   assert.ok(!selected.includes('web3d/unused.js'),'an unrelated bridge script must remain excluded');
 });
+
+
+test('web selection follows document-relative dynamic modules and script URLs',()=>{
+  const paths=['game.html','web3d/presentation.mjs','web3d/native-ground-effects.js','web3d/unused.mjs'];
+  const source={'game.html':`const api=await import('./web3d/presentation.mjs?v=main2');script.src='./web3d/native-ground-effects.js?v=main2';`};
+  const selected=manifest.selectWebRuntimeFiles(paths,['game.html'],path=>source[path]||'');
+  assert.ok(selected.includes('web3d/presentation.mjs'),'the literal dynamic import must ship');
+  assert.ok(selected.includes('web3d/native-ground-effects.js'),'the document-relative script must ship');
+  assert.ok(!selected.includes('web3d/unused.mjs'));
+});
+
+test('web selection closes exact relative module imports from each importing directory',()=>{
+  const paths=['game.html','web3d/main.mjs','web3d/parts/frame.mjs','web3d/core.mjs','web3d/side.mjs','web3d/lazy.mjs','web3d/unused.mjs','unrelated.js'];
+  const source={
+    'game.html':`import('./web3d/main.mjs?v=1')`,
+    'web3d/main.mjs':`import {frame} from './parts/frame.mjs?rev=2'; import './side.mjs';`,
+    'web3d/parts/frame.mjs':`export {core} from '../core.mjs#current'; const lazy=import('../lazy.mjs');`,
+    'web3d/core.mjs':`import './main.mjs'; import 'three'; import 'https://example.com/unrelated.js'; import '../../unrelated.js';`
+  };
+  const selected=manifest.selectWebRuntimeFiles(paths,['game.html'],path=>source[path]||'');
+  for(const path of ['web3d/main.mjs','web3d/parts/frame.mjs','web3d/core.mjs','web3d/side.mjs','web3d/lazy.mjs'])assert.ok(selected.includes(path),path);
+  assert.ok(!selected.includes('web3d/unused.mjs'),'same-directory files are not implicit module dependencies');
+  assert.ok(!selected.includes('unrelated.js'),'outside-root, remote and bare specifiers must not select files');
+});

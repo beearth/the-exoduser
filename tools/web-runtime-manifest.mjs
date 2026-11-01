@@ -1,3 +1,5 @@
+import {posix} from 'node:path';
+
 // The playable CH1 map uses its chunks/layout, not the large authoring master.
 export function isMapAuthoringSource(path) {
   const normalized=path.replaceAll('\\','/');
@@ -35,9 +37,15 @@ export function selectWebRuntimeFiles(tracked,entryFiles,readSource) {
     for(const path of selected) {
       if(scanned.has(path)||! /\.(html|js|css|mjs)$/.test(path))continue;
       scanned.add(path);const source=readSource(path);
-      for(const match of source.matchAll(/["'`]((?:assets|img|sprites|bgm|sfx|video|output|web3d)\/[^"'`\r\n]*)["'`]/g)) {
+      for(const match of source.matchAll(/["'`](?:\.\/)?((?:assets|img|sprites|bgm|sfx|video|output|web3d)\/[^"'`\r\n]*)["'`]/g)) {
         const ref=match[1].split(/[?#]/)[0].split('${')[0].normalize('NFC');
         if(ref.split('/')[1]||available.has(ref))references.add(ref);
+      }
+      // Module specifiers resolve against their importer, never as directory prefixes.
+      for(const match of source.matchAll(/\b(?:import\s*\(\s*|(?:import|export)\s+(?:[^"'();]*?\bfrom\s*)?)["'](\.{1,2}\/[^"'\r\n]*)["']/g)) {
+        const specifier=match[1].split(/[?#]/)[0];
+        const ref=posix.normalize(posix.join(posix.dirname(path),specifier)).normalize('NFC');
+        if(!ref.startsWith('../')&&available.has(ref))references.add(ref);
       }
       for(const match of source.matchAll(/url\(\s*([^"'\s][^)]*)\)/g)) {
         const ref=match[1].split(/[?#]/)[0].trim().normalize('NFC');
