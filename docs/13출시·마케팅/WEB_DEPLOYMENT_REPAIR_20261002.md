@@ -132,3 +132,10 @@ URL와 MIME 지정은 [Vercel Build Output API 공식 configuration](https://ver
 | 공개 상태 | 배포 전 두 도메인 HTTP402 DEPLOYMENT_DISABLED | 원인 계정/플랜 확정 없음·요금/보안 변경 없음 |
 
 검수 산출: Mac `_out/web-runtime-qa-20261101/REPORT.md`와 같은 폴더의 HTTP·브라우저·로딩 검수 영수증 및 캡처. root 근거는 `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-real-artifact-root-audit.json`/`web-derived-real-inputs-root-audit.json`. 최신 승인 지시에 따라 정상 main 반영과 기존 GitHub Actions 배포를 이어가며 공개 URL·실제 로고 바이트 확인 전 배포 완료로 표시하지 않는다.
+
+
+### 공개 배포 실행 #1404 — 2026-11-01 19:34 KST
+
+`082521de3955726df006d22ad284e57b103cebe1` 정상 main push 뒤 기존 GitHub Actions [#1404](https://github.com/beearth/the-exoduser/actions/runs/41297655242)가 실제 실행됐다. 원격 Vercel build·Unicode 경로 준비·파일별/전체 업로드 검사는 모두 성공했고 Linux 산출도 3,088파일 / 3,945,183,602B로 Windows·Mac 검수와 일치했다. 마지막 `Deploy to Vercel` 단계는 2026-11-01T10:34:06Z에 **팀 미결제 잔액으로 계정 재활성화가 필요하다**는 CLI 원문으로 exit1 거절됐다. 공개 서비스 최신화 완료가 아니다.
+
+Vercel 계정 관리자의 결제 문제 해소가 선행한다. 에이전트는 결제·요금제·카드·보안 설정을 변경하지 않았다. 이 외부 조건이 바뀌기 전 같은 배포를 무한 재시도하지 않는다. 원문 로그/영수증: root diagnostics `web-ci-1404-job.log`, `web-ci-1404-job-receipt.json`. PC Unity Desktop 갱신은 별도 기존 owner의 c336 frozen 입력·Win64 build·same-app 검수·바로가기 readback 단위로 진행 중이다.
