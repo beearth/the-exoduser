@@ -57356,3 +57356,5 @@ Mac 원본4장 몬스터16종 Settings QA: 전체 RGBA 허용 마스크 밖 변�
 Mac 원본4장 몬스터16종 공통·배송: 실기동 검수후 개인/`unity/main` fd6caa227a 비강제 FF/readback. 같은3532 입력 공식ARM64 일반 build errors0, QA/일반 DLL SHA 동일, 정규화·서명·기존앱3SHA CAS/원본보존 뒤 새 EXODUSER.app 설치 검증. 일반 저장11 불변·일반앱실행0. 같은 소스 Win64 x64 공식 build errors0, 211파일 manifest·212항목 고유 ZIP 2,123,995,383B SHA `da22b19b…`, 압축 무결성 PASS. PC 실행0, 웹 main은 9개 img 경로 별도 동기화 후보. [상세](8.0몬스터디자인/몬스터_스킨_렌더링_파이프라인.md#원본-네-프레임-16종-공통-반영mac-설치windows-보관).
 
 2026-11-02 Mac 사슴 보스 남서 Player QA 준비: 원본 후보6d5e084의 복구 PNG·Unity mirror·원본6·기존7방향/메타 불변·등록 walk 유효1,236/빈12를 독립 검증했다. 전용 플래그 `--unity-stag-southwest-qa`는 skin22/남서dir3의 0→1→2→3→0 실제 GUI5장, 사슴 정지/반전2장과 기존 방향7장을 수집한다. 새 Player/Metal/시각·일반 제품 전달은 후속 검수 전이므로 PASS로 기록하지 않는다. [수치·범위](8.0몬스터디자인/몬스터_스킨_렌더링_파이프라인.md#2026-11-02-사슴-남서-mac-player-전용-qa-준비).
+
+사슴 남서 첫 GUI QA 실행 경계: `--remodel3d` 누락으로 3D ready 대기 실패, 정지 중 숨겨진 walk의 이전 좌표를 과검사해 별도 assertion 실패. 실제 남서 0→1→2→3→0/skin22/dir3/rect는 5/5 관측됐으나 이 실행은 `passed=false`, exit3이므로 시각 PASS가 아니다. 실행 플래그를 명시하고 정지에서는 walk 비활성만 요구하도록 QA 조건을 수정해 새 공식앱에서 재검수한다.

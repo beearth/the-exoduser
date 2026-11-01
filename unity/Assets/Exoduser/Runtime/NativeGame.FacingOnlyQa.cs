@@ -163,7 +163,7 @@ namespace Exoduser.UnityPort
                             enemyX=enemy.X,enemyY=enemy.Y,playerX=p.X,playerY=p.Y,coreFacing=enemy.Facing,webFacing=enemy.Web!=null?enemy.Web.facing:double.NaN};
                         result.frames.Add(row);
                         if(dir!=expectedDir||row.skin!=stagSkin||row.walkFrame!=frame||row.moving!=walking||!row.bodyEnabled||row.walkEnabled!=walking||
-                            !row.bodyCellValid||(walking&&!row.walkCellValid)||!row.samePosition||!row.sameScale||row.walkOrder!=row.bodyOrder+1)
+                            !row.bodyCellValid||(walking&&!row.walkCellValid)||(walking&&!row.samePosition)||!row.sameScale||row.walkOrder!=row.bodyOrder+1)
                             result.failures.Add(name+" stag south-west/renderer contract");
                     }
                 }
