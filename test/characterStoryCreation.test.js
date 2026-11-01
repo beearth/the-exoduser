@@ -19,12 +19,12 @@ function creationContext({offline=true,fallback=false,rejected=false}={}){
     $:id=>{if(!nodes.has(id))nodes.set(id,{value:id==='charName'?'테스트전사':'',classList:{add(){},remove(){}},focus(){},style:{}});return nodes.get(id);},
     _TL:s=>s,setStatus(){},_goLobby(){},loadLocalCharacters:async()=>{},loadCharacters:async()=>{},
     _afterCharacterCreated:async(...a)=>calls.push(a),
-    localStorage:{getItem:k=>ls.get(k)||null,setItem:(k,v)=>ls.set(k,v)},
+    localStorage:{get length(){return ls.size;},key:i=>Array.from(ls.keys())[i]??null,getItem:k=>ls.get(k)||null,setItem:(k,v)=>ls.set(k,v)},
     fetch:async url=>{if(fallback)throw Error('offline');return {ok:!url.startsWith('/api/load'),json:async()=>({ok:!rejected})};},
     sb:{from:()=>({insert:async()=>({error:rejected?{code:'23505'}:null})})}
   });
   const lobby=readFileSync(new URL('../index.html',import.meta.url),'utf8');
-  vm.runInContext(lobby.slice(lobby.indexOf('const CHAR_VISUALS=['),lobby.indexOf('let _pendingVisualIdx=0;'))+'\n'+declaration('index.html','_showCreateFailure')+'\n'+declaration('index.html','doCreateChar')+'\n'+declaration('index.html','_enterOffline'),ctx);
+  vm.runInContext(lobby.slice(lobby.indexOf('const _DEMO_SLOT_PREFIX='),lobby.indexOf('async function loadLocalCharacters(){'))+'\n'+lobby.slice(lobby.indexOf('const CHAR_VISUALS=['),lobby.indexOf('let _pendingVisualIdx=0;'))+'\n'+declaration('index.html','_showCreateFailure')+'\n'+declaration('index.html','doCreateChar')+'\n'+declaration('index.html','_enterOffline'),ctx);
   return {ctx,calls,nodes};
 }
 for(const mode of [{offline:true},{offline:true,fallback:true},{offline:false}]){
@@ -111,9 +111,10 @@ test('pending online creation cannot submit a second request',async()=>{
   assert.equal(writes,1);finish({error:null});await Promise.all([first,second]);assert.equal(calls.length,1);
 });
 
-for(const path of ['button','direct'])for(const failure of ['quota','full','duplicate'])test('offline retry UI survives '+path+' '+failure,async()=>{
+for(const path of ['button','direct'])for(const failure of ['quota','duplicate'])test('offline retry UI survives '+path+' '+failure,async()=>{
   const {ctx,calls,nodes}=creationContext({offline:true,fallback:true});let shown=false,focused=false,writes=0;
   ctx.$('createModal').classList.add=()=>{shown=true};ctx.$('charName').focus=()=>{focused=true};
+  Object.defineProperty(ctx.localStorage,'length',{get:()=>failure==='duplicate'?1:0});ctx.localStorage.key=i=>'hellsave_demo_'+i;
   ctx.localStorage.getItem=key=>failure==='quota'?null:failure==='duplicate'?(key.endsWith('0')?JSON.stringify({name:'테스트전사'}):null):JSON.stringify({name:'기존'+key});
   ctx.localStorage.setItem=()=>{writes++;if(failure==='quota')throw Error('quota exceeded')};
   if(path==='button')ctx._enterOffline();

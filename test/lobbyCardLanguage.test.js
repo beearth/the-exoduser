@@ -60,15 +60,14 @@ for(const [mode,separator] of [['local',' · '],['online',' | ']])test(mode+' ch
  s.change('ko');assert.equal(card.leaves['.char-cls'].textContent,'궁수');assert.equal(card.leaves['.char-del'].title,'삭제');
 });
 test('available creation card translates its text and button description together',()=>{
- const s=setup(),card=s.card({info:false});s.ctx._addLobbyCardControl(card,()=>s.ctx._lobbyNewCardLabel(card,true,5),'new');
+ const s=setup(),card=s.card({info:false});s.ctx._addLobbyCardControl(card,()=>s.ctx._lobbyNewCardLabel(card),'new');
  s.change('en');assert.equal(card.leaves['.char-name'].textContent,'New Character');assert.equal(card.control.title,'New Character');
  s.change('ko');assert.equal(card.leaves['.char-name'].textContent,'새 캐릭터');assert.equal(s.requests(),0);
 });
-for(const info of [false,true])test('full creation card translates without acquiring an interactive control: '+info,()=>{
- const s=setup(),card=s.card({info});card._refreshLanguage=()=>s.ctx._lobbyNewCardLabel(card,false,5);
- s.change('en');assert.equal(card.leaves['.char-name'].textContent,'Slots Full');assert.equal(card.control,undefined);
- if(info)assert.equal(card.leaves['.char-info'].textContent,'Max 5 characters');
- s.change('ko');assert.equal(card.leaves['.char-name'].textContent,'슬롯 가득참');assert.equal(s.requests(),0);
+for(const info of [false,true])test('creation card stays available while its language changes: '+info,()=>{
+ const s=setup(),card=s.card({info});s.ctx._addLobbyCardControl(card,()=>s.ctx._lobbyNewCardLabel(card),'new');
+ s.change('en');assert.equal(card.leaves['.char-name'].textContent,'New Character');assert.ok(card.control);
+ s.change('ko');assert.equal(card.leaves['.char-name'].textContent,'새 캐릭터');assert.equal(s.requests(),0);
 });
 for(const kind of ['demo','character'])test(kind+' refresh preserves unexpected nested text containers',()=>{
  const s=setup(),card=s.card(),nameChild={},infoChild={};

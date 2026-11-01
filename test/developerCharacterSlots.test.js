@@ -31,7 +31,7 @@ function lobby({ build = 'full', count = 5, development = false, demoSave = null
     _characterLoadSeq: 0, _selectedSlot: null, _selectedSlotName: null, _selectedCharDisplay: null, _lobbyLang: () => 'ko', _TL: s => s, escHtml: s => s,
     CHAR_VISUALS: [{ name: '전사', bust: 'assets/charselect/portrait_warrior.png?v=1' }],
     _updateCharDisplay(slot) { displayed=slot||null; }, _addLobbyCardControl() {}, _bindLobbyListNavigation() {}, openVisualSelect() { opened++; },
-    $: id => els[id], document: { createElement: element }, localStorage: { getItem: key => storage.get(key) ?? null, setItem: (key, value) => storage.set(key, String(value)), removeItem: key => storage.delete(key) },
+    $: id => els[id], document: { createElement: element }, localStorage: { get length(){return storage.size;}, key:i=>Array.from(storage.keys())[i]??null, getItem: key => storage.get(key) ?? null, setItem: (key, value) => storage.set(key, String(value)), removeItem: key => storage.delete(key) },
     fetch: async url => { requests.push(url); return { ok: true, json: async () => ({ ok: true, slots, development }) }; },
   });
   const ancestorCode=['_lobbyAncestorName','_lobbyAncestorCaption','_lobbyAncestorDetail','_lobbyDemoCharacterName'].map(name=>html.match(new RegExp('function '+name+'[^\\n]+'))[0]).join('\n');
@@ -53,22 +53,22 @@ test('development server permits new characters beyond five without removing exi
   assert.equal(els.developerSaveNotice.hidden, false);
 });
 
-test('public offline mode keeps its five-slot limit without a development marker', async () => {
-  const { ctx, els } = lobby();
+test('public offline mode permits more than five characters without a development marker', async () => {
+  const { ctx, els } = lobby({count:100});
   await ctx.loadLocalCharacters();
   const create = els.charList.children.find(e => e.className === 'char-item-new');
-  assert.equal(create.events.click, undefined);
+  assert.equal(typeof create.events.click, 'function');
   assert.equal(els.developerSaveNotice.hidden, true);
 });
 
-test('demo uses its five browser slots without development privileges even with a working server', async () => {
-  const demoSlots = Array.from({ length: 5 }, (_, i) => ({ name: 'demo-' + i, charIdx: 0 }));
+test('demo loads all browser slots and permits creation without development privileges', async () => {
+  const demoSlots = Array.from({ length: 100 }, (_, i) => ({ name: 'demo-' + i, charIdx: 0 }));
   const { ctx, els, requests } = lobby({ build: 'demo', development: true, count: 100, demoSlots });
   await ctx.loadLocalCharacters();
   assert.deepEqual(Array.from(ctx._localSlots, s => s.name), demoSlots.map(s => s.name));
   assert.equal(cards(els).length, 2);
   assert.match(cards(els)[0].innerHTML, /demo-0/);
-  assert.equal(els.charList.children.find(e => e.className === 'char-item-new').events.click, undefined);
+  assert.equal(typeof els.charList.children.find(e => e.className === 'char-item-new').events.click, 'function');
   assert.equal(ctx._developerSlots, false);
   assert.equal(els.developerSaveNotice.hidden, true);
   assert.equal(requests.length, 0);
@@ -88,7 +88,7 @@ test('demo lobby migrates its legacy autosave and shows the saved level and stag
   assert.equal(requests.length, 0);
 });
 
-for (const count of [0, 1, 4]) test('demo permits creation with ' + count + ' browser slots', async () => {
+for (const count of [0, 1, 4, 5, 24, 100]) test('demo permits creation with ' + count + ' browser slots', async () => {
   const demoSlots = Array.from({ length: count }, (_, i) => ({ name: 'demo-' + i }));
   const { ctx, els, requests, opened } = lobby({ build: 'demo', development: true, demoSlots });
   await ctx.loadLocalCharacters();
@@ -211,4 +211,10 @@ for(const screen of ['_goLogin','_goCinematic'])test(screen+' clears the selecte
  // Seed leftover media explicitly; selection may use the shared lobby artwork.
  preview.src='warrior.mp4';preview.poster='warrior.jpg';preview.paused=false;
  ctx[screen]();assert.equal(preview.paused,true);assert.equal(preview.src,undefined);assert.equal(preview.poster,undefined);assert.equal(ctx._selectedCharDisplay,null);assert.equal(ctx._selectedSlot,null);assert.equal(ctx._selectedSlotName,null);assert.equal(els.enterGameBtn.disabled,true);
+});
+
+for(const count of [5,24,100])test("online roster permits creation with "+count+" existing characters",()=>{
+ const {ctx,els}=lobby();ctx._onlineChars=Array.from({length:count},(_,i)=>({id:"id"+i,name:"online"+i,data:{}}));ctx._onlineScrollIdx=0;
+ vm.runInContext(html.slice(html.indexOf("function _renderOnlineSlots(){"),html.indexOf("// ── 캐릭터 외형 목록")),ctx);ctx._renderOnlineSlots();
+ assert.equal(typeof els.charList.children.find(e=>e.className==="char-item-new").events.click,"function");
 });

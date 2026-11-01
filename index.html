@@ -2944,10 +2944,8 @@ function _enterOffline(){
       if(request!==_characterLoadSeq)return;
       // 서버 없음 — localStorage 폴백 (DEMO)
       const _LS_PREFIX='hellsave_demo_';
-      for(let i=0;i<5;i++){const raw=localStorage.getItem(_LS_PREFIX+i);let saved=null;try{saved=raw?JSON.parse(raw):null}catch{}if(saved&&saved.name===name){_showCreateFailure(name,_TL('이미 같은 이름의 캐릭터가 있습니다.'));return}}
-      let _slot=-1;
-      for(let i=0;i<5;i++){if(!localStorage.getItem(_LS_PREFIX+i)){_slot=i;break}}
-      if(_slot<0){_showCreateFailure(name,_TL('슬롯이 가득 찼습니다.'));return}
+      for(const i of _demoSlotIndices()){const raw=localStorage.getItem(_LS_PREFIX+i);let saved=null;try{saved=raw?JSON.parse(raw):null}catch{}if(saved&&saved.name===name){_showCreateFailure(name,_TL('이미 같은 이름의 캐릭터가 있습니다.'));return}}
+      const _slot=_demoFirstFreeSlot();
       localStorage.setItem(_LS_PREFIX+_slot,JSON.stringify({name:name,ts:Date.now(),charIdx:visualIdx}));
       $('createBtn').disabled=false;
       $('charName').value='';setStatus('');await _afterCharacterCreated(name,visualIdx);
@@ -3118,10 +3116,9 @@ function _lobbyDemoCardLabel(card,progress){
   _lobbyCardLeaf(card,'.char-name',name);_lobbyCardLeaf(card,'.char-info',info);
   return name;
 }
-function _lobbyNewCardLabel(card,canCreate,maxChars){
-  const label=_TL(canCreate?'새 캐릭터':'슬롯 가득참');
+function _lobbyNewCardLabel(card){
+  const label=_TL('새 캐릭터');
   _lobbyCardLeaf(card,'.char-name',label);
-  if(!canCreate)_lobbyCardLeaf(card,'.char-info',_TL('최대')+' '+maxChars+_TL('개'));
   return label;
 }
 
@@ -3194,11 +3191,9 @@ function _renderOnlineSlots(){
   }
   vp.appendChild(track);cl.appendChild(vp);
   // ── 새 캐릭터 ──
-  const MAX_CHARS=5,canCreate=total<MAX_CHARS;
   const newDiv=document.createElement('div');newDiv.className='char-item-new';newDiv.style.marginTop='10px';
-  newDiv.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">'+(canCreate?'+':'✕')+'</span></div><div class="char-text"><div class="char-name" style="color:#696c6c">'+(canCreate?_TL('새 캐릭터'):_TL('슬롯 가득참'))+'</div></div>';
-  if(canCreate){_addLobbyCardControl(newDiv,()=>_lobbyNewCardLabel(newDiv,true,MAX_CHARS),'new');newDiv.addEventListener('click',()=>openVisualSelect());}
-  else{newDiv._refreshLanguage=()=>_lobbyNewCardLabel(newDiv,false,MAX_CHARS);newDiv.style.opacity='.35';newDiv.style.cursor='default';newDiv.style.pointerEvents='none'}
+  newDiv.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">+</span></div><div class="char-text"><div class="char-name" style="color:#696c6c">'+_TL('새 캐릭터')+'</div></div>';
+  _addLobbyCardControl(newDiv,()=>_lobbyNewCardLabel(newDiv),'new');newDiv.addEventListener('click',()=>openVisualSelect());
   cl.appendChild(newDiv);
   // ── 이벤트 ──
   const btnUp=cl.querySelector('#charNavUpOn'),btnDn=cl.querySelector('#charNavDnOn');
@@ -3464,10 +3459,9 @@ async function doCreateChar(name,visualIdx){
       $('charName').value='';setStatus('');await _afterCharacterCreated(name,visualIdx);
     }catch(e){
       if(request!==_characterLoadSeq)return;
-      const _LS_PREFIX='hellsave_demo_';const MAX_LS=5;
-      for(let i=0;i<MAX_LS;i++){const raw=localStorage.getItem(_LS_PREFIX+i);if(raw){try{const d=JSON.parse(raw);if(d.name===name){_showCreateFailure(name,_TL('이미 같은 이름의 캐릭터가 있습니다.'));return}}catch(pe){}}}
-      let _slot=-1;for(let i=0;i<MAX_LS;i++){if(!localStorage.getItem(_LS_PREFIX+i)){_slot=i;break}}
-      if(_slot<0){_showCreateFailure(name,_TL('슬롯이 가득 찼습니다.'));return}
+      const _LS_PREFIX='hellsave_demo_';
+      for(const i of _demoSlotIndices()){const raw=localStorage.getItem(_LS_PREFIX+i);if(raw){try{const d=JSON.parse(raw);if(d.name===name){_showCreateFailure(name,_TL('이미 같은 이름의 캐릭터가 있습니다.'));return}}catch(pe){}}}
+      const _slot=_demoFirstFreeSlot();
       localStorage.setItem(_LS_PREFIX+_slot,JSON.stringify({name:name,ts:Date.now(),charIdx:visualIdx}));
       $('createBtn').disabled=false;$('charName').value='';setStatus('');await _afterCharacterCreated(name,visualIdx);
     }
@@ -3504,9 +3498,23 @@ function escHtml(s){const d=document.createElement('div');d.textContent=s;return
 // moved to top
 
 // ── DEMO 멀티 캐릭터 ──
-// 게임(demo=1)은 단일 키 hellsave_demo만 읽고 쓴다. 로비가 캐릭터별 슬롯(hellsave_demo_0~4)과
+// 게임(demo=1)은 단일 키 hellsave_demo만 읽고 쓴다. 로비가 개수 제한 없는 캐릭터별 슬롯(hellsave_demo_<정수>)과
 // 활성 세이브를 교체한다: 입장 시 슬롯→hellsave_demo, 로비 복귀 시 hellsave_demo→슬롯.
-const _DEMO_SLOT_PREFIX='hellsave_demo_',_DEMO_ACTIVE_KEY='hellsave_demo_active',_DEMO_SLOT_MAX=5;
+const _DEMO_SLOT_PREFIX='hellsave_demo_',_DEMO_ACTIVE_KEY='hellsave_demo_active';
+function _demoSlotIndices(){
+  const indices=[];
+  for(let k=0;k<localStorage.length;k++){
+    const key=localStorage.key(k);if(!key||!key.startsWith(_DEMO_SLOT_PREFIX))continue;
+    const suffix=key.slice(_DEMO_SLOT_PREFIX.length);if(!/^(0|[1-9]\d*)$/.test(suffix))continue;
+    const index=Number(suffix);if(Number.isSafeInteger(index))indices.push(index);
+  }
+  return indices.sort((a,b)=>a-b);
+}
+function _demoFirstFreeSlot(){
+  const occupied=new Set(_demoSlotIndices());let index=0;
+  while(occupied.has(index))index++;
+  return index;
+}
 function _demoSlotRead(i){try{return JSON.parse(localStorage.getItem(_DEMO_SLOT_PREFIX+i)||'null')}catch(e){return null}}
 function _demoSyncActiveSave(){
   try{
@@ -3514,9 +3522,8 @@ function _demoSyncActiveSave(){
     if(active===null){
       // 구버전 단일 데모 세이브 → 빈 슬롯으로 이관 (진행도 보존)
       if(!raw)return;
-      const free=[...Array(_DEMO_SLOT_MAX).keys()].find(i=>!localStorage.getItem(_DEMO_SLOT_PREFIX+i));
-      if(free===undefined)return;
-      const names=new Set([...Array(_DEMO_SLOT_MAX).keys()].map(i=>_demoSlotRead(i)?.name).filter(Boolean));
+      const free=_demoFirstFreeSlot();
+      const names=new Set(_demoSlotIndices().map(i=>_demoSlotRead(i)?.name).filter(Boolean));
       let name=_lobbyDemoCharacterName(),n=2;while(names.has(name))name=_lobbyDemoCharacterName()+n++;
       localStorage.setItem(_DEMO_SLOT_PREFIX+free,JSON.stringify({...JSON.parse(raw),name,charIdx:0}));
       localStorage.removeItem('hellsave_demo');return;
@@ -3532,7 +3539,7 @@ function _demoSyncActiveSave(){
 }
 function _demoActivateSlot(name){
   _demoSyncActiveSave();
-  for(let i=0;i<_DEMO_SLOT_MAX;i++){
+  for(const i of _demoSlotIndices()){
     const d=_demoSlotRead(i);if(!d||d.name!==name)continue;
     if(d.player)localStorage.setItem('hellsave_demo',JSON.stringify(d));else localStorage.removeItem('hellsave_demo');
     localStorage.setItem(_DEMO_ACTIVE_KEY,String(i));return true;
@@ -3560,7 +3567,7 @@ async function loadLocalCharacters(){
     // 서버 없음 (DEMO 등) — localStorage 폴백
     _localSlots=[];
     const _LS_PREFIX='hellsave_demo_';
-    for(let i=0;i<5;i++){
+    for(const i of _demoSlotIndices()){
       const raw=localStorage.getItem(_LS_PREFIX+i);
       if(!raw)continue;
       try{const d=JSON.parse(raw);_localSlots.push({name:d.name||('Slot '+(i+1)),lv:(d.player&&d.player.lv)||1,stage:(d.game&&d.game.stage)||0,charIdx:d.charIdx||0});}catch(pe){}
@@ -3575,8 +3582,7 @@ let _slotScrollIdx=0; // 캐릭터 뷰포트 상단 인덱스
 
 function _renderSlotList(){
   const cl=$('charList');if(!cl)return;cl.replaceChildren();
-  // DEMO도 일반 로컬 슬롯 UI(생성/삭제, 최대 5) 사용 — 세이브 교체는 _demoActivateSlot
-  const MAX_CHARS=_developerSlots?Infinity:5; // 개발 서버만 무제한, 공개 오프라인은 5개
+  // 온라인·로컬·DEMO 모두 캐릭터 개수 제한 없음. 뷰포트만 2개씩 표시한다.
   const VIEW=2;      // 한번에 보이는 캐릭터 슬롯 수
   const chars=_localSlots||[];
   const total=chars.length;
@@ -3624,7 +3630,7 @@ function _renderSlotList(){
           }catch(de){
             if(request!==_characterLoadSeq)return;
             const _LS_PREFIX='hellsave_demo_';let _found=false;
-            for(let i=0;i<5;i++){const raw=localStorage.getItem(_LS_PREFIX+i);if(raw){try{const d=JSON.parse(raw);if(d.name===s.name){localStorage.removeItem(_LS_PREFIX+i);_found=true;break}}catch(pe){}}}
+            for(const i of _demoSlotIndices()){const raw=localStorage.getItem(_LS_PREFIX+i);if(raw){try{const d=JSON.parse(raw);if(d.name===s.name){localStorage.removeItem(_LS_PREFIX+i);_found=true;break}}catch(pe){}}}
             if(_found){_slotScrollIdx=Math.max(0,_slotScrollIdx-1);await loadLocalCharacters()}
             else{setStatus(_TL('삭제 실패: ')+de.message,true)}
           }
@@ -3644,15 +3650,9 @@ function _renderSlotList(){
 
   // ── 고정: 새 캐릭터 생성 칸 ──
   const newDiv=document.createElement('div');newDiv.className='char-item-new';newDiv.style.marginTop='10px';
-  const canCreate=total<MAX_CHARS;
-  newDiv.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">'+(canCreate?'+':'✕')+'</span></div><div class="char-text"><div class="char-name" style="color:#696c6c">'+(canCreate?_TL('새 캐릭터'):_TL('슬롯 가득참'))+'</div>'+(canCreate?'':'<div class="char-info">'+_TL('최대')+' '+MAX_CHARS+_TL('개')+'</div>')+'</div>';
-  if(canCreate){
-    _addLobbyCardControl(newDiv,()=>_lobbyNewCardLabel(newDiv,true,MAX_CHARS),'new');
-    newDiv.addEventListener('click',()=>openVisualSelect());
-  }else{
-    newDiv._refreshLanguage=()=>_lobbyNewCardLabel(newDiv,false,MAX_CHARS);
-    newDiv.style.opacity='.35';newDiv.style.cursor='default';newDiv.style.pointerEvents='none';
-  }
+  newDiv.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">+</span></div><div class="char-text"><div class="char-name" style="color:#696c6c">'+_TL('새 캐릭터')+'</div></div>';
+  _addLobbyCardControl(newDiv,()=>_lobbyNewCardLabel(newDiv),'new');
+  newDiv.addEventListener('click',()=>openVisualSelect());
   cl.appendChild(newDiv);
 
   // ── 이벤트: 화살표 버튼 ──

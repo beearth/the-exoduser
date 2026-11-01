@@ -1,5 +1,8 @@
 # 로비 풀 코드 (index.html 패치)
 
+> 2026-11-01 현행 사용자 결정: **캐릭터 개수 제한 없음**. 웹·Unity 소스 후보에 적용했으며 실제 실행본 갱신은 별도다. 아래 과거 검수의 5슬롯/개발자 전용 무제한 기록은 당시 이력이다. 최신 코드·검증 범위는 [세이브 SSOT](../15 세이브+데이터구조/15 세이브+데이터구조.md)의 마지막 절과 `I:/EXODUSER-Storage/character-capacity/20261101-unlimited/REPORT.md`를 따른다.
+
+
 > 2026-09-29 현행: **미선택 기본 화면은 선대 소환체 · 묘왕 바르칸**, 캐릭터 카드 선택 후에는 해당 CHAR_VISUALS의 원화/아이들 영상과 이름·직업을 표시한다. 데모도 자동 선택 없이 시작하며 카드 클릭 후 입장을 활성화한다. 선택 해제 시 전대 화면으로 복귀한다. 아래 2026-09-28 제작·검수는 당시 이력이며, 현재 선택 표시 규칙은 [기본 전대 / 선택 캐릭터 전환 SSOT](<../3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md>)를 우선한다.
 
 
@@ -1058,7 +1061,7 @@ function _swapLobbyBg(stage){
 | _lobbyCardLeaf | 지정한 카드 내부 셀렉터의 children.length===0일 때만 textContent 변경. 부모 컨테이너·이미지·하위 DOM 보존. 삭제 버튼은 title 속성만 갱신 |
 | _lobbyCharacterCardLabel | 기존 CHAR_VISUALS 직업/클래스와 _formatLobbyStageProgress(stage,_TL) 재사용. .char-cls/.char-info/삭제 title 번역. 사용자 저장 이름, charIdx, 레벨, 스테이지 유지. 로컬 구분자 · /온라인 구분자 | 유지 |
 | _lobbyDemoCardLabel | 표시 이름은 KO 묘왕 바르칸 / 그 외 Varkan, the Tomb King, 표제는 전대 소환 / ANCESTRAL SUMMON. 기존 렌더에서 캡처한 진행으로 레벨·Stage 1-1·처치·브라우저 저장 안내 재번역. 초기 Lv.1 START · Stage 1-1 · Lv.100 Cap 유지. 언어 전환 중 세이브 다시 읽기/쓰기 없음 |
-| _lobbyNewCardLabel | 새 캐릭터/슬롯 가득참 및 기존 최대 개수 안내 재번역. 기존 공개5개·개발 Infinity 제한 유지. 가득찬 비활성 카드도 콜백 등록하되 버튼/생성 이벤트를 새로 만들지 않음 |
+| _lobbyNewCardLabel | 2026-11-01 후보: 캐릭터 개수 제한 없이 새 캐릭터 라벨만 재번역. 개수에 따른 비활성/최대 표시는 제거, 기존 노드·초점·번역 키 유지 |
 | 상태 보존 | 같은 카드·선택 버튼·이미지·초점 유지. _selectedSlot/_selectedSlotName/_slotScrollIdx/_onlineScrollIdx/_characterLoadSeq 변경 없음. 번역 카탈로그 신규 키·전투/저장 형식 변경 없음 |
 | 회귀 | test/lobbyCardLanguage.test.js 신규11건: 데모2·온라인/로컬2·생성/가득참3·중첩 노드2·초기 적용1·기존 문자열 호환1. 원본7실패/4통과→수정 후11통과. $ 없는 초기화 검사도 수정 전1실패/10통과. 관련 통합239건 및 inline script4개 구문 통과 |
 | 실제 언어 검증 | 960×540/1920×1080에서29언어×데모1·로컬 생성가능/가득참2·온라인 생성가능/가득참2=290조합. 동일 카드/버튼/이미지·선택·스크롤·초점 보존 및 가로 넘침 없음, pageerror0. 생성/삭제 저장 요청0 |
