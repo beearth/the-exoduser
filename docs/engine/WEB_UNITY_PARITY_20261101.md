@@ -42,3 +42,20 @@
 `codex/h5-web-delivery-20261101`은 웹의 옛 프롤로그 PNG15장과 CH1 제작 베이스/백업 PNG3장만 배포 선택에서 제외한다. 실제 코드/JSON/CSS 참조를 대조하고 신규 정확 참조가 생기면 포함하도록 보호했다. **3,134개·4,829,417,882바이트 → 3,116개·4,692,963,299바이트**이며 제외18개·136,454,583바이트, 추가0이다. 승인 로고·로딩 105장+manifest·현행 컷신/맵 청크·음악77·sfx346·언어27을 유지한다. 경로별 결과는 `I:/EXODUSER-Storage/design/web-unity-parity-20261101/candidate-selection-manifest.json`, 상세 근거는 [배포 복구 문서](../13출시·마케팅/WEB_DEPLOYMENT_REPAIR_20261002.md)를 따른다. 4GB 총량과 100MB 단일 영상 검사는 아직 실패한다. 실제 `web-dist`·HTTP·배포와 사용자 3333은 변경되지 않았다.
 
 웹 소스 자체에는 이번 범위의 로고/로딩 누락이 없으므로 중복 수정하지 않는다. 사용자가 실제로 여는 웹을 최신화하려면 **해당 실행 경로**를 최신 main에서 안전하게 다시 만들고 동일 바이너리/정적 산출물의 화면·저장 격리·배포 해시를 검수해야 한다. G: 사용자 서버 자동 재시작, DEMO/EA 사본 덮어쓰기, Steam·공개 웹 배포, Unity 후보를 웹에 일괄 이식하는 작업은 이번 조사에서 수행하지 않았다. Unity의 별도 로딩·HUD 후보는 해당 owner의 인수/1x/Player 검수 뒤 비교한다.
+
+
+## 2026-11-01 JSON 아트 의존성 후보 마감 — main 미반영
+
+기존 담당의 `tools/web-runtime-manifest.mjs`·`test/webDeployment.test.js` 미마감 변경을 보존·검토한 뒤, CTO가 누락된 manifest 제작원본 차단 검증만 보완했다. 새 작업본·작성 프로세스는 만들지 않았으며 원본 게임·음악·영상·그림 byte는 변경하지 않았다. 기준 원격 후보는 `273c662c0233ecb47064bb309fad667cb8285ea9`, 공통 main은 `2285643604486c5bfd9615ef7deb318c84845931`이다.
+
+| 항목 | 후보의 정확한 동작·검증 범위 |
+|---|---|
+| 로딩 의존성 | 선택된 `img/lording/wide/manifest.json`의 원본35장과 확장판105개를 필수로 포함한다. `img/lording/`의 broad prefix만으로 선택된 비선언21파일은 제외하며, 새 정확 코드 참조가 있으면 포함한다. 실제 소비의 rd6는 PNG이며 구 WEBP는 현재 manifest·소비 목록에 없다. |
+| 전체 화면 의존성 | `assets/fullscreen-wide/20261031/manifest.json`에 선언된 source와 outputs를 읽는다. 원본64종·확장판128개를 유지한다. 해당 등록 이미지가 실제 사용되므로 숫자를 맞추기 위해 제외하지 않는다. |
+| 누락·모호성 | 잘못된 JSON, 존재하지 않는 manifest 자원, 배포에서 제외되는 제작 원본을 manifest가 요구하면 실패한다. NFC/NFD 경로 동치는 유지한다. |
+| 선택 목록 전후 | 이전 후보 3,116파일·4,692,963,299B → 이번 후보 3,095파일·4,629,181,769B. 제외21개·63,781,530B, 추가0이다. main 기준 기존1차 절감을 합치면 39개·200,236,113B 감소다. |
+| 검사 | 기존 실제 코드의 제작원본 차단 누락을 RED(exit1,10/11)로 재현 후 최소수정하여 Node 검사11/11·exit0. 전체 선택 목록에 index/game·승인 불투명 로고·로딩 JS/CSS·두 manifest 존재를 대조했다. |
+| 남은 배포 제한 | 총량은 프로젝트 사전 예산4,000,000,000B보다629,181,769B 크다. `world_intro_v22b_steam.mp4`102,204,634B의 개별100MB 초과도 남는다. 상한을 완화하지 않았다. |
+| 실제 전달 경계 | 복사 전 선택·정적 검증 결과다. 실제 web-dist, HTTP 검수, Actions/Vercel 업로드·공개 서비스 갱신은 아직 완료되지 않았다. user Player·기존3333 서버·G: 사용자 작업본·Unity 공통은 변경하지 않았다. |
+
+경로별 JSON과 RED/GREEN 원문은 `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-json-closure-selection.json`, `web-json-closure-root-red.log`, `web-json-closure-root-green.log`에 보존한다.
