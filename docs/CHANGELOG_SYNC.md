@@ -57360,3 +57360,5 @@ Mac 원본4장 몬스터16종 공통·배송: 실기동 검수후 개인/`unity/
 사슴 남서 첫 GUI QA 실행 경계: `--remodel3d` 누락으로 3D ready 대기 실패, 정지 중 숨겨진 walk의 이전 좌표를 과검사해 별도 assertion 실패. 실제 남서 0→1→2→3→0/skin22/dir3/rect는 5/5 관측됐으나 이 실행은 `passed=false`, exit3이므로 시각 PASS가 아니다. 실행 플래그를 명시하고 정지에서는 walk 비활성만 요구하도록 QA 조건을 수정해 새 공식앱에서 재검수한다.
 
 사슴 남서 최종 Mac QA: 개인 후보5f7f5a3e 원격 확인, Unity 입력3532/3532 SHA 동일, 공식 ARM64 Settings QA errors0. 같은 앱 Metal M1 23/23·실창1920 원본14장(방향7+사슴 남서0→1→2→3→0+정지/반전2) passed/failures0, 원본1× 실루엣·발·walk 숨김 검수에서 사슴 남서 주입 루프 VISUAL PASS. 일반 저장11/QA Preferences2 불변·무음/drain/exit0. 첫 실패 실행은 별도 보존. 자연 보스 AI·다른 빈12셀·전체 아트·PC/웹은 미검수. [정본 상세](8.0몬스터디자인/몬스터_스킨_렌더링_파이프라인.md#사슴-남서-mac-settings-qa-실기동-판정).
+
+사슴 남서 Mac 전달: 개인 후보3458831cf를 `unity/main`에 비강제 FF/readback. 같은 Unity3532 입력 공식ARM64 일반 build errors0, 정규화/서명 후 기존 설치앱3SHA CAS·원본보존, 211파일 전체 manifest SHA 동일로 새 EXODUSER.app 파일 전달. QA/일반 Runtime DLL hash 차이는 명시 기록. 일반 저장/설정11·QA plist2 불변, 일반 앱 실행0·Windows/PC/웹/공개 반영0, 자연 보스AI 미검수. [정본](8.0몬스터디자인/몬스터_스킨_렌더링_파이프라인.md#사슴-남서-common-반영mac-일반-앱-전달).
