@@ -227,3 +227,16 @@ Vercel 계정 관리자의 결제 문제 해소가 선행한다. 에이전트는
 | 시각·도구 한계 | 담당자가 실제1920 원본 빈/이관 로비2장을 직접 확인. root는 raw와 imageView 기록 인수만/원본 직접픽셀뷰0. 게임 스프라이트는 기존 VFX 가림 INCONCLUSIVE 유지. 최초 화면 fixture 순서 timeout은 올바른 UI 순서로 전환; 입장 클릭 검사는 AudioContext 자동재생 경고1로 exit1, 저장 payloadExact=true/pageerror0와 분리. 오디오 경고를 지우거나 전체PASS로 합산하지 않음 |
 | 보존·전달 | 일반 저장11항목/current Preferences2 SHA 불변, 자기 Chrome 종료·port53619 닫힘. 제품 Mac checkout350034 및 외부 WIP 보존. H5 main416/Unity18b/Windows D8 불변, public402 미납 및 Windows external writer 잠금으로 새 공개/Windows 전달0 |
 | 증거 | Mac _out/web-startup-order-final-qa-20261102/{REPORT.md,FINAL_RECEIPT.json,input-audit.json,static-full-manifest.json,browser-startup-results.json,browser-ui-results.json,browser-activation-results.json,ordinary-before.json,ordinary-after.json}; static manifest aggregate(items) SHA1a33914ca392a975fd0c35f93b6cd3f812d1f02c5e28d26f0b7bcff1cfb75531/config148c7f6eb86c0a937d9425e2aa3badeec133b148ac4d5000aa1e7f325c70f4b8 |
+
+
+## 2026-11-02 사슴 보스 남서 걷기 원본 웹 동기화 후보
+
+| 항목 | 이번 정확 소스·검증 경계 |
+|---|---|
+| 인수 | Unity source-only후보 6d5e084665b22ed70b9a115d4f8062b395ff7889(parent18b99a70768cfe235e1474aefe9fe4fbf6439258)의 img 원본6장과 south_west atlas1장만 이 H5 후보에 인수. 게임 JS/Init/저장/파생95행/선택기/Unity 제품 변경0 |
+| 원천 | 과거84dee8862e4debdf8af749cbbeb40dd6ab783ff4의 blender/sprites/boss_ch1_stag.zip blob0f9878b4b07368724bc4507a909c4a1855e8decc. 다른7방향42장 및 남서정지 byte동일, 누락남서 running6장 원본 그대로 복구. 새생성·미러·정지복사0 |
+| 패킹 | idx22/col6/row2, cell256, source[0,1,3,5] 유지. img/atlas_ch1_8dir_walk_south_west.png의 x6144,6400,6656,6912/topY512 네셀만 복구. SHA c10aceee1b05d77997a5dacaa48ac7a420084b8981ab4f7c3486c1e50bab1132, Unity 후보mirror와byte동일. source6장의SHA/경로는 별도 intake.json에 보존 |
+| 원본 보존 검사 | 인수담당의 rawRGBA 전수검증 changedBytes72811/changedPixels18457/outsideChangedBytes0/hiddenRGBChangedBytes0, 다른7방향·metadata/17override 불변. 등록1248셀 중 유효1232→1236/빈16→12. 남은 grotesque_quadruped남서/plague_censer동/blind_swordsman서 12셀·skinless_hound미등록32셀은 그대로 |
+| 공식 선택·용량 | 기존선택3242→3242/추가삭제0. 본편 game.html의 동적 atlas경로가 이 남서 PNG를 소비, 제작 원본6장은 공식정적선택에서 제외. 기존최종6008 actualstatic3999408690B에서 PNG17409B증가만 반영한 예상3999426099B/예상여유573901B; 새 공식artifact/build/prepare/check가 아니라 delta 예상이다. 전체한도PASS로 승격0 |
+| 검수·전달 경계 | 원본/후보byte·source검증만, 이 H5 후보 실제Chrome 남서루프·정지반전/새공식artifact는 미검수. 기존17종 CanvasQA·6008 시작/허구saveQA는 해당sourcebyte불변범위로만 보존. Mac 새실앱QA 진행과 별도이며 H5main416/공개402/WindowsD8 미변경 |
+| 증거 | I:/EXODUSER-Storage/mobility-hud/20261101/_out/stag-southwest-source-repair-20261102/delivery-receipt.json 및 root recovery/web-stag-southwest-sync-20261102/intake.json. 다음 기존Mac 담당이 정확최종H5후보 공식패키지/atlas URL SHA/MIME·실제남서0→1→2→3→0 최소browser1x를 별도검수. VFX가림의 기존west재시도3차로 대체0 |
