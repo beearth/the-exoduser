@@ -96,3 +96,15 @@ GIT
 VISUAL VERDICT: RETOUCH (평면 receiver fixture PASS; 실제 맵 통합 visual 미검수)
 NEXT PASS: 패스 중 DBuffer keyword/DepthNormals draw 관찰, 실제 맵 지면·목교 접지/카메라 QA
 ```
+
+## 실제 R5/A2 맵 접지 QA 확장 — 실행 전 복구점
+
+사용자 후속 범위는 기존 A2 전체 필드의 픽셀 빌보드 HD2D 방향을 유지한 실제 지면·뿌리·목교 접지 세 지점이다. `--unity-ground-map-capture --remodel3d`는 기존 `NativeGame`과 RM1 additive scene을 그대로 실행하고, 격리 QA 전용 RM1 projector 한 개만 지면/경계/교량으로 옮긴다. 새 아트·맵 mesh/material·배치·Core·충돌·제품 Renderer 변경은 없다. 1920×1080 실제 창을 유지하며 3840×1080은 직접 GPU RT로만 만든다. 각 위치의 off-A/off-B/on 직접 RT 세 장은 **yield 없는 같은 프레임**에 같은 실제 카메라·광원·world 상태로 렌더하고, off 반복 차이를 별도 기록한다. 창 스크린샷은 HUD 포함 별도 프레임 출처이므로 RT 수치와 동일시하지 않는다.
+
+| 지점 | world x,z 및 선택 기준 | receiver 기록 |
+|---|---|---|
+| 시작부 | `(40.2,-77.0)` | 실제 A2 지면 청크의 `a2FieldSoil`/HellGroundPBR |
+| 통로/경계 | 실제 활성 `A2RootSurface` renderer 중 목교 중심 `(43.2,-71.8)`에 가장 가까운 것의 bounds 중심 | 실제 뿌리 renderer 이름·material/shader/transform |
+| 목교 접지 | 실제 `A2 시작 목교` 중심 `(43.2,-71.8)` | 자식 renderer 전부와 실제 윗면 vertex, actor ground/terrain 높이 |
+
+각 지점은 Core 보행 여부, 지형·배우·목교 윗면 높이, 실제 카메라 pose, receiver transform, 화면 anchor/ROI 안팎 변동 픽셀·최대 채널차를 영수증에 남긴다. projector가 만든 변화는 자연 회복/강타 VFX 증거가 아니다. 실제 1x 경계·발밑·부양·침범 판정과 PASS 여부는 새 Player 결과 후 보충한다. 기존 평면 fixture PASS나 과거 A2 아트 RETOUCH/Impact R4 FAIL을 실제 맵 PASS로 소급하지 않는다.

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
@@ -201,6 +202,192 @@ namespace Exoduser.UnityPort
                 File.WriteAllText(Path.Combine(output,"ground-receiver-receipt.json"),JsonUtility.ToJson(receipt,true));
             yield return new WaitForSecondsRealtime(1f);
             Debug.Log("QA_MEDIA_DRAIN_COMPLETE GROUND_RECEIVER");Application.Quit(receipt.passed?0:2);
+        }
+
+        [Serializable] sealed class GroundMapSite
+        {
+            public string id, receiver, material, shader, offA, offB, on, window;
+            public int width, height, selfChanged, insideChanged, outsideChanged, selfMax, insideMax, outsideMax;
+            public bool passed, coreWalkable;
+            public float terrainY, actorGroundY, bridgeTopY;
+            public Vector3 anchor, cameraPosition, cameraEuler, screenAnchor, receiverPosition, receiverEuler;
+            public Vector4 roi;
+        }
+        [Serializable] sealed class GroundMapReceipt
+        {
+            public string scope="기존 A2 실제 필드/목교/HD2D 픽셀 배우. QA projector만 주입, 플레이·전투 자연완주 아님";
+            public string error, graphicsDevice, graphicsApi, renderer, technique, soilShader, rootShader, bridgeRenderers;
+            public int screenWidth, screenHeight, mrtCount, groundChunks, rootRenderers, directVideoPlayers;
+            public float listenerVolume, outputPeak;
+            public bool passed, hd2d, remodel, featureActive, listenerPaused;
+            public List<GroundMapSite> sites=new List<GroundMapSite>();
+        }
+        IEnumerator GroundMapCapture()
+        {
+            var body=GroundMapCaptureBody();
+            while(true)
+            {
+                bool more;object current;
+                try{more=body.MoveNext();current=more?body.Current:null;}
+                catch(Exception ex)
+                {
+                    Debug.LogError("GROUND_MAP_QA_FAILED "+ex);
+                    string path=Argument("-output");
+                    if(!string.IsNullOrEmpty(path)&&Path.IsPathRooted(path)&&Directory.Exists(path))
+                        File.WriteAllText(Path.Combine(path,"ground-map-receipt.json"),JsonUtility.ToJson(new GroundMapReceipt{error=ex.ToString()},true));
+                    Application.Quit(2);yield break;
+                }
+                if(!more)yield break;
+                yield return current;
+            }
+        }
+        static Texture2D GroundMapRender(Camera camera,RenderTexture target,string path)
+        {
+            camera.targetTexture=target;camera.Render();
+            var old=RenderTexture.active;RenderTexture.active=target;
+            var tex=new Texture2D(target.width,target.height,TextureFormat.RGB24,false);
+            tex.ReadPixels(new Rect(0,0,target.width,target.height),0,0);tex.Apply();RenderTexture.active=old;
+            File.WriteAllBytes(path,tex.EncodeToPNG());return tex;
+        }
+        static int GroundMapDifference(Color32 a,Color32 b)
+        {
+            return Mathf.Max(Mathf.Abs(a.r-b.r),Mathf.Abs(a.g-b.g),Mathf.Abs(a.b-b.b));
+        }
+        static void GroundMapMeasure(GroundMapSite site,Texture2D offA,Texture2D offB,Texture2D on,Vector3 anchor)
+        {
+            var a=offA.GetPixels32();var b=offB.GetPixels32();var c=on.GetPixels32();
+            int w=offA.width,h=offA.height;
+            int x0=Mathf.Max(0,Mathf.FloorToInt(anchor.x)-230),x1=Mathf.Min(w,Mathf.CeilToInt(anchor.x)+230);
+            int y0=Mathf.Max(0,Mathf.FloorToInt(anchor.y)-140),y1=Mathf.Min(h,Mathf.CeilToInt(anchor.y)+140);
+            site.roi=new Vector4(x0,y0,x1,y1);
+            for(int y=0;y<h;y++)for(int x=0;x<w;x++)
+            {
+                int index=y*w+x;int self=GroundMapDifference(a[index],b[index]);int effect=GroundMapDifference(b[index],c[index]);
+                bool inside=x>=x0&&x<x1&&y>=y0&&y<y1;
+                if(self>4)site.selfChanged++;site.selfMax=Mathf.Max(site.selfMax,self);
+                if(effect<=self+4)continue;
+                if(inside){site.insideChanged++;site.insideMax=Mathf.Max(site.insideMax,effect);}
+                else{site.outsideChanged++;site.outsideMax=Mathf.Max(site.outsideMax,effect);}
+            }
+            site.passed=site.insideChanged>50&&site.insideMax>10&&site.selfChanged<site.insideChanged/10;
+        }
+        IEnumerator GroundMapCaptureBody()
+        {
+            string output=Argument("-output");
+            if(Application.isBatchMode||!NativeQaSandbox.Active||!NativeRemodel3D.Requested||!NativeHd2D.Enabled||
+               string.IsNullOrEmpty(output)||!Path.IsPathRooted(output))
+                throw new InvalidOperationException("Visible remodel3d HD2D Player, absolute -output, QA sandbox required");
+            if(Directory.Exists(output)&&Directory.GetFileSystemEntries(output).Length!=0)throw new InvalidOperationException("Output must be empty");
+            Directory.CreateDirectory(output);
+            AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;
+            smokeActive=true;pauseSmoke=true;Running=false;menu=false;
+            Screen.SetResolution(1920,1080,FullScreenMode.Windowed);
+            lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();
+            if(!lobby.Flow.EnterTest())throw new InvalidOperationException("A2 field entry failed");
+            EndFirstPractice(true);frontendEntryInputFence=false;gameFocused=true;
+            Simulation.Config.EnemyAiEnabled=false;
+            float deadline=Time.realtimeSinceStartup+50;
+            while((!Remodel3DReady||a2Root==null||a2Field==null||a2FieldSoil==null||r3Cam==null||!NativeRemodel3D.Active)&&Time.realtimeSinceStartup<deadline)
+            {UpdateViews();yield return null;}
+            if(!Remodel3DReady||a2Root==null||a2Field==null||a2FieldSoil==null||r3Cam==null||!NativeRemodel3D.Active)
+                throw new InvalidOperationException("Actual A2 field not ready");
+            if(Screen.width!=1920||Screen.height!=1080)throw new InvalidOperationException("1920x1080 actual window unavailable: "+Screen.width+"x"+Screen.height);
+            var receipt=new GroundMapReceipt{screenWidth=Screen.width,screenHeight=Screen.height,hd2d=NativeHd2D.Enabled,
+                remodel=NativeRemodel3D.Active,graphicsDevice=SystemInfo.graphicsDeviceName,graphicsApi=SystemInfo.graphicsDeviceType.ToString(),
+                mrtCount=SystemInfo.supportedRenderTargetCount,renderer=r3Cam.GetUniversalAdditionalCameraData().scriptableRenderer.GetType().Name,
+                soilShader=a2FieldSoil.shader.name};
+            var all=a2Root.GetComponentsInChildren<MeshRenderer>(true);MeshRenderer root=null;GameObject bridge=null;
+            float nearest=float.PositiveInfinity;
+            var bridgeParts=new List<string>();
+            foreach(var renderer in all)
+            {
+                if(renderer.sharedMaterial==a2FieldSoil)receipt.groundChunks++;
+                if(renderer.sharedMaterial!=null&&renderer.sharedMaterial.shader.name=="EXODUSER/A2RootSurface"&&renderer.enabled&&renderer.gameObject.activeInHierarchy)
+                {
+                    receipt.rootRenderers++;float dx=renderer.bounds.center.x-43.2f,dz=renderer.bounds.center.z+71.8f;
+                    float dist=dx*dx+dz*dz;if(dist<nearest){nearest=dist;root=renderer;}
+                }
+            }
+            bridge=GameObject.Find("A2 시작 목교");
+            if(root==null||bridge==null||receipt.groundChunks==0)throw new InvalidOperationException("Actual root/bridge/ground receiver missing");
+            receipt.rootShader=root.sharedMaterial.shader.name;
+            foreach(var renderer in bridge.GetComponentsInChildren<MeshRenderer>(true))
+                bridgeParts.Add(renderer.name+"="+(renderer.sharedMaterial==null?"none":renderer.sharedMaterial.name+"/"+renderer.sharedMaterial.shader.name));
+            receipt.bridgeRenderers=string.Join("|",bridgeParts.ToArray());
+            var cameraData=r3Cam.GetUniversalAdditionalCameraData();
+            foreach(var feature in (System.Collections.IEnumerable)typeof(ScriptableRenderer).GetProperty("rendererFeatures",BindingFlags.Instance|BindingFlags.NonPublic|BindingFlags.Public).GetValue(cameraData.scriptableRenderer,null))
+                if(feature is DecalRendererFeature)
+                {
+                    var decal=(DecalRendererFeature)feature;receipt.featureActive=decal.isActive;
+                    var method=decal.GetType().GetMethod("GetTechnique",BindingFlags.Instance|BindingFlags.NonPublic,null,new[]{typeof(ScriptableRenderer)},null);
+                    receipt.technique=method==null?"unavailable":Convert.ToString(method.Invoke(decal,new object[]{cameraData.scriptableRenderer}));
+                }
+            if(!receipt.featureActive||receipt.technique!="DBuffer"||receipt.mrtCount<4)throw new InvalidOperationException("Actual renderer not DBuffer MRT4");
+            var baseMaterial=Resources.Load<Material>("QA/GroundDecal");
+            if(baseMaterial==null||baseMaterial.shader.name=="Hidden/InternalErrorShader")throw new InvalidOperationException("QA projector shader missing");
+            var decalMaterial=new Material(baseMaterial);decalMaterial.SetFloat("_Shape",4);decalMaterial.SetFloat("_SizeX",3);decalMaterial.SetFloat("_SizeY",1.4f);
+            decalMaterial.SetFloat("_Progress",1);decalMaterial.SetFloat("_Grow",1);decalMaterial.SetFloat("_Flash",0);decalMaterial.SetFloat("_EdgeGlow",0);
+            decalMaterial.SetColor("_FillColor",new Color(.1f,.9f,.8f,.75f));
+            var projector=new GameObject("QA Actual Map Projector").AddComponent<DecalProjector>();
+            projector.material=decalMaterial;projector.size=new Vector3(3,1.4f,6);projector.pivot=Vector3.zero;
+            projector.transform.rotation=Quaternion.Euler(90,0,0);projector.enabled=false;
+            var anchors=new[]{new Vector2(40.2f,-77f),new Vector2(root.bounds.center.x,root.bounds.center.z),new Vector2(43.2f,-71.8f)};
+            var ids=new[]{"start","passage-root-boundary","actual-wood-bridge"};
+            for(int siteIndex=0;siteIndex<anchors.Length;siteIndex++)
+            {
+                float x=anchors[siteIndex].x,z=anchors[siteIndex].y;
+                Simulation.Player.X=x*100;Simulation.Player.Y=-z*100;lastX=x*100;lastY=-z*100;
+                for(int frame=0;frame<12;frame++){UpdateViews();yield return null;}
+                float terrainY=a2Field.TerrainHeight(x,z),actorY=NativeRemodel3D.GroundY(x,z),bridgeY=-999f;
+                Vector3 bridgeTop;if(siteIndex==2&&A2UpperSurfaceVertex(bridge,new Vector3(x,0,z),out bridgeTop))bridgeY=bridgeTop.y;
+                float surfaceY=bridgeY< -900?actorY:Mathf.Max(actorY,bridgeY);
+                projector.transform.position=new Vector3(x,surfaceY+2,z);
+                foreach(int width in new[]{1920,3840})
+                {
+                    var site=new GroundMapSite{id=ids[siteIndex],width=width,height=1080,
+                        receiver=siteIndex==1?root.name:siteIndex==2?bridge.name:"A2 실제 지면 청크",
+                        material=siteIndex==1?root.sharedMaterial.name:siteIndex==2?receipt.bridgeRenderers:a2FieldSoil.name,
+                        shader=siteIndex==1?root.sharedMaterial.shader.name:siteIndex==2?"actual bridge mixed renderers":a2FieldSoil.shader.name,
+                        terrainY=terrainY,actorGroundY=actorY,bridgeTopY=bridgeY,
+                        coreWalkable=Map.CanMove(x*100,-z*100,15),anchor=new Vector3(x,surfaceY,z),
+                        cameraPosition=r3Cam.transform.position,cameraEuler=r3Cam.transform.eulerAngles,
+                        receiverPosition=siteIndex==1?root.transform.position:siteIndex==2?bridge.transform.position:a2Root.transform.position,
+                        receiverEuler=siteIndex==1?root.transform.eulerAngles:siteIndex==2?bridge.transform.eulerAngles:a2Root.transform.eulerAngles};
+                    var rt=new RenderTexture(width,1080,24,RenderTextureFormat.ARGB32);rt.Create();
+                    var previous=r3Cam.targetTexture;r3Cam.targetTexture=rt;
+                    site.screenAnchor=r3Cam.WorldToScreenPoint(site.anchor);
+                    projector.enabled=false;site.offA=Path.Combine(output,ids[siteIndex]+"-"+width+"-off-a.png");
+                    var offA=GroundMapRender(r3Cam,rt,site.offA);
+                    site.offB=Path.Combine(output,ids[siteIndex]+"-"+width+"-off-b.png");
+                    var offB=GroundMapRender(r3Cam,rt,site.offB);
+                    projector.enabled=true;site.on=Path.Combine(output,ids[siteIndex]+"-"+width+"-on.png");
+                    var on=GroundMapRender(r3Cam,rt,site.on);
+                    GroundMapMeasure(site,offA,offB,on,site.screenAnchor);
+                    r3Cam.targetTexture=previous;rt.Release();Destroy(rt);Destroy(offA);Destroy(offB);Destroy(on);
+                    receipt.sites.Add(site);
+                    if(width==1920)
+                    {
+                        site.window=Path.Combine(output,ids[siteIndex]+"-window-1920-on.png");
+                        yield return new WaitForEndOfFrame();
+                        var screen=ScreenCapture.CaptureScreenshotAsTexture();
+                        File.WriteAllBytes(site.window,screen.EncodeToPNG());Destroy(screen);
+                    }
+                    projector.enabled=false;
+                }
+            }
+            receipt.listenerPaused=AudioListener.pause;receipt.listenerVolume=AudioListener.volume;
+            var audio=new float[1024];AudioListener.GetOutputData(audio,0);
+            foreach(float sample in audio)receipt.outputPeak=Mathf.Max(receipt.outputPeak,Mathf.Abs(sample));
+            foreach(var video in Resources.FindObjectsOfTypeAll<UnityEngine.Video.VideoPlayer>())
+                if(video!=null&&video.audioOutputMode==UnityEngine.Video.VideoAudioOutputMode.Direct)receipt.directVideoPlayers++;
+            receipt.passed=receipt.graphicsApi=="Metal"&&receipt.hd2d&&receipt.remodel&&receipt.sites.Count==6&&
+                receipt.listenerPaused&&receipt.listenerVolume==0&&receipt.outputPeak==0&&receipt.directVideoPlayers==0;
+            foreach(var site in receipt.sites)receipt.passed&=site.passed;
+            if(!receipt.passed)receipt.error="One or more actual-map fixture checks failed; inspect self-repeat/ROI/raw images";
+            File.WriteAllText(Path.Combine(output,"ground-map-receipt.json"),JsonUtility.ToJson(receipt,true));
+            lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();
+            yield return new WaitForSecondsRealtime(1);
+            Debug.Log("QA_MEDIA_DRAIN_COMPLETE GROUND_MAP");Application.Quit(receipt.passed?0:2);
         }
     }
 }
