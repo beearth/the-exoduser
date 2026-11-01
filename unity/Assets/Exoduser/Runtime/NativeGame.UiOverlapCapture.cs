@@ -165,6 +165,29 @@ namespace Exoduser.UnityPort
             try{for(int direction=0;direction<8;direction++){float angle=direction*Mathf.PI/4;var screen=NativeUiViewport.ScreenInDesign;var target=screen.center+new Vector2(Mathf.Cos(angle)*screen.width,Mathf.Sin(angle)*screen.height);regionHud.ToGUI=(x,y)=>target;fields[0].SetValue(regionHud,1000000);fields[1].SetValue(regionHud,true);fields[2].SetValue(regionHud,Simulation.Player.X+2000);fields[3].SetValue(regionHud,Simulation.Player.Y-2000);fields[4].SetValue(regionHud,lobby.Language=="ko"?"북동 · 번개":"Northeast · Lightning");yield return UiOverlapShot("지역유도"+direction);}}finally{regionHud.ToGUI=prior;for(int i=0;i<fields.Length;i++)fields[i].SetValue(regionHud,values[i]);}
         }
 
+        IEnumerator UiTitleGrid()
+        {
+            overlapCoverage.resolutions=new[]{"5120x1440","1920x1080","2560x1080","3840x1080","1600x900","2560x1600"};
+            overlapCoverage.scope="승인 A 타이틀 실제6해상도/선택3언어/모션·정지·재개; OS 입력/자연플레이와 구분";
+            foreach(string resolution in overlapCoverage.resolutions)
+            foreach(string language in overlapCoverage.languages)
+            {
+                var parts=resolution.Split('x');int width=int.Parse(parts[0]),height=int.Parse(parts[1]);overlapLanguage=language;lobby.SetLanguage(language);
+                Screen.SetResolution(width,height,FullScreenMode.Windowed);yield return null;yield return null;
+#if UNITY_STANDALONE_WIN
+                if(Screen.width!=width||Screen.height!=height){UiWideSetClientSize(width,height);yield return null;}
+#endif
+                float deadline=Time.realtimeSinceStartup+5;while((Screen.width!=width||Screen.height!=height)&&Time.realtimeSinceStartup<deadline)yield return null;
+                if(Screen.width!=width||Screen.height!=height)throw new InvalidOperationException("실제 타이틀 해상도 불일치 "+resolution);
+                lobby.Begin();lobby.AdvanceSplash();yield return new WaitForSecondsRealtime(1.1f);yield return UiWaitTitleArt();yield return UiOverlapShot("메뉴");
+                yield return new WaitForSecondsRealtime(.5f);yield return UiOverlapShot("메뉴-모션");
+                bool paused=lobby.TitleMotionPaused;
+                try{lobby.TitleMotionPaused=true;yield return new WaitForSecondsRealtime(.15f);yield return UiOverlapShot("메뉴-정지1");yield return new WaitForSecondsRealtime(.35f);yield return UiOverlapShot("메뉴-정지2");}
+                finally{lobby.TitleMotionPaused=paused;}
+                yield return new WaitForSecondsRealtime(.5f);yield return UiOverlapShot("메뉴-재개");
+            }
+        }
+
         IEnumerator UiOverlapCaptureBody()
         {
             overlapOutput=Argument("-output");
@@ -174,6 +197,11 @@ namespace Exoduser.UnityPort
             overlapCoverage.unityVersion=Application.unityVersion;overlapCoverage.device=SystemInfo.graphicsDeviceName;overlapCoverage.deviceType=SystemInfo.graphicsDeviceType.ToString();
             smokeActive=true;pauseSmoke=true;lobby.AutomatedInput=true;lobby.SetPlaybackFocus(true);SetGameFocus(true);
             gameObject.AddComponent<NativeUiAudit.Host>();NativeUiAudit.Active=false;yield return null;yield return null;
+            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-title-a-check")>=0)
+            {
+                yield return UiTitleGrid();NativeUiAudit.Active=false;File.WriteAllText(Path.Combine(overlapOutput,"coverage.json"),JsonUtility.ToJson(overlapCoverage,true));
+                lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);Debug.Log("QA_MEDIA_DRAIN_COMPLETE TITLE_A");Application.Quit(0);yield break;
+            }
             foreach(var size in new[]{new Vector2Int(2560,1600),new Vector2Int(1920,1080),new Vector2Int(2560,1080),new Vector2Int(3840,1080),new Vector2Int(1600,900)})
             foreach(string language in overlapCoverage.languages)
             {
