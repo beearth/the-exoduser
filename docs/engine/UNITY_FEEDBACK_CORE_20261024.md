@@ -62,3 +62,32 @@ r2 source `597c3b9b8d6300a6554abd9543ac08a78bed58bf`의 정식 Win64 빌드 `c1b
 |실제 Editor·Windows Player·음성·화면|이 단위 미검수|상위 `UNITY_PORT_20261024.md`의 부모 통합 결과에서 구분|
 
 도구 시작 과정의 잘못된 Junction 기본 root와 acorn dependency 지정 오류 로그도 남겨두었다. 경로/환경 실패를 기능 RED로 세지 않았다. 출력·dotnet bin/obj·oracle/tests는 기존 Tools Junction을 통해 I:에만 생성했다. 전체 게임 믹서/EQ/compressor·모든 샘플·보스·아이템/affix·field mobs·전체 scheduler와 청각/시각 패리티는 이 단위의 완료 범위가 아니다.
+
+
+## 2026-10-31 r4 첫 정식 빌드와 넉백 영상 근거 정정
+
+source65ead/Unity tree93d5f054/Core tree424bcafff의 첫 정식 빌드 `9de2257e`는 C# compileErrors0/errorLogs0/USER_SAVE0이나 셰이더 준비 중600초 제한(실제603281ms)으로 실패했다. 마지막577s에583/1536변형 준비를 기록했다. 미완성 출력과 원래 JSON/log를 byte·SHA로 보존하고 입력3959 변경0을 확인했으며, 슬롯 반환 후 같은 입력·TimeoutSec1800의 단일 재시도를 큐끝에 접수했다. 새 빌드/M1/영상·통합/Desktop 완료 근거는 아직 없다.
+
+r3 전후 Core trace 일치는 입력 불변 근거로 유지하지만, 그 fixture는 `EnemyAiEnabled=false`로 적 넉백 이동 루프도 중지했다. 실제21표적/7구간 이동0px이므로 기존 영상의 넉백 이동 범위는 미검증이다. 일반·Ki·강타 이동>1px 검사 FAIL/exit2를 보존했다. 격리 Core 예행에서 기존 AI루프+매tick 명시적 fixture Stunned180으로 자발 AI를 중지하자 일반99.61/Ki205.93/강타53.14px 이동과 현행5시전·Ki3타 Tier3명중·처치·악의구폭발을 확인했다. 이는 지형/GPU/자연플레이 증거가 아니며 Core 수식 변경0이다. 영상용 최소 보완은 아직 미적용으로 남긴다. 실제 최종 영상의 이동 게이트와 스프라이트 추종까지 확인한 뒤 판정하며 상세 근거는 [RM-1 구현 기록](../5.1임펙트디자인/UNITY_RM1_VFX_IMPLEMENTATION_20261028.md)의 최신 절을 따른다.
+
+
+## r4 동일소스 재시도 후 실제 영상 판정
+
+같은 source65ead/Unity tree93d5f054의 재시도 `f9e9faf3`는6000.6.7f1/remodel-scenes1 빌드오류0·실제Player MCP파일/관리참조0을확인했다. 동일EXE M1 `c70b8dd3` 23/23 ok·정상종료/창/잔류/USER_SAVE0, 3D16초480PNG `48ca3efb` 안전0과Core SHA dc9493fe…/피해84083/현행5종Graph를확인했다. 새노레위참조와나란히16초실제재생및1x연속프레임을직접보았으나 교량회복바닥/가시접지/강타의점선원형테두리로시각FAIL이다. 이결과는이전첫600초실패를지우지않으며 기술통과를디자인PASS로올리지않는다. 바닥alpha0.016·지형샘플격자·기존Decal투영과넉백검수fixture의원인분리를MCP에서진행할예정이고, 현재Core수식·원본규칙변경0/MQ READY0/Desktop미갱신이다. 상세는RM-1최신절과I: `r4-영상-판정.json`을따른다.
+
+
+## 2026-11-01 r5 접지·투영·넉백 재작업 — 소스 후보/실제 GPU 미검증
+
+r4 빌드·M1 기술 PASS와 회복 바닥/가시 접지/강타 점선 테두리 VISUAL FAIL을 보존한다. 아래는 r5 소스 후보이며 MQ READY0·Desktop 미갱신이다.
+
+| 범위 | 확인 원인·변경·수치 | 검증 경계 |
+|---|---|---|
+| 가시 18개 | 기존 중앙 높이 사용으로 실제 collar 최대오차0.5548178m·바닥 최대뜸0.435781717m. 3D 각 조각 world XZ의 기존 GroundY+0.015m에 뿌리를 배치. 아래 tip은 매립. XY localY0.04m·폭0.22·높이0.28/0.46/0.64·전개/페이드·Core 반경 유지 | 같은 실제 Core 시전30틱의 런타임 진단18개는 RED0.5548178→GREEN0.015m. 첫 쿨다운 재시전의 조각0 결과는 무효로 보존, 900틱 경과 후 1영역/18개를 확인한 표본만 사용. 실제 수정 소스의 Unity 재컴파일/동작은 아직 미검증 |
+| 3D 지면 | 12×12 높이격자가 널빤지/지형 단절을 잇거나 관통. ImpactGroundPatch를 기존 M_SkillGround/URP DecalProjector로 변경: 지름2radius·깊이2m·pivot0·X90도·drawDistance60m·fadeFactor1·전용 clone 재질. XY는 기존 quad/MPB 경로 유지 | 같은 프레임 .016/.04/.06/.08 데칼은 다리 수신 정상·흙 수신0. 공통b673의 A2RootSurface DBuffer 수신 누락을 확인, 맵 소유자의 별도 표준수신 기술 변경이 필수 의존성. 미인수 맵/셰이더 복사0·이 의존성의 정식 인수 전 전체 바닥 PASS/통합 제출 금지 |
+| 바닥 마스크 | SG_SkillGround만 hard rim 제거. r=length((UV-.5)*Size)/max(Radius,.001), inside=1-smoothstep(.72,1,r), grain은 기존3항 사인, Color=lerp(FillColor,EdgeColor,.12*grain), Emission0, Alpha=saturate(inside*(.6+.4*grain)*Progress). 기존 ID/속성/GUID 유지·생성기 동기화 | SkillGround108객체·참조누락0·재질GUID 일치. XY SkillFloor/ContactFlash 그래프 불변. CPU 구조는 실제 시각 판정 아님 |
+| 회복·그을음 | 회복 fade최대3D0.06/XY0.016, 웹색 #b6ff54/#d5ff72·15틱 전개/마지막30틱 소멸·수증기크기0.9/alpha0.012·코어/파편0 유지. 가시fade0.2/강타0.28/얼음0.08 유지. 그을음도 같은3D투사 경로, 색 #1b1410·반경0.28/0.5m·fade0.6·2초·동시8 유지 | 같은프레임 알파 비교는 선택을 위한 진단이다. 새 마스크/수신을 포함한16초 Player 재판정 전 |
+| 실제 넉백 fixture | r3/r4 AIoff가 Core 넉백 이동루프도 건너뛰어21표적 이동0/검사exit2. 명시적 fixture만 AI루프 활성+매tick Stunned180 갱신으로 자발행동 억제. receipt normalKnockback/kiKnockback/slamKnockback에 시작점 대비 최대이동을 기록하고 각각>1px 요구 | 기존 Core 예행 일반99.61/Ki205.93/강타53.14px 이동 근거 유지. 새 실제 영상의 전후 Core trace 일치와 스프라이트 추종은 아직 미검증. 자연플레이 아님·Core 소스/수식 변경0 |
+| MCP 정상 마감 | boot e73821a4/Editor42796·자기A2/RX9070XT/D3D11·격리/무음. Play정지·dirty0·probe0·공식stop/잠금없음·예약반환. QA용 EditorBuildSettings 원래 byte/SHA 동일. 파생763개 보존/기존706 정확복구/신규57 GUID참조0 정리 | import-derived/editor-r5-floor 영수증. 그 뒤 소유 코드만 수정. Unity 자동파생을 제작 변경으로 stage하지 않음 |
+| 기존 CPU 검증 | r5 Runtime317소스·Unity참조125 C#오류0/기존경고473, 표현계약456 통과 | 이미 통과한 동일 검사를 반복하지 않음. Unity 임포트·M1·새 영상·공통/Desktop 검증을 대신하지 않음 |
+
+진단 원문: I:/EXODUSER-Storage/demo-art/impact/MCP-r5-가시-유효대조-결과.json, MCP-r5-회복-同프레임-결과.json, mcp-r3-captures/MCP-r5-*.png. 수정 전 원본은 before-ground-r5/와 before-knockback-r5/에 보존했다. 사용자 도타 보호 조건에 따라 dota2가 어느 PID로든 살아 있으면 새 Unity/Player/빌드/인코딩/무거운 검수를 시작하지 않는다. 가벼운 소스·문서·안전 체크포인트만 진행하며, 재개 전 실제 프로세스 부재와 기존 FIFO/메모리/무음·세이브 조건을 확인한다.

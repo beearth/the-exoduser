@@ -2,6 +2,28 @@
 
 ## 2026-10-31 r3 실제 검수와 r4 재질 재작업
 
+### r4 동일소스 재시도 빌드/M1 통과·실제 영상 FAIL — 현재 판정
+
+| 항목 | 실제 근거·재작업 |
+|---|---|
+| 빌드/파일 | source65ead/Unity tree93d5f054/Core tree424bcafff. 공식 `f9e9faf3` 6000.6.7f1/remodel-scenes1/Succeeded/오류0/3,833,796,213바이트·duration142230ms. 오류로그2건은인증/라이선싱진단으로분류. 실제212파일/160DLL·MCP파일/참조0. Runtime SHA `e79ef3ac7c5b11a7ad96baa49062acc3a4ebd1c8a913f355a4ece4bdb2f17016`, Core SHA `eb051ea6bd6b3ea81804247abeedfd9cd5663e0f0488d9a3bfadbc3d96cb7f3d`. 아래첫실패는별도보존 |
+| 같은EXE M1 | `c70b8dd3`, 23/23 ok·정상exit0·사용자창0/잔류0/USER_SAVE0/숨은Desktop닫힘 |
+| 실제3D 영상 | `48ca3efb`, 1600×900·480PNG/16초·안전0. Core SHA dc9493fe…/피해84083/시전10/5종Graph/실제악의구폭발6/critical drop0. 새노레위필드참조와3200×900 나란히16초실제CPU재생 ended/오류0/480디코드/드롭0/손상0, 같은배율32표본8보드와강타·악의구실제적중각12연속프레임을직접확인. 게임FPS/자연플레이PASS아님 |
+| 시각 판정 | **FAIL**. 독탄밝은반복선제거와3D입체명암은개선됐으나 교량회복바닥이거의안보임/가시덫접지가일정하지않음/강타바닥점선원형테두리가UI선처럼남음. 생성수로전체VFX PASS를대신하지않음. `r4-영상-판정.json`, `playback-material-r4/` |
+| 원인 분리 | 현행회복alpha0.016, 가시조각의중심높이재사용, 12×12메시와얇은교량판자경계관계를MCP에서분리확인한다. 현재URP의기존DecalFeature활성·M_SkillGround/M_ImpactScorch DecalGraph존재를확인했으며실표면투영재사용시험예정. 아직생산수정/높이측정PASS아님. GPU입자생성수와실제표시도분리확인 |
+| 보존/다음 | 촬영직후공식슬롯반환, 파생766보존/기존709정확복구/신규57GUID참조0정리/입력3959변경0. fetch공통b673변경0/HEAD65ead/INDEX0/UnityWORK0. UTC15:14:41 MCP원인검수큐끝접수·공식start90622 한건. 다음은바닥/가시/테두리와넉백검수보완후동일최종빌드전후·와이드검수. MQ READY0/Desktop미갱신 |
+
+### r4 첫 공통 빌드 시간제한 실패와 넉백 검수 공백 — 당시 기록
+
+| 항목 | 확인한 사실·남은 검수 |
+|---|---|
+| 고정 입력 | source `65ead27c3d83ff13b6f7f514c37da04bcc0aab09`, Unity tree `93d5f05496598836dd975973bd684eb4b7c4ab68`, Core tree `424bcafff2db426f3f63e12b0a37b45e37d8db3c`. 공통 대비 자체 Core 변경0 |
+| 첫 정식 빌드 | `PortVerification.Build` run `9de2257e`, duration603281ms·refresh119971ms·compile11543ms. C# compileErrors0/errorLogs0/USER_SAVE0이나600초 제한으로 exit-1/okfalse. 마지막577s 셰이더583/1536변형 준비. 빌드 성공·실행 검증으로 세지 않음 |
+| 실패 보존·재시도 | 미완성 출력은 I: `demo-art/impact/build-r4-fail1`, 공식 JSON/log byte·SHA 대조 사본과 실패manifest 보존. Library/ShaderCache 유지. 파생766 byte/SHA 보존·기존709 정확복구·자기신규57 GUID참조0 정리·입력3959 변경0. own 슬롯 반환 후 UTC14:50:02 Main→UI 뒤 큐끝 재접수. 같은소스/인수에 TimeoutSec1800만 적용한 단일 재시도 대기. 아직 새 빌드/M1/영상 미완료 |
+| r3 넉백 근거 정정 | 실제 `after-r3/core-trace.txt`의21표적/7구간 최대이동0px. 일반·Ki·강타 >1px 검사 `넉백-이동-검사.json`은 FAIL/exit2. 기존 영상은 넉백 이동 증거로 인정하지 않음. 원인은 fixture `EnemyAiEnabled=false`가 Core 적 넉백 루프도 중지하는 것. 런타임 넉백 수식 결함으로 확대 해석하지 않음 |
+| 격리 예행 | 기존 Core AI루프를 켜고 매tick fixture Stunned180으로 자발 행동만 중지하면 일반99.61/Ki205.93/강타53.14px 이동. 현행5시전·Ki3타 Tier3명중·1처치·악의구 실제폭발 유지. `knockback-core-probe/result.json`. 지형/GPU/자연플레이 증거 아님 |
+| 후속 최소 보완 | 아직 생산 코드 미적용. 영상 fixture에 같은 Core 루프/명시적 검수기절과 실제이동 필수 게이트를 연결한 뒤 같은 최종 EXE 전후 Core SHA·1x 연속 화면의 pose hold 후 발밑/스프라이트 추종·전후3D/XY/21:9/32:9를 검수한다. 정지/카운터로 PASS 대체 금지 |
+
 ### r4 MCP 후 수락 공통 b673 결합 — 새 Player 검수 전
 
 | 항목 | 현행 결합 상태 |
@@ -152,3 +174,20 @@ r2 생성기는 Windows에서도 신규 VFX/YAML/meta를 LF·행끝 공백 없�
 1. RM-INT 1단계가 `unity/main`에 들어오면 VFX 브랜치에 최신 `unity/main`을 비강제 병합하고 `VfxWorld.ToWorld`만 `RemodelWorld.ToWorld`로 전환한다. RM-INT 작업 브랜치 자체를 합치지 않는다.
 2. Unity 순번·메모리 조건을 확인한 뒤 그래프 임포트, 컴파일, RM-1 샌드박스 비교 캡처를 실행한다. 오류가 나면 원인 수정 뒤 1회만 재시도한다.
 3. 병합 전 Player 빌드 영수증을 유니티 통합 담당에게 전달한다. 통합 후 실제 GPU Player와 `--remodel3d` 1x 화면에서 웹 기준 크기·톤·탄막 가시성을 판정한다. 캡처에는 적 독 탄이 겹친 장면을 포함한다.
+
+
+## 2026-11-01 r5 접지·투영·넉백 재작업 — 소스 후보/실제 GPU 미검증
+
+r4 빌드·M1 기술 PASS와 회복 바닥/가시 접지/강타 점선 테두리 VISUAL FAIL을 보존한다. 아래는 r5 소스 후보이며 MQ READY0·Desktop 미갱신이다.
+
+| 범위 | 확인 원인·변경·수치 | 검증 경계 |
+|---|---|---|
+| 가시 18개 | 기존 중앙 높이 사용으로 실제 collar 최대오차0.5548178m·바닥 최대뜸0.435781717m. 3D 각 조각 world XZ의 기존 GroundY+0.015m에 뿌리를 배치. 아래 tip은 매립. XY localY0.04m·폭0.22·높이0.28/0.46/0.64·전개/페이드·Core 반경 유지 | 같은 실제 Core 시전30틱의 런타임 진단18개는 RED0.5548178→GREEN0.015m. 첫 쿨다운 재시전의 조각0 결과는 무효로 보존, 900틱 경과 후 1영역/18개를 확인한 표본만 사용. 실제 수정 소스의 Unity 재컴파일/동작은 아직 미검증 |
+| 3D 지면 | 12×12 높이격자가 널빤지/지형 단절을 잇거나 관통. ImpactGroundPatch를 기존 M_SkillGround/URP DecalProjector로 변경: 지름2radius·깊이2m·pivot0·X90도·drawDistance60m·fadeFactor1·전용 clone 재질. XY는 기존 quad/MPB 경로 유지 | 같은 프레임 .016/.04/.06/.08 데칼은 다리 수신 정상·흙 수신0. 공통b673의 A2RootSurface DBuffer 수신 누락을 확인, 맵 소유자의 별도 표준수신 기술 변경이 필수 의존성. 미인수 맵/셰이더 복사0·이 의존성의 정식 인수 전 전체 바닥 PASS/통합 제출 금지 |
+| 바닥 마스크 | SG_SkillGround만 hard rim 제거. r=length((UV-.5)*Size)/max(Radius,.001), inside=1-smoothstep(.72,1,r), grain은 기존3항 사인, Color=lerp(FillColor,EdgeColor,.12*grain), Emission0, Alpha=saturate(inside*(.6+.4*grain)*Progress). 기존 ID/속성/GUID 유지·생성기 동기화 | SkillGround108객체·참조누락0·재질GUID 일치. XY SkillFloor/ContactFlash 그래프 불변. CPU 구조는 실제 시각 판정 아님 |
+| 회복·그을음 | 회복 fade최대3D0.06/XY0.016, 웹색 #b6ff54/#d5ff72·15틱 전개/마지막30틱 소멸·수증기크기0.9/alpha0.012·코어/파편0 유지. 가시fade0.2/강타0.28/얼음0.08 유지. 그을음도 같은3D투사 경로, 색 #1b1410·반경0.28/0.5m·fade0.6·2초·동시8 유지 | 같은프레임 알파 비교는 선택을 위한 진단이다. 새 마스크/수신을 포함한16초 Player 재판정 전 |
+| 실제 넉백 fixture | r3/r4 AIoff가 Core 넉백 이동루프도 건너뛰어21표적 이동0/검사exit2. 명시적 fixture만 AI루프 활성+매tick Stunned180 갱신으로 자발행동 억제. receipt normalKnockback/kiKnockback/slamKnockback에 시작점 대비 최대이동을 기록하고 각각>1px 요구 | 기존 Core 예행 일반99.61/Ki205.93/강타53.14px 이동 근거 유지. 새 실제 영상의 전후 Core trace 일치와 스프라이트 추종은 아직 미검증. 자연플레이 아님·Core 소스/수식 변경0 |
+| MCP 정상 마감 | boot e73821a4/Editor42796·자기A2/RX9070XT/D3D11·격리/무음. Play정지·dirty0·probe0·공식stop/잠금없음·예약반환. QA용 EditorBuildSettings 원래 byte/SHA 동일. 파생763개 보존/기존706 정확복구/신규57 GUID참조0 정리 | import-derived/editor-r5-floor 영수증. 그 뒤 소유 코드만 수정. Unity 자동파생을 제작 변경으로 stage하지 않음 |
+| 기존 CPU 검증 | r5 Runtime317소스·Unity참조125 C#오류0/기존경고473, 표현계약456 통과 | 이미 통과한 동일 검사를 반복하지 않음. Unity 임포트·M1·새 영상·공통/Desktop 검증을 대신하지 않음 |
+
+진단 원문: I:/EXODUSER-Storage/demo-art/impact/MCP-r5-가시-유효대조-결과.json, MCP-r5-회복-同프레임-결과.json, mcp-r3-captures/MCP-r5-*.png. 수정 전 원본은 before-ground-r5/와 before-knockback-r5/에 보존했다. 사용자 도타 보호 조건에 따라 dota2가 어느 PID로든 살아 있으면 새 Unity/Player/빌드/인코딩/무거운 검수를 시작하지 않는다. 가벼운 소스·문서·안전 체크포인트만 진행하며, 재개 전 실제 프로세스 부재와 기존 FIFO/메모리/무음·세이브 조건을 확인한다.

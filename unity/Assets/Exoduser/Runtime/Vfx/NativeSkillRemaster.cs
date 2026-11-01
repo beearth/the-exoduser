@@ -166,7 +166,7 @@ namespace Exoduser.UnityPort.Vfx
         static void Place(Handle h,float x,float y,float lift=0){h.Go.transform.position=ImpactSpace.Point(x,y,lift);h.Go.transform.rotation=ImpactSpace.FloorRotation;h.Go.transform.localScale=Vector3.one;}
         void Floor(Handle h,float radius,uint fill,uint edge,float alpha,float emission)
         {
-            if(h.Patch==null)h.Patch=new ImpactGroundPatch(h.Go.transform,flat,-19000);
+            if(h.Patch==null)h.Patch=new ImpactGroundPatch(h.Go.transform,flat,-19000,ground);
             var core=NativeRemodel3D.Active?RemodelWorld.ToCore(h.Go.transform.position):new Vector2(h.Go.transform.position.x*100,-h.Go.transform.position.y*100);
             h.Patch.Draw(core.x,core.y,radius,Hex(fill),Hex(edge),alpha,emission);
         }
@@ -230,11 +230,17 @@ namespace Exoduser.UnityPort.Vfx
                 {
                     var p=h.Parts[i];float a=i*2.399963f,rr=r*Mathf.Sqrt((i+.5f)/h.Parts.Length);
                     p.localPosition=new Vector3(Mathf.Cos(a)*rr,spikes?.04f:.08f+Mathf.Sin(now*1.3f+i)*.03f,Mathf.Sin(a)*rr);
+                    // The collar is the root; the lower thorn tip stays buried.
+                    // A single center height cannot follow the bridge or uneven soil.
+                    if(spikes&&NativeRemodel3D.Active)
+                    {
+                        var root=p.position;root.y=NativeRemodel3D.GroundY(root.x,root.z)+.015f;p.position=root;
+                    }
                     p.localRotation=Quaternion.Euler(spikes?12:0,i*137.5f,spikes?Mathf.Sin(i*3)*20:0);
                     float size=spikes?(.28f+.18f*(i%3)):.045f;p.localScale=new Vector3(spikes?.22f:size,spikes?size*deploy*fade:size*fade,spikes?.22f:size);
                 }
                 Surface(h,spikes?0x30281bU:0xb6ff54U,spikes?0xb3a17cU:0xd5ff72U,spikes?.12f:0,now);
-                Floor(h,r,spikes?0x1c1610U:0xb6ff54U,spikes?0x66513aU:0xd5ff72U,fade*(spikes?.2f:.016f),spikes?0:.03f);
+                Floor(h,r,spikes?0x1c1610U:0xb6ff54U,spikes?0x66513aU:0xd5ff72U,fade*(spikes?.2f:NativeRemodel3D.Active?.06f:.016f),spikes?0:.03f);
                 Emit(h,now,z.X+Mathf.Cos(now*2)*r*45,z.Y+Mathf.Sin(now*2)*r*45,.12f,spikes?0xd9c8a2U:0xc8dda0U,spikes?0x766449U:0x708151U,0x26251c,.35f,.3f,.05f,.36f);
             }
             foreach(var w in sim.SlamWaves)

@@ -52,16 +52,12 @@ fn=next(o for o in objs if o.get('m_FunctionBody') and 'float soot' in o['m_Func
 fn['m_FunctionName']='SkillGround'
 fn['m_FunctionBody']='''
 float2 p = (UV.xy - 0.5) * float2(SizeX, SizeY);
-float r = length(p);
-float a = atan2(p.y,p.x);
+float r = length(p) / max(Radius,0.001);
 float grain = saturate(0.5 + 0.3 * sin(p.x * 23.0 + sin(p.y * 31.0)) + 0.2 * sin(p.y * 47.0));
-float rough = Radius * (0.985 + 0.015 * sin(a * 19.0));
-float aa = max(fwidth(r),0.006);
-float inside = 1.0 - smoothstep(rough-aa,rough+aa,r);
-float rim = (1.0-smoothstep(0.012,0.028,abs(r-rough))) * smoothstep(0.25,0.6,grain);
-Color = lerp(FillColor,EdgeColor,rim);
-Emission = EdgeColor * rim * EdgeGlow;
-Alpha = saturate(max(inside * (0.55 + 0.45 * grain), rim) * Progress);
+float inside = 1.0 - smoothstep(0.72,1.0,r);
+Color = lerp(FillColor,EdgeColor,0.12 * grain);
+Emission = 0;
+Alpha = saturate(inside * (0.6 + 0.4 * grain) * Progress);
 '''
 p=out/'SG_SkillGround.shadergraph';dump_multi(objs,str(p));meta(p)
 # The legacy boss arena is an XY sprite plane. DecalProjector cannot draw on its

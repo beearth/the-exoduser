@@ -13,7 +13,7 @@ namespace Exoduser.UnityPort.Vfx
         sealed class Scar { public ImpactGroundPatch Patch;public float Born=-10; }
         readonly Transform parent;
         readonly VisualEffectAsset asset;
-        readonly Material scarFlatBase,flashBase;
+        readonly Material scarFlatBase,scarGroundBase,flashBase;
         static Mesh contactQuad;
         readonly Burst[] bursts=new Burst[8];
         readonly Scar[] scars=new Scar[8];
@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort.Vfx
         public int PeakParticles {get;private set;}
         public bool Enabled {get;set;}=true;
         public Camera RenderCamera {get;set;}
-        public bool Ready {get{return asset!=null&&flashBase!=null&&scarFlatBase!=null;}}
+        public bool Ready {get{return asset!=null&&flashBase!=null&&scarFlatBase!=null&&scarGroundBase!=null;}}
         public bool HeroFrozen(float now) { return Enabled && now<heroUntil; }
         public bool EnemyFrozen(int id,float now) { return Enabled && response.Frozen(id,now); }
         public float Flash(int id,float now) { return Enabled?(float)response.Flash(id,now):0; }
@@ -40,6 +40,7 @@ namespace Exoduser.UnityPort.Vfx
             asset=Resources.Load<VisualEffectAsset>("VFX/Impact/VFX_ImpactBurst");
             flashBase=Resources.Load<Material>("VFX/Impact/M_ContactFlash");
             scarFlatBase=Resources.Load<Material>("VFX/Impact/M_SkillFloor");
+            scarGroundBase=Resources.Load<Material>("VFX/Impact/M_SkillGround");
             if(!Ready)Debug.LogError("[임팩트] 필수 타격 Graph/Shader Graph 재질 누락, 기존 접점 표시 유지");
         }
         public void Reset()
@@ -128,7 +129,7 @@ namespace Exoduser.UnityPort.Vfx
         void SpawnScar(float x,float y,float angle,bool heavy,float now)
         {
             int index=scarIndex++%scars.Length;var s=scars[index];
-            if(s==null)s=scars[index]=new Scar{Patch=new ImpactGroundPatch(parent,scarFlatBase,-18999)};
+            if(s==null)s=scars[index]=new Scar{Patch=new ImpactGroundPatch(parent,scarFlatBase,-18999,scarGroundBase)};
             var soot=new Color32(27,20,16,255);s.Patch.Draw(x,y,heavy?.5f:.28f,soot,soot,.6f,0);s.Born=now;
         }
         void Animate(float now)

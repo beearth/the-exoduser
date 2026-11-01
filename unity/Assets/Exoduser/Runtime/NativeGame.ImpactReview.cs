@@ -14,10 +14,11 @@ namespace Exoduser.UnityPort
     {
         [Serializable] sealed class ImpactReviewReceipt
         {
-            public string scope="실제 GPU Player 16초: 고정 입력·AI 중지·첫 표적1회 실제 처치/나머지 불사 표적·현행 5스킬과 독/가시/어둠 탄 겹침 fixture. 자연 전투·미이식 스킬 증거 아님";
+            public string scope="실제 GPU Player 16초: 고정 입력·AI 루프 활성/검수 기절180 갱신으로 자발 행동 중지·실제 넉백·첫 표적1회 실제 처치/나머지 불사 표적·현행 5스킬과 독/가시/어둠 탄 겹침 fixture. 자연 전투·미이식 스킬 증거 아님";
             public string device,coreTraceSha256; public bool world3D,baseline,passed;
             public int frames,contacts,dropped,damage,casts,spawned,peakParticles,skillGraphEvents,peakSkillHandles,poisonFrames,thornFrames,darkFrames;
             public int captureWidth,captureHeight;
+            public float normalKnockback,kiKnockback,slamKnockback;
             public int killedTargets;public bool killContactSeen;
             public bool kiThirdCastSeen,kiThirdHitSeen;public int kiThirdTier;
             public string[] graphSkills;public int coreMaliceBlasts,maliceBlastGraphEvents,droppedCritical;
@@ -38,7 +39,7 @@ namespace Exoduser.UnityPort
             float deadline=Time.realtimeSinceStartup+45;
             while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
             var sim=Simulation;var p=sim.Player;
-            sim.Config.EnemyAiEnabled=false;sim.SpawnHoles=null;sim.CrossbowAuto=false;sim.Stage.Enabled=false;
+            sim.Config.EnemyAiEnabled=true;sim.SpawnHoles=null;sim.CrossbowAuto=false;sim.Stage.Enabled=false;
             sim.Enemies.Clear();p.Iframes=10000;sim.Materials=1000;
             var rc=new ImpactReviewReceipt{device=SystemInfo.graphicsDeviceName,world3D=NativeRemodel3D.Active,baseline=!contactVfx.Enabled,
                 captureWidth=Screen.width,captureHeight=Screen.height,
@@ -65,14 +66,18 @@ namespace Exoduser.UnityPort
                 }
                 // Seed actor observations before damage; no fabricated hit is sent to the VFX view.
                 UpdateViews();
+                var starts=new Dictionary<int,Vector2>();foreach(var e in sim.Enemies)starts[e.Id]=new Vector2(e.X,e.Y);float sectionKnockback=0;
                 int hpBefore=0;foreach(var e in sim.Enemies)hpBefore+=e.Hp;
                 for(int f=0;f<length;f++,frame++)
                 {
                     impactReviewClock=frame/60f;
                     sim.Stage.Enabled=false;
+                    // Keep the accepted Core knockback loop live; suppress only voluntary AI in this explicit fixture.
+                    foreach(var e in sim.Enemies)e.Stunned=180;
                     sim.SetPlayerCombatInput(false,false,false);sim.SetMagicInput(section=="악의구"&&f<96);
                     sim.SetSkillInput(section=="가시덫"&&f==0,false,false,false,section=="지옥강타"&&f==0||section=="얼음보주"&&f==80,section=="회복영역"&&f==0,section=="얼음보주"&&f==0,false);
                     sim.Tick(0,0,p.X+300,p.Y,sectionIndex==0||sectionIndex==1&&f<220,false);
+                    foreach(var e in sim.Enemies)sectionKnockback=Mathf.Max(sectionKnockback,Vector2.Distance(starts[e.Id],new Vector2(e.X,e.Y)));
                     foreach(var feedback in sim.Feedback)if(feedback.Step==3)
                     {
                         if(feedback.Kind==FeedbackKind.Sample&&feedback.SampleKey=="sword_swing3"){rc.kiThirdCastSeen=true;rc.kiThirdTier=Math.Max(rc.kiThirdTier,feedback.Tier);}
@@ -88,6 +93,7 @@ namespace Exoduser.UnityPort
                     yield return null;yield return new WaitForEndOfFrame();
                     if(frame%2==0)ScreenCapture.CaptureScreenshot(Path.Combine(output,"frames","impact-"+(shot++).ToString("0000")+".png"));
                 }
+                if(sectionIndex==0)rc.normalKnockback=sectionKnockback;else if(sectionIndex==1)rc.kiKnockback=sectionKnockback;else if(sectionIndex==3)rc.slamKnockback=sectionKnockback;
                 int hpAfter=0;foreach(var e in sim.Enemies){hpAfter+=e.Hp;if(!e.Alive)rc.killedTargets++;}damage+=hpBefore-hpAfter;
             }
             rc.frames=shot;rc.contacts=contactVfx.Contacts;rc.dropped=contactVfx.Dropped;rc.damage=damage;rc.casts=sim.SkillCastCount;
@@ -97,7 +103,7 @@ namespace Exoduser.UnityPort
             rc.graphSkills=skillRemaster.SeenGraphSkills;rc.coreMaliceBlasts=sim.MaliceOrbBlasts-blastsBefore;rc.maliceBlastGraphEvents=skillRemaster.MaliceBlastEvents;rc.droppedCritical=skillRemaster.DroppedCritical;
             string traceText=trace.ToString();File.WriteAllText(Path.Combine(output,"core-trace.txt"),traceText);
             using(var sha=SHA256.Create())rc.coreTraceSha256=BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(traceText))).Replace("-","").ToLowerInvariant();
-            rc.passed=rc.captureWidth==width&&rc.captureHeight==height&&rc.world3D==NativeRemodel3D.Requested&&shot==480&&damage>0&&rc.killedTargets>=1&&rc.kiThirdCastSeen&&rc.kiThirdHitSeen&&rc.kiThirdTier==3&&rc.coreMaliceBlasts>0&&castKinds.Contains("spikeTrap")&&castKinds.Contains("giantSlam")&&castKinds.Contains("holyDome")&&castKinds.Contains("iceOrb")&&castKinds.Contains("fireball")&&(rc.baseline||rc.killContactSeen&&rc.contacts>0&&rc.spawned>0&&rc.peakParticles>0&&rc.skillAssetsReady&&rc.drawnSkills.Length==5&&rc.graphSkills.Length==5&&rc.maliceBlastGraphEvents>0&&rc.skillGraphEvents>0&&rc.poisonFrames>0&&rc.thornFrames>0&&rc.darkFrames>0);
+            rc.passed=rc.normalKnockback>1&&rc.kiKnockback>1&&rc.slamKnockback>1&&rc.captureWidth==width&&rc.captureHeight==height&&rc.world3D==NativeRemodel3D.Requested&&shot==480&&damage>0&&rc.killedTargets>=1&&rc.kiThirdCastSeen&&rc.kiThirdHitSeen&&rc.kiThirdTier==3&&rc.coreMaliceBlasts>0&&castKinds.Contains("spikeTrap")&&castKinds.Contains("giantSlam")&&castKinds.Contains("holyDome")&&castKinds.Contains("iceOrb")&&castKinds.Contains("fireball")&&(rc.baseline||rc.killContactSeen&&rc.contacts>0&&rc.spawned>0&&rc.peakParticles>0&&rc.skillAssetsReady&&rc.drawnSkills.Length==5&&rc.graphSkills.Length==5&&rc.maliceBlastGraphEvents>0&&rc.skillGraphEvents>0&&rc.poisonFrames>0&&rc.thornFrames>0&&rc.darkFrames>0);
             File.WriteAllText(Path.Combine(output,"impact-review.json"),JsonUtility.ToJson(rc,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();
             yield return new WaitForSecondsRealtime(.8f);Application.Quit(rc.passed?0:2);
