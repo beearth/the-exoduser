@@ -850,6 +850,17 @@ const HUD_ICON = {
 
 ## 2026-08-09 — 하단 오브 자원 링 (현행 구현)
 
+### Unity 이동 자원 표시 수정 후보 — 2026-11-01
+
+| 항목 | 후보 구현·검수 경계 |
+|---|---|
+| 사용자 보고 | `8dbdf205a-stage1-r5 --remodel3d`에서 패링 후 이동 자원 회복과 잔량을 확인할 수 없음. ST와 공용 기동게이지는 별개다. |
+| 표시 누락 | 기존 Unity는 `NativeHud.DrawChainGauge`의 Shift 슬롯 하단 3px 막대만 있고 우측 오브 `mobilityRing`/`mobilityRingTicks`가 없었음. 후보 `NativeHud.DrawMobilityRing`은 실제 `Simulation.HarpGauge/HarpGaugeMax`를 읽는다. |
+| 링 계약 | `NativeMobilityRing`: RGBA256², 우측 liquid 기준 inset11px·지름153px에 `ArtScale=.9` 적용. 상단부터 시계 방향 채움 `clamp(gauge/max,0,1)`, 노랑 RGB255/204/51·alpha.95. 45자원마다 3° 검정 구분선 alpha.9, 빈 트랙 alpha.28 유지. 0일 때도 트랙/칸 유지, 최대치가 양의 유한수가 아니면 숨김. 안쪽 5px 밴드·1.5px 페더, 같은 비율/칸 간격은 텍스처 재업로드 없음. 기존 Shift 막대·ST 표시 보존. |
+| 패링 회복 | 최신 소스 `HurtPlayer`와 실제 배포 `Exoduser.Core.dll`의 Q/E 성공 경로를 격리 재현해 일반 +20·최대225 cap 확인. 빨콩 +10/무지개 +30은 순수 규칙 검사. 피해·판정·회복량은 이번 변경0. 사용자의 실제 입력 실패 원인은 이 검사만으로 해결·부정하지 않는다. |
+| 기술 검수 | `unity/Tools/mobility-hud/MobilityHudTests.csproj` Core/실제DLL/래스터26검사 PASS. Runtime+Core309파일 독립 C# 컴파일 오류0·기존 경고 존재. Unity Editor/Player/실게임 시각·16:9/21:9/32:9 검수와 공통/Desktop 적용은 미완료. |
+| 차단·재개 | 공식 `exo-unity.ps1 status -Json`에서 null→TimeSpan 변환 오류 재현. 공용 잠금/예약 강제 변경0·새 Player0·사용자 세이브0. 실행기 복구 후 NTFS 작업본에서 정식 빌드/M1 및 소모→Q/E 성공→노란 링 증가의 실제 입력 검수 필요. 상태 NOT_READY/디자인 미검수. 근거 `I:/EXODUSER-Storage/mobility-hud/20261101/`. |
+
 > `game.html`의 `updateHUD()` 빠른 경로가 오브 수위와 링을 함께 갱신한다. 좌측의 파란 링은 방어용 에너지 쉴드, 우측의 노란 링은 **Shift 사슬기동 게이지**다. 사슬기동은 기존 `_harpGauge`를 소비·재생하므로, ST(`P.st`)와 동일시하지 않는다.
 
 | id / DOM | 한글명 | 위치·색상 | 갱신 원본·공식 | 표시 규칙 | 적용 위치 |

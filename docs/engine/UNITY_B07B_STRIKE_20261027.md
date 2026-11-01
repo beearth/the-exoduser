@@ -15,7 +15,7 @@ B07 Core(`UNITY_B07_CORE_20261026.md` §6 "구현하지 않은 것")의 후속. 
 | kiGather 해방 | `_kgRelease`가 `_sBashChgMul`(1~3)을 세팅하고 같은 sBash로 진입 → 같은 타격에 배율만 곱해짐 | 기존 `SBashChgMul` 경로 그대로, 타격이 이 배율을 읽음 |
 | Q 캔슬 | `sRecover` 중 Q → 보호막 | `TickPlayerCombat` Q 진입 조건에 `sRecover` 추가 |
 | parryBank | 적 근접 패링 `P.parryBank += e.atk||10`, 보스 반격 `+= _pd` | `Simulation.ParryBank`, `Parry`(`e.atk||10`)·`TryParry`(반격 피해) |
-| 기동 게이지 HUD | Shift 슬롯 아래 3px 막대, 폭 = 게이지/최대, 색 `#44ffaa`(가득) / `#88ccff`(반 이상) / `#ff8844` | `NativeHud.DrawChainGauge` |
+| 기동 게이지 HUD | Shift 슬롯 아래 3px 막대, 폭 = 게이지/최대, 색 `#44ffaa`(가득) / `#88ccff`(반 이상) / `#ff8844`. 2026-11-01 후보는 우측 오브의 노란 분할 링을 추가, 실제 Player·공통·Desktop 미검수/미반영 | `NativeHud.DrawChainGauge` + 후보 `DrawMobilityRing`/`NativeMobilityRing`; [계약·26검사·실행기 차단](../3.1%20ui%20hud%20디자인/exoduser-hud-redesign.md#unity-이동-자원-표시-수정-후보--2026-11-01) |
 
 ## 2. 검증
 

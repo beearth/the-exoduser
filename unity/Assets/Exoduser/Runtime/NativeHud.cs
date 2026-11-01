@@ -16,6 +16,8 @@ namespace Exoduser.UnityPort
         readonly RenderTexture hp,mana,shield,eye;
         readonly Texture2D hpFrame,mpFrame,bar,icon;
         Texture2D labelCleanBar;
+        Texture2D mobilityTexture;
+        NativeMobilityRing mobilityRing;
         readonly Font textFont,numberFont;
         GUIStyle hpNumber,maximum,resourceNumber,resourceLabel,tooltip,keyLabel;
         HudValues values;int tick=-1,slowTick=-1;bool[] eyes=new bool[4];
@@ -88,6 +90,7 @@ namespace Exoduser.UnityPort
             if(labelCleanBar==null)labelCleanBar=BuildLabelCleanBar();
             var oldColor=GUI.color;GUI.color=new Color(.8f,.8f,.8f);NativeUiAudit.DrawTexture(slotBar,labelCleanBar??bar,ScaleMode.StretchToFill,true);GUI.color=oldColor;
             Globe(dock.LeftLiquid,dock.LeftFrame,false);Globe(dock.RightLiquid,dock.RightFrame,true);
+            DrawMobilityRing(dock.RightLiquid,simulation);
             Rect lmb=dock.ActiveSlot;
             if(activeAttack=="kiSlash"){
                 var insetIcon=new Rect(lmb.x+3*scale,lmb.y+3*scale,lmb.width-6*scale,lmb.height-6*scale);
@@ -147,6 +150,19 @@ namespace Exoduser.UnityPort
                 if(values.StaminaValid)ResourceText(wrap,1,"ST",values.StaminaCurrentText,values.StaminaMaximumText,new Color(.533f,.867f,.533f));
             }
         }
+        void DrawMobilityRing(Rect wrap,Simulation simulation)
+        {
+            if(simulation==null)return;
+            if(mobilityRing==null){
+                mobilityRing=new NativeMobilityRing();
+                mobilityTexture=new Texture2D(NativeMobilityRing.Size,NativeMobilityRing.Size,TextureFormat.RGBA32,false){name="Mobility gauge ring",filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp};
+            }
+            if(mobilityRing.Update(simulation.HarpGauge,simulation.HarpGaugeMax)){
+                mobilityTexture.LoadRawTextureData(mobilityRing.Pixels);mobilityTexture.Apply(false,false);
+            }
+            const float s=NativeHudDockLayout.ArtScale;
+            NativeUiAudit.DrawTexture(new Rect(wrap.x+NativeMobilityRing.Inset*s,wrap.y+NativeMobilityRing.Inset*s,NativeMobilityRing.Diameter*s,NativeMobilityRing.Diameter*s),mobilityTexture,ScaleMode.StretchToFill,true);
+        }
         void ResourceText(Rect wrap,int side,string name,string current,string max,Color color)
         {
             const float s=NativeHudDockLayout.ArtScale;float x=wrap.x+side*wrap.width/2,w=wrap.width/2;
@@ -186,6 +202,6 @@ namespace Exoduser.UnityPort
             }finally{Release(h);Release(m);}
         }
         static void Release(UnityEngine.Object value){if(Application.isPlaying)UnityEngine.Object.Destroy(value);else UnityEngine.Object.DestroyImmediate(value);}
-        public void Dispose(){foreach(var rt in new[]{hp,mana,shield,eye}){rt.Release();Release(rt);}Release(labelCleanBar);Release(material);}
+        public void Dispose(){foreach(var rt in new[]{hp,mana,shield,eye}){rt.Release();Release(rt);}Release(labelCleanBar);Release(mobilityTexture);Release(material);}
     }
 }
