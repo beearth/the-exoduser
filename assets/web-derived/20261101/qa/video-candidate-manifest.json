@@ -1,0 +1,31 @@
+{
+  "source_commit": "58956eec7d35873d229d94d5244cb73f665ef49e",
+  "source_path": "video/world_intro_v22b_steam.mp4",
+  "source_git_blob": "2b4770ff9ccba8d496673af52bdd6c8f37e8491e",
+  "source_sha256": "3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f",
+  "source_bytes": 102204634,
+  "candidate_path": "candidates/world_intro_v22b_steam.web.mp4",
+  "candidate_sha256": "c2795c9014b8a2035f307807666a1a952b5c2962acb6c4f31d319cd73345ae28",
+  "candidate_bytes": 75253813,
+  "mime": "video/mp4",
+  "video": "H.264 High yuv420p 1920x1080 30 fps",
+  "audio": "AAC LC 48000 Hz stereo stream copy",
+  "duration_seconds": 113.701,
+  "video_frames_source": 3410,
+  "video_frames_candidate": 3410,
+  "audio_packets_source": 5331,
+  "audio_packets_candidate": 5331,
+  "audio_adts_sha256_both": "12a99a49ea61618dc4c8c23aa921cf984ae9f0f7219bea1df50fe1411aed9435",
+  "full_video_ssim_all": 0.991173,
+  "full_video_psnr_average_db": 48.662197,
+  "full_video_psnr_min_db": 42.73157,
+  "sampled_1x_frames_seconds": [
+    5,
+    45,
+    90
+  ],
+  "sampled_1x_visual_verdict": "PASS",
+  "ultrawide_16_21_32_web_preview": "PENDING",
+  "silent_preview": "review/silent-preview-87-93.mp4",
+  "rebuild_command": "ffmpeg -i ORIGINAL -map 0:v:0 -map 0:a:0 -c:v libx264 -preset medium -crf 20 -threads 2 -pix_fmt yuv420p -c:a copy -movflags +faststart WEB.mp4"
+}
