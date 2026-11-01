@@ -1,6 +1,6 @@
 # Mac 지면 데칼 receiver 후보 — 2026-11-01 KST
 
-상태: **후보 브랜치 전용, 평면 fixture 및 실제 A2 세 지점 GPU 수신 PASS; 실제 맵 VISUAL VERDICT RETOUCH**. 공통 `unity/main` 채택이나 맵 전체 완료를 뜻하지 않는다. 맵 제작 가이드 v0.9 전체와 `_MAP_SSOT_INDEX.md`를 선행 확인했다. 지면 수신은 구조물과 흙의 접지 기술 의존성일 뿐, geometry·collision·배치·카메라 설계·R8 아트 수정은 이번 범위가 아니다.
+상태: **후보 브랜치 전용, 평면 fixture 및 실제 A2 세 지점 GPU 수신 PASS; QA projector 제한은 부분 개선, 실제 맵 VISUAL VERDICT RETOUCH**. 공통 `unity/main` 채택이나 맵 전체 완료를 뜻하지 않는다. 맵 제작 가이드 v0.9 전체와 `_MAP_SSOT_INDEX.md`를 선행 확인했다. 지면 수신은 구조물과 흙의 접지 기술 의존성일 뿐, geometry·collision·배치·카메라 설계·R8 아트 수정은 이번 범위가 아니다.
 
 |항목|정확 계약|
 |---|---|
@@ -174,3 +174,73 @@ NEXT PASS: 실제 효과의 projector 범위/receiver 분리 설계, 자연 이�
 원인 가설: 기존 QA projector는 `(x,surfaceY+2,z)`, 크기 `(3,1.4,6)`, pivot0, 90° 하향, URP 기본 `startAngleFade=endAngleFade=180°`(각도 제한 비활성)였다. URP 17.6 설치 소스의 `DecalProjector`는 깊이를 `size.z`, 표면 법선 각도 감쇠를 `startAngleFade/endAngleFade`로 제공하고 `DecalEntityManager`는 180°에서 감쇠를 끈다. 이 넓은 투영 상자가 목교 난간과 수직 옆면을 포함한 것이 1x 침범의 근거다. 두 custom receiver의 6줄 DBuffer 수신은 평면 양성대조와 실제 흙/뿌리에서 작동하므로, 현 증거만으로 shader 자체의 침범 결함으로 단정하지 않는다. 제품 `VfxBridge` 일반 projector는 깊이2u, poison stain도 깊이2u, Ki scar도 깊이2u이고 각도 감쇠는 별도로 지정하지 않는다. 이 비교는 제품 효과의 실제 침범 측정이 아니다.
 
 이번 제한 후보는 **QA helper만** `(x,surfaceY+.04,z)`, 크기 `(3,1.4,.45)`, 시작각45°·끝각70°로 둔다. 같은 projector 재질/색·footprint x/y·세 anchor·실제 카메라·ROI·`GroundMapMeasure` 필터와 판정 기준은 유지한다. 투영 두께 .45u는 root anchor의 지형 차이 .164466u를 포함한다. 상향 흙/뿌리/판재 수신이 유지되고 난간/수직면 침범이 줄어드는지 **새 GPU/1x**로 판정하며, 경계 잘림이 생기면 실패로 기록한다. 제품 projector·Renderer·맵 mesh/material/transform·두 shader blob은 바꾸지 않는다. 이 후보를 자연 VFX 완성으로 부르지 않는다.
+
+## 제한 후보 실제 Player 결과 — 2026-11-01 KST
+
+후보 코드 checkpoint `bdbac683f3307d43b83eabf50e6023b0234cd833`를 원격에서 확인한 뒤 기존 격리 QA 프로젝트에 helper SHA-256 `6278d7bfeacd5540ea9db77f9850c8287e6afc16055821b516cb64d5b23955c5`를 byte 일치로 반영했다. 새 [ARM64 빌드 영수증](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-limit-20261101/build-receipt.json)은 Unity 6000.6.7f1·오류0이다. 같은 새 앱의 [M1 영수증](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-limit-20261101/m1/m1-check.json)은 23/23 `ok`·exit0이고, 이어서 같은 앱의 [실제맵 GPU 영수증](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-limit-20261101/map/ground-map-receipt.json)은 세 지점×두 직접 RT의 `passed=true`, Metal/DBuffer/MRT8/HD2D와 QA 설정 깊이 .45u·중심 +.04u·각도 45/70°를 기록했다. 1920×1080은 실제 창이며 3840×1080은 직접 GPU RT이다. off-A/off-B/on은 각 지점·해상도 안에서 yield 없는 같은 world/light/camera/time으로 캡처했다. 실창 PNG는 별도 프레임·HUD 출처다.
+
+| 지점/RT | 기존 필터 내부 변화 → 제한 후보 | 기존 raw 효과 비영점 → 후보 | 기존 raw ROI 밖 → 후보 | raw 효과 최대 채널차 기존 → 후보 |
+|---|---:|---:|---:|---:|
+| 시작 흙 1920 | 16,130 → 16,130 | 49,793 → 49,791 | 32,036 → 32,034 | 160 → 160 |
+| 시작 흙 3840 | 15,890 → 15,890 | 65,751 → 65,749 | 48,341 → 48,339 | 160 → 160 |
+| 뿌리 경계 1920 | 9,720 → 8,830 | 64,296 → 63,431 | 52,989 → 52,984 | 176 → 176 |
+| 뿌리 경계 3840 | 9,723 → 8,834 | 103,821 → 102,957 | 92,546 → 92,541 | 176 → 176 |
+| 목교 1920 | 16,246 → 15,156 | 47,872 → 46,816 | 27,800 → 27,800 | 189 → 181 |
+| 목교 3840 | 15,954 → 14,864 | 110,034 → 108,932 | 90,562 → 90,562 | 189 → 187 |
+
+모든 행의 **기존 필터 ROI 밖과 후보 필터 ROI 밖은 각각 0**이다. raw ROI 밖 비영점은 off 반복의 최대 4~6 채널차와 미세한 화면 변화도 세므로 0이 아니다. 기존 이미지도 같은 Swift/AppKit RGB 바이트 분석기로 다시 계산했으며, 필터 내부 수는 기존 Unity 영수증의 여섯 값과 정확히 일치한다. 새 영수증의 `rawSelfChanged/rawSelfMax`도 각 행에 남겼다. [고정 mask 원본 집계](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-limit-20261101/baseline-raw-masks.txt)와 [후보 집계](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-limit-20261101/candidate-raw-masks.txt)은 같은 분석기/좌표를 썼다. 좌표는 PNG 상단 원점, 3840은 x에 +960px만 이동한다.
+
+| 1920 고정 1x 영역 `[x0,y0,x1,y1)` | 기존 필터 변화 → 후보 | raw 비영점 기존 → 후보 | 판정 |
+|---|---:|---:|---|
+| 흙 중심 `[880,575,1040,635)` | 9,311 → 9,311 | 9,482 → 9,482 | 바닥 수신 유지 |
+| 뿌리 중심 `[850,560,980,650)` | 7,150 → 7,150 | 7,495 → 7,495 | 중심 수신 유지 |
+| 뿌리 끝 `[1015,620,1100,700)` | 845 → 180 | 936 → 280 | 쐐기 범위 축소, 끝에 남음 |
+| 목교 판재 `[880,585,1040,660)` | 8,577 → 8,563 | 8,855 → 8,843 | 발밑 수신 거의 유지 |
+| 목교 왼쪽 난간 `[825,520,870,575)` | 727 → 207 | 832 → 314 | 난간 침범 감소, 잔존 |
+| 목교 오른쪽 옆면 `[1050,605,1090,705)` | 788 → 452 | 940 → 646 | 옆면 침범 감소, 잔존 |
+
+3840에서도 뿌리 끝 844→180, 목교 판재 8,667→8,653, 왼쪽 난간 727→207, 오른쪽 옆면 788→452로 같은 방향이었다. [후보 목교 1920 1x](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-limit-20261101/map/actual-wood-bridge-1920-1x.png), [3840 1x](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-limit-20261101/map/actual-wood-bridge-3840-1x.png), [뿌리 1920 1x](/Users/fordeargamers/exoduser-wt/_out/mac-ground-receiver-limit-20261101/map/passage-root-boundary-1920-1x.png)에서 부분 축소와 잔존을 육안 확인했다. 흙은 기존과 같은 크기로 보인다. 기존 raw/off 이미지도 보존했다. 이 결과는 깊이·법선 각도 범위가 침범에 기여한다는 직접 비교이며, 남은 수직/경사 부위는 투영 상자 안의 기하와 뿌리 자체 receiver 표면이므로 이 QA 설정만으로 분리되지 않는다. sharp cyan 시험색·사각 footprint를 실제 회복/강타 VFX 결함으로 해석하지 않는다.
+
+이전 평면 앱의 실행파일/`Exoduser.Runtime.dll` SHA-256은 `b05687675c76903bd47cac8c5e674aea8f581c3add915c2f21a48e2e10b626d7` / `2dcde8baf109c048c061e18c39c79421e97ad8da8a028080f2d1f6c2d3edb7bb`, 이전 실제맵 앱은 `46bb5f84cd61361ef0ffde663926ab1ef3c803fad27891eed82e5d25ac889b17` / `f1237c3991daa00516e87353c2cf6854bc2a2b2acafad79ef0e5cac8efb5ad3a`, 이번 제한 앱은 `b00ece92144af709c87a20ad4466e2dc22a3a889a4035daacd5dc4dae13759ec` / `0cbb1a4748d6c002f8019239a2ea33399c481ddb8319d611b67811a4ed2823f5`다. 세 앱 모두 해당 경로 `Contents/Resources/Data/Managed/Exoduser.Runtime.dll`이 존재한다. 이번 Core DLL SHA는 기존과 같은 `7b3414c9381862d681258347c9e5e54f11eaf6e6d753cde14d476cb6c9395ab3`; 두 custom shader blob SHA도 상단 표의 `93896381…`/`e49e7350…` 그대로다. 빌드 후 소유 Unity tree는 checkpoint와 diff0이며 최종 보고 commit에서는 docs만 바뀐다. QA 복제 프로젝트에는 이전 Unity import가 만든 `.meta` 및 URP/scene/project 직렬화 차이가 남아 있어 저장소 전체 Unity tree와 byte 동일하다고 주장하지 않는다. 이번 수동 이식한 QA helper는 source와 `cmp` 동일이고, 제품 소스·두 shader blob은 최종 tree에 그대로 남았다.
+
+빌드→M1→맵 Player 각각 전후 일반 사용자 저장 11항목(파일4·부재5)의 존재·크기·SHA가 같고 고유 QA sandbox를 사용했다. 두 Player 모두 `QA_MEDIA_DRAIN_COMPLETE` 뒤 exit0, 잔여 게임 Player/Editor0이다. 맵 영수증은 Listener pause·volume0·출력 sample peak0·Direct Video0을 기록한다. OS 물리 청각 측정은 아니다. 제품 전역 receiver/layer/두 shader를 바꾸지 않았으므로 실제 효과를 특정 receiver로만 제한하려면 별도 제품 rendering-layer/receiver 설정과 기존 맵 표면의 영향 검수가 필요하다. 이 단위에서는 제안만 남긴다.
+
+## MAP PRODUCTION REPORT (§23) — 제한 후보
+
+```text
+================= MAP PRODUCTION REPORT =================
+STAGE: CH1/A2 실제 세 지점 QA projector 깊이·각도 원인 분리
+MASTER
+- silhouette/regions/main route/side spaces: 기존 맵 불변, 전체 구성 시각 검수 없음
+OUTER MASS
+- LEFT/RIGHT/TOP/SOUTH/major holes: 제작·수정·검수 없음
+LARGE
+- source assets: 기존 두 custom receiver shader·RM1 QA 재질·기존 목교
+- composites/overlap/repeated silhouette: 변경 없음; 고정 1x 세 접지 지점만 비교
+MEDIUM
+- connections/remaining holes: 뿌리 끝과 목교 발밑만 국소 비교, 전체 연결 검수 없음
+GROUND
+- shadow: 별도 그림자/DepthNormals draw 계측 없음
+- contamination: 필터 ROI 밖 양쪽0, raw 비영점은 별도 기록; 난간727→207·옆면788→452·뿌리 끝845→180 잔존
+- structure integration: 흙9311→9311·뿌리 중심7150→7150·목교 판재8577→8563, 제한 후보 부분 개선
+PLAYABLE
+- main arenas/travel space/breathing space/threat space/combat readability: 제작 없음; 자연 이동·전투 검수 없음
+LANDMARK
+- primary/secondary/tertiary: 불변·검수 없음
+CAMERA QA
+- START/EARLY: 기존 실제 카메라의 세 정지 anchor, 1920 실창·1920/3840 직접 RT 1x
+- ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT: 순회·검수 없음
+TECH QA
+- route/collision/pageerror/404: 이번 변경 없음·전체 검수 없음
+- seam: root 경사 쐐기와 목교 난간/옆면 감소하나 잔존
+- loading: 새 ARM64 앱 M1 23/23, 실제맵 Player 정상 종료
+- performance: GPU 시간·FPS 계측 없음
+FILES
+- stage-owned: NativeGame.GroundReceiverCapture.cs QA helper, receiver 보고·CHANGELOG
+- concurrent touched/unrelated touched: 없음
+GIT
+- staged/commit/push: 후보 branch bdbac683 checkpoint 후 최종 docs commit, nonforce remote 확인
+- deploy/common merge: 없음
+VISUAL VERDICT: RETOUCH (제한 후보 부분 개선; 실제맵/Impact R4 기존 판정 유지)
+NEXT PASS: 실제 제품 효과의 projector별 footprint/수신 layer 설계와 회귀, 자연 이동·전투/카메라 검수. 패스 중 keyword·DepthNormals 직접 trace는 미계측.
+```
