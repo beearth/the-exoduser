@@ -1,5 +1,7 @@
 # Unity Mac 인수 — 2026-10-24
 
+> 2026-11-01 현행: 캐릭터 개수 제한·임의64KiB 제한 제거, payload v1/2 읽기·v2 쓰기와 v1 raw backup 보호. 실제 Mac Player231검사 PASS, 일반 앱 `/Users/fordeargamers/Applications/EXODUSER.app` 설치·실행 완료, 정상 제품 Win64 빌드 완료(Windows 실행 미검증). 1920 목록 시각 PASS/3840 미검증, QA preferences 한 파일 최초 원문 복구 미확인. 아래 날짜별5슬롯·세션/미구현·NOT_READY 기록은 당시 이력이며 현재 계약은 [실제 인수](UNITY_MAC_CHARACTER_CAPACITY_QA_20261101.md)를 따른다.
+
 > 2026-10-24 원본 기준 정정: 이 문서의 “최신 v22b / 사용자 최신 override”는 승인 근거 미확인으로 철회한다. v22b 복사/재생 검사는 해당 후보의 결과만 뜻한다. [원본 대조](UNITY_SOURCE_BASELINE_20261024.md).
 
 ## 2026-10-25 현행 상태
@@ -49,3 +51,7 @@ Mac 후속:6000.6.7f1 별도복사본 compile/verify 및ARM64일반앱 build오�
 
 
 2026-10-25 중단후재개: df80b8f2f 원격백업완료. 기존unity자동화TOML이이전위치에없어현재상태/실제예약wake를재확인하지못했다(view는카드만반환). 중복생성0. pause/resume·focus9/9및새버튼구현은[후속기록](UNITY_MAC_LOBBY_CONTROLS_20261025.md)참조.
+
+## 2026-11-01 정상 Mac 패키지 서명 정규화
+
+`unity/Tools/normalize-mac-app.py`는 고유 백업을 만든 뒤 내부 실행파일/CFBundleExecutable만 ASCII EXODUSER로 맞추고 로컬 ad-hoc 서명→strict/deep 검증을 수행한다. CFBundleName/id·저장경로·Core/Runtime bytes는 유지한다. 새 `--receipt`가 필요하며 `--check`는 읽기 전용이다. 정상 설치본과 ZIP 재전개본에서 검증했다. 정상 제품 표시명은 `EXODUSER · Unity 이식 검증판`, id는 `com.ForDearGamers.EXODUSER----Unity-----------------`다. 전체 제품/231검사·서명 실패 원인·QA preferences 예외·Win64 수신 범위는 [인수 기록](UNITY_MAC_CHARACTER_CAPACITY_QA_20261101.md)을 따른다.

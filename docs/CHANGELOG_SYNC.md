@@ -57327,3 +57327,17 @@ source9dd5991/ARM64 오류0. 캐릭터 표시10PNG·영상3/3, 입장20/20, hove
 2026-11-01 Mac 승인 로고 QA 무음 계측: 첫 로고 앱의 타이틀·인장·로비 실제 1x 캡처 30/30 및 M1 23/23 통과. UI 자산 캡처 영수증에 Listener pause/volume/outputPeak와 Direct VideoPlayer 수를 추가해 후속 앱에서 명시 검증. [결과·경계](engine/UNITY_MAC_SOLID_LOGO_20261101.md).
 2026-11-01 Mac 로딩/승인 로고 최종 검수: 로딩 커밋 `00d5f2b5` ARM64 build errors0·M1 23/23·GUI 팁48+원화68/4해상도/폴백4·무음0·일반 저장11 불변. 후속 승인 로고 커밋 `04c9f974` 별도 공식 build errors0·M1 23/23·타이틀/인장/로비 1x UI31/31·Listener peak0/Direct0·저장11 불변. 표본 원화/로고 영역 visual PASS, 자연 16종 전환과 영상 내 로고는 별도 범위. [로딩](engine/UNITY_MAC_LOADING_ART_OVERLAY_20261101.md), [로고](engine/UNITY_MAC_SOLID_LOGO_20261101.md).
 2026-11-01 Mac 로딩/승인로고 공통 반영·제품 앱: 정확 후보 `9d4692f75`를 `unity/main`에 비강제 fast forward/원격 SHA 대조. 일반 ARM64 제품 앱 별도 출력 build Succeeded/errors0, Runtime/Core SHA는 QA 앱과 동일, M1 23/23. 그러나 일반 번들 ID Preferences plist가 격리 M1에서 변경되고 OS sandbox 재시도에서도 재현되어 저장11 게이트 2회 실패; 두 번째 직전 bytes 복원, 첫 실행 전 bytes 복원 불가. 일반 제품 GUI·기존 앱 자동교체 HOLD. [정확 제품 경로·SHA·한계](engine/UNITY_MAC_LOADING_ART_OVERLAY_20261101.md#공통-반영과-일반-제품-앱--2026-11-01).
+
+2026-11-01 Mac 무제한 캐릭터 QA 준비: 순수 a9ddfbff + QA 전용 capacity phase만 별도 private index/branch에 구성. 공유 UI writer HEAD/index/WIP 보존. 전수 입력 manifest·6개 직접입장/재실행·v1 backup·5,000개 JsonUtility 검수 계약 추가. 실제 새 Player/build는 미완. [계약](engine/UNITY_MAC_CHARACTER_CAPACITY_QA_20261101.md).
+
+2026-11-01 Mac 캐릭터 제한 해제 실제 인수: 일반 ARM64 앱 설치·Player231검사 PASS(6개 생성/재실행/승격·v1 raw backup·5,000개/>64KiB·회귀·동일앱 M1·정상제품 M1/목록). 정상 Win64 build/errors0, Windows 실행 미검증. ASCII 내부 launcher+로컬 ad-hoc 서명 재현 도구 추가, 제품 표시명/id/저장경로 유지. ZIP readback·identity/SHA 확인. 1920 목록 시각PASS/3840 실패·미검증, QA preferences 최초 원문 없는1파일 복구 미확인 명시. 실제 게임 저장 변경0. 공유 UI checkout/index/private 작업 보존, pure branch로 공통 통합. [실제 인수](engine/UNITY_MAC_CHARACTER_CAPACITY_QA_20261101.md).
+
+## 2026-11-01 공통 소스·PC 수신 마감
+
+검증한 제품과 관련 코드/docs를 개인 QA 브랜치 및 unity/main에 비강제 fast-forward로 반영하고 원격473702c151734ac22ac930eec55c0b82e4ee8d7c 일치를 확인했다. 이번 수신 기록 후속은 docs만 변경하며 실제 빌드 입력 Assets/Packages/ProjectSettings는2a0eea00과 동일하다. 기존 UI 담당의 private4099c798eb를 보존했다.
+
+PC 담당이 I:/EXODUSER-Storage/character-capacity/20261101-unlimited/receiver/EXODUSER-Windows-x64-characters-20261101.zip 실제 수신을 회신했다. 크기2,172,346,702B 및 스트리밍 SHA256 c1cfd4497f3a3a1e4a4bc126a32718675c0ce0bb5547f4b9fbad2523cef6d6e4가 Mac 원본과 일치하며 transfer-receipt.json을 보존했다. Mac 서버도14:23:58 UTC에 허용 PC의 GET 응답 완료를 기록했다. 소유 PID3390만 SIGTERM으로 정상 종료0,14:24:30 UTC 종료 영수증 및3334 LISTEN 없음 확인. 위 준비 단계의 수신 미완 기록을 이 회수로 갱신한다. Windows 압축 재전개·실제 실행은 별도 판정이며 아직 완료로 쓰지 않는다.
+
+다음 성역 RETOUCH 한 건은 기존 Mac UI 담당에게 최소수정·원본 수치 보존·1920 실제 시각 재검수·개인 브랜치 산출물 회수 범위로 지시했다. 신규 팀/자동화0. 사용자 게임 저장 불변 및 QA preferences 최초 원문 없는1파일 복구 미확인 한계는 그대로 유지한다.
+
+사용량 단위 시작 주간 누적10%→종료12%, 계정 공용 관측차2퍼센트포인트. 이 작업 단독 소비로 귀속하지 않는다. 날짜 첫 누적 기준 여부가 확인되지 않아 일간 소비는 미상이며 새20% 예산을 배정하지 않았다. 같은 상태 사용량 반복 조회0.

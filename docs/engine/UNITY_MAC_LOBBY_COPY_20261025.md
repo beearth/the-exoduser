@@ -1,5 +1,7 @@
 # Mac 로비 문구와 미리보기 진입 정리 — 2026-10-25
 
+> 2026-11-01 현행: 캐릭터 개수 제한·임의64KiB 제한 제거, payload v1/2 읽기·v2 쓰기와 v1 raw backup 보호. 실제 Mac Player231검사 PASS, 일반 앱 `/Users/fordeargamers/Applications/EXODUSER.app` 설치·실행 완료, 정상 제품 Win64 빌드 완료(Windows 실행 미검증). 1920 목록 시각 PASS/3840 미검증, QA preferences 한 파일 최초 원문 복구 미확인. 아래 날짜별5슬롯·세션/미구현·NOT_READY 기록은 당시 이력이며 현재 계약은 [실제 인수](UNITY_MAC_CHARACTER_CAPACITY_QA_20261101.md)를 따른다.
+
 NativeLobby.DrawLobby 표시 구역만 변경했다. 좌상단의 UNITY PORT/OFFLINE/검수본·개발 검수·임시 전투 오버레이와 우측 UNITY 꼬리표를 제거해 시네마틱 영역을 비웠다. 기존 미리보기 진입은 우측 패널 아래로 옮겼으며, 저장되거나 정식 캐릭터가 생성되는 기능으로 표시하지 않는다.
 
 | 표시/동작 | 현재 상태 |

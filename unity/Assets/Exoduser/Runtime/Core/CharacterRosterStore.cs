@@ -22,8 +22,7 @@ namespace Exoduser.UnityPort.Core
  public sealed class CharacterRosterStore
  {
   public const string Schema="exoduser.unity.character-roster";
-  public const int Version=1;
-  public const int MaximumBytes=65536;
+  public const int Version=2;
   public const string DataFileName="characters.v1.json";
   public const string BackupFileName="characters.v1.bak";
   public const string LockFileName="characters.lock";
@@ -66,7 +65,7 @@ namespace Exoduser.UnityPort.Core
    if(snapshot==null)return false;
    if(snapshot.schema!=Schema){if(snapshot.schema!=null)status=CharacterStoreStatus.WrongSchema;return false;}
    if(snapshot.version>Version){status=CharacterStoreStatus.UnsupportedVersion;return false;}
-   if(snapshot.version!=Version||snapshot.revision<0||snapshot.names==null||snapshot.names.Length>CharacterRoster.Capacity)return false;
+   if(snapshot.version<1||snapshot.revision<0||snapshot.names==null)return false;
    if(snapshot.selectedIndex< -1||snapshot.selectedIndex>=snapshot.names.Length)return false;
    var candidate=new CharacterRoster();
    foreach(string name in snapshot.names)
@@ -85,7 +84,7 @@ namespace Exoduser.UnityPort.Core
    {
     using(var stream=new FileStream(path,FileMode.Open,FileAccess.Read,FileShare.Read))
     {
-     if(stream.Length>MaximumBytes){status=CharacterStoreStatus.TooLarge;return false;}
+     if(stream.Length>int.MaxValue){status=CharacterStoreStatus.TooLarge;return false;}
      var bytes=new byte[(int)stream.Length];int offset=0;
      while(offset<bytes.Length){int count=stream.Read(bytes,offset,bytes.Length-offset);if(count==0){status=CharacterStoreStatus.InvalidData;return false;}offset+=count;}
      json=utf8.GetString(bytes);
@@ -153,7 +152,7 @@ namespace Exoduser.UnityPort.Core
    status=CharacterStoreStatus.NotLoaded;if(!loaded)return false;
    if(!Validate(snapshot,out status))return false;
    if(expectedRevision==long.MaxValue){status=CharacterStoreStatus.Conflict;return false;}
-   var next=Copy(snapshot);next.revision=expectedRevision+1;
+   var next=Copy(snapshot);next.version=Version;next.revision=expectedRevision+1;
    byte[] payload;
    try
    {
@@ -163,7 +162,6 @@ namespace Exoduser.UnityPort.Core
     payload=utf8.GetBytes(json);
    }
    catch(Exception){status=CharacterStoreStatus.CodecError;return false;}
-   if(payload.Length>MaximumBytes){status=CharacterStoreStatus.TooLarge;return false;}
    try { Directory.CreateDirectory(directory); }
    catch(IOException){status=CharacterStoreStatus.IoError;return false;}
    catch(UnauthorizedAccessException){status=CharacterStoreStatus.IoError;return false;}

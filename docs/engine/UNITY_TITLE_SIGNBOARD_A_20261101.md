@@ -81,3 +81,9 @@
 | 순번·다음 | 자기 Owner unity-ui-ultrawide 공식 반환, 현재 잠금/예약 없음 확인. 새 대기자·자동 재시도·Player 시작0. 도타 부재와 FIFO/메모리/무음/격리세이브 확인 뒤 성공한 이 패키지의3핵심SHA부터 대조하고 M1→실제 UI/필드/월드/1x를 이어감. 소스가 바뀌지 않으면 성공 빌드 반복 금지 |
 
 영수증: `title-A/formal/evidence.json`, `source-input.json`, `build.json`, `package-proof.json`, `mcp-proof.json`, `restoration.json`. 원문86cb08bb.log에는 라이선스 토큰 갱신 오류 등도 보존했다. Source 후보229와 별도의 실제 Player 검증·공통/Desktop 전달 상태를 유지한다.
+
+## 2026-11-02 검수 재개와 최신 공통 보존
+
+사용자 도타 종료/재개 지시 후 도타·Unity·Player 부재, 잠금/예약 없음, 메모리 여유51.5GB, 기존 EXE/Runtime/Core3SHA 일치를 확인했다. 기존86cb08bb 동일 패키지 M1은99a0a0c6에서 정상종료/창0/잔여0/USER_SAVE0·필수23단계 통과. 해당 소스의 UI1395 실화면은 수집 중이며 최종 PASS를 선행 선언하지 않는다.
+
+최종 전달에서는 최신 공통907083b7c의 캐릭터 수 제한 해제·보관 호환·검수 fixture를 정상 병합한다. 타이틀/로딩/월드 변경을 보존하며, 공통 이후 인원 제한을 과거로 되돌리지 않는다. 이 결합은 새 Core/Runtime이므로 최종 같은 빌드 M1/실화면/저장 보호를 다시 연결한다. 기존86cb08bb의 결과를 새 DLL 검수로 소급하지 않는다.

@@ -62,7 +62,7 @@ namespace Exoduser.UnityPort
   }
   public bool OpenCharacterCreation()
   {
-   if(!characterWritesAllowed||Flow.Page!=LobbyPage.Lobby||CharacterModalOpen||Characters.Count>=CharacterRoster.Capacity||showLanguages||lobbyQuitPrompt)return false;
+   if(!characterWritesAllowed||Flow.Page!=LobbyPage.Lobby||CharacterModalOpen||showLanguages||lobbyQuitPrompt)return false;
    characterRestoreCreateFocus=false;characterVisualFocusPending=true;
    characterStep=1;characterName="";characterError="";return true;
   }
@@ -142,7 +142,7 @@ namespace Exoduser.UnityPort
   }
   void DrawCharacterSlots()
   {
-   Label(new Rect(1392,277,330,32),K("캐릭터 ","Characters ")+Characters.Count+" / 5",lobbyText,TextAnchor.MiddleLeft);
+   Label(new Rect(1392,277,330,32),K("캐릭터 ","Characters ")+Characters.Count,lobbyText,TextAnchor.MiddleLeft);
    bool enabled=GUI.enabled;GUI.enabled=enabled&&characterScroll>0;if(NativeUiAudit.Button(new Rect(1770,277,44,32),"▲",characterButton))characterScroll--;
    GUI.enabled=enabled&&characterScroll+2<Characters.Count;if(NativeUiAudit.Button(new Rect(1822,277,44,32),"▼",characterButton))characterScroll++;GUI.enabled=enabled;
    for(int i=0;i<2;i++){

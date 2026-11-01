@@ -73,7 +73,7 @@ class Program
   Check(!store.TrySave(Roster("루나"),out status)&&status==CharacterStoreStatus.NotLoaded,"failed load prevents silent overwrite");
   Check(File.ReadAllText(Primary(root))=="not json","bad-only file preserved");
 
-  root=Path.Combine(suite,"future");Directory.CreateDirectory(root);data=DiskSnapshot(new[]{"아린"},0);File.WriteAllText(Backup(root),Encode(data));data.version=2;string future=Encode(data);File.WriteAllText(Primary(root),future);store=Store(root);
+  root=Path.Combine(suite,"future");Directory.CreateDirectory(root);data=DiskSnapshot(new[]{"아린"},0);File.WriteAllText(Backup(root),Encode(data));data.version=CharacterRosterStore.Version+1;string future=Encode(data);File.WriteAllText(Primary(root),future);store=Store(root);
   Check(!store.TryLoad(out data,out status)&&status==CharacterStoreStatus.UnsupportedVersion,"future version refuses backup downgrade");
   Check(!store.TrySave(Roster("루나"),out status)&&File.ReadAllText(Primary(root))==future,"future bytes never overwritten");
 
@@ -87,14 +87,25 @@ class Program
    CharacterRosterStore.CreateSnapshot(new[]{"나/라"},0),
    CharacterRosterStore.CreateSnapshot(new[]{"아린"},1),
    CharacterRosterStore.CreateSnapshot(new string[0],0),
-   CharacterRosterStore.CreateSnapshot(null,-1),
-   CharacterRosterStore.CreateSnapshot(new[]{"가나","다라","마바","사아","자차","카타"},0)})
+   CharacterRosterStore.CreateSnapshot(null,-1)})
    Check(!CharacterRosterStore.Validate(invalid,out status),"invalid imported snapshot rejected before live mutation");
   Check(CharacterRosterStore.Validate(CharacterRosterStore.CreateSnapshot(new[]{"가나","다라","마바","사아","자차"},4),out status),"five canonical slots accepted");
 
-  root=Path.Combine(suite,"large");Directory.CreateDirectory(root);File.WriteAllText(Primary(root),new string('x',CharacterRosterStore.MaximumBytes+1));store=Store(root);
-  Check(!store.TryLoad(out data,out status)&&status==CharacterStoreStatus.TooLarge,"bounded metadata reader");
-  Check(new FileInfo(Primary(root)).Length==CharacterRosterStore.MaximumBytes+1,"oversized data preserved");
+  root=Path.Combine(suite,"large");store=Store(root);store.TryLoad(out data,out status);
+  var many=new CharacterRoster();bool allCreated=true;for(int i=0;i<5000;i++)allCreated&=many.TryCreate("전"+i.ToString("D7"),0,out _);
+  Check(allCreated&&many.Count==5000,"five thousand identities admitted");
+  Check(store.TrySave(many,out status),"roster larger than legacy 64KiB saves");
+  Check(new FileInfo(Primary(root)).Length>65536,"large fixture exceeds old metadata ceiling");
+  Check(Store(root).TryLoad(out data,out status)&&data.names.Length==5000&&data.selectedIndex==4999,"all identities persist and reload past old limits");
+  var imported=new CharacterRoster();Check(imported.TryRestore(data.names,data.selectedIndex)&&imported.SelectedName==many.SelectedName,"large roster restores selection");
+
+  root=Path.Combine(suite,"v1-upgrade");Directory.CreateDirectory(root);
+  var legacy=DiskSnapshot(new[]{"가나","다라","마바","사아","자차"},4);legacy.version=1;string legacyBytes=Encode(legacy);File.WriteAllText(Primary(root),legacyBytes);
+  store=Store(root);Check(store.TryLoad(out data,out status)&&data.version==1&&data.names.Length==5,"legacy v1 roster loads without mutation");
+  Check(File.ReadAllText(Primary(root))==legacyBytes,"legacy bytes unchanged by read");
+  var upgraded=new CharacterRoster();upgraded.TryRestore(data.names,data.selectedIndex);upgraded.TryCreate("여섯째",0,out _);
+  Check(store.TrySave(upgraded,out status)&&Decode(File.ReadAllText(Primary(root))).version==2,"new writes use v2 so old five-slot clients refuse backup downgrade");
+  Check(File.ReadAllText(Backup(root))==legacyBytes,"upgrade preserves legacy previous revision");
 
   root=Path.Combine(suite,"codec");var badCodec=new CharacterRosterStore(root,s=>"{}",Decode);badCodec.TryLoad(out data,out status);
   Check(!badCodec.TrySave(Roster("아린"),out status)&&status==CharacterStoreStatus.CodecError,"codec field loss rejected");

@@ -1,5 +1,7 @@
 # Mac 신규 전사 이야기 — 2026-10-25
 
+> 2026-11-01 현행: 캐릭터 개수 제한·임의64KiB 제한 제거, payload v1/2 읽기·v2 쓰기와 v1 raw backup 보호. 실제 Mac Player231검사 PASS, 일반 앱 `/Users/fordeargamers/Applications/EXODUSER.app` 설치·실행 완료, 정상 제품 Win64 빌드 완료(Windows 실행 미검증). 1920 목록 시각 PASS/3840 미검증, QA preferences 한 파일 최초 원문 복구 미확인. 아래 날짜별5슬롯·세션/미구현·NOT_READY 기록은 당시 이력이며 현재 계약은 [실제 인수](UNITY_MAC_CHARACTER_CAPACITY_QA_20261101.md)를 따른다.
+
 ## 2026-10-27 킬루 피눈물 v3 미디어 입력 동기화
 
 최신 PC→Mac INBOX의 채택 소스 `main` `d038ba4ab4191921c4e5a52ce92a903e27554244:video/warrior_story_v23_clean.mp4`를 Git blob에서 직접 취득했다. 현재 Unity 입력 영상은 94,795,327B/SHA-256 `8b8248424b63d808dc225576fda44e39d459709963f97923ffaa38a51dba28ab`로 원본과 byte 단위 일치한다. 이전 97,796,468B/`277fbe09…166b34` 기록은 당시 영상·Rev4 검토 앱의 이력이며 현재 Unity 소스 미디어가 아니다.

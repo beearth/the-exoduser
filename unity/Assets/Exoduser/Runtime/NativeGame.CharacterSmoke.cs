@@ -27,14 +27,14 @@ namespace Exoduser.UnityPort
    lobby.OpenCharacterCreation();lobby.ConfirmCharacterVisual();check(!lobby.CreateCharacter("아린")&&lobby.Characters.Count==1,"duplicate rejected without changing roster");
    yield return SkillCapture(output,"character-duplicate-720p");
    lobby.CloseCharacterCreation();check(lobby.Characters.Count==1,"cancel preserves roster");
-   for(int i=2;i<=5;i++){lobby.OpenCharacterCreation();lobby.ConfirmCharacterVisual();check(lobby.CreateCharacter("전사"+i),"create session slot "+i);}
-   check(!lobby.OpenCharacterCreation()&&lobby.Characters.Count==5,"five-slot limit blocks sixth creation");
-   yield return SkillCapture(output,"character-five-slots-720p");
+   for(int i=2;i<=6;i++){lobby.OpenCharacterCreation();lobby.ConfirmCharacterVisual();check(lobby.CreateCharacter("전사"+i),"create session slot "+i);}
+   check(lobby.OpenCharacterCreation()&&lobby.Characters.Count==6,"creation remains available beyond five slots");lobby.CloseCharacterCreation();
+   yield return SkillCapture(output,"character-six-slots-720p");
    lobby.SelectCharacter(0);var previous=Simulation;
    check(lobby.EnterSelectedCharacter()&&!lobby.IsBlocking&&Running&&lobby.ActiveCharacterName=="아린"&&!ReferenceEquals(previous,Simulation),"selected identity enters a fresh native preview");
    Running=false;yield return SkillCapture(output,"character-entered-720p");
    ApplyPauseCommand(PauseMenuCommand.ReturnLobby);
-   check(lobby.IsBlocking&&!Running&&lobby.Characters.Count==5&&lobby.Characters.SelectedName=="아린","return to lobby retains session identities and selection");
+   check(lobby.IsBlocking&&!Running&&lobby.Characters.Count==6&&lobby.Characters.SelectedName=="아린","return to lobby retains session identities and selection");
    check(lobby.SelectCharacter(4)&&lobby.EnterSelectedCharacter()&&lobby.ActiveCharacterName=="전사5","different selected identity reaches native preview");
    ApplyPauseCommand(PauseMenuCommand.ReturnLobby);lobby.SelectPreview();lobby.EnterNativeTest();
    check(lobby.ActiveCharacterName=="","anonymous preview does not reuse selected name");

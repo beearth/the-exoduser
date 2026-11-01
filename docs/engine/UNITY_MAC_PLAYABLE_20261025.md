@@ -1,5 +1,7 @@
 # Mac 현재 조작 가능한 누적 실행본 — 2026-10-25
 
+> 2026-11-01 현행: 캐릭터 개수 제한·임의64KiB 제한 제거, payload v1/2 읽기·v2 쓰기와 v1 raw backup 보호. 실제 Mac Player231검사 PASS, 일반 앱 `/Users/fordeargamers/Applications/EXODUSER.app` 설치·실행 완료, 정상 제품 Win64 빌드 완료(Windows 실행 미검증). 1920 목록 시각 PASS/3840 미검증, QA preferences 한 파일 최초 원문 복구 미확인. 아래 날짜별5슬롯·세션/미구현·NOT_READY 기록은 당시 이력이며 현재 계약은 [실제 인수](UNITY_MAC_CHARACTER_CAPACITY_QA_20261101.md)를 따른다.
+
 2026-10-26 최신 HEAD `207ffc8bf`에서 직접 빌드한 일반 ARM64 실행본은 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-HEAD-207FFC8-20261026/build/EXODUSER-Unity.app`이다. 소스/Player 해시·우크라이나어 실제 자막·일반 로비 진단 버튼 숨김·우측 상태 배경의 좁은 검수와 미확인 항목은 [최신 HEAD 실행본](UNITY_MAC_HEAD_PLAYER_20261026.md)에 기록했다. 아래 실행본 명칭과 SHA는 각 시점의 인수 이력이다.
 
 최신 준비된 일반 실행본: `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-INTRO-SILENCE-20261026/build-release/EXODUSER-Unity.app` · source `b4560e63adc28b2f0445e84318131adf3f7ffc1a` · ARM64/오류0. FDG→실버테일 타이틀→게이트 대기는 원본대로 무음이며 입장 뒤 원본 게이트 음원·BGM과 World 음성이 복귀한다. 격리 Player31/31을 인수했다. 기존 설정 저장·소지품 안내·첫2실습·world-blend HUD를 포함한다. [이번 인수](UNITY_MAC_INTRO_SILENCE_20261026.md) / [영수증](UNITY_MAC_INTRO_SILENCE_ACCEPTANCE_20261026.json).
