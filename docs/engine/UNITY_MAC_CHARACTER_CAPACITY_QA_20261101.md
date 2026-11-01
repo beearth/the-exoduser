@@ -89,3 +89,13 @@ Mac ZIP은 재전개 후 strict/deep 서명·실행 권한·Core/Runtime SHA를 
 `python3 unity/Tools/normalize-mac-app.py /절대/EXODUSER.app --backup /절대/고유백업.app --receipt /절대/새영수증.json`은 앱을 APFS 사본으로 먼저 보존하고 실행파일/CFBundleExecutable을 EXODUSER로 맞춘 뒤 로컬 ad-hoc 서명과 strict/deep 검증을 한다. 원 제품명/id와 Core/Runtime SHA 불변을 검증한다. `--check`는 읽기검증만 하며 backup을 요구하지 않는다. 설치된 일반앱과 ZIP 재전개본에서 --check를 실제 실행했다. 출력 영수증은 새 파일이어야 한다.
 
 원 로그·입력 manifest·개별 phase 영수증·원본 PNG·보존 결과는 `/Users/fordeargamers/exoduser-wt/_out/mac-character-unlimited-qa-20261101/` 및 `manager-preparation/`에 있다. [기계 요약](UNITY_MAC_CHARACTER_CAPACITY_QA_20261101.json). 보호된 공유 UI checkout/HEAD/index에 checkout/reset/stash/merge를 실행하지 않았다. 기존 UI 담당의 private 작업은 별도 유지한다.
+
+## 2026-11-01 공통 소스·PC 수신 마감
+
+검증한 제품과 관련 코드/docs를 개인 QA 브랜치 및 unity/main에 비강제 fast-forward로 반영하고 원격473702c151734ac22ac930eec55c0b82e4ee8d7c 일치를 확인했다. 이번 수신 기록 후속은 docs만 변경하며 실제 빌드 입력 Assets/Packages/ProjectSettings는2a0eea00과 동일하다. 기존 UI 담당의 private4099c798eb를 보존했다.
+
+PC 담당이 I:/EXODUSER-Storage/character-capacity/20261101-unlimited/receiver/EXODUSER-Windows-x64-characters-20261101.zip 실제 수신을 회신했다. 크기2,172,346,702B 및 스트리밍 SHA256 c1cfd4497f3a3a1e4a4bc126a32718675c0ce0bb5547f4b9fbad2523cef6d6e4가 Mac 원본과 일치하며 transfer-receipt.json을 보존했다. Mac 서버도14:23:58 UTC에 허용 PC의 GET 응답 완료를 기록했다. 소유 PID3390만 SIGTERM으로 정상 종료0,14:24:30 UTC 종료 영수증 및3334 LISTEN 없음 확인. 위 준비 단계의 수신 미완 기록을 이 회수로 갱신한다. Windows 압축 재전개·실제 실행은 별도 판정이며 아직 완료로 쓰지 않는다.
+
+다음 성역 RETOUCH 한 건은 기존 Mac UI 담당에게 최소수정·원본 수치 보존·1920 실제 시각 재검수·개인 브랜치 산출물 회수 범위로 지시했다. 신규 팀/자동화0. 사용자 게임 저장 불변 및 QA preferences 최초 원문 없는1파일 복구 미확인 한계는 그대로 유지한다.
+
+사용량 단위 시작 주간 누적10%→종료12%, 계정 공용 관측차2퍼센트포인트. 이 작업 단독 소비로 귀속하지 않는다. 날짜 첫 누적 기준 여부가 확인되지 않아 일간 소비는 미상이며 새20% 예산을 배정하지 않았다. 같은 상태 사용량 반복 조회0.

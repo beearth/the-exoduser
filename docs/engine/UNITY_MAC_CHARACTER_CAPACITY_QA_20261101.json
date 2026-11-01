@@ -188,5 +188,30 @@
   },
   "macArchiveStrictDeepReadbackVerified": true,
   "win64CriticalArchiveMembersVerified": true,
-  "pcReceived": false
+  "pcReceived": true,
+  "pcReceiverAttestation": {
+    "reportedBy": "PC management thread 01a1960f-c55c-78e0-842e-3f87e9ebd5d6",
+    "destination": "I:/EXODUSER-Storage/character-capacity/20261101-unlimited/receiver/EXODUSER-Windows-x64-characters-20261101.zip",
+    "bytes": 2172346702,
+    "sha256": "c1cfd4497f3a3a1e4a4bc126a32718675c0ce0bb5547f4b9fbad2523cef6d6e4",
+    "matchesMacArchive": true,
+    "pcReceipt": "transfer-receipt.json",
+    "windowsRuntimeExecuted": false,
+    "signalSentToOwnedServerPid": 3390,
+    "ownedServerCommand": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node manager-preparation/receiver-server.cjs"
+  },
+  "temporaryLanServerStopped": {
+    "pid": 3390,
+    "stoppedAt": "2026-11-01T14:24:30.404Z"
+  },
+  "temporaryLanListenerRemaining": false,
+  "commonFeatureCommit": "473702c151734ac22ac930eec55c0b82e4ee8d7c",
+  "usageObservation": {
+    "weeklyStartUsedPercent": 10,
+    "weeklyEndUsedPercent": 12,
+    "sharedDeltaPercentagePoints": 2,
+    "dailyBaselineKnown": false,
+    "dailyConsumption": "unknown",
+    "sharedAccount": true
+  }
 }
