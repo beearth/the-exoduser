@@ -1,6 +1,6 @@
 # 타이틀 메뉴 이식 (웹 index.html phase 2 → Unity NativeLobby) — 2026-10-28
 
-> 2026-11-01 현행 후속 후보: [승인 A 파노라마·레이어 모션 이식](UNITY_TITLE_SIGNBOARD_A_20261101.md). 타이틀 배경의 구형 영상/블러와 중앙 16:9 설명은 이전 이력이며, 새 후보는 전체 물리 화면을 cover한다. 기존 R5 금속 버튼/입력은 유지한다. 소스·독립 컴파일만 확인되었고 실제 새 Player·M1·시각·Desktop 전달은 아직 미완료다.
+> 2026-11-01 현행 후속 후보: [승인 A 파노라마·레이어 모션 이식](UNITY_TITLE_SIGNBOARD_A_20261101.md). 타이틀 배경의 구형 영상/블러와 중앙 16:9 설명은 이전 이력이며, 새 후보는 전체 물리 화면을 cover한다. 기존 R5 금속 버튼/입력은 유지한다. 소스와 정식 Windows 빌드86cb08bb/errors0·USER_SAVE0까지 확인했다. 도타 실행으로 후속 Player/M1은 시작하지 않았으며 실제 시각·Desktop 전달은 아직 미완료다.
 
 브랜치 `claude/unity-pc-title-menu-20261028` (intro-skip `65e14f1bb`의 `LobbyKeys` 위에서). 웹 기준 = origin/main `index.html` 494~511(CSS)·4560~4810(`_buildTitleMenu`·`_selectTitleItem`·`_activateTitleItem`·`splashKey`). 디자인 = 디자인총괄 시안(2026-10-27), 사용자 승인 [승인-디자인-5].
 

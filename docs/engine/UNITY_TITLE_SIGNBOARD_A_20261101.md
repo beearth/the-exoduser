@@ -2,7 +2,7 @@
 
 사용자가 `스크린샷 2026-11-01 185307.png`의 울트라와이드 버전 제작을 현재 Codex에 직접 지정했다. 실행 중인 PC 패키지는 `I:/EXODUSER-Storage/unity-builds/hd2d-main/8dbdf205a-stage1-r5/EXODUSER-Unity.exe`이며, 새 소스가 그 실행본에 적용됐다고 간주하지 않는다.
 
-**현재 상태: 소스 후보 / NOT_READY.** R5 `e7c75293ba35379eb6d15aeb51051e9fb1f47fcd`에서 타이틀 범위를 후속 제작했다. Unity 셰이더 컴파일·새 Player 빌드·같은 빌드 M1·실제 화면·공통 반영·Desktop 전달은 아직 완료되지 않았다. 사용자 일반 게임은 현재 없고 다른 담당자의 Desktop 검수가 진행 중이므로, 기존 Owner `unity-ui-ultrawide`로 공식 FIFO 뒤에 등록했다. 이전 게임 종료 허가 대기를 현재 장애로 재사용하지 않는다.
+**현재 상태: 정식 Windows 빌드 PASS / 전체 NOT_READY.** 소스229c94162의 정식빌드86cb08bb는 성공했고 BuildReport errors0·USER_SAVE0이다. 후속 M1 입구에서 dota2.exe PID54328을 발견해 Player를 시작하지 않았다. 실제 타이틀/울트라와이드 화면·같은빌드 M1·공통/Desktop 전달은 미완료다. 자기 예약은 공식 반환했고 이번 입력 보호용 원본766경로는 정확 byte로 복원했다.
 
 ## 현행 타이틀 계약
 
@@ -67,3 +67,17 @@
 | 독립 검증 | 결합 Runtime206소스/errors0·경고28, 실제 C# 안전영역/키/로딩702검사와 A 연결 계약 통과. 앞205소스 결과는 이전 후보 이력. 새 정식빌드·Player/M1·실제1x를 대체하지 않음 |
 
 이 병합은 타이틀 작업 브랜치의 소스 결합이며 `unity/main` 게시·다른 PC/Mac 반영·실행 중인 Desktop의 최신화가 아니다. 실제 FIFO·잠금·도타 부재·메모리·무음·격리세이브 조건을 새 실행 직전에 재확인한다.
+
+## 정식 빌드 영수증 — 2026-11-01 19:57 KST
+
+| 항목 | 실제 결과와 경계 |
+|---|---|
+| 정확 입력 | 소스 `229c941628069fb5e449eb673f5d7083b6d9a2d0`, Unity tree `dc5362dbcbcd36dc923a26810b92de5e462d8cf2`. 빌드 전4116개 Git 입력 대조. 외부 후보 코드 추가0, 기존2개 canonical 무시영상은 공식 미디어 복원·동일byte 검사 |
+| 정식 빌드 | 6000.6.7f1 Win64/x64, remodel-scenes1, 86cb08bb/ok=true/exit0, 새 고유출력 BuildReport Succeeded/errors0/4,571,873,631bytes, USER_SAVE0. CLI execMs0/errorLogs2도 원문 보존하며 이 숫자만으로 성공을 추론하지 않음. 이번에 새로 생성된 BuildReport·실제212파일·새Runtime DLL을 함께 확인 |
+| 패키지 | 전체160DLL/Managed153·MCP파일/참조0·보존8개MP4 소스/패키지 동일byte. 타이틀 MP4는 보존 파일이며 새 A 타이틀의 실제 재생 증거로 세지 않음 |
+| 실제 Runtime | `55c3f67fd0d4a3efc99b8b54eae31b1e9754a903c66ed1f2cbf6d30e6fadf1a3`; Core `cf277366bd0ae827507de776b81331128fe0f54a844d2e4057e247c1bcc6f934`. 빌드 후 코드/셰이더/assembly484개가 동일 Git 소스와 일치 |
+| 검수 중단 | M1 입구에서 dota2.exe PID54328 감지. 해당 시도는 슬롯/Player 시작 전 차단이며 M1 결과나 새화면은 없음. 새 Player/M1/시각 PASS·자연플레이·FPS·오디오 청음 완료 주장0 |
+| 원본 보호 | build 전709개 metadata/material/scene의 정확 원본과57개 후보밖 metadata/Editor설정을 별도 보관하고 후보 입력만 임시 적용. 빌드 뒤 원본766개 exact 복원·빌드후 byte도 보관·CAS 원복. 이전 R5에서 이미 남아 있던 원본3overlay의 해소까지 주장하지 않음 |
+| 순번·다음 | 자기 Owner unity-ui-ultrawide 공식 반환, 현재 잠금/예약 없음 확인. 새 대기자·자동 재시도·Player 시작0. 도타 부재와 FIFO/메모리/무음/격리세이브 확인 뒤 성공한 이 패키지의3핵심SHA부터 대조하고 M1→실제 UI/필드/월드/1x를 이어감. 소스가 바뀌지 않으면 성공 빌드 반복 금지 |
+
+영수증: `title-A/formal/evidence.json`, `source-input.json`, `build.json`, `package-proof.json`, `mcp-proof.json`, `restoration.json`. 원문86cb08bb.log에는 라이선스 토큰 갱신 오류 등도 보존했다. Source 후보229와 별도의 실제 Player 검증·공통/Desktop 전달 상태를 유지한다.
