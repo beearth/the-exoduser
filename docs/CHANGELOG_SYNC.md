@@ -57343,3 +57343,4 @@ PC 담당이 I:/EXODUSER-Storage/character-capacity/20261101-unlimited/receiver/
 사용량 단위 시작 주간 누적10%→종료12%, 계정 공용 관측차2퍼센트포인트. 이 작업 단독 소비로 귀속하지 않는다. 날짜 첫 누적 기준 여부가 확인되지 않아 일간 소비는 미상이며 새20% 예산을 배정하지 않았다. 같은 상태 사용량 반복 조회0.
 
 2026-11-02 Mac 몬스터 방향 단독 후보: 최신 공통907083b7 위 PC `b3f80726`의 방향 타입+meta, NativeGame body/walk 방향 선택1 hunk, Tools4만 선택. 살아 있는 플레이어 800px 이내의 시각 주시를 정지/미소이동/공격 공통으로 사용, AI/aim/Core/로스터·저장/장판/맵/HUD 불변. 방향220 순수 검사 PASS. `--unity-facing-only-qa`는 격리 GUI Player에서 정지·0.02px 미세이동·수직·stale facing 노이즈·반전·공격·재정지를 1920 원본 PNG와 renderer/atlas receipt로 기록한다. 공식 빌드/M1/실제 시각/전달 결과는 후속. [계약](8.0몬스터디자인/몬스터_스킨_렌더링_파이프라인.md#2026-11-02-mac-방향-표시-단독-후보--최신-common-위-선택-이식).
+첫 격리 Settings QA Editor 호출은 앱 생성 전 전용 helper의 `EnemyState.Facing` float 대입에 `Math.PI` double을 넣은 CS0266으로 중단. 명시 float 캐스트로 정정하고 첫 로그를 보존, 제품 방향 수치/Core 변경0. 재빌드는 수정 커밋의 원격 SHA를 확인한 뒤 수행한다.

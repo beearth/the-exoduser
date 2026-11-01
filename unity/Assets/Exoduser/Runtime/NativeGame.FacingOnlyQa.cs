@@ -57,7 +57,7 @@ namespace Exoduser.UnityPort
                 int[] expected={4,4,6,4,0,0,0};
                 for(int i=0;i<names.Length;i++)
                 {
-                    enemy.X=xs[i];enemy.Y=ys[i];enemy.State=i==5?"attack":"idle";enemy.Facing=i%2==0?0:Math.PI;
+                    enemy.X=xs[i];enemy.Y=ys[i];enemy.State=i==5?"attack":"idle";enemy.Facing=i%2==0?0:(float)Math.PI;
                     if(enemy.Web!=null){enemy.Web.x=enemy.X;enemy.Web.y=enemy.Y;enemy.Web.s=enemy.State;enemy.Web.facing=i%2==0?Math.PI/2:Math.PI;}
                     UpdateViews();var ev=enemies[enemy.Id];
                     bool moving=i==1||i==2||i==3||i==4||i==5;
