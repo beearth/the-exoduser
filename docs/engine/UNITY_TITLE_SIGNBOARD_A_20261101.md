@@ -1,0 +1,55 @@
+# Unity 울트라와이드 타이틀 A — 2026-11-01
+
+사용자가 `스크린샷 2026-11-01 185307.png`의 울트라와이드 버전 제작을 현재 Codex에 직접 지정했다. 실행 중인 PC 패키지는 `I:/EXODUSER-Storage/unity-builds/hd2d-main/8dbdf205a-stage1-r5/EXODUSER-Unity.exe`이며, 새 소스가 그 실행본에 적용됐다고 간주하지 않는다.
+
+**현재 상태: 소스 후보 / NOT_READY.** R5 `e7c75293ba35379eb6d15aeb51051e9fb1f47fcd`에서 타이틀 범위만 후속 제작했다. Unity 셰이더 컴파일·새 Player 빌드·같은 빌드 M1·실제 화면·공통 반영·Desktop 전달은 아직 완료되지 않았다. 사용자가 열어 둔 게임은 보존하며 종료 허가를 요청한 상태다.
+
+## 현행 타이틀 계약
+
+이 문서가 타이틀의 중앙 16:9 영상/블러 확장/720px 왼쪽 음영 설명보다 우선한다. 캐릭터 선택·로비·인게임의 기존 R5 계약은 별도다. 웹 승인 A 정본 `207b35600b3c9f6c9a6a71b6269439df13cd5f58`의 `title-signboard.js`와 `assets/title-signboard/A/manifest.json`을 참고한다.
+
+| 항목 | 구현·수치·적용 위치 |
+|---|---|
+| 승인 원본 | A master 7680×2160, SHA256 `c6565cf4050d3ae33d3d65acdd5becf0cfe0114a77a7dd2b4e03cb29e6858548`. 원생성 2048×768의 재구성·업스케일 이력이며 네이티브 8K 생성 주장은 하지 않음 |
+| 실행 자산 | `Resources/Art/TitleSignboard/A/background.png`, `silvertail.png`, `still.png`: 각 5760×1620. `motion-mask.png`: 1920×540. `hands.png`: 1536×456, 가로6셀, 셀256×456 |
+| 변환·출처 | 승인 WebP 3개를 PNG로 무손실 형식 변환, PNG 2개는 동일 byte. 크기 조정/신규 생성/유료 호출0. 5개 모두 디코딩 RGBA 일치. 경로별 SHA256/RGBA SHA256은 같은 폴더 `manifest.json`과 `title-A/asset-import.json` |
+| 전체 화면 | `NativeTitleSignboardLayout.Cover`: W,H를 최소1로 보정, k=max(W/7680,H/2160), 표시(7680k,2160k), 원점((W−7680k)/2,(H−2160k)/2). 물리 화면 전체를 균일 cover. 1080높이의 1920/2560/3840폭 원점X는 −960/−640/0, 표시3840×1080 |
+| 보존 영역 | 같은 크롭에서 달 중심(.416,.193), 얼굴(.590,.204), 양발(.595,.886)/(.655,.902)이 지원5해상도와 7680×2160/12800×3600 검사 안에 남음. 픽셀 그림의 실검수는 별도 |
+| 메뉴 | 기존 R5 금속 버튼·입력·일반판3행/데모 위시리스트 조건 보존. 로고(96,96) 폭520/비율유지, 그림자Y+10/alpha.5. 주행동(116,436,400,68), 보조(116,520+(i−1)×62,368,48). 주22/보조18px·자간.14em·선택.25초/해제.18초. 화면 높이/1080의 균일배율, 왼쪽 물리 가장자리 기준 |
+| 메뉴 음영 | 왼쪽560 논리폭만 적용. 좌 alpha.24→x560에서0, 중심(220,500)/반경(340,340) 타원 alpha=max(0,1−거리)×.40 합성. 화면 하단 alpha.28→위로18%에서0. 구형 전체 방사 비네트 제거 |
+| 빌드 줄 | 기존 R5의 실제 오른쪽36·하단26,11px/행높이18.7·자간3.08·alpha.6를 유지. 웹 A의 max(48px,4.5vh) 여백과 같다고 주장하지 않음 |
+| 렌더 | `NativeTitleSignboard` + Resources `Shaders/TitleSignboard`, shader target3.0. 단일 Graphics.Blit, ARGB32/sRGB 렌더텍스처, 깊이0, Bilinear/Clamp. 최대30fps, 화면 비율 보존·버퍼상한5760×2160, 최소1px. OnGUI Repaint에서만 새 프레임 렌더 |
+| 색공간 | 컬러 텍스처 sRGB, 모션 마스크만 linear. Linear 프로젝트에서는 샘플을 gamma로 변환해 웹의 연산을 적용하고 최종 RGB를 linear로 복귀. GL.sRGBWrite와 RenderTexture.active는 finally 복원. 실제 Player 색/방향 검수 전 동일 픽셀 주장은 하지 않음 |
+| 임포터 | A 하위 경로만 전용 규칙. Default/Texture2D, sRGB는 mask 외true, mipmap없음, alphaIsTransparency=false, NPOT보존,8192상한, Uncompressed/Bilinear/Clamp. 기존 다른 아트 규칙·GetVersion3 유지 |
+| 시간 | 최대dt.1, 음수dt0, 비활성 포커스/정지 시 시간 증가0. 새 타이틀 진입에 시간/렌더횟수0 초기화. `--unity-reduce-menu-motion` 및 `NativeLobby.TitleMotionPaused`는 현재 프레임 정지. Windows/Mac OS 접근성 설정 자동 연결은 이번에 구현하지 않음 |
+| 실패 | 셰이더/레이어 미준비·미지원 또는 렌더 실패는 승인 A still로 cover. 전체 아트 부재에도 기존 메뉴 입력은 계속 그림. 구형 title_motion_20261028.mp4를 요청하거나 블러로 대체하지 않음. 기존 MP4 원본/패키지 파일 삭제0 |
+| 자원 수명 | 타이틀을 떠나는 OpenForPage와 로비 OnDestroy에서 RenderTexture.Release/Destroy·Material.Destroy·전용5텍스처 UnloadAsset. 재진입은 재로딩. 기존 FDG/canonical WorldMovie·캐릭터 영상 수명은 보존 |
+
+## 레이어 모션 수치
+
+좌표 p는 승인 마스터의 좌상단 기준 정규좌표, t는 위 검수 시계와 분리된 메뉴 누적시간이다. 아래 식은 웹 A 정본의 수치이며 Unity에서 실제 재생 품질을 확인하기 전에는 웹 검수 결과를 이식 완료 증거로 사용하지 않는다.
+
+| 레이어 | 수치·식 |
+|---|---|
+| 공통 band | smoothstep(a,b,x)×(1−smoothstep(c,d,x)) |
+| 달 | 중심(.416,.193), x거리×3.5555556, 원판=1−smoothstep(.116,.127,거리). pulse=.5+.5sin(.66t), 밝기배율1+(pulse−.5)×.11 |
+| 하늘 | mask.R×(1−달원판), 깊이 band(0,.025,.32,.49,y). dx=하늘×깊이×[.0038sin(.075t+14y)+.0015sin(.123t+29y)+.002sin(.045t+7y)], dy=하늘×깊이×.0016sin(.095t+18x) |
+| 산란광 | through=sin(29x+13y−.29t)×sin(14x−24y+.17t). 하늘광 RGB(.042,.005,.002)×하늘×(.45+.55through)×[1−smoothstep(.12,.74,달거리)]. 반사광 RGB(.022,.003,.001)×mask.B×sin(.66t+.4through) |
+| 강 | mask.G. dx=.0008sin(190y−1.45t+24x), dy=.0017sin(82y−.72t)+.0005sin(170x+.9t). 하이라이트=[.5+.5sin(410y−1.8t+sin(96x))]^12, RGB(.065,.014,.008)×강×하이라이트×(.6+.4sin(.8t+30y)) |
+| 손6종 | 기준점/폭/셀/위상: (.418,.908)/.019/2/.3; (.384,.964)/.023/3/2.8; (.451,.803)/.0105/4/4.4; (.441,.855)/.014/1/1.7; (.392,.918)/.015/5/5.4; (.457,.716)/.007/0/3.9 |
+| 손 공통 | rise=.5+.5sin(.48t+위상), 높이=폭×3.5555556×1.78. 시작Y=기준Y−높이×(.26+.74rise). 손가락dx=.018(1−셀y)sin(7셀y+1.15t+위상). RGB×(.75,.49,.43), alpha×smoothstep(0,.016,기준Y−y)×(.36+.38rise), 수면 아래/셀 밖0 |
+| 머리·천 | 머리=band(.604,.622,.716,.742,x)×band(.145,.175,.335,.365,y), 천=band(.618,.645,.739,.769,x)×band(.435,.49,.79,.84,y). dx=(머리×.0018+천×.0021)sin(1.05t+12y), dy=(머리×.0035+천×.003)sin(.83t+18x). 얼굴·몸·손·무기·발은 원래 레이어 위치 유지 |
+
+## 검수와 반영 경계
+
+| 검수 | 이번 결과 / 남은 조건 |
+|---|---|
+| RED→GREEN | 기존 코드에서 승인 A 전용 렌더러 호출 assertion 실패. 연결 후 `unity/Tools/title-signboard/contract.test.cjs` 통과: 구형 영상/블러 경로 제거·자원해제·전용 캡처 경로 |
+| 좌표·시계 | 실제 C# `NativeTitleSignboardLayout`의71검사 통과: 화면 전체 cover·종횡비·중앙·달/얼굴/양발·버퍼상한·시간클램프/정지 |
+| 독립 Runtime | Player RSP와 기존 Core35 참조로 Runtime205소스 컴파일 exit0/errors0. 기존 범위의 경고28개는 보존. Unity 셰이더 컴파일/Player 실행/M1 증거가 아님 |
+| 자산 | 승인5개 원본 SHA대조·PNG 변환 후 decoded RGBA 일치. import된 실제GPU/메모리/색공간 검수는 아직 수행하지 않음 |
+| 실제 전체UI 목표 | R5의1395 PNG/팁255/키변경30·입력격리1395/틱정지1395 유지. 실제 동영상은 타이틀을 뺀7종×5해상도×3언어=105행. 새 titleArt 15행에서 레이어 모드·실제 렌더횟수/시간증가·정지시계보존·재개 확인. 구형8영상120행 검증기로 새 후보 PASS를 주장하지 않음 |
+| 실제 새 빌드 | R5 기존00078cc6와 다른 Unity tree이므로 새 고유출력 정식빌드→같은M1→필드/월드/UI/타이틀1x 필요. 기존 R4/R5 사진과 과거 M1을 이번 새DLL 증거로 소급하지 않음 |
+| 전달 | 사용자 실행창 종료 허가·도타부재·공식FIFO·메모리·무음·격리세이브 확인 후 실행. 이후 최신 unity/main 정상통합/실행 검수·지정 통합자 Desktop·Mac 수신은 각 별도. 이번 소스 체크포인트만으로 배포완료/시각PASS를 선언하지 않음 |
+
+원본 보존·소유 범위·자산·독립 컴파일·조회 영수증: `I:/EXODUSER-Storage/demo-art/unity-ui/ultrawide/takeover-20261101/title-A/`. 외부 생성/결제/Steam 배포/사용자 세이브 변경0.

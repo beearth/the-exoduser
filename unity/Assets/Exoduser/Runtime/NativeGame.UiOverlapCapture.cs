@@ -10,7 +10,23 @@ namespace Exoduser.UnityPort
 {
     public sealed partial class NativeGame
     {
-        [Serializable] sealed class UiOverlapCoverage {public int schemaVersion=2,inputIsolationChecks,simulationFrozenChecks;public string runtimeSha256,unityVersion,device,deviceType;public string scope="실제 Player OnGUI·제품 API 상태 전환/검수 시계/실제 미디어 seek/8방향 투영 표본, OS 입력/자연 클리어와 구분";public string[] resolutions={"1920x1080","2560x1080","3840x1080","1600x900","2560x1600"};public string[] languages={"ko","de"};public List<string> pages=new List<string>(),frames=new List<string>();public List<UiWideMovie> movies=new List<UiWideMovie>();public List<UiWideCue> worldCues=new List<UiWideCue>();public List<UiWideTipKeyChange> tipKeyChanges=new List<UiWideTipKeyChange>();public int[] loadingImages=new List<int>(NativeLoadingSelection.Images).ToArray();}
+        [Serializable] sealed class UiOverlapCoverage {public int schemaVersion=2,inputIsolationChecks,simulationFrozenChecks;public string runtimeSha256,unityVersion,device,deviceType;public string scope="실제 Player OnGUI·제품 API 상태 전환/검수 시계/실제 미디어 seek/8방향 투영 표본, OS 입력/자연 클리어와 구분";public string[] resolutions={"1920x1080","2560x1080","3840x1080","1600x900","2560x1600"};public string[] languages={"ko","de"};public List<string> pages=new List<string>(),frames=new List<string>();public List<UiWideMovie> movies=new List<UiWideMovie>();public List<UiWideTitle> titleArt=new List<UiWideTitle>();public List<UiWideCue> worldCues=new List<UiWideCue>();public List<UiWideTipKeyChange> tipKeyChanges=new List<UiWideTipKeyChange>();public int[] loadingImages=new List<int>(NativeLoadingSelection.Images).ToArray();}
+        [Serializable] sealed class UiWideTitle {public int width,height,framesBefore,framesAfter;public string language,mode;public double timeBefore,timeAfter;public bool pausedClockPreserved,resumed;}
+        IEnumerator UiWaitTitleArt()
+        {
+            float deadline=Time.realtimeSinceStartup+10;
+            while(lobby.TitleRenderMode!="layered"&&Time.realtimeSinceStartup<deadline){lobby.SetPlaybackFocus(true);yield return null;}
+            if(lobby.TitleRenderMode!="layered")throw new InvalidOperationException("승인 A 타이틀 레이어 렌더 실패 "+lobby.TitleRenderMode);
+            var row=new UiWideTitle{width=Screen.width,height=Screen.height,language=overlapLanguage,mode=lobby.TitleRenderMode,timeBefore=lobby.TitleMotionTime,framesBefore=lobby.TitleRenderedFrames};
+            yield return new WaitForSecondsRealtime(.35f);row.timeAfter=lobby.TitleMotionTime;row.framesAfter=lobby.TitleRenderedFrames;
+            if(row.framesAfter<=row.framesBefore||row.timeAfter<=row.timeBefore)throw new InvalidOperationException("승인 A 타이틀 모션 정지");
+            bool paused=lobby.TitleMotionPaused;
+            try{lobby.TitleMotionPaused=true;double t=lobby.TitleMotionTime;yield return new WaitForSecondsRealtime(.15f);row.pausedClockPreserved=lobby.TitleMotionTime==t;}
+            finally{lobby.TitleMotionPaused=paused;}
+            double resume=lobby.TitleMotionTime;yield return new WaitForSecondsRealtime(.15f);row.resumed=lobby.TitleMotionTime>resume;
+            overlapCoverage.titleArt.Add(row);
+            if(!row.pausedClockPreserved||!row.resumed)throw new InvalidOperationException("승인 A 타이틀 정지/재개 실패");
+        }
         [Serializable] sealed class UiWideTipKeyChange {public int width,height,image;public string language,inventoryBefore,pickupBefore,inventoryChanged,pickupChanged,expectedText;public bool restored;}
         UiWideTipKeyChange activeTipKeyChange;
         void BeginLoadingTipKeyChange(int image)
@@ -170,7 +186,7 @@ namespace Exoduser.UnityPort
                 menu=false;Running=false;pauseMenu.Reset();stageClear.Hide();
                 lobby.ReplayIntro();typeof(NativeLobby).GetField("since",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(lobby,16f);
                 yield return UiOverlapShot("첫화면");yield return UiCinematicShots();
-                lobby.Begin();yield return UiWaitRootMovie(-3,"fdg_intro.mp4");yield return UiOverlapShot("브랜드인트로");lobby.AdvanceSplash();yield return new WaitForSecondsRealtime(1.1f);yield return UiWaitRootMovie(-2,NativeLobby.TitleMovie);yield return UiOverlapShot("메뉴");
+                lobby.Begin();yield return UiWaitRootMovie(-3,"fdg_intro.mp4");yield return UiOverlapShot("브랜드인트로");lobby.AdvanceSplash();yield return new WaitForSecondsRealtime(1.1f);yield return UiWaitTitleArt();yield return UiOverlapShot("메뉴");
                 lobby.ShowLobby();lobby.Characters.TryRestore(new[]{"검수"+overlapCoverage.frames.Count.ToString("000")},0);yield return UiOverlapShot("로비");
                 lobby.OpenCharacterCreation();
                 for(int n=0;n<5;n++){lobby.ChooseCharacterVisual(n);yield return UiWaitCharacterMovie(n);yield return UiOverlapShot("캐릭터선택"+n);}
