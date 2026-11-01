@@ -53,7 +53,6 @@ test('web selection omits retired cutscene and map build inputs without losing l
     'assets/cutscene/prologue/p01.jpg',
     'assets/map/ch1/baked_spike/south_visual_pass/chunk_0_5.png',
     'img/logo_exoduser_solid.png',
-    'img/lording/wide/manifest.json',
     'bgm/1장_썩은숲/current.wav',
     'sfx/death/random_1.mp3',
     'lang_es.js'
@@ -74,6 +73,40 @@ test('web selection omits retired cutscene and map build inputs without losing l
   const withCallers=select();
   assert.ok(withCallers.includes('assets/map/ch1/boss_room_bg_old.png'),'a new exact runtime caller must keep the file');
   assert.ok(withCallers.includes('assets/cutscene/prologue/_old_20260727/p01.png'),'a new exact cutscene caller must keep the file');
+});
+
+test('loading manifest closes the dynamic directory over its 35 source and wide variants',()=>{
+  const images=Array.from({length:35},(_,i)=>({
+    source:`img/lording/${i+1}.png`,
+    variants:['16','21','32'].map(ratio=>({file:`img/lording/wide/${i+1}-${ratio}.webp`}))
+  }));
+  const declared=images.flatMap(image=>[image.source,...image.variants.map(variant=>variant.file)]);
+  const manifestPath='img/lording/wide/manifest.json';
+  const extra='img/lording/retired-source.png';
+  const paths=['index.html',manifestPath,...declared,extra];
+  const source={'index.html':`const loadingRoot='img/lording/';`,[manifestPath]:JSON.stringify({images})};
+  const select=()=>manifest.selectWebRuntimeFiles(paths,['index.html'],path=>source[path]||'');
+  const selected=select();
+  for(const path of [manifestPath,...declared])assert.ok(selected.includes(path),path);
+  assert.ok(!selected.includes(extra),'unlisted old source must not ship from a broad dynamic prefix');
+  source['index.html']+=`const explicit='${extra}';`;
+  assert.ok(select().includes(extra),'a future exact runtime caller must retain the source');
+});
+
+test('fullscreen manifest dependencies are selected even when only JSON names the asset',()=>{
+  const manifestPath='assets/fullscreen-wide/20261031/manifest.json';
+  const original='img/원본.jpg',onDiskOriginal=original.normalize('NFD'),wide='assets/fullscreen-wide/20261031/title-32.webp';
+  const paths=['fullscreen-art.js',manifestPath,onDiskOriginal,wide];
+  const source={'fullscreen-art.js':`fetch('${manifestPath}')`,[manifestPath]:JSON.stringify({assets:[{source:original,outputs:[{path:wide}]}]})};
+  const select=()=>manifest.selectWebRuntimeFiles(paths,['fullscreen-art.js'],path=>source[path]||'');
+  assert.ok(select().includes(onDiskOriginal),'NFC manifest source must retain its NFD filesystem path');
+  assert.ok(select().includes(wide),'manifest-only wide output is required');
+  source[manifestPath]=JSON.stringify({assets:[{source:original,outputs:[{path:'assets/fullscreen-wide/20261031/missing.webp'}]}]});
+  assert.throws(select,/Missing manifest asset/,'a broken manifest path must fail the package selection');
+  const excluded='assets/map/ch1/production_finish/CH1_1_PRODUCTION_MASTER.png';
+  paths.push(excluded);
+  source[manifestPath]=JSON.stringify({assets:[{source:excluded,outputs:[{path:wide}]}]});
+  assert.throws(select,/Manifest asset excluded/,'an existing authoring file cannot silently satisfy a runtime manifest');
 });
 
 test('ASCII upload aliases preserve Korean public URLs and collapse identical NFC/NFD files',async t=>{
