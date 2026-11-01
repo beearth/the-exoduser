@@ -104,3 +104,20 @@ URL와 MIME 지정은 [Vercel Build Output API 공식 configuration](https://ver
 | 반영 경계 | code1·test1·관련 docs2만 기존 후보 위에 정상 commit/push한다. 원본/파생 미디어·game/index·main·공개 배포·이전 partial artifact·G: 사용자 작업본을 변경하지 않는다. 전체 새 고유 output 및 Mac 1x/decode/HTTP 검수는 root/Mac 후속 인수 대상이다. |
 
 근거: `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-eisdir-stage-red.log`, `web-eisdir-stage-green.log`, `web-eisdir-real-fixture.json`.
+
+
+## 2026-11-01 승인 불투명 로고·최신 웹 배포 전 실제 검수 인수
+
+| 항목 | 실제 확인 | 경계 |
+|---|---|---|
+| 승인 불투명 로고 | 원본·web main·unity/main·새 웹 산출 PNG SHA-256 `167e8465a0aec6fa5e8cd90131f203a86a27dccca2aa913a317cffe93c7d413d` 동일 | PC Unity 설치본 교체와 별개 |
+| 소스 | Mac 실제 검수 `5df3c4b8216f8d4ee92e56e0cecfd12cc2f54c4e`, Windows exFAT 복사 수정 `89d70f3d7b82b25f188e98e1501bdcf9ed21d746` | 후속 수정은 빌드 복사 도구·테스트·docs뿐이며 게임·미디어·manifest byte diff 0 |
+| 실제 산출물 | 두 OS 모두 정적 3,088파일 / 3,945,183,602B / 최대 94,795,327B | 생성 중 sidecar를 포함한 값 3,945,236,692B와 구분 |
+| 파생 매핑 | 73논리 행 → 72정규화 자원(WebP54/FLAC17/MP4 1), 원본과 파생 SHA·원본 Gitblob·크기 검증 | 원본 Git byte 보존·NFC/NFD 동일 byte alias만 병합 |
+| HTTP 소비 | 원래 URL 73개 HEAD·정확 MIME·Range206/416·전체 GET SHA 일치 | Vercel Build Output overrides를 반영한 격리 loopback QA; 공개 사이트 검증 아님 |
+| Chrome 소비 | WebP54 decode, FLAC17 decode, MP4 113.701초/1920x1080 및 5·45·90초 seek | 무음 검수·청음 및 자연 전투 검수 아님 |
+| 화면 비율 | 1920x1080·2560x1080·3840x1080 인트로/로딩 캡처 및 담당 1x 확인, 로딩 35종x3비율=105 decode | root는 실제 명령·영수증·imageView5 기록 인수; root 직접 픽셀뷰 0 |
+| 산출물 동일성 | config SHA `a155ecb736faf23f4d0ee94c323d46ccdd9387119ac0e5a26967d04901f264b4`, 파생 영수증 SHA `e4c4479998da14f6370dabc60e3e2e9cae660837433c366195ad5ccd809ca380` Mac/Windows 일치 | hosted Vercel build·실제 배포 URL은 후속 확인 |
+| 공개 상태 | 배포 전 두 도메인 HTTP402 DEPLOYMENT_DISABLED | 원인 계정/플랜 확정 없음·요금/보안 변경 없음 |
+
+검수 산출: Mac `_out/web-runtime-qa-20261101/REPORT.md`와 같은 폴더의 HTTP·브라우저·로딩 검수 영수증 및 캡처. root 근거는 `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-real-artifact-root-audit.json`/`web-derived-real-inputs-root-audit.json`. 최신 승인 지시에 따라 정상 main 반영과 기존 GitHub Actions 배포를 이어가며 공개 URL·실제 로고 바이트 확인 전 배포 완료로 표시하지 않는다.
