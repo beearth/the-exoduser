@@ -1,5 +1,7 @@
 # Unity 캐릭터 슬롯 목록 영속 저장 — 2026-10-25
 
+> 2026-11-01 현행: 캐릭터 개수 제한·임의64KiB 제한 제거, payload v1/2 읽기·v2 쓰기와 v1 raw backup 보호. 실제 Mac Player231검사 PASS, 일반 앱 `/Users/fordeargamers/Applications/EXODUSER.app` 설치·실행 완료, 정상 제품 Win64 빌드 완료(Windows 실행 미검증). 1920 목록 시각 PASS/3840 미검증, QA preferences 한 파일 최초 원문 복구 미확인. 아래 날짜별5슬롯·세션/미구현·NOT_READY 기록은 당시 이력이며 현재 계약은 [실제 인수](UNITY_MAC_CHARACTER_CAPACITY_QA_20261101.md)를 따른다.
+
 > 2026-11-01 사용자 “우리도 다 풀어버려” 적용 후보: 생성·복원·저장의 개수 제한 제거. 폴더/파일명/schema는 유지하고 새 payload만 version2를 사용한다. 아래 2026-10-25 검사 기록은 당시 이력이며 현재후보 검수·실행미반영 상태는 마지막 절을 따른다.
 
 > Integration completed after this module handoff. Current accepted scope and restart/restore evidence: [final slots](UNITY_MAC_CHARACTER_SLOTS_20261025.md), source67d1904c6. The integration-pending gates below are historical. Full game-progress storage remains outside this module.
@@ -40,7 +42,7 @@
 
 | API | 결과 |
 |---|---|
-| CreateSnapshot(names,selected) | names배열복사/schema1/revision0의후보snapshot |
+| CreateSnapshot(names,selected) | names배열복사/schema=exoduser.unity.character-roster/version2/revision0의후보snapshot |
 | Capture(roster) | 현재이름·선택을분리복사, live쓰기0 |
 | Validate(snapshot,out status) | 전체후보를임시roster로검증,live변경0 |
 | TryLoad(out snapshot,out status) | Missing/Loaded/RecoveredFromBackup 성공. 실패시snapshot null·save권한미획득 |

@@ -1,5 +1,7 @@
 # Mac 캐릭터 슬롯 삭제·목록 저장 — 2026-10-25
 
+> 2026-11-01 현행: 캐릭터 개수 제한·임의64KiB 제한 제거, payload v1/2 읽기·v2 쓰기와 v1 raw backup 보호. 실제 Mac Player231검사 PASS, 일반 앱 `/Users/fordeargamers/Applications/EXODUSER.app` 설치·실행 완료, 정상 제품 Win64 빌드 완료(Windows 실행 미검증). 1920 목록 시각 PASS/3840 미검증, QA preferences 한 파일 최초 원문 복구 미확인. 아래 날짜별5슬롯·세션/미구현·NOT_READY 기록은 당시 이력이며 현재 계약은 [실제 인수](UNITY_MAC_CHARACTER_CAPACITY_QA_20261101.md)를 따른다.
+
 기존 캐릭터 생성·선택 다음 단위. 원본 index.html `_showDelConfirm`/`_hideDelConfirm`/로컬 삭제 콜백을 대조했다. 원본과 동일하게 취소가 기본 선택이고, 확인에만 삭제를 연결한다. 기존 웹/Godot/계정 세이브를 읽거나 쓰지 않는다.
 
 ## 삭제 계약

@@ -636,3 +636,7 @@ Mac 소유 `/Users/fordeargamers/exoduser-wt/UNITY-MAC-20261024`의 clean `15483
 ## 2026-10-29 Mac A15 실창 OS 키·격리 복원 후속
 
 최종 ARM64 앱을 재빌드 없이 QA marker 루트의 일반 UI에서 실행. 타이틀→세계관 지원 스킵→로비 전사 생성→전사 이야기/네메시스/안내 지원 스킵→1-1 첫 연습 HUD, 설정 사운드 SFX/BGM 각각 OS Right 1회 `60→61`, v2 revision3 저장과 같은 루트 재시작 `61/61` 실창 복원 PASS. 자동 M1과 실제 OS UI 증거를 분리했다. 기존 앱3 유지, 검수 PID 종료. PC·GitHub·Mac **소스** 공통 `79907fac` byte 일치, PC 실행 앱 교체·검증은 pending. [PNG·실행 인자·범위](../UNITY_MAC_A15_M1_FINAL_20261029.md#같은-최종-앱의-일반-실창-os-키-후속).
+
+## 2026-11-01 Mac 무제한 캐릭터 목록 실제 인수
+
+순수 공통 c3362d2d 후손 a9ddfbff +2a0eea00 QA로 Mac 실제231검사 PASS. 정상 제품 앱 설치/실행·정상 Win64 빌드 완료. 1920 시각 PASS,3840/Windows 실행 미검증. 기존 UI 담당 facing-ground 개인 소스는 공통으로 합치지 않았다. PC 지정 receiver 수신과 SHA 확인 후 임시 서버 종료를 회수한다. 사용자 게임 세이브 불변, QA preferences 한 파일 최초 bytes 복구 미확인은 명시 보류한다. [실물/한계/영수증](../UNITY_MAC_CHARACTER_CAPACITY_QA_20261101.md).
