@@ -1,6 +1,6 @@
 # A2 지면 DBuffer 데칼 수신 — 공통 6ad 기준
 
-상태: 2026-11-02 현재 두 셰이더에만 수신 변경을 이식했다. 정확 소스 `afdd4ab535c2e5f2a419fb009b50598a06ddc88b` Settings QA ARM64 앱의 Metal 기술 수신은 아래 범위에서 PASS다. 일반 앱 전달은 별도 영수증 전까지 미완료다. 맵 전체 VISUAL VERDICT는 RETOUCH, Impact R4 전체 VISUAL FAIL을 유지한다.
+상태: 2026-11-02 현재 두 셰이더에만 수신 변경을 이식했다. 정확 소스 `afdd4ab535c2e5f2a419fb009b50598a06ddc88b` Settings QA ARM64 앱의 Metal 기술 수신은 아래 범위에서 PASS다. 일반 ARM64 앱은 같은 검증 입력으로 빌드하고 `/Users/fordeargamers/Applications/EXODUSER.app`에 파일 전달·검증했다. 일반 앱 실행은 수행하지 않았다. 맵 전체 VISUAL VERDICT는 RETOUCH, Impact R4 전체 VISUAL FAIL을 유지한다.
 
 | id | 현재 코드 계약 | 적용 위치 |
 |---|---|---|
@@ -19,3 +19,16 @@
 영수증: `/Users/fordeargamers/exoduser-wt/_out/mac-current-decal-receiver-20261102/`의 `RED-SOURCE.json`, `qa-input-verification.json`, `nongit-inputs.json`, `build-qa-receipt.json`, `m1/m1-check.json`, `flat/ground-receiver-receipt.json`, `map/ground-map-receipt.json`과 1920 원본/3840 RT 이미지. 빌드 후 Unity가 격리 QA clone에서 재직렬화/파생한 773경로(기존716 복원·신규57 삭제)는 source 원문으로 되돌렸고 전체 입력 3,537/3,537 재대조 불일치 0이다.
 
 맵 제작 가이드 §23의 MAP PRODUCTION REPORT와 VISUAL VERDICT를 기술 수신 범위로 작성하며, 기존 난간 측면 RETOUCH와 전체 맵 RETOUCH를 유지한다. 후보의 `ImpactGroundPatch`/`NativeSkillRemaster`/재질·VFX 묶음, Map R8, holy는 이 변경에 포함하지 않는다.
+
+## 일반 Mac 앱 파일 전달 (2026-11-02)
+
+| id | 검증값 |
+|---|---|
+| PRODUCT_BUILD | QA와 같은 격리 입력 3,537/3,537, SHA 불일치 0. Unity 6000.6.7f1 StandaloneOSX ARM64 일반 빌드 `Succeeded`, errors 0, 정규화 전 4,543,965,532B |
+| NORMALIZE | 제품명 `EXODUSER · Unity 이식 검증판`, bundle ID `com.ForDearGamers.EXODUSER----Unity-----------------`, 내부 실행파일 `EXODUSER`, ad-hoc 서명 strict/deep PASS |
+| PRODUCT_HASH | 실행파일 SHA256 `a70b83f318bdb3892db80baf08064faa0193d8a0db9c2b2b7c0e70ada414e622`, Runtime DLL `1b6ce864f82bcd3cef1531423410461360946083c196e789a1e34cd1d8400e3e`, Core DLL `76e3c4a391b7e34d571aa2fd4b34d7be8921b5248ed459beb688f1804213b06d` |
+| PACKAGE | 정규화 원본·stage·설치본 모두 211파일/0 symlink/4,543,983,917B/전체 manifest SHA256 `54d8ae1bf0f4fe0dd52d2f43e1014e8dc39d2e1f7240366863739a594047e7c2`; 설치 경로 strict/deep PASS |
+| CAS_BACKUP | 이전 설치본 실행파일·Runtime·Core 3 SHA 기대값 일치 후 `/Users/fordeargamers/exoduser-wt/_out/mac-current-decal-receiver-20261102/installed-before-receiver-preserved.app`에 복사 보존. 교체 직전 앱 프로세스 없음 |
+| USER_DATA | 일반 저장·설정 11항목 전후 동일. QA 전용 plist 1개는 QA 실행으로 달라져 시작 전 raw 복사본을 CAS 확인 후 복원, QA plist 2개 최종 전후 동일 |
+
+일반 제품은 파일 전달만 수행했다. 자연 플레이·일반 앱 실행·물리 3840 화면·Windows/PC/공개 배포는 이 판정에 포함하지 않는다. 원본 `Assets/Packages/ProjectSettings`는 제품 빌드 후 복원해 3,537/3,537 일치·불일치 0이다. `unity/Tools/devtools/exo-unity.ps1`과 `unity/Tools/ground-skill/`의 외부 WIP는 수정하지 않았다.
