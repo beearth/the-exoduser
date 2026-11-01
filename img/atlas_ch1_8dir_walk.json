@@ -206,5 +206,13 @@
       "col": 7,
       "row": 4
     }
+  },
+  "sampleIndicesByMob": {
+    "blood_swarm": [
+      0,
+      1,
+      2,
+      3
+    ]
   }
 }

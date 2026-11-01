@@ -33,6 +33,7 @@ namespace Exoduser.UnityPort
             {Debug.LogError("FACING_ONLY_QA requires a GUI Player, absolute output and explicit sandbox");Application.Quit(2);yield break;}
             Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;
             Application.runInBackground=true;smokeActive=true;pauseSmoke=true;
+            bool walkCycle=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-walk-cycle-qa")>=0;
             var result=new FacingOnlyReceipt{sandbox=NativeQaSandbox.Root,device=SystemInfo.graphicsDeviceName,deviceType=SystemInfo.graphicsDeviceType.ToString()};
             Screen.SetResolution(1920,1080,FullScreenMode.Windowed);
             lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();
@@ -51,17 +52,19 @@ namespace Exoduser.UnityPort
             else
             {
                 UpdateViews();
-                string[] names={"01-idle-west","02-micro-west","03-vertical-north","04-noisy-west","05-reversal-east","06-attack-east","07-idle-east"};
-                float[] xs={p.X+200,p.X+200.02f,p.X,p.X+200.02f,p.X-200,p.X-200,p.X-200};
-                float[] ys={p.Y,p.Y,p.Y+200,p.Y+.02f,p.Y,p.Y,p.Y};
-                int[] expected={4,4,6,4,0,0,0};
-                for(int i=0;i<names.Length;i++)
+                string[] names={"01-idle-west","02-micro-west","03-vertical-north","04-noisy-west","05-reversal-east","06-attack-east","07-idle-east",
+                    "08-walk-west-0","09-walk-west-1","10-walk-west-2","11-walk-west-3","12-walk-west-0-loop"};
+                float[] xs={p.X+200,p.X+200.02f,p.X,p.X+200.02f,p.X-200,p.X-200,p.X-200,
+                    p.X+200,p.X+200,p.X+200,p.X+200,p.X+200};
+                float[] ys={p.Y,p.Y,p.Y+200,p.Y+.02f,p.Y,p.Y,p.Y,p.Y,p.Y,p.Y,p.Y,p.Y};
+                int[] expected={4,4,6,4,0,0,0,4,4,4,4,4};
+                for(int i=0;i<(walkCycle?names.Length:7);i++)
                 {
                     enemy.X=xs[i];enemy.Y=ys[i];enemy.State=i==5?"attack":"idle";enemy.Facing=i%2==0?0:(float)Math.PI;
                     if(enemy.Web!=null){enemy.Web.x=enemy.X;enemy.Web.y=enemy.Y;enemy.Web.s=enemy.State;enemy.Web.facing=i%2==0?Math.PI/2:Math.PI;}
                     UpdateViews();var ev=enemies[enemy.Id];
-                    bool moving=i==1||i==2||i==3||i==4||i==5;
-                    ev.lastX=enemy.X-(moving?.02f:0);ev.lastY=enemy.Y;ev.distance=moving?128f*(i%4):0;renderedTick=-1;
+                    bool moving=i==1||i==2||i==3||i==4||i==5||i>=7;
+                    ev.lastX=enemy.X-(moving?.02f:0);ev.lastY=enemy.Y;ev.distance=i>=7?128f*(i-7):(moving?128f*(i%4):0);renderedTick=-1;
                     UpdateViews();yield return null;yield return new WaitForEndOfFrame();
                     var body=ev.body.sprite;var walk=ev.walk.sprite;int dir=NativeEnemyVisualFacing.Direction(enemy,p);
                     string path=Path.Combine(output,names[i]+"-actual-window-1920x1080.png");
@@ -87,7 +90,7 @@ namespace Exoduser.UnityPort
             var sample=new float[1024];AudioListener.GetOutputData(sample,0);foreach(float v in sample)result.listenerPeak=Mathf.Max(result.listenerPeak,Mathf.Abs(v));
             result.listenerPaused=AudioListener.pause;result.directVideoPlayers=FindObjectsByType<VideoPlayer>().Length;
             if(!result.listenerPaused||result.listenerPeak!=0||result.directVideoPlayers!=0)result.failures.Add("audio/video not drained");
-            result.passed=result.failures.Count==0&&result.frames.Count==7;
+            result.passed=result.failures.Count==0&&result.frames.Count==(walkCycle?12:7);
             File.WriteAllText(Path.Combine(output,"facing-only-qa.json"),JsonUtility.ToJson(result,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(.5f);
             Debug.Log("QA_MEDIA_DRAIN_COMPLETE FACING_ONLY");Application.Quit(result.passed?0:3);
