@@ -138,6 +138,8 @@ namespace Exoduser.UnityPort
                 yield return new WaitForEndOfFrame();FgShot(output,"holy-dome-actual-window-1920x1080");
                 var dome=FgMeasure("holy-dome","holy-dome-actual-window-1920x1080.png",holy,false,"dome");result.surfaces.Add(dome);
                 if(dome.vertices!=289||dome.triangles!=512||!dome.sourceHidden||!dome.meshEnabled||dome.ringCount!=2||dome.ringPoints!=72||!dome.ringsWorldSpace||dome.maxVertexHeightError>.002f||dome.maxRingHeightError>.002f)result.failures.Add("holy dome mesh/ring/height contract");
+                if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-facing-ground-diagnose")>=0)
+                    yield return StartCoroutine(FacingGroundDiagnose(output,holy,p,sim));
                 sim.FireZones.Clear();UpdateViews();yield return null;
             }
             else if(!NativeRemodel3D.Requested)

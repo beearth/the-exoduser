@@ -506,3 +506,7 @@ Shore는 고정앵글러 주변을 피한 후 z−52~−42에서 다시28u 굽�
 | 시각 판정 | `RETOUCH`: 평지 가시덫과 목교 널빤지의 장판은 지면에 붙어 보이고 기존 공중 billboard는 보이지 않는다. 경사 표본은 큰 나무 구조물에 가려져 화면 판정 불가. 성역은 메시/링 구조·높이 숫자는 정상이나 실제 3D 화면에서 식별할 만큼 보이지 않는다. 따라서 전체 장판 visual PASS는 보류. 후보가 성역 가시성을 새로 악화시켰는지는 기존 3D 비교 프레임이 없어 단정하지 않는다. 자연 전투·다수 동시 장판·성능은 미검수. |
 
 증거: `/Users/fordeargamers/exoduser-wt/_out/mac-facing-ground-qa-20261101/`의 `build-receipt.json`, `m1/m1-check.json`, `gui-3d/facing-ground-qa.json`, `gui-2d/facing-ground-qa.json`, 원본 PNG, `ordinary-before.json`·`ordinary-after-m1.json`·`ordinary-after-gui.json`.
+
+### Mac 시각 RETOUCH 원인 진단 추가 — 같은 개인 브랜치
+
+`--unity-facing-ground-qa --unity-facing-ground-diagnose`는 기존 절대 출력·저장 sandbox 게이트를 그대로 요구한다. 제품 스킬의 원화/alpha/RGB/반경/전투·맵 계약은 바꾸지 않고 QA에서만 성역을 같은 시뮬레이션 상태·카메라·광원·프레임에 두고 `off`, 현행 mesh, c336 동등 SpriteRenderer billboard 경로를 1920×1080 및 3840×1080 직접 GPU RenderTexture로 각각 캡처한다. off 반복 프레임은 GPU 변동 바닥값이다. 원화 texture·material `_Flat`/depth/render queue·property block `_MainTex`·메시 UV/vertex alpha·source alpha와 실제 지면 높이를 영수증에 남긴다. 이 동등 경로는 같은 빌드에서 QA로 renderer만 교체한 표본이며 별도 c336 제품 앱을 빌드한 것은 아니다. 가시덫은 평지 인근 보행 가능한 경사 네 표본의 실제 1920 창과 3840 직접 세계 RT를 별도로 찍고 좌표·기울기·높이·정점 오차를 기록한다. 새 QA의 on/off GPU 차이는 실제 PNG 픽셀로 분석하며 자동 메시 높이 통과와 시각 PASS를 혼동하지 않는다. 결과는 빌드 후 별도 표로 기록한다.
