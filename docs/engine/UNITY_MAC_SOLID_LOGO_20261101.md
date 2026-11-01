@@ -14,3 +14,9 @@
 검수는 새 후보 커밋의 공식 ARM64 Settings QA 앱에서 실제 타이틀/splash/인장 1x PNG, 원본 SHA와 실행 앱 SHA, 같은 앱 M1, 무음 Listener 출력, Direct VideoPlayer 0, 일반 저장 11항목 전후 동일, 정상 media drain 및 종료를 각각 기록한다. 로딩 원화 116표본은 선행 후보의 별도 통과 결과이며 로고 수정 후 전수 중복 실행하지 않는다.
 
 첫 로고 후보 `b29522969df6774c888bfc7502d95d2f5cb3f73f`의 공식 ARM64 빌드는 Succeeded/오류0, M1 23단계/차단0, UI 자산 캡처 30/30·종료0이다. 타이틀·인장·로비 1920×1080 원본 PNG를 육안 확인했고, 인장 고리의 글자 내부 관통0·기존 위치/폭 유지로 판정했다. 일반 저장 11항목 전후 동일. 이 UI 캡처 영수증에는 Listener 출력 peak/Direct 개수 항목이 없어 그 계측만 QA 코드에 추가한 후속 앱에서 검증한다.
+
+### 최종 계측 앱 결과
+
+코드 커밋 `04c9f9744588837b3b4690cb5901a1598f0a49b0`에서 새 소스 QA 복제본과 이전 자기 Library 캐시를 사용했다. 제품 소스·승인 PNG/메타·주요 설정 28항목은 후보와 byte 일치했다. Unity 6000.6.7f1 공식 Settings QA ARM64 빌드 `Succeeded`/errors0, 실행 파일 SHA-256 `9802ffee0d403a9897c3c559fce52c441cba801b79e1e29b20dfbdddf59c0dd8`. 같은 앱 M1 23/23·차단0·exit0; UI 자산 캡처 31/31·exit0·정상 `QA_MEDIA_DRAIN_COMPLETE UI`. 영수증의 Listener pause=true, volume=0, outputPeak=0, Direct VideoPlayer=0. 일반 사용자 저장 11항목은 사전·M1 후·GUI 후 존재/크기/SHA-256이 모두 같다. 종료 후 잔여 Unity/Settings QA Player 0.
+
+실제 1920×1080 1x 원본은 `/Users/fordeargamers/exoduser-wt/_out/mac-loading-art-overlay-20261101/gui-logo-final/Unity_타이틀_1920.png`, `Unity_인장_1920.png`, `Unity_로비_1920.png`다. 타이틀·인장·로비에서 승인 흑철 글자 내부로 배경/인장 고리 관통0, 기존 배치·크기 보존. **로고 영역 VISUAL VERDICT: PASS.** 이 판정은 MP4 내 합성 로고나 FDG 인트로의 변경을 뜻하지 않는다.
