@@ -15,6 +15,7 @@ namespace Exoduser.UnityPort
         {
             public string name,capture,bodyTexture,walkTexture,state;
             public int direction,expectedDirection,walkFrame,skin,width,height,bodyOrder,walkOrder;
+            public int bodyRectX,bodyRectY,walkRectX,walkRectY;
             public bool moving,bodyEnabled,walkEnabled,bodyCellValid,walkCellValid,samePosition,sameScale;
             public float enemyX,enemyY,playerX,playerY;
             public double coreFacing,webFacing;
@@ -35,6 +36,7 @@ namespace Exoduser.UnityPort
             Application.runInBackground=true;smokeActive=true;pauseSmoke=true;
             bool walkCycle=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-walk-cycle-qa")>=0;
             bool fourFrameWalk=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-four-frame-walk-qa")>=0;
+            bool stagSouthwest=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-stag-southwest-qa")>=0;
             var result=new FacingOnlyReceipt{sandbox=NativeQaSandbox.Root,device=SystemInfo.graphicsDeviceName,deviceType=SystemInfo.graphicsDeviceType.ToString()};
             Screen.SetResolution(1920,1080,FullScreenMode.Windowed);
             lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();
@@ -125,12 +127,52 @@ namespace Exoduser.UnityPort
                         }
                     }
                 }
+                if(stagSouthwest)
+                {
+                    const int stagSkin=22;
+                    for(int i=0;i<7;i++)
+                    {
+                        bool reversal=i==6,walking=i<5||reversal;
+                        enemy.X=p.X+(reversal?-200:200);enemy.Y=p.Y+(reversal?200:-200);
+                        enemy.State="idle";enemy.Facing=0;
+                        if(enemy.Web!=null){enemy.Web.x=enemy.X;enemy.Web.y=enemy.Y;enemy.Web.s=enemy.State;enemy.Web.facing=0;}
+                        UpdateViews();var ev=enemies[enemy.Id];ev.skin=stagSkin;
+                        ev.lastX=enemy.X-(walking?.02f:0);ev.lastY=enemy.Y;
+                        ev.distance=i<5?128f*i:0;renderedTick=-1;
+                        UpdateViews();yield return null;yield return new WaitForEndOfFrame();
+                        int dir=NativeEnemyVisualFacing.Direction(enemy,p),expectedDir=reversal?7:3;
+                        string suffix=enemyDirections[expectedDir];
+                        var bodyAtlas=Resources.Load<Texture2D>("Art/enemy/atlas_ch1_8dir_"+suffix);
+                        var walkAtlas=Resources.Load<Texture2D>("Art/enemy/atlas_ch1_8dir_walk_"+suffix);
+                        var body=ev.body.sprite;var walk=ev.walk.sprite;
+                        string name=i<5?"stag-southwest-"+i:i==5?"stag-southwest-idle":"stag-reversal-northeast";
+                        string capture=Path.GetFileName(name+"-actual-window-1920x1080.png");
+                        var screen=ScreenCapture.CaptureScreenshotAsTexture();
+                        try{File.WriteAllBytes(Path.Combine(output,capture),screen.EncodeToPNG());}finally{Destroy(screen);}
+                        int frame=i<5?i%4:0;
+                        var row=new FacingOnlyFrame{name=name,capture=capture,state=enemy.State,
+                            width=Screen.width,height=Screen.height,direction=dir,expectedDirection=expectedDir,walkFrame=(int)(ev.distance/128)%4,skin=ev.skin,
+                            moving=ev.moving,bodyEnabled=ev.body.enabled,walkEnabled=ev.walk.enabled,bodyOrder=ev.body.sortingOrder,walkOrder=ev.walk.sortingOrder,
+                            bodyTexture=body!=null&&body.texture!=null?body.texture.name:"",walkTexture=walk!=null&&walk.texture!=null?walk.texture.name:"",
+                            bodyRectX=body!=null?(int)body.rect.x:-1,bodyRectY=body!=null?(int)body.rect.y:-1,
+                            walkRectX=walk!=null?(int)walk.rect.x:-1,walkRectY=walk!=null?(int)walk.rect.y:-1,
+                            bodyCellValid=body!=null&&body.texture==bodyAtlas&&body.rect.x==stagSkin%8*256&&body.rect.y==bodyAtlas.height-(stagSkin/8+1)*256&&body.rect.width==256&&body.rect.height==256,
+                            walkCellValid=walk!=null&&walk.texture==walkAtlas&&walk.rect.x==stagSkin%8*1024+frame*256&&walk.rect.y==walkAtlas.height-(stagSkin/8+1)*256&&walk.rect.width==256&&walk.rect.height==256,
+                            samePosition=Vector3.Distance(ev.body.transform.position,ev.walk.transform.position)<.00001f,
+                            sameScale=Vector3.Distance(ev.body.transform.localScale,ev.walk.transform.localScale)<.00001f,
+                            enemyX=enemy.X,enemyY=enemy.Y,playerX=p.X,playerY=p.Y,coreFacing=enemy.Facing,webFacing=enemy.Web!=null?enemy.Web.facing:double.NaN};
+                        result.frames.Add(row);
+                        if(dir!=expectedDir||row.skin!=stagSkin||row.walkFrame!=frame||row.moving!=walking||!row.bodyEnabled||row.walkEnabled!=walking||
+                            !row.bodyCellValid||(walking&&!row.walkCellValid)||!row.samePosition||!row.sameScale||row.walkOrder!=row.bodyOrder+1)
+                            result.failures.Add(name+" stag south-west/renderer contract");
+                    }
+                }
                 sim.Enemies.Clear();UpdateViews();yield return null;
             }
             var sample=new float[1024];AudioListener.GetOutputData(sample,0);foreach(float v in sample)result.listenerPeak=Mathf.Max(result.listenerPeak,Mathf.Abs(v));
             result.listenerPaused=AudioListener.pause;result.directVideoPlayers=FindObjectsByType<VideoPlayer>().Length;
             if(!result.listenerPaused||result.listenerPeak!=0||result.directVideoPlayers!=0)result.failures.Add("audio/video not drained");
-            result.passed=result.failures.Count==0&&result.frames.Count==(walkCycle?12:7)+(fourFrameWalk?80:0);
+            result.passed=result.failures.Count==0&&result.frames.Count==(walkCycle?12:7)+(fourFrameWalk?80:0)+(stagSouthwest?7:0);
             File.WriteAllText(Path.Combine(output,"facing-only-qa.json"),JsonUtility.ToJson(result,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(.5f);
             Debug.Log("QA_MEDIA_DRAIN_COMPLETE FACING_ONLY");Application.Quit(result.passed?0:3);
