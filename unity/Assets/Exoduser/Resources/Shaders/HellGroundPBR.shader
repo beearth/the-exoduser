@@ -16,9 +16,11 @@ Shader "EXODUSER/HellGroundPBR"
    #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
             #pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
    #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
+   #pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
    #pragma multi_compile_fog
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+   #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DBuffer.hlsl"
    TEXTURE2D(_BaseMap);SAMPLER(sampler_BaseMap);TEXTURE2D(_BumpMap);SAMPLER(sampler_BumpMap);
    TEXTURE2D(_RockMap);SAMPLER(sampler_RockMap);TEXTURE2D(_AshMap);SAMPLER(sampler_AshMap);
    TEXTURE2D(_RockNormal);SAMPLER(sampler_RockNormal);TEXTURE2D(_RockRough);SAMPLER(sampler_RockRough);
@@ -90,6 +92,10 @@ Shader "EXODUSER/HellGroundPBR"
     half leafRough=SAMPLE_TEXTURE2D(_ForestRough,sampler_ForestRough,leafUV).r;surface.smoothness=lerp(surface.smoothness,.12+.18*(1-leafRough),leafMix);
     surface.smoothness=lerp(surface.smoothness,.22+.23*(1-SAMPLE_TEXTURE2D(_FieldMossRough,sampler_ForestRough,i.world.xz/2.6).r),mossMix);
     if(_FullField>.5)surface.smoothness=lerp(lerp(lerp(.24-.10*SAMPLE_TEXTURE2D(_SoilRough,sampler_ForestMap,i.world.xz/3.6).r,.14+.14*(1-SAMPLE_TEXTURE2D(_ForestRough,sampler_ForestMap,i.world.xz/4.2).r),litterMix),.63,wetness),.18+.16*(1-SAMPLE_TEXTURE2D(_FieldMossRough,sampler_ForestMap,i.world.xz/2.6).r),mossMix);
+    #if defined(_DBUFFER)
+    ApplyDecalToSurfaceData(i.positionCS,surface,input);
+    input.bakedGI=SampleSH(input.normalWS);
+    #endif
     half4 color=UniversalFragmentPBR(input,surface);color.rgb=MixFog(color.rgb,i.fog);return color;
    }
    ENDHLSL
