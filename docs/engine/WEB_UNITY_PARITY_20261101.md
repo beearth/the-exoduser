@@ -18,6 +18,21 @@
 
 기존 3333 서버와 사용자 세이브를 건드리지 않고 I: 소스의 `server.cjs`를 포트 3448, 별도 `EXODUSER_SAVE_DIR`로 잠시 실행한 뒤 종료했다. `index.html`, `game.html`, 승인 PNG, 로딩 JS/CSS, `img/lording/wide/manifest.json`은 모두 HTTP 200이었다. 무창·무음 Chromium 1600×900에서 기존 3333은 회색 구 타이틀, I: 소스는 붉은 태양·흑철 승인 로고·메뉴로 나타났다. 기존/최신 화면은 각각 `I:/EXODUSER-Storage/design/web-unity-parity-20261101/stale-title-1600x900.png`와 `current-title-1600x900.png`, HTTP·DOM 기록은 같은 폴더의 `title-receipt.json`이다. 이 1개 해상도 캡처는 전체 UI·로딩35장·자연 플레이의 시각 판정이 아니다.
 
+## 게임 계약 비교와 적용 상태
+
+| 계약 | 웹 main 108980fb | Unity main f60d89b | 이번 반영 |
+|---|---|---|---|
+| 게임 내용·맵 | `index.html`→`game.html`의 데모 진입과 CH1 본편 코드·웹 아트/로딩35장 | 별도 3D 런타임과 CH1 이식. [Unity 이식 보드](UNITY_PORT_MASTER_20261026.md)는 전체 웹 게임의 이식 완료를 주장하지 않음 | 웹 원본 게임 내용 변경0. Unity 후보를 main에 역이식하지 않음 |
+| 입력·전투 | `game.html`의 키·스킬·Q/E 판정이 원본 계약 | Unity 입력과 전투는 별도 Core/Player 소비. 이 조사에서 동일 입력·자연 전투 재현을 측정하지 않음 | 키·패링·피해·자원 수치 변경0, 기능 동등 판정 보류 |
+| 수치·아이템 | 웹 `game.html`과 해당 시스템 docs가 기준 | Unity 단계별 일부 이식. 웹 전체 콘텐츠/수치 채택 여부는 기능별 인수 대상 | 새 밸런스·경제·아이템 이식0 |
+| 저장·플랫폼 | 브라우저 demo 기본, `server.cjs`의 `EXODUSER_SAVE_DIR`와 NW.js target별 namespace가 실행 경로에 따라 다름 | Unity Player의 별도 저장 경로·세이브 호환 검수 필요 | 사용자 저장 데이터 이관·쓰기0. 격리 검수의 빈 저장 폴더만 사용 |
+
+## 정적 웹 산출물 준비 상태
+
+`vercel.json`은 `node tools/build-web.mjs`→`web-dist`를 공식 빌드로 지정한다. `selectWebRuntimeFiles`로 최신 작업본을 사전 계산한 결과는 **3,134파일·4,829,417,882바이트**다. 승인 로고, `loading-art.js/css`, `img/lording/wide/`의 manifest 포함 106파일(이미지 105장)이 선택됐다. 전체 선택 경로·크기와 핵심 6파일 SHA-256은 `I:/EXODUSER-Storage/design/web-unity-parity-20261101/web-selection-manifest.json`에 기록했다. 이 JSON은 **복사 전 선택 목록**이며 `web-dist`나 실제 배포 artifact가 아니다. 웹 원본은 원격 main에서 재현 가능하다.
+
+실행 중인 PC Unity Player PID 42820과 작업 지시의 대형 빌드 금지 경계 때문에 4.83GB 전체 복사는 시작하지 않았다. `tools/build-web.mjs`는 기존 출력 폴더를 덮어쓰지 않으며, exFAT 작업본은 hardlink가 지원되지 않아 전체 파일 복사가 필요하다. Unity 실행이 끝난 뒤 고유한 새 출력 경로에서 공식 빌드를 실행하고 3,134파일/핵심 SHA/HTTP 및 실제 정적 참조를 검증해야 배포 가능 산출물로 승격할 수 있다. 현재 3333 서버·DEMO/EA 패키지·Vercel 프로젝트 설정은 그대로다.
+
 ## 다음 반영 경계
 
 웹 소스 자체에는 이번 범위의 로고/로딩 누락이 없으므로 중복 수정하지 않는다. 사용자가 실제로 여는 웹을 최신화하려면 **해당 실행 경로**를 최신 main에서 안전하게 다시 만들고 동일 바이너리/정적 산출물의 화면·저장 격리·배포 해시를 검수해야 한다. G: 사용자 서버 자동 재시작, DEMO/EA 사본 덮어쓰기, Steam·공개 웹 배포, Unity 후보를 웹에 일괄 이식하는 작업은 이번 조사에서 수행하지 않았다. Unity의 별도 로딩·HUD 후보는 해당 owner의 인수/1x/Player 검수 뒤 비교한다.
