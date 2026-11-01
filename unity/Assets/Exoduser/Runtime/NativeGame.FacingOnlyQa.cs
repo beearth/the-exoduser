@@ -34,6 +34,7 @@ namespace Exoduser.UnityPort
             Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;
             Application.runInBackground=true;smokeActive=true;pauseSmoke=true;
             bool walkCycle=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-walk-cycle-qa")>=0;
+            bool fourFrameWalk=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-four-frame-walk-qa")>=0;
             var result=new FacingOnlyReceipt{sandbox=NativeQaSandbox.Root,device=SystemInfo.graphicsDeviceName,deviceType=SystemInfo.graphicsDeviceType.ToString()};
             Screen.SetResolution(1920,1080,FullScreenMode.Windowed);
             lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();
@@ -85,12 +86,51 @@ namespace Exoduser.UnityPort
                     if(dir!=expected[i]||ev.moving!=moving||!row.bodyEnabled||row.walkEnabled!=moving||!row.bodyCellValid||!row.walkCellValid||
                         moving&&!row.samePosition||!row.sameScale||row.walkOrder!=row.bodyOrder+1)result.failures.Add(names[i]+" facing/atlas/renderer contract");
                 }
+                if(fourFrameWalk)
+                {
+                    string[] fourFrameSkins={"apostle_mass","apostle_knight","soul_flame","hive_bloater","spine_beast","flesh_crawler",
+                        "carapace_predator","bone_centipede_pro","gas_zombie","needle_tentacle","rotting_slime_mass","flesh_eye_mass",
+                        "corrupted_wolf","eye_stalker_pro","iron_butcher_pro","plague_doctor_pro"};
+                    for(int skinCase=0;skinCase<fourFrameSkins.Length;skinCase++)
+                    {
+                        string skinName=fourFrameSkins[skinCase];
+                        // This fixed list is the source-proven four-frame whitelist, in atlas cell order.
+                        int skin=skinCase<13?skinCase+1:skinCase+2;
+                        for(int frameCase=0;frameCase<5;frameCase++)
+                        {
+                            enemy.X=p.X+200;enemy.Y=p.Y;enemy.State="idle";enemy.Facing=0;
+                            if(enemy.Web!=null){enemy.Web.x=enemy.X;enemy.Web.y=enemy.Y;enemy.Web.s=enemy.State;enemy.Web.facing=Math.PI/2;}
+                            UpdateViews();var ev=enemies[enemy.Id];ev.skin=skin;ev.lastX=enemy.X-.02f;ev.lastY=enemy.Y;
+                            ev.distance=frameCase*128f;renderedTick=-1;UpdateViews();yield return null;yield return new WaitForEndOfFrame();
+                            int dir=NativeEnemyVisualFacing.Direction(enemy,p);var body=ev.body.sprite;var walk=ev.walk.sprite;
+                            string name="walk-"+skinName+"-"+frameCase;
+                            string path=Path.Combine(output,name+"-actual-window-1920x1080.png");
+                            var screen=ScreenCapture.CaptureScreenshotAsTexture();
+                            try{File.WriteAllBytes(path,screen.EncodeToPNG());}finally{Destroy(screen);}
+                            var bodyAtlas=Resources.Load<Texture2D>("Art/enemy/atlas_ch1_8dir_west");
+                            var walkAtlas=Resources.Load<Texture2D>("Art/enemy/atlas_ch1_8dir_walk_west");
+                            var row=new FacingOnlyFrame{name=name,capture=Path.GetFileName(path),state=enemy.State,
+                                width=Screen.width,height=Screen.height,direction=dir,expectedDirection=4,walkFrame=(int)(ev.distance/128)%4,skin=ev.skin,
+                                moving=ev.moving,bodyEnabled=ev.body.enabled,walkEnabled=ev.walk.enabled,bodyOrder=ev.body.sortingOrder,walkOrder=ev.walk.sortingOrder,
+                                bodyTexture=body!=null&&body.texture!=null?body.texture.name:"",walkTexture=walk!=null&&walk.texture!=null?walk.texture.name:"",
+                                bodyCellValid=body!=null&&body.texture==bodyAtlas&&body.rect.x==skin%8*256&&body.rect.y==bodyAtlas.height-(skin/8+1)*256&&body.rect.width==256&&body.rect.height==256,
+                                walkCellValid=walk!=null&&walk.texture==walkAtlas&&walk.rect.x==skin%8*1024+(frameCase%4)*256&&walk.rect.y==walkAtlas.height-(skin/8+1)*256&&walk.rect.width==256&&walk.rect.height==256,
+                                samePosition=Vector3.Distance(ev.body.transform.position,ev.walk.transform.position)<.00001f,
+                                sameScale=Vector3.Distance(ev.body.transform.localScale,ev.walk.transform.localScale)<.00001f,
+                                enemyX=enemy.X,enemyY=enemy.Y,playerX=p.X,playerY=p.Y,coreFacing=enemy.Facing,webFacing=enemy.Web!=null?enemy.Web.facing:double.NaN};
+                            result.frames.Add(row);
+                            if(dir!=4||row.skin!=skin||row.walkFrame!=frameCase%4||!row.moving||!row.bodyEnabled||!row.walkEnabled||
+                                !row.bodyCellValid||!row.walkCellValid||!row.samePosition||!row.sameScale||row.walkOrder!=row.bodyOrder+1)
+                                result.failures.Add(name+" walk/atlas/renderer contract");
+                        }
+                    }
+                }
                 sim.Enemies.Clear();UpdateViews();yield return null;
             }
             var sample=new float[1024];AudioListener.GetOutputData(sample,0);foreach(float v in sample)result.listenerPeak=Mathf.Max(result.listenerPeak,Mathf.Abs(v));
             result.listenerPaused=AudioListener.pause;result.directVideoPlayers=FindObjectsByType<VideoPlayer>().Length;
             if(!result.listenerPaused||result.listenerPeak!=0||result.directVideoPlayers!=0)result.failures.Add("audio/video not drained");
-            result.passed=result.failures.Count==0&&result.frames.Count==(walkCycle?12:7);
+            result.passed=result.failures.Count==0&&result.frames.Count==(walkCycle?12:7)+(fourFrameWalk?80:0);
             File.WriteAllText(Path.Combine(output,"facing-only-qa.json"),JsonUtility.ToJson(result,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(.5f);
             Debug.Log("QA_MEDIA_DRAIN_COMPLETE FACING_ONLY");Application.Quit(result.passed?0:3);

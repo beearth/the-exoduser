@@ -213,6 +213,102 @@
       1,
       2,
       3
+    ],
+    "apostle_mass": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "apostle_knight": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "soul_flame": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "hive_bloater": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "spine_beast": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "flesh_crawler": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "carapace_predator": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "bone_centipede_pro": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "gas_zombie": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "needle_tentacle": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "rotting_slime_mass": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "flesh_eye_mass": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "corrupted_wolf": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "eye_stalker_pro": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "iron_butcher_pro": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "plague_doctor_pro": [
+      0,
+      1,
+      2,
+      3
     ]
   }
 }
