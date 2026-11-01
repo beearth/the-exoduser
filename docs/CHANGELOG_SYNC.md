@@ -55756,3 +55756,18 @@ stage=0은 실제200×200 본편으로 정정하고 과거 원화 판은 명시�
 | 보존·배포 | 원본/파생 미디어·game.html·Unity·슬롯/저장 내용·기존 서버/사용자 profile 변경0. private 후보 정상 commit/push만; 웹 main·공개 배포·Windows 실행본 변경 없음 |
 
 원문 RED/GREEN·수정 전 HTML: `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-module-closure-20261102/lobby-early-init/`. 최초 acorn 패키지 해석 실패는 회귀 실행환경 오류로 구분했고, 새 설치 없이 실제 함수/초기 호출 구간을 읽는 방식으로 전환해 제품 TDZ를 별도로 재현했다.
+
+
+## 2026-11-02 최종 웹 후보 자산 선택 통합 — 실브라우저 최종 검수 대기
+
+| 항목 | 현재 확인과 검수 경계 |
+|---|---|
+| 정확 입력 | H5 79c081480b151664994924d64abc35f3a70eeb1a의 모듈 선택·로비 초기화 수정 위에 Mac private 350034aa7f99e91fd43fa5bf3b72cf325005f55f의 새 WebP 22개·manifest·재현 도구2·계약 문서만 선택 이식. Unity 전체/기존 Mac CHANGELOG 본문은 반입하지 않음 |
+| 원본 보존 | 새22행의 H5 실제 원본 size/SHA-256/Git blob 전수 일치. 파생 파일22개 SHA/size 일치. 기존73 logical 매핑의 순서·내용 변경0 → 총95 logical/94 physical. 원본 PNG·기존 파생본·game/Unity 변경0 |
+| 선행 Mac 검수 | dae940f 코드와 위 자산을 명시한 복합 입력에서 PNG23개 전체RGBA·치수·색 공간·ICC 동등 확인/22매핑/7,070,875B 절감. 공식 build/prepare/check 최종3,235파일3,999,408,607B·상한 여유591,393B. 최대94,795,327B/상한 변경0 |
+| 실소비 | 복합 입력의 요청13 scripts+22mapped이미지 URL 200·MIME·전체GET SHA 확인. Chrome pageerror0/대표Canvas0·3frame 자동검사 통과. 자연 전투·3D 아트 품질·실제 손입력/전체1x 시각PASS로 확대하지 않음 |
+| 선행 패키지 지문 | static manifest SHA 2b1986d5e12f1522ef0f8e14fa55079765384431e8089ccbe34f9407d7d8f2dd / config SHA 148c7f6eb86c0a937d9425e2aa3badeec133b148ac4d5000aa1e7f325c70f4b8. index가 다른 최종 통합 후보에는 이 전체 지문을 재사용하지 않음 |
+| 최종 후보 gate | 79c의 로비 조기오프라인 초기화 수정은 선행 dae 복합검수에 없었음. 정상commit/privatepush 후 정확 통합 HEAD의 공식새정적산출·최소Canvas/모듈·로비fallback 실제브라우저·저장/종료를 같은 기존Mac 담당이 검수해야 함 |
+| 실제 전달 | 웹main416ea4·Unitycommon18b·WindowsDesktopd8·공개402 상태는 별개. 후보/source/HTTP를 공개배포·Windows전달 완료로 보고하지 않음 |
+
+원문: root `web-final-asset-intake-20261102/intake.json` 및 Mac `_out/web-module-closure-20261102/FINAL_RECEIPT.json`. 코드/manifest/파생 파일이 늘면 좁은 용량 여유를 다시 계산한다. 사용자 저장·기존3333/3448 서버·외부guard baseline은 보존한다.

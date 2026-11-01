@@ -730,6 +730,226 @@
       "sha256": "c2795c9014b8a2035f307807666a1a952b5c2962acb6c4f31d319cd73345ae28",
       "bytes": 75253813,
       "mime": "video/mp4"
+    },
+    {
+      "source_path": "assets/web3d/living/rotten-underbrush-atlas.png",
+      "source_git_blob": "969c92574487dd3307918aaae37ca0980e7ea930",
+      "source_sha256": "bb27bc07f99c758531fdabd3161815b6e1a8146bdaec793705359518fd9d6216",
+      "source_bytes": 2004689,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/living/rotten-underbrush-atlas.exact-lossless.webp",
+      "sha256": "5d4f8f2ce99db13d1af5b66c75d69abc29eff8f62ff9a419fc23af633c299f80",
+      "bytes": 1385736,
+      "mime": "image/webp"
+    },
+    {
+      "source_path": "assets/web3d/sprites/enemy-east.normal.png",
+      "source_git_blob": "d588c41141e56f9554c584fb0a85dd9e3d023463",
+      "source_sha256": "5d1200f3defd2d448d83c3aca8eb64d9e07528858f8c9f202b906dd1c031d6c5",
+      "source_bytes": 407732,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/sprites/enemy-east.normal.exact-lossless.webp",
+      "sha256": "cf88242625028def288ad754f430b51baad9eccc292387cbbba959db0b6fe036",
+      "bytes": 179908,
+      "mime": "image/webp"
+    },
+    {
+      "source_path": "assets/web3d/sprites/enemy-east.png",
+      "source_git_blob": "43a1a4b4f6c932daa82c56d363230cf52aba8bde",
+      "source_sha256": "65162fe57f6ecdf444d8d6969e96dc465bfe249332147f5578f62d4e0fc96b7f",
+      "source_bytes": 1342937,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/sprites/enemy-east.exact-lossless.webp",
+      "sha256": "41ac4e325dfc8de28208ab70bd4cfa8c7a1cc2302f7c3914602ecf4d7d6d7db3",
+      "bytes": 953566,
+      "mime": "image/webp"
+    },
+    {
+      "source_path": "assets/web3d/sprites/enemy-north.normal.png",
+      "source_git_blob": "a99cc1982c738969181b3f238ac17284ff24d958",
+      "source_sha256": "c3fa14384426bcad28e614c3e7dcf45d8265f83ecb2e196833e2f69638b9e908",
+      "source_bytes": 457010,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/sprites/enemy-north.normal.exact-lossless.webp",
+      "sha256": "cc90a297063a949d154864f4713fcdc0107dd54fcbc1c1966d8a5375deed1919",
+      "bytes": 205796,
+      "mime": "image/webp"
+    },
+    {
+      "source_path": "assets/web3d/sprites/enemy-north.png",
+      "source_git_blob": "3707c4ff9a02c83cca6dc69b2ca4fbe7b99defa1",
+      "source_sha256": "614833e5a653f8439f4150a39b8030daa8eb42f3e792bdb1242488a17708e6c3",
+      "source_bytes": 1477920,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/sprites/enemy-north.exact-lossless.webp",
+      "sha256": "04715f56ed203bee954da8e2f161695d64ad277081e6f6e8f3a5908e3c804c23",
+      "bytes": 1034390,
+      "mime": "image/webp"
+    },
+    {
+      "source_path": "assets/web3d/sprites/enemy-north_east.normal.png",
+      "source_git_blob": "2c227044754c42979d527a0fe636c1988c276551",
+      "source_sha256": "0c499856b3a694811a1e80ed78a3d7e3fb32cdcc5fea2539e0ac73662ae7fadb",
+      "source_bytes": 432307,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/sprites/enemy-north_east.normal.exact-lossless.webp",
+      "sha256": "ca13b4a1862630fdfc3d503dc141b7c6ce188ce64750c8b59417a84f85cf0778",
+      "bytes": 193274,
+      "mime": "image/webp"
+    },
+    {
+      "source_path": "assets/web3d/sprites/enemy-north_east.png",
+      "source_git_blob": "c3aff22aca1a52d417c3eda7f4bbe86f54c06d0d",
+      "source_sha256": "971dd82f90c1492cbbc8aa470b2758538221e91651c06d51b9969f025ef3d44f",
+      "source_bytes": 1340982,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/sprites/enemy-north_east.exact-lossless.webp",
+      "sha256": "6799d1e1f9083479da4eecf8b0ac69368dff968ee98ae8e49ffdfab0ad027bd5",
+      "bytes": 941610,
+      "mime": "image/webp"
+    },
+    {
+      "source_path": "assets/web3d/sprites/enemy-north_west.normal.png",
+      "source_git_blob": "c09c14f9c2f91c6b8b97c2e762c8ac3e4f2bac26",
+      "source_sha256": "d9c64bd66c5dcd7d9673a882e49709fb117cd2da39f51e29a408477c2b3af032",
+      "source_bytes": 429035,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/sprites/enemy-north_west.normal.exact-lossless.webp",
+      "sha256": "fcb429a33ac8caa1b6d728cc6f8da3da922d11cdfd24283700838d006ac69657",
+      "bytes": 190596,
+      "mime": "image/webp"
+    },
+    {
+      "source_path": "assets/web3d/sprites/enemy-north_west.png",
+      "source_git_blob": "aa92a4878bfb36005094544e6c4591a92d7a6e20",
+      "source_sha256": "e3fb262aa609c4f49f38f0f4c9c32a55d19ccfa33046fabd38e5f89d311b2efa",
+      "source_bytes": 1233451,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/sprites/enemy-north_west.exact-lossless.webp",
+      "sha256": "df1805970a5caff8f1ea6e7190f94412eff6db4afaa58046bc3076c5d80852ea",
+      "bytes": 843704,
+      "mime": "image/webp"
+    },
+    {
+      "source_path": "assets/web3d/sprites/enemy-south.normal.png",
+      "source_git_blob": "691c18377ec22fc9630c9f6962d417c7020db2c1",
+      "source_sha256": "866063625ea065ab84d8babcf77cc155c4e95701342346a67a33faa7b6c8ae2f",
+      "source_bytes": 490412,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/sprites/enemy-south.normal.exact-lossless.webp",
+      "sha256": "23e26a97311a66e4a29abf41a3b256a0676711e90121be8fc1445624f7f9e506",
+      "bytes": 222696,
+      "mime": "image/webp"
+    },
+    {
+      "source_path": "assets/web3d/sprites/enemy-south.png",
+      "source_git_blob": "50bc78ad01eec1fdc37a2721f0ba9af8138dab9d",
+      "source_sha256": "b9b0b5c1e1b3294c46f5e41f4b9331cc8b71c8b19795e2577db2387f87c06959",
+      "source_bytes": 1525812,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/sprites/enemy-south.exact-lossless.webp",
+      "sha256": "d4445fff8746ce14a5d9a15e2f8b6df6969c7227d051961459b186f06f40bc15",
+      "bytes": 1077402,
+      "mime": "image/webp"
+    },
+    {
+      "source_path": "assets/web3d/sprites/enemy-south_east.normal.png",
+      "source_git_blob": "8203eddcc43b30cf44417dad6569ea9cfc50c1f3",
+      "source_sha256": "7c24f05359949330dd45ceefc8368420b4fd47db056a1b7e55f786fa8ee0be7c",
+      "source_bytes": 468010,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/sprites/enemy-south_east.normal.exact-lossless.webp",
+      "sha256": "49b2bd72c5572e2c8683b62dc1b3410686b50d2477dab7fa68b9c080a0c3218c",
+      "bytes": 211044,
+      "mime": "image/webp"
+    },
+    {
+      "source_path": "assets/web3d/sprites/enemy-south_east.png",
+      "source_git_blob": "59dabcb031c8fe1c4e047252c51fbe0e223d1645",
+      "source_sha256": "a494ced42255ac6e02bf0ea2a35379b6c2abbca751dd22f8c62e09c48db28893",
+      "source_bytes": 1464708,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/sprites/enemy-south_east.exact-lossless.webp",
+      "sha256": "ae34d22bc549bbef5005c4b705ee531876e40b127861beef9ad9bcc49023715b",
+      "bytes": 1040158,
+      "mime": "image/webp"
+    },
+    {
+      "source_path": "assets/web3d/sprites/enemy-south_west.normal.png",
+      "source_git_blob": "634e4cc1f973684c11552625179ad04295999b20",
+      "source_sha256": "8bbfb989bb6bf042e49078dd15a7f30673d8532e67f83fd7c8552c998026502a",
+      "source_bytes": 460940,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/sprites/enemy-south_west.normal.exact-lossless.webp",
+      "sha256": "1ce09cea2793e1113dcd141e54a4f68058d91bcca2c28cd90eb2b30c58636eda",
+      "bytes": 207018,
+      "mime": "image/webp"
+    },
+    {
+      "source_path": "assets/web3d/sprites/enemy-south_west.png",
+      "source_git_blob": "217d311bc7112cfb964ad206e9562d2b04a3da43",
+      "source_sha256": "1324d3b7a8c06ab2e3cec4ebca906b4dd028e8c53e428de22285f0c265fdfadc",
+      "source_bytes": 1468311,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/sprites/enemy-south_west.exact-lossless.webp",
+      "sha256": "6b34b108d4e598e8a5832f909c042f01a520cb751658b026c81609df8c0220f1",
+      "bytes": 1030316,
+      "mime": "image/webp"
+    },
+    {
+      "source_path": "assets/web3d/sprites/enemy-west.normal.png",
+      "source_git_blob": "74fef04555cee55f9154d7b5ef2fed9817d33a61",
+      "source_sha256": "c7d5718477b55edd4f1ce59372721570a7f9d57a5241b3c0564c009373a46e7b",
+      "source_bytes": 405667,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/sprites/enemy-west.normal.exact-lossless.webp",
+      "sha256": "dac8c46467b7ee55f593bb77325131079ca21a2fa5f630a08d3d0ca027107438",
+      "bytes": 179682,
+      "mime": "image/webp"
+    },
+    {
+      "source_path": "assets/web3d/sprites/enemy-west.png",
+      "source_git_blob": "8780e5ba7ae11ac9a3a20dc38a4474f7de532707",
+      "source_sha256": "907d8b995c16267c08be4a5aa476727b1c883b0d91e112301da7c946735c99e3",
+      "source_bytes": 1196890,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/sprites/enemy-west.exact-lossless.webp",
+      "sha256": "6f6b3fb1bca66389fb139bc286732e5152860c67988974bf72784e6eb0f9e293",
+      "bytes": 824558,
+      "mime": "image/webp"
+    },
+    {
+      "source_path": "assets/web3d/sprites/warrior-attack.normal.png",
+      "source_git_blob": "05b6fb0b09401f385b0f3f70c5adaa1a555198d4",
+      "source_sha256": "910d81bb2c17d48d2e38b190221ff15418765746b6792435faaa7adb2b91dceb",
+      "source_bytes": 324137,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/sprites/warrior-attack.normal.exact-lossless.webp",
+      "sha256": "bf1c951b1f7bfeaa916ec14a1c1614f07b8bd4a19d42228533b40422c0c43467",
+      "bytes": 205944,
+      "mime": "image/webp"
+    },
+    {
+      "source_path": "assets/web3d/sprites/warrior-attack.png",
+      "source_git_blob": "5a5cfdbbd93390866df5ae1aa74d6493d0a8e6da",
+      "source_sha256": "20e615843f39ba38c6be24a3f9c142f08e356be235dcf6b3bcea89cb43a6aadd",
+      "source_bytes": 579659,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/sprites/warrior-attack.exact-lossless.webp",
+      "sha256": "91a1183e7b3191c317b2b8740db157199e0dd790351ecd9d363df5c77321fffb",
+      "bytes": 438788,
+      "mime": "image/webp"
+    },
+    {
+      "source_path": "assets/web3d/sprites/warrior-base.normal.png",
+      "source_git_blob": "e155ed4b715e3d0ebf2867741b805aad5afe75d8",
+      "source_sha256": "4b7c293d41f9e2ebdd830c46ded47aa2fe108e7f6d92e1e85e0950f2dfbd9b2a",
+      "source_bytes": 752257,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/sprites/warrior-base.normal.exact-lossless.webp",
+      "sha256": "739e62e4f3120ab3e266c661effb02e98b1d39ffbc3a75e8e2c7f3862b1f81dc",
+      "bytes": 512436,
+      "mime": "image/webp"
+    },
+    {
+      "source_path": "assets/web3d/sprites/warrior-base.png",
+      "source_git_blob": "d0167b56947e66a91aa2e23630e722bd392ca245",
+      "source_sha256": "d60929e40fdb5b689676e1b4e4f5017181044d3357c38dd427c1f717dce2b641",
+      "source_bytes": 1576244,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/sprites/warrior-base.exact-lossless.webp",
+      "sha256": "eb87f4a4b64eea67578f8175d14c3f349033ef87622f879e93334f2ff10f19a7",
+      "bytes": 981794,
+      "mime": "image/webp"
+    },
+    {
+      "source_path": "assets/web3d/sprites/warrior-dash.png",
+      "source_git_blob": "ccd34b4365fcf64b4be53efcf17b573b3f7a899d",
+      "source_sha256": "1e089d477a2ac1be852ee04e0dadbbde42f737aa77b7f711040d7e9d6c0e82e8",
+      "source_bytes": 338985,
+      "derivative_path": "assets/web-derived/20261101/assets/web3d/sprites/warrior-dash.exact-lossless.webp",
+      "sha256": "54c3a5e01209f1e720249c8bf55e6a7a34f73e46248ddeb247fb153a06a0455c",
+      "bytes": 246804,
+      "mime": "image/webp"
     }
   ]
 }
