@@ -57369,3 +57369,5 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 2026-11-02 Mac QA intake on exact3c ground-ring candidate: GPU mip0 contribution, sibling/projectedUV/explicit Sprite material equivalence, shared actual72polygon ring/height/lifecycle assertions, coverage and geometry revision/performance diagnostics. Prior95 actual interiors fail; final3c static compiled, actual GPU/acceptance/delivery pending. No common/install change.
 
 2026-11-02 Mac QA-only immediate progress JSONL: separate before/after product UpdateViews/Late from QA Measure/performance; file writes outside timing. Prior3c first row INCOMPLETE at04:10/noPNG, not performance FAIL; preserved profile and raw/cache restored. Product3c/common1403 unchanged.
+
+2026-11-02 Mac actual3c projection FAIL: exact6ddd normal ARM64 succeeded; soil Lv1 spike actualR300 UpdateViews3.1146ms, productRemodel3DLate unreturned >=96s before anyQA Measure/GPU/interior/dense. Preserve nine immediate diagnostic events; no completed cold/FPS/contact/visual/M1 claim. Owned trace Player stopped and raw/cache Preferences restored. Product fix remains PC-owned; common/install/Win64 blocked on actual acceptance.

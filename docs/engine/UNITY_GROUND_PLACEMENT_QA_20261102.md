@@ -80,7 +80,7 @@ TECH QA: baseline 오류/누락0·복원·같은 앱 Metal M1 23/23. 후보95 �
 FILES: QA helper/meta/docs만 Mac 소유. 제품8경로는 PC 후보95 소유. 타인 WIP 무수정.
 GIT: baseline a5d·후보0fe·alpha d9c6d66 원격 확인. 첫0fe 원격 readback은 빌드 후였으며 소급 prebuild 주장 금지. alpha d9c6d66은 빌드 전 push/readback 완료. common/설치1403 보존.
 VISUAL VERDICT: FAIL — baseline 설치형 접촉 및 후보95 큰 면 내부 접촉. 전체 A2 기존 RETOUCH·ImpactR4 FAIL을 승격하지 않음.
-NEXT PASS: 후보3c827c119의 sibling/UV/공유 mesh 링 QA 보완→별도 실제 Metal 대반경·기여·coverage·전개/roll geometry cache·대표 dense 성능→필요 full/M1/직접 시각→인수 후 common·정상 맥 설치·Win64배송/PC실행 회수.
+NEXT PASS: 실제 제품3c 첫3D projection 지연 수정(PC 소유)→같은 trace로 cold 완료시간부터 회수→대반경/링/coverage/roll-deploy/dense→full149/M1/별도 자연 필드플레이/직접 시각→인수 후 공통·정상 맥 설치·Win64배송/PC실행 회수.
 
 
 # GPU-decoded texture contribution 진단 계약 (작성 당시 미실행; 아래 실제 결과 참조)
@@ -299,3 +299,35 @@ QA Measure의중첩trace가외부Measure완료시간에들어가지않도록누�
 
 
 Actual09190dda normal ARM64 built/errors0/rawbefore+after772drift paths preserved. First row incomplete after owned Player wall04:10/99pct CPU/noPNG; managed sample has unknown JIT names, so product vs QA cause unresolved. Only ownedPID96536 SIGTERM, wrapper restored original normal Preferences raw SHA e5a6b4bc2005eef68b1d40111c1342fc94ac82ca35c7644948e92abc61c16889 and cache semantics. No final receipt/original-simulation comparison, no product PASS/FAIL claim. Ground-progress trace added to separate completed product timings from QA overhead; exact3c product unchanged, no contact criteria relaxation.
+
+
+## 실제3c 제품 첫 projection 지연 — 배포 FAIL, 접촉·시각 미측정
+
+| 항목 | 실제 관측 |
+|---|---|
+| exact source |6ddd9f3072cc210044de08f3c3d1bb7a39966ebc; product3c827c1195ff1fb8c4bc5501de99af33c615d8d1, QA1f5c1f87d0c591991968ae7d7b44df22d5157bb89af83235c28bbd9dc88af260|
+| source 원격 |빌드 전 push/readback6ddd 동일, UTC02:09:11|
+| 빌드 |Unity6000.6.7f1/정상 product·id/ARM64 Succeeded/errors0, tracked3541개 blob mismatch0+canonical movie2, Core tree1403 동일|
+| Runtime/Core |7dfd537e26fd9229a26b1db014e7a81c60729787e3f547f2ddfb107bcd60ff39 / 4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d|
+| 선택 |size-spikeTrap-Lv1, 실제 SkillRules R300 Core px, 첫 soil(40.2,-77). 요청3site/4timedframes/dense8이나 첫 cold에서 중단|
+| UpdateViews |3.1146ms 완료; trace UTC02:11:12.407486→02:11:12.410719|
+| Remodel3DLate |UTC02:11:12.411313 before 이후 after 없음, 첫 revision0/mesh0; 관측 시점 최소96초 미반환. 완료시간 수치가 아닌 하한|
+| QA 측정 |Measure/UV/interior/contribution/GPU readback/fixed/live/dense 전부 진입 전, 따라서 QA 계산 전체시간을 제품 지연으로 치환한 주장이 아님|
+| 프로세스 |해당 관측시 ownedPID97791 RSS약2.44GB/CPU100%; 불필요한 재실행 없이 소유 Player만 SIGTERM|
+| 종료·복구 |exit-15, 최종 ground receipt 없음. 원 Simulation hash 복원 최종비교 미완. 정상 Preferences raw e5a6b4bc2005eef68b1d40111c1342fc94ac82ca35c7644948e92abc61c16889/cache semantics 복원, unrelated raw/cache 원문 백업 보존|
+| 인수 |동기식 제품 첫3D projection의 장시간 blocking으로 배포 FAIL. 전후 전체게임 FPS나 완료 cold ms를 계산하지 않음. 접촉/링/UV/기여/면적/회전cache/dense/M1/자연play/시각은 이 후보에서 미측정|
+
+실제 프로세스의 managed sample은 JIT 함수명이 없어 깊은 leaf를 확정하지 못한다. 직접 증명된 병목 경계는 제품 Remodel3DLate 호출이며, 특정 Field.Height·Triangle leaf 원인 추정은 PC 담당의 다음 수정 근거와 구분한다. 제품 코드는 Mac에서 수정하지 않았다.
+
+### MAP PRODUCTION REPORT (§23) — 이번3c trace 범위
+
+STAGE: 기존 A2 설치형 첫 projection 검수, 맵 제작0.
+MASTER/OUTER MASS/LARGE/MEDIUM/GROUND CONNECTION/LANDMARK/SMALL DETAIL: 원본 형상·경로·좌표·배치 무수정.
+PLAYABLE/COMBAT: 독립 sample 한 Lv1 설치형 동기 projection에서 최소96초 blocking. 자연 전투·플레이 미검수.
+CAMERA QA: actual1920 창 생성, 첫 표본 PNG0/direct3840 미도달. 전체 camera board 재검수0.
+TECH QA: 정상 ARM64 빌드0error·exact input·원격 prebuild proof·raw import772변형 전후 보존·Preferences raw/cache 복원. 제품 cold 지연 FAIL.
+FILES/GIT: QA/helper/docs만6ddd; product3c PC 소유. common/설치1403에 이 후보 미반영, Win64 배송 미진행.
+VISUAL VERDICT: RETOUCH — 새3c contact/visual 증거 미도달로 인수 불가; 이전95 face-contact FAIL 및 전체 A2 RETOUCH/ImpactR4 FAIL 유지. TECH의 projection blocking은 FAIL로 별도 기록.
+NEXT PASS: PC 제품지연 수정의 정확source를 인수해 실패한 cold부터 재검증하고 통과한 범위만 다음 단계로 이동.
+
+원 증거: trace3c/ground-progress.jsonl, trace3c-product-blocking-proof.json, trace3c-owned-stop.json, trace3c-run-result.json, trace3c-source-remote-proof.json, build-trace3c-normal-receipt.json.
