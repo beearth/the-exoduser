@@ -10,6 +10,9 @@ namespace Exoduser.UnityPort.Core {
   public readonly Dictionary<string,int> Stats=new Dictionary<string,int>(),Passives=new Dictionary<string,int>();
   public readonly List<string> Queue=new List<string>();
   public int Grit;
+  int legacySpRefund;
+  // Consume the old nonlinear GRIT cost refund once; saving writes gritCostModeV2=true.
+  public bool TryMigrateSp(int current,out int migrated){migrated=current;long next=(long)current+legacySpRefund;if(current<0||next>int.MaxValue)return false;migrated=(int)next;legacySpRefund=0;return true;}
   public GrowthState(){foreach(var k in StatKeys)Stats[k]=0;foreach(var k in PassiveKeys)Passives[k]=0;}
   public int Value(string key){int v;return key=="grit"?Grit:Stats.TryGetValue(key,out v)||Passives.TryGetValue(key,out v)?v:0;}
   public static bool IsStat(string key){return key=="grit"||Array.IndexOf(StatKeys,key)>=0;}
@@ -29,9 +32,25 @@ namespace Exoduser.UnityPort.Core {
   public int ProcessQueue(PlayerState p){int n=0;while(Queue.Count>0){var k=Queue[0];int rank=Value(k);if(!IsPassive(k)||rank>=Cap(k)){Queue.RemoveAt(0);continue;}int cost=RankCost(rank);if(p.PassivePoints<cost)break;p.PassivePoints-=cost;Passives[k]=rank+1;Queue.RemoveAt(0);n++;}return n;}
   public bool TryApply(GrowthPlan plan,PlayerState p){int sp,ap,changes;if(!plan.Evaluate(this,p.StatPoints,p.PassivePoints,out sp,out ap,out changes)||changes==0)return false;for(int i=Queue.Count-1;i>=0;i--)if(plan.Draft.Value(Queue[i])<Value(Queue[i]))Queue.RemoveAt(i);var queue=new List<string>(Queue);CopyFrom(plan.Draft);Queue.Clear();Queue.AddRange(queue);p.StatPoints=sp;p.PassivePoints=ap;ProcessQueue(p);return true;}
   static bool ReadAllocation(JsonValue obj,string key,out int value){value=0;var v=obj==null?null:obj.Get(key);if(v==null)return true;if(v.Kind!=JsonKind.Number||v.Number<0||v.Number>int.MaxValue||v.Number!=Math.Floor(v.Number))return false;value=(int)v.Number;return true;}
-  public static bool TryRead(JsonValue raw,out GrowthState state,out string error){state=new GrowthState();error=null;if(raw==null)return true;foreach(var k in StatKeys){int v;if(!ReadAllocation(raw.Get("stats"),k,out v)){error="invalid growth stat "+k;return false;}state.Stats[k]=v;}foreach(var k in PassiveKeys){int v;if(!ReadAllocation(raw.Get("passives"),k,out v)){error="invalid growth passive "+k;return false;}state.Passives[k]=v;}int grit;if(!ReadAllocation(raw,"grit",out grit)){error="invalid growth grit";return false;}state.Grit=grit;var player=raw.Get("player");var q=player==null?null:player.Get("passiveQueue");if(q!=null&&q.Kind==JsonKind.Array)foreach(var v in q.Items)if(v!=null&&v.Kind==JsonKind.String&&IsPassive(v.Text)&&state.Value(v.Text)+state.Queued(v.Text)<Cap(v.Text))state.Queue.Add(v.Text);return true;}
+  public static bool TryRead(JsonValue raw,out GrowthState state,out string error){
+   state=new GrowthState();error=null;if(raw==null)return true;
+   if(raw.Kind!=JsonKind.Object){error="growth save root is not an object";return false;}
+   var stats=raw.Get("stats");var passives=raw.Get("passives");var player=raw.Get("player");
+   if(stats!=null&&stats.Kind!=JsonKind.Object){error="growth stats is not an object";return false;}
+   if(passives!=null&&passives.Kind!=JsonKind.Object){error="growth passives is not an object";return false;}
+   if(player!=null&&player.Kind!=JsonKind.Object){error="growth player is not an object";return false;}
+   var q=player==null?null:player.Get("passiveQueue");
+   if(q!=null&&q.Kind!=JsonKind.Array){error="growth passiveQueue is not an array";return false;}
+   foreach(var k in StatKeys){int v;if(!ReadAllocation(stats,k,out v)){error="invalid growth stat "+k;return false;}state.Stats[k]=v;}
+   foreach(var k in PassiveKeys){int v;if(!ReadAllocation(passives,k,out v)){error="invalid growth passive "+k;return false;}state.Passives[k]=v;}
+   int grit;if(!ReadAllocation(raw,"grit",out grit)){error="invalid growth grit";return false;}state.Grit=grit;
+   var mode=raw.Get("gritCostModeV2");if(mode!=null&&mode.Kind!=JsonKind.Bool){error="growth gritCostModeV2 is not a boolean";return false;}
+   if(grit>0&&(mode==null||!mode.Bool)){long refund=(long)grit*(grit+3L)/2;if(refund>int.MaxValue){error="legacy growth SP refund exceeds the player range";return false;}state.legacySpRefund=(int)refund;}
+   if(q!=null)foreach(var v in q.Items){if(v==null||v.Kind!=JsonKind.String){error="growth passiveQueue entry is not a string";return false;}if(IsPassive(v.Text)&&state.Value(v.Text)+state.Queued(v.Text)<Cap(v.Text))state.Queue.Add(v.Text);}
+   return true;
+  }
   static JsonValue ObjectAt(JsonValue root,string key){var v=root.Get(key);if(v==null||v.Kind!=JsonKind.Object){v=JsonValue.NewObject();root.Set(key,v);}return v;}
-  public JsonValue WriteInto(JsonValue raw){var root=raw==null?JsonValue.NewObject():SaveJson.Parse(SaveJson.Write(raw));var stats=ObjectAt(root,"stats");foreach(var k in StatKeys)stats.Set(k,JsonValue.Of((double)Stats[k]));var passives=ObjectAt(root,"passives");foreach(var k in PassiveKeys)passives.Set(k,JsonValue.Of((double)Passives[k]));root.Set("grit",JsonValue.Of((double)Grit));root.Set("gritCostModeV2",JsonValue.Of(true));var q=JsonValue.NewArray();foreach(var k in Queue)q.Add(JsonValue.Of(k));ObjectAt(root,"player").Set("passiveQueue",q);return root;}
+  public JsonValue WriteInto(JsonValue raw){if(legacySpRefund>0)throw new InvalidOperationException("Apply the legacy GRIT SP refund before saving");var root=raw==null?JsonValue.NewObject():SaveJson.Parse(SaveJson.Write(raw));var stats=ObjectAt(root,"stats");foreach(var k in StatKeys)stats.Set(k,JsonValue.Of((double)Stats[k]));var passives=ObjectAt(root,"passives");foreach(var k in PassiveKeys)passives.Set(k,JsonValue.Of((double)Passives[k]));root.Set("grit",JsonValue.Of((double)Grit));root.Set("gritCostModeV2",JsonValue.Of(true));var q=JsonValue.NewArray();foreach(var k in Queue)q.Add(JsonValue.Of(k));ObjectAt(root,"player").Set("passiveQueue",q);return root;}
  }
  public sealed class GrowthPlan {
   public readonly GrowthState Base,Draft;

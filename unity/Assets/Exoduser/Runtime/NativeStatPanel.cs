@@ -32,9 +32,9 @@ namespace Exoduser.UnityPort {
   public int PlannedValue(string key){return plan==null?0:plan.Draft.Value(key);}
   int LiveValue(string key){return sim==null?0:sim.Growth.Value(key);}
   void RefreshPlan(){if(sim==null)return;if(plan==null||!plan.Evaluate(sim.Growth,sim.Player.StatPoints,sim.Player.PassivePoints,out plannedSp,out plannedAp,out planChanges))plan=sim.Growth.CreatePlan();plan.Evaluate(sim.Growth,sim.Player.StatPoints,sim.Player.PassivePoints,out plannedSp,out plannedAp,out planChanges);}
-  public bool PlanChange(string key,int amount){RefreshPlan();if(sim==null||!plan.Change(key,amount,sim.Growth,sim.Player.StatPoints,sim.Player.PassivePoints))return false;RefreshPlan();return true;}
+  public bool PlanChange(string key,int amount){if(key=="pPierce"&&amount>0)return false;RefreshPlan();if(sim==null||!plan.Change(key,amount,sim.Growth,sim.Player.StatPoints,sim.Player.PassivePoints))return false;RefreshPlan();return true;}
   public bool ApplyPlan(){RefreshPlan();if(sim==null||!sim.ApplyGrowthPlan(plan))return false;plan=sim.Growth.CreatePlan();RefreshPlan();changed?.Invoke();return true;}
-  public bool ReservePassive(string key,int amount){if(sim==null||!sim.ReserveGrowthPassive(key,amount))return false;changed?.Invoke();return true;}
+  public bool ReservePassive(string key,int amount){if(key=="pPierce")return false;if(sim==null||!sim.ReserveGrowthPassive(key,amount))return false;changed?.Invoke();return true;}
   public bool CancelReservation(int index){if(sim==null||!sim.Growth.CancelReservation(index))return false;changed?.Invoke();return true;}
   static readonly Rect Viewport=new Rect(271,136,1174,805),DetailRect=new Rect(1489,198,372,597.2f);
   static readonly Vector2 SceneCenter=new Vector2(500,400);
@@ -454,6 +454,7 @@ namespace Exoduser.UnityPort {
     }
     y=ty+rows+10;
     y+=Paragraph(new Rect(x0,y,w,100),n.noteKo,sans,18,C(204,201,195),30.6f);
+    string support=SupportNote(n.key);if(support.Length>0){y+=12;y+=Paragraph(new Rect(x0,y,w,120),support,sans,14,C(220,174,133),23f);}
     y+=DrawLedgers(x0,y,w);
     detailContent=y+detailScroll+10;
     if(detailContent-rect.height<=0)detailScroll=0;
@@ -489,15 +490,18 @@ namespace Exoduser.UnityPort {
    if(sim!=null&&sim.Growth.Queue.Count>0){Text(new Rect(x,y,width,24),"자동 투자 예약 · "+sim.Growth.Queue.Count,sans,13,C(188,185,179));y+=28;for(int i=0;i<sim.Growth.Queue.Count;i++){string key=sim.Growth.Queue[i];var r=new Rect(x,y,width,28);StatDefsNode node;Text(r,(i+1)+". "+(nodeByKey.TryGetValue(key,out node)?Name(node):key),sans,13,C(204,201,195));Text(r,"예약 취소",sans,12,C(188,185,179),FontStyle.Normal,0,TextAnchor.MiddleRight);if(Click(r)){CancelReservation(i);break;}y+=30;}}
    return y-start;
   }
+  static string SupportNote(string key){switch(key){case "pPierce":return "효과 미지원 · 현재 전투에 관통 패시브가 연결되지 않아 신규 투자와 예약은 사용할 수 없습니다. 기존 투자분 환불은 가능합니다.";case "pDot":return "효과 일부 미지원 · 축적률은 적용되며 DOT 피해·지속시간 소비는 아직 연결되지 않았습니다.";case "pPred":return "효과 일부 미지원 · 저체력 피해와 HP 회복은 적용되며 이동속도 증가는 아직 연결되지 않았습니다.";case "pRegen":return "효과 일부 미지원 · HP/ST 재생과 패링 회복은 적용되며 물약 쿨다운 감소는 아직 연결되지 않았습니다.";case "pGuard":return "효과 일부 미지원 · 기존 보호막 흡수율은 적용되며 보호 중 추가 HP 재생은 아직 연결되지 않았습니다.";case "pHunter":return "효과 일부 미지원 · 현재 희귀 몬스터 추가 피해만 연결돼 있으며 보스·정예 별칭 분기는 아직 연결되지 않았습니다.";default:return "";}}
   void DrawActions(bool isStat){
    string key=SelectedKey;int value=PlannedValue(key),reserved=sim==null?0:sim.Growth.Queued(key),future=value+reserved;
    int amount=isStat?1:Math.Max(1,selectedRank-future),cost=0;for(int i=0;i<amount;i++)cost+=RankCost(future+i);
    bool reserve=!isStat&&(sim.Growth.Queue.Count>0||plannedAp<cost),maxed=!isStat&&future>=GrowthState.Cap(key);
-   bool can=isStat?plannedSp>=1&&value<Math.Max(GrowthState.Cap(key),LiveValue(key)):!maxed&&future+amount<=GrowthState.Cap(key);
+   bool can=key!="pPierce"&&(isStat?plannedSp>=1&&value<Math.Max(GrowthState.Cap(key),LiveValue(key)):!maxed&&future+amount<=GrowthState.Cap(key));
    string label=isStat?"계획에 추가 · 1 SP":maxed?"최대 레벨":(reserve?"자동 투자 예약 · ":"계획에 추가 · ")+cost+" AP";
+   if(key=="pPierce")label="효과 미지원";
    var upgrade=new Rect(1489,820.2f,372,49);var old=GUI.color;if(!can)GUI.color=new Color(old.r,old.g,old.b,old.a*.38f);NativeSilverHellUi.ActionPlate(upgrade,true,Hot(upgrade)&&can?1:0,false,20,6);Text(upgrade,label,sans,18,C(244,216,168),FontStyle.Bold,0,TextAnchor.MiddleCenter,true);GUI.color=old;
    if(Click(upgrade)&&can){if(reserve)ReservePassive(key,amount);else PlanChange(key,amount);}
    string note=isStat?can?"추가 후 계획 잔여 SP "+(plannedSp-1):"SP 또는 투자 상한을 확인하세요.":maxed?"레벨 상한에 도달했습니다.":reserve?"현재 AP "+plannedAp+" · 예약 후 예상 레벨 "+(future+amount)+" · AP가 모이면 자동 투자":"추가 후 계획 잔여 AP "+(plannedAp-cost);
+   if(key=="pPierce")note="현재 전투 효과 연결 전까지 신규 투자는 잠겨 있습니다.";
    Text(new Rect(1489,876.2f,372,22.4f),note,sans,14,C(188,185,179),FontStyle.Normal,0,TextAnchor.MiddleCenter);
    string notice=sim.Growth.Queue.Count>0?"자동 투자 예약 "+sim.Growth.Queue.Count+"개 저장됨 · 위에서 개별 취소 가능":planChanges>0?"변경 "+planChanges+"개 · 하단에서 적용":"AP가 부족해도 예약할 수 있습니다. 예약은 즉시 저장됩니다.";
    Text(new Rect(1489,904.6f,372,22.4f),notice,sans,14,C(188,185,179),FontStyle.Normal,0,TextAnchor.MiddleCenter);

@@ -47,7 +47,8 @@ namespace Exoduser.UnityPort
    CombatSaveModel m;string error;
    if(!CombatSaveCodec.TryDecode(data,out m,out error)){BlockCombatSave(error);return;}
    if(m.Lv<1||m.Lv>1461||m.Exp<0||m.Exp>int.MaxValue||m.MaxExp<1||m.MaxExp>int.MaxValue||m.Sp>int.MaxValue||m.Ap>int.MaxValue||m.Kills>int.MaxValue||m.Stage<0||m.Stage>1000||m.PotLvHp<0||m.PotLvHp>1000){BlockCombatSave("a value is outside what the Unity player can hold");return;}
-   GrowthState growth;string growthError;if(!GrowthState.TryRead(data,out growth,out growthError)){BlockCombatSave(growthError);return;}pendingGrowth=growth;
+   GrowthState growth;string growthError;if(!GrowthState.TryRead(data,out growth,out growthError)){BlockCombatSave(growthError);return;}
+   int migratedSp;if(!growth.TryMigrateSp((int)m.Sp,out migratedSp)){BlockCombatSave("legacy growth SP refund exceeds the player range");return;}m.Sp=migratedSp;pendingGrowth=growth;
    InventoryState inventoryState;
    try{inventoryState=new InventoryState(new InventorySeedData{equipped=(InventoryItem[])m.Equipped.Clone(),bag=m.Bag.ToArray()});}
    catch(ArgumentException e){BlockCombatSave("inventory: "+e.Message);return;}
