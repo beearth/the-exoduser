@@ -57,6 +57,7 @@ namespace Exoduser.UnityPort
             var receipt = new FullRunReceipt { device = SystemInfo.graphicsDeviceName, buildGuid = Application.buildGUID, width = width, height = 1080 };
             float started = Time.realtimeSinceStartup;
             yield return new WaitForSecondsRealtime(1);
+            lobby.SetPlaybackFocus(true); // Hidden desktop has no foreground focus; retain the ordinary entry flow.
             lobby.ShowLobby();
             string fresh = "FULL" + (DateTime.Now.Ticks % 1000000).ToString("000000");
             bool created = lobby.OpenCharacterCreation() && lobby.ChooseCharacterVisual(0) && lobby.ConfirmCharacterVisual() && lobby.CreateCharacter(fresh);
@@ -64,10 +65,10 @@ namespace Exoduser.UnityPort
             yield return FullRunShot(output, "00-lobby");
             if (!created || !lobby.BeginCharacterEntry(false)) { receipt.result = "lobby-entry-blocked"; yield return FullRunEnd(output, receipt, started); yield break; }
             float deadline = Time.realtimeSinceStartup + 30;
-            while (lobby.StartupCaptureState.Page != FrontendEntryPage.Nemesis && Time.realtimeSinceStartup < deadline) yield return null;
+            while (lobby.StartupCaptureState.Page != FrontendEntryPage.Nemesis && Time.realtimeSinceStartup < deadline) { lobby.SetPlaybackFocus(true); yield return null; }
             lobby.StartupCaptureState.Skip(); yield return null; lobby.StartupCaptureState.Skip(); yield return null;
             deadline = Time.realtimeSinceStartup + 20;
-            while (lobby.IsBlocking && Time.realtimeSinceStartup < deadline) yield return null;
+            while (lobby.IsBlocking && Time.realtimeSinceStartup < deadline) { lobby.SetPlaybackFocus(true); yield return null; }
             if (lobby.IsBlocking) { receipt.result = "startup-blocked"; yield return FullRunEnd(output, receipt, started); yield break; }
             yield return FullRunShot(output, "01-practice");
             if (firstPractice != null) EndFirstPractice(true);
