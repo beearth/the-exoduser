@@ -1,0 +1,27 @@
+{
+  "time": "2026-11-02T01:06:10.159Z",
+  "checks": [
+    {
+      "file": "neutral_front_v16.html",
+      "status": 200
+    },
+    {
+      "file": "neutral_front_faces_v16.png",
+      "status": 200
+    },
+    {
+      "file": "neutral_front_bob_v16.png",
+      "status": 200
+    },
+    {
+      "file": "neutral_front_updo_v16.png",
+      "status": 200
+    },
+    {
+      "file": "neutral_front_v16.receipt.json",
+      "status": 200
+    }
+  ],
+  "copyHashesVerified": true,
+  "runtimeApplied": false
+}
