@@ -323,6 +323,7 @@ function Set-WaitResult($run, [string]$reason) {
   Log ('WAIT: ' + $reason)
 }
 function Update-AttemptState($stateObj,[string]$sha,[string]$verdict,[bool]$branchOnly) {
+  if ($verdict -eq 'WAIT' -and -not $branchOnly) { $stateObj.lastAttemptVerdict = 'WAIT'; return }
   if ($verdict -notin @('ABORT','WAIT') -and -not $branchOnly) { $stateObj.lastAttemptSha = $sha; $stateObj.lastAttemptVerdict = $verdict }
 }
 function Set-UnityReservation([string]$command) {
@@ -630,7 +631,7 @@ function Cmd-Check {
   if ($needs) {
     Write-Host ("새 커밋 {0}개:" -f $ch.count)
     foreach ($c in $ch.items) { Write-Host ("  {0}  {1}" -f $c.sha, $c.subject) }
-    if ($Ref -eq $MainRef -and $st.lastAttemptSha -eq $head.full) { Write-Host ("주의: 이 HEAD 는 이미 시도됨(판정 {0}). run 은 -Force 가 있어야 다시 돈다." -f $st.lastAttemptVerdict) }
+    if ($Ref -eq $MainRef -and $st.lastAttemptSha -eq $head.full -and $st.lastAttemptVerdict -ne 'WAIT') { Write-Host ("주의: 이 HEAD 는 이미 시도됨(판정 {0}). run 은 -Force 가 있어야 다시 돈다." -f $st.lastAttemptVerdict) }
   } else { Write-Host '새 커밋 없음' }
   Write-Host ("NEEDS_BUILD={0}" -f $needs)
 }
@@ -683,7 +684,7 @@ function Cmd-Run {
   if (-not $NoSwap -and $null -ne $st.pending) { Cmd-Swap; $st = Load-State; if ($null -ne $st.pending) { Log '이전 후보 교체 대기 - 덮어쓰지 않고 다음 회차로'; return } }   # 이전에 미룬 교체 먼저 시도
   if (-not $Force) {
     if ($Ref -eq $MainRef -and $head.full -eq $depFull) { Log "새 커밋 없음 (HEAD $($head.short) = 배포 빌드)"; return }
-    if ($st.lastAttemptSha -eq $head.full) { Log "HEAD $($head.short) 는 이미 시도함(판정 $($st.lastAttemptVerdict)). 다시 하려면 -Force"; return }
+    if ($st.lastAttemptSha -eq $head.full -and $st.lastAttemptVerdict -ne 'WAIT') { Log "HEAD $($head.short) 는 이미 시도함(판정 $($st.lastAttemptVerdict)). 다시 하려면 -Force"; return }
   }
   $runId = '{0}_{1}' -f (Get-Date -Format 'yyyyMMdd-HHmmssfff'), $head.short.Substring(0, 7)
   $runDir = Join-Path $RunsDir $runId; New-Item -ItemType Directory -Force -Path $runDir | Out-Null

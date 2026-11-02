@@ -28,11 +28,12 @@ if($run.verdict -ne 'WAIT' -or $run.failReasons.Count -ne 0){throw 'FAIL: WAIT c
 $st=[pscustomobject]@{lastAttemptSha='before';lastAttemptVerdict='PASS'}
 Update-AttemptState $st 'next' 'WAIT' $false
 if($st.lastAttemptSha -ne 'before'){throw 'FAIL: WAIT blocks next cycle retry'}
+if($st.lastAttemptVerdict -ne 'WAIT'){throw 'FAIL: WAIT verdict must release a previous same-SHA failure on next cycle'}
 Update-AttemptState $st 'next' 'FAIL' $false
 if($st.lastAttemptSha -ne 'next'){throw 'FAIL: actual build failure not recorded'}
 Update-AttemptState $st 'branch' 'PASS' $true
 if($st.lastAttemptSha -ne 'next'){throw 'FAIL: branch modified deployment attempt'}
-'PASS: '+($n+4)+' wait classification/state decisions; Unity launches=0'
+'PASS: '+($n+5)+' wait classification/state decisions; Unity launches=0'
 
 # Exercise the real Cmd-Run finally path with only environment boundaries replaced.
 foreach($name in 'Cmd-Run','WriteJson','ReadJson'){
@@ -117,3 +118,10 @@ if($r.verdict -ne 'WAIT' -or $script:readyCalls -ne 2){throw ('FAIL: smoke waiti
 if($script:saved.lastAttemptSha -ne 'before' -or $script:saved.history[0].fail -ne 0){throw 'FAIL: post-build WAIT retry/failure state'}
 if(-not(Test-Path (Join-Path $f.DirectoryName 'waiting-build/EXODUSER-Unity.exe'))){throw 'FAIL: WAIT package not preserved'}
 'PASS: build-to-smoke reserve before wait, WAIT retry state, completed package preserved'
+
+# A forced retry of an already-failed SHA can WAIT too: the next ordinary cycle must still enter.
+$script:saved.lastAttemptSha='abcdef012345';$script:saved.lastAttemptVerdict='WAIT'
+$script:readyCalls=0;$script:queued=$false;$Force=$false
+Cmd-Run
+if($script:readyCalls -ne 2){throw 'FAIL: ordinary cycle skipped a previous same-SHA WAIT'}
+'PASS: ordinary same-SHA cycle retries after forced WAIT; lastAttemptSha retained'

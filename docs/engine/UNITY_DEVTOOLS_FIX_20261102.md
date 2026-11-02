@@ -43,3 +43,5 @@
 정식 게이트·단계표·HUD 캡처·원격 SHA·남은 한계는 I:/EXODUSER-Storage/devtools/fix-1102/fix2/REPORT.md에 기록한다. 브랜치 NoSwap으로 unity-latest와 바로가기는 교체하지 않는다.
 
 빌드가 예약을 소비한 뒤 스모크 전 다른 Unity를 기다리는 경계에도 reserve -Owner buildloop를 먼저 수행한다. Unity 없는 실제 Cmd-Run 경계 시험으로 WAIT·lastAttemptSha 보존·완료 패키지 waiting-build 보관을 확인한다. 진행 중이던 bb2b0f619 게이트의 해당 경로는 대기자 0으로 통과했고, 이 보완은 도구 전용 후속 변경이다.
+
+WAIT는 본편 lastAttemptSha를 보존하면서 lastAttemptVerdict만 WAIT로 기록한다. 같은 SHA가 과거 실패로 남아 있어도 다음 일반 주기는 WAIT를 재시도하며, check도 Force가 필요하다는 경고를 내지 않는다. 브랜치 NoSwap의 배포 attempt 상태는 계속 변경하지 않는다. 분류/상태 단위13건과 실제 동일 SHA 다음 주기 fixture로 확인한다.
