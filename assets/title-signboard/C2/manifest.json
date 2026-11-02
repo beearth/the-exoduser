@@ -1,0 +1,58 @@
+{
+  "source": "I:/EXODUSER-Storage/codex-takeover/title-kling-C2-20261102/tall-final/loop.mp4",
+  "sourceSHA256": "3020b3babc951c9864b2c105a8e421040229076bd34779892231d366c68c5a7a",
+  "runtime": "video/title_motion_C2_tall_loop_20261102.mp4",
+  "size": [
+    2036,
+    1016
+  ],
+  "layout": "cover",
+  "sourceStartSeconds": 0.5,
+  "overlapSeconds": 1,
+  "audio": false,
+  "stillSource": "I:/EXODUSER-Storage/codex-takeover/title-kling-C2-20261102/tall-final/t_0.5.png",
+  "fallData": [
+    {
+      "id": "near",
+      "box": [
+        696,
+        498,
+        66,
+        259
+      ],
+      "mouth": [
+        714,
+        506
+      ],
+      "contact": [
+        735,
+        747
+      ],
+      "speed": 100
+    },
+    {
+      "id": "far",
+      "box": [
+        951,
+        548,
+        78,
+        218
+      ],
+      "mouth": [
+        974,
+        555
+      ],
+      "contact": [
+        1001,
+        756
+      ],
+      "speed": 75
+    }
+  ],
+  "texture": [
+    128,
+    512
+  ],
+  "opacity": 0.38,
+  "quality": "Native video sampled once with high-quality canvas scaling; no static clarity overlay or re-encoding."
+}
