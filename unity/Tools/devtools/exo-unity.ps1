@@ -32,7 +32,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$ExoUnityVersion = '2026.11.03-slots2'
+$ExoUnityVersion = '2026.11.03-slots3'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -161,6 +161,7 @@ function Cmd-Reserve {
     if ($mine.Count -gt 0) {
         $r = $mine[0]
         $new = [ordered]@{ owner = $Owner; kind = $Kind; note = $Note; createdAt = $r.createdAt; expiresAt = $exp; worktree = [string]$Worktree }
+        if ($r.waitPid) { $new.waitPid = $r.waitPid; $new.waitSince = $r.waitSince } # 갱신이 대기 중인 실행기 표시를 지우지 않는다
         Write-JsonAtomic $r.file $new
         Say "예약 갱신: $Owner ($Note)"
     } else {
@@ -325,9 +326,21 @@ function Cmd-Queue {
     foreach ($k in 'editor','player') {
         $rs = @(Get-Reservations $k); $i = 1
         if ($rs.Count -eq 0) { Write-Output ($k + ' 예약: 없음') }
-        foreach ($r in $rs) { Write-Output ('{0} 예약 {1}: {2} - {3} (등록 {4}, 만료 {5})' -f $k,$i,$r.owner,$r.note,$r.createdAt,$r.expiresAt); $i++ }
+        foreach ($r in $rs) {
+            $st = ''
+            if ($k -eq 'player') {
+                $ws = Get-ReservationWaiterState $r
+                if (@($slots | Where-Object { [string]$_.reservedAs -eq [string]$r.owner }).Count -gt 0) { $ws = 'running' }
+                $r | Add-Member -NotePropertyName waiterState -NotePropertyValue $ws -Force
+                $st = @{ running = ' [실행 중(슬롯)]'; waiting = (' [대기 중(pid ' + $r.waitPid + ' 살아 있음)]'); reserved = ' [예약만 - 순서 안 막음]'; dead = (' [대기 pid ' + $r.waitPid + ' 종료 - 건너뜀]') }[$ws]
+            }
+            Write-Output ('{0} 예약 {1}: {2} - {3} (등록 {4}, 만료 {5}){6}' -f $k,$i,$r.owner,$r.note,$r.createdAt,$r.expiresAt,$st); $i++
+        }
     }
-    if ($Json) { Write-Output (@{ runnerVersion=$ExoUnityVersion; editorLock=$lock; playerSlots=@($slots); legacyPlayerCount=$legacy; maxPlayerSlots=$MaxPlayerSlots; playerDrainReason=$drain; editorReservations=@(Get-Reservations 'editor'); playerReservations=@(Get-Reservations 'player') } | ConvertTo-Json -Depth 8 -Compress) }
+    if ($Json) {
+        $prs = @(Get-Reservations 'player' | ForEach-Object { $_ | Add-Member -NotePropertyName waiterState -NotePropertyValue (Get-ReservationWaiterState $_) -Force -PassThru })
+        Write-Output (@{ runnerVersion=$ExoUnityVersion; editorLock=$lock; playerSlots=@($slots); legacyPlayerCount=$legacy; maxPlayerSlots=$MaxPlayerSlots; playerDrainReason=$drain; editorReservations=@(Get-Reservations 'editor'); playerReservations=$prs } | ConvertTo-Json -Depth 8 -Compress)
+    }
 }
 
 # Player 슬롯의 pid는 실행이 끝날 때까지 기다리는 실행기다. 생성 시각 조회 실패는 fail closed.
@@ -399,11 +412,28 @@ function Get-PlayerDrainReason {
     return ''
 }
 
+# slots3(11-03): player 예약은 주인이 player 명령으로 실제로 기다릴 때만 순서를 막는다.
+# 대기 중인 실행기는 자기 예약에 waitPid/waitSince를 쓴다. pid가 없으면 '예약만', 죽었거나 재사용됐으면 '대기 종료'로 보고 건너뛴다.
+# 남의 예약 파일은 지우지 않는다(건너뛰기만).
+function Get-ReservationWaiterState($r) {
+    if (-not $r.waitPid) { return 'reserved' }
+    if (Test-PlayerSlotAlive ([pscustomobject]@{ pid = $r.waitPid; startedAt = $r.waitSince })) { return 'waiting' }
+    return 'dead'
+}
+
+function Set-ReservationWaiter([int]$waitPid) {
+    if (-not $Owner) { return }
+    foreach ($r in @(Get-Reservations 'player' | Where-Object { $_.owner -eq $Owner })) {
+        $new = [ordered]@{ owner = $r.owner; kind = 'player'; note = $r.note; createdAt = $r.createdAt; expiresAt = $r.expiresAt; worktree = $r.worktree; waitPid = $waitPid; waitSince = (NowIso) }
+        Write-JsonAtomic $r.file $new
+    }
+}
+
 function Get-WaitingPlayerReservations {
     $active = @((Get-PlayerSlots) | ForEach-Object { [string]$_.reservedAs })
     $held = Read-Json $LockPath
     if ((Get-LegacyPlayerCount) -gt 0 -and $held.reservedAs) { $active += [string]$held.reservedAs }
-    return @(Get-Reservations 'player' | Where-Object { $active -notcontains [string]$_.owner })
+    return @(Get-Reservations 'player' | Where-Object { $active -notcontains [string]$_.owner -and (Get-ReservationWaiterState $_) -eq 'waiting' })
 }
 
 function Release-PlayerSlot {
@@ -418,6 +448,7 @@ function Release-PlayerAdmission {
 
 function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
     New-Item -ItemType Directory -Force -Path $Root | Out-Null
+    Set-ReservationWaiter $ownerPid
     $deadline = (Get-Date).AddMinutes($WaitMin); $lastMsg = ''
     while ($true) {
         $slots = @(Get-PlayerSlots -Reap); $legacy = Get-LegacyPlayerCount

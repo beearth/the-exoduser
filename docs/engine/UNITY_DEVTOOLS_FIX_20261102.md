@@ -90,7 +90,7 @@ WAIT는 본편 lastAttemptSha를 보존하면서 lastAttemptVerdict만 WAIT로 �
 | 원인 | run20261103-025650441_09192f7의 상세 overlap-report.json 1,391,748,321B를 buildloop ReadJson이 전체 파싱하다 Insufficient memory ABORT. 원본 run/상세/PNG/겹침_검사.md 보존 |
 | 소비자 | Read-UiOverlapSummary가 overlap-summary.json만 읽음. 허용65,536B·실제읽기/버퍼65,537B 이하(증가 탐지1B 포함), 엄격 UTF-8·4필드·중복/추가 키·주석/끝쉼표/잘못된 타입·음수 정수 거부. count 범위0..9,007,199,254,740,991 |
 | 판정 | exit0 + passed=true + frameCount>0 + issueCount=0 + missing빈배열 + 상세 파일 경로 존재만 PASS. 요약 누락/손상/읽기불가·비정상exit는 FAIL. 상세는 경로/존재만 확인하고 본문 읽기·해시·파싱0 |
-| 결과 필드 | run.uiOverlap에 passed·valid·exit·receipt·detailReport·maxReceiptBytes·bytes·frameCount·issueCount·missing·note·log. smoke-rules receipt=요약, detailReport=상세, maxReceiptBytes=65536; maxIssues=0 유지 |
+| 결과 필드 | run.uiOverlap에 passed·valid·exit·receipt·detailReport·maxReceiptBytes·bytes·frameCount·issueCount·missing·note·log. UI호출 후 stderrLog/processId 추가, 기동/종료값 미확인시 exit=null의 호출ABORT. smoke-rules receipt=요약, detailReport=상세, maxReceiptBytes=65536; maxIssues=0 유지 |
 | 실제 재사용 | 원본81B {passed:false,frameCount:1395,issueCount:147,missing:[]}는 source-only 재판정에서도 FAIL. 원본ABORT/교체false를 수정하지 않음 |
 | 시험 | selftest/buildloop-overlap-summary-test.ps1 RED→GREEN 48검증. 잠긴 상세 파일·ReadJson 상세 호출 금지, 실제 Cmd-Run의 FAIL147/PASS/손상/누락/비정상exit 및 replaced=false. WAIT/보관·NoSwap 회귀 PASS |
 | 경계 | 본인 소스/시험/규칙/docs만 변경. 설치본·워처·task·타 소유자의 예약/프로세스·제품UI 변경0. 새Unity/Player/빌드/GPU/인코딩·1395재촬영0. M1 --remodel3d 누락은 별도 항목으로 유지 |
@@ -98,3 +98,15 @@ WAIT는 본편 lastAttemptSha를 보존하면서 lastAttemptVerdict만 WAIT로 �
 테스트 원문·입력/설치본 fingerprint·원격SHA·한국어 결과는 I:/EXODUSER-Storage/devtools/fix-1103-overlap-summary/REPORT.md. 설치 반영은 root 직접 인수 뒤 공식 경로·정상 회차 종료·CAS를 확인하는 별도 단계다.
 
 root 인수 후 통합 경계(2026-11-03): 기존 private 브랜치에서 공통426544563dcd7068ac661a7ee7876fd91f69d19a를 정상 merge하고, 공통 대비 순변경은 위5경로만 유지한다. 공식 canonical G:/exoduser-wt/codex-buildloop는 unity/main09192f7bbc4650d9ba17408bf2de7cdd95c4f28d·INDEX0·기존미인수tracked WORK855개로 관측됐다. run.lock 비점유/task Ready/구09192회차03:44:26 ABORT 종료와 별개로 Cmd-Install의 clean-source 조건을 충족하지 못하므로 설치HOLD, WIP복원·대체작업본으로 우회 설치0이다. 실제 source/원격 SHA·회귀·bin/task/실게임 fingerprint·최종 경계는 I:/EXODUSER-Storage/devtools/fix-1103-overlap-install/REPORT.md에 기록한다.
+
+## UI 호출 stderr 승격 ABORT 분리 — 2026-11-03
+
+| 항목 | 근거·계약 |
+|---|---|
+| 새 원본 | 20261103-042553959_b6b9998는04:36:00 ABORT/replaced=false, build/smoke exit0, ui-overlap.log0B·새coverage없음. 원본 UI native exit는 기록되지 않아 미확인 |
+| 원인 재현 | 설치1d89와 b6 모두 `& powershell ... *> uiLog` 호출을 사용. EAP=Stop인 PS5.1에서 `[exo-unity] 예약 추가: ui-overlap-check ()` stderr가 NativeCommandError/RemoteException으로 승격되어 종료값 대입 전에 중단. 이전09192의거대JSON/147FAIL과 별개 |
+| 최소 변경 | Invoke-UiOverlapCheck의 Start-Process -WindowStyle Hidden, stdout/stderr 직접파일분리, handle·WaitForExit·Refresh 후 실제exit만 반환. 전역ErrorActionPreference 완화0, 기동/종료값미확인은호출ABORT+exit=null |
+| 판정 | stderr만있고 exit0+정상요약이면 기존요약조건으로판정. exit2/147FAIL은계속FAIL. nativeexit 합성·실패삼키기·PASS조작0, 엄격4키/64KiB 계약불변 |
+| 시험 | ui-overlap-invocation-test.ps1: 실제두구호출RED→GREEN24검증(공백경로·stderr보존·실native0/2·FAIL147·기동실패/종료값미확인). 기존요약48·WAIT·보관/NoSwap회귀 PASS. 실제UI/Player/GPU실행0 |
+
+원본·오류stream·소스/설치대조·private SHA·한국어결과는 I:/EXODUSER-Storage/devtools/fix-1103-ui-invocation/REPORT.md. source candidate는 제품/설치 검증과 구분하며 원본run과0B로그·예약을 수정하지 않는다.

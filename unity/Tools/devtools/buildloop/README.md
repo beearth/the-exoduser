@@ -45,8 +45,11 @@ origin/unity/main 변경을 확인해 exo-unity Win 빌드 → 숨은 데스크�
 
 이번 소스 수정은 원본 ABORT run을 재작성하지 않으며 새 촬영·Unity/Player·빌드·GPU 실행 없이 검증한다. 설치본 반영은 정상 회차 종료·fingerprint/CAS 확인 후 별도 인수 단계다.
 
+UI 호출은 `Invoke-UiOverlapCheck`가 숨긴 PowerShell 자식을 띄워 stdout을 `ui-overlap.log`, stderr를 `ui-overlap.err.log`로 직접 보존한다. PS5.1의 `& powershell ... *> log`가 예약 안내 stderr를 `NativeCommandError`로 바꾸어 EAP=Stop 부모를 ABORT시키던 경로를 분리했다. 전역 오류 정책은 Stop을 유지한다. 프로세스 핸들·실제 종료를 기다린 뒤 확인한 native exit만 요약 판정에 전달하며, 기동/종료값 확인 실패는 exit=null의 호출 ABORT로 남긴다. stderr 문구만으로 제품 FAIL을 만들거나 종료 코드를 합성하지 않는다. run.uiOverlap의 stderrLog/processId도 보존한다. selftest/ui-overlap-invocation-test.ps1은 같은 예약 문구+exit0/2·147FAIL·공백 경로·기동 실패·종료값 미확인24검증이며, 기존 엄격 요약48검증을 함께 유지한다.
+
 Roslyn 사전 검사: compile-check.ps1 -Output <I: 경로>. 기본 LibraryProject는 G:/exoduser-wt/codex-unity-parity-1102/unity의 기존 Bee RSP를 읽는다. 현재 작업본의 asmdef·asmref(이름/GUID)를 따라 소스를 배정하고 Core→Runtime→Editor 순서로 Player/Editor를 분리 컴파일한다. defineConstraints 등 미지원 입력은 성공으로 간주하지 않는다. result.json의 실제 DLL·종료코드를 확인하며 Unity 컴파일이 최종 판정이다.
 
 스모크 앞 reserve는 -Kind player다. Editor 사전 대기는 없고 Player 전용 슬롯·10GB·FIFO를 따른다. Get-BlockingUnityOwner는 종류에 맞는 앞 owner/slot을 읽는다. Player 슬롯 초과도 WAIT·lastAttemptSha 보존·waiting-build 보관으로 처리하며 실제 Cmd-Run fixture로 검사한다.
+ABORT 회차가 만든 build_new는 그 회차 폴더 aborted-build로 보관한다. pending 없이 남은 build_new(이전 ABORT 고아)는 다음 회차가 orphan-build-before로 보관하고 진행한다(11-03 회차마다 ABORT 정체 수정). pending 후보·링크는 옮기지 않는다.
 
 WAIT는 본편 lastAttemptSha를 보존하면서 lastAttemptVerdict만 WAIT로 기록한다. 같은 SHA가 과거 실패로 남아 있어도 다음 일반 주기는 WAIT를 재시도하며, check도 Force가 필요하다는 경고를 내지 않는다. 브랜치 NoSwap의 배포 attempt 상태는 계속 변경하지 않는다. 분류/상태 단위13건과 실제 동일 SHA 다음 주기 fixture로 확인한다.
