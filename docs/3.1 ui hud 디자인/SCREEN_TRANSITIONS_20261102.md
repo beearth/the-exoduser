@@ -32,7 +32,7 @@
 
 제작 전 직접 확인: 승인 gate_sigil 원본512×512 대조, 실제1920 게이트·시작 메뉴·세계관·캐릭터 선택·게임 로딩. 목표 차이는 원본 화면 제거가 페이드보다 먼저 일어나는 컷과 페이지 간 공백이다. 제작법은 원본을 검정 뒤에서 교체하는 단일 최상단 레이어다. 조기 판정은 실제 모듈의80ms/500ms 준비·중복·reject 복구 및 실제 생성 영상 흐름이며, 틈·흰 프레임·검정 고착·중복 저장/경험치 차감이면 FAIL이다.
 
-최신 재검수는 I:/EXODUSER-Storage/codex-takeover/transitions/r2/영상_측정표.md·measurement.json·clips/ 및 REPORT.md를 따른다. 기존 after 영상은 CTO 반려 전 기준으로 보존한다. headless --mute-audio, 격리 서버3462·전용 saves, 게임 음량0. 끝부분 seek·사망/클리어 상태 fixture는 행별 표시한다. 무음 영상·gain 검사와 실제 청취는 별도이며 Unity는 unity-parity-1102-brief.md 인계 대상이다.
+최신 재검수는 I:/EXODUSER-Storage/codex-takeover/transitions/r2/영상_측정표.md·measurement.json·clips-aligned/ 및 REPORT.md를 따른다. 기존 after 영상은 CTO 반려 전 기준으로 보존한다. headless --mute-audio, 격리 서버3462·전용 saves, 게임 음량0. 끝부분 seek·사망/클리어 상태 fixture는 행별 표시한다. 무음 영상·gain 검사와 실제 청취는 별도이며 Unity는 unity-parity-1102-brief.md 인계 대상이다.
 
 ## 이전 제작자 검수 범위 — 22:20 CTO 반려로 인장 판정 철회
 
@@ -42,3 +42,7 @@
 - 프로젝트113/113·오디오/공통 모듈18/18·guard PASS. 중간 VM 회귀는148/154였으며 남은6의환경 호환을 수정한 뒤 같은 명령 반복 대신 실제 브라우저 방법으로 검수했다. 전체154/154 최종 PASS나 실제 청취 PASS를 주장하지 않는다.
 - 최신 main의 대기 원화·웹3D 개선은 정상 병합했다. 실제 검수4384d564b0와 병합본의 stage/boot/retry/lobby 전환5함수는 byte 동일하다(merged-transition-equivalence.json). 기존 원화의 전체 품질 판정과 이번 전환 경계 판정을 구분한다.
 - 이전 공통 전환 경계·전체 cover·재시작 복구 PASS를 인장 가시성 PASS로 확대하지 않는다. 22:20 CTO는 이야기→게임1.2초·복귀1.1초·스테이지0.6초 검정에서 인장 밝기0을 확인해 FAIL 판정했다. 최신 결과는 r2 영상 화소 측정으로 교체한다. 실제 청취·NW.js 설치본·물리32:9모니터·Unity Player는 미검증이다.
+
+## 11-02 CTO 반려 수정 재검수
+
+실제1920/3840 각10종, 전후40편×10초를 raw 영상의 실제 프레임에 맞춰 추출했다. 검정300ms 초과 20구간에서 인장 237/237 검정 표본 노출(100ms 간격), 수정20/20 PASS·흰 전체 화면 표본0. DOM flag 대신 왼쪽70% 배경과 우하단66×66 인장 화소를 측정했다. 이야기→게임 검정1600/2000ms, 게임→로비1400/1500ms에도 모든 검정 표본에서 인장이 보인다. 긴 구간의 시간 감소를 주장하지 않으며 1000ms 이후 작은 기존28언어 로딩 문구로 대기를 알린다. r2/영상_측정표.md·measurement.json·clips-aligned/·comparison.png가 근거다. 두 해상도 녹화의 런타임4파일 SHA256은 후보5eb0034d20과 동일하다. 브라우저 계약13·가시성/외부파일 차단 회귀·미디어4·관련회귀26·프로젝트113·guard PASS. 인장 원본 대비 우하단1x 비교는 제작자가 직접 확인하며 독립 CTO 판정·청취·NW.js·물리32:9·Unity Player는 별도다.
