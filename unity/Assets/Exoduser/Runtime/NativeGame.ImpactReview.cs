@@ -12,6 +12,59 @@ namespace Exoduser.UnityPort
 {
     public sealed partial class NativeGame
     {
+        [Serializable] sealed class ImpactBossReceipt
+        {
+            public string scope="실제 GPU Player 보스10초: 실제 게이트·아레나 진입 후 Core StartPattern에 잠복/충격파/강타를 요청하는 통제 fixture. 이후 실제 Core tick·이벤트·원화 소비. 자연 패턴선택·회피·전체 보스 완성 증거 아님";
+            public bool passed,world3D,baseline,remodel;public int frames,width,height,clipDraws,lightEvents,lightFrames,peakLights,slamContacts,dustEvents,rootEvents;
+            public string coreTraceSha256;public string[] moves,states;
+        }
+        IEnumerator ImpactBossReview()
+        {
+            string output=Argument("-output");
+            if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))||!NativeReviewArgs.BossDirect){Debug.LogError("Boss impact review requires isolated output and --unity-boss-direct 0");Application.Quit(2);yield break;}
+            Directory.CreateDirectory(output);Directory.CreateDirectory(Path.Combine(output,"frames"));
+            AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;Application.targetFrameRate=60;Time.captureDeltaTime=1f/60;
+            smokeActive=true;dropSmoke=true;pauseSmoke=true;Running=false;
+            int width,height;if(!int.TryParse(Argument("-impact-width"),out width))width=1600;if(!int.TryParse(Argument("-impact-height"),out height))height=900;
+            Screen.SetResolution(width,height,FullScreenMode.Windowed);lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;
+            yield return new WaitForSecondsRealtime(.6f);
+            var sim=Simulation;var p=sim.Player;var flow=sim.Stage;int guard=0;
+            while(!flow.InArena&&flow.LoadPhase==0&&guard++<120)StepInput(0,0,p.X+100,p.Y,false,false);
+            while(flow.LoadPhase!=2&&guard++<600)StepInput(0,0,p.X+100,p.Y,false,false);
+            UpdateViews();yield return new WaitForSecondsRealtime(.6f);
+            while(flow.LoadPhase!=0&&guard++<1200)StepInput(0,0,p.X+100,p.Y,false,false);
+            for(int i=0;i<30;i++)StepInput(0,0,p.X,p.Y+1,false,false);
+            float deadline=Time.realtimeSinceStartup+45;while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
+            var boss=flow.FindBoss();DruidData data=null;
+            if(!flow.InArena||boss==null||sim.Druid==null||!sim.Druid.Data.TryGetValue(boss,out data)){File.WriteAllText(Path.Combine(output,"entry-failure.json"),"{\"passed\":false,\"reason\":\"actual arena entry failed\"}");Application.Quit(1);yield break;}
+            var start=typeof(DruidBoss).GetMethod("StartPattern",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            var back=typeof(DruidBoss).GetMethod("WriteBack",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            if(start==null||back==null){Application.Quit(2);yield break;}
+            var rc=new ImpactBossReceipt{world3D=NativeRemodel3D.Active,baseline=bossView.BossImpactBaseline,remodel=sim.Druid.Remodel,width=Screen.width,height=Screen.height,moves=new[]{"burrowStrike","shock","slam"}};
+            var states=new HashSet<string>();var trace=new StringBuilder();int shots=0;
+            Action<string,double,double,double> fx=(kind,x,y,r)=>{if(kind=="druidDust")rc.dustEvents++;if(kind=="druidRoots")rc.rootEvents++;};sim.BossFx+=fx;
+            sim.Config.EnemyAiEnabled=true;p.X=boss.X;p.Y=boss.Y+220;p.Iframes=10000;
+            for(int f=0;f<600;f++)
+            {
+                impactReviewClock=f/60f;
+                if(f%200==0)
+                {
+                    string id=rc.moves[f/200];BossMove move=null;foreach(var m in (sim.Druid.Remodel?DruidRemodelData.Moves:DruidBossData.Moves))if(m.Id==id){move=m;break;}
+                    if(move==null){sim.BossFx-=fx;Application.Quit(2);yield break;}
+                    // QA asks the real production pattern starter, then mirrors its ordinary write-back.
+                    // Timings, warnings, active phases and hit events run entirely through the original Core.
+                    start.Invoke(sim.Druid,new object[]{boss,data,move,220d,0,0});back.Invoke(sim.Druid,new object[]{boss,data});
+                }
+                p.Hp=p.MaxHp;p.Iframes=10000;sim.SetPlayerCombatInput(false,false,false);sim.SetMagicInput(false);
+                sim.Tick(0,0,boss.X,boss.Y,false,false);DispatchFeedback();UpdateViews();Running=false;states.Add(data.S);
+                trace.Append(sim.TickCount).Append('|').Append(data.S).Append('|').Append(data.St2.ToString("R",CultureInfo.InvariantCulture)).Append('|').Append(boss.X.ToString("R",CultureInfo.InvariantCulture)).Append('|').Append(boss.Y.ToString("R",CultureInfo.InvariantCulture)).Append('|').Append(p.Hp).Append('|').Append(sim.Druid.Projectiles.Count).Append('|').Append(sim.Druid.PoisonPools.Count).Append('\n');
+                yield return null;yield return new WaitForEndOfFrame();if(f%2==0)ScreenCapture.CaptureScreenshot(Path.Combine(output,"frames","impact-"+(shots++).ToString("0000")+".png"));
+            }
+            sim.BossFx-=fx;rc.frames=shots;rc.states=new List<string>(states).ToArray();rc.clipDraws=bossView.OriginalBossClipDraws;rc.lightEvents=bossView.ImpactLightEvents;rc.lightFrames=bossView.ImpactLightFrames;rc.peakLights=bossView.PeakImpactLights;rc.slamContacts=bossView.SlamContacts;
+            string text=trace.ToString();File.WriteAllText(Path.Combine(output,"core-trace.txt"),text);using(var sha=SHA256.Create())rc.coreTraceSha256=BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(text))).Replace("-","").ToLowerInvariant();
+            rc.passed=rc.world3D&&shots==300&&rc.dustEvents>=2&&rc.rootEvents>=1&&rc.slamContacts>=1&&rc.clipDraws>0&&states.Contains("bossShock")&&(rc.baseline?rc.lightEvents==0:rc.lightEvents>=4&&rc.lightFrames>0&&rc.peakLights<=2);
+            File.WriteAllText(Path.Combine(output,"impact-boss-review.json"),JsonUtility.ToJson(rc,true),new UTF8Encoding(false));yield return null;Application.Quit(rc.passed?0:1);
+        }
         [Serializable] sealed class ImpactReviewReceipt
         {
             public string scope="실제 GPU Player 16초: 고정 입력·AI 루프 활성/검수 기절180 갱신으로 자발 행동 중지·실제 넉백·첫 표적1회 실제 처치/나머지 불사 표적·현행 5스킬과 독/가시/어둠 탄 겹침 fixture. 자연 전투·미이식 스킬 증거 아님";

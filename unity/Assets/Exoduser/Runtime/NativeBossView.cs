@@ -7,7 +7,7 @@ namespace Exoduser.UnityPort
 {
     // BX: presentation of the 1-1 dark druid's projectiles, ground hazards and event VFX. Gameplay (timing, damage, positions) is the Core's (Core/DruidBoss*.cs,
     // oracle-checked against game.html); this file draws it with the web's own art: the poison-pool / orb / hit / roots / shockring / dust atlas clips
-    // (assets/vfx/boss/druid_*_24_*), the corruption ring (druid_corruption_ring.svg) and the grey-then-#66dd22 fire-devil orb sheet for the poison shots,
+    // (assets/vfx/boss/druid_*_24_*), the corruption ring (druid_corruption_ring.svg) and the value-graded original fire-devil orb sheet for the poison shots,
     // with the web's sizes, alphas and clip time (24 fps loops from the hazard's own T, once-clips stretched over maxFrames x frameTime ticks).
     // Still procedural (the web strokes them as vector lines too): fissure crack body, tide-wave beads, rhythm volley. 추적/탄 지뢰는 현행 어둠 지뢰 원화를 사용한다.
     public sealed partial class NativeBossView
@@ -39,6 +39,30 @@ namespace Exoduser.UnityPort
         readonly HashSet<ChaseZone> zoneHit = new HashSet<ChaseZone>();
         readonly Dictionary<Fissure, int> fissureExploded = new Dictionary<Fissure, int>();
         string prevBossState;
+        sealed class ImpactLight { public Light Light;public int Born=-100000;public float Power; }
+        readonly ImpactLight[] impactLights=new ImpactLight[2];
+        public bool ReducedMotion;
+        public bool BossImpactBaseline{get;private set;}=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-impact-boss-baseline")>=0;
+        public int ImpactLightEvents{get;private set;}public int ImpactLightFrames{get;private set;}public int PeakImpactLights{get;private set;}public int OriginalBossClipDraws{get;private set;}public int SlamContacts{get;private set;}
+
+        void BossImpactLight(double x,double y,bool heavy)
+        {
+            if(BossImpactBaseline||ReducedMotion||!NativeRemodel3D.Active||bound==null)return;
+            int tick=bound.TickCount;ImpactLight slot=null;
+            for(int i=0;i<impactLights.Length;i++)
+            {
+                if(impactLights[i]==null){var go=new GameObject("Druid contact light");go.transform.SetParent(root,false);var light=go.AddComponent<Light>();light.type=LightType.Point;light.shadows=LightShadows.None;light.color=new Color(.78f,.71f,.49f);light.enabled=false;impactLights[i]=new ImpactLight{Light=light};}
+                if(tick-impactLights[i].Born>=6){slot=impactLights[i];break;}
+            }
+            if(slot==null)return;
+            slot.Born=tick;slot.Power=heavy?2.2f:1.4f;slot.Light.range=heavy?2.8f:2;
+            slot.Light.transform.position=Exoduser.UnityPort.Vfx.ImpactSpace.Point((float)x,(float)y,.5f);ImpactLightEvents++;
+        }
+        void UpdateBossImpactLights(int tick)
+        {
+            int active=0;foreach(var p in impactLights)if(p!=null){float a=Exoduser.UnityPort.Vfx.SkillPresentation.BossImpactOpacity((tick-p.Born)/60.0);p.Light.enabled=a>0&&!ReducedMotion&&!BossImpactBaseline&&NativeRemodel3D.Active;if(p.Light.enabled){p.Light.intensity=p.Power*a;active++;}}
+            if(active>0)ImpactLightFrames++;PeakImpactLights=Math.Max(PeakImpactLights,active);
+        }
 
         public NativeBossView(Transform parent)
         {
@@ -134,6 +158,7 @@ namespace Exoduser.UnityPort
         void OnFx(string kind, double x, double y, double r)
         {
             int born = boundTick;
+            if(kind=="druidDust"||kind=="druidRoots")BossImpactLight(x,y,kind=="druidRoots");
             switch (kind)
             {
                 case "druidDust": Spawn(DustClip, x, y, r * 2, r * 2, born, 7, 8); break;                                       // playVFXAng('druid_dust',x,y,r*2/256,7)
@@ -213,8 +238,10 @@ namespace Exoduser.UnityPort
             // boss state transitions that carry a web VFX: bossShockWind -> bossShock = druid_shockring r*2.5/256 (512 px frame -> 5 r wide), speed 7, 8 frames
             var boss = druid.Boss; string bs = null;
             DruidData dd = null; if (boss != null && boss.Alive && druid.Data.TryGetValue(boss, out dd)) bs = dd.S;
-            if (bs == "bossShock" && prevBossState == "bossShockWind") Spawn(ShockClip, dd.X, dd.Y, dd.R * 5, dd.R * 5, t, 7, 8, ground: true);
+            if (bs == "bossShock" && prevBossState == "bossShockWind") {Spawn(ShockClip, dd.X, dd.Y, dd.R * 5, dd.R * 5, t, 7, 8, ground: true);BossImpactLight(dd.X,dd.Y,true);}
+            if(prevBossState=="bossSlam"&&(bs=="recover"||bs=="bossRec")){SlamContacts++;if(!BossImpactBaseline){Spawn(DustClip,dd.X,dd.Y,dd.R*2,dd.R*2,t,7,8);BossImpactLight(dd.X,dd.Y,true);}}
             prevBossState = bs;
+            UpdateBossImpactLights(t);
             // Mines keep their Core tracking behaviour but their ward artwork lies on the floor.
             foreach (var m in druid.SeekerMines)
             {
@@ -249,6 +276,7 @@ namespace Exoduser.UnityPort
                 if (age >= life) { vfx.RemoveAt(i); continue; }
                 int legacy = age / v.FrameTime, frame = Math.Min(v.Clip.Frames - 1, (int)((double)age / life * v.Clip.Frames));
                 PutAdd(ClipSprite(v.Clip, frame), v.X, v.Y, v.W, v.H, 1f - (float)legacy / v.MaxFrames * .3f, (int)v.Y + 20, ground: v.Ground);
+                OriginalBossClipDraws++;
                 i++;
             }
             Finish();

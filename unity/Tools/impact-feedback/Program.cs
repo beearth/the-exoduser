@@ -9,6 +9,8 @@ static class Program
     static int Main()
     {
         try {
+            Check(SkillPresentation.BossImpactOpacity(-.01)==0&&SkillPresentation.BossImpactOpacity(0)==1,"보스 국소광은 실제 타격 이전에는 없고 타격 때만 시작한다");
+            Check(SkillPresentation.BossImpactOpacity(.05)>0&&SkillPresentation.BossImpactOpacity(.05)<1&&SkillPresentation.BossImpactOpacity(.1)==0,"보스 국소광은100ms 이내 소멸한다");
             foreach(bool poison in new[]{true,false}) {
                 uint black=SkillPresentation.EnemyPixel(0,poison), white=SkillPresentation.EnemyPixel(0xffffff,poison);
                 Check(black==(poison?SkillPresentation.EnemyPoisonShadow:SkillPresentation.EnemyDarkShadow),"탄 그림자의 암부를 보존한다");

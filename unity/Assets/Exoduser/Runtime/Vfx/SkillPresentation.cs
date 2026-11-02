@@ -5,6 +5,7 @@ namespace Exoduser.UnityPort.Vfx
     {
         public const uint EnemyPoisonCore=0xc8e8a8,EnemyPoisonMid=0x5f8a2e,EnemyPoisonShadow=0x1c2810;
         public const uint EnemyDarkCore=0xcdb2e0,EnemyDarkMid=0x5e3478,EnemyDarkShadow=0x170c20;
+        public static float BossImpactOpacity(double age){return age<0||age>=.1?0:(float)System.Math.Pow(1-age/.1,2);}
         // Preserve the source image's value structure, with the approved restrained palette.
         public static uint EnemyPixel(uint rgb,bool poison)
         {

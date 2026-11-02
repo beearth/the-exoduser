@@ -262,3 +262,18 @@ Graph 본체 대신 기존 원화 경로를 유지한다. 실제 첫 Player에�
 
 첫 탄막 정식 시도 `1a51ace0`은 NativeBossView 내부 기존 `Vfx` 타입과 네임스페이스의 충돌 CS0117로 실패했다. 해당 호출을 `Exoduser.UnityPort.Vfx.SkillPresentation`으로 한정한다. 실패 로그는 남기며 새 고정 입력의 재빌드로 확인한다.
 
+### 11-03 네 번째 단위: 드루이드 원화 공격 접점 후보
+
+| 항목 | 후보 동작·한계 |
+|---|---|
+| 잠복·출현 | 실제 Core `druidDust` 이벤트의 기존24셀 DustClip, 폭/높이2r·7×8틱 유지. 새 국소광은 실제 이벤트 위치에만 표시 |
+| 뿌리 | 실제 Core `druidRoots` 이벤트의 기존 HitClip(362×0.72,543×0.72,7×8틱)·RootsClip(2r,7×10틱) 유지 |
+| 충격파 | 기존 bossShockWind→bossShock 원화24셀·폭/높이5r·7×8틱·지면 표시 유지. 전환 순간만 국소광 추가 |
+| 강타 | 실제 bossSlam→recover/bossRec 착지 전환에 기존 DustClip(2r,7×8틱)와 국소광 추가. 새 판정·확장 위험 원판·Graph 입자 없음 |
+| 국소광 | 최대2 Point Light·shadow없음. 옅은 흙빛 RGB(0.78,0.71,0.49). 먼지1.4/range2m, 뿌리·충격파·강타2.2/range2.8m. 실제좌표+0.5m. `BossImpactOpacity(age)`: age<0 또는≥0.1초이면0, 나머지 `(1-age/0.1)^2`. 60Hz Core tick 기준6틱 안에 소멸 |
+| 접근성·이전표현 | ReducedMotion 또는 3D 비활성이면 추가광 없음. `--unity-impact-boss-baseline`은 새 강타먼지/국소광을 끄고 같은패키지 이전표현을 재현 |
+| 관측 | OriginalBossClipDraws·ImpactLightEvents/Frames·PeakImpactLights·SlamContacts. 실제 원화 draw와 실제 착지 전환을 따로 집계 |
+| 검수 입력 | `--unity-impact-boss-review --unity-boss-direct 0`: 실제 게이트/아레나 진입 후, 격리 fixture에서 원래 Core StartPattern/WriteBack에 burrowStrike·shock·slam을 200틱 간격으로 요청. 원래 예고/발동/이벤트를 600틱·300PNG·10초 촬영. QA 전용 reflection이며 제품 플레이 경로에서는 실행하지 않음 |
+| 판정 범위 | 표현978개 GREEN. Core·AI 수치·공격 템포·RNG·세이브 형식 변경0. 정식 빌드/M1/같은크기 영상·1x/32:9 판정 전에는 미검증. 통제 패턴 요청을 자연 선택/회피/전체보스 디자인 완성으로 보고하지 않음 |
+
+
