@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script src="character-basic-stories.js?v=20261102"></script>
+<link rel="stylesheet" href="character-basic-story.css?v=20261102">
 <link rel="stylesheet" href="loading-art.css?v=20261031-final35">
 <script src="loading-art.js?v=20261031-final35"></script>
 <script src="decision-sound.js?v=20261031"></script>
@@ -1084,7 +1086,12 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
       <p class="cs-sub">지옥에 강림할 화신을 선택하라</p>
     </div>
     <div class="cs-body">
-      <div class="cs-side left" id="csLeft" tabindex="0" role="region" aria-labelledby="csCharName">
+      <div class="cs-side left" id="csLeft" tabindex="0" role="region" aria-labelledby="csStoryTitle">
+        <section class="cs-frame-box cs-story" aria-labelledby="csStoryTitle"><span class="cnr tl" aria-hidden="true"></span><span class="cnr br" aria-hidden="true"></span><div id="csStoryTitle" class="cs-story-title"></div><div id="csStoryBody" class="cs-story-body"></div></section>
+      </div>
+      <div class="cs-stage"><img id="csPortrait" alt=""><div id="csReleaseLock"><img src="assets/charselect/coming_soon_chains_v2.png" alt="" aria-hidden="true"><span id="csReleaseLabel" role="status"></span></div></div>
+      <div class="cs-side right" id="csRight" tabindex="0" role="region" aria-labelledby="csCharName">
+<div id="csIdentity" class="cs-frame-box">
         <div id="csClsName"></div>
         <div id="csCharName"></div>
         <div id="csCharDesc"></div>
@@ -1093,8 +1100,6 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
           <div id="csThumb"></div>
         </div>
       </div>
-      <div class="cs-stage"><img id="csPortrait" alt=""><div id="csReleaseLock"><img src="assets/charselect/coming_soon_chains_v2.png" alt="" aria-hidden="true"><span id="csReleaseLabel" role="status"></span></div></div>
-      <div class="cs-side right" id="csRight" tabindex="0" role="region" aria-labelledby="csPlaystyleTitle">
         <div class="cs-frame-box">
           <span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
           <div class="cs-crest">✦</div>
@@ -2206,6 +2211,7 @@ function _lobbyLang(){return getCurrentLanguage()}
 function _TL(s){const lang=_lobbyLang();if(lang==='ko')return s;const tbl=_LOBBY_TABLES[lang]||_LOBBY_EN;return tbl[s]||_LOBBY_EN[s]||s}
 const _HTML_LANG_MAP={ko:'ko',ja:'ja',zh:'zh-Hans',zht:'zh-Hant',ar:'ar',th:'th',vi:'vi',id:'id',tr:'tr',el:'el',ru:'ru',uk:'uk',bg:'bg',pl:'pl',cs:'cs',hu:'hu',ro:'ro',de:'de',nl:'nl',sv:'sv',da:'da',no:'no',fi:'fi',fr:'fr',it:'it',es:'es',ptbr:'pt',sk:'sk',en:'en'};
 function _applyLobbyLang(){
+  refreshCharacterBasicStory();
   const lang=_lobbyLang();
   ExoduserI18n.applyDocumentLanguage(document,lang);
   document.getElementById('langSelect').value=lang;
@@ -3331,6 +3337,7 @@ function selectVisual(ci){
   $('csClsName').textContent=_TL(ch.job||ch.cls||'');
   $('csCharName').textContent=_TL(ch.name);
   $('csCharDesc').textContent=_TL(ch.desc);
+  refreshCharacterBasicStory(ci);
   const th=$('csThumb');if(th){const _tp=ch.bust||ch.portrait;th.style.backgroundImage=_tp?"url('"+_tp+"')":'';th.classList.toggle('silvertail-keyart',!!ch.keyart);}
   const aura=$('csAura');if(aura&&ch.aura)aura.style.setProperty('--aura',ch.aura);
   // 배경 씬 — 아이들 영상 있으면 그게 전체를 덮으므로 배경 레이어는 끔

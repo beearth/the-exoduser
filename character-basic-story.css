@@ -1,0 +1,9 @@
+/* Shared silver/iron character-selection hierarchy: story / hero / identity. */
+#charVisualPop .cs-story{box-sizing:border-box;padding:28px 26px 30px;background:linear-gradient(180deg,rgba(8,9,10,.91),rgba(8,9,10,.78));border-color:rgba(151,155,155,.28);border-radius:0}
+#charVisualPop .cs-story-title{font-family:var(--font-hell,'Nanum Myeongjo',serif);font-size:clamp(14px,1.2vw,18px);letter-spacing:.16em;color:#e6e3dc;padding-bottom:16px;margin-bottom:18px;border-bottom:1px solid rgba(155,158,158,.25)}
+#charVisualPop .cs-story-body{font-family:'Noto Sans KR',sans-serif;font-size:clamp(14px,1.05vw,17px);line-height:1.95;color:#c5c2bb;white-space:pre-line;word-break:normal;overflow-wrap:anywhere;text-wrap:pretty}
+#charVisualPop #csIdentity{box-sizing:border-box;background:rgba(8,9,10,.88);border-color:rgba(151,155,155,.28);border-radius:0}
+#charVisualPop #csIdentity .cs-thumb-wrap{display:none}
+#charVisualPop #csIdentity #csCharName{margin:10px 0 18px}
+#charVisualPop #csLeft .cnr{border-color:rgba(175,179,179,.65)}
+@media(max-width:760px){#charVisualPop #csLeft{display:block}#charVisualPop .cs-story{padding:20px}#charVisualPop .cs-story-body{font-size:14px;line-height:1.8}}
