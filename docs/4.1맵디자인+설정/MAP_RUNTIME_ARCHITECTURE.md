@@ -1,3 +1,11 @@
+## 2026-11-02 — r3d 높이·가림 (기본 OFF)
+
+원본 MAP_OBJS 루프의 native painter를 재사용해 큰 나무·바위·벽·시체나무·제단 카드를 만들고 drawP 뒤 발 위치 순서로 합성한다. 가려지는 플레이어/적이 있으면 해당 물체만 .35, 앞쪽 인물·탄의 실제 픽셀은 유지한다. 기존 depthSlice의 .62+주인공 고스트는 r3d OFF 경로에서 그대로다. 원본 그림·충돌·보행·전투/저장 코드는 불변. [정확 수치·검수](WEB3D_TRIAL_20261031.md#2026-11-02-4라운드--높이가림-p0).
+
+## 2026-11-02 — 보물상자 크기·동적 몸통 충돌
+
+웹 본편 상자 표시64×64 CSSpx, 몸통44×24worldpx(반폭22/반깊이12). 닫힘/열림과 관계없이 미제거 chest를 `canMv`/`canMvBlink`에서 검사하고 플레이어 실제 이동 접점은 이전 좌표를 전달해 선분 관통을 막는다. 지형 `isW`/MAP_OBJS·bone/정적 nav·Q/E 수치는 보존한다. 수명·생성 겹침 탈출·전리품 자기 상자 제외·검수 근거는 [상자 최신 계약](TRIPO_CHEST_GAME_20261102.md)을 따른다. 기존 상자 비충돌 설명은 이 절로 대체한다.
+
 > 2026-10-16 통합 범위: 웹 본편 수치·현행은 최신 main 기준, 별도 Native/FDG 항목은 source pin9a4534b4의 부분 이식·명시 opt-in 계약이다. 전체 최신 본편 이식 완료가 아니다. 상세: docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md.
 
 ## 2026-10-08 — CH1-1 런타임 나무 층 + 시작 카메라 클램프
@@ -123,7 +131,7 @@ kit builders (24417~24507)   ─┘        │
   | `4` | 바닥(1×1 fallback 전용) | `G.map=[[4]]` (25846), `_floorAt` (20548) |
   | `6` | 포탈/존 타일 | write 25032, read 35582 |
 - 에디터→게임 변환: `0=용암,1=바닥,2=벽,3=높은벽 → 게임 0=바닥,1=벽` (`24636`).
-- **Q1 답**: 이동가능(walkable) = `isW(px,py)===false` = 타일값 ≠ 1 AND CH1-1 authored hill cliff band 없음 AND bone-wall 없음 AND 충돌 MAP_OBJS 없음.
+- **Q1 답**: 정적 지형 통행 가능(walkable) = `isW(px,py)===false` = 타일값 ≠ 1 AND CH1-1 authored hill cliff band 없음 AND bone-wall 없음 AND 충돌 MAP_OBJS 없음. 실제 actor 이동은 추가로 `canMv`/`canMvBlink`의 미제거 상자 몸통을 통과하지 않아야 한다.
 
 ---
 
@@ -132,8 +140,8 @@ kit builders (24417~24507)   ─┘        │
 | 함수 | 라인 | 역할 |
 |---|---|---|
 | `isW(px,py,skipBone)` | 식별자 grep | 핵심 벽 판정: OOB→solid, 타일===1→solid, CH1-1 `_ch1HillBandBlocks`, `G._boneWalls` 링, 충돌메타 MAP_OBJS(`_colObjs`) |
-| `canMv(x,y,r)` | 25985 | 4코너 AABB `isW` |
-| `canMvBlink(x,y,r)` | 25988 | skipBone=1 |
+| `canMv(x,y,r,fromX=x,fromY=y,ignoreChest=null)` | 식별자 grep | 4코너 AABB `isW` + 동적 상자 몸통/선분. ignoreChest는 자기 전리품 경로에만 사용 |
+| `canMvBlink(x,y,r,fromX=x,fromY=y)` | 식별자 grep | skipBone=1 유지 + 동적 상자 몸통/선분 |
 | `_isWallTile(px,py)` | 25992 | **타일만** 판정(MAP_OBJS 무시) |
 | `_canMvTile(x,y,r)` | 25993 | 4코너 `_isWallTile` (적 밀어내기) |
 | `safePt(x,y,r)` | 25990 | 나선 탐색 최근접 walkable |

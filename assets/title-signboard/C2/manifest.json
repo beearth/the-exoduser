@@ -1,0 +1,121 @@
+{
+  "source": "I:/EXODUSER-Storage/codex-takeover/title-kling-C2-20261102/tall-final/loop.mp4",
+  "sourceSHA256": "3020b3babc951c9864b2c105a8e421040229076bd34779892231d366c68c5a7a",
+  "runtime": "video/title_motion_C2_clarity_3840_20261102.mp4",
+  "size": [
+    3840,
+    1920
+  ],
+  "layout": "cover",
+  "sourceStartSeconds": 0.5,
+  "overlapSeconds": 1,
+  "audio": false,
+  "stillSource": "G:\\exoduser\\tmp\\design-review\\20261102_title_keyframe\\close\\C2-tall-fixed-3840x1920.png",
+  "fallData": [
+    {
+      "id": "near",
+      "box": [
+        696,
+        498,
+        66,
+        259
+      ],
+      "mouth": [
+        714,
+        506
+      ],
+      "contact": [
+        735,
+        747
+      ],
+      "speed": 100
+    },
+    {
+      "id": "far",
+      "box": [
+        951,
+        548,
+        78,
+        218
+      ],
+      "mouth": [
+        974,
+        555
+      ],
+      "contact": [
+        1001,
+        756
+      ],
+      "speed": 75
+    }
+  ],
+  "texture": [
+    128,
+    512
+  ],
+  "opacity": 0.38,
+  "quality": "3840x1920 fixed still supplies static geometry; accumulated motion mask supplies registered video for water/hair/cape and bounded .8..1.2 temporal light transfer for corrected clouds/mist. Rendered 4K; still was generated at 1774x887 and upscaled by its owner. No native-4K generation claim.",
+  "variants": {
+    "1920": {
+      "path": "video/title_motion_C2_clarity_1920_20261102.mp4",
+      "size": [
+        1920,
+        960
+      ],
+      "bytes": 4800452,
+      "sha256": "c5b4d40f3cb5f686d1e0bc5997830391d3ba7986d3f989cebffad7a30bedeb30",
+      "frames": "206",
+      "fps": "24/1",
+      "duration": "8.584000",
+      "audio": false
+    },
+    "2560": {
+      "path": "video/title_motion_C2_clarity_2560_20261102.mp4",
+      "size": [
+        2560,
+        1280
+      ],
+      "bytes": 7292221,
+      "sha256": "1e73270f63f7a6ef3e703e1ee6948f4d83fcfe1fb9bf9539c09c15094887e5ff",
+      "frames": "206",
+      "fps": "24/1",
+      "duration": "8.584000",
+      "audio": false
+    },
+    "3840": {
+      "path": "video/title_motion_C2_clarity_3840_20261102.mp4",
+      "size": [
+        3840,
+        1920
+      ],
+      "bytes": 13032368,
+      "sha256": "eeddc6a44872c1f6f29938f72d1f8e7256694101bf63f456fc63a6fa69f049a6",
+      "frames": "206",
+      "fps": "24/1",
+      "duration": "8.584000",
+      "audio": false
+    }
+  },
+  "stillSHA256": "ca3792f22924dae0dcdcb415ba7227b3ca05a9e1ae2105eea27055c9c6a84d93",
+  "fixedUsed": true,
+  "maskFrames": 206,
+  "registration": {
+    "matrix1018": [
+      [
+        1.000292800575951,
+        0.00007836601995862954,
+        -0.027781048415004048
+      ],
+      [
+        -0.00007836601995862954,
+        1.000292800575951,
+        -0.1258171417487469
+      ]
+    ],
+    "inliers": 343,
+    "medianError4K": 0.9352644085884094,
+    "scale": 1.0002928036456689
+  },
+  "directCoverage": 0.1015435327175671,
+  "residualCoverage": 0.3039647832145159
+}

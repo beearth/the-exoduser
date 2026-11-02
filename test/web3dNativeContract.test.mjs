@@ -12,28 +12,27 @@ const main=html=>html.slice(html.indexOf('<script>\n// ┌')+9).split('</script>
 
 test('all native combat/save/AI declarations retain their exact baseline source',()=>{
   const git=process.platform==='win32'?'C:/Program Files/Git/cmd/git.exe':'git';
-  // 검수된 전투 표현 후보를 기준으로 3D 병합이 새 feel 함수까지 보존하는지 검사한다.
-  const baseline=execFileSync(git,['show','0206fb14df311c1b911ae76ee2921082f7787a10:game.html'],{encoding:'utf8',maxBuffer:12e6,windowsHide:true});
+  // 4라운드 착수 때 병합한 최신 main. 상자·최신 전투/UI도 검사에서 제외하지 않는다.
+  const baseline=execFileSync(git,['show','d60ed26bbe7b1551609bf14a35fe1625ea861359:game.html'],{encoding:'utf8',maxBuffer:12e6,windowsHide:true});
   const functions=s=>new Map(acorn.parse(s,{ecmaVersion:'latest'}).body.filter(n=>n.type==='FunctionDeclaration').map(n=>[n.id.name,s.slice(n.start,n.end)]));
   const before=functions(main(baseline)),after=functions(main(game));
-  // 최신 main의 와이드 원화 두 callback은 검토한 upstream byte에 고정한다.
-  const upstream=functions(main(execFileSync(git,['show','7ba04c4f5757cf86b6289abef4206dff62d841c8:game.html'],{encoding:'utf8',maxBuffer:12e6,windowsHide:true})));
-  const approvedPresentation=new Set(['_getCutsceneImg','_renderIntroCutscene','_showNextDiffPop']);
-  const adapterHooks=new Set(['genFromTemplate','initStage','_syncDruidFinaleMouse','loop']);
   let checked=0;
-  for(const [name,source]of before)if(!adapterHooks.has(name)){
+  for(const [name,source]of before){
     // Optional environment hooks: ground light, original-object relief, foliage.
     // Actor/VFX/input/save declarations and the rest of draw remain byte-exact.
-    const restored=after.get(name)
+    const normalise=value=>value
       .replace(/^  const _web3dAmbient=G.stage===0&&!G._bossArena&&window\._Web3DLivingLayer\?\.snapshot\(\)\.enabled;\r?\n/m,'')
       .replace('if(_lightCvs&&!_web3dAmbient)','if(_lightCvs)')
       .replace('X.globalAlpha=_web3dAmbient?0:_vAlpha','X.globalAlpha=_vAlpha')
-      .replace('if(_ATMDBG.vig&&!(G.stage===0&&!G._bossArena&&window._Web3DLivingLayer?.snapshot().enabled))','if(_ATMDBG.vig)');
-    const current=name==='draw'?restored
+      .replace('if(_ATMDBG.vig&&!(G.stage===0&&!G._bossArena&&window._Web3DLivingLayer?.snapshot().enabled))','if(_ATMDBG.vig)')
+      .replace(/^    if\(window\._Web3DLivingLayer\?\.deferObject\?\.\(mo\)\)continue;\r?\n/m,'')
+      .replace(/^  window\._Web3DLivingLayer\?\.front\?\.\(X,.*\);\r?\n/m,'');
+    const stripDraw=value=>value
       .replace(/^  window\._Web3DLivingLayer\?\.(?:draw|surface|ground)(?:\?\.)?\(X,.*\);\r?\n/gm,'')
       .replace(/^    const _livingRelief=window\._Web3DLivingLayer\?\.beginObject\(X,mo,_OBJ_META\[mo.type\]\);\r?\n/m,'')
-      .replace(/^    if\(_livingRelief\)X.restore\(\);\r?\n/m,''):restored;
-    assert.ok(current===(approvedPresentation.has(name)?upstream.get(name):source),name+' changed');checked++;
+      .replace(/^    if\(_livingRelief\)X.restore\(\);\r?\n/m,'');
+    const current=normalise(after.get(name)),expected=normalise(source);
+    assert.equal(name==='draw'?stripDraw(current):current,name==='draw'?stripDraw(expected):expected,name+' changed');checked++;
   }
   assert.ok(checked>500);
 });
