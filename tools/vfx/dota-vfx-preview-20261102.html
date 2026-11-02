@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EXODUSER · 기검참 / 대지 충격 시안</title>
+<style>
+:root{color-scheme:dark;font-family:"Malgun Gothic",sans-serif;background:#111214;color:#e4ddcf}*{box-sizing:border-box}body{margin:0;padding:32px;max-width:1120px;margin-inline:auto}header{border-bottom:1px solid #34312b;padding-bottom:22px;margin-bottom:20px}.eyebrow{font-size:11px;letter-spacing:.18em;color:#b89c6e}h1{font-size:28px;font-weight:500;margin:9px 0}p{font-size:13px;line-height:1.8;color:#a6a195;margin:8px 0}.controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 0}button,select{font:inherit;font-size:13px;background:#242321;color:#e4ddcf;border:1px solid #504738;border-radius:4px;padding:8px 16px;cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid #d1b879;outline-offset:3px}input{accent-color:#c3a16a;flex:1;min-width:140px}output{font-size:12px;color:#bfb6a6;min-width:96px}section{margin-top:20px}h2{font-size:17px;font-weight:500;margin:8px 0 12px}.labels{display:grid;grid-template-columns:1fr 1fr;font-size:12px;color:#a6a195;margin:0 16px 8px}.labels span:last-child{color:#d1b879}canvas{width:100%;height:auto;display:block;border:1px solid #2c2b28;border-radius:7px}.foot{border-top:1px solid #34312b;padding-top:14px;margin-top:24px}#status{color:#c3b385}a{color:#cdb584}small{font-size:11px;color:#a49b8c}
+</style>
+<header><div class="eyebrow">EXODUSER / VFX STUDY · 2026.11.02</div><h1>검격은 얇게, 충격은 지면으로.</h1><p>기검참 — 케즈 Echo Slash의 전방 검격과 잔상 / 전사 강타 — Echo Slam의 중심 접점과 바깥 충격</p><p>중립 배경에서 보는 시트 비교입니다. 실제 게임 연결·피해 판정·밀집 전투 검수는 별도입니다.</p></header>
+<div class="controls"><button id="play" disabled>정지</button><select id="speed" aria-label="재생 속도"><option value="1">보통 속도</option><option value="0.35">느리게</option></select><select id="background" aria-label="배경 밝기"><option value="dark">어두운 바닥</option><option value="gray">회색 바닥</option><option value="light">밝은 바닥</option></select><input id="seek" type="range" min="0" max="1799" value="0" aria-label="시안 재생 위치"><output id="clock">0 ms</output></div>
+<p id="status">시트 로딩 중…</p>
+<section><h2>01 · 기검참</h2><div class="labels"><span>현재 H5 시트</span><span>전방 검격 시안 · 9프레임</span></div><canvas id="ki" width="960" height="310" aria-label="기검참 원본과 시안의 움직임 비교"></canvas></section>
+<section><h2>02 · 전사 대지 충격 / 분노폭발</h2><div class="labels"><span>현재 H5 강타가 선택하는 화염 시트</span><span>지면 충격 시안 · 4프레임</span></div><canvas id="slam" width="960" height="350" aria-label="전사 강타 원본과 시안의 움직임 비교"></canvas></section>
+<p class="foot">시안: 은빛 검기 + 검은 잔향 / 작고 밝은 접점 + 비어 있는 지면 + 흩어지는 먼지.<br>원본 에셋은 보존했습니다. 현재 H5의 보조 용암·플래시·균열 패스는 이 비교에 포함하지 않았습니다.</p>
+<small><a href="../../assets/vfx/dota-reference-20261102/ki_slash_kez_r1_sheet.png">기검참 PNG</a> · <a href="../../assets/vfx/dota-reference-20261102/ground_shock_echo_r3_sheet.png">지면 충격 PNG</a> · <a href="../../assets/vfx/dota-reference-20261102/manifest.json">프레임 규격·검수 기록</a></small>
+<script>
+'use strict';
+const prefix='../../assets/vfx/';
+const images={};
+const paths={oldKi:prefix+'ki_slash_silver_sheet.png',newKi:prefix+'dota-reference-20261102/ki_slash_kez_r1_sheet.png',oldSlam:prefix+'inferno_slam_impact_sheet.png',newSlam:prefix+'dota-reference-20261102/ground_shock_echo_r3_sheet.png',hero:'../../img/exoduser_warrior/east.png'};
+let ready=false,playing=true,time=0,last=performance.now();
+const byId=id=>document.getElementById(id);
+function sprite(ctx,img,cols,index,x,y,size,blend,alpha=1){
+  const side=img.naturalWidth/cols;
+  ctx.save();ctx.globalCompositeOperation=blend;ctx.globalAlpha=alpha;
+  ctx.drawImage(img,(index%cols)*side,Math.floor(index/cols)*side,side,side,x-size/2,y-size/2,size,size);ctx.restore();
+}
+function draw(canvas,kind){
+  const ctx=canvas.getContext('2d'),isKi=kind==='ki';
+  const bg=byId('background').value;
+  const tones=bg==='light'?['#c9c3b5','#aaa395']:bg==='gray'?['#6a6862','#494a48']:['#302c27','#151719'];
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  const duration=isKi?400:750,p=(time-160)/duration;
+  for(let panel=0;panel<2;panel++){
+    const left=panel*480,cy=isKi?178:204;
+    const g=ctx.createRadialGradient(left+240,cy,20,left+240,cy,290);g.addColorStop(0,tones[0]);g.addColorStop(1,tones[1]);ctx.fillStyle=g;ctx.fillRect(left,0,480,canvas.height);
+    ctx.strokeStyle=bg==='dark'?'#42403a':'#858174';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(left+22,cy+52);ctx.lineTo(left+458,cy+52);ctx.stroke();
+    if(p>=0&&p<1){
+      const image=isKi?(panel?images.newKi:images.oldKi):(panel?images.newSlam:images.oldSlam);
+      const count=isKi?9:4,cols=isKi?3:2,index=Math.min(count-1,Math.floor(p*count));
+      const x=isKi?left+178+p*115:left+240;
+      sprite(ctx,image,cols,index,x,cy,isKi?220:350,panel&&!isKi?'source-over':'screen');
+      ctx.font='12px Malgun Gothic';ctx.fillStyle=bg==='dark'?'#bcb3a1':'#2c2d2c';ctx.fillText((panel?'시안':'현재')+' · '+(index+1)+' / '+count,left+20,26);
+    }
+    ctx.save();ctx.imageSmoothingEnabled=false;
+    const hx=isKi?left+90:left+192;
+    ctx.drawImage(images.hero,0,0,48,48,hx,cy-51,96,96);ctx.restore();
+  }
+  ctx.strokeStyle='#3c3932';ctx.beginPath();ctx.moveTo(480,0);ctx.lineTo(480,canvas.height);ctx.stroke();
+}
+function update(now){
+  if(playing)time=(time+(now-last)*Number(byId('speed').value))%1800;
+  last=now;
+  if(ready){draw(byId('ki'),'ki');draw(byId('slam'),'slam');byId('seek').value=String(Math.round(time));byId('clock').textContent=Math.round(time)+' ms';}
+  requestAnimationFrame(update);
+}
+byId('play').addEventListener('click',()=>{playing=!playing;byId('play').textContent=playing?'정지':'재생';});
+byId('seek').addEventListener('input',()=>{playing=false;byId('play').textContent='재생';time=Number(byId('seek').value);});
+Promise.all(Object.entries(paths).map(([key,src])=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{images[key]=img;resolve();};img.onerror=()=>reject(new Error(key+' 로딩 실패'));img.src=src;}))).then(()=>{ready=true;byId('status').textContent='기검참 9프레임 · 지면 충격 4프레임 로드 완료 / 시트 시안 · 게임 적용 전';byId('play').disabled=false;}).catch(error=>{byId('status').textContent=error.message+' — 원본 경로와 PNG를 확인해 주세요.';});
+requestAnimationFrame(update);
+</script>
+</html>

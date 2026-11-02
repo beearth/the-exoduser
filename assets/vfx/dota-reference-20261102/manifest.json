@@ -1,0 +1,248 @@
+{
+  "date": "2026-11-02",
+  "service": "built-in image_gen",
+  "model": "not exposed by tool",
+  "sourceHead": "2d8cce05bd58873cceb700ca8e14d00c39b91c40",
+  "stage": "CANDIDATE_NOT_INTEGRATED",
+  "baselines": {
+    "assets/vfx/ki_slash_silver_sheet.png": "23d6c17c7244dd523340cb95dd2fe0c7354990afe2702f6dfeb30b1f1fa61a65",
+    "assets/vfx/giant_slam_impact_sheet.png": "b040dbae72889b83d04eda03824263f991ee5c2c8727a288a5c828349992ed87",
+    "assets/vfx/inferno_slam_impact_sheet.png": "5bdc79aadf1fbad64c4bae6a98de4661d7636ccde5adc5a3f605193840929a58",
+    "game.html": "ab13848bb93fe040a09f45a4f717c1c163c80f07f4f4a57233a5121b4a8ebb1c"
+  },
+  "assets": [
+    {
+      "id": "ki-slash",
+      "file": "ki_slash_kez_r1_sheet.png",
+      "width": 1536,
+      "height": 1536,
+      "columns": 3,
+      "rows": 3,
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frames": 9,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "paddingScale": 0.8,
+      "playback": "row-major, no per-frame recentering/rescaling",
+      "previewDurationMs": 400,
+      "previewTimingIsGameplayContract": false,
+      "intendedBlend": "normal dark layer + additive silver layer (adapter required)",
+      "sha256": "c424bc77a42265c6bc46c455f7a2e8095592e675de6860148e9f48d4a61670b0",
+      "sourceSha256": "4d9e3d075352443ba1cae15a0498055f70515f233df0f7ac0adc0b4ce8133612",
+      "sourceFile": "exec-05821197-e9ec-491a-8038-6f078d61bb75.png",
+      "sourceReference": "assets/vfx/ki_slash_silver_sheet.png",
+      "prompt": "Create a production VFX animation spritesheet for EXODUSER, a dark gothic action RPG.\nUse the supplied existing EXODUSER sheet ONLY as a palette/material anchor: silver-white cutting edge with a near-black ink-like trailing layer. Redesign the silhouette to be much cleaner, following the idea of a decisive forward katana slash and a restrained following echo. Original artwork, no Dota assets or characters.\nOUTPUT: exactly 3 columns by 3 rows, nine equal square cells in a square transparent PNG atlas, preferably 1536x1536. Frames ordered left to right, top to bottom. Absolutely no text, labels, borders, numbers, background plane, checkerboard or characters.\nEFFECT: one sharp right-facing sword-energy cut per cell, a flattened forward sweeping blade with a pointed leading nose on the RIGHT and a single thin trailing ribbon to the LEFT. Not a thick round crescent, not a full ring, not a spinning blade ball, not many tangled feathers. 3/4 overhead game camera, restrained painterly realistic silver material.\nANIMATION: coherent single event across nine frames. Frame 1 compact decisive onset at about half peak extent; 2 expands, 3 peak crisp cutting edge; 4 follows through; 5 thin subdued echo remains behind the same cut; 6 breaks into a tapering smooth ribbon; 7 short faint afterimage; 8 tiny fading wisp; 9 almost gone. All frames have the exact SAME origin at cell center, SAME orientation, SAME camera, SAME global scale; size changes are natural animation, no per-frame camera zoom. Keep the bright blade within the central 76% of each cell, no crossing grid boundaries. Peak is early, readable at 100 pixels. Small clean bright silver-white edge only, dark ink trail, no giant glow, no bloom cloud, no sparks, no dots, no starburst, no lightning web, no colored neon. Preserve actual transparent alpha including the black ink layer.",
+      "metrics": [
+        {
+          "frame": 0,
+          "alphaBounds": [
+            132,
+            204,
+            392,
+            323
+          ],
+          "coverage": 0.041,
+          "opacityArea": 0.0303,
+          "outer8pxAlphaPixels": 0
+        },
+        {
+          "frame": 1,
+          "alphaBounds": [
+            82,
+            197,
+            411,
+            338
+          ],
+          "coverage": 0.0648,
+          "opacityArea": 0.0511,
+          "outer8pxAlphaPixels": 0
+        },
+        {
+          "frame": 2,
+          "alphaBounds": [
+            59,
+            192,
+            432,
+            351
+          ],
+          "coverage": 0.0753,
+          "opacityArea": 0.0587,
+          "outer8pxAlphaPixels": 0
+        },
+        {
+          "frame": 3,
+          "alphaBounds": [
+            80,
+            186,
+            442,
+            335
+          ],
+          "coverage": 0.0749,
+          "opacityArea": 0.0573,
+          "outer8pxAlphaPixels": 0
+        },
+        {
+          "frame": 4,
+          "alphaBounds": [
+            78,
+            188,
+            435,
+            325
+          ],
+          "coverage": 0.0534,
+          "opacityArea": 0.0355,
+          "outer8pxAlphaPixels": 0
+        },
+        {
+          "frame": 5,
+          "alphaBounds": [
+            72,
+            191,
+            432,
+            316
+          ],
+          "coverage": 0.0331,
+          "opacityArea": 0.0177,
+          "outer8pxAlphaPixels": 0
+        },
+        {
+          "frame": 6,
+          "alphaBounds": [
+            86,
+            178,
+            430,
+            298
+          ],
+          "coverage": 0.0283,
+          "opacityArea": 0.0136,
+          "outer8pxAlphaPixels": 0
+        },
+        {
+          "frame": 7,
+          "alphaBounds": [
+            89,
+            184,
+            424,
+            287
+          ],
+          "coverage": 0.0143,
+          "opacityArea": 0.0053,
+          "outer8pxAlphaPixels": 0
+        },
+        {
+          "frame": 8,
+          "alphaBounds": [
+            86,
+            189,
+            423,
+            280
+          ],
+          "coverage": 0.0053,
+          "opacityArea": 0.0017,
+          "outer8pxAlphaPixels": 0
+        }
+      ]
+    },
+    {
+      "id": "ground-shock",
+      "file": "ground_shock_echo_r3_sheet.png",
+      "width": 1024,
+      "height": 1024,
+      "columns": 2,
+      "rows": 2,
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frames": 4,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "paddingScale": 0.8,
+      "playback": "row-major, no per-frame recentering/rescaling",
+      "previewDurationMs": 750,
+      "previewTimingIsGameplayContract": false,
+      "intendedBlend": "source-over dust; separate contact core if used",
+      "sha256": "b7c891a16938e6ebf57852e33db2386ebe7c39ee1a21f7833922a2cf3f41bc07",
+      "sourceSha256": "5e51a7ddff43c00f1314f871f12343623adadd457b43f85399d45a0926d0da82",
+      "sourceFile": "exec-22231a27-4177-4047-abfa-228cd78a257a.png",
+      "sourceReference": null,
+      "prompt": "A game VFX texture atlas of FOUR animation frames, 2 columns by 2 rows, transparent background. Square PNG. Each quadrant is an equal square sprite cell. Original AAA dark-fantasy MOBA-style ground SHOCKWAVE, not terrain artwork.\nDraw ONLY wispy broken arcs of a pressure wave traveling outwards along the ground. The centers of all four sprites are EMPTY TRANSPARENT SPACE, absolutely no brown terrain patches, no soil plates, no solid crater, no rocks filling the interior. Think of four to six thin curved smoky brush strokes forming a very broken expanding ellipse, with a tiny warm ivory flash in the exact center in frame 1 only. VERY CLEAN AND MINIMAL, mostly empty space. A little warm ochre light on the inner edge of the wispy dark gray-brown dust arcs. No disc, no star-shaped silhouette, no web of radial cracks, no rays, no vertical plume, no explosion fireball, no magma, no flat ground, no continuous solid ring.\nThree-quarter overhead camera. Horizontal ellipse, same center and angle every frame. Each sprite stays within the central 76% of its quadrant. Read order top-left, top-right, bottom-left, bottom-right. Frame 1: a compact small contact flash and short initial dusty arcs. Frame 2: the strongest and clearest mid-size broken shockfront, empty transparent center, four separated thin dusty crescent arcs. Frame 3: wider, dimmer, thinner diffuse dust arcs, empty transparent center. Frame 4: only faint outward dusty wisps near the rim, almost invisible.\nPainterly realistic controlled broad shapes, polished VFX texture, not photoreal terrain. Dark muted earth, bone ivory small highlights, restrained warm ochre, no neon, no sparks, no dots, no little floating debris, no glitter. Genuine alpha transparency between and inside all arcs. No text, frame borders, numbers, checkerboard, weapons, characters or logos.",
+      "metrics": [
+        {
+          "frame": 0,
+          "alphaBounds": [
+            117,
+            198,
+            381,
+            343
+          ],
+          "coverage": 0.0641,
+          "opacityArea": 0.0292,
+          "outer8pxAlphaPixels": 0
+        },
+        {
+          "frame": 1,
+          "alphaBounds": [
+            67,
+            155,
+            444,
+            377
+          ],
+          "coverage": 0.1137,
+          "opacityArea": 0.0601,
+          "outer8pxAlphaPixels": 0
+        },
+        {
+          "frame": 2,
+          "alphaBounds": [
+            64,
+            159,
+            457,
+            367
+          ],
+          "coverage": 0.0899,
+          "opacityArea": 0.0359,
+          "outer8pxAlphaPixels": 0
+        },
+        {
+          "frame": 3,
+          "alphaBounds": [
+            76,
+            168,
+            437,
+            355
+          ],
+          "coverage": 0.0304,
+          "opacityArea": 0.0091,
+          "outer8pxAlphaPixels": 0
+        }
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "file": "exec-b4602e2a-01da-4a77-97ab-b91f7a73da99.png",
+      "reason": "solid brown soil disc obscures ground"
+    },
+    {
+      "file": "exec-4502a8b0-5bd5-4bc4-ab9a-6f99a64be51d.png",
+      "reason": "soil infill remains despite requested transparency"
+    }
+  ],
+  "validation": {
+    "allFramesNonempty": true,
+    "outer8pxGuttersClear": true,
+    "baselineBytesUnchanged": true,
+    "reviewedInGame": false,
+    "denseCombatReviewed": false,
+    "visualVerdict": "PENDING_REVIEW",
+    "notes": [
+      "Atlas preview only. Old H5 giantSlam currently chooses inferno sheet via vfxKind.",
+      "Existing auxiliary lava/flash/ring/crack passes are not part of the isolated preview.",
+      "Raw generated cells have no per-frame realignment. Uniform 0.8 packing scale across every frame."
+    ]
+  }
+}

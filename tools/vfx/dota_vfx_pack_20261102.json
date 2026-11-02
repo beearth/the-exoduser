@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-02",
+  "service": "built-in image_gen",
+  "model": "not exposed by tool",
+  "sourceHead": "2d8cce05bd58873cceb700ca8e14d00c39b91c40",
+  "assets": [
+    {
+      "id": "ki-slash",
+      "file": "ki_slash_kez_r1_sheet.png",
+      "raw": "C:/Users/심도진/.codex/generated_images/01a19a13-d6cb-7f12-a4f0-933ec8f46bc0/exec-05821197-e9ec-491a-8038-6f078d61bb75.png",
+      "columns": 3,
+      "rows": 3,
+      "frames": 9,
+      "cell": 512,
+      "paddingScale": 0.8,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "previewDurationMs": 400,
+      "reference": "assets/vfx/ki_slash_silver_sheet.png",
+      "prompt": "Create a production VFX animation spritesheet for EXODUSER, a dark gothic action RPG.\nUse the supplied existing EXODUSER sheet ONLY as a palette/material anchor: silver-white cutting edge with a near-black ink-like trailing layer. Redesign the silhouette to be much cleaner, following the idea of a decisive forward katana slash and a restrained following echo. Original artwork, no Dota assets or characters.\nOUTPUT: exactly 3 columns by 3 rows, nine equal square cells in a square transparent PNG atlas, preferably 1536x1536. Frames ordered left to right, top to bottom. Absolutely no text, labels, borders, numbers, background plane, checkerboard or characters.\nEFFECT: one sharp right-facing sword-energy cut per cell, a flattened forward sweeping blade with a pointed leading nose on the RIGHT and a single thin trailing ribbon to the LEFT. Not a thick round crescent, not a full ring, not a spinning blade ball, not many tangled feathers. 3/4 overhead game camera, restrained painterly realistic silver material.\nANIMATION: coherent single event across nine frames. Frame 1 compact decisive onset at about half peak extent; 2 expands, 3 peak crisp cutting edge; 4 follows through; 5 thin subdued echo remains behind the same cut; 6 breaks into a tapering smooth ribbon; 7 short faint afterimage; 8 tiny fading wisp; 9 almost gone. All frames have the exact SAME origin at cell center, SAME orientation, SAME camera, SAME global scale; size changes are natural animation, no per-frame camera zoom. Keep the bright blade within the central 76% of each cell, no crossing grid boundaries. Peak is early, readable at 100 pixels. Small clean bright silver-white edge only, dark ink trail, no giant glow, no bloom cloud, no sparks, no dots, no starburst, no lightning web, no colored neon. Preserve actual transparent alpha including the black ink layer."
+    },
+    {
+      "id": "ground-shock",
+      "file": "ground_shock_echo_r3_sheet.png",
+      "raw": "C:/Users/심도진/.codex/generated_images/01a19a13-d6cb-7f12-a4f0-933ec8f46bc0/exec-22231a27-4177-4047-abfa-228cd78a257a.png",
+      "columns": 2,
+      "rows": 2,
+      "frames": 4,
+      "cell": 512,
+      "paddingScale": 0.8,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "previewDurationMs": 750,
+      "reference": null,
+      "prompt": "A game VFX texture atlas of FOUR animation frames, 2 columns by 2 rows, transparent background. Square PNG. Each quadrant is an equal square sprite cell. Original AAA dark-fantasy MOBA-style ground SHOCKWAVE, not terrain artwork.\nDraw ONLY wispy broken arcs of a pressure wave traveling outwards along the ground. The centers of all four sprites are EMPTY TRANSPARENT SPACE, absolutely no brown terrain patches, no soil plates, no solid crater, no rocks filling the interior. Think of four to six thin curved smoky brush strokes forming a very broken expanding ellipse, with a tiny warm ivory flash in the exact center in frame 1 only. VERY CLEAN AND MINIMAL, mostly empty space. A little warm ochre light on the inner edge of the wispy dark gray-brown dust arcs. No disc, no star-shaped silhouette, no web of radial cracks, no rays, no vertical plume, no explosion fireball, no magma, no flat ground, no continuous solid ring.\nThree-quarter overhead camera. Horizontal ellipse, same center and angle every frame. Each sprite stays within the central 76% of its quadrant. Read order top-left, top-right, bottom-left, bottom-right. Frame 1: a compact small contact flash and short initial dusty arcs. Frame 2: the strongest and clearest mid-size broken shockfront, empty transparent center, four separated thin dusty crescent arcs. Frame 3: wider, dimmer, thinner diffuse dust arcs, empty transparent center. Frame 4: only faint outward dusty wisps near the rim, almost invisible.\nPainterly realistic controlled broad shapes, polished VFX texture, not photoreal terrain. Dark muted earth, bone ivory small highlights, restrained warm ochre, no neon, no sparks, no dots, no little floating debris, no glitter. Genuine alpha transparency between and inside all arcs. No text, frame borders, numbers, checkerboard, weapons, characters or logos."
+    }
+  ],
+  "rejected": [
+    {
+      "file": "exec-b4602e2a-01da-4a77-97ab-b91f7a73da99.png",
+      "reason": "solid brown soil disc obscures ground",
+      "prompt": "Create an original production VFX spritesheet for EXODUSER's warrior ground slam / rage burst. The reference image is ONLY the game's existing rock/dust material vocabulary. Completely simplify it: remove the huge rising boulders, dense debris and bright beige fog. The aim is the readable physical idea of a central earth strike followed by a fast outward ground shock, as in a clean MOBA ground impact, adapted to a dark gothic action RPG.\nOUTPUT: a wide 2:1 transparent PNG animation atlas, exactly FOUR COLUMNS and TWO ROWS, eight equal SQUARE cells. Prefer 2048x1024, or any exact 2:1 image. The 8 frames read left to right, then next row. No text, numbers, borders, ground/background rectangle, characters, weapons, logo, grids or painted checkerboard. Actual transparent alpha.\nEFFECT: a low flat three-quarter-overhead ground rupture, horizontally elliptical in perspective. At the impact there is a very SMALL warm ivory contact flash, then a SINGLE broken irregular earth shockfront expands outwards along the floor. Sparse broad dark basalt pieces and wispy low brown dust cling to the shockfront. The center becomes dark cracked earth with a few hairline warm ochre seams, not lava. No vertical explosion column. No tornado. No floating island or huge crater. No continuous perfect glowing ring. Only a few readable shapes, not dozens of dots.\nANIMATION TIMELINE: 1 compact contact hit; 2 early powerful peak, small ivory core plus initial broken earth rim; 3 ground ripple expands; 4 wider broken rim, peak already dimmer; 5 dust/earth rim continues outward while the center clears; 6 faint low dust and dark fissures; 7 only subtle dark ground afterimage; 8 almost fully gone. Use the SAME exact origin at cell center and SAME ground ellipse, camera and global scale for every frame. Expansion is the actual animation, no reframing. Effects stay inside the central 82% of each cell including dust and shards. This is a flat ground-plane effect, perspective ellipse ratio approximately 2:1. Dark desaturated brown stone, muted warm ochre edge and small ivory core. Smooth painterly semi-realistic rendering, clean anti-aliased shapes, transparent negative space, small bright area. NO beige background fog, neon, red warning circle, stars, sparkling points, round glow blob, volumetric wall, dense speckle or grain. All frames isolated with transparent padding."
+    },
+    {
+      "file": "exec-4502a8b0-5bd5-4bc4-ab9a-6f99a64be51d.png",
+      "reason": "soil infill remains despite requested transparency",
+      "prompt": "Edit this EXODUSER ground-slam spritesheet in one focused way: REMOVE THE SOLID BROWN GROUND DISC from all eight frames. It currently looks like a floating pancake. Preserve the 4-column by 2-row eight-frame layout and the small warm-ivory contact core, warm ochre/dark basalt palette, overhead ellipse, overall scale and chronological expansion.\nBetween a few thin radial cracks the entire interior must be transparent, so the real game floor is visible through it. The effect should be a BROKEN THIN expanding shockfront, not a flat painted floor object. Reduce airborne stone count to at most 4 broad small pieces per frame. Reduce the dust to a few low semi-transparent wisps on the outside of the rim. No solid soil infill whatsoever, no crater rim wall, no thick annular donut, no fog disk. At the peak there is a very small bright contact core at the center and thin jagged rays aimed outward; center quickly clears. Later frames should be almost entirely transparent with only hairline cracks and thin dust wisps. Ensure generous empty gutters: effect stays inside 74% of the width of EVERY equal square cell; no edge bleeding. Fix the second frame's vertical spike into a low outward ground shock.\nExactly eight equally spaced square cells, 4x2 grid, 2:1 wide transparent PNG, no labels, no grid, no border, no background. Same anchor at exact cell center. The contact point is the anchor in every frame. Small bright area, clean shapes, no sparks or dots, no neon. This is an original polished painterly dark-fantasy ground impact texture to be drawn ON existing game ground, NOT a render of a patch of terrain. Actual alpha transparency everywhere between cracks."
+    }
+  ]
+}
