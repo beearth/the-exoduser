@@ -1,0 +1,3 @@
+const {test}=require('node:test');const assert=require('node:assert/strict');const fs=require('node:fs');const vm=require('node:vm');
+// Real browser coverage lives in tools/check-screen-transitions.cjs; this gate prevents package omissions.
+test('shared transition module is present and shipped on both pages',()=>{for(const f of ['screen-transition.js','screen-transition.css']){assert.ok(fs.existsSync(f),f+' missing');for(const page of ['index.html','game.html'])assert.ok(fs.readFileSync(page,'utf8').includes(f),page+' missing '+f);assert.ok(fs.readFileSync('build-nwjs.mjs','utf8').includes("'"+f+"'"),f+' missing in Steam FILES');}new vm.Script(fs.readFileSync('screen-transition.js','utf8'));});

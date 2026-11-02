@@ -38,6 +38,7 @@ const FILES = [
   'chest3d.mjs',
   'title-signboard.js',
   'decision-sound.js',
+  'screen-transition.js', 'screen-transition.css',
   'loading-art.js', 'loading-art.css',
   'living-scenes.js', 'living-scenes.css',
   'fullscreen-art-data.js', 'fullscreen-art.js', 'fullscreen-art.css', 'fullscreen-art-dom.js',

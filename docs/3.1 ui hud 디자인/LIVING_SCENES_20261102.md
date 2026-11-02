@@ -88,3 +88,5 @@ Unity 반영: 대기. 같은 원화/환경 마스크와 정지 정책을 ui-ultr
 | 재사용 | 변경 없는 로딩25종의 16:9/32:9 영상50편 유지. 정리7종·선택·사망 및 영향을 받은 와이드 비율만 교체.최종파일 목록은 FINAL-MATRIX.json |
 
 최종 영상·비교·크롭을 모은 evidence/REVIEW.html, 프레임/렌더 시간·Dota 여부는 EVIDENCE-SUMMARY.json과 각 촬영 영수증. 녹화 FPS는 메뉴 rAF 실측이며 자연 전투 FPS/입력 지연 전 구간/오디오/NW.js 실행 검수로 확대하지 않는다. 생성 정리판의 미세 재질 변화와 해상도 한계를 REPORT 첫3줄에 공개한다.
+
+검수 도구는 Chromium 자식 env뿐 아니라 Node 호스트의 TEMP/TMP도 출력 하위 temp로 지정해 Playwright 임시 프로필을 I:에 둔다. 검수 브라우저는 finally에서 닫고 자기 임시 파일만 정리한다.

@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<style>html,body{background-color:#000}#screenTransition{position:fixed;inset:0;z-index:2147483647;background:#000;opacity:0;pointer-events:none}html[data-screen-cover] #screenTransition{opacity:1;pointer-events:all}</style>
+<link rel="stylesheet" href="screen-transition.css?v=20261102">
+<script src="screen-transition.js?v=20261102"></script>
+
 <link rel="stylesheet" href="loading-art.css?v=20261031-final35">
 <script src="loading-art.js?v=20261031-final35"></script>
 <script src="decision-sound.js?v=20261031"></script>
@@ -2627,6 +2631,7 @@ body:has(#invPanel.on) #keyGuide{display:none!important}
 <script src="web-uiux.js?v=20261031-edge2" defer></script>
 </head>
 <body>
+<div id="screenTransition" aria-hidden="true"></div><span id="screenLoadingSigil" aria-hidden="true"></span>
 <div id="gcModal"><div class="gc-box"><div class="gc-msg" id="gcMsg"></div><div class="gc-btns"><button class="gc-btn gc-ok" id="gcOk"></button><button class="gc-btn gc-cancel" id="gcCancel"></button></div></div></div>
 <canvas id="c"></canvas>
 <canvas id="fogGL" style="position:fixed;inset:0;pointer-events:none;z-index:0"></canvas>
@@ -12831,7 +12836,8 @@ document.addEventListener('click',function(e){
 let _uiFailAt=0;
 function _uiFail(){const n=performance.now();if(n-_uiFailAt<400)return;_uiFailAt=n;playSample('ui_fail',.2,1)}
 // ── SND-02: 1장(hell1) 앰비언스 루프 — BGM.play 끝에서 동기화, 그 외 키는 800ms 페이드 정지. 음량 .09(11-02: .15는 저음대에서 발소리를 덮음) ──
-let _ambRef=null,_ambWant=false;
+let _ambRef=null,_ambWant=false,_screenAmbGain=1;
+window.addEventListener('screen-transition-gain',e=>{_screenAmbGain=e.detail.value;if(!_ambRef)return;const c=actx(),g=_ambRef.gain.gain,t=c.currentTime;g.cancelScheduledValues(t);g.setValueAtTime(g.value,t);g.linearRampToValueAtTime(.09*sfxVol()*_screenAmbGain,t+e.detail.ms/1000);});
 function _ambSync(key,_try){
   _ambWant=(key==='hell1');
   if(!_ambWant){if(_ambRef){_stopLoop(_ambRef,800);_ambRef=null}return}
@@ -12840,7 +12846,7 @@ function _ambSync(key,_try){
   const k='amb_hell_forest_bed',go=function(){
     if(!_ambWant||_ambRef||!_audioBuffers[k])return;
     try{const c=actx(),s=c.createBufferSource();s.buffer=_audioBuffers[k];s.loop=true;
-      const g=c.createGain();g.gain.value=.09*sfxVol();s.connect(g);g.connect(mbus());s.start();_ambRef={src:s,gain:g}}catch(e){_ambRef=null}
+      const g=c.createGain();g.gain.value=.09*sfxVol()*_screenAmbGain;s.connect(g);g.connect(mbus());s.start();_ambRef={src:s,gain:g}}catch(e){_ambRef=null}
   };
   if(_audioBuffers[k]){go();return}
   if(_audioLoadPending[k]){if((_try||0)<20)setTimeout(function(){if(_ambWant&&!_ambRef)_ambSync('hell1',(_try||0)+1)},500);return}
@@ -49931,7 +49937,7 @@ if($('resetYes'))$('resetYes').onclick=async()=>{
   }else{
     try{localStorage.removeItem('hellsave_web')}catch(e){}
   }
-  window.location.href='index.html';
+  ScreenTransition.navigate('index.html?lobby=1');
 };
 
 // ═══ COMBAT POWER ═══
@@ -62905,7 +62911,7 @@ async function startGameFromDB(){
       _startDemoNew();
       return;
     }
-    window.location.href='/?lobby=1';return
+    ScreenTransition.navigate('index.html?lobby=1');return
   }
 
   // 저장 조회 실패를 새 캐릭터로 취급하면 기존 진행을 자동저장으로 덮어쓰게 된다.
@@ -63933,7 +63939,8 @@ if($('deathReplayBtn'))$('deathReplayBtn').onclick=()=>{
   _deathDlgStop();
   _drPlay(()=>{if($('death').classList.contains('on'))_deathDlgStart()});
 };
-$('retryBtn').onclick=async()=>{
+$('retryBtn').onclick=()=>ScreenTransition.withLoading(_retryWithTransition);
+async function _retryWithTransition(){
   _resetInteractInput();
   if(window._FDGDruidQaStorage.active){window._FDGDruidQaStorage.note('native-qa-retry');await _startDruidQaChar();return;}
   $('death').classList.remove('on');$('victory').classList.remove('on');_drReset();if(typeof _deathDlgStop==='function')_deathDlgStop();
@@ -63993,7 +64000,7 @@ $('retryBtn').onclick=async()=>{
   updateQS();G.on=true;
   // DB에 즉시 반영
   if(_dbReady)await dbSave();
-};
+}
 
 // ═══ 스테이지 전환 로딩 ═══
 const _STAGE_TRANSITION_RD=[];
@@ -64011,28 +64018,21 @@ function _pickTransitionRd(){
 for(let i=1;i<=19;i++)if(i!==13&&i!==14&&i!==17)_STAGE_TRANSITION_RD.push('img/lording/'+i+'.png?v=20260930-loading-remaster5');
 // 프리로드 제거 — 스테이지 전환 시 lazy load (배포 초기 로딩 최적화)
 function showStageTransition(callback){
-  const el=$('stageTransition'),bar=$('stLoadBar'),name=$('stNextName'),img=$('stRndImg'),info=$('stFloorInfo');
-  const nextStg=G.stage+1;
-  if(nextStg>=TOTAL_STAGES){if(callback)callback();return;}
-  const hell=SI_TO_HELL[nextStg];
-  const stg=STG[nextStg];
-  name.textContent=_T('구역')+' '+(SI_TO_FLOOR[nextStg]+1)+' — '+_T(HELL_NAMES[hell]);
-  if(info&&stg){
-    const depth=SI_TO_FLOOR[nextStg]+1; const ch=CHAPTER_STAGES[hell];
-    info.textContent=_T(stg.kr)+' '+_T('구역')+' '+depth+' | Lv.'+stg.monLv+' | '+depth+'/'+ch.stages;
-  }
-  if(img&&_STAGE_TRANSITION_RD.length>0){
-    const idx=_pickTransitionRd();
-    LoadingArt.set(img,_STAGE_TRANSITION_RD[idx]);
-  }
-  el.style.opacity='1';el.style.pointerEvents='all';bar.style.width='0%';
-  requestAnimationFrame(()=>{
-    bar.style.width='45%';
-    setTimeout(()=>{
-      if(callback)callback();
-      bar.style.width='100%';
-      setTimeout(()=>{el.style.opacity='0';el.style.pointerEvents='none'},900);
-    },5000);
+  return ScreenTransition.withLoading(async()=>{
+    const el=$('stageTransition'),bar=$('stLoadBar'),name=$('stNextName'),img=$('stRndImg'),info=$('stFloorInfo');
+    const nextStg=G.stage+1;
+    if(nextStg>=TOTAL_STAGES){if(callback)await callback();return;}
+    const hell=SI_TO_HELL[nextStg],stg=STG[nextStg];
+    name.textContent=_T('구역')+' '+(SI_TO_FLOOR[nextStg]+1)+' — '+_T(HELL_NAMES[hell]);
+    if(info&&stg){const depth=SI_TO_FLOOR[nextStg]+1,ch=CHAPTER_STAGES[hell];info.textContent=_T(stg.kr)+' '+_T('구역')+' '+depth+' | Lv.'+stg.monLv+' | '+depth+'/'+ch.stages;}
+    if(img&&_STAGE_TRANSITION_RD.length)LoadingArt.set(img,_STAGE_TRANSITION_RD[_pickTransitionRd()]);
+    await ScreenTransition.imageReady(img);
+    el.style.transition='none';el.style.opacity='1';el.style.pointerEvents='all';bar.style.width='0%';
+    await ScreenTransition.fadeIn();
+    // The artwork remains visible while the stage is prepared; no artificial five second wait.
+    bar.style.width='45%';await ScreenTransition.paint();
+    if(callback)await callback();bar.style.width='100%';await ScreenTransition.paint();
+    await ScreenTransition.fadeOut();el.style.opacity='0';el.style.pointerEvents='none';el.style.transition='';
   });
 }
 let _bootPerfStart=0,_bootPerfLast=0,_bootPerfMarks=null;
@@ -64070,6 +64070,7 @@ function showBootLoading(msg){
   bar.style.width='8%';
   el.style.opacity='1';
   el.style.pointerEvents='all';
+  ScreenTransition.imageReady(img).then(()=>{if(_bootLoadActive)ScreenTransition.fadeIn({keepLoading:true});});
 }
 function setBootLoading(pct,msg){
   _bootPerfMark(pct,msg);
@@ -64082,9 +64083,9 @@ function hideBootLoading(){
   _bootPerfReport();
   const el=$('stageTransition');
   if(!el) return;
-  el.style.opacity='0';
-  el.style.pointerEvents='none';
+  if(_bootLoadKilled)return;
   _bootLoadActive=false;_bootLoadKilled=true;
+  ScreenTransition.withLoading(()=>{el.style.opacity='0';el.style.pointerEvents='none';});
 }
 
 // ═══ 다음 난관 난이도 선택 (5단계) ═══
@@ -64157,7 +64158,7 @@ async function goToLobby(){
     if(P&&P.hp<=0){P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield;P.s='idle'}
     if(_dbReady)await dbSave();
   }catch(e){console.error('[goToLobby] save error:',e)}
-  window.location.href=_DEMO_MODE?'/?lobby=1&demo=1':'/?lobby=1';
+  return ScreenTransition.navigate(_DEMO_MODE?'index.html?lobby=1&demo=1':'index.html?lobby=1');
 }
 if($('toLobbyBtn'))$('toLobbyBtn').onclick=goToLobby;
 if($('toLobbyBtn2'))$('toLobbyBtn2').onclick=goToLobby;
