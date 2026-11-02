@@ -10,6 +10,7 @@ export function isMapAuthoringSource(path) {
 function isRetiredWebSource(path) {
   const normalized=path.replaceAll('\\','/').normalize('NFC');
   return /^assets\/cutscene\/prologue\/_old_20260727\//.test(normalized)
+    || normalized==='assets/title-signboard/C2/moon-cloud-restoration.png'
     || /^assets\/map\/ch1\/(?:baked_spike\/south_visual_pass\/CH1_SOUTH_BASE|boss_room_bg_old|ground_dark_soil_backup)\.png$/.test(normalized);
 }
 

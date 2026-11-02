@@ -321,3 +321,17 @@ Vercel 계정 관리자의 결제 문제 해소가 선행한다. 에이전트는
 | 전달경계 | 같은private후보에정상commit/nonforcepush/remoteSHA확인. source候補와local3448디스크반영은원격main/public/Unity/Windows실행본동기화완료가아님. Macground검수자원반환후정확이후후보를실artifactQA대상으로사용 |
 
 근거: title-c2-close-integration-20261102/moon-followup/{red.log,green.log,official-plan.json,receipt.json}.
+
+
+## 2026-11-02 후속 — 달 제작 원본의 웹 출고 분리
+
+| 항목 | 현재 정확 계약 |
+|---|---|
+| 원인 | C2의동적폴더prefix가달복원제작입력 moon-cloud-restoration.png까지선택했다. 실제title-signboard.js는완성still.webp·moon-static.webp만소비하고이PNG는builder/manifest.moonRelocation의출처기록이다. 화면/정지/오류폴백의요청경로가아님을대조 |
+| 변경 | 선택기한줄로해당정확경로만제작원본으로취급. 실제실행JS/HTML/CSS에리터럴참조가추가되면기존exact-reference예외로다시출고. 임의동명전체파일/원화/영상삭제0·상한완화0 |
+| 보존 | sourcePNG1598544B/SHA3ea9c938cccbd677b203e49c638bbd1bf0f9437340bd54ecec103e1027674b8d·완성still/moonplate·영상3판·game/index/titleJS·94활성매핑·외부guard원문불변 |
+| RED→GREEN | 실제C2선택과소형동적prefixfixture2검사에서미참조제작원본출고FAIL을재현. 제외후리터럴명시참조/완성plate·still포함을양성대조. 합본133/133 PASS. 기존불변game/상자/보상·AI·저장/로비/이동보호검사포함 |
+| 공식sourceplan | 3244선택·sidecar포함3238파일·3996969288B/4GB여유3030712B/max94795327B/94논리93물리. 직전794d공식3998567832B에서정확1598544B감소. identity/MIME전수검증한plan이며실static복사/preparecheck·합본browser/공개배포완료아님 |
+| 검수경계 | runtime표현/재생/입력코드와완성아트byte불변. 기존producer/루트이미지검수는원범위로유지하되새합본artifactQA는Mac기존ground자원반환전미착수. 제작PNG/기존사용자파일·세이브보존 |
+
+근거: I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/title-authoring-closure-20261102/{red.log,green.log,official-plan.json,receipt.json}.

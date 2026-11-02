@@ -226,3 +226,12 @@ test('unreferenced 3D raw downloads stay out of web output while live raw refere
   const dynamic=select("const root='assets/3d/raw/';model.src=root+name;");
   assert.ok(dynamic.includes('assets/3d/raw/actor-source.glb'),'live dynamic raw prefixes retain their closure');
 });
+
+test('C2 cloud restoration stays an authoring source unless a live literal references it',()=>{
+ const source='assets/title-signboard/C2/moon-cloud-restoration.png',still='assets/title-signboard/C2/still.webp',plate='assets/title-signboard/C2/moon-static.webp';
+ const paths=['index.html',source,still,plate];
+ const runtime="const ROOT='assets/title-signboard/C2/';still.src=ROOT+'still.webp';sky.src=ROOT+'moon-static.webp';";
+ const selected=manifest.selectWebRuntimeFiles(paths,['index.html'],()=>runtime);
+ assert.ok(selected.includes(still));assert.ok(selected.includes(plate));assert.ok(!selected.includes(source),'a broad C2 prefix must not ship the restoration input');
+ assert.ok(manifest.selectWebRuntimeFiles(paths,['index.html'],()=>runtime+"const diagnostic='"+source+"';").includes(source),'explicit live usage must retain the source URL');
+});
