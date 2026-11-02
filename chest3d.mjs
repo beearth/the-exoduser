@@ -1,6 +1,7 @@
 // Tripo runtime derivative. Gameplay remains the authoritative worldItems interaction.
 export const CHEST_MODEL='assets/3d/dark_gothic_medieval_treasure_chest__iro_019e0a38.glb?v=tripo-20261102-v2';
 export const OPEN_ANGLE=-1.92;
+export const CHEST_RENDER_SIZE=64;
 export function createChestMotion(opened=false){
  return {phase:opened?'open':'closed',elapsed:opened?1.3:0,lidAngle:opened?OPEN_ANGLE:0};
 }
@@ -21,7 +22,7 @@ export function initChest3D({canvas,getWorld}){
  if(!canvas)return null;
  let motion=createChestMotion(),current=null,ready=false,failed=false,loading=false;
  let renderer,scene,camera,root,lid,light,shadow,foot,THREE,last=0,visible=false,frames=0;
- const SIZE=160;
+ const SIZE=CHEST_RENDER_SIZE;
  const api={
   show(){}, // The existing spawn call is retained; the authoritative item supplies its position.
   open(){requestChestOpen(motion);},
@@ -29,7 +30,7 @@ export function initChest3D({canvas,getWorld}){
   get active(){return ready&&visible&&!failed;},
   isShowing(item){return api.active&&item===current;},
   snapshot(){return {ready,failed,loading,visible,phase:motion.phase,lidAngle:motion.lidAngle,
-   model:CHEST_MODEL,frames,world:current?{x:current.x,y:current.y,opened:current.opened}:null};}
+   model:CHEST_MODEL,renderSize:SIZE,frames,world:current?{x:current.x,y:current.y,opened:current.opened}:null};}
  };
  window._chest3d=api;
  async function load(){

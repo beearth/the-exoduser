@@ -54,6 +54,49 @@ function restoreReviewedChestAdapters(source,name){
   return source;
 }
 
+// 767762: 승인된 상자 몸통/선분 연결만 검증·복원한다. 함수 전체를 검사에서 제외하지 않는다.
+const reviewedChestCollisionFunctions={
+  "canMv": {
+    "current": "function canMv(x,y,r,fromX=x,fromY=y,ignoreChest=null){return!isW(x-r,y-r)&&!isW(x+r,y-r)&&!isW(x-r,y+r)&&!isW(x+r,y+r)&&!_chestBlocks(x,y,r,fromX,fromY,ignoreChest)}",
+    "previous": "function canMv(x,y,r){return!isW(x-r,y-r)&&!isW(x+r,y-r)&&!isW(x-r,y+r)&&!isW(x+r,y+r)}"
+  },
+  "canMvBlink": {
+    "current": "function canMvBlink(x,y,r,fromX=x,fromY=y){return!isW(x-r,y-r,1)&&!isW(x+r,y-r,1)&&!isW(x-r,y+r,1)&&!isW(x+r,y+r,1)&&!_chestBlocks(x,y,r,fromX,fromY)}",
+    "previous": "function canMvBlink(x,y,r){return!isW(x-r,y-r,1)&&!isW(x+r,y-r,1)&&!isW(x-r,y+r,1)&&!isW(x+r,y+r,1)}"
+  }
+};
+const reviewedChestMovementCalls=[
+  [
+    "canMvBlink(_nx,_ny,P.r,P.x,P.y)",
+    "canMvBlink(_nx,_ny,P.r)",
+    1
+  ],
+  [
+    "canMv(nx,ny,P.r,P.x,P.y)",
+    "canMv(nx,ny,P.r)",
+    2
+  ],
+  [
+    "if(canMv(nx,P.y,P.r,P.x,P.y))P.x=nx;if(canMv(P.x,ny,P.r,P.x,P.y))P.y=ny;",
+    "if(canMv(nx,P.y,P.r))P.x=nx;if(canMv(P.x,ny,P.r))P.y=ny;",
+    4
+  ],
+  [
+    "canMv(x,y,18,x,y,it)",
+    "canMv(x,y,18)",
+    1
+  ]
+];
+function restoreReviewedChestCollision(source,name){
+  const collision=reviewedChestCollisionFunctions[name];
+  if(collision){assert.equal(source,collision.current,'reviewed chest collision drift: '+name);return collision.previous;}
+  if(name==='update')for(const [from,to,count]of reviewedChestMovementCalls){
+    assert.equal(source.split(from).length-1,count,'reviewed chest movement drift');
+    source=source.split(from).join(to);
+  }
+  return source;
+}
+
 test('native combat/save/AI source is exact outside reviewed environment and chest adapters',()=>{
   const git=process.platform==='win32'?'C:/Program Files/Git/cmd/git.exe':'git';
   // 검수된 전투 표현 후보를 기준으로 3D 병합이 새 feel 함수까지 보존하는지 검사한다.
@@ -68,7 +111,7 @@ test('native combat/save/AI source is exact outside reviewed environment and che
   for(const [name,source]of before)if(!adapterHooks.has(name)){
     // Optional environment hooks: ground light, original-object relief, foliage.
     // Actor/VFX/input/save declarations and the rest of draw remain byte-exact.
-    const restored=restoreReviewedChestAdapters(after.get(name),name)
+    const restored=restoreReviewedChestAdapters(restoreReviewedChestCollision(after.get(name),name),name)
       .replace(/^  const _web3dAmbient=G.stage===0&&!G._bossArena&&window\._Web3DLivingLayer\?\.snapshot\(\)\.enabled;\r?\n/m,'')
       .replace('if(_lightCvs&&!_web3dAmbient)','if(_lightCvs)')
       .replace('X.globalAlpha=_web3dAmbient?0:_vAlpha','X.globalAlpha=_vAlpha')

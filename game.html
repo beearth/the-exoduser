@@ -32073,10 +32073,31 @@ function _ch1HillHeightAt(px,py){
 }
 // CH1-1 HIGH GROUND END
 function isW(px,py,skipBone){_ensureColObjs();const tx=~~(px/T),ty=~~(py/T);if(tx<0||ty<0||tx>=G.mw||ty>=G.mh)return true;const v=G.map[ty][tx];if(v===1)return true;if(_ch1HillBandBlocks(px,py))return true;if(!skipBone&&G._boneWalls){for(let bi=0;bi<G._boneWalls.length;bi++){const bw=G._boneWalls[bi];if(bw.phase==='rise'&&bw.t<bw.riseT*0.5)continue;const dx=px-bw.x,dy=py-bw.y;const d2=dx*dx+dy*dy;const rIn=bw.ringR-bw.wallThk,rOut=bw.ringR+bw.wallThk;if(d2>=rIn*rIn&&d2<=rOut*rOut)return true}}for(let _pi=0;_pi<_colObjs.length;_pi++){const _po=_colObjs[_pi];if(_po.noCol)continue;const _pm=_OBJ_META[_po.type];if(_pm&&(_pm.collision||_pm.col)){const _pdx=px-_po.x,_pdy=py-_po.y;if(_po._colRect){const _cr=Math.cos(_po._colRot),_sr=Math.sin(_po._colRot),_lx=_pdx*_cr+_pdy*_sr,_ly=-_pdx*_sr+_pdy*_cr;if(Math.abs(_lx)<_po._colW&&Math.abs(_ly)<_po._colH)return true}else if(_po._colW){const _rx=_po._colW,_ry=_po._colH,_coy=_pm.colOy||0;const _pdy2=_pdy-_coy;if((_pdx*_pdx)/(_rx*_rx)+(_pdy2*_pdy2)/(_ry*_ry)<1)return true}else{const _pr=_po._colSz;if(_pdx*_pdx+_pdy*_pdy<_pr*_pr)return true}}}return false}
-function canMv(x,y,r){return!isW(x-r,y-r)&&!isW(x+r,y-r)&&!isW(x-r,y+r)&&!isW(x+r,y+r)}
+function _chestBlocks(x,y,r=0,fromX=x,fromY=y,ignoreChest=null){
+  const padding=Math.max(0,r||0),dx=x-fromX,dy=y-fromY;
+  for(const it of worldItems){
+    if(it.type!=='chest'||it.picked||it===ignoreChest)continue;
+    const minX=it.x-22-padding,maxX=it.x+22+padding,minY=it.y-12-padding,maxY=it.y+12+padding;
+    const inside=fromX>=minX&&fromX<=maxX&&fromY>=minY&&fromY<=maxY;
+    // A chest spawning on an actor must allow outward steps, never deeper penetration.
+    if(inside&&(dx||dy)&&(fromX-it.x)*dx+(fromY-it.y)*dy>=0)continue;
+    let enter=0,exit=1,hit=true;
+    for(let axis=0;axis<2;axis++){
+      const origin=axis?fromY:fromX,delta=axis?dy:dx,low=axis?minY:minX,high=axis?maxY:maxX;
+      if(Math.abs(delta)<1e-9){if(origin<low||origin>high){hit=false;break;}}
+      else{
+        let a=(low-origin)/delta,b=(high-origin)/delta;if(a>b){const swap=a;a=b;b=swap;}
+        enter=Math.max(enter,a);exit=Math.min(exit,b);if(enter>exit){hit=false;break;}
+      }
+    }
+    if(hit)return true;
+  }
+  return false;
+}
+function canMv(x,y,r,fromX=x,fromY=y,ignoreChest=null){return!isW(x-r,y-r)&&!isW(x+r,y-r)&&!isW(x-r,y+r)&&!isW(x+r,y+r)&&!_chestBlocks(x,y,r,fromX,fromY,ignoreChest)}
 // 돌진 경로 클리어 판정: e→플레이어 방향으로 벽/오브젝트가 가로막으면 false (돌진 자체를 막음)
 function _chgPathClear(e,len){const a=Math.atan2(P.y-e.y,P.x-e.x),dx=Math.cos(a),dy=Math.sin(a),mx=Math.min(len||300,dst(P.x,P.y,e.x,e.y)+e.r+24);for(let t=e.r;t<mx;t+=12){if(isW(e.x+dx*t,e.y+dy*t))return false}return true}
-function canMvBlink(x,y,r){return!isW(x-r,y-r,1)&&!isW(x+r,y-r,1)&&!isW(x-r,y+r,1)&&!isW(x+r,y+r,1)}
+function canMvBlink(x,y,r,fromX=x,fromY=y){return!isW(x-r,y-r,1)&&!isW(x+r,y-r,1)&&!isW(x-r,y+r,1)&&!isW(x+r,y+r,1)&&!_chestBlocks(x,y,r,fromX,fromY)}
 // 안전한 위치 찾기: (x,y)가 벽이면 주변 나선탐색으로 빈 곳 반환
 function safePt(x,y,r){if(canMv(x,y,r))return{x,y};for(let d=T;d<=T*5;d+=T/2)for(let a=0;a<8;a++){const nx=x+Math.cos(Math.PI/4*a)*d,ny=y+Math.sin(Math.PI/4*a)*d;if(canMv(nx,ny,r))return{x:nx,y:ny}}return null}
 // 타일 벽만 체크 (MAP_OBJS 제외 — 적 밀어내기 전용)
@@ -32627,7 +32648,7 @@ function update(){
     P.iframes=Math.max(P.iframes,2); // 이동 중 무적
     const _dashStep=Math.min(_dtSp,Math.max(0,_dashLeft));
     const _nx=P.x+_dashVX*_dashStep,_ny=P.y+_dashVY*_dashStep;
-    if(canMvBlink(_nx,_ny,P.r)){P.x=_nx;P.y=_ny}
+    if(canMvBlink(_nx,_ny,P.r,P.x,P.y)){P.x=_nx;P.y=_ny}
     else{_dashLeft=0}
     // ── 경로상 적 히트 (스킬별 분화) ── shQuery 캐싱: 칼날개 활성 시 큰 반경 1회로 통합
     const _csActiveNow=P._chainSlashActive;
@@ -33124,7 +33145,7 @@ function update(){
     else if(P.shield<P.mshield){P.shield=Math.min(P.mshield,P.shield+(0.3+(STATS.int+_lvB())*0.003)*pMRegenMul()*sp)}
   }
 
-  if(Math.abs(P.kb.x)>.1||Math.abs(P.kb.y)>.1){const nx=P.x+P.kb.x*.5*sp,ny=P.y+P.kb.y*.5*sp;if(canMv(nx,ny,P.r)){P.x=nx;P.y=ny}const _kbD=.65**sp;P.kb.x*=_kbD;P.kb.y*=_kbD}
+  if(Math.abs(P.kb.x)>.1||Math.abs(P.kb.y)>.1){const nx=P.x+P.kb.x*.5*sp,ny=P.y+P.kb.y*.5*sp;if(canMv(nx,ny,P.r,P.x,P.y)){P.x=nx;P.y=ny}const _kbD=.65**sp;P.kb.x*=_kbD;P.kb.y*=_kbD}
 
   // 게임패드: 좌스틱 방향 → facing (우스틱 마법 중이면 좌스틱이 facing에 관여 안 함)
   if(_gpActive){
@@ -33227,7 +33248,7 @@ function update(){
         addParts(it.x,it.y,'#ffcc00',16);addParts(it.x,it.y,'#ffaa00',10);
         // 장비 3~5개 드롭 (보스급 레어리티)
         const cnt=3+~~(Math.random()*3);
-        const landings=_chestLootPositions(it.x,it.y,cnt,(x,y)=>canMv(x,y,18),worldItems.filter(w=>w.type==='item'&&!w.picked));
+        const landings=_chestLootPositions(it.x,it.y,cnt,(x,y)=>canMv(x,y,18,x,y,it),worldItems.filter(w=>w.type==='item'&&!w.picked));
         for(let ci=0;ci<cnt;ci++){
           const slot=SLOT_NAMES[~~(Math.random()*SLOT_NAMES.length)];
           const el=[EL.P,EL.F,EL.I,EL.D,EL.L,EL.H][~~(Math.random()*6)];
@@ -33391,7 +33412,7 @@ function update(){
     const ms=(P.speed+(bt().spd||0))*sp*_webMul*_seaMul;
     let nx=P.x+dx*ms,ny=P.y+dy*ms;
     const _wx0=P.x,_wy0=P.y;
-    if(canMv(nx,P.y,P.r))P.x=nx;if(canMv(P.x,ny,P.r))P.y=ny;
+    if(canMv(nx,P.y,P.r,P.x,P.y))P.x=nx;if(canMv(P.x,ny,P.r,P.x,P.y))P.y=ny;
     const _wdd=Math.sqrt((P.x-_wx0)*(P.x-_wx0)+(P.y-_wy0)*(P.y-_wy0));
     P._walkMoving=_wdd>0;
     if(P._walkMoving)P._walkFacing=Math.atan2(P.y-_wy0,P.x-_wx0);
@@ -34133,7 +34154,7 @@ function update(){
     const _oocBonus=(!G._combat&&P._oocSpeed)?P._oocSpeed:0;
     const ms=P.speed*(1+_oocBonus)*.35*sp;
     let nx=P.x+dx*ms,ny=P.y+dy*ms;
-    if(canMv(nx,P.y,P.r))P.x=nx;if(canMv(P.x,ny,P.r))P.y=ny;
+    if(canMv(nx,P.y,P.r,P.x,P.y))P.x=nx;if(canMv(P.x,ny,P.r,P.x,P.y))P.y=ny;
     break;}
 
   case 'peaceShield':{
@@ -34216,7 +34237,7 @@ function update(){
     const len=Math.sqrt(dx*dx+dy*dy);if(len>0){dx/=len;dy/=len}
     const ms=P.speed*.25*sp;
     let nx=P.x+dx*ms,ny=P.y+dy*ms;
-    if(canMv(nx,P.y,P.r))P.x=nx;if(canMv(P.x,ny,P.r))P.y=ny;
+    if(canMv(nx,P.y,P.r,P.x,P.y))P.x=nx;if(canMv(P.x,ny,P.r,P.x,P.y))P.y=ny;
     break;}
 
   case 'ghostWalk':{
@@ -34225,7 +34246,7 @@ function update(){
     const len=Math.sqrt(dx*dx+dy*dy);if(len>0){dx/=len;dy/=len}
     const ms=P.speed*2*sp; // 유령: 2배 속도
     let nx=P.x+dx*ms,ny=P.y+dy*ms;
-    if(canMv(nx,P.y,P.r))P.x=nx;if(canMv(P.x,ny,P.r))P.y=ny;
+    if(canMv(nx,P.y,P.r,P.x,P.y))P.x=nx;if(canMv(P.x,ny,P.r,P.x,P.y))P.y=ny;
     break;}
   case 'rainLightning':{
     // 레인라이트닝: 시작점 갔다 돌아옴. 돌아오면서 유령걸음때 통과한 적들 폭파
@@ -34326,7 +34347,7 @@ function update(){
 
   case 'charge':{
     const nx=P.x+P.chargeDx*P.chargeSpd*sp,ny=P.y+P.chargeDy*P.chargeSpd*sp;
-    if(canMv(nx,ny,P.r)){P.x=nx;P.y=ny}else{
+    if(canMv(nx,ny,P.r,P.x,P.y)){P.x=nx;P.y=ny}else{
       // Wall slam — if hit enemies, do AoE burst
       if(P.chargeHits&&P.chargeHits.size>0){G.shake=14*OPT.shake/100;G.hitStop=~~(_HS.chargeWall*OPT.hitStop/100)}
       P.s='cRecover';P.st2=10;P.iframes=Math.max(P.iframes,48);break} // 착지 0.8초 무적

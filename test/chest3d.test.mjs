@@ -97,3 +97,47 @@ test('existing real interaction grants chest rewards once and ignores distant ch
  items.push({type:'chest',x:200,y:0,picked:false,opened:false});interact();
  assert.equal(items.at(-1).opened,false,'range<60 remains authoritative');
 });
+
+function chestMovement(items){
+ const game=readFileSync(new URL('../game.html',import.meta.url),'utf8');
+ const helperStart=game.indexOf('function _chestBlocks(');
+ const helper=helperStart<0?'':game.slice(helperStart,game.indexOf('\nfunction canMv(',helperStart));
+ const move=game.match(/^function canMv\([^\n]+/m)[0];
+ const blink=game.match(/^function canMvBlink\([^\n]+/m)[0];
+ const context={worldItems:items,isW:x=>x>300};
+ return vm.runInNewContext(helper+'\n'+move+'\n'+blink+'\n;({canMv,canMvBlink})',context);
+}
+test('closed and opened chest bodies block movement with room to walk around',()=>{
+ const chest={type:'chest',x:0,y:0,picked:false,opened:false};
+ const {canMv,canMvBlink}=chestMovement([chest]);
+ for(const opened of [false,true]){
+  chest.opened=opened;
+  for(const move of [canMv,canMvBlink]){
+   assert.equal(move(0,0,15),false,'chest body must obstruct the player');
+   assert.equal(move(36,0,15),false);assert.equal(move(0,26,15),false);
+   for(const [x,y] of [[38,0],[-38,0],[0,28],[0,-28]])assert.equal(move(x,y,15),true,'body footprint must leave a close route around it');
+  }
+ }
+ chest.picked=true;assert.equal(canMv(0,0,15),true,'removed chest must release its footprint');
+ assert.equal(canMv(400,0,15),false,'existing terrain walls remain authoritative');
+});
+test('fast movement cannot tunnel through a chest and a spawn overlap can escape outward',()=>{
+ const {canMv,canMvBlink}=chestMovement([{type:'chest',x:0,y:0}]);
+ for(const move of [canMv,canMvBlink]){
+  assert.equal(move(100,0,15,-100,0),false,'segment crosses the body although the endpoint is clear');
+  assert.equal(move(100,60,15,-100,60),true);
+  assert.equal(move(5,0,15,0,0),true,'player caught by a new chest can step outward');
+  assert.equal(move(0,0,15,5,0),false,'overlap escape must not move deeper into the body');
+ }
+});
+test('loot can leave its own chest while respecting other chest bodies',()=>{
+ const chest={type:'chest',x:0,y:0},other={type:'chest',x:130,y:65};
+ const {canMv}=chestMovement([chest,other]),{_chestLootPositions}=lootHelpers();
+ const points=_chestLootPositions(0,0,5,(x,y)=>canMv(x,y,18,x,y,chest));
+ assert.equal(points.length,5);
+ for(const p of points){assert.ok(Math.hypot(p.x,p.y)>=110);assert.ok(Math.abs(p.x-other.x)>40||Math.abs(p.y-other.y)>30,'loot must stay outside the other chest footprint plus item clearance');assert.equal(canMv(p.x,p.y,18),true,'all landing points must clear every chest body');}
+});
+test('chest visual fits below the human sprite height instead of the old 160px canvas',async()=>{
+ const module=await import(motion);
+ assert.ok(module.CHEST_RENDER_SIZE>0&&module.CHEST_RENDER_SIZE<=64,'chest render viewport must be at most 64px');
+});
