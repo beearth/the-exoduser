@@ -57404,3 +57404,6 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 
 
 2026-11-02 실제3bc48 QA원복오류0,원Core/표현관계·registry통과,detachedfixture viewport2callback원복후전체graph/hash exact확정. stable sprite/texture13메시지로전체false/old50파괴false보존. deferred2frame뒤살아있는동일원Renderer savedSprite leaf exact원복/journal추가준비,기준완화·제품변경0. 새패키지회귀/M1미실행,GUI잠금수동해제대기. 근거UNITY_GROUND_PLACEMENT_QA_20261102.
+
+
+2026-11-02 Mac80d0실제인수:normalARM64errors0,좁은Core/event/fixturegraph/적16·접지·ground10/registry/camera/material/texture/savedSprite semantic복원PASS(errors0). old50literal파괴false유지. 같은실행파일strict6identity M1실제23/23PASS(headless1600x900/GUI0). profile26/27exact복구,sharedHEAD/index/WIP25·기존설치5핵심exact보존. Win전달CLI8fixture준비검증인수/실제Win배포미완료. Mac잠금수동해제필요로자연GUI/FPS미검수,기존full100/61/R불일치/old미관측·전체A2 RETOUCH불변. 근거UNITY_GROUND_PLACEMENT_QA_20261102와UNITY_MAC_MANAGEMENT_REPORT_20261102.

@@ -1,0 +1,44 @@
+{
+  "status": "offline CLI preparation only; actual build/package/PC delivery pending",
+  "entrypoints": [
+    "win_delivery.py prepare",
+    "win_delivery.py pack",
+    "win_delivery.py verify"
+  ],
+  "sources": {
+    "win_delivery.py": "f084a66fd48acee48ad6b93c303be915e996152033300ba4a2d757173e9aa7b3",
+    "test_owned_fixture.py": "d773a5e4b2ce339a22d969c106ad378cbdb15b7dff78512869bb043a530ab4ae"
+  },
+  "pyCompile": "passed for both Python files",
+  "ownedFixture": {
+    "receipt": "owned-tiny-tests-2/test-receipt.json",
+    "tests": 8,
+    "allExpectedOutcomes": true,
+    "totalFixtureBytesBeforeTestReceipt": 83779,
+    "localZip64ExtraMembers": 20,
+    "zipMembers": 20,
+    "over4GiBOrWindowsTested": false,
+    "earlierFixturePreserved": "owned-tiny-tests-1"
+  },
+  "limits": {
+    "actualWindowsBuild": false,
+    "actualGameTreePackaged": false,
+    "originalMovieFilesReadOrPacked": false,
+    "networkServerPcMessagesTransfer": false,
+    "sharedSourceGitIndexSettingsChanged": false,
+    "newAgentsOrAutomation": false,
+    "runtimeExecutionVerified": false
+  },
+  "docsSearch": {
+    "query": "PortVerification|StandaloneWindows64|ZIP64|BackUpThisFolder_ButDontShipItWithYourGame|win-package-manifest|two original movies",
+    "matchingLines": 134,
+    "repositoryDocsEdited": false,
+    "source": "existing docs and prior delivery-readiness"
+  },
+  "pending": [
+    "Root approved same normal source and module availability",
+    "Actual Win64 build/source identity receipt",
+    "Root prepare manifest review and pack",
+    "Approved transfer then PC verify and Windows/media execution"
+  ]
+}

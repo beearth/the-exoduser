@@ -1,0 +1,7 @@
+{
+  "sourceSha": "REPLACE_WITH_APPROVED_NORMAL_SOURCE_40_HEX",
+  "unityVersion": "6000.6.7f1",
+  "buildReceiptSha256": "REPLACE_WITH_FINAL_BUILD_RECEIPT_SHA256",
+  "buildInputManifestPath": "/ABSOLUTE/APPROVED/build-input-manifest.json",
+  "buildInputManifestSha256": "REPLACE_WITH_INPUT_MANIFEST_SHA256"
+}

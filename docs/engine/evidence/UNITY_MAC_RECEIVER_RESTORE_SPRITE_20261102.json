@@ -1,0 +1,118 @@
+{
+  "source": "80d0ae89ca1af2a08987ec7b6f47340231a36bff",
+  "baseSource": "bf3e93a63425a17ede0fa6a0ca16e066374cc984",
+  "productTip": "e33ed53574a187db36e00dfbd1f92b4d6f263635",
+  "stage": "final",
+  "error": "",
+  "cleanupError": "",
+  "coreBefore": "89ee9d28a5c961935e51e6523b7e70ed2d43095d32a32c8601b98f9e9b709cc6",
+  "coreAfter": "89ee9d28a5c961935e51e6523b7e70ed2d43095d32a32c8601b98f9e9b709cc6",
+  "fixtureBefore": "a6d025a04b9b880e06ea959f7b909df0afd54aaec76b4d457cc664e21e699937",
+  "fixtureAfter": "a6d025a04b9b880e06ea959f7b909df0afd54aaec76b4d457cc664e21e699937",
+  "scope": "New80d0 narrow semantic restoration only. Old50 literal references remain false; previousac9/3bc/triad/full receipts unchanged. Not natural GUI or full reference-model PASS.",
+  "oldCount": 1429,
+  "oldMissing": 50,
+  "oldAliveChanged": 0,
+  "oldEnemyMissing": 32,
+  "oldContactMissing": 16,
+  "oldGroundMissing": 2,
+  "initialEnemies": 16,
+  "initialChunks": 10,
+  "tickBefore": 1,
+  "tickAfter": 1,
+  "errors": 0,
+  "originalRefSame": true,
+  "coreSame": true,
+  "eventSame": true,
+  "fixtureCoreSame": true,
+  "stableSurvivorsExact": true,
+  "stableAssetsExact": true,
+  "oldIdentityGate": false,
+  "entityGate": true,
+  "groundGate": true,
+  "registryGate": true,
+  "resourceGate": true,
+  "paused": true,
+  "cameraRootGate": true,
+  "fixtureExercised": true,
+  "cleanupReturned": true,
+  "spriteRestoreGate": true,
+  "semanticGate": true,
+  "passed": true,
+  "failures": [],
+  "neededGround": [
+    50,
+    51,
+    52,
+    53,
+    54,
+    58,
+    59,
+    60,
+    61,
+    62
+  ],
+  "actualGround": [
+    50,
+    51,
+    52,
+    53,
+    54,
+    58,
+    59,
+    60,
+    61,
+    62
+  ],
+  "packet": {
+    "app": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/build-receiverRestoreSprite-normal/EXODUSER-Unity.app",
+    "source": "80d0ae89ca1af2a08987ec7b6f47340231a36bff",
+    "productSource": "e33ed53574a187db36e00dfbd1f92b4d6f263635",
+    "runtimeSha256": "8f9e54651f83bef314b241283b271ab3a15498c48665db6dfbefccef6f943516",
+    "coreSha256": "4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d",
+    "executableSha256": "23f97deeddb5ebc86fb858349ca40881ed6c7eb2f8632c7b1554db6c19aaedb7"
+  },
+  "run": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/profile-guard-runs/20261102T061004452038Z-30598",
+  "profileGuard": {
+    "rawCount": 26,
+    "cacheCount": 27,
+    "allRawExact": true,
+    "allCacheTypedSemanticsExact": true,
+    "checkpoints": [
+      "restore-immediate",
+      "restore-2s",
+      "restore-7s-final"
+    ]
+  },
+  "guardError": null,
+  "diagnostics": {
+    "rawFixtureHashSame": false,
+    "finalFixtureHashSame": true,
+    "assetMismatches": [],
+    "bindingCleanup": [
+      {
+        "path": "$.WorldPointVisible",
+        "before": "null",
+        "current": "Exoduser.UnityPort.NativeGame::WorldPointVisible target=Exoduser.UnityPort.NativeGame#429700352",
+        "after": "null",
+        "changed": true,
+        "recognizedGameViewportBinding": true,
+        "restored": true
+      },
+      {
+        "path": "$.Druid.WorldPointVisible",
+        "before": "null",
+        "current": "Exoduser.UnityPort.NativeGame::WorldPointVisible target=Exoduser.UnityPort.NativeGame#429700352",
+        "after": "null",
+        "changed": true,
+        "recognizedGameViewportBinding": true,
+        "restored": true
+      }
+    ],
+    "finalGraphChanges": [
+      []
+    ]
+  },
+  "spriteJournal": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/profile-guard-runs/20261102T061004452038Z-30598/receiverRestoreSprite/sprite-restore-journal.json",
+  "productAccepted": false
+}

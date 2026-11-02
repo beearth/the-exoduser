@@ -1,0 +1,134 @@
+{
+  "sharedHead": "b98037afcaf33ca733c67ee1790da87e193f9733",
+  "sharedHeadSame": true,
+  "sharedIndexSha256": "612890ad9e339a99102bbfe49884a51c05234794945ed62b38d427fdb0912fc1",
+  "sharedIndexSame": true,
+  "installedAccepted1403AllFiveCriticalSame": true,
+  "installedCritical": [
+    {
+      "path": "Contents/MacOS/EXODUSER",
+      "same": true
+    },
+    {
+      "path": "Contents/Resources/Data/Managed/Exoduser.Runtime.dll",
+      "same": true
+    },
+    {
+      "path": "Contents/Resources/Data/Managed/Exoduser.Core.dll",
+      "same": true
+    },
+    {
+      "path": "Contents/Info.plist",
+      "same": true
+    },
+    {
+      "path": "Contents/_CodeSignature/CodeResources",
+      "same": true
+    }
+  ],
+  "activeUnityOrExoduser": [],
+  "preservedWipFiles": 25,
+  "allPreservedWipExact": true,
+  "wip": [
+    {
+      "path": "unity/Tools/devtools/exo-unity.ps1",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/bin/Release/net8.0/GroundSkillTests",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/bin/Release/net8.0/GroundSkillTests.deps.json",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/bin/Release/net8.0/GroundSkillTests.dll",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/bin/Release/net8.0/GroundSkillTests.pdb",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/bin/Release/net8.0/GroundSkillTests.runtimeconfig.json",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/obj/GroundSkillTests.csproj.nuget.dgspec.json",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/obj/GroundSkillTests.csproj.nuget.g.props",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/obj/GroundSkillTests.csproj.nuget.g.targets",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/obj/Release/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/obj/Release/net8.0/GroundSkillTests.AssemblyInfo.cs",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/obj/Release/net8.0/GroundSkillTests.AssemblyInfoInputs.cache",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/obj/Release/net8.0/GroundSkillTests.GeneratedMSBuildEditorConfig.editorconfig",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/obj/Release/net8.0/GroundSkillTests.assets.cache",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/obj/Release/net8.0/GroundSkillTests.csproj.CoreCompileInputs.cache",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/obj/Release/net8.0/GroundSkillTests.csproj.FileListAbsolute.txt",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/obj/Release/net8.0/GroundSkillTests.dll",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/obj/Release/net8.0/GroundSkillTests.genruntimeconfig.cache",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/obj/Release/net8.0/GroundSkillTests.pdb",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/obj/Release/net8.0/GroundSkillTests.sourcelink.json",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/obj/Release/net8.0/apphost",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/obj/Release/net8.0/ref/GroundSkillTests.dll",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/obj/Release/net8.0/refint/GroundSkillTests.dll",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/obj/project.assets.json",
+      "same": true
+    },
+    {
+      "path": "unity/Tools/ground-skill/obj/project.nuget.cache",
+      "same": true
+    }
+  ]
+}

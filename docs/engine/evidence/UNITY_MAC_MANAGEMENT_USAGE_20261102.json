@@ -1,0 +1,10 @@
+{
+  "unitStartUsedPercent": 31,
+  "unitEndUsedPercent": 32,
+  "sharedAccountDeltaPercentagePoints": 1,
+  "ordinaryUsageAllowed": true,
+  "dayBeforeFirstObservationUnknown": true,
+  "dailyTotalUnknown": true,
+  "observedSinceFirstDayRecord19Percent": 13,
+  "resetOrCreditsUsed": false
+}

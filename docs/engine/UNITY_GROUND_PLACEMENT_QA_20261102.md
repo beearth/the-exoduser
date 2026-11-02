@@ -1209,3 +1209,31 @@ MAP PRODUCTION REPORT: geometry/asset/Core변경없음. TECH scriptedM1만PASS. 
 3bc48실제원복: errors0/cleanupError공백/원Core hash·ref·tick·events true/entity16·ground10·registry·camera·pause true. fixture-settled는BossFx/MaliceOrbExploded/WorldPointVisible2개가원래null에서binding,기존native원복후BossFx/Malice구독은원래null, viewport2개만남았다. 정확히known단일game method2개를detachedfixture에서CAS원복후전체graph diff0와기존Statehash exact=true를실제확인했다. 전체semantic은stableSprite/texture13메시지때문에false로보존. 원SpriteRenderer identity1429중old50파괴(적32/contact16/ground2)는이번에도false유지,생존원Renderer flags/materials변경0.
 
 sprite복원은deferred2frame뒤Validate직전에같은원렌더러의saved leaf sprite를실제로원복한다. source/nativeID/asset생존검사와복원전후journal을남기며old50을새객체로치환하지않는다. 애니메이션시간/TimeScale/제품frame선택불변,동일frame의명시적정리완료시점검증이다. 최종앱same-packageM1은새sprite회귀패키지app/source/product/Runtime/Core/exe6개strict대조후기존23script검사만실행할준비이며아직미실행이다. 실제GUI플레이는CUA Mac잠금으로수동해제대기. 제품/Core/geometry변경0. 이전원결과와입력/시작화면only통계미검증범위불변. MAP PRODUCTION REPORT: TECH회귀준비,PLAYABLE미검수. VISUAL VERDICT: RETOUCH.
+
+
+## 2026-11-02 Mac 총괄 실제 인수 마감 — GUI 수동 잠금 해제 대기
+
+| 항목 | 실제 결과 |
+|---|---|
+| normal QA source / product / ground |80d0ae89ca1af2a08987ec7b6f47340231a36bff / e33ed53574a187db36e00dfbd1f92b4d6f263635 / 8f391fea6f157433fcaea2df611d0a9b146c6604 |
+| ARM64 Unity·Metal build |errors0, bytes4544370420;원격source선확인,원입력전후772drift보존 |
+| 실제 좁은 semantic복원 |PASS/exit0, Error0, cleanupError공백 |
+| 원 Core/ref/tick/events |전부true |
+| fixture 원복 |raw viewport2callback차이보존,known2개CAS원복후전체graph diff0/hash exact=true |
+| 표현·자원 |적16 body/walk/contact·registry/필요ground10/camera/root/생존원Renderer flags·material/texture/savedSprite전부true |
+| old identity |1429중50파괴참조false(적32/contact16/ground2),새객체대입0. semantic통과와별개 |
+| same-package M1 |app/source/product/Runtime/Core/exe6개strict일치,23/23PASS,firstBlocked공백/exit0 |
+| M1 시각 범위 |headless-rendertexture-1600x900,GUI repaint0/bridge0. 자연GUI통과아님 |
+| Runtime SHA256 |8f9e54651f83bef314b241283b271ab3a15498c48665db6dfbefccef6f943516 |
+| Core SHA256 |4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d |
+| executable SHA256 |23f97deeddb5ebc86fb858349ca40881ed6c7eb2f8632c7b1554db6c19aaedb7 |
+| profile보호 |두실행각각raw26/cache27즉시·2s·7s exact복구,guarderrornull |
+| shared보존 |HEAD/index exact,기존WIP25파일exact,기존설치1403핵심5파일exact,현재Player/Editor0 |
+| Win64전달준비 |오프라인prepare/pack/verify CLI와8개소유fixture기대결과인수. 실제빌드/패키지/PC수신·실행미완료 |
+| 계정사용량 |공유누적31→32%,이번단위관측차1pp. 일간전체소비는첫기록이전미상. reset/credit사용0 |
+
+해당source의sprite-restore-journal은살아있는동일원Renderer에savedSprite를실제로대입한정리완료시점을기록한다. frame/time/애니메이션정지정책을바꾸지않고원Sprite/texture/nativeID생존과exact참조를검증했다. 이는이전ac9c/3bc의false를소급바꾼것이아니다. 이전full161=100/61,삼자overallfalse/old9미관측/R독립sampler불일치및old58literalfalse는모두유효하다. 이번narrow semanticPASS도제품전체수용/자연전투/전반시각PASS가아니다.
+
+실제GUI검수는CUA가Mac잠금및physicalinput감지로자동unlock중지라고명시하여사용자수동잠금해제를요청한상태다. 요청후UI조작을우회하지않았다. 이전startup-only60s7068frame/Running0통계와Application.isFocused7849/7849=true를보존하며그값을필드성능으로확대하지않는다. 입력무반응의이전원인을Mac잠금으로소급확정하지않는다. 다음은수동unlock후동일정상후보OS진입/이동/공격/막힘·필드frame실측과scoped실화면인수이며,그후normalizer/서명/백업설치/동일sourceWin64build/전송/실제PC수신실행으로이어진다. commonUnity/main/기존설치·PC공식실행기는현재변경하지않았다.
+
+§23 전체 MAP PRODUCTION REPORT는 UNITY_MAC_MANAGEMENT_REPORT_20261102.md에포함했다. VISUAL VERDICT: RETOUCH. 기존전체A2 RETOUCH/ImpactR4FAIL불변.

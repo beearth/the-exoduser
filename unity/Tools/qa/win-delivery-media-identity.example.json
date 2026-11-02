@@ -1,0 +1,16 @@
+{
+  "files": [
+    {
+      "path": "EXODUSER-Unity_Data/StreamingAssets/Lobby/world_intro_v22b_steam.mp4",
+      "sourcePath": "/ABSOLUTE/APPROVED/ORIGINALS/world_intro_v22b_steam.mp4",
+      "bytes": 102204634,
+      "sha256": "3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f"
+    },
+    {
+      "path": "EXODUSER-Unity_Data/StreamingAssets/Lobby/warrior_story_v23_clean.mp4",
+      "sourcePath": "/ABSOLUTE/APPROVED/ORIGINALS/warrior_story_v23_clean.mp4",
+      "bytes": 94795327,
+      "sha256": "8b8248424b63d808dc225576fda44e39d459709963f97923ffaa38a51dba28ab"
+    }
+  ]
+}
