@@ -21,7 +21,7 @@ namespace Exoduser.UnityPort.Tools
         [Serializable] public sealed class Shape {
             public string path,kind,sprite,texture,assertionScope; public bool uvRangePreserved=true,uvOrientationPreserved=true,materialPreserved=true,texturePreserved=true,colorPreserved=true,opacityPreserved=true,sortingPreserved=true; public float uvRangeDelta,uvOrientationDelta,colorDelta,opacityDelta; public string sourceEntity; public bool normalDiagnosticOnly; public string instanceId; public int sortingOrder; public Vector3 pivot,normal,expectedNormal;
             public Rect atlasRect; public Vector2[] sourceSpriteUv; public Vector2[] uv; public Vector3[] vertices; public float[] expectedVertexY;
-            public InteriorDiagnostic interior; public float pivotLift,maxGroundError,normalUp,expectedDrawOffset,maxBiasResidual,opacity; public string shader,sharedMaterial; public Color color; public int vertexCount,triangleCount; public bool forceRenderingOff; public bool passed;
+            public ContributionDiagnostic contribution; public InteriorDiagnostic interior; public float pivotLift,maxGroundError,normalUp,expectedDrawOffset,maxBiasResidual,opacity; public string shader,sharedMaterial; public Color color; public int vertexCount,triangleCount; public bool forceRenderingOff; public bool passed;
         }
         [Serializable] public sealed class InteriorDiagnostic {
             public bool diagnosticOnly=true; public string sampling="each actual triangle: 3 edge midpoints + centroid; shared edges sampled per triangle";
@@ -35,12 +35,13 @@ namespace Exoduser.UnityPort.Tools
         [Serializable] public sealed class Receipt {
             public string baselineProductSource="1403c5ee6d52c540815ab1cf70d5666b9023aa75",source,qaStorageRoot,audioMeasurementScope="paused/muted fixture; peak is a terminal 1024-sample observation, not continuous output logging",device,api,error;
             public string runtimeDllSha,coreDllSha,originalBefore,originalAfter;
-            public string[] required,generated,missing; public int width,height,failures,directVideo;
+            public int contributionShapes,contributionUnverifiedShapes; public bool contributionVerified,subset; public string consumerPrefix,passScope; public int expectedRows; public string[] required,generated,missing; public int width,height,failures,directVideo;
             public bool restored,originalReferenceSame,originalStateSame,listenerPaused,passed;
             public float listenerVolume,peak; public List<Row> rows=new List<Row>();
         }
         static readonly string[] Consumers={"spikeTrap","holyDome","SeekerMines","Mine-first","Projectile-control","Mine-reused","trap","iceZone","blizzard","LavaPools","PoisonPools","GroundRing","Fissures","TideWaves","malice-control","slam-control","character-control","VfxWorld-active","VfxWorld-inactive","telegraph-2D-control","phase-Shock-create","phase-Shock-hold","phase-Shock-tail","phase-Seeker-unarmed","phase-Seeker-armed","phase-Mine-imminent","phase-Lava-warn","phase-Lava-active","phase-Lava-tail","phase-Poison-start","phase-Poison-atlas-middle","phase-Poison-tail","phase-Chase-warning","phase-Chase-hit-create","phase-Chase-hit-hold","phase-Chase-hit-tail","phase-Fissure-warning","phase-Fissure-explode-create","phase-Fissure-explode-hold","phase-Fissure-explode-tail","phase-Tide-create","phase-Tide-hold","phase-Tide-tail","phase-spikeTrap-zero","phase-holyDome-zero","size-spikeTrap-Lv1","size-spikeTrap-Lv20","size-holyDome-Lv1","size-holyDome-Lv20"};
         NativeGame game; Simulation original,sample; bool enabledBefore,runningBefore,lateEnabledBefore; Behaviour lateDriver; string output;
+        string[] selectedConsumers=Consumers; static Camera contributionCamera;
         Receipt receipt=new Receipt(); readonly HashSet<string> generated=new HashSet<string>();
         static string Arg(string key){var a=Environment.GetCommandLineArgs();int n=Array.IndexOf(a,key);return n>=0&&n+1<a.Length?a[n+1]:"";}
         static bool Has(string key){return Array.IndexOf(Environment.GetCommandLineArgs(),key)>=0;}
@@ -66,22 +67,25 @@ namespace Exoduser.UnityPort.Tools
             foreach(var f in t.GetFields(Flags).OrderBy(f=>f.Name)){if(f.IsStatic)continue;b.Append(f.Name);Snapshot(f.GetValue(o),b,seen);}
         }
         IEnumerator Start(){
-            output=Arg("-output");receipt.source=Arg("-source-sha");receipt.qaStorageRoot=NativeQaSandbox.Root;receipt.required=Consumers.Concat(new[]{"ground-lifecycle"}).ToArray();AudioListener.pause=true;AudioListener.volume=0;
+            output=Arg("-output");receipt.source=Arg("-source-sha");receipt.qaStorageRoot=NativeQaSandbox.Root;receipt.consumerPrefix=Arg("-ground-consumer-prefix");receipt.subset=Has("-ground-consumer-prefix");selectedConsumers=receipt.subset?Consumers.Where(c=>c.StartsWith(receipt.consumerPrefix,StringComparison.Ordinal)).ToArray():Consumers;receipt.required=receipt.subset?selectedConsumers:selectedConsumers.Concat(new[]{"ground-lifecycle"}).ToArray();receipt.expectedRows=selectedConsumers.Length*3+(receipt.subset?0:1);receipt.passScope=receipt.subset?"selected consumer subset only; lifecycle omitted":"full consumer coverage plus lifecycle";AudioListener.pause=true;AudioListener.volume=0;
             var body=Execute();
             while(true){bool next;object current;try{next=body.MoveNext();current=next?body.Current:null;}catch(Exception ex){receipt.error=ex.ToString();break;}if(!next)break;yield return current;}
-            try{(body as IDisposable)?.Dispose();}catch(Exception ex){receipt.error=(receipt.error??"")+" cleanup: "+ex;}
+            ReleaseDecodedCache();contributionCamera=null;try{(body as IDisposable)?.Dispose();}catch(Exception ex){receipt.error=(receipt.error??"")+" cleanup: "+ex;}
             receipt.device=SystemInfo.graphicsDeviceName;receipt.api=SystemInfo.graphicsDeviceType.ToString();receipt.width=Screen.width;receipt.height=Screen.height;
             receipt.generated=generated.OrderBy(x=>x).ToArray();receipt.missing=receipt.required.Where(x=>!generated.Contains(x)).ToArray();
             receipt.listenerPaused=AudioListener.pause;receipt.listenerVolume=AudioListener.volume;float[] audio=new float[1024];AudioListener.GetOutputData(audio,0);foreach(float x in audio)receipt.peak=Mathf.Max(receipt.peak,Mathf.Abs(x));
             foreach(var v in Resources.FindObjectsOfTypeAll<UnityEngine.Video.VideoPlayer>())if(v.audioOutputMode==UnityEngine.Video.VideoAudioOutputMode.Direct)receipt.directVideo++;
             receipt.runtimeDllSha=Dll(typeof(NativeGame));receipt.coreDllSha=Dll(typeof(Simulation));
-            receipt.failures=receipt.rows.Count(x=>!x.passed);receipt.passed=receipt.error==null&&receipt.failures==0&&receipt.missing.Length==0&&receipt.restored&&receipt.originalStateSame&&receipt.originalReferenceSame&&receipt.width==1920&&receipt.height==1080&&receipt.listenerPaused&&receipt.listenerVolume==0&&receipt.peak==0&&receipt.directVideo==0;
+            var contributions=receipt.rows.SelectMany(row=>row.shapes).Where(shape=>shape.contribution!=null).Select(shape=>shape.contribution).ToArray();receipt.contributionShapes=contributions.Length;receipt.contributionUnverifiedShapes=contributions.Count(d=>!d.verified);receipt.contributionVerified=contributions.Length>0&&receipt.contributionUnverifiedShapes==0;
+            receipt.failures=receipt.rows.Count(x=>!x.passed);receipt.passed=receipt.error==null&&receipt.failures==0&&receipt.missing.Length==0&&receipt.rows.Count==receipt.expectedRows&&receipt.restored&&receipt.originalStateSame&&receipt.originalReferenceSame&&receipt.width==1920&&receipt.height==1080&&receipt.listenerPaused&&receipt.listenerVolume==0&&receipt.peak==0&&receipt.directVideo==0;
             try{File.WriteAllText(Path.Combine(output,File.Exists(Path.Combine(output,"ground-placement-receipt.json"))?"ground-placement-failure-"+Guid.NewGuid().ToString("N")+".json":"ground-placement-receipt.json"),JsonUtility.ToJson(receipt,true));}catch(Exception ex){receipt.passed=false;Debug.LogError("GROUND_PLACEMENT receipt write failed "+ex);}
             yield return new WaitForSecondsRealtime(1);Debug.Log("QA_MEDIA_DRAIN_COMPLETE GROUND_PLACEMENT");if(game!=null&&original!=null){SetRunning(runningBefore);game.enabled=enabledBefore;if(lateDriver!=null)lateDriver.enabled=lateEnabledBefore;}Application.Quit(receipt.passed?0:2);
         }
         IEnumerator Execute(){
             if(Directory.Exists(output)&&Directory.GetFileSystemEntries(output).Length!=0){Debug.LogError("QA output must be empty");throw new InvalidOperationException("QA output must be empty");}
-            Directory.CreateDirectory(output);Screen.SetResolution(1920,1080,FullScreenMode.Windowed);
+            Directory.CreateDirectory(output);
+            if(receipt.subset&&(string.IsNullOrEmpty(receipt.consumerPrefix)||selectedConsumers.Length==0))throw new InvalidOperationException("Empty consumer prefix/selection is forbidden");
+            Screen.SetResolution(1920,1080,FullScreenMode.Windowed);
             float end=Time.realtimeSinceStartup+60;
             bool entered=false;
             while(Time.realtimeSinceStartup<end){game=FindAnyObjectByType<NativeGame>();
@@ -95,6 +99,7 @@ namespace Exoduser.UnityPort.Tools
             original=game.Simulation;enabledBefore=game.enabled;runningBefore=game.Running;game.enabled=false;SetRunning(false);lateDriver=Field("r3Late") as Behaviour;if(lateDriver!=null){lateEnabledBefore=lateDriver.enabled;lateDriver.enabled=false;}
             receipt.originalBefore=State(original);
             var setter=typeof(NativeGame).GetProperty("Simulation").GetSetMethod(true);
+            contributionCamera=(Camera)Field("r3Cam");
             sample=new Simulation(new SimulationConfig(),0x671403u);sample.AttachDruidBoss();
             setter.Invoke(game,new object[]{sample});
             try{
@@ -103,7 +108,7 @@ namespace Exoduser.UnityPort.Tools
                 string[] labels={"soil","root-slope","wood-bridge"};
                 for(int site=0;site<sites.Length;site++){
                     float x=sites[site].x*100,y=-sites[site].y*100;sample.Player.X=x-180;sample.Player.Y=y+80;
-                    foreach(string consumer in Consumers){
+                    foreach(string consumer in selectedConsumers){
                         Clear();bool ground=Populate(consumer,x,y);((Camera)Field("view")).cullingMask=(int)Field("worldMask");Invoke("UpdateViews");var lineBefore=LineState(Field("skillView"));Invoke("Remodel3DLate");
                         var row=new Row{renderTime=Time.unscaledTime,site=labels[site],consumer=consumer,core=new Vector2(x,y),ground=ground,scope=ground?"ground contact/normal":"legacy billboard or 2D control"};
                         if(consumer.StartsWith("size-")){var zone=sample.FireZones[0];row.level=zone.Lv;row.actualRadius=zone.R;row.radiusSourceFunction=consumer.Contains("spikeTrap")?"Exoduser.UnityPort.Core.Skills.SkillRules.SpikeTrapRadius(int)":"Exoduser.UnityPort.Core.Skills.SkillRules.HolyDomeRadius(int)";}
@@ -142,7 +147,7 @@ namespace Exoduser.UnityPort.Tools
                         row.direct3840=Path.Combine(output,labels[site]+"-"+consumer+"-3840-direct-rt.png");CaptureDirect(game.Remodel3DCamera,row.direct3840);row.direct3840Captured=true;
                     }
                 }
-                var lifecycle=Lifecycle();try{while(lifecycle.MoveNext())yield return lifecycle.Current;}finally{(lifecycle as IDisposable)?.Dispose();}
+                if(!receipt.subset){var lifecycle=Lifecycle();try{while(lifecycle.MoveNext())yield return lifecycle.Current;}finally{(lifecycle as IDisposable)?.Dispose();}}
             }finally{
                 setter.Invoke(game,new object[]{original});SyncViews();
                 receipt.originalAfter=State(original);receipt.originalReferenceSame=ReferenceEquals(original,game.Simulation);receipt.originalStateSame=receipt.originalBefore==receipt.originalAfter;
@@ -161,7 +166,7 @@ namespace Exoduser.UnityPort.Tools
                 if(source==null){row.passed=false;row.error="No source sprite";yield break;}
                 string identity=source.GetEntityId().ToString();var ground=source.GetComponentsInChildren<MeshRenderer>(true).FirstOrDefault(r=>r.enabled&&!r.forceRenderingOff);
                 if(ground==null){row.passed=false;row.error="Ground lifecycle display mesh missing (baseline remains FAIL)";yield break;}
-                var surfaceShape=Measure(ground,true);row.shapes.Add(surfaceShape);row.passed &= surfaceShape.passed&&surfaceShape.vertexCount==289&&surfaceShape.triangleCount==512;
+                var surfaceShape=Measure(ground,true);row.shapes.Add(surfaceShape);row.passed &= surfaceShape.passed&&surfaceShape.vertexCount>=3&&surfaceShape.triangleCount>=1;
                 source.enabled=false;SyncViews();row.passed &= !ground.enabled;source.enabled=true;
                 source.gameObject.SetActive(false);yield return null;row.passed &= !ground.enabled;source.gameObject.SetActive(true);
                 sample.FieldZones.Clear();sample.Druid.Projectiles.Add(new BossProjectile{X=4020,Y=7700,Mine=false,ParryClass="magic",Life=100,Ml=180,Active=true});view.Update(sample);SyncViews();
@@ -272,7 +277,7 @@ namespace Exoduser.UnityPort.Tools
             s.normalDiagnosticOnly=s.expectedVertexY.Length>0&&s.expectedVertexY.Max()-s.expectedVertexY.Min()>.001f;
             // Before execution: flat normal hard gate only if sampled ground span <=1mm. Slopes retain vertex contact hard gate, normals diagnostic.
             // Fixed 2cm contact tolerance; every active displayed vertex is measured. No baseline exception.
-            if(ground&&r is MeshRenderer){var interiorFilter=r.GetComponent<MeshFilter>();if(interiorFilter!=null&&interiorFilter.sharedMesh!=null)s.interior=MeasureInterior(interiorFilter.sharedMesh.triangles,points);}
+            if(ground&&r is MeshRenderer){var interiorFilter=r.GetComponent<MeshFilter>();if(interiorFilter!=null&&interiorFilter.sharedMesh!=null){s.interior=MeasureInterior(interiorFilter.sharedMesh.triangles,points);s.contribution=MeasureContribution(r,interiorFilter.sharedMesh,points);}}
             s.passed=points.Count>0&&s.uvRangePreserved&&s.uvOrientationPreserved&&s.materialPreserved&&s.texturePreserved&&s.colorPreserved&&s.opacityPreserved&&s.sortingPreserved&&(!ground||(s.maxBiasResidual<=.02f&&Mathf.Abs(s.pivotLift)<=.02f&&(s.normalDiagnosticOnly||Mathf.Abs(Vector3.Dot(s.normal,Vector3.up))>=.99f)));return s;
         }
         static void CaptureDirect(Camera camera,string path){
@@ -296,6 +301,78 @@ namespace Exoduser.UnityPort.Tools
             }
             if(d.sampleCount>0){errors.Sort();d.meanAbs=(float)(absSum/d.sampleCount);d.meanSigned=(float)(signedSum/d.sampleCount);d.p95Abs=errors[Mathf.Clamp(Mathf.CeilToInt(.95f*errors.Count)-1,0,errors.Count-1)];}
             return d;
+        }
+        [Serializable] public sealed class ContributionProbe {
+            public Vector3 actualPoint,expectedPoint,actualScreen1920,expectedScreen1920,potentialRGB;
+            public Vector2 uv; public Color textureRGBA,vertexRGBA; public float signedResidual,expectedGround,expectedDrawY,textureAlpha,vertexAlpha,flatTintAlpha,flat,opacityRaw,opacityApplied,potentialMax;
+            public bool opacityPresent;
+        }
+        [Serializable] public sealed class ContributionBucket {
+            public string rule; public int count,over2cm; public float maxAbs,meanAbs,p95Abs; public ContributionProbe worst;
+            [NonSerialized] public List<float> errors=new List<float>(); [NonSerialized] public double sum;
+            public void Add(ContributionProbe p){float e=Mathf.Abs(p.signedResidual);if(count==0||e>maxAbs){maxAbs=e;worst=p;}count++;if(e>.02f)over2cm++;sum+=e;errors.Add(e);}
+            public void Finish(){if(count==0)return;errors.Sort();meanAbs=(float)(sum/count);p95Abs=errors[Mathf.Clamp(Mathf.CeilToInt(.95f*count)-1,0,count-1)];errors.Clear();}
+        }
+        [Serializable] public sealed class ContributionDiagnostic {
+            public bool diagnosticOnly=true,verified,flatMaterialPresent,flatPropertyBlockPresent,opacityMaterialPresent,opacityPropertyBlockPresent;
+            public string error,scope="GPU-decoded mip0 texture contribution; no depth occlusion or final tonemap pixel-difference verdict",shader,texture,graphicsFormat,filterMode,wrapU,wrapV,activeColorSpace;
+            public int width,height,mipCount,cameraPixelWidth,cameraPixelHeight; public float flatMaterialRaw,flatPropertyBlockRaw,flatResolved,opacityMaterialRaw,opacityPropertyBlockRaw,opacityRaw,opacityApplied=1;
+            public ContributionBucket worstRaw=new ContributionBucket{rule="all valid probes, transparency retained"},positive=new ContributionBucket{rule="potential RGB max > 0"},oneByte=new ContributionBucket{rule="potential RGB max >= 1/255"},onePercent=new ContributionBucket{rule="potential RGB max >= .01"};
+        }
+        sealed class DecodedTexture {public int width,height;public Color[] pixels;}
+        static readonly Dictionary<Texture2D,DecodedTexture> decodedTextures=new Dictionary<Texture2D,DecodedTexture>();
+        static void ReleaseDecodedCache(){decodedTextures.Clear();}
+        static DecodedTexture DecodeMip0(Texture2D source){
+            if(decodedTextures.TryGetValue(source,out var cached))return cached;
+            if(!SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.ARGBFloat)||!SystemInfo.SupportsTextureFormat(TextureFormat.RGBAFloat))throw new NotSupportedException("ARGBFloat/RGBAFloat GPU diagnostic unsupported; no image fallback");
+            if(decodedTextures.Count>=2)ReleaseDecodedCache();
+            var target=new RenderTexture(source.width,source.height,0,RenderTextureFormat.ARGBFloat,RenderTextureReadWrite.Linear){useMipMap=false,autoGenerateMips=false,antiAliasing=1};
+            Texture2D clone=null;var active=RenderTexture.active;bool srgb=GL.sRGBWrite;
+            try{
+                if(!target.Create())throw new InvalidOperationException("ARGBFloat RT creation failed");
+                GL.sRGBWrite=false;Graphics.Blit(source,target);RenderTexture.active=target;
+                clone=new Texture2D(source.width,source.height,TextureFormat.RGBAFloat,false,true);
+                clone.ReadPixels(new Rect(0,0,source.width,source.height),0,0);clone.Apply(false,false);
+                var result=new DecodedTexture{width=source.width,height=source.height,pixels=clone.GetPixels()};decodedTextures.Add(source,result);return result;
+            }finally{GL.sRGBWrite=srgb;RenderTexture.active=active;if(clone!=null)Destroy(clone);target.Release();Destroy(target);}
+        }
+        static Color SampleDecoded(DecodedTexture data,Vector2 uv,FilterMode filter){
+            float u=Mathf.Clamp01(uv.x),v=Mathf.Clamp01(uv.y);
+            if(filter==FilterMode.Point)return data.pixels[Mathf.Clamp(Mathf.FloorToInt(v*data.height),0,data.height-1)*data.width+Mathf.Clamp(Mathf.FloorToInt(u*data.width),0,data.width-1)];
+            float x=u*data.width-.5f,y=v*data.height-.5f;int x0=Mathf.FloorToInt(x),y0=Mathf.FloorToInt(y);float fx=x-x0,fy=y-y0;
+            Color a=data.pixels[Mathf.Clamp(y0,0,data.height-1)*data.width+Mathf.Clamp(x0,0,data.width-1)],b=data.pixels[Mathf.Clamp(y0,0,data.height-1)*data.width+Mathf.Clamp(x0+1,0,data.width-1)],c=data.pixels[Mathf.Clamp(y0+1,0,data.height-1)*data.width+Mathf.Clamp(x0,0,data.width-1)],d=data.pixels[Mathf.Clamp(y0+1,0,data.height-1)*data.width+Mathf.Clamp(x0+1,0,data.width-1)];
+            return Color.LerpUnclamped(Color.LerpUnclamped(a,b,fx),Color.LerpUnclamped(c,d,fx),fy);
+        }
+        static ContributionDiagnostic MeasureContribution(Renderer renderer,Mesh mesh,List<Vector3> world){
+            var d=new ContributionDiagnostic();
+            try{
+                var material=renderer.sharedMaterial;if(material==null)throw new InvalidOperationException("No actual shared material");d.shader=material.shader.name;
+                var block=new MaterialPropertyBlock();renderer.GetPropertyBlock(block);int flatId=Shader.PropertyToID("_Flat"),opacityId=Shader.PropertyToID("_Opacity");
+                d.flatMaterialPresent=material.HasProperty(flatId);d.flatPropertyBlockPresent=block.HasFloat(flatId);d.flatMaterialRaw=d.flatMaterialPresent?material.GetFloat(flatId):0;d.flatPropertyBlockRaw=block.GetFloat(flatId);d.flatResolved=d.flatPropertyBlockPresent?d.flatPropertyBlockRaw:d.flatMaterialRaw;
+                d.opacityMaterialPresent=material.HasProperty(opacityId);d.opacityPropertyBlockPresent=block.HasFloat(opacityId);d.opacityMaterialRaw=d.opacityMaterialPresent?material.GetFloat(opacityId):0;d.opacityPropertyBlockRaw=block.GetFloat(opacityId);d.opacityRaw=d.opacityPropertyBlockPresent?d.opacityPropertyBlockRaw:d.opacityMaterialRaw;
+                // SkillAdditive has no _Opacity uniform. Its absent raw value is never multiplied into RGB.
+                d.opacityApplied=1;
+                var texture=block.GetTexture("_MainTex") as Texture2D;if(texture==null&&material.HasProperty("_MainTex"))texture=material.GetTexture("_MainTex") as Texture2D;
+                if(texture==null){var source=renderer.GetComponentInParent<SpriteRenderer>();if(source!=null&&source.sprite!=null)texture=source.sprite.texture;}
+                if(texture==null)throw new InvalidOperationException("No actual GPU Texture2D _MainTex");
+                d.texture=texture.name;d.width=texture.width;d.height=texture.height;d.mipCount=texture.mipmapCount;d.graphicsFormat=texture.graphicsFormat.ToString();d.filterMode=texture.filterMode.ToString();d.wrapU=texture.wrapModeU.ToString();d.wrapV=texture.wrapModeV.ToString();d.activeColorSpace=QualitySettings.activeColorSpace.ToString();
+                if(d.shader!="EXODUSER/SkillAdditive")throw new NotSupportedException("No symbolic contribution contract for shader "+d.shader);
+                if(contributionCamera==null)throw new InvalidOperationException("No current 1920 diagnostic camera");d.cameraPixelWidth=contributionCamera.pixelWidth;d.cameraPixelHeight=contributionCamera.pixelHeight;
+                var decoded=DecodeMip0(texture);var uv=mesh.uv;var colors=mesh.colors;var triangles=mesh.triangles;
+                if(uv.Length!=world.Count)throw new InvalidOperationException("Actual mesh UV/vertex mismatch");
+                Vector3[] weights={new Vector3(.5f,.5f,0),new Vector3(0,.5f,.5f),new Vector3(.5f,0,.5f),new Vector3(1f/3,1f/3,1f/3)};
+                for(int i=0;i+2<triangles.Length;i+=3){int a=triangles[i],b=triangles[i+1],c=triangles[i+2];if(a<0||b<0||c<0||a>=world.Count||b>=world.Count||c>=world.Count)throw new InvalidOperationException("Invalid triangle index");
+                    foreach(var w in weights){var point=world[a]*w.x+world[b]*w.y+world[c]*w.z;var texUV=uv[a]*w.x+uv[b]*w.y+uv[c]*w.z;Color vertex=colors.Length==world.Count?colors[a]*w.x+colors[b]*w.y+colors[c]*w.z:Color.white;Color p=SampleDecoded(decoded,texUV,texture.filterMode);
+                        float ground=NativeRemodel3D.GroundY(point.x,point.z),tint=d.flatResolved>.5f?Mathf.Max(p.r,Mathf.Max(p.g,p.b)):1,alpha=p.a*vertex.a*tint;Vector3 rgb=d.flatResolved>.5f?Vector3.one:new Vector3(p.r,p.g,p.b);rgb=Vector3.Scale(rgb,new Vector3(vertex.r,vertex.g,vertex.b))*alpha;
+                        var probe=new ContributionProbe{actualPoint=point,expectedPoint=new Vector3(point.x,ground+.025f,point.z),uv=texUV,textureRGBA=p,vertexRGBA=vertex,textureAlpha=p.a,vertexAlpha=vertex.a,flatTintAlpha=tint,flat=d.flatResolved,opacityPresent=d.opacityMaterialPresent||d.opacityPropertyBlockPresent,opacityRaw=d.opacityRaw,opacityApplied=1,potentialRGB=rgb,potentialMax=Mathf.Max(rgb.x,Mathf.Max(rgb.y,rgb.z)),expectedGround=ground,expectedDrawY=ground+.025f,signedResidual=point.y-ground-.025f};
+                        if(!Finite(point)||!Finite(rgb)||float.IsNaN(probe.signedResidual)||float.IsInfinity(probe.signedResidual))throw new InvalidOperationException("Non-finite interior contribution probe");
+                        if(contributionCamera!=null){probe.actualScreen1920=contributionCamera.WorldToScreenPoint(point);probe.expectedScreen1920=contributionCamera.WorldToScreenPoint(probe.expectedPoint);}
+                        d.worstRaw.Add(probe);if(probe.potentialMax>0)d.positive.Add(probe);if(probe.potentialMax>=1f/255)d.oneByte.Add(probe);if(probe.potentialMax>=.01f)d.onePercent.Add(probe);
+                    }
+                }
+                if(d.worstRaw.count==0)throw new InvalidOperationException("No valid contribution probes");d.verified=true;
+            }catch(Exception ex){d.error=ex.ToString();d.verified=false;}
+            d.worstRaw.Finish();d.positive.Finish();d.oneByte.Finish();d.onePercent.Finish();return d;
         }
         static void MeasureVfx(Row row,float x,float y,bool inactive){bool prior=NativeRemodel3D.Active;try{NativeRemodel3D.Active=!inactive;const float lift=.013f;Vector3 a=VfxWorld.ToWorld(x,y,lift),b=VfxWorld.ToWorldMetres(new Vector2(x/100,-y/100),lift);float expected=inactive?lift:NativeRemodel3D.GroundY(x/100,-y/100)+lift;row.shapes.Add(new Shape{kind="VfxWorld.ToWorld",pivot=a,pivotLift=a.y-expected,passed=Mathf.Abs(a.y-expected)<.0001f});row.shapes.Add(new Shape{kind="VfxWorld.ToWorldMetres",pivot=b,pivotLift=b.y-expected,passed=Mathf.Abs(b.y-expected)<.0001f});row.passed=row.shapes.All(s=>s.passed);}finally{NativeRemodel3D.Active=prior;}}
     }

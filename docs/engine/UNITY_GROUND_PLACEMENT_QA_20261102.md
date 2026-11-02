@@ -80,3 +80,50 @@ FILES: QA helper/meta/docs만 Mac 소유. 제품8경로는 PC 후보95 소유. �
 GIT: baseline QA private a5d 원격 확인, common1403 보존. 후보+정확QA 후속 commit/build는 검수 전.
 VISUAL VERDICT: FAIL — baseline 설치형 접촉. 전체 A2 기존 RETOUCH·ImpactR4 FAIL을 승격하지 않음.
 NEXT PASS: 후보95 actual ARM64 정상제품/동일앱 M1/148행·큰 반경 visual→통과 시 common·설치·Win64배송/PC실행 회수.
+
+
+# GPU-decoded texture contribution 진단 보충 (미실행)
+
+입력 root overlay SHA f013cef386cc04fb4073f5f67fe892f0997be99460fe9c6ff6c7e679c937c25a. visible-interior 복사본만 편집했다. 원본/공유checkout/Git/Unity/Player/정적컴파일 수정·실행0. 기존 raw InteriorDiagnostic과148개 vertex/contact/UV/color/물성 assertion은 유지한다. raw max .22~.88m와 기존148 PASS를 투명부 제외로 삭제하거나 덮지 않는다.
+
+## GPU texture cache
+
+실제 renderer MaterialPropertyBlock `_MainTex` → sharedMaterial `_MainTex` → source Sprite texture 순서로 실제 Texture2D를 찾는다. 원 compressed Texture2D.isReadable/import/filter/색/material/propertyblock은 수정하지 않는다. source 크기 그대로 Graphics.Blit → ARGBFloat Linear RT → RGBAFloat Linear Texture2D ReadPixels/GetPixels로 GPU-decoded mip0를 읽는다. GL.sRGBWrite=false로 target encoding을 막고 원 GL.sRGBWrite와 RenderTexture.active를 finally 복원한다. floatRT/RGBAFloat 지원·RT생성·readback 실패는 contribution.verified=false와 exception 원문을 보존하며 PNG/디스크 원화 추측으로 대체하지 않는다.
+
+readback Texture2D와 RT는 각각 finally Destroy/Release한다. 캐시는 원 texture당 진단 Color 배열만 소유하며2개까지 보관하고 새 texture 진입 시 비운다. 모든 경로의 run 종료/예외 후 캐시도 비운다. 원 texture는 소유·해제하지 않는다. 실제 width/height/mipmapCount/filterMode/graphicsFormat/wrapU/wrapV/activeColorSpace를 기록한다. 큰 source는 metadata상 mip0/Bilinear/sRGB지만 runtime 수치를 최종 근거로 쓴다. Point는 floor(uv*size)의 nearest texel, Bilinear/Trilinear mip0는 uv*size-.5의4texel CPU bilinear를 사용하며 atlas 원UV와 Clamp01/edge clamp를 적용한다. 이는 minification mip/최종pixel footprint 진단이 아니다.
+
+## Symbolic shader contract
+
+현재 실제 큰 source shader `EXODUSER/SkillAdditive`의 원문 frag 기준:
+
+`p = textureRGBA; a = p.a * vertexAlpha * (_Flat>.5 ? max(p.rgb) : 1); rgb = (_Flat>.5 ? 1 : p.rgb) * vertexRGB * a`
+
+`_Flat` material/PB의 존재 여부와 raw 및 PB override를 적용한 resolved 값을 읽는다. `_Opacity` material/PB 존재/raw도 기록하지만 이 shader frag에는 `_Opacity` uniform이 없으므로 opacityApplied=1이다. 부재 raw0을 곱하지 않는다. 실제 mesh.colors를 probe의 barycentric 가중치로 보간하고 textureAlpha/vertexAlpha/Flat tint factor와 textureRGBA/vertexRGBA/potentialRGB를 함께 기록한다. 다른 shader는 수식을 추측하지 않고 unverified로 보존한다. receipt.contributionShapes/contributionUnverifiedShapes/contributionVerified가 기존 passed와 별도로 진단 검증 상태를 표시한다.
+
+## 통계
+
+기존과 같은 triangle3 edge midpoint+centroid에서 실제 UV/vertexColor/worldPoint를 같은 가중치로 보간한다. signedResidual = actualWorldY-(GroundY+.025). 원 raw InteriorDiagnostic은 그대로이며 새 contribution에 다음4bucket을 별도로 기록한다.
+
+| bucket | 조건 |
+|---|---|
+| worstRaw | 모든 유효 probe, 투명도 유지 |
+| positive | max(potentialRGB)>0 |
+| oneByte | max(potentialRGB)>=1/255 |
+| onePercent | max(potentialRGB)>=.01 |
+
+각 bucket은 count/2cm초과수/maxAbs/meanAbs/p95Abs(nearest-rank ceil(.95*N))와 절대잔차가 가장 큰 probe를 기록한다. worst에는 signedResidual·actual/expected world XYZ·expectedGround/drawY·UV·textureRGBA·vertexRGBA/alpha·Flat/tint factor·opacity 존재/raw/applied·potentialRGB/max가 있다. 해당 worst actualPoint/expectedPoint를 현재1920 r3Cam.WorldToScreenPoint로도 기록한다. count0은 표본 없음이지 잔차0의 합격 판정이 아니다.
+
+이 값은 GPU-decoded mip0 texture-contribution 진단이다. 실제 depth occlusion·최종tonemap·pixel차이·최종시각 기여의 검증으로 확대하지 않는다. GPU 미실행이며 root의 원본1920 crop/추가 depth 판정이 필요하다.
+
+## 선택 실행
+
+`-ground-consumer-prefix size-`를 주면 기존 case 중 접두사가 일치하는4consumer×3site=12row만 실행한다. required/generated/missing/expectedRows도 선택집합으로 맞추며 lifecycle은 생략한다. receipt.subset=true/passScope에 선택 검수임을 명시한다. 빈 prefix 인자 또는0개 선택은 fail-closed다. 옵션이 없으면 기존49consumer×3site+ lifecycle=148row를 유지한다. 기존passed에 row수==expectedRows gate를 추가해 부족한 선택집합을 통과시키지 않는다.
+
+## adaptive topology
+
+lifecycle의 고정289/512 assertion만 실제 vertex>=3/triangle>=1로 바꿨다. 기존 contact·UV·color 등 의미 검사는 그대로이며 actual vertex/triangle count도 계속 기록한다. 무조건 PASS로 바꾸지 않는다. stage면적 누락 검증은 PC 원문 보완 뒤 별도 회수한다. root의 원Simulation 복원·카메라·생산자·반경·색/opacity·피해수치는 수정하지 않았다.
+
+컴파일 주의: Unity6.7 MaterialPropertyBlock.HasFloat(int), Texture2D.GetPixels(RGBAFloat), ARGBFloat/RenderTextureReadWrite.Linear API를 사용한다. 최종 정적컴파일 및 GPU format/readback 지원 확인은 root 소유이며 본 작성자는 수행하지 않았다.
+
+
+2026-11-02 exact95d4 alpha-only checkpoint: source e84233ab15b40284cc381a6c9cbd80e6bbac82dc9814a0647c6d44504cb80f66, isolated Roslyn C#9 compilation exit0/no diagnostics. This checkpoint has prefix selection, GPU mip0 contribution diagnostics, adaptive lifecycle topology counts; no adaptive performance or67 sibling/UV support. No new GPU execution/visual acceptance yet. Prior candidate148 contact assertions and normalM1 23 pass do not accept visible large-footprint interiors.
