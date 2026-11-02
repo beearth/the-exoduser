@@ -169,3 +169,22 @@ CORE-01 정적 후보: 최신 웹42289는 보스 처치 후 중앙에 상자를 
 이벤트 수신/WorldDrops에는 상자 생성·열기 경로가 없다. Core Pass에도 상자 검사는 없다.
 Core 수정 금지 지시에 따라 근거만 결함표에 올리고 수정하지 않는다. 실제 보스 처치
 후 exit-open PNG 대조 전이므로 Player에서 확인한 결함으로 세지 않는다.
+
+## 첫 정식 빌드와 Player (2026-11-03 03시)
+
+743f0eaa는 C# compileErrors0이나 sparse에서 빠진 root release-version.json 때문에
+PortVerification.Build 실행 전 실패했다. 확인한 HEAD의 해당 파일만 복원했다.
+5000f09e 정식 재빌드 성공: 6000.6.7f1/Windows x64/errors0/6,585,351,789bytes.
+같은 formal-2-build의 M1 5ba9e4ff는23/23, RX9070XT/D3D11, 창/잔여/USER_SAVE0.
+03-move/11a-druid-volley PNG를 직접 열었다. 강제 상태 M1이며 자연 완주가 아니다.
+
+첫 자연 Player2c2816ad는25.521초 lobby-entry-blocked, 전투 틱0/클리어0이다.
+실제 1920/3840 로비 캡처에 이름2~8자 오류가 보인다. QA가 만든 FULL+6자리=10자를
+F+6자리=7자로 고쳤으며 게임의 이름 정책은 바꾸지 않았다(QA-12).
+
+Core 사전 점검은 카메라 가시성700px 상자 근사/렌더·Runtime 입력·저장 제외다.
+원래 조작/진단은171.9초95처치 사망, 임박 구르기 후보는49.55초29처치 사망,
+E 후보304.43초226처치 사망, E+우선 목표 후보135.03초110처치 사망이었다.
+어느 것도 Player 성공/자연 완주로 세지 않는다. 실패 후보의 Runtime/테스트 변경은
+각 I: patch로 보존하고 자기 정확 경로만 되돌려 현재 제품/QA에 채택하지 않았다.
+Unity가 자동 갱신한 meta/material은 별도 WIP patch로 보존했으며 일괄 커밋하지 않는다.

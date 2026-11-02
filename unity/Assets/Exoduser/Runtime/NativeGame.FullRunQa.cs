@@ -62,7 +62,7 @@ namespace Exoduser.UnityPort
             yield return new WaitForSecondsRealtime(1);
             lobby.SetPlaybackFocus(true); // Hidden desktop has no foreground focus; retain the ordinary entry flow.
             lobby.ShowLobby();
-            string fresh = "FULL" + (DateTime.Now.Ticks % 1000000).ToString("000000");
+            string fresh = "F" + (DateTime.Now.Ticks % 1000000).ToString("000000");
             bool created = lobby.OpenCharacterCreation() && lobby.ChooseCharacterVisual(0) && lobby.ConfirmCharacterVisual() && lobby.CreateCharacter(fresh);
             lobby.ShowLobby();
             yield return FullRunShot(output, "00-lobby");
