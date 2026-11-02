@@ -15,12 +15,12 @@ export function actorBounds(a){
  return {left:a.x-w/2,right:a.x+w/2,top:a.y-h*.8,bottom:a.y+h*.3};
 }
 export function occlusion(v,actors){
- let hidden=false;const front=[];
+ let hidden=false;const front=[],bodies=[];
  for(const a of actors){if(!a||a.alive===false||a.hp<=0)continue;const b=actorBounds(a);
   if(b.right<=v.left||b.left>=v.right||b.bottom<=v.top||b.top>=v.bottom)continue;
-  if(a.y<v.foot)hidden=true;else front.push(b);
+  bodies.push(b);if(a.y<v.foot)hidden=true;else front.push(b);
  }
- return {alpha:hidden?.35:1,front};
+ return {alpha:hidden?.35:1,front,bodies};
 }
 export const compareDepth=(a,b)=>a.foot-b.foot||a.left-b.left;
 export function shadowVector(position,light){
