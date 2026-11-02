@@ -214,3 +214,6 @@
 
 
 2026-11-02 QA전용복원companion준비: 원Core복원후기존UpdateViews→Remodel3DLate로표현재구성, old identity실패와별도entity/registry/chunk semantic검증. 제품/Core/geometry변경0·실Player미검증. 별도Update실제frame간격관측10s launchwarmup+60s,입력/AI/시간변경0. bf3e실GUI입력은로비반응없어자연play미검증,profile26/27복구. 근거UNITY_GROUND_PLACEMENT_QA_20261102.
+
+
+2026-11-02 ac9c복원실제:원Core/tick/event/적16·접지·지면10/registry·camera true,old50identity파괴false. QA_MainTex조회38error와fixturehash변화로전체semanticfalse/exit2보존. profile26/27exact복구,새frameobserverGUI실행준비. 근거UNITY_GROUND_PLACEMENT_QA_20261102 및 evidence/UNITY_MAC_RECEIVER_RESTORE_20261102.json.

@@ -1141,3 +1141,21 @@ MAP PRODUCTION REPORT: geometry/asset/Core변경없음. TECH scriptedM1만PASS. 
 
 
 추가 실제 근거: bf3e 동일 앱을 보호runner로 정상1600x900/Metal실행했으나 CUA의 생성/입장/언어 클릭 및Escape/Return에 로비상태 변화가 없었다. macOS AX메뉴/Window활성화/Quit은 반응, 오류로그0. 필드진입·자연이동·공격·막힘·FPS는 관측하지 못했으므로 UNVERIFIED_INPUT_BLOCKED_AT_LOBBY다. 입력도구/포커스/UI원인은 아직 분리되지 않았다. 종료 후 raw26/cache27 exact복구했다. 새helper포함 빌드는아직미실행, 옛triad58ref실패/독립sampler불일치/old9미관측을보존한다. 제품/Core/geometry수정0. MAP PRODUCTION REPORT: TECH준비만,자연PLAYABLE미검수. VISUAL VERDICT: RETOUCH.
+
+
+## 2026-11-02 ac9c 복원 한정 실제 결과(미통과)
+
+| 항목 | 실제 결과 |
+|---|---|
+| 원 Core/hash/ref/tick/event | true, tick1→1 |
+| 적16 entity body/walk/contact / registry | true / true |
+| 필요한 지면10chunk / camera·root / pause | 모두true |
+| 생존 원Renderer 상태 | exact, 변경0 |
+| old1429 identity | false,50파괴(적body/walk32+contact16+ground2), 대체참조기입0 |
+| fixture graph / 자원 / 전체semantic | false / false / false |
+| QA오류 |38: _MainTex없는shader에material.mainTexture직접조회 |
+| 환경설정 |26raw/27cache모두exact복구,guarderrornull |
+
+새로 재생성된적·접지·지면 관계 자체는 실제통과했지만 QA자원조회와fixture hash변화가남아전체false/exit2다. _MainTex가없는셰이더를QA가잘못조회했으므로 존재하는texture property를열거·보존하는최소수정과fixture전후graph진단을다음에준비한다. old50실패와이전triad58실패는각실행의실제값이며수정하지않는다. M123/23은bf3e앱검사이고현재ac9c앱동일패키지M1은아직미실행이다.
+
+현재ac9c일반앱에포함된별도frameobserver로일반GUI의포커스/실제frame간격을관측한다. 첫10s launchwarmup+60s,AI/Core/input/시간변경0. 일반시작화면진입이며quickstart/자동fixture없음. CUA에서이미실행중인앱의정상활성화를시도하고실행PID중복을대조한다. 관측성공자체가이동/공격/자연전투통과는아니다. MAP PRODUCTION REPORT: geometry/제품변경0,표현관계일부TECH통과,자연PLAYABLE/FPS미검수. VISUAL VERDICT: RETOUCH.

@@ -57395,3 +57395,6 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 2026-11-02 Mac동일bf3e/e33패키지 M1실제23/23 PASS(exit0), headless-rendertexture-1600x900/GUI0. 원26raw/27cacheexact복구. CUA선택자동실행1건즉시종료후known-beforeCAS회복. 자연OS검수보호runner준비,실제FPS미검수·기존FAIL보존.
 
 2026-11-02 원Core→fixture→원Core의기존view재동기화한정QA와읽기전용natural frame observer준비,정적error0/metadata유효. old58identity실패불변. bf3eOS입력로비무반응/자연미검증,프로필26/27복구. 제품변경0.
+
+
+2026-11-02 ac9c복원실제:원Core/tick/event/적16·접지·지면10/registry·camera true,old50identity파괴false. QA_MainTex조회38error와fixturehash변화로전체semanticfalse/exit2보존. profile26/27exact복구,새frameobserverGUI실행준비. 근거UNITY_GROUND_PLACEMENT_QA_20261102 및 evidence/UNITY_MAC_RECEIVER_RESTORE_20261102.json.
