@@ -1,6 +1,6 @@
 # Unity 설치형 지면 배치 — Mac 실제 QA 계약과 기록
 
-상태: 기준1403의 실제 ARM64 RED 확보. 후보95d4의 정상 제품 ARM64/Win64·시각·배송 검증은 진행 전이다. 제품 배치 코드는 PC 소유, 이 문서와 Tools/GroundPlacementCapture.cs/meta는 Mac QA 소유다. 기존 무데칼 동등성 FAIL 개인 코드를 합치지 않는다.
+상태: 기준1403 실제 RED, 후보95d4 실제 정상 ARM64148행/동일앱 M1 23행 기술 PASS. 추가 GPU mip0 기여 진단12행에서 실제 내부 잔차 .157~.969m로 제품 인수 FAIL. Win64·제품 설치·공통 통합은 보류한다. 제품 배치 코드는 PC 소유, 이 문서와 Tools/GroundPlacementCapture.cs/meta는 Mac QA 소유다. 기존 무데칼 동등성 FAIL 개인 코드를 합치지 않는다.
 
 ## 실제 기준 결과
 
@@ -72,17 +72,17 @@ receipt에는 baselineProductSource/실제 caller source, QA storage root, Runti
 
 STAGE: 기존 A2 설치형 접촉·수명주기 검수, 맵 제작0.
 MASTER/OUTER MASS/LARGE/MEDIUM/LANDMARK: 형상·경로·배치 기존 유지, 재검수0.
-GROUND:1403 실제 RED112/136. 후보95의 지면 접촉·속성·큰 반경 interior 검수 대기.
+GROUND:1403 실제 RED112/136. 후보95 정점·상태148/148 PASS이나 GPU mip0 기여12/12 표본의 내부 접촉 FAIL.
 PLAYABLE: 실제 자연 AI/피해/완주·성능 미검수. Core tree는 후보와1403 동일.
 CAMERA QA: START 흙/EARLY 경사/목교1920 원본과3840 direct RT. ARENA/SIDE/LANDMARK/LATE/EXIT 전체 맵 camera board 미재검수.
-TECH QA: baseline 오류/누락0·복원·같은 앱 Metal M1 23/23; 후보 실제 실행·배송 대기. route/collision/pageerror/404/seam/loading/performance 미재검수.
+TECH QA: baseline 오류/누락0·복원·같은 앱 Metal M1 23/23. 후보95 정상 ARM64148/148·같은앱 M1 23/23; alpha 보충12/12 정점 assertion PASS/contribution verified12, 오류0·누락0·원 Simulation 복원. 배송 보류. route/collision/pageerror/404/seam/loading/performance 미재검수.
 FILES: QA helper/meta/docs만 Mac 소유. 제품8경로는 PC 후보95 소유. 타인 WIP 무수정.
-GIT: baseline QA private a5d 원격 확인, common1403 보존. 후보+정확QA 후속 commit/build는 검수 전.
-VISUAL VERDICT: FAIL — baseline 설치형 접촉. 전체 A2 기존 RETOUCH·ImpactR4 FAIL을 승격하지 않음.
-NEXT PASS: 후보95 actual ARM64 정상제품/동일앱 M1/148행·큰 반경 visual→통과 시 common·설치·Win64배송/PC실행 회수.
+GIT: baseline a5d·후보0fe·alpha d9c6d66 원격 확인. 첫0fe 원격 readback은 빌드 후였으며 소급 prebuild 주장 금지. alpha d9c6d66은 빌드 전 push/readback 완료. common/설치1403 보존.
+VISUAL VERDICT: FAIL — baseline 설치형 접촉 및 후보95 큰 면 내부 접촉. 전체 A2 기존 RETOUCH·ImpactR4 FAIL을 승격하지 않음.
+NEXT PASS: 후보3c827c119의 sibling/UV/공유 mesh 링 QA 보완→별도 실제 Metal 대반경·기여·coverage·전개/roll geometry cache·대표 dense 성능→필요 full/M1/직접 시각→인수 후 common·정상 맥 설치·Win64배송/PC실행 회수.
 
 
-# GPU-decoded texture contribution 진단 보충 (미실행)
+# GPU-decoded texture contribution 진단 계약 (작성 당시 미실행; 아래 실제 결과 참조)
 
 입력 root overlay SHA f013cef386cc04fb4073f5f67fe892f0997be99460fe9c6ff6c7e679c937c25a. visible-interior 복사본만 편집했다. 원본/공유checkout/Git/Unity/Player/정적컴파일 수정·실행0. 기존 raw InteriorDiagnostic과148개 vertex/contact/UV/color/물성 assertion은 유지한다. raw max .22~.88m와 기존148 PASS를 투명부 제외로 삭제하거나 덮지 않는다.
 
@@ -127,3 +127,31 @@ lifecycle의 고정289/512 assertion만 실제 vertex>=3/triangle>=1로 바꿨�
 
 
 2026-11-02 exact95d4 alpha-only checkpoint: source e84233ab15b40284cc381a6c9cbd80e6bbac82dc9814a0647c6d44504cb80f66, isolated Roslyn C#9 compilation exit0/no diagnostics. This checkpoint has prefix selection, GPU mip0 contribution diagnostics, adaptive lifecycle topology counts; no adaptive performance or67 sibling/UV support. No new GPU execution/visual acceptance yet. Prior candidate148 contact assertions and normalM1 23 pass do not accept visible large-footprint interiors.
+
+
+## 실제95d4 GPU mip0 기여 결과 — 2026-11-02
+
+Source d9c6d66b0cc6da503d5210956c8125b835b0f682, product95d4, helper e84233ab15b40284cc381a6c9cbd80e6bbac82dc9814a0647c6d44504cb80f66. 원격 readback01:44:38 UTC 후 별도 정상 제품 ARM64 빌드 Succeeded/errors0. Runtime063e47bf9eb0b44d3546bf0f7e6b6f51eb200e4848a019c10b1ad4a9e9d90c57, Core4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d. size 접두사12행, assertion12/12 PASS, contribution12/12 verified, 오류0/누락0, 원 Simulation hash·참조 복원. lifecycle/전체148/M1은 이 alpha 앱에서 재실행하지 않았으며 앞선0fe 앱의 결과를 소급 대입하지 않는다.
+
+GPU-decoded mip0 symbolic potentialRGB>=.01 표본의 내부 잔차이며 depth occlusion/tonemap 최종 픽셀 동등성 주장이 아니다. signed 잔차는 양수 들뜸·음수 파묻힘이다. 매 실행 unscaled roll/time이 달라 이전95 캡처와 픽셀 동등 비교는 하지 않는다.
+
+| site | consumer | 기여 표본 | 2cm초과 | maxAbs m | p95Abs m | 최악 signed m |
+|---|---|---:|---:|---:|---:|---:|
+|soil|size-spikeTrap-Lv1|374|11|0.157357|0.009817|+0.157357|
+|soil|size-spikeTrap-Lv20|374|64|0.496313|0.083990|+0.496313|
+|soil|size-holyDome-Lv1|279|47|0.432608|0.108953|+0.432608|
+|soil|size-holyDome-Lv20|280|70|0.449380|0.113352|-0.449380|
+|root-slope|size-spikeTrap-Lv1|374|87|0.169627|0.083586|-0.169627|
+|root-slope|size-spikeTrap-Lv20|367|101|0.495339|0.102133|+0.495339|
+|root-slope|size-holyDome-Lv1|228|57|0.409483|0.131012|-0.409483|
+|root-slope|size-holyDome-Lv20|251|78|0.454275|0.259591|-0.454275|
+|wood-bridge|size-spikeTrap-Lv1|376|143|0.832280|0.496679|-0.832280|
+|wood-bridge|size-spikeTrap-Lv20|379|147|0.775827|0.410495|+0.775827|
+|wood-bridge|size-holyDome-Lv1|265|95|0.491898|0.312972|-0.491898|
+|wood-bridge|size-holyDome-Lv20|243|99|0.968842|0.372928|-0.968842|
+
+1920 원본12개·3840x1080 directRT12개 보존. 목교 Lv20 spike/holy1920 원본을 직접 확인했다. spike의 목교/수면 경계 평면 굴곡·긴 연결선이 남아 인수 불가; holy는 낮은 alpha와 지면에 가려지는 부분이 있어 raw 수치 전체를 최종 가시 픽셀로 주장하지 않는다. LineRenderer의 contribution count0은 미측정이며0오차 PASS가 아니다. PC 후속3c가 원72polygon 링을 본체 접지면과 공유한다.
+
+모든26개 Exoduser Preferences raw 및 cache export를 이번 Player 직전에 백업·비교했다. 종료 후 정상 product domain의 raw SHA e5a6b4bc2005eef68b1d40111c1342fc94ac82ca35c7644948e92abc61c16889와 cache semantics 복원. source raw 전/후 전체3543/3600파일 및772변형 경로 원문 보존. 이전baseline R2 앱만 전체211파일 manifest와5개 identity를 남기고 정리했으며 R3·95 정상 앱·캡처·로그·원문입력은 보존했다. common/설치1403 변경0.
+
+원 증거: alpha95-contribution-summary.json, alpha95/ground-placement-receipt.json, alpha95-run-result.json, alpha95-source-remote-proof.json, alpha95-normal-import-drift.json.
