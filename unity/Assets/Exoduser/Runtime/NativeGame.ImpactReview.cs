@@ -16,7 +16,7 @@ namespace Exoduser.UnityPort
         {
             public string scope="실제 GPU Player 16초: 고정 입력·AI 루프 활성/검수 기절180 갱신으로 자발 행동 중지·실제 넉백·첫 표적1회 실제 처치/나머지 불사 표적·현행 5스킬과 독/가시/어둠 탄 겹침 fixture. 자연 전투·미이식 스킬 증거 아님";
             public string device,coreTraceSha256; public bool world3D,baseline,passed;
-            public int flipbookFrames,peakSprites,maxReactingTargets;public bool warriorOnly,responseBaseline;public int frames,contacts,dropped,damage,casts,spawned,peakParticles,skillGraphEvents,peakSkillHandles,poisonFrames,thornFrames,darkFrames;
+            public int flipbookFrames,peakSprites,maxReactingTargets,normalReactingTargets;public bool warriorOnly,responseBaseline;public int frames,contacts,dropped,damage,casts,spawned,peakParticles,skillGraphEvents,peakSkillHandles,poisonFrames,thornFrames,darkFrames;
             public int captureWidth,captureHeight;
             public float normalKnockback,kiKnockback,slamKnockback;
             public int killedTargets;public bool killContactSeen;
@@ -57,7 +57,7 @@ namespace Exoduser.UnityPort
                 // must not create repeated hits that hide the next skill's cue.
                 // This explicit fixture reset is identical in both render paths.
                 sim.FireZones.Clear();sim.SlamWaves.Clear();sim.SkillBlades.Clear();sim.MaliceOrbs.Clear();sim.Projectiles.Clear();sim.IceOrbActive=false;
-                for(int k=0;k<3;k++)sim.Enemies.Add(new EnemyState{Id=-91000-sectionIndex*10-k,Etype=0,Hp=sectionIndex==0&&k==0?1:1000000,MaxHp=1000000,Level=1,X=p.X+(k<2?48:104),Y=p.Y+(k==0?-28:k==1?28:0),Radius=15,Poise=1000,MaxPoise=1000});
+                for(int k=0;k<3;k++)sim.Enemies.Add(new EnemyState{Id=-91000-sectionIndex*10-k,Etype=0,Hp=sectionIndex==0&&k==0?1:1000000,MaxHp=1000000,Level=1,X=p.X+(rc.warriorOnly&&sectionIndex==0?48:k<2?48:104),Y=p.Y+(k==0?-28:k==1?28:0),Radius=15,Poise=1000,MaxPoise=1000});
                 // Deliberate synthetic hazard lane, below the player. Actual Core projectile
                 // stepping is retained, so both render paths see the identical moving shots.
                 if(sim.Druid!=null)
@@ -85,7 +85,7 @@ namespace Exoduser.UnityPort
                         if(feedback.Kind==FeedbackKind.KiSlashHit)rc.kiThirdHitSeen=true;
                     }
                     DispatchFeedback();UpdateViews();Running=false;
-                    int reacting=0;foreach(var e in sim.Enemies)if(contactVfx.EnemyFrozen(e.Id,ImpactNow))reacting++;rc.maxReactingTargets=Math.Max(rc.maxReactingTargets,reacting);
+                    int reacting=0;foreach(var e in sim.Enemies)if(contactVfx.EnemyFrozen(e.Id,ImpactNow))reacting++;rc.maxReactingTargets=Math.Max(rc.maxReactingTargets,reacting);if(sectionIndex==0)rc.normalReactingTargets=Math.Max(rc.normalReactingTargets,reacting);
                     if(sectionIndex==0&&!sim.Enemies[0].Alive&&contactVfx.EnemyFrozen(sim.Enemies[0].Id,ImpactNow)&&contactVfx.Spawned>0)rc.killContactSeen=true;
                     trace.Append(sim.TickCount).Append('|').Append(p.State).Append('|').Append(p.X.ToString("R",CultureInfo.InvariantCulture)).Append('|').Append(p.Y.ToString("R",CultureInfo.InvariantCulture)).Append('|')
                         .Append(p.Stamina.ToString("R",CultureInfo.InvariantCulture)).Append('|').Append(p.Mana.ToString("R",CultureInfo.InvariantCulture)).Append('|').Append(sim.SkillCastCount);
@@ -108,7 +108,7 @@ namespace Exoduser.UnityPort
             bool feedbackOk=rc.baseline||rc.killContactSeen&&rc.contacts>0&&rc.spawned>0&&rc.flipbookFrames>0&&rc.peakSprites>0;
             bool warriorOk=rc.normalKnockback>1&&rc.kiKnockback>1&&rc.killedTargets>=1&&rc.kiThirdCastSeen&&rc.kiThirdHitSeen&&rc.kiThirdTier==3;
             bool skillsOk=rc.warriorOnly||rc.slamKnockback>1&&rc.coreMaliceBlasts>0&&castKinds.Contains("spikeTrap")&&castKinds.Contains("giantSlam")&&castKinds.Contains("holyDome")&&castKinds.Contains("iceOrb")&&castKinds.Contains("fireball");
-            rc.passed=warriorOk&&skillsOk&&feedbackOk&&(!rc.warriorOnly||rc.baseline||rc.maxReactingTargets>=(rc.responseBaseline?2:3))&&rc.captureWidth==width&&rc.captureHeight==height&&rc.world3D==NativeRemodel3D.Requested&&shot==(rc.warriorOnly?300:480)&&damage>0;
+            rc.passed=warriorOk&&skillsOk&&feedbackOk&&(!rc.warriorOnly||rc.baseline||rc.normalReactingTargets==(rc.responseBaseline?2:3))&&rc.captureWidth==width&&rc.captureHeight==height&&rc.world3D==NativeRemodel3D.Requested&&shot==(rc.warriorOnly?300:480)&&damage>0;
 
             File.WriteAllText(Path.Combine(output,"impact-review.json"),JsonUtility.ToJson(rc,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();
