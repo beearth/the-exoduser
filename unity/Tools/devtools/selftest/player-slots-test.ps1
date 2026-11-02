@@ -76,6 +76,15 @@ try {
  Check ((Get-PlayerDrainReason) -match 'legacy') 'starvation drain absent'
  $blocked=$false;try{Acquire-PlayerSlot 'fake.exe' $PID}catch{$blocked=$_.Exception.Message -match '굶주림'}
  Check $blocked 'starvation gate did not stop admission'
+ $Owner='legacy';Check (-not(Get-PlayerDrainReason)) 'own editor reservation drains own player';$Owner='a'
+ Get-ChildItem -LiteralPath $Root -Filter '_player_slot_*.json'|Remove-Item
+ $key=[string]$old.owner+'|'+[string]$old.createdAt
+ Write-JsonAtomic (Join-Path $Root '_player_drain.json') @{key=$key;zeroAt='';idleUntil=''}
+ Check ((Get-PlayerDrainReason) -match '빈 Editor 창') 'zero players did not open the editor window'
+ Write-JsonAtomic (Join-Path $Root '_player_drain.json') @{key=$key;zeroAt=[datetime]::UtcNow.AddSeconds(-121).ToString('o');idleUntil=''}
+ Check (-not(Get-PlayerDrainReason)) 'idle front reservation still drains after the 120s window'
+ Check ([bool](Read-Json (Join-Path $Root '_player_drain.json')).idleUntil) 'idle cooldown not recorded'
+ Check (-not(Get-PlayerDrainReason)) 'drain returned during the 30-min idle cooldown'
  Write-JsonAtomic $LockPath @{owner='devtools-server';pid=$PID;startedAt=(NowIso)}
  Check (-not(Get-PlayerDrainReason)) 'drain triggered while editor lock occupied'
  Acquire-PlayerSlot 'fake.exe' $PID
