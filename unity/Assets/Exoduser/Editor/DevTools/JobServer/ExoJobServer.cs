@@ -84,6 +84,12 @@ namespace Exoduser.DevTools
 
         static readonly string _q;
         static readonly bool _on;
+        static string _owner = "", _lockToken = "";
+        static int _idleYieldSec = 180;
+        static int _waitingOthers;
+        static bool _yieldRequested;
+        static string AdmissionFile { get { return Path.Combine(_q, "admission.lock"); } }
+        static string YieldFile { get { return Path.Combine(_q, "yielding.json"); } }
         static string _proj = "", _head = "";
         static ExoJobState _cur;
         static double _nextPoll;
@@ -112,6 +118,10 @@ namespace Exoduser.DevTools
             {
                 _q = a[i + 1];
                 _on = true;
+                _owner = Arg(a, "-exoOwner", Path.GetFileName(_q));
+                _lockToken = Arg(a, "-exoLockToken", "");
+                int threshold;
+                if (int.TryParse(Arg(a, "-exoIdleYieldSec", "180"), out threshold) && threshold > 0) _idleYieldSec = threshold;
                 foreach (var d in new[] { Inbox, Running, Done, Logs }) Directory.CreateDirectory(d);
                 _proj = Path.GetDirectoryName(Application.dataPath) ?? "";
 
@@ -198,7 +208,7 @@ namespace Exoduser.DevTools
         // ------------------------------------------------------------------ 메인 루프
         static void Tick()
         {
-            if (!_on) return;
+            if (!_on || _yieldRequested) return;
             try
             {
                 if (_cur == null)
@@ -215,6 +225,15 @@ namespace Exoduser.DevTools
                         EditorApplication.Exit(0);
                         return;
                     }
+                    if (EditorApplication.isCompiling || EditorApplication.isUpdating)
+                    {
+                        _state = EditorApplication.isCompiling ? "compiling" : "refreshing";
+                        _lastActivityMs = NowMs();
+                        SessionState.SetString(KActivity, _lastActivityMs.ToString(CultureInfo.InvariantCulture));
+                        return;
+                    }
+                    _state = "idle";
+                    if (TryIdleYield()) return;
                     Claim();
                     if (_cur == null) return;
                 }
@@ -228,6 +247,79 @@ namespace Exoduser.DevTools
                     try { Finish(_cur, false, 1, ToEx(e), null, 0, "서버 내부 오류"); } catch { _cur = null; _curId = ""; _state = "idle"; }
                 }
             }
+        }
+
+        [Serializable] class WaitRecord
+        {
+            public string owner, reservedAs, worktree, expiresAt, token, queueDir, kind;
+            public int pid;
+        }
+
+        static string Arg(string[] args, string key, string fallback)
+        {
+            int at = Array.IndexOf(args, key);
+            return at >= 0 && at + 1 < args.Length ? args[at + 1] : fallback;
+        }
+
+        static WaitRecord ReadWait(string file)
+        {
+            try { return JsonUtility.FromJson<WaitRecord>(File.ReadAllText(file)); } catch { return null; }
+        }
+
+        static string OwnerOf(WaitRecord r)
+        {
+            if (!string.IsNullOrWhiteSpace(r.owner)) return r.owner;
+            return Path.GetFileName((r.worktree ?? "").TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
+        }
+
+        static List<string> WaitingOwners()
+        {
+            var owners = new List<string>();
+            string root = Path.GetDirectoryName(_q);
+            foreach (var f in SortedJson(Path.Combine(root, "queue")))
+            {
+                var r = ReadWait(f); DateTime expires;
+                if (r != null && IdleYieldPolicy.IsEditorWaiter(r.kind) && DateTime.TryParse(r.expiresAt, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out expires)
+                    && expires.ToUniversalTime() > DateTime.UtcNow) owners.Add(OwnerOf(r));
+            }
+            foreach (var f in SortedJson(Path.Combine(root, "_tickets")))
+            {
+                var r = ReadWait(f);
+                if (r == null || r.pid <= 0 || !IdleYieldPolicy.IsEditorWaiter(r.kind)) continue;
+                try { using (var p = Process.GetProcessById(r.pid)) { if (!p.HasExited) owners.Add(OwnerOf(r)); } } catch { }
+            }
+            return owners;
+        }
+
+        static bool TryIdleYield()
+        {
+            var waiters = WaitingOwners();
+            _waitingOthers = waiters.FindAll(w => !string.IsNullOrWhiteSpace(w) && !string.Equals(w, _owner, StringComparison.OrdinalIgnoreCase)).Count;
+            long idle = Math.Max(0, (NowMs() - _lastActivityMs) / 1000);
+            if (!IdleYieldPolicy.ShouldYield(_state, idle, _idleYieldSec, _owner, waiters)) return false;
+            // Submission and yielding share admission.lock: a job is either accepted or sent to batch, never stranded.
+            try
+            {
+                using (var guard = new FileStream(AdmissionFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None))
+                {
+                    if (Directory.GetFiles(Inbox, "*.json").Length > 0) return false;
+                    var held = ReadWait(Path.Combine(Path.GetDirectoryName(_q), "_pc_lock.json"));
+                    int pid = Process.GetCurrentProcess().Id;
+                    if (held == null || held.pid != pid || string.IsNullOrEmpty(_lockToken) || held.token != _lockToken) return false;
+                    File.WriteAllText(YieldFile, "{\"pid\":" + pid + "}", new UTF8Encoding(false));
+                    string line = IsoFromMs(NowMs()) + " owner=" + _owner.Replace("\r", "").Replace("\n", "") + " pid=" + pid + " idleSec=" + idle + " waiting=" + _waitingOthers + " action=stop\n";
+                    using (var log = new FileStream(Path.Combine(Path.GetDirectoryName(_q), "yield.log"), FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
+                    { byte[] bytes = new UTF8Encoding(false).GetBytes(line); log.Write(bytes, 0, bytes.Length); }
+                    _yieldRequested = true;
+                    _state = "stopping";
+                    BeatSafe(null);
+                }
+                Debug.Log("[ExoJobServer] idle yield: idle=" + idle + "s waiting=" + _waitingOthers);
+                // Same graceful path as stop. Keep PID lock until exit; next acquirer removes it only after PID death.
+                EditorApplication.Exit(0);
+                return true;
+            }
+            catch (IOException) { if (!_yieldRequested) TryDelete(YieldFile); return false; }
         }
 
         static void Claim()
@@ -464,6 +556,9 @@ namespace Exoduser.DevTools
                 sb.Append(",\"currentJob\":").Append(Q(_curId));
                 sb.Append(",\"jobsDone\":").Append(_jobsDone);
                 sb.Append(",\"idleSec\":").Append(idle);
+                sb.Append(",\"idleYieldSec\":").Append(_idleYieldSec);
+                sb.Append(",\"waitingOthers\":").Append(_waitingOthers);
+                sb.Append(",\"owner\":").Append(Q(_owner));
                 long wsB = 0, peakWsB = 0, commitB = 0, peakCommitB = 0;
                 PMC pmc;
                 if (GetProcessMemoryInfo(p.Handle, out pmc, (uint)Marshal.SizeOf(typeof(PMC))))
