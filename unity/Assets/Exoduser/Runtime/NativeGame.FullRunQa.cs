@@ -205,7 +205,7 @@ namespace Exoduser.UnityPort
                             if (d < best) { best = d; destination = new Vector2(e.X,e.Y); objective = "remaining-" + e.Id; }
                         }
                     }
-                    var move = navigation.Direction(p.X,p.Y,destination.x,destination.y,p.Radius,FullRunCanMove,sim.TickCount);
+                    var move = navigation.Direction(p.X,p.Y,destination.x,destination.y,p.Radius,FullRunCanMove,sim.TickCount,flow.InArena&&!flow.BossAlive);
                     if(fighting&&Vector2.SqrMagnitude(new Vector2(p.X,p.Y)-aim)>=(selectedAngler?320*320:170*170)&&Vector2.SqrMagnitude(new Vector2(p.X,p.Y)-aim)<(selectedAngler?410*410:260*260)&&FullRunLine(p.X,p.Y,aim.x,aim.y)){var offset=new Vector2(p.X,p.Y)-aim;var tangent=new Vector2(-offset.y,offset.x).normalized;if(FullRunCanMove(p.X+tangent.x*80,p.Y+tangent.y*80,p.Radius))move=tangent;}
                     var keys = new List<Key> { Key.R };
                     bool defend=false,evade=false,shield=false;Vector2 threat=aim;double shieldDistance=0,shieldSpeed=0;
@@ -434,7 +434,7 @@ namespace Exoduser.UnityPort
     sealed class FullRunNavigation
     {
         readonly List<Vector2> path=new List<Vector2>();Vector2 goal;int nextPlan,probeTick,fineUntil;Vector2 probePosition,probeGoal;
-        public Vector2 Direction(float x,float y,float tx,float ty,float radius,Func<float,float,float,bool> canMove,int tick)
+        public Vector2 Direction(float x,float y,float tx,float ty,float radius,Func<float,float,float,bool> canMove,int tick,bool precise=false)
         {
             var from=new Vector2(x,y);var target=new Vector2(tx,ty);
             if(Vector2.Distance(from,target)<12)return Vector2.zero;
@@ -463,7 +463,8 @@ namespace Exoduser.UnityPort
             }
             while(path.Count>0&&Vector2.Distance(from,path[0])<12)path.RemoveAt(0);
             var to=path.Count>0?path[0]:target;var delta=to-from;
-            var move=new Vector2(Mathf.Abs(delta.x)>8?Mathf.Sign(delta.x):0,Mathf.Abs(delta.y)>8?Mathf.Sign(delta.y):0);
+            float alignment=precise?1:8;
+            var move=new Vector2(Mathf.Abs(delta.x)>alignment?Mathf.Sign(delta.x):0,Mathf.Abs(delta.y)>alignment?Mathf.Sign(delta.y):0);
             if(!canMove(x+move.x*6,y+move.y*6,radius)){nextPlan=0;if(move.x!=0&&canMove(x+move.x*6,y,radius))return new Vector2(move.x,0);if(move.y!=0&&canMove(x,y+move.y*6,radius))return new Vector2(0,move.y);return Vector2.zero;}
             return move;
         }
