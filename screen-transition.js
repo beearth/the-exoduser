@@ -7,17 +7,23 @@
   motionQuery.addEventListener?.('change',reduce);root.addEventListener('storage',reduce);document.addEventListener('change',reduce);
   const duration=ms=>reduce()?80:ms;
   let executing=false,active=null,loadingTimer=null,loadingSince=0,animation=null,covered=false,fadeSeq=0,coverPromise=null;
-  let incoming=0;
-  try{incoming=Number(sessionStorage.getItem(KEY))||0;sessionStorage.removeItem(KEY);}catch{}
+  let incoming=Number(root.__screenBootSince)||0;
+  try{incoming=incoming||Number(sessionStorage.getItem(KEY))||0;sessionStorage.removeItem(KEY);}catch{}
   if(incoming&&Date.now()-incoming>15000)incoming=0;
   const boot=/game(?:demo)?\.html$/i.test(location.pathname);
   if(incoming||boot){html.dataset.screenCover='1';covered=true;}
   const element=()=>document.getElementById('screenTransition');
   const paint=()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
   function loading(on,since=Date.now()){
+    if(on&&loadingSince)return; // A fade, decode and navigation share one elapsed clock.
     reduce();clearTimeout(loadingTimer);loadingTimer=null;loadingSince=on?since:0;
-    html.removeAttribute('data-screen-loading');
-    if(on)loadingTimer=setTimeout(()=>{if(loadingSince)html.dataset.screenLoading='1';},Math.max(0,300-(Date.now()-since)));
+    html.toggleAttribute('data-screen-pending',on);
+    if(!on){html.removeAttribute('data-screen-loading');return;}
+    const label=document.getElementById('screenLoadingLabel');
+    if(label){try{const translate=root._TL||root._T;if(translate)label.textContent=translate('불러오는 중...');}catch{}}
+    html.style.setProperty('--screen-loading-delay',Math.max(0,300-(Date.now()-since))+'ms');
+    html.style.setProperty('--screen-label-delay',Math.max(0,1000-(Date.now()-since))+'ms');
+    loadingTimer=setTimeout(()=>{if(loadingSince)html.dataset.screenLoading='1';},Math.max(0,300-(Date.now()-since)));
   }
   function audio(value,ms){root.DecisionSound?.setTransitionGain?.(value,ms);}
   async function fade(to,ms,keepLoading=false){
@@ -25,7 +31,7 @@
     const el=element();if(!el)return;
     if(animation){animation.cancel();animation=null;}
     const from=Number(getComputedStyle(el).opacity),time=duration(ms);
-    if(to===1){covered=true;html.dataset.screenCover='1';}
+    if(to===1){loading(true);covered=true;html.dataset.screenCover='1';}
     audio(1-to,time);root.dispatchEvent(new CustomEvent('screen-transition-gain',{detail:{value:1-to,ms:time}}));
     el.style.opacity=String(to);
     if(el.animate){const current=el.animate([{opacity:from},{opacity:to}],{duration:time,easing:'ease-in-out'});animation=current;await current.finished.catch(()=>{});if(animation===current)animation=null;}
@@ -37,12 +43,12 @@
   function fadeIn(options={}){return fade(0,600,options.keepLoading);}
   function withLoading(work){
     if(active)return active;
-    active=(async()=>{await fadeOut();loading(true);try{executing=true;return await (typeof work==='function'?work():work);}finally{executing=false;loading(false);await paint();await fadeIn();}})().finally(()=>{active=null;});
+    active=(async()=>{await fadeOut();try{executing=true;return await (typeof work==='function'?work():work);}finally{executing=false;await paint();await fadeIn();}})().finally(()=>{active=null;});
     return active;
   }
   function navigate(url,isCurrent=()=>true){
     if(active)return active;
-    active=(async()=>{await fadeOut();if(!isCurrent()){await fadeIn();active=null;return;}const since=Date.now();loading(true,since);try{sessionStorage.setItem(KEY,String(since));}catch{}try{location.assign(url);}catch(error){await fadeIn();active=null;throw error;}})();
+    active=(async()=>{await fadeOut();if(!isCurrent()){await fadeIn();active=null;return;}const since=loadingSince||Date.now();loading(true,since);try{sessionStorage.setItem(KEY,String(since));}catch{}try{location.assign(url);}catch(error){await fadeIn();active=null;throw error;}})();
     return active;
   }
   function imageReady(img){
