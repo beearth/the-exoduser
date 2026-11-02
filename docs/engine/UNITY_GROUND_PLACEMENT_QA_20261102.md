@@ -667,3 +667,41 @@ No full12/dense8/full149/M1 run is added. No same-frame full per-channel mode4/U
 
 
 ROOT intake: same product8f, helper static0errors/3known legacy unassigned-field warnings. Independent QA sampler shader GPU/Metal compilation is pending, no product shader/formula/criteria change. Original PNG PC received4173019B/SHA7b87f8a2e421907d70080a91b5627c1adc0a23658e6d33e39d57014641c367e3 exact and visually checked one frame; owned4498 one-file server stopped/exit0. Next one-case sampler diagnostic only; no full expansion.
+
+
+## 2026-11-02 맥 실제 GPU sampler 진단 결과
+
+제품 `8f391fea6f157433fcaea2df611d0a9b146c6604` 그대로, QA `0d9ca921cb68836d8d0c61999bf6262fa0fb6e87`를 GitHub 원격에서 빌드 전에 일치 확인했다. 일반 ARM64 앱 빌드 errors0, 실제 Apple M5 Pro/Metal/1920×1080에서 한 장면만 실행했다. 원본 import 전후 바이트와 772 경로 drift를 둘 다 보존했다. 설치된 공통1403와 공유 소스 HEAD/index/WIP는 바이트 검사로 유지 확인했다.
+
+| 검사 | 실제 값 | 판정/한계 |
+|---|---:|---|
+| Mode1 | positive96632, finite/UV/XZ 위반0 | PASS, 한 장면만 |
+| Mode2 기존 CPU bilinear weight | max0.04643953591585159 | FAIL 유지, 허용2/255 변경없음 |
+| Mode2 기존 maxRGB | 0.007769191637635231 | 기존2/255 이내 |
+| Mode3 수신면 깊이 차이 | max0.019809722900390625m | 0.02m 이내 PASS |
+| Mode4 | 존재/유한/alpha0 | 기존 게이트 PASS; 원 RGBA 동등성 미검증 |
+| GPU SampleLevel weight 오차 | max0.046419255435466766 | 단일 mip 표본 불일치 재현 |
+| GPU SampleGrad weight 오차 | max0.00031794013921171427 | footprint 반영 시 감소, exact quad 아님 |
+| GPU Load 대 decodecache texel RGBA | alpha0/RGB0 | 같은 원본 texel 확인 |
+| GPU Level 대 CPUcache alpha | max0.0003750324249267578 | 큰 원본 디코딩 오류 근거 없음 |
+| 원본 runtime aniso / global | 1 / ForceEnable | 읽기만 수행 |
+| 환경설정 | raw26/cache27 | 종료 및 복구 후 즉시/2s/7s exact |
+
+전체 smoke는 false/exit2로 유지한다. 단순 mip0 bilinear 참조와 실제 하드웨어 footprint의 차이를 강하게 지지하지만, finite-neighbor SampleGrad는 원래 fragment quad derivative의 정확한 회수가 아니다. 다음 QA 교정은 같은2/255로 Grad weight/RGB와 안정된 입력hash/카메라 조건의 mode4 RGBA를 비교하고 모든 sample derivative 유효성을 검사해야 한다. invalid/입력불일치는 조용히 통과시키지 않는다. 원본 texture/importer/Quality/product shader는 바꾸지 않는다. 이전 bilinear FAIL과 원 데이터는 삭제하거나 재분류하지 않는다. 제품 인수·전체148/12large/8dense/M1/설치/Win64는 아직 미수행이다.
+
+MAP PRODUCTION REPORT
+- STAGE: A2 soil Lv1 spike receiver QA 한 장면, geometry 제작없음.
+- MASTER: silhouette/regions/main route/side spaces 미변경·이번 검수범위 밖.
+- OUTER MASS: LEFT/RIGHT/TOP/SOUTH/major holes 미변경·미검수.
+- LARGE: source assets/composites/overlap/repeated silhouette 미변경·미검수.
+- MEDIUM: connections/remaining holes 미변경·미검수.
+- GROUND: effect가 soil을 따라 보이는 원본1920 프레임 직접 확인. contamination/structure integration 전체 검수 아님.
+- PLAYABLE: arenas/travel/breathing/threat space 미검수. actor 앞 지면 효과 한 프레임만 확인, 전 actor 제외 증명 아님.
+- LANDMARK: primary/secondary/tertiary 미변경·미검수.
+- CAMERA QA: START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 투어 미수행. 고정 QA 카메라 한 장면만.
+- TECH QA: route/collision/pageerror/404/seam 전체 미검수; shader/RenderGraph error 없음, UpdateViews/Late 시간은 아래 evidence에 기록하며 전체 FPS 판정 아님.
+- FILES: stage-owned QA helper/shader/meta/guard/docs/evidence. concurrent/unrelated 공유 작업 변경없음.
+- GIT: source0d9ca921 원격 선확인; 결과는 본 커밋. deploy/install 미수행.
+- VISUAL VERDICT: RETOUCH. 한 프레임 지면 부착 외관은 양호하나 RGBA/전체 접촉/전체 씬 검수가 남았다. 기존 A2/ImpactR4 판정 승격없음.
+
+증거: `docs/engine/evidence/UNITY_MAC_RECEIVER_SAMPLER_20261102.json`. Python guard는 검증된 receiver47 wrapper의 경로/receipt 이름만 receiverSampler로 바꿔 동일 보호 절차를 적용했고 실제26raw/27cache 복구를 확인했다.
