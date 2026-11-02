@@ -260,3 +260,5 @@ Graph 본체 대신 기존 원화 경로를 유지한다. 실제 첫 Player에�
 | 관측 | `projectileBaseline`, `originalPoisonFrames`, `originalPhysicalFrames`, `originalDarkFrames`, `originalBulletFallbacks`. 실제 NativeBossView 원화 소비를 세며, 꺼진 Graph의 프레임 수로 원화 출력을 증명하지 않음 |
 | 검사·판정 | 명암 단조증가·양끝 승인색을 포함한 표현976개 GREEN. CPU는 색/표현 계약만 검증. 정식 빌드·M1·같은크기10초·탄과 아군공격 중첩·3배크롭의 실제 판정 전에는 미검증 |
 
+첫 탄막 정식 시도 `1a51ace0`은 NativeBossView 내부 기존 `Vfx` 타입과 네임스페이스의 충돌 CS0117로 실패했다. 해당 호출을 `Exoduser.UnityPort.Vfx.SkillPresentation`으로 한정한다. 실패 로그는 남기며 새 고정 입력의 재빌드로 확인한다.
+

@@ -44,7 +44,7 @@ namespace Exoduser.UnityPort
                     for(int f=0;f<CometFrameCount;f++)
                     {
                         var cell=new Color32[cw*ch];
-                        for(int y=0;y<ch;y++)for(int x=0;x<cw;x++){var c=source[y*src.width+f*cw+x];uint rgb=Vfx.SkillPresentation.EnemyPixel((uint)(c.r<<16|c.g<<8|c.b),false);cell[y*cw+x]=new Color32((byte)(rgb>>16),(byte)(rgb>>8),(byte)rgb,c.a);}
+                        for(int y=0;y<ch;y++)for(int x=0;x<cw;x++){var c=source[y*src.width+f*cw+x];uint rgb=Exoduser.UnityPort.Vfx.SkillPresentation.EnemyPixel((uint)(c.r<<16|c.g<<8|c.b),false);cell[y*cw+x]=new Color32((byte)(rgb>>16),(byte)(rgb>>8),(byte)rgb,c.a);}
                         var image=new Texture2D(cw,ch,TextureFormat.RGBA32,true){filterMode=FilterMode.Trilinear,wrapMode=TextureWrapMode.Clamp};image.SetPixels32(cell);image.Apply(true,true);
                         frames[f]=Sprite.Create(image,new Rect(0,0,cw,ch),new Vector2(.62f,.5f),100,0,SpriteMeshType.FullRect);
                     }
