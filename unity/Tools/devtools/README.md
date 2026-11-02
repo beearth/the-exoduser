@@ -2,7 +2,7 @@
 
 ## 브리프에 그대로 붙일 짧은 예시 (Codex·다른 세션)
 ```powershell
-$x = 'G:\exoduser\unity\Tools\devtools\exo-unity.ps1'; $wt = '<내 워크트리 경로>'   # 창 0 · 소리 0 · 세이브 격리 · 잠금·순번 자동 (Unity·플레이어·브라우저는 이 실행기로만)
+$x = 'I:\EXODUSER-Storage\unity-jobs\bin\exo-unity.ps1'; $wt = '<내 워크트리 경로>'   # 총괄 병합·install-bin 뒤 레인은 이 공용 설치본을 부른다. 창 0 · 소리 0 · 세이브 격리
 & $x run    -Worktree $wt -Method <클래스.메서드> -Args '-a,1,-b,2'                         # 에디터 job
 & $x build  -Worktree $wt -Args '-output,<dir>,-receipt,<json>'                              # 빌드(PortVerification.Build)
 & $x player -Worktree $wt -Exe <exe> -Args '--unity-m1-check,-output,<dir>'                  # 플레이어(숨은 데스크톱 기본)
@@ -63,8 +63,9 @@ Unity를 작업마다 새로 띄우면 고정 비용(라이선스·첫 Refresh·
 - 에디터: `unity/Assets/Exoduser/Editor/DevTools/JobServer/` (`ExoJobServer` — `-exoJobServer <queueDir>`가 있을 때만 켜짐, `ExoArgs.Get()` — 명령줄 대체)
 - CLI: `unity/Tools/devtools/exo-unity.ps1` (PowerShell 5.1)
 - 큐 폴더: `I:\EXODUSER-Storage\unity-jobs\<워크트리 폴더명>\` (`inbox` `running` `done` `logs` `server.json`)
-- 잠금: `I:\EXODUSER-Storage\unity-jobs\_pc_lock.json` (PC 전체 Unity 1개)
-- 순번 예약: `I:\EXODUSER-Storage\unity-jobs\queue\`
+- Editor 잠금: `I:\EXODUSER-Storage\unity-jobs\_pc_lock.json` (Unity.exe 1개)
+- Player 슬롯: 같은 폴더의 `_player_slot_1.json`·`_player_slot_2.json` (Editor와 독립)
+- 순번 예약: `I:\EXODUSER-Storage\unity-jobs\queue\` (`kind=editor|player`, 없는 구예약은 editor)
 
 ## 명령
 ```powershell
@@ -87,12 +88,12 @@ $wt = 'E:\exoduser-wt\<내 워크트리>'
 
 ## 순번 예약 (유니티 총괄이 운영)
 ```powershell
-& $x reserve   -Owner unity-m1-sonnet -Note "m1-check 다음" [-TtlMin 120]   # 예약(같은 Owner는 갱신)
+& $x reserve   -Owner unity-m1-sonnet -Kind player -Note "m1-check 다음" [-TtlMin 120]   # 같은 Owner·Kind 갱신
 & $x queue                                                                    # 잠금 보유자 + 예약 순서
-& $x unreserve -Owner unity-m1-sonnet
+& $x unreserve -Owner unity-m1-sonnet -Kind player
 & $x start -Worktree $wt -Owner unity-m1-sonnet                               # 맨 앞 예약자만 진행(획득하면 예약 소멸)
 ```
-예약이 하나라도 있으면 `-Owner`가 맨 앞 예약자와 같은 호출만 잠금을 잡는다. 예약은 TTL(기본 120분)이 지나면 사라진다.
+각 종류의 예약 선두 Owner만 통과한다. `-Kind` 기본은 editor이며 TTL(기본 120분)이 지난 예약은 읽기에서 제외하고 타 담당 파일을 삭제하지 않는다. Player의 실행 중 예약은 대기 FIFO에서 제외하므로 두 번째 Player도 통과한다.
 다른 세션이 손으로 만든 잠금(pid 없음)은 보유 중으로 보고 기다린다(60분 지나고 Unity 0개일 때만 stale).
 `-Takeover`: 다른 워크트리 서버가 잠금을 쥐고 idle 300초 이상이면 stop 요청 후 넘겨받는다. 기본은 대기(최대 `-WaitMin` 40분, `-PollSec` 30초 간격).
 
@@ -106,7 +107,7 @@ $wt = 'E:\exoduser-wt\<내 워크트리>'
 - `browser`: node 를 `exo-pw-guard.cjs` 와 함께 띄운다. 가드가 Playwright `launch`/`launchPersistentContext` 에 `headless:true` + 크로미움 `--mute-audio` 를 강제하고, `headless:false`/`--headed` 는 스크립트 문구와 실행 중 호출 모두 거부한다. playwright 는 `-NodeModules`(기본 `G:\exoduser\node_modules`)에서 찾는다. 자체 점검: `selftest\pw-smoke.mjs`.
 - 거부(종료 코드 2, 사유 출력): `-popupwindow`, `-screen-fullscreen`, `-nographics`, Playwright `headless:false`/`--headed`, nw.js.
 - 실행 뒤 검사: 띄운 프로세스 트리와 실행 중 새로 생긴 `EXODUSER-Unity/Unity/nw` 프로세스 중 `MainWindowHandle ≠ 0` 이면 실패(종료 코드 4). 새로 생긴 `chrome/msedge` 는 우리 명령줄과 겹칠 때만 위반으로 보고, 아니면 경고만 한다(사용자가 같은 시각에 연 브라우저일 수 있음). 끝난 뒤 트리 프로세스가 사라졌는지 확인하고 남은 것은 정리해 결과에 적는다. 결과 json: `_exec\done\<id>.json`.
-- `player` 는 Unity 잠금(`_pc_lock.json`)과 예약 큐를 거친다(최소 커밋 여유 6GB). `browser` 는 잠금을 쓰지 않는다.
+- `player`는 `_pc_lock`을 잡지 않고 전용 슬롯 2개·player FIFO·최소 커밋 여유 10GB를 검사한다. `-Owner`가 있으면 player 예약을 자동 생성하고 종료/대기 실패 시 반환한다(`-KeepReservation`이면 유지). `browser`는 잠금을 쓰지 않는다.
 - 잠금의 pid 는 Unity 를 띄우고 끝까지 기다리는 이 실행기의 `$PID` 다(서버는 서버 Unity pid). 삭제는 pid·token 이 자기일 때만 한다. pid 가 죽었어도 Unity 가 돌고 있고 잠금이 15분 안쪽이면 보유 중으로 본다.
 - 예약을 여러 단계에 걸쳐 쥐고 싶으면 `-Owner 이름 -KeepReservation`(획득해도 예약이 남음), 끝나면 `unreserve`.
 
@@ -127,13 +128,13 @@ $wt = 'E:\exoduser-wt\<내 워크트리>'
 - `status`: 커밋 사용·한도·여유, Unity 프로세스, 서버 메모리, Library 불완전 경고, 최근 1시간 WHEA-Logger 건수(읽기만)를 출력한다. 실행할 때마다 `unity-jobs\memlog.csv` 에 `time,commitUsedGB,commitLimitGB,commitFreeGB,unity,claude,node` 한 줄이 쌓인다.
 - player 는 NativeQaSandbox fail-closed 가 unity/main 에 병합된 뒤(37f1360df)부터 기본 허용한다(`-AllowPlayer` 는 호환용으로만 남김).
 - 세이브 스냅샷은 에디터 자체 상태(`Unityocal.*ditor`, Analytics 등)를 제외한다(에디터를 띄우면 항상 바뀌어 오탐).
-- 시작 조건(유니티 총괄 승인 10-28, 실측 근거는 `I:\EXODUSER-Storage\devtools\dt01\RESULT.md`): 최소 커밋 여유 6GB(권장 에디터 Library 있음 12GB / Library 없음 20GB / 플레이어 10GB는 경고만), 동시 실행 1(잠금). `status` 가 이 값과 현재 여유를 함께 출력한다. 프로세스 종료 정리는 자손 + 생성 시각이 같은 프로세스만 한다(pid 재사용으로 남의 프로세스를 건드리지 않음).
+- 시작 조건(slots1): Editor 최소 6GB(buildloop 8GB), 다른 Unity.exe 0개. Player는 Editor와 독립 2개·최소 10GB. 권장 Editor Library 있음 12GB / 없음 20GB는 경고만. 사용자 직접 실행 Player는 상한에서 제외한다. 프로세스 종료 정리는 자기 자손 + 동일 생성 시각만 처리한다.
 - 빌드 전 필수 영상: `run -Method PortVerification.Build` 또는 `build -Worktree <wt> -Args '-output,<dir>,-receipt,<file>'`(자동으로 `-buildTarget Win64` 추가) 는 Unity 를 띄우기 전에 `restore-lobby-media.cjs`·`restore-warrior-story.cjs` 를 실행하고, `StreamingAssets\Lobby` 필수 영상 9개(각 1MB 이상, buildloop `smoke-rules.json` 의 `requiredMedia` 가 있으면 그 목록)가 하나라도 없으면 실패한다(종료 코드 6, `필수 영상 누락`).
 - 인자 해석 점검: `-DryRun` 은 잠금·Unity·영상 복원 없이 해석된 method/args 만 출력하고 끝난다. 단위 시험: `powershell -File unity\Tools\devtools\selftest\args-test.ps1` (run·player·build × 쉼표/배열/-ArgsJson/-File 14건). `build` 는 인자를 먼저 쪼갠 뒤 `-buildTarget Win64` 를 붙인다(쉼표 형식 `-Args '-output,X,-receipt,Y'` 지원).
 
 ## 2026-10-31 예약과 batch 티켓 우선순위
 
-예약이 있으면 예약 선두 Owner만 batch 티켓 대기를 통과하고, 예약이 없으면 살아 있는 티켓 FIFO를 따른다. 통과 후 기존 Acquire-Slot이 잠금·현재 Unity/Player·메모리·예약을 다시 검사한다. 뒤 예약의 이른 티켓이 앞 예약의 새 batch를 막던 교착을 해소하며, 타인 티켓/예약/프로세스를 삭제하거나 종료하지 않는다. QueueTurn.psm1의 실제 판정 회귀는 selftest/ticket-order-test.ps1 15개다. 사용자 세이브·HALT·무창·미디어·단일 PC 검사 본문은 불변이다.
+editor 예약이 있으면 선두 Owner만 batch 티켓 대기를 통과하고, 없으면 살아 있는 티켓 FIFO를 따른다. Acquire-Slot은 Editor 잠금·Unity.exe·메모리·editor 예약을 다시 검사한다. 뒤 예약의 이른 티켓이 앞 예약의 새 batch를 막던 교착을 해소한다. QueueTurn.psm1 회귀는 selftest/ticket-order-test.ps1 15개다. 사용자 세이브·HALT·무창·미디어 보호는 유지한다.
 
 예약 순번 전 batch 티켓을 먼저 만들면 구버전 FIFO 실행기의 선두를 막을 수 있으므로, 같은 Test-ExoTicketTurn 판정을 티켓 생성 전에도 적용한다. 이 단계는 예약 읽기만 하며 Lock/Unity/타인 티켓 변경0. WaitMin/PollSec 제한을 사용하고 실제 시작에는 원래 Acquire-Slot의 예약·단일잠금·실제프로세스·메모리 검사를 다시 통과해야 한다.
 
@@ -171,12 +172,28 @@ $task = 'I:\EXODUSER-Storage\unity-latest\loop\bin\install-task.ps1'
 | 항목 | 계약 |
 |---|---|
 | start -IdleYieldSec | 기본 180초(1..86400). 실제 job·컴파일·임포트가 끝난 연속 idle 시간 기준 |
-| 양보 조건 | 다른 owner의 유효 예약 또는 살아 있는 티켓 1건 이상 + idle 기준 도달. 자기 owner 예약·만료 예약·죽은 티켓 제외. inbox 제출된 job이 있으면 먼저 처리 |
+| 양보 조건 | 다른 owner의 유효 editor 예약 또는 생존 editor 티켓 1건 이상 + idle 기준. kind 없음=editor, player·자기 owner·만료·죽은 티켓 제외. inbox job 우선 |
 | 정상 종료 | 서버가 자기 PID·lock token을 확인하고 stop과 같은 EditorApplication.Exit(0) 경로로 종료. 타 서버 kill/stop 없음. PID가 살아 있는 동안 PC 잠금을 유지하고 다음 획득자가 종료 확인 뒤 stale 잠금을 회수 |
 | 제출 경합 | admission.lock 안에서 제출/양보 marker를 직렬화. 양보 중이면 기존 run의 예약/FIFO + 1회 batch 경로 사용. 서버 자동 재시작 없음 |
 | 관측 | unity-jobs/yield.log에 사건당 한 줄(UTC·owner·pid·idleSec·waiting). server.json의 idleYieldSec·waitingOthers·owner 및 status의 idle N초, 대기 M건 → 양보 예정 |
 | 적용 | 병합 후 새로 뜨는 서버부터. 구버전 상주 서버는 조작하지 않고 미적용 표시 |
-| buildloop | 대기 전 reserve -Owner buildloop. -WaitMin은 기본 60분, 브랜치 게이트는 90분. 예약/잠금/티켓 대기 초과는 WAIT, 실패 0·lastAttemptSha 보존·다음 회차 재시도. WAIT 배지는 회색 |
+| buildloop | 빌드 전 reserve -Kind editor, 스모크 전 -Kind player -Owner buildloop. WaitMin 기본60분. 예약/Editor잠금/Player슬롯/티켓 시간초과는 WAIT, 실패0·lastAttemptSha 보존·회색 배지 |
 | 사전 검사 | buildloop/compile-check.ps1: asmdef·이름/GUID asmref 경계별 수집, 어셈블리 참조 순서, Player/Editor 정의별 별도 출력. Library/Bee RSP는 참조용 읽기만. 결과는 참고용, 최종은 Unity 컴파일 |
 
 Unity 없는 시험: selftest/idle-yield-test.ps1, buildloop-wait-test.ps1, assembly-sources-test.cjs. 사전 검사 출력은 -Output I:/EXODUSER-Storage/...로 지정하며 기본값도 I:다.
+
+## slots1 — Editor 1개 / Player 2개 (2026-11-03)
+
+| 항목 | 계약 |
+|---|---|
+| 버전 | `$ExoUnityVersion='2026.11.03-slots1'`, status 첫 줄·JSON runnerVersion·슬롯 JSON |
+| Player 상한 | `$MaxPlayerSlots=2`. CreateNew 원자 획득, 슬롯 보유자 + 살아 있는 구버전 owner=devtools-player의 _pc_lock을 1개로 계산. 사용자 직접 연 Player는 제외 |
+| stale | pid 사망 또는 프로세스 생성 시각 > startedAt이면 동일 token·pid·startedAt 재확인 후 회수. 해제는 자기 pid+token만 |
+| FIFO | reserve/unreserve -Kind editor 또는 player(기본 editor). Player -Owner는 자동 예약·완료 후 반환, -KeepReservation은 유지. 실행 중 Player 예약은 대기 FIFO 제외 |
+| 굶주림 방지 | editor 선두 등록 후 20분 이상이고 _pc_lock이 비어 있으면 새 Player 통과를 막아 0개까지 배출. status/대기 사유에 owner 표시 |
+| idle 양보 | editor 예약·티켓만 계산(kind 없음=editor). player 대기자는 서버 양보를 유발하지 않음 |
+| 독립 출력 | Player별 GUID 로그·sandbox, 숨은 데스크톱은 PID+GUID. 사용자 창 0·--unity-mute·USER_SAVE 비교·크래시 HALT·자기 자손 정리 유지 |
+| buildloop | 빌드는 editor 예약/8GB, 스모크는 player 예약/10GB·독립 슬롯. Player 슬롯 대기 초과도 WAIT |
+| 공용 설치 | 소유 소스의 `exo-unity.ps1 install-bin`이 ps1·psm1·cjs·mjs·json·md를 unity-jobs/bin에 복사. 이전 bin은 bin_prev_<UTC시각>에 보관. 런타임 모듈은 PSScriptRoot, 게임 소스·미디어는 -Worktree로 찾음. 이번 작업은 명령 구현만, 설치 실행 없음 |
+
+레인은 총괄 병합·설치 후 `I:\EXODUSER-Storage\unity-jobs\bin\exo-unity.ps1`을 부르고 `-Worktree`에 자기 NTFS 작업본을 전달한다. 자체 시험은 selftest/player-slots-test.ps1이며 실제 동시 M1 영수증은 I:/EXODUSER-Storage/devtools/fix-1103-slots/REPORT.md다.

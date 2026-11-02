@@ -251,7 +251,7 @@ namespace Exoduser.DevTools
 
         [Serializable] class WaitRecord
         {
-            public string owner, reservedAs, worktree, expiresAt, token, queueDir;
+            public string owner, reservedAs, worktree, expiresAt, token, queueDir, kind;
             public int pid;
         }
 
@@ -279,13 +279,13 @@ namespace Exoduser.DevTools
             foreach (var f in SortedJson(Path.Combine(root, "queue")))
             {
                 var r = ReadWait(f); DateTime expires;
-                if (r != null && DateTime.TryParse(r.expiresAt, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out expires)
+                if (r != null && IdleYieldPolicy.IsEditorWaiter(r.kind) && DateTime.TryParse(r.expiresAt, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out expires)
                     && expires.ToUniversalTime() > DateTime.UtcNow) owners.Add(OwnerOf(r));
             }
             foreach (var f in SortedJson(Path.Combine(root, "_tickets")))
             {
                 var r = ReadWait(f);
-                if (r == null || r.pid <= 0) continue;
+                if (r == null || r.pid <= 0 || !IdleYieldPolicy.IsEditorWaiter(r.kind)) continue;
                 try { using (var p = Process.GetProcessById(r.pid)) { if (!p.HasExited) owners.Add(OwnerOf(r)); } } catch { }
             }
             return owners;

@@ -16,6 +16,7 @@ param(
     [ValidateRange(1,86400)][int]$IdleYieldSec = 180,
     [int]$PollSec = 30,
     [string]$Owner,
+    [ValidateSet('editor','player')][string]$Kind = 'editor',
     [string]$Note = '',
     [int]$TtlMin = 120,
     [switch]$Force,
@@ -31,6 +32,8 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+$ExoUnityVersion = '2026.11.03-slots1'
+$MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
 $Root      = 'I:\EXODUSER-Storage\unity-jobs'
@@ -134,7 +137,7 @@ function Test-LibraryIncomplete([string]$wt) {
 }
 
 # ------------------------------------------------------------------ 예약 큐 (queue\)
-function Get-Reservations {
+function Get-Reservations([string]$ReservationKind = '') {
     New-Item -ItemType Directory -Force -Path $QueueRoot | Out-Null
     $out = @()
     foreach ($f in (Get-ChildItem -LiteralPath $QueueRoot -Filter '*.json' -ErrorAction SilentlyContinue | Sort-Object Name)) {
@@ -142,7 +145,9 @@ function Get-Reservations {
         if ($null -eq $r) { continue }
         $exp = $null
         try { $exp = [DateTime]::Parse($r.expiresAt).ToUniversalTime() } catch { }
-        if ($exp -and $exp -lt [DateTime]::UtcNow) { Remove-Item -LiteralPath $f.FullName -Force -ErrorAction SilentlyContinue; continue }
+        if ($exp -and $exp -lt [DateTime]::UtcNow) { continue } # 타 담당 파일은 읽기만
+        if (-not $r.kind) { $r | Add-Member -NotePropertyName kind -NotePropertyValue 'editor' -Force }
+        if ($ReservationKind -and $r.kind -ne $ReservationKind) { continue }
         $r | Add-Member -NotePropertyName file -NotePropertyValue $f.FullName -Force
         $out += $r
     }
@@ -151,16 +156,17 @@ function Get-Reservations {
 
 function Cmd-Reserve {
     if ([string]::IsNullOrWhiteSpace($Owner)) { throw '-Owner 가 필요합니다.' }
-    $mine = @(Get-Reservations | Where-Object { $_.owner -eq $Owner })
+    $mine = @(Get-Reservations $Kind | Where-Object { $_.owner -eq $Owner })
     $exp = [DateTime]::UtcNow.AddMinutes($TtlMin).ToString('yyyy-MM-ddTHH:mm:ss.fffZ')
     if ($mine.Count -gt 0) {
         $r = $mine[0]
-        $new = [ordered]@{ owner = $Owner; note = $Note; createdAt = $r.createdAt; expiresAt = $exp; worktree = [string]$Worktree }
+        $new = [ordered]@{ owner = $Owner; kind = $Kind; note = $Note; createdAt = $r.createdAt; expiresAt = $exp; worktree = [string]$Worktree }
         Write-JsonAtomic $r.file $new
         Say "예약 갱신: $Owner ($Note)"
     } else {
         $p = Join-Path $QueueRoot ((Stamp) + '_' + ($Owner -replace '[^\w\-]', '_') + '.json')
-        Write-JsonAtomic $p ([ordered]@{ owner = $Owner; note = $Note; createdAt = (NowIso); expiresAt = $exp; worktree = [string]$Worktree })
+        $p = $p -replace '\.json$', ('_' + $Kind + '_' + [guid]::NewGuid().ToString('N') + '.json')
+        Write-JsonAtomic $p ([ordered]@{ owner = $Owner; kind = $Kind; note = $Note; createdAt = (NowIso); expiresAt = $exp; worktree = [string]$Worktree })
         Say "예약 추가: $Owner ($Note)"
     }
     Cmd-Queue
@@ -168,7 +174,7 @@ function Cmd-Reserve {
 
 function Cmd-Unreserve {
     if ([string]::IsNullOrWhiteSpace($Owner)) { throw '-Owner 가 필요합니다.' }
-    foreach ($r in @(Get-Reservations | Where-Object { $_.owner -eq $Owner })) { Remove-Item -LiteralPath $r.file -Force -ErrorAction SilentlyContinue }
+    foreach ($r in @(Get-Reservations $Kind | Where-Object { $_.owner -eq $Owner })) { Remove-Item -LiteralPath $r.file -Force -ErrorAction SilentlyContinue }
     Say "예약 해제: $Owner"
     Cmd-Queue
 }
@@ -300,20 +306,122 @@ function Test-HaltGate {
 }
 
 function Cmd-Queue {
+    Write-Output ('exo-unity ' + $ExoUnityVersion)
     Show-Halt
     $lock = Read-Json $LockPath
     if ($lock) {
         $alive = Test-LockHolderAlive $lock
-        Write-Output ('잠금: owner={0} pid={1} alive={2} worktree={3} since={4}' -f $lock.owner, $lock.pid, $alive, $lock.worktree, ($lock.startedAt + $lock.started + ' ' + $lock.note))
+        Write-Output ('Editor 잠금: owner={0} pid={1} alive={2} worktree={3} since={4}' -f $lock.owner, $lock.pid, $alive, $lock.worktree, ($lock.startedAt + $lock.started + ' ' + $lock.note))
         if ($lock.queueDir) {
             $sv = Read-Json (Join-Path $lock.queueDir 'server.json')
             if ($sv) { Write-Output ('  서버: state={0} idleSec={1} jobsDone={2}' -f $sv.state, $sv.idleSec, $sv.jobsDone) }
         }
-    } else { Write-Output '잠금: 없음(비어 있음)' }
-    $rs = @(Get-Reservations)
-    if ($rs.Count -eq 0) { Write-Output '예약: 없음' }
-    $i = 1
-    foreach ($r in $rs) { Write-Output ('예약 {0}: {1} - {2} (등록 {3}, 만료 {4})' -f $i, $r.owner, $r.note, $r.createdAt, $r.expiresAt); $i++ }
+    } else { Write-Output 'Editor 잠금: 없음(비어 있음)' }
+    $slots = @(Get-PlayerSlots)
+    $legacy = Get-LegacyPlayerCount
+    Write-Output ('Player 슬롯 {0}/{1} (구버전 Player {2} 포함)' -f ($slots.Count + $legacy), $MaxPlayerSlots, $legacy)
+    foreach ($s in $slots) { Write-Output ('  Player: owner={0} reservedAs={1} pid={2} 경과={3:N0}초 exe={4}' -f $s.owner,$s.reservedAs,$s.pid,([datetime]::UtcNow - [datetime]::Parse($s.startedAt).ToUniversalTime()).TotalSeconds,$s.exe) }
+    $drain = Get-PlayerDrainReason; if ($drain) { Write-Output $drain }
+    foreach ($k in 'editor','player') {
+        $rs = @(Get-Reservations $k); $i = 1
+        if ($rs.Count -eq 0) { Write-Output ($k + ' 예약: 없음') }
+        foreach ($r in $rs) { Write-Output ('{0} 예약 {1}: {2} - {3} (등록 {4}, 만료 {5})' -f $k,$i,$r.owner,$r.note,$r.createdAt,$r.expiresAt); $i++ }
+    }
+    if ($Json) { Write-Output (@{ runnerVersion=$ExoUnityVersion; editorLock=$lock; playerSlots=@($slots); legacyPlayerCount=$legacy; maxPlayerSlots=$MaxPlayerSlots; playerDrainReason=$drain; editorReservations=@(Get-Reservations 'editor'); playerReservations=@(Get-Reservations 'player') } | ConvertTo-Json -Depth 8 -Compress) }
+}
+
+# Player 슬롯의 pid는 실행이 끝날 때까지 기다리는 실행기다. 생성 시각 조회 실패는 fail closed.
+function Test-PlayerSlotAlive($slot) {
+    if (-not $slot.pid) { return $true }
+    try { $p = Get-Process -Id ([int]$slot.pid) -ErrorAction Stop } catch [Microsoft.PowerShell.Commands.ProcessCommandException] { return $false }
+    catch { return $true }
+    try { return (-not $p.HasExited) -and ($p.StartTime.ToUniversalTime() -le [datetime]::Parse($slot.startedAt).ToUniversalTime()) } catch { return $true }
+}
+
+function Get-PlayerSlots([switch]$Reap) {
+    for ($i=1; $i -le $MaxPlayerSlots; $i++) {
+        $path = Join-Path $Root ('_player_slot_' + $i + '.json')
+        $slot = Read-Json $path
+        if (-not $slot) { continue }
+        if (Test-PlayerSlotAlive $slot) { $slot | Add-Member -NotePropertyName file -NotePropertyValue $path -Force; $slot; continue }
+        if ($Reap) {
+            # 같은 세대의 stale 파일만 회수. 생성 중/재취득 파일은 건드리지 않는다.
+            Remove-StalePlayerSlot $path $slot
+        }
+    }
+}
+
+function Remove-StalePlayerSlot([string]$path, $expected) {
+    # 검사부터 삭제까지 같은 파일 핸들을 잡는다. 다른 reaper/새 writer가 끼어들 수 없다.
+    try { $fs=[IO.File]::Open($path,'Open','ReadWrite','Delete') } catch [IO.IOException] { return }
+    catch [UnauthorizedAccessException] { return } # 다른 reaper가 delete-pending으로 만든 파일도 점유 상태로 둔다.
+    try {
+        $bytes=New-Object byte[] ([int]$fs.Length);$read=$fs.Read($bytes,0,$bytes.Length)
+        $again=$Utf8NoBom.GetString($bytes,0,$read)|ConvertFrom-Json
+        if ($again.token -eq $expected.token -and $again.pid -eq $expected.pid -and $again.startedAt -eq $expected.startedAt -and -not (Test-PlayerSlotAlive $again)) { Remove-Item -LiteralPath $path -Force -ErrorAction SilentlyContinue }
+    } catch { } finally { $fs.Dispose() }
+}
+
+function Get-LegacyPlayerCount {
+    $held = Read-Json $LockPath
+    if ($held -and $held.owner -eq 'devtools-player' -and (Test-PlayerSlotAlive $held)) { return 1 }
+    return 0
+}
+
+function Get-PlayerDrainReason {
+    if (Test-Path -LiteralPath $LockPath) { return '' }
+    $rs = @(Get-Reservations 'editor')
+    if ($rs.Count -gt 0) {
+        try { if (([datetime]::UtcNow - [datetime]::Parse($rs[0].createdAt).ToUniversalTime()).TotalMinutes -ge 20) { return ('굶주림 방지: editor 예약 ' + $rs[0].owner + ' 20분 이상 대기, 새 Player 통과 중지(0개까지 배출)') } } catch { }
+    }
+    return ''
+}
+
+function Get-WaitingPlayerReservations {
+    $active = @((Get-PlayerSlots) | ForEach-Object { [string]$_.reservedAs })
+    $held = Read-Json $LockPath
+    if ((Get-LegacyPlayerCount) -gt 0 -and $held.reservedAs) { $active += [string]$held.reservedAs }
+    return @(Get-Reservations 'player' | Where-Object { $active -notcontains [string]$_.owner })
+}
+
+function Release-PlayerSlot {
+    if (-not $script:PlayerSlotPath) { return }
+    $s = Read-Json $script:PlayerSlotPath
+    if ($s -and [int]$s.pid -eq $PID -and $s.token -eq $script:PlayerSlotToken) { Remove-Item -LiteralPath $script:PlayerSlotPath -Force -ErrorAction SilentlyContinue }
+}
+
+function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
+    New-Item -ItemType Directory -Force -Path $Root | Out-Null
+    $deadline = (Get-Date).AddMinutes($WaitMin); $lastMsg = ''
+    while ($true) {
+        $slots = @(Get-PlayerSlots -Reap); $legacy = Get-LegacyPlayerCount
+        $blocked = Get-PlayerDrainReason
+        $rs = @(Get-WaitingPlayerReservations)
+        if (-not $blocked -and $rs.Count -gt 0 -and (-not $Owner -or $rs[0].owner -ne $Owner)) { $blocked = 'player 예약 큐 맨 앞은 ' + $rs[0].owner }
+        if (-not $blocked -and ($slots.Count + $legacy) -ge $MaxPlayerSlots) { $blocked = 'Player 슬롯 ' + ($slots.Count + $legacy) + '/' + $MaxPlayerSlots }
+        $free = Get-CommitFreeGB
+        if (-not $blocked -and $free -lt 10) { $blocked = '커밋 여유 ' + $free + 'GB < 필요 10GB' }
+        if (-not $blocked) {
+            # 구버전 Player가 있으면 후보 파일도 1개로 줄여 동시 경쟁자의 상호 포기 반복을 막는다.
+            for ($i=1; $i -le ($MaxPlayerSlots - $legacy); $i++) {
+                $path = Join-Path $Root ('_player_slot_' + $i + '.json')
+                $token = [guid]::NewGuid().ToString('N')
+                $content = [ordered]@{owner='devtools-player';pid=$ownerPid;exe=$exeFull;startedAt=(NowIso);token=$token;reservedAs=[string]$Owner;runnerVersion=$ExoUnityVersion}
+                try { $fs = [IO.File]::Open($path,'CreateNew','Write','Read') } catch [IO.IOException] { continue }
+                catch [UnauthorizedAccessException] { continue } # 점유/삭제 대기만 재평가, 다른 경로로 우회하지 않음
+                try { $bytes=$Utf8NoBom.GetBytes(($content|ConvertTo-Json));$fs.Write($bytes,0,$bytes.Length) } finally { $fs.Dispose() }
+                $script:PlayerSlotPath=$path; $script:PlayerSlotToken=$token
+                # 다른 slot/구버전 lock의 동시 획득 뒤 상한을 다시 검사한다.
+                if ((@(Get-PlayerSlots).Count + (Get-LegacyPlayerCount)) -le $MaxPlayerSlots -and (Get-CommitFreeGB) -ge 10 -and -not (Get-PlayerDrainReason)) { return }
+                Release-PlayerSlot
+                break
+            }
+            $blocked = 'Player 슬롯 동시 획득 재검사'
+        }
+        if ((Get-Date) -gt $deadline) { throw ('Player 슬롯 대기 시간 초과(' + $WaitMin + '분): ' + $blocked) }
+        if ($blocked -ne $lastMsg) { Say ('대기: ' + $blocked + ' (' + $PollSec + '초 간격)'); $lastMsg=$blocked }
+        Start-Sleep -Seconds $PollSec
+    }
 }
 
 # ------------------------------------------------------------------ 잠금 + 슬롯
@@ -364,12 +472,12 @@ function Try-TakeoverFrom($lock) {
     return $true
 }
 
-# 잠금 획득 + Unity 0개 + 커밋 여유 확인. 예약 큐가 있으면 맨 앞 예약자(-Owner)만 진행.
+# Editor 잠금 획득 + Unity.exe 0개 + 커밋 여유 확인. editor 예약 선두만 진행.
 function Acquire-Slot([string]$Role, [string]$wt, [int]$ownerPid, [string]$queueDir, [double]$MinFreeGB = 0) {
     $script:LockToken = [Guid]::NewGuid().ToString("N")
     New-Item -ItemType Directory -Force -Path $Root | Out-Null
     # 시작 조건(11-02 사용자 "도타 켜졌어도 그냥 하게"): 사용자 프로그램 실행 여부로 기다리지 않는다.
-    # 권장 여유(Library 있음 12GB / 없음 20GB)는 경고만 하고, 시스템 보호용 최소 여유 6GB만 대기 조건으로 둔다. 동시 실행 1(잠금)은 유지.
+    # 권장 여유(Library 있음 12GB / 없음 20GB)는 경고만 하고, 시스템 보호용 최소 여유 6GB만 대기 조건으로 둔다. Editor 1개 잠금 유지.
     $hasLib = Test-Path -LiteralPath (Join-Path $wt 'unity\Library')
     $wantGB = 12; if (-not $hasLib) { $wantGB = 20 }
     $needGB = 6
@@ -380,7 +488,7 @@ function Acquire-Slot([string]$Role, [string]$wt, [int]$ownerPid, [string]$queue
     $lastMsg = ''
     while ($true) {
         $blocked = $null
-        $res = @(Get-Reservations)
+        $res = @(Get-Reservations 'editor')
         if ($res.Count -gt 0) {
             $front = $res[0]
             if ([string]::IsNullOrWhiteSpace($Owner) -or $front.owner -ne $Owner) {
@@ -388,12 +496,12 @@ function Acquire-Slot([string]$Role, [string]$wt, [int]$ownerPid, [string]$queue
             }
         }
         if (-not $blocked) {
-            $content = [ordered]@{ owner = $Role; pid = $ownerPid; worktree = $wt; queueDir = $queueDir; startedAt = (NowIso); reservedAs = [string]$Owner; token = $script:LockToken }
+            $content = [ordered]@{ owner = $Role; pid = $ownerPid; worktree = $wt; queueDir = $queueDir; startedAt = (NowIso); reservedAs = [string]$Owner; token = $script:LockToken; runnerVersion = $ExoUnityVersion }
             if (Try-CreateLock $content) {
-                $procs = Get-UnityProcs
+                $procs = @(Get-UnityProcs | Where-Object { $_.ProcessName -eq 'Unity' })
                 $free = Get-CommitFreeGB
                 if ($procs.Count -eq 0 -and $free -ge $needGB) {
-                    if ($Owner -and -not $KeepReservation) { foreach ($r in @(Get-Reservations | Where-Object { $_.owner -eq $Owner })) { Remove-Item -LiteralPath $r.file -Force -ErrorAction SilentlyContinue } }
+                    if ($Owner -and -not $KeepReservation) { foreach ($r in @(Get-Reservations 'editor' | Where-Object { $_.owner -eq $Owner })) { Remove-Item -LiteralPath $r.file -Force -ErrorAction SilentlyContinue } }
                     return
                 }
                 Release-Lock $ownerPid
@@ -451,7 +559,7 @@ function Cmd-Start {
         $a += $editorGraphics
         $p = Start-Process -FilePath $UnityExe -ArgumentList $a -PassThru -WindowStyle Hidden
         # 잠금 소유자를 서버로 바꾼다(이 CLI 가 끝나도 서버 pid 로 stale 판정)
-        [IO.File]::WriteAllText($LockPath, ([ordered]@{ owner = 'devtools-server'; pid = $p.Id; worktree = $wt; queueDir = $qd; startedAt = (NowIso); startedBy = $PID; reservedAs = [string]$Owner; token = $script:LockToken } | ConvertTo-Json), $Utf8NoBom)
+        [IO.File]::WriteAllText($LockPath, ([ordered]@{ owner = 'devtools-server'; pid = $p.Id; worktree = $wt; queueDir = $qd; startedAt = (NowIso); startedBy = $PID; reservedAs = [string]$Owner; token = $script:LockToken; runnerVersion = $ExoUnityVersion } | ConvertTo-Json), $Utf8NoBom)
         Write-JsonAtomic (Join-Path $qd 'launcher.json') ([ordered]@{ pid = $p.Id; startedBy = $PID; startedAt = (NowIso); log = $log; worktree = $wt })
         $started = $true
         $deadline = (Get-Date).AddMinutes(15)
@@ -486,6 +594,8 @@ function Resolve-JobArgs {
 }
 
 function Show-Result($r, [long]$wallMs) {
+    if ($r -is [System.Collections.IDictionary]) { $r['runnerVersion'] = $ExoUnityVersion }
+    else { $r | Add-Member -NotePropertyName runnerVersion -NotePropertyValue $ExoUnityVersion -Force }
     $ex = ''
     if ($r.exception -and $r.exception.type) { $ex = ' EXC=' + $r.exception.type + ': ' + $r.exception.message }
     Write-Output ('[result] ok={0} exit={1} wall={2}ms dur={3}ms refresh={4}ms compile={5}ms exec={6}ms errorLogs={7} reloads={8}{9}' -f $r.ok, $r.exitCode, $wallMs, $r.durMs, $r.refreshMs, $r.compileMs, $r.execMs, $r.errorLogs, $r.domainReloads, $ex)
@@ -620,7 +730,7 @@ function Cmd-Run {
     # 예약 순번 전에는 batch 티켓을 만들지 않는다. 구버전 FIFO 실행기의 앞을 막지 않기 위한 읽기 전용 대기다.
     $turnDeadline = (Get-Date).AddMinutes($WaitMin); $lastFront = ''
     while ($true) {
-        $reservationTurn = @(Get-Reservations)
+        $reservationTurn = @(Get-Reservations 'editor')
         $frontBeforeTicket = ''; if ($reservationTurn.Count -gt 0) { $frontBeforeTicket = [string]$reservationTurn[0].owner }
         if (Test-ExoTicketTurn -FirstTicket '' -Ticket '' -Owner $Owner -FrontReservationOwner $frontBeforeTicket) { break }
         if ((Get-Date) -gt $turnDeadline) { throw ('예약 순번 대기 시간 초과(' + $WaitMin + '분): ' + $frontBeforeTicket) }
@@ -629,7 +739,7 @@ function Cmd-Run {
     }
     New-Item -ItemType Directory -Force -Path $Tickets | Out-Null
     $ticket = Join-Path $Tickets ((Stamp) + '_' + $id + '.json')
-    [IO.File]::WriteAllText($ticket, ([ordered]@{ pid = $PID; owner = $(if ($Owner) { $Owner } else { Split-Path $wt -Leaf }); worktree = $wt; method = $Method } | ConvertTo-Json), $Utf8NoBom)
+    [IO.File]::WriteAllText($ticket, ([ordered]@{ pid = $PID; kind = 'editor'; owner = $(if ($Owner) { $Owner } else { Split-Path $wt -Leaf }); worktree = $wt; method = $Method } | ConvertTo-Json), $Utf8NoBom)
     $p = $null
     try {
         $lastMsg = ''; $ticketDeadline = (Get-Date).AddMinutes($WaitMin)
@@ -640,7 +750,7 @@ function Cmd-Run {
                 if ($tj -and (Test-Alive $tj.pid)) { $first = $t.FullName; break }
                 if ($tj -or $t.LastWriteTimeUtc -lt [DateTime]::UtcNow.AddMinutes(-2)) { Remove-Item -LiteralPath $t.FullName -Force -ErrorAction SilentlyContinue }
             }
-            $reservations = @(Get-Reservations)
+            $reservations = @(Get-Reservations 'editor')
             $frontOwner = ''; if ($reservations.Count -gt 0) { $frontOwner = [string]$reservations[0].owner }
             if (Test-ExoTicketTurn -FirstTicket $first -Ticket $ticket -Owner $Owner -FrontReservationOwner $frontOwner) {
                 if ($first -ne $ticket) { Say ('예약 선두 우선: ' + $Owner + ' (단일 PC 잠금 재확인)') }
@@ -763,7 +873,7 @@ function Cmd-Status {
     foreach ($pr in $procs) { Write-Output ('Unity 프로세스: pid={0} ws={1:N0}MB start={2}' -f $pr.Id, ($pr.WorkingSet64 / 1MB), $pr.StartTime) }
     $ci = Get-CommitInfo
     Write-Output ('PC 커밋: 사용 {0}GB / 한도 {1}GB / 여유 {2}GB' -f $ci.used, $ci.limit, $ci.free)
-    Write-Output '시작 조건(커밋 여유): 최소 6GB만 대기, 권장 12GB(Library 있음)/20GB(없음)는 경고만, 동시 실행 1(잠금). 사용자 프로그램(Dota 등) 실행은 대기 사유 아님'
+    Write-Output ('시작 조건: Editor 잠금 1개·최소 6GB(buildloop 8GB), Player 독립 슬롯 {0}개·최소 10GB. 권장 Editor 12GB(Library 있음)/20GB(없음)는 경고만. 사용자 프로그램 실행은 대기 사유 아님' -f $MaxPlayerSlots)
     $needNow = 12; if ($Worktree -and -not (Test-Path -LiteralPath (Join-Path $Worktree 'unity\Library'))) { $needNow = 20 }
     $okNow = 'OK'; if ($ci.free -lt $needNow) { $okNow = '부족' }
     Write-Output ('  현재 여유 {0}GB / 에디터 필요 {1}GB → {2}' -f $ci.free, $needNow, $okNow)
@@ -957,6 +1067,7 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
     $sw.Stop()
     return [pscustomobject]@{
         exitCode = $exit; timedOut = $timedOut; expectedKill = $expectedKill; durMs = $sw.ElapsedMilliseconds
+        processId = $proc.Id; startedAt = $t0.ToUniversalTime().ToString('o'); finishedAt = (NowIso); hiddenDesktopName = $(if ($desk) { $desk.Name } else { '' })
         windowHits = @($violations | Select-Object -Unique); warnings = @($warnings | Select-Object -Unique)
         leftovers = @($left); leftoversKilled = @($killed); treeCount = $tree.Count; hiddenWindows = $hiddenMax; hiddenTitles = @($hiddenTitles); desktopClosed = $desktopClosed
     }
@@ -973,7 +1084,7 @@ function Finish-Guarded([string]$kind, [string]$id, $g, $extra, [bool]$extraOk, 
     if ($g.windowHits.Count -gt 0) { $notes += '창 감지: ' + ($g.windowHits -join '; ') }
     if ($g.leftovers.Count -gt 0) { $notes += '종료 뒤 남은 프로세스 정리: ' + ($g.leftovers -join ',') }
     $res = [ordered]@{
-        id = $id; kind = $kind; ok = $ok; exitCode = $g.exitCode; durMs = $g.durMs; expectedKill = $g.expectedKill; timedOut = $g.timedOut
+        runnerVersion = $ExoUnityVersion; id = $id; kind = $kind; ok = $ok; exitCode = $g.exitCode; durMs = $g.durMs; expectedKill = $g.expectedKill; timedOut = $g.timedOut
         windowHandleCount = $g.windowHits.Count; windowHits = @($g.windowHits); warnings = @($g.warnings); treeProcesses = $g.treeCount
         leftovers = @($g.leftovers); note = ($notes -join ' | '); userSaveChanged = $sc.Count; userSaveFiles = @($sc)
     }
@@ -1027,9 +1138,11 @@ function Cmd-Player {
     if ($lower -notcontains '--unity-mute') { $ia += '--unity-mute' }
     $sbx = New-Sandbox $id; if ($lower -notcontains '--unity-qa-sandbox') { $ia += @('--unity-qa-sandbox', (Q $sbx)) }
     foreach ($u in $user) { if ($u.ToLower() -ne '-batchmode') { $ia += (Q $u) } }
-    Acquire-Slot 'devtools-player' (Split-Path $exeFull -Parent) $PID $ExecDir 10
-    $script:SaveBefore = Get-UserSaveSnapshot
+    $Kind = 'player'
     try {
+        if ($Owner) { Cmd-Reserve | Out-Null }
+        Acquire-PlayerSlot $exeFull $PID
+        $script:SaveBefore = Get-UserSaveSnapshot
         $g = $null; $crashCause = $null; $logsUsed = @($log); $t0c = Get-Date
         for ($attempt = 1; $attempt -le 2; $attempt++) {
             $g = Invoke-Guarded $exeFull $ia (Split-Path $exeFull -Parent) $TimeoutSec $KillAfterSec @($log) ($Desktop -eq 'hidden')
@@ -1054,10 +1167,36 @@ function Cmd-Player {
         $extraOk = $true
         if ($nullGfx) { $extraOk = $false; $fail = 'Forcing GfxDevice: Null - GPU 렌더링 아님' }
         elseif (-not $gpu) { $fail = '그래픽 장치 이름을 로그에서 찾지 못함(GPU 확인 불가)' }
-        Finish-Guarded 'player' $id $g ([ordered]@{ exe = $exeFull; args = @($ia); gpu = $gpu; gfxNull = $nullGfx; log = $log; desktop = $Desktop; hiddenWindows = $g.hiddenWindows; hiddenTitles = @($g.hiddenTitles); desktopClosed = $g.desktopClosed }) $extraOk $fail
-    } finally { Release-Lock $PID }
+        Finish-Guarded 'player' $id $g ([ordered]@{ exe = $exeFull; args = @($ia); gpu = $gpu; gfxNull = $nullGfx; log = $log; desktop = $Desktop; hiddenWindows = $g.hiddenWindows; hiddenTitles = @($g.hiddenTitles); desktopClosed = $g.desktopClosed; processId = $g.processId; startedAt = $g.startedAt; finishedAt = $g.finishedAt; hiddenDesktopName = $g.hiddenDesktopName; slot = $script:PlayerSlotPath }) $extraOk $fail
+    } finally {
+        Release-PlayerSlot
+        if ($Owner -and -not $KeepReservation) { Cmd-Unreserve | Out-Null }
+    }
     if ($rejected) { $script:ExitRc = 2 }
     exit $script:ExitRc
+}
+
+function Cmd-InstallBin {
+    $dest = Join-Path $Root 'bin'
+    if ([IO.Path]::GetFullPath($PSScriptRoot).TrimEnd('\') -eq [IO.Path]::GetFullPath($dest).TrimEnd('\')) { throw '이미 설치본입니다. 소유 작업본에서 install-bin을 호출하세요.' }
+    $stage = Join-Path $Root ('bin_stage_' + (Stamp) + '_' + [guid]::NewGuid().ToString('N').Substring(0,8))
+    New-Item -ItemType Directory -Path $stage | Out-Null
+    # 동료 실행 중인 설치본은 복사로 보관하며 원래 디렉터리는 유지한다.
+    foreach ($file in @(Get-ChildItem -LiteralPath $PSScriptRoot -Recurse -File)) {
+        if ($file.Extension -notin '.ps1','.psm1','.cjs','.mjs','.json','.md') { continue }
+        $rel = $file.FullName.Substring($PSScriptRoot.Length).TrimStart('\')
+        $target = Join-Path $stage $rel
+        New-Item -ItemType Directory -Path (Split-Path $target) -Force | Out-Null
+        Copy-Item -LiteralPath $file.FullName -Destination $target
+        if ((Get-FileHash -LiteralPath $target).Hash -ne (Get-FileHash -LiteralPath $file.FullName).Hash) { throw ('설치 SHA 불일치: ' + $rel) }
+    }
+    if (Test-Path -LiteralPath $dest) {
+        $prev = Join-Path $Root ('bin_prev_' + (Stamp))
+        Copy-Item -LiteralPath $dest -Destination $prev -Recurse
+    }
+    New-Item -ItemType Directory -Path $dest -Force | Out-Null
+    Copy-Item -Path (Join-Path $stage '*') -Destination $dest -Recurse -Force
+    Say ('공용 설치본: ' + $dest + ' runnerVersion=' + $ExoUnityVersion + ' (검증 stage 보존: ' + $stage + ')')
 }
 
 function Resolve-NodeExe {
@@ -1114,5 +1253,6 @@ switch ($Command.ToLower()) {
     'player'    { Cmd-Player }
     'browser'   { Cmd-Browser }
     'nw'        { Cmd-Nw }
+    'install-bin' { Cmd-InstallBin }
     default     { throw "알 수 없는 명령: $Command (start|run|build|status|stop|reap|reserve|unreserve|queue|player|browser|nw)" }
 }

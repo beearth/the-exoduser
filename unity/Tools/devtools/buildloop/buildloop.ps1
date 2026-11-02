@@ -184,7 +184,7 @@ function Acquire-Lock([string]$runId) {
 }
 function Release-Lock { if ($null -ne $script:LoopHandle) { $script:LoopHandle.Dispose(); $script:LoopHandle = $null } }
 
-function Get-UnityProcs { return @(Get-Process Unity, EXODUSER-Unity -ErrorAction SilentlyContinue | Where-Object { -not $_.HasExited }) }
+function Get-UnityProcs { return @(Get-Process Unity -ErrorAction SilentlyContinue | Where-Object { -not $_.HasExited }) }
 function Get-FreeCommitGB { $os = Get-CimInstance Win32_OperatingSystem; return [math]::Round($os.FreeVirtualMemory / 1MB, 1) }
 function Wait-Ready([bool]$libraryExists) {
   # COMMON_RULES: 최소 8GB만 대기, 권장 12/20GB는 경고만. 사용자 앱은 중단하지 않음.
@@ -314,7 +314,7 @@ function Get-UnityWaitReason([string]$text) {
   )
   foreach ($pattern in $patterns) { $m = [regex]::Match($text,$pattern); if ($m.Success) { return ('Unity 순번 대기 초과: ' + $m.Groups[1].Value.Trim()) } }
   # Other slot waits (an unregistered Unity process or memory) still did not start a build.
-  if ($text -match '(?m)^\s*슬롯 대기 시간 초과\([^\r\n]*?\):\s*([^\r\n]+)') { return ('Unity 순번 대기 초과: ' + $Matches[1].Trim()) }
+  if ($text -match '(?m)^\s*(?:Player )?슬롯 대기 시간 초과\([^\r\n]*?\):\s*([^\r\n]+)') { return ('Unity 순번 대기 초과: ' + $Matches[1].Trim()) }
   return ''
 }
 function Set-WaitResult($run, [string]$reason) {
@@ -326,28 +326,36 @@ function Update-AttemptState($stateObj,[string]$sha,[string]$verdict,[bool]$bran
   if ($verdict -eq 'WAIT' -and -not $branchOnly) { $stateObj.lastAttemptVerdict = 'WAIT'; return }
   if ($verdict -notin @('ABORT','WAIT') -and -not $branchOnly) { $stateObj.lastAttemptSha = $sha; $stateObj.lastAttemptVerdict = $verdict }
 }
-function Set-UnityReservation([string]$command) {
+function Set-UnityReservation([string]$command, [string]$kind = 'editor') {
   $launcher = Join-Path $Cfg.Worktree 'unity\Tools\devtools\exo-unity.ps1'
   $base = Join-Path $LoopDir ('reservation-' + [guid]::NewGuid().ToString('N'))
-  $pa = @('-NoProfile','-NonInteractive','-WindowStyle','Hidden','-File', ('"{0}"' -f $launcher), $command, '-Owner','buildloop','-Worktree', ('"{0}"' -f $Cfg.Worktree), '-Note','"buildloop FIFO"','-TtlMin', [string]($Cfg.WaitMaxMin + $Cfg.BuildTimeoutMin + 30))
+  $pa = @('-NoProfile','-NonInteractive','-WindowStyle','Hidden','-File', ('"{0}"' -f $launcher), $command, '-Kind',$kind,'-Owner','buildloop','-Worktree', ('"{0}"' -f $Cfg.Worktree), '-Note','"buildloop FIFO"','-TtlMin', [string]($Cfg.WaitMaxMin + $Cfg.BuildTimeoutMin + 30))
   $pr = Start-Process -FilePath "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -ArgumentList $pa -WindowStyle Hidden -PassThru -RedirectStandardOutput ($base+'.out.log') -RedirectStandardError ($base+'.err.log')
   $null = $pr.Handle; $pr.WaitForExit(); $pr.Refresh()
   foreach ($file in @(($base+'.out.log'),($base+'.err.log'))) { if (Test-Path $file) { foreach ($line in @(Get-Content $file -Encoding UTF8)) { Log ([string]$line) } } }
   if ($pr.ExitCode -ne 0) { throw ('Unity 예약 명령 실패: ' + $command) }
 }
-function Get-BlockingUnityOwner {
-  $root = 'I:\EXODUSER-Storage\unity-jobs'
+function Get-BlockingUnityOwner([string]$kind = 'editor', [string]$root = 'I:\EXODUSER-Storage\unity-jobs') {
   foreach ($f in @(Get-ChildItem (Join-Path $root 'queue') -Filter '*.json' -ErrorAction SilentlyContinue | Sort-Object Name)) {
     $r = ReadJson $f.FullName
-    if ($r -and $r.owner -ne 'buildloop' -and ([datetime]$r.expiresAt).ToUniversalTime() -gt [datetime]::UtcNow) { return [string]$r.owner }
+    $rk = Prop $r 'kind' 'editor'
+    if ($r -and $rk -eq $kind -and $r.owner -ne 'buildloop' -and ([datetime]$r.expiresAt).ToUniversalTime() -gt [datetime]::UtcNow) { return [string]$r.owner }
+  }
+  if ($kind -eq 'player') {
+    foreach ($f in @(Get-ChildItem $root -Filter '_player_slot_*.json' -ErrorAction SilentlyContinue | Sort-Object Name)) {
+      $s = ReadJson $f.FullName
+      if ($s -and (Test-PidAlive ([int]$s.pid))) { if (Prop $s 'reservedAs' '') { return [string]$s.reservedAs }; return [string]$s.owner }
+    }
   }
   $held = ReadJson (Join-Path $root '_pc_lock.json')
+  if ($kind -eq 'player' -and $held -and $held.owner -ne 'devtools-player') { $held = $null }
   if ($held) { if (Prop $held 'reservedAs' '') { return [string]$held.reservedAs }; return [string]$held.owner }
   return 'Unity 프로세스/메모리'
 }
 
 function Invoke-Exo([string]$command, [string[]]$jobArgs, [string]$logBase, [string]$exe = '', [string]$desktop = 'hidden') {
-  Set-UnityReservation 'reserve'
+  $kind = 'editor'; if ($command -eq 'player') { $kind = 'player' }
+  Set-UnityReservation 'reserve' $kind
   $launcher = Join-Path $Cfg.Worktree 'unity\Tools\devtools\exo-unity.ps1'
   $argsText = $jobArgs -join ','
   $timeout = $Cfg.BuildTimeoutMin * 60; if ($command -eq 'player') { $timeout = $Cfg.SmokeTimeoutMin * 60 }
@@ -752,10 +760,8 @@ function Cmd-Run {
     $pj = $null; $m1 = $null; $sm = $null
     if ($SkipSmoke -and $buildOk) { $run.verdict = 'ABORT'; $run.replaceNote = '빌드만(-SkipSmoke) - build_new 보관'; $run.smokeNote = '스모크 생략'; Log 'SkipSmoke: 빌드만 하고 종료'; return }
     if ($buildOk) {
-      Set-UnityReservation 'reserve'
-      # 다른 Unity 가 끼어들지 않았는지 다시 확인(우리 빌드 프로세스는 이미 종료)
-      $others = @(Get-UnityProcs)
-      if ($others.Count -gt 0) { Log ("스모크 전 대기: 다른 Unity {0}개" -f $others.Count); if (-not (Wait-Ready $true)) { Set-WaitResult $run ('Unity 순번 대기 초과: ' + (Get-BlockingUnityOwner)); return } }
+      Set-UnityReservation 'reserve' 'player'
+      # Player는 Editor 사전 대기 없이 실행기의 전용 FIFO/2슬롯/10GB 검사를 따른다.
       for ($sa = 1; $sa -le 1; $sa++) {
       $smokeDir = Join-Path $runDir 'smoke'
 
@@ -874,7 +880,7 @@ function Cmd-Run {
     Log ('오류: ' + $_.Exception.Message + ' @ ' + $_.ScriptStackTrace)
   } finally {
     # 남은 자식 프로세스 확인(우리가 띄운 것만)
-    if ($reserved) { try { Set-UnityReservation 'unreserve' } catch { Log ('예약 반환 경고: ' + $_.Exception.Message) } }
+    if ($reserved) { try { Set-UnityReservation 'unreserve' 'editor'; Set-UnityReservation 'unreserve' 'player' } catch { Log ('예약 반환 경고: ' + $_.Exception.Message) } }
     if ($run.verdict -eq 'WAIT' -and -not $NoSwap -and $stage -and (Test-Path -LiteralPath $stage)) {
       # Own build_new only; keep the completed candidate without blocking the next cycle.
       $target = Join-Path $runDir 'waiting-build'

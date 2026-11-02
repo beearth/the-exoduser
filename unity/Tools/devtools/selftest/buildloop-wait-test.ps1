@@ -15,6 +15,7 @@ foreach($c in @(
  @{log='슬롯 대기 시간 초과(90분): 예약 큐 맨 앞은 map25d(work) - 내 차례 아님';want='Unity 순번 대기 초과: map25d'},
  @{log='슬롯 대기 시간 초과(90분): 잠금 보유: devtools-server pid 48348 G:/map';want='Unity 순번 대기 초과: devtools-server'},
  @{log='EXO_QUEUE_WAIT owner=front-owner';want='Unity 순번 대기 초과: front-owner'},
+ @{log='Player 슬롯 대기 시간 초과(60분): Player 슬롯 2/2';want='Unity 순번 대기 초과: Player 슬롯 2/2'},
  @{log='error CS0103: timeout';want=''},
  @{log='컴파일/임포트 대기 시간 초과';want=''},
  @{log='대기 시간 초과 3600 초 (job abc)';want=''}
@@ -40,7 +41,7 @@ foreach($name in 'Cmd-Run','WriteJson','ReadJson'){
  $f=$ast.FindAll({param($n) $n -is [Management.Automation.Language.FunctionDefinitionAst]},$true)|Where-Object Name -eq $name|Select-Object -First 1
  . ([scriptblock]::Create($f.Extent.Text))
 }
-$fixture=Join-Path 'I:\EXODUSER-Storage\devtools\fix-1102\fix2' ('wait-run-'+[guid]::NewGuid().ToString('N'))
+$fixture=Join-Path 'I:\EXODUSER-Storage\devtools\fix-1103-slots' ('wait-run-'+[guid]::NewGuid().ToString('N'))
 $Cfg=@{Out=$fixture;Worktree=$fixture};$RunsDir=Join-Path $fixture 'runs';$HaltFile=Join-Path $fixture 'HALT'
 $MainRef='origin/unity/main';$Ref=$MainRef;$NoSwap=$false;$Force=$true;$Utf8=New-Object Text.UTF8Encoding($false)
 $script:saved=[pscustomobject]@{deployed=$null;pending=$null;lastAttemptSha='before';lastAttemptVerdict='PASS';history=@()}
@@ -73,7 +74,7 @@ $Cfg=@{Worktree=$fixture;WaitMaxMin=90;BuildTimeoutMin=90};$LoopDir=$fixture
 $fake=Join-Path $fixture 'unity/Tools/devtools/exo-unity.ps1'
 New-Item -ItemType Directory -Path (Split-Path $fake) -Force|Out-Null
 [IO.File]::WriteAllText($fake,@'
-param([string]$Command,[string]$Owner,[string]$Worktree,[string]$Note,[int]$TtlMin)
+param([string]$Command,[string]$Owner,[string]$Worktree,[string]$Note,[int]$TtlMin,[string]$Kind)
 if($Owner -ne 'buildloop' -or $TtlMin -ne 210){exit 2}
 [Console]::Error.WriteLine('queue-stderr-'+$Command)
 Write-Output ('queue-stdout-'+$Command)
@@ -82,9 +83,18 @@ exit 0
 Set-UnityReservation 'reserve'
 Set-UnityReservation 'unreserve'
 'PASS: real hidden reservation subprocess, owner=buildloop, TTL=210, stderr accepted'
+foreach($name in 'Get-BlockingUnityOwner','Prop'){
+ $fun=$ast.FindAll({param($n) $n -is [Management.Automation.Language.FunctionDefinitionAst]},$true)|Where-Object Name -eq $name|Select-Object -First 1
+ . ([scriptblock]::Create($fun.Extent.Text))
+}
+$queue=Join-Path $fixture 'queue';New-Item -ItemType Directory -Path $queue -Force|Out-Null
+WriteJson (Join-Path $queue '1.json') @{owner='editor-front';expiresAt=[datetime]::UtcNow.AddHours(1).ToString('o')}
+WriteJson (Join-Path $queue '2.json') @{owner='player-front';kind='player';expiresAt=[datetime]::UtcNow.AddHours(1).ToString('o')}
+if((Get-BlockingUnityOwner 'editor' $fixture) -ne 'editor-front' -or (Get-BlockingUnityOwner 'player' $fixture) -ne 'player-front'){throw 'FAIL: blocking owner crosses reservation kinds'}
+'PASS: blocking owner is kind-specific; legacy missing kind is editor'
 
 # Build -> smoke has its own waiting boundary after the build consumed its reservation.
-$fixture=Join-Path 'I:\EXODUSER-Storage\devtools\fix-1102\fix2' ('phase-wait-'+[guid]::NewGuid().ToString('N'))
+$fixture=Join-Path 'I:\EXODUSER-Storage\devtools\fix-1103-slots' ('phase-wait-'+[guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $fixture|Out-Null
 & git.exe -C $fixture init -q
 if($LASTEXITCODE -ne 0){throw 'fixture git init failed'}
@@ -93,7 +103,7 @@ $script:saved=[pscustomobject]@{deployed=$null;pending=$null;lastAttemptSha='bef
 $script:FixtureGitExe=(Get-Command git.exe).Source
 function git.exe { & $script:FixtureGitExe -c ('safe.directory='+$fixture.Replace('\','/')) @args }
 $script:queued=$false;$script:readyCalls=0
-function Set-UnityReservation($command){$script:queued=($command -eq 'reserve')}
+function Set-UnityReservation($command,$kind='editor'){$script:queued=($command -eq 'reserve');if($command -eq 'reserve'){$script:reservationKind=$kind}}
 function GitR {return 'abcdef012345'}
 function Test-RequiredMedia {return @()}
 function Judge-Log {return [pscustomobject]@{fail=0;known=0}}
@@ -111,10 +121,14 @@ function Invoke-Exo($command,$jobArgs,$logBase){
  WriteJson $jobArgs[3] @{passed=$true}
  return [pscustomobject]@{exit=0;receipt=$null;waitReason=''}
 }
+function Run-Smoke {
+ if(-not $script:queued -or $script:reservationKind -ne 'player'){throw 'FAIL: smoke missing player reservation'}
+ return [pscustomobject]@{waitReason='Unity 순번 대기 초과: Player 슬롯 2/2';ran=$false;exit=1;timedOut=$false;windowSeen=$false;slowExit=$false;note='';seconds=0}
+}
 Cmd-Run
 $f=Get-ChildItem $RunsDir -Recurse -Filter run.json|Select-Object -First 1
 $r=ReadJson $f.FullName
-if($r.verdict -ne 'WAIT' -or $script:readyCalls -ne 2){throw ('FAIL: smoke waiting boundary: '+$r.verdict+' '+$r.replaceNote)}
+if($r.verdict -ne 'WAIT' -or $script:readyCalls -ne 1){throw ('FAIL: smoke waiting boundary: '+$r.verdict+' '+$r.replaceNote)}
 if($script:saved.lastAttemptSha -ne 'before' -or $script:saved.history[0].fail -ne 0){throw 'FAIL: post-build WAIT retry/failure state'}
 if(-not(Test-Path (Join-Path $f.DirectoryName 'waiting-build/EXODUSER-Unity.exe'))){throw 'FAIL: WAIT package not preserved'}
 'PASS: build-to-smoke reserve before wait, WAIT retry state, completed package preserved'
@@ -123,5 +137,5 @@ if(-not(Test-Path (Join-Path $f.DirectoryName 'waiting-build/EXODUSER-Unity.exe'
 $script:saved.lastAttemptSha='abcdef012345';$script:saved.lastAttemptVerdict='WAIT'
 $script:readyCalls=0;$script:queued=$false;$Force=$false
 Cmd-Run
-if($script:readyCalls -ne 2){throw 'FAIL: ordinary cycle skipped a previous same-SHA WAIT'}
+if($script:readyCalls -ne 1){throw 'FAIL: ordinary cycle skipped a previous same-SHA WAIT'}
 'PASS: ordinary same-SHA cycle retries after forced WAIT; lastAttemptSha retained'

@@ -31,7 +31,7 @@ fix1 당시 검수(이전 기록): Roslyn 사전 검사에서 수집한 Core 114
 
 | 변경 | 수치·이름·동작 |
 |---|---|
-| idle 양보 | start -IdleYieldSec 기본 180초, 범위 1..86400. 서버 자신이 연속 idle + 다른 owner의 유효 예약/생존 티켓을 검사. job·컴파일·임포트·대기자 0·자기 예약만이면 상주 유지 |
+| idle 양보 | start -IdleYieldSec 기본 180초, 범위 1..86400. 서버 자신이 연속 idle + 다른 owner의 editor 예약/생존 editor 티켓만 검사(kind 없음=editor). player는 제외. job·컴파일·임포트·대기자 0·자기 예약만이면 상주 유지 |
 | 안전 | 자기 PID/lock token 확인. admission.lock과 yielding.json으로 제출과 종료를 직렬화. 기존 stop 정상 Exit(0), PID 종료 전 PC 잠금 제거 없음. 다음 run은 기존 예약/FIFO의 1회 batch 대체. 타 서버 종료·재기동 없음 |
 | 관측 | I:/EXODUSER-Storage/unity-jobs/yield.log 사건 1줄. server.json idleSec·idleYieldSec·waitingOthers·owner, status 양보 예정. 기존 구버전 서버 미적용 |
 | buildloop 예약 | 대기 전 reserve -Owner buildloop, 실행기에도 같은 owner. WaitMin 기본 60분, 이번 게이트 90분. 만료=WaitMaxMin+BuildTimeoutMin(90)+30분, 회차 종료 시 자기 예약 반환 |
@@ -42,7 +42,7 @@ fix1 당시 검수(이전 기록): Roslyn 사전 검사에서 수집한 Core 114
 
 정식 게이트·단계표·HUD 캡처·원격 SHA·남은 한계는 I:/EXODUSER-Storage/devtools/fix-1102/fix2/REPORT.md에 기록한다. 브랜치 NoSwap으로 unity-latest와 바로가기는 교체하지 않는다.
 
-빌드가 예약을 소비한 뒤 스모크 전 다른 Unity를 기다리는 경계에도 reserve -Owner buildloop를 먼저 수행한다. Unity 없는 실제 Cmd-Run 경계 시험으로 WAIT·lastAttemptSha 보존·완료 패키지 waiting-build 보관을 확인한다. 진행 중이던 bb2b0f619 게이트의 해당 경로는 대기자 0으로 통과했고, 이 보완은 도구 전용 후속 변경이다.
+slots1부터 스모크 앞 reserve는 -Kind player이며 Editor가 끝나기를 기다리는 경계를 없앴다. 실행기의 Player FIFO·2슬롯·10GB 검사를 따른다. Unity 없는 실제 Cmd-Run fixture로 Player WAIT·lastAttemptSha 보존·waiting-build 보관을 확인한다. 과거 bb2b0f619 실행과 새 도구 검증은 구분한다.
 
 WAIT는 본편 lastAttemptSha를 보존하면서 lastAttemptVerdict만 WAIT로 기록한다. 같은 SHA가 과거 실패로 남아 있어도 다음 일반 주기는 WAIT를 재시도하며, check도 Force가 필요하다는 경고를 내지 않는다. 브랜치 NoSwap의 배포 attempt 상태는 계속 변경하지 않는다. 분류/상태 단위13건과 실제 동일 SHA 다음 주기 fixture로 확인한다.
 
@@ -60,3 +60,24 @@ WAIT는 본편 lastAttemptSha를 보존하면서 lastAttemptVerdict만 WAIT로 �
 | 보존·후속 | 자기 Unity 파생 tracked851개 I: SHA 보존 후 Git 입력 복원. 출처가 확정되지 않은 untracked57개 유지. 새 서버 실양보 사건·M1/HUD·셰이더 로그 수정은 남음. READY 아님 |
 
 상세 영수증·로그·미실행 캡처 경로·최종 원격 tip은 I:/EXODUSER-Storage/devtools/fix-1102/fix2/REPORT.md. 이번 브랜치는 unity/main·unity-latest 설치·예약 작업 등록을 하지 않았다.
+
+## slots1 — Editor와 Player 분리 (2026-11-03)
+
+| 항목·구현 | 현행 계약 |
+|---|---|
+| ExoUnityVersion | 2026.11.03-slots1. status 첫 줄·-Json runnerVersion·슬롯 파일에 기록 |
+| Editor / Acquire-Slot | _pc_lock 1개, 다른 Unity.exe 0개, EXODUSER-Unity는 통과를 막지 않음. 최소6GB/buildloop8GB, 권장12/20GB 경고 유지 |
+| Player / Acquire-PlayerSlot | MaxPlayerSlots=2, _player_slot_1.json·_player_slot_2.json CreateNew. owner·pid(실행기)·exe·startedAt·token·reservedAs·runnerVersion |
+| 상한·stale | 생존 슬롯+생존 구버전 devtools-player lock 1개로 계산. 사용자 직접 Player는 제외. pid 사망/생성시각>startedAt이면 동일 token·pid·startedAt 재확인 후 회수. 생성시각 조회 실패는 보수적으로 유지 |
+| 구버전 경쟁 | 구 Player가 있으면 후보 slot 파일도 1개로 제한하며 획득 후 상한·10GB·drain 재검사. _pc_lock/타인 프로세스 조작 없음 |
+| 예약 | reserve/unreserve -Kind editor 또는 player(기본editor). kind 없음=editor. 종류별 FIFO. 만료 예약은 읽기 제외, 타 담당 파일 삭제 안 함 |
+| Player Owner | 자기 player 예약 자동 생성·완료/대기실패 뒤 반환. KeepReservation이면 유지. 실행 중 예약은 waiting FIFO 제외하여 두 번째 슬롯 진입 허용 |
+| 굶주림 방지 | editor 선두 등록 후20분 이상 + _pc_lock 파일 없음이면 새 Player 통과 중단. status·대기 메시지에 owner 표시. Editor 획득/예약 반환·만료 뒤 재평가 |
+| idle | IdleYieldPolicy.IsEditorWaiter로 editor 예약·티켓만 계산. 기본 idle180초 불변 |
+| 보호·영수증 | 무창 hidden 기본·무음·GUID별 sandbox/log·PID+GUID desktop·USER_SAVE·HALT·자기 자손 정리 유지. Player receipt에 processId·startedAt·finishedAt·hiddenDesktopName·slot 추가 |
+| buildloop | 스모크 -Kind player, Editor 사전 대기 제거. Player 슬롯 시간초과도 WAIT. Get-BlockingUnityOwner(kind)는 종류별 앞 예약/보유자 반환 |
+| install-bin | ps1·psm1·cjs·mjs·json·md를 I:/EXODUSER-Storage/unity-jobs/bin에 복사, bin_prev_<UTC시각> 보관. 모듈은 PSScriptRoot, 프로젝트·미디어는 Worktree. 이번 작업에서 실행하지 않음 |
+| 단위 | player-slots-test.ps1 32판정, race-test stale 회수 포함 실제4경쟁자×2파형(신2/구1+신1), idle11, WAIT상태14+종류별 앞 owner·실제 Cmd-Run fixture. 나머지 기존 인자·티켓·로그·교체·그래픽·소스수집 회귀 포함 |
+| 실제 2개 M1 | concurrent-20261103-010419014: 각각23/23, guiRepaints1145/1160, 창/USER_SAVE/잔여0. 실제 동시 생존 표본8개·23.252초 이상, 실행기 구간27.631초. sampled 커밋 여유 최저18.185GiB, 다른 Editor 빌드 job과도2.434초 겹침. HUD 각3장 직접 확인 |
+
+실제 동시 M1·단계표·6개 HUD 직접 판정·커밋 여유·원격 tip·남은 문제는 I:/EXODUSER-Storage/devtools/fix-1103-slots/REPORT.md. fix2의 원본 run/smoke는 덮어쓰지 않는다. 단위 시험과 기존 패키지 M1은 변경된 C#의 정식 Unity 컴파일·새 빌드를 대신하지 않는다.

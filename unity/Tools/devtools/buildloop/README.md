@@ -18,8 +18,8 @@ origin/unity/main 변경을 확인해 exo-unity Win 빌드 → 숨은 데스크�
 
 | 안전 경계 | 동작 |
 |---|---|
-| 메모리 | buildloop 최소 8GB; Library 있음 12GB/없음 20GB는 경고. exo 최소 6GB 불변 |
-| 동시 실행 | buildloop run.lock 파일 핸들은 회차만 직렬화. PC Unity 슬롯·예약/FIFO·크래시 재시도·USER_SAVE·창/음소거 보호는 exo-unity 하나가 처리 |
+| 메모리 | 빌드 준비 최소8GB, exo Editor 최소6GB. Library 있음12GB/없음20GB 권장 경고. Player 최소10GB |
+| 동시 실행 | buildloop run.lock은 회차만 직렬화. Editor _pc_lock 1개와 Player 전용 슬롯 2개·종류별 FIFO·크래시·USER_SAVE·창/음소거 보호는 exo-unity가 처리 |
 | 소스 갱신 | 현재 HEAD가 대상이면 유지. 변경 있는 checkout/타 lane/비 FF는 거부. clean unity/main은 ff-only, clean detached는 정상 switch. 강제 checkout 없음 |
 | 빌드 | exo-unity build, PortVerification.Build -remodel-scenes 1. 미디어 복원과 requiredMedia 검사는 유지 |
 | 스모크 | exo-unity player -Desktop hidden -force-d3d11, 1600×900, OnGUI guiRepaints>0. --unity-mute·QA sandbox·사용자 창 0·잔여 프로세스 검사 |
@@ -37,6 +37,6 @@ origin/unity/main 변경을 확인해 exo-unity Win 빌드 → 숨은 데스크�
 
 Roslyn 사전 검사: compile-check.ps1 -Output <I: 경로>. 기본 LibraryProject는 G:/exoduser-wt/codex-unity-parity-1102/unity의 기존 Bee RSP를 읽는다. 현재 작업본의 asmdef·asmref(이름/GUID)를 따라 소스를 배정하고 Core→Runtime→Editor 순서로 Player/Editor를 분리 컴파일한다. defineConstraints 등 미지원 입력은 성공으로 간주하지 않는다. result.json의 실제 DLL·종료코드를 확인하며 Unity 컴파일이 최종 판정이다.
 
-빌드가 예약을 소비한 뒤 스모크 전 다른 Unity를 기다리는 경계에도 reserve -Owner buildloop를 먼저 수행한다. Unity 없는 실제 Cmd-Run 경계 시험으로 WAIT·lastAttemptSha 보존·완료 패키지 waiting-build 보관을 확인한다. 진행 중이던 bb2b0f619 게이트의 해당 경로는 대기자 0으로 통과했고, 이 보완은 도구 전용 후속 변경이다.
+스모크 앞 reserve는 -Kind player다. Editor 사전 대기는 없고 Player 전용 슬롯·10GB·FIFO를 따른다. Get-BlockingUnityOwner는 종류에 맞는 앞 owner/slot을 읽는다. Player 슬롯 초과도 WAIT·lastAttemptSha 보존·waiting-build 보관으로 처리하며 실제 Cmd-Run fixture로 검사한다.
 
 WAIT는 본편 lastAttemptSha를 보존하면서 lastAttemptVerdict만 WAIT로 기록한다. 같은 SHA가 과거 실패로 남아 있어도 다음 일반 주기는 WAIT를 재시도하며, check도 Force가 필요하다는 경고를 내지 않는다. 브랜치 NoSwap의 배포 attempt 상태는 계속 변경하지 않는다. 분류/상태 단위13건과 실제 동일 SHA 다음 주기 fixture로 확인한다.
