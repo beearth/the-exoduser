@@ -92,9 +92,9 @@ Mac 앱822756730d260b43a2ef952a0c5a9972a812f5ea로37분 실제 실행을 마쳤�
 | 관측 항목 | 실제 결과/범위 |
 |---|---|
 | coverage |149상태+12밀집=161행, 누락0. 큰반경12는149상태의부분집합 |
-| 상태/접지 | statePassed161/161, depthFailures0, uvFailures0, derivativeInvalid0. 실제층1,185개/선택표본35,570. depth최대.0199956894u, ring distance최대.0000069700u/stroke차.0001443401 |
+| 표시 메타데이터/접지 | statePassed161/161은표시메타데이터이며수명행동완료수치가아니다. depthFailures0, uvFailures0, derivativeInvalid0. 실제층1,185개/선택표본35,570. depth최대.0199956894u, ring distance최대.0000069700u/stroke차.0001443401 |
 | 색상 모델 |60행의QA FullEvidence clone↔독립SampleGrad 모델 비교FAIL, 최대weight차.3122860789/RGBA차.4807712734. 이는아직제품shader출력FAIL로확정하지않음. 같은fixture에서공개원제품RequestProbe2/4, clone, 모델을별도대조중이며2/255불변 |
-| 수명 | ground-lifecycle 실제pool재사용PASS. ring-lifecycle 상태/픽셀은통과했으나마지막Dispose에서이미Destroy한parent의orb.go.SetActive(false)가NullReferenceException. 당시최종row는FAIL이며소급PASS금지 |
+| 수명 | 두수명행의GPU·표시메타데이터값은행동최종결과가아니다. ring-lifecycle 마지막Dispose에서이미Destroy한parent의orb.go.SetActive(false)가NullReferenceException. 그뒤두행동결과를최종row에합치는단계가실행되지않았다. 따라서실제pool행동완료PASS도아직미검증이며, 수정앱에서원래두수명행동을별도로끝까지실행·저장해야한다. 원결과소급PASS금지 |
 | 현재 제품 수정 | NativeSkillView.Reset에서orb C#참조뿐아니라Unity GameObject생존도검사: orb != null && orb.go != null. 살아있는orb의비활성화·전투·표시·RNG·원화수식변경0. parent파괴후Dispose의실제회귀는다음앱에서별도검증예정 |
 | 보존 | full raw26/typed cache27은종료후지연저장까지복구확인. 원시float약348.5MB/PNG약1.948GB,retention절단0. 원실패·전체receipt와100/61결과보존 |
 
