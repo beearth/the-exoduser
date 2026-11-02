@@ -8,7 +8,7 @@
 |---|---|
 | 원인 | 높이900의 아이콘 시작726+54+출시안내30+높이20=830. 행동 버튼은816에 시작해14px 침범 |
 | 참조 | 웹 `index.html`의 레일 아래18px 여백, 행동 간격12px, 직업별 원화·흐림·잠금. 사용자 캡처를 실제 열람 |
-| 검사 | 2026-11-03 좌표 재검수 후보: 09192의1395장/147후보 FAIL 보존. 2560×1600에서 BeginGroup 정보판 원점이24.5556/148.3866px 어긋난 기록을 실제 PNG와 분리 확인. UiAuditCoordinateProbe의 identity·Edge/Right root/group/nested/scroll 9사례×5비율=45PNG와 독립 cyan 픽셀 경계를 coordinate-pixels.py로 대조하는 중. 생산 좌표 보정·새 전체 UI PASS는 아직 미완료. 스키마2: 실제 Player OnGUI Repaint의 글자·의미 영역과 별도 칠 영역(surface), 순서·GUI.depth·실효 불투명도 증명·실제 클립을 기록. 현재 변경의 새 Player 수집은 미실행 |
+| 검사 | 2026-11-03 좌표 재검수 후보: 09192의1395장/147후보 FAIL 보존. 2560×1600에서 BeginGroup 정보판 원점이24.5556/148.3866px 어긋난 기록을 실제 PNG와 분리 확인. UiAuditCoordinateProbe의 생산 Viewport를 호출하지 않는 독립 대조 행렬 scale=h/1080·rightTranslate=w/scale−1920의 identity·Edge/Right root/group/nested/scroll 9사례×5비율=45PNG와 독립 cyan 픽셀 경계를 coordinate-pixels.py로 대조하는 중. 생산 좌표 보정·새 전체 UI PASS는 아직 미완료. 스키마2: 실제 Player OnGUI Repaint의 글자·의미 영역과 별도 칠 영역(surface), 순서·GUI.depth·실효 불투명도 증명·실제 클립을 기록. 현재 변경의 새 Player 수집은 미실행 |
 | 범위 | 첫 화면·메뉴·로비·직업5개·이름 입력·로딩·튜토리얼4개·HUD·일시정지·종료확인·설정4탭/스크롤/선택목록·클리어 |
 | 규격 | 1920×1080,1600×900,한국어와 독일어 긴 번역. 추가 최장 언어 선정과 결과 검증은 후속 기록 |
 | 판정 | 증명된 불투명 영역을 뺀 보이는 조각끼리 기하 교차 후보 검사. 불명 가림은 적용하지 않고 완료 판정 차단. 실제 수집·PNG 1x 전까지 시각 PASS 아님. 다른 문자열/소스 전체 제외0 |

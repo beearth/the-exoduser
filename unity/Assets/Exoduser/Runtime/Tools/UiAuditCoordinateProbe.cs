@@ -29,7 +29,7 @@ namespace Exoduser.UnityPort.Tools {
   void OnGUI(){if(!armed)return;var old=GUI.matrix;var color=GUI.color;int depth=GUI.depth;try{
    GUI.depth=-1000;GUI.matrix=Matrix4x4.identity;if(Event.current.type==EventType.Repaint){NativeUiAudit.BeginFrame();windowOrigin=GUIUtility.GUIToScreenPoint(Vector2.zero);}
    GUI.color=Color.black;GUI.DrawTexture(new Rect(0,0,Screen.width,Screen.height),Texture2D.whiteTexture);GUI.color=Color.cyan;
-   GUI.matrix=current.StartsWith("right")?NativeUiViewport.RightMatrix:current.StartsWith("edge")?NativeUiViewport.EdgeMatrix:Matrix4x4.identity;
+   float scale=Screen.height/1080f;var edge=Matrix4x4.Scale(new Vector3(scale,scale,1));GUI.matrix=current.StartsWith("right")?edge*Matrix4x4.Translate(new Vector3(Screen.width/scale-1920,0,0)):current.StartsWith("edge")?edge:Matrix4x4.identity;
    Rect r=new Rect(130,160,80,50),logical=r;bool group=current.EndsWith("group")||current.EndsWith("nested"),nested=current.EndsWith("nested"),scroll=current.EndsWith("scroll");
    if(group){GUI.BeginGroup(new Rect(180,240,600,500));logical.position+=new Vector2(180,240);}
    if(nested){GUI.BeginGroup(new Rect(40,55,300,250));logical.position+=new Vector2(40,55);}
