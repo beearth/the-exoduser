@@ -28,7 +28,7 @@ function fixture(t,{failLoad=false,failRender=false,defer=false}={}){
  const api=chest.initChest3D({canvas,getWorld:()=>world,loadDependencies:async()=>[{...THREE,WebGLRenderer:Renderer},module]});
  const tick=now=>{const [id,fn]=jobs.entries().next().value;jobs.delete(id);fn(now);};
  const settled=async()=>{for(let n=0;n<12&&api.snapshot().loading;n++)await flush();};
- return {api,counts,material,geometry,tex,world,jobs,canvas,tick,settled,resolveModel:()=>resolveModel(),get renderer(){return renderer;},get scene(){return lastScene;}};
+ return {api,counts,material,geometry,tex,model,world,jobs,canvas,tick,settled,resolveModel:()=>resolveModel(),get renderer(){return renderer;},get scene(){return lastScene;}};
 }
 
 test('scoped reflection data is small, opaque, linear and has colored soft contrast',()=>{
@@ -53,7 +53,7 @@ test('same loaded model can switch baseline and candidate without altering origi
  assert.equal(f.renderer.toneMapping,THREE.ACESFilmicToneMapping);assert.equal(f.renderer.toneMappingExposure,1.25);assert.equal(f.api.snapshot().renderSize,64);
  f.api.setEnvironmentEnabled(false);assert.equal(f.scene.environment,null);assert.equal(f.material.envMapIntensity,1);
  f.api.setEnvironmentEnabled(true);assert.equal(f.scene.environment,probe);assert.equal(f.material.envMapIntensity,.65);
- f.api.dispose();f.api.dispose();assert.equal(probeDisposed,1);assert.equal(f.counts.rendererDispose,1);assert.equal(f.counts.contextLoss,1);assert.equal(f.counts.geometryDispose,1);assert.equal(f.counts.materialDispose,1);assert.equal(f.jobs.size,0);assert.equal(f.api.active,false);assert.equal(f.api.snapshot().ready,false);
+ f.api.dispose();f.api.dispose();assert.equal(probeDisposed,1);assert.equal(f.counts.rendererDispose,1);assert.equal(f.counts.contextLoss,1);assert.equal(f.counts.geometryDispose,1);assert.equal(f.counts.materialDispose,1);assert.equal(f.jobs.size,0);assert.equal(f.api.active,false);assert.equal(f.api.snapshot().ready,false);assert.equal(f.model.parent,null,'disposed model must be detached from the owned render tree');
 });
 
 test('asset failure releases renderer and retains the native fallback without retries',async t=>{

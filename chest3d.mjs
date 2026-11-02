@@ -80,7 +80,8 @@ export function initChest3D({canvas,getWorld,loadDependencies=()=>Promise.all([i
   if(scene)scene.environment=null;
   // r160 releases its cached PMREM target on the source texture's dispose event.
   environmentTexture?.dispose();environmentTexture=null;originalEnvIntensity.clear();
-  disposeChestResources(scene,modelRoot);scene?.clear();modelRoot=null;
+  disposeChestResources(scene,modelRoot);root?.clear();scene?.clear();
+  modelRoot=root=lid=light=shadow=foot=camera=null;
   renderer?.dispose();renderer?.forceContextLoss?.();
  }
  function fail(error){
