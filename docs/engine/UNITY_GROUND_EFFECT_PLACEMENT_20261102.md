@@ -1,6 +1,6 @@
 # Unity 설치형 실제 지면 투영 — 2026-11-02
 
-상태: **제품8f391fea의 Mac 첫 지면 투영·독립 깊이 검사 통과, 필터 참조 교정 및 전체 설치형 검수 진행 중**. 정적 C# 324파일 오류0/경고477. 기준 공통1403c5ee6d52c540815ab1cf70d5666b9023aa75. 사용자 요청은 장판뿐 아니라 지뢰·덫·현재 설치형 전체의 공중 배치를 고치는 것이다. CPU 회귀3151은 보존된 수학/UV·이전 적응면 검사이며 새 GPU 투영의 합격 증거가 아니다.
+상태: **8f391fea 표시 경로의 Mac161행 수집 완료, 색상 참조 비교와 파괴 후 정리 회귀 검증 진행 중**. 정적 C# 324파일 오류0/경고477. 기준 공통1403c5ee6d52c540815ab1cf70d5666b9023aa75. 사용자 요청은 장판뿐 아니라 지뢰·덫·현재 설치형 전체의 공중 배치를 고치는 것이다. CPU 회귀3151은 보존된 수학/UV·이전 적응면 검사이며 새 GPU 투영의 합격 증거가 아니다.
 
 ## 원인과 현재 적용
 
@@ -84,6 +84,21 @@ NativeGroundSkillProjection.RequestProbe(createdRGBAFloatRT,mode)는 target 소�
 | 보존 | 두 번째 진단 종료2는 기존mode2 FAIL 유지 결과. 원래sim reference/private graph 동일. prefs26raw/27typed cache는 복구 immediate/2s/7s 정확 일치. 한 파일3334 전송 서버는 수신검산 뒤 소유PID4498만 정상 종료 |
 
 근거: Mac profile-guard-runs/20261102T032130171914Z-3872/receiver47/ground-receiver-smoke.json 및 20261102T034052091757Z-6432/receiverSampler/ground-receiver-smoke.json·receiver-mode2-sampler-reference.json. PC images-8f/received.json과 source-candidate-depth.json.
+
+## 전체 161행 수집과 정리 예외 수정
+
+Mac 앱822756730d260b43a2ef952a0c5a9972a812f5ea로37분 실제 실행을 마쳤다. 제품 표시 소스는8f와 동일하다. 결과100행 PASS/61행 FAIL을 보존하며 전체 통과로 보고하지 않는다.
+
+| 관측 항목 | 실제 결과/범위 |
+|---|---|
+| coverage |149상태+12밀집=161행, 누락0. 큰반경12는149상태의부분집합 |
+| 상태/접지 | statePassed161/161, depthFailures0, uvFailures0, derivativeInvalid0. 실제층1,185개/선택표본35,570. depth최대.0199956894u, ring distance최대.0000069700u/stroke차.0001443401 |
+| 색상 모델 |60행의QA FullEvidence clone↔독립SampleGrad 모델 비교FAIL, 최대weight차.3122860789/RGBA차.4807712734. 이는아직제품shader출력FAIL로확정하지않음. 같은fixture에서공개원제품RequestProbe2/4, clone, 모델을별도대조중이며2/255불변 |
+| 수명 | ground-lifecycle 실제pool재사용PASS. ring-lifecycle 상태/픽셀은통과했으나마지막Dispose에서이미Destroy한parent의orb.go.SetActive(false)가NullReferenceException. 당시최종row는FAIL이며소급PASS금지 |
+| 현재 제품 수정 | NativeSkillView.Reset에서orb C#참조뿐아니라Unity GameObject생존도검사: orb != null && orb.go != null. 살아있는orb의비활성화·전투·표시·RNG·원화수식변경0. parent파괴후Dispose의실제회귀는다음앱에서별도검증예정 |
+| 보존 | full raw26/typed cache27은종료후지연저장까지복구확인. 원시float약348.5MB/PNG약1.948GB,retention절단0. 원실패·전체receipt와100/61결과보존 |
+
+PC에추가수신한정상전층PNG3개는images-full-822/received.json의원본SHA와모두일치하고직접확인했다. 뿌리spike/Seeker는상면에붙어보이며,dense8Lv20에서는actor와효과가실제겹치고actor가앞에정상표시된다. 이3장만으로난간전체·높은줄기·바위제외나미세색오차원인까지판정하지않는다.
 
 ## 폐기 후보와 증거
 
