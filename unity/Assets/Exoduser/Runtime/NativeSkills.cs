@@ -115,14 +115,16 @@ namespace Exoduser.UnityPort {
    var st=Style(f,size,fs);if(spacing==0)return st.CalcSize(new GUIContent(text)).x;
    float w=0;foreach(char ch in text)w+=st.CalcSize(new GUIContent(ch.ToString())).x+spacing;return w;
   }
-  void Text(Rect r,string text,Font f,int size,Color c,FontStyle fs=FontStyle.Normal,float spacing=0,TextAnchor anchor=TextAnchor.MiddleLeft,bool shadow=false){
+  void Text(Rect r,string text,Font f,int size,Color c,FontStyle fs=FontStyle.Normal,float spacing=0,TextAnchor anchor=TextAnchor.MiddleLeft,bool shadow=false,bool bounded=false){
    if(string.IsNullOrEmpty(text))return;
-   var st=Style(f,size,fs);float total=Width(f,size,fs,text,spacing),x=r.x;
+   var st=Style(f,size,fs);
+   if(bounded){st=new GUIStyle(st){clipping=TextClipping.Clip};if(Width(f,size,fs,text,spacing)>r.width){var ends=System.Globalization.StringInfo.ParseCombiningCharacters(text);int n=ends.Length;while(n>0&&Width(f,size,fs,text.Substring(0,ends[n-1])+"…",spacing)>r.width)n--;text=(n==0?"":text.Substring(0,ends[n-1]))+"…";}}
+   float total=Width(f,size,fs,text,spacing),x=r.x;
    if(anchor==TextAnchor.MiddleCenter||anchor==TextAnchor.UpperCenter)x=r.x+(r.width-total)/2f;else if(anchor==TextAnchor.MiddleRight)x=r.xMax-total;
    for(int pass=shadow?0:1;pass<2;pass++){
     st.normal.textColor=pass==0?new Color(0,0,0,.8f):c;float px=x,oy=pass==0?1.5f:0;
-    if(spacing==0){NativeSilverHellUi.Label(new Rect(px,r.y+oy,Mathf.Max(r.width,total)+8,r.height),text,st);continue;}
-    foreach(char ch in text){var g=ch.ToString();NativeSilverHellUi.Label(new Rect(px,r.y+oy,60,r.height),g,st);px+=st.CalcSize(new GUIContent(g)).x+spacing;}
+    if(spacing==0){NativeSilverHellUi.Label(new Rect(px,r.y+oy,bounded?Mathf.Min(r.width,total):Mathf.Max(r.width,total)+8,r.height),text,st);continue;}
+    foreach(char ch in text){var g=ch.ToString();NativeSilverHellUi.Label(new Rect(px,r.y+oy,bounded?Mathf.Min(st.CalcSize(new GUIContent(g)).x,Mathf.Max(0,r.xMax-px)):60,r.height),g,st);px+=st.CalcSize(new GUIContent(g)).x+spacing;}
    }
   }
   // Latin runs use the web display face (Cinzel Decorative), Hangul falls back to the serif body face, like the browser's font stack.
@@ -218,7 +220,7 @@ namespace Exoduser.UnityPort {
     if(!socket){var c=disc.center;if(selected){Disc(c,43,C(236,121,88,.25f));Disc(c,39,C(236,121,88));Disc(c,37,C(8,11,11));}Disc(c,35,C(167,170,170));Disc(c,33,C(20,23,23));}
     if(tex!=null){var imageRect=socket?new Rect(disc.x-2,disc.y-2,74,74):i==13?new Rect(disc.x+5,disc.y+5,60,60):disc;NativeUiAudit.DrawTexture(imageRect,tex,ScaleMode.ScaleToFit,true);if(!socket)Glass(disc);}else Text(disc,"—",serif,22,C(140,143,143),FontStyle.Normal,0,TextAnchor.MiddleCenter);
     Mixed(new Rect(x,237,cell,11),SlotKey(i),11,C(167,170,170),0,TextAnchor.MiddleCenter);
-    string shown=i==15?"일반사격":id!=null&&skillById.TryGetValue(id,out var d)?d.name:roleNames[i];Text(new Rect(x,251,cell,16.2f),shown,serif,12,selected?C(217,214,208):id==null&&!preview&&i<6?C(113,116,116):C(170,173,173),FontStyle.Normal,0,TextAnchor.MiddleCenter);
+    string shown=i==15?"일반사격":id!=null&&skillById.TryGetValue(id,out var d)?d.name:roleNames[i];Text(new Rect(x,251,cell,16.2f),shown,serif,12,selected?C(217,214,208):id==null&&!preview&&i<6?C(113,116,116):C(170,173,173),FontStyle.Normal,0,TextAnchor.MiddleCenter,false,true);
     var stateStyle=new GUIStyle(Style(serif,10,FontStyle.Normal)){alignment=TextAnchor.UpperCenter,wordWrap=true};stateStyle.normal.textColor=i==13||i==14?C(212,209,203):C(153,156,156);NativeSilverHellUi.Label(new Rect(x,270.1875f,cell,28),SlotCondition(i,id,preview),stateStyle);if(NativeSilverHellUi.Button(button,GUIContent.none,GUIStyle.none))Select(i);
    }
   }
@@ -233,7 +235,7 @@ namespace Exoduser.UnityPort {
    float costY=y+(extra?33:0),buttonY=costY+59,equipY=buttonY+(d!=null?56:0);bool canEquip=id!=EquippedId(SelectedSlot)&&NativeSkillManagementPolicy.CanEquip(sim,SelectedSlot,id);
    float resourceY=equipY+(canEquip?56:0)+(d!=null&&!supported?20:0),height=resourceY+56;var box=new Rect(51,skillBodyTop,270,Mathf.Min(height,658.8125f));InfoFace(box);NativeUiAudit.Region(box,"component","skill-info","최종 웹실측 x51/w270·Hahmlet28/16·행간28");
    var evt=Event.current;if(evt.type==EventType.ScrollWheel&&box.Contains(evt.mousePosition)){infoScroll=Mathf.Clamp(infoScroll+evt.delta.y*22,0,Mathf.Max(0,height-box.height));evt.Use();}infoScroll=Mathf.Clamp(infoScroll,0,Mathf.Max(0,height-box.height));
-   GUI.BeginGroup(box);try{float off=infoScroll;var ico=id=="roll"?Tex("Art/ui/skill/roll_boots"):OrbIcon(id,false);var center=new Vector2(51,49.296875f-off);Disc(center,28,C(146,149,149,.22f));if(ico!=null)NativeUiAudit.DrawTexture(new Rect(23,21.296875f-off,56,56),ico,ScaleMode.ScaleToFit,true);
+   var groupMatrix=NativeUiAudit.BeginScaledGroup(box);try{float off=infoScroll;var ico=id=="roll"?Tex("Art/ui/skill/roll_boots"):OrbIcon(id,false);var center=new Vector2(51,49.296875f-off);Disc(center,28,C(146,149,149,.22f));if(ico!=null)NativeUiAudit.DrawTexture(new Rect(23,21.296875f-off,56,56),ico,ScaleMode.ScaleToFit,true);
     Text(new Rect(93,21-off,154,33.6f),name,serif,28,C(222,219,213),FontStyle.Bold);if(d!=null)Text(new Rect(93,58.59375f-off,154,19),"Lv "+lv+" / 20",serif,13,C(165,168,168));Fill(new Rect(23,89.59375f-off,224,1),C(146,149,149,.22f));
     for(int i=0;i<lines.Count;i++)Text(new Rect(23,descY+i*28-off,224,28),lines[i],serif,16,C(217,214,208));
     if(extra)Text(new Rect(23,y-off,224,24),fixedSkill?"고정 기술은 교체할 수 없습니다":"기절 탈출 ["+SlotKey(SelectedSlot)+"]",serif,13,C(170,173,173));
@@ -244,7 +246,7 @@ namespace Exoduser.UnityPort {
     }
     if(canEquip&&InfoButton(new Rect(23,equipY-off,224,40),"이 슬롯에 장착 ["+SlotKey(SelectedSlot)+"]",true,false)){if(NativeSkillManagementPolicy.Equip(sim,SelectedSlot,id))ChangedSkill();}
     Fill(new Rect(23,resourceY-off,224,1),C(146,149,149,.22f));NativeCurrencyOrb.Draw(new Rect(23,resourceY+12-off,24,24),sim.Materials);Text(new Rect(47,resourceY+12-off,200,24),"SP "+sim.Player.StatPoints+" · 악의오브 "+sim.Materials.ToString("N0",System.Globalization.CultureInfo.InvariantCulture)+" · LV "+sim.Player.Level,serif,13,C(165,168,168),FontStyle.Normal,.1f);
-   }finally{GUI.EndGroup();}
+   }finally{NativeUiAudit.EndScaledGroup(groupMatrix);}
   }
   void InfoFace(Rect r){Fill(r,C(8,11,11,.72f));Border(r,C(146,149,149,.22f));}
   bool InfoButton(Rect r,string text,bool enabled,bool primary){bool prior=GUI.enabled;GUI.enabled=prior&&enabled;var old=GUI.color;if(!enabled)GUI.color=new Color(old.r,old.g,old.b,old.a*.42f);NativeSilverHellUi.ActionPlate(r,false,enabled&&r.Contains(Event.current.mousePosition)?1:0,false,22,6);Text(r,text,serif,16,primary?C(242,240,236):C(214,211,205),FontStyle.Normal,0,TextAnchor.MiddleCenter);bool hit=NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none);GUI.color=old;GUI.enabled=prior;return enabled&&hit;}
@@ -282,10 +284,10 @@ namespace Exoduser.UnityPort {
    // label: name (12px) + level/host badge, soft dark blob behind
    var nr=AltarRect(o.nameRect);Glow(nr.center.x,nr.center.y,nr.width/2+8,nr.height/2+4,C(6,9,9,.86f));
    Color nameCol=ki?C(240,220,168):dim?C(138,141,141):C(217,214,208);
-   Text(nr,skillById.TryGetValue(o.id,out var d)?d.name:o.id,serif,12,nameCol,FontStyle.Normal,0,TextAnchor.MiddleCenter,true);
+   Text(nr,skillById.TryGetValue(o.id,out var d)?d.name:o.id,serif,12,nameCol,FontStyle.Normal,0,TextAnchor.MiddleCenter,true,true);
    if(SkillLevelOf(o.id)>0&&o.subRect!=null&&o.subRect.Length==4){
     var sr=AltarRect(o.subRect);Glow(sr.center.x,sr.center.y,sr.width/2+8,sr.height/2+4,C(6,9,9,.86f));
-    Text(new Rect(sr.x,sr.y,sr.width,sr.height),"Lv "+SkillLevelOf(o.id),serif,11,C(167,170,170),FontStyle.Bold,.22f,TextAnchor.MiddleCenter,true);
+    Text(new Rect(sr.x,sr.y,sr.width,sr.height),"Lv "+SkillLevelOf(o.id),serif,11,C(167,170,170),FontStyle.Bold,.22f,TextAnchor.MiddleCenter,true,true);
    }
    if(o.host&&o.hostRect!=null&&o.hostRect.Length==4){
     var hr=AltarRect(o.hostRect);Grad(hr,C(40,43,43),C(19,22,22));Border(hr,C(139,142,142));
