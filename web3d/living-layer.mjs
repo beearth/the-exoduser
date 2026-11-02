@@ -1,7 +1,7 @@
 import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
 import {waterAt,plantHabitat} from './living-layout.mjs?v=20261031-layer2';
 import {createRelief} from './living-relief.mjs?v=20261031-layer2';
-import {createMapLook} from './map-look-pass.mjs?v=20261031-light4';
+import {createMapLook} from './map-look-pass.mjs?v=20261102-light7';
 import {createForest} from './forest-layer.mjs?v=20261031-forest4';
 import {createGhosts} from './ghost-layer.mjs?v=20261102-ghost4';
 import {authoredFoliageLayout,puddleHabitat} from './foliage-layout.mjs?v=20261031-foliage4b';
