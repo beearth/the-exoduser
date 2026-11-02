@@ -1,0 +1,26 @@
+{
+  "errors": [],
+  "checkedPhysicalCells": 72,
+  "sourceLogicalCell": [
+    80,
+    80
+  ],
+  "candidateSourceCell": [
+    160,
+    160
+  ],
+  "logicalDisplayCell": [
+    80,
+    80
+  ],
+  "proposedUnityPPU": 200,
+  "sourceUnityPPU": 100,
+  "sourcePivot": [
+    0.5,
+    0.5
+  ],
+  "clip": 0,
+  "runtimeAdoption": 0,
+  "speckleVisualScope": "final 3x strips require maker inspection",
+  "normalScope": "silhouette bevel estimate; runtime lighting unverified"
+}

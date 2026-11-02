@@ -1,0 +1,1759 @@
+{
+  "downsample": "BOX area average from generated source, no median/no grain, palette64 no dither",
+  "rawSourceGroup": "G:\\exoduser\\tmp\\design-review\\20261102_sprites\\warrior-attack9-r12",
+  "group": "warrior-bat9",
+  "directionsComplete": [
+    "south",
+    "south-east",
+    "east",
+    "north-east",
+    "north",
+    "north-west",
+    "west",
+    "south-west"
+  ],
+  "nativeDirectionOrder": [
+    "south",
+    "south-east",
+    "east",
+    "north-east",
+    "north",
+    "north-west",
+    "west",
+    "south-west"
+  ],
+  "sourceSheetSize": [
+    720,
+    640
+  ],
+  "candidateSheetSize": [
+    1440,
+    1280
+  ],
+  "sourceCell": [
+    80,
+    80
+  ],
+  "candidateCell": [
+    160,
+    160
+  ],
+  "newActiveKeys": 55,
+  "activeHoldAliases": 1,
+  "neutralReuse": 8,
+  "physicalCells": 72,
+  "records": [
+    {
+      "direction": "south",
+      "frame": 0,
+      "sourceFrame": 0,
+      "method": "r11 idle reuse, no new art",
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1398
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south",
+      "frame": 1,
+      "sourceFrame": 1,
+      "rawBox": [
+        75,
+        112,
+        367,
+        373
+      ],
+      "globalScale": 0.2109090909090909,
+      "rawBootAnchor": 163.0,
+      "rawBootBottom": 259,
+      "translation": [
+        46,
+        61
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1677
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south",
+      "frame": 2,
+      "sourceFrame": 2,
+      "rawBox": [
+        130,
+        97,
+        381,
+        372
+      ],
+      "globalScale": 0.2109090909090909,
+      "rawBootAnchor": 110.0,
+      "rawBootBottom": 274,
+      "translation": [
+        57,
+        60
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1845
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south",
+      "frame": 3,
+      "sourceFrame": 3,
+      "rawBox": [
+        77,
+        112,
+        365,
+        372
+      ],
+      "globalScale": 0.2109090909090909,
+      "rawBootAnchor": 150.0,
+      "rawBootBottom": 259,
+      "translation": [
+        48,
+        63
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1623
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south",
+      "frame": 4,
+      "sourceFrame": 4,
+      "rawBox": [
+        47,
+        111,
+        380,
+        374
+      ],
+      "globalScale": 0.2109090909090909,
+      "rawBootAnchor": 186.5,
+      "rawBootBottom": 261,
+      "translation": [
+        41,
+        63
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1671
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south",
+      "frame": 5,
+      "sourceFrame": 5,
+      "rawBox": [
+        37,
+        112,
+        393,
+        374
+      ],
+      "globalScale": 0.2109090909090909,
+      "rawBootAnchor": 196.5,
+      "rawBootBottom": 260,
+      "translation": [
+        39,
+        63
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1736
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south",
+      "frame": 6,
+      "sourceFrame": 6,
+      "rawBox": [
+        64,
+        106,
+        386,
+        374
+      ],
+      "globalScale": 0.2109090909090909,
+      "rawBootAnchor": 165.5,
+      "rawBootBottom": 267,
+      "translation": [
+        45,
+        59
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1792
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south",
+      "frame": 7,
+      "sourceFrame": 7,
+      "rawBox": [
+        79,
+        103,
+        357,
+        374
+      ],
+      "globalScale": 0.2109090909090909,
+      "rawBootAnchor": 149.0,
+      "rawBootBottom": 270,
+      "translation": [
+        49,
+        59
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1770
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south",
+      "frame": 8,
+      "sourceFrame": 8,
+      "method": "exact RGBA alias of frame0",
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1398
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south-east",
+      "frame": 0,
+      "sourceFrame": 0,
+      "method": "r11 idle reuse, no new art",
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1205
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south-east",
+      "frame": 1,
+      "sourceFrame": 1,
+      "rawBox": [
+        82,
+        115,
+        401,
+        394
+      ],
+      "globalScale": 0.20640569395017794,
+      "rawBootAnchor": 134.0,
+      "rawBootBottom": 278,
+      "translation": [
+        52,
+        60
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1654
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south-east",
+      "frame": 2,
+      "sourceFrame": 2,
+      "rawBox": [
+        31,
+        112,
+        330,
+        394
+      ],
+      "globalScale": 0.20640569395017794,
+      "rawBootAnchor": 182.5,
+      "rawBootBottom": 281,
+      "translation": [
+        42,
+        60
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1786
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south-east",
+      "frame": 3,
+      "sourceFrame": 3,
+      "rawBox": [
+        61,
+        119,
+        342,
+        394
+      ],
+      "globalScale": 0.20640569395017794,
+      "rawBootAnchor": 161.0,
+      "rawBootBottom": 274,
+      "translation": [
+        47,
+        61
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1697
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south-east",
+      "frame": 4,
+      "sourceFrame": 4,
+      "rawBox": [
+        75,
+        124,
+        444,
+        394
+      ],
+      "globalScale": 0.20640569395017794,
+      "rawBootAnchor": 159.5,
+      "rawBootBottom": 268,
+      "translation": [
+        47,
+        60
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1694
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south-east",
+      "frame": 5,
+      "sourceFrame": 5,
+      "rawBox": [
+        0,
+        122,
+        427,
+        394
+      ],
+      "globalScale": 0.20640569395017794,
+      "rawBootAnchor": 230.0,
+      "rawBootBottom": 270,
+      "translation": [
+        33,
+        60
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 2,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1674
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south-east",
+      "frame": 6,
+      "sourceFrame": 6,
+      "rawBox": [
+        62,
+        82,
+        361,
+        394
+      ],
+      "globalScale": 0.20640569395017794,
+      "rawBootAnchor": 159.0,
+      "rawBootBottom": 310,
+      "translation": [
+        47,
+        54
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1637
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south-east",
+      "frame": 7,
+      "sourceFrame": 7,
+      "rawBox": [
+        95,
+        118,
+        363,
+        394
+      ],
+      "globalScale": 0.20640569395017794,
+      "rawBootAnchor": 131.5,
+      "rawBootBottom": 274,
+      "translation": [
+        53,
+        61
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1515
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south-east",
+      "frame": 8,
+      "sourceFrame": 8,
+      "method": "exact RGBA alias of frame0",
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1205
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "east",
+      "frame": 0,
+      "sourceFrame": 0,
+      "method": "r11 idle reuse, no new art",
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1113
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "east",
+      "frame": 1,
+      "sourceFrame": 1,
+      "rawBox": [
+        25,
+        128,
+        305,
+        396
+      ],
+      "globalScale": 0.20640569395017794,
+      "rawBootAnchor": 168.0,
+      "rawBootBottom": 266,
+      "translation": [
+        45,
+        61
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1467
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "east",
+      "frame": 2,
+      "sourceFrame": 2,
+      "rawBox": [
+        56,
+        120,
+        328,
+        396
+      ],
+      "globalScale": 0.20640569395017794,
+      "rawBootAnchor": 156.0,
+      "rawBootBottom": 274,
+      "translation": [
+        48,
+        59
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1701
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "east",
+      "frame": 3,
+      "sourceFrame": 3,
+      "rawBox": [
+        37,
+        125,
+        336,
+        396
+      ],
+      "globalScale": 0.20640569395017794,
+      "rawBootAnchor": 174.5,
+      "rawBootBottom": 269,
+      "translation": [
+        44,
+        60
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1616
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "east",
+      "frame": 4,
+      "sourceFrame": 4,
+      "rawBox": [
+        57,
+        123,
+        444,
+        396
+      ],
+      "globalScale": 0.20640569395017794,
+      "rawBootAnchor": 157.0,
+      "rawBootBottom": 272,
+      "translation": [
+        48,
+        60
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1575
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "east",
+      "frame": 5,
+      "sourceFrame": 5,
+      "rawBox": [
+        0,
+        122,
+        435,
+        396
+      ],
+      "globalScale": 0.20640569395017794,
+      "rawBootAnchor": 223.0,
+      "rawBootBottom": 272,
+      "translation": [
+        34,
+        59
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 2,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1582
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "east",
+      "frame": 6,
+      "sourceFrame": 6,
+      "rawBox": [
+        67,
+        69,
+        381,
+        396
+      ],
+      "globalScale": 0.20640569395017794,
+      "rawBootAnchor": 149.5,
+      "rawBootBottom": 325,
+      "translation": [
+        49,
+        49
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1538
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "east",
+      "frame": 7,
+      "sourceFrame": 7,
+      "rawBox": [
+        84,
+        121,
+        350,
+        396
+      ],
+      "globalScale": 0.20640569395017794,
+      "rawBootAnchor": 147.5,
+      "rawBootBottom": 274,
+      "translation": [
+        50,
+        59
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1434
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "east",
+      "frame": 8,
+      "sourceFrame": 8,
+      "method": "exact RGBA alias of frame0",
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1113
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north-east",
+      "frame": 0,
+      "sourceFrame": 0,
+      "method": "r11 idle reuse, no new art",
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1209
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north-east",
+      "frame": 1,
+      "sourceFrame": 1,
+      "rawBox": [
+        39,
+        89,
+        318,
+        373
+      ],
+      "globalScale": 0.19269102990033224,
+      "rawBootAnchor": 190.5,
+      "rawBootBottom": 283,
+      "translation": [
+        43,
+        61
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1432
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north-east",
+      "frame": 2,
+      "sourceFrame": 2,
+      "rawBox": [
+        49,
+        74,
+        325,
+        373
+      ],
+      "globalScale": 0.19269102990033224,
+      "rawBootAnchor": 177.5,
+      "rawBootBottom": 297,
+      "translation": [
+        46,
+        58
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1588
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north-east",
+      "frame": 3,
+      "sourceFrame": 3,
+      "rawBox": [
+        68,
+        80,
+        421,
+        373
+      ],
+      "globalScale": 0.19269102990033224,
+      "rawBootAnchor": 163.5,
+      "rawBootBottom": 292,
+      "translation": [
+        48,
+        62
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1463
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north-east",
+      "frame": 4,
+      "sourceFrame": 4,
+      "rawBox": [
+        60,
+        77,
+        434,
+        374
+      ],
+      "globalScale": 0.19269102990033224,
+      "rawBootAnchor": 164.0,
+      "rawBootBottom": 295,
+      "translation": [
+        48,
+        59
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1526
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north-east",
+      "frame": 5,
+      "sourceFrame": 5,
+      "rawBox": [
+        60,
+        74,
+        419,
+        373
+      ],
+      "globalScale": 0.19269102990033224,
+      "rawBootAnchor": 155.0,
+      "rawBootBottom": 298,
+      "translation": [
+        50,
+        58
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1499
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north-east",
+      "frame": 6,
+      "sourceFrame": 6,
+      "rawBox": [
+        96,
+        33,
+        357,
+        374
+      ],
+      "globalScale": 0.19269102990033224,
+      "rawBootAnchor": 128.5,
+      "rawBootBottom": 339,
+      "translation": [
+        55,
+        52
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1407
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north-east",
+      "frame": 7,
+      "sourceFrame": 7,
+      "rawBox": [
+        95,
+        73,
+        378,
+        374
+      ],
+      "globalScale": 0.19269102990033224,
+      "rawBootAnchor": 136.0,
+      "rawBootBottom": 299,
+      "translation": [
+        54,
+        60
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1433
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north-east",
+      "frame": 8,
+      "sourceFrame": 8,
+      "method": "exact RGBA alias of frame0",
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1209
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north",
+      "frame": 0,
+      "sourceFrame": 0,
+      "method": "r11 idle reuse, no new art",
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1281
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north",
+      "frame": 1,
+      "sourceFrame": 1,
+      "rawBox": [
+        126,
+        115,
+        422,
+        386
+      ],
+      "globalScale": 0.20938628158844766,
+      "rawBootAnchor": 105.5,
+      "rawBootBottom": 269,
+      "translation": [
+        58,
+        61
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1399
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north",
+      "frame": 2,
+      "sourceFrame": 2,
+      "rawBox": [
+        94,
+        112,
+        421,
+        385
+      ],
+      "globalScale": 0.20938628158844766,
+      "rawBootAnchor": 127.5,
+      "rawBootBottom": 272,
+      "translation": [
+        53,
+        59
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1412
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north",
+      "frame": 3,
+      "sourceFrame": 3,
+      "rawBox": [
+        39,
+        118,
+        329,
+        385
+      ],
+      "globalScale": 0.20938628158844766,
+      "rawBootAnchor": 174.5,
+      "rawBootBottom": 266,
+      "translation": [
+        43,
+        62
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1392
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north",
+      "frame": 4,
+      "sourceFrame": 4,
+      "rawBox": [
+        29,
+        117,
+        387,
+        384
+      ],
+      "globalScale": 0.20938628158844766,
+      "rawBootAnchor": 210.5,
+      "rawBootBottom": 265,
+      "translation": [
+        36,
+        62
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1560
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north",
+      "frame": 5,
+      "sourceFrame": 5,
+      "rawBox": [
+        27,
+        114,
+        391,
+        384
+      ],
+      "globalScale": 0.20938628158844766,
+      "rawBootAnchor": 209.0,
+      "rawBootBottom": 268,
+      "translation": [
+        36,
+        61
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1596
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north",
+      "frame": 6,
+      "sourceFrame": 6,
+      "rawBox": [
+        57,
+        76,
+        353,
+        384
+      ],
+      "globalScale": 0.20938628158844766,
+      "rawBootAnchor": 170.0,
+      "rawBootBottom": 306,
+      "translation": [
+        44,
+        54
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1478
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north",
+      "frame": 7,
+      "sourceFrame": 7,
+      "rawBox": [
+        135,
+        118,
+        381,
+        385
+      ],
+      "globalScale": 0.20938628158844766,
+      "rawBootAnchor": 109.0,
+      "rawBootBottom": 266,
+      "translation": [
+        57,
+        62
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1608
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north",
+      "frame": 8,
+      "sourceFrame": 8,
+      "method": "exact RGBA alias of frame0",
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1281
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north-west",
+      "frame": 0,
+      "sourceFrame": 0,
+      "method": "r11 idle reuse, no new art",
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1150
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north-west",
+      "frame": 1,
+      "sourceFrame": 1,
+      "rawBox": [
+        71,
+        106,
+        354,
+        396
+      ],
+      "globalScale": 0.19727891156462585,
+      "rawBootAnchor": 171.0,
+      "rawBootBottom": 289,
+      "translation": [
+        46,
+        59
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1333
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north-west",
+      "frame": 2,
+      "sourceFrame": 2,
+      "rawBox": [
+        147,
+        99,
+        389,
+        396
+      ],
+      "globalScale": 0.19727891156462585,
+      "rawBootAnchor": 95.0,
+      "rawBootBottom": 296,
+      "translation": [
+        61,
+        57
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1550
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north-west",
+      "frame": 3,
+      "sourceFrame": 3,
+      "rawBox": [
+        22,
+        107,
+        399,
+        399
+      ],
+      "globalScale": 0.19727891156462585,
+      "rawBootAnchor": 211.5,
+      "rawBootBottom": 291,
+      "translation": [
+        38,
+        60
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1598
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north-west",
+      "frame": 4,
+      "sourceFrame": 4,
+      "rawBox": [
+        21,
+        101,
+        389,
+        396
+      ],
+      "globalScale": 0.19727891156462585,
+      "rawBootAnchor": 212.0,
+      "rawBootBottom": 294,
+      "translation": [
+        38,
+        58
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1573
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north-west",
+      "frame": 5,
+      "sourceFrame": 5,
+      "rawBox": [
+        48,
+        100,
+        389,
+        396
+      ],
+      "globalScale": 0.19727891156462585,
+      "rawBootAnchor": 178.0,
+      "rawBootBottom": 295,
+      "translation": [
+        45,
+        58
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1617
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north-west",
+      "frame": 6,
+      "sourceFrame": 6,
+      "rawBox": [
+        106,
+        55,
+        422,
+        398
+      ],
+      "globalScale": 0.19727891156462585,
+      "rawBootAnchor": 117.0,
+      "rawBootBottom": 341,
+      "translation": [
+        57,
+        50
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 6,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1565
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north-west",
+      "frame": 7,
+      "sourceFrame": 7,
+      "rawBox": [
+        135,
+        109,
+        392,
+        396
+      ],
+      "globalScale": 0.19727891156462585,
+      "rawBootAnchor": 101.5,
+      "rawBootBottom": 286,
+      "translation": [
+        60,
+        61
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1528
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "north-west",
+      "frame": 8,
+      "sourceFrame": 8,
+      "method": "exact RGBA alias of frame0",
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1150
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "west",
+      "frame": 0,
+      "sourceFrame": 0,
+      "method": "r11 idle reuse, no new art",
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1156
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "west",
+      "frame": 1,
+      "sourceFrame": 1,
+      "rawBox": [
+        102,
+        121,
+        380,
+        358
+      ],
+      "globalScale": 0.23868312757201646,
+      "rawBootAnchor": 137.5,
+      "rawBootBottom": 235,
+      "translation": [
+        47,
+        59
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1714
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "west",
+      "frame": 2,
+      "sourceFrame": 2,
+      "rawBox": [
+        135,
+        109,
+        383,
+        358
+      ],
+      "globalScale": 0.23868312757201646,
+      "rawBootAnchor": 97.5,
+      "rawBootBottom": 247,
+      "translation": [
+        57,
+        57
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1767
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "west",
+      "frame": 3,
+      "sourceFrame": 3,
+      "rawBox": [
+        91,
+        122,
+        386,
+        358
+      ],
+      "globalScale": 0.23868312757201646,
+      "rawBootAnchor": 126.5,
+      "rawBootBottom": 234,
+      "translation": [
+        50,
+        60
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1789
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "west",
+      "frame": 4,
+      "sourceFrame": 4,
+      "rawBox": [
+        25,
+        121,
+        391,
+        358
+      ],
+      "globalScale": 0.23868312757201646,
+      "rawBootAnchor": 194.0,
+      "rawBootBottom": 235,
+      "translation": [
+        34,
+        59
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1859
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "west",
+      "frame": 5,
+      "sourceFrame": 5,
+      "method": "authored contact HOLD alias of frame4, replaced wrong shoulder-reset pose5",
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1859
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "west",
+      "frame": 6,
+      "sourceFrame": 6,
+      "rawBox": [
+        109,
+        72,
+        382,
+        386
+      ],
+      "globalScale": 0.23868312757201646,
+      "rawBootAnchor": 116.0,
+      "rawBootBottom": 312,
+      "translation": [
+        52,
+        41
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        2045
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "west",
+      "frame": 7,
+      "sourceFrame": 7,
+      "rawBox": [
+        79,
+        116,
+        363,
+        358
+      ],
+      "globalScale": 0.23868312757201646,
+      "rawBootAnchor": 145.5,
+      "rawBootBottom": 240,
+      "translation": [
+        45,
+        58
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1784
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "west",
+      "frame": 8,
+      "sourceFrame": 8,
+      "method": "exact RGBA alias of frame0",
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1156
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south-west",
+      "frame": 0,
+      "sourceFrame": 0,
+      "method": "r11 idle reuse, no new art",
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1275
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south-west",
+      "frame": 1,
+      "sourceFrame": 1,
+      "rawBox": [
+        79,
+        130,
+        345,
+        390
+      ],
+      "globalScale": 0.2230769230769231,
+      "rawBootAnchor": 153.0,
+      "rawBootBottom": 258,
+      "translation": [
+        46,
+        60
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1531
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south-west",
+      "frame": 2,
+      "sourceFrame": 2,
+      "rawBox": [
+        136,
+        112,
+        384,
+        387
+      ],
+      "globalScale": 0.2230769230769231,
+      "rawBootAnchor": 93.0,
+      "rawBootBottom": 274,
+      "translation": [
+        59,
+        57
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1712
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south-west",
+      "frame": 3,
+      "sourceFrame": 3,
+      "rawBox": [
+        82,
+        136,
+        353,
+        389
+      ],
+      "globalScale": 0.2230769230769231,
+      "rawBootAnchor": 141.5,
+      "rawBootBottom": 251,
+      "translation": [
+        48,
+        62
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1582
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south-west",
+      "frame": 4,
+      "sourceFrame": 4,
+      "rawBox": [
+        39,
+        131,
+        371,
+        388
+      ],
+      "globalScale": 0.2230769230769231,
+      "rawBootAnchor": 189.5,
+      "rawBootBottom": 255,
+      "translation": [
+        38,
+        59
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1733
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south-west",
+      "frame": 5,
+      "sourceFrame": 5,
+      "rawBox": [
+        67,
+        129,
+        376,
+        388
+      ],
+      "globalScale": 0.2230769230769231,
+      "rawBootAnchor": 152.5,
+      "rawBootBottom": 257,
+      "translation": [
+        46,
+        58
+      ],
+      "targetAlpha64Bottom": 116,
+      "actualAlpha64Bottom": 116,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1799
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south-west",
+      "frame": 6,
+      "sourceFrame": 6,
+      "rawBox": [
+        104,
+        64,
+        380,
+        394
+      ],
+      "globalScale": 0.2230769230769231,
+      "rawBootAnchor": 123.5,
+      "rawBootBottom": 328,
+      "translation": [
+        52,
+        44
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        2059
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south-west",
+      "frame": 7,
+      "sourceFrame": 7,
+      "rawBox": [
+        49,
+        125,
+        351,
+        389
+      ],
+      "globalScale": 0.2230769230769231,
+      "rawBootAnchor": 173.0,
+      "rawBootBottom": 262,
+      "translation": [
+        41,
+        59
+      ],
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "removedDetachedPixels": 0,
+      "method": "generated active pose; ONE scale from neutral anchor per direction; foot X80 and original alpha64 bottom2x",
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1619
+      ],
+      "borderAlphaPixels": 0
+    },
+    {
+      "direction": "south-west",
+      "frame": 8,
+      "sourceFrame": 8,
+      "method": "exact RGBA alias of frame0",
+      "targetAlpha64Bottom": 118,
+      "actualAlpha64Bottom": 118,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1275
+      ],
+      "borderAlphaPixels": 0
+    }
+  ],
+  "frame8Alias0": true,
+  "normalMethod": "same diffuse silhouette bevel, estimated; not measured PBR",
+  "runtimeAdoption": 0,
+  "previewFrameMs": 120,
+  "previewIsGameplayTiming": false,
+  "timingContract": "WarriorBatSwing.speed=.85; original state-specific frame selection; no Core/display implementation change"
+}

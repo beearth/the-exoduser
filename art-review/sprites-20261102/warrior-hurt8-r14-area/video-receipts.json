@@ -1,0 +1,30 @@
+[
+  {
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/warrior-hurt8-r14-area/comparison-page-1.mp4",
+    "sha256": "7a1e82e6de2c0e3851ff3a0e41c22d5993849c93c8cf10b95d682d7f9b0b68a0",
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 640,
+        "frames": "68",
+        "pix_fmt": "gbrp"
+      }
+    ],
+    "fullDecodeExit": 0
+  },
+  {
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/warrior-hurt8-r14-area/comparison-page-2.mp4",
+    "sha256": "b7110ecab41f93301786680cdaeccaf88e0694830902086220e6db976d3c1901",
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 640,
+        "frames": "68",
+        "pix_fmt": "gbrp"
+      }
+    ],
+    "fullDecodeExit": 0
+  }
+]

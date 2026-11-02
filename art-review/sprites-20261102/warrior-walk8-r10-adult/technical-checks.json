@@ -1,0 +1,453 @@
+{
+  "scope": "offline pixels only; not natural motion/ground contact pass",
+  "checks": [
+    {
+      "direction": "south",
+      "key": 0,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1406
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "south",
+      "key": 1,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1353
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "south",
+      "key": 2,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1404
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "south",
+      "key": 3,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1392
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "south-west",
+      "key": 0,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1339
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "south-west",
+      "key": 1,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1278
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "south-west",
+      "key": 2,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1316
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "south-west",
+      "key": 3,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1252
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "west",
+      "key": 0,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1272
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "west",
+      "key": 1,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1165
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "west",
+      "key": 2,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1264
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "west",
+      "key": 3,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1184
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "north-west",
+      "key": 0,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1141
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "north-west",
+      "key": 1,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1091
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "north-west",
+      "key": 2,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1167
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "north-west",
+      "key": 3,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1115
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "north",
+      "key": 0,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1169
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "north",
+      "key": 1,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1141
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "north",
+      "key": 2,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1136
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "north",
+      "key": 3,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1083
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "north-east",
+      "key": 0,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1141
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "north-east",
+      "key": 1,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1149
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "north-east",
+      "key": 2,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1238
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "north-east",
+      "key": 3,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1169
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "east",
+      "key": 0,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1169
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "east",
+      "key": 1,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1131
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "east",
+      "key": 2,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1206
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "east",
+      "key": 3,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1184
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "south-east",
+      "key": 0,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1327
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "south-east",
+      "key": 1,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1283
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "south-east",
+      "key": 2,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1255
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    },
+    {
+      "direction": "south-east",
+      "key": 3,
+      "dimensions": [
+        96,
+        96
+      ],
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        1193
+      ],
+      "borderAlphaPixels": 0,
+      "binaryAlpha": true
+    }
+  ]
+}

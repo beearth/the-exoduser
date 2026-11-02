@@ -1,0 +1,718 @@
+{
+  "sourceCell": [
+    48,
+    48
+  ],
+  "candidateCell": [
+    96,
+    96
+  ],
+  "sourceAtlas": [
+    1008,
+    384
+  ],
+  "candidateAtlas": [
+    2016,
+    768
+  ],
+  "directions": [
+    "south",
+    "south-east",
+    "east",
+    "north-east",
+    "north",
+    "north-west",
+    "west",
+    "south-west"
+  ],
+  "slots": {
+    "idle": [
+      0,
+      1
+    ],
+    "walk": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "attackFallback": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17
+    ],
+    "legacyAliases": [
+      18,
+      19,
+      20
+    ]
+  },
+  "exactAliases": [
+    0,
+    1,
+    18,
+    19,
+    20
+  ],
+  "attackArtReusedFrom": "warrior-attack9-r13-area frames0..7; NOT8newunique per direction",
+  "newHurtSeparate": "warrior-hurt8-r14-area",
+  "newArtKeys": 0,
+  "proposedPPU": 200,
+  "sourcePPU": 100,
+  "logicalCell": [
+    48,
+    48
+  ],
+  "runtimeAdoption": 0,
+  "records": [
+    {
+      "direction": "south",
+      "slot": 10,
+      "canonicalAttack": 0,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south",
+      "slot": 11,
+      "canonicalAttack": 1,
+      "translate": [
+        -32,
+        -28
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south",
+      "slot": 12,
+      "canonicalAttack": 2,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south",
+      "slot": 13,
+      "canonicalAttack": 3,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south",
+      "slot": 14,
+      "canonicalAttack": 4,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south",
+      "slot": 15,
+      "canonicalAttack": 5,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south",
+      "slot": 16,
+      "canonicalAttack": 6,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south",
+      "slot": 17,
+      "canonicalAttack": 7,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south-east",
+      "slot": 10,
+      "canonicalAttack": 0,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south-east",
+      "slot": 11,
+      "canonicalAttack": 1,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south-east",
+      "slot": 12,
+      "canonicalAttack": 2,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south-east",
+      "slot": 13,
+      "canonicalAttack": 3,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south-east",
+      "slot": 14,
+      "canonicalAttack": 4,
+      "translate": [
+        -32,
+        -28
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south-east",
+      "slot": 15,
+      "canonicalAttack": 5,
+      "translate": [
+        -32,
+        -28
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south-east",
+      "slot": 16,
+      "canonicalAttack": 6,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south-east",
+      "slot": 17,
+      "canonicalAttack": 7,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "east",
+      "slot": 10,
+      "canonicalAttack": 0,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "east",
+      "slot": 11,
+      "canonicalAttack": 1,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "east",
+      "slot": 12,
+      "canonicalAttack": 2,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "east",
+      "slot": 13,
+      "canonicalAttack": 3,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "east",
+      "slot": 14,
+      "canonicalAttack": 4,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "east",
+      "slot": 15,
+      "canonicalAttack": 5,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "east",
+      "slot": 16,
+      "canonicalAttack": 6,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "east",
+      "slot": 17,
+      "canonicalAttack": 7,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north-east",
+      "slot": 10,
+      "canonicalAttack": 0,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north-east",
+      "slot": 11,
+      "canonicalAttack": 1,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north-east",
+      "slot": 12,
+      "canonicalAttack": 2,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north-east",
+      "slot": 13,
+      "canonicalAttack": 3,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north-east",
+      "slot": 14,
+      "canonicalAttack": 4,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north-east",
+      "slot": 15,
+      "canonicalAttack": 5,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north-east",
+      "slot": 16,
+      "canonicalAttack": 6,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north-east",
+      "slot": 17,
+      "canonicalAttack": 7,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north",
+      "slot": 10,
+      "canonicalAttack": 0,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north",
+      "slot": 11,
+      "canonicalAttack": 1,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north",
+      "slot": 12,
+      "canonicalAttack": 2,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north",
+      "slot": 13,
+      "canonicalAttack": 3,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north",
+      "slot": 14,
+      "canonicalAttack": 4,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north",
+      "slot": 15,
+      "canonicalAttack": 5,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north",
+      "slot": 16,
+      "canonicalAttack": 6,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north",
+      "slot": 17,
+      "canonicalAttack": 7,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north-west",
+      "slot": 10,
+      "canonicalAttack": 0,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north-west",
+      "slot": 11,
+      "canonicalAttack": 1,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north-west",
+      "slot": 12,
+      "canonicalAttack": 2,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north-west",
+      "slot": 13,
+      "canonicalAttack": 3,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north-west",
+      "slot": 14,
+      "canonicalAttack": 4,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north-west",
+      "slot": 15,
+      "canonicalAttack": 5,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north-west",
+      "slot": 16,
+      "canonicalAttack": 6,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "north-west",
+      "slot": 17,
+      "canonicalAttack": 7,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "west",
+      "slot": 10,
+      "canonicalAttack": 0,
+      "translate": [
+        -32,
+        -28
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "west",
+      "slot": 11,
+      "canonicalAttack": 1,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "west",
+      "slot": 12,
+      "canonicalAttack": 2,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "west",
+      "slot": 13,
+      "canonicalAttack": 3,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "west",
+      "slot": 14,
+      "canonicalAttack": 4,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "west",
+      "slot": 15,
+      "canonicalAttack": 5,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "west",
+      "slot": 16,
+      "canonicalAttack": 6,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "west",
+      "slot": 17,
+      "canonicalAttack": 7,
+      "translate": [
+        -32,
+        -24
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south-west",
+      "slot": 10,
+      "canonicalAttack": 0,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south-west",
+      "slot": 11,
+      "canonicalAttack": 1,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south-west",
+      "slot": 12,
+      "canonicalAttack": 2,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south-west",
+      "slot": 13,
+      "canonicalAttack": 3,
+      "translate": [
+        -32,
+        -32
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south-west",
+      "slot": 14,
+      "canonicalAttack": 4,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south-west",
+      "slot": 15,
+      "canonicalAttack": 5,
+      "translate": [
+        -32,
+        -28
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south-west",
+      "slot": 16,
+      "canonicalAttack": 6,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    },
+    {
+      "direction": "south-west",
+      "slot": 17,
+      "canonicalAttack": 7,
+      "translate": [
+        -32,
+        -30
+      ],
+      "newArt": false
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+[
+  {
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/warrior-attack9-r13-area/comparison-page-1.mp4",
+    "sha256": "e1e3726da84ab9091854b8b3ee05c855ccf3a09a23b1f127ad2f37766a9ae692",
+    "streams": [
+      {
+        "type": "video",
+        "width": 1696,
+        "height": 1024,
+        "frames": "36",
+        "pix_fmt": "gbrp"
+      }
+    ],
+    "fullDecodeExit": 0
+  },
+  {
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/warrior-attack9-r13-area/comparison-page-2.mp4",
+    "sha256": "fdf5c5fa3bc672411fbd492b24b810da0079e5ccd409d46e9e46b0dc41838949",
+    "streams": [
+      {
+        "type": "video",
+        "width": 1696,
+        "height": 1024,
+        "frames": "36",
+        "pix_fmt": "gbrp"
+      }
+    ],
+    "fullDecodeExit": 0
+  }
+]

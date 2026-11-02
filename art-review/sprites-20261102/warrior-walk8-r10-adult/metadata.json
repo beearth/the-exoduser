@@ -1,0 +1,771 @@
+{
+  "group": "warrior-walk8",
+  "directionsComplete": [
+    "south",
+    "south-west",
+    "west",
+    "north-west",
+    "north",
+    "north-east",
+    "east",
+    "south-east"
+  ],
+  "newUniqueKeys": 32,
+  "physicalSlots": 64,
+  "aliases": [
+    0,
+    0,
+    1,
+    1,
+    2,
+    2,
+    3,
+    3
+  ],
+  "aliasMeaning": "각4키를2슬롯씩 유지. 64개의 신규고유포즈라고 집계하지 않음.",
+  "sourcePeriodWorldPixels": 256,
+  "sourceFrameFormula": "floor(walkDist*frameCount/256)%frameCount",
+  "previewFrameMs": 166,
+  "previewIsGameplayTiming": false,
+  "records": [
+    {
+      "direction": "south-west",
+      "key": 0,
+      "rawBox": [
+        88,
+        33,
+        384,
+        412
+      ],
+      "commonScale": 0.15303430079155672,
+      "translation": [
+        28,
+        30
+      ],
+      "sourceIdleAlpha64Bottom": 44,
+      "candidateAlpha64Bottom": 88,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "south-west",
+      "key": 1,
+      "rawBox": [
+        88,
+        33,
+        388,
+        412
+      ],
+      "commonScale": 0.15303430079155672,
+      "translation": [
+        28,
+        30
+      ],
+      "sourceIdleAlpha64Bottom": 44,
+      "candidateAlpha64Bottom": 88,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "south-west",
+      "key": 2,
+      "rawBox": [
+        89,
+        33,
+        382,
+        411
+      ],
+      "commonScale": 0.15303430079155672,
+      "translation": [
+        28,
+        30
+      ],
+      "sourceIdleAlpha64Bottom": 44,
+      "candidateAlpha64Bottom": 88,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "south-west",
+      "key": 3,
+      "rawBox": [
+        96,
+        33,
+        383,
+        412
+      ],
+      "commonScale": 0.15303430079155672,
+      "translation": [
+        29,
+        30
+      ],
+      "sourceIdleAlpha64Bottom": 44,
+      "candidateAlpha64Bottom": 88,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "west",
+      "key": 0,
+      "rawBox": [
+        80,
+        35,
+        392,
+        415
+      ],
+      "commonScale": 0.15223097112860892,
+      "translation": [
+        28,
+        30
+      ],
+      "sourceIdleAlpha64Bottom": 44,
+      "candidateAlpha64Bottom": 88,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "west",
+      "key": 1,
+      "rawBox": [
+        86,
+        35,
+        381,
+        416
+      ],
+      "commonScale": 0.15223097112860892,
+      "translation": [
+        28,
+        30
+      ],
+      "sourceIdleAlpha64Bottom": 44,
+      "candidateAlpha64Bottom": 88,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "west",
+      "key": 2,
+      "rawBox": [
+        80,
+        35,
+        388,
+        415
+      ],
+      "commonScale": 0.15223097112860892,
+      "translation": [
+        28,
+        30
+      ],
+      "sourceIdleAlpha64Bottom": 44,
+      "candidateAlpha64Bottom": 88,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "west",
+      "key": 3,
+      "rawBox": [
+        86,
+        35,
+        383,
+        416
+      ],
+      "commonScale": 0.15223097112860892,
+      "translation": [
+        28,
+        30
+      ],
+      "sourceIdleAlpha64Bottom": 44,
+      "candidateAlpha64Bottom": 88,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "north-west",
+      "key": 0,
+      "rawBox": [
+        94,
+        29,
+        382,
+        414
+      ],
+      "commonScale": 0.15064935064935064,
+      "translation": [
+        26,
+        28
+      ],
+      "sourceIdleAlpha64Bottom": 43,
+      "candidateAlpha64Bottom": 86,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "north-west",
+      "key": 1,
+      "rawBox": [
+        137,
+        32,
+        374,
+        412
+      ],
+      "commonScale": 0.15064935064935064,
+      "translation": [
+        29,
+        29
+      ],
+      "sourceIdleAlpha64Bottom": 43,
+      "candidateAlpha64Bottom": 86,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "north-west",
+      "key": 2,
+      "rawBox": [
+        96,
+        34,
+        374,
+        413
+      ],
+      "commonScale": 0.15064935064935064,
+      "translation": [
+        26,
+        29
+      ],
+      "sourceIdleAlpha64Bottom": 43,
+      "candidateAlpha64Bottom": 86,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "north-west",
+      "key": 3,
+      "rawBox": [
+        101,
+        34,
+        366,
+        410
+      ],
+      "commonScale": 0.15064935064935064,
+      "translation": [
+        27,
+        29
+      ],
+      "sourceIdleAlpha64Bottom": 43,
+      "candidateAlpha64Bottom": 86,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "north",
+      "key": 0,
+      "rawBox": [
+        118,
+        31,
+        363,
+        414
+      ],
+      "commonScale": 0.1514360313315927,
+      "translation": [
+        30,
+        28
+      ],
+      "sourceIdleAlpha64Bottom": 43,
+      "candidateAlpha64Bottom": 86,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "north",
+      "key": 1,
+      "rawBox": [
+        126,
+        30,
+        364,
+        405
+      ],
+      "commonScale": 0.1514360313315927,
+      "translation": [
+        30,
+        29
+      ],
+      "sourceIdleAlpha64Bottom": 43,
+      "candidateAlpha64Bottom": 86,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "north",
+      "key": 2,
+      "rawBox": [
+        124,
+        33,
+        366,
+        414
+      ],
+      "commonScale": 0.1514360313315927,
+      "translation": [
+        30,
+        28
+      ],
+      "sourceIdleAlpha64Bottom": 43,
+      "candidateAlpha64Bottom": 86,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "north",
+      "key": 3,
+      "rawBox": [
+        133,
+        33,
+        365,
+        409
+      ],
+      "commonScale": 0.1514360313315927,
+      "translation": [
+        30,
+        29
+      ],
+      "sourceIdleAlpha64Bottom": 43,
+      "candidateAlpha64Bottom": 86,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "north-east",
+      "key": 0,
+      "rawBox": [
+        69,
+        28,
+        358,
+        420
+      ],
+      "commonScale": 0.14795918367346939,
+      "translation": [
+        22,
+        28
+      ],
+      "sourceIdleAlpha64Bottom": 43,
+      "candidateAlpha64Bottom": 86,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "north-east",
+      "key": 1,
+      "rawBox": [
+        69,
+        29,
+        357,
+        415
+      ],
+      "commonScale": 0.14795918367346939,
+      "translation": [
+        22,
+        29
+      ],
+      "sourceIdleAlpha64Bottom": 43,
+      "candidateAlpha64Bottom": 86,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "north-east",
+      "key": 2,
+      "rawBox": [
+        54,
+        29,
+        367,
+        418
+      ],
+      "commonScale": 0.14795918367346939,
+      "translation": [
+        20,
+        28
+      ],
+      "sourceIdleAlpha64Bottom": 43,
+      "candidateAlpha64Bottom": 86,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "north-east",
+      "key": 3,
+      "rawBox": [
+        59,
+        29,
+        365,
+        416
+      ],
+      "commonScale": 0.14795918367346939,
+      "translation": [
+        20,
+        29
+      ],
+      "sourceIdleAlpha64Bottom": 43,
+      "candidateAlpha64Bottom": 86,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "east",
+      "key": 0,
+      "rawBox": [
+        45,
+        29,
+        356,
+        417
+      ],
+      "commonScale": 0.14910025706940874,
+      "translation": [
+        21,
+        28
+      ],
+      "sourceIdleAlpha64Bottom": 43,
+      "candidateAlpha64Bottom": 86,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "east",
+      "key": 1,
+      "rawBox": [
+        53,
+        28,
+        329,
+        416
+      ],
+      "commonScale": 0.14910025706940874,
+      "translation": [
+        24,
+        28
+      ],
+      "sourceIdleAlpha64Bottom": 43,
+      "candidateAlpha64Bottom": 86,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "east",
+      "key": 2,
+      "rawBox": [
+        38,
+        28,
+        345,
+        417
+      ],
+      "commonScale": 0.14910025706940874,
+      "translation": [
+        21,
+        28
+      ],
+      "sourceIdleAlpha64Bottom": 43,
+      "candidateAlpha64Bottom": 86,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "east",
+      "key": 3,
+      "rawBox": [
+        57,
+        28,
+        330,
+        416
+      ],
+      "commonScale": 0.14910025706940874,
+      "translation": [
+        24,
+        28
+      ],
+      "sourceIdleAlpha64Bottom": 43,
+      "candidateAlpha64Bottom": 86,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "south-east",
+      "key": 0,
+      "rawBox": [
+        38,
+        12,
+        354,
+        422
+      ],
+      "commonScale": 0.1411192214111922,
+      "translation": [
+        22,
+        28
+      ],
+      "sourceIdleAlpha64Bottom": 43,
+      "candidateAlpha64Bottom": 86,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "south-east",
+      "key": 1,
+      "rawBox": [
+        40,
+        13,
+        329,
+        424
+      ],
+      "commonScale": 0.1411192214111922,
+      "translation": [
+        24,
+        28
+      ],
+      "sourceIdleAlpha64Bottom": 43,
+      "candidateAlpha64Bottom": 86,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "south-east",
+      "key": 2,
+      "rawBox": [
+        46,
+        13,
+        361,
+        423
+      ],
+      "commonScale": 0.1411192214111922,
+      "translation": [
+        23,
+        28
+      ],
+      "sourceIdleAlpha64Bottom": 43,
+      "candidateAlpha64Bottom": 86,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "south-east",
+      "key": 3,
+      "rawBox": [
+        42,
+        13,
+        336,
+        420
+      ],
+      "commonScale": 0.1411192214111922,
+      "translation": [
+        24,
+        29
+      ],
+      "sourceIdleAlpha64Bottom": 43,
+      "candidateAlpha64Bottom": 86,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "south",
+      "key": 0,
+      "rawBox": [
+        61,
+        12,
+        366,
+        428
+      ],
+      "commonScale": 0.13942307692307693,
+      "translation": [
+        22,
+        30
+      ],
+      "sourceIdleAlpha64Bottom": 44,
+      "candidateAlpha64Bottom": 88,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "south",
+      "key": 1,
+      "rawBox": [
+        63,
+        12,
+        371,
+        422
+      ],
+      "commonScale": 0.13942307692307693,
+      "translation": [
+        22,
+        31
+      ],
+      "sourceIdleAlpha64Bottom": 44,
+      "candidateAlpha64Bottom": 88,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "south",
+      "key": 2,
+      "rawBox": [
+        60,
+        12,
+        376,
+        428
+      ],
+      "commonScale": 0.13942307692307693,
+      "translation": [
+        22,
+        30
+      ],
+      "sourceIdleAlpha64Bottom": 44,
+      "candidateAlpha64Bottom": 88,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    },
+    {
+      "direction": "south",
+      "key": 3,
+      "rawBox": [
+        61,
+        12,
+        373,
+        425
+      ],
+      "commonScale": 0.13942307692307693,
+      "translation": [
+        22,
+        30
+      ],
+      "sourceIdleAlpha64Bottom": 44,
+      "candidateAlpha64Bottom": 88,
+      "pivotTopLeft": [
+        48,
+        48
+      ],
+      "runtimePivotChanged": false,
+      "removedDetachedPixels": 0
+    }
+  ],
+  "status": "후보/실게임미검증",
+  "runtimeAdoption": 0,
+  "normalMethod": "same diffuse silhouette bevel estimate, not measured PBR"
+}

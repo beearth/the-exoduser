@@ -1,0 +1,425 @@
+{
+  "group": "warrior-hurt2-eight-directions",
+  "directions": [
+    "south",
+    "south-west",
+    "west",
+    "north-west",
+    "north",
+    "north-east",
+    "east",
+    "south-east"
+  ],
+  "sourceCell": [
+    48,
+    48
+  ],
+  "candidateCell": [
+    96,
+    96
+  ],
+  "atlasSize": [
+    192,
+    768
+  ],
+  "newUniqueKeys": 16,
+  "sourceWasNeutralAlias": true,
+  "originalCompatible21AliasesUnchanged": true,
+  "runtimeBinding": "not bound; requires approval",
+  "runtimeAdoption": 0,
+  "normal": "same diffuse silhouette bevel, not measured PBR",
+  "reviewTimingMs": [
+    300,
+    100,
+    150,
+    300
+  ],
+  "reviewTimingIsGameplay": false,
+  "records": [
+    {
+      "direction": "south",
+      "key": 0,
+      "rawBox": [
+        61,
+        73,
+        344,
+        396
+      ],
+      "scaleFromReferenceBody400to58": 0.1673957158962796,
+      "translation": [
+        14,
+        35
+      ],
+      "sourceHurtSlot": 18,
+      "targetAlpha64Bottom": 88,
+      "actualAlpha64Bottom": 88,
+      "normalAlphaMismatch": 0,
+      "components": [
+        1436
+      ],
+      "borderAlphaPixels": 0,
+      "removedDetached": 0
+    },
+    {
+      "direction": "south",
+      "key": 1,
+      "rawBox": [
+        66,
+        52,
+        355,
+        399
+      ],
+      "scaleFromReferenceBody400to58": 0.1673957158962796,
+      "translation": [
+        15,
+        30
+      ],
+      "sourceHurtSlot": 19,
+      "targetAlpha64Bottom": 88,
+      "actualAlpha64Bottom": 88,
+      "normalAlphaMismatch": 0,
+      "components": [
+        1620
+      ],
+      "borderAlphaPixels": 0,
+      "removedDetached": 0
+    },
+    {
+      "direction": "south-west",
+      "key": 0,
+      "rawBox": [
+        47,
+        73,
+        347,
+        394
+      ],
+      "scaleFromReferenceBody400to58": 0.1673957158962796,
+      "translation": [
+        18,
+        34
+      ],
+      "sourceHurtSlot": 18,
+      "targetAlpha64Bottom": 88,
+      "actualAlpha64Bottom": 88,
+      "normalAlphaMismatch": 0,
+      "components": [
+        1456
+      ],
+      "borderAlphaPixels": 0,
+      "removedDetached": 0
+    },
+    {
+      "direction": "south-west",
+      "key": 1,
+      "rawBox": [
+        50,
+        52,
+        354,
+        400
+      ],
+      "scaleFromReferenceBody400to58": 0.1673957158962796,
+      "translation": [
+        18,
+        30
+      ],
+      "sourceHurtSlot": 19,
+      "targetAlpha64Bottom": 88,
+      "actualAlpha64Bottom": 88,
+      "normalAlphaMismatch": 0,
+      "components": [
+        1584
+      ],
+      "borderAlphaPixels": 0,
+      "removedDetached": 0
+    },
+    {
+      "direction": "west",
+      "key": 0,
+      "rawBox": [
+        62,
+        73,
+        345,
+        391
+      ],
+      "scaleFromReferenceBody400to58": 0.1673957158962796,
+      "translation": [
+        18,
+        35
+      ],
+      "sourceHurtSlot": 18,
+      "targetAlpha64Bottom": 88,
+      "actualAlpha64Bottom": 88,
+      "normalAlphaMismatch": 0,
+      "components": [
+        1261
+      ],
+      "borderAlphaPixels": 0,
+      "removedDetached": 0
+    },
+    {
+      "direction": "west",
+      "key": 1,
+      "rawBox": [
+        65,
+        52,
+        353,
+        400
+      ],
+      "scaleFromReferenceBody400to58": 0.1673957158962796,
+      "translation": [
+        19,
+        30
+      ],
+      "sourceHurtSlot": 19,
+      "targetAlpha64Bottom": 88,
+      "actualAlpha64Bottom": 88,
+      "normalAlphaMismatch": 0,
+      "components": [
+        1379
+      ],
+      "borderAlphaPixels": 0,
+      "removedDetached": 0
+    },
+    {
+      "direction": "north-west",
+      "key": 0,
+      "rawBox": [
+        113,
+        74,
+        363,
+        395
+      ],
+      "scaleFromReferenceBody400to58": 0.1673957158962796,
+      "translation": [
+        32,
+        32
+      ],
+      "sourceHurtSlot": 18,
+      "targetAlpha64Bottom": 86,
+      "actualAlpha64Bottom": 86,
+      "normalAlphaMismatch": 0,
+      "components": [
+        1365
+      ],
+      "borderAlphaPixels": 0,
+      "removedDetached": 0
+    },
+    {
+      "direction": "north-west",
+      "key": 1,
+      "rawBox": [
+        115,
+        52,
+        363,
+        399
+      ],
+      "scaleFromReferenceBody400to58": 0.1673957158962796,
+      "translation": [
+        33,
+        28
+      ],
+      "sourceHurtSlot": 19,
+      "targetAlpha64Bottom": 86,
+      "actualAlpha64Bottom": 86,
+      "normalAlphaMismatch": 0,
+      "components": [
+        1466
+      ],
+      "borderAlphaPixels": 0,
+      "removedDetached": 0
+    },
+    {
+      "direction": "north",
+      "key": 0,
+      "rawBox": [
+        102,
+        73,
+        376,
+        397
+      ],
+      "scaleFromReferenceBody400to58": 0.1673957158962796,
+      "translation": [
+        31,
+        32
+      ],
+      "sourceHurtSlot": 18,
+      "targetAlpha64Bottom": 86,
+      "actualAlpha64Bottom": 86,
+      "normalAlphaMismatch": 0,
+      "components": [
+        1429
+      ],
+      "borderAlphaPixels": 0,
+      "removedDetached": 0
+    },
+    {
+      "direction": "north",
+      "key": 1,
+      "rawBox": [
+        106,
+        47,
+        372,
+        407
+      ],
+      "scaleFromReferenceBody400to58": 0.1673957158962796,
+      "translation": [
+        32,
+        26
+      ],
+      "sourceHurtSlot": 19,
+      "targetAlpha64Bottom": 86,
+      "actualAlpha64Bottom": 86,
+      "normalAlphaMismatch": 0,
+      "components": [
+        1567
+      ],
+      "borderAlphaPixels": 0,
+      "removedDetached": 0
+    },
+    {
+      "direction": "north-east",
+      "key": 0,
+      "rawBox": [
+        82,
+        72,
+        354,
+        397
+      ],
+      "scaleFromReferenceBody400to58": 0.1673957158962796,
+      "translation": [
+        24,
+        32
+      ],
+      "sourceHurtSlot": 18,
+      "targetAlpha64Bottom": 86,
+      "actualAlpha64Bottom": 86,
+      "normalAlphaMismatch": 0,
+      "components": [
+        1382
+      ],
+      "borderAlphaPixels": 0,
+      "removedDetached": 0
+    },
+    {
+      "direction": "north-east",
+      "key": 1,
+      "rawBox": [
+        80,
+        47,
+        348,
+        408
+      ],
+      "scaleFromReferenceBody400to58": 0.1673957158962796,
+      "translation": [
+        24,
+        26
+      ],
+      "sourceHurtSlot": 19,
+      "targetAlpha64Bottom": 86,
+      "actualAlpha64Bottom": 86,
+      "normalAlphaMismatch": 0,
+      "components": [
+        1481
+      ],
+      "borderAlphaPixels": 0,
+      "removedDetached": 0
+    },
+    {
+      "direction": "east",
+      "key": 0,
+      "rawBox": [
+        77,
+        74,
+        339,
+        401
+      ],
+      "scaleFromReferenceBody400to58": 0.1673957158962796,
+      "translation": [
+        31,
+        31
+      ],
+      "sourceHurtSlot": 18,
+      "targetAlpha64Bottom": 86,
+      "actualAlpha64Bottom": 86,
+      "normalAlphaMismatch": 0,
+      "components": [
+        1279
+      ],
+      "borderAlphaPixels": 0,
+      "removedDetached": 0
+    },
+    {
+      "direction": "east",
+      "key": 1,
+      "rawBox": [
+        75,
+        45,
+        326,
+        408
+      ],
+      "scaleFromReferenceBody400to58": 0.1673957158962796,
+      "translation": [
+        27,
+        25
+      ],
+      "sourceHurtSlot": 19,
+      "targetAlpha64Bottom": 86,
+      "actualAlpha64Bottom": 86,
+      "normalAlphaMismatch": 0,
+      "components": [
+        1385
+      ],
+      "borderAlphaPixels": 0,
+      "removedDetached": 0
+    },
+    {
+      "direction": "south-east",
+      "key": 0,
+      "rawBox": [
+        94,
+        78,
+        335,
+        406
+      ],
+      "scaleFromReferenceBody400to58": 0.1673957158962796,
+      "translation": [
+        25,
+        31
+      ],
+      "sourceHurtSlot": 18,
+      "targetAlpha64Bottom": 86,
+      "actualAlpha64Bottom": 86,
+      "normalAlphaMismatch": 0,
+      "components": [
+        1425
+      ],
+      "borderAlphaPixels": 0,
+      "removedDetached": 0
+    },
+    {
+      "direction": "south-east",
+      "key": 1,
+      "rawBox": [
+        86,
+        47,
+        336,
+        408
+      ],
+      "scaleFromReferenceBody400to58": 0.1673957158962796,
+      "translation": [
+        24,
+        26
+      ],
+      "sourceHurtSlot": 19,
+      "targetAlpha64Bottom": 86,
+      "actualAlpha64Bottom": 86,
+      "normalAlphaMismatch": 0,
+      "components": [
+        1561
+      ],
+      "borderAlphaPixels": 0,
+      "removedDetached": 0
+    }
+  ],
+  "errors": []
+}

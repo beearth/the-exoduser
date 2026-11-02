@@ -1,0 +1,368 @@
+[
+  {
+    "path": "art-review/sprites-20261102/warrior-idle8-r11-seam/generated-seam2.png",
+    "blob": "2dd6ce797218a97ab09685a4c941cb2311524434",
+    "bytes": 884050,
+    "sha256": "67e2ba64b3bd0d8c3fd47ccd6aa333621f3c873a2829e9aca80da2a8a3e2a1ac"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-idle8-r11-seam/atlas.png",
+    "blob": "e9c0d0d9a4ea772e04c8ba4738cd8f46251ea605",
+    "bytes": 25667,
+    "sha256": "cdd9d515071e1e7dd87de77ac809a1f899a2538ed33926b4a20688ebe82b43d8"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-idle8-r11-seam/atlas.normal.png",
+    "blob": "58b7e8c5a33656e67ccc9256519e61c5aa2fda86",
+    "bytes": 11332,
+    "sha256": "7dfd814505edae9f953148ef4231b56e7aa41c133c5bee9f8a24d13f942bb284"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-idle8-r11-seam/metadata.json",
+    "blob": "e6912a75756ea196383596ab855ec87d982b6afd",
+    "bytes": 6302,
+    "sha256": "7e38ff420e2e20baf9f39f48d29e903473577e6a10f0059e855386db2d606226"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-idle8-r11-seam/comparison-grid.png",
+    "blob": "cb723e48568c0c920be69b233559a237626afb9a",
+    "bytes": 94560,
+    "sha256": "ee3ac618684e76f2413a830fd62b82a215de63d1ae299d7d77be1f449fea5184"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-idle8-r11-seam/comparison.gif",
+    "blob": "cd98f928c1d325fc413aacbaede46ce8bc6a2734",
+    "bytes": 71861,
+    "sha256": "16686aa9af3538494557a0f3de4826b417becab82541a37cc9ea256083077e15"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-idle8-r11-seam/comparison.mp4",
+    "blob": "677e4c954588a5d16465e5d70278895b78051653",
+    "bytes": 129704,
+    "sha256": "5743e23aff2f27825514a6f0932764b5eb5df74f0566c1224e6d5b7ba002bb7e"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-walk8-r10-adult/metadata.json",
+    "blob": "a6286f28dc23fbf36979ea627db29aa738502b12",
+    "bytes": 15270,
+    "sha256": "ffe6b29d1a804f50731d2ceec811d9cacc1babb3398532039c18456846b6db67"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-walk8-r10-adult/atlas.png",
+    "blob": "e2dea7351be4df4b7f5cdc02f8908a76661e1625",
+    "bytes": 116953,
+    "sha256": "52c23659bb10ee47da32d42a9c1c9429629e74191c761181af105b3b6eef94ae"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-walk8-r10-adult/atlas.normal.png",
+    "blob": "b5439d1eb8916634890d2bf5b4153344f5601477",
+    "bytes": 54051,
+    "sha256": "4164268ba4eb99bdb18a1f7fa8886e9caca2da6c312ce4c5bcdfa6339d459cfb"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-walk8-r10-adult/comparison-page-1.gif",
+    "blob": "c63e5b1728a6d4adea9a9da1941111c1852ba7c2",
+    "bytes": 143418,
+    "sha256": "4bf54e4e8189a3176db5904d3ff597671b9b0e930f73b5db49370278888089b3"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-walk8-r10-adult/comparison-page-1-grid.png",
+    "blob": "b88c947d7ae3f6c80402789cf5093e2f6451f8c3",
+    "bytes": 209356,
+    "sha256": "ba19f98fc4eb7324d6b0249bd723d8a19f405db9f10775ea91acff4be3bf6845"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-walk8-r10-adult/comparison-page-2.gif",
+    "blob": "99fbc129e3f0aee5e2bb293fff448eba356fe850",
+    "bytes": 138410,
+    "sha256": "8d82e992b1bf13add521a0bfce9f182090e33eb79dc8fc4ccaaebbd0f160ae32"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-walk8-r10-adult/comparison-page-2-grid.png",
+    "blob": "e85cbf718272da19338b39ac8e0748e5594f4e6f",
+    "bytes": 201005,
+    "sha256": "dfc443ea21ea71637eb7124114adb4c280d5212bf78f2eb5cdb87999ffa4d388"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-walk8-r10-adult/technical-checks.json",
+    "blob": "96467f1df3c8cca1da8c073fa7926ee71de7f896",
+    "bytes": 8554,
+    "sha256": "270d9d20bcbbae236bb11b25931db606a6638cf710096b61e0a1a72f17ad2dde"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-walk8-r10-adult/comparison-page-1.mp4",
+    "blob": "280291cbc48595a71a1b013d65076f0ad5640e2a",
+    "bytes": 2200825,
+    "sha256": "369443932205f04269c3d58111f2df19b3c817c66b05fb98fa4b4e412a323203"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-walk8-r10-adult/comparison-page-2.mp4",
+    "blob": "0eca355b5f3a2b13017d75f0470b10a88ca83f21",
+    "bytes": 2075958,
+    "sha256": "64bfa39af31e42b6e3445be9937a41e718fc13eb21ba1f366da215ae0c9b4753"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r13-area/atlas.png",
+    "blob": "766ef60208beaf49c6958868f54b5847b98b5ffb",
+    "bytes": 251907,
+    "sha256": "3b2161ffa08154381f5fb2c6ba1214d8530379f3cc1b5586d1edc8bee9f9e4f2"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r13-area/atlas.normal.png",
+    "blob": "77f4051ccaa831cbc4582809ae5007466d9cb239",
+    "bytes": 116060,
+    "sha256": "e3a44f00ad8fb0ac79fedf304b8c461b2f4dc1563a1672a9c21445b992582334"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r13-area/metadata.json",
+    "blob": "3fb4dd11e4d599f114342bc09a15a3a8e03372ea",
+    "bytes": 44214,
+    "sha256": "db4e56264c67bb44d869c57f31c2bcd4a5dbf1eaa628f5ba964a71836005b32f"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r13-area/comparison-page-1-grid.png",
+    "blob": "c25ef0f6d78218705de63139d25ee87524ae44b9",
+    "bytes": 520570,
+    "sha256": "56f6d5a2618b6f57f4abc2b9d4aff915074d389152d71ef98737dc128fe8fb67"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r13-area/comparison-page-1.gif",
+    "blob": "e1b543db4e1a1f255a2f6ad7975e621739325638",
+    "bytes": 375745,
+    "sha256": "619adccc5b3eb6e161b4ccd16786ad5d22196e6539ba98573cc50c924bb2a937"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r13-area/comparison-page-2-grid.png",
+    "blob": "837a2ba3bb6846b72741b2381135ee1ba2241cb6",
+    "bytes": 523560,
+    "sha256": "7b3917a10f0109c5b08483740cf8718ed5dae252e6e239cc1bed09ebee7d6277"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r13-area/comparison-page-2.gif",
+    "blob": "b84817a4cd52153d2fd5f18cbe6df1ca5c0f55be",
+    "bytes": 372590,
+    "sha256": "9ffe0d11310098eacb9dec3cce88d9a7e8647108fe96b58dbc2fc1759ed74d1f"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r13-area/technical-checks.json",
+    "blob": "61d4cdfb061899e74c57833b9639ce30c1290cac",
+    "bytes": 486,
+    "sha256": "f805326d2a1f7be5304980c8a3c6966ed62df0112178212b3eaaa680e37008fe"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r13-area/comparison-page-1.mp4",
+    "blob": "0d85295d142dda8ec4c6a3f77a5a1a440e1aabab",
+    "bytes": 2563666,
+    "sha256": "e1e3726da84ab9091854b8b3ee05c855ccf3a09a23b1f127ad2f37766a9ae692"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r13-area/comparison-page-2.mp4",
+    "blob": "60c615663e7c596bfc246b60f7f48897a871f431",
+    "bytes": 2458977,
+    "sha256": "fdf5c5fa3bc672411fbd492b24b810da0079e5ccd409d46e9e46b0dc41838949"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r13-area/video-receipts.json",
+    "blob": "9462333bf207f11c3711e9850492e7256021a05c",
+    "bytes": 774,
+    "sha256": "bf39c58a239ab5cad0cb309ee2da83560ee81df80387275d2706381ae3d00d59"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-hurt8-r14-area/atlas.png",
+    "blob": "7e744aec75235bbc48fef72c097fa76a7ea6f9aa",
+    "bytes": 55646,
+    "sha256": "13e63e0ec83bf5403139df7479f003811f2c12ac219003aec5d374f3bdccd562"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-hurt8-r14-area/atlas.normal.png",
+    "blob": "de5df27871db13b2065538ee5c10a165624ae6ce",
+    "bytes": 26994,
+    "sha256": "a302cb24e5e9481f59eeb597adf78a03008c663201e14dfd749935a095e98803"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-hurt8-r14-area/comparison-page-1-grid.png",
+    "blob": "758acde419d913990a3de5d253a08093c2b3c953",
+    "bytes": 202269,
+    "sha256": "ce5db9116e2438e90b0ec5d3e2cd02eb13bfa36b425146cc181bee9771e310f9"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-hurt8-r14-area/comparison-page-1.gif",
+    "blob": "e0d0881f079f598620bf06278b859f284d9234ca",
+    "bytes": 157084,
+    "sha256": "bb4a7e0f755e2c727a94829e0a80da23b2e8b98deef7439a657c5857007a792c"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-hurt8-r14-area/comparison-page-2-grid.png",
+    "blob": "5ade0597040e9124db74e8658311b9dbeba63e86",
+    "bytes": 192964,
+    "sha256": "5ea658f0fdb6c9a3463460a87c84b916627186648478401d7f9c4b9703883ef1"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-hurt8-r14-area/comparison-page-2.gif",
+    "blob": "89b89efb1cb1d681a806c6fc0d39d0b14b23c443",
+    "bytes": 149568,
+    "sha256": "ee640294b74f214ac68b8ebc9978a7d71cda7a3b5a89d984e3d858930cda0c42"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-hurt8-r14-area/metadata.json",
+    "blob": "5241b17c8edbba1f57fca974afc813a95b7e7af6",
+    "bytes": 8732,
+    "sha256": "7b693d0781a0a73972b8b5a6c22207e73884d5404e38d6f6e85000860b7744dc"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-hurt8-r14-area/comparison-page-1.mp4",
+    "blob": "fc66bd6ce5b16a0ddf3b1f7fe1f9525442693864",
+    "bytes": 819823,
+    "sha256": "7a1e82e6de2c0e3851ff3a0e41c22d5993849c93c8cf10b95d682d7f9b0b68a0"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-hurt8-r14-area/comparison-page-2.mp4",
+    "blob": "21d22e67f6878bb64c2c1d8fdee6b76c1836af2b",
+    "bytes": 783128,
+    "sha256": "b7110ecab41f93301786680cdaeccaf88e0694830902086220e6db976d3c1901"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-hurt8-r14-area/video-receipts.json",
+    "blob": "f7d07a0b0e92f29020f66c50914efd93e03834e8",
+    "bytes": 768,
+    "sha256": "3814aee529d4900bdd9841cf6cdd01c59c966966a6d9042570c2738004bfd356"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-hurt8-r14-area/prompts.json",
+    "blob": "ef534a56f0bd82fa30170a38f529b7af8f8a79a7",
+    "bytes": 3540,
+    "sha256": "a0807c8f9d837305610f021ee629261c3a039b104532c9fb1bef0f62c80a2529"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-base-compatible-r15/atlas.png",
+    "blob": "e967fc48658e07bb9f6dd9f864a78cfbb02a113a",
+    "bytes": 368188,
+    "sha256": "28fb885843adf09b820e43d6bc42f45d46f32b791aa789027e55d43434a77120"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-base-compatible-r15/atlas.normal.png",
+    "blob": "660a7fa810e97cfcf23a4aa4d08f7cb9cf634e7d",
+    "bytes": 158624,
+    "sha256": "16ed19fc4437552af570491a7f78c39278b8860eefc220d64c6b8fc40f36c3be"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-base-compatible-r15/metadata.json",
+    "blob": "8cc377ffc55d96bf5988ebf9a1dd7f05847c946d",
+    "bytes": 12330,
+    "sha256": "86adb5a83d6de0b12574e37f978da19a60f17b9b1910098aab9d19be9e3a636b"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-idle8-r9-clean-adult/generated.png",
+    "blob": "3f8ab9588fa13af8f8413909230b06d4c9c567f8",
+    "bytes": 858579,
+    "sha256": "c2603c089d3a50e580de224fca554ef786ea6d0c579b1c9ce0967ad367b81049"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-walk8-r10-adult/south-west_west.generated.png",
+    "blob": "f53566c351f6f083ce56330099daaabe33f271fd",
+    "bytes": 1201438,
+    "sha256": "660dfd392474c7f86941b0fc88e81dc39344eb9f11d0e5c742926dbc494162e5"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-walk8-r10-adult/north-west_north.generated.png",
+    "blob": "d24e006bd181a8fbf57d0ab3cd7b3fee7100da53",
+    "bytes": 926619,
+    "sha256": "fcc2f7985ab672eeb8b44bf4b390811d7473f2d3dc56adfd2d9597920f496252"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-walk8-r10-adult/north-east_east.generated.png",
+    "blob": "7d912a8820d0c13467ca3516e722db803b527d59",
+    "bytes": 1087545,
+    "sha256": "bc12409261a9d1ff740ffc585e550151ee3b662c5c141f866d226de7f2827159"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-walk8-r10-adult/south-east_south.generated.png",
+    "blob": "5387d94049d83dc6efaaa661b6a01720d35ba1b2",
+    "bytes": 1222289,
+    "sha256": "f9e613eee035cb06c91fbe3b490278e91fa2267f05eb3f325c42f2de5a234018"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r12/south.generated.png",
+    "blob": "f80b79220bbc129e16f70c55af35c4c70ed8f0e9",
+    "bytes": 839338,
+    "sha256": "5f0a14051ef4aabf88691cf6b5f982f74836aba89196642626f8e57a07167d6f"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r12/south-west.generated.png",
+    "blob": "7debd694e698a876cd6174c260c2c21b03c9916e",
+    "bytes": 2220936,
+    "sha256": "833aec014167e585c2dbbd0230f98d99309d112914c02e28cf92006c52b8ff59"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r12/west.generated.png",
+    "blob": "38703c1246189a5601926e23b39f7e61ff3fa45d",
+    "bytes": 913515,
+    "sha256": "bdd6ca50387c16e21bae9710dd73696a81075991e0324efa9f5db6de3c3d31d6"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r12/north-west.generated.png",
+    "blob": "367414a401f3779eccb3775e6b6a16ce57447650",
+    "bytes": 780322,
+    "sha256": "2c68eae4702c128fb23e8d8cdb591845f1f11acebcfc678e96d2b8a62da66173"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r12/role-patch4.generated.png",
+    "blob": "8f535dbae22f26e4265c9b8b37be788322982dff",
+    "bytes": 799116,
+    "sha256": "176019852a20dd1694a9be197d5fc1000901d68a48a4d3752eaac44dbdf02499"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r12/north.generated.png",
+    "blob": "1e0bfaf5fcc8875cdaa8e35faf083025d0120253",
+    "bytes": 764513,
+    "sha256": "2fbeee1c84c828d6743c5df357c75cc0314d249b1ae10002039d0b811ba007f3"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r12/east.generated.png",
+    "blob": "dfc9bf545a8d9e9cc5c5f061d039391d19cecb09",
+    "bytes": 780149,
+    "sha256": "52d12feaf6383a15ab5c8667f95ab2800ea5bf23b7e8b004f5d8d1ca560fd817"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r12/south-east.generated.png",
+    "blob": "7da570dd85b3f7b6c4c289452354c60a7e6f3d20",
+    "bytes": 784179,
+    "sha256": "93836605404f30fe5068d6b04203fd65a841bb96917e0f1a05aa869dba7899ce"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r12/prompts-latest.json",
+    "blob": "fba372e3c7013e53cc4fed1004af23b97e27d278",
+    "bytes": 13372,
+    "sha256": "97ec48663f1c5c94f77b1d95f2b5a51a08986e897685db4aa60c4e4aedfae5b2"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r12/north-east.generated.png",
+    "blob": "e470ef52eac7642feada70de33484bbb62acbfbc",
+    "bytes": 764006,
+    "sha256": "ffc9625df2cc5dc87c7c28ec691da5c199b2b3dc459429f6b5e6f20e80e25f5e"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-attack9-r12/recovery-patch2.generated.png",
+    "blob": "9f3766780c966fa3f7cc4700300e3fb49624b66b",
+    "bytes": 562806,
+    "sha256": "72c73d8e248d2ceede86e2b9e164e73bc324539d873f5a5d7cf0bee0df32f682"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-hurt8-r14-area/flinch.generated.png",
+    "blob": "33acacc975634a9efde200f2a2bc242488a115b4",
+    "bytes": 933511,
+    "sha256": "f12e1ea3a297e62c7c5f921dc5ac274bad257de5f333a983c7bf1ae3e019a976"
+  },
+  {
+    "path": "art-review/sprites-20261102/warrior-hurt8-r14-area/recover.generated.png",
+    "blob": "c94ebe9fb799cf07803bec0098372b7c8515abef",
+    "bytes": 1061854,
+    "sha256": "f646d7d274c29c39219c5aa22172b854a9fa28aebe6134276a54bab99d4de8e2"
+  },
+  {
+    "path": "docs/4.0케릭터스프라이트 디자인/SPRITES_11_REMASTER_20261103.md",
+    "blob": "7854bcab6a20d5168b08464ccc61898c6d24b024",
+    "bytes": 2955,
+    "sha256": "3630f24106c6e4011f2e68a58c10d79129ae14f9c9266a7c3e18e265e1f16675"
+  }
+]

@@ -1,0 +1,312 @@
+{
+  "group": "warrior-idle8-r11-seam",
+  "cellSize": [
+    96,
+    96
+  ],
+  "atlasSize": [
+    384,
+    192
+  ],
+  "directions": [
+    "south",
+    "south-west",
+    "west",
+    "north-west",
+    "north",
+    "north-east",
+    "east",
+    "south-east"
+  ],
+  "frames": [
+    {
+      "direction": "south",
+      "sourceBox": [
+        11,
+        14,
+        33,
+        44
+      ],
+      "rawBox": [
+        91,
+        35,
+        353,
+        405
+      ],
+      "globalScale": 0.15760869565217392,
+      "translate": [
+        24,
+        30
+      ],
+      "sourceFoot": 44,
+      "targetFoot": 88,
+      "actualFoot": 88,
+      "removedDetachedPixels": 0,
+      "alphaComponents": [
+        1398
+      ],
+      "pivot": [
+        48,
+        48
+      ],
+      "pixelDensityFactor": 2
+    },
+    {
+      "direction": "south-west",
+      "sourceBox": [
+        17,
+        14,
+        34,
+        44
+      ],
+      "rawBox": [
+        116,
+        37,
+        354,
+        406
+      ],
+      "globalScale": 0.15760869565217392,
+      "translate": [
+        32,
+        30
+      ],
+      "sourceFoot": 44,
+      "targetFoot": 88,
+      "actualFoot": 88,
+      "removedDetachedPixels": 0,
+      "alphaComponents": [
+        1275
+      ],
+      "pivot": [
+        48,
+        48
+      ],
+      "pixelDensityFactor": 2
+    },
+    {
+      "direction": "west",
+      "sourceBox": [
+        15,
+        14,
+        36,
+        44
+      ],
+      "rawBox": [
+        131,
+        36,
+        365,
+        404
+      ],
+      "globalScale": 0.15760869565217392,
+      "translate": [
+        32,
+        30
+      ],
+      "sourceFoot": 44,
+      "targetFoot": 88,
+      "actualFoot": 88,
+      "removedDetachedPixels": 0,
+      "alphaComponents": [
+        1156
+      ],
+      "pivot": [
+        48,
+        48
+      ],
+      "pixelDensityFactor": 2
+    },
+    {
+      "direction": "north-west",
+      "sourceBox": [
+        13,
+        14,
+        34,
+        43
+      ],
+      "rawBox": [
+        226,
+        20,
+        738,
+        854
+      ],
+      "globalScale": 0.06912991656734208,
+      "translate": [
+        30,
+        28
+      ],
+      "sourceFoot": 43,
+      "targetFoot": 86,
+      "actualFoot": 86,
+      "removedDetachedPixels": 0,
+      "alphaComponents": [
+        1150
+      ],
+      "pivot": [
+        48,
+        48
+      ],
+      "pixelDensityFactor": 2,
+      "generated": "generated-seam2.png",
+      "change": "대기/보행 검 쪽·중립 다리 연결"
+    },
+    {
+      "direction": "north",
+      "sourceBox": [
+        17,
+        14,
+        31,
+        43
+      ],
+      "rawBox": [
+        116,
+        38,
+        340,
+        406
+      ],
+      "globalScale": 0.15760869565217392,
+      "translate": [
+        30,
+        28
+      ],
+      "sourceFoot": 43,
+      "targetFoot": 86,
+      "actualFoot": 86,
+      "removedDetachedPixels": 0,
+      "alphaComponents": [
+        1281
+      ],
+      "pivot": [
+        48,
+        48
+      ],
+      "pixelDensityFactor": 2
+    },
+    {
+      "direction": "north-east",
+      "sourceBox": [
+        14,
+        14,
+        29,
+        43
+      ],
+      "rawBox": [
+        84,
+        38,
+        319,
+        406
+      ],
+      "globalScale": 0.15760869565217392,
+      "translate": [
+        24,
+        28
+      ],
+      "sourceFoot": 43,
+      "targetFoot": 86,
+      "actualFoot": 86,
+      "removedDetachedPixels": 0,
+      "alphaComponents": [
+        1209
+      ],
+      "pivot": [
+        48,
+        48
+      ],
+      "pixelDensityFactor": 2
+    },
+    {
+      "direction": "east",
+      "sourceBox": [
+        11,
+        14,
+        33,
+        43
+      ],
+      "rawBox": [
+        68,
+        39,
+        305,
+        406
+      ],
+      "globalScale": 0.15760869565217392,
+      "translate": [
+        26,
+        28
+      ],
+      "sourceFoot": 43,
+      "targetFoot": 86,
+      "actualFoot": 86,
+      "removedDetachedPixels": 0,
+      "alphaComponents": [
+        1113
+      ],
+      "pivot": [
+        48,
+        48
+      ],
+      "pixelDensityFactor": 2
+    },
+    {
+      "direction": "south-east",
+      "sourceBox": [
+        11,
+        14,
+        34,
+        43
+      ],
+      "rawBox": [
+        149,
+        17,
+        659,
+        856
+      ],
+      "globalScale": 0.06912991656734208,
+      "translate": [
+        28,
+        28
+      ],
+      "sourceFoot": 43,
+      "targetFoot": 86,
+      "actualFoot": 86,
+      "removedDetachedPixels": 0,
+      "alphaComponents": [
+        1205
+      ],
+      "pivot": [
+        48,
+        48
+      ],
+      "pixelDensityFactor": 2,
+      "generated": "generated-seam2.png",
+      "change": "대기/보행 검 쪽·중립 다리 연결"
+    }
+  ],
+  "sourceFrameIndices": [
+    0
+  ],
+  "aliases": {
+    "idle": [
+      0,
+      0
+    ],
+    "hurt": [
+      0
+    ],
+    "die": [
+      0
+    ],
+    "block": [
+      0
+    ]
+  },
+  "aliasMeaning": "기존 중립 재사용; 신규 피격·사망 동작 아님",
+  "normalMethod": "실루엣 bevel 추정; 실제 재질/PBR 아님",
+  "runtimeAdoption": 0,
+  "screenScaleEvidence": "game.html CHAR_LIST fw/fh48; SpriteAnimator.draw f.w/f.h; _pScale=2. 원본48→96px/2x후보96→96px. Unity 실제 카메라 검수 별도.",
+  "dotVerdict": "제작자 8방향 native 1x/3x 크롭 직접 확인: 잔점·디더링 보이지 않음. 알파 방향당 1연결, alpha차0. 실게임 범위 아님.",
+  "alphaMismatch": 0,
+  "artVerdict": "오프라인 후보 RETOUCH: 성인 비례/큰면/대기-보행 검 위치 교정. 실제게임·조명·자연플레이 미검증",
+  "weaponHand": "방향별 단일검/현재 대기 후보의 가시 손·검 쪽을 보행 연결 기준으로 사용. 전체 방향 anatomical RIGHT 일치 주장은 철회. WARRIOR_LOCK은 손쪽을 지정하지 않고 기존bat 좌3방향은 반전 계약. 드루이드LEFT와 별개.",
+  "normalAlphaMismatch": 0,
+  "otherSixCellRgbaMismatch": 0,
+  "selectedSource": "r9 six directions + r11 NW/SE two corrected idle poses"
+}
