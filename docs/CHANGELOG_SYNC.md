@@ -1,8 +1,14 @@
-## 2026-11-02 시작 메뉴 달 위치 승인 수정
+## 2026-11-02 타이틀 마지막 세 결함 동시 마감
 
-- 기존 codex-web-keyart-wide에서 origin/main 병합(착수시 e9b4d965b 동일). 승인 원화 달/광배4K(−60,+268)px 이동,기존자리는 내장image_gen으로 구름복원. 3비율중앙cover 유지·달/부츠전체보존.
-- 최종canvas합성:기존close영상→구름→국소정지판으로영상원래달제거→10초alpha.01~.03screen맥동. 판미로딩/오류도수정정지판 사용. 기존MP4/저장/다른WIP 보존.
-- 수치·자산/해시는 스플래시C2계약/manifest.moonRelocation, 실제검수·원격SHA는 I:/EXODUSER-Storage/codex-takeover/title-moon-20261102/REPORT.md. 회귀16개·guard 및 실제3해상도1x/자연반복/정지·오류·입력 확인. 물리모니터/NW.js/Unity·외부배포별도.
+- 기존 점제거·흰마스크 확장 WIP 보존 후 최신 origin/main 병합. 원본 타이틀+Silvertail LOCK에 맞춰 상부 등 회전 허브·관절·몸 뒤 종아리 길이 흑철/은색 대검으로 국소 편집,양손 비움. 편집 영역 밖 원화 byte 변경0. 내장 이미지편집2회,외부유료API0.
+- B 확정: 영상 인물 전체를 교정 정지원화로 가리고 머리/망토 끝만3840×1920 GLSL 역샘플. 허브·몸·손·검·발 고정,최대2.4/1.1px,주기206/24초. 같은B를3개영상에사전렌더해WebGL불가시도보존. Kling하늘+이동정지달+구름흐름유지,그레인/샤프닝0.
+- 세부수치/해시: 스플래시C2계약과manifest.bladeCorrection/cleanup/variants. 실제3비율10초·구름/바위0.1초·고정장비/머리/망토·인물1x/바위3x·오류/정지/입력/해제·원격증거는 I:/EXODUSER-Storage/codex-takeover/title-final-three-20261102/REPORT.md. NW.js/Unity/물리모니터·외부배포별도.
+
+## 2026-11-02 시작 메뉴 긴급/추가 결함 동시 수정
+
+- 기존 codex-web-keyart-wide에서 최신origin/main 62f9fac20을먼저병합. 유료생성0·그레인/샤프닝0,원화고립잔점·바위점주변제거. A(인물전체영상)/B(전체원화+미세변위)실물비교후선명한B채택. 몸/망토/머리/검은한소스,보호box4K(2390,430,1140,1060).
+- 하늘은Kling픽셀+사전계산구름흐름/런타임WebGL셰이더. 기존달자리는같이흐르는기존복원구름,옮긴달만정지원반으로합성해정지하늘/광범위정지판제거. 중앙cover·달/부츠·10초약맥동/폭포/정지정책유지. 기존MP4는별도I:백업후3판교체,저장/다른WIP 보존.
+- 수치·해시는스플래시C2계약/manifest.cleanup. 이번실제3비율10초·구름0.1초/바위비교·인물1x/바위3x·정지/오류/입력/원격근거는 I:/EXODUSER-Storage/codex-takeover/title-cleanup-20261102/final/REPORT.md. 물리모니터/NW.js/Unity·외부배포별도.
 
 ## 2026-11-02 보물상자 크기 축소·몸통 충돌
 
