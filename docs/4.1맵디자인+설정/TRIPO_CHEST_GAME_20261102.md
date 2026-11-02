@@ -74,3 +74,25 @@
 | VISUAL VERDICT | RETOUCH: 실제 닫힘→뚜껑 개봉·유지와 내측 면은 확인. 원본의 불규칙 금속 장식/거친 재질은 남음. 기능 PASS와 구분하고 원본 조형 RETOUCH 이력은 유지 |
 
 정확한 출처/축/크기/파생 SHA: `I:/EXODUSER-Storage/tripo-chest-game/20261102/asset-receipt-v2.json`. 제작 `.blend`와 이전 런타임 백업도 같은 소유 폴더에 보관한다.
+
+## 2026-11-02 21시 인수 — ea24 정확 합본의 실제 산출물·브라우저 검수
+
+이 절이 이전의 ea24 `실artifact/browser 미착수` 상태보다 우선한다. 검수 runtime은 `ea24a3bfb6d2d381f520eb81ac1978d8bfde9bab`이며 이후 문서 마감은 제품 코드·자산 변경이 아니다. main/public/Unity/Windows Desktop 최신화와 구분한다.
+
+| 항목 | 실제 결과와 검수 경계 |
+|---|---|
+| 입력·공식 산출 | 필수3346경로 Gitblob mismatch0, selected3244,94논리93물리. 공식 build→prepare→check 각1회 exit0. stage는 sidecar포함3238파일3996969288B, prepare가69482B sidecar를 상위 검수 receipt로 이동한 최종static은 **3237파일3996899806B / 4GB여유3100194B / 최대94795327B**. 수동 파일 보충·상한 완화0 |
+| 산출 identity | config SHA256 `1a8bab831dc2e583724b2a5b6a6790d30467fb37c4dcf5ff3180fc87d87614b2`; derived receipt `64825b7c9bbf1e2c7dd80ef29ffcbe56902655a3a4ec7d56ec85782cc4c75a80`. sourceplan과 실제prepare 후 파일수/byte를 혼동하지 않음 |
+| HTTP·실행 | 새 loopback artifact의 GLB/chestmodule/titleJS/C2영상3/still/moon/cloud/fall 11URL fullGET200·MIME·전체SHA 일치. 같은 산출물의 격리 headless Chrome DPR1에서 실제 namespace/영상·moon/cloud/flow 증가, 숨김 정지·destroy·motion-reduce/영상오류/plate오류 폴백 확인 |
+| 상자·전리품 기능 | 1920×1080의64CSSpx/44×24worldpx 몸통. 닫힘·열림 WASD 정지/우회·겹침 탈출·상자 제거 후 통행, GLB차단의 실제2D draw 확인. 별도 같은artifact fixture에서 R160ms 홀드→장비3개, 순차 분출134샘플·비행중 미수거·착지후 수거·추가보상0·pause/resume 확인. game/chest 최종검사 각각9건 통과. 보상수량/RNG/게임수치를 새로 정의한 것이 아님 |
+| 시작·걷기 | 타이틀→시네마틱→데모→빈 offline 로비 earlyInit 경로, pageerror0. 대표 서쪽 걷기0/3의 실제 drawImage 셀256px 확인. 일반본편 skin 주입·상태제어이며 자연AI전투/85걷기전체/OS 손입력 검수가 아님 |
+| 실패 보존·fixture | 연습모드의 worldItems 교체/R제한, intro 이전 G.on 대기, skip overlay, 프레임 사이 zero-duration R 입력 실패를 원인별 분리 후 실제 UI순서/프레임을 넘는 홀드로 교정. 제품 코드 변경0. 최종 navigation/closed/fallback/walk와 open-flight-pickup은 분리 fixture이므로 한 번의 연속 자연 플레이 PASS로 확대하지 않음. 과거 실패 JSON은 남지만 일부 중간 PNG는 최종 재촬영으로 덮여 과거 실패 이미지 byte 전체 보존 증거는 없음 |
+| 16:9 원본 인수 | root가1920×1080·3840×2160 타이틀 및1920×1080 상자 닫힘/열림 원본4PNG를 파일SHA·IHDR 대조 후 직접 열었다. **3840×2160은16:9이며32:9 증거가 아니다.** 달 전체·발 지지·로고/메뉴 분리는 해당16:9 원범위로 확인 |
+| 실제 와이드 추가 검수 | 같은 artifact만 재사용해2560×1080·3840×1080/DPR1/일치하는 canvas·CSS·PNG 치수, 모션 증가·가로넘침0·pageerror0을 별도 확인. 신규 build0·전체suite 반복0. 양발·달은 보이지만 전체그림 center-cover로2560×1280 y=-100 /3840×1920 y=-420을 그리므로 캐릭터 확대와 상하 배경 크롭이 생김. **기술 PASS / 와이드 구도 RETOUCH**. stage의 기존 cover 수치는 임의 변경하지 않았고 DESIGNLOCK 캐릭터 보존·배경 확장 목표의 품질 공백으로 남김 |
+| 아트 판정 | **상자 금속·목재가 실제64px 화면에서 너무 어두워 RETOUCH**. 기능 PASS로 금속 조형/재질 완성이나 전체맵 PASS를 선언하지 않음. 조명/노출/IBL 원인 추정은 실제 같은-camera A/B 전 확정하지 않음 |
+| 저장·무음·종료 | ordinary11/currentPrefs2 raw사전백업·사후13개동일, installed5/WIP25/공유HEAD·branch·INDEX·WORK/원본7014metadata 불변. 자기출력 후단 gain0·analyser peak0·direct video unmuted0(실OS loopback 청음 아님). 자기 Chrome·loopback 서버 정상종료·PID/listen잔여0, 사용자 Chrome 보존. 이전 소형 proof sender도 /done 정상close와 실제PID/listen0을 확인 |
+| 배포 경계 | 일반userprofile/Unity/NW/실모니터/자연보스처치·전체맵/한타FPS·1%low·public/API 완주 PASS가 아니다. `/api/mats`405는 정적 fixture 제한, Supabase/외부font 요청차단은 의도된 격리. public402 조건에서 mainpush/재배포 반복0, Windows/바로가기 전달0 |
+
+근거: Mac `_out/web-chest-final-qa-20261102/{FINAL_RECEIPT.json,REPORT.md,browser-ea24-game-final-result.json,browser-ea24-chest-input-result.json,wide-aspect-qa.json,static-full-manifest-ea24.json}` 및 root `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-ea24-final-intake-20261102/`. 원본 화면·해시·보존·정상 종료를 인수한 범위만 판정하며 기능 통합과 아트 재작업을 분리한다.
+
+추가 root 원본 인수: `title-C2-2560x1080-wide-original.png` 3770249B/SHA256 `3269a2153d20674d78356f75bafdef0a9b4cd472c47eb44aa7871bc5b647368f`, `title-C2-3840x1080-wide-original.png` 5073289B/SHA256 `9c76fc071d302bf734bc053b12539e6fd3ddb509abf02e57e4e9004281981cd3`. root가 수신 byte·IHDR를 대조하고 두 전체 원본을 직접 열어 위 구도 RETOUCH를 확인했다. UI 화면맞춤 미리보기는 물리 모니터1:1 검수로 주장하지 않는다.
