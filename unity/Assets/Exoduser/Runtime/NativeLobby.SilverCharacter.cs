@@ -22,7 +22,7 @@ namespace Exoduser.UnityPort
             {
                 "warrior","silvertail","hellgunner","transmuter","spearmage"
             };
-            for(int n=0;n<5;n++)silverEmblems[n]=Resources.Load<Texture2D>(n==0?"Art/CharacterSelect/emblem_"+names[n]:"Art/ui/silver_hell/emblem_"+names[n]+"_disabled");
+            for(int n=0;n<5;n++)silverEmblems[n]=Resources.Load<Texture2D>(n==0?"Art/CharacterSelect/emblem_warrior_ui64":"Art/ui/silver_hell/emblem_"+names[n]+"_disabled");
             silverVisualTitle=new GUIStyle(silverName)
             {
                 fontSize=18
