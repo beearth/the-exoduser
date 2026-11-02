@@ -1,0 +1,19 @@
+{
+  "branch": "codex/pc-hd2d-trial-20261031",
+  "HEAD": "5b45b6a482ab4c446137cb82f24ea4d10267d4f0",
+  "INDEX": "",
+  "WORK": "M\ttools/guard.baseline.json",
+  "indexSHA256": "fe5b00d5d150417892bcc1d25e0d5dfcbfc57def5f6d72fccfc2eeb6985ec4c7",
+  "indexPreserved": true,
+  "outputReal": "I:\\EXODUSER-Storage\\archive\\G\\exoduser\\tmp\\design-review\\20261102_sprites",
+  "shortcut": {
+    "path": "C:/Users/심도진/Desktop/EXODUSER_1-1_스프라이트_후보_20261103.url",
+    "content": "[InternetShortcut]\r\nURL=file:///I:/EXODUSER-Storage/archive/G/exoduser/tmp/design-review/20261102_sprites/index.html\r\n"
+  },
+  "artCommit": "26e7349534ac2c75d0020e07a283bf68bfc58e0c",
+  "docsCommit": "79a94007416c0f9da3cf0de88207195d5318dde8",
+  "runtimeAdoption": 0,
+  "actualPlayerVerified": false,
+  "atUTC": "2026-11-02T19:57:21.911Z",
+  "enemyDetachedComponents": []
+}

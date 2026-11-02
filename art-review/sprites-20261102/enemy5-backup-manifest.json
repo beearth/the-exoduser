@@ -1,0 +1,3326 @@
+[
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-idle8-r31/atlas.png",
+    "blob": "3268e0effbb3bb314f035283a894bfec9cf1c1ed",
+    "sha256": "9e21688257846d18b45b8432690eeb4f045b9209596b64a5f7b7b50f2508a9a8",
+    "bytes": 255875
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-idle8-r31/atlas.normal.png",
+    "blob": "280302c7dc3c9765cef44937242cabbcba0955b0",
+    "sha256": "a05cd9e1d071a1e301146e81ffaed70219fab6e7da56307cbbdb90fbce1dbcd9",
+    "bytes": 66893
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-idle8-r31/metadata.json",
+    "blob": "e1c4183f6da5bd29a82ffd1134a49d8361b495f7",
+    "sha256": "b6ebd1691cfc07c277b4d64fc1d117b1775e07082dc7841c6dc5847333a043cd",
+    "bytes": 7252
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-idle8-r31/technical-checks.json",
+    "blob": "ddf4a4c53ac5993383a2dc7053f6ea4fdecf7f38",
+    "sha256": "820efa0f106d155d3a572dc9ef87f682255412e22e81234062679b20724b5d25",
+    "bytes": 4968
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-idle8-r31/comparison-grid-page-1.png",
+    "blob": "d5ae637fa49c2fc74e419c328d038563fb90d320",
+    "sha256": "02fde8cac524598eaa2444185074e89382e5dc13f8b552f7414cde51f91b7142",
+    "bytes": 102809
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-idle8-r31/page-1.gif",
+    "blob": "b38bbdd9cc76e6548e4e933e7c4de6c3eaa031f9",
+    "sha256": "ef1d07ff82ec90876d58ccca0cd35e6c4efb7f02aa17bf58f0dadc754dd894c0",
+    "bytes": 59911
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-idle8-r31/comparison-grid-page-2.png",
+    "blob": "7ba434b4515d1b414e0e8a99997756d9a19b519b",
+    "sha256": "9793ae364852057c9671d52ae9f16e3bdc6c238624447e7558cce1586cf181b1",
+    "bytes": 99795
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-idle8-r31/page-2.gif",
+    "blob": "1dda79cce370a5ae8a41cdf9a2cbd0d80414675f",
+    "sha256": "ceb1f42c3b10b6db41f2a1b7f3fc42a0c6711fc52793a41f0aa9896eb029189a",
+    "bytes": 57957
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-idle8-r31/south-keys-3x.png",
+    "blob": "5bd9e5142c14a376c50643b599404da2c84c9741",
+    "sha256": "e310b14ae090180173c1005b1e65588149aaaa16c4f533c5411ccc8c20136838",
+    "bytes": 7041
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-idle8-r31/south-east-keys-3x.png",
+    "blob": "132eb6df86a7e12e439510b6f2c1f390652f1b8e",
+    "sha256": "51f5ac8e7163373e371773e97d6991fdcfe0c0985ffe1cf81427b5f4f5b2eb72",
+    "bytes": 8079
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-idle8-r31/east-keys-3x.png",
+    "blob": "0b43bacb8adf84aa07686c7fe92dbec552701609",
+    "sha256": "d75497ddf640be7777fc6b4aecbb77dfa84d9f32517e11e70ee2065c67a99b29",
+    "bytes": 6278
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-idle8-r31/north-east-keys-3x.png",
+    "blob": "322a79af2bc884a71d5dd18a8ee221b0d128c8b1",
+    "sha256": "7da605827256378f2a25b692829e04779026e0a7cb4501c4a713640f37958e14",
+    "bytes": 6590
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-idle8-r31/north-keys-3x.png",
+    "blob": "cfb5266310e03fb23a6c5aa6ce77fb5b370a28ac",
+    "sha256": "b91a01060be52d482e3295b2dc69da6052b39d4f048f8fc2a5b8de964578ba3b",
+    "bytes": 6178
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-idle8-r31/north-west-keys-3x.png",
+    "blob": "41d93d8da6445f0966d9571ba252ce451d7e6089",
+    "sha256": "354399035468e69b78d9542289b7052c8305ac6e38e4f602df46e43fe70990ae",
+    "bytes": 6591
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-idle8-r31/west-keys-3x.png",
+    "blob": "98e98f50484bcd27d9dbf236a65eb5ba06862b68",
+    "sha256": "351a816e6193a11461e1c6f15054c5c24529c8eac12966d5c2773a04e572ca41",
+    "bytes": 6192
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-idle8-r31/south-west-keys-3x.png",
+    "blob": "d03ab430d5e9f52c9870769c82cd018b67f398a9",
+    "sha256": "414a606140bce54b782b455cb74da0ca713c09fd9c56321204581989df18fad9",
+    "bytes": 8156
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-idle8-r31/comparison.gif",
+    "blob": "6d3b22cbd9f120ef3062e3b3a3cdf39c162c8c90",
+    "sha256": "55a0a29d177f250a9206d4013126c9145b4c85d8a9238493d0456d877dbb26ad",
+    "bytes": 106636
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-idle8-r31/comparison.mp4",
+    "blob": "7958185297d7c9cbf3d19b902f99cd635b5bfefc",
+    "sha256": "e4b7a011d4138b3f2056838a57d305bc357ff22b7db8f88c7660bcfee254f066",
+    "bytes": 870782
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-idle8-r31/video-receipt.json",
+    "blob": "82e04549222e6fee224da47d8e8726729c094e8a",
+    "sha256": "e187e1a4e04b17b2e9f2b551699a1beade60ba2efe1b896026969b3339d8644a",
+    "bytes": 446
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-idle8-r31/comparison-1x-all-keys.png",
+    "blob": "3a5392eec43df13bcc1d967bcfa2c6c9f7d05dc0",
+    "sha256": "49c12a48eb26e0d27d2e32febff5881c6ff9b61da9d2bd8111e69bc5f418f0a4",
+    "bytes": 78263
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-idle8-r30/generated.png",
+    "blob": "c5669539acd4f0d6797ab641602be0bb50ce7493",
+    "sha256": "435d920f75f5cece3992daf858be1f37c36eca13d4234b78d2d3d1795195ec95",
+    "bytes": 532995
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r31/atlas.png",
+    "blob": "b1a64638fc274ce032372aca893a30f2089acf93",
+    "sha256": "b4502537e5ad51140c34e26107cec126a46b3896c4cc97c7cfff845925b995e6",
+    "bytes": 1106255
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r31/atlas.normal.png",
+    "blob": "52dc629bfd20a8f83b4a03cb7ad0c06c4ffe9f10",
+    "sha256": "70a690570dab58f7981a3b0b6e081b6108f5072f676bf67ce32315287ff5e600",
+    "bytes": 239078
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r31/metadata.json",
+    "blob": "8807946762ea1b40c1043d8671592072eefc611f",
+    "sha256": "d5cd71c308094621818084f3b8621ae1108f3b1acb85fac67317657593599cd7",
+    "bytes": 23964
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r31/technical-checks.json",
+    "blob": "7b2ad281fa88c80832b5a86c61715c7c62b76889",
+    "sha256": "a49c97d7354ad5a464262fee11a0616e737169337c300c93f678f4246c539e82",
+    "bytes": 19856
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r31/comparison-grid-page-1.png",
+    "blob": "ab0b903dff2a2c3bb53f792e9730514ad5849fc6",
+    "sha256": "6bba70954d2d2429acd1aecf4d20b63a00a9bf9c90e2bf1e9542fdbeae981a30",
+    "bytes": 414436
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r31/page-1.gif",
+    "blob": "9cb4aae74ee11e6f4dc7c651cbf1eadfb4fe22e0",
+    "sha256": "57a951f781de939dd96634e00d00f2ea6426b149a5ede9162c5fa2c28a49da7c",
+    "bytes": 208631
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r31/comparison-grid-page-2.png",
+    "blob": "a69c891257f64e18304dec35082eb8bbeeeb3896",
+    "sha256": "bc07532988353087e740e806725138da8ba7cd866e759556c05e44a5f0468988",
+    "bytes": 397940
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r31/page-2.gif",
+    "blob": "5e2d5d097b9144909d7ba9f52b7a3eaacf8989c3",
+    "sha256": "c6a74dd5672bb1b5c26a6e81aaad4a4e7604b13195a136b63e7cdb63019d79eb",
+    "bytes": 201053
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r31/south-keys-3x.png",
+    "blob": "2e8c56d4f688b41fbf3630c75af379a0dc3e1cb2",
+    "sha256": "293dd90c2e3a1278a7f9e5b968ffc5dd5a78c4d2f43f23865926208dfa8ace6d",
+    "bytes": 26520
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r31/south-east-keys-3x.png",
+    "blob": "9f815206b7149faa64e9680c4437f4d702d4e3cc",
+    "sha256": "7b968cc396a0370ea86cba5814573877ec61fd987af31288713d7ada3e2bd6f1",
+    "bytes": 27122
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r31/east-keys-3x.png",
+    "blob": "920ec726c328fa50957c5a39999a010eb1cb1b87",
+    "sha256": "f51e669518544a4ccd45a31cb5f030da642852ce66240325033b09f0831844a0",
+    "bytes": 23174
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r31/north-east-keys-3x.png",
+    "blob": "f4d22dadb192b56eccd13f0c2d0977685c3fcf64",
+    "sha256": "821a0d642b1533e96082597e2ed2d9e93dcca61d5c643a1aab7d5f3ab4eb43b3",
+    "bytes": 23713
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r31/north-keys-3x.png",
+    "blob": "74c52ac3aecb03ac6bab3fa45ab233b1ccfe5c2b",
+    "sha256": "5b6a4eeca73175c9537b67717f56e8449bc790eca125e50c7306a70fc5fb1362",
+    "bytes": 19253
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r31/north-west-keys-3x.png",
+    "blob": "a9e461bc3c811a5098f67074ce851f13b8dc98cc",
+    "sha256": "2983407058c7c6a821492182baf254499638f530e55d8a65bc81e13d1df7a5f0",
+    "bytes": 21331
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r31/west-keys-3x.png",
+    "blob": "28ad453c463a12e2903cec1983af1cb7c79f120f",
+    "sha256": "892bf507f6f6dd031eefcc02088c2f6ca0584e68d3e8a26e549fd8e538c511e2",
+    "bytes": 25014
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r31/south-west-keys-3x.png",
+    "blob": "60efb8198fd05ec537beac634ffd34c4fb13de65",
+    "sha256": "166a99f76ccb132b85c5bd0c33197d32a9babc38d2fbd732f7f4118a40b05a87",
+    "bytes": 30092
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r31/page-1.mp4",
+    "blob": "3d319a185d57573fa8600b0d6ee8d72d9e7d1466",
+    "sha256": "0e8c58aec74f7805d3d6a2bf9f4df5742d5afc553566b8375916f304de8814de",
+    "bytes": 2904120
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r31/page-2.mp4",
+    "blob": "bae60b35cc4ad76abe95ddcf608483d0a65e582b",
+    "sha256": "6b71bd6f3548571260fe9015e51f38a791a1e4ef121bcc76e6aa98bcdf8cc61c",
+    "bytes": 2736778
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r31/video-receipts.json",
+    "blob": "325d029c27a98b09b3c5ca17f4aa4837eb891a31",
+    "sha256": "08e87bc041f1a9cd5b57e4b981f47bfc7c899688ad691f5983367461c096e5da",
+    "bytes": 954
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r31/comparison-1x-all-keys.png",
+    "blob": "d8fa3b5ed1ceb81f19fe2eea3561d7c3a5369084",
+    "sha256": "ab6d02a8c3582a226bc25ccfc630fbf0bed5d1a6f49c1b7798552b6cff9d77cd",
+    "bytes": 252933
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r30/generated-A.png",
+    "blob": "44f8ee93ecdfcb38d3cb91da53078dbc3ddf0881",
+    "sha256": "e64ef9e34dbaeafb3d9919a890162ddb1db584740bc81d2c0ad605cb40c5aad4",
+    "bytes": 1466193
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-walk8-r30/generated-B.png",
+    "blob": "ad2b60189169c3c3423f8dd56d87b72ccf46bcb4",
+    "sha256": "375418c80b0b030f83d30be4a6fdb3fd2f9a1ccd2f72bb1b9150fe2b0f3c0464",
+    "bytes": 1256519
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-idle8-r31/atlas.png",
+    "blob": "0f68cfd2b486835c5891e39647c6d9111595fb15",
+    "sha256": "2a92a5a515963e43f8ee9f9715c6ce924fff4429e4bfe8461709645d4edc7be8",
+    "bytes": 301768
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-idle8-r31/atlas.normal.png",
+    "blob": "7935d434bf4dfadfff0fb7552623b7132f8e3caf",
+    "sha256": "60c66fcca1af816defd41e06e0425bb07ddc12ec1914bed767379dffb0c6ec28",
+    "bytes": 48023
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-idle8-r31/metadata.json",
+    "blob": "ef0cbb37d34ee2af26886906fea31f768eb0bfdd",
+    "sha256": "3f057b7f9b20b683891c0254d115674d454ea1f2b863db38c60a57fc5da8aa71",
+    "bytes": 7242
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-idle8-r31/technical-checks.json",
+    "blob": "0b3fd10c48cbcc0b6ca09e3cdbab84447ce1ab31",
+    "sha256": "fbd1ec5ea67f86849048a045ff565dda1053bf16680438dcd7e33e3cbb2959ef",
+    "bytes": 4964
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-idle8-r31/comparison-grid-page-1.png",
+    "blob": "e88deea8ca5f1d9de4ddb13e3c54f6a80da17b3d",
+    "sha256": "2305f24deba26ece881e52c9f8700a8933189ae0860c09ffeeb1f882284ae3dc",
+    "bytes": 111987
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-idle8-r31/page-1.gif",
+    "blob": "65da12a2be9cf67d1ae69681ab4b7d67401200c3",
+    "sha256": "66a67e50e048999d7ccadfec01ab1dec9c123f9e7d7b209374042f663681509b",
+    "bytes": 68256
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-idle8-r31/comparison-grid-page-2.png",
+    "blob": "b02d63a9b8f0ab3624703073aaf9142a0224fe91",
+    "sha256": "4e604fc01e5d90066c0bcee46ad24300c76f7c888cff608031b5eddb7cd62e76",
+    "bytes": 109695
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-idle8-r31/page-2.gif",
+    "blob": "f547dc114b68e20a30c4623389a6b20060607fd4",
+    "sha256": "5c6ab2400915a25d18f6cf22a5bb0fc168536b13b51239c485ed505e4091dd0f",
+    "bytes": 67295
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-idle8-r31/south-keys-3x.png",
+    "blob": "64fd07f99f402aef0f9ff9da9db20d5376e4b4b5",
+    "sha256": "6ae9275937548d58fa1d31f38e92743c0d233a5a5aee15e04ddffaed5f7677d5",
+    "bytes": 8693
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-idle8-r31/south-east-keys-3x.png",
+    "blob": "218d3bca8c06004bf2bf47016fcadeb310ee0a65",
+    "sha256": "d6887222b7d3254ff645eaeacc79596d27b68a121781596e7efd621d1e3d68cf",
+    "bytes": 8213
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-idle8-r31/east-keys-3x.png",
+    "blob": "3d77451b460384f4363b8b27e6c83fedb9d2397b",
+    "sha256": "2240d47ad2be94887fc0e0f02bbe9cdc140702aac7c45d5f96f6024d12daaa02",
+    "bytes": 6844
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-idle8-r31/north-east-keys-3x.png",
+    "blob": "0415b484c496a1a456310ca61b436d869d2617eb",
+    "sha256": "766152541b113c604f7ad01acf49f567cadd528cba3fa7c82382ef3c60384d9a",
+    "bytes": 7230
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-idle8-r31/north-keys-3x.png",
+    "blob": "5c0593c3f47467338265839af6ddb8ee4fd2ccc5",
+    "sha256": "d6b8f8d4e6fd24ef61f4e4a4586121574c3cc34772ca8096096cbf34976a1444",
+    "bytes": 8233
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-idle8-r31/north-west-keys-3x.png",
+    "blob": "f0cbaf7bdd960517a8bea96fcf80e34aaf12d029",
+    "sha256": "eb64b0f7ce928d86a68e95c06b915b42766a736d11317c94ec94b04c7a11ddfc",
+    "bytes": 7229
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-idle8-r31/west-keys-3x.png",
+    "blob": "6ec763ef5c6db3a25e92f44c430455a9caf94fe5",
+    "sha256": "54d0797328374eb050811fef45f7b53b589b83a25366b2cdc000464ab53f578f",
+    "bytes": 6611
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-idle8-r31/south-west-keys-3x.png",
+    "blob": "cddbb4b5eb6847f18cc17e1e888eaefc93466ae0",
+    "sha256": "6cf3105664fe9d39b40d02d26da1719947bf3bfe42ed65634841e8e2d55bf666",
+    "bytes": 8441
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-idle8-r31/comparison.gif",
+    "blob": "29d2cbd06c348a5e83ce16e03a62484f4484322d",
+    "sha256": "f58d6021be740bbbc7500ad343fef2cea63159e8583c8385ea144dec42806ad3",
+    "bytes": 122354
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-idle8-r31/comparison.mp4",
+    "blob": "eed6c1ee571f48b9d645b4b62d530fa31fe949c9",
+    "sha256": "bd39b85f609b42094f7b97014fdd400428d75bff907a0db8bf1e9c41412797dc",
+    "bytes": 1007892
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-idle8-r31/video-receipt.json",
+    "blob": "74e08d0a4fc792bda14401dfe8f114e6c909527f",
+    "sha256": "08e35a1969b069d330c7389d279143b185490380b1b314b9bea2337cebb2785b",
+    "bytes": 441
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-idle8-r31/comparison-1x-all-keys.png",
+    "blob": "61272c67a940d2a5670f7d541690d4e84d7ba0a8",
+    "sha256": "bb4d8c37b982995caf0a9087779b6ffa1f7b5797229f0e4ba1945bc08923e45c",
+    "bytes": 90254
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-idle8-r30/generated.png",
+    "blob": "6452ef305e50a983586260f011452886b58e812a",
+    "sha256": "8e04318f2759fa8239c7ad4ad771401dc1bbc13debda6d77b9394e6fe036aded",
+    "bytes": 1039097
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/atlas.png",
+    "blob": "d5816c83461b04e6292c7131b116ef24e1df59d8",
+    "sha256": "baeacd614501e111806be763afa6075322be7fbf24bc04c075f1bb4c4b68c1f4",
+    "bytes": 1210108
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/atlas.normal.png",
+    "blob": "6de71fee380155804accb2ca88a12dff5ba9573e",
+    "sha256": "655b2a0872231f8ec078a111ce933ede698f4429c53b056776a3e5c94e2db8e3",
+    "bytes": 237378
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/metadata.json",
+    "blob": "da684f0e44aaf638d0cbdadbc993b0d723d89257",
+    "sha256": "84f40bfd0d7def0678827828f700419d81b4f430970e340d70212e4ace98d701",
+    "bytes": 26640
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/technical-checks.json",
+    "blob": "07904e098dd231cba964c782f732bf9749e55398",
+    "sha256": "176ba3add40f4a5d9229c3019bbafd82994eb1288fba19d1c0d307decda76444",
+    "bytes": 22208
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/comparison-grid-page-1.png",
+    "blob": "6124e062479e4113a5b7dc66306c5fcfd4ab5c67",
+    "sha256": "eb58bd0d603880e45a4aef26afc14fa9a849aeae177b505bffb885caa59b8e35",
+    "bytes": 431110
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/page-1.gif",
+    "blob": "71b76c3a929a7b8d301b4825fd73af9dcadd36a7",
+    "sha256": "276ed50a3b2257188722f32dd16ba5c42c3411e07fff8f03606fc2b8124e0b45",
+    "bytes": 178331
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/comparison-grid-page-2.png",
+    "blob": "f11b9a667d26926cc76ab58b97bfaa80b2960b06",
+    "sha256": "0123f9c68fea489f2615aeb436173b1b12ccc8e585cd75cc2820666b233f2d34",
+    "bytes": 406158
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/page-2.gif",
+    "blob": "3ee5b7a7f115f64525da768569a9942fdf3e6abe",
+    "sha256": "4d775d55c9c23d088cfdcb971d37ac9e311acbb05c4bc7717a4805eaaf5584fb",
+    "bytes": 162359
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/south-keys-3x.png",
+    "blob": "78e47cf5c06d71308294aa348dacebca7dbc6b8a",
+    "sha256": "0d9a382da43373ea41248b0a6d11672e9285c0d0bdec13e70293c6fb978f14a2",
+    "bytes": 30414
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/south-east-keys-3x.png",
+    "blob": "6abcf27f36ed58bba77e67066fae3200244a48d2",
+    "sha256": "ccbf9bbfa9672f7a44618e786bf7dceb980f22ccd32e4bed47d4ff5b9b1c8e0f",
+    "bytes": 29050
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/east-keys-3x.png",
+    "blob": "6d6bb63a7bc80b0bea65cd29d09f82d03f2f9630",
+    "sha256": "11e6278133357bc5b45efd710a7f8c65057a502b0822cbb5e7941cc6f0d2ca4a",
+    "bytes": 25391
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/north-east-keys-3x.png",
+    "blob": "1ef01ffab62121b02c7923bb68dbb40b5f80a22c",
+    "sha256": "286a425cd6759022c68dfec478d0e3d7ba44b006633fc730b3a4043329b5857a",
+    "bytes": 30565
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/north-keys-3x.png",
+    "blob": "da3954fbd9052160400d468e597f8a2e224660b6",
+    "sha256": "b16f9854a968b959bc2735abd86f5a74dda17daf15b3d223892003476172f898",
+    "bytes": 24291
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/north-west-keys-3x.png",
+    "blob": "9ac0b42e0d0fa6bc0e5b2d47924622a98b76855d",
+    "sha256": "4fb1c3e1cd96e01759fdcc8cf279f45815358235fd876d9b5c1442113bcfe78b",
+    "bytes": 25345
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/west-keys-3x.png",
+    "blob": "963df45241d553e52a1803b14ea2c41ed8225066",
+    "sha256": "0d1bfbc05b002f545575a9e3972395f5afd51949ce0c7633d943ad2573d565fe",
+    "bytes": 25770
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/south-west-keys-3x.png",
+    "blob": "376ce4aa33dc4ba2d1027029f5be3eecd49777f7",
+    "sha256": "650ff99bb0acda6ac235b05a8f2461bfc71295a2869bdaf177bb00cef769a56d",
+    "bytes": 27403
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/south-keys4-3x-folded.png",
+    "blob": "a563491fa0495d396c08e2459c8d8c29824bf4f0",
+    "sha256": "535e35d00f512ceed7b25ec55ba43cc028edc63520628572aa7f2f86f6591cc0",
+    "bytes": 30411
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/south-east-keys4-3x-folded.png",
+    "blob": "0537981d27fee4a9726efabebbd0107edee8e9ef",
+    "sha256": "b91dde2760bb82bed4b0bf407a5ed6b1711b6efd33de267ae885b101e1f79d1e",
+    "bytes": 29179
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/east-keys4-3x-folded.png",
+    "blob": "3bac1eba0f62193b866d4dc2b4feac8972a29eb3",
+    "sha256": "7b97b2355a2ab208c52d478975253cc0278b11d259e50a9285d94d8c01307aea",
+    "bytes": 25202
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/north-east-keys4-3x-folded.png",
+    "blob": "dc4989e459aa2f40f9be88c7f1548abb733b4689",
+    "sha256": "11f2fce74eb139eeeb314e0de2b4b14f56393c0717e1205757fdd2ac1b2c61b5",
+    "bytes": 30336
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/north-keys4-3x-folded.png",
+    "blob": "4ebdb1b11ce69706f524f30df60e7d77d4e56920",
+    "sha256": "01ed07ee95736718edc57d2613e249cd3a8ca564425c34c8fb6391fa341f476b",
+    "bytes": 24597
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/north-west-keys4-3x-folded.png",
+    "blob": "eb71f89a2342df9fc0a8131cca90c8cf82bb815e",
+    "sha256": "3511367f94e680332fe85118b7fa33a6d4296b543fc44bf83d66189bdf393cb6",
+    "bytes": 25741
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/west-keys4-3x-folded.png",
+    "blob": "254783f155523024866bb33070c67688aa32cffd",
+    "sha256": "d44354cf8085a1f2976b2d352d9228578f3a69c12d687a8e63cfaebd27949f35",
+    "bytes": 25606
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/south-west-keys4-3x-folded.png",
+    "blob": "62b92c619c4185259d692a7382ad03713c5bae6a",
+    "sha256": "6a0daa305d58d7ec9d97c59449b67ea6e4516cadffe9b1e306fc06117f5f0a4b",
+    "bytes": 27597
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/page-1.mp4",
+    "blob": "4177252b64071253c1711aafcec044299eede80f",
+    "sha256": "dee43b6206eb24b35fb46bbeea3e262b7ab5220315b8c2cb7aa5cc290915aaaf",
+    "bytes": 3050485
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/page-2.mp4",
+    "blob": "0316bbfee6df6318eb2900ee264998ee124cae0d",
+    "sha256": "03e7cdbd4921aa2da06ed1dd5ec287992aebc8af5974a4865b4d83674cd60113",
+    "bytes": 2599845
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/video-receipts.json",
+    "blob": "4a00f0f4863e63ffa4054b4409706e2adc2db601",
+    "sha256": "f0f789814d52ed9d3007008b31142079f854dc1f4de3b0056cbdce0263162955",
+    "bytes": 962
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r31/comparison-1x-all-keys.png",
+    "blob": "667a166ef9b9522b8f543b1bee0c88042bc583a1",
+    "sha256": "09096a9be8d1edebd3232de4ec6a0806abe78ae606857aa7ce23fe21aa37f996",
+    "bytes": 197801
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r30/generated-A-white-rejected.png",
+    "blob": "b97f2af32a2ff5926c388a9b106390ea4325ded9",
+    "sha256": "441af7d2249558d81db33d6010820a3d51e6e6a032d59e036dc322575cfdb78e",
+    "bytes": 2470211
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r30/generated-A.png",
+    "blob": "3156efa85e1c72cf8bdbe8d8ce11d28ee0f7203b",
+    "sha256": "6f433581514851f6b721d8fbd6d71deb67333faa0b4797e3690bc4576fb7b503",
+    "bytes": 1430930
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-attack8-r30/generated-B.png",
+    "blob": "99d9db9e4cfc7275f8b6a9eb9aa5eab835961998",
+    "sha256": "662d4b0529eec153f1968435c56e48cd9a10982dcb75ee07e97e1f79ff1735af",
+    "bytes": 1543131
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r31/atlas.png",
+    "blob": "b489b257ad32ed12f28d3d5c23ade586decf3d0e",
+    "sha256": "2e9233b71a3cd63c31ff1e2b3977cd7b337a6149421e18897c5d74252a9230ea",
+    "bytes": 455151
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r31/atlas.normal.png",
+    "blob": "2a02dc5def7e97795e620a88e7a644a19e05638b",
+    "sha256": "78f6d166183ed9baa56ace9792a66ac0881cff15c1b7696e02665ba8ca342d0f",
+    "bytes": 105326
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r31/metadata.json",
+    "blob": "1d5d4b523aea1f4cf3b2a762e33d3ceb3ef97ffe",
+    "sha256": "7f8a6a2a9774e43d010806bd14859ee4f6aeb73dfdf16e5fd425e3e733ac6086",
+    "bytes": 15764
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r31/technical-checks.json",
+    "blob": "820d732b1eefb8d4468d57cc3eac60f01d1c1209",
+    "sha256": "ea5a26428c4e25cd6b8f2ab84bb2508de8067dd294d967009245b8df5d04f53f",
+    "bytes": 11501
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r31/comparison-grid-page-1.png",
+    "blob": "f08ad0d22bc6807f7df983476a1d01dda0b930fe",
+    "sha256": "730232bfd0c412773d708e5acf1ed8f199d761e9ca618dd4291f434dab292f85",
+    "bytes": 189704
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r31/page-1.gif",
+    "blob": "8514b3c360f384633944270dbef12e59dcecd098",
+    "sha256": "f53ba24ddc2542b12deb43a3af934a3832c0cf595c907ae06777e4b71a4c4796",
+    "bytes": 165993
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r31/comparison-grid-page-2.png",
+    "blob": "3849080fbee70e432119f32c2964bb3417f1c2bb",
+    "sha256": "98f0973e0640add6f780c4698b6836bbcc31dcba0e111a1b2fc23e45d7205d4b",
+    "bytes": 189458
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r31/page-2.gif",
+    "blob": "3db7e28073be2cd7ab4eb2c163c6109e630463f2",
+    "sha256": "87317f200642dc98ba321710a46b5d226d905d0fa653c7d083a67a65748960f5",
+    "bytes": 163570
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r31/south-keys-3x.png",
+    "blob": "bc738e577207b728bf9fe04ba07fd6643c4e64b8",
+    "sha256": "709161d6d335ea88cee40796922475a107fcd5b1db08d76fcb1d07f314623a1d",
+    "bytes": 10578
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r31/south-east-keys-3x.png",
+    "blob": "caefeab92af771abbac55669d83b4bfa3c7c8a47",
+    "sha256": "0da132193e79dd353358298d556e90512b50036babd016621a5e0bfa2080c390",
+    "bytes": 12043
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r31/east-keys-3x.png",
+    "blob": "e4f18a7f6017063a8c7b03b8dfc6a837aeede106",
+    "sha256": "478a12953b566b0f39dfe07e9b3f79f533db47bd3993eac469e629f32e59db9d",
+    "bytes": 11258
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r31/north-east-keys-3x.png",
+    "blob": "bb6b6cf3f2e1e345585ddc412499509aff4910e5",
+    "sha256": "80d1ffc9ea2ebf2b605cb6a0b70ae9fd34e49e51c1ab894867a89d4df67a5569",
+    "bytes": 10500
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r31/north-keys-3x.png",
+    "blob": "a554da98a0eceecd6917766797a605990173fa9c",
+    "sha256": "861eb6da75848ea797ad2a08fbe2e25f01b160641e82e9acdfd0199d45c5a573",
+    "bytes": 11204
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r31/north-west-keys-3x.png",
+    "blob": "a5949b29354303c34e1ba6243dcd99dab8c35694",
+    "sha256": "07a761b027dcf7d797ea9cf6c50eb9a6e8aa39b78eb4450669e828adf65f4934",
+    "bytes": 12102
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r31/west-keys-3x.png",
+    "blob": "83605e27e574b4b4bcc7e59e81ec1fe6ae168096",
+    "sha256": "169fd2886f44c0dd3c9712fbd0a33368943ec9825840caab02ababd5c19dd37e",
+    "bytes": 10601
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r31/south-west-keys-3x.png",
+    "blob": "9aca3a0dbf00183cce203cbba77afc654f6c04dd",
+    "sha256": "ec705365e0710bf5ad501f8ace244a4697cbf7b739cb56b8090437761dc71c3d",
+    "bytes": 11506
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r31/page-1.mp4",
+    "blob": "712e6e0fb31407f8c89fadd5f6f61cfe69234092",
+    "sha256": "d6b3a1768a833de8216ab5ff9380b009578dc8a0d94896d3b9126bff2039d884",
+    "bytes": 1307386
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r31/page-2.mp4",
+    "blob": "af43d572b625d8305f8c341319b3954603aeab26",
+    "sha256": "c068ada41300b4f1b1b950b5f3b25c6d32a54808f907f8b4174f963826b83d14",
+    "bytes": 1306312
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r31/video-receipts.json",
+    "blob": "a3c57407f4a4422bb171ef00c252e9f05fc41e10",
+    "sha256": "7ab15f3268501b48a5efc1fa13d3c8b9c64ffc96a64c612ba19a49e8b88e0045",
+    "bytes": 954
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r31/comparison-1x-all-keys.png",
+    "blob": "f23abdee5ed7ab1d9d67bda413cc60308d6136e2",
+    "sha256": "c5af0b2acca79e41a3ffe0596e0d423dc2b5490c6a181282103b06368122cc39",
+    "bytes": 103138
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r30/generated.png",
+    "blob": "a002192e3a462119dde2c0aea55a3e60cae11304",
+    "sha256": "ad73ee6bd65926f301de32c9d3d22668dc87520ffed34cd122aa9abbfe6b4106",
+    "bytes": 1420722
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r30/north-north-west-fixed.png",
+    "blob": "00e0a157ac9408fa833b89eceaba893fb6be6086",
+    "sha256": "18724ef82bdab22126241e33aab2f3dcbed338c8cb0d93d9f0a84b8f512a3231",
+    "bytes": 1406679
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r30/raw-overrides.json",
+    "blob": "c414f12bb4f11f41d6d400f02b057d090c7686cc",
+    "sha256": "9670a22574d7cf106cfe7c961b28c21c595780a0ac78d9699c2078e4992602bc",
+    "bytes": 395
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_centipede_pro-hurt8-r30/camera-calibration.json",
+    "blob": "ddcddb974b575161ccebd49a8b9bd9fa54a9a8a6",
+    "sha256": "d0f6b73d3205a9d886cdfc87727c208adef8394108f93d5a7f6b3641e0c69fb8",
+    "bytes": 407
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/atlas.png",
+    "blob": "44f05f70b6a4862674f3cabfc04c8182e7cdcbc1",
+    "sha256": "82cbbd6a966704685c8157fe811b0b7b55e38431617fc16f2bc8fab456ca5c32",
+    "bytes": 1093216
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/atlas.normal.png",
+    "blob": "64c10b74944f4596f8ff4011f8f8582071056566",
+    "sha256": "02e9f62a8a47bc93bf567b408a8fdcfee6122f6e64032e70156ffc1b14696af2",
+    "bytes": 165703
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/metadata.json",
+    "blob": "c5d5f735cfe13085d509dde5bb43a59af85fe88b",
+    "sha256": "1cfc4fb31132eda61228ae3d3c23678f6af4fa47f2ba3cc74c28d748ce710b69",
+    "bytes": 27847
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/technical-checks.json",
+    "blob": "4c243db9745827c83789c7233154e68cbe2d24c5",
+    "sha256": "100464798063eea71e535d084d2df4d028e3713d6ca47019b51075730fcb3898",
+    "bytes": 23361
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/comparison-grid-page-1.png",
+    "blob": "c777768d57b65d40d2841ff78af091fdabdaea08",
+    "sha256": "194d823f110deaabe5a541a0deefe47e85e8b987ab4f884b1bf3d3f71d1c5b71",
+    "bytes": 438025
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/page-1.gif",
+    "blob": "f7d3320f292a70836bdde4d7cd5233c15ae6de2f",
+    "sha256": "1a1ac1ef3991d63ad35c5467b6f73d55828c2b578fba7d1ee4016be5599b32ce",
+    "bytes": 224110
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/comparison-grid-page-2.png",
+    "blob": "5c471ad775278f0dc041993f260ab2c88c2f0103",
+    "sha256": "db5d5b1f7b107b9a49620da9fa87b054c109ddd41ea80a7f21fb9aa325692b50",
+    "bytes": 416278
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/page-2.gif",
+    "blob": "3eefdf0edad278d8cde35f966db51a996d51e753",
+    "sha256": "0bc56b932f0f57c14a4b5c9856472c7ad9f9dedd0a728639b9aa2259ad0235dc",
+    "bytes": 213881
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/south-keys-3x.png",
+    "blob": "d3d17d6b55428418e51bebfc32d28514201cd793",
+    "sha256": "b43e332140d89b6e657cb6e52597a6ecfeae2ada74343c9e134128ab695d5dfb",
+    "bytes": 31630
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/south-keys4-3x-folded.png",
+    "blob": "59c120beb6c38fd62e1ff9a2f19b525f7029ad24",
+    "sha256": "fed5677402e2c93dffd1be1ab7e4b107e38ec6d82b7a7bd1ef7d23b4160d0a3c",
+    "bytes": 31248
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/south-east-keys-3x.png",
+    "blob": "4b830876fac9dbe40c68f8427f31e8a6aeac33ad",
+    "sha256": "bec2507fbaa713bbe42c871f2544f6f0b575468b4b625057082287ef6c1d658b",
+    "bytes": 28472
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/south-east-keys4-3x-folded.png",
+    "blob": "2ef21ccb24be5d4901a4f091057361ba0951aad5",
+    "sha256": "2ffee89fb8aca60347bdc68de596f130ae5e96689d3b48c1948a612320b2ca08",
+    "bytes": 28321
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/east-keys-3x.png",
+    "blob": "e1eb5a2543453e85c1b6a0d65c22d49803f78a82",
+    "sha256": "4f13e8636f6bd047a4ee3f769db281d192288541368ce9286bff91a161c7e4d5",
+    "bytes": 22297
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/east-keys4-3x-folded.png",
+    "blob": "4541ae56c27045545e76ad4ded0ed29647f1f0e3",
+    "sha256": "cad79875595419fc5abb13ac02dbf227cce1c2c48409c7c9ca6a1d1d3492c814",
+    "bytes": 22770
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/north-east-keys-3x.png",
+    "blob": "395aaf6db771b818e1aa6022400318311de8d26b",
+    "sha256": "ad3b36e16ed585af9ed3f492cff51ba93cd826e172653040c7b316c8b29c68fd",
+    "bytes": 25324
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/north-east-keys4-3x-folded.png",
+    "blob": "78ec7b4f0a1b5c95dc10a89389f4dac880e6d82e",
+    "sha256": "d20e5da115cf400251b8ab0de6291ff6d62f10d23f3dfbd1d246fa1b8b7765db",
+    "bytes": 25415
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/north-keys-3x.png",
+    "blob": "c46df499f18dba9cbf5dc5e84446557e65c7110b",
+    "sha256": "02fa2375c0cba02df91eeb2cca08b31706950e612897be2a08fd34c71ac14ded",
+    "bytes": 26251
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/north-keys4-3x-folded.png",
+    "blob": "7345bba93655b02f2a085feb237af59e21465119",
+    "sha256": "f25cd1356871facb300d394d9f5b473071c7854ad777e1d0b1d280975de5cdcd",
+    "bytes": 26441
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/north-west-keys-3x.png",
+    "blob": "0d35b0655582f50cd26f11bcb85aacc982ff824d",
+    "sha256": "53372aa75e16e7835f4e91b3d03985cff81ce3cfca9e1c9e3383e63fdbbbf76e",
+    "bytes": 24236
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/north-west-keys4-3x-folded.png",
+    "blob": "266b3736c858f4cf4559fd22594e48d311bbed6b",
+    "sha256": "4e0ac08ceacd8a03b36553fad81f4c80a73039412ec7759704c0bb6c7fbee9bb",
+    "bytes": 24554
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/west-keys-3x.png",
+    "blob": "8396383dbbda29d9c2a4f947a7d2b28df55ca770",
+    "sha256": "9e07a5b838b4f3a63ae6ca6b45fb5a2efad820d5ca997226b0621ec0e4a55a56",
+    "bytes": 22734
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/west-keys4-3x-folded.png",
+    "blob": "3f613e7ce868a4456c96b8f54949b8e835f5dfb0",
+    "sha256": "99d4c9d1988c04148fae71274c5b7b507f28b85532b8041e4adf3968b03396d5",
+    "bytes": 23223
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/south-west-keys-3x.png",
+    "blob": "a1265d33629aeec30c27b89ebbb04344af17b2a6",
+    "sha256": "1179496b109898a80dadb37a9ca110dbec7ab82bf70422adcc45146e108c0d41",
+    "bytes": 25146
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/south-west-keys4-3x-folded.png",
+    "blob": "472d76bff8edf6612cab59a565dddaa0b4ae8fa9",
+    "sha256": "df85fbc66752578f1746e6d242626e2bddc18995b8c6062b5d7a44b9acd24942",
+    "bytes": 25382
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/page-1.mp4",
+    "blob": "8ab12cff854dfaa8086a1fd22485671a19dc5871",
+    "sha256": "c32bad6c364bc14544e42bbc8021cab296cd7fe25cfc790373d3d96bce093ca9",
+    "bytes": 3089415
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/page-2.mp4",
+    "blob": "26273ad243a1dde0d483d40f76403195abcf9838",
+    "sha256": "d6c4ce1c15338f0f88abe215b867591631e9c3c9ed3a5494a0578f8ec8aca167",
+    "bytes": 2836852
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/video-receipts.json",
+    "blob": "bffcb12217690eb151334909327b95abcd9e1e36",
+    "sha256": "cf3dee8a7a0ee88f766069a9732222027e0739e834f592486f3b4e0aae721c85",
+    "bytes": 942
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r31/comparison-1x-all-keys.png",
+    "blob": "7e89f84f7576ec50ec82bbe531f19b0e698635f0",
+    "sha256": "289f54d033e5c2f1fbb8640a77033ad12632010520df22cbda51c60724721139",
+    "bytes": 289260
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r30/generated-A.png",
+    "blob": "3b02aed4fdda499d5e97ab18dce30032c31b382d",
+    "sha256": "6a8fd657de0c3b17490bf7263b09bcda49b2e5d7dbf00a67322effeffb696173",
+    "bytes": 3328013
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-walk8-r30/generated-B.png",
+    "blob": "c214a00cbae4c3cd2b2975b6d3b6dd3ff3547265",
+    "sha256": "a1b4d15e0c6684e21712a46e8901501ea393c60e91cc1657a6440c0b58044787",
+    "bytes": 1367280
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/atlas.png",
+    "blob": "87b456075908085c7b03ee2071d5c95a5b58ed0f",
+    "sha256": "973e8ed2eb8eaf1b60809668e7bc20eafee539efbe450f260ee4315f4675eb06",
+    "bytes": 1173962
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/atlas.normal.png",
+    "blob": "4bef3e47c0130b8fb4b183e67380253fd95467df",
+    "sha256": "2bd7fee7c219242c40fb0f9d5e360211025a46915301b885b4fe2bb109b5b0c4",
+    "bytes": 206570
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/metadata.json",
+    "blob": "24452bd30b43c5a58e8a1863f257aeab79797726",
+    "sha256": "070969c565ec1870984e305439acf873bb4a539030a40a88a2e0b9fcda6cbf2f",
+    "bytes": 29967
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/technical-checks.json",
+    "blob": "e4dac9fac8722c8af00f240dab89a5ac3e413696",
+    "sha256": "983bf2ace7a64c8b936c79faefb536a7504b5315f1788f60da667101f3e604ad",
+    "bytes": 23317
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/comparison-grid-page-1.png",
+    "blob": "6d4e4f643c3f59f878772be65de4ea6adbeab83c",
+    "sha256": "c108d3d138a8510022695bb494ff4f9008d52beba12bbdf203741d0e3a002071",
+    "bytes": 449006
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/page-1.gif",
+    "blob": "d2b74d6e95eda792d4d2c8d214daced32e126ae4",
+    "sha256": "692c0c38eea025ad17e6b316fd14bcae7b7aab5afe39f75662351f2cf3b454bf",
+    "bytes": 186990
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/comparison-grid-page-2.png",
+    "blob": "953e27516bd69068475cc3e1f7e622742052d230",
+    "sha256": "09e57add0f8ac77a67b3a85010841cad37ac1564d542b88fa475e0630f314174",
+    "bytes": 434989
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/page-2.gif",
+    "blob": "c69ca0668cdefcc23f46022c901b534fa29d8d87",
+    "sha256": "e1509be1fde8cd62ba9a1a53b184fb4ce08c6dd6e38d54c317acafb50720b9d9",
+    "bytes": 180201
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/south-keys-3x.png",
+    "blob": "ebc3dcc290589fc3bf6090ba5d5b121fa0a8cd7b",
+    "sha256": "fe5ddaa07943ad7d92dc7b5664847bc0b640d4557e897b3b73fb79740254087f",
+    "bytes": 33618
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/south-keys4-3x-folded.png",
+    "blob": "eba12a14412329b98c4336c7ea17413b51a1ecd8",
+    "sha256": "1898a220b1292a00fe94b5d6ea8a25fbd4533473ada6a8492fc347a39917572e",
+    "bytes": 32938
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/south-east-keys-3x.png",
+    "blob": "8c38f0333ca3f40348e2e2dcaa458efe7b774e69",
+    "sha256": "703d051dd6265ebfeeb1ed7abc505c7a0d5588e44a5e10527ff78e49190f6192",
+    "bytes": 31259
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/south-east-keys4-3x-folded.png",
+    "blob": "d4c364777da7f1ec8e78a7a82b69e0b2ff3f9af6",
+    "sha256": "8641a46b87d9fc10be9c9e5611bf7daf71b893ffedd856dbb444125943c8f0b4",
+    "bytes": 30551
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/east-keys-3x.png",
+    "blob": "6d735d446d364140c907b2d8bdb3ce7df9eb5469",
+    "sha256": "cf6f33d4993c5c39bf16f0e1d2a0929795073a3d6d3e3e2d99f33cc88f0feac9",
+    "bytes": 26992
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/east-keys4-3x-folded.png",
+    "blob": "ee9ffb65f0504df7b9fb58e52a6dc595b57d891c",
+    "sha256": "fcc548c606586b9eeed09f79b8c4761ce24d6065ebfb31a12bf9ab4ec44d6e5d",
+    "bytes": 26966
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/north-east-keys-3x.png",
+    "blob": "aeb61c00377b8f240071de4948a910fab8c3fbb9",
+    "sha256": "500574c832dfe40b377291d8458a801ae67412cceb1d484e76ffe522ad26b480",
+    "bytes": 27130
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/north-east-keys4-3x-folded.png",
+    "blob": "2eeb212381d5025138edcc49ee47fab346a4e59e",
+    "sha256": "3fb8afd731de43938c025afa86d8d3d980e2f4348114ee03513e5f49b0c3b0c9",
+    "bytes": 27053
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/north-keys-3x.png",
+    "blob": "37f14c13e1b358c0d3bdaf667ba48703c3e8ed45",
+    "sha256": "2194890dd684c293a9ab81c4efc4cf543c8aa5c0c0d04610913fb021269fc93e",
+    "bytes": 29823
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/north-keys4-3x-folded.png",
+    "blob": "17117c91979dd10e804b6ada27e8330f0e73f7b9",
+    "sha256": "fa2d8f611b8ed25c2321f8964292d0c47731e32c4147f299119239cbcbdaa222",
+    "bytes": 29544
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/north-west-keys-3x.png",
+    "blob": "495258fb6f51c02b9475a866dbe6f22f36e4f5bb",
+    "sha256": "71651a15a8d679d89d9bc5e159b273f4123318ad88a24dbe709168ab109e34a2",
+    "bytes": 27689
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/north-west-keys4-3x-folded.png",
+    "blob": "0adf8ec30adbc9e47ac395254ceef5082ebab0e1",
+    "sha256": "916cad9ad363fd4caa04d6ffe92650760fb7c9aba12294099ecb7dded55e90a6",
+    "bytes": 27640
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/west-keys-3x.png",
+    "blob": "404c6d2e39b8914e4b2bbc963b199f00c2516a06",
+    "sha256": "6516002f8871f63f9ebeaa06ead3fb84760c05bcedc6c17a23c355d9d84fe03f",
+    "bytes": 25344
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/west-keys4-3x-folded.png",
+    "blob": "142e654fb866336154d6b43a67e55a6100324b92",
+    "sha256": "56f757598a497bf8d2a8320ee709a158259006a409fd788f5907cfd21521c197",
+    "bytes": 25446
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/south-west-keys-3x.png",
+    "blob": "a0281652f2b534a09c681341b690daa320b786fb",
+    "sha256": "41ef4935d917a9f10947a73dfbc474830e3ece81ea146dbeb63ca90648b37941",
+    "bytes": 30312
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/south-west-keys4-3x-folded.png",
+    "blob": "0b82d7b484b27dc706c8648b43777e06497bc916",
+    "sha256": "90eb7ebdedcdbddbf8ea9ffd5ca9f72f3e1883b1ea27f6e4526afd37257363d3",
+    "bytes": 30055
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/comparison-1x-all-keys.png",
+    "blob": "0d0dc543c0fcdfefec183db464cab0ee068f5052",
+    "sha256": "c1cad010c30630aa246f459bf208956be3cd410739bc613802035827275950f1",
+    "bytes": 215652
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/page-1.mp4",
+    "blob": "49a76e5bc4fabc83813cf1ce0df9357189a4f27d",
+    "sha256": "0b21556b2c5a33eb53aa0e04ab18b7fbc0e3ae559d8745af4eaea99170de9e6b",
+    "bytes": 2918929
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/page-2.mp4",
+    "blob": "29757945d4658e24c656816df82e99105171831d",
+    "sha256": "2d1980e1d2829ba1eb9c4dae8d913f7b6691f452414ea1c74a4d0ea47ef356e3",
+    "bytes": 2741982
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r32-body-camera/video-receipts.json",
+    "blob": "328cff50825d3f80ae5c1902a262e31460ac3f66",
+    "sha256": "86f066bb6e3a5049f407e0cc0af576868556b659cb9124f224f8df4232254bec",
+    "bytes": 998
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r30/generated-A.png",
+    "blob": "c3f0344b5963c6f906a96f4789b952f48acebed2",
+    "sha256": "62e07f1921356dab23ffa7d08741c80db4a9fc3e0ee221738282fcdb406a0911",
+    "bytes": 1225116
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r30/generated-B.png",
+    "blob": "463ac808f14bfe8e894d436aa1e82db74220223a",
+    "sha256": "ca1dd1e52b3ecefd5aa1cb476d1c228c9d4a8f817b73ba6f117025f0a3267005",
+    "bytes": 1144661
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-attack8-r30/camera-calibration.json",
+    "blob": "a0715672ab55f22a96a81698dcef0ce418f30958",
+    "sha256": "81fe128ad8f570a81e353746aaaf0c32a3862aa4497a9ea87bba3c529d0e5167",
+    "bytes": 1952
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r31/atlas.png",
+    "blob": "3e60da544fa985fba6f8b3ca1bcabd739c3a846e",
+    "sha256": "296dcfcf3d984ef474c2b197279a061c991a6f2e517fba1dff77b615566e2685",
+    "bytes": 555389
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r31/atlas.normal.png",
+    "blob": "0168ef446e1993bd1c07cd087520a807a3b8aa0a",
+    "sha256": "07b801d24aebd65502e9dce8a9ddc7586abe994965860ec7cf94034f4a389e91",
+    "bytes": 97959
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r31/metadata.json",
+    "blob": "2758c7c19418249bdbc378693fc56dc10aa82f08",
+    "sha256": "0ece197ce97c2944c62fd7d0a3b6b4c4e7b999c7171f631f7016f424f1d0e1a7",
+    "bytes": 15230
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r31/technical-checks.json",
+    "blob": "9db97ad95621b1b539ebde2573c2d4bdb742fdab",
+    "sha256": "77f297e57f20fd9e4f10939f2755ca2b49ba90e27ac5caead654e829f1a2efc7",
+    "bytes": 11665
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r31/comparison-grid-page-1.png",
+    "blob": "9b565aa5da5c48a1577b3784ed31a2ee5004a71b",
+    "sha256": "bab4bb78f88b2ed3a6d33d1edb6cfeda610a731378732961eac52a21eb3527b2",
+    "bytes": 219201
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r31/page-1.gif",
+    "blob": "f7c9cae1072f2a3e71cc406629ac8203b29d8473",
+    "sha256": "7126c6b4201be117fbfb9520f788e96355b97a703c4a40129973b3e906e273fe",
+    "bytes": 203653
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r31/comparison-grid-page-2.png",
+    "blob": "b96aa3cc969943f57127aa832342758135fe0025",
+    "sha256": "9e81b38a06e86fb3078da601c8c4906c2ff999aa50a941a3644bdaa6484a89db",
+    "bytes": 218835
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r31/page-2.gif",
+    "blob": "7a649dfcd809523c9de5d5153fcedb214e69a34a",
+    "sha256": "e16f4b8985a144c56cda851d8aec438a109734663aa128e7059720ca26da1a17",
+    "bytes": 202719
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r31/south-keys-3x.png",
+    "blob": "31b1924602ae923b73a693b7760af8a5a547f659",
+    "sha256": "24574a1f2d5b7b30bf483882349e1ba7444a397b71d71aa8ffe733a93070be5e",
+    "bytes": 16982
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r31/south-east-keys-3x.png",
+    "blob": "c4815014f6539959950cfc63fc895c017dd83563",
+    "sha256": "fc9b17628f682736c633280549a3b9f3cf7f8d15ef5f20b183b4680aa59c7963",
+    "bytes": 14920
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r31/east-keys-3x.png",
+    "blob": "8062af5de20d13718b84cf8cc9383dfb1e4db878",
+    "sha256": "1e007a58c183b6c63a5f781519107b8393b2a04fc370e98495d8d1424dc68471",
+    "bytes": 12253
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r31/north-east-keys-3x.png",
+    "blob": "5dbfdba2e3786ad418b86aad1fef576431906d13",
+    "sha256": "a5172779a4bba09592c11f18409018c9ee48ef6b58b8bcc930f64d2843d37a9e",
+    "bytes": 13068
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r31/north-keys-3x.png",
+    "blob": "85c94bc2e8a36890cea4ddeea3045561f4766571",
+    "sha256": "c482594b67896f79d22684966f4a49b74da841af8c663d31d7d70a201bd3c2f1",
+    "bytes": 14683
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r31/north-west-keys-3x.png",
+    "blob": "09f1c9996f4144dcd7847e403350050a6548e7e6",
+    "sha256": "d75a2db3f04e9ea7911a80d71a7f543e1f74878d273ac4cbc8ad404305f9703d",
+    "bytes": 13885
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r31/west-keys-3x.png",
+    "blob": "f815418d4c864eab1107c18aa3c7c53955755337",
+    "sha256": "dfb7519a82d3cd7dfd4f11b462db454c9c4c752ad3fde6daa75ca893bf6ea66d",
+    "bytes": 12529
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r31/south-west-keys-3x.png",
+    "blob": "e504a3718981921cc8e2d79dae3a71c8c3471865",
+    "sha256": "6c37e290d156f6b9e3002d8acb04523eb18fa658677bc3792926d3512514b6c8",
+    "bytes": 16618
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r31/page-1.mp4",
+    "blob": "d7115f1ed3bc42a6da1655df1bd595ae804de77b",
+    "sha256": "69c0d255c7632a68da579e97e73299c91da00d03f4524972bc4feec2131ebe93",
+    "bytes": 1616616
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r31/page-2.mp4",
+    "blob": "8f920f59dd33ada26f3d2a5a28cd9698cd799742",
+    "sha256": "a8cf15c198e00b40636d3ec2815a885b3ae14c4c085fe897ebff3a164b604e17",
+    "bytes": 1587591
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r31/video-receipts.json",
+    "blob": "6dc0b1010ef08897eb51b41ce1060ef0e49971a1",
+    "sha256": "2f5e02e761b3d3465c7a72ffbca5077d216647f418b4a7958ec02b6f5cd1717c",
+    "bytes": 942
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r31/comparison-1x-all-keys.png",
+    "blob": "f70c3b3728b22a5c8422e1b79065eae9adba35ce",
+    "sha256": "0e258c8293dd866d7ebbc0a82672782d33b92c1544d01983b720bd4717d7efc6",
+    "bytes": 129758
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r30/generated.png",
+    "blob": "a433325e0af5f77199835bd4c0656e87e9da870b",
+    "sha256": "ad7dcce35bd0ea2d624c81dd9ea051310aa3dced25ad757926015d065e6c5336",
+    "bytes": 1702291
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r30/south-west-fixed.png",
+    "blob": "85d7eed187ff4925cefd0dffcb44e0b8a2c0d3ec",
+    "sha256": "4b47a49e176ab28a548f5e6b7a1c1951119f8c8d5429c73341273671a7626541",
+    "bytes": 833270
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-headless_knight-hurt8-r30/raw-overrides.json",
+    "blob": "51dc2f4e4f12b3d7b474cd9e4d2b7e7480f929b8",
+    "sha256": "be478ecd14947138e3aca37109d9c0b44d2572879f88575a96068207d4a71ec7",
+    "bytes": 195
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-idle8-r31/atlas.png",
+    "blob": "f86df28dd0527e50d4ee0c8cd32acf6eadb2da65",
+    "sha256": "00d5fb05003ec64ce4629b62609f2336b06e982acba2975e9ac93e98cc6ee97d",
+    "bytes": 240267
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-idle8-r31/atlas.normal.png",
+    "blob": "f46e29eb5f9d1be937fe342d785b303b779967b9",
+    "sha256": "fa422ef716aabae7ee2511a05509f594057667d15bd1cf731867ce5cd8e01814",
+    "bytes": 56465
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-idle8-r31/metadata.json",
+    "blob": "3761ea6fc274acfc950910ce3df2ab2e16fa204b",
+    "sha256": "ee0610dd1ef70637f7e10a06a47f66b585f2fe7a12c6d072c24db9fbbcfa7ff8",
+    "bytes": 8265
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-idle8-r31/technical-checks.json",
+    "blob": "0d4103fabc5d82a8a940c7879070ad02b5d86585",
+    "sha256": "e5662060e0e4ab65f9a92e8ba7cbaefa0b16f9606229e1011a63f8aa37da6542",
+    "bytes": 5845
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-idle8-r31/comparison-grid-page-1.png",
+    "blob": "b7e007e86fd5e88addca5306aeb2f4493e173fca",
+    "sha256": "e19543c5e367d7984bf2bc84c7f012cd8d4ea2caea1c64b557d9f385e287bb00",
+    "bytes": 110432
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-idle8-r31/page-1.gif",
+    "blob": "b19f95ab9e87105a573603fe711aff555d826955",
+    "sha256": "53809cb9a79ae66513069e279959bc16b9a57ade4ef3c5f30813994126378752",
+    "bytes": 66797
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-idle8-r31/comparison-grid-page-2.png",
+    "blob": "e93377e1a5c4681e0c0c4860211deffed7591ac2",
+    "sha256": "c6224b8ae9a62dd78b9a19bd18762b68bac1d45420b811851320b4e104b1af37",
+    "bytes": 110089
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-idle8-r31/page-2.gif",
+    "blob": "c63d3f773a7f326da7a78bc78843eb44d113cab2",
+    "sha256": "84602a9ae9eaac6f0e89c764813c7d0c3ae78f1141eb0f8249e93c7a9ad813a0",
+    "bytes": 65867
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-idle8-r31/south-keys-3x.png",
+    "blob": "58e36b4b4b448dc587798cedc306846bfbb6cc96",
+    "sha256": "e9e2c4a9d3d06d1d3975bc971460e35d5d8657966d05215361fa9345bd6625d7",
+    "bytes": 7747
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-idle8-r31/south-east-keys-3x.png",
+    "blob": "a57bad732d3d3cdd2fd114784d568c1300a8eccf",
+    "sha256": "d08d3b1561a827d0d1ffa9d2a95253c912453615a9acf91b0212c1fc652283ff",
+    "bytes": 7766
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-idle8-r31/east-keys-3x.png",
+    "blob": "bddc246c5d7435ea4a4861f3d4dea5403bfa23ec",
+    "sha256": "7b04c644fb142befcf87b806e593378bdb52a0827778fb1efd127e32bb29bf5f",
+    "bytes": 7300
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-idle8-r31/north-east-keys-3x.png",
+    "blob": "7cd1712f6e0be10accab0f0ee81cc1c2a57e7917",
+    "sha256": "43ff0bd256a283603452e656f4e46f896e4b615660fcbd6d2a634a3fbcb8002f",
+    "bytes": 7243
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-idle8-r31/north-keys-3x.png",
+    "blob": "dab43688521f51faf6e5842bc91b5e97c0e38ab4",
+    "sha256": "da9d361ab610b3236e9a996954feea526192e0e84e0b2dcfa0bb58b106090ea1",
+    "bytes": 7223
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-idle8-r31/north-west-keys-3x.png",
+    "blob": "ae5d22efe9edf01a905e767015d40490138736f9",
+    "sha256": "0abbc3825b13862ae5dfe7b14653d9b4649e2fbfa60f6d24e8c617b9b89cfee7",
+    "bytes": 7560
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-idle8-r31/west-keys-3x.png",
+    "blob": "181ad8cdc2ee79a02289522dd1ce0ddc8e821348",
+    "sha256": "e9d8a9a805dae3444fd1fe298eabcbe7cf89a389ba5b2ee66e630b6b100d5eaf",
+    "bytes": 7377
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-idle8-r31/south-west-keys-3x.png",
+    "blob": "021bf03d1c7ba59e8335b16df72d1480adef7f3f",
+    "sha256": "ce4aee3bf12c77a773e50f7afee21834a5e6127d21d6984db4bce3bb6ee0533a",
+    "bytes": 7375
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-idle8-r31/comparison.gif",
+    "blob": "82d7e0cce379676ce4fd7757867b11f2eb6dd878",
+    "sha256": "0a7caa56aaf264849749f7b3bf4592bde2c179c1b1d8f28dfdca5fbcf5f301a3",
+    "bytes": 115660
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-idle8-r31/comparison-1x-all-keys.png",
+    "blob": "e609820a58e70d5e7fce8bbcad0de9ba5bdafdbb",
+    "sha256": "dc2a82e85ea2ee0b1a496dde407dc111258237fa175b39d230febc122f922b4e",
+    "bytes": 91751
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-idle8-r31/comparison.mp4",
+    "blob": "8f9f36c9fe2979573710dceea4133ba4b20caecc",
+    "sha256": "3686e68a2ea9f0d7202586dec7b22939076bc1d9a2187fb0b6087323a3c296b8",
+    "bytes": 1020912
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-idle8-r31/video-receipt.json",
+    "blob": "c47e469fe6bab89f050972f617fd9f1ec3a0cc1b",
+    "sha256": "a25791cc19447a89ebee7408175bd8a5e2b42eb768f105acf4251d7afaf6212f",
+    "bytes": 433
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-idle8-r30/generated.png",
+    "blob": "d0c9d1892f3405c3b77a2cdd7c90e754c843663c",
+    "sha256": "fe5e3206334291a1a187f362f1e9d871442dcec7b8bd0e5f8c38296b6def8958",
+    "bytes": 588606
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-idle8-r31/atlas.png",
+    "blob": "e2d23121130d5152201b59336b0a68a2921c1ec4",
+    "sha256": "2ee4ce395c3edde299009228db16c79fd4e6e85986b125b52687c3b23c281999",
+    "bytes": 276958
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-idle8-r31/atlas.normal.png",
+    "blob": "40f9d3b5e9300329c8cd4d9ce8d693e1128e4460",
+    "sha256": "c8a2dc20a908eb28d7b7796db9b0f596ef6eb0f4cdc15d19ab046b3dc42d2888",
+    "bytes": 43240
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-idle8-r31/metadata.json",
+    "blob": "cc8d007e678148d1644635a9ffb9eb5193304fec",
+    "sha256": "d0a8590122bd2886176001b99c3462f866c2a34750ad9518ca4464e65e5cfc2c",
+    "bytes": 8271
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-idle8-r31/technical-checks.json",
+    "blob": "6de7e0a20a229092c65ee49853daa2150b5548de",
+    "sha256": "2378c5fb32d252325935312d1fd6a08457234b5b0893ffaf2a0f1940dd0ffb92",
+    "bytes": 5845
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-idle8-r31/comparison-grid-page-1.png",
+    "blob": "156d23b9f5d595375f4c44b5358e145809d2d8e9",
+    "sha256": "0759f10fd1acccc30d247a23cb61bb87f2e41a06448afbd26085991cd2b789bd",
+    "bytes": 103841
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-idle8-r31/page-1.gif",
+    "blob": "8b856bb7f6bd2913d23fb6d26ed2db57efde013a",
+    "sha256": "9e02fd8656d0d0330d4fa1d6a34dbce1289f7dc7653a9bf70487da206061a6ca",
+    "bytes": 62442
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-idle8-r31/comparison-grid-page-2.png",
+    "blob": "5a6578017f1a7bbf6c103418a3db1c513978a452",
+    "sha256": "835239fdd67347188a7414f783f9f587e488242659a242467be7e49d7b5a33f1",
+    "bytes": 103783
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-idle8-r31/page-2.gif",
+    "blob": "75e8a20e6e4525995106b58d4d5d5980418911be",
+    "sha256": "0fbf832837c60582eeea1ec7af00714ed626d0ca282d047fbae899ff25362754",
+    "bytes": 62045
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-idle8-r31/south-keys-3x.png",
+    "blob": "3629f9e9f2021073a6e605c805ce285e5de86625",
+    "sha256": "4d5aee11b4b7a3ecd6d72d40cc216f5d553fdb161c7c36d669a33ff50c4ccec8",
+    "bytes": 7523
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-idle8-r31/south-east-keys-3x.png",
+    "blob": "6e69b3492c5044caa00de201889945fab392ddb6",
+    "sha256": "f3b1d8b8fe75c1ffb06bffec3d35d745a1c8ade0ac9f298027d8285d056f35b2",
+    "bytes": 7283
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-idle8-r31/east-keys-3x.png",
+    "blob": "f28b5d78e618755ca527a333987a38ce7e4f316d",
+    "sha256": "12d1c5c5daac98117b84eda02138d7481eb22b1abf161de94dfd0ee8794e5eb2",
+    "bytes": 6152
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-idle8-r31/north-east-keys-3x.png",
+    "blob": "a9b1d7138b601d9cc90f1fcc7dd8a9602d6224cd",
+    "sha256": "d4214113207452bb643d4f5fb8eaae9acadcd515cdd77426ad095e8408723d29",
+    "bytes": 7300
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-idle8-r31/north-keys-3x.png",
+    "blob": "581d13360d457884fcd33b21e5a012c39cfca164",
+    "sha256": "99172298b1ef4670bd0769783b97e0a61288addb2a6c60e55ffb7888305b0bf0",
+    "bytes": 7529
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-idle8-r31/north-west-keys-3x.png",
+    "blob": "6d1a6ce873cc520d61e21fc7c67d94805727f9b2",
+    "sha256": "abf48fbeb2826a2e264d6b80dbd731c2b0d6236e1aa5bcd8bee916aef3cdeb61",
+    "bytes": 7379
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-idle8-r31/west-keys-3x.png",
+    "blob": "c50ef0563b9959fbc0f8060bc33f4ee1f28103f4",
+    "sha256": "6a33db33705fe993b19a199c411c8780516f6535939e67d00550701c629f7088",
+    "bytes": 5640
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-idle8-r31/south-west-keys-3x.png",
+    "blob": "143b4f89e1f2a2ca8d16f6dd441692a1f44c3cd3",
+    "sha256": "1cd1dbe31428b6c922e5c7ba518809d713cd4ca5a813aa0976c5f5f474a7eadd",
+    "bytes": 7493
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-idle8-r31/comparison.gif",
+    "blob": "e4d553c5a36edc16fbaa34dfc4fb2cbd1ae8d183",
+    "sha256": "72123116deca90077dc9c7129d3be8acf5cc8afc7f3c7b6ae7703164e627428e",
+    "bytes": 110950
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-idle8-r31/comparison-1x-all-keys.png",
+    "blob": "fd7f3509defd763c47b1c2100178983736cf5ed2",
+    "sha256": "19c33f146b1103fc083ed67080d35f262776072da7b4f1ca5304256782558c69",
+    "bytes": 79747
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-idle8-r31/comparison.mp4",
+    "blob": "2aaf6482c9ec8b768cb4cfe3baccbe4b1e00e901",
+    "sha256": "8972232376da8702e442055252e13bf08bd36466300cb9bc8efba01d192454e3",
+    "bytes": 835670
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-idle8-r31/video-receipt.json",
+    "blob": "80e9b697d62e9c4a833bc93585a0d6f42f2407ea",
+    "sha256": "938f09d0bbbe9ff970c9527fad77b572d9034ff1da103016f7e24237b99a4f5b",
+    "bytes": 438
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-idle8-r30/generated.png",
+    "blob": "9918dab376a2f5d4952b03758a64c33bf4d34c7e",
+    "sha256": "ca9531c4a6096906ec5eee0fc5d0ed36a1ba399f63abf89c61af0ba3f9a3990c",
+    "bytes": 613353
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r32-material/atlas.png",
+    "blob": "67bb206a37e2906c36a9fe075a59cc09a33c7ac0",
+    "sha256": "813ca69e1f51cfd2b53b19b6865e4744070ef8b3577cf3d1ed95954072b66b91",
+    "bytes": 324279
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r32-material/atlas.normal.png",
+    "blob": "720df8eb929cfac05f5c3c9b9eb21f2b67ae81d0",
+    "sha256": "923c840f5fa9e29d475c55a1e7d2738a976b4f8abb83af23360013abeb24ae7b",
+    "bytes": 50262
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r32-material/metadata.json",
+    "blob": "f2ade7b5d7adc39b01b76c5c13a9b7bf8c395911",
+    "sha256": "187220fb7e690105cc301f91134ded42e0a452c1a3db6d736c55f079b12d06b4",
+    "bytes": 8260
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r32-material/technical-checks.json",
+    "blob": "eee8f9918f9e2c64d4c50cac05c7cf3b4a656e6c",
+    "sha256": "61a9b693e1970a78bba890ba0a2a87dce44f274c694a25c6bbe3fc0e874f6d8d",
+    "bytes": 5844
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r32-material/comparison-grid-page-1.png",
+    "blob": "2433b8ffe06c53cd4bfa14cf4f3039330198ee78",
+    "sha256": "29c4f616602c5d9afefdc9e16db98f0b273f22117398094e69b9e77ae1eebfea",
+    "bytes": 109325
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r32-material/page-1.gif",
+    "blob": "c1663880848b7736d183c69133ed8d0546a0f191",
+    "sha256": "931326c938ac1bcf9537d245a7a481d141eda4a6b083ca2c573674ed600c46aa",
+    "bytes": 66503
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r32-material/comparison-grid-page-2.png",
+    "blob": "51aef1410c2cf9533e3a806d6e1d560144ce6c7f",
+    "sha256": "d53e3fe8299b3ff433159f92443f3cf7023ef3edbce0139f4caecf290aaab623",
+    "bytes": 105747
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r32-material/page-2.gif",
+    "blob": "e1a6f380f8f6de7a6a3ab547f7557401324ce5ea",
+    "sha256": "71e5e616afcfa6982f68c8237a67e0ed7e3848eedbb2c3069ba69569524bd078",
+    "bytes": 64138
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r32-material/south-keys-3x.png",
+    "blob": "603f4699994e32c505abf72cc5d3b02f7ab183de",
+    "sha256": "32e3661e910a5c23601c442eee8f7eecac93556fa4bba49aff8530a3f60890e4",
+    "bytes": 8716
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r32-material/south-east-keys-3x.png",
+    "blob": "a69c1911b2723093d771c4de088767b1981408c6",
+    "sha256": "486da7a8623391787038aaa0cd2480456f91864f868da14f310661e1e6c280a6",
+    "bytes": 8365
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r32-material/east-keys-3x.png",
+    "blob": "ec958149f9962753b524e552ab449ddf3e18ef86",
+    "sha256": "cb41c4d32d2fabf053af5ed6ce44f1f30ab8ac8b3bda8aaa884b6de4c46409c6",
+    "bytes": 7947
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r32-material/north-east-keys-3x.png",
+    "blob": "c0932c9e2533b4fb0446c6d155359e4a1c1c39f6",
+    "sha256": "ef6859fbba6ffbab90bf0e7a6e65daac94504023fd7f49abce463a47581239f4",
+    "bytes": 7784
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r32-material/north-keys-3x.png",
+    "blob": "91b52a78c7ac426027469aad15a26c91048c02ad",
+    "sha256": "4edde033304b6f630e5644b81ddff4e6a87058f3bf9952c68c1833fa42451d49",
+    "bytes": 7922
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r32-material/north-west-keys-3x.png",
+    "blob": "49f02af3a441f018a2a73ece8dae83d86ec41f4e",
+    "sha256": "49029d0703c4166a3349aeac85980058f497b0df782e5b3d86a14cf7e714cc10",
+    "bytes": 8430
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r32-material/west-keys-3x.png",
+    "blob": "81b623497d72074a9548228bc7c18c2c1df039e1",
+    "sha256": "9d2345e9b751b9d6c5ee2961a28a54c019e86ccb9a4c1e2d95566859802691ed",
+    "bytes": 7011
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r32-material/south-west-keys-3x.png",
+    "blob": "6eefc1387d0568da24e40634465c752f361c456e",
+    "sha256": "f7d81782b9aac37d8dde8301b46b4a38ce824c2e251875b0fce92b939239c0dd",
+    "bytes": 8440
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r32-material/comparison.gif",
+    "blob": "43c84e5e7ad5592541dfd826bc4c976696315af6",
+    "sha256": "6510ec66dea4d8be45a69e34d909c0f34830a6927c61a3ec6d8b46540e7a51f7",
+    "bytes": 116709
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r32-material/comparison-1x-all-keys.png",
+    "blob": "275d9a623bf18a0655c7d2ce2e920ba300d7e439",
+    "sha256": "5a8c001df2b22adba895615945a3b0863bc136e2071947d6dec85e50efd94c95",
+    "bytes": 82415
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r32-material/comparison.mp4",
+    "blob": "830778f64a71468e65a2235a6fc268e28dd21761",
+    "sha256": "66931376c8caea239cf10ddf7938911836a6108d609130faa4c235774c69568a",
+    "bytes": 958047
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r32-material/video-receipt.json",
+    "blob": "049f1c01961fa07435e534ca7d80d28c3b8db75b",
+    "sha256": "67890bd2ed62abcd6ae24bcea0dfeb851a39ac22645bf49728e85905950a4e99",
+    "bytes": 446
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r30/generated.png",
+    "blob": "7f8ab7d483533a9f6d4f3da88580c89b7ab2cca5",
+    "sha256": "9d93ef86143d3ee364bca94ef7203754658663526d0cafeb3ad0e885631e4dba",
+    "bytes": 638482
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r30/north-fixed.generated.png",
+    "blob": "39a27ba78e771bd19c3ba48682e23de9edbc8017",
+    "sha256": "cfc089bc2c3299ef56b74b9734dcfe6b98bd11ceedc159e2c1539dd7a2002a09",
+    "bytes": 502625
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r30/generated-original-north-gear-rejected.png",
+    "blob": "e9a05bb53ea116953648bd8a48fae3d466f47bf1",
+    "sha256": "568aa4ead26a9fed33790c59d0b9c5b6f1cd7e97817fdb7ff4e71a04274174a0",
+    "bytes": 651811
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-idle8-r30/material-palette.json",
+    "blob": "04ed138024bb998b1a685c7a2e1f5e64ad4f7b9c",
+    "sha256": "26ca5946d12d381b634d67e89298fa28ab193569ee3c4519eaf4c281ce096a42",
+    "bytes": 3614
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/atlas.png",
+    "blob": "363393c8a4f86d962db3f486884632599c727da3",
+    "sha256": "b83588d6a11216c3e1048e9a288e7771e8858a53235988684d3c86ec7a225c6d",
+    "bytes": 961291
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/atlas.normal.png",
+    "blob": "367663f93db458925705758dfee72aea24132290",
+    "sha256": "a47c85d2d1baf8b8f8b452f781bcc23cecc45aabb28f8f881b5e358df6900581",
+    "bytes": 172152
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/metadata.json",
+    "blob": "35badc569f057bd57e4b650e5e5c3b022fe9c849",
+    "sha256": "9c0d4b8579f1737650f1707f3298518650c0f16b287e2ce95e1bad0cdaf37a6e",
+    "bytes": 27818
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/technical-checks.json",
+    "blob": "ee5a74f91338c7cd7b2442242e0bc4825901d97d",
+    "sha256": "38183f9c6add4d9792b4e5f1c4602a8a704fcc00e0f3c15691bc271e5741f643",
+    "bytes": 23286
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/comparison-grid-page-1.png",
+    "blob": "2ff8a112d6dc156696a1838e21db2dfac6a0c41a",
+    "sha256": "b2d3bfd060d453dd7518fbebf9ee3dbce8b93e10fbbb58341b20f99f23c71a50",
+    "bytes": 434288
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/page-1.gif",
+    "blob": "c0f04727ca7ae7aceb156102f10d05312f58e840",
+    "sha256": "239215579bc09a49819844d7432cfba5b3512438c99c8901c54bbaa703e82f55",
+    "bytes": 222263
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/comparison-grid-page-2.png",
+    "blob": "c2ce7f419bc029e2e35e229ffa88ece59f11fe67",
+    "sha256": "af27b310dc620859d997bf2a7fa910895fca35c58af87d3cf968aa742e556907",
+    "bytes": 425633
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/page-2.gif",
+    "blob": "2f17b7f612fbb04fa7b1cb76d7ea2926f1aa0a9c",
+    "sha256": "f929cbc29d841bb7021ef3775eabe37b15d13828769df0e8b7d4596e0f3a023a",
+    "bytes": 216405
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/south-keys-3x.png",
+    "blob": "330916b8d9d33163fba1ea7dc1df86053e41f0bd",
+    "sha256": "5683475d8b6b96aa3b125cfb82c737d46a1fc0dd4aebd1391ed0fb4e23d815b5",
+    "bytes": 27558
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/south-keys4-3x-folded.png",
+    "blob": "22df38ffb5fb63266e9f7b73f019b709a8d8c1ed",
+    "sha256": "ecfac786ae8de9b90eeb82b1635634735e3f77c36d7a1b8aa2f512045f7368ca",
+    "bytes": 27854
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/south-east-keys-3x.png",
+    "blob": "1c9f99fbfc90b9f1a5d8f0f0d5071ee225c2570a",
+    "sha256": "f213932bb96124f86ad3e1f7cddc2b04bb60d6c31a2165abdc14e6ab8d780cc6",
+    "bytes": 27020
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/south-east-keys4-3x-folded.png",
+    "blob": "90fe97190674985052e1d9f2cbddde272e3f0bf5",
+    "sha256": "accd0bc2fc5002871aa6dcf6ad76a8cd5e600516b5bcf547e79fa709fe42b2f4",
+    "bytes": 27258
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/east-keys-3x.png",
+    "blob": "2133b73d46c7474f78d295ee4025303517cf61c2",
+    "sha256": "be1dc0cd4c513bbd042a83b3e4f13ee5beb8f3855777d81142531dbc0c71679d",
+    "bytes": 26765
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/east-keys4-3x-folded.png",
+    "blob": "16c1dc9356eef1f83d686d8d033bbdce2f17bcd2",
+    "sha256": "4b96b0fccda6552616dfc01908024a094928c470afcca220e24f709f92a6c243",
+    "bytes": 26914
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/north-east-keys-3x.png",
+    "blob": "0329cb1a55c5308836751104628d9125b6bab5a1",
+    "sha256": "62d6b14af327e5e28cbf6b1a788d4c4a26d9aff3e7d16dfc1c9f8cad07aef4e6",
+    "bytes": 24928
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/north-east-keys4-3x-folded.png",
+    "blob": "ebdd86842afb8e8be8fe8a2632c50f745fd697c5",
+    "sha256": "edeaf6783ac782f9d2ae37d37b0ca4cc374a1dce317390bcf2a4e0b19d156106",
+    "bytes": 25363
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/north-keys-3x.png",
+    "blob": "bf66de160a84678018632a428c5c316259c9cb31",
+    "sha256": "ce2db21475fddd9edd3c5146ad5e1f522e826e68e7e1c58203e6a6f78ee81490",
+    "bytes": 24482
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/north-keys4-3x-folded.png",
+    "blob": "a51bd189e80ed1c233ee8312f225dc77d3ab7a9e",
+    "sha256": "25482b52961016a0389454a9a993191d81098fbbe87f332b3800d3877f488eba",
+    "bytes": 24669
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/north-west-keys-3x.png",
+    "blob": "45a337ac8472b03c5e0e70c7463952dbf9d799df",
+    "sha256": "e387a031fe19612a601ecebfb936ce417ac3c4a10f18e2ed0d05c9f4ec58fe1e",
+    "bytes": 24448
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/north-west-keys4-3x-folded.png",
+    "blob": "76c9d4ad2b2ca7377562f21a4edec986fd6419b8",
+    "sha256": "285a3f6d20aa7f2c888cd1ad96d571f0f7da424f7454435db22ff25c8ac8be57",
+    "bytes": 24749
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/west-keys-3x.png",
+    "blob": "c2a17e2f4c4c1b5cdf2f7416da90f94a6d03a960",
+    "sha256": "325617e2d029e5b2bbec7a9ae8eadcf83e6350e562c778149dd8fce1193c5ce4",
+    "bytes": 25675
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/west-keys4-3x-folded.png",
+    "blob": "6b9894da40c5b4ffe08cfd73f7c8212e8364ca59",
+    "sha256": "0e63d054e8cfb4d233d20fce7596ba31d399300fbd36523a3d089f5bcff326eb",
+    "bytes": 26084
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/south-west-keys-3x.png",
+    "blob": "0ade35ab68e4315c92aa5340b97f4092e34531e1",
+    "sha256": "9b6c5893d03079d76b9b78d01beb63c8fe9d7de5b963a1b248befcc7cd5febef",
+    "bytes": 26562
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/south-west-keys4-3x-folded.png",
+    "blob": "62c6bfd27299d3e87a9bcff7d5140fd3aef5096a",
+    "sha256": "0d6cab6d7b4ce00b8a543934cd294edaf38d89578f398bb20e1c47e773bf09f5",
+    "bytes": 26700
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/comparison-1x-all-keys.png",
+    "blob": "439946024f3693cd05d4db104ea83e213cea19a3",
+    "sha256": "5e37331d673ddd77de0d10dec46a3baea568ae1105129cd4ede71f09ca71f954",
+    "bytes": 308832
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/page-1.mp4",
+    "blob": "d10485adc05a265bb07cad9acc8a804241f2f22a",
+    "sha256": "9d7dc24672a7f3daef092d28a799dc4d409d19d335af92c85a9a31b1c8cead5c",
+    "bytes": 3307772
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/page-2.mp4",
+    "blob": "104f4dbfc18fbde7fda71f79d530c9cedeaa8db1",
+    "sha256": "42680a410f398658717e5d8760094a0686cfeec7ccd1da2bf1ad294e25f16af8",
+    "bytes": 3139292
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r31/video-receipts.json",
+    "blob": "f903911da754a98878f1a0f00c3e109f8b476e4d",
+    "sha256": "ada3c9dff9c503fc4332e198f08dae5622b5cc00730da58e1be28ba5f3c5e901",
+    "bytes": 926
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r30/generated-A.png",
+    "blob": "bae3b11eb0905617b606064f021b2298a614b2c6",
+    "sha256": "eeebf199943350629789d07b2faf08a0b1b8f9030beff336e3ad02297a9e41d5",
+    "bytes": 1168615
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-walk8-r30/generated-B.png",
+    "blob": "a2162bf6d20248c406f0dc8639812322f8a68813",
+    "sha256": "0f8acee58ff1cf6be44e0192e2831ee839a510d5f8b67564ce2d4b18cbbf01e1",
+    "bytes": 1045777
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-hurt8-r31/atlas.png",
+    "blob": "9f4f5f817012acf01866b038e639ef09c71a7770",
+    "sha256": "6a0df13da720926ec8fddc4ef0ffd739cb917fa385ff845a44cdb5eace226c46",
+    "bytes": 480641
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-hurt8-r31/atlas.normal.png",
+    "blob": "3acd27607fcf6270c261860df518933935329adb",
+    "sha256": "1e1e9833c57c463853f79659370294dc0c728e3245a755c31503e190f8b59bfb",
+    "bytes": 106358
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-hurt8-r31/metadata.json",
+    "blob": "ac520ad874196eaa2c215d8914fdcf1ea2d9361d",
+    "sha256": "d7dd72fcfe3e5851359ff24202b36d01977bf1ab0121cdd0ea116dede503b126",
+    "bytes": 14971
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-hurt8-r31/technical-checks.json",
+    "blob": "0ccf6af00f070fefc407891ec00fea3e8e456ef0",
+    "sha256": "a178110be89d381d88d2cd97436473bc23aa67194dd1b86aa7d316e161fc2223",
+    "bytes": 11661
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-hurt8-r31/comparison-grid-page-1.png",
+    "blob": "f3c75ac9345d7bd7085ae4f9f672b5a886932a0f",
+    "sha256": "df7b537053bca9311624fe177d50f902a1a13fbf4feae572bd56997ab8d0d434",
+    "bytes": 219874
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-hurt8-r31/page-1.gif",
+    "blob": "5d60f638457ba5b666072d62f70707d52ebdde55",
+    "sha256": "e388eda1bcf2c22cb15ef884c625f66f3e53d1423bd9137fbdf5f80671855c52",
+    "bytes": 200210
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-hurt8-r31/comparison-grid-page-2.png",
+    "blob": "cb9e67972334b64d25dd0f1d7e586edc108ed2f0",
+    "sha256": "1799584cdaa014d553822e528b904a6175a125078a1cb2799abe3339b48bff7c",
+    "bytes": 216558
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-hurt8-r31/page-2.gif",
+    "blob": "8dd6157cfa947d80a0c0de4986c6e1e571e1a203",
+    "sha256": "e8a65ff93ae10c0b4cad0cf86086eecdd8be9efd7fcf188d063aaf6f09ff25bf",
+    "bytes": 196227
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-hurt8-r31/south-keys-3x.png",
+    "blob": "5936f7f234c0011df8c8b4a53bec2a55671bc827",
+    "sha256": "8f43eec91db67a97a4b1f3a682f17817510c35a9046e284f4f8438ca353cff64",
+    "bytes": 15198
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-hurt8-r31/south-east-keys-3x.png",
+    "blob": "df28851cd02492a9f008396381f78c258e3a1b5a",
+    "sha256": "462ee71a99fa2c7f87b8104b87e29e22ec371b61ef2287a8fe9d2db55a9b9ec7",
+    "bytes": 14708
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-hurt8-r31/east-keys-3x.png",
+    "blob": "8afd3b3c5c64a7333e192a551e71665ed371eb1e",
+    "sha256": "32cb1880ad0e45d6596306e3182a5ce335dd8eb8db5a422b94622f3c08a37961",
+    "bytes": 14159
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-hurt8-r31/north-east-keys-3x.png",
+    "blob": "e58eb196429e02153a99c7f680273f6b11961c7f",
+    "sha256": "19cceb121a9cb19187daf9555c239d7a3a7097748f9e16841f61b19fdefbb3e7",
+    "bytes": 13955
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-hurt8-r31/north-keys-3x.png",
+    "blob": "e3a981a7a8f9791bf2d335ea2a9c75ee231a1888",
+    "sha256": "0905638e87b46757be65dc8a45ae2958dcaa16b01af4a1f1c5cfee777107b6ad",
+    "bytes": 13388
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-hurt8-r31/north-west-keys-3x.png",
+    "blob": "930ced928b8c186fc5da99d5d301f98a9c1bd952",
+    "sha256": "f71be9fb84bdc0ec5e3c574b57e30bf18364ba917a70174d944b38268d45fa81",
+    "bytes": 13704
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-hurt8-r31/west-keys-3x.png",
+    "blob": "499eb1f78c86c1c19463419510bd229de86479e3",
+    "sha256": "e0854476b8e1d80fed3c9be553d2f392ac94ee07c05efa61d8393b45bf058cd2",
+    "bytes": 13961
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-hurt8-r31/south-west-keys-3x.png",
+    "blob": "faf62277241112944fa5a5bd92281c651f77003a",
+    "sha256": "730862b28f86ad445b97143f797a60911bdd0bab46e3a05e02c17332bd84b66e",
+    "bytes": 14197
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-hurt8-r31/comparison-1x-all-keys.png",
+    "blob": "4b6f1832918546bacf47aa425256c6d53f5024f5",
+    "sha256": "2a133fde864270892abd2a40b3a3fa6babbae4730c39fb0f5380ad2bd0cd15c6",
+    "bytes": 130957
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-hurt8-r31/page-1.mp4",
+    "blob": "0af3c16684eb65bb068c4dfcadcddc1b9f2ef47b",
+    "sha256": "2a13b5854d13ec55f09b0400b151f7042204ac1fadf0eb0e63ce8d3374e10c5d",
+    "bytes": 1596908
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-hurt8-r31/page-2.mp4",
+    "blob": "e51ef36267d4b038001393b936119bd13acee9cd",
+    "sha256": "beb3a55daaeee7b8dc24c335b3f9858c9e25c04fab8e0c6d72a434bae33e9f9b",
+    "bytes": 1560468
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-hurt8-r31/video-receipts.json",
+    "blob": "148903104428772cf0edbfd74fbc16062a348579",
+    "sha256": "c73d6d0e3664032139894aa3654a36b1238e86d1f6f5d8c36a73ae863a3d8dbd",
+    "bytes": 926
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-hurt8-r30/generated.png",
+    "blob": "cc5d9548ca6b3742ef2d45f834d5272f8b3b8b33",
+    "sha256": "854e07dcb37a7c352cd9f3b917f06b233349c078d345ffb0dc3a46a041ef2169",
+    "bytes": 1122439
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/atlas.png",
+    "blob": "92591b8ebb5e6f67c6d2b601ba883b66b58d1782",
+    "sha256": "a4b8a062fd42e190f9367058b3b0b0270ceb6f55faae71bbdb31fde99fd0fb44",
+    "bytes": 986957
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/atlas.normal.png",
+    "blob": "09e04818ff88dd1e3c14c720e569dc55fde30f58",
+    "sha256": "f4f9b166c467765fbe908c6ea1f0d387e69aa33af42e999e01954741b42a3cb4",
+    "bytes": 155893
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/metadata.json",
+    "blob": "ed92876ea34bb24b27afdf192b992dda99c31555",
+    "sha256": "06bd4367ac2e1ee95c5c6a7e4121dd6e59b73ae012a7c219f3cdb8f0495f746c",
+    "bytes": 27861
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/technical-checks.json",
+    "blob": "82478533526afe635aa11fe366282e46281b9dfa",
+    "sha256": "dbdba1896276500ea2521877d3b2052105c8abe2b2f16f1c1d5e77b32fbc13b3",
+    "bytes": 23323
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/comparison-grid-page-1.png",
+    "blob": "8b67b9ea1503fd7e3d04a9535d35cfb321249603",
+    "sha256": "2de39049add5ed9942cf9818ae147c55e1d6e940fe8b22fca04b75e1d8553a15",
+    "bytes": 409504
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/page-1.gif",
+    "blob": "c9d691eba773d3c2aefa55aaa400bd1044871e24",
+    "sha256": "a41e1e34fe17b45b531bd05c1616822c3be01c6f8cdf1a3d08e68302b4815a54",
+    "bytes": 208344
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/comparison-grid-page-2.png",
+    "blob": "7bc9b1c45930e82356c1fa22ed0ee8ec30a968f9",
+    "sha256": "ab6bec545014ed2fef2e1a69e98383e8657bc856e8b2c4099d753d7b52df5f89",
+    "bytes": 400826
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/page-2.gif",
+    "blob": "957afbec6874bfc7d4e662404975d8813fdeab16",
+    "sha256": "5571d5cbee09d58c4c2de542c13965fcbd7d5826063ae8a0e675bb88947d5b5a",
+    "bytes": 206000
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/south-keys-3x.png",
+    "blob": "744c3f78acf7e35d3d344ec46faf9c439753174a",
+    "sha256": "482f2e647b8ed8731191f799606e81170598af253041a77edcf4c2e6bee8ab50",
+    "bytes": 26670
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/south-keys4-3x-folded.png",
+    "blob": "3c50921b63a2743f86f85af011f18ef6da0dd273",
+    "sha256": "8851547a7a6ef885478f334227a291d148af4f576f18cb7bc2bd59831c44f103",
+    "bytes": 27035
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/south-east-keys-3x.png",
+    "blob": "0c726f40dc1bfffb8a0deb15abce14f7eb4c6c22",
+    "sha256": "6f87e30af73c7e8a70409199f41a2f5818c2388a736080e523df0e9281fdcee7",
+    "bytes": 26514
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/south-east-keys4-3x-folded.png",
+    "blob": "5a8c4817c4eab04c354d8ba6454c048d90f9846c",
+    "sha256": "1c75c59e6025ec4798c06f4107ed907a58f21c69c1b6a8ad40a05c4813bd09de",
+    "bytes": 26765
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/east-keys-3x.png",
+    "blob": "d4e7b48aa682ddd88744a250da477d4b9b8a35d0",
+    "sha256": "b1cb41f609b1f7f29a4f1c450ac120f7f2cad2b97983b611379f1b0c77c7a2f3",
+    "bytes": 21161
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/east-keys4-3x-folded.png",
+    "blob": "64405b0a2d78666999c3064d4b52f957d61e4474",
+    "sha256": "33c9d4e06fda3990b66ada73f85ee4c47e223b1c6b8384bb6632898ada6b71f4",
+    "bytes": 21875
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/north-east-keys-3x.png",
+    "blob": "d0556643d5c8d42d762c1e961027946a4b9d9105",
+    "sha256": "5ef224d25692bb19274ba6735d6eb11bf000220976d55a5966dca0851765b2ea",
+    "bytes": 22133
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/north-east-keys4-3x-folded.png",
+    "blob": "65f0c89ff521c80ca45394e7511aecc7f2490d6a",
+    "sha256": "762d003efefc3563eb60dab573de51cbc3137a2239672da49120889e74a9e9be",
+    "bytes": 22680
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/north-keys-3x.png",
+    "blob": "a16be4313f95f62e8e9e60cba3c0654fda34776b",
+    "sha256": "079e11261e410ee2449ae69b0c7405fb735210a67b1a7f35933765bf873a84b7",
+    "bytes": 23964
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/north-keys4-3x-folded.png",
+    "blob": "4766864c046d8a1813edbdd994c5d393479e6b03",
+    "sha256": "f16e3cbd4e9f35fc6d708891d565f093a7b55e22550548c9661bfc985b7553a9",
+    "bytes": 24261
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/north-west-keys-3x.png",
+    "blob": "d6d405314827c64adf8a6ed07d0195fe697dc04f",
+    "sha256": "bc1632af2400521ad2b4a0bdd0517214bcd766d344a26f4c44dff96698343347",
+    "bytes": 22982
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/north-west-keys4-3x-folded.png",
+    "blob": "f34dee052d4792d576a75d2d11e7cbad2e11d7ba",
+    "sha256": "6dc33eb1d3e7bd15fb1463d8f5f5755df4db915bd8baee84b0cade022b6914ba",
+    "bytes": 23166
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/west-keys-3x.png",
+    "blob": "9e91e58764907638b1984c31102e40fdbd8424f8",
+    "sha256": "09b4d4fc11399481343d852e6c66500ba6326c1e81fe5450e08b66dd1b4db791",
+    "bytes": 22219
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/west-keys4-3x-folded.png",
+    "blob": "b6cf63f3a10860b6071005451f28f86caf0a1c1d",
+    "sha256": "3d629a625961e03e520aaf62b67bc87fe571a251d4e11218235e121834594658",
+    "bytes": 22764
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/south-west-keys-3x.png",
+    "blob": "19fbe5f70cb567aae8266ccc4fad8d5928be8f7c",
+    "sha256": "300b3eea3602e6316528a64b35c2775fa6b82728b37c0ba0f5aab0d3376915dc",
+    "bytes": 22805
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/south-west-keys4-3x-folded.png",
+    "blob": "c9eae68be2014ccec5ebcf669cc3cbe200ae9b66",
+    "sha256": "9354f49201177a47f296e4c0cf7ec29d6ba8f9b695e4f0cfae1ee3c4bd17d079",
+    "bytes": 23142
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/comparison-1x-all-keys.png",
+    "blob": "bcfa366821727ea19a1e1387c3f0c518b9b83f68",
+    "sha256": "250a752716b3d92cdfdd2e9727b4d79d6329991278434d5d543de7eb0ba7f0f0",
+    "bytes": 255517
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/page-1.mp4",
+    "blob": "256d212fafe3fabcec6990ea5135eeadfe43cd55",
+    "sha256": "ee425e21b2286e7113fcdee93f747cf639d36b17865d3846530e0a9eb0702580",
+    "bytes": 2631113
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/page-2.mp4",
+    "blob": "56c7720b1c10b3d2959dffd47802015a78df56a9",
+    "sha256": "f88feb00018d384bd38a654fd58875b9f25855cd1b08adfb5d0cf29b49242025",
+    "bytes": 2551497
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r31/video-receipts.json",
+    "blob": "ab22b2e774cff59dfeab84bfc4746dd40928e159",
+    "sha256": "36142d09d0031a29365ccdaefb02cdb6c638e4afcc82ca26b953212f2efe6197",
+    "bytes": 938
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r30/generated-A.png",
+    "blob": "37fa8746d151b7f9ce903f2a4b5efde98fd18de5",
+    "sha256": "7e9e707132b7ad1924d25acf805b7eaa6085f3941f6ec3e8f16db9b07787740c",
+    "bytes": 1162519
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-walk8-r30/generated-B.png",
+    "blob": "baf72a1d1749b6dd521b1156eaf80dc0db84dcf3",
+    "sha256": "34f44aa2be42eae14595f9ab73d0828164a73d076527562cc0974b65a280bd0f",
+    "bytes": 1208466
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-hurt8-r31/atlas.png",
+    "blob": "a7cd529ad787368c81703b1204000cd570c0a9c9",
+    "sha256": "551a204ec170e6add3460a3c372a479f40a89464ccb1371cb8f36822d46ed550",
+    "bytes": 537920
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-hurt8-r31/atlas.normal.png",
+    "blob": "30d5c23f4c44452526d9c2d2ff8ba3de7175907e",
+    "sha256": "e496ee08e4ff76961aac69163238c028ea8ec13d5e82d2cf5b6cc0a2dbb8e0d2",
+    "bytes": 93058
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-hurt8-r31/metadata.json",
+    "blob": "f224d7c90f830ecb2af29f0ee42a908be0889546",
+    "sha256": "d5a95e307ee8c1d3a1f96e68e990094b4cad4cec4228ec035233f1bf6119fa2b",
+    "bytes": 14902
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-hurt8-r31/technical-checks.json",
+    "blob": "90eacf68dcfb610350dc16e92cd3ef2c17c5299e",
+    "sha256": "127e4338e15b0396f3fc4085e66ead3ebf604339c6549b5aaf63b37fa9d94f56",
+    "bytes": 11586
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-hurt8-r31/comparison-grid-page-1.png",
+    "blob": "e840dd1788d334d3a3f18a3d4e342375b69d9451",
+    "sha256": "f566d0a9b22c8fda5712c9721e8b1bdbdd25f250eb8b5a444ca2ff881c2d538d",
+    "bytes": 206810
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-hurt8-r31/page-1.gif",
+    "blob": "ec732a8710f98c68c4054f5ce5275926e8717f15",
+    "sha256": "6b40e6a5527f516e424981cb8672b4cb045828414914448995ba0e33acc9b8eb",
+    "bytes": 184922
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-hurt8-r31/comparison-grid-page-2.png",
+    "blob": "a86217a4a3f926cd04432957a42eef9f4182b2e1",
+    "sha256": "401f109433ee7bc8e4cfd2b28492744f1e99ae8f1adf74a52ebeffea8646364d",
+    "bytes": 206818
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-hurt8-r31/page-2.gif",
+    "blob": "66fc8be0072a08cdebc8713e791fa595150f4905",
+    "sha256": "2789330d5c8ffefd5101939121eca2185e2ddd6dc4e1dc5cf8f29693c29770e4",
+    "bytes": 182912
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-hurt8-r31/south-keys-3x.png",
+    "blob": "b412136807be168976fc9ae5be1e30a52eca01e6",
+    "sha256": "61b7a997de9900edd2d7d6fcf423755609bcf7ac7388acadb636b9c4b671f1cf",
+    "bytes": 14951
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-hurt8-r31/south-east-keys-3x.png",
+    "blob": "6021653b446ce1c7b27375365394216744d02948",
+    "sha256": "e5d7db45d377578129e69668b1329998a92338695a55bb610a308c007196701d",
+    "bytes": 14552
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-hurt8-r31/east-keys-3x.png",
+    "blob": "b55d0b1d77c66580134600bd3ddb32bb59789707",
+    "sha256": "357a398c33e0dd2d73460a22d091aeadeb8e028ad5aed7c7d0fd679b998107d1",
+    "bytes": 11636
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-hurt8-r31/north-east-keys-3x.png",
+    "blob": "8b321adfa6bd84cbf522e710ec902d4b29375f60",
+    "sha256": "9b5c1dd93625444272ab9a3ea690e1e3bace10d6b24ae3b384b5840242e09bbf",
+    "bytes": 12090
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-hurt8-r31/north-keys-3x.png",
+    "blob": "8df40252a075a59f1c1a90b8b57b6fbb8da43e31",
+    "sha256": "a4f0ebe368836088c5fd5daf8ab5ed83010e6cca167aac4c9de4ff6e0e0d7f88",
+    "bytes": 14344
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-hurt8-r31/north-west-keys-3x.png",
+    "blob": "ca8f70e683863da8b55280392a2161cc7dd33e45",
+    "sha256": "54ecfaceecd6578bbe2f9145aa6856b8f5f109caed6cb981ee755279f1320797",
+    "bytes": 13507
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-hurt8-r31/west-keys-3x.png",
+    "blob": "5d16785744acd7c76d4281e81f1ffc09351d64fc",
+    "sha256": "2d5378c678c3bf3fb02b690bde63ca3859c04da6f8f7e85e1fb80a9e202f69fb",
+    "bytes": 10980
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-hurt8-r31/south-west-keys-3x.png",
+    "blob": "f503abc49864ba43445f444e24d297bb40e4b7e4",
+    "sha256": "04732af67550e342a3ecadda22c175a96ad036f30434853e833d8a4874b00499",
+    "bytes": 13997
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-hurt8-r31/comparison-1x-all-keys.png",
+    "blob": "0cb5f3e79548f5cbee3cdb176598c2532dd6a964",
+    "sha256": "a0248caf5c22c5c20e96e4c2db3002c5d2edf4302a6214f1f9dec08e7b968179",
+    "bytes": 116226
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-hurt8-r31/page-1.mp4",
+    "blob": "6ecdc438ea1f8705dc745856302e50efad7edf45",
+    "sha256": "66783b57ec03bf313461b4cb4adef7ccdb72fdafb9884edbefadc8a07e82ffb1",
+    "bytes": 1392955
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-hurt8-r31/page-2.mp4",
+    "blob": "3badc8bd8742a2f939508e17e9317262d7964fdb",
+    "sha256": "74bd28c19158811e14626f1ffc85615d2da9c0e113fbbd244cc16928f2417e6e",
+    "bytes": 1384737
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-hurt8-r31/video-receipts.json",
+    "blob": "4b4d6c8ae27db558d23bba7f215d34e2006d44b6",
+    "sha256": "5c46cb0e8025e303863642b827535e3b61da96058d37ec729ea266e26bd40851",
+    "bytes": 938
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-hurt8-r30/generated.png",
+    "blob": "4c09c5c42f73422a27608d689a05d510f8cbe7a0",
+    "sha256": "66890b9eddd8447dc447db95d5c34df8868cb797d7a80ef86cf9df14474430a2",
+    "bytes": 1420722
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-hurt8-r32-material/atlas.png",
+    "blob": "5c3778fefc728cb43e1fe6a5e8ab155db747e01b",
+    "sha256": "83e73c0e8b21a024cb91565213d21fe07e4b0d0a18e9857e60d58b561eeadca8",
+    "bytes": 680423
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-hurt8-r32-material/atlas.normal.png",
+    "blob": "0cc2c2101b1f7f99c8c61e741ce177152b94e42a",
+    "sha256": "7009998de95abc945a6e4fad5c3b303b522e36aa7fd189b39382c73b9a65f748",
+    "bytes": 97855
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-hurt8-r32-material/metadata.json",
+    "blob": "2677d35eae41e3ee5e31cc1bc93f03143d728f8a",
+    "sha256": "4e77c95ea913a246027453e8303a05a2dfa2ee099c9f862925c4e5c2f2fb79f0",
+    "bytes": 14969
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-hurt8-r32-material/technical-checks.json",
+    "blob": "d6aac20f92482e3e7bd7eb3b81a210f43a80ad0a",
+    "sha256": "b1d27c881458bf662d79c679a807c7f7e242415b2447a0855628f98a7a290649",
+    "bytes": 11663
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-hurt8-r32-material/comparison-grid-page-1.png",
+    "blob": "188864c77628779fa1a5a24e9e093cacaccc04ce",
+    "sha256": "dddec48dca762d3277ee734e5e62ef38f795131b189ad149592cd814526dfcfb",
+    "bytes": 221265
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-hurt8-r32-material/page-1.gif",
+    "blob": "2e25e3d6a40eb45f806b13ac9ff6a11b60d3085e",
+    "sha256": "b26b2ac3b103d9275c8e63e505e2236a126498b71f58c89b091983f8fd18b2ce",
+    "bytes": 209760
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-hurt8-r32-material/comparison-grid-page-2.png",
+    "blob": "7b45a8df2a651b642f38a4b4f7025e8db4bd7695",
+    "sha256": "e902bc672e09f0f361b3b900af7b14fd9dbb1ac521de66a105f871133dde208b",
+    "bytes": 213338
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-hurt8-r32-material/page-2.gif",
+    "blob": "45ffcbf3bf40d821633e535a866afbf63c0daae9",
+    "sha256": "e5179730818b4930458212a551cef663c19af056767e9a1cb8ca45ab573d52c5",
+    "bytes": 200561
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-hurt8-r32-material/south-keys-3x.png",
+    "blob": "e4240d593099288495dc99107304ec06c7eb597e",
+    "sha256": "440ff773de9ed0e41aff270d077f00d22f27dbb767e563e0aa38ead63ae1ac41",
+    "bytes": 16158
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-hurt8-r32-material/south-east-keys-3x.png",
+    "blob": "d891336122b398ccbf3b34bbd4366a46d1e10308",
+    "sha256": "8a695ba62782d350ddea25b9c061f248f5493cfba19abbf3684d646ab0dbf292",
+    "bytes": 15867
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-hurt8-r32-material/east-keys-3x.png",
+    "blob": "fef0d48b0070bd4f2498ce6291721c2aa99d0a49",
+    "sha256": "409051bd80ac83d654bbce045cf7b55262ad253adb9141f3eddf6673cbbd4437",
+    "bytes": 14009
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-hurt8-r32-material/north-east-keys-3x.png",
+    "blob": "f582943297e53263965bef774ef59a51acfc78cc",
+    "sha256": "3aa3e1a5244cfc674571113a85920d005ab02fc845b1bf33a4c374bc84a23ec0",
+    "bytes": 15268
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-hurt8-r32-material/north-keys-3x.png",
+    "blob": "a8d2b5037f7fcafb1d6813d8c114bc3c28edda0c",
+    "sha256": "60734b4973902f7b87e847a1425661715ab1b470904becb23199611917ea77ba",
+    "bytes": 15682
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-hurt8-r32-material/north-west-keys-3x.png",
+    "blob": "a5b3d78183433f9f330d9facad75c9252adf1562",
+    "sha256": "0aa7ee76dbf51640c0e67bc3048d3e44d701e693dd29c6d4c1cc0ecff4f6e0f8",
+    "bytes": 15545
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-hurt8-r32-material/west-keys-3x.png",
+    "blob": "8c7252af4d7dddc4182d18611a56840de4eea68f",
+    "sha256": "7a719f978153fa48095377b89508be1b21c278e4429c0adaa572b2d01509f6ca",
+    "bytes": 12734
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-hurt8-r32-material/south-west-keys-3x.png",
+    "blob": "c33a6258d70d65f35ed4c0ed587321fd5fb3c8bf",
+    "sha256": "35b5571da4cdbb83a99051fa56a45fd71b6b13f12d1e8cb96ef1c31086f30869",
+    "bytes": 15644
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-hurt8-r32-material/comparison-1x-all-keys.png",
+    "blob": "74afdac0f9fe426afd02ccb00d4346880e7222f7",
+    "sha256": "436b0ef2aa66cae4afb5bf214799a5410da56f20bb2211b0a095a07304934330",
+    "bytes": 124014
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-hurt8-r32-material/page-1.mp4",
+    "blob": "2ec52140aebaa01c2d8213776b8ee2fda6c8b44a",
+    "sha256": "ce1f61cbe13da8545313e12295ea20cc9dbd8a7aea6f3bcee9aded764283afc7",
+    "bytes": 1623173
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-hurt8-r32-material/page-2.mp4",
+    "blob": "4160a5fafcaddae10d28a4be6fca8cf92ac47523",
+    "sha256": "1c250229a4ff8799cd1eb3c0b7611733a7909b686a55561329535bba7e81dada",
+    "bytes": 1543756
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-hurt8-r32-material/video-receipts.json",
+    "blob": "e9d275a528c4a6741ccfa443b2d700fd6b67ddb1",
+    "sha256": "5438b8c97dc3e6cca40a29c72527244b45a8b00e9d7f0d9774497d0dc3d9a907",
+    "bytes": 954
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-hurt8-r30/generated.png",
+    "blob": "a6fa4f1b4b7b7d2a11b290c064b3f168bbf9be97",
+    "sha256": "2962bcd244f3a9f83c3fbf7376b95787ed0fe53ce393af8dde62a47aecd64628",
+    "bytes": 1594861
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/atlas.png",
+    "blob": "a4988de2da5b829b81a4205e718238b74e032236",
+    "sha256": "60bcdcf1364675152c061c245d3efa0a8248328e6844002223b724b46eb785e5",
+    "bytes": 1074463
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/atlas.normal.png",
+    "blob": "a1bc54b5e725f917b8da9f4627c2be8602fa4214",
+    "sha256": "39f3f815a9823848791db63cb1feba4eedce064427ec1be6c32f837a46aef95d",
+    "bytes": 215530
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/metadata.json",
+    "blob": "d19ba53c6d46fd9a0df9ae8691028aab974dc05a",
+    "sha256": "7631a9553306e8a002b67ace2140fdd1e28bac849adfc849d8fd311e52776de5",
+    "bytes": 28952
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/technical-checks.json",
+    "blob": "aaa1a450cd200b9e5394987107793c5ba3ec5e6a",
+    "sha256": "e067230c96bb6afafdca4f680c8ccb8802205de061efdcc8acef050c67b2f7cf",
+    "bytes": 23359
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/comparison-grid-page-1.png",
+    "blob": "481a7cd66258e42e0976b658f64dc7eb51784f40",
+    "sha256": "45056a1e043a476a19a41448d55551dc4be78ae0179b3ca8d63062551964248c",
+    "bytes": 444432
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/page-1.gif",
+    "blob": "4bb5c0c71a2feda82b6484b498b1e8708b5b91fc",
+    "sha256": "59cba7772eb97c3489ca901110f8a0a98914ce88898a2c74a916e35d3e6e4792",
+    "bytes": 188758
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/comparison-grid-page-2.png",
+    "blob": "6925b344e3452222d961da4534275caed874e45f",
+    "sha256": "fa7c194bcb9dc79a59a611f9aa8faefaec1849430ff23bfafc37fcca38a229c6",
+    "bytes": 454347
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/page-2.gif",
+    "blob": "992f7700249d20207b9f65d485389e75375bad02",
+    "sha256": "19592259d6f9106dff7cf1afe704ffe7ae1dc7471f2af3a45d49bec28247cb8b",
+    "bytes": 197362
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/south-keys-3x.png",
+    "blob": "c9512becf7a30e15314d76d5a35a9b1f09dd84b5",
+    "sha256": "201bf7084c38ad42f3a1466c446d655270857c309068aee2ddcef678ab38c0ab",
+    "bytes": 28671
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/south-keys4-3x-folded.png",
+    "blob": "ed8bbe7e0e304937ffe1f4834ab13328cb1b85fd",
+    "sha256": "b1ae3d131b9ffcc98bf09ea20365ac4537bf3234fb2a7a6d57e3f69dc000dacb",
+    "bytes": 28796
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/south-east-keys-3x.png",
+    "blob": "b4f890560c04eb88dbe9475b2d25a4eb3a4b66f7",
+    "sha256": "2a5aac296c4ef071316a433241c35dced9690426bf8fdc1ed94cdb18b9531e7e",
+    "bytes": 31108
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/south-east-keys4-3x-folded.png",
+    "blob": "1d36f245f65bd0b152c04439a7f03214276379c5",
+    "sha256": "c54b415920affcb4326081ca2815b6fc96dd9bcc8901215656e3a2c9fd177eb8",
+    "bytes": 30886
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/east-keys-3x.png",
+    "blob": "2f55f383939109691067046f35d067ec5ffd3632",
+    "sha256": "4ce352dc8799f9ecf0849bfe7621f650b2c937baf78d928e26ea3db45d38c23a",
+    "bytes": 29258
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/east-keys4-3x-folded.png",
+    "blob": "10261e6a203f5bffd07536b3de1b079d54723a2c",
+    "sha256": "7d8b99fc27d56c3b4703b22ffe6725c74120fbf4132ea29cc5ce9800ef120409",
+    "bytes": 29164
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/north-east-keys-3x.png",
+    "blob": "55cfb06e29d1552f390abee04b73355694539882",
+    "sha256": "e19ad75da9d4f5a984fcb7c3ce2981d514bd97b8220a1e5a9690d2d9ab5b031d",
+    "bytes": 27869
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/north-east-keys4-3x-folded.png",
+    "blob": "0b7dab31801f4b52d6574e9b98d044da00fc6da2",
+    "sha256": "212d79fcd446616f490dc285efd92ab397562338ea1f32d2b0580e15d2c53e25",
+    "bytes": 27856
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/north-keys-3x.png",
+    "blob": "6b01c96e904b6ae51443d79e51ba5c39505df9c1",
+    "sha256": "379ce1a41a5c008569f7ca65b91dad1f7c95481ff7bcfba8ddc8d044ec021a0a",
+    "bytes": 27954
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/north-keys4-3x-folded.png",
+    "blob": "63c4ce87437dfd8112bb36f82bebf816b94e6d1b",
+    "sha256": "d141b1878cd6631c8a323bd32b83398b071a49aac1e1be47f401e1f19d53fc84",
+    "bytes": 27920
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/north-west-keys-3x.png",
+    "blob": "f21793d2ea1cf995a6063e92838b2a8ddb04131e",
+    "sha256": "86b98790ca5dad2e6d472ee8d8b8726f499414a2a5aba96963eec954161cef70",
+    "bytes": 29746
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/north-west-keys4-3x-folded.png",
+    "blob": "18e8402fefd9ac897e26caa3a6818cc0681cd88c",
+    "sha256": "6dfffbd33c52271ed2c61b462104fe47b612f785b903214131ffa8a812bd37ef",
+    "bytes": 29633
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/west-keys-3x.png",
+    "blob": "99ae8431fe5c5500e6ded4f558915cc1fa8911b0",
+    "sha256": "df486fb54ddfb7363112de0c888625b29aa12e3524d2a6707517ae785cdaefa5",
+    "bytes": 31201
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/west-keys4-3x-folded.png",
+    "blob": "07ae0b8baeacd2cb7495a36302af5e8221f6a5e9",
+    "sha256": "8092a3f5baa6c1639b280885d07b3422bf9b555ca27a9210b7f8d1e7f09802ed",
+    "bytes": 30786
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/south-west-keys-3x.png",
+    "blob": "75445a8b1d8782dd819455ca041562546ef123e9",
+    "sha256": "a293843d4a4b7db0f166752c384c363656aad0b49c8a63b3168e99f2e08dbbe3",
+    "bytes": 32683
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/south-west-keys4-3x-folded.png",
+    "blob": "249036f045ed50146569e2bb9dcea43e62f501f1",
+    "sha256": "56536d7abcf32776cc6ed87f4cb52f341d74b5d804609caa51916d85e37934d9",
+    "bytes": 32282
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/comparison-1x-all-keys.png",
+    "blob": "3c94d985f39615e84e7ccf0493e55cdb9fe31e29",
+    "sha256": "2dd5a2fbb03505d1eb34f4823441cfa53de2dea11f0692cdd6f3eb8f0df228d9",
+    "bytes": 224781
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/page-1.mp4",
+    "blob": "8a84d2a2dcda72bca66775f5dbac4a8a077c30d3",
+    "sha256": "85159c79272bd9b48dbcaace7be6fa6ae79775f93deac87c1e2344cf5920f419",
+    "bytes": 3051107
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/page-2.mp4",
+    "blob": "f61ed1e882c92f843531c22e6cc0522c9d1e7f23",
+    "sha256": "bc173c70b1d4847cd7072e97eee5e20ad3018cf3ff986f24d3de9fbe9160b19b",
+    "bytes": 3181690
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r31/video-receipts.json",
+    "blob": "63e1b7194e71366a97ad2d72f5eed66e69942b6f",
+    "sha256": "4f7bd7445b7a142f4ee14ff2ae3dfcf993baf413e19139025a8d8ca2469ea3a1",
+    "bytes": 934
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r30/generated-A.png",
+    "blob": "7e0d2244fa8ac2fd56f3bc01166b4fb125dcdcd8",
+    "sha256": "2cb59514a165d33d694274843207b0da6d4eb866a3307a9defac66a03923d722",
+    "bytes": 2652506
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r30/generated-B.png",
+    "blob": "e2a75fca4ccc5780985cb3db971a33f014d8314f",
+    "sha256": "91132465353b0e7718db52a1fb4015a70fec5b95e75a0252ac725ca25040a73a",
+    "bytes": 1450129
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r30/yaw-fix-generated.png",
+    "blob": "3a33c1606922893f431958f1c7c5729e94914d75",
+    "sha256": "1affd32d7eb8546626c39e22c0b3dae8185a9f4c597e7a5dd56a278f3368e5e8",
+    "bytes": 926142
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-bone_archer-attack8-r30/raw-overrides.json",
+    "blob": "28a474faa63f47d1c0535a56b7d11287d90cf9db",
+    "sha256": "e804d126d095753dcfa4a084bdd6060a9c77f927bdb3c9ccee121f0eae82c3b1",
+    "bytes": 802
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/atlas.png",
+    "blob": "2d27d0b8c5a71e6e24525f92287d4acbf850ff40",
+    "sha256": "3dd7a36d6077129facc60d5f0808e119b764b857f646980cc6d9b346c61a7c9e",
+    "bytes": 1091012
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/atlas.normal.png",
+    "blob": "aba04686efd769a96b60d438eea27df76ba4bdac",
+    "sha256": "78fbd73da9e1b5f9ada72f87ea8edfd529d07d4212da121e0b8d47f806c096b8",
+    "bytes": 188213
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/metadata.json",
+    "blob": "ca190c1d94df6102883748f33011012acc8c1094",
+    "sha256": "13ccd061f81277e48836ebbe078d97e0918f21ba7b0f79c7ea17db350d47dccb",
+    "bytes": 28401
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/technical-checks.json",
+    "blob": "276bed8f7a2e0aaaac606565f5132bb51f06777e",
+    "sha256": "6ee78a47a909b9d0bc864fd009f8b3f08ebcc672f60367ce02c266c49dbcf3f8",
+    "bytes": 23315
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/comparison-grid-page-1.png",
+    "blob": "70a65e98970b75859ec424cd92fd444a6e271764",
+    "sha256": "4954c608b38d9ca5afcad032730319f3d673bf3f785587b3b9b81be75f50ace7",
+    "bytes": 419132
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/page-1.gif",
+    "blob": "05523682179aa9013f02281579e22c4c3a212d8a",
+    "sha256": "751ae54a0be78c9f23c80128127902ef903dfaafb7f16a6c7fb3cbe227e3c37b",
+    "bytes": 176685
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/comparison-grid-page-2.png",
+    "blob": "40060658f4c08f1812ea1ee95c92ccd3d1c30969",
+    "sha256": "20b75ab38260784cca0d37690960e264dc2ce1606f5813b1da1711b0da523b23",
+    "bytes": 399502
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/page-2.gif",
+    "blob": "cf6be27bc527a7f0181e80b3a7dbf18f3f8f2b0c",
+    "sha256": "c8e36d5e19bcc61153656ebf67f1dfdb0b59a5e3eb09f5abab671838ef2d9bc5",
+    "bytes": 162430
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/south-keys-3x.png",
+    "blob": "8e06b00ae9f62e82463417d0f6eca225a0233c04",
+    "sha256": "01152029947ae33b2f5d3c672e9998c448b8dcbf0c4c6a87ce22ef1f8324c314",
+    "bytes": 29804
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/south-keys4-3x-folded.png",
+    "blob": "1cff2a3d8a0d567510bd0f11aabf8f2fb419d60a",
+    "sha256": "4ac452d676229e5f7907c2c3ae644ac8491c3f3d746ede8afbac648fe4b25dc2",
+    "bytes": 29831
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/south-east-keys-3x.png",
+    "blob": "e93534dcc688241c7cb4b4187597e58a8463c261",
+    "sha256": "1615358314781d5ce7d313f7aee5baf6b35f853eea2ca072b3b645b1b1516c5d",
+    "bytes": 29322
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/south-east-keys4-3x-folded.png",
+    "blob": "a2d07ec9541f1932ad4d23e7d7fa50147c601ae8",
+    "sha256": "6c69ae457e3652ee6ac38a30d5f8e89265d7e6cc6b69481d4f7fb36851af0656",
+    "bytes": 29108
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/east-keys-3x.png",
+    "blob": "3e3e94ffa235594666fd91c0f610074b3f15a7d9",
+    "sha256": "87c3341dcb790900d17030d2860d6234fbcfaebff55ee5b542ed7c7bc760116f",
+    "bytes": 24437
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/east-keys4-3x-folded.png",
+    "blob": "7ba8c351ffc7c76e5267d60a0def416286f052db",
+    "sha256": "de106636c0171267be07dcfe0cc939d7aea6ab63a8cd6d90f05078ae7a11c5c8",
+    "bytes": 24600
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/north-east-keys-3x.png",
+    "blob": "0ee81e8e5d11ccf100e2c39348233c7b6c20bf41",
+    "sha256": "cfae9cdb4864f04e84f96fe314bffd29f9f197c0b5df51cd1e4c31341559deee",
+    "bytes": 23161
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/north-east-keys4-3x-folded.png",
+    "blob": "eafa999048798312eecabf9ef751b1ab1320dc21",
+    "sha256": "73023c481d93a45c89dffcd642f6b4c06713340bba981da3f0db98c4317b76df",
+    "bytes": 23494
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/north-keys-3x.png",
+    "blob": "73584d35e0d4bb4ecaaa109209bb20eedf7ee816",
+    "sha256": "419ca64d53d811460b40cabe8e4f9888ba8b93688b589185c3d07d37f746f132",
+    "bytes": 25385
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/north-keys4-3x-folded.png",
+    "blob": "3c0327d7ff238ed4d21962867af0678d4b7e1e6e",
+    "sha256": "afa840768b4057b1d09e9fa4beed2e48e15a1e53f71487c4899ff0660aba737b",
+    "bytes": 25374
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/north-west-keys-3x.png",
+    "blob": "67cfba011ebc03c6ae0208ab4e8d1fb38f0d4fd0",
+    "sha256": "6d811e2856de1edbce4d807fe1c51d93c4002e740ca812941d94d0a8ea77ac13",
+    "bytes": 24506
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/north-west-keys4-3x-folded.png",
+    "blob": "b9baf71c12d23f2aed05d10c946d68a078314db7",
+    "sha256": "4d1ff41c9c08e5cb493af9e6a2223eb1c6f522cb172c15c7dc4e5846243444a8",
+    "bytes": 24936
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/west-keys-3x.png",
+    "blob": "e1ca381c072501f71cc61f209218cf32859d1323",
+    "sha256": "ee8874e1bc20056f0470ef7cb200ec0b70b40f4f9d8612a7d71ad3b5efb594c2",
+    "bytes": 21868
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/west-keys4-3x-folded.png",
+    "blob": "eb95ae5d85d3ca6824e6f9647c95a347aeb8f531",
+    "sha256": "9dab44b50a27b619e750a3f1a8d7b1afbed272e7b30b83cecf9d8a416d30daf2",
+    "bytes": 22331
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/south-west-keys-3x.png",
+    "blob": "04ac9ab92eb242493538158c820f24e44e781b6f",
+    "sha256": "5dc9b3977f6c6b39476a0e3660e2417638330ef2a385cc56393923e020b04f92",
+    "bytes": 23633
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/south-west-keys4-3x-folded.png",
+    "blob": "12d493695c8ab2997491c64c2ac32a26bcd0b7b8",
+    "sha256": "011fc4a900efa17e04ed99c74156a4ad2467b2e61917f305569a8fcf0e81772d",
+    "bytes": 23982
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/comparison-1x-all-keys.png",
+    "blob": "1d8e9f3ab013015c948e12ae33b67139c2c9e867",
+    "sha256": "0df71e29cd06b7fd2e1ffd56b738c29eeb5b8ae7f87dff867314ff66ce2b6fd6",
+    "bytes": 185900
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/page-1.mp4",
+    "blob": "38a4e445745c765ee46597805401a892159eaa2b",
+    "sha256": "0ae47e05c7643f970df73cfd8f5f748dd1ac35e57415f0eb48b90bd7d28dbf14",
+    "bytes": 2466221
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/page-2.mp4",
+    "blob": "173cb61298d123a07cd8a3eecd1fa29097cedaaa",
+    "sha256": "c65f181663528c9574c3aa050bd295459a7a222be94c56326317c3dc016abed3",
+    "bytes": 2097045
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r31/video-receipts.json",
+    "blob": "356df814214ac28cbea4f2adb3d1a05a5aa46191",
+    "sha256": "eb6fc283f63c9b63b1b4d2f51e8237304f04c42d191b9fb22ed6e996c774b22d",
+    "bytes": 946
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r30/generated-A.png",
+    "blob": "35a0651ed1a76fb1544908829dba63909a17bc96",
+    "sha256": "908952c119de25c3ce0278bd884ddb76da92e9259471d4132e01dc0df8a77a3b",
+    "bytes": 1344668
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r30/generated-B.png",
+    "blob": "e2fe612e36f912afcfa2030e6b75cf7e82073f85",
+    "sha256": "af3aae6fa84ea053c428c2fa5f172e1394f8c9e51450b0e17b62d5d31cac4fa2",
+    "bytes": 1174573
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r30/north-key0-repair-original.png",
+    "blob": "f3c369e28a46e752e6d9e444646828b7fb0a1ba8",
+    "sha256": "595fb05bc9cee8946715374576654d4b5d2fbe1594422488f0fc09760023edc7",
+    "bytes": 742736
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r30/north-key0-raw-repair.png",
+    "blob": "a86a0f5d4add65a2bbc93e9a53dd739fe1984676",
+    "sha256": "169502afc59c56b3aa7a283ca41f7dd86394644fecec6256c510d4dd32fb64df",
+    "bytes": 59893
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-apostle_knight-attack8-r30/raw-key-overrides.json",
+    "blob": "d09e8b727c49e64c3114ab2df2faffc88a568285",
+    "sha256": "452c925b6dcf40170fbdbe29049f70802588ebacaf326bc45f33d3c71723d5b4",
+    "bytes": 467
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/atlas.png",
+    "blob": "65c52fa2b72df15351fcd6b45cde4f0b7c1c8b14",
+    "sha256": "d61a089af38f455b66ea31130ac50a5d6ebe5dcd96d6b0a39e73cef7e1650673",
+    "bytes": 1254110
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/atlas.normal.png",
+    "blob": "c5793c19f0d187feabd3b2e0d47c910181af305f",
+    "sha256": "867c514533f54b4da29236abb6145b0475419ad369fd6881485f7c4cbaa5614c",
+    "bytes": 164457
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/metadata.json",
+    "blob": "c38d50130cca7a3985756e20fc7d768ac4d14340",
+    "sha256": "18eff56695216cb63d7c3b63eb3b8644e339d702b12891e5e39ae41262a745a9",
+    "bytes": 28431
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/technical-checks.json",
+    "blob": "4d4943195b236a4958326a54f950bba7478592ba",
+    "sha256": "3582c24738d9091328838a7dc17ad3fd86e2a7aa3389609a041e43b9caf4ede0",
+    "bytes": 23295
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/comparison-grid-page-1.png",
+    "blob": "54881f367dca87670bc803180dc7023ebe4a6435",
+    "sha256": "c689181d34bd19794f37ba0e9577ddefec12f0127ef4fda0d3ae49a8a0c7ac8a",
+    "bytes": 445165
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/page-1.gif",
+    "blob": "91c2a05f9b7c75cbe8cb372d8befb90bdc6b5f6f",
+    "sha256": "9873e9cf7b913e7a204563b815ef81fb09c3bd66d8c14f46d67743251a1b9c28",
+    "bytes": 238490
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/comparison-grid-page-2.png",
+    "blob": "3385c46969ab010bf3313d533541aa5b22f3750e",
+    "sha256": "596372a4f0e3f97679ef8bcd84b36352ad7cd4b6cfb8c3c66f6d753896cd2ecb",
+    "bytes": 406192
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/page-2.gif",
+    "blob": "0c1916c2bab2a350b33f3125f6ee49bf5388ec29",
+    "sha256": "903ad1b42c0896e1b7ab0aabba9c640cfba85fbe2b66e0d54afb55b86bfd07f4",
+    "bytes": 212688
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/south-keys-3x.png",
+    "blob": "7d1d4c6a228e9a7e6c82942aa52f958c4346b470",
+    "sha256": "cc914eb4b1954b658789c146cdec1b8d71ac8323b753bac5da523fecdf1bb3be",
+    "bytes": 31013
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/south-keys4-3x-folded.png",
+    "blob": "7e263cf3783a51e91184bff7926f38a00107abb3",
+    "sha256": "6db9bd6c28ea2607da330a32679943758b838b924f2f524acd79c1bfb63db389",
+    "bytes": 32707
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/south-east-keys-3x.png",
+    "blob": "2e6299766453e168ddca6e4d04c764ee1ca893c2",
+    "sha256": "4e8c9d02caa377baf244e50501619bcb6d263a15a23470e292ecc7cbccb42eed",
+    "bytes": 29889
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/south-east-keys4-3x-folded.png",
+    "blob": "994006577efaa96a3ee63b5f73e982bdb0bfa561",
+    "sha256": "658d4a2f9dd1210ce8a76df0ba761edff615d0b3c497923753385c936081bf76",
+    "bytes": 31686
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/east-keys-3x.png",
+    "blob": "2ed84973d80802403b48f03d14221d746a12ea1c",
+    "sha256": "804e76508f44907db5d657e0f7c3c2329790e4381bb2451ccd50d2ab584d6c19",
+    "bytes": 27790
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/east-keys4-3x-folded.png",
+    "blob": "d7028dba7e20c666a4263c548a029dfe98f8dde7",
+    "sha256": "94439f49ebe3f819d1a7e500e08a8c8c1b32979dc066ee535c5994fb28bdc567",
+    "bytes": 29351
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/north-east-keys-3x.png",
+    "blob": "9702e0c256f050f40b08f4241ab0d9de813aabee",
+    "sha256": "835c070275669d02f0b527ceb8794ac93147cbc725b0bc2395d51925695aab69",
+    "bytes": 25691
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/north-east-keys4-3x-folded.png",
+    "blob": "bb91c7c6c9a85c3515cbe8f72881a12e22c36acd",
+    "sha256": "d5e61004da95521fd6e8c2767c42fb809a4426324f73524df56abb0832f12d43",
+    "bytes": 27401
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/north-keys-3x.png",
+    "blob": "19af0204effedb96e7b301fe0fdabcb8dcb476b2",
+    "sha256": "a04194cf51539cab701ded581b197399b9a2f7cd9662c4f62a4f649de90e0038",
+    "bytes": 25724
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/north-keys4-3x-folded.png",
+    "blob": "c2e9e6264f5d8d8c469dc7030455eb1454201219",
+    "sha256": "4404b6a27c17e006c297f77f275532bdbf556238b784825a6d67da94b496cf32",
+    "bytes": 27180
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/north-west-keys-3x.png",
+    "blob": "3d24511ba4701d6746d53aab97d9b511ffda76e2",
+    "sha256": "aea4e910ae1c53498a216b9e72eb6aae3606621b475ed9c9423ab66440a54105",
+    "bytes": 24394
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/north-west-keys4-3x-folded.png",
+    "blob": "3f64dd4d3ee37d14ab8ce990ca4472e67ef69d14",
+    "sha256": "a344cb9f5b75a51690f0526e1b1d60e1ea29b5456fd1afb0afbda1282a081d9c",
+    "bytes": 25822
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/west-keys-3x.png",
+    "blob": "84c33827bab5fa75fcd28008a0d5910be35cc5f6",
+    "sha256": "6ba399fceb25d74996262969ad2e58490f4b88107cbafe862032831ce6ec4b24",
+    "bytes": 21621
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/west-keys4-3x-folded.png",
+    "blob": "62ca951404a6b39b13681c81db5cb2420eb82369",
+    "sha256": "7526a3eee7fb0c01f6de15caeebc9ea69680235bf5c7d329aac8e2309883dfb4",
+    "bytes": 22928
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/south-west-keys-3x.png",
+    "blob": "416415d778e5130372034c7948f8096965eca5f8",
+    "sha256": "dc60701c9fc4dd732fcbbb5354f5f65329169a3934edb6277f0e1c5d1ebd1aa4",
+    "bytes": 26136
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/south-west-keys4-3x-folded.png",
+    "blob": "27fc781cb796c8815baa6862f99983ab5266ce36",
+    "sha256": "0affdf6d0e72fcfec405777d235ca555107b7aefcfa7972e2e1b159f60d34430",
+    "bytes": 27407
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/comparison-1x-all-keys.png",
+    "blob": "15ea403af4e0d1db65d3fc0cd68ce0b78c70b459",
+    "sha256": "3e127b886dc1b22923659b9db1f53963d250aa3cf3f656e09090715fda8c1eb3",
+    "bytes": 254820
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/page-1.mp4",
+    "blob": "0e328c7aefd64469a9e995bc69910b0b08160448",
+    "sha256": "431e44b8ca9ef737125d3f32e70c8b1360860597bc273307826218c84808d153",
+    "bytes": 3309214
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/page-2.mp4",
+    "blob": "89f51d06a1d9e918bd18bbf5b3954fd139c6b119",
+    "sha256": "b97644427295feaaa02b14f02b9ee9932148dc7d8903de95b8b91824ee5f6cd0",
+    "bytes": 2845916
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r32-material/video-receipts.json",
+    "blob": "811ba0c5969ced218dc35812768d1b20ddbd5fb3",
+    "sha256": "0748b06177c6fbd9df6fa0d34e50d3f5bc960a88fca03668c362968bd3ea527c",
+    "bytes": 954
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r30/generated-A.png",
+    "blob": "a3e5c6dc0cc5858e3b02915ae9eceb7ef84f1e2b",
+    "sha256": "46506cefb9dd7598ba2d21cd034ff0bd09b90b533415956dfc730116b2bc8202",
+    "bytes": 1708106
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r30/generated-B.png",
+    "blob": "c14caa1934c8c2b703105a51ef1f2654d8b73ba6",
+    "sha256": "20981db7be70783b445aea7593a635f113cae4b374d153959e9d4078f50836e0",
+    "bytes": 1555317
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r30/NE-fix-generated.png",
+    "blob": "e9fe65a80b71daeab316c2f9bfb47ba1d2d43084",
+    "sha256": "66bce4178236e2ec3ae2a1952fb7cd4076edef3e9e4e3e0ddb608b159750887f",
+    "bytes": 1234568
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r30/raw-overrides.json",
+    "blob": "cf2f573627f9ac7aafb09f078e5f5650ad0fb09a",
+    "sha256": "7e4ceef6597457fde4118c90b82f4f2cdb1ce310a508f86a355562a61c7bf2a7",
+    "bytes": 271
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-walk8-r30/raw-component-policy.json",
+    "blob": "c305c0eac1eb10210de34b9dbc96365a1cab3bc1",
+    "sha256": "9f00ed543a6ebf37571c6b09911feba5ab026f24bfaa7c5a9499b45fc6082198",
+    "bytes": 190
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/atlas.png",
+    "blob": "e3ceddef92e3f8a680a2fe5369160dee2dea30d3",
+    "sha256": "2d8d2f087979834032e407d590715256d9b1e855fe1382c27012856852a6bc75",
+    "bytes": 1221604
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/atlas.normal.png",
+    "blob": "94afd888176f29178bf7e65fd3f921ff13030fa6",
+    "sha256": "25b6ca4e8cfd248374d408261c21e4cf4e27a15e0af76ca7745ef0d74bb93653",
+    "bytes": 168721
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/metadata.json",
+    "blob": "4155b99d7ea86a338d40ec1ff586680d3caa4752",
+    "sha256": "1f9400b4cb341d3100f959b1076e7331bd59b0f82b217888ec9e9978b3516df6",
+    "bytes": 28645
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/technical-checks.json",
+    "blob": "22aebdcd48facfb57fc9285b14d5f496c8a59b86",
+    "sha256": "b12d56bebac08798837c020cf6fb7ecbbcd9260a1447bf38cb76621736807fe6",
+    "bytes": 23319
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/comparison-grid-page-1.png",
+    "blob": "f5a9f75ed5ad0e8076af8ccd2a9b7bde0bb339da",
+    "sha256": "2518758c6cc9f5a360514ebdca8f32fffff52d2c59542196c45b74342b94c981",
+    "bytes": 436280
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/page-1.gif",
+    "blob": "90532b2556ee85ccff97d1315e96e30ae2aee315",
+    "sha256": "5328143b4a83992f30c78c379a9cd7ff3b98b9e572bfaef5a641bf6a6eabc583",
+    "bytes": 197903
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/comparison-grid-page-2.png",
+    "blob": "f3864ef1db96edc4967c57834ed839b478c3c946",
+    "sha256": "e1ba94f866ab57070bbaf1765b4961a522e82524d667366ac0b5bb1ec48cfb78",
+    "bytes": 412504
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/page-2.gif",
+    "blob": "3a4dcc9b78a70586954d6ddfb16310d6d36dd54c",
+    "sha256": "61a18ad7131772b15f3337a7f0e751d28f5047cf11f6cb195e17beb2d98d661b",
+    "bytes": 185445
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/south-keys-3x.png",
+    "blob": "d185b5d0d7976f334c60e7044bb97cba09e91ea7",
+    "sha256": "ee50e1bd1afa9770671525635ce1b2db814225b092825c7c80f722ce674d8885",
+    "bytes": 27937
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/south-keys4-3x-folded.png",
+    "blob": "a2fbeb25eaa4847a86e5b98cf92c2476557593a0",
+    "sha256": "3ae54eaaa87fb75dfd6deed1e615081e8184ffe0af3c5b1743a9fd120226a692",
+    "bytes": 29558
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/south-east-keys-3x.png",
+    "blob": "e4b600c2051da941955235e758e40bcb01ad090a",
+    "sha256": "ab30a80f109b5a47292ea02bea1b82e0af9c034aa185000ed70b32723131f011",
+    "bytes": 27362
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/south-east-keys4-3x-folded.png",
+    "blob": "05b5c3bf7fec91d9cf0cd46022068f33ce7e6a41",
+    "sha256": "c2a44d3fd06416c8c9a2012bb583945c7d34845edd54bbb2d20eddf4c2a43a96",
+    "bytes": 28925
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/east-keys-3x.png",
+    "blob": "f55ce271e6cc36f643fdd88bb4456e9dd92ad7fe",
+    "sha256": "7f14f5b19802cd6be5d3f563c402f2e63ca039b154c53bb0282941f064bad5fc",
+    "bytes": 27406
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/east-keys4-3x-folded.png",
+    "blob": "42fd868b3dce79a5a5b0e40c787f3fffdbe847c7",
+    "sha256": "ab042f264c769a1f20e856d46d72b039e5ecd04b2b63f4fdcedf3c66300df7fa",
+    "bytes": 28829
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/north-east-keys-3x.png",
+    "blob": "d224e3f2d53d56a013bb70e4cf438d177e223492",
+    "sha256": "0c80c758ee64b780c065c1daf481e036104119e848503bbc5a70e616acca1bb1",
+    "bytes": 28315
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/north-east-keys4-3x-folded.png",
+    "blob": "eb8494645f7f4be1daa87c3b717b1aaa437f0083",
+    "sha256": "7fe5f3c87891e59ccb944c4f465649e09d787ce793266713c8cbe5c397a43469",
+    "bytes": 29808
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/north-keys-3x.png",
+    "blob": "7649043e4499f5bc911e1c2c082b582334dad702",
+    "sha256": "cc91f4603ab8ffe2de03a2df44e64b2d8ab794c48b6880dc1fae038878f08434",
+    "bytes": 25419
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/north-keys4-3x-folded.png",
+    "blob": "e8e217ecd1e7c4557cbfe0d9ef0177be861d61a9",
+    "sha256": "8f8cdc034ceba51583d011192b9075a5228b9796f707603476cbc89ec6c7665a",
+    "bytes": 27150
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/north-west-keys-3x.png",
+    "blob": "99ab18fd91b89bcef1b84060e6bf6a05e5d63bca",
+    "sha256": "de5c31771ee88b8a48dc58f269d872a7c29cd4c8bf4e3d4cf351f80b65a75a9d",
+    "bytes": 26121
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/north-west-keys4-3x-folded.png",
+    "blob": "c9bd0b1d185ec7c518bf106e77bbf65eb198e9e7",
+    "sha256": "b88bbdf0814f9d6d7305ff88c53e65799bc63fb26fca1c0513918f804640db79",
+    "bytes": 27447
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/west-keys-3x.png",
+    "blob": "078cc1b688574a7a00e58fa07d0c66081d39baad",
+    "sha256": "a52277eba31122011f0d80bc5749f8fd0f63a2fa38e0efbbc971e4c9f5800488",
+    "bytes": 23110
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/west-keys4-3x-folded.png",
+    "blob": "23f3df776d3dd05bf4471ed8b3b555beed977e82",
+    "sha256": "b4513d74e99344488ce7b5d70f5df9d9749a897bceda59a26599aafbc04d1f44",
+    "bytes": 24624
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/south-west-keys-3x.png",
+    "blob": "fda2d74d0c10b762b0e219a423361f21649225ab",
+    "sha256": "1f0a36fafe76b1a4f7f68367f7eadbad60a4a980a9443ddb8c989121d1707711",
+    "bytes": 27229
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/south-west-keys4-3x-folded.png",
+    "blob": "6dc40561da037cb492fbecb713909bde67194e16",
+    "sha256": "85feabebd52d923ad7deab7e9af5e01d816dac1d5e93445b4e1fe1c05c73c43a",
+    "bytes": 28745
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/comparison-1x-all-keys.png",
+    "blob": "8847ae67d4b082a4a003c4a71af7fafe86df86ae",
+    "sha256": "1de0f6cd25a5bbcf8d2f80bd730cdaaf30a2179ea903362b1ddb34866ed2cb99",
+    "bytes": 195008
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/page-1.mp4",
+    "blob": "0a4b2458ba8032576c7d355f207a35358bbab1f1",
+    "sha256": "e2156d945184aafbcdc5f8250ff7d3db7490566f856ba0d770b1e032b71a2f06",
+    "bytes": 2886653
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/page-2.mp4",
+    "blob": "1e4274c11e6dcaaecea75aebcbaf1476674d43ab",
+    "sha256": "ea087227edacdf6ac20a044d3cb1e9939d90db53e64a77240acfb699ff3d000e",
+    "bytes": 2581908
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r33-staff-span/video-receipts.json",
+    "blob": "eb5c85087f788b48c12cec3ef400fd2052bd7960",
+    "sha256": "44ef1f15d419ce09729a0a897e1b40ca78d2e460e5e0991839e3d36920873bef",
+    "bytes": 970
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r30/generated-A.png",
+    "blob": "696839cd29c2816da8c3e11ef1634216b371f71b",
+    "sha256": "7a99625f851ae3e88b83390127fe649ede737c44ea41c234a411e483c515d340",
+    "bytes": 1636175
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r30/generated-B.png",
+    "blob": "be98aeb4ac30939ce980deb27edb24a9d695809c",
+    "sha256": "165a26d58d16560c255716b048e5a44c0a028b3111bc237b8dce2ed71b5d149a",
+    "bytes": 1654280
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r30/north-west-key2-repair-original.png",
+    "blob": "0d166b0a0c7621c2a19ed3dbbd553c4ed2af0382",
+    "sha256": "afcea6d6294ae5b3d732de5c496f060147668bef87537d3e619c0aab17e8df17",
+    "bytes": 401605
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r30/north-west-key2-raw-repair.png",
+    "blob": "e910967fa97147ba96a28d5721b4c2334a88d051",
+    "sha256": "b3a88b94d9b17852dfb5fca0b709c63412cc4b7efabf3743e70cafa40edee654",
+    "bytes": 73269
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r30/raw-key-overrides.json",
+    "blob": "0ca5875e6473070f83ab7063af5b179af76f82ad",
+    "sha256": "40e1b3979234335d11af9a107836a2648554749ce8051b800d83e445e88f58d5",
+    "bytes": 684
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-gut_witch-attack8-r30/north-west-key2-before-staffspan.png",
+    "blob": "fcb6b08134c6de64ef3ad841be6ca684519a6fa2",
+    "sha256": "9b9fc647387096e9bde4925de4306272434f026abfd68a97a01023fc7bd30cc1",
+    "bytes": 68792
+  },
+  {
+    "path": "art-review/sprites-20261102/index.html",
+    "blob": "e5d6a6fc0b16908762f668bf2cd4109ccc5a4286",
+    "sha256": "b684612483e08bc783b00e2b3c40c96238f54781702d44432f5cd9ce4347e0c2",
+    "bytes": 32656
+  },
+  {
+    "path": "art-review/sprites-20261102/CHECKPOINT.json",
+    "blob": "a7f41d7ec0f2bdd7015c951af78bbbc50f70da84",
+    "sha256": "78ae607c9ff7740d344d8ef1524d46cebe31fcdc363f28b033519d496292451d",
+    "bytes": 10206
+  },
+  {
+    "path": "art-review/sprites-20261102/enemy-submissions.json",
+    "blob": "32fc2c586c5dca4a3d0ace26de6008bf9b45c86e",
+    "sha256": "f423d8d6cf07b765d5735b1bc975eef8b2c0fe8ddc9380d73f33d027ad5bd17a",
+    "bytes": 33633
+  },
+  {
+    "path": "art-review/sprites-20261102/ENEMY5_PACKAGE_KO.md",
+    "blob": "55a6da4b8c19dcce1ae7bdeb0c96f88c89956766",
+    "sha256": "d263c3ac0069e735637fa3aac73f40654f29ae553e16ba5a02b1044515994e36",
+    "bytes": 5956
+  },
+  {
+    "path": "art-review/sprites-20261102/DRUID_FULL_PACKAGE_KO.md",
+    "blob": "8959f3715d2263696cef34b2677f51f2b4923c2e",
+    "sha256": "bc5182f2aab1a99fbff7a3dcf8ccf124b8ba4abfcb615264ee3a4265f667361e",
+    "bytes": 5287
+  },
+  {
+    "path": "art-review/sprites-20261102/final-pixel-audit.json",
+    "blob": "cce4cecc498d85a57ffece6426f40e586f4d0ab3",
+    "sha256": "97ba8a90f731c1a8c0e86f73171ced242da4ecac21ab0b125bd376175c236a97",
+    "bytes": 13362
+  },
+  {
+    "path": "art-review/sprites-20261102/prompts-enemy5-complete.json",
+    "blob": "f12fa17ee18340b413d116eeb421c3123eea2d61",
+    "sha256": "11a988d309beb558916876666eacf8626b2abaad839e5f88162218c83304b03e",
+    "bytes": 43622
+  },
+  {
+    "path": "art-review/sprites-20261102/tools/sprite_export.py",
+    "blob": "69a2962247be3723475eeac77557e549c3bcba29",
+    "sha256": "fc8dff84060b34cb313b7efd4cd6bb440ee54080e2a7e73b11b4aa819a31b546",
+    "bytes": 5874
+  },
+  {
+    "path": "art-review/sprites-20261102/tools/enemy_group_export.py",
+    "blob": "bbcdcdf9645624ba93691281ece767f67be38749",
+    "sha256": "a24ae490e88ac6353db70c61f0caeda7ba82f22b48b5b5861b880cf894d1a436",
+    "bytes": 11698
+  },
+  {
+    "path": "art-review/sprites-20261102/tools/enemy_group_compact.py",
+    "blob": "ee61f4ab8c097bcb95fe06b9efcb0c761067c685",
+    "sha256": "54e5c6d70b222763d93b187316d702026e367ba22c056ddb7d1fa1f7fdcca72a",
+    "bytes": 3264
+  },
+  {
+    "path": "art-review/sprites-20261102/tools/enemy_review_1x.py",
+    "blob": "a41884fbc3ca3781d17c1b4a739b795d12b75e8c",
+    "sha256": "285d1b7550adad4e0178fe80b03d9f0f65e953917bba6627b8b8165518d022ac",
+    "bytes": 664
+  },
+  {
+    "path": "art-review/sprites-20261102/tools/headless_body_camera.py",
+    "blob": "c23b66daf026066a37567bd874d5cf3482854814",
+    "sha256": "9acac74c49dbf39875c7642268a87149e5b0f2defe0560339fca48212b2e5b2e",
+    "bytes": 1927
+  },
+  {
+    "path": "art-review/sprites-20261102/tools/gut_witch_north_pack.py",
+    "blob": "c233c673efcfdb71930cd6bc63b5ee868d2c0582",
+    "sha256": "bcaecd150cc0ad4cfe9045b539183862adb3540357dbcb5db0660054ba26116d",
+    "bytes": 910
+  },
+  {
+    "path": "art-review/sprites-20261102/tools/archer_shot_yaw_guide.py",
+    "blob": "9065bb8fb09fbf38e5ab76d52cda6fc10e69649a",
+    "sha256": "0e9e3c4f9b2c448350d1a9c5c7a6cfccd7344574225b66b3e035227d0107ae70",
+    "bytes": 1517
+  },
+  {
+    "path": "art-review/sprites-20261102/tools/witch_material_palette.py",
+    "blob": "390d5280d0ef83765d594c58c38eefa0a961c2c0",
+    "sha256": "3132a73868fde8537cf196ed7430f06efaddfbccf23aee67c2b689e3ac394d96",
+    "bytes": 1645
+  },
+  {
+    "path": "art-review/sprites-20261102/tools/witch_yaw_inputs.py",
+    "blob": "27cec689cbb5ff8c0363f3ce6a0302bad814f36e",
+    "sha256": "4d1c27fbd4b07def30fa50b2d0957c44064e70eae70b492da5432ac3ea7afed9",
+    "bytes": 306
+  },
+  {
+    "path": "art-review/sprites-20261102/tools/enemy_key_repair.py",
+    "blob": "775f7eeede93e6864f2b34f9f50b8bb3e1725db1",
+    "sha256": "4f491b1285a3a3f7dad3c98837b4a1bfb91ea660a5a16d03c59c5cbc1cdc3851",
+    "bytes": 1182
+  },
+  {
+    "path": "art-review/sprites-20261102/tools/witch_cast_span.py",
+    "blob": "aca6bec9aed69a4c494a8790d9134f1559a182f8",
+    "sha256": "608de42999061fa7c253b1cdce432365e871f99bfc8dd8603229dd7e83a21189",
+    "bytes": 737
+  },
+  {
+    "path": "art-review/sprites-20261102/tools/final_pixel_audit.py",
+    "blob": "e6b2c5fbc797214245c76a7c44f9e32d68e322d3",
+    "sha256": "162d385669f40a909ca85307540eb70361621442168cde89655fedcb9b4737bc",
+    "bytes": 1167
+  },
+  {
+    "path": "art-review/sprites-20261102/priority-study/map.json",
+    "blob": "52367b9b942da64fc9f5d7eeabd83b181c30dd1c",
+    "sha256": "418327d8375095f0183313831db16e1386f63244ae1edd254248d0d64f43bfdf",
+    "bytes": 95917
+  },
+  {
+    "path": "art-review/sprites-20261102/priority-study/names.json",
+    "blob": "01de2e07ca974bb28b290641184d6016a28bba57",
+    "sha256": "ad3b60d958fd8cb2d3859f14073b722011beab13585eaadd6c176287419a1fc0",
+    "bytes": 680
+  },
+  {
+    "path": "art-review/sprites-20261102/priority-study/Priority.csproj",
+    "blob": "4208f2c7a3df8824326c84a851885c27bd3b1b8f",
+    "sha256": "fc23bacfa4d758f1eee5e9b6f216dd83c0a7119f3073eaafa9f569d8ae346194",
+    "bytes": 414
+  },
+  {
+    "path": "art-review/sprites-20261102/priority-study/Program.cs",
+    "blob": "3240bf331a666357ad5c5d0e0cd66a321040bca7",
+    "sha256": "1c4ebd95b18f99182827d4fb6fd59ff22077944fe7e42d80c40708b9e3b1d4fa",
+    "bytes": 2903
+  },
+  {
+    "path": "art-review/sprites-20261102/priority-study/global.json",
+    "blob": "425f399a914158315a2b7c0a44f69fb2d77c5096",
+    "sha256": "2c4fec6982cf8b97beba5dce0c885ffab5282d873a76716c611da11252d6c379",
+    "bytes": 73
+  },
+  {
+    "path": "art-review/sprites-20261102/priority-study/source-before.json",
+    "blob": "ebfaa1e72c6eb8d9af3fbd09762d22a0c6501fc6",
+    "sha256": "87c41832949a81054c1766a48e77e7f8e286857ce9acf2ceaa1697081d6ebc13",
+    "bytes": 18133
+  },
+  {
+    "path": "art-review/sprites-20261102/priority-study/source-after.json",
+    "blob": "ebfaa1e72c6eb8d9af3fbd09762d22a0c6501fc6",
+    "sha256": "87c41832949a81054c1766a48e77e7f8e286857ce9acf2ceaa1697081d6ebc13",
+    "bytes": 18133
+  },
+  {
+    "path": "art-review/sprites-20261102/priority-study/source-stability.json",
+    "blob": "5e97b78582e1b0af47bef7abcf0a2db9ed8264d9",
+    "sha256": "fcdc052285826da2953c327c5ad0bc42a6850632010a2bd4feaee535f7f64b8e",
+    "bytes": 226
+  },
+  {
+    "path": "art-review/sprites-20261102/priority-study/population-2000.json",
+    "blob": "d6246a9de4108af0bb4b1627f52000d349cc7675",
+    "sha256": "70c00b36973812e66215cd2cab09b7221ef2547ba1d00aa30e88787a25cd7b3c",
+    "bytes": 7146
+  },
+  {
+    "path": "art-review/sprites-20261102/priority-study/current-common-source-comparison.json",
+    "blob": "803cbcb9248a992da3d8de8c42a6e735a7de49b0",
+    "sha256": "ac45de1064f712a0e42ed12dd82284cf005cb176f617344216fa45dd359855a0",
+    "bytes": 1459
+  },
+  {
+    "path": "art-review/sprites-20261102/priority-study/REPORT_KO.md",
+    "blob": "f6598e00be9f2d91b72b9e63f6e7cbeecbc69e3c",
+    "sha256": "cc883447dd0d797fe4e854836db223c60623e006a71d234567cf03b11d6f0c75",
+    "bytes": 1671
+  }
+]

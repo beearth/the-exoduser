@@ -1,0 +1,16 @@
+{
+  "base": "78ebda580b9b5761583299bb5a80e463e63f4984",
+  "commit": "79a94007416c0f9da3cf0de88207195d5318dde8",
+  "remote": {
+    "refs/heads/codex/pc-sprites11-docs-20261103": "79a94007416c0f9da3cf0de88207195d5318dde8",
+    "refs/heads/main": "79a94007416c0f9da3cf0de88207195d5318dde8"
+  },
+  "paths": [
+    "docs/0마스터플랜/session_handoff/unity-character-lead.md",
+    "docs/4.0케릭터스프라이트 디자인/DRUID_SPRITE_IDLE_CANDIDATE_20261103.md",
+    "docs/4.0케릭터스프라이트 디자인/DRUID_SPRITES_FULL_CANDIDATE_20261103.md",
+    "docs/4.0케릭터스프라이트 디자인/ENEMY5_SPRITES_CANDIDATE_20261103.md"
+  ],
+  "runtimeChanges": 0,
+  "previousR7HistoryPreserved": true
+}

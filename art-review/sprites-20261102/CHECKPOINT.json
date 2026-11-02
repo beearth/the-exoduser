@@ -5,8 +5,8 @@
   "head": "5b45b6a482ab4c446137cb82f24ea4d10267d4f0",
   "outputRealPath": "I:\\EXODUSER-Storage\\archive\\G\\exoduser\\tmp\\design-review\\20261102_sprites",
   "currentWarriorIdle": "warrior-idle8-r11-seam",
-  "status": "全30論理군 오프라인 후보 제작·비교 제출 완료; 실제Player 미검증·사용자승인 전 제품반영0",
-  "next": "사용자 후보 검토 후 승인 범위만 별도 상태소스 어댑터/isolated Player 실게임1x·조명·접지·자연전투 검수",
+  "status": "전체30논리군 오프라인 후보 제작·비교 제출 완료; 실제Player 미검증·승인전 제품반영0",
+  "next": "사용자 후보 검토 후 승인 범위의 어댑터/격리Player 검수",
   "pending": null,
   "normal": "같은diffuse 실루엣 bevel 추정, 실제PBR아님",
   "tools": {
@@ -54,11 +54,14 @@
   "currentWarriorWalk": "warrior-walk8-r10-adult",
   "currentWarriorAttack": "warrior-attack9-r13-area",
   "docsRemote": {
-    "commit": "72ccacdf56e356679d2e26ae868cdeb11abd74c6",
-    "branch": "codex/pc-sprites11-docs-20261103",
+    "commit": "79a94007416c0f9da3cf0de88207195d5318dde8",
     "mainVerified": true,
-    "onlyPath": "docs/0마스터플랜/session_handoff/unity-character-lead.md",
-    "workingIndexUntouched": true
+    "paths": [
+      "docs/0마스터플랜/session_handoff/unity-character-lead.md",
+      "docs/4.0케릭터스프라이트 디자인/DRUID_SPRITE_IDLE_CANDIDATE_20261103.md",
+      "docs/4.0케릭터스프라이트 디자인/DRUID_SPRITES_FULL_CANDIDATE_20261103.md",
+      "docs/4.0케릭터스프라이트 디자인/ENEMY5_SPRITES_CANDIDATE_20261103.md"
+    ]
   },
   "mobPriorityType": "behavior etype probabilities ONLY; NOT visual-species priority",
   "completedCandidateGroups": [
@@ -247,5 +250,6 @@
   "runtimeAdoption": 0,
   "actualPlayerVerified": false,
   "druidLatestArtCommit": "d02f7a456956f5fa2dc4e6e3cbb3b7bd3a7056b9",
-  "visualVerdict": "오프라인 후보 제출 / 실제Player 미검증"
+  "visualVerdict": "오프라인 후보 제출 / 실제Player 미검증",
+  "latestArtCommit": "26e7349534ac2c75d0020e07a283bf68bfc58e0c"
 }
