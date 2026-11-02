@@ -136,3 +136,7 @@
 
 ### 실제 재촬영 아이콘 잔점 재작업
 39abdaa의 mipmap/trilinear만으로는 실제 IMGUI64px 잔점이 남았다(재촬영 rework-ui). 같은 방법을 중단하고 웹 원본1024 PNG를 보존한 채 Lanczos3로64×64 사전 축소한 emblem_warrior_ui64.png를 캐릭터 선택 레일 전용으로 사용한다. 새 이미지64px/빌리니어/무압축/밉0, 기본 원본과 다른 위치의 사용은 유지한다. rework-ui 이전본은 채택하지 않으며 새 패키지의 실제 아이콘 비교가 필요하다.
+
+### 2026-11-02 저녁 최종 Win64 실물·바탕화면 인수
+
+소스9e771f7712→공통동일SHA,6000.6.7f1 정식112a8abb(-remodel-scenes1) compile0/build성공/USER_SAVE0. Runtime bcd1042c…f0e91,동일M1 7e05298a23/23,1920/3840 UI186장·타이틀11e33fd5 10장/10.5초모션·pause두장픽셀일치·resume PASS. 원본2036×1016 영상SHA869895a6…827c3 동일,합성3영상은의존0/보관SHA후제거. 인물/바위/하늘3x와전사아이콘6x실물잔점미관측.9-slice 정보판380×165.5/안쪽36,64px아이콘사전축소본최종채택. 사용자기존Player.log1건변경구간의UI가드false는별도보존(실제캡처186/exit0/창0/잔여0);저장데이터변경검출0. Desktop213파일 전수SHA/링크읽기일치,설치M1은기존map25d예약대기. 전체UI기존폰트/잠금장식/미이식RETOUCH;비교경로와실물영수증은 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md 및 evening/delivery-visual-review.json.

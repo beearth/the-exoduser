@@ -654,3 +654,7 @@ PC 담당이 I:/EXODUSER-Storage/character-capacity/20261101-unlimited/receiver/
 ## 2026-11-02 PC 최신 웹 parity 소스 후보·실행 차단
 
 `codex/unity-parity-1102:818ea0aff182624c506c972077f0384c1b719ce9`에 최신 C2선명도3변형/cover/폭포/여백, 빈Z·Space 습득우선/실제비용, 접점2틱/피격가장자리/처치음 제한 후보를 백업했다. C#75+31/Core35/player-hurt47559 PASS·독립Core114/Runtime212 compile0. enemy-hurt 기존H3 1300실패는 변경전후동일/신규0, 전체PASS아님. Dota PID56244·Library없음/Editor20GB 대비 커밋여유18.7GB로 Unity/Player/빌드0·공통/Desktop0·시각미검증. 화폐/두둥은 기존owner중복으로 건너뜀, 전체화면64 확장연결은 미완. 정확한9항목·다음순서는 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md. 검수없는병합/바로가기교체 금지.
+
+## 2026-11-02 저녁 PC parity 실물 통합
+
+사용자 2차 지시로 9e771f7712를 unity/main에 비강제 반영하고 원격 SHA를 확인했다. Win64 112a8abb는 컴파일 오류 0·빌드 성공·USER_SAVE 0, 같은 패키지 M1 7e05298a는 23/23이다. 1920·3840 UI 186장과 타이틀 모션을 직접 검수했고, 잔점이 남은 전사 아이콘은 64px 사전 축소로 고쳤다. Desktop은 213파일 전수 SHA와 링크 읽기를 확인했다. 마지막 audio/currency·설치본 M1은 기존 map25d 예약 뒤 대기한다. 기존 미이식·폰트·장식 차이로 UI RETOUCH이며 Mac 반영은 미검증이다. 상세: I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md.

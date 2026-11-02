@@ -306,3 +306,7 @@ PC `codex/unity-parity-1102`/G:/exoduser-wt/codex-unity-parity-1102가 공통140
 ## 2026-11-02 저녁 parity 2차 인수
 
 사용자·CTO 지시로 기존 화폐 codex/unity-currency-name-20261031:3333f9931 단일 커밋과 중단된 결정 두둥 범위를 codex/unity-parity-1102가 인수한다. Mac 기존 WIP 미접촉. Dota 여부는 실행 보류 조건에서 제거하며 공식 실행기·단일 잠금·무음·격리 저장은 유지.
+
+## 2026-11-02 저녁 parity 실제 인수·공통 반영
+
+PC 9e771f7712를 unity/main에 정상 반영하고 원격 SHA를 확인했다. Win64 112a8abb 오류 0·USER_SAVE 0, 동일 M1 7e05298a 23/23, UI 186PNG 및 타이틀 모션 PASS. 중단된 화폐 단일 커밋과 두둥 범위를 인수했고 최종 Kling·64종 확장·9-slice·아이콘 축소까지 실물 검수했다. Desktop은 검증한 213파일로 갱신했으며 남은 audio/currency·설치 M1은 기존 map25d FIFO 대기다. 기존 Mac WIP와 앱은 미접촉이며 Mac 소스 반영·실행은 미검증이다. 기존 미이식과 UI RETOUCH 범위는 REPORT에 구분했다.
