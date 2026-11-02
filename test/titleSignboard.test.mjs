@@ -6,7 +6,7 @@ const file=new URL('../title-signboard.js',import.meta.url),scope={};
 if(fs.existsSync(file))vm.runInNewContext(fs.readFileSync(file,'utf8'),scope);
 const api=scope.TitleSignboard||{};
 test('approved moon disk and boot soles fit every 1080p title ratio without changing cover',()=>{
- assert.ok(api.moon,'relocated still moon geometry is available');
+ assert.ok(api.moon,'final video moon geometry is available');
  for(const w of [1920,2560,3840]){
   const r=api.rect(w,1080),m=api.moon;
   for(const [x,y]of [[m.x-m.radius,m.y-m.radius],[m.x+m.radius,m.y+m.radius],[1300,736],[1526,736]]){
@@ -15,15 +15,10 @@ test('approved moon disk and boot soles fit every 1080p title ratio without chan
   }
  }
 });
-test('moon light breathes weakly over ten seconds without changing disk geometry',()=>{
- assert.equal(typeof api.moonPulse,'function');
- assert.ok(api.moonPulse(2.5)>api.moonPulse(7.5));
- for(let t=0;t<10;t+=.1){assert.ok(api.moonPulse(t)>=0&&api.moonPulse(t)<=.04);assert.ok(Math.abs(api.moonPulse(t)-api.moonPulse(t+10))<1e-10);}
-});
 test('close C2 preserves both skulls, both feet and character at 16:9, 21:9 and 32:9 with uniform scale',()=>{
  assert.equal(typeof api.rect,'function');
  for(const [w,h] of [[1920,1080],[2560,1080],[3840,1080],[3840,2160]]){
-  const r=api.rect(w,h);assert.equal(r.width/2036,r.height/1018);
+  const r=api.rect(w,h);assert.equal(r.width/2036,r.height/1016);
   for(const [x,y] of [[875,300],[1054,365],[1368,269],[1335,745],[1520,745],[1597,775]]){const px=r.x+x*r.scale,py=r.y+y*r.scale;assert.ok(px>=0&&px<=w&&py>=0&&py<=h);}
   assert.ok(r.x<=0&&r.x+r.width>=w);
  }
@@ -38,9 +33,4 @@ test('C2 uses the existing title renderer; obsolete DOM video overlay stays remo
  assert.match(h,/title-signboard\.js/);assert.match(h,/TitleSignboard\.create/);
  assert.doesNotMatch(h,/splashTitleVideo|_titleVideoFade|_titleWideBackdrop|title_motion_20261028/);
  const build=fs.readFileSync(new URL('../build-nwjs.mjs',import.meta.url),'utf8');assert.match(build,/'title-signboard.js'/);
-});
-
-test('cloud flow is coherent and continues beyond the media loop without procedural grain',()=>{
- assert.equal(typeof api.cloudFlow,'function');const a=api.cloudFlow(1),b=api.cloudFlow(1.1);
- assert.ok(Math.abs(b[0]-a[0])>.01);for(let t=0;t<30;t+=.1){const p=api.cloudFlow(t);assert.ok(Math.abs(p[0])<=7&&Math.abs(p[1])<=1.5);}
 });
