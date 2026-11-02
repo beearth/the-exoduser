@@ -61,3 +61,7 @@
 이번 결과는 **실제 PNG 에셋과 움직임 검토물의 제작 완료**다. 다음 연결 검수에는 기검참 무기·접점 일치, 강타 중심/외곽 구분, 분노량별 겹침, 밀집 전투 적 예고 보존을 포함한다.
 
 복구 브랜치: [codex/dota-vfx-candidates-20261102](https://github.com/beearth/the-exoduser/tree/codex/dota-vfx-candidates-20261102). main에 병합하지 않는 검토 후보다. 원격 SHA와 부모 대조 영수증은 산출물 폴더의 `backup-receipt.json`에 보관한다. Git 소유권을 기록하지 않는 I:의 초기 Git 사본은 사용을 중단하고, Git 후보 체크포인트는 `G:/exoduser-candidate-checkpoints/dota-vfx-20261102-r1`에 만들었다. 전역 safe.directory·인증 helper·공유 저장소 설정을 변경하지 않았다.
+
+## 후속 — 직접 조작 테스트베드
+
+사용자 “테스트 베드를 만들어 똑바로”에 따라 [전용 시험 공간](DOTA2_VFX_TESTBED_20261102.md)을 추가했다. `http://127.0.0.1:3345/tools/vfx/testbed/`에서 직접 이동·조준·홀드/해제·분노 조건·원본/시안/나란히·정지/단계 진행을 검수했다. 이전 단순 시트 미리보기와 구분한다. 독립 시험 공간 연결 완료이며 본편/Unity에 후보를 통합한 것은 아니다.

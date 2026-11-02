@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ko">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EXODUSER · 전투 이펙트 테스트베드</title><link rel="stylesheet" href="style.css?v=20261102-r3"></head>
+<body>
+<header><div class="brand"><span class="sigil" aria-hidden="true">╱</span><div><span class="overline">EXODUSER · COMBAT LAB</span><h1>전투 이펙트 테스트베드</h1></div></div><div class="health"><i id="ready-dot"></i><span id="asset-state" role="status">에셋 준비 중</span></div></header>
+<main>
+<nav class="top-controls" aria-label="이펙트 선택"><div class="segmented" id="skills"><button id="skill-ki" class="active" aria-pressed="true">기검참</button><button id="skill-slam" aria-pressed="false">대지 충격</button></div><div class="segmented variants" aria-label="비교 방식"><button id="variant-new" class="active" aria-pressed="true">시안</button><button id="variant-old" aria-pressed="false">원본</button><button id="variant-split" aria-pressed="false">나란히</button></div></nav>
+<div class="workspace"><div class="arena-wrap">
+  <div class="arena-head"><span id="scene-name">기검참 · Kez / Echo Slash</span><span id="scene-mode">시안</span></div>
+  <div class="arena" id="arena"><canvas id="field" tabindex="0" aria-label="이동하고 마우스로 조준하는 이펙트 훈련장"></canvas><div id="loading" class="loading">이펙트를 불러오는 중입니다…</div><div class="arena-note"><span id="action-state">준비</span><span id="charge-state">1타부터 시작</span></div></div>
+  <div class="action-bar"><button id="primary" class="cast-button" disabled><span id="primary-label">기검참 발동</span><kbd id="primary-key">좌클릭</kbd></button><div id="ki-actions" class="quick"><button id="cast-1" disabled>1타</button><button id="cast-2" disabled>2타</button><button id="cast-3" disabled>3타</button></div><button id="cast-slam" class="slam-quick" disabled>강타 <kbd>Space</kbd></button></div>
+  <div class="transport"><button id="pause" disabled aria-pressed="false">정지</button><button id="step" disabled>1프레임</button><select id="speed" aria-label="재생 속도"><option value="1">1× 속도</option><option value="0.25">0.25× 속도</option><option value="0.1">0.1× 속도</option></select><button id="repeat" disabled aria-pressed="false">반복</button><button id="reset" disabled>초기화</button><output id="frame-clock">0.00s</output></div>
+</div>
+<aside>
+  <div class="aside-title"><span class="overline">TEST CONDITIONS</span><h2>바로 발동하고 비교</h2></div>
+  <label class="setting">표적 배치<select id="targets"><option value="line">일렬 · 5개</option><option value="single">단일 · 1개</option><option value="dense">밀집 · 14개</option></select></label>
+  <label class="setting" id="tier-setting">3타 바로 발동 시 충전<select id="tier"><option value="0">무충전</option><option value="1">1단</option><option value="2">2단</option><option value="3" selected>3단 · 최대</option></select></label>
+  <label class="setting">강타 분노량 <output id="rage-label">100%</output><input id="rage" aria-label="강타 분노량" type="range" min="0" max="100" step="20" value="100"></label>
+  <label class="setting">화면 배율 <output id="zoom-label">100%</output><input id="zoom" aria-label="화면 배율" type="range" min="50" max="180" step="5" value="100"></label>
+  <label class="check"><input id="ranges" type="checkbox"> 접촉 범위 표시</label>
+  <label class="check"><input id="hit-effects" type="checkbox"> 명중 임팩트 함께 보기</label>
+  <div class="readout"><div><span>발동</span><strong id="cast-count">0</strong></div><div><span>접촉</span><strong id="hit-count">0</strong></div><div><span>현재 효과</span><strong id="active-count">0</strong></div></div>
+  <div class="keys"><h3>직접 조작</h3><p><kbd>W A S D</kbd> 이동 · 마우스 조준</p><p><kbd>좌클릭</kbd> 1 → 2 → 3타</p><p>세 번째 입력을 누르면 충전,<br>놓으면 검기가 나갑니다.</p><p><kbd>Space</kbd> 강타 · <kbd>B</kbd> 원본/시안</p><p><kbd>P</kbd> 정지 · <kbd>.</kbd> 한 프레임</p></div>
+  <p class="scope">전사와 표적을 직접 움직여 보는 VFX 시험 공간입니다. 접촉 수는 위치 확인용이며 피해·세이브에 반영되지 않습니다.</p>
+</aside></div>
+<footer><span>기검참 9프레임 · 지면 충격 4프레임</span><span>원본과 시안은 같은 발동 상태를 공유합니다.</span></footer>
+</main>
+<script type="module" src="app.mjs?v=20261102-r3"></script>
+</body></html>
