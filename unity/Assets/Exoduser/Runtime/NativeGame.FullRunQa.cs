@@ -31,7 +31,7 @@ namespace Exoduser.UnityPort
         [Serializable] sealed class FullRunReceipt
         {
             public string scope = "Actual GPU Player; virtual InputSystem keyboard/mouse -> NativeGame.FixedUpdate. No teleport, HP/resource edits, enemy injection, forced kill or gate unlock. Story and first practice use supported skip.";
-            public string result, device;
+            public string result, device, buildGuid;
             public int width, height;
             public float seconds, averageFps, frameP95Ms, frameP99Ms, longestFrameMs;
             public int renderedFrames;
@@ -53,7 +53,7 @@ namespace Exoduser.UnityPort
             Application.runInBackground = true;
             int width; if (!int.TryParse(Argument("-qa-width"), out width)) width = 1920;
             Screen.SetResolution(width, 1080, FullScreenMode.Windowed);
-            var receipt = new FullRunReceipt { device = SystemInfo.graphicsDeviceName, width = width, height = 1080 };
+            var receipt = new FullRunReceipt { device = SystemInfo.graphicsDeviceName, buildGuid = Application.buildGUID, width = width, height = 1080 };
             float started = Time.realtimeSinceStartup;
             yield return new WaitForSecondsRealtime(1);
             lobby.ShowLobby();
