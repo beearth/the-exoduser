@@ -70,7 +70,7 @@ namespace Exoduser.UnityPort
             impacts=new KiImpactView(transform,f=>SpriteFor("Art/vfx/ki_slash_hit_silver_sheet",f%2*627,f/2*627,627,627,new Vector2(.5f,.5f)));
             skillView=new NativeSkillView(transform);   // B03 skill effects
             sound=new NativeFeedbackAudio(transform,view);
-            gameObject.AddComponent<NativeUiSounds>().Initialize(sound,()=>lobby!=null&&!lobby.IsBlocking&&gameFocused);
+            gameObject.AddComponent<NativeUiSounds>().Initialize(sound,()=>lobby!=null&&lobby.IsBlocking?lobby.UiAudioAllowed:gameFocused,()=>lobby!=null&&lobby.IsBlocking);
             music=new NativeGameMusic(transform,sound.Bus);ambient=new NativeAmbientSources(transform,sound.Bus);   // RM-1 sound: BGM bus, forest bed, 3D environment sources
             sound.ListenerAt=ambient.ListenerAt=()=>Simulation!=null?Point(Simulation.Player.X,Simulation.Player.Y):Vector3.zero;   // the AudioListener sits on the player
             sound.OnScreen=world=>{var v=view.WorldToViewportPoint(world);return v.x>-.05f&&v.x<1.05f&&v.y>-.05f&&v.y<1.05f;};
