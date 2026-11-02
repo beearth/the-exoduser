@@ -52,3 +52,11 @@
 - 영상: `G:/exoduser/tmp/design-review/20261102_unity_ui_sound/`. Unity26초와 웹 비교 MP4는 전체 FFmpeg 디코드 오류0. 자동 재생0.
 
 확인음은 기존 결정/패널 중복 억제를 위해 최대 다음 프레임까지 유예한다(15fps QA에서는 약67ms). 입력은 제품 콜백/공용 이동 경로의 스크립트 실행이다. 자연 마우스·물리 패드의 실제 조작, 사람 청음과 전체 UI 디자인 승인, 자동 빌드의 이후 바탕화면 전달은 별도다. 기능/출력 검증 완료를 최종 청음 PASS로 올리지 않는다.
+
+
+## 2026-11-03 패키지 어셈블리 식별 보강
+
+| 범위 | 실행 계약 | 검증 상태 |
+|---|---|---|
+| CinematicInputCheck·UiSoundCapture·Lobby 캡처 | Assembly.Location이 비면 실제 Player의 Application.dataPath/Managed/{assemblyName}.dll에서 SHA-256 계산. 파일이 없으면 예외로 실패하며 과거 DLL/빈 해시를 쓰지 않음 | 정적 컴파일 후 같은 정식 패키지 Player 검수 예정 |
+| 정식 빌드 | 첫 묶음은 FIFO 티켓 생성 전 대기 중. 공용 실행기를 사용하며 사용자 앱·타인 예약을 종료하지 않음 | 빌드/M1/입력 영상 미완료 |

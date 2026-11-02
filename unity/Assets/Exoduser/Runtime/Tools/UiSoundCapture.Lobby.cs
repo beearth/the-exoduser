@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort.Tools {
   IEnumerator RunLobby(){
    lobbyCapture=true;while(NativeGame.Instance==null)yield return null;game=NativeGame.Instance;lobby=game.GetComponent<NativeLobby>();sound=(NativeFeedbackAudio)Get(game,"sound");yield return null;
    game.enabled=false;typeof(NativeGame).GetProperty("Running").SetValue(game,false);Set(game,"smokeActive",true);Set(game,"pauseSmoke",true);Set(game,"dropSmoke",true);Set(game,"gameFocused",true);
-   receipt.runtimeSha=Hash(typeof(NativeGame).Assembly.Location);receipt.coreSha=Hash(typeof(Simulation).Assembly.Location);receipt.sandbox=NativeQaSandbox.Root;receipt.device=SystemInfo.graphicsDeviceName;
+   receipt.runtimeSha=Hash(NativeQaAssembly.FilePath(typeof(NativeGame).Assembly));receipt.coreSha=Hash(NativeQaAssembly.FilePath(typeof(Simulation).Assembly));receipt.sandbox=NativeQaSandbox.Root;receipt.device=SystemInfo.graphicsDeviceName;
    Application.runInBackground=true;Application.targetFrameRate=15;Time.captureDeltaTime=1f/15;
    AudioListener.volume=0;AudioListener.pause=true;recording=AudioRenderer.Start();CheckThat("장치무음 출력버퍼 녹음",recording);receipt.deviceSilent=true;receipt.sampleRate=AudioSettings.outputSampleRate;receipt.channels=AudioSettings.speakerMode==AudioSpeakerMode.Mono?1:2;
    CheckThat("스테레오 또는 모노",AudioSettings.speakerMode==AudioSpeakerMode.Stereo||AudioSettings.speakerMode==AudioSpeakerMode.Mono);

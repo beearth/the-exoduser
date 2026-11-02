@@ -21,3 +21,11 @@
 Player 어셈블리 증거는 실제 로드 경로를 우선 사용하고, Unity 스트림 로드로 Location이 비면 같은 실행 패키지 Data/Managed의 같은 이름 DLL을 SHA-256으로 읽는다. 파일이 없으면 검수를 실패시키며 예전 산출물로 대체하지 않는다.
 
 홀드 영상은 다음 fixture 페이지를 준비하기 전에 실제 완료 목적지를 기록한다. 세계관은 로비0.65초, 이야기는 기존1.2초 게이트가 스스로 진행하도록1.5초를 녹화하며, 검수기의 ShowLobby 호출로 성공 목적지를 대신하지 않는다.
+
+
+## 2026-11-03 패키지 어셈블리 식별 보강
+
+| 범위 | 실행 계약 | 검증 상태 |
+|---|---|---|
+| CinematicInputCheck·UiSoundCapture·Lobby 캡처 | Assembly.Location이 비면 실제 Player의 Application.dataPath/Managed/{assemblyName}.dll에서 SHA-256 계산. 파일이 없으면 예외로 실패하며 과거 DLL/빈 해시를 쓰지 않음 | 정적 컴파일 후 같은 정식 패키지 Player 검수 예정 |
+| 정식 빌드 | 첫 묶음은 FIFO 티켓 생성 전 대기 중. 공용 실행기를 사용하며 사용자 앱·타인 예약을 종료하지 않음 | 빌드/M1/입력 영상 미완료 |
