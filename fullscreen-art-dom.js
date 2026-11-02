@@ -19,28 +19,28 @@
   const death = document.getElementById('death');
   if (death) {
     art.background(death, 'img/cin_remember_wide.png');
-    art.atmosphere(death, { tone: 'blood' });
+    if (!window.LivingScenes) art.atmosphere(death, { tone: 'blood' });
   }
   const csPlate = document.getElementById('csWideArt');
   art.video(document.getElementById('csIdleVid'), csPlate);
   art.video(document.getElementById('csSceneVid'), csPlate);
-  if (csPlate) art.atmosphere(csPlate.parentElement);
+  if (csPlate && !window.LivingScenes) art.atmosphere(csPlate.parentElement);
   const lobbyPlate = document.getElementById('lobbyWideArt');
   art.video(document.getElementById('lobbyCharPreview'), lobbyPlate);
   art.video(document.getElementById('lobbyAmbientVideo'), lobbyPlate,
     { source: 'assets/lobby/lobby_varkan_crypt_poster_v2.webp' });
   if (lobbyPlate) {
     const selector = document.getElementById('charVisualPop');
-    art.atmosphere(lobbyPlate.parentElement, { tone: 'crypt',
+    if (!window.LivingScenes) art.atmosphere(lobbyPlate.parentElement, { tone: 'crypt',
       isActive: () => !selector || selector.style.display === 'none' });
     // The selector is a sibling, so its opening must also wake the lobby occlusion check.
     if (selector && window.MutationObserver) new MutationObserver(() => art.refreshAtmosphere())
       .observe(selector, { attributes: true, attributeFilter: ['style', 'class'] });
   }
   document.querySelectorAll('.cin-img').forEach(host => art.atmosphere(host));
-  ['stageTransition', 'chapterGate', 'demoEnd'].forEach(id => art.atmosphere(document.getElementById(id)));
+  if (!window.LivingScenes) ['stageTransition', 'chapterGate', 'demoEnd'].forEach(id => art.atmosphere(document.getElementById(id)));
   const entryArt = document.getElementById('loadingBodyArt');
-  if (entryArt) {
+  if (entryArt && !window.LivingScenes) {
     const blockers = ['lobby', 'cinScene', 'splashOverlay'].map(id => document.getElementById(id)).filter(Boolean);
     art.atmosphere(entryArt, { isActive: () => !blockers.some(el =>
       el.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true })) });

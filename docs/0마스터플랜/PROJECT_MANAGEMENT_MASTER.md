@@ -793,12 +793,16 @@ codex-web-statwin: 다섯 창 제목44px와 성장 머리225→44px, 기존 인�
 
 ### 2026-10-31 WEB 로고 알파 보정
 
-시작 메뉴는 2026-11-02 최종 브리프의 C2 tall Kling(2036×1016·8.583333초)·중앙 cover·폭포2줄기 보강으로 갱신했다. 실제16/21/32:9·각10초·1x·원본 비교 자체 PASS,0.1초 폭포 차이 근4.01~4.24/원2.77~3.03>하늘.42~.81, 발/바위86표본 이동0px. 회귀39/39·project111/111·guard PASS·오류/404/세이브쓰기0. [현행 계약](../3.1%20ui%20hud%20디자인/스플래시_인트로_시퀀스.md), 원격SHA·실제 서버·녹화/비교/미검수는 `I:/EXODUSER-Storage/codex-takeover/title-motion-final-20261102/REPORT.md`. 기존 로고/메뉴 여백·첫 ENTER·v22b·A 원본/키트 보존, 실제 모니터/NW.js·Unity·배포는 별도다.
+시작 메뉴는 2026-11-02 마지막 지시 ‘최종 — Kling 영상을 그대로 쓴다’로 교체했다. final-main/loop.mp4를 video/title_motion_C2_final_20261102.mp4에 동일 byte로 복사(2036×1016,24fps,206프레임,8.583008초,무음). 정지 원화/인물·하늘·달 마스크/변위셰이더/그레인/샤프닝/해상도별 합성판을 런타임에서 제거하고, 새 좌표의 해골 폭포 흐름2개만 보강한다. 현행 수치와 정지·오류 정책은 [스플래시 계약](../3.1%20ui%20hud%20디자인/스플래시_인트로_시퀀스.md), 실제3비율각10.592/10.5101/10.5253초·달/부츠/여백·1x/3x·보강밖변경0px·감소/오류/입력/해제 자체PASS 결과는 I:/EXODUSER-Storage/codex-takeover/title-final-as-is-20261102/REPORT.md. 기존ENTER/FDG/월드인트로·원본/WIP 보존. 물리모니터/NW.js/Unity/Steam·외부배포는 별도다.
 
 | 담당·범위 | 결과·근거 | 반영 경계 |
 |---|---|---|
 | codex-web-logo, 첫 화면·로비·시네마틱/챕터/컷 로고 | 원본 금속 보존, 불투명 흑철 보정 PNG로 11참조 통일. [규격·검수](../3.1%20ui%20hud%20디자인/LOGO_SOLID_20261031.md), `G:/exoduser/tmp/design-review/20261031_logo_solid/REPORT.md` | main만 정상 반영. DEMO/EA·배포·Unity 적용과 구분. Unity 기존 브리프에 같은 PNG 사용 인계 |
 
-### 2026-11-02 웹 3D 3라운드 마감
+### 2026-11-02 웹 3D 4라운드 CTO 색 정정
 
-codex-web3d: 기존 맵 위 유령나무 형태·118낮은 군락·캠프/제단 명암 개선,기본OFF/원본인물·VFX·HUD·충돌 보존. 같은 소스1920/3840 OFF·ON10초·1x/주인공RGBA차이0/57회귀·111프로젝트·guard PASS,밀집ON168.48/191.52FPS. 무적시각경로3840·9/9·123.80초·오류0. [현행 계약](../4.1맵디자인+설정/WEB3D_TRIAL_20261031.md), `I:/EXODUSER-Storage/web3d-round3-20261102/REPORT.md` 및3377 `/tmp/web3d-round3-review/index.html`. 자체판정은 이번 표현/경로 범위이며 기존main 동일 회귀3실패·전체AAA/사용자채택·자연완주·NW.js/Steam와 구분한다. 단계별main반영/분리서버HTTP200·27소스SHA대조,최종원격SHA는외부final-delivery.json.
+codex-web3d: 4라운드 제단 붉은 번짐/고유색 수정. 제단343.2px·기준energy.5742, 원래 독액10광원·self-glow.62 보존, 물 위 뿌리2배치 제거/132군락. 같은 소스12구도×1920/3840 OFF/ON·고유색 가시61영역 최대13.96°≤15°·오류0/map동일·81회귀/111프로젝트/guard PASS. [현행 계약](../4.1맵디자인+설정/WEB3D_TRIAL_20261031.md), I:/EXODUSER-Storage/web3d-round4-20261102/hue-color-pass/REPORT.md 및3377 /tmp/web3d-hue-review/index.html. source/remote/HTTP는 delivery.json. 3라운드 이동·FPS는 과거 증거이며 이번 성능으로 재사용하지 않음. 기본OFF·지속120FPS/전구간영상·전체AAA/자연완주·NW.js/Steam·Unity는 보류/미검증.
+
+### 2026-11-02 웹 3D 5라운드 마감
+
+codex-web3d: 나머지구역 낙엽74층/206표시군락, ct환경그라데이션선합성으로동측직선제거(82f93b92b1). 13카메라·고유색63영역최대14.1367°·지속64적/96탄1920/3840전Tier120이상(1초창최저138.28)·원본인물RGBA차0/HUD/map동일·전구간12/12목적지·239.334초무음1배속전편재생·62회귀/111프로젝트/guard PASS. 자체표현레이어PASS·기본ON가능판정/실제OFF유지. [현행계약](../4.1맵디자인+설정/WEB3D_TRIAL_20261031.md), I:/EXODUSER-Storage/codex-takeover/web3d-r5/REPORT.md·3377 /tmp/web3d-r5-review/index.html·원격/실행본영수증delivery.json. 자동보행무적/재탐색7은자연보스완주와구분. Unity대기.

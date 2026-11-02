@@ -4,16 +4,17 @@ import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
 const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
 const click=html.slice(html.indexOf('  function onVidClick(){'),html.indexOf('  function startWorldIntro(){'));
-for(const build of ['full','demo','ea'])for(const gate of [true,false])test(build+' ENTER starts v22b immediately with gateLock='+gate,()=>{
- let starts=0,legacyPlays=0;const classes={add(){}};
+for(const build of ['full','demo','ea'])for(const gate of [true,false])test(build+' ENTER starts v22b once after the enter sound lead with gateLock='+gate,()=>{
+ let starts=0,legacyPlays=0;const delays=[],classes={add(){}};
  const ctx=vm.createContext({_vidStarted:false,_cinDone:false,_cinReady:false,_LOBBY_BUILD:build,
  console:{log(){}},prompt:{querySelector:()=>({classList:classes}),style:{}},skipBtn:{classList:classes},
  document:{getElementById:()=>gate?{}:null},window:{},_GP:{},performance:{now:()=>0},
- setTimeout(){},setInterval(){return 1},clearInterval(){},startCinBgm(){},startWorldIntro(){starts++},
+ setTimeout(f,ms){delays.push(ms);f()},setInterval(){return 1},clearInterval(){},startCinBgm(){},startWorldIntro(){starts++},
  vid:{style:{},play(){legacyPlays++;return Promise.resolve()}}});
  vm.runInContext(click+';onVidClick();onVidClick();',ctx);
  assert.equal(starts,1,'all routes must start v22b once, independently of decorative DOM');
  assert.equal(legacyPlays,0,'no legacy doorway playback');assert.equal(ctx._cinReady,true);
+ assert.ok(delays.includes(1100),'enter sound leads the intro by 1.1s so music and movie do not mask it');
 });
 test('lobby never loads or displays the retired door movie and background',()=>{
  assert.doesNotMatch(html,/<source[^>]+src=["']video\/intro\.mp4/);

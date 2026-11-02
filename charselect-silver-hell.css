@@ -93,3 +93,15 @@
  #charVisualPop :is(.cs-side.left,.cs-side.right,.cs-foot){zoom:var(--cs-side-scale);right:calc(40px / var(--cs-side-scale))}
  #charVisualPop .cs-foot{bottom:calc(40px / var(--cs-side-scale))}
 }
+
+/* 2026-11-02 사용자 "테두리 디자인 만들어 둔 거 없냐, 저 그림판 디자인 말고":
+   SVG 선(가는 선+빨간 마름모) 대신 이미 만들어 둔 은빛 단조 9-slice 원화(panel_frame_20261029)를 두 판에 쓴다. */
+#charVisualPop .cs-side.left,#charVisualPop .cs-frame-box{
+ background:linear-gradient(180deg,rgba(16,15,15,.9),rgba(8,8,9,.94)) padding-box!important;
+ border:1px solid transparent!important;
+ border-image:url(img/ui/silver_hell/panel_frame_20261029.png) 150 / 60px / 18px stretch!important;
+ box-shadow:0 18px 50px rgba(0,0,0,.55)!important}
+#charVisualPop .cs-side.left::before,#charVisualPop .cs-side.left::after,
+#charVisualPop .cs-frame-box::before,#charVisualPop .cs-frame-box::after{display:none!important}
+#charVisualPop .cs-side.left{padding:34px 36px 30px!important}
+#charVisualPop .cs-frame-box{padding:34px 30px 22px!important}

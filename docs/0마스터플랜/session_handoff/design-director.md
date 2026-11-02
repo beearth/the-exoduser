@@ -149,6 +149,16 @@ codex-web-wide-anim이 원래 영상 가림을 해소하고 manifest 위치/높�
 
 기존 codex-web-keyart-wide가 최신origin/main d60ed26bb를 먼저 병합하고 close/C2-tall-fixed-3840x1920.png를 채택했다. 원화 정적 영역과 tall-final 전206프레임 움직임지도를 정합 합성,3840/2560/1920판 선택으로 바꾼다. 하늘은 수정 원화에 시간별밝기비.8~1.2를 적용해 구 직선/감산얼룩을 피한다. 기존로고48.6px/메뉴68.6px 여백·폭포100/75px/s보강 유지.
 
-실제3해상도각10초이상·전후1x·루프/정지/오류/입력 검수 PASS(웹선명도개선범위). 4K13.03MB·2560판7.29MB·1920판4.80MB,발이동0px,오류/404/세이브쓰기0. Dota 보호를 위해PC영상인코딩없이 원격미디어샌드박스 처리. 신규유료생성0,기존WIP7개 보존. 원격최종SHA는결과보고서에확정한다. 현행상세수치는 스플래시C2계약, 최종판정·1x·녹화·source/원격SHA는 I:/EXODUSER-Storage/codex-takeover/title-clarity-20261102/REPORT.md에 확정한다. 이전2036×1016영상만 확대하던 검수는 title-motion-final-20261102/REPORT.md에 보존한다.
+최종 close 원화+close-final 루프 합성3판으로 교체했다. 실제3해상도각10초이상·얼굴/발/요새/폭포1x·루프/정지/오류/입력 검수 완료,발이동0px·오류/404/세이브쓰기0. Dota 보호로PC영상인코딩없이 원격미디어샌드박스 사용,새유료생성0·기존WIP7개 보존. 11/02후속승인:달4K(−60,+268)px이동/구름복원/영상달마스크·10초약맥동으로3비율달전체·부츠보존.후속실제검수 title-moon-20261102/REPORT.md.원생성한계는 스플래시C2계약, 최종source/원격SHA·자체판정·녹화는 I:/EXODUSER-Storage/codex-takeover/title-close-20261102/REPORT.md. 이전tall기록은 title-clarity-20261102/REPORT.md에 보존한다.
 
 확인서버 http://127.0.0.1:3384/index.html?test=1. Unity반영대기. 물리32:9모니터·NW.js·오디오·Steam/외부배포는 별도다. 기존unrelated living-scenes와폐기crop32작업파일은이번커밋에서제외한다.
+
+
+## 2026-11-02 살아 있는 대기 화면
+
+codex-web-keyart-wide가 CTO 저녁 지시를 이어받았다. 시작 메뉴/게이트/기존 타이틀 WIP는 보존하고 로비·선택5종·로딩32장·결과3종만 canvas 환경 레이어로 처리한다. 점 입자/신체 변형 영상은 대상 화면에서 정지판으로 대체하고 접근성/저사양 정책을 선대 스프라이트에도 적용한다. 원화 크기 반올림/디코딩 전환 경합을 수정했다. 현행 소스/수치/에셋은 docs/3.1 ui hud 디자인/LIVING_SCENES_20261102.md, 최종 전수/판정/원격 SHA는 I:/EXODUSER-Storage/codex-takeover/living-1102/REPORT.md. 중간 FAIL 후보는 채택하지 않으며 Unity 반영 대기.
+
+
+## 2026-11-02 살아 있는 화면 최종 인수
+
+로비·선택5종·로딩32종(13/14/17 제외)·결과3종에 점 없는 canvas 연무를 적용했다.시작 메뉴/게이트는 보존했다.원본 파일 보존, 별도 정리판26개로 기존 부유 점/그레인을 제거하고 캐릭터 사이드의 점 박힌 금속판을 숨겼다.4비율164화면·82편10초무음·1x전후/3x·121검사/project112/guard PASS.실제화면의 흰 가장자리까지 전수 검사했다.자체 PASS는 환경 모션·잔점/경계 제거 범위이며 정리판 미세 재질은 원본과 동일하지 않고 네이티브4K가 아니다.최종SHA·실행본·동기화는 I:/EXODUSER-Storage/codex-takeover/living-1102/REPORT.md.상수/원화규격 SSOT는 docs/3.1 ui hud 디자인/LIVING_SCENES_20261102.md.자연 전투/NW.js/오디오/독립 총괄 검수와 구분. Unity 반영: 대기.

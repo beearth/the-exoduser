@@ -1,26 +1,25 @@
-/* C2 Kling loop with measured, feathered skull-mouth waterfall masks. */
+/* Supplied final Kling loop, unprocessed; only the skull-waterfall flow is overlaid. */
 (function(scope){
  'use strict';
  const ROOT='assets/title-signboard/C2/';
- function rect(w,h){const scale=Math.max(w/2036,h/1018);return {x:(w-2036*scale)/2,y:(h-1018*scale)/2,width:2036*scale,height:1018*scale,scale};}
- function videoWidth(w,h,dpr=1){const need=Math.max(w,h*2)*Math.min(dpr,1.5);return need<=1920?1920:need<=2560?2560:3840;}
- function videoSource(width){return 'video/title_motion_C2_clarity_'+width+'_20261102.mp4';}
+ const moon=Object.freeze({x:1178,y:308,radius:80});
+ function rect(w,h){const scale=Math.max(w/2036,h/1016);return {x:(w-2036*scale)/2,y:(h-1016*scale)/2,width:2036*scale,height:1016*scale,scale};}
+ function videoSource(){return 'video/title_motion_C2_final_20261102.mp4';}
  function advance(t,dt,paused){return t+(paused?0:Math.max(0,Math.min(.1,dt)));}
  function motionReason(p){return p.hidden?'hidden':p.reduce?'reduced-motion':p.tier==='C'||p.quality==='low'?'low-tier':p.atmos===0?'atmosphere-off':'motion';}
  function flowOffset(t,index){return t*(index===0?100:75);}
- const api=scope.TitleSignboard={rect,advance,motionReason,flowOffset,videoWidth,videoSource};
+ const api=scope.TitleSignboard={rect,advance,motionReason,flowOffset,videoSource,moon};
  if(!scope.document)return;
  api.create=function(host){
   const doc=scope.document,canvas=doc.createElement('canvas');canvas.id='titleSignboardCanvas';canvas.setAttribute('aria-hidden','true');
   Object.assign(canvas.style,{position:'absolute',inset:'0',width:'100%',height:'100%',pointerEvents:'none',display:'none'});
   host.insertBefore(canvas,doc.getElementById('splashTitleUI'));
-  const cx=canvas.getContext('2d',{alpha:false}),still=new Image();
-  still.src=ROOT+'still.webp';
+  const cx=canvas.getContext('2d',{alpha:false});
   const video=doc.createElement('video');video.muted=true;video.defaultMuted=true;video.loop=true;video.playsInline=true;video.preload='none';
-  const stats={ready:false,frames:0,time:0,mode:'loading',error:null,renderMs:0,videoTime:0,videoFrames:0,flowFrames:0};
+  const stats={ready:false,frames:0,time:0,mode:'loading',error:null,flowError:null,renderMs:0,videoTime:0,videoFrames:0,flowFrames:0};
   const reduce=scope.matchMedia('(prefers-reduced-motion: reduce)');
-  let active=false,destroyed=false,raf=0,last=0,dirty=true,hasVideo=false,playPending=false,policyTimer=0,lastMode='',selectedWidth=0,restoreTime=0;
-  const falls=[{"id":"near","box":[696,498,66,259],"mouth":[714,506],"contact":[735,747],"speed":100},{"id":"far","box":[951,548,78,218],"mouth":[974,555],"contact":[1001,756],"speed":75}];
+  let active=false,destroyed=false,raf=0,last=0,dirty=true,playPending=false,policyTimer=0,lastMode='';
+  const falls=[{"id":"near","box":[860,320,60,253],"mouth":[877,328],"contact":[895,560],"speed":100},{"id":"far","box":[1043,385,44,203],"mouth":[1056,392],"contact":[1066,579],"speed":75}];
   const tile=doc.createElement('canvas');tile.width=128;tile.height=512;
   const tx=tile.getContext('2d'),pixels=tx.createImageData(128,512);
   for(let y=0;y<512;y++)for(let x=0;x<128;x++){
@@ -29,7 +28,7 @@
    pixels.data[i]=v;pixels.data[i+1]=v*.29;pixels.data[i+2]=v*.27;pixels.data[i+3]=255;
   }
   tx.putImageData(pixels,0,0);
-  falls.forEach(f=>{f.mask=new Image();f.mask.src=ROOT+'fall-'+f.id+'.png';f.canvas=doc.createElement('canvas');f.canvas.width=f.box[2];f.canvas.height=f.box[3];f.cx=f.canvas.getContext('2d');f.mask.onload=wake;f.mask.onerror=()=>{stats.error='Waterfall mask unavailable';};});
+  falls.forEach(f=>{f.mask=new Image();f.mask.src=ROOT+'fall-'+f.id+'.png?v=20261102-final';f.canvas=doc.createElement('canvas');f.canvas.width=f.box[2];f.canvas.height=f.box[3];f.cx=f.canvas.getContext('2d');f.mask.onload=wake;f.mask.onerror=()=>{stats.flowError='Waterfall mask unavailable';wake();};});
   function reason(){
    let opt={},local=false,tier='';
    try{opt=JSON.parse(scope.localStorage.getItem('hellcave_settings')||'{}').opt||{};local=scope.localStorage.getItem('exoduser_menu_reduce_motion')==='1';}catch{}
@@ -37,15 +36,15 @@
    return motionReason({hidden:doc.hidden,reduce:reduce.matches||local||opt.reduceMotion,tier,quality:opt.quality,atmos:opt.atmos});
   }
   function sync(){
-   if(destroyed)return;
+   if(destroyed||!active)return;
+   // Load the same video frame even when motion is disabled. No separate still asset.
+   if(!video.getAttribute('src')){video.preload='auto';video.src=videoSource();video.load();}
    const mode=reason();if(mode!==lastMode){dirty=true;last=0;lastMode=mode;}
-   if(!active||mode!=='motion'||stats.error){video.pause();}else if(!playPending){
-    const width=videoWidth(host.clientWidth,host.clientHeight,scope.devicePixelRatio||1);
-    if(selectedWidth!==width){restoreTime=video.currentTime||0;selectedWidth=width;stats.mediaWidth=width;video.src=videoSource(width);}
-    if(!video.paused)return;
-    video.muted=true;playPending=true;video.play().catch(e=>{if(active&&reason()==='motion'&&e.name!=='AbortError'){stats.error='Video playback unavailable';dirty=true;}}).finally(()=>{playPending=false;wake();});
+   if(mode!=='motion'||stats.error){video.pause();}else if(!playPending&&video.paused){
+    video.muted=true;playPending=true;
+    video.play().catch(e=>{if(active&&reason()==='motion'&&e.name!=='AbortError'){stats.error='Video playback unavailable';dirty=true;}}).finally(()=>{playPending=false;wake();});
    }
-   if(dirty&&!raf&&active)raf=scope.requestAnimationFrame(draw);
+   if(dirty&&!raf)raf=scope.requestAnimationFrame(draw);
   }
   function waterfall(f,index,t){
    if(!f.mask.complete||!f.mask.naturalWidth)return;
@@ -63,34 +62,38 @@
   }
   function draw(now){
    raf=0;if(!active||destroyed)return;
-   const mode=reason();stats.mode=stats.error?'still-fallback':mode;
+   const mode=reason();stats.mode=stats.error?'media-error':mode;
    if(mode==='hidden'){video.pause();last=0;return;}
    const moving=mode==='motion'&&!stats.error;
-   if(moving&&now-last<1000/30){raf=scope.requestAnimationFrame(draw);return;}
+   if(moving&&last&&now-last<1000/30){raf=scope.requestAnimationFrame(draw);return;}
    const dt=last?(now-last)/1000:0;last=now;stats.time=advance(stats.time,dt,!moving);
-   const w=host.clientWidth,h=host.clientHeight,k=Math.min(scope.devicePixelRatio||1,1.5,3840/w,2160/h);
-   const rw=Math.round(w*k),rh=Math.round(h*k);
+   const w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;
+   const k=Math.min(scope.devicePixelRatio||1,1.5,3840/w,2160/h),rw=Math.round(w*k),rh=Math.round(h*k);
    if(canvas.width!==rw||canvas.height!==rh){canvas.width=rw;canvas.height=rh;dirty=true;}
    if(!moving&&!dirty)return;
-   const t=performance.now(),r=rect(w,h),videoReady=moving&&video.readyState>=2;
-   if(moving&&hasVideo&&!videoReady&&!video.error){raf=scope.requestAnimationFrame(draw);return;}
-   if(videoReady||still.complete&&still.naturalWidth){
+   const t=performance.now(),r=rect(w,h);
+   if(video.readyState>=2){
     cx.setTransform(rw/w,0,0,rh/h,0,0);cx.imageSmoothingEnabled=true;cx.imageSmoothingQuality='high';
-    cx.drawImage(videoReady?video:still,r.x,r.y,r.width,r.height);
-    cx.save();cx.translate(r.x,r.y);cx.scale(r.width/2036,r.height/1018);
-    if(videoReady){hasVideo=true;stats.videoFrames++;stats.videoTime=video.currentTime;}
-    if(moving&&!stats.error){falls.forEach((f,i)=>waterfall(f,i,stats.time));stats.flowFrames++;}
-    cx.restore();canvas.style.display='block';stats.ready=true;stats.frames++;stats.renderMs+=performance.now()-t;dirty=false;
+    cx.drawImage(video,r.x,r.y,r.width,r.height);
+    stats.videoFrames++;stats.videoTime=video.currentTime;
+    if(moving&&!stats.flowError){
+     cx.save();cx.translate(r.x,r.y);cx.scale(r.scale,r.scale);
+     falls.forEach((f,i)=>waterfall(f,i,stats.time));stats.flowFrames++;
+     cx.restore();
+    }
+    canvas.style.display='block';stats.ready=true;stats.frames++;stats.renderMs+=performance.now()-t;dirty=false;
+   }else if(stats.error){
+    cx.setTransform(1,0,0,1,0,0);cx.fillStyle='#000';cx.fillRect(0,0,rw,rh);
+    canvas.style.display='block';stats.ready=true;dirty=false;
    }
    if(moving)raf=scope.requestAnimationFrame(draw);
   }
   function wake(){dirty=true;if(active&&!destroyed&&!raf)raf=scope.requestAnimationFrame(draw);}
   function refresh(){dirty=true;last=0;sync();}
-  video.addEventListener('loadedmetadata',()=>{if(restoreTime>0&&Number.isFinite(video.duration))video.currentTime=restoreTime%video.duration;});
-  video.addEventListener('loadeddata',wake);video.addEventListener('error',()=>{stats.error='Video load failed';hasVideo=false;video.pause();wake();});
-  still.onload=wake;still.onerror=()=>{stats.stillError=true;wake();};
+  video.addEventListener('loadeddata',wake);
+  video.addEventListener('error',()=>{stats.error='Video load failed';video.pause();wake();});
   doc.addEventListener('visibilitychange',refresh);reduce.addEventListener('change',refresh);scope.addEventListener('resize',refresh);scope.addEventListener('storage',refresh);
-  const instance={stats,still,video,start(){active=true;sync();if(!policyTimer)policyTimer=scope.setInterval(sync,500);},stop(){active=false;video.pause();scope.cancelAnimationFrame(raf);raf=0;last=0;scope.clearInterval(policyTimer);policyTimer=0;canvas.style.display='none';},destroy(){
+  const instance={stats,video,start(){if(destroyed)return;active=true;sync();if(!policyTimer)policyTimer=scope.setInterval(sync,500);},stop(){active=false;video.pause();scope.cancelAnimationFrame(raf);raf=0;last=0;scope.clearInterval(policyTimer);policyTimer=0;canvas.style.display='none';},destroy(){
    this.stop();destroyed=true;video.removeAttribute('src');video.load();doc.removeEventListener('visibilitychange',refresh);reduce.removeEventListener('change',refresh);scope.removeEventListener('resize',refresh);scope.removeEventListener('storage',refresh);canvas.remove();
   }};
   api.current=instance;return instance;

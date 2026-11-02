@@ -2829,10 +2829,10 @@ CSS 캐시 ui-refinement.css?v=20260927-4. 신규 이미지/아이템 데이터 
 | id / 적용 위치 | 현재 계약 |
 |---|---|
 | 예약 시작 | index.html showCharGate(charId,storySeen=false) 진입 시 const request=_characterLoadSeq 캡처. 이 함수는 요청 번호를 증가시키지 않는다 |
-| 예약 실행 | 기존 setTimeout 1200ms 유지. callback 첫머리에서 request!==_characterLoadSeq이면 return. 같을 때만 기존 window.location.href 대입 |
+| 예약 실행 | 공통 fadeOut500ms 완료 뒤 request===_characterLoadSeq를 재확인해 ScreenTransition.navigate로 이동. 취소하면 fadeIn으로 복귀 |
 | 기존 취소·재요청 | _goLogin/_goCinematic 및 loadCharacters/loadLocalCharacters의 기존 ++_characterLoadSeq가 이전 예약을 무효화. 새 취소 writer나 timer clear·debouncer 없음 |
 | 반복 요청 의미 | 요청 번호가 달라진 두 예약은 실행 순서에 관계없이 새 번호만 이동. 같은 번호에서 두 번 호출한 경우 두 callback 모두 허용하는 기존 R 의미 유지 |
-| 정상 경로 | offline test slot 인코딩, online char/선택 slot 이름, demo의 slot=demo&demo=1, storySeen의 story=warrior-v21 suffix 유지. 1200ms/로고 preload/선택·remaster 변경 없음 |
+| 정상 경로 | offline test slot 인코딩, online char/선택 slot 이름, demo의 slot=demo&demo=1, storySeen의 story=warrior-v21 suffix 유지. 로고 preload/선택·remaster 유지. 1200ms 고정대기는 SCREEN_TRANSITIONS_20261102.md의 공통500ms 경계로 대체 |
 | 부수효과 경계 | demo 활성화·loading·로고 preload는 기존처럼 예약 전에 수행. stale callback은 이동만 중단하며 기존 activation·loading을 되돌리지 않는다. demo 활성화 실패는 기존 hideLoading/오류/예약0 유지 |
 | 새 검수 | 격리 실제 showCharGate/직접 callback의 정상URL·demo실패·늦은취소·서로 다른 요청의 양쪽 실행순서·같은번호반복·가드외본문불변6묶음 PASS. 해당 inline script1개 구문 PASS. 전체 Startup/실브라우저·사용자 save/API 실행은 아님 |
 | 보호 범위 | 3387/classic/ch1Three/ch1Rig/webgpu carry 미채택. MAP·package·패링별도dependency·game-easy-test/Godot/HUD 변경0. PC/잔여R전체이식 미완료 |
@@ -3095,7 +3095,7 @@ CSS 선·도형으로 그린 판·버튼을 생성 원화로 교체했다. 모�
 | 자산 | 크기 | 쓰는 곳 | 방식 |
 |---|---|---|---|
 | `assets/lobby/lobby_enter_btn_silver_20261029.png` | 1536×576 | 로비 `#enterGameBtn` img | 원래 보라 ENTER 원화를 같은 형태로 리마스터(육망성 → 일곱 고리·끊어진 사슬 인장). 바탕만 투명(가장자리 연결 검정 플러드 키), 비활성 = 흑백·어둡게, 호버 = 밝기 1.14 + 진홍 번짐 |
-| `img/ui/silver_hell/panel_frame_20261029.png` | 1024×768 | `.sh-panel.sh-framed` (첫 적용: 튜토리얼 `#introKeys .intro-key-panel`) | 9-slice `150 / 75px / 24px stretch`, 검정 휘도 키(색 보정 포함). 4:3 근처 창용 |
+| `img/ui/silver_hell/panel_frame_20261029.png` | 1024×768 | `.sh-panel.sh-framed` (첫 적용: 튜토리얼 `#introKeys .intro-key-panel`), 캐릭터 선택 `#csLeft`·`.cs-frame-box`(2026-11-02, slice150/60px/18px, SVG 선 테두리 대체) | 9-slice `150 / 75px / 24px stretch`, 검정 휘도 키(색 보정 포함). 4:3 근처 창용 |
 | `img/ui/silver_hell/btn_plaque_20261029.png` | 1024×198 | 튜토리얼 건너뛰기·다음 | 3-slice `0 174 fill / 0 40px`, 글자 Hahmlet 400 16px 뼈색 자간 .24em |
 
 다음: 같은 프레임·버튼판을 공통 창(설정·인벤·대장간 등)과 로비 패널로 넓힌다. 창 비율이 4:3에서 멀면 가운데 장식이 늘어나므로 가로형 프레임을 따로 만든다.
@@ -3146,3 +3146,8 @@ statwindow-brief 마지막 보정만 수행한다. 시작 원격/HEAD는 9f5db2a
 ## 2026-11-01 슬롯 안내 후보 대체
 
 사용자 “우리도 다 풀어버려”에 따라 앞선 가득 참 안내 후보028260c89는 단독 인수하지 않는다. 후속 후보는 최대5 생성·복원·저장 제한을 제거하고 현재 개수만 표시한다. 웹 온라인·공개·DEMO도 생성 칸을 항상 활성화한다. 실제 빌드·공통 반영 상태는 아래 SSOT와 최종 인계 영수증을 따른다.
+
+
+## 2026-11-02 살아 있는 대기 화면
+
+로비·영웅5종·허용 로딩32장·클리어/사망/데모 종료는 living-scenes.js/.css의 부드러운 큰 연무로 전환한다. 이 범위에서는 앞 절의 기존 MP4/점 입자 모션 복원 계약을 대체하며, 시작 메뉴와 첫 화면은 보존한다. 저사양·움직임 줄이기·분위기 끄기·숨김·프록시에서 정지. 전사 불씨 국소 보정/사망 무잔점 판, 정확한 수치와 검수 경계는 [현행 계약](LIVING_SCENES_20261102.md), 최종 반영/영상/FPS는 외부 living-1102/REPORT.md를 따른다.

@@ -10,7 +10,7 @@ export function mapLookLayout(data,anchors){
  for(const p of anchors.props)if(data.tree_glow.textures.includes(file(p)))lights.push({...data.tree_glow,id:'tree_glow_'+p.id,position:[...p.position],radius:p.draw_size[0]*data.tree_glow.radius_scale});
  const angle=data.light_shafts.angle_deg*Math.PI/180;
  const shafts=data.light_shafts.shafts.map(([x,y,width,length],i)=>({position:[x,y],width,length,angle,phase:i*1.7}));
- for(const s of shafts)lights.push({id:'shaft_pool',position:[s.position[0]-Math.sin(angle)*s.length*.4,s.position[1]+Math.cos(angle)*s.length*.4],radius:s.width*1.1,energy:data.light_shafts.pool_energy,color:data.light_shafts.pool_color,pulse:[.12,.25]});
+ // Beams scatter through mist; a canopy opening is not a floor point emitter.
  const shadows=anchors.props.filter(p=>!data.prop_shadow.skip_textures.includes(file(p)));
  const center=anchors.boundary.reduce((c,p)=>[c[0]+p[0]*anchors.tile_size/anchors.boundary.length,c[1]+p[1]*anchors.tile_size/anchors.boundary.length],[0,0]);
  const random=seeded(20261020),f=data.foreground,foreground=[];
@@ -21,6 +21,12 @@ export function mapLookLayout(data,anchors){
  return {lights,shadows,shafts,foreground,occluders:anchors.prop_colliders.filter(c=>c.kind==='circle'&&c.radii[0]*data.occluder_radius_scale>=8)};
 }
 export function holeLights(data,holes){return (holes||[]).filter(h=>h&&Number.isFinite(h.x)&&h.alive!==false&&!h.closed).map(h=>({...data.spawn_hole_light,id:'hole',position:[h.x,h.y],radius:data.spawn_hole_light.radius_base+(h.size||0)*data.spawn_hole_light.radius_per_size}));}
+// The 2D darkness pass is disabled for this layer, so carry over its moat's
+// existing emitters instead of dropping their green self-light with that pass.
+export function moatLights(hill,tile){
+ const rows=[];globalThis.Ch1AltarMoat?.lights(rows,hill,tile);
+ return rows.map(l=>({id:'toxic_moat',position:[l.x,l.y],radius:l.r,energy:l.a,color:[l.cr/255,l.cg/255,l.cb/255]}));
+}
 export function effectLights(data,projectiles,blasts){
  const out=[],table=data.fx_lights,keys=['fire','lightning','ice','holy','dark'];
  for(const p of projectiles){if(!p||!Number.isFinite(p.x)||p.life<=0)continue;
@@ -41,6 +47,6 @@ export function foregroundPose(row,center,hero,walkable,parallax){
 }
 
 // Restore the player pool after the cold ambient pass; authored hue stays local.
-const landmarkTuning={camp_fire:[1.20,1.12],camp_glow:[1.15,1.08],altar_ritual:[1.18,1.25]};
+const landmarkTuning={camp_fire:[1.20,1.12],camp_glow:[1.15,1.08],altar_ritual:[.52,.55]};
 export function presentationRadius(row){return row.radius*(landmarkTuning[row.id]?.[0]||1);}
 export function renderEnergy(row,time){return animatedEnergy(row,time)*(row.id==='player'?.8:row.id==='fx'?.7:1.45)*(landmarkTuning[row.id]?.[1]||1);}

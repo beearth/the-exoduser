@@ -14,8 +14,9 @@ export function createGhosts(renderer,canvas,shared,data){
    fragmentShader:`uniform sampler2D art;uniform float time,phase,opacity,soul;uniform vec2 texel;varying vec2 vUv;
    void main(){vec2 p=vUv;float a;vec3 color=vec3(.57,.60,.62);
     if(soul<.5){vec4 c=texture2D(art,p);float lum=dot(c.rgb,vec3(.3,.59,.11));float edge=max(max(texture2D(art,p+vec2(texel.x*3.,0.)).a,texture2D(art,p-vec2(texel.x*3.,0.)).a),max(texture2D(art,p+vec2(0.,texel.y*3.)).a,texture2D(art,p-vec2(0.,texel.y*3.)).a))-c.a;
-     color=mix(vec3(.32,.38,.43),vec3(.83,.85,.80),smoothstep(.015,.42,lum));color+=vec3(.18,.21,.22)*max(0.,edge);
-     a=max(c.a,max(0.,edge)*.40)*smoothstep(0.,.075,p.y);}
+     float glow=max(0.,edge)*(.65+.35*sin(time*.8+phase+p.y*8.));
+     color=mix(c.rgb*.19,vec3(.46,.57,.64),min(1.,glow));
+     a=max(c.a*.94,max(0.,edge)*.50)*smoothstep(0.,.16,p.y);}
     else{vec2 q=(p-vec2(.5,.62))*vec2(2.8,1.9);float head=exp(-dot((p-vec2(.5,.83))*vec2(8.,8.),(p-vec2(.5,.83))*vec2(8.,8.)));
      float body=exp(-q.x*q.x*4.)*smoothstep(0.,.48,p.y)*(1.-smoothstep(.58,.8,p.y));a=max(head,body*.65);}
     float haze=.80+.20*sin(p.y*19.+time*.4+phase);gl_FragColor=vec4(color,a*opacity*haze);}`});
@@ -29,9 +30,9 @@ export function createGhosts(renderer,canvas,shared,data){
   for(const row of data.trees){if(trees.has(row.id))continue;const image=s.images[row.type];if(!image?.naturalWidth)continue;
    const texture=new THREE.Texture(image);texture.needsUpdate=true;texture.colorSpace=THREE.NoColorSpace;trees.set(row.id,make(row,texture));}
   let n=0;for(const item of [...trees.values(),...souls]){const p=item.row;item.mesh.visible=p.x+p.width>view.x&&p.x-p.width<view.x+view.w&&p.y>view.y&&p.y-p.height<view.y+view.h;
-   if(!item.mesh.visible)continue;const pose=ghostPose(p,s.P,s.now/1000);item.u.opacity.value=pose.alpha;if(pose.alpha>.005)n++;}
-  shared.view.value.set(view.x,view.y,view.w,view.h);shared.time.value=s.now/1000;shared.bend.value=s.quality==='low'?0:1;
-  renderer.render(scene,camera);canvas._glVer=(canvas._glVer||0)+1;ctx.save();ctx.globalAlpha=1;ctx.drawImage(canvas,view.x,view.y,view.w,view.h);ctx.restore();stats.ghostVisible=n;stats.ghostLoaded=trees.size;
+   if(!item.mesh.visible)continue;const pose=ghostPose(p,s.P,s.now/1000);item.u.opacity.value=pose.alpha*(item.u.soul.value?1:1.65);if(pose.alpha>.005)n++;}
+   shared.view.value.set(view.x,view.y,view.w,view.h);shared.time.value=s.now/1000;shared.bend.value=s.budget?.sway===false||s.quality==='low'?0:1;
+  renderer.render(scene,camera);canvas._glVer=(canvas._glVer||0)+1;if(window._Web3DFrameProbe&&!window._Web3DFrameProbe.ghosts)window._Web3DFrameProbe.ghosts=canvas.toDataURL();ctx.save();ctx.globalAlpha=1;ctx.drawImage(canvas,view.x,view.y,view.w,view.h);ctx.restore();stats.ghostVisible=n;stats.ghostLoaded=trees.size;
  }
  return {draw,setEnabled:value=>{enabled=!!value;},snapshot:()=>({...stats})};
 }

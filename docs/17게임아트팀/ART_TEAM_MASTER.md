@@ -137,7 +137,7 @@
 | 출시 예정 3종 `portrait_/poster_idle_` spearmage·hellgunner·transmuter (JPG 96~213KB) | ⚠ 압축으로 흐릿함 — 디자인 확정 후 고화질 재제작 필요 |
 | 아이반(검은 연기) T8 키아트 V35 `E:/exoduser-wt/_out/ivan-keyart-t8/` (Git 밖) | ✅ 2026-10-26 디자인총괄 확정 = r4(V29 잔점 제거판 1152×1536). 투명 컷 `ivan_t8_final_cut.png` 1010×1386·가슴 위 초상 `ivan_t8_portrait.png` 1024², halo 검수 통과. 로비·게임 미연결 — [기록](IVAN_T8_KEYART_V35_20261026.md) |
 | 첫 화면·로비 공용 로고 `img/logo_exoduser_solid.png`(2026-10-31 불투명 흑철 보정본, 원본 `img/logo_exoduser.png` 보존)(2026-10-28~ 눈알 로고 A 1506×719 RGBA; 이전 C안 1551×740 → `img/logo_exoduser_c_crown_20261027.png`) + ENTER `img/ui/enter_gothic_brass.png`(1536×1024 RGBA) | ✅ 2026-10-27 사용자 선택 안 C(지옥왕의 관: 흑철 대문자+낮은 뿔 왕관, 진홍 빛은 틈에서만)로 교체·통일. 원본(해골 로고 835×348)은 `img/logo_exoduser_v1_skull.png`로 보존, 기존 첫 화면 RGB 로고 `output/imagegen/exoduser-hell-lord-logo-api-v1.png`·ENTER `enter-gothic-api-v1.png`는 미참조 보존. 후보 A/B/C·목업 `E:/exoduser-wt/_out/title-logo-redesign/`(Git 밖), 적용 캡처 `…/apply/`. 런타임 캔버스 키잉(`cin-logo-art.js`)은 참조 제거. 상세: `docs/3.1 ui hud 디자인/UI_COMPOSITION_20260925.md` 말미 · `docs/cinematic/ENTER_ENGRAVED_20260907.md` §2026-10-27 개정 |
-| 시작 메뉴 C2 tall 합성 `video/title_motion_C2_clarity_{3840,2560,1920}_20261102.mp4` + `title-signboard.js` | 2026-11-02 최종 브리프 반영. 3840×1920 수정 정지 원화 + 2036×1016 제공 루프의 움직임 정합 합성·해상도3판·중앙 cover·폭포2줄기 보강. 달/해골2개/실버테일 전신을16/21/32:9에서 보존. 이전 A·Steam 키트는 보존 이력. 현행 수치·검수는 `docs/3.1 ui hud 디자인/스플래시_인트로_시퀀스.md` C2 계약 |
+| 시작 메뉴 최종 Kling `video/title_motion_C2_final_20261102.mp4` + `title-signboard.js` | 2026-11-02 최종 지시: final-main/loop.mp4 원본 byte 그대로 2036×1016 cover. 정지원화·하늘/인물/달 마스크·변위셰이더·그레인·샤프닝 모두 제거. 예외는 새 영상 좌표의 해골 폭포 흐름2개만. 16/21/32:9 각10초·달/부츠·여백·1x/3x·입력/모션감소/오류 검수는 title-final-as-is-20261102/REPORT.md. 수치 SSOT는 스플래시_인트로_시퀀스.md 현행 계약 |
 
 ### 4.4 배포·동기화 상태 (2026-10-01 실측, 조회 시점 기준)
 
@@ -289,3 +289,13 @@ MagicLight 마지막 조회 59,540 (2026-10-01, emg1 2차 후). 이번 마감 �
 ## 2026-11-02 타이틀 키프레임 3후보 (선택용)
 
 원본 A와 전신1x·발3x·손/성/피강/달1x 비교: `G:/exoduser/tmp/design-review/20261102_title_keyframe/BOARD.png`. 사용자 지정 내장 image_gen 편집 후보3장, 달 교정1회 후 C2만 국소 원형 보정. 원생성2171~2172×724, 32:9 2144×603 크롭→관람3840×1080 균등 확대(네이티브4K 아님). 달 지름비1.0136/1.0000/.9936. **CTO 선택 대기·RETOUCH·게임 미적용**, 고해상도 디테일/32:9 피강 잔해는 최종 채택 전 보완. 기존 손/힐부츠가 남은 런타임 A를 이번 결과로 교체하지 않았다. 프롬프트·측정·검수·한계는 I:/EXODUSER-Storage/codex-takeover/title-keyframe-20261102/REPORT.md.
+
+
+## 2026-11-02 살아 있는 대기 화면
+
+웹 살아 있는 대기 화면용 전사 불씨 보정과 사망 무잔점 보정판을 기존 원화에서 내장 imagegen으로 편집했다. 전사는35개 국소 마스크만 소비하고 원본 얼굴/체형/금속을 보존한다. 사망 원화의 동일 구도 cleanup은 원본 삽입 구간에만 적용한다. 원본 파일·승인 타이틀/게이트 불변. 생성2회/별도 유료 API0, 실제1672×941·1932×814이며 네이티브4K 주장 없음. assets/living-scenes/20261102/provenance.json과 ../3.1 ui hud 디자인/LIVING_SCENES_20261102.md 및 외부 living-1102/REPORT.md에서 최종1x/3x·전수·채택 상태 확인.
+
+
+## 2026-11-02 살아 있는 화면 최종 검수
+
+로비·선택5종·로딩32종(13/14/17 제외)·결과3종에 점 없는 canvas 연무를 적용했다.시작 메뉴/게이트는 보존했다.원본 파일 보존, 별도 정리판26개로 기존 부유 점/그레인을 제거하고 캐릭터 사이드의 점 박힌 금속판을 숨겼다.4비율164화면·82편10초무음·1x전후/3x·121검사/project112/guard PASS.실제화면의 흰 가장자리까지 전수 검사했다.자체 PASS는 환경 모션·잔점/경계 제거 범위이며 정리판 미세 재질은 원본과 동일하지 않고 네이티브4K가 아니다.최종SHA·실행본·동기화는 I:/EXODUSER-Storage/codex-takeover/living-1102/REPORT.md.상수/원화규격 SSOT는 docs/3.1 ui hud 디자인/LIVING_SCENES_20261102.md.자연 전투/NW.js/오디오/독립 총괄 검수와 구분. Unity 반영: 대기.

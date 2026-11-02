@@ -1,0 +1,385 @@
+{
+    "schema":  "exoduser.web3d.groves.v1",
+    "note":  "원래 1-1 생체고사목 12종의 밑동에서 낮은 뿌리 군락을 구성. 버섯·바위가 섞인 목질부와 뼈를 연결. 통로 및 원본 충돌 보존.",
+    "assets":  {
+                   "roots":  "assets/map/ch1/production_finish/outer90_sources/rotforest_root_bridge_01.png",
+                   "root":  "assets/map/ch1/floor_objects/prop_s_root.png",
+                   "bone":  "assets/map/ch1/floor_objects/prop_s_bone.png",
+                   "base1":  "assets/map/ch1/collision/rotforest_tree_01.png",
+                   "base2":  "assets/map/ch1/collision/rotforest_tree_02.png",
+                   "base3":  "assets/map/ch1/collision/rotforest_tree_03.png",
+                   "base4":  "assets/map/ch1/collision/rotforest_tree_04.png",
+                   "base5":  "assets/map/ch1/collision/rotforest_tree_05.png",
+                   "base6":  "assets/map/ch1/collision/rotforest_tree_06.png",
+                   "base7":  "assets/map/ch1/collision/rotforest_tree_07.png",
+                   "base8":  "assets/map/ch1/collision/rotforest_tree_08.png",
+                   "base9":  "assets/map/ch1/collision/rotforest_tree_09.png",
+                   "base10":  "assets/map/ch1/collision/rotforest_tree_10.png",
+                   "base11":  "assets/map/ch1/collision/rotforest_tree_11.png",
+                   "base12":  "assets/map/ch1/collision/rotforest_tree_12.png"
+               },
+    "lanes":  [
+                  {
+                      "id":  "spine",
+                      "halfWidth":  100,
+                      "points":  [
+                                     [
+                                         4020,
+                                         7960
+                                     ],
+                                     [
+                                         4020,
+                                         7000
+                                     ],
+                                     [
+                                         4000,
+                                         5600
+                                     ],
+                                     [
+                                         4000,
+                                         4400
+                                     ],
+                                     [
+                                         4000,
+                                         2900
+                                     ],
+                                     [
+                                         4000,
+                                         1400
+                                     ],
+                                     [
+                                         4000,
+                                         0
+                                     ]
+                                 ]
+                  },
+                  {
+                      "id":  "west",
+                      "halfWidth":  70,
+                      "points":  [
+                                     [
+                                         4000,
+                                         5200
+                                     ],
+                                     [
+                                         2900,
+                                         5480
+                                     ],
+                                     [
+                                         2120,
+                                         5480
+                                     ],
+                                     [
+                                         1900,
+                                         4180
+                                     ],
+                                     [
+                                         1800,
+                                         2200
+                                     ]
+                                 ]
+                  },
+                  {
+                      "id":  "east",
+                      "halfWidth":  70,
+                      "points":  [
+                                     [
+                                         4000,
+                                         5200
+                                     ],
+                                     [
+                                         5400,
+                                         5500
+                                     ],
+                                     [
+                                         6500,
+                                         5460
+                                     ],
+                                     [
+                                         6600,
+                                         3800
+                                     ],
+                                     [
+                                         6700,
+                                         1740
+                                     ]
+                                 ]
+                  },
+                  {
+                      "id":  "altar",
+                      "halfWidth":  70,
+                      "points":  [
+                                     [
+                                         4000,
+                                         3900
+                                     ],
+                                     [
+                                         5100,
+                                         4000
+                                     ],
+                                     [
+                                         5900,
+                                         4120
+                                     ]
+                                 ]
+                  }
+              ],
+    "exclusions":  [
+                       {
+                           "x":  4100,
+                           "y":  3530,
+                           "rx":  560,
+                           "ry":  530
+                       },
+                       {
+                           "x":  1820,
+                           "y":  4020,
+                           "rx":  240,
+                           "ry":  250
+                       },
+                       {
+                           "x":  5900,
+                           "y":  3880,
+                           "rx":  300,
+                           "ry":  320
+                       },
+                       {
+                           "x":  6500,
+                           "y":  5460,
+                           "rx":  330,
+                           "ry":  300
+                       }
+                   ],
+    "regions":  [
+                    {
+                        "id":  "start",
+                        "bands":  [
+                                      {
+                                          "rect":  [
+                                                       3050,
+                                                       6970,
+                                                       4910,
+                                                       7980
+                                                   ],
+                                          "step":  [
+                                                       166,
+                                                       119
+                                                   ],
+                                          "size":  [
+                                                       360,
+                                                       210
+                                                   ],
+                                          "reason":  "남쪽 진입로 양옆 고목 밑동 연결",
+                                          "sway":  5
+                                      }
+                                  ]
+                    },
+                    {
+                        "id":  "early",
+                        "bands":  [
+                                      {
+                                          "rect":  [
+                                                       2380,
+                                                       5610,
+                                                       5620,
+                                                       6830
+                                                   ],
+                                          "step":  [
+                                                       180,
+                                                       133
+                                                   ],
+                                          "size":  [
+                                                       380,
+                                                       220
+                                                   ],
+                                          "reason":  "초입 길 어깨와 경계 숲 연결",
+                                          "sway":  6
+                                      }
+                                  ]
+                    },
+                    {
+                        "id":  "arena",
+                        "bands":  [
+                                      {
+                                          "rect":  [
+                                                       1980,
+                                                       4600,
+                                                       6850,
+                                                       6080
+                                                   ],
+                                          "step":  [
+                                                       112,
+                                                       88
+                                                   ],
+                                          "size":  [
+                                                       380,
+                                                       200
+                                                   ],
+                                          "reason":  "전투광장 양옆 뿌리 둑",
+                                          "sway":  4
+                                      }
+                                  ]
+                    },
+                    {
+                        "id":  "camp",
+                        "bands":  [
+                                      {
+                                          "rect":  [
+                                                       1060,
+                                                       3370,
+                                                       3150,
+                                                       4520
+                                                   ],
+                                          "step":  [
+                                                       173,
+                                                       126
+                                                   ],
+                                          "size":  [
+                                                       350,
+                                                       210
+                                                   ],
+                                          "reason":  "캠프 후면과 폐허 외곽 연결",
+                                          "sway":  5
+                                      }
+                                  ]
+                    },
+                    {
+                        "id":  "corpse_tree",
+                        "bands":  [
+                                      {
+                                          "rect":  [
+                                                       2930,
+                                                       3040,
+                                                       5050,
+                                                       4430
+                                                   ],
+                                          "step":  [
+                                                       130,
+                                                       94
+                                                   ],
+                                          "size":  [
+                                                       380,
+                                                       210
+                                                   ],
+                                          "reason":  "거대 시체나무 뿌리 바깥 연결",
+                                          "sway":  4
+                                      }
+                                  ]
+                    },
+                    {
+                        "id":  "altar",
+                        "bands":  [
+                                      {
+                                          "rect":  [
+                                                       5140,
+                                                       3230,
+                                                       7140,
+                                                       4660
+                                                   ],
+                                          "step":  [
+                                                       176,
+                                                       126
+                                                   ],
+                                          "size":  [
+                                                       360,
+                                                       210
+                                                   ],
+                                          "reason":  "제단·독액 도랑 바깥 테두리",
+                                          "sway":  4
+                                      }
+                                  ]
+                    },
+                    {
+                        "id":  "late",
+                        "bands":  [
+                                      {
+                                          "rect":  [
+                                                       2760,
+                                                       1270,
+                                                       5350,
+                                                       2950
+                                                   ],
+                                          "step":  [
+                                                       166,
+                                                       115
+                                                   ],
+                                          "size":  [
+                                                       390,
+                                                       230
+                                                   ],
+                                          "reason":  "북쪽 길 양 어깨 썩은 그루터기와 뿌리군",
+                                          "sway":  7
+                                      }
+                                  ]
+                    },
+                    {
+                        "id":  "exit",
+                        "bands":  [
+                                      {
+                                          "rect":  [
+                                                       3080,
+                                                       110,
+                                                       4910,
+                                                       1210
+                                                   ],
+                                          "step":  [
+                                                       166,
+                                                       122
+                                                   ],
+                                          "size":  [
+                                                       360,
+                                                       220
+                                                   ],
+                                          "reason":  "북문 좌우 침식된 뿌리 둑",
+                                          "sway":  5
+                                      }
+                                  ]
+                    },
+                    {
+                        "id":  "cocoon",
+                        "bands":  [
+                                      {
+                                          "rect":  [
+                                                       1060,
+                                                       1280,
+                                                       2980,
+                                                       2940
+                                                   ],
+                                          "step":  [
+                                                       176,
+                                                       130
+                                                   ],
+                                          "size":  [
+                                                       360,
+                                                       210
+                                                   ],
+                                          "reason":  "서북 고치 군락 가장자리",
+                                          "sway":  6
+                                      }
+                                  ]
+                    },
+                    {
+                        "id":  "toxic",
+                        "bands":  [
+                                      {
+                                          "rect":  [
+                                                       5330,
+                                                       1190,
+                                                       7240,
+                                                       2900
+                                                   ],
+                                          "step":  [
+                                                       176,
+                                                       130
+                                                   ],
+                                          "size":  [
+                                                       360,
+                                                       210
+                                                   ],
+                                          "reason":  "동북 독액 지대 사이 저지대",
+                                          "sway":  6
+                                      }
+                                  ]
+                    }
+                ]
+}

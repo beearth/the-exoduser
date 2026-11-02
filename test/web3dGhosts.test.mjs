@@ -32,3 +32,7 @@ test('round3 spectral trees keep a quarter-opacity silhouette throughout a full 
   assert.ok(a>=.24 && a<=.62,'tree silhouette opacity '+a);
  }
 });
+
+test('start and altar default cameras retain a whole spectral tree on a side shoulder',()=>{
+ const data=json('../assets/web3d/ghosts-ch1.json');for(const [name,x,y]of [['start',4020,7420],['altar',5900,4120]])assert.ok(data.trees.some(p=>p.x-p.width/2>x-960&&p.x+p.width/2<x+960&&p.y<y+540&&p.y-p.height>y-540&&Math.abs(p.x-x)>450),name+' has no complete side silhouette');
+});
