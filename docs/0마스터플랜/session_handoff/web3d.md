@@ -1,4 +1,16 @@
-# 웹 3D 인계 — 2026-11-02 7라운드
+# 웹 3D 인계 — 2026-11-03 8라운드
+
+착수 origin/main 029a157b7 fetch/merge(Already up to date), INDEX/WORK 비어 있음 확인. [현행 R8 계약](../../4.1맵디자인+설정/WEB3D_TRIAL_20261031.md). **기본 r3d OFF 유지.** 아래 R7 자체 PASS 이후 CTO 11-02 23:50에 밀도·유령나무·생동감 재작업이 지시됐다.
+
+R8: 원화15종의 낮은 뿌리 군락을10구역에 추가. 단일 root_fan 반복 후보·구형 마젠타 소품 후보는 폐기. 원래 rotforest_tree_01..12 하단24%와 root bridge/sroot/sbone, 원본 PNG·맵·충돌·전투/AI/저장·HUD 보존. 군락은 원래 소품 아래 ground hook. 수풀12.5px/군락2px 미풍·군락 부착 식생, 유령나무의 어두운 목질+청백 윤곽광. 유료 실행0.
+
+외부보고 I:/EXODUSER-Storage/codex-takeover/web3d-r8/REPORT.md. 최종자료 release-1920/qa.json·release-3840/qa.json·motion/qa.json·media.json·performance/qa.json·delivery.json. 원재질 hue 분리검수와 실제ON 잔여바닥 평균 visibleFloorActual을 구분해 공개한다. 새 원화 아래 바닥과 다른 원화 RGB를 같은 재질로 비교하지 않는다.
+
+현재 고부하: 활성Core/AI·64적96탄 이상·1920/3840 OFF/high/mid/low 8조건 PASS. ON 평균137.57~160.61FPS,1초창 최저127.86FPS. Dota실행 상태 기록. 1920 13카메라 빈바닥13.16~32.32%, 원재질 분리검수 PASS. 3840·영상·3x·최종전달은 최종 외부영수증 기준. 브라우저 --mute-audio·게임음량0·API쓰기차단·I:프로필,3377격리 세이브/분리서버 유지. 3333수동재시작0.
+
+**제작자 RETOUCH 후보**. 낮은 뿌리의 국소 접합·소재 균형과 실제ON 국소 hue의 독립 CTO 재판정이 남는다. 전체AAA·자연HP보스완주·NW.js재빌드·Steam게시와 구분. 정상 정확경로 commit/push·main 비강제반영·3333예약 실제SHA/HTTP대조는 delivery.json. Unity 반영: 대기(웹 인게임 월드 표현). UI·UX·소리 변경0.
+
+## R7 보존 이력 — 최신 판정 아님
 
 작업본 G:/exoduser-wt/codex-web3d, codex/web3d-trial-20261031. [현행 R7 SSOT](../../4.1맵디자인+설정/WEB3D_TRIAL_20261031.md). CTO 21:40의 새 스티커 결함을 수정했다. **제작자 해당범위 VISUAL PASS / 독립 CTO 재판정 대기 / 기본 r3d OFF 유지**. 과거5라운드 자체PASS로 기본ON을 결정하지 않는다.
 

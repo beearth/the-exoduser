@@ -5,9 +5,10 @@ import {createMapLook} from './map-look-pass.mjs?v=20261102-round6';
 import {createDepthPass} from './depth-pass.mjs?v=20261102-round6';
 import {sceneBudget} from './scene-budget.mjs?v=20261102-round4-final';
 import {createForest} from './forest-layer.mjs?v=20261102-round6';
-import {createGhosts} from './ghost-layer.mjs?v=20261102-round4-final';
+import {createGhosts} from './ghost-layer.mjs?v=20261103-round8';
 import {authoredFoliageLayout,puddleHabitat} from './foliage-layout.mjs?v=20261031-foliage4b';
 import {drawFoliageDebug} from './foliage-debug.mjs?v=20261031-foliage4';
+import {createGroves} from './grove-layer.mjs?v=20261103-r8';
 
 import {createGroundBlendPass} from './ground-blend-pass.mjs?v=20261102-round7';
 import {createGroundDressing} from './ground-dressing.mjs?v=20261102-round7';
@@ -35,6 +36,7 @@ export async function install(read){
   const forestResponse=await fetch('./assets/web3d/forest-ch1.json');if(!forestResponse.ok)throw Error('forest-ch1 '+forestResponse.status);
   const forest=await createForest(renderer,canvas,uniforms,await forestResponse.json(),lookAnchors);
   uniforms.nativeProps={value:forest.nativeMask};
+  const groves=await createGroves(renderer,canvas,uniforms);
   const ghostResponse=await fetch('./assets/web3d/ghosts-ch1.json?v=20261102-round7');if(!ghostResponse.ok)throw Error('ghosts-ch1 '+ghostResponse.status);
   const ghosts=createGhosts(renderer,canvas,uniforms,await ghostResponse.json());
   const relief=createRelief(renderer,canvas,uniforms,read,mapLook);
@@ -42,7 +44,7 @@ export async function install(read){
   void main(){float variant=habitat.w;localUV=uv;vUv=(uv+vec2(mod(variant,2.),1.-floor(variant/2.)))*.5;vec2 p=position.xy*anchor.z;float h=max(0.,p.y)/100.;vec2 d=anchor.xy-hero;tint=habitat.rgb;
     float near=exp(-dot(d,d)/3600.);float wave=sin(time*.85+anchor.x*.002+anchor.y*.0015)+.22*sin(time*2.7+phase);
     vec2 blast=anchor.xy-impulse.xy;float push=exp(-dot(blast,blast)/30000.)*impulse.z;
-    p.x+=(wave*6.8+near*sign(d.x)*12.+push*sign(blast.x)*18.)*h*h*bend;
+    p.x+=(wave*12.5+near*sign(d.x)*12.+push*sign(blast.x)*18.)*h*h*bend;
     p.y-=near*h*8.*bend;vec2 w=anchor.xy+vec2(p.x,-p.y);world=w;
     gl_Position=vec4((w.x-view.x)/view.z*2.-1.,1.-(w.y-view.y)/view.w*2.,0.,1.);light=anchor.w;
   }`;
@@ -85,6 +87,9 @@ export async function install(read){
   function plane(cx,cy,w,h){const g=new THREE.PlaneGeometry(w,h);const p=g.attributes.position;for(let i=0;i<p.count;i++){p.setXYZ(i,p.getX(i)+cx,cy-p.getY(i),0);}return g;}
   function build(s){
     mapRef=s.G.map;layout=authoredFoliageLayout(foliagePlan,s.hill,s.tile);
+    // Living margins grow from the authored root composites, never from a
+    // full-map scatter. The low plants remain behind every combat painter.
+    for(const p of groves.rows)if(p.asset.startsWith('base')&&p.phase%3<1)for(const side of [-1,1])layout.push({x:p.x+side*p.width*.27,y:p.y-p.height*.14,scale:.88+(p.phase%1)*.3,phase:p.phase+side,variant:side<0?1:2,region:p.region,zone:p.id});
     const h=s.hill,t=s.tile;
     for(const m of waterMeshes){waters.remove(m.mesh);m.mesh.geometry.dispose();}waterMeshes=[];
     const add=(x,y,w,h,descriptor)=>{const mesh=new THREE.Mesh(plane(x,y,w,h),waterMaterial);mesh.frustumCulled=false;waters.add(mesh);waterMeshes.push({mesh,x,y,w,h,...descriptor});};
@@ -146,12 +151,12 @@ export async function install(read){
   const active=s=>enabled&&s.G.stage===0&&!s.G._bossArena;
   const api={draw:(ctx,view)=>{try{draw(ctx,currentState||read(),view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D living layer]',error);}},
     surface:(ctx,view)=>{const s=currentState=read();if(!active(s))return;const start=performance.now();frameCost=0;try{const budget=s.budget=sceneBudget(s.quality,proxy,adaptiveCost),w=Math.max(1,Math.round(view.pw*budget.scale)),h=Math.max(1,Math.round(view.ph*budget.scale));if(canvas.width!==w||canvas.height!==h)renderer.setSize(w,h,false);depth.prepare(s,view);relief.surface(ctx,s,view);frameCost+=performance.now()-start;}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D surface]',error);}},
-    ground:(ctx,view)=>{const s=currentState||read();if(!active(s))return;try{groundBlend.draw(ctx,s,view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D ground]',error);}},
+    ground:(ctx,view)=>{const s=currentState||read();if(!active(s))return;const start=performance.now();try{groundBlend.draw(ctx,s,view);groves.draw(ctx,s,view);frameCost+=performance.now()-start;}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D ground]',error);}},
     beginObject:(ctx,o,m)=>{const s=currentState||read();return active(s)&&!s.nativeProxy?relief.beginObject(ctx,o,m,s):false;},
     // Keep GPU props in their original native painter/depth order. Repainting
     // them on Canvas2D changes unsupported blend/gradient/filter semantics.
     deferObject:o=>{const s=currentState||read();return active(s)&&!s.nativeProxy&&depth.defer(o);},
     front:(ctx,paint)=>{const s=currentState||read();if(!active(s))return;const start=performance.now();try{depth.draw(ctx,s,paint);frameCost+=performance.now()-start;costEma=costEma*.96+frameCost*.04;stats.cpuMs=frameCost;stats.layerCostEma=costEma;}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D depth]',error);}},
-    cleanHill:createMaterialCleanup(),snapshot:()=>({...stats,...relief.snapshot(),...forest.snapshot(),...ghosts.snapshot(),...dressing.snapshot(),...depth.snapshot(),enabled,error:api.error||null}),setEnabled:value=>{enabled=!!value;},setGhostsEnabled:value=>ghosts.setEnabled(value),setGroundEnabled:value=>groundBlend.setEnabled(value),canvas};
+    cleanHill:createMaterialCleanup(),snapshot:()=>({...stats,...relief.snapshot(),...forest.snapshot(),...ghosts.snapshot(),...dressing.snapshot(),...depth.snapshot(),...groves.snapshot(),enabled,error:api.error||null}),setEnabled:value=>{enabled=!!value;},setGrovesEnabled:value=>groves.setEnabled(value),setGhostsEnabled:value=>ghosts.setEnabled(value),setGroundEnabled:value=>groundBlend.setEnabled(value),canvas};
   return api;
 }

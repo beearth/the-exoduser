@@ -1,6 +1,10 @@
 > 진행 프로젝트: [MAP_IMPROVEMENT_PROJECT.md](MAP_IMPROVEMENT_PROJECT.md) · 2.5D 깊이 기준: [DEPTH_2_5D_BENCHMARK_20260930.md](DEPTH_2_5D_BENCHMARK_20260930.md)
 
-## 2026-11-02 — 웹 3D 7라운드 (기본 OFF)
+## 2026-11-03 — 웹 3D 8라운드 (기본 OFF·제작자 RETOUCH)
+
+CTO 11-02 23:50의 밀도·유령나무·생동감 재작업. 원래 고사목12종 하단24%와 기존 뿌리/뼈를 사용하는 표시용1797군락·10구역, 수풀12.5px·밑동고정·부착식생, 어두운 목질/청백 윤곽 유령나무. 맵/충돌/전투/저장/HUD·원본PNG 보존, 유료0. 13카메라1920/3840 비교·빈바닥 표, 시작/캠프/후반/제단10초4편·1x 재생/프레임차, 활성64적96탄 ON평균137.57~160.61FPS. 원재질 hue 분리검수와 실제ON 잔여바닥 국소평균을 별도 공개. **실제ON 모든 국소 hue/전체AAA PASS 아님**. [현행 계약](WEB3D_TRIAL_20261031.md) · I:/EXODUSER-Storage/codex-takeover/web3d-r8/REPORT.md·delivery.json.
+
+## 2026-11-02 — 웹 3D 7라운드 이력 (8라운드 재작업으로 대체)
 
 원본맵 위 표현레이어의 스티커형 groundOnly90개를 제거, bank밑동 연결48입력/31표시(전체165/147)·실alpha feather40~80px·native RGB동일scalar로 수정. 표시잡티정리/미풍/안개/유령나무 가시성도수정. 13구도×3해상도 바닥hue13.0920°/개별소품11.6363°/패치1.8803°·패치밝기−.5184~−.1435%, 직접3x 추가점/스티커윤곽0. 요청12편10초1x드롭0, ON평균151.11~191.24FPS(64적96탄·Dota실행),12목적지키보드완주. 추가194초route영상은1x재생2프레임드롭남음. **제작자R7수정범위PASS·독립CTO판정대기/기본OFF**. [정확한현행수치·증거범위](WEB3D_TRIAL_20261031.md), I:/EXODUSER-Storage/codex-takeover/web3d-r7/REPORT.md·delivery.json, 3377 /tmp/web3d-r7-review/index.html. 자연보스완주/전체AAA/Unity/Steam완료와구분.
 
