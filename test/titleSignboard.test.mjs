@@ -5,6 +5,21 @@ import vm from 'node:vm';
 const file=new URL('../title-signboard.js',import.meta.url),scope={};
 if(fs.existsSync(file))vm.runInNewContext(fs.readFileSync(file,'utf8'),scope);
 const api=scope.TitleSignboard||{};
+test('approved moon disk and boot soles fit every 1080p title ratio without changing cover',()=>{
+ assert.ok(api.moon,'relocated still moon geometry is available');
+ for(const w of [1920,2560,3840]){
+  const r=api.rect(w,1080),m=api.moon;
+  for(const [x,y]of [[m.x-m.radius,m.y-m.radius],[m.x+m.radius,m.y+m.radius],[1300,736],[1526,736]]){
+   assert.ok(r.x+x*r.scale>=0&&r.x+x*r.scale<=w);
+   assert.ok(r.y+y*r.scale>=0&&r.y+y*r.scale<=1080);
+  }
+ }
+});
+test('moon light breathes weakly over ten seconds without changing disk geometry',()=>{
+ assert.equal(typeof api.moonPulse,'function');
+ assert.ok(api.moonPulse(2.5)>api.moonPulse(7.5));
+ for(let t=0;t<10;t+=.1){assert.ok(api.moonPulse(t)>=0&&api.moonPulse(t)<=.04);assert.ok(Math.abs(api.moonPulse(t)-api.moonPulse(t+10))<1e-10);}
+});
 test('close C2 preserves both skulls, both feet and character at 16:9, 21:9 and 32:9 with uniform scale',()=>{
  assert.equal(typeof api.rect,'function');
  for(const [w,h] of [[1920,1080],[2560,1080],[3840,1080],[3840,2160]]){

@@ -306,3 +306,18 @@ Vercel 계정 관리자의 결제 문제 해소가 선행한다. 에이전트는
 | 후속 | 기존Macground진단이자원/EditorPlayer/FIFO/profile을반환한뒤 동일Macowner에최종정확후보의공식artifact/최소합본검수. 사용자Dota/OBS·서버3333/3448·save/WIP보존. 공개402미납조건에서mainpush로CI재실패유발0 |
 
 근거: I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/title-c2-close-integration-20261102/ (raw-reference-proof.json, raw-selection-red.log, orphan-red.log, integration-green.log, official-plan.json).
+
+
+## 2026-11-02 후속 — C2 달 위치 복원까지 포함한 최종 소스 후보
+
+앞 절의 C2 close 출고표는29ee2b04 단계 기록이다. 현재는 별도moon 구현0877808df92391a02dd83fbf930fcb334278f489의15경로만 추가선택했다. 원격23ece257의 무관map/web3d/game 변경은 반입하지 않았다.
+
+| 항목 | 현재 인수·검증 |
+|---|---|
+| 표시 | 달/광배를 원화4K기준(-60,+268)px,가상중심(1180,309)/반경79로이동·원달구름복원·정지plate·10초alpha.01~.03맥동. 영상3판byte동일/MP4재인코딩0. 같은16/21/32:9 cover에서달전체와발밑보존은원담당실화면범위로인수 |
+| 실제근거 | title-moon-20261102/REPORT.md·qa-receipt/16회귀·1920/2560/3840각약10초·원본1x/오류폴백범위,root1920최종원본직접뷰. 이근거는새합본artifact/browser·물리모니터/NW/Unity/publicPASS가아님 |
+| 회귀·보호 | 추가2회귀는미구현api.moon/moonPulse에서RED→소스선택이식후GREEN. 기존상자/로비/저장/보상/AI/이동·파생/closure와합본132/132PASS. game.html은923과byte동일·비활성A원본/파생·raw보관파일삭제0·94활성매핑원문유지 |
+| 공식현재plan | 선택3245·sidecar포함3239파일·3998567832B·4GB여유1432168B·최대94795327B·94논리93물리. 실제identity검증계획이며static복사/buildpreparecheck·새합본Chrome미실행. 추가자산전공식예산재계산필수/상한완화0 |
+| 전달경계 | 같은private후보에정상commit/nonforcepush/remoteSHA확인. source候補와local3448디스크반영은원격main/public/Unity/Windows실행본동기화완료가아님. Macground검수자원반환후정확이후후보를실artifactQA대상으로사용 |
+
+근거: title-c2-close-integration-20261102/moon-followup/{red.log,green.log,official-plan.json,receipt.json}.
