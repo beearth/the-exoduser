@@ -1,0 +1,43 @@
+{
+  "stage": "LEAN_FEMALE_BODY_AND_BLUE_BOB_SOURCE_PREPARED_3D_PENDING_CONFIRMATION",
+  "createdAt": "2026-11-02T04:56:29.138Z",
+  "faceOrigins": [
+    {
+      "id": "transmuter",
+      "file": "transmuter.face-lock.png",
+      "sha256": "15ab7e47b4a9b3efd4ac4062b4ef7e528ae69fca7f382b60f2543b6094fd912d"
+    },
+    {
+      "id": "spearmage",
+      "file": "spearmage.face-lock.png",
+      "sha256": "fc2198af2bec17d8895fcb400368c76f7698614764d6134b6d520b1bc8760e32"
+    }
+  ],
+  "characters": [
+    {
+      "id": "transmuter",
+      "label": "변성술사 · 푸른 단발",
+      "face": "transmuter.face-lock.png",
+      "source": "transmuter.lean.source.png",
+      "hair": "푸른 비대칭 단발",
+      "sourceSha256": "7fb2818ab1cce59ca2a68fd5f9ba5bd4a20e572cf33293d407e045a16dc7fe12"
+    },
+    {
+      "id": "spearmage",
+      "label": "창기사 · 보라색 옆땋기",
+      "face": "spearmage.face-lock.png",
+      "source": "spearmage.lean.source.png",
+      "hair": "보라색 굵은 옆땋기",
+      "sourceSha256": "bac72fed1541a0041dff637b7451b28c5f6088e0e293c15fb5555b9d4807eae1"
+    }
+  ],
+  "bodyDirection": "여성적으로 날렵하고 탄탄한 체형; 과도한 어깨/팔/다리 벌크업은 반려",
+  "modelPlan": "meshy-execution-plan.json",
+  "modelAndCreditApproval": "AWAITING_USER_RESPONSE",
+  "paidMeshyRequestsSubmitted": 0,
+  "meshAvailable": false,
+  "rigAvailable": false,
+  "animationAvailable": false,
+  "runtimeApplied": false,
+  "sourceBackdrop": "opaque neutral gray for 3D source, not a transparent gameplay sprite"
+}

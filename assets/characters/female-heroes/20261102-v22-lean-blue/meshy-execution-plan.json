@@ -1,0 +1,97 @@
+{
+  "status": "AWAITING_EXPLICIT_MODEL_AND_CREDIT_CONFIRMATION",
+  "createdAt": "2026-11-02T04:56:29.138Z",
+  "provider": "Meshy",
+  "ai_model": "meshy-7.1",
+  "perCharacterCredits": {
+    "texturedMesh4k": 30,
+    "humanoidRigWithWalkRun": 5,
+    "total": 35
+  },
+  "singleCharacterSample": {
+    "id": "transmuter",
+    "estimatedCredits": 35
+  },
+  "bothCharacters": {
+    "ids": [
+      "transmuter",
+      "spearmage"
+    ],
+    "estimatedCredits": 70
+  },
+  "balanceObservation": {
+    "queriedAt": "2026-11-02T04:57:33.165Z",
+    "balance": 4238,
+    "monthly_credits": 2488,
+    "permanent_credits": 1750,
+    "monthly_resets_at": "2026-11-20T17:41:54.000Z"
+  },
+  "pricingSource": "https://docs.meshy.ai/en/api/pricing",
+  "reservePolicy": "Keep at least twenty percent of observed balance unspent; recheck balance immediately before any approved submission.",
+  "paidRequestsSubmitted": 0,
+  "extraPaidOperationsApproved": false,
+  "jobs": [
+    {
+      "id": "transmuter",
+      "inputSha256": "7fb2818ab1cce59ca2a68fd5f9ba5bd4a20e572cf33293d407e045a16dc7fe12",
+      "create": {
+        "file_path": "G:\\exoduser\\assets\\characters\\female-heroes\\20261102-v22-lean-blue\\transmuter.lean.source.png",
+        "ai_model": "meshy-7.1",
+        "model_type": "standard",
+        "geometry_resolution": "standard",
+        "pose_mode": "t-pose",
+        "should_texture": true,
+        "texture_resolution": "4k",
+        "enable_pbr": true,
+        "image_enhancement": false,
+        "should_remesh": true,
+        "target_polycount": 60000,
+        "topology": "triangle",
+        "target_formats": [
+          "glb",
+          "fbx"
+        ],
+        "alpha_thumbnail": true,
+        "multi_view_thumbnails": true,
+        "texture_prompt": "Preserve the exact input adult face, clearly blue short bob, navy cropped leather top, gently toned bare abdomen, full dark trousers, one blue core only on anatomical left forearm gauntlet. Realistic restrained dark fantasy materials, no new face or extra ornaments."
+      },
+      "rig": {
+        "input_task_id": "SET_ONLY_AFTER_SUCCEEDED_MODEL_PASSES_REVIEW",
+        "height_meters": 1.65,
+        "heightStatus": "Prototype import scale, not final character lore height"
+      },
+      "executionRule": "Confirm model cost first. Inspect finished body before rig. No blind create retry after uncertain timeout; list existing tasks first."
+    },
+    {
+      "id": "spearmage",
+      "inputSha256": "bac72fed1541a0041dff637b7451b28c5f6088e0e293c15fb5555b9d4807eae1",
+      "create": {
+        "file_path": "G:\\exoduser\\assets\\characters\\female-heroes\\20261102-v22-lean-blue\\spearmage.lean.source.png",
+        "ai_model": "meshy-7.1",
+        "model_type": "standard",
+        "geometry_resolution": "standard",
+        "pose_mode": "t-pose",
+        "should_texture": true,
+        "texture_resolution": "4k",
+        "enable_pbr": true,
+        "image_enhancement": false,
+        "should_remesh": true,
+        "target_polycount": 60000,
+        "topology": "triangle",
+        "target_formats": [
+          "glb",
+          "fbx"
+        ],
+        "alpha_thumbnail": true,
+        "multi_view_thumbnails": true,
+        "texture_prompt": "Preserve the exact input adult face, long smoky purple side braid over anatomical left shoulder, slim feminine toned build, charcoal cuirass fully covering abdomen, open upper chest, bare upper arms, plum short hip cloth and exposed thigh. Realistic restrained dark fantasy materials."
+      },
+      "rig": {
+        "input_task_id": "SET_ONLY_AFTER_SUCCEEDED_MODEL_PASSES_REVIEW",
+        "height_meters": 1.65,
+        "heightStatus": "Prototype import scale, not final character lore height"
+      },
+      "executionRule": "Confirm model cost first. Inspect finished body before rig. No blind create retry after uncertain timeout; list existing tasks first."
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "createdAt": "2026-11-02T04:56:29.138Z",
+  "task": "여성적으로 날렵하고 탄탄한 체형 교정·푸른 단발·생성창 애니메이션 참조 v22",
+  "generator": "built-in image_gen; exact model ID and cost undisclosed",
+  "outputs": [
+    {
+      "id": "transmuter",
+      "label": "변성술사 · 푸른 단발",
+      "filename": "transmuter.lean.source.png",
+      "source": "C:\\Users\\심도진\\.codex\\generated_images\\01a194cc-8301-70f1-80f8-a4e5f1090c22\\exec-b4e896c0-bf5c-4e09-80ba-a7a31788fd39.png",
+      "prompt": "Use case: identity-preserve / feminine toned game-character production reference.\nCreate one single adult woman's full-body game-character SOURCE IMAGE. IMAGE 1 is the PERMANENT FACE ORIGIN. Preserve its specific person: same eyelids/eye spacing, nose, lips, cheeks, jaw, skin tone and mature adult age; no different face, no face averaging, no masculinized jaw. IMAGE 2 is her earlier SLENDER full-body costume reference. IMAGE 3 is an actual frame from the user-approved character-creation animation, STYLE AND PRESENTATION REFERENCE ONLY: use its grounded dark-fantasy game-character rendering, clear large silhouette, layered dark plate/leather/cloth and subtle material highlights. Do NOT copy image 3's face, silver hair, weapons, pose, logo, setting or second character.\nThe requested body is FEMININE, SLENDER, FIRMLY TONED and physically fit. The earlier overly bulky/male-looking physique was REJECTED. Keep image 2's slim overall frame. Use a dancer/climber-like adult female body with natural hips, a strong but supple core, smooth narrow/sloping shoulders, slender upper arms with gentle long muscle definition and a healthy firm thigh/glute line. Subtle definition should read in skin/shading and posture rather than enlarged muscle volumes. Do not add bulky biceps, broad shoulder caps, thick trapezius, lats forming a male V torso, veins, heavy quadriceps, bodybuilder striations, stocky limbs or massive boots. She is not fragile/emaciated: healthy muscle tone, stable balanced legs and functional wrists/hands, natural waist/pelvis proportions. Gentle athletic abdominal lines, not deeply carved eight-pack or pinched waist.\nFront-facing neutral upright head/neck, level eyes, calm naturally closed lips, no tilted selfie angle or coy/pout pose. Simple modeling-ready relaxed A-stance: arms slightly separated from torso, hands/fingers clear, feet flat and roughly hip-width, hips centered, no swaying fashion stance. Natural compact adult proportions about seven heads, not elongated amazon height. Fitted practical armor sized to her slender frame. Same realistic painterly skin quality as the portrait, with game-character material depth and quiet worn metal/leather shapes like the animation. No bulky costume added to fake strength.\nVertical 2:3 head-to-sole full figure with generous padding around full hairstyle, hands and both flat boot soles. Clear neutral MID-GRAY background and flat diffuse studio light, no elaborate background, logo, text, second figure, held weapon or inset portraits. This is a clean 3D/rigging source, not a poster composition. Character: the Woni-reference TRANSMUTER, same face and small cheek mole from image 1.\nHAIR: replace the long ponytail with the selected SHORT ASYMMETRIC BOB, jaw to upper-neck length, side-part, clearly DYED BLUE: deep navy roots, visible medium COBALT / smoky steel-blue lengths, subtle slightly lighter blue edges. Blue must be clearly readable as blue, not black or purple; no neon glow, no cyan skin tint. Keep both eyes and face shape visible. No ponytail, braid, bun or long hair.\nCOSTUME ROLE: high-neck cropped navy leather chest covering, bare waist and gently defined female ABS, full fitted dark trousers covering BOTH thighs, sleek flat practical boots, short asymmetric navy shoulder mantle and layered dark guards with restrained fittings. Keep exactly ONE embedded blue core in the anatomical LEFT forearm gauntlet (VIEWER RIGHT); this signature gauntlet can be slightly oversized but the underlying arm and opposite forearm remain slender. Other forearm simple wraps/glove. No second core or long skirt. Use the animation's elegant layered fantasy material language while retaining this exact bare-abs/full-trouser role and short practical cloth. Image 3's old silver hair/hood/other characters do not override the locked face or blue bob.",
+      "refs": [
+        "G:/exoduser/assets/characters/female-heroes/20261102-v19/transmuter.face-lock.png",
+        "G:/exoduser/assets/characters/female-heroes/20261102-v19/transmuter-thick-ponytail.front.png",
+        "G:/exoduser/output/charselect-animation-reference-20261102/transmuter-sample-1.png"
+      ]
+    },
+    {
+      "id": "spearmage",
+      "label": "창기사 · 보라색 옆땋기",
+      "filename": "spearmage.lean.source.png",
+      "source": "C:\\Users\\심도진\\.codex\\generated_images\\01a194cc-8301-70f1-80f8-a4e5f1090c22\\exec-c4365900-ffaa-4f8f-a0c7-caa6c727fdd0.png",
+      "prompt": "Use case: identity-preserve / feminine toned game-character production reference.\nCreate one single adult woman's full-body game-character SOURCE IMAGE. IMAGE 1 is the PERMANENT FACE ORIGIN. Preserve its specific person: same eyelids/eye spacing, nose, lips, cheeks, jaw, skin tone and mature adult age; no different face, no face averaging, no masculinized jaw. IMAGE 2 is her earlier SLENDER full-body costume reference. IMAGE 3 is an actual frame from the user-approved character-creation animation, STYLE AND PRESENTATION REFERENCE ONLY: use its grounded dark-fantasy game-character rendering, clear large silhouette, layered dark plate/leather/cloth and subtle material highlights. Do NOT copy image 3's face, silver hair, weapons, pose, logo, setting or second character.\nThe requested body is FEMININE, SLENDER, FIRMLY TONED and physically fit. The earlier overly bulky/male-looking physique was REJECTED. Keep image 2's slim overall frame. Use a dancer/climber-like adult female body with natural hips, a strong but supple core, smooth narrow/sloping shoulders, slender upper arms with gentle long muscle definition and a healthy firm thigh/glute line. Subtle definition should read in skin/shading and posture rather than enlarged muscle volumes. Do not add bulky biceps, broad shoulder caps, thick trapezius, lats forming a male V torso, veins, heavy quadriceps, bodybuilder striations, stocky limbs or massive boots. She is not fragile/emaciated: healthy muscle tone, stable balanced legs and functional wrists/hands, natural waist/pelvis proportions. Gentle athletic abdominal lines, not deeply carved eight-pack or pinched waist.\nFront-facing neutral upright head/neck, level eyes, calm naturally closed lips, no tilted selfie angle or coy/pout pose. Simple modeling-ready relaxed A-stance: arms slightly separated from torso, hands/fingers clear, feet flat and roughly hip-width, hips centered, no swaying fashion stance. Natural compact adult proportions about seven heads, not elongated amazon height. Fitted practical armor sized to her slender frame. Same realistic painterly skin quality as the portrait, with game-character material depth and quiet worn metal/leather shapes like the animation. No bulky costume added to fake strength.\nVertical 2:3 head-to-sole full figure with generous padding around full hairstyle, hands and both flat boot soles. Clear neutral MID-GRAY background and flat diffuse studio light, no elaborate background, logo, text, second figure, held weapon or inset portraits. This is a clean 3D/rigging source, not a poster composition. Character: the Liv-reference SPEAR KNIGHT (existing id SPEARMAGE), preserve this face's actual more open eyes, short rounded nose, soft cheeks and full natural lip shape. Keep the original adult face without making it rounder/younger or bony.\nHAIR: retain ONE thick LONG PURPLE SIDE BRAID over anatomical LEFT shoulder (VIEWER RIGHT), black-plum roots and clearly visible smoky violet woven length, swept crown and face-framing strands, both eyes/cheeks clear. No short bob, ponytail, bun or silver hair.\nCOSTUME ROLE: slender continuous charcoal cuirass fully covers entire ABDOMEN to hips with a tasteful upper-chest neckline and narrow neck choker; small layered shoulder plates, bare slender toned upper arms, fitted forearm guards; short muted-plum asymmetric hip cloth over opaque shorts, a clearly visible firm but SLIM upper thigh with only gentle natural muscle lines; fitted shin guards and sleek flat boots. Preserve feminine natural waist/hip contour without corset exaggeration. No blue core, bare abs, massive pauldrons, thick arms, bulky calves or floor-length gown. Image 3 supplies dark fantasy material depth/cloth shape language only, not its old face, silver hair, hood, long gown, weapon or stance. Spear is separate rigid attachment geometry, so hands remain empty in this source.",
+      "refs": [
+        "G:/exoduser/assets/characters/female-heroes/20261102-v19/spearmage.face-lock.png",
+        "G:/exoduser/assets/characters/female-heroes/20261102-v19/spearmage-purple-sidebraid.preview.png",
+        "G:/exoduser/output/charselect-animation-reference-20261102/spearmage-sample-1.png"
+      ]
+    }
+  ],
+  "faceOriginLocked": true,
+  "bodyReviewStatus": "NEW_LEAN_BODY_OUTPUTS_AWAIT_USER_REVIEW",
+  "rejectedVersion": "v21 muscular bulk rejected as male-looking",
+  "referenceManifest": "output/charselect-animation-reference-20261102/reference-manifest.json",
+  "threeDStatus": "PAID_EXECUTION_AWAITING_MODEL_AND_COST_CONFIRMATION",
+  "runtimeApplied": false,
+  "notes": [
+    "Current sources have opaque neutral gray background for 3D segmentation; not transparent game sprites.",
+    "Selected faces remain canonical byte-identical originals. Generated render likeness remains a review gate.",
+    "The five existing character-selection MP4s were only read/probed/sampled. No source videos or gameplay code changed."
+  ],
+  "files": [
+    {
+      "id": "transmuter",
+      "file": "transmuter.lean.source.png",
+      "sha256": "7fb2818ab1cce59ca2a68fd5f9ba5bd4a20e572cf33293d407e045a16dc7fe12",
+      "width": 1024,
+      "height": 1536
+    },
+    {
+      "id": "spearmage",
+      "file": "spearmage.lean.source.png",
+      "sha256": "bac72fed1541a0041dff637b7451b28c5f6088e0e293c15fb5555b9d4807eae1",
+      "width": 1024,
+      "height": 1536
+    }
+  ],
+  "copyHashesVerified": true,
+  "paidMeshyRequestsSubmitted": 0
+}

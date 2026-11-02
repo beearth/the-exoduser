@@ -1,0 +1,105 @@
+{
+  "createdAt": "2026-11-02T05:02:35.262Z",
+  "checks": [
+    {
+      "file": "generation.receipt.json",
+      "status": 200
+    },
+    {
+      "file": "meshy-execution-plan.json",
+      "status": 200
+    },
+    {
+      "file": "preview.html",
+      "status": 200
+    },
+    {
+      "file": "production-manifest.json",
+      "status": 200
+    },
+    {
+      "file": "references/hellgunner-sample-0.png",
+      "status": 200
+    },
+    {
+      "file": "references/hellgunner-sample-1.png",
+      "status": 200
+    },
+    {
+      "file": "references/hellgunner-sample-2.png",
+      "status": 200
+    },
+    {
+      "file": "references/reference-manifest.json",
+      "status": 200
+    },
+    {
+      "file": "references/silvertail-sample-0.png",
+      "status": 200
+    },
+    {
+      "file": "references/silvertail-sample-1.png",
+      "status": 200
+    },
+    {
+      "file": "references/silvertail-sample-2.png",
+      "status": 200
+    },
+    {
+      "file": "references/spearmage-sample-0.png",
+      "status": 200
+    },
+    {
+      "file": "references/spearmage-sample-1.png",
+      "status": 200
+    },
+    {
+      "file": "references/spearmage-sample-2.png",
+      "status": 200
+    },
+    {
+      "file": "references/transmuter-sample-0.png",
+      "status": 200
+    },
+    {
+      "file": "references/transmuter-sample-1.png",
+      "status": 200
+    },
+    {
+      "file": "references/transmuter-sample-2.png",
+      "status": 200
+    },
+    {
+      "file": "references/warrior-sample-0.png",
+      "status": 200
+    },
+    {
+      "file": "references/warrior-sample-1.png",
+      "status": 200
+    },
+    {
+      "file": "references/warrior-sample-2.png",
+      "status": 200
+    },
+    {
+      "file": "spearmage.face-lock.png",
+      "status": 200
+    },
+    {
+      "file": "spearmage.lean.source.png",
+      "status": 200
+    },
+    {
+      "file": "transmuter.face-lock.png",
+      "status": 200
+    },
+    {
+      "file": "transmuter.lean.source.png",
+      "status": 200
+    }
+  ],
+  "canonicalFaceHashesVerified": true,
+  "sourceModelInputsVerified": true,
+  "paidMeshyRequestsSubmitted": 0,
+  "runtimeApplied": false
+}

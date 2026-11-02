@@ -1,0 +1,157 @@
+{
+  "createdAt": "2026-11-02T04:52:20.867Z",
+  "scope": "Read-only frame samples from actual character-selection MP4s; no source edits, no audio playback; scale only for reference inspection",
+  "dotaAbsent": true,
+  "videos": [
+    {
+      "id": "warrior",
+      "source": "assets/charselect/idle_warrior_cs3_4k.mp4",
+      "sha256": "f982c42c9b60e64ddb644ae8c6f3983a08a9314597eb14b9a04065b485e6405f",
+      "duration": 8.041667,
+      "streams": [
+        {
+          "index": 0,
+          "codec_type": "video",
+          "width": 3840,
+          "height": 2160,
+          "r_frame_rate": "24/1",
+          "nb_frames": "193"
+        }
+      ],
+      "frames": [
+        {
+          "file": "warrior-sample-0.png",
+          "seconds": 0.6433333600000001
+        },
+        {
+          "file": "warrior-sample-1.png",
+          "seconds": 3.2166668000000005
+        },
+        {
+          "file": "warrior-sample-2.png",
+          "seconds": 6.03125025
+        }
+      ]
+    },
+    {
+      "id": "silvertail",
+      "source": "assets/charselect/idle_silvertail_4k.mp4",
+      "sha256": "9966865d706b078361e8a2a0a1262683c0cea8f4a6dab0f3e94b5ffcea23c45c",
+      "duration": 7.5,
+      "streams": [
+        {
+          "index": 0,
+          "codec_type": "video",
+          "width": 3840,
+          "height": 2160,
+          "r_frame_rate": "24/1",
+          "nb_frames": "180"
+        }
+      ],
+      "frames": [
+        {
+          "file": "silvertail-sample-0.png",
+          "seconds": 0.6
+        },
+        {
+          "file": "silvertail-sample-1.png",
+          "seconds": 3
+        },
+        {
+          "file": "silvertail-sample-2.png",
+          "seconds": 5.625
+        }
+      ]
+    },
+    {
+      "id": "hellgunner",
+      "source": "assets/charselect/idle_hellgunner.mp4",
+      "sha256": "105c56a5b3a535f21099a51f999831ffd63469872e0856fc28054c025ce716ff",
+      "duration": 10.083333,
+      "streams": [
+        {
+          "index": 0,
+          "codec_type": "video",
+          "width": 1600,
+          "height": 900,
+          "r_frame_rate": "24/1",
+          "nb_frames": "242"
+        }
+      ],
+      "frames": [
+        {
+          "file": "hellgunner-sample-0.png",
+          "seconds": 0.80666664
+        },
+        {
+          "file": "hellgunner-sample-1.png",
+          "seconds": 4.0333332
+        },
+        {
+          "file": "hellgunner-sample-2.png",
+          "seconds": 7.56249975
+        }
+      ]
+    },
+    {
+      "id": "transmuter",
+      "source": "assets/charselect/idle_transmuter.mp4",
+      "sha256": "8d4e38f0e75757e28130709fe7ff858da056dc52b29e04aadf85fe124e9e34d7",
+      "duration": 10.083333,
+      "streams": [
+        {
+          "index": 0,
+          "codec_type": "video",
+          "width": 1600,
+          "height": 900,
+          "r_frame_rate": "24/1",
+          "nb_frames": "242"
+        }
+      ],
+      "frames": [
+        {
+          "file": "transmuter-sample-0.png",
+          "seconds": 0.80666664
+        },
+        {
+          "file": "transmuter-sample-1.png",
+          "seconds": 4.0333332
+        },
+        {
+          "file": "transmuter-sample-2.png",
+          "seconds": 7.56249975
+        }
+      ]
+    },
+    {
+      "id": "spearmage",
+      "source": "assets/charselect/idle_spearmage.mp4",
+      "sha256": "0bba78ef3e3322adbc8f152eeac8b225eccef7efb1d5d0a4a5361022f14dcf26",
+      "duration": 10.083333,
+      "streams": [
+        {
+          "index": 0,
+          "codec_type": "video",
+          "width": 1600,
+          "height": 900,
+          "r_frame_rate": "24/1",
+          "nb_frames": "242"
+        }
+      ],
+      "frames": [
+        {
+          "file": "spearmage-sample-0.png",
+          "seconds": 0.80666664
+        },
+        {
+          "file": "spearmage-sample-1.png",
+          "seconds": 4.0333332
+        },
+        {
+          "file": "spearmage-sample-2.png",
+          "seconds": 7.56249975
+        }
+      ]
+    }
+  ]
+}

@@ -1,15 +1,16 @@
 {
   "schema": "exoduser.current-character-art-direction.v1",
-  "updatedAt": "2026-11-02T02:27:00.358Z",
-  "sourcePackage": "assets/characters/female-heroes/20261102-v21-athletic",
-  "manifest": "assets/characters/female-heroes/20261102-v21-athletic/production-manifest.json",
+  "updatedAt": "2026-11-02T04:56:29.138Z",
+  "sourcePackage": "assets/characters/female-heroes/20261102-v22-lean-blue",
+  "manifest": "assets/characters/female-heroes/20261102-v22-lean-blue/production-manifest.json",
   "faceOriginsImmutable": true,
   "selectedHair": {
-    "transmuter": "단발",
+    "transmuter": "푸른 비대칭 단발",
     "spearmage": "보라색 굵은 옆땋기"
   },
-  "bodyDirection": "전사형 탄탄한 근육 체형",
-  "bodyOutputStatus": "USER_REVIEW_PENDING",
+  "bodyDirection": "여성적으로 날렵하고 탄탄한 몸; v21 과도한 근육 부피 반려",
+  "bodyOutputStatus": "NEW_LEAN_BODY_OUTPUTS_AWAIT_REVIEW",
+  "threeDExecutionStatus": "AWAITING_MODEL_AND_CREDIT_CONFIRMATION",
   "runtimeApplied": false,
   "notARuntimeLoaderConfiguration": true
 }
