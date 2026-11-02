@@ -38,7 +38,17 @@
 | 웹 UI 전환 | 실제 Chromium에서 29언어 × 5명 = 145조합 PASS, pageerror 0, 가로 넘침 0 |
 | 웹 화면 | 5120×1440, 1920×1080, 1280×720, 640×960 캡처. 1920·1280 실버테일 직접 확인: 왼쪽 스토리 가독·캐릭터/우측과 비겹침. 1280 우측의 긴 플레이 방식은 기존 영역 스크롤로 읽음 |
 | Unity 컴파일 | 최신 Core + Runtime 소스 Roslyn 검사 exit 0, error 0. Editor 빌드·Player 화면 증거와 구분 |
-| Unity 제품 실행 | 미검수. 현재 변경은 소스 후보이며 설치된 Player·바탕화면 실행본에 적용 완료로 보고하지 않음 |
+| Unity 제품 실행 | 새 Win64 빌드 errors 0. 같은 패키지 실제 GPU Player에서 UI 31/31·M1 23/23 PASS. 1920×1080 캐릭터 5종 스토리 직접 눈검수: 읽힘·잘림 없음·캐릭터/오른쪽과 비겹침. 소스 컴파일과 별개 증거 |
+| 실행 격리 | Player 5e6678f5(UI)·2f6cc34f(M1), RX 9070 XT, 사용자 데스크톱 창 0·잔여 0·사용자 세이브 변경 0 |
+| 배포 경계 | 검수 실행본은 `I:/EXODUSER-Storage/story-basic-20261102/build/EXODUSER-Unity.exe`. 기존 설치본·바탕화면 바로가기 교체 및 main/unity/main 병합은 하지 않음 |
 | 증거 | `I:/EXODUSER-Storage/story-basic-20261102/`의 web-qa.json, web-*.png, compile.log, core-compile.log |
 
 구 실행기 컴파일 검사는 Assembly-CSharp.rsp를 찾지 못해 실패했다. 현행 Exoduser.Core/Runtime.rsp를 읽어 최신 소스를 지정한 별도 검사로 확인했다. 첫 웹 검사는 시작 스플래시가 버튼을 가로막아 실패했고, 게임의 기존 `?lobby=1` 복귀 경로로 재검수했다. 두 실패는 제품 PASS로 계산하지 않는다.
+
+## 인수·남은 경계
+
+- 웹 로컬 실행 소스는 G:/exoduser의 작업본이다. 최신 origin/main의 시작 화면·아트 변경을 보존해 이번 변경만 별도 검토 브랜치 `codex/character-basic-story-web-20261102`에 백업했다. 최신 원격 기반 후보는 문법 검증까지 했으며, 그 후보를 기존 실행본에 설치한 것으로 간주하지 않는다.
+- Unity 소스는 origin/unity/main `1403c5ee6d52c540815ab1cf70d5666b9023aa75` 기반 `G:/exoduser-wt/codex-charselect`의 `codex/character-basic-story-20261102`다. 실제 새 빌드·GPU 화면은 이 소스에서 얻었다.
+- 최초 Unity import/build가 갱신한 타 캐릭터 importer meta·URP prefilter 직렬화는 기능 커밋에 포함하지 않는다. 보존 패치 `unity-build-generated-and-source.patch`는 I: 증거 폴더에 있다.
+- 기본 스토리 패널의 내용·선택 갱신이 이번 범위다. 기존 헬거너 슬롯의 옛 표시명/원화, 타 캐릭터의 옛 소개·플레이 방식과 최신 디자인의 전체 동기화는 별도다. 기존 그림·전투·스킬·잠금은 바꾸지 않았다.
+- 원어민 감수·Unity 29언어 전체 조판·Unity 캐릭터 선택 5120×1440 화면·Mac 동기화는 미검수다. 사용자 수동 플레이와 자동 제품 API 캡처를 구분한다.
