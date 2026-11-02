@@ -418,6 +418,19 @@ function Invoke-Exo([string]$command, [string[]]$jobArgs, [string]$logBase, [str
   if ($rc -ne 0 -and $null -eq $receipt) { $waitReason = Get-UnityWaitReason ([IO.File]::ReadAllText($logBase+'.err.log')) }
   return [pscustomobject]@{ exit = $rc; receipt = $receipt; stdout = ($logBase+'.out.log'); stderr = ($logBase+'.err.log'); waitReason = $waitReason }
 }
+function Invoke-UiOverlapCheck([string]$check, [string]$exe, [string]$worktree, [string]$output, [string]$log) {
+  # PS5.1 turns native stderr into NativeCommandError under & ... *> with EAP=Stop.
+  # Redirect the child's raw streams directly, retaining the parent's error policy.
+  $errLog = $log -replace '\.log$', '.err.log'
+  $pa = @('-NoProfile','-NonInteractive','-WindowStyle','Hidden','-File',('"{0}"' -f $check),'-Exe',('"{0}"' -f $exe),'-Worktree',('"{0}"' -f $worktree),'-Output',('"{0}"' -f $output),'-OverlapOnly')
+  $pr = Start-Process -FilePath "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -ArgumentList $pa -WindowStyle Hidden -PassThru -RedirectStandardOutput $log -RedirectStandardError $errLog
+  try {
+    $null = $pr.Handle; $pr.WaitForExit(); $pr.Refresh()
+    $rc = $pr.ExitCode
+    if ($null -eq $rc) { throw 'UI 검사 프로세스의 native 종료 코드를 확인하지 못함' }
+    return [pscustomobject]@{ exit = $rc; stdout = $log; stderr = $errLog; processId = $pr.Id }
+  } finally { $pr.Dispose() }
+}
 function Run-Smoke([string]$buildDir, [string]$smokeDir, [string]$flag = '--unity-m1-check', [string]$receiptName = 'm1-check.json') {
   New-Item -ItemType Directory -Force -Path $smokeDir | Out-Null
   $desktop = 'hidden'; if ($Mode -eq 'batch') { $desktop = 'batch' }
@@ -845,10 +858,11 @@ function Cmd-Run {
         # The loop mutex stays held; exo acquires/releases the PC slot for UI checks.
         try {
           $uiLog = Join-Path $runDir 'ui-overlap.log'
-          & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -NonInteractive -WindowStyle Hidden -File $uiCheck -Exe (Join-Path $stage 'EXODUSER-Unity.exe') -Worktree $Cfg.Worktree -Output (Join-Path $runDir 'ui-check') -OverlapOnly *> $uiLog
-          $uiExit = $LASTEXITCODE
-          $run.uiOverlap = Read-UiOverlapSummary (Join-Path $runDir 'ui-check\overlap\overlap-summary.json') $uiExit (Join-Path $runDir 'ui-check\overlap\overlap-report.json')
+          $run.uiOverlap = @{ passed = $false; exit = $null; log = $uiLog; stderrLog = ($uiLog -replace '\.log$', '.err.log'); note = 'UI 호출 종료 확인 전' }
+          $uiCall = Invoke-UiOverlapCheck $uiCheck (Join-Path $stage 'EXODUSER-Unity.exe') $Cfg.Worktree (Join-Path $runDir 'ui-check') $uiLog
+          $run.uiOverlap = Read-UiOverlapSummary (Join-Path $runDir 'ui-check\overlap\overlap-summary.json') $uiCall.exit (Join-Path $runDir 'ui-check\overlap\overlap-report.json')
           $run.uiOverlap.log = $uiLog
+          $run.uiOverlap.stderrLog = $uiCall.stderr; $run.uiOverlap.processId = $uiCall.processId
         } finally { }
       }
     } else { $run.smokeNote = '빌드 실패로 스모크 없음' }
