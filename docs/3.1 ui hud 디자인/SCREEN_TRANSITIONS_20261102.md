@@ -32,3 +32,12 @@
 제작 전 직접 확인: 승인 gate_sigil 원본512×512 대조, 실제1920 게이트·시작 메뉴·세계관·캐릭터 선택·게임 로딩. 목표 차이는 원본 화면 제거가 페이드보다 먼저 일어나는 컷과 페이지 간 공백이다. 제작법은 원본을 검정 뒤에서 교체하는 단일 최상단 레이어다. 조기 판정은 실제 모듈의80ms/500ms 준비·중복·reject 복구 및 실제 생성 영상 흐름이며, 틈·흰 프레임·검정 고착·중복 저장/경험치 차감이면 FAIL이다.
 
 검수는 I:/EXODUSER-Storage/codex-takeover/transitions/{before,after}-{1920,3840}/receipt.json·10초 전환별 영상/프레임과 REPORT.md를 따른다. headless --mute-audio, 격리 서버3462·전용 saves, OS/게임 음량0. 끝부분 seek·사망/클리어 상태 fixture는 행별 표시한다. 무음 영상·gain 검사와 실제 청취는 별도이며 Unity는 unity-parity-1102-brief.md 인계 대상이다.
+
+## 제작자 검수 범위
+
+- 최종 실제 Chromium 계약13/13: 짧은/긴 대기, 중복1회, reject 복구, 늦은 이동 취소, 실제 입력 복구, 감소 모션·정지 인장,1920/2560/3840 전체 cover, 기존 오디오 gain0→1.
+- 실제 영상4/4: 세계관 자연 끝과 이야기 자연 끝에서 제거 시 opacity1, 실제 Space 홀드, 이야기 파일 오류 후 생성 슬롯 game 진입. pageerror0.
+-1920/3840의10경계 전후 녹화와 실제 재시작에서 각각HP577/577·544/544, G.on=true·death=false·복귀 busy=false. 스테이지/사망은 fixture이며 자연 전 구간 완주로 확대하지 않는다.
+- 프로젝트113/113·오디오/공통 모듈18/18·guard PASS. 중간 VM 회귀는148/154였으며 남은6의환경 호환을 수정한 뒤 같은 명령 반복 대신 실제 브라우저 방법으로 검수했다. 전체154/154 최종 PASS나 실제 청취 PASS를 주장하지 않는다.
+- 최신 main의 대기 원화·웹3D 개선은 정상 병합했다. 실제 검수4384d564b0와 병합본의 stage/boot/retry/lobby 전환5함수는 byte 동일하다(merged-transition-equivalence.json). 기존 원화의 전체 품질 판정과 이번 전환 경계 판정을 구분한다.
+- 제작자 자체 판정은 공통 전환 경계·전체 cover·재시작 복구 범위 PASS. 실제 청취·NW.js 설치본·물리32:9모니터·Unity Player는 미검증. 영상40편/흰 전체 프레임 검사와 원격/3333/DEMO·EA 전달의 최종 수치는 외부 REPORT.md 및 export.json을 따른다.
