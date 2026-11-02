@@ -42,6 +42,182 @@
       "role": "남부 양쪽 뿌리 연결·중앙 길 유도",
       "placements": [
         {
+          "id": "start_litter_01",
+          "asset": "leaf_litter",
+          "x": 3500,
+          "y": 6890,
+          "width": 650,
+          "height": 310,
+          "flip": false,
+          "alpha": 0.86,
+          "groundOnly": true
+        },
+        {
+          "id": "start_litter_02",
+          "asset": "twig_litter",
+          "x": 3515,
+          "y": 7040,
+          "width": 650,
+          "height": 300,
+          "flip": true,
+          "alpha": 0.86,
+          "groundOnly": true
+        },
+        {
+          "id": "start_litter_03",
+          "asset": "leaf_litter",
+          "x": 3500,
+          "y": 7190,
+          "width": 680,
+          "height": 300,
+          "flip": false,
+          "alpha": 0.86,
+          "groundOnly": true
+        },
+        {
+          "id": "start_litter_04",
+          "asset": "leaf_litter",
+          "x": 3520,
+          "y": 7350,
+          "width": 630,
+          "height": 330,
+          "flip": true,
+          "alpha": 0.86,
+          "groundOnly": true
+        },
+        {
+          "id": "start_litter_05",
+          "asset": "twig_litter",
+          "x": 3510,
+          "y": 7510,
+          "width": 660,
+          "height": 310,
+          "flip": false,
+          "alpha": 0.86,
+          "groundOnly": true
+        },
+        {
+          "id": "start_litter_06",
+          "asset": "leaf_litter",
+          "x": 3500,
+          "y": 7670,
+          "width": 680,
+          "height": 340,
+          "flip": true,
+          "alpha": 0.86,
+          "groundOnly": true
+        },
+        {
+          "id": "start_litter_07",
+          "asset": "leaf_litter",
+          "x": 3530,
+          "y": 7830,
+          "width": 620,
+          "height": 310,
+          "flip": false,
+          "alpha": 0.86,
+          "groundOnly": true
+        },
+        {
+          "id": "start_litter_08",
+          "asset": "twig_litter",
+          "x": 3500,
+          "y": 7980,
+          "width": 650,
+          "height": 320,
+          "flip": true,
+          "alpha": 0.86,
+          "groundOnly": true
+        },
+        {
+          "id": "start_litter_09",
+          "asset": "leaf_litter",
+          "x": 4560,
+          "y": 6900,
+          "width": 640,
+          "height": 320,
+          "flip": true,
+          "alpha": 0.86,
+          "groundOnly": true
+        },
+        {
+          "id": "start_litter_10",
+          "asset": "leaf_litter",
+          "x": 4580,
+          "y": 7050,
+          "width": 660,
+          "height": 330,
+          "flip": false,
+          "alpha": 0.86,
+          "groundOnly": true
+        },
+        {
+          "id": "start_litter_11",
+          "asset": "twig_litter",
+          "x": 4580,
+          "y": 7210,
+          "width": 640,
+          "height": 300,
+          "flip": true,
+          "alpha": 0.86,
+          "groundOnly": true
+        },
+        {
+          "id": "start_litter_12",
+          "asset": "leaf_litter",
+          "x": 4570,
+          "y": 7370,
+          "width": 650,
+          "height": 340,
+          "flip": false,
+          "alpha": 0.86,
+          "groundOnly": true
+        },
+        {
+          "id": "start_litter_13",
+          "asset": "leaf_litter",
+          "x": 4570,
+          "y": 7530,
+          "width": 640,
+          "height": 320,
+          "flip": true,
+          "alpha": 0.86,
+          "groundOnly": true
+        },
+        {
+          "id": "start_litter_14",
+          "asset": "twig_litter",
+          "x": 4580,
+          "y": 7690,
+          "width": 650,
+          "height": 330,
+          "flip": false,
+          "alpha": 0.86,
+          "groundOnly": true
+        },
+        {
+          "id": "start_litter_15",
+          "asset": "leaf_litter",
+          "x": 4580,
+          "y": 7850,
+          "width": 680,
+          "height": 310,
+          "flip": true,
+          "alpha": 0.86,
+          "groundOnly": true
+        },
+        {
+          "id": "start_litter_16",
+          "asset": "leaf_litter",
+          "x": 4570,
+          "y": 8010,
+          "width": 620,
+          "height": 320,
+          "flip": false,
+          "alpha": 0.86,
+          "groundOnly": true
+        },
+        {
           "id": "start_bank_0",
           "asset": "bank",
           "x": 3410,
@@ -1287,5 +1463,27 @@
         }
       ]
     }
-  ]
+  ],
+  "slices": {
+    "leaf_litter": {
+      "source": "bank",
+      "rect": [
+        0,
+        0.46,
+        1,
+        0.54
+      ],
+      "feather": 0.16
+    },
+    "twig_litter": {
+      "source": "bank",
+      "rect": [
+        0.08,
+        0.58,
+        0.84,
+        0.42
+      ],
+      "feather": 0.16
+    }
+  }
 }

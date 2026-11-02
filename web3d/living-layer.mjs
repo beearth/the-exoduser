@@ -9,7 +9,7 @@ import {createGhosts} from './ghost-layer.mjs?v=20261102-round4-light-final';
 import {authoredFoliageLayout,puddleHabitat} from './foliage-layout.mjs?v=20261031-foliage4b';
 import {drawFoliageDebug} from './foliage-debug.mjs?v=20261031-foliage4';
 
-import {createGroundDressing} from './ground-dressing.mjs?v=20261102-dress1';
+import {createGroundDressing} from './ground-dressing.mjs?v=20261102-dress4';
 
 // The native map is the color source. This canvas contains ONLY added vegetation
 // and water highlights; actors, VFX, camera, lighting and HUD use their original pass.

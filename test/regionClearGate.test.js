@@ -27,6 +27,7 @@ function harness(g,p){
   const sandbox={
     G:g,P:p,T,ens:[],_gameFrame:0,_mmDirty:0,_EN:{},
     OPT:{lang:'ko'},
+    Image:class{constructor(){this.complete=false;this.naturalWidth=0;}}, // 방향 화살표의 미로드 브라우저 이미지 환경만 제공
     _spawnHoleCount:(size,si)=>10,
     _L:(ko,en)=>ko,_T:t=>t,
     $:id=>Object.assign($(id),{offsetWidth:0}),
