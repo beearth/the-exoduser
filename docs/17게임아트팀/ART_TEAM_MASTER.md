@@ -328,3 +328,20 @@ MagicLight 마지막 조회 59,540 (2026-10-01, emg1 2차 후). 이번 마감 �
 | 미완료 | cold비용인과·자연전투/전체맵·physicalmonitor/OS손입력/NW/Unity/전체FPS·main/public/Windows/일반앱배포별도. public402기존계정미납원인·같은CI실패반복0. 9d반사RETOUCH는이력유지/새local방식과구분 |
 
 근거: root I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/chest-local-material-final-title-20261102/proof-final-07081a/{REPORT.md,FINAL_RECEIPT.json,official-artifact-commands.json,performance-resource-summary.json,preservation-and-return.json,manifest.received.json,receiver-receipt.json,root-review.json}; Mac _out/web-local-material-final-title-07081a-qa-20261102. 이번은실산출과동일candidate의원본검수이며source117회귀와구분한다. 문서만마감하므로runtime/suite/영상재생성0.
+
+## 2026-11-03 01:00 — 최초 렌더 4case 진단 마감과 준비 단계 후속
+
+직전 절의 최초 비용 진단 대기를 마감한다. 동일 runtime **07081a0cc5ba56f73b94ae1c445818946abdef1f**의 제품·산출물 byte는 바꾸지 않았고, 기존 271.2ms 관측과 원시 실패 자료도 보존했다.
+
+| 항목 | 최종 인수·다음 범위 |
+|---|---|
+| 교차 순서 4case | 새 자기 browser A: baseline→후보ON 첫 renderer.render entry→return 24.1/24.6ms, 다른 새 browser B: 후보ON→baseline24.1/25.5ms. 각각Metal/Three160/동일64CSS·camera·world·pause/4texture5geometry3program. 추가 동기GL조회·cache삭제·제품 변경0,case4초과0 |
+| 271.2ms 해석 | 예전firstStart 뒤진단getExtension/getParameter/getSupportedExtensions와 매compileShader 뒤 추가COMPILE_STATUS 조회가포함됐다. 동기대기를혼입시킬수있는구체경로확인. 이번cache조건에서는271.2가재현안됐으나,추가조회만의단독원인·완전coldcache·후보성능완치확정0. 초기invalidprobe진단TypeError와정상case271.2를혼동하지않음 |
+| 남은 공통 비용 | 기존r160 getProgramInfoLog3회합16.4~17.6ms가주대기관측위치. shadercallback과compile/link호출자체는clockresolution아래~.1ms이며절대0아님. GLBloadAsync20.5~27.6ms/첫textureupload호출CPU1.1~1.2ms별도. rAFgap40.9~43ms는overlay간격/전체FPS아님. 58/56ms LongTask는첫visible진입보다약44ms앞에끝나첫draw원인으로귀속0 |
+| 진단·보존 마감 | turn01a19cc0 2026-11-02T15:08:13Z completed/14분20초. 자기Chrome A/B 정상close잔여0,자기server56820/62001 정상SIGTERM 뒤PID/listen0. ordinary13/raw6files·installed5/WIP25/공유HEADbranchINDEXstatus/원본7014·frozen07081/9d/ea24metadata/기존19증거SHA불변. 첫828B누락·옛PrefsFAIL소급해소0 |
+| 다음 최소 source 단위 | 기존상자owner의같은7d privatebranch에서해당상자shader준비만최초visible보다앞으로옮기는취소가능준비후보를TDD로구현중. 현재r160 public compile/compileAsync/KHR/isReady/getUniforms 실제원문검토. 단순await compileAsync 뒤disposed검사만으로내부폴링·dispose경합안전PASS0;준비중dispose/late/error/중복해제/타이머RAF·unhandled rejection을RED→GREEN으로증명. KHR없으면기존안전경로·debug shader오류폴백보존 |
+| 미검증·전달 | 새준비후보는아직소스구현중/원격·GPU·firstvisible개선미인수. 새제품코드·이문서의성능완료선언0. source완료뒤root정확module차분과관련docs만선택→정상checkpoint→같은Macfreshartifact/실첫사용·수명·오류·보존검수. 타이틀/재질gain/노출/크기/게임수치·보상RNG·저장·원GLB/texture불변,PC usergame·타Unity보호/새GPU0. main/public/Windows·일반앱전달과별도 |
+
+근거: Mac _out/web-local-material-final-title-07081a-qa-20261102/{cold-render-REPORT.md,cold-render-receipt.json,cold-render-analysis.json,cold-render-raw.json,cold-preservation-return.json,proof-transfer-closeout.json}. root recovery/heartbeat-1553-cold-complete-raw.json은실제생성명령·결과·종료원문을보존한다. 원본 재촬영·85걷기/타이틀 전체 suite·build 반복은 하지 않았다.
+
+root 정확파일 인수: cold-profile-closeout/cold-render-REPORT.md 8871B/SHA c75d865ab84cca34e029bdf39d40ba0bd7c5427af52decc8d2c610fd90e1fad9. Mac receipt48408B/SHA a6b46af388a28193ae38db0557a9fbcf1820b86043a37c07259857d5f824407d는metadata와요청필드원문인수이며root전체파일복사완료로주장하지않는다.
