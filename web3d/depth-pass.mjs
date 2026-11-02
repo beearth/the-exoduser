@@ -1,8 +1,8 @@
 import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
-import {objectVolume,actorBounds,occlusion,compareDepth} from './depth-layout.mjs';
+import {objectVolume,occlusion,compareDepth} from './depth-layout.mjs?v=20261102-round4-final';
 import {lightingGLSL} from './lighting-model.mjs?v=20261102-budget2';
 import {createFrameSampler} from './frame-sampler.mjs';
-import {atmosphereGLSL} from './atmosphere-model.mjs?v=20261102-light-final';
+import {atmosphereGLSL} from './atmosphere-model.mjs?v=20261102-round4-final';
 
 // Each native prop is rasterised by the original painter exactly once. The GPU
 // orders those images by their roots, preserves foreground actor pixels, and
@@ -30,9 +30,11 @@ export function createDepthPass(renderer,canvas,shared,lighting){
  ${atmosphereGLSL}
  float lum(vec2 p){return dot(texture2D(art,p).rgb,vec3(.299,.587,.114));}
  void main(){vec4 c=texture2D(art,vUv);if(c.a<.008)discard;
-  float mask=texture2D(frontMask,vUv).r;
+  vec2 mask=texture2D(frontMask,vUv).rg;
   float changed=length(texture2D(afterActors,screenUv).rgb-texture2D(beforeActors,screenUv).rgb);
-  if(mask>.5&&changed>.012)discard;
+  // Every new native pixel outside an actor body is a protected world item,
+  // projectile, telegraph or VFX pixel. Only a body behind the prop can occlude.
+  if(changed>.012&&(mask.r>.5||mask.g<.5))discard;
   vec3 normal=paintedNormal(art,vUv,texel);
   vec3 added=vec3(.07,.09,.14)*flash;
   for(int i=0;i<40;i++){if(i>=lightCount)break;vec2 d=lights[i].xy-world;float r=length(d)/lights[i].z;if(r>=1.)continue;float bump=.28+.72*max(0.,dot(normal,normalize(vec3(d.x,-d.y,lights[i].z*.45))));added+=colors[i]*lights[i].w*(poolFalloff(r)*bump+glow[i]*exp(-r*r*72.)*.13);}
@@ -46,6 +48,7 @@ export function createDepthPass(renderer,canvas,shared,lighting){
   item={image,mask,art,frontMask,u,mesh};cache.set(row.object,item);return item;
  }
  function draw(ctx,s,paint){
+  for(const [object,item]of cache)if(!byObject.has(object)){scene.remove(item.mesh);item.mesh.geometry.dispose();item.mesh.material.dispose();item.art.dispose();item.frontMask.dispose();cache.delete(object);}
   if(!rows.length)return;s.flush?.();fgTex=fgSampler.update(s.frame);renderer.initTexture(fgTex);
   for(const item of cache.values())item.mesh.visible=false;
   for(let i=0;i<rows.length;i++){
@@ -53,15 +56,15 @@ export function createDepthPass(renderer,canvas,shared,lighting){
    const pw=Math.ceil(w*scale),ph=Math.ceil(h*scale);
    if(item.image.width!==pw||item.image.height!==ph){item.art.dispose();item.image.width=pw;item.image.height=ph;item.art=texture(item.image);item.u.art.value=item.art;}
    const x=item.image.getContext('2d');x.setTransform(1,0,0,1,0,0);x.clearRect(0,0,pw,ph);x.setTransform(scale,0,0,scale,-r.left*scale,-r.top*scale);paint(x,r.object);item.art.needsUpdate=true;
-   const m=item.mask.getContext('2d');m.fillStyle='#000';m.fillRect(0,0,128,128);m.fillStyle='#fff';
+   const m=item.mask.getContext('2d');m.fillStyle='#000';m.fillRect(0,0,128,128);m.fillStyle='#00ff00';
+   for(const b of r.bodies)m.fillRect((b.left-r.left)*128/w,(b.top-r.top)*128/h,(b.right-b.left)*128/w,(b.bottom-b.top)*128/h);
+   m.fillStyle='#ffff00';
    for(const b of r.front)m.fillRect((b.left-r.left)*128/w,(b.top-r.top)*128/h,(b.right-b.left)*128/w,(b.bottom-b.top)*128/h);
    // Native projectiles and danger glyphs remain readable in front of scenery.
-   for(const p of s.projectiles){if(!p||!Number.isFinite(p.x))continue;const radius=Math.max(18,p.sz||p.r||18);m.beginPath();m.ellipse((p.x-r.left)*128/w,(p.y-r.top)*128/h,radius*128/w,radius*128/h,0,0,Math.PI*2);m.fill();}
+   m.fillStyle='#ff0000';for(const p of s.projectiles){if(!p||!Number.isFinite(p.x))continue;const radius=Math.max(18,p.sz||p.r||18);m.beginPath();m.ellipse((p.x-r.left)*128/w,(p.y-r.top)*128/h,radius*128/w,radius*128/h,0,0,Math.PI*2);m.fill();}
    item.frontMask.needsUpdate=true;item.u.beforeActors.value=bgTex;item.u.afterActors.value=fgTex;item.u.bounds.value.set(r.left,r.top,w,h);item.u.opacity.value=r.alpha;item.u.texel.value.set(1/pw,1/ph);item.mesh.renderOrder=i;item.mesh.visible=true;
   }
   renderer.render(scene,camera);canvas._glVer=(canvas._glVer||0)+1;ctx.save();ctx.globalAlpha=1;ctx.drawImage(canvas,view.x,view.y,view.w,view.h);ctx.restore();
-  // Leave a visited region without retaining every native prop canvas forever.
-  for(const [object,item]of cache)if(!byObject.has(object)){scene.remove(item.mesh);item.mesh.geometry.dispose();item.mesh.material.dispose();item.art.dispose();item.frontMask.dispose();cache.delete(object);}
  }
  return {prepare,capture,draw,defer:object=>{const row=byObject.get(object);if(!row)return false;row.claimed=true;return true;},snapshot:()=>({...stats})};
 }

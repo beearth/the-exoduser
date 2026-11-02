@@ -12,6 +12,6 @@ export function dynamicLights(data,projectiles,blasts,hero,view){
 }
 // Budgets concern added environment only. Never reduce native combat/HUD.
 export function sceneBudget(quality,proxy,layerMs=0){
- const forced=quality==='low'||proxy,level=forced?3:layerMs>18?3:layerMs>11?2:layerMs>7.5?1:0;
+ const requested=quality==='low'||proxy?3:quality==='mid'?1:0,level=Math.max(requested,layerMs>18?3:layerMs>11?2:layerMs>7.5?1:0);
  return {level,scale:[1,.88,.75,.65][level],foliage:[800,560,320,160][level],particles:[190,128,72,36][level],lightLimit:[40,32,24,16][level],shaftDust:[14,8,4,2][level],sway:level<3,heroLight:true,occlusionAlpha:.35};
 }

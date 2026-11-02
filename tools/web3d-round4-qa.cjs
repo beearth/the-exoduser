@@ -20,6 +20,14 @@ async function coverage(p){return p.evaluate(async()=>{
  for(const r of dressingLayout(plan)){c.save();c.translate(r.x,r.y);c.scale(r.flip?-1:1,1);c.globalAlpha=r.alpha;c.drawImage(images.get(r.asset),-r.width/2,-r.height/2,r.width,r.height);c.restore();}
  const n=occupied();return {emptyFraction:1-n/(240*135),occupied:n,total:240*135,nativeEmptyFraction:1-native/(240*135),view,method:'8px grid alpha>32; outside canonical boundary + exact native prop painter + authored dressing; HUD/actors excluded',png:cv.toDataURL()};
 });}
+async function pixelProtection(p){return p.evaluate(()=>{
+ window._btFramePause=true;const o=MAP_OBJS.find(o=>o.type==='m_c1tree'),m=_OBJ_META[o.type],size=(m.sz||32)*(o.scale||1)*.72;
+ P.x=o.x+550;P.y=o.y+250;G.cam.x=o.x;G.cam.y=o.y;G.shake=0;ens=[];projs.length=0;pProjs.length=0;
+ const gx=o.x,gy=o.y-size*.22,zoom=G._camZoom||1,sx=Math.round(C.width/2+(gx-G.cam.x)*zoom),sy=Math.round(C.height/2+(gy-G.cam.y)*zoom),api=window._Web3DLivingLayer,original=api.front;
+ const sample=()=>{const c=document.createElement('canvas');c.width=c.height=6;const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(C,sx-3,sy-3,6,6,0,0,6,6);return Array.from(x.getImageData(0,0,6,6).data);};let result;
+ api.setEnabled(true);api.front=(ctx,paint)=>{ctx.save();ctx.fillStyle='#10f0e0';ctx.fillRect(gx-10,gy-10,20,20);ctx.restore();_glFlush();const before=sample();original(ctx,paint);_glFlush();const after=sample();result={fixture:'소품 내부/인물 외부 경고색 표본, native 프레임의 실제 픽셀 보존 검사',changedChannels:before.reduce((n,v,i)=>n+(v!==after[i]),0),before,after,layer:api.snapshot()};};
+ const step=_dtSp;try{_dtSp=0;draw();_glFlush();return result;}finally{_dtSp=step;api.front=original;}
+});}
 async function record(p,context,name,width,seconds=10){
  const cdp=await context.newCDPSession(p),times=[],writes=[];let last=-1;await fs.mkdir(out+'/frames-'+name,{recursive:true});
  cdp.on('Page.screencastFrame',e=>{if(e.metadata.timestamp-last>=.12){last=e.metadata.timestamp;const i=times.length;times.push(last);writes.push(fs.writeFile(out+'/frames-'+name+'/'+String(i).padStart(5,'0')+'.jpg',Buffer.from(e.data,'base64')));}cdp.send('Page.screencastFrameAck',{sessionId:e.sessionId}).catch(()=>{});});
@@ -27,7 +35,7 @@ async function record(p,context,name,width,seconds=10){
 }
 async function source(){const files=['game.html','build-nwjs.mjs',...(await fs.readdir(root+'/web3d')).filter(f=>/\.m?js$|\.json$/.test(f)).map(f=>'web3d/'+f),...(await fs.readdir(root+'/assets/web3d')).filter(f=>/^(map-look|forest-ch1|ghosts-ch1|foliage-ch1).*json$/.test(f)).map(f=>'assets/web3d/'+f)];return Object.fromEntries(await Promise.all(files.map(async f=>[f,crypto.createHash('sha256').update(await fs.readFile(root+'/'+f)).digest('hex')])));}
 (async()=>{
- await fs.mkdir(out+'/temp',{recursive:true});const result={started:new Date().toISOString(),mode,source:await source(),errors:[],http:[],cameras:[],occlusion:[],clips:[]};
+ await fs.mkdir(out+'/temp',{recursive:true});process.env.TEMP=process.env.TMP=out+'/temp';const result={started:new Date().toISOString(),mode,source:await source(),errors:[],http:[],cameras:[],occlusion:[],clips:[]};
  const browser=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true,args:['--mute-audio'],env:{...process.env,TEMP:out+'/temp',TMP:out+'/temp'}});
  try{
   const context=await browser.newContext({viewport:{width:1920,height:1080},deviceScaleFactor:1});
@@ -46,6 +54,7 @@ async function source(){const files=['game.html','build-nwjs.mjs',...(await fs.r
   for(const o of props){const size=(o.meta.sz||32)*(o.scale||1),foot=o.y+size*(o.meta.footYF??.28);for(const side of ['behind','front']){
    await at(p,o.x,side==='behind'?foot-80:foot+100);await p.evaluate(()=>window._Web3DLivingLayer.setEnabled(true));await p.waitForTimeout(200);const snap=await p.evaluate(()=>window._Web3DLivingLayer.snapshot());result.occlusion.push({type:o.type,side,depth:snap.depthOrder});await p.screenshot({path:out+'/occlusion-'+o.type+'-'+side+'.png'});
   }}
+  if(process.argv.includes('--pixel-protection')){result.pixelProtection=await pixelProtection(p);assert.equal(result.pixelProtection.changedChannels,0,'환경이 native 위험표시 픽셀을 가림');assert.equal(result.pixelProtection.layer.enabled,true,'높이 레이어 활성');assert.equal(result.pixelProtection.layer.error,null,'높이 레이어 오류 없음');assert.ok(result.pixelProtection.layer.depthObjects>0,'실제 높이 카드가 존재하는 검사');}
   result.mapUnchanged=result.mapBefore===await p.evaluate(()=>JSON.stringify(G.map));delete result.mapBefore;
   if(!limited||process.argv.includes('--record'))for(const width of [1920,3840]){
    await p.setViewportSize({width,height:1080});await at(p,3680,6380);const phase=await p.evaluate(()=>_gameTime);

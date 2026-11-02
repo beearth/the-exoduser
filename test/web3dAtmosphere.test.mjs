@@ -12,6 +12,7 @@ test('all quality tiers retain the hero pool and 35 percent occlusion while redu
  const high=scene.sceneBudget('high',false,6),low=scene.sceneBudget('low',false,20),proxy=scene.sceneBudget('high',true,20);
  assert.equal(high.occlusionAlpha,.35);assert.equal(low.occlusionAlpha,.35);assert.equal(low.heroLight,true);assert.equal(proxy.heroLight,true);
  assert.ok(low.foliage<high.foliage);assert.ok(low.particles<high.particles);assert.equal(proxy.sway,false);
+ const mid=scene.sceneBudget('mid',false,0);assert.ok(mid.foliage<high.foliage&&mid.foliage>low.foliage);
 });
 test('increasing layer cost reduces decoration in ordered steps',()=>{
  const base=scene.sceneBudget('high',false,5),slow=scene.sceneBudget('high',false,13),verySlow=scene.sceneBudget('high',false,24);

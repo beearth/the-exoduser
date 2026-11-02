@@ -1,15 +1,15 @@
 import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
 import {waterAt,plantHabitat} from './living-layout.mjs?v=20261031-layer2';
-import {createRelief} from './living-relief.mjs?v=20261031-layer2';
-import {createMapLook} from './map-look-pass.mjs?v=20261102-round4-light-final';
-import {createDepthPass} from './depth-pass.mjs?v=20261102-light-final';
-import {sceneBudget} from './scene-budget.mjs?v=20261102-light-final';
-import {createForest} from './forest-layer.mjs?v=20261102-round4-light-final';
-import {createGhosts} from './ghost-layer.mjs?v=20261102-round4-light-final';
+import {createRelief} from './living-relief.mjs?v=20261102-round4-final';
+import {createMapLook} from './map-look-pass.mjs?v=20261102-round4-final';
+import {createDepthPass} from './depth-pass.mjs?v=20261102-round4-final';
+import {sceneBudget} from './scene-budget.mjs?v=20261102-round4-final';
+import {createForest} from './forest-layer.mjs?v=20261102-round4-final';
+import {createGhosts} from './ghost-layer.mjs?v=20261102-round4-final';
 import {authoredFoliageLayout,puddleHabitat} from './foliage-layout.mjs?v=20261031-foliage4b';
 import {drawFoliageDebug} from './foliage-debug.mjs?v=20261031-foliage4';
 
-import {createGroundDressing} from './ground-dressing.mjs?v=20261102-dress4';
+import {createGroundDressing} from './ground-dressing.mjs?v=20261102-round4-final';
 
 // The native map is the color source. This canvas contains ONLY added vegetation
 // and water highlights; actors, VFX, camera, lighting and HUD use their original pass.
@@ -23,7 +23,7 @@ export async function install(read){
   const uniforms={view:{value:new THREE.Vector4()},time:{value:0},hero:{value:new THREE.Vector2(-1e5,-1e5)},bend:{value:1},impulse:{value:new THREE.Vector3(-1e5,-1e5,0)}};
   const source=await new THREE.TextureLoader().loadAsync('./assets/web3d/living/rotten-underbrush-atlas.png');
   source.colorSpace=THREE.NoColorSpace;source.minFilter=THREE.LinearFilter;source.magFilter=THREE.LinearFilter;
-  const [lookData,lookAnchors]=await Promise.all(['map-look-ch1.json','map-look-anchors.json'].map(async file=>{const r=await fetch('./assets/web3d/'+file+'?v=20261102-round4-light-final');if(!r.ok)throw Error(file+' '+r.status);return r.json();}));
+  const [lookData,lookAnchors]=await Promise.all(['map-look-ch1.json','map-look-anchors.json'].map(async file=>{const r=await fetch('./assets/web3d/'+file+'?v=20261102-round4-final');if(!r.ok)throw Error(file+' '+r.status);return r.json();}));
   const foliageResponse=await fetch('./assets/web3d/foliage-ch1.json?v=20261031-foliage4');if(!foliageResponse.ok)throw Error('foliage-ch1 '+foliageResponse.status);
   const foliagePlan=await foliageResponse.json(),foliageDebug=new URLSearchParams(location.search).get('r3dFoliageDebug')==='1';
   const dressing=await createGroundDressing();

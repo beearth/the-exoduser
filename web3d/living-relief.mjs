@@ -20,7 +20,7 @@ export function createRelief(renderer,canvas,uniforms,read,mapLook){
  }
  function surface(ctx,s,view){sampleTerrain(s);stats.heightObjects=0;mapLook.surface(ctx,s,view);}
  function beginObject(ctx,o,m,s){
-  const pose=objectRelief(o,m,s.P,s.now/1000);if(!pose)return false;
+  const pose=objectRelief(o,m,s.P,s.budget?.sway===false||s.quality==='low'?0:s.now/1000);if(!pose)return false;
   ctx.save();ctx.translate(o.x,pose.foot);applyAffine(ctx,1,0,pose.shear,pose.lift);ctx.translate(-o.x,-pose.foot);stats.heightObjects++;return true;
  }
  return {surface,beginObject,motes:mapLook.motes,groundColor,snapshot:()=>({...stats,...mapLook.snapshot()}),sampleTerrain};

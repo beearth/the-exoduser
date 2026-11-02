@@ -3,9 +3,9 @@ import {mapLookLayout,holeLights,effectLights,renderEnergy,presentationRadius,fo
 import {seeded,applyAffine} from './living-layout.mjs';
 import {lightingGLSL} from './lighting-model.mjs?v=20261102-budget2';
 import {createFrameSampler} from './frame-sampler.mjs';
-import {shadowVector,shadowAffine} from './depth-layout.mjs?v=20261102-shadow2';
-import {dynamicLights} from './scene-budget.mjs?v=20261102-light-final';
-import {atmosphereGLSL} from './atmosphere-model.mjs?v=20261102-light-final';
+import {shadowVector,shadowAffine} from './depth-layout.mjs?v=20261102-round4-final';
+import {dynamicLights} from './scene-budget.mjs?v=20261102-round4-final';
+import {atmosphereGLSL} from './atmosphere-model.mjs?v=20261102-round4-final';
 
 // A snapshot of the native environment BEFORE actors/VFX/HUD is the albedo.
 // Lighting never substitutes terrain art or recolors an actor sprite.
