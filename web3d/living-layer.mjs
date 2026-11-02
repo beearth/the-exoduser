@@ -7,6 +7,8 @@ import {createGhosts} from './ghost-layer.mjs?v=20261102-ghost4';
 import {authoredFoliageLayout,puddleHabitat} from './foliage-layout.mjs?v=20261031-foliage4b';
 import {drawFoliageDebug} from './foliage-debug.mjs?v=20261031-foliage4';
 
+import {createGroundDressing} from './ground-dressing.mjs?v=20261102-dress1';
+
 // The native map is the color source. This canvas contains ONLY added vegetation
 // and water highlights; actors, VFX, camera, lighting and HUD use their original pass.
 export async function install(read){
@@ -22,6 +24,7 @@ export async function install(read){
   const [lookData,lookAnchors]=await Promise.all(['map-look-ch1.json','map-look-anchors.json'].map(async file=>{const r=await fetch('./assets/web3d/'+file);if(!r.ok)throw Error(file+' '+r.status);return r.json();}));
   const foliageResponse=await fetch('./assets/web3d/foliage-ch1.json?v=20261031-foliage4');if(!foliageResponse.ok)throw Error('foliage-ch1 '+foliageResponse.status);
   const foliagePlan=await foliageResponse.json(),foliageDebug=new URLSearchParams(location.search).get('r3dFoliageDebug')==='1';
+  const dressing=await createGroundDressing();
   const mapLook=createMapLook(renderer,canvas,uniforms,lookData,lookAnchors);
   const forestResponse=await fetch('./assets/web3d/forest-ch1.json');if(!forestResponse.ok)throw Error('forest-ch1 '+forestResponse.status);
   const forest=await createForest(renderer,canvas,uniforms,await forestResponse.json(),lookAnchors);
@@ -131,7 +134,8 @@ export async function install(read){
   const active=s=>enabled&&s.G.stage===0&&!s.G._bossArena;
   const api={draw:(ctx,view)=>{try{draw(ctx,read(),view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D living layer]',error);}},
     surface:(ctx,view)=>{const s=currentState=read();if(!active(s))return;try{const low=proxy||s.quality==='low',w=Math.max(1,Math.round(view.pw*(low?.65:1))),h=Math.max(1,Math.round(view.ph*(low?.65:1)));if(canvas.width!==w||canvas.height!==h)renderer.setSize(w,h,false);relief.surface(ctx,s,view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D surface]',error);}},
+    ground:(ctx,view)=>{const s=currentState||read();if(!active(s))return;try{dressing.draw(ctx,s,view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D ground]',error);}},
     beginObject:(ctx,o,m)=>{const s=currentState||read();return active(s)?relief.beginObject(ctx,o,m,s):false;},
-    snapshot:()=>({...stats,...relief.snapshot(),...forest.snapshot(),...ghosts.snapshot(),enabled,error:api.error||null}),setEnabled:value=>{enabled=!!value;},setGhostsEnabled:value=>ghosts.setEnabled(value),canvas};
+    snapshot:()=>({...stats,...relief.snapshot(),...forest.snapshot(),...ghosts.snapshot(),...dressing.snapshot(),enabled,error:api.error||null}),setEnabled:value=>{enabled=!!value;},setGhostsEnabled:value=>ghosts.setEnabled(value),canvas};
   return api;
 }
