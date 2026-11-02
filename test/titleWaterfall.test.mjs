@@ -20,7 +20,7 @@ test('flow travels down at a steady speed and the near fall is faster',()=>{
 });
 test('close C2 cover keeps both skulls and full close Silvertail in every ratio',()=>{
  for(const w of [1920,2560,3840]){
-  const r=api.rect(w,1080);assert.equal(r.width/2036,r.height/1018);
+  const r=api.rect(w,1080);assert.equal(r.width/2036,r.height/1016);
   assert.ok(r.x<=0&&r.y<=0&&r.x+r.width>=w&&r.y+r.height>=1080);
   for(const [x,y] of [[875,300],[1054,365],[1368,269],[1335,745],[1520,745],[1597,775]]){
    assert.ok(r.x+x*r.scale>=0&&r.x+x*r.scale<=w);

@@ -802,3 +802,21 @@ codex-web-statwin: 다섯 창 제목44px와 성장 머리225→44px, 기존 인�
 ### 2026-11-02 웹 3D 3라운드 마감
 
 codex-web3d: 기존 맵 위 유령나무 형태·118낮은 군락·캠프/제단 명암 개선,기본OFF/원본인물·VFX·HUD·충돌 보존. 같은 소스1920/3840 OFF·ON10초·1x/주인공RGBA차이0/57회귀·111프로젝트·guard PASS,밀집ON168.48/191.52FPS. 무적시각경로3840·9/9·123.80초·오류0. [현행 계약](../4.1맵디자인+설정/WEB3D_TRIAL_20261031.md), `I:/EXODUSER-Storage/web3d-round3-20261102/REPORT.md` 및3377 `/tmp/web3d-round3-review/index.html`. 자체판정은 이번 표현/경로 범위이며 기존main 동일 회귀3실패·전체AAA/사용자채택·자연완주·NW.js/Steam와 구분한다. 단계별main반영/분리서버HTTP200·27소스SHA대조,최종원격SHA는외부final-delivery.json.
+
+
+## 2026-11-02 22:35 — 국소 재질7d와 최종 원본영상94e의 검수 후보 통합
+
+이 절이 이전2546의 타이틀 선택동기화 대기와6a/9d 반사 후보 상태보다 우선한다. **private 검수용 소스 통합이며 새 GPU/브라우저 PASS·main/public/Unity/Windows설치 완료가 아니다.** 이전9d 실GPU기술PASS/재질RETOUCH 결과는 해당source의이력으로보존한다.
+
+| 항목 | 정확 통합 계약·현재 증거 |
+|---|---|
+| 원천 | 기존상자owner7d7929a050305e6531a1a67fe83403e870087e0d의module/test와관련계약,최종title94e3a89eddf8339cb24192bf8ad97e4fed09bcf2의필수자산/module/test/tools만선택이식. wholemain/branchmerge0·사용자G원본/WIP수정0 |
+| 재질 | chest3d.mjs10554B/SHA b1011604ad33361f7b0834b5fc324f1f507b987da2b1db0689d553fa0894f89d. 6a/9d 대비+1247B. 반사DataTexture/PMREM생성제거·scene.environment null,금속B smoothstep(.12,.55) 기반 선형RGB 국소 gain mix((2.4,1.65,1.05),(5,5.3,5.8)),RGB=1-exp(-RGB*gain). onBeforeCompile/uniform API·cache·해제·오류수치 전부 TRIPO_CHEST_GAME_20261102.md 최신후보표가정본 |
+| 영상 | final-main 제공loop와byte동일 video/title_motion_C2_final_20261102.mp46192566B/SHA869895a608475b694d68718ad5af809e0dc8f6fd65204f04adf7db4f011827c3/2036×1016/24fps206frames8.583008초/무음. 신규생성·재인코딩·업스케일0. 원영상인물/달/구름 그대로+기존폭포2개만. 달plate/맥동/구름보강·합성정지판 소비0. 기존파일은 보존/현재소비와분리 |
+| 타이틀 흐름 | 2036:1016 중앙cover·전해상도동일원본,모션감소/저사양은동영상의준비된프레임정지·폭포0. cold진입load,영상오류black+메뉴사용가능/media-error,폭포mask오류flowError는보강만중단. 이정확사용자final-as-is계약을과거달합성판정/일반배경확장요구로덮지않음. 현행상세숫자·좌표는스플래시문서최상단 |
+| index 보호 | reviewed title 캐시변경·_titleArt정지판연결제거·phase2 titleLoop정지판draw제거의3hunk만. 나머지index전체byte는2546과동일하여완료한Init끝/earlyslot/savehelper교정을보존. game.html은923/2546과byte동일·상자충돌/보상RNG/AI/진행저장변경0 |
+| 회귀 | 새재질·최종영상계약 RED13/PASS5→필수정확source반입후GREEN73. 관련16파일합본 **117/117 PASS**;별도보호회귀가슬롯초기값/legacy저장키/비타이틀helper변이3건을실제거절. 최초새GPU셰이더compile/캐시/색/입력/브라우저미검증 |
+| 출고 | 공식selector3242,무손실94논리93물리. **sourceplan3236files3974718398B/4GB여유25281602B/max94795327B**(sidecar포함). 실제static복사/prepare/check아님. 기존3 close영상미선택·final영상1개선택. 기존C2보존자산/파생identity·원본은삭제0. 새공식artifact·wholemanifest/HTTP·decode/ActualGL은다음동일Mac검수 |
+| 품질/전달 | 새국소재질은한방법한후보·未채택/실物미검증,기존재질RETOUCH. 직접목재/철테/잠금쇠·내측64px OFF/ON/A2와PMREM0/추가texture0/반복program수/GL·fallback·dispose검증필수. 최종타이틀은producer자체기록/原本직접뷰까지,새합본1920/2560/3840실브라우저검수로대체하지않음. public402/Windows미배송경계유지 |
+
+근거: I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/chest-local-material-final-title-20261102/{source-candidate.patch,index-title-only.patch,red-combined.log,green-combined.log,integration-protection.log,official-source-plan.json,producer-material-REPORT.md}. 새코드·필수자산·docs정상commit/privatepush/remote후기존Mac同exact입력→공식buildpreparecheck→實shader/64px A/B·title3화면비루프/정지·오류·offline초기화·무음/保存/正常終了로이어간다.

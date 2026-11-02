@@ -18,24 +18,53 @@ export function stepChestMotion(state,delta,paused=false){
  return state;
 }
 
-export const CHEST_ENV_INTENSITY=.65;
-export function createChestEnvironmentTexture(THREE){
- // Small linear reflection field; source base color, RM, normals and lights stay untouched.
- const width=128,height=64,data=new Uint8Array(width*height*4);
- const ground=[.018,.012,.009],sky=[.16,.20,.24],warm=[.46,.42,.34],cool=[.10,.14,.18];
- for(let y=0;y<height;y++){
-  const up=Math.sin(((y+.5)/height-.5)*Math.PI),ring=Math.sqrt(1-up*up),blend=(up+1)/2;
-  for(let x=0;x<width;x++){
-   const angle=((x+.5)/width-.5)*Math.PI*2,nx=Math.cos(angle)*ring,nz=Math.sin(angle)*ring;
-   const key=Math.pow(Math.max(0,-.6*nx+.55*up+.58*nz),8),fill=Math.pow(Math.max(0,.8*nx+.2*up-.56*nz),12),i=(y*width+x)*4;
-   for(let c=0;c<3;c++)data[i+c]=Math.round(255*(ground[c]+(sky[c]-ground[c])*blend+warm[c]*key+cool[c]*fill));
-   data[i+3]=255;
+export const CHEST_MATERIAL_SEPARATION_ID='chest-local-albedo-v1';
+export function createChestMaterialSeparation(THREE,model,enabled=true){
+ if(THREE.REVISION!=='160')throw new Error('Unsupported chest r160 shader revision');
+ const uniform={value:enabled?1:0},originals=new Map();let disposed=false;
+ model.traverse(object=>{for(const material of Array.isArray(object.material)?object.material:[object.material]){
+  if(!material?.isMeshStandardMaterial||originals.has(material))continue;
+  const compile=material.onBeforeCompile,key=material.customProgramCacheKey();
+  originals.set(material,{compileDescriptor:Object.getOwnPropertyDescriptor(material,'onBeforeCompile'),keyDescriptor:Object.getOwnPropertyDescriptor(material,'customProgramCacheKey')});
+  material.onBeforeCompile=function(shader,renderer){
+   compile.call(this,shader,renderer);
+   const common='#include <common>',metal='#include <metalnessmap_fragment>';
+   if(shader.fragmentShader.split(common).length!==2||shader.fragmentShader.split(metal).length!==2)throw new Error('Unsupported chest r160 shader chunks');
+   shader.uniforms.chestLocalAlbedoEnabled=uniform;
+   shader.fragmentShader=shader.fragmentShader.replace(common,common+`
+// CHEST_LOCAL_ALBEDO_BEGIN
+uniform float chestLocalAlbedoEnabled;
+// CHEST_LOCAL_ALBEDO_END`).replace(metal,metal+`
+// CHEST_LOCAL_ALBEDO_BEGIN
+if(chestLocalAlbedoEnabled>0.5){
+ float chestMetalMask=0.0;
+ #ifdef USE_METALNESSMAP
+  chestMetalMask=smoothstep(0.12,0.55,texelMetalness.b);
+ #endif
+ // Linear albedo only: existing B mask separates warm wood from cool iron.
+ // Black stays black; exponential shoulder preserves bounded highlight detail.
+ vec3 chestAlbedoGain=mix(vec3(2.4,1.65,1.05),vec3(5.0,5.3,5.8),chestMetalMask);
+ diffuseColor.rgb=vec3(1.0)-exp(-diffuseColor.rgb*chestAlbedoGain);
+}
+// CHEST_LOCAL_ALBEDO_END`);
+  };
+  // Uniform A/B changes never create shader variants or new programs.
+  material.customProgramCacheKey=()=>key+'|'+CHEST_MATERIAL_SEPARATION_ID;
+  material.needsUpdate=true;
+ }});
+ return {
+  setEnabled(value){if(disposed)return false;uniform.value=value?1:0;return !!uniform.value;},
+  snapshot(){return {id:CHEST_MATERIAL_SEPARATION_ID,enabled:!disposed&&!!uniform.value,materials:originals.size,mask:[.12,.55],woodGain:[2.4,1.65,1.05],metalGain:[5,5.3,5.8]};},
+  dispose(){if(disposed)return;disposed=true;uniform.value=0;
+   for(const [material,saved]of originals){
+    for(const [name,descriptor]of [['onBeforeCompile',saved.compileDescriptor],['customProgramCacheKey',saved.keyDescriptor]]){
+     if(descriptor)Object.defineProperty(material,name,descriptor);else delete material[name];
+    }
+    material.needsUpdate=true;
+   }
+   originals.clear();
   }
- }
- const texture=new THREE.DataTexture(data,width,height,THREE.RGBAFormat,THREE.UnsignedByteType);
- texture.name='EXODUSER chest reflection candidate';texture.colorSpace=THREE.LinearSRGBColorSpace;
- texture.mapping=THREE.EquirectangularReflectionMapping;texture.wrapS=THREE.RepeatWrapping;
- texture.magFilter=texture.minFilter=THREE.LinearFilter;texture.needsUpdate=true;return texture;
+ };
 }
 export function disposeChestResources(...roots){
  const resources=new Set();
@@ -53,33 +82,29 @@ export function initChest3D({canvas,getWorld,loadDependencies=()=>Promise.all([i
  if(!canvas)return null;
  let motion=createChestMotion(),current=null,ready=false,failed=false,loading=false;
  let renderer,scene,camera,root,lid,light,shadow,foot,THREE,last=0,visible=false,frames=0;
- let environmentTexture=null,environmentEnabled=true,modelRoot=null,disposed=false,released=false,raf=0;
- const originalEnvIntensity=new Map();
+ let materialSeparation=null,materialSeparationEnabled=true,modelRoot=null,disposed=false,released=false,raf=0;
  const SIZE=CHEST_RENDER_SIZE;
  const api={
   show(){}, // The existing spawn call is retained; the authoritative item supplies its position.
   open(){requestChestOpen(motion);},
   hide(){visible=false;canvas.style.display='none';},
-  setEnvironmentEnabled(enabled){if(disposed)return false;environmentEnabled=!!enabled;applyEnvironment();return environmentEnabled;},
+  setEnvironmentEnabled(){return false;}, // Retired reflection QA hook: never allocates a source or PMREM.
+  setMaterialSeparationEnabled(enabled){if(disposed||failed)return false;materialSeparationEnabled=!!enabled;return materialSeparation?.setEnabled(enabled)??materialSeparationEnabled;},
   dispose(){if(disposed)return;disposed=true;ready=false;cancelAnimationFrame(raf);api.hide();release();},
   get active(){return ready&&visible&&!failed;},
   isShowing(item){return api.active&&item===current;},
   snapshot(){return {ready,failed,loading,visible,phase:motion.phase,lidAngle:motion.lidAngle,
    model:CHEST_MODEL,renderSize:SIZE,frames,disposed,
-   environment:{enabled:environmentEnabled,prepared:!!environmentTexture,intensity:environmentEnabled?CHEST_ENV_INTENSITY:0},
+   environment:{enabled:false,prepared:false,intensity:0},
+   materialSeparation:materialSeparation?.snapshot()??{id:CHEST_MATERIAL_SEPARATION_ID,enabled:!disposed&&!failed&&materialSeparationEnabled,materials:0},
    resources:{textures:renderer?.info?.memory?.textures??null,geometries:renderer?.info?.memory?.geometries??null,programs:renderer?.info?.programs?.length??null},
    world:current?{x:current.x,y:current.y,opened:current.opened}:null};}
  };
  window._chest3d=api;
- function applyEnvironment(){
-  if(scene)scene.environment=environmentEnabled?environmentTexture:null;
-  for(const [material,intensity]of originalEnvIntensity)material.envMapIntensity=environmentEnabled?CHEST_ENV_INTENSITY:intensity;
- }
  function release(){
   if(released)return;released=true;
   if(scene)scene.environment=null;
-  // r160 releases its cached PMREM target on the source texture's dispose event.
-  environmentTexture?.dispose();environmentTexture=null;originalEnvIntensity.clear();
+  materialSeparation?.dispose();materialSeparation=null;
   disposeChestResources(scene,modelRoot);root?.clear();scene?.clear();
   modelRoot=root=lid=light=shadow=foot=camera=null;
   renderer?.dispose();renderer?.forceContextLoss?.();
@@ -94,6 +119,8 @@ export function initChest3D({canvas,getWorld,loadDependencies=()=>Promise.all([i
    const dependencies=await loadDependencies();THREE=dependencies[0];const {GLTFLoader}=dependencies[1];
    if(disposed)return;
    renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:'low-power'});
+   renderer.debug.checkShaderErrors=true;
+   renderer.debug.onShaderError=()=>{throw new Error('Chest shader compilation failed');};
    renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));renderer.setSize(SIZE,SIZE);
    renderer.setClearColor(0,0);renderer.outputColorSpace=THREE.SRGBColorSpace;
    renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;
@@ -122,9 +149,7 @@ export function initChest3D({canvas,getWorld,loadDependencies=()=>Promise.all([i
    const material=new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(image),transparent:true,depthWrite:false});
    shadow=new THREE.Mesh(new THREE.PlaneGeometry(2.2,1.35),material);
    shadow.rotation.x=-Math.PI/2;shadow.position.y=-.004;scene.add(shadow);
-   environmentTexture=createChestEnvironmentTexture(THREE);
-   modelRoot.traverse(object=>{for(const material of Array.isArray(object.material)?object.material:[object.material])if(material?.isMeshStandardMaterial&&!originalEnvIntensity.has(material))originalEnvIntensity.set(material,material.envMapIntensity);});
-   applyEnvironment();ready=true;failed=false;
+   materialSeparation=createChestMaterialSeparation(THREE,modelRoot,materialSeparationEnabled);ready=true;failed=false;
   }catch(error){
    fail(error);
   }finally{loading=false;}
