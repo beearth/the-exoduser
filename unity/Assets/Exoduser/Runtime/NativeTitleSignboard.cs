@@ -11,7 +11,8 @@ namespace Exoduser.UnityPort
   Material material;RenderTexture frame;
   bool loaded,failed,dirty=true,hasVideo,lastReduced;float lastRender=-1;
   internal bool ReducedMotion=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-reduce-menu-motion")>=0;
-  internal bool HasFocus=true;
+  bool hasFocus=true;
+  internal bool HasFocus{get=>hasFocus;set{hasFocus=value;movie?.SetPlaybackAllowed(value&&!ReducedMotion);}}
   internal double Seconds{get;private set;}
   internal int RenderedFrames{get;private set;}
   internal int VideoFrames{get;private set;}long lastVideoFrame=-1;

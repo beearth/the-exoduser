@@ -99,7 +99,7 @@
 | cover | max(W/2036,H/1016)·중앙 크롭. 버퍼3840×2160 상한·화면 비율 유지. 정지 원화는 WebP→PNG decoded RGBA 동일 |
 | 폭포 | 근거리 box696,498,66,259·mouth714,506·contact735,747·100px/s. 원거리951,548,78,218·974,555·1001,756·75px/s. 128×512 주기 타일·alpha.38. 입구 반사/착수 링·안개 수식 이식, 실제 GPU 일치 미검증 |
 | 메뉴 | 웹 _fitTitleStage와 같이 k=min(W/1920,H/1080), logoLeft=max(48,H×.045), menuLeft=logoLeft+20k. 기존 로고520·상단96, 메뉴116/436와 입력 유지 |
-| 수명·폴백 | 전용 NativeLobbyVideo 무음 디코더, reduced-motion/포커스 해제로 정지. 오류/셰이더 미지원은 C2 still cover. 전환/파괴에서 decoder·RT·material·tile 해제. 이전 A/구형MP4 삭제0 |
+| 수명·폴백 | 전용 NativeLobbyVideo 무음 디코더, reduced-motion/포커스 해제로 정지. 포커스 setter에서 디코더를 즉시 pause하여 로비 Update 조기반환 중에도 재생이 남지 않음. 오류/셰이더 미지원은 C2 still cover. 전환/파괴에서 decoder·RT·material·tile 해제. 이전 A/구형MP4 삭제0 |
 | 검사 | A 비율로 C2 검사 RED 후 C#71 GREEN. 디코더 진행 누락 RED 후 라우팅 계약 GREEN. 독립 Core114/Runtime210 csc exit0. Unity import·셰이더·Player·M1·1x 검수를 대체하지 않음 |
 | 실제 검수 | 기존 --unity-title-a-check 호환·새 --unity-title-c2-check, 기존90장 게이트를 C2 video 모드·decoded frame 진행 조건으로 강화. 도타 실행으로 실제 실행0, 공통/바탕화면 갱신0 |
 
