@@ -1,0 +1,80 @@
+{
+  "schema": "exoduser.modern-multiverse-costume-study.v1",
+  "createdAt": "2026-11-02T06:24:59.576Z",
+  "userDirection": [
+    "모든 시대와 문화가 혼합된 멀티버스이며 시대 제한 없음",
+    "스텔라 블레이드처럼 레깅스 등 현대적인 복장 허용",
+    "얼굴 원형·푸른 단발/보라색 옆땋기·여성적으로 날렵하고 탄탄한 몸 유지"
+  ],
+  "generator": "built-in image_gen; exact model ID and billed cost not disclosed",
+  "stage": "FOUR_2D_OUTFIT_STUDIES_NOT_RUNTIME_ASSETS",
+  "paidTripoRequestsSubmitted": 0,
+  "outputs": [
+    {
+      "version": 23,
+      "id": "transmuter",
+      "source": "C:/Users/심도진/.codex/generated_images/01a194cc-8301-70f1-80f8-a4e5f1090c22/exec-ec7d1fe8-c11d-4b60-a62a-c0e4fc23b0b8.png",
+      "prompt": "Use case: identity-preserve costume redesign for a playable game heroine. Make ONE adult woman, approximately mid twenties, in a head-to-sole FULL BODY character source image, simple neutral medium-gray studio backdrop, consistent soft front light, no text, no logo, no weapons, no inset figures. Image 1 is the permanent FACE ORIGIN: preserve this particular adult person's facial proportions, eyelids, eye spacing, nose, lips, jaw and skin tone. Image 2 identifies her HAIR, slim fit body and balanced modeling pose ONLY. REPLACE THE ENTIRE OLD COSTUME; do not inherit any of image 2's medieval armor, spikes, pauldrons, ragged cloth, brooches, buckles or heavy boots. Keep head upright, eyes level, face straight toward camera, naturally closed relaxed lips, no selfie angle, no coy posing. Feminine slender athletic proportions, gentle healthy muscle definition and firm core, natural hips and thighs, narrow relaxed shoulders. Not bulky or bodybuilder. A neutral relaxed A-stance, fingers visible, feet flat, arms a little separated from torso. Clean extremely high-quality contemporary Korean AAA action-game 3D character rendering with natural skin, refined fabric construction, elegant restrained design. User explicitly allows every era and culture in a MULTIVERSE: there is NO historical-period restriction. Contemporary performance leggings, close-fitting technical knit, high-fashion combat tailoring, sleek synthetic surfaces and limited precise metal equipment are fully appropriate. Design an ORIGINAL outfit with the sleek modern body-conscious material sensibility of contemporary character action games; do not reproduce a particular existing game outfit. Show stretch-knit fabric, seam construction and restrained satin/matte contrast; not old fantasy plate armor disguised by small changes, not a gym outfit with no character design, not a latex fetish costume, no high heels. Keep the torso's pose and actual anatomy natural. Clearly present an original complete game-character costume with fewer, stronger shapes.\nCharacter A: TRANSMUTER. Preserve her distinct face including the small cheek mole. HAIR is the BLUE ASYMMETRIC SHORT BOB in image 2, deep navy roots and clearly blue cobalt/steel-blue lengths; no long hair, braid or ponytail. COSTUME: design a striking modern asymmetric CROPPED performance-fabric combat top, deep midnight blue with a pale cool-gray single shoulder/upper-chest panel and a tasteful sculpted high collar. The entire waist and abdomen are BARE, showing subtle feminine toned abdominal lines. BOTH LEGS wear sleek continuous fitted FULL-LENGTH GRAPHITE LEGGINGS with refined navy inset panels, two or three directional seams and a small cool-gray high-hip inset; the material hugs the actual slim legs, no loose cargo trousers. Integrated slender flat ankle/shin combat boots with a light sole, no oversized shin plate. One arm has a sleek fitted sleeve, the other bare upper arm provides deliberate asymmetry. On the anatomical LEFT forearm (VIEWER RIGHT), a small refined brushed titanium-and-dark-composite alchemical gauntlet contains exactly ONE BLUE CORE. It is precision equipment with a smooth rigid housing and a few functional openings, no spikes, scrollwork or extra glowing stones. One low-profile catalyst cartridge at the hip is sufficient; no potion-bottle clutter, no dangling belts, no cape or skirt. A few hairline pale-copper circuit/engraved details connect the core housing to the outfit without glow covering the body. The silhouette should feel fast, contemporary, individual and aesthetically polished. Full hairstyle and both soles inside the frame.",
+      "refs": [
+        "G:/exoduser/assets/characters/female-heroes/20261102-v22-lean-blue/transmuter.face-lock.png",
+        "G:/exoduser/assets/characters/female-heroes/20261102-v22-lean-blue/transmuter.lean.source.png"
+      ],
+      "file": "transmuter.modern-v23.png",
+      "sha256": "41633e5ce1c8f3bd07708d832e4ac0d70b3e651bd2672972c5b8f1d97bb27a74",
+      "width": 1024,
+      "height": 1536,
+      "review": "소재 혼합 비교안; 이전 금속 장비가 남음",
+      "adopted": false
+    },
+    {
+      "version": 23,
+      "id": "spearmage",
+      "source": "C:/Users/심도진/.codex/generated_images/01a194cc-8301-70f1-80f8-a4e5f1090c22/exec-89141cd7-a65f-42a8-84a0-3c9f0e880806.png",
+      "prompt": "Use case: identity-preserve costume redesign for a playable game heroine. Make ONE adult woman, approximately mid twenties, in a head-to-sole FULL BODY character source image, simple neutral medium-gray studio backdrop, consistent soft front light, no text, no logo, no weapons, no inset figures. Image 1 is the permanent FACE ORIGIN: preserve this particular adult person's facial proportions, eyelids, eye spacing, nose, lips, jaw and skin tone. Image 2 identifies her HAIR, slim fit body and balanced modeling pose ONLY. REPLACE THE ENTIRE OLD COSTUME; do not inherit any of image 2's medieval armor, spikes, pauldrons, ragged cloth, brooches, buckles or heavy boots. Keep head upright, eyes level, face straight toward camera, naturally closed relaxed lips, no selfie angle, no coy posing. Feminine slender athletic proportions, gentle healthy muscle definition and firm core, natural hips and thighs, narrow relaxed shoulders. Not bulky or bodybuilder. A neutral relaxed A-stance, fingers visible, feet flat, arms a little separated from torso. Clean extremely high-quality contemporary Korean AAA action-game 3D character rendering with natural skin, refined fabric construction, elegant restrained design. User explicitly allows every era and culture in a MULTIVERSE: there is NO historical-period restriction. Contemporary performance leggings, close-fitting technical knit, high-fashion combat tailoring, sleek synthetic surfaces and limited precise metal equipment are fully appropriate. Design an ORIGINAL outfit with the sleek modern body-conscious material sensibility of contemporary character action games; do not reproduce a particular existing game outfit. Show stretch-knit fabric, seam construction and restrained satin/matte contrast; not old fantasy plate armor disguised by small changes, not a gym outfit with no character design, not a latex fetish costume, no high heels. Keep the torso's pose and actual anatomy natural. Clearly present an original complete game-character costume with fewer, stronger shapes.\nCharacter B: SPEAR KNIGHT, different woman from Character A. Preserve image 1's individual more open eyes, softer cheek contour, short rounded nose and full natural lips without making her younger. HAIR: ONE THICK LONG SMOKY PURPLE SIDE BRAID over her anatomical LEFT shoulder (VIEWER RIGHT), black-plum roots, clearly purple braid length, swept crown and a few fine face-framing strands, no bob, no ponytail. COSTUME: a striking ORIGINAL contemporary combat BODYSUIT with a continuous fully covered abdomen, shaped from PORCELAIN-IVORY technical stretch fabric and GRAPHITE BLACK structural knit, with a few muted plum seam/panel accents. A clean asymmetric diagonal collar/upper-chest opening exposes a tasteful upper-chest line; it is tailored garment construction, not separate metal bra cups. One sleek shoulder cap only, smooth small brushed gunmetal, and fitted forearm guards; bare slender upper arms. Create a strong asymmetric leg design: one leg fully covered in close-fitting graphite/ivory technical LEGGING fabric, the opposite leg has a clear elegant OUTER UPPER-THIGH SKIN WINDOW integrated into the bodysuit construction, while opaque fitted shorts fully cover the pelvis and upper inner thighs. Below it, a sleek fitted knee-high combat boot with a flat minimal sole and one narrow kneeguard. Keep a long clean athletic leg line and fully covered abdomen, no bare abs. No medieval corset, no belt-and-buckle collage, no ragged skirt, no long gown, no cape, no blue core. A restrained slim copper connector at the waist may suggest spear equipment. Empty hands; the spear will be a separate rigid game attachment. Render fine fabric grain, restrained soft sheen and one or two precise hard-surface accents. She should be visually distinct from the blue-bob cropped-top woman: light-dominant continuous torso, purple braid, asymmetric thigh treatment. Full hairstyle and both soles inside frame.",
+      "refs": [
+        "G:/exoduser/assets/characters/female-heroes/20261102-v22-lean-blue/spearmage.face-lock.png",
+        "G:/exoduser/assets/characters/female-heroes/20261102-v22-lean-blue/spearmage.lean.source.png"
+      ],
+      "file": "spearmage.modern-v23.png",
+      "sha256": "f365da7c2ea6c5c5d9bb2755c40d8fe8ef7d8a9229904b9fa0401cdb6c4cf32c",
+      "width": 1024,
+      "height": 1536,
+      "review": "소재 혼합 비교안; 이전 금속 장비가 남음",
+      "adopted": false
+    },
+    {
+      "version": 24,
+      "id": "transmuter",
+      "source": "C:/Users/심도진/.codex/generated_images/01a194cc-8301-70f1-80f8-a4e5f1090c22/exec-6ce9c21b-c13e-4ddd-bb8d-632068e3f20f.png",
+      "prompt": "Use case: identity-preserve, precise costume redesign. Image 1 is the adult woman's permanent face origin, preserve this specific adult face and natural skin. Image 2 is the edit target: KEEP her precise face, colored hairstyle, feminine slender toned body, full-body front neutral A stance, upright level head, both hands, gray background, studio light and realistic AAA game rendering. CHANGE CLOTHING AND EQUIPMENT ONLY. This is a deliberately MORE MODERN alternate costume. The target's medieval construction must be removed completely: REMOVE ALL layered metal pauldrons, plate shin guards, medieval corset construction, brass buckles, worn leather belts, heraldic clasps and angular antique ornament. This is not a recolor. Replace them with a minimal, distinctive, expensive-looking technical-knit and flexible-composite outfit appropriate to an unrestricted multiverse character action game. Fabric should clearly be close-fitting stretch LEGGING / sleek contemporary BODYSUIT material: slightly satin, micro-rib sections, intentional large color-blocked panels and precise curved seams. No latex fetish gloss or plastic skin. No mass of straps, dangling tails or random glowing lines. No text/logos, no helmets, no held weapons. Make attractive strong shapes and believable fitted apparel with original aesthetic confidence. Every boot has a slim lightweight athletic rubber sole, no medieval shin armor or high heel. Keep the entire head and both soles visible. Only one person. Never alter the face, hair or body silhouette to compensate for clothes.\nBlue asymmetric short bob remains exactly blue, same small cheek mole. Modern graphite/navy crop top with a strong asymmetric PEARL GRAY panel sweeping over only one shoulder and chest; subtle open upper collarbone; one continuous close-fitting sleeve, the opposite upper arm bare. BARE WAIST AND ENTIRE ABDOMEN, with healthy gentle feminine abs. Low-to-mid waist full-length sculpted graphite compression leggings on BOTH legs, one confident narrow cobalt outer-leg panel and a few curved technical seam lines. No pockets or hanging leather belts. The anatomical LEFT forearm/viewer RIGHT has a NEW SMALL SMOOTH PRECISION-COMPOSITE GAUNTLET with exactly one circular blue core flush inside a flat brushed titanium housing. Completely replace the old spiky/antique metal gauntlet. Bare fingers, small fitted fingerless grip gloves. A compact single catalyst capsule flush at the waist is the only extra accessory. Sleek ankle-high knit boots with integrated gray athletic soles. Confident modern original action-game character design, not sportswear catalog or medieval armor.",
+      "refs": [
+        "G:/exoduser/assets/characters/female-heroes/20261102-v22-lean-blue/transmuter.face-lock.png",
+        "C:/Users/심도진/.codex/generated_images/01a194cc-8301-70f1-80f8-a4e5f1090c22/exec-ec7d1fe8-c11d-4b60-a62a-c0e4fc23b0b8.png"
+      ],
+      "file": "transmuter.modern-v24.png",
+      "sha256": "c247f89b744fd739d5c13e421c0d2946e780c5d5934db4962876fa78b9eaba80",
+      "width": 1024,
+      "height": 1536,
+      "review": "현대 기능복 비교안; 금속 견갑·정강이 갑옷 축소",
+      "adopted": false
+    },
+    {
+      "version": 24,
+      "id": "spearmage",
+      "source": "C:/Users/심도진/.codex/generated_images/01a194cc-8301-70f1-80f8-a4e5f1090c22/exec-0956bb09-ceee-4973-8d5f-463e5826e832.png",
+      "prompt": "Create an original modern combat outfit concept for the clearly ADULT woman, age about 26, shown in the supplied face reference. Reference image 1 defines her specific face; keep that individual face. Reference image 2 defines the purple side braid, slender athletic build and front-facing full-body composition. Replace ALL of the old costume. Give her a contemporary fully OPAQUE PORCELAIN WHITE and GRAPHITE performance-knit combat BODYSUIT: high clean collar, fully covered chest, fully covered abdomen, fully covered hips, and FULL-LENGTH FITTED LEGGINGS on BOTH legs. Both shoulders and upper arms are free, with smooth minimal fingerless gloves and a compact plain forearm cuff. Use one asymmetrical black full-length outer-leg panel versus an ivory panel on the opposite leg to distinguish the thighs THROUGH COLOR AND FABRIC, not through exposed skin. Narrow muted plum piping can complement the long thick purple side braid over her anatomical left shoulder. Natural healthy feminine athletic proportions, narrow relaxed shoulders and gently toned limbs, not a bodybuilder and not exaggerated proportions. No armor pauldrons, no medieval corset, no brass ornament, no leg straps, no cutouts on hips or legs, no underwear-like design, no metallic breast cups, no old-fashioned shin guards or high heels. Sleek slim knee-height stretch-knit boots with a modern flat rubber sole. A small flush silver waist fastener is enough equipment. Sophisticated contrasting matte and softly satin technical fabric, precise broad directional paneling, understated and original action-game costume from an unrestricted multiverse. Upright neutral face with level eyes, relaxed balanced A stance, no provocative posing. BOTH empty hands clearly visible, one full body from whole hairstyle to both flat soles, gray studio background, soft clean lighting, highly refined realistic AAA character render. No text, no inset portraits, no weapons, no second character.",
+      "refs": [
+        "G:/exoduser/assets/characters/female-heroes/20261102-v22-lean-blue/spearmage.face-lock.png",
+        "C:/Users/심도진/.codex/generated_images/01a194cc-8301-70f1-80f8-a4e5f1090c22/exec-89141cd7-a65f-42a8-84a0-3c9f0e880806.png"
+      ],
+      "file": "spearmage.modern-v24.png",
+      "sha256": "f2c03c20f9f5afad797325bb13a9810312e7220db776134e30a78b529f0d06a1",
+      "width": 1024,
+      "height": 1536,
+      "review": "현대 기능복 비교안; 금속 견갑·정강이 갑옷 축소",
+      "adopted": false
+    }
+  ],
+  "faceOriginsImmutable": true,
+  "runtimeApplied": false
+}

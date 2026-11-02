@@ -1,0 +1,58 @@
+{
+  "status": "API_AUTHENTICATED_DESIGN_STUDIES_READY_GENERATION_NOT_SUBMITTED",
+  "provider": "Tripo direct API v3",
+  "model": "v3.1-20260211",
+  "costSource": "https://developers.tripo3d.ai/en/pricing",
+  "estimatedCreditsPerModel": 60,
+  "estimatedTwoModelCredits": 120,
+  "estimateBreakdown": {
+    "imageToModelWithStandardTexture": 30,
+    "detailedTextureAddon": 10,
+    "detailedGeometryAddon": 20
+  },
+  "reserveFraction": 0.2,
+  "rigOrAnimationIncluded": false,
+  "noAutomaticSubmissionOrPurchase": true,
+  "submissionHold": "API_CREDITS_INSUFFICIENT; revised costume studies need visual assessment before replacing model input",
+  "paidRequestsSubmitted": 0,
+  "jobs": [
+    {
+      "id": "transmuter",
+      "inputPath": "G:\\exoduser-wt\\latest-web\\assets\\characters\\female-heroes\\20261102-v23-v24-modern-multiverse\\transmuter.modern-v24.png",
+      "inputSha256": "c247f89b744fd739d5c13e421c0d2946e780c5d5934db4962876fa78b9eaba80",
+      "estimatedCredits": 60,
+      "body": {
+        "model": "v3.1-20260211",
+        "texture": true,
+        "pbr": true,
+        "texture_quality": "detailed",
+        "geometry_quality": "detailed",
+        "face_limit": 60000,
+        "quad": false,
+        "texture_alignment": "original_image",
+        "enable_image_autofix": false,
+        "orientation": "align_image",
+        "auto_size": false
+      }
+    },
+    {
+      "id": "spearmage",
+      "inputPath": "G:\\exoduser-wt\\latest-web\\assets\\characters\\female-heroes\\20261102-v23-v24-modern-multiverse\\spearmage.modern-v24.png",
+      "inputSha256": "f2c03c20f9f5afad797325bb13a9810312e7220db776134e30a78b529f0d06a1",
+      "estimatedCredits": 60,
+      "body": {
+        "model": "v3.1-20260211",
+        "texture": true,
+        "pbr": true,
+        "texture_quality": "detailed",
+        "geometry_quality": "detailed",
+        "face_limit": 60000,
+        "quad": false,
+        "texture_alignment": "original_image",
+        "enable_image_autofix": false,
+        "orientation": "align_image",
+        "auto_size": false
+      }
+    }
+  ]
+}

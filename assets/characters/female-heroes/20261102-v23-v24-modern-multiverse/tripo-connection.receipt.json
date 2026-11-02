@@ -1,0 +1,17 @@
+{
+  "verifiedAt": "2026-11-02T06:13:57.261Z",
+  "provider": "Tripo direct API v3",
+  "authenticationHttpStatus": 200,
+  "authenticationApiCode": 0,
+  "authenticated": true,
+  "storage": "Windows DPAPI CurrentUser outside Git",
+  "paidGenerationRequestsSubmitted": 0,
+  "generationStatus": "WAIT_API_CREDITS",
+  "tests": {
+    "encryptedCredentialRoundtrip": true,
+    "zeroBalanceStopsBeforeUpload": true,
+    "unknownPaidPostNotAutomaticallyResubmitted": true
+  },
+  "apiKeyIncluded": false,
+  "rawBalanceIncluded": false
+}

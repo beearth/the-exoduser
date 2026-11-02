@@ -1,0 +1,60 @@
+{
+  "verifiedAt": "2026-11-02T06:25:50.352Z",
+  "url": "http://localhost:3333/assets/characters/female-heroes/20261102-v23-v24-modern-multiverse/preview.html",
+  "staticDesktopAndMobilePass": true,
+  "imagesLoaded": 4,
+  "htmlAndImagesHttp200": true,
+  "sourceHttpDesktopBytesMatch": true,
+  "checks": [
+    {
+      "file": "generation.receipt.json",
+      "status": 200,
+      "sha256": "268ba06fab6a0943421ee3991ff24012162806a51f4a7afc951c1c883c4146fe",
+      "bytes": 15798
+    },
+    {
+      "file": "preview.html",
+      "status": 200,
+      "sha256": "5ad0162bd9f0269a4d0794623bf1d97c1759c138f99058eb09ceb8873000a5c4",
+      "bytes": 3698
+    },
+    {
+      "file": "spearmage.modern-v23.png",
+      "status": 200,
+      "sha256": "f365da7c2ea6c5c5d9bb2755c40d8fe8ef7d8a9229904b9fa0401cdb6c4cf32c",
+      "bytes": 1801084
+    },
+    {
+      "file": "spearmage.modern-v24.png",
+      "status": 200,
+      "sha256": "f2c03c20f9f5afad797325bb13a9810312e7220db776134e30a78b529f0d06a1",
+      "bytes": 1785504
+    },
+    {
+      "file": "transmuter.modern-v23.png",
+      "status": 200,
+      "sha256": "41633e5ce1c8f3bd07708d832e4ac0d70b3e651bd2672972c5b8f1d97bb27a74",
+      "bytes": 1841171
+    },
+    {
+      "file": "transmuter.modern-v24.png",
+      "status": 200,
+      "sha256": "c247f89b744fd739d5c13e421c0d2946e780c5d5934db4962876fa78b9eaba80",
+      "bytes": 1785158
+    },
+    {
+      "file": "tripo-comparison-plan.json",
+      "status": 200,
+      "sha256": "c66cf646d4de715fb628d8a554364d84daaf967db0d16156b879fa7b0ea5bbcd",
+      "bytes": 2070
+    },
+    {
+      "file": "tripo-connection.receipt.json",
+      "status": 200,
+      "sha256": "018c8534f2e43a5c4a034cfdafff6e042bf773e6eb2c6b9b68e65c3b855dd5d8",
+      "bytes": 525
+    }
+  ],
+  "runtimeApplied": false,
+  "actualNew3dAvailable": false
+}

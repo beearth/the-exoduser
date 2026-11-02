@@ -1,3 +1,5 @@
+> **2026-11-02 후속 직접 API 인증:** 현재 PC에서 Tripo v3 account/balance HTTP200/code0 인증을 확인했다. 아래 직접 API 미검증 서술은 이전 관측이다. 키는 Git 밖 DPAPI 암호화 보관, API 잔액 부족으로 유료 생성0건. [실제 연결·제출 경계](17게임아트팀/TRIPO_DIRECT_API_CONNECTION_20261102.md).
+
 # MCP와 API 공통 목록
 
 확인일: 2026년 10월 31일 15:09 KST. EXODUSER 모든 팀은 이 목록을 공통 기준으로 사용한다. 이 PC Codex 세션의 도구 노출과 실제 계정 인증을 구분하며, Mac·Claude·다른 채팅의 연결 완료를 대신 증명하지 않는다.
