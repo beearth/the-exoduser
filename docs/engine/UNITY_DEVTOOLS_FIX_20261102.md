@@ -96,3 +96,5 @@ WAIT는 본편 lastAttemptSha를 보존하면서 lastAttemptVerdict만 WAIT로 �
 | 경계 | 본인 소스/시험/규칙/docs만 변경. 설치본·워처·task·타 소유자의 예약/프로세스·제품UI 변경0. 새Unity/Player/빌드/GPU/인코딩·1395재촬영0. M1 --remodel3d 누락은 별도 항목으로 유지 |
 
 테스트 원문·입력/설치본 fingerprint·원격SHA·한국어 결과는 I:/EXODUSER-Storage/devtools/fix-1103-overlap-summary/REPORT.md. 설치 반영은 root 직접 인수 뒤 공식 경로·정상 회차 종료·CAS를 확인하는 별도 단계다.
+
+root 인수 후 통합 경계(2026-11-03): 기존 private 브랜치에서 공통426544563dcd7068ac661a7ee7876fd91f69d19a를 정상 merge하고, 공통 대비 순변경은 위5경로만 유지한다. 공식 canonical G:/exoduser-wt/codex-buildloop는 unity/main09192f7bbc4650d9ba17408bf2de7cdd95c4f28d·INDEX0·기존미인수tracked WORK855개로 관측됐다. run.lock 비점유/task Ready/구09192회차03:44:26 ABORT 종료와 별개로 Cmd-Install의 clean-source 조건을 충족하지 못하므로 설치HOLD, WIP복원·대체작업본으로 우회 설치0이다. 실제 source/원격 SHA·회귀·bin/task/실게임 fingerprint·최종 경계는 I:/EXODUSER-Storage/devtools/fix-1103-overlap-install/REPORT.md에 기록한다.
