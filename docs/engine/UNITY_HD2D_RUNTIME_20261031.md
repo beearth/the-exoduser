@@ -211,3 +211,6 @@
 |필드 검수|최신UI 결합 NativeGame.A2FieldCapture는기존8+거목재현3=11포즈×2폭22PNG. b673/8dbdf의실제16장영수증은이전소스증거로보존하며새22장으로소급하지않음|
 |UI 보호|중앙/가장자리·GuideHUD/최소물리16·공통제목64/메달40·스킬본문/실제16키·승인로딩16종·공유영상소유·UI검수틱/입력격리·AO선택필드·펫행간·명시재생버튼계약모두유지|
 |소스/증거|공용HEAD38·INDEX0/원WIP520/56·frozenCLI68b7/Queue8a00을보존. 새같은DLL의remodel-scenes1 build→M1→field22/world56/raw24/FPS/UI1225/웹1x 필수. R3나Main8dbdf의M1/사진을새UI 결합DLL 검수로소급0|
+
+
+2026-11-02 QA전용복원companion준비: 원Core복원후기존UpdateViews→Remodel3DLate로표현재구성, old identity실패와별도entity/registry/chunk semantic검증. 제품/Core/geometry변경0·실Player미검증. 별도Update실제frame간격관측10s launchwarmup+60s,입력/AI/시간변경0. bf3e실GUI입력은로비반응없어자연play미검증,profile26/27복구. 근거UNITY_GROUND_PLACEMENT_QA_20261102.

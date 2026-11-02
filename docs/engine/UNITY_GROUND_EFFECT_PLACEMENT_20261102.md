@@ -127,3 +127,6 @@ PC에추가수신한정상전층PNG3개는images-full-822/received.json의원본
 
 
 2026-11-02 동일bf3e 일반앱 scriptedM1 23/23 PASS, headlessRenderTexture1600x900/GUI repaint0·bridge0. raw26/cache27exact복구. 자연OS플레이·실제FPS는별도,전체인수와기존FAIL미관측판정불변. 자세한근거 UNITY_GROUND_PLACEMENT_QA_20261102 및 evidence/UNITY_MAC_RECEIVER_M1_20261102.json.
+
+
+2026-11-02 QA전용복원companion준비: 원Core복원후기존UpdateViews→Remodel3DLate로표현재구성, old identity실패와별도entity/registry/chunk semantic검증. 제품/Core/geometry변경0·실Player미검증. 별도Update실제frame간격관측10s launchwarmup+60s,입력/AI/시간변경0. bf3e실GUI입력은로비반응없어자연play미검증,profile26/27복구. 근거UNITY_GROUND_PLACEMENT_QA_20261102.

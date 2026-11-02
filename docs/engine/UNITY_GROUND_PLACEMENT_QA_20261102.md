@@ -1110,3 +1110,34 @@ MAP PRODUCTION REPORT: A2root-slope두fixture만추가관측;MASTER/OUTER/LARGE/
 CUA 최초 앱 선택이 자동실행을 유발해 즉시CmdQ로 종료한 사건은 별도기록했다. 직전성공M1 known-before를 바탕으로 원26raw/27cache전체 대조, 알려진normal-domain1개만CAS복구, 최종즉시·2s·7s exact복구/errornull이다. 앱선택전에보호runner로먼저실행하는순서를적용한다.
 
 MAP PRODUCTION REPORT: geometry/asset/Core변경없음. TECH scriptedM1만PASS. 실제OS플레이/카메라투어/자연FPS 미검수. VISUAL VERDICT: RETOUCH. 기존설치1403보존,최종Mac/Win인수보류.
+
+
+## 2026-11-02 원 화면 표현 복원 한정 QA 준비
+
+# 원본 view 복원 한정 회귀·자연 프레임 관측 초안 (실제 실행 전)
+
+| 항목 | 계약 |
+|---|---|
+| 기준 | QA bf3e93a63425a17ede0fa6a0ca16e066374cc984 / product e33ed53574a187db36e00dfbd1f92b4d6f263635 |
+| 소유 | 전용 산출물의 신규 companion 2파일만. 기존 제품·GroundPlacementCapture/Full/Triad 소스 변경0 |
+| 복원 진입 | ReceiverRestoreNarrowCapture.Boot, `--unity-receiver-restore-narrow` |
+| 자연 관측 진입 | NaturalFrameObserve.Boot, `--unity-natural-frame-observe` |
+| 상호배제 | 복원과 자연 관측·M1·기존 placement/triad는 별도 프로세스. 복원은 기존 helper owner를 시작시키지 않음 |
+| 복원 경로 | 실제 원 필드 진입 → writer pause → 기존 UpdateViews/Remodel3DLate로 baseline → 원본 renderer/asset/camera/root/Core snapshot → 빈 적 목록·고정 위치의 별도 Simulation fixture → 2프레임 Destroy 처리 → 원 Simulation 재대입 → 기존 UpdateViews/Remodel3DLate → 원 camera/root 및 살아 있는 원 renderer flags/materials 복구 → 2프레임 후 검증 |
+| tick | Simulation.Tick 호출0. 원 TickCount/hash/reference와 fixture hash 검증. 원 게임/late writer는 종료까지 pause. 원 enabled/Running/late 값은 writer-before.json에 기록하고 다시 켜지 않음 |
+| old identity | old ID→실제 원 Renderer reference만 보유. destroyed는 false. 새 Renderer를 old 항목에 대입하지 않음. 이전 run의58개 false receipt는 불변이며 이번 회귀의 파괴 수는 실제 관측값으로 따로 기록 |
+| semantic gate | 원 Core/ref/tick/event, fixture Core, stable 원본 생존/asset reference, entity별 body/walk/overlay/contact 관계, 중복·고아·destroyed registry key 없음, 실제 필요 ground chunk 좌표/경로/rect/pivot/sorting 관계, pause/camera/root, error0, enemy/contact/chunk 파괴 경로가 실제로 모두 실행됐는지 포함 |
+| 자원·event 범위 | 원 renderer material/shader/mainTexture, stable sprite/texture reference, HD2D actor/overlay/shadow registry 및 contact material 생존, 원/fixture Core graph와 delegate 바인딩 복구. 전역 모든 네이티브 자원 수명/메모리 누수 전체 검증이라는 뜻은 아님 |
+| 복원 결과 | restore-narrow.json의 `oldIdentityGate`와 `semanticGate` 독립. `passed`는 이번 한정 semantic 회귀 의미이며 old identity 실패나 과거 triad false를 수정하지 않음. error-events.json, writer-before.json 별도 |
+| 자연 관측 시계 | 별도 MonoBehaviour.Update마다 Time.unscaledDeltaTime 한 번만 채집. NativeGame.Update/DrawSettingsOverlays 연결·제품 FPS 라벨 변경 없음 |
+| 관측 길이 | 컴포넌트 Start 기준 첫10초 warmup + 이후60초. UTC ticks/realtime/frame/tick/Running/게임 enabled/포커스/메뉴 page/설정창/player state/생존적수/아레나 여부 raw frame 기록. 메뉴·로딩도 그대로 포함 |
+| 통계 | warmup=false raw interval의 nearest-rank p50/p95/max (ms). 전체 게임 평균 FPS·GPU 완료 시간·OS 표시 cadence 또는 NativeGame.Update 자체 소요시간이 아님. 구간별 통계는 raw 상태로 후처리 가능 |
+| OS 입력 구분 | `-natural-input-session`은 Root가 CUA 세션과 대응할 선언. OS 입력 발생을 프로그램이 증명하지 않음. 실제 수동 조작/공격/막힘 판정은 Root GUI 증거로 별도 확인 |
+| 관측 종료 | 70초 후 파일1회 쓰기·observer만 비활성화. 앱 종료/일시정지/입력/AI/시간배율/아이템/무적/오디오/FPS cap 변경 없음. 사용자 정상 종료가 먼저면 complete=false partial 기록 |
+| 기존 FPS 한계 | NativeGame.SettingsOptions.cs:35의 fpsFrames++가 :36 Repaint guard 이전이므로 OnGUI 호출 빈도의 영향을 받음. 해당 숫자를 실제 frame FPS 근거로 사용하지 않으며 제품 라벨은 그대로 유지 |
+| 현재 검증 | 정적 C# 컴파일 + PE metadata만. Unity import/Player/GPU/실제 의미 검증은 미실행 |
+
+`docs-search.txt`는 docs 전체 관련 키워드 검색 원문이고 `docs-search-summary.json`에 37문서/48줄을 기록했다. 주요 기존 근거는 docs/engine/UNITY_HD2D_RUNTIME_20261031.md(접지·overlay 공유·파괴 actor 정리·표현 소유), docs/engine/UNITY_MAC_HUD_BLEND_20261026.md, 기존 receiver 복원 분석이다. 공유 docs 직접 수정은 소유 범위 밖이므로 이 초안을 Root 통합용으로 남긴다.
+
+
+추가 실제 근거: bf3e 동일 앱을 보호runner로 정상1600x900/Metal실행했으나 CUA의 생성/입장/언어 클릭 및Escape/Return에 로비상태 변화가 없었다. macOS AX메뉴/Window활성화/Quit은 반응, 오류로그0. 필드진입·자연이동·공격·막힘·FPS는 관측하지 못했으므로 UNVERIFIED_INPUT_BLOCKED_AT_LOBBY다. 입력도구/포커스/UI원인은 아직 분리되지 않았다. 종료 후 raw26/cache27 exact복구했다. 새helper포함 빌드는아직미실행, 옛triad58ref실패/독립sampler불일치/old9미관측을보존한다. 제품/Core/geometry수정0. MAP PRODUCTION REPORT: TECH준비만,자연PLAYABLE미검수. VISUAL VERDICT: RETOUCH.

@@ -57393,3 +57393,5 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 2026-11-02 bf3e actualtriad product/clone positive6345+2041 allbit-equal; independentR불일치/old9미관측보존,bias0/1. orb파괴Dispose회귀+두원수명action/GPU/mergePASS. 58oldref(contact16/enemy16/walk16/ground10)복구false,profiles26/27복구. same-packageM1 runner준비/미실행,최종인수보류.
 
 2026-11-02 Mac동일bf3e/e33패키지 M1실제23/23 PASS(exit0), headless-rendertexture-1600x900/GUI0. 원26raw/27cacheexact복구. CUA선택자동실행1건즉시종료후known-beforeCAS회복. 자연OS검수보호runner준비,실제FPS미검수·기존FAIL보존.
+
+2026-11-02 원Core→fixture→원Core의기존view재동기화한정QA와읽기전용natural frame observer준비,정적error0/metadata유효. old58identity실패불변. bf3eOS입력로비무반응/자연미검증,프로필26/27복구. 제품변경0.

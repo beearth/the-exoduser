@@ -1,0 +1,47 @@
+{
+  "status": "static-only; runtime pending",
+  "baseQa": "bf3e93a63425a17ede0fa6a0ca16e066374cc984",
+  "productTip": "e33ed53574a187db36e00dfbd1f92b4d6f263635",
+  "compile": {
+    "exitCode": 0,
+    "errors": 0,
+    "warnings": 10,
+    "references": {
+      "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/build-receiverTriadBias-normal/EXODUSER-Unity.app/Contents/Resources/Data/Managed/Exoduser.Runtime.dll": "21315e73c464c14097cd416c21d8dece667c446532e0b2d8931d91fbfd62a1c1",
+      "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/build-receiverTriadBias-normal/EXODUSER-Unity.app/Contents/Resources/Data/Managed/Exoduser.Core.dll": "4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d"
+    },
+    "sourceFiles": [
+      "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/receiver-restore-narrow-qa/ReceiverRestoreNarrowCapture.cs",
+      "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/receiver-restore-narrow-qa/NaturalFrameObserve.cs"
+    ],
+    "output": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/receiver-restore-narrow-qa/ReceiverRestoreNarrowStatic.dll",
+    "outputSha256": "1512a602251b61a33f983038ed0ae1c1d0f23d3f046d2b10c612fa0b9a1f2f28"
+  },
+  "metadata": {
+    "method": "PEReader only; does not load/execute QA types",
+    "bootAttributeMethods": 2,
+    "types": [
+      "Exoduser.UnityPort.Tools.ReceiverRestoreNarrowCapture",
+      "Exoduser.UnityPort.Tools.NaturalFrameObserve"
+    ]
+  },
+  "sourceGuards": {
+    "noTickInputAiTimeScaleInvulnerabilityOrFpsWrites": true,
+    "observerNoApplicationQuit": true,
+    "priorHelperFilesEdited": false,
+    "productOrSharedCheckoutEdited": false,
+    "gitIndexSettingsEdited": false,
+    "unityPlayerBuildExecuted": false
+  },
+  "docsSearch": {
+    "files": 37,
+    "matchingLines": 48,
+    "draft": "docs-addon.md"
+  },
+  "pending": [
+    "Unity import/normal QA build and identity verification by Root",
+    "Reviewed profile guard launch",
+    "Actual narrow semantic result and preserved old identity failures",
+    "Separate actual OS input frame observation session"
+  ]
+}
