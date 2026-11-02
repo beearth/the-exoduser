@@ -90,3 +90,5 @@ Unity 반영: 대기. 같은 원화/환경 마스크와 정지 정책을 ui-ultr
 최종 영상·비교·크롭을 모은 evidence/REVIEW.html, 프레임/렌더 시간·Dota 여부는 EVIDENCE-SUMMARY.json과 각 촬영 영수증. 녹화 FPS는 메뉴 rAF 실측이며 자연 전투 FPS/입력 지연 전 구간/오디오/NW.js 실행 검수로 확대하지 않는다. 생성 정리판의 미세 재질 변화와 해상도 한계를 REPORT 첫3줄에 공개한다.
 
 검수 도구는 Chromium 자식 env뿐 아니라 Node 호스트의 TEMP/TMP도 출력 하위 temp로 지정해 Playwright 임시 프로필을 I:에 둔다. 검수 브라우저는 finally에서 닫고 자기 임시 파일만 정리한다.
+
+후속 main 화면 전환(37df1f879) 통합 후 실제3333에서 로비/선택·정리 로딩7종·결과3종12장면 호환 스모크를 추가 통과했다. 선택 취소 검수는 Escape 직후의 순간 display 대신 실제 fade 종료/hidden 상태를 기다린다. 런타임 화면·입력 계약을 이 검수 변경으로 바꾸지 않는다. 근거: evidence/live-main-smoke/SUMMARY.json.
