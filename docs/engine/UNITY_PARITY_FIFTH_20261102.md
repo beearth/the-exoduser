@@ -123,3 +123,24 @@ NativeScreenTransition은준비timeout실패를빈error대신 prepare-timeout (1
 | 보존/실행기 | 자기생성857파일전부SHA백업/정확HEAD원본복원/해시검증,guard기존WIP보존. 공용실행기slots3업데이트때옛자기slots2대기PID67616/parent66480·자식0·자기Player미실행을확인후대기프로세스만재접속. 타프로세스/예약변경0,자기Editor/Player예약반납,Desktop직접교체0 |
 
 전체5차는진행중이다. 이번영수증은전환기술·홀드회귀묶음이며55스킬/32합체/추천전체·조건부패시브·살아있는화면·요약drawer·진짜1-2·글꼴/구슬/핵/광택/리셋전체완료가아니다. I:스킬준비본은제품채택0,복구스냅샷106521b84f31e6d396660340ce7cf2356b61c532(287파일·Gitblob전부/원격ref대조)은미채택자료로만보존한다. 이후준비본의상태수학130곳·사냥꾼72조건·소리196조건교정은별도I후속이며이번패키지내용과혼합하지않는다.
+
+## 11-03 05:10 CTO P0 — UI 겹침 회귀 우선 처리 (검수 중)
+
+| 항목 | 수정 후보 계약 | 현재 증거 |
+|---|---|---|
+| 우선순위 | 147건→0 확인 후 unity/main 비강제 반영, 그 다음 5차 잔여 | 이전 09192f7의 1395장/147건 원본 보존. 새 후보 전체 검수 전 PASS 금지 |
+| 스킬 이름 | 슬롯·제단 이름/레벨은 웹 CSS nowrap/overflow:hidden/text-overflow:ellipsis와 같은 지정 폭·행 높이 안에서 표시 | 웹3333 ko/de/fr ×1920/2560×1600 실물12장. 첫 browser7fdc5e0c는 오류0/창감지1 운영 FAIL, 재검수 중 |
+| 스크롤 판 | 스킬 정보/대장간 본문을 물리 픽셀 그룹에 배치하고 내부에 같은 배율을 한 번 적용. 화면·GUIUtility 좌표의 그룹 원점 불일치를 제거 | 기존 PNG/JSON 그룹 내부 좌표 차이 발견. 새 실제 PNG·JSON 대조 전 미검증. 분석기 제외/임계 완화0 |
+| 제작 비용/확률 | 비용 y447.4/h20.4, 확률 y471.8/h20.4; 기존 h15/14,y465.4 수정. 그리드 y505.4 보존 | 실제 한 줄 높이+4px 간격. 금액·확률·동작 변경0 |
+| 공용 실행기 | I:/EXODUSER-Storage/unity-jobs/bin/exo-unity.ps1만 실행. checkout 사본 위임, ui-overlap/check.ps1 절대 공용 경로 | 자기 evening/third 직접 호출39개 백업·SHA 후 치환. CTO45개와 수 차이는 정확 경로 재검색 필요 |
+
+P0 산출 fifth/p0-overlap. Core/Runtime 독립 컴파일0, 정식 빌드/M1/전체0건/같은 언어1x/원격 반영은 아직 미검증. 바탕화면 직접 교체0.
+
+### 05:35 KST 실행 경로 장애 — P0 완료 아님
+
+- G: 소스/로컬 Git 조회 및 C: powershell.exe 바이너리 읽기는 정상. 메모리 여유 약16GiB/63.76GiB.
+- I: 루트 stat·공용 bin/기존 작은 파일 읽기가 응답하지 않는다. PowerShell -NoProfile Get-Date/Console 조회, CMD type I:/.../COMMON_RULES.md와 Node fs가 각각 대기 상태다. CMD fsutil은 I: 고정 드라이브의 존재까지만 반환한다. 원인(장치/파일시스템/다른 I/O)은 미확정이다.
+- browser7fdc5e0c는 웹3333 ko/de/fr 12PNG·페이지 오류0이나 창 감지1로 운영 FAIL. disable-software-rasterizer를 추가한 재검수8887, Editor 예약73798는 완료 응답 미확인. 정식 새 빌드 시작/슬롯 취득을 주장하지 않는다.
+- 사용자의 I: 장치/복사 작업 여부를 비동기로 확인 요청. 다른 owner 예약·프로세스, 사용자 앱/세이브, 디스크 연결·복구 설정 변경0.
+- 현재 후보는 Core/Runtime 독립 컴파일 exit0까지만 확인했다. P0 전체0건·정식 빌드/M1·unity/main 반영은 미완료. 5차 잔여로 우선순위를 넘기지 않는다.
+- 외부 WIP tools/guard.baseline.json SHA256 9414ce48870885726bd4bd6db7df52d6d3ad8aa63edcb7f67c6cb3f63c4bb8ca를 보존하고 커밋 제외한다.

@@ -239,6 +239,19 @@ namespace Exoduser.UnityPort
         internal static string TextField(Rect r,string s,int max,GUIStyle style){TextFieldBackground(r,style);Region(r,"button");Text(r,new GUIContent(s),style,"입력 글자");return GUI.TextField(r,s,max,style);}
         static void PushClip(Rect r){if(!Active||Event.current.type!=EventType.Repaint)return;Rect next=ScreenRect(r);if(clips.Count>0){Rect p=clips.Peek();next=Rect.MinMaxRect(Mathf.Max(next.xMin,p.xMin),Mathf.Max(next.yMin,p.yMin),Mathf.Min(next.xMax,p.xMax),Mathf.Min(next.yMax,p.yMax));}clips.Push(next);}
         static void PopClip(){if(Active&&Event.current.type==EventType.Repaint)clips.Pop();}
+        // Top-level scaled panels keep their group origin in physical pixels. GUIUtility's
+        // group offset otherwise stays unscaled while the IMGUI renderer scales it.
+        internal static Matrix4x4 BeginScaledGroup(Rect r)
+        {
+            var previous=GUI.matrix;
+            var a=previous.MultiplyPoint3x4(new Vector3(r.xMin,r.yMin,0));
+            var b=previous.MultiplyPoint3x4(new Vector3(r.xMax,r.yMax,0));
+            GUI.matrix=Matrix4x4.identity;
+            BeginGroup(Rect.MinMaxRect(a.x,a.y,b.x,b.y));
+            var local=previous;local.m03=0;local.m13=0;GUI.matrix=local;
+            return previous;
+        }
+        internal static void EndScaledGroup(Matrix4x4 previous){EndGroup();GUI.matrix=previous;}
         internal static void BeginGroup(Rect r){PushClip(r);GUI.BeginGroup(r);}
         internal static void EndGroup(){GUI.EndGroup();PopClip();}
         internal static Vector2 BeginScrollView(Rect r,Vector2 scroll,Rect view,bool horizontal,bool vertical){PushClip(r);return GUI.BeginScrollView(r,scroll,view,horizontal,vertical);}

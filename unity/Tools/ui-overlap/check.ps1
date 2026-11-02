@@ -5,7 +5,7 @@
  [switch]$OverlapOnly
 )
 $ErrorActionPreference='Stop'
-$exo=Join-Path $Worktree 'unity/Tools/devtools/exo-unity.ps1'
+$exo='I:/EXODUSER-Storage/unity-jobs/bin/exo-unity.ps1'
 $node='C:/nvm4w/nodejs/node.exe'
 $runtime=Join-Path (Split-Path $Exe -Parent) 'EXODUSER-Unity_Data/Managed/Exoduser.Runtime.dll'
 $runtimeSha=(Get-FileHash -LiteralPath $runtime -Algorithm SHA256).Hash.ToLower()

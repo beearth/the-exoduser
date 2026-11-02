@@ -31,6 +31,13 @@ param(
     [string]$NodeModules = 'G:\exoduser\node_modules'
 )
 
+# Checkout compatibility entry point: execute the shared slots3 runner only.
+$SharedExoUnity='I:/EXODUSER-Storage/unity-jobs/bin/exo-unity.ps1'
+if([IO.Path]::GetFullPath($PSCommandPath) -ne [IO.Path]::GetFullPath($SharedExoUnity)){
+    & $SharedExoUnity @PSBoundParameters
+    exit $LASTEXITCODE
+}
+
 $ErrorActionPreference = 'Stop'
 $ExoUnityVersion = '2026.11.03-slots3'
 $MaxPlayerSlots = 2
