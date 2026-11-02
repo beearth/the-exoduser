@@ -24,3 +24,11 @@ test('spectral anchors use the quiet inner shoulder, outside the central arenas'
  const {signedBoundaryDistance}=await import('../web3d/environment-layout.mjs');
  const data=json('../assets/web3d/ghosts-ch1.json');for(const p of data.trees){const d=signedBoundaryDistance(p.x,p.y,anchors);assert.ok(d< -40&&d> -360);}
 });
+
+test('round3 spectral trees keep a quarter-opacity silhouette throughout a full cycle',async()=>{
+ const {ghostPose}=await import('../web3d/ghost-layout.mjs');
+ for(const row of json('../assets/web3d/ghosts-ch1.json').trees)for(let t=0;t<120;t+=.5){
+  const a=ghostPose(row,{x:row.x+1000,y:row.y},t).alpha;
+  assert.ok(a>=.24 && a<=.62,'tree silhouette opacity '+a);
+ }
+});

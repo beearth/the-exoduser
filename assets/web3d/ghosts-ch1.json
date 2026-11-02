@@ -1,6 +1,6 @@
 {
   "schema": "exoduser.web3d.ghosts.v1",
-  "note": "유령나무는 기존 부패나무 원화 재사용. 판정·HP·타깃 없음. 고정 외곽 자리만 사용. 유령 가시성은 전경을 더 밝히지 않고 경계 안쪽220px의 조용한 어깨로 자리 정정.",
+  "note": "고정 배치·기존 부패나무 원화. 3라운드: 원화 명암과 알파 차분 림·호흡 하한으로 1x 줄기/가지를 보존. 인물 앞 환경 전용, 판정·HP·타깃 없음.",
   "trees": [
     {
       "id": "ghost_tree_0",
@@ -9,7 +9,7 @@
       "type": "m_ctree13",
       "width": 250,
       "height": 350,
-      "alpha": 0.26,
+      "alpha": 0.58,
       "phase": 0,
       "role": "시작·초입 외곽"
     },
@@ -20,7 +20,7 @@
       "type": "m_ctree20",
       "width": 305,
       "height": 395,
-      "alpha": 0.26,
+      "alpha": 0.58,
       "phase": 1.93,
       "role": "시작·초입 외곽"
     },
@@ -31,7 +31,7 @@
       "type": "m_ctree14",
       "width": 360,
       "height": 440,
-      "alpha": 0.26,
+      "alpha": 0.58,
       "phase": 3.86,
       "role": "시작·초입 외곽"
     },
@@ -42,7 +42,7 @@
       "type": "m_ctree19",
       "width": 250,
       "height": 485,
-      "alpha": 0.26,
+      "alpha": 0.58,
       "phase": 5.79,
       "role": "시작·초입 외곽"
     },
@@ -53,7 +53,7 @@
       "type": "m_ctree15",
       "width": 305,
       "height": 350,
-      "alpha": 0.26,
+      "alpha": 0.58,
       "phase": 7.72,
       "role": "제단·시체나무 외곽"
     },
@@ -64,7 +64,7 @@
       "type": "m_ctree18",
       "width": 360,
       "height": 395,
-      "alpha": 0.26,
+      "alpha": 0.58,
       "phase": 9.65,
       "role": "제단·시체나무 외곽"
     },
@@ -75,7 +75,7 @@
       "type": "m_ctree13",
       "width": 250,
       "height": 440,
-      "alpha": 0.26,
+      "alpha": 0.58,
       "phase": 11.58,
       "role": "제단·시체나무 외곽"
     },
@@ -86,7 +86,7 @@
       "type": "m_ctree20",
       "width": 305,
       "height": 485,
-      "alpha": 0.26,
+      "alpha": 0.58,
       "phase": 13.51,
       "role": "제단·시체나무 외곽"
     },
@@ -97,7 +97,7 @@
       "type": "m_ctree15",
       "width": 360,
       "height": 350,
-      "alpha": 0.26,
+      "alpha": 0.58,
       "phase": 15.44,
       "role": "북부 안개 경계"
     },
@@ -108,7 +108,7 @@
       "type": "m_ctree18",
       "width": 250,
       "height": 395,
-      "alpha": 0.26,
+      "alpha": 0.58,
       "phase": 17.37,
       "role": "북부 안개 경계"
     },
@@ -119,7 +119,7 @@
       "type": "m_ctree16",
       "width": 305,
       "height": 440,
-      "alpha": 0.26,
+      "alpha": 0.58,
       "phase": 19.3,
       "role": "북부 안개 경계"
     },
@@ -130,7 +130,7 @@
       "type": "m_ctree17",
       "width": 360,
       "height": 485,
-      "alpha": 0.26,
+      "alpha": 0.58,
       "phase": 21.23,
       "role": "북부 안개 경계"
     }

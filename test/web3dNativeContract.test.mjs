@@ -17,8 +17,8 @@ test('all native combat/save/AI declarations retain their exact baseline source'
   const functions=s=>new Map(acorn.parse(s,{ecmaVersion:'latest'}).body.filter(n=>n.type==='FunctionDeclaration').map(n=>[n.id.name,s.slice(n.start,n.end)]));
   const before=functions(main(baseline)),after=functions(main(game));
   // 최신 main의 와이드 원화 두 callback은 검토한 upstream byte에 고정한다.
-  const upstream=functions(main(execFileSync(git,['show','b14b9ca1b250c9161291f5376fd0a397b724a708:game.html'],{encoding:'utf8',maxBuffer:12e6,windowsHide:true})));
-  const approvedPresentation=new Set(['_getCutsceneImg','_renderIntroCutscene']);
+  const upstream=functions(main(execFileSync(git,['show','7ba04c4f5757cf86b6289abef4206dff62d841c8:game.html'],{encoding:'utf8',maxBuffer:12e6,windowsHide:true})));
+  const approvedPresentation=new Set(['_getCutsceneImg','_renderIntroCutscene','_showNextDiffPop']);
   const adapterHooks=new Set(['genFromTemplate','initStage','_syncDruidFinaleMouse','loop']);
   let checked=0;
   for(const [name,source]of before)if(!adapterHooks.has(name)){
@@ -30,7 +30,7 @@ test('all native combat/save/AI declarations retain their exact baseline source'
       .replace('X.globalAlpha=_web3dAmbient?0:_vAlpha','X.globalAlpha=_vAlpha')
       .replace('if(_ATMDBG.vig&&!(G.stage===0&&!G._bossArena&&window._Web3DLivingLayer?.snapshot().enabled))','if(_ATMDBG.vig)');
     const current=name==='draw'?restored
-      .replace(/^  window\._Web3DLivingLayer\?\.(?:draw|surface)\(X,.*\);\r?\n/gm,'')
+      .replace(/^  window\._Web3DLivingLayer\?\.(?:draw|surface|ground)(?:\?\.)?\(X,.*\);\r?\n/gm,'')
       .replace(/^    const _livingRelief=window\._Web3DLivingLayer\?\.beginObject\(X,mo,_OBJ_META\[mo.type\]\);\r?\n/m,'')
       .replace(/^    if\(_livingRelief\)X.restore\(\);\r?\n/m,''):restored;
     assert.ok(current===(approvedPresentation.has(name)?upstream.get(name):source),name+' changed');checked++;
