@@ -238,9 +238,9 @@
     "baselineBytesUnchanged": true,
     "reviewedInGame": false,
     "denseCombatReviewed": false,
-    "visualVerdict": "PENDING_REVIEW",
+    "visualVerdict": "RETOUCH",
     "notes": [
-      "Atlas preview only. Old H5 giantSlam currently chooses inferno sheet via vfxKind.",
+      "Atlas preview only; 4-frame ground-shock transitions and in-game contact integration need review. Old H5 giantSlam currently chooses inferno sheet via vfxKind.",
       "Existing auxiliary lava/flash/ring/crack passes are not part of the isolated preview.",
       "Raw generated cells have no per-frame realignment. Uniform 0.8 packing scale across every frame."
     ]

@@ -59,3 +59,5 @@
 새 기검참은 밝은 칼날과 검은 층의 합성을 구분하고 기존 로딩 폴백을 유지해야 한다. 새 강타의 먼지는 일반 합성이 기준이며, 기존 inferno의 screen 경로에 그대로 넣으면 다른 결과가 날 수 있다. 실제 엔진 어댑터·이벤트·기준점·명중·다중 시전 검수 후 연결한다. Unity의 현재 소스·예약·실행은 이번 단위에서 조회·변경하지 않았다.
 
 이번 결과는 **실제 PNG 에셋과 움직임 검토물의 제작 완료**다. 다음 연결 검수에는 기검참 무기·접점 일치, 강타 중심/외곽 구분, 분노량별 겹침, 밀집 전투 적 예고 보존을 포함한다.
+
+복구 브랜치: [codex/dota-vfx-candidates-20261102](https://github.com/beearth/the-exoduser/tree/codex/dota-vfx-candidates-20261102). main에 병합하지 않는 검토 후보다. 원격 SHA와 부모 대조 영수증은 산출물 폴더의 `backup-receipt.json`에 보관한다. Git 소유권을 기록하지 않는 I:의 초기 Git 사본은 사용을 중단하고, Git 후보 체크포인트는 `G:/exoduser-candidate-checkpoints/dota-vfx-20261102-r1`에 만들었다. 전역 safe.directory·인증 helper·공유 저장소 설정을 변경하지 않았다.

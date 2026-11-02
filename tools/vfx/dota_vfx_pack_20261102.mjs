@@ -107,7 +107,7 @@ for (const asset of manifest.assets) {
   assert.equal(ff.status, 0, `ffmpeg: ${ff.stderr}`);
 }
 for (const p of baselineNames) assert.equal(sha(await fs.readFile(path.join(root, p))), baselines[p], `baseline unchanged: ${p}`);
-manifest.validation = { allFramesNonempty: true, outer8pxGuttersClear: true, baselineBytesUnchanged: true, reviewedInGame: false, denseCombatReviewed: false, visualVerdict: 'PENDING_REVIEW', notes: ['Atlas preview only. Old H5 giantSlam currently chooses inferno sheet via vfxKind.', 'Existing auxiliary lava/flash/ring/crack passes are not part of the isolated preview.', 'Raw generated cells have no per-frame realignment. Uniform 0.8 packing scale across every frame.'] };
+manifest.validation = { allFramesNonempty: true, outer8pxGuttersClear: true, baselineBytesUnchanged: true, reviewedInGame: false, denseCombatReviewed: false, visualVerdict: 'RETOUCH', notes: ['Atlas preview only; 4-frame ground-shock transitions and in-game contact integration need review. Old H5 giantSlam currently chooses inferno sheet via vfxKind.', 'Existing auxiliary lava/flash/ring/crack passes are not part of the isolated preview.', 'Raw generated cells have no per-frame realignment. Uniform 0.8 packing scale across every frame.'] };
 await fs.writeFile(path.join(dest, 'manifest.json'), JSON.stringify(manifest, null, 2));
 await fs.writeFile(path.join(out, 'asset-validation.json'), JSON.stringify(manifest, null, 2));
 console.log(JSON.stringify({ dest, out, assets: manifest.assets.map(a => ({ file: a.file, size: [a.width, a.height], frames: a.frames, sha256: a.sha256 })), validation: manifest.validation }, null, 2));
