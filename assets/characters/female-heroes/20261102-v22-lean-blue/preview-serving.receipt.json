@@ -1,0 +1,48 @@
+{
+  "verifiedAt": "2026-11-02T06:02:40.142Z",
+  "url": "http://localhost:3333/assets/characters/female-heroes/20261102-v22-lean-blue/models-review.html",
+  "previousHttpStatus": 404,
+  "currentHttpStatus": 200,
+  "sourcePackageCommit": "0e7682db8cd99d3dfb761eaa7249555ba6ade414",
+  "liveSourceRoot": "G:/exoduser-wt/latest-web",
+  "liveSourceHead": "94e3a89eddf8339cb24192bf8ad97e4fed09bcf2",
+  "serverPid": 66072,
+  "serverRestarted": false,
+  "existingTrackedWorkPreserved": true,
+  "copiedFiles": 78,
+  "copiedBytes": 836005756,
+  "sourceBytesMatchBackup": true,
+  "modelResponses": [
+    {
+      "path": "assets/characters/female-heroes/20261102-v22-lean-blue/models/transmuter/rig-glb/character.glb",
+      "status": 200,
+      "bytes": 41381196
+    },
+    {
+      "path": "assets/characters/female-heroes/20261102-v22-lean-blue/models/transmuter/rig-glb/walking.glb",
+      "status": 200,
+      "bytes": 41362004
+    },
+    {
+      "path": "assets/characters/female-heroes/20261102-v22-lean-blue/models/transmuter/rig-glb/running.glb",
+      "status": 200,
+      "bytes": 41351404
+    },
+    {
+      "path": "assets/characters/female-heroes/20261102-v22-lean-blue/models/spearmage/rig-glb/character.glb",
+      "status": 200,
+      "bytes": 40049616
+    },
+    {
+      "path": "assets/characters/female-heroes/20261102-v22-lean-blue/models/spearmage/rig-glb/walking.glb",
+      "status": 200,
+      "bytes": 40029748
+    },
+    {
+      "path": "assets/characters/female-heroes/20261102-v22-lean-blue/models/spearmage/rig-glb/running.glb",
+      "status": 200,
+      "bytes": 40019136
+    }
+  ],
+  "actual3dPlaybackVerified": false
+}
