@@ -253,6 +253,16 @@ namespace Exoduser.UnityPort
             yield return new WaitForEndOfFrame();
             var image=ScreenCapture.CaptureScreenshotAsTexture();
             try{File.WriteAllBytes(Path.Combine(output,"caps",name+".png"),image.EncodeToPNG());}finally{Destroy(image);}
+            if(Screen.width!=3840&&(name=="00-lobby"||name=="combat"||name=="boss-entry"||name=="death"||name=="clear"))
+            {
+                int previousWidth=Screen.width,previousHeight=Screen.height;
+                Screen.SetResolution(3840,1080,FullScreenMode.Windowed);
+                yield return new WaitForSecondsRealtime(.25f);yield return new WaitForEndOfFrame();
+                image=ScreenCapture.CaptureScreenshotAsTexture();
+                try{File.WriteAllBytes(Path.Combine(output,"caps",name+"-3840.png"),image.EncodeToPNG());}finally{Destroy(image);}
+                Screen.SetResolution(previousWidth,previousHeight,FullScreenMode.Windowed);
+                yield return null;yield return null;
+            }
         }
         IEnumerator FullRunEnd(string output,FullRunReceipt receipt,float started)
         {
