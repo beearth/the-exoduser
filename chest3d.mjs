@@ -18,25 +18,80 @@ export function stepChestMotion(state,delta,paused=false){
  return state;
 }
 
-export function initChest3D({canvas,getWorld}){
+export const CHEST_ENV_INTENSITY=.65;
+export function createChestEnvironmentTexture(THREE){
+ // Small linear reflection field; source base color, RM, normals and lights stay untouched.
+ const width=128,height=64,data=new Uint8Array(width*height*4);
+ const ground=[.018,.012,.009],sky=[.16,.20,.24],warm=[.46,.42,.34],cool=[.10,.14,.18];
+ for(let y=0;y<height;y++){
+  const up=Math.sin(((y+.5)/height-.5)*Math.PI),ring=Math.sqrt(1-up*up),blend=(up+1)/2;
+  for(let x=0;x<width;x++){
+   const angle=((x+.5)/width-.5)*Math.PI*2,nx=Math.cos(angle)*ring,nz=Math.sin(angle)*ring;
+   const key=Math.pow(Math.max(0,-.6*nx+.55*up+.58*nz),8),fill=Math.pow(Math.max(0,.8*nx+.2*up-.56*nz),12),i=(y*width+x)*4;
+   for(let c=0;c<3;c++)data[i+c]=Math.round(255*(ground[c]+(sky[c]-ground[c])*blend+warm[c]*key+cool[c]*fill));
+   data[i+3]=255;
+  }
+ }
+ const texture=new THREE.DataTexture(data,width,height,THREE.RGBAFormat,THREE.UnsignedByteType);
+ texture.name='EXODUSER chest reflection candidate';texture.colorSpace=THREE.LinearSRGBColorSpace;
+ texture.mapping=THREE.EquirectangularReflectionMapping;texture.wrapS=THREE.RepeatWrapping;
+ texture.magFilter=texture.minFilter=THREE.LinearFilter;texture.needsUpdate=true;return texture;
+}
+export function disposeChestResources(...roots){
+ const resources=new Set();
+ for(const root of roots)root?.traverse(object=>{
+  if(object.geometry)resources.add(object.geometry);
+  for(const material of Array.isArray(object.material)?object.material:[object.material])if(material){
+   for(const value of Object.values(material))if(value?.isTexture)resources.add(value);
+   resources.add(material);
+  }
+ });
+ for(const resource of resources)resource.dispose();
+}
+
+export function initChest3D({canvas,getWorld,loadDependencies=()=>Promise.all([import('three'),import('three/addons/loaders/GLTFLoader.js')])}){
  if(!canvas)return null;
  let motion=createChestMotion(),current=null,ready=false,failed=false,loading=false;
  let renderer,scene,camera,root,lid,light,shadow,foot,THREE,last=0,visible=false,frames=0;
+ let environmentTexture=null,environmentEnabled=true,modelRoot=null,disposed=false,released=false,raf=0;
+ const originalEnvIntensity=new Map();
  const SIZE=CHEST_RENDER_SIZE;
  const api={
   show(){}, // The existing spawn call is retained; the authoritative item supplies its position.
   open(){requestChestOpen(motion);},
   hide(){visible=false;canvas.style.display='none';},
+  setEnvironmentEnabled(enabled){if(disposed)return false;environmentEnabled=!!enabled;applyEnvironment();return environmentEnabled;},
+  dispose(){if(disposed)return;disposed=true;ready=false;cancelAnimationFrame(raf);api.hide();release();},
   get active(){return ready&&visible&&!failed;},
   isShowing(item){return api.active&&item===current;},
   snapshot(){return {ready,failed,loading,visible,phase:motion.phase,lidAngle:motion.lidAngle,
-   model:CHEST_MODEL,renderSize:SIZE,frames,world:current?{x:current.x,y:current.y,opened:current.opened}:null};}
+   model:CHEST_MODEL,renderSize:SIZE,frames,disposed,
+   environment:{enabled:environmentEnabled,prepared:!!environmentTexture,intensity:environmentEnabled?CHEST_ENV_INTENSITY:0},
+   resources:{textures:renderer?.info?.memory?.textures??null,geometries:renderer?.info?.memory?.geometries??null,programs:renderer?.info?.programs?.length??null},
+   world:current?{x:current.x,y:current.y,opened:current.opened}:null};}
  };
  window._chest3d=api;
+ function applyEnvironment(){
+  if(scene)scene.environment=environmentEnabled?environmentTexture:null;
+  for(const [material,intensity]of originalEnvIntensity)material.envMapIntensity=environmentEnabled?CHEST_ENV_INTENSITY:intensity;
+ }
+ function release(){
+  if(released)return;released=true;
+  if(scene)scene.environment=null;
+  // r160 releases its cached PMREM target on the source texture's dispose event.
+  environmentTexture?.dispose();environmentTexture=null;originalEnvIntensity.clear();
+  disposeChestResources(scene,modelRoot);scene?.clear();modelRoot=null;
+  renderer?.dispose();renderer?.forceContextLoss?.();
+ }
+ function fail(error){
+  failed=true;ready=false;api.hide();release();
+  console.warn('[CHEST3D] Model unavailable; native chest fallback retained:',error.message);
+ }
  async function load(){
-  if(loading||ready||failed)return;loading=true;
+  if(disposed||loading||ready||failed)return;loading=true;
   try{
-   THREE=await import('three');const {GLTFLoader}=await import('three/addons/loaders/GLTFLoader.js');
+   const dependencies=await loadDependencies();THREE=dependencies[0];const {GLTFLoader}=dependencies[1];
+   if(disposed)return;
    renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:'low-power'});
    renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));renderer.setSize(SIZE,SIZE);
    renderer.setClearColor(0,0);renderer.outputColorSpace=THREE.SRGBColorSpace;
@@ -51,6 +106,8 @@ export function initChest3D({canvas,getWorld}){
    light=new THREE.PointLight(0xe8ad54,0,3);light.position.set(0,.75,.1);scene.add(light);
    root=new THREE.Group();scene.add(root);
    const model=await new GLTFLoader().loadAsync(CHEST_MODEL);
+   if(disposed){disposeChestResources(model.scene);return;}
+   modelRoot=model.scene;
    lid=model.scene.getObjectByName('ChestLidPivot');
    if(!lid||!model.scene.getObjectByName('ChestBody'))throw new Error('Missing hinged chest geometry');
    const box=new THREE.Box3().setFromObject(model.scene),size=box.getSize(new THREE.Vector3());
@@ -64,14 +121,15 @@ export function initChest3D({canvas,getWorld}){
    const material=new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(image),transparent:true,depthWrite:false});
    shadow=new THREE.Mesh(new THREE.PlaneGeometry(2.2,1.35),material);
    shadow.rotation.x=-Math.PI/2;shadow.position.y=-.004;scene.add(shadow);
-   ready=true;failed=false;
+   environmentTexture=createChestEnvironmentTexture(THREE);
+   modelRoot.traverse(object=>{for(const material of Array.isArray(object.material)?object.material:[object.material])if(material?.isMeshStandardMaterial&&!originalEnvIntensity.has(material))originalEnvIntensity.set(material,material.envMapIntensity);});
+   applyEnvironment();ready=true;failed=false;
   }catch(error){
-   failed=true;ready=false;canvas.style.display='none';renderer?.dispose();
-   console.warn('[CHEST3D] Model unavailable; native chest fallback retained:',error.message);
+   fail(error);
   }finally{loading=false;}
  }
  function tick(now){
-  requestAnimationFrame(tick);
+  if(disposed)return;raf=requestAnimationFrame(tick);
   const delta=last?Math.min((now-last)/1000,.05):0;last=now;
   const world=getWorld();
   const next=world?.on?world.items.find(item=>item.type==='chest'&&!item.picked):null;
@@ -93,7 +151,7 @@ export function initChest3D({canvas,getWorld}){
   if(!visible)return;
   canvas.style.left=(x-SIZE*(foot.x+1)/2)+'px';
   canvas.style.top=(y-SIZE*(1-foot.y)/2)+'px';
-  renderer.render(scene,camera);frames++;
+  try{renderer.render(scene,camera);frames++;}catch(error){fail(error);}
  }
- requestAnimationFrame(tick);return api;
+ raf=requestAnimationFrame(tick);return api;
 }

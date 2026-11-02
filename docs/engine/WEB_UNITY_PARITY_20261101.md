@@ -357,3 +357,19 @@ Vercel 계정 관리자의 결제 문제 해소가 선행한다. 에이전트는
 근거: Mac `_out/web-chest-final-qa-20261102/{FINAL_RECEIPT.json,REPORT.md,browser-ea24-game-final-result.json,browser-ea24-chest-input-result.json,wide-aspect-qa.json,static-full-manifest-ea24.json}` 및 root `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/web-ea24-final-intake-20261102/`. 원본 화면·해시·보존·정상 종료를 인수한 범위만 판정하며 기능 통합과 아트 재작업을 분리한다.
 
 추가 root 원본 인수: `title-C2-2560x1080-wide-original.png` 3770249B/SHA256 `3269a2153d20674d78356f75bafdef0a9b4cd472c47eb44aa7871bc5b647368f`, `title-C2-3840x1080-wide-original.png` 5073289B/SHA256 `9c76fc071d302bf734bc053b12539e6fd3ddb509abf02e57e4e9004281981cd3`. root가 수신 byte·IHDR를 대조하고 두 전체 원본을 직접 열어 위 구도 RETOUCH를 확인했다. UI 화면맞춤 미리보기는 물리 모니터1:1 검수로 주장하지 않는다.
+
+
+## 2026-11-02 21:45 — 상자 반사 환경의 검수용 후보 반입
+
+| 항목 | 정확 범위·현재 검증 |
+|---|---|
+| 출처/범위 | 원 담당 private450a6bfa2d2a027728280039267d63f8a29dca0d에서 chest3d.mjs 한 개와 신규 CPU회귀 한 개만 선택 반입. 기존 루트2f37의 exactea24 검수/문서·게임/타이틀·95→94활성매핑·걷기/사슴 복구를 보존. wholebranch/main merge·공개 배포·제품아트 채택 아님 |
+| 모듈 | 기존5632B/SHA90ea0ef8f285ef507d1b3d8b994fb07cc8b21c5969c9d06ff403f14f9d5f9eac → 후보9256B(+3624)/SHAa16f2f94fe26d4c63ff997701fa6415db6402c65879c9c03a05d16cc2e567da9. 반사128×64 선형RGBA/.65, 같은모델 환경off/on, 실패·dispose해제 경로. 숫자/공식/팔레트·캐시 한계는 TRIPO_CHEST_GAME_20261102.md 새후보표가 정본 |
+| 보호 | GLB2679056B/19452tri·PBR입력/노출1.25/원광원·64CSS/44×24body/열기·R분출/수거·보상RNG/save/AI/game/index/title·파생94논리93물리 byte불변. 외부guard/WIP/사용자PC앱조작0 |
+| 검증 | 루트 원본에서 신규6회귀 기능부재 RED→정확모듈반입후 신규6+기존12=18 PASS. 실제Three자원 이벤트+주입 renderer/loader의 CPU검사이며 실제PMREM/GPU/시각/비용은 미검증. baseline/candidate 같은64px 닫힘/열림과 실제fallback·dispose를 같은Mac 격리앱에서 다음 검수 |
+| 출고 예산 | 추가런타임 파일0·모듈+3624B. 이전ea24 actualstatic3996899806B 기준 예상3996903430B/4GB예상여유3096570B, sidecar포함 sourceplan예상3996972912B/예상여유3027088B. 아직 새공식plan/artifact가 아닌 차이 계산이다. 공식새build→prepare→check/wholemanifest·HTTP SHA는 후보정상commitpush 뒤 같은Mac에서 확인 |
+| 판정 | **미채택·GPU시각 미검증 / 기존 상자재질 RETOUCH**. 원인 가설(금속반사환경부재)은 A/B 전 미확정. 이전ea24의 기능한정PASS/와이드구도RETOUCH와 별도. 같은핵심시각2FAIL이면수치미세반복 대신방법전환 |
+
+근거: I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/chest-material-450a6bfa-intake-20261102/{candidate.patch,red-root.log,green-root.log,producer-REPORT.md}.
+
+추가 루트 통합 검사: 상자·패키징·웹선택/무손실파생·staging·C2·시작/슬롯/저장/타이틀 이동의 관련15개 테스트파일 **112/112 PASS**. 이 수치는 이전합본133개 전체 재실행 결과가 아니며 GPU/자연전투 검수로 올리지 않는다.
