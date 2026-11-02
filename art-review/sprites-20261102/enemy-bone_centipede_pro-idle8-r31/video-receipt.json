@@ -1,0 +1,17 @@
+{
+  "group": "enemy-bone_centipede_pro-idle8-r31",
+  "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_centipede_pro-idle8-r31/comparison.mp4",
+  "stem": "comparison",
+  "sha256": "e4b7a011d4138b3f2056838a57d305bc357ff22b7db8f88c7660bcfee254f066",
+  "bytes": 870782,
+  "streams": [
+    {
+      "type": "video",
+      "width": 1088,
+      "height": 560,
+      "frames": "32"
+    }
+  ],
+  "decode": 0,
+  "actualUIPlayback": false
+}

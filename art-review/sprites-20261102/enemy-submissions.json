@@ -1,0 +1,1407 @@
+{
+  "bone_centipede_pro-idle8": {
+    "dir": "enemy-bone_centipede_pro-idle8-r31",
+    "name": "bone_centipede_pro",
+    "mode": "idle8",
+    "frames": 8,
+    "atlasSize": [
+      2048,
+      1024
+    ],
+    "border": 0,
+    "normal": 0,
+    "footError": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "notes": "선두/꼬리두개골 구분, 피격N/NW 방향4키교정, 피격두개골/몸체크기에맞춘고정방향별카메라보정. 전체방향/키1x·3x직접확인. 피격검토는중립300/충격100/회복150/중립300ms이며 실제Core시간변경0. 영상video-only·전체디코드0.",
+    "actualPlayerVerified": false,
+    "runtimeAdoption": 0,
+    "video": {
+      "group": "enemy-bone_centipede_pro-idle8-r31",
+      "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_centipede_pro-idle8-r31/comparison.mp4",
+      "stem": "comparison",
+      "sha256": "e4b7a011d4138b3f2056838a57d305bc357ff22b7db8f88c7660bcfee254f066",
+      "bytes": 870782,
+      "streams": [
+        {
+          "type": "video",
+          "width": 1088,
+          "height": 560,
+          "frames": "32"
+        }
+      ],
+      "decode": 0,
+      "actualUIPlayback": false
+    }
+  },
+  "bone_centipede_pro-walk8": {
+    "dir": "enemy-bone_centipede_pro-walk8-r31",
+    "name": "bone_centipede_pro",
+    "mode": "walk8",
+    "frames": 32,
+    "atlasSize": [
+      2048,
+      4096
+    ],
+    "border": 0,
+    "normal": 0,
+    "footError": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "notes": "선두/꼬리두개골 구분, 피격N/NW 방향4키교정, 피격두개골/몸체크기에맞춘고정방향별카메라보정. 전체방향/키1x·3x직접확인. 피격검토는중립300/충격100/회복150/중립300ms이며 실제Core시간변경0. 영상video-only·전체디코드0.",
+    "actualPlayerVerified": false,
+    "runtimeAdoption": 0,
+    "video": [
+      {
+        "group": "enemy-bone_centipede_pro-walk8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_centipede_pro-walk8-r31/page-1.mp4",
+        "stem": "page-1",
+        "sha256": "0e8c58aec74f7805d3d6a2bf9f4df5742d5afc553566b8375916f304de8814de",
+        "bytes": 2904120,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "32"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      },
+      {
+        "group": "enemy-bone_centipede_pro-walk8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_centipede_pro-walk8-r31/page-2.mp4",
+        "stem": "page-2",
+        "sha256": "6b71bd6f3548571260fe9015e51f38a791a1e4ef121bcc76e6aa98bcdf8cc61c",
+        "bytes": 2736778,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "32"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      }
+    ]
+  },
+  "headless_knight-idle8": {
+    "dir": "enemy-headless_knight-idle8-r31",
+    "name": "headless_knight",
+    "mode": "idle8",
+    "frames": 8,
+    "atlasSize": [
+      2048,
+      1024
+    ],
+    "border": 0,
+    "normal": 0,
+    "footError": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "notes": "목단면·오른검·왼두개골장비/정면등면유지, 보행원시알파잡음제거후본체기준배율교정, 피격SW2키앞가슴으로교정. 전체방향/키1x·3x직접확인. 피격검토는중립300/충격100/회복150/중립300ms이며 실제Core시간변경0. 영상video-only·전체디코드0.",
+    "actualPlayerVerified": false,
+    "runtimeAdoption": 0,
+    "video": {
+      "group": "enemy-headless_knight-idle8-r31",
+      "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-headless_knight-idle8-r31/comparison.mp4",
+      "stem": "comparison",
+      "sha256": "bd39b85f609b42094f7b97014fdd400428d75bff907a0db8bf1e9c41412797dc",
+      "bytes": 1007892,
+      "streams": [
+        {
+          "type": "video",
+          "width": 1088,
+          "height": 560,
+          "frames": "32"
+        }
+      ],
+      "decode": 0,
+      "actualUIPlayback": false
+    }
+  },
+  "bone_centipede_pro-attack8": {
+    "dir": "enemy-bone_centipede_pro-attack8-r31",
+    "name": "bone_centipede_pro",
+    "mode": "attack8",
+    "frames": 32,
+    "atlasSize": [
+      2048,
+      4096
+    ],
+    "border": 0,
+    "normal": 0,
+    "footError": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "notes": "선두/꼬리두개골 구분, 피격N/NW 방향4키교정, 피격두개골/몸체크기에맞춘고정방향별카메라보정. 전체방향/키1x·3x직접확인. 피격검토는중립300/충격100/회복150/중립300ms이며 실제Core시간변경0. 영상video-only·전체디코드0.",
+    "actualPlayerVerified": false,
+    "runtimeAdoption": 0,
+    "video": [
+      {
+        "group": "enemy-bone_centipede_pro-attack8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_centipede_pro-attack8-r31/page-1.mp4",
+        "stem": "page-1",
+        "sha256": "dee43b6206eb24b35fb46bbeea3e262b7ab5220315b8c2cb7aa5cc290915aaaf",
+        "bytes": 3050485,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "32"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      },
+      {
+        "group": "enemy-bone_centipede_pro-attack8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_centipede_pro-attack8-r31/page-2.mp4",
+        "stem": "page-2",
+        "sha256": "03e7cdbd4921aa2da06ed1dd5ec287992aebc8af5974a4865b4d83674cd60113",
+        "bytes": 2599845,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "32"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      }
+    ]
+  },
+  "bone_centipede_pro-hurt8": {
+    "dir": "enemy-bone_centipede_pro-hurt8-r31",
+    "name": "bone_centipede_pro",
+    "mode": "hurt8",
+    "frames": 16,
+    "atlasSize": [
+      1024,
+      4096
+    ],
+    "border": 0,
+    "normal": 0,
+    "footError": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "notes": "선두/꼬리두개골 구분, 피격N/NW 방향4키교정, 피격두개골/몸체크기에맞춘고정방향별카메라보정. 전체방향/키1x·3x직접확인. 피격검토는중립300/충격100/회복150/중립300ms이며 실제Core시간변경0. 영상video-only·전체디코드0.",
+    "actualPlayerVerified": false,
+    "runtimeAdoption": 0,
+    "video": [
+      {
+        "group": "enemy-bone_centipede_pro-hurt8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_centipede_pro-hurt8-r31/page-1.mp4",
+        "stem": "page-1",
+        "sha256": "d6b3a1768a833de8216ab5ff9380b009578dc8a0d94896d3b9126bff2039d884",
+        "bytes": 1307386,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "68"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      },
+      {
+        "group": "enemy-bone_centipede_pro-hurt8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_centipede_pro-hurt8-r31/page-2.mp4",
+        "stem": "page-2",
+        "sha256": "c068ada41300b4f1b1b950b5f3b25c6d32a54808f907f8b4174f963826b83d14",
+        "bytes": 1306312,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "68"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      }
+    ]
+  },
+  "headless_knight-walk8": {
+    "dir": "enemy-headless_knight-walk8-r31",
+    "name": "headless_knight",
+    "mode": "walk8",
+    "frames": 32,
+    "atlasSize": [
+      2048,
+      4096
+    ],
+    "border": 0,
+    "normal": 0,
+    "footError": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "notes": "목단면·오른검·왼두개골장비/정면등면유지, 보행원시알파잡음제거후본체기준배율교정, 피격SW2키앞가슴으로교정. 전체방향/키1x·3x직접확인. 피격검토는중립300/충격100/회복150/중립300ms이며 실제Core시간변경0. 영상video-only·전체디코드0.",
+    "actualPlayerVerified": false,
+    "runtimeAdoption": 0,
+    "video": [
+      {
+        "group": "enemy-headless_knight-walk8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-headless_knight-walk8-r31/page-1.mp4",
+        "stem": "page-1",
+        "sha256": "c32bad6c364bc14544e42bbc8021cab296cd7fe25cfc790373d3d96bce093ca9",
+        "bytes": 3089415,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "32"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      },
+      {
+        "group": "enemy-headless_knight-walk8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-headless_knight-walk8-r31/page-2.mp4",
+        "stem": "page-2",
+        "sha256": "d6c4ce1c15338f0f88abe215b867591631e9c3c9ed3a5494a0578f8ec8aca167",
+        "bytes": 2836852,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "32"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      }
+    ]
+  },
+  "headless_knight-attack8": {
+    "dir": "enemy-headless_knight-attack8-r32-body-camera",
+    "name": "headless_knight",
+    "mode": "attack8",
+    "frames": 32,
+    "atlasSize": [
+      2048,
+      4096
+    ],
+    "border": 0,
+    "normal": 0,
+    "footError": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "notes": "목단면~발거리로방향별고정카메라교정, 이전r31몸체축소FAIL선택철회. 새32키1x/3x전수직접확인, body-camera-landmarks.png근거.",
+    "actualPlayerVerified": false,
+    "runtimeAdoption": 0,
+    "video": [
+      {
+        "group": "enemy-headless_knight-attack8-r32-body-camera",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-headless_knight-attack8-r32-body-camera/page-1.mp4",
+        "stem": "page-1",
+        "sha256": "0b21556b2c5a33eb53aa0e04ab18b7fbc0e3ae559d8745af4eaea99170de9e6b",
+        "bytes": 2918929,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "32"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      },
+      {
+        "group": "enemy-headless_knight-attack8-r32-body-camera",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-headless_knight-attack8-r32-body-camera/page-2.mp4",
+        "stem": "page-2",
+        "sha256": "2d1980e1d2829ba1eb9c4dae8d913f7b6691f452414ea1c74a4d0ea47ef356e3",
+        "bytes": 2741982,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "32"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      }
+    ]
+  },
+  "headless_knight-hurt8": {
+    "dir": "enemy-headless_knight-hurt8-r31",
+    "name": "headless_knight",
+    "mode": "hurt8",
+    "frames": 16,
+    "atlasSize": [
+      1024,
+      4096
+    ],
+    "border": 0,
+    "normal": 0,
+    "footError": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "notes": "목단면·오른검·왼두개골장비/정면등면유지, 보행원시알파잡음제거후본체기준배율교정, 피격SW2키앞가슴으로교정. 전체방향/키1x·3x직접확인. 피격검토는중립300/충격100/회복150/중립300ms이며 실제Core시간변경0. 영상video-only·전체디코드0.",
+    "actualPlayerVerified": false,
+    "runtimeAdoption": 0,
+    "video": [
+      {
+        "group": "enemy-headless_knight-hurt8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-headless_knight-hurt8-r31/page-1.mp4",
+        "stem": "page-1",
+        "sha256": "69c0d255c7632a68da579e97e73299c91da00d03f4524972bc4feec2131ebe93",
+        "bytes": 1616616,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "68"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      },
+      {
+        "group": "enemy-headless_knight-hurt8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-headless_knight-hurt8-r31/page-2.mp4",
+        "stem": "page-2",
+        "sha256": "a8cf15c198e00b40636d3ec2815a885b3ae14c4c085fe897ebff3a164b604e17",
+        "bytes": 1587591,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "68"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      }
+    ]
+  },
+  "bone_archer-idle8": {
+    "dir": "enemy-bone_archer-idle8-r31",
+    "name": "bone_archer",
+    "mode": "idle8",
+    "frames": 8,
+    "atlasSize": [
+      2048,
+      1024
+    ],
+    "border": 0,
+    "normal": 0,
+    "footError": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "notes": "8방향원본1x/후보1x/3x직접확인, 작은뼈몸체·후드·활/화살통정체성유지.",
+    "actualPlayerVerified": false,
+    "runtimeAdoption": 0,
+    "video": {
+      "group": "enemy-bone_archer-idle8-r31",
+      "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_archer-idle8-r31/comparison.mp4",
+      "stem": "comparison",
+      "sha256": "3686e68a2ea9f0d7202586dec7b22939076bc1d9a2187fb0b6087323a3c296b8",
+      "bytes": 1020912,
+      "streams": [
+        {
+          "type": "video",
+          "width": 1088,
+          "height": 560,
+          "frames": "32"
+        }
+      ],
+      "decode": 0,
+      "actualUIPlayback": false
+    }
+  },
+  "apostle_knight-idle8": {
+    "dir": "enemy-apostle_knight-idle8-r31",
+    "name": "apostle_knight",
+    "mode": "idle8",
+    "frames": 8,
+    "atlasSize": [
+      2048,
+      1024
+    ],
+    "border": 0,
+    "normal": 0,
+    "footError": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "notes": "8방향원본1x/후보1x/3x직접확인, 닫힌투구/붉은눈틈/오른손직사각식칼/빈왼손유지.",
+    "actualPlayerVerified": false,
+    "runtimeAdoption": 0,
+    "video": {
+      "group": "enemy-apostle_knight-idle8-r31",
+      "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-apostle_knight-idle8-r31/comparison.mp4",
+      "stem": "comparison",
+      "sha256": "8972232376da8702e442055252e13bf08bd36466300cb9bc8efba01d192454e3",
+      "bytes": 835670,
+      "streams": [
+        {
+          "type": "video",
+          "width": 1088,
+          "height": 560,
+          "frames": "32"
+        }
+      ],
+      "decode": 0,
+      "actualUIPlayback": false
+    }
+  },
+  "gut_witch-idle8": {
+    "dir": "enemy-gut_witch-idle8-r32-material",
+    "name": "gut_witch",
+    "mode": "idle8",
+    "frames": 8,
+    "atlasSize": [
+      2048,
+      1024
+    ],
+    "border": 0,
+    "normal": 0,
+    "footError": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "notes": "보주violet색복구·등면N장비좌우교정. 공통재질56색·디더링0, 원본1x/후보1x/3x8방향전수직접확인.",
+    "actualPlayerVerified": false,
+    "runtimeAdoption": 0,
+    "video": {
+      "group": "enemy-gut_witch-idle8-r32-material",
+      "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-gut_witch-idle8-r32-material/comparison.mp4",
+      "stem": "comparison",
+      "sha256": "66931376c8caea239cf10ddf7938911836a6108d609130faa4c235774c69568a",
+      "bytes": 958047,
+      "streams": [
+        {
+          "type": "video",
+          "width": 1088,
+          "height": 560,
+          "frames": "32"
+        }
+      ],
+      "decode": 0,
+      "actualUIPlayback": false
+    }
+  },
+  "bone_archer-walk8": {
+    "dir": "enemy-bone_archer-walk8-r31",
+    "name": "bone_archer",
+    "mode": "walk8",
+    "frames": 32,
+    "atlasSize": [
+      2048,
+      4096
+    ],
+    "border": 0,
+    "normal": 0,
+    "footError": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "notes": "원본1x 대조 및 8방향×4키의 실제3배 확대를 직접 검토. 활·화살통·발 교차 확인, 일반몹 walk의 기존 partial overlay와 호환되지 않는 full-body 후보.",
+    "actualPlayerVerified": false,
+    "runtimeAdoption": 0,
+    "video": [
+      {
+        "group": "enemy-bone_archer-walk8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_archer-walk8-r31/page-1.mp4",
+        "stem": "page-1",
+        "sha256": "9d7dc24672a7f3daef092d28a799dc4d409d19d335af92c85a9a31b1c8cead5c",
+        "bytes": 3307772,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "32"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      },
+      {
+        "group": "enemy-bone_archer-walk8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_archer-walk8-r31/page-2.mp4",
+        "stem": "page-2",
+        "sha256": "42680a410f398658717e5d8760094a0686cfeec7ccd1da2bf1ad294e25f16af8",
+        "bytes": 3139292,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "32"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      }
+    ]
+  },
+  "bone_archer-hurt8": {
+    "dir": "enemy-bone_archer-hurt8-r31",
+    "name": "bone_archer",
+    "mode": "hurt8",
+    "frames": 16,
+    "atlasSize": [
+      1024,
+      4096
+    ],
+    "border": 0,
+    "normal": 0,
+    "footError": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "notes": "8방향×2키 원본1x/실제3배 확대 직접 검토. 뒤로 젖힘→회복, 활·화살통 유지.",
+    "actualPlayerVerified": false,
+    "runtimeAdoption": 0,
+    "video": [
+      {
+        "group": "enemy-bone_archer-hurt8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_archer-hurt8-r31/page-1.mp4",
+        "stem": "page-1",
+        "sha256": "2a13b5854d13ec55f09b0400b151f7042204ac1fadf0eb0e63ce8d3374e10c5d",
+        "bytes": 1596908,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "68"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      },
+      {
+        "group": "enemy-bone_archer-hurt8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_archer-hurt8-r31/page-2.mp4",
+        "stem": "page-2",
+        "sha256": "beb3a55daaeee7b8dc24c335b3f9858c9e25c04fab8e0c6d72a434bae33e9f9b",
+        "bytes": 1560468,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "68"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      }
+    ]
+  },
+  "apostle_knight-walk8": {
+    "dir": "enemy-apostle_knight-walk8-r31",
+    "name": "apostle_knight",
+    "mode": "walk8",
+    "frames": 32,
+    "atlasSize": [
+      2048,
+      4096
+    ],
+    "border": 0,
+    "normal": 0,
+    "footError": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "notes": "8방향×4키 원본1x/실제3배 확대 직접 검토. 닫힌 투구·오른손 식칼·양발 교차 유지.",
+    "actualPlayerVerified": false,
+    "runtimeAdoption": 0,
+    "video": [
+      {
+        "group": "enemy-apostle_knight-walk8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-apostle_knight-walk8-r31/page-1.mp4",
+        "stem": "page-1",
+        "sha256": "ee425e21b2286e7113fcdee93f747cf639d36b17865d3846530e0a9eb0702580",
+        "bytes": 2631113,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "32"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      },
+      {
+        "group": "enemy-apostle_knight-walk8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-apostle_knight-walk8-r31/page-2.mp4",
+        "stem": "page-2",
+        "sha256": "f88feb00018d384bd38a654fd58875b9f25855cd1b08adfb5d0cf29b49242025",
+        "bytes": 2551497,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "32"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      }
+    ]
+  },
+  "apostle_knight-hurt8": {
+    "dir": "enemy-apostle_knight-hurt8-r31",
+    "name": "apostle_knight",
+    "mode": "hurt8",
+    "frames": 16,
+    "atlasSize": [
+      1024,
+      4096
+    ],
+    "border": 0,
+    "normal": 0,
+    "footError": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "notes": "8방향×2키 원본1x/실제3배 확대 직접 검토. 젖힘/회복 및 식칼 손 유지.",
+    "actualPlayerVerified": false,
+    "runtimeAdoption": 0,
+    "video": [
+      {
+        "group": "enemy-apostle_knight-hurt8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-apostle_knight-hurt8-r31/page-1.mp4",
+        "stem": "page-1",
+        "sha256": "66783b57ec03bf313461b4cb4adef7ccdb72fdafb9884edbefadc8a07e82ffb1",
+        "bytes": 1392955,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "68"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      },
+      {
+        "group": "enemy-apostle_knight-hurt8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-apostle_knight-hurt8-r31/page-2.mp4",
+        "stem": "page-2",
+        "sha256": "74bd28c19158811e14626f1ffc85615d2da9c0e113fbbd244cc16928f2417e6e",
+        "bytes": 1384737,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "68"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      }
+    ]
+  },
+  "gut_witch-hurt8": {
+    "dir": "enemy-gut_witch-hurt8-r32-material",
+    "name": "gut_witch",
+    "mode": "hurt8",
+    "frames": 16,
+    "atlasSize": [
+      1024,
+      4096
+    ],
+    "border": 0,
+    "normal": 0,
+    "footError": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "notes": "8방향×2키 원본1x/실제3배 확대 직접 검토. 구체 보라색·지팡이·척추 장구·발 유지, 56색 재질 팔레트.",
+    "actualPlayerVerified": false,
+    "runtimeAdoption": 0,
+    "video": [
+      {
+        "group": "enemy-gut_witch-hurt8-r32-material",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-gut_witch-hurt8-r32-material/page-1.mp4",
+        "stem": "page-1",
+        "sha256": "ce1f61cbe13da8545313e12295ea20cc9dbd8a7aea6f3bcee9aded764283afc7",
+        "bytes": 1623173,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "68"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      },
+      {
+        "group": "enemy-gut_witch-hurt8-r32-material",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-gut_witch-hurt8-r32-material/page-2.mp4",
+        "stem": "page-2",
+        "sha256": "1c250229a4ff8799cd1eb3c0b7611733a7909b686a55561329535bba7e81dada",
+        "bytes": 1543756,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "68"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      }
+    ]
+  },
+  "bone_archer-attack8": {
+    "dir": "enemy-bone_archer-attack8-r31",
+    "name": "bone_archer",
+    "mode": "attack8",
+    "frames": 32,
+    "atlasSize": [
+      2048,
+      4096
+    ],
+    "border": 0,
+    "normal": 0,
+    "footError": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "notes": "8방향×4키 1x/3x 직접 검토. 남·북·북서 발사 방향 수정. 당김→발사→복귀, 비행 화살/VFX 추가 없음.",
+    "actualPlayerVerified": false,
+    "runtimeAdoption": 0,
+    "video": [
+      {
+        "group": "enemy-bone_archer-attack8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_archer-attack8-r31/page-1.mp4",
+        "stem": "page-1",
+        "sha256": "85159c79272bd9b48dbcaace7be6fa6ae79775f93deac87c1e2344cf5920f419",
+        "bytes": 3051107,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "32"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      },
+      {
+        "group": "enemy-bone_archer-attack8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_archer-attack8-r31/page-2.mp4",
+        "stem": "page-2",
+        "sha256": "bc173c70b1d4847cd7072e97eee5e20ad3018cf3ff986f24d3de9fbe9160b19b",
+        "bytes": 3181690,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "32"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      }
+    ]
+  },
+  "apostle_knight-attack8": {
+    "dir": "enemy-apostle_knight-attack8-r31",
+    "name": "apostle_knight",
+    "mode": "attack8",
+    "frames": 32,
+    "atlasSize": [
+      2048,
+      4096
+    ],
+    "border": 0,
+    "normal": 0,
+    "footError": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "notes": "8방향×4키 원본1x/실제3배 확대 직접 검토. 북쪽 준비 키의 오른손 식칼 수정, 다른31키 보존.",
+    "actualPlayerVerified": false,
+    "runtimeAdoption": 0,
+    "video": [
+      {
+        "group": "enemy-apostle_knight-attack8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-apostle_knight-attack8-r31/page-1.mp4",
+        "stem": "page-1",
+        "sha256": "0ae47e05c7643f970df73cfd8f5f748dd1ac35e57415f0eb48b90bd7d28dbf14",
+        "bytes": 2466221,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "32"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      },
+      {
+        "group": "enemy-apostle_knight-attack8-r31",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-apostle_knight-attack8-r31/page-2.mp4",
+        "stem": "page-2",
+        "sha256": "c65f181663528c9574c3aa050bd295459a7a222be94c56326317c3dc016abed3",
+        "bytes": 2097045,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "32"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      }
+    ]
+  },
+  "gut_witch-walk8": {
+    "dir": "enemy-gut_witch-walk8-r32-material",
+    "name": "gut_witch",
+    "mode": "walk8",
+    "frames": 32,
+    "atlasSize": [
+      2048,
+      4096
+    ],
+    "border": 0,
+    "normal": 0,
+    "footError": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "notes": "8방향×4키 1x/3x 직접 검토. 북동 장구 위치 수정, 서쪽 발밑 분리 잔점 제거 및 전체뷰 배율 .748031496 재산출. 서쪽4키와 전체1x 재검토.",
+    "actualPlayerVerified": false,
+    "runtimeAdoption": 0,
+    "video": [
+      {
+        "group": "enemy-gut_witch-walk8-r32-material",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-gut_witch-walk8-r32-material/page-1.mp4",
+        "stem": "page-1",
+        "sha256": "431e44b8ca9ef737125d3f32e70c8b1360860597bc273307826218c84808d153",
+        "bytes": 3309214,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "32"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      },
+      {
+        "group": "enemy-gut_witch-walk8-r32-material",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-gut_witch-walk8-r32-material/page-2.mp4",
+        "stem": "page-2",
+        "sha256": "b97644427295feaaa02b14f02b9ee9932148dc7d8903de95b8b91824ee5f6cd0",
+        "bytes": 2845916,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "32"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      }
+    ]
+  },
+  "gut_witch-attack8": {
+    "dir": "enemy-gut_witch-attack8-r33-staff-span",
+    "name": "gut_witch",
+    "mode": "attack8",
+    "frames": 32,
+    "atlasSize": [
+      2048,
+      4096
+    ],
+    "border": 0,
+    "normal": 0,
+    "footError": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "notes": "최종 r33: 8방향×4키 1x/3x 검토 후 북서 시전의 고정 지팡이 길이 기준으로 제공자 카메라1.15 보정. 변경 NW2키와 전체1x 재검토, 다른31키 픽셀 보존.",
+    "actualPlayerVerified": false,
+    "runtimeAdoption": 0,
+    "video": [
+      {
+        "group": "enemy-gut_witch-attack8-r33-staff-span",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-gut_witch-attack8-r33-staff-span/page-1.mp4",
+        "stem": "page-1",
+        "sha256": "e2156d945184aafbcdc5f8250ff7d3db7490566f856ba0d770b1e032b71a2f06",
+        "bytes": 2886653,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "32"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      },
+      {
+        "group": "enemy-gut_witch-attack8-r33-staff-span",
+        "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-gut_witch-attack8-r33-staff-span/page-2.mp4",
+        "stem": "page-2",
+        "sha256": "ea087227edacdf6ac20a044d3cb1e9939d90db53e64a77240acfb699ff3d000e",
+        "bytes": 2581908,
+        "streams": [
+          {
+            "type": "video",
+            "width": 1088,
+            "height": 2240,
+            "frames": "32"
+          }
+        ],
+        "decode": 0,
+        "actualUIPlayback": false
+      }
+    ]
+  }
+}

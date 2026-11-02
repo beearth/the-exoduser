@@ -1,0 +1,17 @@
+{
+  "group": "enemy-apostle_knight-idle8-r31",
+  "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-apostle_knight-idle8-r31/comparison.mp4",
+  "stem": "comparison",
+  "sha256": "8972232376da8702e442055252e13bf08bd36466300cb9bc8efba01d192454e3",
+  "bytes": 835670,
+  "streams": [
+    {
+      "type": "video",
+      "width": 1088,
+      "height": 560,
+      "frames": "32"
+    }
+  ],
+  "decode": 0,
+  "actualUIPlayback": false
+}

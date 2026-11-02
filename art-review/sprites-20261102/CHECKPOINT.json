@@ -1,0 +1,251 @@
+{
+  "at": "2026-11-02T18:28:53.543Z",
+  "ownerSession": "01a19cab-2903-7830-923f-16603b0b94cb",
+  "branch": "codex/pc-hd2d-trial-20261031",
+  "head": "5b45b6a482ab4c446137cb82f24ea4d10267d4f0",
+  "outputRealPath": "I:\\EXODUSER-Storage\\archive\\G\\exoduser\\tmp\\design-review\\20261102_sprites",
+  "currentWarriorIdle": "warrior-idle8-r11-seam",
+  "status": "全30論理군 오프라인 후보 제작·비교 제출 완료; 실제Player 미검증·사용자승인 전 제품반영0",
+  "next": "사용자 후보 검토 후 승인 범위만 별도 상태소스 어댑터/isolated Player 실게임1x·조명·접지·자연전투 검수",
+  "pending": null,
+  "normal": "같은diffuse 실루엣 bevel 추정, 실제PBR아님",
+  "tools": {
+    "python": "C:/Users/심도진/AppData/Local/Programs/Python/Python312/python.exe",
+    "ffmpeg": "C:/Users/심도진/AppData/Local/Microsoft/WinGet/Links/ffmpeg.exe"
+  },
+  "report": "I:/EXODUSER-Storage/codex-takeover/sprites-11/REPORT.md",
+  "existingSource": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites",
+  "tests": "원본/기존후보/Unity/Core/INDEX 변경0; external tools/guard.baseline.json WORK보존",
+  "warnings": [
+    "대기r6 체형FAIL, r8 표면잡점FAIL, r9 교정후보",
+    "보행단순일괄시트 다리반복FAIL→좌우색상포즈가이드/단일접촉방법전환",
+    "CUA browser host unavailable; 실제 UI재생/Unity自然플레이 미검증",
+    "포즈가이드v1 screen Y/회전·해부좌우 오류 수정 v3; SE/S 재생성, 나머지3쌍은 실제출력프레임 검수만; 신체포즈PASS소급0",
+    "워리어 전체RIGHT 일치주장철회:LOCK손쪽미지정/레거시좌방향반전. r11대기 NW/SE를 보행검위치에 연결.",
+    "전사9bat의 .85 원본시간함수 유지; 새에셋아직로더미반영"
+  ],
+  "mobPriority": [
+    {
+      "etype": 7,
+      "weight": 7,
+      "expectedProbability": 0.125
+    },
+    {
+      "etype": 16,
+      "weight": 5,
+      "expectedProbability": 0.08928571428571429
+    },
+    {
+      "etype": 1,
+      "weight": 4,
+      "expectedProbability": 0.07142857142857142
+    },
+    {
+      "etype": 47,
+      "weight": 16,
+      "expectedProbability": 0.0625
+    },
+    {
+      "etype": 4,
+      "weight": 14,
+      "expectedProbability": 0.0546875
+    }
+  ],
+  "currentWarriorWalk": "warrior-walk8-r10-adult",
+  "currentWarriorAttack": "warrior-attack9-r13-area",
+  "docsRemote": {
+    "commit": "72ccacdf56e356679d2e26ae868cdeb11abd74c6",
+    "branch": "codex/pc-sprites11-docs-20261103",
+    "mainVerified": true,
+    "onlyPath": "docs/0마스터플랜/session_handoff/unity-character-lead.md",
+    "workingIndexUntouched": true
+  },
+  "mobPriorityType": "behavior etype probabilities ONLY; NOT visual-species priority",
+  "completedCandidateGroups": [
+    "warrior-idle8-r11-seam",
+    "warrior-walk8-r10-adult",
+    "warrior-attack9-r13-area",
+    "warrior-hurt8-r14-area",
+    "druid-idle8-r23-kit-hem",
+    "druid-walk8-r29-projected",
+    "druid-attack8-r29-projected",
+    "druid-dive8-r29-projected",
+    "druid-emerge8-r29-projected",
+    "druid-beast8-r29-projected",
+    "druid-transform8-r29-projected",
+    "enemy-bone_centipede_pro-idle8-r31",
+    "enemy-bone_centipede_pro-walk8-r31",
+    "enemy-headless_knight-idle8-r31",
+    "enemy-bone_centipede_pro-attack8-r31",
+    "enemy-bone_centipede_pro-hurt8-r31",
+    "enemy-headless_knight-walk8-r31",
+    "enemy-headless_knight-attack8-r32-body-camera",
+    "enemy-headless_knight-hurt8-r31",
+    "enemy-bone_archer-idle8-r31",
+    "enemy-apostle_knight-idle8-r31",
+    "enemy-gut_witch-idle8-r32-material",
+    "enemy-bone_archer-walk8-r31",
+    "enemy-bone_archer-hurt8-r31",
+    "enemy-apostle_knight-walk8-r31",
+    "enemy-apostle_knight-hurt8-r31",
+    "enemy-gut_witch-hurt8-r32-material",
+    "enemy-bone_archer-attack8-r31",
+    "enemy-apostle_knight-attack8-r31",
+    "enemy-gut_witch-walk8-r32-material",
+    "enemy-gut_witch-attack8-r33-staff-span"
+  ],
+  "currentWarriorHurt": "warrior-hurt8-r14-area",
+  "currentDruidPrototype": "druid-idle-south-r18-kit",
+  "currentDruidKit": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/candidates/dark-druid-canonical-staff-r175-rgb-alpha-exact.png",
+  "currentDruidKitScale": 0.2422381950683837,
+  "warriorRemoteArt": {
+    "branch": "codex/pc-sprites11-art-20261103",
+    "commit": "7ae86ba665a7e3492aa931cd656d5906696276ce",
+    "paths": 62,
+    "bytes": 33072525,
+    "indexBefore": "fe5b00d5d150417892bcc1d25e0d5dfcbfc57def5f6d72fccfc2eeb6985ec4c7",
+    "indexAfter": "fe5b00d5d150417892bcc1d25e0d5dfcbfc57def5f6d72fccfc2eeb6985ec4c7",
+    "workingHeadUnchanged": true,
+    "productAdoption": 0,
+    "remote": "7ae86ba665a7e3492aa931cd656d5906696276ce\trefs/heads/codex/pc-sprites11-art-20261103",
+    "remoteVerifiedAt": "2026-11-02T16:29:21.692Z"
+  },
+  "warriorRemoteDocs": {
+    "firstDocsCommit": "fc5e06b5f06d83729e17c50d86e968f30975109e",
+    "linkFixCommit": "2baf8d7da9f5f4764362a39d684fea04c31c0770",
+    "remoteReadback": "2baf8d7da9f5f4764362a39d684fea04c31c0770\trefs/heads/codex/pc-sprites11-docs-20261103\n607110d52a56a1e5622a78e2ce7d09582946920a\trefs/heads/godot/main\n2baf8d7da9f5f4764362a39d684fea04c31c0770\trefs/heads/main\n28024b969ff17d03327f79e39d6f63183ca0013f\trefs/heads/unity/main",
+    "verifiedMainDescendant": "2baf8d7da9f5f4764362a39d684fea04c31c0770",
+    "packageBlobExact": "7854bcab6a20d5168b08464ccc61898c6d24b024",
+    "indexBefore": "fe5b00d5d150417892bcc1d25e0d5dfcbfc57def5f6d72fccfc2eeb6985ec4c7",
+    "indexAfter": "fe5b00d5d150417892bcc1d25e0d5dfcbfc57def5f6d72fccfc2eeb6985ec4c7",
+    "checkedAt": "2026-11-02T16:31:50.057Z",
+    "onlyDocs": 2,
+    "runtimeChanges": 0,
+    "remoteExactRefs": {
+      "refs/heads/codex/pc-sprites11-docs-20261103": "2baf8d7da9f5f4764362a39d684fea04c31c0770",
+      "refs/heads/main": "2baf8d7da9f5f4764362a39d684fea04c31c0770"
+    },
+    "lookupNote": "ls-remote pattern main also returns unity/main and godot/main; verification uses full ref names and ancestry, not all returned rows"
+  },
+  "currentDruidIdle": "druid-idle8-r23-kit-hem",
+  "currentDruidBody": "druid-bodies8-r19/body8-lower-clothing-r22.png",
+  "currentDruidKitConfig": "druid-bodies8-r19/rigid-kit-config-r23.json",
+  "selectedEnemyPriority": [
+    {
+      "idx": 8,
+      "name": "bone_centipede_pro",
+      "count": 12976,
+      "meanPerRun": 6.488,
+      "initialCount": 4600,
+      "holeCount": 8376
+    },
+    {
+      "idx": 23,
+      "name": "headless_knight",
+      "count": 10820,
+      "meanPerRun": 5.41,
+      "initialCount": 2520,
+      "holeCount": 8300
+    },
+    {
+      "idx": 35,
+      "name": "bone_archer",
+      "count": 9275,
+      "meanPerRun": 4.6375,
+      "initialCount": 731,
+      "holeCount": 8544
+    },
+    {
+      "idx": 2,
+      "name": "apostle_knight",
+      "count": 9255,
+      "meanPerRun": 4.6275,
+      "initialCount": 686,
+      "holeCount": 8569
+    },
+    {
+      "idx": 27,
+      "name": "gut_witch",
+      "count": 9214,
+      "meanPerRun": 4.607,
+      "initialCount": 781,
+      "holeCount": 8433
+    }
+  ],
+  "priorityScope": "2000seed planned population; not camera/time-weighted actual play",
+  "druidRemoteArt": {
+    "commit": "354649653d7b2dce6a31e60002bcc1580f18bf87",
+    "parent": "7ae86ba665a7e3492aa931cd656d5906696276ce",
+    "remote": "354649653d7b2dce6a31e60002bcc1580f18bf87\trefs/heads/codex/pc-sprites11-art-20261103",
+    "files": 26,
+    "bytes": 16868413,
+    "indexBefore": "fe5b00d5d150417892bcc1d25e0d5dfcbfc57def5f6d72fccfc2eeb6985ec4c7",
+    "indexAfter": "fe5b00d5d150417892bcc1d25e0d5dfcbfc57def5f6d72fccfc2eeb6985ec4c7",
+    "runtimeAdoption": 0
+  },
+  "druidRemoteDocs": {
+    "parent": "2baf8d7da9f5f4764362a39d684fea04c31c0770",
+    "commit": "63b69ebd44063b2dbcb0eee2400be4d9730ea136",
+    "remote": [
+      [
+        "63b69ebd44063b2dbcb0eee2400be4d9730ea136",
+        "refs/heads/codex/pc-sprites11-docs-20261103"
+      ],
+      [
+        "63b69ebd44063b2dbcb0eee2400be4d9730ea136",
+        "refs/heads/main"
+      ]
+    ],
+    "index": "fe5b00d5d150417892bcc1d25e0d5dfcbfc57def5f6d72fccfc2eeb6985ec4c7",
+    "paths": [
+      "docs/0마스터플랜/session_handoff/unity-character-lead.md",
+      "docs/4.0케릭터스프라이트 디자인/DRUID_SPRITE_IDLE_CANDIDATE_20261103.md"
+    ],
+    "runtimeAdoption": 0
+  },
+  "currentDruidWalk": "druid-walk8-r29-projected",
+  "currentDruidAttack": "druid-attack8-r29-projected",
+  "projectionRevision": "druid_project_native_axes.py; walk32 attack32 beast8 dive8 emerge8 exported alpha/clip/feet0; walk/attack projected review pages prepared",
+  "currentDruidWalkProjected": "druid-walk8-r29-projected",
+  "currentDruidAttackProjected": "druid-attack8-r29-projected",
+  "updatedUTC": "2026-11-02T19:52:14.569Z",
+  "selectedGroups": [
+    "warrior-idle8-r11-seam",
+    "warrior-walk8-r10-adult",
+    "warrior-attack9-r13-area",
+    "warrior-hurt8-r14-area",
+    "druid-idle8-r23-kit-hem",
+    "druid-walk8-r29-projected",
+    "druid-attack8-r29-projected",
+    "druid-dive8-r29-projected",
+    "druid-emerge8-r29-projected",
+    "druid-beast8-r29-projected",
+    "druid-transform8-r29-projected",
+    "enemy-bone_centipede_pro-idle8-r31",
+    "enemy-bone_centipede_pro-walk8-r31",
+    "enemy-headless_knight-idle8-r31",
+    "enemy-bone_centipede_pro-attack8-r31",
+    "enemy-bone_centipede_pro-hurt8-r31",
+    "enemy-headless_knight-walk8-r31",
+    "enemy-headless_knight-attack8-r32-body-camera",
+    "enemy-headless_knight-hurt8-r31",
+    "enemy-bone_archer-idle8-r31",
+    "enemy-apostle_knight-idle8-r31",
+    "enemy-gut_witch-idle8-r32-material",
+    "enemy-bone_archer-walk8-r31",
+    "enemy-bone_archer-hurt8-r31",
+    "enemy-apostle_knight-walk8-r31",
+    "enemy-apostle_knight-hurt8-r31",
+    "enemy-gut_witch-hurt8-r32-material",
+    "enemy-bone_archer-attack8-r31",
+    "enemy-apostle_knight-attack8-r31",
+    "enemy-gut_witch-walk8-r32-material",
+    "enemy-gut_witch-attack8-r33-staff-span"
+  ],
+  "enemySubmitted": 20,
+  "enemyTotal": 20,
+  "runtimeAdoption": 0,
+  "actualPlayerVerified": false,
+  "druidLatestArtCommit": "d02f7a456956f5fa2dc4e6e3cbb3b7bd3a7056b9",
+  "visualVerdict": "오프라인 후보 제출 / 실제Player 미검증"
+}

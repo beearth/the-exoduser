@@ -1,0 +1,36 @@
+[
+  {
+    "group": "enemy-bone_archer-attack8-r31",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_archer-attack8-r31/page-1.mp4",
+    "stem": "page-1",
+    "sha256": "85159c79272bd9b48dbcaace7be6fa6ae79775f93deac87c1e2344cf5920f419",
+    "bytes": 3051107,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  },
+  {
+    "group": "enemy-bone_archer-attack8-r31",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_archer-attack8-r31/page-2.mp4",
+    "stem": "page-2",
+    "sha256": "bc173c70b1d4847cd7072e97eee5e20ad3018cf3ff986f24d3de9fbe9160b19b",
+    "bytes": 3181690,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  }
+]

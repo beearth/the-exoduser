@@ -1,0 +1,36 @@
+[
+  {
+    "group": "enemy-gut_witch-walk8-r32-material",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-gut_witch-walk8-r32-material/page-1.mp4",
+    "stem": "page-1",
+    "sha256": "431e44b8ca9ef737125d3f32e70c8b1360860597bc273307826218c84808d153",
+    "bytes": 3309214,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  },
+  {
+    "group": "enemy-gut_witch-walk8-r32-material",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-gut_witch-walk8-r32-material/page-2.mp4",
+    "stem": "page-2",
+    "sha256": "b97644427295feaaa02b14f02b9ee9932148dc7d8903de95b8b91824ee5f6cd0",
+    "bytes": 2845916,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  }
+]

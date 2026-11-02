@@ -1,0 +1,36 @@
+[
+  {
+    "group": "enemy-bone_centipede_pro-walk8-r31",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_centipede_pro-walk8-r31/page-1.mp4",
+    "stem": "page-1",
+    "sha256": "0e8c58aec74f7805d3d6a2bf9f4df5742d5afc553566b8375916f304de8814de",
+    "bytes": 2904120,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  },
+  {
+    "group": "enemy-bone_centipede_pro-walk8-r31",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_centipede_pro-walk8-r31/page-2.mp4",
+    "stem": "page-2",
+    "sha256": "6b71bd6f3548571260fe9015e51f38a791a1e4ef121bcc76e6aa98bcdf8cc61c",
+    "bytes": 2736778,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  }
+]

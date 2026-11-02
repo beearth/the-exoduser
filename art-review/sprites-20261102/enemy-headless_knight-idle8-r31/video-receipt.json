@@ -1,0 +1,17 @@
+{
+  "group": "enemy-headless_knight-idle8-r31",
+  "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-headless_knight-idle8-r31/comparison.mp4",
+  "stem": "comparison",
+  "sha256": "bd39b85f609b42094f7b97014fdd400428d75bff907a0db8bf1e9c41412797dc",
+  "bytes": 1007892,
+  "streams": [
+    {
+      "type": "video",
+      "width": 1088,
+      "height": 560,
+      "frames": "32"
+    }
+  ],
+  "decode": 0,
+  "actualUIPlayback": false
+}

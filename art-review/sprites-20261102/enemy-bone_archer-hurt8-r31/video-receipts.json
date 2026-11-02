@@ -1,0 +1,36 @@
+[
+  {
+    "group": "enemy-bone_archer-hurt8-r31",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_archer-hurt8-r31/page-1.mp4",
+    "stem": "page-1",
+    "sha256": "2a13b5854d13ec55f09b0400b151f7042204ac1fadf0eb0e63ce8d3374e10c5d",
+    "bytes": 1596908,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "68"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  },
+  {
+    "group": "enemy-bone_archer-hurt8-r31",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_archer-hurt8-r31/page-2.mp4",
+    "stem": "page-2",
+    "sha256": "beb3a55daaeee7b8dc24c335b3f9858c9e25c04fab8e0c6d72a434bae33e9f9b",
+    "bytes": 1560468,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "68"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  }
+]

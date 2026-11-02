@@ -1,0 +1,36 @@
+[
+  {
+    "group": "enemy-apostle_knight-attack8-r31",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-apostle_knight-attack8-r31/page-1.mp4",
+    "stem": "page-1",
+    "sha256": "0ae47e05c7643f970df73cfd8f5f748dd1ac35e57415f0eb48b90bd7d28dbf14",
+    "bytes": 2466221,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  },
+  {
+    "group": "enemy-apostle_knight-attack8-r31",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-apostle_knight-attack8-r31/page-2.mp4",
+    "stem": "page-2",
+    "sha256": "c65f181663528c9574c3aa050bd295459a7a222be94c56326317c3dc016abed3",
+    "bytes": 2097045,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  }
+]

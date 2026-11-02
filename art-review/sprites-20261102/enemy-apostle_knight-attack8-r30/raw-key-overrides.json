@@ -1,0 +1,26 @@
+{
+  "north": {
+    "0": {
+      "file": "north-key0-raw-repair.png",
+      "generationOriginal": "north-key0-repair-original.png",
+      "uniformProviderScale": 0.24704618689581095,
+      "oldBox": [
+        86,
+        62,
+        255,
+        292
+      ],
+      "generatedBox": [
+        262,
+        105,
+        954,
+        1036
+      ],
+      "translation": [
+        85,
+        62
+      ],
+      "otherKeysUntouched": true
+    }
+  }
+}

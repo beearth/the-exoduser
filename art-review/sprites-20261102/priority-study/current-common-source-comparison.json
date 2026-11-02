@@ -1,0 +1,41 @@
+{
+  "common": "28024b969ff17d03327f79e39d6f63183ca0013f",
+  "compared": [
+    {
+      "path": "unity/Assets/Exoduser/Runtime/Core/EnemyPools.cs",
+      "sourceBlob": "47f0a54dd9d72108b7abd25fd36b7b3c0047729d",
+      "commonBlob": "47f0a54dd9d72108b7abd25fd36b7b3c0047729d",
+      "equal": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Runtime/Core/EnemyFactory.cs",
+      "sourceBlob": "b30128a03440b8ba737d289559ea57fc4155e094",
+      "commonBlob": "b30128a03440b8ba737d289559ea57fc4155e094",
+      "equal": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Runtime/Core/SpawnHoles.cs",
+      "sourceBlob": "8c5836f5f81ed023c9cba44f0476ae466b176576",
+      "commonBlob": "8c5836f5f81ed023c9cba44f0476ae466b176576",
+      "equal": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.Holes.cs",
+      "sourceBlob": "8376df1f59142aba7087021d5eaa68384ecdcc2d",
+      "commonBlob": "8376df1f59142aba7087021d5eaa68384ecdcc2d",
+      "equal": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.StartMobs.cs",
+      "sourceBlob": "9f58a791a4bb3b4b14debf04cf90c10f9dee086c",
+      "commonBlob": "9f58a791a4bb3b4b14debf04cf90c10f9dee086c",
+      "equal": true
+    },
+    {
+      "path": "unity/Assets/Exoduser/Resources/Data/ch1_map.json",
+      "sourceBlob": "52367b9b942da64fc9f5d7eeabd83b181c30dd1c",
+      "commonBlob": "52367b9b942da64fc9f5d7eeabd83b181c30dd1c",
+      "equal": true
+    }
+  ]
+}

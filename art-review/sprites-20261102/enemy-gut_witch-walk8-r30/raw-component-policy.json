@@ -1,0 +1,6 @@
+{
+  "west": {
+    "keepLargest": true,
+    "reason": "Direct3x review: detached gray alpha speck below feet corrupts whole-view bbox scale; staff/orb/body are one connected component."
+  }
+}

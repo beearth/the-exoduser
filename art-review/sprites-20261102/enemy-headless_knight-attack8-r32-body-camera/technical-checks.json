@@ -1,0 +1,1410 @@
+[
+  {
+    "direction": "south",
+    "key": 0,
+    "sourceBox": [
+      74,
+      73,
+      184,
+      189
+    ],
+    "rawBox": [
+      64,
+      11,
+      244,
+      269
+    ],
+    "rawCellSize": [
+      317,
+      310
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.1319370391378334,
+    "translation": [
+      134,
+      86
+    ],
+    "rect": [
+      0,
+      0,
+      512,
+      512
+    ],
+    "sourceFoot": 189,
+    "targetFoot": 378,
+    "actualFoot": 378,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      31387
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "south",
+    "key": 1,
+    "sourceBox": [
+      74,
+      73,
+      184,
+      189
+    ],
+    "rawBox": [
+      18,
+      11,
+      242,
+      270
+    ],
+    "rawCellSize": [
+      317,
+      310
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.1319370391378334,
+    "translation": [
+      91,
+      85
+    ],
+    "rect": [
+      512,
+      0,
+      512,
+      512
+    ],
+    "sourceFoot": 189,
+    "targetFoot": 378,
+    "actualFoot": 378,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      35016
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "south",
+    "key": 2,
+    "sourceBox": [
+      74,
+      73,
+      184,
+      189
+    ],
+    "rawBox": [
+      63,
+      72,
+      252,
+      284
+    ],
+    "rawCellSize": [
+      318,
+      310
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.1319370391378334,
+    "translation": [
+      134,
+      138
+    ],
+    "rect": [
+      1024,
+      0,
+      512,
+      512
+    ],
+    "sourceFoot": 189,
+    "targetFoot": 378,
+    "actualFoot": 378,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      27921
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "south",
+    "key": 3,
+    "sourceBox": [
+      74,
+      73,
+      184,
+      189
+    ],
+    "rawBox": [
+      72,
+      69,
+      243,
+      275
+    ],
+    "rawCellSize": [
+      317,
+      310
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.1319370391378334,
+    "translation": [
+      144,
+      145
+    ],
+    "rect": [
+      1536,
+      0,
+      512,
+      512
+    ],
+    "sourceFoot": 189,
+    "targetFoot": 378,
+    "actualFoot": 378,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      30223
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "south-east",
+    "key": 0,
+    "sourceBox": [
+      79,
+      75,
+      173,
+      189
+    ],
+    "rawBox": [
+      76,
+      8,
+      243,
+      269
+    ],
+    "rawCellSize": [
+      317,
+      310
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.098967999162945,
+    "translation": [
+      144,
+      91
+    ],
+    "rect": [
+      0,
+      512,
+      512,
+      512
+    ],
+    "sourceFoot": 189,
+    "targetFoot": 378,
+    "actualFoot": 378,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      29315
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "south-east",
+    "key": 1,
+    "sourceBox": [
+      79,
+      75,
+      173,
+      189
+    ],
+    "rawBox": [
+      38,
+      7,
+      243,
+      267
+    ],
+    "rawCellSize": [
+      317,
+      310
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.098967999162945,
+    "translation": [
+      114,
+      92
+    ],
+    "rect": [
+      512,
+      512,
+      512,
+      512
+    ],
+    "sourceFoot": 189,
+    "targetFoot": 378,
+    "actualFoot": 378,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      31432
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "south-east",
+    "key": 2,
+    "sourceBox": [
+      79,
+      75,
+      173,
+      189
+    ],
+    "rawBox": [
+      61,
+      67,
+      278,
+      270
+    ],
+    "rawCellSize": [
+      318,
+      310
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.098967999162945,
+    "translation": [
+      116,
+      155
+    ],
+    "rect": [
+      1024,
+      512,
+      512,
+      512
+    ],
+    "sourceFoot": 189,
+    "targetFoot": 378,
+    "actualFoot": 378,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      25445
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "south-east",
+    "key": 3,
+    "sourceBox": [
+      79,
+      75,
+      173,
+      189
+    ],
+    "rawBox": [
+      86,
+      62,
+      263,
+      270
+    ],
+    "rawCellSize": [
+      317,
+      310
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.098967999162945,
+    "translation": [
+      138,
+      149
+    ],
+    "rect": [
+      1536,
+      512,
+      512,
+      512
+    ],
+    "sourceFoot": 189,
+    "targetFoot": 378,
+    "actualFoot": 378,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      27288
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "east",
+    "key": 0,
+    "sourceBox": [
+      85,
+      77,
+      187,
+      184
+    ],
+    "rawBox": [
+      93,
+      7,
+      228,
+      266
+    ],
+    "rawCellSize": [
+      317,
+      310
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.0519304583427411,
+    "translation": [
+      226,
+      96
+    ],
+    "rect": [
+      0,
+      1024,
+      512,
+      512
+    ],
+    "sourceFoot": 184,
+    "targetFoot": 368,
+    "actualFoot": 368,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      22077
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "east",
+    "key": 1,
+    "sourceBox": [
+      85,
+      77,
+      187,
+      184
+    ],
+    "rawBox": [
+      50,
+      7,
+      230,
+      267
+    ],
+    "rawCellSize": [
+      317,
+      310
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.0519304583427411,
+    "translation": [
+      199,
+      94
+    ],
+    "rect": [
+      512,
+      1024,
+      512,
+      512
+    ],
+    "sourceFoot": 184,
+    "targetFoot": 368,
+    "actualFoot": 368,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      25696
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "east",
+    "key": 2,
+    "sourceBox": [
+      85,
+      77,
+      187,
+      184
+    ],
+    "rawBox": [
+      66,
+      64,
+      306,
+      270
+    ],
+    "rawCellSize": [
+      318,
+      310
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.0519304583427411,
+    "translation": [
+      172,
+      151
+    ],
+    "rect": [
+      1024,
+      1024,
+      512,
+      512
+    ],
+    "sourceFoot": 184,
+    "targetFoot": 368,
+    "actualFoot": 368,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      23543
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "east",
+    "key": 3,
+    "sourceBox": [
+      85,
+      77,
+      187,
+      184
+    ],
+    "rawBox": [
+      89,
+      57,
+      288,
+      272
+    ],
+    "rawCellSize": [
+      317,
+      310
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.0519304583427411,
+    "translation": [
+      193,
+      142
+    ],
+    "rect": [
+      1536,
+      1024,
+      512,
+      512
+    ],
+    "sourceFoot": 184,
+    "targetFoot": 368,
+    "actualFoot": 368,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      22942
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "north-east",
+    "key": 0,
+    "sourceBox": [
+      88,
+      83,
+      194,
+      184
+    ],
+    "rawBox": [
+      73,
+      6,
+      213,
+      276
+    ],
+    "rawCellSize": [
+      317,
+      310
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.0019543378504436,
+    "translation": [
+      197,
+      97
+    ],
+    "rect": [
+      0,
+      1536,
+      512,
+      512
+    ],
+    "sourceFoot": 184,
+    "targetFoot": 368,
+    "actualFoot": 368,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      21667
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "north-east",
+    "key": 1,
+    "sourceBox": [
+      88,
+      83,
+      194,
+      184
+    ],
+    "rawBox": [
+      48,
+      6,
+      218,
+      277
+    ],
+    "rawCellSize": [
+      317,
+      310
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.0019543378504436,
+    "translation": [
+      196,
+      96
+    ],
+    "rect": [
+      512,
+      1536,
+      512,
+      512
+    ],
+    "sourceFoot": 184,
+    "targetFoot": 368,
+    "actualFoot": 368,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      23567
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "north-east",
+    "key": 2,
+    "sourceBox": [
+      88,
+      83,
+      194,
+      184
+    ],
+    "rawBox": [
+      58,
+      70,
+      307,
+      278
+    ],
+    "rawCellSize": [
+      318,
+      310
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.0019543378504436,
+    "translation": [
+      144,
+      160
+    ],
+    "rect": [
+      1024,
+      1536,
+      512,
+      512
+    ],
+    "sourceFoot": 184,
+    "targetFoot": 368,
+    "actualFoot": 368,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      23170
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "north-east",
+    "key": 3,
+    "sourceBox": [
+      88,
+      83,
+      194,
+      184
+    ],
+    "rawBox": [
+      71,
+      62,
+      283,
+      277
+    ],
+    "rawCellSize": [
+      317,
+      310
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.0019543378504436,
+    "translation": [
+      200,
+      153
+    ],
+    "rect": [
+      1536,
+      1536,
+      512,
+      512
+    ],
+    "sourceFoot": 184,
+    "targetFoot": 368,
+    "actualFoot": 368,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      22340
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "north",
+    "key": 0,
+    "sourceBox": [
+      82,
+      78,
+      183,
+      186
+    ],
+    "rawBox": [
+      72,
+      22,
+      246,
+      280
+    ],
+    "rawCellSize": [
+      315,
+      312
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.091930185290225,
+    "translation": [
+      176,
+      90
+    ],
+    "rect": [
+      0,
+      2048,
+      512,
+      512
+    ],
+    "sourceFoot": 186,
+    "targetFoot": 372,
+    "actualFoot": 372,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      26736
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "north",
+    "key": 1,
+    "sourceBox": [
+      82,
+      78,
+      183,
+      186
+    ],
+    "rawBox": [
+      74,
+      11,
+      246,
+      280
+    ],
+    "rawCellSize": [
+      315,
+      312
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.091930185290225,
+    "translation": [
+      181,
+      78
+    ],
+    "rect": [
+      512,
+      2048,
+      512,
+      512
+    ],
+    "sourceFoot": 186,
+    "targetFoot": 372,
+    "actualFoot": 372,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      27474
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "north",
+    "key": 2,
+    "sourceBox": [
+      82,
+      78,
+      183,
+      186
+    ],
+    "rawBox": [
+      75,
+      92,
+      313,
+      280
+    ],
+    "rawCellSize": [
+      316,
+      312
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.091930185290225,
+    "translation": [
+      136,
+      167
+    ],
+    "rect": [
+      1024,
+      2048,
+      512,
+      512
+    ],
+    "sourceFoot": 186,
+    "targetFoot": 372,
+    "actualFoot": 372,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      24747
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "north",
+    "key": 3,
+    "sourceBox": [
+      82,
+      78,
+      183,
+      186
+    ],
+    "rawBox": [
+      76,
+      91,
+      299,
+      280
+    ],
+    "rawCellSize": [
+      315,
+      312
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.091930185290225,
+    "translation": [
+      136,
+      166
+    ],
+    "rect": [
+      1536,
+      2048,
+      512,
+      512
+    ],
+    "sourceFoot": 186,
+    "targetFoot": 372,
+    "actualFoot": 372,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      25134
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "north-west",
+    "key": 0,
+    "sourceBox": [
+      85,
+      83,
+      177,
+      184
+    ],
+    "rawBox": [
+      87,
+      10,
+      223,
+      285
+    ],
+    "rawCellSize": [
+      315,
+      312
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.049943564974762,
+    "translation": [
+      174,
+      79
+    ],
+    "rect": [
+      0,
+      2560,
+      512,
+      512
+    ],
+    "sourceFoot": 184,
+    "targetFoot": 368,
+    "actualFoot": 368,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      21453
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "north-west",
+    "key": 1,
+    "sourceBox": [
+      85,
+      83,
+      177,
+      184
+    ],
+    "rawBox": [
+      75,
+      1,
+      229,
+      281
+    ],
+    "rawCellSize": [
+      315,
+      312
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.049943564974762,
+    "translation": [
+      165,
+      74
+    ],
+    "rect": [
+      512,
+      2560,
+      512,
+      512
+    ],
+    "sourceFoot": 184,
+    "targetFoot": 368,
+    "actualFoot": 368,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      25624
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "north-west",
+    "key": 2,
+    "sourceBox": [
+      85,
+      83,
+      177,
+      184
+    ],
+    "rawBox": [
+      63,
+      92,
+      298,
+      283
+    ],
+    "rawCellSize": [
+      316,
+      312
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.049943564974762,
+    "translation": [
+      124,
+      167
+    ],
+    "rect": [
+      1024,
+      2560,
+      512,
+      512
+    ],
+    "sourceFoot": 184,
+    "targetFoot": 368,
+    "actualFoot": 368,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      22606
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "north-west",
+    "key": 3,
+    "sourceBox": [
+      85,
+      83,
+      177,
+      184
+    ],
+    "rawBox": [
+      79,
+      92,
+      285,
+      285
+    ],
+    "rawCellSize": [
+      315,
+      312
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.049943564974762,
+    "translation": [
+      128,
+      165
+    ],
+    "rect": [
+      1536,
+      2560,
+      512,
+      512
+    ],
+    "sourceFoot": 184,
+    "targetFoot": 368,
+    "actualFoot": 368,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      21022
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "west",
+    "key": 0,
+    "sourceBox": [
+      65,
+      76,
+      163,
+      184
+    ],
+    "rawBox": [
+      115,
+      5,
+      209,
+      291
+    ],
+    "rawCellSize": [
+      315,
+      311
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.0622435020519836,
+    "translation": [
+      169,
+      64
+    ],
+    "rect": [
+      0,
+      3072,
+      512,
+      512
+    ],
+    "sourceFoot": 184,
+    "targetFoot": 368,
+    "actualFoot": 368,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      17877
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "west",
+    "key": 1,
+    "sourceBox": [
+      65,
+      76,
+      163,
+      184
+    ],
+    "rawBox": [
+      73,
+      7,
+      222,
+      293
+    ],
+    "rawCellSize": [
+      315,
+      311
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.0622435020519836,
+    "translation": [
+      128,
+      64
+    ],
+    "rect": [
+      512,
+      3072,
+      512,
+      512
+    ],
+    "sourceFoot": 184,
+    "targetFoot": 368,
+    "actualFoot": 368,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      22632
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 7,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "west",
+    "key": 2,
+    "sourceBox": [
+      65,
+      76,
+      163,
+      184
+    ],
+    "rawBox": [
+      0,
+      101,
+      226,
+      295
+    ],
+    "rawCellSize": [
+      316,
+      311
+    ],
+    "rawBorder": 11,
+    "cameraScale": 1.0622435020519836,
+    "translation": [
+      96,
+      162
+    ],
+    "rect": [
+      1024,
+      3072,
+      512,
+      512
+    ],
+    "sourceFoot": 184,
+    "targetFoot": 368,
+    "actualFoot": 368,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      22192
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "west",
+    "key": 3,
+    "sourceBox": [
+      65,
+      76,
+      163,
+      184
+    ],
+    "rawBox": [
+      49,
+      93,
+      209,
+      295
+    ],
+    "rawCellSize": [
+      315,
+      311
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.0622435020519836,
+    "translation": [
+      134,
+      153
+    ],
+    "rect": [
+      1536,
+      3072,
+      512,
+      512
+    ],
+    "sourceFoot": 184,
+    "targetFoot": 368,
+    "actualFoot": 368,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      18938
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "south-west",
+    "key": 0,
+    "sourceBox": [
+      77,
+      73,
+      176,
+      189
+    ],
+    "rawBox": [
+      76,
+      12,
+      239,
+      290
+    ],
+    "rawCellSize": [
+      315,
+      312
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.0871408214932972,
+    "translation": [
+      152,
+      76
+    ],
+    "rect": [
+      0,
+      3584,
+      512,
+      512
+    ],
+    "sourceFoot": 189,
+    "targetFoot": 378,
+    "actualFoot": 378,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      26566
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "south-west",
+    "key": 1,
+    "sourceBox": [
+      77,
+      73,
+      176,
+      189
+    ],
+    "rawBox": [
+      54,
+      6,
+      229,
+      292
+    ],
+    "rawCellSize": [
+      315,
+      312
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.0871408214932972,
+    "translation": [
+      130,
+      67
+    ],
+    "rect": [
+      512,
+      3584,
+      512,
+      512
+    ],
+    "sourceFoot": 189,
+    "targetFoot": 378,
+    "actualFoot": 378,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      27598
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "south-west",
+    "key": 2,
+    "sourceBox": [
+      77,
+      73,
+      176,
+      189
+    ],
+    "rawBox": [
+      11,
+      91,
+      228,
+      298
+    ],
+    "rawCellSize": [
+      316,
+      312
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.0871408214932972,
+    "translation": [
+      130,
+      153
+    ],
+    "rect": [
+      1024,
+      3584,
+      512,
+      512
+    ],
+    "sourceFoot": 189,
+    "targetFoot": 378,
+    "actualFoot": 378,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      25233
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  },
+  {
+    "direction": "south-west",
+    "key": 3,
+    "sourceBox": [
+      77,
+      73,
+      176,
+      189
+    ],
+    "rawBox": [
+      16,
+      92,
+      235,
+      288
+    ],
+    "rawCellSize": [
+      315,
+      312
+    ],
+    "rawBorder": 0,
+    "cameraScale": 1.0871408214932972,
+    "translation": [
+      136,
+      165
+    ],
+    "rect": [
+      1536,
+      3584,
+      512,
+      512
+    ],
+    "sourceFoot": 189,
+    "targetFoot": 378,
+    "actualFoot": 378,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "alphaComponents": [
+      24674
+    ],
+    "removedDetachedPixels": 0,
+    "rawRemovedDetachedPixels": 0,
+    "alphaOutsideBase2x": 0,
+    "rgbaRestoredDiff": 0
+  }
+]

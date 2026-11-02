@@ -1,0 +1,36 @@
+[
+  {
+    "group": "enemy-headless_knight-walk8-r31",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-headless_knight-walk8-r31/page-1.mp4",
+    "stem": "page-1",
+    "sha256": "c32bad6c364bc14544e42bbc8021cab296cd7fe25cfc790373d3d96bce093ca9",
+    "bytes": 3089415,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  },
+  {
+    "group": "enemy-headless_knight-walk8-r31",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-headless_knight-walk8-r31/page-2.mp4",
+    "stem": "page-2",
+    "sha256": "d6c4ce1c15338f0f88abe215b867591631e9c3c9ed3a5494a0578f8ec8aca167",
+    "bytes": 2836852,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  }
+]

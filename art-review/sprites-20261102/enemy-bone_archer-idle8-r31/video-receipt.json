@@ -1,0 +1,17 @@
+{
+  "group": "enemy-bone_archer-idle8-r31",
+  "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_archer-idle8-r31/comparison.mp4",
+  "stem": "comparison",
+  "sha256": "3686e68a2ea9f0d7202586dec7b22939076bc1d9a2187fb0b6087323a3c296b8",
+  "bytes": 1020912,
+  "streams": [
+    {
+      "type": "video",
+      "width": 1088,
+      "height": 560,
+      "frames": "32"
+    }
+  ],
+  "decode": 0,
+  "actualUIPlayback": false
+}

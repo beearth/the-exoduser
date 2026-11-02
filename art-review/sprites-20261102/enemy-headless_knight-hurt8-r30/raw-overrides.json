@@ -1,0 +1,19 @@
+{
+  "south-west": {
+    "file": "south-west-fixed.png",
+    "grid": [
+      2,
+      1
+    ],
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ]
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "reason": "manual 1x/3x leading-skull and rib-body size comparison against selected idle; one fixed provider camera scale per direction across both hurt keys, not physical-measurement PASS",
+  "scales": {
+    "south": 0.97,
+    "south-east": 1.05,
+    "east": 1.02,
+    "north-east": 0.98,
+    "north": 0.615606936416185,
+    "north-west": 0.6299694189602446,
+    "west": 0.98,
+    "south-west": 1
+  }
+}

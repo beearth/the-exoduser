@@ -1,0 +1,36 @@
+[
+  {
+    "group": "enemy-apostle_knight-hurt8-r31",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-apostle_knight-hurt8-r31/page-1.mp4",
+    "stem": "page-1",
+    "sha256": "66783b57ec03bf313461b4cb4adef7ccdb72fdafb9884edbefadc8a07e82ffb1",
+    "bytes": 1392955,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "68"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  },
+  {
+    "group": "enemy-apostle_knight-hurt8-r31",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-apostle_knight-hurt8-r31/page-2.mp4",
+    "stem": "page-2",
+    "sha256": "74bd28c19158811e14626f1ffc85615d2da9c0e113fbbd244cc16928f2417e6e",
+    "bytes": 1384737,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "68"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  }
+]

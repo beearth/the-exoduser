@@ -1,0 +1,798 @@
+{
+  "name": "headless_knight",
+  "mode": "hurt8",
+  "cell": [
+    512,
+    512
+  ],
+  "baseSourceCell": [
+    256,
+    256
+  ],
+  "base2x": [
+    512,
+    512
+  ],
+  "padding": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "directions": [
+    "south",
+    "south-east",
+    "east",
+    "north-east",
+    "north",
+    "north-west",
+    "west",
+    "south-west"
+  ],
+  "keys": 2,
+  "atlasSize": [
+    1024,
+    4096
+  ],
+  "runtimePPU": 100,
+  "runtimeAdoption": 0,
+  "sourcePivot": [
+    0.5,
+    0.5
+  ],
+  "candidatePivot": [
+    0.5,
+    0.5
+  ],
+  "scaleContract": "NativeSpriteFor PPU100; logical draw scale=e.Radius*7/512. Original Core center unchanged. Fullbody walk needs state source adapter hiding old base+partial overlay.",
+  "fullBodyCandidate": true,
+  "legacyPartialOverlayCompatible": false,
+  "requiresStateSourceAdapter": true,
+  "walkSource": "distance/128 mod4; 4 original partial overlays over base",
+  "attackSource": "legacy idle alias; new 4-key pose proposal unbound",
+  "hurtSource": "legacy idle plus red tint; new 2-key reaction proposal unbound",
+  "normal": "silhouette bevel4 estimate, shared diffuse alpha",
+  "reviewScale": "128px normalized source cell, not actual Player1x proof",
+  "sourceOverrides": {
+    "south-west": {
+      "file": "south-west-fixed.png",
+      "grid": [
+        2,
+        1
+      ],
+      "cells": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ]
+    }
+  },
+  "cameraCalibration": {},
+  "records": [
+    {
+      "direction": "south",
+      "key": 0,
+      "sourceBox": [
+        74,
+        73,
+        184,
+        189
+      ],
+      "rawBox": [
+        60,
+        53,
+        280,
+        273
+      ],
+      "rawCellSize": [
+        315,
+        312
+      ],
+      "rawBorder": 0,
+      "cameraScale": 1.0318181818181817,
+      "translation": [
+        145,
+        151
+      ],
+      "rect": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "sourceFoot": 189,
+      "targetFoot": 378,
+      "actualFoot": 378,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        33618
+      ],
+      "removedDetachedPixels": 0,
+      "rawRemovedDetachedPixels": 0,
+      "alphaOutsideBase2x": 0,
+      "rgbaRestoredDiff": 0
+    },
+    {
+      "direction": "south",
+      "key": 1,
+      "sourceBox": [
+        74,
+        73,
+        184,
+        189
+      ],
+      "rawBox": [
+        62,
+        52,
+        266,
+        274
+      ],
+      "rawCellSize": [
+        315,
+        312
+      ],
+      "rawBorder": 0,
+      "cameraScale": 1.0318181818181817,
+      "translation": [
+        146,
+        149
+      ],
+      "rect": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "sourceFoot": 189,
+      "targetFoot": 378,
+      "actualFoot": 378,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        33043
+      ],
+      "removedDetachedPixels": 0,
+      "rawRemovedDetachedPixels": 0,
+      "alphaOutsideBase2x": 0,
+      "rgbaRestoredDiff": 0
+    },
+    {
+      "direction": "south-east",
+      "key": 0,
+      "sourceBox": [
+        79,
+        75,
+        173,
+        189
+      ],
+      "rawBox": [
+        64,
+        58,
+        254,
+        275
+      ],
+      "rawCellSize": [
+        316,
+        312
+      ],
+      "rawBorder": 0,
+      "cameraScale": 1.0460829493087558,
+      "translation": [
+        118,
+        151
+      ],
+      "rect": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "sourceFoot": 189,
+      "targetFoot": 378,
+      "actualFoot": 378,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        28685
+      ],
+      "removedDetachedPixels": 0,
+      "rawRemovedDetachedPixels": 0,
+      "alphaOutsideBase2x": 0,
+      "rgbaRestoredDiff": 0
+    },
+    {
+      "direction": "south-east",
+      "key": 1,
+      "sourceBox": [
+        79,
+        75,
+        173,
+        189
+      ],
+      "rawBox": [
+        65,
+        57,
+        246,
+        274
+      ],
+      "rawCellSize": [
+        315,
+        312
+      ],
+      "rawBorder": 0,
+      "cameraScale": 1.0460829493087558,
+      "translation": [
+        140,
+        151
+      ],
+      "rect": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "sourceFoot": 189,
+      "targetFoot": 378,
+      "actualFoot": 378,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        29288
+      ],
+      "removedDetachedPixels": 0,
+      "rawRemovedDetachedPixels": 0,
+      "alphaOutsideBase2x": 0,
+      "rgbaRestoredDiff": 0
+    },
+    {
+      "direction": "east",
+      "key": 0,
+      "sourceBox": [
+        85,
+        77,
+        187,
+        184
+      ],
+      "rawBox": [
+        86,
+        39,
+        272,
+        261
+      ],
+      "rawCellSize": [
+        315,
+        312
+      ],
+      "rawBorder": 0,
+      "cameraScale": 0.9774774774774775,
+      "translation": [
+        195,
+        151
+      ],
+      "rect": [
+        0,
+        1024,
+        512,
+        512
+      ],
+      "sourceFoot": 184,
+      "targetFoot": 368,
+      "actualFoot": 368,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        20773
+      ],
+      "removedDetachedPixels": 0,
+      "rawRemovedDetachedPixels": 0,
+      "alphaOutsideBase2x": 0,
+      "rgbaRestoredDiff": 0
+    },
+    {
+      "direction": "east",
+      "key": 1,
+      "sourceBox": [
+        85,
+        77,
+        187,
+        184
+      ],
+      "rawBox": [
+        98,
+        40,
+        265,
+        261
+      ],
+      "rawCellSize": [
+        315,
+        312
+      ],
+      "rawBorder": 0,
+      "cameraScale": 0.9774774774774775,
+      "translation": [
+        212,
+        152
+      ],
+      "rect": [
+        512,
+        1024,
+        512,
+        512
+      ],
+      "sourceFoot": 184,
+      "targetFoot": 368,
+      "actualFoot": 368,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        21119
+      ],
+      "removedDetachedPixels": 0,
+      "rawRemovedDetachedPixels": 0,
+      "alphaOutsideBase2x": 0,
+      "rgbaRestoredDiff": 0
+    },
+    {
+      "direction": "north-east",
+      "key": 0,
+      "sourceBox": [
+        88,
+        83,
+        194,
+        184
+      ],
+      "rawBox": [
+        88,
+        41,
+        264,
+        261
+      ],
+      "rawCellSize": [
+        316,
+        312
+      ],
+      "rawBorder": 0,
+      "cameraScale": 0.9727272727272728,
+      "translation": [
+        188,
+        154
+      ],
+      "rect": [
+        0,
+        1536,
+        512,
+        512
+      ],
+      "sourceFoot": 184,
+      "targetFoot": 368,
+      "actualFoot": 368,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        22059
+      ],
+      "removedDetachedPixels": 0,
+      "rawRemovedDetachedPixels": 0,
+      "alphaOutsideBase2x": 0,
+      "rgbaRestoredDiff": 0
+    },
+    {
+      "direction": "north-east",
+      "key": 1,
+      "sourceBox": [
+        88,
+        83,
+        194,
+        184
+      ],
+      "rawBox": [
+        89,
+        40,
+        253,
+        260
+      ],
+      "rawCellSize": [
+        315,
+        312
+      ],
+      "rawBorder": 0,
+      "cameraScale": 0.9727272727272728,
+      "translation": [
+        190,
+        154
+      ],
+      "rect": [
+        512,
+        1536,
+        512,
+        512
+      ],
+      "sourceFoot": 184,
+      "targetFoot": 368,
+      "actualFoot": 368,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        22316
+      ],
+      "removedDetachedPixels": 0,
+      "rawRemovedDetachedPixels": 0,
+      "alphaOutsideBase2x": 0,
+      "rgbaRestoredDiff": 0
+    },
+    {
+      "direction": "north",
+      "key": 0,
+      "sourceBox": [
+        82,
+        78,
+        183,
+        186
+      ],
+      "rawBox": [
+        70,
+        28,
+        267,
+        244
+      ],
+      "rawCellSize": [
+        315,
+        311
+      ],
+      "rawBorder": 0,
+      "cameraScale": 0.9768518518518519,
+      "translation": [
+        161,
+        161
+      ],
+      "rect": [
+        0,
+        2048,
+        512,
+        512
+      ],
+      "sourceFoot": 186,
+      "targetFoot": 372,
+      "actualFoot": 372,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        27162
+      ],
+      "removedDetachedPixels": 0,
+      "rawRemovedDetachedPixels": 0,
+      "alphaOutsideBase2x": 0,
+      "rgbaRestoredDiff": 0
+    },
+    {
+      "direction": "north",
+      "key": 1,
+      "sourceBox": [
+        82,
+        78,
+        183,
+        186
+      ],
+      "rawBox": [
+        62,
+        28,
+        261,
+        244
+      ],
+      "rawCellSize": [
+        315,
+        311
+      ],
+      "rawBorder": 0,
+      "cameraScale": 0.9768518518518519,
+      "translation": [
+        157,
+        161
+      ],
+      "rect": [
+        512,
+        2048,
+        512,
+        512
+      ],
+      "sourceFoot": 186,
+      "targetFoot": 372,
+      "actualFoot": 372,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        27074
+      ],
+      "removedDetachedPixels": 0,
+      "rawRemovedDetachedPixels": 0,
+      "alphaOutsideBase2x": 0,
+      "rgbaRestoredDiff": 0
+    },
+    {
+      "direction": "north-west",
+      "key": 0,
+      "sourceBox": [
+        85,
+        83,
+        177,
+        184
+      ],
+      "rawBox": [
+        56,
+        29,
+        241,
+        241
+      ],
+      "rawCellSize": [
+        316,
+        311
+      ],
+      "rawBorder": 0,
+      "cameraScale": 0.9905660377358491,
+      "translation": [
+        152,
+        158
+      ],
+      "rect": [
+        0,
+        2560,
+        512,
+        512
+      ],
+      "sourceFoot": 184,
+      "targetFoot": 368,
+      "actualFoot": 368,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        24439
+      ],
+      "removedDetachedPixels": 0,
+      "rawRemovedDetachedPixels": 0,
+      "alphaOutsideBase2x": 0,
+      "rgbaRestoredDiff": 0
+    },
+    {
+      "direction": "north-west",
+      "key": 1,
+      "sourceBox": [
+        85,
+        83,
+        177,
+        184
+      ],
+      "rawBox": [
+        56,
+        29,
+        227,
+        244
+      ],
+      "rawCellSize": [
+        315,
+        311
+      ],
+      "rawBorder": 0,
+      "cameraScale": 0.9905660377358491,
+      "translation": [
+        156,
+        155
+      ],
+      "rect": [
+        512,
+        2560,
+        512,
+        512
+      ],
+      "sourceFoot": 184,
+      "targetFoot": 368,
+      "actualFoot": 368,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        24262
+      ],
+      "removedDetachedPixels": 0,
+      "rawRemovedDetachedPixels": 0,
+      "alphaOutsideBase2x": 0,
+      "rgbaRestoredDiff": 0
+    },
+    {
+      "direction": "west",
+      "key": 0,
+      "sourceBox": [
+        65,
+        76,
+        163,
+        184
+      ],
+      "rawBox": [
+        35,
+        19,
+        237,
+        240
+      ],
+      "rawCellSize": [
+        315,
+        312
+      ],
+      "rawBorder": 0,
+      "cameraScale": 0.9819004524886877,
+      "translation": [
+        97,
+        151
+      ],
+      "rect": [
+        0,
+        3072,
+        512,
+        512
+      ],
+      "sourceFoot": 184,
+      "targetFoot": 368,
+      "actualFoot": 368,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        21159
+      ],
+      "removedDetachedPixels": 0,
+      "rawRemovedDetachedPixels": 0,
+      "alphaOutsideBase2x": 0,
+      "rgbaRestoredDiff": 0
+    },
+    {
+      "direction": "west",
+      "key": 1,
+      "sourceBox": [
+        65,
+        76,
+        163,
+        184
+      ],
+      "rawBox": [
+        30,
+        16,
+        222,
+        240
+      ],
+      "rawCellSize": [
+        315,
+        312
+      ],
+      "rawBorder": 0,
+      "cameraScale": 0.9819004524886877,
+      "translation": [
+        90,
+        148
+      ],
+      "rect": [
+        512,
+        3072,
+        512,
+        512
+      ],
+      "sourceFoot": 184,
+      "targetFoot": 368,
+      "actualFoot": 368,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        21883
+      ],
+      "removedDetachedPixels": 0,
+      "rawRemovedDetachedPixels": 0,
+      "alphaOutsideBase2x": 0,
+      "rgbaRestoredDiff": 0
+    },
+    {
+      "direction": "south-west",
+      "key": 0,
+      "sourceBox": [
+        77,
+        73,
+        176,
+        189
+      ],
+      "rawBox": [
+        183,
+        208,
+        754,
+        751
+      ],
+      "rawCellSize": [
+        887,
+        887
+      ],
+      "rawBorder": 0,
+      "cameraScale": 0.4106813996316759,
+      "translation": [
+        151,
+        155
+      ],
+      "rect": [
+        0,
+        3584,
+        512,
+        512
+      ],
+      "sourceFoot": 189,
+      "targetFoot": 378,
+      "actualFoot": 378,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        31285
+      ],
+      "removedDetachedPixels": 0,
+      "rawRemovedDetachedPixels": 0,
+      "alphaOutsideBase2x": 0,
+      "rgbaRestoredDiff": 0
+    },
+    {
+      "direction": "south-west",
+      "key": 1,
+      "sourceBox": [
+        77,
+        73,
+        176,
+        189
+      ],
+      "rawBox": [
+        140,
+        205,
+        703,
+        751
+      ],
+      "rawCellSize": [
+        887,
+        887
+      ],
+      "rawBorder": 0,
+      "cameraScale": 0.4106813996316759,
+      "translation": [
+        150,
+        154
+      ],
+      "rect": [
+        512,
+        3584,
+        512,
+        512
+      ],
+      "sourceFoot": 189,
+      "targetFoot": 378,
+      "actualFoot": 378,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "alphaComponents": [
+        32078
+      ],
+      "removedDetachedPixels": 0,
+      "rawRemovedDetachedPixels": 0,
+      "alphaOutsideBase2x": 0,
+      "rgbaRestoredDiff": 0
+    }
+  ],
+  "hurtReviewSequence": [
+    "idle",
+    "impact",
+    "recovery",
+    "idle"
+  ],
+  "hurtReviewMs": [
+    300,
+    100,
+    150,
+    300
+  ],
+  "hurtReviewUnbound": true,
+  "supersedes": "enemy-headless_knight-hurt8-r30",
+  "packingChange": "remove only proven-empty padding; every frame RGBA byte-identical after padding restore; 0 art pixels changed",
+  "comparisonEvidence": "same physical view as r30: original128px source cell, review virtual padded viewport restored. Comparison imagery unchanged by proven-lossless packing; actualPlayer1x unverified"
+}

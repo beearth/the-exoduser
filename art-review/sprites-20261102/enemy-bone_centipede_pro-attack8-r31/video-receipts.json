@@ -1,0 +1,36 @@
+[
+  {
+    "group": "enemy-bone_centipede_pro-attack8-r31",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_centipede_pro-attack8-r31/page-1.mp4",
+    "stem": "page-1",
+    "sha256": "dee43b6206eb24b35fb46bbeea3e262b7ab5220315b8c2cb7aa5cc290915aaaf",
+    "bytes": 3050485,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  },
+  {
+    "group": "enemy-bone_centipede_pro-attack8-r31",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-bone_centipede_pro-attack8-r31/page-2.mp4",
+    "stem": "page-2",
+    "sha256": "03e7cdbd4921aa2da06ed1dd5ec287992aebc8af5974a4865b4d83674cd60113",
+    "bytes": 2599845,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  }
+]

@@ -1,0 +1,79 @@
+{
+  "reason": "neck-stump top to foot distance matched to selected idle; one constant per direction across4keys, excludes raised cleaver from scale measurement",
+  "scales": {
+    "south": 1.1319370391378334,
+    "south-east": 1.098967999162945,
+    "east": 1.0519304583427411,
+    "north-east": 1.0019543378504436,
+    "north": 1.091930185290225,
+    "north-west": 1.049943564974762,
+    "west": 1.0622435020519836,
+    "south-west": 1.0871408214932972
+  },
+  "measurements": [
+    {
+      "direction": "south",
+      "idleNeckY": 113,
+      "idleFoot": 370,
+      "motionNeckY": 69,
+      "motionFoot": 269,
+      "scale": 1.1319370391378334
+    },
+    {
+      "direction": "south-east",
+      "idleNeckY": 113,
+      "idleFoot": 370,
+      "motionNeckY": 63,
+      "motionFoot": 269,
+      "scale": 1.098967999162945
+    },
+    {
+      "direction": "east",
+      "idleNeckY": 119,
+      "idleFoot": 365,
+      "motionNeckY": 60,
+      "motionFoot": 266,
+      "scale": 1.0519304583427411
+    },
+    {
+      "direction": "north-east",
+      "idleNeckY": 128,
+      "idleFoot": 368,
+      "motionNeckY": 65,
+      "motionFoot": 276,
+      "scale": 1.0019543378504436
+    },
+    {
+      "direction": "north",
+      "idleNeckY": 114,
+      "idleFoot": 352,
+      "motionNeckY": 88,
+      "motionFoot": 280,
+      "scale": 1.091930185290225
+    },
+    {
+      "direction": "north-west",
+      "idleNeckY": 116,
+      "idleFoot": 352,
+      "motionNeckY": 87,
+      "motionFoot": 285,
+      "scale": 1.049943564974762
+    },
+    {
+      "direction": "west",
+      "idleNeckY": 110,
+      "idleFoot": 356,
+      "motionNeckY": 87,
+      "motionFoot": 291,
+      "scale": 1.0622435020519836
+    },
+    {
+      "direction": "south-west",
+      "idleNeckY": 106,
+      "idleFoot": 359,
+      "motionNeckY": 85,
+      "motionFoot": 290,
+      "scale": 1.0871408214932972
+    }
+  ]
+}

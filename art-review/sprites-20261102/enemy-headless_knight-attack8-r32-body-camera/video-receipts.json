@@ -1,0 +1,36 @@
+[
+  {
+    "group": "enemy-headless_knight-attack8-r32-body-camera",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-headless_knight-attack8-r32-body-camera/page-1.mp4",
+    "stem": "page-1",
+    "sha256": "0b21556b2c5a33eb53aa0e04ab18b7fbc0e3ae559d8745af4eaea99170de9e6b",
+    "bytes": 2918929,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  },
+  {
+    "group": "enemy-headless_knight-attack8-r32-body-camera",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-headless_knight-attack8-r32-body-camera/page-2.mp4",
+    "stem": "page-2",
+    "sha256": "2d1980e1d2829ba1eb9c4dae8d913f7b6691f452414ea1c74a4d0ea47ef356e3",
+    "bytes": 2741982,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  }
+]

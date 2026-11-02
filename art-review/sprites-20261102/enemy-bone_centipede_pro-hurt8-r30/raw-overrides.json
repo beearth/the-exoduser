@@ -1,0 +1,36 @@
+{
+  "north": {
+    "file": "north-north-west-fixed.png",
+    "grid": [
+      2,
+      2
+    ],
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ]
+    ]
+  },
+  "north-west": {
+    "file": "north-north-west-fixed.png",
+    "grid": [
+      2,
+      2
+    ],
+    "cells": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ]
+  }
+}

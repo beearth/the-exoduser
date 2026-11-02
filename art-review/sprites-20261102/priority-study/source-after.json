@@ -1,0 +1,458 @@
+[
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/AutoPotion.cs",
+    "sha256": "63146bc6911437eb0e161b58136d1c5b2b0184828d93de2fb8bb0d620d48cdb3"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/AutoPotionEquipment.cs",
+    "sha256": "8ef5f7f1005a79d0063e3669652218b8fd5755935759f32ad2ce38fe9a51c7b9"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/BossArena.cs",
+    "sha256": "b205d586c059d80b238eed3970e9ace307d3c8b1aa36857ed5a5f460bd347886"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/BossRemodel.cs",
+    "sha256": "b73896c42ead00c706adaa8d6e9d63b411cdc49d7e9c15b041b3cc028aef7a1d"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/ChainDash.cs",
+    "sha256": "e6a2bff2496e09fb994ddf31033de0cfd38e0668d7839056300513c3a7edbfee"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/CharacterRoster.cs",
+    "sha256": "9092d2df1624a9eee02e66fe667c5c3094e98106c24f83d09de26b230914460f"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/CharacterRosterStore.cs",
+    "sha256": "c36db23c667ec2cc19c0b86e77d04d834dca854c8e71939d5adbe8ef59aee987"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/CombatSave.cs",
+    "sha256": "791c770b8ab466a05112176747956c64ebf1d69abfca36abc678f7c3c78dc3f9"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/CombatSaveStore.cs",
+    "sha256": "3ddb6094702961601403da275373faf34c6ec22d1abfdcf22c8857dc0898a61e"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/DropTablesData.cs",
+    "sha256": "5eb6a5d5750d58ce62d0db35b5f3e57d0b4d9bb089d19e7e80f8ac65d233b42d"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/DruidBoss.Hazards.cs",
+    "sha256": "d8a55fe1400546d7711a411a5c3d18fcc7cf86d55e4756d63093447c9cf86568"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/DruidBoss.Hit.cs",
+    "sha256": "63db690df0de2be5ae9b651ff50e1b07e0cdd2336a6516a7b121701f9f00b9bd"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/DruidBoss.Motion.cs",
+    "sha256": "b976fd8fe5dff7fef93eac92fd2c8cb61f2cc8e576ea028d77f5b59ccda700d7"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/DruidBoss.Moves.cs",
+    "sha256": "3b0aa566a741f5cd19d896ac55801cb5797b13d0914ed5d0220a4e66a3ee69ab"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/DruidBoss.Pillars.cs",
+    "sha256": "2c1b5d761596d4900ab96aaed81fdb18e620ccd765988900d37feb88f685f0a9"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/DruidBoss.Reflect.cs",
+    "sha256": "2dad5316aa919a2d27dab1a5aa2429fcca1682cc9993ec22ddad7102f7bbe337"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/DruidBoss.Remodel.cs",
+    "sha256": "f422e70a01fd4cee76666edcca65e9528ff13bab5c569b8bdf39003818922aed"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/DruidBoss.RemodelSet.cs",
+    "sha256": "8c0a691ee9546f4f7287bfdd33c44b839acc1aaa3adf330a5081d46afdcc2d6e"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/DruidBoss.cs",
+    "sha256": "0d7e742dd642a148e5053c1d4db212107a488e1ce907691b2f24eab88580a756"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/DruidBossData.cs",
+    "sha256": "212d0637ec15c79613ebcd5465dc2bf5600e134eb3373b4bda4409d13d1c5e31"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/DruidRemodelData.cs",
+    "sha256": "e2f38d8833fc722820864040a3925445c3e4e08f437dd78822995e5cac7cb7a7"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/DruidTelegraph.cs",
+    "sha256": "c201881372da6bafcd60722ebe8aa180445684a485779be75261ccb8e8621b13"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EliteTables.cs",
+    "sha256": "dfe5e3f25f77530f644543c8d8b69a5667b85f1dc78d9eab121b5769033d2f62"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemyAi.cs",
+    "sha256": "c673500449069949c11826d12c041eb929d7d384d056ae87d02fe20781500120"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemyFactory.cs",
+    "sha256": "440dc4076a49a0b005caacf8afd0263be28e84740d49943bce9c21e7304fbab0"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemyHurt.Body.cs",
+    "sha256": "4c1050bb5af84831690f0c9adaa20ae964259bca48d899b5cac536dac982311e"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemyHurt.Death.cs",
+    "sha256": "334185e00172dc4913af2e936b1566144309a552112a1f7585423bce0012f7c3"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemyHurt.DeathTail.cs",
+    "sha256": "7f634a6bd0b3977d7770d729c6825f3ec6fa4a60fe6408ad17a6a19cf32ed21b"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemyHurt.cs",
+    "sha256": "d0edc9a28129ffaa0b5b19ee1d4319e22fdd081f7e5e7ead67606472459bccdb"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemyHurtContext.Death.cs",
+    "sha256": "8a1912684036d54148487ff34e5cc859d7bb79c944200986019fc66fef9217ac"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemyHurtContext.Tail.cs",
+    "sha256": "de95ea6d481a8634053fba7848f378f80ca9722af6f03fa9bd23c34bc03f8696"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemyHurtContext.cs",
+    "sha256": "20387ba10434ec132eefe29ac1cc4987d76b5a44ef41f5901aa3c11bf8e7ee60"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemyHurtTables.cs",
+    "sha256": "6ce1ffeaedc8acb3531f8d1303104c9aa3f1ff7dcc472ee6ebfb185ea9bfc377"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemyPoiseRules.cs",
+    "sha256": "dc974d24bb8a65dd3019c0e23d4cfae1b7926bb08dff15b059b24558a2ba8fef"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemyPools.cs",
+    "sha256": "f32ed71144e39e9e9e287cda1b1832fc22eb0ee0341596e1319e23433d82ca12"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemySoundTables.cs",
+    "sha256": "113eac51488ab882a4bf3a8874b48d8389bd1da59bb4e8d2cddc50f8029d616e"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemySpawn.Ai.cs",
+    "sha256": "7e793a2076bd974bfab3b411fa4a85279be051ae87156abc908a1ab06f2fce0c"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemySpawn.Dot.cs",
+    "sha256": "570d2e33b2bbef08546054a8687def1104112335297a7156c12eb94a75b79aaf"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemySpawn.Hurt.cs",
+    "sha256": "d933274edd867ef09e84e98887e96b0c83720b66562b8f452df7539c7e762515"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemySpawn.Tick.cs",
+    "sha256": "c3541a64bd35d4dd045e02a2c7d81ef29f3454ae15a90e96ced8fecb6934711d"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemySpawn.cs",
+    "sha256": "c7c9b6de75340cbd1a81a59e6ca1574b1f05cdbeaf3c1927e2b2ac59849f85a6"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemyTables.cs",
+    "sha256": "5d676098451cb9212bc41aa441a6f58aa8939c37bdfe191e7b523c2076b812c9"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemyTick.cs",
+    "sha256": "cad0efca2e7022be616f18f21014594e2170ddc6bd61797399ef17ce43c5dc3d"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemyTickContext.cs",
+    "sha256": "e958c9bd59a12b494f237d20d80f348a716b174f5c0df5c541c03943fc6298f3"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnemyTickTables.cs",
+    "sha256": "2f03c094560b9a24179e78bf5c96636a06f73cb06cb801947e0dffebd168acb4"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EnergyShield.cs",
+    "sha256": "09efdca5a4f14e399ddd1a5e0bdefe0497f40f5e9c6227316aae37e2f82a9c33"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/EquipmentApplication.cs",
+    "sha256": "e10b654262bfb3b07178625d2888aeacc12c9b9397c8a855ed2d82104c5ae775"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Feedback.cs",
+    "sha256": "61a4efc4138ccb5a57618d7e6252326f8a346133f1756f1f543865f2b68728ad"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/FirstPracticeCombat.cs",
+    "sha256": "1cacb397642c66066f60be2c4b46464814913d9bb2c2955c097b2a3953b52f59"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/FirstPracticeFlow.cs",
+    "sha256": "96ecfbaf0e4e8240d9e33a2048e979dc1d065b9f3888250350289022be40c2c6"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/FirstPracticeSession.cs",
+    "sha256": "76754fce59543753d95c658e23989ac09c51bc51f778c373be3895c6579518ed"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/FrontendEntryFlow.cs",
+    "sha256": "24063e2c5867302cc9103b0c8f227cbec21d995b509f30aac090932b029c4ce2"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/FrontendPadPolicy.cs",
+    "sha256": "a70e49d752b4ebc5e348ac8a532a3739fe64b752e5415dbabeaf0d3797f34608"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/HudValues.cs",
+    "sha256": "4407576b245886bbdd7546f4a9898b00168cbbf51d86de0bd576f7b78410640d"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/InventoryCombatPower.cs",
+    "sha256": "1a3b3aa2079536c8092fe4cd0f9ea696be63fa56df41070ddd8a84628266630d"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/InventoryComparison.cs",
+    "sha256": "fb01c3ea793947a7d31c41445e6e753d28c93aef7549d5621b234311783694ab"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/InventoryData.cs",
+    "sha256": "8d81b4c1b1e82237ad6ffc8876f512fd34366f8812f76427ff17f469310fa805"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/InventoryNavigation.cs",
+    "sha256": "f3e4ddc0c0abd6741ce0d939b3700638a7d73606cdea87e810691399dc4079d4"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/InventoryState.cs",
+    "sha256": "945da3a2946dd6aa0d1a101b51aa782a267821b6910bf3f1838a99578cfd7c23"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/ItemFactory.cs",
+    "sha256": "98f715989e99451db1e83bd621290b7c0931abdb97bc7aa696a486ad2904084f"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Js.cs",
+    "sha256": "4e6eb8f87757f784d576ae2c0704c325118b1e7ad2c2fdd2833c032a0a2e8382"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/JsMath.cs",
+    "sha256": "36053d69b0c241d7196239f4d9ac93369747b08c0b690ecf9eb86cb2fd3a2a54"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/KeyBindings.cs",
+    "sha256": "cbfcff2119a6dfcff17e423a3e7e8e99ef9b751eefb2d2a6af7cc8c8c66bc125"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/KiSlash.cs",
+    "sha256": "5c88255c17dc53923d4e64098131c40fab038216dbc8921e6234240b1fc0ace9"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/LevelExp.cs",
+    "sha256": "5735bc22ead5f76022ee1d9b412f1c9427ea8530f6d7489b13d3d58d086952a7"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/LobbyFlow.cs",
+    "sha256": "f0355d425a2d69e1ec27041268b3462ba82e47ff41904f784bc034a63289957a"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/LobbyLanguage.cs",
+    "sha256": "261f8e09e0710723d07754bf116c853ad6aca02e5fa04845f1b5167cd23c5545"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/NativeOptionSet.cs",
+    "sha256": "bf645c04f5bbcbcec73a8a3e99a7d30452df986ec22bc917fc49d8d3ae5e8cec"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/NativeSettingsJsonCodec.cs",
+    "sha256": "23baac2fd883e6ebfb8e569e0faa6c0533053bdb392adc8f553f32038db80064"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/NativeSettingsState.cs",
+    "sha256": "c4934535912dbdea6a287221f29706af5f6105a7332a94ae4f1e56cfbd090a57"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/NativeSettingsStore.cs",
+    "sha256": "4204518dd771ca6701590baed5a6f13f44d95d537ae3ebceb685fd8ab773d74c"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/ParryReflect.cs",
+    "sha256": "064d1c4882a04a1e1e6598f2eb0ebfc45cc5affbbf089ca412d4bc36e9d591db"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/ParryRewards.cs",
+    "sha256": "d40df075ef45671c82b0a9b9970df7e548dbd6d7a5313496ede55ce9a4eb73d9"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/ParryRules.cs",
+    "sha256": "67d6e07cc4bf415f92c9ac6c816ef0acd385dedc2993ee17fffda5d38da8c06e"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/PauseNavigation.cs",
+    "sha256": "d5160283b7c354d2867beeb35320d3a50e70a46020c697bd65ecf23e6b6d062b"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Platform/QaRunPolicy.cs",
+    "sha256": "fa73257caee2ac98afc0d037a0e474ff4976e51bb485c2e406b93d5a31a0c18f"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/PlayerPoise.cs",
+    "sha256": "c89cb84112453ab08f06164bb48ed0d1b8cef4c97606306935823c7b55bd3aa3"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/RageMalice.cs",
+    "sha256": "93c1e99d836e99fd3044c11a79c0a7fbd928754f40fc3a026383f3edba6daa3b"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/ReviveRules.cs",
+    "sha256": "53e07a0fa4f4f9e6036bf3ff38da791670a40ca9df4ff59f58e75abc8f8176c2"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/RollRules.cs",
+    "sha256": "6fb9ef788073589673fef60070c515222ff989873cf52f6bf3f49945fd7ba6b7"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/SaveJson.cs",
+    "sha256": "3124c1f53b36833ced030142c14cc90ef8bd99d58108567f18130a3a5bbbfe98"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.BashStrike.cs",
+    "sha256": "35fabad4ee97a2d3a2b62aed6bbdfe5184ca7b6b9f0e33dab90143a195f69980"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.BossRemodel.cs",
+    "sha256": "56026622a6a7f42716eec5a8381d0173847c67b1c367198f2e8bd8e16cc84fb8"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.BossRemodelRules.cs",
+    "sha256": "b23ea7a900d6b0ddec121bcee301e1bb8f43723448926cc4f636bc227738b419"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.Crossbow.cs",
+    "sha256": "4e6d5fa13563efbeffa9ca18217495e34e26a56209c4660db5db5e84fe94b266"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.Death.cs",
+    "sha256": "05e671afc168eefc35428e1afe6ad20acdeff0569187cdebf76a0c6db276b05f"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.DruidBoss.cs",
+    "sha256": "e89b9160541094b321f4fc10a33ae1727b7d19a1983c236037c110cacbc9dafc"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.DruidRemodel.cs",
+    "sha256": "ce687a9e0c2e05324e4bd419ec91814861cecde89b53af5dbbe94c74c265e3bb"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.EnemyAi.cs",
+    "sha256": "6f2c83f2c4fc3e3e8e25f2bf092ec678944af4cd495bd912318313d6e5adb5ac"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.EnemyBridge.cs",
+    "sha256": "de51d8bdcfe6d8f8ea2182c4a3abe0266483a3a2c0e5ffed4c23c7631d383366"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.EnemyCap.cs",
+    "sha256": "b40a178bf97401b3b1cd70067f709aa3979f5ad5f23d924eb128b6767cf8cb7a"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.FieldBoss.cs",
+    "sha256": "ac50eae5d248b94b9a0eb6934eaf880ce19112ab55f5ccbde1bcc19e381a9e4d"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.Holes.cs",
+    "sha256": "1461fa1b4bb6a99d1f024f814a7b4ccd1b6822fdd30a8d5cd59635965710bd02"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.ParryReflect.cs",
+    "sha256": "089f225bc069fd26deba04bd3b4bb1f9e9d4cecc5417af5800384ff4b4348fde"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.Pillars.cs",
+    "sha256": "a3233f0a37568f6c147c74d7a7fc540cf35fc8d10a9102a160811b933c70a3a0"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.PlayerCombat.cs",
+    "sha256": "ffbf08a42c4003a478cdd2ff6fe22f4d43509a690737c726aa728d0b32c235e3"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.PlayerHurt.cs",
+    "sha256": "2694a1700c3f747d8fc052ec98d1412448f04efccc556dc4e142e4d603d1939f"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.Regions.cs",
+    "sha256": "1bda3c27ba28d5a38148a2caa4c493126989daf84ad5515d8d8c16d7c8a166cf"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.Revive.cs",
+    "sha256": "8c9eaadbe502d9637a294f8ede1f85068e2a2f925693f303e82ce4fb5665f0ee"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.Roll.cs",
+    "sha256": "29f9c17f2c38acf09ade98b85ab25e1b7e779e358dce36b9de20ec342de59702"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.StartMobs.cs",
+    "sha256": "b99d1efc7deea31a4ab4e933e4930373a6eeb7ae37561b386551a1bfcce92e3b"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Simulation.cs",
+    "sha256": "0c3632636797654dcce13ab5cdfdbca8f58bae5f168767d7a43d3bdc521aefaa"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/SimulationRage.cs",
+    "sha256": "2629e4933a1eaf5567ce0b5d810e09cb24dfacd934c044b097a01ffa88d55ac3"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/SimulationState.cs",
+    "sha256": "038d6fd6dee4bed9d4263e1b54b61c63ff808b120300b1116efdaf683512d8a2"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/SkillUiState.cs",
+    "sha256": "b1c6e97be9754555e62375eca2a51416657854ef03e78c2c36e2b6c1cfbe5b84"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Skills/Simulation.Fireball.cs",
+    "sha256": "993def80c7e74bb2e577dac8cbb69f662a1e561c254e5e94ac1c1424cc86b49b"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Skills/Simulation.Skills.cs",
+    "sha256": "ec6fe569861d51a85ad49521e555724c416b0b22f9c4a607c803fe6fdd725832"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/Skills/SkillRules.cs",
+    "sha256": "59cf2574fcd345c8c872aead680a5377991b848d5acdc0986737e3f680f2489d"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/SourceStarterFixture.cs",
+    "sha256": "c4fe747f22f689bef9511c4245d3ce1081d8092ccf313d22f860c2f507fea7d3"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/SpawnHoles.cs",
+    "sha256": "f3c7b6dd4cdb50c745c1915b22cc5ff3ac6d95ed379b39613a1737e25cc2b1cd"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/StageFlow.cs",
+    "sha256": "a366305f6198893ae5e6c92e93ef7a7aa7ddc6d66a31f1e8eca7411a6a09146a"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/WarriorStoryState.cs",
+    "sha256": "e9ccbf320ea221550d1dd7af8fa9d1ec31c0ae60a337715217f714c13c24e22b"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/WeaponCatalog.cs",
+    "sha256": "21b21ce3a365154955f99870a8cf88c8dd4f0840e9aacf722a3c1182c1011f52"
+  },
+  {
+    "path": "unity/Assets/Exoduser/Runtime/Core/WorldDrop.cs",
+    "sha256": "d064bf3a22eeb84c9d4e0e56018bc11fb89d6962bf8b5dd539432a249f943ec4"
+  }
+]

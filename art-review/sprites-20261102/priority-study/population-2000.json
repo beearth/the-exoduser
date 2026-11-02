@@ -1,0 +1,335 @@
+{
+  "scope": "planned population sampling, all holes pre-activated, no AI/combat or camera/time weighting; not natural Player observation",
+  "sourceHead": "5b45b6a482ab4c446137cb82f24ea4d10267d4f0",
+  "runs": 2000,
+  "seeds": [
+    1,
+    2000
+  ],
+  "plannedHoleCount": 168,
+  "minStart": 13,
+  "maxStart": 18,
+  "allCount": 364831,
+  "ranked": [
+    {
+      "idx": 8,
+      "name": "bone_centipede_pro",
+      "count": 12976,
+      "meanPerRun": 6.488,
+      "initialCount": 4600,
+      "holeCount": 8376
+    },
+    {
+      "idx": 23,
+      "name": "headless_knight",
+      "count": 10820,
+      "meanPerRun": 5.41,
+      "initialCount": 2520,
+      "holeCount": 8300
+    },
+    {
+      "idx": 35,
+      "name": "bone_archer",
+      "count": 9275,
+      "meanPerRun": 4.6375,
+      "initialCount": 731,
+      "holeCount": 8544
+    },
+    {
+      "idx": 2,
+      "name": "apostle_knight",
+      "count": 9255,
+      "meanPerRun": 4.6275,
+      "initialCount": 686,
+      "holeCount": 8569
+    },
+    {
+      "idx": 27,
+      "name": "gut_witch",
+      "count": 9214,
+      "meanPerRun": 4.607,
+      "initialCount": 781,
+      "holeCount": 8433
+    },
+    {
+      "idx": 29,
+      "name": "jaw_stalker",
+      "count": 9159,
+      "meanPerRun": 4.5795,
+      "initialCount": 735,
+      "holeCount": 8424
+    },
+    {
+      "idx": 4,
+      "name": "hive_bloater",
+      "count": 9147,
+      "meanPerRun": 4.5735,
+      "initialCount": 692,
+      "holeCount": 8455
+    },
+    {
+      "idx": 12,
+      "name": "flesh_eye_mass",
+      "count": 9138,
+      "meanPerRun": 4.569,
+      "initialCount": 686,
+      "holeCount": 8452
+    },
+    {
+      "idx": 16,
+      "name": "iron_butcher_pro",
+      "count": 9125,
+      "meanPerRun": 4.5625,
+      "initialCount": 714,
+      "holeCount": 8411
+    },
+    {
+      "idx": 9,
+      "name": "gas_zombie",
+      "count": 9124,
+      "meanPerRun": 4.562,
+      "initialCount": 668,
+      "holeCount": 8456
+    },
+    {
+      "idx": 20,
+      "name": "poison_mushroom_giant",
+      "count": 9123,
+      "meanPerRun": 4.5615,
+      "initialCount": 562,
+      "holeCount": 8561
+    },
+    {
+      "idx": 14,
+      "name": "crawling_horror",
+      "count": 9089,
+      "meanPerRun": 4.5445,
+      "initialCount": 824,
+      "holeCount": 8265
+    },
+    {
+      "idx": 7,
+      "name": "carapace_predator",
+      "count": 9067,
+      "meanPerRun": 4.5335,
+      "initialCount": 638,
+      "holeCount": 8429
+    },
+    {
+      "idx": 5,
+      "name": "spine_beast",
+      "count": 9043,
+      "meanPerRun": 4.5215,
+      "initialCount": 474,
+      "holeCount": 8569
+    },
+    {
+      "idx": 11,
+      "name": "rotting_slime_mass",
+      "count": 9010,
+      "meanPerRun": 4.505,
+      "initialCount": 507,
+      "holeCount": 8503
+    },
+    {
+      "idx": 36,
+      "name": "bloated_warrior",
+      "count": 9001,
+      "meanPerRun": 4.5005,
+      "initialCount": 550,
+      "holeCount": 8451
+    },
+    {
+      "idx": 28,
+      "name": "iron_torturer",
+      "count": 8995,
+      "meanPerRun": 4.4975,
+      "initialCount": 539,
+      "holeCount": 8456
+    },
+    {
+      "idx": 21,
+      "name": "forest_watcher",
+      "count": 8994,
+      "meanPerRun": 4.497,
+      "initialCount": 571,
+      "holeCount": 8423
+    },
+    {
+      "idx": 39,
+      "name": "blind_swordsman",
+      "count": 8987,
+      "meanPerRun": 4.4935,
+      "initialCount": 570,
+      "holeCount": 8417
+    },
+    {
+      "idx": 32,
+      "name": "void_cultist",
+      "count": 8981,
+      "meanPerRun": 4.4905,
+      "initialCount": 541,
+      "holeCount": 8440
+    },
+    {
+      "idx": 33,
+      "name": "skull_brute",
+      "count": 8967,
+      "meanPerRun": 4.4835,
+      "initialCount": 559,
+      "holeCount": 8408
+    },
+    {
+      "idx": 18,
+      "name": "grotesque_quadruped",
+      "count": 8962,
+      "meanPerRun": 4.481,
+      "initialCount": 555,
+      "holeCount": 8407
+    },
+    {
+      "idx": 15,
+      "name": "eye_stalker_pro",
+      "count": 8939,
+      "meanPerRun": 4.4695,
+      "initialCount": 556,
+      "holeCount": 8383
+    },
+    {
+      "idx": 34,
+      "name": "chain_wraith",
+      "count": 8934,
+      "meanPerRun": 4.467,
+      "initialCount": 500,
+      "holeCount": 8434
+    },
+    {
+      "idx": 6,
+      "name": "flesh_crawler",
+      "count": 8929,
+      "meanPerRun": 4.4645,
+      "initialCount": 483,
+      "holeCount": 8446
+    },
+    {
+      "idx": 30,
+      "name": "fallen_paladin",
+      "count": 8907,
+      "meanPerRun": 4.4535,
+      "initialCount": 523,
+      "holeCount": 8384
+    },
+    {
+      "idx": 10,
+      "name": "needle_tentacle",
+      "count": 8903,
+      "meanPerRun": 4.4515,
+      "initialCount": 490,
+      "holeCount": 8413
+    },
+    {
+      "idx": 19,
+      "name": "black_castle_guardian",
+      "count": 8896,
+      "meanPerRun": 4.448,
+      "initialCount": 438,
+      "holeCount": 8458
+    },
+    {
+      "idx": 25,
+      "name": "skinless_hound",
+      "count": 8894,
+      "meanPerRun": 4.447,
+      "initialCount": 537,
+      "holeCount": 8357
+    },
+    {
+      "idx": 13,
+      "name": "corrupted_wolf",
+      "count": 8888,
+      "meanPerRun": 4.444,
+      "initialCount": 504,
+      "holeCount": 8384
+    },
+    {
+      "idx": 38,
+      "name": "etype1_archer",
+      "count": 8863,
+      "meanPerRun": 4.4315,
+      "initialCount": 457,
+      "holeCount": 8406
+    },
+    {
+      "idx": 22,
+      "name": "boss_ch1_stag",
+      "count": 8855,
+      "meanPerRun": 4.4275,
+      "initialCount": 541,
+      "holeCount": 8314
+    },
+    {
+      "idx": 1,
+      "name": "apostle_mass",
+      "count": 8842,
+      "meanPerRun": 4.421,
+      "initialCount": 579,
+      "holeCount": 8263
+    },
+    {
+      "idx": 0,
+      "name": "blood_swarm",
+      "count": 8831,
+      "meanPerRun": 4.4155,
+      "initialCount": 497,
+      "holeCount": 8334
+    },
+    {
+      "idx": 3,
+      "name": "soul_flame",
+      "count": 8821,
+      "meanPerRun": 4.4105,
+      "initialCount": 493,
+      "holeCount": 8328
+    },
+    {
+      "idx": 31,
+      "name": "flesh_executioner",
+      "count": 8821,
+      "meanPerRun": 4.4105,
+      "initialCount": 418,
+      "holeCount": 8403
+    },
+    {
+      "idx": 17,
+      "name": "plague_doctor_pro",
+      "count": 8807,
+      "meanPerRun": 4.4035,
+      "initialCount": 462,
+      "holeCount": 8345
+    },
+    {
+      "idx": 37,
+      "name": "rot_knight",
+      "count": 8803,
+      "meanPerRun": 4.4015,
+      "initialCount": 645,
+      "holeCount": 8158
+    },
+    {
+      "idx": 26,
+      "name": "deformed_giant",
+      "count": 8741,
+      "meanPerRun": 4.3705,
+      "initialCount": 473,
+      "holeCount": 8268
+    },
+    {
+      "idx": 24,
+      "name": "plague_censer",
+      "count": 8705,
+      "meanPerRun": 4.3525,
+      "initialCount": 532,
+      "holeCount": 8173
+    }
+  ]
+}

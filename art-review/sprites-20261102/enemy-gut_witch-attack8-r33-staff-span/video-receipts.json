@@ -1,0 +1,36 @@
+[
+  {
+    "group": "enemy-gut_witch-attack8-r33-staff-span",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-gut_witch-attack8-r33-staff-span/page-1.mp4",
+    "stem": "page-1",
+    "sha256": "e2156d945184aafbcdc5f8250ff7d3db7490566f856ba0d770b1e032b71a2f06",
+    "bytes": 2886653,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  },
+  {
+    "group": "enemy-gut_witch-attack8-r33-staff-span",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-gut_witch-attack8-r33-staff-span/page-2.mp4",
+    "stem": "page-2",
+    "sha256": "ea087227edacdf6ac20a044d3cb1e9939d90db53e64a77240acfb699ff3d000e",
+    "bytes": 2581908,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  }
+]

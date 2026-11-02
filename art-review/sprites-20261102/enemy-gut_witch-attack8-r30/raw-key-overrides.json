@@ -1,0 +1,28 @@
+{
+  "north-west": {
+    "2": {
+      "file": "north-west-key2-raw-repair.png",
+      "generationOriginal": "north-west-key2-repair-original.png",
+      "uniformProviderScale": 0.36268656716417913,
+      "oldBox": [
+        62,
+        31,
+        267,
+        274
+      ],
+      "generatedBox": [
+        291,
+        334,
+        961,
+        1004
+      ],
+      "translation": [
+        43,
+        31
+      ],
+      "otherKeysUntouched": true,
+      "staffSpanCameraCorrection": 1.15,
+      "staffSpanReason": "Fixed-prop length compared at3x against other3 keys; overall bbox included raised orb, shrinking body. Source generation retained."
+    }
+  }
+}

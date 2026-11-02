@@ -1,0 +1,409 @@
+{
+  "scope": "selected31 atlas packages;30logical groups, not Player",
+  "runtimeAdoption": 0,
+  "records": [
+    {
+      "group": "warrior-idle8-r11-seam",
+      "atlas": [
+        384,
+        192
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 8,
+      "atlasSHA256": "cdd9d515071e1e7dd87de77ac809a1f899a2538ed33926b4a20688ebe82b43d8",
+      "normalSHA256": "7dfd814505edae9f953148ef4231b56e7aa41c133c5bee9f8a24d13f942bb284"
+    },
+    {
+      "group": "warrior-walk8-r10-adult",
+      "atlas": [
+        768,
+        768
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 32,
+      "atlasSHA256": "52c23659bb10ee47da32d42a9c1c9429629e74191c761181af105b3b6eef94ae",
+      "normalSHA256": "4164268ba4eb99bdb18a1f7fa8886e9caca2da6c312ce4c5bcdfa6339d459cfb"
+    },
+    {
+      "group": "warrior-attack9-r13-area",
+      "atlas": [
+        1440,
+        1280
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 72,
+      "atlasSHA256": "3b2161ffa08154381f5fb2c6ba1214d8530379f3cc1b5586d1edc8bee9f9e4f2",
+      "normalSHA256": "e3a44f00ad8fb0ac79fedf304b8c461b2f4dc1563a1672a9c21445b992582334"
+    },
+    {
+      "group": "warrior-hurt8-r14-area",
+      "atlas": [
+        192,
+        768
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 16,
+      "atlasSHA256": "13e63e0ec83bf5403139df7479f003811f2c12ac219003aec5d374f3bdccd562",
+      "normalSHA256": "a302cb24e5e9481f59eeb597adf78a03008c663201e14dfd749935a095e98803"
+    },
+    {
+      "group": "druid-idle8-r23-kit-hem",
+      "atlas": [
+        4592,
+        2928
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 8,
+      "atlasSHA256": "5d9b82395d297b1735270b87cc12d224300112ac9eea5da09b048681bbace310",
+      "normalSHA256": "609188b0aeded2afa304f32188e20bef7a8d780aa25aca992759b50e13b854b0"
+    },
+    {
+      "group": "druid-walk8-r29-projected",
+      "atlas": [
+        3054,
+        4828
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 32,
+      "atlasSHA256": "e1dd906964a1d461f79958404712af4428573b350cb14ac2babcbd72b7e0fb27",
+      "normalSHA256": "daa5a84038125e03971db8e0d934b748aac072db297514b9c91c7dc148423c14"
+    },
+    {
+      "group": "druid-attack8-r29-projected",
+      "atlas": [
+        4982,
+        5340
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 32,
+      "atlasSHA256": "10aea0d53bd2335013b23f2cc67a2c9e47135fbc17c7bb643d3ced8fc53bce91",
+      "normalSHA256": "1b7ecaca237d4f0e97ba0109f334da57a29e1fcaa0832dedc4a3130844cf03a5"
+    },
+    {
+      "group": "druid-dive8-r29-projected",
+      "atlas": [
+        4572,
+        2222
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 8,
+      "atlasSHA256": "0330f20ba373e8c5b56c56733c7eb6a94b9be7e5c984ccb92ce15c96cb139dd9",
+      "normalSHA256": "44398eb64659012bcbca70753b40831a8f7ef89a57fb3b6b743a00cd18da74d0"
+    },
+    {
+      "group": "druid-emerge8-r29-projected",
+      "atlas": [
+        5628,
+        2222
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 8,
+      "atlasSHA256": "9caa6fbc2026e3e4a9dc4677ba226e5bd0b74ba51d4f57ce792f47845a0ed86f",
+      "normalSHA256": "ca84c76218a49b17e678aa70449f02eb97f9bc00fdafff893e0ff3aaead15f7b"
+    },
+    {
+      "group": "druid-beast8-r29-projected",
+      "atlas": [
+        3548,
+        1774
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 8,
+      "atlasSHA256": "b72392980f922e9ead7d3974383ca43c7b228f5c9098adfa14c64e474d31b0ca",
+      "normalSHA256": "d238508f46867f3d05120e9ddb06772969ce0cc0a17b3edb9a6b1ec874290587"
+    },
+    {
+      "group": "druid-transform8-r29-projected",
+      "atlas": [
+        6368,
+        3984
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 8,
+      "atlasSHA256": "3047eeb49e87c4ccc09f23b2a9edff13b8c17255a293b011e149ebd2ecc6827f",
+      "normalSHA256": "784cc197a2d9101ba8bf10cebd52d8a82ad7153097fa3ed6a2c00c2d66f0d12c"
+    },
+    {
+      "group": "enemy-bone_centipede_pro-idle8-r31",
+      "atlas": [
+        2048,
+        1024
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 8,
+      "atlasSHA256": "9e21688257846d18b45b8432690eeb4f045b9209596b64a5f7b7b50f2508a9a8",
+      "normalSHA256": "a05cd9e1d071a1e301146e81ffaed70219fab6e7da56307cbbdb90fbce1dbcd9"
+    },
+    {
+      "group": "enemy-bone_centipede_pro-walk8-r31",
+      "atlas": [
+        2048,
+        4096
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 32,
+      "atlasSHA256": "b4502537e5ad51140c34e26107cec126a46b3896c4cc97c7cfff845925b995e6",
+      "normalSHA256": "70a690570dab58f7981a3b0b6e081b6108f5072f676bf67ce32315287ff5e600"
+    },
+    {
+      "group": "enemy-headless_knight-idle8-r31",
+      "atlas": [
+        2048,
+        1024
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 8,
+      "atlasSHA256": "2a92a5a515963e43f8ee9f9715c6ce924fff4429e4bfe8461709645d4edc7be8",
+      "normalSHA256": "60c66fcca1af816defd41e06e0425bb07ddc12ec1914bed767379dffb0c6ec28"
+    },
+    {
+      "group": "enemy-bone_centipede_pro-attack8-r31",
+      "atlas": [
+        2048,
+        4096
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 32,
+      "atlasSHA256": "baeacd614501e111806be763afa6075322be7fbf24bc04c075f1bb4c4b68c1f4",
+      "normalSHA256": "655b2a0872231f8ec078a111ce933ede698f4429c53b056776a3e5c94e2db8e3"
+    },
+    {
+      "group": "enemy-bone_centipede_pro-hurt8-r31",
+      "atlas": [
+        1024,
+        4096
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 16,
+      "atlasSHA256": "2e9233b71a3cd63c31ff1e2b3977cd7b337a6149421e18897c5d74252a9230ea",
+      "normalSHA256": "78f6d166183ed9baa56ace9792a66ac0881cff15c1b7696e02665ba8ca342d0f"
+    },
+    {
+      "group": "enemy-headless_knight-walk8-r31",
+      "atlas": [
+        2048,
+        4096
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 32,
+      "atlasSHA256": "82cbbd6a966704685c8157fe811b0b7b55e38431617fc16f2bc8fab456ca5c32",
+      "normalSHA256": "02e9f62a8a47bc93bf567b408a8fdcfee6122f6e64032e70156ffc1b14696af2"
+    },
+    {
+      "group": "enemy-headless_knight-attack8-r32-body-camera",
+      "atlas": [
+        2048,
+        4096
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 32,
+      "atlasSHA256": "973e8ed2eb8eaf1b60809668e7bc20eafee539efbe450f260ee4315f4675eb06",
+      "normalSHA256": "2bd7fee7c219242c40fb0f9d5e360211025a46915301b885b4fe2bb109b5b0c4"
+    },
+    {
+      "group": "enemy-headless_knight-hurt8-r31",
+      "atlas": [
+        1024,
+        4096
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 16,
+      "atlasSHA256": "296dcfcf3d984ef474c2b197279a061c991a6f2e517fba1dff77b615566e2685",
+      "normalSHA256": "07b801d24aebd65502e9dce8a9ddc7586abe994965860ec7cf94034f4a389e91"
+    },
+    {
+      "group": "enemy-bone_archer-idle8-r31",
+      "atlas": [
+        2048,
+        1024
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 8,
+      "atlasSHA256": "00d5fb05003ec64ce4629b62609f2336b06e982acba2975e9ac93e98cc6ee97d",
+      "normalSHA256": "fa422ef716aabae7ee2511a05509f594057667d15bd1cf731867ce5cd8e01814"
+    },
+    {
+      "group": "enemy-apostle_knight-idle8-r31",
+      "atlas": [
+        2048,
+        1024
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 8,
+      "atlasSHA256": "2ee4ce395c3edde299009228db16c79fd4e6e85986b125b52687c3b23c281999",
+      "normalSHA256": "c8a2dc20a908eb28d7b7796db9b0f596ef6eb0f4cdc15d19ab046b3dc42d2888"
+    },
+    {
+      "group": "enemy-gut_witch-idle8-r32-material",
+      "atlas": [
+        2048,
+        1024
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 8,
+      "atlasSHA256": "813ca69e1f51cfd2b53b19b6865e4744070ef8b3577cf3d1ed95954072b66b91",
+      "normalSHA256": "923c840f5fa9e29d475c55a1e7d2738a976b4f8abb83af23360013abeb24ae7b"
+    },
+    {
+      "group": "enemy-bone_archer-walk8-r31",
+      "atlas": [
+        2048,
+        4096
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 32,
+      "atlasSHA256": "b83588d6a11216c3e1048e9a288e7771e8858a53235988684d3c86ec7a225c6d",
+      "normalSHA256": "a47c85d2d1baf8b8f8b452f781bcc23cecc45aabb28f8f881b5e358df6900581"
+    },
+    {
+      "group": "enemy-bone_archer-hurt8-r31",
+      "atlas": [
+        1024,
+        4096
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 16,
+      "atlasSHA256": "6a0df13da720926ec8fddc4ef0ffd739cb917fa385ff845a44cdb5eace226c46",
+      "normalSHA256": "1e1e9833c57c463853f79659370294dc0c728e3245a755c31503e190f8b59bfb"
+    },
+    {
+      "group": "enemy-apostle_knight-walk8-r31",
+      "atlas": [
+        2048,
+        4096
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 32,
+      "atlasSHA256": "a4b8a062fd42e190f9367058b3b0b0270ceb6f55faae71bbdb31fde99fd0fb44",
+      "normalSHA256": "f4f9b166c467765fbe908c6ea1f0d387e69aa33af42e999e01954741b42a3cb4"
+    },
+    {
+      "group": "enemy-apostle_knight-hurt8-r31",
+      "atlas": [
+        1024,
+        4096
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 16,
+      "atlasSHA256": "551a204ec170e6add3460a3c372a479f40a89464ccb1371cb8f36822d46ed550",
+      "normalSHA256": "e496ee08e4ff76961aac69163238c028ea8ec13d5e82d2cf5b6cc0a2dbb8e0d2"
+    },
+    {
+      "group": "enemy-gut_witch-hurt8-r32-material",
+      "atlas": [
+        1024,
+        4096
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 16,
+      "atlasSHA256": "83e73c0e8b21a024cb91565213d21fe07e4b0d0a18e9857e60d58b561eeadca8",
+      "normalSHA256": "7009998de95abc945a6e4fad5c3b303b522e36aa7fd189b39382c73b9a65f748"
+    },
+    {
+      "group": "enemy-bone_archer-attack8-r31",
+      "atlas": [
+        2048,
+        4096
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 32,
+      "atlasSHA256": "60bcdcf1364675152c061c245d3efa0a8248328e6844002223b724b46eb785e5",
+      "normalSHA256": "39f3f815a9823848791db63cb1feba4eedce064427ec1be6c32f837a46aef95d"
+    },
+    {
+      "group": "enemy-apostle_knight-attack8-r31",
+      "atlas": [
+        2048,
+        4096
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 32,
+      "atlasSHA256": "3dd7a36d6077129facc60d5f0808e119b764b857f646980cc6d9b346c61a7c9e",
+      "normalSHA256": "78fbd73da9e1b5f9ada72f87ea8edfd529d07d4212da121e0b8d47f806c096b8"
+    },
+    {
+      "group": "enemy-gut_witch-walk8-r32-material",
+      "atlas": [
+        2048,
+        4096
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 32,
+      "atlasSHA256": "d61a089af38f455b66ea31130ac50a5d6ebe5dcd96d6b0a39e73cef7e1650673",
+      "normalSHA256": "867c514533f54b4da29236abb6145b0475419ad369fd6881485f7c4cbaa5614c"
+    },
+    {
+      "group": "enemy-gut_witch-attack8-r33-staff-span",
+      "atlas": [
+        2048,
+        4096
+      ],
+      "normalAlphaMismatch": 0,
+      "isolatedSingleAlphaPixels": 0,
+      "partialAlphaPixels": 0,
+      "records": 32,
+      "atlasSHA256": "2d8d2f087979834032e407d590715256d9b1e855fe1382c27012856852a6bc75",
+      "normalSHA256": "25b6ca4e8cfd248374d408261c21e4cf4e27a15e0af76ca7745ef0d74bb93653"
+    }
+  ]
+}

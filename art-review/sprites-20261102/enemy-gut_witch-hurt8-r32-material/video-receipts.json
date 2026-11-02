@@ -1,0 +1,36 @@
+[
+  {
+    "group": "enemy-gut_witch-hurt8-r32-material",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-gut_witch-hurt8-r32-material/page-1.mp4",
+    "stem": "page-1",
+    "sha256": "ce1f61cbe13da8545313e12295ea20cc9dbd8a7aea6f3bcee9aded764283afc7",
+    "bytes": 1623173,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "68"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  },
+  {
+    "group": "enemy-gut_witch-hurt8-r32-material",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/enemy-gut_witch-hurt8-r32-material/page-2.mp4",
+    "stem": "page-2",
+    "sha256": "1c250229a4ff8799cd1eb3c0b7611733a7909b686a55561329535bba7e81dada",
+    "bytes": 1543756,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 2240,
+        "frames": "68"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  }
+]
