@@ -75,6 +75,55 @@ function WriteJson($path, $obj, [int]$depth = 8) {
   [IO.File]::WriteAllText($path, ($obj | ConvertTo-Json -Depth $depth), $Utf8)
 }
 function ReadJson($path) { if (Test-Path -LiteralPath $path) { return (Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json) } return $null }
+function Read-UiOverlapSummary([string]$path, [Nullable[int]]$AnalyzerExit, [string]$detailReport = '') {
+  # The analyzer's full frame report can exceed 1GB. Read only its bounded four-field summary.
+  $limit = 65536
+  $result = [ordered]@{ passed = $false; valid = $false; exit = $AnalyzerExit; receipt = $path; detailReport = $detailReport; maxReceiptBytes = $limit; bytes = 0; frameCount = $null; issueCount = $null; missing = @(); note = '' }
+  $stream = $null
+  try {
+    $stream = [IO.File]::Open($path, [IO.FileMode]::Open, [IO.FileAccess]::Read, ([IO.FileShare]::ReadWrite -bor [IO.FileShare]::Delete))
+    if ($stream.Length -gt $limit) { $result.note = 'UI 요약 크기 초과: 최대 65536 bytes'; return $result }
+    # Bound the actual read as well: the file may grow after Length was checked.
+    $buffer = New-Object byte[] ($limit + 1); $used = 0
+    while ($used -lt $buffer.Length) {
+      $read = $stream.Read($buffer, $used, $buffer.Length - $used)
+      if ($read -eq 0) { break }; $used += $read
+    }
+    $result.bytes = $used
+    if ($used -gt $limit) { $result.note = 'UI 요약 크기 초과: 최대 65536 bytes'; return $result }
+    $text = ([Text.UTF8Encoding]::new($false,$true)).GetString($buffer,0,$used).TrimStart([char]0xFEFF)
+    # Flat schema grammar rejects duplicate/unknown keys, comments, trailing commas, coercion
+    # and non-integer counts before PS5.1 ConvertFrom-Json (which otherwise accepts some of these).
+    $ws = '[ \t\r\n]*'
+    $jsonString = '"(?:[^"\\\x00-\x1f]|\\(?:["\\/bfnrt]|u[0-9a-fA-F]{4}))*"'
+    $boolean = '"(?<key>passed)"' + $ws + ':' + $ws + '(?:true|false)'
+    $integer = '"(?<key>frameCount|issueCount)"' + $ws + ':' + $ws + '(?:0|[1-9][0-9]{0,15})'
+    $strings = '"(?<key>missing)"' + $ws + ':' + $ws + '\[' + $ws + '(?:' + $jsonString + '(?:' + $ws + ',' + $ws + $jsonString + ')*)?' + $ws + '\]'
+    $member = '(?:' + $boolean + '|' + $integer + '|' + $strings + ')'
+    $pattern = '\A' + $ws + '\{' + $ws + $member + '(?:' + $ws + ',' + $ws + $member + '){3}' + $ws + '\}' + $ws + '\z'
+    $match = ([regex]::new($pattern,[Text.RegularExpressions.RegexOptions]::CultureInvariant,[TimeSpan]::FromSeconds(1))).Match($text)
+    if (-not $match.Success -or @($match.Groups['key'].Captures | ForEach-Object { $_.Value } | Select-Object -Unique).Count -ne 4) { throw '스키마는 passed(bool), frameCount/issueCount(비음수 정수), missing(문자열 배열) 4개여야 함' }
+    $summary = $text | ConvertFrom-Json
+    foreach ($name in 'frameCount','issueCount') {
+      $value = $summary.$name
+      if (($value -isnot [int] -and $value -isnot [long]) -or $value -lt 0 -or $value -gt 9007199254740991) { throw ('잘못된 정수: ' + $name) }
+    }
+    $result.valid = $true; $result.frameCount = $summary.frameCount; $result.issueCount = $summary.issueCount; $result.missing = @($summary.missing)
+    # Only metadata is checked for the detailed evidence; never open/hash/parse its contents.
+    $detailPresent = $detailReport -and (Test-Path -LiteralPath $detailReport -PathType Leaf)
+    $result.passed = ($null -ne $AnalyzerExit -and $AnalyzerExit -eq 0 -and $summary.passed -eq $true -and $summary.frameCount -gt 0 -and $summary.issueCount -eq 0 -and $summary.missing.Count -eq 0 -and $detailPresent)
+    $notes = @()
+    if ($null -eq $AnalyzerExit -or $AnalyzerExit -ne 0) { $notes += ('UI 검사 종료 코드: ' + $AnalyzerExit) }
+    if ($summary.issueCount -gt 0) { $notes += ('UI 겹침 ' + $summary.issueCount + '건') }
+    if ($summary.missing.Count -gt 0) { $notes += ('UI 누락 ' + $summary.missing.Count + '건') }
+    if (-not $summary.passed) { $notes += 'analyzer FAIL' }
+    if ($summary.frameCount -eq 0) { $notes += 'UI 캡처 0장' }
+    if (-not $detailPresent) { $notes += 'UI 상세 보고서 경로 없음' }
+    $result.note = $notes -join '; '
+  } catch { $result.passed = $false; $result.note = 'UI 요약 읽기/형식 오류: ' + $_.Exception.Message }
+  finally { if ($null -ne $stream) { $stream.Dispose() } }
+  return $result
+}
 function GitR { param([Parameter(ValueFromRemainingArguments)]$a) $o = & git.exe -C $Cfg.Repo @a 2>&1; if ($LASTEXITCODE -ne 0) { throw "git $($a -join ' ') 실패: $o" }; return $o }
 function Prop($o, [string]$n, $default = $null) { if ($null -ne $o -and $o.PSObject.Properties.Name -contains $n) { return $o.$n } return $default }
 
@@ -798,8 +847,8 @@ function Cmd-Run {
           $uiLog = Join-Path $runDir 'ui-overlap.log'
           & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -NonInteractive -WindowStyle Hidden -File $uiCheck -Exe (Join-Path $stage 'EXODUSER-Unity.exe') -Worktree $Cfg.Worktree -Output (Join-Path $runDir 'ui-check') -OverlapOnly *> $uiLog
           $uiExit = $LASTEXITCODE
-          $uiReport = ReadJson (Join-Path $runDir 'ui-check\overlap\overlap-report.json')
-          $run.uiOverlap = @{ passed = ($uiExit -eq 0 -and $null -ne $uiReport -and $uiReport.passed); exit = $uiExit; log = $uiLog }
+          $run.uiOverlap = Read-UiOverlapSummary (Join-Path $runDir 'ui-check\overlap\overlap-summary.json') $uiExit (Join-Path $runDir 'ui-check\overlap\overlap-report.json')
+          $run.uiOverlap.log = $uiLog
         } finally { }
       }
     } else { $run.smokeNote = '빌드 실패로 스모크 없음' }
