@@ -23,7 +23,7 @@ namespace Exoduser.UnityPort {
   public Action Changed;
   string pendingResetId;
   public string PendingResetId {get{return pendingResetId;}}
-  public bool RequestReset(Simulation sim,string id){if(sim==null||!Ported(id)||!skillById.TryGetValue(id,out var d)||NativeSkillManagementPolicy.Level(sim,id)<1)return false;if((id=="kiSlash"||id=="fireball")&&NativeSkillManagementPolicy.Level(sim,id)<=1)return false;cur=sim;pendingResetId=id;return true;}
+  public bool RequestReset(Simulation sim,string id){if(sim==null||!skillById.ContainsKey(id)||!NativeSkillManagementPolicy.CanReset(sim,id))return false;cur=sim;pendingResetId=id;return true;}
   public bool ResolveReset(bool accept){if(pendingResetId==null)return false;string id=pendingResetId;pendingResetId=null;if(!accept)return false;bool changed=NativeSkillManagementPolicy.Reset(cur,id,skillById[id].spCost);if(changed)ChangedSkill();return changed;}
   public int SelectedSlot {get;private set;}=SkillUiState.LmbSlot;
   const string NotPorted="미이식";
@@ -240,7 +240,7 @@ namespace Exoduser.UnityPort {
     if(d!=null){Fill(new Rect(23,costY-off,224,1),C(146,149,149,.22f));Fill(new Rect(23,costY+42-off,224,1),C(146,149,149,.22f));string cost=learned?"강화 SP "+SkillRules.UpgradeSpCost:"습득 SP "+d.spCost+(d.matCost>0?" · 악의오브 "+sim.MaliceCost(d.matCost):"");Text(new Rect(25,costY+10-off,220,23),cost,serif,15,C(165,168,168));int locked=SkillRules.SkillLevelLock(sim.Player.Level);if(learned&&lv>=locked&&lv<20)Text(new Rect(25,costY+10-off,220,23),"Lv"+(locked*50)+" 도달 시 해금",serif,14,C(224,138,106),FontStyle.Normal,0,TextAnchor.MiddleRight);
      bool can=supported&&(learned?NativeSkillManagementPolicy.CanUpgrade(sim,id):NativeSkillManagementPolicy.CanLearn(sim,id,d.spCost,d.matCost,d.reqLv));
      if(InfoButton(new Rect(23,buttonY-off,68.453125f,40),learned?"강화 +":"습득",can,true)){bool changed=learned?NativeSkillManagementPolicy.Upgrade(sim,id):NativeSkillManagementPolicy.Learn(sim,id,d.spCost,d.matCost,d.reqLv);if(changed)ChangedSkill();}
-     if(learned){if(InfoButton(new Rect(101.453125f,buttonY-off,67.015625f,40),"강화 −",supported&&lv>1,false)){if(NativeSkillManagementPolicy.LevelDown(sim,id))ChangedSkill();}if(InfoButton(new Rect(178.46875f,buttonY-off,64,40),"리셋",supported&&(!(id=="kiSlash"||id=="fireball")||lv>1),false))RequestReset(sim,id);}if(!supported)Text(new Rect(23,buttonY+42-off,224,18),"실행 기능 미이식",serif,11,C(142,145,145));
+     if(learned){if(InfoButton(new Rect(101.453125f,buttonY-off,67.015625f,40),"강화 −",sim.CanLowerSkillLevel(id),false)){if(NativeSkillManagementPolicy.LevelDown(sim,id))ChangedSkill();}if(InfoButton(new Rect(178.46875f,buttonY-off,64,40),"리셋",NativeSkillManagementPolicy.CanReset(sim,id),false))RequestReset(sim,id);}if(!supported)Text(new Rect(23,buttonY+42-off,224,18),"실행 기능 미이식",serif,11,C(142,145,145));
     }
     if(canEquip&&InfoButton(new Rect(23,equipY-off,224,40),"이 슬롯에 장착 ["+SlotKey(SelectedSlot)+"]",true,false)){if(NativeSkillManagementPolicy.Equip(sim,SelectedSlot,id))ChangedSkill();}
     Fill(new Rect(23,resourceY-off,224,1),C(146,149,149,.22f));NativeCurrencyOrb.Draw(new Rect(23,resourceY+12-off,24,24),sim.Materials);Text(new Rect(47,resourceY+12-off,200,24),"SP "+sim.Player.StatPoints+" · 악의오브 "+sim.Materials.ToString("N0",System.Globalization.CultureInfo.InvariantCulture)+" · LV "+sim.Player.Level,serif,13,C(165,168,168),FontStyle.Normal,.1f);
@@ -301,7 +301,7 @@ namespace Exoduser.UnityPort {
   void DrawBottom(Action close){
    float w1=Width(serif,16,FontStyle.Normal,"닫기 [ESC]",0)+60,w2=Width(serif,16,FontStyle.Normal,"일괄 레벨업",0)+60,w3=Width(serif,16,FontStyle.Normal,"추천 자동",0)+60,x=(1920-w1-w2-w3-24)/2;
    if(BottomButton(new Rect(x,998,w1,40),"닫기 [ESC]"))close();x+=w1+12;
-   if(BottomButton(new Rect(x,998,w2,40),"일괄 레벨업")){bool changed=false;foreach(var d in defs.skills)while(NativeSkillManagementPolicy.Upgrade(cur,d.id))changed=true;if(changed)ChangedSkill();}x+=w2+12;
+   if(BottomButton(new Rect(x,998,w2,40),"일괄 레벨업")){if(cur.UpgradeAllSkills()>0)ChangedSkill();}x+=w2+12;
    bool enabled=GUI.enabled;GUI.enabled=false;var auto=new Rect(x,998,w3,40);BottomButton(auto,"추천 자동");GUI.enabled=enabled;
    if(auto.Contains(Event.current.mousePosition)){var tip=new Rect(x-120,948,390,30);InfoFace(tip);Text(tip,"추천 빌드에 필요한 기술은 준비 중입니다",serif,12,C(170,173,173),FontStyle.Normal,0,TextAnchor.MiddleCenter);}
   }

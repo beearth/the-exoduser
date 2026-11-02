@@ -20,7 +20,7 @@ namespace Exoduser.UnityPort
   bool ShouldPlayCharacterStory {get{return !AutomatedInput||Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-character-story-smoke")>=0;}}
   void BeginCreatedCharacterStory()
   {
-   if(!ShouldPlayCharacterStory)return;
+   if(!ShouldPlayCharacterStory)return;if(TransitionPage("create-story",()=>BeginCreatedCharacterStory(),true))return;
    if(warriorStoryData==null){var source=Resources.Load<TextAsset>("Data/warrior_story");if(source!=null)warriorStoryData=JsonUtility.FromJson<WarriorStoryData>(source.text);}
    if(warriorStoryData==null||warriorStoryData.cuts==null){characterError=K("캐릭터는 저장됐지만 이야기 자료를 읽지 못했습니다.","The character was saved, but story data could not be loaded.");return;}
    if(warriorStory==null)warriorStory=new WarriorStoryState(warriorStoryData.cuts);
@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort
    warriorSlot=Characters.SelectedIndex;warriorDecoderClosed=false;warriorError="";SubtitleText="";frontendPad.Reset();
    StopMusic();movie.Open(warriorStoryData.video,false,false,false);movie.Volume(1);
   }
-  public void NextCharacterStory(){if(!CharacterStoryActive||warriorStory.Entering||!movie.Prepared)return;if(frontendPadQaEnabled)FrontendPadQaStoryNextConsumptions++;double next=warriorStory.Next(movie.Time);if(next<0)warriorStory.Finish(true);else movie.Seek(next);}
+  public void NextCharacterStory(){if(!CharacterStoryActive||warriorStory.Entering||!movie.Prepared)return;if(frontendPadQaEnabled)FrontendPadQaStoryNextConsumptions++;double next=warriorStory.Next(movie.Time);if(next<0)FinishCharacterStory(true);else movie.Seek(next);}
   public void HoldCharacterStory(string source,bool held){if(warriorStory!=null)warriorStory.SetHeld(source,held);}
   string CharacterStoryControl(int index){WarriorStoryControls selected=null,english=null;if(warriorStoryData!=null&&warriorStoryData.controls!=null)foreach(var row in warriorStoryData.controls){if(row.code==Language)selected=row;if(row.code=="en")english=row;}var labels=(selected??english)?.labels;return labels!=null&&index>=0&&index<labels.Length?labels[index]:"";}
   void CancelCharacterStory(){if(warriorStory!=null)warriorStory.Cancel();warriorSlot=-1;SubtitleText="";frontendPad.Reset();}
@@ -36,8 +36,8 @@ namespace Exoduser.UnityPort
   {
    if(!CharacterStoryActive)return;
    if(!warriorStory.Entering){
-    if(movie.Error.Length>0){warriorError=movie.Error;warriorStory.Finish(false);}
-    else if(movie.Ended)warriorStory.Finish(true);
+    if(movie.Error.Length>0){warriorError=movie.Error;FinishCharacterStory(false);}
+    else if(movie.Ended||(movie.Prepared&&movie.Duration>0&&movie.Duration-movie.Time<=.6))FinishCharacterStory(true);
     var pad=frontendPad.Step(FrontendPadPhase.Story,ReadFrontendPadFrame(),!AutomatedInput&&!characterInputFence);
     HoldCharacterStory("pad-skip",pad.Hold);
     if(!AutomatedInput&&!characterInputFence){
@@ -47,9 +47,9 @@ namespace Exoduser.UnityPort
     }
     SubtitleText="";foreach(var language in warriorStoryData.captions)if(language.code==Language){foreach(var cue in language.cues)if(movie.Time>=cue.start&&movie.Time<cue.end){SubtitleText=cue.text;break;}break;}
    }
-   warriorStory.Tick(delta,movie.Time,focused);
+   warriorStory.Tick(delta,movie.Time,focused,false);if(warriorStory.HoldProgress>=1)FinishCharacterStory(true);
    if(warriorStory.Entering&&!warriorDecoderClosed){movie.Close();warriorDecoderClosed=true;SubtitleText="";}
-   if(warriorStory.EntryReady){
+   if(warriorStory.Entering&&!NativeScreenTransition.Busy){
     string name=warriorStory.Name;bool valid=Characters.SelectedIndex==warriorSlot&&Characters.NameAt(warriorSlot)==name;
     CancelCharacterStory();characterInputFence=true;
     if(valid)BeginCharacterEntry(true);else ShowLobby();

@@ -39,7 +39,7 @@ namespace Exoduser.UnityPort
    if(Flow.Page!=LobbyPage.Lobby||startup.Active||Characters.SelectedIndex<0)return false;
    ActiveCharacterName=Characters.SelectedName;
    if(AutomatedInput||LegacyFrontendFixture()){Flow.SelectPreview();return EnterNativeTest();}
-   NativeUiSounds.Current?.SuppressConfirm();StopEntryHover();NativeDecisionSound.Play(loadingAlreadyShown?"new-game":"enter");
+   if(!loadingAlreadyShown&&TransitionPage("lobby-game",()=>BeginCharacterEntry(true),false))return true;NativeUiSounds.Current?.SuppressConfirm();StopEntryHover();NativeDecisionSound.Play(loadingAlreadyShown?"new-game":"enter");
    if(HasCombatSave!=null&&HasCombatSave(ActiveCharacterName)){StartupGameplayPrepared=false;keepStartupStageMusic=false;CancelCharacterStory();Flow.SelectPreview();return EnterNativeTest();}
    if(startupData==null){var source=Resources.Load<TextAsset>("Data/startup_intro");if(source!=null)startupData=JsonUtility.FromJson<StartupIntroData>(source.text);}
    StartupIntroLine[] lines=null;if(startupData!=null&&startupData.languages!=null){foreach(var language in startupData.languages)if(language.code==Language)lines=language.lines;if(lines==null)foreach(var language in startupData.languages)if(language.code=="en")lines=language.lines;}

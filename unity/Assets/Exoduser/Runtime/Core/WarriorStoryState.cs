@@ -23,7 +23,7 @@ namespace Exoduser.UnityPort.Core
   public double Next(double time){foreach(double cut in cuts)if(cut>time+.05)return cut;return -1;}
   public void SetHeld(string source,bool down){if(!Active||Entering)return;if(down)held.Add(source);else held.Remove(source);if(held.Count==0)HoldProgress=0;}
   public void CancelHold(){held.Clear();HoldProgress=0;}
-  public void Tick(double delta,double time,bool focused){if(!Active)return;if(!focused){CancelHold();return;}delta=Math.Max(0,delta);if(Entering){GateElapsed+=delta;return;}if(time>=3)HintsHidden=true;if(HintsHidden)hintFade+=delta;if(held.Count>0){HoldProgress=Math.Min(1,HoldProgress+delta/HoldSeconds);if(HoldProgress>=1)Finish(true);}}
+  public void Tick(double delta,double time,bool focused,bool complete=true){if(!Active)return;if(!focused){CancelHold();return;}delta=Math.Max(0,delta);if(Entering){GateElapsed+=delta;return;}if(time>=3)HintsHidden=true;if(HintsHidden)hintFade+=delta;if(held.Count>0){HoldProgress=Math.Min(1,HoldProgress+delta/HoldSeconds);if(complete&&HoldProgress>=1)Finish(true);}}
   public void Finish(bool seen){if(!Active||Entering)return;Seen=seen;Entering=true;GateElapsed=0;CancelHold();}
   public void Cancel(){Active=false;Entering=false;GateElapsed=0;CancelHold();}
  }

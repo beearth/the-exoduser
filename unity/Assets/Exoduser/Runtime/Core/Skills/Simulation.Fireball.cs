@@ -29,7 +29,7 @@ namespace Exoduser.UnityPort.Core
         private float magicCastAngle; // 웹 P.atkArc: 시전 시작 때 고정하며 다음 연사 시작 때 갱신한다.
 
         // once per tick before Tick(): the held state of the web 'beam' action (default mouse2)
-        public void SetMagicInput(bool beamHeld) { magicHeld = beamHeld; }
+        public void SetMagicInput(bool beamHeld) { magicHeld = beamHeld&&Skills.MagicSkill=="fireball"; }
 
         // pMagicSpd = (2 + pMagic*.08) * (1 + castSpeed + headbandCastSpd)
         public double MagicCastSpeed()
@@ -40,12 +40,15 @@ namespace Exoduser.UnityPort.Core
         // mpCost('magic'): _COST_SK has no 'magic' entry, so the skill-level factor is 1
         public int MagicMpCost() { return SkillRules.MpCost("magic", 1, MagicCostMultiplier()); }
 
-        private bool CanStartMagic { get { return Player.State == "idle" && Player.Mana >= MagicMpCost(); } }
+        private bool CanStartMagic { get { return Player.State == "idle" && !HarpActive && !DashActive && !idleChainDetonation && Player.Mana >= MagicMpCost(); } }
+
+        // 원문 idle은 무기 자원을 실제로 낼 수 있을 때만 E/마법보다 무기를 먼저 선택한다.
+        private bool IdleWeaponHasPriority { get { return attackHeldForMagic && Player.Stamina >= (Config.ActiveAttack == "kiSlash" ? 10 + (Math.Max(1, Config.KiSlashLevel) - 1) * 2 : 5); } }
 
         // idle branch of the web state machine: `else if(isHeld('beam')&&P.mp>=mpCost('magic')) _execMagicE()`, after the weapon / shield / Q branches
         private void TickMagicIdle()
         {
-            if (!magicHeld || attackHeldForMagic || playerActionBranchConsumed || !CanStartMagic) return;
+            if (!magicHeld || IdleWeaponHasPriority || playerActionBranchConsumed || !CanStartMagic) return;
             MovePlayerAction(1, true);
             ExecMagicE();
         }
