@@ -41,4 +41,6 @@ export function foregroundPose(row,center,hero,walkable,parallax){
 }
 
 // Restore the player pool after the cold ambient pass; authored hue stays local.
-export function renderEnergy(row,time){return animatedEnergy(row,time)*(row.id==='player'?.8:row.id==='fx'?.7:1.45);}
+const landmarkTuning={camp_fire:[1.20,1.12],camp_glow:[1.15,1.08],altar_ritual:[1.18,1.25]};
+export function presentationRadius(row){return row.radius*(landmarkTuning[row.id]?.[0]||1);}
+export function renderEnergy(row,time){return animatedEnergy(row,time)*(row.id==='player'?.8:row.id==='fx'?.7:1.45)*(landmarkTuning[row.id]?.[1]||1);}
