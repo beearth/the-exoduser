@@ -5,7 +5,7 @@ namespace Exoduser.UnityPort.Core
 {
     // RM-1 sound: EnemyHit / EnemyCrit / EnemyDeath / BossHit / BossDeath / Roll are plain notifications (position, etype, source volume and rate).
     // The sample choice among variants is the audio adapter's (the Core never draws a random number for sound, so every oracle stays unchanged).
-    public enum FeedbackKind { Sample, KiChargeFlash, KiSlashHit, EnemyHit, EnemyCrit, EnemyDeath, BossHit, BossDeath, Roll, Parry }
+    public enum FeedbackKind { Sample, KiChargeFlash, KiSlashHit, EnemyHit, EnemyCrit, EnemyDeath, BossHit, BossDeath, Roll, Parry, FeelContact, FeelHurt }
 
     // Native view drains once after Tick. Pixel coordinates retain positive Y down.
     public sealed class FeedbackEvent
@@ -14,6 +14,7 @@ namespace Exoduser.UnityPort.Core
         public int Tick, Step, Tier, FrameCount, FrameTicks, InkCapacity, Etype;
         public float X, Y, Angle, Scale, Size, Volume, Rate, QueuedRate;
         public string SampleKey;
+        public int TargetId;public bool Killed; // presentation identity / pre-death HP result; no gameplay authority
         public bool Ink, IsBoss;
         public string Source;   // RM-1 sound: where the sound came from (move number / event), for the Receipt log
     }

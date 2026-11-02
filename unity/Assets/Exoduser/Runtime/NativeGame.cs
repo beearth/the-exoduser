@@ -300,7 +300,7 @@ namespace Exoduser.UnityPort
         void UpdateViews()
         {
             if(Simulation==null||view==null)return;BindWorldViewport();Remodel3DRestoreBillboards();NativeHd2D.RestoreSourcePoses();var p=Simulation.Player;
-            float shk=Simulation.ShakeAmount*OptionShakeScale;   // B09: web G.shake -> camera offset (random +-shake px, game.html 51900)
+            float shk=impacts!=null&&impacts.ReducedMotion?0:Simulation.ShakeAmount*OptionShakeScale;   // B09: web G.shake -> camera offset (random +-shake px, game.html 51900)
             float camX=p.X/100,camY=-p.Y/100;BossCameraZoom();ClampCameraToMap(ref camX,ref camY);   // [CAM-CLAMP] web _clampCamToMap before the shake offset
             hd2dCameraShake=new Vector3(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0,shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0,0);
             view.transform.position=new Vector3(camX,camY,-10)+hd2dCameraShake;StageFlowSyncViews();if(!Simulation.Stage.InArena)StreamChunks(view.transform.position.x*100,-view.transform.position.y*100);
@@ -349,7 +349,7 @@ namespace Exoduser.UnityPort
             UpdateDropViews();
             kiView?.Update(Simulation);
             boltView?.Update(Simulation);BossViewUpdate();
-            impacts?.Update(Simulation.TickCount);
+            if(impacts!=null)impacts.ShakeScale=OptionShakeScale;impacts?.Update(Simulation.TickCount);
             skillView?.Update(Simulation,Time.time);
             hud?.Refresh(p,Simulation.TickCount);StageFlowBossBar();
             if(NativeHd2D.Enabled&&!NativeRemodel3D.Active)Hd2dArenaFrame();
@@ -424,6 +424,7 @@ namespace Exoduser.UnityPort
             button=new GUIStyle(GUI.skin.button){font=font,fontSize=22};
             characterBadge=new GUIStyle(label){font=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular")??font};
         }
+        void DrawFeelHurtEdge(){var prior=GUI.matrix;try{GUI.matrix=Matrix4x4.identity;var color=new Color(166/255f,50/255f,37/255f,.24f);Fill(new Rect(0,0,Screen.width,6),color);Fill(new Rect(0,Screen.height-6,Screen.width,6),color);Fill(new Rect(0,6,6,Screen.height-12),color);Fill(new Rect(Screen.width-6,6,6,Screen.height-12),color);}finally{GUI.matrix=prior;}}
         void OnGUI()
         {
             if(groundReceiverQaActive)return;
@@ -445,7 +446,8 @@ namespace Exoduser.UnityPort
             // B09: web draws the hit flash (_hitFlash) and the red damage flash (scrFlash) over the canvas, under the DOM HUD (game.html 55077-55078)
             if(Simulation.HitFlashAlpha>0){Color hc=Color.white;ColorUtility.TryParseHtmlString(Simulation.HitFlashColor,out hc);hc.a=Simulation.HitFlashAlpha;NativeUiViewport.FillScreen(hc);}
             // 웹 rgba(200,0,0,.25)의 색 알파와 globalAlpha를 함께 적용한다. Core 감쇠는 그대로 둔다.
-            if(Simulation.ScreenFlashAlpha>0)NativeUiViewport.FillScreen(new Color(200f/255,0,0,Simulation.ScreenFlashAlpha*.25f));
+            if(!KiImpactView.FeelEnabled&&Simulation.ScreenFlashAlpha>0)NativeUiViewport.FillScreen(new Color(200f/255,0,0,Simulation.ScreenFlashAlpha*.25f));
+            if(impacts!=null&&impacts.HurtActive(Simulation.TickCount))DrawFeelHurtEdge();
             // 로딩 원화/정보는 HUD 뒤에 가리지 않도록 아래 전환 분기에서 마지막으로 그린다.
             var baseMatrix=GUI.matrix;
             GUI.matrix=NativeUiViewport.Matrix;
@@ -454,7 +456,7 @@ namespace Exoduser.UnityPort
             // Web #mmLvl objective panel (game.html 2576-2586): level / experience / area kills / malice from Unity state; Unity has no area-kill total (shown as 미이식).
             {int areaK,areaT;Simulation.AreaKills(regionHud.CurIdx,out areaK,out areaT);objective.Draw(hudWidth,new NativeObjectivePanel.Info{level=p.Level,exp=p.Experience,maxExp=p.MaxExperience,materials=Simulation.Materials,areaKills=areaK,areaTotal=areaT,english=lobby.Language!="ko"});}   // LT-5: "지역 처치" = current region min(kills,total)/total, else G._stageKills/G._totalSpawned (web 60584-60586), not G.kills
             DrawFieldHud(hudWidth);
-            hud.Draw(hudWidth,NativeUiSafeArea.DesignHeight,Simulation.Config.ActiveAttack,Simulation);DrawFirstPractice(hudWidth);GUI.matrix=baseMatrix;
+            hud.FeelHurtActive=impacts!=null&&impacts.HurtActive(Simulation.TickCount);hud.Draw(hudWidth,NativeUiSafeArea.DesignHeight,Simulation.Config.ActiveAttack,Simulation);DrawFirstPractice(hudWidth);GUI.matrix=baseMatrix;
             // 전환 중 전투 안내·지역 제목·레벨업이 중앙 명패를 덮지 않게 한다. 자원 HUD는 유지한다.
             if(Simulation.Stage.LoadPhase>0){StageFlowDrawLoad();GUI.matrix=old;return;}
             // game.html drawEn 54054: a 4 px bar (r*2+6 wide, r+16 above the centre) once the mob is hurt or its shield is down: black 60%, red hp, the blue shield laid over it

@@ -80,6 +80,7 @@ namespace Exoduser.UnityPort.Core
         public Action<EnemySpawn, EnemyProjectile> SpawnBossProjectile; // _spawnBossProjectile(e, obj)
         public Action<double, double, string, string, double, double?, string> AddText; // addTxt(x, y, text, color, life[, size, text2])
         public Action<double, double, string, double> AddParts; // addParts(x, y, color, n)
+        public Action<EnemySpawn,double?,bool> FeelContact; // optional presentation only, after accepted non-continuous HP damage
         public Action<double> Shake;                    // shake(n)
         public Action<string, double> DoHitFlash;       // doHitFlash(color, alpha)
         public Action<string, double, double> PlaySample; // playSample(key, volume, pitch)

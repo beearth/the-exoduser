@@ -102,6 +102,7 @@ namespace Exoduser.UnityPort.Core
                 double kbAng = o.HasAngle ? o.Angle + Math.PI : o.HasSource ? Math.Atan2(Player.Y - o.SrcY, Player.X - o.SrcX) : NextRandom() * Math.PI * 2;
                 Player.KnockbackX += (float)(Math.Cos(kbAng) * kbStr); Player.KnockbackY += (float)(Math.Sin(kbAng) * kbStr);
                 ScreenFlashAlpha = .25f;
+                Feedback.Enqueue(new FeedbackEvent{Kind=FeedbackKind.FeelHurt,Tick=TickCount});
                 ShakeAmount = (float)(Math.Max(4, Math.Min(16, Js.Int(a / (double)Player.MaxHp * 60))) * OptShake / 100);
                 FlashTicks = Math.Max(FlashTicks, 2);
                 if (a > Player.MaxHp * .15) ChromaTicks = Math.Max(ChromaTicks, 4);

@@ -196,7 +196,7 @@ namespace Exoduser.UnityPort
             string category=EnemySoundTables.DeathCategory(e.Etype);string[] pool;
             if(!NativeEnemySfxTables.DeathPools.TryGetValue(category,out pool))pool=NativeEnemySfxTables.DeathPools["monster"];
             float volume=(category=="armor"?.525f:e.Size>=40?1.05f:.825f)*layer;
-            var r=Make(pool[rng.Next(pool.Length)],Jitter(volume,.08f),Jitter(1,.12f)*layerPitch,World(e),e);r.pan=pan;direct.Add(r);
+            var r=Make(pool[rng.Next(pool.Length)],Jitter(volume,.08f),Jitter(1,.12f)*layerPitch,World(e),e);r.pan=pan;if(!KiImpactView.FeelEnabled||n<NativeCombatFeelPolicy.DeathVoices)direct.Add(r);else Receipt.dropped++;
             if(n==0&&e.Size>=40&&rng.NextDouble()<.25)direct.Add(Make("monster_die1",.75f,Jitter(.8f,.15f),World(e),e));
             if(n==0&&rng.NextDouble()<.15)direct.Add(Make("death_grunt",.45f,Jitter(1,.15f),World(e),e));
         }
