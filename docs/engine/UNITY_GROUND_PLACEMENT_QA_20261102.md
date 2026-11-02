@@ -1285,3 +1285,26 @@ signed-natural wrapper도source80d0/normalizer서명exe/Runtime/Core를strict대
 
 
 2026-11-02 private전송actual: 자기NodePID34940/실행경로/config확인후192.168.0.233:3334 listen,오직192.168.0.146 허용. 정확5경로/bytes/SHA는 evidence/UNITY_WIN80D_PRIVATE_TRANSFER_20261102.json. 자기Mac의HEAD/package.zip은403으로거부돼PC-only제한실행확인. senderZIP4572275424B/SHA50e0abf7d303fb6e9eb67d31ce6cec7162e6ca610b18f05193162b180fb73460. PC수신·해제·실행아직미완료이며20분최대lease/수신확인후자기PID종료정책유지. 설치/currentunity/main1403보존.
+
+
+## 2026-11-03 독립 GUI 좌표 대조군 — Windows 빌드 입력
+
+| 항목 | 정확한 계약 |
+|---|---|
+| 기존 Mac QA 기준 | 244f7d7babcb38cee41e8653e93ba30edb83375a. 실제 재사용 QA 프로젝트의 기존 Assets/Packages/ProjectSettings 기반은 80d0ae89ca1af2a08987ec7b6f47340231a36bff와 기존 Windows import 상태이며 전체 최신 제품 소스라는 뜻이 아니다 |
+| 테스트 입력 출처 | 32d41c0ec625e90c17d63d2aed344326140d0887의 아래 5파일만 exact blob 인수. 전체 32d 병합 아님. 이전 1e98 입력은 미빌드로 보존 |
+| Editor 입력 | unity/Assets/Exoduser/Editor/UiAuditCoordinateBuild.cs 및 .meta |
+| Player 입력 | unity/Assets/Exoduser/Runtime/Tools/UiAuditCoordinateProbe.cs 및 .meta |
+| 분석 입력 | unity/Tools/ui-overlap/coordinate-pixels.py; Python Pillow 필요 |
+| 측정 코드 | NativeUiAudit.cs는 32d와 byte 동일. 제품 NativeUiViewport/NativeUiSafeArea/Core/생산 Scene/Prefab/설치 앱은 수정하지 않는다 |
+| 독립 행렬 | scale=Screen.height/1080f; edge=Scale(scale,scale,1); right=edge*Translate(Screen.width/scale-1920,0,0). 생산 Viewport 연결을 검증하는 fixture가 아니다 |
+| 빌드 | 기존 Unity 6000.6.7f1, StandaloneWindows64, UiAuditCoordinateBuild.Build, 절대 -output, 기존 QA Library 재사용; 새 프로젝트/Library/아트 복제 없음 |
+| 임시 scene | Assets/__UiAuditCoordinateProbe.unity가 이미 있으면 중단. 비어 있는 단일 scene의 probe만 BuildPlayer에 지정. 이번 생성 scene/meta만 증거 보존 후 정리 |
+| PC 실행 인자 | --unity-ui-coordinate-check --unity-qa-sandbox <absolute sandbox> -output <absolute output> |
+| 5 해상도 | 1920×1080, 2560×1080, 3840×1080, 1600×900, 2560×1600 |
+| 9 사례 | identity; edge-root/group/nested/scroll; right-root/group/nested/scroll |
+| 기대 증거 | 45 PNG + 45 frame JSON + coordinate-probe.json. 실제 PC 실행은 별도 인수 전까지 미완료 |
+| 픽셀 판정 | coordinate-pixels.py가 cyan raster와 측정 rect를 비교. 가장자리 반올림 허용 ≤1.01px이며 본편 UI overlap 허용치 변경 없음 |
+| 검수 경계 | 특정 scale/translation/group/scroll의 Native GUI API→실제 픽셀 독립 대조군. 본편 UI/생산 Viewport/ground/성능/출시 수용 판정 아님 |
+
+기존 full merge의 VFX 문서 4충돌은 보류 상태를 유지한다. 이 입력 인수는 기존 own branch의 단일 부모 commit이며 충돌 문서, 공유 HEAD/index 및 타인 PowerShell WIP를 손대지 않는다. 산출 경로는 기존 mac-installable-ground-qa-20261102/coordinate-probe-20261103이며 빌드/패키지/PC 실행 결과는 실제 관측 뒤 기록한다.
