@@ -131,7 +131,7 @@
 | 구역 | 재작업 값·구현 | 검수 상태 |
 |---|---|---|
 | 전체 스킬 영역 | x36/y147/w=물리폭−72/h833, 내부배경x39/y150/w=물리폭−78/h827. 웹 제단 shader의 연속 smoke·지옥불·vignette를 전체폭 생성 텍스처로 그린다. 별도 그레인/점 생성0 | 첫 후보의 중앙 검은 사각형 제거용, 최종 Player 재검수 필요 |
-| 제단 이미지 | 기존 정본 원화의 링 중심(577,376.89)·반경246~248px만 초기화 때 알파 마스킹한다. 원본파일/원화 바이트 변경0. 기존 사각 배경·바깥 입자 crop는 표시하지 않는다 | 실제 GPU ReadPixels/마스크 최종 검수 필요 |
+| 제단 이미지 | 부모가 원본 RGB를 보존하고 배경 키로 컷아웃한 `altar_lmb_clean.png`·`altar_none_clean.png`를 Resources에서 직접 읽는다. 런타임 AltarRing/Graphics.Blit/ReadPixels 마스크는 최종 Player 색 어두워짐·검은 원반 결함으로 제거. 원본 RGB 감마변환0 | 새 최종 union Player에서 색·외곽 재검수 필요 |
 | 제단 배치 | 일반화면 x333/w=화면폭−384, 21:9이상 중앙최대1800폭. y308.1875/h658.8125, 핵중심 y676.2656. 구슬은 기존 정의의 핵대비 상대거리/58px 유지. 제단 이미지와 글자를 함께 축소하지 않음 | 1920·2560·3840 필요 |
 | 설명판 | x51/y308.1875/w270, padding20/22/18. 아이콘56, 이름28px·Bold, Hahmlet400본문16px/행간28px·내용폭224. Lv13px. 내용이 몸체658.8125를 넘으면 내부 스크롤/clip | 첫 후보의 작은글자/부족한 본문높이 수정 |
 | 원가/해금/정보버튼 | 원가행43px(상하10px), 같은줄오른쪽 해금안내. 버튼까지16px, 버튼40px/폭68.453125·67.015625·64/간격10. 같은 공용 액션원화를 edge22/outset6으로 표시. 자원줄paddingTop12·height37 | SP/LV/실제 원장 동작 유지 |
@@ -141,3 +141,12 @@
 | 하단 | 실제 Hahmlet16 텍스트너비+양쪽30px, 간격12px로 중앙정렬, y998/h40. 원화edge28/outset6. 일괄6종·추천disabled와 사유 유지 | 42종/합체 전체지원 주장은 없음 |
 
 독립 Runtime 컴파일: third/skill/art-fix.compile-retry.log exit0/오류0/기존경고47. 최초 실행은 부모의 이전 rsp가 최신 UiSoundCapture.Lobby.cs를 누락해 사운드symbol2오류였고, 제품코드 변경 없이 입력목록만 추가한 1회 재검사에서 통과했다. 실제 Win64/최종 Player 판정은 부모가 같은 union build에서 수행한다. 이 절은 최종 시각 PASS 영수증이 아니다. Core/Save/NativeGame/사운드/정책 파일은 이 재작업에서 수정0.
+
+
+### 3차 최종 Player 후속 — 제단 원본 RGB 보존
+
+최종 실물에서 GPU ReadPixels 기반 링 복사가 원화보다 어둡고 외곽을 검은 원반처럼 보이게 한 결함을 확인했다. `NativeSkills.Init`은 부모가 준비하는 정본 RGB 보존 컷아웃 `Art/ui/skill/altar_lmb_clean`·`altar_none_clean`를 직접 로드하며 런타임 `AltarRing` 함수를 삭제했다. 제단 배치·크기·구슬·UI 동작·Core·정책은 그대로다. 컷아웃 에셋 생성/알파 검수와 최종 Player 확인은 부모 담당이다. 기존 GPU 마스크 후보를 최종 시각 PASS로 사용하지 않는다.
+
+후속 독립 Runtime 컴파일: `third/skill/clean-altar.compile.log` 종료0/오류0/기존경고32.Unity·Player·Git 실행0.
+
+제단clean2PNG는원본1154×671 RGB변경0, 알파만수정한다. 중심(577,376.89), r216이내보존/r248이상제거, 바깥붉은배경색키로가시실루엣보존. GPU읽기/감마변환/축소/노이즈추가0. unity/Tools/skill-ui-tests/build-altar-cutout.cjs와 third/skill/altar-alpha-only.json 참조. 실제최종Player에서색/가시를다시확인한다.

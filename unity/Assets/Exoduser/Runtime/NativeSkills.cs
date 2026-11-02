@@ -75,7 +75,7 @@ namespace Exoduser.UnityPort {
    serif=NativeSilverHellUi.Font(true)??Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular");cinzel=Resources.Load<Font>("Art/fonts/CinzelDecorative-Bold")??serif;latinFont=Resources.Load<Font>("Art/fonts/Cinzel-400")??serif;
    sans=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular");sansSemi=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold")??sans;
    windowBase=Tex("Art/ui/skill/window_base");altarLmb=Tex("Art/ui/skill/altar_lmb");altarNone=Tex("Art/ui/skill/altar_none");discEmpty=Tex("Art/ui/skill/disc_empty");discEmptySel=Tex("Art/ui/skill/disc_empty_sel");discLmb=Tex("Art/ui/skill/disc_lmb");discLmbSel=Tex("Art/ui/skill/disc_lmb_sel");
-   plate=Tex("Art/ui/inventory/plate");altarRingLmb=AltarRing(altarLmb);altarRingNone=AltarRing(altarNone);
+   plate=Tex("Art/ui/inventory/plate");altarRingLmb=Tex("Art/ui/skill/altar_lmb_clean");altarRingNone=Tex("Art/ui/skill/altar_none_clean");
   }
   static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
   static void Border(Rect r,Color c,float w=1){Fill(new Rect(r.x,r.y,r.width,w),c);Fill(new Rect(r.x,r.yMax-w,r.width,w),c);Fill(new Rect(r.x,r.y+w,w,r.height-2*w),c);Fill(new Rect(r.xMax-w,r.y+w,w,r.height-2*w),c);}
@@ -191,12 +191,6 @@ namespace Exoduser.UnityPort {
     if(SelectedSlot<13)DrawAltar(lmb,level);else{var intrinsic=SelectedSlot==13?Tex("Art/ui/skill/roll_boots"):OrbIcon(SelectedSlot==14?"execution":"fanShot",false);if(intrinsic!=null)NativeUiAudit.DrawTexture(new Rect(altarCenter.x-48,altarCenter.y-48,96,96),intrinsic,ScaleMode.ScaleToFit,true);Text(new Rect(altarCenter.x-250,altarCenter.y+65,500,34),roleNames[SelectedSlot]+" · "+SlotKey(SelectedSlot),serif,22,C(217,214,208),FontStyle.Normal,0,TextAnchor.MiddleCenter);Text(new Rect(altarCenter.x-250,altarCenter.y+105,500,26),SelectedSlot==15?"전용":"고정 기술은 교체할 수 없습니다",serif,14,C(150,153,153),FontStyle.Normal,0,TextAnchor.MiddleCenter);}
     GUI.matrix=NativeUiViewport.RightMatrix;if(HasRoad())DrawRoad(lmb);GUI.matrix=centerMatrix;DrawBottom(close);GUI.enabled=enabled;if(pendingResetId!=null)DrawResetConfirmation();
    } finally {GUI.matrix=old;GUI.color=color;GUI.enabled=enabled;}
-  }
-  Texture2D AltarRing(Texture2D source){
-   if(source==null)return null;var previous=RenderTexture.active;var rt=RenderTexture.GetTemporary(source.width,source.height,0,RenderTextureFormat.ARGB32,RenderTextureReadWrite.sRGB);
-   try{Graphics.Blit(source,rt);RenderTexture.active=rt;var copy=new Texture2D(source.width,source.height,TextureFormat.RGBA32,false){filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp};copy.ReadPixels(new Rect(0,0,source.width,source.height),0,0);var px=copy.GetPixels32();
-    for(int y=0;y<copy.height;y++)for(int x=0;x<copy.width;x++){float radius=Mathf.Sqrt((x-577)*(x-577)+(y-(copy.height-376.89f))*(y-(copy.height-376.89f)));var p=px[y*copy.width+x];p.a=(byte)Mathf.RoundToInt(p.a*Mathf.Clamp01((248-radius)/2));px[y*copy.width+x]=p;}copy.SetPixels32(px);copy.Apply(false,true);return copy;
-   }finally{RenderTexture.active=previous;RenderTexture.ReleaseTemporary(rt);}
   }
   static float Fract(float x){return x-Mathf.Floor(x);}static float SmokeHash(float x,float y){return Fract(Mathf.Sin(x*127.1f+y*311.7f)*43758.5453f);}
   static float SmokeNoise(float x,float y){float ix=Mathf.Floor(x),iy=Mathf.Floor(y),fx=Fract(x),fy=Fract(y);fx=fx*fx*(3-2*fx);fy=fy*fy*(3-2*fy);return Mathf.Lerp(Mathf.Lerp(SmokeHash(ix,iy),SmokeHash(ix+1,iy),fx),Mathf.Lerp(SmokeHash(ix,iy+1),SmokeHash(ix+1,iy+1),fx),fy);}

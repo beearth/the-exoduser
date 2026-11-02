@@ -7,21 +7,21 @@ namespace Exoduser.UnityPort {
   readonly NextStageDifficultyPolicy policy=new NextStageDifficultyPolicy();
   static readonly string[] ko={"안식","순례","여정","시련","재앙"},en={"Respite","Pilgrimage","Journey","Ordeal","Calamity"};
   static readonly int[] artIds={9,7,11,15,19};
-  readonly Texture2D[] art=new Texture2D[5];readonly RenderTexture[] dim=new RenderTexture[5],hoverArt=new RenderTexture[5];
-  Material dimMaterial;Texture2D glow,line;readonly Texture2D[] buttons=new Texture2D[2];Action<int> proceed;Action back;bool initialized,keyReady;int focus;string language="ko";
+  readonly Texture2D[] art=new Texture2D[5],dim=new Texture2D[5],hoverArt=new Texture2D[5];
+  Texture2D glow,line;readonly Texture2D[] buttons=new Texture2D[2];Action<int> proceed;Action back;bool initialized,keyReady;int focus;string language="ko";
   public bool Active=>policy.Active;public int SelectedIndex=>policy.SelectedIndex;public int ConfirmedOffset=>policy.ConfirmedOffset;
   public void Show(int previousOffset,string locale,Action<int> confirm,Action cancel){language=locale??"ko";proceed=confirm;back=cancel;policy.Show(previousOffset);keyReady=false;focus=1;}
   public void Pick(int index){policy.Pick(index);}
   public bool Confirm(){if(!policy.Confirm())return false;var action=proceed;proceed=null;back=null;NativeDecisionSound.Play("difficulty");action?.Invoke(policy.ConfirmedOffset);return true;}
   public void Cancel(){if(!Active)return;policy.Cancel();var action=back;proceed=null;back=null;action?.Invoke();}
   string L(string a,string b)=>language=="ko"?a:b;
-  void Init(){if(initialized)return;initialized=true;var shader=Resources.Load<Shader>("Shaders/DifficultyCard");if(shader!=null)dimMaterial=new Material(shader);
-   for(int i=0;i<5;i++){art[i]=Resources.Load<Texture2D>("Art/Loading/"+artIds[i].ToString("00"));if(art[i]==null||dimMaterial==null)continue;int w=Mathf.Min(512,art[i].width),h=Mathf.Max(1,Mathf.RoundToInt(w*art[i].height/(float)art[i].width));dim[i]=new RenderTexture(w,h,0,RenderTextureFormat.ARGB32,RenderTextureReadWrite.Linear){name="Web difficulty grayscale "+i,filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp};dim[i].Create();dimMaterial.SetFloat("_Gray",1);dimMaterial.SetFloat("_Brightness",.62f);dimMaterial.SetFloat("_Contrast",1.05f);BlitLinear(art[i],dim[i]);hoverArt[i]=new RenderTexture(w,h,0,RenderTextureFormat.ARGB32,RenderTextureReadWrite.Linear){name="Web difficulty hover "+i,filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp};hoverArt[i].Create();dimMaterial.SetFloat("_Gray",.4f);dimMaterial.SetFloat("_Brightness",.85f);dimMaterial.SetFloat("_Contrast",1);BlitLinear(art[i],hoverArt[i]);}
+  void Init(){if(initialized)return;initialized=true;
+   // Pre-filtered lossless sRGB PNGs preserve dark detail through the standard GUI texture path.
+   // Two GPU ARGB32 cache candidates failed actual Player review (double decode, then dark-linear quantization).
+   for(int i=0;i<5;i++){string id=artIds[i].ToString("00");art[i]=Resources.Load<Texture2D>("Art/Loading/"+id);dim[i]=Resources.Load<Texture2D>("Art/Loading/Difficulty/"+id+"-dim");hoverArt[i]=Resources.Load<Texture2D>("Art/Loading/Difficulty/"+id+"-hover");if(dim[i]==null||hoverArt[i]==null)Debug.LogWarning("Difficulty filtered artwork missing: "+id);}
    glow=NativeSilverHellUi.Effect(128,128,(u,v)=>new Color(194/255f,26/255f,16/255f,.32f*Mathf.Clamp01(1-Mathf.Max(Mathf.Abs(u-.5f),Mathf.Abs(v-.5f))*2)));
    line=NativeSilverHellUi.Effect(128,1,(u,v)=>new Color(155/255f,158/255f,158/255f,.62f*u));
   }
-  // CSS filters operate in sRGB; the shader converts that result back to linear. The cache must not decode it a second time.
-  void BlitLinear(Texture source,RenderTexture target){bool old=GL.sRGBWrite;try{GL.sRGBWrite=false;Graphics.Blit(source,target,dimMaterial);}finally{GL.sRGBWrite=old;}}
   static bool InButton(float x,float y,float w,float h){if(x<0||y<0||x>w||y>h)return false;float cut=12*Mathf.Abs(y-h/2)/(h/2);return x>=cut&&x<=w-cut;}
   static Color Over(Color below,Color above){float a=above.a+below.a*(1-above.a);return a<=0?Color.clear:new Color((above.r*above.a+below.r*below.a*(1-above.a))/a,(above.g*above.a+below.g*below.a*(1-above.a))/a,(above.b*above.a+below.b*below.a*(1-above.a))/a,a);}
   Texture2D ButtonFace(bool primary){int k=primary?1:0;if(buttons[k]!=null)return buttons[k];buttons[k]=NativeSilverHellUi.Effect(496,80,(u,v)=>{float x=u*248,y=v*40;if(!InButton(x,y,248,40))return Color.clear;Color c=primary?new Color(207/255f,204/255f,198/255f):new Color(155/255f,158/255f,158/255f,.62f);if(InButton(x-1,y-1,246,38))c=new Color(11/255f,12/255f,13/255f);if(InButton(x-4,y-4,240,32))c=Over(c,new Color(230/255f,227/255f,220/255f,.13f));if(InButton(x-5,y-5,238,30)){Color face;if(primary){float d=Mathf.Sqrt(Mathf.Pow((x-124)/(238*.7f),2)+Mathf.Pow((y-20)/(30*1.2f),2));face=d<=.6f?Color.Lerp(new Color(194/255f,26/255f,16/255f,.42f),new Color(60/255f,10/255f,8/255f,.55f),d/.6f):Color.Lerp(new Color(60/255f,10/255f,8/255f,.55f),new Color(18/255f,7/255f,7/255f),Mathf.Clamp01((d-.6f)/.4f));}else face=Color.Lerp(new Color(22/255f,24/255f,26/255f),new Color(12/255f,13/255f,14/255f),(y-5)/30);c=Over(c,face);}return c;});return buttons[k];}
@@ -43,6 +43,6 @@ namespace Exoduser.UnityPort {
   }finally{GUI.matrix=matrix;GUI.color=color;GUI.enabled=enabled;GUI.depth=depth;}}
   void DrawButton(Rect r,string text,bool primary,bool selected,Action action){bool hover=r.Contains(Event.current.mousePosition);var color=GUI.color;if(hover)GUI.color=new Color(1.18f,1.18f,1.18f,color.a);NativeUiAudit.DrawTexture(r,ButtonFace(primary));GUI.color=color;Label(r,text,15,primary?NativeSilverHellUi.Bright:NativeSilverHellUi.Text,2.4f);if(NativeUiAudit.Button(r,GUIContent.none,GUIStyle.none))action();}
   void HandleKeys(){var e=Event.current;if(!keyReady){if(!ExoInput.Key(KeyCode.Return)&&!ExoInput.Key(KeyCode.KeypadEnter)&&!ExoInput.Key(KeyCode.Space)&&!ExoInput.Key(KeyCode.Escape))keyReady=true;return;}if(e.type!=EventType.KeyDown||e.isKey==false)return;if(e.keyCode==KeyCode.LeftArrow||e.keyCode==KeyCode.A)Pick(SelectedIndex-1);else if(e.keyCode==KeyCode.RightArrow||e.keyCode==KeyCode.D)Pick(SelectedIndex+1);else if(e.keyCode==KeyCode.Tab)focus=1-focus;else if(e.keyCode==KeyCode.Escape)Cancel();else if(e.keyCode==KeyCode.Return||e.keyCode==KeyCode.KeypadEnter||e.keyCode==KeyCode.Space){if(focus==0)Cancel();else Confirm();}else return;e.Use();}
-  public void Dispose(){foreach(var rt in dim)if(rt!=null){rt.Release();UnityEngine.Object.Destroy(rt);}foreach(var rt in hoverArt)if(rt!=null){rt.Release();UnityEngine.Object.Destroy(rt);}if(dimMaterial!=null)UnityEngine.Object.Destroy(dimMaterial);if(glow!=null)UnityEngine.Object.Destroy(glow);if(line!=null)UnityEngine.Object.Destroy(line);foreach(var face in buttons)if(face!=null)UnityEngine.Object.Destroy(face);}
+  public void Dispose(){if(glow!=null)UnityEngine.Object.Destroy(glow);if(line!=null)UnityEngine.Object.Destroy(line);foreach(var face in buttons)if(face!=null)UnityEngine.Object.Destroy(face);}
  }
 }

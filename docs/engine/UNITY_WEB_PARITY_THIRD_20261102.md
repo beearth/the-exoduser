@@ -24,3 +24,5 @@
 최신웹 실물에서 강화미선택 안내는(x746,y492.390625,w650,h20)이다. Native 가상좌표 y588.4→실화면492.4로수정해 카드520.4에가려지던문구를복원했다. 근거 third/web-final-panels/forge-hint.json.
 
 첫 Player d80a4898는 실제76PNG/3해상도·지원기능14검사 PASS, 버전0.7.11확인. 시각결함을수정해 최종별도패키지를검수한다. 웹 최종패널 browser65107b31은제품API경로로9PNG/3해상도,ok=true/창0/잔여0/USER_SAVE0. 제공소스a4d48922, UI독립6파일은시작9c50와동일이고 game.html의renderForge함수범위는동일(정확길이56654; third/forge-source-section-proof.json). 최초연결거부ac78c17e는실패로보존하고 자기격리서버HTTP200확인뒤1회재실행했다.
+
+최종 후보90a72eb4의 M1 9f9dccf7은23/23, UI67c9a925는76PNG/기능14 PASS다. 난이도 linear8bit 캐시의 검은 블록·잔점을 실제 화면에서 발견하여 VISUAL FAIL·미반영으로 유지했다. GPU512폭 캐시는09/07 파노라마를 높이144로 축소해300px 카드에 확대하는 해상도 손실도 있었다. 원본 규격의 CSS sRGB8bit 무손실PNG10개로 방법을 변경하고 미사용 DifficultyCard.shader를 제거했다. build-filtered-art.cjs가 grayscale/brightness/contrast를 배정밀도로 계산하며 noise/resize0이다. 근거 third/difficulty/lossless-filtered-art.json. 새 최종 패키지 검수가 필요하다.
