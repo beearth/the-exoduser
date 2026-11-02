@@ -17012,6 +17012,47 @@ let G={on:false,paused:false,stage:0,kills:0,mats:0,cam:{x:0,y:0},shake:0,parts:
   _zones:null,_curZone:0,_zoneState:{},_portals:null,_playerPortalPair:null}; // 존 분할 시스템
 let P=null,ens=[],projs=[],pProjs=[],worldItems=[];// worldItems = items on ground, pProjs = player arrows
 const _levelUpVfx=window.LevelUpVfx.create();
+function _chestLootPositions(cx,cy,count,clear,occupied=[]){
+  const slots=[],candidates=[];
+  const reachable=(x,y)=>{
+    if(!clear(x,y))return false;
+    const steps=Math.ceil(Math.hypot(x-cx,y-cy)/20);
+    for(let i=1;i<steps;i++)if(!clear(cx+(x-cx)*i/steps,cy+(y-cy)*i/steps))return false;
+    return true;
+  };
+  const add=(radius,degrees)=>{
+    const angle=degrees*Math.PI/180,x=cx+Math.cos(angle)*radius,y=cy+Math.sin(angle)*radius;
+    if(Math.abs(x-cx)<86&&y-cy>-156&&y-cy<40)return;
+    if(reachable(x,y))candidates.push({x,y});
+  };
+  for(let i=0;i<count;i++)add(150,count===1?90:25+130*i/(count-1));
+  for(const radius of [150,190,230,270])for(let angle=0;angle<360;angle+=15)add(radius,angle);
+  for(const gap of [64,48,32,0]){
+    for(const point of candidates){
+      if(slots.length>=count)return slots;
+      if(slots.some(p=>Math.hypot(p.x-point.x,p.y-point.y)<Math.max(1,gap)))continue;
+      if(occupied.some(p=>Math.hypot(p.x-point.x,p.y-point.y)<gap))continue;
+      slots.push(point);
+    }
+  }
+  // Extremely confined maps must retain every reward even when no separated floor is reachable.
+  while(slots.length<count)slots.push(candidates[slots.length%candidates.length]||{x:cx,y:cy});
+  return slots;
+}
+function _chestDropPose(it){
+  const flight=it._chestDrop;
+  if(!flight)return {visible:true,x:it.x,y:it.y};
+  if(flight.age<flight.delay)return {visible:false,x:flight.fromX,y:flight.fromY};
+  const t=Math.min(1,(flight.age-flight.delay)/flight.duration);
+  return {visible:true,x:flight.fromX+(it.x-flight.fromX)*t,y:flight.fromY+(it.y-flight.fromY)*t-Math.sin(Math.PI*t)*flight.height};
+}
+function _tickChestDrops(dt){
+  for(const it of worldItems){
+    if(!it._chestDrop)continue;
+    it._chestDrop.age+=dt;
+    if(it._chestDrop.age+1e-9>=it._chestDrop.delay+it._chestDrop.duration)delete it._chestDrop;
+  }
+}
 function _wiPush(wi){worldItems.push(wi);if(wi.type==='item'&&wi.item&&!wi._dropPreview)playItemDropSfx(wi.item.rarity||0,wi.x,wi.y);while(worldItems.length>20){let mi=0,mr=Infinity;for(let i=0;i<worldItems.length;i++){const r=worldItems[i].type==='chest'&&!worldItems[i].picked&&!worldItems[i].opened?Infinity:worldItems[i].type==='item'?(worldItems[i].item?worldItems[i].item.rarity||0:0):-1;if(r<mr){mr=r;mi=i}}worldItems[mi]=worldItems[worldItems.length-1];worldItems.length--}}
 function _spawnWorldDropPreview(){
   if(!_DROP_PREVIEW||!P)return;
@@ -32453,6 +32494,7 @@ function update(){
     else{addTxt(P.x,P.y-30,_T('기동칼날개 AUTO OFF'),'#886688',40)}
   }
   if(G.paused)return;
+  _tickChestDrops(_dtSp/60);
   // null 엔트리 정리 (mkEn 실패 등)
   for(let _ni=ens.length-1;_ni>=0;_ni--){if(!ens[_ni])ens.splice(_ni,1)}
   // 백그라운드 초기화는 update() 끝에서 버짓 기반 처리 (게임 로직 스킵 안 함)
@@ -33185,6 +33227,7 @@ function update(){
         addParts(it.x,it.y,'#ffcc00',16);addParts(it.x,it.y,'#ffaa00',10);
         // 장비 3~5개 드롭 (보스급 레어리티)
         const cnt=3+~~(Math.random()*3);
+        const landings=_chestLootPositions(it.x,it.y,cnt,(x,y)=>canMv(x,y,18),worldItems.filter(w=>w.type==='item'&&!w.picked));
         for(let ci=0;ci<cnt;ci++){
           const slot=SLOT_NAMES[~~(Math.random()*SLOT_NAMES.length)];
           const el=[EL.P,EL.F,EL.I,EL.D,EL.L,EL.H][~~(Math.random()*6)];
@@ -33192,7 +33235,8 @@ function update(){
           const leg=Math.min(.15+stgB*.5,.40);const hero=Math.min(.25+stgB*.4,.35);
           const rr=Math.random();const rar=rr<leg?4:rr<leg+hero?3:rr<leg+hero+.30?2:1;
           const item=mkItem(slot,0,el,rar);
-          _wiPush({x:it.x+(Math.random()-.5)*50,y:it.y+(Math.random()-.5)*50,type:'item',item,picked:false});
+          const jumpHeight=Math.random(),jumpTime=Math.random(); // Preserve the original two position RNG calls.
+          _wiPush({x:landings[ci].x,y:landings[ci].y,type:'item',item,picked:false,_chestDrop:{fromX:it.x,fromY:it.y-35,age:0,delay:.55+ci*.06,duration:.42+jumpTime*.08,height:38+jumpHeight*14}});
         }
         // 추가 보상: 악의 + 물약
         const matBonus=5+~~(G.stage*2);G.mats+=matBonus;
@@ -33255,7 +33299,7 @@ function update(){
     // 장비 아이템 줍기 — R키: 화면 내 가장 높은 등급 1개 픽업 (동급이면 가까운 것)
     if(!chestOpened){
       let _bestWi=-1,_bestD=1e9,_bestR=-1;
-      for(let _wi=0;_wi<worldItems.length;_wi++){const it=worldItems[_wi];if(it.type!=='item'||it.picked)continue;
+      for(let _wi=0;_wi<worldItems.length;_wi++){const it=worldItems[_wi];if(it.type!=='item'||it.picked||it._chestDrop)continue;
         const _sx=it.x-G.cam.x,_sy=it.y-G.cam.y;if(_sx<-VW/2-40||_sx>VW/2+40||_sy<-VH/2-40||_sy>VH/2+40)continue;
         const _r=it.item?it.item.rarity||0:0;const d=dst(P.x,P.y,it.x,it.y);if(_r>_bestR||(_r===_bestR&&d<_bestD)){_bestR=_r;_bestD=d;_bestWi=_wi}
       }
@@ -33281,7 +33325,7 @@ function update(){
     if(P._pickHoldT>=9){P._pickHoldT=0;
       // 장비 — 높은 등급 우선 (동급이면 가까운 것)
       let _hBi=-1,_hBd=1e9,_hBr=-1;
-      for(let _wi=0;_wi<worldItems.length;_wi++){const it=worldItems[_wi];if(it.type!=='item'||it.picked)continue;
+      for(let _wi=0;_wi<worldItems.length;_wi++){const it=worldItems[_wi];if(it.type!=='item'||it.picked||it._chestDrop)continue;
         const _sx=it.x-G.cam.x,_sy=it.y-G.cam.y;if(_sx<-VW/2-40||_sx>VW/2+40||_sy<-VH/2-40||_sy>VH/2+40)continue;
         const _r=it.item?it.item.rarity||0:0;const d=dst(P.x,P.y,it.x,it.y);if(_r>_hBr||(_r===_hBr&&d<_hBd)){_hBr=_r;_hBd=d;_hBi=_wi}
       }
@@ -52942,10 +52986,12 @@ function draw(){
       }
     }
     else if(it.type==='item'){
+      const flightPose=_chestDropPose(it);if(!flightPose.visible)continue;
+      X.save();X.translate(flightPose.x-it.x,flightPose.y-it.y);
       // Equipment drop — 인벤토리 스킨 + 제공된 룬 빛기둥 아틀라스
       const item=it.item;
       const _beamTier=_getWorldDropBeamTier(item);
-      if(_beamTier>0){
+      if(_beamTier>0&&!it._chestDrop){
         const _pillarFrame=~~((_now/180+it.x)%2);
         const _fx=_worldDropFxTile(_pillarFrame,_beamTier-1);
         const _fxDrawW=60,_fxDrawH=160;
@@ -52956,6 +53002,7 @@ function draw(){
       const _dropSz=34;const _skin=_worldItemSkin(item);
       const _dropX=it.x-_dropSz*.58,_dropY=it.y+b-_dropSz*.82;
       X.save();X.globalCompositeOperation='source-over';X.globalAlpha=1;X.shadowColor='rgba(0,0,0,.9)';X.shadowBlur=6;X.shadowOffsetY=2;if(_skin){X.drawImage(_skin,_dropX-_dropSz/2,_dropY-_dropSz/2,_dropSz,_dropSz);}else{X.font='19px sans-serif';X.fillText(item.emoji,_dropX,_dropY);}X.restore();
+      X.restore();
     }
     else if(it.type==='chest'){
       const glow=.5+Math.sin(_now/350)*.4;
