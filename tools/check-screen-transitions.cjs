@@ -7,6 +7,7 @@ const gameOnly=String(process.argv[4]||'').startsWith('game');
 const dir=path.join(out,phase+'-'+width+(gameOnly?'-'+process.argv[4]:'')),base='http://127.0.0.1:3462';fs.mkdirSync(dir,{recursive:true});
 process.env.TEMP=out;process.env.TMP=out;
 const receipt={phase,width,height,source:cp.execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),errors:[],rows:[],fixture:'격리 DEMO 생성·실제 UI. 끝부분 seek, 스테이지/사망 상태 fixture는 행에 표시. 자연 전체 완주 아님.'};
+receipt.inputs=Object.fromEntries(['index.html','game.html','screen-transition.js','screen-transition.css'].map(f=>[f,require('node:crypto').createHash('sha256').update(fs.readFileSync(path.join(root,f))).digest('hex')]));
 const save=()=>fs.writeFileSync(path.join(dir,'receipt.json'),JSON.stringify(receipt,null,2));
 (async()=>{
  const browser=await chromium.launch({headless:true,args:['--mute-audio'],env:{...process.env,TEMP:out,TMP:out}});
