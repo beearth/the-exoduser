@@ -192,6 +192,8 @@ namespace Exoduser.UnityPort
             if(WaitForFrontendEntryInput())return;
             if(traceInventoryKeys)TraceInventoryKeys();
             if(!gameFocused){Running=false;return;}
+            // Web nextDiffPop consumes its keys before background window handlers.
+            if(nextDifficulty.Active){UpdateViews();return;}
             if(a15DirectReview&&HandleA15DirectKeys())return;
             if(HandlePanelHotkeys())return;
             // Web stat window: ESC blurs the search box first, then closes; K/TAB switch straight to skills/inventory (not while typing).

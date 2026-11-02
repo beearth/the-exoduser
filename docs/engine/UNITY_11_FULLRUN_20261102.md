@@ -114,3 +114,9 @@ NativeGame의 실제 StageClear→난이도 선택→CombatSave→로비 연결,
 아레나 전환 시 hazard 정리, 파괴된 HD2D actor 정리를 정적으로 확인했다.
 이 사실은 화면·입력·저장·자연 완주 통과를 뜻하지 않는다. 최신 QA 수정 포함
 Core117/Runtime219 소스 정적 컴파일 exit0이며 정식 Unity 결과는 별도로 남긴다.
+
+클리어 난이도 모달이 열린 동안 `NativeGame.Update`가 배경 패널 hotkey와 ESC를
+먼저 처리하던 UI-01도 실제 Update 입력 경계 추출 검사에서 재현했다(3개 중1실패).
+웹 `_ndKey`의 capture 소비처럼 모달 활성 중에는 배경 핸들러 앞에서 반환한다.
+기본 입력과 비활성 창 처리까지 3/3 통과했다. 모달 그림/정책/Core 변경은 없고
+실제 Player의 ESC/선택/확정·취소 입력 검수는 대기 중이다.
