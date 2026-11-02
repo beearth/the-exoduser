@@ -52950,6 +52950,7 @@ function draw(){
     {const _moM=(_OBJ_META[mo.type]&&_OBJ_META[mo.type].sz>200)?_OBJ_META[mo.type].sz:0;
     if(mo.x<_wvl-_moM||mo.x>_wvr+_moM||mo.y<_wvt-_moM||mo.y>_wvb+_moM)continue;}
     // [DEPTH-SLICE] 밑동이 플레이어보다 남쪽인 tall 오브젝트는 엔티티 뒤 프런트 패스로 이월 (MAP-001)
+    if(window._Web3DLivingLayer?.deferObject?.(mo))continue;
     if(_dsOn&&_dsIsFrontObj(mo)){_dsFrontObjs.push(mo);continue}
     _drawMapObjOne(mo,_hellWinterTone);
   }
@@ -54920,6 +54921,7 @@ function draw(){
   _levelUpVfx.draw(X,P,G.stage,false,IS_MOBILE||OPT.quality==='low');
   drawP();
   if(_dsOn&&_dsFrontObjs.length)_dsDrawFrontPass(); // [DEPTH-SLICE] 플레이어 앞(남쪽 밑동) tall 오브젝트 + 캐노피 가림 페이드
+  window._Web3DLivingLayer?.front?.(X,(ctx,mo)=>{const _savedX=X;X=ctx;try{_drawMapObjOne(mo,false);}finally{X=_savedX;}});
   if(globalThis.Ch1BorderForeground)Ch1BorderForeground.drawFront(X,G,_now,VW,VH); // [DEPTH-SLICE2] 경계 전경 오버행(나무 9+군락) — 엔티티 위
   _drawPhysicalBites();
   _levelUpVfx.draw(X,P,G.stage,true,IS_MOBILE||OPT.quality==='low');
@@ -66028,7 +66030,7 @@ if(window._FDGDruidQaStorage?.active&&new URLSearchParams(location.search).get('
 
 <script type="module">
 if(new URLSearchParams(location.search).get('r3d')==='1'&&new URLSearchParams(location.search).get('r3dLegacy')!=='1'){
-  import('./web3d/living-layer.mjs?v=20261102-round3-final3').then(m=>m.install(()=>({G,P,objects:MAP_OBJS,images:_OBJ_SPR,meta:_OBJ_META,ground:_ch1StartOuterCache,hill:_CH1_HILL,tile:T,now:_now,quality:OPT.quality,enemies:ens,projectiles:[...projs,...pProjs],blasts:[..._fireExps,..._impacts],frame:C,flush:_glFlush}))).then(api=>{window._Web3DLivingLayer=api;}).catch(error=>{window._Web3DLivingLayerError=error.message;console.error('[WEB3D living layer unavailable]',error);});
+  import('./web3d/living-layer.mjs?v=20261102-round4-depth1').then(m=>m.install(()=>({G,P,objects:MAP_OBJS,images:_OBJ_SPR,meta:_OBJ_META,ground:_ch1StartOuterCache,hill:_CH1_HILL,tile:T,now:_now,quality:OPT.quality,enemies:ens,projectiles:[...projs,...pProjs],blasts:[..._fireExps,..._impacts],frame:C,flush:_glFlush}))).then(api=>{window._Web3DLivingLayer=api;}).catch(error=>{window._Web3DLivingLayerError=error.message;console.error('[WEB3D living layer unavailable]',error);});
 }
 if(new URLSearchParams(location.search).get('r3d')==='1'&&new URLSearchParams(location.search).get('r3dLegacy')==='1'){
   const {renderFrame,advancePresentation}=await import('./web3d/presentation.mjs?v=20261031-main2');

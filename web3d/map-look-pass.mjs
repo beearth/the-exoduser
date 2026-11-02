@@ -3,6 +3,7 @@ import {mapLookLayout,holeLights,effectLights,renderEnergy,presentationRadius,fo
 import {seeded,applyAffine} from './living-layout.mjs';
 import {lightingGLSL} from './lighting-model.mjs?v=20261102-budget2';
 import {createFrameSampler} from './frame-sampler.mjs';
+import {shadowVector} from './depth-layout.mjs';
 
 // A snapshot of the native environment BEFORE actors/VFX/HUD is the albedo.
 // Lighting never substitutes terrain art or recolors an actor sprite.
@@ -58,8 +59,10 @@ export function createMapLook(renderer,canvas,shared,data,anchors){
   for(const p of plan.shadows){const [x,y]=p.position,[w,h]=p.draw_size;if(!visible(x,y,Math.max(w,h),view))continue;const im=s.images[p.id];if(!im?.naturalWidth)continue;
    const c=stamp(im,data.prop_shadow.blur_px,'#030305',shadowStamps),upright=data.prop_shadow.upright_textures.includes(p.texture.split('/').pop());
    ctx.save();ctx.globalAlpha=data.prop_shadow.tint[3]*.7;
-   if(upright){ctx.translate(x+w*.05,y+h*.5);applyAffine(ctx,1,0,.62,-.42);ctx.drawImage(c,-w*.5,-h*.5,w,h);}
-   else ctx.drawImage(c,x-w*p.pivot[0]+w*.08,y-h*p.pivot[1]+h*.06,w,h);
+   const light=plan.lights.filter(l=>l.shadow&&Math.hypot(x-l.position[0],y-l.position[1])<presentationRadius(l)).sort((a,b)=>Math.hypot(x-a.position[0],y-a.position[1])-Math.hypot(x-b.position[0],y-b.position[1]))[0];
+   const [dx,dy]=shadowVector([x,y],light?.position||[s.P.x,s.P.y-20]);
+   if(upright){ctx.translate(x,y+h*.5);applyAffine(ctx,1,0,dx*.88,-Math.max(.12,Math.abs(dy)*.6));ctx.drawImage(c,-w*.5,-h*.5,w,h);}
+   else ctx.drawImage(c,x-w*p.pivot[0]+dx*w*.11,y-h*p.pivot[1]+dy*h*.09,w,h);
    ctx.restore();n++;
   }
   // Root occlusion follows the nearest shadow-casting player/camp light.
@@ -111,5 +114,5 @@ export function createMapLook(renderer,canvas,shared,data,anchors){
     drawDot(sh.position[0]+a*co-b*si,sh.position[1]+a*si+b*co,1.1,'#d5ceb5',Math.sin(age*Math.PI)*.19);}
   }stats.particles=count;
  }
- return {surface:(ctx,s,v)=>{foreground(ctx,s,v);shadows(ctx,s,v);},draw,motes,snapshot:()=>({...stats})};
+ return {surface:(ctx,s,v)=>{foreground(ctx,s,v);shadows(ctx,s,v);},draw,motes,uniforms:u,snapshot:()=>({...stats})};
 }
