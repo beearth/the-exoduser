@@ -46,3 +46,5 @@ Unity 반영: 대기(미반영).
 | 같은 전체 경계 | 움직임 | 인장2초/.35~.9 호흡, 영상끝.6초 검정, 감소설정80ms/정지인장 | 없음 | 미이식 |
 
 웹1920/3840 전후 무음10초 영상·실제 브라우저 계약·원격 상태는 transitions/REPORT.md. Unity 반영: 대기(미반영); 기존 unity-parity-1102-brief 말미에 동일 계약 인계.
+
+11-02 23시 전환 인장2차 RETOUCH 수정: 웹 원화 img/ui/silver_hell/gate_sigil_loading.png(1520²RGBA), red-only gate_sigil_loading_embers.png,9.5vh·2초 균열 호흡. 두 HTML 부트에도 동일2레이어. 위치·300ms·1000ms·감소모션 계약 유지. Unity SHA 미반영/판정 미이식, 기존 parity 담당5차 인계. 웹 증거transitions/r3/ 및 REPORT.md.

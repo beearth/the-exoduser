@@ -1,12 +1,18 @@
-/* Approved gate artwork, reduced to a small quiet stamp; no new illustration. */
-#screenLoadingSigil{position:fixed;z-index:2147483647;pointer-events:none;right:max(48px,4.5vh);bottom:max(48px,4.5vh);width:6vh;height:6vh;mix-blend-mode:screen;background:#000 url('img/ui/silver_hell/gate_sigil_20261028.jpg') center/auto 100% no-repeat;opacity:0;filter:brightness(4) drop-shadow(0 0 5px rgba(145,22,15,.28));}
-html[data-screen-pending] #screenLoadingSigil{animation:screenSigilBreath 2s ease-in-out var(--screen-loading-delay,300ms) infinite;}
-html[data-screen-loading] #screenLoadingSigil{animation-delay:0ms;}
-@keyframes screenSigilBreath{0%,100%{opacity:.35}50%{opacity:.9}}
+/* Original black iron remains still; only its source red eye/cracks breathe. */
+#screenLoadingSigil{position:fixed;z-index:2147483647;pointer-events:none;right:max(48px,4.5vh);bottom:max(48px,4.5vh);width:9.5vh;height:9.5vh;background:transparent url('img/ui/silver_hell/gate_sigil_loading.png') center/contain no-repeat;opacity:0;}
+#screenLoadingSigil::after{content:'';position:absolute;inset:0;background:var(--screen-sigil-embers,url('img/ui/silver_hell/gate_sigil_loading_embers.png')) center/contain no-repeat;opacity:.12;filter:drop-shadow(0 0 2px rgba(143,19,12,.35));}
+html[data-screen-pending] #screenLoadingSigil{animation:screenSigilReveal 1ms var(--screen-loading-delay,300ms) forwards;}
+html[data-screen-pending] #screenLoadingSigil::after{animation:screenSigilEmbers 2s ease-in-out var(--screen-loading-delay,300ms) infinite;}
+html[data-screen-loading] #screenLoadingSigil{animation:none;opacity:1;}
+html[data-screen-loading] #screenLoadingSigil::after{animation-delay:0ms;}
+@keyframes screenSigilReveal{to{opacity:1}}
+@keyframes screenSigilEmbers{0%,100%{opacity:.12}50%{opacity:.75}}
 #screenLoadingLabel{position:fixed;z-index:2147483647;pointer-events:none;right:max(48px,4.5vh);bottom:max(24px,2vh);font:12px var(--font-hell,'Nanum Myeongjo',serif);color:#dfd6c2;opacity:0;}
 html[data-screen-pending] #screenLoadingLabel{animation:screenLoadingLabel 1ms var(--screen-label-delay,1000ms) forwards;}
 @keyframes screenLoadingLabel{to{opacity:.8}}
 @keyframes screenSigilStatic{to{opacity:.65}}
 @media(prefers-reduced-motion:reduce){html[data-screen-pending] #screenLoadingSigil{animation:screenSigilStatic 1ms var(--screen-loading-delay,300ms) forwards;}html[data-screen-loading] #screenLoadingSigil{animation:none;opacity:.65;}}
+@media(prefers-reduced-motion:reduce){#screenLoadingSigil::after{animation:none!important;opacity:.3;}}
 html[data-screen-pending][data-screen-reduced] #screenLoadingSigil{animation:screenSigilStatic 1ms var(--screen-loading-delay,300ms) forwards;}
 html[data-screen-loading][data-screen-reduced] #screenLoadingSigil{animation:none;opacity:.65;}
+html[data-screen-reduced] #screenLoadingSigil::after{animation:none;opacity:.3;}
