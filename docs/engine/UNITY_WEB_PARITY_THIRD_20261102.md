@@ -12,3 +12,5 @@
 | 난이도 | 클리어→5카드(−100/−50/0/+50/+100)→확정/취소/재무장·결정두둥. Config.StageDiffOffset·적factory4경계·저장연결 | 다음1-2 자체는 기존미이식, 확정 뒤 기존 저장→로비 동선 유지. UNITY_NEXT_DIFFICULTY_20261102.md 참조 |
 
 검수는 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/third/에 보존한다. 독립 Core/Runtime compile0은 실제 Player 검수와 별도다. 최종 빌드/M1·해상도·1x 판정은 아래 후속 영수증에 기록한다.
+
+새 격리 Player 검수 host는 1920/2560/3840에서 버전 정합·지원스킬 학습/강화/리셋 취소·환불·STR계획/적용·AP0 예약/취소·난이도 취소/확정, 3840 실제 클리어 버튼 재무장·데모 종료 우회까지 검사한다. fixture 주입이며 자연플레이 증거로 올리지 않는다.

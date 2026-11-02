@@ -53,6 +53,20 @@ namespace Exoduser.UnityPort {
     nextDifficulty.Show(offset,"ko",v=>{confirmed=true;Simulation.Config.StageDiffOffset=v;},()=>{});nextDifficulty.Pick(3);nextDifficulty.Confirm();
     if(!confirmed||Simulation.Config.StageDiffOffset!=50)throw new InvalidOperationException("difficulty confirm missing offset");Simulation.Config.StageDiffOffset=offset;
     checks.Add(width+" difficulty selection/cancel/confirm actual callbacks PASS");
+    if(width==3840){
+     stageClear.Show(new NativeStageClearOverlay.Input{kind=NativeStageClearOverlay.Kind.Zone,stageIndex=0,stageKills=137,totalSpawned=168,clearSeconds=88,regionsCleared=4,bossKilled=true});stageClear.ForcedAge=2;
+     if(!stageClear.RequestNext()||!nextDifficulty.Active)throw new InvalidOperationException("clear next did not open difficulty");
+     nextDifficulty.Pick(4);yield return UiOverlapShot("3차-클리어-난이도");nextDifficulty.Cancel();
+     if(!stageClear.Active||nextDifficulty.Active||Simulation.Config.StageDiffOffset!=offset)throw new InvalidOperationException("clear cancel changed state");
+     if(!stageClear.RequestNext()||!nextDifficulty.Active)throw new InvalidOperationException("clear next did not rearm");nextDifficulty.Pick(1);
+     if(!nextDifficulty.Confirm()||nextDifficulty.Confirm()||Simulation.Config.StageDiffOffset!=-50||stageClear.Active)throw new InvalidOperationException("clear confirmation duplicate or offset mismatch");
+     checks.Add("3840 actual clear→difficulty→cancel→rearm→confirm→existing lobby continuation PASS; next stage remains unported");
+     BuildFlavor.Override(BuildFlavor.Kind.Demo);
+     try{stageClear.Show(new NativeStageClearOverlay.Input{kind=NativeStageClearOverlay.Kind.Zone,stageIndex=0});stageClear.ForcedAge=2;
+      if(stageClear.ShownKind!=NativeStageClearOverlay.Kind.DemoEnd||!stageClear.RequestNext()||nextDifficulty.Active)throw new InvalidOperationException("demo end must bypass difficulty");
+     }finally{BuildFlavor.ResetOverride();}
+     checks.Add("3840 demo end bypass PASS");
+    }
    }
    File.WriteAllText(Path.Combine(overlapOutput,"third-checks.json"),"{\"scope\":\"isolated product API fixtures; not natural play\",\"checks\":[\""+string.Join("\",\"",checks.ToArray())+"\"]}");
   }
