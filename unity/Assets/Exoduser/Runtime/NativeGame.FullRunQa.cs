@@ -50,6 +50,7 @@ namespace Exoduser.UnityPort
             Directory.CreateDirectory(output); Directory.CreateDirectory(Path.Combine(output, "caps"));
             AudioListener.volume = 0; AudioListener.pause = true;
             smokeActive = true; dropSmoke = true; Running = false;
+            areaTitleAllowed = true; // Natural input review includes the ordinary area title UI.
             Application.runInBackground = true;
             int width; if (!int.TryParse(Argument("-qa-width"), out width)) width = 1920;
             Screen.SetResolution(width, 1080, FullScreenMode.Windowed);
