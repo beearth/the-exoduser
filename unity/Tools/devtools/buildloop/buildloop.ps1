@@ -16,20 +16,33 @@ param(
   [switch]$NoSwap,             # build 를 교체하지 않는다(브랜치 시험용). -Ref 가 origin/unity/main 이 아니면 자동으로 켜진다
   [string]$JudgeOnly,          # 빌드 없이 로그 한 개만 판정(예: -JudgeOnly C:\x\build.log -Scope build)
   [ValidateSet('build', 'player', 'caps')][string]$Scope = 'build',
-  [string]$Ref = 'origin/unity/main'
+  [string]$Ref = 'origin/unity/main',
+  [string]$Worktree,
+  [string]$OutputRoot
 )
 $ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = [Text.Encoding]::UTF8; $OutputEncoding = [Text.Encoding]::UTF8
 Set-StrictMode -Version 2
 
+$installedConfig = Join-Path $PSScriptRoot 'source.json'
+if (-not $Worktree) {
+  if (Test-Path -LiteralPath $installedConfig) { $Worktree = [string]((Get-Content $installedConfig -Raw -Encoding UTF8 | ConvertFrom-Json).worktree) }
+  else { $Worktree = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..\..\..')) }
+}
+if (-not $OutputRoot) {
+  $OutputRoot = 'I:\EXODUSER-Storage\unity-latest'
+  if ($Ref -ne 'origin/unity/main') { $OutputRoot = Join-Path 'I:\EXODUSER-Storage\devtools\branch-runs' ($Ref -replace '[^a-zA-Z0-9_-]', '_') }
+}
+$Worktree = [IO.Path]::GetFullPath($Worktree).TrimEnd('\')
+if ($Worktree -eq 'G:\exoduser') { throw '사용자 원본은 readonly: 자기 NTFS 작업본을 지정하세요' }
+$OutputRoot = [IO.Path]::GetFullPath($OutputRoot).TrimEnd('\')
+if (-not $OutputRoot.StartsWith('I:\EXODUSER-Storage\', [StringComparison]::OrdinalIgnoreCase)) { throw '출력은 I:\EXODUSER-Storage 하위만 허용' }
+if ($Ref -eq 'origin/unity/main' -and $OutputRoot -ne 'I:\EXODUSER-Storage\unity-latest') { $NoSwap = [switch]$true }
 $Cfg = @{
-  Repo      = 'G:\exoduser'
-  Worktree  = 'E:\exoduser-wt\pc-unity-latest'
-  Out       = 'I:\EXODUSER-Storage\unity-latest'
-  UnityExe  = 'E:\Unity\Editors\6000.6.7f1\Editor\Unity.exe'
+  Repo      = $Worktree
+  Worktree  = $Worktree
+  Out       = $OutputRoot
   Node      = 'C:\nvm4w\nodejs\node.exe'
-  LockFile  = 'I:\EXODUSER-Storage\unity-jobs\_pc_lock.json'
-  DotnetHome = 'E:\exoduser-wt\_dotnet-home'
   SmokeW    = 1600       # 무창(batchmode) 스모크: 창을 띄우지 않는다. 캡처는 RenderTexture 1600x900
   SmokeH    = 900
   ExitGraceSec = 60      # m1-check.json 을 쓴 뒤 플레이어가 이만큼 안에 끝나야 한다(DBT-6)
@@ -49,6 +62,7 @@ $MemLog = 'I:\EXODUSER-Storage\unity-jobs\memlog.csv'
 $MainRef = 'origin/unity/main'
 if ($Ref -ne $MainRef) { $NoSwap = [switch]$true }
 $Utf8 = New-Object System.Text.UTF8Encoding($false)
+$script:LoopHandle = $null
 
 function Log([string]$m) {
   $line = '[{0}] {1}' -f (Get-Date -Format 'MM-dd HH:mm:ss'), $m
@@ -117,7 +131,7 @@ function Mem-Svg {
   [void]$o.AppendLine("<svg viewBox=`"0 0 $w $h`" width=`"100%`" role=`"img`" aria-label=`"commit free GB, last 24h`" xmlns=`"http://www.w3.org/2000/svg`">")
   for ($g = 0; $g -le $maxY; $g += 10) { $y = [math]::Round((& $sy $g), 1); [void]$o.AppendLine("<line x1=`"$l`" y1=`"$y`" x2=`"$($w - $r)`" y2=`"$y`" stroke=`"rgba(164,147,115,.18)`"/><text x=`"$($l - 8)`" y=`"$($y + 4)`" text-anchor=`"end`" fill=`"#9b9078`" font-size=`"11`" font-family=`"Consolas,monospace`">$g</text>") }
   for ($k = 0; $k -le 6; $k++) { $tt = $t0.AddHours($k * 4); $x = [math]::Round((& $sx $tt), 1); [void]$o.AppendLine("<text x=`"$x`" y=`"$($h - 8)`" text-anchor=`"middle`" fill=`"#9b9078`" font-size=`"11`" font-family=`"Consolas,monospace`">$($tt.ToString('HH:mm'))</text>") }
-  foreach ($th in @(@{ v = 20; c = '#d4a24a'; n = '시작 조건 20GB' }, @{ v = 30; c = '#c0341d'; n = 'Library 없음 30GB' })) {
+  foreach ($th in @(@{ v = 8; c = '#c0341d'; n = '최소 8GB' }, @{ v = 12; c = '#d4a24a'; n = '권장 12GB' }, @{ v = 20; c = '#9b9078'; n = 'Library 없음 권장 20GB' })) {
     if ($th.v -le $maxY) { $y = [math]::Round((& $sy $th.v), 1); [void]$o.AppendLine("<line x1=`"$l`" y1=`"$y`" x2=`"$($w - $r)`" y2=`"$y`" stroke=`"$($th.c)`" stroke-dasharray=`"6 4`"/><text x=`"$($w - $r - 4)`" y=`"$($y - 5)`" text-anchor=`"end`" fill=`"$($th.c)`" font-size=`"11`">$($th.n)</text>") }
   }
   if ($pts.Count -ge 1) {
@@ -160,54 +174,23 @@ function Get-CrashInfo([datetime]$since) {
 
 # ---------- 잠금 / 대기 ----------
 function Test-PidAlive([int]$p) { return [bool](Get-Process -Id $p -ErrorAction SilentlyContinue) }
+# A separate file handle serializes buildloop invocations; exo-unity owns the PC slot/FIFO.
 function Acquire-Lock([string]$runId) {
-  New-Item -ItemType Directory -Force -Path (Split-Path -Parent $Cfg.LockFile) | Out-Null
-  $deadline = (Get-Date).AddMinutes($Cfg.WaitMaxMin)
-  while ($true) {
-    # DT-01 순번 예약(queue\*.json): 예약이 있고 맨 앞이 내가 아니면 잠금을 잡지 않고 기다린다. 만료된 예약은 무시.
-    $qdir = Join-Path (Split-Path -Parent $Cfg.LockFile) 'queue'; $front = $null
-    if (Test-Path -LiteralPath $qdir) {
-      foreach ($qf in @(Get-ChildItem -LiteralPath $qdir -Filter '*.json' -ErrorAction SilentlyContinue | Sort-Object Name)) {
-        $q = $null; try { $q = ReadJson $qf.FullName } catch { }; if ($null -eq $q) { continue }
-        $exp = $null; try { $exp = [DateTime]::Parse([string]$q.expiresAt).ToUniversalTime() } catch { }
-        if ($exp -and $exp -lt [DateTime]::UtcNow) { continue }
-        $front = $q; break
-      }
-    }
-    if ($null -ne $front -and [string]$front.owner -ne 'devtools-buildloop') {
-      if ((Get-Date) -gt $deadline) { Log "예약 대기 초과 (맨 앞: $($front.owner))"; return $false }
-      Log "예약 대기: 맨 앞 예약자 $($front.owner) ($($front.note))"; Start-Sleep -Seconds 30; continue
-    }
-    try {
-      $fs = [IO.File]::Open($Cfg.LockFile, 'CreateNew', 'Write', 'None')
-      $body = @{ owner = 'devtools-buildloop'; pid = $PID; worktree = $Cfg.Worktree; startedAt = (Get-Date).ToString('s'); run = $runId } | ConvertTo-Json
-      $bytes = $Utf8.GetBytes($body); $fs.Write($bytes, 0, $bytes.Length); $fs.Close()
-      Log "잠금 획득 ($($Cfg.LockFile))"; return $true
-    } catch [IO.IOException] {
-      $holder = $null; try { $holder = ReadJson $Cfg.LockFile } catch { }
-      $hp = 0; if ($null -ne $holder -and $holder.PSObject.Properties.Name -contains 'pid') { $hp = [int]$holder.pid }
-      if ($hp -gt 0 -and -not (Test-PidAlive $hp)) {
-        Log "죽은 pid $hp 의 잠금을 덮어쓴다"; Remove-Item -LiteralPath $Cfg.LockFile -Force -ErrorAction SilentlyContinue; continue
-      }
-      if ((Get-Date) -gt $deadline) { Log "잠금 대기 초과 (보유: $(Prop $holder 'owner' '?') pid $hp)"; return $false }
-      Log "잠금 보유 중: $(Prop $holder 'owner' '?') pid $hp - 30초 후 재시도"; Start-Sleep -Seconds 30
-    }
-  }
+  if ($null -ne $script:LoopHandle) { return $true }
+  New-Item -ItemType Directory -Force -Path $LoopDir | Out-Null
+  try { $script:LoopHandle = [IO.File]::Open((Join-Path $LoopDir 'run.lock'), 'OpenOrCreate', 'ReadWrite', 'None'); return $true }
+  catch [IO.IOException] { Log '다른 buildloop 회차 실행 중 - 다음 주기로 미룸'; return $false }
 }
-function Release-Lock {
-  try {
-    $h = ReadJson $Cfg.LockFile
-    if ($null -ne $h -and [string]$h.owner -eq 'devtools-buildloop' -and [int]$h.pid -eq $PID) { Remove-Item -LiteralPath $Cfg.LockFile -Force; Log '잠금 해제' }
-  } catch { }
-}
+function Release-Lock { if ($null -ne $script:LoopHandle) { $script:LoopHandle.Dispose(); $script:LoopHandle = $null } }
+
 function Get-UnityProcs { return @(Get-Process Unity, EXODUSER-Unity -ErrorAction SilentlyContinue | Where-Object { -not $_.HasExited }) }
 function Get-FreeCommitGB { $os = Get-CimInstance Win32_OperatingSystem; return [math]::Round($os.FreeVirtualMemory / 1MB, 1) }
 function Wait-Ready([bool]$libraryExists) {
-  $need = 20; if (-not $libraryExists) { $need = 30 }
+  $need = 8; $recommended = 12; if (-not $libraryExists) { $recommended = 20 }
   $deadline = (Get-Date).AddMinutes($Cfg.WaitMaxMin)
   while ($true) {
     $procs = @(Get-UnityProcs); $free = Get-FreeCommitGB
-    if ($procs.Count -eq 0 -and $free -ge $need) { Log ("실행 조건 충족: Unity 0개, 커밋 여유 {0} GB (필요 {1})" -f $free, $need); return $true }
+    if ($procs.Count -eq 0 -and $free -ge $need) { if ($free -lt $recommended) { Log "권장 메모리 $recommended GB 미만($free GB): 경고만, 순차 실행" }; Log ("실행 조건 충족: Unity 0개, 커밋 여유 {0} GB (필요 {1})" -f $free, $need); return $true }
     if ((Get-Date) -gt $deadline) { Log ("대기 초과: Unity {0}개, 커밋 여유 {1} GB" -f $procs.Count, $free); return $false }
     Log ("대기: Unity {0}개 ({1}), 커밋 여유 {2} GB" -f $procs.Count, (($procs | ForEach-Object { "$($_.ProcessName)#$($_.Id)" }) -join ','), $free)
     Start-Sleep -Seconds 30
@@ -319,96 +302,43 @@ function Judge-M1($path, $rules) {
   return [pscustomobject]@{ present = $true; ok = $ok; fail = $fail; neutral = $neu; stages = $stages; firstBlocked = [string](Prop $m 'firstBlocked' ''); device = [string](Prop $m 'device' ''); deviceType = [string](Prop $m 'deviceType' ''); captureMode = [string](Prop $m 'captureMode' ''); headless = [bool](Prop $m 'headless' $false); guiRepaints = [int](Prop $m 'guiRepaints' 0); guiBridged = [int](Prop $m 'guiBridged' 0) }
 }
 
-# ---------- 숨은 데스크톱 스모크 (기본 방식) ----------
-# 별도 Windows 데스크톱(CreateDesktop)에 플레이어를 batchmode 없이 띄운다. 사용자 화면에는 창이 없고, D3D12 Present·OnGUI·ScreenCapture 가 모두 실제로 돌아 HUD/UI 가 캡처에 찍힌다.
-function Add-HiddenDesktopType {
-  if ('HDL' -as [type]) { return }
-  Add-Type -TypeDefinition @'
-using System; using System.Runtime.InteropServices; using System.Text; using System.Collections.Generic;
-public static class HDL {
-  public delegate bool EnumProc(IntPtr h, IntPtr l);
-  [DllImport("user32.dll", SetLastError=true, CharSet=CharSet.Unicode)] public static extern IntPtr CreateDesktop(string name, IntPtr dev, IntPtr devmode, int flags, uint access, IntPtr sa);
-  [DllImport("user32.dll")] public static extern bool CloseDesktop(IntPtr h);
-  [DllImport("user32.dll")] public static extern bool EnumDesktopWindows(IntPtr hDesk, EnumProc p, IntPtr l);
-  [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr h);
-  [DllImport("kernel32.dll", SetLastError=true, CharSet=CharSet.Unicode)] public static extern bool CreateProcess(string app, StringBuilder cmd, IntPtr pa, IntPtr ta, bool inherit, uint flags, IntPtr env, string cwd, ref STARTUPINFO si, out PROCESS_INFORMATION pi);
-  [DllImport("kernel32.dll")] public static extern uint WaitForSingleObject(IntPtr h, uint ms);
-  [DllImport("kernel32.dll")] public static extern bool GetExitCodeProcess(IntPtr h, out uint code);
-  [DllImport("kernel32.dll")] public static extern bool TerminateProcess(IntPtr h, uint code);
-  [DllImport("kernel32.dll")] public static extern bool CloseHandle(IntPtr h);
-  [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Unicode)] public struct STARTUPINFO { public int cb; public string lpReserved; public string lpDesktop; public string lpTitle; public int dwX, dwY, dwXSize, dwYSize, dwXCountChars, dwYCountChars, dwFillAttribute, dwFlags; public short wShowWindow, cbReserved2; public IntPtr lpReserved2, hStdInput, hStdOutput, hStdError; }
-  [StructLayout(LayoutKind.Sequential)] public struct PROCESS_INFORMATION { public IntPtr hProcess, hThread; public int dwProcessId, dwThreadId; }
-  public static int CountVisible(IntPtr desk) { int n = 0; EnumDesktopWindows(desk, delegate(IntPtr h, IntPtr p) { if (IsWindowVisible(h)) n++; return true; }, IntPtr.Zero); return n; }
+# All Unity and Player launches use the shared FIFO/save/window guard.
+function Invoke-Exo([string]$command, [string[]]$jobArgs, [string]$logBase, [string]$exe = '', [string]$desktop = 'hidden') {
+  $launcher = Join-Path $Cfg.Worktree 'unity\Tools\devtools\exo-unity.ps1'
+  $argsText = $jobArgs -join ','
+  $timeout = $Cfg.BuildTimeoutMin * 60; if ($command -eq 'player') { $timeout = $Cfg.SmokeTimeoutMin * 60 }
+  $pa = @('-NoProfile','-NonInteractive','-WindowStyle','Hidden','-ExecutionPolicy','Bypass','-File', ('"{0}"' -f $launcher), $command, '-Worktree', ('"{0}"' -f $Cfg.Worktree), '-Owner','devtools-buildloop','-Json','-TimeoutSec', ([string]$timeout), '-Args', ('"{0}"' -f $argsText))
+  if ($exe) { $pa += @('-Exe', ('"{0}"' -f $exe), '-Desktop', $desktop) }
+  $pr = Start-Process -FilePath "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -ArgumentList $pa -WindowStyle Hidden -PassThru -RedirectStandardOutput ($logBase+'.out.log') -RedirectStandardError ($logBase+'.err.log')
+  $null = $pr.Handle; $pr.WaitForExit(); $pr.Refresh()
+  $rc = $pr.ExitCode; $receipt = $null
+  foreach ($line in @(Get-Content -LiteralPath ($logBase+'.out.log') -Encoding UTF8)) { if ($line.Trim().StartsWith('{')) { try { $receipt = $line | ConvertFrom-Json } catch { } } }
+  return [pscustomobject]@{ exit = $rc; receipt = $receipt; stdout = ($logBase+'.out.log'); stderr = ($logBase+'.err.log') }
 }
-'@
-}
-function Run-DesktopSmoke([string]$buildDir, [string]$smokeDir, [string]$flag, [string]$receiptName) {
-  $r = [ordered]@{ mode = 'hidden-desktop'; ran = $false; exit = $null; timedOut = $false; windowSeen = $false; slowExit = $false; receiptWritten = $false; exitAfterReceiptSec = $null; hiddenVisibleWindows = 0; desktopClosed = $false; note = ''; seconds = 0 }
-  Add-HiddenDesktopType
-  New-Item -ItemType Directory -Force -Path (Join-Path $smokeDir 'sandbox') | Out-Null
-  $exe = Join-Path $buildDir 'EXODUSER-Unity.exe'
-  $name = 'ExoLoop{0}_{1}' -f $PID, (Get-Random)
-  $desk = [HDL]::CreateDesktop($name, [IntPtr]::Zero, [IntPtr]::Zero, 0, 0x10000000, [IntPtr]::Zero)
-  if ($desk -eq [IntPtr]::Zero) { $r.note = 'CreateDesktop 실패 ' + [Runtime.InteropServices.Marshal]::GetLastWin32Error(); return [pscustomobject]$r }
-  $pi = New-Object HDL+PROCESS_INFORMATION
-  $sw = [Diagnostics.Stopwatch]::StartNew()
-  try {
-    $cmdText = '"{0}" {1} --unity-mute --unity-qa-sandbox "{2}" -output "{3}" -screen-width {4} -screen-height {5} -screen-fullscreen 0 -logFile "{6}"' -f $exe, $flag, (Join-Path $smokeDir 'sandbox'), $smokeDir, 1600, 900, (Join-Path $smokeDir 'player.log')
-    $cmd = New-Object Text.StringBuilder $cmdText
-    $si = New-Object HDL+STARTUPINFO; $si.cb = [Runtime.InteropServices.Marshal]::SizeOf($si); $si.lpDesktop = 'WinSta0\' + $name
-    $ok = [HDL]::CreateProcess([NullString]::Value, $cmd, [IntPtr]::Zero, [IntPtr]::Zero, $false, 0, [IntPtr]::Zero, $buildDir, [ref]$si, [ref]$pi)
-    if (-not $ok) { $r.note = 'CreateProcess 실패 ' + [Runtime.InteropServices.Marshal]::GetLastWin32Error(); return [pscustomobject]$r }
-    $r.ran = $true
-    $deadline = (Get-Date).AddMinutes($Cfg.SmokeTimeoutMin); $receipt = Join-Path $smokeDir $receiptName; $receiptSeen = $null
-    while ([HDL]::WaitForSingleObject($pi.hProcess, 2000) -eq 258) {
-      $pp = Get-Process -Id $pi.dwProcessId -ErrorAction SilentlyContinue
-      if ($null -ne $pp) { $pp.Refresh(); if ($pp.MainWindowHandle -ne [IntPtr]::Zero) { $r.windowSeen = $true; $r.note = '사용자 데스크톱에 플레이어 창이 보임(숨은 데스크톱 위반) - 강제 종료'; [void][HDL]::TerminateProcess($pi.hProcess, 98); break } }
-      $vis = [HDL]::CountVisible($desk); if ($vis -gt $r.hiddenVisibleWindows) { $r.hiddenVisibleWindows = $vis }
-      if ($null -eq $receiptSeen -and (Test-Path -LiteralPath $receipt)) { $receiptSeen = Get-Date }
-      if ($null -ne $receiptSeen -and ((Get-Date) - $receiptSeen).TotalSeconds -gt $Cfg.ExitGraceSec) { $r.slowExit = $true; $r.note = "$receiptName 을 쓴 뒤 $($Cfg.ExitGraceSec)초 안에 종료하지 않음(DBT-6) - 강제 종료"; [void][HDL]::TerminateProcess($pi.hProcess, 97); break }
-      if ((Get-Date) -gt $deadline) { $r.timedOut = $true; $r.note = "스모크 시간 초과($($Cfg.SmokeTimeoutMin)분), 강제 종료"; [void][HDL]::TerminateProcess($pi.hProcess, 99); break }
-    }
-    [void][HDL]::WaitForSingleObject($pi.hProcess, 10000)
-    [uint32]$code = 0; [void][HDL]::GetExitCodeProcess($pi.hProcess, [ref]$code); $r.exit = [int]$code
-    if ($null -ne $receiptSeen) { $r.receiptWritten = $true; $r.exitAfterReceiptSec = [int]((Get-Date) - $receiptSeen).TotalSeconds }
-  } finally {
-    if ($pi.hProcess -ne [IntPtr]::Zero) { [void][HDL]::CloseHandle($pi.hProcess); [void][HDL]::CloseHandle($pi.hThread) }
-    if ($pi.dwProcessId) { Get-Process -Id $pi.dwProcessId -ErrorAction SilentlyContinue | Stop-Process -Force }
-    [void][HDL]::CloseDesktop($desk); $r.desktopClosed = $true
-    $r.seconds = [int]$sw.Elapsed.TotalSeconds
-  }
-  return [pscustomobject]$r
-}
-
-# ---------- 스모크(실제 GPU, batchmode 대체 방식) ----------
-# 플레이어는 -batchmode(-nographics 없음)로 띄워 GPU 장치를 유지하고 창은 만들지 않는다. 소리: --unity-mute (AudioListener.volume=0, pause=true).
-# 자기가 띄운 프로세스의 MainWindowHandle 이 0 이 아니면 실패로 친다.
-function Test-OwnWindow($proc) { try { $proc.Refresh(); return ($proc.MainWindowHandle -ne [IntPtr]::Zero) } catch { return $false } }
 function Run-Smoke([string]$buildDir, [string]$smokeDir, [string]$flag = '--unity-m1-check', [string]$receiptName = 'm1-check.json') {
-  if ($Mode -eq 'desktop') { return (Run-DesktopSmoke $buildDir $smokeDir $flag $receiptName) }
-  $r = [ordered]@{ mode = 'batch'; ran = $false; exit = $null; timedOut = $false; windowSeen = $false; slowExit = $false; receiptWritten = $false; exitAfterReceiptSec = $null; note = ''; seconds = 0 }
   New-Item -ItemType Directory -Force -Path $smokeDir | Out-Null
-  New-Item -ItemType Directory -Force -Path (Join-Path $smokeDir 'sandbox') | Out-Null
+  $desktop = 'hidden'; if ($Mode -eq 'batch') { $desktop = 'batch' }
   $sw = [Diagnostics.Stopwatch]::StartNew()
-  $args2 = @('-batchmode', $flag, '--unity-mute', '--unity-qa-sandbox', (Join-Path $smokeDir 'sandbox'), '-output', $smokeDir, '-screen-width', $Cfg.SmokeW, '-screen-height', $Cfg.SmokeH, '-logFile', (Join-Path $smokeDir 'player.log'))
-  $p = Start-Process -FilePath (Join-Path $buildDir 'EXODUSER-Unity.exe') -ArgumentList $args2 -PassThru
-  $r.ran = $true
-  $deadline = (Get-Date).AddMinutes($Cfg.SmokeTimeoutMin); $receipt = Join-Path $smokeDir $receiptName; $receiptSeen = $null
-  while (-not $p.WaitForExit(2000)) {
-    if (Test-OwnWindow $p) { $r.windowSeen = $true; $r.note = '플레이어가 창을 만들었다(무창 위반) - 강제 종료'; try { $p.Kill() } catch { }; break }
-    if ($null -eq $receiptSeen -and (Test-Path -LiteralPath $receipt)) { $receiptSeen = Get-Date }
-    if ($null -ne $receiptSeen -and ((Get-Date) - $receiptSeen).TotalSeconds -gt $Cfg.ExitGraceSec) { $r.slowExit = $true; $r.note = "$receiptName 을 쓴 뒤 $($Cfg.ExitGraceSec)초 안에 종료하지 않음(DBT-6) - 강제 종료"; try { $p.Kill() } catch { }; break }
-    if ((Get-Date) -gt $deadline) { $r.timedOut = $true; $r.note = "스모크 시간 초과($($Cfg.SmokeTimeoutMin)분), 강제 종료"; try { $p.Kill() } catch { }; break }
-  }
-  try { $p.WaitForExit(10000) | Out-Null; $r.exit = $p.ExitCode } catch { }
-  if ($null -ne $receiptSeen) { $r.receiptWritten = $true; $r.exitAfterReceiptSec = [int]((Get-Date) - $receiptSeen).TotalSeconds }
-  $r.seconds = [int]$sw.Elapsed.TotalSeconds
-  return [pscustomobject]$r
+  $x = Invoke-Exo 'player' @($flag,'-output',$smokeDir,'-force-d3d11') (Join-Path $smokeDir 'exo') (Join-Path $buildDir 'EXODUSER-Unity.exe') $desktop
+  $r = $x.receipt
+  if ($null -ne $r -and $r.log -and (Test-Path -LiteralPath $r.log)) { Copy-Item -LiteralPath $r.log -Destination (Join-Path $smokeDir 'player.log') }
+  return [pscustomobject]@{ mode = $Mode; ran = ($null -ne $r); exit = $x.exit; timedOut = [bool](Prop $r 'timedOut' $false); windowSeen = ([int](Prop $r 'windowHandleCount' 0) -gt 0); slowExit = $false; receiptWritten = (Test-Path -LiteralPath (Join-Path $smokeDir $receiptName)); exitAfterReceiptSec = $null; hiddenVisibleWindows = (Prop $r 'hiddenWindows' 0); desktopClosed = (Prop $r 'desktopClosed' $false); note = [string](Prop $r 'note' ''); seconds = [int]$sw.Elapsed.TotalSeconds; runner = $r }
 }
 
 # ---------- 교체 ----------
 function Swap-Build($stateObj, [string]$runDir, $loopReceipt) {
-  $build = Join-Path $Cfg.Out 'build'; $prev = Join-Path $Cfg.Out 'build_prev'; $new = Join-Path $Cfg.Out 'build_new'
+  if ($NoSwap) { return @{ done = $false; note = 'NoSwap - 교체 금지' } }
+  $build = Join-Path $Cfg.Out 'build'; $new = Join-Path $Cfg.Out 'build_new'
+  $metadata = [ordered]@{}; $old = ReadJson (Join-Path $Cfg.Out 'build-commit.json')
+  if ($null -ne $old) { foreach ($v in $old.PSObject.Properties) { $metadata[$v.Name] = $v.Value } }
+  $oldSha = [string](Prop $old 'commit' 'unknown'); $oldSha = $oldSha -replace '[^a-zA-Z0-9_-]', '_'
+  $prev = Join-Path $Cfg.Out ('build_prev_{0}_{1}' -f $oldSha, (Get-Date -Format 'yyyyMMddTHHmmssfff'))
+  $safeRoot = [IO.Path]::GetFullPath($Cfg.Out).TrimEnd('\') + '\'
+  foreach ($target in @($build,$new,$prev)) {
+    $resolved = [IO.Path]::GetFullPath($target)
+    if (-not $resolved.StartsWith($safeRoot,[StringComparison]::OrdinalIgnoreCase)) { throw '교체 경로가 출력 루트를 벗어남' }
+    if ((Test-Path -LiteralPath $target) -and ((Get-Item -LiteralPath $target).Attributes -band [IO.FileAttributes]::ReparsePoint)) { throw '링크인 빌드 경로는 자동 교체하지 않음' }
+  }
   $holders = @(Get-BuildHolders)
   $user = @($holders | Where-Object { -not $_.auto })
   if ($user.Count -gt 0) { return @{ done = $false; note = "사용자가 build 를 실행 중(pid $($user[0].pid)) - 교체 대기, 사용자 창은 건드리지 않음" } }
@@ -417,7 +347,7 @@ function Swap-Build($stateObj, [string]$runDir, $loopReceipt) {
   while ($auto.Count -gt 0 -and (Get-Date) -lt $until) { Log "자동 스모크가 build 를 잡고 있음(pid $($auto[0].pid)) - 30초 대기"; Start-Sleep -Seconds 30; $auto = @(Get-BuildHolders | Where-Object { $_.auto }) }
   if ($auto.Count -gt 0) { return @{ done = $false; note = "다른 자동 스모크(pid $($auto[0].pid))가 build 를 계속 사용 - 교체 대기" } }
   try {
-    if (Test-Path -LiteralPath $prev) { Remove-Item -LiteralPath $prev -Recurse -Force }
+    if (Test-Path -LiteralPath $prev) { throw '보관 경로 충돌 - 덮어쓰지 않음' }
     if (Test-Path -LiteralPath $build) { Move-Item -LiteralPath $build -Destination $prev }
     Move-Item -LiteralPath $new -Destination $build
   } catch {
@@ -429,8 +359,22 @@ function Swap-Build($stateObj, [string]$runDir, $loopReceipt) {
   Copy-Item -LiteralPath (Join-Path $runDir 'build-receipt.json') -Destination (Join-Path $Cfg.Out 'build-receipt.json') -Force
   Copy-Item -LiteralPath (Join-Path $runDir 'build.log') -Destination (Join-Path $Cfg.Out 'build.log') -Force
   $pl = Join-Path $runDir 'smoke\player.log'; if (Test-Path -LiteralPath $pl) { Copy-Item -LiteralPath $pl -Destination (Join-Path $Cfg.Out 'smoke-player.log') -Force }
-  WriteJson (Join-Path $Cfg.Out 'build-commit.json') ([ordered]@{ commit = $loopReceipt.sha; branch = $loopReceipt.branch; built_at = $loopReceipt.builtAt; exe = (Join-Path $build 'EXODUSER-Unity.exe'); receipt = 'build-receipt.json'; by = 'devtools-buildloop'; verdict = $loopReceipt.verdict })
-  return @{ done = $true; note = '교체 완료(이전 빌드는 build_prev 1세대 보관)' }
+  $metadata.utc = [DateTime]::UtcNow.ToString('o'); $metadata.branch = $loopReceipt.branch
+  $metadata.commit = $loopReceipt.shaFull; $metadata.verifiedSource = $loopReceipt.shaFull
+  $metadata.unityTree = Prop $loopReceipt 'unityTree' $null
+  if ($metadata.Contains('built_at')) { $metadata.built_at = $loopReceipt.builtAt }
+  $metadata.exe = Join-Path $build 'EXODUSER-Unity.exe'; $metadata.exeSha256 = (Get-FileHash -LiteralPath $metadata.exe -Algorithm SHA256).Hash.ToLowerInvariant()
+  $metadata.buildRun = Split-Path $runDir -Leaf; $metadata.m1Run = Join-Path $runDir 'smoke\m1-check.json'
+  $metadata.previousBuild = $prev; $metadata.by = 'devtools-buildloop'; $metadata.verdict = $loopReceipt.verdict
+  foreach ($pair in @(@('runtimeSha256','Exoduser.Runtime.dll'),@('coreSha256','Exoduser.Core.dll'))) {
+    $dll = Join-Path $build ('EXODUSER-Unity_Data\Managed\'+$pair[1]); $metadata[$pair[0]] = $null
+    if (Test-Path -LiteralPath $dll) { $metadata[$pair[0]] = (Get-FileHash $dll -Algorithm SHA256).Hash.ToLowerInvariant() }
+  }
+  # Clear evidence belonging to the previous package; preserve unrelated/custom and shortcut fields.
+  foreach ($key in 'installedM1Run','stageVerification','installVerification','suite','video','sourcePublicationCommit') { if ($metadata.Contains($key)) { $metadata[$key] = $null } }
+  $metadata.visualVerdict = '미검증'; $metadata.documentationOnlyFollowup = $false; $metadata.metadataUpdatedAt = $metadata.utc
+  WriteJson (Join-Path $Cfg.Out 'build-commit.json') $metadata
+  return @{ done = $true; note = '교체 완료(이전 빌드 SHA·시각 보관, 바로가기 불변)' }
 }
 
 # ---------- 상태판 ----------
@@ -459,14 +403,8 @@ function Make-Thumbs([string]$runId, [string]$capsDir) {
   }
   return $list
 }
-function Prune-Runs {
-  $dirs = @(Get-ChildItem -LiteralPath $RunsDir -Directory -ErrorAction SilentlyContinue | Sort-Object Name -Descending)
-  if ($dirs.Count -le $Cfg.KeepRuns) { return }
-  foreach ($d in ($dirs | Select-Object -Skip $Cfg.KeepRuns)) {
-    Remove-Item -LiteralPath $d.FullName -Recurse -Force -ErrorAction SilentlyContinue
-    $t = Join-Path $StatusDir ("thumbs\" + $d.Name); if (Test-Path -LiteralPath $t) { Remove-Item -LiteralPath $t -Recurse -Force -ErrorAction SilentlyContinue }
-  }
-}
+function Prune-Runs { } # 검수/이전 빌드는 자동 영구 삭제하지 않는다.
+
 function Write-Status($stateObj) {
   New-Item -ItemType Directory -Force -Path $StatusDir | Out-Null
   $rules = Load-Rules
@@ -661,12 +599,21 @@ function Cmd-Status {
 }
 
 function Cmd-Install {
+  $head = Get-HeadInfo
+  $actual = ([string](GitR rev-parse HEAD)).Trim()
+  & git.exe -C $Cfg.Worktree merge-base --is-ancestor $actual origin/unity/main
+  if ($LASTEXITCODE -ne 0) { throw 'unity/main 병합 전에는 설치하지 않는다' }
+  $branch = ([string](GitR branch --show-current)).Trim()
+  if ($branch -and $branch -ne 'unity/main') { throw '설치는 통합된 unity/main 또는 지정 detached 작업본에서 실행' }
+  if (& git.exe -C $Cfg.Worktree status --porcelain --untracked-files=normal) { throw '설치 source는 변경·미추적 파일 없는 소유 작업본이어야 한다' }
   $dst = Join-Path $LoopDir 'bin'; New-Item -ItemType Directory -Force -Path $dst | Out-Null
   Copy-Item -Path (Join-Path $PSScriptRoot '*') -Destination $dst -Recurse -Force
+  WriteJson (Join-Path $dst 'source.json') @{ worktree=$Cfg.Worktree; installedSource=$actual; utc=[DateTime]::UtcNow.ToString('o') }
   Write-Host "설치: $dst"
 }
 
 function Cmd-Swap {
+  if ($NoSwap) { Log 'NoSwap - pending 교체도 하지 않음'; return }
   $st = Load-State
   if ($null -eq $st.pending) { Log '교체 대기 항목 없음'; return }
   $pend = $st.pending
@@ -688,12 +635,12 @@ function Cmd-Run {
   if (Test-Path -LiteralPath $HaltFile) { Log "HALT 파일이 있어 실행하지 않는다: $HaltFile (지우기 전까지 정지)"; return }
   $st = Load-State; $head = Get-HeadInfo
   $depFull = ''; if ($null -ne $st.deployed) { $depFull = [string]$st.deployed.shaFull }
-  if ($null -ne $st.pending) { Cmd-Swap; $st = Load-State }   # 이전에 미룬 교체 먼저 시도
+  if (-not $NoSwap -and $null -ne $st.pending) { Cmd-Swap; $st = Load-State; if ($null -ne $st.pending) { Log '이전 후보 교체 대기 - 덮어쓰지 않고 다음 회차로'; return } }   # 이전에 미룬 교체 먼저 시도
   if (-not $Force) {
     if ($Ref -eq $MainRef -and $head.full -eq $depFull) { Log "새 커밋 없음 (HEAD $($head.short) = 배포 빌드)"; return }
     if ($st.lastAttemptSha -eq $head.full) { Log "HEAD $($head.short) 는 이미 시도함(판정 $($st.lastAttemptVerdict)). 다시 하려면 -Force"; return }
   }
-  $runId = '{0}_{1}' -f (Get-Date -Format 'yyyyMMdd-HHmm'), $head.short.Substring(0, 7)
+  $runId = '{0}_{1}' -f (Get-Date -Format 'yyyyMMdd-HHmmssfff'), $head.short.Substring(0, 7)
   $runDir = Join-Path $RunsDir $runId; New-Item -ItemType Directory -Force -Path $runDir | Out-Null
   $branchName = 'unity/main'; if ($Ref -ne $MainRef) { $branchName = $Ref }
   $run = [ordered]@{ id = $runId; sha = $head.short; shaFull = $head.full; branch = $branchName; subject = $head.subject; startedAt = (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'); finishedAt = ''; buildSeconds = 0; smokeSeconds = 0; buildExit = $null; receiptPassed = $null; verdict = 'ABORT'; replaced = $false; replaceNote = ''; changedCount = 0; changed = @(); smokeNote = ''; build = $null; player = $null; m1 = $null; caps = @(); hud = $null; userSave = $null; capsBlack = $null; smoke = $null; crash = $null; buildCrash = $null; restoreFailed = ''; mediaMissing = @(); extraKnown = @{}; captureNote = $null; failReasons = @(); knownTotal = 0; buildWindow = $false }
@@ -710,10 +657,20 @@ function Cmd-Run {
     $libExists = Test-Path -LiteralPath (Join-Path $Cfg.Worktree 'unity\Library')
     if (-not (Wait-Ready $libExists)) { $run.replaceNote = 'Unity 프로세스 대기/커밋 여유 부족으로 중단'; return }
 
-    # 1) 워크트리 -> HEAD
-    Log "워크트리 $($Cfg.Worktree) -> $($head.short)"
-    & git.exe -C $Cfg.Worktree checkout -q -f --detach $head.full 2>&1 | Out-Null
-    if ($LASTEXITCODE -ne 0) { throw '워크트리 checkout 실패' }
+    # Update only a clean detached checkout/explicit unity/main checkout; never force or touch a lane branch.
+    $actual = ([string](GitR rev-parse HEAD)).Trim()
+    $dirty = & git.exe -C $Cfg.Worktree status --porcelain --untracked-files=no
+    if ($dirty) { throw '작업본 INDEX/WORK 변경이 있어 이번 회차 중단' }
+    if ($actual -ne $head.full) {
+      $branch = ([string](GitR branch --show-current)).Trim()
+      if ($branch -and $branch -ne 'unity/main') { throw '다른 담당 브랜치는 자동 갱신하지 않음' }
+      & git.exe -C $Cfg.Worktree merge-base --is-ancestor HEAD $head.full
+      if ($LASTEXITCODE -ne 0) { throw '비 fast-forward 갱신 거부' }
+    if ($branch) { & git.exe -C $Cfg.Worktree merge --ff-only --no-overwrite-ignore $head.full }
+      else { & git.exe -C $Cfg.Worktree switch --no-overwrite-ignore --detach $head.full }
+      if ($LASTEXITCODE -ne 0) { throw '정상 갱신 실패' }
+    }
+
     foreach ($s in 'restore-lobby-media.cjs', 'restore-warrior-story.cjs') {
       $sp = Join-Path $Cfg.Worktree "unity\Tools\$s"
       if (Test-Path -LiteralPath $sp) { & $Cfg.Node $sp --project (Join-Path $Cfg.Worktree 'unity') | Out-Null; Log "$s 종료코드 $LASTEXITCODE"; if ($LASTEXITCODE -ne 0) { $run.restoreFailed = [string]$run.restoreFailed + "$s(exit $LASTEXITCODE) " } } else { Log "$s 없음(이 커밋엔 불필요)" }
@@ -726,43 +683,20 @@ function Cmd-Run {
       Log $why; return
     }
 
-    # 2) 빌드 -> build_new
-    $env:DOTNET_ADD_GLOBAL_TOOLS_TO_PATH = 'false'; $env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE = '1'; $env:DOTNET_NOLOGO = '1'; $env:DOTNET_CLI_HOME = $Cfg.DotnetHome
+    # 2) Shared launcher owns memory minimum 6GB, queue, Unity slot, mute and save isolation.
     $proj = Join-Path $Cfg.Worktree 'unity'
-    if (-not (Test-Path -LiteralPath (Join-Path $proj 'Library'))) {
-      Log 'Library 없음 - pc-unity-rm0 에서 복사'
-      & robocopy 'E:\exoduser-wt\pc-unity-rm0\unity\Library' (Join-Path $proj 'Library') /E /XJ /MT:16 /NFL /NDL /NJH /NP | Out-Null
-    }
     $stage = Join-Path $Cfg.Out 'build_new'
-    for ($ba = 1; $ba -le 2; $ba++) {
-    if (Test-Path -LiteralPath $stage) { Remove-Item -LiteralPath $stage -Recurse -Force }
-    Write-MemLog
+    if ($NoSwap) { $stage = Join-Path $runDir 'build_new' }
+    if (Test-Path -LiteralPath $stage) { throw '기존 build_new 보존: 먼저 pending/실패 후보를 확인하세요' }
     $sw = [Diagnostics.Stopwatch]::StartNew()
-    $bargs = @('-batchmode', '-quit', '-projectPath', $proj, '-buildTarget', 'Win64', '-executeMethod', 'PortVerification.Build', '-output', $stage, '-receipt', (Join-Path $runDir 'build-receipt.json'), '-logFile', (Join-Path $runDir 'build.log'))
-    $bp = Start-Process -FilePath $Cfg.UnityExe -ArgumentList $bargs -PassThru
-    $bdeadline = (Get-Date).AddMinutes($Cfg.BuildTimeoutMin); $run.buildExit = $null; $buildWindow = $false
-    while (-not $bp.WaitForExit(3000)) {
-      if (Test-OwnWindow $bp) { $buildWindow = $true; Log 'Unity 에디터가 창을 만들었다(무창 위반) - 강제 종료'; try { $bp.Kill() } catch { }; $run.buildExit = -998; break }
-      if ((Get-Date) -gt $bdeadline) { try { $bp.Kill() } catch { }; Log "빌드 시간 초과($($Cfg.BuildTimeoutMin)분), 강제 종료"; $run.buildExit = -999; break }
-    }
-    if ($null -eq $run.buildExit) { $run.buildExit = $bp.ExitCode }
-    $run.buildWindow = $buildWindow
-    $run.buildSeconds = [int]$sw.Elapsed.TotalSeconds
-    Log ("빌드 종료코드 {0}, {1}초" -f $run.buildExit, $run.buildSeconds)
-    if ($run.buildExit -ne 0) { $run.buildCrash = Get-CrashInfo $runStart; Log ('빌드 비정상 종료: 로그 ' + (Join-Path $runDir 'build.log') + ' / Unity 크래시 폴더 ' + $run.buildCrash.editorDir) }
+    $bx = Invoke-Exo 'build' @('-output',$stage,'-receipt',(Join-Path $runDir 'build-receipt.json'),'-remodel-scenes','1') (Join-Path $runDir 'exo-build')
+    $run.buildExit = $bx.exit; $run.buildSeconds = [int]$sw.Elapsed.TotalSeconds
+    $run.buildRunner = $bx.receipt
+    if ($null -ne $bx.receipt -and (Test-Path -LiteralPath $bx.receipt.logFile)) { Copy-Item -LiteralPath $bx.receipt.logFile -Destination (Join-Path $runDir 'build.log') }
     $rcpt = ReadJson (Join-Path $runDir 'build-receipt.json'); if ($null -ne $rcpt) { $run.receiptPassed = [bool]$rcpt.passed }
     $bj = Judge-Log (Join-Path $runDir 'build.log') 'build' $rules
     $run.build = $bj
-    if (Test-CrashRun $run.buildExit (Join-Path $runDir 'build.log')) {
-      $run.buildCrash = Get-CrashInfo $runStart
-      Copy-Item -LiteralPath (Join-Path $runDir 'build.log') -Destination (Join-Path $runDir "build.crash$ba.log") -Force -ErrorAction SilentlyContinue
-      Log ("빌드 크래시 감지(시도 $ba/2): 종료코드 $($run.buildExit), 로그 $(Join-Path $runDir "build.crash$ba.log"), 크래시 폴더 $($run.buildCrash.editorDir)")
-      if ($ba -eq 1) { Log '1회 재시도'; continue }
-      Set-Halt 'Unity 에디터 빌드 크래시 2회' (Join-Path $runDir 'build.crash2.log') $run.buildCrash.editorDir $runId
-      $run.verdict = 'ABORT'; $run.replaceNote = '빌드 크래시 2회 - HALT'; return
-    }
-    break
-    }
+
     $exeOk = Test-Path -LiteralPath (Join-Path $stage 'EXODUSER-Unity.exe')
     $buildOk = ($run.buildExit -eq 0) -and $exeOk -and ($run.receiptPassed -eq $true)
 
@@ -773,9 +707,9 @@ function Cmd-Run {
       # 다른 Unity 가 끼어들지 않았는지 다시 확인(우리 빌드 프로세스는 이미 종료)
       $others = @(Get-UnityProcs)
       if ($others.Count -gt 0) { Log ("스모크 전 대기: 다른 Unity {0}개" -f $others.Count); [void](Wait-Ready $true) }
-      for ($sa = 1; $sa -le 2; $sa++) {
+      for ($sa = 1; $sa -le 1; $sa++) {
       $smokeDir = Join-Path $runDir 'smoke'
-      if ($sa -gt 1 -and (Test-Path -LiteralPath $smokeDir)) { Remove-Item -LiteralPath $smokeDir -Recurse -Force }
+
       $sm = Run-Smoke $stage $smokeDir
       $run.smokeSeconds = $sm.seconds; $run.smokeNote = $sm.note
       Log ("스모크: ran={0} exit={1} timedOut={2} windowSeen={3} slowExit={4} {5}" -f $sm.ran, $sm.exit, $sm.timedOut, $sm.windowSeen, $sm.slowExit, $sm.note)
@@ -796,30 +730,20 @@ function Cmd-Run {
         $crashLogs = @($pj.failById.Keys | Where-Object { $_ -eq 'crash' })
         if (($null -ne $sm.exit -and [int]$sm.exit -ne 0) -or $crashLogs.Count -gt 0) { $run.crash = Get-CrashInfo $runStart; Log ('플레이어 크래시 의심: 로그 ' + (Join-Path $smokeDir 'player.log') + ' / 크래시 폴더 ' + $run.crash.playerDir) }
       }
-      if ($sm.ran -and (Test-CrashRun $sm.exit (Join-Path $smokeDir 'player.log'))) {
-        $run.crash = Get-CrashInfo $runStart
-        Copy-Item -LiteralPath (Join-Path $smokeDir 'player.log') -Destination (Join-Path $runDir "player.crash$sa.log") -Force -ErrorAction SilentlyContinue
-        Log ("플레이어 크래시 감지(시도 $sa/2): 종료코드 $($sm.exit), 로그 $(Join-Path $runDir "player.crash$sa.log"), 크래시 폴더 $($run.crash.playerDir)")
-        if ($sa -eq 1) { Log '1회 재시도'; continue }
-        Set-Halt '플레이어 스모크 크래시 2회' (Join-Path $runDir 'player.crash2.log') $run.crash.playerDir $runId
-        $run.verdict = 'ABORT'; $run.replaceNote = '스모크 크래시 2회 - HALT'; return
-      }
       break
       }
+
       # M1 다음의 필수 UI 검사. 기존 잠금은 exo 실행기에 정상 양도하고 반환받는다.
       if ($null -ne $m1 -and $m1.present -and $m1.fail -eq 0 -and $sm.exit -eq 0) {
         $uiCheck = Join-Path $Cfg.Worktree 'unity\Tools\ui-overlap\check.ps1'
-        Release-Lock; $got = $false
+        # The loop mutex stays held; exo acquires/releases the PC slot for UI checks.
         try {
           $uiLog = Join-Path $runDir 'ui-overlap.log'
           & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -NonInteractive -WindowStyle Hidden -File $uiCheck -Exe (Join-Path $stage 'EXODUSER-Unity.exe') -Worktree $Cfg.Worktree -Output (Join-Path $runDir 'ui-check') -OverlapOnly *> $uiLog
           $uiExit = $LASTEXITCODE
           $uiReport = ReadJson (Join-Path $runDir 'ui-check\overlap\overlap-report.json')
           $run.uiOverlap = @{ passed = ($uiExit -eq 0 -and $null -ne $uiReport -and $uiReport.passed); exit = $uiExit; log = $uiLog }
-        } finally {
-          $got = Acquire-Lock $runId
-          if (-not $got) { throw 'UI 검사 뒤 공통 실행 잠금을 다시 받지 못함' }
-        }
+        } finally { }
       }
     } else { $run.smokeNote = '빌드 실패로 스모크 없음' }
     $run.player = $pj; $run.m1 = $m1
@@ -864,11 +788,12 @@ function Cmd-Run {
     # 5) 교체
     $builtAt = Get-Date -Format 'yyyy-MM-dd HH:mm'
     $loopReceipt = [ordered]@{ sha = $head.short; shaFull = $head.full; branch = $branchName; builtAt = $builtAt; verdict = $run.verdict; failReasons = $reasons; knownTotal = $knownTotal; buildSeconds = $run.buildSeconds; smokeSeconds = $run.smokeSeconds; buildExit = $run.buildExit; receiptPassed = $run.receiptPassed; gfx = $(if ($null -ne $pj) { $pj.gfx } else { @() }); m1 = $(if ($null -ne $m1) { @{ ok = $m1.ok; fail = $m1.fail; neutral = $m1.neutral } } else { $null }); exe = $(Join-Path $Cfg.Out 'build\EXODUSER-Unity.exe'); headless = $(if ($null -ne $m1) { $m1.headless } else { $null }); device = $(if ($null -ne $m1) { $m1.device } else { '' }); captureMode = $(if ($null -ne $m1) { $m1.captureMode } else { '' }); guiRepaints = $(if ($null -ne $m1) { $m1.guiRepaints } else { 0 }); windowSeen = $(if ($null -ne $sm) { $sm.windowSeen } else { $false }); extraKnown = $extra; mode = $Mode; by = 'devtools-buildloop' }
+    $loopReceipt.unityTree = ([string](GitR rev-parse ($head.full + ':unity'))).Trim()
     $eligible = ($run.verdict -eq 'PASS') -or ($run.verdict -eq 'KNOWN' -and $AllowKnown)
     if ($NoSwap) {
       $run.replaceNote = '브랜치 시험 빌드/-NoSwap - build 교체 안 함'
       WriteJson (Join-Path $runDir 'loop-receipt.json') $loopReceipt
-      if (-not $KeepStage -and (Test-Path -LiteralPath $stage)) { Remove-Item -LiteralPath $stage -Recurse -Force -ErrorAction SilentlyContinue }
+      # Branch package retained as gate evidence.
     } elseif ($eligible -and $buildOk) {
       WriteJson (Join-Path $runDir 'loop-receipt.json') $loopReceipt
       $sr = Swap-Build $st $runDir ([pscustomobject]$loopReceipt)
@@ -882,7 +807,7 @@ function Cmd-Run {
     } else {
       $run.replaceNote = '실패 - 기존 build 유지'
       WriteJson (Join-Path $runDir 'loop-receipt.json') $loopReceipt
-      if (Test-Path -LiteralPath $stage) { Remove-Item -LiteralPath $stage -Recurse -Force -ErrorAction SilentlyContinue }
+      # Failed package retained for diagnosis.
     }
     Copy-Item -LiteralPath (Join-Path $runDir 'loop-receipt.json') -Destination (Join-Path $Cfg.Out 'loop-receipt.json') -Force
     Log ("build 교체: {0} - {1}" -f $run.replaced, $run.replaceNote)
@@ -914,8 +839,8 @@ if ($JudgeOnly) {
 }
 switch ($Command) {
   'check'   { Cmd-Check }
-  'run'     { Cmd-Run }
+  'run'     { if (Acquire-Lock 'run') { try { Cmd-Run } finally { Release-Lock } } }
   'status'  { Cmd-Status }
-  'swap'    { Cmd-Swap }
-  'install' { Cmd-Install }
+  'swap'    { if (Acquire-Lock 'swap') { try { Cmd-Swap } finally { Release-Lock } } }
+  'install' { if (Acquire-Lock 'install') { try { Cmd-Install } finally { Release-Lock } } }
 }

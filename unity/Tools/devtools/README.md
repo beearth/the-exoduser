@@ -14,7 +14,7 @@ $x = 'G:\exoduser\unity\Tools\devtools\exo-unity.ps1'; $wt = '<내 워크트리 
 여러 총괄이 PC의 Codex CLI 0.165를 쓸 때 워크트리·메모리·HALT·동시 실행을 확인하고 실행 기록을 I: 보관소에 남긴다. `codex exec`의 stdin은 빈 파일로 닫는다. 긴 브리프는 `prompt.md`에 복사하고 CLI에는 그 파일을 읽으라는 짧은 인수만 전달한다.
 
 ```powershell
-$wt = 'E:\exoduser-wt\<작업 워크트리>'
+$wt = 'G:\exoduser-wt\<작업 워크트리>'
 $codex = Join-Path $wt 'unity\Tools\devtools\exo-codex.ps1'
 & $codex run -Worktree $wt -Brief "$wt\brief.md" -Name 'hud-fix' -Owner 'unity-lead'
 & $codex run -Worktree $wt -Brief "$wt\brief.md" -Name 'hud-check' -Owner 'unity-lead' -Background
@@ -54,7 +54,7 @@ $clean = Join-Path $wt 'unity\Tools\devtools\exo-worktree-clean.ps1'
 # 실제 정리가 필요할 때 사람이 직접 -WhatIf 없이 같은 명령을 실행한다.
 ```
 
-**각 총괄은 자기 브랜치가 병합되면 자기 워크트리를 scan으로 확인한 뒤 정리 요청한다.** 새 워크트리는 `E:\exoduser-wt\`에만 만들고, Library는 필요할 때만 복사한다. 보고서 기본 위치는 `I:\EXODUSER-Storage\worktree-clean\`이다.
+**각 총괄은 자기 브랜치가 병합되면 자기 워크트리를 scan으로 확인한 뒤 정리 요청한다.** 새 Unity 워크트리는 NTFS `G:\exoduser-wt\`에 `unity docs/engine tools` sparse로 만든다(브리프 기준 약 3GB, 전체 약 18GB; Library 별도). Library는 Unity가 쉴 때 PowerShell robocopy `/E /XJ /MT:8`로 복사하거나 새 임포트한다. 보고서 기본 위치는 `I:\EXODUSER-Storage\worktree-clean\`이다.
 
 Unity를 작업마다 새로 띄우면 고정 비용(라이선스·첫 Refresh·엔진 초기화/종료)이 9~10초씩 든다.
 작업 서버는 워크트리당 Unity 1개를 batchmode로 계속 띄워 두고, 작업을 파일로 받아 실행한다. 컴파일 오류는 Unity를 다시 띄우지 않고 결과 json에 바로 담긴다.
@@ -71,7 +71,7 @@ Unity를 작업마다 새로 띄우면 고정 비용(라이선스·첫 Refresh·
 $x = 'E:\exoduser-wt\pc-unity-devtools-runner\unity\Tools\devtools\exo-unity.ps1'
 $wt = 'E:\exoduser-wt\<내 워크트리>'
 
-& $x start  -Worktree $wt                       # 서버 기동(잠금·Unity 0개·커밋 여유 20GB 확인, Library 없으면 30GB)
+& $x start  -Worktree $wt                       # 서버 기동(잠금·Unity 0개·최소 커밋 여유 6GB, 권장 12GB/Library 없으면 20GB는 경고만)
 & $x run    -Worktree $wt -Method Exoduser.Rm1SliceBuilder.Capture -Args '-outDir','I:/x','-cuts','start'
 & $x run    -Worktree $wt -Method Exoduser.Foo.Bar -NoRefresh -TimeoutSec 300 -Json
 & $x status [-Worktree $wt]                      # 서버·잠금·inbox·메모리·Library 경고
@@ -102,11 +102,11 @@ $wt = 'E:\exoduser-wt\<내 워크트리>'
 & $x browser -Script C:\...\check.mjs [-Args ...] [-TimeoutSec 600]
 & $x nw      -Exe ...                      # 항상 거부(창 없는 방식이 없음)
 ```
-- `player`: 기본 `-Desktop hidden` — 보이지 않는 별도 Windows 데스크톱(`CreateDesktop` + `STARTUPINFO.lpDesktop`)에서 batchmode 없이 띄운다(GPU·OnGUI·HUD 캡처 가능, 사용자 화면에 창 0). 끝나면 데스크톱 핸들을 닫고 사용자 데스크톱의 `MainWindowHandle ≠ 0` 이 0건인지 검사한다(있으면 실패, 종료 코드 4). `-Desktop batch` 는 `-batchmode` 로 띄운다(사용자 데스크톱에서는 batchmode 가 아닌 플레이어를 계속 거부: `-popupwindow`·`-screen-fullscreen` 거부). hidden 은 기본 `-screen-width 1600 -screen-height 900 -screen-fullscreen 0` 을 붙이고, 자체 종료하지 않는 점검(예: `--unity-hud-smoke` 는 batchmode 에서만 종료)은 `-KillAfterSec` 로 끝낸다. 두 모드 모두 `--unity-mute`·`--unity-qa-sandbox`·USER_SAVE 비교는 그대로. 로그 `_exec\logs\player-<id>.log` 에서 `Renderer:` 줄로 그래픽 장치 이름을 뽑아 결과에 넣고, `Forcing GfxDevice: Null` 이면 실패. P/Invoke 는 공용 모듈 `HiddenDesktop.psm1`(DT-15 `buildloop\desktop-probe.ps1` 과 공용).
+- `player`: 기본 `-Desktop hidden` — 보이지 않는 별도 Windows 데스크톱(`CreateDesktop` + `STARTUPINFO.lpDesktop`)에서 batchmode 없이 띄운다(GPU·OnGUI·HUD 캡처 가능, 사용자 화면에 창 0). 끝나면 데스크톱 핸들을 닫고 사용자 데스크톱의 `MainWindowHandle ≠ 0` 이 0건인지 검사한다(있으면 실패, 종료 코드 4). `-Desktop batch` 는 `-batchmode` 로 띄운다(사용자 데스크톱에서는 batchmode 가 아닌 플레이어를 계속 거부: `-popupwindow`·`-screen-fullscreen` 거부). hidden 은 기본 `-screen-width 1600 -screen-height 900 -screen-fullscreen 0` 을 붙이고, 자체 종료하지 않는 점검(예: `--unity-hud-smoke` 는 batchmode 또는 --unity-mute에서 종료)은 `-KillAfterSec` 로 끝낸다. 두 모드 모두 `--unity-mute`·`--unity-qa-sandbox`·USER_SAVE 비교는 그대로. 로그 `_exec\logs\player-<id>.log` 에서 `Renderer:` 줄로 그래픽 장치 이름을 뽑아 결과에 넣고, `Forcing GfxDevice: Null` 이면 실패. P/Invoke 는 공용 모듈 `HiddenDesktop.psm1`(DT-15 `buildloop\desktop-probe.ps1` 과 공용).
 - `browser`: node 를 `exo-pw-guard.cjs` 와 함께 띄운다. 가드가 Playwright `launch`/`launchPersistentContext` 에 `headless:true` + 크로미움 `--mute-audio` 를 강제하고, `headless:false`/`--headed` 는 스크립트 문구와 실행 중 호출 모두 거부한다. playwright 는 `-NodeModules`(기본 `G:\exoduser\node_modules`)에서 찾는다. 자체 점검: `selftest\pw-smoke.mjs`.
 - 거부(종료 코드 2, 사유 출력): `-popupwindow`, `-screen-fullscreen`, `-nographics`, Playwright `headless:false`/`--headed`, nw.js.
 - 실행 뒤 검사: 띄운 프로세스 트리와 실행 중 새로 생긴 `EXODUSER-Unity/Unity/nw` 프로세스 중 `MainWindowHandle ≠ 0` 이면 실패(종료 코드 4). 새로 생긴 `chrome/msedge` 는 우리 명령줄과 겹칠 때만 위반으로 보고, 아니면 경고만 한다(사용자가 같은 시각에 연 브라우저일 수 있음). 끝난 뒤 트리 프로세스가 사라졌는지 확인하고 남은 것은 정리해 결과에 적는다. 결과 json: `_exec\done\<id>.json`.
-- `player` 는 Unity 잠금(`_pc_lock.json`)과 예약 큐를 거친다(커밋 여유 10GB). `browser` 는 잠금을 쓰지 않는다.
+- `player` 는 Unity 잠금(`_pc_lock.json`)과 예약 큐를 거친다(최소 커밋 여유 6GB). `browser` 는 잠금을 쓰지 않는다.
 - 잠금의 pid 는 Unity 를 띄우고 끝까지 기다리는 이 실행기의 `$PID` 다(서버는 서버 Unity pid). 삭제는 pid·token 이 자기일 때만 한다. pid 가 죽었어도 Unity 가 돌고 있고 잠금이 15분 안쪽이면 보유 중으로 본다.
 - 예약을 여러 단계에 걸쳐 쥐고 싶으면 `-Owner 이름 -KeepReservation`(획득해도 예약이 남음), 끝나면 `unreserve`.
 
@@ -127,7 +127,7 @@ $wt = 'E:\exoduser-wt\<내 워크트리>'
 - `status`: 커밋 사용·한도·여유, Unity 프로세스, 서버 메모리, Library 불완전 경고, 최근 1시간 WHEA-Logger 건수(읽기만)를 출력한다. 실행할 때마다 `unity-jobs\memlog.csv` 에 `time,commitUsedGB,commitLimitGB,commitFreeGB,unity,claude,node` 한 줄이 쌓인다.
 - player 는 NativeQaSandbox fail-closed 가 unity/main 에 병합된 뒤(37f1360df)부터 기본 허용한다(`-AllowPlayer` 는 호환용으로만 남김).
 - 세이브 스냅샷은 에디터 자체 상태(`Unityocal.*ditor`, Analytics 등)를 제외한다(에디터를 띄우면 항상 바뀌어 오탐).
-- 시작 조건(유니티 총괄 승인 10-28, 실측 근거는 `I:\EXODUSER-Storage\devtools\dt01\RESULT.md`): 커밋 여유 에디터 Library 있음 12GB / Library 없음 20GB / 플레이어 10GB, 동시 실행 1(잠금). `status` 가 이 값과 현재 여유를 함께 출력한다. 프로세스 종료 정리는 자손 + 생성 시각이 같은 프로세스만 한다(pid 재사용으로 남의 프로세스를 건드리지 않음).
+- 시작 조건(유니티 총괄 승인 10-28, 실측 근거는 `I:\EXODUSER-Storage\devtools\dt01\RESULT.md`): 최소 커밋 여유 6GB(권장 에디터 Library 있음 12GB / Library 없음 20GB / 플레이어 10GB는 경고만), 동시 실행 1(잠금). `status` 가 이 값과 현재 여유를 함께 출력한다. 프로세스 종료 정리는 자손 + 생성 시각이 같은 프로세스만 한다(pid 재사용으로 남의 프로세스를 건드리지 않음).
 - 빌드 전 필수 영상: `run -Method PortVerification.Build` 또는 `build -Worktree <wt> -Args '-output,<dir>,-receipt,<file>'`(자동으로 `-buildTarget Win64` 추가) 는 Unity 를 띄우기 전에 `restore-lobby-media.cjs`·`restore-warrior-story.cjs` 를 실행하고, `StreamingAssets\Lobby` 필수 영상 9개(각 1MB 이상, buildloop `smoke-rules.json` 의 `requiredMedia` 가 있으면 그 목록)가 하나라도 없으면 실패한다(종료 코드 6, `필수 영상 누락`).
 - 인자 해석 점검: `-DryRun` 은 잠금·Unity·영상 복원 없이 해석된 method/args 만 출력하고 끝난다. 단위 시험: `powershell -File unity\Tools\devtools\selftest\args-test.ps1` (run·player·build × 쉼표/배열/-ArgsJson/-File 14건). `build` 는 인자를 먼저 쪼갠 뒤 `-buildTarget Win64` 를 붙인다(쉼표 형식 `-Args '-output,X,-receipt,Y'` 지원).
 
@@ -141,3 +141,27 @@ $wt = 'E:\exoduser-wt\<내 워크트리>'
 ### 2026-10-31 Editor 그래픽 API 선택
 
 `exo-unity.ps1 start -Worktree <자기 체크아웃> -Owner <자기 예약> -ForceD3D11`은 공식 Editor 시작에만 `-force-d3d11`을 추가한다. 생략하면 기존 프로젝트 기본 API를 유지한다. `start -DryRun`으로 실제 Unity/슬롯 획득 없이 선택 그래픽 인수만 확인할 수 있다. 기존 Acquire-Slot·예약 순서·숨김 실행·격리 세이브는 동일하다. Player는 기존 `-Args`로 `-force-d3d11`을 전달한다. 이 옵션 검증은 D3D12 장치 제거 자체의 원인 해결이나 D3D11 실실행 성공을 뜻하지 않는다.
+
+## 레인 브리프용 Codex 실행 3줄
+
+~~~powershell
+$wt = 'G:\exoduser-wt\<내 sparse 작업본>'; $codex = Join-Path $wt 'unity\Tools\devtools\exo-codex.ps1'
+& $codex run -Worktree $wt -Brief 'I:\EXODUSER-Storage\<레인>\brief.md' -Name 'lane-fix' -Owner '<담당>'
+& $codex status -Last 3
+~~~
+
+Codex CLI 실행은 위 래퍼를 사용한다. 새 작업본 sparse 명령은 git sparse-checkout set unity docs/engine tools이다. 자기 브랜치 병합 후 exo-worktree-clean.ps1 scan 결과로 정리 요청하며, 삭제 apply는 사람이 직접 실행한다. 시험 생성 파일 selftest/codex-e2e.txt는 커밋하지 않는다.
+
+## 자동 빌드 감시 켜기·끄기 (unity/main 병합 뒤 총괄 실행)
+
+~~~powershell
+# 통합된 깨끗한 소유 NTFS checkout에서 설치. lane branch/미병합 source는 거부한다.
+& .\unity\Tools\devtools\buildloop\buildloop.ps1 install -Worktree '<통합 checkout>'
+$task = 'I:\EXODUSER-Storage\unity-latest\loop\bin\install-task.ps1'
+& $task -WhatIf       # 사용자 Limited/Interactive, 20분, 무창·NonInteractive 계획
+& $task               # 켜기: 이번 작업에서는 실행하지 않음
+& $task -Status       # 상태
+& $task -Remove       # 끄기(등록 해제)
+~~~
+
+스모크 기본은 숨은 데스크톱 -Mode desktop이다. 교체 대상은 I:\EXODUSER-Storage\unity-latest\build 하나이며, 이전 것은 build_prev_<sha>_<시각>으로 보관한다. 바탕화면 .lnk와 인자 -force-d3d11 --remodel3d는 수정하지 않는다. 실행 중인 사용자의 build는 다음 회차로 미룬다. 세부 계약·영수증은 [buildloop README](buildloop/README.md)를 따른다.

@@ -1,4 +1,4 @@
-param(
+﻿param(
     [switch]$ExpectLegacyThrow,
     [string]$TestRoot = 'I:\EXODUSER-Storage\codex-takeover\runner-batchlog-fix-20261029\fixtures'
 )
@@ -61,7 +61,7 @@ try {
     Apply-SaveCheck $result $before (Join-Path $Root 'sandbox')
     $done = Join-Path $Root 'done\save-check.json'
     Write-JsonAtomic $done $result
-    $receipt = Get-Content -LiteralPath $done -Raw | ConvertFrom-Json
+    $receipt = Get-Content -LiteralPath $done -Raw -Encoding UTF8 | ConvertFrom-Json
     Assert (-not $receipt.ok -and $receipt.userSaveChanged -eq 1) 'done JSON lost failure or save comparison'
     Assert ($receipt.userSaveFiles.Count -eq 1) 'done JSON lost changed fake save path'
     Assert ($receipt.note -match '로그 읽기 실패' -and $receipt.note -match 'USER_SAVE changed=1') 'done JSON lost reasons'
