@@ -52959,7 +52959,7 @@ function draw(){
     }
     else if(it.type==='chest'){
       const glow=.5+Math.sin(_now/350)*.4;
-      if(window._chest3d?.active){
+      if(window._chest3d?.isShowing?.(it)){
         // 3D overlay 처리 중 — 상호작용 힌트만 2D에 표시
         if(!it.opened){X.globalAlpha=1;X.font='13px "Noto Sans KR"';X.fillStyle='#ffcc44';X.fillText('['+keyName(BINDS.interact)+'] '+_T('열기'),it.x,it.y+b+28);}
       }else if(it.opened){
@@ -65639,148 +65639,9 @@ console.log('[BOSS3D] Overlay initialized');
 }
 </script>
 <script type="module">
-// CHEST 3D — Meshy GLB v8.0
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-(function(){
-'use strict';
-const CVS=document.getElementById('chest3dCvs');
-if(!CVS)return;
-if(!(()=>{try{const _pc=document.createElement('canvas');return !!(_pc.getContext('webgl2')||_pc.getContext('webgl'));}catch(e){return false}})()){console.warn('[CHEST3D] WebGL 미지원 — 3D 상자 비활성');return;}
-
-const SZ=140;
-const R=new THREE.WebGLRenderer({canvas:CVS,alpha:true,antialias:true,powerPreference:'high-performance'});
-R.setSize(SZ,SZ);R.setPixelRatio(Math.min(devicePixelRatio||1,1.5));
-CVS.style.width=CVS.style.height=SZ+'px';
-R.setClearColor(0,0);R.outputColorSpace=THREE.SRGBColorSpace;
-R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;
-R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.5;
-
-const SC=new THREE.Scene();
-const CAM=new THREE.PerspectiveCamera(40,1,0.01,30);
-CAM.position.set(0.3,1.8,3.4);CAM.lookAt(0,0.5,0);
-
-// 환경맵
-const cubeRT=new THREE.WebGLCubeRenderTarget(128,{generateMipmaps:true,minFilter:THREE.LinearMipmapLinearFilter});
-const cubeCam=new THREE.CubeCamera(0.1,30,cubeRT);
-const envS=new THREE.Scene();
-envS.add(new THREE.HemisphereLight(0x4a3020,0x101018,3.0));
-const eD1=new THREE.DirectionalLight(0xffffff,5);eD1.position.set(2,4,2);envS.add(eD1);
-const eD2=new THREE.DirectionalLight(0x3344aa,2);eD2.position.set(-3,-1,-3);envS.add(eD2);
-cubeCam.update(R,envS);SC.environment=cubeRT.texture;
-
-// 3점 조명
-const keyL=new THREE.DirectionalLight(0xffe0c0,3.0);
-keyL.position.set(3,5,4);keyL.castShadow=true;
-keyL.shadow.mapSize.set(512,512);
-keyL.shadow.camera.near=0.1;keyL.shadow.camera.far=18;
-keyL.shadow.camera.left=keyL.shadow.camera.bottom=-2.5;
-keyL.shadow.camera.right=keyL.shadow.camera.top=2.5;
-keyL.shadow.bias=-0.001;SC.add(keyL);
-const fillL=new THREE.DirectionalLight(0x8090b0,1.2);fillL.position.set(-3,2,-2);SC.add(fillL);
-const rimL=new THREE.DirectionalLight(0xff6020,2.0);rimL.position.set(1,1,-4);SC.add(rimL);
-SC.add(new THREE.HemisphereLight(0x1a1008,0x060202,0.8));
-const iL1=new THREE.PointLight(0xff4400,0,5);iL1.position.set(0,1.2,0.2);SC.add(iL1);
-const iL2=new THREE.PointLight(0xff6600,0,8);iL2.position.set(0,3,0);SC.add(iL2);
-
-const ROOT=new THREE.Group();SC.add(ROOT);ROOT.rotation.y=-0.18;
-
-// GLB 로드
-new GLTFLoader().load('assets/3d/dark_gothic_medieval_treasure_chest__iro_019e0a38.glb',function(gltf){
-  const mdl=gltf.scene;
-  mdl.traverse(function(ch){if(ch.isMesh){ch.castShadow=true;ch.receiveShadow=true;}});
-  const box=new THREE.Box3().setFromObject(mdl);
-  const sz=box.getSize(new THREE.Vector3());
-  const ctr=box.getCenter(new THREE.Vector3());
-  const s=1.8/Math.max(sz.x,sz.y,sz.z);
-  mdl.scale.setScalar(s);
-  mdl.position.sub(ctr.multiplyScalar(s));
-  mdl.position.y+=sz.y*s*0.5;
-  ROOT.add(mdl);
-});
-
-// 파티클
-const parts=[];
-for(let i=0;i<14;i++){
-  const pm=new THREE.MeshBasicMaterial({
-    color:new THREE.Color().setHSL(0.04+Math.random()*0.05,1.0,0.55+Math.random()*0.2),
-    transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide
-  });
-  const p=new THREE.Mesh(new THREE.PlaneGeometry(1,1),pm);
-  p.scale.setScalar(0.04+Math.random()*0.06);
-  p.userData={angle:Math.random()*Math.PI*2,r:0.4+Math.random()*0.7,
-    yOff:Math.random()*1.1,ySpd:0.10+Math.random()*0.20,
-    aSpd:(0.18+Math.random()*0.26)*(Math.random()<0.5?1:-1),phase:Math.random()*Math.PI*2};
-  p.visible=false;SC.add(p);parts.push(p);
-}
-
-let _st='hidden',_timer=0,_wx=0,_wy=0;
-function _reset(){
-  ROOT.position.set(0,0,0);ROOT.rotation.set(0,-0.18,0);
-  iL1.intensity=0;iL2.intensity=0;
-  parts.forEach(function(p){p.visible=false;p.material.opacity=0;});
-}
-window._chest3d={
-  show:function(wx,wy){_wx=wx;_wy=wy;_st='idle';_timer=0;_reset();CVS.style.display='block';},
-  open:function(){if(_st==='idle'||_st==='rattling'){_st='rattling';_timer=0;}},
-  hide:function(){_st='hidden';CVS.style.display='none';},
-  get active(){return _st!=='hidden';}
-};
-
-function updatePos(){
-  const c=document.getElementById('c');
-  if(!c||typeof G==='undefined'||!G.on)return;
-  const sc=(typeof _dpr!=='undefined'?_dpr:Math.min(devicePixelRatio||1,1.5))*((typeof OPT!=='undefined'&&OPT.resScale)?OPT.resScale/100:1);
-  const cssX=(c.width/2+(_wx-G.cam.x))/sc;
-  const cssY=(c.height/2+(_wy-G.cam.y))/sc;
-  if(cssX<-200||cssX>innerWidth+200||cssY<-200||cssY>innerHeight+200){CVS.style.opacity='0';return;}
-  CVS.style.opacity='1';
-  CVS.style.left=(cssX-SZ/2)+'px';
-  CVS.style.top=(cssY-SZ*.85)+'px';
-}
-
-const CLK=new THREE.Clock();
-function tick(){
-  requestAnimationFrame(tick);
-  if(_st==='hidden')return;
-  const dt=Math.min(CLK.getDelta(),0.05);_timer+=dt;
-  updatePos();
-  parts.forEach(function(p){
-    const u=p.userData;
-    if(_st==='idle'||_st==='rattling'){
-      p.visible=true;u.angle+=dt*u.aSpd;
-      const y0=0.05+((u.yOff+_timer*u.ySpd)%1.2);
-      p.position.set(Math.cos(u.angle)*u.r,y0,Math.sin(u.angle)*u.r*0.45);
-      p.lookAt(CAM.position);
-      p.material.opacity=(_st==='rattling'?0.75:0.35)+Math.sin(_timer*1.8+u.phase)*0.14;
-    }else if(_st==='opening'&&_timer<0.5){
-      p.visible=true;p.material.opacity=Math.max(0,(0.5-_timer)*1.8);
-    }else{p.visible=false;}
-  });
-  if(_st==='idle'){
-    ROOT.position.y=Math.sin(_timer*1.3)*0.022;
-    ROOT.rotation.y=-0.18+Math.sin(_timer*0.44)*0.035;
-  }else if(_st==='rattling'){
-    const rp=Math.min(1,_timer*2.4);
-    ROOT.position.x=Math.sin(_timer*48)*0.040*rp;
-    ROOT.position.y=Math.abs(Math.sin(_timer*43))*0.022*rp;
-    ROOT.rotation.z=Math.sin(_timer*45)*0.020*rp;ROOT.rotation.y=-0.18;
-    iL1.intensity=Math.min(1,_timer*2)*1.5;
-    if(_timer>.50){_st='opening';_timer=0;if(typeof shake==='function')shake(14);}
-  }else if(_st==='opening'){
-    ROOT.position.x=0;ROOT.rotation.z=0;ROOT.rotation.y=-0.18;
-    // 빛 폭발
-    const bst=Math.min(1,_timer/.25);
-    iL1.intensity=bst*20;iL2.intensity=bst*12;
-    // 화이트아웃 (모델 밝아짐)
-    ROOT.scale.setScalar(1+bst*0.15);
-    if(_timer>=0.6){_st='hidden';CVS.style.display='none';ROOT.scale.setScalar(1);}
-  }
-  R.render(SC,CAM);
-}
-tick();
-console.log('[CHEST3D] v8 Meshy GLB');
-})();
+// CHEST 3D — Tripo H3.1 runtime body + hinged lid.
+import {initChest3D} from "./chest3d.mjs";
+initChest3D({canvas:document.getElementById("chest3dCvs"),getWorld:()=>({on:G.on,paused:G.paused,items:worldItems,cam:G.cam,canvas:C})});
 </script>
 <!-- ═══ VFX 3D Particle Overlay (Unity 재현) ═══ -->
 <script>
