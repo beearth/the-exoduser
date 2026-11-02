@@ -1,0 +1,34 @@
+{
+  "createdAt": "2026-11-02T01:13:35.482Z",
+  "task": "v15/v16 동일 얼굴 지적 후 실제 인물별 독립 얼굴 재생성 v17",
+  "generator": "built-in image_gen; actual model ID and cost unexposed",
+  "status": "NEW_FACE_STUDIES_AWAIT_USER_REVIEW",
+  "method": "One photograph per independent generation; no prior generated face and no paired character image input; HTML side-by-side comparison without raster recomposition",
+  "outputs": [
+    {
+      "id": "woni",
+      "filename": "independent_woni_face_v17.png",
+      "source": "C:\\Users\\심도진\\.codex\\generated_images\\01a194cc-8301-70f1-80f8-a4e5f1090c22\\exec-0f2d4bcc-9d45-4183-9974-8d2fc92e0b1a.png",
+      "prompt": "Create one SINGLE-ADULT-WOMAN frontal character face study, square canvas, head and shoulders with generous clear margin above hair, head centered, eye line horizontal at roughly 43 percent canvas height. Mature adult woman in her twenties. Use ONLY the one attached photograph as the facial identity reference. Rotate the photographed identity into a true frontal neutral view; the photograph's head angle and pose must NOT be copied.\nPreserve that real person's individual face geometry: skull and cheek breadth, eye spacing and actual eyelid shapes, nose bridge/tip/nostril anatomy, philtrum length, upper-versus-lower lip shape, jaw width and chin. Do not apply a universal doll face, enlarged anime eyes, tiny button nose, standardized V-chin, plumped lips or social-media beauty filter. No smoothing away identifying facial structure. Retain subtle natural asymmetry and human surface texture.\nRendering: high-quality realistic HAND-PAINTED DARK-FANTASY GAME CHARACTER portrait, restrained painterly skin shading and believable anatomy, muted materials, neutral warm-gray studio backdrop. No photographic face pasted into art, no glossy CGI doll, no idol promo lighting. Soft diffuse front illumination equally across both sides of face. Exact front view, vertical nose axis, straight upright neck, head balanced naturally on shoulders, neutral chin, calm attentive expression, mouth relaxed and gently closed; no smile, pout, tilted head, side glance, lifted chin, lowered chin or three-quarter view. No text, labels, logos or watermark. There is exactly ONE character and ONE face in this image. Identity target: WONI in the attached photograph, not an invented averaged K-pop face. Pay particular attention to her comparatively longer central nose/philtrum rhythm, gently narrow almond eye openings and recognizable upper/lower lip proportions in the photo; preserve her small facial mole seen beside the nose/upper cheek, do not embellish. Remove the smile for neutral assessment without replacing the underlying face. Hair: dark black-brown half-up tie with loose long hair; tuck front strands enough to reveal both cheeks, brow shapes and jaw corners. She is the bare-abs heroine, but this portrait stops at shoulders and uses a simple dark navy high collar and leather shoulder edge. Minimal outfit details so the face is the subject. Only this photograph supplies the identity; do not bring in any prior generated character faces.",
+      "refs": [
+        "G:/exoduser/output/character_style_variations_20261101/reference_woni_official_20261101.jpg"
+      ]
+    },
+    {
+      "id": "liv",
+      "filename": "independent_liv_face_v17.png",
+      "source": "C:\\Users\\심도진\\.codex\\generated_images\\01a194cc-8301-70f1-80f8-a4e5f1090c22\\exec-0a02da0f-8fc8-44a6-8b2d-49e4599743c9.png",
+      "prompt": "Create one SINGLE-ADULT-WOMAN frontal character face study, square canvas, head and shoulders with generous clear margin above hair, head centered, eye line horizontal at roughly 43 percent canvas height. Mature adult woman in her twenties. Use ONLY the one attached photograph as the facial identity reference. Rotate the photographed identity into a true frontal neutral view; the photograph's head angle and pose must NOT be copied.\nPreserve that real person's individual face geometry: skull and cheek breadth, eye spacing and actual eyelid shapes, nose bridge/tip/nostril anatomy, philtrum length, upper-versus-lower lip shape, jaw width and chin. Do not apply a universal doll face, enlarged anime eyes, tiny button nose, standardized V-chin, plumped lips or social-media beauty filter. No smoothing away identifying facial structure. Retain subtle natural asymmetry and human surface texture.\nRendering: high-quality realistic HAND-PAINTED DARK-FANTASY GAME CHARACTER portrait, restrained painterly skin shading and believable anatomy, muted materials, neutral warm-gray studio backdrop. No photographic face pasted into art, no glossy CGI doll, no idol promo lighting. Soft diffuse front illumination equally across both sides of face. Exact front view, vertical nose axis, straight upright neck, head balanced naturally on shoulders, neutral chin, calm attentive expression, mouth relaxed and gently closed; no smile, pout, tilted head, side glance, lifted chin, lowered chin or three-quarter view. No text, labels, logos or watermark. There is exactly ONE character and ONE face in this image. Identity target: LIV in the attached photograph, not an invented averaged K-pop face. Pay particular attention to her specific more open, softly curved eye shapes and their spacing, her shorter delicate rounded nose, softer cheek planes and the full contour and cupid-bow shape of her natural lips in THIS photo. Reconstruct the image's sideways-leaning face upright without copying that pose. Do not turn these features into the narrow-eyed long-nosed template used for other people. Hair: approved smoky black-plum asymmetric short bob, tuck side strands enough to reveal both cheeks, brow shapes and jaw corners. She is the Spearmage, but this portrait stops at shoulders and uses a simple charcoal high collar and worn-metal shoulder edge. Minimal outfit details so the face is the subject. Only this photograph supplies the identity; do not bring in any prior generated character faces.",
+      "refs": [
+        "G:/exoduser/output/character_style_variations_20261101/reference_liv_profile_20261102.webp"
+      ]
+    }
+  ],
+  "observed": "Separate source-face geometry retained more visibly: Woni study has narrower eye openings/longer central face rhythm/facial mole; Liv study has more rounded open eyes/softer cheek planes/shorter nose/full shaped lips. Both frontal.",
+  "limits": [
+    "Illustrated likeness still needs user review; output adoption not assumed.",
+    "Head studies only. Generated collars/materials are incidental, not new adopted costumes or body designs.",
+    "No full-body or updo reapplication yet; no game, 3D or animation integration.",
+    "v15/v16 face differentiation rejected; v16 posture work retained as history."
+  ]
+}

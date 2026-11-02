@@ -1,0 +1,23 @@
+{
+  "time": "2026-11-02T01:14:16.232Z",
+  "checks": [
+    {
+      "file": "independent_faces_v17.html",
+      "status": 200
+    },
+    {
+      "file": "independent_woni_face_v17.png",
+      "status": 200
+    },
+    {
+      "file": "independent_liv_face_v17.png",
+      "status": 200
+    },
+    {
+      "file": "independent_faces_v17.receipt.json",
+      "status": 200
+    }
+  ],
+  "copyHashesVerified": true,
+  "runtimeApplied": false
+}
