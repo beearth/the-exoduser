@@ -10,7 +10,7 @@
   "sourceStartSeconds": 0.5,
   "overlapSeconds": 1,
   "audio": false,
-  "stillSource": "G:/exoduser/tmp/design-review/20261102_title_keyframe/close/C2-close-3840x1920.png",
+  "stillSource": "I:/EXODUSER-Storage/codex-takeover/title-final-three-20261102/C2-close-backblade-moon-3840x1920.png",
   "fallData": [
     {
       "id": "near",
@@ -54,7 +54,7 @@
     512
   ],
   "opacity": 0.38,
-  "quality": "Close composition: approved 3840x1920 still for static geometry; registered close-final motion for hair/cape/water; bounded temporal light on clouds/mist. Background was generated at 1774x887 and resized; character layer 1224x1285 reduced to 1000px. No native-4K claim.",
+  "quality": "Single cleaned still for entire character/cloth/hair/sword with bounded inverse displacement; direct Kling sky and water; no synthesized noise or sharpening. Upscaled approved artwork, not native 4K.",
   "variants": {
     "1920": {
       "path": "video/title_motion_C2_close_1920_20261102.mp4",
@@ -62,8 +62,8 @@
         1920,
         960
       ],
-      "bytes": 5036891,
-      "sha256": "1682e40ec09bb1fd8294797c94445cd5071d8d40c23b5369b03451601f761b3a",
+      "bytes": 5488666,
+      "sha256": "d8df7ee56951f3a176b9e50b85e2fa208f2ca351285e22329428b15b6fe7d307",
       "frames": "206",
       "fps": "24/1",
       "duration": "8.584000",
@@ -75,8 +75,8 @@
         2560,
         1280
       ],
-      "bytes": 7641069,
-      "sha256": "0c3bc18287f8403e7ff90110c10865cdba1518e9d2df3a51287f2a6e92b4ddeb",
+      "bytes": 8582130,
+      "sha256": "802b39a9e255992036650612e2fab03784779e5238d40819b7eb2695b8974960",
       "frames": "206",
       "fps": "24/1",
       "duration": "8.584000",
@@ -88,15 +88,15 @@
         3840,
         1920
       ],
-      "bytes": 15764208,
-      "sha256": "0157bf6370446b48cf1f06e643c840e19a07f444b707b3088a1f0f18e8b1d8ff",
+      "bytes": 16561398,
+      "sha256": "2c2f1ab1c7b5b0e8e4aba72981610af5ceca8eab3bf962b24dfafa2528770b4f",
       "frames": "206",
       "fps": "24/1",
       "duration": "8.584000",
       "audio": false
     }
   },
-  "stillSHA256": "66733238edceea19749585f1e685c9717539d42fdf4c047857934f5a08d737ae",
+  "stillSHA256": "75f6cd74ade97958b4256873a7f1b5c5135ac922a6d927f33996e27d3fcbf238",
   "fixedUsed": true,
   "maskFrames": 206,
   "registration": {
@@ -114,31 +114,25 @@
     ],
     "inliers": 292,
     "medianError4K": 0.5763294696807861,
-    "scale": 1.0011068071759768
+    "scale": 1.0011068071759768,
+    "applied": false,
+    "note": "Retained previous compositor measurement; current single-source character is never cross-blended with video."
   },
-  "directCoverage": 0.18804736742563136,
-  "residualCoverage": 0.2503078187902625,
   "cloudFlow": {
-    "path": "assets/title-signboard/C2/cloud-flow.webp",
-    "size": [
-      2036,
-      1018
-    ],
-    "opacity": 0.12,
-    "dx": "7*sin(.07*t)+2*sin(.13*t)",
-    "dy": "1.5*sin(.09*t)",
-    "source": "approved still; 3 feathered cloud envelopes with moon/dark silhouettes protected"
+    "source": "Kling sky, pre-rendered inverse flow plus GLSL runtime inverse sampling",
+    "mask": "assets/title-signboard/C2/cloud-video-mask.png",
+    "maskSHA256": "4c6dcee0e5a5a75bdfc6f8c88f8a978c3c12ed35394837691e02fb36b32321ef"
   },
   "originalSource": "I:/EXODUSER-Storage/codex-takeover/title-kling-C2-20261102/close-final/original.mp4",
   "originalSourceSHA256": "b9e7b0cf0f8d39d1a26ebaab188603825035b8e855bdacdecfec6e95d4c5950f",
-  "stillRuntimeSHA256": "c857bd0dbee22b740c220928ad0d21389a92324460a2078349053014410f8817",
+  "stillRuntimeSHA256": "28dd037da87d3bca1f63d93c5070ac028780864d08a660ae264d37a871313035",
   "assetBuilder": "tools/build-title-close-assets.cjs",
-  "compositor": "tools/build-title-clarity.py",
-  "staticComposition": "Relocated still moon (1180,309), radius79 virtual; both moon disk and boot soles visible at 16:9/21:9/32:9; local feathered still plate masks video moon",
+  "compositor": "tools/build-title-cleanup.cjs",
+  "staticComposition": "B: corrected still character fully covers video character; rigid hub/blade/body/hands/boots, hair/cape tips only inverse displacement. Kling sky + flow, separate relocated moon disc.",
   "maskHashes": {
     "fall-near.png": "8e49502aa482d2fba599592d8408dc5511b88013b1de1d776a7f2ccbd73847e1",
     "fall-far.png": "7c6858c890391f14ec6cc4786ea09fae30f0b7376d39043bc658e0cec90ddca5",
-    "cloud-flow.webp": "c0f0fb93ae0b3472040e84274b1aadbdce8504e514951d17b22fac1e956746c5"
+    "cloud-video-mask.png": "4c6dcee0e5a5a75bdfc6f8c88f8a978c3c12ed35394837691e02fb36b32321ef"
   },
   "moonRelocation": {
     "from": {
@@ -165,10 +159,11 @@
       "size": [
         632,
         868
-      ]
+      ],
+      "alpha": "disc radius80 virtual,26px smoothstep; no old moon or static surrounding clouds"
     },
     "cloudRestoration": "assets/title-signboard/C2/moon-cloud-restoration.png",
-    "method": "built-in image edit for old cloud spot; exact approved moon and halo extracted; local still plate masks original video moon after cloud flow",
+    "method": "Separate relocated disc/halo only: old broad cloud plate removed. Original video moon covered with existing cloud restoration, advected by the sky flow field.",
     "pulse": {
       "seconds": 10,
       "opacity": [
@@ -181,7 +176,141 @@
     "builder": "tools/build-title-moon-assets.cjs",
     "sourceSHA256": "66733238edceea19749585f1e685c9717539d42fdf4c047857934f5a08d737ae",
     "editSHA256": "6a233b9546999a114b9914bf85e2df8265cc301cb933574a8c20bcf2cf822900",
-    "stillSHA256": "c857bd0dbee22b740c220928ad0d21389a92324460a2078349053014410f8817",
-    "plateSHA256": "f7be54e9bb592bc6bc1919e082946a3b2502f11dcdd75308810dc6fff29691ad"
+    "stillSHA256": "28dd037da87d3bca1f63d93c5070ac028780864d08a660ae264d37a871313035",
+    "plateSHA256": "bd83335409292eb9dfd9ab6d70613ce47aeed6c5a326fd4eb2be93f59ad7e33f"
+  },
+  "previousCompositor": {
+    "script": "tools/build-title-clarity.py",
+    "registration": {
+      "matrix1018": [
+        [
+          1.0011068040120776,
+          0.00007959146777343134,
+          -0.2804537475118558
+        ],
+        [
+          -0.00007959146777343134,
+          1.0011068040120776,
+          -0.16521527674242206
+        ]
+      ],
+      "inliers": 292,
+      "medianError4K": 0.5763294696807861,
+      "scale": 1.0011068071759768
+    },
+    "directCoverage": 0.18804736742563136,
+    "residualCoverage": 0.2503078187902625
+  },
+  "cleanup": {
+    "frames": 206,
+    "fps": 24,
+    "seconds": 8.583333333333334,
+    "stillCleanup": [
+      {
+        "components": 18647,
+        "pixels": 372540
+      },
+      {
+        "components": 33071,
+        "pixels": 146524
+      },
+      {
+        "rockCollar": "median25 only at detected foreground glints, white expansion4, feather1.2; feet/sword excluded"
+      }
+    ],
+    "grain": false,
+    "sharpen": false,
+    "character": "B: all approved still, body/face/feet/sword fixed; continuous inverse displacement only on hair/cloth",
+    "protectedBox4K": [
+      2390,
+      430,
+      1140,
+      1060
+    ],
+    "featherOutside": 65,
+    "cloudFlow": {
+      "source": "I:/EXODUSER-Storage/codex-takeover/title-kling-C2-20261102/close-final/loop.mp4",
+      "dx": "28*sin(2*pi*t/(206/24)+y/420)",
+      "dy": "5*sin(2*pi*t/(206/24)+y/530)",
+      "oldMoon": "existing cloud restoration texture advected by same sky field",
+      "moon": "separate still disc only, no cloud plate"
+    },
+    "runtimeCloudShader": {
+      "language": "GLSL ES 1.00",
+      "precision": "highp",
+      "size": [
+        2036,
+        1018
+      ],
+      "mask": "assets/title-signboard/C2/cloud-video-mask.png",
+      "flowVirtual": [
+        "7*sin(.33*t)",
+        "1.5*sin(.27*t)"
+      ],
+      "fallback": "pre-rendered sky flow retained"
+    },
+    "runtimeCharacterShader": {
+      "language": "GLSL ES 1.00",
+      "size": [
+        3840,
+        1920
+      ],
+      "source": "corrected still.webp only",
+      "maxDisplacementPixels": [
+        2.4,
+        1.1
+      ],
+      "periodSeconds": 8.583333333333334,
+      "hair": {
+        "x": [
+          2830,
+          3180
+        ],
+        "yFade": [
+          880,
+          970
+        ]
+      },
+      "cape": {
+        "x": [
+          3060,
+          3280
+        ],
+        "yFadeIn": [
+          890,
+          980
+        ],
+        "yFadeOut": [
+          1290,
+          1380
+        ]
+      },
+      "rigid": "upper-back rotary hub, blade corridor, body, hands, boots",
+      "fallback": "same single-source B baked into all video variants"
+    }
+  },
+  "originalStillSource": "G:/exoduser/tmp/design-review/20261102_title_keyframe/close/C2-close-3840x1920.png",
+  "bladeCorrection": {
+    "reference": "img/title_bg_20261028.jpg",
+    "lock": "docs/archetypes/silvertail/SILVERTAIL_LOCKED_SPEC_v1_2.md",
+    "source": "I:/EXODUSER-Storage/codex-takeover/title-final-three-20261102/C2-close-backblade-moon-3840x1920.png",
+    "method": "Built-in imagegen cropped edit, adopt only hub and blade corridor; other source pixels byte-identical",
+    "receipt": {
+      "source": "I:/EXODUSER-Storage/codex-takeover/title-moon-20261102/C2-close-moon-lowered-3840x1920.png",
+      "edit": "I:/EXODUSER-Storage/codex-takeover/title-final-three-20261102/sword-edit-selected.png",
+      "crop": {
+        "left": 2420,
+        "top": 480,
+        "width": 930,
+        "height": 1040
+      },
+      "changedMaskPixels": 64930,
+      "outsideChanges": 0,
+      "method": "Built-in image editing; adopt only hub/blade/removal corridor, exact original bytes elsewhere",
+      "equipment": "Upper-back rotary hub; clean black/silver blade behind body down to right mid-calf; empty hands"
+    },
+    "prompt": "Small upper-back rotary hub; descending black/silver blade behind torso, right mid-calf tip; hands empty. Face, pose, hair, armor, cape, boots and environment unchanged.",
+    "toolCalls": 2,
+    "externalPaidGeneration": 0
   }
 }

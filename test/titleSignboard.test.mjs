@@ -39,3 +39,8 @@ test('C2 uses the existing title renderer; obsolete DOM video overlay stays remo
  assert.doesNotMatch(h,/splashTitleVideo|_titleVideoFade|_titleWideBackdrop|title_motion_20261028/);
  const build=fs.readFileSync(new URL('../build-nwjs.mjs',import.meta.url),'utf8');assert.match(build,/'title-signboard.js'/);
 });
+
+test('cloud flow is coherent and continues beyond the media loop without procedural grain',()=>{
+ assert.equal(typeof api.cloudFlow,'function');const a=api.cloudFlow(1),b=api.cloudFlow(1.1);
+ assert.ok(Math.abs(b[0]-a[0])>.01);for(let t=0;t<30;t+=.1){const p=api.cloudFlow(t);assert.ok(Math.abs(p[0])<=7&&Math.abs(p[1])<=1.5);}
+});
