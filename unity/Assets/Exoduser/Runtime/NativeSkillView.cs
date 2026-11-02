@@ -102,7 +102,7 @@ namespace Exoduser.UnityPort
             var l = go.AddComponent<LineRenderer>(); l.useWorldSpace = false; l.loop = true; l.positionCount = 72; l.widthMultiplier = .03f; l.sharedMaterial = add;
             l.startColor = l.endColor = color; l.sortingOrder = -18990; return l;
         }
-        static void SetRing(LineRenderer l, float radiusPx, Color c)
+        static void SetRing(LineRenderer l, float radiusPx, Color c, SpriteRenderer owner)
         {
             l.startColor = l.endColor = c;
             var anchor = l.transform.position;
@@ -116,6 +116,7 @@ namespace Exoduser.UnityPort
                 }
                 else l.SetPosition(i, new Vector3(x, y, 0));
             }
+            NativeGroundSkillSurface.SetRing(l,owner,radiusPx/100,c);
         }
 
         public void Update(Simulation sim, float time)
@@ -142,7 +143,7 @@ namespace Exoduser.UnityPort
                     for (int ri = 0; ri < 2; ri++)
                     {
                         float rp = (Mathf.Sin(t * (2.1f + ri * .35f) + ri * 2.4f) + 1) * .5f;
-                        SetRing(it.rings[ri], z.R * (.62f + ri * .19f + rp * .09f) * deploy, new Color(213 / 255f, 1f, 114 / 255f, (.64f + rp * .18f) * fade * WebLitHolyDomeRing));
+                        SetRing(it.rings[ri], z.R * (.62f + ri * .19f + rp * .09f) * deploy, new Color(213 / 255f, 1f, 114 / 255f, (.64f + rp * .18f) * fade * WebLitHolyDomeRing), it.a);
                     }
                 }
             }

@@ -14,6 +14,14 @@ namespace Exoduser.UnityPort
         static readonly int MainTex = Shader.PropertyToID("_MainTex");
         static readonly int GroundClip=Shader.PropertyToID("_GroundUvClip"),GroundU=Shader.PropertyToID("_GroundUvU"),GroundV=Shader.PropertyToID("_GroundUvV"),GroundRect=Shader.PropertyToID("_GroundUvRect");
         static Material spriteAlpha;
+        static readonly int RingRadius=Shader.PropertyToID("_GroundRingRadius"),RingWidth=Shader.PropertyToID("_GroundRingWidth"),RingColor=Shader.PropertyToID("_GroundRingColor"),RingLift=Shader.PropertyToID("_GroundRingLift");
+        sealed class Ring
+        {
+            public LineRenderer Source; public MeshRenderer Draw; public MeshFilter Filter;
+            public float Radius; public Color Color; public bool Forced, PriorForceOff;
+            public readonly MaterialPropertyBlock Block=new MaterialPropertyBlock();
+        }
+        readonly List<Ring> rings=new List<Ring>();
         SpriteRenderer source;
         GameObject surface;
         Mesh mesh;
@@ -32,6 +40,23 @@ namespace Exoduser.UnityPort
         public int OmittedTriangles { get; private set; }
         public int GeometryRevision { get; private set; }
         public MeshRenderer SurfaceRenderer { get { return draw; } }
+
+        public static void SetRing(LineRenderer line,SpriteRenderer owner,float radius,Color color)
+        {
+            NativeGroundSkillSurface entry;
+            if(line==null || owner==null || !registered.TryGetValue(owner,out entry) || entry==null)return;
+            Ring ring=entry.rings.Find(x=>x.Source==line);
+            if(ring==null) { ring=new Ring { Source=line };entry.rings.Add(ring); }
+            ring.Radius=radius;ring.Color=color;
+            if(NativeRemodel3D.Active && !ring.Forced)
+            { ring.PriorForceOff=line.forceRenderingOff;line.forceRenderingOff=true;ring.Forced=true; }
+        }
+        public static MeshRenderer RingSurface(LineRenderer line)
+        {
+            foreach(var entry in registered.Values)if(entry!=null)
+                foreach(var ring in entry.rings)if(ring.Source==line)return ring.Draw;
+            return null;
+        }
         readonly MaterialPropertyBlock block = new MaterialPropertyBlock();
         Sprite uvSprite;
         bool ground, forced, priorForceOff, uvFlipX, uvFlipY;
@@ -88,7 +113,7 @@ namespace Exoduser.UnityPort
             if (!forced) { priorForceOff = source.forceRenderingOff; source.forceRenderingOff = true; forced = true; }
             bool visible = source.enabled && source.sprite != null && source.gameObject.activeInHierarchy && !priorForceOff;
             draw.enabled = visible;
-            if (!visible) return;
+            if (!visible) { HideRings();return; }
             var sprite = source.sprite; var rect = sprite.rect; var texture = sprite.texture;
             var material=source.sharedMaterial;
             if(material!=null && material.shader!=null && material.shader.name=="Sprites/Default")
@@ -111,7 +136,7 @@ namespace Exoduser.UnityPort
             var anchor = source.transform.position; var scale = source.transform.lossyScale;
             // A just-created zone deploys from zero size. Its inverse transform is
             // singular at that instant, and the original zero-size sprite is invisible.
-            if (Mathf.Abs(scale.x) < .000001f || Mathf.Abs(scale.y) < .000001f) { draw.enabled = false; return; }
+            if (Mathf.Abs(scale.x) < .000001f || Mathf.Abs(scale.y) < .000001f) { draw.enabled = false;HideRings();return; }
             float left=-sprite.pivot.x/sprite.pixelsPerUnit*scale.x, bottom=-sprite.pivot.y/sprite.pixelsPerUnit*scale.y;
             float width=rect.width/sprite.pixelsPerUnit*scale.x, height=rect.height/sprite.pixelsPerUnit*scale.y;
             float roll=source.transform.eulerAngles.z*Mathf.Deg2Rad;
@@ -140,6 +165,7 @@ namespace Exoduser.UnityPort
                 }
                 mesh.Clear();mesh.indexFormat=vertices.Length>65535?UnityEngine.Rendering.IndexFormat.UInt32:UnityEngine.Rendering.IndexFormat.UInt16;
                 mesh.vertices=vertices;mesh.uv=uv;mesh.triangles=data.Triangles;mesh.RecalculateBounds();
+                var bounds=mesh.bounds;bounds.Expand(new Vector3(0,2*Mathf.Abs(NativeGroundSkillGeometry.RingLift-NativeGroundSkillGeometry.SurfaceLift),0));mesh.bounds=bounds;
                 OmittedTriangles=data.OmittedTriangles;geometryTransform=matrix;geometryFootprint=footprint;
                 geometryTerrain=NativeRemodel3D.Ground;geometryField=NativeRemodel3D.Field;geometryValid=true;
                 geometryExtent=radius;geometryRoll=roll;geometryProjected=projected;GeometryRevision++;
@@ -168,6 +194,32 @@ namespace Exoduser.UnityPort
                 for(int i=0;i<colors.Length;i++)colors[i]=source.color;
                 mesh.colors=colors;lastColor=source.color;
             }
+            SyncRings();
+        }
+
+        void HideRings() { foreach(var ring in rings)if(ring.Draw!=null)ring.Draw.enabled=false; }
+        void SyncRings()
+        {
+            foreach(var ring in rings)
+            {
+                if(ring.Source==null)continue;
+                if(!ring.Forced) { ring.PriorForceOff=ring.Source.forceRenderingOff;ring.Source.forceRenderingOff=true;ring.Forced=true; }
+                if(ring.Draw==null)
+                {
+                    var go=new GameObject("Ground skill ring");go.transform.SetParent(surface.transform,false);
+                    ring.Filter=go.AddComponent<MeshFilter>();ring.Draw=go.AddComponent<MeshRenderer>();
+                    ring.Draw.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;ring.Draw.receiveShadows=false;
+                }
+                ring.Draw.enabled=ring.Source.enabled && ring.Source.gameObject.activeInHierarchy && !ring.PriorForceOff && ring.Radius>0;
+                ring.Draw.gameObject.layer=ring.Source.gameObject.layer;
+                ring.Filter.sharedMesh=mesh;ring.Draw.sharedMaterial=ring.Source.sharedMaterial;
+                ring.Draw.sortingLayerID=ring.Source.sortingLayerID;ring.Draw.sortingOrder=ring.Source.sortingOrder;
+                ring.Source.GetPropertyBlock(ring.Block);ring.Block.SetFloat(GroundClip,1);
+                ring.Block.SetFloat(RingRadius,ring.Radius);ring.Block.SetFloat(RingWidth,ring.Source.widthMultiplier);
+                ring.Block.SetFloat(RingLift,NativeGroundSkillGeometry.RingLift-NativeGroundSkillGeometry.SurfaceLift);
+                var c=ring.Color;ring.Block.SetVector(RingColor,new Vector4(c.r,c.g,c.b,c.a));
+                ring.Draw.SetPropertyBlock(ring.Block);
+            }
         }
 
         void RestoreSprite()
@@ -175,6 +227,12 @@ namespace Exoduser.UnityPort
             if (draw != null) draw.enabled = false;
             if (forced && source != null) source.forceRenderingOff = priorForceOff;
             forced = false;
+            HideRings();
+            foreach(var ring in rings)
+            {
+                if(ring.Forced && ring.Source!=null)ring.Source.forceRenderingOff=ring.PriorForceOff;
+                ring.Forced=false;
+            }
         }
 
         void OnDisable() { RestoreSprite(); }

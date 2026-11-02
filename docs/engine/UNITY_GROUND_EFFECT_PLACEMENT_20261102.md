@@ -9,7 +9,7 @@
 | 적용 위치 / id | 현재 소스 계약 | 보존할 값 |
 |---|---|---|
 | FireZones.spikeTrap | 명시적 ground surface; 지면 점마다 높이 샘플 | 기존 원화·반경·배치 회전·전개·알파·수명 |
-| FireZones.holyDome | 본체 ground surface + 72점 링별 지형/목교 높이 | 지정 연두/원문 색·WebLitHolyDome .11·링 .03·기존 회복 판정 |
+| FireZones.holyDome | 본체 ground surface + 동일 mesh 위의72각형 ring band | 지정 연두/원문 색·WebLitHolyDome .11·링 .03·기존 회복 판정 |
 | FieldZones.trap | ward sheet 오른쪽 atlas cell만 지면 메시로 표시 | 112px·pulse/회전·_Opacity |
 | FieldZones.iceZone/blizzard | 세 겹 원을 각각 ground surface로 표시 | 원래 암흑/얼음색·반경/알파·감속/수명 |
 | SeekerMines / DruidMine | ward 왼쪽 cell을 지면에 표시 | Core 이동·arm·추적·패링·폭발·피해 |
@@ -42,6 +42,14 @@ d08 적응 분할의 matrix 캐시는 장판 둘의 연속 roll(.05rad/s)이 변
 | 기타 재질 | GroundUvClip property가 없으면 기존 실제 footprint 적응 메시/직접 UV 경로를 유지. 현재 producer의 세 재질 외 기능을 추정 변환하지 않음 |
 
 기존 geometry735 + 회전/비정사각 pivot/40시점/flip/외접 footprint2401 =3136 assertion PASS. 독립 원화 좌표 검사이며 실제 GPU shader/성능 PASS로 대체하지 않는다. source323 정적 compile 오류0/경고477. shader compile 및 실제 mesh 재생성0회(전개·roll), actual alpha/atlas/동일 frame·다중 설치 성능은 Mac 실제 검증 대상이다.
+
+## 테두리 링의 면 사이 접지
+
+72개의 링 정점만 GroundY에 놓아도 선분 중간이 목교 끝을 가로질러 뜰 수 있으므로, 실제3D 링은 LineRenderer chord 대신 **본체와 동일한 적응 접지 mesh**를 공유한다. 원 LineRenderer는2D/원문72point·loop·width.03·source color/sort 상태를 유지하며 Active3D일 때만 forceRenderingOff한다. forceOff 원값은2D 전환/owner disable/destroy에서 복원한다. 원line 자체 disable 또는 GameObject 비활성 시 mapped draw도 꺼진다.
+
+SkillAdditive의 _GroundRingRadius 기본0은 본체·공중·2D에 기존 수식 그대로다. ring child만 양수반경을 MPB로 전달하고, localXZ에서 같은72각형 centre-line의 signed distance로 widthMultiplier.03의 띠를 그린다. fwidth로경계AA, 원ring색/알파·add blend·sorting/layer/material을 유지한다. vertex Y에 _GroundRingLift=RingLift-SurfaceLift(.005u)를 더하여 **링+.03u**로 유지하며 공유mesh bounds에 그 간격도 포함한다. GroundUvClip1/ring 양수 경로는 atlas 대신 원래 단색 링의 premultiplied RGB/alpha를 출력한다. 원 radius pulse/전개·WebLitHolyDomeRing .03은 불변이다. 별도 height 조회/geometry 생성0, owner mesh를공유하며 실제 SurfaceRenderer/RingSurface(LineRenderer)/GeometryRevision으로 QA에서 표시 경로를 추적한다.
+
+CPU3136은 공통 적응면/회전UV 검사이며 이 새 GPU band의 실제 화면/AA·폭·72각형·RGB·접지·복원 PASS를 대신하지 않는다. 기존QA의 LineRenderer interior0은 미측정값으로 남기며 실제3D mapped draw를 후속 QA가 검사한다.
 
 ## 검사와 남은 검증
 
