@@ -57,7 +57,7 @@ namespace Exoduser.UnityPort
 
         void BossViewUpdate()
         {
-            if (bossView != null) {bossView.ReducedMotion=impacts!=null&&impacts.ReducedMotion;bossView.Update(Simulation);}
+            if (bossView != null) {bossView.ReducedMotion=impacts!=null&&impacts.ReducedMotion;bossView.SceneLightingActive=NativeRemodel3D.Active||(NativeRemodel3D.Requested&&Simulation.Stage.InArena&&hellActorMaterial!=null);bossView.Update(Simulation);}
             if (druidBody != null && druidBody.Stamp != Time.frameCount) druidBody.Hide();   // nobody drew the druid this frame (gone / not on this stage)
             foreach (var e in Simulation.Enemies) if (e.Alive && e.IsBoss && sinkStart.Count > 0) { sinkStart.Remove(e.Id); sinkSounded.Remove(e.Id); }
         }

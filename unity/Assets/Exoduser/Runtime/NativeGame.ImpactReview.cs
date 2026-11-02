@@ -14,8 +14,8 @@ namespace Exoduser.UnityPort
     {
         [Serializable] sealed class ImpactBossReceipt
         {
-            public string scope="실제 GPU Player 보스10초: 실제 게이트·아레나 진입 후 Core StartPattern에 잠복/충격파/강타를 요청하는 통제 fixture. 이후 실제 Core tick·이벤트·원화 소비. 자연 패턴선택·회피·전체 보스 완성 증거 아님";
-            public bool passed,world3D,baseline,remodel;public int frames,width,height,clipDraws,lightEvents,lightFrames,peakLights,slamContacts,dustEvents,rootEvents;
+            public string scope="실제 GPU Player 현행 lit XY 보스방10초: 실제 게이트·아레나 진입 후 Core StartPattern에 잠복/충격파/강타를 요청하는 통제 fixture. 이후 실제 Core tick·이벤트·원화 소비. 자연 패턴선택·회피·진짜3D 지형 아레나·전체 보스 완성 증거 아님";
+            public bool passed,world3D,arenaLighting,baseline,remodel;public int frames,width,height,clipDraws,lightEvents,lightFrames,peakLights,slamContacts,dustEvents,rootEvents;
             public string coreTraceSha256;public string[] moves,states;
         }
         IEnumerator ImpactBossReview()
@@ -28,19 +28,23 @@ namespace Exoduser.UnityPort
             int width,height;if(!int.TryParse(Argument("-impact-width"),out width))width=1600;if(!int.TryParse(Argument("-impact-height"),out height))height=900;
             Screen.SetResolution(width,height,FullScreenMode.Windowed);lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;
             yield return new WaitForSecondsRealtime(.6f);
+            // Finish the real field lighting load before walking its gate. In the arena,
+            // NativeRemodel3D.Active is deliberately false: its lit XY presentation has a separate camera.
+            float fieldDeadline=Time.realtimeSinceStartup+45;
+            while(NativeRemodel3D.Requested&&!Remodel3DReady&&Time.realtimeSinceStartup<fieldDeadline){UpdateViews();yield return null;}
             var sim=Simulation;var p=sim.Player;var flow=sim.Stage;int guard=0;
             while(!flow.InArena&&flow.LoadPhase==0&&guard++<120)StepInput(0,0,p.X+100,p.Y,false,false);
             while(flow.LoadPhase!=2&&guard++<600)StepInput(0,0,p.X+100,p.Y,false,false);
             UpdateViews();yield return new WaitForSecondsRealtime(.6f);
             while(flow.LoadPhase!=0&&guard++<1200)StepInput(0,0,p.X+100,p.Y,false,false);
             for(int i=0;i<30;i++)StepInput(0,0,p.X,p.Y+1,false,false);
-            float deadline=Time.realtimeSinceStartup+45;while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
+            UpdateViews();yield return null;yield return new WaitForEndOfFrame();
             var boss=flow.FindBoss();DruidData data=null;
             if(!flow.InArena||boss==null||sim.Druid==null||!sim.Druid.Data.TryGetValue(boss,out data)){File.WriteAllText(Path.Combine(output,"entry-failure.json"),"{\"passed\":false,\"reason\":\"actual arena entry failed\"}");Application.Quit(1);yield break;}
             var start=typeof(DruidBoss).GetMethod("StartPattern",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
             var back=typeof(DruidBoss).GetMethod("WriteBack",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
             if(start==null||back==null){Application.Quit(2);yield break;}
-            var rc=new ImpactBossReceipt{world3D=NativeRemodel3D.Active,baseline=bossView.BossImpactBaseline,remodel=sim.Druid.Remodel,width=Screen.width,height=Screen.height,moves=new[]{"burrowStrike","shock","slam"}};
+            var rc=new ImpactBossReceipt{world3D=NativeRemodel3D.Active,arenaLighting=bossView.SceneLightingActive&&flow.InArena,baseline=bossView.BossImpactBaseline,remodel=sim.Druid.Remodel,width=Screen.width,height=Screen.height,moves=new[]{"burrowStrike","shock","slam"}};
             var states=new HashSet<string>();var trace=new StringBuilder();int shots=0;
             Action<string,double,double,double> fx=(kind,x,y,r)=>{if(kind=="druidDust")rc.dustEvents++;if(kind=="druidRoots")rc.rootEvents++;};sim.BossFx+=fx;
             sim.Config.EnemyAiEnabled=true;p.X=boss.X;p.Y=boss.Y+220;p.Iframes=10000;
@@ -62,7 +66,7 @@ namespace Exoduser.UnityPort
             }
             sim.BossFx-=fx;rc.frames=shots;rc.states=new List<string>(states).ToArray();rc.clipDraws=bossView.OriginalBossClipDraws;rc.lightEvents=bossView.ImpactLightEvents;rc.lightFrames=bossView.ImpactLightFrames;rc.peakLights=bossView.PeakImpactLights;rc.slamContacts=bossView.SlamContacts;
             string text=trace.ToString();File.WriteAllText(Path.Combine(output,"core-trace.txt"),text);using(var sha=SHA256.Create())rc.coreTraceSha256=BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(text))).Replace("-","").ToLowerInvariant();
-            rc.passed=rc.world3D&&shots==300&&rc.dustEvents>=2&&rc.rootEvents>=1&&rc.slamContacts>=1&&rc.clipDraws>0&&states.Contains("bossShock")&&(rc.baseline?rc.lightEvents==0:rc.lightEvents>=4&&rc.lightFrames>0&&rc.peakLights<=2);
+            rc.passed=rc.arenaLighting&&shots==300&&rc.dustEvents>=2&&rc.rootEvents>=1&&rc.slamContacts>=1&&rc.clipDraws>0&&states.Contains("bossShock")&&(rc.baseline?rc.lightEvents==0:rc.lightEvents>=4&&rc.lightFrames>0&&rc.peakLights<=2);
             File.WriteAllText(Path.Combine(output,"impact-boss-review.json"),JsonUtility.ToJson(rc,true),new UTF8Encoding(false));yield return null;Application.Quit(rc.passed?0:1);
         }
         [Serializable] sealed class ImpactReviewReceipt

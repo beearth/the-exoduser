@@ -270,11 +270,13 @@ Graph 본체 대신 기존 원화 경로를 유지한다. 실제 첫 Player에�
 | 뿌리 | 실제 Core `druidRoots` 이벤트의 기존 HitClip(362×0.72,543×0.72,7×8틱)·RootsClip(2r,7×10틱) 유지 |
 | 충격파 | 기존 bossShockWind→bossShock 원화24셀·폭/높이5r·7×8틱·지면 표시 유지. 전환 순간만 국소광 추가 |
 | 강타 | 실제 bossSlam→recover/bossRec 착지 전환에 기존 DustClip(2r,7×8틱)와 국소광 추가. 새 판정·확장 위험 원판·Graph 입자 없음 |
-| 국소광 | 최대2 Point Light·shadow없음. 옅은 흙빛 RGB(0.78,0.71,0.49). 먼지1.4/range2m, 뿌리·충격파·강타2.2/range2.8m. 실제좌표+0.5m. `BossImpactOpacity(age)`: age<0 또는≥0.1초이면0, 나머지 `(1-age/0.1)^2`. 60Hz Core tick 기준6틱 안에 소멸 |
-| 접근성·이전표현 | ReducedMotion 또는 3D 비활성이면 추가광 없음. `--unity-impact-boss-baseline`은 새 강타먼지/국소광을 끄고 같은패키지 이전표현을 재현 |
+| 국소광 | 최대2 Point Light·shadow없음. 옅은 흙빛 RGB(0.78,0.71,0.49). 먼지1.4/range2m, 뿌리·충격파·강타2.2/range2.8m. 필드는 실제지면 높이+0.5m, 현행 보스방은 XY좌표 앞쪽(-Z)0.5m. `BossImpactOpacity(age)`: age<0 또는≥0.1초이면0, 나머지 `(1-age/0.1)^2`. 60Hz Core tick 기준6틱 안에 소멸 |
+| 접근성·이전표현 | ReducedMotion 또는 장면 조명 비활성이면 추가광 없음. `--unity-impact-boss-baseline`은 새 강타먼지/국소광을 끄고 같은패키지 이전표현을 재현 |
 | 관측 | OriginalBossClipDraws·ImpactLightEvents/Frames·PeakImpactLights·SlamContacts. 실제 원화 draw와 실제 착지 전환을 따로 집계 |
 | 검수 입력 | `--unity-impact-boss-review --unity-boss-direct 0`: 실제 게이트/아레나 진입 후, 격리 fixture에서 원래 Core StartPattern/WriteBack에 burrowStrike·shock·slam을 200틱 간격으로 요청. 원래 예고/발동/이벤트를 600틱·300PNG·10초 촬영. QA 전용 reflection이며 제품 플레이 경로에서는 실행하지 않음 |
 | 판정 범위 | 표현978개 GREEN. Core·AI 수치·공격 템포·RNG·세이브 형식 변경0. 정식 빌드/M1/같은크기 영상·1x/32:9 판정 전에는 미검증. 통제 패턴 요청을 자연 선택/회피/전체보스 디자인 완성으로 보고하지 않음 |
+
+보스방 경로 정정: NativeRemodel3D.Active는 숲 필드 전용이며 아레나에서는 의도적으로 false다. 최초044322 후보의 이 플래그 한정은 보스 접점광을 차단하는 결함이다. SceneLightingActive는 필드 active 또는 (remodel3d 요청·InArena·hellActorMaterial 존재)로 설정하고, 현행 아레나는 SpriteLit3D/ArenaSoilLit의 기존 Additional Point Light 경로를 사용한다. 셰이더/기존 방 조명은 변경하지 않는다. 검수는 실제 필드 로딩/조명 준비를 마친 후 게이트를 걸으며, 방 진입 후 field3D(world3D)=false와 arenaLighting=true를 구분 기록한다. 현행 XY lit 아레나의 VFX 검수이며 진짜3D 지형 보스방 완성 PASS로 올리지 않는다. 최신 전체 표현980개는 기존 수치/수명 검사를 재사용하고, 이 경로 수정은 새 정식 Player의 실제 이벤트/광원/영상을 통해 검증한다.
 
 ### 11-03 탄막 가독성 보완: 충전 검기 중첩
 

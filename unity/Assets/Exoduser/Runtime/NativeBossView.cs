@@ -42,12 +42,13 @@ namespace Exoduser.UnityPort
         sealed class ImpactLight { public Light Light;public int Born=-100000;public float Power; }
         readonly ImpactLight[] impactLights=new ImpactLight[2];
         public bool ReducedMotion;
+        public bool SceneLightingActive;
         public bool BossImpactBaseline{get;private set;}=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-impact-boss-baseline")>=0;
         public int ImpactLightEvents{get;private set;}public int ImpactLightFrames{get;private set;}public int PeakImpactLights{get;private set;}public int OriginalBossClipDraws{get;private set;}public int SlamContacts{get;private set;}
 
         void BossImpactLight(double x,double y,bool heavy)
         {
-            if(BossImpactBaseline||ReducedMotion||!NativeRemodel3D.Active||bound==null)return;
+            if(BossImpactBaseline||ReducedMotion||!SceneLightingActive||bound==null)return;
             int tick=bound.TickCount;ImpactLight slot=null;
             for(int i=0;i<impactLights.Length;i++)
             {
@@ -56,11 +57,11 @@ namespace Exoduser.UnityPort
             }
             if(slot==null)return;
             slot.Born=tick;slot.Power=heavy?2.2f:1.4f;slot.Light.range=heavy?2.8f:2;
-            slot.Light.transform.position=Exoduser.UnityPort.Vfx.ImpactSpace.Point((float)x,(float)y,.5f);ImpactLightEvents++;
+            slot.Light.transform.position=NativeRemodel3D.Active?Exoduser.UnityPort.Vfx.ImpactSpace.Point((float)x,(float)y,.5f):NativeRemodel3D.Point2D(x,y)+Vector3.back*.5f;ImpactLightEvents++;
         }
         void UpdateBossImpactLights(int tick)
         {
-            int active=0;foreach(var p in impactLights)if(p!=null){float a=Exoduser.UnityPort.Vfx.SkillPresentation.BossImpactOpacity((tick-p.Born)/60.0);p.Light.enabled=a>0&&!ReducedMotion&&!BossImpactBaseline&&NativeRemodel3D.Active;if(p.Light.enabled){p.Light.intensity=p.Power*a;active++;}}
+            int active=0;foreach(var p in impactLights)if(p!=null){float a=Exoduser.UnityPort.Vfx.SkillPresentation.BossImpactOpacity((tick-p.Born)/60.0);p.Light.enabled=a>0&&!ReducedMotion&&!BossImpactBaseline&&SceneLightingActive;if(p.Light.enabled){p.Light.intensity=p.Power*a;active++;}}
             if(active>0)ImpactLightFrames++;PeakImpactLights=Math.Max(PeakImpactLights,active);
         }
 
@@ -173,7 +174,7 @@ namespace Exoduser.UnityPort
             used = 0; addUsed = 0; MineSpritesDrawn = 0; MineArtFallbacks = 0; FieldMouthsDrawn = 0; FieldCometsDrawn = 0; FieldOrbsDrawn = 0; FieldBulletFallbacks = 0; PoisonShotsDrawn=0;
             if (bound != sim) { if (bound != null) bound.BossFx -= OnFx; bound = sim; sim.BossFx += OnFx; }
             DrawFieldZones(sim);
-            var druid = sim.Druid; if (druid == null) { Finish(); return; }
+            var druid = sim.Druid; if (druid == null) { foreach(var light in impactLights)if(light!=null)light.Light.enabled=false;Finish(); return; }
             int t = sim.TickCount; boundTick = t;
             double nowMs = Time.unscaledTime * 1000.0;
             // ground hazards first (low sorting order, under the actors)
