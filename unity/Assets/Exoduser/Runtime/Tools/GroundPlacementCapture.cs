@@ -15,7 +15,7 @@ using Exoduser.UnityPort.Vfx;
 namespace Exoduser.UnityPort.Tools
 {
     // Explicit fixture only. Product renderers own every displayed sample.
-    public sealed class GroundPlacementCapture : MonoBehaviour
+    public sealed partial class GroundPlacementCapture : MonoBehaviour
     {
         const BindingFlags Flags=BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic;
         [Serializable] public sealed class Shape {
@@ -70,6 +70,7 @@ namespace Exoduser.UnityPort.Tools
             foreach(var f in t.GetFields(Flags).OrderBy(f=>f.Name)){if(f.IsStatic)continue;b.Append(f.Name);Snapshot(f.GetValue(o),b,seen);}
         }
         IEnumerator Start(){
+            if(Has("-ground-receiver-full")){var full=ReceiverFullMode();while(full.MoveNext())yield return full.Current;yield break;}
             if(Has("-ground-receiver-smoke")){var smoke=ReceiverSmokeMode();while(smoke.MoveNext())yield return smoke.Current;yield break;}
             if(Has("-ground-geometry-probe")){var probe=GeometryProbeMode();while(probe.MoveNext())yield return probe.Current;yield break;}
             output=Arg("-output");traceOwner=this;receipt.source=Arg("-source-sha");receipt.qaStorageRoot=NativeQaSandbox.Root;receipt.consumerPrefix=Arg("-ground-consumer-prefix");receipt.subset=Has("-ground-consumer-prefix");selectedConsumers=receipt.subset?Consumers.Where(c=>c.StartsWith(receipt.consumerPrefix,StringComparison.Ordinal)).ToArray():Consumers;receipt.required=receipt.subset?selectedConsumers:selectedConsumers.Concat(new[]{"ground-lifecycle","ground-ring-lifecycle"}).ToArray();receipt.expectedRows=selectedConsumers.Length*3+(receipt.subset?0:2);receipt.passScope=receipt.subset?"selected consumer subset only; lifecycle omitted":"full consumer coverage plus lifecycle";AudioListener.pause=true;AudioListener.volume=0;

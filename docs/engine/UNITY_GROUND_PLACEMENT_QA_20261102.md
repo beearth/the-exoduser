@@ -827,3 +827,85 @@ MAP PRODUCTION REPORT
 - FILES: stage-owned QA helper/shaders/meta/guard/docs/evidence; shared concurrent/unrelated 변경없음.
 - GIT: source2f368f10 원격 선확인; 본 커밋 결과발행. deploy/install 미수행.
 - VISUAL VERDICT: RETOUCH. 한 장면 외관은 양호, 전체맵/전투/전체효과 인수 보류. 기존 A2/ImpactR4 판정 유지.
+
+
+# Receiver full QA source-only 인계 — 2026-11-02
+
+제품8f(`8f391fea6f157433fcaea2df611d0a9b146c6604`)와 one-case baseline `2f368f105d30a6066c92ae85a33e358373205a6c` 유지. 실제 one-case PASS 증거는 ROOT의 `168b609e7c585a38a28bda3bfe6beddadf2ade19`에 있다. 이번 산출물은 **컴파일·Unity·Player 실행 전**이다. 새 팀/워크트리/자동화/Git 실행·제품/texture/import/Quality/Prefs 편집은 하지 않았다.
+
+## 진입과 coverage
+
+기존 capture 필수 인자에 `-ground-receiver-full`을 추가한다. `-ground-receiver-smoke` / `-ground-geometry-probe`와 동시 사용 금지. visible Metal, absolute active sandbox, empty absolute output을 요구한다. 시작 시 기존 통과 one-case body와 동일 최종 gate를 먼저 실행하고 PASS해야 확장한다. 기존 단독 one-case 경로와 기존 sampler-reference shader는 그대로 유지했다. full용 ring/half 참조는 별도 GroundReceiverFullReference shader로 분리했다. 기존 helper 수정은 partial 선언 및 새 Start 분기 두 곳이다.
+
+| 집계 | 실제 계산 / 의미 |
+|---|---|
+| consumerCount | 현재 Consumers 배열 길이 49. 하드코딩148 없음 |
+| expectedStateRows | `Consumers.Length × 3 + 2 = 149` |
+| 상태 행 | soil/root-slope/wood-bridge에서 각49 =147 |
+| 수명 행 | actual pool lifecycle + holy ring lifecycle =2 |
+| largeRows | 상태147 안의 `size-`4×3=12; Lv1/Lv20 spike/holy를 SkillRules 실제 반경으로 생성 |
+| expectedDenseRows | 별도 size4×3=12조건, 각8개 동시 FireZone. 8개를8개 case로 부풀리지 않음 |
+| expectedRows |149+12=161. one-case 선행 증거는 별도 하위 폴더이며161행에 중복 산입하지 않음 |
+| 72 ring |72개 case가 아니라 원 LineRenderer72점과72polygon/fwidth analytic 분기 |
+| actual | receipt에 required/generated/missing/consumerCount/expectedStateRows/expectedDenseRows/expectedRows/generatedStateRows/generatedDenseRows/generatedRows 기록. layer 진단은 부모 행 하위이며 기본행 수에 더하지 않음. generated는 행 record 존재를 뜻하고 성공 개수가 아님. gpuRequiredRows/gpuVerifiedRows/stateOnlyRows/layerCount/verifiedLayerCount/selectedPixelSamples를 별도 기록하며 실패·중단 행을 GPU PASS에 산입하지 않음 |
+
+Zero-deploy/빌보드/2D/수직 burst는 ground GPU PASS로 이름 바꾸지 않는다. ground volume이 필요한데 없으면 FAIL. 실제 모든 visible boss source가 vertical burst인 행은 명시적인 billboard phase control로만 분류한다. 보이는 vertex8/triangle12는 volume metadata이며 접촉 증명에 사용하지 않는다.
+
+## 전층 화면·성능을 보존한 layer 격리
+
+ice/blizzard3겹, holy 본체+링2, clip/rim처럼 한 consumer의 다중 volume을 모두 수집한다. 전층 1920 원본과 직접3840×1080을 먼저 저장한다. 직접3840 이후 정상 EOF를 다시 기다려 public FrameSize가 정상 렌더로 갱신된 다음 probe한다.
+
+large/dense의 CPU 성능은 격리 전에 기록한다. 최초 cold UpdateViews/Late 각각, fixed3회, yielded deployment3회, T복원1회를 각각 분리 측정한다. QA readback·gzip·EOF·참조 shader 시간은 `qaCaptureElapsedMs`이며 CPU 성능으로 합산하지 않는다. fixed3회는 같은 프레임 반복일 수 있고 deployment는 합성3프레임이다. 자연플레이/60FPS/장시간 성능 증거가 아니다. 완료된 Native 호출이2초를 넘으면 중단하지만 이미 막힌 호출을 CPU 내부에서 강제 중단할 수 없으므로 ROOT 외부 watchdog이 필요하다. Simulation.Tick을 호출하지 않는다.
+
+ROOT/PC가 승인한 방법으로 진단 시에만 현재 fixture의 ground draw enabled 원값을 저장하고 선택 layer 하나만 켠다. source forceOff/Core/PB/source·display material은 편집하지 않는다. finally에서 모든 draw enabled와 source/line forceOff 및 display material 객체를 대조한다. 전층 source/PB metadata hash도 마지막에 일치해야 한다. 격리 original enabled/source forceOff/line forceOff 배열, 선택 draw ID, 복구 여부를 layer receipt에 남긴다. 정상 dense8 성능과 화면은 격리 없는 전층 상태다. 격리 화면을 정상 합성 화면으로 제출하지 않는다.
+
+## 각 layer의 실제 GPU 검사
+
+제품 shader의 원8f 계산을 QA 이름으로 복제한 `GroundReceiverFullEvidence`를 private static probeMaterial에만 잠시 넣는다. 정상 화면 projection pass는 override 없는 renderer material을 사용한다. 기존 private field 타입·원 nonnull Material 객체·대입 identity를 확인하고, `RequestProbe(target,3)`으로 각 진단을 별도 float target에 요청한다. 원 depth3 파일을 다른 의미로 덮지 않는다. QA material은 명시적으로 `_DstBlend=0`이다.
+
+| map | RGBA 의미 |
+|---|---|
+| world | 실제 scene-depth worldXYZ + 원 weight |
+| uv-weight | 실제 packedUV + 원 half preblend maxRGB + 원 weight |
+| depth | sceneEye / receiverEye / abs 차이 / 원 weight |
+| preblend-rgba | 실제 원 half preblendRGBA |
+| derivative-or-ring-analytic | texture: sampling 직전 GPU ddx(packed).xy/ddy(packed).xy; ring: polygon signed distance/fwidth(distance)/stroke/0 |
+| owner-signature | anchor.x/anchor.z/ringRadius/ringWidth. 선택 source와 유일하게 매칭되어야 함 |
+
+실제 public FrameSize의 Linear RGBAFloat, nonpositive size/format/API/resize/serial EOF5초 오류는 중단한다. API receiver>0/activeVolumeCount=1, source hash와 finite camera view/projection float-bit 동일성, map 간 dimensions/camera 동일성이 필수다. 다른 프레임 자료이며 same-frame 전체RGBA 증명으로 부르지 않는다.
+
+모든 positive GPU pixel에서 depth 두 값이 양수, abs 차이0..0.02m, 차이 채널과 실제 subtraction 일치, worldXZ가 선택 volume footprint 내부인지 검사한다. texture는 source sprite rect/pivot/PPU/scale/roll/flip에서 독립 계산한 PB UV/atlas 계약과 world→UV를 검사한다. shader/source material identity raw=false 의미 계약, 원 texture/tint/Flat/Opacity/NormalBlend/sorting·UsesReceiverDepth/sourceforceOff도 유지해야 한다. absent Opacity0을 mode0에 곱하지 않는다. body UV epsilon1e-5, world footprint epsilon0.0001m이다.
+
+각 layer의 실제 positive pixel에서 최대32점을 고르게 선택한다. 모든 선택 sample에 GPU derivative finite/nonzero 조건을 요구하며 invalid를 삭제하거나 통과시키지 않는다. 원 texture를 실제 sampling 설정의 SampleGrad로 다시 샘플하고 원 shader half 분기로 weight/maxRGB/preblendRGBA를 계산한다. 원 mode0/1/2 및 Flat/Opacity/NormalBlend/tint/packed atlas UV를 사용한다. weight/maxRGB/모든 RGBA 채널의 절대오차 기준은 기존 `2/255` 그대로다. source/world/depth weight의 프레임 간 안정성도 같은 기준으로 검사한다. 선택점 밖의 모든 RGBA를 참조 계산한 것이라고 주장하지 않는다.
+
+ring은 texture Grad=0을 허용하는 방식이 아니다. 원 Line72점이 유한한 규칙72polygon인지 검사하고, native ring producer의 Radius/Color 및 line width와 PB를 대조한다. 실제 worldXZ에서72polygon signed distance를 별도 계산한다. GPU의 실제 fwidth>0, distance 오차<=0.0001m, 동일 폭/fwidth로 계산한 stroke 오차<=2/255를 요구한다. 이 analytic stroke로 별도 GroundReceiverFullReference GPU half ring 수식을 실행하여 weight/maxRGB/RGBA를 검사한다. CPU GroundY나 proxy triangle 보간값을 접촉 증명으로 쓰지 않는다. ddx/ddy 출력 clone의 컴파일 결과가 implicit sampler 내부와 비트 동일하다는 주장은 하지 않는다.
+
+각 probe finally에서 CancelProbe→caller target IsCreated 확인→원 probeMaterial 객체 ReferenceEquals 복구→RT/readback/QA material 정리를 수행한다. 상태·pool·수명·2D actual source 참조/변환/파괴 동작은 기존 lifecycle 행동을 유지하고, 오래된 vertex/contact 및 ring-render-to-empty-depth gate만 새 receiver GPU 검사와 metadata gate로 바꿨다. real pool의 ice→air projectile→ice 같은 source 객체 참조·forceOff·draw enable, 실제 arena2D 전환·원 scale/rotation·GO disable/Destroy를 검사한다. 원 Simulation ref/hash 복구, 원 view 재바인딩, writer 정지와 오디오/media drain은 유지한다.
+
+## 제외 대상의 남은 API 한계 — 자동 전체 PASS 차단
+
+actor/rail/rock/tall trunk **각각의 scene raster identity/negative mask를 반환하는 API는 없다.** receiver private inventory의 hierarchy 경로는 diagnostic으로 보존하지만, 이름만으로 실제 화면 카테고리 exclusion PASS를 만들지 않는다. 실제 source shader는 receiver depth와 scene depth가2cm 내인 pixel만 통과시키지만 이것만으로 네 카테고리를 각각 검수했다고 주장하지 않는다.
+
+따라서 `technicalPassed`와 최종 `passed`를 분리했다. `technicalPassed`는 실행·149+12·GPU/상태·복구·Metal·오디오 gate이고, `passed`는 추가로 `exclusionsVerified`와 `visualReviewed`를 요구한다. 두 필드는 이번 소스에서 false/UNREVIEWED로 남겨 자동 전체 PASS를 막는다. ROOT가 정상 전층 PNG를 검토하고 실제 네 제외 카테고리의 authoritative raster 증거를 추가하기 전에는 부족분이 해소되지 않는다. 이 소스만 실행하면 기술 검사가 모두 통과해도 최종 exit2일 수 있음을 명시한다. category 이름 추측이나 registry 목록을 pixel 증명으로 바꾸지 않는다.
+
+## 저장·인수
+
+모든 map은 메모리에서 분석하며 정확한 원 float bytes의 SHA256/rawBytes와 최대32 선택 표본·카메라/hash·요약·오류를 항상 기록한다. `bytesHashComputed=true`는 파일 보존을 의미하지 않는다. 기본은 `rawRetained=false`, path=null, compressedBytes=0이다.
+
+영구 float는 baseline을 포함해 실제 저장 총 **3GiB** 상한이다. 명시적 대표 목록은 soil/root-slope/wood-bridge의 `size-spikeTrap-Lv1` 정상 parent의 layer0(각6map)뿐이다. 추가로 새 FAIL layer의 이미 회수된 map을 cap 내에서 보존한다. 그 밖의 원 bytes는 처음부터 메모리 분석만 하며 임시 raw 파일을 만들거나 기존 파일을 지우지 않는다. 실패 raw도 cap에 도달하면 hash/표본/오류/retentionReason을 남기고 rawRetained=false이다. retentionTruncated를 전역 기록한다. 대표 정상 layer의 PNG와 sample/hash evidence도 별도로 유지된다.
+
+보존 map은 lossless gzip, bottom-left row-major little-endian RGBA float32, rawBytes=W×H×16이다. raw와 압축 파일 SHA256/실제 compressedBytes를 구분한다. 쓰기 전에 gzip worst-case 원bytes+64KiB가 잔여 cap에 들어오는지 보수적으로 확인하고, 실제 보존량으로 누적한다. 재직렬화 raw SHA가 분석 raw SHA와 다르면 실패한다. baseline의 기존 비압축 raw도 floatStoredBytes에 산입한다. cap 때문에 저장하지 않은 raw를 파일 존재로 보고하지 않는다.
+
+PNG worst-case 예상 상한은 `(expectedRows+onecase)×(1920×1080×4 +3840×1080×4 +131072)` bytes로 명시하고 실제 누적 pngStoredBytes도 기록한다. 전 run `freeReserveBytes=3GiB`, freeStart/freeLast/freeMinimumObserved를 기록한다. 시작 시 PNG 예상상한+float3GiB+reserve3GiB가 가능한지 확인한다. 각 PNG/float 쓰기 전에도 reserve3GiB를 남길 여유가 없으면 안전 중단/FAIL이며 자기 산출물·과거 실패·기존/타인 증거를 삭제하지 않는다. metadata는 작은 JSON이며 probe progress는 큰 전체 receipt 대신 작은 progress JSON을 갱신한다.
+
+신규 partial C#과 shader에는 meta를 제공했다. Root가 고친 exact derivative meta의 GUID `1389b11cce034ca882f43d26366bb448`을 사용하며 33hex 원본은 사용하지 않는다. 함께 제공한 기존 리소스는 같은 경로를 대체한다. 별도 경로로 중복 설치하지 않는다. `SHA256SUMS`와 `guid-inventory.json` 참조. 신규3 GUID는 candidate2ac-input/Assets의 기존 meta와도 대조했다. coverage-plan.json은 source 계획 목록이며 실제 generated 증거가 아니다.
+
+실행 전 상태: source-only, 실제 generated/GPU coverage0, 시각 UNREVIEWED, 제외4종 미검증. 기존148 vertex PASS를 GPU149 PASS로 바꾸지 않았다. 신규 source 두 개를 ROOT 정적 검사에 모두 포함해야 한다. ROOT가 source 고정·원격 선증명·빌드·실제 실행·가드 최종복구 및 이후 same-app M1/자연플레이/서명설치/Win64를 담당한다.
+
+
+ROOT 인수 검토: UnityEngine.CompressionLevel과 충돌한 gzip enum 참조만 System.IO.Compression.CompressionLevel.Optimal로 한정했다. 첫 정적 오류 기록을 보존하고 실패 범위 두 C#만 재검사한다. 제품/허용기준/검수 범위 변경없음.
+
+ROOT metadata: 신규 shader meta의 빈 세 필드 뒤 공백만 제거해 git diff --check를 통과시킨다. GUID와 helper/실행 기준은 그대로다.
+
+
+ROOT source intake: full QA static passed. All coverage and raw-retention maxima are declared by the helper. Product8f unchanged. Prebuild source checkpoint only; actual full GPU/149-row, dense, exclusion and final integration acceptance pending.

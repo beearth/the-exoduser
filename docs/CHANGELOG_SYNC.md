@@ -57381,3 +57381,5 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 2026-11-02 QA derivative shader GUID33hex를32hex로수정. buildSucceeded/errors1을발견해Player미실행, 실패원본보존. helper/product불변, 새source증명후재빌드.
 
 2026-11-02 제품8f 동일, QA2f368f10 실제Metal onecase correctedPASS: GPU미분32/32, weight0.000423923135/RGBA0.00010918919 ≤2/255; legacybilinearFAIL 보존. probe원객체/정상재질/환경설정26raw27cache복구, 설치1403유지. 전체검수는다음작업이며미완료.
+
+2026-11-02 full receiver QA source checkpoint: expected149=49*3+2; large12 subset, dense12conditions*8effects separate. Per-layer attribution/isolation, GPU pixel/halfRGBA/72polygon ring, exact restoration and bounded retention. Static passed, actual full execution pending. Product8f unchanged; previous one-case pass and legacy failures kept.
