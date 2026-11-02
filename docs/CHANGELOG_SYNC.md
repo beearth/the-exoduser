@@ -55715,3 +55715,9 @@ stage=0은 실제200×200 본편으로 정정하고 과거 원화 판은 명시�
 - 검수/전후표·최종 원격SHA는 `G:/exoduser/tmp/design-review/20261031_wide_animation/REPORT.md`, 실제 영상/1x·실패 근거는 `I:/EXODUSER-Storage/wide-animation/20261031/`. 최신 승인 타이틀A·게이트 검정 배경·v22b 인트로를 정상 병합해 보존하고 영향 범위를 재검수한다. Steam/Unity 배포0.
 - 후속 연결: 입장/로그인 배경도 전체 폭 분위기를 사용하되 로비·시네마틱·타이틀 뒤에서는 정지한다. 게임은 하드웨어C/OPT.atmos0, 메뉴는 저장 hellcave_settings.opt.atmos0을 존중한다. 새 저장옵션2검사를 포함해 표적27/27·브라우저19/19 PASS, 최종 전체2482검사에서 신규 실패0·기존277실패/35skip. 영상은 시스템Chrome GPU 경로로 정리하며 초기 headless-shell/RED 이력은 보존한다.
 - 마감 검수:22유형×1920/2560/3840의 약10초66편(9.96~10.00초),0·4·8초 동작·전후·1x 및 기존63원화 경계 확인. 스킬 창에 가린 초기 클리어/종료 표본은 native closeAllPanels·_showClearResult·버튼hit-test 후 교체하고 이력 보존. 자체 시각 PASS는 이번 원본 모션/경계 범위이며 컷신 시간 유지·정지 월드 fixture와 자연 플레이를 구분한다. SSOT 최종 검수 표와 인계 design-director.md, REPORT/Git 영수증을 동기화한다.
+
+
+## 2026-11-02 타이틀 후보 보드·왼쪽 안전 여백
+
+- 사용자 브리프1·2절: 3후보 비교 보드(전신1x/발3x/손/성/강/달)까지 제작, CTO 선택 대기·RETOUCH·새 아트 게임 미적용. 거대 마왕 요새와 원형 달 추가 지시 포함. 생성 원본/프롬프트/측정은 G:/exoduser/tmp/design-review/20261102_title_keyframe/ 및 담당 I: REPORT 보존.
+- index.html _fitTitleStage: 화면 높이4.5%·최소48px에 로고 시작점을 고정, 메뉴는20k 뒤. 실제7크기 경계·키보드 선택·pageerror0, 타이틀8/8·project-check111/111. splash/FULLSCREEN_ART 현행 수치·design-director 인계·ART 현황 동기화. 기존 living-scenes 3개 WIP 보존.
