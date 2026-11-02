@@ -13,7 +13,12 @@ namespace Exoduser.UnityPort {
   void UiConfirm(){if(UiAudioAllowed)NativeUiSounds.Current?.Clicked();}
   bool EntrySoundButton(Rect rect){return NativeUiSounds.SilentButton(()=>NativeUiAudit.Button(rect,"",GUIStyle.none));}
   bool DecisionSoundButton(Rect rect){return NativeUiSounds.OwnSoundButton(()=>NativeUiAudit.Button(rect,"",GUIStyle.none));}
-  void FocusUiControl(string id){if(GUI.GetNameOfFocusedControl()!=id)UiNavigate(id);GUI.FocusControl(id);}
+  void FocusUiControl(string id){if(GUI.GetNameOfFocusedControl()!=id){if(id!="lobby-enter"&&!id.StartsWith("visual-info-",StringComparison.Ordinal))UiNavigate(id);if(id!="lobby-enter")StopEntryHover();}GUI.FocusControl(id);}
+  void MoveLobbyFocus(bool back){
+   var controls=new List<string>{"lobby-language"};for(int n=0;n<2;n++)if(characterScroll+n<Characters.Count)controls.Add("character-slot-"+(characterScroll+n));
+   controls.Add("character-create-card");if(Characters.SelectedIndex>=0)controls.Add("lobby-enter");controls.AddRange(new[]{"lobby-replay","lobby-steam","patch-notes-open","lobby-quit"});
+   int at=controls.IndexOf(GUI.GetNameOfFocusedControl());FocusUiControl(controls[(at+(back?controls.Count-1:1)+controls.Count)%controls.Count]);
+  }
   int lobbyPadFrame=-1;float lobbyPadVertical,lobbyPadHorizontal;
   Event LobbyPadEvent(Event original){
    if(AutomatedInput||!focused||original.type!=EventType.Layout||lobbyPadFrame==Time.frameCount)return original;
@@ -23,12 +28,12 @@ namespace Exoduser.UnityPort {
    KeyCode key=KeyCode.None;
    if(ExoInput.KeyDown(KeyCode.JoystickButton0))key=KeyCode.Return;
    else if(ExoInput.KeyDown(KeyCode.JoystickButton1))key=KeyCode.Escape;
-   else if(movedY)key=CharacterModalOpen?KeyCode.Tab:(y>0?KeyCode.UpArrow:KeyCode.DownArrow);
+   else if(movedY)key=showLanguages?(y>0?KeyCode.UpArrow:KeyCode.DownArrow):KeyCode.Tab;
    else if(movedX)key=x>0?KeyCode.RightArrow:KeyCode.LeftArrow;
    if(key==KeyCode.None)return original;
    if(showLanguages){ProcessLanguageMenuKey(key,false);ProcessLanguageMenuKey(key,true);return original;}
    if(lobbyQuitPrompt){if(key==KeyCode.Escape){UiConfirm();lobbyQuitPrompt=false;}return original;}
-   return new Event{type=EventType.KeyDown,keyCode=key};
+   return new Event{type=EventType.KeyDown,keyCode=key,shift=movedY&&y>0};
   }
   AudioMixerGroup EntryUiGroup(){
    var mixer=Resources.Load<AudioMixer>("Audio/FrontendUI");if(mixer==null)throw new InvalidOperationException("Missing frontend UI mixer");

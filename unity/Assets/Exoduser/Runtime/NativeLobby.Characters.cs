@@ -133,7 +133,16 @@ namespace Exoduser.UnityPort
     if(e.keyCode==KeyCode.Return||e.keyCode==KeyCode.KeypadEnter){if(GUI.GetNameOfFocusedControl()=="character-cancel")CloseCharacterCreation();else CreateCharacter(characterName);e.Use();return;}
     return;
    }
-   if(GUI.GetNameOfFocusedControl()=="character-create-card"&&(e.keyCode==KeyCode.Return||e.keyCode==KeyCode.KeypadEnter||e.keyCode==KeyCode.Space)){OpenCharacterCreation();e.Use();return;}
+   if(e.keyCode==KeyCode.Tab){MoveLobbyFocus(e.shift);e.Use();return;}
+   if(e.keyCode==KeyCode.Return||e.keyCode==KeyCode.KeypadEnter||e.keyCode==KeyCode.Space){
+    string control=GUI.GetNameOfFocusedControl();
+    if(control=="character-create-card"){OpenCharacterCreation();e.Use();return;}
+    if(control=="lobby-language"){ToggleLanguages();e.Use();return;}
+    if(control=="lobby-replay"){UiConfirm();ReplayIntro();e.Use();return;}
+    if(control=="lobby-steam"){PlayStartupEnter();Application.OpenURL(SteamWishlistUrl);e.Use();return;}
+    if(control=="lobby-quit"){UiConfirm();lobbyQuitPrompt=true;e.Use();return;}
+    if(control.StartsWith("character-slot-",System.StringComparison.Ordinal)&&int.TryParse(control.Substring(15),out var slot)){SelectCharacter(slot);UiConfirm();e.Use();return;}
+   }
    if(e.keyCode==KeyCode.N){OpenCharacterCreation();e.Use();}
    else if(e.keyCode==KeyCode.Delete||e.keyCode==KeyCode.Backspace){RequestCharacterDelete(Characters.SelectedIndex);e.Use();}
    else if(e.keyCode==KeyCode.UpArrow){SelectCharacter(Mathf.Max(0,Characters.SelectedIndex-1));e.Use();}

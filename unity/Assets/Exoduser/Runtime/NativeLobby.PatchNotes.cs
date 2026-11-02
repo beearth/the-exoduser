@@ -81,7 +81,7 @@ namespace Exoduser.UnityPort
   }
   void HandlePatchNotesKeys()
   {
-   var e=Event.current;
+   var e=patchNotesOpen?LobbyPadEvent(Event.current):Event.current;
    if(AutomatedInput||e.type!=EventType.KeyDown)return;
    if(patchNotesOpen){
     if(e.keyCode==KeyCode.Escape||e.keyCode==KeyCode.Return||e.keyCode==KeyCode.KeypadEnter||e.keyCode==KeyCode.Space){ClosePatchNotes();e.Use();return;}
@@ -90,7 +90,6 @@ namespace Exoduser.UnityPort
     if(e.keyCode==KeyCode.Tab){FocusUiControl("patch-notes-close");e.Use();return;}
     e.Use();return;
    }
-   if(!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen&&e.keyCode==KeyCode.Tab&&string.IsNullOrEmpty(GUI.GetNameOfFocusedControl())){FocusUiControl("patch-notes-open");e.Use();return;}
    if(!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen&&GUI.GetNameOfFocusedControl()=="patch-notes-open"&&(e.keyCode==KeyCode.Return||e.keyCode==KeyCode.KeypadEnter||e.keyCode==KeyCode.Space)){OpenPatchNotes();e.Use();}
   }
   void DrawPatchNotesLauncher()
