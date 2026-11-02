@@ -10,7 +10,7 @@ async function ready(p){
  await p.waitForFunction(()=>G.on&&window._Web3DLivingLayer?.snapshot().frame>8&&getComputedStyle(document.getElementById('stageTransition')).opacity==='0',null,{timeout:90000});
  await p.evaluate(()=>{OPT.sfxVol=OPT.bgmVol=0;BGM.setVol(0);});
 }
-async function at(p,x,y){await p.evaluate(({x,y})=>{window._btFramePause=true;P.x=x;P.y=y;G.cam.x=x;G.cam.y=y;},{x,y});await p.waitForTimeout(500);await p.waitForFunction(()=>Object.values(_ch1StartOuterCache).every(e=>e.status!=='loading'),null,{timeout:45000});}
+async function at(p,x,y){await p.evaluate(({x,y})=>{window._btFramePause=true;P.x=x;P.y=y;G.cam.x=x;G.cam.y=y;},{x,y});await p.waitForTimeout(2000);await p.waitForFunction(()=>Object.values(_ch1StartOuterCache).every(e=>e.status!=='loading'),null,{timeout:45000});}
 async function coverage(p){return p.evaluate(async()=>{
  const plan=await(await fetch('./web3d/ground-dressing-ch1.json')).json(),anchors=await(await fetch('./assets/web3d/map-look-anchors.json')).json(),{dressingLayout,dressingImages}=await import('./web3d/ground-dressing.mjs?v=20261102-dress4');
  const zoom=G._camZoom||1,view={x:G.cam.x-VW/(2*zoom),y:G.cam.y-VH/(2*zoom),w:VW/zoom,h:VH/zoom},cv=document.createElement('canvas');cv.width=240;cv.height=135;const c=cv.getContext('2d',{willReadFrequently:true});c.setTransform(240/view.w,0,0,135/view.h,-view.x*240/view.w,-view.y*135/view.h);c.fillStyle='white';c.fillRect(view.x,view.y,view.w,view.h);c.globalCompositeOperation='destination-out';c.beginPath();anchors.boundary.forEach(([x,y],i)=>c[i?'lineTo':'moveTo'](x*anchors.tile_size,y*anchors.tile_size));c.closePath();c.fill();c.globalCompositeOperation='source-over';
@@ -43,6 +43,7 @@ async function source(){const files=['game.html','build-nwjs.mjs',...(await fs.r
   await context.route('**/api/save',r=>r.fulfill({status:200,contentType:'application/json',body:'{"ok":true,"isolated":true}'}));
   const p=await context.newPage();p.on('pageerror',e=>result.errors.push(e.stack));p.on('console',m=>{if(m.type()==='error')result.errors.push(m.text());});p.on('response',r=>{if(r.status()>=400)result.http.push({url:r.url(),status:r.status()});});
   await p.goto('http://127.0.0.1:3377/game.html?classic=1&r3d=1&tutorial=0&resourceTutorial=0&slot=web3d-round4-'+mode,{waitUntil:'domcontentloaded'});await ready(p);console.log('진입 완료');
+  if(process.argv.includes('--settled')){await p.evaluate(()=>P.iframes=900008);await p.waitForTimeout(8000);result.stillFixture='최초8초 Core/AI 진행·주인공 무적 후 정지 카메라, 시작 소환 VFX 종료 대기';}
   await p.evaluate(()=>window._btFramePause=true);result.mapBefore=await p.evaluate(()=>JSON.stringify(G.map));
   const selected=process.argv.includes('--motion-only')?[]:process.argv.includes('--start-only')?cameras.filter(c=>c[0]==='start'):mode==='stage1'?cameras.filter(c=>['start','camp','corpse_tree','altar'].includes(c[0])):cameras;
   for(const width of [1920,3840]){

@@ -55,12 +55,12 @@ async function record(p,context,name,width,seconds=10){
  result.mapUnchanged=result.mapBefore===await p.evaluate(()=>JSON.stringify(G.map));delete result.mapBefore;
  console.log('저사양 Tier 검수');await p.evaluate(()=>{OPT.quality='low';P.x=5880;P.y=4310;G.cam.x=P.x;G.cam.y=P.y;});await p.waitForTimeout(400);result.low=await p.evaluate(()=>window._Web3DLivingLayer.snapshot());await p.screenshot({path:out+'/low-tier-3840.png'});await p.evaluate(()=>OPT.quality='high');
  const dense=async on=>p.evaluate(({on,continuous})=>{
-  window._btFramePause=true;P.x=4020;P.y=6500;G.cam.x=P.x;G.cam.y=P.y;P.hp=P.mhp=1000000;ens=[];projs.length=0;pProjs.length=0;
+  window._btFramePause=true;P.x=4020;P.y=6500;G.cam.x=P.x;G.cam.y=P.y;P.hp=P.mhp=1000000;if(continuous)P.iframes=900008;ens=[];projs.length=0;pProjs.length=0;
   const tiles=G._floorTiles.filter(c=>{const x=(c.tx+.5)*T,y=(c.ty+.5)*T,d=Math.hypot(x-P.x,y-P.y);return d>150&&d<(continuous?420:800)&&canMv(x,y,24);});if(!tiles.length)throw Error('밀집 fixture 보행 표본 없음');
   for(let i=0;i<64;i++){const c=tiles[i*137%tiles.length],e=mkEn((c.tx+.5)*T,(c.ty+.5)*T,0,i%8,false,1,0);if(e){if(continuous)e.hp=e.mhp=1000000;ens.push(e);}}
-  const topUp=()=>{for(let i=projs.length;i<96;i++){const a=((window._round4DenseCounter=(window._round4DenseCounter||0)+1)%96)*6.283/96;spawnProj({x:P.x+Math.cos(a)*360,y:P.y+Math.sin(a)*280,vx:-Math.cos(a),vy:-Math.sin(a),life:900,ml:900,sz:2,el:0,dmg:20,friendly:false,redBean:true,parryClass:'physical',_commit:true});}};
+  const topUp=()=>{if(continuous){P.hp=P.mhp;P.iframes=900008;}for(let i=projs.length;i<96;i++){const a=((window._round4DenseCounter=(window._round4DenseCounter||0)+1)%96)*6.283/96;spawnProj({x:P.x+Math.cos(a)*360,y:P.y+Math.sin(a)*280,vx:-Math.cos(a),vy:-Math.sin(a),life:900,ml:900,sz:2,el:0,dmg:20,friendly:false,redBean:true,parryClass:'physical',_commit:true});}};
   if(continuous&&!window._round4DenseOriginal){const api=window._Web3DLivingLayer,original=api.surface;window._round4DenseOriginal=original;api.surface=(ctx,view)=>{topUp();original(ctx,view);};}
-  topUp();window._Web3DLivingLayer.setEnabled(on);window._btFramePause=false;return {enemies:ens.length,bullets:projs.length,continuous,healthFixture:continuous?'플레이어·적 HP100만 / 매 프레임 최소96탄 보충':'플레이어 HP100만 / 시작96탄'};
+  topUp();window._Web3DLivingLayer.setEnabled(on);window._btFramePause=false;return {enemies:ens.length,bullets:projs.length,continuous,healthFixture:continuous?'플레이어 무적·HP회복 / 적 HP100만 / 매 프레임 최소96탄 보충':'플레이어 HP100만 / 시작96탄'};
  },{on,continuous:process.argv.includes('--sustained')});
  for(const width of [1920,3840]){await p.setViewportSize({width,height:1080});await p.waitForTimeout(400);for(const on of [false,true]){console.log(width+' 활성64적/96탄 '+(on?'ON':'OFF'));const start=await dense(on),s=await sample(p,width+' 활성 밀집 '+(on?'ON':'OFF')+' / HP100만 fixture',10);s.start=start;result.samples.push(s);await p.evaluate(()=>window._btFramePause=true);await p.screenshot({path:out+'/dense-'+width+'-'+(on?'on':'off')+'.png'});}}
  await dense(true);result.clips.push(await record(p,context,'dense-active',3840));await p.evaluate(()=>window._btFramePause=true);
