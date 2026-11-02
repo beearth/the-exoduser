@@ -9,3 +9,5 @@
 후속 회전 분리: TextureMap/pivot/flip/외접 footprint2401 추가, 총3136 PASS. GPU clip/재질 default0 경로 및 실제 geometry cache/프레임은 실제 Player에서 별도 검사한다.
 
 대각 단차5크기15assert 추가, 총3151 PASS. 기존/분산hash의 동일 vertex XYZUV+index SHA와 시간은 I:/EXODUSER-Storage/ground-placement/20261102/hash-diagonal-{old,new}.log. PC .NET 비교이며 Mac 실제96초 지연 해소는 별도 검수한다.
+
+실제표시 방법 변경: CPU 적응면은3c제품Late96초/actualField100k약420ms로폐기. Tessellate는진단/회귀용만보존하며제품consumer는호출하지않는다.3151은기하/UV검사이고새receiver-depth GPU접촉/성능은실제Player probe·화면·M1이필수다.

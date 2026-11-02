@@ -99,6 +99,7 @@ namespace Exoduser.UnityPort
         {
             HellArenaLate();
             if (!NativeRemodel3D.Active || r3Cam == null || Simulation == null) return;
+            NativeGroundSkillProjection.BeginFrame(r3Cam);
             bool hidden = view.cullingMask == 0;   // the lobby / startup hides the world through the 2D camera mask: mirror it
             view.cullingMask = 0;                  // the 2D camera only clears the frame while the 3D one draws
             r3Cam.enabled = !hidden;

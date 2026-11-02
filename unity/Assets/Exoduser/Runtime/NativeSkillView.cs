@@ -105,16 +105,12 @@ namespace Exoduser.UnityPort
         static void SetRing(LineRenderer l, float radiusPx, Color c, SpriteRenderer owner)
         {
             l.startColor = l.endColor = c;
-            var anchor = l.transform.position;
             for (int i = 0; i < 72; i++)
             {
                 float a = i * Mathf.PI * 2 / 72, x = Mathf.Cos(a) * radiusPx / 100, y = Mathf.Sin(a) * radiusPx / 100;
-                if (NativeRemodel3D.Active)
-                {
-                    float wx = anchor.x + x, wz = anchor.z + y;
-                    l.SetPosition(i, l.transform.InverseTransformPoint(new Vector3(wx, NativeRemodel3D.GroundY(wx, wz) + NativeGroundSkillGeometry.RingLift, wz)));
-                }
-                else l.SetPosition(i, new Vector3(x, y, 0));
+                // Retain the exact 2D line. Its 3D display is a receiver-depth band;
+                // no per-point terrain queries or airborne chords are needed.
+                l.SetPosition(i, new Vector3(x, y, 0));
             }
             NativeGroundSkillSurface.SetRing(l,owner,radiusPx/100,c);
         }
