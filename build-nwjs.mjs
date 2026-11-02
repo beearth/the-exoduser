@@ -39,6 +39,7 @@ const FILES = [
   'title-signboard.js',
   'decision-sound.js',
   'loading-art.js', 'loading-art.css',
+  'living-scenes.js', 'living-scenes.css',
   'fullscreen-art-data.js', 'fullscreen-art.js', 'fullscreen-art.css', 'fullscreen-art-dom.js',
   'currency-orb.js', 'currency-orb.css',
   'index.html', 'indexdemo.html', 'game.html', 'credits.html', 'nw-boot.html',

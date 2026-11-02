@@ -1,0 +1,450 @@
+{
+  "tool": "built-in imagegen",
+  "edits": 26,
+  "paidApiCalls": 0,
+  "preserve": "Original source files and videos untouched. Separate particle-free restoration plates; no animated face or body deformation. Warrior original silhouette restored over cleaned background.",
+  "assets": [
+    {
+      "file": "warrior-clean.webp",
+      "width": 1672,
+      "height": 941,
+      "source": "assets/charselect/poster_idle_warrior_cs3_4k.jpg",
+      "prompt": "Remove all detached floating orange embers, bright dots, speckle, grain, dust motes and isolated spark artifacts. Preserve framing, warrior face/body/pose/sword/armor/cloak/castle/archways/braziers/color. Local repair only; no blur, smears, cloning circles or grain.",
+      "sha256": "6d87beb71bee3aa459fccde9d63e766e0a3aeef341436b66434bde3dc50f4e72"
+    },
+    {
+      "file": "death-clean.webp",
+      "width": 1932,
+      "height": 814,
+      "source": "img/cin_remember_wide.png",
+      "prompt": "Remove every airborne orange ember, white floating flake, tiny bright dot, grain and noise artifact. Preserve three children at left, woman spirit in front of moon, prisoners/cage at right, continuous blue/orange clouds and stone ground. Keep silhouettes, pose, framing and lighting. No blur, new objects, text, UI or particulate texture.",
+      "sha256": "c83e27fd2db5dc0bbd841120eb38a6a86594684758e538a624c11d585be79e9b"
+    },
+    {
+      "file": "warrior-wide-clean.webp",
+      "source": "assets/fullscreen-wide/20261031/58-poster_idle_warrior_cs3_4k-32.webp",
+      "width": 2172,
+      "height": 609,
+      "generated": [
+        2172,
+        724
+      ],
+      "removedWhiteMargins": {
+        "top": 57,
+        "bottom": 58
+      },
+      "prompt": "Clean up this exact existing 32:9 panorama. Preserve the entire composition, same camera, character identities and poses, sizes and positions, architecture, landscape and color palette. Remove EVERY floating spark, ember, orange or white dot, floating flake, granular dither, speckled noise, firefly, dust mote throughout the ENTIRE panorama including far left and far right wings. Reconstruct smooth continuous painted atmosphere and ground in their place. Keep real continuous flames, glowing cracks, cloth folds, polished metal edges. Do not add or remove characters. No grain. Do not crop or reframe. The full exact 32:9 scene must remain; if necessary use only pure white letterboxing above and below for a 3:1 output canvas, never crop either side.",
+      "sha256": "41a7d5343df7a9f9a0f13065326259794cfba3e7455f1198744fcaaccb8d1c0e",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
+    },
+    {
+      "file": "death-wide-clean.webp",
+      "source": "assets/fullscreen-wide/20261031/03-cin_remember_wide-32.webp",
+      "width": 2172,
+      "height": 608,
+      "generated": [
+        2172,
+        724
+      ],
+      "removedWhiteMargins": {
+        "top": 58,
+        "bottom": 58
+      },
+      "prompt": "Clean up this exact existing 32:9 panorama. Preserve the entire composition, same camera, character identities and poses, sizes and positions, architecture, landscape and color palette. Remove EVERY floating spark, ember, orange or white dot, floating flake, granular dither, speckled noise, firefly, dust mote throughout the ENTIRE panorama including far left and far right wings. Reconstruct smooth continuous painted atmosphere and ground in their place. Keep real continuous flames, glowing cracks, cloth folds, polished metal edges. Do not add or remove characters. No grain. Do not crop or reframe. The full exact 32:9 scene must remain; if necessary use only pure white letterboxing above and below for a 3:1 output canvas, never crop either side.",
+      "sha256": "4e08839e653d92594204725300f8085bb525109694a87f964f97c82bc54e073e",
+      "borderCleanup": "Actual-screen QA: classify antialiased letterbox rows by RGB>180 in over80percent of row, remove both ends plus one guard pixel; no scene resize or paint."
+    },
+    {
+      "file": "silvertail-clean.webp",
+      "source": "assets/charselect/poster_idle_silvertail_4k.jpg",
+      "width": 1672,
+      "height": 941,
+      "generated": [
+        1672,
+        941
+      ],
+      "removedWhiteMargins": {
+        "top": 0,
+        "bottom": 0
+      },
+      "prompt": "Restore this exact existing 16:9 illustration. Remove EVERY detached floating spark, tiny dust mote, floating fleck, dotted grain, granular dither, white/purple/blue snow speck, orange ember, tiny isolated noise dot and compressed particle artifact across ALL areas, including fabric and the far left/right. Make clean continuous painted surfaces. Keep all character identities, faces, body proportions, poses, costumes, weapons, silhouette, number of characters, the exact composition and camera, all architecture and lighting colors unchanged. Keep connected lightning/energy lines, weapon glows, actual flames and material contour highlights; remove only detached noise/points. No blur, no smears, no new design, no text changes. Fill the entire same 16:9 image to edges, no borders or letterbox.",
+      "sha256": "6d939bd398ebe632fca82da6f19e9e781caf7be3bd45794cfddc8257a21ce089"
+    },
+    {
+      "file": "silvertail-wide-clean.webp",
+      "source": "assets/fullscreen-wide/20261031/59-poster_idle_silvertail_4k-32.webp",
+      "width": 2172,
+      "height": 604,
+      "generated": [
+        2172,
+        724
+      ],
+      "removedWhiteMargins": {
+        "top": 60,
+        "bottom": 60
+      },
+      "prompt": "Restore this exact existing 32:9 panorama. Remove EVERY detached floating spark, tiny dust mote, floating fleck, dotted grain, granular dither, white/purple/blue snow speck, orange ember, tiny isolated noise dot and compressed particle artifact across ALL areas, including fabric and the far left/right. Make clean continuous painted surfaces. Keep all character identities, faces, body proportions, poses, costumes, weapons, silhouette, number of characters, the exact composition and camera, all architecture and lighting colors unchanged. Keep connected lightning/energy lines, weapon glows, actual flames and material contour highlights; remove only detached noise/points. No blur, no smears, no new design, no text changes. Keep the entire exact panorama without cropping; pure white letterboxing above and below only is permitted if the output canvas is 3:1.",
+      "sha256": "d076a946ae257e56c35223f372253e2981f1c22b12376e6b201e5c2c09d40475",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
+    },
+    {
+      "file": "hellgunner-clean.webp",
+      "source": "assets/charselect/poster_idle_hellgunner.jpg",
+      "width": 1672,
+      "height": 941,
+      "generated": [
+        1672,
+        941
+      ],
+      "removedWhiteMargins": {
+        "top": 0,
+        "bottom": 0
+      },
+      "prompt": "Restore this exact existing 16:9 illustration. Remove EVERY detached floating spark, tiny dust mote, floating fleck, dotted grain, granular dither, white/purple/blue snow speck, orange ember, tiny isolated noise dot and compressed particle artifact across ALL areas, including fabric and the far left/right. Make clean continuous painted surfaces. Keep all character identities, faces, body proportions, poses, costumes, weapons, silhouette, number of characters, the exact composition and camera, all architecture and lighting colors unchanged. Keep connected lightning/energy lines, weapon glows, actual flames and material contour highlights; remove only detached noise/points. No blur, no smears, no new design, no text changes. Fill the entire same 16:9 image to edges, no borders or letterbox.",
+      "sha256": "759e5756cbb813095d10c384ee998e4f20f3add340c3fe8478cce94b4c43a553"
+    },
+    {
+      "file": "hellgunner-wide-clean.webp",
+      "source": "assets/fullscreen-wide/20261031/60-poster_idle_hellgunner-32.webp",
+      "width": 2172,
+      "height": 606,
+      "generated": [
+        2172,
+        724
+      ],
+      "removedWhiteMargins": {
+        "top": 59,
+        "bottom": 59
+      },
+      "prompt": "Restore this exact existing 32:9 panorama. Remove EVERY detached floating spark, tiny dust mote, floating fleck, dotted grain, granular dither, white/purple/blue snow speck, orange ember, tiny isolated noise dot and compressed particle artifact across ALL areas, including fabric and the far left/right. Make clean continuous painted surfaces. Keep all character identities, faces, body proportions, poses, costumes, weapons, silhouette, number of characters, the exact composition and camera, all architecture and lighting colors unchanged. Keep connected lightning/energy lines, weapon glows, actual flames and material contour highlights; remove only detached noise/points. No blur, no smears, no new design, no text changes. Keep the entire exact panorama without cropping; pure white letterboxing above and below only is permitted if the output canvas is 3:1.",
+      "sha256": "a6bd831834765ce9be0747cec4986d89544c2cd9124da01ebfa0a5695a34efba",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
+    },
+    {
+      "file": "transmuter-clean.webp",
+      "source": "assets/charselect/poster_idle_transmuter.jpg",
+      "width": 1672,
+      "height": 941,
+      "generated": [
+        1672,
+        941
+      ],
+      "removedWhiteMargins": {
+        "top": 0,
+        "bottom": 0
+      },
+      "prompt": "Restore this exact existing 16:9 illustration. Remove EVERY detached floating spark, tiny dust mote, floating fleck, dotted grain, granular dither, white/purple/blue snow speck, orange ember, tiny isolated noise dot and compressed particle artifact across ALL areas, including fabric and the far left/right. Make clean continuous painted surfaces. Keep all character identities, faces, body proportions, poses, costumes, weapons, silhouette, number of characters, the exact composition and camera, all architecture and lighting colors unchanged. Keep connected lightning/energy lines, weapon glows, actual flames and material contour highlights; remove only detached noise/points. No blur, no smears, no new design, no text changes. Fill the entire same 16:9 image to edges, no borders or letterbox.",
+      "sha256": "a335e986dff64f794b343cb6b0db21267b67638574b04960e2b4d4eaa6ef8af6"
+    },
+    {
+      "file": "transmuter-wide-clean.webp",
+      "source": "assets/fullscreen-wide/20261031/61-poster_idle_transmuter-32.webp",
+      "width": 2172,
+      "height": 605,
+      "generated": [
+        2172,
+        724
+      ],
+      "removedWhiteMargins": {
+        "top": 59,
+        "bottom": 60
+      },
+      "prompt": "Restore this exact existing 32:9 panorama. Remove EVERY detached floating spark, tiny dust mote, floating fleck, dotted grain, granular dither, white/purple/blue snow speck, orange ember, tiny isolated noise dot and compressed particle artifact across ALL areas, including fabric and the far left/right. Make clean continuous painted surfaces. Keep all character identities, faces, body proportions, poses, costumes, weapons, silhouette, number of characters, the exact composition and camera, all architecture and lighting colors unchanged. Keep connected lightning/energy lines, weapon glows, actual flames and material contour highlights; remove only detached noise/points. No blur, no smears, no new design, no text changes. Keep the entire exact panorama without cropping; pure white letterboxing above and below only is permitted if the output canvas is 3:1.",
+      "sha256": "8b7b91c6f92b92619b7f3a366e4352651ef660552749e4b7600c59536b255ff3",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
+    },
+    {
+      "file": "spearmage-clean.webp",
+      "source": "assets/charselect/poster_idle_spearmage.jpg",
+      "width": 1672,
+      "height": 941,
+      "generated": [
+        1672,
+        941
+      ],
+      "removedWhiteMargins": {
+        "top": 0,
+        "bottom": 0
+      },
+      "prompt": "Restore this exact existing 16:9 illustration. Remove EVERY detached floating spark, tiny dust mote, floating fleck, dotted grain, granular dither, white/purple/blue snow speck, orange ember, tiny isolated noise dot and compressed particle artifact across ALL areas, including fabric and the far left/right. Make clean continuous painted surfaces. Keep all character identities, faces, body proportions, poses, costumes, weapons, silhouette, number of characters, the exact composition and camera, all architecture and lighting colors unchanged. Keep connected lightning/energy lines, weapon glows, actual flames and material contour highlights; remove only detached noise/points. No blur, no smears, no new design, no text changes. Fill the entire same 16:9 image to edges, no borders or letterbox.",
+      "sha256": "d2692c1cd38b708eefee5105659e5a7f7ed150511a313f24549c301c0a35061b"
+    },
+    {
+      "file": "spearmage-wide-clean.webp",
+      "source": "assets/fullscreen-wide/20261031/62-poster_idle_spearmage-32.webp",
+      "width": 2172,
+      "height": 605,
+      "generated": [
+        2172,
+        724
+      ],
+      "removedWhiteMargins": {
+        "top": 59,
+        "bottom": 60
+      },
+      "prompt": "Restore this exact existing 32:9 panorama. Remove EVERY detached floating spark, tiny dust mote, floating fleck, dotted grain, granular dither, white/purple/blue snow speck, orange ember, tiny isolated noise dot and compressed particle artifact across ALL areas, including fabric and the far left/right. Make clean continuous painted surfaces. Keep all character identities, faces, body proportions, poses, costumes, weapons, silhouette, number of characters, the exact composition and camera, all architecture and lighting colors unchanged. Keep connected lightning/energy lines, weapon glows, actual flames and material contour highlights; remove only detached noise/points. No blur, no smears, no new design, no text changes. Keep the entire exact panorama without cropping; pure white letterboxing above and below only is permitted if the output canvas is 3:1.",
+      "sha256": "f948fb69deb83411cf796efc13484923a9c01dadf9f2de47235f6b0e00d5290b",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
+    }
+  ],
+  "loadingRepairs": [
+    {
+      "id": "1",
+      "file": "assets/living-scenes/20261102/loading-1-clean.webp",
+      "input32": "img/lording/wide/1-32.webp",
+      "generated": [
+        2172,
+        724
+      ],
+      "content": [
+        2172,
+        606
+      ],
+      "removedWhiteMargins": {
+        "top": 59,
+        "bottom": 59
+      },
+      "sha256": "1bdec37979cdecfe6437694176ed72f6f70e33970397eff36020a9baee554456",
+      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9.",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
+    },
+    {
+      "id": "2",
+      "file": "assets/living-scenes/20261102/loading-2-clean.webp",
+      "input32": "img/lording/wide/2-32.webp",
+      "generated": [
+        2172,
+        724
+      ],
+      "content": [
+        2172,
+        607
+      ],
+      "removedWhiteMargins": {
+        "top": 58,
+        "bottom": 59
+      },
+      "sha256": "8a261cc095ea6483face4032f08d0d0ebb7965eb6214a9d7e38f06bd2498d093",
+      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9.",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
+    },
+    {
+      "id": "rd2",
+      "file": "assets/living-scenes/20261102/loading-rd2-clean.webp",
+      "input32": "img/lording/wide/rd2-32.webp",
+      "generated": [
+        2172,
+        724
+      ],
+      "content": [
+        2172,
+        606
+      ],
+      "removedWhiteMargins": {
+        "top": 59,
+        "bottom": 59
+      },
+      "sha256": "eb35994eb3781e16d3c7790182a281451487ac460a82d573b377cf2f9fddd45e",
+      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9.",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
+    },
+    {
+      "id": "rd4",
+      "file": "assets/living-scenes/20261102/loading-rd4-clean.webp",
+      "input32": "img/lording/wide/rd4-32.webp",
+      "generated": [
+        2172,
+        724
+      ],
+      "content": [
+        2172,
+        605
+      ],
+      "removedWhiteMargins": {
+        "top": 59,
+        "bottom": 60
+      },
+      "sha256": "5e3f72a5b0e831a16ea2387a47805f15100818d4680dd756eb1716d153fd3c71",
+      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9.",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
+    },
+    {
+      "id": "rd7",
+      "file": "assets/living-scenes/20261102/loading-rd7-clean.webp",
+      "input32": "img/lording/wide/rd7-32.webp",
+      "generated": [
+        2172,
+        724
+      ],
+      "content": [
+        2172,
+        606
+      ],
+      "removedWhiteMargins": {
+        "top": 59,
+        "bottom": 59
+      },
+      "sha256": "1eec5bf5481f7f3da0121d45b9c7ad52a8a6a73d1eb45e26fcb04f54b8e994b0",
+      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9.",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
+    },
+    {
+      "id": "rd8",
+      "file": "assets/living-scenes/20261102/loading-rd8-clean.webp",
+      "input32": "img/lording/wide/rd8-32.webp",
+      "generated": [
+        2172,
+        724
+      ],
+      "content": [
+        2172,
+        606
+      ],
+      "removedWhiteMargins": {
+        "top": 59,
+        "bottom": 59
+      },
+      "sha256": "04b370e2d3cdc0697064751bb932cae7dff71d5887e053006260b13a13d8b639",
+      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9.",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
+    },
+    {
+      "id": "rd12",
+      "file": "assets/living-scenes/20261102/loading-rd12-clean.webp",
+      "input32": "img/lording/wide/rd12-32.webp",
+      "generated": [
+        2172,
+        724
+      ],
+      "content": [
+        2172,
+        606
+      ],
+      "removedWhiteMargins": {
+        "top": 59,
+        "bottom": 59
+      },
+      "sha256": "6ddf75635ce1551890f676c9a782381418447f7d52ede3173b75891a975ae6f8",
+      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9.",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
+    },
+    {
+      "id": "1",
+      "file": "assets/living-scenes/20261102/loading-1-16-clean.webp",
+      "input16": "img/lording/wide/1-16.webp",
+      "generated": [
+        1587,
+        991
+      ],
+      "content": [
+        1587,
+        991
+      ],
+      "prompt": "Edit the attached existing game loading illustration 1. This is a restoration/cleanup, preserve the EXACT full 16:10 composition, framing, camera, all characters identity, facial features, poses, costume, background architecture and lighting palette. Remove ALL airborne particles, floating sparks/embers, isolated tiny glowing dots, dust motes, fireflies, granular sky noise, speckled dither and compression dots. Inpaint those tiny defects into clean continuous painted sky/fog/material; no blurry smudges or black replacement spots. Keep connected flames, lava, the eye, flowers, jewelry and real material edges. Clean fine continuous surfaces, crisp artwork, no grain/no noise. Do not redesign or move any object. Same 16:10 landscape image; fill the entire output to the edge, no letterboxing or added borders, no text.",
+      "sha256": "3ff29b68853c5e45fce433c3803238410a0b73f28741aaeb08e595c65ee55c36",
+      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9."
+    },
+    {
+      "id": "2",
+      "file": "assets/living-scenes/20261102/loading-2-16-clean.webp",
+      "input16": "img/lording/wide/2-16.webp",
+      "generated": [
+        1587,
+        991
+      ],
+      "content": [
+        1587,
+        991
+      ],
+      "prompt": "Edit the attached existing game loading illustration 2. This is a restoration/cleanup, preserve the EXACT full 16:10 composition, framing, camera, all characters identity, facial features, poses, costume, background architecture and lighting palette. Remove ALL airborne particles, floating sparks/embers, isolated tiny glowing dots, dust motes, fireflies, granular sky noise, speckled dither and compression dots. Inpaint those tiny defects into clean continuous painted sky/fog/material; no blurry smudges or black replacement spots. Keep connected flames, lava, the eye, flowers, jewelry and real material edges. Clean fine continuous surfaces, crisp artwork, no grain/no noise. Do not redesign or move any object. Same 16:10 landscape image; fill the entire output to the edge, no letterboxing or added borders, no text.",
+      "sha256": "51ff7049ef94d0a32db640b4d891f829122aed19a99590af1a6785f4d8e9debf",
+      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9."
+    },
+    {
+      "id": "rd2",
+      "file": "assets/living-scenes/20261102/loading-rd2-16-clean.webp",
+      "input16": "img/lording/wide/rd2-16.webp",
+      "generated": [
+        1587,
+        991
+      ],
+      "content": [
+        1587,
+        991
+      ],
+      "prompt": "Edit the attached existing game loading illustration rd2. This is a restoration/cleanup, preserve the EXACT full 16:10 composition, framing, camera, all characters identity, facial features, poses, costume, background architecture and lighting palette. Remove ALL airborne particles, floating sparks/embers, isolated tiny glowing dots, dust motes, fireflies, granular sky noise, speckled dither and compression dots. Inpaint those tiny defects into clean continuous painted sky/fog/material; no blurry smudges or black replacement spots. Keep connected flames, lava, the eye, flowers, jewelry and real material edges. Clean fine continuous surfaces, crisp artwork, no grain/no noise. Do not redesign or move any object. Same 16:10 landscape image; fill the entire output to the edge, no letterboxing or added borders, no text.",
+      "sha256": "6c34d74f31af4ec281128f27f9d1fec28c4fc95d6c439afb6ca4391a10591ccf",
+      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9."
+    },
+    {
+      "id": "rd4",
+      "file": "assets/living-scenes/20261102/loading-rd4-16-clean.webp",
+      "input16": "img/lording/wide/rd4-16.webp",
+      "generated": [
+        1586,
+        992
+      ],
+      "content": [
+        1586,
+        992
+      ],
+      "prompt": "Edit the attached existing game loading illustration rd4. This is a restoration/cleanup, preserve the EXACT full 16:10 composition, framing, camera, all characters identity, facial features, poses, costume, background architecture and lighting palette. Remove ALL airborne particles, floating sparks/embers, isolated tiny glowing dots, dust motes, fireflies, granular sky noise, speckled dither and compression dots. Inpaint those tiny defects into clean continuous painted sky/fog/material; no blurry smudges or black replacement spots. Keep connected flames, lava, the eye, flowers, jewelry and real material edges. Clean fine continuous surfaces, crisp artwork, no grain/no noise. Do not redesign or move any object. Same 16:10 landscape image; fill the entire output to the edge, no letterboxing or added borders, no text.",
+      "sha256": "70a9ad540d0919b5f6fdd446126ab3d8937b26558a0bd3e7ba314f9206fb8d97",
+      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9."
+    },
+    {
+      "id": "rd7",
+      "file": "assets/living-scenes/20261102/loading-rd7-16-clean.webp",
+      "input16": "img/lording/wide/rd7-16.webp",
+      "generated": [
+        1586,
+        992
+      ],
+      "content": [
+        1586,
+        992
+      ],
+      "prompt": "Edit the attached existing game loading illustration rd7. This is a restoration/cleanup, preserve the EXACT full 16:10 composition, framing, camera, all characters identity, facial features, poses, costume, background architecture and lighting palette. Remove ALL airborne particles, floating sparks/embers, isolated tiny glowing dots, dust motes, fireflies, granular sky noise, speckled dither and compression dots. Inpaint those tiny defects into clean continuous painted sky/fog/material; no blurry smudges or black replacement spots. Keep connected flames, lava, the eye, flowers, jewelry and real material edges. Clean fine continuous surfaces, crisp artwork, no grain/no noise. Do not redesign or move any object. Same 16:10 landscape image; fill the entire output to the edge, no letterboxing or added borders, no text.",
+      "sha256": "52973494640890d2ee26abd70b316a8af6ab3327548459785e909822e3c48f92",
+      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9."
+    },
+    {
+      "id": "rd8",
+      "file": "assets/living-scenes/20261102/loading-rd8-16-clean.webp",
+      "input16": "img/lording/wide/rd8-16.webp",
+      "generated": [
+        1587,
+        991
+      ],
+      "content": [
+        1587,
+        991
+      ],
+      "prompt": "Edit the attached existing game loading illustration rd8. This is a restoration/cleanup, preserve the EXACT full 16:10 composition, framing, camera, all characters identity, facial features, poses, costume, background architecture and lighting palette. Remove ALL airborne particles, floating sparks/embers, isolated tiny glowing dots, dust motes, fireflies, granular sky noise, speckled dither and compression dots. Inpaint those tiny defects into clean continuous painted sky/fog/material; no blurry smudges or black replacement spots. Keep connected flames, lava, the eye, flowers, jewelry and real material edges. Clean fine continuous surfaces, crisp artwork, no grain/no noise. Do not redesign or move any object. Same 16:10 landscape image; fill the entire output to the edge, no letterboxing or added borders, no text.",
+      "sha256": "d93659680844356a5b9d331ccc4705290e2f5e4049c87dcc17520d725021c82d",
+      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9."
+    },
+    {
+      "id": "rd12",
+      "file": "assets/living-scenes/20261102/loading-rd12-16-clean.webp",
+      "input16": "img/lording/wide/rd12-16.webp",
+      "generated": [
+        1586,
+        992
+      ],
+      "content": [
+        1586,
+        992
+      ],
+      "prompt": "Edit the attached existing game loading illustration rd12. This is a restoration/cleanup, preserve the EXACT full 16:10 composition, framing, camera, all characters identity, facial features, poses, costume, background architecture and lighting palette. Remove ALL airborne particles, floating sparks/embers, isolated tiny glowing dots, dust motes, fireflies, granular sky noise, speckled dither and compression dots. Inpaint those tiny defects into clean continuous painted sky/fog/material; no blurry smudges or black replacement spots. Keep connected flames, lava, the eye, flowers, jewelry and real material edges. Clean fine continuous surfaces, crisp artwork, no grain/no noise. Do not redesign or move any object. Same 16:10 landscape image; fill the entire output to the edge, no letterboxing or added borders, no text.",
+      "sha256": "160ed349e4b1c88b6d23b7dc3a50801e5d505c4da67f2ce6fbcbba494b64578b",
+      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9."
+    }
+  ],
+  "loadingPrompt": "Precisely remove floating dots, embers, dust, sparks, grain; preserve exact 32:9 layout, characters, continuous flames/lightning and actual objects. White outer margins permitted solely for 3:1 generation canvas; content uncropped.",
+  "warriorMask": {
+    "normalizedOutline": "[[.16,.10],[.24,.10],[.25,.20],[.30,.24],[.31,.22],[.36,.21],[.39,.27],[.47,.31],[.60,.32],[.68,.35],[.74,.39],[.82,.43],[.83,.59],[.78,.67],[.74,.81],[.66,.84],[.61,.77],[.57,.82],[.58,.94],[.50,.95],[.44,.79],[.39,.71],[.32,.66],[.29,.77],[.28,.89],[.23,.91],[.18,.91],[.15,.96],[.15,.77],[.16,.58],[.16,.33]]",
+    "featherHeightRatio": 0.012,
+    "detachedBackgroundEmbers": "450/554/r12;560/463/r10;1411/455/r12"
+  }
+}
