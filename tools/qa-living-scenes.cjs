@@ -74,7 +74,7 @@ async function gameFixture(page){
    await indexFixture(page);await page.waitForTimeout(1400);await snap(page,context,'lobby');
    await page.evaluate(()=>openVisualSelect());for(let i=0;i<(mode==='probe'?1:5);i++){await page.evaluate(i=>{selectVisual(i);LivingScenes.refresh();},i);await page.waitForTimeout(1000);await snap(page,context,'hero-'+i);}
    // Actual keyboard selection and cancellation, retaining the existing release locks.
-   await page.locator('#visualGrid button').first().focus();const started=Date.now();await page.keyboard.press('ArrowRight');assert.equal(await page.locator('#visualGrid .sel').getAttribute('data-vi'),'1');receipt.inputMs=Date.now()-started;await page.keyboard.press('Escape');assert.equal(await page.locator('#charVisualPop').isVisible(),false);
+   await page.locator('#visualGrid button').first().focus();const started=Date.now();await page.keyboard.press('ArrowRight');assert.equal(await page.locator('#visualGrid .sel').getAttribute('data-vi'),'1');receipt.inputMs=Date.now()-started;await page.keyboard.press('Escape');await page.locator('#charVisualPop').waitFor({state:'hidden'});assert.equal(await page.locator('#charVisualPop').isVisible(),false);
    for(const [setting,reason]of [[{reduceMotion:true},'reduced-motion'],[{quality:'low'},'low-tier'],[{atmos:0},'atmosphere-off']]){
     await page.evaluate(setting=>{localStorage.setItem('hellcave_settings',JSON.stringify({opt:{quality:'high',atmos:2,...setting}}));LivingScenes.refresh();},setting);await page.waitForTimeout(420);const a=await page.evaluate(()=>({...LivingScenes.stats}));assert.equal(a.reason,reason);await page.waitForTimeout(300);assert.equal(await page.evaluate(()=>LivingScenes.stats.frames),a.frames);
    }
