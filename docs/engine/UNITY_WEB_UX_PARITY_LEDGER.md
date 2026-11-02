@@ -39,12 +39,187 @@ Unity 반영: 대기(미반영).
 
 | 화면 | 구분 | 웹 기준 / 전달할 계약 | Unity SHA | 판정 |
 |---|---|---|---|---|
-| 게이트·영상·메뉴·게임 이동·스테이지·재시작·복귀 | 화면 | 전체 #000 cover, 오른쪽아래 승인 인장6vh/max(48px,4.5vh), 전3비율 | 없음 | 신규 공통 전환 미이식 |
+| 게이트·영상·메뉴·게임 이동·스테이지·재시작·복귀 | 화면 | 전체 #000 cover, 오른쪽아래 승인 투명 인장9.5vh/max(48px,4.5vh), 전3비율 | 없음 | 신규 공통 전환 미이식 |
 | 같은 전체 경계 | 반응 | 전환 중 중복 요청1회·기존 focus/홀드/저장 identity·늦은 취소 보호 | 없음 | Player 실입력 대조 미검증 |
 | 같은 전체 경계 | 소리 | 기존 음악/영상·앰비언스 gain을500ms로0,600ms로1; 결정음 duck과 곱함 | 없음 | 미이식·녹음 대조 미검증 |
 | 같은 전체 경계 | 흐름 | fadeOut→실제 decode/준비→fadeIn, 페이지간 첫 paint 검정,300ms 지연 인장, 고정1.2초/5초 제거 | 없음 | 미이식 |
-| 같은 전체 경계 | 움직임 | 인장2초/.35~.9 호흡, 영상끝.6초 검정, 감소설정80ms/정지인장 | 없음 | 미이식 |
+| 같은 전체 경계 | 움직임 | 본체고정/붉은레이어2초/.12~.75 호흡, 영상끝.6초 검정, 감소설정80ms/정지인장 | 없음 | 미이식 |
 
 웹1920/3840 전후 무음10초 영상·실제 브라우저 계약·원격 상태는 transitions/REPORT.md. Unity 반영: 대기(미반영); 기존 unity-parity-1102-brief 말미에 동일 계약 인계.
 
 11-02 23:40 전환 인장3차 가독성: 웹 img/ui/silver_hell/gate_sigil_loading.png(1520²RGBA·색조유지gamma.65·얇은 뼈색 윤곽),red-only gate_sigil_loading_embers.png,12vh·2초 균열+1.4배 붉은 후광(.25~.4). 두 HTML 부트 동일2레이어·300/1000ms 유지. 감소모션 본체1/균열·후광.3정지. Unity SHA 미반영/미이식, 기존 parity 담당5차 인계. 웹 증거transitions/r4/ 및 REPORT.md.
+
+
+## 5차 전체 화면 인벤토리 — 진행 중
+
+웹 기준 `029a157b743312f112c04d94af31832785414c21`, Unity 조사 기준 `9694e3451c71d4aa5958c343c117775b648167f3`. 각 행의 상태는 소스/이전 검수/이번 Player 근거를 구분한다. 현재 전체 입력·영상·청음 대조가 끝나지 않은 행은 미검증이며 같음으로 승격하지 않는다. 명시적 미이식은 해당 실행기/표현이 없는 경우에만 쓴다. 인게임 월드 표현은 일치 대상에서 제외한다.
+
+| 화면 | 구분 | 웹 계약 | Unity 소스/상태 | 웹 SHA | Unity SHA | 판정 | 이번 검수 |
+|---|---|---|---|---|---|---|---|
+| FDG 로고 | 화면 | 원본 FDG 영상·브랜드·아무 키 | NativeLobby.Begin/AdvanceSplash | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| FDG 로고 | 반응 | 아무 키 다음·중복 입력 fence | NativeLobby.Begin/AdvanceSplash | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| FDG 로고 | 소리 | 원본 영화 오디오 | NativeLobby.Begin/AdvanceSplash | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| FDG 로고 | 흐름 | 실제 디코드→시작 메뉴 | NativeLobby.Begin/AdvanceSplash | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| FDG 로고 | 움직임 | 영상 clock/포커스 정지 | NativeLobby.Begin/AdvanceSplash | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 시작 메뉴 | 화면 | C2 원본·로고/메뉴 여백·release-version | NativeLobby.TitleMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 시작 메뉴 | 반응 | 마우스/방향키/패드 선택·확정 | NativeLobby.TitleMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 시작 메뉴 | 소리 | 호버/확인/ENTER 원음 | NativeLobby.TitleMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 시작 메뉴 | 흐름 | 시작/인트로 재생/위시리스트/종료 | NativeLobby.TitleMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 시작 메뉴 | 움직임 | 원본 루프·폭포 | NativeLobby.TitleMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 게이트 인장 | 화면 | 흑철 로고·인장·사슬·HELL LORD·ENTER | NativeLobby.SilverHell | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 게이트 인장 | 반응 | 인장 호버/ENTER·중복 억제 | NativeLobby.SilverHell | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 게이트 인장 | 소리 | 80/100ms hover loop·ENTER 매번 | NativeLobby.SilverHell | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 게이트 인장 | 흐름 | ENTER1100ms→세계관 준비 | NativeLobby.SilverHell | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 게이트 인장 | 움직임 | 기존 승인 인장 호흡 | NativeLobby.SilverHell | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 세계관 영상 | 화면 | v22b·자막·우하단 진행 링 | NativeLobby/LobbyFlow | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 세계관 영상 | 반응 | Space/ESC5초·B/Start·다음 cue | NativeLobby/LobbyFlow | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 세계관 영상 | 소리 | 음성1/BGM.22·기존 mix | NativeLobby/LobbyFlow | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 세계관 영상 | 흐름 | 준비/재시도/자연끝/홀드→로비 | NativeLobby/LobbyFlow | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 세계관 영상 | 움직임 | 영상·진행링·포커스 정지 | NativeLobby/LobbyFlow | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 캐릭터 목록 로비 | 화면 | 신전·슬롯·악의오브·입장 | NativeLobby.SilverLobby/Characters | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 캐릭터 목록 로비 | 반응 | 선택/생성/삭제·키보드/패드 | NativeLobby.SilverLobby/Characters | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 캐릭터 목록 로비 | 소리 | 호버/확인·입장 루프·두둥 | NativeLobby.SilverLobby/Characters | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 캐릭터 목록 로비 | 흐름 | 캐릭터별 세이브 확인→이어하기/신규 | NativeLobby.SilverLobby/Characters | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 캐릭터 목록 로비 | 움직임 | 선대·연무·화로11초 | NativeLobby.SilverLobby/Characters | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 영웅 선택5종 | 화면 | 이름/직업/설명/미니스토리/특성·X잠김 | NativeLobby.CharacterPresentation | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 영웅 선택5종 | 반응 | 5종 이동/잠김 생성차단/취소/정보스크롤 | NativeLobby.CharacterPresentation | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 영웅 선택5종 | 소리 | 호버35ms·확인/결정 중복억제 | NativeLobby.CharacterPresentation | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 영웅 선택5종 | 흐름 | 선택→이름/취소→로비 | NativeLobby.CharacterPresentation | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 영웅 선택5종 | 움직임 | 정지판·연무·인물 변위0 | NativeLobby.CharacterPresentation | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 이름 생성 | 화면 | 정본 패널9slice·제목/입력/오류 | NativeLobby.CharacterPresentation/Characters | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 이름 생성 | 반응 | IME/입력검증·확정/취소·중복저장차단 | NativeLobby.CharacterPresentation/Characters | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 이름 생성 | 소리 | 정본 확인·생성 두둥 | NativeLobby.CharacterPresentation/Characters | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 이름 생성 | 흐름 | 저장성공→같은 캐릭터 이야기 | NativeLobby.CharacterPresentation/Characters | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 이름 생성 | 움직임 | 전환페이드·버튼 반응 | NativeLobby.CharacterPresentation/Characters | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 삭제 확인 | 화면 | 정본 이름·선택 확인판 | NativeLobby.CharacterDelete | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 삭제 확인 | 반응 | 기본취소/좌우/확정/ESC | NativeLobby.CharacterDelete | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 삭제 확인 | 소리 | dark두둥·취소확인 | NativeLobby.CharacterDelete | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 삭제 확인 | 흐름 | 동일identity 삭제·목록복귀 | NativeLobby.CharacterDelete | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 삭제 확인 | 움직임 | 전환/선택 반응 | NativeLobby.CharacterDelete | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 캐릭터 이야기 영상 | 화면 | v23 clean·정본 cue/자막·스킵표시 | NativeLobby.CharacterStory/WarriorStoryState | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 캐릭터 이야기 영상 | 반응 | Space/ESC1.2초·B/Start·다음대사 | NativeLobby.CharacterStory/WarriorStoryState | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 캐릭터 이야기 영상 | 소리 | 원본 영화음·두둥 정책 | NativeLobby.CharacterStory/WarriorStoryState | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 캐릭터 이야기 영상 | 흐름 | 생성→이야기→같은캐릭터 게임·취소무효화 | NativeLobby.CharacterStory/WarriorStoryState | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 캐릭터 이야기 영상 | 움직임 | 원본 영상·홀드/힌트/검정경계 | NativeLobby.CharacterStory/WarriorStoryState | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 언어 메뉴 | 화면 | 29개 언어·선택상태·행/글꼴 | NativeLobby.LanguageMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 언어 메뉴 | 반응 | 검색/포인터/키보드/패드/닫기 | NativeLobby.LanguageMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 언어 메뉴 | 소리 | 호버/확인 | NativeLobby.LanguageMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 언어 메뉴 | 흐름 | 언어저장·이전 화면복귀 | NativeLobby.LanguageMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 언어 메뉴 | 움직임 | 메뉴 전환·긴글 스크롤 | NativeLobby.LanguageMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 패치노트 | 화면 | 버전·본문·카테고리 | NativeLobby.PatchNotes | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 패치노트 | 반응 | 스크롤/키/닫기 | NativeLobby.PatchNotes | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 패치노트 | 소리 | 호버/취소 | NativeLobby.PatchNotes | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 패치노트 | 흐름 | 열기/복귀 | NativeLobby.PatchNotes | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 패치노트 | 움직임 | 표시 전환 | NativeLobby.PatchNotes | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 게임 종료 확인 | 화면 | 예/아니오 판·기본취소 | NativeLobby.UiSound/NativePauseMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 게임 종료 확인 | 반응 | 포인터/좌우/Enter/ESC | NativeLobby.UiSound/NativePauseMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 게임 종료 확인 | 소리 | 확인/취소 | NativeLobby.UiSound/NativePauseMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 게임 종료 확인 | 흐름 | 취소복귀·명시확정만 종료 | NativeLobby.UiSound/NativePauseMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 게임 종료 확인 | 움직임 | 선택 강조 | NativeLobby.UiSound/NativePauseMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 입장 로딩 | 화면 | 전체 원화·진행/팁·투명인장9.5vh | NativeLobby.StartupPresentation | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 입장 로딩 | 반응 | 중복진입차단·identity fence | NativeLobby.StartupPresentation | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 입장 로딩 | 소리 | 기존 gain×transition×decision | NativeLobby.StartupPresentation | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 입장 로딩 | 흐름 | 실제자원준비→Nemesis/게임 | NativeLobby.StartupPresentation | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 입장 로딩 | 움직임 | 500/600ms·300/1000ms·붉은레이어2초 | NativeLobby.StartupPresentation | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| Nemesis 대화 | 화면 | 원화21장·화자·대사/힌트 | NativeLobby.StartupPresentation/FrontendEntryFlow | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| Nemesis 대화 | 반응 | 다음/ESC/Space홀드·패드 | NativeLobby.StartupPresentation/FrontendEntryFlow | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| Nemesis 대화 | 소리 | 원음보이스/BGM | NativeLobby.StartupPresentation/FrontendEntryFlow | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| Nemesis 대화 | 흐름 | 신규캐릭터 첫진입→조작안내 | NativeLobby.StartupPresentation/FrontendEntryFlow | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| Nemesis 대화 | 움직임 | 대화 crossfade·홀드 | NativeLobby.StartupPresentation/FrontendEntryFlow | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 첫 조작 안내 | 화면 | 4판·실제 바인딩/패드·고정기술 | NativeLobby.StartupPresentation | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 첫 조작 안내 | 반응 | Enter/Space/패드/건너뛰기 | NativeLobby.StartupPresentation | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 첫 조작 안내 | 소리 | 기존 시작음·화면 gain | NativeLobby.StartupPresentation | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 첫 조작 안내 | 흐름 | 전투 준비완료→안내→입력해제→게임 | NativeLobby.StartupPresentation | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 첫 조작 안내 | 움직임 | 원화·커튼·전환 | NativeLobby.StartupPresentation | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 인게임 HUD | 화면 | 체력/마나/ST/ES/EXP·악의오브4단계·미니맵·퀵슬롯 | NativeHud/NativeFieldHud | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 인게임 HUD | 반응 | 스킬/물약/목표 hover·바인딩·퀵창 | NativeHud/NativeFieldHud | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 인게임 HUD | 소리 | 원본 인터랙션/SFX | NativeHud/NativeFieldHud | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 인게임 HUD | 흐름 | 실제Core상태→HUD·저장연결 | NativeHud/NativeFieldHud | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 인게임 HUD | 움직임 | 게이지·접점2틱·피격가장자리·처치음2보이스 | NativeHud/NativeFieldHud | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 인벤토리·장비 | 화면 | 정본 프레임/제목44px/눈메달·칸·필터 | NativeInventory | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 인벤토리·장비 | 반응 | 장착/비교/드래그/분해/필터/키패드 | NativeInventory | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 인벤토리·장비 | 소리 | 탭/확인/취소·중복억제 | NativeInventory | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 인벤토리·장비 | 흐름 | 실제장비/가방/저장 | NativeInventory | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 인벤토리·장비 | 움직임 | 슬롯·툴팁·탭 전환 | NativeInventory | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 아이템 툴팁·비교 | 화면 | 이름/등급/수치·어픽스·좌우비교 | NativeInventory/NativeTooltip | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 아이템 툴팁·비교 | 반응 | hover/포커스·위치 clamp | NativeInventory/NativeTooltip | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 아이템 툴팁·비교 | 소리 | 원본 정책 | NativeInventory/NativeTooltip | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 아이템 툴팁·비교 | 흐름 | 선택아이템identity 일치 | NativeInventory/NativeTooltip | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 아이템 툴팁·비교 | 움직임 | 지연/표시·경계 | NativeInventory/NativeTooltip | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 퀵슬롯·물약 | 화면 | 정본 슬롯/충전/자동사용 | NativeHud/NativeInventory | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 퀵슬롯·물약 | 반응 | 드래그/사용/자동설정/키패드 | NativeHud/NativeInventory | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 퀵슬롯·물약 | 소리 | 원본 물약/실패/설정음 | NativeHud/NativeInventory | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 퀵슬롯·물약 | 흐름 | 실제Core물약·저장 | NativeHud/NativeInventory | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 퀵슬롯·물약 | 움직임 | 충전/쿨다운 | NativeHud/NativeInventory | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 스킬 제단16슬롯 | 화면 | 정본 제단·구슬/핵·설명판·고정/잠김/빈소켓 | NativeSkills/NativeSkillManagementPolicy | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 스킬 제단16슬롯 | 반응 | 48종 학습/강화/하향/장착·리셋확인 | NativeSkills/NativeSkillManagementPolicy | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 스킬 제단16슬롯 | 소리 | 선택/결정/리셋 원음 | NativeSkills/NativeSkillManagementPolicy | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 스킬 제단16슬롯 | 흐름 | 실제실행기·비용/SP·세이브 | NativeSkills/NativeSkillManagementPolicy | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 스킬 제단16슬롯 | 움직임 | 구슬/핵 광택·호버·잠김/비활성 | NativeSkills/NativeSkillManagementPolicy | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 스킬 합체 | 화면 | 합체식/재료/결과·추천 | NativeSkills/Core.Skills | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 스킬 합체 | 반응 | 선택/가능조건/전체추천 | NativeSkills/Core.Skills | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 스킬 합체 | 소리 | 정본 결정/취소 | NativeSkills/Core.Skills | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 스킬 합체 | 흐름 | 실제합체·비용·슬롯/저장 | NativeSkills/Core.Skills | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 스킬 합체 | 움직임 | 결정 연출 | NativeSkills/Core.Skills | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 능력치 별자리 | 화면 | 정본 수치/노드·요약drawer·효과 | NativeStatPanel/Simulation.Growth | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 능력치 별자리 | 반응 | SP/AP계획/투자/환불/예약·취소 | NativeStatPanel/Simulation.Growth | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 능력치 별자리 | 소리 | 호버/확인·탭 | NativeStatPanel/Simulation.Growth | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 능력치 별자리 | 흐름 | 실제파생·조건부패시브·저장 | NativeStatPanel/Simulation.Growth | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 능력치 별자리 | 움직임 | 노드/선/선택/스크롤 | NativeStatPanel/Simulation.Growth | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 대장간6탭 | 화면 | 980×1056·정본44px제목/눈메달·배치 | NativeForgePanel | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 대장간6탭 | 반응 | 강화/물약/분해/재설정/결정/제작 | NativeForgePanel | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 대장간6탭 | 소리 | 탭/확인/결정/실패 | NativeForgePanel | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 대장간6탭 | 흐름 | 각 실제아이템변경·비용/저장 | NativeForgePanel | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 대장간6탭 | 움직임 | 호버/결정/목록 | NativeForgePanel | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 일시정지·보조메뉴 | 화면 | 정본 계속/설정/로비/종료 | NativePauseMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 일시정지·보조메뉴 | 반응 | ESC/포커스복귀·명시재개·키패드 | NativePauseMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 일시정지·보조메뉴 | 소리 | 호버/확인/취소 | NativePauseMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 일시정지·보조메뉴 | 흐름 | 멈춤→명시재개·로비/종료 | NativePauseMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 일시정지·보조메뉴 | 움직임 | 표시/포커스 강조 | NativePauseMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 설정 | 화면 | 정본 탭/슬라이더/라벨/버전 | NativePauseMenu/NativeSettingsState | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 설정 | 반응 | 음량/화면/성능/게임/언어·저장 | NativePauseMenu/NativeSettingsState | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 설정 | 소리 | 호버/확인·버스 | NativePauseMenu/NativeSettingsState | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 설정 | 흐름 | 현재설정적용·재실행보존 | NativePauseMenu/NativeSettingsState | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 설정 | 움직임 | reduceMotion·프리셋·화면비 | NativePauseMenu/NativeSettingsState | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 키 바인딩 | 화면 | 실제107키·패드·현재키·리셋 | NativeKeyBindInput/NativePauseMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 키 바인딩 | 반응 | 충돌/재바인드/취소·중복차단 | NativeKeyBindInput/NativePauseMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 키 바인딩 | 소리 | 확인/취소 | NativeKeyBindInput/NativePauseMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 키 바인딩 | 흐름 | 실제입력맵·저장 | NativeKeyBindInput/NativePauseMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 키 바인딩 | 움직임 | 선택/대기 강조 | NativeKeyBindInput/NativePauseMenu | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 레벨업 | 화면 | 정본 제목/보상·SP/AP | NativeLevelUpOverlay | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 레벨업 | 반응 | 닫기/분배/선택 | NativeLevelUpOverlay | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 레벨업 | 소리 | 원본레벨업음 | NativeLevelUpOverlay | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 레벨업 | 흐름 | 실제EXP·SP/AP·한번만 보상 | NativeLevelUpOverlay | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 레벨업 | 움직임 | 표시·광택 | NativeLevelUpOverlay | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 지역 제목·목표 | 화면 | 정본 제목·목표/지역상태 | NativeAreaTitle/NativeObjectivePanel | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 지역 제목·목표 | 반응 | 목표정보·입력통과 | NativeAreaTitle/NativeObjectivePanel | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 지역 제목·목표 | 소리 | 지역/진행 음 | NativeAreaTitle/NativeObjectivePanel | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 지역 제목·목표 | 흐름 | 실제stage/지역상태 | NativeAreaTitle/NativeObjectivePanel | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 지역 제목·목표 | 움직임 | 등장/사라짐 | NativeAreaTitle/NativeObjectivePanel | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 보스 HUD | 화면 | 정본이름/HP·단계/표식 | NativeBossBar | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 보스 HUD | 반응 | 실제보스대상·가림없음 | NativeBossBar | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 보스 HUD | 소리 | 원본보스음 | NativeBossBar | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 보스 HUD | 흐름 | 출현/전투/퇴장 | NativeBossBar | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 보스 HUD | 움직임 | 체력/피격/단계 | NativeBossBar | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 사망·재시작 | 화면 | 정본사망원화/텍스트/EXP | NativeDeathOverlay/NativeGame | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 사망·재시작 | 반응 | 재시작/로비·중복EXP손실금지 | NativeDeathOverlay/NativeGame | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 사망·재시작 | 소리 | 원본사망/확인·transition gain | NativeDeathOverlay/NativeGame | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 사망·재시작 | 흐름 | 부활가능여부→사망→실제재시작 | NativeDeathOverlay/NativeGame | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 사망·재시작 | 움직임 | 피안개·검정500/600ms | NativeDeathOverlay/NativeGame | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 클리어·난이도·다음구역 | 화면 | 정본보상/5난이도/다음 | NativeStageClearOverlay/NativeNextDifficultyPanel | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 클리어·난이도·다음구역 | 반응 | −100/−50/0/+50/+100·취소/재열기/확정 | NativeStageClearOverlay/NativeNextDifficultyPanel | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 클리어·난이도·다음구역 | 소리 | 정본결정음 | NativeStageClearOverlay/NativeNextDifficultyPanel | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 클리어·난이도·다음구역 | 흐름 | 실제1-1→1-2·저장/보상 중복0 | NativeStageClearOverlay/NativeNextDifficultyPanel | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 클리어·난이도·다음구역 | 움직임 | 회백연무·검정/로딩인장 | NativeStageClearOverlay/NativeNextDifficultyPanel | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 데모 종료·승리 | 화면 | 정본종료원화/위시리스트/보상 | NativeStageClearOverlay | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 데모 종료·승리 | 반응 | 다시하기/로비/위시리스트 | NativeStageClearOverlay | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 데모 종료·승리 | 소리 | 정본종료/결정음 | NativeStageClearOverlay | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 데모 종료·승리 | 흐름 | 데모상한→종료·난이도우회 | NativeStageClearOverlay | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 데모 종료·승리 | 움직임 | 피안개/클리어연무 | NativeStageClearOverlay | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 공통 전환·로딩32종 | 화면 | 원본1520²RGBA인장/embers·32장확장판 | NativeScreenTransition(미이식) | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 공통 전환·로딩32종 | 반응 | 중복1회/늦은취소/입력흡수/해제 | NativeScreenTransition(미이식) | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 공통 전환·로딩32종 | 소리 | 기존gain×전환×decision | NativeScreenTransition(미이식) | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 공통 전환·로딩32종 | 흐름 | fadeOut→실제decode/준비→두프레임→fadeIn | NativeScreenTransition(미이식) | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+| 공통 전환·로딩32종 | 움직임 | 500/600ms·300/1000ms·9.5vh·2秒 .12/.75/.12·감소80ms | NativeScreenTransition(미이식) | 029a157b743312f112c04d94af31832785414c21 | 9694e3451c | 미검증 | 입력/1x/출력버퍼 대조 대기 |
+
+5차 미니 스토리: 웹 `740722e1ac3a5f4b0143f55b6088b01b8517be0f`의 합성 번역 테이블과 Unity9694e3451c의 `visual_select_labels`를 대조해 5종×29언어145개 원문/번역 byte 차이0. `NativeLobby.SilverCharacter.SilverLore`에서 카탈로그를 읽으며 별도 문구 하드코딩 없음. 현행 웹은 오른쪽 정보 레일이다. 기존3차의 같은 UI 소스를 재사용하되 새 패키지의1x 최종 대조는 대기. 문구 [제안] 상태는 유지한다.
