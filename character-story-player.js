@@ -3,7 +3,7 @@
   const CUES=Object.freeze([1,5.5,10,16,22.5,28,33.5,39,42.24,46.5,51,53.48,56.019999999999996,59.5,59.98,65,70.67,76,81.5,88,90.33333333333333,92.9]);
   const HOLD_MS=1200;
   // 검은 화면에서 밝아지며 시작(2026-11-02 사용자 지시). 소리는 짧게 올려 첫 대사를 깎지 않는다.
-  const FADE_MS=1400,AUDIO_FADE_MS=450;
+  const FADE_MS=600,AUDIO_FADE_MS=450;
   let activePromise=null,finishCurrent=null,nextCurrent=null,holdCurrent=null;
   root.ExoduserCharacterStory={
     CUES,HOLD_MS,
@@ -18,7 +18,7 @@
       const previousFocus=document.activeElement;
       const overlay=document.createElement('div');overlay.id='characterStoryOverlay';
       overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label',controls[3]);overlay.lang=({zht:'zh-Hant',ptbr:'pt-BR'})[code]||code;overlay.dir=code==='ar'?'rtl':'ltr';
-      overlay.style.cssText='position:fixed;inset:0;z-index:2147483647;background:#000;display:flex;align-items:center;justify-content:center';
+      overlay.style.cssText='position:fixed;inset:0;z-index:2147483646;background:#000;opacity:0;display:flex;align-items:center;justify-content:center';
       const video=document.createElement('video');video.id='characterStoryVideo';
       video.src='video/warrior_story_v23_clean.mp4?v=20261027-killu-bloodtears-v3';video.preload='auto';video.playsInline=true;video.controls=false;
       video.disablePictureInPicture=true;video.disableRemotePlayback=true;video.tabIndex=-1;
@@ -39,6 +39,8 @@
       activePromise=new Promise(r=>{resolve=r;});const result=activePromise;
       function finish(seen){
         if(done)return;done=true;
+        root.ScreenTransition?.loading(false);
+        const cleanup=()=>{
         document.removeEventListener('keydown',key,true);
         document.removeEventListener('keyup',keyUp,true);
         document.removeEventListener('pointerup',pointerUp,true);
@@ -48,7 +50,10 @@
         video.pause();video.removeAttribute('src');video.load();overlay.remove();
         finishCurrent=null;nextCurrent=null;holdCurrent=null;activePromise=null;
         if(previousFocus&&previousFocus.focus)previousFocus.focus();
+        root.DecisionSound?.detachMusic(video);
         resolve(seen);
+        };
+        if(root.ScreenTransition)root.ScreenTransition.fadeOut().then(cleanup);else cleanup();
       }
       function cancelHold(){heldSources.clear();if(holdTimer!==null)clearInterval(holdTimer);holdTimer=null;progress.style.width='0';}
       function setHeld(held,source){
@@ -113,11 +118,19 @@
         hintsHidden=true;ui.style.opacity='0';ui.style.visibility='hidden';ui.style.pointerEvents='none';
         if(document.activeElement===next||document.activeElement===skip)overlay.focus();
       });
+      let tailFade=false;
+      video.addEventListener('timeupdate',()=>{if(!tailFade&&Number.isFinite(video.duration)&&video.duration-video.currentTime<=.6){tailFade=true;root.ScreenTransition?.fadeOut();}});
       video.addEventListener('playing',reveal);
       video.addEventListener('ended',()=>finish(true));
       video.addEventListener('error',()=>finish(false));
       overlay.focus();
-      if(leadInMs>0)leadTimer=setTimeout(begin,leadInMs);else begin();
+      root.DecisionSound?.attachMusic(video);
+      if(root.ScreenTransition)root.ScreenTransition.withLoading(async()=>{
+        overlay.style.opacity='1';
+        if(leadInMs>0)await new Promise(r=>{leadTimer=setTimeout(r,leadInMs);});
+        if(done)return;begin();await root.ScreenTransition.videoReady(video).catch(()=>{});
+      });
+      else if(leadInMs>0)leadTimer=setTimeout(begin,leadInMs);else begin();
       return result;
     }
   };

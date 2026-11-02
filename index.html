@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<style>html,body{background-color:#000}#screenTransition{position:fixed;inset:0;z-index:2147483647;background:#000;opacity:0;pointer-events:none}html[data-screen-cover] #screenTransition{opacity:1;pointer-events:all}</style>
+<link rel="stylesheet" href="screen-transition.css?v=20261102">
+<script src="screen-transition.js?v=20261102"></script>
+
 <link rel="stylesheet" href="loading-art.css?v=20261031-final35">
 <script src="loading-art.js?v=20261031-final35"></script>
 <script src="decision-sound.js?v=20261031"></script>
@@ -585,6 +589,7 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 </style>
 </head>
 <body>
+<div id="screenTransition" aria-hidden="true"></div><span id="screenLoadingSigil" aria-hidden="true"></span>
 
 <!-- ═══ Splash Sequence (경고문 → 로고 → 타이틀) ═══ -->
 <div id="splashOverlay" style="position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;opacity:1;transition:opacity 0.5s">
@@ -2293,12 +2298,12 @@ const _CIN_VOICE=false; // 2026-07-27 인트로 스왑: 세계관 프롤로그�
 // ═══ 컷신 BGM (2026-07-27 BGM 스왑): 세계관 프롤로그 = 주제가 웅장버전 4곡 랜덤 (game.html cutscene_prologue 풀과 동일 파일) ═══
 const _CIN_BGM_TRACKS=['bgm/cutscene/prologue_theme.mp3','bgm/cutscene/prologue_theme_abyssal_fracture.mp3','bgm/cutscene/prologue_theme_rebirth_gate_1.mp3','bgm/cutscene/prologue_theme_rebirth_gate_2.mp3'];
 let _cinBgm=null;
-function startCinBgm(){try{if(_cinBgm)return;_cinBgm=new Audio(_CIN_BGM_TRACKS[~~(Math.random()*_CIN_BGM_TRACKS.length)]);_cinBgm.volume=0.6;_cinBgm.play().catch(()=>{})}catch(e){}}
+function startCinBgm(){try{if(_cinBgm)return;_cinBgm=new Audio(_CIN_BGM_TRACKS[~~(Math.random()*_CIN_BGM_TRACKS.length)]);_cinBgm.volume=0.6;DecisionSound.attachMusic(_cinBgm);_cinBgm.play().catch(()=>{})}catch(e){}}
 function stopLobbyBgm(){ // 시네마틱 진입 시 로비BGM 페이드 정지 (2026-07-27 겹침 해소) — bgmStarted 리셋으로 종료 후 재시작 가능
   try{if(lobbyBGM.paused){bgmStarted=false;return}
   const _lv=setInterval(()=>{if(lobbyBGM.volume>0.07){lobbyBGM.volume=Math.max(0,lobbyBGM.volume-0.07)}else{clearInterval(_lv);lobbyBGM.pause();lobbyBGM.currentTime=0;lobbyBGM.volume=0.65;bgmStarted=false}},50)}catch(e){}
 }
-function stopCinBgm(){if(!_cinBgm)return;const _a=_cinBgm;_cinBgm=null;const _fd=setInterval(()=>{if(_a.volume>0.06){_a.volume=Math.max(0,_a.volume-0.06)}else{clearInterval(_fd);try{_a.pause()}catch(e){}}},50)}
+function stopCinBgm(){if(!_cinBgm)return;const _a=_cinBgm;_cinBgm=null;if(globalThis.ScreenTransition?.executing){_a.pause();DecisionSound.detachMusic(_a);return;}const _fd=setInterval(()=>{if(_a.volume>0.06){_a.volume=Math.max(0,_a.volume-0.06)}else{clearInterval(_fd);try{_a.pause();DecisionSound.detachMusic(_a)}catch(e){}}},50)}
 let bgmStarted=false;
 function _tryBGM(){
   if(ExoduserCharacterStory.active)return;
@@ -2502,7 +2507,8 @@ function playCinematic(){
   }
 
   function finishCin(){
-    if(_cinDone) return;
+    if(_cinDone||ScreenTransition.busy) return;
+    return ScreenTransition.withLoading(async()=>{
     _cinDone=true;
     clearTimeout(_cinTimer);
     _clearVidTimers();
@@ -2514,7 +2520,8 @@ function playCinematic(){
     $('skipBtn').classList.remove('show');
     _cinSeenSet();
     if(_LOBBY_BUILD==='demo'&&_testMode){_goLogin({fromCinematic:true});}
-    else if(currentUser||_testMode){_goLobby({fromCinematic:true});}else{_goLogin({fromCinematic:true});}
+    else if(currentUser||_testMode){await _goLobby({fromCinematic:true});}else{_goLogin({fromCinematic:true});}
+    });
   }
 
   // 인트로 비디오: 문 장면은 폐지. 빈 구버전 노드는 재생/프리로드하지 않는다.
@@ -2542,6 +2549,7 @@ function playCinematic(){
   }
   
   function startWorldIntro(){
+    return ScreenTransition.withLoading(async()=>{
     stopMediaVideo(vid);vid.style.opacity='0';
     hideAll();stopIntroVoice();clearTimeout(_cinTimer);
     $('cinScene').classList.add('world-intro-active');
@@ -2563,7 +2571,10 @@ function playCinematic(){
     voice.oninput=music.oninput=applyMix;
     toggle.onclick=()=>{if(_worldIntroPlayer)_worldIntroPlayer.toggle();};
     $('worldIntroVoiceValue').textContent='100%';$('worldIntroMusicValue').textContent='22%';
-    _worldIntroPlayer.start();
+    DecisionSound.attachMusic(movie);
+    await _worldIntroPlayer.start();
+    await ScreenTransition.videoReady(movie).catch(()=>{});
+    });
   }
 
   // [보정] 클릭 안내가 확실히 작동하도록 다시 연결
@@ -2813,6 +2824,7 @@ const _cinPreview=_qp.get('cinematic')==='1';
 let _testMode=_qp.get('test')==='1';
 
 function _goLogin({fromCinematic=false}={}){
+  if(typeof ScreenTransition!=='undefined'&&!ScreenTransition.executing&&$('splashOverlay')?.style.display==='none')return ScreenTransition.withLoading(()=>_goLogin({fromCinematic}));
   if(typeof _closeCreationOverlays==='function')_closeCreationOverlays();
   const confirm=$('delConfirmModal');if(confirm&&confirm.style.display==='flex')_hideDelConfirm({fromTransition:true});
   try{_stopHover();}catch(e){}
@@ -2841,6 +2853,7 @@ function _goLogin({fromCinematic=false}={}){
   hideLoading();
 }
 function _goCinematic(){
+  if(typeof ScreenTransition!=='undefined'&&!ScreenTransition.executing&&$('splashOverlay')?.style.display==='none')return ScreenTransition.withLoading(()=>_goCinematic());
   if(typeof _closeCreationOverlays==='function')_closeCreationOverlays();
   const confirm=$('delConfirmModal');if(confirm&&confirm.style.display==='flex')_hideDelConfirm({fromTransition:true});
   try{_stopHover();}catch(e){}
@@ -2872,6 +2885,7 @@ function _goCinematic(){
   playCinematic();
 }
 async function _goLobby({fromCinematic=false}={}){
+  if(typeof ScreenTransition!=='undefined'&&!ScreenTransition.executing&&$('splashOverlay')?.style.display==='none')return ScreenTransition.withLoading(()=>_goLobby({fromCinematic}));
   if(typeof _closeCreationOverlays==='function')_closeCreationOverlays();
   const confirm=$('delConfirmModal');if(confirm&&confirm.style.display==='flex')_hideDelConfirm({fromTransition:true});
   if($('_langPop'))_closeLangPop(false);
@@ -3367,6 +3381,7 @@ function _spawnEmbers(){
   box.innerHTML=h;
 }
 function openVisualSelect(){
+  if(typeof ScreenTransition!=='undefined'&&!ScreenTransition.executing)return ScreenTransition.withLoading(()=>openVisualSelect());
   _visualReturnFocus=document.activeElement;
   const pop=$('charVisualPop');pop.style.display='flex';
   _spawnEmbers();
@@ -3410,6 +3425,7 @@ function _visualSelectKeydown(e){
 $('charVisualPop').addEventListener('keydown',_visualSelectKeydown);
 // 생성 확정 → 이름 입력 모달
 function _visualConfirm(){
+  if(typeof ScreenTransition!=='undefined'&&!ScreenTransition.executing)return ScreenTransition.withLoading(()=>_visualConfirm());
   if(CHAR_VISUALS[_pendingVisualIdx]?.comingSoon)return;
   globalThis.DecisionSound?.play('hero');
   _closeVisualSelect();
@@ -3417,7 +3433,7 @@ function _visualConfirm(){
   setTimeout(()=>{if($('createModal').classList.contains('show'))$('charName').focus()},50);
 }
 $('visualCreateBtn').onclick=_visualConfirm;
-$('visualCancelBtn').onclick=()=>_closeVisualSelect({restoreFocus:true});
+$('visualCancelBtn').onclick=()=>typeof ScreenTransition==='undefined'?_closeVisualSelect({restoreFocus:true}):ScreenTransition.withLoading(()=>_closeVisualSelect({restoreFocus:true}));
 
 async function _afterCharacterCreated(name,visualIdx){
   let request=_characterLoadSeq;
@@ -4383,7 +4399,7 @@ _GP.on('lobbyNav', (gp, just) => {
 // ═══ 캐릭터 선택 → 입장 ═══
 function showCharGate(charId,storySeen=false){
   const request=_characterLoadSeq;
-  showLoading(_TL('지옥으로 입장하는 중...'));
+  if(ScreenTransition.busy)return;
   // 로고 프리로드
   const _preImg=new Image();_preImg.src='img/logo_exoduser_solid.png';
   const _slotName=_testMode?charId:(_selectedSlotName||charId);
@@ -4391,7 +4407,7 @@ function showCharGate(charId,storySeen=false){
   if(_LOBBY_BUILD==='demo'&&!_demoActivateSlot(charId)){hideLoading();setStatus(_TL('알 수 없는 오류'),true);return}
   globalThis.DecisionSound?.play(storySeen?'new-game':'enter');
   const _tp=(_LOBBY_BUILD==='demo'?'game.html?test=1&slot=demo':_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId+'&slot='+encodeURIComponent(_slotName))+_demoParam;
-  setTimeout(()=>{if(request!==_characterLoadSeq)return;window.location.href=_tp+(storySeen?'&story=warrior-v21':'')+'&ddung='+(globalThis.DecisionSound?.candidate||1)},1200);
+  if(request===_characterLoadSeq)return ScreenTransition.navigate(_tp+(storySeen?'&story=warrior-v21':'')+'&ddung='+(globalThis.DecisionSound?.candidate||1),()=>request===_characterLoadSeq);
 }
 
 // ═══ 펫 말풍선 시스템 ═══
@@ -4572,7 +4588,7 @@ function showCharGate(charId,storySeen=false){
   function _buildTitleMenu(){
     const defs=[
       {label:'게임 시작',act:()=>{try{playEnterSFX()}catch(e){}skip()}},
-      {label:'인트로 다시 보기',act:()=>{skip();if(typeof _goCinematic==='function')_goCinematic()}},
+      {label:'인트로 다시 보기',act:()=>{_goCinematic();skip()}},
     ];
     if(_LOBBY_BUILD==='demo')defs.push({label:'STEAM 위시리스트 추가',act:()=>openWishlist()});
     if(window.nw?.App?.quit||window.electronAPI?.quitApp)defs.push({label:'게임 종료',act:_titleQuit});
@@ -4737,19 +4753,23 @@ function showCharGate(charId,storySeen=false){
   }
 
   function endSplash(){
+    if(done)return;
+    return ScreenTransition.withLoading(async()=>{
     done=true;clearInterval(blinkId);cancelAnimationFrame(rafId);
     _titleScene.destroy();
     hideFDGScreen();
     overlay.style.opacity='0';
     overlay.style.pointerEvents='none';
-    setTimeout(()=>{overlay.style.display='none';_showInputModeScreen()},500);
+    overlay.style.display='none';_showInputModeScreen();
     console.log('[SPLASH] sequence ended');
+    });
   }
 
   function skip(){
     if(done)return;
     if(phase===1)console.log('[SPLASH] FDG screen skipped');
     else console.log('[SPLASH] screen '+(phase+1)+' skipped');
+    if(phase===2){endSplash();return;}
     nextPhase();
   }
 

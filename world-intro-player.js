@@ -6,7 +6,7 @@
     const offset=Number(video.dataset?.timingOffset);
     const cuts=CUTS.slice(1).map(t=>t+(Number.isFinite(offset)?offset:0));
     let active=true,started=false,playing=false,music=null,voiceGain=1,musicGain=.22;
-    let fadeTimer=null,mixStarted=false;
+    let fadeTimer=null,mixStarted=false,tailFade=false;
     const listeners=[];
     const listen=(event,fn)=>{video.addEventListener(event,fn);listeners.push([event,fn]);};
     function clearFade(){
@@ -48,6 +48,7 @@
     // The score belongs to the whole cinematic, not the movie's seek clock.
     listen('waiting',()=>{if(active)onState('waiting');});
     listen('seeked',()=>{if(!video.paused)playMusic();});
+    listen('timeupdate',()=>{if(!tailFade&&Number.isFinite(video.duration)&&video.duration-video.currentTime<=.6){tailFade=true;root.ScreenTransition?.fadeOut();}});
     listen('ended',finish);
     listen('error',()=>{pauseMusic();if(active)onError(video.error,'video');});
     return {

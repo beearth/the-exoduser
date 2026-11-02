@@ -3,7 +3,7 @@
   'use strict';
   const selected=new URLSearchParams(global.location.search).get('ddung');
   const candidate=/^[123]$/.test(selected||'')?Number(selected):1;
-  let context=null,output=null,busyUntil=0,getVolume=null,duckBus=null;
+  let context=null,output=null,busyUntil=0,getVolume=null,duckBus=null,transitionGain=1,decisionGain=1;
   const buffers={},music=new Map();
   function audio(){
     if(context)return context;
@@ -30,7 +30,7 @@
     try{
       const c=audio();if(!c||!element||music.has(element))return;
       const source=c.createMediaElementSource(element),gain=c.createGain();
-      source.connect(gain);gain.connect(c.destination);music.set(element,gain);
+      source.connect(gain);gain.connect(c.destination);gain.gain.value=transitionGain*decisionGain;music.set(element,gain);
     }catch{/* Existing music routing remains authoritative. */}
   }
   function detachMusic(element){
@@ -38,10 +38,10 @@
   }
   function duck(){
     const amount=Math.pow(10,-6/20);
-    for(const gain of music.values())gain.gain.setValueAtTime(amount,context.currentTime);
+    decisionGain=amount;for(const gain of music.values())gain.gain.setValueAtTime(amount*transitionGain,context.currentTime);
     if(duckBus)duckBus(amount);
     global.setTimeout(()=>{
-      for(const gain of music.values())gain.gain.setValueAtTime(1,context.currentTime);
+      decisionGain=1;for(const gain of music.values())gain.gain.setValueAtTime(transitionGain,context.currentTime);
       if(duckBus)duckBus(1);
     },800);
   }
@@ -76,5 +76,6 @@
   }
   global.addEventListener('pointerdown',()=>{try{const c=audio();if(c?.state==='suspended')c.resume().catch(()=>{});}catch{}},{capture:true,passive:true});
   global.addEventListener('keydown',()=>{try{const c=audio();if(c?.state==='suspended')c.resume().catch(()=>{});}catch{}},{capture:true});
-  global.DecisionSound={candidate,ready,play,attachMusic,detachMusic,configure(options={}){getVolume=options.getVolume||null;duckBus=options.duck||null;}};
+  function setTransitionGain(value,ms=0){transitionGain=Math.max(0,Math.min(1,value));if(!context)return;const t=context.currentTime;for(const node of music.values()){const g=node.gain;g.cancelScheduledValues(t);g.setValueAtTime(g.value,t);g.linearRampToValueAtTime(transitionGain*decisionGain,t+ms/1000);}}
+  global.DecisionSound={setTransitionGain,candidate,ready,play,attachMusic,detachMusic,configure(options={}){getVolume=options.getVolume||null;duckBus=options.duck||null;}};
 })(globalThis);

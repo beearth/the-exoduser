@@ -1,0 +1,6 @@
+/* Approved gate artwork, reduced to a small quiet stamp; no new illustration. */
+#screenLoadingSigil{position:fixed;z-index:2147483647;pointer-events:none;right:max(48px,4.5vh);bottom:max(48px,4.5vh);width:6vh;height:6vh;mix-blend-mode:screen;background:#000 url('img/ui/silver_hell/gate_sigil_20261028.jpg') center/contain no-repeat;opacity:0;filter:drop-shadow(0 0 5px rgba(145,22,15,.28));}
+html[data-screen-loading] #screenLoadingSigil{animation:screenSigilBreath 2s ease-in-out infinite;}
+@keyframes screenSigilBreath{0%,100%{opacity:.35}50%{opacity:.9}}
+@media(prefers-reduced-motion:reduce){html[data-screen-loading] #screenLoadingSigil{animation:none;opacity:.65;}}
+html[data-screen-reduced] #screenLoadingSigil{animation:none;opacity:.65;}
