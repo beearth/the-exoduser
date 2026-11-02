@@ -1,6 +1,6 @@
 # 5차 웹·Unity UX 동기화 — 진행 중
 
-기준 Unity9694e3451c, 웹029a157b743312f112c04d94af31832785414c21。사용자 최신 지시로 origin/unity/main fetch 성공. 바탕화면 직접 교체0, 기존 guard.baseline WIP 보존. 공식 예약 unity-parity-1102-fifth, 앞 담당 순번 보존.
+착수 Unity9694e3451c, 현재 고정 웹740722e1ac3a5f4b0143f55b6088b01b8517be0f.사용자 최신 지시로 origin/unity/main fetch 성공. 바탕화면 직접 교체0, 기존 guard.baseline WIP 보존. 공식 예약 unity-parity-1102-fifth, 앞 담당 순번 보존.
 
 | 항목 | 현재 계약·검수 |
 |---|---|
@@ -8,9 +8,9 @@
 | 캐릭터 영상 홀드 | 웹과 동일1.2초. 키보드/검수주입을 LobbyKeys 공용 경로로 읽고, 기존패드/포인터의 독립held-source 보존. 원본warrior_story.controls29언어를 읽어13px·자간.06em·우하단3%·gap22·진행2px/#ccb789, 힌트3초뒤.4초숨김 |
 | 링 | 웹120×100·오른쪽/아래30px·반경34/두께3, 진행색#e4e1db·B홀드중Ⓑ |
 | 호버 | 일반호버 두 경계35ms, 확인80ms·마지막항목지연/이탈취소·결정중복억제 보존 |
-| UX표 | main 문서용33화면×5구분165행 초안. 최종원격반영/Player판정은 아직 없음 |
+| UX표 | main 18f7a41a6의33화면×5구분165행 대조표. 전체 화면 동일 판정은 아직 없음 |
 | 테스트 | 실제패드정책6PASS/4FAIL→10/0, 실제NativeUiSounds35.1ms실패→17/0. 경계double·순수C#이며 Player/청음 완료가 아님 |
-| Player검수 | CinematicInputCheck는 명시적CLI+공식sandbox에서만 실행. InputSystem 가상키보드/패드→실제Update, Space/ESC/B/Start·부분홀드/해제/정상홀드·전투틱정지·PNG/영상 기록. OS입력/자연플레이와 구분. 정식빌드/M1/캡처는 대기 |
+| Player검수 | CinematicInputCheck는 명시적CLI+공식sandbox에서만 실행. InputSystem 가상키보드/패드→실제Update, Space/ESC/B/Start·부분홀드/해제/정상홀드·전투틱정지·PNG/영상 기록. OS입력/자연플레이와 구분. 2cb2a854 같은 공식 패키지에서1920/3840 각44검사 통과. 사용자 OS 입력과 구분 |
 
 세부 영수증: I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/fifth。2~3항목마다 빌드(-remodel-scenes1)→같은패키지M1→1920/3840캡처→직접1x→정상merge/비강제push/원격ref확인. 未검수 결과를 PASS로 올리지 않는다.
 
@@ -27,5 +27,20 @@ Player 어셈블리 증거는 실제 로드 경로를 우선 사용하고, Unity
 
 | 범위 | 실행 계약 | 검증 상태 |
 |---|---|---|
-| CinematicInputCheck·UiSoundCapture·Lobby 캡처 | Assembly.Location이 비면 실제 Player의 Application.dataPath/Managed/{assemblyName}.dll에서 SHA-256 계산. 파일이 없으면 예외로 실패하며 과거 DLL/빈 해시를 쓰지 않음 | 정적 컴파일 후 같은 정식 패키지 Player 검수 예정 |
-| 정식 빌드 | 첫 묶음은 FIFO 티켓 생성 전 대기 중. 공용 실행기를 사용하며 사용자 앱·타인 예약을 종료하지 않음 | 빌드/M1/입력 영상 미완료 |
+| CinematicInputCheck·UiSoundCapture·Lobby 캡처 | Assembly.Location이 비면 실제 Player의 Application.dataPath/Managed/{assemblyName}.dll에서 SHA-256 계산. 파일이 없으면 예외로 실패하며 과거 DLL/빈 해시를 쓰지 않음 | 2cb2a854 같은 정식 패키지에서 실제 홀드88·일반UI소리477·로비소리425검사 통과 |
+| 정식 빌드 | 첫 묶음 acd55c48 공식 빌드 성공. 공용 실행기를 사용하며 사용자 앱·타인 예약 종료0 | M1·양해상도 입력·UI/오디오 검수 완료, 후속 전체범위는 진행 중 |
+
+## 2026-11-03 첫 공식 검수 묶음
+
+| 단계 | 동일 패키지 증거·판정 |
+|---|---|
+| 소스·빌드 | 검수 입력2cb2a854015cff7335a27659fd74ca382342070b, run acd55c48, Unity6000.6.7f1/Win64/remodel-scenes1, Build Succeeded/errors0, USER_SAVE0. Editor 라이선스 토큰 갱신 진단은 있었으나 공식 빌드 성공과 구분 |
+| M1 | run9d4d20b1,23/23 ok,firstBlocked빈값,32캡처. 이동·공격·구르기·패링·처치·보스·클리어·샌드박스 저장/이어하기. 다음1-2 미이식은 그대로 남음 |
+| 실제 홀드 | e5ec2f48(1920×1080)/e36603d0(3840×1080), 각44/44. Space/Esc/B/Start×세계관/캐릭터, 부분홀드·해제0·전투틱정지·정상홀드. 세계관약5초/이야기1.2초 기준. 직접본 프레임00024/00029/00160/00163(1920),00028(3840). 세계관 완료 로비, 캐릭터 완료는 기존 startupLoading 경계까지 기록하며 같은 사례의최종1-1 도착으로 과장하지 않음 |
+| 패키지 동일성 | 실제 Player가 읽은 Runtime51e441849b491b69c48245c5a18a8bab4ab796c4d927118ab467d249d903e6e7 / Corecf2b6cb6caee3ab29811d0c5b222622c76d572657f0771a1bceb42364906af7c, 실제 Data/Managed 파일 SHA와 일치 |
+| UI | run21cdde43,1920/2560/3840×1080,76PNG,기능결과문자열14개·명시FAIL0. 미니스토리1920전사/3840실버테일 직접열람. KO외전언어·전5캐릭터전체의시각동일완료는 아님 |
+| UI 소리 | d4ea0ca0 일반477/477·출력사건10, e41a455d 로비425/425·사건14, 같은 Runtime SHA. AudioRenderer 출력버퍼 WAV로 검사하며 사용자에게 소리 재생0 |
+| 영상 | 실제 PNG+frames.jsonl 시각으로 무음 VP9 lossless/VFR 조립,1920은전체+8사례9clips. 원본보존. 캡처 IO가 포함된 VFR이며60fps 성능/자연손조작 증거가 아님 |
+| 원본 보존 | 자기 공식 빌드 생성855파일은 전파일 SHA백업·HEAD입력 archive·원본변경없음 재확인 뒤 정확한855경로만복구·SHA대조. guard.baseline WIP와소유경계메모보존, 인덱스별도확인 |
+
+증거 루트: I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/fifth/{batch1-official-build-receipt.json,batch1-m1,batch1-cinematic-1920,batch1-cinematic-3840,batch1-ui,batch1-audio-ui,batch1-audio-lobby,batch1-video-1920,batch1-video-3840,batch1-generated-recovery}. 전체 시각/UX는 RETOUCH 유지. 화면전환·55스킬/32합체·패시브·요약drawer·살아있는화면·진짜1-2·세부획/광택이 남아 있다. I:후속 준비본은 실행 소스에 인수하지 않았다. 바탕화면 직접교체0, 자기 Editor/Player예약 반환.
