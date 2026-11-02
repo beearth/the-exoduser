@@ -1,0 +1,323 @@
+{
+  "group": "druid-idle8-body-plus-rigid-S3",
+  "sourceSheet": [
+    1656,
+    1240
+  ],
+  "sourceCell": [
+    414,
+    620
+  ],
+  "base2xSheet": [
+    3312,
+    2480
+  ],
+  "candidateSheet": [
+    4592,
+    2928
+  ],
+  "candidateCell": [
+    1148,
+    1464
+  ],
+  "padding": {
+    "left": 160,
+    "right": 160,
+    "top": 192,
+    "bottom": 32
+  },
+  "texelDensity": "original2x + common padding; not whole-atlas exact2x",
+  "directions": [
+    "south",
+    "south-west",
+    "west",
+    "north-west",
+    "north",
+    "north-east",
+    "east",
+    "south-east"
+  ],
+  "bodyScale": 2.5022474704003366,
+  "bodyReference": 422,
+  "staffNativeFixedScale": 0.2422381950683837,
+  "staffSource": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/candidates/dark-druid-canonical-staff-r175-rgb-alpha-exact.png",
+  "staffGripSource": [
+    532,
+    953
+  ],
+  "sourceToBaseFactor": 2.7927927927927927,
+  "sourcePPU": 100,
+  "proposedPPU": 200,
+  "pivot": "original bottom-left pixel pivot scaled2 + [160,32], divide by padded cell; no bbox pivot",
+  "runtimeAdoption": 0,
+  "normal": "estimated silhouette bevel radius4, no measured internal PBR",
+  "preview": "turntable only; not breathing/natural idle",
+  "referenceDisplay": "r44*14.1/4=155.1px logical cell at web camera1; actual Player unverified",
+  "patchTwoPresent": false,
+  "records": [
+    {
+      "direction": "south",
+      "bodyScale": 2.5022474704003366,
+      "staffScale": 0.6765210853261167,
+      "bodyTranslation": [
+        100,
+        119
+      ],
+      "sourceFootA64": 603,
+      "footTargetY": 1398,
+      "actualFootA64": 1398,
+      "sourceFooterCenter200": 555.0,
+      "gripRaw": [
+        294,
+        214
+      ],
+      "destinationGrip": [
+        836,
+        654
+      ],
+      "staffAngle": 0.1,
+      "components": [
+        444061
+      ],
+      "borderAlphaPixels": 0,
+      "normalAlphaMismatch": 0,
+      "removedDetached": 0,
+      "editBandWorld": [
+        1033,
+        1337
+      ],
+      "outsideBandRGBA": 0
+    },
+    {
+      "direction": "south-west",
+      "bodyScale": 2.5022474704003366,
+      "staffScale": 0.6765210853261167,
+      "bodyTranslation": [
+        30,
+        113
+      ],
+      "sourceFootA64": 605,
+      "footTargetY": 1402,
+      "actualFootA64": 1402,
+      "sourceFooterCenter200": 515.0,
+      "gripRaw": [
+        295,
+        215
+      ],
+      "destinationGrip": [
+        768,
+        651
+      ],
+      "staffAngle": 0.1,
+      "components": [
+        431700
+      ],
+      "borderAlphaPixels": 0,
+      "normalAlphaMismatch": 0,
+      "removedDetached": 0,
+      "editBandWorld": [
+        1037,
+        1341
+      ],
+      "outsideBandRGBA": 0
+    },
+    {
+      "direction": "west",
+      "bodyScale": 2.5022474704003366,
+      "staffScale": 0.6765210853261167,
+      "bodyTranslation": [
+        110,
+        166
+      ],
+      "sourceFootA64": 604,
+      "footTargetY": 1400,
+      "actualFootA64": 1400,
+      "sourceFooterCenter200": 606.0,
+      "gripRaw": [
+        100,
+        218
+      ],
+      "destinationGrip": [
+        360,
+        711
+      ],
+      "staffAngle": -0.1,
+      "components": [
+        345882
+      ],
+      "borderAlphaPixels": 0,
+      "normalAlphaMismatch": 0,
+      "removedDetached": 0,
+      "editBandWorld": [
+        1035,
+        1339
+      ],
+      "outsideBandRGBA": 0
+    },
+    {
+      "direction": "north-west",
+      "bodyScale": 2.5022474704003366,
+      "staffScale": 0.6765210853261167,
+      "bodyTranslation": [
+        168,
+        165
+      ],
+      "sourceFootA64": 601,
+      "footTargetY": 1394,
+      "actualFootA64": 1394,
+      "sourceFooterCenter200": 576.0,
+      "gripRaw": [
+        54,
+        216
+      ],
+      "destinationGrip": [
+        303,
+        705
+      ],
+      "staffAngle": -0.05,
+      "components": [
+        391554
+      ],
+      "borderAlphaPixels": 0,
+      "normalAlphaMismatch": 0,
+      "removedDetached": 0,
+      "editBandWorld": [
+        1029,
+        1333
+      ],
+      "outsideBandRGBA": 0
+    },
+    {
+      "direction": "north",
+      "bodyScale": 2.5022474704003366,
+      "staffScale": 0.6765210853261167,
+      "bodyTranslation": [
+        132,
+        160
+      ],
+      "sourceFootA64": 596,
+      "footTargetY": 1384,
+      "actualFootA64": 1384,
+      "sourceFooterCenter200": 604.0,
+      "gripRaw": [
+        85,
+        207
+      ],
+      "destinationGrip": [
+        345,
+        678
+      ],
+      "staffAngle": -0.12,
+      "components": [
+        403608
+      ],
+      "borderAlphaPixels": 0,
+      "normalAlphaMismatch": 0,
+      "removedDetached": 33,
+      "editBandWorld": [
+        1019,
+        1323
+      ],
+      "outsideBandRGBA": 0
+    },
+    {
+      "direction": "north-east",
+      "bodyScale": 2.5022474704003366,
+      "staffScale": 0.6765210853261167,
+      "bodyTranslation": [
+        134,
+        161
+      ],
+      "sourceFootA64": 595,
+      "footTargetY": 1382,
+      "actualFootA64": 1382,
+      "sourceFooterCenter200": 604.0,
+      "gripRaw": [
+        88,
+        207
+      ],
+      "destinationGrip": [
+        354,
+        679
+      ],
+      "staffAngle": -0.1,
+      "components": [
+        374680
+      ],
+      "borderAlphaPixels": 0,
+      "normalAlphaMismatch": 0,
+      "removedDetached": 44,
+      "editBandWorld": [
+        1018,
+        1321
+      ],
+      "outsideBandRGBA": 0
+    },
+    {
+      "direction": "east",
+      "bodyScale": 2.5022474704003366,
+      "staffScale": 0.6765210853261167,
+      "bodyTranslation": [
+        92,
+        143
+      ],
+      "sourceFootA64": 596,
+      "footTargetY": 1384,
+      "actualFootA64": 1384,
+      "sourceFooterCenter200": 463.0,
+      "gripRaw": [
+        255,
+        205
+      ],
+      "destinationGrip": [
+        730,
+        656
+      ],
+      "staffAngle": 0.06,
+      "components": [
+        332471
+      ],
+      "borderAlphaPixels": 0,
+      "normalAlphaMismatch": 0,
+      "removedDetached": 0,
+      "editBandWorld": [
+        1020,
+        1323
+      ],
+      "outsideBandRGBA": 0
+    },
+    {
+      "direction": "south-east",
+      "bodyScale": 2.5022474704003366,
+      "staffScale": 0.6765210853261167,
+      "bodyTranslation": [
+        192,
+        150
+      ],
+      "sourceFootA64": 602,
+      "footTargetY": 1396,
+      "actualFootA64": 1396,
+      "sourceFooterCenter200": 588.0,
+      "gripRaw": [
+        262,
+        202
+      ],
+      "destinationGrip": [
+        848,
+        655
+      ],
+      "staffAngle": 0.06,
+      "components": [
+        392863
+      ],
+      "borderAlphaPixels": 0,
+      "normalAlphaMismatch": 0,
+      "removedDetached": 0,
+      "editBandWorld": [
+        1032,
+        1335
+      ],
+      "outsideBandRGBA": 0
+    }
+  ]
+}

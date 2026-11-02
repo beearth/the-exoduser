@@ -1,0 +1,82 @@
+[
+  {
+    "direction": "south",
+    "feet": 511,
+    "hemMax": 436,
+    "editRange": [
+      366,
+      486
+    ],
+    "tabardMax": 376
+  },
+  {
+    "direction": "south-west",
+    "feet": 515,
+    "hemMax": 440,
+    "editRange": [
+      370,
+      490
+    ],
+    "tabardMax": 380
+  },
+  {
+    "direction": "west",
+    "feet": 493,
+    "hemMax": 418,
+    "editRange": [
+      348,
+      468
+    ],
+    "tabardMax": 358
+  },
+  {
+    "direction": "north-west",
+    "feet": 491,
+    "hemMax": 416,
+    "editRange": [
+      346,
+      466
+    ],
+    "tabardMax": 356
+  },
+  {
+    "direction": "north",
+    "feet": 489,
+    "hemMax": 414,
+    "editRange": [
+      344,
+      464
+    ],
+    "tabardMax": 354
+  },
+  {
+    "direction": "north-east",
+    "feet": 488,
+    "hemMax": 413,
+    "editRange": [
+      343,
+      463
+    ],
+    "tabardMax": 353
+  },
+  {
+    "direction": "east",
+    "feet": 496,
+    "hemMax": 421,
+    "editRange": [
+      351,
+      471
+    ],
+    "tabardMax": 361
+  },
+  {
+    "direction": "south-east",
+    "feet": 498,
+    "hemMax": 423,
+    "editRange": [
+      353,
+      473
+    ],
+    "tabardMax": 363
+  }
+]

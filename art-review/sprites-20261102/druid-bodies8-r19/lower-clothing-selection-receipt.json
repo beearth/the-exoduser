@@ -1,0 +1,82 @@
+[
+  {
+    "direction": "south",
+    "editRange": [
+      366,
+      486
+    ],
+    "outsideEditRGBA": 0,
+    "protectedBootRGBA": 0,
+    "changedPixels": 23269
+  },
+  {
+    "direction": "south-west",
+    "editRange": [
+      370,
+      490
+    ],
+    "outsideEditRGBA": 0,
+    "protectedBootRGBA": 0,
+    "changedPixels": 22954
+  },
+  {
+    "direction": "west",
+    "editRange": [
+      348,
+      468
+    ],
+    "outsideEditRGBA": 0,
+    "protectedBootRGBA": 0,
+    "changedPixels": 16748
+  },
+  {
+    "direction": "north-west",
+    "editRange": [
+      346,
+      466
+    ],
+    "outsideEditRGBA": 0,
+    "protectedBootRGBA": 0,
+    "changedPixels": 16914
+  },
+  {
+    "direction": "north",
+    "editRange": [
+      344,
+      464
+    ],
+    "outsideEditRGBA": 0,
+    "protectedBootRGBA": 0,
+    "changedPixels": 17028
+  },
+  {
+    "direction": "north-east",
+    "editRange": [
+      343,
+      463
+    ],
+    "outsideEditRGBA": 0,
+    "protectedBootRGBA": 0,
+    "changedPixels": 15245
+  },
+  {
+    "direction": "east",
+    "editRange": [
+      351,
+      471
+    ],
+    "outsideEditRGBA": 0,
+    "protectedBootRGBA": 0,
+    "changedPixels": 14805
+  },
+  {
+    "direction": "south-east",
+    "editRange": [
+      353,
+      473
+    ],
+    "outsideEditRGBA": 0,
+    "protectedBootRGBA": 0,
+    "changedPixels": 16524
+  }
+]

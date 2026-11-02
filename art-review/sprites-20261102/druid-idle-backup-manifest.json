@@ -1,0 +1,152 @@
+[
+  {
+    "path": "art-review/sprites-20261102/druid-idle8-r23-kit-hem/atlas.png",
+    "blob": "e5f6de9daac8e576ac3aa02aafb1441aa49c3669",
+    "bytes": 1807267,
+    "sha256": "5d9b82395d297b1735270b87cc12d224300112ac9eea5da09b048681bbace310"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-idle8-r23-kit-hem/atlas.normal.png",
+    "blob": "c3eff299721f71ef23013afb5f139afeb8621899",
+    "bytes": 407282,
+    "sha256": "609188b0aeded2afa304f32188e20bef7a8d780aa25aca992759b50e13b854b0"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-idle8-r23-kit-hem/comparison-grid.png",
+    "blob": "9fe3209c1d9f10a34eeff498fbdd4f9b37250e51",
+    "bytes": 562731,
+    "sha256": "ed401d7b2585421d3117eb3a364434414b7ea21f46b06970aaff1986a7106cba"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-idle8-r23-kit-hem/comparison.gif",
+    "blob": "48f0717702178f9a5ec057f47186b5c2a0869f6b",
+    "bytes": 360431,
+    "sha256": "8a09ef0a85a6be5118b35fe7dcdb064a4da2a5c207f274defb48431c5242818b"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-idle8-r23-kit-hem/metadata.json",
+    "blob": "bd138ec1985f3c2a1ad955fa0cfde8cc8f943fa5",
+    "bytes": 7023,
+    "sha256": "219a8d83151c9173bb4c079d401d56dbc527900e406966a732fb9bd8b53c32d0"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-idle8-r23-kit-hem/comparison.mp4",
+    "blob": "263787ed000008005be1f8abf09ca4a74ab43928",
+    "bytes": 3286757,
+    "sha256": "b6f08d10a97a4a45b31808d2af648599e278bcb73247664e2de74e071112c584"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-idle8-r23-kit-hem/video-receipt.json",
+    "blob": "0505a9222afd1ce109c85b5129a850f50e16a0ae",
+    "bytes": 396,
+    "sha256": "8f5a08d57fb7cb26637b783287294a7a28b60cf93a4e3165f21d610bc4932847"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-idle8-r23-kit-hem/technical-checks.json",
+    "blob": "dde2b57fe9a1aa255f4bef82f43f47948a94383e",
+    "bytes": 213,
+    "sha256": "f47b0893d6ffb8b0e9a2ddc85c26929f00e6318a82b29122cf86cbc5d2473831"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-idle8-r23-kit-hem/prompts.json",
+    "blob": "411682172ebb1adfe085376db463c0c2ec3a8a19",
+    "bytes": 10993,
+    "sha256": "5e17ab573fb5483b41b50503f2b48ad2cb3c836e1dde90816dcbd74a15054bab"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-bodies8-r19/body8.generated.png",
+    "blob": "7fc5311330188666b47a5fedd3c9d1f07dcbd3bc",
+    "bytes": 1460009,
+    "sha256": "e8d08331e297d790180bae184b7b8e841b1b7c8f03479203c0f534ecaf1ee3c1"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-bodies8-r19/S-SW-body-patch.generated.png",
+    "blob": "1b775154e04a07e4d3033fb457fa3067285255f5",
+    "bytes": 1299312,
+    "sha256": "46469c89a01d4345bbabbf01530c86e19d1db4df1ce36849f3ad87cf1ec264b2"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-bodies8-r19/lower-clothing.generated.png",
+    "blob": "daccd82b2989e5467bcd0c1e17c397e3b6589ef6",
+    "bytes": 1633854,
+    "sha256": "e7f02528657efdb6a9320d16c4ebdafda53febac880a5473906d40b5d5f6d162"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-bodies8-r19/body8-corrected-before-hem.png",
+    "blob": "80e8814aabdfbd2cd7a73330296b0aea865cab65",
+    "bytes": 1402862,
+    "sha256": "98c8bcb71039b059f2e3d97b3058197942dbdd5fbbc309467d983a4cfdbc164c"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-bodies8-r19/body8-lower-clothing-r22.png",
+    "blob": "202d1a51a7129d2506c267379d72c4361223ad84",
+    "bytes": 1414394,
+    "sha256": "3bfc1706ef38a5ce5850b1cfd19a2e7342ffbff0f90496003422ae7e5ccedc23"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-bodies8-r19/rigid-kit-config.json",
+    "blob": "c87102d6428e5d273bdf87ee00a667490d1a5fb3",
+    "bytes": 1367,
+    "sha256": "12673774b43e3ed9f8741599a86a8c875743015642b0cc8cf472e89bc3b4fa56"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-bodies8-r19/rigid-kit-config-r23.json",
+    "blob": "24790f476bdc8418ab0b4a5a88b5100870a29e52",
+    "bytes": 1719,
+    "sha256": "1ac9fa655812815aa276e8d587feccd5c9026f3157c51f17e081e3e4b73f6d64"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-bodies8-r19/hem-targets-v3.json",
+    "blob": "ac7ceab0732ef820b8fb149a44538eff8a3564d2",
+    "bytes": 1213,
+    "sha256": "79d3693e6534d698002c9552b5fa6109241ad4520eda32affd097c078b374af1"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-bodies8-r19/lower-clothing-selection-receipt.json",
+    "blob": "b1b56cd31daf8aa141af106b57fc7af895327c73",
+    "bytes": 1405,
+    "sha256": "5e0a2c28fdf7582ff913c40438e6ee643e902ea926323edfe36021b8733c4412"
+  },
+  {
+    "path": "art-review/sprites-20261102/tools/sprite_export.py",
+    "blob": "69a2962247be3723475eeac77557e549c3bcba29",
+    "bytes": 5874,
+    "sha256": "fc8dff84060b34cb313b7efd4cd6bb440ee54080e2a7e73b11b4aa819a31b546"
+  },
+  {
+    "path": "art-review/sprites-20261102/tools/druid_idle8_rigid_kit_pad192.py",
+    "blob": "dcaf82d514e6c87dc61c980a4b24a15bbe111e64",
+    "bytes": 6068,
+    "sha256": "ddc05dbdbc4e6287ba54057510c20c8685f2c585cacb22e828ee8efa55cf3ff8"
+  },
+  {
+    "path": "art-review/sprites-20261102/tools/druid_idle8_r23_hem.py",
+    "blob": "cb838d60592ebf60e557c3ec475ec98ad1a57cc5",
+    "bytes": 6963,
+    "sha256": "51a69c8682736545bba09f902510de18a447225a9c6fb34e30c08ad9362dbc66"
+  },
+  {
+    "path": "art-review/sprites-20261102/tools/druid_apply_lower_clothing.py",
+    "blob": "ff84bd95998e7d1a59898dcce593872558d6a1f7",
+    "bytes": 1599,
+    "sha256": "91e66d985ff75aef27aeaef4dd288b559389d73f2d99016277f96a3862599085"
+  },
+  {
+    "path": "art-review/sprites-20261102/source-anchors/druid-canonical-staff-r175.png",
+    "blob": "98b33160a251842de99aaec18e377e78bdb248d6",
+    "bytes": 1011367,
+    "sha256": "5b93cdbe6d8df276ba7ed04d90b886996931c4b79d5e7b8ad4544b1b9c9e388f"
+  },
+  {
+    "path": "art-review/sprites-20261102/source-anchors/druid-S3-staff-approved-reference.png",
+    "blob": "ae3b1ba85313c6ccc463407ae01480377ef70129",
+    "bytes": 2174365,
+    "sha256": "cd1fca28b4d700ba50a3ec7af7483784b9291da76ed94358fb631d9d85bd4a2e"
+  },
+  {
+    "path": "docs/4.0케릭터스프라이트 디자인/DRUID_SPRITE_IDLE_CANDIDATE_20261103.md",
+    "blob": "b7e9f464a7c7d50f0602742a47085f940df90e21",
+    "bytes": 2949,
+    "sha256": "d29fcb9967277712097538d9ff0ed428378e2fc8bba17834ab871aa1d2c86806"
+  }
+]

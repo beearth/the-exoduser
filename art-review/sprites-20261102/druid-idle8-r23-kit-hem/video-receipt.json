@@ -1,0 +1,14 @@
+{
+  "path": "G:/exoduser/tmp/design-review/20261102_sprites/druid-idle8-r23-kit-hem/comparison.mp4",
+  "sha256": "b6f08d10a97a4a45b31808d2af648599e278bcb73247664e2de74e071112c584",
+  "streams": [
+    {
+      "type": "video",
+      "width": 768,
+      "height": 600,
+      "frames": "32"
+    }
+  ],
+  "fullDecodeExit": 0,
+  "scope": "8-direction turntable, not breathing motion or actual Player"
+}

@@ -1,0 +1,120 @@
+{
+  "bodySheet": "druid-bodies8-r19/body8-lower-clothing-r22.png",
+  "patchTwo": null,
+  "directions": [
+    "south",
+    "south-west",
+    "west",
+    "north-west",
+    "north",
+    "north-east",
+    "east",
+    "south-east"
+  ],
+  "sourceCell": [
+    414,
+    620
+  ],
+  "sourceSheet": [
+    1656,
+    1240
+  ],
+  "bodyReferenceNative": 422,
+  "referenceRawBodyHeight": 471,
+  "existingAttackCommonScale": 0.3523654159869494,
+  "staffSource": "G:/exoduser/tmp/design-review/20261031_hd2d_sprites/candidates/dark-druid-canonical-staff-r175-rgb-alpha-exact.png",
+  "staffSourceAxis": 1484,
+  "staffSourceGrip": [
+    532,
+    953
+  ],
+  "staffFixedNativeScale": 0.2422381950683837,
+  "sourceToBaseFactor": 2.7927927927927927,
+  "padding": {
+    "left": 160,
+    "right": 160,
+    "top": 192,
+    "bottom": 32
+  },
+  "gripsRaw": [
+    [
+      294,
+      214
+    ],
+    [
+      295,
+      215
+    ],
+    [
+      100,
+      218
+    ],
+    [
+      54,
+      216
+    ],
+    [
+      85,
+      207
+    ],
+    [
+      88,
+      207
+    ],
+    [
+      255,
+      205
+    ],
+    [
+      262,
+      202
+    ]
+  ],
+  "angles": [
+    0.1,
+    0.1,
+    -0.1,
+    -0.05,
+    -0.12,
+    -0.1,
+    0.06,
+    0.06
+  ],
+  "status": "prepared bounded lower-clothing edit; preserve all upper/boots from r21, fixed body translations and prop scale",
+  "runtimeAdoption": 0,
+  "fixedBodyTranslations": [
+    [
+      100,
+      119
+    ],
+    [
+      30,
+      113
+    ],
+    [
+      110,
+      166
+    ],
+    [
+      168,
+      165
+    ],
+    [
+      132,
+      160
+    ],
+    [
+      134,
+      161
+    ],
+    [
+      92,
+      143
+    ],
+    [
+      192,
+      150
+    ]
+  ],
+  "preserveOutsideLowerBandFrom": "druid-idle8-r21-kit-pad192"
+}
