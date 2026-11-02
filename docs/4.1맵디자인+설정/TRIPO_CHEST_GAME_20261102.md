@@ -1,6 +1,6 @@
 # Tripo 보물상자 — 웹 본편 실제 뚜껑 개봉
 
-사용자 지시: “게임에 상자 넣어서 열어보고”. 대상은 `game.html` 웹 본편의 기존 보스 보물상자다. Unity·Steam 배포·스폰/보상 수량·확률/저장 설계 변경은 포함하지 않는다. 11/02 후속 지시로 상자 전리품의 바깥 분산·분출과 착지 전 수거 대기를 적용한다.
+사용자 지시: “게임에 상자 넣어서 열어보고”. 대상은 `game.html` 웹 본편의 기존 보스 보물상자다. Unity·Steam 배포·스폰/보상 수량·확률/저장 설계 변경은 포함하지 않는다. 11/02 후속 지시로 상자 전리품의 바깥 분산·분출과 착지 전 수거 대기를 적용한다. 최신 추가 지시 “상자가 너무커 … 충돌도 넣고”로 표시 축소·동적 몸통 충돌을 적용한다.
 
 ## 제작과 런타임 계약
 
@@ -13,11 +13,28 @@
 | SIZE | 파생본 | 2,679,056B·19,452삼각형. 기존 런타임보다 3,005,924B 감소. 원본 Tripo 70MB와 `.blend`·제작 로그는 출고 폴더에 넣지 않음 |
 | LID | 노드 | `TripoChest` 아래 정지 `ChestBody`·`ChestInterior`, `ChestLidPivot` 아래 `ChestLid`. 열린 X축 회전 −1.92rad(약110도). 기본 닫힘, 이미 열린 world item의 늦은 모델 로드도 열린 상태를 따른다 |
 | MOTION | `chest3d.mjs` | 개봉 후 0.4초 흔들림 + 0.9초 cubic ease-out 뚜껑 열기, 열린 상태 유지. dt는 0~0.05초, 게임 일시정지 중 진행0. 다시 열어도 재시작/재보상0 |
-| DRAW | 접지·카메라 | CSS160×160, DPR≤1.5. 모델 폭1.8, Perspective40도/카메라(.7,1.75,3.5)→(0,.62,0). 투영된 바닥 원점과 실제 world item 위치를 맞추고 부유 이동 제거. 작은 접촉 그림자 사용 |
-| LOAD | 폴백 | 실제 chest가 있을 때만 Three/GLB·WebGL을 준비한다. 준비 전/로드 실패/컨텍스트 생성 실패에는 기존2D 상자를 유지한다. `isShowing(item)`은 표시 중인 바로 그 item만 숨겨 다른 chest의 폴백을 지우지 않음 |
+| DRAW | 접지·카메라 | CSS64×64(최초160에서60% 축소), DPR≤1.5. 모델 폭1.8, Perspective40도/카메라(.7,1.75,3.5)→(0,.62,0). 투영된 바닥 원점과 실제 world item 위치를 맞추고 부유 이동 제거. 작은 접촉 그림자 사용 |
+| LOAD | 폴백 | 실제 chest가 있을 때만 Three/GLB·WebGL을 준비한다. 준비 전/로드 실패/컨텍스트 생성 실패에는2D 목재 몸통44×24px 폴백을 유지한다. 열린 우편함 이모지를 열린 목재 상자로 교체하고 같은 충돌 면적을 따른다. `isShowing(item)`은 표시 중인 바로 그 item만 숨겨 다른 chest의 폴백을 지우지 않음 |
 | LIFETIME | 상태 | 스테이지 이동·item 제거·게임 종료 시 overlay 숨김. 일시정지에는 현재 형태 유지. 모델 로드 실패를 반복 재요청하지 않음 |
-| GAMEPLAY | 보존 | 보스 사망 후 기존 위치의 chest 생성, 거리<60 상호작용, `opened=true`를 먼저 세운 뒤 장비3~5개·기존 추가 보상. 보상 수량·등급 확률·추가 재화/물약·스폰·저장 보존. 전리품 좌표와 분출/착지 전 수거 대기는 아래 후속 계약으로 변경 |
+| GAMEPLAY | 보존 | 보스 사망 후 기존 위치의 chest 생성, 거리<60 상호작용, `opened=true`를 먼저 세운 뒤 장비3~5개·기존 추가 보상. 보상 수량·등급 확률·추가 재화/물약·스폰·저장 보존. 전리품 좌표와 분출/착지 전 수거 대기, 표시 크기·상자 몸통 충돌은 아래 후속 계약으로 변경 |
 | PACKAGE | 파일 선택 | `build-nwjs.mjs` FILES에 `chest3d.mjs`1개만 추가. 기존 GLB 경로를 교체해 새70MB master 추가를 막고 기존4GB/단일100MB 제한을 유지 |
+
+## 11/02 최신 — 캐릭터 대비 크기와 몸통 충돌
+
+| id | 적용 위치 | 현행 값·설계 경계 |
+|---|---|---|
+| SCALE | chest3d.mjs `CHEST_RENDER_SIZE` | 64×64 CSSpx. 초기160의40%, 80px 중간 실물에서 열린 뚜껑까지 더 작게 보이도록64로 마감. 모델/텍스처 원본은 불변 |
+| BODY | game.html `_chestBlocks` | 중심(it.x,it.y), 반폭22·반깊이12worldpx =44×24px 몸통 사각형. actor 반경r만큼 확장. 뚜껑/광원/힌트는 충돌 면적에 넣지 않음 |
+| STATE | worldItems 수명 | 닫힘/개봉 중/열림 모두 몸통 유지. picked/item제거/스테이지 새 worldItems에 따라 자동 해제. terrain 타일에 영구 기록하지 않음, 모델 준비/실패와 독립 |
+| MOVE | canMv/canMvBlink | 기존 지형·MAP_OBJS·bone 처리 뒤 동적 몸통 검사. canMvBlink의 skipBone=1은 유지하되 상자 통과는 허용하지 않음. isW·정적 맵/흐름 그리드·Q/E 패링 수치 불변 |
+| SWEEP | 빠른 이동 | 선택적 fromX/fromY→x/y 선분과 확장 몸통 AABB 교차 검사. 실제 플레이어 걷기(idle)·sBlock/peaceShield 중 이동·ghostWalk·넉백·돌진·사슬 끌림·칼날이동 접점에 이전 좌표 전달. 벽 검사 자체는 기존 네 모서리 계약 |
+| ESCAPE | 생성 순간 겹침 | 시작점이 몸통 확장 안일 때, 이동이0이 아니며 `(from-center) dot delta >= 0`인 바깥 방향만 허용. 더 안쪽으로 들어가는 이동은 막아 생성 후 갇힘 방지 |
+| LOOT | 자기 상자 제외 | 장비 착지 경로 검사에 `canMv(x,y,18,x,y,it)`: 분출 시작점이 자기 몸통 안이라는 이유로 모든 후보가 탈락하지 않게 자기 상자만 제외. 다른 상자·지형은 계속 검사 |
+| FALLBACK | 2D 크기 | 닫힌 몸통44×24, 뚜껑48×8; 열린 몸통44×24/내부36×14/뒤로 열린 뚜껑44×14. 기존 고정 접지/2D 힌트와 보상 사용 |
+| CACHE | bootstrap | `./chest3d.mjs?v=20261102-size64-collision`. 기존160px 모듈 캐시 혼동 방지 |
+| QA | 근거 | `I:/EXODUSER-Storage/tripo-chest-game/20261102/size-collision/REPORT.md`. 크기·닫힘/열림 충돌·실제 WASD 우회·기존 R 개봉·전리품 분산을 같은 최종 소스로 검수. 보스 자연 처치/전체 맵 품질 PASS 아님 |
+
+- 최종64px 실게임: 닫힌 양쪽 중심 간격37.79224/37.35920px에서 정지, 위쪽으로 약72.47px 이동 후 반대편 우회 성공. 개봉 뒤 전투 넉백의 첫 간격46.38px 관측은 충돌 정지로 오인하지 않고 별도 안전 위치에서 다시 A 입력→37.79224px 정지 확인. 상자 제거 시 중심/고속 선분 통과 가능, 복귀 시 다시 차단. 장비4개 반지름150px/최소110.76184px·모두 보행 가능·미수거. Chrome 연결 중단 후 IAB의 같은 소스로 최종 개봉/이동 검수를 마쳤다.
 
 ## 11/02 후속 — 전리품 겹침 수정
 
@@ -49,8 +66,8 @@
 |---|---|
 | STAGE / MASTER | 기존 CH1·보스 보상 상자. 실루엣·지역·남북 주 경로·전투/여유 공간 설계 변경0 |
 | OUTER MASS / LARGE / MEDIUM | LEFT/RIGHT/TOP/SOUTH·합성·중형 접합·기존 남은 hole 무변. 기존 맵 PASS를 새로 주장하지 않음 |
-| GROUND | 상자 바닥 원점 투영·소형 접촉 그림자만 검수. 바닥 원화·오염·맵 geometry/collision 무변 |
-| PLAYABLE / LANDMARK | 기존 보스 보상 tertiary interactable. 랜덤 scatter·새 장애물·주 경로 이동0 |
+| GROUND | 상자 바닥 원점 투영·소형 접촉 그림자만 검수. 바닥 원화·오염·정적 맵 geometry/collision 무변. 최신44×24 상자 동적 몸통 충돌은 위 계약 적용 |
+| PLAYABLE / LANDMARK | 기존 보스 보상 tertiary interactable. 랜덤 scatter·주 경로 이동0. 기존 보상 상자 몸통에만 동적 장애물 추가 |
 | CAMERA QA | 실제 검수 위치/해상도·닫힘/열림·플레이어/전리품 가독성은 REPORT. 미관측 START/EARLY/SIDE/LATE/EXIT는 전체 맵 검수로 확대하지 않음 |
 | TECH QA | route/collision 보존, pageerror/404/GLB 로드/프레임·폴백·보상은 REPORT의 실제 결과 |
 | FILES / GIT | 상자 자산·모듈·bootstrap·출고 FILES·테스트·제작도구·관련 docs만 자기 소유 작업본에서 변경. 기존 G 사용자 INDEX·아트 WORK는 보존 |
