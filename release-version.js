@@ -1,1 +1,1 @@
-window.EXODUSER_RELEASE={version:"0.7.10",date:"2026-10-30"};
+window.EXODUSER_RELEASE={version:"0.7.11",date:"2026-11-02"};
