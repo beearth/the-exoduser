@@ -11,7 +11,22 @@ namespace Exoduser.UnityPort
         public const float InteriorTolerance = .005f, MaxEdge = .35f;
         public const int MaxRefinement = 8;
         public struct Vertex { public float X, Y, Z, U, V; }
+        public struct TextureProjection { public float Ux, Uz, Uo, Vx, Vz, Vo; }
         public sealed class SurfaceMesh { public Vertex[] Vertices; public int[] Triangles; public int OmittedTriangles; }
+
+        public static float FootprintExtent(float left,float bottom,float width,float height)
+        {
+            float x=Math.Max(Math.Abs(left),Math.Abs(left+width)),z=Math.Max(Math.Abs(bottom),Math.Abs(bottom+height));
+            return (float)Math.Sqrt(x*x+z*z);
+        }
+        // Rotate only the original texture over the static, world-aligned surface.
+        // Sprite pivot, non-square scale, roll and flip all remain source-authored.
+        public static TextureProjection TextureMap(float left,float bottom,float width,float height,double rotation,bool flipX,bool flipY)
+        {
+            float c=(float)Math.Cos(rotation),s=(float)Math.Sin(rotation),u=flipX?-1:1,v=flipY?-1:1;
+            return new TextureProjection { Ux=u*c/width,Uz=u*s/width,Uo=(flipX?1:0)-u*left/width,
+                Vx=-v*s/height,Vz=v*c/height,Vo=(flipY?1:0)-v*bottom/height };
+        }
 
         // A fixed grid follows its vertices but can suspend the whole face above a
         // root/bridge edge. Refine only curved faces; never connect two support levels

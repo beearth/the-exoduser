@@ -12,6 +12,8 @@ namespace Exoduser.UnityPort
         static readonly Dictionary<SpriteRenderer, NativeGroundSkillSurface> registered = new Dictionary<SpriteRenderer, NativeGroundSkillSurface>();
         static readonly Func<float, float, float> sampleHeight = NativeRemodel3D.GroundY;
         static readonly int MainTex = Shader.PropertyToID("_MainTex");
+        static readonly int GroundClip=Shader.PropertyToID("_GroundUvClip"),GroundU=Shader.PropertyToID("_GroundUvU"),GroundV=Shader.PropertyToID("_GroundUvV"),GroundRect=Shader.PropertyToID("_GroundUvRect");
+        static Material spriteAlpha;
         SpriteRenderer source;
         GameObject surface;
         Mesh mesh;
@@ -24,14 +26,17 @@ namespace Exoduser.UnityPort
         Vector4 geometryFootprint;
         Terrain geometryTerrain;
         A2FieldLayout geometryField;
-        bool geometryValid;
+        bool geometryValid, geometryProjected;
+        float requestedExtent, geometryExtent, geometryRoll;
         Color lastColor;
         public int OmittedTriangles { get; private set; }
+        public int GeometryRevision { get; private set; }
+        public MeshRenderer SurfaceRenderer { get { return draw; } }
         readonly MaterialPropertyBlock block = new MaterialPropertyBlock();
         Sprite uvSprite;
         bool ground, forced, priorForceOff, uvFlipX, uvFlipY;
 
-        public static void Mark(SpriteRenderer sprite, bool isGround = true)
+        public static void Mark(SpriteRenderer sprite, bool isGround = true, float maximumExtent = 0)
         {
             if (sprite == null) return;
             NativeGroundSkillSurface entry;
@@ -43,6 +48,7 @@ namespace Exoduser.UnityPort
                 registered[sprite] = entry;
             }
             entry.ground = isGround;
+            entry.requestedExtent = maximumExtent;
             if (!isGround) entry.RestoreSprite();
         }
 
@@ -65,7 +71,8 @@ namespace Exoduser.UnityPort
         {
             source = sprite;
             surface = new GameObject("Ground skill surface");
-            surface.transform.SetParent(transform, false);
+            // Sibling of the source: its roll/scale animate UVs, never the terrain mesh.
+            surface.transform.SetParent(transform.parent, false);
             surface.layer = gameObject.layer;
             draw = surface.AddComponent<MeshRenderer>();
             draw.enabled = false;
@@ -83,12 +90,23 @@ namespace Exoduser.UnityPort
             draw.enabled = visible;
             if (!visible) return;
             var sprite = source.sprite; var rect = sprite.rect; var texture = sprite.texture;
-            draw.sharedMaterial = source.sharedMaterial;
+            var material=source.sharedMaterial;
+            if(material!=null && material.shader!=null && material.shader.name=="Sprites/Default")
+            {
+                if(spriteAlpha==null)
+                {
+                    spriteAlpha=new Material(Shader.Find("EXODUSER/SkillAdditive")) { name="Ground sprite alpha (original premultiplied blend)" };
+                    spriteAlpha.SetFloat("_NormalBlend",1);spriteAlpha.SetFloat("_DstBlend",(float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                }
+                material=spriteAlpha;
+            }
+            draw.sharedMaterial = material;
+            bool projected=material!=null && material.HasProperty(GroundClip);
             draw.sortingLayerID = source.sortingLayerID; draw.sortingOrder = source.sortingOrder;
             surface.layer = source.gameObject.layer;
             // Preserve per-renderer _Opacity and other original overrides as well as the
             // exact atlas cell. Treating the entire ward sheet as one texture mixes mine/trap art.
-            source.GetPropertyBlock(block); block.SetTexture(MainTex, texture); draw.SetPropertyBlock(block);
+            source.GetPropertyBlock(block); block.SetTexture(MainTex, texture);
             bool updateUv = uvSprite != sprite || uvFlipX != source.flipX || uvFlipY != source.flipY;
             var anchor = source.transform.position; var scale = source.transform.lossyScale;
             // A just-created zone deploys from zero size. Its inverse transform is
@@ -96,28 +114,45 @@ namespace Exoduser.UnityPort
             if (Mathf.Abs(scale.x) < .000001f || Mathf.Abs(scale.y) < .000001f) { draw.enabled = false; return; }
             float left=-sprite.pivot.x/sprite.pixelsPerUnit*scale.x, bottom=-sprite.pivot.y/sprite.pixelsPerUnit*scale.y;
             float width=rect.width/sprite.pixelsPerUnit*scale.x, height=rect.height/sprite.pixelsPerUnit*scale.y;
+            float roll=source.transform.eulerAngles.z*Mathf.Deg2Rad;
             var footprint=new Vector4(left,bottom,width,height);
+            surface.transform.SetPositionAndRotation(anchor,Quaternion.identity);
+            surface.transform.localScale=Vector3.one;
             var matrix=surface.transform.localToWorldMatrix;
-            bool rebuild=!geometryValid || geometryTransform!=matrix || geometryFootprint!=footprint ||
+            float extent=projected?Mathf.Max(requestedExtent,NativeGroundSkillGeometry.FootprintExtent(left,bottom,width,height)):0;
+            bool rebuild=!geometryValid || geometryTransform!=matrix || geometryProjected!=projected ||
+                (projected?extent>geometryExtent:geometryFootprint!=footprint || geometryRoll!=roll) ||
                 geometryTerrain!=NativeRemodel3D.Ground || geometryField!=NativeRemodel3D.Field;
             if(rebuild)
             {
-                var data=NativeGroundSkillGeometry.Tessellate(anchor.x*100,-anchor.z*100,left,bottom,width,height,
-                    source.transform.eulerAngles.z*Mathf.Deg2Rad,sampleHeight);
+                // The terrain is world-aligned and covers every source rotation. Texture
+                // footprint clipping happens on the GPU; deploy/roll need no retessellation.
+                float radius=projected?Mathf.Ceil(extent*4)*.25f:0;
+                var data=NativeGroundSkillGeometry.Tessellate(anchor.x*100,-anchor.z*100,
+                    projected?-radius:left,projected?-radius:bottom,projected?radius*2:width,projected?radius*2:height,
+                    projected?0:roll,sampleHeight);
                 vertices=new Vector3[data.Vertices.Length];uv=new Vector2[vertices.Length];colors=new Color[vertices.Length];
                 footprintUv=new Vector2[vertices.Length];
                 for(int i=0;i<vertices.Length;i++)
                 {
                     var p=data.Vertices[i];vertices[i]=surface.transform.InverseTransformPoint(new Vector3(p.X,p.Y,p.Z));
-                    footprintUv[i]=new Vector2(p.U,p.V);
+                    footprintUv[i]=uv[i]=new Vector2(p.U,p.V);
                 }
                 mesh.Clear();mesh.indexFormat=vertices.Length>65535?UnityEngine.Rendering.IndexFormat.UInt32:UnityEngine.Rendering.IndexFormat.UInt16;
-                mesh.vertices=vertices;mesh.triangles=data.Triangles;mesh.RecalculateBounds();
+                mesh.vertices=vertices;mesh.uv=uv;mesh.triangles=data.Triangles;mesh.RecalculateBounds();
                 OmittedTriangles=data.OmittedTriangles;geometryTransform=matrix;geometryFootprint=footprint;
                 geometryTerrain=NativeRemodel3D.Ground;geometryField=NativeRemodel3D.Field;geometryValid=true;
+                geometryExtent=radius;geometryRoll=roll;geometryProjected=projected;GeometryRevision++;
                 updateUv=true;
             }
-            if(updateUv)
+            if(projected)
+            {
+                var map=NativeGroundSkillGeometry.TextureMap(left,bottom,width,height,roll,source.flipX,source.flipY);
+                block.SetFloat(GroundClip,1);block.SetVector(GroundU,new Vector4(map.Ux,map.Uz,map.Uo,0));
+                block.SetVector(GroundV,new Vector4(map.Vx,map.Vz,map.Vo,0));
+                block.SetVector(GroundRect,new Vector4(rect.x/texture.width,rect.y/texture.height,rect.width/texture.width,rect.height/texture.height));
+            }
+            else if(updateUv)
             {
                 for(int i=0;i<uv.Length;i++)
                 {
@@ -127,6 +162,7 @@ namespace Exoduser.UnityPort
                 }
                 mesh.uv=uv;uvSprite=sprite;uvFlipX=source.flipX;uvFlipY=source.flipY;
             }
+            draw.SetPropertyBlock(block);
             if(rebuild || lastColor!=source.color)
             {
                 for(int i=0;i<colors.Length;i++)colors[i]=source.color;
@@ -147,6 +183,7 @@ namespace Exoduser.UnityPort
             RestoreSprite();
             if (!ReferenceEquals(source, null)) registered.Remove(source);
             Release(mesh); Release(surface);
+            if(registered.Count==0) { Release(spriteAlpha);spriteAlpha=null; }
         }
         static void Release(UnityEngine.Object value)
         {

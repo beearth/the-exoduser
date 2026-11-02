@@ -59,6 +59,20 @@ static class Program
                 Check(large==0,"triangle interior exceeds 2cm contact: "+worst+" count="+large);
                 Console.WriteLine("SURFACE diameter="+diameter+" vertices="+vv.Length+" triangles="+tri.Length/3+" coverage="+(area/(diameter*diameter)).ToString("F6")+" worst="+worst.ToString("F6")+" buildMs="+buildMs+" totalMs="+clock.ElapsedMilliseconds);
             }
+            var mapping=t.GetMethod("TextureMap");Check(mapping!=null,"MISSING independent texture rotation on cached terrain surface");
+            var extentMethod=t.GetMethod("FootprintExtent");
+            float left=-2.7f,bottom=-1.3f,width=6.2f,height=4.1f;
+            double extent=Convert.ToDouble(extentMethod.Invoke(null,new object[]{left,bottom,width,height}));
+            for(int frame=0;frame<40;frame++)foreach(bool fx in new[]{false,true})foreach(bool fy in new[]{false,true}) {
+                double angle=frame*.137;var map=mapping.Invoke(null,new object[]{left,bottom,width,height,angle,fx,fy});
+                foreach(var corner in new[]{new[]{0f,0f},new[]{1f,0f},new[]{0f,1f},new[]{1f,1f},new[]{.37f,.63f}}) {
+                    var pos=p(0,0,left+width*corner[0],bottom+height*corner[1],angle,flat,.025f);
+                    double x=read(pos,"X"),z=read(pos,"Z");
+                    Near(read(map,"Ux")*x+read(map,"Uz")*z+read(map,"Uo"),fx?1-corner[0]:corner[0],"texture U follows original animated rotation/flip");
+                    Near(read(map,"Vx")*x+read(map,"Vz")*z+read(map,"Vo"),fy?1-corner[1]:corner[1],"texture V follows original animated rotation/flip");
+                    Check(Math.Sqrt(x*x+z*z)<=extent+.00001,"cached terrain covers all rotating footprint corners");
+                }
+            }
             Console.WriteLine("GROUND_SKILL PASS "+checks+" checks; pure geometry, not Unity Player");return 0;
         } catch(Exception e){Console.Error.WriteLine("GROUND_SKILL FAIL after "+checks+": "+e.Message);return 1;}
     }

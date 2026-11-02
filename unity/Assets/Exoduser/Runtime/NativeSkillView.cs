@@ -206,9 +206,9 @@ namespace Exoduser.UnityPort
         }
         void BuildZone(Item it, FireZone z)
         {
-            if (z.Type == "spikeTrap") { it.a = NewRenderer(it, "thorn", spike, add, -19000); NativeGroundSkillSurface.Mark(it.a); return; }
+            if (z.Type == "spikeTrap") { it.a = NewRenderer(it, "thorn", spike, add, -19000); NativeGroundSkillSurface.Mark(it.a, true, (float)z.R*.01f*Mathf.Sqrt(2)); return; }
             it.a = NewRenderer(it, "dome", dome, addFlat, -19000);
-            NativeGroundSkillSurface.Mark(it.a);
+            NativeGroundSkillSurface.Mark(it.a, true, (float)z.R*.0102f*Mathf.Sqrt(2));
             it.rings = new[] { NewRing(it, Color.white), NewRing(it, Color.white) };
         }
         void Drop(Dictionary<int, Item> map, List<int> ids)
