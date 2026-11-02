@@ -20,12 +20,13 @@ namespace Exoduser.UnityPort {
   const string NotPorted="미이식";
   static readonly Rect WinRect=new Rect(470,12,980,1056);
   // padding box of #fgGrid (border 6px inside 732,382.4,688x581.6) and its content origin (+8 padding)
-  static readonly Rect GridView=new Rect(738,388.4f,676,687);
+  static readonly Rect GridView=new Rect(738,292.4f,676,661.6f);
+  const float LegacyGridTop=388.4f,ContentShift=-96;
   const float CX=746,CY=396.4f,CW=650;
   readonly ForgeDefs defs;readonly Dictionary<string,ForgeGlyph> glyphs=new Dictionary<string,ForgeGlyph>();
   readonly Dictionary<string,AffixDef> affixById=new Dictionary<string,AffixDef>();readonly Dictionary<string,string> unitById=new Dictionary<string,string>();
   readonly Dictionary<string,float> gridScroll=new Dictionary<string,float>();float listScroll;
-  Font nm,nsk,nskSemi;Texture2D windowBase,plate,iron,atlas;bool ready;
+  Font nm,nsk,nskSemi;Texture2D windowBase,plate,iron,atlas,innerRail;bool ready;
   readonly Dictionary<string,Texture2D> procedural=new Dictionary<string,Texture2D>();
   readonly Dictionary<long,GUIStyle> styles=new Dictionary<long,GUIStyle>();
   enum F {NM,Sans,SansSemi}
@@ -50,9 +51,9 @@ namespace Exoduser.UnityPort {
   static Color C(int r,int g,int b,float a=1f){return new Color(r/255f,g/255f,b/255f,a);}
   void Init(){
    if(ready)return;ready=true;
-   nm=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular");nsk=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular");
-   nskSemi=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold")??nsk;
-   windowBase=Resources.Load<Texture2D>("Art/ui/forge/window_base");atlas=Resources.Load<Texture2D>("Art/ui/forge/forge_glyphs");
+   nm=NativeSilverHellUi.Font(true)??Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular");nsk=nm;
+   nskSemi=nm;
+   innerRail=Resources.Load<Texture2D>("Art/ui/silver_hell/inner_rail_iron_covenant");windowBase=Resources.Load<Texture2D>("Art/ui/forge/window_base");atlas=Resources.Load<Texture2D>("Art/ui/forge/forge_glyphs");
    plate=Resources.Load<Texture2D>("Art/ui/inventory/plate");iron=Resources.Load<Texture2D>("Art/ui/inventory/iron_320");
    if(iron!=null)iron.wrapMode=TextureWrapMode.Repeat;
   }
@@ -79,7 +80,7 @@ namespace Exoduser.UnityPort {
   GUIStyle Style(F f,int size,bool bold,bool italic){
    long key=(((long)f*1000+size)*2+(bold?1:0))*2+(italic?1:0);
    if(!styles.TryGetValue(key,out var s)){
-    s=new GUIStyle(GUI.skin.label){font=f==F.NM?nm:f==F.Sans?nsk:nskSemi,fontSize=size,fontStyle=bold&&f==F.NM?(italic?FontStyle.BoldAndItalic:FontStyle.Bold):italic?FontStyle.Italic:FontStyle.Normal,alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};
+    s=new GUIStyle(GUI.skin.label){font=f==F.NM?nm:f==F.Sans?nsk:nskSemi,fontSize=size,fontStyle=(bold||f==F.SansSemi)?(italic?FontStyle.BoldAndItalic:FontStyle.Bold):italic?FontStyle.Italic:FontStyle.Normal,alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};
     styles[key]=s;
    }
    return s;
@@ -104,15 +105,10 @@ namespace Exoduser.UnityPort {
    return total;
   }
   // 1x crop sprite (web render). Returns the advance of "glyph + space" in that web context. tint white-mask sprites with c.
-  float Spr(string name,float x,float lineTop,float alpha=1f,Color? tint=null){
-   if(!glyphs.TryGetValue(Key(name),out var g))return 0;
-   var old=GUI.color;GUI.color=tint.HasValue?new Color(tint.Value.r,tint.Value.g,tint.Value.b,tint.Value.a*alpha):new Color(1,1,1,alpha);
-   NativeUiAudit.DrawTextureWithTexCoords(new Rect(x+g.ox-off.x,lineTop+g.oy-off.y,g.w,g.h),atlas,new Rect((float)g.x/atlas.width,1f-(float)(g.y+g.h)/atlas.height,(float)g.w/atlas.width,(float)g.h/atlas.height));
-   GUI.color=old;return g.adv;
-  }
-  float Adv(string name){return glyphs.TryGetValue(Key(name),out var g)?g.adv:0;}
-  // Width of the glyph alone (no trailing space), for glyphs that sit directly against text or alone in a box.
-  float GlyphW(string name){return glyphs.TryGetValue(Key(name),out var g)?g.lw:0;}
+  // The current web UI pass removes decorative emoji from forge text (including AI/chips/cards/lore).
+  float Spr(string name,float x,float lineTop,float alpha=1f,Color? tint=null){return 0;}
+  float Adv(string name){return 0;}
+  float GlyphW(string name){return 0;}
   static string Commas(double v){return Math.Floor(v).ToString("N0",CultureInfo.InvariantCulture);}
 
   // ---- window ----
@@ -124,7 +120,8 @@ namespace Exoduser.UnityPort {
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
     NativeUiAudit.DrawTexture(WinRect,windowBase,ScaleMode.StretchToFill,false);
     NativePanelTitle.Surface(new Rect(500,32,920,1006));NativePanelTabBar.Draw(NativePanelTabBar.Preset.Forge,"forge");
-    NativePanelTitle.Surface(new Rect(500,92,920,170));NativePanelTitle.Draw(new Rect(700,72,520,64),"대장간");DrawHeader(sim);
+    NativePanelTitle.Draw(new Rect(700,101,520,64),"복수의 대장간");DrawHeader(sim);
+    var gridBox=new Rect(732,286.4f,688,673.6f);IronTile(gridBox,400);Grad(gridBox,C(17,16,18,.875f),C(9,9,10,.93f));if(innerRail!=null)NativeSilverHellUi.Slice(gridBox,innerRail,innerRail.width*.04f,innerRail.height*.04f,6,6,false);else Border(gridBox,C(73,76,76),6);
     DrawLeftTabs();
     DrawContent(sim,inv);
     DrawClose(close);
@@ -132,16 +129,15 @@ namespace Exoduser.UnityPort {
   }
 
   void DrawHeader(Simulation sim){
-   // 현행 웹 정적판에 제목 원문이 포함돼 있다. 중복 덧쓰기로 두꺼워지지 않게 원본을 그대로 표시한다.
-   // #forgeMats: "악의: N" 14px 600 ls .08em
-   NativeCurrencyOrb.Draw(new Rect(760,271,32,32),sim.Materials);
-   Txt(new Rect(800,267,600,41),defs.matsLabel+": "+sim.Materials,F.SansSemi,14,C(211,208,202),false,TextAnchor.MiddleCenter,1.12f);
-   // #forgeLore: 12px italic, opacity .85, emoji crops inline, centred
+   // Web currency-balance is the first grid cell at the left, outside the content list.
+   NativeCurrencyOrb.Draw(new Rect(500,174.5f,32,32),sim.Materials);
+   var balance=new Rect(538,165,182,41);PlateFace(balance,false,false);
+   Txt(balance,defs.matsLabel+": "+sim.Materials,F.NM,14,C(211,208,202),true,TextAnchor.MiddleCenter,1.12f);
    float total=0;foreach(var run in defs.lore)total+=run.g!=null?GlyphW(run.g):Meas(run.t,F.NM,12,false,0,true);
    float x=732+(688-total)/2f;
    foreach(var run in defs.lore){
-    if(run.g!=null){Spr(run.g,x,336,.85f);x+=GlyphW(run.g);}
-    else x+=Txt(new Rect(x,336,Meas(run.t,F.NM,12,false,0,true)+8,20.4f),run.t,F.NM,12,C(165,168,168),false,TextAnchor.MiddleLeft,0,.85f,new Color(0,0,0,.9f),1f,true);
+    if(run.g!=null){Spr(run.g,x,240,.85f);x+=GlyphW(run.g);}
+    else x+=Txt(new Rect(x,240,Meas(run.t,F.NM,12,false,0,true)+8,20.4f),run.t,F.NM,12,C(165,168,168),false,TextAnchor.MiddleLeft,0,.85f,new Color(0,0,0,.9f),1f,true);
    }
   }
 
@@ -153,7 +149,7 @@ namespace Exoduser.UnityPort {
   }
   void DrawLeftTabs(){
    for(int i=0;i<defs.tabs.Length;i++){
-    var t=defs.tabs[i];var r=new Rect(500,388+46*i,216,40);bool act=Tab==t.id;
+    var t=defs.tabs[i];var r=new Rect(500,468+46*i,216,40);bool act=Tab==t.id;
     PlateFace(r,act,true);
     // .fg-tab-txt 12.48px 700 ls .624, text-shadow 0 2px 4px rgba(0,0,0,.95)
     Txt(new Rect(512,r.y+11,192,18),t.label,F.NM,12.48f,act?C(244,230,203):C(194,191,185),true,TextAnchor.MiddleCenter,.624f,1f,new Color(0,0,0,.9f),2f);
@@ -161,7 +157,7 @@ namespace Exoduser.UnityPort {
    }
   }
   void DrawClose(Action close){
-   var r=new Rect(885,1004,150,36);PlateFace(r,false,false);
+   var r=new Rect(885,1000,150,40);NativeSilverHellUi.ActionPlate(r,false,Over(r)?1:0,false);
    Txt(r,defs.closeLabel,F.SansSemi,12,C(194,191,185),false,TextAnchor.MiddleCenter,.24f,1f,new Color(0,0,0,1),2f);
    if(Hit(r))close();
   }
@@ -203,7 +199,7 @@ namespace Exoduser.UnityPort {
    if(innerRect.height>0&&Wheel(innerRect,ref listScroll,InnerListContent(sim,inv),innerRect.height)){}
    else Wheel(GridView,ref scroll,contentH,GridView.height);
    NativeUiAudit.BeginGroup(GridView);
-   off=new Vector2(GridView.x,GridView.y+scroll);
+   off=new Vector2(GridView.x,LegacyGridTop+scroll);
    switch(Tab){
     case "upgrade":DrawUpgrade(sim,inv);break;
     case "potion":DrawPotion(sim);break;
@@ -214,21 +210,21 @@ namespace Exoduser.UnityPort {
    }
    off=Vector2.zero;NativeUiAudit.EndGroup();
    // panel scrollbar sits in the padding box column x 1404..1414
-   ScrollBar(1,new Rect(1404,388.4f,10,687),GridView.height,contentH,ref scroll);
+   ScrollBar(1,new Rect(1404,GridView.y,10,GridView.height),GridView.height,contentH,ref scroll);
    gridScroll[Tab]=scroll;
    if(Tab=="potion")DrawPotionConfirm(sim);   // web #forgeConfirm sits below the grid, outside the scroll area
   }
   float ContentHeight(Simulation sim,InventoryState inv){
    switch(Tab){
     case "upgrade":{int n=0;foreach(var s in defs.slots)if(inv.GetEquipped(s.key)!=null)n++;
-     if(n==0)return 0;float cardsTop=447.4f+(SelectedChip!=null&&inv.GetEquipped(SelectedChip)!=null?236:182)+8;return cardsTop+116*n-8-GridView.y+8;}
+     if(n==0)return 0;float cardsTop=450.4f+(SelectedChip!=null&&inv.GetEquipped(SelectedChip)!=null?212:158)+8;return cardsTop+114.97f*n-8-LegacyGridTop+8;}
     case "craft":return 974.4f-GridView.y+8;
     default:return 0;
    }
   }
   Rect InnerListRect(Simulation sim,InventoryState inv){
-   if(Tab=="salvage")return new Rect(746,549.4f,650,320);
-   if(Tab=="reroll")return new Rect(746,433.4f,650,280);
+   if(Tab=="salvage")return new Rect(746,549.4f+ContentShift,650,320);
+   if(Tab=="reroll")return new Rect(746,433.4f+ContentShift,650,280);
    return new Rect(0,0,0,0);
   }
   float InnerListContent(Simulation sim,InventoryState inv){

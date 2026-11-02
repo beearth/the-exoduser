@@ -102,10 +102,17 @@ namespace Exoduser.UnityPort
             var l = go.AddComponent<LineRenderer>(); l.useWorldSpace = false; l.loop = true; l.positionCount = 72; l.widthMultiplier = .03f; l.sharedMaterial = add;
             l.startColor = l.endColor = color; l.sortingOrder = -18990; return l;
         }
-        static void SetRing(LineRenderer l, float radiusPx, Color c)
+        static void SetRing(LineRenderer l, float radiusPx, Color c, SpriteRenderer owner)
         {
             l.startColor = l.endColor = c;
-            for (int i = 0; i < 72; i++) { float a = i * Mathf.PI * 2 / 72; l.SetPosition(i, new Vector3(Mathf.Cos(a) * radiusPx / 100, Mathf.Sin(a) * radiusPx / 100, 0)); }
+            for (int i = 0; i < 72; i++)
+            {
+                float a = i * Mathf.PI * 2 / 72, x = Mathf.Cos(a) * radiusPx / 100, y = Mathf.Sin(a) * radiusPx / 100;
+                // Retain the exact 2D line. Its 3D display is a receiver-depth band;
+                // no per-point terrain queries or airborne chords are needed.
+                l.SetPosition(i, new Vector3(x, y, 0));
+            }
+            NativeGroundSkillSurface.SetRing(l,owner,radiusPx/100,c);
         }
 
         public void Update(Simulation sim, float time)
@@ -132,7 +139,7 @@ namespace Exoduser.UnityPort
                     for (int ri = 0; ri < 2; ri++)
                     {
                         float rp = (Mathf.Sin(t * (2.1f + ri * .35f) + ri * 2.4f) + 1) * .5f;
-                        SetRing(it.rings[ri], z.R * (.62f + ri * .19f + rp * .09f) * deploy, new Color(213 / 255f, 1f, 114 / 255f, (.64f + rp * .18f) * fade * WebLitHolyDomeRing));
+                        SetRing(it.rings[ri], z.R * (.62f + ri * .19f + rp * .09f) * deploy, new Color(213 / 255f, 1f, 114 / 255f, (.64f + rp * .18f) * fade * WebLitHolyDomeRing), it.a);
                     }
                 }
             }
@@ -196,8 +203,9 @@ namespace Exoduser.UnityPort
         }
         void BuildZone(Item it, FireZone z)
         {
-            if (z.Type == "spikeTrap") { it.a = NewRenderer(it, "thorn", spike, add, -19000); return; }
+            if (z.Type == "spikeTrap") { it.a = NewRenderer(it, "thorn", spike, add, -19000); NativeGroundSkillSurface.Mark(it.a, true, (float)z.R*.01f*Mathf.Sqrt(2)); return; }
             it.a = NewRenderer(it, "dome", dome, addFlat, -19000);
+            NativeGroundSkillSurface.Mark(it.a, true, (float)z.R*.0102f*Mathf.Sqrt(2));
             it.rings = new[] { NewRing(it, Color.white), NewRing(it, Color.white) };
         }
         void Drop(Dictionary<int, Item> map, List<int> ids)
@@ -209,7 +217,7 @@ namespace Exoduser.UnityPort
         {
             ResetMaliceBursts();
             foreach (var m in new[] { zones, waves, blades, orbs }) { foreach (var it in m.Values) { ForgetMaliceSprites(it); ForgetCenteredSlamSprites(it); UnityEngine.Object.Destroy(it.go); } m.Clear(); }
-            if (orb != null) orb.go.SetActive(false);
+            if (orb != null && orb.go != null) orb.go.SetActive(false);
             orbTrails.Clear(); ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0;
         }
         public void Dispose()

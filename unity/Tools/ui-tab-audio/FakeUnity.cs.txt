@@ -1,4 +1,5 @@
 using System;using System.Collections.Generic;using System.Linq;using System.IO;
+namespace Exoduser.UnityPort { public static class KiImpactView {public static bool FeelEnabled=false;} public static class NativeCombatFeelPolicy {public const int DeathVoices=2;} }
 namespace UnityEngine {
  public class Object {public string name;public static void Destroy(Object o){}}
  public class Component:Object {public GameObject gameObject;public Transform transform=>gameObject?.transform??new Transform();public T GetComponent<T>() where T:Component,new()=>null;}

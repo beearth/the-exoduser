@@ -85,6 +85,7 @@ namespace Exoduser.UnityPort
         void Remodel3DSetActive(bool on)
         {
             Remodel3DRestoreBillboards();
+            NativeGroundSkillSurface.RestoreAll();
             NativeHd2D.BeginProjection();
             NativeRemodel3D.Active = on;
             if(a2EnemyShadowRoot!=null)a2EnemyShadowRoot.SetActive(on);
@@ -98,6 +99,7 @@ namespace Exoduser.UnityPort
         {
             HellArenaLate();
             if (!NativeRemodel3D.Active || r3Cam == null || Simulation == null) return;
+            NativeGroundSkillProjection.BeginFrame(r3Cam);
             bool hidden = view.cullingMask == 0;   // the lobby / startup hides the world through the 2D camera mask: mirror it
             view.cullingMask = 0;                  // the 2D camera only clears the frame while the 3D one draws
             r3Cam.enabled = !hidden;
@@ -145,6 +147,7 @@ namespace Exoduser.UnityPort
             var tilt = Quaternion.Euler(pitch * Mathf.Rad2Deg, 0, 0);
             foreach (var sr in FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None))
             {
+                if (sr != null && NativeGroundSkillSurface.Project(sr)) continue;
                 if (sr == null || !sr.enabled || sr.sprite == null || sr.gameObject.scene == r3Scene) continue;
                 var tr = sr.transform;
                 r3Base[sr] = new R3Base { localPosition = tr.localPosition, localRotation = tr.localRotation };

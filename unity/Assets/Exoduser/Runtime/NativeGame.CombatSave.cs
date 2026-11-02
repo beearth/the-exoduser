@@ -11,6 +11,7 @@ namespace Exoduser.UnityPort
  {
   CombatSaveStore combatStore;bool combatStoreResolved;
   string combatKey="";long combatRevision;
+  GrowthState pendingGrowth;
   CombatSaveModel pendingCombat;InventoryState pendingInventory;double pendingMats;
   bool combatBlocked;string combatBlockReason="";
   bool combatPending,combatMenuSeen;float combatLastSave=-100;
@@ -34,7 +35,7 @@ namespace Exoduser.UnityPort
   // ---- ResetRun hook 1: before the Simulation exists (stage index is part of its config) ----
   void CombatBeginRun(SimulationConfig config)
   {
-   pendingCombat=null;pendingInventory=null;combatLastRaw=null;combatKey="";combatBlocked=false;combatBlockReason="";CombatSaveRestored=false;combatPending=false;
+   pendingGrowth=null;pendingCombat=null;pendingInventory=null;combatLastRaw=null;combatKey="";combatBlocked=false;combatBlockReason="";CombatSaveRestored=false;combatPending=false;
    var store=lobby==null?null:CombatStore();string name=lobby==null?"":lobby.ActiveCharacterName;
    if(store==null||string.IsNullOrEmpty(name))return;
    combatKey=name;combatRevision=0;
@@ -46,6 +47,8 @@ namespace Exoduser.UnityPort
    CombatSaveModel m;string error;
    if(!CombatSaveCodec.TryDecode(data,out m,out error)){BlockCombatSave(error);return;}
    if(m.Lv<1||m.Lv>1461||m.Exp<0||m.Exp>int.MaxValue||m.MaxExp<1||m.MaxExp>int.MaxValue||m.Sp>int.MaxValue||m.Ap>int.MaxValue||m.Kills>int.MaxValue||m.Stage<0||m.Stage>1000||m.PotLvHp<0||m.PotLvHp>1000){BlockCombatSave("a value is outside what the Unity player can hold");return;}
+   GrowthState growth;string growthError;if(!GrowthState.TryRead(data,out growth,out growthError)){BlockCombatSave(growthError);return;}
+   int migratedSp;if(!growth.TryMigrateSp((int)m.Sp,out migratedSp)){BlockCombatSave("legacy growth SP refund exceeds the player range");return;}m.Sp=migratedSp;pendingGrowth=growth;
    InventoryState inventoryState;
    try{inventoryState=new InventoryState(new InventorySeedData{equipped=(InventoryItem[])m.Equipped.Clone(),bag=m.Bag.ToArray()});}
    catch(ArgumentException e){BlockCombatSave("inventory: "+e.Message);return;}
@@ -53,7 +56,7 @@ namespace Exoduser.UnityPort
    CombatSaveCodec.ResolveMats(game==null?0:CombatSaveCodec.Number(game,"mats",0),store.LoadSharedMats(),out newShared,out mats,out clear);
    if(newShared!=store.LoadSharedMats())store.SaveSharedMats(newShared);
    combatLastRaw=m.Raw;pendingCombat=m;pendingInventory=inventoryState;pendingMats=Math.Min(mats,int.MaxValue);
-   config.StageIndex=(int)m.Stage;
+   config.StageIndex=(int)m.Stage;config.StageDiffOffset=m.StageDiffOffset;
   }
   // ---- ResetRun hook 2: right after inventory.Reset() (before the equipment stats are recalculated) ----
   void CombatRestoreState()
@@ -65,6 +68,8 @@ namespace Exoduser.UnityPort
     p.Level=(int)m.Lv;p.Experience=(int)m.Exp;p.MaxExperience=(int)m.MaxExp;p.StatPoints=(int)m.Sp;p.PassivePoints=(int)m.Ap;p.TransDate=m.TransLvDate;p.TransCount=(int)m.TransLvCount;
     Simulation.Materials=(int)pendingMats;Simulation.Kills=(int)m.Kills;Simulation.PotionState.PotLv=(int)m.PotLvHp;
     Simulation.RestoreSkills(m.Skills,m.SkillSlots,m.UltSlot,m.ActiveCtSk);   // B03
+    if(m.Skills!=null&&m.Skills.TryGetValue("kiSlash",out var kiLv)&&kiLv>=1&&kiLv<=Exoduser.UnityPort.Core.Skills.SkillRules.MaxSkillLevel)Simulation.Config.KiSlashLevel=(int)kiLv;
+    if(pendingGrowth!=null)Simulation.Growth.CopyFrom(pendingGrowth);
    }
    else if(combatKey.Length>0&&!combatBlocked){var store=CombatStore();if(store!=null&&store.HasSharedMats)Simulation.Materials=(int)Math.Min(store.LoadSharedMats(),int.MaxValue);}   // account-shared malice, also for a new character
   }
@@ -87,9 +92,10 @@ namespace Exoduser.UnityPort
    m.Speed=Round3(p.Speed);m.Shield=Round3(p.Shield);m.Mshield=Round3(p.MaxShield);
    for(int i=0;i<m.Equipped.Length;i++)m.Equipped[i]=inventory.State.Equipped[i];
    m.Bag.AddRange(inventory.State.Bag);
-   m.Stage=Simulation.Config.StageIndex;m.Kills=Simulation.Kills;m.PotLvHp=Simulation.PotionState.PotLv;m.BagMax=InventoryState.BagMax;
+   m.Stage=Simulation.Config.StageIndex;m.StageDiffOffset=Simulation.Config.StageDiffOffset;m.Kills=Simulation.Kills;m.PotLvHp=Simulation.PotionState.PotLv;m.BagMax=InventoryState.BagMax;
    Simulation.CaptureSkills(out m.Skills,out m.SkillSlots,out m.UltSlot,out m.ActiveCtSk);   // B03
-   m.Raw=combatLastRaw;
+   m.Skills["kiSlash"]=Simulation.Config.KiSlashLevel;
+   m.Raw=Simulation.Growth.WriteInto(combatLastRaw);
    return m;
   }
   JsonValue combatLastRaw;

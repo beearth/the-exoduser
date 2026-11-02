@@ -50,8 +50,8 @@ namespace Exoduser.UnityPort
 #endif
         }
 
-        void SelectTitleRow(int i) { if (titleRows.Count == 0) return; titleSel = (i % titleRows.Count + titleRows.Count) % titleRows.Count; }
-        void ActivateTitleRow(int i) { if (splash != 2 || i < 0 || i >= titleRows.Count) return; SelectTitleRow(i); TitleActivations++; var act = titleRows[i].Act; act(); }
+        void SelectTitleRow(int i) { if (titleRows.Count == 0) return; int next=(i % titleRows.Count + titleRows.Count) % titleRows.Count;if(next!=titleSel)UiNavigate("title:"+next);titleSel=next; }
+        void ActivateTitleRow(int i) { if (splash != 2 || i < 0 || i >= titleRows.Count) return; SelectTitleRow(i);if(i!=0&&!(titleRows[i].Label==K("STEAM 위시리스트 추가", "ADD TO STEAM WISHLIST")))UiConfirm();TitleActivations++; var act = titleRows[i].Act; act(); }
 
         // Update, splash == 2: only the menu keys count (Up / Down / W / S, Enter / Space / A); a key that is not one of them does nothing, as in the web's splashKey.
         void UpdateTitleMenu(float dt)
@@ -148,6 +148,7 @@ namespace Exoduser.UnityPort
             {
                 float rowH=48;
                 var rect = new Rect(left,top+i*48,width,rowH);
+                if(!AutomatedInput)NativeUiSounds.Current?.BeforeButton(rect,"title:"+i);
                 if (e.type == EventType.MouseMove || e.type == EventType.Repaint) { if (rect.Contains(e.mousePosition) && e.type == EventType.MouseMove && !AutomatedInput && i != titleSel) SelectTitleRow(i); }
                 if (e.type == EventType.MouseDown && e.button == 0 && rect.Contains(e.mousePosition) && !AutomatedInput) { ActivateTitleRow(i); e.Use();GUI.matrix=menuMatrix; return; }
                 var row = titleRows[i]; float s = row.Sel;

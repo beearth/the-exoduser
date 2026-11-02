@@ -13,6 +13,7 @@ namespace Exoduser.UnityPort
         sealed class WorldText { public float x, y, until; public string text; public Color color; }
         readonly List<WorldText> worldTexts = new List<WorldText>();
         NativeArenaView arenaView; bool arenaViewWasOpen;
+        readonly NativeNextDifficultyPanel nextDifficulty=new NativeNextDifficultyPanel();
         public NativeBossBar.Input LastBossBarInput; public bool BossBarShown;
         bool English { get { return lobby != null && lobby.Language != "ko"; } }
 
@@ -166,11 +167,17 @@ namespace Exoduser.UnityPort
         // "다음 구역으로 ▶": the next area (1-2) is not ported, so the run is saved and the player returns to the lobby.
         void StageClearNext()
         {
+            if(stageClear.ShownKind==NativeStageClearOverlay.Kind.DemoEnd){StageClearContinue();return;}
+            nextDifficulty.Show(Simulation.Config.StageDiffOffset,lobby.Language,offset=>{Simulation.Config.StageDiffOffset=offset;StageClearContinue();},()=>stageClear.RearmNext());
+        }
+        void StageClearContinue()
+        {
             stageClear.Hide(); if(lobby.DiagnosticUiEnabled)Toast("다음 구역은 아직 이식되지 않았습니다 — 저장하고 로비로 돌아갑니다");
             SaveCombatNow(); Running = false; menu = true; sound.Reset(); pauseMenu.Reset(); lobby.ShowLobby();
         }
         bool PointerOverStageClear()
         {
+            if(nextDifficulty.Active)return true;
             if (!stageClear.Active) return false;
             var r=stageClear.ButtonScreenRect;var m=ExoInput.MousePosition;return r.Contains(new Vector2(m.x,Screen.height-m.y));
         }

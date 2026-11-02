@@ -90,7 +90,7 @@ namespace Exoduser.UnityPort.Core
         public double MagicReference()
         {
             var inv = EquippedInventory; var h = inv != null ? inv.GetEquipped("helmet") : null;
-            double atk = h != null ? h.atk : 0, enh = h != null ? h.enh * .25 : 0, flat = 0, intel = (int)(Player.Level * .5);
+            double atk = h != null ? h.atk : 0, enh = h != null ? h.enh * .25 : 0, flat = 0, intel = (int)(Player.Level * .5) + Growth.Value("int");
             if (h != null && h.affixes != null) foreach (var a in h.affixes) if (a != null && (a.id == "sharpAtk" || a.id == "brutalAtk" || a.id == "ruinAtk")) flat += a.value;
             if (inv != null) foreach (var i in inv.Equipped) if (i != null) intel += i.bInt;
             return atk + enh + flat + Player.BaseAttack + intel;
@@ -99,7 +99,7 @@ namespace Exoduser.UnityPort.Core
         public double MagicDamageMultiplier()
         {
             var inv = EquippedInventory;
-            double s = PassiveAtk * .10 + PassiveMagic * .10 + (inv != null ? inv.AffixTotal("magicDmg") + inv.ImplicitTotal("_iMagDmg") * .01 : 0);
+            double s = PassiveAtk * .10 + Config.PassiveHuman * .05 + PassiveMagic * .10 + (inv != null ? inv.AffixTotal("magicDmg") + inv.ImplicitTotal("_iMagDmg") * .01 : 0);
             return (1 + s) * 0.7 * 2;
         }
         public double CooldownReduction
