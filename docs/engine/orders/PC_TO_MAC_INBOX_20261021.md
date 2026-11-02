@@ -292,3 +292,7 @@ Claude는 원본 readonly 대조, Codex 기존 구현자는 Native 영상/오디
 - **동선 우선**: 로비 → 1-1 진입 → 이동 → 공격 → 몹 사망 → 드랍 → 레벨업 → 보스 → 클리어. 앞에서부터 막힌 곳을 하나씩 뚫는다. 동선 밖 행은 뒤로 미룬다.
 - **연결 소유 변경(M1 동안)**: PC가 맡은 M1 행(B03·B05·B07·B08·B10·B11·D01·D05·E03)은 PC가 `Simulation*`·`NativeGame*`·`NativeHud*` 연결까지 `unity/main`에 직접 넣는다(fetch → merge → PC 6000.6.7f1 컴파일 오류 0 → 비강제 push, Codex가 최근 고친 줄은 지우지 않음). **Codex는 `Simulation*`·`NativeGame*`·`NativeHud*`를 고치기 전에 반드시 fetch/merge한다.** 협약 §2에 같은 행을 추가했다.
 - **수학 함수 규칙(전체총괄 결정)**: 결과가 게임 상태에 남는 삼각·초월 함수(facing·이동각·좌표·스폰 오프셋 등)는 `Runtime/Core/JsMath.cs`(fdlibm 포트, V8과 비트 일치)를 쓴다. .NET `Math`는 표시 전용에만 쓴다. **Codex 요청**: `Math.Pow`와 IL2CPP 빌드에서의 비트 일치를 Mac 빌드에서 확인해 Mac→PC 회신에 1줄로 남긴다.
+
+## 2026-11-02 PC 웹 최신 표현 parity 인수
+
+PC `codex/unity-parity-1102`/G:/exoduser-wt/codex-unity-parity-1102가 공통1403c5ee6·웹origin/main을 대조해 C2 타이틀 렌더/여백과 미반영 UI·사운드·전투 표현을 맡는다. Mac 기존 A2/캐릭터/맵 작업 및 private WIP는 변경하지 않는다. 화폐4번은 기존 `codex/unity-currency-name-20261031:3333f9931` 담당 후보/검수 대기가 있어 중복 구현을 건너뛴다. PC Dota PID56244 관측으로 Unity/빌드/Player는 시작0, 소스·검증 준비만 진행. 최종 근거는 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md.

@@ -12,3 +12,9 @@ assert.match(lobby,/titleSignboard\?\.Dispose\(/,'타이틀 렌더 자원은 로
 const capture=read('Assets/Exoduser/Runtime/NativeGame.UiOverlapCapture.cs');
 assert.doesNotMatch(capture,/UiWaitRootMovie\(-2,NativeLobby\.TitleMovie\)/,'메뉴 검수는 그리지 않는 과거 영상 재생을 증거로 쓰면 안 된다');
 console.log('PASS approved title renderer routing, no legacy video/blur, resource disposal and honest capture contract');
+
+const c2=read('Assets/Exoduser/Runtime/NativeTitleSignboard.cs');
+assert.match(c2,/NativeLobbyVideo/);
+assert.match(c2,/movie\.Open\(Movie,true,true,false\)/,'C2는 무음 반복 디코더를 사용');
+assert.match(c2,/movie\?\.Dispose\(/,'C2 전용 디코더 자원 해제');
+assert.match(capture,/videoFramesAfter<=row.videoFramesBefore/,'물결 모션만으로 영상 재생 PASS 금지');

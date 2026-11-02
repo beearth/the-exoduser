@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Exoduser.UnityPort
 {
-    // Approved A panorama and layer motion fill the physical screen. The retained native menu
+    // C2 tall loop and layer motion fill the physical screen. The retained native menu
     // has a 520px logo at (96,96) and black-iron rows at (116,436), scaled by physical height.
     // Rows (what the web builds, _buildTitleMenu): start game, replay intro, [demo] Steam wishlist, [native player] quit. Up / Down / W / S (and the pad) move, Enter / Space / A run
     // the selected row at once, the mouse hovers and clicks rows; every other key and a click elsewhere do nothing. Everything below is in the 1920 x 1080 stage of NativeLobby.Draw.
@@ -17,11 +17,12 @@ namespace Exoduser.UnityPort
         readonly NativeTitleSignboard titleSignboard=new NativeTitleSignboard();
         public double TitleMotionTime=>titleSignboard.Seconds;
         public int TitleRenderedFrames=>titleSignboard.RenderedFrames;
+        public int TitleVideoFrames=>titleSignboard.VideoFrames;
         public string TitleRenderMode=>titleSignboard.Mode;
         public bool TitleMotionPaused{get=>titleSignboard.ReducedMotion;set=>titleSignboard.ReducedMotion=value;}
         Font titleMenuFont, titleBuildFont; float padStickPrev;
         const string SteamWishlistUrl = "https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/";
-        public const string TitleMovie = "title_motion_20261028.mp4";
+        public const string TitleMovie = NativeTitleSignboard.Movie;
         /// <summary>Test hook (headless smoke): the selected row and the row labels, and a way to read what ran.</summary>
         public int TitleSelected { get { return titleSel; } }
         public IList<string> TitleLabels { get { var l = new List<string>(); foreach (var r in titleRows) l.Add(r.Label); return l; } }
@@ -129,7 +130,7 @@ namespace Exoduser.UnityPort
             GUI.color = prev;
         }
 
-        // Approved 32:9 master covers the actual screen; menu controls use the left physical edge.
+        // Approved C2 tall master covers the actual screen; menu controls use the left physical edge.
         void DrawTitleSplash()
         {
             EnsureTitleArt();
@@ -138,7 +139,8 @@ namespace Exoduser.UnityPort
             float fade = Mathf.Clamp01((Time.unscaledTime - titleStart) / 1f); var prev = GUI.color;
             GUI.color = new Color(1, 1, 1, fade); NativeUiAudit.DrawTexture(NativeUiViewport.ScreenInDesign, titleVeil, ScaleMode.StretchToFill, true);
             var menuMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.EdgeMatrix;
-            var shade=new Rect(0,0,560,1080);NativeUiAudit.DrawTexture(shade,titleSideVeil,ScaleMode.StretchToFill,true);NativeUiAudit.Region(shade,"component","frontend-shade","타이틀 A 왼쪽 음영560");
+            var shade=new Rect(0,0,560,1080);NativeUiAudit.DrawTexture(shade,titleSideVeil,ScaleMode.StretchToFill,true);NativeUiAudit.Region(shade,"component","frontend-shade","타이틀 C2 왼쪽 음영560");
+            var fit=NativeTitleSignboardLayout.Menu(Screen.width,Screen.height);GUI.matrix=Matrix4x4.TRS(new Vector3((float)fit.X,(float)fit.Y,0),Quaternion.identity,new Vector3((float)fit.Width,(float)fit.Height,1));
             if (titleLogo != null) { float lw = 520, lh = lw * titleLogo.height / titleLogo.width; GUI.color = new Color(0, 0, 0, .5f * fade); NativeUiAudit.DrawTexture(new Rect(96, 106, lw, lh), titleLogo, ScaleMode.StretchToFill, true); GUI.color = new Color(1, 1, 1, fade); NativeUiAudit.DrawTexture(new Rect(96, 96, lw, lh), titleLogo, ScaleMode.StretchToFill, true); }
             const float left = 116, top = 436, width = 400;
             var e = Event.current;
@@ -156,6 +158,7 @@ namespace Exoduser.UnityPort
                 float labelWidth=SpacedWidth(titleMenuFont,size,row.Label,spacing)-spacing;
                 GUI.color = Color.white; DrawSpaced(rect.center.x-labelWidth/2, rect.y, rowH, row.Label, titleMenuFont, size, spacing, txt, true);
             }
+            GUI.matrix=NativeUiViewport.EdgeMatrix;
             // #splashTitleBuild: right 36, bottom 26, Cinzel 600 11 px / 1.7, letter-spacing .28em, rgba(230,227,221,.6), two lines right aligned
             string l1 = BuildFlavor.Current.Label + (string.IsNullOrEmpty(BuildFlavor.ReleaseVersion) ? "" : " · v" + BuildFlavor.ReleaseVersion), l2 = "FOR DEAR GAMERS"; float sp = 11 * .28f, lh2 = 11 * 1.7f;
             GUI.color = Color.white; var bc = new Color(230f / 255, 227f / 255, 221f / 255, .6f * fade);

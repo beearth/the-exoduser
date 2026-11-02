@@ -1,3 +1,5 @@
+> 2026-11-02 C2 후속 후보: `codex/unity-parity-1102`. 아래 A 전달은 이전 빌드 이력이며 새 C2 실제 Player 검증과 구분한다.
+
 # Unity 울트라와이드 타이틀 A — 2026-11-01
 
 사용자가 지정한 스크린샷의 울트라와이드 제작을 완료했다. 실제 Desktop 바로가기의 EXE·인수·작업폴더·아이콘을 검수한 설치본 `I:/EXODUSER-Storage/unity-builds/ui-ultrawide/d8a089fbbad3/EXODUSER-Unity.exe`로 연결하고4속성을 다시 읽었다. 이전 바로가기와 실행본은 보존했다.
@@ -87,3 +89,18 @@
 사용자 도타 종료/재개 지시 후 도타·Unity·Player 부재, 잠금/예약 없음, 메모리 여유51.5GB, 기존 EXE/Runtime/Core3SHA 일치를 확인했다. 기존86cb08bb 동일 패키지 M1은99a0a0c6에서 정상종료/창0/잔여0/USER_SAVE0·필수23단계 통과. 해당 소스 UI1395/동영상105/타이틀15·팁255·키30, 컴포넌트·글자겹침·물리경계0건 통과. 단74f49763 원문 guard는 Player.log/prev2개변경으로 FAIL이며 안전PASS로 재분류하지 않음.
 
 최종 전달은 공통907083b7c의 무제한 캐릭터·보관 호환과 babada0923의 적 시각방향·QA를 정상 병합한다. NativeGame의 fixture조건1충돌은 world/facing/hud-blend 모두 보존하며 Core 전투값은 변경0. 타이틀/로딩/월드 변경을 보존하며, 공통 이후 인원 제한을 과거로 되돌리지 않는다. 이 결합은 새 Core/Runtime이므로 최종 같은 빌드 M1/실화면/저장 보호를 다시 연결한다. 기존86cb08bb의 결과를 새 DLL 검수로 소급하지 않는다.
+
+## 2026-11-02 웹 C2 tall 이식 후보
+
+| 항목 | 현행 후보 계약·검증 |
+|---|---|
+| 원본 | origin/main `f4967bc62`의 title-signboard.js·C2 manifest·still·fall-near/far와 title_motion_C2_tall_loop_20261102.mp4. 웹 수정0 |
+| 미디어 | 2036×1016·24fps·8.583333초·무음·loop. 원본 SHA256 3020b3babc951c9864b2c105a8e421040229076bd34779892231d366c68c5a7a, 같은 byte를 StreamingAssets/Lobby에 인수 |
+| cover | max(W/2036,H/1016)·중앙 크롭. 버퍼3840×2160 상한·화면 비율 유지. 정지 원화는 WebP→PNG decoded RGBA 동일 |
+| 폭포 | 근거리 box696,498,66,259·mouth714,506·contact735,747·100px/s. 원거리951,548,78,218·974,555·1001,756·75px/s. 128×512 주기 타일·alpha.38. 입구 반사/착수 링·안개 수식 이식, 실제 GPU 일치 미검증 |
+| 메뉴 | 웹 _fitTitleStage와 같이 k=min(W/1920,H/1080), logoLeft=max(48,H×.045), menuLeft=logoLeft+20k. 기존 로고520·상단96, 메뉴116/436와 입력 유지 |
+| 수명·폴백 | 전용 NativeLobbyVideo 무음 디코더, reduced-motion/포커스 해제로 정지. 오류/셰이더 미지원은 C2 still cover. 전환/파괴에서 decoder·RT·material·tile 해제. 이전 A/구형MP4 삭제0 |
+| 검사 | A 비율로 C2 검사 RED 후 C#71 GREEN. 디코더 진행 누락 RED 후 라우팅 계약 GREEN. 독립 Core114/Runtime210 csc exit0. Unity import·셰이더·Player·M1·1x 검수를 대체하지 않음 |
+| 실제 검수 | 기존 --unity-title-a-check 호환·새 --unity-title-c2-check, 기존90장 게이트를 C2 video 모드·decoded frame 진행 조건으로 강화. 도타 실행으로 실제 실행0, 공통/바탕화면 갱신0 |
+
+증거·최종 SHA·웹 대비 차이: I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md. VISUAL VERDICT: 미검증. 기존 A의 실제 PASS를 C2로 소급하지 않는다.
