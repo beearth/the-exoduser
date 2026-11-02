@@ -1308,3 +1308,22 @@ signed-natural wrapper도source80d0/normalizer서명exe/Runtime/Core를strict대
 | 검수 경계 | 특정 scale/translation/group/scroll의 Native GUI API→실제 픽셀 독립 대조군. 본편 UI/생산 Viewport/ground/성능/출시 수용 판정 아님 |
 
 기존 full merge의 VFX 문서 4충돌은 보류 상태를 유지한다. 이 입력 인수는 기존 own branch의 단일 부모 commit이며 충돌 문서, 공유 HEAD/index 및 타인 PowerShell WIP를 손대지 않는다. 산출 경로는 기존 mac-installable-ground-qa-20261102/coordinate-probe-20261103이며 빌드/패키지/PC 실행 결과는 실제 관측 뒤 기록한다.
+
+
+### 同日 실제 빌드·패키징 결과
+
+| 항목 | 관측 결과 |
+|---|---|
+| 입력 checkpoint | 6f21da01ffc983d54e3b39da4aaae39f6eac54d1; GitHub own branch 원격 SHA 일치 선확인 |
+| Windows build | UiAuditCoordinateBuild.Build, Unity 6000.6.7f1, Win64, scope=coordinate calibration only, Succeeded/errors=0, Editor exit=0 |
+| 실제 EXE 형식 | PE32+ GUI x86-64, Windows |
+| 보호 파일 | 생산 Scene/Prefab/NativeUiAudit/Viewport/SafeArea/ProjectSettings 기존 34파일 SHA 동일. 공유 HEAD/index/PowerShell WIP exact |
+| 최종 ZIP | 4435774904B, SHA256 0921fbfcfc87bf4b9b0591a4246af9c51e6f724001b5faa5b2ea9c03ba8744a9 |
+| manifest | 213파일, payload 4435734430B, manifest SHA256 ac89714b28096a1544381f242dc844e3b51220e64eeedaee0a9f101eaac19c2d |
+| 송신 검증 | ZIP 모든 member의 CRC/SHA256 및 원본 build size/SHA 변경 없음 검증. PC 수신·실행 결과와 구분 |
+| 정리 | 검증 ZIP·manifest·receipt·로그·임시 scene 증거를 남기고 자기 비압축 중복 빌드 4435734430B 제거. 임시 scene/meta 2파일 정리. 다른 작업/저장/설치 삭제 없음 |
+| 디스크 | 빌드 전 318GiB, 빌드 후 314GiB, 패키징·정리 후 310GiB 가용 관측. 논리 삭제량을 실제 회수 공간으로 주장하지 않음 |
+| 전용 전송 | 기존 reviewed helper 재사용, PID 67135, 192.168.0.233:3334, peer 192.168.0.146만, 명시 5 GET/HEAD 경로, 20분 lease |
+| PC 검수 | 아직 수신·해제·45프레임 실행 결과 미인수. 기존 full-game win-delivery.py는 변경 없이 제공하나 이 독립 fixture manifest schema용 검증기라고 주장하지 않음 |
+
+상세 증거: 기존 `_out/mac-installable-ground-qa-20261102/coordinate-probe-20261103`의 source-checkpoint.json, build-result.json, build-verification.json, protected-project-after.json, intermediate-cleanup.json 및 delivery/manifest.json·pack-receipt.json·candidate-packet.json. 기존 전체 game/ground VISUAL VERDICT와 acceptance는 변경되지 않는다.
