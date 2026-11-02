@@ -6,7 +6,7 @@
 
 런타임 입력 4c88ef67d524756a8ce8af2a98f302bec60547c2. 시작 origin/main ff6494308 병합 후 d2ef5baaa/a4d48922d/2a3357e53의 기존UI·문서를 정상병합했다. 마지막 로딩인장critical header 병합은 web3d·native게임함수 불변, 최신회귀/32:9 smoke 별도검수. 최종commit/원격/3333/DEMO·EA는 외부 delivery.json 참조(이문서에 자기commit SHA를 예측하지 않음).
 
-외부보고 I:/EXODUSER-Storage/codex-takeover/web3d-r7/REPORT.md. 실제리뷰 http://127.0.0.1:3377/tmp/web3d-r7-review/index.html (source server 유지). final-delivery/cameras-fixed/qa.json·motion/qa.json·motion/media.json·playback.json·visual-review.json·route/qa.json·source-proof.json, 성능은 ../budget-performance/qa.json. 13구도×3해상도39쌍 바닥hue최대13.0921°/개별소품11.6363°/패치단독1.8803°, 패치밝기−.5184~0%. 5패치/인물/바위/상부안개3x 추가잔점·잘린스티커윤곽0.
+외부보고 I:/EXODUSER-Storage/codex-takeover/web3d-r7/REPORT.md. 실제리뷰 http://127.0.0.1:3377/tmp/web3d-r7-review/index.html (source server 유지). final-delivery/cameras-fixed/qa.json·motion/qa.json·motion/media.json·playback.json·visual-review.json·route/qa.json·source-proof.json, 성능은 ../budget-performance/qa.json. 13구도×3해상도39쌍 바닥hue최대13.0920°/개별소품11.6363°/패치단독1.8803°, 패치밝기−.5184~−.1435%. 5패치/인물/바위/상부안개3x 추가잔점·잘린스티커윤곽0.
 
 요청12영상10초1x120프레임/드롭0. 원시68~83장 timestamp hold 12fps이며 실렌더FPS와구분. Core/AI활성64적96탄12초×8조건, ON평균151.11~191.24FPS/1초창최저135.85, Dota실행중.75/75·project113/113·guard PASS. 인물RGBA차0·draw/HUD/map동일·오류0. 실제키보드12목적지194.832초(무적fixture), 추가route영상1x끝까지재생했으나2프레임드롭남음. 실패영수증과웜업재검수도보존했다.
 
