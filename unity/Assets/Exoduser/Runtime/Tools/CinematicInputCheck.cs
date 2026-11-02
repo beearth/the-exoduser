@@ -13,14 +13,17 @@ namespace Exoduser.UnityPort.Tools
 {
  // Explicit sandbox-only regression: Input System devices -> real Lobby Update.
  // No direct HoldSkip/SetHeld calls, OS input, user pointer, or desktop installation.
+ [DefaultExecutionOrder(-31000)]
  internal sealed class CinematicInputCheck : MonoBehaviour
  {
   [Serializable] sealed class Check {public string name,detail;public bool passed;}
   [Serializable] sealed class Sample {public string scene,input,page;public float elapsed,progress;public bool deviceHeld,lobbyHeld,automated;}
+  [Serializable] sealed class Frame {public int index;public string phase,page;public float time,progress;}
   [Serializable] sealed class Receipt {public string scope="실제 Player 가상 Input System 장치 → 로비 Update. OS 전경 입력/사용자 손조작과 구분",runtimeSha,coreSha;public bool passed;public int width,height,frames;public List<Check> checks=new List<Check>();public List<Sample> samples=new List<Sample>();}
   static string Arg(string name){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,name);return i>=0&&i+1<a.Length?a[i+1]:null;}
   [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)] static void Boot(){if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-cinematic-input-check")>=0)new GameObject("Cinematic input isolated check").AddComponent<CinematicInputCheck>();}
   NativeGame game;NativeLobby lobby;Keyboard keyboard,previousKeyboard;Gamepad pad,previousPad;Receipt receipt=new Receipt();string output,phase="prepare";bool failed,recording;float nextFrame;
+  void Update(){if(keyboard!=null)keyboard.MakeCurrent();if(pad!=null)pad.MakeCurrent();}
   static string Hash(string path){using(var sha=SHA256.Create())using(var stream=File.OpenRead(path))return BitConverter.ToString(sha.ComputeHash(stream)).Replace("-","").ToLowerInvariant();}
   void Save(){receipt.passed=!failed&&receipt.checks.Count>0&&receipt.checks.TrueForAll(x=>x.passed);File.WriteAllText(Path.Combine(output,"cinematic-input.json"),JsonUtility.ToJson(receipt,true));}
   void CheckThat(bool ok,string name,string detail=""){if(!ok)failed=true;receipt.checks.Add(new Check{name=name,passed=ok,detail=detail});Debug.Log("CINEMATIC_INPUT "+(ok?"PASS ":"FAIL ")+name+" "+detail);Save();}
@@ -54,7 +57,7 @@ namespace Exoduser.UnityPort.Tools
   bool Complete(string scene){return scene=="world"?lobby.Flow.Page==LobbyPage.Lobby:lobby.CharacterStoryEntering;}
   void Inject(string input){keyboard.MakeCurrent();pad.MakeCurrent();InputSystem.QueueStateEvent(keyboard,new KeyboardState(input=="Space"?new[]{Key.Space}:input=="Escape"?new[]{Key.Escape}:new Key[0]));var state=new GamepadState();if(input=="B")state=state.WithButton(GamepadButton.East);if(input=="Start")state=state.WithButton(GamepadButton.Start);InputSystem.QueueStateEvent(pad,state);}
   void Release(){if(keyboard!=null)InputSystem.QueueStateEvent(keyboard,new KeyboardState());if(pad!=null)InputSystem.QueueStateEvent(pad,new GamepadState());}
-  IEnumerator Frames(){while(recording){yield return new WaitForEndOfFrame();if(Time.realtimeSinceStartup<nextFrame)continue;nextFrame=Time.realtimeSinceStartup+.1f;var t=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(Path.Combine(output,"frames",receipt.frames.ToString("D5")+".png"),t.EncodeToPNG());Destroy(t);receipt.frames++;}}
+  IEnumerator Frames(){while(recording){yield return new WaitForEndOfFrame();if(Time.realtimeSinceStartup<nextFrame)continue;nextFrame=Time.realtimeSinceStartup+.1f;var frame=new Frame{index=receipt.frames,phase=phase,page=lobby.StageName,time=Time.realtimeSinceStartup,progress=lobby.CharacterStoryActive?(float)lobby.CharacterStoryHoldProgress:(float)lobby.Flow.SkipProgress};var t=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(Path.Combine(output,"frames",receipt.frames.ToString("D5")+".png"),t.EncodeToPNG());Destroy(t);File.AppendAllText(Path.Combine(output,"frames.jsonl"),JsonUtility.ToJson(frame)+"\n");receipt.frames++;}}
   void Cleanup(){recording=false;if(keyboard!=null){InputSystem.RemoveDevice(keyboard);keyboard=null;}if(pad!=null){InputSystem.RemoveDevice(pad);pad=null;}if(previousKeyboard!=null&&previousKeyboard.added)previousKeyboard.MakeCurrent();if(previousPad!=null&&previousPad.added)previousPad.MakeCurrent();}
   void OnDestroy(){Cleanup();}
  }

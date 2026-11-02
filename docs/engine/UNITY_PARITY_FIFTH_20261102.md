@@ -15,3 +15,5 @@
 세부 영수증: I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/fifth。2~3항목마다 빌드(-remodel-scenes1)→같은패키지M1→1920/3840캡처→직접1x→정상merge/비강제push/원격ref확인. 未검수 결과를 PASS로 올리지 않는다.
 
 전환 후속 기준 정정: 브리프 말미23:40 R4/웹740722e1a는 갱신PNG(gamma.65·얇은뼈색윤곽),12vh·기존우하단위치·후광1.4배/.25~.4/2초,감소 본체1/균열·후광.3정지다. 이전9.5vh R3는 현행값이 아니다. 후보pure flow20/0는 I:준비본이며 아직 런타임미반영.
+
+입력 검수의 성공 영상은 frames.jsonl의 실제 캡처 시각·단계·페이지·진행률로 조립한다. 검수 장치만 매Update current로 고정하며 사용자 OS 키/포인터를 주입하거나 바꾸지 않는다.
