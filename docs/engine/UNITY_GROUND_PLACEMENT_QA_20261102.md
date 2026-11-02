@@ -482,3 +482,6 @@ ROOT review: require an explicit absolute non-symlink artifact root CLI argument
 
 
 The Unity app build remains exact6a13; this checkpoint changes only the external Python launcher and documentation. No Unity rebuild is needed or claimed. Actual delayed raw/cache regression on the existing app is pending.
+
+
+ROOT slot review: first guard attempt exited3/launchCount0 before any preference snapshot because its broad command-string process guard reported a busy slot. The transient process was not captured, so its cause is not asserted. Two later observations had no Unity/Player and all26 original raw hashes were unchanged; the block/error receipt was archived with a reviewed resolution. Refine the guard to ps pid/comm executable identity (Unity/EXODUSER basename or exact Unity Mach-O path), with private PID/executable evidence on future rejection, instead of matching paths in a parent command argument. This does not terminate or modify any process. Same-app real profile regression remains pending.

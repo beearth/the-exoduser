@@ -40,9 +40,22 @@ def raw_now(name):
     return path.read_bytes()
 
 def idle():
-    commands = subprocess.check_output(['ps', '-Ao', 'command='], text=True).splitlines()
-    busy = [s for s in commands if '/bin/zsh' not in s and ('/Unity.app/Contents/MacOS/Unity' in s or ('/exoduser' in s.casefold() and '/Contents/MacOS/' in s))]
+    # Match executable identity, not a parent's arguments mentioning an app path.
+    rows = subprocess.check_output(['ps', '-Ao', 'pid=,comm='], text=True).splitlines()
+    busy = []
+    for row in rows:
+        parts = row.strip().split(None, 1)
+        if len(parts) != 2:
+            continue
+        pid, executable = parts
+        name = Path(executable).name.casefold()
+        if '/Unity.app/Contents/MacOS/Unity' in executable or name == 'unity' or name == 'exoduser' or name.startswith(('exoduser ', 'exoduser-')):
+            busy.append({'pid': int(pid), 'executable': executable})
     if busy:
+        evidence = run / 'slot-busy-evidence.json'
+        if not evidence.exists():
+            json_new(evidence, {'processes': busy})
+        result['busySlotEvidence'] = str(evidence)
         raise RuntimeError('Unity/EXODUSER process present; launch/restore forbidden')
 
 def domains():
