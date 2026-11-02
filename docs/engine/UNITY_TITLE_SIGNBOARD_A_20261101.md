@@ -139,4 +139,10 @@
 
 ### 2026-11-02 저녁 최종 Win64 실물·바탕화면 인수
 
-소스9e771f7712→공통동일SHA,6000.6.7f1 정식112a8abb(-remodel-scenes1) compile0/build성공/USER_SAVE0. Runtime bcd1042c…f0e91,동일M1 7e05298a23/23,1920/3840 UI186장·타이틀11e33fd5 10장/10.5초모션·pause두장픽셀일치·resume PASS. 원본2036×1016 영상SHA869895a6…827c3 동일,합성3영상은의존0/보관SHA후제거. 인물/바위/하늘3x와전사아이콘6x실물잔점미관측.9-slice 정보판380×165.5/안쪽36,64px아이콘사전축소본최종채택. 사용자기존Player.log1건변경구간의UI가드false는별도보존(실제캡처186/exit0/창0/잔여0);저장데이터변경검출0. Desktop213파일 전수SHA/링크읽기일치,설치M1은기존map25d예약대기. 전체UI기존폰트/잠금장식/미이식RETOUCH;비교경로와실물영수증은 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md 및 evening/delivery-visual-review.json.
+빌드 입력9e771f7712, Unity트리 b57814813639c9263bd0973dea794e5a13182348. 공식6000.6.7f1 Win64 112a8abb(-remodel-scenes1)는 compile0/build성공/USER_SAVE0이다. Runtime bcd1042c…f0e91, 동일 M1 7e05298a 및 실제 설치본731adf79 각각23/23.
+
+최종 Kling 원본2036×1016·SHA869895a6…827c3과 폭포만 사용한다. 1920/3840 UI186장, 타이틀11e33fd5 10장/10.5초 모션·pause 픽셀일치·resume PASS. 실제 인물/바위/하늘3x와 아이콘6x에서 잔점 미관측. 9-slice 정보판380×165.5/안쪽36, 전사 아이콘64px 사전축소본을 채택했다.
+
+Desktop213파일은 빌드→staging→설치 후 전수SHA와 목록 일치, 링크 대상/인자 읽기 확인. 최종 오디오3313979d와 화폐d6be008e도 통과했다. UI186 실행은 외부 Player.log1건 변경으로 보호검사 false를 원문 보존하며, 자체 Player exit0·창0·잔여0이고 저장데이터 변경은 검출0이다. 다른 최종 빌드/M1/타이틀/오디오/화폐/설치M1은 USER_SAVE0이다.
+
+전체 UI는 기존 글꼴·잠금 장식·미이식 범위로 RETOUCH, 맵 전체·자연 밀집전투·청음·Mac은 별도 미검증이다. 비교 경로와 실제 영수증: I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md 및 evening/delivery-visual-review.json.

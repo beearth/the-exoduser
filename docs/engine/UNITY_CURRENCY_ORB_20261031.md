@@ -15,3 +15,7 @@
 | 실행 | 기존 codex-currency-rename 예약 재사용. 타인 Unity·잠금·실행본을 종료하지 않음. 최종 빌드·무창 Player·M1·원격 SHA는 아래 REPORT로 확정 |
 
 증거: I:/EXODUSER-Storage/demo-art/currency-rename/REPORT.md. 웹은 main, Unity 코드는 unity/main에만 비강제 통합. 지원 29언어 전체 UI 이식 완료로 확대하지 않는다. 기존 Unity UI가 한국어/영문만 구분하는 범위는 유지한다.
+
+## 2026-11-02 parity 인수·실물 통합 완료
+
+기존3333f9931 단일커밋을2315838a7로 인수, 최종9e771f7712 입력 Win64 112a8abb에서 HUD/대장간/스킬/피드백과 원화4단계를 연결했다. 공식 d6be008e는999/5000/50000/123456 네잔액과 대장간·합체6PNG의 실제 UI 캡처 PASS/exit0/창0/잔여0/USER_SAVE0이다. 캡처는 잔액주입·AI정지의 UI fixture(검은 필드)이며 일반 맵 화면 증거가 아니다. 일반3D게임 및 설치본은 별도 M1 7e05298a/731adf79 각각23/23으로 확인했다. 4단계 HUD의1x 표본을 직접 확인했으며 620ms 전체 자연획득 타이밍·29언어를 확대 검증한 것은 아니다. Desktop213파일 전수SHA 일치, 기존 UI배치/미이식의 RETOUCH는 유지한다. 근거 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md와 evening/delivery-currency/ 및 review/currency-stages-final-1x.png.

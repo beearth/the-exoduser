@@ -309,4 +309,4 @@ PC `codex/unity-parity-1102`/G:/exoduser-wt/codex-unity-parity-1102가 공통140
 
 ## 2026-11-02 저녁 parity 실제 인수·공통 반영
 
-PC 9e771f7712를 unity/main에 정상 반영하고 원격 SHA를 확인했다. Win64 112a8abb 오류 0·USER_SAVE 0, 동일 M1 7e05298a 23/23, UI 186PNG 및 타이틀 모션 PASS. 중단된 화폐 단일 커밋과 두둥 범위를 인수했고 최종 Kling·64종 확장·9-slice·아이콘 축소까지 실물 검수했다. Desktop은 검증한 213파일로 갱신했으며 남은 audio/currency·설치 M1은 기존 map25d FIFO 대기다. 기존 Mac WIP와 앱은 미접촉이며 Mac 소스 반영·실행은 미검증이다. 기존 미이식과 UI RETOUCH 범위는 REPORT에 구분했다.
+PC 소스9e771f7712를 공통에 반영했다. 같은 Unity트리의 Win64 112a8abb 오류0·USER_SAVE0, M1 7e05298a와 설치본731adf79 각각23/23, UI186PNG/타이틀모션 직접검수. 최종 Kling·64확장·화폐·두둥·9-slice·아이콘축소 인수와 실제 오디오3313979d/화폐d6be008e 검수를 마쳤다. Desktop213파일SHA 및 바로가기 읽기 일치. Mac 기존 WIP·앱 미접촉, Mac 소스 반영·실행은 미검증이며 기존 미이식/UI RETOUCH 범위는 REPORT에 남겼다.

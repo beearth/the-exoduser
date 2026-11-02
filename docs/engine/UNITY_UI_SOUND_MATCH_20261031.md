@@ -138,7 +138,11 @@ Runtime SHA256 `32669c0d133674b36ce39b0ac72d838a8f5d995afd11f49818e1d267390e0a15
 | 파일 | 웹 sfx/ui/decision/ddung_1~3 및 각 _dark WAV 동일byte, 임시 기본1. --unity-ddung-candidate 1~3으로 검토. 사용자 최종 청음 선택 아님 |
 | 이벤트 | hero/CreateCharacter 성공/기존입장 enter/새입장 new-game/삭제 delete. difficulty도 정책 whitelist에 포함하나 Unity에는 다음 난관 난이도 확정창이 아직 없어 실제 연결은 미구현. 일반 탭·호버·취소·종료는 재생0 |
 | gain | .8×SFX설정/100, 효과음0은 재생·덕킹0. 1850ms 전역 중복억제, 같은 확정의 일반 confirm 억제 |
-| 음악 | 로비·인게임 BGM에만 0.501187(-6dB), 800ms 후1. 설정값/원래 fade·source level 보존. 자동 검수는 listener무음 유지 |
+| 음악 | 로비·인게임 BGM에만 0.501187(-6dB), 800ms 후1. 설정값/원래 fade·source level 보존. 자동 검수는 AudioRenderer가 성공한 동안만 Listener를 열고 장치에는 silence 출력 |
 | 검수 | 실제 정책의 whitelist/zero/cooldown/duck복구12검사 PASS. 실제 출력 버퍼·청음·Player 이벤트 검증은 지정 REPORT 결과에 따름 |
 
 기존 UI30초 출력버퍼 검수의 저장캐릭터 입장 기대를 ENTER에서 실제 결정음1회로 갱신하고, hero/enter/delete normal·dark의 이벤트3회 이상을 요구한다. 기존 ENTER 인장·탭·호버·레벨업·장치무음 검사는 유지한다. 실제 최종 결과는 REPORT를 따른다.
+
+### 11-02 최종 Win64 결정음·설치본 영수증
+
+빌드 입력9e771f7712/Runtime bcd1042c…f0e91, 실제 GPU 출력3313979d는477/477·450프레임·48kHz stereo·결정음 hero/enter/delete 3회 PASS. normal/dark 기본후보1의 시작0.8초 PCM표본 peak0.21994/0.21994/0.19955, clipped samples0이다. 전체 float peak2.000836은 기존 ENTER gain2를 포함하며 전체무클리핑·사용자청음PASS를 주장하지 않는다. AudioRenderer 장치무음과 종료 후 Listener정지 유지, 공식exit0/창0/잔여0/USER_SAVE0. 설치본 M1 731adf79 23/23, 같은213파일SHA·Desktop읽기 일치. 검토영상은 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/evening/review/최종-오디오-결정음-실제출력.mp4(H2641600×900/15fps/AAC/29.994667초). 난이도 확정창의 미이식과 사용자 최종청음선택 미확인은 유지한다.

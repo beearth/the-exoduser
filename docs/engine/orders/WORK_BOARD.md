@@ -657,4 +657,4 @@ PC 담당이 I:/EXODUSER-Storage/character-capacity/20261101-unlimited/receiver/
 
 ## 2026-11-02 저녁 PC parity 실물 통합
 
-사용자 2차 지시로 9e771f7712를 unity/main에 비강제 반영하고 원격 SHA를 확인했다. Win64 112a8abb는 컴파일 오류 0·빌드 성공·USER_SAVE 0, 같은 패키지 M1 7e05298a는 23/23이다. 1920·3840 UI 186장과 타이틀 모션을 직접 검수했고, 잔점이 남은 전사 아이콘은 64px 사전 축소로 고쳤다. Desktop은 213파일 전수 SHA와 링크 읽기를 확인했다. 마지막 audio/currency·설치본 M1은 기존 map25d 예약 뒤 대기한다. 기존 미이식·폰트·장식 차이로 UI RETOUCH이며 Mac 반영은 미검증이다. 상세: I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md.
+사용자 2차 지시의 소스 9e771f7712를 unity/main에 비강제 반영했다. 최종 Win64 112a8abb는 오류 0·USER_SAVE 0, 같은 패키지 M1 7e05298a와 설치본 731adf79는 각각23/23이다. 1920·3840 UI186장/타이틀 모션·잔점 크롭을 직접 검수했고, 오디오3313979d 477검사/결정3회 및 화폐 d6be008e 4단계·6캡처도 통과했다. Desktop213파일 전수SHA·링크 읽기 일치. UI는 기존 미이식·글꼴·장식 차이로 RETOUCH이며 Mac 반영은 미검증이다. 자기 예약 반환, 사용자 앱 종료0. 상세는 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md.
