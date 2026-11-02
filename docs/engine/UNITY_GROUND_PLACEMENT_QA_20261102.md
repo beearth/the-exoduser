@@ -1159,3 +1159,28 @@ MAP PRODUCTION REPORT: geometry/asset/Core변경없음. TECH scriptedM1만PASS. 
 새로 재생성된적·접지·지면 관계 자체는 실제통과했지만 QA자원조회와fixture hash변화가남아전체false/exit2다. _MainTex가없는셰이더를QA가잘못조회했으므로 존재하는texture property를열거·보존하는최소수정과fixture전후graph진단을다음에준비한다. old50실패와이전triad58실패는각실행의실제값이며수정하지않는다. M123/23은bf3e앱검사이고현재ac9c앱동일패키지M1은아직미실행이다.
 
 현재ac9c일반앱에포함된별도frameobserver로일반GUI의포커스/실제frame간격을관측한다. 첫10s launchwarmup+60s,AI/Core/input/시간변경0. 일반시작화면진입이며quickstart/자동fixture없음. CUA에서이미실행중인앱의정상활성화를시도하고실행PID중복을대조한다. 관측성공자체가이동/공격/자연전투통과는아니다. MAP PRODUCTION REPORT: geometry/제품변경0,표현관계일부TECH통과,자연PLAYABLE/FPS미검수. VISUAL VERDICT: RETOUCH.
+
+
+## 2026-11-02 복원 QA 자원 접근·fixture callback 원복 보완 준비
+
+# 원본 view 한정 회귀 QA 진단 보완 초안 (실행 전)
+
+| 항목 | 계약 / 상태 |
+|---|---|
+| 입력 | ac9c512fbb96f501bc97fee760c87645536c2360 QA, 원 triad 기준 bf3e, product e33 |
+| 기존 실제 결과 | 원 Core/hash/ref/tick/events exact. oldMissing50(적32/contact16/ground2) identity false. entity/ground/registry/camera/root true. fixtureCoreSame/stableAssetsExact false, 오류38, 전체semantic false 보존 |
+| 오류38 | 모두 `_MainTex` 없는 shader의 material.mainTexture 조회 메시지. 오류 제거와 asset 동일성 PASS는 별도 판정 |
+| 재질 검증 | shader 참조와 GetTexturePropertyNames의 전체 texture property 이름 집합/각 texture 참조·생존 검사. 없는 `_MainTex` 접근0. texture property0개 material 허용은 누락 검사 완화가 아니라 실제 shader 계약에 따른 조회 |
+| graph 증거 | fixture before/settled/after-native-restore/after-binding-cleanup 각각 실제 Core graph JSON+txt 및 최초 대비 field path별 diff. 기존 canonical State hash와 fixtureCoreSame gate 유지 |
+| viewport binding | NativeGame.WorldViewport.cs:12-13은 Simulation/Druid WorldPointVisible callback을 제품 view에서 연결. fixture 최초 값은 별도 저장 |
+| 한정 cleanup | 원 Core 복원 및 writer pause 후, detached fixture의 두 viewport field가 정확한 단일 game.WorldPointVisible callback일 때만 최초 delegate값 exact 복원. 그 외 field/callback 불변. 원 game Core exact 유지 요구 |
+| false 보존 | 정리 전 rawFixtureHashSame/diff와 정리 후 finalFixtureHashSame 구분. 과거 receipt 및 old ID false는 수정하지 않음 |
+| 의미 제한 | 아직 이전 hash 변화 필드의 실제 증거 없음. source상 가능한 경로와 다음 run 진단만 준비. 미지 필드 변화·자원 불일치·native 오류가 남으면 기존 gate로 실패 |
+| 상태 | 정적 컴파일/PE metadata 검사만. Unity/Player/빌드/제품/설정/공유 checkout/Git 수정실행0 |
+
+관련 docs 전체 검색은 docs-search.txt(87줄)와 docs-search-summary.json에 보존했다. 공유 문서 통합은 Root 소유다.
+
+
+일반ac9c앱 frameobserver는첫10초후시작화면60초7068frame을수집했다. CPU프레임간격p50=8.33625253289938ms,p95=8.900085464119911ms,max=25.344083085656166ms. 전체7849frame Application.isFocused=true, Running=true는0이다. CUA는이시점Mac잠금·물리입력감지로자동해제중지라고명시했으므로사용자에게수동잠금해제를요청했다. mac의cua.computer.launch_app API는실제로없어활성화대조미실행이며다른OS입력기술로대체하지않았다. 시작화면통계는전투/이동/GPU완료/OS표시FPS통과가아니다. ownedPID26847경로검증후관측완료상태에서SIGTERM종료(exit-15),raw26/cache27즉시2s7s exact복구. 이전로비입력무반응의원인을잠금으로소급확정하지않는다.
+
+디스크확보는never-launched QA bias형식오류12487앱만대상으로했다.211개모든원파일바이트/심볼링크를exact중복4323067725B대응과unique221258534B보존으로대체했고map작성·재hash후해당생성앱복제본만정리했다. 원실패로그/raw/실제TriadBias·Full앱/PNG/기존설치1403/WIP는보존했다. standalone앱은더이상실행가능하다고주장하지않는다. MAP PRODUCTION REPORT: 제품/Core/geometry불변,TECH최소실패범위재검사준비,자연PLAYABLE/FPS는수동잠금해제후검수. VISUAL VERDICT: RETOUCH.

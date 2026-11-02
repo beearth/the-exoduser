@@ -1,0 +1,44 @@
+{
+  "status": "prepared-static-only; actual execution pending",
+  "inputQa": "ac9c512fbb96f501bc97fee760c87645536c2360",
+  "triadBase": "bf3e93a63425a17ede0fa6a0ca16e066374cc984",
+  "productTip": "e33ed53574a187db36e00dfbd1f92b4d6f263635",
+  "compile": {
+    "exitCode": 0,
+    "errors": 0,
+    "warnings": 11,
+    "references": {
+      "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/build-receiverRestore-normal/EXODUSER-Unity.app/Contents/Resources/Data/Managed/Exoduser.Runtime.dll": "ab0d59638e6bb1e1b81942ca7ec051e2f7354a4522baa5a7f388b45d88c8e398",
+      "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/build-receiverRestore-normal/EXODUSER-Unity.app/Contents/Resources/Data/Managed/Exoduser.Core.dll": "4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d"
+    },
+    "sources": {
+      "ReceiverRestoreNarrowCapture.cs": "00a97c70d3a7f8f6af2b3bf7a4c9f2e3615b8b4bd3501a6ed70daf7416c1d3ad",
+      "ReceiverRestoreNarrowDiagnostics.cs": "ee11a3d8252e2d67e8ff09e97b6ee8c5dea989cab4f664aea8a680727960b24c"
+    },
+    "outputSha256": "cccd50a1aec8dc508aee1b1cbd4b19e5ca4cf4a15a2961aaadc0e8b79581ca71"
+  },
+  "metadata": {
+    "tool": "existing PEReader metadata checker; no QA type execution",
+    "bootPresent": true
+  },
+  "sourceGuards": {
+    "mainTextureAccessAbsent": true,
+    "allEnumeratedTexturePropertiesCompared": true,
+    "canonicalFixtureHashGateKept": true,
+    "rawPreCleanupGraphAndHashKept": true,
+    "oldIdentityGateKept": true,
+    "cleanupRestrictedToTwoDetachedFixtureViewportDelegates": true,
+    "newObserverChanged": false,
+    "originalFrozenHelperChanged": false,
+    "originalRuntimeReceiptChanged": false,
+    "productSharedGitSettingsChanged": false,
+    "unityPlayerBuildExecuted": false
+  },
+  "docsSearchMatches": 87,
+  "pending": [
+    "Root new checkpoint/package identity",
+    "Unity import/build/signing owned by Root",
+    "Guarded actual narrow run",
+    "Raw fixture diffs and asset mismatch verdict"
+  ]
+}

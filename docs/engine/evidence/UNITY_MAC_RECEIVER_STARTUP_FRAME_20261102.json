@@ -1,0 +1,43 @@
+{
+  "source": "ac9c512fbb96f501bc97fee760c87645536c2360",
+  "productSource": "e33ed53574a187db36e00dfbd1f92b4d6f263635",
+  "inputSession": "os-cua-root-20261102",
+  "startedUtc": "2026-11-02T05:56:17.1624760Z",
+  "error": "",
+  "scope": "Time.unscaledDeltaTime once per Unity Update; 10s launch warmup + 60s observation. Includes menus and loading. OS input session label is operator declaration, not input provenance proof. No automatic input or process termination.",
+  "metric": "CPU/main-thread frame interval, not GPU completion, OS display cadence or NativeGame.Update duration",
+  "complete": true,
+  "observedFrames": 7068,
+  "p50Ms": 8.33625253289938,
+  "p95Ms": 8.900085464119911,
+  "maxMs": 25.344083085656166,
+  "run": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/profile-guard-runs/20261102T055614016079Z-26808",
+  "packet": {
+    "app": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/build-receiverRestore-normal/EXODUSER-Unity.app",
+    "source": "ac9c512fbb96f501bc97fee760c87645536c2360",
+    "productSource": "e33ed53574a187db36e00dfbd1f92b4d6f263635",
+    "runtimeSha256": "ab0d59638e6bb1e1b81942ca7ec051e2f7354a4522baa5a7f388b45d88c8e398",
+    "coreSha256": "4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d",
+    "executableSha256": "52a32de5621d0ad7dfacac4c48963598bcbc854f1649d542d983da8a354e169a"
+  },
+  "focusedFrames": 7849,
+  "totalFrames": 7849,
+  "runningFrames": 0,
+  "naturalPlayPassed": false,
+  "scopeVerdict": "STARTUP_ONLY_OS_GUI_LOCKED_NO_GAMEPLAY",
+  "cuafailure": "Mac locked; automatic unlock paused due to physical input; user manual unlock requested. launch_app API is unavailable on this Mac.",
+  "profileGuard": {
+    "rawCount": 26,
+    "cacheCount": 27,
+    "allRawExact": true,
+    "allCacheTypedSemanticsExact": true,
+    "checkpoints": [
+      "restore-immediate",
+      "restore-2s",
+      "restore-7s-final"
+    ]
+  },
+  "guardError": null,
+  "operatorStop": "Owned PID26847 exact path verified then SIGTERM after collection; exit-15, no duplicate Player",
+  "fieldPerformanceVerified": false
+}

@@ -57398,3 +57398,6 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 
 
 2026-11-02 ac9c복원실제:원Core/tick/event/적16·접지·지면10/registry·camera true,old50identity파괴false. QA_MainTex조회38error와fixturehash변화로전체semanticfalse/exit2보존. profile26/27exact복구,새frameobserverGUI실행준비. 근거UNITY_GROUND_PLACEMENT_QA_20261102 및 evidence/UNITY_MAC_RECEIVER_RESTORE_20261102.json.
+
+
+2026-11-02 QA전용보완: 존재하는textureproperty전체참조비교,없는_MainTex조회제거. fixture전체graph전후diff보존,원Core와분리된fixture의알려진WorldPointVisible단일callback2곳만CAS원복,전체hashgate유지. ac9c old50/전체semanticfalse이력불변. startup60s frameinterval7068개만관측(Running0·전투성능미검증),MacCUA잠금수동해제대기/profile26·27exact복구. 제품변경0/새QA실Player아직미실행. 근거UNITY_GROUND_PLACEMENT_QA_20261102.

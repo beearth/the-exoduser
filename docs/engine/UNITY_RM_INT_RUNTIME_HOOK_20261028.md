@@ -498,3 +498,6 @@ Shore는 고정앵글러 주변을 피한 후 z−52~−42에서 다시28u 굽�
 
 
 2026-11-02 QA전용복원companion준비: 원Core복원후기존UpdateViews→Remodel3DLate로표현재구성, old identity실패와별도entity/registry/chunk semantic검증. 제품/Core/geometry변경0·실Player미검증. 별도Update실제frame간격관측10s launchwarmup+60s,입력/AI/시간변경0. bf3e실GUI입력은로비반응없어자연play미검증,profile26/27복구. 근거UNITY_GROUND_PLACEMENT_QA_20261102.
+
+
+2026-11-02 QA전용보완: 존재하는textureproperty전체참조비교,없는_MainTex조회제거. fixture전체graph전후diff보존,원Core와분리된fixture의알려진WorldPointVisible단일callback2곳만CAS원복,전체hashgate유지. ac9c old50/전체semanticfalse이력불변. startup60s frameinterval7068개만관측(Running0·전투성능미검증),MacCUA잠금수동해제대기/profile26·27exact복구. 제품변경0/새QA실Player아직미실행. 근거UNITY_GROUND_PLACEMENT_QA_20261102.

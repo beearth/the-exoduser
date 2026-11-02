@@ -9,7 +9,7 @@ using Exoduser.UnityPort.Core;
 
 namespace Exoduser.UnityPort.Tools {
 // QA-only companion to bf3e. No product edits, ticks, probes or full/triad loops.
-public sealed class ReceiverRestoreNarrowCapture : MonoBehaviour {
+public sealed partial class ReceiverRestoreNarrowCapture : MonoBehaviour {
  const BindingFlags F=BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Instance;
  const BindingFlags S=BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Static;
  const string Flag="--unity-receiver-restore-narrow";
@@ -29,7 +29,7 @@ public sealed class ReceiverRestoreNarrowCapture : MonoBehaviour {
  sealed class CameraState { public Camera camera; public Transform parent; public Vector3 position,scale; public Quaternion rotation; public Matrix4x4 projection; public int mask; public bool enabled; public float fov,ortho,near,far,aspect; public bool orthographic; }
  NativeGame game; Simulation original,fixture; Behaviour late; bool oldEnabled,oldRunning,oldLate,nativeActive; string output;
  Result r=new Result(); List<RootState> roots=new List<RootState>(); List<CameraState> cameras=new List<CameraState>();
- HashSet<Material> assets=new HashSet<Material>(); Dictionary<Material,Shader> assetShaders=new Dictionary<Material,Shader>(); Dictionary<Material,Texture> assetTextures=new Dictionary<Material,Texture>();
+ HashSet<Material> assets=new HashSet<Material>(); Dictionary<Material,Shader> assetShaders=new Dictionary<Material,Shader>(); Dictionary<Material,Dictionary<string,Texture>> assetTextures=new Dictionary<Material,Dictionary<string,Texture>>();
  readonly List<string> logErrors=new List<string>(); bool captured,cleaned,cleanupAttempted;
  static string Arg(string key){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,key);return i>=0&&i+1<a.Length?a[i+1]:"";}
  static bool Has(string key){return Array.IndexOf(Environment.GetCommandLineArgs(),key)>=0;}
@@ -84,7 +84,7 @@ public sealed class ReceiverRestoreNarrowCapture : MonoBehaviour {
   Sync();yield return null;yield return null;Sync();Capture();Save("original-baseline");
   try{
    fixture=new Simulation(new SimulationConfig(),0x671403u);fixture.AttachDruidBoss();fixture.Enemies.Clear();fixture.Player.X=36.2916f*100-180;fixture.Player.Y=73.17135f*100+80;
-   r.fixtureBefore=State(fixture);SimulationSet(fixture);Sync();yield return null;yield return null;Save("fixture-settled");
+   r.fixtureBefore=State(fixture);CaptureFixtureBindings();CaptureFixtureGraph("before-fixture");SimulationSet(fixture);Sync();yield return null;yield return null;CaptureFixtureGraph("fixture-settled");Save("fixture-settled");
   }finally{Cleanup();}
  }
  void Sync(){Call("UpdateViews");Call("Remodel3DLate");}
@@ -92,7 +92,7 @@ public sealed class ReceiverRestoreNarrowCapture : MonoBehaviour {
   r.coreBefore=State(original);r.eventBefore=Events(original)+"/druid/"+Events(original.Druid);r.tickBefore=original.TickCount;nativeActive=NativeRemodel3D.Active;
   foreach(var x in UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsInactive.Include,FindObjectsSortMode.None).Where(x=>x!=null&&x.gameObject.scene.IsValid())){
    var mats=x.sharedMaterials;r.old.Add(new OldRenderer{value=x,id=Id(x),name=x.name,category=Category(x),enabled=x.enabled,off=x.forceRenderingOff,active=x.gameObject.activeSelf,refs=mats,materials=mats.Select(Id).ToArray(),sprite=(x as SpriteRenderer)?.sprite,spriteTexture=(x as SpriteRenderer)?.sprite?.texture});
-   foreach(var m in mats)if(m!=null&&assets.Add(m)){assetShaders[m]=m.shader;assetTextures[m]=m.mainTexture;}
+   foreach(var m in mats)if(m!=null&&assets.Add(m)){assetShaders[m]=m.shader;assetTextures[m]=CaptureMaterialTextures(m);}
   }
   foreach(var scene in r.old.Select(x=>x.value.gameObject.scene).Distinct())foreach(var go in scene.GetRootGameObjects())if(go!=gameObject)roots.Add(new RootState{go=go,active=go.activeSelf});
   foreach(var c in UnityEngine.Object.FindObjectsByType<Camera>(FindObjectsInactive.Include,FindObjectsSortMode.None))cameras.Add(new CameraState{camera=c,parent=c.transform.parent,position=c.transform.localPosition,rotation=c.transform.localRotation,scale=c.transform.localScale,projection=c.projectionMatrix,mask=c.cullingMask,enabled=c.enabled,fov=c.fieldOfView,ortho=c.orthographicSize,near=c.nearClipPlane,far=c.farClipPlane,aspect=c.aspect,orthographic=c.orthographic});
@@ -104,7 +104,7 @@ public sealed class ReceiverRestoreNarrowCapture : MonoBehaviour {
   SimulationSet(original);game.enabled=false;RunningSet(false);if(late!=null)late.enabled=false;RestoreCameraRoots();Sync();RestoreCameraRoots();
   // Restore flags/materials only on surviving originals; never substitute new references for old IDs.
   foreach(var x in r.old)if(x.value!=null){x.value.sharedMaterials=x.refs;x.value.forceRenderingOff=x.off;x.value.enabled=x.enabled;x.value.gameObject.SetActive(x.active);}
-  cleaned=true;r.cleanupReturned=true;
+  CaptureFixtureGraph("after-native-restore");RestoreFixtureViewportBindings();cleaned=true;r.cleanupReturned=true;
  }
  void RestoreCameraRoots(){
   foreach(var x in roots)if(x.go!=null)x.go.SetActive(x.active);
@@ -112,10 +112,10 @@ public sealed class ReceiverRestoreNarrowCapture : MonoBehaviour {
  }
  void ValidateCameraRoots(){r.cameraRootGate=NativeRemodel3D.Active==nativeActive&&roots.All(x=>x.go!=null&&x.go.activeSelf==x.active)&&cameras.All(x=>x.camera!=null&&x.camera.transform.parent==x.parent&&x.camera.transform.localPosition.Equals(x.position)&&x.camera.transform.localRotation.Equals(x.rotation)&&x.camera.transform.localScale.Equals(x.scale)&&x.camera.projectionMatrix.Equals(x.projection)&&x.camera.cullingMask==x.mask&&x.camera.enabled==x.enabled);Check(r.cameraRootGate,"camera/root restoration");}
  void Validate(){
-  r.coreAfter=State(original);r.fixtureAfter=State(fixture);r.eventAfter=Events(original)+"/druid/"+Events(original.Druid);r.tickAfter=original.TickCount;r.originalRefSame=ReferenceEquals(game.Simulation,original);r.coreSame=r.coreBefore==r.coreAfter&&r.tickBefore==r.tickAfter;r.fixtureCoreSame=r.fixtureBefore==r.fixtureAfter;r.eventSame=r.eventBefore==r.eventAfter;
+  CaptureFixtureGraph("after-binding-cleanup");r.coreAfter=State(original);r.fixtureAfter=State(fixture);r.eventAfter=Events(original)+"/druid/"+Events(original.Druid);r.tickAfter=original.TickCount;r.originalRefSame=ReferenceEquals(game.Simulation,original);r.coreSame=r.coreBefore==r.coreAfter&&r.tickBefore==r.tickAfter;r.fixtureCoreSame=r.fixtureBefore==r.fixtureAfter;r.eventSame=r.eventBefore==r.eventAfter;
   foreach(var x in r.old){x.alive=x.value!=null;x.exact=x.alive&&Id(x.value)==x.id&&x.value.enabled==x.enabled&&x.value.forceRenderingOff==x.off&&x.value.gameObject.activeSelf==x.active&&x.value.sharedMaterials.SequenceEqual(x.refs);}
   r.oldCount=r.old.Count;r.oldMissing=r.old.Count(x=>!x.alive);r.oldAliveChanged=r.old.Count(x=>x.alive&&!x.exact);r.oldEnemyMissing=r.old.Count(x=>!x.alive&&x.category=="enemy");r.oldContactMissing=r.old.Count(x=>!x.alive&&x.category=="contact");r.oldGroundMissing=r.old.Count(x=>!x.alive&&x.category=="ground");r.oldIdentityGate=r.old.All(x=>x.exact);
-  r.stableSurvivorsExact=r.old.All(x=>x.alive?x.exact:x.category!="stable");r.stableAssetsExact=assets.All(m=>m!=null&&m.shader==assetShaders[m]&&m.mainTexture==assetTextures[m]&&(ReferenceEquals(assetTextures[m],null)||assetTextures[m]!=null))&&r.old.Where(x=>x.category=="stable"&&!ReferenceEquals(x.sprite,null)).All(x=>x.sprite!=null&&x.spriteTexture!=null&&x.value is SpriteRenderer sr&&ReferenceEquals(sr.sprite,x.sprite)&&ReferenceEquals(sr.sprite.texture,x.spriteTexture));
+  r.stableSurvivorsExact=r.old.All(x=>x.alive?x.exact:x.category!="stable");r.stableAssetsExact=ValidateStableAssets();
   var hd=typeof(NativeHd2D);var actors=(IDictionary)hd.GetField("actors",S).GetValue(null);var overlays=(IDictionary)hd.GetField("overlayBases",S).GetValue(null);var shadows=(IDictionary)hd.GetField("shadows",S).GetValue(null);var enemyViews=(IDictionary)Field("enemies");
   var ids=new HashSet<int>(original.Enemies.Select(e=>e.Id));var bodies=new HashSet<SpriteRenderer>();var walks=new HashSet<SpriteRenderer>();var contacts=new HashSet<MeshRenderer>();
   r.entityGate=enemyViews.Count==ids.Count;
