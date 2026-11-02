@@ -28,7 +28,9 @@ namespace Exoduser.UnityPort {
     lobby.CloseCharacterCreation();lobby.SelectPreview();lobby.EnterNativeTest();frontendEntryInputFence=false;EndFirstPractice(true);Running=false;menu=false;areaTitle.Hide();levelUp.Hide();
     SetForge(true);foreach(string tab in new[]{"upgrade","potion","salvage","reroll","crystal","craft"}){forge.SelectTab(tab);yield return UiOverlapShot("3차-대장간-"+tab);}SetForge(false);
     SetSkills(true,6);foreach(int slot in new[]{6,0,7,8,11,13,14}){skills.Select(slot);yield return UiOverlapShot("3차-스킬"+slot);}Simulation.Player.Level=50;Simulation.Player.StatPoints=40;Simulation.Materials=1000;
-    if(NativeSkillManagementPolicy.Level(Simulation,"spikeTrap")==0&&!NativeSkillManagementPolicy.Learn(Simulation,"spikeTrap",10,80,1))throw new InvalidOperationException("live skill learn");
+    if(NativeSkillManagementPolicy.Level(Simulation,"spikeTrap")>0)NativeSkillManagementPolicy.Reset(Simulation,"spikeTrap",10);
+    int learnSp=Simulation.Player.StatPoints,learnMats=Simulation.Materials;
+    if(!NativeSkillManagementPolicy.Learn(Simulation,"spikeTrap",10,80,1)||Simulation.Player.StatPoints!=learnSp-10||Simulation.Materials!=learnMats-40)throw new InvalidOperationException("live skill learn cost");
     if(!NativeSkillManagementPolicy.Equip(Simulation,0,"spikeTrap")||!NativeSkillManagementPolicy.Upgrade(Simulation,"spikeTrap"))throw new InvalidOperationException("live skill equip/upgrade");
     skills.Select(0);yield return UiOverlapShot("3차-스킬-실제강화");
     int skillSp=Simulation.Player.StatPoints,skillMats=Simulation.Materials,skillLv=NativeSkillManagementPolicy.Level(Simulation,"spikeTrap");
