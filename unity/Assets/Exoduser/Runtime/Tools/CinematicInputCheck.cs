@@ -50,7 +50,11 @@ namespace Exoduser.UnityPort.Tools
     Inject(input);float started=Time.realtimeSinceStartup;limit=started+(scene=="world"?6.5f:2.5f);
     while(!Complete(scene)&&Time.realtimeSinceStartup<limit){receipt.samples.Add(new Sample{scene=scene,input=input,page=lobby.StageName,elapsed=Time.realtimeSinceStartup-started,progress=Progress(scene),deviceHeld=ExoInput.Key(input=="Space"?KeyCode.Space:input=="Escape"?KeyCode.Escape:input=="B"?KeyCode.JoystickButton1:KeyCode.JoystickButton7),lobbyHeld=LobbyKeys.Held(input=="Escape"?KeyCode.Escape:KeyCode.Space),automated=lobby.AutomatedInput});yield return null;}
     CheckThat(Complete(scene),phase+" 실제 Update 홀드 건너뛰기","elapsed="+(Time.realtimeSinceStartup-started).ToString("F3"));
-    CheckThat(game.Simulation.TickCount==tick,phase+" 영상 중 전투 틱 정지");Release();lobby.ShowLobby();yield return null;
+    CheckThat(game.Simulation.TickCount==tick,phase+" 영상 중 전투 틱 정지");Release();
+    // Record the real completion destination before the next case prepares a page.
+    // Story's existing 1.2s gate must advance itself; the fixture never substitutes ShowLobby for that transition.
+    phase+="-success";yield return new WaitForSecondsRealtime(scene=="world"?.65f:1.5f);
+    lobby.ShowLobby();yield return null;
    }
    recording=false;Save();Cleanup();lobby.CloseStartupCaptureMedia();Application.Quit(failed?2:0);
   }
