@@ -250,8 +250,10 @@ namespace Exoduser.UnityPort
                 }
                 yield return M1Shot("07e-field-bullets");
                 int mouths = bossView != null ? bossView.FieldMouthsDrawn : -1, comets = bossView != null ? bossView.FieldCometsDrawn : -1, orbs = bossView != null ? bossView.FieldOrbsDrawn : -1, fall = bossView != null ? bossView.FieldBulletFallbacks : -1;
-                bool bulletsOk = mouths == 4 && comets == 7 && orbs == 6 && fall == 0;
-                M1Add("07e", "field enemy bullets drawn per kind (VFX-D18)", bulletsOk ? "ok" : "fail", "mouths " + mouths + "/4, element comets " + comets + "/7, element orbs " + orbs + "/6, fallback dots " + fall + " (the druid poison orb is not used for field bullets)", "07e-field-bullets.png");
+                int remMouths=0,remComets=0,remOrbs=0;
+                if(dr!=null&&skillRemaster!=null)foreach(var b in dr.Projectiles)if(skillRemaster.Drawn(b)){if(b.ElemBall)remOrbs++;else if(b.ParryClass=="physical"||b.Web)remMouths++;else remComets++;}
+                bool bulletsOk = mouths+remMouths == 4 && comets+remComets == 7 && orbs+remOrbs == 6 && fall == 0;
+                M1Add("07e", "field enemy bullets drawn per kind (VFX-D18 + impact matter)", bulletsOk ? "ok" : "fail", "mouths " + mouths + "+"+remMouths+" matter/4, element comets " + comets + "+"+remComets+" matter/7, element orbs " + orbs + "+"+remOrbs+" matter/6, fallback dots " + fall + " (new material geometry counted only for the exact live Core projectile drawn by the remaster)", "07e-field-bullets.png");
                 if (dr != null) dr.Projectiles.Clear();
             }
 

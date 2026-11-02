@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems><UseSharedCompilation>false</UseSharedCompilation>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="../../Assets/Exoduser/Runtime/Vfx/ImpactResponse.cs" />
+    <Compile Include="../../Assets/Exoduser/Runtime/Vfx/SkillPresentation.cs" />
+  </ItemGroup>
+</Project>

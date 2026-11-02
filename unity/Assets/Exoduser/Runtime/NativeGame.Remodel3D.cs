@@ -105,6 +105,7 @@ namespace Exoduser.UnityPort
             r3Cam.enabled = !hidden;
             Remodel3DViewport();
             var p = Simulation.Player; r3Marker.position = NativeRemodel3D.Point(p.X, p.Y) + NativeRemodelCamera.TargetOffset;   // CM LOOK-001 follows the marker (offset 0, 10.52, -9.24, no damping)
+            r3Marker.position += ImpactCameraOffset();
             if(NativeHd2D.Enabled&&r3Brain!=null)r3Brain.ManualUpdate(); // 최종 카메라 pose 뒤에만 픽셀 스냅한다.
             foreach (var r in props) if (r != null) r.enabled = false;
             foreach (var c in chunks.Values) if (c.renderer != null) c.renderer.enabled = false;
@@ -147,7 +148,7 @@ namespace Exoduser.UnityPort
             var tilt = Quaternion.Euler(pitch * Mathf.Rad2Deg, 0, 0);
             foreach (var sr in FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None))
             {
-                if (sr != null && NativeGroundSkillSurface.Project(sr)) continue;
+                if (sr != null && (Exoduser.UnityPort.Vfx.NativeImpactView.IsContactSprite(sr)||NativeGroundSkillSurface.Project(sr))) continue;
                 if (sr == null || !sr.enabled || sr.sprite == null || sr.gameObject.scene == r3Scene) continue;
                 var tr = sr.transform;
                 r3Base[sr] = new R3Base { localPosition = tr.localPosition, localRotation = tr.localRotation };

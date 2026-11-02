@@ -5,7 +5,7 @@ class Program {
  static bool Near(double a,double b)=>Math.Abs(a-b)<.0001;
  static int Finish(string p){File.WriteAllText(p,JsonSerializer.Serialize(new{scope="standalone_dotnet_source_oracle_not_Unity_runtime",passed=failed==0,failed,checks=Rows},new JsonSerializerOptions{WriteIndented=true}));Console.WriteLine("FEEDBACK_RESULT "+Rows.Count+" checks / "+failed+" failures");return failed==0?0:2;}
  static dynamic New(){var c=SourceStarterFixture.CreateKiSlash();c.StartX=10;c.StartY=20;c.EnemyAiEnabled=false;dynamic s=new Simulation(c);s.Random01=(Func<double>)(()=>.5);return s;}
- static List<dynamic> Drain(dynamic s){var a=new List<dynamic>();while(s.Feedback.Count>0){var f=s.Feedback.Dequeue();string k=f.Kind.ToString();if(k=="EnemyHit"||k=="EnemyCrit"||k=="EnemyDeath"||k=="BossHit"||k=="BossDeath"||k=="Roll"||k=="Parry")continue;a.Add(f);}return a;}   // RM-1 sound notifications (no state, no RNG) are not part of the ki slash packets
+ static List<dynamic> Drain(dynamic s){var a=new List<dynamic>();while(s.Feedback.Count>0){var f=s.Feedback.Dequeue();string k=f.Kind.ToString();if(k=="EnemyHit"||k=="EnemyCrit"||k=="EnemyDeath"||k=="BossHit"||k=="BossDeath"||k=="Roll"||k=="Parry"||k=="FeelContact"||k=="FeelHurt")continue;a.Add(f);}return a;}   // Independent presentation/sound notifications are not source ki slash packets.
  static int Main(string[] args){
   Check(typeof(Simulation).GetField("Feedback")!=null,"native feedback queue exists");if(failed>0)return Finish(args[0]);
   using(var o=JsonDocument.Parse(File.ReadAllText(args[1]))){
@@ -28,6 +28,7 @@ class Program {
    int webCastDraws=o.RootElement.GetProperty("casts")[0].GetProperty("randomCalls").GetInt32();dynamic plain=New();int pos2=castDraws;plain.Random01=(Func<double>)(()=>values[(pos2++)%4]);var shifted=plain.SpawnNormalEnemy(100,100);
    Check(castDraws==webCastDraws&&spawned!=null&&shifted!=null&&pos-castDraws==pos2-castDraws&&spawned.Etype==shifted.Etype&&Near(spawned.Speed,shifted.Speed)&&spawned.Hp==shifted.Hp&&spawned.MaxHp==shifted.MaxHp,"shared cast pitch consumes RNG before enemy generation");
   }
+  var contactSim=(Simulation)New();var target=contactSim.SpawnNormalEnemy(40,20);contactSim.SpawnKiSlash(1,120f);Drain(contactSim);contactSim.Tick(0,0,100,20,false,false);int feel=0,ki=0;foreach(var e in contactSim.Feedback){if(e.Kind==FeedbackKind.FeelContact){feel++;Check(e.TargetId==target.Id&&e.Killed&&!target.Alive,"supplemental contact identifies the actual killed target");}if(e.Kind==FeedbackKind.KiSlashHit)ki++;}Check(feel==1&&ki==1,"supplemental contact coexists once with original ki packet");
   return Finish(args[0]);
  }
 }

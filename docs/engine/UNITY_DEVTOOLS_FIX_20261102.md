@@ -82,3 +82,19 @@ WAIT는 본편 lastAttemptSha를 보존하면서 lastAttemptVerdict만 WAIT로 �
 | 실제 2개 M1 | concurrent-20261103-010419014: 각각23/23, guiRepaints1145/1160, 창/USER_SAVE/잔여0. 실제 동시 생존 표본8개·23.252초 이상, 실행기 구간27.631초. sampled 커밋 여유 최저18.185GiB, 다른 Editor 빌드 job과도2.434초 겹침. HUD 각3장 직접 확인 |
 
 실제 동시 M1·단계표·6개 HUD 직접 판정·커밋 여유·원격 tip·남은 문제는 I:/EXODUSER-Storage/devtools/fix-1103-slots/REPORT.md. fix2의 원본 run/smoke는 덮어쓰지 않는다. 최종 시작 인계·delete-pending 보완은 Unity 없는 자식 생성/경합 시험으로 검증했으며 M1 2회 제한 때문에 이후 Unity 재실행은 하지 않았다. 변경 C#의 정식 Unity 컴파일·새 빌드는 별도다.
+
+## UI 요약 소비자 메모리 차단 수정 — 2026-11-03
+
+| 항목 | 계약·근거 |
+|---|---|
+| 원인 | run20261103-025650441_09192f7의 상세 overlap-report.json 1,391,748,321B를 buildloop ReadJson이 전체 파싱하다 Insufficient memory ABORT. 원본 run/상세/PNG/겹침_검사.md 보존 |
+| 소비자 | Read-UiOverlapSummary가 overlap-summary.json만 읽음. 허용65,536B·실제읽기/버퍼65,537B 이하(증가 탐지1B 포함), 엄격 UTF-8·4필드·중복/추가 키·주석/끝쉼표/잘못된 타입·음수 정수 거부. count 범위0..9,007,199,254,740,991 |
+| 판정 | exit0 + passed=true + frameCount>0 + issueCount=0 + missing빈배열 + 상세 파일 경로 존재만 PASS. 요약 누락/손상/읽기불가·비정상exit는 FAIL. 상세는 경로/존재만 확인하고 본문 읽기·해시·파싱0 |
+| 결과 필드 | run.uiOverlap에 passed·valid·exit·receipt·detailReport·maxReceiptBytes·bytes·frameCount·issueCount·missing·note·log. smoke-rules receipt=요약, detailReport=상세, maxReceiptBytes=65536; maxIssues=0 유지 |
+| 실제 재사용 | 원본81B {passed:false,frameCount:1395,issueCount:147,missing:[]}는 source-only 재판정에서도 FAIL. 원본ABORT/교체false를 수정하지 않음 |
+| 시험 | selftest/buildloop-overlap-summary-test.ps1 RED→GREEN 48검증. 잠긴 상세 파일·ReadJson 상세 호출 금지, 실제 Cmd-Run의 FAIL147/PASS/손상/누락/비정상exit 및 replaced=false. WAIT/보관·NoSwap 회귀 PASS |
+| 경계 | 본인 소스/시험/규칙/docs만 변경. 설치본·워처·task·타 소유자의 예약/프로세스·제품UI 변경0. 새Unity/Player/빌드/GPU/인코딩·1395재촬영0. M1 --remodel3d 누락은 별도 항목으로 유지 |
+
+테스트 원문·입력/설치본 fingerprint·원격SHA·한국어 결과는 I:/EXODUSER-Storage/devtools/fix-1103-overlap-summary/REPORT.md. 설치 반영은 root 직접 인수 뒤 공식 경로·정상 회차 종료·CAS를 확인하는 별도 단계다.
+
+root 인수 후 통합 경계(2026-11-03): 기존 private 브랜치에서 공통426544563dcd7068ac661a7ee7876fd91f69d19a를 정상 merge하고, 공통 대비 순변경은 위5경로만 유지한다. 공식 canonical G:/exoduser-wt/codex-buildloop는 unity/main09192f7bbc4650d9ba17408bf2de7cdd95c4f28d·INDEX0·기존미인수tracked WORK855개로 관측됐다. run.lock 비점유/task Ready/구09192회차03:44:26 ABORT 종료와 별개로 Cmd-Install의 clean-source 조건을 충족하지 못하므로 설치HOLD, WIP복원·대체작업본으로 우회 설치0이다. 실제 source/원격 SHA·회귀·bin/task/실게임 fingerprint·최종 경계는 I:/EXODUSER-Storage/devtools/fix-1103-overlap-install/REPORT.md에 기록한다.

@@ -69,6 +69,7 @@ namespace Exoduser.UnityPort
             if(hitSheet==null||hitSheet.width!=1254||hitSheet.height!=1254)throw new InvalidOperationException("Invalid original kiSlash 2x2 hit sheet");
             impacts=new KiImpactView(transform,f=>SpriteFor("Art/vfx/ki_slash_hit_silver_sheet",f%2*627,f/2*627,627,627,new Vector2(.5f,.5f)));
             skillView=new NativeSkillView(transform);   // B03 skill effects
+            ImpactInitialize();
             sound=new NativeFeedbackAudio(transform,view);
             gameObject.AddComponent<NativeUiSounds>().Initialize(sound,()=>lobby!=null&&lobby.IsBlocking?lobby.UiAudioAllowed:gameFocused,()=>lobby!=null&&lobby.IsBlocking);
             music=new NativeGameMusic(transform,sound.Bus);ambient=new NativeAmbientSources(transform,sound.Bus);   // RM-1 sound: BGM bus, forest bed, 3D environment sources
@@ -108,6 +109,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-ui-overlap-check")>=0){Running=false;StartCoroutine(UiOverlapCapture());}
             else if(Array.IndexOf(args,"--unity-loading-tip-capture")>=0){Running=false;StartCoroutine(LoadingTipCapture());}
             else if(Array.IndexOf(args,"--unity-hero-review")>=0){Running=false;StartCoroutine(HeroCapture());}
+            else if(Array.IndexOf(args,"--unity-impact-review")>=0){Running=false;StartCoroutine(ImpactReview());}
             else if(Array.IndexOf(args,"--unity-m1-check")>=0){Running=false;StartCoroutine(M1Check());}
             else if(Array.IndexOf(args,"--unity-review-args-capture")>=0){Running=false;StartCoroutine(ReviewArgsCapture());}
             else if(Array.IndexOf(args,"--unity-hd2d-capture")>=0){Running=false;StartCoroutine(Hd2dCapture());}
@@ -142,9 +144,10 @@ namespace Exoduser.UnityPort
         public void ResetRun()
         {
             ResetFirstPractice();
+            contactVfx?.Reset();
             startupResetCount++;
             foreach(var e in enemies.Values){Destroy(e.body.gameObject);Destroy(e.walk.gameObject);}enemies.Clear();damage.Clear();damageFloaters.Clear();ResetFieldBossViews();
-            kiView?.Reset();boltView?.Reset();impacts?.Reset();skillView?.Reset();sound?.Reset();
+            kiView?.Reset();boltView?.Reset();impacts?.Reset();skillView?.Reset();skillRemaster?.Reset();sound?.Reset();
             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;if(settings!=null)config.DifficultyIndex=settings.Options.Get("diff");if(BuildFlavor.Current.DemoMode)config.LevelCap=BuildFlavor.Current.LevelCap;CombatBeginRun(config);
             Simulation=new Simulation(config,SourceStarterFixture.Seed);revive.Reset();Simulation.ReviveTextRaised+=revive.Add;Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.ProjectileBlocked;Simulation.LevelledUp+=OnLevelledUp;ReviewArgsApply();ApplySettingsOptions();
             inventory.Reset();CombatRestoreState();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;death.Hide();deathShown=false;stageClear.Hide();bossBar.Hide();areaTitle.Hide();areaTitleShown=false;skillInputFence=false;Simulation.ApplyEquipment(inventory.State);CombatRestoreResources();
@@ -276,7 +279,7 @@ namespace Exoduser.UnityPort
         void DispatchFeedback()
         {
             sound.CurrentTick=Simulation.TickCount;
-            while(Simulation.Feedback.Count>0){var e=Simulation.Feedback.Dequeue();impacts.Handle(e);sound.Handle(e);}
+            while(Simulation.Feedback.Count>0){var e=Simulation.Feedback.Dequeue();if(!ImpactActive||e.Kind!=FeedbackKind.FeelContact)impacts.Handle(e);sound.Handle(e);}
             sound.Flush();
         }
         void BuildProps()
@@ -304,12 +307,19 @@ namespace Exoduser.UnityPort
         void UpdateViews()
         {
             if(Simulation==null||view==null)return;BindWorldViewport();Remodel3DRestoreBillboards();NativeHd2D.RestoreSourcePoses();var p=Simulation.Player;
+            if(contactVfx!=null){contactVfx.RenderCamera=HudCamera;contactVfx.ReducedMotion=impacts!=null&&impacts.ReducedMotion;}
+            if(skillRemaster!=null)skillRemaster.RenderCamera=HudCamera;
+            contactVfx?.Observe(Simulation,ImpactNow);
             float shk=impacts!=null&&impacts.ReducedMotion?0:Simulation.ShakeAmount*OptionShakeScale;   // B09: web G.shake -> camera offset (random +-shake px, game.html 51900)
             float camX=p.X/100,camY=-p.Y/100;BossCameraZoom();ClampCameraToMap(ref camX,ref camY);   // [CAM-CLAMP] web _clampCamToMap before the shake offset
+            ImpactCameraProjection();
             hd2dCameraShake=new Vector3(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0,shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0,0);
             view.transform.position=new Vector3(camX,camY,-10)+hd2dCameraShake;StageFlowSyncViews();if(!Simulation.Stage.InArena)StreamChunks(view.transform.position.x*100,-view.transform.position.y*100);
             bool newTick=renderedTick!=Simulation.TickCount;
             if(newTick){float dx=p.X-lastX,dy=p.Y-lastY;walkDistance+=Mathf.Sqrt(dx*dx+dy*dy);lastX=p.X;lastY=p.Y;playerMoving=dx*dx+dy*dy>.001f;}
+            bool heroHeld=ImpactHoldHeroPose();
+            float heroPresentationScale=NativeHd2D.Enabled||NativeRemodel3D.Active?NativeRemodelCamera.HeroScale:1;
+            if(!heroHeld){
             int direction=((int)Math.Floor((Math.PI/2-p.Facing)/(Math.PI/4)+.5)%8+8)%8;
             bool attack=NativeHeroSpriteMotion.UsesAttackSheet(p.State);bool moving=playerMoving;
             double windup=Math.Max(1,(int)(10/(Simulation.Config.WeaponSpeed!=0?Simulation.Config.WeaponSpeed:1)));
@@ -317,11 +327,11 @@ namespace Exoduser.UnityPort
             int frame=attack?NativeHeroSpriteMotion.Frame(p.State,p.StateTicks,windup,recovery):moving?2+(int)(walkDistance/32)%8:(Simulation.TickCount/48)%2;
             playerView.sprite=attack?SpriteFor("Art/player/attack-bat-v1",frame*80,direction*80,80,80,new Vector2(.5f,45f/80)):
                 SpriteFor("Art/player/"+directions[direction],frame*48,0,48,48,new Vector2(.5f,.5f));
-            float heroPresentationScale=NativeHd2D.Enabled||NativeRemodel3D.Active?NativeRemodelCamera.HeroScale:1;
             playerView.transform.position=Point(p.X,p.Y);playerView.transform.localScale=Vector3.one*2*heroPresentationScale;playerView.sortingOrder=(int)p.Y;
             // web roll: the body curls up and turns once (360 degrees) over the 18 frames, dust trail
             playerView.transform.rotation=Simulation.RollActive?Quaternion.Euler(0,0,-360f*(1f-(float)Simulation.RollMoveT/RollRules.Frames)):Quaternion.identity;
-            heroView?.Sync(Simulation,playerMoving);playerView.enabled=NativeHd2D.Enabled||heroView==null||!heroView.Ready;
+            heroView?.Sync(Simulation,playerMoving);}
+            playerView.enabled=NativeHd2D.Enabled||heroView==null||!heroView.Ready;
             NativeHd2D.Actor(playerView,false,p.Radius*.02f*heroPresentationScale);
             foreach(var e in Simulation.Enemies)
             {
@@ -335,6 +345,8 @@ namespace Exoduser.UnityPort
                 int dealtHp=Mathf.RoundToInt(ev.hp-e.Hp),dealtShield=Mathf.RoundToInt(ev.shield-e.Shield);if(dealtShield>0)damage.Add(new DamageText{x=e.X,y=e.Y-24,amount=dealtShield,shield=true,until=Time.unscaledTime+1});if(dealtHp>0)damage.Add(new DamageText{x=e.X,y=e.Y,amount=dealtHp,until=Time.unscaledTime+1});ev.hp=e.Hp;ev.shield=e.Shield;
                 if(newTick){float ex=e.X-ev.lastX,ey=e.Y-ev.lastY;float travel=Mathf.Sqrt(ex*ex+ey*ey);ev.distance+=travel;ev.lastX=e.X;ev.lastY=e.Y;ev.moving=travel>.001f;}
                 if(BossBodyDraw(e,ev,newTick))continue;   // BX: the 1-1 druid has its own sheets (damage numbers and walk bookkeeping above already ran)
+                // Keep the struck body's last drawn pose for 55/75/90ms; Core movement and knockback continue unchanged.
+                if(ImpactActive&&contactVfx.EnemyFrozen(e.Id,ImpactNow)&&ev.body.sprite!=null){float flash=contactVfx.Flash(e.Id,ImpactNow);ev.walk.enabled=ev.moving;ev.body.color=ev.walk.color=Color.Lerp(Color.white,new Color(1,.82f,.54f),flash*.8f);continue;}
                 // One visual-facing writer for both idle and walk. Core facing
                 // is untouched; a tiny movement must not reveal its stale snapshot.
                 int dir=NativeEnemyVisualFacing.Direction(e,p),cellX=ev.skin%8,cellY=ev.skin/8;
@@ -351,10 +363,11 @@ namespace Exoduser.UnityPort
             }
             PruneEnemyViews();FieldBossViews();
             UpdateDropViews();
-            kiView?.Update(Simulation);
+            skillRemaster?.Update(Simulation,ImpactNow);
+            if(skillRemaster!=null&&skillRemaster.Active)kiView?.Reset();else kiView?.Update(Simulation);
             boltView?.Update(Simulation);BossViewUpdate();
             if(impacts!=null)impacts.ShakeScale=OptionShakeScale;impacts?.Update(Simulation.TickCount);
-            skillView?.Update(Simulation,Time.time);
+            if(skillRemaster!=null&&skillRemaster.Active)skillView?.Reset();else skillView?.Update(Simulation,Time.time);
             hud?.Refresh(p,Simulation.TickCount);StageFlowBossBar();
             if(NativeHd2D.Enabled&&!NativeRemodel3D.Active)Hd2dArenaFrame();
             teleView?.Update(Simulation,view); // 최종 flat camera의 화면 장판 clip 경계를 사용한다.
@@ -696,7 +709,7 @@ namespace Exoduser.UnityPort
         public static string Argument(string key){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,key);return i>=0&&i+1<a.Length?a[i+1]:"";}
         [Serializable] sealed class SmokeReceipt{public bool moved,webViewUsed,charged,released;public float initialX,finalX,maximumCharge;public int originalMapChunks,loadedChunks,enemyActors,maximumProjectiles,kills,totalDamage;public FeedbackAudioReceipt feedbackAudio;public ImpactReceipt feedbackVisual;}
         [Serializable] sealed class HudSmokeReceipt{public string scope,activeSkill,iconResource;public bool iconDrawn;public HudPixelProbe[] cases;}
-        void OnDestroy(){nextDifficulty.Dispose();NativePanelTabBar.Requested-=OnPanelRequested;kiView?.Dispose();boltView?.Dispose();impacts?.Dispose();skillView?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();music?.Dispose();ambient?.Dispose();if(Instance==this)Instance=null;}
+        void OnDestroy(){nextDifficulty.Dispose();NativePanelTabBar.Requested-=OnPanelRequested;skillRemaster?.Dispose();contactVfx?.Dispose();kiView?.Dispose();boltView?.Dispose();impacts?.Dispose();skillView?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();music?.Dispose();ambient?.Dispose();if(Instance==this)Instance=null;}
         [Serializable] sealed class TextReviewLabel {public string text;public int count,priority;public long value;public float originX,originY,x,y,width,height,distance;}
         [Serializable] sealed class TextReviewShot {public string name,kind,note;public int tick,visible,deferred,stateEvents,damageEvents;public float realSeconds;public List<TextReviewLabel> labels=new List<TextReviewLabel>();}
         readonly List<TextReviewShot> textReviewShots=new List<TextReviewShot>();float textReviewStart;
