@@ -26,6 +26,9 @@ if($source.IndexOf('        static InventoryItem FullRunUpgradeItem(') -lt 0){$g
 if($source.IndexOf('        static int FullRunAuxSkills(') -lt 0){$growthBody+='static int FullRunAuxSkills(Simulation sim,bool fighting,float nearest){return 0;}'}
 $navStart=$source.IndexOf('    sealed class FullRunNavigation')
 $navBody=$source.Substring($navStart,$source.LastIndexOf("`n}")-$navStart)
+$attackMatch=[regex]::Match($source,'bool attack = [^;]+;')
+if(-not $attackMatch.Success){throw 'Actual attack decision not found'}
+$attackBody=$attackMatch.Value
 $prefix=@'
 using System;using System.IO;using System.Collections.Generic;using System.Text.Json;using Exoduser.UnityPort.Core;using Exoduser.UnityPort;
 struct Vector2{public float x,y;public Vector2(float a,float b){x=a;y=b;}public static Vector2 zero=>new Vector2();public static Vector2 up=>new Vector2(0,1);public float magnitude=>(float)Math.Sqrt(x*x+y*y);public Vector2 normalized{get{float d=magnitude;return d>0?new Vector2(x/d,y/d):new Vector2();}}public static Vector2 operator+(Vector2 a,Vector2 b)=>new Vector2(a.x+b.x,a.y+b.y);public static Vector2 operator-(Vector2 a,Vector2 b)=>new Vector2(a.x-b.x,a.y-b.y);public static Vector2 operator*(Vector2 a,float f)=>new Vector2(a.x*f,a.y*f);public static float SqrMagnitude(Vector2 a)=>a.x*a.x+a.y*a.y;public static float Distance(Vector2 a,Vector2 b)=>(float)Math.Sqrt(SqrMagnitude(a-b));}
@@ -37,6 +40,7 @@ static void Check(bool ok,string name,Route route){rows.Add(new{name,passed=ok,x
 static bool At(Route r,float x,float y)=>Math.Abs(r.X-x)<.01&&Math.Abs(r.Y-y)<.01;
 static bool FullRunLine(float x,float y,float tx,float ty)=>true;
 /* GROWTH_HELPER */
+static bool ReadActualAttack(Simulation sim){var p=sim.Player;var flow=sim.Stage;bool fighting=true,defend=false,evade=false,shield=false;/* ATTACK_SELECTOR */return attack;}
 class DefenseInput{public string ParryClass;public float Mana;}
 static (bool defend,bool evade) Defense(string kind,float mana){var p=new DefenseInput{Mana=mana};var bullet=new DefenseInput{ParryClass=kind};bool defend=false,evade=false;
 /* DEFENSE_BODY */
@@ -52,6 +56,9 @@ s=Make();s.Stage.InArena=true;s.Stage.BossAlive=true;s.AddEnemy(new EnemyState{I
 s=Make();s.Stage.InArena=true;s.Stage.BossAlive=false;s.Stage.Exits.Add(new StageFlow.Tile(50,5));r=ReadActualRoute(s);Check(At(r,2020,220),"defeated arena goes to real opened exit",r);
 s=Make();s.Stage.BossUnlocked=true;s.Stage.Exits.Add(new StageFlow.Tile(99,14));s.Stage.Exits.Add(new StageFlow.Tile(100,14));r=ReadActualRoute(s);Check(At(r,4020,580),"unlocked field approaches real gate",r);
 s=Make();s.AddEnemy(new EnemyState{Alive=true,Hp=100,MaxHp=100,X=2250,Y=4100});r=ReadActualRoute(s);Check(At(r,2000,4100)&&r.Objective=="combat","nearby enemy keeps in-range combat",r);
+s=Make();s.Player.X=4000;s.Player.Y=8000;s.EnableFieldSpawns();s.SpawnHoles.Holes.Clear();s.FieldBosses=new[]{new FieldBossState{Index=0,X=6000,Y=6000,Hp=100,MaxHp=100}};r=ReadActualRoute(s);Check(r.Objective.StartsWith("angler-"),"finished far summon sites must not delay the remaining anglers",r);
+s=Make();s.AddEnemy(new EnemyState{Alive=true,Hp=100,MaxHp=100,X=2080,Y=4100});s.AddEnemy(new EnemyState{Alive=true,Hp=100,MaxHp=100,X=2300,Y=4100,Etype=7});r=ReadActualRoute(s);Check(At(r,2090,4100),"near summoner takes priority over its disposable add",r);
+s=Make();s.EnableFieldSpawns();s.SpawnHoles.Holes.Clear();s.FieldBosses=new[]{new FieldBossState{Index=0,X=2600,Y=4100,Hp=100,MaxHp=100}};s.AddEnemy(new EnemyState{Alive=true,Hp=100,MaxHp=100,X=2080,Y=4100});r=ReadActualRoute(s);Check(At(r,2390,4100),"after holes finish an angler takes priority over a nearby add",r);
 var d=Defense("physical",100);Check(!d.defend&&d.evade,"physical bullet must not choose wrong Q input",new Route{Objective="physical"});
 d=Defense("magic",100);Check(d.defend&&!d.evade,"magic bullet with mana chooses Q",new Route{Objective="magic"});
 d=Defense("forbidden",100);Check(!d.defend&&d.evade,"unparryable bullet chooses evade",new Route{Objective="forbidden"});
@@ -64,9 +71,10 @@ g=Make();g.Player.StatPoints=0;g.Player.PassivePoints=1000;Check(FullRunAllocate
 var oldWeapon=new InventoryItem{slot="weapon",wtype="sword",atk=10,spd=.5,name="old"};var better=new InventoryItem{slot="weapon",wtype="sword",atk=20,spd=.6,name="earned"};var locked=new InventoryItem{slot="weapon",wtype="sword",atk=1000,spd=2,name="locked",reqLv=99};var worn=new InventoryItem[17];worn[0]=oldWeapon;var inv=new InventoryState(new InventorySeedData{equipped=worn,bag=new[]{better,locked}});var selected=FullRunUpgradeItem(inv,1);Check(ReferenceEquals(selected,better),"selects owned usable upgrade instead of level-locked loot",new Route());Check(ReferenceEquals(inv.GetEquipped("weapon"),oldWeapon)&&inv.Bag.Count==2,"selection never edits equipment or ownership",new Route());inv.TryEquip(better,1,out _);Check(FullRunUpgradeItem(inv,1)==null,"no downgrade or repeated equip when all usable items are worse",new Route());
 var escapeSim=Make();escapeSim.Player.State="pStun";escapeSim.Player.Mana=100;escapeSim.IceOrbCd=0;Check((FullRunAuxSkills(escapeSim,true,100)&2)!=0,"stun selects the learned Ctrl escape skill",new Route());escapeSim.IceOrbCd=100;Check((FullRunAuxSkills(escapeSim,true,100)&2)==0,"Ctrl escape respects actual cooldown",new Route());escapeSim=Make();escapeSim.Rage=80;escapeSim.Materials=1000;Check((FullRunAuxSkills(escapeSim,true,200*200)&4)!=0,"earned rage can use stationary Space burst",new Route());
 var md=JsonSerializer.Deserialize<MapData>(File.ReadAllText(args[1]),new JsonSerializerOptions{IncludeFields=true});var map=new SourceMap(md);var nav=new FullRunNavigation();float nx=5145.0137f,ny=3796.453f;for(int t=0;t<1800;t++){var v=nav.Direction(nx,ny,5620,5220,16,map.CanMove,t).normalized;if(map.CanMove(nx+v.x*2.7f,ny,16))nx+=v.x*2.7f;if(map.CanMove(nx,ny+v.y*2.7f,16))ny+=v.y*2.7f;}Check(Vector2.Distance(new Vector2(nx,ny),new Vector2(5620,5220))<60,"real source map corner must reach the next summon site",new Route{X=nx,Y=ny});
+var charged=Make();charged.Stage.InArena=true;charged.Player.KiChargeActive=true;charged.Player.KiChargeTicks=119;Check(ReadActualAttack(charged),"boss third slash holds until the real tier3 boundary",new Route());charged.Player.KiChargeTicks=120;Check(!ReadActualAttack(charged),"boss tier3 is released at120 ordinary ticks",new Route());charged.Stage.InArena=false;charged.Player.KiChargeTicks=30;Check(!ReadActualAttack(charged),"field third slash retains its short release",new Route());charged.Player.KiChargeTicks=29;Check(ReadActualAttack(charged),"field short release is not premature",new Route());
 File.WriteAllText(args[0],JsonSerializer.Serialize(new{passed=rows.Count-failures,failures,scope="Actual NativeGame.FullRunQa route body with pure geometry shim; no Player/GPU claim",rows},new JsonSerializerOptions{WriteIndented=true}));Console.WriteLine("checks="+rows.Count+" failures="+failures);return failures>0?1:0;}}
 '@
-[IO.File]::WriteAllText((Join-Path $Output 'Program.cs'),$prefix.Replace('/* DEFENSE_BODY */',$defenseBody).Replace('/* GROWTH_HELPER */',$growthBody)+"`n"+$body+"`n"+$suffix+"`n"+$navBody)
+[IO.File]::WriteAllText((Join-Path $Output 'Program.cs'),$prefix.Replace('/* DEFENSE_BODY */',$defenseBody).Replace('/* GROWTH_HELPER */',$growthBody).Replace('/* ATTACK_SELECTOR */',$attackBody)+"`n"+$body+"`n"+$suffix+"`n"+$navBody)
 $core=$project.Replace('\','/')+'/Assets/Exoduser/Runtime/Core/**/*.cs'
 $csproj='<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><EnableDefaultCompileItems>false</EnableDefaultCompileItems><NuGetAudit>false</NuGetAudit></PropertyGroup><ItemGroup><Compile Include="Program.cs"/><Compile Include="'+$core+'"/><Compile Include="'+$project.Replace('\','/')+'/Assets/Exoduser/Runtime/SourceMap.cs"/></ItemGroup></Project>'
 [IO.File]::WriteAllText((Join-Path $Output 'FullRunRouteTests.csproj'),$csproj)

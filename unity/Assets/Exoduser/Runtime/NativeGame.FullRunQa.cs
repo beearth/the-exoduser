@@ -23,27 +23,31 @@ namespace Exoduser.UnityPort
         [Serializable] sealed class FullRunSample
         {
             public string scene, state, target, bossState;
-            public float seconds, x, y, hp, shield, mana, stamina, fps;
+            public float seconds, x, y, hp, shield, mana, stamina, fps, maxHp, maxShield, maxMana, maxStamina, poison, iceCd, slamCd, aimX, aimY;public double rage;public bool iceActive;public List<FullRunNearby> nearby;
             public int tick, kills, level, experience, loot, bag, regions, anglers, holes, bossHp, sp, ap, strength, fortify, human, melee;
             public bool arena, cleared, gate;
             public int[] regionKills, regionTotals;
         }
+        [Serializable] sealed class FullRunNearby {public string kind;public int id,type;public double hp,x,y,distance;public bool line;}
+        string fullRunCapturePrefix="",fullRunCaptureActivity="";float fullRunAimX,fullRunAimY;
         [Serializable] sealed class FullRunReceipt
         {
-            public string scope = "Actual GPU Player; virtual InputSystem keyboard/mouse -> NativeGame.FixedUpdate. No teleport, HP/resource edits, enemy injection, forced kill or gate unlock. Story and first practice use supported skip. Earned growth points use the ordinary transactional stat purchase API; owned usable gear is equipped through NativeInventory.Equip. No forced healing.";
+            public string scope = "Actual GPU Player; virtual InputSystem keyboard/mouse -> NativeGame.FixedUpdate. No direct position/HP/resource edits, enemy injection, forced kill or gate unlock. Boss retries use the real death screen callback and its ordinary resource restoration; deaths and retries are counted. Story and first practice use supported skip. Earned growth points use the ordinary transactional stat purchase API; owned usable gear is equipped through NativeInventory.Equip. No forced healing.";
             public string result, device, buildGuid;
             public int width, height;
             public float seconds, averageFps, frameP95Ms, frameP99Ms, longestFrameMs;
-            public int renderedFrames, gearChanges;
+            public int renderedFrames, gearChanges, deaths, retries;
             public bool worldCleared, clearModalNotApplicable, clearModalBlockedBackground, clearCancelRearmed, clearReturnedLobby, clearSaveExists;
             public float worldClearSeconds;
             public string clearUiScope = "After natural clear: actual panel callbacks and virtual Escape through NativeGame.Update; not OS/IMGUI button injection.";
             public List<FullRunSample> samples = new List<FullRunSample>();
         }
+        [Serializable] sealed class FullRunLongFrame {public float seconds,ms;public int tick,loadPhase;public bool arena;public string capture,state;}
         sealed class FullRunFrameProbe : MonoBehaviour
         {
             public readonly List<float> milliseconds=new List<float>();
-            void Update(){milliseconds.Add(Time.unscaledDeltaTime*1000);}
+            public NativeGame game;public string output;
+            void Update(){float ms=Time.unscaledDeltaTime*1000;milliseconds.Add(ms);if(ms>100&&game!=null&&game.Simulation!=null){var s=game.Simulation;File.AppendAllText(Path.Combine(output,"long-frames.jsonl"),JsonUtility.ToJson(new FullRunLongFrame{seconds=Time.realtimeSinceStartup,ms=ms,tick=s.TickCount,loadPhase=s.Stage.LoadPhase,arena=s.Stage.InArena,capture=game.fullRunCaptureActivity,state=s.Player.State})+"\n");}}
         }
 
         IEnumerator FullRunQa()
@@ -83,10 +87,11 @@ namespace Exoduser.UnityPort
             var keyboard = InputSystem.AddDevice<Keyboard>(); var mouse = InputSystem.AddDevice<Mouse>();
             var visits = new HashSet<int>();
             var patterns = new HashSet<string>();
-            var performance = gameObject.AddComponent<FullRunFrameProbe>();
+            var performance = gameObject.AddComponent<FullRunFrameProbe>();performance.game=this;performance.output=output;
             var navigation = new FullRunNavigation();
             float nextSample = 0, nextStep = Time.realtimeSinceStartup;
             int maxTicks; if (!int.TryParse(Argument("-qa-max-ticks"), out maxTicks)) maxTicks = 54000;
+            int retryLimit;if(!int.TryParse(Argument("-qa-retries"),out retryLimit))retryLimit=5;retryLimit=Mathf.Clamp(retryLimit,0,20);
             int firstTick = Simulation.TickCount, previousLevel = Simulation.Player.Level, previousBag = inventory.State.Bag.Count;
             bool pickupShot=false;bool battleShot = false, arenaShot = false, dropShot = false, gateShot = false, exitShot = false;
             float previousX = Simulation.Player.X, previousY = Simulation.Player.Y;
@@ -97,7 +102,19 @@ namespace Exoduser.UnityPort
                 while (Simulation.TickCount - firstTick < maxTicks)
                 {
                     var sim = Simulation; var p = sim.Player; var flow = sim.Stage;
-                    if (PlayerDown) { yield return new WaitForSecondsRealtime(2.7f); receipt.result = "player-death"; yield return FullRunShot(output, "death"); break; }
+                    if (PlayerDown)
+                    {
+                        receipt.deaths++;yield return new WaitForSecondsRealtime(2.7f);yield return FullRunShot(output,"death");
+                        if(flow.InArena&&receipt.retries<retryLimit)
+                        {
+                            InputState.Change(keyboard,new KeyboardState());InputState.Change(mouse,new MouseState());
+                            death.OnRetry?.Invoke();Running=false;yield return null;
+                            if(PlayerDown||Simulation.Stage.InArena){receipt.result="death-retry-blocked";break;}
+                            receipt.retries++;fullRunCapturePrefix="retry-"+receipt.retries.ToString("00")+"-";
+                            navigation=new FullRunNavigation();patterns.Clear();yield return FullRunShot(output,"retry-field");continue;
+                        }
+                        receipt.result="player-death";break;
+                    }
                     if (flow.StageCleared)
                     {
                         receipt.worldCleared=true;receipt.worldClearSeconds=Time.realtimeSinceStartup-started;
@@ -118,18 +135,18 @@ namespace Exoduser.UnityPort
                     }
                     if(FullRunAllocateGrowth(sim)){hud.Refresh(p,sim.TickCount,true);RequestCombatSave();}
                     Vector2 destination = new Vector2(p.X, p.Y), aim = destination + Vector2.up * 200;
-                    bool fighting = false; float nearest = 850 * 850;
+                    bool fighting = false; float nearest = 850 * 850,targetScore=float.MaxValue;
                     foreach (var e in sim.Enemies)
                     {
                         if (!e.Alive || Simulation.IsRemodelProp(e)) continue;
                         float d = (e.X - p.X) * (e.X - p.X) + (e.Y - p.Y) * (e.Y - p.Y);
-                        if (d < nearest) { nearest = d; aim = new Vector2(e.X, e.Y); fighting = true; }
+                        if(d>=850*850)continue;nearest=Math.Min(nearest,d);float score=e.Etype==7&&d<550*550&&FullRunLine(p.X,p.Y,e.X,e.Y)?d/20:d;if(score<targetScore){targetScore=score;aim=new Vector2(e.X,e.Y);fighting=true;}
                     }
                     if (sim.FieldBosses != null) foreach (var a in sim.FieldBosses)
                     {
                         if (a == null || a.Hp <= 0) continue;
                         float d = (float)((a.X - p.X) * (a.X - p.X) + (a.Y - p.Y) * (a.Y - p.Y));
-                        if (d < nearest) { nearest = d; aim = new Vector2((float)a.X, (float)a.Y); fighting = true; }
+                        if(d>=850*850)continue;nearest=Math.Min(nearest,d);float score=sim.SpawnHoles!=null&&sim.SpawnHoles.Holes.Count==0?d/100:d;if(score<targetScore){targetScore=score;aim=new Vector2((float)a.X,(float)a.Y);fighting=true;}
                     }
                     if (flow.InArena && !flow.BossAlive && flow.Exits.Count > 0)
                     {
@@ -162,7 +179,7 @@ namespace Exoduser.UnityPort
                             var h = SpawnHoleSystem.Stage0Holes[i]; var q = new Vector2((float)h[0], (float)h[1]);
                             bool pending = false;
                             if (sim.SpawnHoles != null) foreach (var live in sim.SpawnHoles.Holes) if (live.X == h[0] && live.Y == h[1]) pending = true;
-                            if (!pending && Vector2.Distance(new Vector2(p.X,p.Y),q)<750) { visits.Add(i); continue; }
+                            if (!pending && (sim.SpawnHoles!=null||Vector2.Distance(new Vector2(p.X,p.Y),q)<750)) { visits.Add(i); continue; }
                             float d = Vector2.SqrMagnitude(q - new Vector2(p.X,p.Y));
                             if (d < best) { best = d; destination = q; objective = "hole-" + i; }
                         }
@@ -181,7 +198,7 @@ namespace Exoduser.UnityPort
                         }
                     }
                     var move = navigation.Direction(p.X,p.Y,destination.x,destination.y,p.Radius,FullRunCanMove,sim.TickCount);
-                    if(fighting&&nearest<400*400&&FullRunLine(p.X,p.Y,aim.x,aim.y)){var offset=new Vector2(p.X,p.Y)-aim;var tangent=new Vector2(-offset.y,offset.x).normalized;if(FullRunCanMove(p.X+tangent.x*80,p.Y+tangent.y*80,p.Radius))move=tangent;}
+                    if(fighting&&Vector2.SqrMagnitude(new Vector2(p.X,p.Y)-aim)<260*260&&FullRunLine(p.X,p.Y,aim.x,aim.y)){var offset=new Vector2(p.X,p.Y)-aim;var tangent=new Vector2(-offset.y,offset.x).normalized;if(FullRunCanMove(p.X+tangent.x*80,p.Y+tangent.y*80,p.Radius))move=tangent;}
                     var keys = new List<Key> { Key.R };
                     bool defend=false,evade=false,shield=false;Vector2 threat=aim;double shieldDistance=0,shieldSpeed=0;
                     if(sim.Druid!=null&&p.Iframes<=0)
@@ -219,9 +236,10 @@ namespace Exoduser.UnityPort
                     if (move.x > .25f) keys.Add(Key.D); else if(move.x < -.25f) keys.Add(Key.A);
                     if (move.y > .25f) keys.Add(Key.S); else if(move.y < -.25f) keys.Add(Key.W);
                     // Release the third charged slash periodically; continuous hold never releases it.
-                    bool attack = fighting&&!defend&&!shield&&!evade&&(p.Stamina>=10||p.KiChargeActive)&&(!p.KiChargeActive||p.KiChargeTicks<30);
+                    bool attack = fighting&&!defend&&!shield&&!evade&&(p.Stamina>=10||p.KiChargeActive)&&(!p.KiChargeActive||p.KiChargeTicks<(flow.InArena?120:30));
                     bool magic = fighting&&!defend&&!shield&&!evade&&p.Mana>=40&&sim.TickCount%150<(p.Stamina<20?60:18);
                     if(aux!=0||sim.IceOrbActive){attack=false;magic=false;}
+                    if(flow.InArena&&p.KiChargeActive&&p.KiChargeTicks<120&&!sim.IceOrbActive)attack=true;
                     if (fighting && sim.TickCount % 600 < 1) keys.Add(Key.Digit1);
                     keyboard.MakeCurrent(); mouse.MakeCurrent(); InputState.Change(keyboard,new KeyboardState(keys.ToArray()));
                     var aimPoint = NativeRemodel3D.Active ? NativeRemodel3D.Point(aim.x,aim.y) : Point(aim.x,aim.y);
@@ -229,7 +247,7 @@ namespace Exoduser.UnityPort
                     var screen = HudCamera.WorldToScreenPoint(aimPoint);
                     var ms = new MouseState { position = new Vector2(screen.x,screen.y) };
                     if (attack) ms=ms.WithButton(MouseButton.Left); if (magic) ms=ms.WithButton(MouseButton.Right);
-                    InputState.Change(mouse,ms);
+                    InputState.Change(mouse,ms);fullRunAimX=aim.x;fullRunAimY=aim.y;
                     Running=true; FixedUpdate(); Running=false; UpdateViews();
                     if (Vector2.Distance(destination,new Vector2(p.X,p.Y))>80 && Mathf.Abs(p.X-previousX)+Mathf.Abs(p.Y-previousY)<.01f) stalled++; else stalled=0;
                     previousX=p.X;previousY=p.Y;
@@ -321,6 +339,11 @@ namespace Exoduser.UnityPort
             var s=Simulation;var p=s.Player;var b=s.Stage.FindBoss();string state="";DruidData data;
             if(b!=null&&s.Druid!=null&&s.Druid.Data.TryGetValue(b,out data))state=data.S;
             var row=new FullRunSample{scene=s.Stage.InArena?"arena":"field",state=p.State,target=target,bossState=state,seconds=Time.realtimeSinceStartup-started,x=p.X,y=p.Y,hp=p.Hp,shield=p.Shield,mana=p.Mana,stamina=p.Stamina,fps=1/Mathf.Max(.0001f,Time.unscaledDeltaTime),sp=p.StatPoints,ap=p.PassivePoints,strength=s.Growth.Value("str"),fortify=s.Growth.Value("pFortify"),human=s.Growth.Value("pHuman"),melee=s.Growth.Value("pMelee"),tick=s.TickCount,kills=s.Kills,level=p.Level,experience=p.Experience,loot=s.Loot.Count,bag=inventory.State.Bag.Count,regions=s.RegionClearedCount(),anglers=s.FieldBossAliveCount(),holes=s.SpawnHoles!=null?s.SpawnHoles.Holes.Count:0,bossHp=b!=null?b.Hp:0,arena=s.Stage.InArena,cleared=s.Stage.StageCleared,gate=s.Stage.BossUnlocked};
+            row.maxHp=p.MaxHp;row.maxShield=p.MaxShield;row.maxMana=p.MaxMana;row.maxStamina=p.MaxStamina;row.poison=s.PlayerPoison;row.iceCd=s.IceOrbCd;row.slamCd=s.GiantSlamCd;row.rage=s.Rage;row.iceActive=s.IceOrbActive;row.aimX=fullRunAimX;row.aimY=fullRunAimY;
+            row.nearby=new List<FullRunNearby>();
+            foreach(var e in s.Enemies){if(!e.Alive||Simulation.IsRemodelProp(e))continue;double dx=e.X-p.X,dy=e.Y-p.Y,dist=Math.Sqrt(dx*dx+dy*dy);if(dist<1300)row.nearby.Add(new FullRunNearby{kind="enemy",id=e.Id,type=e.Etype,hp=e.Hp,x=e.X,y=e.Y,distance=dist,line=FullRunLine(p.X,p.Y,e.X,e.Y)});}
+            if(s.FieldBosses!=null)foreach(var a in s.FieldBosses){if(a==null||a.Hp<=0)continue;double dx=a.X-p.X,dy=a.Y-p.Y,dist=Math.Sqrt(dx*dx+dy*dy);if(dist<1300)row.nearby.Add(new FullRunNearby{kind="angler",id=a.Index,hp=a.Hp,x=a.X,y=a.Y,distance=dist,line=FullRunLine(p.X,p.Y,(float)a.X,(float)a.Y)});}
+            row.nearby.Sort((a,c)=>a.distance.CompareTo(c.distance));if(row.nearby.Count>5)row.nearby.RemoveRange(5,row.nearby.Count-5);
             if(s.Regions!=null){row.regionKills=new int[4];row.regionTotals=new int[4];for(int i=0;i<4;i++){row.regionKills[i]=s.Regions[i].Kills;row.regionTotals[i]=s.Regions[i].Total;}}
             return row;
         }
@@ -351,10 +374,11 @@ namespace Exoduser.UnityPort
         }
         IEnumerator FullRunShot(string output,string name)
         {
+            bool wide=name=="00-lobby"||name=="combat"||name=="boss-entry"||name=="death"||name=="clear"||name=="clear-difficulty"||name=="clear-lobby";name=fullRunCapturePrefix+name;fullRunCaptureActivity=name;
             yield return new WaitForEndOfFrame();
             var image=ScreenCapture.CaptureScreenshotAsTexture();
             try{File.WriteAllBytes(Path.Combine(output,"caps",name+".png"),image.EncodeToPNG());File.AppendAllText(Path.Combine(output,"capture-sizes.jsonl"),"{\"name\":\""+name+"\",\"width\":"+image.width+",\"height\":"+image.height+"}\n");}finally{Destroy(image);}
-            if(Screen.width!=3840&&(name=="00-lobby"||name=="combat"||name=="boss-entry"||name=="death"||name=="clear"||name=="clear-difficulty"||name=="clear-lobby"))
+            if(Screen.width!=3840&&wide)
             {
                 int previousWidth=Screen.width,previousHeight=Screen.height;
                 Screen.SetResolution(3840,1080,FullScreenMode.Windowed);
@@ -364,6 +388,7 @@ namespace Exoduser.UnityPort
                 Screen.SetResolution(previousWidth,previousHeight,FullScreenMode.Windowed);
                 yield return null;yield return null;
             }
+            fullRunCaptureActivity="";
         }
         IEnumerator FullRunEnd(string output,FullRunReceipt receipt,float started)
         {
