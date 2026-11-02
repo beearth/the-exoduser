@@ -98,6 +98,7 @@ namespace Exoduser.UnityPort
                     if (flow.StageCleared)
                     {
                         receipt.worldCleared=true;receipt.worldClearSeconds=Time.realtimeSinceStartup-started;
+                        yield return new WaitForSecondsRealtime(.6f); // Respect the clear button's ordinary .5 s input fence.
                         yield return FullRunShot(output,"clear");
                         yield return FullRunClearTransition(output,keyboard,receipt);
                         receipt.result=receipt.clearModalBlockedBackground&&receipt.clearCancelRearmed&&receipt.clearReturnedLobby&&receipt.clearSaveExists?"stage-cleared":"stage-cleared-transition-blocked";
