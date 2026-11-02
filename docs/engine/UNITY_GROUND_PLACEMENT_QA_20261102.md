@@ -909,3 +909,41 @@ ROOT metadata: 신규 shader meta의 빈 세 필드 뒤 공백만 제거해 git 
 
 
 ROOT source intake: full QA static passed. All coverage and raw-retention maxima are declared by the helper. Product8f unchanged. Prebuild source checkpoint only; actual full GPU/149-row, dense, exclusion and final integration acceptance pending.
+
+
+## 2026-11-02 full161 실제 Metal 최종 — 인수 보류
+
+제품8f 동일, QA822756730d260b43a2ef952a0c5a9972a812f5ea를 원격에서 빌드 전에 확인했다. 정상 ARM64 errors0, 원본 import 전후772 drift 바이트 모두 보존. 실제 run은 약2209초 동안 진행됐으며 한 장면 hard timeout 없이 각 probe진행/정상 프레임/메모리/디스크를 구분해 감독했다. 환경설정26raw/27cache exact 복구가 끝났고 설치1403 및 공유 HEAD/index/WIP 바이트도 유지 확인했다.
+
+| 최종 집계 | 실제 값 | 의미 |
+|---|---:|---|
+| 기본 상태 / 별도 dense / 총 행 |149 /12 /161 |49×3+2 및12조건×8효과, 중복ID0·누락0 |
+| 행 PASS / FAIL |100 /61 | 원 final false/exit2 유지 |
+| clone 대 독립 sampler 비교 FAIL |60행 | 실제 제품 출력 오류 확정 아님 |
+| 수명 정리 예외 |1행 | ring root Destroy 후 finally Dispose/Reset이 파괴 GO SetActive 호출 |
+| state metadata flag |161 true | 실제 두 lifecycle 행동 결과의 최종 merge가 예외로 실행되지 않았으므로 전체pool/2D행동 PASS라고 부르지 않음 |
+| GPU required / verified 행 |134 /74 |27개는 state-only; 링행은 GPUtrue이나 정리예외로 rowfalse |
+| 전체 layer / verified |1185 /901 |284 layer에서 모델 비교 미통과, proxy 정점 증명 아님 |
+| 선택 pixel 표본 |35570 | 모든 RGBA texel 참조 비교라고 주장하지 않음 |
+| depth / UV / derivative invalid 행 |0 /0 /0 | finite·nonzero derivative만으로 implicit sampling 동등성을 증명하지 않음 |
+| 최대 양의 pixel 깊이 차이 |0.019995689392089844m | 기존0.02m 이내, 제외 픽셀 원인 증명 아님 |
+| 최대 weight / RGBA 잔차 |0.3122860789299011 /0.4807712733745575 | 기존2/255 유지, 모델 FAIL 보존 |
+| 원72 ring signed distance / stroke 최대오차 |0.000006970018148422241m /0.00014434009790420532 | texture consumer 이름 GroundRing과 source Line72 ring 구분 |
+| 영구 float / PNG 저장 |348503495B /1948343722B | float3GiB cap/여유3GiB 지킴, retentionTruncatedfalse |
+
+저장자료 분석(6case/실패7layer/224표본)은21 FAIL을 보존했다. 그 중 완전한quad18개에서 capturedddx/ddy는 fine 차분과 일치하지만 implicit Sample과 같은 footprint라는 증거는 아니다. 제품8f는 URP SampleBias 경로, QA 독립 참조는 raw SampleGrad이므로 coarse/fine 및 실제_GlobalMipBias도 분리해야 한다. Git 설정의 renderScale1/카메라mMipBias0 또는SMAA만으로 런타임 값을 확정하지 않는다. 다음 실행은 실패한root-slope spikeTrap/SeekerMines 두 fixture에서 원제품 공개mode2/4, QAclone, 독립 모델을 같은 좌표·카메라·입력으로 비교한다. 원실패/2/255/texture/importer/Quality/제품 source를 바꾸지 않는다. 전체161을 새로 반복하지 않고 이 최소 진단을 먼저 인수한다.
+
+PC는 전송된 원본1920 세 장의 bytes/SHA를 모두 맞추고 직접 검수했다. RootSpike/Seeker는 뿌리 상면 접지와 공중 사각면 없음, soilDense8Lv20는 실제 효과와 겹친 player 몸/발이 앞에 정상 표시됨을 해당 프레임 범위에서 관측했다. deck까지 효과 이어짐은 확인했으나 난간전체/높은줄기/바위 개별 제외는 이 세 장으로 PASS하지 않았다. Root도 같은 원본을 열었다. 소유 whitelist3334 서버15248은 수신확인 후 SIGTERM/exit0로 종료했다. 별도 시각 관측은 runtime false/UNREVIEWED를 덮지 않는다. 범용 객체 마스크 framework는 전달 필수에서 제외했고, 실제 겹침/모호한 대상만 추가 근거를 수집한다.
+
+MAP PRODUCTION REPORT
+- STAGE: A2 soil/root-slope/wood-bridge의 ground-effect QA. MASTER/OUTER MASS/LARGE/MEDIUM geometry·원 assets 미변경. silhouette/regions/mainroute/sidespace/outerholes/composites/overlap은 새 제작·전체인수 대상 아님.
+- GROUND: 실제 원본1920/직접3840×1080, 전층 표시 후 layer격리·원enabled 복구. 양의 픽셀 접촉만 검사, 전체 환경 shadow/contamination/structure integration PASS 아님.
+- PLAYABLE: 실제 조작대상 앞 표시 일부 중첩 확인. 전체arena/travel/breathing/threat/전투 readability 미인수.
+- LANDMARK: primary/secondary/tertiary 미변경·전체 검수 아님.
+- CAMERA QA: 세 고정 실제 위치만, START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 투어 아님.
+- TECH QA:161 generated/0missing, clone-model60FAIL와ring정리예외1. route/collision/pageerror/404/seam 전체 미검수. CPU 호출시간은evidence이며 GPUFPS/자연플레이 증거 아님.
+- FILES: QA helpers/shaders/meta/guard 및 docs/evidence만. shared concurrent/unrelated WIP·index 유지.
+- GIT:82275673 source 원격선확인; 본 커밋 final결과. commonUnity/설치/Win64/배포는미수행.
+- VISUAL VERDICT: RETOUCH. 관측된 접지·player 앞표시는 양호; 전체 인수 보류. 기존 A2/ImpactR4 판정 유지.
+
+증거: `evidence/UNITY_MAC_RECEIVER_FULL_20261102.json`, `evidence/UNITY_MAC_RECEIVER_QUAD_ANALYSIS_20261102.json`. 원본 전체receipt·raw/PNG·before/after snapshot은 로컬 보존되며 그 SHA/정책/경로를 evidence에 기록했다.

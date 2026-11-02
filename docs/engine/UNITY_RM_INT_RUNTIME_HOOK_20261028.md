@@ -482,3 +482,6 @@ Shore는 고정앵글러 주변을 피한 후 z−52~−42에서 다시28u 굽�
 
 
 2026-11-02 맥 QA 후속: 제품8f 동일, QA2f368f10의 soil Lv1 spike 한 장면에서 captured GPU ddx/ddy 기반 SampleGrad 참조를 원2/255로 비교해32/32 valid, weight최대0.000423923135/RGBA최대0.00010918919 corrected smokePASS. 기존 mip0 bilinear FAIL은 보존. 원probe객체/정상재질/26raw27cache 복구. 입력hash/카메라가 같은 독립프레임 RGBA pairing이며 동시프레임 API 증명은 아님. 전체148/12large/8dense/72ring/제외/2D/M1/자연플레이/통합설치/Win64 인수는 아직 미완료. 상세 근거: UNITY_GROUND_PLACEMENT_QA_20261102.md 및 evidence/UNITY_MAC_RECEIVER_MODEL_20261102.json.
+
+
+2026-11-02 맥 후속 QA822 full161/161(149state+12dense),100PASS/61FAIL=clone 대 독립 sampler60행+ring test정리예외1. 원제품color오류는아직확정아님. depth/UV/derivative invalid0、source metadata161true이나 lifecycle행동결과최종merge는예외로미완료. 원실패·2/255보존, 다음rootSpike/Seeker두fixture에서제품공개2/4-vsclone-vsmodel비교. 26raw27cache복구,설치1403/공유WIP유지. 전체통합설치/Win64미인수. 근거: UNITY_GROUND_PLACEMENT_QA_20261102 및 evidence/UNITY_MAC_RECEIVER_FULL_20261102.json.
