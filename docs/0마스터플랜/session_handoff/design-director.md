@@ -144,3 +144,11 @@ codex-web-wide-anim이 원래 영상 가림을 해소하고 manifest 위치/높�
 - 사용자 직접 브리프 1·2절만 진행. 원본 A/실버테일 원화와 v22b 20초 피강을 직접 대조, 내장 image_gen으로 후보3장+달1회 교정. 거대 마왕 요새·자연스러운 왼쪽 부츠·어두운 피강·원형 달을 비교한 `G:/exoduser/tmp/design-review/20261102_title_keyframe/BOARD.png`(4740×4320). 달 지름비 C1 149/147=1.0136, C2 142/142=1.0000, C3 156/157=.9936. C2는 생성 교정도 실패해 달 영역 국소 기하 보정으로 전환.
 - **CTO 선택 대기 / 후보 RETOUCH / 새 아트 게임 미적용**. 원생성2171~2172×724를2144×603 크롭 후3840×1080으로 균등 확대, 네이티브4K가 아니다. 고해상도 세부와32:9 피강 잔해 판독은 선택 후 보완 대상. PNG 원본·프롬프트·측정·전체/전신1x/발3x/손/성/강/달 크롭은 같은 경로와 I:/EXODUSER-Storage/codex-takeover/title-keyframe-20261102/ 보존. Kling/영상 생성·게임 자산 교체 없음.
 - 2절은 최신 origin/main 604cd2ca6 fetch/merge(Already up to date) 후 시작. 로고 왼쪽=`max(48px,4.5vh)`, 메뉴=로고+20k. 실제1920/2560/3840×1080에서48.6/68.6px, 총7크기 경계 PASS·키보드 선택 PASS·pageerror0, 타이틀8/8·project-check111/111. 최신 main에서 E 잘림은 미재현, 좁은800×1080의 기존40px<48.6px만 재현. 전후 캡처·원격SHA·최종 보고는 위 I: REPORT.md.
+
+## 2026-11-02 시작 메뉴 C2 tall 최종 반영
+
+최종 브리프의 tall-final/loop.mp4(2036×1016,24fps,8.583333초)로 이전 A·crop32를 대체했다. 중앙 cover로16/21/32:9에서 달·해골2개·실버테일 전신을 보존하고, 같은 좌표의 적갈색 폭포2줄기를100/75 원본px/s·alpha.38로 보강했다. 로고/메뉴48.6/68.6px 여백 유지. 유료 생성0.
+
+실제3해상도·각10초 녹화·1x·레퍼런스 나란히 비교를 자체 확인했다. 0.1초 차이 근거리4.01~4.24/원거리2.77~3.03, 하늘.42~.81. 발/바위86표본 최적이동0px,206프레임 동일연속0. 모션감소·저사양·분위기0·영상오류·입력/해제 PASS, 오류/404/세이브쓰기0. 회귀39/39·project111/111·guard PASS. VISUAL VERDICT: PASS는 이 웹 타이틀 범위이며 실제 모니터·NW.js·Unity·오디오·Steam/외부 배포는 미검수.
+
+최신 수치는 스플래시 C2 현행 계약, source/원격SHA·녹화/1x·비교는 I:/EXODUSER-Storage/codex-takeover/title-motion-final-20261102/REPORT.md. 확인서버 http://127.0.0.1:3384/index.html?test=1. 기존 unrelated living-scenes와 폐기 crop32 작업 파일은 이번 커밋에서 제외해 보존한다.
