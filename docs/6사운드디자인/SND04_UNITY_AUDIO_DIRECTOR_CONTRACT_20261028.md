@@ -41,7 +41,7 @@
 | `druid_tide` | `sfx/boss/druid_tide.mp3` | .5 · `_r(1,.04)` | SKILL 10 | `tideWave` 시작 |
 | `druid_sink` | `sfx/boss/druid_sink.mp3` | .55 · `_r(1,.04)` | SKILL 10 | 침강 시작 |
 | `crit_heavy` | `sfx/hit/crit_heavy.mp3` | .45 · `_r(1,.05)` | 기본 HIT 2 | DOT·noSound 제외, 12프레임 쿨다운 |
-| `amb_hell_forest_bed` | `sfx/ambient/hell_forest_bed.mp3` | .15 × SFX 설정 · 루프 | AMB 0 | BGM 키가 `hell1`일 때만, 다른 키면 800ms 페이드 정지 |
+| `amb_hell_forest_bed` | `sfx/ambient/hell_forest_bed.mp3` | .09 × SFX 설정 · 루프 (웹 2026-11-02 .15→.09, Unity 반영 대기) | AMB 0 | BGM 키가 `hell1`일 때만, 다른 키면 800ms 페이드 정지 |
 
 1-1 Unity 리모델링 전용 `druid_hit`·목소리·아레나·보스곡은 웹에 없는 새 설계다. 이 표의 웹 원본 키와 섞어서 웹 이식률로 계산하지 않는다. 파일별 채택과 임시 음량은 `DRUID_BOSS_SOUND_REMAKE_20261028.md` 및 Unity 후보의 `RM1_AUDIO_KEYS.json`이 기준이다.
 

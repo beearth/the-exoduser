@@ -12828,7 +12828,7 @@ document.addEventListener('click',function(e){
 // ── SND-10: 실패 소리 — 자원 부족·쿨다운(전사)·장착 실패. 실버테일은 기존 음성(voice_*)이 있어 showPH에서 부르지 않는다. 400ms 쿨다운 ──
 let _uiFailAt=0;
 function _uiFail(){const n=performance.now();if(n-_uiFailAt<400)return;_uiFailAt=n;playSample('ui_fail',.2,1)}
-// ── SND-02: 1장(hell1) 앰비언스 루프 — BGM.play 끝에서 동기화, 그 외 키는 800ms 페이드 정지 ──
+// ── SND-02: 1장(hell1) 앰비언스 루프 — BGM.play 끝에서 동기화, 그 외 키는 800ms 페이드 정지. 음량 .09(11-02: .15는 저음대에서 발소리를 덮음) ──
 let _ambRef=null,_ambWant=false;
 function _ambSync(key,_try){
   _ambWant=(key==='hell1');
@@ -12838,7 +12838,7 @@ function _ambSync(key,_try){
   const k='amb_hell_forest_bed',go=function(){
     if(!_ambWant||_ambRef||!_audioBuffers[k])return;
     try{const c=actx(),s=c.createBufferSource();s.buffer=_audioBuffers[k];s.loop=true;
-      const g=c.createGain();g.gain.value=.15*sfxVol();s.connect(g);g.connect(mbus());s.start();_ambRef={src:s,gain:g}}catch(e){_ambRef=null}
+      const g=c.createGain();g.gain.value=.09*sfxVol();s.connect(g);g.connect(mbus());s.start();_ambRef={src:s,gain:g}}catch(e){_ambRef=null}
   };
   if(_audioBuffers[k]){go();return}
   if(_audioLoadPending[k]){if((_try||0)<20)setTimeout(function(){if(_ambWant&&!_ambRef)_ambSync('hell1',(_try||0)+1)},500);return}
@@ -33416,7 +33416,7 @@ function update(){
     const _wdd=Math.sqrt((P.x-_wx0)*(P.x-_wx0)+(P.y-_wy0)*(P.y-_wy0));
     P._walkMoving=_wdd>0;
     if(P._walkMoving)P._walkFacing=Math.atan2(P.y-_wy0,P.x-_wx0);
-    if(_wdd>0){const _prevD=P._walkDist||0;P._walkDist=_prevD+_wdd;const _prevF=~~(_prevD/32)%8,_curF=~~(P._walkDist/32)%8;if(_prevF!==_curF&&(_curF===0||_curF===4)){playSample(_curF===0?'footstep':'footstep2',.3,_r(.9,.15))}}else P._walkDist=P._walkDist||0
+    if(_wdd>0){const _prevD=P._walkDist||0;P._walkDist=_prevD+_wdd;const _prevF=~~(_prevD/32)%8,_curF=~~(P._walkDist/32)%8;if(_prevF!==_curF&&(_curF===0||_curF===4)){playSample(_curF===0?'footstep':'footstep2',.55,_r(.9,.15))}}else P._walkDist=P._walkDist||0
     // ═══ 칼날이동 — 더블탭 트리거 소비 ═══
     if(P._bdTrigger!=null){
       if(_canMobility()&&!(P._seaParalyzed>0)){
