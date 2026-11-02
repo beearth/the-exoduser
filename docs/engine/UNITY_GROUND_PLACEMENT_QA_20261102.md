@@ -1237,3 +1237,6 @@ sprite복원은deferred2frame뒤Validate직전에같은원렌더러의saved leaf
 실제GUI검수는CUA가Mac잠금및physicalinput감지로자동unlock중지라고명시하여사용자수동잠금해제를요청한상태다. 요청후UI조작을우회하지않았다. 이전startup-only60s7068frame/Running0통계와Application.isFocused7849/7849=true를보존하며그값을필드성능으로확대하지않는다. 입력무반응의이전원인을Mac잠금으로소급확정하지않는다. 다음은수동unlock후동일정상후보OS진입/이동/공격/막힘·필드frame실측과scoped실화면인수이며,그후normalizer/서명/백업설치/동일sourceWin64build/전송/실제PC수신실행으로이어진다. commonUnity/main/기존설치·PC공식실행기는현재변경하지않았다.
 
 §23 전체 MAP PRODUCTION REPORT는 UNITY_MAC_MANAGEMENT_REPORT_20261102.md에포함했다. VISUAL VERDICT: RETOUCH. 기존전체A2 RETOUCH/ImpactR4FAIL불변.
+
+
+2026-11-02 게시경로인수추가: fixture companion import를실제게시CLI명win-delivery.py에맞췄다. 실제게시2파일배치에서py_compile+8개작은소유fixture기대결과를모두재확인했다. CLI제품코드변경0,원래worker8개검사기록보존. 실제Win64빌드/패키지/PC수신검수범위는미완료그대로다. 근거evidence/UNITY_MAC_WINDOWS_PUBLISHED_TOOL_CHECK_20261102.json.

@@ -9,7 +9,7 @@ import subprocess
 import sys
 import zipfile
 
-TOOL = Path(__file__).with_name('win_delivery.py')
+TOOL = Path(__file__).with_name('win-delivery.py')
 spec = importlib.util.spec_from_file_location('delivery', TOOL)
 d = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(d)

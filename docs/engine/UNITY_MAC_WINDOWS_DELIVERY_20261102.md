@@ -97,3 +97,6 @@ py_compile 통과. 아주 작은 소유 fixture만 사용해 8개 기대 결과�
 | 실제 Win64 source/build/package/PC수신 |아직없음. 이Mac QA source를최종배포승인한것아님 |
 
 Root가manifest를검토하고명시SHA를pack에전달하는내부인수단계다. 사용자의새승인을요구하는규칙으로해석하지않는다. 기존authorized범위에서실제소스인수와MacGUI검수후진행한다.
+
+
+2026-11-02 게시경로인수추가: fixture companion import를실제게시CLI명win-delivery.py에맞췄다. 실제게시2파일배치에서py_compile+8개작은소유fixture기대결과를모두재확인했다. CLI제품코드변경0,원래worker8개검사기록보존. 실제Win64빌드/패키지/PC수신검수범위는미완료그대로다. 근거evidence/UNITY_MAC_WINDOWS_PUBLISHED_TOOL_CHECK_20261102.json.

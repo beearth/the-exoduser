@@ -57407,3 +57407,6 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 
 
 2026-11-02 Mac80d0실제인수:normalARM64errors0,좁은Core/event/fixturegraph/적16·접지·ground10/registry/camera/material/texture/savedSprite semantic복원PASS(errors0). old50literal파괴false유지. 같은실행파일strict6identity M1실제23/23PASS(headless1600x900/GUI0). profile26/27exact복구,sharedHEAD/index/WIP25·기존설치5핵심exact보존. Win전달CLI8fixture준비검증인수/실제Win배포미완료. Mac잠금수동해제필요로자연GUI/FPS미검수,기존full100/61/R불일치/old미관측·전체A2 RETOUCH불변. 근거UNITY_GROUND_PLACEMENT_QA_20261102와UNITY_MAC_MANAGEMENT_REPORT_20261102.
+
+
+2026-11-02 게시경로인수추가: fixture companion import를실제게시CLI명win-delivery.py에맞췄다. 실제게시2파일배치에서py_compile+8개작은소유fixture기대결과를모두재확인했다. CLI제품코드변경0,원래worker8개검사기록보존. 실제Win64빌드/패키지/PC수신검수범위는미완료그대로다. 근거evidence/UNITY_MAC_WINDOWS_PUBLISHED_TOOL_CHECK_20261102.json.

@@ -1,0 +1,12 @@
+{
+  "publishedCli": "unity/Tools/qa/win-delivery.py",
+  "publishedTest": "unity/Tools/qa/test-win-delivery-owned-fixture.py",
+  "change": "Align test companion import filename with published CLI. Production CLI unchanged.",
+  "testSha256": "b30ee6a4027ed3d8d7ff7ee7256924d6871bd6efb46e5c3ae47a8f053865783d",
+  "cliSha256": "f084a66fd48acee48ad6b93c303be915e996152033300ba4a2d757173e9aa7b3",
+  "pyCompilePassed": true,
+  "ownedTinyFixtureTests": 8,
+  "allExpectedOutcomes": true,
+  "actualWindowsBuildOrTransferExecuted": false,
+  "earlierWorker8TestsPreserved": true
+}
