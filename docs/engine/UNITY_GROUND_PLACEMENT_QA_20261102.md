@@ -485,3 +485,6 @@ The Unity app build remains exact6a13; this checkpoint changes only the external
 
 
 ROOT slot review: first guard attempt exited3/launchCount0 before any preference snapshot because its broad command-string process guard reported a busy slot. The transient process was not captured, so its cause is not asserted. Two later observations had no Unity/Player and all26 original raw hashes were unchanged; the block/error receipt was archived with a reviewed resolution. Refine the guard to ps pid/comm executable identity (Unity/EXODUSER basename or exact Unity Mach-O path), with private PID/executable evidence on future rejection, instead of matching paths in a parent command argument. This does not terminate or modify any process. Same-app real profile regression remains pending.
+
+
+Actual second no-launch guard evidence identified Unity Hub Resources/unity(PID3141), a background helper, not Editor/Player. It was not stopped. Restrict the guard to the exact Unity.app/Contents/MacOS/Unity executable and EXODUSER executables under Contents/MacOS; preserve both no-launch errors and reviewed block resolutions. This excludes the unrelated Hub helper while retaining actual app guards. All26 original raw hashes remained unchanged before the reviewed retry.

@@ -57373,3 +57373,5 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 2026-11-02 Mac external QA launcher guard: never skip cache on raw equality; immediate/2s/7s exit and recovery checkpoints; exact2owned domains CAS-only restoration; unrelated/new/unknown original changes block further launch without daemon/security/deletion changes. Explicit absolute artifact-root CLI. Source AST reviewed; actual same-app profile regression pending. Unity Assets unchanged, appsource6a13 retained.
 
 2026-11-02 Mac QA launcher slot guard: identify actual pid/comm executable, preserve rejection evidence; no match on parent command arguments. Initial transient busy attempt launch0 preserved and explicitly reviewed after slot clear/original26 raw unchanged. No Unity Asset/app changes or process termination; actual profile regression pending.
+
+2026-11-02 Mac QA slot regression: Unity Hub Resources/unity helper was conservatively blocked by basename. Actual evidence retained; helper not terminated; guard now requires real Editor/Player Contents/MacOS path. Launch0/raw26 unchanged before reviewed recovery. Actual delayed profile test pending.

@@ -49,7 +49,7 @@ def idle():
             continue
         pid, executable = parts
         name = Path(executable).name.casefold()
-        if '/Unity.app/Contents/MacOS/Unity' in executable or name == 'unity' or name == 'exoduser' or name.startswith(('exoduser ', 'exoduser-')):
+        if executable.endswith('/Unity.app/Contents/MacOS/Unity') or ('/Contents/MacOS/' in executable and (name == 'exoduser' or name.startswith(('exoduser ', 'exoduser-')))):
             busy.append({'pid': int(pid), 'executable': executable})
     if busy:
         evidence = run / 'slot-busy-evidence.json'
