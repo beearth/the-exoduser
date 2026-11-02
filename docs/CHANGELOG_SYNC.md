@@ -57367,3 +57367,5 @@ Mac 원본4장 몬스터16종 공통·배송: 실기동 검수후 개인/`unity/
 Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반 build errors0, 정규화·strict/deep 서명 PASS, 이전앱3SHA CAS/보존 후 `/Users/fordeargamers/Applications/EXODUSER.app` 설치. 원본/stage/설치 211파일 전체 manifest SHA `54d8ae1b…` 동일, QA/일반 Runtime·Core DLL SHA 동일. 일반 저장11·QA plist2 최종 원문 동일, 일반 앱 실행0. 실제 A2 지면/뿌리/목교 기술 수신 VISUAL PASS 범위만 해당, 맵 전체 RETOUCH/Impact R4 FAIL 유지. [상세](engine/UNITY_A2_DECAL_RECEIVER_20261101.md#일반-mac-앱-파일-전달-2026-11-02).
 
 2026-11-02 Mac QA intake on exact3c ground-ring candidate: GPU mip0 contribution, sibling/projectedUV/explicit Sprite material equivalence, shared actual72polygon ring/height/lifecycle assertions, coverage and geometry revision/performance diagnostics. Prior95 actual interiors fail; final3c static compiled, actual GPU/acceptance/delivery pending. No common/install change.
+
+2026-11-02 Mac QA-only immediate progress JSONL: separate before/after product UpdateViews/Late from QA Measure/performance; file writes outside timing. Prior3c first row INCOMPLETE at04:10/noPNG, not performance FAIL; preserved profile and raw/cache restored. Product3c/common1403 unchanged.

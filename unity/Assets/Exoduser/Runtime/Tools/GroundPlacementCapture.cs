@@ -52,8 +52,11 @@ namespace Exoduser.UnityPort.Tools
         }
         void SetRunning(bool value){typeof(NativeGame).GetProperty("Running").GetSetMethod(true).Invoke(game,new object[]{value});}
         object Field(string name){return typeof(NativeGame).GetField(name,Flags).GetValue(game);}
-        void Invoke(string name){typeof(NativeGame).GetMethod(name,Flags).Invoke(game,null);}
-        void SyncViews(){((Camera)Field("view")).cullingMask=(int)Field("worldMask");Invoke("UpdateViews");Invoke("Remodel3DLate");}
+        void InvokeRaw(string name){typeof(NativeGame).GetMethod(name,Flags).Invoke(game,null);}
+        void Invoke(string name){if(name=="UpdateViews"||name=="Remodel3DLate")TracedProductCall(name);else InvokeRaw(name);}
+        double TracedProductCall(string name){Progress("before",name);long start=System.Diagnostics.Stopwatch.GetTimestamp();try{InvokeRaw(name);}catch(Exception ex){double failed=ElapsedMs(start);Progress("error",name,failed,null,ex.ToString());throw;}double ms=ElapsedMs(start);Progress("after",name,ms);return ms;}
+        void SyncViews(){TimedSyncViews();}
+        double TimedSyncViews(){long prepare=System.Diagnostics.Stopwatch.GetTimestamp();((Camera)Field("view")).cullingMask=(int)Field("worldMask");double prepareMs=ElapsedMs(prepare);double update=TracedProductCall("UpdateViews");return prepareMs+update+TracedProductCall("Remodel3DLate");}
         static string Sha(byte[] b){using(var h=SHA256.Create())return BitConverter.ToString(h.ComputeHash(b)).Replace("-","").ToLowerInvariant();}
         static string Dll(Type t){string p=t.Assembly.Location;return File.Exists(p)?Sha(File.ReadAllBytes(p)):"unavailable-connect-launcher-sha";}
         // Includes private randomState and all nested Core fields. Delegates are identity-only, never called.
@@ -67,10 +70,11 @@ namespace Exoduser.UnityPort.Tools
             foreach(var f in t.GetFields(Flags).OrderBy(f=>f.Name)){if(f.IsStatic)continue;b.Append(f.Name);Snapshot(f.GetValue(o),b,seen);}
         }
         IEnumerator Start(){
-            output=Arg("-output");receipt.source=Arg("-source-sha");receipt.qaStorageRoot=NativeQaSandbox.Root;receipt.consumerPrefix=Arg("-ground-consumer-prefix");receipt.subset=Has("-ground-consumer-prefix");selectedConsumers=receipt.subset?Consumers.Where(c=>c.StartsWith(receipt.consumerPrefix,StringComparison.Ordinal)).ToArray():Consumers;receipt.required=receipt.subset?selectedConsumers:selectedConsumers.Concat(new[]{"ground-lifecycle","ground-ring-lifecycle"}).ToArray();receipt.expectedRows=selectedConsumers.Length*3+(receipt.subset?0:2);receipt.passScope=receipt.subset?"selected consumer subset only; lifecycle omitted":"full consumer coverage plus lifecycle";AudioListener.pause=true;AudioListener.volume=0;
+            output=Arg("-output");traceOwner=this;receipt.source=Arg("-source-sha");receipt.qaStorageRoot=NativeQaSandbox.Root;receipt.consumerPrefix=Arg("-ground-consumer-prefix");receipt.subset=Has("-ground-consumer-prefix");selectedConsumers=receipt.subset?Consumers.Where(c=>c.StartsWith(receipt.consumerPrefix,StringComparison.Ordinal)).ToArray():Consumers;receipt.required=receipt.subset?selectedConsumers:selectedConsumers.Concat(new[]{"ground-lifecycle","ground-ring-lifecycle"}).ToArray();receipt.expectedRows=selectedConsumers.Length*3+(receipt.subset?0:2);receipt.passScope=receipt.subset?"selected consumer subset only; lifecycle omitted":"full consumer coverage plus lifecycle";AudioListener.pause=true;AudioListener.volume=0;
             var body=Execute();
             while(true){bool next;object current;try{next=body.MoveNext();current=next?body.Current:null;}catch(Exception ex){receipt.error=ex.ToString();break;}if(!next)break;yield return current;}
             ReleaseDecodedCache();drawSources.Clear();ringSources.Clear();contributionCamera=null;try{(body as IDisposable)?.Dispose();}catch(Exception ex){receipt.error=(receipt.error??"")+" cleanup: "+ex;}
+            Progress("after","capture-body");
             receipt.device=SystemInfo.graphicsDeviceName;receipt.api=SystemInfo.graphicsDeviceType.ToString();receipt.width=Screen.width;receipt.height=Screen.height;
             receipt.generated=generated.OrderBy(x=>x).ToArray();receipt.missing=receipt.required.Where(x=>!generated.Contains(x)).ToArray();
             receipt.listenerPaused=AudioListener.pause;receipt.listenerVolume=AudioListener.volume;float[] audio=new float[1024];AudioListener.GetOutputData(audio,0);foreach(float x in audio)receipt.peak=Mathf.Max(receipt.peak,Mathf.Abs(x));
@@ -79,11 +83,11 @@ namespace Exoduser.UnityPort.Tools
             var contributions=receipt.rows.SelectMany(row=>row.shapes).Where(shape=>shape.contribution!=null).Select(shape=>shape.contribution).ToArray();receipt.contributionShapes=contributions.Length;receipt.contributionUnverifiedShapes=contributions.Count(d=>!d.verified);receipt.contributionVerified=contributions.Length>0&&receipt.contributionUnverifiedShapes==0;
             receipt.failures=receipt.rows.Count(x=>!x.passed);receipt.passed=receipt.error==null&&receipt.failures==0&&receipt.missing.Length==0&&receipt.rows.Count==receipt.expectedRows&&receipt.restored&&receipt.originalStateSame&&receipt.originalReferenceSame&&receipt.width==1920&&receipt.height==1080&&receipt.listenerPaused&&receipt.listenerVolume==0&&receipt.peak==0&&receipt.directVideo==0;
             try{File.WriteAllText(Path.Combine(output,File.Exists(Path.Combine(output,"ground-placement-receipt.json"))?"ground-placement-failure-"+Guid.NewGuid().ToString("N")+".json":"ground-placement-receipt.json"),JsonUtility.ToJson(receipt,true));}catch(Exception ex){receipt.passed=false;Debug.LogError("GROUND_PLACEMENT receipt write failed "+ex);}
-            yield return new WaitForSecondsRealtime(1);Debug.Log("QA_MEDIA_DRAIN_COMPLETE GROUND_PLACEMENT");if(game!=null&&original!=null){SetRunning(runningBefore);game.enabled=enabledBefore;if(lateDriver!=null)lateDriver.enabled=lateEnabledBefore;}Application.Quit(receipt.passed?0:2);
+            yield return new WaitForSecondsRealtime(1);Debug.Log("QA_MEDIA_DRAIN_COMPLETE GROUND_PLACEMENT");if(game!=null&&original!=null){SetRunning(runningBefore);game.enabled=enabledBefore;if(lateDriver!=null)lateDriver.enabled=lateEnabledBefore;}Progress("end","capture");Application.Quit(receipt.passed?0:2);
         }
         IEnumerator Execute(){
             if(Directory.Exists(output)&&Directory.GetFileSystemEntries(output).Length!=0){Debug.LogError("QA output must be empty");throw new InvalidOperationException("QA output must be empty");}
-            Directory.CreateDirectory(output);
+            Directory.CreateDirectory(output);Progress("begin","capture");
             if(receipt.subset&&(string.IsNullOrEmpty(receipt.consumerPrefix)||selectedConsumers.Length==0))throw new InvalidOperationException("Empty consumer prefix/selection is forbidden");
             if(Has("-ground-performance-frames")&&(!int.TryParse(Arg("-ground-performance-frames"),out performanceFrames)||performanceFrames<0))throw new InvalidOperationException("Performance frames must be a nonnegative integer");if(performanceFrames>0&&(!receipt.subset||selectedConsumers.Any(c=>!c.StartsWith("size-"))))throw new InvalidOperationException("Performance sampling requires an explicit size-only consumer subset");
             if(Has("-ground-dense-count")&&(!int.TryParse(Arg("-ground-dense-count"),out denseCount)||denseCount<0||denseCount>8))throw new InvalidOperationException("Dense count must be 0(disabled) or 1..8");if(denseCount>0&&performanceFrames==0)throw new InvalidOperationException("Dense diagnostics require performance frames >0");receipt.requestedDenseCount=denseCount;receipt.requestedPerformanceFrames=performanceFrames;
@@ -91,8 +95,8 @@ namespace Exoduser.UnityPort.Tools
             float end=Time.realtimeSinceStartup+60;
             bool entered=false;
             while(Time.realtimeSinceStartup<end){game=FindAnyObjectByType<NativeGame>();
-                if(game!=null&&game.Simulation!=null&&!entered){var lobby=Field("lobby");var flow=lobby.GetType().GetProperty("Flow").GetValue(lobby);flow.GetType().GetMethod("ShowLobby").Invoke(flow,null);flow.GetType().GetMethod("SelectPreview").Invoke(flow,null);if(!(bool)lobby.GetType().GetMethod("EnterNativeTest").Invoke(lobby,null))throw new InvalidOperationException("QA field entry failed");entered=true;}
-                if(entered&&NativeRemodel3D.Active&&Field("a2Field")!=null&&Field("r3Cam")!=null)break;yield return null;}
+                if(game!=null&&game.Simulation!=null&&!entered){var lobby=Field("lobby");var flow=lobby.GetType().GetProperty("Flow").GetValue(lobby);flow.GetType().GetMethod("ShowLobby").Invoke(flow,null);flow.GetType().GetMethod("SelectPreview").Invoke(flow,null);Progress("before","field-entry");if(!(bool)lobby.GetType().GetMethod("EnterNativeTest").Invoke(lobby,null))throw new InvalidOperationException("QA field entry failed");entered=true;Progress("after","field-entry");Progress("before","field-ready");}
+                if(entered&&NativeRemodel3D.Active&&Field("a2Field")!=null&&Field("r3Cam")!=null){Progress("after","field-ready");break;}yield return null;}
             var run=Run();try{while(run.MoveNext())yield return run.Current;}finally{(run as IDisposable)?.Dispose();}
         }
         IEnumerator Run(){
@@ -111,7 +115,8 @@ namespace Exoduser.UnityPort.Tools
                 for(int site=0;site<sites.Length;site++){
                     float x=sites[site].x*100,y=-sites[site].y*100;sample.Player.X=x-180;sample.Player.Y=y+80;
                     foreach(string consumer in selectedConsumers){
-                        Clear();bool ground=Populate(consumer,x,y);((Camera)Field("view")).cullingMask=(int)Field("worldMask");long updateStart=System.Diagnostics.Stopwatch.GetTimestamp();Invoke("UpdateViews");double initialUpdateMs=ElapsedMs(updateStart);var lineBefore=LineState(Field("skillView"));long lateStart=System.Diagnostics.Stopwatch.GetTimestamp();Invoke("Remodel3DLate");double initialLateMs=ElapsedMs(lateStart);
+                        traceSite=labels[site];traceConsumer=consumer;tracePhase="consumer";Progress("begin","consumer");
+                        Clear();bool ground=Populate(consumer,x,y);((Camera)Field("view")).cullingMask=(int)Field("worldMask");double initialUpdateMs=TracedProductCall("UpdateViews");var lineBefore=LineState(Field("skillView"));double initialLateMs=TracedProductCall("Remodel3DLate");
                         var row=new Row{renderTime=Time.unscaledTime,site=labels[site],consumer=consumer,core=new Vector2(x,y),ground=ground,scope=ground?"ground contact/normal":"legacy billboard or 2D control"};
                         if(consumer.StartsWith("size-")){var zone=sample.FireZones[0];row.level=zone.Lv;row.actualRadius=zone.R;row.radiusSourceFunction=consumer.Contains("spikeTrap")?"Exoduser.UnityPort.Core.Skills.SkillRules.SpikeTrapRadius(int)":"Exoduser.UnityPort.Core.Skills.SkillRules.HolyDomeRadius(int)";}
                         if(consumer=="phase-spikeTrap-zero"||consumer=="phase-holyDome-zero")MeasureZeroScale(row,consumer);
@@ -147,18 +152,19 @@ namespace Exoduser.UnityPort.Tools
                         receipt.rows.Add(row);
                         yield return new WaitForEndOfFrame();
                         row.screenshot=Path.Combine(output,labels[site]+"-"+consumer+"-1920.png");var image=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(row.screenshot,image.EncodeToPNG());Destroy(image);
-                        row.direct3840=Path.Combine(output,labels[site]+"-"+consumer+"-3840-direct-rt.png");CaptureDirect(game.Remodel3DCamera,row.direct3840);row.direct3840Captured=true;
+                        row.direct3840=Path.Combine(output,labels[site]+"-"+consumer+"-3840-direct-rt.png");CaptureDirect(game.Remodel3DCamera,row.direct3840);row.direct3840Captured=true;Progress("after","captures");
                         if(denseCount>0&&consumer.StartsWith("size-")){var dense=MeasureDensePerformance(row);try{while(dense.MoveNext())yield return dense.Current;}finally{(dense as IDisposable)?.Dispose();}}
                     }
                 }
                 if(!receipt.subset){var lifecycle=Lifecycle();try{while(lifecycle.MoveNext())yield return lifecycle.Current;}finally{(lifecycle as IDisposable)?.Dispose();}var rings=RingLifecycle();try{while(rings.MoveNext())yield return rings.Current;}finally{(rings as IDisposable)?.Dispose();}}
             }finally{
-                setter.Invoke(game,new object[]{original});SyncViews();
+                tracePhase="restore-original";Progress("before","restore-original");setter.Invoke(game,new object[]{original});SyncViews();Progress("after","restore-original");
                 receipt.originalAfter=State(original);receipt.originalReferenceSame=ReferenceEquals(original,game.Simulation);receipt.originalStateSame=receipt.originalBefore==receipt.originalAfter;
                 receipt.restored=true; // Keep NativeGame disabled through media drain; restore enable flag immediately before Quit.
             }
         }
         IEnumerator Lifecycle(){
+            traceSite="soil";traceConsumer="ground-lifecycle";tracePhase="lifecycle";Progress("begin","lifecycle");
             var root=new GameObject("QA isolated product boss lifecycle");var view=new NativeBossView(root.transform);
             var row=new Row{site="soil",consumer="ground-lifecycle",scope="same normal pool: iceZone -> field comet -> iceZone; source enabled/GO/Destroy/real 2D presentation restore",ground=false,passed=true};
             receipt.rows.Add(row);generated.Add("ground-lifecycle");
@@ -186,6 +192,7 @@ namespace Exoduser.UnityPort.Tools
             }finally{view.Dispose();Destroy(root);}
         }
         IEnumerator RingLifecycle(){
+            traceSite="soil";traceConsumer="ground-ring-lifecycle";tracePhase="ring-lifecycle";Progress("begin","ring-lifecycle");
             var root=new GameObject("QA isolated holy ring lifetime");var view=new NativeSkillView(root.transform);var row=new Row{site="soil",consumer="ground-ring-lifecycle",scope="actual ring shared geometry, enabled/GO/2D/zone removal/Destroy",passed=true};receipt.rows.Add(row);generated.Add(row.consumer);
             var wasArena=sample.Stage.InArena;var oldArena=sample.Stage.Arena;
             try{
@@ -285,7 +292,8 @@ namespace Exoduser.UnityPort.Tools
             foreach(var f in t.GetFields(Flags))if(!f.IsStatic)Collect(f.GetValue(o),found,seen);
         }
         static bool IsVerticalBurst(Renderer renderer){var sr=renderer as SpriteRenderer;if(sr==null)sr=SourceFor(renderer);if(sr==null||sr.sprite==null)return false;string name=sr.sprite.texture.name;return name=="druid_hit_24_20261010"||name=="druid_roots_48_20261010"||name=="druid_dust_24_20261010";}
-        static Shape Measure(Renderer r,bool ground){
+        static Shape Measure(Renderer r,bool ground){Progress("before","Measure",-1,r);long start=System.Diagnostics.Stopwatch.GetTimestamp(),overhead=traceOverheadTicks;try{var result=MeasureCore(r,ground);Progress("after","Measure",DiagnosticMs(start,overhead),r);return result;}catch(Exception ex){Progress("error","Measure",DiagnosticMs(start,overhead),r,ex.ToString());throw;}}
+        static Shape MeasureCore(Renderer r,bool ground){
             if(ringSources.TryGetValue(r,out var ringSource))return MeasureRing(r,ringSource);
             var s=new Shape{forceRenderingOff=r.forceRenderingOff,shader=r.sharedMaterial==null?"none":r.sharedMaterial.shader.name,sharedMaterial=r.sharedMaterial==null?"none":r.sharedMaterial.name,assertionScope="active sibling/child display renderer; all vertex contact hard gate; slope normal diagnostic",path=r.name,kind=r.GetType().Name,instanceId=r.GetEntityId().ToString(),sortingOrder=r.sortingOrder,pivot=r.transform.position};var points=new List<Vector3>();
             var block=new MaterialPropertyBlock();r.GetPropertyBlock(block);s.opacity=block.GetFloat("_Opacity");s.color=r.sharedMaterial!=null&&r.sharedMaterial.HasProperty("_BaseColor")?r.sharedMaterial.GetColor("_BaseColor"):Color.white;
@@ -318,21 +326,23 @@ namespace Exoduser.UnityPort.Tools
         static TimingStats Summarize(List<double> samples){var result=new TimingStats{samples=samples.Count};if(samples.Count==0)return result;samples.Sort();result.meanMs=samples.Average();result.maxMs=samples[samples.Count-1];result.p95Ms=samples[Mathf.Clamp(Mathf.CeilToInt(.95f*samples.Count)-1,0,samples.Count-1)];return result;}
         void CountPerformanceTopology(PerformanceDiagnostic d){var owned=new HashSet<Renderer>();Collect(Field("skillView"),owned,new HashSet<object>());int vertices=0,triangles=0,draws=0;var meshes=new HashSet<Mesh>();foreach(var renderer in owned)if(renderer is MeshRenderer&&renderer.enabled&&!renderer.forceRenderingOff&&renderer.gameObject.activeInHierarchy){var mf=renderer.GetComponent<MeshFilter>();if(mf!=null&&mf.sharedMesh!=null){draws++;if(meshes.Add(mf.sharedMesh)){vertices+=mf.sharedMesh.vertexCount;triangles+=mf.sharedMesh.triangles.Length/3;}}}d.lastVertices=vertices;d.lastTriangles=triangles;d.peakVertices=Mathf.Max(d.peakVertices,vertices);d.peakTriangles=Mathf.Max(d.peakTriangles,triangles);d.lastUniqueMeshes=meshes.Count;d.peakUniqueMeshes=Mathf.Max(d.peakUniqueMeshes,meshes.Count);d.lastDraws=draws;d.peakDraws=Mathf.Max(d.peakDraws,draws);}
         IEnumerator MeasurePerformance(Row row,double initialUpdate,double initialLate){
+            tracePhase="single-performance";Progress("before","single-performance");
             var d=new PerformanceDiagnostic{initialUpdateMs=initialUpdate,initialLateMs=initialLate,initialCombinedMs=initialUpdate+initialLate};row.performance=d;CountPerformanceTopology(d);d.initialGeometry=CaptureGeometryRevisions();d.geometryRevisionObserved=d.initialGeometry.Length>0;
-            var repeated=new List<double>();for(int i=0;i<performanceFrames;i++){long start=System.Diagnostics.Stopwatch.GetTimestamp();SyncViews();repeated.Add(ElapsedMs(start));}d.fixedPose=Summarize(repeated);d.fixedGeometry=CaptureGeometryRevisions();d.fixedGeometryUnchanged=d.geometryRevisionObserved&&SameRevisions(d.initialGeometry,d.fixedGeometry);
+            var repeated=new List<double>();for(int i=0;i<performanceFrames;i++){tracePhase="fixed-"+i;Progress("before","fixed");double ms=TimedSyncViews();repeated.Add(ms);Progress("after","fixed",ms);}d.fixedPose=Summarize(repeated);d.fixedGeometry=CaptureGeometryRevisions();d.fixedGeometryUnchanged=d.geometryRevisionObserved&&SameRevisions(d.initialGeometry,d.fixedGeometry);
             var live=new List<double>();var zones=sample.FireZones.ToArray();var priorT=zones.Select(z=>z.T).ToArray();
-            try{for(int i=0;i<performanceFrames;i++){yield return null;foreach(var zone in zones)zone.T=Mathf.RoundToInt(30f*(i+1)/performanceFrames);long start=System.Diagnostics.Stopwatch.GetTimestamp();SyncViews();live.Add(ElapsedMs(start));CountPerformanceTopology(d);}}
+            try{for(int i=0;i<performanceFrames;i++){yield return null;foreach(var zone in zones)zone.T=Mathf.RoundToInt(30f*(i+1)/performanceFrames);tracePhase="live-"+i;Progress("before","live");double ms=TimedSyncViews();live.Add(ms);CountPerformanceTopology(d);Progress("after","live",ms);}}
             finally{for(int i=0;i<zones.Length;i++)zones[i].T=priorT[i];SyncViews();d.syntheticDeploymentRestored=zones.Select((z,i)=>z.T==priorT[i]).All(v=>v);}
             d.liveFrames=Summarize(live);d.liveGeometry=CaptureGeometryRevisions();d.liveGeometryUnchanged=d.geometryRevisionObserved&&SameRevisions(d.initialGeometry,d.liveGeometry);
         }
         IEnumerator MeasureDensePerformance(Row row){
+            tracePhase="dense-prepare";Progress("before","dense-prepare");
             var originalZones=sample.FireZones.ToArray();if(originalZones.Length!=1||row.performance==null)throw new InvalidOperationException("Dense size fixture needs exactly one original FireZone and performance record");
             var template=originalZones[0];var d=new PerformanceDiagnostic{syntheticDenseCount=denseCount,scope="synthetic dense actual-radius field: new source-ID geometry cold, fixed frame cache and yielded roll/deploy; no gameplay/60fps PASS"};row.performance.dense=d;
             try{
                 sample.FireZones.Clear();for(int i=0;i<denseCount;i++){var zone=new FireZone();foreach(var f in typeof(FireZone).GetFields(BindingFlags.Public|BindingFlags.Instance))f.SetValue(zone,f.GetValue(template));zone.Id=500000+template.Id*10+i;zone.X=template.X+(i==0?0:((i-1)%3-1)*120);zone.Y=template.Y+(i==0?0:((i-1)/3+1)*120);zone.T=30;sample.FireZones.Add(zone);}
-                long start=System.Diagnostics.Stopwatch.GetTimestamp();SyncViews();d.initialCombinedMs=ElapsedMs(start);CountPerformanceTopology(d);d.initialGeometry=CaptureGeometryRevisions();d.geometryRevisionObserved=d.initialGeometry.Length>0;
-                var fixedSamples=new List<double>();for(int i=0;i<performanceFrames;i++){start=System.Diagnostics.Stopwatch.GetTimestamp();SyncViews();fixedSamples.Add(ElapsedMs(start));}d.fixedPose=Summarize(fixedSamples);d.fixedGeometry=CaptureGeometryRevisions();d.fixedGeometryUnchanged=d.geometryRevisionObserved&&SameRevisions(d.initialGeometry,d.fixedGeometry);
-                foreach(var zone in sample.FireZones)zone.T=0;SyncViews();var live=new List<double>();for(int i=0;i<performanceFrames;i++){yield return null;foreach(var zone in sample.FireZones)zone.T=Mathf.RoundToInt(30f*(i+1)/performanceFrames);start=System.Diagnostics.Stopwatch.GetTimestamp();SyncViews();live.Add(ElapsedMs(start));CountPerformanceTopology(d);}d.liveFrames=Summarize(live);d.liveGeometry=CaptureGeometryRevisions();d.liveGeometryUnchanged=d.geometryRevisionObserved&&SameRevisions(d.initialGeometry,d.liveGeometry);
+                tracePhase="dense-cold";Progress("before","dense-cold");d.initialCombinedMs=TimedSyncViews();Progress("after","dense-cold",d.initialCombinedMs);CountPerformanceTopology(d);d.initialGeometry=CaptureGeometryRevisions();d.geometryRevisionObserved=d.initialGeometry.Length>0;
+                var fixedSamples=new List<double>();for(int i=0;i<performanceFrames;i++){tracePhase="dense-fixed-"+i;Progress("before","dense-fixed");double ms=TimedSyncViews();fixedSamples.Add(ms);Progress("after","dense-fixed",ms);}d.fixedPose=Summarize(fixedSamples);d.fixedGeometry=CaptureGeometryRevisions();d.fixedGeometryUnchanged=d.geometryRevisionObserved&&SameRevisions(d.initialGeometry,d.fixedGeometry);
+                foreach(var zone in sample.FireZones)zone.T=0;SyncViews();var live=new List<double>();for(int i=0;i<performanceFrames;i++){yield return null;foreach(var zone in sample.FireZones)zone.T=Mathf.RoundToInt(30f*(i+1)/performanceFrames);tracePhase="dense-live-"+i;Progress("before","dense-live");double ms=TimedSyncViews();live.Add(ms);CountPerformanceTopology(d);Progress("after","dense-live",ms);}d.liveFrames=Summarize(live);d.liveGeometry=CaptureGeometryRevisions();d.liveGeometryUnchanged=d.geometryRevisionObserved&&SameRevisions(d.initialGeometry,d.liveGeometry);
             }finally{sample.FireZones.Clear();sample.FireZones.AddRange(originalZones);SyncViews();d.denseSampleRestored=sample.FireZones.Count==originalZones.Length&&sample.FireZones.Select((z,i)=>ReferenceEquals(z,originalZones[i])).All(v=>v);if(!d.denseSampleRestored)throw new InvalidOperationException("Dense FireZone restoration failed");}
         }
         [Serializable] public sealed class GeometryRevisionEntry {public string rendererEntity,sourceEntity,meshEntity;public int revision;}
@@ -365,7 +375,8 @@ namespace Exoduser.UnityPort.Tools
             var target=new RenderTexture(3840,1080,24,RenderTextureFormat.ARGB32);target.Create();var oldTarget=camera.targetTexture;var oldActive=RenderTexture.active;float aspect=camera.aspect;var rect=camera.rect;
             try{camera.aspect=3840f/1080;camera.rect=new Rect(0,0,1,1);var request=new UniversalRenderPipeline.SingleCameraRequest{destination=target};if(!RenderPipeline.SupportsRenderRequest(camera,request))throw new InvalidOperationException("URP direct render request unsupported");RenderPipeline.SubmitRenderRequest(camera,request);RenderTexture.active=target;var image=new Texture2D(3840,1080,TextureFormat.RGBA32,false);try{image.ReadPixels(new Rect(0,0,3840,1080),0,0);image.Apply();File.WriteAllBytes(path,image.EncodeToPNG());}finally{Destroy(image);}}finally{camera.targetTexture=oldTarget;camera.aspect=aspect;camera.rect=rect;RenderTexture.active=oldActive;target.Release();Destroy(target);}
         }
-        static InteriorDiagnostic MeasureInterior(int[] triangles,List<Vector3> world,float offset=.025f){
+        static InteriorDiagnostic MeasureInterior(int[] triangles,List<Vector3> world,float offset=.025f){Progress("before","MeasureInterior",-1,null);long start=System.Diagnostics.Stopwatch.GetTimestamp(),overhead=traceOverheadTicks;try{var result=MeasureInteriorCore(triangles,world,offset);Progress("after","MeasureInterior",DiagnosticMs(start,overhead),null);return result;}catch(Exception ex){Progress("error","MeasureInterior",DiagnosticMs(start,overhead),null,ex.ToString());throw;}}
+        static InteriorDiagnostic MeasureInteriorCore(int[] triangles,List<Vector3> world,float offset=.025f){
             var d=new InteriorDiagnostic{expectedDrawOffset=offset};var errors=new List<float>();double absSum=0,signedSum=0;
             for(int i=0;i+2<triangles.Length;i+=3){
                 int ia=triangles[i],ib=triangles[i+1],ic=triangles[i+2];
@@ -403,7 +414,8 @@ namespace Exoduser.UnityPort.Tools
         sealed class DecodedTexture {public int width,height;public Color[] pixels;}
         static readonly Dictionary<Texture2D,DecodedTexture> decodedTextures=new Dictionary<Texture2D,DecodedTexture>();
         static void ReleaseDecodedCache(){decodedTextures.Clear();}
-        static DecodedTexture DecodeMip0(Texture2D source){
+        static DecodedTexture DecodeMip0(Texture2D source){Progress("before",decodedTextures.ContainsKey(source)?"GPU-decode-cache-hit":"GPU-decode-mip0");long start=System.Diagnostics.Stopwatch.GetTimestamp(),overhead=traceOverheadTicks;try{var result=DecodeMip0Core(source);Progress("after","GPU-decode-mip0",DiagnosticMs(start,overhead));return result;}catch(Exception ex){Progress("error","GPU-decode-mip0",DiagnosticMs(start,overhead),null,ex.ToString());throw;}}
+        static DecodedTexture DecodeMip0Core(Texture2D source){
             if(decodedTextures.TryGetValue(source,out var cached))return cached;
             if(!SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.ARGBFloat)||!SystemInfo.SupportsTextureFormat(TextureFormat.RGBAFloat))throw new NotSupportedException("ARGBFloat/RGBAFloat GPU diagnostic unsupported; no image fallback");
             if(decodedTextures.Count>=2)ReleaseDecodedCache();
@@ -424,7 +436,8 @@ namespace Exoduser.UnityPort.Tools
             Color a=data.pixels[Mathf.Clamp(y0,0,data.height-1)*data.width+Mathf.Clamp(x0,0,data.width-1)],b=data.pixels[Mathf.Clamp(y0,0,data.height-1)*data.width+Mathf.Clamp(x0+1,0,data.width-1)],c=data.pixels[Mathf.Clamp(y0+1,0,data.height-1)*data.width+Mathf.Clamp(x0,0,data.width-1)],d=data.pixels[Mathf.Clamp(y0+1,0,data.height-1)*data.width+Mathf.Clamp(x0+1,0,data.width-1)];
             return Color.LerpUnclamped(Color.LerpUnclamped(a,b,fx),Color.LerpUnclamped(c,d,fx),fy);
         }
-        static ContributionDiagnostic MeasureContribution(Renderer renderer,Mesh mesh,List<Vector3> world){
+        static ContributionDiagnostic MeasureContribution(Renderer renderer,Mesh mesh,List<Vector3> world){Progress("before","MeasureContribution",-1,renderer);long start=System.Diagnostics.Stopwatch.GetTimestamp(),overhead=traceOverheadTicks;try{var result=MeasureContributionCore(renderer,mesh,world);Progress("after","MeasureContribution",DiagnosticMs(start,overhead),renderer);return result;}catch(Exception ex){Progress("error","MeasureContribution",DiagnosticMs(start,overhead),renderer,ex.ToString());throw;}}
+        static ContributionDiagnostic MeasureContributionCore(Renderer renderer,Mesh mesh,List<Vector3> world){
             var d=new ContributionDiagnostic();
             try{
                 var material=renderer.sharedMaterial;if(material==null)throw new InvalidOperationException("No actual shared material");d.shader=material.shader.name;
@@ -488,7 +501,8 @@ namespace Exoduser.UnityPort.Tools
         [Serializable] public sealed class CoverageDiagnostic {public bool diagnosticOnly=true,unionNotComputed=true;public string rule="sum of actual triangles clipped to normalized shader UV unit square";public int triangles,clippedTriangles;public double normalizedAreaSum,missingAreaEstimate,overlapExcess,worldAreaSum,missingWorldAreaEstimate;}
         static Vector2 NormalizedUv(Vector3 local,Vector4 u,Vector4 v){return new Vector2(local.x*u.x+local.z*u.y+u.z,local.x*v.x+local.z*v.y+v.z);}
         static void ClipPolygon(List<Vector2> input,List<Vector2> output,int axis,float boundary,bool lower){output.Clear();if(input.Count==0)return;Vector2 a=input[input.Count-1];bool aInside=lower?a[axis]>=boundary:a[axis]<=boundary;foreach(var b in input){bool bInside=lower?b[axis]>=boundary:b[axis]<=boundary;if(aInside!=bInside){float delta=b[axis]-a[axis];float t=delta==0?0:(boundary-a[axis])/delta;output.Add(a+(b-a)*t);}if(bInside)output.Add(b);a=b;aInside=bInside;}}
-        static void FillShaderUvAndCoverage(Renderer renderer,Mesh mesh,Shape shape){
+        static void FillShaderUvAndCoverage(Renderer renderer,Mesh mesh,Shape shape){Progress("before","UV-and-coverage",-1,renderer);long start=System.Diagnostics.Stopwatch.GetTimestamp(),overhead=traceOverheadTicks;try{FillShaderUvAndCoverageCore(renderer,mesh,shape);}finally{Progress("after","UV-and-coverage",DiagnosticMs(start,overhead),renderer);}}
+        static void FillShaderUvAndCoverageCore(Renderer renderer,Mesh mesh,Shape shape){
             var source=SourceFor(renderer);if(source==null||source.sprite==null)return;
             var block=new MaterialPropertyBlock();renderer.GetPropertyBlock(block);bool projected=EffectiveFloat(renderer,"_GroundUvClip")>.5f;Vector4 u=block.GetVector("_GroundUvU"),v=block.GetVector("_GroundUvV"),rect=block.GetVector("_GroundUvRect");
             var local=mesh.vertices;var raw=mesh.uv;shape.normalizedShaderUv=new Vector2[local.Length];shape.shaderUv=new Vector2[local.Length];var sprite=source.sprite;var atlas=sprite.rect;
@@ -525,7 +539,8 @@ namespace Exoduser.UnityPort.Tools
             for(int i=0;i+2<triangles.Length;i+=3){var a=vertices[triangles[i]];var b=vertices[triangles[i+1]];var c=vertices[triangles[i+2]];double bx=b.x-a.x,bz=b.z-a.z,cx=c.x-a.x,cz=c.z-a.z,det=bx*cz-bz*cx;if(Math.Abs(det)<1e-14)continue;double dx=localXZ.x-a.x,dz=localXZ.y-a.z,u=(dx*cz-dz*cx)/det,v=(bx*dz-bz*dx)/det;if(u>=-1e-5&&v>=-1e-5&&u+v<=1.00001){point=a+(b-a)*(float)u+(c-a)*(float)v;return true;}}
             point=Vector3.zero;return false;
         }
-        static Shape MeasureRing(Renderer renderer,LineRenderer line){
+        static Shape MeasureRing(Renderer renderer,LineRenderer line){Progress("before","MeasureRing",-1,renderer);long start=System.Diagnostics.Stopwatch.GetTimestamp(),overhead=traceOverheadTicks;try{var result=MeasureRingCore(renderer,line);Progress("after","MeasureRing",DiagnosticMs(start,overhead),renderer);return result;}catch(Exception ex){Progress("error","MeasureRing",DiagnosticMs(start,overhead),renderer,ex.ToString());throw;}}
+        static Shape MeasureRingCore(Renderer renderer,LineRenderer line){
             var s=new Shape{path=renderer.name,kind="actual polygon ring MeshRenderer",assertionScope="uniform ring shader: actual shared mesh+vertex lift, no body UV/texture alpha assertion",instanceId=renderer.GetEntityId().ToString(),pivot=renderer.transform.position,sortingOrder=renderer.sortingOrder,expectedDrawOffset=.03f};var d=new RingDiagnostic();s.ring=d;
             try{
                 var source=SourceFor(renderer);var body=SurfaceFor(source);var mf=renderer.GetComponent<MeshFilter>();var bodyFilter=body==null?null:body.GetComponent<MeshFilter>();if(source==null||mf==null||mf.sharedMesh==null||bodyFilter==null)throw new InvalidOperationException("Actual ring/body/source missing");
@@ -534,14 +549,16 @@ namespace Exoduser.UnityPort.Tools
                 d.bodyRadius=EffectiveFloat(body,"_GroundRingRadius");d.sourceRadius=EffectiveFloat(source,"_GroundRingRadius");d.sourceLineRadius=EffectiveFloat(line,"_GroundRingRadius");s.groundRingRadius=d.radius;s.sourceGroundRingRadius=d.sourceRadius;s.sourceEntity=d.bodySource;s.geometryRevision=d.bodyRevision;s.groundUvClip=EffectiveFloat(renderer,"_GroundUvClip");s.sourceGroundUvClip=EffectiveFloat(source,"_GroundUvClip");s.groundClipContract=s.groundUvClip==1&&s.sourceGroundUvClip==0&&d.radius>0&&d.bodyRadius==0&&d.sourceRadius==0&&d.sourceLineRadius==0;s.shader=renderer.sharedMaterial==null?"null":renderer.sharedMaterial.shader.name;s.sharedMaterial=renderer.sharedMaterial==null?"null":renderer.sharedMaterial.name;s.materialIdentityPreserved=renderer.sharedMaterial==line.sharedMaterial;s.materialPreserved=s.materialIdentityPreserved;s.color=d.uniformColor;s.sortingPreserved=renderer.sortingOrder==line.sortingOrder&&renderer.sortingLayerID==line.sortingLayerID;
                 var local=mesh.vertices;var ringTriangles=mesh.triangles;var raised=new List<Vector3>(local.Length);foreach(var vertex in local)raised.Add(renderer.transform.TransformPoint(vertex+Vector3.up*d.lift));s.vertices=raised.ToArray();s.vertexCount=raised.Count;s.triangleCount=mesh.triangles.Length/3;s.uv=mesh.uv;s.pivotLift=s.pivot.y-NativeRemodel3D.GroundY(s.pivot.x,s.pivot.z);s.expectedVertexY=raised.Select(v=>NativeRemodel3D.GroundY(v.x,v.z)+.03f).ToArray();for(int i=0;i<raised.Count;i++){s.maxBiasResidual=Mathf.Max(s.maxBiasResidual,Mathf.Abs(raised[i].y-s.expectedVertexY[i]));s.maxGroundError=Mathf.Max(s.maxGroundError,Mathf.Abs(raised[i].y-NativeRemodel3D.GroundY(raised[i].x,raised[i].z)));}s.interior=MeasureInterior(mesh.triangles,raised,.03f);
                 d.original72World=new Vector3[line.positionCount];for(int i=0;i<line.positionCount;i++){var point=line.GetPosition(i);d.original72World[i]=line.useWorldSpace?point:line.transform.TransformPoint(point);var ringLocal=renderer.transform.InverseTransformPoint(d.original72World[i]);d.radiusDelta=Mathf.Max(d.radiusDelta,Mathf.Abs(new Vector2(ringLocal.x,ringLocal.z).magnitude-d.radius));}
-                var gpu=RenderRingContribution(renderer);d.gpuPositivePixels=gpu.positive;d.gpuMaxRgb=gpu.maxRgb;d.gpuVerified=gpu.positive>0;
+                Progress("before","ring-GPU-readback",-1,renderer);long ringGpuStart=System.Diagnostics.Stopwatch.GetTimestamp(),ringGpuOverhead=traceOverheadTicks;var gpu=RenderRingContribution(renderer);Progress("after","ring-GPU-readback",DiagnosticMs(ringGpuStart,ringGpuOverhead),renderer);d.gpuPositivePixels=gpu.positive;d.gpuMaxRgb=gpu.maxRgb;d.gpuVerified=gpu.positive>0;
                 var contribution=new ContributionDiagnostic{shader=s.shader,scope="actual ring uniform band GPU-rendered RGB, no texture/vertex color path",verified=d.gpuVerified};s.contribution=contribution;
+                Progress("before","ring-144-support",-1,renderer);long supportStart=System.Diagnostics.Stopwatch.GetTimestamp(),supportOverhead=traceOverheadTicks;
                 for(int i=0;i<144;i++){
                     float angle=(i/2)*Mathf.PI*2/72;Vector2 xz;if(i%2==0)xz=new Vector2(Mathf.Cos(angle),Mathf.Sin(angle))*d.radius;else{float next=angle+Mathf.PI*2/72;xz=(new Vector2(Mathf.Cos(angle),Mathf.Sin(angle))+new Vector2(Mathf.Cos(next),Mathf.Sin(next)))*(.5f*d.radius);}
                     if(!RingSupport(local,ringTriangles,xz,out var support)){d.missingBandSamples++;continue;}d.bandSamples++;var actual=renderer.transform.TransformPoint(support+Vector3.up*d.lift);float ground=NativeRemodel3D.GroundY(actual.x,actual.z);var screen=contributionCamera.WorldToScreenPoint(actual);Color rgb=Color.clear;if(screen.z>0&&screen.x>=0&&screen.x<1920&&screen.y>=0&&screen.y<1080)rgb=gpu.pixels[Mathf.FloorToInt(screen.y)*1920+Mathf.FloorToInt(screen.x)];
                     if(screen.z>contributionCamera.nearClipPlane&&screen.z<contributionCamera.farClipPlane&&screen.x>=0&&screen.x<1920&&screen.y>=0&&screen.y<1080){d.gpuBandScreenSamples++;if(Mathf.Max(rgb.r,Mathf.Max(rgb.g,rgb.b))>0)d.gpuBandPositiveSamples++;}
                     var probe=new ContributionProbe{actualPoint=actual,expectedPoint=new Vector3(actual.x,ground+.03f,actual.z),actualScreen1920=screen,expectedScreen1920=contributionCamera.WorldToScreenPoint(new Vector3(actual.x,ground+.03f,actual.z)),expectedGround=ground,expectedDrawY=ground+.03f,signedResidual=actual.y-ground-.03f,insideFootprint=true,textureSampled=false,vertexAlpha=1,flatTintAlpha=1,opacityApplied=1,potentialRGB=new Vector3(rgb.r,rgb.g,rgb.b),potentialMax=Mathf.Max(rgb.r,Mathf.Max(rgb.g,rgb.b))};d.band.Add(probe);contribution.worstRaw.Add(probe);if(probe.potentialMax>0)contribution.positive.Add(probe);if(probe.potentialMax>=1f/255)contribution.oneByte.Add(probe);if(probe.potentialMax>=.01f)contribution.onePercent.Add(probe);
                 }
+                Progress("after","ring-144-support",DiagnosticMs(supportStart,supportOverhead),renderer);
                 if(RingSupport(local,ringTriangles,Vector2.zero,out var centerSupport)){
                     d.centerActualPoint=renderer.transform.TransformPoint(centerSupport+Vector3.up*d.lift);d.centerScreen=contributionCamera.WorldToScreenPoint(d.centerActualPoint);var screen=d.centerScreen;
                     d.centerMeasured=screen.z>contributionCamera.nearClipPlane&&screen.z<contributionCamera.farClipPlane&&screen.x>=0&&screen.x<1920&&screen.y>=0&&screen.y<1080&&d.radius*Mathf.Cos(Mathf.PI/72)>d.width*2;
@@ -553,6 +570,21 @@ namespace Exoduser.UnityPort.Tools
                 d.verified=d.sharedBodyMesh&&d.bodyRevision>=0&&d.ringRevision==d.bodyRevision&&d.sourceForced&&d.sourceActive&&d.sourceEnabled&&d.sourcePoints==72&&renderer.enabled&&!renderer.forceRenderingOff&&renderer.gameObject.activeInHierarchy&&s.materialPreserved&&s.sortingPreserved&&s.groundClipContract&&s.shader=="EXODUSER/SkillAdditive"&&EffectiveFloat(renderer,"_DstBlend")==1&&Mathf.Abs(d.width-.03f)<1e-6f&&Mathf.Abs(d.lift-.005f)<1e-6f&&d.radius>0&&d.radiusDelta<1e-4f&&d.colorDelta<1e-5f&&d.gpuRingMaskVerified&&d.bandSamples==144&&d.missingBandSamples==0&&d.band.maxAbs<=.02f&&s.maxBiasResidual<=.02f&&Mathf.Abs(s.pivotLift)<.02f;
                 s.passed=d.verified;
             }catch(Exception ex){d.error=ex.ToString();d.verified=false;s.passed=false;}return s;
+        }
+        [Serializable] sealed class ProgressRow {
+            public string utc,site,consumer,phase,eventType,step,renderer,error;public double realtimeSeconds,monotonicSeconds,completedMs=-1;public int frame,draws,uniqueMeshes,vertices,triangles,revisionMax=-1,revisionObserved;
+        }
+        static GroundPlacementCapture traceOwner;static string traceSite="startup",traceConsumer="startup",tracePhase="startup";static long traceOverheadTicks;
+        static double DiagnosticMs(long start,long priorOverhead){return Math.Max(0,(System.Diagnostics.Stopwatch.GetTimestamp()-start-(traceOverheadTicks-priorOverhead))*1000.0/System.Diagnostics.Stopwatch.Frequency);}
+        static void Progress(string eventType,string step,double completedMs=-1,Renderer renderer=null,string error=null){
+            var owner=traceOwner;if(owner==null||!Has("--unity-ground-placement-capture")||string.IsNullOrEmpty(owner.output)||!Directory.Exists(owner.output))return;
+            long overhead=System.Diagnostics.Stopwatch.GetTimestamp();
+            try{
+                var row=new ProgressRow{utc=DateTime.UtcNow.ToString("O"),realtimeSeconds=Time.realtimeSinceStartupAsDouble,monotonicSeconds=System.Diagnostics.Stopwatch.GetTimestamp()/(double)System.Diagnostics.Stopwatch.Frequency,frame=Time.frameCount,site=traceSite,consumer=traceConsumer,phase=tracePhase,eventType=eventType,step=step,completedMs=completedMs,renderer=renderer==null?null:renderer.name,error=error};
+                var display=new HashSet<Renderer>();if(renderer!=null)display.Add(renderer);else if(owner.game!=null)Collect(owner.Field("skillView"),display,new HashSet<object>());
+                var meshes=new HashSet<Mesh>();foreach(var draw in display)if(draw!=null&&draw.enabled&&!draw.forceRenderingOff&&draw.gameObject.activeInHierarchy){row.draws++;var filter=draw.GetComponent<MeshFilter>();if(filter!=null&&filter.sharedMesh!=null&&meshes.Add(filter.sharedMesh)){var mesh=filter.sharedMesh;row.vertices+=mesh.vertexCount;for(int sub=0;sub<mesh.subMeshCount;sub++)row.triangles+=(int)(mesh.GetIndexCount(sub)/3);}int revision=GeometryRevision(SourceFor(draw));if(revision>=0){row.revisionObserved++;row.revisionMax=Math.Max(row.revisionMax,revision);}}row.uniqueMeshes=meshes.Count;
+                var bytes=Encoding.UTF8.GetBytes(JsonUtility.ToJson(row,false)+"\n");using(var stream=new FileStream(Path.Combine(owner.output,"ground-progress.jsonl"),FileMode.Append,FileAccess.Write,FileShare.ReadWrite)){stream.Write(bytes,0,bytes.Length);stream.Flush(true);}
+            }catch(Exception ex){Debug.LogWarning("GROUND_PROGRESS_WRITE_OR_SUMMARY_FAILED "+ex.Message);}finally{traceOverheadTicks+=System.Diagnostics.Stopwatch.GetTimestamp()-overhead;}
         }
         static void MeasureVfx(Row row,float x,float y,bool inactive){bool prior=NativeRemodel3D.Active;try{NativeRemodel3D.Active=!inactive;const float lift=.013f;Vector3 a=VfxWorld.ToWorld(x,y,lift),b=VfxWorld.ToWorldMetres(new Vector2(x/100,-y/100),lift);float expected=inactive?lift:NativeRemodel3D.GroundY(x/100,-y/100)+lift;row.shapes.Add(new Shape{kind="VfxWorld.ToWorld",pivot=a,pivotLift=a.y-expected,passed=Mathf.Abs(a.y-expected)<.0001f});row.shapes.Add(new Shape{kind="VfxWorld.ToWorldMetres",pivot=b,pivotLift=b.y-expected,passed=Mathf.Abs(b.y-expected)<.0001f});row.passed=row.shapes.All(s=>s.passed);}finally{NativeRemodel3D.Active=prior;}}
     }

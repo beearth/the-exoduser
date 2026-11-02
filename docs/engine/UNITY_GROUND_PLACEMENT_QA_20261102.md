@@ -272,3 +272,30 @@ ROOT source review corrections before build: replace nonexistent BossArena.Gener
 
 
 Final3c candidate QA checkpoint: exact product3c827c1195ff1fb8c4bc5501de99af33c615d8d1, helper source SHA256 8bbf79744041e8d6e04a628ca082c2dbc9005574f45dbd6b938884580c0ceb6f. Source-only static compilation passed. Actual Metal/large contact/coverage/roll-deploy cache/dense timings/M1/visual/install/Win64 delivery pending for this checkpoint. Prior95 alpha fail remains retained.
+
+
+# 3c QA 진행 추적만 추가 — 미컴파일·미실행
+
+입력 root final3c-reviewed/GroundPlacementCapture.cs SHA256 8bbf79744041e8d6e04a628ca082c2dbc9005574f45dbd6b938884580c0ceb6f. trace-qa 복사본에만 단계 로그를 추가했다. 원본/공유checkout/제품/Git/Unity/Player/정적컴파일 변경·실행0. 현재실행중Player96536의원본및실행파일은수정하지않았다.
+
+명시 --unity-ground-placement-capture 실행에서만 output/ground-progress.jsonl에 즉시 append한다. 각 레코드는 UTC ISO8601, 실제 realtimeSeconds·monotonicSeconds, frame/site/consumer/phase/eventType/step/completedMs와 소규모 actualdraw/uniqueMesh/vertex/triangle/revision 요약을 포함한다. 큰 vertex/UV/triangle 배열이나 per-probe 로그는없다. topology는mesh.vertexCount/GetIndexCount만읽고공유mesh는중복제외한다.
+
+각기록은새FileStream Append→UTF8 JSON 한줄→Flush(true)로즉시보존한다. before뒤after가없으면해당호출중단위치를알수있다. 로그쓰기·요약실패는Unitywarning을남기며기존source복원/검사/정상Quit을막지않는다. 기존receipt/표본/기준값을바꾸지않는다.
+
+추적단계:
+
+- capture 시작/field-entry/field-ready, site·consumer 시작.
+- 실제private UpdateViews/Remodel3DLate 모든명시호출 before/after/error와완료시간.
+- 각 Measure/MeasureRing/MeasureInterior/MeasureContribution before/after/error.
+- UV-and-coverage, GPU-decode-mip0/cache hit, ring-GPU-readback, ring-144-support 그룹전후. 매probe로그0.
+- fixed/live 각iteration과dense-cold/dense-fixed/dense-live 전후·완료CPU시간.
+- lifecycle/ring-lifecycle·원Simulation복원·capture-body완료와capture종료.
+
+측정IO분리: 기존 Invoke reflection 원문을 InvokeRaw에 두고 TracedProductCall은 로그 before를쓴뒤Stopwatch를시작해InvokeRaw만측정하고종료값을계산한뒤after로그를쓴다. TimedSyncViews는기존worldMask준비시간+두제품호출시간을합산한다. fixed/live/dense의원래통계입력도이IO제외값을사용한다. 초기Update/Late의사이LineState는계속제외한다.
+
+QA Measure의중첩trace가외부Measure완료시간에들어가지않도록누적traceOverheadTicks(요약+JSON+파일IO)를차감한DiagnosticMs를보고한다. 제품호출timer내에JSONL쓰기/CPU메타수집을넣지않는다. UTC/realtime간격은로깅을포함한실제wallclock이고completedMs는이구간을제외하므로둘의목적이다르다. trace IO는CPU측정밖이어도yield프레임간실제시간을늘릴수있다. 따라서이추적실행의FPS/실시간roll주기를최종무추적성능PASS로확대하지않는다.
+
+기존sample/RNG/source/material/피해/반경/시나리오/148+링lifecycle집계및hardcriterion은변경0. 거대한배열측정/루프를최적화하거나샘플수를줄이지않았다. ROOT가새원격QA체크포인트를보존한후필요시실행해제품cold와QA진단비용을구분한다. 현재CPU100%의원인을이소스작성만으로단정하지않는다.
+
+
+Actual09190dda normal ARM64 built/errors0/rawbefore+after772drift paths preserved. First row incomplete after owned Player wall04:10/99pct CPU/noPNG; managed sample has unknown JIT names, so product vs QA cause unresolved. Only ownedPID96536 SIGTERM, wrapper restored original normal Preferences raw SHA e5a6b4bc2005eef68b1d40111c1342fc94ac82ca35c7644948e92abc61c16889 and cache semantics. No final receipt/original-simulation comparison, no product PASS/FAIL claim. Ground-progress trace added to separate completed product timings from QA overhead; exact3c product unchanged, no contact criteria relaxation.
