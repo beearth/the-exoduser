@@ -1,5 +1,135 @@
 # RM-1 VFX 통합 구현 기록 — 2026-10-28
 
+## 2026-10-31 r3 실제 검수와 r4 재질 재작업
+
+### r4 동일소스 재시도 빌드/M1 통과·실제 영상 FAIL — 현재 판정
+
+| 항목 | 실제 근거·재작업 |
+|---|---|
+| 빌드/파일 | source65ead/Unity tree93d5f054/Core tree424bcafff. 공식 `f9e9faf3` 6000.6.7f1/remodel-scenes1/Succeeded/오류0/3,833,796,213바이트·duration142230ms. 오류로그2건은인증/라이선싱진단으로분류. 실제212파일/160DLL·MCP파일/참조0. Runtime SHA `e79ef3ac7c5b11a7ad96baa49062acc3a4ebd1c8a913f355a4ece4bdb2f17016`, Core SHA `eb051ea6bd6b3ea81804247abeedfd9cd5663e0f0488d9a3bfadbc3d96cb7f3d`. 아래첫실패는별도보존 |
+| 같은EXE M1 | `c70b8dd3`, 23/23 ok·정상exit0·사용자창0/잔류0/USER_SAVE0/숨은Desktop닫힘 |
+| 실제3D 영상 | `48ca3efb`, 1600×900·480PNG/16초·안전0. Core SHA dc9493fe…/피해84083/시전10/5종Graph/실제악의구폭발6/critical drop0. 새노레위필드참조와3200×900 나란히16초실제CPU재생 ended/오류0/480디코드/드롭0/손상0, 같은배율32표본8보드와강타·악의구실제적중각12연속프레임을직접확인. 게임FPS/자연플레이PASS아님 |
+| 시각 판정 | **FAIL**. 독탄밝은반복선제거와3D입체명암은개선됐으나 교량회복바닥이거의안보임/가시덫접지가일정하지않음/강타바닥점선원형테두리가UI선처럼남음. 생성수로전체VFX PASS를대신하지않음. `r4-영상-판정.json`, `playback-material-r4/` |
+| 원인 분리 | 현행회복alpha0.016, 가시조각의중심높이재사용, 12×12메시와얇은교량판자경계관계를MCP에서분리확인한다. 현재URP의기존DecalFeature활성·M_SkillGround/M_ImpactScorch DecalGraph존재를확인했으며실표면투영재사용시험예정. 아직생산수정/높이측정PASS아님. GPU입자생성수와실제표시도분리확인 |
+| 보존/다음 | 촬영직후공식슬롯반환, 파생766보존/기존709정확복구/신규57GUID참조0정리/입력3959변경0. fetch공통b673변경0/HEAD65ead/INDEX0/UnityWORK0. UTC15:14:41 MCP원인검수큐끝접수·공식start90622 한건. 다음은바닥/가시/테두리와넉백검수보완후동일최종빌드전후·와이드검수. MQ READY0/Desktop미갱신 |
+
+### r4 첫 공통 빌드 시간제한 실패와 넉백 검수 공백 — 당시 기록
+
+| 항목 | 확인한 사실·남은 검수 |
+|---|---|
+| 고정 입력 | source `65ead27c3d83ff13b6f7f514c37da04bcc0aab09`, Unity tree `93d5f05496598836dd975973bd684eb4b7c4ab68`, Core tree `424bcafff2db426f3f63e12b0a37b45e37d8db3c`. 공통 대비 자체 Core 변경0 |
+| 첫 정식 빌드 | `PortVerification.Build` run `9de2257e`, duration603281ms·refresh119971ms·compile11543ms. C# compileErrors0/errorLogs0/USER_SAVE0이나600초 제한으로 exit-1/okfalse. 마지막577s 셰이더583/1536변형 준비. 빌드 성공·실행 검증으로 세지 않음 |
+| 실패 보존·재시도 | 미완성 출력은 I: `demo-art/impact/build-r4-fail1`, 공식 JSON/log byte·SHA 대조 사본과 실패manifest 보존. Library/ShaderCache 유지. 파생766 byte/SHA 보존·기존709 정확복구·자기신규57 GUID참조0 정리·입력3959 변경0. own 슬롯 반환 후 UTC14:50:02 Main→UI 뒤 큐끝 재접수. 같은소스/인수에 TimeoutSec1800만 적용한 단일 재시도 대기. 아직 새 빌드/M1/영상 미완료 |
+| r3 넉백 근거 정정 | 실제 `after-r3/core-trace.txt`의21표적/7구간 최대이동0px. 일반·Ki·강타 >1px 검사 `넉백-이동-검사.json`은 FAIL/exit2. 기존 영상은 넉백 이동 증거로 인정하지 않음. 원인은 fixture `EnemyAiEnabled=false`가 Core 적 넉백 루프도 중지하는 것. 런타임 넉백 수식 결함으로 확대 해석하지 않음 |
+| 격리 예행 | 기존 Core AI루프를 켜고 매tick fixture Stunned180으로 자발 행동만 중지하면 일반99.61/Ki205.93/강타53.14px 이동. 현행5시전·Ki3타 Tier3명중·1처치·악의구 실제폭발 유지. `knockback-core-probe/result.json`. 지형/GPU/자연플레이 증거 아님 |
+| 후속 최소 보완 | 아직 생산 코드 미적용. 영상 fixture에 같은 Core 루프/명시적 검수기절과 실제이동 필수 게이트를 연결한 뒤 같은 최종 EXE 전후 Core SHA·1x 연속 화면의 pose hold 후 발밑/스프라이트 추종·전후3D/XY/21:9/32:9를 검수한다. 정지/카운터로 PASS 대체 금지 |
+
+### r4 MCP 후 수락 공통 b673 결합 — 새 Player 검수 전
+
+| 항목 | 현행 결합 상태 |
+|---|---|
+| 수락 공통 | `b673cb3f7a534c367e03c285404342e3769a8bfc`(R5 순수맵+HD2D 1단계). 새 원격 공통을 fetch·확인했으며 Core tree `424bcafff2db426f3f63e12b0a37b45e37d8db3c`는19c/r3와 동일. 미인수 R6맵·후속UI후보 반입0 |
+| r4 MCP 실제 범위 | 원본 `cffe41b111da555a29f6204187d0bdb4b1d5cf90`, Editor28344·boot `0ac3dd54`, 자기root/6000.6.7f1/Radeon DX11 확인. 세필수셰이더지원·메시지0·새 `_EdgeMix` 속성 로드. 실제Core 독/가시/어둠탄의PropertyBlock0.025/0.04/0.025 확인·1600×900 카메라 진단. 밝은반복선은 제거됐지만 XY저조도에서입체감·어둠탄가독성은 최종판정전. 정지재질진단이며 전체HUD·Graph동작·3D·자연플레이PASS 아님 |
+| 진단 실패/회수 | 첫 C# 진단은6000.6.7f1의 obsolete-error `GetInstanceID` 때문에 실행전컴파일실패. 이름조회로교체후실제실행성공·프로덕션변경0. 자체RT Release/DestroyImmediate·원aspect1.33333337복원·Play미저장종료·sceneDirty false·공식서버정상종료. MCP오류콘솔0. editor/state의stale_status는직접C# root/compiling/updating/Play상태로대조했으며캐시를현재값으로단정하지않음 |
+| 보존/병합 | MCP파생573 byte/SHA보존·기존517정확복구·신규56 GUID참조0정리·입력3326변경0. 공통인수전68기존파일byte/SHA·636신규경로를 I:before-commonb673-merge에보존. 정상merge의공유Runtime3충돌을해결중CPU단계에서own예약공식반환·다음UI통보. 타인WIP/예약/프로세스변경0 |
+| 충돌 해소 | `NativeGame.UpdateViews`: HD2D 원본자세복원→접점관찰→표시projection반동→공통카메라흔들림을유지. 영웅공격pose writer만hold하고HD2D Actor등록/접지폭은매프레임수행. `NativeDruidBody`: 공통접지폭 `r*0.0465`와기존hold/피격틴트동시유지. `NativeGame.Remodel3D`: 표시marker반동후공통Cinemachine ManualUpdate·최종카메라후픽셀스냅순서유지. 공통 `Map.ProjectileBlocked` 콜백과영웅모션/HD2D자산을보존 |
+| 결합 CPU 검증 | Runtime317소스/설치Unity참조125·오류0/경고473, 표현계약456통과. 자체Core변경0이며같은Core의피드백26/0·기검참93/0·스킬13216/0 근거재사용. 변경된맵콜백·결합런타임/조명/동작은새빌드M1·실제Player에서별도검수전 |
+| 형식 검사 경계 | 전체 staged 검사에서 수락 공통의 Unity meta/material YAML 후행 공백을 발견했다. 해당 경고 파일은 공통과 Git blob가 같은지 대조해 원문을 보존하고, 수락 공통 대비 자체 변경은 별도로 `diff --check`를 요구한다. 공통 에셋을 형식만 바꾸기 위해 재직렬화하지 않는다 |
+| 참조 정정 | r3참조의91~94초에큰보스확대가있음을연속시퀀스에서재확인해기존영상을보존했다. r4는 `노레위-필드전투-r4b-16초.mp4`: 공식257016039 70~74/257129364 76~80/257264916 70~74/257129364 80~84초, 각4초·반복0. 초기75초앞0.75초보스소개도직접확인해76초로교체. 네구간보드를직접확인. 원본720p확대·타게임/타카메라스타일참조이며동등1x텍스처/성능증거아님 |
+| 회복막 진단 | 통제r3 XY300→330 외곽391225픽셀·중앙180px/HUD제외: 기존ΔG평균5.3238/중앙2/G+20면적11.6281%, 새평균2.8333/중앙3/면적2.5694%. 시간차·움직이는합성탄/초기일부전개/반동오염이남아 웹정확패리티·아트PASS 아님. 이전r2과강진단과분리 |
+
+원본·진단·실패는 I:`MCP-r4-진단.json`/`import-derived/editor-r4/`에 보존했다. 결합 후 정식빌드·동일M1·전후/초광폭영상·지정통합/Desktop은 아직 미완료다.
+
+이 절이 아래 r3 검수 전/이전 후보 기록보다 우선한다. r3는 접점 가림과 바닥 표시를 개선했지만 **적탄 재질 FAIL**로 통합 제출하지 않았다. r4는 밝은 반복 줄무늬 방법을 제거하는 재작업이며 실제 Unity·Player 품질은 검수 전이다.
+
+| 항목 | 실제 근거·현행 수치 |
+|---|---|
+| r3 원본 | `6cda46abeb2f4e2ad63fa6ad1d7ed496da13d34a`·Unity tree `c8467c71b8d6bcb83d8682adbfa2989a88bf6fd6`·수락 공통19c 대비 자체 Core변경0 |
+| r3 MCP/빌드 | 실제6000.6.7f1·자기root·RX9070XT/D3D11·ImpactGroundPatch 타입/셰이더지원·오류0 확인. 고정7Core틱/피해208·20ms 접점 캡처는 진단이며 자연플레이/전체PASS 아님. `PortVerification.Build` `2f4ebedc`, remodel-scenes1·오류0·3,109,886,741바이트. Player MCP파일/관리참조0 |
+| 같은 빌드 M1 | `72363307`·23/23 ok·첫차단없음·사용자창0/잔류0/USER_SAVE0/숨은Desktop종료. 내부숨은창9개와 사용자노출0을 구분. DLL·리소스 해시는 I: `빌드-소스-연결-r3.json` |
+| 실제 영상 | 3D 전/후 `71aa99b8`/`b8adbb2d`, XY 전/후 `7cc3bc24`/`0fd9781e`, 21:9 `5061ca9c`, 32:9 `40668222`. 각16초·480PNG·30fps. 실제Screen와PNG1600×900/2560×1080/3840×1080 일치. 전부Core SHA `dc9493fefc26ba10139a71abf26c17a5e9c01d593f12bc7d4969083e5a095861`·피해84083 동일 |
+| r3 신호/제약 | after접점37/생성37/drop0·Graph197·Core악의구폭발6/Graph폭발6/critical누락0·실행5스킬 cast/drawn/Graph 일치·완전충전3타발사/명중Tier3·처치1/새처치접점true. AI중지·고정입력·첫표적1HP/나머지100만HP fixture이며 자연플레이·미이식스킬·최소사양FPS 증거 아님 |
+| 영상 판정 | 실제30fps 접점 연속1~3프레임에서3D 본체 식별·4프레임 뒤 소멸. 지형밀착 회복막 확인. 반면 밝은 민트/라벤더 본체의 흰 지그재그가 만화풍으로 읽혀 적탄재질FAIL. `임팩트-전후-r3-16초.mp4`/`노레위-임팩트-r3-나란히-16초.mp4` 및XY·원본와이드 영상 보존. NoRest는 공식720p를같은1600×900으로 확대한6전투구간16초 스타일참조·마지막2초재사용이며 동등카메라/성능 증거 아님 |
+| r4 표면 함수 | `RoughMaterial`·Lit·금속0/매끈함0.35 유지. `q=Pos*11`, cell=floor(q), f=frac(q), u=f²(3−2f). 8셀 해시 `frac(sin(dot(cell+corner,(127.1,311.7,74.7)))*43758.5453)`를 u로 삼선형 보간한 grain 사용. corner는 x/y/z각0/1 조합. 밝은선/pow12 균열 제거 |
+| r4 밝기 계약 | `e=saturate(EdgeMix)`, `Color=lerp(Base*(0.56+0.44*grain),Edge,e*(0.35+0.65*grain))`, `Emission=Edge*Glow*(0.006+e*0.35)*(0.84+0.16*grain)*(0.94+0.06*sin(Phase*7))`. 팔레트·Core폭/판정R·이동/수명·Graph 예산은 기존 그대로 |
+| `_EdgeMix` | Shader 기본0.12/범위0~1. Native 물질kind7/8(독·어둠·악의구)0.025, kind2(적가시)0.04, kind1(덫)0.06, kind3(얼음·충전)0.25, kind6(얇은기검참)0.55, 나머지(강타)0.12. 얼음/검기는 밝은 가장자리 성격을 유지하고 유기탄은 어두운 알베도 유지 |
+| r4 변경 경계 | 자기 SG_SkillMatter·NativeSkillRemaster·생성기만 수정. 기존 Graph ID/연결을 유지하고 EdgeMix속성·입력만 추가, 나머지Graph/재질 재생성0. 수정전5파일 원byte/SHA는 I:before-material-r4. 독립 Runtime292소스/참조125·오류0/경고438·기존표현계약456 통과. 실제 셰이더컴파일/GPU는 별도검수 전 |
+| 자원/보존 | r3 마지막촬영 후 own예약해제·Unity0/잠금없음·다음UI에 공식반환 통보. build파생575 byte/SHA보존·기존519정확복구·자기신규56 참조0정리·입력3326변경0. 별도MCP캡처는 I:보관·기존G경로는 검증된Junction. 추가GPU는 큐끝 재접수하며 타인예약/프로세스 변경0 |
+
+컴파일·oracle·카운터는 시각 판정을 대신하지 않는다. r3 공식 원본영수증과 사본SHA는 I: `r3-통합검수.json`/`official-r3/`, 실제 무창CPU MP4재생 ended/디코드 기록은 `playback-r3-attempt2/재생-영수증.json`이다. 첫 로컬 재생의 두번째파일 networkidle 대기실패도 보존했으며 정적HTML은 media ready/ended로 검증했다. 게임 성능 측정과 구분한다. r4 정식검수→비교영상→지정통합→바탕화면까지 미완료다.
+
+## 2026-10-31 r3 표시 구조 재작업 — 정식 Player 재검수 전
+
+r2는 기술 검사와 별개로 **3D 접점/탄막 가독성 FAIL**이다. 같은 접점의 핵심 결함이 두 후보에 남아, Graph 수치 반복 대신 본체/잔여와 바닥 표시 구조를 분리한다. 아래 r2 표는 실패 후보의 이력이며 현행 후보 수치는 이 절이 우선한다.
+
+| 범위 | 현행 r3 후보·검증 경계 |
+|---|---|
+| 최신 공통 인수 | 확정 공통 `19c6ccec8f7056acdc554b45de72d43a78c12ec6`의 일시정지·UI 음원57 Unity경로/관련docs6경로를 전용 브랜치에 정상3방향 병합·충돌0. 미인수 후보 인수0. 공통 대비 자체 Core diff0이며 기존15c 대비 Core 차이는 승인된 PauseNavigation 한 줄이다. 새 입력의 독립 Runtime292소스/Unity참조125·C#오류0/경고438, 피드백26/0·기검참93/0·스킬13216/0을 별도 I:oracle-common19c에 보존. 정식 Unity 메타 임포트·같은 새 빌드M1·영상은 재검수 전 |
+| r2 실제 입력·빌드 | source `597c3b9b8d6300a6554abd9543ac08a78bed58bf` → `PortVerification.Build` run `c1bbb4b4`·6000.6.7f1·remodel-scenes1·오류0·3,102,826,230바이트. 공식 실행 errorLogs2는 컴파일 오류가 아니며 Licensing access-token 갱신 로그를 포함한다. Player MCP 파일/관리참조0·212파일/160DLL |
+| r2 동일 EXE | SHA256 `9806abde4a406ed68647e9505852c49f6aa72a372f4f084e2aa2821affea57a2`. M1 `e60e23d8` 23/23 ok. 첫 M1 실행기는 Player 시작 전 무출력 exit1·프로세스0·stale 잠금 확인 후 기존 sync 호출로 재실행; 원인 영구 복구 주장은 안 함 |
+| r2 실제 비교 | 3D 전/후 `4f1e1283`/`a693e300`, XY 전/후 `ec201491`/`b4be09a4`. 각각1600×900·30fps·480PNG/16초. 네 Core SHA `ce48d649960a79064929e94ab5f3a204cbfd59da1ecb1125ccf77dd6d3445f0e`·피해55777 동일. 새 접점78·생성75·최대입자74·스킬Graph201·현행5종 표시 카운터. 모든 실행 사용자 창노출0/잔류0/USER_SAVE0/숨은Desktop 종료. 카운터는 시각 PASS 근거가 아님 |
+| r2 시각 결함 | 1x 연속 프레임에서 XY 코어는 보이지만 3D는 몸체 뒤에 가림·방향 파편 약함. 새 적탄은 작은 점무리로 축소됨. 3D 바닥 회복막 식별불가, XY 바닥은 보임. `after-r2-1x/`·`after-xy-r2-1x/`·전후/노레위 나란히16초 영상으로 보존. 통합 제출0 |
+| 접점 본체 분리 | 신규 Lit `SG_ContactFlash`/`M_ContactFlash`, 카메라를 향한 비정형 렌즈 면. 크기 일반0.24m/강공0.38m×가로1.25/세로0.8·발광4. 45ms까지 불투명1→85ms에0. 3D 높이0.65m와 카메라 앞쪽0.3m 제한 bias, XY 높이0.42m·표적Y+4. 기존 Graph 코어크기0·삼각 파편/회갈 먼지 유지. 논리 입력·피해·히트스톱 계약 불변 |
+| 접점 면 함수 | `q=(UV-0.5)*2`, `a=atan2(q.y,q.x)`, `rho=length(q)/(0.92+0.055*sin(5*a)+0.025*cos(9*a))`, `Alpha=(1-smoothstep(0.65,1,rho))*Fade`. 선형 입력 Fill `(1,0.96,0.82)`, Edge `(1,0.69,0.35)`를 saturate(rho)로 보간하고 Emission=Color×4. 원시 쿼드는 XY ±0.5·normal -Z. 값은 authored Shader Graph/축척 계약이며 실제 HDR 최종픽셀값은 아님 |
+| 지형 밀착 표면 | `ImpactGroundPatch`: 3D 12×12격자·169정점·288삼각형, 현재 지형을 읽어 표면+0.025m에 배치. XY는 같은 Shader Graph 평면·카메라쪽0.02m. Core 반경 그대로·충돌/지형 쓰기0. 회복/덫/강타/얼음 바닥과 그을음을 직접 표면으로 표시해 데칼 수신기 의존 제거. 미사용 옛 decal Graph/재질은 이력 자산이며 현재 경로의 필수 재질은 SkillFloor/ContactFlash |
+| 탄막 외곽 복원 | 충돌R로 축소한 오류 수정. 독 표시폭 `(ElemBall?240:clamp(Sz*24,96,180))*(physical?2:1)`px. 일반탄 `sz=(Sz==0?1:Sz)`, `ps=clamp(sz*1.5,1.2,4)*0.7`, 물리폭 `22.05*ps*2*0.55*2`, 어둠길이 `44*ps`, 원소보주폭 `max(96,sz*5.3)*2`. 기존 NativeBossView 웹 표시식과 동일. 판정R·수명·Q/E 불변 |
+| 본체·보조 분리 | 독/어둠은 불규칙 고체 본체1+보조3, 물리 가시3. 독 본체폭 표시폭0.66·암흑0.72×높이0.28×두께0.34. 악의구는 본체2.75R+위성3개 궤도2.1R·높이1.35R. Lit 면은 base grain→edge0.22+균열0.28, 균열pow12·발광은0.22+균열0.35로 면적을 확보. 팔레트는 r2 확정값 유지·네온/작은 반짝이 군집 억제 |
+| 원시 메시·축척 의미 | 결정/가시 원시는5면·각 면2삼각형/6독립정점, 적도반경0.35·밑점Y=-0.45. 결정 윗점(0,0.65,0), 가시는(0.13,1,0). Orb는 위도8/경도12분할·반경 `0.5*(1+0.025*sin(3*a)*sin(4*b))`. 기검참은28분할·각도±1.3rad·원시외곽0.5·띠폭 `0.025*sin(pi*i/28)`·원시Y0.12. 표의 조각 폭/높이는 Transform.localScale 입력이며 실제 메시 끝점/카메라 투영 외곽과 구분한다. Core 반경·표시 기준 외곽식은 위 표를 사용하고 실제 투영은 다음 Player에서 판정한다 |
+| 회복영역 강도 보정 | VFX-D19의 `.11`은 기존 문양의 밝기²/점유율에 대한 감쇠이며 넓은 새 면의 최대 불투명도로 그대로 쓰면 안 된다. 실제 r2 XY 프레임264→300 바깥영역391225픽셀 진단에서 기존경로 ΔG평균3.51/중앙1, 새경로17.35/중앙17·G+20면적22.19%로 과강을 확인했다. 시간차·이전덫/투사체 오염이 있어 웹1:1 측정은 아니다. r3 새 면 최대alpha0.016·수증기alpha0.012로 줄여 웹 저강도 방향으로 보정한다. 사용자색 b6ff54/d5ff72·반경520(Lv1)·테두리발광0.03 유지. r3 통제 영상에서 재측정 전 패리티 PASS는 아니다 |
+| 화면 비율 검수 | review에 `-impact-width`/`-impact-height` 추가. 기본1600×900, width1600~3840/height900~2160 제한·실제 Screen 크기를 영수증과 PASS 조건에 포함. 21:9/3840×1080 실제 영상은 다음 정식 빌드에서 검수 |
+| 구간 비교 통제 | r2 영상에서 먼저 쓴 장시간 가시덫이 회복영역/얼음/악의구 구간까지 반복 피격광을 만들었다. r3 review는 매 구간 FireZones/SlamWaves/SkillBlades/MaliceOrbs/기검참 투사체와 IceOrbActive를 명시적으로 초기화한다. 새 표적/공통탄막3종은 유지. 양쪽 같은 fixture이며 생산 게임·Core 구현 변경이 아니다. 따라서 r3의 전후끼리 새 Core SHA를 대조하며 r2 SHA와 같다고 가정하지 않는다 |
+| 즉사 접점 경계 | 현행 실제 Core CPU 5사례에서 일반·즉사·보호막넘침·직접DOT API는 HurtTicks6/접점true, 완전 보호막흡수는 HurtTicks0/접점false다. 최초 두 진단은 보호막·DOT의 harness 기대가 틀려 실패했고 CX-04b/실제 Body를 읽어 기대를 정정했으며 생산 코드 변경0이다. 즉사 표적은 목록에 남는다. r3 실제영상은 첫 일반공격 표적1HP를 실제 처치하고 `killedTargets>=1`·새 경로의 해당 ID `EnemyFrozen`/생성 접점을 PASS에 요구한다. 나머지 표적은100만HP fixture. CPU 결과는 GPU 처치 표현의 PASS가 아니다 |
+| 표적 배치 | review만 영웅 기준 Core delta `(48,-28)`, `(48,28)`, `(104,0)`px. 첫 두 표적은 실제 일반공격 원호 안에 두어 즉사와 생존 적중을 함께 확인하고 세 번째는 기검참/스킬 대상이다. 판정 범위를 늘리거나 강제 hit 이벤트를 보내지 않는다 |
+| 기검참 실제3타 게이트 | r2 trace120틱 구간은 swing 시작0/40/100, windup80~99로3타 모션은 있으나20틱충전이며 Step 발사/명중은 별도 미기록이었다. r3 총960틱/16초/480PNG는 유지하고 일반120·기검참240·각스킬120틱으로 배분한다. 기검참은220틱까지 유지 후 해제하고 실제 Feedback를 dequeue 전 읽어 `sword_swing3`/Step3 발사·`KiSlashHit`/Step3 명중·Tier3를 모두 PASS에 요구한다. Core 큐/시간/난수는 변경하지 않는다. 악의구는96틱 유지·24틱 해제, 얼음 파쇄는80틱에서 눌러 뒤40틱의 진행을 확보한다 |
+| 일회성 Graph 우선 | 기존12슬롯/0.8초·프레임6이벤트 한도는 유지. 일반 연기/잔여는 프레임4까지 사용하여 강타/악의구 폭발용2이벤트를 남긴다. 중요 요청은 만료 슬롯이 없으면 최소0.15초 지난 일반 잔여 중 가장 오래된 슬롯을 재사용하며, 진행 중인 다른 중요 효과는0.8초까지 보존한다. Core 공격/피해/발사는 제한하지 않는다. `PuffCanYield` 계약6개 RED→GREEN 추가(총456). 화면 안 중요 요청 누락 `DroppedCritical`·악의구 폭발 전송 `MaliceBlastEvents`를 별도 기록 |
+| Graph 전송과 본체 구분 | 핸들의 실제 원인 스킬ID를 붙여 `SendEvent` 이후 `SeenGraphSkills`에 기록한다. 적탄/기검참/충전이 같은 kind를 쓰더라도 현행5스킬로 오인 집계하지 않는다. review PASS는 본체5종과 별도로 Graph 전송5종·실제 Core 악의구 폭발·해당 폭발 Graph 전송을 요구한다. 전송 카운터는 실제 GPU 표시/시각 PASS를 대신하지 않는다 |
+| 공통19c 이전 독립 검증 | 표현 계약456개 RED→GREEN. 설치 Unity 참조125·runtime287소스 독립 C# 오류0·기존경고437. ContactFlash Graph47객체·누락참조0·재질GUID 일치. 실제 Core960틱 입력 예행에서 처치1·3타 발사/명중 Tier3·악의구폭발6·5스킬 발동 PASS. 지형/GPU/자연플레이 증거가 아니며 정식 Unity 임포트/Player/M1/시각 판정은 아직 r3 미검증 |
+| 첫 r3 공식 컴파일 FAIL | source599afc45a, 10:47:56UTC 공식 start가 UPM정상 연결 후 CS0246 두 건으로 준비 전exit1. `ImpactGroundPatch.cs.meta`의 GUID를33자리 `a9dc74cf92824d56a066173f2734c96c7`로 잘못 작성해 Unity가 파일을 무시했다. 실제 로그의 invalid GUID/ignored asset와 `Exoduser.Runtime.rsp`의 해당 소스 누락으로 확인했다. 독립 C# 검사는 메타 임포트를 포함하지 않아 잡지 못했다. 잘못된 원본 byte/SHA를 I:before-guid-fix-r3에 보존하고32자리 `a9dc74cf92824d56a066173f2734c96c`로 최소 수정。 자기 메타20개 형식/중복 검사는 RED1→GREEN0·중복0으로 확인했으며 정식 Unity 재컴파일 전에는 해결 PASS로 올리지 않는다 |
+| 실패 뒤 자원 반환 | 공식 대기68128 종료·Unity0/잠금없음 확인 후 자기예약만 unreserve하여 Map선두로 반환했다. 자동파생55파일 byte/SHA 보존·GUID참조0인 자기신규55개 정리·tracked source파생0. 산출물 `import-derived/editor-r3-fail1`. Library 삭제/캐시 초기화·타인 프로세스 변경0, 새 GPU검수는 수정 checkpoint 뒤 큐끝으로 재접수 |
+| 소유권·반환 | r2 종료08:15 UTC 자기 예약 해제·잠금 비어있음 확인·다음 기존 담당에게 반환. 파생575파일 byte/SHA 보존→기존519 정확복구·자기신규56 GUID참조0 정리·자기 source 변화0. CPU 재작업 중 Unity 점유0. 새 writer/세션/작업본0 |
+
+## r2 후보와 실패 이력
+
+| 범위 | 현재 후보·수치 |
+|---|---|
+| 브랜치·기준 | `codex/pc-impact-remaster-20261031`, 공통 `15c8ed3c522de317d22cdbfd185b1ceca494b56f`. 현행 실행 영웅 스킬 `PortedSkillIds` 5종 전체·기검참·독/가시/어둠 탄 표현을 연결. 미이식 스킬의 실행기 추가·완료 주장은 하지 않음 |
+| 표현 정지 | `ImpactResponse`·`NativeGame.Impact`: 3D 월드와 XY 아레나 모두 일반55ms, 치명프로필75ms, 대검끝타/강타90ms. 타격한 적과 공격 중 영웅의 뷰만 유지. 영웅은 접점 포즈를 한 번 그린 뒤 유지하며 HD-2D 스프라이트 경로도 적용. 치명프로필은 아직 실제 이벤트 미연결. Core Tick/입력/피해/쿨다운/넉백/난수/저장·`Time.timeScale` 수정 없음 |
+| 카메라·피격 | 방향성 반동 일반2.2px/치명프로필3.5px/강공4.5px·180ms감쇠·설정배율. 3D는 표시 marker, XY는 렌더 projection만 이동. AI 발사·루팅 콜백이 읽는 논리카메라 Transform 불변. 피격 틴트100ms 이내·Core넉백은 뷰정지 뒤 따라감. 전용 드루이드 sprite도 같은 피격 틴트·포즈 유지 경로 연결 |
+| 접점·잔여 | `Resources/VFX/Impact/VFX_ImpactBurst.vfx`: 코어0.24/0.38m·`#fff4d0` HDR4. 코어 알파는 정규화수명0.08~0.28에서1 유지(0.25초 수명 기준20~70ms), 0.5에서0.225·끝0. 파편은 둥근 텍스처 quad 대신 무텍스처 삼각 primitive, 0.035~0.065/0.09m·방향속도2.8/3.8m/s, `#ffd9a0` HDR1.2→0.18에서`#9a8a72`→끝`#2a2220`. 먼지0.5/0.8m·0.35~0.65초·알파0.14 |
+| 예산·조명 | 같은 관찰 프레임 접점2, 같은 적 재발광 최소80ms, 효과 인스턴스8·최소재사용900ms, 국소 무그림자 라이트 동시2·100ms 이내·반경1.5/2.2m·초기강도2/3 |
+| 화면·정렬 | 현재 월드 카메라 투영의 near/far와 viewport 가장자리±0.1 여유로 접점·Graph 이벤트·스킬라이트를 admission. 화면 밖 접점은 카메라 반동·정지를 만들지 않음. 접점 Graph는 실제 표적 Core Y 정수+4, 긴 스킬 잔여 Graph는 발생 Y 정수-4. int 정렬은-32768~32767로 제한. 접점의 위치 오프셋 Y를 정렬 기준으로 쓰지 않음 |
+| 그을음 | 전용 `SG_ImpactScorch.shadergraph`·참조 재질. 불규칙 알파와 알베도 분리·발광0·색 `#1b1410`, 반경0.28/0.5m, 동시8, 최대fade0.6·2초 수명·마지막1.2초 소멸. r2는 바닥+0.12m·깊이0.3m로 인물 투영 억제. 풀 재사용마다 라이트 반경·강도 갱신 |
+| 비교 장치 | `--unity-impact-review`·`--unity-impact-baseline`, r2 1600×900·30fps 480장/16초·같은 입력 Core 추적 SHA. 일반공격/기검참 각120틱, 현행5스킬 각144틱·얼음보주110틱 Space 파쇄. 매 구간 실제 Core 탄3종 합성 배치·이동/수명도 추적. AI 중지·불사 표적 fixture이며 자연 플레이 증거 아님 |
+| r1 실제 근거 | source `88ca4c3` → build `912c9e52` 성공/오류0 → Player MCP 파일·참조0(212파일/160DLL) → M1 `1d5bc9ab` PASS → 전후 `f8362a14`/`4f7c29d1` 각각12초. Core SHA `69cee82a…b2fb` 동일·피해50388 동일·접점50/생성46/최대입자65. 숨은Desktop 창노출0·잔류0·사용자세이브0. 연속120프레임에서 기존 큰 붉은 가시문양·두꺼운 기검참·밝은 얼음덩어리 결함 확인, r2 재작업. r1 전체스킬 아트 PASS 아님 |
+| r1 접점 추가 판정 | 320×240 1x·30fps 연속12프레임(0~0.4초)에서 국소 조명은 읽히지만 백열 코어·방향 파편은 식별되지 않음. **접점 Graph 가시성 FAIL**. 생성46/입자65는 화면 표시의 증거가 아님. 원인(이벤트 좌표·고정 bounds·렌더 경로)은 MCP 실제 프리뷰에서 확인 후 수정. `after-r1-접점연속12프레임-1x.png` |
+| MCP 원인 확인·수정 | boot `a6b9d860`, 자기 Editor67604/instance c6d087a3·실제경로 대조·RX9070XT/D3D12·I:격리/무음. position 속성/Renderer/노출속성·4재질 지원·셰이더 오류0 확인. Core tick7·피해208 고정에서 order0→7424만 변경해 코어 가림435픽셀 재현. 코드 적용 후 자동7424 확인. XY 바닥은 Fade0에도2150픽셀 반사가 남음→Lit Preserve Specular 해제·금속/매끈함0·그림자off 후 Fade0/비활성 차이0. 좌표를 임의 변경하지 않음. EditorMode 최초 culled/입자0 캡처는 위치 판정에서 제외. 원격 Player/D3D11의 동일성·품질 증거는 별도 |
+| r2 검증 경계 | 독립계약443개 RED→GREEN(정렬·화면 admission9개 추가, 적 독/어둠 팔레트 검사 포함), 설치 Unity DLL 기준 runtime C# 오류0(기존경고437), 최신 XY 수정의 정식 Unity 재컴파일·콘솔 오류0. 새 Lit/Graph·탄막의 최종 Player 영상은 미검증. MCP 스킬 정지5장은 압축틱·풀의 지연 파괴가 섞인 진단이며 동작/전체 아트 PASS가 아님. r1 MCP/M1도 r2 검증을 대신하지 않음 |
+| 전체 docs 검색 보완 | 앞선 rg는 sparse의 VFX/engine 폴더만 검색했다. Git object 전체 docs를 be125799a2 기준1,145행/266문서·origin/main9780db0cdd 기준1,260행/261문서 검색해 `관련-docs-전체트리-*.log`로 보완. CX-04b는 당시 Core/oracle 인수, P2-001a는 Godot 이력으로 확인했으며 새 Unity 표현과 혼동해 과거 기록·보호 설계를 덮어쓰지 않음 |
+| 정식 실행 경계 | r2 첫40분·다음120분 start는 타 담당 선두로 시간 초과(exit1), 자기 Unity 시작0. 종료·프로세스0 확인 후07:20 UTC 대기1건 재접수→07:25 자기 순번/Editor 시작→08:01 Play·Editor 정상 종료. 자식7116은 자기 AssetImportWorker로 별도 Editor/Player 아님. 파생588 byte/SHA 보존·기존518 정확복구·자기신규56 GUID참조0 정리·자기후보14 유지. 같은 등록04:34 예약을 다음 공식 빌드/Player 게이트에 유지. 산출물 `import-derived/editor-r2` |
+
+M1 `07e`는 원래17발 분류(물리/입4·혜성7·원소보주6)를 유지한다. 새 표현이 실제로 그린 Core 탄 객체만 해당 분류에 더하고 기존 sprite 수와 합산한다. 없는 탄을 더하거나 기대17발/폴백0 기준을 낮추지 않는다. 새 Graph/물질·독/가시/어둠 표시 여부는 16초 별도 fixture에서 함께 검사한다.
+
+필수 Graph·그을음·XY 바닥 재질 중 하나가 누락되면 접점의 새 관찰/정지/반동/기존 hit sprite 억제를 적용하지 않는다. 스킬 본체 역시 필수3재질·Graph 로드가 성공한 경우만 기존 경로를 대체한다. 누락 자산으로 `new Material(null)`을 호출하지 않는다.
+
+r2 생성기는 Windows에서도 신규 VFX/YAML/meta를 LF·행끝 공백 없이 저장한다. Graph 수치·재질 GUID를 바꾸지 않는 형식 정리의 이전 byte는 I: `format-before-a36b237e1/`에 보존했다.
+
+### r2 스킬·탄막 표현 수치
+
+새 경로는 `NativeSkillRemaster`가 읽기 전용으로 관찰한다. 비교 baseline 또는 자산 누락 시 기존 경로를 사용한다. 현행 HD-2D 인물/적 스프라이트 방향을 변경하지 않는다. `SG_SkillMatter`는 Lit·거친 결/약한 발광 혈관·금속0/매끈함0.35. `VFX_SkillMatter`는 별도 코어·삼각 파편·먼지 시스템이다. `ImpactSpace`는 XZ 지형 높이 또는 XY 발밑/카메라 방향 높이로 변환한다. XY에서는 기검참 평면을 제외한 물질 조각만 `90도-LOOK001 pitch`(약41.3도) 추가 기울여 높이를 읽게 하며 Core 바닥 좌표/반경은 보존한다. XY 바닥은 투명 Lit 쿼드(레이어-19000/그을음-18999), 금속0·매끈함0·알파 독립 specular/그림자0이다. 두 스킬 바닥 마스크는 `max(inside*(0.55+0.45*grain),rim)`로 전개/페이드에 곱한다. 따라서 전달 fade가 최대 불투명도이며 0.2를 다시 곱해 회복 영역을 숨기지 않는다. 기존 아레나 sprite가 DecalProjector를 받는다고 가정하지 않는다.
+
+| id·대상 | 크기·형태 | 색·빛·잔상 |
+|---|---|---|
+| `spikeTrap` 가시덫 | Core `z.R/100` 안 18개 가시, 황금각137.5도·면적균등 배치, 12틱 전개·마지막30틱 축소. 폭0.22m·높이0.28/0.46/0.64m | 목질 `#30281b`/끝 `#b3a17c`, glow0.12, 바닥fade0.2·발광0. 붉은 원화 문양 사용 안 함 |
+| `holyDome` 회복영역 | Core `z.R/100`, 15틱 전개·마지막30틱 소멸. 작은 반짝이 결정0개, Graph는 크기0.9m/알파0.035의 넓은 얇은 수증기만(코어·파편크기0) | 사용자 웹색 `#b6ff54`/`#d5ff72` 그대로, 바닥fade0.11·가장자리발광0.03. 색 변경B′/C′ 미채택 결정 준수·큰 네온 원판 억제 |
+| `giantSlam` 지옥강타·E 강타 | 웹 sprite 외곽 지름 `MaxR*0.9*(0.72+0.28*min(1,progress*3.5))` 보존. 둘레 파편14개·0.12~0.20m, 진행 끝0.38 구간 소멸. Graph는 평면방향±3m/s와 바닥법선방향1.2~3.5m/s로 솟는 조각·회갈 먼지를 분리 | 지옥강타는 마스터 화염 `#ffd9a0`/`#d8562a`/`#4a1610`, 탄화재질 `#3a2117`·균열glow `0.8*(1-progress)`. E는 물리 뼈색파편·회청 `#91a7ac`·glow0.1 유지. 바닥fade0.28·따뜻한 금갈 가장자리. 시작20%만 국소빛(지옥불주황/E서리색)·강도최대2·반경최대4m. `gSlamWindup`의 실제 접점에도 뷰정지 |
+| `iceOrb` 얼음보주 | Core·웹 R식 유지. 반경3.2R 궤도 결정14개·0.10×0.28~0.46×0.12m, 조각 포함 웹지름6.6R 표시 외곽에 맞춘 성긴 덮개. Core 파쇄로 생긴 blade는0.11×0.4×0.11m | 마스터 빙결 `#e8f3f8`/`#5f98c0`/`#1a2a36`, glow0.38(칼날0.4). 바닥fade0.08·가장자리0.08·빛반경1.8m/강도0.45. 인물·탄이 보이는 빈 중심 |
+| `fireball` 악의구 | Core R에 따라 조각5개, 궤도2.25R·폭0.65R/높이1.2~1.68R, 조각 포함 웹지름5R 표시 외곽에 맞춤. 실제 폭발 이벤트 반경으로 먼지폭최대1.8m | 마스터 마력 `#e4dcf4`/`#6a56a8`/`#161226`, glow0.65·빛반경1.1m/강도0.5. 적 암흑과 색상각 구분 |
+| 기검참·충전 | 1/2타192px·3타252px×Core ChargeScale 외곽, ±1.3rad 얇은 초승달·최대두께외곽의0.025·지면위쪽 법선. 충전40틱마다3단계 작은결정 크기0.045→0.1m | 뼈 `#9c978b`/`#ede8d8` glow1.5, 큰5겹 흰 원화 대신 물질 경계. 코어 판정/수명 불변 |
+| 적 독·가시·어둠탄 | Core R→0.045~0.3m 표시반경. 독·어둠은5조각, 가시는3개 방향성 파편. 물리탄 분류 우선, 독은전용우선. mine/friendly/blue/black/bw bean·나머지원소탄 기존경로 | 마스터 독 `#c8e8a8`/`#5f8a2e`/`#1c2810`, 물리 `#efe6d2`/`#9a8a72`/`#2a2220`, 암흑 `#cdb2e0`/`#5e3478`/`#170c20`. glow0.9/0.35/0.9. 독85~95도·암흑270~295도 상수 검사. Q/E 패링계약·탄 이동·피해 불변 |
+| 공통예산 | 활성핸들96·넘친 적탄은 기존 표시 유지, Graph풀12·재사용0.8초, 프레임당이벤트6·Graph 잔여0.8초, 스킬라이트동시2·바닥법선방향 높이0.75m | 코어HDR1.5·코어크기프리셋×0.24·파편0.06~0.12×size, 먼지size×0.8·0.24~0.5초·알파0.02~0.14. 스킬별재발생0.12~0.36초, 강타1회 |
+
+출력·실패 원본: `I:/EXODUSER-Storage/demo-art/impact/`. 실제 영상 판정 전 제품 PASS·MERGE_READY·바탕화면 갱신으로 보고하지 않는다. 브리프의 최종 전체 범위와 지정 통합 담당의 권한은 유지한다.
+
 기준: `UNITY_RM1_VFX_SPEC_20261027.md` v2.1 §3.1·3.2·§7, `VFX_LEAD_MASTER_20261026.md` §2.7. 이 기록은 Unity 후보 브랜치의 실제 표현 코드 상태를 설명한다. Core 판정·피해·속도 수치는 변경하지 않았다.
 
 ## 소유 파일과 연결 상태
@@ -44,3 +174,75 @@
 1. RM-INT 1단계가 `unity/main`에 들어오면 VFX 브랜치에 최신 `unity/main`을 비강제 병합하고 `VfxWorld.ToWorld`만 `RemodelWorld.ToWorld`로 전환한다. RM-INT 작업 브랜치 자체를 합치지 않는다.
 2. Unity 순번·메모리 조건을 확인한 뒤 그래프 임포트, 컴파일, RM-1 샌드박스 비교 캡처를 실행한다. 오류가 나면 원인 수정 뒤 1회만 재시도한다.
 3. 병합 전 Player 빌드 영수증을 유니티 통합 담당에게 전달한다. 통합 후 실제 GPU Player와 `--remodel3d` 1x 화면에서 웹 기준 크기·톤·탄막 가시성을 판정한다. 캡처에는 적 독 탄이 겹친 장면을 포함한다.
+
+
+## 2026-11-01 r5 접지·투영·넉백 재작업 — 소스 후보/실제 GPU 미검증
+
+r4 빌드·M1 기술 PASS와 회복 바닥/가시 접지/강타 점선 테두리 VISUAL FAIL을 보존한다. 아래는 r5 소스 후보이며 MQ READY0·Desktop 미갱신이다.
+
+| 범위 | 확인 원인·변경·수치 | 검증 경계 |
+|---|---|---|
+| 가시 18개 | 기존 중앙 높이 사용으로 실제 collar 최대오차0.5548178m·바닥 최대뜸0.435781717m. 3D 각 조각 world XZ의 기존 GroundY+0.015m에 뿌리를 배치. 아래 tip은 매립. XY localY0.04m·폭0.22·높이0.28/0.46/0.64·전개/페이드·Core 반경 유지 | 같은 실제 Core 시전30틱의 런타임 진단18개는 RED0.5548178→GREEN0.015m. 첫 쿨다운 재시전의 조각0 결과는 무효로 보존, 900틱 경과 후 1영역/18개를 확인한 표본만 사용. 실제 수정 소스의 Unity 재컴파일/동작은 아직 미검증 |
+| 3D 지면 | 12×12 높이격자가 널빤지/지형 단절을 잇거나 관통. ImpactGroundPatch를 기존 M_SkillGround/URP DecalProjector로 변경: 지름2radius·깊이2m·pivot0·X90도·drawDistance60m·fadeFactor1·전용 clone 재질. XY는 기존 quad/MPB 경로 유지 | 같은 프레임 .016/.04/.06/.08 데칼은 다리 수신 정상·흙 수신0. 공통b673의 A2RootSurface DBuffer 수신 누락을 확인, 맵 소유자의 별도 표준수신 기술 변경이 필수 의존성. 미인수 맵/셰이더 복사0·이 의존성의 정식 인수 전 전체 바닥 PASS/통합 제출 금지 |
+| 바닥 마스크 | SG_SkillGround만 hard rim 제거. r=length((UV-.5)*Size)/max(Radius,.001), inside=1-smoothstep(.72,1,r), grain은 기존3항 사인, Color=lerp(FillColor,EdgeColor,.12*grain), Emission0, Alpha=saturate(inside*(.6+.4*grain)*Progress). 기존 ID/속성/GUID 유지·생성기 동기화 | SkillGround108객체·참조누락0·재질GUID 일치. XY SkillFloor/ContactFlash 그래프 불변. CPU 구조는 실제 시각 판정 아님 |
+| 회복·그을음 | 회복 fade최대3D0.06/XY0.016, 웹색 #b6ff54/#d5ff72·15틱 전개/마지막30틱 소멸·수증기크기0.9/alpha0.012·코어/파편0 유지. 가시fade0.2/강타0.28/얼음0.08 유지. 그을음도 같은3D투사 경로, 색 #1b1410·반경0.28/0.5m·fade0.6·2초·동시8 유지 | 같은프레임 알파 비교는 선택을 위한 진단이다. 새 마스크/수신을 포함한16초 Player 재판정 전 |
+| 실제 넉백 fixture | r3/r4 AIoff가 Core 넉백 이동루프도 건너뛰어21표적 이동0/검사exit2. 명시적 fixture만 AI루프 활성+매tick Stunned180 갱신으로 자발행동 억제. receipt normalKnockback/kiKnockback/slamKnockback에 시작점 대비 최대이동을 기록하고 각각>1px 요구 | 기존 Core 예행 일반99.61/Ki205.93/강타53.14px 이동 근거 유지. 새 실제 영상의 전후 Core trace 일치와 스프라이트 추종은 아직 미검증. 자연플레이 아님·Core 소스/수식 변경0 |
+| MCP 정상 마감 | boot e73821a4/Editor42796·자기A2/RX9070XT/D3D11·격리/무음. Play정지·dirty0·probe0·공식stop/잠금없음·예약반환. QA용 EditorBuildSettings 원래 byte/SHA 동일. 파생763개 보존/기존706 정확복구/신규57 GUID참조0 정리 | import-derived/editor-r5-floor 영수증. 그 뒤 소유 코드만 수정. Unity 자동파생을 제작 변경으로 stage하지 않음 |
+| 기존 CPU 검증 | r5 Runtime317소스·Unity참조125 C#오류0/기존경고473, 표현계약456 통과 | 이미 통과한 동일 검사를 반복하지 않음. Unity 임포트·M1·새 영상·공통/Desktop 검증을 대신하지 않음 |
+
+진단 원문: I:/EXODUSER-Storage/demo-art/impact/MCP-r5-가시-유효대조-결과.json, MCP-r5-회복-同프레임-결과.json, mcp-r3-captures/MCP-r5-*.png. 수정 전 원본은 before-ground-r5/와 before-knockback-r5/에 보존했다. 사용자 도타 보호 조건에 따라 dota2가 어느 PID로든 살아 있으면 새 Unity/Player/빌드/인코딩/무거운 검수를 시작하지 않는다. 가벼운 소스·문서·안전 체크포인트만 진행하며, 재개 전 실제 프로세스 부재와 기존 FIFO/메모리/무음·세이브 조건을 확인한다.
+
+
+### 2026-11-01 r5 맵 표준 데칼 수신 소스 인수 — 실제 검수 전
+
+맵 담당 d19847702111b7d5b2cf77059c198f1f9d78aae6에서 전달한 공통 b673 기준 receiver-only 패치만 r5 작업 브랜치에 인수했다. R8 전체 브랜치·재질·배치 반입0, 공통 unity/main/Desktop 채택0이다.
+
+| 확인 | 결과 |
+|---|---|
+| 입력 경계 | 인수 전 r5 HEAD3a78311e9/INDEX0·외부 guard WORK1. HellGroundPBR/A2RootSurface 원문은 공통b673 byte와 동일·맵 영수증 base SHA 일치. 패치SHA256 720a0e1fc8f22354b556cb45a58ec8ba659bca2c9bb30a76ca35909211059fed·git apply --check 무충돌 |
+| 인수 범위 | 기존 두 Opaque UniversalForward 셰이더에 _DBUFFER_MRT1/2/3 변종·DBuffer.hlsl include·최종 표면 계산 뒤 guarded ApplyDecalToSurfaceData/법선 반영 SampleSH 추가. 두 수신 추가를 제거하면 원래 byte와 완전 일치. 재질 GUID/속성·geometry·shadow/depth·Core·기존 r5 VFX 불변 |
+| 후보 SHA256 | HellGroundPBR 93896381f9dc33efaa0bf1a02c7942f170402192e272a977c4e82c02f077a218, A2RootSurface e49e7350cd96de8385feb53e6aa5aaac0d43f17c99aebecbd1104c85fca9c6ec. 분리 문서 UNITY_A2_DECAL_RECEIVER_20261101.md는 맵 원문9e09c8ce42758cf88910253b62af4ce5ebff5932804153e2b0ec399232123c5b과 일치 |
+| 설치 계약 | 자기 설치 URP com.unity.render-pipelines.universal@ffe395a3a1d1의 Lit.shader/LitForwardPass.hlsl/DBuffer.hlsl 원문에서 변종·인수 SurfaceData/InputData·수신→GI→PBR 순서를 대조. 이 소스 대조는 Shader 컴파일 통과가 아님 |
+| 현재 미완료 | 이전의 '맵 수신 코드 준비 대기'는 이 소스 후보 인수로 해소했다. 실제 Unity import/변종0오류·동일프레임 지면/뿌리/목교 off/on·무데칼 회귀·r5 접지/회복/넉백1x·새빌드/M1/16초 전후·초광폭·최종 판정은 모두 미완료. r4 VISUAL FAIL/MQ READY0 유지 |
+| 사용자 보호 | 실제 dota2 PID4892 생존을 인수 전에 재확인. 새 Unity/MCP Editor/Player/빌드/대기자/인코딩/무거운 검사0·passed CPU검사 반복0. 소스/문서/원격 복구점만 진행 |
+
+원본·인수 영수증: I:/EXODUSER-Storage/demo-art/impact/decal-receiver-intake-r5/. 별도 맵 수신 계약은 [UNITY_A2_DECAL_RECEIVER_20261101.md](../engine/UNITY_A2_DECAL_RECEIVER_20261101.md)를 따른다. 소스 인수와 실제 표시 성공을 구분하며, 도타 부재와 기존 실행 안전조건 확인 전에는 검수 실행을 재개하지 않는다.
+
+
+## 2026-11-03 웹 플립북으로 전환 — 전사 첫 단위
+
+11-03 새벽 재개 지시가 이전 Graph 본체 및 도타 보호 이력보다 우선한다. origin/unity/main 09192f7bbc를 정상 병합했고 충돌은 최신 viewport·방향·지면 배치와 자체 표현 observer를 함께 유지했다. 기존 FAIL 후보를 제품 PASS로 올리지 않는다.
+
+| id | 현행 후보 계약 | 검수 |
+|---|---|---|
+| CONTACT_ART | 기존 Art/vfx/ki_slash_hit_silver_sheet, 원본1254²/2×2/627²/4프레임, 40ms씩 총160ms. 원본 byte 불변·KiSlashAdditive 합성. 첫40ms alpha1, 이후 pow(1-(age-.04)/.12,1.4) | 표현 계약 RED→GREEN458 |
+| PRESENTATION | normal55ms/heavy90ms pose hold, Core 시간·입력·피해·판정·RNG 불변. 기존 공격/피격 원화 유지. 카메라 반동≤4.5px·180ms, reduced motion이면 추가 반동/광원0 | 실제 Player 검수 전 |
+| CONTACT_WORLD | 실제 GroundY+.55m, 카메라 앞 .08m 바이어스, 카메라 면+방향각. 원화 폭 normal.95m/heavy1.35m; 전용 billboard 제외로 발밑 lift/이중 tilt 방지 | 1x 실제 검수 전 |
+| BUDGET | sprite8슬롯/틱 신규2접점, 80ms 이내 같은 적 중복억제. 점광원 동시최대2/80ms/normal1.5·range1.2m/heavy2.4·range1.8m. 데칼8/반경.24·.4m/alpha.35/1.2초. Graph 본체·입자0 | GPU/탄막 겹침 미검증 |
+| WEB_ROUTE | NativeSkillRemaster.Enabled=false; 기존 KiSlashHit·NativeSkillView·NativeBossView 웹 원화가 기본. FeelContact 중복만 새 observer 준비 시 억제하고 원화 누락이면 기존 표시 폴백 | 기본 공격→기검참 10초 fixture부터 판정 |
+| REVIEW | -impact-scope warrior: 기본300틱+기검참300틱/60Hz,30fps300PNG/10초. 같은EXE baseline/after Core trace SHA 일치, 실제처치·Ki3타Tier3명중·양쪽넉백>1px 검사. 전체5스킬 fixture는 기존16초480PNG. Graph 카운터 대신 실제 flipbookFrames/peakSprites로 표기 | 정식 빌드·동일M1·나란히영상 후에만 공통 반영 |
+
+레퍼런스: 직접 연 091256 횃불 타격과 keyframe_B. 배울 점은 짧은 접점·방향·국소 조명·남아 있는 적탄이며 외부 원화 반입0. 새 소스의 빌드/M1/실게임·1x·소리 청취는 아직 미검증이다. 상태·영수증은 I:/EXODUSER-Storage/demo-art/impact/REPORT_1103.md에 갱신한다.
+
+추가 oracle: 최신 공통의 FeelContact/FeelHurt를 원 기검참 패킷과 분리하고 실제 처치 target/원 패킷과1회 공존을 검증해28/28. 기검참93/93, 현재 G 웹 원문52블록에서 새로 추출한 스킬13,216/13,216 불일치0. 생산 Core 변경0이며, 옛 검사기26중4실패와 저장 oracle의 fireball 누락 예외도 `1103-oracle/`에 보존한다.
+
+
+### 11-03 전사 첫 단위 정식 영수증
+
+고정 source `dea943ccd6d9c398fdf310b3b90015c981782b9f`, 정식6000.6.7f1/remodel-scenes1 build `3a97850e` Succeeded/errors0/6,586,212,347B/compileErrors0/USER_SAVE0. 실제 Player MCP0. 같은패키지 M1 `dd9739b0` 23/23 ok, 전후 `33793752`/`68a4f7f9` 1600×900/각10초300PNG, Core trace `9a432b59a8229ddb3fa405dec933484d7a0eb5894a8cb56674cf99f7d1ddbb26` 동일. 접점8회/원화표시152프레임/최대3sprite/drop0, 실제처치1/기검참3타Tier3명중, 넉백 normal99.6108/Ki207.2568px 동일.
+
+원본 크기의 전후·091256 고정앵커·움직이는공식참조 나란히10초 MP4 3편은 각300프레임 실제연속재생 ended/drop0/손상0. 직접1x 접점연속 및 두 공격구간 연속프레임을 확인했다. 접점 가시성은 PASS, 전체 VFX는 **RETOUCH**: 기존큰흰검기·밀집겹침/세번째피격자반응·보스/전체스킬/자연전투/청취가 남는다. 타게임 카메라·캐릭터크기·노출 차이를 동등성으로 주장하지 않는다.
+
+32:9 첫 `0abed168`은 요청3840×1080/실제1600×900으로 실패했다. 시작 해상도까지 명시한 단일재시도는 실제3840×1080/300PNG/같은Core trace/표시8회로 통과했다. 이 raw 화면과1x를 직접 열었다. 원영수증 scope의16초/5스킬 이력문구와 달리 실제 warriorOnly/sections/frames상 이 검수는2공격10초이며, 원본을 수정하지 않고 다음QA소스에서 문구를 정정한다. 빌드 파생원본855개 정확복원·신규57개 SHA보존/추적GUID참조0 정리. 상세 `I:/EXODUSER-Storage/demo-art/impact/1103-warrior-verdict.json`, `REPORT_1103.md`.
+
+
+### 11-03 밀집 피격 반응 보완 — 공유 반영 전 재작업
+
+첫1x 검수 후 세 표적 중 세 번째의 표현정지/플래시 누락을 재현했다. ImpactResponse.Hit가 원화 생성 상한2에서 즉시 반환한 것이 원인이다. 자체명중RNG/피해/경직·넉백 규칙은 그대로 두고 모든 실제 피격자에55/75/90ms 표현정지·100ms 플래시를 기록하며, 원화/광원/추가카메라만 틱당2개로 제한한다. 같은패키지 --unity-impact-response-baseline은 이전누락 재현용이다. 밀집 RED→표현460/460 GREEN. 10초검수는 maxReactingTargets를 기록해 이전최소2/수정최소3을 gate로 확인하며 scope 문자열도 실제2공격10초로 정정한다. 첫후보의 제한을 남긴 채 공유에 반영하지 않고 최신공통4265445의 독립검증된 시작/호버UI와 정상병합 후 새 정식빌드/M1/같은패키지 비교로 검수한다.
+
+
+### 피격 집계 정정과 최초 동시명중 fixture 보강
+
+39f7071의 정식 eb92048d/errors0·동일 M1 4e5b70a1 23/23·전후 e88e49ec/4e5f26e7은 기술 통과했다. 원화8회·Core trace9a432b59…도 같다. 그러나 maxReactingTargets는 이전 타격의 아직 유효한 pulse까지 세므로 baseline/after 모두3일 수 있어 예상2→3의 증거가 아니다. 이 수치를 개선으로 보고하지 않는다.
+
+warriorOnly 첫 일반공격의 세 번째 QA 표적만 X+104→X+48로 놓아 세 표적 모두 실제 첫 근접명중을 받게 한다(Y -28/+28/0 유지). 기본16초전체스킬 fixture와 제품 스폰/판정은 변경0. 새 normalReactingTargets는 첫 일반공격 구간만 세며 같은패키지 이전방식 정확2/수정 정확3을 gate로 검사한다. maxReactingTargets는 보조 전체최대치로만 유지한다. 이 QA 입력 변경 때문에 이전 Core trace/영상은 새 장면과 직접 동등 비교하지 않는다. 새 정식빌드/M1/전후10초로 확인하며 사용자 세이브·피해공식·입력·전투시간·공격예산 변화0.
