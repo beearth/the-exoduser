@@ -137,3 +137,10 @@ codex-web-wide-anim이 원래 영상 가림을 해소하고 manifest 위치/높�
 22화면 유형×3해상도(1920/2560/3840×1080)의 약10초66편·기존63원화 경계1x·실제 전후/0·4·8초를 직접 확인했다. 자체 VISUAL VERDICT: PASS는 이번 모션 복원·경계 범위다. 회귀27/27·브라우저19/19·guard PASS, 전체2482검사의 신규 실패0/기존277FAIL·35SKIP을 분리했다. 초기 스킬 창에 가린 클리어/종료6편은 native 패널 닫기·결과 표시 후 교체했다. 컷신 dur30초/구형 줌14초·포지랩 Lv1000/정지 월드 fixture이므로 자연 플레이·오디오·NW.js·Unity·전체 제품 디자인 PASS로 확대하지 않는다.
 
 소스 체크포인트5b9157cc0 이후 검수 도구/문서만 마감한다. 최종 Git SHA·origin/main 확인·HTTP200·66편 링크는 `G:/exoduser/tmp/design-review/20261031_wide_animation/REPORT.md`, 동일 인수본 `I:/EXODUSER-Storage/codex-takeover/wide-animation/REPORT.md`. 확인 서버는 `http://127.0.0.1:3458/index.html?test=1&lobby=1`, 저장은 전용I: 폴더. 사용자 기존 창/서버/세이브는 보존했다.
+
+
+## 2026-11-02 타이틀 키프레임 후보·왼쪽 안전 여백
+
+- 사용자 직접 브리프 1·2절만 진행. 원본 A/실버테일 원화와 v22b 20초 피강을 직접 대조, 내장 image_gen으로 후보3장+달1회 교정. 거대 마왕 요새·자연스러운 왼쪽 부츠·어두운 피강·원형 달을 비교한 `G:/exoduser/tmp/design-review/20261102_title_keyframe/BOARD.png`(4740×4320). 달 지름비 C1 149/147=1.0136, C2 142/142=1.0000, C3 156/157=.9936. C2는 생성 교정도 실패해 달 영역 국소 기하 보정으로 전환.
+- **CTO 선택 대기 / 후보 RETOUCH / 새 아트 게임 미적용**. 원생성2171~2172×724를2144×603 크롭 후3840×1080으로 균등 확대, 네이티브4K가 아니다. 고해상도 세부와32:9 피강 잔해 판독은 선택 후 보완 대상. PNG 원본·프롬프트·측정·전체/전신1x/발3x/손/성/강/달 크롭은 같은 경로와 I:/EXODUSER-Storage/codex-takeover/title-keyframe-20261102/ 보존. Kling/영상 생성·게임 자산 교체 없음.
+- 2절은 최신 origin/main 604cd2ca6 fetch/merge(Already up to date) 후 시작. 로고 왼쪽=`max(48px,4.5vh)`, 메뉴=로고+20k. 실제1920/2560/3840×1080에서48.6/68.6px, 총7크기 경계 PASS·키보드 선택 PASS·pageerror0, 타이틀8/8·project-check111/111. 최신 main에서 E 잘림은 미재현, 좁은800×1080의 기존40px<48.6px만 재현. 전후 캡처·원격SHA·최종 보고는 위 I: REPORT.md.

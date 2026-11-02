@@ -35,6 +35,7 @@ mkdirSync(DIST, { recursive: true });
 
 // ── 2. 단일 파일 복사 ────────────────────────────────────────────────────────
 const FILES = [
+  'chest3d.mjs',
   'title-signboard.js',
   'decision-sound.js',
   'loading-art.js', 'loading-art.css',

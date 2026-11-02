@@ -1,7 +1,7 @@
 import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
-import {mapLookLayout,holeLights,effectLights,renderEnergy,foregroundPose} from './map-look-layout.mjs';
+import {mapLookLayout,holeLights,effectLights,renderEnergy,presentationRadius,foregroundPose} from './map-look-layout.mjs?v=20261102-light5';
 import {seeded,applyAffine} from './living-layout.mjs';
-import {lightingGLSL} from './lighting-model.mjs';
+import {lightingGLSL} from './lighting-model.mjs?v=20261102-budget2';
 import {createFrameSampler} from './frame-sampler.mjs';
 
 // A snapshot of the native environment BEFORE actors/VFX/HUD is the albedo.
@@ -72,8 +72,8 @@ export function createMapLook(renderer,canvas,shared,data,anchors){
   const time=s.now/1000,dt=lastTime?Math.max(0,Math.min(.1,time-lastTime)):1/60;lastTime=time;
   if(time-lastHoles>.5||lastHoles<0){holeRows=holeLights(data,s.G.spawnHoles);lastHoles=time;}
   const fx=effectLights(data,s.projectiles,s.blasts),player={...data.player_light,id:'player',position:[s.P.x,s.P.y-20]};
-  const rows=[player,...fx,...plan.lights,...holeRows].filter(l=>visible(...l.position,l.radius,view));
-  let count=0;for(const l of rows.slice(0,40)){lights[count].set(...l.position,l.radius,renderEnergy(l,time));colors[count].set(...l.color);count++;}u.lightCount.value=count;
+  const rows=[player,...fx,...plan.lights,...holeRows].filter(l=>visible(...l.position,presentationRadius(l),view));
+  let count=0;for(const l of rows.slice(0,40)){lights[count].set(...l.position,presentationRadius(l),renderEnergy(l,time));colors[count].set(...l.color);count++;}u.lightCount.value=count;
   const idx=(s.P.y/s.tile<(s.G._regMidY||100)?0:2)+(s.P.x/s.tile<(s.G._regMidX||100)?0:1);
   region=region.map((v,i)=>v+(data.region_ambient[idx][i]-v)*Math.min(1,dt*.6));u.ambient.value.set(...region);
   if(idx===data.lightning.region){flashNext-=dt;if(flashNext<=0){flashLeft=data.lightning.duration;flashNext=7+(Math.sin(++flashIndex*127.1)*.5+.5)*9;}}

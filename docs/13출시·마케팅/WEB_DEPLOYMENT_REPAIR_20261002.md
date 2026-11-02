@@ -253,3 +253,23 @@ Vercel 계정 관리자의 결제 문제 해소가 선행한다. 에이전트는
 | 보존·종료 | 일반11항목/current QA Preferences2 byte/SHA 동일, 설치앱3SHA·MacHEAD6ad·외부WIP 동일. 자기Chrome·53620 서버 정상종료/포트닫힘. root는 원본뷰 기록·raw를 인수하고 별도300×130 손실JPEG 0/3 미리보기만 직접 확인. |
 | 남은 원본·전달 | 기존 blender/sprites/ Git 변경6건/7스냅샷·97경로·유일stag ZIP 감사에서 남은3방향 원본 미발견. 다른보관소 전체부재나 실제 누락frame수는 미확정. 빈12셀 보존/가짜·미러대체0. WindowsD8에는 앞선17종 및 사슴 걷기복구 미반영, receiver 작성잠금으로 배송0. H5main416/공개402 미납차단은 그대로. |
 | 원문 | Mac _out/web-stag-southwest-qa-20261102/{REPORT.md,FINAL_RECEIPT.json,browser-stag-results.json,static-full-manifest.json,ordinary-before.json,ordinary-after.json}; root recovery/web-stag-southwest-sync-20261102/; 기존 mobility _out/remaining-walk-archive-catalog-20261102/receipt.json. |
+
+
+## 2026-11-02 최신 main·Tripo 상자 웹 전달 후보 선택 인수
+
+| 항목 | 소스·검수 범위 |
+|---|---|
+| 정확 인수 | 기존 H5 후보631ad4806cb5b6f7504cb242b0dfaf0a13eb955f 위에 원격main2148d32f2efee255124907391a15c06f8f4ef623의 최신 웹표현·타이틀여백·Tripo상자·release0.7.11과 관련docs/tests38경로를 선택 이식. Git wholemerge가 아니라 검토한 source port이며 Unity·Steam 실행/배포 없음 |
+| 기존 후보 보존 | Init IIFE말미 이동·조기오프라인 실제저장helper/스크롤선언, web 상대module closure/95논리94물리 무손실매핑, blood_swarm·16종 및 사슴남서atlas 원문 유지. CHANGELOG의두독립추가기록충돌은양쪽본문모두보존 |
+| 원화·상자 | runtime GLB2679056B/19452tri/SHA2df52668134854e83cab7edc2fc304162aead1e79f0ce24c8033566209937828. 기존동일경로5684980B를대체하고chest3d.mjs만추가. 생성master70MB/제작blend·예전GLB는출고에서추가하지않음. 상자단위runtime delta−3006335B는제작담당측정이며통합최종값은다음공식산출필수 |
+| 게임·화면 | 제작담당의기존본편fixture 실제R→열림110도·장비3/악의+7·재입력보상0/일시정지·item제거복귀·GLB차단native폴백 근거를인수. root는실1920닫힘·열림원본JPEG2개직접확인. 자연보스처치/전체전투·밀집성능/통합후browser검수로확대하지않음. 원본재질·장식 VISUAL RETOUCH유지 |
+| guard·보존 | 외부tools/guard.baseline.json WORK SHA baf66bf767443f3c0f9a38e748b624e6d69e0ba9ba1afb97a1566997c52eaaab를미stage·미수정. upstream guard diff는line count66226→66095뿐이라이번선택이식에서제외. 기존G사용자INDEX·WIP/3333/save·현재3448프로세스보존/자동재시작0 |
+| 다음 gate | 자기exactsource+관련docs정상candidatecommit/push·remoteSHA후정확HEAD의공식build/prepare/check·최종4GB/100MB·필수chestmodule/GLB/MIME/GETSHA/실개봉·fallback/로비초기화·save격리 검수. source만으로실artifact/publicPASS0·원본무근거삭제/상한완화0 |
+| 실제 전달 | 공개Vercel402미납은별도. 같은조건mainpush로CI재실패유발/결제플랜보안변경0. 3448은새source를제공할수있지만기존열린창이자동최신이라고하지않고새통합후QA로재확인. Unity 상자 이식/PC설치완료아님 |
+
+원문: I:/EXODUSER-Storage/tripo-chest-game/20261102/{REPORT.md,packaging-delta.json,git-receipt.json,chest-opening.mp4}; root recovery/tripo-chest-intake-20261102의정확prepared/before manifest·선택목록·회귀로그. MAP PRODUCTION REPORT: STAGE=기존보상상자/표현인수; MASTER/OUTER/LARGE/MEDIUM/PLAYABLE/landmark geometry는source승인범위보존,GROUND=기존상자anchor/그림자, CAMERA=원제작1920/3840·root1920닫힘열림2장한정, TECH=새통합후실패/예산/실browser별도, FILES=자기선택38+H5closeoutdocs, VISUAL VERDICT=상자RETOUCH/전체맵기존판정유지, NEXT=정확새artifact·기본/선택3D·상자개봉실검수.
+
+- 통합 회귀: 원 담당 main2148의 `draw`와 현재 후보가 동일함을 원문 대조했다. 기존 보호 검사는 `active`→`isShowing(item)` 한 조건만 기준으로 정규화하며 500개 이상의 기존 전투/저장/AI 함수와 나머지 draw 원문 비교를 유지한다. 전체 draw 제외는 하지 않는다. 잘못된 전역 active 조건과 다른 draw 수정의 두 음성 fixture는 각각 실제 FAIL, 실제 후보의 보호4검사는 PASS. Git 소유권 조회 오류와 실제 조건 변경 실패를 별도 로그에 보존했다.
+- 사용자 후속 전리품 분산 수정은 기존 MCP/API 담당 진행 중이다. 현재 상자 개봉 인수는 중간 단계이며 최종 분산 SHA/공식 산출·브라우저 확인 전 전체 웹 전달 완료로 판단하지 않는다.
+
+- 현재 중간 통합본의 공식 선택·파생 plan: selected3245, sidecar 포함3239파일, 3,996,523,003B(4GB 여유3,476,997B), 최대94,795,327B, 기존95논리/94물리 매핑 유지. 실제 배포 artifact를 생성한 수치가 아니며 전리품 후속 반영 시 다시 계산한다. 통합 회귀94/94 PASS.

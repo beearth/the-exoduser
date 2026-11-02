@@ -4608,7 +4608,9 @@ function showCharGate(charId,storySeen=false){
   function _fitTitleStage(){
     const w=overlay.clientWidth||innerWidth,h=overlay.clientHeight||innerHeight;
     const k=Math.min(w/1920,h/1080);
-    _titleStage.style.transform=`translate(0px,${(h-1080*k)/2}px) scale(${k})`;
+    // Anchor the logo edge in viewport pixels, independently of the scaled 1920px stage.
+    const inset=Math.max(48,h*.045);
+    _titleStage.style.transform=`translate(${inset-96*k}px,${(h-1080*k)/2}px) scale(${k})`;
   }
   window.addEventListener('resize',_fitTitleStage);
 

@@ -1,0 +1,44 @@
+# Tripo 보물상자 — 웹 본편 실제 뚜껑 개봉
+
+사용자 지시: “게임에 상자 넣어서 열어보고”. 대상은 `game.html` 웹 본편의 기존 보스 보물상자다. Unity·Steam 배포·스폰/보상/저장 설계 변경은 포함하지 않는다.
+
+## 제작과 런타임 계약
+
+| id | 항목 | 값·경계 |
+|---|---|---|
+| SOURCE | Tripo Studio H3.1 | 텍스트 생성 작업 `e124bd3b-f5bd-4c63-9f79-9db5dcf901af`, 원본 70,015,768B·1,896,668삼각형. 원본·정확한 프롬프트·비공개 구독 기록은 `I:/EXODUSER-Storage/admin/subscriptions/tripo-20261102/proof.json` |
+| REF | 직접 확인한 기준 | 해당 원본의 실제 Tripo 뷰어 `viewer.jpg`·`model-preview.jpg`. 단일 닫힌 목재 상자·단철 장식·중앙 잠금쇠의 큰 실루엣과 재질을 유지한다. 게임용 파생은 원본 생성의 조형 RETOUCH를 전체 아트 PASS로 올리지 않음 |
+| DERIVE | 제작 도구 | Blender 5.1 `tools/tripo-chest-game.py`. 원본 read-only import→decimate→몸통/뚜껑 분리→움푹한 목재 내부→`ChestLidPivot` 뒤쪽 경첩. 정확한 절단·축·텍스처/바이트·SHA는 아래 receipt |
+| RUNTIME | 기존 런타임 경로 교체 | `assets/3d/dark_gothic_medieval_treasure_chest__iro_019e0a38.glb`. 파일명은 기존 Meshy 이력과 패키징 경로를 유지하지만 이 버전의 실제 내용은 Tripo 파생본이다. 이전 5,684,980B Meshy 원본은 Git 이력 및 작업 전 정확-byte 백업에 보존 |
+| SIZE | 파생본 | 2,679,056B·19,452삼각형. 기존 런타임보다 3,005,924B 감소. 원본 Tripo 70MB와 `.blend`·제작 로그는 출고 폴더에 넣지 않음 |
+| LID | 노드 | `TripoChest` 아래 정지 `ChestBody`·`ChestInterior`, `ChestLidPivot` 아래 `ChestLid`. 열린 X축 회전 −1.92rad(약110도). 기본 닫힘, 이미 열린 world item의 늦은 모델 로드도 열린 상태를 따른다 |
+| MOTION | `chest3d.mjs` | 개봉 후 0.4초 흔들림 + 0.9초 cubic ease-out 뚜껑 열기, 열린 상태 유지. dt는 0~0.05초, 게임 일시정지 중 진행0. 다시 열어도 재시작/재보상0 |
+| DRAW | 접지·카메라 | CSS160×160, DPR≤1.5. 모델 폭1.8, Perspective40도/카메라(.7,1.75,3.5)→(0,.62,0). 투영된 바닥 원점과 실제 world item 위치를 맞추고 부유 이동 제거. 작은 접촉 그림자 사용 |
+| LOAD | 폴백 | 실제 chest가 있을 때만 Three/GLB·WebGL을 준비한다. 준비 전/로드 실패/컨텍스트 생성 실패에는 기존2D 상자를 유지한다. `isShowing(item)`은 표시 중인 바로 그 item만 숨겨 다른 chest의 폴백을 지우지 않음 |
+| LIFETIME | 상태 | 스테이지 이동·item 제거·게임 종료 시 overlay 숨김. 일시정지에는 현재 형태 유지. 모델 로드 실패를 반복 재요청하지 않음 |
+| GAMEPLAY | 보존 | 보스 사망 후 기존 위치의 chest 생성, 거리<60 상호작용, `opened=true`를 먼저 세운 뒤 장비3~5개·기존 추가 보상. 보상/스폰/저장 코드는 변경하지 않음 |
+| PACKAGE | 파일 선택 | `build-nwjs.mjs` FILES에 `chest3d.mjs`1개만 추가. 기존 GLB 경로를 교체해 새70MB master 추가를 막고 기존4GB/단일100MB 제한을 유지 |
+
+## 검수 근거와 남은 범위
+
+- 기존 상자 보상 조각을 실제 소스에서 실행하는 회귀: 거리 조건·장비3~5개·추가 보상·재입력 무보상 확인. 수량/확률을 새로 정의하지 않는다.
+- RED: 분리 경첩/열림 모듈 부재2건 실패, 기존 보상1건 통과. GREEN: 위3건 통과. 자동 검사와 실제 게임의 시각/조작 검수는 별도다.
+- 실제 본편1920×1080에서 R 입력→장비3개·악의오브+7, 재입력 추가보상0을 확인했다. 3840×1080 표시·item 제거 시 숨김/열린 상태 복귀·실제 GLB 요청 차단 시2D 폴백 및 기존 R 보상도 확인. 검수 fixture·구간별 일시정지이며 보스 자연 처치/자연 완주 증거가 아니다.
+- V1의 뚜껑 안쪽 소실을 실제1x에서 발견해 `ChestLidUnderside`를 추가하고 같은 열기 경로를 재검수했다. 최종19452삼각형·2679056B이며 V1 실패 화면/자산은 소유 검수 폴더에 보존.
+- 실제 게임 검수·사진/영상·1x 비교·로딩 실패·최종 패키지 증감·Git 근거는 `I:/EXODUSER-Storage/tripo-chest-game/20261102/REPORT.md`에 기록한다. 검수용 chest를 배치한 경우 보스 자연 처치/자연 완주와 구분한다.
+- 큰 형태·경첩 축·내부 빈 공간·재질·지면 접촉이 실제 게임에서 성립하는지 우선 판단한다. 원본의 복잡한 철제 장식/불규칙 모서리 개선, Unity 및 다른 구형 테스트 HTML의 열림 이식은 별도다.
+
+## MAP PRODUCTION REPORT
+
+| 구역 | 이번 범위 |
+|---|---|
+| STAGE / MASTER | 기존 CH1·보스 보상 상자. 실루엣·지역·남북 주 경로·전투/여유 공간 설계 변경0 |
+| OUTER MASS / LARGE / MEDIUM | LEFT/RIGHT/TOP/SOUTH·합성·중형 접합·기존 남은 hole 무변. 기존 맵 PASS를 새로 주장하지 않음 |
+| GROUND | 상자 바닥 원점 투영·소형 접촉 그림자만 검수. 바닥 원화·오염·맵 geometry/collision 무변 |
+| PLAYABLE / LANDMARK | 기존 보스 보상 tertiary interactable. 랜덤 scatter·새 장애물·주 경로 이동0 |
+| CAMERA QA | 실제 검수 위치/해상도·닫힘/열림·플레이어/전리품 가독성은 REPORT. 미관측 START/EARLY/SIDE/LATE/EXIT는 전체 맵 검수로 확대하지 않음 |
+| TECH QA | route/collision 보존, pageerror/404/GLB 로드/프레임·폴백·보상은 REPORT의 실제 결과 |
+| FILES / GIT | 상자 자산·모듈·bootstrap·출고 FILES·테스트·제작도구·관련 docs만 자기 소유 작업본에서 변경. 기존 G 사용자 INDEX·아트 WORK는 보존 |
+| VISUAL VERDICT | RETOUCH: 실제 닫힘→뚜껑 개봉·유지와 내측 면은 확인. 원본의 불규칙 금속 장식/거친 재질은 남음. 기능 PASS와 구분하고 원본 조형 RETOUCH 이력은 유지 |
+
+정확한 출처/축/크기/파생 SHA: `I:/EXODUSER-Storage/tripo-chest-game/20261102/asset-receipt-v2.json`. 제작 `.blend`와 이전 런타임 백업도 같은 소유 폴더에 보관한다.
