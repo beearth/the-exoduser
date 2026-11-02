@@ -157,4 +157,4 @@ Core(`Runtime/Core`)는 바꾸지 않았다.
 
 ## 2026-11-02 설치형 지면 배치 수정 진행
 
-사용자 요청은 장판·지뢰·덫·설치형 전체의 공중 배치 해소다. 2026-11-03 사용자 실행본131887780의 Runtime2bad5c6c8ace951017cee6c3673921692bc2a2a309ca5b5b0d23f1fbc471ff0a에는 접지 수정 타입 둘 다 없어 전달 미완료를 확인했다. 최신 Unity와 정상 병합한 [204166a 통합 소스](https://github.com/beearth/the-exoduser/commit/204166a07c95f08d6a3fe24617e05a8ff8fd8a21)는 원격 대조 일치, Player/Editor 정적 검사 오류0이다. Mac 표적 접지·수명·M1 23 통과는 후보 한정이며 원full100/61·독립색참조/미관측 한계는 보존한다. 공통 소스 반영을 실제 실행본 갱신으로 간주하지 않고 새 빌드·동일 패키지 장판/지뢰 실화면·M1·unity-latest 적용을 확인한다. 현재 시각 RETOUCH/사용자 화면 FAIL, 정확한 수치·전달 상태는 [설치형 기록](UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)을 따른다. H5/Core 전투 수식 변경0.
+사용자 요청은 장판·지뢰·덫·설치형 전체의 공중 배치 해소다. 11/03 PC 후보09192/Runtimesha b66fcf8c648d2f7ba126fe0fd14fe992c5a623c62798685e6a7b641a8e2c89d8 일반빌드오류0, 자동2D·별도명시3D M1 각각23/23·세이브0. 원본1x에서 붉은원이흙과목교상판에붙음을확인했다. 필수UI1395장교차후보147/누락0 FAIL과큰상세JSON소비자OOM으로배포회차ABORT, 사용자실행본131887/바탕화면unity-latest는아직미교체다. 기존스킬창·devtools담당의수정과새최종패키지검수·실제전달을계속한다. 실제3D근거/147원본/보고서/현재미검증범위는 [전용기록](UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)을따른다. SourceWindows후보상태·자연플레이·최종설치완료를혼동하지않고 원full100/61·독립색참조/미관측한계를보존한다. 현재기능후보RETOUCH이며 H5/Core전투수식은본변경범위밖이다.
