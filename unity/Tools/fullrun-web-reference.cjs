@@ -47,7 +47,7 @@ process.env.TMP = temp;
       while (Date.now() - started < 15 * 60 * 1000) {
         const frame = await page.evaluate(() => {
           if (typeof G === 'undefined' || typeof P === 'undefined') return { stop: 'not-started' };
-          if (P.hp <= 0 || P.s === 'dead') return { stop: 'death', x: P.x, y: P.y, hp: P.hp };
+          if (P.s === 'dead') return { stop: 'death', x: P.x, y: P.y, hp: P.hp, state: P.s };
           if (G.stageCleared) return { stop: 'stage-cleared', x: P.x, y: P.y, hp: P.hp };
           const nav = window.__inputFullrunNav ||= { path: [], goal: {x:0,y:0}, planAt: 0 };
           let target = null, near = 850 * 850;
@@ -91,7 +91,7 @@ process.env.TMP = temp;
           const phase=performance.now()%3500;
           return {mx,my,fighting,attack:fighting&&phase<3150,magic:fighting&&performance.now()%2500<300,
             aimX:Math.max(180,Math.min(VW-180,aim.x-G.cam.x+VW/2)),aimY:Math.max(150,Math.min(VH-220,aim.y-G.cam.y+VH/2)),
-            objective,x:P.x,y:P.y,hp:P.hp,stamina:P.st,mana:P.mp,level:P.lv,kills:G.kills,materials:G.mats,
+            objective,x:P.x,y:P.y,hp:P.hp,state:P.s,stamina:P.st,mana:P.mp,level:P.lv,kills:G.kills,materials:G.mats,
             arena:G._bossArena,gate:G._bossUnlocked,holes:(G.spawnHoles||[]).length,anglers:(G._fieldBosses||[]).filter(e=>e&&e.hp>0).length,
             regions:(G._regions||[]).map(r=>({kills:r.kills,total:r.total,cleared:r.cleared})),boss:ens.filter(e=>e.ib&&e.hp>0).map(e=>({hp:e.hp,state:e.s}))};
         });
