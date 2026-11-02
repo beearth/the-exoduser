@@ -389,3 +389,21 @@ Vercel 계정 관리자의 결제 문제 해소가 선행한다. 에이전트는
 | runtime | chest3d.mjs9307B,기존5632B대비+3675B/초기후보대비+51B; SHA256 `4cfa51bafddd65e8fb6a1009eb63f5d10c2e3367052a9d32d8a97a2b95fdc442` |
 | 예산 | 이전ea24 actualstatic3996899806+3675=**예상3996903481B/여유3096519B**, sidecar포함 **예상3996972963B/여유3027037B**. 새공식plan/artifact 미실행이며 Mac 실제값으로 대조해야함 |
 | 전달 상태 | 초기4a용Mac작업문은 **native전송전 최종수정으로 보류**했다. 최종정확commit/privatepush/remote후 같은Mac에게정정된전체문 단회전달. 중복QA·과거수락재전송아님 |
+
+
+## 2026-11-02 22:15 — 9d 상자 반사 후보의 실제 GPU 검수 마감
+
+| 항목 | 실제 인수와 판정 |
+|---|---|
+| 소스/패키지 | runtime9d269179f4dccaf6fd48d6e2d93277181dc8b630/원담당6a41b622. 입력3349/mismatch0/selected3244·94논리93물리,공식build→prepare→check각1회 exit0. stage3238/3996972963B에서69482B sidecar이동 후 실제static3237/3996903481B·4GB여유3096519B/max94795327B. 이전예상값을실산출로인수했다 |
+| 실제 경로 | 단일loopback의원본ea24/후보9d분리. module2/GLB2 fullGET200·MIME·SHA 및actualloadedmoduleSHA일치. actual AppleM5Pro/ANGLEMetal/Three r160/WebGL2/DPR1,1920×1080·3840×1080의64CSSpx 같은camera/pose fixture. 자연OS입력/보스처치/전체맵검수 아님 |
+| A/B 한계 | 최초render전API setter로env-off freshA확인. 원본baseline과A는camera/PBR/exposure동일하지만배경particle차가있어전체pixel동일주장0. A→A2의닫힘·열림64px crop은각changedpixel0. B뒤A2는PMREM캐시보유이므로freshA비용으로세지않음 |
+| 실측 비용 | 닫힘warm각116표본(첫10제외): GPUmean/p95 A0.383/0.515ms→B0.484/0.622ms,CPUmean/p95 A0.218/0.400→B0.203/0.400ms. 실제EXT_disjoint_timer_query_webgl2/disjointfalse·순차클럭/프로브오버헤드한계. 첫B CPU15.400ms/GPU0.914ms. texture4→7/geometry5→13/program3→7. 전체FPS/1%low·VRAM/heapbytes 인증이 아님 |
+| 실제수명/폴백 | GLB차단→native2D/R보상·actualcontextlost,실GLB1800ms지연후dispose/late모델해제,첫actualrender호출의제어된Scene예외→catch/release. main dispose멱등·RAF정지/readyactivefalse·scenechildren0,고유dispose texture5/material5/geometry13각1회,expectedcontextlost확인. 자발적인GPU드라이버고장검사는 아님 |
+| 잔여카운터 | main해제후JSrenderer.info texture1/program2/geometry0을그대로보존. source/PMREM해제이벤트·actualGLcontextloss·pageclose가근거이며모든카운터0·즉시VRAM회수·GC검수로가장0 |
+| root실물 판정 | root는SHA/IHDR검증한4개의scale1 A/B strip과1920후보닫힘·열림전체원본2장을직접열었다. **RETOUCH/재질가독gate미달·반사환경방법미채택**: 일부모서리차이만미미하고금속/목재/잠금쇠·열린내측이여전히어두운회녹색덩어리다. 추가자원/밝기숫자로아트PASS를주지않음 |
+| 보존/종료 | ordinary11/currentPrefs2 raw사전backup과사후13동일/installed5·WIP25·공유HEADbranchINDEXWORK·globalGitconfig·원본7014metadata 및이전ea24입력/출력10477metadata동일. 자기최종gain0/peak0/directvideo0,ownChrome잔여0·서버52927/61290 정상close뒤ps/listen0,사용자Chrome보존. 최초828B누락/옛Prefs2FAIL소급해소0 |
+| 실패 근거 한계 | 초기prototype계측미연결·pause메뉴가림을교정한rawJSON/log/메뉴witness1장을보존. 담당이중복무효PNG등8723172논리B를삭제했으므로실패이미지byte전체보존은아님. 제품compile/GPU실패로오인하거나삭제로FAIL을숨기지않음 |
+| 다음 | 새빛/환경강도/노출미세반복0. 기존원담당에source-only 국소알베도/금속·목재부위명암분리 한개방법후보를이어배정. 실패반사기본경로OFF·추가PMREM없음·수명안전보존·원텍스처/GLB/UV/형상/64px/게임수치불변을검증하고sameMac실1x전미채택. 새유료/생성/PCGPU0. 이문서마감으로새제품효과개선을주장하지않음 |
+
+근거: root `I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/chest-material-450a6bfa-intake-20261102/proof-final-9d2691/{FINAL_RECEIPT.json,REPORT.md,manifest.received.json,receiver-receipt.json,root-review.json}`. 원본6뷰·scale1배치의bbox/SHA는manifest와receipt에있다. runtime9d와이후docs-onlycheckpoint/공개·Windows·일반앱설치를구분한다.
