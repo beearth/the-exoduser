@@ -9,7 +9,8 @@ import {createGhosts} from './ghost-layer.mjs?v=20261102-round4-final';
 import {authoredFoliageLayout,puddleHabitat} from './foliage-layout.mjs?v=20261031-foliage4b';
 import {drawFoliageDebug} from './foliage-debug.mjs?v=20261031-foliage4';
 
-import {createGroundDressing} from './ground-dressing.mjs?v=20261102-round6';
+import {createGroundBlendPass} from './ground-blend-pass.mjs?v=20261102-round7';
+import {createGroundDressing} from './ground-dressing.mjs?v=20261102-round7';
 import {consumeEnvironmentOverlay} from './environment-overlay.mjs?v=20261102-round5';
 import {createMaterialCleanup} from './material-cleanup.mjs?v=20261102-round6';
 
@@ -28,20 +29,20 @@ export async function install(read){
   const [lookData,lookAnchors]=await Promise.all(['map-look-ch1.json','map-look-anchors.json'].map(async file=>{const r=await fetch('./assets/web3d/'+file+'?v=20261102-hue1');if(!r.ok)throw Error(file+' '+r.status);return r.json();}));
   const foliageResponse=await fetch('./assets/web3d/foliage-ch1.json?v=20261031-foliage4');if(!foliageResponse.ok)throw Error('foliage-ch1 '+foliageResponse.status);
   const foliagePlan=await foliageResponse.json(),foliageDebug=new URLSearchParams(location.search).get('r3dFoliageDebug')==='1';
-  const dressing=await createGroundDressing();
+  const dressing=await createGroundDressing(),groundBlend=createGroundBlendPass(renderer,canvas,uniforms,dressing);
   const mapLook=createMapLook(renderer,canvas,uniforms,lookData,lookAnchors);
   const depth=createDepthPass(renderer,canvas,uniforms,mapLook.uniforms);
   const forestResponse=await fetch('./assets/web3d/forest-ch1.json');if(!forestResponse.ok)throw Error('forest-ch1 '+forestResponse.status);
   const forest=await createForest(renderer,canvas,uniforms,await forestResponse.json(),lookAnchors);
   uniforms.nativeProps={value:forest.nativeMask};
-  const ghostResponse=await fetch('./assets/web3d/ghosts-ch1.json?v=20261102-ghost4');if(!ghostResponse.ok)throw Error('ghosts-ch1 '+ghostResponse.status);
+  const ghostResponse=await fetch('./assets/web3d/ghosts-ch1.json?v=20261102-round7');if(!ghostResponse.ok)throw Error('ghosts-ch1 '+ghostResponse.status);
   const ghosts=createGhosts(renderer,canvas,uniforms,await ghostResponse.json());
   const relief=createRelief(renderer,canvas,uniforms,read,mapLook);
   const vs=`uniform vec4 view;uniform float time,bend;uniform vec2 hero;uniform vec3 impulse;attribute vec4 anchor;attribute float phase;attribute vec4 habitat;varying vec2 vUv,world;varying float light;varying vec2 localUV;varying vec3 tint;
   void main(){float variant=habitat.w;localUV=uv;vUv=(uv+vec2(mod(variant,2.),1.-floor(variant/2.)))*.5;vec2 p=position.xy*anchor.z;float h=max(0.,p.y)/100.;vec2 d=anchor.xy-hero;tint=habitat.rgb;
     float near=exp(-dot(d,d)/3600.);float wave=sin(time*.85+anchor.x*.002+anchor.y*.0015)+.22*sin(time*2.7+phase);
     vec2 blast=anchor.xy-impulse.xy;float push=exp(-dot(blast,blast)/30000.)*impulse.z;
-    p.x+=(wave*4.2+near*sign(d.x)*12.+push*sign(blast.x)*18.)*h*h*bend;
+    p.x+=(wave*6.8+near*sign(d.x)*12.+push*sign(blast.x)*18.)*h*h*bend;
     p.y-=near*h*8.*bend;vec2 w=anchor.xy+vec2(p.x,-p.y);world=w;
     gl_Position=vec4((w.x-view.x)/view.z*2.-1.,1.-(w.y-view.y)/view.w*2.,0.,1.);light=anchor.w;
   }`;
@@ -145,12 +146,12 @@ export async function install(read){
   const active=s=>enabled&&s.G.stage===0&&!s.G._bossArena;
   const api={draw:(ctx,view)=>{try{draw(ctx,currentState||read(),view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D living layer]',error);}},
     surface:(ctx,view)=>{const s=currentState=read();if(!active(s))return;const start=performance.now();frameCost=0;try{const budget=s.budget=sceneBudget(s.quality,proxy,adaptiveCost),w=Math.max(1,Math.round(view.pw*budget.scale)),h=Math.max(1,Math.round(view.ph*budget.scale));if(canvas.width!==w||canvas.height!==h)renderer.setSize(w,h,false);depth.prepare(s,view);relief.surface(ctx,s,view);frameCost+=performance.now()-start;}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D surface]',error);}},
-    ground:(ctx,view)=>{const s=currentState||read();if(!active(s))return;try{dressing.draw(ctx,s,view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D ground]',error);}},
+    ground:(ctx,view)=>{const s=currentState||read();if(!active(s))return;try{groundBlend.draw(ctx,s,view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D ground]',error);}},
     beginObject:(ctx,o,m)=>{const s=currentState||read();return active(s)&&!s.nativeProxy?relief.beginObject(ctx,o,m,s):false;},
     // Keep GPU props in their original native painter/depth order. Repainting
     // them on Canvas2D changes unsupported blend/gradient/filter semantics.
     deferObject:o=>{const s=currentState||read();return active(s)&&!s.nativeProxy&&depth.defer(o);},
     front:(ctx,paint)=>{const s=currentState||read();if(!active(s))return;const start=performance.now();try{depth.draw(ctx,s,paint);frameCost+=performance.now()-start;costEma=costEma*.96+frameCost*.04;stats.cpuMs=frameCost;stats.layerCostEma=costEma;}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D depth]',error);}},
-    cleanHill:createMaterialCleanup(),snapshot:()=>({...stats,...relief.snapshot(),...forest.snapshot(),...ghosts.snapshot(),...dressing.snapshot(),...depth.snapshot(),enabled,error:api.error||null}),setEnabled:value=>{enabled=!!value;},setGhostsEnabled:value=>ghosts.setEnabled(value),canvas};
+    cleanHill:createMaterialCleanup(),snapshot:()=>({...stats,...relief.snapshot(),...forest.snapshot(),...ghosts.snapshot(),...dressing.snapshot(),...depth.snapshot(),enabled,error:api.error||null}),setEnabled:value=>{enabled=!!value;},setGhostsEnabled:value=>ghosts.setEnabled(value),setGroundEnabled:value=>groundBlend.setEnabled(value),canvas};
   return api;
 }
