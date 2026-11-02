@@ -150,7 +150,7 @@ namespace Exoduser.UnityPort
    DrawSpaced(cancel.center.x-(SpacedWidth(noto,14,CharacterDialogLabel("cancel",K("취소","CANCEL")),1.152f)-1.152f)/2,cancel.y,cancel.height,CharacterDialogLabel("cancel",K("취소","CANCEL")),noto,14,1.152f,new Color(210/255f,207/255f,201/255f),false);
    var bold=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Bold")??noto;DrawSpaced(create.center.x-(SpacedWidth(bold,14,CharacterDialogLabel("create",K("생성","CREATE")),1.728f)-1.728f)/2,create.y,create.height,CharacterDialogLabel("create",K("생성","CREATE")),bold,14,1.728f,new Color(244/255f,241/255f,235/255f),false);
    GUI.SetNextControlName("character-cancel");if(NativeUiAudit.Button(cancel,"",GUIStyle.none))CloseCharacterCreation();
-   GUI.SetNextControlName("character-create");if(NativeUiAudit.Button(create,"",GUIStyle.none))CreateCharacter(characterName);
+   GUI.SetNextControlName("character-create");if(DecisionSoundButton(create))CreateCharacter(characterName);
   }
   void DrawCharacterVisualVignette(float w,float h){
    Fill(new Rect(0,0,w,Mathf.Min(h*.11f,112)),new Color(0,0,0,.34f));Fill(new Rect(0,h-Mathf.Min(h*.132f,142),w,Mathf.Min(h*.132f,142)),new Color(0,0,0,.55f));

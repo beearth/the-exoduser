@@ -57,7 +57,7 @@ namespace Exoduser.UnityPort
   void OpenPatchNotes()
   {
    if(patchNotesOpen||showLanguages||lobbyQuitPrompt||CharacterModalOpen)return;
-   LoadPatchNotes();patchNotesPreviousFocus=GUI.GetNameOfFocusedControl();patchNotesScroll=Vector2.zero;
+   UiConfirm();LoadPatchNotes();patchNotesPreviousFocus=GUI.GetNameOfFocusedControl();patchNotesScroll=Vector2.zero;
    patchNotesOpen=true;patchNotesFocusClose=true;patchNotesRestoreFocus=false;
   }
   void OpenPatchNotesForQaOnce()
@@ -76,7 +76,7 @@ namespace Exoduser.UnityPort
   }
   void ClosePatchNotes()
   {
-   patchNotesOpen=false;patchNotesFocusClose=false;patchNotesRestoreFocus=true;
+   UiConfirm();patchNotesOpen=false;patchNotesFocusClose=false;patchNotesRestoreFocus=true;
    if(patchNotesQaEnabled)Debug.Log("A03_QA_CLOSE: roster="+Characters.Count+" selected="+Characters.SelectedIndex+" unchanged="+(Characters.Count==patchNotesQaRosterCount&&Characters.SelectedIndex==patchNotesQaSelectedIndex)+" language="+Language);
   }
   void HandlePatchNotesKeys()
@@ -87,10 +87,10 @@ namespace Exoduser.UnityPort
     if(e.keyCode==KeyCode.Escape||e.keyCode==KeyCode.Return||e.keyCode==KeyCode.KeypadEnter||e.keyCode==KeyCode.Space){ClosePatchNotes();e.Use();return;}
     if(e.keyCode==KeyCode.PageDown||e.keyCode==KeyCode.DownArrow){patchNotesScroll.y+=80;e.Use();return;}
     if(e.keyCode==KeyCode.PageUp||e.keyCode==KeyCode.UpArrow){patchNotesScroll.y=Mathf.Max(0,patchNotesScroll.y-80);e.Use();return;}
-    if(e.keyCode==KeyCode.Tab){GUI.FocusControl("patch-notes-close");e.Use();return;}
+    if(e.keyCode==KeyCode.Tab){FocusUiControl("patch-notes-close");e.Use();return;}
     e.Use();return;
    }
-   if(!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen&&e.keyCode==KeyCode.Tab&&string.IsNullOrEmpty(GUI.GetNameOfFocusedControl())){GUI.FocusControl("patch-notes-open");e.Use();return;}
+   if(!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen&&e.keyCode==KeyCode.Tab&&string.IsNullOrEmpty(GUI.GetNameOfFocusedControl())){FocusUiControl("patch-notes-open");e.Use();return;}
    if(!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen&&GUI.GetNameOfFocusedControl()=="patch-notes-open"&&(e.keyCode==KeyCode.Return||e.keyCode==KeyCode.KeypadEnter||e.keyCode==KeyCode.Space)){OpenPatchNotes();e.Use();}
   }
   void DrawPatchNotesLauncher()

@@ -21,7 +21,7 @@ namespace Exoduser.UnityPort
         // web _SFX_PRI (TELL 12, SKILL 10, VOICE 9, PLAYER_HIT 8, DEATH 4, STEP 3, HIT 2, PROJ 1, AMB 0)
         public const int PriTell=12,PriSkill=10,PriVoice=9,PriPlayerHit=8,PriDeath=4,PriStep=3,PriHit=2,PriProj=1,PriAmb=0;
         sealed class Voice {public AudioSource source;public int priority;public double started,ends;public float rawVolume;public bool busOnly;}
-        sealed class Req {public string key,category,group,logical,source,note,fileKey;public int tick;public float volume,pitch,blend,delay,pan;public int priority;public Vector3 pos;public bool front;}
+        sealed class Req {public string key,category,group,logical,source,note,fileKey;public int tick;public float volume,pitch,blend,delay,pan;public int priority;public Vector3 pos;public bool front,frontendUi;}
         readonly Transform parent;float volumeGain=.6f;
         readonly NativeAudioMixer bus;readonly GameObject listenerObject;
         readonly Dictionary<string,AudioMixerGroup> groupCache=new Dictionary<string,AudioMixerGroup>();
@@ -270,11 +270,11 @@ namespace Exoduser.UnityPort
         public int UiRevision {get;private set;}
         readonly Dictionary<string,double> uiLast=new Dictionary<string,double>();
         public void PlayUiTab(){PlayUiSample("ui_tab",.22f);}
-        public void PlayUiSample(string key,float volume,float pitch=1f){
+        public void PlayUiSample(string key,float volume,float pitch=1f,bool frontendUi=false){
             double now=Time.realtimeSinceStartupAsDouble;
             if(uiLast.TryGetValue(key,out double last)&&now-last<.03)return;
             uiLast[key]=now;UiRevision++;Receipt.requested++;
-            Play(Make(key,volume,Jitter(pitch,.08f),Vector3.zero));
+            var request=Make(key,volume,frontendUi?pitch:Jitter(pitch,.08f),Vector3.zero);request.frontendUi=frontendUi;Play(request);
         }
         public void PlayItemPickup(){PlayUiSample(new[]{"pickup_item","pickup_rummage1","pickup_rummage2","pickup_rummage3","pickup_rummage4","pickup_rummage5"}[rng.Next(6)],.5f,Jitter(1,.05f));}
         public void PlayLevelUp(){UiRevision++;Receipt.requested++;Play(Make("ui_levelup",1f,1f,Vector3.zero));}
@@ -298,6 +298,12 @@ namespace Exoduser.UnityPort
             pending.Clear();
         }
         AudioMixerGroup GroupFor(string name){AudioMixerGroup g;if(!groupCache.TryGetValue(name,out g)){g=bus.Group(name);groupCache.Add(name,g);}return g;}
+        AudioMixerGroup FrontendUiGroup(){
+            if(groupCache.TryGetValue("FrontendUI",out var group))return group;
+            var mixer=Resources.Load<UnityEngine.Audio.AudioMixer>("Audio/FrontendUI");
+            if(mixer!=null)foreach(var g in mixer.FindMatchingGroups("Master/UI"))if(g.name=="UI"){groupCache["FrontendUI"]=g;return g;}
+            throw new InvalidOperationException("Missing FrontendUI/UI mixer group");
+        }
         void Play(Req r)
         {
             double now=AudioSettings.dspTime;Voice available=null,lowest=null;int active=0,hitVoices=0;
@@ -320,7 +326,7 @@ namespace Exoduser.UnityPort
             string fileKey=r.fileKey??(r.key=="roll_body"?"footstep":r.key);   // roll_body is not adopted yet: the web footsteps stand in
             if(r.key=="roll_body")r.note="temporary file "+fileKey;
             var clip=clips[fileKey];if(clip.loadState!=AudioDataLoadState.Loaded){Receipt.dropped++;return;}
-            var s=available.source;s.clip=clip;s.pitch=r.pitch;s.outputAudioMixerGroup=GroupFor(r.group);s.spatialBlend=r.blend;s.transform.position=r.pos;
+            var s=available.source;s.clip=clip;s.pitch=r.pitch;s.outputAudioMixerGroup=r.frontendUi?FrontendUiGroup():GroupFor(r.group);s.spatialBlend=r.blend;s.transform.position=r.pos;
             // OPT.sfxVol60: sample gain min(1,vol*.6); the master bus gain .6 is the mixer's SfxVol parameter.
             available.rawVolume=r.volume;available.busOnly=r.key=="ui_levelup"||r.key=="ui_pickup_chime";s.volume=Mathf.Min(1,r.volume*(available.busOnly?(volumeGain<=0?0:1):volumeGain));s.panStereo=r.blend>0?0:Mathf.Clamp(r.pan,-1,1);
             if(r.delay>0)s.PlayDelayed(r.delay);else s.Play();

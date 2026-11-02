@@ -19,7 +19,7 @@ namespace Exoduser.UnityPort
   public bool RequestCharacterDelete(int index)
   {
    if(!characterWritesAllowed||Flow.Page!=LobbyPage.Lobby||CharacterModalOpen||showLanguages||lobbyQuitPrompt||index<0||index>=Characters.Count)return false;
-   deletingCharacter=index;deletingName=Characters.NameAt(index);deleteSelected=false;deleteFocus=true;characterStep=3;characterError="";return true;
+   UiConfirm();deletingCharacter=index;deletingName=Characters.NameAt(index);deleteSelected=false;deleteFocus=true;characterStep=3;characterError="";return true;
   }
   public bool ConfirmCharacterDelete()
   {
@@ -30,16 +30,17 @@ namespace Exoduser.UnityPort
    string removedName=deletingName;
    if(!CommitCharacters(candidate))return false;
    NativeDecisionSound.Play("delete");CharacterDeleted?.Invoke(removedName);   // E03: the character's combat save goes with it (a re-created name must not inherit it)
-   RevealSelectedCharacter();CloseCharacterCreation();return true;
+   RevealSelectedCharacter();CloseCharacterCreation();NativeUiSounds.Current?.SuppressConfirm();return true;
   }
   void HandleCharacterDeleteKeys(Event e)
   {
    if(e.keyCode==KeyCode.Escape){CloseCharacterCreation();e.Use();return;}
+   bool before=deleteSelected;
    if(e.keyCode==KeyCode.Tab){deleteSelected=!deleteSelected;deleteFocus=true;}
    else if(e.keyCode==KeyCode.LeftArrow){deleteSelected=true;deleteFocus=true;}
    else if(e.keyCode==KeyCode.RightArrow){deleteSelected=false;deleteFocus=true;}
    else if(e.keyCode==KeyCode.Return||e.keyCode==KeyCode.KeypadEnter||e.keyCode==KeyCode.Space){if(deleteSelected)ConfirmCharacterDelete();else CloseCharacterCreation();}
-   e.Use();
+   if(deleteSelected!=before)UiNavigate(deleteSelected?"character-delete-confirm":"character-delete-cancel");e.Use();
   }
   void DrawCharacterDelete()
   {
@@ -50,7 +51,7 @@ namespace Exoduser.UnityPort
    var confirm=new Rect(784,562,170,46);var cancel=new Rect(966,562,170,46);
    Fill(confirm,new Color(.22f,.035f,.035f));Border(confirm,new Color(.533f,0,0),1);
    Fill(cancel,new Color(.063f,.055f,.047f));Border(cancel,new Color(.333f,.267f,.2f),1);
-   GUI.SetNextControlName("character-delete-confirm");if(NativeUiAudit.Button(confirm,"",GUIStyle.none))ConfirmCharacterDelete();
+   GUI.SetNextControlName("character-delete-confirm");if(DecisionSoundButton(confirm))ConfirmCharacterDelete();
    GUI.SetNextControlName("character-delete-cancel");if(NativeUiAudit.Button(cancel,"",GUIStyle.none))CloseCharacterCreation();
    Label(confirm,CharacterDialogLabel("confirm",K("확인","Confirm")),deleteConfirmStyle,TextAnchor.MiddleCenter);
    Label(cancel,CharacterDialogLabel("cancel",K("취소","Cancel")),deleteCancelStyle,TextAnchor.MiddleCenter);

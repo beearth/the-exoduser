@@ -8,6 +8,28 @@ namespace Exoduser.UnityPort {
   readonly List<EntryHoverVoice> entryHoverVoices=new List<EntryHoverVoice>();AudioClip entryHoverClip;
   bool entryHoverWanted,entryHoverPrevious;int entryHoverFrame=-10;
   internal int EntryAudioEvents {get;private set;}
+  internal bool UiAudioAllowed=>focused&&IsBlocking;
+  void UiNavigate(string id){if(UiAudioAllowed&&(Event.current==null||!Event.current.isMouse))NativeUiSounds.Current?.Navigate(id);}
+  void UiConfirm(){if(UiAudioAllowed)NativeUiSounds.Current?.Clicked();}
+  bool EntrySoundButton(Rect rect){return NativeUiSounds.SilentButton(()=>NativeUiAudit.Button(rect,"",GUIStyle.none));}
+  bool DecisionSoundButton(Rect rect){return NativeUiSounds.OwnSoundButton(()=>NativeUiAudit.Button(rect,"",GUIStyle.none));}
+  void FocusUiControl(string id){if(GUI.GetNameOfFocusedControl()!=id)UiNavigate(id);GUI.FocusControl(id);}
+  int lobbyPadFrame=-1;float lobbyPadVertical,lobbyPadHorizontal;
+  Event LobbyPadEvent(Event original){
+   if(AutomatedInput||!focused||original.type!=EventType.Layout||lobbyPadFrame==Time.frameCount)return original;
+   lobbyPadFrame=Time.frameCount;float y=0,x=0;
+   foreach(var pad in UnityEngine.InputSystem.Gamepad.all){var stick=pad.leftStick.ReadValue();var d=pad.dpad.ReadValue();if(Mathf.Abs(stick.y)>.5f)y=Mathf.Sign(stick.y);if(Mathf.Abs(stick.x)>.5f)x=Mathf.Sign(stick.x);if(Mathf.Abs(d.y)>.5f)y=Mathf.Sign(d.y);if(Mathf.Abs(d.x)>.5f)x=Mathf.Sign(d.x);}
+   bool movedY=y!=0&&y!=lobbyPadVertical,movedX=x!=0&&x!=lobbyPadHorizontal;lobbyPadVertical=y;lobbyPadHorizontal=x;
+   KeyCode key=KeyCode.None;
+   if(ExoInput.KeyDown(KeyCode.JoystickButton0))key=KeyCode.Return;
+   else if(ExoInput.KeyDown(KeyCode.JoystickButton1))key=KeyCode.Escape;
+   else if(movedY)key=CharacterModalOpen?KeyCode.Tab:(y>0?KeyCode.UpArrow:KeyCode.DownArrow);
+   else if(movedX)key=x>0?KeyCode.RightArrow:KeyCode.LeftArrow;
+   if(key==KeyCode.None)return original;
+   if(showLanguages){ProcessLanguageMenuKey(key,false);ProcessLanguageMenuKey(key,true);return original;}
+   if(lobbyQuitPrompt){if(key==KeyCode.Escape){UiConfirm();lobbyQuitPrompt=false;}return original;}
+   return new Event{type=EventType.KeyDown,keyCode=key};
+  }
   AudioMixerGroup EntryUiGroup(){
    var mixer=Resources.Load<AudioMixer>("Audio/FrontendUI");if(mixer==null)throw new InvalidOperationException("Missing frontend UI mixer");
    foreach(var group in mixer.FindMatchingGroups("Master/UI"))if(group.name=="UI")return group;
@@ -16,7 +38,7 @@ namespace Exoduser.UnityPort {
   void PrepareEntryHoverClip(){if(entryHoverClip==null){entryHoverClip=Resources.Load<AudioClip>("Audio/UI/entry_hover");entryHoverClip?.LoadAudioData();}}
   void DrawEntryHover(Rect r,bool enabled=true){
    if(Event.current.type!=EventType.Repaint)return;
-   entryHoverFrame=Time.frameCount;entryHoverWanted=enabled&&GUI.enabled&&focused&&r.Contains(Event.current.mousePosition);
+   entryHoverFrame=Time.frameCount;entryHoverWanted=enabled&&GUI.enabled&&focused&&(r.Contains(Event.current.mousePosition)||GUI.GetNameOfFocusedControl()=="lobby-enter");
   }
   void UpdateEntryUiAudio(float dt){
    bool wanted=entryHoverWanted&&focused&&entryHoverFrame>=Time.frameCount-1&&IsBlocking;float now=Time.unscaledTime;

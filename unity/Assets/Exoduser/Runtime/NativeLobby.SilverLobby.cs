@@ -103,12 +103,12 @@ namespace Exoduser.UnityPort
             var enterText=K("입장","ENTER");float enterSpacing=22*.14f,enterWidth=SpacedWidth(silverName.font,22,enterText,enterSpacing)-enterSpacing;
             DrawSpaced(play.center.x-enterWidth/2,play.y,play.height,enterText,silverName.font,22,enterSpacing,canEnter?NativeSilverHellUi.Bright:NativeSilverHellUi.Dim,true);
             GUI.enabled=controls&&Characters.SelectedIndex>=0;
-            DrawEntryHover(play,canEnter);if(NativeUiAudit.Button(play,"",GUIStyle.none))EnterSelectedCharacter();
+            GUI.SetNextControlName("lobby-enter");DrawEntryHover(play,canEnter);if(EntrySoundButton(play))EnterSelectedCharacter();
             GUI.enabled=controls;
             SilverLabel(new Rect(1424,866,100,42),K("▶ 시네마틱","▶ Cinematic"),silverMicro,TextAnchor.MiddleLeft);
             if(NativeUiAudit.Button(new Rect(1424,866,100,42),"",GUIStyle.none))ReplayIntro();
             SilverLabel(new Rect(1516,866,210,42),K("STEAM 위시리스트 추가","ADD TO STEAM WISHLIST"),silverMicro,TextAnchor.MiddleLeft);
-            if(NativeUiAudit.Button(new Rect(1516,866,210,42),"",GUIStyle.none))Application.OpenURL(SteamWishlistUrl);
+            if(DecisionSoundButton(new Rect(1516,866,210,42))){PlayStartupEnter();Application.OpenURL(SteamWishlistUrl);}
             DrawPatchNotesLauncher();
             DrawPower(new Rect(1812,870,36,36));
             if(NativeUiAudit.Button(new Rect(1812,870,36,36),"",GUIStyle.none))lobbyQuitPrompt=true;

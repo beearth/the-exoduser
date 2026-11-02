@@ -155,9 +155,9 @@ namespace Exoduser.UnityPort
                 traitY+=traitHeights[n];
             }
             GUI.SetNextControlName("visual-info-left");
-            if(NativeUiAudit.Button(info,"",GUIStyle.none))GUI.FocusControl("visual-info-left");
+            if(EntrySoundButton(info))GUI.FocusControl("visual-info-left");
             GUI.SetNextControlName("visual-info-right");
-            if(NativeUiAudit.Button(traits,"",GUIStyle.none))GUI.FocusControl("visual-info-right");
+            if(EntrySoundButton(traits))GUI.FocusControl("visual-info-right");
             for(int n=0;n<5;n++)
             {
                 var r=new Rect(x+n*(380-size)/4,railY,size,size);
@@ -187,7 +187,7 @@ namespace Exoduser.UnityPort
             SilverLabel(cancel,CharacterDialogLabel("cancel",K("취소","CANCEL")),silverVisualAction,TextAnchor.MiddleCenter);if(NativeUiAudit.Button(cancel,"",GUIStyle.none))CloseCharacterCreation();
             GUI.enabled=prior&&!locked;
             GUI.SetNextControlName("visual-create");
-            SilverLabel(create,locked?CharacterDialogLabel("comingSoon",K("출시 준비 중","COMING SOON")):CharacterDialogLabel("create",K("생성","CREATE")),silverVisualAction,TextAnchor.MiddleCenter);if(NativeUiAudit.Button(create,"",GUIStyle.none))ConfirmCharacterVisual();
+            SilverLabel(create,locked?CharacterDialogLabel("comingSoon",K("출시 준비 중","COMING SOON")):CharacterDialogLabel("create",K("생성","CREATE")),silverVisualAction,TextAnchor.MiddleCenter);if(DecisionSoundButton(create))ConfirmCharacterVisual();
             GUI.enabled=prior;GUI.matrix=centerMatrix;
             if(characterVisualFocusPending&&Event.current.type==EventType.Repaint)
             {
