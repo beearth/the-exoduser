@@ -15,7 +15,7 @@ async function record(p,context,name,width,seconds=10){
 }
 (async()=>{
  await fs.mkdir(out+'/temp',{recursive:true});process.env.TEMP=process.env.TMP=out+'/temp';const result={url,started:new Date().toISOString(),controllerSha:crypto.createHash('sha256').update(await fs.readFile(__filename)).digest('hex'),errors:[],http:[],source:{},samples:[],clips:[],cameras:[]};
- const files=['game.html','fullscreen-art-data.js','fullscreen-art.js','fullscreen-art-dom.js','fullscreen-art.css','assets/fullscreen-wide/20261031/manifest.json',...(await fs.readdir(root+'/web3d')).filter(f=>/living-|map-look-|lighting-model|frame-sampler|forest-|environment-layout|ghost-|foliage-|ground-dressing|depth-|scene-budget|atmosphere-model/.test(f)).map(f=>'web3d/'+f),...(await fs.readdir(root+'/assets/web3d')).filter(f=>/map-look-|forest-ch1|ghosts-ch1|foliage-ch1/.test(f)).map(f=>'assets/web3d/'+f)];
+ const files=['game.html','fullscreen-art-data.js','fullscreen-art.js','fullscreen-art-dom.js','fullscreen-art.css','assets/fullscreen-wide/20261031/manifest.json',...(await fs.readdir(root+'/web3d')).filter(f=>/living-|map-look-|lighting-model|frame-sampler|forest-|environment-layout|environment-overlay|ghost-|foliage-|ground-dressing|depth-|scene-budget|atmosphere-model/.test(f)).map(f=>'web3d/'+f),...(await fs.readdir(root+'/assets/web3d')).filter(f=>/map-look-|forest-ch1|ghosts-ch1|foliage-ch1/.test(f)).map(f=>'assets/web3d/'+f)];
  for(const f of files)result.source[f]=crypto.createHash('sha256').update(await fs.readFile(root+'/'+f)).digest('hex');
  const browser=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true,args:['--mute-audio'],env:{...process.env,TEMP:out+'/temp',TMP:out+'/temp'}});
  try{

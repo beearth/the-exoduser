@@ -4,7 +4,7 @@ const {chromium}=require('playwright');
 const root=path.resolve(__dirname,'..'),out=process.env.WEB3D_QA_OUT;
 if(!out)throw Error('WEB3D_QA_OUT required');
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
-function programs(){return cp.execFileSync('C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe',['-NoProfile','-NonInteractive','-WindowStyle','Hidden','-Command',"@(Get-Process | Where-Object { $_.ProcessName -in @('dota2','Unity','EXODUSER-Unity') } | Select-Object Id,ProcessName) | ConvertTo-Json -Compress"],{windowsHide:true,encoding:'utf8'}).trim();}
+function programs(){return cp.execFileSync('C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe',['-NoProfile','-NonInteractive','-WindowStyle','Hidden','-Command',"@(Get-Process | Where-Object { $_.ProcessName -in @('dota2','Unity','EXODUSER-Unity') } | Select-Object Id,ProcessName) | ConvertTo-Json -Compress"],{windowsHide:true,encoding:'utf8'}).trim()||'[]';}
 async function ready(p){
  await p.waitForFunction(()=>typeof P!=='undefined'&&P?.x>0&&typeof _startSceneWarmState!=='undefined'&&_startSceneWarmState.status==='ready',null,{timeout:90000});
  for(let i=0;i<150;i++){const s=await p.evaluate(()=>({on:G.on,cutscene:_cutsceneState,guide:getComputedStyle(document.getElementById('introKeys')).opacity==='1'}));if(s.on)break;if(s.guide)await p.locator('#ikSkip').click();else if(s.cutscene==='INTRO_CUTSCENE')await p.keyboard.press('Escape');await p.waitForTimeout(150);}
@@ -46,7 +46,7 @@ async function sample(p){return p.evaluate(async()=>{
     const measured=await sample(p),row={width,tier,fixture,...measured};
     row.workloadValid=row.enemiesMin>=64&&row.bulletsMin>=96&&row.hp>0&&row.active.on&&!row.active.paused&&!row.active.framePause&&!row.layer.error;
     row.fpsPass=row.fps>=120&&(!on||row.layerFps>=120);row.sustainedPass=row.fpsPass&&row.minOneSecondFps>=120;
-    result.samples.push(row);console.log(JSON.stringify({width,tier,fps:row.fps,layerFps:row.layerFps,minOneSecondFps:row.minOneSecondFps,enemies:row.enemiesMin,bullets:row.bulletsMin,qualityLevel:row.layer.qualityLevel,valid:row.workloadValid}));
+    row.programs=programs();result.samples.push(row);console.log(JSON.stringify({width,tier,fps:row.fps,layerFps:row.layerFps,minOneSecondFps:row.minOneSecondFps,enemies:row.enemiesMin,bullets:row.bulletsMin,qualityLevel:row.layer.qualityLevel,valid:row.workloadValid}));
     await p.evaluate(()=>window._btFramePause=true);await p.screenshot({path:out+`/dense-${width}-${tier}.png`});await fs.writeFile(out+'/qa.json',JSON.stringify(result,null,2));
    }
   }

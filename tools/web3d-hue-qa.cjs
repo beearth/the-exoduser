@@ -5,6 +5,7 @@ const root=path.resolve(__dirname,'..'),out=process.env.WEB3D_QA_OUT||process.ar
 const cameras=[['start',4020,7420],['early',3680,6380],['arena',4000,5200],['side_l',2120,5480],['camp',1900,4180],['corpse_tree',4100,3900],['altar',5900,4120],['side_r',6600,3800],['late',4000,2000],['exit',4000,700]];
 const selected=process.argv.includes('--pools-only')?[['toxic_north',6700,1740],['toxic_south',6500,5460]]:process.argv.includes('--affected-only')?cameras.filter(c=>['altar','side_r','corpse_tree'].includes(c[0])):cameras.filter(c=>!process.argv.includes('--altar-only')||c[0]==='altar');
 if(process.argv.includes('--materials-only'))selected.splice(0,selected.length,...cameras.filter(c=>['altar','side_r','corpse_tree'].includes(c[0])),['toxic_north',6700,1740],['toxic_south',6500,5460]);
+if(process.argv.includes('--all-regions'))selected.push(['cocoon',1800,2200]);
 if(process.argv.includes('--include-pools'))selected.push(['toxic_north',6700,1740],['toxic_south',6500,5460]);
 const hsv=rgb=>{const hi=Math.max(...rgb),lo=Math.min(...rgb),d=hi-lo,i=rgb.indexOf(hi);return {h:(((d?i===0?(rgb[1]-rgb[2])/d:i===1?2+(rgb[2]-rgb[0])/d:4+(rgb[0]-rgb[1])/d:0)*60)+360)%360,s:d/Math.max(hi,1),v:hi};};
 function materialRegions(a,b,width,height,state,overlay){

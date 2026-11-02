@@ -66030,7 +66030,7 @@ if(window._FDGDruidQaStorage?.active&&new URLSearchParams(location.search).get('
 
 <script type="module">
 if(new URLSearchParams(location.search).get('r3d')==='1'&&new URLSearchParams(location.search).get('r3dLegacy')!=='1'){
-  import('./web3d/living-layer.mjs?v=20261102-hue1').then(m=>m.install(()=>({G,P,objects:MAP_OBJS,images:_OBJ_SPR,meta:_OBJ_META,ground:_ch1StartOuterCache,hill:_CH1_HILL,tile:T,now:_now,quality:OPT.quality,colorLight:OPT.quality!=='low'&&_litCamX===G.cam.x&&_litCamY===G.cam.y?_litColCvs:null,colorLightMix:LIT_COL_MIX,enemies:ens,projectiles:[...projs,...pProjs],blasts:[..._fireExps,..._impacts],frame:C,flush:_glFlush}))).then(api=>{window._Web3DLivingLayer=api;}).catch(error=>{window._Web3DLivingLayerError=error.message;console.error('[WEB3D living layer unavailable]',error);});
+  import('./web3d/living-layer.mjs?v=20261102-round5-overlay').then(m=>m.install(()=>({G,P,objects:MAP_OBJS,images:_OBJ_SPR,meta:_OBJ_META,ground:_ch1StartOuterCache,hill:_CH1_HILL,tile:T,now:_now,quality:OPT.quality,colorLight:OPT.quality!=='low'&&_litCamX===G.cam.x&&_litCamY===G.cam.y?_litColCvs:null,colorLightMix:LIT_COL_MIX,enemies:ens,projectiles:[...projs,...pProjs],blasts:[..._fireExps,..._impacts],frame:C,overlayFrame:(_useGL||_useGPU)?CT:null,flush:_glFlush}))).then(api=>{window._Web3DLivingLayer=api;}).catch(error=>{window._Web3DLivingLayerError=error.message;console.error('[WEB3D living layer unavailable]',error);});
 }
 if(new URLSearchParams(location.search).get('r3d')==='1'&&new URLSearchParams(location.search).get('r3dLegacy')==='1'){
   const {renderFrame,advancePresentation}=await import('./web3d/presentation.mjs?v=20261031-main2');
