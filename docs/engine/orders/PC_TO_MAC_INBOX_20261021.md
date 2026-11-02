@@ -310,3 +310,7 @@ PC `codex/unity-parity-1102`/G:/exoduser-wt/codex-unity-parity-1102가 공통140
 ## 2026-11-02 저녁 parity 실제 인수·공통 반영
 
 PC 소스9e771f7712를 공통에 반영했다. 같은 Unity트리의 Win64 112a8abb 오류0·USER_SAVE0, M1 7e05298a와 설치본731adf79 각각23/23, UI186PNG/타이틀모션 직접검수. 최종 Kling·64확장·화폐·두둥·9-slice·아이콘축소 인수와 실제 오디오3313979d/화폐d6be008e 검수를 마쳤다. Desktop213파일SHA 및 바로가기 읽기 일치. Mac 기존 WIP·앱 미접촉, Mac 소스 반영·실행은 미검증이며 기존 미이식/UI RETOUCH 범위는 REPORT에 남겼다.
+
+## 2026-11-02 4차 로비 UI 소리
+
+PC `codex/unity-lobby-uisound-20261102`가 로비 제외 조건을 해제하고 웹 원음6종·gain/피치/루프·일반/결정 중복 억제를 연결했다. 소스ce3464ff82, Win64 959c78a1 오류0·같은패키지 M1 5f39f0e1 23/23·1920/3840 출력버퍼 4404c328/254e9ac1 각425/425, PDB218 source/DLL 일치. [전수표·검수 범위](../UNITY_LOBBY_UI_SOUND_20261102.md), 외부 REPORT `I:/EXODUSER-Storage/codex-takeover/unity-uisound/REPORT.md`. 3차 버전/잠김 표시와 레이아웃을 변경하지 않았고 바탕화면 교체0·최종 사용자 청음 대기다. 비강제 공통 반영 SHA는 REPORT에서 확인한다.
