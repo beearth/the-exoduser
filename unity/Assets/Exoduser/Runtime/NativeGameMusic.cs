@@ -46,7 +46,7 @@ namespace Exoduser.UnityPort
         {
             if (playing != wanted)
             {
-                if (music.isPlaying && musicLevel > 0) { musicLevel = Mathf.Max(0, musicLevel - dt / FadeOutSeconds); music.volume = musicLevel * MusicBase; }
+                if (music.isPlaying && musicLevel > 0) { musicLevel = Mathf.Max(0, musicLevel - dt / FadeOutSeconds); music.volume = musicLevel * MusicBase * NativeDecisionSound.MusicGain; }
                 else
                 {
                     music.Stop(); playing = wanted; var clip = playing.Length > 0 ? Resources.Load<AudioClip>("Audio/Bgm/" + (playing == "boss" ? "bgm_druid_boss" : playing)) : null;   // 1-1 slice: the boss is the druid (SND-09)
@@ -55,7 +55,7 @@ namespace Exoduser.UnityPort
                     if (clip != null) music.Play();
                 }
             }
-            else if (music.isPlaying) { musicLevel = Mathf.Min(1, musicLevel + dt / FadeInSeconds); music.volume = musicLevel * MusicBase; }
+            else if (music.isPlaying) { musicLevel = Mathf.Min(1, musicLevel + dt / FadeInSeconds); music.volume = musicLevel * MusicBase * NativeDecisionSound.MusicGain; }
             if (bedWanted)
             {
                 if (!bed.isPlaying) { bed.Play(); bedLevel = 0; }

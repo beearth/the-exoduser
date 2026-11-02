@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort.Tools {
   [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]static void Boot(){if(Has(Flag)&&!Has("--unity-m1-check"))new GameObject("UI sound buffer capture").AddComponent<UiSoundCapture>();}
   [Serializable]sealed class Check{public string id,detail;public bool passed;}
   [Serializable]sealed class Cue{public string name;public int frame,sample;public double time;}
-  [Serializable]sealed class Receipt{public string scope="실제 GPU Player의 생산 콜백을 스크립트로 실행. 자연플레이/사용자 청음 아님. AudioRenderer는 장치에 silence만 출력",runtimeSha,coreSha,device,sandbox;public bool passed,deviceSilent;public int fps=15,frames,sampleRate,channels,sampleCount;public float peak,rms;public List<Check> checks=new List<Check>();public List<Cue> cues=new List<Cue>();public List<NativeFeedbackAudio.UiAudioEvent> events;}
+  [Serializable]sealed class Receipt{public string scope="실제 GPU Player의 생산 콜백을 스크립트로 실행. 자연플레이/사용자 청음 아님. AudioRenderer는 장치에 silence만 출력",runtimeSha,coreSha,device,sandbox;public bool passed,deviceSilent;public int fps=15,frames,sampleRate,channels,sampleCount,decisionEvents;public float peak,rms;public List<Check> checks=new List<Check>();public List<Cue> cues=new List<Cue>();public List<NativeFeedbackAudio.UiAudioEvent> events;}
   Receipt receipt=new Receipt();NativeGame game;NativeLobby lobby;NativeFeedbackAudio sound;string output,label="시작 준비";List<float> pcm=new List<float>();int frame;bool failed;
   const BindingFlags Private=BindingFlags.Instance|BindingFlags.NonPublic;
   static object Get(object o,string n)=>o.GetType().GetField(n,Private).GetValue(o);
@@ -42,18 +42,18 @@ namespace Exoduser.UnityPort.Tools {
     if(frame==0)CueAt("타이틀 메뉴 이동은 무음");
     if(frame==30){CueAt("게임 시작 ENTER · 인장과 같은 프레임");Call(lobby,"BuildTitleRows");Call(lobby,"ActivateTitleRow",0);}
     if(frame==75){CueAt("첫 인장 ENTER · 웹 원음 gain 2");int before=lobby.EntryAudioEvents;lobby.StartGate();CheckThat("인장 ENTER 1회",lobby.EntryAudioEvents==before+1);}
-    if(frame==135){CueAt("캐릭터 선택은 무음");lobby.ShowLobby();lobby.Characters.TryCreate("음향검수",0,out var error);lobby.Characters.Select(0);}
+    if(frame==135){CueAt("중요 결정 hero · 임시 두둥 후보1");NativeDecisionSound.Play("hero");lobby.ShowLobby();lobby.Characters.TryCreate("음향검수",0,out var error);lobby.Characters.Select(0);}
     if(frame==150){CueAt("입장 호버 루프 · 100ms 페이드인");Set(lobby,"entryHoverWanted",true);}
     if(frame>=150&&frame<165)Set(lobby,"entryHoverFrame",Time.frameCount);
     if(frame==165){CueAt("호버 종료 · 80ms 페이드아웃");Call(lobby,"StopEntryHover");}
-    if(frame==180){CueAt("저장 캐릭터 입장 · 웹과 같은 ENTER");lobby.HasCombatSave=_=>true;lobby.AutomatedInput=false;int n=lobby.EntryAudioEvents;CheckThat("저장캐릭터 진입",lobby.EnterSelectedCharacter());CheckThat("저장캐릭터 ENTER 1회",lobby.EntryAudioEvents==n+1);typeof(NativeGame).GetProperty("Running").SetValue(game,false);game.enabled=false;Call(game,"EndFirstPractice",true);Set(game,"menu",false);Set(game,"gameFocused",true);}
+    if(frame==180){CueAt("저장 캐릭터 입장 · 웹 두둥 후보1");lobby.HasCombatSave=_=>true;lobby.AutomatedInput=false;int n=NativeDecisionSound.Events;CheckThat("저장캐릭터 진입",lobby.EnterSelectedCharacter());CheckThat("저장캐릭터 결정음 1회",NativeDecisionSound.Events==n+1);typeof(NativeGame).GetProperty("Running").SetValue(game,false);game.enabled=false;Call(game,"EndFirstPractice",true);Set(game,"menu",false);Set(game,"gameFocused",true);}
     if(frame==195){CueAt("TAB 인벤토리 열기");int n=sound.UiEvents.Count;Call(game,"SetInventory",true);CheckThat("인벤 열기 1회",sound.UiEvents.Count==n+1&&sound.UiEvents[n].key=="ui_panel_open");}
     if(frame==225){CueAt("인벤토리 닫기");int n=sound.UiEvents.Count;Call(game,"SetInventory",false);CheckThat("인벤 닫기 1회",sound.UiEvents.Count==n+1&&sound.UiEvents[n].key=="ui_panel_close");}
     if(frame==240){CueAt("일시정지 설정 열기");Call(game,"OnPanelRequested","settings");}
     if(frame==270){CueAt("설정 → 인벤토리 · 탭 1회");int n=sound.UiEvents.Count;Call(game,"OnPanelRequested","invPanel");CheckThat("전환은 탭만 1회",sound.UiEvents.Count==n+1&&sound.UiEvents[n].key=="ui_tab");}
     if(frame==285){CueAt("활성 탭 재선택은 무음");int n=sound.UiEvents.Count;Call(game,"OnPanelRequested","invPanel");CheckThat("활성 탭 무음",sound.UiEvents.Count==n);}
     if(frame==300){Call(game,"SetInventory",false);CueAt("버튼 호버 · 웹 원음");sound.PlayUiSample("ui_button_hover",.25f);}
-    if(frame==315){CueAt("버튼 확정 · 처리기 고유음 중복 억제");NativeUiSounds.Current.Clicked();}
+    if(frame==315){CueAt("삭제 결정 · dark 후보1과 일반 confirm 중복억제");NativeDecisionSound.Play("delete");NativeUiSounds.Current.Clicked();}
     if(frame==330){CueAt("레벨업 · 웹 합성 아르페지오");int n=sound.UiEvents.Count,before=game.Simulation.Player.Level;game.Simulation.AddExperience(checked(game.Simulation.Player.MaxExperience*3));CheckThat("실제 레벨 상승",game.Simulation.Player.Level>before,before+" -> "+game.Simulation.Player.Level);CheckThat("실제 레벨업 이벤트",sound.UiEvents.Count==n+1&&sound.UiEvents[n].key=="ui_levelup","events="+n+" -> "+sound.UiEvents.Count);}
     if(frame==375){CueAt("드랍 아이템 획득 · 웹 6종 풀");var item=NativeInventorySeed.Load().equipped[0];int n=sound.UiEvents.Count;bool picked=(bool)Call(game,"CollectLoot",new LootState{Item=item,Rarity=item.rarity});CheckThat("실제 가방 획득",picked&&sound.UiEvents.Count==n+1&&sound.UiEvents[n].key.StartsWith("pickup_"));}
     if(frame==405){CueAt("SFX 0% · 창 열기는 무음");sound.SetVolumePercent(0);Call(game,"SetInventory",true);}
@@ -63,7 +63,7 @@ namespace Exoduser.UnityPort.Tools {
     var image=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(Path.Combine(output,"frame"+frame.ToString("D4")+".png"),image.EncodeToPNG());Destroy(image);
     int nFrames=AudioRenderer.GetSampleCountForCaptureFrame();using(var buffer=new NativeArray<float>(nFrames*receipt.channels,Allocator.Temp)){CheckThat("출력버퍼 "+frame,AudioRenderer.Render(buffer));for(int i=0;i<buffer.Length;i++)pcm.Add(buffer[i]);}
    }
-   receipt.frames=frame;receipt.sampleCount=pcm.Count;double square=0;foreach(float s in pcm){receipt.peak=Mathf.Max(receipt.peak,Mathf.Abs(s));square+=s*s;}receipt.rms=(float)Math.Sqrt(square/Math.Max(1,pcm.Count));CheckThat("실제 출력버퍼 유음",receipt.peak>.001f&&receipt.rms>.00001f);
+   receipt.frames=frame;receipt.sampleCount=pcm.Count;receipt.decisionEvents=NativeDecisionSound.Events;CheckThat("결정음 normal·dark 실제 이벤트",receipt.decisionEvents>=3);double square=0;foreach(float s in pcm){receipt.peak=Mathf.Max(receipt.peak,Mathf.Abs(s));square+=s*s;}receipt.rms=(float)Math.Sqrt(square/Math.Max(1,pcm.Count));CheckThat("실제 출력버퍼 유음",receipt.peak>.001f&&receipt.rms>.00001f);
    receipt.events=new List<NativeFeedbackAudio.UiAudioEvent>(sound.UiEvents);receipt.passed=true;Finish();Debug.Log("UI_SOUND_CAPTURE_COMPLETE "+receipt.checks.Count);Application.Quit(0);
   }
   void Finish(){AudioListener.volume=0;AudioListener.pause=true;if(recording){AudioRenderer.Stop();recording=false;}Time.captureDeltaTime=0;if(output==null)return;receipt.events=new List<NativeFeedbackAudio.UiAudioEvent>(sound?.UiEvents??new List<NativeFeedbackAudio.UiAudioEvent>());File.WriteAllText(Path.Combine(output,"오디오_검수.json"),JsonUtility.ToJson(receipt,true));using(var w=new BinaryWriter(File.Create(Path.Combine(output,"출력버퍼.wav")))){int bytes=pcm.Count*2;w.Write(System.Text.Encoding.ASCII.GetBytes("RIFF"));w.Write(36+bytes);w.Write(System.Text.Encoding.ASCII.GetBytes("WAVEfmt "));w.Write(16);w.Write((short)1);w.Write((short)receipt.channels);w.Write(receipt.sampleRate);w.Write(receipt.sampleRate*receipt.channels*2);w.Write((short)(receipt.channels*2));w.Write((short)16);w.Write(System.Text.Encoding.ASCII.GetBytes("data"));w.Write(bytes);foreach(float s in pcm)w.Write((short)Mathf.Clamp(Mathf.RoundToInt(s*32767),-32768,32767));}lobby?.CloseStartupCaptureMedia();}

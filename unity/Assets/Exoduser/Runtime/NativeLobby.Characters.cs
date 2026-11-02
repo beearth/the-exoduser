@@ -74,7 +74,7 @@ namespace Exoduser.UnityPort
   public bool ConfirmCharacterVisual()
   {
    if(characterStep!=1||characterVisual!=0)return false;
-   CloseCharacterPresentationVideo();characterStep=2;characterVisualFocusPending=false;characterFocus=true;characterError="";return true;
+   NativeDecisionSound.Play("hero");CloseCharacterPresentationVideo();characterStep=2;characterVisualFocusPending=false;characterFocus=true;characterError="";return true;
   }
   public bool CreateCharacter(string name)
   {
@@ -82,7 +82,7 @@ namespace Exoduser.UnityPort
    var candidate=CopyCharacters();
    if(!candidate.TryCreate(name,characterVisual,out var error)){characterError=CharacterError(error);return false;}
    if(!CommitCharacters(candidate))return false;
-   RevealSelectedCharacter();CloseCharacterCreation();characterRestoreCreateFocus=false;if(characterVisual==0)BeginCreatedCharacterStory();return true;
+   NativeDecisionSound.Play("create");RevealSelectedCharacter();CloseCharacterCreation();characterRestoreCreateFocus=false;if(characterVisual==0)BeginCreatedCharacterStory();return true;
   }
   string CharacterError(CharacterCreateError error)
   {

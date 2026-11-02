@@ -650,3 +650,7 @@ PC 담당이 I:/EXODUSER-Storage/character-capacity/20261101-unlimited/receiver/
 다음 성역 RETOUCH 한 건은 기존 Mac UI 담당에게 최소수정·원본 수치 보존·1920 실제 시각 재검수·개인 브랜치 산출물 회수 범위로 지시했다. 신규 팀/자동화0. 사용자 게임 저장 불변 및 QA preferences 최초 원문 없는1파일 복구 미확인 한계는 그대로 유지한다.
 
 사용량 단위 시작 주간 누적10%→종료12%, 계정 공용 관측차2퍼센트포인트. 이 작업 단독 소비로 귀속하지 않는다. 날짜 첫 누적 기준 여부가 확인되지 않아 일간 소비는 미상이며 새20% 예산을 배정하지 않았다. 같은 상태 사용량 반복 조회0.
+
+## 2026-11-02 PC 최신 웹 parity 소스 후보·실행 차단
+
+`codex/unity-parity-1102:818ea0aff182624c506c972077f0384c1b719ce9`에 최신 C2선명도3변형/cover/폭포/여백, 빈Z·Space 습득우선/실제비용, 접점2틱/피격가장자리/처치음 제한 후보를 백업했다. C#75+31/Core35/player-hurt47559 PASS·독립Core114/Runtime212 compile0. enemy-hurt 기존H3 1300실패는 변경전후동일/신규0, 전체PASS아님. Dota PID56244·Library없음/Editor20GB 대비 커밋여유18.7GB로 Unity/Player/빌드0·공통/Desktop0·시각미검증. 화폐/두둥은 기존owner중복으로 건너뜀, 전체화면64 확장연결은 미완. 정확한9항목·다음순서는 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md. 검수없는병합/바로가기교체 금지.

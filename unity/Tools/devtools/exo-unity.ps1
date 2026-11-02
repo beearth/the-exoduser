@@ -367,10 +367,14 @@ function Try-TakeoverFrom($lock) {
 function Acquire-Slot([string]$Role, [string]$wt, [int]$ownerPid, [string]$queueDir, [double]$MinFreeGB = 0) {
     $script:LockToken = [Guid]::NewGuid().ToString("N")
     New-Item -ItemType Directory -Force -Path $Root | Out-Null
-    # 시작 조건(유니티 총괄 승인 10-28): 에디터 Library 있음 12GB / Library 없음 20GB / 플레이어 10GB, 동시 실행 1(잠금)
+    # 시작 조건(11-02 사용자 "도타 켜졌어도 그냥 하게"): 사용자 프로그램 실행 여부로 기다리지 않는다.
+    # 권장 여유(Library 있음 12GB / 없음 20GB)는 경고만 하고, 시스템 보호용 최소 여유 6GB만 대기 조건으로 둔다. 동시 실행 1(잠금)은 유지.
     $hasLib = Test-Path -LiteralPath (Join-Path $wt 'unity\Library')
-    $needGB = 12; if (-not $hasLib) { $needGB = 20 }
+    $wantGB = 12; if (-not $hasLib) { $wantGB = 20 }
+    $needGB = 6
     if ($MinFreeGB -gt 0) { $needGB = $MinFreeGB }
+    $freeNow = Get-CommitFreeGB
+    if ($freeNow -lt $wantGB) { Say ('경고: 커밋 여유 {0}GB < 권장 {1}GB - 대기하지 않고 진행(최소 {2}GB)' -f $freeNow, $wantGB, $needGB) }
     $deadline = (Get-Date).AddMinutes($WaitMin)
     $lastMsg = ''
     while ($true) {
@@ -727,7 +731,7 @@ function Cmd-Status {
     foreach ($pr in $procs) { Write-Output ('Unity 프로세스: pid={0} ws={1:N0}MB start={2}' -f $pr.Id, ($pr.WorkingSet64 / 1MB), $pr.StartTime) }
     $ci = Get-CommitInfo
     Write-Output ('PC 커밋: 사용 {0}GB / 한도 {1}GB / 여유 {2}GB' -f $ci.used, $ci.limit, $ci.free)
-    Write-Output '시작 조건(커밋 여유): 에디터 Library 있음 12GB / Library 없음 20GB / 플레이어 10GB, 동시 실행 1(잠금)'
+    Write-Output '시작 조건(커밋 여유): 최소 6GB만 대기, 권장 12GB(Library 있음)/20GB(없음)는 경고만, 동시 실행 1(잠금). 사용자 프로그램(Dota 등) 실행은 대기 사유 아님'
     $needNow = 12; if ($Worktree -and -not (Test-Path -LiteralPath (Join-Path $Worktree 'unity\Library'))) { $needNow = 20 }
     $okNow = 'OK'; if ($ci.free -lt $needNow) { $okNow = '부족' }
     Write-Output ('  현재 여유 {0}GB / 에디터 필요 {1}GB → {2}' -f $ci.free, $needNow, $okNow)

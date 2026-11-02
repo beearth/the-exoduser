@@ -130,3 +130,15 @@ Runtime SHA256 `32669c0d133674b36ce39b0ac72d838a8f5d995afd11f49818e1d267390e0a15
 | 자원 반환 | 자기 예약 한 건만 공식 unreserve로 반환하고 원본 SHA/파일 부재·자기 잠금 없음 직접 확인. 추가 unreserve/프로세스 종료0. 후속 GPU 작업 없음 |
 
 근거: `I:/EXODUSER-Storage/demo-art/ui-sound/r7-common-publication.json`, `r7-stage-verification.json`, `r7-install-verification.json`, `r7-desktop-refresh.json`, `r7-reservation-return.json`. 현재 바탕화면 검수본의 실제 빌드 소스는57bb84b29이며 최종 docs-only 공통 SHA와 구분한다. PC 소유 checkout·GitHub·해당 Windows Player 전달은 확인했으나 Mac 반영을 확인한 것은 아니다.
+
+## 2026-11-02 저녁 결정 두둥 인수
+
+| 항목 | 현행 계약 |
+|---|---|
+| 파일 | 웹 sfx/ui/decision/ddung_1~3 및 각 _dark WAV 동일byte, 임시 기본1. --unity-ddung-candidate 1~3으로 검토. 사용자 최종 청음 선택 아님 |
+| 이벤트 | hero/CreateCharacter 성공/기존입장 enter/새입장 new-game/삭제 delete. difficulty도 정책 whitelist에 포함하나 Unity에는 다음 난관 난이도 확정창이 아직 없어 실제 연결은 미구현. 일반 탭·호버·취소·종료는 재생0 |
+| gain | .8×SFX설정/100, 효과음0은 재생·덕킹0. 1850ms 전역 중복억제, 같은 확정의 일반 confirm 억제 |
+| 음악 | 로비·인게임 BGM에만 0.501187(-6dB), 800ms 후1. 설정값/원래 fade·source level 보존. 자동 검수는 listener무음 유지 |
+| 검수 | 실제 정책의 whitelist/zero/cooldown/duck복구12검사 PASS. 실제 출력 버퍼·청음·Player 이벤트 검증은 지정 REPORT 결과에 따름 |
+
+기존 UI30초 출력버퍼 검수의 저장캐릭터 입장 기대를 ENTER에서 실제 결정음1회로 갱신하고, hero/enter/delete normal·dark의 이벤트3회 이상을 요구한다. 기존 ENTER 인장·탭·호버·레벨업·장치무음 검사는 유지한다. 실제 최종 결과는 REPORT를 따른다.

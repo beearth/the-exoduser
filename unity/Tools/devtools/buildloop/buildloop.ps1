@@ -186,6 +186,7 @@ function Release-Lock { if ($null -ne $script:LoopHandle) { $script:LoopHandle.D
 function Get-UnityProcs { return @(Get-Process Unity, EXODUSER-Unity -ErrorAction SilentlyContinue | Where-Object { -not $_.HasExited }) }
 function Get-FreeCommitGB { $os = Get-CimInstance Win32_OperatingSystem; return [math]::Round($os.FreeVirtualMemory / 1MB, 1) }
 function Wait-Ready([bool]$libraryExists) {
+  # COMMON_RULES: 최소 8GB만 대기, 권장 12/20GB는 경고만. 사용자 앱은 중단하지 않음.
   $need = 8; $recommended = 12; if (-not $libraryExists) { $recommended = 20 }
   $deadline = (Get-Date).AddMinutes($Cfg.WaitMaxMin)
   while ($true) {

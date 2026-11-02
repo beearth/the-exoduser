@@ -1,3 +1,5 @@
+> 2026-11-02 C2 후속 후보: `codex/unity-parity-1102`. 아래 A 전달은 이전 빌드 이력이며 새 C2 실제 Player 검증과 구분한다.
+
 # Unity 울트라와이드 타이틀 A — 2026-11-01
 
 사용자가 지정한 스크린샷의 울트라와이드 제작을 완료했다. 실제 Desktop 바로가기의 EXE·인수·작업폴더·아이콘을 검수한 설치본 `I:/EXODUSER-Storage/unity-builds/ui-ultrawide/d8a089fbbad3/EXODUSER-Unity.exe`로 연결하고4속성을 다시 읽었다. 이전 바로가기와 실행본은 보존했다.
@@ -87,3 +89,50 @@
 사용자 도타 종료/재개 지시 후 도타·Unity·Player 부재, 잠금/예약 없음, 메모리 여유51.5GB, 기존 EXE/Runtime/Core3SHA 일치를 확인했다. 기존86cb08bb 동일 패키지 M1은99a0a0c6에서 정상종료/창0/잔여0/USER_SAVE0·필수23단계 통과. 해당 소스 UI1395/동영상105/타이틀15·팁255·키30, 컴포넌트·글자겹침·물리경계0건 통과. 단74f49763 원문 guard는 Player.log/prev2개변경으로 FAIL이며 안전PASS로 재분류하지 않음.
 
 최종 전달은 공통907083b7c의 무제한 캐릭터·보관 호환과 babada0923의 적 시각방향·QA를 정상 병합한다. NativeGame의 fixture조건1충돌은 world/facing/hud-blend 모두 보존하며 Core 전투값은 변경0. 타이틀/로딩/월드 변경을 보존하며, 공통 이후 인원 제한을 과거로 되돌리지 않는다. 이 결합은 새 Core/Runtime이므로 최종 같은 빌드 M1/실화면/저장 보호를 다시 연결한다. 기존86cb08bb의 결과를 새 DLL 검수로 소급하지 않는다.
+
+## 2026-11-02 웹 C2 tall 이식 후보
+
+| 항목 | 현행 후보 계약·검증 |
+|---|---|
+| 원본 | origin/main `f4967bc62`의 title-signboard.js·C2 manifest·still·fall-near/far와 title_motion_C2_tall_loop_20261102.mp4. 웹 수정0 |
+| 미디어 | 2036×1016·24fps·8.583333초·무음·loop. 원본 SHA256 3020b3babc951c9864b2c105a8e421040229076bd34779892231d366c68c5a7a, 같은 byte를 StreamingAssets/Lobby에 인수 |
+| cover | max(W/2036,H/1016)·중앙 크롭. 버퍼3840×2160 상한·화면 비율 유지. 정지 원화는 WebP→PNG decoded RGBA 동일 |
+| 폭포 | 근거리 box696,498,66,259·mouth714,506·contact735,747·100px/s. 원거리951,548,78,218·974,555·1001,756·75px/s. 128×512 주기 타일·alpha.38. 입구 반사/착수 링·안개 수식 이식, 실제 GPU 일치 미검증 |
+| 메뉴 | 웹 _fitTitleStage와 같이 k=min(W/1920,H/1080), logoLeft=max(48,H×.045), menuLeft=logoLeft+20k. 기존 로고520·상단96, 메뉴116/436와 입력 유지 |
+| 수명·폴백 | 전용 NativeLobbyVideo 무음 디코더, reduced-motion/포커스 해제로 정지. 포커스 setter에서 디코더를 즉시 pause하여 로비 Update 조기반환 중에도 재생이 남지 않음. 오류/셰이더 미지원은 C2 still cover. 전환/파괴에서 decoder·RT·material·tile 해제. 이전 A/구형MP4 삭제0 |
+| 검사 | A 비율로 C2 검사 RED 후 C#71 GREEN. 디코더 진행 누락 RED 후 라우팅 계약 GREEN. 독립 Core114/Runtime210 csc exit0. Unity import·셰이더·Player·M1·1x 검수를 대체하지 않음 |
+| 실제 검수 | 기존 --unity-title-a-check 호환·새 --unity-title-c2-check, 기존90장 게이트를 C2 video 모드·decoded frame 진행 조건으로 강화. 도타 실행으로 실제 실행0, 공통/바탕화면 갱신0 |
+
+증거·최종 SHA·웹 대비 차이: I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md. VISUAL VERDICT: 미검증. 기존 A의 실제 PASS를 C2로 소급하지 않는다.
+
+### 같은 날 최신 선명도 합성판 수신
+
+웹 `93f41dd8f6`(origin/main fd2d1badfb)의 정적 원화+Kling 선명도 합성판이 들어와 브리프대로 tall 후보를 교체했다. 원본 생성 해상도1774×887에서 제작자가 확대·합성한3840×1920 결과이며 네이티브4K 생성으로 부르지 않는다. cover 기준은2036×1018(2:1), 폭포 좌표·100/75px/s·alpha.38은 그대로다.
+
+| 변형 | 런타임 선택·검증 |
+|---|---|
+|1920×960|need=max(Screen.width,Screen.height×2)≤1920,4,800,452B·c5b4d40f…|
+|2560×1280|need≤2560,7,292,221B·1e73270f…|
+|3840×1920|나머지,13,032,368B·eeddc6a4…|
+|공통|24fps·206프레임·8.584초·무음. 3파일 웹SHA256일치, still WebP→PNG decoded RGBA일치. resize는 이전 초/새 duration으로 seek, 준비 중 이전 출력 유지. 새C#75/라우팅계약통과·실제Player미검증|
+
+상세 전체SHA는 C2-clarity-assets.json. 앞의2036×1016/tall/71검사는 교체 전 이력이다. 폐기된16:9 타이틀·A파노라마로 fallback하지 않는다. 이번 체크아웃의 이전 tall 활성 사본만 I:에 보존한 뒤 SSD에서 제외하고 웹원본/Git이력은 유지한다.
+
+## 2026-11-02 저녁 2차 정정 — 최종 Kling·전체화면 확장
+
+| 항목 | 현행 계약 |
+|---|---|
+| 타이틀 | 웹94e3a89ed의 title_motion_C2_final_20261102.mp4 한 개, 2036×1016/24fps/8.583초/6,192,566B/SHA256 869895a608475b694d68718ad5af809e0dc8f6fd65204f04adf7db4f011827c3. 선명도 변형3종은 런타임 요청하지 않음. fallback은 같은 원본 첫 프레임 |
+| 폭포 | near 860,320,60,253/mouth877,328/contact895,560/100px/s; far1043,385,44,203/mouth1056,392/contact1066,579/75px/s. mask 웹 동일byte, alpha.38 |
+| 프레임 | 캐릭터 정보·플레이 방식 판은 동일 panel_frame_20261029, source slice150/destination60/outset18. 새 원화 생성0 |
+| 전체화면 | 웹64종·21/32판128개를 FullscreenWide PNG에 무손실 반입. 원본SHA·decoded RGBA 일치. catalog 원본 크기·centerX로 로비/캐릭터 영상 중앙을 합성하고 네메시스21컷/사망 원화를 실제 화면에 연결. 폐기 타이틀·문·게이트 그림은 활성화하지 않음. 나머지 영화 대체 정지컷은 catalog만 보관하며 정본 영화 유지 |
+| 검사 | 실제 레이아웃 C#68검사 PASS. 전체화면64/128 pixel byte PASS. 이번 빌드/Player/시각 판정과 최종SHA는 지정 REPORT에 기록. 과거 A/합성판 실물 결과를 소급하지 않음 |
+
+저녁 실비교 후 메뉴를 최신 웹의380px 폭/48px 행/18px Hahmlet/왼쪽36px+.16em/상하1px 선/선택16×1px 표식으로 정합했다. 정지 모션은 같은 디코더 프레임을 유지하고 사망 확장판은 실제 전체화면을 채운다. --unity-parity-1102-check는 기존 UI/타이틀 검수의 범위를1920·3840/ko로만 제한하며 제품 경로는 불변, 타이틀 모션 실측간격10.5초다. 첫 빌드는 셰이더1148/3584에서 실행 중단되어 성공 영수증이 없으며 Library를 보존해 정식 실행을 이어간다.
+
+실제1920/3840 비교에서 전사1024px 문장의64px 축소 샘플에 aliasing 점이 확인되어 원본PNG는 유지하고 전사 아이콘에만 mipmap/trilinear를 적용한다. 정보판 높이를 웹165.5px·좌우36px·상단34px로 맞추고 이름/설명 기준59.4/110.6px를 정합한다. 이 수정의 실제 화면은 후속 같은빌드로 재검수하며 앞9e9ba444 DLL의186UI/23M1 근거와 구분한다.
+
+폐기된 C2_clarity_1920/2560/3840 MP4와 각meta6경로는 활성 코드참조0을 확인하고 I: evening/rejected-clarity에 전파일SHA대조 보존 후 자기 StreamingAssets에서 제거했다. 최종 원본1개만 배포입력에 남기며 Git 이력·웹 정본은 보존한다.
+
+### 실제 재촬영 아이콘 잔점 재작업
+39abdaa의 mipmap/trilinear만으로는 실제 IMGUI64px 잔점이 남았다(재촬영 rework-ui). 같은 방법을 중단하고 웹 원본1024 PNG를 보존한 채 Lanczos3로64×64 사전 축소한 emblem_warrior_ui64.png를 캐릭터 선택 레일 전용으로 사용한다. 새 이미지64px/빌리니어/무압축/밉0, 기본 원본과 다른 위치의 사용은 유지한다. rework-ui 이전본은 채택하지 않으며 새 패키지의 실제 아이콘 비교가 필요하다.

@@ -22,7 +22,7 @@ namespace Exoduser.UnityPort
             {
                 "warrior","silvertail","hellgunner","transmuter","spearmage"
             };
-            for(int n=0;n<5;n++)silverEmblems[n]=Resources.Load<Texture2D>(n==0?"Art/CharacterSelect/emblem_"+names[n]:"Art/ui/silver_hell/emblem_"+names[n]+"_disabled");
+            for(int n=0;n<5;n++)silverEmblems[n]=Resources.Load<Texture2D>(n==0?"Art/CharacterSelect/emblem_warrior_ui64":"Art/ui/silver_hell/emblem_"+names[n]+"_disabled");
             silverVisualTitle=new GUIStyle(silverName)
             {
                 fontSize=18
@@ -63,7 +63,7 @@ namespace Exoduser.UnityPort
         }
         void SilverCornerPanel(Rect r)
         {
-            NativeSilverHellUi.Panel(r,28,8);
+            NativeSilverHellUi.Panel(r,60,18);
         }
         void DrawSilverScene(Rect box,int i)
         {
@@ -115,19 +115,19 @@ namespace Exoduser.UnityPort
             Image(new Rect((w-headingWidth)/2-238,45,220,1),silverHeadingLine,ScaleMode.StretchToFill);
             NativeUiAudit.DrawTextureWithTexCoords(new Rect((w+headingWidth)/2+18,45,220,1),silverHeadingLine,new Rect(1,0,-1,1),true);
             var centerMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.RightMatrix;NativeUiAudit.Region(new Rect(1500,0,420,1080),"component","frontend-right","캐릭터 선택 오른쪽 레일");
-            var info=new Rect(x,bodyY,380,shortScreen?156:148.5f);
+            var info=new Rect(x,bodyY,380,shortScreen?156:165.5f);
             SilverCornerPanel(info);
-            SilverLabel(new Rect(x+28,bodyY+26,324,16),VisualSelectionLabel(presentationJobs[i],new[]
+            SilverLabel(new Rect(x+36,bodyY+34,308,16),VisualSelectionLabel(presentationJobs[i],new[]
             {
                 "WARRIOR","BLADE DANCER","HELLGUNNER","TRANSMUTER","SPEARMAGE"
             }
             [i]),silverVisualCaption,TextAnchor.MiddleLeft);
-            DrawSpaced(x+28,bodyY+48,40,VisualSelectionLabel(presentationNames[i],new[]
+            DrawSpaced(x+36,bodyY+59.4f,39.2f,VisualSelectionLabel(presentationNames[i],new[]
             {
                 "Exoduser Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"
             }
             [i]),silverVisualName.font,28,3.36f,NativeSilverHellUi.Bright,true);
-            SilverLabel(new Rect(x+28,bodyY+100,324,38),VisualSelectionLabel(presentationDescriptions[i],new[]
+            SilverLabel(new Rect(x+36,bodyY+110.6f,308,38),VisualSelectionLabel(presentationDescriptions[i],new[]
             {
                 "A black-iron warrior wielding a greatsword.","One spinning sword; her dance is annihilation.","A blood-moon marksman who uses her own blood as ammunition.","A hunter who transmutes core flame into bow, scythe, spear and sword.","A herald of the void who seals space with runes."
             }

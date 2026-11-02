@@ -86,6 +86,7 @@ namespace Exoduser.UnityPort.Core
                 HurtEnemy = (w, dmg, ang, noSound, opts, atkEl) => { if (w != null && webOwner.TryGetValue(w, out var other)) ApplyEnemyDamage(other, (int)dmg, (float)(ang ?? 0), false, 1, opts != null && opts.dot == true, opts != null && opts.shieldHit == true); },
                 ParryLessonHurt = (w, dmg, ang, opts) => { }, HurtPlayer = dmg => HurtPlayer((int)dmg), SpawnBossProjectile = (w, proj) => { },
                 AddText = (x, y, text, col, life, size, text2) => { }, AddParts = (x, y, col, n) => { }, Shake = n => { }, DoHitFlash = (col, a) => { }, PlaySample = QueueHurtSample, HitSfxCd = hitSfxCd,
+                FeelContact = (w,angle,killed) => {if(webOwner.TryGetValue(w,out var target))Feedback.Enqueue(new FeedbackEvent{Kind=FeedbackKind.FeelContact,Tick=TickCount,TargetId=target.Id,X=(float)w.x,Y=(float)(w.y-(w.r>0?w.r:20)*.35),Angle=(float)(angle??0),Killed=killed});},
                 HitSfxForEtype = EnemySoundTables.Hit, Block = () => { }, Translate = s => s,
                 UqS = new EnemyUqS(), CanMove = (x, y, r) => Pass((float)x, (float)y, (float)r),
                 PoolPart = (x, y, vx, vy, col, sz, life, tp, rot, grav) => { }, AddImpact = (x, y, el, ang, type, boss, noFlash) => { }, AddBoom = (x, y, r, dur, col) => { },
