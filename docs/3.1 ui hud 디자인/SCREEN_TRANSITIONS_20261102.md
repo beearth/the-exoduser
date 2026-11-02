@@ -30,7 +30,7 @@
 | 로비→게임 / 게임→로비 | showCharGate / goToLobby와 기존 이동 대입 세 곳. 기존 slot/char/demo/story/ddung query 보존 |
 | 스테이지·클리어 다음 / 사망재시작 | showStageTransition / retryBtn. 전투·보상·저장 본문은 기존 함수 유지 |
 
-제작 전 직접 확인: 승인 gate_sigil 원본512×512 대조, 실제1920 게이트·시작 메뉴·세계관·캐릭터 선택·게임 로딩. 목표 차이는 원본 화면 제거가 페이드보다 먼저 일어나는 컷과 페이지 간 공백이다. 제작법은 원본을 검정 뒤에서 교체하는 단일 최상단 레이어다. 조기 판정은 실제 모듈의80ms/500ms 준비·중복·reject 복구 및 실제 생성 영상 흐름이며, 틈·흰 프레임·검정 고착·중복 저장/경험치 차감이면 FAIL이다.
+제작 전 직접 확인: 승인 gate_sigil 원본2048×1152 대조, 실제1920 게이트·시작 메뉴·세계관·캐릭터 선택·게임 로딩. 목표 차이는 원본 화면 제거가 페이드보다 먼저 일어나는 컷과 페이지 간 공백이다. 제작법은 원본을 검정 뒤에서 교체하는 단일 최상단 레이어다. 조기 판정은 실제 모듈의80ms/500ms 준비·중복·reject 복구 및 실제 생성 영상 흐름이며, 틈·흰 프레임·검정 고착·중복 저장/경험치 차감이면 FAIL이다.
 
 최신 재검수는 I:/EXODUSER-Storage/codex-takeover/transitions/r2/영상_측정표.md·measurement.json·clips-aligned/ 및 REPORT.md를 따른다. 기존 after 영상은 CTO 반려 전 기준으로 보존한다. headless --mute-audio, 격리 서버3462·전용 saves, 게임 음량0. 끝부분 seek·사망/클리어 상태 fixture는 행별 표시한다. 무음 영상·gain 검사와 실제 청취는 별도이며 Unity는 unity-parity-1102-brief.md 인계 대상이다.
 
