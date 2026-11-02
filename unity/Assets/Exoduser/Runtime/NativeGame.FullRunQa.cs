@@ -35,6 +35,9 @@ namespace Exoduser.UnityPort
             public int width, height;
             public float seconds, averageFps, frameP95Ms, frameP99Ms, longestFrameMs;
             public int renderedFrames;
+            public bool worldCleared, clearModalNotApplicable, clearModalBlockedBackground, clearCancelRearmed, clearReturnedLobby, clearSaveExists;
+            public float worldClearSeconds;
+            public string clearUiScope = "After natural clear: actual panel callbacks and virtual Escape through NativeGame.Update; not OS/IMGUI button injection.";
             public List<FullRunSample> samples = new List<FullRunSample>();
         }
         sealed class FullRunFrameProbe : MonoBehaviour
@@ -82,7 +85,7 @@ namespace Exoduser.UnityPort
             float nextSample = 0, nextStep = Time.realtimeSinceStartup;
             int maxTicks; if (!int.TryParse(Argument("-qa-max-ticks"), out maxTicks)) maxTicks = 54000;
             int firstTick = Simulation.TickCount, previousLevel = Simulation.Player.Level, previousBag = inventory.State.Bag.Count;
-            bool battleShot = false, arenaShot = false, dropShot = false, gateShot = false;
+            bool battleShot = false, arenaShot = false, dropShot = false, gateShot = false, exitShot = false;
             float previousX = Simulation.Player.X, previousY = Simulation.Player.Y;
             int stalled = 0;
             string objective = "field";
@@ -92,7 +95,14 @@ namespace Exoduser.UnityPort
                 {
                     var sim = Simulation; var p = sim.Player; var flow = sim.Stage;
                     if (PlayerDown) { receipt.result = "player-death"; yield return FullRunShot(output, "death"); break; }
-                    if (flow.StageCleared) { receipt.result = "stage-cleared"; yield return FullRunShot(output, "clear"); break; }
+                    if (flow.StageCleared)
+                    {
+                        receipt.worldCleared=true;receipt.worldClearSeconds=Time.realtimeSinceStartup-started;
+                        yield return FullRunShot(output,"clear");
+                        yield return FullRunClearTransition(output,keyboard,receipt);
+                        receipt.result=receipt.clearModalBlockedBackground&&receipt.clearCancelRearmed&&receipt.clearReturnedLobby&&receipt.clearSaveExists?"stage-cleared":"stage-cleared-transition-blocked";
+                        break;
+                    }
                     Vector2 destination = new Vector2(p.X, p.Y), aim = destination + Vector2.up * 200;
                     bool fighting = false; float nearest = 850 * 850;
                     foreach (var e in sim.Enemies)
@@ -215,6 +225,7 @@ namespace Exoduser.UnityPort
                     if(inventory.State.Bag.Count>previousBag){previousBag=inventory.State.Bag.Count;yield return FullRunShot(output,"pickup-"+previousBag);}
                     if(!gateShot&&flow.BossUnlocked){gateShot=true;yield return FullRunShot(output,"gate-open");}
                     if(!arenaShot&&flow.InArena&&flow.LoadPhase==0){arenaShot=true;yield return FullRunShot(output,"boss-entry");}
+                    if(!exitShot&&flow.InArena&&!flow.BossAlive&&flow.Exits.Count>0){exitShot=true;yield return FullRunShot(output,"exit-open");}
                     var liveBoss=flow.FindBoss();DruidData pattern;
                     if(flow.InArena&&flow.LoadPhase==0&&liveBoss!=null&&sim.Druid!=null&&sim.Druid.Data.TryGetValue(liveBoss,out pattern)&&patterns.Add(pattern.S))
                         yield return FullRunShot(output,"boss-pattern-"+pattern.S);
@@ -249,12 +260,37 @@ namespace Exoduser.UnityPort
             if(s.Regions!=null){row.regionKills=new int[4];row.regionTotals=new int[4];for(int i=0;i<4;i++){row.regionKills[i]=s.Regions[i].Kills;row.regionTotals[i]=s.Regions[i].Total;}}
             return row;
         }
+        IEnumerator FullRunClearTransition(string output,Keyboard keyboard,FullRunReceipt receipt)
+        {
+            InputState.Change(keyboard,new KeyboardState());yield return null;
+            if(!stageClear.RequestNext())yield break;
+            if(nextDifficulty.Active)
+            {
+                yield return FullRunShot(output,"clear-difficulty");
+                InputState.Change(keyboard,new KeyboardState(Key.Escape));Update();
+                receipt.clearModalBlockedBackground=nextDifficulty.Active&&!menu&&!stats.Open&&!forge.Open&&!inventory.Open&&!skills.Open;
+                InputState.Change(keyboard,new KeyboardState());yield return null;
+                nextDifficulty.Cancel();
+                receipt.clearCancelRearmed=stageClear.Active&&!nextDifficulty.Active&&stageClear.RequestNext();
+                if(!receipt.clearCancelRearmed)yield break;
+                nextDifficulty.Confirm();
+            }
+            else
+            {
+                receipt.clearModalNotApplicable=stageClear.ShownKind==NativeStageClearOverlay.Kind.DemoEnd;
+                receipt.clearModalBlockedBackground=receipt.clearCancelRearmed=receipt.clearModalNotApplicable;
+            }
+            yield return null;
+            receipt.clearReturnedLobby=lobby.IsBlocking&&lobby.Flow.Page==LobbyPage.Lobby&&!Running;
+            receipt.clearSaveExists=HasCombatSave(lobby.ActiveCharacterName);
+            yield return FullRunShot(output,"clear-lobby");
+        }
         IEnumerator FullRunShot(string output,string name)
         {
             yield return new WaitForEndOfFrame();
             var image=ScreenCapture.CaptureScreenshotAsTexture();
             try{File.WriteAllBytes(Path.Combine(output,"caps",name+".png"),image.EncodeToPNG());}finally{Destroy(image);}
-            if(Screen.width!=3840&&(name=="00-lobby"||name=="combat"||name=="boss-entry"||name=="death"||name=="clear"))
+            if(Screen.width!=3840&&(name=="00-lobby"||name=="combat"||name=="boss-entry"||name=="death"||name=="clear"||name=="clear-difficulty"||name=="clear-lobby"))
             {
                 int previousWidth=Screen.width,previousHeight=Screen.height;
                 Screen.SetResolution(3840,1080,FullScreenMode.Windowed);
