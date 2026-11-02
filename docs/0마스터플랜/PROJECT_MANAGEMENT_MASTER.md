@@ -802,3 +802,7 @@ codex-web-statwin: 다섯 창 제목44px와 성장 머리225→44px, 기존 인�
 ### 2026-11-02 웹 3D 4라운드 CTO 색 정정
 
 codex-web3d: 4라운드 제단 붉은 번짐/고유색 수정. 제단343.2px·기준energy.5742, 원래 독액10광원·self-glow.62 보존, 물 위 뿌리2배치 제거/132군락. 같은 소스12구도×1920/3840 OFF/ON·고유색 가시61영역 최대13.96°≤15°·오류0/map동일·81회귀/111프로젝트/guard PASS. [현행 계약](../4.1맵디자인+설정/WEB3D_TRIAL_20261031.md), I:/EXODUSER-Storage/web3d-round4-20261102/hue-color-pass/REPORT.md 및3377 /tmp/web3d-hue-review/index.html. source/remote/HTTP는 delivery.json. 3라운드 이동·FPS는 과거 증거이며 이번 성능으로 재사용하지 않음. 기본OFF·지속120FPS/전구간영상·전체AAA/자연완주·NW.js/Steam·Unity는 보류/미검증.
+
+### 2026-11-02 웹 3D 5라운드 마감
+
+codex-web3d: 나머지구역 낙엽74층/206표시군락, ct환경그라데이션선합성으로동측직선제거(82f93b92b1). 13카메라·고유색63영역최대14.1367°·지속64적/96탄1920/3840전Tier120이상(1초창최저138.28)·원본인물RGBA차0/HUD/map동일·전구간12/12목적지·239.334초무음1배속전편재생·62회귀/111프로젝트/guard PASS. 자체표현레이어PASS·기본ON가능판정/실제OFF유지. [현행계약](../4.1맵디자인+설정/WEB3D_TRIAL_20261031.md), I:/EXODUSER-Storage/codex-takeover/web3d-r5/REPORT.md·3377 /tmp/web3d-r5-review/index.html·원격/실행본영수증delivery.json. 자동보행무적/재탐색7은자연보스완주와구분. Unity대기.

@@ -1,8 +1,8 @@
 > 진행 프로젝트: [MAP_IMPROVEMENT_PROJECT.md](MAP_IMPROVEMENT_PROJECT.md) · 2.5D 깊이 기준: [DEPTH_2_5D_BENCHMARK_20260930.md](DEPTH_2_5D_BENCHMARK_20260930.md)
 
-## 2026-10-31 — 웹 3D 방향 정정: 기존 1-1 수풀·물 흐름 (기본 OFF)
+## 2026-11-02 — 웹 3D 5라운드 마감(기본 OFF)
 
-`?r3d=1`은 기존 맵 원화·인물·VFX·HUD를 보존하고 수풀/물 흐름·MAP-LOOK 국소광·경계 숲·유령을 더한다. 4라운드는 큰 소품 높이/발 정렬·인물 가림.35, 빛줄기10·동적광18·2층 안개·원화 요철3.6·품질 단계다. 환경만 차갑게 감광하고 빛 웅덩이를 복원하며 native 어둠/비네트를 이중 적용하지 않는다. 4라운드 CTO 색 정정은 제단343.2px/기준energy.5742·고유색 재질 가산·독액10광원/원본self-glow.62 복원, 5라운드207입력/206표시 군락·원경 반복 경계 연결/영역 hue≤15° 검수를 따른다. 목교 대체는 퇴역(`r3dLegacy=1` 필요). [현행 수치·검수 계약](WEB3D_TRIAL_20261031.md), 단계 증거는 `I:/EXODUSER-Storage/web3d-round4-20261102/`. 기본 OFF·전체 맵/Unity/Steam 미채택과 단계 판정을 구분한다.
+`?r3d=1`은 원본 맵/인물/VFX/HUD/판정을 보존한 표현 레이어다. 207입력/206표시 군락·ct 환경 인수로 동측 직선 제거·원경 연결, 기존 가림.35/빛줄기10/동적광18/2층안개/원화요철3.6을 유지한다. 13카메라·고유색63영역최대14.1367°·양해상도전Tier120FPS이상(1초창최저138.28)·12목적지/239.334초전편재생·인물RGBA차0/HUD/map동일. [현행수치·범위](WEB3D_TRIAL_20261031.md), I:/EXODUSER-Storage/codex-takeover/web3d-r5/REPORT.md·3377 /tmp/web3d-r5-review/index.html·delivery.json. 자체표현PASS/기본ON가능판정이지만 실제OFF유지. 자연보스완주/전체AAA/Unity/Steam완료와구분한다.
 
 ## 2026-10-20 — MAPLOOK-HOLE Godot 독립 소환굴 오버레이
 
