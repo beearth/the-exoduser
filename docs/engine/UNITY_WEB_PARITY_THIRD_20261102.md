@@ -14,3 +14,5 @@
 검수는 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/third/에 보존한다. 독립 Core/Runtime compile0은 실제 Player 검수와 별도다. 최종 빌드/M1·해상도·1x 판정은 아래 후속 영수증에 기록한다.
 
 새 격리 Player 검수 host는 1920/2560/3840에서 버전 정합·지원스킬 학습/강화/리셋 취소·환불·STR계획/적용·AP0 예약/취소·난이도 취소/확정, 3840 실제 클리어 버튼 재무장·데모 종료 우회까지 검사한다. fixture 주입이며 자연플레이 증거로 올리지 않는다.
+
+대장간 강화 카드106.97px/간격8px와 스크롤 content-height의114.97px stride를 일치시켜 최하단 불필요한 빈 여백을 없앴다.

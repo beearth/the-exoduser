@@ -222,7 +222,7 @@ namespace Exoduser.UnityPort {
   float ContentHeight(Simulation sim,InventoryState inv){
    switch(Tab){
     case "upgrade":{int n=0;foreach(var s in defs.slots)if(inv.GetEquipped(s.key)!=null)n++;
-     if(n==0)return 0;float cardsTop=450.4f+(SelectedChip!=null&&inv.GetEquipped(SelectedChip)!=null?212:158)+8;return cardsTop+116*n-8-LegacyGridTop+8;}
+     if(n==0)return 0;float cardsTop=450.4f+(SelectedChip!=null&&inv.GetEquipped(SelectedChip)!=null?212:158)+8;return cardsTop+114.97f*n-8-LegacyGridTop+8;}
     case "craft":return 974.4f-GridView.y+8;
     default:return 0;
    }
