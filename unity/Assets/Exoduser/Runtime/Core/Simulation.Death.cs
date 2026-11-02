@@ -130,7 +130,7 @@ namespace Exoduser.UnityPort.Core
             c.HurtPlayerTyped = (d, m) => { shockwave = true; HurtPlayer((int)d, new HurtOptions { Magic = m != null && m.dtype == "magic" }); };
             c.SpawnBossShot = (x, o) => SpawnDeathBullet(x, new ProjSpec { X = o.x, Y = o.y, Vx = o.vx, Vy = o.vy, Dmg = o.dmg, Life = o.life, Ml = o.ml, Sz = o.sz, El = (int)(o.el ?? 0), Col = o.col ?? "", RedBean = o.redBean == true, Homing = o.homing == true });
             var spawnCtx = new EnemySpawnContext {
-                PlayerLevel = Player.Level, DifficultyIndex = Config.DifficultyIndex, StageDiffOffset = 0, Stage = Config.StageIndex, DemoMode = Config.DemoMode, DemoLastStage = Config.DemoLastStage,
+                PlayerLevel = Player.Level, DifficultyIndex = Config.DifficultyIndex, StageDiffOffset = Config.StageDiffOffset, Stage = Config.StageIndex, DemoMode = Config.DemoMode, DemoLastStage = Config.DemoLastStage,
                 CanMove = (cx, cy, cr) => Pass((float)cx, (float)cy, (float)cr), Random = NextRandom
             };
             c.MkEn = (x, y, si, et, ib, el, room) => EnemyFactory.Create(spawnCtx, x, y, si, et, ib, el, room);

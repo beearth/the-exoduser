@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort.Core
         {
             if (!Finite(x) || !Finite(y)) return null;
             var context = new EnemySpawnContext {
-                PlayerLevel = Player.Level, DifficultyIndex = Config.DifficultyIndex, StageDiffOffset = 0, Stage = Config.StageIndex,
+                PlayerLevel = Player.Level, DifficultyIndex = Config.DifficultyIndex, StageDiffOffset = Config.StageDiffOffset, Stage = Config.StageIndex,
                 DemoMode = Config.DemoMode, DemoLastStage = Config.DemoLastStage,
                 CanMove = (cx, cy, cr) => Pass((float)cx, (float)cy, (float)cr), Random = NextRandom
             };
@@ -80,7 +80,10 @@ namespace Exoduser.UnityPort.Core
                 P = p, HasStats = false, OptParts = 0, ViewW = 1e6, ViewH = 1e6, CamX = Player.X, CamY = Player.Y,
                 Random = NextRandom, EqAffix = eqAffix, LEq = zero, UEq = zero,
                 StatStr = () => 1, StatCrit = () => Config.PlayerCriticalChance, StatCritDmg = () => Config.PlayerCriticalMultiplier, PAtkMul = () => Config.DamageMultiplier,
-                MeleeRef = MeleeReference, PDotPool = () => 1, PredBonus = w => 0, HunterMul = w => 1,
+                MeleeRef = MeleeReference, PDotPool = () => 1 + Growth.Value("pDot") * .05,
+                PassAbund = Growth.Value("pAbund"), PassBow = Growth.Value("pBow"), PassCombo = Growth.Value("pCombo"),
+                PredBonus = w => w != null && w.hp <= w.mhp * .3 ? Growth.Value("pPred") * .20 : 0,
+                HunterMul = w => w != null && w.etype >= 90 ? 1 + Growth.Value("pHunter") * .10 : 1,
                 NecklaceDmg = Config.AccessoryDamageSum,
                 PetOnAtk = () => { }, ShQuery = (x, y, r) => NearbyWebs(x, y, r), Ens = new List<EnemySpawn>(),
                 HurtEnemy = (w, dmg, ang, noSound, opts, atkEl) => { if (w != null && webOwner.TryGetValue(w, out var other)) ApplyEnemyDamage(other, (int)dmg, (float)(ang ?? 0), false, 1, opts != null && opts.dot == true, opts != null && opts.shieldHit == true); },

@@ -4,7 +4,7 @@ namespace Exoduser.UnityPort
  public sealed partial class NativeLobby
  {
   NativeCharacterPresentationPlayback characterPresentationPlayback;
-  [System.Serializable] sealed class VisualLabelCatalog { public VisualLabelLanguage[] entries; }
+  [System.Serializable] sealed class VisualLabelCatalog { public VisualLabelLanguage[] entries; public string[] characterLoreKeys; }
   [System.Serializable] sealed class VisualLabelLanguage { public string code; public VisualLabelItem[] labels; }
   [System.Serializable] sealed class VisualLabelItem { public string key,text; }
   VisualLabelCatalog visualLabelCatalog;bool visualLabelCatalogLoaded;string visualLabelLanguage="";

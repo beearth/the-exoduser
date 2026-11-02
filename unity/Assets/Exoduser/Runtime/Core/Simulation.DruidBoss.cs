@@ -28,7 +28,7 @@ namespace Exoduser.UnityPort.Core
         EnemyState SpawnDruid(Simulation sim, float x, float y)
         {
             var context = new EnemySpawnContext {
-                PlayerLevel = Player.Level, DifficultyIndex = Config.DifficultyIndex, StageDiffOffset = 0, Stage = Config.StageIndex,
+                PlayerLevel = Player.Level, DifficultyIndex = Config.DifficultyIndex, StageDiffOffset = Config.StageDiffOffset, Stage = Config.StageIndex,
                 DemoMode = Config.DemoMode, DemoLastStage = Config.DemoLastStage,
                 CanMove = (cx, cy, cr) => Pass((float)cx, (float)cy, (float)cr), Random = NextRandom
             };

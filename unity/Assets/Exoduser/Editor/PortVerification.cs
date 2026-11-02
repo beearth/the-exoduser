@@ -233,6 +233,11 @@ public static class PortVerification {
    if(target==BuildTarget.StandaloneOSX)throw new NotSupportedException("Build the Mac verification app with the Mac Editor");
 #endif
    if(settingsQa||uiQa){restoreOverride=SettingsIdentifierOverride();restoreProduct=PlayerSettings.productName;restoreIdentifier=PlayerSettings.GetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone);}
+   // Read the release SSOT for every build; stale extracted Data/release_web is never the input.
+   string releaseSource=Path.GetFullPath(Path.Combine(Application.dataPath,"..","..","release-version.json"));
+   string releaseVersion=ReleaseMetadataSync.Copy(releaseSource,"Assets/Exoduser/Resources/Data/release_web.json");
+   AssetDatabase.ImportAsset("Assets/Exoduser/Resources/Data/release_web.json",ImportAssetOptions.ForceUpdate);
+   Debug.Log("UNITY_BUILD_RELEASE "+releaseVersion+" source="+releaseSource);
    restoreFlavor=WriteFlavor();
    VerifyLobby();var scene=MakeScene();var directory=Argument("-output");Directory.CreateDirectory(directory);
    if(settingsQa){PlayerSettings.productName="EXODUSER Settings QA";PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone,"com.fordeargamers.exoduser.settingsqa");SetSettingsIdentifierOverride(true);if(PlayerSettings.GetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone)==restoreIdentifier)throw new Exception("Settings QA must have a distinct application identifier");}
