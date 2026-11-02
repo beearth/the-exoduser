@@ -47,9 +47,12 @@ Shader "EXODUSER/GroundSkillProjection"
             }
             float4 Frag(Output input):SV_Target
             {
-                float2 screen=GetNormalizedScreenSpaceUV(input.positionCS);
-                float scene=SampleSceneDepth(screen);
-                uint2 pixel=uint2(screen*_ScaledScreenParams.xy);
+                // The camera and receiver are intermediate textures in the same
+                // raster orientation. Match URP's projector reconstruction: load
+                // raster pixels and invert the unmodified normalized position.
+                uint2 pixel=uint2(input.positionCS.xy);
+                float2 screen=input.positionCS.xy*_ScreenSize.zw;
+                float scene=LoadSceneDepth(pixel);
                 float receiver=LOAD_TEXTURE2D_X(_ExoduserGroundDepth,pixel).r;
                 #if UNITY_REVERSED_Z
                 clip(min(scene,receiver)-.0000001);

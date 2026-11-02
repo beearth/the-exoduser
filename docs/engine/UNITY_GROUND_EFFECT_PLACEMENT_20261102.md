@@ -29,7 +29,7 @@ NativeGroundSkillSurface는 source SpriteRenderer를 수정하지 않고 렌더�
 | source 좌표 | Core X/100,-Y/100의 worldXZ. 원rect/pivot/PPU/lossyScale/roll/flip로 TextureMap U/V를 만들고 atlas offset.xy/scale.zw를 그대로 전달 |
 | actual surface | receiver depth와 camera scene depth의 LinearEyeDepth 차이<=.02u인 실제 픽셀. scene depth에서 UNITY_MATRIX_I_VP로 world 위치 복원. 별도표면+.025/링+.03 오프셋 없이 같은 surface에 합성하며 ZWriteOff라 z-fighting 없음 |
 | volume clip | abs(worldToObject(world)) 각축<=.50001. far-depth 유효성epsilon1e-7. 실제receiver가 없거나 앞의 비수신물체가 가리면 출력하지 않음 |
-| ground pass | Unity6000.6.7f1/URP17.6.0, 현재 package source ffe395a3a1d1 API. depth texture Load에 필요한 shader target3.5. BeforeRenderingTransparents에 receiver-depth→projection 두 RenderGraph raster pass. Depth input+intermediate texture 요구. original material/renderer asset 파일 변경0 |
+| ground pass | Unity6000.6.7f1/URP17.6.0, 현재 package source ffe395a3a1d1 API. depth texture Load에 필요한 shader target3.5. BeforeRenderingTransparents에 receiver-depth→projection 두 RenderGraph raster pass. Depth input+intermediate texture 요구. 같은 raster orientation의 SV_POSITION.xy로 depth를Load하고, 원래 raster.xy*_ScreenSize.zw로world를복원한다(URP projector 방식, normalized UV 이중flip 금지). original material/renderer asset 파일 변경0 |
 | runtime feature | 현재camera의 ScriptableRenderer protected rendererFeatures getter를 캐시해 본인 transient feature만 append. 타feature/asset/전역설정 재작성0. 해당r3Camera/Active/visible volume이 있을 때만 실행 |
 | dynamic geometry | runtime Surface/링 update에서 Tessellate 호출0, GroundY 대량조회0. cube/UV·uniform만 갱신. 원writer의Point anchor GroundY는 그대로 |
 
