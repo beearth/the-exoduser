@@ -89,3 +89,16 @@
 - 조치: 스킬 스모크를 `pauseSmoke`처럼 OS 포커스와 무관하게 만드는 Codex용 patch `docs/engine/unity_patches/U05_nativegame_skill_smoke_focus.patch`(`git apply --check` 통과). 적용 전까지 이 검사는 실행 창 포커스에 따라 흔들린다.
 
 2026-10-30 PC 현행 시각 자산·은빛 팔레트·Linear 글자 보정은 [Unity UI 원화 반영](UNITY_UI_ASSETS_20261030.md)을 따른다. 기능·저장·미이식 범위와 위 검수 이력은 유지하며, 현재 원화의 실제 Player 결과는 해당 문서의 정확 후보 영수증으로 구분한다.
+
+## 2026-11-02 빈 Z·Space 잠김 안내 정합 후보
+
+| 항목 | 현행 후보·원본 |
+|---|---|
+| 원본 | origin/main f4967bc62의 skill-forge.js slotPreview/slotCondition, SKILL_LIST 및 _malCost. 웹 수정0 |
+| 미리보기 | 기존 Z후보 blackStar/lavaSummon/execution, Space후보 giantSlam/giantSlam2/skyCrusher 중 실제 Skills.Level>0을 우선. 없으면 blackStar/giantSlam. 장착 상태·스킬 습득·저장에 쓰지 않음 |
+| 비용 | skill_defs_web의48정의 중 원본 SKILL_LIST에 있는46개의 spCost/matCost/reqLv를 표시자료로 인수. 고유 charge/parry는 원 목록에 없어 추가0. 할인은 양수raw의 max(1,ceil(raw×.5)),0은0 |
+| 표시 | 빈 Z 기본 습득 SP10 + 악의오브50(raw100), Space SP10 + 악의오브60(raw120). 양수reqLv가 실제 플레이어 레벨보다 클 때만 Lv안내. 조건 판 높이28px·두줄·font10. 설명판도 같은 preview정의를 사용 |
+| 기존 | 270px 설명판·고정 구르기/처형·T석궁·빈2/3/4소켓 원화·64px공통제목 유지. 미이식 기술의 습득/장착 가능을 새로 주장하지 않음 |
+| 검사·한계 | 미리보기 정책 부재 RED→GREEN 7개, 앞선 전투24 포함31. 실제 Player1920/3840·1x·번역 전체는 Dota 실행으로 미검증 |
+
+원본byte·데이터 추출·최종 SHA·검수는 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md. VISUAL VERDICT: 미검증.

@@ -15,7 +15,7 @@ namespace Exoduser.UnityPort {
   public float[] button,disc,keyRect,nameRect,fieldRect,fieldTitleRect,fieldSubRect,coreRect,coreNameRect,hintRect;
   public SkillDefsOrb[] orbs;
  }
- [Serializable] public sealed class SkillDefsSkill {public string id,name,desc,icon;public bool host;public string[] lines;}
+ [Serializable] public sealed class SkillDefsSkill {public string id,name,desc,icon;public int spCost,matCost,reqLv;public bool host;public string[] lines;}
  [Serializable] public sealed class SkillDefsFile {public SkillDefsSlot[] slots;public SkillDefsSkill[] skills;}
 
  public sealed class NativeSkills {
@@ -189,15 +189,17 @@ namespace Exoduser.UnityPort {
 
   static readonly string[] roleNames={"스킬 1","스킬 2","스킬 3","스킬 4","F 스킬","필살기","무기 공격","마법","사슬 이동","칼등 처내기","마법 패링","탈출기","분노 폭발","구르기","처형","자동 석궁"};
   string SlotKey(int i){string[] actions={null,null,null,null,null,null,"weapon","beam","charge","shield","parry",null,"bow","roll",null,null};string code=actions[i]==null?null:NativeKeyBindInput.Bindings.Primary(actions[i]);if(actions[i]!=null&&code==null)return KeyBindings.KeyName(null,false);return i==13?"방향 + "+KeyBindings.KeyName(code,false):code==null?new[]{"1","2","3","4","F","Z","LMB","RMB","Shift","E","Q","Ctrl","Space","Space","X","T"}[i]:code=="mouse0"?"LMB":code=="mouse1"?"MMB":code=="mouse2"?"RMB":KeyBindings.KeyName(code,false);}
-  string SelectedId(){if(SelectedSlot==13)return "roll";if(SelectedSlot==14)return "execution";if(SelectedSlot==15)return "fanShot";return selectedOrb??EquippedId(SelectedSlot);}
+  string PreviewId(int slot){if(slot!=5&&slot!=12||EquippedId(slot)!=null)return null;var ids=new List<string>();foreach(var orb in defs.slots[slot].orbs)if(skillById.ContainsKey(orb.id))ids.Add(orb.id);return NativeSkillPreviewPolicy.Pick(ids.ToArray(),id=>cur.Skills.Level(id),slot==5?"blackStar":"giantSlam");}
+  string PreviewCondition(string id){if(id==null||!skillById.TryGetValue(id,out var d))return "습득 필요";if(d.reqLv>cur.Player.Level)return "Lv"+d.reqLv+" 도달 시 해금";return cur.Skills.Level(id)>0?"이 슬롯에 장착":"습득 SP "+d.spCost+(d.matCost>0?"\n악의오브 "+NativeSkillPreviewPolicy.MaliceCost(d.matCost):"");}
+  string SelectedId(){if(SelectedSlot==13)return "roll";if(SelectedSlot==14)return "execution";if(SelectedSlot==15)return "fanShot";return selectedOrb??EquippedId(SelectedSlot)??PreviewId(SelectedSlot);}
   bool HasRoad(){var id=SelectedId();return SelectedSlot<13&&id!=null&&skillById.TryGetValue(id,out var d)&&d.host;}
   void DrawSlots(bool lmb){
    const float cell=100,gap=8,total=16*cell+15*gap;float left=(1920-total)/2;
-   for(int i=0;i<16;i++){bool sel=i==SelectedSlot;float x=left+i*(cell+gap);var button=new Rect(x,164,cell,136);var disc=new Rect(x+18,170,64,64);string id=i<13?EquippedId(i):i==14?"execution":null;bool preview=id==null&&(i==5||i==12);if(preview)id=i==5?"blackStar":"giantSlam";Texture2D tex=id==null?null:OrbIcon(id,preview);if(i==6&&lmb)tex=OrbIcon("kiSlash",false);if(i==13)tex=Tex("Art/ui/skill/roll_boots");if(i==15)tex=OrbIcon("fanShot",false);if(id==null&&i>=1&&i<=3)tex=Tex("Art/ui/skill/empty_socket_"+(i+1));if(tex!=null)NativeUiAudit.DrawTexture(disc,tex,ScaleMode.ScaleToFit,true);else {NativeSilverHellUi.ActionPlate(disc,false,sel?1:0,false,14,0);Text(disc,i==13?"↔":i==15?"T":"—",serif,22,C(140,143,143),FontStyle.Normal,0,TextAnchor.MiddleCenter);}
+   for(int i=0;i<16;i++){bool sel=i==SelectedSlot;float x=left+i*(cell+gap);var button=new Rect(x,164,cell,136);var disc=new Rect(x+18,170,64,64);string id=i<13?EquippedId(i):i==14?"execution":null;bool preview=id==null&&(i==5||i==12);if(preview)id=PreviewId(i);Texture2D tex=id==null?null:OrbIcon(id,preview);if(i==6&&lmb)tex=OrbIcon("kiSlash",false);if(i==13)tex=Tex("Art/ui/skill/roll_boots");if(i==15)tex=OrbIcon("fanShot",false);if(id==null&&i>=1&&i<=3)tex=Tex("Art/ui/skill/empty_socket_"+(i+1));if(tex!=null)NativeUiAudit.DrawTexture(disc,tex,ScaleMode.ScaleToFit,true);else {NativeSilverHellUi.ActionPlate(disc,false,sel?1:0,false,14,0);Text(disc,i==13?"↔":i==15?"T":"—",serif,22,C(140,143,143),FontStyle.Normal,0,TextAnchor.MiddleCenter);}
     if(sel)Border(new Rect(disc.x-3,disc.y-3,disc.width+6,disc.height+6),C(207,205,197));
     Mixed(new Rect(x,146,cell,20),SlotKey(i),11,C(191,188,182),.4f,TextAnchor.MiddleCenter);
     string shown=id!=null&&skillById.TryGetValue(id,out var sd)?sd.name:roleNames[i];var style=new GUIStyle(GUI.skin.label){font=NativeSilverHellUi.TextFont(NativeSilverHellUi.Font(true),shown),fontSize=12,alignment=TextAnchor.UpperCenter,wordWrap=true,padding=new RectOffset(),margin=new RectOffset()};style.normal.textColor=C(210,207,201);if(style.CalcHeight(new GUIContent(shown),cell)>32)style.fontSize=10;NativeSilverHellUi.Label(new Rect(x,240,cell,32),shown,style);
-    string state=i==15?(cur.Crossbow.Equipped?(cur.CrossbowAuto?"전용 · ON":"전용 · OFF"):"석궁 미장착"):preview?(Ported(id)&&SkillLevelOf(id)>0?"장착 필요":"습득 필요"):i==13||i==14?"고정 · 교체 불가":i==8||i==11?"전용 · 탈출":i>=6&&i!=12||i==15?"전용":id==null?"미장착":"장착";Text(new Rect(x,274,cell,20),state,serif,10,C(142,145,145),FontStyle.Normal,0,TextAnchor.MiddleCenter);if(NativeSilverHellUi.Button(button,GUIContent.none,GUIStyle.none))Select(i);
+    string state=i==15?(cur.Crossbow.Equipped?(cur.CrossbowAuto?"전용 · ON":"전용 · OFF"):"석궁 미장착"):preview?PreviewCondition(id):i==13||i==14?"고정 · 교체 불가":i==8||i==11?"전용 · 탈출":i>=6&&i!=12||i==15?"전용":id==null?"미장착":"장착";var stateStyle=new GUIStyle(style){fontSize=10,alignment=TextAnchor.UpperCenter,wordWrap=true};stateStyle.normal.textColor=C(142,145,145);NativeSilverHellUi.Label(new Rect(x,274,cell,28),state,stateStyle);if(NativeSilverHellUi.Button(button,GUIContent.none,GUIStyle.none))Select(i);
    }
   }
   void DrawInfo(Simulation sim,bool lmb,int level,Action equip){

@@ -296,3 +296,5 @@ Claude는 원본 readonly 대조, Codex 기존 구현자는 Native 영상/오디
 ## 2026-11-02 PC 웹 최신 표현 parity 인수
 
 PC `codex/unity-parity-1102`/G:/exoduser-wt/codex-unity-parity-1102가 공통1403c5ee6·웹origin/main을 대조해 C2 타이틀 렌더/여백과 미반영 UI·사운드·전투 표현을 맡는다. Mac 기존 A2/캐릭터/맵 작업 및 private WIP는 변경하지 않는다. 화폐4번은 기존 `codex/unity-currency-name-20261031:3333f9931` 담당 후보/검수 대기가 있어 중복 구현을 건너뛴다. PC Dota PID56244 관측으로 Unity/빌드/Player는 시작0, 소스·검증 준비만 진행. 최종 근거는 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md.
+
+- 같은 parity 인수의8번 결정 두둥은 ui-sound-brief.md에 이미 기존 `codex/pc-ui-sound-match-20261031` 담당 범위로 배정되어 있어 중복 구현을 건너뛴다. 현재 공통19c6ccec8 후손의 일반 UI음 전달과 결정음 미구현은 구분한다. SP/소켓 안내5번·전투 표현9번은 이 PC 후보에서 처리하며, 전체화면 확장7번은 기존16개 로딩 pool 외64원화의 실제 Unity 매핑/반입·Player 검수가 남아 있다.
