@@ -13,6 +13,7 @@ param(
     [switch]$Json,
     [switch]$Takeover,
     [int]$WaitMin = 40,
+    [ValidateRange(1,86400)][int]$IdleYieldSec = 180,
     [int]$PollSec = 30,
     [string]$Owner,
     [string]$Note = '',
@@ -436,6 +437,7 @@ function Cmd-Start {
     if ($sv -and (Test-Alive $sv.pid)) { Say ("이미 실행 중: pid {0} state={1}" -f $sv.pid, $sv.state); return }
     Remove-Item -LiteralPath (Join-Path $qd 'server.json') -Force -ErrorAction SilentlyContinue
     Remove-Item -LiteralPath (Join-Path $qd 'stop') -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath (Join-Path $qd 'yielding.json') -Force -ErrorAction SilentlyContinue
     $t0 = Get-Date
     Acquire-Slot 'devtools-runner' $wt $PID $qd
     $started = $false
@@ -444,6 +446,8 @@ function Cmd-Start {
         $log = Join-Path $qd ('logs\server-' + (Stamp) + '.log')
         $a = @('-batchmode', '-projectPath', (Q (Join-Path $wt 'unity')), '-exoJobServer', (Q $qd), '-logFile', (Q $log))
         $a += @('--unity-qa-sandbox', (Q (New-Sandbox ('server-' + (Stamp)))))
+        $serverOwner = $Owner; if (-not $serverOwner) { $serverOwner = Split-Path $qd -Leaf }
+        $a += @('-exoIdleYieldSec', [string]$IdleYieldSec, '-exoOwner', (Q $serverOwner), '-exoLockToken', $script:LockToken)
         $a += $editorGraphics
         $p = Start-Process -FilePath $UnityExe -ArgumentList $a -PassThru -WindowStyle Hidden
         # 잠금 소유자를 서버로 바꾼다(이 CLI 가 끝나도 서버 pid 로 stale 판정)
@@ -564,7 +568,23 @@ function Cmd-Run {
     $sw = [Diagnostics.Stopwatch]::StartNew()
     $sv = Read-Json (Join-Path $qd 'server.json')
 
+    # A new server serializes admission with self-yield; legacy servers keep their existing behaviour.
+    $admission = $null
     if ($sv -and (Test-Alive $sv.pid)) {
+        $admitUntil = (Get-Date).AddSeconds(15)
+        while (-not $admission) {
+            try { $admission = [IO.File]::Open((Join-Path $qd 'admission.lock'),[IO.FileMode]::OpenOrCreate,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None) }
+            catch [IO.IOException] { if ((Get-Date) -ge $admitUntil) { throw '서버 제출 잠금 15초 초과' }; Start-Sleep -Milliseconds 100 }
+        }
+        $sv = Read-Json (Join-Path $qd 'server.json')
+        $yielding = Read-Json (Join-Path $qd 'yielding.json')
+        if (-not $sv -or -not (Test-Alive $sv.pid) -or $sv.state -eq 'stopping' -or ($yielding -and [int]$yielding.pid -eq [int]$sv.pid)) {
+            $admission.Dispose(); $admission = $null; $sv = $null
+            Say '서버가 양보 중/종료됨 → 예약 순번에 따라 1회 batch 대체'
+        }
+    }
+    if ($sv -and (Test-Alive $sv.pid)) {
+        try {
         # --- 서버 모드: inbox 에 제출(파일명 = UTC 타임스탬프_id → 실행 순서)
         $saveBefore = Get-UserSaveSnapshot
         $job = [ordered]@{ id = $id; method = $Method; args = @($argList); refresh = (-not $NoRefresh.IsPresent); timeoutSec = $TimeoutSec }
@@ -573,6 +593,7 @@ function Cmd-Run {
         $tmp = Join-Path $inbox ($name + '.tmp')
         [IO.File]::WriteAllText($tmp, ($job | ConvertTo-Json -Depth 5), $Utf8NoBom)
         Move-Item -LiteralPath $tmp -Destination (Join-Path $inbox ($name + '.json')) -Force
+        } finally { if ($admission) { $admission.Dispose(); $admission = $null } }
         Say ("제출 {0} → 서버 pid {1} (state={2})" -f $id, $sv.pid, $sv.state)
         $donePath = Join-Path $qd ('done\' + $id + '.json')
         $lastCheck = Get-Date
@@ -594,6 +615,7 @@ function Cmd-Run {
         }
     }
 
+    if ($admission) { $admission.Dispose(); $admission = $null }
     # --- 서버 없음: 1회 batch 실행(같은 잠금 + 티켓 순번)
     # 예약 순번 전에는 batch 티켓을 만들지 않는다. 구버전 FIFO 실행기의 앞을 막지 않기 위한 읽기 전용 대기다.
     $turnDeadline = (Get-Date).AddMinutes($WaitMin); $lastFront = ''
@@ -607,10 +629,10 @@ function Cmd-Run {
     }
     New-Item -ItemType Directory -Force -Path $Tickets | Out-Null
     $ticket = Join-Path $Tickets ((Stamp) + '_' + $id + '.json')
-    [IO.File]::WriteAllText($ticket, ([ordered]@{ pid = $PID; worktree = $wt; method = $Method } | ConvertTo-Json), $Utf8NoBom)
+    [IO.File]::WriteAllText($ticket, ([ordered]@{ pid = $PID; owner = $(if ($Owner) { $Owner } else { Split-Path $wt -Leaf }); worktree = $wt; method = $Method } | ConvertTo-Json), $Utf8NoBom)
     $p = $null
     try {
-        $lastMsg = ''
+        $lastMsg = ''; $ticketDeadline = (Get-Date).AddMinutes($WaitMin)
         while ($true) {   # 티켓 순서: 살아 있는 가장 앞 티켓이 내 것일 때만 진행
             $first = $null
             foreach ($t in (Get-ChildItem -LiteralPath $Tickets -Filter '*.json' | Sort-Object Name)) {
@@ -625,6 +647,11 @@ function Cmd-Run {
                 break
             }
             if ($lastMsg -ne $first) { Say ("순번 대기: 앞 티켓 " + (Split-Path $first -Leaf)); $lastMsg = $first }
+            if ((Get-Date) -gt $ticketDeadline) {
+                $frontTicket = Read-Json $first; $ahead = [string]$frontTicket.owner
+                if (-not $ahead) { $ahead = Split-Path ([string]$frontTicket.worktree) -Leaf }
+                throw ('EXO_QUEUE_WAIT owner=' + $ahead)
+            }
             Start-Sleep -Seconds 2
         }
         Acquire-Slot 'devtools-runner' $wt $PID $qd
@@ -724,6 +751,11 @@ function Cmd-Status {
         $inb = @(Get-ChildItem -LiteralPath (Join-Path $d.FullName 'inbox') -Filter '*.json' -ErrorAction SilentlyContinue).Count
         $run = @(Get-ChildItem -LiteralPath (Join-Path $d.FullName 'running') -Filter '*.json' -ErrorAction SilentlyContinue).Count
         Write-Output ('서버[{0}]: pid={1} alive={2} state={3} beatAge={4}s inbox={5} running={6} jobsDone={7} ws={8}MB(peak {9}) private={10}MB head={11}' -f $d.Name, $s.pid, $alive, $s.state, $age, $inb, $run, $s.jobsDone, $s.workingSetMB, $s.peakWorkingSetMB, $s.privateMB, ([string]$s.headSha).Substring(0, [math]::Min(9, ([string]$s.headSha).Length)))
+        if ($s.PSObject.Properties.Name -contains 'idleYieldSec') {
+            $waiting = [int]$s.waitingOthers; $planned = '상주 유지'
+            if ($s.state -eq 'idle' -and $waiting -gt 0) { $planned = '양보 예정(기준 ' + $s.idleYieldSec + '초)' }
+            Write-Output ('  idle {0}초, 대기 {1}건 → {2}' -f $s.idleSec, $waiting, $planned)
+        } else { Write-Output '  idle 양보: 구버전 서버(새 규칙 미적용, 조작하지 않음)' }
         if ($s.projectPath) { $wts += (Split-Path $s.projectPath -Parent) }
     }
     $procs = Get-UnityProcs

@@ -18,7 +18,8 @@ param(
   [ValidateSet('build', 'player', 'caps')][string]$Scope = 'build',
   [string]$Ref = 'origin/unity/main',
   [string]$Worktree,
-  [string]$OutputRoot
+  [string]$OutputRoot,
+  [ValidateRange(1,180)][int]$WaitMin = 60
 )
 $ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = [Text.Encoding]::UTF8; $OutputEncoding = [Text.Encoding]::UTF8
@@ -48,7 +49,7 @@ $Cfg = @{
   ExitGraceSec = 60      # m1-check.json 을 쓴 뒤 플레이어가 이만큼 안에 끝나야 한다(DBT-6)
   BuildTimeoutMin = 90
   SmokeTimeoutMin = 15
-  WaitMaxMin      = 60
+  WaitMaxMin      = $WaitMin
   KeepRuns        = 10
 }
 $LoopDir   = Join-Path $Cfg.Out 'loop'
@@ -304,17 +305,60 @@ function Judge-M1($path, $rules) {
 }
 
 # All Unity and Player launches use the shared FIFO/save/window guard.
+function Get-UnityWaitReason([string]$text) {
+  $patterns = @(
+    'EXO_QUEUE_WAIT owner=([^\r\n]+)',
+    '(?m)^\s*예약 순번 대기 시간 초과\([^\r\n]*?\):\s*([^\r\n]+)',
+    '(?m)^\s*슬롯 대기 시간 초과\([^\r\n]*?\):\s*예약 큐 맨 앞은\s+([^\s(]+)',
+    '(?m)^\s*슬롯 대기 시간 초과\([^\r\n]*?\):\s*잠금 보유:\s*([^\s]+)'
+  )
+  foreach ($pattern in $patterns) { $m = [regex]::Match($text,$pattern); if ($m.Success) { return ('Unity 순번 대기 초과: ' + $m.Groups[1].Value.Trim()) } }
+  # Other slot waits (an unregistered Unity process or memory) still did not start a build.
+  if ($text -match '(?m)^\s*슬롯 대기 시간 초과\([^\r\n]*?\):\s*([^\r\n]+)') { return ('Unity 순번 대기 초과: ' + $Matches[1].Trim()) }
+  return ''
+}
+function Set-WaitResult($run, [string]$reason) {
+  $run.verdict = 'WAIT'; $run.failReasons = @(); $run.replaceNote = $reason
+  $run.smokeNote = 'Unity 순번 대기 중단(빌드/검수 실패 아님)'
+  Log ('WAIT: ' + $reason)
+}
+function Update-AttemptState($stateObj,[string]$sha,[string]$verdict,[bool]$branchOnly) {
+  if ($verdict -notin @('ABORT','WAIT') -and -not $branchOnly) { $stateObj.lastAttemptSha = $sha; $stateObj.lastAttemptVerdict = $verdict }
+}
+function Set-UnityReservation([string]$command) {
+  $launcher = Join-Path $Cfg.Worktree 'unity\Tools\devtools\exo-unity.ps1'
+  $base = Join-Path $LoopDir ('reservation-' + [guid]::NewGuid().ToString('N'))
+  $pa = @('-NoProfile','-NonInteractive','-WindowStyle','Hidden','-File', ('"{0}"' -f $launcher), $command, '-Owner','buildloop','-Worktree', ('"{0}"' -f $Cfg.Worktree), '-Note','"buildloop FIFO"','-TtlMin', [string]($Cfg.WaitMaxMin + $Cfg.BuildTimeoutMin + 30))
+  $pr = Start-Process -FilePath "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -ArgumentList $pa -WindowStyle Hidden -PassThru -RedirectStandardOutput ($base+'.out.log') -RedirectStandardError ($base+'.err.log')
+  $null = $pr.Handle; $pr.WaitForExit(); $pr.Refresh()
+  foreach ($file in @(($base+'.out.log'),($base+'.err.log'))) { if (Test-Path $file) { foreach ($line in @(Get-Content $file -Encoding UTF8)) { Log ([string]$line) } } }
+  if ($pr.ExitCode -ne 0) { throw ('Unity 예약 명령 실패: ' + $command) }
+}
+function Get-BlockingUnityOwner {
+  $root = 'I:\EXODUSER-Storage\unity-jobs'
+  foreach ($f in @(Get-ChildItem (Join-Path $root 'queue') -Filter '*.json' -ErrorAction SilentlyContinue | Sort-Object Name)) {
+    $r = ReadJson $f.FullName
+    if ($r -and $r.owner -ne 'buildloop' -and ([datetime]$r.expiresAt).ToUniversalTime() -gt [datetime]::UtcNow) { return [string]$r.owner }
+  }
+  $held = ReadJson (Join-Path $root '_pc_lock.json')
+  if ($held) { if (Prop $held 'reservedAs' '') { return [string]$held.reservedAs }; return [string]$held.owner }
+  return 'Unity 프로세스/메모리'
+}
+
 function Invoke-Exo([string]$command, [string[]]$jobArgs, [string]$logBase, [string]$exe = '', [string]$desktop = 'hidden') {
+  Set-UnityReservation 'reserve'
   $launcher = Join-Path $Cfg.Worktree 'unity\Tools\devtools\exo-unity.ps1'
   $argsText = $jobArgs -join ','
   $timeout = $Cfg.BuildTimeoutMin * 60; if ($command -eq 'player') { $timeout = $Cfg.SmokeTimeoutMin * 60 }
-  $pa = @('-NoProfile','-NonInteractive','-WindowStyle','Hidden','-ExecutionPolicy','Bypass','-File', ('"{0}"' -f $launcher), $command, '-Worktree', ('"{0}"' -f $Cfg.Worktree), '-Owner','devtools-buildloop','-Json','-TimeoutSec', ([string]$timeout), '-Args', ('"{0}"' -f $argsText))
+  $pa = @('-NoProfile','-NonInteractive','-WindowStyle','Hidden','-ExecutionPolicy','Bypass','-File', ('"{0}"' -f $launcher), $command, '-Worktree', ('"{0}"' -f $Cfg.Worktree), '-Owner','buildloop','-WaitMin',([string]$Cfg.WaitMaxMin),'-Json','-TimeoutSec', ([string]$timeout), '-Args', ('"{0}"' -f $argsText))
   if ($exe) { $pa += @('-Exe', ('"{0}"' -f $exe), '-Desktop', $desktop) }
   $pr = Start-Process -FilePath "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -ArgumentList $pa -WindowStyle Hidden -PassThru -RedirectStandardOutput ($logBase+'.out.log') -RedirectStandardError ($logBase+'.err.log')
   $null = $pr.Handle; $pr.WaitForExit(); $pr.Refresh()
   $rc = $pr.ExitCode; $receipt = $null
   foreach ($line in @(Get-Content -LiteralPath ($logBase+'.out.log') -Encoding UTF8)) { if ($line.Trim().StartsWith('{')) { try { $receipt = $line | ConvertFrom-Json } catch { } } }
-  return [pscustomobject]@{ exit = $rc; receipt = $receipt; stdout = ($logBase+'.out.log'); stderr = ($logBase+'.err.log') }
+  $waitReason = ''
+  if ($rc -ne 0 -and $null -eq $receipt) { $waitReason = Get-UnityWaitReason ([IO.File]::ReadAllText($logBase+'.err.log')) }
+  return [pscustomobject]@{ exit = $rc; receipt = $receipt; stdout = ($logBase+'.out.log'); stderr = ($logBase+'.err.log'); waitReason = $waitReason }
 }
 function Run-Smoke([string]$buildDir, [string]$smokeDir, [string]$flag = '--unity-m1-check', [string]$receiptName = 'm1-check.json') {
   New-Item -ItemType Directory -Force -Path $smokeDir | Out-Null
@@ -323,7 +367,7 @@ function Run-Smoke([string]$buildDir, [string]$smokeDir, [string]$flag = '--unit
   $x = Invoke-Exo 'player' @($flag,'-output',$smokeDir,'-force-d3d11') (Join-Path $smokeDir 'exo') (Join-Path $buildDir 'EXODUSER-Unity.exe') $desktop
   $r = $x.receipt
   if ($null -ne $r -and $r.log -and (Test-Path -LiteralPath $r.log)) { Copy-Item -LiteralPath $r.log -Destination (Join-Path $smokeDir 'player.log') }
-  return [pscustomobject]@{ mode = $Mode; ran = ($null -ne $r); exit = $x.exit; timedOut = [bool](Prop $r 'timedOut' $false); windowSeen = ([int](Prop $r 'windowHandleCount' 0) -gt 0); slowExit = $false; receiptWritten = (Test-Path -LiteralPath (Join-Path $smokeDir $receiptName)); exitAfterReceiptSec = $null; hiddenVisibleWindows = (Prop $r 'hiddenWindows' 0); desktopClosed = (Prop $r 'desktopClosed' $false); note = [string](Prop $r 'note' ''); seconds = [int]$sw.Elapsed.TotalSeconds; runner = $r }
+  return [pscustomobject]@{ waitReason = $x.waitReason; mode = $Mode; ran = ($null -ne $r); exit = $x.exit; timedOut = [bool](Prop $r 'timedOut' $false); windowSeen = ([int](Prop $r 'windowHandleCount' 0) -gt 0); slowExit = $false; receiptWritten = (Test-Path -LiteralPath (Join-Path $smokeDir $receiptName)); exitAfterReceiptSec = $null; hiddenVisibleWindows = (Prop $r 'hiddenWindows' 0); desktopClosed = (Prop $r 'desktopClosed' $false); note = [string](Prop $r 'note' ''); seconds = [int]$sw.Elapsed.TotalSeconds; runner = $r }
 }
 
 # ---------- 교체 ----------
@@ -381,7 +425,7 @@ function Swap-Build($stateObj, [string]$runDir, $loopReceipt) {
 # ---------- 상태판 ----------
 function Esc($s) { return [Net.WebUtility]::HtmlEncode([string]$s) }
 function Verdict-Label([string]$v) {
-  switch ($v) { 'PASS' { return '통과' } 'KNOWN' { return '알려진 결함' } 'FAIL' { return '실패' } 'ABORT' { return '중단' } 'LEGACY' { return '수동 빌드' } default { return $v } }
+  switch ($v) { 'PASS' { return '통과' } 'KNOWN' { return '알려진 결함' } 'FAIL' { return '실패' } 'WAIT' { return '순번 대기' } 'ABORT' { return '중단' } 'LEGACY' { return '수동 빌드' } default { return $v } }
 }
 function Make-Thumbs([string]$runId, [string]$capsDir) {
   $dest = Join-Path $StatusDir ("thumbs\" + $runId)
@@ -439,7 +483,7 @@ h2::before{content:"";display:inline-block;width:8px;height:8px;margin-right:10p
 .k{color:var(--dim);font-size:12px;letter-spacing:.08em}
 .v{font-size:17px}
 .badge{display:inline-block;padding:2px 12px;border:1px solid var(--line);font:600 13px 'Cinzel','Nanum Myeongjo',serif;letter-spacing:.1em}
-.b-PASS{color:var(--ok);border-color:#6f8560}.b-KNOWN{color:var(--warn);border-color:#9a7a38}.b-FAIL{color:var(--redhot);border-color:var(--red)}.b-ABORT,.b-LEGACY{color:var(--dim)}
+.b-PASS{color:var(--ok);border-color:#6f8560}.b-KNOWN{color:var(--warn);border-color:#9a7a38}.b-FAIL{color:var(--redhot);border-color:var(--red)}.b-WAIT{color:#a0a0a0;border-color:#707070}.b-ABORT,.b-LEGACY{color:var(--dim)}
 table{width:100%;border-collapse:collapse;font-size:14px}
 th{font:600 12px 'Cinzel','Nanum Myeongjo',serif;letter-spacing:.12em;color:var(--dim);text-align:left;border-bottom:1px solid var(--line);padding:6px 10px}
 td{padding:6px 10px;border-bottom:1px solid var(--line2);vertical-align:top}
@@ -648,15 +692,16 @@ function Cmd-Run {
   $ch = Get-Changed $depFull $head.full; $run.changedCount = $ch.count; $run.changed = $ch.items
   $rules = Load-Rules
   $runStart = Get-Date
-  $got = $false
+  $got = $false; $reserved = $false; $stage = $null
   try {
     Log "=== run $runId  HEAD $($head.short) $($head.subject)"
     if (-not (Acquire-Lock $runId)) { $run.replaceNote = '잠금 대기 초과 - 이번 회차 중단'; return }
     $got = $true
     Write-MemLog
     $userBefore = Get-UserSaveSnapshot
+    Set-UnityReservation 'reserve'; $reserved = $true
     $libExists = Test-Path -LiteralPath (Join-Path $Cfg.Worktree 'unity\Library')
-    if (-not (Wait-Ready $libExists)) { $run.replaceNote = 'Unity 프로세스 대기/커밋 여유 부족으로 중단'; return }
+    if (-not (Wait-Ready $libExists)) { Set-WaitResult $run ('Unity 순번 대기 초과: ' + (Get-BlockingUnityOwner)); return }
 
     # Update only a clean detached checkout/explicit unity/main checkout; never force or touch a lane branch.
     $actual = ([string](GitR rev-parse HEAD)).Trim()
@@ -693,6 +738,7 @@ function Cmd-Run {
     $bx = Invoke-Exo 'build' @('-output',$stage,'-receipt',(Join-Path $runDir 'build-receipt.json'),'-remodel-scenes','1') (Join-Path $runDir 'exo-build')
     $run.buildExit = $bx.exit; $run.buildSeconds = [int]$sw.Elapsed.TotalSeconds
     $run.buildRunner = $bx.receipt
+    if ($bx.waitReason) { Set-WaitResult $run $bx.waitReason; return }
     if ($null -ne $bx.receipt -and (Test-Path -LiteralPath $bx.receipt.logFile)) { Copy-Item -LiteralPath $bx.receipt.logFile -Destination (Join-Path $runDir 'build.log') }
     $rcpt = ReadJson (Join-Path $runDir 'build-receipt.json'); if ($null -ne $rcpt) { $run.receiptPassed = [bool]$rcpt.passed }
     $bj = Judge-Log (Join-Path $runDir 'build.log') 'build' $rules
@@ -707,7 +753,7 @@ function Cmd-Run {
     if ($buildOk) {
       # 다른 Unity 가 끼어들지 않았는지 다시 확인(우리 빌드 프로세스는 이미 종료)
       $others = @(Get-UnityProcs)
-      if ($others.Count -gt 0) { Log ("스모크 전 대기: 다른 Unity {0}개" -f $others.Count); [void](Wait-Ready $true) }
+      if ($others.Count -gt 0) { Log ("스모크 전 대기: 다른 Unity {0}개" -f $others.Count); if (-not (Wait-Ready $true)) { Set-WaitResult $run ('Unity 순번 대기 초과: ' + (Get-BlockingUnityOwner)); return } }
       for ($sa = 1; $sa -le 1; $sa++) {
       $smokeDir = Join-Path $runDir 'smoke'
 
@@ -715,10 +761,12 @@ function Cmd-Run {
       $run.smokeSeconds = $sm.seconds; $run.smokeNote = $sm.note
       Log ("스모크: ran={0} exit={1} timedOut={2} windowSeen={3} slowExit={4} {5}" -f $sm.ran, $sm.exit, $sm.timedOut, $sm.windowSeen, $sm.slowExit, $sm.note)
       $run.smoke = $sm
+      if ($sm.waitReason) { Set-WaitResult $run $sm.waitReason; return }
       Write-MemLog
       if ($HudSmoke -and $sm.ran -and -not $sm.windowSeen) {
         $hs = Run-Smoke $stage (Join-Path $runDir 'hud') '--unity-hud-smoke' 'hud-smoke.json'
         $run.hud = $hs
+        if ($hs.waitReason) { Set-WaitResult $run $hs.waitReason; return }
         Log ("hud-smoke: ran={0} exit={1} receipt={2} exitAfterReceipt={3}s timedOut={4} windowSeen={5} {6}" -f $hs.ran, $hs.exit, $hs.receiptWritten, $hs.exitAfterReceiptSec, $hs.timedOut, $hs.windowSeen, $hs.note)
       }
       if ($sm.ran) {
@@ -824,6 +872,13 @@ function Cmd-Run {
     Log ('오류: ' + $_.Exception.Message + ' @ ' + $_.ScriptStackTrace)
   } finally {
     # 남은 자식 프로세스 확인(우리가 띄운 것만)
+    if ($reserved) { try { Set-UnityReservation 'unreserve' } catch { Log ('예약 반환 경고: ' + $_.Exception.Message) } }
+    if ($run.verdict -eq 'WAIT' -and -not $NoSwap -and $stage -and (Test-Path -LiteralPath $stage)) {
+      # Own build_new only; keep the completed candidate without blocking the next cycle.
+      $target = Join-Path $runDir 'waiting-build'
+      if ([IO.Path]::GetFullPath($stage) -ne (Join-Path $Cfg.Out 'build_new') -or ((Get-Item -LiteralPath $stage).Attributes -band [IO.FileAttributes]::ReparsePoint)) { throw 'WAIT 후보 보관 경로/링크 거부' }
+      Move-Item -LiteralPath $stage -Destination $target
+    }
     $run.finishedAt = (Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
     if ($got) { Write-MemLog; Release-Lock }
     if ($true) {
@@ -831,7 +886,7 @@ function Cmd-Run {
       $m1ok = 0; $m1fail = 0; if ($null -ne $run.m1) { $m1ok = $run.m1.ok; $m1fail = $run.m1.fail }
       $fcount = 0; $kcount = 0; if ($null -ne $run.build) { $fcount += [int]$run.build.fail; $kcount += [int]$run.build.known }; if ($null -ne $run.player) { $fcount += [int]$run.player.fail; $kcount += [int]$run.player.known }
       $sum = [pscustomobject]@{ id = $runId; sha = $head.short; startedAt = $run.startedAt; verdict = $run.verdict; fail = $fcount; known = $kcount; m1ok = $m1ok; m1fail = $m1fail; buildMin = [math]::Round($run.buildSeconds / 60, 1); smokeMin = [math]::Round($run.smokeSeconds / 60, 1); replaced = $run.replaced }
-      if ($run.verdict -ne 'ABORT' -and -not $NoSwap) { $st.lastAttemptSha = $head.full; $st.lastAttemptVerdict = $run.verdict }
+      Update-AttemptState $st $head.full $run.verdict ([bool]$NoSwap)
       $st.history = @(@($sum) + @($st.history) | Select-Object -First 30)
       Save-State $st; Prune-Runs; Write-Status $st
     }

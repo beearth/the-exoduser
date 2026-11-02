@@ -165,3 +165,18 @@ $task = 'I:\EXODUSER-Storage\unity-latest\loop\bin\install-task.ps1'
 ~~~
 
 스모크 기본은 숨은 데스크톱 -Mode desktop이다. 교체 대상은 I:\EXODUSER-Storage\unity-latest\build 하나이며, 이전 것은 build_prev_<sha>_<시각>으로 보관한다. 바탕화면 .lnk와 인자 -force-d3d11 --remodel3d는 수정하지 않는다. 실행 중인 사용자의 build는 다음 회차로 미룬다. 세부 계약·영수증은 [buildloop README](buildloop/README.md)를 따른다.
+
+## 2026-11-02 fix2 — idle 서버 양보와 순번 대기
+
+| 항목 | 계약 |
+|---|---|
+| start -IdleYieldSec | 기본 180초(1..86400). 실제 job·컴파일·임포트가 끝난 연속 idle 시간 기준 |
+| 양보 조건 | 다른 owner의 유효 예약 또는 살아 있는 티켓 1건 이상 + idle 기준 도달. 자기 owner 예약·만료 예약·죽은 티켓 제외. inbox 제출된 job이 있으면 먼저 처리 |
+| 정상 종료 | 서버가 자기 PID·lock token을 확인하고 stop과 같은 EditorApplication.Exit(0) 경로로 종료. 타 서버 kill/stop 없음. PID가 살아 있는 동안 PC 잠금을 유지하고 다음 획득자가 종료 확인 뒤 stale 잠금을 회수 |
+| 제출 경합 | admission.lock 안에서 제출/양보 marker를 직렬화. 양보 중이면 기존 run의 예약/FIFO + 1회 batch 경로 사용. 서버 자동 재시작 없음 |
+| 관측 | unity-jobs/yield.log에 사건당 한 줄(UTC·owner·pid·idleSec·waiting). server.json의 idleYieldSec·waitingOthers·owner 및 status의 idle N초, 대기 M건 → 양보 예정 |
+| 적용 | 병합 후 새로 뜨는 서버부터. 구버전 상주 서버는 조작하지 않고 미적용 표시 |
+| buildloop | 대기 전 reserve -Owner buildloop. -WaitMin은 기본 60분, 브랜치 게이트는 90분. 예약/잠금/티켓 대기 초과는 WAIT, 실패 0·lastAttemptSha 보존·다음 회차 재시도. WAIT 배지는 회색 |
+| 사전 검사 | buildloop/compile-check.ps1: asmdef·이름/GUID asmref 경계별 수집, 어셈블리 참조 순서, Player/Editor 정의별 별도 출력. Library/Bee RSP는 참조용 읽기만. 결과는 참고용, 최종은 Unity 컴파일 |
+
+Unity 없는 시험: selftest/idle-yield-test.ps1, buildloop-wait-test.ps1, assembly-sources-test.cjs. 사전 검사 출력은 -Output I:/EXODUSER-Storage/...로 지정하며 기본값도 I:다.
