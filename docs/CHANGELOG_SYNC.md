@@ -1,3 +1,9 @@
+## 2026-11-02 시작 메뉴 달 위치 승인 수정
+
+- 기존 codex-web-keyart-wide에서 origin/main 병합(착수시 e9b4d965b 동일). 승인 원화 달/광배4K(−60,+268)px 이동,기존자리는 내장image_gen으로 구름복원. 3비율중앙cover 유지·달/부츠전체보존.
+- 최종canvas합성:기존close영상→구름→국소정지판으로영상원래달제거→10초alpha.01~.03screen맥동. 판미로딩/오류도수정정지판 사용. 기존MP4/저장/다른WIP 보존.
+- 수치·자산/해시는 스플래시C2계약/manifest.moonRelocation, 실제검수·원격SHA는 I:/EXODUSER-Storage/codex-takeover/title-moon-20261102/REPORT.md. 회귀16개·guard 및 실제3해상도1x/자연반복/정지·오류·입력 확인. 물리모니터/NW.js/Unity·외부배포별도.
+
 ## 2026-11-02 보물상자 크기 축소·몸통 충돌
 
 - 캐릭터보다 크게 보이던160px 표시를64px로 축소했다. 동적 몸통44×24worldpx는 닫힘/열림 모두 유지하며, 기존 지형 판정 뒤 일반/빠른 이동을 막는다. 이전 좌표 선분 검사와 생성 겹침의 바깥 탈출을 지원한다.

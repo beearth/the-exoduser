@@ -131,13 +131,57 @@
   },
   "originalSource": "I:/EXODUSER-Storage/codex-takeover/title-kling-C2-20261102/close-final/original.mp4",
   "originalSourceSHA256": "b9e7b0cf0f8d39d1a26ebaab188603825035b8e855bdacdecfec6e95d4c5950f",
-  "stillRuntimeSHA256": "c0125f636e167603cf42fa15843c11d1574a3ee7d9b17be2fd634aa282bbe0b5",
+  "stillRuntimeSHA256": "c857bd0dbee22b740c220928ad0d21389a92324460a2078349053014410f8817",
   "assetBuilder": "tools/build-title-close-assets.cjs",
   "compositor": "tools/build-title-clarity.py",
-  "staticComposition": "C2-close approved still preserved; 32:9 center cover preserves character head and feet, but crops the upper moon",
+  "staticComposition": "Relocated still moon (1180,309), radius79 virtual; both moon disk and boot soles visible at 16:9/21:9/32:9; local feathered still plate masks video moon",
   "maskHashes": {
     "fall-near.png": "8e49502aa482d2fba599592d8408dc5511b88013b1de1d776a7f2ccbd73847e1",
     "fall-far.png": "7c6858c890391f14ec6cc4786ea09fae30f0b7376d39043bc658e0cec90ddca5",
     "cloud-flow.webp": "c0f0fb93ae0b3472040e84274b1aadbdce8504e514951d17b22fac1e956746c5"
+  },
+  "moonRelocation": {
+    "from": {
+      "x": 1212,
+      "y": 167
+    },
+    "to": {
+      "x": 1180,
+      "y": 309,
+      "radius": 79
+    },
+    "delta4K": [
+      -60,
+      268
+    ],
+    "plate": {
+      "path": "assets/title-signboard/C2/moon-static.webp",
+      "box": [
+        1024.8927083333333,
+        0,
+        335.09166666666664,
+        460.2208333333333
+      ],
+      "size": [
+        632,
+        868
+      ]
+    },
+    "cloudRestoration": "assets/title-signboard/C2/moon-cloud-restoration.png",
+    "method": "built-in image edit for old cloud spot; exact approved moon and halo extracted; local still plate masks original video moon after cloud flow",
+    "pulse": {
+      "seconds": 10,
+      "opacity": [
+        0.01,
+        0.03
+      ],
+      "blend": "screen",
+      "radius": 145
+    },
+    "builder": "tools/build-title-moon-assets.cjs",
+    "sourceSHA256": "66733238edceea19749585f1e685c9717539d42fdf4c047857934f5a08d737ae",
+    "editSHA256": "6a233b9546999a114b9914bf85e2df8265cc301cb933574a8c20bcf2cf822900",
+    "stillSHA256": "c857bd0dbee22b740c220928ad0d21389a92324460a2078349053014410f8817",
+    "plateSHA256": "f7be54e9bb592bc6bc1919e082946a3b2502f11dcdd75308810dc6fff29691ad"
   }
 }

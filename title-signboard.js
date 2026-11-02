@@ -2,23 +2,28 @@
 (function(scope){
  'use strict';
  const ROOT='assets/title-signboard/C2/';
+ const moon=Object.freeze({x:1180,y:309,radius:79});
+ const moonPlate=Object.freeze({x:1024.8927083333333,y:0,width:335.09166666666664,height:460.2208333333333});
+ function moonPulse(t){return .02+.01*Math.sin(t*Math.PI/5);}
  function rect(w,h){const scale=Math.max(w/2036,h/1018);return {x:(w-2036*scale)/2,y:(h-1018*scale)/2,width:2036*scale,height:1018*scale,scale};}
  function videoWidth(w,h,dpr=1){const need=Math.max(w,h*2)*Math.min(dpr,1.5);return need<=1920?1920:need<=2560?2560:3840;}
  function videoSource(width){return 'video/title_motion_C2_close_'+width+'_20261102.mp4';}
  function advance(t,dt,paused){return t+(paused?0:Math.max(0,Math.min(.1,dt)));}
  function motionReason(p){return p.hidden?'hidden':p.reduce?'reduced-motion':p.tier==='C'||p.quality==='low'?'low-tier':p.atmos===0?'atmosphere-off':'motion';}
  function flowOffset(t,index){return t*(index===0?100:75);}
- const api=scope.TitleSignboard={rect,advance,motionReason,flowOffset,videoWidth,videoSource};
+ const api=scope.TitleSignboard={rect,advance,motionReason,flowOffset,videoWidth,videoSource,moon,moonPulse};
  if(!scope.document)return;
  api.create=function(host){
   const doc=scope.document,canvas=doc.createElement('canvas');canvas.id='titleSignboardCanvas';canvas.setAttribute('aria-hidden','true');
   Object.assign(canvas.style,{position:'absolute',inset:'0',width:'100%',height:'100%',pointerEvents:'none',display:'none'});
   host.insertBefore(canvas,doc.getElementById('splashTitleUI'));
   const cx=canvas.getContext('2d',{alpha:false}),still=new Image();
-  still.src=ROOT+'still.webp';
+  still.src=ROOT+'still.webp?v=20261102-moon';
+  const sky=new Image();sky.src=ROOT+'moon-static.webp';sky.onload=wake;
+  sky.onerror=()=>{stats.error='Moon plate unavailable';wake();};
   const cloud=new Image();cloud.src=ROOT+'cloud-flow.webp';cloud.onload=wake;
   const video=doc.createElement('video');video.muted=true;video.defaultMuted=true;video.loop=true;video.playsInline=true;video.preload='none';
-  const stats={ready:false,frames:0,time:0,mode:'loading',error:null,renderMs:0,videoTime:0,videoFrames:0,flowFrames:0,cloudFrames:0};
+  const stats={ready:false,frames:0,time:0,mode:'loading',error:null,renderMs:0,videoTime:0,videoFrames:0,flowFrames:0,cloudFrames:0,moonFrames:0,pulseAlpha:0};
   const reduce=scope.matchMedia('(prefers-reduced-motion: reduce)');
   let active=false,destroyed=false,raf=0,last=0,dirty=true,hasVideo=false,playPending=false,policyTimer=0,lastMode='',selectedWidth=0,restoreTime=0;
   const falls=[{"id":"near","box":[862,319,54,241],"mouth":[876,329],"contact":[893,551],"speed":100},{"id":"far","box":[1041,381,41,200],"mouth":[1053,389],"contact":[1063,575],"speed":75}];
@@ -73,14 +78,26 @@
    const rw=Math.round(w*k),rh=Math.round(h*k);
    if(canvas.width!==rw||canvas.height!==rh){canvas.width=rw;canvas.height=rh;dirty=true;}
    if(!moving&&!dirty)return;
-   const t=performance.now(),r=rect(w,h),videoReady=moving&&video.readyState>=2;
+   const t=performance.now(),r=rect(w,h),videoReady=moving&&video.readyState>=2&&sky.complete&&sky.naturalWidth>0;
    if(moving&&hasVideo&&!videoReady&&!video.error){raf=scope.requestAnimationFrame(draw);return;}
    if(videoReady||still.complete&&still.naturalWidth){
     cx.setTransform(rw/w,0,0,rh/h,0,0);cx.imageSmoothingEnabled=true;cx.imageSmoothingQuality='high';
     cx.drawImage(videoReady?video:still,r.x,r.y,r.width,r.height);
     cx.save();cx.translate(r.x,r.y);cx.scale(r.width/2036,r.height/1018);
     if(videoReady){hasVideo=true;stats.videoFrames++;stats.videoTime=video.currentTime;}
-    if(moving&&!stats.error){if(cloud.complete&&cloud.naturalWidth){cx.globalAlpha=.12;cx.drawImage(cloud,Math.sin(stats.time*.07)*7+Math.sin(stats.time*.13)*2,Math.sin(stats.time*.09)*1.5,2036,1018);cx.globalAlpha=1;stats.cloudFrames++;}falls.forEach((f,i)=>waterfall(f,i,stats.time));stats.flowFrames++;}
+    if(moving&&!stats.error&&cloud.complete&&cloud.naturalWidth){cx.globalAlpha=.12;cx.drawImage(cloud,Math.sin(stats.time*.07)*7+Math.sin(stats.time*.13)*2,Math.sin(stats.time*.09)*1.5,2036,1018);cx.globalAlpha=1;stats.cloudFrames++;}
+    // Applied after cloud flow: neither the video nor its moving cloud overlay
+    // can reintroduce the original moon. Until this plate loads, use the new still.
+    if(videoReady){cx.drawImage(sky,moonPlate.x,moonPlate.y,moonPlate.width,moonPlate.height);stats.moonFrames++;}
+    stats.pulseAlpha=0;
+    if(moving&&!stats.error){
+     stats.pulseAlpha=moonPulse(stats.time);
+     cx.save();cx.globalCompositeOperation='screen';cx.globalAlpha=stats.pulseAlpha;
+     const glow=cx.createRadialGradient(moon.x,moon.y,0,moon.x,moon.y,145);
+     glow.addColorStop(0,'rgba(227,116,91,.8)');glow.addColorStop(.55,'rgba(207,82,64,.6)');glow.addColorStop(1,'rgba(146,41,33,0)');
+     cx.fillStyle=glow;cx.fillRect(moon.x-145,moon.y-145,290,290);cx.restore();
+     falls.forEach((f,i)=>waterfall(f,i,stats.time));stats.flowFrames++;
+    }
     cx.restore();canvas.style.display='block';stats.ready=true;stats.frames++;stats.renderMs+=performance.now()-t;dirty=false;
    }
    if(moving)raf=scope.requestAnimationFrame(draw);
