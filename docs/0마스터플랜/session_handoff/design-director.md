@@ -149,6 +149,6 @@ codex-web-wide-anim이 원래 영상 가림을 해소하고 manifest 위치/높�
 
 기존 codex-web-keyart-wide가 최신origin/main d60ed26bb를 먼저 병합하고 close/C2-tall-fixed-3840x1920.png를 채택했다. 원화 정적 영역과 tall-final 전206프레임 움직임지도를 정합 합성,3840/2560/1920판 선택으로 바꾼다. 하늘은 수정 원화에 시간별밝기비.8~1.2를 적용해 구 직선/감산얼룩을 피한다. 기존로고48.6px/메뉴68.6px 여백·폭포100/75px/s보강 유지.
 
-실제3해상도각10초이상·전후1x·루프/정지/오류/입력 검수 PASS(웹선명도개선범위). 4K13.03MB·2560판7.29MB·1920판4.80MB,발이동0px,오류/404/세이브쓰기0. Dota 보호를 위해PC영상인코딩없이 원격미디어샌드박스 처리. 신규유료생성0,기존WIP7개 보존. 원격최종SHA는결과보고서에확정한다. 현행상세수치는 스플래시C2계약, 최종판정·1x·녹화·source/원격SHA는 I:/EXODUSER-Storage/codex-takeover/title-clarity-20261102/REPORT.md에 확정한다. 이전2036×1016영상만 확대하던 검수는 title-motion-final-20261102/REPORT.md에 보존한다.
+최종 close 원화+close-final 루프 합성3판으로 교체했다. 실제3해상도각10초이상·얼굴/발/요새/폭포1x·루프/정지/오류/입력 검수 완료,발이동0px·오류/404/세이브쓰기0. Dota 보호로PC영상인코딩없이 원격미디어샌드박스 사용,새유료생성0·기존WIP7개 보존. 중앙cover32:9달상단크롭과원생성한계는 스플래시C2계약, 최종source/원격SHA·자체판정·녹화는 I:/EXODUSER-Storage/codex-takeover/title-close-20261102/REPORT.md. 이전tall기록은 title-clarity-20261102/REPORT.md에 보존한다.
 
 확인서버 http://127.0.0.1:3384/index.html?test=1. Unity반영대기. 물리32:9모니터·NW.js·오디오·Steam/외부배포는 별도다. 기존unrelated living-scenes와폐기crop32작업파일은이번커밋에서제외한다.

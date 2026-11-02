@@ -4,7 +4,7 @@
  const ROOT='assets/title-signboard/C2/';
  function rect(w,h){const scale=Math.max(w/2036,h/1018);return {x:(w-2036*scale)/2,y:(h-1018*scale)/2,width:2036*scale,height:1018*scale,scale};}
  function videoWidth(w,h,dpr=1){const need=Math.max(w,h*2)*Math.min(dpr,1.5);return need<=1920?1920:need<=2560?2560:3840;}
- function videoSource(width){return 'video/title_motion_C2_clarity_'+width+'_20261102.mp4';}
+ function videoSource(width){return 'video/title_motion_C2_close_'+width+'_20261102.mp4';}
  function advance(t,dt,paused){return t+(paused?0:Math.max(0,Math.min(.1,dt)));}
  function motionReason(p){return p.hidden?'hidden':p.reduce?'reduced-motion':p.tier==='C'||p.quality==='low'?'low-tier':p.atmos===0?'atmosphere-off':'motion';}
  function flowOffset(t,index){return t*(index===0?100:75);}
@@ -16,11 +16,12 @@
   host.insertBefore(canvas,doc.getElementById('splashTitleUI'));
   const cx=canvas.getContext('2d',{alpha:false}),still=new Image();
   still.src=ROOT+'still.webp';
+  const cloud=new Image();cloud.src=ROOT+'cloud-flow.webp';cloud.onload=wake;
   const video=doc.createElement('video');video.muted=true;video.defaultMuted=true;video.loop=true;video.playsInline=true;video.preload='none';
-  const stats={ready:false,frames:0,time:0,mode:'loading',error:null,renderMs:0,videoTime:0,videoFrames:0,flowFrames:0};
+  const stats={ready:false,frames:0,time:0,mode:'loading',error:null,renderMs:0,videoTime:0,videoFrames:0,flowFrames:0,cloudFrames:0};
   const reduce=scope.matchMedia('(prefers-reduced-motion: reduce)');
   let active=false,destroyed=false,raf=0,last=0,dirty=true,hasVideo=false,playPending=false,policyTimer=0,lastMode='',selectedWidth=0,restoreTime=0;
-  const falls=[{"id":"near","box":[696,498,66,259],"mouth":[714,506],"contact":[735,747],"speed":100},{"id":"far","box":[951,548,78,218],"mouth":[974,555],"contact":[1001,756],"speed":75}];
+  const falls=[{"id":"near","box":[862,319,54,241],"mouth":[876,329],"contact":[893,551],"speed":100},{"id":"far","box":[1041,381,41,200],"mouth":[1053,389],"contact":[1063,575],"speed":75}];
   const tile=doc.createElement('canvas');tile.width=128;tile.height=512;
   const tx=tile.getContext('2d'),pixels=tx.createImageData(128,512);
   for(let y=0;y<512;y++)for(let x=0;x<128;x++){
@@ -79,7 +80,7 @@
     cx.drawImage(videoReady?video:still,r.x,r.y,r.width,r.height);
     cx.save();cx.translate(r.x,r.y);cx.scale(r.width/2036,r.height/1018);
     if(videoReady){hasVideo=true;stats.videoFrames++;stats.videoTime=video.currentTime;}
-    if(moving&&!stats.error){falls.forEach((f,i)=>waterfall(f,i,stats.time));stats.flowFrames++;}
+    if(moving&&!stats.error){if(cloud.complete&&cloud.naturalWidth){cx.globalAlpha=.12;cx.drawImage(cloud,Math.sin(stats.time*.07)*7+Math.sin(stats.time*.13)*2,Math.sin(stats.time*.09)*1.5,2036,1018);cx.globalAlpha=1;stats.cloudFrames++;}falls.forEach((f,i)=>waterfall(f,i,stats.time));stats.flowFrames++;}
     cx.restore();canvas.style.display='block';stats.ready=true;stats.frames++;stats.renderMs+=performance.now()-t;dirty=false;
    }
    if(moving)raf=scope.requestAnimationFrame(draw);

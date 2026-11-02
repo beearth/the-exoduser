@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
 const manifest=JSON.parse(fs.readFileSync(new URL('../assets/title-signboard/C2/manifest.json',import.meta.url)));
-test('registered 4K title composite retains approved tall motion and hashes all delivery sizes',()=>{
+test('registered 4K title composite retains approved close motion and hashes all delivery sizes',()=>{
  assert.deepEqual(manifest.size,[3840,1920]);
- assert.match(manifest.source,/tall-final\/loop\.mp4$/);
+ assert.match(manifest.source,/close-final\/loop\.mp4$/);
  assert.equal(manifest.maskFrames,206);
  assert.ok(manifest.registration.medianError4K<2);
  assert.equal(manifest.layout,'cover');

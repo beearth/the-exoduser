@@ -10,5 +10,5 @@ test('title decode width follows the physical cover width including tall 1080p s
 });
 test('clarity source mapping has no aspect jump when decode size changes',()=>{
  assert.equal(typeof api.videoSource,'function');
- for(const width of [1920,2560,3840])assert.match(api.videoSource(width),new RegExp('clarity_'+width+'_20261102\\.mp4$'));
+ for(const width of [1920,2560,3840])assert.match(api.videoSource(width),new RegExp('close_'+width+'_20261102\\.mp4$'));
 });

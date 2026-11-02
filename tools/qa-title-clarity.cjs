@@ -1,13 +1,13 @@
 const fs = require('node:fs/promises');
 const assert = require('node:assert/strict');
 const sharp = require('sharp');
-const out = process.env.TITLE_QA_OUT || 'I:/EXODUSER-Storage/codex-takeover/title-clarity-20261102';
+const out = process.env.TITLE_QA_OUT || 'I:/EXODUSER-Storage/codex-takeover/title-close-20261102';
 const url = process.env.TITLE_QA_URL || 'http://127.0.0.1:3384/index.html?test=1';
 process.env.TEMP = out + '/temp';
 process.env.TMP = process.env.TEMP;
 const { chromium } = require('playwright');
 const receipt = {url, errors:[], http:[], saves:[], sizes:[], recordings:[], differences:[]};
-const regions = {near:[708,516,20,211], far:[973,563,20,182], sky:[1040,280,300,65], feet:[1140,722,165,60], moon:[774,299,145,150]};
+const regions = {near:[874,344,18,192], far:[1050,399,15,70], sky:[1100,269,200,40], feet:[1310,716,220,45], moon:[1120,82,178,180]};
 function TitleWidth(width){return width<=2560?2560:3840;}
 async function show(page) {
   await page.goto(url, {waitUntil:'domcontentloaded'});
@@ -103,10 +103,10 @@ async function deterministicPairs(page) {
       await page.setViewportSize({width,height:1080});await page.waitForTimeout(1100);
       await page.waitForFunction(width=>TitleSignboard.current.video.videoWidth===width,width<=2560?2560:3840);
       const size=await page.evaluate(()=>({width:innerWidth,stats:{...TitleSignboard.current.stats},rect:TitleSignboard.rect(innerWidth,innerHeight),logo:document.getElementById('splashTitleLogo').getBoundingClientRect().toJSON(),menu:document.getElementById('splashTitleMenu').getBoundingClientRect().toJSON(),scroll:document.documentElement.scrollWidth>innerWidth,muted:TitleSignboard.current.video.muted,src:TitleSignboard.current.video.currentSrc,video:[TitleSignboard.current.video.videoWidth,TitleSignboard.current.video.videoHeight,TitleSignboard.current.video.duration]}));
-      assert.equal(size.stats.error,null);assert.equal(size.scroll,false);assert.ok(size.logo.x>=48&&size.menu.x>=48);assert.equal(size.muted,true);assert.deepEqual(size.video.slice(0,2),[TitleWidth(width),TitleWidth(width)/2]);receipt.sizes.push(size);
+      assert.equal(size.stats.error,null);assert.equal(size.scroll,false);assert.ok(size.logo.x>=48&&size.menu.x>=48);assert.equal(size.muted,true);assert.deepEqual(size.video.slice(0,2),[TitleWidth(width),TitleWidth(width)/2]);assert.ok(size.stats.cloudFrames>0);receipt.sizes.push(size);
       const name=out+'/menu-'+width+'.png';await page.screenshot({path:name});
-      for(const key of ['near','far','feet','moon','face','fortress','rock']) {
-        const [x,y,w,h]=({...regions,face:[1156,371,116,122],fortress:[300,403,220,160],rock:[1700,730,200,50]})[key], r=size.rect;
+      for(const key of ['near','far','feet','face','fortress','rock']) {
+        const [x,y,w,h]=({...regions,face:[1333,279,116,110],fortress:[420,300,240,170],rock:[1630,730,200,50]})[key], r=size.rect;
         await sharp(name).extract({left:Math.round(r.x+x*r.scale)-12,top:Math.round(r.y+y*r.scale)-12,width:Math.round(w*r.scale)+24,height:Math.round(h*r.scale)+24}).png().toFile(out+'/crop-'+width+'-'+key+'-1x.png');
       }
       if(process.argv.includes('--record'))await record(page,context,width);
@@ -116,7 +116,7 @@ async function deterministicPairs(page) {
     await page.emulateMedia({reducedMotion:'reduce'});await page.waitForTimeout(650);
     const frozen=await page.evaluate(()=>({...TitleSignboard.current.stats,paused:TitleSignboard.current.video.paused}));await page.waitForTimeout(650);
     const after=await page.evaluate(()=>({...TitleSignboard.current.stats}));
-    assert.equal(after.time,frozen.time);assert.equal(after.flowFrames,frozen.flowFrames);assert.equal(frozen.paused,true);receipt.reduced={frozen,after};await page.screenshot({path:out+'/reduced.png'});
+    assert.equal(after.time,frozen.time);assert.equal(after.flowFrames,frozen.flowFrames);assert.equal(after.cloudFrames,frozen.cloudFrames);assert.equal(frozen.paused,true);receipt.reduced={frozen,after};await page.screenshot({path:out+'/reduced.png'});
     await page.emulateMedia({reducedMotion:'no-preference'});
     for(const [opt,expected] of [[{quality:'low'},'low-tier'],[{atmos:0},'atmosphere-off'],[{reduceMotion:true},'reduced-motion']]) {
       await page.evaluate(opt=>{localStorage.setItem('hellcave_settings',JSON.stringify({opt}));dispatchEvent(new Event('storage'));},opt);await page.waitForTimeout(650);
@@ -127,7 +127,7 @@ async function deterministicPairs(page) {
     await page.keyboard.press('Home');await page.keyboard.press('Enter');await page.waitForTimeout(700);assert.equal(await page.locator('#titleSignboardCanvas').count(),0);
     await context.close();
     const fc=await browser.newContext({viewport:{width:1920,height:1080}}), fallback=await fc.newPage();
-    await fallback.route('**/video/title_motion_C2_clarity_*_20261102.mp4',r=>r.abort());
+    await fallback.route('**/video/title_motion_C2_close_*_20261102.mp4',r=>r.abort());
     await fallback.goto(url,{waitUntil:'domcontentloaded'});await fallback.waitForFunction(()=>TitleSignboard.current.stats.error&&TitleSignboard.current.stats.ready);
     receipt.fallback=await fallback.evaluate(()=>({stats:{...TitleSignboard.current.stats},still:TitleSignboard.current.still.src,menu:document.querySelectorAll('#splashTitleMenu li').length}));assert.match(receipt.fallback.still,/C2\/still.webp/);assert.ok(receipt.fallback.menu>=2);await fallback.screenshot({path:out+'/video-error-fallback.png'});await fc.close();
     assert.equal(receipt.errors.length,0);assert.equal(receipt.http.length,0);assert.equal(receipt.saves.length,0);

@@ -5,11 +5,11 @@ import vm from 'node:vm';
 const file=new URL('../title-signboard.js',import.meta.url),scope={};
 if(fs.existsSync(file))vm.runInNewContext(fs.readFileSync(file,'utf8'),scope);
 const api=scope.TitleSignboard||{};
-test('tall C2 preserves moon, both feet and character at 16:9, 21:9 and 32:9 with uniform scale',()=>{
+test('close C2 preserves both skulls, both feet and character at 16:9, 21:9 and 32:9 with uniform scale',()=>{
  assert.equal(typeof api.rect,'function');
  for(const [w,h] of [[1920,1080],[2560,1080],[3840,1080],[3840,2160]]){
   const r=api.rect(w,h);assert.equal(r.width/2036,r.height/1018);
-  for(const [x,y] of [[846,368],[1185,385],[1200,775]]){const px=r.x+x*r.scale,py=r.y+y*r.scale;assert.ok(px>=0&&px<=w&&py>=0&&py<=h);}
+  for(const [x,y] of [[875,300],[1054,365],[1368,269],[1335,745],[1520,745],[1597,775]]){const px=r.x+x*r.scale,py=r.y+y*r.scale;assert.ok(px>=0&&px<=w&&py>=0&&py<=h);}
   assert.ok(r.x<=0&&r.x+r.width>=w);
  }
 });

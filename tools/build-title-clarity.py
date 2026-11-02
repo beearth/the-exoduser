@@ -1,6 +1,6 @@
 """Registered 4K still + automatically accumulated Kling motion, no paid generation.
 
-Uses the approved tall-final loop (already crossfaded), never crop32.
+Uses the approved close-final loop (already crossfaded), never crop32.
 Static pixels remain the still. Clouds/mist use temporal luminance/color changes
 over the corrected still, avoiding reintroducing the old straight sky seam.
 Hair/cape/water use registered video pixels within a fixed feathered motion mask.
@@ -91,19 +91,20 @@ def masks(still, motion):
     h, w = motion.shape
     # Authored semantic envelopes only constrain the automatic motion map.
     # Every moving pixel must also have measured temporal change.
-    sky = polygon((h,w), [(0,0),(1,0),(1,.56),(.79,.56),(.75,.61),(.55,.61),
-                          (.50,.53),(.48,.36),(.465,.39),(.46,.52),(.41,.49),
-                          (.37,.42),(.35,.31),(.33,.43),(.31,.38),(.29,.37),
-                          (.26,.22),(.24,.37),(.23,.27),(.21,.36),(.18,.28),
-                          (.17,.36),(.12,.25),(.11,.35),(.08,.33),(0,.37)], 12)
-    river = polygon((h,w), [(0,.938),(.12,.89),(.23,.85),(.32,.80),(.49,.762),
-                            (.545,.77),(.55,.81),(.52,.86),(.51,.92),(.56,1),(0,1)], 10)
-    near = polygon((h,w), [(.344,.501),(.359,.501),(.370,.745),(.349,.748)], 3)
-    far = polygon((h,w), [(.474,.550),(.487,.550),(.503,.752),(.479,.752)], 3)
-    hair = polygon((h,w), [(.594,.367),(.616,.365),(.642,.418),(.718,.442),
-                           (.721,.520),(.646,.508),(.614,.459)], 8)
-    cape = polygon((h,w), [(.618,.554),(.663,.548),(.736,.617),(.739,.735),
-                           (.683,.731),(.650,.670)], 8)
+    sky = polygon((h,w), [(0,0),(1,0),(1,.54),(.91,.52),(.85,.55),(.75,.54),
+                          (.65,.51),(.60,.48),(.56,.44),(.54,.41),(.52,.43),
+                          (.50,.42),(.46,.38),(.44,.36),(.42,.29),(.40,.33),
+                          (.38,.28),(.36,.21),(.34,.25),(.32,.19),(.30,.22),
+                          (.28,.17),(.26,.21),(.245,.10),(.23,.17),(.21,.18),
+                          (.19,.12),(.17,.19),(.14,.23),(.11,.20),(0,.29)], 12)
+    river = polygon((h,w), [(0,.845),(.15,.774),(.27,.745),(.39,.637),(.49,.594),
+                            (.56,.598),(.60,.631),(.583,.690),(.58,.81),(.51,1),(0,1)], 10)
+    near = polygon((h,w), [(.424,.326),(.437,.327),(.449,.599),(.429,.599)], 3)
+    far = polygon((h,w), [(.512,.384),(.522,.385),(.529,.599),(.513,.599)], 3)
+    hair = polygon((h,w), [(.689,.251),(.709,.251),(.731,.306),(.795,.329),
+                           (.882,.358),(.884,.472),(.798,.481),(.741,.433),(.712,.369)], 8)
+    cape = polygon((h,w), [(.697,.474),(.735,.464),(.807,.505),(.894,.556),
+                           (.900,.690),(.837,.729),(.765,.697),(.724,.624)], 8)
     mist = np.zeros((h,w),np.float32)
     # Soft fog bands, temporal residual only, retain sharp masonry underneath.
     for x,y,rx,ry in [(.17,.69,.20,.07),(.37,.735,.15,.045),(.79,.70,.14,.06)]:
@@ -115,15 +116,17 @@ def masks(still, motion):
     direct = np.maximum.reduce([river,near,far,hair,cape])*measured
     residual = np.maximum(sky,mist)*measured*(1-direct)
     # Face, torso, armor, legs, sword, rock and tree trunks are never video.
-    body = polygon((h,w),[(.573,.369),(.596,.367),(.608,.420),(.619,.462),
-                           (.629,.540),(.631,.599),(.641,.665),(.654,.777),
-                           (.571,.781),(.558,.746),(.573,.640),(.567,.577),
-                           (.555,.558),(.566,.466),(.568,.415)])
-    sword = polygon((h,w),[(.604,.500),(.615,.495),(.670,.790),(.660,.797)])
+    body = polygon((h,w),[(.678,.270),(.693,.272),(.702,.325),(.710,.352),
+                           (.715,.402),(.717,.467),(.726,.524),(.732,.583),
+                           (.742,.680),(.750,.740),(.700,.750),(.687,.702),
+                           (.683,.751),(.644,.750),(.644,.718),(.665,.680),
+                           (.669,.590),(.655,.535),(.648,.497),(.652,.446),
+                           (.662,.385),(.663,.325)])
+    sword = polygon((h,w),[(.701,.481),(.713,.473),(.787,.757),(.775,.766)])
     tree = np.zeros((h,w), np.float32)
     small=cv2.resize(still,(w,h),interpolation=cv2.INTER_AREA)
     dark=(np.max(small,axis=2)<43).astype(np.uint8)
-    dark[:,:int(w*.75)]=0
+    dark[:,:int(w*.90)]=0
     tree=cv2.dilate(dark, np.ones((5,5),np.uint8)).astype(np.float32)
     protect=np.maximum.reduce([body,sword,tree])
     protect=cv2.GaussianBlur(cv2.dilate(protect,np.ones((5,5),np.uint8)),(0,0),1)
