@@ -91,3 +91,18 @@ Unity GUI.depth 계약: [공식API](https://docs.unity3d.com/ja/current/ScriptRe
 명시적QA인자: --unity-transition-exit-code-check는샌드박스·절대출력경로에서만실행하며decoder준비성공뒤기대exit2,준비실패는exit3이다. 일반게임경로에서실행되지않는다.
 
 세번째패키지홀드추가: 1edf337b(1920)·bd8554c9(3840) 각각132/132·797/782프레임. Space/ESC/B/Start×2영상·부분/해제/홀드·매경계대기·실제준비/전투틱정지. 전환대기검사가추가되어첫44/44와검사수가다르며중복합산으로기능수를늘리지않는다.
+
+
+## 네 번째 패키지 검수와 외장 디스크 캡처 정지 분리
+
+| 범위 | 실제 근거·판정 |
+|---|---|
+| 정식/M1 | ac84527e 입력895e7dd8 Succeeded/errors0/6,610,058,572bytes/USER_SAVE0. cf4de8b2 M1 23/23·32PNG·firstBlocked빈값 |
+| 실제전환 | d6b683e4(1920)·94be67a9(3840),각36/36.실제완전검정18+19표본/오염0. Runtime2e00dc29b99d05ad6ece5623ebef96d8128cfab1c3a6da066c1869bf414f9f53/Core9efc2ba7c876b8e9e19f698265dd1f89cf40383f87e29283602cdb4d7cfe338a 동일. 원본1x batch4-comparison.html·Native169/108열람. 전체RETOUCH 유지 |
+| 실제홀드 | 9ebfa9bb1920 132/132·837프레임.7ab8dd8e3840은132중3FAIL·770프레임·exit2. worldSpace완료후다음ShowLobby준비16초검사초과/실패,worldEsc진행률1이나8초제한안에로비미도착. 실패를보존하며전체홀드재통과로세지않음 |
+| 시간근거 | frames.jsonl 실제연속시각43.04367→59.84716,캡처간격16.80349초. ESC진행.973285(4.849s)→1(7.819s)에서2.969초간격. 동기PNG/파일쓰기경로가검사루프에서실행되어외장IO정지를기능타임아웃과혼합. 제품12초준비timeout/입력홀드수치는완화하지않음 |
+| 검수기수정 | NativeQaCaptureWriter는워커한개·대기PNG최대4개·초과캡처skippedFrames기록,PNG성공후timeline순서기록,receipt최신값병합.모든UnityAPI/PNG인코딩은메인스레드,파일IO만워커.완료/예외때최대120초flush·IO오류는실패. 느린저장소fixture에서생산자비차단·순서3·최신100병합·오류전달통과. 실제Player새빌드대기 |
+| 종료코드진단 | 6e24448a 실제decoderPrepared=true에서의도적expectedExit2,공식실제exit2/windows0/leftovers0/USER_SAVE0. runner ok=false는의도진단이며정상게임검수통과로세지않음. 실패코드를0으로덮지않음확인 |
+| 보존 | 생성857정확경로모두SHA백업·원HEAD입력복원/해시검증,guard기존WIP보존. Desktop직접교체0. 원격d00cfd6f4 타격표현·도구변경을정상병합한뒤통합정식빌드재검수예정 |
+
+NativeScreenTransition은준비timeout실패를빈error대신 prepare-timeout (12s)로기록한다. 유효한앞선단일범위검사는유지하되네번째패키지전체성공으로승격하지않는다.

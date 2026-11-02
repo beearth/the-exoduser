@@ -29,6 +29,7 @@ namespace Exoduser.UnityPort {
    double now=Time.realtimeSinceStartupAsDouble;double delta=Math.Max(0,now-clockAt);clockAt=now;flow.Tick(delta,ready,!string.IsNullOrEmpty(error));NativeLobbyVideo.ApplyTransitionMix();
    if(flow.NeedsSwap)blackLatch.Request(Time.frameCount);if(flow.Failed)blackLatch.Cancel();
    if(blackLatch.TryConsume(Time.frameCount)){executing=true;try{entry.blackPaintedFrame=blackLatch.PresentedFrame;entry.swappedFrame=Time.frameCount;swap?.Invoke();swapped=true;entry.swapped=Time.realtimeSinceStartup;}catch(Exception e){error=e.ToString();flow.Tick(0,false,true);}finally{executing=false;swap=null;}}
+   if(flow.Failed&&string.IsNullOrEmpty(error))error="prepare-timeout (12s)";
    if(!string.IsNullOrEmpty(error)){entry.error=error;entry.failed=true;Debug.LogWarning("SCREEN_TRANSITION_RECOVER "+entry.boundary+" "+error);}
    if(flow.Failed)entry.failed=true;
    if(!flow.Busy){entry.finished=Time.realtimeSinceStartup;var callback=done;done=null;prepared=null;problem=null;if(!entry.cancelled)callback?.Invoke();}
