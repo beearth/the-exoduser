@@ -1,0 +1,36 @@
+{
+  "createdAt": "2026-11-02T02:28:24.149Z",
+  "checks": [
+    {
+      "file": "generation.receipt.json",
+      "status": 200
+    },
+    {
+      "file": "preview.html",
+      "status": 200
+    },
+    {
+      "file": "production-manifest.json",
+      "status": 200
+    },
+    {
+      "file": "spearmage.athletic.front.png",
+      "status": 200
+    },
+    {
+      "file": "spearmage.face-lock.png",
+      "status": 200
+    },
+    {
+      "file": "transmuter.athletic.front.png",
+      "status": 200
+    },
+    {
+      "file": "transmuter.face-lock.png",
+      "status": 200
+    }
+  ],
+  "canonicalFaceHashesVerified": true,
+  "copyHashesVerified": true,
+  "runtimeApplied": false
+}

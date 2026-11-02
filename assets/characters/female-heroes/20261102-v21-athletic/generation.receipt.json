@@ -1,0 +1,78 @@
+{
+  "createdAt": "2026-11-02T02:27:00.358Z",
+  "task": "전사다운 탄탄한 근육 체형과 창기사 옆땋기/변성 단발 선택 v21",
+  "hairstyleDecision": "창기사는 옆땋기 변성은 단발로가자",
+  "physiqueDirection": "좀 근육질로 탄탄하게 이제 전사같이 인게임 케릭터로 만들어보자",
+  "faceOriginLocked": true,
+  "bodyOutputStatus": "NEW_ATHLETIC_BODY_OUTPUTS_AWAIT_REVIEW",
+  "generator": "built-in image_gen; exact model ID and cost undisclosed",
+  "outputs": [
+    {
+      "id": "transmuter",
+      "label": "변성술사 · 단발",
+      "filename": "transmuter.athletic.front.png",
+      "source": "C:\\Users\\심도진\\.codex\\generated_images\\01a194cc-8301-70f1-80f8-a4e5f1090c22\\exec-e6d87f97-9d0b-4ce6-8698-32271b92b5a3.png",
+      "prompt": "Use case: identity-preserve / athletic combat-character physique edit.\nIMAGE 1 is this adult woman's PERMANENTLY LOCKED FACE ORIGIN. IMAGE 2 is her existing full-body costume reference and EDIT TARGET. Preserve this specific individual face exactly: eyelid shapes and spacing, nose length/bridge/tip, cheeks, lip contours, jaw/chin, skin tone, mature twenties age. Do not change facial bone structure when strengthening the body, do not widen her jaw or give her a new face. Do not use any other woman or any generic doll face.\nThe user asks for a visibly STRONG, MUSCULAR, FIRM FEMALE WARRIOR BODY suitable as an in-game character. This must be an actual physique change, not merely painting abs onto the same slender model. Increase shoulder girdle strength, rounded developed deltoids, clear biceps/triceps volume, powerful forearms and functional hands, stronger upper back/lats, solid athletic waist/core, muscular glutes and thighs with believable quad/hamstring structure, strong calves. Moderate compact trained-combat-athlete build; capable, healthy and feminine, not a gigantic bodybuilder or extreme shredded anatomy. Keep an attractive naturally human adult face and compact adult proportions, roughly seven heads, avoid fashion-model long legs and tiny waist. Muscles should have convincing large anatomy and tension under the skin, subtle natural definition in neutral light; no fake muscle engraving, inflated balloons or greasy skin. Broader, stable combat silhouette with substantial limbs rather than thin porcelain limbs.\nFront-facing head/torso, upright relaxed neck, horizontal eyes, chin neutral, calm focused expression, naturally closed mouth, no selfie tilt or model pout. Stand naturally ready with balanced hips over planted flat feet, comfortable shoulder-width stance, knees softly relaxed, arms slightly away from torso for readable muscles and equipment, hands naturally relaxed and functional. Keep face and body perspective coherent. Practical material wear, rigid crisp metal, matte leather, large clean costume masses, restrained fittings and gold trim, no random decorative proliferation.\nPreserve the locked portrait's realistic painterly skin/material quality. Full figure from whole hair crown to both boot soles, fingers and all hair entirely visible, generous transparent margins; vertical 2:3 transparent-background PNG. No text, labels, logos, watermark, inset faces or held weapon. This is the Woni-reference TRANSMUTER, the BARE-ABS heroine. Keep her original face including the small cheek mole; it must remain distinct from the Liv-reference other character.\nNEW HAIR SELECTION: replace ponytail with a SHORT ASYMMETRIC BOB in natural black-brown, jaw to upper-neck length, controlled layered ends, strong slightly side-swept part and one side tucked behind ear. Both eyes and face outline remain visible. No ponytail, long tail, bun, braid or purple hair.\nKeep high-neck navy cropped leather protective chest covering, bare athletic ABDOMEN AND WAIST. Make her abs and obliques genuinely stronger with natural abdominal walls and believable rectus separation, not emaciated or bodybuilding striations. Exposed upper arms reveal visibly developed deltoids and biceps/triceps. Full dark trousers cover BOTH thighs but visibly fit strong quads and glutes, reinforced knees and substantial flat practical boots. Short navy shoulder mantle stays short enough to read the stronger shoulders/back; preserve rigid dark-metal LEFT FOREARM gauntlet with exactly ONE BLUE CORE on anatomical LEFT (VIEWER RIGHT), larger combat-ready forearm silhouette and consistent functional fingers. Other forearm wrapped/gloved. No second core, bare thigh or skirt. This is the same woman rebuilt as a sturdy frontline transmutation fighter, not an idol in armor.",
+      "refs": [
+        "G:/exoduser/assets/characters/female-heroes/20261102-v19/transmuter.face-lock.png",
+        "G:/exoduser/assets/characters/female-heroes/20261102-v19/transmuter-thick-ponytail.front.png"
+      ]
+    },
+    {
+      "id": "spearmage",
+      "label": "창기사 · 보라색 옆땋기",
+      "filename": "spearmage.athletic.front.png",
+      "source": "C:\\Users\\심도진\\.codex\\generated_images\\01a194cc-8301-70f1-80f8-a4e5f1090c22\\exec-e2829291-a8f2-4702-95db-2687d6954d6f.png",
+      "prompt": "Use case: identity-preserve / athletic combat-character physique edit.\nIMAGE 1 is this adult woman's PERMANENTLY LOCKED FACE ORIGIN. IMAGE 2 is her existing full-body costume reference and EDIT TARGET. Preserve this specific individual face exactly: eyelid shapes and spacing, nose length/bridge/tip, cheeks, lip contours, jaw/chin, skin tone, mature twenties age. Do not change facial bone structure when strengthening the body, do not widen her jaw or give her a new face. Do not use any other woman or any generic doll face.\nThe user asks for a visibly STRONG, MUSCULAR, FIRM FEMALE WARRIOR BODY suitable as an in-game character. This must be an actual physique change, not merely painting abs onto the same slender model. Increase shoulder girdle strength, rounded developed deltoids, clear biceps/triceps volume, powerful forearms and functional hands, stronger upper back/lats, solid athletic waist/core, muscular glutes and thighs with believable quad/hamstring structure, strong calves. Moderate compact trained-combat-athlete build; capable, healthy and feminine, not a gigantic bodybuilder or extreme shredded anatomy. Keep an attractive naturally human adult face and compact adult proportions, roughly seven heads, avoid fashion-model long legs and tiny waist. Muscles should have convincing large anatomy and tension under the skin, subtle natural definition in neutral light; no fake muscle engraving, inflated balloons or greasy skin. Broader, stable combat silhouette with substantial limbs rather than thin porcelain limbs.\nFront-facing head/torso, upright relaxed neck, horizontal eyes, chin neutral, calm focused expression, naturally closed mouth, no selfie tilt or model pout. Stand naturally ready with balanced hips over planted flat feet, comfortable shoulder-width stance, knees softly relaxed, arms slightly away from torso for readable muscles and equipment, hands naturally relaxed and functional. Keep face and body perspective coherent. Practical material wear, rigid crisp metal, matte leather, large clean costume masses, restrained fittings and gold trim, no random decorative proliferation.\nPreserve the locked portrait's realistic painterly skin/material quality. Full figure from whole hair crown to both boot soles, fingers and all hair entirely visible, generous transparent margins; vertical 2:3 transparent-background PNG. No text, labels, logos, watermark, inset faces or held weapon. This is the Liv-reference SPEAR KNIGHT (existing project id Spearmage), SAME distinctive open eye shape, short rounded nose, soft cheek contours and specific fuller lips from image 1. Her face stays delicate and recognizable while her BODY becomes a strong trained lancer.\nHAIR SELECTION: keep the LONG THICK PURPLE SIDE BRAID from IMAGE 2, dark black-plum roots through muted smoky violet woven sections, laid over anatomical LEFT shoulder (VIEWER RIGHT) toward waist. One thick clearly woven braid, swept crown, opposite side neatly tucked. Do not change it to bob or ponytail, and do not let it hide face or all shoulder anatomy.\nKeep continuous charcoal metal cuirass fully covering ENTIRE abdomen to hips; tasteful upper-chest neckline and narrow neck choker, small rigid shoulder guards, bare upper arms, articulated forearm guards, muted-plum short asymmetric split hip cloth over opaque fitted shorts, exposed upper thigh, articulated shin guards and flat practical boots. Visible arm and thigh muscles must become significantly stronger: round deltoid cap, solid biceps/triceps, trained forearm, visibly athletic quadriceps and stable strong calves. Armor fits muscular back/torso with natural volume, not an implausibly pinched corset waist. Feminine athletic lancer proportions, no huge amazon height. Keep shoulders and hips balanced rather than a swaying beauty stance. No bare abs, blue-core gauntlet, gown or long ragged train. Spear is modeled/attached separately; keep hands empty in this body reference.",
+      "refs": [
+        "G:/exoduser/assets/characters/female-heroes/20261102-v19/spearmage.face-lock.png",
+        "G:/exoduser/assets/characters/female-heroes/20261102-v19/spearmage-purple-sidebraid.preview.png"
+      ]
+    }
+  ],
+  "runtimeIdPolicy": "Existing ids transmuter/spearmage retained. User's name 창기사 used as appearance-review label, no gameplay/class rename performed.",
+  "observed": "More developed deltoids and upper arms, stronger legs and athletic torso volume. Transmuter black-brown short bob, bare athletic abdomen, long trousers, one blue left gauntlet core; Spearmage purple side braid, solid covered abdomen, exposed arms/thighs. Upright frontal standing.",
+  "limits": [
+    "Body images are source-art review outputs; no mesh/rig/animation/playable integration.",
+    "v19 three-view sheets are previous hair/body history and must not be used as current v21 geometry references.",
+    "Canonical face PNGs stay byte-identical; face likeness in generated derivatives remains a visual review gate."
+  ],
+  "files": [
+    {
+      "id": "transmuter",
+      "file": "transmuter.athletic.front.png",
+      "sha256": "9e9706bc9535890c5501bf83845af2e030edcbd7e7bc5a7e30c60c94178c613c",
+      "width": 1024,
+      "height": 1536,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "zeroPixels": 1079328
+      }
+    },
+    {
+      "id": "spearmage",
+      "file": "spearmage.athletic.front.png",
+      "sha256": "33eff3edcf86d8807d5ae7ff7adb02bc900f10e38b67c266e0db72570e854b4a",
+      "width": 1024,
+      "height": 1536,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "zeroPixels": 1091447
+      }
+    }
+  ],
+  "faceOrigins": [
+    {
+      "id": "transmuter",
+      "file": "transmuter.face-lock.png",
+      "sha256": "15ab7e47b4a9b3efd4ac4062b4ef7e528ae69fca7f382b60f2543b6094fd912d"
+    },
+    {
+      "id": "spearmage",
+      "file": "spearmage.face-lock.png",
+      "sha256": "fc2198af2bec17d8895fcb400368c76f7698614764d6134b6d520b1bc8760e32"
+    }
+  ]
+}

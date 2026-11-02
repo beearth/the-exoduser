@@ -1,0 +1,72 @@
+{
+  "stage": "LOCKED_FACE_AND_SELECTED_HAIR_ATHLETIC_BODY_REVIEW",
+  "createdAt": "2026-11-02T02:27:00.358Z",
+  "characters": [
+    {
+      "id": "transmuter",
+      "label": "변성술사",
+      "hair": "흑갈색 짧은 단발",
+      "face": "transmuter.face-lock.png",
+      "front": "transmuter.athletic.front.png",
+      "role": "복근·긴 바지·해부학적 왼팔 단일 청색 코어"
+    },
+    {
+      "id": "spearmage",
+      "label": "창기사 (기존 창법사)",
+      "hair": "보라색 굵은 옆땋기",
+      "face": "spearmage.face-lock.png",
+      "front": "spearmage.athletic.front.png",
+      "role": "복부 갑주·가슴선/상완/허벅지"
+    }
+  ],
+  "faceOrigins": [
+    {
+      "id": "transmuter",
+      "file": "transmuter.face-lock.png",
+      "sha256": "15ab7e47b4a9b3efd4ac4062b4ef7e528ae69fca7f382b60f2543b6094fd912d"
+    },
+    {
+      "id": "spearmage",
+      "file": "spearmage.face-lock.png",
+      "sha256": "fc2198af2bec17d8895fcb400368c76f7698614764d6134b6d520b1bc8760e32"
+    }
+  ],
+  "files": [
+    {
+      "id": "transmuter",
+      "file": "transmuter.athletic.front.png",
+      "sha256": "9e9706bc9535890c5501bf83845af2e030edcbd7e7bc5a7e30c60c94178c613c",
+      "width": 1024,
+      "height": 1536,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "zeroPixels": 1079328
+      }
+    },
+    {
+      "id": "spearmage",
+      "file": "spearmage.athletic.front.png",
+      "sha256": "33eff3edcf86d8807d5ae7ff7adb02bc900f10e38b67c266e0db72570e854b4a",
+      "width": 1024,
+      "height": 1536,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "zeroPixels": 1091447
+      }
+    }
+  ],
+  "bodyApproved": false,
+  "turnaroundAvailableForThisBody": false,
+  "meshAvailable": false,
+  "rigAvailable": false,
+  "animationAvailable": false,
+  "gameplayReady": false,
+  "runtimeApplied": false,
+  "notes": [
+    "Body images are source-art review outputs; no mesh/rig/animation/playable integration.",
+    "v19 three-view sheets are previous hair/body history and must not be used as current v21 geometry references.",
+    "Canonical face PNGs stay byte-identical; face likeness in generated derivatives remains a visual review gate."
+  ]
+}
