@@ -20,6 +20,7 @@ Shader "EXODUSER/GroundSkillProjection"
             Tags { "LightMode"="ExoduserGroundProjection" }
             Cull Front ZWrite Off ZTest Always Blend One [_DstBlend]
             HLSLPROGRAM
+            #pragma target 3.5
             #pragma vertex Vert
             #pragma fragment Frag
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"

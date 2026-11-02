@@ -9,6 +9,7 @@ Shader "EXODUSER/GroundSkillReceiverDepth"
             Tags { "LightMode"="ExoduserGroundReceiver" }
             ZWrite On ZTest LEqual Cull Off ColorMask 0
             HLSLPROGRAM
+            #pragma target 3.5
             #pragma vertex Vert
             #pragma fragment Frag
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
