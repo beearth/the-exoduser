@@ -6,6 +6,8 @@ namespace Exoduser.UnityPort.Vfx
         public const uint EnemyPoisonCore=0xc8e8a8,EnemyPoisonMid=0x5f8a2e,EnemyPoisonShadow=0x1c2810;
         public const uint EnemyDarkCore=0xcdb2e0,EnemyDarkMid=0x5e3478,EnemyDarkShadow=0x170c20;
         public static float BossImpactOpacity(double age){return age<0||age>=.1?0:(float)System.Math.Pow(1-age/.1,2);}
+        public static float KiLayerOpacity(int layer,bool heavy){switch(layer){case 0:return .35f;case 1:return .025f;case 2:return .08f;case 3:return heavy?.08f:.07f;case 4:return heavy?.50f:.72f;default:return 0;}}
+        public static int FriendlyKiOrder(float actorY){return Order(actorY,-1024);}
         // Preserve the source image's value structure, with the approved restrained palette.
         public static uint EnemyPixel(uint rgb,bool poison)
         {

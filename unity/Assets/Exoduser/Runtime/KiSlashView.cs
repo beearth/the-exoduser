@@ -48,7 +48,8 @@ namespace Exoduser.UnityPort
             var active=new HashSet<int>();int slot=0;
             foreach(var p in simulation.Projectiles)
             {
-                int order=25000+slot++*5;
+                bool restrained=NativeRemodel3D.Active&&!NativeDruidArt.ProjectileBaseline;
+                int order=(restrained?Vfx.SkillPresentation.FriendlyKiOrder(p.Y):25000)+slot++*5;
                 if(!p.Active)continue;active.Add(p.Id);
                 if(!projectiles.TryGetValue(p.Id,out var layers))
                 {
@@ -57,14 +58,15 @@ namespace Exoduser.UnityPort
                     projectiles.Add(p.Id,layers);
                 }
                 float progress=Mathf.Clamp01(1-p.Life/Mathf.Max(1,p.MaxLife));
+                for(int i=0;i<layers.Length;i++)layers[i].sortingOrder=order+i;
                 int cell=Mathf.Min(8,Mathf.FloorToInt(progress*9));
                 float alpha=Mathf.Min(1,(1-progress)*2.5f),size=(p.Step==3?252:192)*p.ChargeScale;
-                Set(layers[0],cell,p.X,p.Y,p.Angle,size*1.14f,size*1.14f,alpha*.9f);
+                Set(layers[0],cell,p.X,p.Y,p.Angle,size*1.14f,size*1.14f,alpha*(restrained?Vfx.SkillPresentation.KiLayerOpacity(0,p.Step==3):.9f));
                 int far=(p.TrailHead-4+5)%5,near=(p.TrailHead-2+5)%5;
-                Set(layers[1],cell,p.TrailX[far],p.TrailY[far],p.Angle,size*.9f,size*.9f,alpha*.08f);
-                Set(layers[2],cell,p.TrailX[near],p.TrailY[near],p.Angle,size*.9f,size*.9f,alpha*.18f);
-                Set(layers[3],cell,p.X,p.Y,p.Angle,size*1.08f,size*1.08f,alpha*(p.Step==3?.3f:.18f));
-                Set(layers[4],cell,p.X,p.Y,p.Angle,size,size,alpha);
+                Set(layers[1],cell,p.TrailX[far],p.TrailY[far],p.Angle,size*.9f,size*.9f,alpha*(restrained?Vfx.SkillPresentation.KiLayerOpacity(1,p.Step==3):.08f));
+                Set(layers[2],cell,p.TrailX[near],p.TrailY[near],p.Angle,size*.9f,size*.9f,alpha*(restrained?Vfx.SkillPresentation.KiLayerOpacity(2,p.Step==3):.18f));
+                Set(layers[3],cell,p.X,p.Y,p.Angle,size*1.08f,size*1.08f,alpha*(restrained?Vfx.SkillPresentation.KiLayerOpacity(3,p.Step==3):p.Step==3?.3f:.18f));
+                Set(layers[4],cell,p.X,p.Y,p.Angle,size,size,alpha*(restrained?Vfx.SkillPresentation.KiLayerOpacity(4,p.Step==3):1));
             }
             var remove=new List<int>();foreach(var id in projectiles.Keys)if(!active.Contains(id))remove.Add(id);
             foreach(int id in remove){foreach(var r in projectiles[id])UnityEngine.Object.Destroy(r.gameObject);projectiles.Remove(id);}

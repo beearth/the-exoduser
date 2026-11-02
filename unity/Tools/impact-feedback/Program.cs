@@ -9,6 +9,9 @@ static class Program
     static int Main()
     {
         try {
+            double bright=0;for(int layer=1;layer<5;layer++)bright+=SkillPresentation.KiLayerOpacity(layer,true);
+            Check(bright<.7&&SkillPresentation.KiLayerOpacity(4,true)>=.45,"3D 충전 검기는 윤곽을 유지하되 발광 합이0.7 미만이어야 한다");
+            Check(SkillPresentation.FriendlyKiOrder(7420)+4<7392+6,"큰 아군 검기보다 근처 적/적탄의 원화가 앞에 그려져야 한다");
             Check(SkillPresentation.BossImpactOpacity(-.01)==0&&SkillPresentation.BossImpactOpacity(0)==1,"보스 국소광은 실제 타격 이전에는 없고 타격 때만 시작한다");
             Check(SkillPresentation.BossImpactOpacity(.05)>0&&SkillPresentation.BossImpactOpacity(.05)<1&&SkillPresentation.BossImpactOpacity(.1)==0,"보스 국소광은100ms 이내 소멸한다");
             foreach(bool poison in new[]{true,false}) {

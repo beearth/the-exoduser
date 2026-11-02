@@ -71,7 +71,7 @@ namespace Exoduser.UnityPort
             public string device,coreTraceSha256; public bool world3D,baseline,passed;
             public int flipbookFrames,peakSprites,maxReactingTargets,normalReactingTargets;public bool warriorOnly,responseBaseline;public int frames,contacts,dropped,damage,casts,spawned,peakParticles,skillGraphEvents,peakSkillHandles,poisonFrames,thornFrames,darkFrames;
             public int captureWidth,captureHeight;
-            public bool projectileBaseline;public int originalPoisonFrames,originalPhysicalFrames,originalDarkFrames,originalBulletFallbacks;
+            public bool projectileBaseline;public int originalPoisonFrames,originalPhysicalFrames,originalDarkFrames,originalBulletFallbacks,kiOverlapShots;
             public float normalKnockback,kiKnockback,slamKnockback;
             public int killedTargets;public bool killContactSeen;
             public bool kiThirdCastSeen,kiThirdHitSeen;public int kiThirdTier;
@@ -127,6 +127,9 @@ namespace Exoduser.UnityPort
                 for(int f=0;f<length;f++,frame++)
                 {
                     impactReviewClock=frame/60f;
+                    // The initial lane has passed behind the hero by the charged third cut.
+                    // Request fresh actual moving shots in front of that cut in both render paths.
+                    if(sectionIndex==1&&f==200&&sim.Druid!=null)for(int k=0;k<3;k++){sim.Druid.Projectiles.Add(new BossProjectile{X=p.X+220+k*35,Y=p.Y+10+k*22,Vx=-3,Vy=0,R=8,Sz=1.1,Life=180,Ml=180,Dmg=1,Active=true,DruidPoison=k==0,El=k==2?3:0,ParryClass=k==1?"physical":"magic"});rc.kiOverlapShots++;}
                     sim.Stage.Enabled=false;
                     // Keep the accepted Core knockback loop live; suppress only voluntary AI in this explicit fixture.
                     foreach(var e in sim.Enemies)e.Stunned=180;
