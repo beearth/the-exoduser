@@ -1,3 +1,9 @@
+## 2026-11-02 상자 국소 albedo 분리 후보 — source-only·미채택
+
+- 같은64px Mac 원본6장 직접 검토: 이전6a/9d 반사 후보 RETOUCH/미채택. 반사 데이터/PMREM 준비를 제거하고 기존 기본색·금속도B로 목재/철테 톤을 분리하는 한 개 소스 후보를 준비했다. 전역노출·빛·크기·GLB·충돌·보상·game/index/title 보존.
+- 같은모델 `setMaterialSeparationEnabled(false/true)`는 uniform만 전환, OFF 원본PBR/고정cache key 유지. 셰이더 오류→2D폴백,6a의dispose/late-model/참조 해제 보존. 재질/수명8+기존12=20 CPU PASS. 실제GPU/시각/비용·반복 프로그램 수는 미검증.
+- 정확 수식·API·퇴역 반사장·다음Mac1x 판정은 [상자 최신 계약](4.1맵디자인+설정/TRIPO_CHEST_GAME_20261102.md). 기존branch만 정상 보존하며 main/CI/배포0.
+
 ## 2026-11-02 상자 재질 가독성 source-only 후보 — 미채택
 
 - 공식 ea24 닫힘/열림 원본·Tripo 원본을 대조하고 r160 GLTF 채널/색공간/알파·기존 조명과 환경 반사 부재를 분리 조사했다. 주원인 미확정이며 금속도 반전/전역 노출·크기·발광 보정은 하지 않는다.
