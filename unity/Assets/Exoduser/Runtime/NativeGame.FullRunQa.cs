@@ -167,7 +167,7 @@ namespace Exoduser.UnityPort
                             double dx=p.X-bullet.X,dy=p.Y-bullet.Y,d=dx*dx+dy*dy;
                             if(d>=closestThreat||dx*bullet.Vx+dy*bullet.Vy<=0)continue;
                             closestThreat=d;threat=new Vector2((float)bullet.X,(float)bullet.Y);
-                            defend=bullet.ParryClass!="forbidden"&&p.Mana>30;
+                            defend=bullet.ParryClass=="magic"&&p.Mana>30;
                             evade=!defend;
                         }
                     }

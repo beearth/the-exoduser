@@ -15,6 +15,10 @@ $start=$source.IndexOf('                    Vector2 destination =',[StringCompar
 $end=$source.IndexOf('                    var move = navigation.Direction(',$start,[StringComparison]::Ordinal)
 if($start -lt 0 -or $end -le $start){throw 'Actual fullrun route body not found'}
 $body=$source.Substring($start,$end-$start)
+$defenseStart=$source.IndexOf('                            defend=',[StringComparison]::Ordinal)
+$defenseEnd=$source.IndexOf('                            evade=!defend;',$defenseStart,[StringComparison]::Ordinal)
+if($defenseStart -lt 0 -or $defenseEnd -lt $defenseStart){throw 'Actual fullrun defense selection not found'}
+$defenseBody=$source.Substring($defenseStart,$defenseEnd-$defenseStart)+'evade=!defend;'
 $prefix=@'
 using System;using System.IO;using System.Collections.Generic;using System.Text.Json;using Exoduser.UnityPort.Core;
 struct Vector2{public float x,y;public Vector2(float a,float b){x=a;y=b;}public static Vector2 up=>new Vector2(0,1);public float magnitude=>(float)Math.Sqrt(x*x+y*y);public Vector2 normalized{get{float d=magnitude;return d>0?new Vector2(x/d,y/d):new Vector2();}}public static Vector2 operator+(Vector2 a,Vector2 b)=>new Vector2(a.x+b.x,a.y+b.y);public static Vector2 operator-(Vector2 a,Vector2 b)=>new Vector2(a.x-b.x,a.y-b.y);public static Vector2 operator*(Vector2 a,float f)=>new Vector2(a.x*f,a.y*f);public static float SqrMagnitude(Vector2 a)=>a.x*a.x+a.y*a.y;public static float Distance(Vector2 a,Vector2 b)=>(float)Math.Sqrt(SqrMagnitude(a-b));}
@@ -24,6 +28,10 @@ static readonly List<object> rows=new List<object>();static int failures;
 static void Check(bool ok,string name,Route route){rows.Add(new{name,passed=ok,x=route.X,y=route.Y,objective=route.Objective});if(!ok){failures++;Console.WriteLine("FAIL "+name+" actual="+route.Objective+" "+route.X+","+route.Y);}}
 static bool At(Route r,float x,float y)=>Math.Abs(r.X-x)<.01&&Math.Abs(r.Y-y)<.01;
 static bool FullRunLine(float x,float y,float tx,float ty)=>true;
+class DefenseInput{public string ParryClass;public float Mana;}
+static (bool defend,bool evade) Defense(string kind,float mana){var p=new DefenseInput{Mana=mana};var bullet=new DefenseInput{ParryClass=kind};bool defend=false,evade=false;
+/* DEFENSE_BODY */
+return (defend,evade);}
 static Route ReadActualRoute(Simulation sim){var Simulation=sim;var p=sim.Player;var flow=sim.Stage;var visits=new HashSet<int>();string objective="";
 '@
 $suffix=@'
@@ -35,9 +43,13 @@ s=Make();s.Stage.InArena=true;s.Stage.BossAlive=true;s.AddEnemy(new EnemyState{I
 s=Make();s.Stage.InArena=true;s.Stage.BossAlive=false;s.Stage.Exits.Add(new StageFlow.Tile(50,5));r=ReadActualRoute(s);Check(At(r,2020,220),"defeated arena goes to real opened exit",r);
 s=Make();s.Stage.BossUnlocked=true;s.Stage.Exits.Add(new StageFlow.Tile(99,14));s.Stage.Exits.Add(new StageFlow.Tile(100,14));r=ReadActualRoute(s);Check(At(r,4020,580),"unlocked field approaches real gate",r);
 s=Make();s.AddEnemy(new EnemyState{Alive=true,Hp=100,MaxHp=100,X=2250,Y=4100});r=ReadActualRoute(s);Check(At(r,2000,4100)&&r.Objective=="combat","nearby enemy keeps in-range combat",r);
+var d=Defense("physical",100);Check(!d.defend&&d.evade,"physical bullet must not choose wrong Q input",new Route{Objective="physical"});
+d=Defense("magic",100);Check(d.defend&&!d.evade,"magic bullet with mana chooses Q",new Route{Objective="magic"});
+d=Defense("forbidden",100);Check(!d.defend&&d.evade,"unparryable bullet chooses evade",new Route{Objective="forbidden"});
+d=Defense("magic",20);Check(!d.defend&&d.evade,"low mana chooses evade instead of unavailable Q",new Route{Objective="low-mana"});
 File.WriteAllText(args[0],JsonSerializer.Serialize(new{passed=rows.Count-failures,failures,scope="Actual NativeGame.FullRunQa route body with pure geometry shim; no Player/GPU claim",rows},new JsonSerializerOptions{WriteIndented=true}));Console.WriteLine("checks="+rows.Count+" failures="+failures);return failures>0?1:0;}}
 '@
-[IO.File]::WriteAllText((Join-Path $Output 'Program.cs'),$prefix+"`n"+$body+"`n"+$suffix)
+[IO.File]::WriteAllText((Join-Path $Output 'Program.cs'),$prefix.Replace('/* DEFENSE_BODY */',$defenseBody)+"`n"+$body+"`n"+$suffix)
 $core=$project.Replace('\','/')+'/Assets/Exoduser/Runtime/Core/**/*.cs'
 $csproj='<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><EnableDefaultCompileItems>false</EnableDefaultCompileItems><NuGetAudit>false</NuGetAudit></PropertyGroup><ItemGroup><Compile Include="Program.cs"/><Compile Include="'+$core+'"/></ItemGroup></Project>'
 [IO.File]::WriteAllText((Join-Path $Output 'FullRunRouteTests.csproj'),$csproj)
