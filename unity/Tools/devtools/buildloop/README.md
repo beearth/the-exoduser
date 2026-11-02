@@ -26,7 +26,7 @@ origin/unity/main 변경을 확인해 exo-unity Win 빌드 → 숨은 데스크�
 | 교체 | build만 교체. 이전 build는 build_prev_<이전 commit>_<시각>으로 영구 보존. 사용자 실행 중이면 pending, 다음 회차에 먼저 재시도하며 새 후보로 덮어쓰지 않음 |
 | 메타데이터 | build-commit.json의 utc·branch·commit(full SHA)·exe·exeSha256·buildRun·m1Run·previousBuild 갱신. runtime/core DLL 해시 갱신, 구 패키지 검수 참조는 null. 기존 custom/desktop 필드 보존. 새 시각 판정은 미검증 |
 | 바로가기 | .lnk 파일과 -force-d3d11 --remodel3d 인자는 읽기 대조만 하며 쓰지 않음 |
-| 보관 | loop/runs/<id> 빌드/로그/캡처/run.json. 실패·브랜치 패키지와 과거 run 자동 삭제 없음 |
+| 보관 | loop/runs/<id> 빌드/로그/캡처/run.json. 실패 본편은 같은 run의 failed-build로 옮겨 다음 SHA를 막지 않음. 브랜치 패키지와 과거 run 자동 삭제 없음 |
 
 브랜치 시험은 -OutputRoot I:/EXODUSER-Storage/devtools/fix-1102를 지정한다. 본편 상태·build-commit·build·바로가기를 교체하지 않는다. 동일 실패는 원인 수정 후 한 번만 재시도한다. exo의 내부 crash retry도 같은 횟수에 포함한다.
 

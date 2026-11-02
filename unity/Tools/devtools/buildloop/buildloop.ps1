@@ -86,7 +86,7 @@ function Load-State {
     $bcPath = Join-Path $Cfg.Out 'build-commit.json'
     if (Test-Path -LiteralPath $bcPath) {
       $raw = Get-Content -LiteralPath $bcPath -Raw -Encoding UTF8
-      $mc = [regex]::Match($raw, '"commit"\s*:\s*"([^"]+)"'); $mt = [regex]::Match($raw, '"built_at"\s*:\s*"([^"]+)"')
+      $mc = [regex]::Match($raw, '"commit"\s*:\s*"([^"]+)"'); $mt = [regex]::Match($raw, '"(?:utc|built_at)"\s*:\s*"([^"]+)"')
       if ($mc.Success) {
         $full = ''
         try { $full = ([string](GitR rev-parse $mc.Groups[1].Value)).Trim() } catch { }
@@ -808,7 +808,14 @@ function Cmd-Run {
     } else {
       $run.replaceNote = '실패 - 기존 build 유지'
       WriteJson (Join-Path $runDir 'loop-receipt.json') $loopReceipt
-      # Failed package retained for diagnosis.
+      # Preserve this failed package under its run so a later SHA can build again.
+      if ((-not $NoSwap) -and (Test-Path -LiteralPath $stage)) {
+        $archive = Join-Path $runDir 'failed-build'
+        $rootPath = [IO.Path]::GetFullPath($Cfg.Out).TrimEnd('\') + '\'
+        if (-not ([IO.Path]::GetFullPath($stage)).StartsWith($rootPath,[StringComparison]::OrdinalIgnoreCase) -or -not ([IO.Path]::GetFullPath($archive)).StartsWith($rootPath,[StringComparison]::OrdinalIgnoreCase)) { throw '실패 빌드 보관 경로 이탈' }
+        if ((Get-Item -LiteralPath $stage).Attributes -band [IO.FileAttributes]::ReparsePoint) { throw '링크인 실패 빌드는 이동하지 않음' }
+        Move-Item -LiteralPath $stage -Destination $archive
+      }
     }
     Copy-Item -LiteralPath (Join-Path $runDir 'loop-receipt.json') -Destination (Join-Path $Cfg.Out 'loop-receipt.json') -Force
     Log ("build 교체: {0} - {1}" -f $run.replaced, $run.replaceNote)
