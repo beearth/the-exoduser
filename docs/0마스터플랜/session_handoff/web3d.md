@@ -1,13 +1,15 @@
-# 웹 3D 인계 — 2026-11-02 6라운드
+# 웹 3D 인계 — 2026-11-02 7라운드
 
-작업본 G:/exoduser-wt/codex-web3d, codex/web3d-trial-20261031. 현행은 [SSOT의 6라운드](../../4.1맵디자인+설정/WEB3D_TRIAL_20261031.md)다. 5라운드 제작자 PASS/기본ON 가능 판정은 CTO 반려로 취소했다. **기본 r3d OFF 유지, 독립 CTO 재판정 대기(RETOUCH)**.
+작업본 G:/exoduser-wt/codex-web3d, codex/web3d-trial-20261031. [현행 R7 SSOT](../../4.1맵디자인+설정/WEB3D_TRIAL_20261031.md). CTO 21:40의 새 스티커 결함을 수정했다. **제작자 해당범위 VISUAL PASS / 독립 CTO 재판정 대기 / 기본 r3d OFF 유지**. 과거5라운드 자체PASS로 기본ON을 결정하지 않는다.
 
-요청4건: 제단 표시용 흙의 밝은 micro-island/추가 점입자 제거, 회색 재질의 RGB 색광 덮임 제거, 원래 조명/후처리 복원 및 가상 shaft_pool 10개 제거, GPU 소품의 원래 페인터/정렬/가림 복원. 추가 숲·수풀과 접지 그림자가 원래 소품을 덮지 않도록 동일 native mask를 사용한다. 표시 캐시 luminance opening radius6+5tap 평활, 원본PNG·맵/충돌·전투/AI/저장·HUD 불변. 추가 숲의 미세 질감이 부드러워진 점은 전후 원본 화면으로 재판정한다.
+흩어진 groundOnly90개를 제거하고 이유 있는 bank밑동 연결48입력/31표시로 전환했다(전체165입력/147표시·10구역). 실제alpha윤곽40~80world px feather, 원래 native RGB동일scalar ±.045로 색을 보존한다. 표시용 바닥·수풀 잡티를 정리하고 미풍6.8px·안개 시간주파수5배·화면에 들어오는 유령나무3곳을 조정했다. 원본PNG/맵/충돌/전투·AI·저장/HUD 불변, 생성비용0.
 
-외부보고 I:/EXODUSER-Storage/codex-takeover/web3d-r6/REPORT.md, golden/qa.json·performance-final/qa.json·motion-final/qa-receipt.json·playback-final.json·source-proof-final.json·delivery.json. 확인3377(분리 source server 유지), 사용자3333은 기존5분 예약 작업으로만 갱신한다. 시작 origin/main9c50bf964 fetch·merge Already up to date. 실제 반영SHA/원격/3333 대조는 delivery.json에 기록한다.
+런타임 입력 4c88ef67d524756a8ce8af2a98f302bec60547c2. 시작 origin/main ff6494308 병합 후 d2ef5baaa/a4d48922d/2a3357e53의 기존UI·문서를 정상병합했다. 마지막 로딩인장critical header 병합은 web3d·native게임함수 불변, 최신회귀/32:9 smoke 별도검수. 최종commit/원격/3333/DEMO·EA는 외부 delivery.json 참조(이문서에 자기commit SHA를 예측하지 않음).
 
-13카메라×3해상도39쌍 hue 최대 바닥7.1532°/소품전체7.1907°/개별10.0219°, 모두15° 이내. 해당4증상·동일유형 추가 결함은 검토한1x/3x 표본에서0. 인물RGBA차이0·draw/HUD동일·맵불변·오류0. 64적/96탄 지속8회 평균177.81~204.33FPS, 1초창최저141.25(OFF포함)/152.88(ON). 회귀69/69·project111/111·guard PASS. 무음6편×10초12fps, 실제렌더FPS와 구분. 자연보스완주·NW.js재빌드·Unity·Steam게시 미검증/미실행.
+외부보고 I:/EXODUSER-Storage/codex-takeover/web3d-r7/REPORT.md. 실제리뷰 http://127.0.0.1:3377/tmp/web3d-r7-review/index.html (source server 유지). final-delivery/cameras-fixed/qa.json·motion/qa.json·motion/media.json·playback.json·visual-review.json·route/qa.json·source-proof.json, 성능은 ../budget-performance/qa.json. 13구도×3해상도39쌍 바닥hue최대13.0921°/개별소품11.6363°/패치단독1.8803°, 패치밝기−.5184~0%. 5패치/인물/바위/상부안개3x 추가잔점·잘린스티커윤곽0.
 
-검수 브라우저 --mute-audio·게임음량0·API쓰기차단·I: 임시프로필을 유지한다. Dota 등 사용자앱은 보류사유가 아니며 종료금지. 신규 생성/유료도구0. 후속은 같은 golden 원본/3x/영상으로 CTO 재판정하며 제작자 자체 수치통과를 최종아트PASS로 올리지 않는다.
+요청12영상10초1x120프레임/드롭0. 원시68~83장 timestamp hold 12fps이며 실렌더FPS와구분. Core/AI활성64적96탄12초×8조건, ON평균151.11~191.24FPS/1초창최저135.85, Dota실행중.75/75·project113/113·guard PASS. 인물RGBA차0·draw/HUD/map동일·오류0. 실제키보드12목적지194.832초(무적fixture), 추가route영상1x끝까지재생했으나2프레임드롭남음. 실패영수증과웜업재검수도보존했다.
+
+브라우저 --mute-audio·게임음량0·API쓰기차단·I: 프로필. 사용자앱종료0. 3333은기존5분예약으로갱신/수동재시작0. 자연HP보스완주/NW.js재빌드/전체AAA/Steam게시미검증·미실행. 후속CTO는같은R7 원본/3x/영상으로판정한다.
 
 Unity 반영: 대기.

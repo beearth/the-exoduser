@@ -1,8 +1,8 @@
 > 진행 프로젝트: [MAP_IMPROVEMENT_PROJECT.md](MAP_IMPROVEMENT_PROJECT.md) · 2.5D 깊이 기준: [DEPTH_2_5D_BENCHMARK_20260930.md](DEPTH_2_5D_BENCHMARK_20260930.md)
 
-## 2026-11-02 — 웹 3D 5라운드 마감(기본 OFF)
+## 2026-11-02 — 웹 3D 7라운드 (기본 OFF)
 
-`?r3d=1`은 원본 맵/인물/VFX/HUD/판정을 보존한 표현 레이어다. 207입력/206표시 군락·ct 환경 인수로 동측 직선 제거·원경 연결, 기존 가림.35/빛줄기10/동적광18/2층안개/원화요철3.6을 유지한다. 13카메라·고유색63영역최대14.1367°·양해상도전Tier120FPS이상(1초창최저138.28)·12목적지/239.334초전편재생·인물RGBA차0/HUD/map동일. [현행수치·범위](WEB3D_TRIAL_20261031.md), I:/EXODUSER-Storage/codex-takeover/web3d-r5/REPORT.md·3377 /tmp/web3d-r5-review/index.html·delivery.json. 자체표현PASS/기본ON가능판정이지만 실제OFF유지. 자연보스완주/전체AAA/Unity/Steam완료와구분한다.
+원본맵 위 표현레이어의 스티커형 groundOnly90개를 제거, bank밑동 연결48입력/31표시(전체165/147)·실alpha feather40~80px·native RGB동일scalar로 수정. 표시잡티정리/미풍/안개/유령나무 가시성도수정. 13구도×3해상도 바닥hue13.0921°/개별소품11.6363°/패치1.8803°·패치밝기−.5184~0%, 직접3x 추가점/스티커윤곽0. 요청12편10초1x드롭0, ON평균151.11~191.24FPS(64적96탄·Dota실행),12목적지키보드완주. 추가194초route영상은1x재생2프레임드롭남음. **제작자R7수정범위PASS·독립CTO판정대기/기본OFF**. [정확한현행수치·증거범위](WEB3D_TRIAL_20261031.md), I:/EXODUSER-Storage/codex-takeover/web3d-r7/REPORT.md·delivery.json, 3377 /tmp/web3d-r7-review/index.html. 자연보스완주/전체AAA/Unity/Steam완료와구분.
 
 ## 2026-10-20 — MAPLOOK-HOLE Godot 독립 소환굴 오버레이
 
