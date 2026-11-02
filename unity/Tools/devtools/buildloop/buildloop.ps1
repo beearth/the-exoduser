@@ -188,7 +188,10 @@ function Release-Lock {
 function Get-UnityProcs { return @(Get-Process Unity, EXODUSER-Unity -ErrorAction SilentlyContinue | Where-Object { -not $_.HasExited }) }
 function Get-FreeCommitGB { $os = Get-CimInstance Win32_OperatingSystem; return [math]::Round($os.FreeVirtualMemory / 1MB, 1) }
 function Wait-Ready([bool]$libraryExists) {
-  $need = 20; if (-not $libraryExists) { $need = 30 }
+  # 11-02 사용자: 사용자 프로그램(Dota 등) 실행은 대기 사유 아님. 권장 20/30GB는 경고만, 최소 8GB만 대기.
+  $want = 20; if (-not $libraryExists) { $want = 30 }
+  $need = 8
+  $f0 = Get-FreeCommitGB; if ($f0 -lt $want) { Log ("경고: 커밋 여유 {0} GB < 권장 {1} - 대기하지 않고 진행(최소 {2})" -f $f0, $want, $need) }
   $deadline = (Get-Date).AddMinutes($Cfg.WaitMaxMin)
   while ($true) {
     $procs = @(Get-UnityProcs); $free = Get-FreeCommitGB
