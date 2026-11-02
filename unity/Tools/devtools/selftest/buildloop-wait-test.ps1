@@ -81,3 +81,39 @@ exit 0
 Set-UnityReservation 'reserve'
 Set-UnityReservation 'unreserve'
 'PASS: real hidden reservation subprocess, owner=buildloop, TTL=210, stderr accepted'
+
+# Build -> smoke has its own waiting boundary after the build consumed its reservation.
+$fixture=Join-Path 'I:\EXODUSER-Storage\devtools\fix-1102\fix2' ('phase-wait-'+[guid]::NewGuid().ToString('N'))
+New-Item -ItemType Directory -Path $fixture|Out-Null
+& git.exe -C $fixture init -q
+if($LASTEXITCODE -ne 0){throw 'fixture git init failed'}
+$Cfg=@{Out=$fixture;Worktree=$fixture;Node='unused';KeepRuns=10};$RunsDir=Join-Path $fixture 'runs';$HaltFile=Join-Path $fixture 'HALT'
+$script:saved=[pscustomobject]@{deployed=$null;pending=$null;lastAttemptSha='before';lastAttemptVerdict='PASS';history=@()}
+$script:FixtureGitExe=(Get-Command git.exe).Source
+function git.exe { & $script:FixtureGitExe -c ('safe.directory='+$fixture.Replace('\','/')) @args }
+$script:queued=$false;$script:readyCalls=0
+function Set-UnityReservation($command){$script:queued=($command -eq 'reserve')}
+function GitR {return 'abcdef012345'}
+function Test-RequiredMedia {return @()}
+function Judge-Log {return [pscustomobject]@{fail=0;known=0}}
+function Get-UnityProcs {return @([pscustomobject]@{Id=555})}
+function Wait-Ready {
+ $script:readyCalls++
+ if(-not $script:queued){throw 'FAIL: build-to-smoke wait happened before reserve'}
+ return ($script:readyCalls -eq 1)
+}
+function Invoke-Exo($command,$jobArgs,$logBase){
+ if($command -ne 'build'){throw 'fixture must stop before real smoke'}
+ $script:queued=$false
+ New-Item -ItemType Directory -Path $jobArgs[1] -Force|Out-Null
+ [IO.File]::WriteAllText((Join-Path $jobArgs[1] 'EXODUSER-Unity.exe'),'fixture, never executed')
+ WriteJson $jobArgs[3] @{passed=$true}
+ return [pscustomobject]@{exit=0;receipt=$null;waitReason=''}
+}
+Cmd-Run
+$f=Get-ChildItem $RunsDir -Recurse -Filter run.json|Select-Object -First 1
+$r=ReadJson $f.FullName
+if($r.verdict -ne 'WAIT' -or $script:readyCalls -ne 2){throw ('FAIL: smoke waiting boundary: '+$r.verdict+' '+$r.replaceNote)}
+if($script:saved.lastAttemptSha -ne 'before' -or $script:saved.history[0].fail -ne 0){throw 'FAIL: post-build WAIT retry/failure state'}
+if(-not(Test-Path (Join-Path $f.DirectoryName 'waiting-build/EXODUSER-Unity.exe'))){throw 'FAIL: WAIT package not preserved'}
+'PASS: build-to-smoke reserve before wait, WAIT retry state, completed package preserved'

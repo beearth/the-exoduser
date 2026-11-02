@@ -751,6 +751,7 @@ function Cmd-Run {
     $pj = $null; $m1 = $null; $sm = $null
     if ($SkipSmoke -and $buildOk) { $run.verdict = 'ABORT'; $run.replaceNote = '빌드만(-SkipSmoke) - build_new 보관'; $run.smokeNote = '스모크 생략'; Log 'SkipSmoke: 빌드만 하고 종료'; return }
     if ($buildOk) {
+      Set-UnityReservation 'reserve'
       # 다른 Unity 가 끼어들지 않았는지 다시 확인(우리 빌드 프로세스는 이미 종료)
       $others = @(Get-UnityProcs)
       if ($others.Count -gt 0) { Log ("스모크 전 대기: 다른 Unity {0}개" -f $others.Count); if (-not (Wait-Ready $true)) { Set-WaitResult $run ('Unity 순번 대기 초과: ' + (Get-BlockingUnityOwner)); return } }

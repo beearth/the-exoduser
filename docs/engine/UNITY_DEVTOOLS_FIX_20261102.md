@@ -41,3 +41,5 @@
 | 검수 범위 | 사전 검사 1회: Player Core114/Runtime217, Editor Core114/Runtime217/Editor56 모두 오류0. 종료 경합 후속 수정은 정식 Unity 게이트에서 확인. 과거 Rm4PoolLightCuller 누락은 asmref 수집으로 해결 |
 
 정식 게이트·단계표·HUD 캡처·원격 SHA·남은 한계는 I:/EXODUSER-Storage/devtools/fix-1102/fix2/REPORT.md에 기록한다. 브랜치 NoSwap으로 unity-latest와 바로가기는 교체하지 않는다.
+
+빌드가 예약을 소비한 뒤 스모크 전 다른 Unity를 기다리는 경계에도 reserve -Owner buildloop를 먼저 수행한다. Unity 없는 실제 Cmd-Run 경계 시험으로 WAIT·lastAttemptSha 보존·완료 패키지 waiting-build 보관을 확인한다. 진행 중이던 bb2b0f619 게이트의 해당 경로는 대기자 0으로 통과했고, 이 보완은 도구 전용 후속 변경이다.
