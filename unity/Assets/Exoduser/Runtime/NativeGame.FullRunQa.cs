@@ -29,7 +29,7 @@ namespace Exoduser.UnityPort
             public int[] regionKills, regionTotals;
         }
         [Serializable] sealed class FullRunNearby {public string kind;public int id,type;public double hp,x,y,distance;public bool line;}
-        string fullRunCapturePrefix="",fullRunCaptureActivity="";float fullRunAimX,fullRunAimY;
+        string fullRunCapturePrefix="",fullRunCaptureActivity="",fullRunLastCaptureActivity="";int fullRunLastCaptureFrame=-10000;float fullRunAimX,fullRunAimY;
         [Serializable] sealed class FullRunReceipt
         {
             public string scope = "Actual GPU Player; virtual InputSystem keyboard/mouse -> NativeGame.FixedUpdate. No direct position/HP/resource edits, enemy injection, forced kill or gate unlock. Boss retries use the real death screen callback and its ordinary resource restoration; deaths and retries are counted. Story and first practice use supported skip. Earned growth points use the ordinary transactional stat purchase API; owned usable gear is equipped through NativeInventory.Equip. No forced healing.";
@@ -38,6 +38,7 @@ namespace Exoduser.UnityPort
             public float seconds, averageFps, frameP95Ms, frameP99Ms, longestFrameMs;
             public int renderedFrames, gearChanges, deaths, retries, policyChanges;
             public string controlPolicyScope="Optional fullrun-policy.json changes virtual boss inputs only; accepted settings are recorded in policy-history.jsonl. Disabled by default.";
+            public string timingScope="Raw frames include capture/resizes and concurrent work. Long-frame records are buffered and flushed after play; the final trace flush is outside the timing sample.";
             public bool worldCleared, clearModalNotApplicable, clearModalBlockedBackground, clearCancelRearmed, clearReturnedLobby, clearSaveExists;
             public float worldClearSeconds;
             public string clearUiScope = "After natural clear: actual panel callbacks and virtual Escape through NativeGame.Update; not OS/IMGUI button injection.";
@@ -47,8 +48,10 @@ namespace Exoduser.UnityPort
         sealed class FullRunFrameProbe : MonoBehaviour
         {
             public readonly List<float> milliseconds=new List<float>();
-            public NativeGame game;public string output;
-            void Update(){float ms=Time.unscaledDeltaTime*1000;milliseconds.Add(ms);if(ms>100&&game!=null&&game.Simulation!=null){var s=game.Simulation;File.AppendAllText(Path.Combine(output,"long-frames.jsonl"),JsonUtility.ToJson(new FullRunLongFrame{seconds=Time.realtimeSinceStartup,ms=ms,tick=s.TickCount,loadPhase=s.Stage.LoadPhase,arena=s.Stage.InArena,capture=game.fullRunCaptureActivity,state=s.Player.State})+"\n");}}
+            public NativeGame game;public string output;public float started;
+            readonly List<FullRunLongFrame> longFrames=new List<FullRunLongFrame>();
+            void Update(){float ms=Time.unscaledDeltaTime*1000;milliseconds.Add(ms);if(ms>100&&game!=null&&game.Simulation!=null){var s=game.Simulation;longFrames.Add(new FullRunLongFrame{seconds=Time.realtimeSinceStartup-started,ms=ms,tick=s.TickCount,loadPhase=s.Stage.LoadPhase,arena=s.Stage.InArena,capture=FullRunFrameCapture(game.fullRunCaptureActivity,game.fullRunLastCaptureFrame,Time.frameCount,game.fullRunLastCaptureActivity),state=s.Player.State});}}
+            public void Flush(){var text=new System.Text.StringBuilder();foreach(var row in longFrames)text.AppendLine(JsonUtility.ToJson(row));File.WriteAllText(Path.Combine(output,"long-frames.jsonl"),text.ToString());}
         }
 
         IEnumerator FullRunQa()
@@ -88,7 +91,7 @@ namespace Exoduser.UnityPort
             var keyboard = InputSystem.AddDevice<Keyboard>(); var mouse = InputSystem.AddDevice<Mouse>();
             var visits = new HashSet<int>();
             var patterns = new HashSet<string>();
-            var performance = gameObject.AddComponent<FullRunFrameProbe>();performance.game=this;performance.output=output;
+            var performance = gameObject.AddComponent<FullRunFrameProbe>();performance.game=this;performance.output=output;performance.started=started;
             var navigation = new FullRunNavigation();
             var controlPolicy=new FullRunControlPolicy();string policyText=null;
             string policyPath=Path.Combine(output,"fullrun-policy.json");int lastChainTick=-10000;
@@ -229,9 +232,9 @@ namespace Exoduser.UnityPort
                         var away=new Vector2(p.X,p.Y)-threat;
                         var escape=new Vector2(-away.y,away.x).normalized;
                         if(!FullRunCanMove(p.X+escape.x*80,p.Y+escape.y*80,p.Radius))escape=-escape;
-                        move=escape;keys.Add(Key.Space);objective="evade";
+                        move=escape;if(FullRunRollPress(sim))keys.Add(Key.Space);objective="evade";
                     }
-                    else if(defend){keys.Add(Key.Q);aim=threat;objective="parry";}
+                    else if(defend){if(FullRunMagicShieldPress(p.State))keys.Add(Key.Q);aim=threat;objective="parry";}
                     else if(shield){if(FullRunShieldPress(p.State,shieldDistance,shieldSpeed))keys.Add(Key.E);aim=threat;objective="physical-parry";}
                     int aux=FullRunAuxSkills(sim,fighting,nearest);
                     if((aux&1)!=0)keys.Add(Key.F);
@@ -304,6 +307,7 @@ namespace Exoduser.UnityPort
             finally
             {
                 Running=false;InputSystem.RemoveDevice(keyboard);InputSystem.RemoveDevice(mouse);
+                try{performance.Flush();}catch(Exception ex)when(ex is IOException||ex is UnauthorizedAccessException){receipt.result="qa-trace-write-error";Debug.LogError("FULLRUN_TRACE_WRITE "+ex.GetType().Name);}
                 Destroy(performance);
                 if(oldKeyboard!=null&&oldKeyboard.added)oldKeyboard.MakeCurrent();if(oldMouse!=null&&oldMouse.added)oldMouse.MakeCurrent();
             }
@@ -315,6 +319,9 @@ namespace Exoduser.UnityPort
             return kind=="physical"&&(player.State=="sDraw"||player.State=="sBash"||(player.State=="idle"&&player.Stamina>=Exoduser.UnityPort.Core.Combat.ParryRules.ShieldStaminaCost(level)));
         }
         static bool FullRunShieldPress(string state,double distance,double speed) { return state=="idle"&&distance<=110+speed*10; }
+        static bool FullRunMagicShieldPress(string state) { return state=="idle"||state=="sRecover"||state=="sBlock"; }
+        static bool FullRunRollPress(Simulation sim) { return sim.CanRollNow&&sim.TickCount%2==0; }
+        static string FullRunFrameCapture(string current,int capturedFrame,int frame,string captured) { return !string.IsNullOrEmpty(current)?current:capturedFrame>=frame-1&&capturedFrame<=frame?captured:""; }
         static bool FullRunAllocateGrowth(Simulation sim)
         {
             var p=sim.Player;var g=sim.Growth;
@@ -397,6 +404,7 @@ namespace Exoduser.UnityPort
         {
             bool wide=name=="00-lobby"||name=="combat"||name=="boss-entry"||name=="death"||name=="clear"||name=="clear-difficulty"||name=="clear-lobby";name=fullRunCapturePrefix+name;fullRunCaptureActivity=name;
             yield return new WaitForEndOfFrame();
+            fullRunLastCaptureActivity=name;fullRunLastCaptureFrame=Time.frameCount;
             var image=ScreenCapture.CaptureScreenshotAsTexture();
             try{File.WriteAllBytes(Path.Combine(output,"caps",name+".png"),image.EncodeToPNG());File.AppendAllText(Path.Combine(output,"capture-sizes.jsonl"),"{\"name\":\""+name+"\",\"width\":"+image.width+",\"height\":"+image.height+"}\n");}finally{Destroy(image);}
             if(Screen.width!=3840&&wide)
@@ -404,6 +412,7 @@ namespace Exoduser.UnityPort
                 int previousWidth=Screen.width,previousHeight=Screen.height;
                 Screen.SetResolution(3840,1080,FullScreenMode.Windowed);
                 yield return new WaitForSecondsRealtime(.25f);yield return new WaitForEndOfFrame();
+                fullRunLastCaptureActivity=name+"-3840";fullRunLastCaptureFrame=Time.frameCount;
                 image=ScreenCapture.CaptureScreenshotAsTexture();
                 try{File.WriteAllBytes(Path.Combine(output,"caps",name+"-3840.png"),image.EncodeToPNG());}finally{Destroy(image);}
                 Screen.SetResolution(previousWidth,previousHeight,FullScreenMode.Windowed);

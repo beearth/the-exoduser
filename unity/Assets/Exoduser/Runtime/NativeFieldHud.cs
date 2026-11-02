@@ -10,7 +10,7 @@ namespace Exoduser.UnityPort
  public sealed class NativeFieldHud
  {
   public struct Info { public SourceMap map;public Simulation sim;public int statPoints,passivePoints,combatPower;public float progress;public bool english; }
-  Texture2D frame,mapTex,portrait,markerRing,markerArrow;Font font;SourceMap texFor;float mapSc;int mapW,mapH;
+  Texture2D frame,mapTex,portrait,markerRing,markerArrow;Font font;NativeMinimapTiles texFor;bool mapBuilt;float mapSc;int mapW,mapH;
   readonly Dictionary<string,GUIStyle> styles=new Dictionary<string,GUIStyle>();
   static Color C(int r,int g,int b,float a=1f){return new Color(r/255f,g/255f,b/255f,a);}
   static void Fill(Rect r,Color c){var o=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=o;}
@@ -26,15 +26,15 @@ namespace Exoduser.UnityPort
 
   }
   // _mmTickBuild: tile 1 is skipped, 2 #777a7a, 4 #443355, everything else #555858; one sc-sized square per tile.
-  void BuildMap(SourceMap map)
+  void BuildMap(NativeMinimapTiles map)
   {
-   texFor=map;int mw=map.Data.width,mh=map.Data.height;float sc=Mathf.Min(122f/mw,122f/mh);mapSc=sc;
+   texFor=map;mapBuilt=true;int mw=map.Width,mh=map.Height;float sc=Mathf.Min(122f/mw,122f/mh);mapSc=sc;
    mapW=Mathf.Max(1,(int)(mw*sc));mapH=Mathf.Max(1,(int)(mh*sc));
    var px=new Color32[mapW*mapH];Color32 a=new Color32(119,122,122,255),b=new Color32(68,51,85,255),c=new Color32(85,88,88,255);
     int size=Mathf.Max(1,Mathf.CeilToInt(sc));
    for(int ty=0;ty<mh;ty++)for(int tx=0;tx<mw;tx++)
    {
-     int tv=map.DisplayTile(tx,ty);if(tv==1)continue;Color32 col=tv==2?a:tv==4?b:c;
+     int tv=map.Tile(tx,ty);if(tv==1)continue;Color32 col=tv==2?a:tv==4?b:c;
     int x0=(int)(tx*sc),y0=(int)(ty*sc);
     for(int dy=0;dy<size;dy++)for(int dx=0;dx<size;dx++){int x=x0+dx,y=y0+dy;if(x<mapW&&y<mapH)px[(mapH-1-y)*mapW+x]=col;}
    }
@@ -61,7 +61,8 @@ namespace Exoduser.UnityPort
   public void Draw(float hudWidth,Info info)
   {
    if(info.sim==null||info.map==null)return;Init();
-   if(texFor!=info.map||mapTex==null)BuildMap(info.map);
+   var tiles=NativeMinimapTiles.Read(info.map,info.sim.Stage);
+   if(!mapBuilt||!texFor.Same(tiles)||mapTex==null)BuildMap(tiles);
    var matrix=GUI.matrix;GUI.matrix=NativeUiViewport.EdgeMatrix;DrawMinimap(info);DrawCorner(info);GUI.matrix=matrix;DrawClock(hudWidth,info);
   }
   void DrawMinimap(Info info)
@@ -70,7 +71,7 @@ namespace Exoduser.UnityPort
    NativeUiAudit.Region(new Rect(8,8,141.1f,141.1f),"component","hud-minimap","미니맵 외곽");var canvas=new Rect(23.3f,23.3f,110.5f,110.5f);const float k=.85f;
    float ox=(130-mapW)/2f,oy=4,sourceH=mapH+8,ys=130f/sourceH;
    GUI.color=new Color(1,1,1,.94f);NativeUiAudit.DrawTexture(canvas,mapTex);GUI.color=old;
-   var sim=info.sim;int T=info.map.Data.tileSize;if(T<=0)T=64;int shown=0;
+   var sim=info.sim;int T=texFor.TileSize;int shown=0;
    foreach(var e in sim.Enemies){
     if(!e.Alive||sim.IsRemodelProp(e))continue;if(shown++>=60)break;float ex=ox+e.X/T*mapSc,ey=(oy+e.Y/T*mapSc)*ys;
     if(Vector2.Distance(new Vector2(ex,ey),new Vector2(65,65))>64)continue;
