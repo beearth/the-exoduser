@@ -839,7 +839,11 @@ function Get-WindowHits($pids, $label) {
         try {
             $pr = Get-Process -Id ([int]$id) -ErrorAction Stop
             $pr.Refresh()
-            if ($pr.MainWindowHandle -ne [IntPtr]::Zero) { $hits += ('{0}:{1}:pid{2}:title=[{3}]' -f $label, $pr.ProcessName, $pr.Id, $pr.MainWindowTitle) }
+            # A fast child can exit between Get-Process and this observation.
+            # PowerShell considers $null -ne [IntPtr]::Zero true; it is not a window.
+            if ($pr.HasExited) { continue }
+            $window = $pr.MainWindowHandle
+            if ($null -ne $window -and $window -ne [IntPtr]::Zero) { $hits += ('{0}:{1}:pid{2}:title=[{3}]' -f $label, $pr.ProcessName, $pr.Id, $pr.MainWindowTitle) }
         } catch { }
     }
     return $hits
