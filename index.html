@@ -2537,10 +2537,10 @@ function playCinematic(){
     try{playEnterSFX();}catch(e){} // ENTER 클릭 사운드 — 로비 입장버튼과 동일 (2026-08-11)
     setTimeout(()=>{prompt.style.display='none'},1200);
     // 2026-10-31: 장식 DOM·언어·빌드·재방문 여부와 무관하게 문 없이 v22b로 바로 진입한다.
+    // 2026-11-02: 입장음(2초, 소리 대부분이 앞 1.1초)이 프롤로그 음악·영상과 같은 순간 시작해 묻혔다 → 인장이 흩어지는 동안 1.1초 먼저 울린 뒤 시작.
     window._introVoiceUnlocked=true;
-    startCinBgm();
     skipBtn.classList.add('show');
-    _cinReady=true;startWorldIntro();
+    setTimeout(()=>{if(_cinDone)return;startCinBgm();_cinReady=true;startWorldIntro();},1100);
   }
   
   function startWorldIntro(){

@@ -42,6 +42,18 @@
 - UI·시작 메뉴·연출·사운드는 웹에서 먼저 확정하고 Unity로 옮긴다(UI는 웹 그대로). 웹 작업 보고 끝에 Unity 반영 상태(대기/진행/완료)를 적는다.
 - PC·Mac Codex가 unity/main을 함께 쓰므로 작업판·INBOX로 겹침을 피한다.
 
+## 2-2. 최신판 자동 갱신 (2026-11-02 사용자 "왜 자동 업데이트 안 하는 거지")
+
+사용자가 여는 웹·Unity 실행본은 항상 Git 최신이어야 한다. 손으로 갱신하지 않고 예약 작업이 맡는다.
+
+| 대상 | 기준 | 자동 갱신 | 상태 확인 |
+|---|---|---|---|
+| 웹 3333 | origin/main | 예약 `EXODUSER_LatestWeb3333`(5분 간격): `G:\exoduser-wt\latest-web`을 fast-forward한다. 서버는 꺼져 있거나 `server.cjs`가 바뀌었을 때만 다시 띄운다 | `I:\EXODUSER-Storage\tools\latest-web-refresh\refresh.log` |
+| Unity 바탕화면 "지옥의 길 (Unity)" | origin/unity/main | 예약 `EXODUSER-Unity-BuildLoop`(30분 간격): 새 커밋을 빌드하고 무창 GPU 스모크를 통과하면 `I:\EXODUSER-Storage\unity-latest\build`를 교체한다. 바로가기는 이 폴더에 고정한다 | `I:\EXODUSER-Storage\unity-latest\status\index.html` |
+
+- main·unity/main에 반영했다는 사실만으로 사용자 실행본이 갱신됐다고 보고하지 않는다. 다음 갱신 주기 뒤 위 로그나 상태판에서 SHA를 확인하고 보고한다.
+- 예약 작업이 멈춰 있거나 실패하면 그 자체를 결함으로 보고 먼저 고친다. 바로가기를 개별 빌드 폴더로 돌려 두지 않는다.
+
 ## 3. 검수·통합·실행본
 
 - [품질 기준](WORK_QUALITY_STANDARD_20261029.md)의 분야별 표와 나란히 비교를 적용한다. 판정은 [AAA 목표·등급](AAA_QUALITY_STANDARD_20260927.md)에 따른다.

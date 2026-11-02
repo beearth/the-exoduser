@@ -4,12 +4,13 @@ import {createRelief} from './living-relief.mjs?v=20261102-round4-final';
 import {createMapLook} from './map-look-pass.mjs?v=20261102-hue1';
 import {createDepthPass} from './depth-pass.mjs?v=20261102-hue1';
 import {sceneBudget} from './scene-budget.mjs?v=20261102-round4-final';
-import {createForest} from './forest-layer.mjs?v=20261102-round4-final';
+import {createForest} from './forest-layer.mjs?v=20261102-round5';
 import {createGhosts} from './ghost-layer.mjs?v=20261102-round4-final';
 import {authoredFoliageLayout,puddleHabitat} from './foliage-layout.mjs?v=20261031-foliage4b';
 import {drawFoliageDebug} from './foliage-debug.mjs?v=20261031-foliage4';
 
-import {createGroundDressing} from './ground-dressing.mjs?v=20261102-hue1';
+import {createGroundDressing} from './ground-dressing.mjs?v=20261102-round5';
+import {consumeEnvironmentOverlay} from './environment-overlay.mjs?v=20261102-round5';
 
 // The native map is the color source. This canvas contains ONLY added vegetation
 // and water highlights; actors, VFX, camera, lighting and HUD use their original pass.
@@ -101,6 +102,7 @@ export async function install(read){
   }
   function draw(ctx,s,view){
     if(!enabled||s.G.stage!==0||s.G._bossArena||!s.G.map)return;
+    stats.environmentOverlayMerged=consumeEnvironmentOverlay(ctx,s.overlayFrame,view,s.flush);
     const start=performance.now();if(mapRef!==s.G.map)build(s);
     const now=s.now/1000,dt=lastTime?Math.min(100,(now-lastTime)*1000):16.7;lastTime=now;ema=ema*.97+dt*.03;
     if(++frame%120===0){adaptiveCost=costEma;if(costEma>7.5)density=Math.max(.3,density-.15);else if(costEma<5)density=Math.min(1,density+.05);}

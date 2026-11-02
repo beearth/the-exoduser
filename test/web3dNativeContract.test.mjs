@@ -16,6 +16,10 @@ test('all native combat/save/AI declarations retain their exact baseline source'
   const baseline=execFileSync(git,['show','d60ed26bbe7b1551609bf14a35fe1625ea861359:game.html'],{encoding:'utf8',maxBuffer:12e6,windowsHide:true});
   const functions=s=>new Map(acorn.parse(s,{ecmaVersion:'latest'}).body.filter(n=>n.type==='FunctionDeclaration').map(n=>[n.id.name,s.slice(n.start,n.end)]));
   const before=functions(main(baseline)),after=functions(main(game));
+  // Round5 merges the approved upstream footstep fix. These two functions are
+  // still compared byte-for-byte, against that pinned main instead of ignored.
+  const audioMain=execFileSync(git,['show','ad1646d3260989b66d96a04379dc8c8f16b63d2e:game.html'],{encoding:'utf8',maxBuffer:12e6,windowsHide:true});
+  const audioFunctions=functions(main(audioMain));
   let checked=0;
   for(const [name,source]of before){
     // Optional environment hooks: ground light, original-object relief, foliage.
@@ -31,7 +35,7 @@ test('all native combat/save/AI declarations retain their exact baseline source'
       .replace(/^  window\._Web3DLivingLayer\?\.(?:draw|surface|ground)(?:\?\.)?\(X,.*\);\r?\n/gm,'')
       .replace(/^    const _livingRelief=window\._Web3DLivingLayer\?\.beginObject\(X,mo,_OBJ_META\[mo.type\]\);\r?\n/m,'')
       .replace(/^    if\(_livingRelief\)X.restore\(\);\r?\n/m,'');
-    const current=normalise(after.get(name)),expected=normalise(source);
+    const current=normalise(after.get(name)),expected=normalise(['_ambSync','update'].includes(name)?audioFunctions.get(name):source);
     assert.equal(name==='draw'?stripDraw(current):current,name==='draw'?stripDraw(expected):expected,name+' changed');checked++;
   }
   assert.ok(checked>500);

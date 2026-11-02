@@ -14,7 +14,7 @@ export async function dressingImages(data){
  return images;
 }
 export async function createGroundDressing(){
- const response=await fetch('./web3d/ground-dressing-ch1.json?v=20261102-hue1');if(!response.ok)throw Error('ground dressing '+response.status);
+ const response=await fetch('./web3d/ground-dressing-ch1.json?v=20261102-round5');if(!response.ok)throw Error('ground dressing '+response.status);
  const data=await response.json(),rows=dressingLayout(data),images=await dressingImages(data);
  const shadow=document.createElement('canvas');shadow.width=128;shadow.height=64;const sx=shadow.getContext('2d'),g=sx.createRadialGradient(64,32,0,64,32,64);g.addColorStop(0,'rgba(5,4,6,.34)');g.addColorStop(1,'rgba(5,4,6,0)');sx.fillStyle=g;sx.fillRect(0,0,128,64);
  const debug=new URLSearchParams(location.search).get('r3dFoliageDebug')==='1';

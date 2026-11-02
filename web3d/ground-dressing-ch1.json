@@ -414,6 +414,94 @@
       "role": "기존 원화의 외곽·소품 밑동 연결",
       "placements": [
         {
+          "id": "early_r5_litter_01",
+          "asset": "leaf_litter",
+          "x": 3430,
+          "y": 6680,
+          "width": 650,
+          "height": 290,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "early_r5_litter_02",
+          "asset": "twig_litter",
+          "x": 4530,
+          "y": 6690,
+          "width": 580,
+          "height": 280,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "early_r5_litter_03",
+          "asset": "leaf_litter",
+          "x": 3450,
+          "y": 6420,
+          "width": 620,
+          "height": 300,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "early_r5_litter_04",
+          "asset": "leaf_litter",
+          "x": 4580,
+          "y": 6380,
+          "width": 600,
+          "height": 300,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "early_r5_litter_05",
+          "asset": "twig_litter",
+          "x": 3420,
+          "y": 6120,
+          "width": 660,
+          "height": 280,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "early_r5_litter_06",
+          "asset": "leaf_litter",
+          "x": 4550,
+          "y": 6090,
+          "width": 580,
+          "height": 320,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "early_r5_litter_07",
+          "asset": "leaf_litter",
+          "x": 3150,
+          "y": 5880,
+          "width": 650,
+          "height": 270,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "early_r5_litter_08",
+          "asset": "twig_litter",
+          "x": 4850,
+          "y": 5800,
+          "width": 720,
+          "height": 290,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
           "id": "early_bank_0",
           "asset": "bank",
           "x": 3310,
@@ -560,6 +648,72 @@
       "role": "기존 원화의 외곽·소품 밑동 연결",
       "placements": [
         {
+          "id": "arena_r5_litter_01",
+          "asset": "leaf_litter",
+          "x": 2820,
+          "y": 5440,
+          "width": 670,
+          "height": 320,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "arena_r5_litter_02",
+          "asset": "twig_litter",
+          "x": 5140,
+          "y": 5400,
+          "width": 720,
+          "height": 310,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "arena_r5_litter_03",
+          "asset": "leaf_litter",
+          "x": 2900,
+          "y": 5170,
+          "width": 640,
+          "height": 280,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "arena_r5_litter_04",
+          "asset": "leaf_litter",
+          "x": 5160,
+          "y": 5120,
+          "width": 690,
+          "height": 300,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "arena_r5_litter_05",
+          "asset": "twig_litter",
+          "x": 2860,
+          "y": 4840,
+          "width": 650,
+          "height": 260,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "arena_r5_litter_06",
+          "asset": "leaf_litter",
+          "x": 5140,
+          "y": 4810,
+          "width": 680,
+          "height": 270,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
           "id": "arena_bank_0",
           "asset": "bank",
           "x": 2860,
@@ -665,6 +819,72 @@
       "id": "side_l",
       "role": "기존 원화의 외곽·소품 밑동 연결",
       "placements": [
+        {
+          "id": "side_l_r5_litter_01",
+          "asset": "leaf_litter",
+          "x": 1670,
+          "y": 5940,
+          "width": 640,
+          "height": 290,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "side_l_r5_litter_02",
+          "asset": "twig_litter",
+          "x": 1770,
+          "y": 5700,
+          "width": 620,
+          "height": 280,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "side_l_r5_litter_03",
+          "asset": "leaf_litter",
+          "x": 2360,
+          "y": 5930,
+          "width": 720,
+          "height": 270,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "side_l_r5_litter_04",
+          "asset": "leaf_litter",
+          "x": 2830,
+          "y": 5780,
+          "width": 600,
+          "height": 310,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "side_l_r5_litter_05",
+          "asset": "twig_litter",
+          "x": 1510,
+          "y": 5480,
+          "width": 620,
+          "height": 290,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "side_l_r5_litter_06",
+          "asset": "leaf_litter",
+          "x": 2850,
+          "y": 5430,
+          "width": 650,
+          "height": 300,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
         {
           "id": "side_l_bank_0",
           "asset": "bank",
@@ -772,6 +992,72 @@
       "role": "기존 원화의 외곽·소품 밑동 연결",
       "placements": [
         {
+          "id": "camp_r5_litter_01",
+          "asset": "leaf_litter",
+          "x": 1320,
+          "y": 4570,
+          "width": 620,
+          "height": 300,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "camp_r5_litter_02",
+          "asset": "twig_litter",
+          "x": 2510,
+          "y": 4510,
+          "width": 660,
+          "height": 290,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "camp_r5_litter_03",
+          "asset": "leaf_litter",
+          "x": 1290,
+          "y": 4240,
+          "width": 580,
+          "height": 280,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "camp_r5_litter_04",
+          "asset": "leaf_litter",
+          "x": 2630,
+          "y": 4200,
+          "width": 640,
+          "height": 300,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "camp_r5_litter_05",
+          "asset": "twig_litter",
+          "x": 1310,
+          "y": 3810,
+          "width": 620,
+          "height": 290,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "camp_r5_litter_06",
+          "asset": "leaf_litter",
+          "x": 2560,
+          "y": 3820,
+          "width": 620,
+          "height": 280,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
           "id": "camp_bank_0",
           "asset": "bank",
           "x": 1460,
@@ -877,6 +1163,83 @@
       "id": "altar",
       "role": "기존 원화의 외곽·소품 밑동 연결",
       "placements": [
+        {
+          "id": "altar_r5_litter_01",
+          "asset": "leaf_litter",
+          "x": 5460,
+          "y": 4510,
+          "width": 700,
+          "height": 260,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "altar_r5_litter_02",
+          "asset": "twig_litter",
+          "x": 6030,
+          "y": 4500,
+          "width": 670,
+          "height": 280,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "altar_r5_litter_03",
+          "asset": "leaf_litter",
+          "x": 6640,
+          "y": 4470,
+          "width": 680,
+          "height": 280,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "altar_r5_litter_04",
+          "asset": "leaf_litter",
+          "x": 6920,
+          "y": 4140,
+          "width": 550,
+          "height": 280,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "altar_r5_litter_05",
+          "asset": "twig_litter",
+          "x": 6930,
+          "y": 3780,
+          "width": 580,
+          "height": 300,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "altar_r5_litter_06",
+          "asset": "leaf_litter",
+          "x": 6570,
+          "y": 3380,
+          "width": 650,
+          "height": 280,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "altar_r5_litter_07",
+          "asset": "leaf_litter",
+          "x": 5870,
+          "y": 3350,
+          "width": 700,
+          "height": 270,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
         {
           "id": "altar_bank_0",
           "asset": "bank",
@@ -984,6 +1347,72 @@
       "role": "기존 원화의 외곽·소품 밑동 연결",
       "placements": [
         {
+          "id": "corpse_tree_r5_litter_01",
+          "asset": "leaf_litter",
+          "x": 3440,
+          "y": 4210,
+          "width": 640,
+          "height": 290,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "corpse_tree_r5_litter_02",
+          "asset": "twig_litter",
+          "x": 4640,
+          "y": 4270,
+          "width": 670,
+          "height": 280,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "corpse_tree_r5_litter_03",
+          "asset": "leaf_litter",
+          "x": 3460,
+          "y": 3940,
+          "width": 620,
+          "height": 280,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "corpse_tree_r5_litter_04",
+          "asset": "leaf_litter",
+          "x": 4560,
+          "y": 3960,
+          "width": 620,
+          "height": 270,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "corpse_tree_r5_litter_05",
+          "asset": "twig_litter",
+          "x": 3430,
+          "y": 3600,
+          "width": 640,
+          "height": 260,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "corpse_tree_r5_litter_06",
+          "asset": "leaf_litter",
+          "x": 4640,
+          "y": 3470,
+          "width": 660,
+          "height": 280,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
           "id": "corpse_tree_bank_0",
           "asset": "bank",
           "x": 3450,
@@ -1090,6 +1519,105 @@
       "role": "기존 원화의 외곽·소품 밑동 연결",
       "placements": [
         {
+          "id": "side_r_r5_pocket_1",
+          "asset": "leaf_litter",
+          "x": 6010,
+          "y": 5660,
+          "width": 540,
+          "height": 260,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "side_r_r5_pocket_2",
+          "asset": "twig_litter",
+          "x": 6530,
+          "y": 5860,
+          "width": 640,
+          "height": 260,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "side_r_r5_pocket_3",
+          "asset": "leaf_litter",
+          "x": 6980,
+          "y": 5610,
+          "width": 500,
+          "height": 280,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "side_r_r5_pocket_4",
+          "asset": "leaf_litter",
+          "x": 6990,
+          "y": 5260,
+          "width": 520,
+          "height": 260,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "side_r_r5_litter_01",
+          "asset": "leaf_litter",
+          "x": 6440,
+          "y": 5160,
+          "width": 710,
+          "height": 300,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "side_r_r5_litter_02",
+          "asset": "twig_litter",
+          "x": 6960,
+          "y": 4920,
+          "width": 600,
+          "height": 280,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "side_r_r5_litter_03",
+          "asset": "leaf_litter",
+          "x": 7040,
+          "y": 4570,
+          "width": 580,
+          "height": 270,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "side_r_r5_litter_04",
+          "asset": "leaf_litter",
+          "x": 7060,
+          "y": 3490,
+          "width": 580,
+          "height": 280,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "side_r_r5_litter_05",
+          "asset": "twig_litter",
+          "x": 6570,
+          "y": 3190,
+          "width": 700,
+          "height": 280,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
           "id": "side_r_bank_0",
           "asset": "bank",
           "x": 6400,
@@ -1165,6 +1693,204 @@
       "id": "late",
       "role": "기존 원화의 외곽·소품 밑동 연결",
       "placements": [
+        {
+          "id": "late_r5_pocket_1",
+          "asset": "leaf_litter",
+          "x": 1430,
+          "y": 2410,
+          "width": 580,
+          "height": 260,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "late_r5_pocket_2",
+          "asset": "twig_litter",
+          "x": 2040,
+          "y": 2440,
+          "width": 660,
+          "height": 270,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "late_r5_pocket_3",
+          "asset": "leaf_litter",
+          "x": 2520,
+          "y": 2320,
+          "width": 620,
+          "height": 280,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "late_r5_pocket_4",
+          "asset": "leaf_litter",
+          "x": 1440,
+          "y": 1960,
+          "width": 540,
+          "height": 270,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "late_r5_pocket_5",
+          "asset": "twig_litter",
+          "x": 2450,
+          "y": 1930,
+          "width": 600,
+          "height": 270,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "late_r5_pocket_6",
+          "asset": "leaf_litter",
+          "x": 6230,
+          "y": 2110,
+          "width": 560,
+          "height": 250,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "late_r5_pocket_7",
+          "asset": "leaf_litter",
+          "x": 6780,
+          "y": 2160,
+          "width": 620,
+          "height": 260,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "late_r5_pocket_8",
+          "asset": "twig_litter",
+          "x": 7180,
+          "y": 1920,
+          "width": 480,
+          "height": 270,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "late_r5_litter_01",
+          "asset": "leaf_litter",
+          "x": 3430,
+          "y": 2830,
+          "width": 660,
+          "height": 290,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "late_r5_litter_02",
+          "asset": "twig_litter",
+          "x": 4610,
+          "y": 2790,
+          "width": 640,
+          "height": 280,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "late_r5_litter_03",
+          "asset": "leaf_litter",
+          "x": 3450,
+          "y": 2510,
+          "width": 640,
+          "height": 290,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "late_r5_litter_04",
+          "asset": "leaf_litter",
+          "x": 4630,
+          "y": 2470,
+          "width": 660,
+          "height": 300,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "late_r5_litter_05",
+          "asset": "twig_litter",
+          "x": 3440,
+          "y": 2180,
+          "width": 650,
+          "height": 280,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "late_r5_litter_06",
+          "asset": "leaf_litter",
+          "x": 4630,
+          "y": 2130,
+          "width": 680,
+          "height": 300,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "late_r5_litter_07",
+          "asset": "leaf_litter",
+          "x": 3440,
+          "y": 1860,
+          "width": 640,
+          "height": 280,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "late_r5_litter_08",
+          "asset": "twig_litter",
+          "x": 4640,
+          "y": 1770,
+          "width": 670,
+          "height": 300,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "late_r5_litter_09",
+          "asset": "leaf_litter",
+          "x": 3420,
+          "y": 1540,
+          "width": 640,
+          "height": 290,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "late_r5_litter_10",
+          "asset": "leaf_litter",
+          "x": 4630,
+          "y": 1480,
+          "width": 660,
+          "height": 300,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
         {
           "id": "late_bank_0",
           "asset": "bank",
@@ -1341,6 +2067,94 @@
       "id": "exit",
       "role": "기존 원화의 외곽·소품 밑동 연결",
       "placements": [
+        {
+          "id": "exit_r5_litter_01",
+          "asset": "leaf_litter",
+          "x": 3460,
+          "y": 1300,
+          "width": 650,
+          "height": 290,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "exit_r5_litter_02",
+          "asset": "twig_litter",
+          "x": 4640,
+          "y": 1260,
+          "width": 660,
+          "height": 300,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "exit_r5_litter_03",
+          "asset": "leaf_litter",
+          "x": 3460,
+          "y": 1000,
+          "width": 640,
+          "height": 280,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "exit_r5_litter_04",
+          "asset": "leaf_litter",
+          "x": 4630,
+          "y": 940,
+          "width": 650,
+          "height": 280,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "exit_r5_litter_05",
+          "asset": "twig_litter",
+          "x": 3450,
+          "y": 680,
+          "width": 640,
+          "height": 280,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "exit_r5_litter_06",
+          "asset": "leaf_litter",
+          "x": 4620,
+          "y": 620,
+          "width": 640,
+          "height": 280,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "exit_r5_litter_07",
+          "asset": "leaf_litter",
+          "x": 3470,
+          "y": 360,
+          "width": 620,
+          "height": 260,
+          "flip": false,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
+        {
+          "id": "exit_r5_litter_08",
+          "asset": "twig_litter",
+          "x": 4620,
+          "y": 300,
+          "width": 650,
+          "height": 270,
+          "flip": true,
+          "alpha": 0.82,
+          "groundOnly": true
+        },
         {
           "id": "exit_bank_0",
           "asset": "bank",
