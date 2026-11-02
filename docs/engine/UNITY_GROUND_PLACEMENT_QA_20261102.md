@@ -1,0 +1,393 @@
+# Unity 설치형 지면 배치 — Mac 실제 QA 계약과 기록
+
+상태: 기준1403 실제 RED, 후보95d4 실제 정상 ARM64148행/동일앱 M1 23행 기술 PASS. 추가 GPU mip0 기여 진단12행에서 실제 내부 잔차 .157~.969m로 제품 인수 FAIL. Win64·제품 설치·공통 통합은 보류한다. 제품 배치 코드는 PC 소유, 이 문서와 Tools/GroundPlacementCapture.cs/meta는 Mac QA 소유다. 기존 무데칼 동등성 FAIL 개인 코드를 합치지 않는다.
+
+## 실제 기준 결과
+
+| 기준 입력 | 실제 결과 |
+|---|---|
+| 1403 + QA e5b4b7d3 | 첫 spikeTrap 실제 접촉 FAIL. QA의 서로 다른 FireZone ID 재사용으로 다음 case 예외, 검정 캡처. 전체 RED로 채택하지 않음. 로그·입력·identity 보존, 미완 앱 번들은 공간 확보를 위해 원문 manifest/5개 identity 파일 보존 후 정리 |
+| 1403 + QA85b9fbe2 |61행=43FAIL/18대조PASS, 오류0/누락0, 원 Simulation/RNG hash·참조 복원. 같은 앱 Metal M1 23/23/exit0. 뒤 case 카메라 mask 재설정 누락이 있어 전체 시각 증거는 후속으로 대체 |
+| 1403 + QA a5d174da8a94c687a7587c2590324cb93c0757aa |136행=112FAIL/24PASS, 오류0/누락0. 기존 대조18행 및 전개0크기6행 PASS. 원 Simulation hash·참조 복원. 같은 앱 Metal M1 23/23/exit0. actual1920 PNG135개 + direct3840 PNG135개, 잘못된 크기0/50KB 미만 검정 의심0 |
+| 가시덫 흙 실제 수치 |원 sprite pivot lift0.8403094m, 최대 정점 ground 차이1.717096m, draw bias 제외 최대 잔차1.692096m, normalUp0.5591928. 수직 actor billboarding 오류의 실제 측정 |
+| 원문 보호 |모든 제품 source는1403 원문. 별도 sample Simulation만 표본을 생성하며 원 게임 Simulation.Tick/RNG 호출0. QA prefs는 매 Player 직전 원문 백업 후 raw SHA·CFPrefs cache semantics 정확 복원 |
+| 빌드 재현 |각 baseline build 전/후 Assets·Packages·ProjectSettings 전체 raw byte를 APFS snapshot으로 보존. 각773변형 경로의 전/후 SHA와 byte 보존. 과거 사라진 imported byte를 소급 증명하지 않음 |
+
+## 실행과 격리
+
+`--unity-ground-placement-capture --remodel3d --unity-quick-start --unity-qa-sandbox <절대폴더> -output <빈 절대폴더> -source-sha <실제 source SHA>`
+
+명시 capture가 없으면 helper를 생성하지 않는다. 필수 격리/출력/모드 인자가 잘못되면 Quit2. NativeQaSandbox.Root로 모든 게임 저장 IO를 격리하며 실제 저장 namespace로 fallback하지 않는다. QA prefs는 sandbox와 별개인 OS 파일이므로 별도 raw+cache 백업/복원을 한다. 정상 앱의 product name/id/save path는 바꾸지 않는다.
+
+QA는 기존 로비 preview→EnterNativeTest를 통해 실제 A2를 연다. 게임의 Simulation private setter에 별도 seed0x671403 표본을 잠시 연결하고 기존 UpdateViews/Remodel3DLate를 reflection으로 구동한다. 원 Simulation의 private randomState 포함 전체 Core 필드 그래프 hash/참조를 전후 비교한다. 게임 Update와 별도 R3Late writer를 QA 중 disabled로 두고 consumer마다 worldMask 복원→UpdateViews→line 원문 채집→단일 Remodel3DLate를 실행한다. finally에서 원 sim/views를 복원하고 drain 후 Quit 직전에 원 Running/enabled/Late enabled를 복원한다. 예외도 receipt 및 Quit2로 회수한다.
+
+## 현재3c 전체 표본 —49 consumer×3site +2 lifecycle =149행 (이전95 전체148행)
+
+| 소비자/단계 | seed 또는 실제 함수 | 기대 표시 계약 |
+|---|---|---|
+| spikeTrap/holyDome R100 |Id1/2,T30,MaxT180 |surface 지면, holy 두72점 링 지면 |
+| SeekerMines / Mine-first→Projectile-control→Mine-reused |Seeker T61/ArmT60, Mine Life100/Ml180 |지뢰 지면·일반탄 billboard, 서로 다른 pool의 표시 전환을 동일 SR 재사용으로 오인하지 않음 |
+| FieldZones trap/iceZone/blizzard |R20/Life180 |실제 표시 surface/층별 원 |
+| LavaPools/PoisonPools/GroundRing/Fissures/TideWaves |기존 고정 생성 표본 |설치형 정점 접촉; 기존 수치/원화 불변 |
+| 원문 대조 |malice orb, slam wave/flash, character, ordinary projectile |원래 centered/actor billboard. 악의구 GroundY+.25m, 강타 중심0m |
+| VfxWorld 활성/비활성 |ToWorld·ToWorldMetres, lift.013m |활성=GroundY+lift, 비활성=원 height, 오차1e-4m |
+| NativeDruidTelegraphView |sample bossSlamWind/Active=false |원 local XY/z0 및 under/over sorting(-8985/30000), world z0 강제나 3D 평탄화 없음 |
+| Shock create/hold/tail |실제 bossShockWind→bossShock producer 전환 후 age0/21/49, lifetime56 |ShockClip 지면. 별도 Hit/Roots/Dust는 원 texture ID의 vertical burst 대조로 분리 |
+| Seeker unarmed/armed·Mine imminent |T20/61,ArmT60 / Life20,Ml180 |arm 전후 원화·임박 flash ring 실제 분기 |
+| Lava warn/active/tail |T15/60/162,WarnT30,MaxT180 |경고/유지/후기 |
+| Poison start/middle/tail |T5/30/162,MaxT180 |실제 atlas loop frame2/12/16 |
+| Chase warning/hit create/hold/tail |T30/Delay60 / hit age0/9/21,ExplT1/10/22,ExplMax24 |ground ring과 원 HitClip 세로 burst를 shape별로 구분 |
+| Fissure warning/explode create/hold/tail |Exploded false 또는 age0/12/27,Len100,W30,ExplR80 |실제 producer 경고/폭발 표시 |
+| Tide create/hold/tail |T1/60/110,Rad40/100/160,MaxT120,gap.8 |실제 파도 구슬 생성/유지/후기 |
+| spikeTrap/holyDome T0 |Id20001/20002,T0,MaxT180,R100 |finite source/vertices·실표시 면적0, mesh 존재 강요0 |
+| size-spikeTrap Lv1/20 |SkillRules.SpikeTrapRadius:300/585,Id30001/30002 |실제 함수 반환 사용, hardcoded R 대입0 |
+| size-holyDome Lv1/20 |SkillRules.HolyDomeRadius:520/900,Id30003/30004 |실제 함수 반환 사용,T30,MaxT180 |
+| actual ring lifecycle |holy 실제2D→3D 공유mesh 두72polygon 링|enabled/GO/owner disable·2D 원문/forceOff 복원·제거/Destroy,149번째 행|
+| same-pool lifecycle |iceZone→일반 magic comet→iceZone |동일 normal-pool entity/mesh hide·re-show, source.enabled/GO inactive/Destroy, sample arena 전환의 2D 복원 |
+
+위3site는 world X/Z=(40.2,-77),(36.2916,-73.17135),(43.2,-71.8)이며 Core=(100X,-100Z). 각각 기존 흙·뿌리 경사·실제 목교 표본이다. Player는 target에서 Core(-180,+80) offset으로 표본 가림을 피한다. 각 phase는 sample.TickCount를256씩 진행해 이전 once clip을 만료하며 실제 Simulation.Tick/자연 AI·타격 검수로 주장하지 않는다. 같은 객체가 필요한 Chase/Fissure는 spawn→capture 동안 유지한다. 종류/phase ID와 serial은 고유하다.
+
+## 실행 전 고정한 assertion
+
+| 항목 | 기준 |
+|---|---|
+| 실제 표시 |enabled/activeInHierarchy이며 forceRenderingOff가 아닌 sprite/mesh/line. 같은 GO/자식의 활성 mesh를 수집하고 원 hidden sprite를 실표시로 중복 검사하지 않음 |
+| 지면 접촉 |source pivot 목표GroundY+0; 실제 surface 정점GroundY+.025m, ground ring점GroundY+.03m. raw ground 차이와 bias 제외 잔차를 모두 기록, 잔차/pivot 허용.02m |
+| 방향 |샘플 ground span<=.001m인 평면은 normalUp>=.99. 굽은/경사는 각 정점 접촉이 hard gate이고 첫 triangle normal은 진단으로만 기록 |
+| atlas/flip |95 direct 경로는 source atlas min/max와 독립 worldXZ/UV 역산 mapping;3c projected 경로는 실제 PB U/V/Rect와 source rect/pivot/scale/roll/flip의 독립 계수 비교, atlas1e-5. emit 순서에 의존하지 않음. 잘린2×1 ward 포함 |
+| 원 표시 속성 |material/texture/sorting 원문 동일. 단3c Sprites/Default는 명시 premultiplied SkillAdditive 대체의 white/Flat0/NormalBlend1/DstBlend10 equivalence를 별도로 검증하고 identity 차이 기록. mesh color/opacity1e-6; 링은 원 LineRenderer material·uniform raw color/width.03/lift.005/72polygon 계약을 별도로 검증 |
+| 대조 |일반 sprite normal은 기존 camera tilt 내적 절댓값>.99. 악의구 중심높이.25m, slam0m에.02m 허용. Malice trail은 billboard 전후 실제 점 보존 |
+| lifecycle |실제 같은 normal pool producer의 source entity, source force off와 child 숨김/재표시, disable/inactive/Destroy. 2D 전환 직전 pose를 기준으로 비교. 단순 Active=false는 field sync가 다시 켜므로 sample.Stage.InArena/Arena를 실제 변경하고 finally 원복 |
+
+큰 반경의 mesh 각 실제 triangle에서3 edge midpoint+centroid를 추가 진단한다(512tri이면2048표본). signed error=보간 worldY−(GroundY+.025m), 양수 들뜸/음수 파묻힘. 최대/평균/p95(nearest rank ceil.95N)·부호·2cm초과수·최악 actual/expected 좌표를 기록한다. 이 interior 지표는 diagnosticOnly이며 기존 vertex hard gate를 사후 변경하지 않는다. 큰 오차/화면 결함이 있으면 별도 RETOUCH로 인수 보류한다.
+
+## 캡처·판정·미검증 경계
+
+실행은 actual1920×1080 game framebuffer와 별도3840×1080 direct RenderTexture를 저장한다. 후자는 공식 URP SingleCameraRequest/SubmitRenderRequest이며 물리3840창 주장이 아니다. camera target/aspect/rect와 active RT는 finally 복원한다. 기하/속성 PASS와 실제 원본 visual 판정은 별도다. R100 baseline/current의 site·radius·age는 같고 unscaled renderTime/color도 기록하므로 완전 픽셀 동등 비교로 주장하지 않는다.
+
+receipt에는 baselineProductSource/실제 caller source, QA storage root, Runtime/Core DLL SHA, required/generated/missing, 실제 정점/UV/atlas·색·sorting·copy assertions, 음성 대조·복원, native1920 및 direct3840 경로가 있다. source string만으로 바이너리를 증명하지 않고 외부 exact Git input/실행 packet DLL SHA와 결합한다. 음량0·listener pause·DirectVideo0을 기록하며 peak는 종료 시1024표본 관측이고 연속 peak 실측 주장은 아니다. 명시 mute 인자도 런처가 사용한다.
+
+원 증거는 `/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/`. 최초 준비 때 QA 포함 Preferences26개 원문과 cache semantics를 백업했다. 공유 checkout의 exo-unity.ps1 및 ground-skill/ WIP25파일과 index/HEAD를 보존한다. 새 팀·worktree·자동화·유료 구매0. baseline private QA a5d를 포함한 무관한 QA branch 전체를 제품으로 병합하지 않고 정확 helper/meta/docs만 후보95에 인수한다.
+
+## MAP PRODUCTION REPORT (§23)
+
+STAGE: 기존 A2 설치형 접촉·수명주기 검수, 맵 제작0.
+MASTER/OUTER MASS/LARGE/MEDIUM/LANDMARK: 형상·경로·배치 기존 유지, 재검수0.
+GROUND:1403 실제 RED112/136. 후보95 정점·상태148/148 PASS이나 GPU mip0 기여12/12 표본의 내부 접촉 FAIL.
+PLAYABLE: 실제 자연 AI/피해/완주·성능 미검수. Core tree는 후보와1403 동일.
+CAMERA QA: START 흙/EARLY 경사/목교1920 원본과3840 direct RT. ARENA/SIDE/LANDMARK/LATE/EXIT 전체 맵 camera board 미재검수.
+TECH QA: baseline 오류/누락0·복원·같은 앱 Metal M1 23/23. 후보95 정상 ARM64148/148·같은앱 M1 23/23; alpha 보충12/12 정점 assertion PASS/contribution verified12, 오류0·누락0·원 Simulation 복원. 배송 보류. route/collision/pageerror/404/seam/loading/performance 미재검수.
+FILES: QA helper/meta/docs만 Mac 소유. 제품8경로는 PC 후보95 소유. 타인 WIP 무수정.
+GIT: baseline a5d·후보0fe·alpha d9c6d66 원격 확인. 첫0fe 원격 readback은 빌드 후였으며 소급 prebuild 주장 금지. alpha d9c6d66은 빌드 전 push/readback 완료. common/설치1403 보존.
+VISUAL VERDICT: FAIL — baseline 설치형 접촉 및 후보95 큰 면 내부 접촉. 전체 A2 기존 RETOUCH·ImpactR4 FAIL을 승격하지 않음.
+NEXT PASS: 실제 제품3c 첫3D projection 지연 수정(PC 소유)→같은 trace로 cold 완료시간부터 회수→대반경/링/coverage/roll-deploy/dense→full149/M1/별도 자연 필드플레이/직접 시각→인수 후 공통·정상 맥 설치·Win64배송/PC실행 회수.
+
+
+# GPU-decoded texture contribution 진단 계약 (작성 당시 미실행; 아래 실제 결과 참조)
+
+입력 root overlay SHA f013cef386cc04fb4073f5f67fe892f0997be99460fe9c6ff6c7e679c937c25a. visible-interior 복사본만 편집했다. 원본/공유checkout/Git/Unity/Player/정적컴파일 수정·실행0. 기존 raw InteriorDiagnostic과148개 vertex/contact/UV/color/물성 assertion은 유지한다. raw max .22~.88m와 기존148 PASS를 투명부 제외로 삭제하거나 덮지 않는다.
+
+## GPU texture cache
+
+실제 renderer MaterialPropertyBlock `_MainTex` → sharedMaterial `_MainTex` → source Sprite texture 순서로 실제 Texture2D를 찾는다. 원 compressed Texture2D.isReadable/import/filter/색/material/propertyblock은 수정하지 않는다. source 크기 그대로 Graphics.Blit → ARGBFloat Linear RT → RGBAFloat Linear Texture2D ReadPixels/GetPixels로 GPU-decoded mip0를 읽는다. GL.sRGBWrite=false로 target encoding을 막고 원 GL.sRGBWrite와 RenderTexture.active를 finally 복원한다. floatRT/RGBAFloat 지원·RT생성·readback 실패는 contribution.verified=false와 exception 원문을 보존하며 PNG/디스크 원화 추측으로 대체하지 않는다.
+
+readback Texture2D와 RT는 각각 finally Destroy/Release한다. 캐시는 원 texture당 진단 Color 배열만 소유하며2개까지 보관하고 새 texture 진입 시 비운다. 모든 경로의 run 종료/예외 후 캐시도 비운다. 원 texture는 소유·해제하지 않는다. 실제 width/height/mipmapCount/filterMode/graphicsFormat/wrapU/wrapV/activeColorSpace를 기록한다. 큰 source는 metadata상 mip0/Bilinear/sRGB지만 runtime 수치를 최종 근거로 쓴다. Point는 floor(uv*size)의 nearest texel, Bilinear/Trilinear mip0는 uv*size-.5의4texel CPU bilinear를 사용하며 atlas 원UV와 Clamp01/edge clamp를 적용한다. 이는 minification mip/최종pixel footprint 진단이 아니다.
+
+## Symbolic shader contract
+
+현재 실제 큰 source shader `EXODUSER/SkillAdditive`의 원문 frag 기준:
+
+`p = textureRGBA; a = p.a * vertexAlpha * (_Flat>.5 ? max(p.rgb) : 1); rgb = (_Flat>.5 ? 1 : p.rgb) * vertexRGB * a`
+
+`_Flat` material/PB의 존재 여부와 raw 및 PB override를 적용한 resolved 값을 읽는다. `_Opacity` material/PB 존재/raw도 기록하지만 이 shader frag에는 `_Opacity` uniform이 없으므로 opacityApplied=1이다. 부재 raw0을 곱하지 않는다. 실제 mesh.colors를 probe의 barycentric 가중치로 보간하고 textureAlpha/vertexAlpha/Flat tint factor와 textureRGBA/vertexRGBA/potentialRGB를 함께 기록한다. 다른 shader는 수식을 추측하지 않고 unverified로 보존한다. receipt.contributionShapes/contributionUnverifiedShapes/contributionVerified가 기존 passed와 별도로 진단 검증 상태를 표시한다.
+
+## 통계
+
+기존과 같은 triangle3 edge midpoint+centroid에서 실제 UV/vertexColor/worldPoint를 같은 가중치로 보간한다. signedResidual = actualWorldY-(GroundY+.025). 원 raw InteriorDiagnostic은 그대로이며 새 contribution에 다음4bucket을 별도로 기록한다.
+
+| bucket | 조건 |
+|---|---|
+| worstRaw | 모든 유효 probe, 투명도 유지 |
+| positive | max(potentialRGB)>0 |
+| oneByte | max(potentialRGB)>=1/255 |
+| onePercent | max(potentialRGB)>=.01 |
+
+각 bucket은 count/2cm초과수/maxAbs/meanAbs/p95Abs(nearest-rank ceil(.95*N))와 절대잔차가 가장 큰 probe를 기록한다. worst에는 signedResidual·actual/expected world XYZ·expectedGround/drawY·UV·textureRGBA·vertexRGBA/alpha·Flat/tint factor·opacity 존재/raw/applied·potentialRGB/max가 있다. 해당 worst actualPoint/expectedPoint를 현재1920 r3Cam.WorldToScreenPoint로도 기록한다. count0은 표본 없음이지 잔차0의 합격 판정이 아니다.
+
+이 값은 GPU-decoded mip0 texture-contribution 진단이다. 실제 depth occlusion·최종tonemap·pixel차이·최종시각 기여의 검증으로 확대하지 않는다. GPU 미실행이며 root의 원본1920 crop/추가 depth 판정이 필요하다.
+
+## 선택 실행
+
+`-ground-consumer-prefix size-`를 주면 기존 case 중 접두사가 일치하는4consumer×3site=12row만 실행한다. required/generated/missing/expectedRows도 선택집합으로 맞추며 lifecycle은 생략한다. receipt.subset=true/passScope에 선택 검수임을 명시한다. 빈 prefix 인자 또는0개 선택은 fail-closed다. 옵션이 없으면 기존49consumer×3site+ lifecycle=148row를 유지한다. 기존passed에 row수==expectedRows gate를 추가해 부족한 선택집합을 통과시키지 않는다.
+
+## adaptive topology
+
+lifecycle의 고정289/512 assertion만 실제 vertex>=3/triangle>=1로 바꿨다. 기존 contact·UV·color 등 의미 검사는 그대로이며 actual vertex/triangle count도 계속 기록한다. 무조건 PASS로 바꾸지 않는다. stage면적 누락 검증은 PC 원문 보완 뒤 별도 회수한다. root의 원Simulation 복원·카메라·생산자·반경·색/opacity·피해수치는 수정하지 않았다.
+
+컴파일 주의: Unity6.7 MaterialPropertyBlock.HasFloat(int), Texture2D.GetPixels(RGBAFloat), ARGBFloat/RenderTextureReadWrite.Linear API를 사용한다. 최종 정적컴파일 및 GPU format/readback 지원 확인은 root 소유이며 본 작성자는 수행하지 않았다.
+
+
+2026-11-02 exact95d4 alpha-only checkpoint: source e84233ab15b40284cc381a6c9cbd80e6bbac82dc9814a0647c6d44504cb80f66, isolated Roslyn C#9 compilation exit0/no diagnostics. This checkpoint has prefix selection, GPU mip0 contribution diagnostics, adaptive lifecycle topology counts; no adaptive performance or67 sibling/UV support. No new GPU execution/visual acceptance yet. Prior candidate148 contact assertions and normalM1 23 pass do not accept visible large-footprint interiors.
+
+
+## 실제95d4 GPU mip0 기여 결과 — 2026-11-02
+
+Source d9c6d66b0cc6da503d5210956c8125b835b0f682, product95d4, helper e84233ab15b40284cc381a6c9cbd80e6bbac82dc9814a0647c6d44504cb80f66. 원격 readback01:44:38 UTC 후 별도 정상 제품 ARM64 빌드 Succeeded/errors0. Runtime063e47bf9eb0b44d3546bf0f7e6b6f51eb200e4848a019c10b1ad4a9e9d90c57, Core4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d. size 접두사12행, assertion12/12 PASS, contribution12/12 verified, 오류0/누락0, 원 Simulation hash·참조 복원. lifecycle/전체148/M1은 이 alpha 앱에서 재실행하지 않았으며 앞선0fe 앱의 결과를 소급 대입하지 않는다.
+
+GPU-decoded mip0 symbolic potentialRGB>=.01 표본의 내부 잔차이며 depth occlusion/tonemap 최종 픽셀 동등성 주장이 아니다. signed 잔차는 양수 들뜸·음수 파묻힘이다. 매 실행 unscaled roll/time이 달라 이전95 캡처와 픽셀 동등 비교는 하지 않는다.
+
+| site | consumer | 기여 표본 | 2cm초과 | maxAbs m | p95Abs m | 최악 signed m |
+|---|---|---:|---:|---:|---:|---:|
+|soil|size-spikeTrap-Lv1|374|11|0.157357|0.009817|+0.157357|
+|soil|size-spikeTrap-Lv20|374|64|0.496313|0.083990|+0.496313|
+|soil|size-holyDome-Lv1|279|47|0.432608|0.108953|+0.432608|
+|soil|size-holyDome-Lv20|280|70|0.449380|0.113352|-0.449380|
+|root-slope|size-spikeTrap-Lv1|374|87|0.169627|0.083586|-0.169627|
+|root-slope|size-spikeTrap-Lv20|367|101|0.495339|0.102133|+0.495339|
+|root-slope|size-holyDome-Lv1|228|57|0.409483|0.131012|-0.409483|
+|root-slope|size-holyDome-Lv20|251|78|0.454275|0.259591|-0.454275|
+|wood-bridge|size-spikeTrap-Lv1|376|143|0.832280|0.496679|-0.832280|
+|wood-bridge|size-spikeTrap-Lv20|379|147|0.775827|0.410495|+0.775827|
+|wood-bridge|size-holyDome-Lv1|265|95|0.491898|0.312972|-0.491898|
+|wood-bridge|size-holyDome-Lv20|243|99|0.968842|0.372928|-0.968842|
+
+1920 원본12개·3840x1080 directRT12개 보존. 목교 Lv20 spike/holy1920 원본을 직접 확인했다. spike의 목교/수면 경계 평면 굴곡·긴 연결선이 남아 인수 불가; holy는 낮은 alpha와 지면에 가려지는 부분이 있어 raw 수치 전체를 최종 가시 픽셀로 주장하지 않는다. LineRenderer의 contribution count0은 미측정이며0오차 PASS가 아니다. PC 후속3c가 원72polygon 링을 본체 접지면과 공유한다.
+
+모든26개 Exoduser Preferences raw 및 cache export를 이번 Player 직전에 백업·비교했다. 종료 후 정상 product domain의 raw SHA e5a6b4bc2005eef68b1d40111c1342fc94ac82ca35c7644948e92abc61c16889와 cache semantics 복원. source raw 전/후 전체3543/3600파일 및772변형 경로 원문 보존. 이전baseline R2 앱만 전체211파일 manifest와5개 identity를 남기고 정리했으며 R3·95 정상 앱·캡처·로그·원문입력은 보존했다. common/설치1403 변경0.
+
+원 증거: alpha95-contribution-summary.json, alpha95/ground-placement-receipt.json, alpha95-run-result.json, alpha95-source-remote-proof.json, alpha95-normal-import-drift.json.
+
+
+# 1403 / Alpha95 / Adaptive67 호환 QA — 미컴파일·미실행
+
+제품 기준67fbf337bff761e277a99169c4b68037e48da590의 NativeGroundSkillSurface/Geometry 및 SkillAdditive/KiSlashAdditive 원문을 git show로 읽고 visible-interior 복사본만 보충했다. root overlay f013cef386cc04fb4073f5f67fe892f0997be99460fe9c6ff6c7e679c937c25a는 수정하지 않았다. 기존 Alpha95 복사본 e84233ab15b40284cc381a6c9cbd80e6bbac82dc9814a0647c6d44504cb80f66은 alpha95-preserved/GroundPlacementCapture.cs에 보존했다. 성능·directUV 보충의 바탕은 adaptive-qa cb9524b8...이며 현재 복사본은 이를 포함한다. 공유checkout/Git/정적컴파일/Unity/Player/GPU실행0.
+
+## 표시 renderer와 source 연결
+
+Compile-time 새 제품 type 참조는 없다. source SpriteRenderer의 컴포넌트에서 reflection으로 public SurfaceRenderer 프로퍼티를 찾아 실제 sibling Renderer를 수집한다. Dictionary<Renderer,SpriteRenderer>로 draw→source를 연결한다. 이전95의 child surface는 fallback child MeshRenderer로 찾고1403의 mesh부재는 기존 FAIL을 유지한다. Collect의 기존 enabled/forceRenderingOff/active 표시 필터는 유지한다. source atlas/UV/색·재질·opacity 검사는 SourceFor로 sibling에서도 동일 source를 사용한다. lifecycle도 SurfaceFor를 쓰므로 child 구조에 의존하지 않는다. 종료 시 이 QA mapping을 비운다.
+
+GeometryRevision도 source 컴포넌트의 public 프로퍼티를 reflection으로 읽는다. 없는1403/95/d08는 -1/미관측이며0으로 위조하지 않는다. 실제 counts와 revision은 계속 기록한다. 고정289/512는 vertex>=3/triangle>=1 및 기존 contact/UV/color semantic hard gate로 대체된 상태다.
+
+## projected UV 계약
+
+67의 실제 PB 필드는 `_GroundUvClip`, `_GroundUvU`, `_GroundUvV`, `_GroundUvRect`다. shader vertex는 local mesh `vertex.xz`에 U/V.xyz를 dot하여 normalized UV를 만들고, frag는0..1 밖을 clip한 뒤 Rect.xy+normalized*Rect.zw를 atlas UV로 쓴다. 따라서 mesh.uv는 projected 경로의 실제 texture UV가 아니다.
+
+Shape는 기존 uv(raw mesh UV), sourceSpriteUv와 별개로 normalizedShaderUv/shaderUv 및 actual/expected U/V/Rect를 기록한다. source rect/pivot/ppu/lossyScale/roll/flip와 실제 draw local→world transform으로 expected U/V를 독립 계산한다. 직접 제품 TextureMap 함수를 호출하거나 actual PB를 expected로 재사용하지 않는다.
+
+계수 hard gate는 각 component `abs(actual-expected)<=1e-5 + 8*floatEpsilon*max(1,abs(actual),abs(expected))`, floatEpsilon1.1920929e-7. atlas Rect min/max는 source.sprite.uv min/max와 별개1e-5 hard gate를 유지한다. emit 순서 first/last 조건은 없다. projected 범위는 source rect/clip footprint로 정의하며 static terrain mesh의 atlas밖 UV가 존재하는 것을 오류로 만들지 않는다.
+
+_GroundUvClip이 없는95/1403 및 direct fallback은 원 mesh UV의 source atlas min/max1e-5를 유지한다. 원UV/flip/scale/roll로 실제 expected worldXZ를 계산하여 모든 정점의 mapping을 검사한다. world tolerance는 `.00002m + 8*floatEpsilon*max(1,abs(anchorX),abs(anchorZ),sourceExtent)`다. 충분히 큰 축은 회전역산 localX/Y와 U/V correlation의 sign(scale)*(flip?-1:1) 및.99를 검사한다. 작은 형상의 world quantization 때문에 축을 분해할 수 없으면 uvAxesResolvable=false로 진단하지만 world forward-mapping 및atlas범위 hard gate는 유지한다.
+
+source/air sprite의 effective clip은0이어야 한다. 새 shader를 쓰는 ground MeshRenderer의 clip은1이어야 한다. shape.groundClipContract/sourceGroundUvClip/groundUvClip로 기록하며 음성 대조의 최종 passed에도 적용한다. 기준범위·반경·opacity를 완화하지 않는다.
+
+## 재질 대체의 엄격한 예외
+
+materialIdentityPreserved는 실제 sharedMaterial 동일성을 기록하므로 대체 시false다. materialPreserved는 기존 passed에 쓰는 semantic gate로 identity 또는 아래 명시적 동등성만 허용한다.
+
+source shader가 Sprites/Default이고 material `_Color` 및 존재하는PB `_Color` 결합이white여야 한다. draw는 SkillAdditive, resolved Flat0 / NormalBlend1 / DstBlend10(OneMinusSrcAlpha)여야 한다. 기존 source texture/vertexRGBA/opacity/color/sorting 검사도 유지한다. 이때 두 frag/blend의 의미는 `a=p.a*vertexAlpha; premultipliedRGB=p.rgb*vertexRGB*a; alpha=a; Blend One OneMinusSrcAlpha`로 같다. 다른 source 재질에는 이 예외를 허용하지 않는다. source/draw shader/material·materialIdentityPreserved/defaultSpriteEquivalent·sourceMaterialTint·drawFlat/NormalBlend/DstBlend와 식을 Shape에 기록한다. identity를 임의true로 바꾸지 않는다.
+
+## mesh footprint 면적 진단
+
+actual triangle을 실제 normalizedShaderUv로 옮기고 unit square의4변에 Sutherland-Hodgman clipping한다. 교차 polygon shoelace 면적을 triangle마다 합산해 normalizedAreaSum/입력·교차triangle 수를 기록한다. missingAreaEstimate=max(0,1-areaSum), overlapExcess=max(0,areaSum-1), source rect/scale 기준world면적과 누락world면적도 기록한다. diagnosticOnly이며 contact gate를 완화하거나면적PASS로 치환하지 않는다. unionNotComputed=true: 겹친 triangle이 있으면합산만으로 실제union누락을 확정할 수 없다. non-overlap tessellation에서 누락회수용진단이다.
+
+## GPU-decoded contribution
+
+GPU source Texture2D는 바꾸지 않는다. actual draw PB `_MainTex`→material→mapped source texture를 ARGBFloat Linear RT에 Graphics.Blit하고 RGBAFloat Linear readback에서 mip0 RGBA를 캐시한다. Point는 nearest, Bilinear/Trilinear mip0는 원atlasUV/Clamp의4texel interpolation. width/height/mipmapCount/filter/graphicsFormat/wrap/activeColorSpace를 기록한다. GPU float지원/생성/readback 실패 또는 미지원shader는 verified=false+exception원문, PNG추측대체0.
+
+GL.sRGBWrite/activeRT를 finally복원하고 readback clone/RT를 해제한다. source texture/material/PB/색/isReadable을 수정하지 않는다. 진단Color 배열 cache는최대2texture이며 종료·예외에도비운다.
+
+모든 actual triangle midpoint3+centroid의 rawMeshUv, actual local barycentric point에 PB투영한 normalizedShaderUv, atlas shader UV를 구분한다. footprint밖은 insideFootprint=false/textureSampled=false, clip때문에 texture를 읽지않고 contribution0이다. raw all-probe signed contact residual은 밖도 그대로 포함한다.
+
+SkillAdditive symbolic frag: `a=p.a*vertexAlpha*(Flat>.5?max(p.rgb):1); RGB=(Flat>.5?1:p.rgb)*vertexRGB*a`. 이 shader에는 _Opacity가 없으므로 존재/raw를 기록해도 opacityApplied=1이며 부재raw0을 곱하지 않는다. KiSlashAdditive는 실제67원문 `RGB=p.rgb*p.a*_Opacity`, vertexRGBA를 곱하지 않고 resolved opacity를적용한다. 두shader만 지원하며 다른shader 추측0.
+
+ContributionDiagnostic은 worstRaw(all-probe), positive(potential maxRGB>0), oneByte(>=1/255), onePercent(>=.01) bucket을 제공한다. visible3bucket에는 insideFootprint와 실제alpha기여를 모두 적용한다. 각bucket count/2cm초과/maxAbs/meanAbs/p95Abs와 worst signed·world actual/expected·GroundY/drawY·rawMeshUV/shaderUV·RGBA·Flat/vertex alpha/opacity/potentialRGB·현재1920camera WorldToScreenPoint를 기록한다. 기존 raw InteriorDiagnostic은 보존한다. depth occlusion/최종tonemap/pixel차이 검증이 아니며 texture contribution 진단이다.
+
+## 선택집합 및 성능
+
+-ground-consumer-prefix size-는4consumer×3site=12row만 실행한다. required/generated/missing/expectedRows를선택집합에맞추며 lifecycle생략/subset/passScope명시. 옵션없으면기존148전체. 선택0/빈prefix는실패. 기존case삭제·분류완화0.
+
+-ground-performance-frames N 기본0. N>0은명시size-only subset에서만허용. initial UpdateViews/Late 각각과합, 같은frame 고정pose N회 SyncViews, yield실제시간의roll+synthetic T(0..30)갱신 N회의CPU wall-clock 평균/p95/max를기록한다. 실제active vertex/triangle peak/last도기록한다. GeometryRevision이있으면 initial/fixed/live snapshot의sourceEntity/revision을기록하고 fixed/live 불변을정확비교한다. 미관측은false이며d08의매roll재분할을67의캐시성능으로주장하지않는다.
+
+geometry timer에는QA LineState reflection/GPU readback/alpha통계/PNG비용을포함하지않는다. live synthetic T는finally복원한다. GPU 완료시간/최종FPS나Mac성능PASS가아니다. 다중설치형3개 optional case는미구현이다.
+
+## 검증 상태
+
+최종 source는 compile/run미실행. root가95 alpha와67 subset/profile을각각보존된remote source에서수행한다. 기존95 source148PASS·현재대면visualRETOUCH를이소스로자동승격하지않는다. PC는제품소유이며이파일은QA복사본만이다.
+
+## Holy ring 후속 설계만 준비 — 새 제품 원문 도착 전 미구현
+
+원본72개 LineRenderer 정점이 GroundY+.03에 있어도 그 사이 직선 선분의 들뜸을 검증한 것은 아니다. 현재 LineRenderer interior 미측정 또는0을 접촉PASS 근거로 쓰지 않는다. 기존 raw72점은 비교 참고로 유지하고, ring 선분/새표시 surface 검증의 미완료를 별도로 명시한다. alpha95 source의148PASS는 ring-interior PASS로 확대하지 않는다.
+
+제품 후속이 도착하면 공개 RingSurface(LineRenderer)의 실제 signature/소유위치부터 git show로 읽는다. reflection으로 실제 draw를 찾고 draw→원본Line 매핑을 추가한다. 신규 제품 type compile참조0, 이전1403/95/67에서 API없음은 후속 ring 측정 미지원이며임의PASS0. 현재 source에는 추측한 RingSurface 호출을 넣지 않았다.
+
+설계할 회수항목:
+
+- 3D 원Line은forceRenderingOff이고 실제추가MeshRenderer2개가 표시되는지 확인. 활성display선택은 forceRenderingOff/active/enabled기준으로 하고 원Line72좌표와실제shader band중심선/radius/width.03/color/sort/addblend를각각기록한다.
+- 링draw의MeshFilter.sharedMesh와본체의sharedMesh 참조/instance identity가같은지,GeometryRevision이같은원source revision으로공유되는지기록한다. ring마다복제된mesh가있는지별도진단한다.
+- 현재모델의surface+.025와ring추가+.005가실제shader/geometry어디에서적용되는지원문확인후expecteddraw+.03을기록한다. 본체world정점만그대로검사해ring높이로오인하지않는다.
+- normalizedUV shader band의72polygon 중심선/선분을 실제draw계약으로재구성하여edge·interior원형부위접촉을진단한다. 전체공유mesh의footprint나정점수만으로ring자체접촉을PASS시키지않는다.
+- Active=false RestoreAll에서 원Line forceRenderingOff 원값/72point·색·sort·width·rotation/scale복원과추가draw비활성 확인. source.enabled=false/GO비활성/Destroy/zone종료 시ringdraw수명과공유mesh소유해제검사. 기존원sim/RNG/finally는보존한다.
+- 선택size subset/profile에서본체+ring draw의실제triangle/vertex개수와공유geometry고유개수를분리해중복계산을표기한다. 이전profile draw별count가공유mesh를중복합산할수있다는점도명시한다.
+
+최종ring제품commit이없으므로위항목은계획이며구현/컴파일/실제검수로기록하지않는다.
+
+## 최종3c 링 actual draw 구현 — 이전 '설계만' 절을 대체
+
+제품3c827c1195ff1fb8c4bc5501de99af33c615d8d1의 Surface/SkillView/SkillAdditive 원문을 읽었다. cb72 전 소스는 GroundPlacementCapture.before-ring-cb72.cs로 보존했고, root의 before-ring 정적검사에서 발견한 rendereSourceFor(r) 오타2곳은 SourceFor(renderer)로 수정했다. 컴파일/Unity/GPU실행은여전히미수행이다.
+
+Reflection으로 public static RingSurface(LineRenderer)를찾아actualdraw→원Line 매핑을만든다. bodySource는동일Mesh를소유한SurfaceRenderer의Sprite로연결한다. source원72point는참고원문배열이며actual3D표시의대체증거가아니다. sourceLine이forceRenderingOff이고actualringRenderer가enabled/active/forceRenderingOff=false일때실표시를수집한다. holyDome와size-holyDome row는verified ring draw가정확2개여야통과한다. 이전API없음이나GPU기여미측정은그row의PASS로회피하지않는다.
+
+RingDiagnostic/전용MeasureRing은body의atlas·vertex색alpha검사를적용하지않는다. 이shader의actualPB `_GroundUvClip=1`, `_GroundRingRadius>0`, `_GroundRingWidth=.03`, `_GroundRingLift=.005`, `_GroundRingColor` raw를읽는다. 링MeshFilter.sharedMesh가body와같은참조인지·mesh entity·body/ring owner GeometryRevision이같은지·원Line72좌표의XZ반경이PB반경과맞는지·원line start/endColor와PB색·sharedMaterial/sorting/add blend(DstBlend1)동일성을검사한다. Mesh world정점은shader vertex의localY+.005를실제로변환한값을기록하며expecteddraw는GroundY+.03이다. 원sourcepivot GroundY0과구분한다.
+
+Shaderband 원문은step2π/72, face angle=(floor(atan2(z,x)/step)+.5)*step, distance=dot(localXZ,faceNormal)-radius*cos(step/2), stroke=saturate((width/2-abs(distance))/max(fwidth(distance),1e-6)+.5)이다. fragment는uniformColor.rgb*(uniformAlpha*stroke)를반환하며atlas/vertexcolor/Opacity는사용하지않는다. 해당부재를임의0곱하지않고RingDiagnostic의atlasUsed/vertexColorUsed/opacityUsed=false로명시한다.
+
+AA를CPU에서추측하지않는다. actual renderer/sharedMaterial/실제PB를CommandBuffer.DrawRenderer로1920×1080 ARGBFloat Linear RT에별도렌더링하고RGBAFloat로readback한다. 원shader/재질/PB변경0, actualcamera view/GPUprojection 사용, empty depth를플랫폼far로clear한다. 이는actualband/fwidth AA의고립기여이며환경occlusion/최종tonemap검사가아니다. GL.sRGBWrite/activeRT finally복원, commandBuffer.Release/readbackDestroy/RTRelease+Destroy로정리한다. positive pixel 수와maxRGB를기록하고미지원·오류·positive0은ringVerified/PASS를허용하지않는다.
+
+actualmesh의localXZ triangle barycentric support에서72polygon vertices+segment midpoints144점을측정한다. 실제support가없으면missingBandSamples로기록하며144점완료를요구한다. 지원점의실제shaderlift worldY와GroundY+.03 잔차hardgate .02m 유지. 원fullMesh/rawInterior 잔차도그대로기록한다. band worst 및기존3기여bucket은현재camera의probe pixel에서actualfloatRT RGB를읽는다. uniform band는textureSampled=false이고raw uniformColor를별도로기록한다. pixelcenter AA와world centerline의위치차/프레임clip·환경차이는원본crop으로root가검수한다. 링원본2D선분을지면72정점만맞았다고통과시키지않는다.
+
+기본full은기존148row에ground-ring-lifecycle1row를추가해149row/required51scope다(49consumer×3site+기존lifecycle1+ringlifecycle1). 선택size subset은12row/lifecycle생략을유지한다. 링lifecycle은별도NativeSkillView clone에서2D priorforceOff/rotation/scale/원72localpoints를먼저보존하고,3Dbody공유draw2개검수,Line.enabled=false/GO비활성/bodySprite.disabled에서draw비활성,실제2D전환에서원forceOff/pose/72점복원·draw비활성,zone제거/Destroy의실제draw생멸을검사한다. source구조체2개만있거나RingSurface없으면실패다. 원sim/RNG/finally복원은유지한다.
+
+## Dense 성능 optional 구현
+
+`-ground-consumer-prefix size- -ground-performance-frames N -ground-dense-count K`.
+
+K기본0, 명시0은비활성, 유효활성1..8이며performanceFrames>0필수다. 기본0은기존단일case변경0. 기존row1920/3840capture후별도dense진단을실행하므로dense용renderer교체가원본capture의entity증거를덮지않는다. dense는sample에동일consumer의실제반경/Lv/물성을복사한고유ID K개를넣고,120Core px간격의서로다른고정위치에둔다. actor원좌표/원Simulation/Tick/RNG수정0. K8은합성부하이며실제플레이/60FPS로일반화하지않는다.
+
+새source ID의T30 cold projection1회, 같은Unityframe·time·pose의반복N회, T0상태설정후yield실제시간의T→30전개와roll N회UpdateViews+Late만Stopwatch로측정한다. 각각cold/mean/p95/max와실제geometryrevision snapshot을기록한다. shader 자체는이미warm일수있어'geometry source cold'로한정한다. renderer별entity/sourceEntity/meshEntity/GeometryRevision을기록하고fixed/live에서정확한불변여부를비교한다. GeometryRevision없는구제품을0으로위조하지않는다.
+
+Topology는actualactive draw수와고유Mesh수를분리하고body/링sharedmesh는HashSet<Mesh>로중복제외한vertex/triangle합을기록한다. GPU alpha/readback·JSON·캡처·CPU interior/통계·topology/revision수집은Stopwatch밖이다. dense끝/예외finally에서원sample.FireZones객체배열을참조그대로복원하고SyncViews하며denseSampleRestored=false는예외다. 모든dense기능은선택QAflag아래며원case반경·접촉Gate·분류를완화하지않았다.
+
+root가최종정적컴파일후short size12+profile→full필요검사를수행한다.95재시험은요구하지않으며,root실측95 alpha12/12verified와1%기여부분최대.157~.969m shippingFAIL 사실을새소스가덮지않는다. PC제품수정은별도소유다.
+
+### 최종 링 mask 및 source/air 대조 보강
+
+isolatedRT positive pixel>0은raw readback성공정보인 gpuVerified일뿐, 그것만으로ringmask를PASS시키지않는다. 실제sharedmesh가ring중심localXZ0을덮는support를찾아shaderlift world점으로camera.WorldToScreenPoint를구한다. near/far 및1920window안이고radius*cos(pi/72)>2*width로band에서충분히먼경우에만centerMeasured=true다. 해당actualRT RGB가절댓값1e-6이하의검정이어야한다. 중심support없음/유효화면·깊이밖은미측정으로실패보존한다.
+
+144band표본중유효화면·깊이안의gpuBandScreenSamples와그actualRT RGB>0인gpuBandPositiveSamples를별도로센다. 둘다>0이어야한다. AA경계의모든pixel이같은RGB여야한다는조건은없다. 이두대조와rawGPUpositive를함께만족해야gpuRingMaskVerified=true이며,ring contribution.verified 및ring.passed도이mask검증을요구한다. PB가누락되어default body/전체면이그려지는경우중심검정대조로걸러낸다.
+
+원sprite/air/defaultbody의effective `_GroundRingRadius`와mappedsource의radius를groundRingRadius/sourceGroundRingRadius에기록하고정확0을hard control로검사한다. Mesh body에ringuniform이전파되어도실패한다. ringactualdraw만radius>0이며,그body/sourceSprite/sourceLine은모두0이어야한다. `_GroundUvClip` 기존0/ground1대조도같이유지한다. effective값은PB.HasFloat 우선,실제materialproperty fallback으로읽는다. 본보충도미컴파일·GPU미실행이다.
+
+
+ROOT source review corrections before build: replace nonexistent BossArena.Generate(0) at two lifecycle sites with existing BossArenaLayout.Generate(sample.Config.StageIndex); measure explicit line.enabled=false with projection-only SyncViews (do not call separate NativeSkillView.Update, which intentionally re-enables the producer line); refresh actual field contribution camera after arena→field transition before ring GPU measurement. Worker original4c06f076 source retained separately. Official helper static compilation recorded below; product source unchanged.
+
+
+Final3c candidate QA checkpoint: exact product3c827c1195ff1fb8c4bc5501de99af33c615d8d1, helper source SHA256 8bbf79744041e8d6e04a628ca082c2dbc9005574f45dbd6b938884580c0ceb6f. Source-only static compilation passed. Actual Metal/large contact/coverage/roll-deploy cache/dense timings/M1/visual/install/Win64 delivery pending for this checkpoint. Prior95 alpha fail remains retained.
+
+
+# 3c QA 진행 추적만 추가 — 미컴파일·미실행
+
+입력 root final3c-reviewed/GroundPlacementCapture.cs SHA256 8bbf79744041e8d6e04a628ca082c2dbc9005574f45dbd6b938884580c0ceb6f. trace-qa 복사본에만 단계 로그를 추가했다. 원본/공유checkout/제품/Git/Unity/Player/정적컴파일 변경·실행0. 현재실행중Player96536의원본및실행파일은수정하지않았다.
+
+명시 --unity-ground-placement-capture 실행에서만 output/ground-progress.jsonl에 즉시 append한다. 각 레코드는 UTC ISO8601, 실제 realtimeSeconds·monotonicSeconds, frame/site/consumer/phase/eventType/step/completedMs와 소규모 actualdraw/uniqueMesh/vertex/triangle/revision 요약을 포함한다. 큰 vertex/UV/triangle 배열이나 per-probe 로그는없다. topology는mesh.vertexCount/GetIndexCount만읽고공유mesh는중복제외한다.
+
+각기록은새FileStream Append→UTF8 JSON 한줄→Flush(true)로즉시보존한다. before뒤after가없으면해당호출중단위치를알수있다. 로그쓰기·요약실패는Unitywarning을남기며기존source복원/검사/정상Quit을막지않는다. 기존receipt/표본/기준값을바꾸지않는다.
+
+추적단계:
+
+- capture 시작/field-entry/field-ready, site·consumer 시작.
+- 실제private UpdateViews/Remodel3DLate 모든명시호출 before/after/error와완료시간.
+- 각 Measure/MeasureRing/MeasureInterior/MeasureContribution before/after/error.
+- UV-and-coverage, GPU-decode-mip0/cache hit, ring-GPU-readback, ring-144-support 그룹전후. 매probe로그0.
+- fixed/live 각iteration과dense-cold/dense-fixed/dense-live 전후·완료CPU시간.
+- lifecycle/ring-lifecycle·원Simulation복원·capture-body완료와capture종료.
+
+측정IO분리: 기존 Invoke reflection 원문을 InvokeRaw에 두고 TracedProductCall은 로그 before를쓴뒤Stopwatch를시작해InvokeRaw만측정하고종료값을계산한뒤after로그를쓴다. TimedSyncViews는기존worldMask준비시간+두제품호출시간을합산한다. fixed/live/dense의원래통계입력도이IO제외값을사용한다. 초기Update/Late의사이LineState는계속제외한다.
+
+QA Measure의중첩trace가외부Measure완료시간에들어가지않도록누적traceOverheadTicks(요약+JSON+파일IO)를차감한DiagnosticMs를보고한다. 제품호출timer내에JSONL쓰기/CPU메타수집을넣지않는다. UTC/realtime간격은로깅을포함한실제wallclock이고completedMs는이구간을제외하므로둘의목적이다르다. trace IO는CPU측정밖이어도yield프레임간실제시간을늘릴수있다. 따라서이추적실행의FPS/실시간roll주기를최종무추적성능PASS로확대하지않는다.
+
+기존sample/RNG/source/material/피해/반경/시나리오/148+링lifecycle집계및hardcriterion은변경0. 거대한배열측정/루프를최적화하거나샘플수를줄이지않았다. ROOT가새원격QA체크포인트를보존한후필요시실행해제품cold와QA진단비용을구분한다. 현재CPU100%의원인을이소스작성만으로단정하지않는다.
+
+
+Actual09190dda normal ARM64 built/errors0/rawbefore+after772drift paths preserved. First row incomplete after owned Player wall04:10/99pct CPU/noPNG; managed sample has unknown JIT names, so product vs QA cause unresolved. Only ownedPID96536 SIGTERM, wrapper restored original normal Preferences raw SHA e5a6b4bc2005eef68b1d40111c1342fc94ac82ca35c7644948e92abc61c16889 and cache semantics. No final receipt/original-simulation comparison, no product PASS/FAIL claim. Ground-progress trace added to separate completed product timings from QA overhead; exact3c product unchanged, no contact criteria relaxation.
+
+
+## 실제3c 제품 첫 projection 지연 — 배포 FAIL, 접촉·시각 미측정
+
+| 항목 | 실제 관측 |
+|---|---|
+| exact source |6ddd9f3072cc210044de08f3c3d1bb7a39966ebc; product3c827c1195ff1fb8c4bc5501de99af33c615d8d1, QA1f5c1f87d0c591991968ae7d7b44df22d5157bb89af83235c28bbd9dc88af260|
+| source 원격 |빌드 전 push/readback6ddd 동일, UTC02:09:11|
+| 빌드 |Unity6000.6.7f1/정상 product·id/ARM64 Succeeded/errors0, tracked3541개 blob mismatch0+canonical movie2, Core tree1403 동일|
+| Runtime/Core |7dfd537e26fd9229a26b1db014e7a81c60729787e3f547f2ddfb107bcd60ff39 / 4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d|
+| 선택 |size-spikeTrap-Lv1, 실제 SkillRules R300 Core px, 첫 soil(40.2,-77). 요청3site/4timedframes/dense8이나 첫 cold에서 중단|
+| UpdateViews |3.1146ms 완료; trace UTC02:11:12.407486→02:11:12.410719|
+| Remodel3DLate |UTC02:11:12.411313 before 이후 after 없음, 첫 revision0/mesh0; 관측 시점 최소96초 미반환. 완료시간 수치가 아닌 하한|
+| QA 측정 |Measure/UV/interior/contribution/GPU readback/fixed/live/dense 전부 진입 전, 따라서 QA 계산 전체시간을 제품 지연으로 치환한 주장이 아님|
+| 프로세스 |해당 관측시 ownedPID97791 RSS약2.44GB/CPU100%; 불필요한 재실행 없이 소유 Player만 SIGTERM|
+| 종료·복구 |exit-15, 최종 ground receipt 없음. 원 Simulation hash 복원 최종비교 미완. 정상 Preferences raw e5a6b4bc2005eef68b1d40111c1342fc94ac82ca35c7644948e92abc61c16889/cache semantics 복원, unrelated raw/cache 원문 백업 보존|
+| 인수 |동기식 제품 첫3D projection의 장시간 blocking으로 배포 FAIL. 전후 전체게임 FPS나 완료 cold ms를 계산하지 않음. 접촉/링/UV/기여/면적/회전cache/dense/M1/자연play/시각은 이 후보에서 미측정|
+
+실제 프로세스의 managed sample은 JIT 함수명이 없어 깊은 leaf를 확정하지 못한다. 직접 증명된 병목 경계는 제품 Remodel3DLate 호출이며, 특정 Field.Height·Triangle leaf 원인 추정은 PC 담당의 다음 수정 근거와 구분한다. 제품 코드는 Mac에서 수정하지 않았다.
+
+### MAP PRODUCTION REPORT (§23) — 이번3c trace 범위
+
+STAGE: 기존 A2 설치형 첫 projection 검수, 맵 제작0.
+MASTER/OUTER MASS/LARGE/MEDIUM/GROUND CONNECTION/LANDMARK/SMALL DETAIL: 원본 형상·경로·좌표·배치 무수정.
+PLAYABLE/COMBAT: 독립 sample 한 Lv1 설치형 동기 projection에서 최소96초 blocking. 자연 전투·플레이 미검수.
+CAMERA QA: actual1920 창 생성, 첫 표본 PNG0/direct3840 미도달. 전체 camera board 재검수0.
+TECH QA: 정상 ARM64 빌드0error·exact input·원격 prebuild proof·raw import772변형 전후 보존·Preferences raw/cache 복원. 제품 cold 지연 FAIL.
+FILES/GIT: QA/helper/docs만6ddd; product3c PC 소유. common/설치1403에 이 후보 미반영, Win64 배송 미진행.
+VISUAL VERDICT: RETOUCH — 새3c contact/visual 증거 미도달로 인수 불가; 이전95 face-contact FAIL 및 전체 A2 RETOUCH/ImpactR4 FAIL 유지. TECH의 projection blocking은 FAIL로 별도 기록.
+NEXT PASS: PC 제품지연 수정의 정확source를 인수해 실패한 cold부터 재검증하고 통과한 범위만 다음 단계로 이동.
+
+원 증거: trace3c/ground-progress.jsonl, trace3c-product-blocking-proof.json, trace3c-owned-stop.json, trace3c-run-result.json, trace3c-source-remote-proof.json, build-trace3c-normal-receipt.json.
+
+
+# Geometry 호출 경계 budget 진단 — 별도 명시 모드
+
+입력 root trace3c-reviewed/GroundPlacementCapture.cs exact SHA1f5c1f87d0c591991968ae7d7b44df22d5157bb89af83235c28bbd9dc88af260. geometry-probe-qa 복사본에만 모드를 추가했다. root검수본/현재실행중Player/제품/공유checkout/Git/정적컴파일/Unity/Player 실행·수정0.
+
+## CLI 및 분기
+
+기존 `--unity-ground-placement-capture --remodel3d --unity-quick-start --unity-qa-sandbox <절대경로> -output <빈 절대경로>`에 **`-ground-geometry-probe`**를 추가한다. 기존Boot 명시조건은 유지한다. 모드가없으면 기존Start/149full·size12/정상기준·생산자·카메라·복원코드는 그대로다.
+
+모드가있으면 Start 첫줄에서별도 GeometryProbeMode iterator로분기하고 yield break한다. 일반capture Execute/Run/finally SyncViews/reenabledLate/성능·GPUalpha·캡처경로를실행하지않는다. 필드진입은기존로비preview/EnterNativeTest와sandbox를사용한다. actualField ready후 NativeGame.enabled=false/Running=false/r3Late.enabled=false로writer를멈춘다. 그뒤진단·cleanup·복원어디에서도Remodel3DLate/SyncViews/NativeGame.UpdateViews를호출하지않는다. 종료까지writer를paused상태로두고소유QA프로세스만Quit한다.
+
+## 3개 동일 Tessellate 입력
+
+public NativeGroundSkillGeometry.Tessellate를reflection으로정확signature조회하여MethodInfo를한번캐시한다. Core4020/7700, left=bottom=-4.25m,width=height=8.5m,rotation(double)0으로각case당딱1회Invoke한다.
+
+| case | 높이delegate |
+|---|---|
+| flat0 | (x,z)=>0 |
+| slope | (x,z)=>.1f*x+.1f*z |
+| actual-field | 한 번 캐시한 Func<float,float,float> NativeRemodel3D.GroundY |
+
+각QA HeightProbe에서wrapperCalls·실제위임heightCalls·요청min/maxXZ·마지막요청XZ·마지막성공XYZ를기록한다. height호출경계에서Stopwatch2초또는wrapperCalls>=100000이면진단전용GeometryProbeBudgetException을던진다. 따라서100000번째wrapper진입에서위임전중단하며actual heightCalls 최대99999다. 해당수치를서로섞지않는다. StopWatch는reflection Invoke직전에시작하고case finally에서정지한뒤JSON을쓴다. product geometry/source/정밀도/원래계산은변경하지않는다.
+
+중요한 budget 한계: 단일GroundY 호출안에서멈추거나높이callback이없는구간이오래걸리면즉시강제중단할수없다. 마지막height뒤구간이2초를넘겨성공하면completed-after-wall-budget-boundary로명시한다. 호출경계budget이며엄격한OS wallclock timeout이아니다. reflection TargetInvocationException은inner budget예외와기타예외를구분한다.
+
+## metadata와 원Simulation 보호
+
+실제 NativeRemodel3D.Field/게임a2Field 존재·참조동일성, ForestA2/Active/Terrain명/type를기록한다. 같은XYZ(40.2,-77)의높이3개를캐시된실제Func로직접기록한다. 이3회metadata호출과단독뷰prepare는Tessellate budget밖이며단일호출경계한계가동일하다. before/after stage를먼저쓰기때문에metadata단계지연도구분된다.
+
+별도Simulation에 SkillRules.SpikeTrapRadius(1) 반환의원R300 spike, Lv1/T30/MaxT180/고유Id93001을넣는다. 단독NativeSkillView.Update만호출해실제product Mark를거친source sprite의PPU/rect/scale/worldWidth/worldHeight/position/requestedExtent를읽는다. requestedExtent는실제source컴포넌트의private field를reflection으로읽고미존재를0확정값으로바꾸지않고Found=false로구분한다. projection을호출하지않고GeometryRevision/mesh생성을강제하지않는다. 이뷰/root는소유자finally에서Dispose/Destroy한다.
+
+NativeGame.Simulation에는진단sample을대입하지않는다. 원reference/private필드그래프해시(randomState포함)/TickCount를전후기록하며예상치못한reference교체가있으면원reference만setter로복원한다. Simulation.Tick 호출0, projection호출0이다. 원view복원때Late를돌리는우회는없다. game/late writer는소유프로세스Quit까지paused상태로기록하며다시reenable하지않는다.
+
+## 즉시 영수증
+
+별도 `ground-geometry-probe.json`에stage와현재진단상태를계속덮어쓴다. 각case finally에 `geometry-probe-case-flat0.json` / slope / actual-field 작은결과를즉시쓴뒤통합파일도갱신한다. vertices/triangles/omitted는반환배열Length만읽고거대배열은직렬화하지않는다. status=completed/diagnostic-budget-stop/exception/completed-after-wall-budget-boundary 및count/time/error를기록한다. case예산종료는원인자료이며QA/제품PASS가아니다. before파일은호출중지연시에도남는다.
+
+completed는3case 결과수집여부다. exit0은세호출정상완료+원sim복원/오류없음인진단완료만뜻하며제품PASS가아니다. budget/예외/복원문제는exit2. listener pause/volume/peak/DirectVideo와device/API/DLL SHA를최종기록하고drain후정상Quit한다. ROOT가Preferencesraw/cache보호·원격source보존·정적컴파일·actual짧은실행을소유한다. 본소스는컴파일/실행미수행이며96초지연원인을미리단정하지않는다.
+
+## 최종 동일앱 3c clone / 6e 제품 비교 — 앞의 '3case' 정의를 대체
+
+ROOT가제품renderer source를6e3ca9a1cb5083ba30c97b4d0b91e6491249bd9d로빌드한다. standalone NativeSkillView.Update의metadata도그실제제품source를쓴다. 원제품Geometry/renderer 파일은이작성자가수정하지않는다.
+
+`git show 3c827c1195ff1fb8c4bc5501de99af33c615d8d1:unity/Assets/Exoduser/Runtime/NativeGroundSkillGeometry.cs` 원문을 GroundGeometry3cProbeSource.cs로복사했다. **namespace 선언 한 곳만** `Exoduser.UnityPort` → `Exoduser.UnityPort.QaDiagnostics.Original3c`로바꿨다. class/계산/수치/공식/자료구조/키해시는3c원문그대로다. 순수진단clone이며제품renderer나GPU가참조하는클래스를바꾸지않는다.
+
+- 변환 전 원문 SHA256: 52821cab5127a51ef28b0d94a541770ec430c7d03e7b97bff6ae8d5415f9e362
+- namespace만 바꾼 clone SHA256: 3eddd167e3848a3ee45eea92067c28296307261767c93a51c018adda6f5e5e13
+- 새 clone meta GUID: 5deaf6c12c0f4c21a636fd05207b329f
+
+버전배열은 `[clone3c, product6e]`이며각각flat0/slope/actual-field를1회씩실행해총6결과를남긴다. clone3c는 `Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry`, product6e는실제 `Exoduser.UnityPort.NativeGroundSkillGeometry`의public Tessellate다. 버전별MethodInfo를한번씩캐시하고, 실제NativeRemodel3D.GroundY Func는두버전이같은한개캐시를공유한다. actualField·입력좌표/범위·위임높이공식·2초/100000wrapper cap을동일하게적용한다. 호출순서 clone3c(flat/slope/actual) 후 product6e(flat/slope/actual)이다.
+
+각case에version/implementationType/sourceCommit을기록하며casefinally파일은 `geometry-probe-case-clone3c-flat0.json` 등버전+case 고유명으로쓴다. geometryMethodInvocations는정상진입시6이고completed는6case결과회수여부다. budget-stop은결과로회수해도제품/QA PASS가아니며exit2를유지한다. 모든6개가정상완료한exit0도오직이진단의정상종료이지제품성능/출하PASS가아니다. 기존3case 파일명/완료수 설명은이6case정의로대체한다.
+
+원앱을별도3c빌드하거나재실행하는방식이아니다. 한6e앱의동일actualField/delegate에서3c순수clone과6e실제품함수를반사호출한다. 2초/호출경계한계·NoLate/NoSyncViews·원sim reference/hash보호·pause유지·작은JSON즉시보존은동일하다. 자동writer의필드준비이전동작까지0회였다는주장은하지않으며,metadata/진단/복원분기에서직접호출한projection은0이다.
+
+제출파일4개: GroundPlacementCapture.cs, GroundGeometry3cProbeSource.cs, GroundGeometry3cProbeSource.cs.meta, doc-addon.md. ROOT가정확QA/clone/meta/docs를원격보존하고정적컴파일및실제짧은실행을소유한다. 작성자는컴파일/실행하지않았다.
+
+
+Bounded pure geometry diagnostic checkpoint: product renderer remains exact6e, original3c is an isolated namespace-only pure diagnostic clone, no product Late call in diagnostic branch. Explicit geometry probe is source-only static compiled at this checkpoint; actual GPU-field receipt pending. A budget stop is causal evidence, never a contact/performance/product PASS.
