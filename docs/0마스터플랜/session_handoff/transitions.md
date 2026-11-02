@@ -9,3 +9,5 @@
 R2 제작자 실영상 재검수20/20: 검정300ms 초과20구간·인장237/237표본 노출,1920/3840 전후40편. 녹화4파일 SHA256은5eb0034d20과 일치. 표·영상·원격/3333/DEMO·EA 최종 전달은 외부 REPORT 및 r2/ 폴더 참조. 무음·상태 fixture 범위이며 Unity는 별도 인계다.
 
 23시 2차 CTO RETOUCH: 승인 JPG의 원색 투명PNG1520×1520(검정→알파),9.5vh,붉은 눈/균열만2초 호흡. 원본·게이트 구성 보존. tools/build-loading-sigil.cjs/inline 생성기로 재현 가능. 실제 전후영상·3x·원격/실행본 최종 상태는 외부transitions/r3/ 및 REPORT.md. Unity 동일원본은 parity 브리프5차에 추가, Unity 미반영.
+
+23시 재작업 검수:1920/3840 각10종20편·22검정구간·244/244표본 인장 노출,흰 전체화면 표본0(100ms표본,60fps 전수검사 아님). 실제 첫HTML 외부JS/CSS차단·브라우저 계약13·프로젝트113·guard PASS,빠른 경계191.7ms 인장 미노출. 원본1520²RGBA 테두리alpha0, 실제1x/3x 사슬·가시·눈·균열 확인·사각경계/잔점 관찰0. 기본webm 압축잡티는 runtime PNG와 구분하며 별도PNG→VP9 lossless 4:4:4 호흡영상2편(대기상태 fixture·6fps)을 병기한다. 제작자 인장 표현 VISUAL PASS,독립CTO·Unity Player·실청취·설치본/물리32:9·자연 전구간 완주는 미검증. main/3333/DEMO·EA 최종 전달·전편재생은 외부REPORT.md 영수증을 따른다.
