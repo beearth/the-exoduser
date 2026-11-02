@@ -1,0 +1,36 @@
+{
+  "manifestPath": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/win80d-delivery/prepare/manifest.json",
+  "manifestSha256": "181ce8aef4d64c0c28051cef9d1679ed7110feefef734e304a8900f55629e599",
+  "sourceSha": "80d0ae89ca1af2a08987ec7b6f47340231a36bff",
+  "normalBuildErrors": 0,
+  "fileCount": 211,
+  "shippedBytes": 4572136263,
+  "directories": 21,
+  "excludedFiles": 1,
+  "excludedOnlyExactBackup": true,
+  "movie2ByteExact": true,
+  "actualWindowsExecution": false,
+  "candidateOnly": true,
+  "critical": [
+    {
+      "path": "EXODUSER-Unity.exe",
+      "bytes": 667136,
+      "sha256": "9806abde4a406ed68647e9505852c49f6aa72a372f4f084e2aa2821affea57a2"
+    },
+    {
+      "path": "EXODUSER-Unity_Data/Managed/Exoduser.Core.dll",
+      "bytes": 700928,
+      "sha256": "957d31e65635d916a8b14a16dacd74c79bf6dec6ca9f5a60506af75761fb5842"
+    },
+    {
+      "path": "EXODUSER-Unity_Data/Managed/Exoduser.Runtime.dll",
+      "bytes": 1872896,
+      "sha256": "85752c0dcc90a516a1bf8117353837b0d7bed480f872c7777ba770485c894e6c"
+    },
+    {
+      "path": "UnityPlayer.dll",
+      "bytes": 38753192,
+      "sha256": "38db99e19730fad74e8cc21758c87ffe7387b7774ebd9a14405c62ae481f2550"
+    }
+  ]
+}

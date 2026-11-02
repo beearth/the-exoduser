@@ -100,3 +100,24 @@ Root가manifest를검토하고명시SHA를pack에전달하는내부인수단계�
 
 
 2026-11-02 게시경로인수추가: fixture companion import를실제게시CLI명win-delivery.py에맞췄다. 실제게시2파일배치에서py_compile+8개작은소유fixture기대결과를모두재확인했다. CLI제품코드변경0,원래worker8개검사기록보존. 실제Win64빌드/패키지/PC수신검수범위는미완료그대로다. 근거evidence/UNITY_MAC_WINDOWS_PUBLISHED_TOOL_CHECK_20261102.json.
+
+
+## 2026-11-02 동일80d0 정상Win64·서명후MacM1·배포바이트준비 실제 결과
+
+| 단계 | 실제 결과/범위 |
+|---|---|
+| normal Win64 |source80d0ae89ca1af2a08987ec7b6f47340231a36bff,StandaloneWindows64/x64/settingsQa=false/uiQa=false,DX11·DX12포함빌드errors0,bytes4572368298 |
+| 소스경계 | e33이후제품Runtime추가수정0,QA Tools14source/meta만차이. Win원입력tracked3569+원본movie2개,blobmismatch0,rawbefore/after772drift보존 |
+| 원본영상 |world_intro_v22b_steam.mp4=102204634B/SHA3b99d59bca9d84a37bb6b49067148e1ed69fefb478ff206221b59c8c952d0b0f,warrior_story_v23_clean.mp4=94795327B/SHA8b8248424b63d808dc225576fda44e39d459709963f97923ffaa38a51dba28ab. 원본과Winbuilt모두exact |
+| manifest |배포211파일4572136263B,원트리21디렉터리.유일한제외는정확rootBackup내1파일. SHA181ce8aef4d64c0c28051cef9d1679ed7110feefef734e304a8900f55629e599 |
+| ZIP64 sender |4572275424B,SHA50e0abf7d303fb6e9eb67d31ce6cec7162e6ca610b18f05193162b180fb73460. 전체member/CRC/SHA/source evidence전후변경감지통과,송신준비완료. PC수신/해제/실행PASS아님 |
+| Win exe / DLL |exe667136B/SHA9806abde4a406ed68647e9505852c49f6aa72a372f4f084e2aa2821affea57a2;Runtime85752c0dcc90a516a1bf8117353837b0d7bed480f872c7777ba770485c894e6c;Core957d31e65635d916a8b14a16dacd74c79bf6dec6ca9f5a60506af75761fb5842. Mac/Win DLLbyte동일을주장하지않고동일입력소스를각targetreceipt로연결 |
+| signed Mac 후보 |ASCIIlauncherEXODUSER/로컬ad-hoc strict-deep서명,원Runtime8f9e.../Core4a3e...동일,서명exe ba81873d07d13140804243144ce66878c8ee347dfc72b06702d2317bff66a144 |
+| signed-M1 실제 |동일80d0 source/Runtime/Core 및normalizer의서명exeSHAstrict일치,23/23PASS/exit0,headless-rendertexture1600×900/GUIrepaint0·bridge0. raw26/cache27즉시2s7s exact복구/errornull |
+| 설치/공통Unity |기존설치1403보존. remoteunity/main1403확인,candidate80d0가descendant인것확인. source+docs최종인수후remote재확인/nonforcefastforward만. 아직설치교체/commonpush0 |
+| PC문서 |9d658d3fe1f91e4ec33a234623f140da6b6c2bf9의문서4delta를Root9fa1d67...에기존Root기록보존하며병합,e33대비PCUnitytree동일. 최종통합은이문서계보도포함해야함 |
+| 전달도구 |WindowsNTFS cross-APIctime/.exe합성xbit호환patchSHA78cf...인수,PC담당8+변조회귀attestation와Mac실제8+변조회귀모두PASS. gameAssets/Shader/C#변경0 |
+
+private one-shot서버는정확192.168.0.233:3334에만bind하고peer192.168.0.146만허용한다.5개GET/HEAD route(/package.zip,/manifest.json,/pack-receipt.json,/win-delivery.py,/candidate-packet.json)만허용,목록/root노출없음,시작전SHA/descriptor/O_NOFOLLOW확인,request전후fileidentity,Range재개지원,20분기한후종료. Node준비소스syntax검사만이시점PASS이며아직listen/PC수신완료로표현하지않는다. 기존서버가있으면임의종료하지않고소유PID를확인해야한다. 파일을다받았다는peer확인뒤자기서버만종료한다. 상시자동화/자동로그인/잠금우회는없다.
+
+signed-natural wrapper도source80d0/normalizer서명exe/Runtime/Core를strict대조하고별도QA sandbox에서사용자수동unlock후OS조작으로검수할준비다. 자동조작·AI정지·자원/무적부여0. observer는첫10s launchwarmup+60s만읽으며menu/startup포함이므로실제fieldframe/전투를별도선택·관측해야한다. 이검수는아직미실행이다. Rootliteralold50/triadold58·old9미관측/R독립참조불일치/원full100·61은불변이다. MAP PRODUCTION REPORT:geometry/원화/충돌불변,TECH별도서명·Winpack준비통과,자연PLAYABLE/PCGPU실행미검수. VISUAL VERDICT: RETOUCH.

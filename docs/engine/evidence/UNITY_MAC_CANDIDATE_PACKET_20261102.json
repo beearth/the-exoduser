@@ -70,11 +70,115 @@
   "windows": {
     "source": "80d0ae89ca1af2a08987ec7b6f47340231a36bff",
     "branch": "codex/mac-ground-win-candidate-20261102",
-    "normalBuild": "PREPARING",
-    "videoByteCheck": "PENDING",
-    "zip": "PENDING",
-    "privateTransfer": "PREPARATION_ONLY",
-    "pcExecutionVerified": false
+    "normalBuild": "PASS_ERRORS0_NORMAL_X64",
+    "videoByteCheck": "TWO_ORIGINAL_AND_BUILT_MOVIES_EXACT",
+    "zip": "PACK_COMPLETE_SENDER_BYTE_VERIFIED",
+    "privateTransfer": "FIVE_ROUTE_PEER_WHITELIST_PREPARED",
+    "pcExecutionVerified": false,
+    "receiverToolPortability": "Windows PC owner reports8+mutationPASS; Mac8+mutationPASS, actual game ZIP verify pending",
+    "buildReceipt": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/build-receiverWin80d-normal-receipt.json",
+    "manifestReview": {
+      "manifestPath": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/win80d-delivery/prepare/manifest.json",
+      "manifestSha256": "181ce8aef4d64c0c28051cef9d1679ed7110feefef734e304a8900f55629e599",
+      "sourceSha": "80d0ae89ca1af2a08987ec7b6f47340231a36bff",
+      "normalBuildErrors": 0,
+      "fileCount": 211,
+      "shippedBytes": 4572136263,
+      "directories": 21,
+      "excludedFiles": 1,
+      "excludedOnlyExactBackup": true,
+      "movie2ByteExact": true,
+      "actualWindowsExecution": false,
+      "candidateOnly": true,
+      "critical": [
+        {
+          "path": "EXODUSER-Unity.exe",
+          "bytes": 667136,
+          "sha256": "9806abde4a406ed68647e9505852c49f6aa72a372f4f084e2aa2821affea57a2"
+        },
+        {
+          "path": "EXODUSER-Unity_Data/Managed/Exoduser.Core.dll",
+          "bytes": 700928,
+          "sha256": "957d31e65635d916a8b14a16dacd74c79bf6dec6ca9f5a60506af75761fb5842"
+        },
+        {
+          "path": "EXODUSER-Unity_Data/Managed/Exoduser.Runtime.dll",
+          "bytes": 1872896,
+          "sha256": "85752c0dcc90a516a1bf8117353837b0d7bed480f872c7777ba770485c894e6c"
+        },
+        {
+          "path": "UnityPlayer.dll",
+          "bytes": 38753192,
+          "sha256": "38db99e19730fad74e8cc21758c87ffe7387b7774ebd9a14405c62ae481f2550"
+        }
+      ]
+    },
+    "receiverToolSha256": "78cf59590433d264c70729e51e686d3f0531cb9f4a1edd5ec2d00b783c30213c",
+    "packReceipt": {
+      "compression": "ZIP_STORED",
+      "eachMemberForcedZip64": true,
+      "executionVerified": false,
+      "files": 211,
+      "manifestSha256": "181ce8aef4d64c0c28051cef9d1679ed7110feefef734e304a8900f55629e599",
+      "sourceSha": "80d0ae89ca1af2a08987ec7b6f47340231a36bff",
+      "stage": "pack-complete-byte-verified",
+      "transferVerified": false,
+      "unityVersion": "6000.6.7f1",
+      "zip64Allowed": true,
+      "zipBytes": 4572275424,
+      "zipSha256": "50e0abf7d303fb6e9eb67d31ce6cec7162e6ca610b18f05193162b180fb73460"
+    },
+    "pcReceived": false
   },
-  "productAccepted": false
+  "productAccepted": false,
+  "normalizedMacCandidate": {
+    "app": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/install-candidate-80d0/EXODUSER.app",
+    "product": "EXODUSER · Unity 이식 검증판",
+    "identifier": "com.ForDearGamers.EXODUSER----Unity-----------------",
+    "executable": "EXODUSER",
+    "previousExecutable": "EXODUSER · Unity 이식 검증판",
+    "strictDeepCodesignVerified": true,
+    "mainNotNestedSeal": true,
+    "gameplayDllsUnchanged": {
+      "Exoduser.Runtime.dll": "8f9e54651f83bef314b241283b271ab3a15498c48665db6dfbefccef6f943516",
+      "Exoduser.Core.dll": "4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d"
+    },
+    "executableSha256": "ba81873d07d13140804243144ce66878c8ee347dfc72b06702d2317bff66a144",
+    "checkOnly": false
+  },
+  "pcEvidenceDocsTip": "9d658d3fe1f91e4ec33a234623f140da6b6c2bf9",
+  "pcDocsMergedMacEvidenceTip": "9fa1d67bd8a279c5c684f2a32ca9ae19f10c8b0c",
+  "normalizedMacCandidateM1": {
+    "packet": {
+      "app": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/install-candidate-80d0/EXODUSER.app",
+      "source": "80d0ae89ca1af2a08987ec7b6f47340231a36bff",
+      "productSource": "e33ed53574a187db36e00dfbd1f92b4d6f263635",
+      "runtimeSha256": "8f9e54651f83bef314b241283b271ab3a15498c48665db6dfbefccef6f943516",
+      "coreSha256": "4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d",
+      "executableSha256": "ba81873d07d13140804243144ce66878c8ee347dfc72b06702d2317bff66a144"
+    },
+    "expectedChecks": 23,
+    "collectedChecks": 23,
+    "m1Passed": true,
+    "firstBlocked": "",
+    "captureMode": "headless-rendertexture-1600x900",
+    "headless": true,
+    "guiRepaints": 0,
+    "guiBridged": 0,
+    "preferencesFinal": {
+      "rawCount": 26,
+      "cacheCount": 27,
+      "allRawExact": true,
+      "allCacheTypedSemanticsExact": true,
+      "checkpoints": [
+        "restore-immediate",
+        "restore-2s",
+        "restore-7s-final"
+      ]
+    },
+    "error": null,
+    "run": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/profile-guard-runs/20261102T062823774311Z-34346",
+    "scope": "NormalizedASCII/ad-hoc-signed candidate only; source80d0 Runtime/Core unchanged, signed executableSHA bound to normalizer receipt.23 scripted checks, no naturalGUI claim.",
+    "installed": false
+  }
 }

@@ -1,0 +1,19 @@
+{
+  "originalSha256": "f084a66fd48acee48ad6b93c303be915e996152033300ba4a2d757173e9aa7b3",
+  "patchedSha256": "78cf59590433d264c70729e51e686d3f0531cb9f4a1edd5ec2d00b783c30213c",
+  "pcOwnerAttestation": {
+    "python": "3.12.14",
+    "filesystem": "NTFS",
+    "fixtures8": true,
+    "mutationMtimeRestoredRejected": true,
+    "rawEvidencePaths": [
+      "I:/EXODUSER-Storage/ground-placement/20261102/win-delivery-tools/windows-owned-fixture-8.raw.json",
+      "I:/EXODUSER-Storage/ground-placement/20261102/win-delivery-tools/windows-stat-mutation-portable.raw.json"
+    ]
+  },
+  "macActual": {
+    "fixtures8": true,
+    "mutationRejected": true
+  },
+  "actualGamePcReceiveVerified": false
+}

@@ -1,0 +1,14 @@
+{
+    "passed": true,
+    "settingsQa": false,
+    "uiQa": false,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneWindows64",
+    "architecture": "x64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/build-receiverWin80d-normal/EXODUSER-Unity.exe",
+    "product": "EXODUSER · Unity 이식 검증판",
+    "identifier": "com.ForDearGamers.EXODUSER----Unity-----------------",
+    "errors": 0,
+    "bytes": 4572368298
+}

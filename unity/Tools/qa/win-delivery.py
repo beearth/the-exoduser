@@ -76,6 +76,20 @@ def identity(s):
     return [s.st_dev, s.st_ino, s.st_size, s.st_mtime_ns, s.st_ctime_ns, stat.S_IMODE(s.st_mode)]
 
 
+def cross_api_identity(s):
+    value = identity(s)
+    # Windows path-stat and fstat can expose different ctime semantics.
+    # Compare their common birth time, while each API keeps its full
+    # before/after ctime check in hash_file. Older runtimes stay strict.
+    if os.name == 'nt':
+        if hasattr(s, 'st_birthtime_ns'):
+            value[4] = s.st_birthtime_ns
+        # Path stat synthesizes execute bits from .exe/.bat names; a handle
+        # does not. Keep full modes in each API's own before/after check.
+        value[5] = stat.S_IFMT(s.st_mode)
+    return value
+
+
 def hash_file(path, sink=None):
     absolute(str(path), 'file')
     before = path.lstat()
@@ -83,7 +97,8 @@ def hash_file(path, sink=None):
     flags = os.O_RDONLY | getattr(os, 'O_NOFOLLOW', 0) | getattr(os, 'O_BINARY', 0)
     fd = os.open(path, flags)
     with os.fdopen(fd, 'rb') as f:
-        demand(identity(before) == identity(os.fstat(f.fileno())), 'File replaced before read: ' + str(path))
+        opened = os.fstat(f.fileno())
+        demand(cross_api_identity(before) == cross_api_identity(opened), 'File replaced before read: ' + str(path))
         digest = hashlib.sha256()
         count = 0
         while True:
@@ -94,7 +109,12 @@ def hash_file(path, sink=None):
             count += len(block)
             if sink is not None:
                 sink.write(block)
-        demand(identity(before) == identity(os.fstat(f.fileno())) == identity(path.lstat()), 'Live input changed during read: ' + str(path))
+        after_path = path.lstat()
+        after_handle = os.fstat(f.fileno())
+        demand(identity(before) == identity(after_path)
+               and identity(opened) == identity(after_handle)
+               and cross_api_identity(after_path) == cross_api_identity(after_handle),
+               'Live input changed during read: ' + str(path))
     demand(count == before.st_size, 'Length changed: ' + str(path))
     return {'bytes': count, 'sha256': digest.hexdigest(), 'identity': identity(before)}
 

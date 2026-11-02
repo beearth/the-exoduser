@@ -57412,3 +57412,6 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 2026-11-02 게시경로인수추가: fixture companion import를실제게시CLI명win-delivery.py에맞췄다. 실제게시2파일배치에서py_compile+8개작은소유fixture기대결과를모두재확인했다. CLI제품코드변경0,원래worker8개검사기록보존. 실제Win64빌드/패키지/PC수신검수범위는미완료그대로다. 근거evidence/UNITY_MAC_WINDOWS_PUBLISHED_TOOL_CHECK_20261102.json.
 
 2026-11-02 Mac80d0후보normalizer/ad-hoc서명strict-deep검증통과,원Runtime/Core불변·기존설치보존.동일sourceWin64빌드착수,source원격선증명/원입력정합성확인.PC9d658 docs4merge/Unity불변.설치CAS계획및post-signM1guard구체화/미실행,GUI수동unlock대기.
+
+
+2026-11-02 actual80d0정상Win64errors0/원movie2byteexact/211파일manifest·ZIP64송신바이트검증완료(4572275424B,SHA50e0abf7d303fb6e9eb67d31ce6cec7162e6ca610b18f05193162b180fb73460). 별도정규화/로컬서명Mac후보M123/23PASS,prefs26/27복구,기존설치1403보존. PCNTFS도구patch78cf...와Mac8+변조회귀인수/제품변경0.5route한정사설전송준비/PC실제수신·실행미완료,Mac수동unlock대기.9d658 PC문서병합보존,unity/main아직1403. 근거UNITY_GROUND_PLACEMENT_QA_20261102/UNITY_WINDOWS_DELIVERY_STAT_PORT_20261102.

@@ -1,0 +1,33 @@
+{
+  "packet": {
+    "app": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/install-candidate-80d0/EXODUSER.app",
+    "source": "80d0ae89ca1af2a08987ec7b6f47340231a36bff",
+    "productSource": "e33ed53574a187db36e00dfbd1f92b4d6f263635",
+    "runtimeSha256": "8f9e54651f83bef314b241283b271ab3a15498c48665db6dfbefccef6f943516",
+    "coreSha256": "4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d",
+    "executableSha256": "ba81873d07d13140804243144ce66878c8ee347dfc72b06702d2317bff66a144"
+  },
+  "expectedChecks": 23,
+  "collectedChecks": 23,
+  "m1Passed": true,
+  "firstBlocked": "",
+  "captureMode": "headless-rendertexture-1600x900",
+  "headless": true,
+  "guiRepaints": 0,
+  "guiBridged": 0,
+  "preferencesFinal": {
+    "rawCount": 26,
+    "cacheCount": 27,
+    "allRawExact": true,
+    "allCacheTypedSemanticsExact": true,
+    "checkpoints": [
+      "restore-immediate",
+      "restore-2s",
+      "restore-7s-final"
+    ]
+  },
+  "error": null,
+  "run": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/profile-guard-runs/20261102T062823774311Z-34346",
+  "scope": "NormalizedASCII/ad-hoc-signed candidate only; source80d0 Runtime/Core unchanged, signed executableSHA bound to normalizer receipt.23 scripted checks, no naturalGUI claim.",
+  "installed": false
+}

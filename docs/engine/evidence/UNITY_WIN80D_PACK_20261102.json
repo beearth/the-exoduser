@@ -1,0 +1,14 @@
+{
+  "compression": "ZIP_STORED",
+  "eachMemberForcedZip64": true,
+  "executionVerified": false,
+  "files": 211,
+  "manifestSha256": "181ce8aef4d64c0c28051cef9d1679ed7110feefef734e304a8900f55629e599",
+  "sourceSha": "80d0ae89ca1af2a08987ec7b6f47340231a36bff",
+  "stage": "pack-complete-byte-verified",
+  "transferVerified": false,
+  "unityVersion": "6000.6.7f1",
+  "zip64Allowed": true,
+  "zipBytes": 4572275424,
+  "zipSha256": "50e0abf7d303fb6e9eb67d31ce6cec7162e6ca610b18f05193162b180fb73460"
+}

@@ -512,3 +512,6 @@ Shore는 고정앵글러 주변을 피한 후 z−52~−42에서 다시28u 굽�
 
 
 2026-11-02 Mac후속:PC9d658의Unity무변경문서4개를Root기록과병합.80d0동일source Win64정상빌드중,별도Mac후보ASCII실행명/로컬ad-hoc strict-deep서명준비완료(Runtime/Core동일),서명후M1/실제설치·PC실행아직미완료.기존1403설치보존.근거UNITY_GROUND_PLACEMENT_QA_20261102 및 UNITY_MAC_CANDIDATE_PACKET_20261102.json.
+
+
+2026-11-02 actual80d0정상Win64errors0/원movie2byteexact/211파일manifest·ZIP64송신바이트검증완료(4572275424B,SHA50e0abf7d303fb6e9eb67d31ce6cec7162e6ca610b18f05193162b180fb73460). 별도정규화/로컬서명Mac후보M123/23PASS,prefs26/27복구,기존설치1403보존. PCNTFS도구patch78cf...와Mac8+변조회귀인수/제품변경0.5route한정사설전송준비/PC실제수신·실행미완료,Mac수동unlock대기.9d658 PC문서병합보존,unity/main아직1403. 근거UNITY_GROUND_PLACEMENT_QA_20261102/UNITY_WINDOWS_DELIVERY_STAT_PORT_20261102.
