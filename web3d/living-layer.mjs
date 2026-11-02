@@ -1,7 +1,8 @@
 import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
 import {waterAt,plantHabitat} from './living-layout.mjs?v=20261031-layer2';
 import {createRelief} from './living-relief.mjs?v=20261031-layer2';
-import {createMapLook} from './map-look-pass.mjs?v=20261102-light7';
+import {createMapLook} from './map-look-pass.mjs?v=20261102-round4-depth1';
+import {createDepthPass} from './depth-pass.mjs?v=20261102-depth1';
 import {createForest} from './forest-layer.mjs?v=20261031-forest4';
 import {createGhosts} from './ghost-layer.mjs?v=20261102-ghost4';
 import {authoredFoliageLayout,puddleHabitat} from './foliage-layout.mjs?v=20261031-foliage4b';
@@ -26,6 +27,7 @@ export async function install(read){
   const foliagePlan=await foliageResponse.json(),foliageDebug=new URLSearchParams(location.search).get('r3dFoliageDebug')==='1';
   const dressing=await createGroundDressing();
   const mapLook=createMapLook(renderer,canvas,uniforms,lookData,lookAnchors);
+  const depth=createDepthPass(renderer,canvas,uniforms,mapLook.uniforms);
   const forestResponse=await fetch('./assets/web3d/forest-ch1.json');if(!forestResponse.ok)throw Error('forest-ch1 '+forestResponse.status);
   const forest=await createForest(renderer,canvas,uniforms,await forestResponse.json(),lookAnchors);
   const ghostResponse=await fetch('./assets/web3d/ghosts-ch1.json?v=20261102-ghost4');if(!ghostResponse.ok)throw Error('ghosts-ch1 '+ghostResponse.status);
@@ -128,14 +130,17 @@ export async function install(read){
     ghosts.draw(ctx,s,view);
     relief.motes(ctx,s,view,low);
     if(foliageDebug)drawFoliageDebug(ctx,foliagePlan,view);
+    depth.capture(s);
     Object.assign(stats,{frame,foliage:count,water:visibleWater,cpuMs:performance.now()-start,density,drawCalls:renderer.info.render.calls});
   }
   let currentState;
   const active=s=>enabled&&s.G.stage===0&&!s.G._bossArena;
   const api={draw:(ctx,view)=>{try{draw(ctx,read(),view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D living layer]',error);}},
-    surface:(ctx,view)=>{const s=currentState=read();if(!active(s))return;try{const low=proxy||s.quality==='low',w=Math.max(1,Math.round(view.pw*(low?.65:1))),h=Math.max(1,Math.round(view.ph*(low?.65:1)));if(canvas.width!==w||canvas.height!==h)renderer.setSize(w,h,false);relief.surface(ctx,s,view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D surface]',error);}},
+    surface:(ctx,view)=>{const s=currentState=read();if(!active(s))return;try{const low=proxy||s.quality==='low',w=Math.max(1,Math.round(view.pw*(low?.65:1))),h=Math.max(1,Math.round(view.ph*(low?.65:1)));if(canvas.width!==w||canvas.height!==h)renderer.setSize(w,h,false);depth.prepare(s,view);relief.surface(ctx,s,view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D surface]',error);}},
     ground:(ctx,view)=>{const s=currentState||read();if(!active(s))return;try{dressing.draw(ctx,s,view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D ground]',error);}},
     beginObject:(ctx,o,m)=>{const s=currentState||read();return active(s)?relief.beginObject(ctx,o,m,s):false;},
-    snapshot:()=>({...stats,...relief.snapshot(),...forest.snapshot(),...ghosts.snapshot(),...dressing.snapshot(),enabled,error:api.error||null}),setEnabled:value=>{enabled=!!value;},setGhostsEnabled:value=>ghosts.setEnabled(value),canvas};
+    deferObject:o=>active(currentState||read())&&depth.defer(o),
+    front:(ctx,paint)=>{const s=currentState||read();if(!active(s))return;try{depth.draw(ctx,s,paint);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D depth]',error);}},
+    snapshot:()=>({...stats,...relief.snapshot(),...forest.snapshot(),...ghosts.snapshot(),...dressing.snapshot(),...depth.snapshot(),enabled,error:api.error||null}),setEnabled:value=>{enabled=!!value;},setGhostsEnabled:value=>ghosts.setEnabled(value),canvas};
   return api;
 }
