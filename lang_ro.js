@@ -2856,3 +2856,6 @@ Object.assign(_RO,{"구르기":"Rostogolire"});
 
 // 2026-10-31 화폐 단위 앞 공백 보존 (No.3819)
 Object.assign(_RO,{" 악의오브":" Glob de răutate"});
+
+// 2026-11-03 사망 피해 기록 적 이름 (No.3845~3846)
+Object.assign(_RO,{"몬스터":"Monstru","정예 몬스터":"Monstru de elită"});

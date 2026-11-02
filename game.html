@@ -16850,6 +16850,15 @@ function nc(){return INV.equipped.necklace||{}}
 function rg1(){return INV.equipped.ring1||{}}
 function rg2(){return INV.equipped.ring2||{}}
 function cp(){return INV.equipped.cape||{}}
+// 플레이어 방어 합계 — 피격(hurtP)과 스탯창이 같은 값을 쓴다. 장비 .def/.eDef는 생성되는 슬롯 전부 합산
+// (망토·왕관 .def, 유골함 .eDef 포함), DEF/eDef 강화는 shield/armor/cape 3종만(2026-06-10 규칙)
+function _playerDefTotals(){
+  const _eq=INV.equipped,_d=s=>(_eq[s]&&_eq[s].def)||0,_e=s=>(_eq[s]&&_eq[s].eDef)||0;
+  const _enh=~~(enhMul(sh().enh||0)+enhMul(ar().enh||0)+enhMul(cp().enh||0));
+  const pDef=P.baseDef+pDefAdd()+_d('shield')+_d('armor')+_d('boots')+_d('gloves')+_d('pants')+_d('cape')+_d('helmet')+_enh;
+  const eDef=_e('helmet')+_e('necklace')+_e('ring1')+_e('ring2')+_e('cape')+_e('shield')+_e('armor')+_e('boots')+_e('gloves')+_e('pants')+_e('belt')+_e('bracelet')+_e('headband')+_e('headband2')+_e('ossuary')+_eqAffix('eDefFlat')+_enh+~~(P._crystalStats?P._crystalStats.eDef:0)+~~(_gritTotal()*.5);
+  return{pDef,eDef,enh:_enh};
+}
 // 유니크 특수 효과 체크: 임의 슬롯에서 해당 stat의 val 반환 (없으면 0)
 function _uEq(stat){for(let _ui=0;_ui<SLOT_NAMES.length;_ui++){const _it=INV.equipped[SLOT_NAMES[_ui]];if(_it&&_it[stat])return _it[stat]}return 0}
 // ═══ 유니크 특수 효과(신규 25종) 공유 상태 — 세이브 안 함, 스테이지 전환 시 초기화 ═══
@@ -28294,7 +28303,7 @@ function _maliceMul(){return 1+(PASSIVES.pMalice||0)*0.08}
 // ═══ 분노 최대치 (기본100 + 무기고유옵션 + 어픽스 rageMaxFlat + 분노폭주 패시브 +10%/lv) ═══
 function _rageMax(){if(window._parryLesson?.active)return 100;return ~~((100+(_uEq('_uRageMax')||0)+(_eqAffix('rageMaxFlat')||0))*(1+(PASSIVES.pRage||0)*0.10))}
 // ═══ 사냥꾼 배율 (엘리트/보스 추가뎀) ═══
-function _hunterMul(e){return(e&&(e.isBoss||e.isElite||e.etype>=90))?1+(PASSIVES.pHunter||0)*0.10:1}
+function _hunterMul(e){return(e&&(e.ib||e.elite||e.etype>=90))?1+(PASSIVES.pHunter||0)*0.10:1}
 // ═══ 근성 (보조스텟): SP 소모, 무한 레벨, HP/MP/ST 각각 +1/lv ═══
 let _grit=0; // 근성 레벨
 function _gritCost(){return 1;} // 일반 스탯처럼 SP 1당 근성 1
@@ -43861,9 +43870,11 @@ function _logDmg(raw,final,src){
     let _nrD=200,_nrE=null;
     for(let i=0;i<ens.length;i++){const e=ens[i];if(!e.alive)continue;const d=Math.abs(e.x-P.x)+Math.abs(e.y-P.y);if(d<_nrD){_nrD=d;_nrE=e}}
     if(_nrE){
-      if(_nrE.isBoss)_nrName=STG[G.stage]?_T(STG[G.stage].bn):_L('보스','Boss');
+      // 보스 판정 필드는 e.ib(예전 e.isBoss는 설정되는 곳이 없어 보스도 '몬스터(0)'으로 찍혔다)
+      if(_nrE.ib)_nrName=STG[G.stage]?_T(STG[G.stage].bn):_L('보스','Boss');
       else if(_nrE.etype>=90)_nrName=_L('레어몹','Rare Mob');
-      else _nrName=_L('몬스터(','Monster(')+_nrE.etype+')';
+      else if(_nrE.elite)_nrName=_L('정예 몬스터','Elite Monster');
+      else _nrName=_L('몬스터','Monster');
     }
   }
   const label=_nrName?(src+' ['+_nrName+']'):src;
@@ -43964,13 +43975,8 @@ function hurtP(dmg,opts){
   }
   const dtype=(opts&&opts.dtype)||'phys'; // 'phys','magic','grab','parry'
   const isEnergy=dtype==='magic'||dtype==='parry'; // 패링데미지는 마법 DR 적용
-  // 물리방어: 갑옷/방패/장갑/바지/부츠 (물리장비)
-  // DEF 강화: shield/armor/cape 3종만 (2026-06-10)
-  const _enhDef=~~(enhMul(sh().enh||0)+enhMul(ar().enh||0)+enhMul(cp().enh||0));
-  const totalPDef=P.baseDef+pDefAdd()+(sh().def||0)+(ar().def||0)+(bt().def||0)+(gl().def||0)+(pt().def||0)+_enhDef;
-  // 에너지방어: DEF 강화 3종(shield/armor/cape)만
-  const _enhEDef=~~(enhMul(sh().enh||0)+enhMul(ar().enh||0)+enhMul(cp().enh||0));
-  const totalEDef=(hm().eDef||0)+(nc().eDef||0)+(rg1().eDef||0)+(rg2().eDef||0)+(cp().eDef||0)+(sh().eDef||0)+(ar().eDef||0)+(bt().eDef||0)+(gl().eDef||0)+(pt().eDef||0)+(blt().eDef||0)+(INV.equipped.bracelet&&INV.equipped.bracelet.eDef||0)+(INV.equipped.headband&&INV.equipped.headband.eDef||0)+(INV.equipped.headband2&&INV.equipped.headband2.eDef||0)+_eqAffix('eDefFlat')+_enhEDef+~~(P._crystalStats?P._crystalStats.eDef:0)+~~(_gritTotal()*.5);
+  // 물리·에너지 방어 합계는 스탯창과 같은 _playerDefTotals()
+  const {pDef:totalPDef,eDef:totalEDef}=_playerDefTotals();
   // DR 캡 적용 (바이블 75%) + 어픽스 physDR
   const pDR=Math.min(DR_CAP,totalPDef/(totalPDef+2500)+_eqAffix('physDR'));
   const eDR=Math.min(DR_CAP,totalEDef/(totalEDef+2500));
@@ -51813,10 +51819,8 @@ function renderStatSummary(){
   if(!sm)return;
   sm.innerHTML='';
   // ═══ 총합 스탯 계산 ═══
-  const _sEnhDef=~~(enhMul(sh().enh||0)+enhMul(ar().enh||0)+enhMul(bt().enh||0)+enhMul(gl().enh||0)+enhMul(pt().enh||0)+enhMul(hm().enh||0)+enhMul(nc().enh||0)+enhMul(rg1().enh||0)+enhMul(rg2().enh||0));
-  const _sTotalPDef=P.baseDef+pDefAdd()+(sh().def||0)+(ar().def||0)+(bt().def||0)+(gl().def||0)+(pt().def||0)+_sEnhDef;
-  const _sEnhEDef=~~(enhMul(sh().enh||0)+enhMul(ar().enh||0)+enhMul(bt().enh||0)+enhMul(gl().enh||0)+enhMul(pt().enh||0)+enhMul(hm().enh||0)+enhMul(nc().enh||0)+enhMul(rg1().enh||0)+enhMul(rg2().enh||0));
-  const _sTotalEDef=(hm().eDef||0)+(nc().eDef||0)+(rg1().eDef||0)+(rg2().eDef||0)+(cp().eDef||0)+(sh().eDef||0)+(ar().eDef||0)+(bt().eDef||0)+(gl().eDef||0)+(pt().eDef||0)+(blt().eDef||0)+(INV.equipped.bracelet&&INV.equipped.bracelet.eDef||0)+(INV.equipped.headband&&INV.equipped.headband.eDef||0)+(INV.equipped.headband2&&INV.equipped.headband2.eDef||0)+_eqAffix('eDefFlat')+_sEnhEDef+~~(P._crystalStats?P._crystalStats.eDef:0);
+  // 피격 계산과 같은 방어 합계(예전 스탯창은 강화 9부위·근성 eDef 누락으로 실제와 달랐다)
+  const {pDef:_sTotalPDef,eDef:_sTotalEDef,enh:_sEnhDef}=_playerDefTotals();
   const _sPDefPct=(_sTotalPDef/(_sTotalPDef+2500)*100);
   const _sEDefPct=(_sTotalEDef/(_sTotalEDef+2500)*100);
   const _sMeleeAtk=~~(meleeRef()*statStr()*pAtkMul());
@@ -51879,7 +51883,7 @@ function renderStatSummary(){
     // ── 방어 ──
     `<div style="${_sHd}">🛡️ ${_L('방어','Defense')}</div>`+
     `<div style="${_sLn}">${_L('물리방어','Phys DEF')}: <span style="color:#ffaa44">${_sTotalPDef.toFixed(1)}</span> → <span style="color:#44ff88">${(_sPhysDR*100).toFixed(1)}%${_L('감소','red')}</span> <span style="color:#887766;font-size:1.1rem">(${_L('캡','cap')}${~~(DR_CAP*100)}%)</span></div>`+
-    `<div style="font-size:1rem;color:#887766;line-height:1.6;margin-left:12px">${_L('기본','base')}:${P.baseDef} | ${_L('제단','altar')}:${pDefAdd()} | ${_L('보조무기','off-hand')}:${sh().def||0} | ${_L('갑옷','armor')}:${ar().def||0} | ${_L('부츠','boots')}:${bt().def||0} | ${_L('장갑','gloves')}:${gl().def||0} | ${_L('바지','pants')}:${pt().def||0} | ${_L('강화','enhance')}:${_sEnhDef}</div>`+
+    `<div style="font-size:1rem;color:#887766;line-height:1.6;margin-left:12px">${_L('기본','base')}:${P.baseDef} | ${_L('제단','altar')}:${pDefAdd()} | ${_L('보조무기','off-hand')}:${sh().def||0} | ${_L('갑옷','armor')}:${ar().def||0} | ${_L('부츠','boots')}:${bt().def||0} | ${_L('장갑','gloves')}:${gl().def||0} | ${_L('바지','pants')}:${pt().def||0} | ${_L('망토','cape')}:${cp().def||0} | ${_L('왕관','crown')}:${hm().def||0} | ${_L('강화','enhance')}:${_sEnhDef}</div>`+
     `<div style="${_sLn}">${_L('속성방어','Elem DEF')}: <span style="color:#bb88ff">${_sTotalEDef}</span> → <span style="color:#44ff88">${(_sElemDR*100).toFixed(1)}%${_L('감소','red')}</span></div>`+
     `<div style="font-size:1rem;color:#887766;line-height:1.6;margin-left:12px">${_L('왕관','crown')}:${hm().eDef||0} | ${_L('목걸이','necklace')}:${nc().eDef||0} | ${_L('반지1','ring1')}:${rg1().eDef||0} | ${_L('반지2','ring2')}:${rg2().eDef||0}</div>`+
     `<div style="${_sLn}">${_L('반사','Reflect')}: <span style="color:${_afc('reflect','#aaaaff')}">${_afp('reflect')}</span> | ${_L('가시','Thorns')}: <span style="color:${_afc('thorns','#ff8844')}">${_af('thorns').toFixed(0)}</span> | ${_L('배리어','Barrier')}: <span style="color:${_afc('barrier','#4488ff')}">${_af('barrier').toFixed(0)}</span></div>`+
@@ -63690,7 +63694,8 @@ function _renderIntroCutscene(){
         cx.fillStyle='#fff';cx.globalAlpha=.6;
         cx.font=Math.max(12,ch*.016)+'px sans-serif';
         cx.textAlign='center';
-        cx.fillText('\u25BC',cw*.92,ch-subH*.2);
+        // \uC6B0\uD558\uB2E8 SPACE \uC2A4\uD0B5 \uD78C\uD2B8(\uBC14\uB2E5\uC5D0\uC11C 34px)\uC640 \uACB9\uCE58\uC9C0 \uC54A\uAC8C \uBC14\uB2E5 58px \uC704\uB85C \uC81C\uD55C
+        cx.fillText('\u25BC',cw*.92,ch-Math.max(subH*.2,58));
         cx.textAlign='left';
       }
       cx.globalAlpha=1;
@@ -64808,7 +64813,7 @@ function _btResetBoss(){
   // 재소환
   _enterBossArena();
   P.hp=P.mhp;P.iframes=99999;
-  setTimeout(()=>{window._btBoss=ens.find(e=>e.isBoss);_btUpdateInfo()},300);
+  setTimeout(()=>{window._btBoss=ens.find(e=>e.ib);_btUpdateInfo()},300);
 }
 
 // ── UI 구축 ──

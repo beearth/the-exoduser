@@ -2851,3 +2851,6 @@ Object.assign(_ID,{"구르기":"Berguling"});
 
 // 2026-10-31 화폐 단위 앞 공백 보존 (No.3819)
 Object.assign(_ID,{" 악의오브":" Sfera kedengkian"});
+
+// 2026-11-03 사망 피해 기록 적 이름 (No.3845~3846)
+Object.assign(_ID,{"몬스터":"Monster","정예 몬스터":"Monster elit"});

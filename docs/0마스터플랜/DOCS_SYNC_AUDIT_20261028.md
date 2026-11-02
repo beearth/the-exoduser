@@ -370,9 +370,9 @@
 
 ### 코드 의심 버그
 
-1. **사냥꾼(pHunter) 보스/정예 미적용** — `_hunterMul(e)`(L28075)가 `e.isBoss||e.isElite`를 보지만 적 객체는 `ib`/`elite` 필드를 쓰고 `isBoss`/`isElite`를 설정하지 않는다(grep 0건). 사실상 etype≥90 레어몹에만 적용. 툴팁 "엘리트/보스 추가뎀 +10%/lv"와 불일치.
-2. **망토(cape)·왕관(helmet) DEF 미반영** — `mkItem`이 cape/helmet에 `def:20+tier*20`을 생성(L16114, L16119)하지만 `hurtP` `totalPDef`(L43716)는 shield/armor/boots/gloves/pants만 합산. 장비 툴팁·itemPower 상 DEF가 실제 방어에 쓰이지 않음.
-3. **유골함(ossuary) eDef 미반영** — `ossuary:{eDef:20+tier*20,…}`(L16128) 생성, `totalEDef`(L43719)에는 ossuary 없음.
+1. **[2026-11-03 수정: e.ib/e.elite]** **사냥꾼(pHunter) 보스/정예 미적용** — `_hunterMul(e)`(L28075)가 `e.isBoss||e.isElite`를 보지만 적 객체는 `ib`/`elite` 필드를 쓰고 `isBoss`/`isElite`를 설정하지 않는다(grep 0건). 사실상 etype≥90 레어몹에만 적용. 툴팁 "엘리트/보스 추가뎀 +10%/lv"와 불일치.
+2. **[2026-11-03 수정: _playerDefTotals]** **망토(cape)·왕관(helmet) DEF 미반영** — `mkItem`이 cape/helmet에 `def:20+tier*20`을 생성(L16114, L16119)하지만 `hurtP` `totalPDef`(L43716)는 shield/armor/boots/gloves/pants만 합산. 장비 툴팁·itemPower 상 DEF가 실제 방어에 쓰이지 않음.
+3. **[2026-11-03 수정: _playerDefTotals]** **유골함(ossuary) eDef 미반영** — `ossuary:{eDef:20+tier*20,…}`(L16128) 생성, `totalEDef`(L43719)에는 ossuary 없음.
 4. **strFlat/dexFlat/intFlat 어픽스가 ATK에 미반영** — `applyStats` 유효 스탯 s.str 등에는 `~~_eqAffix('strFlat')`를 더하지만(HP·MP·이속 등), `meleeRef/bowRef/magicRef`(L28953~28955)는 `STATS.x+_eqStat('X')+_lvB()`만 사용. "STR ATK +1/pt"가 어픽스 STR에는 적용 안 됨.
 5. **critDmgA/critDmgB 사장** — `statCritDmg`(L28181)가 합산하지만 AFFIX_POOL에 정의 없음.
 6. **회피 주석 불일치** — L43637 주석 "근성 0.5%/pt" 포함, 실제 식(L43639)에는 근성 없음.

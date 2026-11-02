@@ -2852,3 +2852,6 @@ Object.assign(_VI,{"구르기":"Lăn né"});
 
 // 2026-10-31 화폐 단위 앞 공백 보존 (No.3819)
 Object.assign(_VI,{" 악의오브":" Khối cầu ác ý"});
+
+// 2026-11-03 사망 피해 기록 적 이름 (No.3845~3846)
+Object.assign(_VI,{"몬스터":"Quái vật","정예 몬스터":"Quái vật tinh nhuệ"});
