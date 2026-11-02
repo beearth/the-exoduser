@@ -255,7 +255,7 @@ namespace Exoduser.UnityPort.Core
             public EnemySpawn Create(double x, double y, int etype, double? el)
             {
                 var ctx = new EnemySpawnContext {
-                    PlayerLevel = s.Player.Level, DifficultyIndex = s.Config.DifficultyIndex, StageDiffOffset = 0, Stage = s.Config.StageIndex,
+                    PlayerLevel = s.Player.Level, DifficultyIndex = s.Config.DifficultyIndex, StageDiffOffset = s.Config.StageDiffOffset, Stage = s.Config.StageIndex,
                     DemoMode = s.Config.DemoMode, DemoLastStage = s.Config.DemoLastStage, CanMove = (cx, cy, cr) => s.Pass((float)cx, (float)cy, (float)cr), Random = s.NextRandom
                 };
                 return EnemyFactory.Create(ctx, x, y, s.Config.StageIndex, etype, false, el, null);

@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using Exoduser.UnityPort.Core;
 
 namespace Exoduser.UnityPort {
  // Web stat window (stat-panel-ui.js / stat-panel-ui.css + growth-tree-*.css, #statPanel) in the 1920x1080 design space.
  // Definitions (tree positions, links, rank stars, names, descriptions, path classification, contribution formula text) come from
  // Resources/Data/stat_panel_web.json, extracted from the web runtime. State (invested levels, SP/AP, learned/pending, current/next numbers)
- // is not ported yet, so those places show "미이식" (tiny badges and path counters use a dash). The window frame, knight art and the
+ // comes from the live Simulation.Growth transactional plan. The window frame, knight art and the
  // empty control shapes are one still of the web window; node frames/glyphs are stills of the web elements; everything dynamic is drawn here.
  [Serializable] public sealed class StatDefsEffect {public string ko,en,unit;public float per,@base,cap;}
  [Serializable] public sealed class StatDefsNode {
@@ -26,7 +27,15 @@ namespace Exoduser.UnityPort {
  public sealed class NativeStatPanel {
   public bool Open {get;private set;}
   public bool TextInputActive {get{return Open&&searchFocused;}}
-  const string NotPorted="미이식",SearchName="statSearch";
+  const string SearchName="statSearch";
+  Simulation sim;GrowthPlan plan;Action changed;int plannedSp,plannedAp,planChanges;
+  public int PlannedValue(string key){return plan==null?0:plan.Draft.Value(key);}
+  int LiveValue(string key){return sim==null?0:sim.Growth.Value(key);}
+  void RefreshPlan(){if(sim==null)return;if(plan==null||!plan.Evaluate(sim.Growth,sim.Player.StatPoints,sim.Player.PassivePoints,out plannedSp,out plannedAp,out planChanges))plan=sim.Growth.CreatePlan();plan.Evaluate(sim.Growth,sim.Player.StatPoints,sim.Player.PassivePoints,out plannedSp,out plannedAp,out planChanges);}
+  public bool PlanChange(string key,int amount){RefreshPlan();if(sim==null||!plan.Change(key,amount,sim.Growth,sim.Player.StatPoints,sim.Player.PassivePoints))return false;RefreshPlan();return true;}
+  public bool ApplyPlan(){RefreshPlan();if(sim==null||!sim.ApplyGrowthPlan(plan))return false;plan=sim.Growth.CreatePlan();RefreshPlan();changed?.Invoke();return true;}
+  public bool ReservePassive(string key,int amount){if(sim==null||!sim.ReserveGrowthPassive(key,amount))return false;changed?.Invoke();return true;}
+  public bool CancelReservation(int index){if(sim==null||!sim.Growth.CancelReservation(index))return false;changed?.Invoke();return true;}
   static readonly Rect Viewport=new Rect(271,136,1174,805),DetailRect=new Rect(1489,198,372,597.2f);
   static readonly Vector2 SceneCenter=new Vector2(500,400);
   readonly StatDefsFile defs;readonly Dictionary<string,StatDefsNode> nodeByKey=new Dictionary<string,StatDefsNode>();
@@ -34,7 +43,7 @@ namespace Exoduser.UnityPort {
   readonly Dictionary<string,StatDefsPath> pathById=new Dictionary<string,StatDefsPath>();readonly Dictionary<string,StatDefsStar> starById=new Dictionary<string,StatDefsStar>();
   readonly Dictionary<string,Texture2D> textures=new Dictionary<string,Texture2D>(),procedural=new Dictionary<string,Texture2D>();
   readonly Dictionary<long,GUIStyle> styles=new Dictionary<long,GUIStyle>();
-  Font serif,cinzel,sans,sansSemi;Texture2D baseTex,plate;bool ready;GUIStyle searchStyle;
+  Font serif,cinzel,sans,sansSemi;Texture2D baseTex,plate,knightBackground;bool ready;GUIStyle searchStyle;
   // UI state (selection / filters / camera); no gameplay state lives here.
   string selected="pAtk",selectedStat,pathId="all",filter="all",search="";int selectedRank;
   float zoom=1,panX,panY,detailScroll;bool searchFocused,blurSearch,detailDrag;string hover,forcedHover;
@@ -47,7 +56,7 @@ namespace Exoduser.UnityPort {
    foreach(var j in defs.joints){point[j.key]=new Vector2(j.x,j.y);parentOf[j.key]=j.parent;}
    foreach(var p in defs.paths)pathById[p.id]=p;foreach(var s in defs.stars){starById[s.id]=s;point[s.id]=new Vector2(s.x,s.y);}
   }
-  public void SetOpen(bool value){Open=value;if(value){searchFocused=false;blurSearch=true;}}
+  public void SetOpen(bool value){Open=value;plan=null;if(value){searchFocused=false;blurSearch=true;}}
   public void BlurSearch(){blurSearch=true;searchFocused=false;}
   public void HandleKeys(Action close){
    if(searchFocused)return;
@@ -62,7 +71,7 @@ namespace Exoduser.UnityPort {
    if(ready)return;ready=true;
    serif=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular");cinzel=Resources.Load<Font>("Art/fonts/CinzelDecorative-Bold")??serif;
    sans=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular");sansSemi=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold")??sans;
-   baseTex=Tex("stat_base");plate=Resources.Load<Texture2D>("Art/ui/inventory/plate");
+   knightBackground=Tex("knight_background");baseTex=Tex("stat_base");plate=Resources.Load<Texture2D>("Art/ui/inventory/plate");
   }
   static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
   static void Border(Rect r,Color c,float w=1){Fill(new Rect(r.x,r.y,r.width,w),c);Fill(new Rect(r.x,r.yMax-w,r.width,w),c);Fill(new Rect(r.x,r.y+w,w,r.height-2*w),c);Fill(new Rect(r.xMax-w,r.y+w,w,r.height-2*w),c);}
@@ -159,7 +168,8 @@ namespace Exoduser.UnityPort {
   // Same card rules as the web render(): path filter, search, and the learned/pending tabs. Unity has no invested levels, so those two tabs are empty.
   bool Visible(StatDefsNode n){
    if(pathId!="all"&&n.path!=pathId)return false;
-   if(filter!="all")return false;
+   if(filter=="learned"&&PlannedValue(n.key)==0)return false;
+   if(filter=="planned"&&PlannedValue(n.key)==LiveValue(n.key))return false;
    return Matches(n);
   }
   string SelectedKey{get{return selectedStat??selected;}}
@@ -180,13 +190,15 @@ namespace Exoduser.UnityPort {
   void ClampPan(){var s=Scale;panX=Mathf.Clamp(panX,-500*s,500*s);panY=Mathf.Clamp(panY,-400*s,400*s);}
 
   // ---- window ----
-  public void Draw(Action close){
-   if(!Open)return;Init();var old=GUI.matrix;var color=GUI.color;bool enabled=GUI.enabled;
+  public void Draw(Action close){Draw(sim??new Simulation(new SimulationConfig()),changed,close);}
+  public void Draw(Simulation live,Action onChanged,Action close){
+   if(!Open)return;sim=live;changed=onChanged;RefreshPlan();Init();var old=GUI.matrix;var color=GUI.color;bool enabled=GUI.enabled;
    try {
     GUI.matrix=Matrix4x4.identity;Fill(new Rect(0,0,Screen.width,Screen.height),Color.black);
     float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
     NativePanelTitle.Surface(new Rect(0,0,1920,1080));Fill(Viewport,C(6,11,9));
+    if(knightBackground!=null)NativeUiAudit.DrawTexture(Viewport,knightBackground,ScaleMode.StretchToFill);
     ClampPan();
     HandleTreeInput();
     // The tree is drawn straight over the still and the still is then re-drawn around the viewport (IMGUI groups break rotated quads).
@@ -205,14 +217,14 @@ namespace Exoduser.UnityPort {
   }
   void DrawHeader(){
    // "계획 후 AP" label is part of the still; its value is state (AP): not ported.
-   NativePanelTitle.Draw(new Rect(700,72,520,64),"성장의 각인");Text(new Rect(1660,92,80,30),"AP",sans,14,C(165,168,168));Text(new Rect(1740,88,135,38),NotPorted,sans,24,C(202,199,193),FontStyle.Normal,0,TextAnchor.MiddleRight);
+   NativePanelTitle.Draw(new Rect(700,72,520,64),"성장의 각인");Text(new Rect(1660,92,80,30),"AP",sans,14,C(165,168,168));Text(new Rect(1740,88,135,38),plannedAp.ToString(),sans,24,C(202,199,193),FontStyle.Normal,0,TextAnchor.MiddleRight);
   }
 
   void DrawLeft(){
    Text(new Rect(35,139.4f,150,25.2f),"전투의 길",serif,18,C(204,201,195),FontStyle.Bold);
    // count: visible definition total (web "265 / 265" for the unfiltered tree); learned/pending numerators are state.
-   int total=defs.totalNodes,shown=0;foreach(var n in defs.nodes)if(Visible(n))shown+=n.kind=="passive"?n.max:1;
-   Text(new Rect(188.4f,144,66.6f,16),(filter=="all"?shown.ToString():"–")+" / "+total,serif,14,C(188,185,179),FontStyle.Normal,0,TextAnchor.MiddleRight);
+   int total=defs.totalNodes,shown=0;foreach(var n in defs.nodes)if(Visible(n))shown+=n.kind=="passive"?(filter=="learned"?PlannedValue(n.key):filter=="planned"?Math.Abs(PlannedValue(n.key)-LiveValue(n.key)):n.max):1;
+   Text(new Rect(188.4f,144,66.6f,16),shown.ToString()+" / "+total,serif,14,C(188,185,179),FontStyle.Normal,0,TextAnchor.MiddleRight);
    // search box: shape is in the still; text input and placeholder are drawn here.
    var sr=new Rect(35,178,220,44);GUI.SetNextControlName(SearchName);
    if(searchStyle==null){
@@ -232,7 +244,7 @@ namespace Exoduser.UnityPort {
     if(p==null)Spark(new Vector2(55,y+29),15,C(191,188,182));
     else{Glow(new Vector2(55,y+29),15,new Color(school.r,school.g,school.b,.16f));Glyph(p.glyph,new Rect(43,y+17,24,24),new Color(school.r,school.g,school.b,.75f));}
     Text(new Rect(77,y+17.8f,126,22.4f),p==null?"전체":p.ko,sans,16,active?C(255,240,217):C(216,213,207));
-    int cnt=p==null?defs.totalNodes:p.total;Text(new Rect(150,y+21,99,16),"– / "+cnt,serif,14,C(188,185,179),FontStyle.Normal,0,TextAnchor.MiddleRight);
+    int cnt=p==null?defs.totalNodes:p.total,learned=0;foreach(var node in defs.nodes)if(p==null||node.path==p.id)learned+=node.kind=="passive"?PlannedValue(node.key):PlannedValue(node.key)>0?1:0;Text(new Rect(150,y+21,99,16),learned+" / "+cnt,serif,14,C(188,185,179),FontStyle.Normal,0,TextAnchor.MiddleRight);
     if(Click(r))SelectPath(id);
    }
    string hint=pathId=="all"?"6개의 길 · 서로 조합 가능한 26개 패시브":pathById[pathId].hintKo;
@@ -279,7 +291,7 @@ namespace Exoduser.UnityPort {
    }
    return best;
   }
-  bool StarVisible(StatDefsStar s){var n=nodeByKey[s.key];return Visible(n)&&n.kind=="passive";}
+  bool StarVisible(StatDefsStar s){var n=nodeByKey[s.key];return Visible(n)&&n.kind=="passive"&&(filter!="learned"||PlannedValue(n.key)>=s.rank)&&(filter!="planned"||((PlannedValue(n.key)>=s.rank)!=(LiveValue(n.key)>=s.rank)));}
 
   void DrawTree(){
    float sc=Scale,ns=NodeScale;var inner=new Rect(Viewport.x+1,Viewport.y+1,Viewport.width-2,Viewport.height-2);
@@ -329,7 +341,7 @@ namespace Exoduser.UnityPort {
   }
   void DrawStar(StatDefsStar st,float sc){
    var c=ToWin(new Vector2(st.x,st.y));bool terminal=st.rank%10==0,sel=SelectedKey==st.key&&selectedStat==null&&selectedRank==st.rank;
-   var fill=sel?C(249,222,163):C(24,32,27);var edge=sel?C(255,241,207):terminal?C(195,192,186):C(177,180,180);
+   bool learned=PlannedValue(st.key)>=st.rank,pending=learned!=(LiveValue(st.key)>=st.rank);var fill=sel?C(249,222,163):learned?C(181,148,89):C(24,32,27);var edge=sel?C(255,241,207):pending?C(237,171,104):terminal?C(195,192,186):C(177,180,180);
    if(sel)Glow(c,18*sc,C(229,184,105,.55f));
    if(terminal){float d=17f*1.4142f*sc;Diamond(c,d+5*sc,d+5*sc,C(9,14,12,.85f));Diamond(c,d,d,edge);Diamond(c,d-2.2f*sc*1.4142f,d-2.2f*sc*1.4142f,fill);}
    else{float r=6.8f*sc;Disc(c,r+2.2f*sc,C(9,14,12,.85f));Disc(c,r,edge);Disc(c,r-1.3f*sc,fill);}
@@ -344,9 +356,9 @@ namespace Exoduser.UnityPort {
    if(stat){gc.a=.13f;Glyph(n.glyph,new Rect(c.x-gs/2,c.y-gs/2,gs,gs),gc);Text(new Rect(c.x-30*sc,c.y-10*sc,60*sc,20*sc),n.statLabel,serif,14*sc,C(217,214,208),FontStyle.Bold,0,TextAnchor.MiddleCenter,true);}
    else Glyph(n.glyph,new Rect(c.x-gs/2,c.y-gs/2,gs,gs),gc);
    // rank/value badge (bottom-right): the invested level is state, shown as a dash.
-   if(!sel)return;
+
    float bw=16.6f*sc,bh=18f*sc;var br=new Rect(c.x+size/2-bw+5*sc,c.y+size/2-bh+6*sc,bw,bh);
-   Fill(br,C(18,25,27));Border(br,C(82,85,85),Mathf.Max(1,sc));Text(br,"–",serif,14*sc,C(185,182,176),FontStyle.Normal,0,TextAnchor.MiddleCenter);
+   Fill(br,C(18,25,27));Border(br,C(82,85,85),Mathf.Max(1,sc));Text(br,PlannedValue(n.key).ToString(),serif,14*sc,C(185,182,176),FontStyle.Normal,0,TextAnchor.MiddleCenter);
   }
 
   void DrawToolbar(){
@@ -371,7 +383,7 @@ namespace Exoduser.UnityPort {
    string cluster=hover;int rank=0;int at=hover.IndexOf('@');if(at>0){cluster=hover.Substring(0,at);rank=int.Parse(hover.Substring(at+1));}
    var n=nodeByKey[cluster];bool stat=n.kind=="stat";
    string title=Name(n)+(rank>0?" · Lv. "+rank:"");
-   string rankText=rank>0?rank+" / "+n.max:stat?NotPorted+" SP":NotPorted+" / "+n.max;
+   string rankText=rank>0?rank+" / "+n.max:stat?PlannedValue(n.key)+" SP":PlannedValue(n.key)+" / "+n.max;
    int rows=Mathf.Min(2,n.effects.Length);float W=380,H=96+rows*37.4f;
    var c=ToWin(rank>0?point[hover]:new Vector2(n.x,n.y));
    float half=rank>0?10*Scale:(n.major?27f:22f)*Scale*NodeScale;
@@ -387,7 +399,7 @@ namespace Exoduser.UnityPort {
     float ry=y+81+i*37.4f;var e=n.effects[i];
     Fill(new Rect(x+18,ry,346,1),C(117,120,120,.17f));
     Text(new Rect(x+18,ry+6,200,26.4f),e.ko,sans,16,C(219,216,210));
-    string val=rank>0?FmtEffect(e,n.key,rank-1)+" → "+FmtEffect(e,n.key,rank):NotPorted+" → "+NotPorted;
+    string val=rank>0?FmtEffect(e,n.key,rank-1)+" → "+FmtEffect(e,n.key,rank):FmtEffect(e,n.key,PlannedValue(n.key))+" → "+FmtEffect(e,n.key,Math.Min(GrowthState.Cap(n.key),(long)PlannedValue(n.key)+1));
     Text(new Rect(x+18,ry+8,346,22),val,serif,18,C(228,199,144),FontStyle.Normal,0,TextAnchor.MiddleRight);
    }
   }
@@ -411,18 +423,19 @@ namespace Exoduser.UnityPort {
     Text(new Rect(x0,y+.5f,120,24),isStat?"직접 투자량":"투자 레벨",sans,16,C(199,196,190));
     string cap=isStat?(n.uncapped?"∞":"/ "+n.max):"/ "+n.max;
     float capW=Width(sans,10,FontStyle.Normal,cap,0);Text(new Rect(x0+w-capW,y+5,capW+4,15),cap,sans,10,C(139,142,142));
-    Text(new Rect(x0+w-capW-70,y,64,25),NotPorted,sans,16,C(230,191,136),FontStyle.Normal,0,TextAnchor.MiddleRight);
+    Text(new Rect(x0+w-capW-70,y,64,25),PlannedValue(n.key).ToString(),sans,16,C(230,191,136),FontStyle.Normal,0,TextAnchor.MiddleRight);
     y+=33;
     if(!isStat){
      for(int i=0;i<n.max;i++){
       // skewX(-25deg) 4px bar drawn as four 1px rows
-      float px=x0+i*36;for(int row=0;row<4;row++)Fill(new Rect(px+(1.5f-row)*Mathf.Tan(25*Mathf.Deg2Rad)*1f+1f,y+row,33.9f,1),C(58,61,61));
+      float px=x0+i*36;for(int row=0;row<4;row++)Fill(new Rect(px+(1.5f-row)*Mathf.Tan(25*Mathf.Deg2Rad)*1f+1f,y+row,33.9f,1),i<PlannedValue(n.key)?C(224,191,134):C(58,61,61));
      }
      y+=18;
      if(selectedRank>0){Text(new Rect(x0,y,w,22),"Lv. "+selectedRank+" · "+RankCost(selectedRank-1)+" AP",sans,14,C(199,196,190));y+=24;}
     } else y+=6;
     // contribution table
-    string third=!isStat&&selectedRank>0?"계획":isStat?"+1":"다음";
+    bool pending=PlannedValue(n.key)!=LiveValue(n.key);int value=PlannedValue(n.key),from=pending?LiveValue(n.key):value,target=selectedRank>0?(selectedRank>value?selectedRank:selectedRank-1):pending?value:Math.Min(n.uncapped?int.MaxValue:n.max,value+1);
+    string third=pending||(!isStat&&selectedRank>0)?"계획":isStat?"+1":"다음";
     float ty=y,rows=46.7f;
     var eff=n.effects;var heights=new float[eff.Length];
     for(int i=0;i<eff.Length;i++){var lines=Wrap(eff[i].ko,sans,18,250);heights[i]=34f+lines.Count*27.9f;rows+=heights[i];}
@@ -435,12 +448,13 @@ namespace Exoduser.UnityPort {
      var lines=Wrap(eff[i].ko,sans,18,250);
      for(int k=0;k<lines.Count;k++)Text(new Rect(x0+1,ry+16+k*27.9f,252,27.9f),lines[k],sans,18,C(191,188,182));
      float cy=ry+16+(lines.Count-1)*13.95f;
-     Text(new Rect(x0+244,cy,50,27.9f),NotPorted,sans,13,C(159,162,162),FontStyle.Normal,0,TextAnchor.MiddleRight);
-     Text(new Rect(x0+296,cy,56,27.9f),NotPorted,sans,13,C(240,215,167),FontStyle.Normal,0,TextAnchor.MiddleRight);
+     Text(new Rect(x0+244,cy,50,27.9f),FmtEffect(eff[i],n.key,from),sans,13,C(159,162,162),FontStyle.Normal,0,TextAnchor.MiddleRight);
+     Text(new Rect(x0+296,cy,56,27.9f),FmtEffect(eff[i],n.key,target),sans,13,C(240,215,167),FontStyle.Normal,0,TextAnchor.MiddleRight);
      ry+=heights[i];Fill(new Rect(x0+1,ry-1,w-2,1),C(49,52,52));
     }
     y=ty+rows+10;
     y+=Paragraph(new Rect(x0,y,w,100),n.noteKo,sans,18,C(204,201,195),30.6f);
+    y+=DrawLedgers(x0,y,w);
     detailContent=y+detailScroll+10;
     if(detailContent-rect.height<=0)detailScroll=0;
    } finally {GUI.matrix=oldM;}
@@ -470,23 +484,33 @@ namespace Exoduser.UnityPort {
    }
    if(ev.type==EventType.MouseUp)detailDrag=false;
   }
-  void DrawActions(bool isStat){
-   // The upgrade/refund buttons keep the web shapes (in the still); they do nothing yet (auto-invest reservation / refund plan are not ported).
-   NativeSilverHellUi.ActionPlate(new Rect(1489,820.2f,372,49),true,0,false,20,6);Text(new Rect(1489,820.2f,372,49),isStat?"계획에 추가 · 1 SP":"자동 투자 예약 · "+NotPorted,sans,18,C(244,216,168),FontStyle.Bold,0,TextAnchor.MiddleCenter,true);
-   Text(new Rect(1489,876.2f,372,22.4f),isStat?"현재 SP "+NotPorted:"현재 AP "+NotPorted+" · 예약 후 예상 레벨 "+NotPorted,sans,14,C(188,185,179),FontStyle.Normal,0,TextAnchor.MiddleCenter);
-   Text(new Rect(1489,904.6f,372,22.4f),isStat?"":"AP가 부족해도 예약할 수 있습니다. 예약은 즉시 저장됩니다.",sans,14,C(188,185,179),FontStyle.Normal,0,TextAnchor.MiddleCenter);
-   Text(new Rect(1489,927,372,44),isStat?"1포인트 환불 계획":"1레벨 환불 계획",sans,18,new Color(180/255f,160/255f,131/255f,.48f),FontStyle.Normal,0,TextAnchor.MiddleCenter);
+  float DrawLedgers(float x,float y,float width){
+   float start=y;if(planChanges>0){Text(new Rect(x,y,width,24),"변경 중 · "+planChanges,sans,13,C(188,185,179));y+=28;foreach(var n in defs.nodes){int before=LiveValue(n.key),after=PlannedValue(n.key);if(before==after)continue;Text(new Rect(x,y,width-110,25),Name(n),sans,13,C(204,201,195));Text(new Rect(x+width-110,y,110,25),before+" → "+after,serif,14,C(240,215,167),FontStyle.Normal,0,TextAnchor.MiddleRight);y+=28;}}
+   if(sim!=null&&sim.Growth.Queue.Count>0){Text(new Rect(x,y,width,24),"자동 투자 예약 · "+sim.Growth.Queue.Count,sans,13,C(188,185,179));y+=28;for(int i=0;i<sim.Growth.Queue.Count;i++){string key=sim.Growth.Queue[i];var r=new Rect(x,y,width,28);StatDefsNode node;Text(r,(i+1)+". "+(nodeByKey.TryGetValue(key,out node)?Name(node):key),sans,13,C(204,201,195));Text(r,"예약 취소",sans,12,C(188,185,179),FontStyle.Normal,0,TextAnchor.MiddleRight);if(Click(r)){CancelReservation(i);break;}y+=30;}}
+   return y-start;
   }
-
+  void DrawActions(bool isStat){
+   string key=SelectedKey;int value=PlannedValue(key),reserved=sim==null?0:sim.Growth.Queued(key),future=value+reserved;
+   int amount=isStat?1:Math.Max(1,selectedRank-future),cost=0;for(int i=0;i<amount;i++)cost+=RankCost(future+i);
+   bool reserve=!isStat&&(sim.Growth.Queue.Count>0||plannedAp<cost),maxed=!isStat&&future>=GrowthState.Cap(key);
+   bool can=isStat?plannedSp>=1&&value<Math.Max(GrowthState.Cap(key),LiveValue(key)):!maxed&&future+amount<=GrowthState.Cap(key);
+   string label=isStat?"계획에 추가 · 1 SP":maxed?"최대 레벨":(reserve?"자동 투자 예약 · ":"계획에 추가 · ")+cost+" AP";
+   var upgrade=new Rect(1489,820.2f,372,49);var old=GUI.color;if(!can)GUI.color=new Color(old.r,old.g,old.b,old.a*.38f);NativeSilverHellUi.ActionPlate(upgrade,true,Hot(upgrade)&&can?1:0,false,20,6);Text(upgrade,label,sans,18,C(244,216,168),FontStyle.Bold,0,TextAnchor.MiddleCenter,true);GUI.color=old;
+   if(Click(upgrade)&&can){if(reserve)ReservePassive(key,amount);else PlanChange(key,amount);}
+   string note=isStat?can?"추가 후 계획 잔여 SP "+(plannedSp-1):"SP 또는 투자 상한을 확인하세요.":maxed?"레벨 상한에 도달했습니다.":reserve?"현재 AP "+plannedAp+" · 예약 후 예상 레벨 "+(future+amount)+" · AP가 모이면 자동 투자":"추가 후 계획 잔여 AP "+(plannedAp-cost);
+   Text(new Rect(1489,876.2f,372,22.4f),note,sans,14,C(188,185,179),FontStyle.Normal,0,TextAnchor.MiddleCenter);
+   string notice=sim.Growth.Queue.Count>0?"자동 투자 예약 "+sim.Growth.Queue.Count+"개 저장됨 · 위에서 개별 취소 가능":planChanges>0?"변경 "+planChanges+"개 · 하단에서 적용":"AP가 부족해도 예약할 수 있습니다. 예약은 즉시 저장됩니다.";
+   Text(new Rect(1489,904.6f,372,22.4f),notice,sans,14,C(188,185,179),FontStyle.Normal,0,TextAnchor.MiddleCenter);
+   int remove=isStat?1:selectedRank>0&&selectedRank<=value?value-selectedRank+1:1,refund=0;for(int i=0;i<remove;i++)refund+=RankCost(value-i-1);
+   var rr=new Rect(1489,927,372,44);Text(rr,isStat?"1포인트 환불 계획":(remove==1?"1레벨 환불 계획":"환불 계획 · Lv. "+value+" → "+(value-remove))+(value>0?" · +"+refund+" AP":""),sans,18,new Color(180/255f,160/255f,131/255f,value>0?1f:.38f),FontStyle.Normal,0,TextAnchor.MiddleCenter);if(Click(rr)&&value>0)PlanChange(key,-remove);
+  }
   void DrawFooter(Action close){
-   Text(new Rect(39,1014.8f,1368.7f,22.4f),"AP가 부족해도 예약 가능 · 짝수 레벨업으로 AP가 모이면 순서대로 자동 투자됩니다.",sans,14,C(188,185,179));
-   Text(new Rect(1421.7f,1004,109.3f,44),"전체 환불 계획",sans,16,C(142,145,145),FontStyle.Normal,0,TextAnchor.MiddleCenter);
-   Text(new Rect(1545,1004,97.4f,44),"계획 취소",sans,16,new Color(201/255f,178/255f,145/255f,.48f),FontStyle.Normal,0,TextAnchor.MiddleCenter);
-   Text(new Rect(1656.3f,1003,123.4f,46),"변경 적용",sansSemi,16,new Color(1f,222/255f,189/255f,.48f),FontStyle.Normal,0,TextAnchor.MiddleCenter);
-   var closeRect=new Rect(1793.7f,1004,87.3f,44);
-   if(Hot(closeRect))Fill(closeRect,new Color(1,1,1,.05f));
-   Text(closeRect,"닫기 [J]",sans,16,C(184,181,175),FontStyle.Normal,0,TextAnchor.MiddleCenter);
-   if(Click(closeRect))close();
+   string footer=sim.Growth.Queue.Count>0?"자동 투자 예약 "+sim.Growth.Queue.Count+"개 저장됨 · 짝수 레벨업마다 AP +1, 충분해지면 예약 순서대로 투자됩니다.":planChanges>0?planChanges+"개 변경 대기 · 적용 전에는 저장되지 않습니다.":"AP가 부족해도 예약 가능 · 짝수 레벨업으로 AP가 모이면 순서대로 자동 투자됩니다.";
+   Text(new Rect(39,1014.8f,1368.7f,22.4f),footer,sans,14,C(188,185,179));
+   var refund=new Rect(1421.7f,1004,109.3f,44);Text(refund,"전체 환불 계획",sans,16,C(142,145,145),FontStyle.Normal,0,TextAnchor.MiddleCenter);if(Click(refund)){plan.RefundAll();RefreshPlan();}
+   var cancel=new Rect(1545,1004,97.4f,44);Text(cancel,"계획 취소",sans,16,new Color(201/255f,178/255f,145/255f,planChanges>0?1f:.38f),FontStyle.Normal,0,TextAnchor.MiddleCenter);if(Click(cancel)&&planChanges>0){plan=sim.Growth.CreatePlan();RefreshPlan();}
+   var apply=new Rect(1656.3f,1003,123.4f,46);Text(apply,"변경 적용",sansSemi,16,new Color(1f,222/255f,189/255f,planChanges>0?1f:.38f),FontStyle.Normal,0,TextAnchor.MiddleCenter);if(Click(apply)&&planChanges>0)ApplyPlan();
+   var closeRect=new Rect(1793.7f,1004,87.3f,44);if(Hot(closeRect))Fill(closeRect,new Color(1,1,1,.05f));Text(closeRect,"닫기 [J]",sans,16,C(184,181,175),FontStyle.Normal,0,TextAnchor.MiddleCenter);if(Click(closeRect))close();
   }
 
   // ---- verification entry (--unity-stat-panel-capture <out-dir>): opens the window by itself, captures stills and quits ----

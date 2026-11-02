@@ -102,3 +102,23 @@
 | 검사·한계 | 미리보기 정책 부재 RED→GREEN 7개, 앞선 전투24 포함31. 실제 Player1920/3840·1x·번역 전체는 Dota 실행으로 미검증 |
 
 원본byte·데이터 추출·최종 SHA·검수는 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md. VISUAL VERDICT: 미검증.
+
+
+## 2026-11-02 3차 CTO 후속 — 실제 지원 스킬 UI/원장 정합
+
+웹 기준은 11-02 현재 origin/main의 skill-forge.js/css와 game.html이다. 이전 13슬롯/LMB 단일 상태 캡처 설명은 이 절의 16슬롯·실제 상태 표시로 대체한다. 미지원 기술의 전투 실행기를 구현한 것으로 표시하지 않는다.
+
+| 구역 | 현재 구현·정확 계약 | 검수 경계 |
+|---|---|---|
+| 지원 범위 | kiSlash + Simulation.PortedSkillIds의 spikeTrap/giantSlam/holyDome/iceOrb/fireball, 총6종. JSON48정의 중 나머지42종은 정의/설명 조회만, 학습·자원 차감 거절 | 전체 스킬 이식 완료 아님 |
+| E/RMB | 과거 Data/skill_defs_web의 slots7/9를 생성 시 교환. 현행 RMB=마법, E=칼등 처내기. 악의구 설명 키도 현재 슬롯7의 키로 표시 | Q/E 핵심/전투 입력 변경0 |
+| 왼쪽 정보 | 폭270·padding16·원형 아이콘64·이름23px·본문15px·레벨/원가·강화+/강화−/리셋·실제SP/악의오브/LV. 나눔명조·CinzelDecorative 사용. 과거 원화9-slice 설명판을 웹 CSS의 얇은 테/흑철 gradient로 정합 | 실제 Player1920/3840 비교는 부모 검수 영수증 참조 |
+| 지원 학습 | 정의의 spCost/matCost/reqLv, 원가는 sim.MaliceCost로 계산. 중복/요구레벨/SP/악의 부족은 쓰기0 | spikeTrap10SP·raw80→40악의, holy10/90→45, ice10/100→50, giant10/120→60 |
+| 강화 | 실제 Lv<min(20,floor(플레이어Lv/50)+1),1SP. 기검참은 Config.KiSlashLevel과 Skills.Levels를 같이 갱신. 하향은1SP환불·Lv1유지 | 기검참 저장은 CombatSave 소유자의 명시 kiSlash 저장/복원 seam과 함께 적용 |
+| 장착 | UI0~3=spikeTrap/iceOrb,F4=holy,LMB6=ki,RMB7=fireball,Ctrl11=iceOrb,Space12=giant. 숫자 슬롯 중복은 해제, 고정LMB/RMB/Ctrl 직접 해제는 거절 | 미지원 기술 배정0 |
+| 리셋 | RequestReset(sim,id)로 확인 대기, ResolveReset(false)는 자원/슬롯 쓰기0. 확인 시 일반기 학습SP+(Lv−1)SP환불·악의미반환·해당 숫자/CT해제. 기본ki/fireball은Lv1 유지·강화분만 환불 | 동시다른창입력 차단, 사용자저장 덮어쓰기0 |
+| 가운데 | 모든13일반 슬롯에 기존 빈 제단 표시, 실제 장착 핵/명칭과 모든 습득 구슬의 실제Lv 표시. 선택한 다른 구슬 때문에 장착 모체의 로드맵 열이 바뀌지 않음 | 합체 executor/전체42종/실시간3D제단은 미이식, 아트 완성 선언 없음 |
+| 하단 | 기존 공용 원화 ActionPlate로3버튼 정합. 일괄강화는 지원/습득한6종의 실제Lv락/SP내에서만 처리. 추천자동은 전체 추천빌드에 필요한 미지원 기능 때문에 disabled 유지하고 hover사유 표시 | 부분 추천을 전체 추천으로 가장하지 않음 |
+| 저장 요청 | Changed callback에서 실제 원장 변경 때만 NativeGame.RequestCombatSave 요청. 스킬 창이 상태/실행을 초기화하지 않음 | 실제 재시작 왕복은 부모 통합 검수 |
+
+검증: I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/third/skill/의 SkillPolicyTests.csproj·Program.cs, red.txt→green.txt. 실제 Core가 연결된26검사 PASS: SP/악의 원자성·중복학습·Lv50락·기검참실제공격레벨·하향환불·슬롯중복제거·고정슬롯해제거절·리셋중복환불거절·RMB/E배정. 기존 EnemyAi 미사용 지역변수 경고2는 원문 보존. 컴파일/CPU검사만으로 Player/시각/저장 PASS를 선언하지 않는다. 관련docs 전수검색은 같은 폴더 docs-search.txt.

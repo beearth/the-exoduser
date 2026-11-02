@@ -26,14 +26,14 @@ namespace Exoduser.UnityPort {
   // ===== 강화 =====
   void DrawUpgrade(Simulation sim,InventoryState inv){
    var up=defs.upgrade;
-   Txt(new Rect(CX,CY,CW,19),up.header,F.NM,15.2f,C(255,170,68),true,TextAnchor.MiddleCenter,1.52f);
+   Txt(new Rect(CX,CY,CW,19),up.header,F.NM,15.2f,C(230,227,221),true,TextAnchor.MiddleCenter,1.52f);
    var list=new List<KeyValuePair<ForgeSlotDef,InventoryItem>>();
    foreach(var s in defs.slots){var it=inv.GetEquipped(s.key);if(it!=null)list.Add(new KeyValuePair<ForgeSlotDef,InventoryItem>(s,it));}
    if(list.Count==0){Txt(new Rect(CX,433.4f,CW,48),up.noItem,F.NM,15.2f,C(68,71,71),false,TextAnchor.MiddleCenter);return;}
    KeyValuePair<ForgeSlotDef,InventoryItem>? sel=null;
    foreach(var kv in list)if(kv.Key.key==SelectedChip)sel=kv;
    // ---- AI auto-enhance section (border-top #333636, padding 14) ----
-   const float secTop=447.4f;float secH=sel.HasValue?236:182;
+   const float secTop=450.4f;float secH=sel.HasValue?212:158;
    Fill(new Rect(CX,secTop,CW,1),C(51,54,54));
    float x=CX;x+=Spr("ai15_2:⚡",x,462.4f);
    Txt(new Rect(x,462.4f,CW,21),up.aiTitle,F.NM,15.2f,C(144,147,147),true);
@@ -59,7 +59,7 @@ namespace Exoduser.UnityPort {
    // ---- one card per equipped slot ----
    float cardsTop=secTop+secH+8;
    for(int i=0;i<list.Count;i++){
-    var def=list[i].Key;var it=list[i].Value;var r=new Rect(CX,cardsTop+116*i,CW,108);
+    var def=list[i].Key;var it=list[i].Value;var r=new Rect(CX,cardsTop+114.97f*i,CW,106.97f);
     Card(r);float tx=r.x+15;
     float adv=Spr("card14:"+def.emoji,tx,r.y+13);
     float nameW=Txt(new Rect(tx+adv,r.y+13,620,23.4f),def.label+" "+it.name,F.SansSemi,14,Bone,false,TextAnchor.MiddleLeft,.21f,1f,new Color(0,0,0,.78f),1f);

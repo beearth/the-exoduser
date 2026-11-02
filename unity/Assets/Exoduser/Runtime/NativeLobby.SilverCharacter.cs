@@ -6,7 +6,7 @@ namespace Exoduser.UnityPort
         Texture2D silverCornerTop,silverCornerBottom,silverVisualCancel,silverVisualCreate,silverVisualDisabled;
         Texture2D[] silverEmblems,silverPosters,silverPortraits;
         GUIStyle silverVisualTitle,silverVisualName,silverVisualDescription,silverVisualCaption,silverVisualAction,silverVisualTraitTitle,silverVisualTraitBody;
-        Texture2D silverVisualVignette,silverVisualSideShade,silverHeadingLine;
+        Texture2D silverVisualVignette,silverVisualSideShade,silverHeadingLine,silverClassChains;
         void EnsureSilverVisual()
         {
             SilverStyles();
@@ -14,6 +14,7 @@ namespace Exoduser.UnityPort
             silverVisualCancel=Resources.Load<Texture2D>("Art/ui/silver_hell/visual_cancel");
             silverVisualCreate=Resources.Load<Texture2D>("Art/ui/silver_hell/visual_create");
             silverVisualDisabled=Resources.Load<Texture2D>("Art/ui/silver_hell/visual_disabled");
+            silverClassChains=Resources.Load<Texture2D>("Art/CharacterSelect/coming_soon_chains_v2");
             silverCornerTop=Resources.Load<Texture2D>("Art/ui/silver_hell/panel_corner_0");
             silverCornerBottom=Resources.Load<Texture2D>("Art/ui/silver_hell/panel_corner_1");
             presentationTraitGlyphs=Resources.Load<Texture2D>("Art/ui/silver_hell/trait_silver")??presentationTraitGlyphs;
@@ -92,8 +93,9 @@ namespace Exoduser.UnityPort
             float x=w-420,bodyY=62,top=bodyY+(shortScreen?190:300),size=shortScreen?54:64;
             string[] railLabels={"전사","실버테일","헬거너","변성술사","창법사"};
             string[] railEnglish={"Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"};
-            var railName=new GUIStyle(silverBody){wordWrap=true,alignment=TextAnchor.UpperCenter};
-            var railSoon=new GUIStyle(silverVisualCaption){wordWrap=true,alignment=TextAnchor.UpperCenter};
+            var railName=new GUIStyle(silverBody){fontSize=13,fontStyle=FontStyle.Normal,wordWrap=true,alignment=TextAnchor.UpperCenter};
+            var railSoon=new GUIStyle(silverVisualCaption){fontSize=10,wordWrap=true,alignment=TextAnchor.UpperCenter};
+            railSoon.normal.textColor=new Color(111/255f,114/255f,114/255f);
             const float labelWidth=76,labelGap=9,footerGap=9,actionGap=18;
             float nameHeight=0,soonHeight=0;
             for(int n=0;n<5;n++)
@@ -167,6 +169,7 @@ namespace Exoduser.UnityPort
                 Border(r,n==i?NativeSilverHellUi.Bright:new Color(.61f,.62f,.62f,.62f),1);
                 if(n==i)Border(new Rect(r.x-3,r.y-3,size+6,size+6),NativeSilverHellUi.Text,1);
                 float labelX=r.center.x-labelWidth/2;
+                railName.normal.textColor=n==i?NativeSilverHellUi.Bright:NativeSilverHellUi.Dim;
                 SilverLabel(new Rect(labelX,r.yMax+labelGap,labelWidth,nameHeight),railEnglish[n],railName,TextAnchor.UpperCenter);
                 if(n>0)SilverLabel(new Rect(labelX,r.yMax+labelGap+nameHeight+footerGap,labelWidth,soonHeight),soon,railSoon,TextAnchor.UpperCenter);
                 GUI.SetNextControlName("visual-icon-"+n);
@@ -195,7 +198,7 @@ namespace Exoduser.UnityPort
                 characterVisualFocusPending=false;
             }
         }
-        // 이모지/대각선 사슬 대신 원화 문장을 보존하고 작은 금속 자물쇠를 표시한다.
+        // 웹 .cs-ico.locked .cs-ico-ring::after의 같은 X 사슬 원본을 슬롯 전체에 표시한다.
         static string SilverRailName(string text,GUIStyle style,float width)
         {
             if(text.IndexOf(' ')>=0||style.CalcSize(new GUIContent(text)).x<=width)return text;
@@ -210,11 +213,7 @@ namespace Exoduser.UnityPort
         }
         void DrawSilverClassLock(Rect icon)
         {
-            var c=GUI.color;float s=14;Rect body=new Rect(icon.center.x-s/2,icon.yMax-18,s,11);
-            Fill(new Rect(body.x+3,body.y-6,8,7),new Color(.035f,.039f,.043f,.96f));
-            Border(new Rect(body.x+3,body.y-6,8,8),new Color(.57f,.58f,.56f,.95f),1);
-            Fill(body,new Color(.055f,.059f,.061f,.98f));Border(body,new Color(.62f,.63f,.60f,.98f),1);
-            Fill(new Rect(body.center.x-.7f,body.y+3,1.4f,4),NativeSilverHellUi.Text);GUI.color=c;
+            if(silverClassChains!=null)Image(icon,silverClassChains,ScaleMode.StretchToFill);
         }
     }
 }

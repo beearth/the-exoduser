@@ -198,6 +198,13 @@ namespace Exoduser.UnityPort
             overlapCoverage.unityVersion=Application.unityVersion;overlapCoverage.device=SystemInfo.graphicsDeviceName;overlapCoverage.deviceType=SystemInfo.graphicsDeviceType.ToString();
             smokeActive=true;pauseSmoke=true;lobby.AutomatedInput=true;lobby.SetPlaybackFocus(true);SetGameFocus(true);
             gameObject.AddComponent<NativeUiAudit.Host>();NativeUiAudit.Active=false;yield return null;yield return null;
+            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-parity-third-check")>=0)
+            {
+                yield return ParityThirdCapture();NativeUiAudit.Active=false;
+                File.WriteAllText(Path.Combine(overlapOutput,"coverage.json"),JsonUtility.ToJson(overlapCoverage,true));
+                lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);
+                Debug.Log("QA_MEDIA_DRAIN_COMPLETE PARITY_THIRD");Application.Quit(0);yield break;
+            }
             if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-title-a-check")>=0||Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-title-c2-check")>=0)
             {
                 yield return UiTitleGrid();NativeUiAudit.Active=false;File.WriteAllText(Path.Combine(overlapOutput,"coverage.json"),JsonUtility.ToJson(overlapCoverage,true));
