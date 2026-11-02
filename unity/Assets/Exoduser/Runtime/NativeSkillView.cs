@@ -17,13 +17,18 @@ namespace Exoduser.UnityPort
         readonly List<int> stale = new List<int>();
         // 웹 강타 wave/flash는 Core 점을 중심으로 그린다. 캐릭터용 발끝 lift 대상이 아니다.
         static readonly HashSet<SpriteRenderer> centeredSlamSprites = new HashSet<SpriteRenderer>();
-        public static bool IsCenteredSkillSprite(SpriteRenderer sprite) { return IsCenteredMaliceSprite(sprite) || centeredSlamSprites.Contains(sprite); }
+        static readonly HashSet<SpriteRenderer> centeredSkillSprites = new HashSet<SpriteRenderer>();
+        static readonly HashSet<SpriteRenderer> groundSkillSprites = new HashSet<SpriteRenderer>();
+        public static bool IsCenteredSkillSprite(SpriteRenderer sprite) { return centeredSkillSprites.Contains(sprite) || IsCenteredMaliceSprite(sprite) || centeredSlamSprites.Contains(sprite); }
+        public static bool IsGroundSkillSprite(SpriteRenderer sprite) { return groundSkillSprites.Contains(sprite); }
+        static void ForgetSkillSprites(Item item) { foreach(var sprite in item.go.GetComponentsInChildren<SpriteRenderer>(true)) { centeredSkillSprites.Remove(sprite); groundSkillSprites.Remove(sprite); } }
         static void ForgetCenteredSlamSprites(Item item) { centeredSlamSprites.Remove(item.a); centeredSlamSprites.Remove(item.b); }
         // The web draws fire zones in the world layer, then the dynamic lighting pass (game.html _renderLighting, line 55344) darkens them; Unity has no such overlay. Factor measured web|Unity capture 2026-10-28.
         const float WebLitHolyDome = .11f;
         // Web lighting presses the ring band (.62~.90 r) down to almost 0, so the two rings are practically invisible there (web|Unity capture 10-28).
         const float WebLitHolyDomeRing = .03f;
         Sprite spike, dome, shard, disc; readonly Sprite[] slamFrames = new Sprite[4], orbFrames = new Sprite[9], maliceFrames = new Sprite[20];
+        Sprite weakZone; Material weakZoneMaterial;
         Item orb;
         public int ActiveZones, ActiveWaves, ActiveBlades, ActiveMaliceOrbs; public bool OrbShown;
 
@@ -32,12 +37,18 @@ namespace Exoduser.UnityPort
             this.parent = parent;
             add = new Material(Resources.Load<Shader>("Shaders/SkillAdditive"));
             addFlat = new Material(Resources.Load<Shader>("Shaders/SkillAdditive")); addFlat.SetFloat("_Flat", 1);
-            alpha = new Material(Shader.Find("Sprites/Default"));
+            alpha = new Material(Resources.Load<Shader>("Shaders/SkillAdditive")); alpha.SetFloat("_NormalBlend", 1); alpha.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
             // 현행 웹 GPU 프록시는 globalCompositeOperation을 무시하므로 악의구도 일반 합성이다.
             malice = new Material(Resources.Load<Shader>("Shaders/SkillAdditive")); malice.SetFloat("_NormalBlend", 1);
             malice.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
             malice.SetInt("_DepthTest", (int)UnityEngine.Rendering.CompareFunction.Always);
             spike = Whole("Art/vfx/skill_spike_thorn"); dome = Whole("Art/vfx/skill_holy_dome");
+            var weakTexture = Resources.Load<Texture2D>("Art/vfx/skill_zone_single");
+            if (weakTexture != null) weakZone = Sprite.Create(weakTexture, new Rect(0, 0, weakTexture.width, weakTexture.height), new Vector2(.5f, .5f), 100, 0, SpriteMeshType.FullRect);
+            else Debug.LogWarning("원본 영역 십자 문양을 불러오지 못했습니다.");
+            var weakShader = Resources.Load<Shader>("Shaders/WeakZoneTint");
+            if (weakShader != null) weakZoneMaterial = new Material(weakShader);
+            else Debug.LogWarning("영역 source-atop 틴트 셰이더를 불러오지 못했습니다.");
             var slam = Resources.Load<Texture2D>("Art/vfx/skill_inferno_slam_sheet"); int hw = slam.width / 2, hh = slam.height / 2;
             for (int i = 0; i < 4; i++) slamFrames[i] = Sprite.Create(slam, new Rect(i % 2 * hw, slam.height - (i / 2 + 1) * hh, hw, hh), new Vector2(.5f, .5f), 100, 0, SpriteMeshType.FullRect);
             var orbTex = Resources.Load<Texture2D>("Art/vfx/skill_ice_orb_sheet"); int fw = orbTex.width / 3, fh = orbTex.height / 3;
@@ -46,7 +57,7 @@ namespace Exoduser.UnityPort
             var mo = Resources.Load<Texture2D>("Art/vfx/skill_malice_orb_sheet");
             for (int i = 0; i < 20; i++) maliceFrames[i] = Sprite.Create(mo, new Rect(i % 7 * 171, mo.height - (i / 7 + 1) * 171, 171, 171), new Vector2(.5f, .5f), 100, 0, SpriteMeshType.FullRect);
             shard = BuildShard(); disc = BuildDisc();
-            LoadMaliceBursts();
+            LoadMaliceBursts(); LoadQeVisuals();
         }
         static Sprite Whole(string path)
         {
@@ -92,7 +103,9 @@ namespace Exoduser.UnityPort
         SpriteRenderer NewRenderer(Item item, string name, Sprite sprite, Material material, int order)
         {
             var go = new GameObject(name); go.transform.SetParent(item != null ? item.go.transform : parent, false);
-            var r = go.AddComponent<SpriteRenderer>(); r.sprite = sprite; r.sharedMaterial = material; r.sortingOrder = order; return r;
+            var r = go.AddComponent<SpriteRenderer>(); r.sprite = sprite; r.sharedMaterial = material; r.sortingOrder = order;
+            if(material != malice && name != "wave" && name != "flash") centeredSkillSprites.Add(r);
+            return r;
         }
         Item NewItem(string name) { return new Item { go = new GameObject(name) { transform = { parent = parent } } }; }
         static void Fit(SpriteRenderer r, float px, float srcPx) { r.transform.localScale = Vector3.one * (px / srcPx); }
@@ -117,24 +130,45 @@ namespace Exoduser.UnityPort
 
         public void Update(Simulation sim, float time)
         {
-            BindMaliceBursts(sim); UpdateMaliceBursts(sim.TickCount);
+            // 중심형 효과는 Canvas의 전체 영역을 보존하고, 지면 장판은 XZ면에 놓는다.
+            int depth=NativeRemodel3D.Active?(int)UnityEngine.Rendering.CompareFunction.Always:(int)UnityEngine.Rendering.CompareFunction.LessEqual;
+            add.SetInt("_DepthTest",depth); addFlat.SetInt("_DepthTest",depth); alpha.SetInt("_DepthTest",depth);
+            if (weakZoneMaterial != null) weakZoneMaterial.SetInt("_DepthTest", depth);
+            UpdatePlayerBladeViews(sim,time); BindMaliceBursts(sim); UpdateMaliceBursts(sim.TickCount); BindIceShatter(sim); UpdateIceShatter(sim.TickCount); UpdateQeVisuals(sim,time);
             ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0; var p = sim.Player;
+            UpdateFireTrails(sim, time); UpdateChainSlamView(sim); UpdateChainAssaultView(sim, time);
             // ---- ground zones ----
             stale.Clear(); foreach (var k in zones.Keys) stale.Add(k);
             foreach (var z in sim.FireZones)
             {
+                if (z.Type == "fireTrail" || z.Type == "assaultFlame") continue;
                 stale.Remove(z.Id); Item it; if (!zones.TryGetValue(z.Id, out it)) { it = NewItem(z.Type + z.Id); zones[z.Id] = it; BuildZone(it, z); }
-                ActiveZones++; it.go.transform.position = Point(z.X, z.Y);
+                ActiveZones++; it.go.transform.position = Point(z.X, z.Y) + (NativeRemodel3D.Active ? Vector3.up * .025f : Vector3.zero);
                 float fade = Mathf.Clamp01((z.MaxT - z.T) / 30f), deploy = Mathf.Min(1f, z.T / (z.Type == "holyDome" ? 15f : 12f));
-                if (z.Type == "spikeTrap")
+                if(UpdateExtendedZone(it,z,sim,time))continue;
+                if (Simulation.IsWeakZoneSkill(z.Type))
                 {
-                    it.a.transform.localRotation = Quaternion.Euler(0, 0, -time * 1000f * 0.00005f * Mathf.Rad2Deg);
+                    it.a.enabled = weakZone != null && weakZoneMaterial != null;
+                    if (it.a.enabled)
+                    {
+                        it.a.transform.localRotation = (NativeRemodel3D.Active ? Quaternion.Euler(90, 0, 0) : Quaternion.identity) * Quaternion.Euler(0, 0, -time * .05f * Mathf.Rad2Deg);
+                        float size = z.R * 2 * Mathf.Min(1, z.T / 15f);
+                        it.a.transform.localScale = new Vector3(size / weakZone.rect.width, size / weakZone.rect.height, 1);
+                        // 원문 source-atop은 RGB를 색으로 교체하고 원본 알파를 보존한다.
+                        Color tint = z.Type == "weakPhys" ? new Color(1, .4f, 68 / 255f) : z.Type == "weakMag" ? new Color(170 / 255f, .4f, 1) : z.Type == "weakPj" ? new Color(68 / 255f, 170 / 255f, 1) : new Color(1, 68 / 255f, 136 / 255f);
+                        float weakFade = Mathf.Clamp01((z.MaxT - z.T) / (z.MaxT * .2f)) * .3f;
+                        tint.a = (.5f + .3f * Mathf.Sin(time * 3)) * weakFade; it.a.color = tint;
+                    }
+                }
+                else if (z.Type == "spikeTrap")
+                {
+                    it.a.transform.localRotation = (NativeRemodel3D.Active ? Quaternion.Euler(90, 0, 0) : Quaternion.identity) * Quaternion.Euler(0, 0, -time * 1000f * 0.00005f * Mathf.Rad2Deg);
                     Fit(it.a, z.R * 2 * deploy, spike.rect.width); it.a.color = new Color(1, 1, 1, (.43f + .04f * Mathf.Sin(time * 1000f * .003f)) * fade);
                 }
                 else
                 {
                     float t = time; float sz = z.R * 2 * deploy;
-                    it.a.transform.localRotation = Quaternion.Euler(0, 0, time * 1000f * 0.00005f * Mathf.Rad2Deg);
+                    it.a.transform.localRotation = (NativeRemodel3D.Active ? Quaternion.Euler(90, 0, 0) : Quaternion.identity) * Quaternion.Euler(0, 0, time * 1000f * 0.00005f * Mathf.Rad2Deg);
                     Fit(it.a, sz * 1.02f, dome.rect.width); it.a.color = new Color(182 / 255f, 1f, 84 / 255f, (.52f + .12f * Mathf.Sin(t * 3)) * fade * WebLitHolyDome);
                     for (int ri = 0; ri < 2; ri++)
                     {
@@ -150,6 +184,7 @@ namespace Exoduser.UnityPort
             {
                 stale.Remove(w.Id); Item it; if (!waves.TryGetValue(w.Id, out it)) { it = NewItem("slam" + w.Id); waves[w.Id] = it; it.a = NewRenderer(it, "wave", slamFrames[0], addFlat == null ? add : add, -18900); it.b = NewRenderer(it, "flash", disc, alpha, -18890); centeredSlamSprites.Add(it.a); centeredSlamSprites.Add(it.b); }
                 ActiveWaves++; it.go.transform.position = Point(w.X, w.Y);
+                if(w.Bash){UpdateBashWave(it,w);continue;}
                 float wp = w.T / (float)w.MaxT, fadeA = wp < .62f ? 1f : Mathf.Max(0, (1 - wp) / .38f);
                 int frame = Mathf.Min(3, Mathf.FloorToInt(Mathf.Pow(wp, .6f) * 4)); it.a.sprite = slamFrames[frame];
                 float size = w.MaxR * .9f * (.72f + .28f * Mathf.Min(1, wp * 3.5f)); Fit(it.a, size, slamFrames[frame].rect.width); it.a.color = w.Bash ? new Color(.4f, .667f, .867f, fadeA) : new Color(1, 1, 1, fadeA);   // E strike: web col #66aadd
@@ -203,27 +238,49 @@ namespace Exoduser.UnityPort
         }
         void BuildZone(Item it, FireZone z)
         {
-            if (z.Type == "spikeTrap") { it.a = NewRenderer(it, "thorn", spike, add, -19000); NativeGroundSkillSurface.Mark(it.a, true, (float)z.R*.01f*Mathf.Sqrt(2)); return; }
+            if(BuildExtendedZone(it,z))return;
+            if (Simulation.IsWeakZoneSkill(z.Type)) { it.a = NewRenderer(it, "weak zone", weakZone, weakZoneMaterial != null ? weakZoneMaterial : alpha, -19000); groundSkillSprites.Add(it.a); NativeGroundSkillSurface.Mark(it.a,true,(float)z.R*.01f*Mathf.Sqrt(2)); return; }
+            if (z.Type == "spikeTrap") { it.a = NewRenderer(it, "thorn", spike, add, -19000); NativeGroundSkillSurface.Mark(it.a, true, (float)z.R*.01f*Mathf.Sqrt(2)); groundSkillSprites.Add(it.a); return; }
             it.a = NewRenderer(it, "dome", dome, addFlat, -19000);
-            NativeGroundSkillSurface.Mark(it.a, true, (float)z.R*.0102f*Mathf.Sqrt(2));
+            NativeGroundSkillSurface.Mark(it.a, true, (float)z.R*.0102f*Mathf.Sqrt(2)); groundSkillSprites.Add(it.a);
             it.rings = new[] { NewRing(it, Color.white), NewRing(it, Color.white) };
+        }
+        // 명시적 Player 검수에서 실제 billboard 적용 뒤 중심·지면·깊이를 읽는다.
+        public void AuditPresentation(Simulation sim, out float centerError, out float groundTiltError, out int depthFailures, out int checkedSprites)
+        {
+            float center=0,tilt=0;int depth=0,count=0;
+            Action<SpriteRenderer,Vector3,bool> sample=(renderer,expected,ground)=>{
+                if(renderer==null||!renderer.enabled||!renderer.gameObject.activeInHierarchy)return;
+                count++;center=Mathf.Max(center,Vector3.Distance(renderer.transform.position,expected));
+                if(ground)tilt=Mathf.Max(tilt,1-Mathf.Abs(Vector3.Dot(renderer.transform.forward,Vector3.up)));
+                if(renderer.sharedMaterial.GetInt("_DepthTest")!=(int)UnityEngine.Rendering.CompareFunction.Always)depth++;
+            };
+            foreach(var z in sim.FireZones)if(zones.TryGetValue(z.Id,out var zone))sample(zone.a,Point(z.X,z.Y)+Vector3.up*.025f,true);
+            foreach(var z in sim.FireZones)if(fireTrails.TryGetValue(z.Id,out var flames))foreach(var flame in flames)sample(flame.Renderer,Point(z.X+flame.X,z.Y+flame.Y),false);
+            foreach(var w in sim.SlamWaves)if(waves.TryGetValue(w.Id,out var wave)){sample(wave.a,Point(w.X,w.Y),false);sample(wave.b,Point(w.X,w.Y),false);}
+            foreach(var b in sim.SkillBlades)if(b.Active&&blades.TryGetValue(b.Id,out var blade))sample(blade.a,Point(b.X,b.Y),false);
+            if(sim.IceOrbActive&&orb!=null){var expected=Point(sim.IceOrbX,sim.IceOrbY);sample(orb.a,expected,false);sample(orb.b,expected,false);sample(glow0,expected,false);sample(glow1,expected,false);}
+            if(iceShatter!=null&&iceShatter.go.activeSelf){var expected=Point(iceShatterX,iceShatterY);sample(iceShatter.a,expected,false);sample(iceShatter.b,expected,false);}
+            centerError=center;groundTiltError=tilt;depthFailures=depth;checkedSprites=count;
         }
         void Drop(Dictionary<int, Item> map, List<int> ids)
         {
-            foreach (int id in ids) { ForgetMaliceSprites(map[id]); ForgetCenteredSlamSprites(map[id]); UnityEngine.Object.Destroy(map[id].go); map.Remove(id); }
+            foreach (int id in ids) { ForgetMaliceSprites(map[id]); ForgetCenteredSlamSprites(map[id]); ForgetSkillSprites(map[id]); UnityEngine.Object.Destroy(map[id].go); map.Remove(id); }
         }
 
         public void Reset()
         {
-            ResetMaliceBursts();
-            foreach (var m in new[] { zones, waves, blades, orbs }) { foreach (var it in m.Values) { ForgetMaliceSprites(it); ForgetCenteredSlamSprites(it); UnityEngine.Object.Destroy(it.go); } m.Clear(); }
+            ResetPlayerBladeViews(); ResetMaliceBursts(); ResetIceShatter(); ResetQeVisuals(); ResetFireTrails(); ResetChainSlamView(); ResetChainAssaultView();
+            foreach (var m in new[] { zones, waves, blades, orbs }) { foreach (var it in m.Values) { ForgetMaliceSprites(it); ForgetCenteredSlamSprites(it); ForgetSkillSprites(it); UnityEngine.Object.Destroy(it.go); } m.Clear(); }
             if (orb != null && orb.go != null) orb.go.SetActive(false);
             orbTrails.Clear(); ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0;
         }
         public void Dispose()
         {
-            Reset(); DisposeMaliceVisuals(); if (orb != null) UnityEngine.Object.Destroy(orb.go);
+            Reset(); DisposeExtendedZones(); DisposeMaliceVisuals(); DisposeIceShatter(); DisposeQeVisuals(); if (trailFrames != null) foreach (var sprite in trailFrames) UnityEngine.Object.Destroy(sprite); if (orb != null) { ForgetSkillSprites(orb); UnityEngine.Object.Destroy(orb.go); }
             UnityEngine.Object.Destroy(add); UnityEngine.Object.Destroy(addFlat); UnityEngine.Object.Destroy(alpha); UnityEngine.Object.Destroy(malice);
+            if (weakZone != null) UnityEngine.Object.Destroy(weakZone);
+            if (weakZoneMaterial != null) UnityEngine.Object.Destroy(weakZoneMaterial);
         }
     }
 }

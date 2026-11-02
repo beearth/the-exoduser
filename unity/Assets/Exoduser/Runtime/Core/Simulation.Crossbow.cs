@@ -29,6 +29,8 @@ namespace Exoduser.UnityPort.Core
     public sealed class BoltState
     {
         public int Id, Damage, Element, Bounces, Pierced;
+        internal PlayerProjectileCarry PoolCarry;
+        public int PierceCount, PierceMax;public double PierceProbability;
         public bool Active, Fresh;                      // Fresh: created by _mkPProj (no _pierceRate), not recycled by _resetPProj
         public double X, Y, Vx, Vy, Dist, MaxDist, Radius = 3, PierceRate;
         internal readonly HashSet<EnemyState> HitSet = new HashSet<EnemyState>();
@@ -44,7 +46,7 @@ namespace Exoduser.UnityPort.Core
         public bool CrossbowAuto = true;                // _xbowEquipped (T toggle, default ON)
         public double CrossbowTimer;                    // _xbowTimer
         public EnemyState CrossbowTarget;               // _xbowTarget
-        public int BoltFreeCount;                       // _pprojFree.length: recycled objects only come from bolts consumed by a hit
+        // BoltFreeCount aliases the shared source pProjs pool in Simulation.PlayerProjectilePool.cs.
         public int BoltShots, BoltHits;                 // monotonic counters for sound / view
         public double BoltLastHitX, BoltLastHitY;
         /// <summary>Test hook: replaces the hurtE call of a bolt hit (enemy, damage, angle) -> unused. Null = the real ApplyEnemyDamage.</summary>
@@ -125,8 +127,7 @@ namespace Exoduser.UnityPort.Core
         {
             double cdx = Math.Cos(ang), cdy = Math.Sin(ang);
             BoltState b = new BoltState();
-            if (BoltFreeCount > 0) { BoltFreeCount--; b.PierceRate = 50 + Crossbow.PierceFlat; }   // _getPProj pops a recycled object -> _resetPProj sets _pierceRate
-            else b.Fresh = true;                                                                    // _mkPProj: _pierceRate undefined -> no pierce
+            bool fresh;b.PoolCarry=TakePlayerProjectile(out fresh);b.Fresh=fresh;b.PierceRate=fresh?0:50+Crossbow.PierceFlat;b.PierceCount=b.PoolCarry.PierceCount;if(!fresh){b.PierceProbability=Math.Min(.95,Growth.Value("pPierce")*.05);b.PierceMax=Growth.Value("pPierce");}
             b.Id = nextBoltId++; b.Active = true;
             b.X = ox + cdx * 10; b.Y = oy + cdy * 10; b.Vx = cdx * speed; b.Vy = cdy * speed;
             b.Damage = damage; b.Element = Crossbow.Element; b.MaxDist = range; b.Dist = 0; b.Radius = 3;
@@ -191,6 +192,7 @@ namespace Exoduser.UnityPort.Core
                 var p = Bolts[i];
                 double spd = Math.Sqrt(p.Vx * p.Vx + p.Vy * p.Vy);
                 p.X += p.Vx; p.Y += p.Vy; p.Dist += spd;
+                if(p.PoolCarry!=null&&p.PoolCarry.Grace>0)p.PoolCarry.Grace--;
                 bool dead = false;
                 if (p.Dist > p.MaxDist) dead = true;
                 else if (BoltWall(p.X, p.Y))
@@ -234,7 +236,7 @@ namespace Exoduser.UnityPort.Core
                     hit = true; break;
                 }
                 if (!hit) Bolts[w++] = p;
-                else { p.Active = false; if (BoltFreeCount < BoltPoolSize) BoltFreeCount++; }
+                else { p.Active = false; if(p.PoolCarry!=null){p.PoolCarry.PierceCount=p.PierceCount;RecyclePlayerProjectile(p.PoolCarry);p.PoolCarry=null;} }
             }
             if (w < Bolts.Count) Bolts.RemoveRange(w, Bolts.Count - w);
         }

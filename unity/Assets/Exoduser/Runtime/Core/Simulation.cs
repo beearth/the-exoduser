@@ -74,30 +74,48 @@ namespace Exoduser.UnityPort.Core
         {
             if (!Finite(moveX) || !Finite(moveY) || !Finite(aimX) || !Finite(aimY)) throw new ArgumentException("Non-finite input");
             if (Stage.Enabled && Stage.LoadPhase > 0) { moveX = 0; moveY = 0; attack = false; pickup = false; }   // C07: the boss-arena load screen freezes the player (web 43568, 61395)
+            if(preservedLoadedLmbSkill!=null)attack=false;skillAimX=aimX;skillAimY=aimY;RecordTimeWarp();BeginChainLandingInput(attack);
             TickCount++;
             if (hitSfxCd > 0) hitSfxCd--; TickScheduledSounds();   // RM-1 sound cooldowns (web _hitSfxCd / _critSfxCd)
             LastHitDamage = 0;
             if (ComboTicks > 0) { ComboTicks--; if (ComboTicks <= 0) Combo = 0; }
             TickDeathFrameStart();   // O-1: _sfxFrameReset (_critSfxCd)
-            if (Player.Hp <= 0 || Player.State == "dead" || Player.State == "fallen") { TickFallen(); UpdateKiProjectiles(); UpdateBolts(); TickKiTimers(); TickHurtFx(); return; }
+            if (Player.Hp <= 0 || Player.State == "dead" || Player.State == "fallen") { TickFallen(); TickPlayerSkillProjectiles(); UpdateKiProjectiles(); UpdateBolts(); TickKiTimers(); TickHurtFx(); return; }
             if (!RollActive) Player.Facing = (float)Math.Atan2(aimY - Player.Y, aimX - Player.X);
+            if (PlayerCombatWired) UpdateChainInputEvents();
+            if (SkillsWired) DispatchSkillKeys();
+            if (Player.State != "pStun") ConsumeRollTrigger(); // 원본 일반 기동 발동은 재생·무적 감소보다 앞선다.
+            if (PlayerCombatWired) TickChainDash(); // 기절은 새 홀드·재생만 막고 이미 날아간 사슬은 계속 진행한다.
+            TickChainSlamInput();
+            if (SourceActInput != null) attack = attack && SourceActInput("weapon");
+            if (SourceHeldInput != null) magicHeld = magicHeld && SourceHeldInput("beam");
+            float regenMul = ApplySkillRegen();
             float regenDivisor = Player.State == "idle" ? 8 : 16;
-            Player.Hp = Math.Min(Player.MaxHp, Player.Hp + Config.PlayerHpRegen * (float)((1 + Growth.Value("pRegen") * .03) * (1 + Growth.Value("pAbund") * .05 + (Player.Hp <= Player.MaxHp * .3 ? Growth.Value("pPred") * .10 : 0))) / regenDivisor);
-            Player.Stamina = Math.Min(Player.MaxStamina, Player.Stamina + Config.PlayerStaminaRegen * (float)(1 + Growth.Value("pRegen") * .03) / regenDivisor);
-            Player.Mana = Math.Min(Player.MaxMana, Player.Mana + Config.PlayerManaRegen * (float)(1 + Growth.Value("pMRegen") * .03) / regenDivisor);
+            Player.Hp = Math.Min(Player.MaxHp, Player.Hp + Config.PlayerHpRegen * regenMul * (float)((1 + Growth.Value("pRegen") * .03) * (1 + Growth.Value("pAbund") * .05 + (Player.Hp <= Player.MaxHp * .3 ? Growth.Value("pPred") * .10 : 0))) / regenDivisor);
+            Player.Stamina = Math.Min(Player.MaxStamina, Player.Stamina + Config.PlayerStaminaRegen * regenMul * (float)(1 + Growth.Value("pRegen") * .03) / regenDivisor);
+            Player.Mana = Math.Min(Player.MaxMana, Player.Mana + Config.PlayerManaRegen * regenMul * (float)(1 + Growth.Value("pMRegen") * .03) / regenDivisor);
             Player.StateTicks--;
             Player.Iframes = Math.Max(0, Player.Iframes - 1);
+            TickChainStocks();
             attackHeldForMagic = attack;
             actionMoveX = moveX; actionMoveY = moveY; playerActionBranchConsumed = false;
             TickPlayerShieldAndRevive();
-            ConsumeRollTrigger();
+            if (Player.State == "pStun") ConsumeRollTrigger(); // 기절 탈출은 원본의 뒤쪽 상태 분기다.
             TickPlayerCombat();
             TickRoll();
-            TickSkills();   // B03: skill keys, cooldowns, zones, ice orb
+            TickExtendedSkillPreparation(aimX,aimY);TickSkills();   // B03: 마법 자세·투사체·쿨다운·보주·장판 후반 단계
             MoveKnockback();
-            if (Player.State == "bladeDash") { }   // roll: TickRoll moves the player, no walking / attacking meanwhile (web case 'bladeDash')
+            if(TickGhostMovement(moveX,moveY)){}
+            else if (Player.State == "bladeDash") { }   // roll: TickRoll moves the player, no walking / attacking meanwhile (web case 'bladeDash')
             else if (Player.State == "stagger" || Player.State == "pStun") {
-                if (Player.StateTicks <= 0) { Player.State = "idle"; if (Player.Poise <= 0) Player.Poise = 4; }
+                bool chainEscape = combatShiftHeld && (!combatShiftPrev || DashHold || HarpActive || DashActive);
+                if (chainEscape)
+                {
+                    if (Player.State == "pStun") { Player.Iframes = 30; Player.Poise = 4; }
+                    else Player.StateTicks = 0;
+                    Player.State = "idle";
+                }
+                else if (Player.StateTicks <= 0) { if (Player.State == "pStun") { Player.Iframes = 60; Player.Poise = 4; } Player.State = "idle"; if (Player.Poise <= 0) Player.Poise = 4; }
             }
             else if (TickSkillState(moveX, moveY)) { }   // B03: giant slam windup / strike / recover, ice orb
             else if (playerActionBranchConsumed) { } // 원본 switch는 진입한 자세 한 분기만 실행한다.
@@ -105,7 +123,7 @@ namespace Exoduser.UnityPort.Core
                 MovePlayer(moveX, moveY, Player.State == "idle" ? 1 : .8f, Player.State == "idle");
                 if (Player.State == "idle") {
                     float cost = Config.ActiveAttack == "kiSlash" ? 10 + (Math.Max(1, Config.KiSlashLevel) - 1) * 2 : 5;
-                    if (attack && Player.Stamina >= cost) {
+                    if (attack && Player.Stamina >= cost && !HarpActive && !DashActive) {
                         Player.Stamina -= cost; attackBonus = (int)(cost * 1.5);
                         attackAngle = Player.Facing;
                         if (Config.ActiveAttack == "kiSlash" && KiComboStep == 2 && KiComboTicks > 0) {
@@ -162,11 +180,14 @@ namespace Exoduser.UnityPort.Core
             }
             TickCorpses();
             if (AfterEnemyTick != null) AfterEnemyTick();   // BX: boss projectiles and hazards (Simulation.DruidBoss.cs)
-            TickCrossbow(); // B05: auto crossbow fire + bolt update
+            TickPlayerSkillProjectiles();TickCrossbow(); // B05: auto crossbow fire + bolt update
             UpdateKiProjectiles();
             TickKiTimers();
             // Web update() auto potion block (game.html 35895-35911): runs once per frame after the enemy loop.
             TickAutoPotion();
+            TickShieldThrow(); // 원본 _stCd/_stWingT/_stProjs, 적 탄환 이동 뒤 실행
+            if (SkillsWired) TickFireZones(); // 원문 후반 장판 DOT: 적 이동·상태 감소가 끝난 뒤 생성 순서대로
+            TickChainSlamWaves();TickGhostLate();TickGuardian();
             if (pickup) { if (pickupHoldTicks == 0 || pickupHoldTicks >= 9) { PickSourcePriorityLoot(); pickupHoldTicks = 0; } pickupHoldTicks++; }
             else pickupHoldTicks = 0;
             CapEnemies();   // web 34540: ens hard cap 800 -> 700
@@ -233,25 +254,25 @@ namespace Exoduser.UnityPort.Core
         }
 
         // hurtE: the oracle-checked Core head + middle (EnemyHurt) and, at zero HP, the death part (EnemyHurt.DeathHead + DeathTail, Simulation.Death.cs).
-        private void ApplyEnemyDamage(EnemyState enemy, int damage, float angle, bool poiseHit, float knockbackMultiplier, bool dot = false, bool shieldHit = false, double typeDamagePct = 0, double critRateBonus = 0, bool arrow = false, int atkEl = 0, bool iceBlade = false, bool blueBean = false, bool parryBlueBean = false, bool magicHit = false, double? poiseMult = null)
+        private void ApplyEnemyDamage(EnemyState enemy, double damage, float angle, bool poiseHit, float knockbackMultiplier, bool dot = false, bool shieldHit = false, double typeDamagePct = 0, double critRateBonus = 0, bool arrow = false, int atkEl = 0, bool iceBlade = false, bool blueBean = false, bool parryBlueBean = false, bool magicHit = false, double? poiseMult = null, bool explode = false, EnemyHurtOpts sourceOptions = null, bool silent = true)
         {
             if (enemy == null || !enemy.Alive || enemy.Hp <= 0) return;
             // Source parryLesson.hurtEnemy: a valid hit defeats this lesson actor
             // directly; its inherited shield is untouched and no rewards roll.
-            if(IsFirstPracticeActor(enemy)){ApplyPracticeDamage(enemy,damage);return;}
+            if(IsFirstPracticeActor(enemy)){ApplyPracticeDamage(enemy,Exoduser.UnityPort.Core.Combat.Js.Int(damage));return;}
             bool live = inEnemyLoop && enemy.Web != null;   // inside the L1 loop the web object is the live one (see ApplyEnemyDot): no state -> web copy
             var web = live ? enemy.Web : SyncToWeb(enemy);
             var player = HurtPlayerView();
             var context = BuildHurtContext(player, typeDamagePct, critRateBonus); context.CritSfxCd = critSfxCd;
-            var opts = new EnemyHurtOpts { dot = dot ? (bool?)true : null, shieldHit = shieldHit ? (bool?)true : null, poiseHit = poiseHit ? (bool?)true : null, kbMult = knockbackMultiplier, noImpact = true, maxDist = arrow ? (double?)1 : null, iceBlade = iceBlade ? (bool?)true : null, blueBean = blueBean ? (bool?)true : null, parryBlueBean = parryBlueBean ? (bool?)true : null, magic = magicHit ? (bool?)true : null, poiseMult = poiseMult };
+            var opts = sourceOptions ?? new EnemyHurtOpts { dot = dot ? (bool?)true : null, shieldHit = shieldHit ? (bool?)true : null, poiseHit = poiseHit ? (bool?)true : null, kbMult = knockbackMultiplier, noImpact = true, maxDist = arrow ? (double?)1 : null, iceBlade = iceBlade ? (bool?)true : null, blueBean = blueBean ? (bool?)true : null, parryBlueBean = parryBlueBean ? (bool?)true : null, magic = magicHit ? (bool?)true : null, poiseMult = poiseMult, explode = explode ? (bool?)true : null };
             if (live) { enemy.Hp = ToIntClamped(web.hp); enemy.Shield = (float)web.eShield; }
             double hpBefore = enemy.Hp, shieldBefore = enemy.Shield;
             hurtSfxEnemy = enemy;   // RM-1 sound: the hurt context reports hit / crit sounds for this enemy
-            var head = EnemyHurt.Head(context, web, damage, angle, true, opts, atkEl);
+            var head = EnemyHurt.Head(context, web, damage, angle, silent, opts, atkEl);
             hitSfxCd = (int)context.HitSfxCd; hurtSfxEnemy = null;
             if (head == null) { critSfxCd = context.CritSfxCd; SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player); return; }   // revive iframes swallowed it / parry lesson
             hurtSfxEnemy = enemy;
-            var body = EnemyHurt.Body(context, web, angle, true, opts, head); critSfxCd = context.CritSfxCd;
+            var body = EnemyHurt.Body(context, web, angle, silent, opts, head); critSfxCd = context.CritSfxCd;
             hitSfxCd = (int)context.HitSfxCd; hurtSfxEnemy = null;
             SyncFromWeb(enemy, web); ApplyHurtPlayerBack(player);
             int total = (int)((shieldBefore - enemy.Shield) + (hpBefore - enemy.Hp));

@@ -16,14 +16,15 @@ namespace Exoduser.UnityPort {
   public SkillDefsOrb[] orbs;
  }
  [Serializable] public sealed class SkillDefsSkill {public string id,name,desc,icon;public int spCost,matCost,reqLv;public bool host;public string[] lines;}
- [Serializable] public sealed class SkillDefsFile {public SkillDefsSlot[] slots;public SkillDefsSkill[] skills;}
+ [Serializable] public sealed class SkillFusionName {public string key,name;}
+ [Serializable] public sealed class SkillDefsFile {public SkillDefsSlot[] slots;public SkillDefsSkill[] skills;public SkillFusionName[] fusionNames;}
 
- public sealed class NativeSkills {
+ public sealed partial class NativeSkills {
   public bool Open {get;private set;}
   public Action Changed;
   string pendingResetId;
   public string PendingResetId {get{return pendingResetId;}}
-  public bool RequestReset(Simulation sim,string id){if(sim==null||!Ported(id)||!skillById.TryGetValue(id,out var d)||NativeSkillManagementPolicy.Level(sim,id)<1)return false;if((id=="kiSlash"||id=="fireball")&&NativeSkillManagementPolicy.Level(sim,id)<=1)return false;cur=sim;pendingResetId=id;return true;}
+  public bool RequestReset(Simulation sim,string id){if(sim==null||!skillById.ContainsKey(id)||!NativeSkillManagementPolicy.CanReset(sim,id))return false;cur=sim;pendingResetId=id;return true;}
   public bool ResolveReset(bool accept){if(pendingResetId==null)return false;string id=pendingResetId;pendingResetId=null;if(!accept)return false;bool changed=NativeSkillManagementPolicy.Reset(cur,id,skillById[id].spCost);if(changed)ChangedSkill();return changed;}
   public int SelectedSlot {get;private set;}=SkillUiState.LmbSlot;
   const string NotPorted="미이식";
@@ -38,7 +39,8 @@ namespace Exoduser.UnityPort {
   Texture2D discEmpty;Simulation cur;
   // B03 ports: these skills run in the Simulation (Skills/*.cs); everything else stays "미이식"
   static bool Ported(string id){return NativeSkillManagementPolicy.Supported(id);}
-  string EquippedId(int slot){
+  string EquippedId(int slot){return cur.ReadSkillLedger().Equipped(slot);}
+  string LegacyEquippedId(int slot){
     if(slot==SkillUiState.LmbSlot)return cur.Config.ActiveAttack=="kiSlash"?"kiSlash":null;
     return NativeHud.SlotSkillId(cur,slot);
   }
@@ -56,9 +58,9 @@ namespace Exoduser.UnityPort {
   }
   static int RequestedSlot(){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,"--unity-skill-slot");return i>=0&&i+1<a.Length&&int.TryParse(a[i+1],out var n)?Mathf.Clamp(n,0,15):-1;}
   public void SetOpen(bool value,int slot=6){Open=value;pendingResetId=null;if(value){int req=RequestedSlot();Select(req>=0?req:slot);}}
-  public void Select(int slot){SelectedSlot=Mathf.Clamp(slot,0,15);selectedOrb=null;infoScroll=0;}
+  public void Select(int slot){SelectedSlot=Mathf.Clamp(slot,0,15);selectedOrb=null;infoScroll=0;stagedForge.Clear();forgeLayoutKey=null;}
   public void HandleKeys(Action close,Action equip){
-   if(pendingResetId!=null){if(ExoInput.KeyDown(KeyCode.Escape))pendingResetId=null;return;}
+   if(pendingFusionId!=null){if(ExoInput.KeyDown(KeyCode.Escape))pendingFusionId=null;return;}if(pendingResetId!=null){if(ExoInput.KeyDown(KeyCode.Escape))pendingResetId=null;return;}
    if(NativeKeyBindInput.Down("skill")){close();return;}   // A16: web BINDS.skill
    if(ExoInput.KeyDown(KeyCode.LeftArrow))Select(SelectedSlot-1);
    if(ExoInput.KeyDown(KeyCode.RightArrow))Select(SelectedSlot+1);
@@ -182,14 +184,14 @@ namespace Exoduser.UnityPort {
    try {
     GUI.matrix=Matrix4x4.identity;Fill(new Rect(0,0,Screen.width,Screen.height),C(0,0,0,.53f));
     float scale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);var centerMatrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*scale)/2,(Screen.height-1080*scale)/2,0),Quaternion.identity,Vector3.one*scale);
-    cur=sim;if(pendingResetId!=null)GUI.enabled=false;bool lmb=sim.Config.ActiveAttack=="kiSlash";int level=Math.Max(1,sim.Config.KiSlashLevel);
+    cur=sim;DrawForgeInteractions(true);if(pendingResetId!=null||pendingFusionId!=null)GUI.enabled=false;bool lmb=sim.Config.ActiveAttack=="kiSlash";int level=Math.Max(1,sim.Config.KiSlashLevel);
     float ew=NativeUiViewport.Edges.Width;bool wide=ew/1080f>=2.3f;float bodyX=wide?(ew-1800)/2:333,bodyW=wide?1800:ew-bodyX-(HasRoad()?333:51);
     altarBounds=new Rect(bodyX,skillBodyTop,bodyW,658.8125f);altarCenter=new Vector2(altarBounds.center.x,676.2656f);
     GUI.matrix=NativeUiViewport.EdgeMatrix;NativeSilverHellUi.Panel(new Rect(8,8,ew-16,1064),28,0);DrawForgeBackground(new Rect(36,147,ew-72,833));
     GUI.matrix=centerMatrix;NativePanelTitle.Draw(new Rect(700,72,520,64),"전투 스킬");NativePanelTabBar.Draw(NativePanelTabBar.Preset.Skill,"skillPanel");DrawSlots(lmb);
     GUI.matrix=NativeUiViewport.EdgeMatrix;DrawInfo(sim,lmb,level,equip);NativeUiAudit.Region(altarBounds,"component","skill-tree","slot="+SelectedSlot+";road="+HasRoad());
-    if(SelectedSlot<13)DrawAltar(lmb,level);else{var intrinsic=SelectedSlot==13?Tex("Art/ui/skill/roll_boots"):OrbIcon(SelectedSlot==14?"execution":"fanShot",false);if(intrinsic!=null)NativeUiAudit.DrawTexture(new Rect(altarCenter.x-48,altarCenter.y-48,96,96),intrinsic,ScaleMode.ScaleToFit,true);Text(new Rect(altarCenter.x-250,altarCenter.y+65,500,34),roleNames[SelectedSlot]+" · "+SlotKey(SelectedSlot),serif,22,C(217,214,208),FontStyle.Normal,0,TextAnchor.MiddleCenter);Text(new Rect(altarCenter.x-250,altarCenter.y+105,500,26),SelectedSlot==15?"전용":"고정 기술은 교체할 수 없습니다",serif,14,C(150,153,153),FontStyle.Normal,0,TextAnchor.MiddleCenter);}
-    GUI.matrix=NativeUiViewport.RightMatrix;if(HasRoad())DrawRoad(lmb);GUI.matrix=centerMatrix;DrawBottom(close);GUI.enabled=enabled;if(pendingResetId!=null)DrawResetConfirmation();
+    if(SelectedSlot!=13&&SelectedSlot!=14)DrawDynamicForge();else{var intrinsic=SelectedSlot==13?Tex("Art/ui/skill/roll_boots"):OrbIcon(SelectedSlot==14?"execution":"fanShot",false);if(intrinsic!=null)NativeUiAudit.DrawTexture(new Rect(altarCenter.x-48,altarCenter.y-48,96,96),intrinsic,ScaleMode.ScaleToFit,true);Text(new Rect(altarCenter.x-250,altarCenter.y+65,500,34),roleNames[SelectedSlot]+" · "+SlotKey(SelectedSlot),serif,22,C(217,214,208),FontStyle.Normal,0,TextAnchor.MiddleCenter);Text(new Rect(altarCenter.x-250,altarCenter.y+105,500,26),SelectedSlot==15?"전용":"고정 기술은 교체할 수 없습니다",serif,14,C(150,153,153),FontStyle.Normal,0,TextAnchor.MiddleCenter);}
+    GUI.matrix=NativeUiViewport.RightMatrix;if(HasRoad())DrawDynamicRoad();GUI.matrix=centerMatrix;DrawBottom(close);DrawForgeInteractions(false);GUI.enabled=enabled;if(pendingResetId!=null)DrawResetConfirmation();if(pendingFusionId!=null)DrawFusionConfirmation();
    } finally {GUI.matrix=old;GUI.color=color;GUI.enabled=enabled;}
   }
   static float Fract(float x){return x-Mathf.Floor(x);}static float SmokeHash(float x,float y){return Fract(Mathf.Sin(x*127.1f+y*311.7f)*43758.5453f);}
@@ -207,8 +209,9 @@ namespace Exoduser.UnityPort {
   string SlotKey(int i){string[] actions={null,null,null,null,null,null,"weapon","beam","charge","shield","parry",null,"bow","roll",null,null};string code=actions[i]==null?null:NativeKeyBindInput.Bindings.Primary(actions[i]);if(actions[i]!=null&&code==null)return KeyBindings.KeyName(null,false);return i==13?"↑↓←→ + "+KeyBindings.KeyName(code,false):code==null?new[]{"1","2","3","4","F","Z","LMB","RMB","Shift","E","Q","Ctrl","Space","Space","X","T"}[i]:code=="mouse0"?"LMB":code=="mouse1"?"MMB":code=="mouse2"?"RMB":KeyBindings.KeyName(code,false);}
   string PreviewId(int slot){if(slot!=5&&slot!=12||EquippedId(slot)!=null)return null;var ids=new List<string>();foreach(var orb in defs.slots[slot].orbs)if(skillById.ContainsKey(orb.id))ids.Add(orb.id);return NativeSkillPreviewPolicy.Pick(ids.ToArray(),id=>cur.Skills.Level(id),slot==5?"blackStar":"giantSlam");}
   string PreviewCondition(string id){if(id==null||!skillById.TryGetValue(id,out var d))return "습득 필요";if(d.reqLv>cur.Player.Level)return "Lv"+d.reqLv+" 도달 시 해금";return cur.Skills.Level(id)>0?"이 슬롯에 장착":"습득 SP "+d.spCost+(d.matCost>0?"\n악의오브 "+NativeSkillPreviewPolicy.MaliceCost(d.matCost):"");}
-  string SelectedId(){if(SelectedSlot==13)return "roll";if(SelectedSlot==14)return "execution";if(SelectedSlot==15)return "fanShot";return selectedOrb??EquippedId(SelectedSlot)??PreviewId(SelectedSlot);}
-  bool HasRoad(){var id=SelectedSlot<13?EquippedId(SelectedSlot):null;return SelectedSlot<13&&id!=null&&skillById.TryGetValue(id,out var d)&&d.host;}
+  string SelectedId(){if(SelectedSlot==13)return "roll";if(SelectedSlot==14)return "execution";if(SelectedSlot==15)return selectedOrb??EquippedId(15);return selectedOrb??EquippedId(SelectedSlot)??PreviewId(SelectedSlot);}
+  bool HasRoad(){return cur!=null&&SkillForgeModel.Build(cur.ReadSkillLedger(),SelectedSlot,stagedForge).Keys.Length>0;}
+  bool LegacyHasRoad(){var id=SelectedSlot<13?EquippedId(SelectedSlot):null;return SelectedSlot<13&&id!=null&&skillById.TryGetValue(id,out var d)&&d.host;}
   void Glass(Rect r){if(sphereLight==null)sphereLight=NativeSilverHellUi.Effect(128,128,(u,v)=>{float x=u*2-1,y=v*2-1,d=Mathf.Sqrt(x*x+y*y);if(d>1)return Color.clear;float highlight=Mathf.Exp(-((x+.28f)*(x+.28f)/.28f+(y+.48f)*(y+.48f)/.07f))*.43f,edge=Smooth(.64f,1,d)*.42f;return highlight>edge?new Color(1,1,1,highlight-edge):new Color(0,0,0,edge-highlight);});NativeUiAudit.DrawTexture(r,sphereLight);}
   string SlotCondition(int i,string id,bool preview){if(i==13)return "고정";if(i==14)return SkillLevelOf("execution")>0?"고정":"고정 · 습득 필요";if(i==8||i==11)return "기절 탈출";if(i>=6&&i!=12)return "전용";if(id!=null&&!preview)return "";if(preview)return PreviewCondition(id);return "스킬 습득 후 장착";}
   void DrawSlots(bool lmb){
@@ -240,7 +243,7 @@ namespace Exoduser.UnityPort {
     if(d!=null){Fill(new Rect(23,costY-off,224,1),C(146,149,149,.22f));Fill(new Rect(23,costY+42-off,224,1),C(146,149,149,.22f));string cost=learned?"강화 SP "+SkillRules.UpgradeSpCost:"습득 SP "+d.spCost+(d.matCost>0?" · 악의오브 "+sim.MaliceCost(d.matCost):"");Text(new Rect(25,costY+10-off,220,23),cost,serif,15,C(165,168,168));int locked=SkillRules.SkillLevelLock(sim.Player.Level);if(learned&&lv>=locked&&lv<20)Text(new Rect(25,costY+10-off,220,23),"Lv"+(locked*50)+" 도달 시 해금",serif,14,C(224,138,106),FontStyle.Normal,0,TextAnchor.MiddleRight);
      bool can=supported&&(learned?NativeSkillManagementPolicy.CanUpgrade(sim,id):NativeSkillManagementPolicy.CanLearn(sim,id,d.spCost,d.matCost,d.reqLv));
      if(InfoButton(new Rect(23,buttonY-off,68.453125f,40),learned?"강화 +":"습득",can,true)){bool changed=learned?NativeSkillManagementPolicy.Upgrade(sim,id):NativeSkillManagementPolicy.Learn(sim,id,d.spCost,d.matCost,d.reqLv);if(changed)ChangedSkill();}
-     if(learned){if(InfoButton(new Rect(101.453125f,buttonY-off,67.015625f,40),"강화 −",supported&&lv>1,false)){if(NativeSkillManagementPolicy.LevelDown(sim,id))ChangedSkill();}if(InfoButton(new Rect(178.46875f,buttonY-off,64,40),"리셋",supported&&(!(id=="kiSlash"||id=="fireball")||lv>1),false))RequestReset(sim,id);}if(!supported)Text(new Rect(23,buttonY+42-off,224,18),"실행 기능 미이식",serif,11,C(142,145,145));
+     if(learned){if(InfoButton(new Rect(101.453125f,buttonY-off,67.015625f,40),"강화 −",sim.CanLowerSkillLevel(id),false)){if(NativeSkillManagementPolicy.LevelDown(sim,id))ChangedSkill();}if(InfoButton(new Rect(178.46875f,buttonY-off,64,40),"리셋",NativeSkillManagementPolicy.CanReset(sim,id),false))RequestReset(sim,id);}if(!supported)Text(new Rect(23,buttonY+42-off,224,18),"실행 기능 미이식",serif,11,C(142,145,145));
     }
     if(canEquip&&InfoButton(new Rect(23,equipY-off,224,40),"이 슬롯에 장착 ["+SlotKey(SelectedSlot)+"]",true,false)){if(NativeSkillManagementPolicy.Equip(sim,SelectedSlot,id))ChangedSkill();}
     Fill(new Rect(23,resourceY-off,224,1),C(146,149,149,.22f));NativeCurrencyOrb.Draw(new Rect(23,resourceY+12-off,24,24),sim.Materials);Text(new Rect(47,resourceY+12-off,200,24),"SP "+sim.Player.StatPoints+" · 악의오브 "+sim.Materials.ToString("N0",System.Globalization.CultureInfo.InvariantCulture)+" · LV "+sim.Player.Level,serif,13,C(165,168,168),FontStyle.Normal,.1f);
@@ -301,9 +304,9 @@ namespace Exoduser.UnityPort {
   void DrawBottom(Action close){
    float w1=Width(serif,16,FontStyle.Normal,"닫기 [ESC]",0)+60,w2=Width(serif,16,FontStyle.Normal,"일괄 레벨업",0)+60,w3=Width(serif,16,FontStyle.Normal,"추천 자동",0)+60,x=(1920-w1-w2-w3-24)/2;
    if(BottomButton(new Rect(x,998,w1,40),"닫기 [ESC]"))close();x+=w1+12;
-   if(BottomButton(new Rect(x,998,w2,40),"일괄 레벨업")){bool changed=false;foreach(var d in defs.skills)while(NativeSkillManagementPolicy.Upgrade(cur,d.id))changed=true;if(changed)ChangedSkill();}x+=w2+12;
-   bool enabled=GUI.enabled;GUI.enabled=false;var auto=new Rect(x,998,w3,40);BottomButton(auto,"추천 자동");GUI.enabled=enabled;
-   if(auto.Contains(Event.current.mousePosition)){var tip=new Rect(x-120,948,390,30);InfoFace(tip);Text(tip,"추천 빌드에 필요한 기술은 준비 중입니다",serif,12,C(170,173,173),FontStyle.Normal,0,TextAnchor.MiddleCenter);}
+   if(BottomButton(new Rect(x,998,w2,40),"일괄 레벨업")){if(cur.UpgradeAllSkills()>0)ChangedSkill();}x+=w2+12;
+   var auto=new Rect(x,998,w3,40);if(BottomButton(auto,"추천 자동")){var result=cur.RecommendSkills();if(result[0]>0||result[1]>0)ChangedSkill();}
+   
   }
 
  }

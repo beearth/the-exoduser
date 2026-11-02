@@ -500,7 +500,7 @@ namespace Exoduser.UnityPort {
    if(sim!=null&&sim.Growth.Queue.Count>0){Text(new Rect(x,y,width,24),"자동 투자 예약 · "+sim.Growth.Queue.Count,sans,13,C(188,185,179));y+=28;for(int i=0;i<sim.Growth.Queue.Count;i++){string key=sim.Growth.Queue[i];var r=new Rect(x,y,width,28);StatDefsNode node;Text(r,(i+1)+". "+(nodeByKey.TryGetValue(key,out node)?Name(node):key),sans,13,C(204,201,195));Text(r,"예약 취소",sans,12,C(188,185,179),FontStyle.Normal,0,TextAnchor.MiddleRight);if(Click(r)){CancelReservation(i);break;}y+=30;}}
    return y-start;
   }
-  static string SupportNote(string key){switch(key){case "pPierce":return "효과 미지원 · 현재 전투에 관통 패시브가 연결되지 않아 신규 투자와 예약은 사용할 수 없습니다. 기존 투자분 환불은 가능합니다.";case "pDot":return "효과 일부 미지원 · 축적률은 적용되며 DOT 피해·지속시간 소비는 아직 연결되지 않았습니다.";case "pPred":return "효과 일부 미지원 · 저체력 피해와 HP 회복은 적용되며 이동속도 증가는 아직 연결되지 않았습니다.";case "pRegen":return "효과 일부 미지원 · HP/ST 재생과 패링 회복은 적용되며 물약 쿨다운 감소는 아직 연결되지 않았습니다.";case "pGuard":return "효과 일부 미지원 · 기존 보호막 흡수율은 적용되며 보호 중 추가 HP 재생은 아직 연결되지 않았습니다.";case "pHunter":return "효과 일부 미지원 · 현재 희귀 몬스터 추가 피해만 연결돼 있으며 보스·정예 별칭 분기는 아직 연결되지 않았습니다.";default:return "";}}
+  static string SupportNote(string key){return key=="pPierce"?"효과 미지원 · 현재 전투의 모든 투사체에 관통 패시브가 연결되지 않아 신규 투자와 예약은 사용할 수 없습니다. 기존 투자분 환불은 가능합니다.":"";}
   void DrawActions(bool isStat){
    string key=SelectedKey;int value=PlannedValue(key),reserved=sim==null?0:sim.Growth.Queued(key),future=value+reserved;
    int amount=isStat?1:Math.Max(1,selectedRank-future),cost=0;for(int i=0;i<amount;i++)cost+=RankCost(future+i);

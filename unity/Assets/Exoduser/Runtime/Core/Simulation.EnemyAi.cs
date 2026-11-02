@@ -296,8 +296,8 @@ namespace Exoduser.UnityPort.Core
                     if (count > 50 && oldest >= 0) s.FieldZones.RemoveAt(oldest);
                 }
             }
-            public double DotDur() { return 1; }   // pDotDur(): 1 + passive pDot * .1 (the passive tree is not ported)
-            public double DotDmg() { return 1; }   // pDotDmg(): _passDmgSum('dot')
+            public double DotDur() { return 1 + s.Growth.Value("pDot") * .10; }   // pDotDur()
+            public double DotDmg() { return (1 + s.Growth.Value("pAtk") * .10 + s.Growth.Value("pHuman") * .05 + s.Growth.Value("pDot") * .15) * .7; }   // _passDmgSum('dot'); no alternate-character attack system is active in this native scope
             public void HurtDot(EnemySpawn e, int damage, bool maliceHunt, double? atkEl) { EnemyState o; if (s.webOwner.TryGetValue(e, out o)) s.ApplyEnemyDot(o, damage, maliceHunt, atkEl ?? 0); }
         }
     }

@@ -112,7 +112,7 @@ namespace Exoduser.UnityPort.Core
             c.Stage = Config.StageIndex; c.DemoMode = Config.DemoMode; c.DemoLastStage = Config.DemoLastStage; c.OptDiff = Config.DifficultyIndex; c.OptHitStop = 100;
             c.Kills = Kills; c.StageKills = Stage.StageKills; c.Combo = Combo; c.ComboTimer = ComboTicks; c.ComboMax = ComboMax;
             c.KilledBosses = new List<double>(); foreach (int et in KilledBosses) c.KilledBosses.Add(et);
-            c.FireZones = null; c.SpawnHoles = new List<EnemySpawnHole>();                                  // no holyPrison zone / _fromHole source in Unity yet
+            c.FireZones = new List<EnemyFireZone>();foreach(var z in FireZones)c.FireZones.Add(new EnemyFireZone{type=z.Type,x=z.X,y=z.Y,r=z.R,lv=z.Lv}); c.SpawnHoles = new List<EnemySpawnHole>();                                  // no holyPrison zone / _fromHole source in Unity yet
             c.GateGuardSet = Stage.GateGuard != null; c.GateGuardKilled = Stage.GateGuardKilled; c.BossGateOpen = true;
             c.CritSfxCd = critSfxCd; c.Mats = Materials; c.ChainCnt = KillChainCount; c.ChainT = KillChainTicks; c.Rifts = Rifts; c.DruidFled = DruidFled ? (bool?)true : null;
             double matsBefore = Materials;
