@@ -67,6 +67,7 @@ namespace Exoduser.UnityPort
     inventory.Restore(pendingInventory);
     p.Level=(int)m.Lv;p.Experience=(int)m.Exp;p.MaxExperience=(int)m.MaxExp;p.StatPoints=(int)m.Sp;p.PassivePoints=(int)m.Ap;p.TransDate=m.TransLvDate;p.TransCount=(int)m.TransLvCount;
     Simulation.Materials=(int)pendingMats;Simulation.Kills=(int)m.Kills;Simulation.PotionState.PotLv=(int)m.PotLvHp;
+    Simulation.RestoreSkillSelections(m);
     Simulation.RestoreSkills(m.Skills,m.SkillSlots,m.UltSlot,m.ActiveCtSk);   // B03
     if(m.Skills!=null&&m.Skills.TryGetValue("kiSlash",out var kiLv)&&kiLv>=1&&kiLv<=Exoduser.UnityPort.Core.Skills.SkillRules.MaxSkillLevel)Simulation.Config.KiSlashLevel=(int)kiLv;
     if(pendingGrowth!=null)Simulation.Growth.CopyFrom(pendingGrowth);
@@ -94,7 +95,7 @@ namespace Exoduser.UnityPort
    m.Bag.AddRange(inventory.State.Bag);
    m.Stage=Simulation.Config.StageIndex;m.StageDiffOffset=Simulation.Config.StageDiffOffset;m.Kills=Simulation.Kills;m.PotLvHp=Simulation.PotionState.PotLv;m.BagMax=InventoryState.BagMax;
    Simulation.CaptureSkills(out m.Skills,out m.SkillSlots,out m.UltSlot,out m.ActiveCtSk);   // B03
-   m.Skills["kiSlash"]=Simulation.Config.KiSlashLevel;
+   m.Skills["kiSlash"]=Simulation.Config.KiSlashLevel;Simulation.CaptureSkillSelections(m);
    m.Raw=Simulation.Growth.WriteInto(combatLastRaw);
    return m;
   }

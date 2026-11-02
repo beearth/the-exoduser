@@ -7,9 +7,11 @@ namespace Exoduser.UnityPort.Core {
    int str=Growth.Value("str"),dex=Growth.Value("dex"),intel=Growth.Value("int"),lck=Growth.Value("lck"),grit=Growth.Grit;
    int human=Growth.Value("pHuman"),melee=Growth.Value("pMelee"),fortify=Growth.Value("pFortify");
    bool allocated=Growth.SpentSp()!=0||Growth.SpentAp()!=0;
+   double predatorMaxHp=s.PlayerMaxHp;
    if(allocated){
     double hp=0;foreach(var it in inventory.Equipped)if(it!=null&&it.slot!="weapon"&&it.slot!="bow"&&it.slot!="helmet")hp+=it.bonusHp;
     double raw=Math.Max(100,300-20*(Config.DifficultyIndex-5))+Config.StageIndex*6+(s.StrengthFlat+str)*5+Growth.Value("vit")*3+hp+inventory.ImplicitTotal("_iMaxHP");
+    predatorMaxHp=(int)(raw*(1+inventory.AffixTotal("maxHPPct")+(inventory.ImplicitTotal("_iMaxHPPct")+inventory.ImplicitTotal("_iLifeHPPct"))*.01+melee*.03));
     s.PlayerMaxHp=(int)(raw*(1+inventory.AffixTotal("maxHPPct")+(inventory.ImplicitTotal("_iMaxHPPct")+inventory.ImplicitTotal("_iLifeHPPct"))*.01+melee*.03))+(int)(Player.Level*.5)+grit+human*100+fortify*300;
     s.PlayerMaxMana+=intel*2+grit+human*100+Growth.Value("pVital")*50;
     s.PlayerMaxStamina+=dex*2+grit+human*100+Growth.Value("pStamina")*50;
@@ -22,6 +24,10 @@ namespace Exoduser.UnityPort.Core {
     s.AttackSpeedMultiplier+=dex*.0005;s.DamageMultiplier=(1+Growth.Value("pAtk")*.10+human*.05+melee*.15)*.7;
     s.DropBonus+=lck*.0015+Growth.Value("pDrop")*.08;s.StrengthFlat+=str;s.Dex+=dex;
    }
+   // applyStats samples pPredSpd before crystal / human / fortify HP additions. Do not retest it per Tick.
+   double speedBonus=inventory.AffixTotal("movSpeed")+inventory.AffixTotal("movSpeedCombat")+(Player.Hp<=predatorMaxHp*.3?Growth.Value("pPred")*.05:0)+(Player.Hp<=predatorMaxHp*.5?inventory.AffixTotal("injuredSpeed"):0);
+   s.PlayerSpeed+=(2.6+s.Dex*.005)*speedBonus;
+   PotionRegenLevel=Growth.Value("pRegen");
    // Existing formulas consume these input fields; their protected Q/E/dash rules are unchanged.
    PassiveAtk=Growth.Value("pAtk");PassiveMagic=Growth.Value("pMagic");PassiveMelee=melee;
    PParry=Growth.Value("pParry");PRegen=Growth.Value("pRegen");PGuard=Growth.Value("pGuard");PCharge=Growth.Value("pCharge");

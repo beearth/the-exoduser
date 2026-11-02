@@ -1,0 +1,3922 @@
+[
+  {
+    "name": "web_graph_00_00",
+    "index": 0,
+    "variant": 0,
+    "sampleRate": 48000,
+    "samples": 4800,
+    "note": {
+      "Kind": "Sub",
+      "Wave": "sine",
+      "Args": [
+        55,
+        0.08,
+        0.05,
+        35
+      ]
+    },
+    "sha256": "94a4b371c697c6f2aefeb8590893c3b9675bbc84244bc83550ba6d87b38827fb",
+    "bytes": 19244,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_00_01",
+    "index": 0,
+    "variant": 1,
+    "sampleRate": 48000,
+    "samples": 4800,
+    "note": {
+      "Kind": "Sub",
+      "Wave": "sine",
+      "Args": [
+        55,
+        0.08,
+        0.05,
+        35
+      ]
+    },
+    "sha256": "94a4b371c697c6f2aefeb8590893c3b9675bbc84244bc83550ba6d87b38827fb",
+    "bytes": 19244,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_00_02",
+    "index": 0,
+    "variant": 2,
+    "sampleRate": 48000,
+    "samples": 4800,
+    "note": {
+      "Kind": "Sub",
+      "Wave": "sine",
+      "Args": [
+        55,
+        0.08,
+        0.05,
+        35
+      ]
+    },
+    "sha256": "94a4b371c697c6f2aefeb8590893c3b9675bbc84244bc83550ba6d87b38827fb",
+    "bytes": 19244,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_00_03",
+    "index": 0,
+    "variant": 3,
+    "sampleRate": 48000,
+    "samples": 4800,
+    "note": {
+      "Kind": "Sub",
+      "Wave": "sine",
+      "Args": [
+        55,
+        0.08,
+        0.05,
+        35
+      ]
+    },
+    "sha256": "94a4b371c697c6f2aefeb8590893c3b9675bbc84244bc83550ba6d87b38827fb",
+    "bytes": 19244,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_00_04",
+    "index": 0,
+    "variant": 4,
+    "sampleRate": 48000,
+    "samples": 4800,
+    "note": {
+      "Kind": "Sub",
+      "Wave": "sine",
+      "Args": [
+        55,
+        0.08,
+        0.05,
+        35
+      ]
+    },
+    "sha256": "94a4b371c697c6f2aefeb8590893c3b9675bbc84244bc83550ba6d87b38827fb",
+    "bytes": 19244,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_00_05",
+    "index": 0,
+    "variant": 5,
+    "sampleRate": 48000,
+    "samples": 4800,
+    "note": {
+      "Kind": "Sub",
+      "Wave": "sine",
+      "Args": [
+        55,
+        0.08,
+        0.05,
+        35
+      ]
+    },
+    "sha256": "94a4b371c697c6f2aefeb8590893c3b9675bbc84244bc83550ba6d87b38827fb",
+    "bytes": 19244,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_00_06",
+    "index": 0,
+    "variant": 6,
+    "sampleRate": 48000,
+    "samples": 4800,
+    "note": {
+      "Kind": "Sub",
+      "Wave": "sine",
+      "Args": [
+        55,
+        0.08,
+        0.05,
+        35
+      ]
+    },
+    "sha256": "94a4b371c697c6f2aefeb8590893c3b9675bbc84244bc83550ba6d87b38827fb",
+    "bytes": 19244,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_00_07",
+    "index": 0,
+    "variant": 7,
+    "sampleRate": 48000,
+    "samples": 4800,
+    "note": {
+      "Kind": "Sub",
+      "Wave": "sine",
+      "Args": [
+        55,
+        0.08,
+        0.05,
+        35
+      ]
+    },
+    "sha256": "94a4b371c697c6f2aefeb8590893c3b9675bbc84244bc83550ba6d87b38827fb",
+    "bytes": 19244,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_00_08",
+    "index": 0,
+    "variant": 8,
+    "sampleRate": 48000,
+    "samples": 4800,
+    "note": {
+      "Kind": "Sub",
+      "Wave": "sine",
+      "Args": [
+        55,
+        0.08,
+        0.05,
+        35
+      ]
+    },
+    "sha256": "94a4b371c697c6f2aefeb8590893c3b9675bbc84244bc83550ba6d87b38827fb",
+    "bytes": 19244,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_00_09",
+    "index": 0,
+    "variant": 9,
+    "sampleRate": 48000,
+    "samples": 4800,
+    "note": {
+      "Kind": "Sub",
+      "Wave": "sine",
+      "Args": [
+        55,
+        0.08,
+        0.05,
+        35
+      ]
+    },
+    "sha256": "94a4b371c697c6f2aefeb8590893c3b9675bbc84244bc83550ba6d87b38827fb",
+    "bytes": 19244,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_00_10",
+    "index": 0,
+    "variant": 10,
+    "sampleRate": 48000,
+    "samples": 4800,
+    "note": {
+      "Kind": "Sub",
+      "Wave": "sine",
+      "Args": [
+        55,
+        0.08,
+        0.05,
+        35
+      ]
+    },
+    "sha256": "94a4b371c697c6f2aefeb8590893c3b9675bbc84244bc83550ba6d87b38827fb",
+    "bytes": 19244,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_00_11",
+    "index": 0,
+    "variant": 11,
+    "sampleRate": 48000,
+    "samples": 4800,
+    "note": {
+      "Kind": "Sub",
+      "Wave": "sine",
+      "Args": [
+        55,
+        0.08,
+        0.05,
+        35
+      ]
+    },
+    "sha256": "94a4b371c697c6f2aefeb8590893c3b9675bbc84244bc83550ba6d87b38827fb",
+    "bytes": 19244,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_00_12",
+    "index": 0,
+    "variant": 12,
+    "sampleRate": 48000,
+    "samples": 4800,
+    "note": {
+      "Kind": "Sub",
+      "Wave": "sine",
+      "Args": [
+        55,
+        0.08,
+        0.05,
+        35
+      ]
+    },
+    "sha256": "94a4b371c697c6f2aefeb8590893c3b9675bbc84244bc83550ba6d87b38827fb",
+    "bytes": 19244,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_00_13",
+    "index": 0,
+    "variant": 13,
+    "sampleRate": 48000,
+    "samples": 4800,
+    "note": {
+      "Kind": "Sub",
+      "Wave": "sine",
+      "Args": [
+        55,
+        0.08,
+        0.05,
+        35
+      ]
+    },
+    "sha256": "94a4b371c697c6f2aefeb8590893c3b9675bbc84244bc83550ba6d87b38827fb",
+    "bytes": 19244,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_00_14",
+    "index": 0,
+    "variant": 14,
+    "sampleRate": 48000,
+    "samples": 4800,
+    "note": {
+      "Kind": "Sub",
+      "Wave": "sine",
+      "Args": [
+        55,
+        0.08,
+        0.05,
+        35
+      ]
+    },
+    "sha256": "94a4b371c697c6f2aefeb8590893c3b9675bbc84244bc83550ba6d87b38827fb",
+    "bytes": 19244,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_00_15",
+    "index": 0,
+    "variant": 15,
+    "sampleRate": 48000,
+    "samples": 4800,
+    "note": {
+      "Kind": "Sub",
+      "Wave": "sine",
+      "Args": [
+        55,
+        0.08,
+        0.05,
+        35
+      ]
+    },
+    "sha256": "94a4b371c697c6f2aefeb8590893c3b9675bbc84244bc83550ba6d87b38827fb",
+    "bytes": 19244,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_01_00",
+    "index": 1,
+    "variant": 0,
+    "sampleRate": 48000,
+    "samples": 2880,
+    "note": {
+      "Kind": "Tone",
+      "Wave": "sine",
+      "Args": [
+        3200,
+        0.04,
+        0.015,
+        0,
+        0.004
+      ]
+    },
+    "sha256": "d858e578d9193c5e69d2005d5c9b2d8d975bb0a4ca56d9a6b646c70a4ada1e86",
+    "bytes": 11564,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_01_01",
+    "index": 1,
+    "variant": 1,
+    "sampleRate": 48000,
+    "samples": 2880,
+    "note": {
+      "Kind": "Tone",
+      "Wave": "sine",
+      "Args": [
+        3200,
+        0.04,
+        0.015,
+        0,
+        0.004
+      ]
+    },
+    "sha256": "b2a905706383fc6b72865aaa104d6a8d2b0e2dd0fb31d7fc189409ffb9423e37",
+    "bytes": 11564,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_01_02",
+    "index": 1,
+    "variant": 2,
+    "sampleRate": 48000,
+    "samples": 2880,
+    "note": {
+      "Kind": "Tone",
+      "Wave": "sine",
+      "Args": [
+        3200,
+        0.04,
+        0.015,
+        0,
+        0.004
+      ]
+    },
+    "sha256": "e2aa3e0066d0f4c293c8f7824feca82133ab7937da96066d78f78e309954d9ed",
+    "bytes": 11564,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_01_03",
+    "index": 1,
+    "variant": 3,
+    "sampleRate": 48000,
+    "samples": 2880,
+    "note": {
+      "Kind": "Tone",
+      "Wave": "sine",
+      "Args": [
+        3200,
+        0.04,
+        0.015,
+        0,
+        0.004
+      ]
+    },
+    "sha256": "39e945b28be95fb938590372b79a5595e0e53bc48083382ad7e1121ebda23219",
+    "bytes": 11564,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_01_04",
+    "index": 1,
+    "variant": 4,
+    "sampleRate": 48000,
+    "samples": 2880,
+    "note": {
+      "Kind": "Tone",
+      "Wave": "sine",
+      "Args": [
+        3200,
+        0.04,
+        0.015,
+        0,
+        0.004
+      ]
+    },
+    "sha256": "1b13812d118598f289681d494a13d7d85318b9d5d614d373dc71dbd14de26340",
+    "bytes": 11564,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_01_05",
+    "index": 1,
+    "variant": 5,
+    "sampleRate": 48000,
+    "samples": 2880,
+    "note": {
+      "Kind": "Tone",
+      "Wave": "sine",
+      "Args": [
+        3200,
+        0.04,
+        0.015,
+        0,
+        0.004
+      ]
+    },
+    "sha256": "c0233334ee15abb6919da851a3e5d707ebd4fe5ce43571549c56dfe4487a7211",
+    "bytes": 11564,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_01_06",
+    "index": 1,
+    "variant": 6,
+    "sampleRate": 48000,
+    "samples": 2880,
+    "note": {
+      "Kind": "Tone",
+      "Wave": "sine",
+      "Args": [
+        3200,
+        0.04,
+        0.015,
+        0,
+        0.004
+      ]
+    },
+    "sha256": "200a04115015e33cbd8c38dd190f36c3d10de4732686a6628f736775b764c449",
+    "bytes": 11564,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_01_07",
+    "index": 1,
+    "variant": 7,
+    "sampleRate": 48000,
+    "samples": 2880,
+    "note": {
+      "Kind": "Tone",
+      "Wave": "sine",
+      "Args": [
+        3200,
+        0.04,
+        0.015,
+        0,
+        0.004
+      ]
+    },
+    "sha256": "273a8ae9f2404bfc65487980900cf3b9aaf0f1079ea31398c8fd324c791db7ad",
+    "bytes": 11564,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_01_08",
+    "index": 1,
+    "variant": 8,
+    "sampleRate": 48000,
+    "samples": 2880,
+    "note": {
+      "Kind": "Tone",
+      "Wave": "sine",
+      "Args": [
+        3200,
+        0.04,
+        0.015,
+        0,
+        0.004
+      ]
+    },
+    "sha256": "4fee0de114277370f006ea65bc15ae06e2ade3c0c23028e918689a7901f70871",
+    "bytes": 11564,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_01_09",
+    "index": 1,
+    "variant": 9,
+    "sampleRate": 48000,
+    "samples": 2880,
+    "note": {
+      "Kind": "Tone",
+      "Wave": "sine",
+      "Args": [
+        3200,
+        0.04,
+        0.015,
+        0,
+        0.004
+      ]
+    },
+    "sha256": "3c719c42742ac6c809c7e1ce8582a3f4d21ea872272a1fd45119fb5563217a5e",
+    "bytes": 11564,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_01_10",
+    "index": 1,
+    "variant": 10,
+    "sampleRate": 48000,
+    "samples": 2880,
+    "note": {
+      "Kind": "Tone",
+      "Wave": "sine",
+      "Args": [
+        3200,
+        0.04,
+        0.015,
+        0,
+        0.004
+      ]
+    },
+    "sha256": "bf6ff717d280963ad27eeb5bca343a6690a79762b1d5219a6df3d284d8b7a6d0",
+    "bytes": 11564,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_01_11",
+    "index": 1,
+    "variant": 11,
+    "sampleRate": 48000,
+    "samples": 2880,
+    "note": {
+      "Kind": "Tone",
+      "Wave": "sine",
+      "Args": [
+        3200,
+        0.04,
+        0.015,
+        0,
+        0.004
+      ]
+    },
+    "sha256": "636801a2b1cfa90fe9573d1b691d929b9509c11ea2cbf1972b336569391761de",
+    "bytes": 11564,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_01_12",
+    "index": 1,
+    "variant": 12,
+    "sampleRate": 48000,
+    "samples": 2880,
+    "note": {
+      "Kind": "Tone",
+      "Wave": "sine",
+      "Args": [
+        3200,
+        0.04,
+        0.015,
+        0,
+        0.004
+      ]
+    },
+    "sha256": "650e41d62729eb6ec656e1c355247c4a53845a9bcf6cffe67407146472c92639",
+    "bytes": 11564,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_01_13",
+    "index": 1,
+    "variant": 13,
+    "sampleRate": 48000,
+    "samples": 2880,
+    "note": {
+      "Kind": "Tone",
+      "Wave": "sine",
+      "Args": [
+        3200,
+        0.04,
+        0.015,
+        0,
+        0.004
+      ]
+    },
+    "sha256": "595b52736b22861f59bdfbad6a2cff7762319e3c617f9539de26e93d15d9176a",
+    "bytes": 11564,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_01_14",
+    "index": 1,
+    "variant": 14,
+    "sampleRate": 48000,
+    "samples": 2880,
+    "note": {
+      "Kind": "Tone",
+      "Wave": "sine",
+      "Args": [
+        3200,
+        0.04,
+        0.015,
+        0,
+        0.004
+      ]
+    },
+    "sha256": "4cebee6c40bde96dc8e84efbdd7fb74957cb13a3c7f03ac1e4aa63447cc10bb2",
+    "bytes": 11564,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_01_15",
+    "index": 1,
+    "variant": 15,
+    "sampleRate": 48000,
+    "samples": 2880,
+    "note": {
+      "Kind": "Tone",
+      "Wave": "sine",
+      "Args": [
+        3200,
+        0.04,
+        0.015,
+        0,
+        0.004
+      ]
+    },
+    "sha256": "9d20cd96865ba84556d8611c80e75384d5cd3365f47c9297ba3ec31368938c4b",
+    "bytes": 11564,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_02_00",
+    "index": 2,
+    "variant": 0,
+    "sampleRate": 48000,
+    "samples": 4321,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        1400,
+        700,
+        200,
+        0.07,
+        0.06,
+        2200
+      ]
+    },
+    "sha256": "deb75cefb2cc439579e7c1c72d368d1f6ce0dc5ade791a6edd778b1d3a62701d",
+    "bytes": 17328,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_02_01",
+    "index": 2,
+    "variant": 1,
+    "sampleRate": 48000,
+    "samples": 4321,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        1400,
+        700,
+        200,
+        0.07,
+        0.06,
+        2200
+      ]
+    },
+    "sha256": "e904d7035df0c28cadbf59f0598ca87659ee5f9fd08e9c210831ddc5eada0a1a",
+    "bytes": 17328,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_02_02",
+    "index": 2,
+    "variant": 2,
+    "sampleRate": 48000,
+    "samples": 4321,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        1400,
+        700,
+        200,
+        0.07,
+        0.06,
+        2200
+      ]
+    },
+    "sha256": "d0688927bb4eed43145a7d7039dc733d7b45e36069eb7e096a0cf8356e3891a8",
+    "bytes": 17328,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_02_03",
+    "index": 2,
+    "variant": 3,
+    "sampleRate": 48000,
+    "samples": 4321,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        1400,
+        700,
+        200,
+        0.07,
+        0.06,
+        2200
+      ]
+    },
+    "sha256": "7e1d950169a2be5eb8089a89f5b110901240e115218197e747698b252c657ad4",
+    "bytes": 17328,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_02_04",
+    "index": 2,
+    "variant": 4,
+    "sampleRate": 48000,
+    "samples": 4321,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        1400,
+        700,
+        200,
+        0.07,
+        0.06,
+        2200
+      ]
+    },
+    "sha256": "4d412498765ede52efd05768d3e36e1aca2f791293a725bf741dcca66cdbdf27",
+    "bytes": 17328,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_02_05",
+    "index": 2,
+    "variant": 5,
+    "sampleRate": 48000,
+    "samples": 4321,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        1400,
+        700,
+        200,
+        0.07,
+        0.06,
+        2200
+      ]
+    },
+    "sha256": "a170999d11a25fff43ff1b931ef1c64d1b683882e792f83ebc187de540c41840",
+    "bytes": 17328,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_02_06",
+    "index": 2,
+    "variant": 6,
+    "sampleRate": 48000,
+    "samples": 4321,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        1400,
+        700,
+        200,
+        0.07,
+        0.06,
+        2200
+      ]
+    },
+    "sha256": "7e9497a783ec4db2002b6774aac50ff20510f74408ca240e81b0024bebb8f27a",
+    "bytes": 17328,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_02_07",
+    "index": 2,
+    "variant": 7,
+    "sampleRate": 48000,
+    "samples": 4321,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        1400,
+        700,
+        200,
+        0.07,
+        0.06,
+        2200
+      ]
+    },
+    "sha256": "d6ef978ba4bf50e52b737141ff876519a0929789d0586b809ac3903233eb0225",
+    "bytes": 17328,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_02_08",
+    "index": 2,
+    "variant": 8,
+    "sampleRate": 48000,
+    "samples": 4321,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        1400,
+        700,
+        200,
+        0.07,
+        0.06,
+        2200
+      ]
+    },
+    "sha256": "596dc0eead2646c5b3a0f72a425b02afb15592847527e62a30c378bb66e12d2e",
+    "bytes": 17328,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_02_09",
+    "index": 2,
+    "variant": 9,
+    "sampleRate": 48000,
+    "samples": 4321,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        1400,
+        700,
+        200,
+        0.07,
+        0.06,
+        2200
+      ]
+    },
+    "sha256": "8a3137d6ef6b9793666e257d4ed6b012359113534ce8798341f677ce7c6350ce",
+    "bytes": 17328,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_02_10",
+    "index": 2,
+    "variant": 10,
+    "sampleRate": 48000,
+    "samples": 4321,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        1400,
+        700,
+        200,
+        0.07,
+        0.06,
+        2200
+      ]
+    },
+    "sha256": "0c1d6c40c3a325dfe85b73ca299bc79037972f0fbc890a08446ab498f05a0d14",
+    "bytes": 17328,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_02_11",
+    "index": 2,
+    "variant": 11,
+    "sampleRate": 48000,
+    "samples": 4321,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        1400,
+        700,
+        200,
+        0.07,
+        0.06,
+        2200
+      ]
+    },
+    "sha256": "9f939091273390b518f3d5506434e8e94c52c5b3fc54b8771a453c5685003ab3",
+    "bytes": 17328,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_02_12",
+    "index": 2,
+    "variant": 12,
+    "sampleRate": 48000,
+    "samples": 4321,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        1400,
+        700,
+        200,
+        0.07,
+        0.06,
+        2200
+      ]
+    },
+    "sha256": "1d2b85bad0c05e4e77f78a98ef1e982157a1acef0df59158279d62fa84eb9190",
+    "bytes": 17328,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_02_13",
+    "index": 2,
+    "variant": 13,
+    "sampleRate": 48000,
+    "samples": 4321,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        1400,
+        700,
+        200,
+        0.07,
+        0.06,
+        2200
+      ]
+    },
+    "sha256": "324c905db9b86a8ee76a6053378c88373a75631a0e0b5cea8c3f4f26c4bf8371",
+    "bytes": 17328,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_02_14",
+    "index": 2,
+    "variant": 14,
+    "sampleRate": 48000,
+    "samples": 4321,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        1400,
+        700,
+        200,
+        0.07,
+        0.06,
+        2200
+      ]
+    },
+    "sha256": "0ebb0ed0023f66b99f4a3140e993c1cac8193e66746e2c37e47d7a8edc8222ac",
+    "bytes": 17328,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_02_15",
+    "index": 2,
+    "variant": 15,
+    "sampleRate": 48000,
+    "samples": 4321,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        1400,
+        700,
+        200,
+        0.07,
+        0.06,
+        2200
+      ]
+    },
+    "sha256": "f68ec1e880b1813fd1a172674d1dc85e0245f1fa49c72ea595ad492cc7d21cdc",
+    "bytes": 17328,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_03_00",
+    "index": 3,
+    "variant": 0,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        2000,
+        1000,
+        150,
+        0.06,
+        0.035,
+        2800
+      ]
+    },
+    "sha256": "c3d0912bfac730809eaad6d972c884178420d67cd1463066fb25f7e2461ebe3a",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_03_01",
+    "index": 3,
+    "variant": 1,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        2000,
+        1000,
+        150,
+        0.06,
+        0.035,
+        2800
+      ]
+    },
+    "sha256": "98318a73f81f3330f533fb2ff56225085b541e0977467e2672212bd698daf4cc",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_03_02",
+    "index": 3,
+    "variant": 2,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        2000,
+        1000,
+        150,
+        0.06,
+        0.035,
+        2800
+      ]
+    },
+    "sha256": "466f83a469a5da8e47be1a5b03225be310cf8a654d0c5570cb78bb94667b2c3e",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_03_03",
+    "index": 3,
+    "variant": 3,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        2000,
+        1000,
+        150,
+        0.06,
+        0.035,
+        2800
+      ]
+    },
+    "sha256": "bdd881ffe1fc68115952cb07e5397c24be672041205b5dd13aed35e72b764d61",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_03_04",
+    "index": 3,
+    "variant": 4,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        2000,
+        1000,
+        150,
+        0.06,
+        0.035,
+        2800
+      ]
+    },
+    "sha256": "830f067602841414858b5d2f450d1cc6c13dae851b629a58769644c0e8f513a2",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_03_05",
+    "index": 3,
+    "variant": 5,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        2000,
+        1000,
+        150,
+        0.06,
+        0.035,
+        2800
+      ]
+    },
+    "sha256": "a8aaf8c37932eaa4ac4fcc87ca31413d60b1b683603696f32314382cdee518d8",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_03_06",
+    "index": 3,
+    "variant": 6,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        2000,
+        1000,
+        150,
+        0.06,
+        0.035,
+        2800
+      ]
+    },
+    "sha256": "d4d5f8253d1cb4985272fb647c92cfd0fbfe51cfcc0498d90bb5fbca3a774078",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_03_07",
+    "index": 3,
+    "variant": 7,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        2000,
+        1000,
+        150,
+        0.06,
+        0.035,
+        2800
+      ]
+    },
+    "sha256": "f3693d5471a081c54998461ebb2c199380822b3a7bd84a717f8e74ba577086dd",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_03_08",
+    "index": 3,
+    "variant": 8,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        2000,
+        1000,
+        150,
+        0.06,
+        0.035,
+        2800
+      ]
+    },
+    "sha256": "c077f848bc2fd6cc6922716b5269d1c06cd6487c4bb581aecb14146fd201c27d",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_03_09",
+    "index": 3,
+    "variant": 9,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        2000,
+        1000,
+        150,
+        0.06,
+        0.035,
+        2800
+      ]
+    },
+    "sha256": "b4092a561bdc62b7e65f9bec53269e744ce945f419f07702c9b7294b052eb87f",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_03_10",
+    "index": 3,
+    "variant": 10,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        2000,
+        1000,
+        150,
+        0.06,
+        0.035,
+        2800
+      ]
+    },
+    "sha256": "c83448c1c87c24c661743b3ed9c07c12e9e95df73cd86442bf9418d963297fc1",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_03_11",
+    "index": 3,
+    "variant": 11,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        2000,
+        1000,
+        150,
+        0.06,
+        0.035,
+        2800
+      ]
+    },
+    "sha256": "46c1a78d6ebd75f2258c7f7992b3575774544b484a47aa61fbc32a08b8ee0b61",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_03_12",
+    "index": 3,
+    "variant": 12,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        2000,
+        1000,
+        150,
+        0.06,
+        0.035,
+        2800
+      ]
+    },
+    "sha256": "24953a3505778843e7167e6943797c51f89b2ceda32e94314cc1601fb2a77109",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_03_13",
+    "index": 3,
+    "variant": 13,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        2000,
+        1000,
+        150,
+        0.06,
+        0.035,
+        2800
+      ]
+    },
+    "sha256": "f272a3c566e71e058757d1ad94df7dde4c21cefcaeb9bf883701d767d52e2ef3",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_03_14",
+    "index": 3,
+    "variant": 14,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        2000,
+        1000,
+        150,
+        0.06,
+        0.035,
+        2800
+      ]
+    },
+    "sha256": "ae81114e35de67b981c76bf0b1e5d38213e2d652d202bc33da965e7343c6fa47",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_03_15",
+    "index": 3,
+    "variant": 15,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sine",
+      "Args": [
+        2000,
+        1000,
+        150,
+        0.06,
+        0.035,
+        2800
+      ]
+    },
+    "sha256": "4dd4576afee790ed21f9ab7d7af211ed2666eef73018fd217e174ff3f9ed12dd",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_04_00",
+    "index": 4,
+    "variant": 0,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.06,
+        3000,
+        0.04,
+        1500,
+        0.002
+      ]
+    },
+    "sha256": "9b66ab0378d84445a29813e34cca04fd26573e56c43262958d642e6694f17609",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_04_01",
+    "index": 4,
+    "variant": 1,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.06,
+        3000,
+        0.04,
+        1500,
+        0.002
+      ]
+    },
+    "sha256": "8fa66ed2851e50dd78d3d556858952c276519e55d57c7efd2487e89f6e350b7e",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_04_02",
+    "index": 4,
+    "variant": 2,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.06,
+        3000,
+        0.04,
+        1500,
+        0.002
+      ]
+    },
+    "sha256": "c8ba00d80fb3fb246e3cc64fcac2b9d310a91a426c90b89352591be3363d871c",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_04_03",
+    "index": 4,
+    "variant": 3,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.06,
+        3000,
+        0.04,
+        1500,
+        0.002
+      ]
+    },
+    "sha256": "4a12491cefe5156f62d7198a58dd694103b54d72991cafbd424fe443fce391fe",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_04_04",
+    "index": 4,
+    "variant": 4,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.06,
+        3000,
+        0.04,
+        1500,
+        0.002
+      ]
+    },
+    "sha256": "080ba1a10d4721062567a3232990668bb1d3ebda2bd9f5625974326e95a517a6",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_04_05",
+    "index": 4,
+    "variant": 5,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.06,
+        3000,
+        0.04,
+        1500,
+        0.002
+      ]
+    },
+    "sha256": "2abdd2c6c717274f93b832333f7d0d2c3dfe0a447b3c674053aee5611c9c38e8",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_04_06",
+    "index": 4,
+    "variant": 6,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.06,
+        3000,
+        0.04,
+        1500,
+        0.002
+      ]
+    },
+    "sha256": "a05dcb16badef46492922eea273c39cd3cb3db1dea258d5a798bd50bc7c55a7d",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_04_07",
+    "index": 4,
+    "variant": 7,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.06,
+        3000,
+        0.04,
+        1500,
+        0.002
+      ]
+    },
+    "sha256": "32998e12cd7a19c0b816d512dc5f7f59097de07db45b2b31eb4b72b3cc705126",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_04_08",
+    "index": 4,
+    "variant": 8,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.06,
+        3000,
+        0.04,
+        1500,
+        0.002
+      ]
+    },
+    "sha256": "4092c45b2eb94d3ea7bfb5ffa6142c156123cf9a8bca3cb06201da4f40bb3af3",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_04_09",
+    "index": 4,
+    "variant": 9,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.06,
+        3000,
+        0.04,
+        1500,
+        0.002
+      ]
+    },
+    "sha256": "65e5eb72bd8cbb19df8683a5abb91eec59cfd776280e0577aa712a62412977dd",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_04_10",
+    "index": 4,
+    "variant": 10,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.06,
+        3000,
+        0.04,
+        1500,
+        0.002
+      ]
+    },
+    "sha256": "69026754378894ebe7563da4c460416a13f39a954347e3c9689eaf34b37e9454",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_04_11",
+    "index": 4,
+    "variant": 11,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.06,
+        3000,
+        0.04,
+        1500,
+        0.002
+      ]
+    },
+    "sha256": "eca83d8ae392ce9db8cda31778fcfd06310152f5dc86b2f796283ac7a0e643b4",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_04_12",
+    "index": 4,
+    "variant": 12,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.06,
+        3000,
+        0.04,
+        1500,
+        0.002
+      ]
+    },
+    "sha256": "673dd584420c3205d6ec3b4d1147149daa35b5693d04e9b25b8965e11fa3aafc",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_04_13",
+    "index": 4,
+    "variant": 13,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.06,
+        3000,
+        0.04,
+        1500,
+        0.002
+      ]
+    },
+    "sha256": "b5c3755b669578d3c7bd1987d3b44eb78ff2778c6615293b85bbf052c47f5e56",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_04_14",
+    "index": 4,
+    "variant": 14,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.06,
+        3000,
+        0.04,
+        1500,
+        0.002
+      ]
+    },
+    "sha256": "8edf6e4697a8ccbe13bd2b1b62dfc34d5cf020c9c6659ed0ce68ee80c453f958",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_04_15",
+    "index": 4,
+    "variant": 15,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.06,
+        3000,
+        0.04,
+        1500,
+        0.002
+      ]
+    },
+    "sha256": "8fd39fba3f64ba5a51636bc10b08c82cf175307f13419805bb5a2735838482d5",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_05_00",
+    "index": 5,
+    "variant": 0,
+    "sampleRate": 48000,
+    "samples": 22560,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.45,
+        1800,
+        0.1,
+        650,
+        0.025
+      ]
+    },
+    "sha256": "b5e89cb528d369511b5b83f7288083241ef7830b99cddfb68ac296e680145cf8",
+    "bytes": 90284,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_05_01",
+    "index": 5,
+    "variant": 1,
+    "sampleRate": 48000,
+    "samples": 22560,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.45,
+        1800,
+        0.1,
+        650,
+        0.025
+      ]
+    },
+    "sha256": "af49cecea3c0b21125055df3f95ee6259f5cefa73f991446e53c982d6f49d7f0",
+    "bytes": 90284,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_05_02",
+    "index": 5,
+    "variant": 2,
+    "sampleRate": 48000,
+    "samples": 22560,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.45,
+        1800,
+        0.1,
+        650,
+        0.025
+      ]
+    },
+    "sha256": "2367e77bb9971ca4c1b95b69b05fe074738d989218ba3cd58f3bae57ba008a8d",
+    "bytes": 90284,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_05_03",
+    "index": 5,
+    "variant": 3,
+    "sampleRate": 48000,
+    "samples": 22560,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.45,
+        1800,
+        0.1,
+        650,
+        0.025
+      ]
+    },
+    "sha256": "adbcd9ba4377262e5f3b8b93aed7c44a27f70f980e3e154ca30a28452896ef5b",
+    "bytes": 90284,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_05_04",
+    "index": 5,
+    "variant": 4,
+    "sampleRate": 48000,
+    "samples": 22560,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.45,
+        1800,
+        0.1,
+        650,
+        0.025
+      ]
+    },
+    "sha256": "39c34440c352f3453a898ac39f6ea956cf8a06c52969439663939af1f893213b",
+    "bytes": 90284,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_05_05",
+    "index": 5,
+    "variant": 5,
+    "sampleRate": 48000,
+    "samples": 22560,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.45,
+        1800,
+        0.1,
+        650,
+        0.025
+      ]
+    },
+    "sha256": "77074fed84347e1aadf71fe668b1cd866a9548466a0ebf28ad72cd1ff3ba977d",
+    "bytes": 90284,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_05_06",
+    "index": 5,
+    "variant": 6,
+    "sampleRate": 48000,
+    "samples": 22560,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.45,
+        1800,
+        0.1,
+        650,
+        0.025
+      ]
+    },
+    "sha256": "280c12d1d684062492b3d26c6c7e651d4fbe821db5615d961b6351b3009e1c32",
+    "bytes": 90284,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_05_07",
+    "index": 5,
+    "variant": 7,
+    "sampleRate": 48000,
+    "samples": 22560,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.45,
+        1800,
+        0.1,
+        650,
+        0.025
+      ]
+    },
+    "sha256": "1c2e15c902b0be5bdde4b56043e7967ed3496adb1af8b4885bae88c842116942",
+    "bytes": 90284,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_05_08",
+    "index": 5,
+    "variant": 8,
+    "sampleRate": 48000,
+    "samples": 22560,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.45,
+        1800,
+        0.1,
+        650,
+        0.025
+      ]
+    },
+    "sha256": "fe0d5fd0866cf474c71fcd4d9e26a8c841618a3340e18cdb94475ef51aa17139",
+    "bytes": 90284,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_05_09",
+    "index": 5,
+    "variant": 9,
+    "sampleRate": 48000,
+    "samples": 22560,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.45,
+        1800,
+        0.1,
+        650,
+        0.025
+      ]
+    },
+    "sha256": "5793b503a458b1db12170eeb0981467e97f855b4efc59dc43eb0754528b266d4",
+    "bytes": 90284,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_05_10",
+    "index": 5,
+    "variant": 10,
+    "sampleRate": 48000,
+    "samples": 22560,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.45,
+        1800,
+        0.1,
+        650,
+        0.025
+      ]
+    },
+    "sha256": "aaa343c0c5ccff882176517601a1c67818c2fbb04e97e233e2b9b5beaf0ea0f9",
+    "bytes": 90284,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_05_11",
+    "index": 5,
+    "variant": 11,
+    "sampleRate": 48000,
+    "samples": 22560,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.45,
+        1800,
+        0.1,
+        650,
+        0.025
+      ]
+    },
+    "sha256": "f8977bf1457fd090fccbeaf3889b115a7936989be4bf3b15a712de0b2e8b6c65",
+    "bytes": 90284,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_05_12",
+    "index": 5,
+    "variant": 12,
+    "sampleRate": 48000,
+    "samples": 22560,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.45,
+        1800,
+        0.1,
+        650,
+        0.025
+      ]
+    },
+    "sha256": "a67f9e4927e4a9321d610016c498d48a020cd66d5f6ced7614d385ecdf08c68a",
+    "bytes": 90284,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_05_13",
+    "index": 5,
+    "variant": 13,
+    "sampleRate": 48000,
+    "samples": 22560,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.45,
+        1800,
+        0.1,
+        650,
+        0.025
+      ]
+    },
+    "sha256": "a40f1994eacc403396a390dcebe8bad8f9d4a8a3ac17adde1a92594bb87cf79c",
+    "bytes": 90284,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_05_14",
+    "index": 5,
+    "variant": 14,
+    "sampleRate": 48000,
+    "samples": 22560,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.45,
+        1800,
+        0.1,
+        650,
+        0.025
+      ]
+    },
+    "sha256": "3f6e36baaccc7dbd5a4ce8d7d051c20ad3c41ea22db96439e625afd3264e4af3",
+    "bytes": 90284,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_05_15",
+    "index": 5,
+    "variant": 15,
+    "sampleRate": 48000,
+    "samples": 22560,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "bandpass",
+      "Args": [
+        0.45,
+        1800,
+        0.1,
+        650,
+        0.025
+      ]
+    },
+    "sha256": "3a1a003f95264dba625ea5a567b49e319c47a2cd2783f953ff3a7b3862c28f99",
+    "bytes": 90284,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_06_00",
+    "index": 6,
+    "variant": 0,
+    "sampleRate": 48000,
+    "samples": 5760,
+    "note": {
+      "Kind": "Dist",
+      "Wave": "square",
+      "Args": [
+        80,
+        0.1,
+        0.03,
+        30,
+        30
+      ]
+    },
+    "sha256": "2183b8c1518867578a1f2475a0f89b0cfbf7a656a9062a7c5473083df2d15914",
+    "bytes": 23084,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_06_01",
+    "index": 6,
+    "variant": 1,
+    "sampleRate": 48000,
+    "samples": 5760,
+    "note": {
+      "Kind": "Dist",
+      "Wave": "square",
+      "Args": [
+        80,
+        0.1,
+        0.03,
+        30,
+        30
+      ]
+    },
+    "sha256": "4cc891b77b1b17df8f4b22301f5a181b14f55d544ffd8e76b2701de390e81c38",
+    "bytes": 23084,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_06_02",
+    "index": 6,
+    "variant": 2,
+    "sampleRate": 48000,
+    "samples": 5760,
+    "note": {
+      "Kind": "Dist",
+      "Wave": "square",
+      "Args": [
+        80,
+        0.1,
+        0.03,
+        30,
+        30
+      ]
+    },
+    "sha256": "491dbeb073c681801000d1cde108e6030258bf0a425940d0a285a069ee207616",
+    "bytes": 23084,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_06_03",
+    "index": 6,
+    "variant": 3,
+    "sampleRate": 48000,
+    "samples": 5760,
+    "note": {
+      "Kind": "Dist",
+      "Wave": "square",
+      "Args": [
+        80,
+        0.1,
+        0.03,
+        30,
+        30
+      ]
+    },
+    "sha256": "c8013f13a1d246ea2bdd2af0d995ec45784174bc2e1e452201b5306fc7968fa7",
+    "bytes": 23084,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_06_04",
+    "index": 6,
+    "variant": 4,
+    "sampleRate": 48000,
+    "samples": 5760,
+    "note": {
+      "Kind": "Dist",
+      "Wave": "square",
+      "Args": [
+        80,
+        0.1,
+        0.03,
+        30,
+        30
+      ]
+    },
+    "sha256": "4c4ffc116c1bf372df11f5bb798761eaf5807bd597d8f712eaa328b84376b733",
+    "bytes": 23084,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_06_05",
+    "index": 6,
+    "variant": 5,
+    "sampleRate": 48000,
+    "samples": 5760,
+    "note": {
+      "Kind": "Dist",
+      "Wave": "square",
+      "Args": [
+        80,
+        0.1,
+        0.03,
+        30,
+        30
+      ]
+    },
+    "sha256": "45fdfbab543ec9a9ee99b2b349828f7e115b56f8110a3e9f104e1fa4446594e2",
+    "bytes": 23084,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_06_06",
+    "index": 6,
+    "variant": 6,
+    "sampleRate": 48000,
+    "samples": 5760,
+    "note": {
+      "Kind": "Dist",
+      "Wave": "square",
+      "Args": [
+        80,
+        0.1,
+        0.03,
+        30,
+        30
+      ]
+    },
+    "sha256": "dbbe8c2233c6c2b6620890adf7f4a6f78ecdccf4bd87ae3a7a6df2a24eda1ab3",
+    "bytes": 23084,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_06_07",
+    "index": 6,
+    "variant": 7,
+    "sampleRate": 48000,
+    "samples": 5760,
+    "note": {
+      "Kind": "Dist",
+      "Wave": "square",
+      "Args": [
+        80,
+        0.1,
+        0.03,
+        30,
+        30
+      ]
+    },
+    "sha256": "4cd6094e422abe2b0dee40f7114db4aee1f9f7282e9740dc325d642ef69cc973",
+    "bytes": 23084,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_06_08",
+    "index": 6,
+    "variant": 8,
+    "sampleRate": 48000,
+    "samples": 5760,
+    "note": {
+      "Kind": "Dist",
+      "Wave": "square",
+      "Args": [
+        80,
+        0.1,
+        0.03,
+        30,
+        30
+      ]
+    },
+    "sha256": "25f6b7fdf157ab17d656995be7133583527a1595cb547a48d92637909f767c27",
+    "bytes": 23084,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_06_09",
+    "index": 6,
+    "variant": 9,
+    "sampleRate": 48000,
+    "samples": 5760,
+    "note": {
+      "Kind": "Dist",
+      "Wave": "square",
+      "Args": [
+        80,
+        0.1,
+        0.03,
+        30,
+        30
+      ]
+    },
+    "sha256": "2b4516034991cbabf4a5a4c9f8b104b2a380f4193c62cd9bf5ea6ed9c20c8944",
+    "bytes": 23084,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_06_10",
+    "index": 6,
+    "variant": 10,
+    "sampleRate": 48000,
+    "samples": 5760,
+    "note": {
+      "Kind": "Dist",
+      "Wave": "square",
+      "Args": [
+        80,
+        0.1,
+        0.03,
+        30,
+        30
+      ]
+    },
+    "sha256": "ad32930808ead56e295104b5367ecd4cd3d6a3db366b4dc69b493ed97a9c5254",
+    "bytes": 23084,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_06_11",
+    "index": 6,
+    "variant": 11,
+    "sampleRate": 48000,
+    "samples": 5760,
+    "note": {
+      "Kind": "Dist",
+      "Wave": "square",
+      "Args": [
+        80,
+        0.1,
+        0.03,
+        30,
+        30
+      ]
+    },
+    "sha256": "53d073ba5e041ee4b1cb0070158763c8f1a5b4eb7f333a54d1411bdd8e542658",
+    "bytes": 23084,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_06_12",
+    "index": 6,
+    "variant": 12,
+    "sampleRate": 48000,
+    "samples": 5760,
+    "note": {
+      "Kind": "Dist",
+      "Wave": "square",
+      "Args": [
+        80,
+        0.1,
+        0.03,
+        30,
+        30
+      ]
+    },
+    "sha256": "1bf1fd1fb5ffffed11ce9bb0848044b25fc91fcac3d9eb43feb0bc192833de6c",
+    "bytes": 23084,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_06_13",
+    "index": 6,
+    "variant": 13,
+    "sampleRate": 48000,
+    "samples": 5760,
+    "note": {
+      "Kind": "Dist",
+      "Wave": "square",
+      "Args": [
+        80,
+        0.1,
+        0.03,
+        30,
+        30
+      ]
+    },
+    "sha256": "eab49d13f49443add7bc6d497ec666d5d470127888d4948f6ada83c9eca2171e",
+    "bytes": 23084,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_06_14",
+    "index": 6,
+    "variant": 14,
+    "sampleRate": 48000,
+    "samples": 5760,
+    "note": {
+      "Kind": "Dist",
+      "Wave": "square",
+      "Args": [
+        80,
+        0.1,
+        0.03,
+        30,
+        30
+      ]
+    },
+    "sha256": "c01ccfb7646b85f32fbc0ad2b3d408cd617684f13fe9e32cb0990c45d57315ca",
+    "bytes": 23084,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_06_15",
+    "index": 6,
+    "variant": 15,
+    "sampleRate": 48000,
+    "samples": 5760,
+    "note": {
+      "Kind": "Dist",
+      "Wave": "square",
+      "Args": [
+        80,
+        0.1,
+        0.03,
+        30,
+        30
+      ]
+    },
+    "sha256": "fd68543153aef726e20386216456ed3ef079b767dacc1d4c81a429e8bb7c3cad",
+    "bytes": 23084,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_07_00",
+    "index": 7,
+    "variant": 0,
+    "sampleRate": 48000,
+    "samples": 6720,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sawtooth",
+      "Args": [
+        150,
+        40,
+        300,
+        0.12,
+        0.05,
+        80
+      ]
+    },
+    "sha256": "550a47ba1c119bf4c688f9285c713c854be9b5d120b0aca396382c48334a87f6",
+    "bytes": 26924,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_07_01",
+    "index": 7,
+    "variant": 1,
+    "sampleRate": 48000,
+    "samples": 6720,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sawtooth",
+      "Args": [
+        150,
+        40,
+        300,
+        0.12,
+        0.05,
+        80
+      ]
+    },
+    "sha256": "d9193873c93d079afcb82feb38dddc6a9c2509d7d704f1c5a92388b09374f3ac",
+    "bytes": 26924,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_07_02",
+    "index": 7,
+    "variant": 2,
+    "sampleRate": 48000,
+    "samples": 6720,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sawtooth",
+      "Args": [
+        150,
+        40,
+        300,
+        0.12,
+        0.05,
+        80
+      ]
+    },
+    "sha256": "bd299c1c8fb564db9524ba75f036b3de7b4e4bd6a06fd0a08093f65ff0a64c27",
+    "bytes": 26924,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_07_03",
+    "index": 7,
+    "variant": 3,
+    "sampleRate": 48000,
+    "samples": 6720,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sawtooth",
+      "Args": [
+        150,
+        40,
+        300,
+        0.12,
+        0.05,
+        80
+      ]
+    },
+    "sha256": "613f8e68a54ac67e3ca3cf7dd63bdd3cf5a1ee895dfb195734cefbe01fcbeace",
+    "bytes": 26924,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_07_04",
+    "index": 7,
+    "variant": 4,
+    "sampleRate": 48000,
+    "samples": 6720,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sawtooth",
+      "Args": [
+        150,
+        40,
+        300,
+        0.12,
+        0.05,
+        80
+      ]
+    },
+    "sha256": "beb04b83db66deef6dcfe7e03c4d839b2949bd91ec5199dbc9e74294be859249",
+    "bytes": 26924,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_07_05",
+    "index": 7,
+    "variant": 5,
+    "sampleRate": 48000,
+    "samples": 6720,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sawtooth",
+      "Args": [
+        150,
+        40,
+        300,
+        0.12,
+        0.05,
+        80
+      ]
+    },
+    "sha256": "7dc7b7db2ba1e78cc0ab23a037c763d118fddefde5b9810c62212fe3aa6c4123",
+    "bytes": 26924,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_07_06",
+    "index": 7,
+    "variant": 6,
+    "sampleRate": 48000,
+    "samples": 6720,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sawtooth",
+      "Args": [
+        150,
+        40,
+        300,
+        0.12,
+        0.05,
+        80
+      ]
+    },
+    "sha256": "2bf06489d347a97f8f268569b4f4e7521c1aeb828bf6653e469a71f6ecd81a5d",
+    "bytes": 26924,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_07_07",
+    "index": 7,
+    "variant": 7,
+    "sampleRate": 48000,
+    "samples": 6720,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sawtooth",
+      "Args": [
+        150,
+        40,
+        300,
+        0.12,
+        0.05,
+        80
+      ]
+    },
+    "sha256": "e88950eab16a80003d5da12b24a2f7d9c2a0c645523f928391a3f85daa8b05e9",
+    "bytes": 26924,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_07_08",
+    "index": 7,
+    "variant": 8,
+    "sampleRate": 48000,
+    "samples": 6720,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sawtooth",
+      "Args": [
+        150,
+        40,
+        300,
+        0.12,
+        0.05,
+        80
+      ]
+    },
+    "sha256": "4a180bf9c49933b3bb748a98f2ad973a6fcc4b8c49d06f01e0fd98292c0dbf3d",
+    "bytes": 26924,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_07_09",
+    "index": 7,
+    "variant": 9,
+    "sampleRate": 48000,
+    "samples": 6720,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sawtooth",
+      "Args": [
+        150,
+        40,
+        300,
+        0.12,
+        0.05,
+        80
+      ]
+    },
+    "sha256": "6f2f620e8e2fbb593723decb6b7f2e0b50572c3af7ae415646aeff79178e1e0c",
+    "bytes": 26924,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_07_10",
+    "index": 7,
+    "variant": 10,
+    "sampleRate": 48000,
+    "samples": 6720,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sawtooth",
+      "Args": [
+        150,
+        40,
+        300,
+        0.12,
+        0.05,
+        80
+      ]
+    },
+    "sha256": "edac8e65e1ab50cc36bab07b0fdd969c39e83c5cde4a9cd5517321d7a8776ff0",
+    "bytes": 26924,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_07_11",
+    "index": 7,
+    "variant": 11,
+    "sampleRate": 48000,
+    "samples": 6720,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sawtooth",
+      "Args": [
+        150,
+        40,
+        300,
+        0.12,
+        0.05,
+        80
+      ]
+    },
+    "sha256": "30dbfb69f925495f16497cb772219ed1b344a69ffee631320e2d3e5e8d37f64b",
+    "bytes": 26924,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_07_12",
+    "index": 7,
+    "variant": 12,
+    "sampleRate": 48000,
+    "samples": 6720,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sawtooth",
+      "Args": [
+        150,
+        40,
+        300,
+        0.12,
+        0.05,
+        80
+      ]
+    },
+    "sha256": "c2d6a20baccad1f6ab3902fec196d812ee3f3f9f4ae76765155cc6515c49c69f",
+    "bytes": 26924,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_07_13",
+    "index": 7,
+    "variant": 13,
+    "sampleRate": 48000,
+    "samples": 6720,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sawtooth",
+      "Args": [
+        150,
+        40,
+        300,
+        0.12,
+        0.05,
+        80
+      ]
+    },
+    "sha256": "c06904487a716c9b68052816183ddbcb1d0ba65124bba559a358c528485ecf73",
+    "bytes": 26924,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_07_14",
+    "index": 7,
+    "variant": 14,
+    "sampleRate": 48000,
+    "samples": 6720,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sawtooth",
+      "Args": [
+        150,
+        40,
+        300,
+        0.12,
+        0.05,
+        80
+      ]
+    },
+    "sha256": "32ef73e94a3ba5038ce99eb34d39068288f302a335fe068fe192b422b6fe5492",
+    "bytes": 26924,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_07_15",
+    "index": 7,
+    "variant": 15,
+    "sampleRate": 48000,
+    "samples": 6720,
+    "note": {
+      "Kind": "FM",
+      "Wave": "sawtooth",
+      "Args": [
+        150,
+        40,
+        300,
+        0.12,
+        0.05,
+        80
+      ]
+    },
+    "sha256": "cd01a8b3ad81f30ab883b7831847cb0bc4b08df472d15b42fdac5b499f1b63b1",
+    "bytes": 26924,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_08_00",
+    "index": 8,
+    "variant": 0,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "FM",
+      "Wave": "square",
+      "Args": [
+        100,
+        2000,
+        3000,
+        0.05,
+        0.05,
+        3000
+      ]
+    },
+    "sha256": "ac9103cdeb5a4afbf2349785dcd51ff6a1aa4127394930019eae1f7e61ac1f04",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_08_01",
+    "index": 8,
+    "variant": 1,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "FM",
+      "Wave": "square",
+      "Args": [
+        100,
+        2000,
+        3000,
+        0.05,
+        0.05,
+        3000
+      ]
+    },
+    "sha256": "d60c4ad8d0d0cc8b415c89fd5e816140bcc0887017ebdcc3e5976cc6118ab336",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_08_02",
+    "index": 8,
+    "variant": 2,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "FM",
+      "Wave": "square",
+      "Args": [
+        100,
+        2000,
+        3000,
+        0.05,
+        0.05,
+        3000
+      ]
+    },
+    "sha256": "3cb4d5944a5c6409c6c0d43b419b926573a96ee53970e9d3660864b38517efc8",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_08_03",
+    "index": 8,
+    "variant": 3,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "FM",
+      "Wave": "square",
+      "Args": [
+        100,
+        2000,
+        3000,
+        0.05,
+        0.05,
+        3000
+      ]
+    },
+    "sha256": "3018d05bf92780f4daec2beeb459e8863df10cd5a7090d8996fd7facd5db7784",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_08_04",
+    "index": 8,
+    "variant": 4,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "FM",
+      "Wave": "square",
+      "Args": [
+        100,
+        2000,
+        3000,
+        0.05,
+        0.05,
+        3000
+      ]
+    },
+    "sha256": "01200b434712af0d464b3c0bab2985b73f60c697366edf8e599145066e33bdfc",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_08_05",
+    "index": 8,
+    "variant": 5,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "FM",
+      "Wave": "square",
+      "Args": [
+        100,
+        2000,
+        3000,
+        0.05,
+        0.05,
+        3000
+      ]
+    },
+    "sha256": "fc093b1afe150b6331d4804450819c9b0c43cc57000776c7ae3cf396bc4f204e",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_08_06",
+    "index": 8,
+    "variant": 6,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "FM",
+      "Wave": "square",
+      "Args": [
+        100,
+        2000,
+        3000,
+        0.05,
+        0.05,
+        3000
+      ]
+    },
+    "sha256": "dbef8b5561ccf063d37899526f083c634629cf5cb9c041be1826763c4477a96c",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_08_07",
+    "index": 8,
+    "variant": 7,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "FM",
+      "Wave": "square",
+      "Args": [
+        100,
+        2000,
+        3000,
+        0.05,
+        0.05,
+        3000
+      ]
+    },
+    "sha256": "ce98ff4bd98ed51a708e11139df1e3f20d9305a779600238947cfdd11f8d23b3",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_08_08",
+    "index": 8,
+    "variant": 8,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "FM",
+      "Wave": "square",
+      "Args": [
+        100,
+        2000,
+        3000,
+        0.05,
+        0.05,
+        3000
+      ]
+    },
+    "sha256": "b10a7635f639066d28e1a687703ce10dac8244eb43ed057cb5fdccdfce2e18c4",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_08_09",
+    "index": 8,
+    "variant": 9,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "FM",
+      "Wave": "square",
+      "Args": [
+        100,
+        2000,
+        3000,
+        0.05,
+        0.05,
+        3000
+      ]
+    },
+    "sha256": "db187244abbfaf2cb8530f623b0b991f02a7a9c7508b5483834462b80e465f4c",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_08_10",
+    "index": 8,
+    "variant": 10,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "FM",
+      "Wave": "square",
+      "Args": [
+        100,
+        2000,
+        3000,
+        0.05,
+        0.05,
+        3000
+      ]
+    },
+    "sha256": "d8287a860bb230f2c798da53427ebf0437199ab80bd416c4f8c74d2ba0fd9add",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_08_11",
+    "index": 8,
+    "variant": 11,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "FM",
+      "Wave": "square",
+      "Args": [
+        100,
+        2000,
+        3000,
+        0.05,
+        0.05,
+        3000
+      ]
+    },
+    "sha256": "d2fddad8c81314d1a61027dccdc17dbc428d769fc20fdfc1c3cf552158f04e5b",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_08_12",
+    "index": 8,
+    "variant": 12,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "FM",
+      "Wave": "square",
+      "Args": [
+        100,
+        2000,
+        3000,
+        0.05,
+        0.05,
+        3000
+      ]
+    },
+    "sha256": "07c47a76c255c82476c75c1abeda2a158daa76d65faa1e10d1c5d849eaa0e45b",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_08_13",
+    "index": 8,
+    "variant": 13,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "FM",
+      "Wave": "square",
+      "Args": [
+        100,
+        2000,
+        3000,
+        0.05,
+        0.05,
+        3000
+      ]
+    },
+    "sha256": "343a3665b68acb58ccc41411473f7737b3a1865fd0d9ec03443f78b17701425e",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_08_14",
+    "index": 8,
+    "variant": 14,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "FM",
+      "Wave": "square",
+      "Args": [
+        100,
+        2000,
+        3000,
+        0.05,
+        0.05,
+        3000
+      ]
+    },
+    "sha256": "2d59715a4ae4f093355759ad5fe1245f44ef7b833c047883a16d2a54c0e3d510",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_08_15",
+    "index": 8,
+    "variant": 15,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "FM",
+      "Wave": "square",
+      "Args": [
+        100,
+        2000,
+        3000,
+        0.05,
+        0.05,
+        3000
+      ]
+    },
+    "sha256": "9218e316e281c0cf57b3c866648b2abe119edd74b7c7bfb4d7cc37bea1cedf42",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_09_00",
+    "index": 9,
+    "variant": 0,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "highpass",
+      "Args": [
+        0.06,
+        12000,
+        0.02,
+        8000,
+        0.001
+      ]
+    },
+    "sha256": "65ae9c8b11fa3229fd9641cba8fd61c82a7248c893e7f379c45ea6b69aca2ac6",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_09_01",
+    "index": 9,
+    "variant": 1,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "highpass",
+      "Args": [
+        0.06,
+        12000,
+        0.02,
+        8000,
+        0.001
+      ]
+    },
+    "sha256": "66d30b7c5d06f0ab9706ad159904164bab67e64ddd8e98e888222c2a82b54bcf",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_09_02",
+    "index": 9,
+    "variant": 2,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "highpass",
+      "Args": [
+        0.06,
+        12000,
+        0.02,
+        8000,
+        0.001
+      ]
+    },
+    "sha256": "ac34fe9be94b1fc62c10c1a65fe4402ff3ee346dba77e083f94ec991fa8b1f14",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_09_03",
+    "index": 9,
+    "variant": 3,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "highpass",
+      "Args": [
+        0.06,
+        12000,
+        0.02,
+        8000,
+        0.001
+      ]
+    },
+    "sha256": "80f5c579d1a61480d576904c15c288adf37dc40547ebf0847e47227b73f7ce13",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_09_04",
+    "index": 9,
+    "variant": 4,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "highpass",
+      "Args": [
+        0.06,
+        12000,
+        0.02,
+        8000,
+        0.001
+      ]
+    },
+    "sha256": "54fcdaab5996c49a90c7ada2a5979fb51edf884f76eef510dbb8287ee457ef13",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_09_05",
+    "index": 9,
+    "variant": 5,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "highpass",
+      "Args": [
+        0.06,
+        12000,
+        0.02,
+        8000,
+        0.001
+      ]
+    },
+    "sha256": "93441ba828f4defaea4882ae448446aa57fdfae1e5b6392919426a424bbed5de",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_09_06",
+    "index": 9,
+    "variant": 6,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "highpass",
+      "Args": [
+        0.06,
+        12000,
+        0.02,
+        8000,
+        0.001
+      ]
+    },
+    "sha256": "2715120ae1b26637cda4e5c4798d15a29b7bbdcdf20c9f9ef87ca60ba710ed95",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_09_07",
+    "index": 9,
+    "variant": 7,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "highpass",
+      "Args": [
+        0.06,
+        12000,
+        0.02,
+        8000,
+        0.001
+      ]
+    },
+    "sha256": "f1e1036540ddd45b2e9d746c5af11ad43289cc4aa2e8d4da9a6be27d815ab2ed",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_09_08",
+    "index": 9,
+    "variant": 8,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "highpass",
+      "Args": [
+        0.06,
+        12000,
+        0.02,
+        8000,
+        0.001
+      ]
+    },
+    "sha256": "6268ec435e9c70480942389b14789302c84f0e7da834303bbb3808ff1120b8b1",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_09_09",
+    "index": 9,
+    "variant": 9,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "highpass",
+      "Args": [
+        0.06,
+        12000,
+        0.02,
+        8000,
+        0.001
+      ]
+    },
+    "sha256": "2305914443b5c02842ceba9b6fc51264f0b723b5a796c253f8dd8e6a1a69d191",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_09_10",
+    "index": 9,
+    "variant": 10,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "highpass",
+      "Args": [
+        0.06,
+        12000,
+        0.02,
+        8000,
+        0.001
+      ]
+    },
+    "sha256": "09ebf894bc1a835b8d1932188d2f2c5ae05cc1200463f35c8429dcba3893a32b",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_09_11",
+    "index": 9,
+    "variant": 11,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "highpass",
+      "Args": [
+        0.06,
+        12000,
+        0.02,
+        8000,
+        0.001
+      ]
+    },
+    "sha256": "78470e86433fd722b5f4143d19bed84e2430a1ac5e8d2f75fc299168dcbe8b3e",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_09_12",
+    "index": 9,
+    "variant": 12,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "highpass",
+      "Args": [
+        0.06,
+        12000,
+        0.02,
+        8000,
+        0.001
+      ]
+    },
+    "sha256": "1e84314ed483038ac07cd20932f8db6fb115c855ef21661654a456ca07b46cfc",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_09_13",
+    "index": 9,
+    "variant": 13,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "highpass",
+      "Args": [
+        0.06,
+        12000,
+        0.02,
+        8000,
+        0.001
+      ]
+    },
+    "sha256": "ab43a368ee5feabf88fb6bb681c50a148466e4c0e299f30c00d70962a231dc6f",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_09_14",
+    "index": 9,
+    "variant": 14,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "highpass",
+      "Args": [
+        0.06,
+        12000,
+        0.02,
+        8000,
+        0.001
+      ]
+    },
+    "sha256": "462ea0119c47fbca17d1894019367d8ff0d2c20f5d4b113709c06f3f75355d58",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_09_15",
+    "index": 9,
+    "variant": 15,
+    "sampleRate": 48000,
+    "samples": 3840,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "highpass",
+      "Args": [
+        0.06,
+        12000,
+        0.02,
+        8000,
+        0.001
+      ]
+    },
+    "sha256": "98ca16aab6b860c76f36c2113bd942e65c068a5233b36642daa009e0f08985d6",
+    "bytes": 15404,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_10_00",
+    "index": 10,
+    "variant": 0,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "lowpass",
+      "Args": [
+        0.05,
+        10000,
+        0.04,
+        4000,
+        0.001
+      ]
+    },
+    "sha256": "c9c2bb06257926e54e05eada31534e18b4d347cb2e83f786603f0765ac8258b1",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_10_01",
+    "index": 10,
+    "variant": 1,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "lowpass",
+      "Args": [
+        0.05,
+        10000,
+        0.04,
+        4000,
+        0.001
+      ]
+    },
+    "sha256": "927b7a0a8c86f82d315476a2d8e7471762e5d8715900eb81683ded8de27cc01b",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_10_02",
+    "index": 10,
+    "variant": 2,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "lowpass",
+      "Args": [
+        0.05,
+        10000,
+        0.04,
+        4000,
+        0.001
+      ]
+    },
+    "sha256": "5e4bce036fdd32ec108ae99d4e92b9920a35af5081cc0305f32aab49e56a488e",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_10_03",
+    "index": 10,
+    "variant": 3,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "lowpass",
+      "Args": [
+        0.05,
+        10000,
+        0.04,
+        4000,
+        0.001
+      ]
+    },
+    "sha256": "de696399dee8da7ccc1af84ef42c943e0885144872224cb5b24c9bb535fe275b",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_10_04",
+    "index": 10,
+    "variant": 4,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "lowpass",
+      "Args": [
+        0.05,
+        10000,
+        0.04,
+        4000,
+        0.001
+      ]
+    },
+    "sha256": "b9056f3748aa92a6ca0aef07c93bd38cce7c5055460193de96a662cf1d969598",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_10_05",
+    "index": 10,
+    "variant": 5,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "lowpass",
+      "Args": [
+        0.05,
+        10000,
+        0.04,
+        4000,
+        0.001
+      ]
+    },
+    "sha256": "cd4c3a22abc2c7e302a8ca30c6360687ae58d6595fe680ef882537c29557675a",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_10_06",
+    "index": 10,
+    "variant": 6,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "lowpass",
+      "Args": [
+        0.05,
+        10000,
+        0.04,
+        4000,
+        0.001
+      ]
+    },
+    "sha256": "fafebe1361c0127c6d625b37e80fc413219c9c6be641598772b200014548b0be",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_10_07",
+    "index": 10,
+    "variant": 7,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "lowpass",
+      "Args": [
+        0.05,
+        10000,
+        0.04,
+        4000,
+        0.001
+      ]
+    },
+    "sha256": "ba82b96b3cd76904e9909962dcfc5a5f946b415866bfae3dde0dc26616f34a6f",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_10_08",
+    "index": 10,
+    "variant": 8,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "lowpass",
+      "Args": [
+        0.05,
+        10000,
+        0.04,
+        4000,
+        0.001
+      ]
+    },
+    "sha256": "05af7163e6397b11220af49b5e73f8818eb48417be88953d4453c548922414b7",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_10_09",
+    "index": 10,
+    "variant": 9,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "lowpass",
+      "Args": [
+        0.05,
+        10000,
+        0.04,
+        4000,
+        0.001
+      ]
+    },
+    "sha256": "42316be001a4b0abd785b59538782fdcef24437b03fdec0072c24ab0ddcaa251",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_10_10",
+    "index": 10,
+    "variant": 10,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "lowpass",
+      "Args": [
+        0.05,
+        10000,
+        0.04,
+        4000,
+        0.001
+      ]
+    },
+    "sha256": "859ca849518c1dc9d66095f255814c59bfb4ce635e398c2cecd24022990ee0a7",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_10_11",
+    "index": 10,
+    "variant": 11,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "lowpass",
+      "Args": [
+        0.05,
+        10000,
+        0.04,
+        4000,
+        0.001
+      ]
+    },
+    "sha256": "aec02ce4586080443942fb32e7f2f2e5ce57a3ec4aef04ee9527fa28286b00aa",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_10_12",
+    "index": 10,
+    "variant": 12,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "lowpass",
+      "Args": [
+        0.05,
+        10000,
+        0.04,
+        4000,
+        0.001
+      ]
+    },
+    "sha256": "b5b36648517720d95dc28e99a36606a7324fa3a37c8893c140b1bf51b32d2e3d",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_10_13",
+    "index": 10,
+    "variant": 13,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "lowpass",
+      "Args": [
+        0.05,
+        10000,
+        0.04,
+        4000,
+        0.001
+      ]
+    },
+    "sha256": "e475b2b826024079d97d55867dc4a0e96cf1b804453666167d5749eaab833892",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_10_14",
+    "index": 10,
+    "variant": 14,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "lowpass",
+      "Args": [
+        0.05,
+        10000,
+        0.04,
+        4000,
+        0.001
+      ]
+    },
+    "sha256": "be8d6dce6fdc49a6673ab7b51fa3f0c030152309e21f759e40df9ac4383cd023",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  },
+  {
+    "name": "web_graph_10_15",
+    "index": 10,
+    "variant": 15,
+    "sampleRate": 48000,
+    "samples": 3361,
+    "note": {
+      "Kind": "Noise",
+      "Wave": "lowpass",
+      "Args": [
+        0.05,
+        10000,
+        0.04,
+        4000,
+        0.001
+      ]
+    },
+    "sha256": "fc9187f9438f15e67bcb26a1de7f28f4abae376afeeaf457b2cd8fa65adf1f23",
+    "bytes": 13488,
+    "source": "740722e1 actual OfflineAudioContext",
+    "run": "e0cca35b"
+  }
+]

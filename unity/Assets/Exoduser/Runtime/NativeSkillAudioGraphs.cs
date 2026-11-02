@@ -1,0 +1,11 @@
+using System;using System.Collections.Generic;using UnityEngine;using Exoduser.UnityPort.Core;namespace Exoduser.UnityPort {internal sealed class NativeSkillAudioGraphs{sealed class Graph{internal string kind,wave,prefix;internal double[] args;}static readonly Graph[] graphs={new Graph{kind="Sub",wave="sine",args=new double[]{55.0,0.08,0.05,35.0},prefix="web_graph_00_"},
+new Graph{kind="Tone",wave="sine",args=new double[]{3200.0,0.04,0.015,0.0,0.004},prefix="web_graph_01_"},
+new Graph{kind="FM",wave="sine",args=new double[]{1400.0,700.0,200.0,0.07,0.06,2200.0},prefix="web_graph_02_"},
+new Graph{kind="FM",wave="sine",args=new double[]{2000.0,1000.0,150.0,0.06,0.035,2800.0},prefix="web_graph_03_"},
+new Graph{kind="Noise",wave="bandpass",args=new double[]{0.06,3000.0,0.04,1500.0,0.002},prefix="web_graph_04_"},
+new Graph{kind="Noise",wave="bandpass",args=new double[]{0.45,1800.0,0.1,650.0,0.025},prefix="web_graph_05_"},
+new Graph{kind="Dist",wave="square",args=new double[]{80.0,0.1,0.03,30.0,30.0},prefix="web_graph_06_"},
+new Graph{kind="FM",wave="sawtooth",args=new double[]{150.0,40.0,300.0,0.12,0.05,80.0},prefix="web_graph_07_"},
+new Graph{kind="FM",wave="square",args=new double[]{100.0,2000.0,3000.0,0.05,0.05,3000.0},prefix="web_graph_08_"},
+new Graph{kind="Noise",wave="highpass",args=new double[]{0.06,12000.0,0.02,8000.0,0.001},prefix="web_graph_09_"},
+new Graph{kind="Noise",wave="lowpass",args=new double[]{0.05,10000.0,0.04,4000.0,0.001},prefix="web_graph_10_"}};readonly Dictionary<string,AudioClip> clips=new Dictionary<string,AudioClip>();internal AudioClip Resolve(SkillAudioNote n,int variant){foreach(var g in graphs){if(n.Kind!=g.kind||n.Wave!=g.wave||n.Args.Length!=g.args.Length)continue;bool same=true;for(int i=0;i<g.args.Length;i++)if(n.Args[i]!=g.args[i]){same=false;break;}if(!same)continue;string key=g.prefix+(Math.Abs(variant)%16).ToString("00");if(!clips.TryGetValue(key,out var clip)){clip=Resources.Load<AudioClip>("Audio/SkillGraphs/"+key);if(clip==null)throw new InvalidOperationException("Missing original web graph "+key);clip.LoadAudioData();clips.Add(key,clip);}return clip;}throw new InvalidOperationException("Unadmitted original graph: "+n.Kind+" / "+n.Wave);}}}

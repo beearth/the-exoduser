@@ -19,7 +19,7 @@ namespace Exoduser.UnityPort.Core
   public JsonValue Raw;   // loaded `data` root (unmodeled sections), null for a first save
   // B03: the skill sections the Unity skill executor owns (web `skills` {id:Lv}, `skillSlots`[6], `ultSlot`, `activeCtSk`). null = never saved / not loaded:
   // entries of skills Unity cannot run yet stay as the raw save has them, so a web import after a Unity autosave still finds them.
-  public Dictionary<string,double> Skills;public string[] SkillSlots;public string UltSlot,ActiveCtSk;
+  public Dictionary<string,double> Skills;public string[] SkillSlots;public string UltSlot,ActiveCtSk;public List<string> Fused;public bool SkillSelectionsCaptured;public string ActiveChargeSk,ActiveBowSk,ActiveTechSk,ActiveMagicSk,ActiveLMBSk,ActiveRMBSk,ActiveQSk;
  }
 
  public static class CombatSaveCodec
@@ -64,6 +64,8 @@ namespace Exoduser.UnityPort.Core
      case "skills":if(m.Skills!=null)root.Set(key,EncodeSkills(m,Raw(m,key)));else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;
      case "skillSlots":if(m.SkillSlots!=null)root.Set(key,EncodeSlots(m,Raw(m,key)));else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;
      case "ultSlot":if(m.Skills!=null)root.Set(key,m.UltSlot!=null?JsonValue.Of(m.UltSlot):JsonValue.Null);else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;
+     case "fused":if(m.Fused!=null)root.Set(key,EncodeFused(m,Raw(m,key)));else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;
+     case "activeChargeSk":case "activeBowSk":case "activeTechSk":case "activeMagicSk":case "activeLMBSk":case "activeRMBSk":case "activeQSk":{string selected=FixedSelection(m,key);if(selected!=null)root.Set(key,JsonValue.Of(selected));else if(m.SkillSelectionsCaptured&&key=="activeTechSk")root.Set(key,JsonValue.Null);else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;}
      case "activeCtSk":if(m.ActiveCtSk!=null)root.Set(key,JsonValue.Of(m.ActiveCtSk));else{var r=Raw(m,key);if(r!=null)root.Set(key,r);}break;
      default:{var raw=Raw(m,key);if(raw!=null)root.Set(key,raw);break;}
     }
@@ -71,6 +73,9 @@ namespace Exoduser.UnityPort.Core
    if(m.Raw!=null&&m.Raw.Kind==JsonKind.Object)foreach(var kv in m.Raw.Members)if(!root.Has(kv.Key))root.Set(kv.Key,kv.Value);   // future/unknown keys survive
    return root;
   }
+
+  static string FixedSelection(CombatSaveModel m,string key){switch(key){case "activeChargeSk":return m.ActiveChargeSk;case "activeBowSk":return m.ActiveBowSk;case "activeTechSk":return m.ActiveTechSk;case "activeMagicSk":return m.ActiveMagicSk;case "activeLMBSk":return m.ActiveLMBSk;case "activeRMBSk":return m.ActiveRMBSk;case "activeQSk":return m.ActiveQSk;default:return null;}}
+  static JsonValue EncodeFused(CombatSaveModel m,JsonValue raw){var o=Obj();if(raw!=null&&raw.Kind==JsonKind.Object)foreach(var kv in raw.Members){if(Simulation.FusionExecutorReady(kv.Key)){if(m.Fused.Contains(kv.Key))o.Set(kv.Key,JsonValue.Of(true));}else o.Set(kv.Key,kv.Value);}foreach(var key in m.Fused)if(!o.Has(key))o.Set(key,JsonValue.Of(true));return o;}
 
   // B03: raw entries are copied; the ids in SkillIds are the ones the Unity executor owns and are written from the model (Lv 0 = key removed)
   static JsonValue EncodeSkills(CombatSaveModel m,JsonValue raw)
@@ -156,6 +161,8 @@ namespace Exoduser.UnityPort.Core
     var ult=data.Get("ultSlot");m.UltSlot=ult!=null&&ult.Kind==JsonKind.String?ult.Text:null;
     var ct=data.Get("activeCtSk");m.ActiveCtSk=ct!=null&&ct.Kind==JsonKind.String?ct.Text:null;
    }
+   var fused=data.Get("fused");if(Valid(fused,JsonKind.Object)){m.Fused=new List<string>();foreach(var kv in fused.Members)if(kv.Value!=null&&kv.Value.Kind==JsonKind.Bool&&kv.Value.Bool)m.Fused.Add(kv.Key);}
+   m.ActiveChargeSk=data.Str("activeChargeSk");m.ActiveBowSk=data.Str("activeBowSk");m.ActiveTechSk=data.Str("activeTechSk");m.ActiveMagicSk=data.Str("activeMagicSk");m.ActiveLMBSk=data.Str("activeLMBSk");m.ActiveRMBSk=data.Str("activeRMBSk");m.ActiveQSk=data.Str("activeQSk");
    model=m;return true;
   }
 

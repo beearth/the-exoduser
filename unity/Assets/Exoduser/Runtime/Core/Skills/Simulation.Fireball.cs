@@ -11,6 +11,7 @@ namespace Exoduser.UnityPort.Core
     // _maliceWeakMul (24707). Formulas are in SkillRules (oracle-checked); this file owns the state, input edge and the per-frame tick.
     public sealed class MaliceOrb
     {
+        internal PlayerProjectileCarry PoolCarry;
         public int Id, Dmg, ExplDmg, Bounces; public bool Active;
         public float X, Y, Vx, Vy, Dist, MaxDist, R, R0, RMax, ExplR, BounceCool;
         // 웹 p._trail: 이동 전 위치를 매 실제 틱에14점 순환 기록한다. 렌더 빈도와 무관한 표시 자료다.
@@ -29,7 +30,7 @@ namespace Exoduser.UnityPort.Core
         private float magicCastAngle; // 웹 P.atkArc: 시전 시작 때 고정하며 다음 연사 시작 때 갱신한다.
 
         // once per tick before Tick(): the held state of the web 'beam' action (default mouse2)
-        public void SetMagicInput(bool beamHeld) { magicHeld = beamHeld; }
+        public void SetMagicInput(bool beamHeld) { magicHeld = beamHeld&&Skills.MagicSkill=="fireball"; }
 
         // pMagicSpd = (2 + pMagic*.08) * (1 + castSpeed + headbandCastSpd)
         public double MagicCastSpeed()
@@ -40,12 +41,15 @@ namespace Exoduser.UnityPort.Core
         // mpCost('magic'): _COST_SK has no 'magic' entry, so the skill-level factor is 1
         public int MagicMpCost() { return SkillRules.MpCost("magic", 1, MagicCostMultiplier()); }
 
-        private bool CanStartMagic { get { return Player.State == "idle" && Player.Mana >= MagicMpCost(); } }
+        private bool CanStartMagic { get { return Player.State == "idle" && !HarpActive && !DashActive && !idleChainDetonation && Player.Mana >= MagicMpCost(); } }
+
+        // 원문 idle은 무기 자원을 실제로 낼 수 있을 때만 E/마법보다 무기를 먼저 선택한다.
+        private bool IdleWeaponHasPriority { get { return attackHeldForMagic && Player.Stamina >= (Config.ActiveAttack == "kiSlash" ? 10 + (Math.Max(1, Config.KiSlashLevel) - 1) * 2 : 5); } }
 
         // idle branch of the web state machine: `else if(isHeld('beam')&&P.mp>=mpCost('magic')) _execMagicE()`, after the weapon / shield / Q branches
         private void TickMagicIdle()
         {
-            if (!magicHeld || attackHeldForMagic || playerActionBranchConsumed || !CanStartMagic) return;
+            if (!magicHeld || IdleWeaponHasPriority || playerActionBranchConsumed || !CanStartMagic) return;
             MovePlayerAction(1, true);
             ExecMagicE();
         }
@@ -90,6 +94,7 @@ namespace Exoduser.UnityPort.Core
                 Vx = (float)(dx * SkillRules.FireballSpeed), Vy = (float)(dy * SkillRules.FireballSpeed), Dmg = dmg, ExplDmg = Js.Int(dmg * .6),
                 MaxDist = (float)SkillRules.FireballRange(lv, 0), R0 = (float)SkillRules.FireballRadius0, R = (float)SkillRules.FireballRadius0, RMax = (float)SkillRules.FireballRadiusMax(lv), ExplR = (float)SkillRules.FireballExplosionRadius(lv)
             };
+            bool fresh;o.PoolCarry=TakePlayerProjectile(out fresh);
             MaliceOrbs.Add(o); MaliceOrbShots++;
             SkillSample("fireball", .8, 1); Cast("fireball");
         }
@@ -121,8 +126,9 @@ namespace Exoduser.UnityPort.Core
                     }
                 }
                 p.X += p.Vx; p.Y += p.Vy; p.Dist += (float)spd;
+                if(p.PoolCarry!=null&&p.PoolCarry.Grace>0)p.PoolCarry.Grace--;
                 if (p.MaxDist > 0) p.R = (int)(p.R0 + (p.RMax - p.R0) * Math.Min(1, p.Dist / p.MaxDist));
-                bool dead = false;
+                bool dead = false, recycle = false;
                 if (p.Dist > p.MaxDist) { OrbExplode(p); dead = true; }
                 else if (OrbWall(p.X, p.Y))
                 {
@@ -136,16 +142,16 @@ namespace Exoduser.UnityPort.Core
                     }
                     else { OrbExplode(p); dead = true; }
                 }
-                if (!dead && HurtFieldMobs(p.X, p.Y, p.R + 8, p.Dmg, p.HitFieldMobs)) { OrbExplode(p); dead = true; }   // web pProj loop 35466: an angler touched by the orb takes p.dmg, the orb bursts
+                if (!dead && HurtFieldMobs(p.X, p.Y, p.R + 8, p.Dmg, p.HitFieldMobs)) { OrbExplode(p); dead = true; recycle = true; }   // web pProj loop 35466: an angler touched by the orb takes p.dmg, the orb bursts
                 if (!dead)
                 {
                     foreach (var e in ShQuery(p.X, p.Y, p.R + 20, true))
                     {
                         if (!e.Alive || Distance(p.X, p.Y, e.X, e.Y) >= e.Radius + p.R) continue;
-                        OrbExplode(p); dead = true; break;
+                        OrbExplode(p); dead = true; recycle = true; break;
                     }
                 }
-                if (dead) { p.Active = false; continue; }
+                if (dead) { p.Active = false; if(recycle){RecyclePlayerProjectile(p.PoolCarry);p.PoolCarry=null;} continue; }
                 MaliceOrbs[w++] = p;
             }
             if (w < MaliceOrbs.Count) MaliceOrbs.RemoveRange(w, MaliceOrbs.Count - w);
@@ -181,7 +187,7 @@ namespace Exoduser.UnityPort.Core
                 practiceHitKind = null; EmitFirstPracticeHit(e, "fireball", 0, 0, wasAlive, true);
                 web = e.Web ?? SyncToWeb(e);
                 web.poison = 1; web.poisonT = Math.Max(web.poisonT, SkillRules.FireballPoisonFrames); web.poisonStk = Math.Min(10, web.poisonStk + 1);
-                if (web.poisonStk < 10) web._poisonPool = web._poisonPool + 1 * dmg * 2;   // pDotPool() = 1 until the passive rows are ported
+                if (web.poisonStk < 10) web._poisonPool = web._poisonPool + (1 + Growth.Value("pDot") * .05) * dmg * 2;   // source pDotPool()
             }
         }
     }

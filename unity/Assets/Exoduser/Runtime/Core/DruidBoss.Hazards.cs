@@ -9,7 +9,7 @@ namespace Exoduser.UnityPort.Core
         public double X, Y, Vx, Vy, Dmg, Life, Ml, Sz = 1, R = 4;
         public int El;
         public string Col = "", ParryClass = "";
-        public bool RedBean, BlackBean, Homing, Mine, ElemBall, DruidStraight, DruidParryVolley, Commit, FireMagic, MissileTrail, Typed, Web;
+        public bool NoParry, FbEnergy, FdEnergy, RedBean, BlackBean, Homing, Mine, ElemBall, DruidStraight, DruidParryVolley, Commit, FireMagic, MissileTrail, Typed, Web;
     }
 
     public sealed class BossProjectile
@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort.Core
         public double X, Y, Vx, Vy, Dmg, Life, Ml, Sz = 1, R = 4, Dist;
         public int El;
         public string Col = "", ParryClass = "";
-        public bool RedBean, BlackBean, Homing, Mine, ElemBall, DruidStraight, DruidPoison, DruidParryVolley, Commit, FireMagic, MissileTrail, Typed, Web, Active = true;
+        public bool NoParry, FbEnergy, FdEnergy, RedBean, BlackBean, Homing, Mine, ElemBall, DruidStraight, DruidPoison, DruidParryVolley, Commit, FireMagic, MissileTrail, Typed, Web, Active = true;
         // parry reflection (ParryReflect.cs): a reflected bullet is friendly and flies back as a blue bean
         public bool Friendly, BlueBean, ParryBlueBean, Magic, FromRainbow, WaterBean, TitanEye, BwBean, GbBean;
         public double AoeR, AoeDmg;
@@ -50,7 +50,7 @@ namespace Exoduser.UnityPort.Core
         public int Dropped, Spawned;               // oracle counters
         public double VolleyT, OrbT; public int VolleyN;   // G._druidParryT / _druidOrbT / _druidParryVolley
         public bool ProjectileFlight = true;       // false: oracle (the web projectile loop is not extracted, spawn parameters only)
-        public Action<BossProjectile> OnSpawn;
+        public Action<BossProjectile> OnSpawn;public Func<BossProjectile,bool> ProjectileAbsorber;
         public Func<int, double> ElementMul;       // elMul(p.el, ar().el): null = 1 (the oracle and the boss arena)
 
         public const double ESpeedPhysMin = 300.0 / 60, ESpeedPhysMax = 300.0 / 60, ESpeedMagicMin = 500.0 / 60, ESpeedMagicMax = 600.0 / 60;
@@ -85,7 +85,7 @@ namespace Exoduser.UnityPort.Core
         public BossProjectile SpawnProjectile(EnemyState e, DruidData d, ProjSpec s, bool viaBoss)
         {
             var p = new BossProjectile { X = s.X, Y = s.Y, Vx = s.Vx, Vy = s.Vy, Dmg = s.Dmg, Life = s.Life, Ml = s.Ml, Sz = s.Sz, R = s.R, El = s.El, Col = s.Col, ParryClass = s.ParryClass,
-                RedBean = s.RedBean, BlackBean = s.BlackBean, Homing = s.Homing, Mine = s.Mine, ElemBall = s.ElemBall, DruidStraight = s.DruidStraight, DruidParryVolley = s.DruidParryVolley,
+                NoParry = s.NoParry, FbEnergy = s.FbEnergy, FdEnergy = s.FdEnergy, RedBean = s.RedBean, BlackBean = s.BlackBean, Homing = s.Homing, Mine = s.Mine, ElemBall = s.ElemBall, DruidStraight = s.DruidStraight, DruidParryVolley = s.DruidParryVolley,
                 Commit = s.Commit, FireMagic = s.FireMagic, MissileTrail = s.MissileTrail, Typed = s.Typed, Web = s.Web };
             if (viaBoss) { p.DruidPoison = e != null && e.IsBoss && DruidStage; p.DruidStraight = p.DruidStraight && e != null && e.IsBoss && DruidStage; }
             if (p.DruidPoison) { p.ParryClass = ClassOf(p); p.El = EL_P; p.Col = "#66dd22"; }
@@ -164,7 +164,7 @@ namespace Exoduser.UnityPort.Core
             for (int i = 0; i < Projectiles.Count; i++)
             {
                 var p = Projectiles[i]; bool dead = false;
-                p.Life -= 0.667;
+                p.Life -= 0.667;if(ProjectileAbsorber!=null&&ProjectileAbsorber(p)){p.Active=false;continue;}
                 if (p.Mine)
                 {
                     p.Vx = 0; p.Vy = 0;

@@ -10,15 +10,17 @@ namespace Exoduser.UnityPort.Core
     // Formulas live in Skills/SkillRules.cs (oracle-checked); this file owns state, input edges, costs, targets and the per-frame ticks.
     [Serializable] public sealed class SkillBook
     {
+        public readonly List<string> Fused=new List<string>();
         public readonly Dictionary<string, int> Levels = new Dictionary<string, int>();
         public readonly string[] Slots = new string[SkillRules.SlotCount];   // SKILL_SLOTS: 1,2,3,4,Space,F
-        public string UltSlot, CtSkill = "iceOrb", MagicSkill = "fireball";  // ULT_SLOT, P.activeCtSk, P.activeMagicSk (E slot; fireball is the only ported one)
+        public string RmbSkill="maliceSwipe",QSkill="parry",BowSkill="normal",TechSkill;
+        public string UltSlot, CtSkill = "iceOrb", MagicSkill = "fireball", ChargeSkill = "charge";  // ULT_SLOT, P.activeCtSk, P.activeMagicSk, P.activeChargeSk
         public int Level(string id) { int v; return id != null && Levels.TryGetValue(id, out v) ? v : 0; }
         public bool Learned(string id) { return Level(id) >= 1; }
     }
 
-    public sealed class FireZone { public int Id; public string Type; public float X, Y, R, TickTimer; public int T, MaxT, Lv, Dmg; }
-    public sealed class SlamWave { public int Id; public float X, Y, MaxR; public int T, MaxT; public bool Bash; }   // Bash: the E strike wave (blue-grey, web col #66aadd)
+    public sealed class FireZone { public int Id; public string Type; public float X, Y, R, TickTimer; public int T, MaxT, Lv, AfStack, Revision; public double Dmg, AfBaseR, AfBaseDmg;public bool PillarSpike;public int Element; }
+    public sealed class SlamWave { public int Id; public float X, Y, MaxR; public int T, MaxT; public bool Bash, Flame; }   // Bash: the E strike wave (blue-grey, web col #66aadd)
     public sealed class SkillBlade
     {
         public int Id, Dmg, Pierced; public bool Active; public float X, Y, Vx, Vy, Dist, MaxDist, Radius;
@@ -28,6 +30,8 @@ namespace Exoduser.UnityPort.Core
     public sealed partial class Simulation
     {
         public readonly SkillBook Skills = new SkillBook();
+        // 미이식이지만 습득된 저장 선택은 시스템 기본 보정으로 지우지 않는다. 실제 슬롯 편집 때만 해제한다.
+        string preservedLoadedCtSkill;
         public readonly List<FireZone> FireZones = new List<FireZone>();
         public readonly List<SlamWave> SlamWaves = new List<SlamWave>();
         public readonly List<SkillBlade> SkillBlades = new List<SkillBlade>();
@@ -40,41 +44,79 @@ namespace Exoduser.UnityPort.Core
         // outcome counters for the presentation layer / smoke
         public int SkillCastCount, SkillDeniedCount; public string LastSkill, LastSkillDenied;
         public event Action<string> SkillCast;   // id of the skill that was just started
+        public event Action<float,float,float> IceShattered; // 중심X/Y와 원문 시트 표시 지름px
 
         private bool skD1, skD2, skD3, skD4, skSpace, skF, skCtrl, skZ, skP1, skP2, skP3, skP4, skPSpace, skPF, skPCtrl, skPZ;
         private bool skSuppressSpace;
         // Skill effects (blade scatter, voice choice, pierce rolls) draw from their own stream (web Math.random): the shared sim stream stays the enemy / loot owners'.
         private uint skillRandomState = 0x9E3779B9u;
-        private double SkillRandom() { skillRandomState = unchecked(skillRandomState * 1664525u + 1013904223u); return skillRandomState / 4294967296.0; }
+        // 검수에서 원문 난수 조건을 맞출 때만 주입한다. 기본 null은 기존 독립 스트림이다.
+        public Func<double> SkillRandom01;
+        private double SkillRandom()
+        {
+            if (SkillRandom01 != null)
+            {
+                double value = SkillRandom01();
+                if (double.IsNaN(value) || value < 0 || value >= 1) throw new InvalidOperationException("Skill random provider must return [0,1).");
+                return value;
+            }
+            skillRandomState = unchecked(skillRandomState * 1664525u + 1013904223u);
+            return skillRandomState / 4294967296.0;
+        }
         private int nextZoneId = 1, nextBladeId = 1, nextWaveId = 1;
         private readonly HashSet<EnemyState> spikeHitThisFrame = new HashSet<EnemyState>();
 
         // start state of a new character (game.html 62632-62640 / 62334-62336 + the Ctrl iceOrb that is always granted): giantSlam -> Space, holyDome -> F, spikeTrap -> 1, iceOrb -> Ctrl
         public void InitStartingSkills()
         {
+            if(!Skills.Fused.Contains("shieldFuse"))Skills.Fused.Add("shieldFuse");
+            Skills.Levels["kiSlash"] = Math.Max(1, Config.KiSlashLevel);
             Skills.Levels["giantSlam"] = 1; Skills.Slots[SkillRules.SlotSpace] = "giantSlam";
             Skills.Levels["holyDome"] = 1; Skills.Slots[SkillRules.SlotF] = "holyDome";
             Skills.Levels["spikeTrap"] = 1; Skills.Slots[0] = "spikeTrap";
             Skills.Levels["iceOrb"] = 1; Skills.CtSkill = "iceOrb";
+            Skills.Levels["maliceSwipe"] = 1; Skills.Levels["shieldThrow"] = 1; MaliceSwipeLevel=1; ShieldThrowLevel=1;
             Skills.Levels["fireball"] = 1; Skills.MagicSkill = "fireball";   // E: P.skills.fireball||1 is always usable (default skill)
         }
 
         // ---- save (web `skills`, `skillSlots`, `ultSlot`, `activeCtSk`): only the skills this executor runs are owned by Unity ----
-        public static readonly string[] PortedSkillIds = { "spikeTrap", "giantSlam", "holyDome", "iceOrb", "fireball" };
+        public static readonly string[] PortedSkillIds = { "kiSlash", "spikeTrap", "giantSlam", "holyDome", "iceOrb", "fireball", "maliceSwipe", "shieldThrow", "chargeBoost", "magicBlink", "chainSlam", "chainAssault", "weakPhys", "weakMag", "weakPj", "weakRev", "darkPillar", "holyPrison", "maliceDome", "iceStorm", "timeWarp", "ghostWalk" };
         static bool IsPorted(string id) { return id != null && Array.IndexOf(PortedSkillIds, id) >= 0; }
         public void CaptureSkills(out Dictionary<string, double> skills, out string[] slots, out string ult, out string ct)
         {
-            skills = new Dictionary<string, double>(); foreach (var id in PortedSkillIds) skills[id] = Skills.Level(id);
+            skills = new Dictionary<string, double>(); foreach (var id in PortedSkillIds) skills[id] = id == "kiSlash" ? Math.Max(1, Config.KiSlashLevel) : Skills.Level(id);
             slots = new string[SkillRules.SlotCount]; for (int i = 0; i < slots.Length; i++) slots[i] = IsPorted(Skills.Slots[i]) ? Skills.Slots[i] : null;
-            ult = null; ct = Skills.CtSkill;
+            ult = Skills.UltSlot; ct = preservedLoadedCtSkill ?? Skills.CtSkill;
         }
         // m.Skills == null (a save from before the skills were stored) keeps the new-character start state
         public void RestoreSkills(Dictionary<string, double> skills, string[] slots, string ult, string ct)
         {
             if (skills == null) return;
-            foreach (var id in PortedSkillIds) { double v; skills.TryGetValue(id, out v); if (id == "fireball" && v < 1) v = 1; if (v >= 1) Skills.Levels[id] = (int)v; else Skills.Levels.Remove(id); }
-            for (int i = 0; i < SkillRules.SlotCount; i++) Skills.Slots[i] = slots != null && i < slots.Length && IsPorted(slots[i]) && Skills.Learned(slots[i]) ? slots[i] : null;
-            Skills.CtSkill = IsPorted(ct) && Skills.Learned(ct) ? ct : (Skills.Learned("iceOrb") ? "iceOrb" : null);
+            skills = ChainSkillRestoreRules.Normalize(skills);
+            CaptureDisplaySkillLevels(skills);
+            foreach (var id in PortedSkillIds) { double v; skills.TryGetValue(id, out v); if ((id == "kiSlash"||id == "fireball"||id=="maliceSwipe"||id=="shieldThrow"||id=="spikeTrap"||id=="giantSlam"||id=="holyDome") && v < 1) v = 1; if (v >= 1) Skills.Levels[id] = (int)v; else Skills.Levels.Remove(id); }
+            var reservedRawSlots = new bool[SkillRules.SlotCount];
+            for (int i = 0; i < SkillRules.SlotCount; i++)
+            {
+                string id = slots != null && i < slots.Length ? slots[i] : null;
+                reservedRawSlots[i] = id != null && !IsPorted(id);
+                Skills.Slots[i] = IsPorted(id) && Skills.Learned(id) ? id : null;
+            }
+            RepairRestoredSkillSlots(reservedRawSlots);
+            Config.KiSlashLevel = Math.Max(1, Skills.Level("kiSlash"));
+            MaliceSwipeLevel=Skills.Level("maliceSwipe");ShieldThrowLevel=Skills.Level("shieldThrow");
+            // 원문 dbRestore는 고정 슬롯 후보를 미습득이어도 보존한다. 미이식 선택값의 보존은 실행 소유권을 늘리지 않는다.
+            double savedLevel;
+            bool ctLearned = ct != null && skills.TryGetValue(ct, out savedLevel) && savedLevel >= 1;
+            Skills.CtSkill = ct == "ghostWalk" || ct == "iceOrb" || ct == "timeWarp" || ctLearned ? ct : "ghostWalk";
+            preservedLoadedCtSkill = ctLearned && !IsPorted(ct) ? ct : null;
+            Skills.UltSlot = ult != null && skills.TryGetValue(ult, out savedLevel) && savedLevel >= 1 ? ult : null;
+        }
+
+        public void RestoreChargeSkill(string id, Dictionary<string, double> savedSkills)
+        {
+            double level;
+            Skills.ChargeSkill = id != null && id != "quakeStride" && id != "galeSlash" && (id == "charge" || savedSkills != null && savedSkills.TryGetValue(id, out level) && level >= 1) ? id : "charge";
         }
 
         // held states of 1..4, Space (rage burst key), F, Ctrl and Z, once per tick before Tick(); spaceIsRollKey: the Space key also rolls (a direction held => roll, no slam)
@@ -111,12 +153,9 @@ namespace Exoduser.UnityPort.Core
         public int SkillMpCost(string key, string skillId) { return SkillRules.MpCost(key, Skills.Level(skillId), MagicCostMultiplier()); }
 
         // ---- level up (_skCtx / _skLearnUp upgrade branch): SP is Player.StatPoints ----
-        public bool CanUpgradeSkill(string id) { return SkillRules.CanUpgrade(Skills.Learned(id), Skills.Level(id), Player.StatPoints, Player.Level); }
-        public bool UpgradeSkill(string id)
-        {
-            if (!CanUpgradeSkill(id)) return false;
-            Player.StatPoints -= SkillRules.UpgradeSpCost; Skills.Levels[id] = Skills.Level(id) + 1; return true;
-        }
+        public int SkillUpgradeSpCost(string id){return ReadSkillLedger().UpgradeSpCost(id);}
+        public bool CanUpgradeSkill(string id){return ReadSkillLedger().CanUpgrade(id);}
+        public bool UpgradeSkill(string id){return ChangeSkillLedger(l=>l.Upgrade(id));}
 
         // HUD cooldown sweep: remaining frames and the full length of the skill's last cooldown
         public float SkillCooldown(string id, out float total)
@@ -127,7 +166,10 @@ namespace Exoduser.UnityPort.Core
                 case "spikeTrap": total = SkillRules.SpikeTrapCooldown(CooldownReduction); return SpikeTrapCd;
                 case "giantSlam": total = SkillRules.GiantSlamCooldown(GiantSlamLevel > 0 ? GiantSlamLevel : lv, CooldownReduction); return GiantSlamCd;
                 case "holyDome": total = SkillRules.HolyDomeCooldown; return HolyDomeCd;
+                case "weakPhys": case "weakMag": case "weakPj": case "weakRev": total = 1500; return WeakZoneCooldown(id);
                 case "iceOrb": total = SkillRules.IceOrbCooldown(lv); return IceOrbCd;
+                case "timeWarp":total=TimeWarpCooldownTotal;return TimeWarpCd;case "darkPillar":total=(float)(900*(1+CooldownReduction));return DarkPillarCd;case "holyPrison":total=1800;return HolyPrisonCd;case "maliceDome":total=1500;return MaliceDomeCd;case "iceStorm":total=1500;return IceStormRecharge;
+                case "maliceSwipe":case "shieldThrow":total=ShieldFuse?Math.Max(120,720-Math.Max(1,Math.Min(Skills.Level("maliceSwipe"),Skills.Level("shieldThrow")))*15):720;return (float)ShieldThrowCd;
             }
             return 0;
         }
@@ -140,16 +182,16 @@ namespace Exoduser.UnityPort.Core
         {
             if (!SkillsWired) return;
             spikeHitThisFrame.Clear();
-            bool dead = Player.Hp <= 0 || Player.State == "dead" || Player.State == "fallen";
-            if (!dead) DispatchSkillKeys();
+            // 키 이벤트는 원문처럼 재생과 상태 타이머보다 앞서 처리한다.
+            TickMagicIdle(); TickMagicStates();
+            TickSkillBlades(); TickMaliceOrbs();
             TickSkillCooldowns();
             if (IceOrbActive) TickIceOrb();
-            TickMagicIdle(); TickMagicStates();
-            TickFireZones();
-            TickSkillBlades(); TickMaliceOrbs();
+            CaptureShieldDomeFrame(); // 장판 피해는 원문처럼 적 갱신 뒤 Simulation에서 처리한다.
             for (int i = SlamWaves.Count - 1; i >= 0; i--) { var w = SlamWaves[i]; w.T++; if (w.T >= w.MaxT) SlamWaves.RemoveAt(i); }
         }
 
+        bool IsSkillAbsorbed(string id){foreach(var key in Skills.Fused){var group=FullSkillLedger.Fusion(key);if(group!=null&&Array.IndexOf(group.Absorbed,id)>=0)return true;}return false;}
         private void DispatchSkillKeys()
         {
             // 13400: digits 1~4 -> slot; 13421 Space, 13425 F (not repeats); Ctrl fixed skill; Z ult slot
@@ -167,14 +209,21 @@ namespace Exoduser.UnityPort.Core
             if (slot < 0 || slot >= SkillRules.SlotCount) return false;
             string sid = Skills.Slots[slot];
             if (sid == null || !Skills.Learned(sid)) return false;
+            if(IsPorted(sid)&&!IsSkillExecutorReady(sid))return false;
             if (Player.State == "dead" || Player.State == "fallen") return false;
             if (Player.State == "pStun") { Player.Poise = PlayerPoise.MaxPoise; }   // skills break out of a stun with full poise
+            if(IsSkillAbsorbed(sid)){Skills.Slots[slot]=null;return true;}
+            if(GhostWalkActive&&sid!="ghostWalk")return false;
             if (IceOrbActive && sid != "iceOrb") { RaisePlayerText(Player.X, Player.Y - 30, "얼음보주 안에선 사용 불가!", "#88ddff", 40); return true; }
             switch (sid)
             {
+                case "ghostWalk":return CastGhostWalk();
+                case "maliceHunt":case "venomBlade":case "ltnChaser":case "plagueBurst":return CastBladeSkill(sid);
                 case "spikeTrap": return CastSpikeTrap();
                 case "giantSlam": return CastGiantSlam("giantSlam");
                 case "holyDome": return CastHolyDome();
+                case "darkPillar":return CastDarkPillar();case "holyPrison":return CastHolyPrison();case "maliceDome":return CastMaliceDome();case "iceStorm":return BeginIceStormAim();
+                case "weakPhys": case "weakMag": case "weakPj": case "weakRev": return CastWeakZone(sid);
                 case "iceOrb": return CastIceOrb();
             }
             return false;
@@ -183,10 +232,14 @@ namespace Exoduser.UnityPort.Core
         // _dispatchCtSkill (13228-13250): re-entering while the orb is active shatters it
         public bool DispatchCt()
         {
+            if(Player.State=="dead"||Player.State=="fallen")return false;
             string sid = Skills.CtSkill;
             if (sid == null || !Skills.Learned(sid)) return false;
+            if(IsSkillAbsorbed(sid)){if(sid=="ghostWalk"&&Skills.Fused.Contains("timeStep")&&Skills.Learned("timeWarp")){Skills.CtSkill="timeWarp";return DispatchCt();}Skills.CtSkill="ghostWalk";return true;}
+            if(GhostWalkActive){FinishGhostWalk();return true;}
             if (IceOrbActive) { ActivateIceShatter(); return true; }
-            if (sid == "iceOrb") return CastIceOrb();
+            if(sid=="ghostWalk")return CastGhostWalk();
+            if (sid == "iceOrb") return CastIceOrb();if(sid=="timeWarp")return CastTimeWarp();
             return false;
         }
 
@@ -230,6 +283,7 @@ namespace Exoduser.UnityPort.Core
             GiantSlamHit(range, dmg, slv);
             ShakeAmount = Math.Max(ShakeAmount, (float)(14 * OptShake / 100.0));
             SlamWaves.Add(new SlamWave { Id = nextWaveId++, X = Player.X, Y = Player.Y, MaxR = (float)(range * 2), MaxT = SkillRules.GiantSlamWaveMaxT });
+            DetonateAssaultFlames();
             SkillSample("heavy_hit", 1, 1); SkillSample(SkillRandom() < .5 ? "voice_grunt" : "male_grunt", 1, 1); Cast("giantSlam");
             return true;
         }
@@ -340,9 +394,11 @@ namespace Exoduser.UnityPort.Core
                     ApplyEnemyDamage(e, shatterDmg, (float)Math.Atan2(e.Y - cy, e.X - cx), false, 1, false, false, 0, 0, false, 2);
             }
             RaisePlayerText(cx, cy - 30, "❄ 파쇄!", "#aaeeff", 50); HurtShake(10);
-            Player.State = "idle"; Player.StateTicks = 0;
+            IceOrbT = 0;
+            Player.State = "idle";
             IceOrbCd = SkillRules.IceOrbCooldown(slv);
             SkillSample("ice_storm", .5, 1.4);
+            IceShattered?.Invoke(cx,cy,(float)(spawnR*6.6));
         }
 
         private void TickSkillBlades()
@@ -384,14 +440,41 @@ namespace Exoduser.UnityPort.Core
             if (GiantSlamCd > 0) GiantSlamCd -= 1 + bonus;         // 36819
             if (HolyDomeCd > 0) HolyDomeCd -= 1;                   // 36820: the dome's own cooldown is not accelerated
             if (IceOrbCd > 0) IceOrbCd -= 1 + bonus;               // 36828
+            TickWeakZoneCooldowns(bonus);TickTimeWarpCooldown();
         }
 
-        // G._fireZones loop (37339+): age, DOT tick, expiry; the dome only regenerates the player (resources +10+Lv*2 per second, x2 regen, x2 cooldowns)
+        // 원문32934: 첫 회복 영역의 평탄 회복 뒤 기본 자원 재생을2배로 적용한다.
+        private float ApplySkillRegen()
+        {
+            if (!SkillsWired) return 1;
+            foreach (var zone in FireZones)
+            {
+                if (zone.Type != "holyDome" || Distance(Player.X, Player.Y, zone.X, zone.Y) >= zone.R) continue;
+                if (Player.Hp > 0)
+                {
+                    float flat = (float)SkillRules.HolyDomeRegenPerFrame(zone.Lv, 1);
+                    Player.Hp = Math.Min(Player.MaxHp, Player.Hp + flat);
+                    Player.Mana = Math.Min(Player.MaxMana, Player.Mana + flat);
+                    Player.Stamina = Math.Min(Player.MaxStamina, Player.Stamina + flat);
+                }
+                return 2;
+            }
+            return 1;
+        }
+
+        // 원문 후반 장판 수명·DOT·만료. 회복 영역의 자원 재생은 앞 단계에서 이미 처리했다.
         private void TickFireZones()
         {
-            for (int i = FireZones.Count - 1; i >= 0; i--)
+            // 원문은 생성 순서로 처리한다. 역순이면 화상 10중첩 경계에서 풀에 더하는 피해가 달라진다.
+            for (int i = 0; i < FireZones.Count; i++)
             {
-                var z = FireZones[i]; z.T++;
+                var z = FireZones[i]; z.T++;if(TickExtendedZone(z)){if(z.T>=z.MaxT)FireZones.RemoveAt(i--);continue;}
+                if (IsWeakZoneSkill(z.Type))
+                {
+                    if (z.T >= z.MaxT) { FireZones.RemoveAt(i--); continue; }
+                    TickWeakZone(z);
+                    continue;
+                }
                 if (z.Type == "spikeTrap")
                 {
                     z.TickTimer += 1;
@@ -411,12 +494,25 @@ namespace Exoduser.UnityPort.Core
                         }
                     }
                 }
-                else if (z.Type == "holyDome" && Player.Hp > 0 && Distance(Player.X, Player.Y, z.X, z.Y) < z.R)
+
+                if (z.Type == "fireTrail" || z.Type == "assaultFlame")
                 {
-                    float f = (float)SkillRules.HolyDomeRegenPerFrame(z.Lv, 1);
-                    Player.Hp = Math.Min(Player.MaxHp, Player.Hp + f); Player.Mana = Math.Min(Player.MaxMana, Player.Mana + f); Player.Stamina = Math.Min(Player.MaxStamina, Player.Stamina + f);
+                    int interval = z.Type == "assaultFlame" ? 20 : 15;
+                    z.TickTimer++;
+                    if (z.TickTimer >= interval)
+                    {
+                        z.TickTimer -= interval;
+                        foreach (var e in Enemies.ToArray())
+                        {
+                            if (!e.Alive || Distance(z.X, z.Y, e.X, e.Y) > z.R) continue;
+                            ApplyEnemyDamage(e, z.Dmg, (float)Math.Atan2(e.Y - z.Y, e.X - z.X), false, 1, true, true, 0, 0, false, 1);
+                            var w = e.Web ?? SyncToWeb(e); w.burnT = z.Type == "assaultFlame" ? 180 : Math.Max(w.burnT, 180); w.burnStk = Math.Min(10, w.burnStk + 1);
+                            if (w.burnStk < 10) w._burnPool += z.Dmg * .10; // 현재 패시브 pDotPool=1 범위
+                            if (z.Type == "fireTrail") w._webSlow = Math.Max(w._webSlow ?? 0, 20);
+                        }
+                    }
                 }
-                if (z.T >= z.MaxT) FireZones.RemoveAt(i);
+                if (z.T >= z.MaxT) FireZones.RemoveAt(i--);
             }
         }
 
