@@ -64,8 +64,8 @@ Cmd-Run
 $f=Get-ChildItem $RunsDir -Recurse -Filter run.json|Select-Object -First 1
 $r=ReadJson $f.FullName
 if($r.verdict -ne 'WAIT' -or $r.failReasons.Count -ne 0 -or $script:saved.history[0].fail -ne 0){throw 'FAIL: real run did not persist WAIT/fail=0'}
-if($script:saved.lastAttemptSha -ne 'before' -or $script:queued){throw 'FAIL: retry state/reservation cleanup'}
-'PASS: real Cmd-Run WAIT receipt/history, no attempt SHA update, reserve before wait, reservation cleanup'
+if($script:saved.lastAttemptSha -ne 'before' -or -not $script:queued){throw 'FAIL: retry state/WAIT keeps FIFO reservation'}
+'PASS: real Cmd-Run WAIT receipt/history, no attempt SHA update, reserve before wait, WAIT keeps FIFO reservation'
 
 # Real hidden PowerShell child for the queue command; fake launcher stays inside this fixture.
 $f=$ast.FindAll({param($n) $n -is [Management.Automation.Language.FunctionDefinitionAst]},$true)|Where-Object Name -eq 'Set-UnityReservation'|Select-Object -First 1

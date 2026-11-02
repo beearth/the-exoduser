@@ -657,7 +657,7 @@ function Cmd-Install {
   $actual = ([string](GitR rev-parse HEAD)).Trim()
   & git.exe -C $Cfg.Worktree merge-base --is-ancestor $actual origin/unity/main
   if ($LASTEXITCODE -ne 0) { throw 'unity/main 병합 전에는 설치하지 않는다' }
-  $branch = ([string](GitR branch --show-current)).Trim()
+  $branch = "$(GitR branch --show-current)".Trim()
   if ($branch -and $branch -ne 'unity/main') { throw '설치는 통합된 unity/main 또는 지정 detached 작업본에서 실행' }
   if (& git.exe -C $Cfg.Worktree status --porcelain --untracked-files=normal) { throw '설치 source는 변경·미추적 파일 없는 소유 작업본이어야 한다' }
   $dst = Join-Path $LoopDir 'bin'; New-Item -ItemType Directory -Force -Path $dst | Out-Null
@@ -717,7 +717,7 @@ function Cmd-Run {
     $dirty = & git.exe -C $Cfg.Worktree status --porcelain --untracked-files=no
     if ($dirty) { throw '작업본 INDEX/WORK 변경이 있어 이번 회차 중단' }
     if ($actual -ne $head.full) {
-      $branch = ([string](GitR branch --show-current)).Trim()
+      $branch = "$(GitR branch --show-current)".Trim()
       if ($branch -and $branch -ne 'unity/main') { throw '다른 담당 브랜치는 자동 갱신하지 않음' }
       & git.exe -C $Cfg.Worktree merge-base --is-ancestor HEAD $head.full
       if ($LASTEXITCODE -ne 0) { throw '비 fast-forward 갱신 거부' }
@@ -880,7 +880,9 @@ function Cmd-Run {
     Log ('오류: ' + $_.Exception.Message + ' @ ' + $_.ScriptStackTrace)
   } finally {
     # 남은 자식 프로세스 확인(우리가 띄운 것만)
-    if ($reserved) { try { Set-UnityReservation 'unreserve' 'editor'; Set-UnityReservation 'unreserve' 'player' } catch { Log ('예약 반환 경고: ' + $_.Exception.Message) } }
+    # WAIT keeps the reservation (createdAt preserved) so the next 30-min cycle keeps its FIFO place instead of rejoining at the back; TTL covers the gap.
+    if ($reserved -and $run.verdict -eq 'WAIT') { Log '예약 유지: WAIT 회차는 다음 주기까지 순번을 지킨다' }
+    elseif ($reserved) { try { Set-UnityReservation 'unreserve' 'editor'; Set-UnityReservation 'unreserve' 'player' } catch { Log ('예약 반환 경고: ' + $_.Exception.Message) } }
     if ($run.verdict -eq 'WAIT' -and -not $NoSwap -and $stage -and (Test-Path -LiteralPath $stage)) {
       # Own build_new only; keep the completed candidate without blocking the next cycle.
       $target = Join-Path $runDir 'waiting-build'

@@ -1,6 +1,6 @@
 namespace Exoduser.UnityPort.Core
 {
- public enum FrontendPadPhase { Story,Nemesis,Guide }
+ public enum FrontendPadPhase { Story,Nemesis,Guide,WorldIntro }
 
  // Logical buttons only. NativeLobby maps the project's existing Confirm, Cancel and Start inputs.
  public struct FrontendPadFrame
@@ -31,7 +31,7 @@ namespace Exoduser.UnityPort.Core
    if(!enabled){releaseFence=true;hasPhase=false;return default(FrontendPadDecision);}
    if(!hasPhase||phase!=current){phase=current;hasPhase=true;releaseFence=true;}
    if(releaseFence){if(!frame.AnyHeld)releaseFence=false;return default(FrontendPadDecision);}
-   if(current==FrontendPadPhase.Story)
+   if(current==FrontendPadPhase.Story||current==FrontendPadPhase.WorldIntro)
     return new FrontendPadDecision{Next=frame.ConfirmDown,Hold=frame.CancelHeld||frame.StartHeld};
    if(frame.StartDown)return new FrontendPadDecision{Skip=true};
    if(current==FrontendPadPhase.Nemesis)

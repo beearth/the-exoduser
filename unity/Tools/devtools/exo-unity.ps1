@@ -32,7 +32,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$ExoUnityVersion = '2026.11.03-slots1'
+$ExoUnityVersion = '2026.11.03-slots2'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -368,12 +368,34 @@ function Get-LegacyPlayerCount {
     return 0
 }
 
+# 굶주림 방지(11-03 보완): 구버전 Editor 대기자는 Player 0개가 되어야 들어온다. 맨 앞 editor 예약이 20분 이상이면
+# 새 Player를 막아 0개까지 배출하고, 0개가 된 뒤 120초 빈 창을 준다. 그 창에서도 Editor 잠금을 안 가져가면
+# 그 예약은 Editor를 쓰려는 대기자가 아니므로(예약만 걸어 둔 레인) 30분 동안 drain하지 않는다. 자기 editor 예약은 자기 Player를 막지 않는다.
 function Get-PlayerDrainReason {
     if (Test-Path -LiteralPath $LockPath) { return '' }
     $rs = @(Get-Reservations 'editor')
-    if ($rs.Count -gt 0) {
-        try { if (([datetime]::UtcNow - [datetime]::Parse($rs[0].createdAt).ToUniversalTime()).TotalMinutes -ge 20) { return ('굶주림 방지: editor 예약 ' + $rs[0].owner + ' 20분 이상 대기, 새 Player 통과 중지(0개까지 배출)') } } catch { }
+    if ($rs.Count -eq 0) { return '' }
+    $front = $rs[0]
+    try { $age = ([datetime]::UtcNow - [datetime]::Parse($front.createdAt).ToUniversalTime()).TotalMinutes } catch { return '' }
+    if ($age -lt 20) { return '' }
+    if ($Owner -and [string]$front.owner -eq [string]$Owner) { return '' }
+    $dp = Join-Path $Root '_player_drain.json'
+    $key = [string]$front.owner + '|' + [string]$front.createdAt
+    $st = Read-Json $dp
+    if (-not $st -or [string]$st.key -ne $key) { $st = [pscustomobject]@{ key = $key; zeroAt = ''; idleUntil = '' } }
+    $now = [datetime]::UtcNow
+    if ($st.idleUntil -and $now -lt [datetime]::Parse([string]$st.idleUntil).ToUniversalTime()) { return '' }
+    $running = @(Get-PlayerSlots).Count + (Get-LegacyPlayerCount)
+    if ($running -gt 0) {
+        if ($st.zeroAt) { $st.zeroAt = '' }
+        Write-JsonAtomic $dp $st
+        return ('굶주림 방지: editor 예약 ' + $front.owner + ' 20분 이상 대기, 새 Player 통과 중지(Player ' + $running + '개 배출 중)')
     }
+    if (-not $st.zeroAt) { $st.zeroAt = $now.ToString('o'); Write-JsonAtomic $dp $st }
+    $zeroSec = ($now - [datetime]::Parse([string]$st.zeroAt).ToUniversalTime()).TotalSeconds
+    if ($zeroSec -lt 120) { return ('굶주림 방지: editor 예약 ' + $front.owner + '에 빈 Editor 창 제공 중(' + [int]$zeroSec + '/120초)') }
+    $st.zeroAt = ''; $st.idleUntil = $now.AddMinutes(30).ToString('o'); Write-JsonAtomic $dp $st
+    Say ('굶주림 방지 해제: ' + $front.owner + ' 가 빈 Editor 창을 쓰지 않음 - 30분 동안 Player 통과')
     return ''
 }
 

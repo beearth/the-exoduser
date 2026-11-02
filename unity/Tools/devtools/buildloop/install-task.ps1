@@ -1,13 +1,14 @@
 ﻿# Register only after unity/main integration. -WhatIf has no copy/registration side effects.
 [CmdletBinding(SupportsShouldProcess=$true)]
-param([ValidateRange(1,1440)][int]$Minutes=20,[switch]$Remove,[switch]$Status,[string]$TaskName='EXODUSER-Unity-BuildLoop')
+param([ValidateRange(1,1440)][int]$Minutes=30,[switch]$Remove,[switch]$Status,[string]$TaskName='EXODUSER-Unity-BuildLoop')
 $ErrorActionPreference='Stop'
 $bin='I:\EXODUSER-Storage\unity-latest\loop\bin'
 if($Status){Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue;return}
 if($Remove){if($PSCmdlet.ShouldProcess($TaskName,'Unregister current-user build watch')){Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false};return}
 $identity=[Security.Principal.WindowsIdentity]::GetCurrent().Name
 $actionArgs='-NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy Bypass -File "{0}" run -Mode desktop' -f (Join-Path $bin 'buildloop.ps1')
-$act=New-ScheduledTaskAction -Execute "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -Argument $actionArgs -WorkingDirectory $bin
+# conhost --headless: the scheduler must not flash a PowerShell console on the user's screen (windows 0).
+$act=New-ScheduledTaskAction -Execute "$env:SystemRoot\System32\conhost.exe" -Argument ('--headless "{0}\System32\WindowsPowerShell\v1.0\powershell.exe" {1}' -f $env:SystemRoot,$actionArgs) -WorkingDirectory $bin
 $trg=New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(2) -RepetitionInterval (New-TimeSpan -Minutes $Minutes)
 $set=New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Hours 3) -StartWhenAvailable
 $principal=New-ScheduledTaskPrincipal -UserId $identity -LogonType Interactive -RunLevel Limited

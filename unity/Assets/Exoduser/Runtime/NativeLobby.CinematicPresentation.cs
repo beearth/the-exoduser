@@ -62,8 +62,8 @@ namespace Exoduser.UnityPort {
    var savedMatrix=GUI.matrix;try{GUI.matrix=NativeUiViewport.RightMatrix;
    CinematicStyles();float a=holdDelta>0?1:.5f;var center=new Vector2(1830,990);
    DrawCinematicArc(center,34,1,new Color(68/255f,68/255f,68/255f,a*.5f));
-   if(holdDelta>0)DrawCinematicArc(center,34,holdDelta,new Color(232/255f,224/255f,208/255f,a));
-   cinematicMicro.normal.textColor=new Color(136/255f,136/255f,136/255f,a*.8f);Label(new Rect(1770,980,120,20),"SPACE / ESC",cinematicMicro,TextAnchor.MiddleCenter);
+   if(holdDelta>0)DrawCinematicArc(center,34,holdDelta,new Color(228/255f,225/255f,219/255f,a));
+   cinematicMicro.normal.textColor=new Color(136/255f,136/255f,136/255f,a*.8f);Label(new Rect(1770,980,120,20),cinematicPadHolding?"Ⓑ":"SPACE / ESC",cinematicMicro,TextAnchor.MiddleCenter);
    cinematicTiny.normal.textColor=new Color(.4f,.4f,.4f,a*.6f);Label(new Rect(1770,1030,120,20),"HOLD TO SKIP",cinematicTiny,TextAnchor.MiddleCenter);NativeUiAudit.Region(new Rect(1770,954.5f,120,95.5f),"component","cinematic-skip","실제 오른쪽 아래");
    }finally{GUI.matrix=savedMatrix;}
   }
