@@ -571,3 +571,6 @@ ROOT acceptance correction: preserve the first actual1920 normal-frame PNG immed
 
 
 Exact product8f391fea6f157433fcaea2df611d0a9b146c6604: shaders target3.5 and same-raster depth/world alignment; C#324/API same2ac. Main old shaders byte-identical1403. The only current acceptance scope is soil Lv1 spikeR300, actual feature/shader/visibility/RGBA/cold timing with four same-pass float probe modes. Cube8 vertices/12 triangles are volume bounds, not a physical contact surface. Actual47 smoke/visual/API/shader/runtime evidence pending at this checkpoint. Preserve legacy failures and source-only vs actual distinctions; no full/large/dense/M1/install/Win64 claim.
+
+
+Receiver smoke launcher reuses the verified delayed-profile guard unchanged except product/app/proof/output labels, exclusive receiver-smoke flag and receipt fields. Wrapper SHA2d818ee4de9ac1b0426cb48d8ff585de19e8dbdf20f8306190d8fdd813e5b67e, explicit absolute artifact-root CLI. App buildsource remains b224. AST syntax verified; actual single-case run pending. Initial actual1920 frame is saved before metadata or probe failure.

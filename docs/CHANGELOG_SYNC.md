@@ -57367,3 +57367,5 @@ Mac 원본4장 몬스터16종 공통·배송: 실기동 검수후 개인/`unity/
 Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반 build errors0, 정규화·strict/deep 서명 PASS, 이전앱3SHA CAS/보존 후 `/Users/fordeargamers/Applications/EXODUSER.app` 설치. 원본/stage/설치 211파일 전체 manifest SHA `54d8ae1b…` 동일, QA/일반 Runtime·Core DLL SHA 동일. 일반 저장11·QA plist2 최종 원문 동일, 일반 앱 실행0. 실제 A2 지면/뿌리/목교 기술 수신 VISUAL PASS 범위만 해당, 맵 전체 RETOUCH/Impact R4 FAIL 유지. [상세](engine/UNITY_A2_DECAL_RECEIVER_20261101.md#일반-mac-앱-파일-전달-2026-11-02).
 
 2026-11-02 Mac QA intake on receiver-depth product47: exact helper/meta/legacy clone and same-pass one-case smoke; proxy vertices are not surface contact. Soil Lv1 R300 only before full QA. GPU modes1world/weight2UV/contribution3scene-receiverdepth4preblendRGBA, FrameSize/serial/timeout checks. Static helper compiled; normal Metal smoke pending; originals/prefs preserved and delayed-profile guard applied.
+
+2026-11-02 Mac first receiver smoke runner: same verified raw/cache/late-flush guard, only new8f app/receipt labels and receiver mode. Source b224 build ongoing; no Assets changed by launcher checkpoint. Actual normal-frame/probe result pending.
