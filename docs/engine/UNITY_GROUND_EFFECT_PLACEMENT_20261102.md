@@ -1,6 +1,6 @@
 # Unity 설치형 지면 배치 수정 — 2026-11-02
 
-상태: **소스 수정·CPU 659회귀 PASS / 실제 Player 검증 대기**. 기준 공통 `1403c5ee6d52c540815ab1cf70d5666b9023aa75`. 사용자 요청은 장판뿐 아니라 지뢰·덫·현재 실행기에 존재하는 설치형 전체의 공중 배치를 고치는 것이다.
+상태: **1차 정점·속성·상태148행 PASS / 실제 큰 반경 면 내부 결함 발견 → 적응 분할 후보 CPU735 PASS / 재검증 대기**. 기준 공통 `1403c5ee6d52c540815ab1cf70d5666b9023aa75`. 사용자 요청은 장판뿐 아니라 지뢰·덫·현재 실행기에 존재하는 설치형 전체의 공중 배치를 고치는 것이다.
 
 ## 원인과 적용 계약
 
@@ -23,15 +23,21 @@
 
 `NativeGroundSkillSurface.Mark`는 설치형 생산자가 명시적으로 호출한다. 이름/정렬값/속도0 추측으로 분류하지 않는다. 3D일 때 원 SpriteRenderer의 렌더만 forceRenderingOff하고 source는 그대로 두며, 자식 MeshRenderer로 원 sharedMaterial·전체 MaterialPropertyBlock(_Opacity 포함)·색·정확한 sprite.rect UV·flip·sorting layer/order를 전달한다. sprite.enabled=false 또는 부모 비활성화면 surface도 사라진다. pool이 공중탄으로 재사용될 때 Mark(false)로 원 sprite를 복원한다. 2D 전환은 RestoreAll로 원 forceRenderingOff 상태를 되돌리고 메시를 끈다. Destroy에서 registry·메시를 해제한다.
 
-지면 메시: 16×16 subdivision, 289정점/512삼각형. Core X/100, -Y/100의 XZ 평면에서 원래 Z-roll을 회전하고 **정점별 NativeRemodel3D.GroundY**를 사용한다. 실제 A2FieldLayout.Height(등록된 목교 상판/접촉 포함)를 공유한다. 표면 +.025u, 링 +.03u는 z-fighting 방지용 표현 간격이며 Core 반경/위치/피해/시간을 바꾸지 않는다. 초기 전개 scale0은 singular inverse를 쓰지 않고 원문과 같이 표시하지 않는다.
+지면 메시: 최초16×16을 시작점으로 삼각형의 edge/centroid/barycentric7점과 world XZ bounding box4점을 원본 GroundY와 대조하고, 표본 오차.005u 또는 XZ변.35u 초과면 최대8단계로 적응 분할한다. 접촉이 끊기는 최종 극소 면은 생략하여 목교 끝을 공중 경사면으로 잇지 않는다. UV는 원화 평면 좌표를 그대로 유지하며 기존 material/MPB/색을 변경하지 않는다. 표면 +.025u, 링 +.03u는 z-fighting 방지 간격이다. Core 위치/반경/피해/시간은 불변이다. Geometry API가 반환하는 omitted triangle 수를 component가 공개하고 QA에서 실제 잔여 면적도 확인한다. 정점수가65535 초과면 UInt32 인덱스를 쓴다.
+
+고정 설치형의 footprint·transform·지면/Field 참조가 같으면 geometry를 캐시한다. tint/opacity와 atlas frame/flip은 기존 writer를 따라 별도 갱신한다. 초기 scale0은 원문과 같이 표시하지 않는다. 전개 중 scale/회전/위치가 바뀌는 프레임은 다시 접지하므로 **실제 Player frame timing/밀집 배치 검증이 필수이며 CPU 검사만으로 성능 PASS를 선언하지 않는다**.
+
+1차 Mac 정상 후보95d4 + QA0fe68452는 정점/원화전달/풀·상태148행을 통과했지만 실제 Lv1/20 큰 반경에서 삼각형 내부 ground 오차 최대.881259u를 발견했다. 양·음 오차가 있어 뜸/관통 둘 다 존재하며 원화 alpha별 가시성 진단은 Mac QA가 소유한다. 148행 PASS의 범위는 정점·속성·상태이며 완성된 면의 시각 PASS가 아니다. 후보 설치/공통 통합은 이 단계에서 보류했다.
+
+적응 분할 CPU 검사는 평지/경사/곡면/불연속 목교/좁은 뿌리에 1.12·6·10.4·11.7·18u footprint를 회전 배치한다. refinement 표본과 다른11개 barycentric 점으로 emitted triangle 내부 높이 오차<=.02u, 유효 면적>=98%를 검증한다. 실제735 assertion PASS, 합성 표본 최대 오차.006984u, 최소 면적보존99.9264%. 최대 합성 footprint 생성351ms 관측이므로 실제 Field 생성비용/프레임은 후속 실제 검수 대상이다. 이 합성값을 제품 성능으로 보고하지 않는다.
 
 ## 검사와 남은 검증
 
 | 검사 | 근거 / 판정 |
 |---|---|
 | 수정 전 CPU RED | helper 부재에서 실행 assertion `MISSING terrain-conforming ground skill placement` FAIL. 컴파일 자체는 성공 |
-| 수정 후 CPU | 실제 Runtime 지면 수학 파일을 컴파일해 평지·경사·회전·72점 링·목교/주변 바닥의 659검사 PASS |
-| 정적 C# | Core/Runtime 323소스 통합 Roslyn 컴파일 오류0, 경고477. 실제 Unity 빌드로 대체하지 않음 |
+| 수정 후 CPU | 실제 Runtime 지면 수학 파일을 컴파일해 평지·경사·회전·72점 링·목교/주변 바닥의 기존659검사 + 면 내부/면적76검사 =735 PASS |
+| 정적 C# | 적응 분할 포함 Core/Runtime 323소스 통합 Roslyn 컴파일 오류0, 경고477. 실제 Unity 빌드로 대체하지 않음 |
 | Mac 실제 baseline/후보 | 기존 Mac 총괄이 QA 파일/실행·입력/변형 byte·사용자 prefs 원문 보존을 소유. 실제 FAIL→같은 검사 GREEN·1920 화면·같은 앱 M1·생성/소멸/풀 재사용·2D/3D 전환은 아직 대기 |
 | 필수 시각 | 평지·경사·목교에서 각 설치형이 떠 있지 않고 원화/atlas/링이 올바른지 직접 확인. 정점 수학만으로 화면 PASS를 선언하지 않음 |
 

@@ -33,6 +33,32 @@ static class Program
             Func<float,float,float> bridge=(x,z)=>Math.Abs(x)<.3&&Math.Abs(z)<1?2:0;
             v=p(0,0,0,0,0,bridge,.025f);Near(read(v,"Y"),2.025,"walkable bridge top sampled");
             v=p(0,0,1,0,0,bridge,.025f);Near(read(v,"Y"),.025,"surrounding ground sampled separately");
+            var tess=t.GetMethod("Tessellate");Check(tess!=null,"MISSING triangle-interior terrain contact at actual skill sizes");
+            Func<object,string,object> field=(o,n)=>o.GetType().GetField(n).GetValue(o);
+            Func<float,float,float> curved=(x,z)=>.35f*(float)Math.Sin(x*2.7)+.22f*(float)Math.Cos(z*3.1)+.3f*(float)Math.Sin(x*z*.4);
+            Func<float,float,float> deck=(x,z)=>Math.Abs(x)<1.37&&Math.Abs(z)<3.11?1.4f+.03f*z:curved(x,z);
+            Func<float,float,float> root=(x,z)=>curved(x,z)+(float)(.7*Math.Max(0,1-Math.Abs(x+.23)/.17));
+            foreach(var ground in new[]{flat,slope,curved,deck,root})foreach(float diameter in new[]{1.12f,6f,10.4f,11.7f,18f}) {
+                var clock=System.Diagnostics.Stopwatch.StartNew();
+                object data=tess.Invoke(null,new object[]{0f,0f,-diameter/2,-diameter/2,diameter,diameter,.37,ground});
+                long buildMs=clock.ElapsedMilliseconds;var vv=(Array)field(data,"Vertices");var tri=(int[])field(data,"Triangles");double area=0,worst=0;int large=0;
+                Check(tri.Length>0&&tri.Length%3==0,"nonempty terrain footprint");
+                for(int k=0;k<tri.Length;k+=3) {
+                    var a=vv.GetValue(tri[k]);var b=vv.GetValue(tri[k+1]);var c=vv.GetValue(tri[k+2]);
+                    double ax=read(a,"X"),az=read(a,"Z"),ay=read(a,"Y"),bx=read(b,"X"),bz=read(b,"Z"),by=read(b,"Y"),cx=read(c,"X"),cz=read(c,"Z"),cy=read(c,"Y");
+                    area+=Math.Abs((bx-ax)*(cz-az)-(cx-ax)*(bz-az))*.5;
+                    // Independent barycentric positions, distinct from the refinement probes.
+                    for(int n=0;n<11;n++) {
+                        double u=(n*.61803398875+.137)%1,w=(n*.41421356237+.281)%1;if(u+w>1){u=1-u;w=1-w;}
+                        double x=ax+(bx-ax)*u+(cx-ax)*w,z=az+(bz-az)*u+(cz-az)*w;
+                        double error=Math.Abs(ay+(by-ay)*u+(cy-ay)*w-ground((float)x,(float)z)-.025);
+                        worst=Math.Max(worst,error);if(error>.02){large++;if(large<3)Console.WriteLine("BAD "+diameter+" at="+x+","+z+" tri="+ax+","+az+" / "+bx+","+bz+" / "+cx+","+cz+" error="+error);}
+                    }
+                }
+                Check(area/(diameter*diameter)>.98,"preserve at least 98 percent footprint at support discontinuities");
+                Check(large==0,"triangle interior exceeds 2cm contact: "+worst+" count="+large);
+                Console.WriteLine("SURFACE diameter="+diameter+" vertices="+vv.Length+" triangles="+tri.Length/3+" coverage="+(area/(diameter*diameter)).ToString("F6")+" worst="+worst.ToString("F6")+" buildMs="+buildMs+" totalMs="+clock.ElapsedMilliseconds);
+            }
             Console.WriteLine("GROUND_SKILL PASS "+checks+" checks; pure geometry, not Unity Player");return 0;
         } catch(Exception e){Console.Error.WriteLine("GROUND_SKILL FAIL after "+checks+": "+e.Message);return 1;}
     }
