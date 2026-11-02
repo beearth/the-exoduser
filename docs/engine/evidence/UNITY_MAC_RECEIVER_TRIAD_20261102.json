@@ -1,0 +1,1110 @@
+{
+  "source": "bf3e93a63425a17ede0fa6a0ca16e066374cc984",
+  "productTip": "e33ed53574a187db36e00dfbd1f92b4d6f263635",
+  "resetGuardSource": "316442480c051cee99a5d9a783b0875640892ea8",
+  "groundSource": "8f391fea6f157433fcaea2df611d0a9b146c6604",
+  "actualPackage": {
+    "app": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/build-receiverTriadBias-normal/EXODUSER-Unity.app",
+    "source": "bf3e93a63425a17ede0fa6a0ca16e066374cc984",
+    "productSource": "e33ed53574a187db36e00dfbd1f92b4d6f263635",
+    "runtimeSha256": "21315e73c464c14097cd416c21d8dece667c446532e0b2d8931d91fbfd62a1c1",
+    "coreSha256": "4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d",
+    "executableSha256": "2e06e64ce39c2f449387aaa78e62cfcf6e877665a5eebe0c735f0ea5d50962da"
+  },
+  "normalBuild": {
+    "passed": true,
+    "settingsQa": false,
+    "uiQa": false,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/build-receiverTriadBias-normal/EXODUSER-Unity.app",
+    "product": "EXODUSER · Unity 이식 검증판",
+    "identifier": "com.ForDearGamers.EXODUSER----Unity-----------------",
+    "errors": 0,
+    "bytes": 4544331267
+  },
+  "sourceRemoteReadbackBeforeBuild": true,
+  "api": "Metal",
+  "device": "Apple M5 Pro",
+  "run": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/profile-guard-runs/20261102T053003950237Z-20733",
+  "fixtures": [
+    {
+      "consumer": "spikeTrap",
+      "completed": true,
+      "stateStable": true,
+      "isolationRestored": true,
+      "normal1920": {
+        "path": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/profile-guard-runs/20261102T053003950237Z-20733/receiverTriadBias/root-slope_spikeTrap/normal-all-layers-1920.png",
+        "sha256": "400cc25c70a127f5b50bf6de74e2943e0aa89f8f80c6fad39b9d94f213b8a0c1"
+      },
+      "direct3840": {
+        "path": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/profile-guard-runs/20261102T053003950237Z-20733/receiverTriadBias/root-slope_spikeTrap/normal-all-layers-3840x1080.png",
+        "sha256": "d49abec76e56709b9d378cc1a7a7fab8bf92c953a9f2ffd77487daf8dceb9771"
+      },
+      "layers": [
+        {
+          "productPositive": 6345,
+          "clonePositive": 6345,
+          "productOnly": 0,
+          "cloneOnly": 0,
+          "coverageDifferences": 0,
+          "directMismatchPixels": 0,
+          "productInternalMismatchPixels": 0,
+          "cloneInternalMismatchPixels": 0,
+          "worldUnverifiedPixels": 0,
+          "old32Count": 32,
+          "current32Count": 32,
+          "oldFailedCount": 2,
+          "selectedCount": 64,
+          "invalidSelected": 5,
+          "imageEquivalenceGate": true,
+          "selectedCoverageGate": false,
+          "productCloneGate": false,
+          "cloneIndependentGate": false,
+          "productUvIndependentGate": false,
+          "maxUvDelta": 0.0,
+          "maxWeightDelta": 0.0,
+          "maxMaxRgbDelta": 0.0,
+          "maxRgbaDelta": 0.0,
+          "cameraMipBias": {
+            "x": 0.0,
+            "y": 1.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "eofMipBias": {
+            "x": 0.0,
+            "y": 1.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "cameraMipBiasUniform": true,
+          "cameraMipBiasObserved": true,
+          "observedSelected": 59,
+          "current32Unverified": 0,
+          "oldFailuresObserved": 2,
+          "observedProductReferenceMaxWeight": 0.05201563239097595,
+          "observedProductReferenceMaxRgba": 0.06057630479335785,
+          "observedIndependentFailures": 7
+        }
+      ]
+    },
+    {
+      "consumer": "SeekerMines",
+      "completed": true,
+      "stateStable": true,
+      "isolationRestored": true,
+      "normal1920": {
+        "path": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/profile-guard-runs/20261102T053003950237Z-20733/receiverTriadBias/root-slope_SeekerMines/normal-all-layers-1920.png",
+        "sha256": "f8ab16a44cc47021f55ceb4afd2f8244a0e9a79d8b68989e2b47619922e85c38"
+      },
+      "direct3840": {
+        "path": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/profile-guard-runs/20261102T053003950237Z-20733/receiverTriadBias/root-slope_SeekerMines/normal-all-layers-3840x1080.png",
+        "sha256": "7d97211d228502fd76f768b4196270245c549ff13fd82ec6a6f8ab959c3a1f90"
+      },
+      "layers": [
+        {
+          "productPositive": 2041,
+          "clonePositive": 2041,
+          "productOnly": 0,
+          "cloneOnly": 0,
+          "coverageDifferences": 0,
+          "directMismatchPixels": 0,
+          "productInternalMismatchPixels": 0,
+          "cloneInternalMismatchPixels": 0,
+          "worldUnverifiedPixels": 0,
+          "old32Count": 32,
+          "current32Count": 32,
+          "oldFailedCount": 7,
+          "selectedCount": 64,
+          "invalidSelected": 4,
+          "imageEquivalenceGate": true,
+          "selectedCoverageGate": false,
+          "productCloneGate": false,
+          "cloneIndependentGate": false,
+          "productUvIndependentGate": false,
+          "maxUvDelta": 0.0,
+          "maxWeightDelta": 0.0,
+          "maxMaxRgbDelta": 0.0,
+          "maxRgbaDelta": 0.0,
+          "cameraMipBias": {
+            "x": 0.0,
+            "y": 1.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "eofMipBias": {
+            "x": 0.0,
+            "y": 1.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "cameraMipBiasUniform": true,
+          "cameraMipBiasObserved": true,
+          "observedSelected": 60,
+          "current32Unverified": 0,
+          "oldFailuresObserved": 7,
+          "observedProductReferenceMaxWeight": 0.0023245811462402344,
+          "observedProductReferenceMaxRgba": 0.10733780264854431,
+          "observedIndependentFailures": 13
+        }
+      ]
+    }
+  ],
+  "completed": false,
+  "passed": false,
+  "error": "",
+  "cleanupError": "",
+  "productAccepted": false,
+  "interpretation": "Both fixtures product versus clone match every positive pixel exactly; independent SampleGrad still differs. Old9 unobserved points remain unverified. This does not establish a product-colour bug or waive2/255.",
+  "orbRegression": {
+    "stage": "final",
+    "error": "",
+    "guardFixSource": "316442480c051cee99a5d9a783b0875640892ea8",
+    "scope": "one isolated NativeSkillView active ice-orb creation -> own parent Destroy ->2frames -> direct Dispose; no full lifecycle rerun",
+    "parentId": "5796:768",
+    "orbId": "6053:768",
+    "gameCoreBefore": "5d144e92a1b6ba97a421fecdc33dc41db58b28ab5ea141054a2f35176a723cc0",
+    "gameCoreAfter": "5d144e92a1b6ba97a421fecdc33dc41db58b28ab5ea141054a2f35176a723cc0",
+    "originalCoreBefore": "c480e345e5bd80425ac5c779f7cea2d11bc261dd3e73e85603fa0e0a82b6a3af",
+    "originalCoreAfter": "c480e345e5bd80425ac5c779f7cea2d11bc261dd3e73e85603fa0e0a82b6a3af",
+    "ownedCoreBeforeUpdate": "e841e99e71a5f678f2d1298370fc34cb706b5efcbb4026182e160d0a1c2fb0cc",
+    "ownedCoreAfterDispose": "e841e99e71a5f678f2d1298370fc34cb706b5efcbb4026182e160d0a1c2fb0cc",
+    "registryBefore": "1e73fbd8f1c70ebc0aa5e8356e2fe3812a3ffb35fa35bb15cdb022fe144be226",
+    "registryAfter": "1e73fbd8f1c70ebc0aa5e8356e2fe3812a3ffb35fa35bb15cdb022fe144be226",
+    "childNames": [
+      "base0",
+      "base1",
+      "glow0",
+      "glow1"
+    ],
+    "childIds": [
+      "6058:768",
+      "6057:768",
+      "6061:768",
+      "6064:768"
+    ],
+    "materialIds": [
+      "5799:768",
+      "5805:768",
+      "5801:768",
+      "5803:768"
+    ],
+    "errors": [],
+    "expectedRenderers": 4,
+    "observedRenderers": 4,
+    "enabledRenderers": 2,
+    "expectedOwnedObjects": 6,
+    "observedOwnedObjects": 6,
+    "orbItemClrPresent": true,
+    "orbGameObjectClrPresent": true,
+    "orbShown": true,
+    "orbActive": true,
+    "orbParentOwned": true,
+    "exactChildren": true,
+    "sourceSpritesPresent": true,
+    "maliceBoundToOwnedCore": true,
+    "parentDestroyRequested": true,
+    "parentUnityNullAfter2Frames": true,
+    "orbUnityNullAfter2Frames": true,
+    "orbItemClrRetainedAfterDestroy": true,
+    "orbGameObjectClrRetainedAfterDestroy": true,
+    "allOwnedObjectsUnityNull": true,
+    "disposeAttempted": true,
+    "disposeAttemptedAfterDestroyed": true,
+    "disposeReturned": true,
+    "materialsUnityNullAfterDispose": true,
+    "viewMapsEmpty": true,
+    "maliceUnbound": true,
+    "registryAvailable": true,
+    "registrySame": true,
+    "gameRefSame": true,
+    "gameCoreSame": true,
+    "originalCoreSame": true,
+    "ownedCoreSame": true,
+    "parentGameTransformSame": true,
+    "passed": true
+  },
+  "narrowLifecycle": {
+    "completed": true,
+    "actionGate": true,
+    "gpuGate": true,
+    "mergedGate": true,
+    "flows": [
+      {
+        "consumer": "ground-lifecycle",
+        "completed": true,
+        "actionPresent": true,
+        "actionRowPassed": true,
+        "gpuPresent": true,
+        "gpuPassed": true,
+        "metadataPassed": true,
+        "mergedPassed": true,
+        "returned": true,
+        "enumeratorDisposed": true,
+        "error": "",
+        "ringTimeInputCorrected": false,
+        "ringReferenceTime": 0.0,
+        "inputCorrection": "none"
+      },
+      {
+        "consumer": "ground-ring-lifecycle",
+        "completed": true,
+        "actionPresent": true,
+        "actionRowPassed": true,
+        "gpuPresent": true,
+        "gpuPassed": true,
+        "metadataPassed": true,
+        "mergedPassed": true,
+        "returned": true,
+        "enumeratorDisposed": true,
+        "error": "",
+        "ringTimeInputCorrected": true,
+        "ringReferenceTime": 13.269844055175781,
+        "inputCorrection": "Isolated test view Update time fixed once; same ring pulse input for 2D/3D/restore/recreate. Product/global time and legacy full default unchanged."
+      }
+    ]
+  },
+  "originalSourceRestoration": {
+    "exactAll1429": false,
+    "total": 1429,
+    "restored": 1371,
+    "missing": [
+      {
+        "id": "5786:256",
+        "path": "HD2D contact: Enemy 12",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "6079:256"
+        ]
+      },
+      {
+        "id": "5836:256",
+        "path": "HD2D contact: Enemy 2",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "6079:256"
+        ]
+      },
+      {
+        "id": "5801:256",
+        "path": "HD2D contact: Enemy 9",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "6079:256"
+        ]
+      },
+      {
+        "id": "5781:256",
+        "path": "HD2D contact: Enemy 13",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "6079:256"
+        ]
+      },
+      {
+        "id": "5791:256",
+        "path": "HD2D contact: Enemy 11",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "6079:256"
+        ]
+      },
+      {
+        "id": "5831:256",
+        "path": "HD2D contact: Enemy 3",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "6079:256"
+        ]
+      },
+      {
+        "id": "5821:256",
+        "path": "HD2D contact: Enemy 5",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "6079:256"
+        ]
+      },
+      {
+        "id": "5771:256",
+        "path": "HD2D contact: Enemy 15",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "6079:256"
+        ]
+      },
+      {
+        "id": "5766:256",
+        "path": "HD2D contact: Enemy 16",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "6079:256"
+        ]
+      },
+      {
+        "id": "5826:256",
+        "path": "HD2D contact: Enemy 4",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "6079:256"
+        ]
+      },
+      {
+        "id": "5806:256",
+        "path": "HD2D contact: Enemy 8",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "6079:256"
+        ]
+      },
+      {
+        "id": "5816:256",
+        "path": "HD2D contact: Enemy 6",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "6079:256"
+        ]
+      },
+      {
+        "id": "5811:256",
+        "path": "HD2D contact: Enemy 7",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "6079:256"
+        ]
+      },
+      {
+        "id": "5841:256",
+        "path": "HD2D contact: Enemy 1",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "6079:256"
+        ]
+      },
+      {
+        "id": "5776:256",
+        "path": "HD2D contact: Enemy 14",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "6079:256"
+        ]
+      },
+      {
+        "id": "5796:256",
+        "path": "HD2D contact: Enemy 10",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "6079:256"
+        ]
+      },
+      {
+        "id": "3167:256",
+        "path": "Ground 5,7",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "969:256"
+        ]
+      },
+      {
+        "id": "3200:256",
+        "path": "Ground 2,6",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "969:256"
+        ]
+      },
+      {
+        "id": "3191:256",
+        "path": "Ground 4,6",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "969:256"
+        ]
+      },
+      {
+        "id": "5864:256",
+        "path": "Enemy walk 13",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5924:256",
+        "path": "Enemy walk 3",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "3187:256",
+        "path": "Ground 5,6",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "969:256"
+        ]
+      },
+      {
+        "id": "3183:256",
+        "path": "Ground 6,6",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "969:256"
+        ]
+      },
+      {
+        "id": "5876:256",
+        "path": "Enemy walk 11",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5870:256",
+        "path": "Enemy walk 12",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "3175:256",
+        "path": "Ground 3,7",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "969:256"
+        ]
+      },
+      {
+        "id": "5888:256",
+        "path": "Enemy walk 9",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5939:256",
+        "path": "Enemy 1",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5849:256",
+        "path": "Enemy 16",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5873:256",
+        "path": "Enemy 12",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5846:256",
+        "path": "Enemy walk 16",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5894:256",
+        "path": "Enemy walk 8",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5885:256",
+        "path": "Enemy 10",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5861:256",
+        "path": "Enemy 14",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5882:256",
+        "path": "Enemy walk 10",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "3195:256",
+        "path": "Ground 3,6",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "969:256"
+        ]
+      },
+      {
+        "id": "5900:256",
+        "path": "Enemy walk 7",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "3163:256",
+        "path": "Ground 6,7",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "969:256"
+        ]
+      },
+      {
+        "id": "5879:256",
+        "path": "Enemy 11",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5852:256",
+        "path": "Enemy walk 15",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5927:256",
+        "path": "Enemy 3",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5921:256",
+        "path": "Enemy 4",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5867:256",
+        "path": "Enemy 13",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "3171:256",
+        "path": "Ground 4,7",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "969:256"
+        ]
+      },
+      {
+        "id": "5891:256",
+        "path": "Enemy 9",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "3179:256",
+        "path": "Ground 2,7",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "969:256"
+        ]
+      },
+      {
+        "id": "5930:256",
+        "path": "Enemy walk 2",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5858:256",
+        "path": "Enemy walk 14",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5903:256",
+        "path": "Enemy 7",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5912:256",
+        "path": "Enemy walk 5",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5906:256",
+        "path": "Enemy walk 6",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5897:256",
+        "path": "Enemy 8",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5915:256",
+        "path": "Enemy 5",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5855:256",
+        "path": "Enemy 15",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5936:256",
+        "path": "Enemy walk 1",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5918:256",
+        "path": "Enemy walk 4",
+        "enabled": false,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5909:256",
+        "path": "Enemy 6",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      },
+      {
+        "id": "5933:256",
+        "path": "Enemy 2",
+        "enabled": true,
+        "forceOff": false,
+        "activeSelf": true,
+        "aliveAfter": false,
+        "mismatchBeforeRestore": false,
+        "restored": false,
+        "materialIds": [
+          "3160:256"
+        ]
+      }
+    ],
+    "roots": [
+      {
+        "id": "4982:256",
+        "name": "Key Light",
+        "activeSelf": true,
+        "restored": true
+      },
+      {
+        "id": "4979:256",
+        "name": "Lights",
+        "activeSelf": true,
+        "restored": true
+      },
+      {
+        "id": "4967:256",
+        "name": "Player Marker",
+        "activeSelf": true,
+        "restored": true
+      },
+      {
+        "id": "4962:256",
+        "name": "Global Volume",
+        "activeSelf": true,
+        "restored": true
+      },
+      {
+        "id": "4950:256",
+        "name": "Main Camera",
+        "activeSelf": true,
+        "restored": true
+      },
+      {
+        "id": "4948:256",
+        "name": "CM LOOK-001",
+        "activeSelf": true,
+        "restored": true
+      },
+      {
+        "id": "4935:256",
+        "name": "World",
+        "activeSelf": true,
+        "restored": true
+      },
+      {
+        "id": "3076:768",
+        "name": "A2 1-1 전체 썩은 숲",
+        "activeSelf": true,
+        "restored": true
+      }
+    ],
+    "semanticContactRestorationVerified": false
+  },
+  "originalCoreRefAndHashSame": true,
+  "canonicalMaterialObjectRestored": true,
+  "writersPaused": true,
+  "profileGuard": {
+    "error": null,
+    "launchCount": 1,
+    "preferencesFinal": {
+      "rawCount": 26,
+      "cacheCount": 27,
+      "allRawExact": true,
+      "allCacheTypedSemanticsExact": true,
+      "checkpoints": [
+        "restore-immediate",
+        "restore-2s",
+        "restore-7s-final"
+      ]
+    }
+  },
+  "floatStoredBytes": 1280896,
+  "rawBudgetBytes": 3221225472,
+  "visualVerdict": "RETOUCH",
+  "usage": {
+    "unitStartPercent": 28,
+    "unitEndPercent": 31,
+    "sharedAccountDeltaPercentagePoints": 3,
+    "dayBeforeFirstObservationUnknown": true,
+    "ordinaryUsageAllowed": true
+  }
+}

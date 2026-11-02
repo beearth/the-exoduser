@@ -1471,3 +1471,6 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 
 
 2026-11-02 맥 후속 QA822 full161/161(149state+12dense),100PASS/61FAIL=clone 대 독립 sampler60행+ring test정리예외1. 원제품color오류는아직확정아님. depth/UV/derivative invalid0、source metadata161true이나 lifecycle행동결과최종merge는예외로미완료. 원실패·2/255보존, 다음rootSpike/Seeker두fixture에서제품공개2/4-vsclone-vsmodel비교. 26raw27cache복구,설치1403/공유WIP유지. 전체통합설치/Win64미인수. 근거: UNITY_GROUND_PLACEMENT_QA_20261102 및 evidence/UNITY_MAC_RECEIVER_FULL_20261102.json.
+
+
+2026-11-02 Macbf3e(producte33/guard316/ground8f) 좁은실제후속:rootSpike6345/Seeker2041positive에서제품공개2/4와QAclone mask/UV/weight/RGBA전부차0. 독립SampleGrad불일치·old9좌표미관측보존,bias(0,1)확인. orb생성→부모파괴2frame→Dispose실제PASS,기존두수명행동flow도동일시간인수조건에서action/GPU/merge모두PASS. full161원100/61소급변경없음. 원표시58ref복구false는별도원인확인중,Core/material/prefs26raw27cache복구. 전체triadfalse/최종설치Win미인수. 근거UNITY_GROUND_PLACEMENT_QA_20261102 및 evidence/UNITY_MAC_RECEIVER_TRIAD_20261102.json.

@@ -1064,3 +1064,29 @@ ROOT source checkpoint: partial3 static errors0, warnings8. Exact PC guard316 pl
 ### ROOT Metal float2 bias 출력 형식 교정
 
 source12487 일반ARM64 BuildSucceeded였으나 errors1을확인해Player는실행하지않았다. URP _GlobalMipBias는float2이며 이전QA계획의xyzw직접float4출력은맞지않았다. QA전용출력한줄을 `return float4(_GlobalMipBias.xy,0,0);`로고쳤다. 카메라실효bias는xy두성분, z/w는명시패딩0이다. 제품지면shader/전역bias/필터/C#는그대로다. errors1원빌드와rawbefore/after보존, 통과한C#재검사는반복하지않고새source원격선증명후Metalerrors0을확인해야Player를시작한다. launch guard의경로/receipt label만receiverTriadBias로맞췄고환경설정보호알고리즘불변이다. 실제삼자/원예외/두수명회귀는아직미실행이다.
+
+
+## 2026-11-02 삼자 실제 비교·관측된 정리 예외 폐회로 검증
+
+일반 ARM64 QA sourcebf3e93a63425a17ede0fa6a0ca16e066374cc984, productTipe33(guard316), ground8f동일. 원격선확인·Metalshadererrors0후 실제AppleM5Pro/Metal에서2fixture와표적orb회귀1개,원래두lifecycle흐름만실행했다. 앞선12487의QA bias float2형식오류앱은Player미실행이며보존했다. 원161행100/61은바꾸지않는다.
+
+| 결과 | rootSpike | rootSeeker |
+|---|---:|---:|
+| 원제품P/QAclone C positive |6345/6345 |2041/2041 |
+| P/C mask불일치 / UV·weight·maxRGB·RGBA최대차 |0 / 전부0 |0 / 전부0 |
+| 현재32점 미관측 |0 |0 |
+| 옛32점중현재미관측 |5 |4 |
+| 옛실패점 실제재관측 |2/2 |7/7 |
+| 관측된선택점 R(Puv) weight최대차 |0.05201563239097595 |0.0023245811462402344 |
+| 관측된선택점 R(Puv) RGBA최대차 |0.06057630479335785 |0.10733780264854431 |
+| 실효camera bias / EOF global |(0,1,0,0)/(0,1,0,0) |동일 |
+
+제품/clone 실제영상 동등 imageEquivalenceGate는true지만 old9미관측은남겨 selectedCoverageGate/productCloneGate는false를보존했다. R은QA fine-gradient를쓴독립SampleGrad이며 실제제품implicit sampler와동등하다는근거가아니다. bias0/scale1을동일camera pass에서회수했으므로이두scene의bias보정누락은큰잔차의설명이되지않았다. 현재자료는제품색상오류를확정하지않고quad/coarse/fine참조검토로연결한다. 기존2/255·실패·미관측을완화하거나삭제하지않는다.
+
+실제own ice-orb 생성(6GO/4renderer/4material)→부모Destroy→2frame→직접Dispose에서guard316이정상반환했다. managedorb/goWrapper존재와Unity-null파괴상태를함께확인했고,ownmaterials/event/registry정리·Core/ref/hash보존·error0으로폐회로PASS다. 기존FullPoolLifecycle과FullRingLifecycle도실제disable/GO/ice→air→icepool/arena2D/remove/Destroy/Dispose를끝까지실행하고각actionRow를finally에저장·merge했다. 두flow action/GPU/metadata/merged모두true이며 ringReferenceTime=13.269844055175781을고립view인수에만사용했다. 제품맥동·전역TimeScale변경없음. 이번표적통과를기존full100/61에소급하지않는다.
+
+전체triad completed/passed는false/exit2다. 원Scene Renderer1429중1371개는exact복구됐으나58개 참조(contact16+Enemy16+walk16+Ground10)가파괴돼oldref복구false를보존했다. World원root8개는복구true, 원Simulationref/hash·canonical제품probeMaterial객체·writer정지조건은true다. contact가재생성가능presentation인지복구호출누락인지source로별도확인하며 사라진참조를합성해true로바꾸지않는다. 프로필guard는errornull,raw26/typedcache27exact복구완료다.
+
+다음same-packageM1은정확히동일bf3eapp/DLL/exe를검증한뒤기존23개script QA만실행한다. 기존검증된profileguard의백업/CAS/즉시2s7s복구를유지하고M1인자/receipt parser만바꿨다. batchmode이지만-nographics는사용하지않으며captureMode/GUI repaint/bridge를보고한다. M1은자연손조작/자연적전투/FPS검수의대체가아니다. 실제M1·자연플레이·서명설치·Win64는이시점미실행이다.
+
+MAP PRODUCTION REPORT: A2root-slope두fixture만추가관측;MASTER/OUTER/LARGE/MEDIUM/GROUNDgeometry·sourceart미변경. PLAYABLE의자연이동/전투·전체LANDMARK/START~EXIT카메라투어/route/collision/pageerror/404/seam/전체FPS미검수. TECH는위P/C/R및세수명흐름분리결과. FILES는QA/source316guard/docs/evidence,sharedWIP/index미수정. GIT는bf3e선증명,본결과commit발행;install/deploy없음. VISUAL VERDICT: RETOUCH.

@@ -57389,3 +57389,5 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 2026-11-02 triad source checkpoint: original product2/4 vsQAclone vsindependent sampler in rootSpike/Seeker only, exact PC316 orb guard and e33 corrected docs. Added actual owned parentDestroy2frameDispose regression and original2 lifecycle flows with narrow isolated ring time input fixed. All old full100/61/FAIL/2/255 kept; static3 errors0, actual pending.
 
 2026-11-02 QA-only Metal bias shader의float2→float4형식오류를xy+0패딩으로수정. source12487 errors1을gate에서발견해Player미실행. 제품/C#불변,실패원본보존,새source증명후Metal재빌드.
+
+2026-11-02 bf3e actualtriad product/clone positive6345+2041 allbit-equal; independentR불일치/old9미관측보존,bias0/1. orb파괴Dispose회귀+두원수명action/GPU/mergePASS. 58oldref(contact16/enemy16/walk16/ground10)복구false,profiles26/27복구. same-packageM1 runner준비/미실행,최종인수보류.
