@@ -10,7 +10,7 @@ keyart-superwide-brief의 후속 2단계 확대 및 11-02 저녁 지시를 인�
 |---|---|
 | 승인된 시작 메뉴·게이트 | splashOverlay/cinClickPrompt/fdgScreen이 보이면 LivingScenes는 idle. title-signboard와 gate의 기존 atmosphere 등록은 보존 |
 | 로비 / lobby | 같은 신전/선택 영웅 정지판 위 연무 3겹. 신전 3개 화로 위치만 푸른 빛 약맥동. 기존 lobbyParticles의 작은 불씨 40개는 생성/표시하지 않음 |
-| 캐릭터 선택 / charVisualPop | 영웅 5종의 같은 정지 원화, 얼굴·체형 고정. 원경과 바닥의 연무. 기존 csEmbers 26개와 해당 화면 fullscreen-atmosphere 점 입자 대체. 정지판 준비 시 점이 박힌 기존 cs-side-texture를 숨겨 실제 와이드 원화를 노출. 기존 csScene/cs-aura CSS 반복은 정지. 정지판 준비 시 점이 박힌 기존 cs-side-texture를 숨겨 실제 와이드 원화를 노출. 기존 csScene/cs-aura CSS 반복은 정지. 정지판 준비 시 점이 박힌 기존 cs-side-texture를 숨겨 실제 와이드 원화를 노출. 기존 csScene/cs-aura CSS 반복은 정지 |
+| 캐릭터 선택 / charVisualPop | 영웅 5종의 같은 정지 원화, 얼굴·체형 고정. 원경과 바닥의 연무. 기존 csEmbers 26개와 해당 화면 fullscreen-atmosphere 점 입자 대체. 정지판 준비 시 점이 박힌 기존 cs-side-texture를 숨겨 실제 와이드 원화를 노출. 기존 csScene/cs-aura CSS 반복은 정지. 정지판 준비 시 점이 박힌 기존 cs-side-texture를 숨겨 실제 와이드 원화를 노출. 기존 csScene/cs-aura CSS 반복은 정지. 정지판 준비 시 점이 박힌 기존 cs-side-texture를 숨겨 실제 와이드 원화를 노출. 기존 csScene/cs-aura CSS 반복은 정지. 정지판 준비 시 점이 박힌 기존 cs-side-texture를 숨겨 실제 와이드 원화를 노출. 기존 csScene/cs-aura CSS 반복은 정지 |
 | 로딩 / loadingBodyArt, chapterGate, stageTransition | 1~19 중 13·14·17 제외 16장 + rd1/rd2/rd4~rd17 16장, 총32장. LoadingArt의 원본/16/21/32판 선택은 유지하고 색조별 연무 추가 |
 | 결과 / stageClear, death, demoEnd | 클리어의 낮은 회백 연무, 사망/종료의 낮은 피안개. UI·버튼·보상 수치·전투 규칙 불변. stageClear 연무는 body의 fixed z24, 기존 패널 z25 유지 |
 | victory | 기존 엔딩 결과를 표시할 때 같은 clear 연무. 영상 필수 전수는 CTO 지정 클리어/사망/데모 종료3종으로 구분 |
@@ -34,9 +34,9 @@ keyart-superwide-brief의 후속 2단계 확대 및 11-02 저녁 지시를 인�
 
 | 보정 파일 | 실제 생성 크기 / 적용 |
 |---|---|
-| warrior-clean.webp | 1672×941, lossless WebP. 16:9 16:9 16:9 배경의 불씨 제거판을 실제 중앙 원화 삽입 구간에 놓고,21:9/32:9는 전체 폭 warrior-wide-clean.webp를 cover한 뒤,21:9/32:9는 전체 폭 warrior-wide-clean.webp를 cover한 뒤,21:9/32:9는 전체 폭 warrior-wide-clean.webp를 cover한 뒤 원본 전사·검·망토 실루엣을 다각형 마스크로 복원, 외곽 blur=삽입 높이×.012. 느슨한 실루엣 여백 안 불씨3개(1920×1080 좌표 x/y/r:450/554/12,560/463/10,1411/455/12)만 정리판으로 덮음.35개 복제법은 폐기 |
-| death-clean.webp | 1932×814, lossless WebP. 기존1931×814 사망 원화와 같은 구도의 점 제거판을 원본 삽입 구간에 맞춤. 확장판 판별은 실제 선택 URL의 -21/-32 접미사로 하며,1931/814 원본 비율만으로 확장판으로 간주하지 않음.32:9 좌우 확장과 UI 유지 |
-| loading-{1,2,rd2,rd4,rd7,rd8,rd12}-clean.webp | 2172×610~612. 기존32:9 그림에서 잔점 제거, 생성 캔버스의 흰 위아래 여백만 제거.21:9는 같은 파노라마 중앙 cover |
+| warrior-clean.webp | 1672×941, lossless WebP. 16:9 16:9 16:9 16:9 배경의 불씨 제거판을 실제 중앙 원화 삽입 구간에 놓고,21:9/32:9는 전체 폭 warrior-wide-clean.webp를 cover한 뒤,21:9/32:9는 전체 폭 warrior-wide-clean.webp를 cover한 뒤,21:9/32:9는 전체 폭 warrior-wide-clean.webp를 cover한 뒤,21:9/32:9는 전체 폭 warrior-wide-clean.webp를 cover한 뒤 원본 전사·검·망토 실루엣을 다각형 마스크로 복원, 외곽 blur=삽입 높이×.012. 느슨한 실루엣 여백 안 불씨3개(1920×1080 좌표 x/y/r:450/554/12,560/463/10,1411/455/12)만 정리판으로 덮음.35개 복제법은 폐기 |
+| death-clean.webp | 1932×814, lossless WebP. 기존1931×814 사망 원화와 같은 구도의 점 제거판을 원본 삽입 구간에 맞춤. 확장판 판별은 실제 선택 URL의 -21/-32 접미사로 하며,1931/814 원본 비율만으로 확장판으로 간주하지 않음. 확장판 판별은 실제 선택 URL의 -21/-32 접미사로 하며,1931/814 원본 비율만으로 확장판으로 간주하지 않음.32:9 좌우 확장과 UI 유지 |
+| loading-{1,2,rd2,rd4,rd7,rd8,rd12}-clean.webp | 2172×605~607(흰 여백 제거 후). 기존32:9 그림에서 잔점 제거, 생성 캔버스의 흰 위아래 여백만 제거.21:9는 같은 파노라마 중앙 cover |
 | loading-{동일7종}-16-clean.webp | 1586~1587×991~992. 원래1920×1200판의16:10 구도를 별도로 정리하여16:9/16:10에 사용.32:9판의 과확대나 늘이기로 대신하지 않음 |
 | 나머지 로딩25종 | 기존 원화/와이드 선택판 그대로. 새로운 입자·그레인 추가0 |
 
@@ -55,23 +55,36 @@ keyart-superwide-brief의 후속 2단계 확대 및 11-02 저녁 지시를 인�
 |---|---|---|
 | warrior-clean.webp | 1672×941 | 16:9 원화 구간 |
 | death-clean.webp | 1932×814 | 16:9 원화 구간 |
-| warrior-wide-clean.webp | 2172×616 | 21:9/32:9 전체 폭, 균등 cover |
+| warrior-wide-clean.webp | 2172×609 | 21:9/32:9 전체 폭, 균등 cover |
 | death-wide-clean.webp | 2172×608 | 21:9/32:9 전체 폭, 균등 cover |
 | silvertail-clean.webp | 1672×941 | 16:9 원화 구간 |
-| silvertail-wide-clean.webp | 2172×609 | 21:9/32:9 전체 폭, 균등 cover |
+| silvertail-wide-clean.webp | 2172×604 | 21:9/32:9 전체 폭, 균등 cover |
 | hellgunner-clean.webp | 1672×941 | 16:9 원화 구간 |
-| hellgunner-wide-clean.webp | 2172×613 | 21:9/32:9 전체 폭, 균등 cover |
+| hellgunner-wide-clean.webp | 2172×606 | 21:9/32:9 전체 폭, 균등 cover |
 | transmuter-clean.webp | 1672×941 | 16:9 원화 구간 |
-| transmuter-wide-clean.webp | 2172×609 | 21:9/32:9 전체 폭, 균등 cover |
+| transmuter-wide-clean.webp | 2172×605 | 21:9/32:9 전체 폭, 균등 cover |
 | spearmage-clean.webp | 1672×941 | 16:9 원화 구간 |
-| spearmage-wide-clean.webp | 2172×610 | 21:9/32:9 전체 폭, 균등 cover |
+| spearmage-wide-clean.webp | 2172×605 | 21:9/32:9 전체 폭, 균등 cover |
 
 기존 입력 원화·로고·원본 MP4는 보존한다. 위 정리판은 빛 선·무기·갑옷의 실제 반사를 지우는 무차별 필터가 아니며, 부유 점과 노이즈를 제거한 별도 복원본이다. 미세 재질·붓결·장식 표현은 원본과 완전히 같지 않다. 원본보다 모든 면에서 우수하거나 디자인 전면 재승인됐다는 뜻이 아니다.
 
 ## 실물 검수와 전달
 
-무창·무음 Chrome RX9070XT, 실제 index.html/game.html DOM에 네이티브 화면을 유지하는 fixture를 사용한다. API 저장을 격리하고 새 저장 요청은0이어야 한다. 자연 플레이·오디오·물리32:9모니터·NW.js 전체 실행·Steam 배포 또는 Unity 완료로 확대하지 않는다. 1920×1080/3840×1080 각10초 영상(25fps CFR, 무음;10.5초 CDP 촬영 후 VFR 타임스탬프 끝 구간은 최대200ms 정지 프레임 보존)·FPS·동일 크기 원본 정지 | 연출 비교·인물/석재/하늘3x를 남긴다. 21:9와16:10은 추가 정지/입력/경계 검수다. Dota 등 사용자 앱은 종료/대기 사유로 쓰지 않고 측정 당시 실행 여부를 영수증에 적는다.
+무창·무음 Chrome RX9070XT, 실제 index.html/game.html DOM에 네이티브 화면을 유지하는 fixture를 사용한다. API 저장을 격리하고 새 저장 요청은0이어야 한다. 자연 플레이·오디오·물리32:9모니터·NW.js 전체 실행·Steam 배포 또는 Unity 완료로 확대하지 않는다. 1920×1080/3840×1080 각10초 영상(25fps CFR, 무음;10.5초 CDP 촬영 후 VFR 타임스탬프 끝 구간은 최대200ms 정지 프레임 보존)(25fps CFR, 무음;10.5초 CDP 촬영 후 VFR 타임스탬프 끝 구간은 최대200ms 정지 프레임 보존)·FPS·동일 크기 원본 정지 | 연출 비교·인물/석재/하늘3x를 남긴다. 21:9와16:10은 추가 정지/입력/경계 검수다. Dota 등 사용자 앱은 종료/대기 사유로 쓰지 않고 측정 당시 실행 여부를 영수증에 적는다.
 
 브라우저 전수/최종 시각 판정/원격 SHA/실행 서버/검수 제한은 I:/EXODUSER-Storage/codex-takeover/living-1102/REPORT.md와 evidence/*.json이 정본이다. source SHA와 runtimeFiles의 실제 바이트 해시를 구분한다. 중간 FAIL/취소 캡처를 최종 완료 증거로 재사용하지 않는다.
 
 Unity 반영: 대기. 같은 원화/환경 마스크와 정지 정책을 ui-ultrawide-brief에 인계하며 Unity 코드/빌드/바로가기는 이 웹 작업에서 변경하지 않는다.
+
+## 최종 검수 영수증
+
+| 항목 | 실제 결과 |
+|---|---|
+| 장면/비율 | 로비1 + 영웅5 + 로딩32 + 결과3 =41종.1920×1080,2560×1080,3840×1080,2560×1600 총164화면 |
+| 영상 | 16:9/32:9 각각41편, 총82편. ffprobe로 해상도·10.00초·오디오0 확인 |
+| 기술 검사 | focused121/121, project-check112/112, guard 및 diff-check PASS |
+| 브라우저 | 실제 DOM fixture, pageerror/HTTP실패/저장쓰기0.26회 빠른 선택 전환, 저사양·설정·OS 정지, 승인 화면 우선순위 확인 |
+| 자체 시각 판정 | 요청한 환경 모션·원화 잔점 제거·확장부 경계 범위 PASS.1x 전후·중앙/바닥/하늘3x 및 영웅 좌우 확장부3x 직접 확인.전체 원화/제품 AAA·독립 검수 PASS는 아님 |
+| 재사용 | 변경 없는 로딩25종의 16:9/32:9 영상50편 유지. 정리7종·선택·사망 및 영향을 받은 와이드 비율만 교체.최종파일 목록은 FINAL-MATRIX.json |
+
+최종 영상·비교·크롭을 모은 evidence/REVIEW.html, 프레임/렌더 시간·Dota 여부는 EVIDENCE-SUMMARY.json과 각 촬영 영수증. 녹화 FPS는 메뉴 rAF 실측이며 자연 전투 FPS/입력 지연 전 구간/오디오/NW.js 실행 검수로 확대하지 않는다. 생성 정리판의 미세 재질 변화와 해상도 한계를 REPORT 첫3줄에 공개한다.

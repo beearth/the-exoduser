@@ -61,7 +61,8 @@ async function gameFixture(page){
  receipt.started=new Date().toISOString();receipt.dotaRunning=cp.execFileSync('C:/Windows/System32/tasklist.exe',['/FI','IMAGENAME eq dota2.exe','/FO','CSV','/NH'],{encoding:'utf8',windowsHide:true}).includes('dota2.exe');
  browser=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true,args:['--mute-audio','--autoplay-policy=no-user-gesture-required'],env:{...process.env,TEMP:out+'/temp',TMP:out+'/temp'}});
  try{
- const sizes=mode==='edges'?[[2560,1080],[2560,1600]]:(mode==='probe'?[1920]:record?[1920,3840]:[1920,2560,3840]).map(width=>[width,1080]);
+ let sizes=mode==='edges'?[[2560,1080],[2560,1600]]:(mode==='probe'?[1920]:record?[1920,3840]:[1920,2560,3840]).map(width=>[width,1080]);
+ if(process.env.LIVING_VIEWPORTS)sizes=sizes.filter(([w,h])=>process.env.LIVING_VIEWPORTS.split(',').includes(w+'x'+h));
  for(const [width,height] of sizes){
   const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:1});
   await context.addInitScript(()=>{localStorage.setItem('hellLang','ko');localStorage.setItem('hellcave_settings',JSON.stringify({opt:{sfxVol:0,bgmVol:0,quality:'high',atmos:2,reduceMotion:false}}));});

@@ -24,17 +24,18 @@
       "file": "warrior-wide-clean.webp",
       "source": "assets/fullscreen-wide/20261031/58-poster_idle_warrior_cs3_4k-32.webp",
       "width": 2172,
-      "height": 616,
+      "height": 609,
       "generated": [
         2172,
         724
       ],
       "removedWhiteMargins": {
-        "top": 54,
-        "bottom": 54
+        "top": 57,
+        "bottom": 58
       },
       "prompt": "Clean up this exact existing 32:9 panorama. Preserve the entire composition, same camera, character identities and poses, sizes and positions, architecture, landscape and color palette. Remove EVERY floating spark, ember, orange or white dot, floating flake, granular dither, speckled noise, firefly, dust mote throughout the ENTIRE panorama including far left and far right wings. Reconstruct smooth continuous painted atmosphere and ground in their place. Keep real continuous flames, glowing cracks, cloth folds, polished metal edges. Do not add or remove characters. No grain. Do not crop or reframe. The full exact 32:9 scene must remain; if necessary use only pure white letterboxing above and below for a 3:1 output canvas, never crop either side.",
-      "sha256": "d4709e527b9ef6ca3cc4076b1e0f149a97dd4d53e549596cd7b8881761955283"
+      "sha256": "41a7d5343df7a9f9a0f13065326259794cfba3e7455f1198744fcaaccb8d1c0e",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
     },
     {
       "file": "death-wide-clean.webp",
@@ -73,17 +74,18 @@
       "file": "silvertail-wide-clean.webp",
       "source": "assets/fullscreen-wide/20261031/59-poster_idle_silvertail_4k-32.webp",
       "width": 2172,
-      "height": 609,
+      "height": 604,
       "generated": [
         2172,
         724
       ],
       "removedWhiteMargins": {
-        "top": 58,
-        "bottom": 57
+        "top": 60,
+        "bottom": 60
       },
       "prompt": "Restore this exact existing 32:9 panorama. Remove EVERY detached floating spark, tiny dust mote, floating fleck, dotted grain, granular dither, white/purple/blue snow speck, orange ember, tiny isolated noise dot and compressed particle artifact across ALL areas, including fabric and the far left/right. Make clean continuous painted surfaces. Keep all character identities, faces, body proportions, poses, costumes, weapons, silhouette, number of characters, the exact composition and camera, all architecture and lighting colors unchanged. Keep connected lightning/energy lines, weapon glows, actual flames and material contour highlights; remove only detached noise/points. No blur, no smears, no new design, no text changes. Keep the entire exact panorama without cropping; pure white letterboxing above and below only is permitted if the output canvas is 3:1.",
-      "sha256": "eb2a5cbd980ded7cbe995fe5c9e8007be3dcec9e0d160bedfeba5d35feb1cd4c"
+      "sha256": "d076a946ae257e56c35223f372253e2981f1c22b12376e6b201e5c2c09d40475",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
     },
     {
       "file": "hellgunner-clean.webp",
@@ -105,17 +107,18 @@
       "file": "hellgunner-wide-clean.webp",
       "source": "assets/fullscreen-wide/20261031/60-poster_idle_hellgunner-32.webp",
       "width": 2172,
-      "height": 613,
+      "height": 606,
       "generated": [
         2172,
         724
       ],
       "removedWhiteMargins": {
-        "top": 55,
-        "bottom": 56
+        "top": 59,
+        "bottom": 59
       },
       "prompt": "Restore this exact existing 32:9 panorama. Remove EVERY detached floating spark, tiny dust mote, floating fleck, dotted grain, granular dither, white/purple/blue snow speck, orange ember, tiny isolated noise dot and compressed particle artifact across ALL areas, including fabric and the far left/right. Make clean continuous painted surfaces. Keep all character identities, faces, body proportions, poses, costumes, weapons, silhouette, number of characters, the exact composition and camera, all architecture and lighting colors unchanged. Keep connected lightning/energy lines, weapon glows, actual flames and material contour highlights; remove only detached noise/points. No blur, no smears, no new design, no text changes. Keep the entire exact panorama without cropping; pure white letterboxing above and below only is permitted if the output canvas is 3:1.",
-      "sha256": "881d2c182ca8fd1211f3bde3460d3e8e01abb0574377b98fc16fbed5077bcc3c"
+      "sha256": "a6bd831834765ce9be0747cec4986d89544c2cd9124da01ebfa0a5695a34efba",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
     },
     {
       "file": "transmuter-clean.webp",
@@ -137,17 +140,18 @@
       "file": "transmuter-wide-clean.webp",
       "source": "assets/fullscreen-wide/20261031/61-poster_idle_transmuter-32.webp",
       "width": 2172,
-      "height": 609,
+      "height": 605,
       "generated": [
         2172,
         724
       ],
       "removedWhiteMargins": {
-        "top": 57,
-        "bottom": 58
+        "top": 59,
+        "bottom": 60
       },
       "prompt": "Restore this exact existing 32:9 panorama. Remove EVERY detached floating spark, tiny dust mote, floating fleck, dotted grain, granular dither, white/purple/blue snow speck, orange ember, tiny isolated noise dot and compressed particle artifact across ALL areas, including fabric and the far left/right. Make clean continuous painted surfaces. Keep all character identities, faces, body proportions, poses, costumes, weapons, silhouette, number of characters, the exact composition and camera, all architecture and lighting colors unchanged. Keep connected lightning/energy lines, weapon glows, actual flames and material contour highlights; remove only detached noise/points. No blur, no smears, no new design, no text changes. Keep the entire exact panorama without cropping; pure white letterboxing above and below only is permitted if the output canvas is 3:1.",
-      "sha256": "2d902abd7d0d56c5b0b4c8042756e993d22267ad8792b0b95f2a919c5ec68871"
+      "sha256": "8b7b91c6f92b92619b7f3a366e4352651ef660552749e4b7600c59536b255ff3",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
     },
     {
       "file": "spearmage-clean.webp",
@@ -169,17 +173,18 @@
       "file": "spearmage-wide-clean.webp",
       "source": "assets/fullscreen-wide/20261031/62-poster_idle_spearmage-32.webp",
       "width": 2172,
-      "height": 610,
+      "height": 605,
       "generated": [
         2172,
         724
       ],
       "removedWhiteMargins": {
-        "top": 57,
-        "bottom": 57
+        "top": 59,
+        "bottom": 60
       },
       "prompt": "Restore this exact existing 32:9 panorama. Remove EVERY detached floating spark, tiny dust mote, floating fleck, dotted grain, granular dither, white/purple/blue snow speck, orange ember, tiny isolated noise dot and compressed particle artifact across ALL areas, including fabric and the far left/right. Make clean continuous painted surfaces. Keep all character identities, faces, body proportions, poses, costumes, weapons, silhouette, number of characters, the exact composition and camera, all architecture and lighting colors unchanged. Keep connected lightning/energy lines, weapon glows, actual flames and material contour highlights; remove only detached noise/points. No blur, no smears, no new design, no text changes. Keep the entire exact panorama without cropping; pure white letterboxing above and below only is permitted if the output canvas is 3:1.",
-      "sha256": "69ba1cc688a3e9cd3457fe3d237b1af5cbd5339fb9f52716bccf7b444c628a70"
+      "sha256": "f948fb69deb83411cf796efc13484923a9c01dadf9f2de47235f6b0e00d5290b",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
     }
   ],
   "loadingRepairs": [
@@ -193,14 +198,15 @@
       ],
       "content": [
         2172,
-        612
+        606
       ],
       "removedWhiteMargins": {
-        "top": 56,
-        "bottom": 56
+        "top": 59,
+        "bottom": 59
       },
-      "sha256": "523e4ab8c0707e40f687fe6c3a37ac9ed1701900d03e70e56b54834989b9672f",
-      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9."
+      "sha256": "1bdec37979cdecfe6437694176ed72f6f70e33970397eff36020a9baee554456",
+      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9.",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
     },
     {
       "id": "2",
@@ -212,14 +218,15 @@
       ],
       "content": [
         2172,
-        612
+        607
       ],
       "removedWhiteMargins": {
-        "top": 55,
-        "bottom": 57
+        "top": 58,
+        "bottom": 59
       },
-      "sha256": "1854e6a4c4e5487f595729da4851b2fa1cf64a40468d39a3709ae33caa59db8b",
-      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9."
+      "sha256": "8a261cc095ea6483face4032f08d0d0ebb7965eb6214a9d7e38f06bd2498d093",
+      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9.",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
     },
     {
       "id": "rd2",
@@ -231,14 +238,15 @@
       ],
       "content": [
         2172,
-        610
+        606
       ],
       "removedWhiteMargins": {
-        "top": 57,
-        "bottom": 57
+        "top": 59,
+        "bottom": 59
       },
-      "sha256": "2137be06b0f531e7dff948b227225c90cbd88d899487d025598fe602e36f06d7",
-      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9."
+      "sha256": "eb35994eb3781e16d3c7790182a281451487ac460a82d573b377cf2f9fddd45e",
+      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9.",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
     },
     {
       "id": "rd4",
@@ -250,14 +258,15 @@
       ],
       "content": [
         2172,
-        611
+        605
       ],
       "removedWhiteMargins": {
-        "top": 56,
-        "bottom": 57
+        "top": 59,
+        "bottom": 60
       },
-      "sha256": "6a9bfc424dd4d319ca50ffb89f96088d23d04b43a8f8b4c21515f1c96f8295ff",
-      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9."
+      "sha256": "5e3f72a5b0e831a16ea2387a47805f15100818d4680dd756eb1716d153fd3c71",
+      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9.",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
     },
     {
       "id": "rd7",
@@ -269,14 +278,15 @@
       ],
       "content": [
         2172,
-        611
+        606
       ],
       "removedWhiteMargins": {
-        "top": 57,
-        "bottom": 56
+        "top": 59,
+        "bottom": 59
       },
-      "sha256": "2ec0a5508c131476cec0807e0da5f4a70948035c4511e5d7a20eeb0d0a529ea7",
-      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9."
+      "sha256": "1eec5bf5481f7f3da0121d45b9c7ad52a8a6a73d1eb45e26fcb04f54b8e994b0",
+      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9.",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
     },
     {
       "id": "rd8",
@@ -288,14 +298,15 @@
       ],
       "content": [
         2172,
-        610
+        606
       ],
       "removedWhiteMargins": {
-        "top": 57,
-        "bottom": 57
+        "top": 59,
+        "bottom": 59
       },
-      "sha256": "7337484b825f83ff4f1ba26beccbaf0514d8b49272880455cf241afacd272dbe",
-      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9."
+      "sha256": "04b370e2d3cdc0697064751bb932cae7dff71d5887e053006260b13a13d8b639",
+      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9.",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
     },
     {
       "id": "rd12",
@@ -307,14 +318,15 @@
       ],
       "content": [
         2172,
-        610
+        606
       ],
       "removedWhiteMargins": {
-        "top": 57,
-        "bottom": 57
+        "top": 59,
+        "bottom": 59
       },
-      "sha256": "c7cca3c199ea198863446ec010bbf2cc0e97ef18828672bba61a06d89e0c4cef",
-      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9."
+      "sha256": "6ddf75635ce1551890f676c9a782381418447f7d52ede3173b75891a975ae6f8",
+      "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9.",
+      "borderCleanup": "Removed antialiased letterbox rows: minimumRGB>180 across over80percent of row, both ends plus one guard pixel. Scene content retained."
     },
     {
       "id": "1",
