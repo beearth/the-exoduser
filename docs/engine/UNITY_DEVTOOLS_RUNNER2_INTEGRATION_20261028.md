@@ -76,3 +76,12 @@ root가 compare_04/02/05/06과 accepted-m1/caps의03-move·11a-druid-volley·13-
 이 단위의 source 통합과 로컬 바로가기 연결은 완료했다. 손 조작 Player 종단검수·Mac 반영/실행·전체 맵/보스 리마스터 완성은 별도이며 이번 증거로 완료 처리하지 않는다. MAP PRODUCTION REPORT의 최종 VISUAL VERDICT는 **RETOUCH**다. 위 남은 결함은 후속 담당의 다음 패스이며 이 한 건 결과 제출 후 대기한다.
 
 실제 근거: I:/EXODUSER-Storage/unity-visual/ntfs-20261029의 지정통합-선행확인.json, 지정통합-소스반영.json, 통합-바로가기-선행확인.json, shortcut-after.json, root-intake-cosmetic-exception.json, 지정통합-최종영수증.json. 제품소스 반영 SHA와 그 뒤 문서 전용 SHA를 최종 영수증에서 분리한다.
+## 배치 로그 읽기 실패 처리 — 2026-10-29
+
+| 조건 | 실행기 판정 | 후처리 |
+|---|---|---|
+| 배치 로그 정상 읽기 | 기존 refresh/compile/오류/크래시 파싱과 종료 코드 판정 유지 | 사용자 세이브 전후 대조 후 `done/<id>.json` 작성 |
+| 로그 없음 | `ok=false`, `note=로그 파일이 없음` | 같은 후처리 실행 |
+| 로그 잠김 또는 읽기 오류 | `ok=false`, `note`와 `exception`에 읽기 실패 종류·메시지 기록 | 같은 후처리 실행 |
+
+`Parse-BatchLog`의 로그 읽기 예외가 `Cmd-Run`을 탈출하여 세이브 대조와 완료 JSON 작성을 건너뛰던 문제를 수정했다. `selftest/batchlog-read-test.ps1`은 실제 `FileShare.None` 잠금으로 수정 전 IOException을 재현하고, 수정 후 실패 결과·비정상 종료 코드·정상 로그 파싱·가짜 `I:` 프로필의 `USER_SAVE` 변경 감지·완료 JSON을 확인한다. 이 시험은 Unity를 실행하지 않으며 2026-10-29 UPM 시작 실패의 원인을 밝힌 것은 아니다. 해당 과거 실행의 실행 전 세이브 스냅샷이 없어 변경 0으로 소급 판정하지 않는다.
