@@ -1,7 +1,7 @@
 import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
-import {mapLookLayout,holeLights,moatLights,effectLights,renderEnergy,presentationRadius,foregroundPose} from './map-look-layout.mjs?v=20261102-hue1';
-import {seeded,applyAffine} from './living-layout.mjs';
-import {lightingGLSL} from './lighting-model.mjs?v=20261102-hue1';
+import {mapLookLayout,holeLights,moatLights,effectLights,renderEnergy,presentationRadius,foregroundPose} from './map-look-layout.mjs?v=20261102-round6';
+import {applyAffine} from './living-layout.mjs';
+import {lightingGLSL} from './lighting-model.mjs?v=20261102-round6';
 import {createFrameSampler} from './frame-sampler.mjs';
 import {shadowVector,shadowAffine} from './depth-layout.mjs?v=20261102-round4-final';
 import {dynamicLights} from './scene-budget.mjs?v=20261102-round4-final';
@@ -36,8 +36,8 @@ export function createMapLook(renderer,canvas,shared,data,anchors){
      float across=pow(1.-smoothstep(0.,1.,abs(p.x)/shafts[i].z*2.),1.6);
      float wisp=.84+.16*sin(p.y*.012+p.x*.005-time*.24+float(i)*1.7);
      float beam=along*across*wisp*(.75+.25*sin(time*.37+float(i)*1.7));
-     added+=vec3(.88,.84,.74)*.24*beam;
-     scattering=max(scattering,vec3(.72,.76,.78)*.085*beam);}
+     added+=vec3(.88,.84,.74)*.035*beam;
+     scattering=max(scattering,vec3(.012)*beam);}
     // Cold darkness belongs to environment only. Actors/VFX/HUD draw afterwards.
     vec4 emission=texture2D(nativeEmission,vUv);
     float toxicMaterial=smoothstep(.005,.025,original.g-max(original.r,original.b));
@@ -45,7 +45,7 @@ export function createMapLook(renderer,canvas,shared,data,anchors){
     float wet=smoothstep(moatBand.x,moatBand.x+.025,waterRadius)*(1.-smoothstep(moatBand.y-.025,moatBand.y,waterRadius));
     vec3 selfLight=emission.rgb*emission.a*emissionMix+(selfEmission+original.rgb*wet*.4)*toxicMaterial;
     vec3 color=shadeEnvironment(original.rgb,ambient*(.88+.12*(1.-smoothstep(.25,.9,cloud))),added,selfLight)+scattering;
-    gl_FragColor=vec4(clamp(forestAtmosphere(clamp(color,0.,1.),original.rgb+selfLight,world,hero,time,lowFog),0.,1.),original.a);
+    gl_FragColor=vec4(clamp(forestAtmosphere(clamp(color,0.,1.),original.rgb,world,hero,time,lowFog),0.,1.),original.a);
    }`});
  scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),material));
  const silhouettes=new Map(),shadowStamps=new Map(),dot=document.createElement('canvas');dot.width=dot.height=32;
@@ -114,31 +114,6 @@ export function createMapLook(renderer,canvas,shared,data,anchors){
   if(probe&&!probe.output)probe.output=canvas.toDataURL();
   ctx.save();ctx.globalAlpha=1;ctx.drawImage(canvas,view.x,view.y,view.w,view.h);ctx.restore();
  }
- function motes(ctx,s,view,low){
-  const rnd=seeded(20261020),time=s.now/1000,particleLimit=s.budget?.particles??(low?36:190);let count=0;
-  const drawDot=(x,y,size,color,alpha)=>{if(count>=particleLimit)return;ctx.save();ctx.globalAlpha=alpha;ctx.fillStyle=color;ctx.beginPath();ctx.ellipse(x,y,size,size*.7,0,0,Math.PI*2);ctx.fill();ctx.restore();count++;};
-  // A world-anchored tiled field: panning never attaches particles to the camera.
-  for(let i=0;i<(low?18:data.spores.amount);i++){
-   const phase=rnd()*Math.PI*2,bx=rnd()*2320,by=rnd()*1360,r=data.spores.size[0]+rnd()*(data.spores.size[1]-data.spores.size[0]);
-   for(let cy=Math.floor(view.y/1360)-1;cy<=Math.floor((view.y+view.h)/1360);cy++)for(let cx=Math.floor(view.x/2320)-1;cx<=Math.floor((view.x+view.w)/2320);cx++){
-    const x=cx*2320+(bx+time*5+Math.sin(time*.3+phase)*10)%2320,y=cy*1360+((by-time*7)%1360+1360)%1360;if(visible(x,y,r,view))drawDot(x,y,r*.22,'#b1b89a',.06+.10*(.5+.5*Math.sin(time*.6+phase)));
-   }
-  }
-  const camp=plan.lights.find(l=>l.id==='camp_fire');
-  if(visible(...camp.position,250,view))for(let i=0;i<(low?12:data.embers.amount);i++){
-   const phase=i*.618,age=(time/data.embers.lifetime+phase)%1,x=camp.position[0]+Math.sin(i*37)*46+Math.sin(time+i)*age*20,y=camp.position[1]-16-age*170;
-   drawDot(x,y,1+Math.sin(i*17)**2,'#df9d60',Math.sin(age*Math.PI)*.55);
-  }
-  for(const sh of plan.shafts){if(!visible(...sh.position,sh.length,view))continue;
-   for(let i=0;i<(s.budget?.shaftDust??(low?4:data.light_shafts.dust));i++){const age=(time*.035+i*.618)%1,a=Math.sin(i*23)*sh.width*.3,b=(age-.5)*sh.length*.72,co=Math.cos(sh.angle),si=Math.sin(sh.angle);
-    drawDot(sh.position[0]+a*co-b*si,sh.position[1]+a*si+b*co,1.1,'#d5ceb5',Math.sin(age*Math.PI)*.19);}
-  }
-  // Sparse pale fireflies, with soft halos; these never sit over actor/VFX passes.
-  ctx.save();ctx.globalCompositeOperation='lighter';let fireflies=0;
-  for(let cy=Math.floor(view.y/1360);cy<=Math.floor((view.y+view.h)/1360);cy++)for(let cx=Math.floor(view.x/2320);cx<=Math.floor((view.x+view.w)/2320);cx++)for(let i=0;i<(low?2:6);i++){
-   const phase=i*2.399+cx*1.71+cy*.83,x=cx*2320+220+i*337+Math.sin(time*.17+phase)*22,y=cy*1360+180+(i*281%980)+Math.sin(time*.13+phase)*15;
-   if(!visible(x,y,14,view)||count>=particleLimit)continue;const a=.04+.08*Math.pow(.5+.5*Math.sin(time*.45+phase),2);ctx.globalAlpha=a;ctx.drawImage(dot,x-10,y-10,20,20);drawDot(x,y,1.3,'#c9bea3',a*2);fireflies++;
-  }ctx.restore();stats.particles=count;stats.fireflies=fireflies;
- }
+ function motes(){stats.particles=0;stats.fireflies=0;}
  return {surface:(ctx,s,v)=>{foreground(ctx,s,v);shadows(ctx,s,v);},draw,motes,uniforms:u,snapshot:()=>({...stats})};
 }
