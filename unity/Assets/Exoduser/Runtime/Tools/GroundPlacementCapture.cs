@@ -70,6 +70,7 @@ namespace Exoduser.UnityPort.Tools
             foreach(var f in t.GetFields(Flags).OrderBy(f=>f.Name)){if(f.IsStatic)continue;b.Append(f.Name);Snapshot(f.GetValue(o),b,seen);}
         }
         IEnumerator Start(){
+            if(Has("-ground-receiver-triad")){var triad=ReceiverTriadMode();while(triad.MoveNext())yield return triad.Current;yield break;}
             if(Has("-ground-receiver-full")){var full=ReceiverFullMode();while(full.MoveNext())yield return full.Current;yield break;}
             if(Has("-ground-receiver-smoke")){var smoke=ReceiverSmokeMode();while(smoke.MoveNext())yield return smoke.Current;yield break;}
             if(Has("-ground-geometry-probe")){var probe=GeometryProbeMode();while(probe.MoveNext())yield return probe.Current;yield break;}

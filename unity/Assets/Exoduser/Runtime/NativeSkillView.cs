@@ -217,7 +217,7 @@ namespace Exoduser.UnityPort
         {
             ResetMaliceBursts();
             foreach (var m in new[] { zones, waves, blades, orbs }) { foreach (var it in m.Values) { ForgetMaliceSprites(it); ForgetCenteredSlamSprites(it); UnityEngine.Object.Destroy(it.go); } m.Clear(); }
-            if (orb != null) orb.go.SetActive(false);
+            if (orb != null && orb.go != null) orb.go.SetActive(false);
             orbTrails.Clear(); ActiveZones = ActiveWaves = ActiveBlades = ActiveMaliceOrbs = 0;
         }
         public void Dispose()

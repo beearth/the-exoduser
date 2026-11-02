@@ -5324,5 +5324,7 @@
     "sharedAccountDeltaPercentagePoints": 2,
     "dayBeforeFirstObservationUnknown": true,
     "ordinaryUsageAllowed": true
-  }
+  },
+  "guardElapsedSecondsAtPlayerExit": 2208.963505333,
+  "durationLabelNote": "Legacy wholePlayerRunSecondsToExit is the guard elapsed clock at exit and includes its prelaunch snapshot; approximate37minute run, not exact pure Player duration."
 }

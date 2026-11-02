@@ -947,3 +947,115 @@ MAP PRODUCTION REPORT
 - VISUAL VERDICT: RETOUCH. 관측된 접지·player 앞표시는 양호; 전체 인수 보류. 기존 A2/ImpactR4 판정 유지.
 
 증거: `evidence/UNITY_MAC_RECEIVER_FULL_20261102.json`, `evidence/UNITY_MAC_RECEIVER_QUAD_ANALYSIS_20261102.json`. 원본 전체receipt·raw/PNG·before/after snapshot은 로컬 보존되며 그 SHA/정책/경로를 evidence에 기록했다.
+
+
+# Receiver triad 최소 QA — source-only 인계
+
+지면/셰이더 기준8f 유지. 제품 통합 tip은 별도 CLI metadata이며 orb guard31644248을 포함한다. ROOT `receiver-full-reviewed`의 CompressionLevel 명시 수정·정적 통과본에서 복사했다. 고정 원본 파일은 편집하지 않았다. 기존 full/smoke/geometry 실행 동작과 기존 shader는 보존했고 main Start 앞에 명시 triad 분기를 추가했다. FullRingLifecycle은 narrow 전용 optional time 입력 교정만 예외다. 신규 partial `GroundReceiverTriadCapture.cs`와 별도 camera-bias shader를 함께 인수한다. 최신 승인에 따라 실제 orb 부모파괴→Dispose 회귀1개와 기존 두 lifecycle 행동흐름의 좁은 실행을 추가했다. FullRingLifecycle의 실제 행동 단계는 유지하며 최신 승인된 narrow 전용 optional time 입력만 추가했다. 무인수 full 동작은 기존과 같다. **컴파일·Unity·Player·Git 실행 전**이다.
+
+## 실행 범위
+
+기존 Boot 필수 `--unity-ground-placement-capture --remodel3d --unity-quick-start --unity-qa-sandbox <absolute> -output <empty absolute> -source-sha <actualQAsha>`에 `-ground-receiver-triad -product-source-sha <integrated product tip40hex>`를 추가한다. smoke/full/geometry 플래그 동시 사용 금지. 같은 triad run 마지막 전용 하위 단계로 기존 두 lifecycle 흐름만 실행한다. 기존 healthy one-case/full149/dense를 재실행하지 않는다. lifecycle은 아래 기존 두 흐름만 좁게 실행한다.
+
+| fixture | producer 그대로 |
+|---|---|
+| root-slope/spikeTrap | world `(36.2916,-73.17135)`; 정확 기존 Populate("spikeTrap"); R100, T30/Max180, Id1 |
+| root-slope/SeekerMines | 같은 site; 정확 기존 Populate("SeekerMines"); R56, T61/Arm60/Max180, armed |
+| player | 기존 fixture offset Core X−180/Y+80 |
+| state | 동일 sample seed0x671403 + AttachDruidBoss, Simulation.Tick 호출 없음 |
+
+검증된 field-entry/lobby close/API cache/원 Simulation hash·ref 복구/writer pause/media drain 루틴만 재사용한다. 정상 전층1920와 직접3840×1080을 먼저 보존하고, 정상 EOF를 기다려 descriptor를1920으로 되돌린 뒤 layer별 probe한다. 각 fixture의 실제 source 목록을 수집하며1..4 texture layer 범위만 허용한다. 각 layer의 다른 draw enabled 원값을 저장→선택 layer만 diagnostic→finally 원 enabled/sourceforceOff/display material 객체 복구를 요구한다. 정상 표시·Core·원 texture/import/Quality를 바꾸지 않는다.
+
+**Core phase는 같지만 옛 run의 wall-clock pose를 조작해 재현하지 않는다.** NativeSkillView spike의 회전·alpha는 전달된 time, NativeBossView seeker의 회전·alpha는 Time.unscaledTime에 의존한다. 원 producer를 정확 호출하며 그 시각과 실제 원 tint/PB/UV mapping을 기록하고 이후 writers를 정지한다. 옛32점은 그대로 검사하되 새 art pose에서 관측되지 않으면 미검증으로 남긴다. 옛 frame과 같은 source hash라고 주장하지 않는다. 같은 triad 안에서 모든 비교의 hash/camera를 엄격히 맞춘다.
+
+## 세 계층과 gate 분리
+
+| 계층 | 실제 경로 / 출력 |
+|---|---|
+| P | **원제품** private probeMaterial의 shader `EXODUSER/GroundSkillProjection` 확인 후 공개 RequestProbe mode2(packedUV/maxRGB/weight), mode4(preblendRGBA) |
+| C | 고정 QA FullEvidence의 기존6 map: world/UV/depth/RGBA/derivative/owner signature |
+| R(Cuv) | 기존 FullReference raw SampleGrad + 원 half 식, clone UV와 clone captured ddx/ddy 사용 |
+| R(Puv) | 별도 참조 결과: product mode2 UV와 같은 captured ddx/ddy 사용. 원제품 내부 derivative를 직접 측정했다고 부르지 않음 |
+
+P2→P4를 먼저 회수한 다음 C6개를 회수한다. shader가 canonical이 아닌 private material을 원제품으로 기록하지 않는다. 첫 공개 probe 전 native lazy slot이 null일 수 있다. 이 경우 API가 원제품 material을 생성한 뒤 identity를 확인하고 그 **native-created 원 객체**를 이후 모든 QA swap의 복구 기준으로 삼는다. worker가 canonical material을 새로 만들거나 파괴하지 않는다. canonicalNativeLazyCreation을 기록한다. 원제품 mode2/4 자체는 QA material override 없이 호출한다.
+
+모든 RT는 실제 FrameSize의 Linear RGBAFloat, 요청serial 증가/EOF5초/API/resize 검사, ReadPixels, CancelProbe 후 caller target 생존 확인을 요구한다. source/PB hash·finite camera view/projection float bit·FrameSize·receiver count·active layer1을 비교한다. C 경로는 원 private 객체로 exact 복구하고, P 경로도 그 객체가 그대로인지 확인한다. 원 display sharedMaterial/sourceforceOff/Core를 바꾸지 않는다. finally에서 원 Simulation ref/hash를 되돌리고 view event 바인딩을 복구한 뒤 writers paused 상태로 종료한다.
+
+1. **imageEquivalenceGate**: 전체 positive mask 합집합에서 P/C mask 불일치·UV·weight·maxRGB·RGBA 차이, P2maxRGB↔P4maxRGB 및 C의 내부 일관성을 검사한다. UV tolerance1e-5, 색/weight는 기존2/255. P-only/C-only/both positive 개수를 기록한다. world는 C에서 회수한 것이라고 명시하고 원 sprite UV 계약으로 P2 UV와 교차 검증한다. canonical world map을 직접 얻었다고 주장하지 않는다.
+2. **selectedCoverageGate / productCloneGate**: 고정 옛32점과 이번 clone의32점 합집합을 모두 보존한다. 옛 실패점(Spike2/Seeker7)은 별도 flag. product/clone 양쪽 coverage·world가 없으면 미검증/FAIL이다. imageEquivalenceGate와 selected gate를 나눠 “새 pose에서 옛 좌표 미관측”을 실제 P/C 출력 차이와 구분한다.
+3. **cloneIndependentGate**: 기존 C의32점/FullEvaluate 결과를 그대로 보존하고 합집합에 대한 R(Cuv)도 검사한다. 기존 clone FAIL을 지우지 않는다.
+4. **productUvIndependentGate**: R(Puv)의 sourceRGBA/expected weight/RGBA를 별도로 기록해 P와 비교한다. derivative finite/nonzero, P/C 양쪽 coverage·UV 일치·world를 요구한다. UV가 다르면 clone derivative를 원제품 참조로 통과시키지 않는다. 실제 product implicit gradient와 동등하다는 자동 주장은 하지 않는다.
+
+R 두 경로는 최대32점씩 GPU batch 처리한다. invalid 표본도 자료를 기록하며 조용히 삭제하지 않는다. 각 선택점에 P/C UV/RGBA/weight, C world/gradient, 두 R sourceRGBA/expectedRGBA/오차, 양쪽2×2 UV/weight와 captured gradient4개를 저장한다. clear0/helper UV를 추정하지 않는다. 새 coarse 후보 GPU 실험은 추가하지 않았다. 기존 저장 분석 후보를 재사용할 수 있다. 모든 원 FAIL 및2/255는 그대로다.
+
+## camera-scope mip bias 읽기
+
+PC가 확인한 URP17.6 Core 매크로는 implicit SampleBias에 `_GlobalMipBias.x`, Grad에 `.y` 보정을 사용한다. 현재 R은 UnityCG raw.SampleGrad라 그 보정을 적용하지 않는다. bias가 원인이라고 단정하거나 원 R FAIL을 보정값으로 덮지 않는다.
+
+원 FullEvidence 파일은 그대로 두고, 별도 `GroundReceiverTriadBias` copy에 kind6 `_GlobalMipBias.xyzw` 출력만 추가했다. 기존 clip/art 범위 안에서 같은 실제 camera/pass로 한 번 더 회수하며 `camera-mip-bias`라는 별도 raw다. 기존 canonical 객체를 잠시 QA bias material로 바꿨다가 exact 복구한다. C positive 픽셀에서 finite하고 uniform한 값, 양수 gradient scale y를 관측해야 한다. 별도로 EOF `Shader.GetGlobalVector`도 기록하지만 **다른 camera가 덮었을 수 있으므로 camera-scope 값으로 대체하지 않는다.** 보정 sampling variant는 만들지 않았다.
+
+## raw/종료/해석
+
+두 fixture/layer의 P2/P4+C6+bias1, 총9 map만 lossless gzip으로 보존한다. 원bytes/압축 SHA·layout·rawRetained·camera/hash/serial·소유권을 기록한다. float 실제 저장 max3GiB, free reserve3GiB, PNG 예상상한을 지킨다. 상한에 도달하면 hash/sample을 보존하고 layer completed=false로 기록한다. 기존 파일/실패 증거 삭제 없음. helper 공용 progress 파일 이름이 receiver-full-progress.json이어도 triad가 full을 실행한 것이 아니다. 최종 문서는 receiver-triad-receipt.json이다.
+
+`completed`는 두 fixture 자료 회수·아래 orb 회귀1개·두 lifecycle 흐름의 종료/기록·원 source 상태 복구·환경 gate다. 실제 action/GPU/merge PASS는 별도 lifecycle gate이며 최종 passed에 lifecycleMergedGate를 요구한다. `productCloneGate`, `cloneIndependentGate`, `productUvIndependentGate`는 따로 기록한다. `passed`는 세 gate까지 모두 true일 때만 가능하며, 비교 FAIL이어도 나머지 fixture 회수는 계속한다. API/serial/camera/hash/소유권 오류는 중단한다. exit2는 진단 불일치/미검증을 포함하며 **제품 FAIL로 번역하지 않는다.** P≈C/R만 다르면 참조 모델 비동등성, P≠C면 clone 계측/컴파일 동등성을 먼저 조사한다.
+
+인수 범위는 세 C# 파일과 제공한 shader/meta, selection-origin, GUID/공백/보존 inventory, SHA256SUMS다. ROOT가 정적 검사·고정소스 원격 선증명·빌드·단1회 실행을 담당한다. 추가 확대는 하지 않는다.
+
+
+## 추가 승인: 실제 orb 부모파괴 후 Dispose 회귀1개
+
+제품 guard commit은 `316442480c051cee99a5d9a783b0875640892ea8`이며 ROOT가8f 대비 NativeSkillView.cs의 `orb.go!=null` 조건1줄뿐임을 확인했다. worker는 제품파일을 수정하거나 새 blob을 대신 stage하지 않는다. 실행 인자 **`-product-source-sha`**를 `productTip`으로 기록한다. ROOT launcher는 문서 정정까지 포함한 e33ed53574a187db36e00dfbd1f92b4d6f263635를 전달한다. 이 tip의 Unity tree는 guard31644248과 동일하다. `groundBaseSource`와 같은 값의 alias `groundSource`는8f를 유지하며 지면/UV/색/셰이더 기준을 나타낸다. source-sha는 QA source commit이다. CLI metadata만으로 실제 build 내용을 증명한다고 주장하지 않으며 ROOT frozen manifest/DLL SHA와 연결한다.
+
+두 삼자 fixture를 모두 회수한 뒤 별도 `native-skill-orb-dispose-regression.json` 하나를 기록한다. 정상/비정상 비교 gate가 false여도 API/소유권 오류가 없으면 두 fixture와 이 회귀를 회수한다. 전체149/161은 재실행하지 않고, 아래 승인된 기존 두 수명 흐름만 좁게 호출한다.
+
+| 단계 | 실제 증명 |
+|---|---|
+| 소유권 | 새 자기 parent GameObject + 별도 Simulation + 실제 NativeSkillView 생성. game.Simulation에 별도 Core를 대입하지 않음. 외부 GO를 Destroy하지 않음 |
+| 생성 | own Simulation IceOrbActive=true/T30, 자체 좌표를 설정한 뒤 **원 Update(ownSim,0f)**를 호출. private orb Item/GO 실제참조 확인, OrbShown=true/activeSelf=true, parent 소유권, base0/base1/glow0/glow1 SpriteRenderer 정확4개·정상 sprite·최소1enabled 확인 |
+| 기대 children | 자기 parent1+ice orb1+renderer GO4 =6개 객체, parent 직계1/ice orb 직계4. 실제 이름/객체ID/own material4개ID를 생성 전에 기록 |
+| 폐회로 재현 | 자기 parent를 Destroy → 정확2frame → parent/orb/6GO가 Unity null인지 확인. **managed orb Item 및 같은 go wrapper가 여전히 남았는지도 확인**하여 원 `orb!=null` 조건을 실제 통과할 상태를 증명 |
+| 핵심 호출 | 파괴됐다고 Dispose를 건너뛰지 않고 **isolatedView.Dispose() 직접 호출**. 여기에는 try/catch로 통과시키는 처리가 없음. 예외는 outer triad error/exit2와 회귀 error에 보존 |
+| 정리 | 정상 반환 후2frame 대기, own material4개 Unity null, view의 zones/waves/blades/orbs/orbTrails empty, maliceSim null 및 own Core 이벤트 해제 후 원 own-Core hash 복구 확인 |
+| registry/외부 보호 | centered slam/malice sets, NativeGroundSkillSurface registry, projection volume/receiver registry, HD2D actors의 원소identity fingerprint 전후 일치. 필드누락을 empty로 간주하지 않고 FAIL. game.Simulation 동일ref/hash, 원 original Core hash, game transform finite-bit 동일성 확인 |
+| 오류 | 회귀 범위 Error/Assert/Exception log를 기록하고 하나라도 있으면 PASS 불가. Dispose 미호출·미생성·GO 미파괴·빈 orb 대체는 PASS 불가 |
+
+핵심 Dispose 전에 생성 검사가 실패하면 product Dispose를 cleanup에서 직접 시도할 수 있지만 `disposeAttemptedAfterDestroyed`가 없으므로 절대 회귀 PASS가 되지 않는다. 핵심 Dispose가 던지면 다시 시도해 숨기지 않는다. 자기 parent 잔재만 finally에서 정리한다. OrbShown/managed orb Item은 기존 Dispose가 false/null로 reset한다고 새로 요구하지 않는다. constructor가 만든 모든 Sprite asset 해제를 검수하는 별도 확장이 아니라, 실제 관측된 destroyed orb.go 접근과 해당 GO/material/event/registry 정리만 폐회로 검사한다.
+
+원 full의100/161 pass,61fail(model60+ring cleanup1), state 행동 merge 미실행 등의 과거 결과는 변경하지 않는다. 이번 회귀 PASS가 나와도 기존 pool/2D 전체 PASS로 소급하지 않는다. 아직 실행 전이다.
+
+
+## 최신 마감 승인: 기존 두 lifecycle 행동흐름의 좁은 실행
+
+같은 `-ground-receiver-triad` run에서 삼자2fixture → 실제 orb 표적회귀1개 → **FullPoolLifecycle()와 FullRingLifecycle()** 순서로 호출한다. 별도 149/161 전체 loop는 없다. FullPoolLifecycle 본문은 ROOT 원본과 동일하며 FullRingLifecycle은 아래 optional time 입력 교정만 적용하고, disable/GO/real pool air→ground 재사용/arena2D/zone removal/Destroy/마지막 Dispose를 간이 검사로 대체하거나 생략하지 않는다. CompressionLevel.Optimal 한정 수정도 원 검수본 그대로다.
+
+| 기록 | 의미 |
+|---|---|
+| lifecycle-ground-lifecycle-action.json / lifecycle-ground-ring-lifecycle-action.json | 각 흐름 종료 **finally에서 즉시** 저장. 실제 receipt.rows의 원 Row 전체, 원 actionRow.passed, returned/enumeratorDisposed, 예외를 보존 |
+| lifecycle-narrow-receipt.json | 각 흐름 종료와 전체 wrapper의 finally에서 재계산/저장. 두 흐름 expectedFlows=2 |
+| actionRowPassed | 실제 기존 행동 코드가 계산한 Row.passed. 예외 전에 초기값 true였다면 그대로 남지만 completion/PASS로 해석하지 않음 |
+| completed | iterator 정상 종료·정리 반환·실제 action row 존재·명시 error 없음. early-yield 원 error/예외면 false |
+| gpuPassed / metadataPassed | 기존 FullCapture의 실제 GPU/metadata 값. action 결과로 덮지 않음 |
+| mergedPassed | 위 종료 조건 + 실제 actionRow.passed + 실제 GPU/metadata + isolation 복구를 모두 요구. 부모 gpuEvidence.passed에만 최종 결합값을 반영하며 원 statePassed와 gpuVerified는 보존 |
+| triad.lifecycleActionGate / lifecycleGpuGate / lifecycleMergedGate | 두 흐름 각각의 실제 결과를 따로 집계. synthetic metadata로 action PASS를 만들지 않음 |
+
+예외 시에도 inner/finally와 outer/finally가 action row를 병합·보존한다. MoveNext/iterator Dispose 예외는 기록하고 다시 던져 triad error/exit2로 남긴다. try/catch로 cleanup 성공을 가장하지 않는다. 정상 false assert가 있어도 그 실제 row 결과는 그대로 저장한다. orb guard가 ring 마지막 Destroy→2frame→Dispose를 통과시키는지도 이 원흐름에서 검증한다. 기존 full100/61 원결과를 소급 변경하지 않는다.
+
+원 source 상태 복구를 명확히 하려고 lobby media 파괴2frame 후, fixture 교체 전의 실제 scene Renderer 참조/원 enabled·forceRenderingOff·sharedMaterials·activeSelf와 원 r3Roots/a2Root 활성값을 읽어 저장한다. 마지막 원 Simulation/view 바인딩 복구 후 살아 있는 **같은 참조**에 원값을 복구하고, 복구 전 mismatch와 최종값 일치를 별도 기록한다. 사라진 원 참조를 새 객체로 합성하지 않으며 누락이면 originalSourceStatesRestored=false다. 원 NativeRemodel3D.Active도 같아야 한다. 이 복구가 actionRow의 실패/예외를 PASS로 덮지 않는다. original-source-restoration.json에 남기며 Core hash/ref 조건도 유지한다.
+
+lifecycle 두 parent의 전층1x/direct3840도 원 FullCapture 동작대로 저장한다. PNG 예상상한은 triad2+lifecycle2=4 parent 기준으로 늘렸고, 추가 float는 기존 full의 bounded 대표/FAIL 보존 정책을 재사용하여 triad와 합산 max3GiB/free3GiB를 유지한다. layer 하위 결과는 기존161 또는 삼자 expectedFixtures=2에 섞어 세지 않는다. 현재 세 C#·shader는 아직 실행 전이다.
+
+Pool 등 남은 기존 assert는 그대로다. ring은 아래 최신 승인으로 고립 test view의 time 인수만 동일화했다. 정상 종료했더라도 실제 actionRow=false가 나올 수 있으며 그 원인은 별도 판정한다. guard 예외 소멸만으로 행동 전체 PASS나 제품 오류 여부를 자동 결정하지 않는다.
+
+
+### Ring time 입력 교정 — 최신 PC 승인
+
+제품 ring 반경은 `sin(time*(2.1+ri*.35)+ri*2.4)` pulse를 따른다. 초기에 저장한72점을 많은 GPU frame 뒤 다른 Time.time 입력의72점과 완전 일치시키면 정상 pulse만으로도 실패할 수 있다. 이를 제품 버그로 판정하지 않는다.
+
+독립 FullCapture copy의 signature만 `FullRingLifecycle(float? ringReferenceTime=null)`로 바꾸고, 이 method 내부 **고립된 view.Update(sample, ...)** 호출의 time 인수만 `ringReferenceTime??Time.time`으로 치환했다. narrow wrapper는 시작 시 Time.time 한 값을 저장해 모든2D/3D/복원/재생성 Update에 전달하며 flow receipt의 ringReferenceTime/ringTimeInputCorrected/inputCorrection에 기록한다. 원 full 호출은 무인수이므로 null→기존 Time.time을 계속 사용한다. FullPoolLifecycle, NativeGame.UpdateViews가 구동하는 실제 main view, 제품 pulse 수식·주기·전역 시간/설정·GPU 렌더·disable/GO/remove/Destroy/Dispose 단계·원 raw FAIL은 바꾸지 않았다. assert 기준 완화가 아니라 동일 input 비교 교정이다. preservation-inventory는 이 작은 치환을 역변환했을 때 원 FullCapture와 바이트 동일한지 구분해 기록한다.
+
+
+ROOT 인수: C# partial3개 정적 오류0(기존/비권장API 경고8), canonical guard 소스316 및 문서e33 인수. 새shader meta 빈 필드 뒤 공백만 정리. 실제 triad/좁은수명/원 예외 회귀는 아직 미실행. 기존 full161의100/61과 원 예외/미merge를 그대로 보존한다.
+
+
+ROOT source checkpoint: partial3 static errors0, warnings8. Exact PC guard316 plus corrected docs e33 integrated; all other product Unity files equal8f. Metadata GUID1818 valid/no duplicates. Guard still protects26raw/27cache with unchanged algorithm; paths/triad parser/product-tip argument only adapted. Full161 original100/61 stays unchanged. New triad+orb+two narrow lifecycle actual execution pending, M1/naturalplay/integration/install/Win64 pending.

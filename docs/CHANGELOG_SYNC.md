@@ -57385,3 +57385,5 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 2026-11-02 full receiver QA source checkpoint: expected149=49*3+2; large12 subset, dense12conditions*8effects separate. Per-layer attribution/isolation, GPU pixel/halfRGBA/72polygon ring, exact restoration and bounded retention. Static passed, actual full execution pending. Product8f unchanged; previous one-case pass and legacy failures kept.
 
 2026-11-02 Mac822 actualfull161/161=149state+12dense,missing0、100PASS/61FAIL(clone-model60+ringcleanup1), product귀속미확정. layers1185/verified901/samples35570/depthUVinvalid0, 원FAIL·2/255유지. 26raw27cache복구/1403WIP유지, 원본3PNG PC검산·직접검수/소유서버종료. 다음2fixture삼자진단 우선, 전체/설치/Win인수보류.
+
+2026-11-02 triad source checkpoint: original product2/4 vsQAclone vsindependent sampler in rootSpike/Seeker only, exact PC316 orb guard and e33 corrected docs. Added actual owned parentDestroy2frameDispose regression and original2 lifecycle flows with narrow isolated ring time input fixed. All old full100/61/FAIL/2/255 kept; static3 errors0, actual pending.

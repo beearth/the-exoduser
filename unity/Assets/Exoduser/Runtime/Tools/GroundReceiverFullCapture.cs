@@ -174,28 +174,28 @@ SaveReceiverSmoke("full-preserved-onecase-final");}
                 row.passed &= source==null&&surfaceObject==null;
             }finally{view.Dispose();Destroy(root);}
         }
-        IEnumerator FullRingLifecycle(){
+        IEnumerator FullRingLifecycle(float? ringReferenceTime=null){
             traceSite="soil";traceConsumer="ground-ring-lifecycle";tracePhase="ring-lifecycle";Progress("begin","ring-lifecycle");
             var root=new GameObject("QA isolated holy ring lifetime");var view=new NativeSkillView(root.transform);var row=new Row{site="soil",consumer="ground-ring-lifecycle",scope="actual ring shared geometry, enabled/GO/2D/zone removal/Destroy",passed=true};receipt.rows.Add(row);generated.Add(row.consumer);
             var wasArena=sample.Stage.InArena;var oldArena=sample.Stage.Arena;
             try{
                 Clear();sample.FireZones.Add(new FireZone{Id=91001,Type="holyDome",X=4020,Y=7700,R=520,T=30,MaxT=180});
-                sample.Stage.Arena=BossArenaLayout.Generate(sample.Config.StageIndex);sample.Stage.InArena=true;Invoke("UpdateViews");view.Update(sample,Time.time);
+                sample.Stage.Arena=BossArenaLayout.Generate(sample.Config.StageIndex);sample.Stage.InArena=true;Invoke("UpdateViews");view.Update(sample,ringReferenceTime??Time.time);
                 var lines=root.GetComponentsInChildren<LineRenderer>(true).Where(l=>l.positionCount==72&&l.name=="ring").ToArray();if(lines.Length!=2){row.passed=false;row.error="Original two 72point source rings missing";yield break;}
                 var priorForce=lines.Select(l=>l.forceRenderingOff).ToArray();var rotations=lines.Select(l=>l.transform.localRotation).ToArray();var scales=lines.Select(l=>l.transform.localScale).ToArray();var raw2d=lines.Select(l=>Enumerable.Range(0,l.positionCount).Select(l.GetPosition).ToArray()).ToArray();
-                sample.Stage.InArena=wasArena;sample.Stage.Arena=oldArena;SyncViews();view.Update(sample,Time.time);SyncViews();
+                sample.Stage.InArena=wasArena;sample.Stage.Arena=oldArena;SyncViews();view.Update(sample,ringReferenceTime??Time.time);SyncViews();
                 var draws=lines.Select(RingFor).ToArray();if(draws.Any(d=>d==null)){row.passed=false;row.error="Actual RingSurface missing; source72 is not a substitute PASS";yield break;}
                 contributionCamera=game.Remodel3DCamera;for(int i=0;i<draws.Length;i++){var shape=FullProxyMetadata(draws[i],SourceFor(draws[i]));row.shapes.Add(shape);row.passed &= shape.passed;}
                 var gpuRing=new FullCase{id="soil/ground-ring-lifecycle",site="soil",consumer="ground-ring-lifecycle",gpuRequired=true};fullReceipt.rows.Add(gpuRing);fullCurrent=gpuRing;string beforeOutput=output;output=Path.Combine(beforeOutput,"ring-start");Directory.CreateDirectory(output);var ringPixels=FullCaptureCase(gpuRing);try{while(ringPixels.MoveNext())yield return ringPixels.Current;}finally{(ringPixels as IDisposable)?.Dispose();output=beforeOutput;}
                 var line=lines[0];var draw=draws[0];line.enabled=false;SyncViews();row.passed &= !draw.enabled;line.enabled=true;
-                line.gameObject.SetActive(false);view.Update(sample,Time.time);SyncViews();row.passed &= !draw.enabled;line.gameObject.SetActive(true);
+                line.gameObject.SetActive(false);view.Update(sample,ringReferenceTime??Time.time);SyncViews();row.passed &= !draw.enabled;line.gameObject.SetActive(true);
                 var owner=SourceFor(draw);if(owner==null){row.passed=false;row.error="Mapped ring body missing";yield break;}
-                owner.enabled=false;SyncViews();row.passed &= draws.All(d=>!d.enabled);owner.enabled=true;view.Update(sample,Time.time);SyncViews();
-                sample.Stage.Arena=BossArenaLayout.Generate(sample.Config.StageIndex);sample.Stage.InArena=true;Invoke("UpdateViews");view.Update(sample,Time.time);
+                owner.enabled=false;SyncViews();row.passed &= draws.All(d=>!d.enabled);owner.enabled=true;view.Update(sample,ringReferenceTime??Time.time);SyncViews();
+                sample.Stage.Arena=BossArenaLayout.Generate(sample.Config.StageIndex);sample.Stage.InArena=true;Invoke("UpdateViews");view.Update(sample,ringReferenceTime??Time.time);
                 for(int i=0;i<lines.Length;i++){row.passed &= !draws[i].enabled&&lines[i].forceRenderingOff==priorForce[i]&&lines[i].transform.localRotation==rotations[i]&&lines[i].transform.localScale==scales[i];for(int j=0;j<72;j++)row.passed &= (lines[i].GetPosition(j)-raw2d[i][j]).sqrMagnitude<1e-10f;}
-                sample.Stage.InArena=wasArena;sample.Stage.Arena=oldArena;SyncViews();view.Update(sample,Time.time);SyncViews();
-                var objects=draws.Select(d=>d.gameObject).ToArray();sample.FireZones.Clear();view.Update(sample,Time.time);SyncViews();yield return null;yield return null;row.passed &= objects.All(o=>o==null)&&lines.All(l=>l==null);
-                sample.FireZones.Add(new FireZone{Id=91002,Type="holyDome",X=4020,Y=7700,R=520,T=30,MaxT=180});view.Update(sample,Time.time);SyncViews();var fresh=root.GetComponentsInChildren<LineRenderer>(true).Where(l=>l.name=="ring"&&l.positionCount==72).ToArray();var freshDraw=fresh.Select(RingFor).ToArray();row.passed &= fresh.Length==2&&freshDraw.All(d=>d!=null&&d.enabled);var meshObjects=freshDraw.Where(d=>d!=null).Select(d=>d.gameObject).ToArray();Destroy(root);yield return null;yield return null;row.passed &= meshObjects.All(o=>o==null);
+                sample.Stage.InArena=wasArena;sample.Stage.Arena=oldArena;SyncViews();view.Update(sample,ringReferenceTime??Time.time);SyncViews();
+                var objects=draws.Select(d=>d.gameObject).ToArray();sample.FireZones.Clear();view.Update(sample,ringReferenceTime??Time.time);SyncViews();yield return null;yield return null;row.passed &= objects.All(o=>o==null)&&lines.All(l=>l==null);
+                sample.FireZones.Add(new FireZone{Id=91002,Type="holyDome",X=4020,Y=7700,R=520,T=30,MaxT=180});view.Update(sample,ringReferenceTime??Time.time);SyncViews();var fresh=root.GetComponentsInChildren<LineRenderer>(true).Where(l=>l.name=="ring"&&l.positionCount==72).ToArray();var freshDraw=fresh.Select(RingFor).ToArray();row.passed &= fresh.Length==2&&freshDraw.All(d=>d!=null&&d.enabled);var meshObjects=freshDraw.Where(d=>d!=null).Select(d=>d.gameObject).ToArray();Destroy(root);yield return null;yield return null;row.passed &= meshObjects.All(o=>o==null);
             }finally{sample.Stage.InArena=wasArena;sample.Stage.Arena=oldArena;view.Dispose();if(root!=null)Destroy(root);Clear();SyncViews();}
         }
   Shape FullProxyMetadata(Renderer draw,SpriteRenderer source){var filter=draw==null?null:draw.GetComponent<MeshFilter>();var type=typeof(NativeGame).Assembly.GetType("Exoduser.UnityPort.NativeGroundSkillSurface");var component=source==null?null:source.GetComponent(type);bool depth=component!=null&&(bool)type.GetProperty("UsesReceiverDepth").GetValue(component);return new Shape{path=draw==null?"missing":draw.name,kind="receiver volume metadata only",assertionScope="8v/12t proxy is not contact evidence; separate actual GPU capture required",vertexCount=filter?.sharedMesh?.vertexCount??0,triangleCount=filter?.sharedMesh==null?0:filter.sharedMesh.triangles.Length/3,passed=depth&&source!=null&&source.forceRenderingOff&&draw!=null&&draw.enabled};}
