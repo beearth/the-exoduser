@@ -7,6 +7,8 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using Exoduser.UnityPort.Core;
 using Exoduser.UnityPort.Vfx;
 
@@ -22,7 +24,7 @@ namespace Exoduser.UnityPort.Tools
             public float pivotLift,maxGroundError,normalUp,expectedDrawOffset,maxBiasResidual,opacity; public string shader,sharedMaterial; public Color color; public int vertexCount,triangleCount; public bool forceRenderingOff; public bool passed;
         }
         [Serializable] public sealed class Row {
-            public string site,consumer,scope,screenshot,error; public Vector2 core;
+            public string site,consumer,scope,screenshot,direct3840,error; public bool direct3840Captured; public Vector2 core;
             public bool ground,passed; public List<Shape> shapes=new List<Shape>();
         }
         [Serializable] public sealed class Receipt {
@@ -33,7 +35,7 @@ namespace Exoduser.UnityPort.Tools
             public float listenerVolume,peak; public List<Row> rows=new List<Row>();
         }
         static readonly string[] Consumers={"spikeTrap","holyDome","SeekerMines","Mine-first","Projectile-control","Mine-reused","trap","iceZone","blizzard","LavaPools","PoisonPools","GroundRing","Fissures","TideWaves","malice-control","slam-control","character-control","VfxWorld-active","VfxWorld-inactive","telegraph-2D-control"};
-        NativeGame game; Simulation original,sample; bool enabledBefore,runningBefore; string output;
+        NativeGame game; Simulation original,sample; bool enabledBefore,runningBefore,lateEnabledBefore; Behaviour lateDriver; string output;
         Receipt receipt=new Receipt(); readonly HashSet<string> generated=new HashSet<string>();
         static string Arg(string key){var a=Environment.GetCommandLineArgs();int n=Array.IndexOf(a,key);return n>=0&&n+1<a.Length?a[n+1]:"";}
         static bool Has(string key){return Array.IndexOf(Environment.GetCommandLineArgs(),key)>=0;}
@@ -45,6 +47,7 @@ namespace Exoduser.UnityPort.Tools
         void SetRunning(bool value){typeof(NativeGame).GetProperty("Running").GetSetMethod(true).Invoke(game,new object[]{value});}
         object Field(string name){return typeof(NativeGame).GetField(name,Flags).GetValue(game);}
         void Invoke(string name){typeof(NativeGame).GetMethod(name,Flags).Invoke(game,null);}
+        void SyncViews(){((Camera)Field("view")).cullingMask=(int)Field("worldMask");Invoke("UpdateViews");Invoke("Remodel3DLate");}
         static string Sha(byte[] b){using(var h=SHA256.Create())return BitConverter.ToString(h.ComputeHash(b)).Replace("-","").ToLowerInvariant();}
         static string Dll(Type t){string p=t.Assembly.Location;return File.Exists(p)?Sha(File.ReadAllBytes(p)):"unavailable-connect-launcher-sha";}
         // Includes private randomState and all nested Core fields. Delegates are identity-only, never called.
@@ -69,7 +72,7 @@ namespace Exoduser.UnityPort.Tools
             receipt.runtimeDllSha=Dll(typeof(NativeGame));receipt.coreDllSha=Dll(typeof(Simulation));
             receipt.failures=receipt.rows.Count(x=>!x.passed);receipt.passed=receipt.error==null&&receipt.failures==0&&receipt.missing.Length==0&&receipt.restored&&receipt.originalStateSame&&receipt.originalReferenceSame&&receipt.width==1920&&receipt.height==1080&&receipt.listenerPaused&&receipt.listenerVolume==0&&receipt.peak==0&&receipt.directVideo==0;
             try{File.WriteAllText(Path.Combine(output,File.Exists(Path.Combine(output,"ground-placement-receipt.json"))?"ground-placement-failure-"+Guid.NewGuid().ToString("N")+".json":"ground-placement-receipt.json"),JsonUtility.ToJson(receipt,true));}catch(Exception ex){receipt.passed=false;Debug.LogError("GROUND_PLACEMENT receipt write failed "+ex);}
-            yield return new WaitForSecondsRealtime(1);Debug.Log("QA_MEDIA_DRAIN_COMPLETE GROUND_PLACEMENT");if(game!=null&&original!=null){SetRunning(runningBefore);game.enabled=enabledBefore;}Application.Quit(receipt.passed?0:2);
+            yield return new WaitForSecondsRealtime(1);Debug.Log("QA_MEDIA_DRAIN_COMPLETE GROUND_PLACEMENT");if(game!=null&&original!=null){SetRunning(runningBefore);game.enabled=enabledBefore;if(lateDriver!=null)lateDriver.enabled=lateEnabledBefore;}Application.Quit(receipt.passed?0:2);
         }
         IEnumerator Execute(){
             if(Directory.Exists(output)&&Directory.GetFileSystemEntries(output).Length!=0){Debug.LogError("QA output must be empty");throw new InvalidOperationException("QA output must be empty");}
@@ -84,7 +87,7 @@ namespace Exoduser.UnityPort.Tools
         IEnumerator Run(){
             if(game==null||!NativeRemodel3D.Active)throw new InvalidOperationException("Actual A2 not ready; launcher must enter field before fixture");
             var lobby=Field("lobby");lobby.GetType().GetMethod("CloseStartupCaptureMedia",Flags).Invoke(lobby,null);((Behaviour)lobby).enabled=false;
-            original=game.Simulation;enabledBefore=game.enabled;runningBefore=game.Running;game.enabled=false;SetRunning(false);
+            original=game.Simulation;enabledBefore=game.enabled;runningBefore=game.Running;game.enabled=false;SetRunning(false);lateDriver=Field("r3Late") as Behaviour;if(lateDriver!=null){lateEnabledBefore=lateDriver.enabled;lateDriver.enabled=false;}
             receipt.originalBefore=State(original);
             var setter=typeof(NativeGame).GetProperty("Simulation").GetSetMethod(true);
             sample=new Simulation(new SimulationConfig(),0x671403u);sample.AttachDruidBoss();
@@ -129,11 +132,12 @@ namespace Exoduser.UnityPort.Tools
                         receipt.rows.Add(row);
                         yield return new WaitForEndOfFrame();
                         row.screenshot=Path.Combine(output,labels[site]+"-"+consumer+"-1920.png");var image=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(row.screenshot,image.EncodeToPNG());Destroy(image);
+                        row.direct3840=Path.Combine(output,labels[site]+"-"+consumer+"-3840-direct-rt.png");CaptureDirect(game.Remodel3DCamera,row.direct3840);row.direct3840Captured=true;
                     }
                 }
                 var lifecycle=Lifecycle();try{while(lifecycle.MoveNext())yield return lifecycle.Current;}finally{(lifecycle as IDisposable)?.Dispose();}
             }finally{
-                setter.Invoke(game,new object[]{original});Invoke("UpdateViews");Invoke("Remodel3DLate");
+                setter.Invoke(game,new object[]{original});SyncViews();
                 receipt.originalAfter=State(original);receipt.originalReferenceSame=ReferenceEquals(original,game.Simulation);receipt.originalStateSame=receipt.originalBefore==receipt.originalAfter;
                 receipt.restored=true; // Keep NativeGame disabled through media drain; restore enable flag immediately before Quit.
             }
@@ -145,23 +149,23 @@ namespace Exoduser.UnityPort.Tools
             try{
                 Clear();sample.Player.X=4020;sample.Player.Y=7700;
                 sample.Druid.Projectiles.Add(new BossProjectile{X=4020,Y=7700,Mine=true,Life=100,Ml=180,Active=true});
-                view.Update(sample);Invoke("UpdateViews");Invoke("Remodel3DLate");
+                view.Update(sample);SyncViews();
                 var source=root.GetComponentsInChildren<SpriteRenderer>(true).FirstOrDefault(r=>r.enabled&&r.sprite!=null);
                 if(source==null){row.passed=false;row.error="No source sprite";yield break;}
                 string identity=source.GetEntityId().ToString();var ground=source.GetComponentsInChildren<MeshRenderer>(true).FirstOrDefault(r=>r.enabled&&!r.forceRenderingOff);
                 if(ground==null){row.passed=false;row.error="Ground lifecycle display mesh missing (baseline remains FAIL)";yield break;}
                 var surfaceShape=Measure(ground,true);row.shapes.Add(surfaceShape);row.passed &= surfaceShape.passed&&surfaceShape.vertexCount==289&&surfaceShape.triangleCount==512;
                 var rotation=source.transform.localRotation;var scale=source.transform.localScale;
-                source.enabled=false;Invoke("UpdateViews");Invoke("Remodel3DLate");row.passed &= !ground.enabled;source.enabled=true;
+                source.enabled=false;SyncViews();row.passed &= !ground.enabled;source.enabled=true;
                 source.gameObject.SetActive(false);yield return null;row.passed &= !ground.enabled;source.gameObject.SetActive(true);
-                sample.Druid.Projectiles[0].Mine=false;view.Update(sample);Invoke("UpdateViews");Invoke("Remodel3DLate");
+                sample.Druid.Projectiles[0].Mine=false;view.Update(sample);SyncViews();
                 row.passed &= !source.forceRenderingOff&&!ground.enabled&&source.GetEntityId().ToString()==identity;
-                sample.Druid.Projectiles[0].Mine=true;view.Update(sample);Invoke("UpdateViews");Invoke("Remodel3DLate");row.passed &= ground.enabled&&source.forceRenderingOff&&source.GetEntityId().ToString()==identity;
+                sample.Druid.Projectiles[0].Mine=true;view.Update(sample);SyncViews();row.passed &= ground.enabled&&source.forceRenderingOff&&source.GetEntityId().ToString()==identity;
                 bool active=NativeRemodel3D.Active,wasArena=sample.Stage.InArena;var oldArena=sample.Stage.Arena;
                 // Drive the real presentation transition: merely setting Active=false is re-enabled by Remodel3DSync while Stage remains in the field.
                 try{sample.Stage.Arena=BossArenaLayout.Generate(sample.Config.StageIndex);sample.Stage.InArena=true;Invoke("UpdateViews");row.passed &= !NativeRemodel3D.Active&&!ground.enabled&&!source.forceRenderingOff&&source.transform.localScale==scale&&source.transform.localRotation==rotation;}
-                finally{sample.Stage.InArena=wasArena;sample.Stage.Arena=oldArena;NativeRemodel3D.Active=active;Invoke("UpdateViews");}
-                view.Update(sample);Invoke("UpdateViews");Invoke("Remodel3DLate");
+                finally{sample.Stage.InArena=wasArena;sample.Stage.Arena=oldArena;SyncViews();}row.passed &= NativeRemodel3D.Active==active;
+                view.Update(sample);SyncViews();
                 var surfaceObject=ground.gameObject;Destroy(source.gameObject);yield return null;yield return null;
                 row.passed &= source==null&&surfaceObject==null;
             }finally{view.Dispose();Destroy(root);}
@@ -169,7 +173,7 @@ namespace Exoduser.UnityPort.Tools
         void Clear(){sample.FireZones.Clear();sample.SlamWaves.Clear();sample.MaliceOrbs.Clear();var d=sample.Druid;d.SeekerMines.Clear();d.Projectiles.Clear();d.LavaPools.Clear();d.PoisonPools.Clear();d.ChaseAoes.Clear();d.Fissures.Clear();d.TideWaves.Clear();sample.FieldZones.Clear();}
         bool Populate(string c,float x,float y){
             var d=sample.Druid;
-            if(c=="spikeTrap"||c=="holyDome")sample.FireZones.Add(new FireZone{Id=1,Type=c,X=x,Y=y,R=100,T=30,MaxT=180});
+            if(c=="spikeTrap"||c=="holyDome")sample.FireZones.Add(new FireZone{Id=c=="spikeTrap"?1:2,Type=c,X=x,Y=y,R=100,T=30,MaxT=180});
             else if(c=="SeekerMines")d.SeekerMines.Add(new SeekerMine{X=x,Y=y,R=56,T=61,ArmT=60,MaxT=180});
             else if(c.StartsWith("Mine")||c=="Projectile-control")d.Projectiles.Add(new BossProjectile{X=x,Y=y,Mine=c!="Projectile-control",Life=100,Ml=180,Active=true});
             else if(c=="trap"||c=="iceZone"||c=="blizzard")sample.FieldZones.Add(new Simulation.FieldZone{Kind=c,X=x,Y=y,R=20,Life=180});
@@ -204,6 +208,10 @@ namespace Exoduser.UnityPort.Tools
             // Before execution: flat normal hard gate only if sampled ground span <=1mm. Slopes retain vertex contact hard gate, normals diagnostic.
             // Fixed 2cm contact tolerance; every active displayed vertex is measured. No baseline exception.
             s.passed=points.Count>0&&(!ground||(s.maxBiasResidual<=.02f&&Mathf.Abs(s.pivotLift)<=.02f&&(s.normalDiagnosticOnly||Mathf.Abs(Vector3.Dot(s.normal,Vector3.up))>=.99f)));return s;
+        }
+        static void CaptureDirect(Camera camera,string path){
+            var target=new RenderTexture(3840,1080,24,RenderTextureFormat.ARGB32);target.Create();var oldTarget=camera.targetTexture;var oldActive=RenderTexture.active;float aspect=camera.aspect;var rect=camera.rect;
+            try{camera.aspect=3840f/1080;camera.rect=new Rect(0,0,1,1);var request=new UniversalRenderPipeline.SingleCameraRequest{destination=target};if(!RenderPipeline.SupportsRenderRequest(camera,request))throw new InvalidOperationException("URP direct render request unsupported");RenderPipeline.SubmitRenderRequest(camera,request);RenderTexture.active=target;var image=new Texture2D(3840,1080,TextureFormat.RGBA32,false);try{image.ReadPixels(new Rect(0,0,3840,1080),0,0);image.Apply();File.WriteAllBytes(path,image.EncodeToPNG());}finally{Destroy(image);}}finally{camera.targetTexture=oldTarget;camera.aspect=aspect;camera.rect=rect;RenderTexture.active=oldActive;target.Release();Destroy(target);}
         }
         static void MeasureVfx(Row row,float x,float y,bool inactive){bool prior=NativeRemodel3D.Active;try{NativeRemodel3D.Active=!inactive;const float lift=.013f;Vector3 a=VfxWorld.ToWorld(x,y,lift),b=VfxWorld.ToWorldMetres(new Vector2(x/100,-y/100),lift);float expected=inactive?lift:NativeRemodel3D.GroundY(x/100,-y/100)+lift;row.shapes.Add(new Shape{kind="VfxWorld.ToWorld",pivot=a,pivotLift=a.y-expected,passed=Mathf.Abs(a.y-expected)<.0001f});row.shapes.Add(new Shape{kind="VfxWorld.ToWorldMetres",pivot=b,pivotLift=b.y-expected,passed=Mathf.Abs(b.y-expected)<.0001f});row.passed=row.shapes.All(s=>s.passed);}finally{NativeRemodel3D.Active=prior;}}
     }

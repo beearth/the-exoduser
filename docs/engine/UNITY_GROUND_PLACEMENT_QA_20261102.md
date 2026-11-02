@@ -67,3 +67,11 @@ NEXT PASS: 총괄 exact1403 baseline 컴파일→원본1920 FAIL 수치→PC 수
 - VfxWorld Active/비활성 계약과 일반탄·강타·악의구·캐릭터 계약은 유지한다. 최종 컴파일/실제 RED·GREEN/시각 검수는 아직 수행하지 않았다.
 
 2D lifecycle drives sample.Stage.InArena=true with generated sample-only BossArenaLayout, then restores both fields in finally. Active=false alone would be re-enabled by the product Remodel3DSync and is not used as a transition oracle.
+
+## QA revision before full baseline run
+
+First actual ARM641403+QA run exited2 after one measured spikeTrap FAIL. The next holyDome re-used FireZone Id1 and hit a fixture NullReference (zone Items are keyed by ID); the one screenshot was black because the disabled NativeGame no longer reset the world camera mask while its separate Late driver still ran. This is incomplete baseline coverage, not the full RED acceptance. Original Simulation hash/reference restored and QA prefs raw/cache restored.
+
+QA r2 gives spikeTrap Id1 and holyDome Id2, disables the product Late driver only while explicitly calling the original UpdateViews/Remodel3DLate, and resets the world mask before each manual update. Original Late enabled state is restored immediately before owning process Quit. No product placement change. All contact, UV and control assertion criteria remain unchanged.
+
+Each consumer now captures the1920x1080 original window and a separate3840x1080 direct RenderTexture through official URP SingleCameraRequest/SubmitRenderRequest. The latter is not a3840 physical window claim. Camera target/aspect/rect and active RT are restored in finally.
