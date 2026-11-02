@@ -657,7 +657,7 @@ function Cmd-Install {
   $actual = ([string](GitR rev-parse HEAD)).Trim()
   & git.exe -C $Cfg.Worktree merge-base --is-ancestor $actual origin/unity/main
   if ($LASTEXITCODE -ne 0) { throw 'unity/main 병합 전에는 설치하지 않는다' }
-  $branch = ([string](GitR branch --show-current)).Trim()
+  $branch = "$(GitR branch --show-current)".Trim()
   if ($branch -and $branch -ne 'unity/main') { throw '설치는 통합된 unity/main 또는 지정 detached 작업본에서 실행' }
   if (& git.exe -C $Cfg.Worktree status --porcelain --untracked-files=normal) { throw '설치 source는 변경·미추적 파일 없는 소유 작업본이어야 한다' }
   $dst = Join-Path $LoopDir 'bin'; New-Item -ItemType Directory -Force -Path $dst | Out-Null
@@ -717,7 +717,7 @@ function Cmd-Run {
     $dirty = & git.exe -C $Cfg.Worktree status --porcelain --untracked-files=no
     if ($dirty) { throw '작업본 INDEX/WORK 변경이 있어 이번 회차 중단' }
     if ($actual -ne $head.full) {
-      $branch = ([string](GitR branch --show-current)).Trim()
+      $branch = "$(GitR branch --show-current)".Trim()
       if ($branch -and $branch -ne 'unity/main') { throw '다른 담당 브랜치는 자동 갱신하지 않음' }
       & git.exe -C $Cfg.Worktree merge-base --is-ancestor HEAD $head.full
       if ($LASTEXITCODE -ne 0) { throw '비 fast-forward 갱신 거부' }
