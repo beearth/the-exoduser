@@ -25,6 +25,7 @@ test('all native combat/save/AI declarations retain their exact baseline source'
     // Optional environment hooks: ground light, original-object relief, foliage.
     // Actor/VFX/input/save declarations and the rest of draw remain byte-exact.
     const normalise=value=>value
+      .replace('window._Web3DLivingLayer?.snapshot().enabled?window._Web3DLivingLayer.cleanHill(tex):tex','tex')
       .replace(/^  const _web3dAmbient=G.stage===0&&!G._bossArena&&window\._Web3DLivingLayer\?\.snapshot\(\)\.enabled;\r?\n/m,'')
       .replace('if(_lightCvs&&!_web3dAmbient)','if(_lightCvs)')
       .replace('X.globalAlpha=_web3dAmbient?0:_vAlpha','X.globalAlpha=_vAlpha')

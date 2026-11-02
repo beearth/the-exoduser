@@ -20,7 +20,8 @@ test('native toxic moat keeps all ten authored green emitters in the 3D environm
  assert.equal(typeof layout.moatLights,'function','moat light adapter exists');const rows=layout.moatLights(hill,40);assert.equal(rows.length,10);
  rows.forEach((row,i)=>{assert.deepEqual(row.position,[native[i].x,native[i].y]);assert.deepEqual(row.color,[126/255,236/255,98/255]);assert.equal(row.radius,210);assert.equal(row.energy,.30);});
 });
-test('native colored emission is added after diffuse shading and survives a dark ambient',()=>{
+test('native emission adds energy without replacing material hue',()=>{
  const emission=[.04,.12,.03],color=shadeEnvironment([.08,.09,.04],[0,0,0],[0,0,0],emission);
- assert.deepEqual(color,emission,'native self-light is neither tinted nor dimmed by environment lighting');
+ assert.ok(color[1]>.09*.72,'native self-light remains visible');
+ assert.ok(Math.abs(color[0]/color[1]-.08/.09)<1e-10,'emission preserves the material channel ratios');
 });

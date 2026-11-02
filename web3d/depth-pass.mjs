@@ -1,8 +1,9 @@
 import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
-import {objectVolume,occlusion,compareDepth} from './depth-layout.mjs?v=20261102-round4-final';
-import {lightingGLSL} from './lighting-model.mjs?v=20261102-hue1';
+import {objectVolume,presentationOcclusion,compareDepth} from './depth-layout.mjs?v=20261102-round6';
+import {lightingGLSL} from './lighting-model.mjs?v=20261102-round6';
 import {createFrameSampler} from './frame-sampler.mjs';
 import {atmosphereGLSL} from './atmosphere-model.mjs?v=20261102-hue1';
+import {nativePropContext} from './native-prop-context.mjs?v=20261102-round6';
 
 // Each native prop is rasterised by the original painter exactly once. The GPU
 // orders those images by their roots, preserves foreground actor pixels, and
@@ -16,7 +17,7 @@ export function createDepthPass(renderer,canvas,shared,lighting){
   view=v;rows=[];byObject.clear();const actors=[{...s.P,_web3dHero:true},...s.enemies];
   for(const object of s.objects){const volume=objectVolume(object,s.meta[object.type],s.images[object.type]);
    if(!volume||volume.right<v.x||volume.left>v.x+v.w||volume.bottom<v.y||volume.top>v.y+v.h||!s.images[object.type]?.naturalWidth)continue;
-   const row={...volume,...occlusion(volume,actors)};rows.push(row);byObject.set(object,row);
+   const row={...volume,...presentationOcclusion(volume,actors,s.propOpacity)};rows.push(row);byObject.set(object,row);
   }rows.sort(compareDepth);stats.depthObjects=rows.length;stats.depthFaded=rows.filter(r=>r.alpha<1).length;stats.depthOrder=rows.map(r=>({type:r.object.type,foot:r.foot,alpha:r.alpha}));
  }
  function capture(s){
@@ -58,7 +59,7 @@ export function createDepthPass(renderer,canvas,shared,lighting){
    const r=rows[i],item=entry(r),w=r.right-r.left,h=r.bottom-r.top,scale=Math.min(1,(s.quality==='low'||s.budget?.level>=2?768:1536)/Math.max(w,h));
    const pw=Math.ceil(w*scale),ph=Math.ceil(h*scale);
    if(item.image.width!==pw||item.image.height!==ph){item.art.dispose();item.image.width=pw;item.image.height=ph;item.art=texture(item.image);item.u.art.value=item.art;}
-   const x=item.image.getContext('2d');x.setTransform(1,0,0,1,0,0);x.clearRect(0,0,pw,ph);x.setTransform(scale,0,0,scale,-r.left*scale,-r.top*scale);paint(x,r.object);item.art.needsUpdate=true;
+   const x=item.image.getContext('2d');x.setTransform(1,0,0,1,0,0);x.clearRect(0,0,pw,ph);x.setTransform(scale,0,0,scale,-r.left*scale,-r.top*scale);paint(nativePropContext(x,s.nativeProxy),r.object);item.art.needsUpdate=true;
    const m=item.mask.getContext('2d');m.fillStyle='#000';m.fillRect(0,0,128,128);m.fillStyle='#00ff00';
    for(const b of r.bodies)m.fillRect((b.left-r.left)*128/w,(b.top-r.top)*128/h,(b.right-b.left)*128/w,(b.bottom-b.top)*128/h);
    m.fillStyle='#ffff00';

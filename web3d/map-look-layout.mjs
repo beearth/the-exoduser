@@ -10,7 +10,7 @@ export function mapLookLayout(data,anchors){
  for(const p of anchors.props)if(data.tree_glow.textures.includes(file(p)))lights.push({...data.tree_glow,id:'tree_glow_'+p.id,position:[...p.position],radius:p.draw_size[0]*data.tree_glow.radius_scale});
  const angle=data.light_shafts.angle_deg*Math.PI/180;
  const shafts=data.light_shafts.shafts.map(([x,y,width,length],i)=>({position:[x,y],width,length,angle,phase:i*1.7}));
- for(const s of shafts)lights.push({id:'shaft_pool',position:[s.position[0]-Math.sin(angle)*s.length*.4,s.position[1]+Math.cos(angle)*s.length*.4],radius:s.width*1.1,energy:data.light_shafts.pool_energy,color:data.light_shafts.pool_color,pulse:[.12,.25]});
+ // Beams scatter through mist; a canopy opening is not a floor point emitter.
  const shadows=anchors.props.filter(p=>!data.prop_shadow.skip_textures.includes(file(p)));
  const center=anchors.boundary.reduce((c,p)=>[c[0]+p[0]*anchors.tile_size/anchors.boundary.length,c[1]+p[1]*anchors.tile_size/anchors.boundary.length],[0,0]);
  const random=seeded(20261020),f=data.foreground,foreground=[];

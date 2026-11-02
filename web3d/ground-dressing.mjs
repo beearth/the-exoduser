@@ -1,9 +1,10 @@
+import {createMaterialCleanup} from './material-cleanup.mjs?v=20261102-round6';
 // Authored visual-only low silhouettes; source map and gameplay arrays stay untouched.
 export function dressingLayout(data){return data.regions.flatMap(region=>region.placements.map(row=>({...row,region:region.id}))).filter(r=>!data.exclusions.some(z=>{const [x0,y0,x1,y1]=z.rect;return r.x+r.width/2>x0&&r.x-r.width/2<x1&&r.y+r.height/2>y0&&r.y-r.height/2<y1;}));}
 export function visibleDressing(r,v){return r.x+r.width/2>v.x&&r.x-r.width/2<v.x+v.w&&r.y+r.height/2>v.y&&r.y-r.height/2<v.y+v.h;}
 export async function dressingImages(data){
- const images=new Map();
- await Promise.all(Object.entries(data.assets).map(async([key,url])=>{const image=new Image();await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=()=>reject(Error('ground asset '+key));image.src=url;});images.set(key,image);}));
+ const images=new Map(),clean=createMaterialCleanup();
+ await Promise.all(Object.entries(data.assets).map(async([key,url])=>{const image=new Image();await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=()=>reject(Error('ground asset '+key));image.src=url;});images.set(key,clean(image));}));
  // Selected leaf/wood excerpts from adopted source art, feathered once at load.
  // They lie below the root masses and do not replace or rewrite the map PNG.
  for(const [key,spec]of Object.entries(data.slices||{})){

@@ -22,6 +22,19 @@ export function occlusion(v,actors){
  }
  return {alpha:hidden?.35:1,front,bodies};
 }
+export function presentationOcclusion(volume,actors,nativeOpacity){
+ const row=occlusion(volume,actors);
+ if(nativeOpacity)row.alpha=nativeOpacity(volume.object);
+ return row;
+}
+export function nativePropStamp(o,m,image){
+ if(!m||!image?.naturalWidth||m.anim||m.sheet)return null;
+ const size=(m.sz||32)*(o.scale||1),ss=m.sourceSize||[image.naturalWidth,image.naturalHeight],ar=m.keepAR&&!m.squareDraw?ss[0]/ss[1]:1;
+ let w=size*Math.min(1,ar),h=size/Math.max(1,ar),px=m.pivotX??.5,py=m.anchorBottom?1:m.pivotY??.5;
+ if(o.type==='m_c1tree'&&o._hand){w*=.72;h*=.72;px=.5;py=.72;}
+ const r=m.srcRect||[0,0,image.naturalWidth,image.naturalHeight],tr=m.srcRect?m.trimOffset||[0,0]:[0,0];
+ return {source:r,destination:[o.x-w*px+w*tr[0]/ss[0],o.y-h*py+h*tr[1]/ss[1],w*r[2]/ss[0],h*r[3]/ss[1]]};
+}
 export const compareDepth=(a,b)=>a.foot-b.foot||a.left-b.left;
 export function shadowVector(position,light){
  const dx=light?position[0]-light[0]:1,dy=light?position[1]-light[1]:1,d=Math.hypot(dx,dy)||1;
