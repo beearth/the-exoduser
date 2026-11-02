@@ -2,7 +2,29 @@
 
 사용자 지시: “게임에 상자 넣어서 열어보고”. 대상은 `game.html` 웹 본편의 기존 보스 보물상자다. Unity·Steam 배포·스폰/보상 수량·확률/저장 설계 변경은 포함하지 않는다. 11/02 후속 지시로 상자 전리품의 바깥 분산·분출과 착지 전 수거 대기를 적용한다. 최신 추가 지시 “상자가 너무커 … 충돌도 넣고”로 표시 축소·동적 몸통 충돌을 적용한다.
 
-## 11/02 최신 재질 후보 — 국소 albedo 분리·source-only 미검증
+## 11/03 최신 소스 후보 — 취소 가능한 셰이더 준비·실GPU 미검증
+
+총괄 인수 통보와 정확 docs commit `c5da354e1221a9aa3db23f65786dc64cdb34058e`를 읽었다. 기존7d 국소 albedo의 root runtime07081a 실Metal/64px 원본 가독성 PASS와 이번 준비 후보를 구분한다. 순서를 교차한 첫 표시24.1/24.6ms 및24.1/25.5ms에서는 단독271ms 회귀가 재현되지 않았다. 과거271.2ms 계측에는 backend조회와 추가 COMPILE_STATUS 동기조회가 섞였으며, 공통 getProgramInfoLog3회 합16.4~17.6ms가 주요 첫사용 대기 위치로 관측됐다. **271ms 해결·driver cold 보장·전체FPS/1%low 개선 선언이 아니다.** 아래 준비 경로의 실제 비용·색·자원은 다음 root Mac 실검수 대상이다.
+
+| id | 항목 | 이번 소스 후보 계약·검증 경계 |
+|---|---|---|
+| GOAL | 표시 전 준비 | Three/GLB/재질/기존 접촉그림자를 만든 뒤 `prepareChestRenderer(renderer,scene,camera,{signal})` 완료를 기다린 다음 ready=true. loading 중 중복 load/compile0, active/isShowing=false·overlay 숨김으로 기존 native2D/보상·수거 유지 |
+| KHR | r160 고정 경로 | `renderer.extensions.has('KHR_parallel_shader_compile')` 지원 때만 public `renderer.compile(scene,camera)`1회. 반환 재질의 `renderer.properties.get(material).currentProgram`을 yield 전 고유Set에 캡처. r160 내부 program API 의존을 해당 모듈로 한정, vendor 수정0 |
+| READY | 준비 완료 | 캡처 program의 `isReady()`로 기존 COMPLETION_STATUS_KHR 완료를 확인. 모두 완료되면 각 고유 program의 `getUniforms()`1회로 r160 onFirstUse의 기존 link/log 검사·uniform/attribute cache를 채움. 별도 COMPILE_STATUS/getProgramInfoLog 진단 추가0, checkShaderErrors/onShaderError 보존 |
+| POLL | 기간·상한 | `CHEST_PREPARE_POLL_MS=10`ms, `CHEST_PREPARE_TIMEOUT_MS=5000`ms. 시작부터 performance.now 경과>=5000이면 실패. event loop/동기 compile·driver 호출을 선점하거나5초 이내 종료를 보장하는 hard deadline은 아님; 숨김 탭 timer 지연도 경과에 포함 |
+| CANCEL | 종료 수명 | private AbortController를 자원해제 전에 abort. 준비 타이머 clear·abort listener 제거·program Set/GL/renderer/scene/camera 참조 비움, 이미 큐에 들어간 callback은 settled 검사로 접근0. renderer.properties는 yield 후 재조회0. r160 compileAsync의 취소 불가능한 내부 poll을 호출하지 않음 |
+| UNSUPPORTED | 기존 렌더 | KHR 미지원이면 compile/poll/getUniforms 준비0, 결과 unsupported로 원래 첫 product render 경로 사용. 비동기 개선·첫사용 대기 제거 보장0. 기존 첫 render 오류 catch/2D fallback 보존 |
+| FAILURE | 실패·경합 | compile/isReady/getUniforms 예외·해제된 program·timeout·contextlost는 failed/ready=false·2D fallback·1회해제. falsey 거절 값도 실패로 처리. contextlost listener는 release 때 제거한 뒤 own context loss. 실패/종료 모두 own RAF 취소·재예약0. 늦은 GLB는 disposed 또는 failed 양쪽에서 즉시 해제, 늦은 거절은 재실패/중복해제0 |
+| RESULT | 결과·관측 API | helper 결과 ready/unsupported/cancelled, 오류는 Promise rejection. `snapshot().preparation={status,pollMs:10,timeoutMs:5000}`; status idle→preparing→ready/unsupported, 조기해제 cancelled, 오류 failed. ready/unsupported 완료 뒤 dispose하면 그 준비 결과는 이력으로 유지하되 top-level ready/active=false |
+| PRESERVE | 고정 입력 | `chest-local-albedo-v1`/색·gain/mask·캐시id/빛/노출1.25/fov40·64CSS/44×24몸통·개봉/R/보상/RNG/AI/save·game/index/title·GLB/원본texture·vendor 불변. 새 texture/geometry/program variant·helper모듈 추가0. 실제4texture/5geometry/3program 유지 여부는 다음GPU 확인 |
+| CPU QA | 검증 | 기존20+준비/경합20=40 PASS. 설치된 r160 compileAsync/실WebGLProperties JS로 해제 뒤 late-poll TypeError를 재현하고 같은 r160 isReady closure를 CPU GL 대역으로 실행. 준비후ready/한번compile·고유program중복방지·unsupported·dispose/resolve/reject/latecallback·GLB지연/contextlost·timeout·falsey거절·RAF/timer0 확인. 실제WebGLRenderer/GPU·driver/firstvisible 비용 증명 아님 |
+| NEXT | 실물 gate | root가 정확 module 최소차분만 인수→기존Mac fresh공식artifact/Metal/64px 같은그림·자원·firstvisible A/B/prepare중dispose·실오류/GLB지연·정상종료 검수. 이 준비 후보로 기존07081a 원본 PASS를 소급 재사용하지 않음 |
+
+정확 전후 byte/SHA·RED/GREEN·patch·원격 영수증: `I:/EXODUSER-Storage/tripo-chest-game/20261103/cancellable-shader-prepare/REPORT.md`. 이번 PC에서는 source-only, GPU/CUA/게임/서버/빌드/전송/유료0. 기존branch만 정상 보존하며 main/CI/공개 반영0.
+
+## 11/02 국소 albedo 소스 후보 이력 — 당시 source-only 미검증
+
+아래는7d 제작 당시의 기록이다. 이후 root07081a 한정 실GPU/1x PASS 인수 통보는 위 최신 절과 총괄c5 문서를 따르며, 이번 셰이더 준비 후보의 GPU PASS를 뜻하지 않는다.
 
 같은64px Mac 원본2장과scale1 strip4장을 직접 확인했다. 이전6a 소스/9d 실산출의 반사 후보는 철테 가장자리만 미세하게 바뀌며 목재·철테·잠금쇠·열린 내측의 짙은 회녹색 뭉침이 남아 **RETOUCH/미채택**이다. 반사 강도·전역 노출 미세조정 대신 기존 기본색과금속도B로 부위별 명암/색을 분리하는 한 후보로 방법을 전환한다. 아래는 새 소스 계약이며, 다음 절의128×64 반사장은 과거 후보 이력이다.
 
@@ -57,8 +79,8 @@
 | LID | 노드 | `TripoChest` 아래 정지 `ChestBody`·`ChestInterior`, `ChestLidPivot` 아래 `ChestLid`. 열린 X축 회전 −1.92rad(약110도). 기본 닫힘, 이미 열린 world item의 늦은 모델 로드도 열린 상태를 따른다 |
 | MOTION | `chest3d.mjs` | 개봉 후 0.4초 흔들림 + 0.9초 cubic ease-out 뚜껑 열기, 열린 상태 유지. dt는 0~0.05초, 게임 일시정지 중 진행0. 다시 열어도 재시작/재보상0 |
 | DRAW | 접지·카메라 | CSS64×64(최초160에서60% 축소), DPR≤1.5. 모델 폭1.8, Perspective40도/카메라(.7,1.75,3.5)→(0,.62,0). 투영된 바닥 원점과 실제 world item 위치를 맞추고 부유 이동 제거. 작은 접촉 그림자 사용 |
-| LOAD | 폴백 | 실제 chest가 있을 때만 Three/GLB·WebGL을 준비한다. 준비 전/로드 실패/컨텍스트 생성 실패에는2D 목재 몸통44×24px 폴백을 유지한다. 열린 우편함 이모지를 열린 목재 상자로 교체하고 같은 충돌 면적을 따른다. `isShowing(item)`은 표시 중인 바로 그 item만 숨겨 다른 chest의 폴백을 지우지 않음 |
-| LIFETIME | 상태 | 스테이지 이동·item 제거·게임 종료 시 overlay 숨김. 일시정지에는 현재 형태 유지. 모델 로드 실패를 반복 재요청하지 않음 |
+| LOAD | 폴백 | 실제 chest가 있을 때만 Three/GLB·WebGL을 준비한다. KHR 지원 때 취소 가능한 셰이더 준비 완료 뒤ready, 미지원은 기존첫렌더 경로. 준비/로드/컨텍스트/timeout 실패에는2D 목재 몸통44×24px 폴백을 유지한다. 열린 우편함 이모지를 열린 목재 상자로 교체하고 같은 충돌 면적을 따른다. `isShowing(item)`은 표시 중인 바로 그 item만 숨겨 다른 chest의 폴백을 지우지 않음 |
+| LIFETIME | 상태 | 스테이지 이동·item 제거·게임 종료 시 overlay 숨김. 일시정지에는 현재 형태 유지. 실패 재요청0, dispose/실패 때 준비취소·상자 RAF종료·1회해제. 실패/종료 뒤 늦은 GLB도 해제하고 준비를 재개하지 않음 |
 | GAMEPLAY | 보존 | 보스 사망 후 기존 위치의 chest 생성, 거리<60 상호작용, `opened=true`를 먼저 세운 뒤 장비3~5개·기존 추가 보상. 보상 수량·등급 확률·추가 재화/물약·스폰·저장 보존. 전리품 좌표와 분출/착지 전 수거 대기, 표시 크기·상자 몸통 충돌은 아래 후속 계약으로 변경 |
 | PACKAGE | 파일 선택 | `build-nwjs.mjs` FILES에 `chest3d.mjs`1개만 추가. 기존 GLB 경로를 교체해 새70MB master 추가를 막고 기존4GB/단일100MB 제한을 유지 |
 

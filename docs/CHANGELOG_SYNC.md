@@ -1,3 +1,9 @@
+## 2026-11-03 상자 취소 가능한 셰이더 준비 — source-only·실GPU 미검증
+
+- 설치된Three r160 compileAsync의 해제 뒤 late-poll TypeError를 실제JS로 재현했다. KHR 지원 때만 compile1회→고유program 완료10ms poll→기존getUniforms/onFirstUse 검사 뒤ready로 넘기는 상자 전용 취소 경로를 추가했다.5초 경과 상한/미지원 기존렌더/예외2D fallback을 명시했다.
+- dispose·contextlost·timeout/resolve/reject 경합에서 타이머/ownRAF/참조 정리, 실패 뒤 늦은GLB 해제·재실패 방지. 기존색/빛/크기/충돌/보상/저장·game/index/title/GLB/vendor 변경0,새모듈/texture0. CPU40 PASS/실GPU·첫표시 개선 미검증,271ms해결 주장0.
+- 정확 API·상한·대역 한계·기존07081a 시각PASS와의 구분은 [상자 최신 계약](4.1맵디자인+설정/TRIPO_CHEST_GAME_20261102.md). 기존branch만 정상commit/push,main/CI/공개반영0.
+
 ## 2026-11-02 상자 국소 albedo 분리 후보 — source-only·미채택
 
 - 같은64px Mac 원본6장 직접 검토: 이전6a/9d 반사 후보 RETOUCH/미채택. 반사 데이터/PMREM 준비를 제거하고 기존 기본색·금속도B로 목재/철테 톤을 분리하는 한 개 소스 후보를 준비했다. 전역노출·빛·크기·GLB·충돌·보상·game/index/title 보존.
