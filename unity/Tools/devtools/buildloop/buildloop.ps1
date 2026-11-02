@@ -880,7 +880,9 @@ function Cmd-Run {
     Log ('오류: ' + $_.Exception.Message + ' @ ' + $_.ScriptStackTrace)
   } finally {
     # 남은 자식 프로세스 확인(우리가 띄운 것만)
-    if ($reserved) { try { Set-UnityReservation 'unreserve' 'editor'; Set-UnityReservation 'unreserve' 'player' } catch { Log ('예약 반환 경고: ' + $_.Exception.Message) } }
+    # WAIT keeps the reservation (createdAt preserved) so the next 30-min cycle keeps its FIFO place instead of rejoining at the back; TTL covers the gap.
+    if ($reserved -and $run.verdict -eq 'WAIT') { Log '예약 유지: WAIT 회차는 다음 주기까지 순번을 지킨다' }
+    elseif ($reserved) { try { Set-UnityReservation 'unreserve' 'editor'; Set-UnityReservation 'unreserve' 'player' } catch { Log ('예약 반환 경고: ' + $_.Exception.Message) } }
     if ($run.verdict -eq 'WAIT' -and -not $NoSwap -and $stage -and (Test-Path -LiteralPath $stage)) {
       # Own build_new only; keep the completed candidate without blocking the next cycle.
       $target = Join-Path $runDir 'waiting-build'
