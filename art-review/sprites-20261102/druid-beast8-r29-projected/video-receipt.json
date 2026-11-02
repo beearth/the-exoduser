@@ -1,0 +1,19 @@
+[
+  {
+    "group": "druid-beast8-r29-projected",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/druid-beast8-r29-projected/comparison.mp4",
+    "stem": "comparison",
+    "sha256": "199f2892f59a230f2afadc79740f171bbcce794be97a8ed4983e1c6d46e4d39c",
+    "bytes": 3396278,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 700,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  }
+]

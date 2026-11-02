@@ -1,0 +1,19 @@
+[
+  {
+    "group": "druid-dive8-r29-projected",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/druid-dive8-r29-projected/comparison.mp4",
+    "stem": "comparison",
+    "sha256": "9e08d8dbae66560d74302b50929184aae735b6913256e97ee5b82a7570f2073e",
+    "bytes": 6605009,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1200,
+        "height": 702,
+        "frames": "64"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  }
+]

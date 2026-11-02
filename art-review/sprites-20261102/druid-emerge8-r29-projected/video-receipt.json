@@ -1,0 +1,19 @@
+[
+  {
+    "group": "druid-emerge8-r29-projected",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/druid-emerge8-r29-projected/comparison.mp4",
+    "stem": "comparison",
+    "sha256": "3c0110050149acbff20a0eba6d084daf053111eab60d523125a646e6d531f4f1",
+    "bytes": 5651402,
+    "streams": [
+      {
+        "type": "video",
+        "width": 1088,
+        "height": 702,
+        "frames": "64"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  }
+]

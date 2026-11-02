@@ -1,0 +1,575 @@
+{
+  "group": "druid-beast-native-axis-projected",
+  "supersedes": "druid-beast8-r26",
+  "kind": "beast",
+  "sourceSize": [
+    1774,
+    887
+  ],
+  "base2x": [
+    3548,
+    1774
+  ],
+  "candidateSize": [
+    3548,
+    1774
+  ],
+  "padding": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "sourceX": [
+    0,
+    444,
+    887,
+    1331,
+    1774
+  ],
+  "sourceY": [
+    0,
+    444,
+    887
+  ],
+  "candidateX": [
+    0,
+    888,
+    1774,
+    2662,
+    3548
+  ],
+  "candidateY": [
+    0,
+    888,
+    1774
+  ],
+  "runtimePPU": 100,
+  "sourcePivotNormalized": [
+    0.5,
+    0.14
+  ],
+  "pivot": "original bottom-left pixel pivot*2+[newL,B], normalize new cell; same original Core pivot, no bbox pivot",
+  "projection": "inverse pixel aspect of current NativeDruidBody.Put: walk/attack/emerge14.1/9.3*sourceW/sourceH; special1/1.12; idle aspect-correct factor1",
+  "projectionPurpose": "same logical character and S3 world aspect across states; art pose unchanged; no Core/timing/hit changes",
+  "staff": "source S3 rigid logical scale inherited; native x projection is render-camera calibration, not perpose prop fitting",
+  "runtimeBinding": "current NativeDruidArt100; explicit rects/pivot + padded logical draw legacy dw/dh * newCell/(2*sourceCell); NativeHd2D.Actor/current Player pending",
+  "normal": "same diffuse alpha, silhouette bevel4 estimate",
+  "runtimeAdoption": 0,
+  "referenceDisplay": "155px normalized review target, actual current Player1x unverified",
+  "inputMetadata": {
+    "group": "druid-beast8",
+    "directions": [
+      "south",
+      "south-west",
+      "west",
+      "north-west",
+      "north",
+      "north-east",
+      "east",
+      "south-east"
+    ],
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "candidateSize": [
+      3548,
+      1774
+    ],
+    "sourceX": [
+      0,
+      444,
+      887,
+      1331,
+      1774
+    ],
+    "sourceY": [
+      0,
+      444,
+      887
+    ],
+    "candidateX": [
+      0,
+      888,
+      1774,
+      2662,
+      3548
+    ],
+    "candidateY": [
+      0,
+      888,
+      1774
+    ],
+    "bodyScale": 1.8233766233766233,
+    "runtimePPU": 100,
+    "pivot": [
+      0.5,
+      0.14
+    ],
+    "runtimeAdoption": 0,
+    "normal": "silhouette bevel estimate; actual lighting unverified",
+    "preview": "direction turntable, not new charge locomotion",
+    "referenceDisplay": "155px normalized target, actual Player1x unverified",
+    "records": [
+      {
+        "direction": "south",
+        "sourceBox": [
+          99,
+          36,
+          342,
+          405
+        ],
+        "bodyScale": 1.8233766233766233,
+        "translation": [
+          208,
+          110
+        ],
+        "sourceFoot": 405,
+        "targetFoot": 810,
+        "actualFoot": 810,
+        "border": 0,
+        "normalAlphaMismatch": 0,
+        "components": [
+          197639
+        ]
+      },
+      {
+        "direction": "south-west",
+        "sourceBox": [
+          37,
+          28,
+          380,
+          404
+        ],
+        "bodyScale": 1.8233766233766233,
+        "translation": [
+          65,
+          101
+        ],
+        "sourceFoot": 404,
+        "targetFoot": 808,
+        "actualFoot": 808,
+        "border": 0,
+        "normalAlphaMismatch": 0,
+        "components": [
+          235678
+        ]
+      },
+      {
+        "direction": "west",
+        "sourceBox": [
+          26,
+          43,
+          413,
+          384
+        ],
+        "bodyScale": 1.8233766233766233,
+        "translation": [
+          74,
+          90
+        ],
+        "sourceFoot": 384,
+        "targetFoot": 768,
+        "actualFoot": 768,
+        "border": 0,
+        "normalAlphaMismatch": 0,
+        "components": [
+          228403
+        ]
+      },
+      {
+        "direction": "north-west",
+        "sourceBox": [
+          52,
+          36,
+          361,
+          403
+        ],
+        "bodyScale": 1.8233766233766233,
+        "translation": [
+          114,
+          109
+        ],
+        "sourceFoot": 403,
+        "targetFoot": 806,
+        "actualFoot": 806,
+        "border": 0,
+        "normalAlphaMismatch": 0,
+        "components": [
+          201644
+        ]
+      },
+      {
+        "direction": "north",
+        "sourceBox": [
+          98,
+          20,
+          349,
+          404
+        ],
+        "bodyScale": 1.8233766233766233,
+        "translation": [
+          199,
+          111
+        ],
+        "sourceFoot": 404,
+        "targetFoot": 808,
+        "actualFoot": 808,
+        "border": 0,
+        "normalAlphaMismatch": 0,
+        "components": [
+          202092
+        ]
+      },
+      {
+        "direction": "north-east",
+        "sourceBox": [
+          39,
+          18,
+          350,
+          403
+        ],
+        "bodyScale": 1.8233766233766233,
+        "translation": [
+          77,
+          113
+        ],
+        "sourceFoot": 403,
+        "targetFoot": 806,
+        "actualFoot": 806,
+        "border": 0,
+        "normalAlphaMismatch": 0,
+        "components": [
+          216520
+        ]
+      },
+      {
+        "direction": "east",
+        "sourceBox": [
+          25,
+          35,
+          428,
+          386
+        ],
+        "bodyScale": 1.8233766233766233,
+        "translation": [
+          104,
+          70
+        ],
+        "sourceFoot": 386,
+        "targetFoot": 772,
+        "actualFoot": 772,
+        "border": 0,
+        "normalAlphaMismatch": 0,
+        "components": [
+          237359
+        ]
+      },
+      {
+        "direction": "south-east",
+        "sourceBox": [
+          63,
+          20,
+          381,
+          414
+        ],
+        "bodyScale": 1.8233766233766233,
+        "translation": [
+          125,
+          128
+        ],
+        "sourceFoot": 414,
+        "targetFoot": 828,
+        "actualFoot": 828,
+        "border": 0,
+        "normalAlphaMismatch": 0,
+        "components": [
+          219767
+        ]
+      }
+    ]
+  },
+  "records": [
+    {
+      "direction": "south",
+      "key": 0,
+      "frame": 0,
+      "sourceRect": [
+        0,
+        0,
+        444,
+        444
+      ],
+      "rect": [
+        0,
+        0,
+        888,
+        888
+      ],
+      "inputCell": [
+        888,
+        888
+      ],
+      "projectionX": 0.8928571428571428,
+      "projectionAxisX": 444,
+      "paddingExtraSymmetric": 0,
+      "YRegistrationCorrection": 0,
+      "destinationGrip": null,
+      "sourceFoot": 405,
+      "targetFoot": 810,
+      "actualFoot": 810,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        176510
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "south-west",
+      "key": 1,
+      "frame": 1,
+      "sourceRect": [
+        444,
+        0,
+        443,
+        444
+      ],
+      "rect": [
+        888,
+        0,
+        886,
+        888
+      ],
+      "inputCell": [
+        886,
+        888
+      ],
+      "projectionX": 0.8928571428571428,
+      "projectionAxisX": 443,
+      "paddingExtraSymmetric": 0,
+      "YRegistrationCorrection": 0,
+      "destinationGrip": null,
+      "sourceFoot": 404,
+      "targetFoot": 808,
+      "actualFoot": 808,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        210432
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "west",
+      "key": 2,
+      "frame": 2,
+      "sourceRect": [
+        887,
+        0,
+        444,
+        444
+      ],
+      "rect": [
+        1774,
+        0,
+        888,
+        888
+      ],
+      "inputCell": [
+        888,
+        888
+      ],
+      "projectionX": 0.8928571428571428,
+      "projectionAxisX": 444,
+      "paddingExtraSymmetric": 0,
+      "YRegistrationCorrection": 0,
+      "destinationGrip": null,
+      "sourceFoot": 384,
+      "targetFoot": 768,
+      "actualFoot": 768,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        204013
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north-west",
+      "key": 3,
+      "frame": 3,
+      "sourceRect": [
+        1331,
+        0,
+        443,
+        444
+      ],
+      "rect": [
+        2662,
+        0,
+        886,
+        888
+      ],
+      "inputCell": [
+        886,
+        888
+      ],
+      "projectionX": 0.8928571428571428,
+      "projectionAxisX": 443,
+      "paddingExtraSymmetric": 0,
+      "YRegistrationCorrection": 0,
+      "destinationGrip": null,
+      "sourceFoot": 403,
+      "targetFoot": 806,
+      "actualFoot": 806,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        180036
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north",
+      "key": 4,
+      "frame": 4,
+      "sourceRect": [
+        0,
+        444,
+        444,
+        443
+      ],
+      "rect": [
+        0,
+        888,
+        888,
+        886
+      ],
+      "inputCell": [
+        888,
+        886
+      ],
+      "projectionX": 0.8928571428571428,
+      "projectionAxisX": 444,
+      "paddingExtraSymmetric": 0,
+      "YRegistrationCorrection": 0,
+      "destinationGrip": null,
+      "sourceFoot": 404,
+      "targetFoot": 808,
+      "actualFoot": 808,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        180460
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north-east",
+      "key": 5,
+      "frame": 5,
+      "sourceRect": [
+        444,
+        444,
+        443,
+        443
+      ],
+      "rect": [
+        888,
+        888,
+        886,
+        886
+      ],
+      "inputCell": [
+        886,
+        886
+      ],
+      "projectionX": 0.8928571428571428,
+      "projectionAxisX": 443,
+      "paddingExtraSymmetric": 0,
+      "YRegistrationCorrection": 0,
+      "destinationGrip": null,
+      "sourceFoot": 403,
+      "targetFoot": 806,
+      "actualFoot": 806,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        193335
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "east",
+      "key": 6,
+      "frame": 6,
+      "sourceRect": [
+        887,
+        444,
+        444,
+        443
+      ],
+      "rect": [
+        1774,
+        888,
+        888,
+        886
+      ],
+      "inputCell": [
+        888,
+        886
+      ],
+      "projectionX": 0.8928571428571428,
+      "projectionAxisX": 444,
+      "paddingExtraSymmetric": 0,
+      "YRegistrationCorrection": 0,
+      "destinationGrip": null,
+      "sourceFoot": 386,
+      "targetFoot": 772,
+      "actualFoot": 772,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        211897
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "south-east",
+      "key": 7,
+      "frame": 7,
+      "sourceRect": [
+        1331,
+        444,
+        443,
+        443
+      ],
+      "rect": [
+        2662,
+        888,
+        886,
+        886
+      ],
+      "inputCell": [
+        886,
+        886
+      ],
+      "projectionX": 0.8928571428571428,
+      "projectionAxisX": 443,
+      "paddingExtraSymmetric": 0,
+      "YRegistrationCorrection": 0,
+      "destinationGrip": null,
+      "sourceFoot": 414,
+      "targetFoot": 828,
+      "actualFoot": 828,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        196277
+      ],
+      "removed": 0
+    }
+  ]
+}

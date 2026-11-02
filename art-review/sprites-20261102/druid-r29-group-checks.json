@@ -1,0 +1,218 @@
+[
+  {
+    "kind": "walk",
+    "dir": "druid-walk8-r29-projected",
+    "size": [
+      3054,
+      4828
+    ],
+    "padding": [
+      160,
+      128,
+      160,
+      32
+    ],
+    "frames": 32,
+    "border": 0,
+    "normal": 0,
+    "footDelta": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "maxComponents": 1
+  },
+  {
+    "kind": "attack",
+    "dir": "druid-attack8-r29-projected",
+    "size": [
+      4982,
+      5340
+    ],
+    "padding": [
+      401,
+      192,
+      401,
+      32
+    ],
+    "frames": 32,
+    "border": 0,
+    "normal": 0,
+    "footDelta": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "maxComponents": 1
+  },
+  {
+    "kind": "dive",
+    "dir": "druid-dive8-r29-projected",
+    "size": [
+      4572,
+      2222
+    ],
+    "padding": [
+      128,
+      192,
+      128,
+      32
+    ],
+    "frames": 8,
+    "border": 0,
+    "normal": 0,
+    "footDelta": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "maxComponents": 1
+  },
+  {
+    "kind": "emerge",
+    "dir": "druid-emerge8-r29-projected",
+    "size": [
+      5628,
+      2222
+    ],
+    "padding": [
+      260,
+      192,
+      260,
+      32
+    ],
+    "frames": 8,
+    "border": 0,
+    "normal": 0,
+    "footDelta": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "maxComponents": 1
+  },
+  {
+    "kind": "beast",
+    "dir": "druid-beast8-r29-projected",
+    "size": [
+      3548,
+      1774
+    ],
+    "padding": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "frames": 8,
+    "border": 0,
+    "normal": 0,
+    "footDelta": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "maxComponents": 1
+  },
+  {
+    "kind": "transform",
+    "dir": "druid-transform8-r29-projected",
+    "size": [
+      6368,
+      3984
+    ],
+    "padding": [
+      496,
+      512,
+      496,
+      32
+    ],
+    "frames": 8,
+    "border": 0,
+    "normal": 0,
+    "footDelta": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "maxComponents": 1
+  }
+]

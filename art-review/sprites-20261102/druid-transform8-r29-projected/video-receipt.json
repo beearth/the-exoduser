@@ -1,0 +1,17 @@
+{
+  "group": "druid-transform8-r29-projected",
+  "file": "G:/exoduser/tmp/design-review/20261102_sprites/druid-transform8-r29-projected/comparison.mp4",
+  "stem": "comparison",
+  "sha256": "489a71d27c2bc3725036e45ca0e997d0786dc6704bfb7e8d031d67deaf81c1b4",
+  "bytes": 5706702,
+  "streams": [
+    {
+      "type": "video",
+      "width": 1088,
+      "height": 760,
+      "frames": "64"
+    }
+  ],
+  "decode": 0,
+  "actualUIPlayback": false
+}

@@ -1,0 +1,653 @@
+{
+  "group": "druid-transform-native-axis-projected",
+  "supersedes": "druid-transform8-r28-kit",
+  "kind": "transform",
+  "sourceSize": [
+    2400,
+    724
+  ],
+  "base2x": [
+    4800,
+    1448
+  ],
+  "candidateSize": [
+    6368,
+    3984
+  ],
+  "padding": [
+    496,
+    512,
+    496,
+    32
+  ],
+  "sourceX": [
+    0,
+    300,
+    600,
+    900,
+    1200,
+    1500,
+    1800,
+    2100,
+    2400
+  ],
+  "sourceY": [
+    0,
+    724
+  ],
+  "candidateX": [
+    0,
+    1592,
+    3184,
+    4776,
+    6368
+  ],
+  "candidateY": [
+    0,
+    1992,
+    3984
+  ],
+  "runtimePPU": 100,
+  "sourcePivotNormalized": [
+    0.5,
+    0.14
+  ],
+  "pivot": "original bottom-left pixel pivot*2+[newL,B], normalize new cell; same original Core pivot, no bbox pivot",
+  "projection": "inverse pixel aspect of current NativeDruidBody.Put: walk/attack/emerge14.1/9.3*sourceW/sourceH; special1/1.12; idle aspect-correct factor1",
+  "projectionPurpose": "same logical character and S3 world aspect across states; art pose unchanged; no Core/timing/hit changes",
+  "staff": "source S3 rigid logical scale inherited; native x projection is render-camera calibration, not perpose prop fitting",
+  "runtimeBinding": "current NativeDruidArt100; explicit rects/pivot + padded logical draw legacy dw/dh * newCell/(2*sourceCell); NativeHd2D.Actor/current Player pending",
+  "normal": "same diffuse alpha, silhouette bevel4 estimate",
+  "runtimeAdoption": 0,
+  "referenceDisplay": "155px normalized review target, actual current Player1x unverified",
+  "inputMetadata": {
+    "group": "druid-transform8",
+    "sourceSize": [
+      2400,
+      724
+    ],
+    "sourceGrid": [
+      8,
+      1
+    ],
+    "candidateGrid": [
+      4,
+      2
+    ],
+    "base2x": [
+      4800,
+      1448
+    ],
+    "candidateSize": [
+      6368,
+      3984
+    ],
+    "padding": [
+      496,
+      512,
+      496,
+      32
+    ],
+    "sourceX": [
+      0,
+      300,
+      600,
+      900,
+      1200,
+      1500,
+      1800,
+      2100,
+      2400
+    ],
+    "sourceY": [
+      0,
+      724
+    ],
+    "candidateX": [
+      0,
+      1592,
+      3184,
+      4776,
+      6368
+    ],
+    "candidateY": [
+      0,
+      1992,
+      3984
+    ],
+    "humanScale": 2.921979304144909,
+    "mainSheetScale": 2.985225609429431,
+    "endSheetScale": 1.6921632473681054,
+    "beastSourceScale": 1.6343115124153498,
+    "uniqueNewBodies": 6,
+    "reusedBodies": 2,
+    "accessory": "localized imagegen cleanup on end2 selected whole poses; one skull plus3beads, duplicate removed; rejected patch preserved",
+    "runtimePPU": 100,
+    "runtimeAdoption": 0,
+    "staff": "fixed S3 .2422381950683837*1448/444; visible0/1 only,2..7 beast state no staff as original",
+    "actualStateTicks": 45,
+    "preview": "forward stages only;125ms illustration not actual state timing proof",
+    "normal": "silhouette bevel4 estimate",
+    "pivot": "source bottom-left pivot*2+[496,32], normalize padded cell, Core unchanged",
+    "records": [
+      {
+        "frame": 0,
+        "selectedSource": "current human E body",
+        "reuse": "current human E body",
+        "sourceBox": [
+          65,
+          24,
+          277,
+          496
+        ],
+        "bodyScale": 2.921979304144909,
+        "bodyTranslation": [
+          481,
+          265
+        ],
+        "destinationGrip": [
+          1036,
+          794
+        ],
+        "staffScale": 0.7900020415743685,
+        "staffVisible": true,
+        "sourceFoot": 566,
+        "targetFoot": 1644,
+        "actualFoot": 1644,
+        "border": 0,
+        "normalAlphaMismatch": 0,
+        "components": [
+          452768
+        ],
+        "removed": 0
+      },
+      {
+        "frame": 1,
+        "selectedSource": "main:1",
+        "reuse": null,
+        "sourceBox": [
+          89,
+          34,
+          326,
+          467
+        ],
+        "bodyScale": 2.985225609429431,
+        "bodyTranslation": [
+          494,
+          349
+        ],
+        "destinationGrip": [
+          1004,
+          949
+        ],
+        "staffScale": 0.7900020415743685,
+        "staffVisible": true,
+        "sourceFoot": 565,
+        "targetFoot": 1642,
+        "actualFoot": 1642,
+        "border": 0,
+        "normalAlphaMismatch": 0,
+        "components": [
+          488838
+        ],
+        "removed": 0
+      },
+      {
+        "frame": 2,
+        "selectedSource": "main:2",
+        "reuse": null,
+        "sourceBox": [
+          62,
+          61,
+          364,
+          468
+        ],
+        "bodyScale": 2.985225609429431,
+        "bodyTranslation": [
+          470,
+          427
+        ],
+        "destinationGrip": null,
+        "staffScale": 0.7900020415743685,
+        "staffVisible": false,
+        "sourceFoot": 565,
+        "targetFoot": 1642,
+        "actualFoot": 1642,
+        "border": 0,
+        "normalAlphaMismatch": 0,
+        "components": [
+          504379
+        ],
+        "removed": 0
+      },
+      {
+        "frame": 3,
+        "selectedSource": "main:3",
+        "reuse": null,
+        "sourceBox": [
+          39,
+          94,
+          372,
+          468
+        ],
+        "bodyScale": 2.985225609429431,
+        "bodyTranslation": [
+          274,
+          524
+        ],
+        "destinationGrip": null,
+        "staffScale": 0.7900020415743685,
+        "staffVisible": false,
+        "sourceFoot": 564,
+        "targetFoot": 1640,
+        "actualFoot": 1640,
+        "border": 0,
+        "normalAlphaMismatch": 0,
+        "components": [
+          570583
+        ],
+        "removed": 0
+      },
+      {
+        "frame": 4,
+        "selectedSource": "main:4",
+        "reuse": null,
+        "sourceBox": [
+          18,
+          78,
+          372,
+          443
+        ],
+        "bodyScale": 2.985225609429431,
+        "bodyTranslation": [
+          242,
+          558
+        ],
+        "destinationGrip": null,
+        "staffScale": 0.7900020415743685,
+        "staffVisible": false,
+        "sourceFoot": 568,
+        "targetFoot": 1648,
+        "actualFoot": 1648,
+        "border": 0,
+        "normalAlphaMismatch": 0,
+        "components": [
+          573271
+        ],
+        "removed": 0
+      },
+      {
+        "frame": 5,
+        "selectedSource": "end2:0",
+        "reuse": null,
+        "sourceBox": [
+          37,
+          165,
+          694,
+          842
+        ],
+        "bodyScale": 1.6921632473681054,
+        "bodyTranslation": [
+          280,
+          498
+        ],
+        "destinationGrip": null,
+        "staffScale": 0.7900020415743685,
+        "staffVisible": false,
+        "sourceFoot": 566,
+        "targetFoot": 1644,
+        "actualFoot": 1644,
+        "border": 0,
+        "normalAlphaMismatch": 0,
+        "components": [
+          677032
+        ],
+        "removed": 0
+      },
+      {
+        "frame": 6,
+        "selectedSource": "end2:1",
+        "reuse": null,
+        "sourceBox": [
+          5,
+          165,
+          687,
+          843
+        ],
+        "bodyScale": 1.6921632473681054,
+        "bodyTranslation": [
+          232,
+          497
+        ],
+        "destinationGrip": null,
+        "staffScale": 0.7900020415743685,
+        "staffVisible": false,
+        "sourceFoot": 566,
+        "targetFoot": 1644,
+        "actualFoot": 1644,
+        "border": 0,
+        "normalAlphaMismatch": 0,
+        "components": [
+          686662
+        ],
+        "removed": 0
+      },
+      {
+        "frame": 7,
+        "selectedSource": "current canonical beast E body",
+        "reuse": "current canonical beast E body",
+        "sourceBox": [
+          104,
+          70,
+          802,
+          772
+        ],
+        "bodyScale": 1.6343115124153498,
+        "bodyTranslation": [
+          396,
+          533
+        ],
+        "destinationGrip": null,
+        "staffScale": 0.7900020415743685,
+        "staffVisible": false,
+        "sourceFoot": 584,
+        "targetFoot": 1680,
+        "actualFoot": 1680,
+        "border": 0,
+        "normalAlphaMismatch": 0,
+        "components": [
+          633987
+        ],
+        "removed": 0
+      }
+    ]
+  },
+  "records": [
+    {
+      "direction": null,
+      "key": 0,
+      "frame": 0,
+      "sourceRect": [
+        0,
+        0,
+        300,
+        724
+      ],
+      "rect": [
+        0,
+        0,
+        1592,
+        1992
+      ],
+      "inputCell": [
+        1592,
+        1992
+      ],
+      "projectionX": 0.8928571428571428,
+      "projectionAxisX": 796,
+      "paddingExtraSymmetric": 0,
+      "YRegistrationCorrection": 0,
+      "destinationGrip": [
+        1010,
+        794
+      ],
+      "sourceFoot": 566,
+      "targetFoot": 1644,
+      "actualFoot": 1644,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        404253
+      ],
+      "removed": 0
+    },
+    {
+      "direction": null,
+      "key": 1,
+      "frame": 1,
+      "sourceRect": [
+        300,
+        0,
+        300,
+        724
+      ],
+      "rect": [
+        1592,
+        0,
+        1592,
+        1992
+      ],
+      "inputCell": [
+        1592,
+        1992
+      ],
+      "projectionX": 0.8928571428571428,
+      "projectionAxisX": 796,
+      "paddingExtraSymmetric": 0,
+      "YRegistrationCorrection": 0,
+      "destinationGrip": [
+        982,
+        949
+      ],
+      "sourceFoot": 565,
+      "targetFoot": 1642,
+      "actualFoot": 1642,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        436544
+      ],
+      "removed": 0
+    },
+    {
+      "direction": null,
+      "key": 2,
+      "frame": 2,
+      "sourceRect": [
+        600,
+        0,
+        300,
+        724
+      ],
+      "rect": [
+        3184,
+        0,
+        1592,
+        1992
+      ],
+      "inputCell": [
+        1592,
+        1992
+      ],
+      "projectionX": 0.8928571428571428,
+      "projectionAxisX": 796,
+      "paddingExtraSymmetric": 0,
+      "YRegistrationCorrection": 0,
+      "destinationGrip": null,
+      "sourceFoot": 565,
+      "targetFoot": 1642,
+      "actualFoot": 1642,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        450412
+      ],
+      "removed": 0
+    },
+    {
+      "direction": null,
+      "key": 3,
+      "frame": 3,
+      "sourceRect": [
+        900,
+        0,
+        300,
+        724
+      ],
+      "rect": [
+        4776,
+        0,
+        1592,
+        1992
+      ],
+      "inputCell": [
+        1592,
+        1992
+      ],
+      "projectionX": 0.8928571428571428,
+      "projectionAxisX": 796,
+      "paddingExtraSymmetric": 0,
+      "YRegistrationCorrection": 0,
+      "destinationGrip": null,
+      "sourceFoot": 564,
+      "targetFoot": 1640,
+      "actualFoot": 1640,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        509395
+      ],
+      "removed": 0
+    },
+    {
+      "direction": null,
+      "key": 4,
+      "frame": 4,
+      "sourceRect": [
+        1200,
+        0,
+        300,
+        724
+      ],
+      "rect": [
+        0,
+        1992,
+        1592,
+        1992
+      ],
+      "inputCell": [
+        1592,
+        1992
+      ],
+      "projectionX": 0.8928571428571428,
+      "projectionAxisX": 796,
+      "paddingExtraSymmetric": 0,
+      "YRegistrationCorrection": 0,
+      "destinationGrip": null,
+      "sourceFoot": 568,
+      "targetFoot": 1648,
+      "actualFoot": 1648,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        511883
+      ],
+      "removed": 0
+    },
+    {
+      "direction": null,
+      "key": 5,
+      "frame": 5,
+      "sourceRect": [
+        1500,
+        0,
+        300,
+        724
+      ],
+      "rect": [
+        1592,
+        1992,
+        1592,
+        1992
+      ],
+      "inputCell": [
+        1592,
+        1992
+      ],
+      "projectionX": 0.8928571428571428,
+      "projectionAxisX": 796,
+      "paddingExtraSymmetric": 0,
+      "YRegistrationCorrection": 0,
+      "destinationGrip": null,
+      "sourceFoot": 566,
+      "targetFoot": 1644,
+      "actualFoot": 1644,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        604553
+      ],
+      "removed": 0
+    },
+    {
+      "direction": null,
+      "key": 6,
+      "frame": 6,
+      "sourceRect": [
+        1800,
+        0,
+        300,
+        724
+      ],
+      "rect": [
+        3184,
+        1992,
+        1592,
+        1992
+      ],
+      "inputCell": [
+        1592,
+        1992
+      ],
+      "projectionX": 0.8928571428571428,
+      "projectionAxisX": 796,
+      "paddingExtraSymmetric": 0,
+      "YRegistrationCorrection": 0,
+      "destinationGrip": null,
+      "sourceFoot": 566,
+      "targetFoot": 1644,
+      "actualFoot": 1644,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        613127
+      ],
+      "removed": 0
+    },
+    {
+      "direction": null,
+      "key": 7,
+      "frame": 7,
+      "sourceRect": [
+        2100,
+        0,
+        300,
+        724
+      ],
+      "rect": [
+        4776,
+        1992,
+        1592,
+        1992
+      ],
+      "inputCell": [
+        1592,
+        1992
+      ],
+      "projectionX": 0.8928571428571428,
+      "projectionAxisX": 796,
+      "paddingExtraSymmetric": 0,
+      "YRegistrationCorrection": 0,
+      "destinationGrip": null,
+      "sourceFoot": 584,
+      "targetFoot": 1680,
+      "actualFoot": 1680,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        565979
+      ],
+      "removed": 0
+    }
+  ]
+}

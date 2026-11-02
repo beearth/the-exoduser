@@ -1,0 +1,300 @@
+[
+  {
+    "direction": null,
+    "key": 0,
+    "frame": 0,
+    "sourceRect": [
+      0,
+      0,
+      444,
+      444
+    ],
+    "rect": [
+      0,
+      0,
+      1144,
+      1112
+    ],
+    "inputCell": [
+      1144,
+      1112
+    ],
+    "projectionX": 0.8928571428571428,
+    "projectionAxisX": 572,
+    "paddingExtraSymmetric": 0,
+    "YRegistrationCorrection": 0,
+    "destinationGrip": [
+      772,
+      548
+    ],
+    "sourceFoot": 444,
+    "targetFoot": 1080,
+    "actualFoot": 1080,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "components": [
+      203064
+    ],
+    "removed": 2
+  },
+  {
+    "direction": null,
+    "key": 1,
+    "frame": 1,
+    "sourceRect": [
+      444,
+      0,
+      443,
+      444
+    ],
+    "rect": [
+      1144,
+      0,
+      1142,
+      1112
+    ],
+    "inputCell": [
+      1142,
+      1112
+    ],
+    "projectionX": 0.8928571428571428,
+    "projectionAxisX": 571,
+    "paddingExtraSymmetric": 0,
+    "YRegistrationCorrection": 0,
+    "destinationGrip": [
+      711,
+      651
+    ],
+    "sourceFoot": 444,
+    "targetFoot": 1080,
+    "actualFoot": 1080,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "components": [
+      221404
+    ],
+    "removed": 0
+  },
+  {
+    "direction": null,
+    "key": 2,
+    "frame": 2,
+    "sourceRect": [
+      887,
+      0,
+      444,
+      444
+    ],
+    "rect": [
+      2286,
+      0,
+      1144,
+      1112
+    ],
+    "inputCell": [
+      1144,
+      1112
+    ],
+    "projectionX": 0.8928571428571428,
+    "projectionAxisX": 572,
+    "paddingExtraSymmetric": 0,
+    "YRegistrationCorrection": 0,
+    "destinationGrip": [
+      691,
+      793
+    ],
+    "sourceFoot": 444,
+    "targetFoot": 1080,
+    "actualFoot": 1080,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "components": [
+      214686
+    ],
+    "removed": 0
+  },
+  {
+    "direction": null,
+    "key": 3,
+    "frame": 3,
+    "sourceRect": [
+      1331,
+      0,
+      443,
+      444
+    ],
+    "rect": [
+      3430,
+      0,
+      1142,
+      1112
+    ],
+    "inputCell": [
+      1142,
+      1112
+    ],
+    "projectionX": 0.8928571428571428,
+    "projectionAxisX": 571,
+    "paddingExtraSymmetric": 0,
+    "YRegistrationCorrection": 0,
+    "destinationGrip": [
+      616,
+      942
+    ],
+    "sourceFoot": 444,
+    "targetFoot": 1080,
+    "actualFoot": 1080,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "components": [
+      228733
+    ],
+    "removed": 0
+  },
+  {
+    "direction": null,
+    "key": 4,
+    "frame": 4,
+    "sourceRect": [
+      0,
+      444,
+      444,
+      443
+    ],
+    "rect": [
+      0,
+      1112,
+      1144,
+      1110
+    ],
+    "inputCell": [
+      1144,
+      1110
+    ],
+    "projectionX": 0.8928571428571428,
+    "projectionAxisX": 572,
+    "paddingExtraSymmetric": 0,
+    "YRegistrationCorrection": 0,
+    "destinationGrip": [
+      641,
+      957
+    ],
+    "sourceFoot": 425,
+    "targetFoot": 1042,
+    "actualFoot": 1042,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "components": [
+      206478
+    ],
+    "removed": 0
+  },
+  {
+    "direction": null,
+    "key": 5,
+    "frame": 5,
+    "sourceRect": [
+      444,
+      444,
+      443,
+      443
+    ],
+    "rect": [
+      1144,
+      1112,
+      1142,
+      1110
+    ],
+    "inputCell": [
+      1142,
+      1110
+    ],
+    "projectionX": 0.8928571428571428,
+    "projectionAxisX": 571,
+    "paddingExtraSymmetric": 0,
+    "YRegistrationCorrection": 0,
+    "destinationGrip": [
+      728,
+      953
+    ],
+    "sourceFoot": 424,
+    "targetFoot": 1040,
+    "actualFoot": 1040,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "components": [
+      163126
+    ],
+    "removed": 0
+  },
+  {
+    "direction": null,
+    "key": 6,
+    "frame": 6,
+    "sourceRect": [
+      887,
+      444,
+      444,
+      443
+    ],
+    "rect": [
+      2286,
+      1112,
+      1144,
+      1110
+    ],
+    "inputCell": [
+      1144,
+      1110
+    ],
+    "projectionX": 0.8928571428571428,
+    "projectionAxisX": 572,
+    "paddingExtraSymmetric": 0,
+    "YRegistrationCorrection": 0,
+    "destinationGrip": null,
+    "sourceFoot": 426,
+    "targetFoot": 1044,
+    "actualFoot": 1044,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "components": [
+      120214
+    ],
+    "removed": 0
+  },
+  {
+    "direction": null,
+    "key": 7,
+    "frame": 7,
+    "sourceRect": [
+      1331,
+      444,
+      443,
+      443
+    ],
+    "rect": [
+      3430,
+      1112,
+      1142,
+      1110
+    ],
+    "inputCell": [
+      1142,
+      1110
+    ],
+    "projectionX": 0.8928571428571428,
+    "projectionAxisX": 571,
+    "paddingExtraSymmetric": 0,
+    "YRegistrationCorrection": 0,
+    "destinationGrip": null,
+    "sourceFoot": 424,
+    "targetFoot": 1040,
+    "actualFoot": 1040,
+    "border": 0,
+    "normalAlphaMismatch": 0,
+    "components": [
+      78300
+    ],
+    "removed": 0
+  }
+]

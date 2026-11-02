@@ -1,0 +1,36 @@
+[
+  {
+    "group": "druid-attack8-r29-projected",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/druid-attack8-r29-projected/comparison-page-1.mp4",
+    "stem": "comparison-page-1",
+    "sha256": "637b34f72809ca1f8851a93d65e83bbc63b387f152df9ddfd795f155ae6079f3",
+    "bytes": 12658047,
+    "streams": [
+      {
+        "type": "video",
+        "width": 3032,
+        "height": 1644,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  },
+  {
+    "group": "druid-attack8-r29-projected",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/druid-attack8-r29-projected/comparison-page-2.mp4",
+    "stem": "comparison-page-2",
+    "sha256": "220a444c3e13163982914e72c40bc76bd59f02021a69a9bbbfe2b530ab05fd57",
+    "bytes": 12239051,
+    "streams": [
+      {
+        "type": "video",
+        "width": 3032,
+        "height": 1644,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  }
+]

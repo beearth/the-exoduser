@@ -1,0 +1,36 @@
+[
+  {
+    "group": "druid-walk8-r29-projected",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/druid-walk8-r29-projected/comparison-page-1.mp4",
+    "stem": "comparison-page-1",
+    "sha256": "4b531bfac67bdb5986779180b4450fe9dca9d971f887516be9d83a43d86369f3",
+    "bytes": 11189991,
+    "streams": [
+      {
+        "type": "video",
+        "width": 2176,
+        "height": 1560,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  },
+  {
+    "group": "druid-walk8-r29-projected",
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/druid-walk8-r29-projected/comparison-page-2.mp4",
+    "stem": "comparison-page-2",
+    "sha256": "ff8205a70779e27613650116971b5ac06358698e45316913a01cc9f3427e05fe",
+    "bytes": 11322595,
+    "streams": [
+      {
+        "type": "video",
+        "width": 2176,
+        "height": 1560,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  }
+]

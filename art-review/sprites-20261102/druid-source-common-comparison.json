@@ -1,0 +1,47 @@
+{
+  "common": "426544563dcd7068ac661a7ee7876fd91f69d19a",
+  "files": [
+    {
+      "file": "base8_v3.png",
+      "headBlob": "3e309a35cb5fc57da36aad27914a3e1f3469fe96",
+      "commonBlob": "3e309a35cb5fc57da36aad27914a3e1f3469fe96",
+      "equal": true
+    },
+    {
+      "file": "walk.png",
+      "headBlob": "e593bfdebdb2298c0803920ff21f9d71c6d27fa8",
+      "commonBlob": "e593bfdebdb2298c0803920ff21f9d71c6d27fa8",
+      "equal": true
+    },
+    {
+      "file": "attack.png",
+      "headBlob": "b2c54f48369e5c468ac492f78527afe9989808ca",
+      "commonBlob": "b2c54f48369e5c468ac492f78527afe9989808ca",
+      "equal": true
+    },
+    {
+      "file": "dive.png",
+      "headBlob": "46f531c28e4ed41baeb794ba836abc80f9d2538f",
+      "commonBlob": "46f531c28e4ed41baeb794ba836abc80f9d2538f",
+      "equal": true
+    },
+    {
+      "file": "emerge.png",
+      "headBlob": "46f531c28e4ed41baeb794ba836abc80f9d2538f",
+      "commonBlob": "46f531c28e4ed41baeb794ba836abc80f9d2538f",
+      "equal": true
+    },
+    {
+      "file": "beast.png",
+      "headBlob": "72d11de414da132f273b680868f26b9ec7b9677a",
+      "commonBlob": "72d11de414da132f273b680868f26b9ec7b9677a",
+      "equal": true
+    },
+    {
+      "file": "transform.png",
+      "headBlob": "bd114f9d10fb7b69f8cc681a7c0bd9b4e8ba62e8",
+      "commonBlob": "bd114f9d10fb7b69f8cc681a7c0bd9b4e8ba62e8",
+      "equal": true
+    }
+  ]
+}

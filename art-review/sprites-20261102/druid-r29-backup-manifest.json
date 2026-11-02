@@ -1,0 +1,458 @@
+[
+  {
+    "path": "art-review/sprites-20261102/druid-idle8-r23-kit-hem/atlas.png",
+    "blob": "e5f6de9daac8e576ac3aa02aafb1441aa49c3669",
+    "sha256": "5d9b82395d297b1735270b87cc12d224300112ac9eea5da09b048681bbace310",
+    "bytes": 1807267
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-idle8-r23-kit-hem/atlas.normal.png",
+    "blob": "c3eff299721f71ef23013afb5f139afeb8621899",
+    "sha256": "609188b0aeded2afa304f32188e20bef7a8d780aa25aca992759b50e13b854b0",
+    "bytes": 407282
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-idle8-r23-kit-hem/comparison-grid.png",
+    "blob": "9fe3209c1d9f10a34eeff498fbdd4f9b37250e51",
+    "sha256": "ed401d7b2585421d3117eb3a364434414b7ea21f46b06970aaff1986a7106cba",
+    "bytes": 562731
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-idle8-r23-kit-hem/comparison.gif",
+    "blob": "48f0717702178f9a5ec057f47186b5c2a0869f6b",
+    "sha256": "8a09ef0a85a6be5118b35fe7dcdb064a4da2a5c207f274defb48431c5242818b",
+    "bytes": 360431
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-idle8-r23-kit-hem/metadata.json",
+    "blob": "e67d68f7d86cb02de51a883c303c7f79c8aa9a6d",
+    "sha256": "ddfb69138276e3d2260fe1bdea3fb351cc4d6ac3c27b6e2b45a0d6c86b93326d",
+    "bytes": 8118
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-idle8-r23-kit-hem/comparison.mp4",
+    "blob": "263787ed000008005be1f8abf09ca4a74ab43928",
+    "sha256": "b6f08d10a97a4a45b31808d2af648599e278bcb73247664e2de74e071112c584",
+    "bytes": 3286757
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-idle8-r23-kit-hem/video-receipt.json",
+    "blob": "0505a9222afd1ce109c85b5129a850f50e16a0ae",
+    "sha256": "8f5a08d57fb7cb26637b783287294a7a28b60cf93a4e3165f21d610bc4932847",
+    "bytes": 396
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-idle8-r23-kit-hem/technical-checks.json",
+    "blob": "dde2b57fe9a1aa255f4bef82f43f47948a94383e",
+    "sha256": "f47b0893d6ffb8b0e9a2ddc85c26929f00e6318a82b29122cf86cbc5d2473831",
+    "bytes": 213
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r29-projected/atlas.png",
+    "blob": "8286b7578c423ce035e1b4795ec50ea0575493e0",
+    "sha256": "e1dd906964a1d461f79958404712af4428573b350cb14ac2babcbd72b7e0fb27",
+    "bytes": 3906789
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r29-projected/atlas.normal.png",
+    "blob": "ef90f26280916b4b5c21ef809067754890034574",
+    "sha256": "daa5a84038125e03971db8e0d934b748aac072db297514b9c91c7dc148423c14",
+    "bytes": 685310
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r29-projected/metadata.json",
+    "blob": "b2ea39cf75fc8b1e77b47deda4939458c0eef1d0",
+    "sha256": "352e786a1ebd71e8c2fc9d06df67aaa71d22c298b79dd05ed7da60bc5b5673e5",
+    "bytes": 53647
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r29-projected/technical-checks.json",
+    "blob": "1f0a8c9870589a2096bcef66dbc4072ada8f79f4",
+    "sha256": "9b155c40d89a63595ab6ff4b4540563cc6f3abebe323aa3f62b96c1ba12bb701",
+    "bytes": 20645
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r29-projected/comparison-page-1-grid.png",
+    "blob": "0d3bdf57ded33afa44950b72bccecb4e931396a9",
+    "sha256": "3f6e4f4b4fc03591a24fd836586e5a19796d288d7c75d5c0272811c63083fc5f",
+    "bytes": 998155
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r29-projected/comparison-page-1.gif",
+    "blob": "5037f76017961575e82dcc3c14355b2659f08c17",
+    "sha256": "a62e814c82fddc74ae9544423bd56c008c4ccd3c149c0462065c5eb942bef918",
+    "bytes": 688330
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r29-projected/comparison-page-2-grid.png",
+    "blob": "3e9331f2346912489444619a231deec8ae6b69d6",
+    "sha256": "53a23f140e3824c8c8c80e6d599305d4e3accc2e7d596d99daf75b4ce7e63f17",
+    "bytes": 1007435
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r29-projected/comparison-page-2.gif",
+    "blob": "eeec7835944e89654b680fc8be301802f1aabf86",
+    "sha256": "7311a11703f7bfd3527e538c3b3dafd9aea766fb0ede0527d1fe14116efdf8ca",
+    "bytes": 712492
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r29-projected/comparison-page-1.mp4",
+    "blob": "e2e1a42c7e8c1b9023be4ed6dbbb1ba4db3e474b",
+    "sha256": "4b531bfac67bdb5986779180b4450fe9dca9d971f887516be9d83a43d86369f3",
+    "bytes": 11189991
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r29-projected/comparison-page-2.mp4",
+    "blob": "0d984a7100b2076c1f4f04b0f40ebe9f7d87702b",
+    "sha256": "ff8205a70779e27613650116971b5ac06358698e45316913a01cc9f3427e05fe",
+    "bytes": 11322595
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r29-projected/video-receipt.json",
+    "blob": "f7ce92dccc8965673f340931749b867bf9ee6193",
+    "sha256": "bbd79594fa5be44e1b21fe6bd9292211a1234c2484b4e3aeb13a607e7cc2e34f",
+    "bytes": 964
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r29-projected/atlas.png",
+    "blob": "21259a62e0087282c5637db3308968ac6b277417",
+    "sha256": "10aea0d53bd2335013b23f2cc67a2c9e47135fbc17c7bb643d3ced8fc53bce91",
+    "bytes": 4439074
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r29-projected/atlas.normal.png",
+    "blob": "3db50d62eddeb2a3caad5d20cd6b7c6b26deacc8",
+    "sha256": "1b7ecaca237d4f0e97ba0109f334da57a29e1fcaa0832dedc4a3130844cf03a5",
+    "bytes": 815384
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r29-projected/metadata.json",
+    "blob": "cf7bb99d9379d415ab0d3a3ddea4b5126ef2713d",
+    "sha256": "a4ad5d463e4f8eb9879ecb9dd511400eff2a193d313f92e0b7766489057c4b02",
+    "bytes": 47474
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r29-projected/technical-checks.json",
+    "blob": "6b2a68fa586946fb6fdfbd4224b5b661e8c7448c",
+    "sha256": "be7e0b60a209cbae05b7763b72cc5de56d879d03ccdecbf4497c2ac2203a9b0c",
+    "bytes": 20749
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r29-projected/comparison-page-1-grid.png",
+    "blob": "e84d5f76c8a711082dc668dde3fb3ba263ebd828",
+    "sha256": "412a98cc213d6c61297e30a358261241cdbeccdb83eded748300c06bc744cf26",
+    "bytes": 1147837
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r29-projected/comparison-page-1.gif",
+    "blob": "d1a2c3db5d4d04b2ac6e8330b527e25b88569173",
+    "sha256": "1db257e52eebaf2ac349761b1b697d9f0c2959b1a4ec4fa00de1f7f1163090a2",
+    "bytes": 780716
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r29-projected/comparison-page-2-grid.png",
+    "blob": "ee1a16d6de2dbfe496548fc3891b7126321bcb3e",
+    "sha256": "772910141fa31ae6fe5b39f423673d23f1d58f18d171a00a32269d3a3164845f",
+    "bytes": 1125539
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r29-projected/comparison-page-2.gif",
+    "blob": "eaaed1c03859207b2548d76b1ddbd1e3b4a7f082",
+    "sha256": "be175e229aea967824e092dcb430afb609faca440f066ba9ff0de01525861f32",
+    "bytes": 769042
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r29-projected/comparison-page-1.mp4",
+    "blob": "e6afc77eee68db7979d9c32a7de8c092142cf8a9",
+    "sha256": "637b34f72809ca1f8851a93d65e83bbc63b387f152df9ddfd795f155ae6079f3",
+    "bytes": 12658047
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r29-projected/comparison-page-2.mp4",
+    "blob": "4d94919e3ccd7ac67c9a7e7913d0e1e8d8c57346",
+    "sha256": "220a444c3e13163982914e72c40bc76bd59f02021a69a9bbbfe2b530ab05fd57",
+    "bytes": 12239051
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r29-projected/video-receipt.json",
+    "blob": "816fa12ede18240cbcd34cf5e6e65bc95394cb0d",
+    "sha256": "e58bba4e6ad0b7fd66d0691a0c75ea7f629205b1b587ed55eca04855bc65c9fd",
+    "bytes": 972
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-beast8-r29-projected/atlas.png",
+    "blob": "f9a7cbf05976b6604d9b6efd0b8c3b2b0b705fa3",
+    "sha256": "b72392980f922e9ead7d3974383ca43c7b228f5c9098adfa14c64e474d31b0ca",
+    "bytes": 1442935
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-beast8-r29-projected/atlas.normal.png",
+    "blob": "96efe9dcf3fe75b4ec6fa023fc014545f7785b17",
+    "sha256": "d238508f46867f3d05120e9ddb06772969ce0cc0a17b3edb9a6b1ec874290587",
+    "bytes": 239770
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-beast8-r29-projected/metadata.json",
+    "blob": "3793507993daf48882272a2b55a544bb515196ad",
+    "sha256": "c1d740414a721da90145d8de78b2ba9bb813ce6e70bce15c8ef72b72ff6e0359",
+    "bytes": 11684
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-beast8-r29-projected/technical-checks.json",
+    "blob": "8efc3ce7d12fc2d2e1412e96548fc165e0117266",
+    "sha256": "4e7ccb8d2c46aa0fc58ad72f008f2440eba93ed8a92e1090b45e95ea1d50a564",
+    "bytes": 4931
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-beast8-r29-projected/comparison-grid.png",
+    "blob": "b5712525b52fb3bcd3557d04a6dde63e7be3c7db",
+    "sha256": "b75fee15f105d022743a2a3427c96fd3b53bff561c179a80bf2de8c12eff17b8",
+    "bytes": 646839
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-beast8-r29-projected/comparison.gif",
+    "blob": "ff11d8c674d0c9028926720f77e914abce0751a0",
+    "sha256": "b4f3580dceaec9c9880ec14518365eb0aa5c96c6a9b5958efd396ccae954c51d",
+    "bytes": 395269
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-beast8-r29-projected/comparison.mp4",
+    "blob": "8062bc863e1dd45ebabc10f82fa75568e4c6a94d",
+    "sha256": "199f2892f59a230f2afadc79740f171bbcce794be97a8ed4983e1c6d46e4d39c",
+    "bytes": 3396278
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-beast8-r29-projected/video-receipt.json",
+    "blob": "067527583da0c0960cf8a0d631a144d7fe27ad87",
+    "sha256": "f24b98852c88c501b6299c265d138b0854ec93c3ad4513d69474c272a47b63b9",
+    "bytes": 469
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-dive8-r29-projected/atlas.png",
+    "blob": "4cbfc456ea4d8d8809c6fa9bba5288394cb74f76",
+    "sha256": "0330f20ba373e8c5b56c56733c7eb6a94b9be7e5c984ccb92ce15c96cb139dd9",
+    "bytes": 1372904
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-dive8-r29-projected/atlas.normal.png",
+    "blob": "94f0dd6dbce774f60cd2120cc57e48f5a33663a2",
+    "sha256": "44398eb64659012bcbca70753b40831a8f7ef89a57fb3b6b743a00cd18da74d0",
+    "bytes": 234071
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-dive8-r29-projected/metadata.json",
+    "blob": "fdc677d8cefe066b7a9fc50ce1e534073b9f8ef1",
+    "sha256": "ddf7fd38baafdd74847dcef3c4626e0ac9ae4cc75a73be7edd602b51400095a2",
+    "bytes": 14541
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-dive8-r29-projected/technical-checks.json",
+    "blob": "25458b1984849007f2ffeee0fc8e5c75e39f7c53",
+    "sha256": "e8eb4d75067796e44c2275166e96168284a06012d5dcb008920267fcfea3810c",
+    "bytes": 5104
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-dive8-r29-projected/comparison-grid.png",
+    "blob": "dce4abef8c30593669bb9626acc8ccd096db667c",
+    "sha256": "d2f542e8cf32e8aacac1a1619ae8c2802333a3568110a7b3faef779819338024",
+    "bytes": 710659
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-dive8-r29-projected/comparison.gif",
+    "blob": "34ebb8150102957c15242ad8ffd52adb06e56b9f",
+    "sha256": "f68a202edf0c0be5d6988486f49c8730c131af43f7ebf9b8b660431c5ca1b5e3",
+    "bytes": 790572
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-dive8-r29-projected/comparison.mp4",
+    "blob": "ba867838dfe722af6a3fc0dbb525aabb2dadd424",
+    "sha256": "9e08d8dbae66560d74302b50929184aae735b6913256e97ee5b82a7570f2073e",
+    "bytes": 6605009
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-dive8-r29-projected/video-receipt.json",
+    "blob": "b994335e5bab770435c7af5a8c5d5155c0da0051",
+    "sha256": "bb1402c78effdecd01cc959972e5448e38b98a2eeb4596d3842b7b785ecee440",
+    "bytes": 467
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-emerge8-r29-projected/atlas.png",
+    "blob": "ba4d74b70f3f769f46da368ef6f593750ae23345",
+    "sha256": "9caa6fbc2026e3e4a9dc4677ba226e5bd0b74ba51d4f57ce792f47845a0ed86f",
+    "bytes": 1880510
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-emerge8-r29-projected/atlas.normal.png",
+    "blob": "5f1ed5b44bf59c019e057fa0c42401b5da961c8e",
+    "sha256": "ca84c76218a49b17e678aa70449f02eb97f9bc00fdafff893e0ff3aaead15f7b",
+    "bytes": 269682
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-emerge8-r29-projected/metadata.json",
+    "blob": "47d8942a9f421e0a9bf0afb6852203631e453aac",
+    "sha256": "5de36813a4e71b369f9072ed72409b4c8239ecf279e94c60096cecced3118e31",
+    "bytes": 14561
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-emerge8-r29-projected/technical-checks.json",
+    "blob": "3fe1a41705d30ad1bf477e3fee13a27f7b88df0e",
+    "sha256": "f847588781136b7f73e198a8b71c2e1e204841919bc8e41e8d749ccbbb43b05c",
+    "bytes": 5120
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-emerge8-r29-projected/comparison-grid.png",
+    "blob": "fd8c4d00209fec96d123c495f26ce1203289f900",
+    "sha256": "86d8a80aebbe87aec874edc4073c4e2c905d15ec02e6ad5fe18d2a330af69e38",
+    "bytes": 583879
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-emerge8-r29-projected/comparison.gif",
+    "blob": "e18f98536bfb7716e69b14d94cdc5aad90962fd3",
+    "sha256": "63f55299d5c27ea0d6f5ae66218a58ffddd88fcdbecf22333ec3de15fbaeae30",
+    "bytes": 688150
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-emerge8-r29-projected/comparison.mp4",
+    "blob": "15b4c8101bc98467c3998226a51a8ef9adfe85d6",
+    "sha256": "3c0110050149acbff20a0eba6d084daf053111eab60d523125a646e6d531f4f1",
+    "bytes": 5651402
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-emerge8-r29-projected/video-receipt.json",
+    "blob": "f5dcdfd826e5ce204063501cfd48de28ea545b2c",
+    "sha256": "105603316ea29d726654b6d74801302acaed426b6ba5721f35f2afcfb5001499",
+    "bytes": 471
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-transform8-r29-projected/atlas.png",
+    "blob": "7ee9b301d307f53057c5ab45cc0d533971fc74fc",
+    "sha256": "3047eeb49e87c4ccc09f23b2a9edff13b8c17255a293b011e149ebd2ecc6827f",
+    "bytes": 2646184
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-transform8-r29-projected/atlas.normal.png",
+    "blob": "b57990b843d33a7c69d1efa267b4a4af6ed8270b",
+    "sha256": "784cc197a2d9101ba8bf10cebd52d8a82ad7153097fa3ed6a2c00c2d66f0d12c",
+    "bytes": 472301
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-transform8-r29-projected/metadata.json",
+    "blob": "196762ec599e19d96c9c527cb517f9ede7e1e070",
+    "sha256": "543b8b9480e126df4880deba7d1975e760a95a33b53b2f7116de81b37f38cb35",
+    "bytes": 13987
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-transform8-r29-projected/technical-checks.json",
+    "blob": "31ada3f925c1c96aec4c7890b097ac59a35fd4b4",
+    "sha256": "4b26b792020d144678346db9c951900ccb267ed03f45cae8113179e767724cdd",
+    "bytes": 4994
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-transform8-r29-projected/comparison-grid.png",
+    "blob": "05974b34ad47dbf20d86315b587205e589252097",
+    "sha256": "00559868c0fae8eaa63ce01669df0e7a0a0d2814943c8bd5120465e10be2e6d7",
+    "bytes": 498669
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-transform8-r29-projected/comparison.gif",
+    "blob": "9fd190a2d131d63b6519875b050e47c19b4e70c6",
+    "sha256": "7401a0c9957ebecdfab37c737f1937abd647ed37a658fc8956e3a34c0b024931",
+    "bytes": 325370
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-transform8-r29-projected/comparison.mp4",
+    "blob": "0399d085c36a8b216453f76c9a7f97dca0808220",
+    "sha256": "489a71d27c2bc3725036e45ca0e997d0786dc6704bfb7e8d031d67deaf81c1b4",
+    "bytes": 5706702
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-transform8-r29-projected/video-receipt.json",
+    "blob": "14c039b253a6d8e7dc15b8646d1857c2cc18188e",
+    "sha256": "9b0e707eb92a8079b9f2aca1a8ccd0fe713f4f31d80172b3c051458777273216",
+    "bytes": 439
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-beast8-r26/generated.png",
+    "blob": "2656d9b01069b7ae04e80cda49fbbe398876d059",
+    "sha256": "ff5a53f3347ffd2e599436ae9e1b0793420fbade15dfbf520fe0a453e6b4338e",
+    "bytes": 1783305
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-transform8-r28-body/generated.png",
+    "blob": "bb89f82da165b29cba66be0612ad3df2a510c5ae",
+    "sha256": "3d0007836f749d38d8afa1d6cf6e6a4c85f02e261e71d3dca1c37189afb6f8d7",
+    "bytes": 1700265
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-transform8-r28-body/end2.accessory-fixed.generated.png",
+    "blob": "30fb355d618fb115181961279eaa511fcec87383",
+    "sha256": "993734cfb62e2e29442af771dd874e9c85b30830650c0dd2c685930aa6cf752a",
+    "bytes": 1971906
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-r29-group-checks.json",
+    "blob": "24d7e361901cd4207b70545ea0008b80e5dfd7ea",
+    "sha256": "09ada9f37b28aecfbcb38b0da78ec45ab2ce6c6eb3192a2021f8bd88cdc87cf9",
+    "bytes": 2549
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-source-common-comparison.json",
+    "blob": "a66297e55ce5483f6051e4fcc5f9e4e51746f140",
+    "sha256": "61ec5ad8461eddbc0913ba7baa932357b2118e383d40d437d9e726c411676a16",
+    "bytes": 1384
+  },
+  {
+    "path": "art-review/sprites-20261102/DRUID_FULL_PACKAGE_KO.md",
+    "blob": "153f11f8e56ac44305236c1c4eec88d2876c8c10",
+    "sha256": "c65afc7ab2d4442ad00ec4436b32e1cbc6e4d630c310648f8dadd86e4ad04430",
+    "bytes": 5283
+  },
+  {
+    "path": "art-review/sprites-20261102/DRUID_IDLE_PACKAGE_KO.md",
+    "blob": "3315a85340b03ae2af4f99746df3a6ac75d5ebe7",
+    "sha256": "fb39cd7338593ce8996ebde4db55ecd7eb52da1d71b84f2c6c656b9de42e3ccc",
+    "bytes": 3139
+  },
+  {
+    "path": "art-review/sprites-20261102/tools/druid_project_native_axes.py",
+    "blob": "8752c2867563f4205e44f783fd569f9c5edc944e",
+    "sha256": "6f4ac19a5f1bafecb48b18e56fc7deebd464aa032f2148a35dda642a8f2d0180",
+    "bytes": 6250
+  },
+  {
+    "path": "art-review/sprites-20261102/tools/druid_projected8_review.py",
+    "blob": "a8bf69e27923cfe384129b60a1fbdbf40411d532",
+    "sha256": "ccc513969aae23ce0ad270de1bd86909dc4bfb60a825c2f425b27f297c2cba8f",
+    "bytes": 2883
+  },
+  {
+    "path": "art-review/sprites-20261102/tools/druid_group_review_projected.py",
+    "blob": "8eadb940bdc9f10ab5e31f91acbca7d9a6c58211",
+    "sha256": "97c4e3273d1de4771265e341f115d8d6a1c2a6a7035bc2442891e0432c7e1940",
+    "bytes": 3546
+  },
+  {
+    "path": "art-review/sprites-20261102/tools/druid_transform8_export.py",
+    "blob": "58daccfd2eb1e4eef19fb51150b6f2dd44ce949b",
+    "sha256": "7a247d05331800934c0b2d65dc7886d646e813619d2a0d10a5f630dbbfc92818",
+    "bytes": 5690
+  },
+  {
+    "path": "art-review/sprites-20261102/tools/druid_dive8_export_grip_angle.py",
+    "blob": "8269c0e962cf2a9cf03a18e25a7a9c487e7ec0e6",
+    "sha256": "e8b68c42bdf04f628d24f27cbf8884d8e454fa51457d75c49605e2d3bf5ad6f7",
+    "bytes": 6471
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-dive8-r27-body/generated.png",
+    "blob": "291fa4f6ab5a1babbaa14827b7e2b36ebf00da8f",
+    "sha256": "574a3c96f353613a078e34c850e11f26c038007b8f02d5c7639e5a5d1bdbfa46",
+    "bytes": 1433733
+  },
+  {
+    "path": "art-review/sprites-20261102/prompts-latest-groups.json",
+    "blob": "f4e673b08fed91d84ef873302529c97f1b56471b",
+    "sha256": "6cdcea73b79a675daa7c2952ff665b65a40a47bd4dd12cd575cfc148486e7752",
+    "bytes": 27052
+  }
+]
