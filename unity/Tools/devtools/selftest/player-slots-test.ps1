@@ -97,7 +97,33 @@ try {
  $blocked=$false;try{Acquire-PlayerSlot 'fake.exe' $PID}catch{$blocked=$_.Exception.Message -match '10GB'}
  Check $blocked 'player minimum 10GB lost'
  function Get-CommitFreeGB {return 30}
+ # slots3: 예약만 걸어 둔 앞 예약·죽은/재사용 대기 pid는 순서를 막지 않는다.
+ $Owner='pre';$Kind='player';Cmd-Reserve|Out-Null
+ $Owner='deadw';Cmd-Reserve|Out-Null
+ $dw=@(Get-Reservations 'player'|Where-Object owner -eq 'deadw')[0]
+ Write-JsonAtomic $dw.file @{owner='deadw';kind='player';createdAt=$dw.createdAt;expiresAt=$dw.expiresAt;waitPid=2147483646;waitSince=(NowIso)}
+ $Owner='reusedw';Cmd-Reserve|Out-Null
+ $rw=@(Get-Reservations 'player'|Where-Object owner -eq 'reusedw')[0]
+ Write-JsonAtomic $rw.file @{owner='reusedw';kind='player';createdAt=$rw.createdAt;expiresAt=$rw.expiresAt;waitPid=$PID;waitSince='2000-01-01T00:00:00Z'}
+ Check ((Get-ReservationWaiterState (@(Get-Reservations 'player'|Where-Object owner -eq 'pre')[0])) -eq 'reserved') 'pre-reservation not classified reserved-only'
+ Check ((Get-ReservationWaiterState (@(Get-Reservations 'player'|Where-Object owner -eq 'deadw')[0])) -eq 'dead') 'dead waiter pid not detected'
+ Check ((Get-ReservationWaiterState (@(Get-Reservations 'player'|Where-Object owner -eq 'reusedw')[0])) -eq 'dead') 'reused waiter pid not detected'
+ $Owner='late';Cmd-Reserve|Out-Null
+ Acquire-PlayerSlot 'fake.exe' $PID
+ Release-PlayerAdmission
+ Check (@(Get-PlayerSlots).Count -eq 1) 'pre-reserved/dead front reservations still block a live waiter'
+ $lateRes=@(Get-Reservations 'player'|Where-Object owner -eq 'late')[0]
+ Check ([int]$lateRes.waitPid -eq $PID -and $lateRes.waitSince) 'waiter pid not recorded on own reservation'
+ Cmd-Reserve|Out-Null
+ Check ([int](@(Get-Reservations 'player'|Where-Object owner -eq 'late')[0]).waitPid -eq $PID) 'renewal erased waiter pid'
+ $q=(Cmd-Queue) -join "`n"
+ Check ($q -match 'pre - .*예약만' -and $q -match 'deadw - .*종료 - 건너뜀' -and $q -match 'late - .*실행 중') 'status waiter labels missing'
+ Release-PlayerSlot;Cmd-Unreserve|Out-Null
+ foreach($o in 'pre','deadw','reusedw'){$Owner=$o;Cmd-Unreserve|Out-Null}
  $Owner='b';$Kind='player';Cmd-Reserve|Out-Null;$Owner='c';Cmd-Reserve|Out-Null
+ $Owner='b';Set-ReservationWaiter $PID;$Owner='c'
+ $q=(Cmd-Queue) -join "`n"
+ Check ($q -match 'b - .*대기 중\(pid '+$PID+' 살아 있음\)') 'status live waiter label missing'
  $blocked=$false;try{Acquire-PlayerSlot 'fake.exe' $PID}catch{$blocked=$_.Exception.Message -match '맨 앞은 b'}
  Check $blocked 'player FIFO bypassed'
  $Owner='b';Acquire-PlayerSlot 'fake.exe' $PID
