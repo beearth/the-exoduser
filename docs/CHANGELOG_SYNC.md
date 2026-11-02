@@ -55721,3 +55721,7 @@ stage=0은 실제200×200 본편으로 정정하고 과거 원화 판은 명시�
 
 - 사용자 브리프1·2절: 3후보 비교 보드(전신1x/발3x/손/성/강/달)까지 제작, CTO 선택 대기·RETOUCH·새 아트 게임 미적용. 거대 마왕 요새와 원형 달 추가 지시 포함. 생성 원본/프롬프트/측정은 G:/exoduser/tmp/design-review/20261102_title_keyframe/ 및 담당 I: REPORT 보존.
 - index.html _fitTitleStage: 화면 높이4.5%·최소48px에 로고 시작점을 고정, 메뉴는20k 뒤. 실제7크기 경계·키보드 선택·pageerror0, 타이틀8/8·project-check111/111. splash/FULLSCREEN_ART 현행 수치·design-director 인계·ART 현황 동기화. 기존 living-scenes 3개 WIP 보존.
+
+## 2026-11-02 웹 3D 3라운드
+
+기존 맵/인물/VFX/HUD를 보존하며 유령 수피·가지 가시성/일렁임,10구역118낮은 군락,캠프·제단 국소광 범위/입사광 상한을 반영했다. 시작 맨바닥 표본43.46%; 실제1920/3840 OFF·ON/1x/각10초·주인공RGBA0/HUD·맵동일/오류0. 밀집 ON168.48/191.52FPS·관련57/57·project111/111·guard PASS. 3840 무적 시각 이동9/9·123.80초·18,448.59px,AI/충돌/native입력 유지. 원격 단계604cd2ca6→e7ac4d3e5→09ab11e59/6db15a40b;3377 분리 서버HTTP200·QA/디스크/HTTP27파일 SHA동일. [현행 계약](4.1맵디자인+설정/WEB3D_TRIAL_20261031.md),근거 I:/EXODUSER-Storage/web3d-round3-20261102/REPORT.md. 원격 시작main 동일 실패3건/자연 보스완주/NW.js 재빌드·Steam 배포는 별도다.
