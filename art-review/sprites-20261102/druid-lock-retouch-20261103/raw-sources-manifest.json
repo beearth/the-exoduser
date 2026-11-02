@@ -1,0 +1,44 @@
+[
+  {
+    "file": "south-master-r36-blank.png",
+    "blob": "36b2c01e44f45c9e4a2a1e937241184486d25923",
+    "bytes": 1804020,
+    "sha256": "67947b6b51ebb1e6fbbce43d321b0da7e81260ca428f443f06ca9d1e237222a9"
+  },
+  {
+    "file": "south-master-r34-initial.png",
+    "blob": "dc3e62ba6e19339a23bd90dbd3d446b1089d42fe",
+    "bytes": 1627003,
+    "sha256": "9c4ebccc39eaca82592d444d84040414b59d1ef000d2e8ba06a02769f0dd9e52"
+  },
+  {
+    "file": "south-master-r35-joint.png",
+    "blob": "4d5f7e363626ddd9724602b760a055ceb1b80a07",
+    "bytes": 1728084,
+    "sha256": "006427815ab1f8b1ab77019b44fac73b8d0700c2f3390c8bb5a4a2155686a9bb"
+  },
+  {
+    "file": "idle-A-generated.png",
+    "blob": "c15c0ce68875ac8e0dbaf90d3726207ce5034e08",
+    "bytes": 799932,
+    "sha256": "c7b2fe9b586c4330bfb4f7014a1b276637ff181cc1439da681dcee42dbe017dd"
+  },
+  {
+    "file": "idle-B-generated.png",
+    "blob": "450be925e618d31f19bc25be8d841a925e39d555",
+    "bytes": 782390,
+    "sha256": "86845d6fa781ca01e6e0208be7d0a694f773e2a08252ad0bbb4a49d5539bf6d8"
+  },
+  {
+    "file": "idle-east-fix-generated.png",
+    "blob": "89888ef11ee778a62811a4da43a0b1fa3ecb0ec0",
+    "bytes": 1231342,
+    "sha256": "cb569b997c60f8e4400ef020eddf37d226e17eb43feb3bcaf3f4f39c454c7bb2"
+  },
+  {
+    "file": "hair-north-west-generated.png",
+    "blob": "c06b8881fcf2409fae54017c3399b1467116d2d9",
+    "bytes": 1148476,
+    "sha256": "4e1920e6dfeb88d4e0f5e1b4a2a85b719780f88545e7bf22555f42aa69816332"
+  }
+]
