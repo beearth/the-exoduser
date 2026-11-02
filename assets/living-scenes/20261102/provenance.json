@@ -1,0 +1,24 @@
+{
+  "tool": "built-in imagegen",
+  "edits": 2,
+  "paidApiCalls": 0,
+  "preserve": "Original source files untouched; warrior consumes local repair masks only; death retains scene composition.",
+  "assets": [
+    {
+      "file": "warrior-clean.webp",
+      "width": 1672,
+      "height": 941,
+      "source": "assets/charselect/poster_idle_warrior_cs3_4k.jpg",
+      "prompt": "Remove all detached floating orange embers, bright dots, speckle, grain, dust motes and isolated spark artifacts. Preserve framing, warrior face/body/pose/sword/armor/cloak/castle/archways/braziers/color. Local repair only; no blur, smears, cloning circles or grain.",
+      "sha256": "6d87beb71bee3aa459fccde9d63e766e0a3aeef341436b66434bde3dc50f4e72"
+    },
+    {
+      "file": "death-clean.webp",
+      "width": 1932,
+      "height": 814,
+      "source": "img/cin_remember_wide.png",
+      "prompt": "Remove every airborne orange ember, white floating flake, tiny bright dot, grain and noise artifact. Preserve three children at left, woman spirit in front of moon, prisoners/cage at right, continuous blue/orange clouds and stone ground. Keep silhouettes, pose, framing and lighting. No blur, new objects, text, UI or particulate texture.",
+      "sha256": "c83e27fd2db5dc0bbd841120eb38a6a86594684758e538a624c11d585be79e9b"
+    }
+  ]
+}

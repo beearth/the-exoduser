@@ -6,6 +6,8 @@
 <script src="decision-sound.js?v=20261031"></script>
 <script src="fullscreen-art-data.js?v=20261031"></script>
 <script src="fullscreen-art.js?v=20261031-motion1"></script>
+<link rel="stylesheet" href="living-scenes.css?v=20261102">
+<script src="living-scenes.js?v=20261102"></script>
 
 <script src="build-target.js"></script>
 <script src="release-version.js"></script>
@@ -3359,6 +3361,7 @@ function selectVisual(ci){
 
 // 잉걸불 파티클 1회 생성
 function _spawnEmbers(){
+  if(globalThis.LivingScenes)return; // Smooth canvas smoke owns this scene; no point embers.
   const box=$('csEmbers');if(!box||box.childElementCount)return;
   let h='';for(let i=0;i<26;i++){
     const x=(i*3.9+((i*i)%7))%100, dur=6+((i*7)%9), delay=-((i*11)%14), dx=((i%2)?1:-1)*(6+(i%5)*5), sz=2+(i%3);
@@ -4446,6 +4449,7 @@ function showCharGate(charId,storySeen=false){
 // ═══ 로비 파티클 시스템 (불씨 + 안개) ═══
 (function(){
   const cv=document.getElementById('lobbyParticles');
+  if(globalThis.LivingScenes)return; // Replaced by the masked, point-free living scene.
   if(!cv)return;
   const cx=cv.getContext('2d');
   const embers=[];const mist=[];

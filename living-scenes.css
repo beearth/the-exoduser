@@ -1,0 +1,18 @@
+/* Assigned waiting screens only. */
+.living-scene{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;user-select:none;z-index:2}
+.living-scene[hidden]{display:none!important}
+.living-still{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none;user-select:none;z-index:0}
+#charVisualPop .cs-scene>.living-still{z-index:2}
+#charVisualPop .cs-scene>.living-scene{z-index:3}
+#charVisualPop.living-painting-ready :is(#csIdleVid,#csSceneVid,#csPortrait){visibility:hidden}
+#lobby.living-painting-ready :is(#lobbyAmbientVideo,#lobbyCharPreview){visibility:hidden}
+#lobbyParticles,#charVisualPop .cs-embers{display:none!important}
+#lobby .lobby-bg-img{animation:none!important}
+:is(#death,#demoEnd,#victory,#chapterGate,#stageTransition)>.living-scene{z-index:0}
+:is(#death,#demoEnd,#chapterGate,#stageTransition)>:not(.living-scene):not(.living-still):not(.loading-art){z-index:3}
+.living-ui-layer{position:relative;z-index:3}
+:is(#chapterGate,#stageTransition,#loadingBodyArt)>.living-scene{z-index:2}
+:is(#chapterGate,#stageTransition)>.living-still{z-index:1}
+#death>.living-still{z-index:-1}
+.living-viewport{position:fixed;z-index:24}
+@media(prefers-reduced-motion:reduce){.living-scene{display:none!important}}
