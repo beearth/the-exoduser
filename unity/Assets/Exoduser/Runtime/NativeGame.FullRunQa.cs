@@ -36,7 +36,8 @@ namespace Exoduser.UnityPort
             public string result, device, buildGuid;
             public int width, height;
             public float seconds, averageFps, frameP95Ms, frameP99Ms, longestFrameMs;
-            public int renderedFrames, gearChanges, deaths, retries;
+            public int renderedFrames, gearChanges, deaths, retries, policyChanges;
+            public string controlPolicyScope="Optional fullrun-policy.json changes virtual boss inputs only; accepted settings are recorded in policy-history.jsonl. Disabled by default.";
             public bool worldCleared, clearModalNotApplicable, clearModalBlockedBackground, clearCancelRearmed, clearReturnedLobby, clearSaveExists;
             public float worldClearSeconds;
             public string clearUiScope = "After natural clear: actual panel callbacks and virtual Escape through NativeGame.Update; not OS/IMGUI button injection.";
@@ -89,6 +90,9 @@ namespace Exoduser.UnityPort
             var patterns = new HashSet<string>();
             var performance = gameObject.AddComponent<FullRunFrameProbe>();performance.game=this;performance.output=output;
             var navigation = new FullRunNavigation();
+            var controlPolicy=new FullRunControlPolicy();string policyText=null;
+            string policyPath=Path.Combine(output,"fullrun-policy.json");int lastChainTick=-10000;
+            if(!File.Exists(policyPath))File.WriteAllText(policyPath,JsonUtility.ToJson(controlPolicy,true));
             float nextSample = 0, nextStep = Time.realtimeSinceStartup;
             int maxTicks; if (!int.TryParse(Argument("-qa-max-ticks"), out maxTicks)) maxTicks = 54000;
             int retryLimit;if(!int.TryParse(Argument("-qa-retries"),out retryLimit))retryLimit=5;retryLimit=Mathf.Clamp(retryLimit,0,20);
@@ -242,6 +246,22 @@ namespace Exoduser.UnityPort
                     if(flow.InArena&&p.KiChargeActive&&p.KiChargeTicks<120&&!sim.IceOrbActive)attack=true;
                     if (fighting && sim.TickCount % 600 < 1) keys.Add(Key.Digit1);
                     keyboard.MakeCurrent(); mouse.MakeCurrent(); InputState.Change(keyboard,new KeyboardState(keys.ToArray()));
+                    if(sim.TickCount%60==0||policyText==null)
+                    {
+                        try
+                        {
+                            string raw=File.ReadAllText(policyPath);
+                            if(raw!=policyText)
+                            {
+                                var nextPolicy=new FullRunControlPolicy();JsonUtility.FromJsonOverwrite(raw,nextPolicy);nextPolicy.Normalize();
+                                controlPolicy=nextPolicy;policyText=raw;receipt.policyChanges++;
+                                File.AppendAllText(Path.Combine(output,"policy-history.jsonl"),"{\"tick\":"+sim.TickCount+",\"policy\":"+JsonUtility.ToJson(controlPolicy)+"}\n");
+                            }
+                        }
+                        catch(Exception ex)when(ex is IOException||ex is ArgumentException){Debug.LogWarning("FULLRUN_POLICY_RETAINED "+ex.GetType().Name);}
+                    }
+                    FullRunControlInputs.Apply(sim,controlPolicy,navigation,FullRunCanMove,keys,ref move,ref aim,ref attack,ref magic,evade,aux,ref lastChainTick);
+                    InputState.Change(keyboard,new KeyboardState(keys.ToArray()));
                     var aimPoint = NativeRemodel3D.Active ? NativeRemodel3D.Point(aim.x,aim.y) : Point(aim.x,aim.y);
                     if (NativeRemodel3D.Active) aimPoint.y = NativeRemodel3D.Point(p.X,p.Y).y;
                     var screen = HudCamera.WorldToScreenPoint(aimPoint);
