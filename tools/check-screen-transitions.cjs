@@ -3,8 +3,8 @@ const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_pro
 const {chromium}=require(process.env.EXODUSER_TOOLS_PACKAGE||'G:/exoduser/node_modules/playwright');
 const root=path.resolve(__dirname,'..'),out=process.env.TRANSITION_OUTPUT||'I:/EXODUSER-Storage/codex-takeover/transitions';
 const phase=process.argv[2]||'after',width=Number(process.argv[3]||1920),height=1080;
-const gameOnly=process.argv[4]==='game';
-const dir=path.join(out,phase+'-'+width+(gameOnly?'-game':'')),base='http://127.0.0.1:3462';fs.mkdirSync(dir,{recursive:true});
+const gameOnly=String(process.argv[4]||'').startsWith('game');
+const dir=path.join(out,phase+'-'+width+(gameOnly?'-'+process.argv[4]:'')),base='http://127.0.0.1:3462';fs.mkdirSync(dir,{recursive:true});
 process.env.TEMP=out;process.env.TMP=out;
 const receipt={phase,width,height,source:cp.execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),errors:[],rows:[],fixture:'격리 DEMO 생성·실제 UI. 끝부분 seek, 스테이지/사망 상태 fixture는 행에 표시. 자연 전체 완주 아님.'};
 const save=()=>fs.writeFileSync(path.join(dir,'receipt.json'),JSON.stringify(receipt,null,2));
@@ -39,9 +39,9 @@ const save=()=>fs.writeFileSync(path.join(dir,'receipt.json'),JSON.stringify(rec
   await page.waitForFunction(()=>typeof _bootLoadActive!=='undefined'&&!_bootLoadActive,null,{timeout:90000});await idle();
   await page.evaluate(()=>{_cutsceneState=null;if(typeof _cutC!=='undefined')_cutC.style.display='none';G.on=true;G._cutsceneDone=true;P.iframes=999999;document.querySelector('#introKeys').style.display='none';closeAllPanels(true);});
   await page.evaluate(()=>{G.stage=1;document.querySelector('#demoEnd').style.display='none';});
-  await segment('08-stage-next',()=>page.evaluate(()=>{showStageTransition(()=>nextStage());}),'기존 nextStage 콜백, 클리어 상태 fixture');
+  await segment('08-stage-next',()=>page.evaluate(()=>{showStageTransition(()=>{nextStage();P.iframes=999999;});}),'기존 nextStage 콜백, 클리어 상태 fixture');
   await idle();await page.evaluate(()=>{document.querySelector('#demoEnd').style.display='none';G._cutsceneDone=true;G.on=true;P.hp=0;die();});await page.waitForTimeout(500);
-  await segment('09-death-retry',()=>page.locator('#retryBtn').click(),'die()로 사망 상태 구성; 실제 재시작 버튼');
+  await segment('09-death-retry',async()=>{await page.locator('#retryBtn').click();await page.waitForFunction(()=>G.on&&!globalThis.ScreenTransition?.busy,null,{timeout:20000});receipt.retryState=await page.evaluate(()=>{P.iframes=999999;return{on:G.on,hp:P.hp,mhp:P.mhp,death:document.querySelector('#death').classList.contains('on')};});if(receipt.retryState.hp<=0||receipt.retryState.death)throw Error('Retry failed');},'die() 사망 fixture·실제 재시작 버튼·재사망을 막는 iframe fixture');
   await idle();await segment('10-game-lobby',()=>page.evaluate(()=>{goToLobby();}));
   receipt.final=await page.evaluate(()=>({url:location.href,overflow:document.documentElement.scrollWidth>innerWidth,cover:document.documentElement.dataset.screenCover,busy:globalThis.ScreenTransition?.busy}));
  }catch(e){receipt.errors.push(e.stack||String(e));console.error(e);}
