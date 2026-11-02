@@ -107,3 +107,19 @@ r4 빌드·M1 기술 PASS와 회복 바닥/가시 접지/강타 점선 테두리
 | 사용자 보호 | 실제 dota2 PID4892 생존을 인수 전에 재확인. 새 Unity/MCP Editor/Player/빌드/대기자/인코딩/무거운 검사0·passed CPU검사 반복0. 소스/문서/원격 복구점만 진행 |
 
 원본·인수 영수증: I:/EXODUSER-Storage/demo-art/impact/decal-receiver-intake-r5/. 별도 맵 수신 계약은 [UNITY_A2_DECAL_RECEIVER_20261101.md](../engine/UNITY_A2_DECAL_RECEIVER_20261101.md)를 따른다. 소스 인수와 실제 표시 성공을 구분하며, 도타 부재와 기존 실행 안전조건 확인 전에는 검수 실행을 재개하지 않는다.
+
+
+## 2026-11-03 웹 플립북으로 전환 — 전사 첫 단위
+
+11-03 새벽 재개 지시가 이전 Graph 본체 및 도타 보호 이력보다 우선한다. origin/unity/main 09192f7bbc를 정상 병합했고 충돌은 최신 viewport·방향·지면 배치와 자체 표현 observer를 함께 유지했다. 기존 FAIL 후보를 제품 PASS로 올리지 않는다.
+
+| id | 현행 후보 계약 | 검수 |
+|---|---|---|
+| CONTACT_ART | 기존 Art/vfx/ki_slash_hit_silver_sheet, 원본1254²/2×2/627²/4프레임, 40ms씩 총160ms. 원본 byte 불변·KiSlashAdditive 합성. 첫40ms alpha1, 이후 pow(1-(age-.04)/.12,1.4) | 표현 계약 RED→GREEN458 |
+| PRESENTATION | normal55ms/heavy90ms pose hold, Core 시간·입력·피해·판정·RNG 불변. 기존 공격/피격 원화 유지. 카메라 반동≤4.5px·180ms, reduced motion이면 추가 반동/광원0 | 실제 Player 검수 전 |
+| CONTACT_WORLD | 실제 GroundY+.55m, 카메라 앞 .08m 바이어스, 카메라 면+방향각. 원화 폭 normal.95m/heavy1.35m; 전용 billboard 제외로 발밑 lift/이중 tilt 방지 | 1x 실제 검수 전 |
+| BUDGET | sprite8슬롯/틱 신규2접점, 80ms 이내 같은 적 중복억제. 점광원 동시최대2/80ms/normal1.5·range1.2m/heavy2.4·range1.8m. 데칼8/반경.24·.4m/alpha.35/1.2초. Graph 본체·입자0 | GPU/탄막 겹침 미검증 |
+| WEB_ROUTE | NativeSkillRemaster.Enabled=false; 기존 KiSlashHit·NativeSkillView·NativeBossView 웹 원화가 기본. FeelContact 중복만 새 observer 준비 시 억제하고 원화 누락이면 기존 표시 폴백 | 기본 공격→기검참 10초 fixture부터 판정 |
+| REVIEW | -impact-scope warrior: 기본300틱+기검참300틱/60Hz,30fps300PNG/10초. 같은EXE baseline/after Core trace SHA 일치, 실제처치·Ki3타Tier3명중·양쪽넉백>1px 검사. 전체5스킬 fixture는 기존16초480PNG. Graph 카운터 대신 실제 flipbookFrames/peakSprites로 표기 | 정식 빌드·동일M1·나란히영상 후에만 공통 반영 |
+
+레퍼런스: 직접 연 091256 횃불 타격과 keyframe_B. 배울 점은 짧은 접점·방향·국소 조명·남아 있는 적탄이며 외부 원화 반입0. 새 소스의 빌드/M1/실게임·1x·소리 청취는 아직 미검증이다. 상태·영수증은 I:/EXODUSER-Storage/demo-art/impact/REPORT_1103.md에 갱신한다.

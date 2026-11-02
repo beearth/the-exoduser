@@ -17,7 +17,7 @@ namespace Exoduser.UnityPort
             contactVfx=new NativeImpactView(transform);
             // Same-build before/after capture: baseline retains the previous drawing path.
             contactVfx.Enabled=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-impact-baseline")<0;
-            skillRemaster=new NativeSkillRemaster(transform){Enabled=contactVfx.Enabled};
+            skillRemaster=new NativeSkillRemaster(transform){Enabled=false}; // 11-03: retain original web skill/projectile flipbooks.
         }
         Vector3 ImpactCameraOffset()
         {

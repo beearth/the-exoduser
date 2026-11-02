@@ -46,7 +46,9 @@ static class Program
             Check(Math.Abs(SkillPresentation.EnemyWidth(false,false,false,1.1)-50.82)<.001, "어둠 탄 표시 길이는 기존 ps와44 배율을 유지한다");
             Check(Math.Abs(SkillPresentation.EnemyWidth(false,true,false,1.1)-56.02905)<.001, "물리탄은 기존 입 시트의2:1 외곽폭을 유지한다");
             Check(SkillPresentation.EnemyWidth(false,false,true,1)==192, "원소보주의2:1 시트 외곽폭을 유지한다");
-            Check(SkillPresentation.ContactOpacity(.02)>0.9&&SkillPresentation.ContactOpacity(.09)==0, "선명한 접점 본체는20ms에 보이고90ms 전에 사라진다");
+            Check(SkillPresentation.ContactOpacity(.02)>0.9, "웹 원화의 첫 접점은20ms에 선명하다");
+            Check(SkillPresentation.ContactOpacity(.13)>0&&SkillPresentation.ContactOpacity(.13)<.25, "웹 플립북 잔여 프레임은130ms에 낮은 불투명도로 이어져 갑자기 끊기지 않는다");
+            Check(SkillPresentation.ContactOpacity(.16)==0&&SkillPresentation.ContactOpacity(-.01)==0, "160ms 이후와 생성 전에는 접점이 탄막을 가리지 않는다");
             Check(!SkillPresentation.PuffCanYield(.1,false,true), "막 생긴 잔여 효과를 일회성 폭발이 즉시 잘라내지 않는다");
             Check(SkillPresentation.PuffCanYield(.2,false,true), "중요 폭발은 오래된 잔여 슬롯을 양보받을 수 있다");
             Check(!SkillPresentation.PuffCanYield(.2,true,true), "다른 중요한 폭발은 유지한다");

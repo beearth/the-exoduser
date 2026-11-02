@@ -16,8 +16,8 @@ namespace Exoduser.UnityPort.Vfx
         }
         public static float ContactOpacity(double age)
         {
-            if(age<0||age>=.085)return 0;
-            return (float)(age<.045?1:1-(age-.045)/.04);
+            if(age<0||age>=.16)return 0;
+            return (float)(age<.04?1:System.Math.Pow(1-(age-.04)/.12,1.4));
         }
         public static bool PuffCanYield(double age,bool existingCritical,bool incomingCritical)
         {

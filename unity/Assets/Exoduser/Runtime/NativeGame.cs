@@ -277,7 +277,7 @@ namespace Exoduser.UnityPort
         void DispatchFeedback()
         {
             sound.CurrentTick=Simulation.TickCount;
-            while(Simulation.Feedback.Count>0){var e=Simulation.Feedback.Dequeue();if(!ImpactActive||e.Kind!=FeedbackKind.KiSlashHit)impacts.Handle(e);sound.Handle(e);}
+            while(Simulation.Feedback.Count>0){var e=Simulation.Feedback.Dequeue();if(!ImpactActive||e.Kind!=FeedbackKind.FeelContact)impacts.Handle(e);sound.Handle(e);}
             sound.Flush();
         }
         void BuildProps()
@@ -305,7 +305,7 @@ namespace Exoduser.UnityPort
         void UpdateViews()
         {
             if(Simulation==null||view==null)return;BindWorldViewport();Remodel3DRestoreBillboards();NativeHd2D.RestoreSourcePoses();var p=Simulation.Player;
-            if(contactVfx!=null)contactVfx.RenderCamera=HudCamera;
+            if(contactVfx!=null){contactVfx.RenderCamera=HudCamera;contactVfx.ReducedMotion=impacts!=null&&impacts.ReducedMotion;}
             if(skillRemaster!=null)skillRemaster.RenderCamera=HudCamera;
             contactVfx?.Observe(Simulation,ImpactNow);
             float shk=impacts!=null&&impacts.ReducedMotion?0:Simulation.ShakeAmount*OptionShakeScale;   // B09: web G.shake -> camera offset (random +-shake px, game.html 51900)
