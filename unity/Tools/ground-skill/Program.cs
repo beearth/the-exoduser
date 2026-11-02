@@ -38,9 +38,10 @@ static class Program
             Func<float,float,float> curved=(x,z)=>.35f*(float)Math.Sin(x*2.7)+.22f*(float)Math.Cos(z*3.1)+.3f*(float)Math.Sin(x*z*.4);
             Func<float,float,float> deck=(x,z)=>Math.Abs(x)<1.37&&Math.Abs(z)<3.11?1.4f+.03f*z:curved(x,z);
             Func<float,float,float> root=(x,z)=>curved(x,z)+(float)(.7*Math.Max(0,1-Math.Abs(x+.23)/.17));
-            foreach(var ground in new[]{flat,slope,curved,deck,root})foreach(float diameter in new[]{1.12f,6f,10.4f,11.7f,18f}) {
+            Func<float,float,float> diagonal=(x,z)=>x+z>0?1:0;
+            foreach(var ground in new[]{flat,slope,curved,deck,root,diagonal})foreach(float diameter in new[]{1.12f,6f,10.4f,11.7f,18f}) {
                 var clock=System.Diagnostics.Stopwatch.StartNew();
-                object data=tess.Invoke(null,new object[]{0f,0f,-diameter/2,-diameter/2,diameter,diameter,.37,ground});
+                object data=tess.Invoke(null,new object[]{0f,0f,-diameter/2,-diameter/2,diameter,diameter,ground==diagonal?0:.37,ground});
                 long buildMs=clock.ElapsedMilliseconds;var vv=(Array)field(data,"Vertices");var tri=(int[])field(data,"Triangles");double area=0,worst=0;int large=0;
                 Check(tri.Length>0&&tri.Length%3==0,"nonempty terrain footprint");
                 for(int k=0;k<tri.Length;k+=3) {

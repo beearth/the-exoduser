@@ -1,6 +1,6 @@
 # Unity 설치형 지면 배치 수정 — 2026-11-02
 
-상태: **1차 정점·속성·상태148행 PASS / 실제 큰 반경 면 내부 결함 발견 → 회전 분리 후보 CPU3136 PASS / 재검증 대기**. 기준 공통 `1403c5ee6d52c540815ab1cf70d5666b9023aa75`. 사용자 요청은 장판뿐 아니라 지뢰·덫·현재 실행기에 존재하는 설치형 전체의 공중 배치를 고치는 것이다.
+상태: **1차 정점·속성·상태148행 PASS / 실제 큰 반경 면 내부 결함 발견 → 해시 분산 보완 후보 CPU3151 PASS / 실제 재검증 대기**. 기준 공통 `1403c5ee6d52c540815ab1cf70d5666b9023aa75`. 사용자 요청은 장판뿐 아니라 지뢰·덫·현재 실행기에 존재하는 설치형 전체의 공중 배치를 고치는 것이다.
 
 ## 원인과 적용 계약
 
@@ -51,12 +51,26 @@ SkillAdditive의 _GroundRingRadius 기본0은 본체·공중·2D에 기존 수�
 
 CPU3136은 공통 적응면/회전UV 검사이며 이 새 GPU band의 실제 화면/AA·폭·72각형·RGB·접지·복원 PASS를 대신하지 않는다. 기존QA의 LineRenderer interior0은 미측정값으로 남기며 실제3D mapped draw를 후속 QA가 검사한다.
 
+## 실제 생성 지연 RED와 좌표 키 분산 보완
+
+3c 정상 ARM64에서 최초 size-spikeTrap-Lv1의 UpdateViews3.1ms 뒤 **제품 Remodel3DLate가 최소96초 동안 반환되지 않음**을 추적했다. 검증 계산 진입 전의 지연이므로 제품후보3c는 반영 불가이며 기존 앱/공통을 보존했다. flat/slope/actualField의2초·100000 height-call budget QA 진단으로 나머지 원가를 구분하며, 이 진단을 성공검수로 세지 않는다.
+
+기존 dyadic grid Key=(long)x<<32 | (uint)y에 기본 long comparer를 쓰면 x/y 비트가 겹치는 대각 경계에 hash가 몰릴 수 있다. Dictionary의 **키 equality는 a==b 그대로**, 분산만 SplitMix64 후 int fold로 바꾼다: +0x9e3779b97f4a7c15UL, (x xor x>>30)*0xbf58476d1ce4e5b9UL, (x xor x>>27)*0x94d049bb133111ebUL, x xor x>>31, int(x xor x>>32). samples/indices 두 dictionary에 같은 comparer를 적용한다. 정점·삼각형·오차/분할/coverage 기준과 순서는 변경하지 않는다.
+
+| 독립 동일면 비교 | 기본 hash → 분산 hash | 출력 동일성 |
+|---|---|---|
+| 8.5u square / diagonal step0 |677ms →37ms |36459 vertices/40158 triangles/16382 omitted, vertex XYZUV+indices SHA256 2563ADA042C15C4EAB15EF91F0687540B2A526919D79CA4E15CE3EB7FEB3FF49 양쪽일치 |
+| diagonal step.001 |583ms →33ms |위와 동일 SHA, 양쪽일치 |
+| diagonal step.16 |83ms →30ms |35877/39590/16074, SHA256 27BD2E5CD0B6D5B7B5EC087102529B8EE17DC3B84128532EA65F87FB6872D683 양쪽일치 |
+
+위는 PC .NET8의 독립 복사본 비교이며 Mac96초 지연의 원인을 전부 설명했다고 주장하지 않는다. 실제Mac에서 동일3c의 지연 근거를 보존하고 후속후보를 다시 측정한다. 합성 최대18u root 생성351→196~197ms, 전체 geometry/UV3136+대각단차5크기15assertion=3151 PASS, C#323 compile0오류477경고. 최대 내부.006984u/면적98% 기준은 그대로이며 Mac 실제작동·화면·성능 PASS 전 출하하지 않는다.
+
 ## 검사와 남은 검증
 
 | 검사 | 근거 / 판정 |
 |---|---|
 | 수정 전 CPU RED | helper 부재에서 실행 assertion `MISSING terrain-conforming ground skill placement` FAIL. 컴파일 자체는 성공 |
-| 수정 후 CPU | 실제 Runtime 지면 수학 파일을 컴파일해 평지·경사·회전·72점 링·목교/주변 바닥의 기존659검사 + 면 내부/면적76검사 =735 PASS |
+| 수정 후 CPU | 실제 Runtime 지면 수학 파일을 컴파일해 평지·경사·회전·72점 링·목교/주변 바닥의 기하659 + 면 내부/면적76 + 회전UV2401 + 대각단차15 =3151 PASS |
 | 정적 C# | 적응 분할 포함 Core/Runtime 323소스 통합 Roslyn 컴파일 오류0, 경고477. 실제 Unity 빌드로 대체하지 않음 |
 | Mac 실제 baseline/후보 | 기존 Mac 총괄이 QA 파일/실행·입력/변형 byte·사용자 prefs 원문 보존을 소유. 실제 FAIL→같은 검사 GREEN·1920 화면·같은 앱 M1·생성/소멸/풀 재사용·2D/3D 전환은 아직 대기 |
 | 필수 시각 | 평지·경사·목교에서 각 설치형이 떠 있지 않고 원화/atlas/링이 올바른지 직접 확인. 정점 수학만으로 화면 PASS를 선언하지 않음 |

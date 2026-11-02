@@ -38,14 +38,20 @@ namespace Exoduser.UnityPort
             return new Builder(px, py, left, bottom, width, height, rotation, ground).Build();
         }
 
+        sealed class GridKeyComparer : IEqualityComparer<long>
+        {
+            public static readonly GridKeyComparer Instance=new GridKeyComparer();
+            public bool Equals(long a,long b) { return a==b; }
+            public int GetHashCode(long value) { unchecked { ulong x=(ulong)value+0x9e3779b97f4a7c15UL;x=(x^(x>>30))*0xbf58476d1ce4e5b9UL;x=(x^(x>>27))*0x94d049bb133111ebUL;x^=x>>31;return (int)(x^(x>>32)); } }
+        }
         sealed class Builder
         {
             const int Resolution = Segments << MaxRefinement;
             readonly float px, py, left, bottom, width, height;
             readonly double angle;
             readonly Func<float, float, float> ground;
-            readonly Dictionary<long, Vertex> samples = new Dictionary<long, Vertex>();
-            readonly Dictionary<long, int> indices = new Dictionary<long, int>();
+            readonly Dictionary<long, Vertex> samples = new Dictionary<long, Vertex>(GridKeyComparer.Instance);
+            readonly Dictionary<long, int> indices = new Dictionary<long, int>(GridKeyComparer.Instance);
             readonly List<Vertex> vertices = new List<Vertex>();
             readonly List<int> triangles = new List<int>();
             int omitted;
