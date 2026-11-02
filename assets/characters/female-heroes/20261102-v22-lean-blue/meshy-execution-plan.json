@@ -1,5 +1,5 @@
 {
-  "status": "AWAITING_EXPLICIT_MODEL_AND_CREDIT_CONFIRMATION",
+  "status": "APPROVED_EXECUTED_AND_DOWNLOADED",
   "createdAt": "2026-11-02T04:56:29.138Z",
   "provider": "Meshy",
   "ai_model": "meshy-7.1",
@@ -19,16 +19,9 @@
     ],
     "estimatedCredits": 70
   },
-  "balanceObservation": {
-    "queriedAt": "2026-11-02T04:57:33.165Z",
-    "balance": 4238,
-    "monthly_credits": 2488,
-    "permanent_credits": 1750,
-    "monthly_resets_at": "2026-11-20T17:41:54.000Z"
-  },
   "pricingSource": "https://docs.meshy.ai/en/api/pricing",
   "reservePolicy": "Keep at least twenty percent of observed balance unspent; recheck balance immediately before any approved submission.",
-  "paidRequestsSubmitted": 0,
+  "paidRequestsSubmitted": 4,
   "extraPaidOperationsApproved": false,
   "jobs": [
     {
@@ -56,11 +49,14 @@
         "texture_prompt": "Preserve the exact input adult face, clearly blue short bob, navy cropped leather top, gently toned bare abdomen, full dark trousers, one blue core only on anatomical left forearm gauntlet. Realistic restrained dark fantasy materials, no new face or extra ornaments."
       },
       "rig": {
-        "input_task_id": "SET_ONLY_AFTER_SUCCEEDED_MODEL_PASSES_REVIEW",
+        "input_task_id": "01a19ab3-0b62-77c9-859c-125af3f06ac7",
         "height_meters": 1.65,
         "heightStatus": "Prototype import scale, not final character lore height"
       },
-      "executionRule": "Confirm model cost first. Inspect finished body before rig. No blind create retry after uncertain timeout; list existing tasks first."
+      "executionRule": "Confirm model cost first. Inspect finished body before rig. No blind create retry after uncertain timeout; list existing tasks first.",
+      "modelTaskId": "01a19ab3-0b62-77c9-859c-125af3f06ac7",
+      "rigTaskId": "01a19ab8-0631-7427-9ce8-e0b577564526",
+      "executionStatus": "SUCCEEDED_DOWNLOADED"
     },
     {
       "id": "spearmage",
@@ -87,11 +83,17 @@
         "texture_prompt": "Preserve the exact input adult face, long smoky purple side braid over anatomical left shoulder, slim feminine toned build, charcoal cuirass fully covering abdomen, open upper chest, bare upper arms, plum short hip cloth and exposed thigh. Realistic restrained dark fantasy materials."
       },
       "rig": {
-        "input_task_id": "SET_ONLY_AFTER_SUCCEEDED_MODEL_PASSES_REVIEW",
+        "input_task_id": "01a19ab3-881f-7217-80b4-f2d7b2154304",
         "height_meters": 1.65,
         "heightStatus": "Prototype import scale, not final character lore height"
       },
-      "executionRule": "Confirm model cost first. Inspect finished body before rig. No blind create retry after uncertain timeout; list existing tasks first."
+      "executionRule": "Confirm model cost first. Inspect finished body before rig. No blind create retry after uncertain timeout; list existing tasks first.",
+      "modelTaskId": "01a19ab3-881f-7217-80b4-f2d7b2154304",
+      "rigTaskId": "01a19ab8-18c1-7059-912d-dc2376e4c932",
+      "executionStatus": "SUCCEEDED_DOWNLOADED"
     }
-  ]
+  ],
+  "approvedAtUserMessage": "다 진행해",
+  "approvedCapCredits": 70,
+  "consumedCredits": 70
 }

@@ -1,0 +1,81 @@
+{
+  "createdAt": "2026-11-02T05:31:09.363Z",
+  "models": [
+    {
+      "id": "transmuter",
+      "images": [
+        {
+          "mimeType": "image/png",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3
+        },
+        {
+          "mimeType": "image/jpeg",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3
+        },
+        {
+          "mimeType": "image/jpeg",
+          "width": 2048,
+          "height": 2048,
+          "channels": 3
+        }
+      ],
+      "roots": [
+        {
+          "children": [
+            24,
+            23
+          ],
+          "name": "Armature",
+          "scale": [
+            0.01,
+            0.01,
+            0.01
+          ]
+        }
+      ],
+      "morphTargets": 0
+    },
+    {
+      "id": "spearmage",
+      "images": [
+        {
+          "mimeType": "image/png",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3
+        },
+        {
+          "mimeType": "image/jpeg",
+          "width": 4096,
+          "height": 4096,
+          "channels": 3
+        },
+        {
+          "mimeType": "image/jpeg",
+          "width": 2048,
+          "height": 2048,
+          "channels": 3
+        }
+      ],
+      "roots": [
+        {
+          "children": [
+            24,
+            23
+          ],
+          "name": "Armature",
+          "scale": [
+            0.01,
+            0.01,
+            0.01
+          ]
+        }
+      ],
+      "morphTargets": 0
+    }
+  ]
+}

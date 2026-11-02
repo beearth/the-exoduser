@@ -1,0 +1,106 @@
+{
+  "status": "PREPARED_NOT_IMPORTED_OR_RUNTIME_VERIFIED",
+  "runtimeApplied": false,
+  "characters": [
+    {
+      "id": "transmuter",
+      "modelTaskId": "01a19ab3-0b62-77c9-859c-125af3f06ac7",
+      "rigTaskId": "01a19ab8-0631-7427-9ce8-e0b577564526",
+      "modelStatus": "SUCCEEDED",
+      "rigStatus": "SUCCEEDED",
+      "modelCredits": 30,
+      "rigCredits": 5,
+      "rigGlb": "models/transmuter/rig-glb/character.glb",
+      "rigFbx": "models/transmuter/rig-fbx/character.fbx",
+      "walkingGlb": "models/transmuter/rig-glb/walking.glb",
+      "walkingFbx": "models/transmuter/rig-fbx/walking.fbx",
+      "runningGlb": "models/transmuter/rig-glb/running.glb",
+      "runningFbx": "models/transmuter/rig-fbx/running.fbx"
+    },
+    {
+      "id": "spearmage",
+      "modelTaskId": "01a19ab3-881f-7217-80b4-f2d7b2154304",
+      "rigTaskId": "01a19ab8-18c1-7059-912d-dc2376e4c932",
+      "modelStatus": "SUCCEEDED",
+      "rigStatus": "SUCCEEDED",
+      "modelCredits": 30,
+      "rigCredits": 5,
+      "rigGlb": "models/spearmage/rig-glb/character.glb",
+      "rigFbx": "models/spearmage/rig-fbx/character.fbx",
+      "walkingGlb": "models/spearmage/rig-glb/walking.glb",
+      "walkingFbx": "models/spearmage/rig-fbx/walking.fbx",
+      "runningGlb": "models/spearmage/rig-glb/running.glb",
+      "runningFbx": "models/spearmage/rig-fbx/running.fbx"
+    }
+  ],
+  "prototypeHeightMeters": 1.65,
+  "prototypeHeightIsNotLore": true,
+  "glbArmatureScale": [
+    0.01,
+    0.01,
+    0.01
+  ],
+  "unitRule": "GLB contains 0.01 root scale; do not blindly apply another 0.01. Validate FBX imported height and foot plane in Unity.",
+  "humanoidMappingByHierarchy": {
+    "Hips": "Hips",
+    "Spine": "Spine02",
+    "Chest": "Spine01",
+    "UpperChest": "Spine",
+    "Neck": "neck",
+    "Head": "Head",
+    "LeftShoulder": "LeftShoulder",
+    "LeftUpperArm": "LeftArm",
+    "LeftLowerArm": "LeftForeArm",
+    "LeftHand": "LeftHand",
+    "RightShoulder": "RightShoulder",
+    "RightUpperArm": "RightArm",
+    "RightLowerArm": "RightForeArm",
+    "RightHand": "RightHand",
+    "LeftUpperLeg": "LeftUpLeg",
+    "LeftLowerLeg": "LeftLeg",
+    "LeftFoot": "LeftFoot",
+    "LeftToes": "LeftToeBase",
+    "RightUpperLeg": "RightUpLeg",
+    "RightLowerLeg": "RightLeg",
+    "RightFoot": "RightFoot",
+    "RightToes": "RightToeBase"
+  },
+  "unmapped": [
+    "head_end",
+    "headfront"
+  ],
+  "hairBonesPresent": false,
+  "clothBonesPresent": false,
+  "fingerBonesPresent": false,
+  "facialBlendshapesPresent": false,
+  "clips": [
+    {
+      "file": "rig-fbx/character.fbx",
+      "role": "bind pose only; not an idle animation",
+      "loop": false
+    },
+    {
+      "file": "rig-fbx/walking.fbx",
+      "role": "default unarmed walk",
+      "durationSeconds": 1.0333332680165768,
+      "loopCandidate": true
+    },
+    {
+      "file": "rig-fbx/running.fbx",
+      "role": "default unarmed run",
+      "durationSeconds": 0.6333333514630795,
+      "loopCandidate": true
+    }
+  ],
+  "rootMotionPolicy": "Preview source motion first; retarget and remove horizontal root travel only if the gameplay controller owns translation. Not verified.",
+  "materials": "PBR; Normal 4096, base-color 4096, metallic-roughness 2048 in downloaded GLB",
+  "weaponRule": "No weapon mesh attached; approved spear must remain separate rigid geometry and be socketed without metal skin deformation.",
+  "remaining": [
+    "Close face likeness against locked origin",
+    "Hair/cape/braid clipping and skin weights during walk/run",
+    "Loop seam and ground contact at actual camera",
+    "Weapon socket / grip / IK",
+    "Attack / evade / hit / death animations",
+    "Unity Humanoid import, Animator and same-build Player QA"
+  ]
+}

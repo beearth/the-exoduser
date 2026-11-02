@@ -1,0 +1,135 @@
+{
+  "createdAt": "2026-11-02T05:24:38.300Z",
+  "models": [
+    {
+      "id": "transmuter",
+      "path": "G:\\exoduser\\assets\\characters\\female-heroes\\20261102-v22-lean-blue\\models\\transmuter\\source\\model.glb",
+      "sha256": "4c890e9214b0b2af83f80bd14f532bc55827d6b487a86c3e2f5e70fc7a259790",
+      "bytes": 37762176,
+      "vertices": 95741,
+      "triangles": 61635,
+      "meshCount": 1,
+      "primitives": [
+        {
+          "vertices": 95741,
+          "indices": 184905,
+          "min": [
+            -0.9107319712638855,
+            -0.9506810307502747,
+            -0.19385303556919098
+          ],
+          "max": [
+            0.9087040424346924,
+            0.9450240731239319,
+            0.19788408279418945
+          ],
+          "attributes": [
+            "POSITION",
+            "NORMAL",
+            "TEXCOORD_0"
+          ]
+        }
+      ],
+      "materials": [
+        {
+          "name": "Material_0",
+          "baseColorTexture": {
+            "index": 1
+          },
+          "metallicRoughnessTexture": {
+            "index": 2
+          },
+          "normalTexture": {
+            "index": 0
+          },
+          "doubleSided": true
+        }
+      ],
+      "images": [
+        {
+          "name": "normal",
+          "mimeType": "image/png",
+          "embedded": true
+        },
+        {
+          "name": "Image_0",
+          "mimeType": "image/jpeg",
+          "embedded": true
+        },
+        {
+          "name": "Image_1",
+          "mimeType": "image/jpeg",
+          "embedded": true
+        }
+      ],
+      "skins": 0,
+      "animations": 0,
+      "stage": "UNRIGGED_GENERATION_TECHNICAL_ONLY_NOT_RUNTIME_QA"
+    },
+    {
+      "id": "spearmage",
+      "path": "G:\\exoduser\\assets\\characters\\female-heroes\\20261102-v22-lean-blue\\models\\spearmage\\source\\model.glb",
+      "sha256": "a8fc63d07ca959ad2975951f0a8f77846578c7418ab4645913ddb889d14a7166",
+      "bytes": 36608440,
+      "vertices": 91168,
+      "triangles": 61746,
+      "meshCount": 1,
+      "primitives": [
+        {
+          "vertices": 91168,
+          "indices": 185238,
+          "min": [
+            -0.8550369739532471,
+            -0.9512730836868286,
+            -0.15777799487113953
+          ],
+          "max": [
+            0.8530290126800537,
+            0.9501740336418152,
+            0.16221308708190918
+          ],
+          "attributes": [
+            "POSITION",
+            "NORMAL",
+            "TEXCOORD_0"
+          ]
+        }
+      ],
+      "materials": [
+        {
+          "name": "Material_0",
+          "baseColorTexture": {
+            "index": 1
+          },
+          "metallicRoughnessTexture": {
+            "index": 2
+          },
+          "normalTexture": {
+            "index": 0
+          },
+          "doubleSided": true
+        }
+      ],
+      "images": [
+        {
+          "name": "normal",
+          "mimeType": "image/png",
+          "embedded": true
+        },
+        {
+          "name": "Image_0",
+          "mimeType": "image/jpeg",
+          "embedded": true
+        },
+        {
+          "name": "Image_1",
+          "mimeType": "image/jpeg",
+          "embedded": true
+        }
+      ],
+      "skins": 0,
+      "animations": 0,
+      "stage": "UNRIGGED_GENERATION_TECHNICAL_ONLY_NOT_RUNTIME_QA"
+    }
+  ]
+}

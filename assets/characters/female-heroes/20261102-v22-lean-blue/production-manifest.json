@@ -1,5 +1,5 @@
 {
-  "stage": "LEAN_FEMALE_BODY_AND_BLUE_BOB_SOURCE_PREPARED_3D_PENDING_CONFIRMATION",
+  "stage": "RIGGED_3D_AND_DEFAULT_WALK_RUN_SAVED_RUNTIME_PENDING",
   "createdAt": "2026-11-02T04:56:29.138Z",
   "faceOrigins": [
     {
@@ -20,7 +20,11 @@
       "face": "transmuter.face-lock.png",
       "source": "transmuter.lean.source.png",
       "hair": "푸른 비대칭 단발",
-      "sourceSha256": "7fb2818ab1cce59ca2a68fd5f9ba5bd4a20e572cf33293d407e045a16dc7fe12"
+      "sourceSha256": "7fb2818ab1cce59ca2a68fd5f9ba5bd4a20e572cf33293d407e045a16dc7fe12",
+      "modelTaskId": "01a19ab3-0b62-77c9-859c-125af3f06ac7",
+      "rigTaskId": "01a19ab8-0631-7427-9ce8-e0b577564526",
+      "rigGlb": "models/transmuter/rig-glb/character.glb",
+      "rigFbx": "models/transmuter/rig-fbx/character.fbx"
     },
     {
       "id": "spearmage",
@@ -28,16 +32,27 @@
       "face": "spearmage.face-lock.png",
       "source": "spearmage.lean.source.png",
       "hair": "보라색 굵은 옆땋기",
-      "sourceSha256": "bac72fed1541a0041dff637b7451b28c5f6088e0e293c15fb5555b9d4807eae1"
+      "sourceSha256": "bac72fed1541a0041dff637b7451b28c5f6088e0e293c15fb5555b9d4807eae1",
+      "modelTaskId": "01a19ab3-881f-7217-80b4-f2d7b2154304",
+      "rigTaskId": "01a19ab8-18c1-7059-912d-dc2376e4c932",
+      "rigGlb": "models/spearmage/rig-glb/character.glb",
+      "rigFbx": "models/spearmage/rig-fbx/character.fbx"
     }
   ],
   "bodyDirection": "여성적으로 날렵하고 탄탄한 체형; 과도한 어깨/팔/다리 벌크업은 반려",
   "modelPlan": "meshy-execution-plan.json",
-  "modelAndCreditApproval": "AWAITING_USER_RESPONSE",
-  "paidMeshyRequestsSubmitted": 0,
-  "meshAvailable": false,
-  "rigAvailable": false,
-  "animationAvailable": false,
+  "modelAndCreditApproval": "APPROVED_BOTH_70_CREDITS",
+  "paidMeshyRequestsSubmitted": 4,
+  "meshAvailable": true,
+  "rigAvailable": true,
+  "animationAvailable": true,
   "runtimeApplied": false,
-  "sourceBackdrop": "opaque neutral gray for 3D source, not a transparent gameplay sprite"
+  "sourceBackdrop": "opaque neutral gray for 3D source, not a transparent gameplay sprite",
+  "updatedAt": "2026-11-02T05:31:41.759Z",
+  "consumedCredits": 70,
+  "technicalAuditPass": true,
+  "visualVerdict": "RETOUCH_PENDING_CLOSE_FACE_DEFORMATION_AND_RUNTIME",
+  "localExecutionHold": "DOTA2_RUNNING",
+  "executionReceipt": "meshy-execution-receipt.json",
+  "reviewPage": "models-review.html"
 }

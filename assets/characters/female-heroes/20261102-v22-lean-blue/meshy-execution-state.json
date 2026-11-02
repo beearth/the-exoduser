@@ -1,0 +1,18 @@
+{
+  "stage": "RIGGED_3D_AND_DEFAULT_WALK_RUN_SAVED_RUNTIME_PENDING",
+  "updatedAt": "2026-11-02T05:31:41.759Z",
+  "approval": "다 진행해",
+  "approvedCapCredits": 70,
+  "consumedCredits": 70,
+  "modelTasks": {
+    "transmuter": "01a19ab3-0b62-77c9-859c-125af3f06ac7",
+    "spearmage": "01a19ab3-881f-7217-80b4-f2d7b2154304"
+  },
+  "rigTasks": {
+    "transmuter": "01a19ab8-0631-7427-9ce8-e0b577564526",
+    "spearmage": "01a19ab8-18c1-7059-912d-dc2376e4c932"
+  },
+  "runtimeApplied": false,
+  "visualVerdict": "RETOUCH_PENDING_CLOSE_FACE_DEFORMATION_AND_RUNTIME",
+  "localExecutionHold": "DOTA2_RUNNING"
+}

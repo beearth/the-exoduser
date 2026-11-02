@@ -1,0 +1,3039 @@
+{
+  "createdAt": "2026-11-02T05:30:52.451Z",
+  "stage": "TECHNICAL_FILES_PASS_VISUAL_RUNTIME_PENDING",
+  "localDotaRunning": true,
+  "runtimeApplied": false,
+  "clipsAreProviderDefaults": true,
+  "faceLikenessVerified": false,
+  "clothHairDeformationVerified": false,
+  "models": [
+    {
+      "id": "transmuter",
+      "file": "rig-glb/character.glb",
+      "bytes": 41381196,
+      "sha256": "a01db655172ee50c9794592045d7ff99bca0a42eed1df51c2e85ea9f0fb1b952",
+      "vertices": 97113,
+      "triangles": 61635,
+      "skinCount": 1,
+      "jointCount": 24,
+      "joints": [
+        {
+          "node": 23,
+          "name": "Hips",
+          "parent": "Armature",
+          "translation": [
+            -0.000001123407855629921,
+            92.68054366111755,
+            -1.1753140948712826
+          ]
+        },
+        {
+          "node": 14,
+          "name": "Spine02",
+          "parent": "Hips",
+          "translation": [
+            0,
+            11.028321832418442,
+            0
+          ]
+        },
+        {
+          "node": 13,
+          "name": "Spine01",
+          "parent": "Spine02",
+          "translation": [
+            0,
+            11.028313636779785,
+            0
+          ]
+        },
+        {
+          "node": 12,
+          "name": "Spine",
+          "parent": "Spine01",
+          "translation": [
+            0,
+            11.362515389919281,
+            1.862645149230957e-7
+          ]
+        },
+        {
+          "node": 3,
+          "name": "neck",
+          "parent": "Spine",
+          "translation": [
+            8.881784197001252e-14,
+            7.716290652751923,
+            0
+          ]
+        },
+        {
+          "node": 2,
+          "name": "Head",
+          "parent": "neck",
+          "translation": [
+            8.881784197001252e-14,
+            6.606210023164749,
+            3.725290298461914e-7
+          ]
+        },
+        {
+          "node": 0,
+          "name": "head_end",
+          "parent": "Head",
+          "translation": [
+            4.794856067746878e-7,
+            23.433440923690796,
+            -0.000002380693331360817
+          ]
+        },
+        {
+          "node": 1,
+          "name": "headfront",
+          "parent": "Head",
+          "translation": [
+            0.9412916377186775,
+            1.6358936205506325,
+            12.019849568605423
+          ]
+        },
+        {
+          "node": 7,
+          "name": "LeftShoulder",
+          "parent": "Spine",
+          "translation": [
+            3.3460773527622223,
+            4.134052991867065,
+            0.020818039774894714
+          ]
+        },
+        {
+          "node": 6,
+          "name": "LeftArm",
+          "parent": "LeftShoulder",
+          "translation": [
+            -1.8044374883174896e-7,
+            13.462366163730621,
+            -1.0927578841801733e-7
+          ]
+        },
+        {
+          "node": 5,
+          "name": "LeftForeArm",
+          "parent": "LeftArm",
+          "translation": [
+            -0.00001387670636177063,
+            19.985683262348175,
+            0
+          ]
+        },
+        {
+          "node": 4,
+          "name": "LeftHand",
+          "parent": "LeftForeArm",
+          "translation": [
+            -0.000029988586902618408,
+            22.456711530685425,
+            -0.000013969838619232178
+          ]
+        },
+        {
+          "node": 11,
+          "name": "RightShoulder",
+          "parent": "Spine",
+          "translation": [
+            -3.2037001103162766,
+            5.204655230045319,
+            -0.019931234419345856
+          ]
+        },
+        {
+          "node": 10,
+          "name": "RightArm",
+          "parent": "RightShoulder",
+          "translation": [
+            4.307366907596588e-7,
+            12.844990193843842,
+            2.7771420718636364e-7
+          ]
+        },
+        {
+          "node": 9,
+          "name": "RightForeArm",
+          "parent": "RightArm",
+          "translation": [
+            -0.000004563480615615845,
+            21.93158119916916,
+            7.450580596923828e-7
+          ]
+        },
+        {
+          "node": 8,
+          "name": "RightHand",
+          "parent": "RightForeArm",
+          "translation": [
+            0.000006426125764846802,
+            22.469554841518402,
+            -0.000014342367649078369
+          ]
+        },
+        {
+          "node": 18,
+          "name": "LeftUpLeg",
+          "parent": "Hips",
+          "translation": [
+            9.714177995920181,
+            -8.435548096895218,
+            -0.36589354276657104
+          ]
+        },
+        {
+          "node": 17,
+          "name": "LeftLeg",
+          "parent": "LeftUpLeg",
+          "translation": [
+            -0.0000011408701539039612,
+            34.29139256477356,
+            5.587935447692871e-7
+          ]
+        },
+        {
+          "node": 16,
+          "name": "LeftFoot",
+          "parent": "LeftLeg",
+          "translation": [
+            3.259629011154175e-7,
+            37.50008046627045,
+            -3.725290298461914e-7
+          ]
+        },
+        {
+          "node": 15,
+          "name": "LeftToeBase",
+          "parent": "LeftFoot",
+          "translation": [
+            9.313225746154785e-7,
+            12.59472668170929,
+            -1.862645149230957e-7
+          ]
+        },
+        {
+          "node": 22,
+          "name": "RightUpLeg",
+          "parent": "Hips",
+          "translation": [
+            -8.82878452539444,
+            -8.435548096895218,
+            -0.36589354276657104
+          ]
+        },
+        {
+          "node": 21,
+          "name": "RightLeg",
+          "parent": "RightUpLeg",
+          "translation": [
+            -0.0000010011717677116394,
+            34.2055082321167,
+            0
+          ]
+        },
+        {
+          "node": 20,
+          "name": "RightFoot",
+          "parent": "RightLeg",
+          "translation": [
+            8.963979780673981e-7,
+            36.63206398487091,
+            1.862645149230957e-7
+          ]
+        },
+        {
+          "node": 19,
+          "name": "RightToeBase",
+          "parent": "RightFoot",
+          "translation": [
+            -3.725290298461914e-7,
+            13.350330293178558,
+            -0.0000010244548320770264
+          ]
+        }
+      ],
+      "weights": {
+        "badWeightSums": 0,
+        "zeroWeightVertices": 0,
+        "badJointIndices": 0,
+        "nonfinite": 0,
+        "maxWeightError": 1.364387571811676e-7
+      },
+      "animations": [
+        {
+          "name": "Armature|clip0|baselayer",
+          "startSeconds": 0.03333333507180214,
+          "endSeconds": 0.03333333507180214,
+          "durationSeconds": 0,
+          "channelCount": 72,
+          "samplerCount": 72,
+          "animatedNodeCount": 24,
+          "paths": [
+            "translation",
+            "rotation",
+            "scale"
+          ],
+          "valuesChecked": 240,
+          "badValues": 0
+        }
+      ],
+      "materials": [
+        {
+          "name": "Material_0",
+          "doubleSided": true,
+          "alphaMode": "OPAQUE"
+        }
+      ],
+      "technicalPass": true,
+      "bindPoseOnly": true
+    },
+    {
+      "id": "transmuter",
+      "file": "rig-glb/walking.glb",
+      "bytes": 41362004,
+      "sha256": "fb66d2b6454fa50973aa4280b84328bdd822eefe8d48334f8433749b9ac2997b",
+      "vertices": 97113,
+      "triangles": 61635,
+      "skinCount": 1,
+      "jointCount": 24,
+      "joints": [
+        {
+          "node": 23,
+          "name": "Hips",
+          "parent": "Armature",
+          "translation": [
+            -0.000001123407855629921,
+            92.68054366111755,
+            -1.1753140948712826
+          ]
+        },
+        {
+          "node": 14,
+          "name": "Spine02",
+          "parent": "Hips",
+          "translation": [
+            0,
+            11.028321832418442,
+            0
+          ]
+        },
+        {
+          "node": 13,
+          "name": "Spine01",
+          "parent": "Spine02",
+          "translation": [
+            0,
+            11.028313636779785,
+            0
+          ]
+        },
+        {
+          "node": 12,
+          "name": "Spine",
+          "parent": "Spine01",
+          "translation": [
+            0,
+            11.362515389919281,
+            1.862645149230957e-7
+          ]
+        },
+        {
+          "node": 3,
+          "name": "neck",
+          "parent": "Spine",
+          "translation": [
+            8.881784197001252e-14,
+            7.716290652751923,
+            0
+          ]
+        },
+        {
+          "node": 2,
+          "name": "Head",
+          "parent": "neck",
+          "translation": [
+            8.881784197001252e-14,
+            6.606210023164749,
+            3.725290298461914e-7
+          ]
+        },
+        {
+          "node": 0,
+          "name": "head_end",
+          "parent": "Head",
+          "translation": [
+            4.794856067746878e-7,
+            23.433440923690796,
+            -0.000002380693331360817
+          ]
+        },
+        {
+          "node": 1,
+          "name": "headfront",
+          "parent": "Head",
+          "translation": [
+            0.9412916377186775,
+            1.6358936205506325,
+            12.019849568605423
+          ]
+        },
+        {
+          "node": 7,
+          "name": "LeftShoulder",
+          "parent": "Spine",
+          "translation": [
+            3.3460773527622223,
+            4.134052991867065,
+            0.020818039774894714
+          ]
+        },
+        {
+          "node": 6,
+          "name": "LeftArm",
+          "parent": "LeftShoulder",
+          "translation": [
+            -1.8044374883174896e-7,
+            13.462366163730621,
+            -1.0927578841801733e-7
+          ]
+        },
+        {
+          "node": 5,
+          "name": "LeftForeArm",
+          "parent": "LeftArm",
+          "translation": [
+            -0.00001387670636177063,
+            19.985683262348175,
+            0
+          ]
+        },
+        {
+          "node": 4,
+          "name": "LeftHand",
+          "parent": "LeftForeArm",
+          "translation": [
+            -0.000029988586902618408,
+            22.456711530685425,
+            -0.000013969838619232178
+          ]
+        },
+        {
+          "node": 11,
+          "name": "RightShoulder",
+          "parent": "Spine",
+          "translation": [
+            -3.2037001103162766,
+            5.204655230045319,
+            -0.019931234419345856
+          ]
+        },
+        {
+          "node": 10,
+          "name": "RightArm",
+          "parent": "RightShoulder",
+          "translation": [
+            4.307366907596588e-7,
+            12.844990193843842,
+            2.7771420718636364e-7
+          ]
+        },
+        {
+          "node": 9,
+          "name": "RightForeArm",
+          "parent": "RightArm",
+          "translation": [
+            -0.000004563480615615845,
+            21.93158119916916,
+            7.450580596923828e-7
+          ]
+        },
+        {
+          "node": 8,
+          "name": "RightHand",
+          "parent": "RightForeArm",
+          "translation": [
+            0.000006426125764846802,
+            22.469554841518402,
+            -0.000014342367649078369
+          ]
+        },
+        {
+          "node": 18,
+          "name": "LeftUpLeg",
+          "parent": "Hips",
+          "translation": [
+            9.714177995920181,
+            -8.435548096895218,
+            -0.36589354276657104
+          ]
+        },
+        {
+          "node": 17,
+          "name": "LeftLeg",
+          "parent": "LeftUpLeg",
+          "translation": [
+            -0.0000011408701539039612,
+            34.29139256477356,
+            5.587935447692871e-7
+          ]
+        },
+        {
+          "node": 16,
+          "name": "LeftFoot",
+          "parent": "LeftLeg",
+          "translation": [
+            3.259629011154175e-7,
+            37.50008046627045,
+            -3.725290298461914e-7
+          ]
+        },
+        {
+          "node": 15,
+          "name": "LeftToeBase",
+          "parent": "LeftFoot",
+          "translation": [
+            9.313225746154785e-7,
+            12.59472668170929,
+            -1.862645149230957e-7
+          ]
+        },
+        {
+          "node": 22,
+          "name": "RightUpLeg",
+          "parent": "Hips",
+          "translation": [
+            -8.82878452539444,
+            -8.435548096895218,
+            -0.36589354276657104
+          ]
+        },
+        {
+          "node": 21,
+          "name": "RightLeg",
+          "parent": "RightUpLeg",
+          "translation": [
+            -0.0000010011717677116394,
+            34.2055082321167,
+            0
+          ]
+        },
+        {
+          "node": 20,
+          "name": "RightFoot",
+          "parent": "RightLeg",
+          "translation": [
+            8.963979780673981e-7,
+            36.63206398487091,
+            1.862645149230957e-7
+          ]
+        },
+        {
+          "node": 19,
+          "name": "RightToeBase",
+          "parent": "RightFoot",
+          "translation": [
+            -3.725290298461914e-7,
+            13.350330293178558,
+            -0.0000010244548320770264
+          ]
+        }
+      ],
+      "weights": {
+        "badWeightSums": 0,
+        "zeroWeightVertices": 0,
+        "badJointIndices": 0,
+        "nonfinite": 0,
+        "maxWeightError": 1.364387571811676e-7
+      },
+      "animations": [
+        {
+          "name": "Armature|walking_man|baselayer",
+          "startSeconds": 0.03333333507180214,
+          "endSeconds": 1.066666603088379,
+          "durationSeconds": 1.0333332680165768,
+          "channelCount": 66,
+          "samplerCount": 66,
+          "animatedNodeCount": 22,
+          "paths": [
+            "translation",
+            "rotation",
+            "scale"
+          ],
+          "valuesChecked": 7040,
+          "badValues": 0
+        }
+      ],
+      "materials": [
+        {
+          "name": "Material_0",
+          "doubleSided": true,
+          "alphaMode": "OPAQUE"
+        }
+      ],
+      "technicalPass": true,
+      "bindPoseOnly": false
+    },
+    {
+      "id": "transmuter",
+      "file": "rig-glb/running.glb",
+      "bytes": 41351404,
+      "sha256": "52ffa12790adc49c7e36126fc0c25cd40ce9923758e398be55599ce679fbdf1a",
+      "vertices": 97113,
+      "triangles": 61635,
+      "skinCount": 1,
+      "jointCount": 24,
+      "joints": [
+        {
+          "node": 23,
+          "name": "Hips",
+          "parent": "Armature",
+          "translation": [
+            -0.000001123407855629921,
+            92.68054366111755,
+            -1.1753140948712826
+          ]
+        },
+        {
+          "node": 14,
+          "name": "Spine02",
+          "parent": "Hips",
+          "translation": [
+            0,
+            11.028321832418442,
+            0
+          ]
+        },
+        {
+          "node": 13,
+          "name": "Spine01",
+          "parent": "Spine02",
+          "translation": [
+            0,
+            11.028313636779785,
+            0
+          ]
+        },
+        {
+          "node": 12,
+          "name": "Spine",
+          "parent": "Spine01",
+          "translation": [
+            0,
+            11.362515389919281,
+            1.862645149230957e-7
+          ]
+        },
+        {
+          "node": 3,
+          "name": "neck",
+          "parent": "Spine",
+          "translation": [
+            8.881784197001252e-14,
+            7.716290652751923,
+            0
+          ]
+        },
+        {
+          "node": 2,
+          "name": "Head",
+          "parent": "neck",
+          "translation": [
+            8.881784197001252e-14,
+            6.606210023164749,
+            3.725290298461914e-7
+          ]
+        },
+        {
+          "node": 0,
+          "name": "head_end",
+          "parent": "Head",
+          "translation": [
+            4.794856067746878e-7,
+            23.433440923690796,
+            -0.000002380693331360817
+          ]
+        },
+        {
+          "node": 1,
+          "name": "headfront",
+          "parent": "Head",
+          "translation": [
+            0.9412916377186775,
+            1.6358936205506325,
+            12.019849568605423
+          ]
+        },
+        {
+          "node": 7,
+          "name": "LeftShoulder",
+          "parent": "Spine",
+          "translation": [
+            3.3460773527622223,
+            4.134052991867065,
+            0.020818039774894714
+          ]
+        },
+        {
+          "node": 6,
+          "name": "LeftArm",
+          "parent": "LeftShoulder",
+          "translation": [
+            -1.8044374883174896e-7,
+            13.462366163730621,
+            -1.0927578841801733e-7
+          ]
+        },
+        {
+          "node": 5,
+          "name": "LeftForeArm",
+          "parent": "LeftArm",
+          "translation": [
+            -0.00001387670636177063,
+            19.985683262348175,
+            0
+          ]
+        },
+        {
+          "node": 4,
+          "name": "LeftHand",
+          "parent": "LeftForeArm",
+          "translation": [
+            -0.000029988586902618408,
+            22.456711530685425,
+            -0.000013969838619232178
+          ]
+        },
+        {
+          "node": 11,
+          "name": "RightShoulder",
+          "parent": "Spine",
+          "translation": [
+            -3.2037001103162766,
+            5.204655230045319,
+            -0.019931234419345856
+          ]
+        },
+        {
+          "node": 10,
+          "name": "RightArm",
+          "parent": "RightShoulder",
+          "translation": [
+            4.307366907596588e-7,
+            12.844990193843842,
+            2.7771420718636364e-7
+          ]
+        },
+        {
+          "node": 9,
+          "name": "RightForeArm",
+          "parent": "RightArm",
+          "translation": [
+            -0.000004563480615615845,
+            21.93158119916916,
+            7.450580596923828e-7
+          ]
+        },
+        {
+          "node": 8,
+          "name": "RightHand",
+          "parent": "RightForeArm",
+          "translation": [
+            0.000006426125764846802,
+            22.469554841518402,
+            -0.000014342367649078369
+          ]
+        },
+        {
+          "node": 18,
+          "name": "LeftUpLeg",
+          "parent": "Hips",
+          "translation": [
+            9.714177995920181,
+            -8.435548096895218,
+            -0.36589354276657104
+          ]
+        },
+        {
+          "node": 17,
+          "name": "LeftLeg",
+          "parent": "LeftUpLeg",
+          "translation": [
+            -0.0000011408701539039612,
+            34.29139256477356,
+            5.587935447692871e-7
+          ]
+        },
+        {
+          "node": 16,
+          "name": "LeftFoot",
+          "parent": "LeftLeg",
+          "translation": [
+            3.259629011154175e-7,
+            37.50008046627045,
+            -3.725290298461914e-7
+          ]
+        },
+        {
+          "node": 15,
+          "name": "LeftToeBase",
+          "parent": "LeftFoot",
+          "translation": [
+            9.313225746154785e-7,
+            12.59472668170929,
+            -1.862645149230957e-7
+          ]
+        },
+        {
+          "node": 22,
+          "name": "RightUpLeg",
+          "parent": "Hips",
+          "translation": [
+            -8.82878452539444,
+            -8.435548096895218,
+            -0.36589354276657104
+          ]
+        },
+        {
+          "node": 21,
+          "name": "RightLeg",
+          "parent": "RightUpLeg",
+          "translation": [
+            -0.0000010011717677116394,
+            34.2055082321167,
+            0
+          ]
+        },
+        {
+          "node": 20,
+          "name": "RightFoot",
+          "parent": "RightLeg",
+          "translation": [
+            8.963979780673981e-7,
+            36.63206398487091,
+            1.862645149230957e-7
+          ]
+        },
+        {
+          "node": 19,
+          "name": "RightToeBase",
+          "parent": "RightFoot",
+          "translation": [
+            -3.725290298461914e-7,
+            13.350330293178558,
+            -0.0000010244548320770264
+          ]
+        }
+      ],
+      "weights": {
+        "badWeightSums": 0,
+        "zeroWeightVertices": 0,
+        "badJointIndices": 0,
+        "nonfinite": 0,
+        "maxWeightError": 1.364387571811676e-7
+      },
+      "animations": [
+        {
+          "name": "Armature|running|baselayer",
+          "startSeconds": 0.03333333507180214,
+          "endSeconds": 0.6666666865348816,
+          "durationSeconds": 0.6333333514630795,
+          "channelCount": 66,
+          "samplerCount": 66,
+          "animatedNodeCount": 22,
+          "paths": [
+            "translation",
+            "rotation",
+            "scale"
+          ],
+          "valuesChecked": 4400,
+          "badValues": 0
+        }
+      ],
+      "materials": [
+        {
+          "name": "Material_0",
+          "doubleSided": true,
+          "alphaMode": "OPAQUE"
+        }
+      ],
+      "technicalPass": true,
+      "bindPoseOnly": false
+    },
+    {
+      "id": "transmuter",
+      "file": "armature/walking.glb",
+      "bytes": 89684,
+      "sha256": "aa9f3c548d81a35dc6c80a3220e27c25a7b4013f9942885244c8aacb65d718e9",
+      "vertices": 576,
+      "triangles": 288,
+      "skinCount": 1,
+      "jointCount": 24,
+      "joints": [
+        {
+          "node": 23,
+          "name": "Hips",
+          "parent": "Armature",
+          "translation": [
+            -0.000001123407855629921,
+            92.68054366111755,
+            -1.1753140948712826
+          ]
+        },
+        {
+          "node": 14,
+          "name": "Spine02",
+          "parent": "Hips",
+          "translation": [
+            0,
+            11.028321832418442,
+            0
+          ]
+        },
+        {
+          "node": 13,
+          "name": "Spine01",
+          "parent": "Spine02",
+          "translation": [
+            0,
+            11.028313636779785,
+            0
+          ]
+        },
+        {
+          "node": 12,
+          "name": "Spine",
+          "parent": "Spine01",
+          "translation": [
+            0,
+            11.362515389919281,
+            1.862645149230957e-7
+          ]
+        },
+        {
+          "node": 3,
+          "name": "neck",
+          "parent": "Spine",
+          "translation": [
+            8.881784197001252e-14,
+            7.716290652751923,
+            0
+          ]
+        },
+        {
+          "node": 2,
+          "name": "Head",
+          "parent": "neck",
+          "translation": [
+            8.881784197001252e-14,
+            6.606210023164749,
+            3.725290298461914e-7
+          ]
+        },
+        {
+          "node": 0,
+          "name": "head_end",
+          "parent": "Head",
+          "translation": [
+            4.794856067746878e-7,
+            23.433440923690796,
+            -0.000002380693331360817
+          ]
+        },
+        {
+          "node": 1,
+          "name": "headfront",
+          "parent": "Head",
+          "translation": [
+            0.9412916377186775,
+            1.6358936205506325,
+            12.019849568605423
+          ]
+        },
+        {
+          "node": 7,
+          "name": "LeftShoulder",
+          "parent": "Spine",
+          "translation": [
+            3.3460773527622223,
+            4.134052991867065,
+            0.020818039774894714
+          ]
+        },
+        {
+          "node": 6,
+          "name": "LeftArm",
+          "parent": "LeftShoulder",
+          "translation": [
+            -1.8044374883174896e-7,
+            13.462366163730621,
+            -1.0927578841801733e-7
+          ]
+        },
+        {
+          "node": 5,
+          "name": "LeftForeArm",
+          "parent": "LeftArm",
+          "translation": [
+            -0.00001387670636177063,
+            19.985683262348175,
+            0
+          ]
+        },
+        {
+          "node": 4,
+          "name": "LeftHand",
+          "parent": "LeftForeArm",
+          "translation": [
+            -0.000029988586902618408,
+            22.456711530685425,
+            -0.000013969838619232178
+          ]
+        },
+        {
+          "node": 11,
+          "name": "RightShoulder",
+          "parent": "Spine",
+          "translation": [
+            -3.2037001103162766,
+            5.204655230045319,
+            -0.019931234419345856
+          ]
+        },
+        {
+          "node": 10,
+          "name": "RightArm",
+          "parent": "RightShoulder",
+          "translation": [
+            4.307366907596588e-7,
+            12.844990193843842,
+            2.7771420718636364e-7
+          ]
+        },
+        {
+          "node": 9,
+          "name": "RightForeArm",
+          "parent": "RightArm",
+          "translation": [
+            -0.000004563480615615845,
+            21.93158119916916,
+            7.450580596923828e-7
+          ]
+        },
+        {
+          "node": 8,
+          "name": "RightHand",
+          "parent": "RightForeArm",
+          "translation": [
+            0.000006426125764846802,
+            22.469554841518402,
+            -0.000014342367649078369
+          ]
+        },
+        {
+          "node": 18,
+          "name": "LeftUpLeg",
+          "parent": "Hips",
+          "translation": [
+            9.714177995920181,
+            -8.435548096895218,
+            -0.36589354276657104
+          ]
+        },
+        {
+          "node": 17,
+          "name": "LeftLeg",
+          "parent": "LeftUpLeg",
+          "translation": [
+            -0.0000011408701539039612,
+            34.29139256477356,
+            5.587935447692871e-7
+          ]
+        },
+        {
+          "node": 16,
+          "name": "LeftFoot",
+          "parent": "LeftLeg",
+          "translation": [
+            3.259629011154175e-7,
+            37.50008046627045,
+            -3.725290298461914e-7
+          ]
+        },
+        {
+          "node": 15,
+          "name": "LeftToeBase",
+          "parent": "LeftFoot",
+          "translation": [
+            9.313225746154785e-7,
+            12.59472668170929,
+            -1.862645149230957e-7
+          ]
+        },
+        {
+          "node": 22,
+          "name": "RightUpLeg",
+          "parent": "Hips",
+          "translation": [
+            -8.82878452539444,
+            -8.435548096895218,
+            -0.36589354276657104
+          ]
+        },
+        {
+          "node": 21,
+          "name": "RightLeg",
+          "parent": "RightUpLeg",
+          "translation": [
+            -0.0000010011717677116394,
+            34.2055082321167,
+            0
+          ]
+        },
+        {
+          "node": 20,
+          "name": "RightFoot",
+          "parent": "RightLeg",
+          "translation": [
+            8.963979780673981e-7,
+            36.63206398487091,
+            1.862645149230957e-7
+          ]
+        },
+        {
+          "node": 19,
+          "name": "RightToeBase",
+          "parent": "RightFoot",
+          "translation": [
+            -3.725290298461914e-7,
+            13.350330293178558,
+            -0.0000010244548320770264
+          ]
+        }
+      ],
+      "weights": {
+        "badWeightSums": 0,
+        "zeroWeightVertices": 0,
+        "badJointIndices": 0,
+        "nonfinite": 0,
+        "maxWeightError": 0
+      },
+      "animations": [
+        {
+          "name": "Armature|walking_man|baselayer",
+          "startSeconds": 0.03333333507180214,
+          "endSeconds": 1.066666603088379,
+          "durationSeconds": 1.0333332680165768,
+          "channelCount": 66,
+          "samplerCount": 66,
+          "animatedNodeCount": 22,
+          "paths": [
+            "translation",
+            "rotation",
+            "scale"
+          ],
+          "valuesChecked": 7040,
+          "badValues": 0
+        }
+      ],
+      "materials": [],
+      "technicalPass": true,
+      "bindPoseOnly": false
+    },
+    {
+      "id": "transmuter",
+      "file": "armature/running.glb",
+      "bytes": 79068,
+      "sha256": "a042402f85d5a3fb1cbc7a7c2e58fc4aa0d70b65e267132261f19155dbc43649",
+      "vertices": 576,
+      "triangles": 288,
+      "skinCount": 1,
+      "jointCount": 24,
+      "joints": [
+        {
+          "node": 23,
+          "name": "Hips",
+          "parent": "Armature",
+          "translation": [
+            -0.000001123407855629921,
+            92.68054366111755,
+            -1.1753140948712826
+          ]
+        },
+        {
+          "node": 14,
+          "name": "Spine02",
+          "parent": "Hips",
+          "translation": [
+            0,
+            11.028321832418442,
+            0
+          ]
+        },
+        {
+          "node": 13,
+          "name": "Spine01",
+          "parent": "Spine02",
+          "translation": [
+            0,
+            11.028313636779785,
+            0
+          ]
+        },
+        {
+          "node": 12,
+          "name": "Spine",
+          "parent": "Spine01",
+          "translation": [
+            0,
+            11.362515389919281,
+            1.862645149230957e-7
+          ]
+        },
+        {
+          "node": 3,
+          "name": "neck",
+          "parent": "Spine",
+          "translation": [
+            8.881784197001252e-14,
+            7.716290652751923,
+            0
+          ]
+        },
+        {
+          "node": 2,
+          "name": "Head",
+          "parent": "neck",
+          "translation": [
+            8.881784197001252e-14,
+            6.606210023164749,
+            3.725290298461914e-7
+          ]
+        },
+        {
+          "node": 0,
+          "name": "head_end",
+          "parent": "Head",
+          "translation": [
+            4.794856067746878e-7,
+            23.433440923690796,
+            -0.000002380693331360817
+          ]
+        },
+        {
+          "node": 1,
+          "name": "headfront",
+          "parent": "Head",
+          "translation": [
+            0.9412916377186775,
+            1.6358936205506325,
+            12.019849568605423
+          ]
+        },
+        {
+          "node": 7,
+          "name": "LeftShoulder",
+          "parent": "Spine",
+          "translation": [
+            3.3460773527622223,
+            4.134052991867065,
+            0.020818039774894714
+          ]
+        },
+        {
+          "node": 6,
+          "name": "LeftArm",
+          "parent": "LeftShoulder",
+          "translation": [
+            -1.8044374883174896e-7,
+            13.462366163730621,
+            -1.0927578841801733e-7
+          ]
+        },
+        {
+          "node": 5,
+          "name": "LeftForeArm",
+          "parent": "LeftArm",
+          "translation": [
+            -0.00001387670636177063,
+            19.985683262348175,
+            0
+          ]
+        },
+        {
+          "node": 4,
+          "name": "LeftHand",
+          "parent": "LeftForeArm",
+          "translation": [
+            -0.000029988586902618408,
+            22.456711530685425,
+            -0.000013969838619232178
+          ]
+        },
+        {
+          "node": 11,
+          "name": "RightShoulder",
+          "parent": "Spine",
+          "translation": [
+            -3.2037001103162766,
+            5.204655230045319,
+            -0.019931234419345856
+          ]
+        },
+        {
+          "node": 10,
+          "name": "RightArm",
+          "parent": "RightShoulder",
+          "translation": [
+            4.307366907596588e-7,
+            12.844990193843842,
+            2.7771420718636364e-7
+          ]
+        },
+        {
+          "node": 9,
+          "name": "RightForeArm",
+          "parent": "RightArm",
+          "translation": [
+            -0.000004563480615615845,
+            21.93158119916916,
+            7.450580596923828e-7
+          ]
+        },
+        {
+          "node": 8,
+          "name": "RightHand",
+          "parent": "RightForeArm",
+          "translation": [
+            0.000006426125764846802,
+            22.469554841518402,
+            -0.000014342367649078369
+          ]
+        },
+        {
+          "node": 18,
+          "name": "LeftUpLeg",
+          "parent": "Hips",
+          "translation": [
+            9.714177995920181,
+            -8.435548096895218,
+            -0.36589354276657104
+          ]
+        },
+        {
+          "node": 17,
+          "name": "LeftLeg",
+          "parent": "LeftUpLeg",
+          "translation": [
+            -0.0000011408701539039612,
+            34.29139256477356,
+            5.587935447692871e-7
+          ]
+        },
+        {
+          "node": 16,
+          "name": "LeftFoot",
+          "parent": "LeftLeg",
+          "translation": [
+            3.259629011154175e-7,
+            37.50008046627045,
+            -3.725290298461914e-7
+          ]
+        },
+        {
+          "node": 15,
+          "name": "LeftToeBase",
+          "parent": "LeftFoot",
+          "translation": [
+            9.313225746154785e-7,
+            12.59472668170929,
+            -1.862645149230957e-7
+          ]
+        },
+        {
+          "node": 22,
+          "name": "RightUpLeg",
+          "parent": "Hips",
+          "translation": [
+            -8.82878452539444,
+            -8.435548096895218,
+            -0.36589354276657104
+          ]
+        },
+        {
+          "node": 21,
+          "name": "RightLeg",
+          "parent": "RightUpLeg",
+          "translation": [
+            -0.0000010011717677116394,
+            34.2055082321167,
+            0
+          ]
+        },
+        {
+          "node": 20,
+          "name": "RightFoot",
+          "parent": "RightLeg",
+          "translation": [
+            8.963979780673981e-7,
+            36.63206398487091,
+            1.862645149230957e-7
+          ]
+        },
+        {
+          "node": 19,
+          "name": "RightToeBase",
+          "parent": "RightFoot",
+          "translation": [
+            -3.725290298461914e-7,
+            13.350330293178558,
+            -0.0000010244548320770264
+          ]
+        }
+      ],
+      "weights": {
+        "badWeightSums": 0,
+        "zeroWeightVertices": 0,
+        "badJointIndices": 0,
+        "nonfinite": 0,
+        "maxWeightError": 0
+      },
+      "animations": [
+        {
+          "name": "Armature|running|baselayer",
+          "startSeconds": 0.03333333507180214,
+          "endSeconds": 0.6666666865348816,
+          "durationSeconds": 0.6333333514630795,
+          "channelCount": 66,
+          "samplerCount": 66,
+          "animatedNodeCount": 22,
+          "paths": [
+            "translation",
+            "rotation",
+            "scale"
+          ],
+          "valuesChecked": 4400,
+          "badValues": 0
+        }
+      ],
+      "materials": [],
+      "technicalPass": true,
+      "bindPoseOnly": false
+    },
+    {
+      "id": "spearmage",
+      "file": "rig-glb/character.glb",
+      "bytes": 40049616,
+      "sha256": "12dd2d746b49e48609c90784fb4b0b955e9c79d98831b4ab35f69290561d458b",
+      "vertices": 92330,
+      "triangles": 61746,
+      "skinCount": 1,
+      "jointCount": 24,
+      "joints": [
+        {
+          "node": 23,
+          "name": "Hips",
+          "parent": "Armature",
+          "translation": [
+            -0.7118843495845795,
+            92.32459664344788,
+            -1.679701916873455
+          ]
+        },
+        {
+          "node": 14,
+          "name": "Spine02",
+          "parent": "Hips",
+          "translation": [
+            -2.9103830456733704e-8,
+            11.268799751996994,
+            -4.292814992368221e-8
+          ]
+        },
+        {
+          "node": 13,
+          "name": "Spine01",
+          "parent": "Spine02",
+          "translation": [
+            -1.1641532182693481e-8,
+            11.268794536590576,
+            -2.546585164964199e-8
+          ]
+        },
+        {
+          "node": 12,
+          "name": "Spine",
+          "parent": "Spine01",
+          "translation": [
+            -2.1245796233415604e-7,
+            11.610269546508789,
+            -2.4265318643301725e-7
+          ]
+        },
+        {
+          "node": 3,
+          "name": "neck",
+          "parent": "Spine",
+          "translation": [
+            3.14321368932724e-7,
+            8.034297823905945,
+            -8.87666828930378e-8
+          ]
+        },
+        {
+          "node": 2,
+          "name": "Head",
+          "parent": "neck",
+          "translation": [
+            1.4531091885316982e-7,
+            6.603989750146866,
+            2.242734442603478e-7
+          ]
+        },
+        {
+          "node": 0,
+          "name": "head_end",
+          "parent": "Head",
+          "translation": [
+            6.080881576053798e-7,
+            21.933113038539886,
+            -0.000002555316314101219
+          ]
+        },
+        {
+          "node": 1,
+          "name": "headfront",
+          "parent": "Head",
+          "translation": [
+            0.7117135915905237,
+            1.199889648705721,
+            8.900672197341919
+          ]
+        },
+        {
+          "node": 7,
+          "name": "LeftShoulder",
+          "parent": "Spine",
+          "translation": [
+            3.2156191766262054,
+            5.956563726067543,
+            -0.05844465340487659
+          ]
+        },
+        {
+          "node": 6,
+          "name": "LeftArm",
+          "parent": "LeftShoulder",
+          "translation": [
+            -4.0745362639427185e-7,
+            12.74293065071106,
+            -0.0000040319719118997455
+          ]
+        },
+        {
+          "node": 5,
+          "name": "LeftForeArm",
+          "parent": "LeftArm",
+          "translation": [
+            -0.000004656612873077393,
+            19.52124834060669,
+            0.000003725290298461914
+          ]
+        },
+        {
+          "node": 4,
+          "name": "LeftHand",
+          "parent": "LeftForeArm",
+          "translation": [
+            -2.7939677238464355e-7,
+            23.265340924263,
+            -0.00000130385160446167
+          ]
+        },
+        {
+          "node": 11,
+          "name": "RightShoulder",
+          "parent": "Spine",
+          "translation": [
+            -2.895623818039894,
+            5.452411249279976,
+            0.052628538105636835
+          ]
+        },
+        {
+          "node": 10,
+          "name": "RightArm",
+          "parent": "RightShoulder",
+          "translation": [
+            1.6880221664905548e-7,
+            11.923451721668243,
+            0.000003207105692126788
+          ]
+        },
+        {
+          "node": 9,
+          "name": "RightForeArm",
+          "parent": "RightArm",
+          "translation": [
+            -0.0000014901161193847656,
+            21.622943878173828,
+            -0.000002514570951461792
+          ]
+        },
+        {
+          "node": 8,
+          "name": "RightHand",
+          "parent": "RightForeArm",
+          "translation": [
+            -0.0000019208528101444244,
+            22.72738218307495,
+            -6.984919309616089e-7
+          ]
+        },
+        {
+          "node": 18,
+          "name": "LeftUpLeg",
+          "parent": "Hips",
+          "translation": [
+            8.238749951124191,
+            -8.426561206579208,
+            -0.2962130354717374
+          ]
+        },
+        {
+          "node": 17,
+          "name": "LeftLeg",
+          "parent": "LeftUpLeg",
+          "translation": [
+            -2.7939677238464355e-7,
+            34.47228670120239,
+            2.7939677238464355e-7
+          ]
+        },
+        {
+          "node": 16,
+          "name": "LeftFoot",
+          "parent": "LeftLeg",
+          "translation": [
+            7.217749953269958e-7,
+            36.052632331848145,
+            -4.6566128730773926e-8
+          ]
+        },
+        {
+          "node": 15,
+          "name": "LeftToeBase",
+          "parent": "LeftFoot",
+          "translation": [
+            9.313225746154785e-8,
+            12.24420815706253,
+            4.6566128730773926e-7
+          ]
+        },
+        {
+          "node": 22,
+          "name": "RightUpLeg",
+          "parent": "Hips",
+          "translation": [
+            -7.3762498795986176,
+            -8.731717616319656,
+            -0.14100568369030952
+          ]
+        },
+        {
+          "node": 21,
+          "name": "RightLeg",
+          "parent": "RightUpLeg",
+          "translation": [
+            -0.0000021420419216156006,
+            34.99828577041626,
+            0.00000130385160446167
+          ]
+        },
+        {
+          "node": 20,
+          "name": "RightFoot",
+          "parent": "RightLeg",
+          "translation": [
+            9.546056389808655e-7,
+            35.44824421405792,
+            3.725290298461914e-7
+          ]
+        },
+        {
+          "node": 19,
+          "name": "RightToeBase",
+          "parent": "RightFoot",
+          "translation": [
+            -0.0000010244548320770264,
+            14.203126728534698,
+            -6.984919309616089e-8
+          ]
+        }
+      ],
+      "weights": {
+        "badWeightSums": 0,
+        "zeroWeightVertices": 0,
+        "badJointIndices": 0,
+        "nonfinite": 0,
+        "maxWeightError": 1.4156103134155273e-7
+      },
+      "animations": [
+        {
+          "name": "Armature|clip0|baselayer",
+          "startSeconds": 0.03333333507180214,
+          "endSeconds": 0.03333333507180214,
+          "durationSeconds": 0,
+          "channelCount": 72,
+          "samplerCount": 72,
+          "animatedNodeCount": 24,
+          "paths": [
+            "translation",
+            "rotation",
+            "scale"
+          ],
+          "valuesChecked": 240,
+          "badValues": 0
+        }
+      ],
+      "materials": [
+        {
+          "name": "Material_0",
+          "doubleSided": true,
+          "alphaMode": "OPAQUE"
+        }
+      ],
+      "technicalPass": true,
+      "bindPoseOnly": true
+    },
+    {
+      "id": "spearmage",
+      "file": "rig-glb/walking.glb",
+      "bytes": 40029748,
+      "sha256": "569bb8e24a50dce83290b7ee651f31848919b25f4d18ca9009f0342bf8814e92",
+      "vertices": 92330,
+      "triangles": 61746,
+      "skinCount": 1,
+      "jointCount": 24,
+      "joints": [
+        {
+          "node": 23,
+          "name": "Hips",
+          "parent": "Armature",
+          "translation": [
+            -0.7118843495845795,
+            92.32459664344788,
+            -1.679701916873455
+          ]
+        },
+        {
+          "node": 14,
+          "name": "Spine02",
+          "parent": "Hips",
+          "translation": [
+            -2.9103830456733704e-8,
+            11.268799751996994,
+            -4.292814992368221e-8
+          ]
+        },
+        {
+          "node": 13,
+          "name": "Spine01",
+          "parent": "Spine02",
+          "translation": [
+            -1.1641532182693481e-8,
+            11.268794536590576,
+            -2.546585164964199e-8
+          ]
+        },
+        {
+          "node": 12,
+          "name": "Spine",
+          "parent": "Spine01",
+          "translation": [
+            -2.1245796233415604e-7,
+            11.610269546508789,
+            -2.4265318643301725e-7
+          ]
+        },
+        {
+          "node": 3,
+          "name": "neck",
+          "parent": "Spine",
+          "translation": [
+            3.14321368932724e-7,
+            8.034297823905945,
+            -8.87666828930378e-8
+          ]
+        },
+        {
+          "node": 2,
+          "name": "Head",
+          "parent": "neck",
+          "translation": [
+            1.4531091885316982e-7,
+            6.603989750146866,
+            2.242734442603478e-7
+          ]
+        },
+        {
+          "node": 0,
+          "name": "head_end",
+          "parent": "Head",
+          "translation": [
+            6.080881576053798e-7,
+            21.933113038539886,
+            -0.000002555316314101219
+          ]
+        },
+        {
+          "node": 1,
+          "name": "headfront",
+          "parent": "Head",
+          "translation": [
+            0.7117135915905237,
+            1.199889648705721,
+            8.900672197341919
+          ]
+        },
+        {
+          "node": 7,
+          "name": "LeftShoulder",
+          "parent": "Spine",
+          "translation": [
+            3.2156191766262054,
+            5.956563726067543,
+            -0.05844465340487659
+          ]
+        },
+        {
+          "node": 6,
+          "name": "LeftArm",
+          "parent": "LeftShoulder",
+          "translation": [
+            -4.0745362639427185e-7,
+            12.74293065071106,
+            -0.0000040319719118997455
+          ]
+        },
+        {
+          "node": 5,
+          "name": "LeftForeArm",
+          "parent": "LeftArm",
+          "translation": [
+            -0.000004656612873077393,
+            19.52124834060669,
+            0.000003725290298461914
+          ]
+        },
+        {
+          "node": 4,
+          "name": "LeftHand",
+          "parent": "LeftForeArm",
+          "translation": [
+            -2.7939677238464355e-7,
+            23.265340924263,
+            -0.00000130385160446167
+          ]
+        },
+        {
+          "node": 11,
+          "name": "RightShoulder",
+          "parent": "Spine",
+          "translation": [
+            -2.895623818039894,
+            5.452411249279976,
+            0.052628538105636835
+          ]
+        },
+        {
+          "node": 10,
+          "name": "RightArm",
+          "parent": "RightShoulder",
+          "translation": [
+            1.6880221664905548e-7,
+            11.923451721668243,
+            0.000003207105692126788
+          ]
+        },
+        {
+          "node": 9,
+          "name": "RightForeArm",
+          "parent": "RightArm",
+          "translation": [
+            -0.0000014901161193847656,
+            21.622943878173828,
+            -0.000002514570951461792
+          ]
+        },
+        {
+          "node": 8,
+          "name": "RightHand",
+          "parent": "RightForeArm",
+          "translation": [
+            -0.0000019208528101444244,
+            22.72738218307495,
+            -6.984919309616089e-7
+          ]
+        },
+        {
+          "node": 18,
+          "name": "LeftUpLeg",
+          "parent": "Hips",
+          "translation": [
+            8.238749951124191,
+            -8.426561206579208,
+            -0.2962130354717374
+          ]
+        },
+        {
+          "node": 17,
+          "name": "LeftLeg",
+          "parent": "LeftUpLeg",
+          "translation": [
+            -2.7939677238464355e-7,
+            34.47228670120239,
+            2.7939677238464355e-7
+          ]
+        },
+        {
+          "node": 16,
+          "name": "LeftFoot",
+          "parent": "LeftLeg",
+          "translation": [
+            7.217749953269958e-7,
+            36.052632331848145,
+            -4.6566128730773926e-8
+          ]
+        },
+        {
+          "node": 15,
+          "name": "LeftToeBase",
+          "parent": "LeftFoot",
+          "translation": [
+            9.313225746154785e-8,
+            12.24420815706253,
+            4.6566128730773926e-7
+          ]
+        },
+        {
+          "node": 22,
+          "name": "RightUpLeg",
+          "parent": "Hips",
+          "translation": [
+            -7.3762498795986176,
+            -8.731717616319656,
+            -0.14100568369030952
+          ]
+        },
+        {
+          "node": 21,
+          "name": "RightLeg",
+          "parent": "RightUpLeg",
+          "translation": [
+            -0.0000021420419216156006,
+            34.99828577041626,
+            0.00000130385160446167
+          ]
+        },
+        {
+          "node": 20,
+          "name": "RightFoot",
+          "parent": "RightLeg",
+          "translation": [
+            9.546056389808655e-7,
+            35.44824421405792,
+            3.725290298461914e-7
+          ]
+        },
+        {
+          "node": 19,
+          "name": "RightToeBase",
+          "parent": "RightFoot",
+          "translation": [
+            -0.0000010244548320770264,
+            14.203126728534698,
+            -6.984919309616089e-8
+          ]
+        }
+      ],
+      "weights": {
+        "badWeightSums": 0,
+        "zeroWeightVertices": 0,
+        "badJointIndices": 0,
+        "nonfinite": 0,
+        "maxWeightError": 1.4156103134155273e-7
+      },
+      "animations": [
+        {
+          "name": "Armature|walking_man|baselayer",
+          "startSeconds": 0.03333333507180214,
+          "endSeconds": 1.066666603088379,
+          "durationSeconds": 1.0333332680165768,
+          "channelCount": 66,
+          "samplerCount": 66,
+          "animatedNodeCount": 22,
+          "paths": [
+            "translation",
+            "rotation",
+            "scale"
+          ],
+          "valuesChecked": 7040,
+          "badValues": 0
+        }
+      ],
+      "materials": [
+        {
+          "name": "Material_0",
+          "doubleSided": true,
+          "alphaMode": "OPAQUE"
+        }
+      ],
+      "technicalPass": true,
+      "bindPoseOnly": false
+    },
+    {
+      "id": "spearmage",
+      "file": "rig-glb/running.glb",
+      "bytes": 40019136,
+      "sha256": "984cdd4fed230a39e9fe5a16744e538d31f5e973ee08cb4e32d8be3a0b190177",
+      "vertices": 92330,
+      "triangles": 61746,
+      "skinCount": 1,
+      "jointCount": 24,
+      "joints": [
+        {
+          "node": 23,
+          "name": "Hips",
+          "parent": "Armature",
+          "translation": [
+            -0.7118843495845795,
+            92.32459664344788,
+            -1.679701916873455
+          ]
+        },
+        {
+          "node": 14,
+          "name": "Spine02",
+          "parent": "Hips",
+          "translation": [
+            -2.9103830456733704e-8,
+            11.268799751996994,
+            -4.292814992368221e-8
+          ]
+        },
+        {
+          "node": 13,
+          "name": "Spine01",
+          "parent": "Spine02",
+          "translation": [
+            -1.1641532182693481e-8,
+            11.268794536590576,
+            -2.546585164964199e-8
+          ]
+        },
+        {
+          "node": 12,
+          "name": "Spine",
+          "parent": "Spine01",
+          "translation": [
+            -2.1245796233415604e-7,
+            11.610269546508789,
+            -2.4265318643301725e-7
+          ]
+        },
+        {
+          "node": 3,
+          "name": "neck",
+          "parent": "Spine",
+          "translation": [
+            3.14321368932724e-7,
+            8.034297823905945,
+            -8.87666828930378e-8
+          ]
+        },
+        {
+          "node": 2,
+          "name": "Head",
+          "parent": "neck",
+          "translation": [
+            1.4531091885316982e-7,
+            6.603989750146866,
+            2.242734442603478e-7
+          ]
+        },
+        {
+          "node": 0,
+          "name": "head_end",
+          "parent": "Head",
+          "translation": [
+            6.080881576053798e-7,
+            21.933113038539886,
+            -0.000002555316314101219
+          ]
+        },
+        {
+          "node": 1,
+          "name": "headfront",
+          "parent": "Head",
+          "translation": [
+            0.7117135915905237,
+            1.199889648705721,
+            8.900672197341919
+          ]
+        },
+        {
+          "node": 7,
+          "name": "LeftShoulder",
+          "parent": "Spine",
+          "translation": [
+            3.2156191766262054,
+            5.956563726067543,
+            -0.05844465340487659
+          ]
+        },
+        {
+          "node": 6,
+          "name": "LeftArm",
+          "parent": "LeftShoulder",
+          "translation": [
+            -4.0745362639427185e-7,
+            12.74293065071106,
+            -0.0000040319719118997455
+          ]
+        },
+        {
+          "node": 5,
+          "name": "LeftForeArm",
+          "parent": "LeftArm",
+          "translation": [
+            -0.000004656612873077393,
+            19.52124834060669,
+            0.000003725290298461914
+          ]
+        },
+        {
+          "node": 4,
+          "name": "LeftHand",
+          "parent": "LeftForeArm",
+          "translation": [
+            -2.7939677238464355e-7,
+            23.265340924263,
+            -0.00000130385160446167
+          ]
+        },
+        {
+          "node": 11,
+          "name": "RightShoulder",
+          "parent": "Spine",
+          "translation": [
+            -2.895623818039894,
+            5.452411249279976,
+            0.052628538105636835
+          ]
+        },
+        {
+          "node": 10,
+          "name": "RightArm",
+          "parent": "RightShoulder",
+          "translation": [
+            1.6880221664905548e-7,
+            11.923451721668243,
+            0.000003207105692126788
+          ]
+        },
+        {
+          "node": 9,
+          "name": "RightForeArm",
+          "parent": "RightArm",
+          "translation": [
+            -0.0000014901161193847656,
+            21.622943878173828,
+            -0.000002514570951461792
+          ]
+        },
+        {
+          "node": 8,
+          "name": "RightHand",
+          "parent": "RightForeArm",
+          "translation": [
+            -0.0000019208528101444244,
+            22.72738218307495,
+            -6.984919309616089e-7
+          ]
+        },
+        {
+          "node": 18,
+          "name": "LeftUpLeg",
+          "parent": "Hips",
+          "translation": [
+            8.238749951124191,
+            -8.426561206579208,
+            -0.2962130354717374
+          ]
+        },
+        {
+          "node": 17,
+          "name": "LeftLeg",
+          "parent": "LeftUpLeg",
+          "translation": [
+            -2.7939677238464355e-7,
+            34.47228670120239,
+            2.7939677238464355e-7
+          ]
+        },
+        {
+          "node": 16,
+          "name": "LeftFoot",
+          "parent": "LeftLeg",
+          "translation": [
+            7.217749953269958e-7,
+            36.052632331848145,
+            -4.6566128730773926e-8
+          ]
+        },
+        {
+          "node": 15,
+          "name": "LeftToeBase",
+          "parent": "LeftFoot",
+          "translation": [
+            9.313225746154785e-8,
+            12.24420815706253,
+            4.6566128730773926e-7
+          ]
+        },
+        {
+          "node": 22,
+          "name": "RightUpLeg",
+          "parent": "Hips",
+          "translation": [
+            -7.3762498795986176,
+            -8.731717616319656,
+            -0.14100568369030952
+          ]
+        },
+        {
+          "node": 21,
+          "name": "RightLeg",
+          "parent": "RightUpLeg",
+          "translation": [
+            -0.0000021420419216156006,
+            34.99828577041626,
+            0.00000130385160446167
+          ]
+        },
+        {
+          "node": 20,
+          "name": "RightFoot",
+          "parent": "RightLeg",
+          "translation": [
+            9.546056389808655e-7,
+            35.44824421405792,
+            3.725290298461914e-7
+          ]
+        },
+        {
+          "node": 19,
+          "name": "RightToeBase",
+          "parent": "RightFoot",
+          "translation": [
+            -0.0000010244548320770264,
+            14.203126728534698,
+            -6.984919309616089e-8
+          ]
+        }
+      ],
+      "weights": {
+        "badWeightSums": 0,
+        "zeroWeightVertices": 0,
+        "badJointIndices": 0,
+        "nonfinite": 0,
+        "maxWeightError": 1.4156103134155273e-7
+      },
+      "animations": [
+        {
+          "name": "Armature|running|baselayer",
+          "startSeconds": 0.03333333507180214,
+          "endSeconds": 0.6666666865348816,
+          "durationSeconds": 0.6333333514630795,
+          "channelCount": 66,
+          "samplerCount": 66,
+          "animatedNodeCount": 22,
+          "paths": [
+            "translation",
+            "rotation",
+            "scale"
+          ],
+          "valuesChecked": 4400,
+          "badValues": 0
+        }
+      ],
+      "materials": [
+        {
+          "name": "Material_0",
+          "doubleSided": true,
+          "alphaMode": "OPAQUE"
+        }
+      ],
+      "technicalPass": true,
+      "bindPoseOnly": false
+    },
+    {
+      "id": "spearmage",
+      "file": "armature/walking.glb",
+      "bytes": 90072,
+      "sha256": "7cdf66a30fbd94ef77ea3a004e2e4bfde7966b1281ad891a87fe14447a186fa3",
+      "vertices": 576,
+      "triangles": 288,
+      "skinCount": 1,
+      "jointCount": 24,
+      "joints": [
+        {
+          "node": 23,
+          "name": "Hips",
+          "parent": "Armature",
+          "translation": [
+            -0.7118843495845795,
+            92.32459664344788,
+            -1.679701916873455
+          ]
+        },
+        {
+          "node": 14,
+          "name": "Spine02",
+          "parent": "Hips",
+          "translation": [
+            -2.9103830456733704e-8,
+            11.268799751996994,
+            -4.292814992368221e-8
+          ]
+        },
+        {
+          "node": 13,
+          "name": "Spine01",
+          "parent": "Spine02",
+          "translation": [
+            -1.1641532182693481e-8,
+            11.268794536590576,
+            -2.546585164964199e-8
+          ]
+        },
+        {
+          "node": 12,
+          "name": "Spine",
+          "parent": "Spine01",
+          "translation": [
+            -2.1245796233415604e-7,
+            11.610269546508789,
+            -2.4265318643301725e-7
+          ]
+        },
+        {
+          "node": 3,
+          "name": "neck",
+          "parent": "Spine",
+          "translation": [
+            3.14321368932724e-7,
+            8.034297823905945,
+            -8.87666828930378e-8
+          ]
+        },
+        {
+          "node": 2,
+          "name": "Head",
+          "parent": "neck",
+          "translation": [
+            1.4531091885316982e-7,
+            6.603989750146866,
+            2.242734442603478e-7
+          ]
+        },
+        {
+          "node": 0,
+          "name": "head_end",
+          "parent": "Head",
+          "translation": [
+            6.080881576053798e-7,
+            21.933113038539886,
+            -0.000002555316314101219
+          ]
+        },
+        {
+          "node": 1,
+          "name": "headfront",
+          "parent": "Head",
+          "translation": [
+            0.7117135915905237,
+            1.199889648705721,
+            8.900672197341919
+          ]
+        },
+        {
+          "node": 7,
+          "name": "LeftShoulder",
+          "parent": "Spine",
+          "translation": [
+            3.2156191766262054,
+            5.956563726067543,
+            -0.05844465340487659
+          ]
+        },
+        {
+          "node": 6,
+          "name": "LeftArm",
+          "parent": "LeftShoulder",
+          "translation": [
+            -4.0745362639427185e-7,
+            12.74293065071106,
+            -0.0000040319719118997455
+          ]
+        },
+        {
+          "node": 5,
+          "name": "LeftForeArm",
+          "parent": "LeftArm",
+          "translation": [
+            -0.000004656612873077393,
+            19.52124834060669,
+            0.000003725290298461914
+          ]
+        },
+        {
+          "node": 4,
+          "name": "LeftHand",
+          "parent": "LeftForeArm",
+          "translation": [
+            -2.7939677238464355e-7,
+            23.265340924263,
+            -0.00000130385160446167
+          ]
+        },
+        {
+          "node": 11,
+          "name": "RightShoulder",
+          "parent": "Spine",
+          "translation": [
+            -2.895623818039894,
+            5.452411249279976,
+            0.052628538105636835
+          ]
+        },
+        {
+          "node": 10,
+          "name": "RightArm",
+          "parent": "RightShoulder",
+          "translation": [
+            1.6880221664905548e-7,
+            11.923451721668243,
+            0.000003207105692126788
+          ]
+        },
+        {
+          "node": 9,
+          "name": "RightForeArm",
+          "parent": "RightArm",
+          "translation": [
+            -0.0000014901161193847656,
+            21.622943878173828,
+            -0.000002514570951461792
+          ]
+        },
+        {
+          "node": 8,
+          "name": "RightHand",
+          "parent": "RightForeArm",
+          "translation": [
+            -0.0000019208528101444244,
+            22.72738218307495,
+            -6.984919309616089e-7
+          ]
+        },
+        {
+          "node": 18,
+          "name": "LeftUpLeg",
+          "parent": "Hips",
+          "translation": [
+            8.238749951124191,
+            -8.426561206579208,
+            -0.2962130354717374
+          ]
+        },
+        {
+          "node": 17,
+          "name": "LeftLeg",
+          "parent": "LeftUpLeg",
+          "translation": [
+            -2.7939677238464355e-7,
+            34.47228670120239,
+            2.7939677238464355e-7
+          ]
+        },
+        {
+          "node": 16,
+          "name": "LeftFoot",
+          "parent": "LeftLeg",
+          "translation": [
+            7.217749953269958e-7,
+            36.052632331848145,
+            -4.6566128730773926e-8
+          ]
+        },
+        {
+          "node": 15,
+          "name": "LeftToeBase",
+          "parent": "LeftFoot",
+          "translation": [
+            9.313225746154785e-8,
+            12.24420815706253,
+            4.6566128730773926e-7
+          ]
+        },
+        {
+          "node": 22,
+          "name": "RightUpLeg",
+          "parent": "Hips",
+          "translation": [
+            -7.3762498795986176,
+            -8.731717616319656,
+            -0.14100568369030952
+          ]
+        },
+        {
+          "node": 21,
+          "name": "RightLeg",
+          "parent": "RightUpLeg",
+          "translation": [
+            -0.0000021420419216156006,
+            34.99828577041626,
+            0.00000130385160446167
+          ]
+        },
+        {
+          "node": 20,
+          "name": "RightFoot",
+          "parent": "RightLeg",
+          "translation": [
+            9.546056389808655e-7,
+            35.44824421405792,
+            3.725290298461914e-7
+          ]
+        },
+        {
+          "node": 19,
+          "name": "RightToeBase",
+          "parent": "RightFoot",
+          "translation": [
+            -0.0000010244548320770264,
+            14.203126728534698,
+            -6.984919309616089e-8
+          ]
+        }
+      ],
+      "weights": {
+        "badWeightSums": 0,
+        "zeroWeightVertices": 0,
+        "badJointIndices": 0,
+        "nonfinite": 0,
+        "maxWeightError": 0
+      },
+      "animations": [
+        {
+          "name": "Armature|walking_man|baselayer",
+          "startSeconds": 0.03333333507180214,
+          "endSeconds": 1.066666603088379,
+          "durationSeconds": 1.0333332680165768,
+          "channelCount": 66,
+          "samplerCount": 66,
+          "animatedNodeCount": 22,
+          "paths": [
+            "translation",
+            "rotation",
+            "scale"
+          ],
+          "valuesChecked": 7040,
+          "badValues": 0
+        }
+      ],
+      "materials": [],
+      "technicalPass": true,
+      "bindPoseOnly": false
+    },
+    {
+      "id": "spearmage",
+      "file": "armature/running.glb",
+      "bytes": 79448,
+      "sha256": "120014832b3a61e2e13cfe752ecf428ecce626710fc073a078ed0e7e18e7f02d",
+      "vertices": 576,
+      "triangles": 288,
+      "skinCount": 1,
+      "jointCount": 24,
+      "joints": [
+        {
+          "node": 23,
+          "name": "Hips",
+          "parent": "Armature",
+          "translation": [
+            -0.7118843495845795,
+            92.32459664344788,
+            -1.679701916873455
+          ]
+        },
+        {
+          "node": 14,
+          "name": "Spine02",
+          "parent": "Hips",
+          "translation": [
+            -2.9103830456733704e-8,
+            11.268799751996994,
+            -4.292814992368221e-8
+          ]
+        },
+        {
+          "node": 13,
+          "name": "Spine01",
+          "parent": "Spine02",
+          "translation": [
+            -1.1641532182693481e-8,
+            11.268794536590576,
+            -2.546585164964199e-8
+          ]
+        },
+        {
+          "node": 12,
+          "name": "Spine",
+          "parent": "Spine01",
+          "translation": [
+            -2.1245796233415604e-7,
+            11.610269546508789,
+            -2.4265318643301725e-7
+          ]
+        },
+        {
+          "node": 3,
+          "name": "neck",
+          "parent": "Spine",
+          "translation": [
+            3.14321368932724e-7,
+            8.034297823905945,
+            -8.87666828930378e-8
+          ]
+        },
+        {
+          "node": 2,
+          "name": "Head",
+          "parent": "neck",
+          "translation": [
+            1.4531091885316982e-7,
+            6.603989750146866,
+            2.242734442603478e-7
+          ]
+        },
+        {
+          "node": 0,
+          "name": "head_end",
+          "parent": "Head",
+          "translation": [
+            6.080881576053798e-7,
+            21.933113038539886,
+            -0.000002555316314101219
+          ]
+        },
+        {
+          "node": 1,
+          "name": "headfront",
+          "parent": "Head",
+          "translation": [
+            0.7117135915905237,
+            1.199889648705721,
+            8.900672197341919
+          ]
+        },
+        {
+          "node": 7,
+          "name": "LeftShoulder",
+          "parent": "Spine",
+          "translation": [
+            3.2156191766262054,
+            5.956563726067543,
+            -0.05844465340487659
+          ]
+        },
+        {
+          "node": 6,
+          "name": "LeftArm",
+          "parent": "LeftShoulder",
+          "translation": [
+            -4.0745362639427185e-7,
+            12.74293065071106,
+            -0.0000040319719118997455
+          ]
+        },
+        {
+          "node": 5,
+          "name": "LeftForeArm",
+          "parent": "LeftArm",
+          "translation": [
+            -0.000004656612873077393,
+            19.52124834060669,
+            0.000003725290298461914
+          ]
+        },
+        {
+          "node": 4,
+          "name": "LeftHand",
+          "parent": "LeftForeArm",
+          "translation": [
+            -2.7939677238464355e-7,
+            23.265340924263,
+            -0.00000130385160446167
+          ]
+        },
+        {
+          "node": 11,
+          "name": "RightShoulder",
+          "parent": "Spine",
+          "translation": [
+            -2.895623818039894,
+            5.452411249279976,
+            0.052628538105636835
+          ]
+        },
+        {
+          "node": 10,
+          "name": "RightArm",
+          "parent": "RightShoulder",
+          "translation": [
+            1.6880221664905548e-7,
+            11.923451721668243,
+            0.000003207105692126788
+          ]
+        },
+        {
+          "node": 9,
+          "name": "RightForeArm",
+          "parent": "RightArm",
+          "translation": [
+            -0.0000014901161193847656,
+            21.622943878173828,
+            -0.000002514570951461792
+          ]
+        },
+        {
+          "node": 8,
+          "name": "RightHand",
+          "parent": "RightForeArm",
+          "translation": [
+            -0.0000019208528101444244,
+            22.72738218307495,
+            -6.984919309616089e-7
+          ]
+        },
+        {
+          "node": 18,
+          "name": "LeftUpLeg",
+          "parent": "Hips",
+          "translation": [
+            8.238749951124191,
+            -8.426561206579208,
+            -0.2962130354717374
+          ]
+        },
+        {
+          "node": 17,
+          "name": "LeftLeg",
+          "parent": "LeftUpLeg",
+          "translation": [
+            -2.7939677238464355e-7,
+            34.47228670120239,
+            2.7939677238464355e-7
+          ]
+        },
+        {
+          "node": 16,
+          "name": "LeftFoot",
+          "parent": "LeftLeg",
+          "translation": [
+            7.217749953269958e-7,
+            36.052632331848145,
+            -4.6566128730773926e-8
+          ]
+        },
+        {
+          "node": 15,
+          "name": "LeftToeBase",
+          "parent": "LeftFoot",
+          "translation": [
+            9.313225746154785e-8,
+            12.24420815706253,
+            4.6566128730773926e-7
+          ]
+        },
+        {
+          "node": 22,
+          "name": "RightUpLeg",
+          "parent": "Hips",
+          "translation": [
+            -7.3762498795986176,
+            -8.731717616319656,
+            -0.14100568369030952
+          ]
+        },
+        {
+          "node": 21,
+          "name": "RightLeg",
+          "parent": "RightUpLeg",
+          "translation": [
+            -0.0000021420419216156006,
+            34.99828577041626,
+            0.00000130385160446167
+          ]
+        },
+        {
+          "node": 20,
+          "name": "RightFoot",
+          "parent": "RightLeg",
+          "translation": [
+            9.546056389808655e-7,
+            35.44824421405792,
+            3.725290298461914e-7
+          ]
+        },
+        {
+          "node": 19,
+          "name": "RightToeBase",
+          "parent": "RightFoot",
+          "translation": [
+            -0.0000010244548320770264,
+            14.203126728534698,
+            -6.984919309616089e-8
+          ]
+        }
+      ],
+      "weights": {
+        "badWeightSums": 0,
+        "zeroWeightVertices": 0,
+        "badJointIndices": 0,
+        "nonfinite": 0,
+        "maxWeightError": 0
+      },
+      "animations": [
+        {
+          "name": "Armature|running|baselayer",
+          "startSeconds": 0.03333333507180214,
+          "endSeconds": 0.6666666865348816,
+          "durationSeconds": 0.6333333514630795,
+          "channelCount": 66,
+          "samplerCount": 66,
+          "animatedNodeCount": 22,
+          "paths": [
+            "translation",
+            "rotation",
+            "scale"
+          ],
+          "valuesChecked": 4400,
+          "badValues": 0
+        }
+      ],
+      "materials": [],
+      "technicalPass": true,
+      "bindPoseOnly": false
+    }
+  ],
+  "files": [
+    {
+      "path": "models/spearmage/armature/running.glb",
+      "bytes": 79448,
+      "sha256": "120014832b3a61e2e13cfe752ecf428ecce626710fc073a078ed0e7e18e7f02d"
+    },
+    {
+      "path": "models/spearmage/armature/walking.glb",
+      "bytes": 90072,
+      "sha256": "7cdf66a30fbd94ef77ea3a004e2e4bfde7966b1281ad891a87fe14447a186fa3"
+    },
+    {
+      "path": "models/spearmage/review/meshy-source-thumbnail.png",
+      "bytes": 92581,
+      "sha256": "5c977b94f28b6033d84f5808e4988150f038e4e37504799f9bb7a77fd14d7411"
+    },
+    {
+      "path": "models/spearmage/rig-fbx/character.fbx",
+      "bytes": 38353052,
+      "sha256": "68fb95b9edbec863f8ccbda62ed5396311892543fa07a49487a49d98dd081f51"
+    },
+    {
+      "path": "models/spearmage/rig-fbx/running.fbx",
+      "bytes": 38372028,
+      "sha256": "e0ace7e47ba213c25ff9f2bed671d870a96f51257ba6ff89374f9e3eb2b9b79b"
+    },
+    {
+      "path": "models/spearmage/rig-fbx/walking.fbx",
+      "bytes": 38389164,
+      "sha256": "f1238799eb3bb8abb0ad6f7a34085ac1d5e48a505fb4bf3d74ef6fdcfb231180"
+    },
+    {
+      "path": "models/spearmage/rig-glb/character.glb",
+      "bytes": 40049616,
+      "sha256": "12dd2d746b49e48609c90784fb4b0b955e9c79d98831b4ab35f69290561d458b"
+    },
+    {
+      "path": "models/spearmage/rig-glb/running.glb",
+      "bytes": 40019136,
+      "sha256": "984cdd4fed230a39e9fe5a16744e538d31f5e973ee08cb4e32d8be3a0b190177"
+    },
+    {
+      "path": "models/spearmage/rig-glb/walking.glb",
+      "bytes": 40029748,
+      "sha256": "569bb8e24a50dce83290b7ee651f31848919b25f4d18ca9009f0342bf8814e92"
+    },
+    {
+      "path": "models/spearmage/source/model.glb",
+      "bytes": 36608440,
+      "sha256": "a8fc63d07ca959ad2975951f0a8f77846578c7418ab4645913ddb889d14a7166"
+    },
+    {
+      "path": "models/spearmage/source/model_textures/base_color.png",
+      "bytes": 20798917,
+      "sha256": "21068eea265f66ec7bbd63d9cf4774ed43546d7bc49d6c253a9290e23dc12259"
+    },
+    {
+      "path": "models/spearmage/source/model_textures/metallic.png",
+      "bytes": 1133850,
+      "sha256": "79c3b9b53cb58821100263ac60a1fc463cb9e8fe6f6bbf98e49b7f41800ccc46"
+    },
+    {
+      "path": "models/spearmage/source/model_textures/normal.png",
+      "bytes": 19296199,
+      "sha256": "8cf16c52ed3b6a491607d3c5f1d80e04fa0cc476917383a3a56e2cdc51955e38"
+    },
+    {
+      "path": "models/spearmage/source/model_textures/roughness.png",
+      "bytes": 1632018,
+      "sha256": "38893142f85692c2a2a55dc4ea95acbb87deaeaeb8a31025f6737f61f3599e9e"
+    },
+    {
+      "path": "models/spearmage/source-fbx/model.fbx",
+      "bytes": 45448700,
+      "sha256": "e5ad8f8ef4ec7c8dced43cf14553ca34b850155e8ec898af7b20c0fe4c105a99"
+    },
+    {
+      "path": "models/spearmage/source-fbx/model_textures/base_color.png",
+      "bytes": 20798917,
+      "sha256": "21068eea265f66ec7bbd63d9cf4774ed43546d7bc49d6c253a9290e23dc12259"
+    },
+    {
+      "path": "models/spearmage/source-fbx/model_textures/metallic.png",
+      "bytes": 1133850,
+      "sha256": "79c3b9b53cb58821100263ac60a1fc463cb9e8fe6f6bbf98e49b7f41800ccc46"
+    },
+    {
+      "path": "models/spearmage/source-fbx/model_textures/normal.png",
+      "bytes": 19296199,
+      "sha256": "8cf16c52ed3b6a491607d3c5f1d80e04fa0cc476917383a3a56e2cdc51955e38"
+    },
+    {
+      "path": "models/spearmage/source-fbx/model_textures/roughness.png",
+      "bytes": 1632018,
+      "sha256": "38893142f85692c2a2a55dc4ea95acbb87deaeaeb8a31025f6737f61f3599e9e"
+    },
+    {
+      "path": "models/transmuter/armature/running.glb",
+      "bytes": 79068,
+      "sha256": "a042402f85d5a3fb1cbc7a7c2e58fc4aa0d70b65e267132261f19155dbc43649"
+    },
+    {
+      "path": "models/transmuter/armature/walking.glb",
+      "bytes": 89684,
+      "sha256": "aa9f3c548d81a35dc6c80a3220e27c25a7b4013f9942885244c8aacb65d718e9"
+    },
+    {
+      "path": "models/transmuter/review/meshy-source-thumbnail.png",
+      "bytes": 101125,
+      "sha256": "9fabd9ece1f85c7d30418e1b992d5631bda5075ef231628bf9ccfdbf1809778c"
+    },
+    {
+      "path": "models/transmuter/rig-fbx/character.fbx",
+      "bytes": 39078748,
+      "sha256": "da9b9d0c3a204c0796d9e472b77963f3a05ce5b67a29c2bc41fa2607f7217930"
+    },
+    {
+      "path": "models/transmuter/rig-fbx/running.fbx",
+      "bytes": 39097724,
+      "sha256": "2c5567850b86ce9c250d311913c33d5dec77cc0ffb545abb8648ad6af6136ddf"
+    },
+    {
+      "path": "models/transmuter/rig-fbx/walking.fbx",
+      "bytes": 39114844,
+      "sha256": "75d25152b26f4933fb090958d1039ea95e8ed9ead513990a5958e74e74f0d101"
+    },
+    {
+      "path": "models/transmuter/rig-glb/character.glb",
+      "bytes": 41381196,
+      "sha256": "a01db655172ee50c9794592045d7ff99bca0a42eed1df51c2e85ea9f0fb1b952"
+    },
+    {
+      "path": "models/transmuter/rig-glb/running.glb",
+      "bytes": 41351404,
+      "sha256": "52ffa12790adc49c7e36126fc0c25cd40ce9923758e398be55599ce679fbdf1a"
+    },
+    {
+      "path": "models/transmuter/rig-glb/walking.glb",
+      "bytes": 41362004,
+      "sha256": "fb66d2b6454fa50973aa4280b84328bdd822eefe8d48334f8433749b9ac2997b"
+    },
+    {
+      "path": "models/transmuter/source/model.glb",
+      "bytes": 37762176,
+      "sha256": "4c890e9214b0b2af83f80bd14f532bc55827d6b487a86c3e2f5e70fc7a259790"
+    },
+    {
+      "path": "models/transmuter/source/model_textures/base_color.png",
+      "bytes": 20982839,
+      "sha256": "e61980532b09ebf91b8e80c5593f072ca24cd7eb06f5110160539c6d491e928f"
+    },
+    {
+      "path": "models/transmuter/source/model_textures/metallic.png",
+      "bytes": 146084,
+      "sha256": "76e4d717ec6adeb1436c2da2a842343167b8eb338f03cc7054fbdfea5067b6a4"
+    },
+    {
+      "path": "models/transmuter/source/model_textures/normal.png",
+      "bytes": 20307190,
+      "sha256": "8e8cd81b0b8472a24e24ff9305379adde6f08d9cf805ecb95ffb5a00b7730607"
+    },
+    {
+      "path": "models/transmuter/source/model_textures/roughness.png",
+      "bytes": 1594024,
+      "sha256": "f5210335147f001cdb68ced7e6b8bbc544d92005711fc9a09950007ddc1072e1"
+    },
+    {
+      "path": "models/transmuter/source-fbx/model.fbx",
+      "bytes": 45615340,
+      "sha256": "d6098337eff2f7d0d0bdbf8f937a186f14c71fd125ba43571c7545db3f131f25"
+    },
+    {
+      "path": "models/transmuter/source-fbx/model_textures/base_color.png",
+      "bytes": 20982839,
+      "sha256": "e61980532b09ebf91b8e80c5593f072ca24cd7eb06f5110160539c6d491e928f"
+    },
+    {
+      "path": "models/transmuter/source-fbx/model_textures/metallic.png",
+      "bytes": 146084,
+      "sha256": "76e4d717ec6adeb1436c2da2a842343167b8eb338f03cc7054fbdfea5067b6a4"
+    },
+    {
+      "path": "models/transmuter/source-fbx/model_textures/normal.png",
+      "bytes": 20307190,
+      "sha256": "8e8cd81b0b8472a24e24ff9305379adde6f08d9cf805ecb95ffb5a00b7730607"
+    },
+    {
+      "path": "models/transmuter/source-fbx/model_textures/roughness.png",
+      "bytes": 1594024,
+      "sha256": "f5210335147f001cdb68ced7e6b8bbc544d92005711fc9a09950007ddc1072e1"
+    }
+  ]
+}

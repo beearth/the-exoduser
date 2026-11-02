@@ -1,0 +1,12 @@
+{
+  "name": "@google/model-viewer",
+  "version": "4.4.0",
+  "license": "Apache-2.0",
+  "repository": {
+    "url": "git+https://github.com/google/model-viewer.git",
+    "type": "git"
+  },
+  "distributionUrl": "https://unpkg.com/@google/model-viewer@4.4.0/dist/model-viewer.min.js",
+  "documentation": "https://modelviewer.dev/examples/animation/",
+  "sha256": "18b2e711035aa4705ee281530a55dc2338ff05eed3d70ae16d54105282a75ed5"
+}

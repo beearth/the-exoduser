@@ -1,0 +1,48 @@
+{
+  "schema": "exoduser.meshy-execution-receipt.v1",
+  "completedAt": "2026-11-02T05:31:41.759Z",
+  "userApproval": "다 진행해",
+  "approvedCapCredits": 70,
+  "consumedCredits": 70,
+  "paidRequestsSubmitted": 4,
+  "additionalPaidActionsSubmitted": 0,
+  "model": "meshy-7.1",
+  "outputsSavedLocally": true,
+  "downloadUrlsPersistedInPublicFiles": false,
+  "characters": [
+    {
+      "id": "transmuter",
+      "modelTaskId": "01a19ab3-0b62-77c9-859c-125af3f06ac7",
+      "rigTaskId": "01a19ab8-0631-7427-9ce8-e0b577564526",
+      "modelStatus": "SUCCEEDED",
+      "rigStatus": "SUCCEEDED",
+      "modelCredits": 30,
+      "rigCredits": 5,
+      "rigGlb": "models/transmuter/rig-glb/character.glb",
+      "rigFbx": "models/transmuter/rig-fbx/character.fbx",
+      "walkingGlb": "models/transmuter/rig-glb/walking.glb",
+      "walkingFbx": "models/transmuter/rig-fbx/walking.fbx",
+      "runningGlb": "models/transmuter/rig-glb/running.glb",
+      "runningFbx": "models/transmuter/rig-fbx/running.fbx"
+    },
+    {
+      "id": "spearmage",
+      "modelTaskId": "01a19ab3-881f-7217-80b4-f2d7b2154304",
+      "rigTaskId": "01a19ab8-18c1-7059-912d-dc2376e4c932",
+      "modelStatus": "SUCCEEDED",
+      "rigStatus": "SUCCEEDED",
+      "modelCredits": 30,
+      "rigCredits": 5,
+      "rigGlb": "models/spearmage/rig-glb/character.glb",
+      "rigFbx": "models/spearmage/rig-fbx/character.fbx",
+      "walkingGlb": "models/spearmage/rig-glb/walking.glb",
+      "walkingFbx": "models/spearmage/rig-fbx/walking.fbx",
+      "runningGlb": "models/spearmage/rig-glb/running.glb",
+      "runningFbx": "models/spearmage/rig-fbx/running.fbx"
+    }
+  ],
+  "technicalAudit": "models/rigged-package-audit.json",
+  "visualVerdict": "RETOUCH_PENDING_CLOSE_FACE_DEFORMATION_AND_RUNTIME",
+  "localExecutionHold": "DOTA2_RUNNING",
+  "runtimeApplied": false
+}

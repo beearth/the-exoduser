@@ -1,6 +1,6 @@
 {
   "schema": "exoduser.current-character-art-direction.v1",
-  "updatedAt": "2026-11-02T04:56:29.138Z",
+  "updatedAt": "2026-11-02T05:31:41.759Z",
   "sourcePackage": "assets/characters/female-heroes/20261102-v22-lean-blue",
   "manifest": "assets/characters/female-heroes/20261102-v22-lean-blue/production-manifest.json",
   "faceOriginsImmutable": true,
@@ -9,8 +9,9 @@
     "spearmage": "보라색 굵은 옆땋기"
   },
   "bodyDirection": "여성적으로 날렵하고 탄탄한 몸; v21 과도한 근육 부피 반려",
-  "bodyOutputStatus": "NEW_LEAN_BODY_OUTPUTS_AWAIT_REVIEW",
-  "threeDExecutionStatus": "AWAITING_MODEL_AND_CREDIT_CONFIRMATION",
+  "bodyOutputStatus": "APPROVED_FOR_3D_PRODUCTION",
+  "threeDExecutionStatus": "RIGGED_3D_AND_DEFAULT_WALK_RUN_SAVED_RUNTIME_PENDING",
   "runtimeApplied": false,
-  "notARuntimeLoaderConfiguration": true
+  "notARuntimeLoaderConfiguration": true,
+  "reviewPage": "assets/characters/female-heroes/20261102-v22-lean-blue/models-review.html"
 }

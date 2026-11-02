@@ -1,0 +1,105 @@
+{
+  "verifiedAt": "2026-11-02T05:34:26.241Z",
+  "localUrl": "http://localhost:3333/assets/characters/female-heroes/20261102-v22-lean-blue/models-review.html",
+  "desktopPath": "C:/Users/심도진/Desktop/엑소듀서_검토/캐릭터_인게임준비_20261102/날렵한체형_푸른단발_v22",
+  "desktopFilesVerified": 78,
+  "downloadResponses": [
+    {
+      "path": "models/transmuter/rig-glb/character.glb",
+      "status": 200,
+      "contentType": "model/gltf-binary",
+      "bytes": 41381196
+    },
+    {
+      "path": "models/transmuter/rig-fbx/character.fbx",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 39078748
+    },
+    {
+      "path": "models/transmuter/rig-glb/walking.glb",
+      "status": 200,
+      "contentType": "model/gltf-binary",
+      "bytes": 41362004
+    },
+    {
+      "path": "models/transmuter/rig-fbx/walking.fbx",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 39114844
+    },
+    {
+      "path": "models/transmuter/rig-glb/running.glb",
+      "status": 200,
+      "contentType": "model/gltf-binary",
+      "bytes": 41351404
+    },
+    {
+      "path": "models/transmuter/rig-fbx/running.fbx",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 39097724
+    },
+    {
+      "path": "models/spearmage/rig-glb/character.glb",
+      "status": 200,
+      "contentType": "model/gltf-binary",
+      "bytes": 40049616
+    },
+    {
+      "path": "models/spearmage/rig-fbx/character.fbx",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 38353052
+    },
+    {
+      "path": "models/spearmage/rig-glb/walking.glb",
+      "status": 200,
+      "contentType": "model/gltf-binary",
+      "bytes": 40029748
+    },
+    {
+      "path": "models/spearmage/rig-fbx/walking.fbx",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 38389164
+    },
+    {
+      "path": "models/spearmage/rig-glb/running.glb",
+      "status": 200,
+      "contentType": "model/gltf-binary",
+      "bytes": 40019136
+    },
+    {
+      "path": "models/spearmage/rig-fbx/running.fbx",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 38372028
+    }
+  ],
+  "staticReviewScreenshots": [
+    "v22-model-review-desktop.png",
+    "v22-model-review-mobile.png"
+  ],
+  "noModelOrViewerLoadedBeforeClick": true,
+  "desktopAndMobileStaticUiPass": true,
+  "faceOriginBytesUnchanged": true,
+  "technicalGlbAuditPass": true,
+  "actual3dViewerPlaybackVerified": false,
+  "actualUnityRuntimeVerified": false,
+  "hold": "DOTA2_RUNNING_AT_AUDIT",
+  "sourceModels": [
+    {
+      "id": "transmuter",
+      "vertices": 97113,
+      "triangles": 61635,
+      "joints": 24
+    },
+    {
+      "id": "spearmage",
+      "vertices": 92330,
+      "triangles": 61746,
+      "joints": 24
+    }
+  ]
+}
