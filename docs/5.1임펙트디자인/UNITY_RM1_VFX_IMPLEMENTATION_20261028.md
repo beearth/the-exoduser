@@ -223,3 +223,5 @@ r4 빌드·M1 기술 PASS와 회복 바닥/가시 접지/강타 점선 테두리
 | REVIEW | -impact-scope warrior: 기본300틱+기검참300틱/60Hz,30fps300PNG/10초. 같은EXE baseline/after Core trace SHA 일치, 실제처치·Ki3타Tier3명중·양쪽넉백>1px 검사. 전체5스킬 fixture는 기존16초480PNG. Graph 카운터 대신 실제 flipbookFrames/peakSprites로 표기 | 정식 빌드·동일M1·나란히영상 후에만 공통 반영 |
 
 레퍼런스: 직접 연 091256 횃불 타격과 keyframe_B. 배울 점은 짧은 접점·방향·국소 조명·남아 있는 적탄이며 외부 원화 반입0. 새 소스의 빌드/M1/실게임·1x·소리 청취는 아직 미검증이다. 상태·영수증은 I:/EXODUSER-Storage/demo-art/impact/REPORT_1103.md에 갱신한다.
+
+추가 oracle: 최신 공통의 FeelContact/FeelHurt를 원 기검참 패킷과 분리하고 실제 처치 target/원 패킷과1회 공존을 검증해28/28. 기검참93/93, 현재 G 웹 원문52블록에서 새로 추출한 스킬13,216/13,216 불일치0. 생산 Core 변경0이며, 옛 검사기26중4실패와 저장 oracle의 fireball 누락 예외도 `1103-oracle/`에 보존한다.
