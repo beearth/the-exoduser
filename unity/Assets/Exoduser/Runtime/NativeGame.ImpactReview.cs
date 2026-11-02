@@ -18,6 +18,7 @@ namespace Exoduser.UnityPort
             public string device,coreTraceSha256; public bool world3D,baseline,passed;
             public int flipbookFrames,peakSprites,maxReactingTargets,normalReactingTargets;public bool warriorOnly,responseBaseline;public int frames,contacts,dropped,damage,casts,spawned,peakParticles,skillGraphEvents,peakSkillHandles,poisonFrames,thornFrames,darkFrames;
             public int captureWidth,captureHeight;
+            public bool projectileBaseline;public int originalPoisonFrames,originalPhysicalFrames,originalDarkFrames,originalBulletFallbacks;
             public float normalKnockback,kiKnockback,slamKnockback;
             public int killedTargets;public bool killContactSeen;
             public bool kiThirdCastSeen,kiThirdHitSeen;public int kiThirdTier;
@@ -46,6 +47,7 @@ namespace Exoduser.UnityPort
                 sections=new[]{"일반공격","기검참3타·완전충전","가시덫","지옥강타","회복영역","얼음보주","악의구"}};
             rc.warriorOnly=Argument("-impact-scope")=="warrior";rc.responseBaseline=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-impact-response-baseline")>=0;if(rc.warriorOnly){rc.sections=new[]{"일반공격","기검참3타·완전충전"};rc.scope="실제 GPU Player 10초/2공격: 고정 입력·실제 Core 명중·처치·넉백·3표적 동시 피격과 합성 탄막. AI루프 유지/fixture기절180·불사표적 사용. 자연전투·전체스킬·게임FPS 증거 아님";}
             var trace=new StringBuilder();int frame=0,damage=0,shot=0,blastsBefore=sim.MaliceOrbBlasts;
+            rc.projectileBaseline=NativeDruidArt.ProjectileBaseline;
             var castKinds=new HashSet<string>();Action<string> castSeen=id=>castKinds.Add(id);sim.SkillCast+=castSeen;
             foreach(string section in rc.sections)
             {
@@ -85,6 +87,7 @@ namespace Exoduser.UnityPort
                         if(feedback.Kind==FeedbackKind.KiSlashHit)rc.kiThirdHitSeen=true;
                     }
                     DispatchFeedback();UpdateViews();Running=false;
+                    if(bossView!=null){if(bossView.PoisonShotsDrawn>0)rc.originalPoisonFrames++;if(bossView.FieldMouthsDrawn>0)rc.originalPhysicalFrames++;if(bossView.FieldCometsDrawn>0)rc.originalDarkFrames++;rc.originalBulletFallbacks+=bossView.FieldBulletFallbacks;}
                     int reacting=0;foreach(var e in sim.Enemies)if(contactVfx.EnemyFrozen(e.Id,ImpactNow))reacting++;rc.maxReactingTargets=Math.Max(rc.maxReactingTargets,reacting);if(sectionIndex==0)rc.normalReactingTargets=Math.Max(rc.normalReactingTargets,reacting);
                     if(sectionIndex==0&&!sim.Enemies[0].Alive&&contactVfx.EnemyFrozen(sim.Enemies[0].Id,ImpactNow)&&contactVfx.Spawned>0)rc.killContactSeen=true;
                     trace.Append(sim.TickCount).Append('|').Append(p.State).Append('|').Append(p.X.ToString("R",CultureInfo.InvariantCulture)).Append('|').Append(p.Y.ToString("R",CultureInfo.InvariantCulture)).Append('|')

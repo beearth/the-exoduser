@@ -246,3 +246,17 @@ r4 빌드·M1 기술 PASS와 회복 바닥/가시 접지/강타 점선 테두리
 39f7071의 정식 eb92048d/errors0·동일 M1 4e5b70a1 23/23·전후 e88e49ec/4e5f26e7은 기술 통과했다. 원화8회·Core trace9a432b59…도 같다. 그러나 maxReactingTargets는 이전 타격의 아직 유효한 pulse까지 세므로 baseline/after 모두3일 수 있어 예상2→3의 증거가 아니다. 이 수치를 개선으로 보고하지 않는다.
 
 warriorOnly 첫 일반공격의 세 번째 QA 표적만 X+104→X+48로 놓아 세 표적 모두 실제 첫 근접명중을 받게 한다(Y -28/+28/0 유지). 기본16초전체스킬 fixture와 제품 스폰/판정은 변경0. 새 normalReactingTargets는 첫 일반공격 구간만 세며 같은패키지 이전방식 정확2/수정 정확3을 gate로 검사한다. maxReactingTargets는 보조 전체최대치로만 유지한다. 이 QA 입력 변경 때문에 이전 Core trace/영상은 새 장면과 직접 동등 비교하지 않는다. 새 정식빌드/M1/전후10초로 확인하며 사용자 세이브·피해공식·입력·전투시간·공격예산 변화0.
+### 11-03 세 번째 단위: 원화 탄막 팔레트·축소 필터 후보
+
+Graph 본체 대신 기존 원화 경로를 유지한다. 실제 첫 Player에서 독의 강한 연두색과 어둠의 자홍색을 확인해, 아래 승인색을 원화의 명암에 적용했다. 원본 PNG·투명도·셀 배치·크기·이동·피해·패링 분류는 변경하지 않는다. 물리탄은 기존 이빨 입 원화 그대로이며, 빨간 원형 `skill_spike_thorn`을 가시탄으로 오용하지 않는다.
+
+| 항목 | 현행 후보 계약 |
+|---|---|
+| 독 원화 | `proj_firedevil_orb`, 4×4/16프레임, 기존70ms/프레임. 암부 `1c2810` / 중간 `5f8a2e` / 중심 `c8e8a8` |
+| 어둠 원화 | `proj_bolt_comet`, 8프레임, 기존머리 피벗(0.62,0.5). 암부 `170c20` / 중간 `5e3478` / 중심 `cdb2e0` |
+| 명암 변환 | `SkillPresentation.EnemyPixel`: 원RGB의 `(0.299R+0.587G+0.114B)/255`를 0..0.48 암부→중간, 0.48..1 중간→중심으로 선형보간, RGB 반올림. 원alpha 보존 |
+| 축소 | 독16셀 및 어둠8셀 각각 별도 mip chain·Trilinear·Clamp. 인접 프레임 색 번짐을 방지. 다른 속성·무지개/블루/블랙 반사탄의 기존 경로 유지 |
+| 같은패키지 이전표현 | `--unity-impact-projectile-baseline`: 독은 기존 grayscale×`66dd22`·Bilinear·mip없음, 어둠은 기존 ELC65%+원화35% 경로 |
+| 관측 | `projectileBaseline`, `originalPoisonFrames`, `originalPhysicalFrames`, `originalDarkFrames`, `originalBulletFallbacks`. 실제 NativeBossView 원화 소비를 세며, 꺼진 Graph의 프레임 수로 원화 출력을 증명하지 않음 |
+| 검사·판정 | 명암 단조증가·양끝 승인색을 포함한 표현976개 GREEN. CPU는 색/표현 계약만 검증. 정식 빌드·M1·같은크기10초·탄과 아군공격 중첩·3배크롭의 실제 판정 전에는 미검증 |
+

@@ -9,6 +9,13 @@ static class Program
     static int Main()
     {
         try {
+            foreach(bool poison in new[]{true,false}) {
+                uint black=SkillPresentation.EnemyPixel(0,poison), white=SkillPresentation.EnemyPixel(0xffffff,poison);
+                Check(black==(poison?SkillPresentation.EnemyPoisonShadow:SkillPresentation.EnemyDarkShadow),"탄 그림자의 암부를 보존한다");
+                Check(white==(poison?SkillPresentation.EnemyPoisonCore:SkillPresentation.EnemyDarkCore),"탄 중심의 명도 대비를 보존한다");
+                double previous=-1;
+                for(int v=0;v<=255;v++) {uint c=SkillPresentation.EnemyPixel((uint)(v*0x010101),poison);double l=(c>>16&255)*.299+(c>>8&255)*.587+(c&255)*.114;Check(l>=previous,"탄의 그라데이션이 역전되지 않는다");previous=l;}
+            }
             var t = new ImpactResponse();
             Check(t.Hit(1, 0, 0, false, false), "실제 명중은 첫 피드백을 생성해야 한다");
             Check(t.FreezeSeconds >= .05 && t.FreezeSeconds <= .1, "표현 정지는 50~100ms이어야 한다");

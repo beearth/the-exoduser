@@ -145,7 +145,7 @@ namespace Exoduser.UnityPort
 
         public void Update(Simulation sim)
         {
-            used = 0; addUsed = 0; MineSpritesDrawn = 0; MineArtFallbacks = 0; FieldMouthsDrawn = 0; FieldCometsDrawn = 0; FieldOrbsDrawn = 0; FieldBulletFallbacks = 0;
+            used = 0; addUsed = 0; MineSpritesDrawn = 0; MineArtFallbacks = 0; FieldMouthsDrawn = 0; FieldCometsDrawn = 0; FieldOrbsDrawn = 0; FieldBulletFallbacks = 0; PoisonShotsDrawn=0;
             if (bound != sim) { if (bound != null) bound.BossFx -= OnFx; bound = sim; sim.BossFx += OnFx; }
             DrawFieldZones(sim);
             var druid = sim.Druid; if (druid == null) { Finish(); return; }
@@ -237,6 +237,7 @@ namespace Exoduser.UnityPort
                     // _drawDruidPoisonShot: 16-frame orb at 70 ms/frame, 96..180 px by Sz (240 for mines / element balls), doubled for physical-parry shots
                     double size = (p.Mine || p.ElemBall ? 240 : Math.Max(96, Math.Min(180, p.Sz * 24))) * (p.ParryClass == "physical" ? 2 : 1);
                     PutBox(NativeDruidArt.PoisonShot((int)(nowMs / 70) % 16), p.X, p.Y, size, size, Color.white, (int)p.Y + 6);
+                    PoisonShotsDrawn++;
                     continue;
                 }
                 DrawFieldBullet(p, t);   // VFX-D18: field enemies' bullets, per kind as game.html pass 2 (NativeBossView.FieldBullets.cs)

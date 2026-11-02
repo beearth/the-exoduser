@@ -14,6 +14,7 @@ namespace Exoduser.UnityPort
         static readonly Dictionary<string, Sprite> sprites = new Dictionary<string, Sprite>();
         static Material additive;
         public static readonly int Opacity = Shader.PropertyToID("_Opacity");
+        internal static readonly bool ProjectileBaseline=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-impact-projectile-baseline")>=0;
 
         public static Texture2D Tex(string res)
         {
@@ -88,7 +89,8 @@ namespace Exoduser.UnityPort
             sprites[key] = s; return s;
         }
 
-        // _druidPoisonFly: proj_firedevil_orb.png (4x4, 16 frames) turned grey, multiplied by #66dd22, original alpha kept
+        // Original _druidPoisonFly 4x4/16-frame art and alpha; restrained value ramp and per-cell mips.
+        // The QA baseline reproduces the previous grayscale multiplied by #66dd22.
         public static Sprite PoisonShot(int frame)
         {
             string key = "poisonShot:" + frame;
@@ -100,10 +102,11 @@ namespace Exoduser.UnityPort
             {
                 var c = src[(oy + y) * t.width + ox + x];
                 float g = (c.r * .299f + c.g * .587f + c.b * .114f) / 255f;   // canvas filter grayscale(1) uses the same luma weights
-                px[y * cw + x] = new Color32((byte)Mathf.RoundToInt(g * 0x66), (byte)Mathf.RoundToInt(g * 0xdd), (byte)Mathf.RoundToInt(g * 0x22), c.a);
+                if(ProjectileBaseline)px[y * cw + x] = new Color32((byte)Mathf.RoundToInt(g * 0x66), (byte)Mathf.RoundToInt(g * 0xdd), (byte)Mathf.RoundToInt(g * 0x22), c.a);
+                else {uint rgb=Vfx.SkillPresentation.EnemyPixel((uint)(c.r<<16|c.g<<8|c.b),true);px[y*cw+x]=new Color32((byte)(rgb>>16),(byte)(rgb>>8),(byte)rgb,c.a);}
             }
-            var cell = new Texture2D(cw, ch, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
-            cell.SetPixels32(px); cell.Apply(false, true);
+            var cell = new Texture2D(cw, ch, TextureFormat.RGBA32, !ProjectileBaseline) { filterMode = ProjectileBaseline?FilterMode.Bilinear:FilterMode.Trilinear, wrapMode = TextureWrapMode.Clamp };
+            cell.SetPixels32(px); cell.Apply(!ProjectileBaseline, true);
             s = Sprite.Create(cell, new Rect(0, 0, cw, ch), new Vector2(.5f, .5f), 100, 0, SpriteMeshType.FullRect);
             sprites[key] = s; return s;
         }

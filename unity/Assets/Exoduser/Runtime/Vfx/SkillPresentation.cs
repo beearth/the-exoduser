@@ -5,6 +5,15 @@ namespace Exoduser.UnityPort.Vfx
     {
         public const uint EnemyPoisonCore=0xc8e8a8,EnemyPoisonMid=0x5f8a2e,EnemyPoisonShadow=0x1c2810;
         public const uint EnemyDarkCore=0xcdb2e0,EnemyDarkMid=0x5e3478,EnemyDarkShadow=0x170c20;
+        // Preserve the source image's value structure, with the approved restrained palette.
+        public static uint EnemyPixel(uint rgb,bool poison)
+        {
+            double value=((rgb>>16&255)*.299+(rgb>>8&255)*.587+(rgb&255)*.114)/255;
+            uint shadow=poison?EnemyPoisonShadow:EnemyDarkShadow,mid=poison?EnemyPoisonMid:EnemyDarkMid,core=poison?EnemyPoisonCore:EnemyDarkCore;
+            uint a=value<.48?shadow:mid,b=value<.48?mid:core;double t=value<.48?value/.48:(value-.48)/.52;
+            uint result=0;for(int shift=16;shift>=0;shift-=8)result|=(uint)System.Math.Round((a>>shift&255)*(1-t)+(b>>shift&255)*t)<<shift;
+            return result;
+        }
         public static bool Supports(string id) { return id=="spikeTrap"||id=="giantSlam"||id=="holyDome"||id=="iceOrb"||id=="fireball"; }
         public static int BulletKind(bool poison,bool physical,int element) { return poison?1:physical?2:element==3?3:0; }
         public static float KiWidth(int step,float chargeScale) { return (step==3?252:192)*chargeScale; }
