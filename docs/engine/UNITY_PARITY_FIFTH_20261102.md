@@ -61,3 +61,16 @@ Player 어셈블리 증거는 실제 로드 경로를 우선 사용하고, Unity
 | 검수 경계 | ScreenTransitionCheck는 CLI+샌드박스 전용 실제 Player 호스트·실제 영상 decoder 준비 검사. CinematicInputCheck는 모든 로비 경계를 기다린 뒤 기존 홀드 회귀. 컴파일은0이나 정식 빌드·M1·양해상도 캡처·시각/청음은 아직 대기 |
 
 I:준비 중인 전체 스킬/패시브/대장간 소스는 이번 인수에 포함하지 않았다. 소유23코드와새원화/메타/문구만 정확한경로로복사,원본은transition-prep/adoption-backup에 SHA 백업했다. guard.baseline과기존미추적파일은보존한다.
+
+
+## 두 번째 패키지 첫 검수 실패와 수정 — 재빌드 전
+
+| 증거 | 원인·현재 조치 |
+|---|---|
+| build9922028a | Succeeded/errors0,6,610,053,276bytes,USER_SAVE0. 라이선스토큰갱신진단2는빌드결과와구분. M1은37d9427c의firstBlocked01,실패인데기존하네스가exit0반환했으므로미통과 |
+| M1진입 | 기존M1이ShowLobby(.6초)→Open/Choose/Confirm을동일프레임에호출해500/600ms비동기경계를기다리지못함. 생성API별경계해제/실패를기다리고,firstBlocked가있으면이제exit2.전환을우회하지않음 |
+| 실제전환4b4102f2 |34검사중타이밍2실패.첫요청이전unscaledDeltaTime까지합산하여실제fade-out.426초. 요청시각부터realtime차이로교체.감소준비검사는initial FDG splash-menu가끼어들어다른요청의.475초를측정했음.초기로비안정화후요청id로검사 |
+| 직접캡처결함 | frame108은opacity1인데FDG화면이검정덮개위로그려짐. GUI.depth는현재GUIBehaviour정렬속성이라finally에서0으로돌리면덮개우선순위가사라짐.전환컴포넌트는-1000000을유지하고행렬/색/활성만복원.새QA는완전검정일때실제PNG중앙/상단3점RGB≤.02를검사해상태값만통과시키지않음 |
+| 추가회귀 | 실제인수GateEnterDelay.cs를직접링크한v2테스트10/0. 오래된이웃Core를읽던원래하네스실패와구분. Core/Runtime수정본재컴파일/정식재빌드/새M1·양해상도Player는대기 |
+
+Unity GUI.depth 계약: [공식API](https://docs.unity3d.com/ja/current/ScriptReference/GUI-depth.html). 첫실패영수증과이미지는삭제하거나성공으로대체하지않는다.

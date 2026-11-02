@@ -85,16 +85,19 @@ namespace Exoduser.UnityPort
             float deadline;
 
             // ---- 01 lobby -> warrior -> 1-1 ----
-            lobby.ShowLobby(); yield return new WaitForSecondsRealtime(.6f);
+            lobby.ShowLobby(); yield return M1WaitFrontend("initial lobby");
             // Always a brand-new character: a roster/combat save left in <output> by an earlier run makes BeginCharacterEntry take the "continue" path (HasCombatSave), which skips the
             // story and the first practice arena (step 02 "not shown"). A fresh unique name has no combat save, so the new-character route is always walked.
             {
                 string fresh = "M1" + (DateTime.Now.Ticks % 100000).ToString("00000");
-                if (lobby.OpenCharacterCreation() && lobby.ChooseCharacterVisual(0) && lobby.ConfirmCharacterVisual()) lobby.CreateCharacter(fresh);
-                lobby.ShowLobby();
+                bool opened=lobby.OpenCharacterCreation();yield return M1WaitFrontend("character selection");
+                bool chosen=opened&&lobby.ChooseCharacterVisual(0);bool confirmed=chosen&&lobby.ConfirmCharacterVisual();yield return M1WaitFrontend("character naming");
+                bool created=confirmed&&lobby.CreateCharacter(fresh);yield return M1WaitFrontend("created story decoder");
+                if(!created)M1Add("00","new character creation","fail","async character route rejected"," ");
+                lobby.ShowLobby();yield return M1WaitFrontend("selected lobby");
             }
             yield return M1Shot("01-lobby-warrior-selected");
-            bool entered = lobby.BeginCharacterEntry(false);
+            bool entered = lobby.BeginCharacterEntry(false);yield return M1WaitFrontend("entry loading and reveal");
             deadline = Time.realtimeSinceStartup + 15; while (lobby.StartupCaptureState.Page != FrontendEntryPage.Nemesis && Time.realtimeSinceStartup < deadline) yield return null;
             string storyPage = lobby.StartupCaptureState.Page.ToString();
             lobby.StartupCaptureState.Skip(); yield return null; lobby.StartupCaptureState.Skip(); yield return null;
@@ -456,6 +459,7 @@ namespace Exoduser.UnityPort
             yield return M1Finish(output);
         }
 
+        IEnumerator M1WaitFrontend(string label) {float until=Time.realtimeSinceStartup+25;while((NativeScreenTransition.Busy||lobby.CinematicEntryPending)&&Time.realtimeSinceStartup<until)yield return null;if(NativeScreenTransition.Busy||lobby.CinematicEntryPending)M1Add("00","frontend boundary "+label,"fail","boundary timeout","");else if(NativeScreenTransition.History!=null&&NativeScreenTransition.History.Count>0){var record=NativeScreenTransition.History[NativeScreenTransition.History.Count-1];if(record.failed||record.cancelled)M1Add("00","frontend boundary "+label,"fail",record.boundary+" "+record.error,"");}yield return null;}
         IEnumerator M1Finish(string output)
         {
             m1.guiRepaints = m1GuiRepaints; m1.guiBridged = m1GuiBridged;
@@ -466,7 +470,7 @@ namespace Exoduser.UnityPort
             File.WriteAllText(Path.Combine(output, "m1-check.json"), JsonUtility.ToJson(m1, true), new UTF8Encoding(false));
             // UI 캡처와 동일하게 영상 컴포넌트의 지연 파괴를 먼저 끝낸다.
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);
-            Debug.Log("QA_MEDIA_DRAIN_COMPLETE M1");Application.Quit(0);
+            Debug.Log("QA_MEDIA_DRAIN_COMPLETE M1");Application.Quit(string.IsNullOrEmpty(m1.firstBlocked)?0:2);
         }
     }
 }
