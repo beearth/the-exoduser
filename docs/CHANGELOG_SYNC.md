@@ -57415,3 +57415,6 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 
 
 2026-11-02 actual80d0정상Win64errors0/원movie2byteexact/211파일manifest·ZIP64송신바이트검증완료(4572275424B,SHA50e0abf7d303fb6e9eb67d31ce6cec7162e6ca610b18f05193162b180fb73460). 별도정규화/로컬서명Mac후보M123/23PASS,prefs26/27복구,기존설치1403보존. PCNTFS도구patch78cf...와Mac8+변조회귀인수/제품변경0.5route한정사설전송준비/PC실제수신·실행미완료,Mac수동unlock대기.9d658 PC문서병합보존,unity/main아직1403. 근거UNITY_GROUND_PLACEMENT_QA_20261102/UNITY_WINDOWS_DELIVERY_STAT_PORT_20261102.
+
+
+2026-11-02 private전송actual: 자기NodePID34940/실행경로/config확인후192.168.0.233:3334 listen,오직192.168.0.146 허용. 정확5경로/bytes/SHA는 evidence/UNITY_WIN80D_PRIVATE_TRANSFER_20261102.json. 자기Mac의HEAD/package.zip은403으로거부돼PC-only제한실행확인. senderZIP4572275424B/SHA50e0abf7d303fb6e9eb67d31ce6cec7162e6ca610b18f05193162b180fb73460. PC수신·해제·실행아직미완료이며20분최대lease/수신확인후자기PID종료정책유지. 설치/currentunity/main1403보존.

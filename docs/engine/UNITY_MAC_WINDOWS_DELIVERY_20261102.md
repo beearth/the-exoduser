@@ -121,3 +121,6 @@ Root가manifest를검토하고명시SHA를pack에전달하는내부인수단계�
 private one-shot서버는정확192.168.0.233:3334에만bind하고peer192.168.0.146만허용한다.5개GET/HEAD route(/package.zip,/manifest.json,/pack-receipt.json,/win-delivery.py,/candidate-packet.json)만허용,목록/root노출없음,시작전SHA/descriptor/O_NOFOLLOW확인,request전후fileidentity,Range재개지원,20분기한후종료. Node준비소스syntax검사만이시점PASS이며아직listen/PC수신완료로표현하지않는다. 기존서버가있으면임의종료하지않고소유PID를확인해야한다. 파일을다받았다는peer확인뒤자기서버만종료한다. 상시자동화/자동로그인/잠금우회는없다.
 
 signed-natural wrapper도source80d0/normalizer서명exe/Runtime/Core를strict대조하고별도QA sandbox에서사용자수동unlock후OS조작으로검수할준비다. 자동조작·AI정지·자원/무적부여0. observer는첫10s launchwarmup+60s만읽으며menu/startup포함이므로실제fieldframe/전투를별도선택·관측해야한다. 이검수는아직미실행이다. Rootliteralold50/triadold58·old9미관측/R독립참조불일치/원full100·61은불변이다. MAP PRODUCTION REPORT:geometry/원화/충돌불변,TECH별도서명·Winpack준비통과,자연PLAYABLE/PCGPU실행미검수. VISUAL VERDICT: RETOUCH.
+
+
+2026-11-02 private전송actual: 자기NodePID34940/실행경로/config확인후192.168.0.233:3334 listen,오직192.168.0.146 허용. 정확5경로/bytes/SHA는 evidence/UNITY_WIN80D_PRIVATE_TRANSFER_20261102.json. 자기Mac의HEAD/package.zip은403으로거부돼PC-only제한실행확인. senderZIP4572275424B/SHA50e0abf7d303fb6e9eb67d31ce6cec7162e6ca610b18f05193162b180fb73460. PC수신·해제·실행아직미완료이며20분최대lease/수신확인후자기PID종료정책유지. 설치/currentunity/main1403보존.

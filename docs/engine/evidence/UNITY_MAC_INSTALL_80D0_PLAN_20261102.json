@@ -71,8 +71,15 @@
   "installedAppTouched": false,
   "commonUnityIntegration": {
     "acceptedBase": "1403c5ee6d52c540815ab1cf70d5666b9023aa75",
-    "candidateSource": "80d0ae89ca1af2a08987ec7b6f47340231a36bff",
-    "status": "PREPARED_SOURCE_PROOF_ONLY; destination branch CAS must be read before integration, no main/common push yet"
+    "candidateSource": "e4db69ac07322af00da18d9027c82613b7a8fa0d",
+    "status": "PREPARED_SOURCE_PROOF_ONLY; destination branch CAS must be read before integration, no main/common push yet",
+    "destinationRef": "refs/heads/unity/main",
+    "observedCurrentSha": "1403c5ee6d52c540815ab1cf70d5666b9023aa75",
+    "candidateDescendsObservedCurrent": true,
+    "method": "Immediate remote readback + non-force fast-forward only; preserve unknown advance and stop. Recheck at action time.",
+    "executed": false,
+    "runtimeBuildSource": "80d0ae89ca1af2a08987ec7b6f47340231a36bff",
+    "pc9d658Included": true
   },
   "windowsDesktopCasOwner": "PC root; Mac does not alter Windows shortcuts/registry"
 }

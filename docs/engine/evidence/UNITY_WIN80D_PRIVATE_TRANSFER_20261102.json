@@ -1,0 +1,46 @@
+{
+  "status": "LISTENING_PEER_WHITELIST",
+  "buildSource": "80d0ae89ca1af2a08987ec7b6f47340231a36bff",
+  "candidateOnly": true,
+  "bind": "192.168.0.233:3334",
+  "onlyPeer": "192.168.0.146",
+  "methods": [
+    "GET",
+    "HEAD"
+  ],
+  "expiryMinutes": 20,
+  "routes": {
+    "/package.zip": {
+      "url": "http://192.168.0.233:3334/package.zip",
+      "bytes": 4572275424,
+      "sha256": "50e0abf7d303fb6e9eb67d31ce6cec7162e6ca610b18f05193162b180fb73460"
+    },
+    "/manifest.json": {
+      "url": "http://192.168.0.233:3334/manifest.json",
+      "bytes": 91735,
+      "sha256": "181ce8aef4d64c0c28051cef9d1679ed7110feefef734e304a8900f55629e599"
+    },
+    "/pack-receipt.json": {
+      "url": "http://192.168.0.233:3334/pack-receipt.json",
+      "bytes": 496,
+      "sha256": "fd3ad81c3a5f9317f7a03cfd87f492693c976826beae57e5fe5cfe957acee9e3"
+    },
+    "/win-delivery.py": {
+      "url": "http://192.168.0.233:3334/win-delivery.py",
+      "bytes": 20992,
+      "sha256": "78cf59590433d264c70729e51e686d3f0531cb9f4a1edd5ec2d00b783c30213c"
+    },
+    "/candidate-packet.json": {
+      "url": "http://192.168.0.233:3334/candidate-packet.json",
+      "bytes": 8426,
+      "sha256": "ea3913df4b720166a0faae69ba3d3fbb780fbdfe98b17c174bd8b0e01826b05f"
+    }
+  },
+  "pcReceived": false,
+  "pcExecutionVerified": false,
+  "installedMacReplaced": false,
+  "evidenceAndToolsSource": "e4db69ac07322af00da18d9027c82613b7a8fa0d",
+  "portableVerifierSha256": "78cf59590433d264c70729e51e686d3f0531cb9f4a1edd5ec2d00b783c30213c",
+  "pc9d658Ancestor": true,
+  "ownerPid": 34940
+}
