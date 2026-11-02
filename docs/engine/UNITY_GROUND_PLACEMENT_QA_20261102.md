@@ -598,3 +598,72 @@ Local Unity6000.6.7f1 CGIncludes/UnityCG.cginc lines774-784 define half2 image U
 Only the original1920 PNG was made available via private192.168.0.233:3334 exact one-file GET/HEAD whitelist toPC192.168.0.146; no listing/write or prefs/float publication. Server is ephemeral and will be stopped after verified receipt. Full shader/GPURGBA/12large/8dense/M1/integration/install/Win64 remain held until this one case is resolved.
 
 MAP PRODUCTION REPORT: existing A2 soil effect-rendering QA only, map/route/collision/art/Core unchanged. First normal1920 frame directly viewed; direct3840 not reached. TECH rendering/feature and one-call CPU latency evidence obtained; mode2 weight consistency FAIL/unresolved, actual2cm depthmode3 not yet read. VISUAL VERDICT: RETOUCH for acceptance; the one image looks grounded but no full-contact/color/actor-exclusion sign-off. Next pass is exact-sampler diagnosis on the same single case.
+
+
+# Receiver mode2 sampler diagnosis — source-only QA handoff
+
+2026-11-02. Product baseline remains `8f391fea6f157433fcaea2df611d0a9b146c6604`. Copy base: ROOT `receiver-reviewed/GroundPlacementCapture.cs`, SHA256 `fe09668aa45a3ca41c442215411c033b105f84f39237ff58d4cd740085c8c4a0`. The first normal 1920 screenshot stays before metadata/probe gates exactly as in that base. This task changes only this overlay, adds one QA Resources shader/meta and this addon. No compilation, Unity/Player, Git mutation, preferences, product/importer/texture/global Quality changes, new teams or expanded test coverage.
+
+## Read-only first-run evidence
+
+Only run `profile-guard-runs/20261102T032130171914Z-3872/receiver47/` and the candidate2ac-input `skill_spike_thorn.png` / `.meta` were consulted. The 1254×1254 source PNG is 8-bit noninterlaced RGBA. Its original alpha was decoded losslessly with PNG row filters, then bilinearly sampled at each of the **same 32** mode2 packed UVs using `uv * 1254 - 0.5`. PNG storage is top-row-first, so Unity source UV v corresponds to PNG row `(1-v)*height-0.5` for this comparison. This is texture row convention evidence, not a screen-projection vertical flip diagnosis.
+
+| Comparison of all 32 existing samples | Result |
+|---|---:|
+| PNG alpha versus legacy GPU-decoded cache alpha, maximum absolute difference | `0.0000070360654214063345` |
+| PNG predicted weight versus actual mode2 weight, maximum absolute difference | `0.04644002094651261` |
+| PNG predicted weight versus actual mode2 weight, mean absolute difference | `0.0018973928619060018` |
+| Opposite PNG row convention: weight maximum / mean absolute difference | `0.40566415886675583` / `0.06668289190864422` |
+
+| Worst existing sample | Value |
+|---|---|
+| Pixel / packed UV | `(1061,564)` / `(0.4321146607,0.7196003199)` (read full JSON floats in analysis) |
+| Original PNG bilinear alpha | `0.12127550540549124` |
+| Legacy cache alpha | `0.1212766245007515` |
+| Tint alpha | `0.43239855766296387` |
+| PNG predicted weight | `0.05243935361718139` |
+| Actual mode2 weight | `0.098879374563694` |
+
+The large weight mismatch is not explained by a large legacy mip0 alpha-decode error or by reversing source texture Y. This does not yet establish the cause of the product's filtered sample. Importer alphaIsTransparency can affect RGB, so this read-only evidence makes no PNG-to-runtime RGB equivalence claim. No acceptance threshold was relaxed.
+
+## Independent GPU reference
+
+Install `Resources/Shaders/GroundReceiverSamplerReference.shader` and its matching `.meta` under the QA Assets Resources hierarchy alongside the helper. `Resources.Load<Shader>("Shaders/GroundReceiverSamplerReference")` creates a QA-owned Material; it is never installed on a product renderer.
+
+| Reference mode | Width × height | Operation |
+|---|---|---|
+| 0 | sampleCount × 1, at most 32×1 | Original runtime Texture2D, original sampler: `SampleLevel(uv,0)` |
+| 1 | sampleCount × 1 | Same texture/sampler: `SampleGrad(uv,dx,dy)` |
+| 2 | (sampleCount×4) × 1, at most 128×1 | Exact four surrounding mip0 texels by `Texture2D.Load`; offsets `(0,0),(1,0),(0,1),(1,1)` from `floor(uv*size-0.5)`; clamped because this actual soil source is Clamp |
+
+ROOT reports Unity6000.6.7f1 UnityCG image-Blit structs use half2 UV; this is a plausible decoder precision mechanism, not an established cause of these errors. The QA shader does **not** reuse `vert_img`, `appdata_img` or `v2f_img`. Its custom vertex output contains only float4 SV_POSITION. Source UVs come from explicit float4 sample arrays, and the exact texel path uses integer Texture2D.Load, so no image-Blit half2 UV varying participates.
+
+Shader target3.5; RGBAFloat Linear targets with required `R32G32B32A32_SFloat`; float32 readback. Pixel indexing comes only from reference output `SV_POSITION.x`; reference source UV is passed explicitly from the saved mode2 sample list, with no input/output screen Y assumption. Source filtering, wrap, mipmaps, readability, importer, aniso and QualitySettings are never written. Material, targets, readback Texture2D and active RT are cleaned/restored in finally.
+
+The same original mode2 sample list and completed source/PB snapshot drive every path. Existing legacy cache RGBA, expected weight, actual weight, absolute errors, original thresholds, `passed=false` and raw float evidence remain intact. New per-sample fields record:
+
+| Field family | Meaning |
+|---|---|
+| referenceLevelRgba / referenceGradRgba | Actual GPU source sample RGBA at original packed UV |
+| referenceLevelExpectedRgba / referenceGradExpectedRgba | Expected preblend RGBA using original completed-frame PB tint/Flat/NormalBlend |
+| referenceLevelWeight / referenceGradWeight / corresponding Error | Expected weight and absolute difference from original actual mode2 weight |
+| referenceLoadedTexels / referenceCachedTexels | Same four exact mip0 texels from GPU Load and legacy default-Blit decoded cache |
+| referenceLoadCacheAlphaError / referenceLoadCacheRgbError | Maximum per-sample absolute texel differences; NPOT default-Blit decode diagnostic |
+| referenceLoadBilinear / referenceLoadExpectedRgba / referenceLoadWeight | CPU bilinear reconstruction from exact GPU-loaded texels, independently of legacy cache |
+| referenceLevelCacheAlphaError | Direct GPU level0 alpha versus existing CPU-bilinear cache alpha |
+| referenceDx / referenceDy / referenceDerivativesValid | Actual mode2 packed-UV neighbor finite differences, not assumed screen-space orientation |
+
+For Grad, a positive-weight finite next neighbor gives `nextUV-centerUV`; otherwise a valid previous neighbor gives `centerUV-previousUV`; absent neighbors return zero and validity=false. This approximates footprint using actual reconstructed UVs; it is **not the exact original fragment quad derivative**, especially at clip/silhouette boundaries. A closer Grad result is evidence to inspect sampling footprint, not proof or permission to change the product shader.
+
+`texture.anisoLevel` and `QualitySettings.anisotropicFiltering` are now recorded in every source snapshot and the independent diagnostic. Texture meta was aniso1; the runtime/global values must be observed, never inferred from that importer field.
+
+`receiver-mode2-sampler-reference.json` contains status/error, the original completed-frame snapshot, original samples plus all new reference outputs, runtime aniso and maximum differences. The same diagnostic object appears in the mode2 summary. Missing/unsupported reference shader or reference errors are recorded independently and cannot turn the original mode2 gate into PASS. Reference completion is not itself a smoke acceptance criterion.
+
+## Continue only a comparison failure
+
+After the existing per-mode cleanup/CancelProbe, `mode2ComparisonOnlyFailure=true` allows this one case to continue to modes3 and4 **only** if mode2 readback completed, target ownership survived cancellation, error is empty, serial advanced, inputHash is unchanged, all pixels are finite, positive coverage exists, UV footprint is valid, samples were compared, and weight/maxRGB exceeds its unchanged `2/255` threshold. The failed mode2 `passed` remains false, so final `smokePassed=false` / exit2 remain. API exceptions, resize, serial timeout, invalid/nonfinite/empty/UV evidence and cleanup errors still stop immediately. Modes1/3/4 retain their previous gates.
+
+No full12/dense8/full149/M1 run is added. No same-frame full per-channel mode4/UV equivalence or visual PASS is claimed. ROOT owns static compilation, remote prebuild and actual GPU execution.
+
+
+ROOT intake: same product8f, helper static0errors/3known legacy unassigned-field warnings. Independent QA sampler shader GPU/Metal compilation is pending, no product shader/formula/criteria change. Original PNG PC received4173019B/SHA7b87f8a2e421907d70080a91b5627c1adc0a23658e6d33e39d57014641c367e3 exact and visually checked one frame; owned4498 one-file server stopped/exit0. Next one-case sampler diagnostic only; no full expansion.
