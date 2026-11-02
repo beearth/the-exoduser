@@ -78,11 +78,63 @@ export function disposeChestResources(...roots){
  for(const resource of resources)resource.dispose();
 }
 
+export const CHEST_PREPARE_POLL_MS=10;
+export const CHEST_PREPARE_TIMEOUT_MS=5000;
+export function prepareChestRenderer(renderer,scene,camera,{signal}={}){
+ // Pinned r160: compileAsync has an uncancellable timer that rereads disposed properties.
+ // Capture only this scene's compiled programs before yielding; own and cancel every poll.
+ return new Promise((resolve,reject)=>{
+  let timer=null,settled=false,gl=null;const programs=new Set(),started=performance.now();
+  function finish(error,status='failed'){
+   if(settled)return;settled=true;
+   if(timer!==null)clearTimeout(timer);timer=null;
+   signal?.removeEventListener('abort',cancel);programs.clear();gl=null;
+   renderer=scene=camera=null;
+   if(status==='failed')reject(error);else resolve(status);
+  }
+  function cancel(){finish(null,'cancelled');}
+  function check(){
+   if(settled)return;timer=null;
+   if(signal?.aborted){cancel();return;}
+   try{
+    if(gl.isContextLost())throw new Error('Chest WebGL context lost during preparation');
+    if(performance.now()-started>=CHEST_PREPARE_TIMEOUT_MS)throw new Error('Chest shader preparation timed out');
+    let pending=false;
+    for(const program of programs){
+     if(!program.program)throw new Error('Chest preparation program released');
+     if(!program.isReady())pending=true;
+    }
+    if(settled||signal?.aborted)return;
+    if(pending){timer=setTimeout(check,CHEST_PREPARE_POLL_MS);return;}
+    // Preserve r160 diagnostics and initialize its cached uniforms/attributes before ready.
+    for(const program of programs){if(settled||signal?.aborted)return;program.getUniforms();}
+    finish(null,'ready');
+   }catch(error){finish(error);}
+  }
+  if(signal?.aborted){cancel();return;}
+  signal?.addEventListener('abort',cancel,{once:true});
+  try{
+   if(!renderer.extensions.has('KHR_parallel_shader_compile')){finish(null,'unsupported');return;}
+   gl=renderer.getContext();
+   if(gl.isContextLost())throw new Error('Chest WebGL context lost during preparation');
+   const materials=renderer.compile(scene,camera);
+   if(settled||signal?.aborted)return;
+   for(const material of materials){
+    const program=renderer.properties.get(material).currentProgram;
+    if(!program?.isReady||!program.getUniforms)throw new Error('Unsupported chest r160 preparation program');
+    programs.add(program);
+   }
+   check();
+  }catch(error){finish(error);}
+ });
+}
+
 export function initChest3D({canvas,getWorld,loadDependencies=()=>Promise.all([import('three'),import('three/addons/loaders/GLTFLoader.js')])}){
  if(!canvas)return null;
  let motion=createChestMotion(),current=null,ready=false,failed=false,loading=false;
  let renderer,scene,camera,root,lid,light,shadow,foot,THREE,last=0,visible=false,frames=0;
  let materialSeparation=null,materialSeparationEnabled=true,modelRoot=null,disposed=false,released=false,raf=0;
+ let preparation='idle';const prepareAbort=new AbortController();
  const SIZE=CHEST_RENDER_SIZE;
  const api={
   show(){}, // The existing spawn call is retained; the authoritative item supplies its position.
@@ -90,19 +142,24 @@ export function initChest3D({canvas,getWorld,loadDependencies=()=>Promise.all([i
   hide(){visible=false;canvas.style.display='none';},
   setEnvironmentEnabled(){return false;}, // Retired reflection QA hook: never allocates a source or PMREM.
   setMaterialSeparationEnabled(enabled){if(disposed||failed)return false;materialSeparationEnabled=!!enabled;return materialSeparation?.setEnabled(enabled)??materialSeparationEnabled;},
-  dispose(){if(disposed)return;disposed=true;ready=false;cancelAnimationFrame(raf);api.hide();release();},
+  dispose(){if(disposed)return;disposed=true;ready=false;api.hide();release();},
   get active(){return ready&&visible&&!failed;},
   isShowing(item){return api.active&&item===current;},
   snapshot(){return {ready,failed,loading,visible,phase:motion.phase,lidAngle:motion.lidAngle,
    model:CHEST_MODEL,renderSize:SIZE,frames,disposed,
+   preparation:{status:preparation,pollMs:CHEST_PREPARE_POLL_MS,timeoutMs:CHEST_PREPARE_TIMEOUT_MS},
    environment:{enabled:false,prepared:false,intensity:0},
    materialSeparation:materialSeparation?.snapshot()??{id:CHEST_MATERIAL_SEPARATION_ID,enabled:!disposed&&!failed&&materialSeparationEnabled,materials:0},
    resources:{textures:renderer?.info?.memory?.textures??null,geometries:renderer?.info?.memory?.geometries??null,programs:renderer?.info?.programs?.length??null},
    world:current?{x:current.x,y:current.y,opened:current.opened}:null};}
  };
  window._chest3d=api;
+ function contextLost(){if(!disposed&&!failed)fail(new Error('Chest WebGL context lost'));}
  function release(){
   if(released)return;released=true;
+  cancelAnimationFrame(raf);
+  prepareAbort.abort();if(preparation==='preparing'||preparation==='idle')preparation='cancelled';
+  canvas.removeEventListener?.('webglcontextlost',contextLost);
   if(scene)scene.environment=null;
   materialSeparation?.dispose();materialSeparation=null;
   disposeChestResources(scene,modelRoot);root?.clear();scene?.clear();
@@ -110,15 +167,16 @@ export function initChest3D({canvas,getWorld,loadDependencies=()=>Promise.all([i
   renderer?.dispose();renderer?.forceContextLoss?.();
  }
  function fail(error){
-  failed=true;ready=false;api.hide();release();
-  console.warn('[CHEST3D] Model unavailable; native chest fallback retained:',error.message);
+  failed=true;ready=false;preparation='failed';api.hide();release();
+  console.warn('[CHEST3D] Model unavailable; native chest fallback retained:',error?.message??String(error));
  }
  async function load(){
   if(disposed||loading||ready||failed)return;loading=true;
   try{
    const dependencies=await loadDependencies();THREE=dependencies[0];const {GLTFLoader}=dependencies[1];
-   if(disposed)return;
+   if(disposed||failed)return;
    renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:'low-power'});
+   canvas.addEventListener?.('webglcontextlost',contextLost);
    renderer.debug.checkShaderErrors=true;
    renderer.debug.onShaderError=()=>{throw new Error('Chest shader compilation failed');};
    renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));renderer.setSize(SIZE,SIZE);
@@ -134,7 +192,7 @@ export function initChest3D({canvas,getWorld,loadDependencies=()=>Promise.all([i
    light=new THREE.PointLight(0xe8ad54,0,3);light.position.set(0,.75,.1);scene.add(light);
    root=new THREE.Group();scene.add(root);
    const model=await new GLTFLoader().loadAsync(CHEST_MODEL);
-   if(disposed){disposeChestResources(model.scene);return;}
+   if(disposed||failed){disposeChestResources(model.scene);return;}
    modelRoot=model.scene;
    lid=model.scene.getObjectByName('ChestLidPivot');
    if(!lid||!model.scene.getObjectByName('ChestBody'))throw new Error('Missing hinged chest geometry');
@@ -149,13 +207,17 @@ export function initChest3D({canvas,getWorld,loadDependencies=()=>Promise.all([i
    const material=new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(image),transparent:true,depthWrite:false});
    shadow=new THREE.Mesh(new THREE.PlaneGeometry(2.2,1.35),material);
    shadow.rotation.x=-Math.PI/2;shadow.position.y=-.004;scene.add(shadow);
-   materialSeparation=createChestMaterialSeparation(THREE,modelRoot,materialSeparationEnabled);ready=true;failed=false;
+   materialSeparation=createChestMaterialSeparation(THREE,modelRoot,materialSeparationEnabled);
+   preparation='preparing';
+   const prepared=await prepareChestRenderer(renderer,scene,camera,{signal:prepareAbort.signal});
+   if(disposed||failed)return;
+   preparation=prepared;ready=true;failed=false;
   }catch(error){
-   fail(error);
+   if(!disposed&&!failed)fail(error);
   }finally{loading=false;}
  }
  function tick(now){
-  if(disposed)return;raf=requestAnimationFrame(tick);
+  if(disposed||failed)return;raf=requestAnimationFrame(tick);
   const delta=last?Math.min((now-last)/1000,.05):0;last=now;
   const world=getWorld();
   const next=world?.on?world.items.find(item=>item.type==='chest'&&!item.picked):null;

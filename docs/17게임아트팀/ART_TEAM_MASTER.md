@@ -345,3 +345,21 @@ MagicLight 마지막 조회 59,540 (2026-10-01, emg1 2차 후). 이번 마감 �
 근거: Mac _out/web-local-material-final-title-07081a-qa-20261102/{cold-render-REPORT.md,cold-render-receipt.json,cold-render-analysis.json,cold-render-raw.json,cold-preservation-return.json,proof-transfer-closeout.json}. root recovery/heartbeat-1553-cold-complete-raw.json은실제생성명령·결과·종료원문을보존한다. 원본 재촬영·85걷기/타이틀 전체 suite·build 반복은 하지 않았다.
 
 root 정확파일 인수: cold-profile-closeout/cold-render-REPORT.md 8871B/SHA c75d865ab84cca34e029bdf39d40ba0bd7c5427af52decc8d2c610fd90e1fad9. Mac receipt48408B/SHA a6b46af388a28193ae38db0557a9fbcf1820b86043a37c07259857d5f824407d는metadata와요청필드원문인수이며root전체파일복사완료로주장하지않는다.
+
+## 2026-11-03 01:16 — 취소 가능한 상자 준비6299의 합본 소스 후보
+
+이번은 새소스 후보 통합이며 기존07081a 실GPU·1x PASS와 별도다. root baseline577ecaac2d152b36437e8a58ff2917a0da8c4fda 위에 원담당 **6299db9aa7763453b06208305b2dacc9587b0d2a**의 module/test만 정확 인수했다. 원 담당 branch 전체·구형 index/game·다른 문서를 통째로 병합하지 않았다.
+
+| 항목 | 계약·검증·미검증 |
+|---|---|
+| 정확 모듈 | chest3d.mjs13681B/SHA e0fe0899ac70bc9f1ed834d919c63f358c7819344a559e5966d146b4032975ed,기존10554B대비+3127B. 새helper모듈/자산/texture0. 기존 localalbedo/mask/gain/cacheid/빛/노출1.25/fov40/64CSS/몸통44×24/R·보상RNG/AI/save 불변 |
+| 준비 순서 | Three/GLB·기존재질/그림자뒤 prepareChestRenderer(renderer,scene,camera,{signal}) 완료후ready=true. KHR지원때publiccompile1회·yield전material.currentProgram 고유Set캡처→기존isReady(KHR완료)→고유getUniforms(onFirstUse diagnostics)1회. 추가COMPILE_STATUS/진단getProgramInfoLog0/debug오류검사끄기0 |
+| 수명·상한 | CHEST_PREPARE_POLL_MS=10ms/CHEST_PREPARE_TIMEOUT_MS=5000ms 경과제한. 동기GL선점·harddeadline보장0. privateAbortController를release전에abort·timer/RAF/listener/참조해제·이미queuedcallback/취소재진입재예약0. KHR없음unsupported·기존안전firstdraw. 준비결과ready/unsupported/cancelled/실패reject, snapshot.preparation status/pollMs/timeoutMs 관측 |
+| 실패·게임 보호 | 준비중native2D/상호작용 유지·ready/active/isShowing false·중복load0. compile/poll/getUniforms/해제program/contextlost/timeout/falseyreject는failed/2Dfallback·1회해제/ownRAF정지. 늦은GLB는disposed/failed 모두폐기,dispose가resolve/rejectcontinuation보다우선하면ready/failed부활0. actualR보상1회는다음실GPU검수 |
+| 소스 회귀 | root새계약 **18FAIL/10PASS RED**(기존module)→정확module반영후45GREEN. 관련16파일 **137/137 PASS**,타이틀/Init끝·earlyslot/legacy저장키·출고closure·보호음성회귀 포함. 원담당40CPU와구분;실GPU/성능검수로대체0 |
+| 공식 SOURCE plan | selected3242/94논리93물리,sidecar포함3236files **3974721525B/4GB여유25278475B/max94795327B**. prepared예상3235files3974652043B/여유25347957B,69482B sidecar 이동전제. 아직새actualbuild/prepare/check·모듈HTTP·GPU아님/기준완화0 |
+| 동등성 | gameSHA02c8a60ca1d01dbc589cb0131db91dc420a5151278118c897aa1b621930ba06f/index/titleJS/finalMP4/GLB·vendor·94매핑 byte불변. 이전07081a색·시각PASS는이새준비후보의동등성검증을소급대체하지않음 |
+| 다음 실제 gate | 코드+docs정상privatecommitpush/remote뒤동일기존Mac exactCOW입력/全Gitblob→fresh공식artifact→baseline07081a 대비같은materialON/64CSS/camera의firstvisible와준비메인스레드/rAF/longtask/GLB→ready→3D전체시간교차A/B. 단순히stall을준비구간으로옮겨개선이라고하지않음. native2D/Rpending보상1회·KHR미지원·실shader오류/prepare中dispose/contextloss/timeout/lateGLB·원본같은색/그림자·자원4/5/3/무음保存/종료검수. 최종영상3비율10초/85walk전체반복0 |
+| 한계·전달 | source후보/未GPU·未채택. userDota/타Unity보호·PCGPU/Player/build/encoding/서버/대형LAN0. 공개402·main/public/Unity/일반앱/Windows설치별도. 원본/WIP/기존13save/외부guard보호 |
+
+근거: root recovery/chest-local-material-final-title-20261102/cancellable-prepare-intake/{producer-REPORT.md,producer-git-receipt.json,candidate.patch,red-root.log,green-root.log,integration-root.log,official-source-plan.json}; 원담당 I:/EXODUSER-Storage/tripo-chest-game/20261103/cancellable-shader-prepare. 기존root冷진단4case와새준비후보GPU gate를분리한다. source/code·test정확차분과관련8docs만정상commit하며main/CI재실패유발0.
