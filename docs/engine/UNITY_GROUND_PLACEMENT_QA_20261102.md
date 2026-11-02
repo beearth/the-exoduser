@@ -429,3 +429,56 @@ The duplicate unsigned95 backup was removed only after all208 non-normalization 
 STAGE: A2 existing soil installable generation diagnosis; map production0. MASTER/LARGE/MEDIUM/GROUND CONNECTION/PLAYABLE/LANDMARK/SMALL DETAIL: original geometry/routes/collision/art/numbers unchanged. CAMERA QA: actual1920 window only, no visual/contact/direct3840 captures in this mode; full camera board not reviewed. TECH QA: exact6a13 prebuild remote proof/input3543 tracked blobs0 mismatch/ARM64 errors0; six bounded pure-call records, original sim restored; final26 raw/cache match. VISUAL VERDICT: RETOUCH — no new visible acceptance evidence; prior95 contact FAIL and3c projection TECH FAIL remain. NEXT PASS: PC product generation fix plus bounded completion proof, then actual contact/ring/coverage/cache/dense,149full/M1/natural field play and original visual review before common/install/Win64/PC delivery.
 
 Evidence: docs/engine/evidence/UNITY_GROUND_GEOMETRY_MAC_PROBE_20261102.json (actual aggregate receipt); private root probe6e-run-result.json, probe6e-preferences-final-proof.json, probe6e-late-preference-flush/recovery-proof.json.
+
+
+## Delayed Mac profile guard for the next same-app regression
+
+# 다음 실행용 단일 probe wrapper의 preference 보호 수정 — source only
+
+입력은 root run_probe6e.py 소스만 읽었다. 기존 app/Info/Settings/Preferences/private backup payload는 이 작업에서 열거나 수정하지 않았다. 새 run_probe6e_guarded.py는 실행·import하지 않았다. OS defaults/앱/Git 실행0, 기존 historical run 결과 수정0.
+
+## 근거
+
+기존 코드는 Player 종료 직후 raw SHA가 before와 같으면 continue하여cache export와지연flush를건너뛰었다. ROOT는그뒤4개telemetry키(unity.player_session_count, unity.player_sessionid, unity_connect.mega_session_id, unity_connect.session_id)가normal domain raw/cache에늦게flush된실제결함을확인했다. ROOT가known-before e5 원문을CAS+per-domain import로복구하고2/7초·26raw/cache 정확복원을확인한사실을전제로한다. 이작성자가원prefs를다시읽거나재복구하지않았다.
+
+## 실행 경로와 역사 보존
+
+이파일은profile-guard 폴더에서다음실행용으로제출한다. source root는해당폴더의부모이며 app/proof/source-commit 입력은기존run_probe6e.py와같은6e경로다. 실제실행전ROOT가해당app/proof가다음실행제품과맞는지검토해야한다. 모든새결과/세이브sandbox/Player log/receipt/backup은 `profile-guard-runs/<UTC-microseconds>-<pid>/` 고유폴더에쓴다. 예전 probe6e 결과나 old private backup은덮지않는다. 최상위코드가소유QA앱1개를실행하므로검토하려고import하지말것.
+
+## 시작 보존
+
+모든Exoduser raw 파일을두차례읽어고유snapshot의raw-a/raw-b에600으로복사한다. defaults domains에서Exoduser domain과raw plist stem의합집합을export하여cache파일700/폴더700으로보존한다. export파일은domain SHA를파일명으로써대소문자·Unicode filesystem alias충돌을피한다. manifest는raw/cache SHA·typed semantics digest·원raw파일명·domain목록·시작/완료monotonic을남긴다. raw/cache 읽기중raw/domain집합이달라지면stable=false이며시작시에는앱실행을금지한다. before raw와cache typed semantics가이미다르면정규화하지않고중단한다.
+
+owned는appInfo의CFBundleIdentifier와unity.ForDearGamers.CFBundleName에서나온정확2domain뿐이다. 각canonical raw경로와samefile인before 원문1개씩만선택하고실제보존된파일stem을cache domain으로고정한다. Unicode/casefold로임의다른domain을소유범위에넣지않는다. samefile은mac filesystem의기존정확file alias만해결하며canonical→실제파일/domain매핑을owned-domains.json에보존한다. 알려진원문raw/cache가없거나둘이같은파일로해결되면launch금지다. 새domain을자동삭제·원문미상값으로정규화하지않는다.
+
+## 종료와 지연 flush
+
+Player wait 종료후Unity/EXODUSER 프로세스가없는지읽기전용ps로확인한다. 종료직후, 종료+2초, 종료+7초의전체raw/cache snapshot을각기고유폴더로보존한다. before와비교할때raw같음으로cache를건너뛰지않는다. raw 또는cache만달라도변경이다. snapshot IO가deadline을넘기면실제시작/완료monotonic과requestedMonotonic을남기며정확한wallclock2/7초를거짓주장하지않는다.
+
+모든checkpoint에서unowned raw/cache변경이나새domain을발견하면자료를보존하고owned 복구도시작하지않는다. last7s snapshot이불안정해도복구하지않는다. 각owned 복구직전과cache import/최종raw쓰기직전에도전체snapshot을읽어unrelated변경을확인한다. 변화가검출되면나머지쓰기중단,타domain은원문을덮지않는다.
+
+## owned 복구와 CAS
+
+해당owned raw/cache가현재checkpoint와달랐을때만known-before복구를한다. raw같고cache만다른경우도이분기에들어간다.
+
+1. 변경현재raw와현재cache export를restore 고유폴더에별도보존한다.
+2. 현재raw bytes/cache typed semantics가관측checkpoint와같은지확인한다. 독립cache재export와raw재읽기로pre-import CAS를확인하고프로세스없는지도확인한다.
+3. 보존된known-before cache 파일과raw 파일SHA가시작manifest그대로인지확인한뒤,오직해당owned domain에 defaults import한다. 여러domain을묶거나cache daemon을재시작하지않는다.
+4. import후cache와raw의typed semantics가known-before와같은지확인한다. post-import raw도별도보존한다. 최종cache를또확인한다.
+5. 마지막raw직전에는O_NOFOLLOW로연동한descriptor의raw bytes와inode/dev를검사한후known-before raw를쓰고truncate/flush/fsync한다. 정규화된plist를다시만들어쓰지않는다. 기존pref permission을변경하지않는다.
+
+cache CAS의비교기준은plist의typed canonical binary digest다. bool/int·bytes/string 타입을유지한다. export byte SHA도모두남기지만serializer key순서차이를semantic변경으로오인하지않는다. raw는항상byte SHA/bytes exact다. defaults import와file CAS사이를OS수준원자적transaction으로묶었다는주장은하지않는다. 최종stability검사가그사이의late change를찾으면재복구retry하지않고차단한다.
+
+## 최종 전체 비교와 다음 실행 차단
+
+복구후즉시·+2초·+7초에다시모든raw/cache를비교한다. 고정26개이름을코드에박지않고실제before집합전체를검사하며receipt에rawCount/cacheCount를기록한다. 현재ROOT 기준이26개이면그26개전부와신규항목없음이검사된다. 하나라도raw/cache/domain/stability가다르면error receipt·exit3,자동재시도0이다.
+
+오류는고유run/profile-guard-error.json 및최종probe6e-run-result.json에남긴다. profile-guard-BLOCKED.json을원문보존방식으로생성해다음wrapper의앱실행을막는다. 이미있는차단파일은덮거나자동해제하지않는다. 다음진입은명시적인ROOT 검토·복구가필요하다. 코드자체는앱을재실행하지않고하나만launch하며복구실패후추가앱실행0이다. 새domain삭제/defaults delete/daemon재시작/보안설정변경/사용자앱종료명령은없다.
+
+즉시상태와지연/최종복원증거는별도snapshot으로남는다. 이전historical결과를성공으로고쳐쓰지않는다. 이수정은계정소비반복조회나일반화framework를추가하지않고단일wrapper의보호분기를고친source-only제출이다. 실제실행검수는ROOT 소유다.
+
+
+ROOT review: require an explicit absolute non-symlink artifact root CLI argument so the repository tool never derives a shared checkout as its output directory. App/proof and original-owned profile checks remain unchanged. AST syntax verified; actual same-app delayed-profile regression is pending. Known2domains raw originals confirmed present before launch.
+
+
+The Unity app build remains exact6a13; this checkpoint changes only the external Python launcher and documentation. No Unity rebuild is needed or claimed. Actual delayed raw/cache regression on the existing app is pending.
