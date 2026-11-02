@@ -1,0 +1,26 @@
+{
+  "guardWrapperSha256": "187520fbc4568c48fe42a1ac8690547a83f668ffb855ed734d159014476f8cef",
+  "guardSourceCommit": "5178de33f257882ecbe4f26d64490540420a4ac9",
+  "actualAppSource": "6a13cffaead9682e9218ef1478fabab11219bd71",
+  "productSource": "6e3ca9a1cb5083ba30c97b4d0b91e6491249bd9d",
+  "launchCount": 1,
+  "childDiagnosticExitCode": 2,
+  "expectedBudgetExitNotGuardFailure": true,
+  "diagnosticCases": 6,
+  "actualRuntimeMatches": true,
+  "preferencesRawCount": 26,
+  "preferencesCacheDomainCount": 27,
+  "finalRawExact": true,
+  "finalTypedCacheExact": true,
+  "ownedDomainRestored": 1,
+  "checkpoints": [
+    "exit-immediate",
+    "exit-2s",
+    "exit-7s",
+    "restore-immediate",
+    "restore-2s",
+    "restore-7s-final"
+  ],
+  "guardError": null,
+  "productAccepted": false
+}

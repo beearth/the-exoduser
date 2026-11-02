@@ -488,3 +488,35 @@ ROOT slot review: first guard attempt exited3/launchCount0 before any preference
 
 
 Actual second no-launch guard evidence identified Unity Hub Resources/unity(PID3141), a background helper, not Editor/Player. It was not stopped. Restrict the guard to the exact Unity.app/Contents/MacOS/Unity executable and EXODUSER executables under Contents/MacOS; preserve both no-launch errors and reviewed block resolutions. This excludes the unrelated Hub helper while retaining actual app guards. All26 original raw hashes remained unchanged before the reviewed retry.
+
+
+## Actual delayed-profile guard regression completed
+
+External wrapper187520fbc4568c48fe42a1ac8690547a83f668ffb855ed734d159014476f8cef / source5178de33 used the SAME unchanged normal ARM64 appsource6a13. App launched once; all6 bounded diagnostic records collected, Runtime DLL matched. Child exit2 remains the expected geometry callback-budget outcome and is not a launcher/profile failure or a product PASS.
+
+| guard evidence | actual result |
+|---|---|
+| exit checkpoints |immediate,2s,7s, each raw+typed-cache snapshot|
+| recovery |one known owned normal profile restored; current raw/cache and independent CAS/global-scope checks preserved before import/write|
+| final checkpoints |recovery immediate,2s,7s all raw/typed-cache exact|
+| final scope |26 raw files and27 cache domains (includes an already-present cache-only domain), exact to this run before-launch state|
+| unrelated/new domains |no changes; no normalization/deletion/daemon/security/process changes|
+| guard result |error null, no persistent blocked marker, productAccepted false|
+| workspace/install |shared HEAD/index unchanged, five installed1403 critical file hashes unchanged|
+
+The two preceding no-launch rejections and their reviewed resolutions remain private evidence. The second was the unrelated Unity Hub Resources/unity helper; it was not terminated. Raw/cache values and session UUIDs are not published. Repository diagnostic summary below contains counts/hashes only, not the private profile snapshots.
+
+## Next product method: planned receiver-depth projection; API pending
+
+Latest PC owner has rejected CPU adaptive faces for product integration and is implementing a receiver-depth method. This is a PLAN and pending API, not a delivered Mac feature. Keep all95/3c/6e failure and bounded-probe evidence; do not rerun unlimited6e Late or enlarge QA through guessed APIs. Existing app/common1403 and all original saves/preferences remain preserved.
+
+| pending product contract | Mac acceptance preparation |
+|---|---|
+|8vertex/12triangle proxy cube |proxy vertex height is not the displayed surface; retain old vertex tests as historical baseline, measure actual displayed pixel/world contact instead|
+|registered ground/bridge/low-root receiver mask and actual scene depth |verify receiver selection, physical2cm contact criterion, actor/high-tree exclusion, bridge/root edges; no foot-height fallback|
+|same shader/pass GPU probes |await actual API for WorldXYZ+effectiveWeight, packedUV+weight, scene/receiver eyeDepth+difference, actual preblendRGBA; do not fabricate captures|
+|source art/UV/atlas/RGBA/72polygon ring |compare actual frame metadata and imported GPU texture contributions with original producer formulas; body/ring contracts separately|
+|original2D/Core and1403 Skill/Ki shaders |source byte preservation plus air/actor/2D/lifecycle controls; preserve DBuffer receiver positive fix|
+|performance/real play |actual normal Metal and direct3840RT, dense placement and cleanup, same-app M1 and separate live field play, then normal install/Win64 delivery/PC actual receipt only after acceptance|
+
+MAP PRODUCTION REPORT continuation: stage remains existing A2 contact/generation QA, map production0. TECH profile-protection guard PASS in tested scope; product3c generation FAIL and current receiver-depth API pending. VISUAL VERDICT: RETOUCH, no new receiver-depth actual visual evidence. No candidate installation/common/Win64 delivery accepted.
