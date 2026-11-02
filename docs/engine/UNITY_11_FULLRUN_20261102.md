@@ -163,3 +163,9 @@ OS/IMGUI 버튼 클릭 검수로 세지 않는다. `worldCleared/worldClearSecon
 분리해, 전투 완주가 됐지만 후속 UI가 막힌 경우도 결과에 그대로 남긴다.
 실제 출구 개방 순간 PNG와 클리어 난이도/로비의 1920·3840 PNG도 남긴다.
 클리어 버튼의 기존0.5초 입력 잠금은 실제 시간으로 기다리며 ForcedAge를 쓰지 않는다.
+
+CORE-01 정적 후보: 최신 웹42289는 보스 처치 후 중앙에 상자를 만들고32124는 몸체
+충돌을 검사한다. 현재 Core StageFlow는 ChestSpawned 이벤트만 내며 NativeGame의
+이벤트 수신/WorldDrops에는 상자 생성·열기 경로가 없다. Core Pass에도 상자 검사는 없다.
+Core 수정 금지 지시에 따라 근거만 결함표에 올리고 수정하지 않는다. 실제 보스 처치
+후 exit-open PNG 대조 전이므로 Player에서 확인한 결함으로 세지 않는다.
