@@ -104,3 +104,16 @@
 | 실제 검수 | 기존 --unity-title-a-check 호환·새 --unity-title-c2-check, 기존90장 게이트를 C2 video 모드·decoded frame 진행 조건으로 강화. 도타 실행으로 실제 실행0, 공통/바탕화면 갱신0 |
 
 증거·최종 SHA·웹 대비 차이: I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md. VISUAL VERDICT: 미검증. 기존 A의 실제 PASS를 C2로 소급하지 않는다.
+
+### 같은 날 최신 선명도 합성판 수신
+
+웹 `93f41dd8f6`(origin/main fd2d1badfb)의 정적 원화+Kling 선명도 합성판이 들어와 브리프대로 tall 후보를 교체했다. 원본 생성 해상도1774×887에서 제작자가 확대·합성한3840×1920 결과이며 네이티브4K 생성으로 부르지 않는다. cover 기준은2036×1018(2:1), 폭포 좌표·100/75px/s·alpha.38은 그대로다.
+
+| 변형 | 런타임 선택·검증 |
+|---|---|
+|1920×960|need=max(Screen.width,Screen.height×2)≤1920,4,800,452B·c5b4d40f…|
+|2560×1280|need≤2560,7,292,221B·1e73270f…|
+|3840×1920|나머지,13,032,368B·eeddc6a4…|
+|공통|24fps·206프레임·8.584초·무음. 3파일 웹SHA256일치, still WebP→PNG decoded RGBA일치. resize는 이전 초/새 duration으로 seek, 준비 중 이전 출력 유지. 새C#75/라우팅계약통과·실제Player미검증|
+
+상세 전체SHA는 C2-clarity-assets.json. 앞의2036×1016/tall/71검사는 교체 전 이력이다. 폐기된16:9 타이틀·A파노라마로 fallback하지 않는다. 이번 체크아웃의 이전 tall 활성 사본만 I:에 보존한 뒤 SSD에서 제외하고 웹원본/Git이력은 유지한다.

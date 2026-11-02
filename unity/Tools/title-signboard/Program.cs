@@ -12,7 +12,7 @@ class Program
   {
    int w=sizes[i,0],h=sizes[i,1];var r=NativeTitleSignboardLayout.Cover(w,h);
    Check(r.X<=0&&r.Y<=0&&r.X+r.Width>=w-.002&&r.Y+r.Height>=h-.002,"전체 물리 화면을 덮어야 함");
-   Check(Near(r.Width/r.Height,2036d/1016),"인물과 배경 종횡비 보존");
+   Check(Near(r.Width/r.Height,2d/1),"인물과 배경 종횡비 보존");
    Check(Near(r.X*2+r.Width,w)&&Near(r.Y*2+r.Height,h),"정중앙 크롭");
    // Approved master: moon center, face, and feet must all survive every supported crop.
    foreach(var p in new[]{new[]{.417,.365},new[]{.59,.39},new[]{.57,.765},new[]{.635,.758}})
@@ -21,14 +21,18 @@ class Program
    Check(b.Width>=1&&b.Height>=1&&b.Width<=3840&&b.Height<=2160,"렌더 버퍼 상한");
    Check(Math.Abs(b.Width/(double)b.Height-w/(double)h)<.004,"버퍼 종횡비 보존");
   }
-  Check(Near(NativeTitleSignboardLayout.Cover(1920,1080).X,-122.125984),"16:9 C2 cover");
-  Check(Near(NativeTitleSignboardLayout.Cover(2560,1080).Y,-98.7426326),"21:9 C2 cover");
-  Check(Near(NativeTitleSignboardLayout.Cover(3840,1080).Y,-418.113949),"32:9 C2 cover");
+  Check(Near(NativeTitleSignboardLayout.Cover(1920,1080).X,-120),"16:9 C2 cover");
+  Check(Near(NativeTitleSignboardLayout.Cover(2560,1080).Y,-100),"21:9 C2 cover");
+  Check(Near(NativeTitleSignboardLayout.Cover(3840,1080).Y,-420),"32:9 C2 cover");
   Check(Near(NativeTitleSignboardLayout.Advance(2,.016,false),2.016),"활성 시간 진행");
   Check(Near(NativeTitleSignboardLayout.Advance(2,20,false),2.1),"포커스 복귀 시간 점프 차단");
   Check(Near(NativeTitleSignboardLayout.Advance(2,-1,false),2),"음수 시간 차단");
   Check(Near(NativeTitleSignboardLayout.Advance(2,.1,true),2),"움직임 감소/정지 시 시간 보존");
   var invalid=NativeTitleSignboardLayout.Cover(0,-10);Check(invalid.Width>0&&invalid.Height>0,"최소화 중 유효 크롭");
+  Check(NativeTitleSignboardLayout.VideoWidth(1920,1080)==2560,"1080p는 높이 기준2560판");
+  Check(NativeTitleSignboardLayout.VideoWidth(3840,1080)==3840,"32:9는3840판");
+  Check(NativeTitleSignboardLayout.VideoWidth(1280,720)==1920,"720p는1920판");
+  Check(NativeTitleSignboardLayout.VideoFile(2560)=="title_motion_C2_clarity_2560_20261102.mp4","선명도 합성판 요청");
   Console.WriteLine("PASS "+checks+" approved title crop, protected subject, bounded buffer and motion clock checks");
  }
 }

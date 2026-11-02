@@ -6,10 +6,10 @@ namespace Exoduser.UnityPort
  internal sealed class NativeTitleSignboard:IDisposable
  {
   const string Root="Art/TitleSignboard/C2/";
-  internal const string Movie="title_motion_C2_tall_loop_20261102.mp4";
+  internal const string Movie="title_motion_C2_clarity_3840_20261102.mp4";
   Texture2D still,near,far,tile;Transform parent;NativeLobbyVideo movie;
   Material material;RenderTexture frame;
-  bool loaded,failed,dirty=true,hasVideo,lastReduced;float lastRender=-1;
+  bool loaded,failed,dirty=true,hasVideo,lastReduced;float lastRender=-1;int selectedWidth;double restoreTime=-1;
   internal bool ReducedMotion=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-reduce-menu-motion")>=0;
   bool hasFocus=true;
   internal bool HasFocus{get=>hasFocus;set{hasFocus=value;movie?.SetPlaybackAllowed(value&&!ReducedMotion);}}
@@ -43,8 +43,11 @@ namespace Exoduser.UnityPort
   }
   void EnsureMovie()
   {
-   if(movie!=null||ReducedMotion||!HasFocus||parent==null)return;
-   movie=new NativeLobbyVideo(parent);movie.Open(Movie,true,true,false);movie.Volume(0);
+   if(ReducedMotion||!HasFocus||parent==null)return;
+   int width=NativeTitleSignboardLayout.VideoWidth(Screen.width,Screen.height);
+   if(movie==null)movie=new NativeLobbyVideo(parent);
+   if(width!=selectedWidth){restoreTime=movie.Time;selectedWidth=width;movie.Open(NativeTitleSignboardLayout.VideoFile(width),true,true,false);movie.Volume(0);lastVideoFrame=-1;}
+   if(restoreTime>=0&&movie.Prepared){if(restoreTime>0&&movie.Duration>0)movie.Seek(restoreTime%movie.Duration);restoreTime=-1;}
   }
   internal bool Draw(Rect screen)
   {
@@ -78,7 +81,7 @@ namespace Exoduser.UnityPort
   void ReleaseFrame(){if(frame==null)return;frame.Release();UnityEngine.Object.Destroy(frame);frame=null;}
   public void Dispose()
   {
-   movie?.Dispose();movie=null;ReleaseFrame();if(material!=null)UnityEngine.Object.Destroy(material);material=null;if(tile!=null)UnityEngine.Object.Destroy(tile);tile=null;
+   movie?.Dispose();movie=null;selectedWidth=0;restoreTime=-1;ReleaseFrame();if(material!=null)UnityEngine.Object.Destroy(material);material=null;if(tile!=null)UnityEngine.Object.Destroy(tile);tile=null;
    foreach(var texture in new[]{still,near,far})if(texture!=null)Resources.UnloadAsset(texture);still=near=far=null;loaded=false;failed=false;dirty=true;hasVideo=false;
   }
  }
