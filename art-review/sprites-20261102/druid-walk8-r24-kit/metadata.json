@@ -1,0 +1,1248 @@
+{
+  "group": "druid-walk8",
+  "completedDirections": [
+    "south",
+    "south-west",
+    "west",
+    "north-west",
+    "north",
+    "north-east",
+    "east",
+    "south-east"
+  ],
+  "sourceSize": [
+    887,
+    1774
+  ],
+  "candidateSize": [
+    3054,
+    4828
+  ],
+  "sourceX": [
+    0,
+    222,
+    444,
+    665,
+    887
+  ],
+  "sourceY": [
+    0,
+    222,
+    444,
+    665,
+    887,
+    1109,
+    1331,
+    1552,
+    1774
+  ],
+  "candidateX": [
+    0,
+    764,
+    1528,
+    2290,
+    3054
+  ],
+  "candidateY": [
+    0,
+    604,
+    1208,
+    1810,
+    2414,
+    3018,
+    3622,
+    4224,
+    4828
+  ],
+  "padding": [
+    160,
+    128,
+    160,
+    32
+  ],
+  "durationMs": 150,
+  "bodyScale": 0.8959660297239915,
+  "staffScale": 0.2422381950683837,
+  "sourcePPU": 100,
+  "proposedPPU": 100,
+  "pivot": "source bottom-left pivot*2+[160,32]; normalize padded cell; no bbox pivot",
+  "runtimeAdoption": 0,
+  "normal": "silhouette bevel estimate, actual lighting unverified",
+  "display": "source logical102x155 + common padding; candidate176x211 at same texel density",
+  "records": [
+    {
+      "direction": "south",
+      "key": 0,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        264,
+        131
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        263,
+        199
+      ],
+      "destinationGrip": [
+        500,
+        309
+      ],
+      "staffAngle": 0.1,
+      "sourceFoot": 222,
+      "targetFoot": 572,
+      "actualFoot": 572,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        47513
+      ],
+      "removed": 2
+    },
+    {
+      "direction": "south",
+      "key": 1,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        242,
+        133
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        263,
+        198
+      ],
+      "destinationGrip": [
+        478,
+        310
+      ],
+      "staffAngle": 0.1,
+      "sourceFoot": 222,
+      "targetFoot": 572,
+      "actualFoot": 572,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        45512
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "south",
+      "key": 2,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        236,
+        133
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        262,
+        202
+      ],
+      "destinationGrip": [
+        471,
+        314
+      ],
+      "staffAngle": 0.1,
+      "sourceFoot": 222,
+      "targetFoot": 572,
+      "actualFoot": 572,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        46508
+      ],
+      "removed": 1
+    },
+    {
+      "direction": "south",
+      "key": 3,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        260,
+        144
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        260,
+        198
+      ],
+      "destinationGrip": [
+        493,
+        321
+      ],
+      "staffAngle": 0.1,
+      "sourceFoot": 222,
+      "targetFoot": 572,
+      "actualFoot": 572,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        44640
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "south-west",
+      "key": 0,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        246,
+        118
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        249,
+        204
+      ],
+      "destinationGrip": [
+        469,
+        301
+      ],
+      "staffAngle": 0.1,
+      "sourceFoot": 222,
+      "targetFoot": 572,
+      "actualFoot": 572,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        49347
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "south-west",
+      "key": 1,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        208,
+        128
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        250,
+        198
+      ],
+      "destinationGrip": [
+        432,
+        305
+      ],
+      "staffAngle": 0.1,
+      "sourceFoot": 222,
+      "targetFoot": 572,
+      "actualFoot": 572,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        46170
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "south-west",
+      "key": 2,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        238,
+        122
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        251,
+        210
+      ],
+      "destinationGrip": [
+        463,
+        310
+      ],
+      "staffAngle": 0.1,
+      "sourceFoot": 222,
+      "targetFoot": 572,
+      "actualFoot": 572,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        49029
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "south-west",
+      "key": 3,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        258,
+        133
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        251,
+        197
+      ],
+      "destinationGrip": [
+        483,
+        310
+      ],
+      "staffAngle": 0.1,
+      "sourceFoot": 222,
+      "targetFoot": 572,
+      "actualFoot": 572,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        45241
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "west",
+      "key": 0,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        290,
+        140
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        117,
+        204
+      ],
+      "destinationGrip": [
+        395,
+        323
+      ],
+      "staffAngle": -0.1,
+      "sourceFoot": 221,
+      "targetFoot": 570,
+      "actualFoot": 570,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        43198
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "west",
+      "key": 1,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        262,
+        140
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        117,
+        202
+      ],
+      "destinationGrip": [
+        367,
+        321
+      ],
+      "staffAngle": -0.1,
+      "sourceFoot": 221,
+      "targetFoot": 570,
+      "actualFoot": 570,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        39683
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "west",
+      "key": 2,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        272,
+        140
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        103,
+        205
+      ],
+      "destinationGrip": [
+        364,
+        324
+      ],
+      "staffAngle": -0.1,
+      "sourceFoot": 221,
+      "targetFoot": 570,
+      "actualFoot": 570,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        44214
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "west",
+      "key": 3,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        238,
+        141
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        114,
+        199
+      ],
+      "destinationGrip": [
+        340,
+        319
+      ],
+      "staffAngle": -0.1,
+      "sourceFoot": 221,
+      "targetFoot": 570,
+      "actualFoot": 570,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        39011
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north-west",
+      "key": 0,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        186,
+        141
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        104,
+        205
+      ],
+      "destinationGrip": [
+        279,
+        325
+      ],
+      "staffAngle": -0.05,
+      "sourceFoot": 222,
+      "targetFoot": 572,
+      "actualFoot": 572,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        46264
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north-west",
+      "key": 1,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        189,
+        140
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        101,
+        206
+      ],
+      "destinationGrip": [
+        279,
+        325
+      ],
+      "staffAngle": -0.05,
+      "sourceFoot": 222,
+      "targetFoot": 572,
+      "actualFoot": 572,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        41993
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north-west",
+      "key": 2,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        216,
+        140
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        107,
+        203
+      ],
+      "destinationGrip": [
+        312,
+        322
+      ],
+      "staffAngle": -0.05,
+      "sourceFoot": 222,
+      "targetFoot": 572,
+      "actualFoot": 572,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        45828
+      ],
+      "removed": 1
+    },
+    {
+      "direction": "north-west",
+      "key": 3,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        192,
+        138
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        105,
+        203
+      ],
+      "destinationGrip": [
+        286,
+        320
+      ],
+      "staffAngle": -0.05,
+      "sourceFoot": 222,
+      "targetFoot": 572,
+      "actualFoot": 572,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        42326
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north",
+      "key": 0,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        205,
+        121
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        86,
+        196
+      ],
+      "destinationGrip": [
+        282,
+        297
+      ],
+      "staffAngle": -0.12,
+      "sourceFoot": 222,
+      "targetFoot": 572,
+      "actualFoot": 572,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        52484
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north",
+      "key": 1,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        212,
+        124
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        89,
+        198
+      ],
+      "destinationGrip": [
+        292,
+        301
+      ],
+      "staffAngle": -0.12,
+      "sourceFoot": 222,
+      "targetFoot": 572,
+      "actualFoot": 572,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        51556
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north",
+      "key": 2,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        184,
+        123
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        111,
+        194
+      ],
+      "destinationGrip": [
+        283,
+        297
+      ],
+      "staffAngle": -0.12,
+      "sourceFoot": 222,
+      "targetFoot": 572,
+      "actualFoot": 572,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        49827
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north",
+      "key": 3,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        151,
+        124
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        88,
+        193
+      ],
+      "destinationGrip": [
+        230,
+        297
+      ],
+      "staffAngle": -0.12,
+      "sourceFoot": 222,
+      "targetFoot": 572,
+      "actualFoot": 572,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        51184
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north-east",
+      "key": 0,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        205,
+        113
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        85,
+        196
+      ],
+      "destinationGrip": [
+        281,
+        289
+      ],
+      "staffAngle": -0.1,
+      "sourceFoot": 222,
+      "targetFoot": 572,
+      "actualFoot": 572,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        52258
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north-east",
+      "key": 1,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        182,
+        115
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        88,
+        197
+      ],
+      "destinationGrip": [
+        261,
+        292
+      ],
+      "staffAngle": -0.1,
+      "sourceFoot": 222,
+      "targetFoot": 572,
+      "actualFoot": 572,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        51509
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north-east",
+      "key": 2,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        200,
+        113
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        135,
+        187
+      ],
+      "destinationGrip": [
+        321,
+        281
+      ],
+      "staffAngle": -0.1,
+      "sourceFoot": 222,
+      "targetFoot": 572,
+      "actualFoot": 572,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        49660
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north-east",
+      "key": 3,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        174,
+        115
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        87,
+        195
+      ],
+      "destinationGrip": [
+        252,
+        290
+      ],
+      "staffAngle": -0.1,
+      "sourceFoot": 222,
+      "targetFoot": 572,
+      "actualFoot": 572,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        51188
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "east",
+      "key": 0,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        220,
+        157
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        251,
+        196
+      ],
+      "destinationGrip": [
+        445,
+        333
+      ],
+      "staffAngle": 0.06,
+      "sourceFoot": 221,
+      "targetFoot": 570,
+      "actualFoot": 570,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        39916
+      ],
+      "removed": 1
+    },
+    {
+      "direction": "east",
+      "key": 1,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        206,
+        159
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        272,
+        198
+      ],
+      "destinationGrip": [
+        450,
+        336
+      ],
+      "staffAngle": 0.06,
+      "sourceFoot": 221,
+      "targetFoot": 570,
+      "actualFoot": 570,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        38321
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "east",
+      "key": 2,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        179,
+        156
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        239,
+        181
+      ],
+      "destinationGrip": [
+        393,
+        318
+      ],
+      "staffAngle": 0.06,
+      "sourceFoot": 221,
+      "targetFoot": 570,
+      "actualFoot": 570,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        40131
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "east",
+      "key": 3,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        196,
+        158
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        252,
+        192
+      ],
+      "destinationGrip": [
+        422,
+        330
+      ],
+      "staffAngle": 0.06,
+      "sourceFoot": 221,
+      "targetFoot": 570,
+      "actualFoot": 570,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        36731
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "south-east",
+      "key": 0,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        258,
+        115
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        266,
+        202
+      ],
+      "destinationGrip": [
+        496,
+        296
+      ],
+      "staffAngle": 0.06,
+      "sourceFoot": 212,
+      "targetFoot": 552,
+      "actualFoot": 552,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        46856
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "south-east",
+      "key": 1,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        285,
+        114
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        266,
+        202
+      ],
+      "destinationGrip": [
+        523,
+        295
+      ],
+      "staffAngle": 0.06,
+      "sourceFoot": 212,
+      "targetFoot": 552,
+      "actualFoot": 552,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        44378
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "south-east",
+      "key": 2,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        214,
+        97
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        268,
+        186
+      ],
+      "destinationGrip": [
+        454,
+        264
+      ],
+      "staffAngle": 0.06,
+      "sourceFoot": 204,
+      "targetFoot": 536,
+      "actualFoot": 536,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        46502
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "south-east",
+      "key": 3,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        268,
+        114
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        255,
+        204
+      ],
+      "destinationGrip": [
+        496,
+        297
+      ],
+      "staffAngle": 0.06,
+      "sourceFoot": 212,
+      "targetFoot": 552,
+      "actualFoot": 552,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        49714
+      ],
+      "removed": 0
+    }
+  ],
+  "runtimePPU": 100,
+  "ppuNote": "NativeDruidArt.Sprite.Create hardcodes100; NativeDruidBody.Put independently scales widthPx/s.rect.width. PPU200 alone halves displayed world size. Keep100 for this path and expand logical draw box only for padding; separate generic SpriteRenderer proposal200 is not applicable.",
+  "sourcePivotNormalized": [
+    0.5,
+    0.14
+  ],
+  "normalBinding": "pending actual shader/Player binding",
+  "referenceDisplay": "155px normalized review target; actual net web/Unity camera1x unverified, not proved by r44/bt4 expression",
+  "runtimeBindingContract": {
+    "currentPPU": 100,
+    "source": "assigned Body f31ae8240 vs common1a400b608: Put formulas/NativeArt PPU100 unchanged; ay/surface differ; current Player anchor unverified",
+    "worldDrawWidth": "legacy dw * paddedCellWidth/(2*originalCellWidth)",
+    "worldDrawHeight": "legacy dh * paddedCellHeight/(2*originalCellHeight)",
+    "pivot": "[(2*originalWidth*.5+padLeft)/paddedWidth,(2*originalHeight*.14+padBottom)/paddedHeight]",
+    "actorOrigin": "unchanged Core actor; no bbox origin",
+    "requiresExplicitRects": true,
+    "minMaxTextureSize": 8192,
+    "applied": false
+  },
+  "sourcePreparationCalibration": [
+    {
+      "pair": "west_north-west",
+      "row": 0,
+      "key": 2,
+      "source": "contact6-cloth-seam.generated.png",
+      "sourceBox": [
+        69,
+        25,
+        369,
+        557
+      ],
+      "targetRawBodyBox": [
+        81,
+        21,
+        280,
+        480
+      ],
+      "providerMagnificationCalibration": 0.865,
+      "translation": [
+        50,
+        20
+      ],
+      "method": "whole generated pose; no horizontal composite seams; independent provider size normalized to same direction original key height; staff scale NOT changed",
+      "gripSource": [
+        130,
+        239
+      ],
+      "gripNormalized": [
+        103,
+        205
+      ]
+    },
+    {
+      "pair": "west_north-west",
+      "row": 1,
+      "key": 2,
+      "source": "contact6-cloth-seam.generated.png",
+      "sourceBox": [
+        58,
+        26,
+        360,
+        560
+      ],
+      "targetRawBodyBox": [
+        76,
+        22,
+        276,
+        482
+      ],
+      "providerMagnificationCalibration": 0.865,
+      "translation": [
+        44,
+        20
+      ],
+      "method": "whole generated pose; no horizontal composite seams; independent provider size normalized to same direction original key height; staff scale NOT changed",
+      "gripSource": [
+        131,
+        237
+      ],
+      "gripNormalized": [
+        107,
+        203
+      ]
+    },
+    {
+      "pair": "north_north-east",
+      "row": 0,
+      "key": 2,
+      "source": "contact6-cloth-seam.generated.png",
+      "sourceBox": [
+        80,
+        18,
+        347,
+        580
+      ],
+      "targetRawBodyBox": [
+        63,
+        15,
+        295,
+        501
+      ],
+      "providerMagnificationCalibration": 0.865,
+      "translation": [
+        96,
+        15
+      ],
+      "method": "whole generated pose; no horizontal composite seams; independent provider size normalized to same direction original key height; staff scale NOT changed",
+      "gripSource": [
+        97,
+        225
+      ],
+      "gripNormalized": [
+        111,
+        194
+      ]
+    },
+    {
+      "pair": "north_north-east",
+      "row": 1,
+      "key": 2,
+      "source": "contact6-cloth-seam.generated.png",
+      "sourceBox": [
+        73,
+        22,
+        347,
+        596
+      ],
+      "targetRawBodyBox": [
+        62,
+        15,
+        299,
+        512
+      ],
+      "providerMagnificationCalibration": 0.865,
+      "translation": [
+        106,
+        15
+      ],
+      "method": "whole generated pose; no horizontal composite seams; independent provider size normalized to same direction original key height; staff scale NOT changed",
+      "gripSource": [
+        106,
+        221
+      ],
+      "gripNormalized": [
+        135,
+        187
+      ]
+    },
+    {
+      "pair": "east_south-east",
+      "row": 0,
+      "key": 2,
+      "source": "contact6-cloth-seam.generated.png",
+      "sourceBox": [
+        70,
+        20,
+        359,
+        539
+      ],
+      "targetRawBodyBox": [
+        56,
+        12,
+        294,
+        462
+      ],
+      "providerMagnificationCalibration": 0.865,
+      "translation": [
+        50,
+        13
+      ],
+      "method": "whole generated pose; no horizontal composite seams; independent provider size normalized to same direction original key height; staff scale NOT changed",
+      "gripSource": [
+        288,
+        214
+      ],
+      "gripNormalized": [
+        239,
+        181
+      ]
+    },
+    {
+      "pair": "east_south-east",
+      "row": 1,
+      "key": 2,
+      "source": "contact6-cloth-seam.generated.png",
+      "sourceBox": [
+        60,
+        16,
+        353,
+        571
+      ],
+      "targetRawBodyBox": [
+        78,
+        10,
+        300,
+        490
+      ],
+      "providerMagnificationCalibration": 0.865,
+      "translation": [
+        62,
+        10
+      ],
+      "method": "whole generated pose; no horizontal composite seams; independent provider size normalized to same direction original key height; staff scale NOT changed",
+      "gripSource": [
+        298,
+        220
+      ],
+      "gripNormalized": [
+        268,
+        186
+      ]
+    },
+    {
+      "pair": "east_south-east",
+      "row": 0,
+      "key": 1,
+      "source": "east_south-east.opposite-passing.generated.png",
+      "sourceBox": [
+        216,
+        31,
+        590,
+        934
+      ],
+      "targetRawBodyBox": [
+        89,
+        12,
+        286,
+        458
+      ],
+      "providerMagnificationCalibration": 0.4939091915836102,
+      "translation": [
+        100,
+        12
+      ],
+      "method": "whole generated pose; no horizontal composite seams; independent provider size normalized to same direction original key height; staff scale NOT changed",
+      "gripSource": [
+        565,
+        407
+      ],
+      "gripNormalized": [
+        272,
+        198
+      ]
+    },
+    {
+      "pair": "east_south-east",
+      "row": 1,
+      "key": 3,
+      "source": "east_south-east.opposite-passing.generated.png",
+      "sourceBox": [
+        136,
+        49,
+        587,
+        934
+      ],
+      "targetRawBodyBox": [
+        100,
+        11,
+        300,
+        488
+      ],
+      "providerMagnificationCalibration": 0.5389830508474577,
+      "translation": [
+        38,
+        11
+      ],
+      "method": "whole generated pose; no horizontal composite seams; independent provider size normalized to same direction original key height; staff scale NOT changed",
+      "gripSource": [
+        538,
+        407
+      ],
+      "gripNormalized": [
+        255,
+        204
+      ]
+    }
+  ],
+  "sourcePreparationNote": "Rejected strip compositing left seams. Six whole contact poses use ONE source sheet calibration .865. Two independently generated passing views use explicit .49390919/.53898305 provider magnification calibration to direction reference height; do not claim no per-pose/view normalization. S3 fixed scale unchanged."
+}

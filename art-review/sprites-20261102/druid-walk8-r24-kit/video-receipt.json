@@ -1,0 +1,36 @@
+[
+  {
+    "group": "druid-walk8-r24-kit",
+    "page": 1,
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/druid-walk8-r24-kit/comparison-page-1.mp4",
+    "sha256": "061a51c451c31aa12336cef0d42ad5077ca58bdcc228383fd580d06e68b540dd",
+    "bytes": 8535058,
+    "streams": [
+      {
+        "type": "video",
+        "width": 2176,
+        "height": 1560,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  },
+  {
+    "group": "druid-walk8-r24-kit",
+    "page": 2,
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/druid-walk8-r24-kit/comparison-page-2.mp4",
+    "sha256": "c6217802887e3f7a44e8ccece690b4e21242be30970e406d3c03e94580de8133",
+    "bytes": 8594321,
+    "streams": [
+      {
+        "type": "video",
+        "width": 2176,
+        "height": 1560,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false
+  }
+]

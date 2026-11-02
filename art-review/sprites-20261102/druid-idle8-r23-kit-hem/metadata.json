@@ -47,12 +47,12 @@
   ],
   "sourceToBaseFactor": 2.7927927927927927,
   "sourcePPU": 100,
-  "proposedPPU": 200,
+  "proposedPPU": 100,
   "pivot": "original bottom-left pixel pivot scaled2 + [160,32], divide by padded cell; no bbox pivot",
   "runtimeAdoption": 0,
   "normal": "estimated silhouette bevel radius4, no measured internal PBR",
   "preview": "turntable only; not breathing/natural idle",
-  "referenceDisplay": "r44*14.1/4=155.1px logical cell at web camera1; actual Player unverified",
+  "referenceDisplay": "155px normalized review target; actual net web/Unity camera1x unverified, not proved by r44/bt4 expression",
   "patchTwoPresent": false,
   "records": [
     {
@@ -319,5 +319,23 @@
       ],
       "outsideBandRGBA": 0
     }
-  ]
+  ],
+  "runtimePPU": 100,
+  "ppuNote": "NativeDruidArt.Sprite.Create hardcodes100; NativeDruidBody.Put independently scales widthPx/s.rect.width. PPU200 alone halves displayed world size. Keep100 for this path and expand logical draw box only for padding; separate generic SpriteRenderer proposal200 is not applicable.",
+  "sourcePivotNormalized": [
+    0.5,
+    0.14
+  ],
+  "normalBinding": "pending actual shader/Player binding",
+  "runtimeBindingContract": {
+    "currentPPU": 100,
+    "source": "assigned Body f31ae8240 vs common1a400b608: Put formulas/NativeArt PPU100 unchanged; ay/surface differ; current Player anchor unverified",
+    "worldDrawWidth": "legacy dw * paddedCellWidth/(2*originalCellWidth)",
+    "worldDrawHeight": "legacy dh * paddedCellHeight/(2*originalCellHeight)",
+    "pivot": "[(2*originalWidth*.5+padLeft)/paddedWidth,(2*originalHeight*.14+padBottom)/paddedHeight]",
+    "actorOrigin": "unchanged Core actor; no bbox origin",
+    "requiresExplicitRects": true,
+    "minMaxTextureSize": 8192,
+    "applied": false
+  }
 }

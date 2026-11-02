@@ -1,0 +1,146 @@
+[
+  {
+    "pair": "west_north-west",
+    "key": 0,
+    "quad": [
+      [
+        161,
+        270
+      ],
+      [
+        183,
+        277
+      ],
+      [
+        174,
+        324
+      ],
+      [
+        151,
+        314
+      ]
+    ],
+    "source": "body8-lower-clothing-r22.png [176,282,207,357]",
+    "newArt": false
+  },
+  {
+    "pair": "west_north-west",
+    "key": 1,
+    "quad": [
+      [
+        159,
+        270
+      ],
+      [
+        181,
+        277
+      ],
+      [
+        172,
+        324
+      ],
+      [
+        149,
+        314
+      ]
+    ],
+    "source": "body8-lower-clothing-r22.png [176,282,207,357]",
+    "newArt": false
+  },
+  {
+    "pair": "west_north-west",
+    "key": 3,
+    "quad": [
+      [
+        157,
+        266
+      ],
+      [
+        179,
+        273
+      ],
+      [
+        170,
+        320
+      ],
+      [
+        147,
+        310
+      ]
+    ],
+    "source": "body8-lower-clothing-r22.png [176,282,207,357]",
+    "newArt": false
+  },
+  {
+    "pair": "north_north-east",
+    "key": 0,
+    "quad": [
+      [
+        204,
+        318
+      ],
+      [
+        217,
+        317
+      ],
+      [
+        223,
+        361
+      ],
+      [
+        203,
+        362
+      ]
+    ],
+    "source": "body8-lower-clothing-r22.png [176,282,207,357]",
+    "newArt": false
+  },
+  {
+    "pair": "north_north-east",
+    "key": 1,
+    "quad": [
+      [
+        202,
+        312
+      ],
+      [
+        216,
+        311
+      ],
+      [
+        223,
+        355
+      ],
+      [
+        202,
+        356
+      ]
+    ],
+    "source": "body8-lower-clothing-r22.png [176,282,207,357]",
+    "newArt": false
+  },
+  {
+    "pair": "north_north-east",
+    "key": 3,
+    "quad": [
+      [
+        202,
+        318
+      ],
+      [
+        216,
+        316
+      ],
+      [
+        224,
+        362
+      ],
+      [
+        201,
+        362
+      ]
+    ],
+    "source": "body8-lower-clothing-r22.png [176,282,207,357]",
+    "newArt": false
+  }
+]

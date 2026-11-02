@@ -1,0 +1,258 @@
+[
+  {
+    "pair": "west_north-west",
+    "row": 0,
+    "key": 2,
+    "source": "contact6-cloth-seam.generated.png",
+    "sourceBox": [
+      69,
+      25,
+      369,
+      557
+    ],
+    "targetRawBodyBox": [
+      81,
+      21,
+      280,
+      480
+    ],
+    "providerMagnificationCalibration": 0.865,
+    "translation": [
+      50,
+      20
+    ],
+    "method": "whole generated pose; no horizontal composite seams; independent provider size normalized to same direction original key height; staff scale NOT changed",
+    "gripSource": [
+      130,
+      239
+    ],
+    "gripNormalized": [
+      103,
+      205
+    ]
+  },
+  {
+    "pair": "west_north-west",
+    "row": 1,
+    "key": 2,
+    "source": "contact6-cloth-seam.generated.png",
+    "sourceBox": [
+      58,
+      26,
+      360,
+      560
+    ],
+    "targetRawBodyBox": [
+      76,
+      22,
+      276,
+      482
+    ],
+    "providerMagnificationCalibration": 0.865,
+    "translation": [
+      44,
+      20
+    ],
+    "method": "whole generated pose; no horizontal composite seams; independent provider size normalized to same direction original key height; staff scale NOT changed",
+    "gripSource": [
+      131,
+      237
+    ],
+    "gripNormalized": [
+      107,
+      203
+    ]
+  },
+  {
+    "pair": "north_north-east",
+    "row": 0,
+    "key": 2,
+    "source": "contact6-cloth-seam.generated.png",
+    "sourceBox": [
+      80,
+      18,
+      347,
+      580
+    ],
+    "targetRawBodyBox": [
+      63,
+      15,
+      295,
+      501
+    ],
+    "providerMagnificationCalibration": 0.865,
+    "translation": [
+      96,
+      15
+    ],
+    "method": "whole generated pose; no horizontal composite seams; independent provider size normalized to same direction original key height; staff scale NOT changed",
+    "gripSource": [
+      97,
+      225
+    ],
+    "gripNormalized": [
+      111,
+      194
+    ]
+  },
+  {
+    "pair": "north_north-east",
+    "row": 1,
+    "key": 2,
+    "source": "contact6-cloth-seam.generated.png",
+    "sourceBox": [
+      73,
+      22,
+      347,
+      596
+    ],
+    "targetRawBodyBox": [
+      62,
+      15,
+      299,
+      512
+    ],
+    "providerMagnificationCalibration": 0.865,
+    "translation": [
+      106,
+      15
+    ],
+    "method": "whole generated pose; no horizontal composite seams; independent provider size normalized to same direction original key height; staff scale NOT changed",
+    "gripSource": [
+      106,
+      221
+    ],
+    "gripNormalized": [
+      135,
+      187
+    ]
+  },
+  {
+    "pair": "east_south-east",
+    "row": 0,
+    "key": 2,
+    "source": "contact6-cloth-seam.generated.png",
+    "sourceBox": [
+      70,
+      20,
+      359,
+      539
+    ],
+    "targetRawBodyBox": [
+      56,
+      12,
+      294,
+      462
+    ],
+    "providerMagnificationCalibration": 0.865,
+    "translation": [
+      50,
+      13
+    ],
+    "method": "whole generated pose; no horizontal composite seams; independent provider size normalized to same direction original key height; staff scale NOT changed",
+    "gripSource": [
+      288,
+      214
+    ],
+    "gripNormalized": [
+      239,
+      181
+    ]
+  },
+  {
+    "pair": "east_south-east",
+    "row": 1,
+    "key": 2,
+    "source": "contact6-cloth-seam.generated.png",
+    "sourceBox": [
+      60,
+      16,
+      353,
+      571
+    ],
+    "targetRawBodyBox": [
+      78,
+      10,
+      300,
+      490
+    ],
+    "providerMagnificationCalibration": 0.865,
+    "translation": [
+      62,
+      10
+    ],
+    "method": "whole generated pose; no horizontal composite seams; independent provider size normalized to same direction original key height; staff scale NOT changed",
+    "gripSource": [
+      298,
+      220
+    ],
+    "gripNormalized": [
+      268,
+      186
+    ]
+  },
+  {
+    "pair": "east_south-east",
+    "row": 0,
+    "key": 1,
+    "source": "east_south-east.opposite-passing.generated.png",
+    "sourceBox": [
+      216,
+      31,
+      590,
+      934
+    ],
+    "targetRawBodyBox": [
+      89,
+      12,
+      286,
+      458
+    ],
+    "providerMagnificationCalibration": 0.4939091915836102,
+    "translation": [
+      100,
+      12
+    ],
+    "method": "whole generated pose; no horizontal composite seams; independent provider size normalized to same direction original key height; staff scale NOT changed",
+    "gripSource": [
+      565,
+      407
+    ],
+    "gripNormalized": [
+      272,
+      198
+    ]
+  },
+  {
+    "pair": "east_south-east",
+    "row": 1,
+    "key": 3,
+    "source": "east_south-east.opposite-passing.generated.png",
+    "sourceBox": [
+      136,
+      49,
+      587,
+      934
+    ],
+    "targetRawBodyBox": [
+      100,
+      11,
+      300,
+      488
+    ],
+    "providerMagnificationCalibration": 0.5389830508474577,
+    "translation": [
+      38,
+      11
+    ],
+    "method": "whole generated pose; no horizontal composite seams; independent provider size normalized to same direction original key height; staff scale NOT changed",
+    "gripSource": [
+      538,
+      407
+    ],
+    "gripNormalized": [
+      255,
+      204
+    ]
+  }
+]

@@ -1,0 +1,1002 @@
+{
+  "group": "druid-attack8",
+  "completedDirections": [
+    "south",
+    "south-west",
+    "west",
+    "north-west",
+    "north",
+    "north-east",
+    "east",
+    "south-east"
+  ],
+  "sourceSize": [
+    887,
+    1774
+  ],
+  "candidateSize": [
+    3566,
+    5340
+  ],
+  "sourceX": [
+    0,
+    222,
+    444,
+    665,
+    887
+  ],
+  "sourceY": [
+    0,
+    222,
+    444,
+    665,
+    887,
+    1109,
+    1331,
+    1552,
+    1774
+  ],
+  "candidateX": [
+    0,
+    892,
+    1784,
+    2674,
+    3566
+  ],
+  "candidateY": [
+    0,
+    668,
+    1336,
+    2002,
+    2670,
+    3338,
+    4006,
+    4672,
+    5340
+  ],
+  "padding": [
+    224,
+    192,
+    224,
+    32
+  ],
+  "durationMs": 150,
+  "bodyScale": 0.8959660297239915,
+  "staffScale": 0.2422381950683837,
+  "sourcePPU": 100,
+  "proposedPPU": 100,
+  "pivot": "source bottom-left pivot*2+[224,32]; normalize padded cell; no bbox pivot",
+  "runtimeAdoption": 0,
+  "normal": "silhouette bevel estimate, actual lighting unverified",
+  "display": "source logical102x155 + common padding; candidate205x233 at same texel density",
+  "records": [
+    {
+      "direction": "south",
+      "key": 0,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        331,
+        179
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        286,
+        217
+      ],
+      "destinationGrip": [
+        587,
+        373
+      ],
+      "staffAngle": 0.1,
+      "sourceFoot": 222,
+      "targetFoot": 636,
+      "actualFoot": 636,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        54488
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "south",
+      "key": 1,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        326,
+        180
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        254,
+        156
+      ],
+      "destinationGrip": [
+        554,
+        320
+      ],
+      "staffAngle": -0.3,
+      "sourceFoot": 222,
+      "targetFoot": 636,
+      "actualFoot": 636,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        54035
+      ],
+      "removed": 1
+    },
+    {
+      "direction": "south",
+      "key": 2,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        345,
+        175
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        309,
+        195
+      ],
+      "destinationGrip": [
+        622,
+        350
+      ],
+      "staffAngle": 1.45,
+      "sourceFoot": 220,
+      "targetFoot": 632,
+      "actualFoot": 632,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        54239
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "south",
+      "key": 3,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        304,
+        179
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        263,
+        206
+      ],
+      "destinationGrip": [
+        540,
+        364
+      ],
+      "staffAngle": 0.15,
+      "sourceFoot": 222,
+      "targetFoot": 636,
+      "actualFoot": 636,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        52886
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "south-west",
+      "key": 0,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        328,
+        176
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        294,
+        211
+      ],
+      "destinationGrip": [
+        591,
+        365
+      ],
+      "staffAngle": 0.1,
+      "sourceFoot": 222,
+      "targetFoot": 636,
+      "actualFoot": 636,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        53418
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "south-west",
+      "key": 1,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        324,
+        176
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        236,
+        150
+      ],
+      "destinationGrip": [
+        535,
+        310
+      ],
+      "staffAngle": -0.35,
+      "sourceFoot": 222,
+      "targetFoot": 636,
+      "actualFoot": 636,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        51231
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "south-west",
+      "key": 2,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        352,
+        170
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        88,
+        194
+      ],
+      "destinationGrip": [
+        431,
+        344
+      ],
+      "staffAngle": -1.45,
+      "sourceFoot": 220,
+      "targetFoot": 632,
+      "actualFoot": 632,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        51417
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "south-west",
+      "key": 3,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        246,
+        176
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        246,
+        206
+      ],
+      "destinationGrip": [
+        466,
+        361
+      ],
+      "staffAngle": -0.1,
+      "sourceFoot": 222,
+      "targetFoot": 636,
+      "actualFoot": 636,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        49980
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "west",
+      "key": 0,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        353,
+        185
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        101,
+        217
+      ],
+      "destinationGrip": [
+        443,
+        379
+      ],
+      "staffAngle": -0.1,
+      "sourceFoot": 218,
+      "targetFoot": 628,
+      "actualFoot": 628,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        43614
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "west",
+      "key": 1,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        332,
+        191
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        128,
+        155
+      ],
+      "destinationGrip": [
+        447,
+        330
+      ],
+      "staffAngle": -0.3,
+      "sourceFoot": 221,
+      "targetFoot": 634,
+      "actualFoot": 634,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        41307
+      ],
+      "removed": 1
+    },
+    {
+      "direction": "west",
+      "key": 2,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        383,
+        193
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        18,
+        195
+      ],
+      "destinationGrip": [
+        399,
+        368
+      ],
+      "staffAngle": -1.5,
+      "sourceFoot": 221,
+      "targetFoot": 634,
+      "actualFoot": 634,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        46691
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "west",
+      "key": 3,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        277,
+        193
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        87,
+        199
+      ],
+      "destinationGrip": [
+        355,
+        371
+      ],
+      "staffAngle": -0.1,
+      "sourceFoot": 221,
+      "targetFoot": 634,
+      "actualFoot": 634,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        45697
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north-west",
+      "key": 0,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        358,
+        195
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        75,
+        215
+      ],
+      "destinationGrip": [
+        425,
+        388
+      ],
+      "staffAngle": -0.05,
+      "sourceFoot": 222,
+      "targetFoot": 636,
+      "actualFoot": 636,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        48354
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north-west",
+      "key": 1,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        310,
+        195
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        76,
+        159
+      ],
+      "destinationGrip": [
+        378,
+        337
+      ],
+      "staffAngle": -0.3,
+      "sourceFoot": 222,
+      "targetFoot": 636,
+      "actualFoot": 636,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        49784
+      ],
+      "removed": 246
+    },
+    {
+      "direction": "north-west",
+      "key": 2,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        368,
+        195
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        5,
+        185
+      ],
+      "destinationGrip": [
+        372,
+        361
+      ],
+      "staffAngle": -1.3,
+      "sourceFoot": 222,
+      "targetFoot": 636,
+      "actualFoot": 636,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        49711
+      ],
+      "removed": 1
+    },
+    {
+      "direction": "north-west",
+      "key": 3,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        263,
+        195
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        92,
+        194
+      ],
+      "destinationGrip": [
+        345,
+        369
+      ],
+      "staffAngle": -0.1,
+      "sourceFoot": 222,
+      "targetFoot": 636,
+      "actualFoot": 636,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        48757
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north",
+      "key": 0,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        308,
+        196
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        91,
+        212
+      ],
+      "destinationGrip": [
+        390,
+        386
+      ],
+      "staffAngle": -0.12,
+      "sourceFoot": 222,
+      "targetFoot": 636,
+      "actualFoot": 636,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        51339
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north",
+      "key": 1,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        286,
+        196
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        103,
+        144
+      ],
+      "destinationGrip": [
+        378,
+        325
+      ],
+      "staffAngle": -0.22,
+      "sourceFoot": 222,
+      "targetFoot": 636,
+      "actualFoot": 636,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        51996
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north",
+      "key": 2,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        272,
+        197
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        79,
+        171
+      ],
+      "destinationGrip": [
+        343,
+        350
+      ],
+      "staffAngle": -0.2,
+      "sourceFoot": 222,
+      "targetFoot": 636,
+      "actualFoot": 636,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        52430
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north",
+      "key": 3,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        278,
+        196
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        100,
+        183
+      ],
+      "destinationGrip": [
+        368,
+        360
+      ],
+      "staffAngle": -0.1,
+      "sourceFoot": 222,
+      "targetFoot": 636,
+      "actualFoot": 636,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        51552
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north-east",
+      "key": 0,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        298,
+        197
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        88,
+        215
+      ],
+      "destinationGrip": [
+        377,
+        390
+      ],
+      "staffAngle": -0.1,
+      "sourceFoot": 222,
+      "targetFoot": 636,
+      "actualFoot": 636,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        48360
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north-east",
+      "key": 1,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        291,
+        197
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        119,
+        154
+      ],
+      "destinationGrip": [
+        398,
+        335
+      ],
+      "staffAngle": 0.25,
+      "sourceFoot": 222,
+      "targetFoot": 636,
+      "actualFoot": 636,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        48846
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "north-east",
+      "key": 2,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        244,
+        197
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        300,
+        177
+      ],
+      "destinationGrip": [
+        513,
+        356
+      ],
+      "staffAngle": 1.35,
+      "sourceFoot": 222,
+      "targetFoot": 636,
+      "actualFoot": 636,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        48404
+      ],
+      "removed": 1
+    },
+    {
+      "direction": "north-east",
+      "key": 3,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        267,
+        197
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        100,
+        186
+      ],
+      "destinationGrip": [
+        357,
+        364
+      ],
+      "staffAngle": 0.05,
+      "sourceFoot": 222,
+      "targetFoot": 636,
+      "actualFoot": 636,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        48400
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "east",
+      "key": 0,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        321,
+        190
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        253,
+        210
+      ],
+      "destinationGrip": [
+        548,
+        378
+      ],
+      "staffAngle": 0.06,
+      "sourceFoot": 221,
+      "targetFoot": 634,
+      "actualFoot": 634,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        41249
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "east",
+      "key": 1,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        263,
+        190
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        266,
+        146
+      ],
+      "destinationGrip": [
+        501,
+        321
+      ],
+      "staffAngle": 0.25,
+      "sourceFoot": 221,
+      "targetFoot": 634,
+      "actualFoot": 634,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        43036
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "east",
+      "key": 2,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        272,
+        191
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        316,
+        184
+      ],
+      "destinationGrip": [
+        555,
+        356
+      ],
+      "staffAngle": 1.5,
+      "sourceFoot": 221,
+      "targetFoot": 634,
+      "actualFoot": 634,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        43170
+      ],
+      "removed": 1
+    },
+    {
+      "direction": "east",
+      "key": 3,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        308,
+        190
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        254,
+        198
+      ],
+      "destinationGrip": [
+        536,
+        367
+      ],
+      "staffAngle": 0.12,
+      "sourceFoot": 221,
+      "targetFoot": 634,
+      "actualFoot": 634,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        41759
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "south-east",
+      "key": 0,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        336,
+        149
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        246,
+        211
+      ],
+      "destinationGrip": [
+        556,
+        338
+      ],
+      "staffAngle": 0.06,
+      "sourceFoot": 202,
+      "targetFoot": 596,
+      "actualFoot": 596,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        48440
+      ],
+      "removed": 1
+    },
+    {
+      "direction": "south-east",
+      "key": 1,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        360,
+        149
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        225,
+        146
+      ],
+      "destinationGrip": [
+        562,
+        280
+      ],
+      "staffAngle": 0.25,
+      "sourceFoot": 202,
+      "targetFoot": 596,
+      "actualFoot": 596,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        49239
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "south-east",
+      "key": 2,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        350,
+        149
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        291,
+        187
+      ],
+      "destinationGrip": [
+        611,
+        317
+      ],
+      "staffAngle": 1.45,
+      "sourceFoot": 202,
+      "targetFoot": 596,
+      "actualFoot": 596,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        49815
+      ],
+      "removed": 0
+    },
+    {
+      "direction": "south-east",
+      "key": 3,
+      "bodyScale": 0.8959660297239915,
+      "bodyTranslation": [
+        286,
+        156
+      ],
+      "staffScale": 0.2422381950683837,
+      "gripRaw": [
+        246,
+        200
+      ],
+      "destinationGrip": [
+        506,
+        335
+      ],
+      "staffAngle": 0.12,
+      "sourceFoot": 205,
+      "targetFoot": 602,
+      "actualFoot": 602,
+      "border": 0,
+      "normalAlphaMismatch": 0,
+      "components": [
+        48468
+      ],
+      "removed": 1
+    }
+  ],
+  "runtimePPU": 100,
+  "ppuNote": "NativeDruidArt.Sprite.Create hardcodes100; NativeDruidBody.Put independently scales widthPx/s.rect.width. PPU200 alone halves displayed world size. Keep100 for this path and expand logical draw box only for padding; separate generic SpriteRenderer proposal200 is not applicable.",
+  "sourcePivotNormalized": [
+    0.5,
+    0.14
+  ],
+  "normalBinding": "pending actual shader/Player binding",
+  "referenceDisplay": "155px normalized review target; actual net web/Unity camera1x unverified, not proved by r44/bt4 expression",
+  "runtimeBindingContract": {
+    "currentPPU": 100,
+    "source": "assigned Body f31ae8240 vs common1a400b608: Put formulas/NativeArt PPU100 unchanged; ay/surface differ; current Player anchor unverified",
+    "worldDrawWidth": "legacy dw * paddedCellWidth/(2*originalCellWidth)",
+    "worldDrawHeight": "legacy dh * paddedCellHeight/(2*originalCellHeight)",
+    "pivot": "[(2*originalWidth*.5+padLeft)/paddedWidth,(2*originalHeight*.14+padBottom)/paddedHeight]",
+    "actorOrigin": "unchanged Core actor; no bbox origin",
+    "requiresExplicitRects": true,
+    "minMaxTextureSize": 8192,
+    "applied": false
+  },
+  "occlusionContract": {
+    "keys0and2": "body over rigid staff",
+    "keys1and3": "rigid staff over body, restore same body hand alpha island ellipse16x20 at grip; no new hand art",
+    "staffScale": "fixed .2422381950683837; no perpose fit",
+    "padding": [
+      224,
+      192,
+      224,
+      32
+    ],
+    "source": "druid_attack8_kit_front_hand.py",
+    "runtimeAdoption": 0
+  }
+}

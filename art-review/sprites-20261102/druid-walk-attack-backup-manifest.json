@@ -1,0 +1,458 @@
+[
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/atlas.png",
+    "blob": "cf386c0a8c163736242bef8a21b8e57479b40d02",
+    "bytes": 2800412,
+    "sha256": "60fcf645f30b3a1412f9439188845066b56c76e7f65b1a8011ff818e25662b2a"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/atlas.normal.png",
+    "blob": "2490a769ae26bed45b5dc4bf0e9f2a404f0a2b9f",
+    "bytes": 515864,
+    "sha256": "a7130aa10bf7015c3b04b6e1b8caf1ed0bcca30fefc70472360d15278dee9790"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/metadata.json",
+    "blob": "e3934c1771cf60fc3e0c983002779f7e817cc044",
+    "bytes": 26379,
+    "sha256": "fb8a4208671cb57598cf2d6e276cd553007c6e202b25a4876ddfe88a8c1995e2"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/technical-checks.json",
+    "blob": "503f25534b5d50a0534b10d68d5636ad18f1b2a2",
+    "bytes": 16036,
+    "sha256": "785094201e8531bf27ef1f472cbfdbcc5c0394abc2404e470d65f1fa997b452f"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/video-receipt.json",
+    "blob": "91594c275978e413aaad15f41f69f033b992926e",
+    "bytes": 902,
+    "sha256": "4ab0fddbf901a11794aeb614a611a5985a274f3fcc189da5d510af016d384d77"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/comparison-page-1-grid.png",
+    "blob": "5303ac63aa636eb1e4688a0b0ca5b60c557f0360",
+    "bytes": 815070,
+    "sha256": "bf0211a216d4efa41f8213f65ca57b44600ac09afc4a1cecbde16f7265787e67"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/comparison-page-2-grid.png",
+    "blob": "688dff76d8c3e7a65276a775484c079a7bb569d4",
+    "bytes": 818865,
+    "sha256": "6eff63745aee64a488f9e4d8121316d3c7ab4ffb866b3d9d75fb150960a5de97"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/comparison-page-1.gif",
+    "blob": "aeb85594a3b9a2187b23f0401a194170e55f9d70",
+    "bytes": 545384,
+    "sha256": "1e24c8c12b2814827ff1ab50478f946979f7d05603aecd0104260574f4d2ae0c"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/comparison-page-2.gif",
+    "blob": "5932224f8e2c48a554743f5f0ccf43c37d9bd636",
+    "bytes": 565263,
+    "sha256": "5ae34b625fa76e4f7b7561f65debd4f564e610ca061ef27e1aeef83cddd5f547"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/comparison-page-1.mp4",
+    "blob": "ce6f8c06139d1bd61419d2e73efafdec7328436e",
+    "bytes": 8535058,
+    "sha256": "061a51c451c31aa12336cef0d42ad5077ca58bdcc228383fd580d06e68b540dd"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/comparison-page-2.mp4",
+    "blob": "6d89290420c049a27c0415b3477365804803ee1e",
+    "bytes": 8594321,
+    "sha256": "c6217802887e3f7a44e8ccece690b4e21242be30970e406d3c03e94580de8133"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/grips32-native-3x.png",
+    "blob": "2555df8d977a9aae22b5cce637971e9c7038edf4",
+    "bytes": 246799,
+    "sha256": "74d83bad2ce24e7e9c1ad92031c558908d42c4a7a47f55959e3db21543b68836"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/all32-normalized-1x.png",
+    "blob": "cc953ce4c9b08b1aa9b21126412135611f9d69a3",
+    "bytes": 336086,
+    "sha256": "4a7c16b1aca96f4231b7be84894fbe54afd0083ce894fe34bf2ed514cabac1d1"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/prompts.json",
+    "blob": "e4dfd1913aa12bb78d46bbdd26d0fc0dd0962be6",
+    "bytes": 15502,
+    "sha256": "f1dd9f314c49766ea876fefa25f5c54aa774bc879b8d79240bc8080bf9b182e3"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/south/keys4-native.png",
+    "blob": "4c6b42dc311f2a9f2c6287321597d277ce9b2981",
+    "bytes": 359419,
+    "sha256": "d33ae30837a1865e6185b7d4a13797e950694145aa9d45aa4cdf7b0bb5d937a7"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/south/keys4.normal.png",
+    "blob": "15633624ec1686ef33656ed5fa96e71de76dd048",
+    "bytes": 69499,
+    "sha256": "2b4fd98b03e0dba6f4cb6c76ee94d892e7405a410eecba440c7ab2716ef68fae"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/south-west/keys4-native.png",
+    "blob": "3856268f3fd36e3954f0792e607ae682a8e4d65b",
+    "bytes": 358671,
+    "sha256": "644c5e67f73e30947fc54c4cc7a34eb50b16cc8700b7d3633d24d47a4a1fd941"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/south-west/keys4.normal.png",
+    "blob": "626a488613fd9a0181678ad8242f9a1945824ef8",
+    "bytes": 67421,
+    "sha256": "3aec41a8478ecf26bf8d9c25ed65a3bb9e4d5b718cab57cbec1de6eacc6120b9"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/west/keys4-native.png",
+    "blob": "e69d32e820674cc8d065810e45ec939a800e995d",
+    "bytes": 333950,
+    "sha256": "b8a9e9a903bf5672e437e7ccb4b605aa513c463e5e54f03ef2bf66f073653054"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/west/keys4.normal.png",
+    "blob": "23468c098d408e7a1fa288b07ffbbe3be1fb412b",
+    "bytes": 62323,
+    "sha256": "c5a8215c57ec092a2fba7009c85673c5e1caba6f7e9aeebe6753dd17eed7197a"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/north-west/keys4-native.png",
+    "blob": "b86ccc9d0860147d85865db2c456a2b131f82c70",
+    "bytes": 333967,
+    "sha256": "b6ad4b0a70ea0f281d1973688c491bf43a6c473f2e8e0168e204017a40dacb62"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/north-west/keys4.normal.png",
+    "blob": "a148d2d41b7f69c7f2d08282c7dbd8d950f014e5",
+    "bytes": 60014,
+    "sha256": "111f275f00d2219bdaec12a6daa802bd23d7c76c4651c3f1cbe06add0df6ada6"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/north/keys4-native.png",
+    "blob": "fae1947c948de855c541c3c7698e998b17eed600",
+    "bytes": 359733,
+    "sha256": "b67871ebf70f4ae5a458acfad305a3d9fe2c9dbf403eae8de53da75270c25947"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/north/keys4.normal.png",
+    "blob": "22d389ea1c9012f54e0812ddd1a25100f1506dc2",
+    "bytes": 64654,
+    "sha256": "057a1a97375fd4929d1724063ca78dedf3e510ccf635272777e7dec382ca9cb5"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/north-east/keys4-native.png",
+    "blob": "fec317e2e09c9cd7c90f99adb16a082e6f227029",
+    "bytes": 366930,
+    "sha256": "9f5fc9f1667ec0f2eb3641894746459907b75c9fd6b865bb94db93c3a5e6bea5"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/north-east/keys4.normal.png",
+    "blob": "836046e8d510fb455f17bb64f6012eaa68365e90",
+    "bytes": 63502,
+    "sha256": "dc51d24299bc39ac494dbf83870e8a9b9b9033b3245dfb5293115d08c9c5e142"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/east/keys4-native.png",
+    "blob": "8e2912ecc012960e00b0ffe54cda8ca09caf2432",
+    "bytes": 316387,
+    "sha256": "db0f7664dd6185171fc355e76a64ab0aefa496c02dfba55ed81125491a289430"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/east/keys4.normal.png",
+    "blob": "71d4969f6b408007841345580ae876552abd17be",
+    "bytes": 64252,
+    "sha256": "8eface8b15d7de7a2c76136f54e81213ccaab2a1bbcb39d735412d0deb5b8ba3"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/south-east/keys4-native.png",
+    "blob": "3dc61d6c5b647e32d2979ca2d4e1d46c89aa9e44",
+    "bytes": 372629,
+    "sha256": "24bee3fa9515130d5a4c9efeed21e3c3f54a0dbc09ef66ca212b2c2889e7f8e4"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-kit/south-east/keys4.normal.png",
+    "blob": "36363f4a840b59b259328b9d3ddd99d7cf566aee",
+    "bytes": 65546,
+    "sha256": "e84e2be4647a2b13f8915f7b8210b5a55529472e2da7c40eea7566683ce67093"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/atlas.png",
+    "blob": "b5fead2aabfb5cd1aaf77c357f8cbe8292d8ab49",
+    "bytes": 3006070,
+    "sha256": "d5f8213b1a30c7eb6b6cf63d09c5cdc5dfd56c33a3563b69192b6b2e9c26c296"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/atlas.normal.png",
+    "blob": "f92bf0dbe9be0bad59106ae123942e7e662cf938",
+    "bytes": 577292,
+    "sha256": "d6fe9cc56ad12a739e01d1636c8ae535513216cbe54995ca94e36a84537b82f1"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/metadata.json",
+    "blob": "a0ea5a269a8050f5334a4ce23a7d0449d465c5ec",
+    "bytes": 19586,
+    "sha256": "760f48061d1533fe986d0faa4f5c1bd7c402e48bac8da437f42d04e6e834f0a3"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/technical-checks.json",
+    "blob": "5351cf4f2e0273dd7b3cbed95d9ce046a334c8ce",
+    "bytes": 16036,
+    "sha256": "0b527e0ebcf3b926220a4069b9c8660a804a1c4780b0cbeec3defd5f23b4e491"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/video-receipt.json",
+    "blob": "2c7fe0fb1b163cc06a50c672831618e6c85dad44",
+    "bytes": 1026,
+    "sha256": "a27f00f618819837e510e2e36f6bb4916866a5c4d09ecd319fa6c171259673e3"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/comparison-page-1-grid.png",
+    "blob": "5c6175312ad6947f5199e108247adc446ed3df34",
+    "bytes": 907792,
+    "sha256": "427e1666ba64a87aaf52d503641919cf68667f430591dd2c34e8bd8c47f523d6"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/comparison-page-2-grid.png",
+    "blob": "6976b9829d3f24b62a6b471035676bb0feab8758",
+    "bytes": 899591,
+    "sha256": "43ec59331a82ff6505973bca955b67aebe26e17d6a1be1e2a054ea0bfc894e3a"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/comparison-page-1.gif",
+    "blob": "1ef81ccdfe08b410b676b4353d9e685cbadbdfb6",
+    "bytes": 602409,
+    "sha256": "f1b64a7dd13bf7cdf60abf5a5126240b133bd11d9bbb6eaabe35d01c8a5dbaaf"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/comparison-page-2.gif",
+    "blob": "1be618e3679dba389d4be9422c11340446053f33",
+    "bytes": 594294,
+    "sha256": "e423274bef8bae71b7aca3f482b27919aeeab88b39eb44854d0d28cc798060ff"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/comparison-page-1.mp4",
+    "blob": "8c310a589dc9cef747b21688e0b1a0997c76d177",
+    "bytes": 9695116,
+    "sha256": "7682ce2c89e14421147c02122c2f4b2ee34cc920ae93c9ad748a0f2c8ebf21a0"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/comparison-page-2.mp4",
+    "blob": "ad435fb43a493e9e456c18ad971b4e69865d7346",
+    "bytes": 9528499,
+    "sha256": "e4c0c96a6a8743cdf75d585b1c63bc375cff1b925055f71e0bebbc076369d260"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/grips32-native-3x.png",
+    "blob": "96d507931df606edf490dfa28a52642369c8c795",
+    "bytes": 261609,
+    "sha256": "76444cbcf7c8e14d4b797abdfa42714073e1e86496ea3892fb0f2e0c548d2ad0"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/all32-normalized-1x.png",
+    "blob": "72ce8d0b0117f9fff5de8d992d7e0f1ba8bdc6f6",
+    "bytes": 362725,
+    "sha256": "9fc392d4f6fffa6c591206e1f80738adf2eea40046cd89cd2c469686a4afe786"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/prompts.json",
+    "blob": "2985519f4d24099e7f1dd903572cbaf92d377d33",
+    "bytes": 9564,
+    "sha256": "b74cc724133c0b379e3e9a5c4ba0bf60a51baebc18978f9e3547f011acf5e2ea"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/south/keys4-native.png",
+    "blob": "95812a34a85b2813d5e68e0e8941bfcf31352bd4",
+    "bytes": 414825,
+    "sha256": "ae09309f95de6025ac7e54503a9f6adc7f675c4444e07b4336ebc3ae269727cf"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/south/keys4.normal.png",
+    "blob": "3520908fe5fd0697f2bb9948883b5571de9df08a",
+    "bytes": 81983,
+    "sha256": "863b552534d823d22eb8878ecafbef50f084b6e68fbeea8c0f8cffb1194983fd"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/south-west/keys4-native.png",
+    "blob": "9d637a8de11fc971483655a59527be3d6080a560",
+    "bytes": 395023,
+    "sha256": "f776c07ce61a8a71f2c2e7f0d0e3645b6ae79ee4d5c6c0fd5e99a91f8331bf95"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/south-west/keys4.normal.png",
+    "blob": "e5c39c558ddec111806d92a9dd1b764b0d7bdc2a",
+    "bytes": 79411,
+    "sha256": "a9f5934ff7db3b00ae574d02bbbb6a0d62d67b40267b2a3c4d645f0efc3f7065"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/west/keys4-native.png",
+    "blob": "ec5b71f8786224edce1523cfad000f2424ddb2a7",
+    "bytes": 357238,
+    "sha256": "368eafbacacc750f56c645cac98e00c26bbc94ac16d822023e51d8bf8f4b7ca1"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/west/keys4.normal.png",
+    "blob": "5c9c307353976dbcc8c329312bdf2ef11db96abb",
+    "bytes": 68065,
+    "sha256": "10e1edd67d342f09a441ba24937de7d72f921776fa05a25cc73944e667439ce1"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/north-west/keys4-native.png",
+    "blob": "89a180948738e067a50b790f65fd3d44c75a2da2",
+    "bytes": 376754,
+    "sha256": "eb6ef460fc74ce72001459ceb8fea82514d70c0f24cdcddb1c533834c143011d"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/north-west/keys4.normal.png",
+    "blob": "809632363145da73e756cb52fd09bb6f5de3f12e",
+    "bytes": 73256,
+    "sha256": "3fbddb24831f3a3afec9bd3651cb899f68b83a9722b58f11dfb0cf864dcfe73e"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/north/keys4-native.png",
+    "blob": "b9e112195272ac77bd9d15b27c1062dbcf396709",
+    "bytes": 380957,
+    "sha256": "302040f96e6ac921a400dd6640042e9d2ab22647e00ab5099132b546171f2f18"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/north/keys4.normal.png",
+    "blob": "f1652094450c9b4658d65f17a7eb7dc4333c6ae7",
+    "bytes": 70584,
+    "sha256": "16068fb90215e33ef2b4555b6120504aec38f799fb25d2608df959dd8745a056"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/north-east/keys4-native.png",
+    "blob": "b9a295f3245ba8776aa35e3aec06c69c31626fab",
+    "bytes": 364591,
+    "sha256": "29d747d7f2294630edc2b43041c2b974029cb6f4c27d76c6a231a3f5145054f3"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/north-east/keys4.normal.png",
+    "blob": "cc64cb47bad4cb311e8c67318c93887d661c28d1",
+    "bytes": 68607,
+    "sha256": "faf6fcb3b18e59ebc6be52e53b2c0df95b9a550cf57ccf73dcb3b1c1a27faf32"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/east/keys4-native.png",
+    "blob": "73935170955ede3ecea64a9dd5da6a22f81e3e02",
+    "bytes": 333051,
+    "sha256": "68bae442eeb4b3007dcef8aafcefd001267d7076aaa6dbb8b2a10702e50554a8"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/east/keys4.normal.png",
+    "blob": "27f03d25c144f96e3635e785104173b6a9eb3a99",
+    "bytes": 64647,
+    "sha256": "be4481d0843e31290e50434f3f4f7530d40abab46b94132145c7f58600f86cbb"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/south-east/keys4-native.png",
+    "blob": "2ec53488dd0de1811b95f2346c261a9de0bf301a",
+    "bytes": 383212,
+    "sha256": "0c9acb30735394dd8d986b497d6e077144927d6c3383b17186f84bfb4ef475a1"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-kit/south-east/keys4.normal.png",
+    "blob": "ea6bb14836e87ad3526292a0d86243cb4f47f3a4",
+    "bytes": 74345,
+    "sha256": "60c07820af299d73c655fa9ab85002ee85fb376d97a111cf00910da03f2611a3"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-body/south_south-west.generated.png",
+    "blob": "4d7ebee6d71c582ef8626a40b2ac8662249b7a09",
+    "bytes": 1710464,
+    "sha256": "1182d59ad41ef809f2ad07cab3f1548af1bd9609785561d96255b0b27600d118"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-body/west_north-west.lock-final.png",
+    "blob": "a6f2b988810d778df850a20ed717f819a14e3d20",
+    "bytes": 1178578,
+    "sha256": "84cb8d6fd261a92504cf8c19496da4d9bec590cf3aa465855e38139e3ea9197b"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-body/north_north-east.lock-final.png",
+    "blob": "01b2dfd26bb6cc02cd0b3c730e25917ec7d3819a",
+    "bytes": 1379178,
+    "sha256": "a64e16dd6cb63394f65953ca69d9a9da9a29cbffce3f0c654a5db8764301f0df"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-body/east_south-east.whole-pose-final.png",
+    "blob": "7d6e2545a40f3a679afb0156252ba603056d2456",
+    "bytes": 1129213,
+    "sha256": "3f57035d356eaf370e003acff2d06a961439db2771cc83e915aa7408914d8f1b"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-body/config.json",
+    "blob": "f38b382d89290580a1fd190e49c6168c9ee4bec9",
+    "bytes": 3360,
+    "sha256": "6f73bf312439ef59f663c28cd1d00cf79ff9632d752d9388c450a36c51f5e081"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-body/whole-pose-calibration-receipt.json",
+    "blob": "ca6cd03693496581f89ff3e7d74688dce57c19ed",
+    "bytes": 5044,
+    "sha256": "1edcfafec18cd5e651fa140ef87c829c82d2ba457ddef950cbae4e7128967aff"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-walk8-r24-body/sigil-reuse-receipt.json",
+    "blob": "119ba9e336dc37fbb7d8aef6c2bc6b5abfe3c185",
+    "bytes": 2106,
+    "sha256": "b21df3a2a98085f57e26fe8e970612e91c6fb32964a62c743a53f700250c172e"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-body/south_south-west.generated.png",
+    "blob": "2764c12d6049e76af1446db3d360d2b26e758866",
+    "bytes": 1612533,
+    "sha256": "d6609a34320b9e8fe7345c21801e8f854feae042f6d183785a982da808c80b96"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-body/west_north-west.generated.png",
+    "blob": "d4acff8f29a6b8475ab45659e6200dcb9ada4ae2",
+    "bytes": 1401787,
+    "sha256": "397adb196d9c4b743d49766ca5074cdcf3068c7a4b561aa2db6c1445f8564260"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-body/north_north-east.generated.png",
+    "blob": "ac7890b3054a9ce53cb812ed4ff3529ecbce0ef5",
+    "bytes": 1492552,
+    "sha256": "f1b8426a12fffa94302cc4625a2d0d6b364c59aab2ad78be90fc28013a478d49"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-body/east_south-east.generated.png",
+    "blob": "64423d0c0e89220acb6ec9328d93a121eaf8b273",
+    "bytes": 1346124,
+    "sha256": "3e02cdc400a3d7514d9e6d9bd4dbf0403612468b833183798b5dc6bb72becfc9"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-body/south-west-cast.generated.png",
+    "blob": "c07073645026966cb235e4142c457843d26545b6",
+    "bytes": 1643308,
+    "sha256": "be0ffd981c8ce25cf91ac5d1d9552e836d336f54b3ab55ba0b1741e75a593444"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-attack8-r25-body/config.json",
+    "blob": "0ed5ac4478cc6495d5fdbd2ee52d62d9b443be5b",
+    "bytes": 3422,
+    "sha256": "bee7c640cc916f7b9ed5b0826f8c31d7e3dee6a303cea2d56e3b115105cece1f"
+  },
+  {
+    "path": "art-review/sprites-20261102/druid-idle8-r23-kit-hem/metadata.json",
+    "blob": "e67d68f7d86cb02de51a883c303c7f79c8aa9a6d",
+    "bytes": 8118,
+    "sha256": "ddfb69138276e3d2260fe1bdea3fb351cc4d6ac3c27b6e2b45a0d6c86b93326d"
+  },
+  {
+    "path": "docs/4.0케릭터스프라이트 디자인/DRUID_SPRITE_IDLE_CANDIDATE_20261103.md",
+    "blob": "3315a85340b03ae2af4f99746df3a6ac75d5ebe7",
+    "bytes": 3139,
+    "sha256": "fb39cd7338593ce8996ebde4db55ecd7eb52da1d71b84f2c6c656b9de42e3ccc"
+  },
+  {
+    "path": "docs/4.0케릭터스프라이트 디자인/DRUID_WALK_ATTACK_CANDIDATE_20261103.md",
+    "blob": "cb3e88415ccbfff974148affa3fe8d6c3208d36e",
+    "bytes": 3910,
+    "sha256": "af8e45b88bb6c60089f7bf0cf274f53a6e6d96a468661bab3acf752fa79efb2c"
+  }
+]

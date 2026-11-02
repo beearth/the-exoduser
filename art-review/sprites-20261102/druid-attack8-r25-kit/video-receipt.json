@@ -1,0 +1,38 @@
+[
+  {
+    "group": "druid-attack8-r25-kit",
+    "page": 1,
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/druid-attack8-r25-kit/comparison-page-1.mp4",
+    "sha256": "7682ce2c89e14421147c02122c2f4b2ee34cc920ae93c9ad748a0f2c8ebf21a0",
+    "bytes": 9695116,
+    "streams": [
+      {
+        "type": "video",
+        "width": 2176,
+        "height": 1560,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false,
+    "occlusion": "front-staff hand restored for keys1,3"
+  },
+  {
+    "group": "druid-attack8-r25-kit",
+    "page": 2,
+    "file": "G:/exoduser/tmp/design-review/20261102_sprites/druid-attack8-r25-kit/comparison-page-2.mp4",
+    "sha256": "e4c0c96a6a8743cdf75d585b1c63bc375cff1b925055f71e0bebbc076369d260",
+    "bytes": 9528499,
+    "streams": [
+      {
+        "type": "video",
+        "width": 2176,
+        "height": 1560,
+        "frames": "32"
+      }
+    ],
+    "decode": 0,
+    "actualUIPlayback": false,
+    "occlusion": "front-staff hand restored for keys1,3"
+  }
+]
