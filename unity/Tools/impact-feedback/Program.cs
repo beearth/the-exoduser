@@ -17,6 +17,8 @@ static class Program
             Check(!t.Frozen(1, .101), "정지가 끝나면 적이 복귀해야 한다");
             Check(t.Hit(2, 0, 0, false, false), "같은 틱의 두 번째 접점은 허용한다");
             Check(!t.Hit(3, 0, 0, false, false), "같은 틱의 세 번째 접점은 생략한다");
+            Check(t.Frozen(3,.025)&&t.Flash(3,.025)>0, "입자 예산 밖의 세 번째 피격자도 실제 명중 반응은 유지해야 한다");
+            var legacy=new ImpactResponse(true);legacy.Hit(1,0,0,false,false);legacy.Hit(2,0,0,false,false);Check(!legacy.Hit(3,0,0,false,false)&&!legacy.Frozen(3,.025),"같은패키지 비교용 이전 표현은 세 번째 반응 누락을 재현한다");
             Check(!t.Hit(1, .03, 0, false, false), "같은 적 연속 통지는 광량을 중복 적층하지 않는다");
             Check(t.Hit(3, .12, Math.PI / 2, true, false), "다음 틱은 독립 예산으로 재개한다");
             Check(t.FreezeSeconds >= .075 && t.FreezeSeconds <= .1, "대검 끝타는 더 무겁되 100ms를 넘지 않는다");

@@ -15,7 +15,7 @@ namespace Exoduser.UnityPort.Vfx
         readonly Transform parent;readonly Sprite[] frames=new Sprite[4];readonly Material material,scarFlat,scarGround;
         readonly Burst[] bursts=new Burst[8];readonly Scar[] scars=new Scar[8];
         readonly Dictionary<int,float> health=new Dictionary<int,float>();readonly HashSet<int> present=new HashSet<int>();readonly List<int> removed=new List<int>();
-        readonly ImpactResponse response=new ImpactResponse();Simulation bound;int observedTick=-1,scarIndex;float heroUntil;
+        readonly ImpactResponse response;Simulation bound;int observedTick=-1,scarIndex;float heroUntil;
         public int Contacts {get;private set;}public int Dropped {get;private set;}public int Spawned {get;private set;}
         public int PeakParticles=>0;public int FlipbookFrames {get;private set;}public int PeakSprites {get;private set;}
         public bool Enabled {get;set;}=true;public bool ReducedMotion {get;set;}public Camera RenderCamera {get;set;}
@@ -26,7 +26,7 @@ namespace Exoduser.UnityPort.Vfx
         public Vector2 CameraOffset(float now){if(!Enabled||ReducedMotion)return Vector2.zero;response.Camera(now,out var x,out var y);return new Vector2((float)x,(float)-y);}
         public NativeImpactView(Transform parent)
         {
-            this.parent=parent;var sheet=Resources.Load<Texture2D>("Art/vfx/ki_slash_hit_silver_sheet");
+            this.parent=parent;response=new ImpactResponse(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-impact-response-baseline")>=0);var sheet=Resources.Load<Texture2D>("Art/vfx/ki_slash_hit_silver_sheet");
             var shader=Resources.Load<Shader>("Shaders/KiSlashAdditive");
             if(sheet!=null&&sheet.width==1254&&sheet.height==1254&&shader!=null){material=new Material(shader);for(int i=0;i<4;i++)frames[i]=Sprite.Create(sheet,new Rect(i%2*627,1254-(i/2+1)*627,627,627),new Vector2(.5f,.5f),100,0,SpriteMeshType.FullRect);}
             scarFlat=Resources.Load<Material>("VFX/Impact/M_SkillFloor");scarGround=Resources.Load<Material>("VFX/Impact/M_SkillGround");

@@ -11,14 +11,21 @@ namespace Exoduser.UnityPort.Vfx
         readonly List<int> expired = new List<int>();
         double frame = double.NegativeInfinity, impulseTime = double.NegativeInfinity, direction, amplitude;
         int accepted;
+        readonly bool limitReactions;
+        public ImpactResponse(bool limitReactions=false) { this.limitReactions=limitReactions; }
         public double FreezeSeconds { get; private set; }
         public static bool IsContact(bool known,double before,double after,double hurtTicks) { return hurtTicks>0&&(!known||after<before); }
         public bool Hit(int id,double now,double angle,bool heavy,bool critical)
         {
             if (now != frame) { frame=now; accepted=0; }
-            if (accepted >= 2 || pulses.TryGetValue(id,out var before) && now-before.Born < .08) return false;
+            if (pulses.TryGetValue(id,out var before) && now-before.Born < .08) return false;
+            bool admitted=accepted<2;
+            if(!admitted&&limitReactions)return false;
             FreezeSeconds=heavy?.09:critical?.075:.055;
-            pulses[id]=new Pulse { Born=now, Hold=FreezeSeconds }; accepted++;
+            pulses[id]=new Pulse { Born=now, Hold=FreezeSeconds };
+            // Every struck body reacts. Only flipbooks/lights/camera impulses use the two-contact budget.
+            if(!admitted)return false;
+            accepted++;
             impulseTime=now; direction=angle; amplitude=heavy?.045:critical?.035:.022;
             // Damage-over-time can touch many enemies; retired entries never grow without bound.
             if(pulses.Count>128) { expired.Clear(); foreach(var p in pulses) if(now-p.Value.Born>.3) expired.Add(p.Key); foreach(var key in expired)pulses.Remove(key); }

@@ -16,7 +16,7 @@ namespace Exoduser.UnityPort
         {
             public string scope="실제 GPU Player 16초: 고정 입력·AI 루프 활성/검수 기절180 갱신으로 자발 행동 중지·실제 넉백·첫 표적1회 실제 처치/나머지 불사 표적·현행 5스킬과 독/가시/어둠 탄 겹침 fixture. 자연 전투·미이식 스킬 증거 아님";
             public string device,coreTraceSha256; public bool world3D,baseline,passed;
-            public int flipbookFrames,peakSprites;public bool warriorOnly;public int frames,contacts,dropped,damage,casts,spawned,peakParticles,skillGraphEvents,peakSkillHandles,poisonFrames,thornFrames,darkFrames;
+            public int flipbookFrames,peakSprites,maxReactingTargets;public bool warriorOnly,responseBaseline;public int frames,contacts,dropped,damage,casts,spawned,peakParticles,skillGraphEvents,peakSkillHandles,poisonFrames,thornFrames,darkFrames;
             public int captureWidth,captureHeight;
             public float normalKnockback,kiKnockback,slamKnockback;
             public int killedTargets;public bool killContactSeen;
@@ -44,7 +44,7 @@ namespace Exoduser.UnityPort
             var rc=new ImpactReviewReceipt{device=SystemInfo.graphicsDeviceName,world3D=NativeRemodel3D.Active,baseline=!contactVfx.Enabled,
                 captureWidth=Screen.width,captureHeight=Screen.height,
                 sections=new[]{"일반공격","기검참3타·완전충전","가시덫","지옥강타","회복영역","얼음보주","악의구"}};
-            rc.warriorOnly=Argument("-impact-scope")=="warrior";if(rc.warriorOnly)rc.sections=new[]{"일반공격","기검참3타·완전충전"};
+            rc.warriorOnly=Argument("-impact-scope")=="warrior";rc.responseBaseline=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-impact-response-baseline")>=0;if(rc.warriorOnly){rc.sections=new[]{"일반공격","기검참3타·완전충전"};rc.scope="실제 GPU Player 10초/2공격: 고정 입력·실제 Core 명중·처치·넉백·3표적 동시 피격과 합성 탄막. AI루프 유지/fixture기절180·불사표적 사용. 자연전투·전체스킬·게임FPS 증거 아님";}
             var trace=new StringBuilder();int frame=0,damage=0,shot=0,blastsBefore=sim.MaliceOrbBlasts;
             var castKinds=new HashSet<string>();Action<string> castSeen=id=>castKinds.Add(id);sim.SkillCast+=castSeen;
             foreach(string section in rc.sections)
@@ -85,6 +85,7 @@ namespace Exoduser.UnityPort
                         if(feedback.Kind==FeedbackKind.KiSlashHit)rc.kiThirdHitSeen=true;
                     }
                     DispatchFeedback();UpdateViews();Running=false;
+                    int reacting=0;foreach(var e in sim.Enemies)if(contactVfx.EnemyFrozen(e.Id,ImpactNow))reacting++;rc.maxReactingTargets=Math.Max(rc.maxReactingTargets,reacting);
                     if(sectionIndex==0&&!sim.Enemies[0].Alive&&contactVfx.EnemyFrozen(sim.Enemies[0].Id,ImpactNow)&&contactVfx.Spawned>0)rc.killContactSeen=true;
                     trace.Append(sim.TickCount).Append('|').Append(p.State).Append('|').Append(p.X.ToString("R",CultureInfo.InvariantCulture)).Append('|').Append(p.Y.ToString("R",CultureInfo.InvariantCulture)).Append('|')
                         .Append(p.Stamina.ToString("R",CultureInfo.InvariantCulture)).Append('|').Append(p.Mana.ToString("R",CultureInfo.InvariantCulture)).Append('|').Append(sim.SkillCastCount);
@@ -107,7 +108,7 @@ namespace Exoduser.UnityPort
             bool feedbackOk=rc.baseline||rc.killContactSeen&&rc.contacts>0&&rc.spawned>0&&rc.flipbookFrames>0&&rc.peakSprites>0;
             bool warriorOk=rc.normalKnockback>1&&rc.kiKnockback>1&&rc.killedTargets>=1&&rc.kiThirdCastSeen&&rc.kiThirdHitSeen&&rc.kiThirdTier==3;
             bool skillsOk=rc.warriorOnly||rc.slamKnockback>1&&rc.coreMaliceBlasts>0&&castKinds.Contains("spikeTrap")&&castKinds.Contains("giantSlam")&&castKinds.Contains("holyDome")&&castKinds.Contains("iceOrb")&&castKinds.Contains("fireball");
-            rc.passed=warriorOk&&skillsOk&&feedbackOk&&rc.captureWidth==width&&rc.captureHeight==height&&rc.world3D==NativeRemodel3D.Requested&&shot==(rc.warriorOnly?300:480)&&damage>0;
+            rc.passed=warriorOk&&skillsOk&&feedbackOk&&(!rc.warriorOnly||rc.baseline||rc.maxReactingTargets>=(rc.responseBaseline?2:3))&&rc.captureWidth==width&&rc.captureHeight==height&&rc.world3D==NativeRemodel3D.Requested&&shot==(rc.warriorOnly?300:480)&&damage>0;
 
             File.WriteAllText(Path.Combine(output,"impact-review.json"),JsonUtility.ToJson(rc,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();
