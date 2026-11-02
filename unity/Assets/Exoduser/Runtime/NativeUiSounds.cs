@@ -20,7 +20,7 @@ namespace Exoduser.UnityPort {
   }
   internal void Clicked(){if(!ButtonsSilent&&allowed!=null&&allowed()){pendingFrame=Time.frameCount;pendingRevision=audio.UiRevision;}}
   void LateUpdate(){
-   if(pendingFrame<0||Time.frameCount<=pendingFrame)return;pendingFrame=-1;
+   if(pendingFrame<0||Time.frameCount<=pendingFrame)return;if(NativeDecisionSound.LastDecisionFrame>=pendingFrame){pendingFrame=-1;return;}pendingFrame=-1;
    double now=Time.realtimeSinceStartupAsDouble;
    if(allowed!=null&&allowed()&&pendingRevision==audio.UiRevision&&now-confirmAt>=.08){confirmAt=now;audio.PlayUiSample("ui_button_confirm",.35f);}
   }

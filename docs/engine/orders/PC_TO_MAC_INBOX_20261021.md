@@ -302,3 +302,7 @@ PC `codex/unity-parity-1102`/G:/exoduser-wt/codex-unity-parity-1102가 공통140
 ## 2026-11-02 PC 최신 웹 parity 소스 후보·실행 차단
 
 `codex/unity-parity-1102:818ea0aff182624c506c972077f0384c1b719ce9`에 최신 C2선명도3변형/cover/폭포/여백, 빈Z·Space 습득우선/실제비용, 접점2틱/피격가장자리/처치음 제한 후보를 백업했다. C#75+31/Core35/player-hurt47559 PASS·독립Core114/Runtime212 compile0. enemy-hurt 기존H3 1300실패는 변경전후동일/신규0, 전체PASS아님. Dota PID56244·Library없음/Editor20GB 대비 커밋여유18.7GB로 Unity/Player/빌드0·공통/Desktop0·시각미검증. 화폐/두둥은 기존owner중복으로 건너뜀, 전체화면64 확장연결은 미완. 정확한9항목·다음순서는 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md. 검수없는병합/바로가기교체 금지.
+
+## 2026-11-02 저녁 parity 2차 인수
+
+사용자·CTO 지시로 기존 화폐 codex/unity-currency-name-20261031:3333f9931 단일 커밋과 중단된 결정 두둥 범위를 codex/unity-parity-1102가 인수한다. Mac 기존 WIP 미접촉. Dota 여부는 실행 보류 조건에서 제거하며 공식 실행기·단일 잠금·무음·격리 저장은 유지.

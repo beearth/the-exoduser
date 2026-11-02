@@ -142,21 +142,23 @@ namespace Exoduser.UnityPort
             var shade=new Rect(0,0,560,1080);NativeUiAudit.DrawTexture(shade,titleSideVeil,ScaleMode.StretchToFill,true);NativeUiAudit.Region(shade,"component","frontend-shade","타이틀 C2 왼쪽 음영560");
             var fit=NativeTitleSignboardLayout.Menu(Screen.width,Screen.height);GUI.matrix=Matrix4x4.TRS(new Vector3((float)fit.X,(float)fit.Y,0),Quaternion.identity,new Vector3((float)fit.Width,(float)fit.Height,1));
             if (titleLogo != null) { float lw = 520, lh = lw * titleLogo.height / titleLogo.width; GUI.color = new Color(0, 0, 0, .5f * fade); NativeUiAudit.DrawTexture(new Rect(96, 106, lw, lh), titleLogo, ScaleMode.StretchToFill, true); GUI.color = new Color(1, 1, 1, fade); NativeUiAudit.DrawTexture(new Rect(96, 96, lw, lh), titleLogo, ScaleMode.StretchToFill, true); }
-            const float left = 116, top = 436, width = 400;
+            const float left = 116, top = 436, width = 380;
             var e = Event.current;
             for (int i = 0; i < titleRows.Count; i++)
             {
-                float rowH=i==0?68:48;
-                var rect = new Rect(left, i==0?top:top+84+(i-1)*62, i==0?width:width-32, rowH);
+                float rowH=48;
+                var rect = new Rect(left,top+i*48,width,rowH);
                 if (e.type == EventType.MouseMove || e.type == EventType.Repaint) { if (rect.Contains(e.mousePosition) && e.type == EventType.MouseMove && !AutomatedInput && i != titleSel) SelectTitleRow(i); }
                 if (e.type == EventType.MouseDown && e.button == 0 && rect.Contains(e.mousePosition) && !AutomatedInput) { ActivateTitleRow(i); e.Use();GUI.matrix=menuMatrix; return; }
                 var row = titleRows[i]; float s = row.Sel;
                 GUI.color=new Color(1,1,1,fade);
-                NativeSilverHellUi.ActionPlate(rect,i==0,s,!AutomatedInput&&rect.Contains(e.mousePosition)&&ExoInput.Mouse(0));
+                if(i==0)Fill(new Rect(rect.x,rect.y,rect.width,1),new Color(230/255f,227/255f,220/255f,.1f*fade));
+                Fill(new Rect(rect.x,rect.yMax,rect.width,1),new Color(230/255f,227/255f,220/255f,.1f*fade));
+                Fill(new Rect(rect.x+13,rect.center.y-.5f,16,1),new Color(230/255f,227/255f,220/255f,.6f*s*fade));
                 Color txt = Color.Lerp(new Color(201f / 255, 199f / 255, 195f / 255), new Color(242f / 255, 240f / 255, 236f / 255), s); txt.a = fade;
-                int size=i==0?22:18;float spacing=size*.14f;
+                int size=18;float spacing=size*.14f;
                 float labelWidth=SpacedWidth(titleMenuFont,size,row.Label,spacing)-spacing;
-                GUI.color = Color.white; DrawSpaced(rect.center.x-labelWidth/2, rect.y, rowH, row.Label, titleMenuFont, size, spacing, txt, true);
+                GUI.color = Color.white; DrawSpaced(rect.x+36+size*.16f, rect.y, rowH, row.Label, titleMenuFont, size, spacing, txt, true);
             }
             GUI.matrix=NativeUiViewport.EdgeMatrix;
             // #splashTitleBuild: right 36, bottom 26, Cinzel 600 11 px / 1.7, letter-spacing .28em, rgba(230,227,221,.6), two lines right aligned

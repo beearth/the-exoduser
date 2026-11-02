@@ -34,8 +34,8 @@ Shader "Hidden/EXODUSER/TitleSignboardC2"
  float4 frag(v2f_img i):SV_Target
  {
   float2 screen=float2(i.uv.x,1-i.uv.y),p=(screen-_Crop.xy)/_Crop.zw;
-  float3 color=art(_Plate,p).rgb;float2 px=p*float2(2036,1018);
-  if(_Motion>.5){color=waterfall(color,px,_Near,float4(696,498,66,259),float2(714,506),float2(735,747),100);color=waterfall(color,px,_Far,float4(951,548,78,218),float2(974,555),float2(1001,756),75);}
+  float3 color=art(_Plate,p).rgb;float2 px=p*float2(2036,1016);
+  if(_Motion>.5){color=waterfall(color,px,_Near,float4(860,320,60,253),float2(877,328),float2(895,560),100);color=waterfall(color,px,_Far,float4(1043,385,44,203),float2(1056,392),float2(1066,579),75);}
  #ifndef UNITY_COLORSPACE_GAMMA
   color=GammaToLinearSpace(color);
  #endif

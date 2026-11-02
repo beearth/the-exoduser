@@ -63,7 +63,7 @@ namespace Exoduser.UnityPort
         }
         void SilverCornerPanel(Rect r)
         {
-            NativeSilverHellUi.Panel(r,28,8);
+            NativeSilverHellUi.Panel(r,60,18);
         }
         void DrawSilverScene(Rect box,int i)
         {

@@ -167,7 +167,7 @@ namespace Exoduser.UnityPort
 
         IEnumerator UiTitleGrid()
         {
-            overlapCoverage.resolutions=new[]{"5120x1440","1920x1080","2560x1080","3840x1080","1600x900","2560x1600"};
+            overlapCoverage.resolutions=Parity1102Capture?new[]{"1920x1080","3840x1080"}:new[]{"5120x1440","1920x1080","2560x1080","3840x1080","1600x900","2560x1600"};
             overlapCoverage.scope="C2 영상 타이틀 실제6해상도/선택3언어/모션·정지·재개; OS 입력/자연플레이와 구분";
             foreach(string resolution in overlapCoverage.resolutions)
             foreach(string language in overlapCoverage.languages)
@@ -180,7 +180,7 @@ namespace Exoduser.UnityPort
                 float deadline=Time.realtimeSinceStartup+5;while((Screen.width!=width||Screen.height!=height)&&Time.realtimeSinceStartup<deadline)yield return null;
                 if(Screen.width!=width||Screen.height!=height)throw new InvalidOperationException("실제 타이틀 해상도 불일치 "+resolution);
                 lobby.Begin();lobby.AdvanceSplash();yield return new WaitForSecondsRealtime(1.1f);yield return UiWaitTitleArt();yield return UiOverlapShot("메뉴");
-                yield return new WaitForSecondsRealtime(.5f);yield return UiOverlapShot("메뉴-모션");
+                yield return new WaitForSecondsRealtime(Parity1102Capture?10.5f:.5f);yield return UiOverlapShot("메뉴-모션");
                 bool paused=lobby.TitleMotionPaused;
                 try{lobby.TitleMotionPaused=true;yield return new WaitForSecondsRealtime(.15f);yield return UiOverlapShot("메뉴-정지1");yield return new WaitForSecondsRealtime(.35f);yield return UiOverlapShot("메뉴-정지2");}
                 finally{lobby.TitleMotionPaused=paused;}
@@ -188,11 +188,12 @@ namespace Exoduser.UnityPort
             }
         }
 
+        static bool Parity1102Capture=>Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-parity-1102-check")>=0;
         IEnumerator UiOverlapCaptureBody()
         {
             overlapOutput=Argument("-output");
             if(!NativeQaSandbox.Active||string.IsNullOrEmpty(overlapOutput)||!Path.IsPathRooted(overlapOutput)){Debug.LogError("겹침 검사는 격리 저장·절대 출력 경로 필요");Application.Quit(3);yield break;}
-            Directory.CreateDirectory(overlapOutput);overlapCoverage=new UiOverlapCoverage();overlapUiFreeze=true;SelectOverlapLanguages();
+            Directory.CreateDirectory(overlapOutput);overlapCoverage=new UiOverlapCoverage();overlapUiFreeze=true;SelectOverlapLanguages();if(Parity1102Capture){overlapCoverage.languages=new[]{"ko"};overlapCoverage.resolutions=new[]{"1920x1080","3840x1080"};}
             using(var hash=System.Security.Cryptography.SHA256.Create())using(var binary=File.OpenRead(typeof(NativeGame).Assembly.Location))overlapCoverage.runtimeSha256=BitConverter.ToString(hash.ComputeHash(binary)).Replace("-","").ToLowerInvariant();
             overlapCoverage.unityVersion=Application.unityVersion;overlapCoverage.device=SystemInfo.graphicsDeviceName;overlapCoverage.deviceType=SystemInfo.graphicsDeviceType.ToString();
             smokeActive=true;pauseSmoke=true;lobby.AutomatedInput=true;lobby.SetPlaybackFocus(true);SetGameFocus(true);
@@ -202,7 +203,7 @@ namespace Exoduser.UnityPort
                 yield return UiTitleGrid();NativeUiAudit.Active=false;File.WriteAllText(Path.Combine(overlapOutput,"coverage.json"),JsonUtility.ToJson(overlapCoverage,true));
                 lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);Debug.Log("QA_MEDIA_DRAIN_COMPLETE TITLE_A");Application.Quit(0);yield break;
             }
-            foreach(var size in new[]{new Vector2Int(2560,1600),new Vector2Int(1920,1080),new Vector2Int(2560,1080),new Vector2Int(3840,1080),new Vector2Int(1600,900)})
+            foreach(var size in Parity1102Capture?new[]{new Vector2Int(1920,1080),new Vector2Int(3840,1080)}:new[]{new Vector2Int(2560,1600),new Vector2Int(1920,1080),new Vector2Int(2560,1080),new Vector2Int(3840,1080),new Vector2Int(1600,900)})
             foreach(string language in overlapCoverage.languages)
             {
                 overlapLanguage=language;lobby.SetLanguage(language);stageClear.LocaleCode=language;

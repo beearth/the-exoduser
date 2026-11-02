@@ -7,7 +7,7 @@ namespace Exoduser.UnityPort
   internal static NativeTitleSignboardLayout Cover(int width,int height)
   {
    width=Math.Max(1,width);height=Math.Max(1,height);
-   double scale=Math.Max(width/2036d,height/1018d),w=2036*scale,h=1018*scale;
+   double scale=Math.Max(width/2036d,height/1016d),w=2036*scale,h=1016*scale;
    return new NativeTitleSignboardLayout{X=(width-w)/2,Y=(height-h)/2,Width=w,Height=h};
   }
   internal static NativeTitleSignboardLayout Buffer(int width,int height)
@@ -21,8 +21,8 @@ namespace Exoduser.UnityPort
    width=Math.Max(1,width);height=Math.Max(1,height);double scale=Math.Min(width/1920d,height/1080d);
    return new NativeTitleSignboardLayout{X=Math.Max(48,height*.045)-96*scale,Y=(height-1080*scale)/2,Width=scale,Height=scale};
   }
-  internal static int VideoWidth(int width,int height){double need=Math.Max(Math.Max(1,width),Math.Max(1,height)*2d);return need<=1920?1920:need<=2560?2560:3840;}
-  internal static string VideoFile(int width)=>"title_motion_C2_clarity_"+width+"_20261102.mp4";
+  internal static int VideoWidth(int width,int height)=>2036;
+  internal static string VideoFile(int width)=>"title_motion_C2_final_20261102.mp4";
   internal static double Advance(double time,double delta,bool paused)=>time+(paused?0:Math.Max(0,Math.Min(.1,delta)));
  }
 }

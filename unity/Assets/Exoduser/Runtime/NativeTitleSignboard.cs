@@ -6,7 +6,7 @@ namespace Exoduser.UnityPort
  internal sealed class NativeTitleSignboard:IDisposable
  {
   const string Root="Art/TitleSignboard/C2/";
-  internal const string Movie="title_motion_C2_clarity_3840_20261102.mp4";
+  internal const string Movie="title_motion_C2_final_20261102.mp4";
   Texture2D still,near,far,tile;Transform parent;NativeLobbyVideo movie;
   Material material;RenderTexture frame;
   bool loaded,failed,dirty=true,hasVideo,lastReduced;float lastRender=-1;int selectedWidth;double restoreTime=-1;
@@ -43,10 +43,10 @@ namespace Exoduser.UnityPort
   }
   void EnsureMovie()
   {
-   if(ReducedMotion||!HasFocus||parent==null)return;
+   if(!HasFocus||parent==null)return;
    int width=NativeTitleSignboardLayout.VideoWidth(Screen.width,Screen.height);
    if(movie==null)movie=new NativeLobbyVideo(parent);
-   if(width!=selectedWidth){restoreTime=movie.Time;selectedWidth=width;movie.Open(NativeTitleSignboardLayout.VideoFile(width),true,true,false);movie.Volume(0);lastVideoFrame=-1;}
+   if(width!=selectedWidth){restoreTime=movie.Time;selectedWidth=width;movie.Open(NativeTitleSignboardLayout.VideoFile(width),true,true,false);movie.Volume(0);lastVideoFrame=-1;movie.SetPlaybackAllowed(HasFocus&&!ReducedMotion);}
    if(restoreTime>=0&&movie.Prepared){if(restoreTime>0&&movie.Duration>0)movie.Seek(restoreTime%movie.Duration);restoreTime=-1;}
   }
   internal bool Draw(Rect screen)
@@ -58,7 +58,7 @@ namespace Exoduser.UnityPort
     {
      var size=NativeTitleSignboardLayout.Buffer(Screen.width,Screen.height);int w=(int)size.Width,h=(int)size.Height;
      if(frame==null||frame.width!=w||frame.height!=h){ReleaseFrame();frame=new RenderTexture(w,h,0,RenderTextureFormat.ARGB32,RenderTextureReadWrite.sRGB){name="C2 title",filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp,hideFlags=HideFlags.HideAndDontSave};if(!frame.Create())throw new InvalidOperationException("Title render target unavailable");dirty=true;}
-     float now=Time.realtimeSinceStartup;bool videoReady=!ReducedMotion&&movie!=null&&movie.Error.Length==0&&movie.Frame>=0&&movie.Texture!=null;
+     float now=Time.realtimeSinceStartup;bool videoReady=movie!=null&&movie.Error.Length==0&&movie.Frame>=0&&movie.Texture!=null;
      // Freeze the same still under reduced motion; an interrupted loop keeps its last frame.
      if(videoReady){hasVideo=true;if(movie.Frame!=lastVideoFrame){VideoFrames++;lastVideoFrame=movie.Frame;}}
      bool waiting=hasVideo&&!videoReady&&!ReducedMotion&&movie!=null&&movie.Error.Length==0;
