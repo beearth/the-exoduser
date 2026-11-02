@@ -132,7 +132,7 @@ if (existsSync('node-main.js')) {
 }
 
 // ── 6. 에셋 폴더 복사 ────────────────────────────────────────────────────────
-const DIRS = ['assets', 'img', 'sprites', 'bgm', 'sfx', 'video', 'localization',
+const DIRS = ['assets', 'img', 'sprites', 'bgm', 'sfx', 'video', 'localization', 'web3d',
   'output/imagegen/item-skins', 'output/imagegen/forge-tabs-v3', 'output/imagegen/forge-tabs-v4'];
 const OPTIONAL_DIRS = new Set(['output/imagegen/forge-tabs-v3']);
 for (const d of DIRS) {

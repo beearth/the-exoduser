@@ -197,3 +197,4 @@ schtasks /Create /TN "EXODUSER_DailySteamRelease" /TR "cmd /c G:\exoduser-steam\
 | 권한 경계 | 빌드·preview·업로드·Steam 로그인·Set Live·Steam 게시·예약 작업 설정·공용 실행기/잠금 변경0회. 예약 XML 전후 SHA256 동일, 자기 스모크 서버/브라우저 종료 확인. 기존 latest-web·사용자 소스·세이브 보존. 증거: `I:/EXODUSER-Storage/steam-prep/20261031/REPORT.md` |
 
 | 2026-10-31 | v0.7.11 준비 점검에서 새 루트 모듈 6개가 `build-nwjs.mjs` FILES에 빠진 것을 발견(패키지에서 404 예상) | `fullscreen-art-data.js`·`fullscreen-art.js`·`fullscreen-art.css`·`fullscreen-art-dom.js`(전체 화면 원화 확장)·`currency-orb.js`·`currency-orb.css`(악의오브)를 FILES에 추가. 새 루트 파일을 만든 작업은 같은 커밋에서 FILES도 갱신한다 |
+| 2026-11-02 | 09:00 v0.7.11 실행이 SMOKE FAIL로 중단(업로드 0회). `404 /web3d/bridge-map.js` — game.html이 항상 읽는 `web3d/` 폴더가 `build-nwjs.mjs` DIRS에 없음 | DIRS에 `web3d` 추가. 같은 날 오늘 몫 1회를 예약 작업 수동 실행으로 다시 돌린다(업로드 비공개, Set Live는 사용자 확인) |
