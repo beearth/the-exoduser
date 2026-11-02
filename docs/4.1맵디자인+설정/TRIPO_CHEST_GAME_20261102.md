@@ -2,6 +2,28 @@
 
 사용자 지시: “게임에 상자 넣어서 열어보고”. 대상은 `game.html` 웹 본편의 기존 보스 보물상자다. Unity·Steam 배포·스폰/보상 수량·확률/저장 설계 변경은 포함하지 않는다. 11/02 후속 지시로 상자 전리품의 바깥 분산·분출과 착지 전 수거 대기를 적용한다. 최신 추가 지시 “상자가 너무커 … 충돌도 넣고”로 표시 축소·동적 몸통 충돌을 적용한다.
 
+## 11/02 재질 가독성 재작업 — source-only 후보·미채택
+
+공식 ea24 실행본의1920×1080 닫힘/열림 원본과 Tripo viewer/실제 내장 텍스처를 직접 대조했다.64px에서 목재·철테·장식이 어둡게 뭉치는 결함은 남아 있다. 아래 후보는 기존 작업 브랜치에만 보존하며 main/실행본/아트 채택을 뜻하지 않는다.
+
+| id | 항목 | 후보 계약·검증 경계 |
+|---|---|---|
+| INPUT | 실제 원본 | CTO ea24 `chest-closed-original.png`/`chest-open-loot-original.png`, 기존 Tripo `viewer.jpg`, GLB 내장 basecolor1024²·normal512²·RM512². 경로/CPU 분석은 아래 REPORT |
+| FACT | PBR 경로 | 본편 importmap은 Three r160. 기본색은 GLTFLoader의 SRGBColorSpace, roughness=G/metalness=B의 선형 데이터, glTF 기본 OPAQUE·텍스처 알파255 확인. RM B평균49.55661/max218, G평균137.92878. 채널 반전·색공간·알파 오류를 원인으로 확정하지 않음 |
+| HYPOTHESIS | 한 개 방법 | 기존 상자 scene.environment 부재를 분리 시험한다. 어두운 기본색(RGB평균34.97/35.65/34.85)과64px 축소도 관측됐으므로 IBL 부재가 주원인이라는 판정은 GPU A/B 전 미확정 |
+| PRESERVE | 고정 기준 | ACESFilmic·exposure1.25·hemi2.5/key3.2/fill.8, PBR map/normal/RM·불투명도·emissive·원GLB/형상·뚜껑·64px·44×24충돌·R 보상/분산·game.html 보존. 전역 노출·크기 확대·흰 발광 추가0 |
+| ENV | 반사 데이터 | `createChestEnvironmentTexture`:128×64 RGBA Uint8=32768B, 알파255, srgb-linear, EquirectangularReflectionMapping, 가로Repeat·LinearFilter. 실제 후보 데이터 RGB범위2~149(흰색255 없음). 외부 HDR/이미지/Three 버전/자산 추가0 |
+| PALETTE | 선형 RGB | ground(.018,.012,.009), sky(.16,.20,.24), warm(.46,.42,.34), cool(.10,.14,.18). up=sin((v−.5)π), 상하보간(up+1)/2; 주방향(−.6,.55,.58)의 양수 dot^8, 보조(.8,.2,−.56)의 양수 dot^12. 픽셀 셀 중심 표본·RGB×255 반올림 |
+| INTENSITY | 재질 국소 | `CHEST_ENV_INTENSITY=.65`를 해당 모델의 고유 MeshStandardMaterial만 적용. 원본 basecolor/metalness/roughness/emissive/alpha를 재작성하지 않음. 기존 접촉 그림자·다른 장면에는 적용0 |
+| AB | 같은 실행본 | `_chest3d.setEnvironmentEnabled(false)`=scene.environment null + 원래 envMapIntensity 복원, true=같은 준비된 반사 texture/.65. 저장·게임 UI 설정은 쓰지 않음. snapshot.environment의 prepared는 CPU 데이터 준비이며 GPU/시각 PASS가 아님 |
+| PMREM | r160 자동 경로 | 실제 렌더 때 WebGLCubeUVMaps가 source를 PMREM으로 변환·캐시. 소스 계산상 cube32→각336×128 RGBA16F 출력/임시타깃, 원본32768B 포함 명목약720896B(.6875MiB). shader/정렬/드라이버·실측 GPU/프레임 비용 미포함, 실제 비용 검수 전 예산 통과 주장0 |
+| DISPOSE | 실패·종료 | source texture.dispose→r160 캐시 타깃 해제 이벤트, 실제 고유 geometry/texture/material dispose + renderer.dispose/own context loss. api.dispose는 멱등·RAF취소·ready/active=false. 로드 중 종료 후 늦게 도착한 모델도 해제. snapshot.resources는 해당 renderer의 카운터만 노출 |
+| FALLBACK | 예외 | GLB/의존성/환경 준비 또는 첫 render 예외→한 번 failed, 자원 해제·overlay 숨김·기존 native2D 보존. 새 프레임에서 반복 로드/실패 렌더를 하지 않음 |
+| CPU QA | 최소 회귀 | 새6건 RED→GREEN + 기존 상자/패키징12건=18 PASS. 실제 Three r160 Texture/Material/Geometry.dispose 이벤트와 PBR 불변 검사. WebGLRenderer/네트워크 GLTFLoader는 CPU 주입 대역이며 하드웨어 해제·색·오버레이 비용은 검증하지 않음 |
+| HANDOFF | 다음 gate | 기존MacUI idle/소유 확인 뒤 격리 same-artifact64px baseline/candidate 닫힘·열린 내측 A/B/실제1x·fallback·dispose·오버레이 비용. PC CUA/Chrome/OBS/게임/Unity/Player/빌드/렌더/GPU/인코딩·신규유료0. 후보 시각 판정 미검증, 기존 재질 RETOUCH 유지 |
+
+근거·후보 차이·실행 명령·정확SHA: `I:/EXODUSER-Storage/tripo-chest-game/20261102/material-readability-rework/REPORT.md`. 두 번 같은 핵심 시각 실패 시 수치 미세 반복 대신 재질/표현 방법을 다시 정한다.
+
 ## 제작과 런타임 계약
 
 | id | 항목 | 값·경계 |
