@@ -225,3 +225,12 @@ r4 빌드·M1 기술 PASS와 회복 바닥/가시 접지/강타 점선 테두리
 레퍼런스: 직접 연 091256 횃불 타격과 keyframe_B. 배울 점은 짧은 접점·방향·국소 조명·남아 있는 적탄이며 외부 원화 반입0. 새 소스의 빌드/M1/실게임·1x·소리 청취는 아직 미검증이다. 상태·영수증은 I:/EXODUSER-Storage/demo-art/impact/REPORT_1103.md에 갱신한다.
 
 추가 oracle: 최신 공통의 FeelContact/FeelHurt를 원 기검참 패킷과 분리하고 실제 처치 target/원 패킷과1회 공존을 검증해28/28. 기검참93/93, 현재 G 웹 원문52블록에서 새로 추출한 스킬13,216/13,216 불일치0. 생산 Core 변경0이며, 옛 검사기26중4실패와 저장 oracle의 fireball 누락 예외도 `1103-oracle/`에 보존한다.
+
+
+### 11-03 전사 첫 단위 정식 영수증
+
+고정 source `dea943ccd6d9c398fdf310b3b90015c981782b9f`, 정식6000.6.7f1/remodel-scenes1 build `3a97850e` Succeeded/errors0/6,586,212,347B/compileErrors0/USER_SAVE0. 실제 Player MCP0. 같은패키지 M1 `dd9739b0` 23/23 ok, 전후 `33793752`/`68a4f7f9` 1600×900/각10초300PNG, Core trace `9a432b59a8229ddb3fa405dec933484d7a0eb5894a8cb56674cf99f7d1ddbb26` 동일. 접점8회/원화표시152프레임/최대3sprite/drop0, 실제처치1/기검참3타Tier3명중, 넉백 normal99.6108/Ki207.2568px 동일.
+
+원본 크기의 전후·091256 고정앵커·움직이는공식참조 나란히10초 MP4 3편은 각300프레임 실제연속재생 ended/drop0/손상0. 직접1x 접점연속 및 두 공격구간 연속프레임을 확인했다. 접점 가시성은 PASS, 전체 VFX는 **RETOUCH**: 기존큰흰검기·밀집겹침/세번째피격자반응·보스/전체스킬/자연전투/청취가 남는다. 타게임 카메라·캐릭터크기·노출 차이를 동등성으로 주장하지 않는다.
+
+32:9 첫 `0abed168`은 요청3840×1080/실제1600×900으로 실패했다. 시작 해상도까지 명시한 단일재시도는 실제3840×1080/300PNG/같은Core trace/표시8회로 통과했다. 이 raw 화면과1x를 직접 열었다. 원영수증 scope의16초/5스킬 이력문구와 달리 실제 warriorOnly/sections/frames상 이 검수는2공격10초이며, 원본을 수정하지 않고 다음QA소스에서 문구를 정정한다. 빌드 파생원본855개 정확복원·신규57개 SHA보존/추적GUID참조0 정리. 상세 `I:/EXODUSER-Storage/demo-art/impact/1103-warrior-verdict.json`, `REPORT_1103.md`.
