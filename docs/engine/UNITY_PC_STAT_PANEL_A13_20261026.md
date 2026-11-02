@@ -1,5 +1,7 @@
 # PC-A13 능력치 창 (`#statPanel`) Unity 이식 — 2026-10-26
 
+> 2026-11-02 3차: 실상태·투자계획·환불·FIFO예약·저장·기사 배경은 [현행 이식표](UNITY_STAT_PLAN_PARITY_20261102.md)로 갱신됐다. 아래 미이식 표는 당시 checkpoint 이력이다.
+
 기준: 웹 `G:/exoduser/stat-panel-ui.js` · `stat-panel-ui.css` · `growth-tree-*.css` · `ui-refinement.css` (웹 HEAD `1770c2698`, stat-panel-ui.js 마지막 커밋 `2cc7bdfdc`). 베이스 `d5f32ff57`. 원칙: UI는 웹 그대로, **정의=웹에서 추출 / 상태=Unity에서 읽고 없으면 "미이식"**.
 
 ## 1. 파일

@@ -77,6 +77,8 @@ namespace Exoduser.UnityPort
             keyLabel=new GUIStyle(GUI.skin.label){font=textFont,fontStyle=FontStyle.Normal,fontSize=15,alignment=TextAnchor.MiddleCenter,wordWrap=false,clipping=TextClipping.Clip,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};keyLabel.normal.textColor=new Color(192/255f,189/255f,183/255f);
             tooltip=new GUIStyle(GUI.skin.box){font=textFont,fontSize=20,alignment=TextAnchor.MiddleCenter};tooltip.normal.textColor=new Color(219/255f,216/255f,210/255f);
         }
+        public bool FeelHurtActive;Texture2D feelHurtMark;
+        void DrawFeelHurt(Rect liquid){if(!FeelHurtActive)return;if(feelHurtMark==null)feelHurtMark=NativeSilverHellUi.Effect(256,256,(u,v)=>{float r=Vector2.Distance(new Vector2(u,v),new Vector2(.5f,.5f));if(r>.5f)return Color.clear;float inward=(.5f-r)*175;return inward<3?new Color(223/255f,180/255f,156/255f,1):new Color(184/255f,48/255f,34/255f,Mathf.Clamp01(1-(inward-3)/22));});NativeUiAudit.DrawTexture(liquid,feelHurtMark,ScaleMode.StretchToFill,true);}
         public void Draw(float width,float height,string activeAttack,Simulation simulation=null)
         {
             if(values==null)return;Styles();ActiveSkill=activeAttack;float mid=width/2;
@@ -88,7 +90,7 @@ namespace Exoduser.UnityPort
             // The original imported PNG stays byte-identical and the common labels are drawn below.
             if(labelCleanBar==null)labelCleanBar=BuildLabelCleanBar();
             var oldColor=GUI.color;GUI.color=new Color(.8f,.8f,.8f);NativeUiAudit.DrawTexture(slotBar,labelCleanBar??bar,ScaleMode.StretchToFill,true);GUI.color=oldColor;
-            Globe(dock.LeftLiquid,dock.LeftFrame,false);Globe(dock.RightLiquid,dock.RightFrame,true);
+            Globe(dock.LeftLiquid,dock.LeftFrame,false);DrawFeelHurt(dock.LeftLiquid);Globe(dock.RightLiquid,dock.RightFrame,true);
             Rect lmb=dock.ActiveSlot;
             if(activeAttack=="kiSlash"){
                 var insetIcon=new Rect(lmb.x+3*scale,lmb.y+3*scale,lmb.width-6*scale,lmb.height-6*scale);
@@ -187,6 +189,6 @@ namespace Exoduser.UnityPort
             }finally{Release(h);Release(m);}
         }
         static void Release(UnityEngine.Object value){if(Application.isPlaying)UnityEngine.Object.Destroy(value);else UnityEngine.Object.DestroyImmediate(value);}
-        public void Dispose(){foreach(var rt in new[]{hp,mana,shield,eye}){rt.Release();Release(rt);}Release(labelCleanBar);Release(material);}
+        public void Dispose(){if(feelHurtMark!=null)Release(feelHurtMark);foreach(var rt in new[]{hp,mana,shield,eye}){rt.Release();Release(rt);}Release(labelCleanBar);Release(material);}
     }
 }

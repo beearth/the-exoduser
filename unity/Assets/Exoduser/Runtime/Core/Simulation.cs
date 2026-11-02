@@ -82,9 +82,9 @@ namespace Exoduser.UnityPort.Core
             if (Player.Hp <= 0 || Player.State == "dead" || Player.State == "fallen") { TickFallen(); UpdateKiProjectiles(); UpdateBolts(); TickKiTimers(); TickHurtFx(); return; }
             if (!RollActive) Player.Facing = (float)Math.Atan2(aimY - Player.Y, aimX - Player.X);
             float regenDivisor = Player.State == "idle" ? 8 : 16;
-            Player.Hp = Math.Min(Player.MaxHp, Player.Hp + Config.PlayerHpRegen / regenDivisor);
-            Player.Stamina = Math.Min(Player.MaxStamina, Player.Stamina + Config.PlayerStaminaRegen / regenDivisor);
-            Player.Mana = Math.Min(Player.MaxMana, Player.Mana + Config.PlayerManaRegen / regenDivisor);
+            Player.Hp = Math.Min(Player.MaxHp, Player.Hp + Config.PlayerHpRegen * (float)((1 + Growth.Value("pRegen") * .03) * (1 + Growth.Value("pAbund") * .05 + (Player.Hp <= Player.MaxHp * .3 ? Growth.Value("pPred") * .10 : 0))) / regenDivisor);
+            Player.Stamina = Math.Min(Player.MaxStamina, Player.Stamina + Config.PlayerStaminaRegen * (float)(1 + Growth.Value("pRegen") * .03) / regenDivisor);
+            Player.Mana = Math.Min(Player.MaxMana, Player.Mana + Config.PlayerManaRegen * (float)(1 + Growth.Value("pMRegen") * .03) / regenDivisor);
             Player.StateTicks--;
             Player.Iframes = Math.Max(0, Player.Iframes - 1);
             attackHeldForMagic = attack;
@@ -334,7 +334,8 @@ namespace Exoduser.UnityPort.Core
             var ctx = new ExpContext { AffixExpBonus = Config.ExpBonus, DemoLevelCap = Config.LevelCap, Today = TodayKey() };
             var up = LevelExp.Add(Player, input, trans, ctx);
             if (up == null) return;
-            // Web 43228: +20% of each maximum, capped. Passive-queue auto-invest (_processPassiveQueue) and the Lv300/700 skill unlocks belong to the passive/skill rows.
+            ProcessGrowthQueue(); // web _processPassiveQueue, after AP is awarded and before the resource heal
+            // Web 43228: +20% of each maximum, capped.
             Player.Hp = Math.Min(Player.MaxHp, Player.Hp + (int)(Player.MaxHp * .2));
             Player.Stamina = Math.Min(Player.MaxStamina, Player.Stamina + (int)(Player.MaxStamina * .2));
             Player.Mana = Math.Min(Player.MaxMana, Player.Mana + (int)(Player.MaxMana * .2));

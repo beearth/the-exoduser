@@ -1,0 +1,1734 @@
+{
+  "web": "origin/main",
+  "catalogCount": 64,
+  "rows": [
+    {
+      "id": 0,
+      "source": "img/title_bg_20261028.jpg",
+      "native": "",
+      "width": 2560,
+      "height": 1440,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 5120,
+          "height": 1440,
+          "centerX": 1280,
+          "resource": "Art/FullscreenWide/00-32",
+          "sourceSha256": "6aeda6917767550cf108fda586299fd967880c266f98d1bb6bb0424fc16fb8a1",
+          "pngSha256": "d5acca619ec79ef60f13941598f46c810c631beaf403cb5b0d1ebcbd5226b292"
+        },
+        {
+          "label": "21",
+          "width": 3414,
+          "height": 1440,
+          "centerX": 427,
+          "resource": "Art/FullscreenWide/00-21",
+          "sourceSha256": "c0ce7ae4ffc66cf69d17510068ee0e2ce4730f990e4969e8de34074993f38bf9",
+          "pngSha256": "fbbab3b26d6cd984db3bdc90cf9f58129b18b4955007e5930f8bdf31d27b2f15"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "source": "img/hellgate.png",
+      "native": "",
+      "width": 2560,
+      "height": 1664,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 5918,
+          "height": 1664,
+          "centerX": 1679,
+          "resource": "Art/FullscreenWide/01-32",
+          "sourceSha256": "6e2973044181553b69e6e52ef8d19f7c23f329f98e3a146655a8c70190c2ddca",
+          "pngSha256": "c6c61e56c32f1e151d418c6dbfa5bc6f6d1b8e0fa70b707963ce04880df4c568"
+        },
+        {
+          "label": "21",
+          "width": 3945,
+          "height": 1664,
+          "centerX": 693,
+          "resource": "Art/FullscreenWide/01-21",
+          "sourceSha256": "76598f4f1b9670e869195dc583df07aec06271af85ebfd8d4eb2c07c4eebbf1e",
+          "pngSha256": "413c5a7aba428e8e53f9f5f1a58ff8b2e81e0e2a95548f8c14d96911a3b5d393"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "source": "img/cin_nemesia_hd.png",
+      "native": "",
+      "width": 1536,
+      "height": 1024,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 3642,
+          "height": 1024,
+          "centerX": 1053,
+          "resource": "Art/FullscreenWide/02-32",
+          "sourceSha256": "3b9da2b62999994792054f031eaabe2cf1e285c355f2230d565e281d7c5638fe",
+          "pngSha256": "e3ba34aaac10a9bce6818c965bac25bdcd17a49d1cde760e821d4535caf32d3c"
+        },
+        {
+          "label": "21",
+          "width": 2428,
+          "height": 1024,
+          "centerX": 446,
+          "resource": "Art/FullscreenWide/02-21",
+          "sourceSha256": "fa076ba5d479e8cfa909bc6911d4c267d3d30bf9fd31f2427ca25bec596eea23",
+          "pngSha256": "9f65c1efd2874eb90f0ed79a341524a07469c47431fa516e2fbdfeec058fe5cb"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "source": "img/cin_remember_wide.png",
+      "native": "Art/ui/death/cin_remember_wide",
+      "width": 1931,
+      "height": 814,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 2895,
+          "height": 814,
+          "centerX": 482,
+          "resource": "Art/FullscreenWide/03-32",
+          "sourceSha256": "73eb427292af0c37ceb4398838b42a2221d926a0136a0c2121fa2e29e71aea47",
+          "pngSha256": "6dd95729999fb8e13cb223a0398faf81cc4fc22babb72a5e4ccb6d52706c8efe"
+        },
+        {
+          "label": "21",
+          "width": 1931,
+          "height": 814,
+          "centerX": 0,
+          "resource": "Art/FullscreenWide/03-21",
+          "sourceSha256": "9d9215c9f73ce30bf63968b2fbcc23ffa4950847f9d9ea45fa67d351317b7515",
+          "pngSha256": "43b162b2f0465d00e71f56c2d528adc0dd6142832134dc414c0dac99ae947cef"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "source": "assets/lobby/lobby_varkan_crypt_poster_v2.webp",
+      "native": "Art/lobby/lobby_poster",
+      "width": 1920,
+      "height": 1088,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 3870,
+          "height": 1088,
+          "centerX": 975,
+          "resource": "Art/FullscreenWide/04-32",
+          "sourceSha256": "9a6de99d8868048b945638eea3de68bdf707a10231d9fe9e9e7b939486166bbe",
+          "pngSha256": "44f8b9f8cbec1c8bd1a1754230a993689b999e0e717b3b904166178d49ff8088"
+        },
+        {
+          "label": "21",
+          "width": 2579,
+          "height": 1088,
+          "centerX": 330,
+          "resource": "Art/FullscreenWide/04-21",
+          "sourceSha256": "350792ec04b381418dd997e67fb5b91630352dfaea968ab41fdec72daa08647a",
+          "pngSha256": "78620eb3243107ef152403d5ef92a6ddc5b6f3748144982ba236b5988b334511"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "source": "assets/charselect/bg_scene1.png",
+      "native": "Art/CharacterSelect/bg_scene1",
+      "width": 1536,
+      "height": 1024,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 3642,
+          "height": 1024,
+          "centerX": 1053,
+          "resource": "Art/FullscreenWide/05-32",
+          "sourceSha256": "0c0402a6c67b703488179df26368d0cd17d44c55acf7ee15045adb2db3f3a586",
+          "pngSha256": "1405da85e4c328fbd3834bfddd0552847717272ef1e34277f3b0f35e79b388f1"
+        },
+        {
+          "label": "21",
+          "width": 2428,
+          "height": 1024,
+          "centerX": 446,
+          "resource": "Art/FullscreenWide/05-21",
+          "sourceSha256": "78445207b240a66f56a8234e56711e5d6ea3cc4b5f58dfa74a13c4dccd5cd415",
+          "pngSha256": "1ffbfcad9785fc0a982f74472304a1db078b67ea198ec988b2b93c89faec2bdb"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "source": "assets/charselect/bg_scene2.png",
+      "native": "Art/CharacterSelect/bg_scene2",
+      "width": 1536,
+      "height": 1024,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 3642,
+          "height": 1024,
+          "centerX": 1053,
+          "resource": "Art/FullscreenWide/06-32",
+          "sourceSha256": "470ad9e3e46731b0f8546e471b0467553255f42344debbcc3d821b6aa6f91d0a",
+          "pngSha256": "89430ac3030c893fba3b00c4c353b149891d2f07e1e78397c092735ea7f1839a"
+        },
+        {
+          "label": "21",
+          "width": 2428,
+          "height": 1024,
+          "centerX": 446,
+          "resource": "Art/FullscreenWide/06-21",
+          "sourceSha256": "44afee65223eedc7504db31ad32711ba96db32c49e43f6b1d1c9d48eaef1cf16",
+          "pngSha256": "94f3f1e56b3d73f47fd735f875d514731c3f15d234c2c0943a9b0638e24bea77"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "source": "assets/cutscene/prologue/p01.jpg",
+      "native": "",
+      "width": 2688,
+      "height": 1520,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 5406,
+          "height": 1520,
+          "centerX": 1359,
+          "resource": "Art/FullscreenWide/07-32",
+          "sourceSha256": "179c0ffaa55fbea76ef5d2e4919baf90510aac0524e23c49ac104d395034c7b6",
+          "pngSha256": "15f2c792cfa0b5dd60a3ece3a5017c48e524bc9d7e91c4dfd99220a82389da6b"
+        },
+        {
+          "label": "21",
+          "width": 3603,
+          "height": 1520,
+          "centerX": 458,
+          "resource": "Art/FullscreenWide/07-21",
+          "sourceSha256": "fd6a451ec8b88f9682b03cb2de52b505c44ca631905ad663b71485184de99d1d",
+          "pngSha256": "d92210ae0e84fe428b1cf4ff251f6734f84a7b8ed920904868d6ddb32b476c98"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "source": "assets/cutscene/prologue/p01b.jpg",
+      "native": "",
+      "width": 2688,
+      "height": 1520,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 5406,
+          "height": 1520,
+          "centerX": 1359,
+          "resource": "Art/FullscreenWide/08-32",
+          "sourceSha256": "cdfde601bafc06668a418eb842ee905d616530cd6b96d5d471060fee3a43569f",
+          "pngSha256": "1c948e9d3df0e927d502d4778074cb9fe73b317be9b9fc9a7172c89e91368add"
+        },
+        {
+          "label": "21",
+          "width": 3603,
+          "height": 1520,
+          "centerX": 458,
+          "resource": "Art/FullscreenWide/08-21",
+          "sourceSha256": "1c2c5e277aee4648fdef62f7a5267ff2c18f55ea1e911177b4a17204b3f4508b",
+          "pngSha256": "468cc5f55df63d5987113a0089bdf02c0eda8d8650a92a9a582c8241a2f4e573"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "source": "assets/cutscene/prologue/p02.jpg",
+      "native": "",
+      "width": 2688,
+      "height": 1520,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 5406,
+          "height": 1520,
+          "centerX": 1359,
+          "resource": "Art/FullscreenWide/09-32",
+          "sourceSha256": "4adadc56026d23684cad32255d7e0a53271d384b178a88d7fcd185da4456c822",
+          "pngSha256": "ab027a7dc84c8c1ba195855be82b9e895c33b7da0190c5a00106fe83995d49dc"
+        },
+        {
+          "label": "21",
+          "width": 3603,
+          "height": 1520,
+          "centerX": 458,
+          "resource": "Art/FullscreenWide/09-21",
+          "sourceSha256": "d48c6b0dc996e994d7420a8991edc9bb417d0e278ae1f8f9fc84a1611d3f055a",
+          "pngSha256": "b701260fcff92e9d6a84b9715aa5bb8f96aaf4b1a00054d830d88346ee88c444"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "source": "assets/cutscene/prologue/p03.jpg",
+      "native": "",
+      "width": 2688,
+      "height": 1520,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 5406,
+          "height": 1520,
+          "centerX": 1359,
+          "resource": "Art/FullscreenWide/10-32",
+          "sourceSha256": "2664454ac2d1b1665d330cfa6f850a510a8c55c8f3a097b0dcaa137d31ad7279",
+          "pngSha256": "1c108ceaa7932689df89814fb489e67eaa3aef069d9d4c97ae6bbdf561bdde32"
+        },
+        {
+          "label": "21",
+          "width": 3603,
+          "height": 1520,
+          "centerX": 458,
+          "resource": "Art/FullscreenWide/10-21",
+          "sourceSha256": "aad91c35bce84c907db65cd591ef9f42224225240a8d79103733d64e400ffab4",
+          "pngSha256": "2520f0d0e70d21236a6e17ec16f1df838ea1cda8d332ca0e1b968afdd2847dfa"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "source": "assets/cutscene/prologue/p04.jpg",
+      "native": "",
+      "width": 2688,
+      "height": 1520,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 5406,
+          "height": 1520,
+          "centerX": 1359,
+          "resource": "Art/FullscreenWide/11-32",
+          "sourceSha256": "3623375070e6b59dd4e0e40efb9d8d0de17c563f0f54151efd194d4c2946a681",
+          "pngSha256": "fc92de86c0c03583737ab6b62c77fd444219bcdf05e48c2bceb712cb28f60e78"
+        },
+        {
+          "label": "21",
+          "width": 3603,
+          "height": 1520,
+          "centerX": 458,
+          "resource": "Art/FullscreenWide/11-21",
+          "sourceSha256": "86efc824eebfe4dfd63ccea15af063e3ff3d9833739b2e5f69f1d8aa5da3461e",
+          "pngSha256": "5cc0073e054a54b959d73e13cda123f5e2314a70d469362c82892eb14eac439c"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "source": "assets/cutscene/prologue/p05.jpg",
+      "native": "",
+      "width": 2688,
+      "height": 1520,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 5406,
+          "height": 1520,
+          "centerX": 1359,
+          "resource": "Art/FullscreenWide/12-32",
+          "sourceSha256": "66bb1a8e00cf64ef33d29ee1954913f14c525e7ecc0049c0e05f55978c3cf963",
+          "pngSha256": "e31fa8149a29a2eecf675156b66c29e4112a1779acc6272ecb52a5d1ae22b78a"
+        },
+        {
+          "label": "21",
+          "width": 3603,
+          "height": 1520,
+          "centerX": 458,
+          "resource": "Art/FullscreenWide/12-21",
+          "sourceSha256": "40ad030b5c42acefec7430d00efd197807e1223b3b1e987e58f7b2d0372ce437",
+          "pngSha256": "975d19e06bbe09f50585e0cca5520bef05183320a4a92edc78f3113ecfb222d7"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "source": "assets/cutscene/prologue/p06.jpg",
+      "native": "",
+      "width": 2688,
+      "height": 1520,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 5406,
+          "height": 1520,
+          "centerX": 1359,
+          "resource": "Art/FullscreenWide/13-32",
+          "sourceSha256": "1d02220f12bc91191d9a1e91ab895b36cd16b3b041c5a3cf76972204f7d11ff1",
+          "pngSha256": "5b2458f89269815d43b63ee236d6c06c9be191755e6a225493243738e12cdb33"
+        },
+        {
+          "label": "21",
+          "width": 3603,
+          "height": 1520,
+          "centerX": 458,
+          "resource": "Art/FullscreenWide/13-21",
+          "sourceSha256": "87ce9e82f64321fed66e52d67c1d124da726568b8f883ffdf7a1bd2d39636922",
+          "pngSha256": "96b3cf52984d9baa98a17408b51f1af994cc99755c0dde95081738e551b057b7"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "source": "assets/cutscene/prologue/p07.jpg",
+      "native": "",
+      "width": 2688,
+      "height": 1520,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 5406,
+          "height": 1520,
+          "centerX": 1359,
+          "resource": "Art/FullscreenWide/14-32",
+          "sourceSha256": "c91969302b38661cac19a34c523647a5f09fc031f79149d40e5800c5a4062808",
+          "pngSha256": "23fc53fc5dd50e90ae4ffdef9983e0d588ce8720d2b0a1f7e04d739a189bb1df"
+        },
+        {
+          "label": "21",
+          "width": 3603,
+          "height": 1520,
+          "centerX": 458,
+          "resource": "Art/FullscreenWide/14-21",
+          "sourceSha256": "14c8640cdfc95689d145f2357b91879e28085c5f024d4813d7ae3519e472083a",
+          "pngSha256": "8e5a48bb4c12ffb46f434cdd7d1df62859256351cf98c903cf75e9af0943a01f"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "source": "assets/cutscene/prologue/p08.jpg",
+      "native": "",
+      "width": 2688,
+      "height": 1520,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 5406,
+          "height": 1520,
+          "centerX": 1359,
+          "resource": "Art/FullscreenWide/15-32",
+          "sourceSha256": "eb5bd42050eb302ce7212f677b36042bd7418700e23ef309a8b64b92a73306f3",
+          "pngSha256": "b2f9658acbb4d148bf184ba4d6616ea05d03a546068a9ef1cdb175f0a96eaaa8"
+        },
+        {
+          "label": "21",
+          "width": 3603,
+          "height": 1520,
+          "centerX": 458,
+          "resource": "Art/FullscreenWide/15-21",
+          "sourceSha256": "e428a8a9a8ebfc6172f4e917737cfa9ce0c125755733ab4527924d6cdd0cc987",
+          "pngSha256": "a96fc2b28a5a4b338050653f55742c2ee2043bd6ef1be14e4736c4efd507fda4"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "source": "assets/cutscene/prologue/p09.jpg",
+      "native": "",
+      "width": 2688,
+      "height": 1520,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 5406,
+          "height": 1520,
+          "centerX": 1359,
+          "resource": "Art/FullscreenWide/16-32",
+          "sourceSha256": "8e7fc288427addeb64cd515e1a22f76b09b4b9796867f5d18bf159717f842ca2",
+          "pngSha256": "db7a330f640aadbf0dd193698e456ab2649e7674b598967b733939d4a4c9642f"
+        },
+        {
+          "label": "21",
+          "width": 3603,
+          "height": 1520,
+          "centerX": 458,
+          "resource": "Art/FullscreenWide/16-21",
+          "sourceSha256": "6c177b46969a3aa4a8f90587b8cc99c615a9ed425c57e24157731ce16cfa5793",
+          "pngSha256": "6e09dde7f4f0ff572646e37133a9efd1a92403873f17129e1c243a62f5519953"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "source": "assets/cutscene/prologue/p10.jpg",
+      "native": "",
+      "width": 2688,
+      "height": 1520,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 5406,
+          "height": 1520,
+          "centerX": 1359,
+          "resource": "Art/FullscreenWide/17-32",
+          "sourceSha256": "721fa1f074f2af2064831fb0fe99ad3356c4bf52349301727a7b80a3838e5e20",
+          "pngSha256": "1b42efa0a477dad8bdcf60c3591ce55af111a8a55bdc65549db93368fa2304a3"
+        },
+        {
+          "label": "21",
+          "width": 3603,
+          "height": 1520,
+          "centerX": 458,
+          "resource": "Art/FullscreenWide/17-21",
+          "sourceSha256": "26c729adea473d1f115f260d9050304e4410d5d5ce55c682d22a280dcefeabb1",
+          "pngSha256": "3815b4c348da9b1ba8c2766e20f096dd2d048121ea32495f70f04b45705397e5"
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "source": "assets/cutscene/prologue/p11.jpg",
+      "native": "",
+      "width": 2688,
+      "height": 1520,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 5406,
+          "height": 1520,
+          "centerX": 1359,
+          "resource": "Art/FullscreenWide/18-32",
+          "sourceSha256": "0d3b002d2a126bbd29da60762d79b9b8f954bb6cda0d732d1b88cc235e794259",
+          "pngSha256": "0f2564d5e55159b6554d16836994dc59af74c9a54f11c55796f0caa203cc717b"
+        },
+        {
+          "label": "21",
+          "width": 3603,
+          "height": 1520,
+          "centerX": 458,
+          "resource": "Art/FullscreenWide/18-21",
+          "sourceSha256": "5623f0e40fddbe929163f99ec9a440f48ee7b9467a0ca6f2728c61c0bf73f67c",
+          "pngSha256": "5b61140ce7a9df844adf76848c31c6ba793129c3d363fcbb2d8cd7748b4daf37"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "source": "assets/cutscene/prologue/p12.jpg",
+      "native": "",
+      "width": 2688,
+      "height": 1520,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 5406,
+          "height": 1520,
+          "centerX": 1359,
+          "resource": "Art/FullscreenWide/19-32",
+          "sourceSha256": "3f11a95e564137c5fc9563aba983408bb1f6697d1ffa67204406f24852a80cba",
+          "pngSha256": "1b793b77071fd758af80e4d11e3acceb9219e757667a5cdcff28a835ba054e86"
+        },
+        {
+          "label": "21",
+          "width": 3603,
+          "height": 1520,
+          "centerX": 458,
+          "resource": "Art/FullscreenWide/19-21",
+          "sourceSha256": "255605b7996df206e70f9dafd39f17922ebecda81b499dca719c28b21f80f29e",
+          "pngSha256": "2c6ffcb9e82bf21b84df2317c0726c3914b35e9db6e5ea8b6d73d2a84a6e7620"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "source": "assets/cutscene/prologue/p13.jpg",
+      "native": "",
+      "width": 2688,
+      "height": 1520,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 5406,
+          "height": 1520,
+          "centerX": 1359,
+          "resource": "Art/FullscreenWide/20-32",
+          "sourceSha256": "fe08c34efeceac25d3aead0a2e4ff2aced586d6999f211a59fc9a933dce30e21",
+          "pngSha256": "107d33e15779696726e4f63401623e6fc32ac643e3477171360ca74e715265c5"
+        },
+        {
+          "label": "21",
+          "width": 3603,
+          "height": 1520,
+          "centerX": 458,
+          "resource": "Art/FullscreenWide/20-21",
+          "sourceSha256": "d0c98fb1aac3a02b47b637a9ba64d20769a149927a78350d17db5e04d0bd3a2d",
+          "pngSha256": "710d9ab70017a74214724a87dca699357b4da17e2f3984caa5606dc1eb93ade1"
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "source": "assets/cutscene/prologue/p14.jpg",
+      "native": "",
+      "width": 2688,
+      "height": 1520,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 5406,
+          "height": 1520,
+          "centerX": 1359,
+          "resource": "Art/FullscreenWide/21-32",
+          "sourceSha256": "682ca95e4afa6038bfcfd05f3197e342471ea6c345e6b2deef9fbfd9d946dc72",
+          "pngSha256": "f2b4f729d1dfe67eff6cba98f90712cddeeaa7842724a0192952f39fdede4b23"
+        },
+        {
+          "label": "21",
+          "width": 3603,
+          "height": 1520,
+          "centerX": 458,
+          "resource": "Art/FullscreenWide/21-21",
+          "sourceSha256": "007ef412534e12a1ba643b7bc239eedd498e569e458f613fda54597492ed9e5b",
+          "pngSha256": "9b4626b97ae7183f243f7afab8ec3d357e8374793e55f3628ea1c1ef36c1cdfa"
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "source": "assets/cutscene/prologue/p15.jpg",
+      "native": "",
+      "width": 2688,
+      "height": 1520,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 5406,
+          "height": 1520,
+          "centerX": 1359,
+          "resource": "Art/FullscreenWide/22-32",
+          "sourceSha256": "b06848d71e7772ee211bf2eddf29e6c126eaf91e46e3fcab91103ecd6cdc9ccb",
+          "pngSha256": "23f548255a9b43ede44ecc78ac0a277fc45bf8d84c9bc33e43403b1124a6faa8"
+        },
+        {
+          "label": "21",
+          "width": 3603,
+          "height": 1520,
+          "centerX": 458,
+          "resource": "Art/FullscreenWide/22-21",
+          "sourceSha256": "2ae94943fce393441b623404cee3fd550861680f48a6c6acce5b918efcd8ee6e",
+          "pngSha256": "cfc33f74708d5ddd161cb823c3787be83cf4ab44899d3832fdf37aa9cb8dbda4"
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "source": "assets/cutscene/prologue/p16.jpg",
+      "native": "",
+      "width": 2688,
+      "height": 1520,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 5406,
+          "height": 1520,
+          "centerX": 1359,
+          "resource": "Art/FullscreenWide/23-32",
+          "sourceSha256": "160627f19ac7a29abcc9af3d121c16c9c3f3fc9baa6fb93db70080427847d7ed",
+          "pngSha256": "7becae59b06b4e02cafeea9caf1b94889760aa02f15f239f36dc69f1f0ad4348"
+        },
+        {
+          "label": "21",
+          "width": 3603,
+          "height": 1520,
+          "centerX": 458,
+          "resource": "Art/FullscreenWide/23-21",
+          "sourceSha256": "28a236dbf1f7fdc462db3f34cab6595e69ce90dd68fe80c3db54d533f17e4911",
+          "pngSha256": "b34b37732be2d2d773350d3ef5a3bafe8c04e009fb829bdfba0b1412975cbee8"
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "source": "assets/cutscene/prologue/p17.jpg",
+      "native": "",
+      "width": 2688,
+      "height": 1520,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 5406,
+          "height": 1520,
+          "centerX": 1359,
+          "resource": "Art/FullscreenWide/24-32",
+          "sourceSha256": "94dba446560e598182d615d0c0b976a1ebdc39e6e74e7b936689786912bc972d",
+          "pngSha256": "24a112d4f57a4aca4db2fdb7cca3b6772dddf9c7b60bd79bc6d13c478c077f44"
+        },
+        {
+          "label": "21",
+          "width": 3603,
+          "height": 1520,
+          "centerX": 458,
+          "resource": "Art/FullscreenWide/24-21",
+          "sourceSha256": "d8721abfefba5eb6f8095c23184e1470e408ac43ea15f146e56b7805f921b357",
+          "pngSha256": "d0fb0a504d25cccefaa3cbe37bea621ce4ab88c258018a77ad45e4dadd59fb1e"
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "source": "assets/cutscene/warintro/cin_war.jpg",
+      "native": "",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/25-32",
+          "sourceSha256": "87fd82023967773df8525d0ba0ee40e3de8bc14f6fab0b11071ac3d3e14fc341",
+          "pngSha256": "8ff16c26501bc851915017faea7d0dda209c6b7bd462902451bb6670dca77692"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/25-21",
+          "sourceSha256": "89394304f4ab50a09d1c59c47256149d378edb17e077f1fe77974e14d208124e",
+          "pngSha256": "c88c106fbf4d0af029671de3f1207980d68e94b45cb344b65ad553f9ac00763f"
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "source": "assets/cutscene/warintro/cin_ruins.jpg",
+      "native": "",
+      "width": 1536,
+      "height": 1024,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 3642,
+          "height": 1024,
+          "centerX": 1053,
+          "resource": "Art/FullscreenWide/26-32",
+          "sourceSha256": "b20487f8c455fc158ad6486e01a164df027a25c0a0387fe5bc04ff558973d20a",
+          "pngSha256": "b6bdc276853d4e4cf1536a863655923628af74b453a04aba2955a9981cf7d220"
+        },
+        {
+          "label": "21",
+          "width": 2428,
+          "height": 1024,
+          "centerX": 446,
+          "resource": "Art/FullscreenWide/26-21",
+          "sourceSha256": "5743d46c3da71b482ec407ab0e0af7bb4b36000665b3548173c05ffd11bd340c",
+          "pngSha256": "fd8fe797dbf8a62cbec6e277dc19b19019c963eff0e9fbe297722f18e69dac0c"
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "source": "assets/cutscene/warintro/cin_throne.jpg",
+      "native": "",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/27-32",
+          "sourceSha256": "6d9e1bee98fba4f5d7022df00e000cd4847dcc1cfcd5ec893f96a670ef46e784",
+          "pngSha256": "4f77fb9602f759d337ea0d900e44c9e2fa0de1ee3e5d5d34521663e34565aa25"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/27-21",
+          "sourceSha256": "345a6a7ea15073346755ae734467511c172333008db6abaa8d2a8334aafc5ff0",
+          "pngSha256": "f34e02b85c37da69b155676288af416723053b4c7673df10fc9cbd97c91eb9ca"
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "source": "assets/cutscene/warintro/cin_bystanders.jpg",
+      "native": "",
+      "width": 1536,
+      "height": 1024,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 3642,
+          "height": 1024,
+          "centerX": 1053,
+          "resource": "Art/FullscreenWide/28-32",
+          "sourceSha256": "c5b91e2a9aa8aecab7ff37f312e6f5b0a780b0d87a8c68bda3e6930a0d0569b3",
+          "pngSha256": "f45ceb425411825118719edc896214abef5843b1507ea15cdb105faa4598f37d"
+        },
+        {
+          "label": "21",
+          "width": 2428,
+          "height": 1024,
+          "centerX": 446,
+          "resource": "Art/FullscreenWide/28-21",
+          "sourceSha256": "d246544865da6f18a80724ffdf7affd7a97131e7299e86b5b22a6d63532cb7b4",
+          "pngSha256": "f2f824b2bba1bd7657f46b73e89ccbdb7ab27ab9d24848763de4e0eb5fd83f96"
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "source": "assets/cutscene/warintro/cin_bloodbath.jpg",
+      "native": "",
+      "width": 1536,
+      "height": 1024,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 3642,
+          "height": 1024,
+          "centerX": 1053,
+          "resource": "Art/FullscreenWide/29-32",
+          "sourceSha256": "66e97504e2672e619bd2cfab72f0924073c7c1c529b3a68edccb5842346ae9e7",
+          "pngSha256": "89c60c1a04ebbfd7a3fb9f12ec16d4b7222e71902393cd8650f58cf90ed427d5"
+        },
+        {
+          "label": "21",
+          "width": 2428,
+          "height": 1024,
+          "centerX": 446,
+          "resource": "Art/FullscreenWide/29-21",
+          "sourceSha256": "d077b8bc3a135751614fc822e0cd73cecf07922f0f08b6bec658b6c811b86233",
+          "pngSha256": "08284e3a9b6766b187c77fceacf9d63618ea1bb199253701c234fc1028b56a0e"
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "source": "assets/cutscene/warintro/cin_torture.jpg",
+      "native": "",
+      "width": 1536,
+      "height": 1024,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 3642,
+          "height": 1024,
+          "centerX": 1053,
+          "resource": "Art/FullscreenWide/30-32",
+          "sourceSha256": "46c0b6bbae3fc68ee9778f72b3377fe6f75e1b51ce6ee22347cf33ca435dd323",
+          "pngSha256": "68a87894354b1072017b549e0c5fe540b8a01c2583a7c0fdd61a2f0fe69ec77f"
+        },
+        {
+          "label": "21",
+          "width": 2428,
+          "height": 1024,
+          "centerX": 446,
+          "resource": "Art/FullscreenWide/30-21",
+          "sourceSha256": "3380c9c89aeaaf6238a5a921d43b87146a341e73ac60887f6b45b4b0a4999f0c",
+          "pngSha256": "a6a6eba89f91aa1af9d8b316dffe9b1e25eac8e499c4d29f4078e36cbd2c3793"
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "source": "assets/cutscene/warintro/cin_remember.jpg",
+      "native": "",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/31-32",
+          "sourceSha256": "d5a07beb11e0ad46345dcfe0e912af11ae2e21726bf91b0a2044a8ae6000d81c",
+          "pngSha256": "059871c1b1ce0a9cda4bc7dbb293efc44b90893bf0ee521d76127c0b6e37afce"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/31-21",
+          "sourceSha256": "617036dd21c35b932e6066cfe6ca71d8322dbd26739d4e16fba52e3b683fa8a6",
+          "pngSha256": "5242c5d70c267aad13b106170556d222cb9dd46e93fc9f035369a795b5b61486"
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "source": "assets/cutscene/warintro/cin_fallhell_custom.jpg",
+      "native": "",
+      "width": 2560,
+      "height": 1440,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 5120,
+          "height": 1440,
+          "centerX": 1280,
+          "resource": "Art/FullscreenWide/32-32",
+          "sourceSha256": "fec46e768ead46e94c149b259f92acdabd5601201d0415cb4f0235dce969202c",
+          "pngSha256": "76cccbac74efb02a9f4810c192cf3e28e67988cac98494f0d95e394ab458545b"
+        },
+        {
+          "label": "21",
+          "width": 3414,
+          "height": 1440,
+          "centerX": 427,
+          "resource": "Art/FullscreenWide/32-21",
+          "sourceSha256": "72edfd3608e1352fddabb2dec0f05269fa9303e2218a5e72934b487860e206d0",
+          "pngSha256": "de53637af979d8ad8fa8e64c81277605d7a8ad8d22b19767a6049ff5b93f02de"
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "source": "assets/cutscene/warintro/emg1.jpg",
+      "native": "",
+      "width": 1536,
+      "height": 1024,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 3642,
+          "height": 1024,
+          "centerX": 1053,
+          "resource": "Art/FullscreenWide/33-32",
+          "sourceSha256": "3dcba9fd4d1f11977fb4f962b106e30b7055b6a0e236da9b444ec6d7c52bc29d",
+          "pngSha256": "ab8bd29fe4a307d8e03f56ee38e5f8836efe969a71ea0b88eb40b8e2f189c4d6"
+        },
+        {
+          "label": "21",
+          "width": 2428,
+          "height": 1024,
+          "centerX": 446,
+          "resource": "Art/FullscreenWide/33-21",
+          "sourceSha256": "b7347915821a7b1c5ab8e6a3b22b8f2c315554ab002588ddbcdacf8050bce74b",
+          "pngSha256": "6e5d8244a1ee6b4ecd68f509e763c90f605ccdd58c5c8766820d0d5ebbf47757"
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "source": "assets/cutscene/warintro/cin_demonbattle.jpg",
+      "native": "",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/34-32",
+          "sourceSha256": "086931801083fdea31fa4c8357320be23ff13b54e3780c2548d8d8305712cbac",
+          "pngSha256": "b86791aa8a2290a6ce4b604b884c3fecf944e6e9f639296f5b6e0b39eeedb843"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/34-21",
+          "sourceSha256": "f56159100d04f11c5f6258b01ecfeed485d8a377643c78b245c661ca2f8a2d08",
+          "pngSha256": "e719617df6565e12aeeecb329fb708f84091d915f7fd3335efbb81942902af6f"
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "source": "assets/cutscene/warintro/cin_demonfight.jpg",
+      "native": "",
+      "width": 1536,
+      "height": 1024,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 3642,
+          "height": 1024,
+          "centerX": 1053,
+          "resource": "Art/FullscreenWide/35-32",
+          "sourceSha256": "6113601ecc49e2f685a240763074383e89c6986a2dad7ec7a0cefda19ec00e1c",
+          "pngSha256": "5eb35f33f3506ca23984024345171fb5b1ec8bdad982afaa3cd26d694b8814fc"
+        },
+        {
+          "label": "21",
+          "width": 2428,
+          "height": 1024,
+          "centerX": 446,
+          "resource": "Art/FullscreenWide/35-21",
+          "sourceSha256": "10fb5ae4c66676117e896bed0a98330869f35d29973aae1e1c88eba322ec02ca",
+          "pngSha256": "561d713333a42b485b498e05ada1a40aa591023bec6186213bdda689502ca111"
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "source": "assets/cutscene/warintro/cin_nemesia_hd.jpg",
+      "native": "",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/36-32",
+          "sourceSha256": "f710d6d74f03c73aa8616575d124fd535abe3648aff156751b5a2a51b995bddc",
+          "pngSha256": "6dcf63d5ffa8fe363ce86c96730fcaa9cfa549bee0e54703af321b51657d6b24"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/36-21",
+          "sourceSha256": "54d152e1daef86fa2c7dd2effa15ba80bcd7e14d41f6746d377cb412f17cddb0",
+          "pngSha256": "aa52253ce087e86076479af91530880914e2472876c226592245cb11f381c2dd"
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "source": "assets/cutscene/images/00.png",
+      "native": "Art/Startup/Nemesis/00",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/37-32",
+          "sourceSha256": "cd40f5bc798caca1ac799457891cb552c1b605e85d3642010df00e6cde04a9b7",
+          "pngSha256": "693162ea4b54d0b0a1be762d15cd9a97a2b48e5503ae5163e2f43f53c119fb58"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/37-21",
+          "sourceSha256": "33526d75aa0ef540ec53c60030ad7acf92adac2b45b8efd1eac67611a666dfb5",
+          "pngSha256": "861fd12deae3002f3a77cbacd29a71b473b68dffdc4fdd843d01b7998b25252e"
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "source": "assets/cutscene/images/01.png",
+      "native": "Art/Startup/Nemesis/01",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/38-32",
+          "sourceSha256": "9aa0ad4eb1cee82cb50393a0b6d938c306ef696fabf91486983c740c5374d209",
+          "pngSha256": "6dc53cb35b0cd2c951ca78b7a4b7216368a5a5f01572f947338490542d8001cf"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/38-21",
+          "sourceSha256": "7d286295e51faebc29feac97e59c1baeb0648fe26324fcbf598bc0cf7f33f69c",
+          "pngSha256": "71bf3b0eae904cedbc5e6a9619d2aea7498423fb33341fe5c645313416bb1709"
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "source": "assets/cutscene/images/02.png",
+      "native": "Art/Startup/Nemesis/02",
+      "width": 1672,
+      "height": 941,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 3346,
+          "height": 941,
+          "centerX": 837,
+          "resource": "Art/FullscreenWide/39-32",
+          "sourceSha256": "f98dd16a15a956c51cee134d00696054bdf777cc1c6b53cfc1d62aa0b00cf65e",
+          "pngSha256": "29217eae8cf33348ed01e3cb0d862f77f96d86bd99c604b1be31279d266f4415"
+        },
+        {
+          "label": "21",
+          "width": 2231,
+          "height": 941,
+          "centerX": 280,
+          "resource": "Art/FullscreenWide/39-21",
+          "sourceSha256": "3cd2cb9cc771d87587863f7b88b302f84faeb62f087b6d1727139e10f4b89a16",
+          "pngSha256": "2ebaae21a91819d906f4c7c913e67d6fdfc25e0951f0e958f006264e0f17c344"
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "source": "assets/cutscene/images/03.png",
+      "native": "Art/Startup/Nemesis/03",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/40-32",
+          "sourceSha256": "0c72960272a65bf75eec8b1b605b2214e45b2c0a2764767410645a39260a3ead",
+          "pngSha256": "888a01de37b887418989e722b3d256c2751e75c48df3335b554998a0fa2e4e58"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/40-21",
+          "sourceSha256": "2927f681648ec5e0a74cd1d8b0308efc71990e452ed7d817cfe6ffe7738be5da",
+          "pngSha256": "34f7ca51f176c44558ad973682b2dc67f0ae1e1cbaa0835a0f5f397ac08593fb"
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "source": "assets/cutscene/images/04.png",
+      "native": "Art/Startup/Nemesis/04",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/41-32",
+          "sourceSha256": "7374c25f06b78a508e6523620c1bb206e7ee42134102ed7cdb6fda2adc14ae7f",
+          "pngSha256": "e1b65b757e9eda39138689b1d016be54c86acb09692448e76a387348205dfb08"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/41-21",
+          "sourceSha256": "6ab4088be96836dc96cd6ec304a60d7207c9a239fc14e65038c107a6dad27191",
+          "pngSha256": "c9ecb871373c82c3cc1da7a1c1f6e5866b3285b9d5337f635b1e98e73db29372"
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "source": "assets/cutscene/images/05.png",
+      "native": "Art/Startup/Nemesis/05",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/42-32",
+          "sourceSha256": "78b4d35fdaf7df0c828f31e85a5cb4e5ca002ce27dbb127710151a23bf423990",
+          "pngSha256": "3b061e142a206ce72a58a5a6b121e38f6044feff1224d7c098e9d31f128aed93"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/42-21",
+          "sourceSha256": "34133dc88e45eb090468b8444e5d576b8717483159bd9bfcb83a58c91958f52e",
+          "pngSha256": "b6fe6492047d1631ee5566cf19cc99ea5a49f0394dc3656b1890663f9f096c14"
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "source": "assets/cutscene/images/06.png",
+      "native": "Art/Startup/Nemesis/06",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/43-32",
+          "sourceSha256": "da8a94c504e6cc96a8ccc904227452b9fe7380d490a4a137a55741bb79079123",
+          "pngSha256": "787cf99d866d20111a954a9303f4a23503d18da9a96604f3fc61fda9964413ab"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/43-21",
+          "sourceSha256": "3464e8859a4819daa15c29cd1554dbc9970c223d00ca7072ea526342cc789918",
+          "pngSha256": "2d82d5f4642e4e602f4094463fb9cfb66205142935f1e2c952902b9ccca8b586"
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "source": "assets/cutscene/images/07.png",
+      "native": "Art/Startup/Nemesis/07",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/44-32",
+          "sourceSha256": "664ae38f4e7c3aab7d105b37a5a11ce22410d51d5779b8713422e09b9ca19fe9",
+          "pngSha256": "af50886ff9efb2a6c1abc311cfeab5f49366471ef4abe863e9b7683ec70de0e3"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/44-21",
+          "sourceSha256": "0fff31ca7e6ffe112ce020e801964d52f41183160dfb546b0b84aa212ab56633",
+          "pngSha256": "41867256f321d0249c020087e1a38811884f41d976988556f80f5ce4f0d39426"
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "source": "assets/cutscene/images/08.png",
+      "native": "Art/Startup/Nemesis/08",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/45-32",
+          "sourceSha256": "a36432a1f5355162da57d7c14cac3366cce49830cbd39aa7ec707aeab90353b0",
+          "pngSha256": "b243b4d34adfbcecb5013f022d01dac4025c8637ebaeefbc923f57a07f131e41"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/45-21",
+          "sourceSha256": "44c32e9f9e5c3bb811226359e2d6ea2e4c410375de980aeaa7c0e3f43ed17255",
+          "pngSha256": "2f379b97e82a1474686c844ca512f8bea9860f21bee92614931e738ac9496d2f"
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "source": "assets/cutscene/images/09.png",
+      "native": "Art/Startup/Nemesis/09",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/46-32",
+          "sourceSha256": "0860103ced4630056c7bc1b9cc7f85ec8cfbd6aeb8af134c7e2be5374f8b4695",
+          "pngSha256": "28757b8fae192d5651f2a1bfb3d903ae5be3faa13bc45771774527719841b16c"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/46-21",
+          "sourceSha256": "4861748770db8d2a7977e96c19cb1e7892f31b47a8e8036c399460346bc96807",
+          "pngSha256": "421208df4a432720ce0261bf966484fb181cb11827aef185f65cdbbab1556af8"
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "source": "assets/cutscene/images/10.png",
+      "native": "Art/Startup/Nemesis/10",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/47-32",
+          "sourceSha256": "3c8299b261d8e0583139906599f609b8ad1532f7b0f2ae1486538c7045568bcb",
+          "pngSha256": "3873b822be56219385e2cc97ce13aa65867b4c03ca8ffb8dad592b5ac3ad2f05"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/47-21",
+          "sourceSha256": "46013b4ebd2d075ad121900f662ed5a8a719bbb909aad882ff7f220c6597496f",
+          "pngSha256": "02dd6dc7bbc10382c2d19633ae38aa67fa8e09df196840561a2b02f7ae96cfab"
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "source": "assets/cutscene/images/11.png",
+      "native": "Art/Startup/Nemesis/11",
+      "width": 1672,
+      "height": 941,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 3346,
+          "height": 941,
+          "centerX": 837,
+          "resource": "Art/FullscreenWide/48-32",
+          "sourceSha256": "6ab5e5982f5cb2c3a7c86926e81a03d2423523a372a545a3313dfbf8945e9a10",
+          "pngSha256": "28443edbf68684435d753499f3fd6fafb6b52f9387067f7f83a9bc79265d6a1c"
+        },
+        {
+          "label": "21",
+          "width": 2231,
+          "height": 941,
+          "centerX": 280,
+          "resource": "Art/FullscreenWide/48-21",
+          "sourceSha256": "f3c8768d2c5d4c9781016498800c2619a40bf24e035f3f6b329216108f124362",
+          "pngSha256": "771b6108bffc95dbddb974592321f32d4bcb23bf52136c75ee943bc6506f53bb"
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "source": "assets/cutscene/images/12.png",
+      "native": "Art/Startup/Nemesis/12",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/49-32",
+          "sourceSha256": "40bc4d07e36dd3f09d1936a2ca5f51abb2f62a6ff91dbbc0155f47cd8d903247",
+          "pngSha256": "9385be19478602cbfcdf6ae6abf4931b05b0674101250a0fb696edec319b832c"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/49-21",
+          "sourceSha256": "763814d6c2c9f4018267febf5d4ed5278d271525013900a59528261dd1419704",
+          "pngSha256": "f5c5dfb20855c57e68c9b533543adf35c9cb54736190e8e807ef1f6e38b16f08"
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "source": "assets/cutscene/images/13.png",
+      "native": "Art/Startup/Nemesis/13",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/50-32",
+          "sourceSha256": "98f6909f14aef3546ef3ada403a00bb6ebadc59bfde8798624d79c63101bf1c1",
+          "pngSha256": "0e67365f4a39c928e7b9636428d5abc9e196beaa9825fd373ea8be04581db347"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/50-21",
+          "sourceSha256": "463e7348ebb68fa2ae3fb30ec76bfacd1fc321b165ae542c79b3efbedcc4dd04",
+          "pngSha256": "398aba620cc1c8199cabf367efa587a7140b8f5f1f977462b5fc3ab179f2db59"
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "source": "assets/cutscene/images/14.png",
+      "native": "Art/Startup/Nemesis/14",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/51-32",
+          "sourceSha256": "c48a7c13ec65646576b5d5e3a51b66ce07d9d6b0ea6cf12d4d6e7823dbfb6639",
+          "pngSha256": "de1c79926ce08f8df9cc0c5b1a7e3343ddd56b1fc2e7594750021f2291920054"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/51-21",
+          "sourceSha256": "8a311c4ec527f65fe16cee6a0c7363ce65147c2037053f48f969596dad124160",
+          "pngSha256": "0c066b7481d2f3a057bf45cf2f0b46ecb4bec703f774f961b388464f91933c2d"
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "source": "assets/cutscene/images/15.png",
+      "native": "Art/Startup/Nemesis/15",
+      "width": 1672,
+      "height": 941,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 3346,
+          "height": 941,
+          "centerX": 837,
+          "resource": "Art/FullscreenWide/52-32",
+          "sourceSha256": "44fa8c0d91acb10e666ad6cfe7ca80ab495b5c6a88525106383698a0623f6bee",
+          "pngSha256": "933f19cc92f4530c1982446d67642137efcba99544f7719d2844b1311574e106"
+        },
+        {
+          "label": "21",
+          "width": 2231,
+          "height": 941,
+          "centerX": 280,
+          "resource": "Art/FullscreenWide/52-21",
+          "sourceSha256": "b8ec311e84b4ef4f96c5f844c2a624d598c95f01489cfe808f6dcd6a868e0d17",
+          "pngSha256": "a186ab34bd876c265693d019ebe71d4b37839a153846529d00936e816700c93c"
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "source": "assets/cutscene/images/16.png",
+      "native": "Art/Startup/Nemesis/16",
+      "width": 1672,
+      "height": 941,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 3346,
+          "height": 941,
+          "centerX": 837,
+          "resource": "Art/FullscreenWide/53-32",
+          "sourceSha256": "eeae3b6841a0f794f1c1c920419b2e31d3cbc293c875eaafcedbee9f31e488df",
+          "pngSha256": "d228589313058a4cae8588d511ea56f0dbcb20885156cdf26fccfdf4155da250"
+        },
+        {
+          "label": "21",
+          "width": 2231,
+          "height": 941,
+          "centerX": 280,
+          "resource": "Art/FullscreenWide/53-21",
+          "sourceSha256": "a572b5d8bbffa6a2b5cd04ffba590cc3591c5e01078d9ba0a5a99b8dbf55291c",
+          "pngSha256": "5f7d07044d0b80605dcc17c18488c30529d35118d6506eaaca519b2e37c168a7"
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "source": "assets/cutscene/images/17.png",
+      "native": "Art/Startup/Nemesis/17",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/54-32",
+          "sourceSha256": "12c7f86425c687a28f28be5c40fe09f97d0b993225988b93647bf3a519f3b806",
+          "pngSha256": "ea8a2653d22c0144316a08eacdf15d3807a8e592ea5603185b2969017bf985fc"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/54-21",
+          "sourceSha256": "89accab358c412bc4fbdf84c812afd6acda9b7f9fb0dab4b8811c9efd49ff5c7",
+          "pngSha256": "722180e9179f586ac918689caac6690404b99518d2016c1c128dc8ba7c38bb80"
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "source": "assets/cutscene/images/18.png",
+      "native": "Art/Startup/Nemesis/18",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/55-32",
+          "sourceSha256": "587f6c2c485950432266a05bc6bf6049a79eb9e4828a6d79b6da5698f3b0eb97",
+          "pngSha256": "b0347682392959666ab6a6dfca05372a6a24c5e92542dc2832da08556428626c"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/55-21",
+          "sourceSha256": "2c2580d8658e7171562b79144891b864c2de2608f961f0ae229123594d41946f",
+          "pngSha256": "4f61614072cf90fb9b9dfc26f222625da382a253a22cd06db214f81b3eb2d122"
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "source": "assets/cutscene/images/19.png",
+      "native": "Art/Startup/Nemesis/19",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/56-32",
+          "sourceSha256": "ef3da13b642fc07bc086e0fb136f07ba72f48e2bbed405e0179e68f5907f031e",
+          "pngSha256": "609bc8c014070d4a017b2e1421375d40ad0121882e8b23a758b3090b4d80901d"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/56-21",
+          "sourceSha256": "7dcbeae7e3dd248e0038f614400d0f10ebe826c205e716dd41d853c7ab04a999",
+          "pngSha256": "add92ff8be30488fc3782dd52e4ab4009401c91819e8126d953753e34c2dfed8"
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "source": "assets/cutscene/images/20.png",
+      "native": "Art/Startup/Nemesis/20",
+      "width": 2048,
+      "height": 1152,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 4096,
+          "height": 1152,
+          "centerX": 1024,
+          "resource": "Art/FullscreenWide/57-32",
+          "sourceSha256": "9d26966e99d4e40555e1df28efea342ffe69262b1ee88fca4473db4d127f59d5",
+          "pngSha256": "f5be2750f777c86338d1e9c9059dd8266280a772b262e629a927c950c5dc01cf"
+        },
+        {
+          "label": "21",
+          "width": 2731,
+          "height": 1152,
+          "centerX": 342,
+          "resource": "Art/FullscreenWide/57-21",
+          "sourceSha256": "8fe2d571bc3966c2fa9fbab0a8d3243b3348474d524c1c136eba8e82768d7106",
+          "pngSha256": "edf56c248677aaf849e07a2dde431d03267c43aa344271e468c36a93d229e2b5"
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "source": "assets/charselect/poster_idle_warrior_cs3_4k.jpg",
+      "native": "Art/CharacterSelect/poster_idle_warrior_cs3_4k",
+      "width": 3840,
+      "height": 2160,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 7680,
+          "height": 2160,
+          "centerX": 1920,
+          "resource": "Art/FullscreenWide/58-32",
+          "sourceSha256": "6a62d0ed60ca35186fa7db2fa0a3b5e45647a6462d76efd9c9872a6acee36824",
+          "pngSha256": "fcc697feb954d23a68080531f99c771bd6463c31a70a820b79d29b2b3c653a43"
+        },
+        {
+          "label": "21",
+          "width": 5120,
+          "height": 2160,
+          "centerX": 640,
+          "resource": "Art/FullscreenWide/58-21",
+          "sourceSha256": "a9d6ecabc4e195d508364be370a43bb575ee3cd154a471d9cd24eff52e952550",
+          "pngSha256": "255b51b5de55410719eb1ed2bbc8005911475b80207aa7954a96ee2f450feadf"
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "source": "assets/charselect/poster_idle_silvertail_4k.jpg",
+      "native": "Art/CharacterSelect/poster_idle_silvertail_4k",
+      "width": 3840,
+      "height": 2160,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 7680,
+          "height": 2160,
+          "centerX": 1920,
+          "resource": "Art/FullscreenWide/59-32",
+          "sourceSha256": "312151761aab508baf1850fca701c6f458425bd75157d2b650694ad4a28ab338",
+          "pngSha256": "4c55ffba401bb8727ed27049c4841be58f7dfb438aec6ae89d8f6d99df439716"
+        },
+        {
+          "label": "21",
+          "width": 5120,
+          "height": 2160,
+          "centerX": 640,
+          "resource": "Art/FullscreenWide/59-21",
+          "sourceSha256": "295859a85f895b99d277dc32f9a506eed65bfe2f8d240206fda6a73e7e5c51b5",
+          "pngSha256": "a4b029481d2c6361c52f30f18733121f6cf715bf35602c5fe3097567c5767aa5"
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "source": "assets/charselect/poster_idle_hellgunner.jpg",
+      "native": "Art/CharacterSelect/poster_idle_hellgunner",
+      "width": 1600,
+      "height": 900,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 3200,
+          "height": 900,
+          "centerX": 800,
+          "resource": "Art/FullscreenWide/60-32",
+          "sourceSha256": "a5a58b6eec20b9b0b9147bf5d7f4a395396db814d85fcf82fa70d44e7d91bbe0",
+          "pngSha256": "3571628f92884d4ca0772639c5a435f9243648fd7008b12bd2951a0dfef0cdb0"
+        },
+        {
+          "label": "21",
+          "width": 2134,
+          "height": 900,
+          "centerX": 267,
+          "resource": "Art/FullscreenWide/60-21",
+          "sourceSha256": "4ffea5f24f88f8574edd315eca4de300685e2c0b77d6de46da4c6c1a817774eb",
+          "pngSha256": "e66d82e775e20dcb944c1f934e177651bc38acdf574052f1f1324cee207cd45f"
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "source": "assets/charselect/poster_idle_transmuter.jpg",
+      "native": "Art/CharacterSelect/poster_idle_transmuter",
+      "width": 1600,
+      "height": 900,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 3200,
+          "height": 900,
+          "centerX": 800,
+          "resource": "Art/FullscreenWide/61-32",
+          "sourceSha256": "2b6452843de3e03bcdd95875e79562dfbdeeac6c039524b8a30f2bf2e595db35",
+          "pngSha256": "9d8f2d9fa0dae30f177febf74aa052e0432db1fbea7b945137451cd26bddbdc3"
+        },
+        {
+          "label": "21",
+          "width": 2134,
+          "height": 900,
+          "centerX": 267,
+          "resource": "Art/FullscreenWide/61-21",
+          "sourceSha256": "36c54d54a50f9bb862b53151ae6225f0ef7b836b07ec9a69c5f33193e9894ac3",
+          "pngSha256": "3241184c43ab1aed20f25a10cbc0e593cdfbf7619f89b198ccf18f550524d1e0"
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "source": "assets/charselect/poster_idle_spearmage.jpg",
+      "native": "Art/CharacterSelect/poster_idle_spearmage",
+      "width": 1600,
+      "height": 900,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 3200,
+          "height": 900,
+          "centerX": 800,
+          "resource": "Art/FullscreenWide/62-32",
+          "sourceSha256": "eebe9edd9789c66df157e35bea68875853408e574d32adca8c1b9d3f76c709ba",
+          "pngSha256": "5a44b4c740bce3feca3084d7aabbb65475930f9da3e205377933a4ed2313b201"
+        },
+        {
+          "label": "21",
+          "width": 2134,
+          "height": 900,
+          "centerX": 267,
+          "resource": "Art/FullscreenWide/62-21",
+          "sourceSha256": "1c7bca659ffe54335264e6d4541ff60945ec68ee2611266198be65dbab1d871e",
+          "pngSha256": "64e0bb34bf68cea41fda996e783ec00a954354b415e9c02df57dd40412b2ca49"
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "source": "assets/fullscreen-wide/20261031/gate-original.png",
+      "native": "",
+      "width": 1200,
+      "height": 700,
+      "outputs": [
+        {
+          "label": "32",
+          "width": 2490,
+          "height": 700,
+          "centerX": 645,
+          "resource": "Art/FullscreenWide/63-32",
+          "sourceSha256": "fcc70c4b8fda49bdef7f5eda8c247edc3520fbbd58d80e2f40bdc14b0c3a3c34",
+          "pngSha256": "594d98625613faa45f40243b2ce84e599f9196f4730ff378124f4571755608f7"
+        },
+        {
+          "label": "21",
+          "width": 1660,
+          "height": 700,
+          "centerX": 230,
+          "resource": "Art/FullscreenWide/63-21",
+          "sourceSha256": "345d2da40d026e06475ec925a65e9b10e807732eb418d9351ebd19f56b41fdec",
+          "pngSha256": "42d3f03558d58ef1ca74524367bcbedbe8066ad2a36f63741a0b6d2662d8be7d"
+        }
+      ]
+    }
+  ]
+}

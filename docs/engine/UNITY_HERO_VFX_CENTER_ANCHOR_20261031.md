@@ -72,4 +72,4 @@ UI 최종 Desktop 완료 전 Unity/Player/빌드/선예약0. 완료 후 최신�
 
 수명정정: statePassed161은표시메타데이터다. 정리예외로두수명행동의최종결과merge가미실행됐으므로pool행동완료PASS로간주하지않고, 수정앱에서원래두수명검사를별도완주·기록한다.
 
-최신후속: guard316의실제parent파괴→Dispose와원래두수명행동은bf3e에서완주·저장·merge PASS. 별도80d0후보semantic표현복원/동일앱M123PASS,제품16파일은e33과동일. 원full100/61·독립참조불일치/미관측·파괴oldref50false는보존하며자연OS조작/최종설치·Win반입/desktop은미완료다. 상세최신표를따른다.
+최신 상태(2026-11-03): Mac 표적 정리/두수명행동·semantic 복원/동일앱 M1 23 통과는 후보 범위다. 사용자 PC 실행본131887780의 Runtime2bad5c6c8ace951017cee6c3673921692bc2a2a309ca5b5b0d23f1fbc471ff0a에는 접지 수정 타입 둘 다 없어 실제 전달 미완료를 확인했다. 최신 unity/main1d89b0c18와 정상 병합해 UI/사운드를 보존했으며, 새 실행본 검수·unity-latest 반영 뒤 다시 확인한다. 원full100/61·독립참조/미관측/oldref 한계는 그대로 보존한다.

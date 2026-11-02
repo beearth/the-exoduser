@@ -52,6 +52,7 @@ namespace Exoduser.UnityPort {
    input=value;active=true;start=Now;nextAction.Reset();keyboardReady=false;
   }
   public void Hide(){active=false;}
+  public void RearmNext(){nextAction.Reset();keyboardReady=false;} // Esc from nextDiffPop returns to the same clear result
 
   // ---- web formulas (game.html 42015-42057) ----
   public int ParSeconds(int total){return (int)Math.Round(defs.formula.parBase+total*defs.formula.parPerSpawn,MidpointRounding.AwayFromZero);}

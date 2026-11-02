@@ -120,7 +120,7 @@ namespace Exoduser.UnityPort {
     GUI.matrix=NativeUiViewport.Matrix;
     // background: "url(cin_remember_wide) center/cover" over the viewport; the dark radial gradient behind it is fully covered
     float sc=Mathf.Max(NativeUiSafeArea.DesignWidth/bg.width,NativeUiSafeArea.DesignHeight/bg.height);float iw=bg.width*sc,ih=bg.height*sc;
-    GUI.color=new Color(1,1,1,fade);NativeUiAudit.DrawTexture(new Rect((NativeUiSafeArea.DesignWidth-iw)/2,(NativeUiSafeArea.DesignHeight-ih)/2,iw,ih),bg,ScaleMode.StretchToFill,false);
+    GUI.color=new Color(1,1,1,fade);NativeFullscreenArtwork.Draw(bg,NativeUiViewport.ScreenInDesign);
     float s=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s)/2,(Screen.height-1080*s)/2,0),Quaternion.identity,Vector3.one*s);
     DrawLight(age,fade);

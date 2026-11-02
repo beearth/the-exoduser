@@ -15,6 +15,7 @@ namespace Exoduser.UnityPort.Core
   public readonly InventoryItem[] Equipped=new InventoryItem[InventoryItemJson.SlotCount];
   public readonly List<InventoryItem> Bag=new List<InventoryItem>();
   public double Stage,Kills,PotLvHp,BagMax=300;
+  public int StageDiffOffset;
   public JsonValue Raw;   // loaded `data` root (unmodeled sections), null for a first save
   // B03: the skill sections the Unity skill executor owns (web `skills` {id:Lv}, `skillSlots`[6], `ultSlot`, `activeCtSk`). null = never saved / not loaded:
   // entries of skills Unity cannot run yet stay as the raw save has them, so a web import after a Unity autosave still finds them.
@@ -48,7 +49,7 @@ namespace Exoduser.UnityPort.Core
    var bag=Arr();foreach(var it in m.Bag)bag.Add(InventoryItemJson.Write(it));
    var eq=Obj();for(int i=0;i<m.Equipped.Length;i++)eq.Set(InventoryItemJson.SlotName(i),m.Equipped[i]==null?JsonValue.Null:InventoryItemJson.Write(m.Equipped[i]));
    var inv=Obj().Set("bag",bag).Set("equipped",eq).Set("ossCollect",Pick(ri,"ossCollect",Obj()));
-   var game=Obj().Set("stage",JsonValue.Of(m.Stage)).Set("kills",JsonValue.Of(m.Kills)).Set("mats",JsonValue.Of(0.0))
+   var game=Obj().Set("stageDiffOff",JsonValue.Of((double)m.StageDiffOffset)).Set("stage",JsonValue.Of(m.Stage)).Set("kills",JsonValue.Of(m.Kills)).Set("mats",JsonValue.Of(0.0))
     .Set("irisSz",Pick(rg,"irisSz",JsonValue.Of(20.0))).Set("taRecords",Pick(rg,"taRecords",Obj())).Set("clearRecords",Pick(rg,"clearRecords",Obj()))
     .Set("comboMax",Pick(rg,"comboMax",JsonValue.Of(0.0))).Set("playTime",Pick(rg,"playTime",JsonValue.Of(0.0))).Set("cutsceneDone",Pick(rg,"cutsceneDone",JsonValue.Of(false)));
    var pot=Obj();if(rpot!=null&&rpot.Kind==JsonKind.Object)foreach(var kv in rpot.Members)if(kv.Key!="hp")pot.Set(kv.Key,kv.Value);
@@ -141,7 +142,7 @@ namespace Exoduser.UnityPort.Core
     }
    }
    var game=data.Get("game");
-   if(Valid(game,JsonKind.Object)){m.Stage=Or(Number(game,"stage",0),0);m.Kills=Or(Number(game,"kills",0),0);}
+   if(Valid(game,JsonKind.Object)){m.Stage=Or(Number(game,"stage",0),0);m.Kills=Or(Number(game,"kills",0),0);double stageOffset=Number(game,"stageDiffOff",0);if(stageOffset!=Math.Truncate(stageOffset)||stageOffset<-100||stageOffset>100||stageOffset%50!=0){error="invalid next-stage difficulty offset";return false;}m.StageDiffOffset=(int)stageOffset;}
    var bm=data.Get("bagMax");
    m.BagMax=bm!=null&&bm.Kind==JsonKind.Number?Or(bm.Number,300):300;
    var pot=data.Get("potLv");

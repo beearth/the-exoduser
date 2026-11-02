@@ -6,10 +6,10 @@ namespace Exoduser.UnityPort {
   internal bool LanguageMenuOpen=>showLanguages;
   internal int LanguageMenuCursor=>languageCursor;
   void ToggleLanguages(){
-   showLanguages=!showLanguages;languageInputFence=true;
+   UiConfirm();showLanguages=!showLanguages;languageInputFence=true;
    if(showLanguages){languageCursor=0;languagePointerKnown=false;for(int i=0;i<LobbyLanguage.Count;i++)if(LobbyLanguage.GetCode(i)==Language){languageCursor=i;break;}revealLanguage=true;}
   }
-  void CloseLanguageMenu(){showLanguages=false;languageInputFence=true;}
+  void CloseLanguageMenu(){UiConfirm();showLanguages=false;languageInputFence=true;}
   internal bool ProcessLanguageMenuPointer(Vector2 position,int row){
    if(!showLanguages||row<0||row>=LobbyLanguage.Count)return false;
    if(languagePointerKnown&&languagePointer==position)return false;
@@ -20,7 +20,7 @@ namespace Exoduser.UnityPort {
    if(key==languageHeld)return true;
    if(key==KeyCode.L){languageHeld=key;ToggleLanguages();return true;}
    if(!showLanguages)return false;
-   switch(key){
+   int before=languageCursor;switch(key){
     case KeyCode.Escape:case KeyCode.Tab:languageHeld=key;CloseLanguageMenu();break;
     case KeyCode.Return:case KeyCode.KeypadEnter:case KeyCode.Space:languageHeld=key;SetLanguage(LobbyLanguage.GetCode(languageCursor));CloseLanguageMenu();break;
     case KeyCode.UpArrow:languageCursor=Mathf.Max(0,languageCursor-1);revealLanguage=true;break;
@@ -28,13 +28,13 @@ namespace Exoduser.UnityPort {
     case KeyCode.Home:languageCursor=0;revealLanguage=true;break;
     case KeyCode.End:languageCursor=LobbyLanguage.Count-1;revealLanguage=true;break;
    }
-   return true;
+   if(languageCursor!=before)UiNavigate("language:"+languageCursor);return true;
   }
   void HandleLanguagePopupKeys(){
    var e=Event.current;if(CharacterModalOpen||AutomatedInput)return;
    if(e.type==EventType.KeyUp){ProcessLanguageMenuKey(e.keyCode,true);return;}
    if(e.type!=EventType.KeyDown)return;
-   if(lobbyQuitPrompt){if(e.keyCode==KeyCode.Escape)lobbyQuitPrompt=false;e.Use();return;}
+   if(lobbyQuitPrompt){HandleLobbyQuitKey(e.keyCode);e.Use();return;}
    if(ProcessLanguageMenuKey(e.keyCode,false))e.Use();
   }
   void DrawLanguages(Rect selector){
