@@ -1,6 +1,6 @@
 {
   "tool": "built-in imagegen",
-  "edits": 16,
+  "edits": 26,
   "paidApiCalls": 0,
   "preserve": "Original source files and videos untouched. Separate particle-free restoration plates; no animated face or body deformation. Warrior original silhouette restored over cleaned background.",
   "assets": [
@@ -19,6 +19,167 @@
       "source": "img/cin_remember_wide.png",
       "prompt": "Remove every airborne orange ember, white floating flake, tiny bright dot, grain and noise artifact. Preserve three children at left, woman spirit in front of moon, prisoners/cage at right, continuous blue/orange clouds and stone ground. Keep silhouettes, pose, framing and lighting. No blur, new objects, text, UI or particulate texture.",
       "sha256": "c83e27fd2db5dc0bbd841120eb38a6a86594684758e538a624c11d585be79e9b"
+    },
+    {
+      "file": "warrior-wide-clean.webp",
+      "source": "assets/fullscreen-wide/20261031/58-poster_idle_warrior_cs3_4k-32.webp",
+      "width": 2172,
+      "height": 616,
+      "generated": [
+        2172,
+        724
+      ],
+      "removedWhiteMargins": {
+        "top": 54,
+        "bottom": 54
+      },
+      "prompt": "Clean up this exact existing 32:9 panorama. Preserve the entire composition, same camera, character identities and poses, sizes and positions, architecture, landscape and color palette. Remove EVERY floating spark, ember, orange or white dot, floating flake, granular dither, speckled noise, firefly, dust mote throughout the ENTIRE panorama including far left and far right wings. Reconstruct smooth continuous painted atmosphere and ground in their place. Keep real continuous flames, glowing cracks, cloth folds, polished metal edges. Do not add or remove characters. No grain. Do not crop or reframe. The full exact 32:9 scene must remain; if necessary use only pure white letterboxing above and below for a 3:1 output canvas, never crop either side.",
+      "sha256": "d4709e527b9ef6ca3cc4076b1e0f149a97dd4d53e549596cd7b8881761955283"
+    },
+    {
+      "file": "death-wide-clean.webp",
+      "source": "assets/fullscreen-wide/20261031/03-cin_remember_wide-32.webp",
+      "width": 2172,
+      "height": 608,
+      "generated": [
+        2172,
+        724
+      ],
+      "removedWhiteMargins": {
+        "top": 58,
+        "bottom": 58
+      },
+      "prompt": "Clean up this exact existing 32:9 panorama. Preserve the entire composition, same camera, character identities and poses, sizes and positions, architecture, landscape and color palette. Remove EVERY floating spark, ember, orange or white dot, floating flake, granular dither, speckled noise, firefly, dust mote throughout the ENTIRE panorama including far left and far right wings. Reconstruct smooth continuous painted atmosphere and ground in their place. Keep real continuous flames, glowing cracks, cloth folds, polished metal edges. Do not add or remove characters. No grain. Do not crop or reframe. The full exact 32:9 scene must remain; if necessary use only pure white letterboxing above and below for a 3:1 output canvas, never crop either side.",
+      "sha256": "4e08839e653d92594204725300f8085bb525109694a87f964f97c82bc54e073e",
+      "borderCleanup": "Actual-screen QA: classify antialiased letterbox rows by RGB>180 in over80percent of row, remove both ends plus one guard pixel; no scene resize or paint."
+    },
+    {
+      "file": "silvertail-clean.webp",
+      "source": "assets/charselect/poster_idle_silvertail_4k.jpg",
+      "width": 1672,
+      "height": 941,
+      "generated": [
+        1672,
+        941
+      ],
+      "removedWhiteMargins": {
+        "top": 0,
+        "bottom": 0
+      },
+      "prompt": "Restore this exact existing 16:9 illustration. Remove EVERY detached floating spark, tiny dust mote, floating fleck, dotted grain, granular dither, white/purple/blue snow speck, orange ember, tiny isolated noise dot and compressed particle artifact across ALL areas, including fabric and the far left/right. Make clean continuous painted surfaces. Keep all character identities, faces, body proportions, poses, costumes, weapons, silhouette, number of characters, the exact composition and camera, all architecture and lighting colors unchanged. Keep connected lightning/energy lines, weapon glows, actual flames and material contour highlights; remove only detached noise/points. No blur, no smears, no new design, no text changes. Fill the entire same 16:9 image to edges, no borders or letterbox.",
+      "sha256": "6d939bd398ebe632fca82da6f19e9e781caf7be3bd45794cfddc8257a21ce089"
+    },
+    {
+      "file": "silvertail-wide-clean.webp",
+      "source": "assets/fullscreen-wide/20261031/59-poster_idle_silvertail_4k-32.webp",
+      "width": 2172,
+      "height": 609,
+      "generated": [
+        2172,
+        724
+      ],
+      "removedWhiteMargins": {
+        "top": 58,
+        "bottom": 57
+      },
+      "prompt": "Restore this exact existing 32:9 panorama. Remove EVERY detached floating spark, tiny dust mote, floating fleck, dotted grain, granular dither, white/purple/blue snow speck, orange ember, tiny isolated noise dot and compressed particle artifact across ALL areas, including fabric and the far left/right. Make clean continuous painted surfaces. Keep all character identities, faces, body proportions, poses, costumes, weapons, silhouette, number of characters, the exact composition and camera, all architecture and lighting colors unchanged. Keep connected lightning/energy lines, weapon glows, actual flames and material contour highlights; remove only detached noise/points. No blur, no smears, no new design, no text changes. Keep the entire exact panorama without cropping; pure white letterboxing above and below only is permitted if the output canvas is 3:1.",
+      "sha256": "eb2a5cbd980ded7cbe995fe5c9e8007be3dcec9e0d160bedfeba5d35feb1cd4c"
+    },
+    {
+      "file": "hellgunner-clean.webp",
+      "source": "assets/charselect/poster_idle_hellgunner.jpg",
+      "width": 1672,
+      "height": 941,
+      "generated": [
+        1672,
+        941
+      ],
+      "removedWhiteMargins": {
+        "top": 0,
+        "bottom": 0
+      },
+      "prompt": "Restore this exact existing 16:9 illustration. Remove EVERY detached floating spark, tiny dust mote, floating fleck, dotted grain, granular dither, white/purple/blue snow speck, orange ember, tiny isolated noise dot and compressed particle artifact across ALL areas, including fabric and the far left/right. Make clean continuous painted surfaces. Keep all character identities, faces, body proportions, poses, costumes, weapons, silhouette, number of characters, the exact composition and camera, all architecture and lighting colors unchanged. Keep connected lightning/energy lines, weapon glows, actual flames and material contour highlights; remove only detached noise/points. No blur, no smears, no new design, no text changes. Fill the entire same 16:9 image to edges, no borders or letterbox.",
+      "sha256": "759e5756cbb813095d10c384ee998e4f20f3add340c3fe8478cce94b4c43a553"
+    },
+    {
+      "file": "hellgunner-wide-clean.webp",
+      "source": "assets/fullscreen-wide/20261031/60-poster_idle_hellgunner-32.webp",
+      "width": 2172,
+      "height": 613,
+      "generated": [
+        2172,
+        724
+      ],
+      "removedWhiteMargins": {
+        "top": 55,
+        "bottom": 56
+      },
+      "prompt": "Restore this exact existing 32:9 panorama. Remove EVERY detached floating spark, tiny dust mote, floating fleck, dotted grain, granular dither, white/purple/blue snow speck, orange ember, tiny isolated noise dot and compressed particle artifact across ALL areas, including fabric and the far left/right. Make clean continuous painted surfaces. Keep all character identities, faces, body proportions, poses, costumes, weapons, silhouette, number of characters, the exact composition and camera, all architecture and lighting colors unchanged. Keep connected lightning/energy lines, weapon glows, actual flames and material contour highlights; remove only detached noise/points. No blur, no smears, no new design, no text changes. Keep the entire exact panorama without cropping; pure white letterboxing above and below only is permitted if the output canvas is 3:1.",
+      "sha256": "881d2c182ca8fd1211f3bde3460d3e8e01abb0574377b98fc16fbed5077bcc3c"
+    },
+    {
+      "file": "transmuter-clean.webp",
+      "source": "assets/charselect/poster_idle_transmuter.jpg",
+      "width": 1672,
+      "height": 941,
+      "generated": [
+        1672,
+        941
+      ],
+      "removedWhiteMargins": {
+        "top": 0,
+        "bottom": 0
+      },
+      "prompt": "Restore this exact existing 16:9 illustration. Remove EVERY detached floating spark, tiny dust mote, floating fleck, dotted grain, granular dither, white/purple/blue snow speck, orange ember, tiny isolated noise dot and compressed particle artifact across ALL areas, including fabric and the far left/right. Make clean continuous painted surfaces. Keep all character identities, faces, body proportions, poses, costumes, weapons, silhouette, number of characters, the exact composition and camera, all architecture and lighting colors unchanged. Keep connected lightning/energy lines, weapon glows, actual flames and material contour highlights; remove only detached noise/points. No blur, no smears, no new design, no text changes. Fill the entire same 16:9 image to edges, no borders or letterbox.",
+      "sha256": "a335e986dff64f794b343cb6b0db21267b67638574b04960e2b4d4eaa6ef8af6"
+    },
+    {
+      "file": "transmuter-wide-clean.webp",
+      "source": "assets/fullscreen-wide/20261031/61-poster_idle_transmuter-32.webp",
+      "width": 2172,
+      "height": 609,
+      "generated": [
+        2172,
+        724
+      ],
+      "removedWhiteMargins": {
+        "top": 57,
+        "bottom": 58
+      },
+      "prompt": "Restore this exact existing 32:9 panorama. Remove EVERY detached floating spark, tiny dust mote, floating fleck, dotted grain, granular dither, white/purple/blue snow speck, orange ember, tiny isolated noise dot and compressed particle artifact across ALL areas, including fabric and the far left/right. Make clean continuous painted surfaces. Keep all character identities, faces, body proportions, poses, costumes, weapons, silhouette, number of characters, the exact composition and camera, all architecture and lighting colors unchanged. Keep connected lightning/energy lines, weapon glows, actual flames and material contour highlights; remove only detached noise/points. No blur, no smears, no new design, no text changes. Keep the entire exact panorama without cropping; pure white letterboxing above and below only is permitted if the output canvas is 3:1.",
+      "sha256": "2d902abd7d0d56c5b0b4c8042756e993d22267ad8792b0b95f2a919c5ec68871"
+    },
+    {
+      "file": "spearmage-clean.webp",
+      "source": "assets/charselect/poster_idle_spearmage.jpg",
+      "width": 1672,
+      "height": 941,
+      "generated": [
+        1672,
+        941
+      ],
+      "removedWhiteMargins": {
+        "top": 0,
+        "bottom": 0
+      },
+      "prompt": "Restore this exact existing 16:9 illustration. Remove EVERY detached floating spark, tiny dust mote, floating fleck, dotted grain, granular dither, white/purple/blue snow speck, orange ember, tiny isolated noise dot and compressed particle artifact across ALL areas, including fabric and the far left/right. Make clean continuous painted surfaces. Keep all character identities, faces, body proportions, poses, costumes, weapons, silhouette, number of characters, the exact composition and camera, all architecture and lighting colors unchanged. Keep connected lightning/energy lines, weapon glows, actual flames and material contour highlights; remove only detached noise/points. No blur, no smears, no new design, no text changes. Fill the entire same 16:9 image to edges, no borders or letterbox.",
+      "sha256": "d2692c1cd38b708eefee5105659e5a7f7ed150511a313f24549c301c0a35061b"
+    },
+    {
+      "file": "spearmage-wide-clean.webp",
+      "source": "assets/fullscreen-wide/20261031/62-poster_idle_spearmage-32.webp",
+      "width": 2172,
+      "height": 610,
+      "generated": [
+        2172,
+        724
+      ],
+      "removedWhiteMargins": {
+        "top": 57,
+        "bottom": 57
+      },
+      "prompt": "Restore this exact existing 32:9 panorama. Remove EVERY detached floating spark, tiny dust mote, floating fleck, dotted grain, granular dither, white/purple/blue snow speck, orange ember, tiny isolated noise dot and compressed particle artifact across ALL areas, including fabric and the far left/right. Make clean continuous painted surfaces. Keep all character identities, faces, body proportions, poses, costumes, weapons, silhouette, number of characters, the exact composition and camera, all architecture and lighting colors unchanged. Keep connected lightning/energy lines, weapon glows, actual flames and material contour highlights; remove only detached noise/points. No blur, no smears, no new design, no text changes. Keep the entire exact panorama without cropping; pure white letterboxing above and below only is permitted if the output canvas is 3:1.",
+      "sha256": "69ba1cc688a3e9cd3457fe3d237b1af5cbd5339fb9f52716bccf7b444c628a70"
     }
   ],
   "loadingRepairs": [
@@ -268,5 +429,10 @@
       "use": "Separate static restoration plate; original file preserved. 16:10 variant for the 1920-wide input; panoramic variant for 21:9/32:9."
     }
   ],
-  "loadingPrompt": "Precisely remove floating dots, embers, dust, sparks, grain; preserve exact 32:9 layout, characters, continuous flames/lightning and actual objects. White outer margins permitted solely for 3:1 generation canvas; content uncropped."
+  "loadingPrompt": "Precisely remove floating dots, embers, dust, sparks, grain; preserve exact 32:9 layout, characters, continuous flames/lightning and actual objects. White outer margins permitted solely for 3:1 generation canvas; content uncropped.",
+  "warriorMask": {
+    "normalizedOutline": "[[.16,.10],[.24,.10],[.25,.20],[.30,.24],[.31,.22],[.36,.21],[.39,.27],[.47,.31],[.60,.32],[.68,.35],[.74,.39],[.82,.43],[.83,.59],[.78,.67],[.74,.81],[.66,.84],[.61,.77],[.57,.82],[.58,.94],[.50,.95],[.44,.79],[.39,.71],[.32,.66],[.29,.77],[.28,.89],[.23,.91],[.18,.91],[.15,.96],[.15,.77],[.16,.58],[.16,.33]]",
+    "featherHeightRatio": 0.012,
+    "detachedBackgroundEmbers": "450/554/r12;560/463/r10;1411/455/r12"
+  }
 }

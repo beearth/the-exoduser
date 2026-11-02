@@ -5,6 +5,8 @@
 #charVisualPop .cs-scene>.living-still{z-index:2}
 #charVisualPop .cs-scene>.living-scene{z-index:3}
 #charVisualPop.living-painting-ready :is(#csIdleVid,#csSceneVid,#csPortrait){visibility:hidden}
+#charVisualPop.living-painting-ready .cs-side-texture{display:none!important}
+#charVisualPop :is(#csScene,.cs-aura){animation:none!important}
 #lobby.living-painting-ready :is(#lobbyAmbientVideo,#lobbyCharPreview){visibility:hidden}
 #lobbyParticles,#charVisualPop .cs-embers{display:none!important}
 #lobby .lobby-bg-img{animation:none!important}

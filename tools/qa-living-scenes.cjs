@@ -17,7 +17,7 @@ async function record10(page,context,prefix){
  const perf=await measure(page,10500);await cdp.send('Page.stopScreencast');await Promise.all(pending);await cdp.detach();
  const duration=frames.at(-1).t-frames[0].t;assert.ok(duration>=10,`recording too short: ${duration}`);
  const concat=['ffconcat version 1.0'];for(let i=0;i<frames.length-1;i++)concat.push(`file '${frames[i].file}'`,`duration ${frames[i+1].t-frames[i].t}`);concat.push(`file '${frames.at(-1).file}'`);await fsp.writeFile(folder+'/frames.ffconcat',concat.join('\n')+'\n');
- await run(process.env.FFMPEG||'C:/Users/심도진/AppData/Local/Microsoft/WinGet/Links/ffmpeg.exe',['-hide_banner','-loglevel','error','-y','-safe','0','-i',folder+'/frames.ffconcat','-t','10','-an','-c:v','libx264','-preset','veryfast','-crf','16','-pix_fmt','yuv420p',out+'/'+prefix+'.mp4']);
+ await run(process.env.FFMPEG||'C:/Users/심도진/AppData/Local/Microsoft/WinGet/Links/ffmpeg.exe',['-hide_banner','-loglevel','error','-y','-safe','0','-i',folder+'/frames.ffconcat','-vf','fps=25,tpad=stop_mode=clone:stop_duration=0.12','-r','25','-t','10','-an','-c:v','libx264','-preset','veryfast','-crf','16','-pix_fmt','yuv420p',out+'/'+prefix+'.mp4']);
  await fsp.rm(folder,{recursive:true,force:true});return{...perf,recordedFrames:frames.length,recordedSeconds:duration,video:prefix+'.mp4'};
 }
 async function measure(page,ms){return page.evaluate(duration=>new Promise(resolve=>{const start=performance.now(),s0={...LivingScenes.stats};let frames=0,last=start,max=0;function step(t){frames++;max=Math.max(max,t-last);last=t;if(t-start<duration)requestAnimationFrame(step);else{const s=LivingScenes.stats;resolve({duration:t-start,frames,fps:frames*1000/(t-start),maxFrameMs:max,renderFrames:s.frames-s0.frames,meanRenderMs:(s.renderMs-s0.renderMs)/Math.max(1,s.frames-s0.frames),maxRenderMs:s.maxRenderMs});}}requestAnimationFrame(step);}),ms);}
@@ -33,6 +33,7 @@ async function screenshotPair(page,prefix){
  }
 }
 async function snap(page,context,name){
+ if(process.env.LIVING_CASES&&!process.env.LIVING_CASES.split(',').includes(name))return;
  await page.waitForFunction(()=>LivingScenes.stats.active&&LivingScenes.stats.frames>0);
  await page.waitForFunction(()=>!LivingScenes.stats.source||(LivingScenes.stats.stillReady&&LivingScenes.stats.stillSource===LivingScenes.stats.source),null,{timeout:90000});
  await page.waitForTimeout(450);

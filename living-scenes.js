@@ -33,16 +33,22 @@
  const warriorOutline=[[.16,.10],[.24,.10],[.25,.20],[.30,.24],[.31,.22],[.36,.21],[.39,.27],[.47,.31],[.60,.32],[.68,.35],[.74,.39],[.82,.43],[.83,.59],[.78,.67],[.74,.81],[.66,.84],[.61,.77],[.57,.82],[.58,.94],[.50,.95],[.44,.79],[.39,.71],[.32,.66],[.29,.77],[.28,.89],[.23,.91],[.18,.91],[.15,.96],[.15,.77],[.16,.58],[.16,.33]];
  function cleanImage(im,s){
   if(cleaned.has(im.src))return cleaned.get(im.src);
-  const lid=loadingId(s.source),kind=loadingRepairIds.has(lid)?'loading-'+lid+(im.naturalWidth===1920?'-16':''):/poster_idle_warrior/.test(s.source)?'warrior':s.kind==='death'?'death':null;
+  const lid=loadingId(s.source),wide=/-(?:21|32)\.webp(?:[?#]|$)/.test(im.src),hero=s.source.match(/poster_idle_(warrior|silvertail|hellgunner|transmuter|spearmage)/)?.[1],kind=loadingRepairIds.has(lid)?'loading-'+lid+(im.naturalWidth===1920?'-16':''):hero?hero+(wide?'-wide':''):s.kind==='death'?'death'+(wide?'-wide':''):null;
   if(!kind||(kind.startsWith('loading-')&&![1920,2560,3840].includes(im.naturalWidth)))return Promise.resolve({url:im.src,count:0});
   const pending=correction(kind).then(repair=>{
    if(kind.startsWith('loading-'))return {url:repair.src,count:0};
    return new Promise((resolve,reject)=>{
    const c=doc.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;const ctx=c.getContext('2d');ctx.drawImage(im,0,0);
    const [ox,oy,ow,oh]=originalBox(s,c.width,c.height);
-   ctx.drawImage(repair,ox,oy,ow,oh);
-   if(kind==='warrior'){
-    ctx.save();ctx.beginPath();warriorOutline.forEach(([x,y],i)=>ctx[i?'lineTo':'moveTo'](ox+ow*x,oy+oh*y));ctx.closePath();ctx.clip();ctx.drawImage(im,0,0);ctx.restore();
+   const k=Math.max(c.width/repair.naturalWidth,c.height/repair.naturalHeight),rx=wide?(c.width-repair.naturalWidth*k)/2:ox,ry=wide?(c.height-repair.naturalHeight*k)/2:oy,rw=wide?repair.naturalWidth*k:ow,rh=wide?repair.naturalHeight*k:oh;
+   ctx.drawImage(repair,rx,ry,rw,rh);
+   if(kind.startsWith('warrior')){
+    const fg=doc.createElement('canvas'),fm=doc.createElement('canvas');fg.width=fm.width=c.width;fg.height=fm.height=c.height;const f=fg.getContext('2d'),m=fm.getContext('2d');
+    f.drawImage(im,0,0);m.filter=`blur(${oh*.012}px)`;m.beginPath();warriorOutline.forEach(([x,y],i)=>m[i?'lineTo':'moveTo'](ox+ow*x,oy+oh*y));m.closePath();m.fill();f.globalCompositeOperation='destination-in';f.drawImage(fm,0,0);ctx.drawImage(fg,0,0);
+    // Three detached embers inside the loose silhouette margin; no face/body pixels.
+    for(const[x,y,r]of [[450,554,12],[560,463,10],[1411,455,12]]){
+     const px=ox+ow*x/1920,py=oy+oh*y/1080,rr=oh*r/1080;ctx.save();ctx.beginPath();ctx.arc(px,py,rr,0,TAU);ctx.clip();ctx.drawImage(repair,rx,ry,rw,rh);ctx.restore();
+    }
    }
    c.toBlob(blob=>blob?resolve({url:URL.createObjectURL(blob),count:0}):reject(new Error('still encoding failed')),'image/png');
   });});
