@@ -156,4 +156,4 @@ codex-web-wide-anim이 원래 영상 가림을 해소하고 manifest 위치/높�
 
 ## 2026-11-02 살아 있는 대기 화면
 
-codex-web-keyart-wide가 CTO 저녁 지시를 이어받았다. 시작 메뉴/게이트/기존 타이틀 WIP는 보존하고 로비·선택5종·로딩32장·결과3종만 canvas 환경 레이어로 처리한다. 점 입자/신체 변형 영상은 대상 화면에서 정지판으로 대체하고 접근성/저사양 정책을 선대 스프라이트에도 적용한다. 원화 크기 반올림/디코딩 전환 경합을 수정했다. 현행 소스/수치/에셋은 ../..//3.1 ui hud 디자인/LIVING_SCENES_20261102.md, 최종 전수/판정/원격 SHA는 I:/EXODUSER-Storage/codex-takeover/living-1102/REPORT.md. 중간 FAIL 후보는 채택하지 않으며 Unity 반영 대기.
+codex-web-keyart-wide가 CTO 저녁 지시를 이어받았다. 시작 메뉴/게이트/기존 타이틀 WIP는 보존하고 로비·선택5종·로딩32장·결과3종만 canvas 환경 레이어로 처리한다. 점 입자/신체 변형 영상은 대상 화면에서 정지판으로 대체하고 접근성/저사양 정책을 선대 스프라이트에도 적용한다. 원화 크기 반올림/디코딩 전환 경합을 수정했다. 현행 소스/수치/에셋은 docs/3.1 ui hud 디자인/LIVING_SCENES_20261102.md, 최종 전수/판정/원격 SHA는 I:/EXODUSER-Storage/codex-takeover/living-1102/REPORT.md. 중간 FAIL 후보는 채택하지 않으며 Unity 반영 대기.

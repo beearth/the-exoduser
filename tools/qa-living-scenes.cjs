@@ -60,8 +60,9 @@ async function gameFixture(page){
  receipt.started=new Date().toISOString();receipt.dotaRunning=cp.execFileSync('C:/Windows/System32/tasklist.exe',['/FI','IMAGENAME eq dota2.exe','/FO','CSV','/NH'],{encoding:'utf8',windowsHide:true}).includes('dota2.exe');
  browser=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true,args:['--mute-audio','--autoplay-policy=no-user-gesture-required'],env:{...process.env,TEMP:out+'/temp',TMP:out+'/temp'}});
  try{
- for(const width of(mode==='probe'?[1920]:record?[1920,3840]:[1920,2560,3840])){
-  const context=await browser.newContext({viewport:{width,height:1080},deviceScaleFactor:1});
+ const sizes=mode==='edges'?[[2560,1080],[2560,1600]]:(mode==='probe'?[1920]:record?[1920,3840]:[1920,2560,3840]).map(width=>[width,1080]);
+ for(const [width,height] of sizes){
+  const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:1});
   await context.addInitScript(()=>{localStorage.setItem('hellLang','ko');localStorage.setItem('hellcave_settings',JSON.stringify({opt:{sfxVol:0,bgmVol:0,quality:'high',atmos:2,reduceMotion:false}}));});
   const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.url().startsWith(base)&&r.status()>=400)http.push({url:r.url(),status:r.status()});});
   await page.route('**/api/slots**',r=>{if(!['GET','HEAD'].includes(r.request().method()))writes.push(r.request().method()+' '+r.request().url());return r.fulfill({json:{slots:[],activeId:null}});});
@@ -77,7 +78,7 @@ async function gameFixture(page){
    await page.emulateMedia({reducedMotion:'reduce'});await page.waitForFunction(()=>matchMedia('(prefers-reduced-motion: reduce)').matches&&LivingScenes.stats.reason==='reduced-motion');await page.emulateMedia({reducedMotion:'no-preference'});
   }else{
    await gameFixture(page);
-   if(group==='loading')for(const id of ids){
+   if(group.startsWith('loading'))for(const id of (group==='loading-repair'?ids.filter(x=>['1','2','rd2','rd4','rd7','rd8','rd12'].includes(x)):ids)){
     await page.evaluate(id=>{const e=document.getElementById('stageTransition');e.style.display='flex';e.style.opacity='1';e.style.pointerEvents='all';LoadingArt.set(document.getElementById('stRndImg'),'img/lording/'+id+(id==='rd11'?'.jpg':'.png'));document.getElementById('stNextName').textContent='에셋 로딩 중...';document.getElementById('stLoadBar').style.width='65%';LivingScenes.refresh();},id);
     await page.waitForFunction(id=>document.getElementById('stRndImg').src.includes('/wide/'+id+'-')&&document.getElementById('stRndImg').complete,id);await page.evaluate(()=>LivingScenes.refresh());await page.waitForTimeout(900);await snap(page,context,'loading-'+id);
    }else{

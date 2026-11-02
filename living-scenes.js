@@ -27,25 +27,25 @@
  const still=doc.createElement('img');still.className='living-still';still.alt='';still.setAttribute('aria-hidden','true');
  const stats=api.stats={active:null,source:null,stillSource:null,stillReady:false,reason:'idle',frames:0,renderMs:0,maxRenderMs:0,renderer:'',resolution:[],error:null,suppressedSpecks:0};
  const cleaned=new Map(),corrections=new Map();
+ const loadingRepairIds=new Set(['1','2','rd2','rd4','rd7','rd8','rd12']);
  function correction(name){if(corrections.has(name))return corrections.get(name);const promise=new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=()=>reject(new Error('Correction image unavailable: '+name));im.src='assets/living-scenes/20261102/'+name+'-clean.webp';});corrections.set(name,promise);return promise;}
- // Authored clone masks, in the original 1920x1080 composition. Only detached
- // background embers are covered; faces, metal highlights, cloth and architecture stay intact.
- const warriorMasks=[[18,210,13],[285,254,10],[164,409,12],[326,345,10],[278,374,8],[441,73,9],[488,40,10],[644,56,9],[791,94,9],[1196,100,11],[900,158,8],[1034,203,8],[977,240,7],[1263,314,8],[1437,342,9],[450,554,10],[560,463,8],[596,410,8],[46,566,9],[56,572,9],[140,598,11],[136,665,11],[471,600,9],[1642,780,14],[1686,818,10],[1646,971,13],[1678,957,14],[1453,1043,14],[1297,1043,14],[867,142,7],[484,105,7],[1290,635,9],[1120,795,8],[1411,455,8],[1045,233,8]];
+ // Preserve the original warrior silhouette; only the surrounding scene is cleaned.
+ const warriorOutline=[[.16,.10],[.24,.10],[.25,.20],[.30,.24],[.31,.22],[.36,.21],[.39,.27],[.47,.31],[.60,.32],[.68,.35],[.74,.39],[.82,.43],[.83,.59],[.78,.67],[.74,.81],[.66,.84],[.61,.77],[.57,.82],[.58,.94],[.50,.95],[.44,.79],[.39,.71],[.32,.66],[.29,.77],[.28,.89],[.23,.91],[.18,.91],[.15,.96],[.15,.77],[.16,.58],[.16,.33]];
  function cleanImage(im,s){
   if(cleaned.has(im.src))return cleaned.get(im.src);
-  const kind=/poster_idle_warrior/.test(s.source)?'warrior':s.kind==='death'?'death':null;
-  if(!kind)return Promise.resolve({url:im.src,count:0});
-  const pending=correction(kind).then(repair=>new Promise((resolve,reject)=>{
+  const lid=loadingId(s.source),kind=loadingRepairIds.has(lid)?'loading-'+lid+(im.naturalWidth===1920?'-16':''):/poster_idle_warrior/.test(s.source)?'warrior':s.kind==='death'?'death':null;
+  if(!kind||(kind.startsWith('loading-')&&![1920,2560,3840].includes(im.naturalWidth)))return Promise.resolve({url:im.src,count:0});
+  const pending=correction(kind).then(repair=>{
+   if(kind.startsWith('loading-'))return {url:repair.src,count:0};
+   return new Promise((resolve,reject)=>{
    const c=doc.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;const ctx=c.getContext('2d');ctx.drawImage(im,0,0);
    const [ox,oy,ow,oh]=originalBox(s,c.width,c.height);
-   if(kind==='death')ctx.drawImage(repair,ox,oy,ow,oh);
-   else for(const [x,y,r]of warriorMasks){
-    const px=ox+ow*x/1920,py=oy+oh*y/1080,radius=oh*r/1080,patch=doc.createElement('canvas');patch.width=patch.height=Math.ceil(radius*2);const p=patch.getContext('2d');
-    p.drawImage(repair,(x-r)/1920*repair.naturalWidth,(y-r)/1080*repair.naturalHeight,r*2/1920*repair.naturalWidth,r*2/1080*repair.naturalHeight,0,0,patch.width,patch.height);
-    p.globalCompositeOperation='destination-in';const g=p.createRadialGradient(radius,radius,radius*.58,radius,radius,radius);g.addColorStop(0,'#fff');g.addColorStop(1,'#fff0');p.fillStyle=g;p.fillRect(0,0,patch.width,patch.height);ctx.drawImage(patch,px-radius,py-radius);
+   ctx.drawImage(repair,ox,oy,ow,oh);
+   if(kind==='warrior'){
+    ctx.save();ctx.beginPath();warriorOutline.forEach(([x,y],i)=>ctx[i?'lineTo':'moveTo'](ox+ow*x,oy+oh*y));ctx.closePath();ctx.clip();ctx.drawImage(im,0,0);ctx.restore();
    }
-   c.toBlob(blob=>blob?resolve({url:URL.createObjectURL(blob),count:kind==='warrior'?warriorMasks.length:0}):reject(new Error('still encoding failed')),'image/png');
-  }));
+   c.toBlob(blob=>blob?resolve({url:URL.createObjectURL(blob),count:0}):reject(new Error('still encoding failed')),'image/png');
+  });});
   cleaned.set(im.src,pending);if(cleaned.size>4){const first=cleaned.keys().next().value;cleaned.get(first).then(item=>URL.revokeObjectURL(item.url)).catch(()=>{});cleaned.delete(first);}return pending;
  }
  try{reduced=scope.localStorage.getItem(KEY)==='1';}catch{}
@@ -171,6 +171,12 @@
  api.setReduced=value=>{reduced=!!value;try{scope.localStorage.setItem(KEY,reduced?'1':'0');}catch{}poll();};
  api.refresh=poll;
  api.motionAllowed=()=>!policy();
- function boot(){poll();scope.setInterval(poll,400);doc.addEventListener('visibilitychange',poll);reduceQuery.addEventListener('change',poll);scope.addEventListener('resize',()=>{maskKey='';poll();});scope.addEventListener('storage',e=>{if(e.key===KEY)reduced=e.newValue==='1';poll();});doc.addEventListener('change',poll);}
+ doc.addEventListener('play',e=>{if(['lobbyAmbientVideo','lobbyCharPreview','csIdleVid','csSceneVid'].includes(e.target.id))e.target.pause();},true);
+ function boot(){
+  poll();scope.setInterval(poll,400);doc.addEventListener('visibilitychange',poll);reduceQuery.addEventListener('change',poll);scope.addEventListener('resize',()=>{maskKey='';poll();});scope.addEventListener('storage',e=>{if(e.key===KEY)reduced=e.newValue==='1';poll();});doc.addEventListener('change',poll);
+  const observer=new MutationObserver(poll);
+  for(const id of ['csWideArt','lobbyWideArt','stRndImg','chGateImg']){const el=q('#'+id);if(el)observer.observe(el,{attributes:true,attributeFilter:['src']});}
+  for(const id of ['lobby','charVisualPop','stageTransition','chapterGate','stageClear','death','demoEnd','victory','splashOverlay','cinClickPrompt','fdgScreen']){const el=q('#'+id);if(el)observer.observe(el,{attributes:true,attributeFilter:['style']});}
+ }
  if(doc.readyState==='loading')doc.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })(globalThis);
