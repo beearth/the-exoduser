@@ -12,6 +12,8 @@ R8: 원화15종의 낮은 뿌리 군락을10구역에 추가. 단일 root_fan �
 
 3333 전달 차단: latest-web HEAD b1a26271c, 미인수 tracked API가이드/CHANGELOG 및 untracked 캐릭터/아트 WIP 때문에 자동ff가 진행되지 않음. task종료0은성공근거아님. 타인WIP stage/reset/stash/덮어쓰기 금지,3377에서현재후보제공. 정상 main 포함·설치본/3333 상태는 외부 delivery.json을 구분해읽는다. 후속총괄은latest-web 원작성자와WIP 소유를 먼저확인한다.
 
+최종전달: DEMO5갱신+3추가/EA4갱신+3추가·공식백업,새런타임/필수원화58항목씩일치·package/build-target보존. 3377동일58항목HTTP byte일치. 3333은위WIP로미갱신. 원격최종ref와백업은delivery.json. 회귀77/77·project113/113·guard,3840합병스모크4구도,4영상120프레임씩1x드롭0.
+
 ## R7 보존 이력 — 최신 판정 아님
 
 작업본 G:/exoduser-wt/codex-web3d, codex/web3d-trial-20261031. [현행 R7 SSOT](../../4.1맵디자인+설정/WEB3D_TRIAL_20261031.md). CTO 21:40의 새 스티커 결함을 수정했다. **제작자 해당범위 VISUAL PASS / 독립 CTO 재판정 대기 / 기본 r3d OFF 유지**. 과거5라운드 자체PASS로 기본ON을 결정하지 않는다.
