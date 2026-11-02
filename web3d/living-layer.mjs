@@ -3,7 +3,7 @@ import {waterAt,plantHabitat} from './living-layout.mjs?v=20261031-layer2';
 import {createRelief} from './living-relief.mjs?v=20261031-layer2';
 import {createMapLook} from './map-look-pass.mjs?v=20261031-light4';
 import {createForest} from './forest-layer.mjs?v=20261031-forest4';
-import {createGhosts} from './ghost-layer.mjs?v=20261031-ghost3';
+import {createGhosts} from './ghost-layer.mjs?v=20261102-ghost4';
 import {authoredFoliageLayout,puddleHabitat} from './foliage-layout.mjs?v=20261031-foliage4b';
 import {drawFoliageDebug} from './foliage-debug.mjs?v=20261031-foliage4';
 
@@ -25,7 +25,7 @@ export async function install(read){
   const mapLook=createMapLook(renderer,canvas,uniforms,lookData,lookAnchors);
   const forestResponse=await fetch('./assets/web3d/forest-ch1.json');if(!forestResponse.ok)throw Error('forest-ch1 '+forestResponse.status);
   const forest=await createForest(renderer,canvas,uniforms,await forestResponse.json(),lookAnchors);
-  const ghostResponse=await fetch('./assets/web3d/ghosts-ch1.json?v=20261031-ghost3');if(!ghostResponse.ok)throw Error('ghosts-ch1 '+ghostResponse.status);
+  const ghostResponse=await fetch('./assets/web3d/ghosts-ch1.json?v=20261102-ghost4');if(!ghostResponse.ok)throw Error('ghosts-ch1 '+ghostResponse.status);
   const ghosts=createGhosts(renderer,canvas,uniforms,await ghostResponse.json());
   const relief=createRelief(renderer,canvas,uniforms,read,mapLook);
   const vs=`uniform vec4 view;uniform float time,bend;uniform vec2 hero;uniform vec3 impulse;attribute vec4 anchor;attribute float phase;attribute vec4 habitat;varying vec2 vUv;varying float light;varying vec2 localUV;varying vec3 tint;

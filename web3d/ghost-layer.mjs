@@ -1,22 +1,24 @@
 import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
-import {ghostPose} from './ghost-layout.mjs?v=20261031-ghost3';
+import {ghostPose} from './ghost-layout.mjs?v=20261102-ghost4';
 export function createGhosts(renderer,canvas,shared,data){
  let enabled=true;
  const scene=new THREE.Scene(),camera=new THREE.Camera(),trees=new Map(),souls=[];
  const make=(row,art,soul=false)=>{
   const geo=new THREE.PlaneGeometry(row.width,row.height,8,16);geo.translate(0,row.height*.5,0);
-  const u={...shared,art:{value:art},anchor:{value:new THREE.Vector2(row.x,row.y)},phase:{value:row.phase},opacity:{value:0},soul:{value:soul?1:0},height:{value:row.height}};
+  const u={...shared,art:{value:art},anchor:{value:new THREE.Vector2(row.x,row.y)},phase:{value:row.phase},opacity:{value:0},soul:{value:soul?1:0},height:{value:row.height},texel:{value:new THREE.Vector2(1/(art.image?.width||1024),1/(art.image?.height||1024))}};
   const mat=new THREE.ShaderMaterial({uniforms:u,transparent:true,depthTest:false,depthWrite:false,
    vertexShader:`uniform vec4 view;uniform float time,phase,height,soul,bend;uniform vec2 anchor;varying vec2 vUv;
-   void main(){vUv=uv;float h=uv.y;vec2 p=position.xy;p.x+=sin(time*.6+phase+h*2.)*h*h*8.*bend;
+   void main(){vUv=uv;float h=uv.y;vec2 p=position.xy;p.x+=sin(time*.85+phase+h*2.)*h*h*18.*bend;
     if(soul>.5)p+=vec2(sin(time*.22+phase)*16.,sin(time*.31+phase)*7.);
     vec2 world=anchor+vec2(p.x,-p.y);gl_Position=vec4((world.x-view.x)/view.z*2.-1.,1.-(world.y-view.y)/view.w*2.,0.,1.);}`,
-   fragmentShader:`uniform sampler2D art;uniform float time,phase,opacity,soul;varying vec2 vUv;
-   void main(){vec2 p=vUv;float a;
-    if(soul<.5){vec4 c=texture2D(art,p);float lum=dot(c.rgb,vec3(.3,.59,.11));a=c.a*(.65+.35*lum)*smoothstep(0.,.10,p.y);}
+   fragmentShader:`uniform sampler2D art;uniform float time,phase,opacity,soul;uniform vec2 texel;varying vec2 vUv;
+   void main(){vec2 p=vUv;float a;vec3 color=vec3(.57,.60,.62);
+    if(soul<.5){vec4 c=texture2D(art,p);float lum=dot(c.rgb,vec3(.3,.59,.11));float edge=max(max(texture2D(art,p+vec2(texel.x*3.,0.)).a,texture2D(art,p-vec2(texel.x*3.,0.)).a),max(texture2D(art,p+vec2(0.,texel.y*3.)).a,texture2D(art,p-vec2(0.,texel.y*3.)).a))-c.a;
+     color=mix(vec3(.32,.38,.43),vec3(.83,.85,.80),smoothstep(.015,.42,lum));color+=vec3(.18,.21,.22)*max(0.,edge);
+     a=max(c.a,max(0.,edge)*.40)*smoothstep(0.,.075,p.y);}
     else{vec2 q=(p-vec2(.5,.62))*vec2(2.8,1.9);float head=exp(-dot((p-vec2(.5,.83))*vec2(8.,8.),(p-vec2(.5,.83))*vec2(8.,8.)));
      float body=exp(-q.x*q.x*4.)*smoothstep(0.,.48,p.y)*(1.-smoothstep(.58,.8,p.y));a=max(head,body*.65);}
-    float haze=.80+.20*sin(p.y*19.+time*.4+phase);gl_FragColor=vec4(vec3(.57,.60,.62),a*opacity*haze);}`});
+    float haze=.80+.20*sin(p.y*19.+time*.4+phase);gl_FragColor=vec4(color,a*opacity*haze);}`});
   const mesh=new THREE.Mesh(geo,mat);mesh.frustumCulled=false;scene.add(mesh);return {row,mesh,u};
  };
  const fallback=new THREE.DataTexture(new Uint8Array([255,255,255,255]),1,1);fallback.needsUpdate=true;
