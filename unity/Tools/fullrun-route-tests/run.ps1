@@ -19,6 +19,9 @@ $defenseStart=$source.IndexOf('                            defend=',[StringCompa
 $defenseEnd=$source.IndexOf('                            evade=!defend;',$defenseStart,[StringComparison]::Ordinal)
 if($defenseStart -lt 0 -or $defenseEnd -lt $defenseStart){throw 'Actual fullrun defense selection not found'}
 $defenseBody=$source.Substring($defenseStart,$defenseEnd-$defenseStart)+'evade=!defend;'
+$growthStart=$source.IndexOf('        static bool FullRunPhysicalShield(',[StringComparison]::Ordinal)
+$growthEnd=if($growthStart -ge 0){$source.IndexOf('        bool FullRunCanMove(',$growthStart,[StringComparison]::Ordinal)}else{-1}
+$growthBody=if($growthEnd -gt $growthStart -and $growthStart -ge 0){$source.Substring($growthStart,$growthEnd-$growthStart)}else{'static bool FullRunAllocateGrowth(Simulation sim){return false;}'}
 $prefix=@'
 using System;using System.IO;using System.Collections.Generic;using System.Text.Json;using Exoduser.UnityPort.Core;
 struct Vector2{public float x,y;public Vector2(float a,float b){x=a;y=b;}public static Vector2 up=>new Vector2(0,1);public float magnitude=>(float)Math.Sqrt(x*x+y*y);public Vector2 normalized{get{float d=magnitude;return d>0?new Vector2(x/d,y/d):new Vector2();}}public static Vector2 operator+(Vector2 a,Vector2 b)=>new Vector2(a.x+b.x,a.y+b.y);public static Vector2 operator-(Vector2 a,Vector2 b)=>new Vector2(a.x-b.x,a.y-b.y);public static Vector2 operator*(Vector2 a,float f)=>new Vector2(a.x*f,a.y*f);public static float SqrMagnitude(Vector2 a)=>a.x*a.x+a.y*a.y;public static float Distance(Vector2 a,Vector2 b)=>(float)Math.Sqrt(SqrMagnitude(a-b));}
@@ -28,6 +31,7 @@ static readonly List<object> rows=new List<object>();static int failures;
 static void Check(bool ok,string name,Route route){rows.Add(new{name,passed=ok,x=route.X,y=route.Y,objective=route.Objective});if(!ok){failures++;Console.WriteLine("FAIL "+name+" actual="+route.Objective+" "+route.X+","+route.Y);}}
 static bool At(Route r,float x,float y)=>Math.Abs(r.X-x)<.01&&Math.Abs(r.Y-y)<.01;
 static bool FullRunLine(float x,float y,float tx,float ty)=>true;
+/* GROWTH_HELPER */
 class DefenseInput{public string ParryClass;public float Mana;}
 static (bool defend,bool evade) Defense(string kind,float mana){var p=new DefenseInput{Mana=mana};var bullet=new DefenseInput{ParryClass=kind};bool defend=false,evade=false;
 /* DEFENSE_BODY */
@@ -47,9 +51,14 @@ var d=Defense("physical",100);Check(!d.defend&&d.evade,"physical bullet must not
 d=Defense("magic",100);Check(d.defend&&!d.evade,"magic bullet with mana chooses Q",new Route{Objective="magic"});
 d=Defense("forbidden",100);Check(!d.defend&&d.evade,"unparryable bullet chooses evade",new Route{Objective="forbidden"});
 d=Defense("magic",20);Check(!d.defend&&d.evade,"low mana chooses evade instead of unavailable Q",new Route{Objective="low-mana"});
+var ep=Make().Player;ep.State="idle";ep.Stamina=5;Check(FullRunPhysicalShield("physical",ep,1),"physical E uses actual stamina cost",new Route());ep.Stamina=4;Check(!FullRunPhysicalShield("physical",ep,1),"low stamina cannot force E",new Route());ep.Stamina=100;Check(!FullRunPhysicalShield("magic",ep,1),"magic is not E parry",new Route());ep.State="sDraw";Check(FullRunPhysicalShield("physical",ep,1)&&!FullRunShieldPress(ep.State,80,5),"E draw releases as a tap",new Route());Check(FullRunShieldPress("idle",150,5)&&!FullRunShieldPress("idle",300,5),"physical parry waits for actual range",new Route());
+var g=Make();g.Player.StatPoints=0;g.Player.PassivePoints=0;float hp=g.Player.Hp;Check(!FullRunAllocateGrowth(g)&&g.Player.Hp==hp,"no points cannot allocate or heal",new Route());
+g=Make();g.Player.StatPoints=3;g.Player.PassivePoints=1;hp=g.Player.Hp;Check(FullRunAllocateGrowth(g)&&g.Player.StatPoints==0&&g.Player.PassivePoints==0&&g.Growth.Value("str")==3&&g.Growth.Value("pFortify")==1&&g.Player.Hp==hp,"earned points spend transactionally without forced heal",new Route());
+Check(!FullRunAllocateGrowth(g),"same earned points cannot be spent twice",new Route());
+g=Make();g.Player.StatPoints=0;g.Player.PassivePoints=1000;Check(FullRunAllocateGrowth(g)&&g.Player.PassivePoints>=0&&g.Growth.Value("pFortify")<=10&&g.Growth.Value("pHuman")<=10&&g.Growth.Value("pMelee")<=10,"rank caps and actual costs are respected",new Route());
 File.WriteAllText(args[0],JsonSerializer.Serialize(new{passed=rows.Count-failures,failures,scope="Actual NativeGame.FullRunQa route body with pure geometry shim; no Player/GPU claim",rows},new JsonSerializerOptions{WriteIndented=true}));Console.WriteLine("checks="+rows.Count+" failures="+failures);return failures>0?1:0;}}
 '@
-[IO.File]::WriteAllText((Join-Path $Output 'Program.cs'),$prefix.Replace('/* DEFENSE_BODY */',$defenseBody)+"`n"+$body+"`n"+$suffix)
+[IO.File]::WriteAllText((Join-Path $Output 'Program.cs'),$prefix.Replace('/* DEFENSE_BODY */',$defenseBody).Replace('/* GROWTH_HELPER */',$growthBody)+"`n"+$body+"`n"+$suffix)
 $core=$project.Replace('\','/')+'/Assets/Exoduser/Runtime/Core/**/*.cs'
 $csproj='<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><EnableDefaultCompileItems>false</EnableDefaultCompileItems><NuGetAudit>false</NuGetAudit></PropertyGroup><ItemGroup><Compile Include="Program.cs"/><Compile Include="'+$core+'"/></ItemGroup></Project>'
 [IO.File]::WriteAllText((Join-Path $Output 'FullRunRouteTests.csproj'),$csproj)

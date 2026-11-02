@@ -24,13 +24,13 @@ namespace Exoduser.UnityPort
         {
             public string scene, state, target, bossState;
             public float seconds, x, y, hp, shield, mana, stamina, fps;
-            public int tick, kills, level, experience, loot, bag, regions, anglers, holes, bossHp;
+            public int tick, kills, level, experience, loot, bag, regions, anglers, holes, bossHp, sp, ap, strength, fortify, human, melee;
             public bool arena, cleared, gate;
             public int[] regionKills, regionTotals;
         }
         [Serializable] sealed class FullRunReceipt
         {
-            public string scope = "Actual GPU Player; virtual InputSystem keyboard/mouse -> NativeGame.FixedUpdate. No teleport, HP/resource edits, enemy injection, forced kill or gate unlock. Story and first practice use supported skip.";
+            public string scope = "Actual GPU Player; virtual InputSystem keyboard/mouse -> NativeGame.FixedUpdate. No teleport, HP/resource edits, enemy injection, forced kill or gate unlock. Story and first practice use supported skip. Earned growth points use the ordinary transactional stat purchase API; no forced healing.";
             public string result, device, buildGuid;
             public int width, height;
             public float seconds, averageFps, frameP95Ms, frameP99Ms, longestFrameMs;
@@ -61,6 +61,7 @@ namespace Exoduser.UnityPort
             float started = Time.realtimeSinceStartup;
             yield return new WaitForSecondsRealtime(1);
             lobby.SetPlaybackFocus(true); // Hidden desktop has no foreground focus; retain the ordinary entry flow.
+            Screen.SetResolution(width,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
             lobby.ShowLobby();
             string fresh = "F" + (DateTime.Now.Ticks % 1000000).ToString("000000");
             bool created = lobby.OpenCharacterCreation() && lobby.ChooseCharacterVisual(0) && lobby.ConfirmCharacterVisual() && lobby.CreateCharacter(fresh);
@@ -76,6 +77,8 @@ namespace Exoduser.UnityPort
             yield return FullRunShot(output, "01-practice");
             if (firstPractice != null) EndFirstPractice(true);
             frontendEntryInputFence = false; menu = false; SetGameFocus(true); Running = false;
+            Screen.SetResolution(width,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
+            receipt.width=Screen.width;receipt.height=Screen.height;
             var oldKeyboard = Keyboard.current; var oldMouse = Mouse.current;
             var keyboard = InputSystem.AddDevice<Keyboard>(); var mouse = InputSystem.AddDevice<Mouse>();
             var visits = new HashSet<int>();
@@ -94,7 +97,7 @@ namespace Exoduser.UnityPort
                 while (Simulation.TickCount - firstTick < maxTicks)
                 {
                     var sim = Simulation; var p = sim.Player; var flow = sim.Stage;
-                    if (PlayerDown) { receipt.result = "player-death"; yield return FullRunShot(output, "death"); break; }
+                    if (PlayerDown) { yield return new WaitForSecondsRealtime(1.2f); receipt.result = "player-death"; yield return FullRunShot(output, "death"); break; }
                     if (flow.StageCleared)
                     {
                         receipt.worldCleared=true;receipt.worldClearSeconds=Time.realtimeSinceStartup-started;
@@ -104,6 +107,7 @@ namespace Exoduser.UnityPort
                         receipt.result=receipt.clearModalBlockedBackground&&receipt.clearCancelRearmed&&receipt.clearReturnedLobby&&receipt.clearSaveExists?"stage-cleared":"stage-cleared-transition-blocked";
                         break;
                     }
+                    if(FullRunAllocateGrowth(sim)){hud.Refresh(p,sim.TickCount,true);RequestCombatSave();}
                     Vector2 destination = new Vector2(p.X, p.Y), aim = destination + Vector2.up * 200;
                     bool fighting = false; float nearest = 850 * 850;
                     foreach (var e in sim.Enemies)
@@ -168,8 +172,9 @@ namespace Exoduser.UnityPort
                         }
                     }
                     var move = navigation.Direction(p.X,p.Y,destination.x,destination.y,p.Radius,FullRunCanMove,sim.TickCount);
+                    if(fighting&&nearest<400*400&&FullRunLine(p.X,p.Y,aim.x,aim.y)){var offset=new Vector2(p.X,p.Y)-aim;var tangent=new Vector2(-offset.y,offset.x).normalized;if(FullRunCanMove(p.X+tangent.x*80,p.Y+tangent.y*80,p.Radius))move=tangent;}
                     var keys = new List<Key> { Key.R };
-                    bool defend=false,evade=false;Vector2 threat=aim;
+                    bool defend=false,evade=false,shield=false;Vector2 threat=aim;double shieldDistance=0,shieldSpeed=0;
                     if(sim.Druid!=null&&p.Iframes<=0)
                     {
                         double closestThreat=260*260;
@@ -181,10 +186,13 @@ namespace Exoduser.UnityPort
                             closestThreat=d;threat=new Vector2((float)bullet.X,(float)bullet.Y);
                             defend=bullet.ParryClass=="magic"&&p.Mana>30;
                             evade=!defend;
+                            shield=FullRunPhysicalShield(bullet.ParryClass,p,sim.MaliceSwipeLevel);
+                            shieldDistance=Math.Sqrt(d);shieldSpeed=Math.Sqrt(bullet.Vx*bullet.Vx+bullet.Vy*bullet.Vy);
+                            if(shield)evade=false;
                         }
                     }
                     // A real resource-limited run needs defensive inputs, not forced healing.
-                    if(fighting&&p.Hp<p.MaxHp*.35f&&nearest<240*240&&p.Iframes<=0)evade=true;
+                    if(!shield&&!defend&&fighting&&p.Hp<p.MaxHp*.35f&&nearest<240*240&&p.Iframes<=0)evade=true;
                     if(evade)
                     {
                         var away=new Vector2(p.X,p.Y)-threat;
@@ -193,11 +201,12 @@ namespace Exoduser.UnityPort
                         move=escape;keys.Add(Key.Space);objective="evade";
                     }
                     else if(defend){keys.Add(Key.Q);aim=threat;objective="parry";}
+                    else if(shield){if(FullRunShieldPress(p.State,shieldDistance,shieldSpeed))keys.Add(Key.E);aim=threat;objective="physical-parry";}
                     if (move.x > .25f) keys.Add(Key.D); else if(move.x < -.25f) keys.Add(Key.A);
                     if (move.y > .25f) keys.Add(Key.S); else if(move.y < -.25f) keys.Add(Key.W);
                     // Release the third charged slash periodically; continuous hold never releases it.
-                    bool attack = fighting&&!defend&&!evade&&(p.Stamina>=10||p.KiChargeActive)&&sim.TickCount%270<250;
-                    bool magic = fighting&&!defend&&!evade&&p.Mana>=40&&sim.TickCount%150<(p.Stamina<20?60:18);
+                    bool attack = fighting&&!defend&&!shield&&!evade&&(p.Stamina>=10||p.KiChargeActive)&&(!p.KiChargeActive||p.KiChargeTicks<30);
+                    bool magic = fighting&&!defend&&!shield&&!evade&&p.Mana>=40&&sim.TickCount%150<(p.Stamina<20?60:18);
                     if (fighting && sim.TickCount % 600 < 1) keys.Add(Key.Digit1);
                     keyboard.MakeCurrent(); mouse.MakeCurrent(); InputState.Change(keyboard,new KeyboardState(keys.ToArray()));
                     var aimPoint = NativeRemodel3D.Active ? NativeRemodel3D.Point(aim.x,aim.y) : Point(aim.x,aim.y);
@@ -247,6 +256,24 @@ namespace Exoduser.UnityPort
             receipt.samples.Add(FullRunObserve(objective,started));
             yield return FullRunEnd(output,receipt,started);
         }
+        static bool FullRunPhysicalShield(string kind,PlayerState player,double level)
+        {
+            return kind=="physical"&&(player.State=="sDraw"||player.State=="sBash"||(player.State=="idle"&&player.Stamina>=Exoduser.UnityPort.Core.Combat.ParryRules.ShieldStaminaCost(level)));
+        }
+        static bool FullRunShieldPress(string state,double distance,double speed) { return state=="idle"&&distance<=110+speed*10; }
+        static bool FullRunAllocateGrowth(Simulation sim)
+        {
+            var p=sim.Player;var g=sim.Growth;
+            if(p.StatPoints<=0&&p.PassivePoints<=0)return false;
+            var plan=g.CreatePlan();
+            while(plan.Change("str",1,g,p.StatPoints,p.PassivePoints)){}
+            // Ordinary earned points and the same transactional purchase API as the stat panel.
+            foreach(var key in new[]{"pFortify","pHuman","pMelee","pParry","pArmor","pRegen"})
+                while(plan.Draft.Value(key)<3&&plan.Change(key,1,g,p.StatPoints,p.PassivePoints)){}
+            foreach(var key in new[]{"pFortify","pHuman","pMelee","pParry","pArmor","pRegen"})
+                while(plan.Change(key,1,g,p.StatPoints,p.PassivePoints)){}
+            return sim.ApplyGrowthPlan(plan);
+        }
         bool FullRunCanMove(float x,float y,float radius)
         {
             return (Simulation.CanMove==null||Simulation.CanMove(x,y,radius)) &&
@@ -257,7 +284,7 @@ namespace Exoduser.UnityPort
         {
             var s=Simulation;var p=s.Player;var b=s.Stage.FindBoss();string state="";DruidData data;
             if(b!=null&&s.Druid!=null&&s.Druid.Data.TryGetValue(b,out data))state=data.S;
-            var row=new FullRunSample{scene=s.Stage.InArena?"arena":"field",state=p.State,target=target,bossState=state,seconds=Time.realtimeSinceStartup-started,x=p.X,y=p.Y,hp=p.Hp,shield=p.Shield,mana=p.Mana,stamina=p.Stamina,fps=1/Mathf.Max(.0001f,Time.unscaledDeltaTime),tick=s.TickCount,kills=s.Kills,level=p.Level,experience=p.Experience,loot=s.Loot.Count,bag=inventory.State.Bag.Count,regions=s.RegionClearedCount(),anglers=s.FieldBossAliveCount(),holes=s.SpawnHoles!=null?s.SpawnHoles.Holes.Count:0,bossHp=b!=null?b.Hp:0,arena=s.Stage.InArena,cleared=s.Stage.StageCleared,gate=s.Stage.BossUnlocked};
+            var row=new FullRunSample{scene=s.Stage.InArena?"arena":"field",state=p.State,target=target,bossState=state,seconds=Time.realtimeSinceStartup-started,x=p.X,y=p.Y,hp=p.Hp,shield=p.Shield,mana=p.Mana,stamina=p.Stamina,fps=1/Mathf.Max(.0001f,Time.unscaledDeltaTime),sp=p.StatPoints,ap=p.PassivePoints,strength=s.Growth.Value("str"),fortify=s.Growth.Value("pFortify"),human=s.Growth.Value("pHuman"),melee=s.Growth.Value("pMelee"),tick=s.TickCount,kills=s.Kills,level=p.Level,experience=p.Experience,loot=s.Loot.Count,bag=inventory.State.Bag.Count,regions=s.RegionClearedCount(),anglers=s.FieldBossAliveCount(),holes=s.SpawnHoles!=null?s.SpawnHoles.Holes.Count:0,bossHp=b!=null?b.Hp:0,arena=s.Stage.InArena,cleared=s.Stage.StageCleared,gate=s.Stage.BossUnlocked};
             if(s.Regions!=null){row.regionKills=new int[4];row.regionTotals=new int[4];for(int i=0;i<4;i++){row.regionKills[i]=s.Regions[i].Kills;row.regionTotals[i]=s.Regions[i].Total;}}
             return row;
         }
@@ -290,7 +317,7 @@ namespace Exoduser.UnityPort
         {
             yield return new WaitForEndOfFrame();
             var image=ScreenCapture.CaptureScreenshotAsTexture();
-            try{File.WriteAllBytes(Path.Combine(output,"caps",name+".png"),image.EncodeToPNG());}finally{Destroy(image);}
+            try{File.WriteAllBytes(Path.Combine(output,"caps",name+".png"),image.EncodeToPNG());File.AppendAllText(Path.Combine(output,"capture-sizes.jsonl"),"{\"name\":\""+name+"\",\"width\":"+image.width+",\"height\":"+image.height+"}\n");}finally{Destroy(image);}
             if(Screen.width!=3840&&(name=="00-lobby"||name=="combat"||name=="boss-entry"||name=="death"||name=="clear"||name=="clear-difficulty"||name=="clear-lobby"))
             {
                 int previousWidth=Screen.width,previousHeight=Screen.height;
@@ -345,7 +372,7 @@ namespace Exoduser.UnityPort
             while(path.Count>0&&Vector2.Distance(from,path[0])<12)path.RemoveAt(0);
             var to=path.Count>0?path[0]:target;var delta=to-from;
             var move=new Vector2(Mathf.Abs(delta.x)>8?Mathf.Sign(delta.x):0,Mathf.Abs(delta.y)>8?Mathf.Sign(delta.y):0);
-            if(!canMove(x+move.x*6,y+move.y*6,radius)){nextPlan=0;return Vector2.zero;}
+            if(!canMove(x+move.x*6,y+move.y*6,radius)){nextPlan=0;if(move.x!=0&&canMove(x+move.x*6,y,radius))return new Vector2(move.x,0);if(move.y!=0&&canMove(x,y+move.y*6,radius))return new Vector2(0,move.y);return Vector2.zero;}
             return move;
         }
     }
