@@ -74,4 +74,6 @@ GIT
 
 VISUAL VERDICT: RETOUCH
 
-NEXT PASS: Mac을 사용자가 직접 잠금 해제한 뒤 같은 정상 후보의 OS 진입/이동/공격/막힘·필드 frame 관측. 독립 sampler R 모델은 미해결 판정을 보존하고 scoped visual 수용 범위를 별도 기록. 이후 scoped 인수 → normalizer/서명/백업설치 → 동일 source Win64 full-tree build/manifest/ZIP → 실제 PC 수신·실행 검수. 기존 full161=100PASS/61FAIL와 이전 triad false·old9미관측·각 old58/50 identity false, 전체 A2 RETOUCH/ImpactR4 FAIL을 소급 변경하지 않는다.
+NEXT PASS: 같은80d0 정상Win64 errors0/원movie2byteexact/211파일manifest·4,572,275,424B ZIP64송신검증 및정규화·로컬서명Mac후보M123/23까지완료. 현재PC전용5route20분서버의수신·해제·byte검증은PC담당인수대기이며PC실행/GPU검수는미완료. Mac은사용자수동unlock후signed후보실제OS이동/공격/막힘·필드frame/scopedvisual인수→백업/CAS설치→PC9d658문서를포함한최종source의unity/main nonforce통합순서. 현재unity/main/기존설치1403유지. 이전full100/61·R독립모델불일치·old9미관측·old58/50literalfalse와전체A2 RETOUCH/ImpactR4 FAIL불변.
+
+추가TECH: WinCore/Runtime은같은source의target별DLLSHA를각각기록한다. Mac/WinDLL byte동일을주장하지않는다. WindowsNTFS검증도구patch78cf...는PC담당8+변조회귀인수와Mac실제8+변조회귀통과. 서명MacM1은headless1600×900/GUI0이므로자연플레이검수대체아님. profile26raw/27cache복구,sharedHEAD/index/WIP25 및설치5핵심파일exact보존. Source80d0이후제품Runtime변경0,PC9d658 docs4병합포함. 공유계정단위32→33%(1pp),일간전체소비는첫기록이전미상. 새agent/상시자동화/reset/credit사용0.
