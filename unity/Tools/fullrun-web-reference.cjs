@@ -27,15 +27,16 @@ fs.mkdirSync(out, { recursive: true });
         return { on: typeof G !== 'undefined' && G.on, intro: typeof G !== 'undefined' && !!G._intro };
       });
       if (state.on && !state.intro) break;
-      await page.keyboard.press('Escape');
+      if (state.intro) await page.keyboard.press('Escape');
       await page.waitForTimeout(1000);
     }
     await page.evaluate(() => {
       try { if (window._parryLesson && _parryLesson.skipAll) _parryLesson.skipAll(); if (window._systemLesson && _systemLesson.skipAll) _systemLesson.skipAll(); } catch (_) {}
       if (typeof G !== 'undefined') G.paused = false;
     });
+    if (await page.locator('#settings').isVisible()) await page.keyboard.press('Escape');
     for (let i = 0; i < 7; i++) {
-      const row = await page.evaluate(() => ({ on: typeof G !== 'undefined' && G.on, p: typeof P !== 'undefined' ? { x: P.x, y: P.y, hp: P.hp, level: P.lv } : null, g: typeof G !== 'undefined' ? { kills: G.kills, paused: G.paused, stage: G.stage } : null }));
+      const row = await page.evaluate(() => ({ on: typeof G !== 'undefined' && G.on, p: typeof P !== 'undefined' ? { x: P.x, y: P.y, hp: P.hp, level: P.lv } : null, g: typeof G !== 'undefined' ? { kills: G.kills, paused: G.paused, stage: G.stage } : null, boss: typeof ens !== 'undefined' ? ens.filter(e=>e.ib&&!e.dead).map(e=>({hp:e.hp,state:e.s})) : [], settingsVisible: !!document.querySelector('#settings.open,#settings.active') }));
       rows.push(row);
       await page.screenshot({ path: path.join(out, `field-${i * 10}.png`) });
       await page.mouse.move(1150, 500); await page.mouse.down();

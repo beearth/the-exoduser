@@ -33,8 +33,14 @@ namespace Exoduser.UnityPort
             public string scope = "Actual GPU Player; virtual InputSystem keyboard/mouse -> NativeGame.FixedUpdate. No teleport, HP/resource edits, enemy injection, forced kill or gate unlock. Story and first practice use supported skip.";
             public string result, device;
             public int width, height;
-            public float seconds;
+            public float seconds, averageFps, frameP95Ms, frameP99Ms, longestFrameMs;
+            public int renderedFrames;
             public List<FullRunSample> samples = new List<FullRunSample>();
+        }
+        sealed class FullRunFrameProbe : MonoBehaviour
+        {
+            public readonly List<float> milliseconds=new List<float>();
+            void Update(){milliseconds.Add(Time.unscaledDeltaTime*1000);}
         }
 
         IEnumerator FullRunQa()
@@ -68,6 +74,8 @@ namespace Exoduser.UnityPort
             var oldKeyboard = Keyboard.current; var oldMouse = Mouse.current;
             var keyboard = InputSystem.AddDevice<Keyboard>(); var mouse = InputSystem.AddDevice<Mouse>();
             var visits = new HashSet<int>();
+            var patterns = new HashSet<string>();
+            var performance = gameObject.AddComponent<FullRunFrameProbe>();
             var navigation = new FullRunNavigation();
             float nextSample = 0, nextStep = Time.realtimeSinceStartup;
             int maxTicks; if (!int.TryParse(Argument("-qa-max-ticks"), out maxTicks)) maxTicks = 54000;
@@ -175,15 +183,21 @@ namespace Exoduser.UnityPort
                     if(inventory.State.Bag.Count>previousBag){previousBag=inventory.State.Bag.Count;yield return FullRunShot(output,"pickup-"+previousBag);}
                     if(!gateShot&&flow.BossUnlocked){gateShot=true;yield return FullRunShot(output,"gate-open");}
                     if(!arenaShot&&flow.InArena&&flow.LoadPhase==0){arenaShot=true;yield return FullRunShot(output,"boss-entry");}
+                    var liveBoss=flow.FindBoss();DruidData pattern;
+                    if(flow.InArena&&flow.LoadPhase==0&&liveBoss!=null&&sim.Druid!=null&&sim.Druid.Data.TryGetValue(liveBoss,out pattern)&&patterns.Add(pattern.S))
+                        yield return FullRunShot(output,"boss-pattern-"+pattern.S);
                     // One actual simulation tick at 60 Hz, with real render frames between inputs.
                     nextStep+=1f/60; float wait=nextStep-Time.realtimeSinceStartup;
                     if(wait>0)yield return new WaitForSecondsRealtime(wait);else nextStep=Time.realtimeSinceStartup;
                 }
                 if(receipt.result==null)receipt.result="time-limit";
+                var timings=performance.milliseconds;receipt.renderedFrames=timings.Count;
+                if(timings.Count>0){double total=0;foreach(float ms in timings)total+=ms;timings.Sort();receipt.averageFps=(float)(1000*timings.Count/total);receipt.frameP95Ms=timings[(int)((timings.Count-1)*.95)];receipt.frameP99Ms=timings[(int)((timings.Count-1)*.99)];receipt.longestFrameMs=timings[timings.Count-1];}
             }
             finally
             {
                 Running=false;InputSystem.RemoveDevice(keyboard);InputSystem.RemoveDevice(mouse);
+                Destroy(performance);
                 if(oldKeyboard!=null&&oldKeyboard.added)oldKeyboard.MakeCurrent();if(oldMouse!=null&&oldMouse.added)oldMouse.MakeCurrent();
             }
             receipt.samples.Add(FullRunObserve(objective,started));
