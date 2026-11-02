@@ -1,0 +1,27 @@
+{
+  "time": "2026-11-02T01:26:19.205Z",
+  "checks": [
+    {
+      "file": "portrait_fullbody_v18.html",
+      "status": 200
+    },
+    {
+      "file": "portrait_fullbody_woni_abs_v18.png",
+      "status": 200
+    },
+    {
+      "file": "portrait_fullbody_liv_bob_v18.png",
+      "status": 200
+    },
+    {
+      "file": "portrait_fullbody_liv_updo_v18.png",
+      "status": 200
+    },
+    {
+      "file": "portrait_fullbody_v18.receipt.json",
+      "status": 200
+    }
+  ],
+  "copyHashesVerified": true,
+  "runtimeApplied": false
+}
