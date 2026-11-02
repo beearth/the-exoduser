@@ -295,3 +295,19 @@ Vercel 계정 관리자의 결제 문제 해소가 선행한다. 에이전트는
 | 자동 | 통합119/119 PASS(기존웹/로비/저장/파생/선택기+상자+이동회피전리품). canMv보호실패를 보존 뒤 검토한 함수2개/이전좌표 연결만 고정정규화. 기존 update/draw전체제외0·500개 이상 원문보호유지. 벽검사제거·선분연결삭제·보호이속변경 음성fixture3개 실제FAIL 확인 |
 | 출고계획 | 공식선택3245 동일, runtime2파일+1314B. 이전공식plan3996525412에 더한 예상3996526726B/4GB예상여유3473274B. fullplan/공식artifact/실브라우저합본은 새로실행하지 않음. C2묶음 포함수치가 아님 |
 | 전달 | 이 단위는 root H5후보 정상commit/push 및 로컬HTTP원문대조까지. public402/Unity/Windows설치·바로가기 미반영, Dota실행중 root새GPU/build/encoding0. 기존Mac독립ground진단과겹치지않는후속 정확artifactQA 필요 |
+
+
+## 2026-11-02 C2 close·상자 합본 출고 후보
+
+| 항목 | 현재 후보의 정확 범위 |
+|---|---|
+| 소스 인수 | 923deedfc55017fa4d44dc24843d2b035b583700 위에 title 최종 e9b4d965b5ac4fd25df52d930ab9146fe21268f2의 close 원화·3개 영상·표시/QA/관련 문서만 선택 반영. 중간 c6 tall/93 clarity의 미사용 영상은 인수하지 않음. unrelated main web3d/맵/game 변경·wholemerge0 |
+| 보존 | index의 Init 말미 배치/earlyslot 상태·기존 상자64px/44×24충돌·보상/AI/저장·walk/stag 복구 유지. game.html은923과 byte동일. A master PNG/WebP 및 제작 raw 파일은 삭제·재인코딩하지 않음 |
+| 파생 매핑 오류 | 새 C2가 A를 소비하지 않으므로 A/master-7680x2160.png 매핑1행만 비활성화. 기존95논리94물리→94논리93물리, 나머지94행 순서/identity byte동일. 원본/파생 파일은 그대로 보존. 미선택 원본의 매핑이 남으면 공식plan이실패하는 RED를 먼저 확인 |
+| 예산 원인·수정 | close 영상3종을 그대로 반입하면 약4013715790B(sidecar조정전)로상한초과. 현재런타임참조0인 assets/3d/raw/vinebound의GLB2개+README 총17167315B가 무조건포함되는선택오류를수정. raw를초기전체포함에서만제외하고 명시URL/동적prefix 실제참조는기존closure로유지. root 원본파일/필요한canonical모델/상자GLB는보존 |
+| 공식 소스 plan | 선택3243·sidecar포함3237파일·3996547694B·4GB여유3452306B·최대94795327B·94논리93물리. 실제모든활성파생source/blob/hash/MIME를검증한plan이며 대형static복사·prepare/check·합본browser 완료가아님 |
+| 회귀 | raw전체포장 RED15/16→정확선택GREEN·A미선택매핑RED→1행해제GREEN. 합본130/130:타이틀/파생/closure/로비실제helper/상자/이동/보상·AI·저장소스보호 PASS. source-only검사는 실제합본화면PASS가아님 |
+| 실제 이미지·경계 | 원담당 title-close-20261102/REPORT.md·19관련검사/합성픽셀3/111project·1920/2560/3840자체실화면범위인수, root새1920메뉴원본직접뷰. 32:9달상단크롭과원생성해상도한계보존. Unity/물리모니터/NW/public·전체맵/자연전투는미검수 |
+| 후속 | 기존Macground진단이자원/EditorPlayer/FIFO/profile을반환한뒤 동일Macowner에최종정확후보의공식artifact/최소합본검수. 사용자Dota/OBS·서버3333/3448·save/WIP보존. 공개402미납조건에서mainpush로CI재실패유발0 |
+
+근거: I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/title-c2-close-integration-20261102/ (raw-reference-proof.json, raw-selection-red.log, orphan-red.log, integration-green.log, official-plan.json).

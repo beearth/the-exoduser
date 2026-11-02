@@ -30,7 +30,7 @@ export function selectWebRuntimeFiles(tracked,entryFiles,readSource) {
   const selected=new Set(paths.filter(({path})=>roots.has(path)
     || /^(lang_[^/]+\.js|atlas_[^/]+)$/.test(path)
     || /^(sfx|sprites|localization)\//.test(path)
-    || /^assets\/(vendor|3d)\//.test(path)).map(entry=>entry.path));
+    || /^assets\/(?:vendor\/|3d\/(?!raw\/))/.test(path)).map(entry=>entry.path));
   const scanned=new Set(),references=new Set();let changed=true;
   while(changed) {
     changed=false;

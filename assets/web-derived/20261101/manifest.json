@@ -512,16 +512,6 @@
       "mime": "image/webp"
     },
     {
-      "source_path": "assets/title-signboard/A/master-7680x2160.png",
-      "source_git_blob": "9de6838ffa2d465407e893397ef586611ef67461",
-      "source_sha256": "c6565cf4050d3ae33d3d65acdd5becf0cfe0114a77a7dd2b4e03cb29e6858548",
-      "source_bytes": 21882735,
-      "derivative_path": "assets/web-derived/20261101/assets/title-signboard/A/master-7680x2160.webp",
-      "sha256": "47cfbf675ba1bcffb88f6d1b24c01efaecd29dc5c0da9d602a6132a89652a69f",
-      "bytes": 8213492,
-      "mime": "image/webp"
-    },
-    {
       "source_path": "assets/lobby/varkan_idle_v3.png",
       "source_git_blob": "90c396dbf3b4647e6922433c21e3e7e863a0e2dd",
       "source_sha256": "12a5dec2194c21715f5c57ecd73c5621759e4d3e7a11b99d8543ebbca6776df4",

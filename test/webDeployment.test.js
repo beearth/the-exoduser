@@ -217,3 +217,12 @@ test('web selection closes exact relative module imports from each importing dir
   assert.ok(!selected.includes('web3d/unused.mjs'),'same-directory files are not implicit module dependencies');
   assert.ok(!selected.includes('unrelated.js'),'outside-root, remote and bare specifiers must not select files');
 });
+
+test('unreferenced 3D raw downloads stay out of web output while live raw references remain supported',()=>{
+  const paths=['index.html','assets/3d/actor.glb','assets/3d/raw/actor-source.glb','assets/3d/raw/README.md'];
+  const select=source=>manifest.selectWebRuntimeFiles(paths,['index.html'],()=>source);
+  assert.deepEqual(select("const actor='assets/3d/actor.glb';"),['index.html','assets/3d/actor.glb']);
+  assert.ok(select("const actor='assets/3d/raw/actor-source.glb';").includes('assets/3d/raw/actor-source.glb'));
+  const dynamic=select("const root='assets/3d/raw/';model.src=root+name;");
+  assert.ok(dynamic.includes('assets/3d/raw/actor-source.glb'),'live dynamic raw prefixes retain their closure');
+});

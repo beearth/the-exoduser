@@ -144,3 +144,11 @@ codex-web-wide-anim이 원래 영상 가림을 해소하고 manifest 위치/높�
 - 사용자 직접 브리프 1·2절만 진행. 원본 A/실버테일 원화와 v22b 20초 피강을 직접 대조, 내장 image_gen으로 후보3장+달1회 교정. 거대 마왕 요새·자연스러운 왼쪽 부츠·어두운 피강·원형 달을 비교한 `G:/exoduser/tmp/design-review/20261102_title_keyframe/BOARD.png`(4740×4320). 달 지름비 C1 149/147=1.0136, C2 142/142=1.0000, C3 156/157=.9936. C2는 생성 교정도 실패해 달 영역 국소 기하 보정으로 전환.
 - **CTO 선택 대기 / 후보 RETOUCH / 새 아트 게임 미적용**. 원생성2171~2172×724를2144×603 크롭 후3840×1080으로 균등 확대, 네이티브4K가 아니다. 고해상도 세부와32:9 피강 잔해 판독은 선택 후 보완 대상. PNG 원본·프롬프트·측정·전체/전신1x/발3x/손/성/강/달 크롭은 같은 경로와 I:/EXODUSER-Storage/codex-takeover/title-keyframe-20261102/ 보존. Kling/영상 생성·게임 자산 교체 없음.
 - 2절은 최신 origin/main 604cd2ca6 fetch/merge(Already up to date) 후 시작. 로고 왼쪽=`max(48px,4.5vh)`, 메뉴=로고+20k. 실제1920/2560/3840×1080에서48.6/68.6px, 총7크기 경계 PASS·키보드 선택 PASS·pageerror0, 타이틀8/8·project-check111/111. 최신 main에서 E 잘림은 미재현, 좁은800×1080의 기존40px<48.6px만 재현. 전후 캡처·원격SHA·최종 보고는 위 I: REPORT.md.
+
+## 2026-11-02 시작 메뉴 C2 tall 선명도 개선
+
+기존 codex-web-keyart-wide가 최신origin/main d60ed26bb를 먼저 병합하고 close/C2-tall-fixed-3840x1920.png를 채택했다. 원화 정적 영역과 tall-final 전206프레임 움직임지도를 정합 합성,3840/2560/1920판 선택으로 바꾼다. 하늘은 수정 원화에 시간별밝기비.8~1.2를 적용해 구 직선/감산얼룩을 피한다. 기존로고48.6px/메뉴68.6px 여백·폭포100/75px/s보강 유지.
+
+최종 close 원화+close-final 루프 합성3판으로 교체했다. 실제3해상도각10초이상·얼굴/발/요새/폭포1x·루프/정지/오류/입력 검수 완료,발이동0px·오류/404/세이브쓰기0. Dota 보호로PC영상인코딩없이 원격미디어샌드박스 사용,새유료생성0·기존WIP7개 보존. 중앙cover32:9달상단크롭과원생성한계는 스플래시C2계약, 최종source/원격SHA·자체판정·녹화는 I:/EXODUSER-Storage/codex-takeover/title-close-20261102/REPORT.md. 이전tall기록은 title-clarity-20261102/REPORT.md에 보존한다.
+
+확인서버 http://127.0.0.1:3384/index.html?test=1. Unity반영대기. 물리32:9모니터·NW.js·오디오·Steam/외부배포는 별도다. 기존unrelated living-scenes와폐기crop32작업파일은이번커밋에서제외한다.

@@ -1,0 +1,143 @@
+{
+  "source": "I:/EXODUSER-Storage/codex-takeover/title-kling-C2-20261102/close-final/loop.mp4",
+  "sourceSHA256": "744d516b62efb60cebae94b2754fbedcc26b1e05cab2587dfd53173e460f98d8",
+  "runtime": "video/title_motion_C2_close_3840_20261102.mp4",
+  "size": [
+    3840,
+    1920
+  ],
+  "layout": "cover",
+  "sourceStartSeconds": 0.5,
+  "overlapSeconds": 1,
+  "audio": false,
+  "stillSource": "G:/exoduser/tmp/design-review/20261102_title_keyframe/close/C2-close-3840x1920.png",
+  "fallData": [
+    {
+      "id": "near",
+      "box": [
+        862,
+        319,
+        54,
+        241
+      ],
+      "mouth": [
+        876,
+        329
+      ],
+      "contact": [
+        893,
+        551
+      ],
+      "speed": 100
+    },
+    {
+      "id": "far",
+      "box": [
+        1041,
+        381,
+        41,
+        200
+      ],
+      "mouth": [
+        1053,
+        389
+      ],
+      "contact": [
+        1063,
+        575
+      ],
+      "speed": 75
+    }
+  ],
+  "texture": [
+    128,
+    512
+  ],
+  "opacity": 0.38,
+  "quality": "Close composition: approved 3840x1920 still for static geometry; registered close-final motion for hair/cape/water; bounded temporal light on clouds/mist. Background was generated at 1774x887 and resized; character layer 1224x1285 reduced to 1000px. No native-4K claim.",
+  "variants": {
+    "1920": {
+      "path": "video/title_motion_C2_close_1920_20261102.mp4",
+      "size": [
+        1920,
+        960
+      ],
+      "bytes": 5036891,
+      "sha256": "1682e40ec09bb1fd8294797c94445cd5071d8d40c23b5369b03451601f761b3a",
+      "frames": "206",
+      "fps": "24/1",
+      "duration": "8.584000",
+      "audio": false
+    },
+    "2560": {
+      "path": "video/title_motion_C2_close_2560_20261102.mp4",
+      "size": [
+        2560,
+        1280
+      ],
+      "bytes": 7641069,
+      "sha256": "0c3bc18287f8403e7ff90110c10865cdba1518e9d2df3a51287f2a6e92b4ddeb",
+      "frames": "206",
+      "fps": "24/1",
+      "duration": "8.584000",
+      "audio": false
+    },
+    "3840": {
+      "path": "video/title_motion_C2_close_3840_20261102.mp4",
+      "size": [
+        3840,
+        1920
+      ],
+      "bytes": 15764208,
+      "sha256": "0157bf6370446b48cf1f06e643c840e19a07f444b707b3088a1f0f18e8b1d8ff",
+      "frames": "206",
+      "fps": "24/1",
+      "duration": "8.584000",
+      "audio": false
+    }
+  },
+  "stillSHA256": "66733238edceea19749585f1e685c9717539d42fdf4c047857934f5a08d737ae",
+  "fixedUsed": true,
+  "maskFrames": 206,
+  "registration": {
+    "matrix1018": [
+      [
+        1.0011068040120776,
+        0.00007959146777343134,
+        -0.2804537475118558
+      ],
+      [
+        -0.00007959146777343134,
+        1.0011068040120776,
+        -0.16521527674242206
+      ]
+    ],
+    "inliers": 292,
+    "medianError4K": 0.5763294696807861,
+    "scale": 1.0011068071759768
+  },
+  "directCoverage": 0.18804736742563136,
+  "residualCoverage": 0.2503078187902625,
+  "cloudFlow": {
+    "path": "assets/title-signboard/C2/cloud-flow.webp",
+    "size": [
+      2036,
+      1018
+    ],
+    "opacity": 0.12,
+    "dx": "7*sin(.07*t)+2*sin(.13*t)",
+    "dy": "1.5*sin(.09*t)",
+    "source": "approved still; 3 feathered cloud envelopes with moon/dark silhouettes protected"
+  },
+  "originalSource": "I:/EXODUSER-Storage/codex-takeover/title-kling-C2-20261102/close-final/original.mp4",
+  "originalSourceSHA256": "b9e7b0cf0f8d39d1a26ebaab188603825035b8e855bdacdecfec6e95d4c5950f",
+  "stillRuntimeSHA256": "c0125f636e167603cf42fa15843c11d1574a3ee7d9b17be2fd634aa282bbe0b5",
+  "assetBuilder": "tools/build-title-close-assets.cjs",
+  "compositor": "tools/build-title-clarity.py",
+  "staticComposition": "C2-close approved still preserved; 32:9 center cover preserves character head and feet, but crops the upper moon",
+  "maskHashes": {
+    "fall-near.png": "8e49502aa482d2fba599592d8408dc5511b88013b1de1d776a7f2ccbd73847e1",
+    "fall-far.png": "7c6858c890391f14ec6cc4786ea09fae30f0b7376d39043bc658e0cec90ddca5",
+    "cloud-flow.webp": "c0f0fb93ae0b3472040e84274b1aadbdce8504e514951d17b22fac1e956746c5"
+  }
+}

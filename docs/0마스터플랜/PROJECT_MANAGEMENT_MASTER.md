@@ -793,7 +793,7 @@ codex-web-statwin: 다섯 창 제목44px와 성장 머리225→44px, 기존 인�
 
 ### 2026-10-31 WEB 로고 알파 보정
 
-시작 메뉴의 후속 사용자 선택 A 반영은 기존 codex-web-keyart-wide 담당이 완료했다. 단일32:9 마스터에서16/21/32:9·구름/달빛/강/손/미풍, 웹 실제3해상도·10초2종·1x/연속프레임 자체 PASS, 최신main 병합 회귀50/50·프로젝트111/111·guard PASS. Steam/공모전13이미지·README·기존Hero비교 제작(게시0). [현행 계약](../3.1%20ui%20hud%20디자인/스플래시_인트로_시퀀스.md), 원격SHA·확인서버·동작/키트 증거·미검수 경계는 `I:/EXODUSER-Storage/codex-takeover/title-signboard/REPORT.md`. 로고 보정·첫 ENTER 게이트·기존 타인WIP·세계관 인트로v22b 보존, Unity/NW.js·배포는 별도다.
+시작 메뉴는 2026-11-02 최종 ‘캐릭터 당긴 안’ C2 close 원화+Kling 움직임 합성 루프3판으로 교체했다. 실제16/21/32:9각10초이상·얼굴/발/요새/폭포1x·정지/오류/입력 검수 완료,전206프레임발이동0px·오류/404/세이브쓰기0. 중앙cover의32:9달상단크롭과 원생성해상도 한계는 [현행 계약](../3.1%20ui%20hud%20디자인/스플래시_인트로_시퀀스.md), source/원격SHA·자체 판정·녹화/비교는 `I:/EXODUSER-Storage/codex-takeover/title-close-20261102/REPORT.md`. 기존ENTER/FDG/월드인트로·A/tall원본은보존. 물리모니터/NW.js/Unity·외부배포는 별도다.
 
 | 담당·범위 | 결과·근거 | 반영 경계 |
 |---|---|---|
