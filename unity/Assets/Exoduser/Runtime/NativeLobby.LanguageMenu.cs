@@ -34,7 +34,7 @@ namespace Exoduser.UnityPort {
    var e=Event.current;if(CharacterModalOpen||AutomatedInput)return;
    if(e.type==EventType.KeyUp){ProcessLanguageMenuKey(e.keyCode,true);return;}
    if(e.type!=EventType.KeyDown)return;
-   if(lobbyQuitPrompt){if(e.keyCode==KeyCode.Escape)lobbyQuitPrompt=false;e.Use();return;}
+   if(lobbyQuitPrompt){HandleLobbyQuitKey(e.keyCode);e.Use();return;}
    if(ProcessLanguageMenuKey(e.keyCode,false))e.Use();
   }
   void DrawLanguages(Rect selector){

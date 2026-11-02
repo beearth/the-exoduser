@@ -6,7 +6,7 @@ namespace Exoduser.UnityPort {
  public sealed partial class NativeLobby {
   sealed class EntryHoverVoice{public AudioSource source;public float start,stop=-1,releaseGain;}
   readonly List<EntryHoverVoice> entryHoverVoices=new List<EntryHoverVoice>();AudioClip entryHoverClip;
-  bool entryHoverWanted,entryHoverPrevious;int entryHoverFrame=-10;
+  bool entryHoverWanted,entryHoverPrevious,gateInputFocus,lobbyQuitYes;int entryHoverFrame=-10;
   internal int EntryAudioEvents {get;private set;}
   internal bool UiAudioAllowed=>focused&&IsBlocking;
   void UiNavigate(string id){if(UiAudioAllowed&&(Event.current==null||!Event.current.isMouse))NativeUiSounds.Current?.Navigate(id);}
@@ -32,8 +32,17 @@ namespace Exoduser.UnityPort {
    else if(movedX)key=x>0?KeyCode.RightArrow:KeyCode.LeftArrow;
    if(key==KeyCode.None)return original;
    if(showLanguages){ProcessLanguageMenuKey(key,false);ProcessLanguageMenuKey(key,true);return original;}
-   if(lobbyQuitPrompt){if(key==KeyCode.Escape){UiConfirm();lobbyQuitPrompt=false;}return original;}
+   if(lobbyQuitPrompt){HandleLobbyQuitKey(key);return original;}
    return new Event{type=EventType.KeyDown,keyCode=key,shift=movedY&&y>0};
+  }
+  void HandleLobbyQuitKey(KeyCode key){
+   if(key==KeyCode.Escape){UiConfirm();lobbyQuitPrompt=false;return;}
+   bool before=lobbyQuitYes;
+   if(key==KeyCode.Tab)lobbyQuitYes=!lobbyQuitYes;
+   else if(key==KeyCode.LeftArrow)lobbyQuitYes=false;
+   else if(key==KeyCode.RightArrow)lobbyQuitYes=true;
+   if(before!=lobbyQuitYes)UiNavigate(lobbyQuitYes?"lobby-quit-confirm":"lobby-quit-cancel");
+   if(key==KeyCode.Return||key==KeyCode.KeypadEnter||key==KeyCode.Space){UiConfirm();if(lobbyQuitYes)Application.Quit();else lobbyQuitPrompt=false;}
   }
   AudioMixerGroup EntryUiGroup(){
    var mixer=Resources.Load<AudioMixer>("Audio/FrontendUI");if(mixer==null)throw new InvalidOperationException("Missing frontend UI mixer");
@@ -42,10 +51,12 @@ namespace Exoduser.UnityPort {
   }
   void PrepareEntryHoverClip(){if(entryHoverClip==null){entryHoverClip=Resources.Load<AudioClip>("Audio/UI/entry_hover");entryHoverClip?.LoadAudioData();}}
   void DrawEntryHover(Rect r,bool enabled=true){
+   if(Event.current.type==EventType.MouseMove)gateInputFocus=false;
    if(Event.current.type!=EventType.Repaint)return;
-   entryHoverFrame=Time.frameCount;entryHoverWanted=enabled&&GUI.enabled&&focused&&(r.Contains(Event.current.mousePosition)||GUI.GetNameOfFocusedControl()=="lobby-enter");
+   entryHoverFrame=Time.frameCount;entryHoverWanted=enabled&&GUI.enabled&&focused&&(r.Contains(Event.current.mousePosition)||GUI.GetNameOfFocusedControl()=="lobby-enter"||gateInputFocus&&Flow.Page==Core.LobbyPage.Title);
   }
   void UpdateEntryUiAudio(float dt){
+   if(!AutomatedInput&&UiAudioAllowed&&splash==0&&Flow.Page==Core.LobbyPage.Title){if(LobbyKeys.Down(KeyCode.Tab)||ExoInput.VerticalRaw()!=0)gateInputFocus=true;if(Time.frameCount!=inputFence&&ExoInput.KeyDown(KeyCode.JoystickButton0))StartGate();}
    bool wanted=entryHoverWanted&&focused&&entryHoverFrame>=Time.frameCount-1&&IsBlocking;float now=Time.unscaledTime;
    if(wanted!=entryHoverPrevious){
     // 웹 _startHover는 이전 루프를 80ms로 내리고 새 소스는 첫 샘플부터 100ms로 올린다.
@@ -55,6 +66,6 @@ namespace Exoduser.UnityPort {
    }
    for(int i=entryHoverVoices.Count-1;i>=0;i--){var voice=entryHoverVoices[i];voice.source.volume=voice.stop<0?.7f*Mathf.Clamp01((now-voice.start)/.1f):voice.releaseGain*Mathf.Clamp01(1-(now-voice.stop)/.08f);if(voice.stop>=0&&now-voice.stop>=.1f){voice.source.Stop();Destroy(voice.source);entryHoverVoices.RemoveAt(i);}}
   }
-  void StopEntryHover(){entryHoverWanted=false;entryHoverFrame=-10;}
+  void StopEntryHover(){entryHoverWanted=false;entryHoverFrame=-10;gateInputFocus=false;}
  }
 }
