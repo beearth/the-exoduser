@@ -4,12 +4,12 @@ import {createRelief} from './living-relief.mjs?v=20261102-round4-final';
 import {createMapLook} from './map-look-pass.mjs?v=20261102-hue1';
 import {createDepthPass} from './depth-pass.mjs?v=20261102-hue1';
 import {sceneBudget} from './scene-budget.mjs?v=20261102-round4-final';
-import {createForest} from './forest-layer.mjs?v=20261102-round4-final';
+import {createForest} from './forest-layer.mjs?v=20261102-round5';
 import {createGhosts} from './ghost-layer.mjs?v=20261102-round4-final';
 import {authoredFoliageLayout,puddleHabitat} from './foliage-layout.mjs?v=20261031-foliage4b';
 import {drawFoliageDebug} from './foliage-debug.mjs?v=20261031-foliage4';
 
-import {createGroundDressing} from './ground-dressing.mjs?v=20261102-hue1';
+import {createGroundDressing} from './ground-dressing.mjs?v=20261102-round5';
 
 // The native map is the color source. This canvas contains ONLY added vegetation
 // and water highlights; actors, VFX, camera, lighting and HUD use their original pass.

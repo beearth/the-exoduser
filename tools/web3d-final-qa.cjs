@@ -19,7 +19,7 @@ async function record(p,context,name,width,seconds=10){
  for(const f of files)result.source[f]=crypto.createHash('sha256').update(await fs.readFile(root+'/'+f)).digest('hex');
  const browser=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true,args:['--mute-audio'],env:{...process.env,TEMP:out+'/temp',TMP:out+'/temp'}});
  try{
- const context=await browser.newContext({viewport:{width:1920,height:1080},deviceScaleFactor:1});await context.addInitScript(()=>setInterval(()=>{try{if(typeof OPT!=='undefined'){OPT.sfxVol=OPT.bgmVol=0;OPT.fpsCap=0;}}catch{}},50));await context.route('**/*',r=>r.continue());const p=await context.newPage();
+ const context=await browser.newContext({viewport:{width:1920,height:1080},deviceScaleFactor:1});await context.addInitScript(()=>setInterval(()=>{try{if(typeof OPT!=='undefined'){OPT.sfxVol=OPT.bgmVol=0;OPT.fpsCap=0;}}catch{}},50));await context.route('**/api/**',r=>r.request().method()==='GET'?r.continue():r.fulfill({status:200,contentType:'application/json',body:'{"ok":true,"isolated":true}'}));const p=await context.newPage();
  p.on('pageerror',e=>result.errors.push(e.message));p.on('console',m=>{if(m.type()==='error')result.errors.push(m.text());});p.on('response',r=>{if(r.status()>=400)result.http.push({url:r.url(),status:r.status()});});
  console.log('최종 게임 진입');await p.goto(url,{waitUntil:'domcontentloaded',timeout:60000});await ready(p);await p.waitForTimeout(process.argv.includes('--sustained')?5000:1200);await p.evaluate(()=>window._btFramePause=true);console.log('원본 인물·HUD 동일성 검수');
   result.actorParity=await p.evaluate(()=>{
@@ -42,7 +42,7 @@ async function record(p,context,name,width,seconds=10){
    console.log(width+' '+(on?'ON':'OFF')+' 영상·정지 FPS');
    await p.evaluate(({on,phase})=>{window._Web3DLivingLayer.setEnabled(on);_gameTime=phase;window._finalQaClock=setInterval(()=>_gameTime+=1000/60,1000/60);},{on,phase});await p.waitForTimeout(100);
    await p.screenshot({path:out+'/moat-'+(on?'on':'off')+'-'+width+'.png'});result.clips.push(await record(p,context,width+'-'+(on?'on':'off'),width));
-   await p.evaluate(()=>clearInterval(window._finalQaClock));result.samples.push(await sample(p,width+' '+(on?'ON':'OFF')+' 정지상태·녹화없음',10));
+   await p.evaluate(()=>clearInterval(window._finalQaClock));if(!process.argv.includes('--media-only'))result.samples.push(await sample(p,width+' '+(on?'ON':'OFF')+' 정지상태·녹화없음',10));
   }
  }
  await p.evaluate(()=>window._Web3DLivingLayer.setEnabled(true));console.log('3840 8카메라 검수');
@@ -62,11 +62,11 @@ async function record(p,context,name,width,seconds=10){
   if(continuous&&!window._round4DenseOriginal){const api=window._Web3DLivingLayer,original=api.surface;window._round4DenseOriginal=original;api.surface=(ctx,view)=>{topUp();original(ctx,view);};}
   topUp();window._Web3DLivingLayer.setEnabled(on);window._btFramePause=false;return {enemies:ens.length,bullets:projs.length,continuous,healthFixture:continuous?'플레이어 무적·HP회복 / 적 HP100만 / 매 프레임 최소96탄 보충':'플레이어 HP100만 / 시작96탄'};
  },{on,continuous:process.argv.includes('--sustained')});
- for(const width of [1920,3840]){await p.setViewportSize({width,height:1080});await p.waitForTimeout(400);for(const on of [false,true]){console.log(width+' 활성64적/96탄 '+(on?'ON':'OFF'));const start=await dense(on),s=await sample(p,width+' 활성 밀집 '+(on?'ON':'OFF')+' / HP100만 fixture',10);s.start=start;result.samples.push(s);await p.evaluate(()=>window._btFramePause=true);await p.screenshot({path:out+'/dense-'+width+'-'+(on?'on':'off')+'.png'});}}
+ for(const width of (process.argv.includes('--media-only')?[]:[1920,3840])){await p.setViewportSize({width,height:1080});await p.waitForTimeout(400);for(const on of [false,true]){console.log(width+' 활성64적/96탄 '+(on?'ON':'OFF'));const start=await dense(on),s=await sample(p,width+' 활성 밀집 '+(on?'ON':'OFF')+' / HP100만 fixture',10);s.start=start;result.samples.push(s);await p.evaluate(()=>window._btFramePause=true);await p.screenshot({path:out+'/dense-'+width+'-'+(on?'on':'off')+'.png'});}}
  await dense(true);result.clips.push(await record(p,context,'dense-active',3840));await p.evaluate(()=>window._btFramePause=true);
  const info=await browser.newBrowserCDPSession();result.gpu=(await info.send('SystemInfo.getInfo')).gpu.devices;await info.detach();
  await context.close();console.log('정상 HP·AI의 실제 입력 10초');
- const normal=await browser.newContext({viewport:{width:1920,height:1080},deviceScaleFactor:1});await normal.addInitScript(()=>setInterval(()=>{try{if(typeof OPT!=='undefined'){OPT.sfxVol=OPT.bgmVol=0;}}catch{}},50));await normal.route('**/*',r=>r.continue());const play=await normal.newPage();play.on('pageerror',e=>result.errors.push(e.message));play.on('console',m=>{if(m.type()==='error')result.errors.push(m.text())});await play.goto(url+'&input=1',{waitUntil:'domcontentloaded'});await ready(play);
+ const normal=await browser.newContext({viewport:{width:1920,height:1080},deviceScaleFactor:1});await normal.addInitScript(()=>setInterval(()=>{try{if(typeof OPT!=='undefined'){OPT.sfxVol=OPT.bgmVol=0;}}catch{}},50));await normal.route('**/api/**',r=>r.request().method()==='GET'?r.continue():r.fulfill({status:200,contentType:'application/json',body:'{"ok":true,"isolated":true}'}));const play=await normal.newPage();play.on('pageerror',e=>result.errors.push(e.message));play.on('console',m=>{if(m.type()==='error')result.errors.push(m.text())});await play.goto(url+'&input=1',{waitUntil:'domcontentloaded'});await ready(play);
  result.input={before:await play.evaluate(()=>({x:P.x,y:P.y,hp:P.hp,mhp:P.mhp,stats:{...G._sStats}}))};
  const inputClip=record(play,normal,'native-input',1920,10);await play.keyboard.down('w');await play.waitForTimeout(1600);await play.keyboard.up('w');await play.mouse.move(1160,480);await play.mouse.down();await play.waitForTimeout(2500);await play.keyboard.down('q');await play.waitForTimeout(700);await play.keyboard.up('q');await play.keyboard.down('a');await play.waitForTimeout(1200);await play.keyboard.up('a');await play.waitForTimeout(4000);await play.mouse.up();result.clips.push(await inputClip);
  result.input.after=await play.evaluate(()=>({x:P.x,y:P.y,hp:P.hp,mhp:P.mhp,stats:{...G._sStats},layer:window._Web3DLivingLayer.snapshot()}));await play.screenshot({path:out+'/native-input.png'});await normal.close();

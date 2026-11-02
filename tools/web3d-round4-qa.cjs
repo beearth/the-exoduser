@@ -4,6 +4,7 @@ const root=path.resolve(__dirname,'..'),base='I:/EXODUSER-Storage/web3d-round4-2
 const mode=process.argv[2]||'stage1',out=process.env.WEB3D_QA_OUT||base+'/'+mode;
 const limited=process.argv.includes('--limited')||mode==='stage1';
 const cameras=[['start',4020,7420],['early',3680,6380],['arena',4000,5200],['side_l',2120,5480],['camp',1900,4180],['corpse_tree',4100,3900],['altar',5900,4120],['side_r',6600,3800],['late',4000,2000],['exit',4000,700]];
+if(process.argv.includes('--all-regions'))cameras.push(['cocoon',1800,2200],['toxic_north',6700,1740],['toxic_south',6500,5460]);
 async function ready(p){
  await p.waitForFunction(()=>typeof P!=='undefined'&&P?.x>0&&typeof _startSceneWarmState!=='undefined'&&_startSceneWarmState.status==='ready',null,{timeout:90000});
  for(let i=0;i<150;i++){const s=await p.evaluate(()=>({on:G.on,cutscene:_cutsceneState,guide:getComputedStyle(document.getElementById('introKeys')).opacity==='1'}));if(s.on)break;if(s.guide)await p.locator('#ikSkip').click();else if(s.cutscene==='INTRO_CUTSCENE')await p.keyboard.press('Escape');await p.waitForTimeout(150);}

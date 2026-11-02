@@ -1,6 +1,6 @@
 import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
 import {forestLayout} from './environment-layout.mjs';
-import {forestLightingGLSL} from './forest-lighting.mjs';
+import {forestLightingGLSL,forestBackdropGLSL} from './forest-lighting.mjs?v=20261102-round5';
 
 export async function createForest(renderer,canvas,shared,data,anchors){
  const plan=forestLayout(data,anchors),scene=new THREE.Scene(),camera=new THREE.Camera(),groups=[];
@@ -13,7 +13,7 @@ export async function createForest(renderer,canvas,shared,data,anchors){
  // It is outside the walkable polygon and reuses the existing forest painting.
  const backMaterial=new THREE.ShaderMaterial({uniforms:{...shared,art:{value:null},forestMask:{value:maskTex}},depthTest:false,depthWrite:false,transparent:true,
   vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}`,
-  fragmentShader:`uniform vec4 view;uniform sampler2D art,forestMask;varying vec2 vUv;void main(){vec2 w=view.xy+vec2(vUv.x,1.-vUv.y)*view.zw;float outside=texture2D(forestMask,vec2((w.x+2400.)/12800.,1.-(w.y+2400.)/12800.)).a;if(outside<.005)discard;vec4 wood=texture2D(art,fract(w/vec2(1450.,2100.)));float haze=.92+.08*sin(w.x*.0013+w.y*.0008);vec3 c=(vec3(.028,.037,.049)+wood.rgb*wood.a*vec3(.07,.08,.09))*haze;gl_FragColor=vec4(c,outside*.96);}`});
+  fragmentShader:`uniform vec4 view;uniform sampler2D art,forestMask;varying vec2 vUv;${forestBackdropGLSL}void main(){vec2 w=view.xy+vec2(vUv.x,1.-vUv.y)*view.zw;float outside=texture2D(forestMask,vec2((w.x+2400.)/12800.,1.-(w.y+2400.)/12800.)).a;if(outside<.005)discard;vec4 wood=texture2D(art,forestBackdropUV(w));float haze=.92+.08*sin(w.x*.0013+w.y*.0008);vec3 c=(vec3(.028,.037,.049)+wood.rgb*wood.a*vec3(.07,.08,.09))*haze;gl_FragColor=vec4(c,outside*.96);}`});
  const back=new THREE.Mesh(new THREE.PlaneGeometry(2,2),backMaterial);back.frustumCulled=false;back.renderOrder=-10;scene.add(back);
  const vertex=`uniform vec4 view;uniform float time,bend;attribute vec4 placement,detail;varying vec2 vUv,world;varying vec4 info;
  void main(){vUv=uv;info=detail;vec2 p=position.xy*placement.zw;float top=uv.y;
