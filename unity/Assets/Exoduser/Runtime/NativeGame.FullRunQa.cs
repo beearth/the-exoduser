@@ -30,11 +30,11 @@ namespace Exoduser.UnityPort
         }
         [Serializable] sealed class FullRunReceipt
         {
-            public string scope = "Actual GPU Player; virtual InputSystem keyboard/mouse -> NativeGame.FixedUpdate. No teleport, HP/resource edits, enemy injection, forced kill or gate unlock. Story and first practice use supported skip. Earned growth points use the ordinary transactional stat purchase API; no forced healing.";
+            public string scope = "Actual GPU Player; virtual InputSystem keyboard/mouse -> NativeGame.FixedUpdate. No teleport, HP/resource edits, enemy injection, forced kill or gate unlock. Story and first practice use supported skip. Earned growth points use the ordinary transactional stat purchase API; owned usable gear is equipped through NativeInventory.Equip. No forced healing.";
             public string result, device, buildGuid;
             public int width, height;
             public float seconds, averageFps, frameP95Ms, frameP99Ms, longestFrameMs;
-            public int renderedFrames;
+            public int renderedFrames, gearChanges;
             public bool worldCleared, clearModalNotApplicable, clearModalBlockedBackground, clearCancelRearmed, clearReturnedLobby, clearSaveExists;
             public float worldClearSeconds;
             public string clearUiScope = "After natural clear: actual panel callbacks and virtual Escape through NativeGame.Update; not OS/IMGUI button injection.";
@@ -88,7 +88,7 @@ namespace Exoduser.UnityPort
             float nextSample = 0, nextStep = Time.realtimeSinceStartup;
             int maxTicks; if (!int.TryParse(Argument("-qa-max-ticks"), out maxTicks)) maxTicks = 54000;
             int firstTick = Simulation.TickCount, previousLevel = Simulation.Player.Level, previousBag = inventory.State.Bag.Count;
-            bool battleShot = false, arenaShot = false, dropShot = false, gateShot = false, exitShot = false;
+            bool pickupShot=false;bool battleShot = false, arenaShot = false, dropShot = false, gateShot = false, exitShot = false;
             float previousX = Simulation.Player.X, previousY = Simulation.Player.Y;
             int stalled = 0;
             string objective = "field";
@@ -97,7 +97,7 @@ namespace Exoduser.UnityPort
                 while (Simulation.TickCount - firstTick < maxTicks)
                 {
                     var sim = Simulation; var p = sim.Player; var flow = sim.Stage;
-                    if (PlayerDown) { yield return new WaitForSecondsRealtime(1.2f); receipt.result = "player-death"; yield return FullRunShot(output, "death"); break; }
+                    if (PlayerDown) { yield return new WaitForSecondsRealtime(2.7f); receipt.result = "player-death"; yield return FullRunShot(output, "death"); break; }
                     if (flow.StageCleared)
                     {
                         receipt.worldCleared=true;receipt.worldClearSeconds=Time.realtimeSinceStartup-started;
@@ -106,6 +106,15 @@ namespace Exoduser.UnityPort
                         yield return FullRunClearTransition(output,keyboard,receipt);
                         receipt.result=receipt.clearModalBlockedBackground&&receipt.clearCancelRearmed&&receipt.clearReturnedLobby&&receipt.clearSaveExists?"stage-cleared":"stage-cleared-transition-blocked";
                         break;
+                    }
+                    if(sim.TickCount%60==0||sim.TickCount==firstTick)
+                    {
+                        for(int changes=0;changes<InventoryState.Slots.Length;changes++)
+                        {
+                            var upgrade=FullRunUpgradeItem(inventory.State,p.Level);if(upgrade==null||!inventory.Equip(upgrade,p.Level))break;
+                            receipt.gearChanges++;
+                            File.AppendAllText(Path.Combine(output,"equipment.jsonl"),"{\"tick\":"+sim.TickCount+",\"itemId\":"+upgrade.id.ToString(System.Globalization.CultureInfo.InvariantCulture)+",\"power\":"+InventoryState.ItemPower(upgrade)+"}\n");
+                        }
                     }
                     if(FullRunAllocateGrowth(sim)){hud.Refresh(p,sim.TickCount,true);RequestCombatSave();}
                     Vector2 destination = new Vector2(p.X, p.Y), aim = destination + Vector2.up * 200;
@@ -202,11 +211,17 @@ namespace Exoduser.UnityPort
                     }
                     else if(defend){keys.Add(Key.Q);aim=threat;objective="parry";}
                     else if(shield){if(FullRunShieldPress(p.State,shieldDistance,shieldSpeed))keys.Add(Key.E);aim=threat;objective="physical-parry";}
+                    int aux=FullRunAuxSkills(sim,fighting,nearest);
+                    if((aux&1)!=0)keys.Add(Key.F);
+                    if((aux&2)!=0){keys.Add(Key.LeftCtrl);keys.Remove(Key.Space);objective="ice-escape";}
+                    else if((aux&4)!=0){move=Vector2.zero;keys.Add(Key.Space);objective="rage-burst";}
+                    if(sim.IceOrbActive){keys.Remove(Key.Space);keys.Remove(Key.Q);keys.Remove(Key.E);move=Vector2.zero;}
                     if (move.x > .25f) keys.Add(Key.D); else if(move.x < -.25f) keys.Add(Key.A);
                     if (move.y > .25f) keys.Add(Key.S); else if(move.y < -.25f) keys.Add(Key.W);
                     // Release the third charged slash periodically; continuous hold never releases it.
                     bool attack = fighting&&!defend&&!shield&&!evade&&(p.Stamina>=10||p.KiChargeActive)&&(!p.KiChargeActive||p.KiChargeTicks<30);
                     bool magic = fighting&&!defend&&!shield&&!evade&&p.Mana>=40&&sim.TickCount%150<(p.Stamina<20?60:18);
+                    if(aux!=0||sim.IceOrbActive){attack=false;magic=false;}
                     if (fighting && sim.TickCount % 600 < 1) keys.Add(Key.Digit1);
                     keyboard.MakeCurrent(); mouse.MakeCurrent(); InputState.Change(keyboard,new KeyboardState(keys.ToArray()));
                     var aimPoint = NativeRemodel3D.Active ? NativeRemodel3D.Point(aim.x,aim.y) : Point(aim.x,aim.y);
@@ -232,7 +247,7 @@ namespace Exoduser.UnityPort
                     if(!battleShot&&sim.Kills>0){battleShot=true;yield return FullRunShot(output,"combat");}
                     if(!dropShot&&sim.Loot.Count>0){dropShot=true;yield return FullRunShot(output,"drops");}
                     if(p.Level!=previousLevel){previousLevel=p.Level;yield return FullRunShot(output,"level-"+p.Level);}
-                    if(inventory.State.Bag.Count>previousBag){previousBag=inventory.State.Bag.Count;yield return FullRunShot(output,"pickup-"+previousBag);}
+                    if(inventory.State.Bag.Count>previousBag){previousBag=inventory.State.Bag.Count;if(!pickupShot){pickupShot=true;yield return FullRunShot(output,"pickup-"+previousBag);}}
                     if(!gateShot&&flow.BossUnlocked){gateShot=true;yield return FullRunShot(output,"gate-open");}
                     if(!arenaShot&&flow.InArena&&flow.LoadPhase==0){arenaShot=true;yield return FullRunShot(output,"boss-entry");}
                     if(!exitShot&&flow.InArena&&!flow.BossAlive&&flow.Exits.Count>0){exitShot=true;yield return FullRunShot(output,"exit-open");}
@@ -273,6 +288,27 @@ namespace Exoduser.UnityPort
             foreach(var key in new[]{"pFortify","pHuman","pMelee","pParry","pArmor","pRegen"})
                 while(plan.Change(key,1,g,p.StatPoints,p.PassivePoints)){}
             return sim.ApplyGrowthPlan(plan);
+        }
+        static InventoryItem FullRunUpgradeItem(InventoryState inventory,int level)
+        {
+            InventoryItem best=null;int gain=0;
+            foreach(var item in inventory.Bag)
+            {
+                if(item==null||item.slot=="ossuary"||item.reqLv>level)continue;
+                int delta=InventoryState.ItemPower(item)-InventoryState.ItemPower(inventory.GetEquipped(item.slot));
+                if(delta>gain){gain=delta;best=item;}
+            }
+            return best;
+        }
+        static int FullRunAuxSkills(Simulation sim,bool fighting,float nearest)
+        {
+            var p=sim.Player;if(sim.IceOrbActive||p.Hp<=0)return 0;int flags=0;
+            if(sim.Skills.Learned("holyDome")&&sim.HolyDomeCd<=0&&p.Hp<p.MaxHp*.9f)flags|=1;
+            if(sim.Skills.Learned("iceOrb")&&sim.IceOrbCd<=0&&p.Mana>=sim.SkillMpCost("iceOrb","iceOrb")&&
+               (p.State=="pStun"||(sim.PlayerPoison>1&&p.Hp<p.MaxHp*.7f)||p.Hp<p.MaxHp*.4f))return flags|2;
+            if(sim.Skills.Learned("giantSlam")&&sim.Rage>=40&&sim.GiantSlamCd<=0&&fighting&&nearest<500*500&&
+               p.Stamina>=sim.SkillStCost("giantSlam","giantSlam")&&sim.CanSpendMalice(Exoduser.UnityPort.Core.Skills.SkillRules.GiantSlamMalice))flags|=4;
+            return flags;
         }
         bool FullRunCanMove(float x,float y,float radius)
         {
@@ -342,32 +378,33 @@ namespace Exoduser.UnityPort
     // Collision-aware navigation for QA input. A path is sampled against the same host collision callback.
     sealed class FullRunNavigation
     {
-        readonly List<Vector2> path=new List<Vector2>();Vector2 goal;int nextPlan;
+        readonly List<Vector2> path=new List<Vector2>();Vector2 goal;int nextPlan,probeTick,fineUntil;Vector2 probePosition,probeGoal;
         public Vector2 Direction(float x,float y,float tx,float ty,float radius,Func<float,float,float,bool> canMove,int tick)
         {
             var from=new Vector2(x,y);var target=new Vector2(tx,ty);
             if(Vector2.Distance(from,target)<12)return Vector2.zero;
+            if(tick>=probeTick){if(probeTick>0&&Vector2.Distance(probePosition,from)<40&&Vector2.Distance(probeGoal,target)<100&&Vector2.Distance(from,target)>100){fineUntil=tick+900;nextPlan=0;}probeTick=tick+300;probePosition=from;probeGoal=target;}
             if(tick>=nextPlan||Vector2.Distance(goal,target)>100)
             {
                 nextPlan=tick+90;goal=target;path.Clear();
-                const int side=210;const float cell=40;
+                bool fine=tick<fineUntil;int side=fine?421:210;float cell=fine?20:40;
                 int sx=Mathf.Clamp((int)(x/cell),0,side-1),sy=Mathf.Clamp((int)(y/cell),0,side-1),start=sy*side+sx;
-                var previous=new int[side*side];for(int i=0;i<previous.Length;i++)previous[i]=-1;
+                float ox=fine?x-sx*cell:cell*.5f,oy=fine?y-sy*cell:cell*.5f;var previous=new int[side*side];for(int i=0;i<previous.Length;i++)previous[i]=-1;
                 var queue=new Queue<int>();queue.Enqueue(start);previous[start]=start;int closest=start;float best=float.MaxValue;
                 while(queue.Count>0)
                 {
-                    int at=queue.Dequeue(),ax=at%side,ay=at/side;var point=new Vector2((ax+.5f)*cell,(ay+.5f)*cell);
-                    float distance=Vector2.SqrMagnitude(point-target);if(distance<best){best=distance;closest=at;}if(distance<900)break;
+                    int at=queue.Dequeue(),ax=at%side,ay=at/side;var point=new Vector2(ax*cell+ox,ay*cell+oy);
+                    float distance=Vector2.SqrMagnitude(point-target);if(distance<best){best=distance;closest=at;}if(distance<(fine?225:900))break;
                     for(int d=0;d<4;d++)
                     {
                         int nx=ax+(d==0?1:d==1?-1:0),ny=ay+(d==2?1:d==3?-1:0);if(nx<0||ny<0||nx>=side||ny>=side)continue;
                         int n=ny*side+nx;if(previous[n]>=0)continue;
-                        float px=(nx+.5f)*cell,py=(ny+.5f)*cell;
+                        float px=nx*cell+ox,py=ny*cell+oy;
                         if(!canMove(px,py,radius)||!canMove((point.x+px)/2,(point.y+py)/2,radius))continue;
                         previous[n]=at;queue.Enqueue(n);
                     }
                 }
-                for(int n=closest;n!=start&&n>=0;n=previous[n])path.Add(new Vector2((n%side+.5f)*cell,(n/side+.5f)*cell));path.Reverse();
+                for(int n=closest;n!=start&&n>=0;n=previous[n])path.Add(new Vector2(n%side*cell+ox,n/side*cell+oy));path.Reverse();
             }
             while(path.Count>0&&Vector2.Distance(from,path[0])<12)path.RemoveAt(0);
             var to=path.Count>0?path[0]:target;var delta=to-from;
