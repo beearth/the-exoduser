@@ -30,7 +30,7 @@ export function createGhosts(renderer,canvas,shared,data){
    const texture=new THREE.Texture(image);texture.needsUpdate=true;texture.colorSpace=THREE.NoColorSpace;trees.set(row.id,make(row,texture));}
   let n=0;for(const item of [...trees.values(),...souls]){const p=item.row;item.mesh.visible=p.x+p.width>view.x&&p.x-p.width<view.x+view.w&&p.y>view.y&&p.y-p.height<view.y+view.h;
    if(!item.mesh.visible)continue;const pose=ghostPose(p,s.P,s.now/1000);item.u.opacity.value=pose.alpha;if(pose.alpha>.005)n++;}
-  shared.view.value.set(view.x,view.y,view.w,view.h);shared.time.value=s.now/1000;shared.bend.value=s.quality==='low'?0:1;
+   shared.view.value.set(view.x,view.y,view.w,view.h);shared.time.value=s.now/1000;shared.bend.value=s.budget?.sway===false||s.quality==='low'?0:1;
   renderer.render(scene,camera);canvas._glVer=(canvas._glVer||0)+1;ctx.save();ctx.globalAlpha=1;ctx.drawImage(canvas,view.x,view.y,view.w,view.h);ctx.restore();stats.ghostVisible=n;stats.ghostLoaded=trees.size;
  }
  return {draw,setEnabled:value=>{enabled=!!value;},snapshot:()=>({...stats})};

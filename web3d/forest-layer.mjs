@@ -48,7 +48,7 @@ export async function createForest(renderer,canvas,shared,data,anchors){
    g.a.set([p.x,p.y,p.width,p.height],n*4);g.b.set([p.alpha,p.flip?1:0,p.layer,p.phase],n*4);n++;
   }g.geo.instanceCount=n;g.geo.attributes.placement.needsUpdate=true;g.geo.attributes.detail.needsUpdate=true;visible+=n;}
   shared.view.value.set(view.x,view.y,view.w,view.h);shared.time.value=s.now/1000;
-  shared.bend.value=s.quality==='low'?0:1;renderer.render(scene,camera);canvas._glVer=(canvas._glVer||0)+1;
+   shared.bend.value=s.budget?.sway===false||s.quality==='low'?0:1;renderer.render(scene,camera);canvas._glVer=(canvas._glVer||0)+1;
   ctx.save();ctx.globalAlpha=1;ctx.drawImage(canvas,view.x,view.y,view.w,view.h);ctx.restore();
   stats.forestVisible=visible;stats.forestDrawCalls=renderer.info.render.calls;
  }

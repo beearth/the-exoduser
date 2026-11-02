@@ -8,7 +8,7 @@ test('Godot authored anchors expand without shifting coordinates or mutating gam
  assert.ok(fs.existsSync(moduleURL),'MAP-LOOK placement adapter must exist');
  const {mapLookLayout}=await import(moduleURL),before=JSON.stringify(anchors),plan=mapLookLayout(data,anchors);
  assert.equal(plan.foreground.length,27);
- assert.equal(plan.shafts.length,8);
+ assert.equal(plan.shafts.length,10); // Godot 8 + 캠프/북쪽 접근부 2
  assert.equal(plan.shadows.length,29);
  assert.deepEqual(plan.lights.find(x=>x.id==='camp_fire').position,[1820,4010]);
  assert.deepEqual(plan.lights.find(x=>x.id==='altar_ritual').position,[5900,3860]);

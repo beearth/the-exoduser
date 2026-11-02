@@ -2,6 +2,7 @@ import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
 import {objectVolume,actorBounds,occlusion,compareDepth} from './depth-layout.mjs';
 import {lightingGLSL} from './lighting-model.mjs?v=20261102-budget2';
 import {createFrameSampler} from './frame-sampler.mjs';
+import {atmosphereGLSL} from './atmosphere-model.mjs?v=20261102-light-final';
 
 // Each native prop is rasterised by the original painter exactly once. The GPU
 // orders those images by their roots, preserves foreground actor pixels, and
@@ -24,17 +25,18 @@ export function createDepthPass(renderer,canvas,shared,lighting){
   bgTex=bgSampler.update(s.frame);renderer.initTexture(bgTex);
  }
  const vertex=`uniform vec4 view,bounds;varying vec2 vUv,world,screenUv;void main(){vUv=uv;world=bounds.xy+vec2(uv.x,1.-uv.y)*bounds.zw;screenUv=vec2((world.x-view.x)/view.z,1.-(world.y-view.y)/view.w);gl_Position=vec4(screenUv*2.-1.,0.,1.);}`;
- const fragment=`uniform sampler2D art,frontMask,beforeActors,afterActors;uniform vec4 lights[40];uniform vec3 colors[40],ambient;uniform int lightCount;uniform float opacity,time,flash;uniform vec2 texel;varying vec2 vUv,world,screenUv;
+ const fragment=`uniform sampler2D art,frontMask,beforeActors,afterActors;uniform vec4 lights[40];uniform vec3 colors[40],ambient;uniform int lightCount;uniform float opacity,time,flash,lowFog,glow[40];uniform vec2 texel,hero;varying vec2 vUv,world,screenUv;
  ${lightingGLSL}
+ ${atmosphereGLSL}
  float lum(vec2 p){return dot(texture2D(art,p).rgb,vec3(.299,.587,.114));}
  void main(){vec4 c=texture2D(art,vUv);if(c.a<.008)discard;
   float mask=texture2D(frontMask,vUv).r;
   float changed=length(texture2D(afterActors,screenUv).rgb-texture2D(beforeActors,screenUv).rgb);
   if(mask>.5&&changed>.012)discard;
-  vec3 normal=normalize(vec3((lum(vUv-vec2(texel.x,0.))-lum(vUv+vec2(texel.x,0.)))*2.8,(lum(vUv-vec2(0.,texel.y))-lum(vUv+vec2(0.,texel.y)))*2.8,1.));
+  vec3 normal=paintedNormal(art,vUv,texel);
   vec3 added=vec3(.07,.09,.14)*flash;
-  for(int i=0;i<40;i++){if(i>=lightCount)break;vec2 d=lights[i].xy-world;float r=length(d)/lights[i].z;if(r>=1.)continue;float bump=.28+.72*max(0.,dot(normal,normalize(vec3(d.x,-d.y,lights[i].z*.45))));added+=colors[i]*lights[i].w*poolFalloff(r)*bump;}
-  gl_FragColor=vec4(shadeEnvironment(c.rgb,ambient,added),c.a*opacity);
+  for(int i=0;i<40;i++){if(i>=lightCount)break;vec2 d=lights[i].xy-world;float r=length(d)/lights[i].z;if(r>=1.)continue;float bump=.28+.72*max(0.,dot(normal,normalize(vec3(d.x,-d.y,lights[i].z*.45))));added+=colors[i]*lights[i].w*(poolFalloff(r)*bump+glow[i]*exp(-r*r*72.)*.13);}
+  gl_FragColor=vec4(forestAtmosphere(shadeEnvironment(c.rgb,ambient,added),world,hero,time,lowFog),c.a*opacity);
  }`;
  function entry(row){
   let item=cache.get(row.object);if(item)return item;
@@ -47,7 +49,7 @@ export function createDepthPass(renderer,canvas,shared,lighting){
   if(!rows.length)return;s.flush?.();fgTex=fgSampler.update(s.frame);renderer.initTexture(fgTex);
   for(const item of cache.values())item.mesh.visible=false;
   for(let i=0;i<rows.length;i++){
-   const r=rows[i],item=entry(r),w=r.right-r.left,h=r.bottom-r.top,scale=Math.min(1,(s.quality==='low'?768:1536)/Math.max(w,h));
+   const r=rows[i],item=entry(r),w=r.right-r.left,h=r.bottom-r.top,scale=Math.min(1,(s.quality==='low'||s.budget?.level>=2?768:1536)/Math.max(w,h));
    const pw=Math.ceil(w*scale),ph=Math.ceil(h*scale);
    if(item.image.width!==pw||item.image.height!==ph){item.art.dispose();item.image.width=pw;item.image.height=ph;item.art=texture(item.image);item.u.art.value=item.art;}
    const x=item.image.getContext('2d');x.setTransform(1,0,0,1,0,0);x.clearRect(0,0,pw,ph);x.setTransform(scale,0,0,scale,-r.left*scale,-r.top*scale);paint(x,r.object);item.art.needsUpdate=true;

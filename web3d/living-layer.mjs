@@ -1,10 +1,11 @@
 import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
 import {waterAt,plantHabitat} from './living-layout.mjs?v=20261031-layer2';
 import {createRelief} from './living-relief.mjs?v=20261031-layer2';
-import {createMapLook} from './map-look-pass.mjs?v=20261102-round4-depth1';
-import {createDepthPass} from './depth-pass.mjs?v=20261102-depth1';
-import {createForest} from './forest-layer.mjs?v=20261031-forest4';
-import {createGhosts} from './ghost-layer.mjs?v=20261102-ghost4';
+import {createMapLook} from './map-look-pass.mjs?v=20261102-round4-light-final';
+import {createDepthPass} from './depth-pass.mjs?v=20261102-light-final';
+import {sceneBudget} from './scene-budget.mjs?v=20261102-light-final';
+import {createForest} from './forest-layer.mjs?v=20261102-round4-light-final';
+import {createGhosts} from './ghost-layer.mjs?v=20261102-round4-light-final';
 import {authoredFoliageLayout,puddleHabitat} from './foliage-layout.mjs?v=20261031-foliage4b';
 import {drawFoliageDebug} from './foliage-debug.mjs?v=20261031-foliage4';
 
@@ -22,7 +23,7 @@ export async function install(read){
   const uniforms={view:{value:new THREE.Vector4()},time:{value:0},hero:{value:new THREE.Vector2(-1e5,-1e5)},bend:{value:1},impulse:{value:new THREE.Vector3(-1e5,-1e5,0)}};
   const source=await new THREE.TextureLoader().loadAsync('./assets/web3d/living/rotten-underbrush-atlas.png');
   source.colorSpace=THREE.NoColorSpace;source.minFilter=THREE.LinearFilter;source.magFilter=THREE.LinearFilter;
-  const [lookData,lookAnchors]=await Promise.all(['map-look-ch1.json','map-look-anchors.json'].map(async file=>{const r=await fetch('./assets/web3d/'+file);if(!r.ok)throw Error(file+' '+r.status);return r.json();}));
+  const [lookData,lookAnchors]=await Promise.all(['map-look-ch1.json','map-look-anchors.json'].map(async file=>{const r=await fetch('./assets/web3d/'+file+'?v=20261102-round4-light-final');if(!r.ok)throw Error(file+' '+r.status);return r.json();}));
   const foliageResponse=await fetch('./assets/web3d/foliage-ch1.json?v=20261031-foliage4');if(!foliageResponse.ok)throw Error('foliage-ch1 '+foliageResponse.status);
   const foliagePlan=await foliageResponse.json(),foliageDebug=new URLSearchParams(location.search).get('r3dFoliageDebug')==='1';
   const dressing=await createGroundDressing();
@@ -102,11 +103,11 @@ export async function install(read){
     if(!enabled||s.G.stage!==0||s.G._bossArena||!s.G.map)return;
     const start=performance.now();if(mapRef!==s.G.map)build(s);
     const now=s.now/1000,dt=lastTime?Math.min(100,(now-lastTime)*1000):16.7;lastTime=now;ema=ema*.97+dt*.03;
-    if(++frame%120===0){if(ema>24)density=Math.max(.3,density-.15);else if(ema<18)density=Math.min(1,density+.05);}
-    const low=proxy||s.quality==='low',limit=low?160:Math.floor(800*density),step=low?3:1;
-    const w=Math.max(1,Math.round(view.pw*(low?.65:1))),h=Math.max(1,Math.round(view.ph*(low?.65:1)));
+    if(++frame%120===0){adaptiveCost=costEma;if(costEma>7.5)density=Math.max(.3,density-.15);else if(costEma<5)density=Math.min(1,density+.05);}
+    const budget=s.budget||sceneBudget(s.quality,proxy,adaptiveCost),low=budget.level===3,limit=Math.floor(budget.foliage*density),step=low?3:1;
+    const w=Math.max(1,Math.round(view.pw*budget.scale)),h=Math.max(1,Math.round(view.ph*budget.scale));
     if(canvas.width!==w||canvas.height!==h)renderer.setSize(w,h,false);
-    uniforms.view.value.set(view.x,view.y,view.w,view.h);uniforms.time.value=now;uniforms.hero.value.set(s.P.x,s.P.y);uniforms.bend.value=low?0:1;
+    uniforms.view.value.set(view.x,view.y,view.w,view.h);uniforms.time.value=now;uniforms.hero.value.set(s.P.x,s.P.y);uniforms.bend.value=budget.sway?1:0;
     uniforms.impulse.value.z*=Math.exp(-dt*.004);
     const attack=/Swing|slam|Slam|Recover/.test(s.P.s||'');if(attack&&s.P.s!==api.lastAttack){uniforms.impulse.value.set(s.P.x,s.P.y,1);api.lastAttack=s.P.s;}if(!attack)api.lastAttack='';
     for(const b of s.blasts){if(!b||seenBlasts.has(b)||!Number.isFinite(b.x)||!Number.isFinite(b.y))continue;seenBlasts.add(b);uniforms.impulse.value.set(b.x,b.y,.75);if(waterAt(b.x,b.y,s.hill,s.tile)){hitPool[hitIndex++%8].set(b.x,b.y,now,1);stats.interactions++;}}
@@ -131,16 +132,17 @@ export async function install(read){
     relief.motes(ctx,s,view,low);
     if(foliageDebug)drawFoliageDebug(ctx,foliagePlan,view);
     depth.capture(s);
-    Object.assign(stats,{frame,foliage:count,water:visibleWater,cpuMs:performance.now()-start,density,drawCalls:renderer.info.render.calls});
+    frameCost+=performance.now()-start;
+    Object.assign(stats,{frame,foliage:count,water:visibleWater,cpuMs:frameCost,density,qualityLevel:budget.level,renderScale:budget.scale,drawCalls:renderer.info.render.calls});
   }
-  let currentState;
+  let currentState,frameCost=0,costEma=0,adaptiveCost=0;
   const active=s=>enabled&&s.G.stage===0&&!s.G._bossArena;
-  const api={draw:(ctx,view)=>{try{draw(ctx,read(),view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D living layer]',error);}},
-    surface:(ctx,view)=>{const s=currentState=read();if(!active(s))return;try{const low=proxy||s.quality==='low',w=Math.max(1,Math.round(view.pw*(low?.65:1))),h=Math.max(1,Math.round(view.ph*(low?.65:1)));if(canvas.width!==w||canvas.height!==h)renderer.setSize(w,h,false);depth.prepare(s,view);relief.surface(ctx,s,view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D surface]',error);}},
+  const api={draw:(ctx,view)=>{try{draw(ctx,currentState||read(),view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D living layer]',error);}},
+    surface:(ctx,view)=>{const s=currentState=read();if(!active(s))return;const start=performance.now();frameCost=0;try{const budget=s.budget=sceneBudget(s.quality,proxy,adaptiveCost),w=Math.max(1,Math.round(view.pw*budget.scale)),h=Math.max(1,Math.round(view.ph*budget.scale));if(canvas.width!==w||canvas.height!==h)renderer.setSize(w,h,false);depth.prepare(s,view);relief.surface(ctx,s,view);frameCost+=performance.now()-start;}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D surface]',error);}},
     ground:(ctx,view)=>{const s=currentState||read();if(!active(s))return;try{dressing.draw(ctx,s,view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D ground]',error);}},
     beginObject:(ctx,o,m)=>{const s=currentState||read();return active(s)?relief.beginObject(ctx,o,m,s):false;},
     deferObject:o=>active(currentState||read())&&depth.defer(o),
-    front:(ctx,paint)=>{const s=currentState||read();if(!active(s))return;try{depth.draw(ctx,s,paint);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D depth]',error);}},
+    front:(ctx,paint)=>{const s=currentState||read();if(!active(s))return;const start=performance.now();try{depth.draw(ctx,s,paint);frameCost+=performance.now()-start;costEma=costEma*.96+frameCost*.04;stats.cpuMs=frameCost;stats.layerCostEma=costEma;}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D depth]',error);}},
     snapshot:()=>({...stats,...relief.snapshot(),...forest.snapshot(),...ghosts.snapshot(),...dressing.snapshot(),...depth.snapshot(),enabled,error:api.error||null}),setEnabled:value=>{enabled=!!value;},setGhostsEnabled:value=>ghosts.setEnabled(value),canvas};
   return api;
 }

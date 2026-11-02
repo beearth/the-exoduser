@@ -27,3 +27,4 @@ export function shadowVector(position,light){
  const dx=light?position[0]-light[0]:1,dy=light?position[1]-light[1]:1,d=Math.hypot(dx,dy)||1;
  return [dx/d,dy/d];
 }
+export const shadowAffine=([dx,dy])=>[dy,-dx,-dx*.88,-dy*.6];

@@ -26,3 +26,9 @@ test('local shadow points away from the light and defaults southeast',()=>{
  assert.ok(depth.shadowVector([100,100],[200,200])[1]<0);
  assert.ok(depth.shadowVector([100,100],null).every(v=>v>0));
 });
+test('the top of an upright shadow projects away from a light on either side',()=>{
+ for(const light of [[0,0],[200,200],[0,200],[200,0],[100,0],[100,200],[0,100],[200,100]]){
+  const v=depth.shadowVector([100,100],light),a=depth.shadowAffine?.(v)||[1,0,0,0];
+  const top=[a[2]*-100,a[3]*-100];assert.ok(top[0]*v[0]+top[1]*v[1]>0);assert.ok(Math.abs(a[0]*a[3]-a[1]*a[2])>.1,'shadow must retain a ground footprint');
+ }
+});
