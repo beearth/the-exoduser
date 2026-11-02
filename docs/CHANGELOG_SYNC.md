@@ -55969,3 +55969,14 @@ stage=0은 실제200×200 본편으로 정정하고 과거 원화 판은 명시�
 근거: I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/chest-material-450a6bfa-intake-20261102/{candidate.patch,red-root.log,green-root.log,producer-REPORT.md}.
 
 추가 루트 통합 검사: 상자·패키징·웹선택/무손실파생·staging·C2·시작/슬롯/저장/타이틀 이동의 관련15개 테스트파일 **112/112 PASS**. 이 수치는 이전합본133개 전체 재실행 결과가 아니며 GPU/자연전투 검수로 올리지 않는다.
+
+
+### 21:45 후보의 최종 수명 수정 인수
+
+원 담당 최종 `6a41b6229fd09d05c7568e4720c4a29d54855739`가 초기450 후보를 대체한다. teardown 때 `root.clear()`와 modelRoot/root/lid/light/shadow/foot/camera 참조 비우기만 추가했다. 부모 root에 남은 model을 새 assert로 RED 재현한 뒤 최종모듈에서18/18 PASS. 반사색·광원·환경생성·표시/판정 수치는 초기450과 동일이며 시각 검수는 아직 없다. 초기450 및 루트4a8609의 source검사/원격 이력은 최종GPU 검수로 바꿔 표시하지 않는다.
+
+| 항목 | 최종 후보값 |
+|---|---|
+| runtime | chest3d.mjs9307B,기존5632B대비+3675B/초기후보대비+51B; SHA256 `4cfa51bafddd65e8fb6a1009eb63f5d10c2e3367052a9d32d8a97a2b95fdc442` |
+| 예산 | 이전ea24 actualstatic3996899806+3675=**예상3996903481B/여유3096519B**, sidecar포함 **예상3996972963B/여유3027037B**. 새공식plan/artifact 미실행이며 Mac 실제값으로 대조해야함 |
+| 전달 상태 | 초기4a용Mac작업문은 **native전송전 최종수정으로 보류**했다. 최종정확commit/privatepush/remote후 같은Mac에게정정된전체문 단회전달. 중복QA·과거수락재전송아님 |
