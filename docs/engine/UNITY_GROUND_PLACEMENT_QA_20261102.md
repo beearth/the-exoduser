@@ -391,3 +391,41 @@ ROOT가제품renderer source를6e3ca9a1cb5083ba30c97b4d0b91e6491249bd9d로빌드
 
 
 Bounded pure geometry diagnostic checkpoint: product renderer remains exact6e, original3c is an isolated namespace-only pure diagnostic clone, no product Late call in diagnostic branch. Explicit geometry probe is source-only static compiled at this checkpoint; actual GPU-field receipt pending. A budget stop is causal evidence, never a contact/performance/product PASS.
+
+
+## Actual same-app bounded geometry diagnostic on6e — 2026-11-02
+
+Source6a13cffaead9682e9218ef1478fabab11219bd71 was pushed and remotely read back before the normal-product ARM64 build (Succeeded/errors0). Actual Apple Metal app contained the namespace-only3c diagnostic clone and exact6e production geometry. Both used the same prepared A2FieldLayout instance and the same cached actual-height delegate. This was a pure Tessellate diagnosis; the production projection Late was never directly called by its diagnostic/cleanup branch. No unlimited6e Late was attempted.
+
+| implementation | height case | wrapper calls | delegated height calls | partial-call elapsed ms | status |
+|---|---|---:|---:|---:|---|
+|clone3c|flat0|100000|99999|10.6860|diagnostic-budget-stop|
+|clone3c|slope|100000|99999|8.6390|diagnostic-budget-stop|
+|clone3c|actual-field|100000|99999|420.0777|diagnostic-budget-stop|
+|product6e|flat0|100000|99999|9.0572|diagnostic-budget-stop|
+|product6e|slope|100000|99999|7.0214|diagnostic-budget-stop|
+|product6e|actual-field|100000|99999|418.6682|diagnostic-budget-stop|
+
+All six stopped at the100000th wrapper entry before its underlying height delegate, hence99999 executed height calls. None returned a completed mesh: default vertices/triangles/omitted0 fields do not mean an actual zero-size mesh. The2second wall budget was not reached; exit2 is the declared diagnostic budget-stop outcome, while all6 records were collected, aggregate error/cleanupError empty, external Runtime DLL hash matched, and original Simulation reference/private-graph hash were restored. These are partial-run elapsed times including Tessellate/wrapper/height work, not isolated GroundY timings, not a full cold placement, not FPS and not a product PASS.
+
+| metadata | actual value |
+|---|---|
+| field |A2FieldLayout; Field and NativeGame a2Field references identical; ForestA2/Active=true; Terrain name Terrain|
+| repeated height at40.2,-77 |0.291918218, 0.291918218, 0.291918218m|
+| actual source |SkillRules.SpikeTrapRadius(1)=300 Core px; skill_spike_thorn; rect1254x1254; PPU100; lossyScale XY0.478468895; width/height6m; requestedExtent4.242640495m|
+| pure input |Core4020/7700, left/bottom-4.25m, width/height8.5m, roll0; source-size calculation shows no100x unit inflation in this sample|
+| original simulation |TickCount1 before/1 after; reference and private graph hash identical. Tick1 was reached during existing field startup before writers paused; do not claim entire process never ticked|
+| audio |listener paused/volume0, terminal1024-sample peak0, DirectVideo0; not continuous audio proof|
+| binary |Runtimeee3ac449236d7d14de9f84a4755d181f48f6b058708f59abea260f1d976ca37a; Core4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d|
+
+At the same early100000-wrapper frontier, real-field partial calls cost about419-420ms versus7-11ms flat/slope, and6e versus3c real-field difference was small. This points to the actual-height/adaptive traversal workload as the next diagnostic focus. It does not establish the complete96second root cause or disprove late hash-collision costs after this early frontier; no total-height-call count or complete mesh was obtained. Preserve the original3c projection FAIL. PC owns product performance/method changes and may use a further bounded probe before any unlimited projection.
+
+After immediate wrapper completion, Unity telemetry session keys were flushed late into the normal profile. Their exact changed raw/cache originals were privately preserved. The known before-profile was restored using per-domain import, raw compare-and-swap checks, and raw/cache stability checks after2 and7seconds, with no daemon/security/global changes. A final separate verification exported all26 domains and confirmed all26 raw SHA/cache semantics exactly match before this Player. Do not infer unchanged cache from immediate raw equality in future launches. Raw/preferences/cache data and session UUID values were not committed.
+
+The duplicate unsigned95 backup was removed only after all208 non-normalization files, including shaderData, were proven byte-identical to the retained complete signed95 app. Its full manifest and original6 identity byte files were retained. The full actual3c trace bundle, inputs/raw before+after, logs, diagnostic shaderData and installed1403 remain retained. The removed backup is not claimed complete or runnable.
+
+### MAP PRODUCTION REPORT (§23) — bounded geometry scope
+
+STAGE: A2 existing soil installable generation diagnosis; map production0. MASTER/LARGE/MEDIUM/GROUND CONNECTION/PLAYABLE/LANDMARK/SMALL DETAIL: original geometry/routes/collision/art/numbers unchanged. CAMERA QA: actual1920 window only, no visual/contact/direct3840 captures in this mode; full camera board not reviewed. TECH QA: exact6a13 prebuild remote proof/input3543 tracked blobs0 mismatch/ARM64 errors0; six bounded pure-call records, original sim restored; final26 raw/cache match. VISUAL VERDICT: RETOUCH — no new visible acceptance evidence; prior95 contact FAIL and3c projection TECH FAIL remain. NEXT PASS: PC product generation fix plus bounded completion proof, then actual contact/ring/coverage/cache/dense,149full/M1/natural field play and original visual review before common/install/Win64/PC delivery.
+
+Evidence: docs/engine/evidence/UNITY_GROUND_GEOMETRY_MAC_PROBE_20261102.json (actual aggregate receipt); private root probe6e-run-result.json, probe6e-preferences-final-proof.json, probe6e-late-preference-flush/recovery-proof.json.

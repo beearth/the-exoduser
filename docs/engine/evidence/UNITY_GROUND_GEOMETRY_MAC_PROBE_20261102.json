@@ -1,0 +1,283 @@
+{
+    "coreCenter": {
+        "x": 4020.0,
+        "y": 7700.0
+    },
+    "left": -4.25,
+    "bottom": -4.25,
+    "probeWidth": 8.5,
+    "probeHeight": 8.5,
+    "roll": 0.0,
+    "heightBudgetSeconds": 2.0,
+    "heightWrapperBudget": 100000,
+    "geometryMethodInvocations": 6,
+    "projectionInvocations": 0,
+    "gameFieldExists": true,
+    "nativeGameFieldSame": true,
+    "diagnosticOnly": true,
+    "fieldExists": true,
+    "forestA2": true,
+    "active": true,
+    "originalReferenceSame": true,
+    "originalStateSame": true,
+    "writersPausedForQuit": true,
+    "completed": true,
+    "cloneGeometrySource": "3c827c1195ff1fb8c4bc5501de99af33c615d8d1",
+    "productGeometrySource": "6e3ca9a1cb5083ba30c97b4d0b91e6491249bd9d",
+    "expectedCases": 6,
+    "mode": "bounded public Tessellate reflection diagnostic; not product/QA PASS",
+    "source": "6a13cffaead9682e9218ef1478fabab11219bd71",
+    "stage": "diagnostic-final",
+    "error": "",
+    "cleanupError": "",
+    "device": "Apple M5 Pro",
+    "api": "Metal",
+    "terrainName": "Terrain",
+    "fieldType": "Exoduser.UnityPort.A2FieldLayout",
+    "runtimeDllSha": "ee3ac449236d7d14de9f84a4755d181f48f6b058708f59abea260f1d976ca37a",
+    "coreDllSha": "4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d",
+    "originalBefore": "954dec4574a3e52460f306acd7e7506aa32b67863fa93e1ad6b47fb8e6d2f270",
+    "originalAfter": "954dec4574a3e52460f306acd7e7506aa32b67863fa93e1ad6b47fb8e6d2f270",
+    "budgetContract": "2 seconds or 100000 wrapper calls, checked at height-call boundary; cannot interrupt a single height call or non-height work",
+    "exitCode": 2,
+    "simulationTickInvocations": 0,
+    "width": 1920,
+    "height": 1080,
+    "originalTickBefore": 1,
+    "originalTickAfter": 1,
+    "listenerPaused": true,
+    "listenerVolume": 0.0,
+    "peak": 0.0,
+    "directVideo": 0,
+    "spike": {
+        "prepared": true,
+        "requestedExtentFound": true,
+        "radiusSourceFunction": "SkillRules.SpikeTrapRadius(1)",
+        "error": "",
+        "sprite": "",
+        "texture": "skill_spike_thorn",
+        "level": 1,
+        "tickCount": 0,
+        "coreRadius": 300.0,
+        "pixelsPerUnit": 100.0,
+        "worldWidth": 6.0,
+        "worldHeight": 6.0,
+        "requestedExtent": 4.242640495300293,
+        "rect": {
+            "serializedVersion": "2",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1254.0,
+            "height": 1254.0
+        },
+        "scale": {
+            "x": 0.4784688949584961,
+            "y": 0.4784688949584961,
+            "z": 0.4784688949584961
+        },
+        "position": {
+            "x": 40.20000076293945,
+            "y": 0.29191821813583374,
+            "z": -77.0
+        }
+    },
+    "sameXyzHeights": [
+        0.29191821813583374,
+        0.29191821813583374,
+        0.29191821813583374
+    ],
+    "cases": [
+        {
+            "version": "clone3c",
+            "implementationType": "Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry",
+            "sourceCommit": "3c827c1195ff1fb8c4bc5501de99af33c615d8d1",
+            "name": "flat0",
+            "status": "diagnostic-budget-stop",
+            "error": "Exoduser.UnityPort.Tools.GroundPlacementCapture+GeometryProbeBudgetException: Diagnostic height boundary budget reached\n  at Exoduser.UnityPort.Tools.GroundPlacementCapture+HeightProbe.Height (System.Single x, System.Single z) [0x000df] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.Contact (Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Vertex a, Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Vertex b, Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Vertex c, System.Single u, System.Single v) [0x00046] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.BoundsContact (Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Vertex a, Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Vertex b, Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Vertex c) [0x000f7] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x000b4] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x0017b] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x001a5] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.Build () [0x0001f] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry.Tessellate (System.Single px, System.Single py, System.Single left, System.Single bottom, System.Single width, System.Single height, System.Double rotation, System.Func`3[T1,T2,TResult] ground) [0x00011] in <146466146bd24027a569bcb0523b75eb>:0 \n  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\n  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <b8620ca0238146d3931f0e57066b310c>:0 ",
+            "wrapperCalls": 100000,
+            "heightCalls": 99999,
+            "vertices": 0,
+            "triangles": 0,
+            "omitted": 0,
+            "elapsedMs": 10.686,
+            "wallBudgetExceeded": false,
+            "minXZ": {
+                "x": 35.95000076293945,
+                "y": -81.25
+            },
+            "maxXZ": {
+                "x": 44.45000076293945,
+                "y": -73.8125
+            },
+            "lastRequestedXZ": {
+                "x": 36.21562576293945,
+                "y": -73.8125
+            },
+            "lastSuccessfulXYZ": {
+                "x": 36.34843826293945,
+                "y": 0.0,
+                "z": -73.9453125
+            }
+        },
+        {
+            "version": "clone3c",
+            "implementationType": "Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry",
+            "sourceCommit": "3c827c1195ff1fb8c4bc5501de99af33c615d8d1",
+            "name": "slope",
+            "status": "diagnostic-budget-stop",
+            "error": "Exoduser.UnityPort.Tools.GroundPlacementCapture+GeometryProbeBudgetException: Diagnostic height boundary budget reached\n  at Exoduser.UnityPort.Tools.GroundPlacementCapture+HeightProbe.Height (System.Single x, System.Single z) [0x000df] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.Contact (Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Vertex a, Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Vertex b, Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Vertex c, System.Single u, System.Single v) [0x00046] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.BoundsContact (Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Vertex a, Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Vertex b, Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Vertex c) [0x000f7] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x000b4] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x0017b] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x001a5] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.Build () [0x0001f] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry.Tessellate (System.Single px, System.Single py, System.Single left, System.Single bottom, System.Single width, System.Single height, System.Double rotation, System.Func`3[T1,T2,TResult] ground) [0x00011] in <146466146bd24027a569bcb0523b75eb>:0 \n  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\n  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <b8620ca0238146d3931f0e57066b310c>:0 ",
+            "wrapperCalls": 100000,
+            "heightCalls": 99999,
+            "vertices": 0,
+            "triangles": 0,
+            "omitted": 0,
+            "elapsedMs": 8.639000000000001,
+            "wallBudgetExceeded": false,
+            "minXZ": {
+                "x": 35.95000076293945,
+                "y": -81.25
+            },
+            "maxXZ": {
+                "x": 44.45000076293945,
+                "y": -73.8125
+            },
+            "lastRequestedXZ": {
+                "x": 36.21562576293945,
+                "y": -73.8125
+            },
+            "lastSuccessfulXYZ": {
+                "x": 36.34843826293945,
+                "y": -3.7596874237060547,
+                "z": -73.9453125
+            }
+        },
+        {
+            "version": "clone3c",
+            "implementationType": "Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry",
+            "sourceCommit": "3c827c1195ff1fb8c4bc5501de99af33c615d8d1",
+            "name": "actual-field",
+            "status": "diagnostic-budget-stop",
+            "error": "Exoduser.UnityPort.Tools.GroundPlacementCapture+GeometryProbeBudgetException: Diagnostic height boundary budget reached\n  at Exoduser.UnityPort.Tools.GroundPlacementCapture+HeightProbe.Height (System.Single x, System.Single z) [0x000df] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.Contact (Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Vertex a, Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Vertex b, Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Vertex c, System.Single u, System.Single v) [0x00046] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x0001e] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x0018f] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x001a5] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x001a5] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x0018f] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x001a5] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x0017b] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x0018f] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x00168] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry+Builder.Build () [0x0001f] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.QaDiagnostics.Original3c.NativeGroundSkillGeometry.Tessellate (System.Single px, System.Single py, System.Single left, System.Single bottom, System.Single width, System.Single height, System.Double rotation, System.Func`3[T1,T2,TResult] ground) [0x00011] in <146466146bd24027a569bcb0523b75eb>:0 \n  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\n  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <b8620ca0238146d3931f0e57066b310c>:0 ",
+            "wrapperCalls": 100000,
+            "heightCalls": 99999,
+            "vertices": 0,
+            "triangles": 0,
+            "omitted": 0,
+            "elapsedMs": 420.0777,
+            "wallBudgetExceeded": false,
+            "minXZ": {
+                "x": 35.95000076293945,
+                "y": -81.25
+            },
+            "maxXZ": {
+                "x": 44.45000076293945,
+                "y": -75.40625
+            },
+            "lastRequestedXZ": {
+                "x": 42.7784309387207,
+                "y": -75.69989013671875
+            },
+            "lastSuccessfulXYZ": {
+                "x": 42.78154373168945,
+                "y": 0.21175090968608856,
+                "z": -75.6988525390625
+            }
+        },
+        {
+            "version": "product6e",
+            "implementationType": "Exoduser.UnityPort.NativeGroundSkillGeometry",
+            "sourceCommit": "6e3ca9a1cb5083ba30c97b4d0b91e6491249bd9d",
+            "name": "flat0",
+            "status": "diagnostic-budget-stop",
+            "error": "Exoduser.UnityPort.Tools.GroundPlacementCapture+GeometryProbeBudgetException: Diagnostic height boundary budget reached\n  at Exoduser.UnityPort.Tools.GroundPlacementCapture+HeightProbe.Height (System.Single x, System.Single z) [0x000df] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.Contact (Exoduser.UnityPort.NativeGroundSkillGeometry+Vertex a, Exoduser.UnityPort.NativeGroundSkillGeometry+Vertex b, Exoduser.UnityPort.NativeGroundSkillGeometry+Vertex c, System.Single u, System.Single v) [0x00046] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.BoundsContact (Exoduser.UnityPort.NativeGroundSkillGeometry+Vertex a, Exoduser.UnityPort.NativeGroundSkillGeometry+Vertex b, Exoduser.UnityPort.NativeGroundSkillGeometry+Vertex c) [0x000f7] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x000b4] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x0017b] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x001a5] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.Build () [0x0001f] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry.Tessellate (System.Single px, System.Single py, System.Single left, System.Single bottom, System.Single width, System.Single height, System.Double rotation, System.Func`3[T1,T2,TResult] ground) [0x00011] in <146466146bd24027a569bcb0523b75eb>:0 \n  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\n  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <b8620ca0238146d3931f0e57066b310c>:0 ",
+            "wrapperCalls": 100000,
+            "heightCalls": 99999,
+            "vertices": 0,
+            "triangles": 0,
+            "omitted": 0,
+            "elapsedMs": 9.0572,
+            "wallBudgetExceeded": false,
+            "minXZ": {
+                "x": 35.95000076293945,
+                "y": -81.25
+            },
+            "maxXZ": {
+                "x": 44.45000076293945,
+                "y": -73.8125
+            },
+            "lastRequestedXZ": {
+                "x": 36.21562576293945,
+                "y": -73.8125
+            },
+            "lastSuccessfulXYZ": {
+                "x": 36.34843826293945,
+                "y": 0.0,
+                "z": -73.9453125
+            }
+        },
+        {
+            "version": "product6e",
+            "implementationType": "Exoduser.UnityPort.NativeGroundSkillGeometry",
+            "sourceCommit": "6e3ca9a1cb5083ba30c97b4d0b91e6491249bd9d",
+            "name": "slope",
+            "status": "diagnostic-budget-stop",
+            "error": "Exoduser.UnityPort.Tools.GroundPlacementCapture+GeometryProbeBudgetException: Diagnostic height boundary budget reached\n  at Exoduser.UnityPort.Tools.GroundPlacementCapture+HeightProbe.Height (System.Single x, System.Single z) [0x000df] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.Contact (Exoduser.UnityPort.NativeGroundSkillGeometry+Vertex a, Exoduser.UnityPort.NativeGroundSkillGeometry+Vertex b, Exoduser.UnityPort.NativeGroundSkillGeometry+Vertex c, System.Single u, System.Single v) [0x00046] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.BoundsContact (Exoduser.UnityPort.NativeGroundSkillGeometry+Vertex a, Exoduser.UnityPort.NativeGroundSkillGeometry+Vertex b, Exoduser.UnityPort.NativeGroundSkillGeometry+Vertex c) [0x000f7] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x000b4] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x0017b] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x001a5] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.Build () [0x0001f] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry.Tessellate (System.Single px, System.Single py, System.Single left, System.Single bottom, System.Single width, System.Single height, System.Double rotation, System.Func`3[T1,T2,TResult] ground) [0x00011] in <146466146bd24027a569bcb0523b75eb>:0 \n  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\n  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <b8620ca0238146d3931f0e57066b310c>:0 ",
+            "wrapperCalls": 100000,
+            "heightCalls": 99999,
+            "vertices": 0,
+            "triangles": 0,
+            "omitted": 0,
+            "elapsedMs": 7.021400000000001,
+            "wallBudgetExceeded": false,
+            "minXZ": {
+                "x": 35.95000076293945,
+                "y": -81.25
+            },
+            "maxXZ": {
+                "x": 44.45000076293945,
+                "y": -73.8125
+            },
+            "lastRequestedXZ": {
+                "x": 36.21562576293945,
+                "y": -73.8125
+            },
+            "lastSuccessfulXYZ": {
+                "x": 36.34843826293945,
+                "y": -3.7596874237060547,
+                "z": -73.9453125
+            }
+        },
+        {
+            "version": "product6e",
+            "implementationType": "Exoduser.UnityPort.NativeGroundSkillGeometry",
+            "sourceCommit": "6e3ca9a1cb5083ba30c97b4d0b91e6491249bd9d",
+            "name": "actual-field",
+            "status": "diagnostic-budget-stop",
+            "error": "Exoduser.UnityPort.Tools.GroundPlacementCapture+GeometryProbeBudgetException: Diagnostic height boundary budget reached\n  at Exoduser.UnityPort.Tools.GroundPlacementCapture+HeightProbe.Height (System.Single x, System.Single z) [0x000df] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.Contact (Exoduser.UnityPort.NativeGroundSkillGeometry+Vertex a, Exoduser.UnityPort.NativeGroundSkillGeometry+Vertex b, Exoduser.UnityPort.NativeGroundSkillGeometry+Vertex c, System.Single u, System.Single v) [0x00046] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x0001e] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x0018f] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x001a5] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x001a5] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x0018f] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x001a5] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x0017b] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x0018f] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.Triangle (System.Int32 ax, System.Int32 ay, System.Int32 bx, System.Int32 by, System.Int32 cx, System.Int32 cy, System.Int32 depth) [0x00168] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry+Builder.Build () [0x0001f] in <146466146bd24027a569bcb0523b75eb>:0 \n  at Exoduser.UnityPort.NativeGroundSkillGeometry.Tessellate (System.Single px, System.Single py, System.Single left, System.Single bottom, System.Single width, System.Single height, System.Double rotation, System.Func`3[T1,T2,TResult] ground) [0x00011] in <146466146bd24027a569bcb0523b75eb>:0 \n  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)\n  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <b8620ca0238146d3931f0e57066b310c>:0 ",
+            "wrapperCalls": 100000,
+            "heightCalls": 99999,
+            "vertices": 0,
+            "triangles": 0,
+            "omitted": 0,
+            "elapsedMs": 418.6682,
+            "wallBudgetExceeded": false,
+            "minXZ": {
+                "x": 35.95000076293945,
+                "y": -81.25
+            },
+            "maxXZ": {
+                "x": 44.45000076293945,
+                "y": -75.40625
+            },
+            "lastRequestedXZ": {
+                "x": 42.7784309387207,
+                "y": -75.69989013671875
+            },
+            "lastSuccessfulXYZ": {
+                "x": 42.78154373168945,
+                "y": 0.21175090968608856,
+                "z": -75.6988525390625
+            }
+        }
+    ]
+}
