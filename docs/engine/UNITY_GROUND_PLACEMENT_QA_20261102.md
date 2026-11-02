@@ -705,3 +705,85 @@ MAP PRODUCTION REPORT
 - VISUAL VERDICT: RETOUCH. 한 프레임 지면 부착 외관은 양호하나 RGBA/전체 접촉/전체 씬 검수가 남았다. 기존 A2/ImpactR4 판정 승격없음.
 
 증거: `docs/engine/evidence/UNITY_MAC_RECEIVER_SAMPLER_20261102.json`. Python guard는 검증된 receiver47 wrapper의 경로/receipt 이름만 receiverSampler로 바꿔 동일 보호 절차를 적용했고 실제26raw/27cache 복구를 확인했다.
+
+
+# Receiver sampler QA 모델 검토 — 2026-11-02
+
+**결론: 현재 증거는 전체 PASS가 아니다.** decoder texel 오염보다 implicit filtering footprint 차이와 일관된 결과지만 원인 확정은 하지 않는다. 기존 32개 중 forward 이웃 유효는 28개, 완전한 후보 2×2 묶음은 27개다. 잘린/helper lane UV가 raw 출력에 없으므로 기존 데이터만으로 실제 implicit GPU derivative를 복원할 수 없다. 원본 실패와 `2/255`를 유지하고 독립 QA 사본에서 불완전 샘플을 FAIL로 처리한다.
+
+## 저장된 증거와 새 분석
+
+제품 `8f391fea`, 실행 QA `0d9ca921`, 증거 발행 `e8ffd4f7a51574e9d768d9d6ce0d8a8649a7de36`. 입력은 `profile-guard-runs/20261102T034052091757Z-6432/receiverSampler/`만 사용했다. `analyze_saved_quad.py`는 해당 JSON·mode2/mode4 float 파일을 읽고 `saved-quad-analysis.json`만 쓴다. 새 Unity/Player 실행, 컴파일, Git·설정 변경은 하지 않았다.
+
+| 관측 | 값 / 해석 |
+|---|---|
+| mode1 / mode3 / mode4 기존 결과 | PASS / PASS(최대 depth 차이 `0.0198097229m`) / PASS(유한 RGB·additive alpha0만) |
+| legacy bilinear 최대 weight / maxRGB 오차 | `0.0464395359` / `0.00776919`; weight FAIL 보존 |
+| GPU Level0 최대 weight 오차 | `0.0464192554` |
+| 기존 forward Grad 최대 weight / maxRGB 오차 | `0.000317940139` / `0.00005905888975`; 숫자가 작아도 invalid를 PASS로 세지 않음 |
+| exact Load 대 legacy cache RGBA 차이 | 샘플 주변 texel 최대 `0`; 해당 위치에서 default-Blit 디코더 오류 근거 없음 |
+| 실제 sampling 설정 | texture aniso1 / global ForceEnable; 설정 변경 없음 |
+| forward-valid | `28/32`; invalid 0-based index `0,1,6,31` |
+| 완전한 2×2 후보 | `27/32`; invalid `0,1,6,9,31` |
+| forward 대 후보 fine 차분 최대 차이 | 원본 1254 texture 기준 `0.0223111510 texel`; 이 차이를 새 GPU sampling 결과로 환산한 증거는 아직 없음 |
+| mode2 ↔ mode4 조건 | inputHash, view/projection 행렬, dimensions 모두 정확 일치 |
+| 같은 좌표 mode4 실제 RGBA 대 저장된 float Grad 예상 RGBA | 최대 `0.000059058889746665955`; 조건부 cross-frame 증거이며 원 half 수식의 새 참조 실행 결과는 아님 |
+| forward-valid 28개만의 Grad 최대 weight 오차 | `0.00021196006855461746`; 나머지 4개가 없어지거나 전체가 통과한 것으로 해석 금지 |
+
+## 2×2 차분의 의미와 한계
+
+ReadPixels 정수 좌표에서 `qx=x&~1`, `qy=y&~1`을 후보 묶음으로 잡았다. 각 샘플의 같은 행 `right-left`와 같은 열 `row1-row0`로 fine 형태 차분을 계산하고, 두 행/두 열의 coarse 후보도 JSON에 남겼다. forward 방식은 홀수 픽셀에서 다음 묶음을 참조할 수 있어 같은 연산이 아니다. 양의 weight이고 RGBA가 모두 finite인 네 픽셀이 모두 있어야 후보가 유효하다. zero weight는 저장되지 않은 UV이므로 `(0,0)` UV로 간주하지 않는다.
+
+이 후보는 hardware quad, GPU coarse/fine 선택, viewport/readback 변환을 직접 포착한 것이 아니다. 특히 index9는 기존 forward 이웃이 있지만 후보 quad의 한 픽셀이 사라져 있다. 살아 있는 오른쪽/위쪽 이웃만으로 원래 helper lane 값을 추정하지 않는다. 부호·원점·분기·clip 이후 lane 동작도 실제 derivative와 동등하다고 선언하지 않는다.
+
+일반 HLSL 설명에서도 derivative는 quad lane을 사용하며, 출력되지 않는 helper lane이 derivative 계산에 참여할 수 있다. 이 설명 자체는 이 Metal 실행의 quad 선택을 증명하지 않는다. [Microsoft derivative 명세](https://microsoft.github.io/DirectX-Specs/d3d/HLSL_SM_6_6_Derivatives.html), [helper lane 명세](https://microsoft.github.io/DirectX-Specs/d3d/HLSL_SM_6_7_Wave_Ops_Include_Helper_Lanes.html).
+
+## 독립 사본의 QA 교정
+
+소유 범위는 이 폴더뿐이다. helper 원본은 f8e9c564306273b1bb15989846bfa05ec28145ec75718b656e33eb7eb9b545b5에서 복사했다. 셰이더와 meta는 기존 sampler QA의 동일 리소스를 대체하는 독립 사본이다. 두 버전을 한 Resources 경로에 중복 설치하지 않는다.
+
+| 변경 | 계약 |
+|---|---|
+| 원본 보존 | legacy32, 원 bilinear gate·오차·raw 파일 및 기존 forward/Level/Load 진단 보존. 첫 PNG 선저장·probe 소유권·finally cleanup 그대로 |
+| 새 모델 선택 | 동일한 원래32 샘플을 모두 사용. 삭제·재선정 없음. 후보 단계 `modelDerivativeValid`는 네 quad 픽셀이 모두 유효할 때만 true. 최종 단계는 별도 capturedDerivativeValid로 재평가하며 이전 quad 유효성은 modelQuadValid에 보존; 원래 `referenceDerivativesValid`도 유지 |
+| 참조 sampler | 후보 단계는 원 packedUV와 quad 차분, 최종 단계는 원 packedUV와 QA clone의 captured ddx/ddy로 실제 원 Texture2D를 SampleGrad. 기본 Blit의 half2 UV varying은 사용하지 않음. 새 source RGBA·half metrics·half preblend RGBA 기록 |
+| 원 수식 | 제품 shader의 `half4 p`, `half4 _SourceTint`, half alpha/color 연산을 QA 참조에 그대로 사용. SourceMode0/1/2, Flat, NormalBlend, Opacity 분기 유지. mode0에 absent original Opacity0을 추가로 곱하지 않음 |
+| atlas·material | UV는 mode2가 기록한 packed atlas UV 자체. source snapshot의 atlas 포함 inputHash로 mode4와 동일성 확인. ring은 지원하지 않고 명시 실패. texturePreserved=true, sharedMaterial identity=false 의미 계약 유지 |
+| mode2 새 gate | 모든 원32의 derivative valid, 유한 readback, serial 증가, request/completed inputHash 일치, positive coverage, UV 유효 + GPU half expected weight/maxRGB 각각 절대오차 `<=2/255` |
+| mode4 비교 허용 조건 | mode2 completed ↔ mode4 completed inputHash, dimensions, finite view/projection의 float bit 값이 모두 정확 일치할 때만 같은 좌표 RGBA pairing. 다르면 비교하지 않고 FAIL |
+| mode4 새 gate | 기존 mode4 유한값/존재/alpha0 gate 유지. 별도로 원 half 수식 GPU preblend RGBA와 모든 채널 절대오차 `<=2/255`; invalid derivative는 숫자가 작아도 FAIL |
+| 판정 분리 | mode2 `buffer.passed`는 legacy 판정을 유지. `legacySmokePassed`도 그대로 계산. `correctedModelPassed`는 새 모델의 두 비교를 모두 요구. 새 `smokePassed`는 mode2만 corrected model gate를 사용하며 다른 환경·복원·소유권·mode gate는 유지 |
+| 기록 | `receiver-sampler-model.json`에 model2/model4 frame, selected/valid/invalid, 오류/최대오차/판정. 원 mode2 summary sample마다 quad 데이터, 유효성, 모델 source/weight/maxRGB/RGBA, 실제 mode4 RGBA와 오차 기록 |
+
+`fullRgbaSameFrameVerified`와 `fullRgbaSameFrameCompared`는 계속 false다. 위 비교는 고정 조건을 만족한 **서로 다른 프레임**의 비교다. 새 모델도 후보 finite difference이며 실제 ddx/ddy를 포착한 모델이 아니다.
+
+후보 quad 모델은 현재32에서 **5 invalid로 차단**된다. 그 중간 결과는 별도 파일로 보존하며, 아래 마지막 QA-only derivative 캡처가 성공해야 최종 corrected model이 이를 대체할 수 있다. 이 사본은 invalid를 삭제하는 방식으로 PASS를 만들지 않는다. 새 GPU 모델 출력 수치는 실행 전이므로 기재하지 않았다.
+
+## 마지막 한 번의 QA-only GPU derivative 캡처 구현
+
+ROOT가 제안한 private `probeMaterial` 임시 교체를 source-only로 구현했다. 조사한 제품 C#에서 정상 화면 projection pass는 `List(...projectionTag)`로 원 renderer material을 사용한다. private probeMaterial은 probe 요청이 있을 때의 별도 float target pass에만 `overrideMaterial`로 사용된다. 따라서 정상 화면 material을 교체할 필요가 없다. 이 근거가 버전 변경으로 깨지면 실행을 거절해야 하는 private ABI 의존 경로다.
+
+| 항목 | 구현 계약 |
+|---|---|
+| 실행 순서 | 원 PNG → 원 mode1/2/depth3/4 완료 → 후보 quad 모델/summary 복사 보존 → extra derivative probe → 원 probeMaterial 복구 → GPU sampler 모델 재계산 → 원 mode4 raw와 조건부 비교 → 기존 optional3840/원상복원 |
+| QA clone | 제품 shader SHA256 `4e65d469a6bfc65dc7d8f939e531655982a8b93afc17811018557eb140b17a89`에서 생성. Shader 이름만 QA 전용으로 변경하고 sampling 직전 `ddx(packed)/ddy(packed)` 변수 계산을 추가, 최종 probe 출력만 네 derivative 성분으로 변경. 원 depth·world·volume·UV 계산, 모든 clip, 원 Sample/half 수식, weight discard 순서는 보존 |
+| private 안전장치 | NonPublic Static `probeMaterial` 필드 타입이 정확히 Material이어야 하며, 원 4 probe로 만들어진 기존 nonnull 객체를 저장. 임시 QA Material은 QA Resources에서만 생성. field 대입 후 객체 identity 확인 |
+| 추가 API 의미 | `RequestProbe(target,3)`을 라우팅 수단으로 한 번 사용하되 이번 출력만 `RGBA=(ddxU,ddxV,ddyU,ddyV)`. 기존 `receiver-mode3` depth 파일은 덮어쓰지 않음 |
+| readback gate | 실제 FrameSize RGBAFloat 생성 → serial 증가/EOF 5s/API/resize 검사 → readback. 원 mode2·mode4 및 요청/완료 frame의 inputHash·FrameSize·receiver/volume counts·finite camera matrix bit 값이 모두 동일해야 함 |
+| 소유권·복구 | finally에서 CancelProbe → caller target IsCreated 확인 → private field를 저장한 원 객체로 복구·ReferenceEquals 확인 → QA target/readback/material 폐기. source/draw sharedMaterial 객체도 전후 동일해야 함. 복구나 capture 실패 시 전체 FAIL |
+| 파일 | `receiver-exact-derivatives.json`, `receiver-exact-derivatives.rgba32f`(기존 float layout, SHA 기록). 중간 후보 결과 `receiver-sampler-quad-model.json`·`receiver-mode2-quad-model-summary.json` 보존 |
+| 새 유효성 | 원32 모두 유지. 각 원 mode2 positive sample 좌표에서 실제 derivative readback RGBA가 finite이고 gradient가 전부0이 아닐 때만 capturedDerivativeValid=true. invalid는 FAIL. 이전 forward/quad 유효성·quad 픽셀/차분은 별도 필드로 계속 보존 |
+| 최종 GPU 참조 | capturedDx/Dy를 원 texture의 SampleGrad에 공급하고 원 half 수식으로 expected weight/maxRGB/preblendRGBA 계산. 원 mode2와 weight/maxRGB 비교, 원 mode4와 hash+camera gate 후 모든 RGBA 채널 비교. 모든 오차 기준은 그대로 `2/255` |
+| 최종 gate | exact 캡처·원 객체 복구·display material 불변·원32 유효·mode2/model4 비교가 모두 통과해야 correctedModelPassed 가능. 중간 근사 quad 모델만으로는 최종 PASS 불가 |
+
+여기서 GPU ddx/ddy는 **QA clone의 원 raster 위치에서 직접 출력한 값**이다. 결과를 implicit texture instruction의 내부 미분/필터 구현 자체와 비트 단위로 동일하다고 주장하지 않는다. shader 복제와 추가 출력 때문에 컴파일 최적화가 달라질 수 있으며, 실제 same-UV SampleGrad 수치와 원 mode2/4가 unchanged tolerance 안에서 일치하는지 ROOT가 확인해야 한다. 원32의 경계를 지우거나 남은27만으로 전체 통과시키지 않는다. 두 프레임의 source/camera 동일성이 성립해도 same-frame fullRGBA 증명으로 승격하지 않는다.
+
+## 다음 한 번에 필요한 입력
+
+더 이상의 raw CPU 분석만으로 누락된 helper UV를 만들 수 없다. 다음 한 번은 이 독립 소스와 두 QA Resources shader/meta를 ROOT가 검토·컴파일하고 같은 one-case로 실행해 위 추가 derivative raw/receipt와 최종 sample별 half 참조 비교를 회수하는 것이다. 필요한 산출물은 기존4 mode 증거, 중간 실패 보존본, exact derivative raw/receipt, 최종 model/원32 sample summary다. 원 probeMaterial 객체 복구와 display material 불변이 확인되지 않으면 수치가 작아도 중단한다. 제품8f·원texture/import/Quality·기준은 불변이다. full12/dense8 확대·제품 인수는 아직 승인하지 않는다.
+
+
+ROOT 검토 보충: QA derivative 전용 material도 원래 probe처럼 `_DstBlend=0`을 명시해 clear 대상에 덧누적하지 않는다. 정상 display material에는 접근/대입하지 않는다. .meta의 빈 필드 뒤 공백만 제거했다. 제품8f 및 이전 실패 증거는 그대로다.
+
+
+ROOT intake: same product8f; static receipt verified. QA-only exact derivative/sampler model correction actual GPU pending; original legacy failures and 2/255 retained. PC documentation e952ec89751d11a8aadece77f1fa8abc146b5e89 included with unchanged product Unity tree.

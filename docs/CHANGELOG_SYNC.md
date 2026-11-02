@@ -57375,3 +57375,5 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 2026-11-02 QA-only sameUV GPU sampler reference on unchanged8f: float32UV SampleLevel/SampleGrad/exactTextureLoad against originalCPUcache, runtimeaniso read-only, mode2failure retained while depth3/preblend4 can be collected. Read-only PNGalpha differs fromcache <=.00000704, largeweightmismatch unresolved. Original image PC SHA matched/server stopped. Static0, actual sampler/GPU evidence pending.
 
 2026-11-02 맥 실제8f sampler: mode1/3/4기존게이트PASS, mode2bilinearFAIL유지. GPU Grad weight오차최대0.000317940139/Level0.0464192554/texel Load대cache RGBA0. 깊이최대0.0198097229m. footprint 참조교정근거 기록, RGBA완료/제품인수 주장없음. raw26/cache27복구, 설치1403/공유WIP유지.
+
+2026-11-02 QA-only receiver model correction source checkpoint; product8f unchanged; legacy FAIL and 2/255 kept. PC documentation-only followup e952 included. Actual Metal validation pending.

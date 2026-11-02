@@ -15,6 +15,15 @@ Shader "Hidden/EXODUSER/QA/GroundReceiverSamplerReference" {
             float4 _SampleDy[32];   // finite-difference dUV/dy
             float4 _ReferenceSize;
             int _ReferenceMode;
+            half4 _SourceTint;
+            float _SourceMode,_Flat,_NormalBlend,_Opacity;
+            half4 ReferenceColor(half4 p,out float weight) {
+                half4 color;
+                if(_SourceMode>1.5) { color=p*_SourceTint;weight=color.a;color.rgb*=color.a; }
+                else if(_SourceMode>.5) { weight=p.a*_Opacity;color=half4(p.rgb*p.a*_Opacity,0); }
+                else { half a=p.a*_SourceTint.a;if(_Flat>.5)a*=max(p.r,max(p.g,p.b));weight=a;half3 rgb=_Flat>.5?half3(1,1,1):p.rgb;color=half4(rgb*_SourceTint.rgb*a,_NormalBlend>.5?a:0); }
+                return color;
+            }
             struct Attributes { float4 vertex : POSITION; };
             struct Varyings { float4 position : SV_POSITION; };
             Varyings Vert(Attributes input) { Varyings output; output.position=UnityObjectToClipPos(input.vertex); return output; }
@@ -23,6 +32,12 @@ Shader "Hidden/EXODUSER/QA/GroundReceiverSamplerReference" {
                 int index=_ReferenceMode==2?pixel/4:pixel;
                 float2 uv=_SampleUvDx[index].xy;
                 if(_ReferenceMode==0) return _ReferenceSource.SampleLevel(sampler_ReferenceSource,uv,0);
+                if(_ReferenceMode==3||_ReferenceMode==4) {
+                    half4 p=_ReferenceSource.SampleGrad(sampler_ReferenceSource,uv,_SampleUvDx[index].zw,_SampleDy[index].xy);
+                    float weight;half4 color=ReferenceColor(p,weight);
+                    if(_ReferenceMode==3)return float4(weight,max(color.r,max(color.g,color.b)),p.a,1);
+                    return color;
+                }
                 if(_ReferenceMode==1) return _ReferenceSource.SampleGrad(sampler_ReferenceSource,uv,_SampleUvDx[index].zw,_SampleDy[index].xy);
                 int corner=pixel%4;
                 int2 at=(int2)floor(uv*_ReferenceSize.xy-.5)+int2(corner%2,corner/2);

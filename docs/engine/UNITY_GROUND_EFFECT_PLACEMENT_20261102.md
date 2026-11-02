@@ -1,6 +1,6 @@
 # Unity 설치형 실제 지면 투영 — 2026-11-02
 
-상태: **GPU receiver-depth 방법 소스·324 C# 정적 컴파일 오류0/경고477 / 실제 GPU·성능·시각·설치·공통 반영 검증 대기**. 기준 공통1403c5ee6d52c540815ab1cf70d5666b9023aa75. 사용자 요청은 장판뿐 아니라 지뢰·덫·현재 설치형 전체의 공중 배치를 고치는 것이다. CPU 회귀3151은 보존된 수학/UV·이전 적응면 검사이며 새 GPU 투영의 합격 증거가 아니다.
+상태: **제품8f391fea의 Mac 첫 지면 투영·독립 깊이 검사 통과, 필터 참조 교정 및 전체 설치형 검수 진행 중**. 정적 C# 324파일 오류0/경고477. 기준 공통1403c5ee6d52c540815ab1cf70d5666b9023aa75. 사용자 요청은 장판뿐 아니라 지뢰·덫·현재 설치형 전체의 공중 배치를 고치는 것이다. CPU 회귀3151은 보존된 수학/UV·이전 적응면 검사이며 새 GPU 투영의 합격 증거가 아니다.
 
 ## 원인과 현재 적용
 
@@ -69,6 +69,22 @@ NativeGroundSkillProjection.RequestProbe(createdRGBAFloatRT,mode)는 target 소�
 
 이 probe는 tone map 이후 화면색과 구분한다. source atlas/Opacity/Flat/색, ring 단색 band, actor 제외, 실제.02 접촉, source2D/공중 대조, 생멸/pool·2D복원, large/dense frame time, 원본1920/direct3840 및 같은패키지M1·자연실행은 실제Mac QA가 소유한다. source proxy vertex나 legacy CPU 수학으로 대신하지 않는다.
 
+## Mac 첫 실제 실행과 필터 참조 원인
+
+제품 소스는8f391fea6f157433fcaea2df611d0a9b146c6604, 두 번째 검증 앱 소스는0d9ca921cb68836d8d0c61999bf6262fa0fb6e87이다. 제품 변경 없이 QA 전용 sampler만 추가했다. 첫 흙 Lv1 한 건이며 전체 설치형·대형·밀집·자연플레이·공통 앱 설치의 합격은 아니다.
+
+| 항목 | 실제 관측과 해석 |
+|---|---|
+| 제품 호출 | 첫 UpdateViews3.2235ms / Remodel3DLate1.6049ms. PNG/readback 제외 한 번의 CPU 호출이며 전체 GPU frame/FPS 수치가 아니다 |
+| feature/화면 | receiver287/volume1, FrameSize1920×1080, Available=true/Error 없음. 첫 모드1 유효 world 픽셀96,632개. 원본 PNG4,173,019B/SHA7b87f8a2e421907d70080a91b5627c1adc0a23658e6d33e39d57014641c367e3를 PC 수신·검산·직접 확인, 흙 가시덫 접지와 actor 앞표시를 한 장 범위에서 확인 |
+| 독립 깊이 | 두 번째 실행 mode3 PASS, scene/receiver eye 깊이 최대차.0198097229u로 기존.02 안. mode4 유한값/출력존재 PASS는 원본RGBA 대조 합격을 뜻하지 않음 |
+| 기존 참조 FAIL | mode2 기존 bilinear cache weight 최대차.0464395359 > 기존2/255=.0078431373. RGB최대차.0077691916는 같은허용 안. 원래 실패값·캐시를 보존 |
+| 원인 분리 | textureAnisoLevel1/QualitySettings.anisotropicFiltering=ForceEnable. 정확Texture2D.Load↔기존cache RGB/alpha 차0, 직접SampleLevel↔cache alpha최대.0003750324. 단순Level 기준weight차.0464192554지만 같은UV·gradient GPU 기준weight차는최대.0003179401. 비등방성 footprint를 무시한 단순bilinear 참조가 불일치 원인 |
+| 다음 판정 | 제품 shader·원화/import·전역필터·허용2/255 변경0. 기존bilinear 진단을 보존하고 올바른GPU gradient기준 weight/RGB/RGBA를 같은허용으로 대조. 현재gradient는 유효이웃finite difference로 exact fragment quad와 구분, invalid를 합격처리하지 않음. 전체 교정검사 아직 진행 중 |
+| 보존 | 두 번째 진단 종료2는 기존mode2 FAIL 유지 결과. 원래sim reference/private graph 동일. prefs26raw/27typed cache는 복구 immediate/2s/7s 정확 일치. 한 파일3334 전송 서버는 수신검산 뒤 소유PID4498만 정상 종료 |
+
+근거: Mac profile-guard-runs/20261102T032130171914Z-3872/receiver47/ground-receiver-smoke.json 및 20261102T034052091757Z-6432/receiverSampler/ground-receiver-smoke.json·receiver-mode2-sampler-reference.json. PC images-8f/received.json과 source-candidate-depth.json.
+
 ## 폐기 후보와 증거
 
 | 단계 | 실제 근거/판정 |
@@ -77,10 +93,10 @@ NativeGroundSkillProjection.RequestProbe(createdRGBAFloatRT,mode)는 target 소�
 |95 정점격자 |148 정점·원화전달·상태 PASS/M1 23PASS. 그러나 실제반경 face내부최대.881259u, 추가GPU alpha기여표본도약16~97cm → 반영불가 |
 |3c 적응면 |CPU3136/정적323 0err. 실제size-spikeTrap-Lv1 UpdateViews3.1ms 뒤 제품Late>=96초 미반환 → 반영불가. 강제종료본은미완료, 원문prefs/raw+cache 복원 |
 |6e hash분산 |PC 독립8.5u diagonal677→37ms, output XYZUV+indices SHA동일. 총3151CPU PASS. 그러나 Mac100k actualField 호출3c420.078ms/6e418.668ms, flat각10.686/9.057ms/slope8.639/7.021ms. 모두100k budget 중단이며 완료/성능PASS가 아님 |
-| 현재방법 | 위지연으로CPU적응면을 실제consumer에서 제거. NativeGroundSkillGeometry.Tessellate는 이전진단/회귀용 public 수학만 보존하고 제품표시에서는 호출0. 새GPU방법은 실제재검증대기 |
+| 현재방법 | 위지연으로CPU적응면을 실제consumer에서 제거. NativeGroundSkillGeometry.Tessellate는 이전진단/회귀용 public 수학만 보존하고 제품표시에서는 호출0. 새GPU방법은 위 첫 실제 한 건을 확인했고 전체 교정검사 진행 중 |
 
 원본95 PNG8장은 PC images-95d4/received.json·verified.json에 저장하고 Mac whitelist 원문8SHA 전부대조했다. root가baseline/목교holy·spike/뿌리spike/흙holy 원본을직접봤다. 소유3334서버종료확인. Code/input·진단·source byte·로그는 I:/EXODUSER-Storage/ground-placement/20261102 및 Mac _out/mac-installable-ground-qa-20261102/. Mac 제품QA/helper/실행·prefs보호·빌드/설치/Unity통합은 기존 총괄 담당, PC 제품수정·정상Win반입/검수/바탕화면·main문서연결은본작업담당이다.
 
 ## MAP PRODUCTION REPORT — 현재 gate
 
-범위: 환경 제작이 아닌 지면 효과 표현 결함. 지형/원본맵/충돌/전투핵심 변경0. Reference는 현재같은원본Player의흙/뿌리/목교이다. source/CPU·324컴파일은기술부분확인, 새RenderGraph shader/접촉픽셀/성능·1x·M1·자연플레이·앱설치/공통/PC전달은진행전이다. VISUAL VERDICT: RETOUCH(새후보GPU미검수). 기존사용자앱/세이브·PC공용WIP와index는보존하며 소스후보만으로완료를주장하지않는다.
+범위: 환경 제작이 아닌 지면 효과 표현 결함. 지형/원본맵/충돌/전투핵심 변경0. Reference는 현재같은원본Player의흙/뿌리/목교이다. source/CPU·324컴파일과 Mac 첫 흙 한 건의 실제 투영·깊이 및 원본1920 화면을 확인했다. 전체 원화RGBA·여러 지면/설치형·대형/밀집·M1·자연플레이·앱설치/공통/PC전달은 진행 중이다. VISUAL VERDICT: RETOUCH(첫 흙 한 장 외 전체 시각 검수 대기). 기존사용자앱/세이브·PC공용WIP와index는보존하며 소스후보만으로완료를주장하지않는다.
