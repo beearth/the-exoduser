@@ -799,6 +799,6 @@ codex-web-statwin: 다섯 창 제목44px와 성장 머리225→44px, 기존 인�
 |---|---|---|
 | codex-web-logo, 첫 화면·로비·시네마틱/챕터/컷 로고 | 원본 금속 보존, 불투명 흑철 보정 PNG로 11참조 통일. [규격·검수](../3.1%20ui%20hud%20디자인/LOGO_SOLID_20261031.md), `G:/exoduser/tmp/design-review/20261031_logo_solid/REPORT.md` | main만 정상 반영. DEMO/EA·배포·Unity 적용과 구분. Unity 기존 브리프에 같은 PNG 사용 인계 |
 
-### 2026-11-02 웹 3D 3라운드 마감
+### 2026-11-02 웹 3D 4라운드 CTO 색 정정
 
-codex-web3d: 기존 맵 위 유령나무 형태·118낮은 군락·캠프/제단 명암 개선,기본OFF/원본인물·VFX·HUD·충돌 보존. 같은 소스1920/3840 OFF·ON10초·1x/주인공RGBA차이0/57회귀·111프로젝트·guard PASS,밀집ON168.48/191.52FPS. 무적시각경로3840·9/9·123.80초·오류0. [현행 계약](../4.1맵디자인+설정/WEB3D_TRIAL_20261031.md), `I:/EXODUSER-Storage/web3d-round3-20261102/REPORT.md` 및3377 `/tmp/web3d-round3-review/index.html`. 자체판정은 이번 표현/경로 범위이며 기존main 동일 회귀3실패·전체AAA/사용자채택·자연완주·NW.js/Steam와 구분한다. 단계별main반영/분리서버HTTP200·27소스SHA대조,최종원격SHA는외부final-delivery.json.
+codex-web3d: 4라운드 제단 붉은 번짐/고유색 수정. 제단343.2px·기준energy.5742, 원래 독액10광원·self-glow.62 보존, 물 위 뿌리2배치 제거/132군락. 같은 소스12구도×1920/3840 OFF/ON·고유색 가시61영역 최대13.96°≤15°·오류0/map동일·81회귀/111프로젝트/guard PASS. [현행 계약](../4.1맵디자인+설정/WEB3D_TRIAL_20261031.md), I:/EXODUSER-Storage/web3d-round4-20261102/hue-color-pass/REPORT.md 및3377 /tmp/web3d-hue-review/index.html. source/remote/HTTP는 delivery.json. 3라운드 이동·FPS는 과거 증거이며 이번 성능으로 재사용하지 않음. 기본OFF·지속120FPS/전구간영상·전체AAA/자연완주·NW.js/Steam·Unity는 보류/미검증.

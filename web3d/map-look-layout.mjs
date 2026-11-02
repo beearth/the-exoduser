@@ -21,6 +21,12 @@ export function mapLookLayout(data,anchors){
  return {lights,shadows,shafts,foreground,occluders:anchors.prop_colliders.filter(c=>c.kind==='circle'&&c.radii[0]*data.occluder_radius_scale>=8)};
 }
 export function holeLights(data,holes){return (holes||[]).filter(h=>h&&Number.isFinite(h.x)&&h.alive!==false&&!h.closed).map(h=>({...data.spawn_hole_light,id:'hole',position:[h.x,h.y],radius:data.spawn_hole_light.radius_base+(h.size||0)*data.spawn_hole_light.radius_per_size}));}
+// The 2D darkness pass is disabled for this layer, so carry over its moat's
+// existing emitters instead of dropping their green self-light with that pass.
+export function moatLights(hill,tile){
+ const rows=[];globalThis.Ch1AltarMoat?.lights(rows,hill,tile);
+ return rows.map(l=>({id:'toxic_moat',position:[l.x,l.y],radius:l.r,energy:l.a,color:[l.cr/255,l.cg/255,l.cb/255]}));
+}
 export function effectLights(data,projectiles,blasts){
  const out=[],table=data.fx_lights,keys=['fire','lightning','ice','holy','dark'];
  for(const p of projectiles){if(!p||!Number.isFinite(p.x)||p.life<=0)continue;
@@ -41,6 +47,6 @@ export function foregroundPose(row,center,hero,walkable,parallax){
 }
 
 // Restore the player pool after the cold ambient pass; authored hue stays local.
-const landmarkTuning={camp_fire:[1.20,1.12],camp_glow:[1.15,1.08],altar_ritual:[1.18,1.25]};
+const landmarkTuning={camp_fire:[1.20,1.12],camp_glow:[1.15,1.08],altar_ritual:[.52,.55]};
 export function presentationRadius(row){return row.radius*(landmarkTuning[row.id]?.[0]||1);}
 export function renderEnergy(row,time){return animatedEnergy(row,time)*(row.id==='player'?.8:row.id==='fx'?.7:1.45)*(landmarkTuning[row.id]?.[1]||1);}

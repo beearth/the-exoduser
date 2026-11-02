@@ -176,6 +176,7 @@
     },
     {
       "id": "toxic_pit_s",
+      "self_glow": 0.22,
       "prop": "pit_poison",
       "offset": [
         0,
@@ -195,6 +196,7 @@
     },
     {
       "id": "toxic_growth_s",
+      "self_glow": 0.15,
       "prop": "m_c1gtoxicf",
       "offset": [
         0,
@@ -312,9 +314,9 @@
   },
   "spawn_hole_light": {
     "color": [
-      0.62,
-      0.1,
-      0.34
+      0.48,
+      0.18,
+      0.82
     ],
     "radius_base": 220,
     "radius_per_size": 160,

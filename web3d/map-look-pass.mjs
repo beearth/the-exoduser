@@ -1,34 +1,36 @@
 import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
-import {mapLookLayout,holeLights,effectLights,renderEnergy,presentationRadius,foregroundPose} from './map-look-layout.mjs?v=20261102-light5';
+import {mapLookLayout,holeLights,moatLights,effectLights,renderEnergy,presentationRadius,foregroundPose} from './map-look-layout.mjs?v=20261102-hue1';
 import {seeded,applyAffine} from './living-layout.mjs';
-import {lightingGLSL} from './lighting-model.mjs?v=20261102-budget2';
+import {lightingGLSL} from './lighting-model.mjs?v=20261102-hue1';
 import {createFrameSampler} from './frame-sampler.mjs';
 import {shadowVector,shadowAffine} from './depth-layout.mjs?v=20261102-round4-final';
 import {dynamicLights} from './scene-budget.mjs?v=20261102-round4-final';
-import {atmosphereGLSL} from './atmosphere-model.mjs?v=20261102-round4-final';
+import {atmosphereGLSL} from './atmosphere-model.mjs?v=20261102-hue1';
 
 // A snapshot of the native environment BEFORE actors/VFX/HUD is the albedo.
 // Lighting never substitutes terrain art or recolors an actor sprite.
 export function createMapLook(renderer,canvas,shared,data,anchors){
  const plan=mapLookLayout(data,anchors),scene=new THREE.Scene(),camera=new THREE.Camera();
  const frameSampler=createFrameSampler(frame=>{const t=new THREE.Texture(frame);t.colorSpace=THREE.NoColorSpace;t.minFilter=t.magFilter=THREE.LinearFilter;t.generateMipmaps=false;return t;});
+ const emissionSampler=createFrameSampler(frame=>{const t=new THREE.Texture(frame);t.colorSpace=THREE.NoColorSpace;t.minFilter=t.magFilter=THREE.LinearFilter;t.generateMipmaps=false;return t;});
+ const transparent=document.createElement('canvas');transparent.width=transparent.height=1;
  const lights=Array.from({length:40},()=>new THREE.Vector4(-1e5,-1e5,1,0)),colors=lights.map(()=>new THREE.Vector3());
  const shafts=plan.shafts.map(s=>new THREE.Vector4(...s.position,s.width,s.length));
- const glow=new Float32Array(40);
- const u={...shared,frameArt:{value:null},pixel:{value:new THREE.Vector2()},lights:{value:lights},colors:{value:colors},shafts:{value:shafts},ambient:{value:new THREE.Vector3()},flash:{value:0},lightCount:{value:0},glow:{value:glow},lowFog:{value:0}};
+ const glow=new Float32Array(40),selfGlow=new Float32Array(40);
+ const u={...shared,frameArt:{value:null},nativeEmission:{value:null},emissionMix:{value:0},moat:{value:new THREE.Vector4()},moatBand:{value:new THREE.Vector2()},pixel:{value:new THREE.Vector2()},lights:{value:lights},colors:{value:colors},shafts:{value:shafts},ambient:{value:new THREE.Vector3()},flash:{value:0},lightCount:{value:0},glow:{value:glow},selfGlow:{value:selfGlow},lowFog:{value:0}};
  const material=new THREE.ShaderMaterial({uniforms:u,depthTest:false,depthWrite:false,
   vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}`,
-  fragmentShader:`uniform sampler2D frameArt;uniform vec2 pixel,hero;uniform vec4 view;uniform vec4 lights[40],shafts[${plan.shafts.length}];uniform vec3 colors[40],ambient;uniform float time,flash,lowFog,glow[40];uniform int lightCount;varying vec2 vUv;
+  fragmentShader:`uniform sampler2D frameArt,nativeEmission;uniform vec2 pixel,hero,moatBand;uniform vec4 view,moat;uniform vec4 lights[40],shafts[${plan.shafts.length}];uniform vec3 colors[40],ambient;uniform float time,flash,lowFog,glow[40],selfGlow[40],emissionMix;uniform int lightCount;varying vec2 vUv;
    ${lightingGLSL}
    ${atmosphereGLSL}
    float lum(vec2 uv){return dot(texture2D(frameArt,uv).rgb,vec3(.299,.587,.114));}
    void main(){vec4 original=texture2D(frameArt,vUv);vec2 world=view.xy+vec2(vUv.x,1.-vUv.y)*view.zw;
     vec3 normal=paintedNormal(frameArt,vUv,pixel*1.5);
     float cloud=.5+.24*sin(world.x*.002+world.y*.0012-time*.055)+.18*sin(world.y*.003-world.x*.0007-time*.037);
-    vec3 added=vec3(.07,.09,.14)*flash,scattering=vec3(0.);
+    vec3 added=vec3(.07,.09,.14)*flash,scattering=vec3(0.),selfEmission=vec3(0.);
     for(int i=0;i<40;i++){if(i>=lightCount)break;vec2 delta=lights[i].xy-world;float d=length(delta)/lights[i].z;if(d>=1.)continue;
      float fall=poolFalloff(d);vec3 dir=normalize(vec3(delta.x,-delta.y,lights[i].z*.45));
-     float bump=.28+.72*max(0.,dot(normal,dir));float bloom=glow[i]*exp(-d*d*72.)*.13;added+=colors[i]*lights[i].w*(fall*bump+bloom);}
+     float bump=.28+.72*max(0.,dot(normal,dir));float bloom=glow[i]*exp(-d*d*72.)*.13;added+=colors[i]*lights[i].w*(fall*bump+bloom);selfEmission+=colors[i]*lights[i].w*fall*selfGlow[i];}
     for(int i=0;i<${plan.shafts.length};i++){vec2 q=world-shafts[i].xy;float co=.848048,si=-.529919;vec2 p=vec2(co*q.x+si*q.y,-si*q.x+co*q.y);float v=p.y/shafts[i].w+.5;
      float along=smoothstep(0.,.25,v)*( .55+.45*smoothstep(.55,.9,v))*(1.-smoothstep(.9,1.,v));
      float across=pow(1.-smoothstep(0.,1.,abs(p.x)/shafts[i].z*2.),1.6);
@@ -37,8 +39,13 @@ export function createMapLook(renderer,canvas,shared,data,anchors){
      added+=vec3(.88,.84,.74)*.24*beam;
      scattering=max(scattering,vec3(.72,.76,.78)*.085*beam);}
     // Cold darkness belongs to environment only. Actors/VFX/HUD draw afterwards.
-    vec3 color=shadeEnvironment(original.rgb,ambient*(.88+.12*(1.-smoothstep(.25,.9,cloud))),added)+scattering;
-    gl_FragColor=vec4(forestAtmosphere(clamp(color,0.,1.),world,hero,time,lowFog),original.a);
+    vec4 emission=texture2D(nativeEmission,vUv);
+    float toxicMaterial=smoothstep(.005,.025,original.g-max(original.r,original.b));
+    float waterRadius=length((world-moat.xy)/moat.zw);
+    float wet=smoothstep(moatBand.x,moatBand.x+.025,waterRadius)*(1.-smoothstep(moatBand.y-.025,moatBand.y,waterRadius));
+    vec3 selfLight=emission.rgb*emission.a*emissionMix+(selfEmission+original.rgb*wet*.4)*toxicMaterial;
+    vec3 color=shadeEnvironment(original.rgb,ambient*(.88+.12*(1.-smoothstep(.25,.9,cloud))),added,selfLight)+scattering;
+    gl_FragColor=vec4(clamp(forestAtmosphere(clamp(color,0.,1.),original.rgb+selfLight,world,hero,time,lowFog),0.,1.),original.a);
    }`});
  scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),material));
  const silhouettes=new Map(),shadowStamps=new Map(),dot=document.createElement('canvas');dot.width=dot.height=32;
@@ -80,12 +87,13 @@ export function createMapLook(renderer,canvas,shared,data,anchors){
  }
  function update(s,view){
   const time=s.now/1000,dt=lastTime?Math.max(0,Math.min(.1,time-lastTime)):1/60;lastTime=time;
+  u.moat.value.set(s.hill.cx*s.tile,s.hill.cy*s.tile,s.hill.rx*s.tile,s.hill.ry*s.tile);u.moatBand.value.set(s.hill.inner,s.hill.outer);
   if(time-lastHoles>.5||lastHoles<0){holeRows=holeLights(data,s.G.spawnHoles);lastHoles=time;}
   const fx=dynamicLights(data,s.projectiles,s.blasts,s.P,view),player={...data.player_light,id:'player',position:[s.P.x,s.P.y-20]};
-  const staticRows=[...plan.lights,...holeRows].filter(l=>visible(...l.position,presentationRadius(l),view));
+  const staticRows=[...moatLights(s.hill,s.tile),...plan.lights,...holeRows].filter(l=>visible(...l.position,presentationRadius(l),view));
   const limit=s.budget?.lightLimit||40,reserve=Math.min(4,Math.floor(limit/4));
   const rows=[player,...fx.slice(0,reserve),...staticRows,...fx.slice(reserve)];
-  let count=0;for(const l of rows.slice(0,limit)){lights[count].set(...l.position,presentationRadius(l),renderEnergy(l,time));colors[count].set(...l.color);glow[count]=/toxic|altar|hole|glow|heart|camp_fire/.test(l.id)?1:0;count++;}u.lightCount.value=count;u.lowFog.value=s.budget?.level>=2?1:0;
+  let count=0;for(const l of rows.slice(0,limit)){lights[count].set(...l.position,presentationRadius(l),renderEnergy(l,time));colors[count].set(...l.color);glow[count]=/toxic|altar|hole|glow|heart|camp_fire/.test(l.id)?1:0;selfGlow[count]=l.self_glow||0;count++;}u.lightCount.value=count;u.lowFog.value=s.budget?.level>=2?1:0;
   const idx=(s.P.y/s.tile<(s.G._regMidY||100)?0:2)+(s.P.x/s.tile<(s.G._regMidX||100)?0:1);
   region=region.map((v,i)=>v+(data.region_ambient[idx][i]-v)*Math.min(1,dt*.6));u.ambient.value.set(...region);
   if(idx===data.lightning.region){flashNext-=dt;if(flashNext<=0){flashLeft=data.lightning.duration;flashNext=7+(Math.sin(++flashIndex*127.1)*.5+.5)*9;}}
@@ -98,6 +106,9 @@ export function createMapLook(renderer,canvas,shared,data,anchors){
   const probe=window._Web3DFrameProbe;
   if(probe&&!probe.input){probe.view={...view};probe.input=s.frame.toDataURL();}
   u.frameArt.value=frameSampler.update(s.frame);u.pixel.value.set(1/s.frame.width,1/s.frame.height);
+  // Keep the original 2D self-glow colors. It is a read-only, additive map;
+  // neither the cold ambient nor a nearby red pool is allowed to recolor it.
+  u.nativeEmission.value=emissionSampler.update(s.colorLight||transparent);u.emissionMix.value=s.colorLight?s.colorLightMix:0;
   shared.view.value.set(view.x,view.y,view.w,view.h);shared.time.value=s.now/1000;
   renderer.render(scene,camera);canvas._glVer=(canvas._glVer||0)+1;
   if(probe&&!probe.output)probe.output=canvas.toDataURL();

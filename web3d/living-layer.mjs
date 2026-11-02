@@ -1,15 +1,15 @@
 import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
 import {waterAt,plantHabitat} from './living-layout.mjs?v=20261031-layer2';
 import {createRelief} from './living-relief.mjs?v=20261102-round4-final';
-import {createMapLook} from './map-look-pass.mjs?v=20261102-round4-final';
-import {createDepthPass} from './depth-pass.mjs?v=20261102-round4-final';
+import {createMapLook} from './map-look-pass.mjs?v=20261102-hue1';
+import {createDepthPass} from './depth-pass.mjs?v=20261102-hue1';
 import {sceneBudget} from './scene-budget.mjs?v=20261102-round4-final';
 import {createForest} from './forest-layer.mjs?v=20261102-round4-final';
 import {createGhosts} from './ghost-layer.mjs?v=20261102-round4-final';
 import {authoredFoliageLayout,puddleHabitat} from './foliage-layout.mjs?v=20261031-foliage4b';
 import {drawFoliageDebug} from './foliage-debug.mjs?v=20261031-foliage4';
 
-import {createGroundDressing} from './ground-dressing.mjs?v=20261102-round4-final';
+import {createGroundDressing} from './ground-dressing.mjs?v=20261102-hue1';
 
 // The native map is the color source. This canvas contains ONLY added vegetation
 // and water highlights; actors, VFX, camera, lighting and HUD use their original pass.
@@ -23,7 +23,7 @@ export async function install(read){
   const uniforms={view:{value:new THREE.Vector4()},time:{value:0},hero:{value:new THREE.Vector2(-1e5,-1e5)},bend:{value:1},impulse:{value:new THREE.Vector3(-1e5,-1e5,0)}};
   const source=await new THREE.TextureLoader().loadAsync('./assets/web3d/living/rotten-underbrush-atlas.png');
   source.colorSpace=THREE.NoColorSpace;source.minFilter=THREE.LinearFilter;source.magFilter=THREE.LinearFilter;
-  const [lookData,lookAnchors]=await Promise.all(['map-look-ch1.json','map-look-anchors.json'].map(async file=>{const r=await fetch('./assets/web3d/'+file+'?v=20261102-round4-final');if(!r.ok)throw Error(file+' '+r.status);return r.json();}));
+  const [lookData,lookAnchors]=await Promise.all(['map-look-ch1.json','map-look-anchors.json'].map(async file=>{const r=await fetch('./assets/web3d/'+file+'?v=20261102-hue1');if(!r.ok)throw Error(file+' '+r.status);return r.json();}));
   const foliageResponse=await fetch('./assets/web3d/foliage-ch1.json?v=20261031-foliage4');if(!foliageResponse.ok)throw Error('foliage-ch1 '+foliageResponse.status);
   const foliagePlan=await foliageResponse.json(),foliageDebug=new URLSearchParams(location.search).get('r3dFoliageDebug')==='1';
   const dressing=await createGroundDressing();
@@ -124,6 +124,7 @@ export async function install(read){
     let visibleWater=0;for(const water of waterMeshes){const visible=water.x+water.w/2>view.x&&water.x-water.w/2<view.x+view.w&&water.y+water.h/2>view.y&&water.y-water.h/2<view.y+view.h;water.mesh.visible=visible;if(visible)visibleWater++;water.mesh.onBeforeRender=()=>{waterUniforms.mode.value=water.mode;waterUniforms.center.value.set(water.x,water.y);waterUniforms.radii.value.set(water.mode===0?hill.rx*t:water.w/2,water.mode===0?hill.ry*t:water.h/2);waterUniforms.liquid.value=water.texture||source;waterUniforms.flip.value=water.flip||1;waterMaterial.uniformsNeedUpdate=true;};}
     // Plants, their roots and water share the native environment lighting.
     renderer.render(scene,camera);canvas._glVer=(canvas._glVer||0)+1;
+    if(window._Web3DFrameProbe&&!window._Web3DFrameProbe.overlay)window._Web3DFrameProbe.overlay=canvas.toDataURL();
     ctx.save();ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';ctx.drawImage(canvas,view.x,view.y,view.w,view.h);ctx.restore();
     mapLook.draw(ctx,s,view);
     // Outside-only cold forest is already shaded, before actors and danger marks.

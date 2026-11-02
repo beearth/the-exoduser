@@ -15,10 +15,10 @@ test('pool edge is smooth, finite, and strictly dark outside its radius',async()
  assert.ok(poolFalloff(.5)>poolFalloff(.8));assert.ok(poolFalloff(.999)<.00001);
 });
 
-test('camp tent and altar shoulders receive local warm light without lifting the dark interspace',async()=>{
+test('camp tent receives local warm light without lifting the dark interspace',async()=>{
  const {presentationRadius,renderEnergy}=await import('../web3d/map-look-layout.mjs');const {poolFalloff}=await import('../web3d/lighting-model.mjs');
  assert.equal(typeof presentationRadius,'function');
- for(const row of [{id:'camp_fire',radius:640,energy:1.55,position:[0,0]},{id:'altar_ritual',radius:660,energy:.72,position:[0,0]}]){
+ for(const row of [{id:'camp_fire',radius:640,energy:1.55,position:[0,0]}]){
  const r=presentationRadius(row);assert.ok(r>row.radius*1.1);assert.ok(renderEnergy(row,0)*poolFalloff(.65*row.radius/r)>row.energy*1.45*poolFalloff(.65)*1.6);assert.equal(poolFalloff(1.001),0);
  }
  assert.equal(presentationRadius({id:'player',radius:560}),560);

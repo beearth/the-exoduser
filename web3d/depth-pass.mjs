@@ -1,8 +1,8 @@
 import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
 import {objectVolume,occlusion,compareDepth} from './depth-layout.mjs?v=20261102-round4-final';
-import {lightingGLSL} from './lighting-model.mjs?v=20261102-budget2';
+import {lightingGLSL} from './lighting-model.mjs?v=20261102-hue1';
 import {createFrameSampler} from './frame-sampler.mjs';
-import {atmosphereGLSL} from './atmosphere-model.mjs?v=20261102-round4-final';
+import {atmosphereGLSL} from './atmosphere-model.mjs?v=20261102-hue1';
 
 // Each native prop is rasterised by the original painter exactly once. The GPU
 // orders those images by their roots, preserves foreground actor pixels, and
@@ -25,7 +25,7 @@ export function createDepthPass(renderer,canvas,shared,lighting){
   bgTex=bgSampler.update(s.frame);renderer.initTexture(bgTex);
  }
  const vertex=`uniform vec4 view,bounds;varying vec2 vUv,world,screenUv;void main(){vUv=uv;world=bounds.xy+vec2(uv.x,1.-uv.y)*bounds.zw;screenUv=vec2((world.x-view.x)/view.z,1.-(world.y-view.y)/view.w);gl_Position=vec4(screenUv*2.-1.,0.,1.);}`;
- const fragment=`uniform sampler2D art,frontMask,beforeActors,afterActors;uniform vec4 lights[40];uniform vec3 colors[40],ambient;uniform int lightCount;uniform float opacity,time,flash,lowFog,glow[40];uniform vec2 texel,hero;varying vec2 vUv,world,screenUv;
+ const fragment=`uniform sampler2D art,frontMask,beforeActors,afterActors,nativeEmission;uniform vec4 lights[40];uniform vec3 colors[40],ambient;uniform int lightCount;uniform float opacity,time,flash,lowFog,glow[40],selfGlow[40],emissionMix;uniform vec2 texel,hero;varying vec2 vUv,world,screenUv;
  ${lightingGLSL}
  ${atmosphereGLSL}
  float lum(vec2 p){return dot(texture2D(art,p).rgb,vec3(.299,.587,.114));}
@@ -36,9 +36,12 @@ export function createDepthPass(renderer,canvas,shared,lighting){
   // projectile, telegraph or VFX pixel. Only a body behind the prop can occlude.
   if(changed>.012&&(mask.r>.5||mask.g<.5))discard;
   vec3 normal=paintedNormal(art,vUv,texel);
-  vec3 added=vec3(.07,.09,.14)*flash;
-  for(int i=0;i<40;i++){if(i>=lightCount)break;vec2 d=lights[i].xy-world;float r=length(d)/lights[i].z;if(r>=1.)continue;float bump=.28+.72*max(0.,dot(normal,normalize(vec3(d.x,-d.y,lights[i].z*.45))));added+=colors[i]*lights[i].w*(poolFalloff(r)*bump+glow[i]*exp(-r*r*72.)*.13);}
-  gl_FragColor=vec4(forestAtmosphere(shadeEnvironment(c.rgb,ambient,added),world,hero,time,lowFog),c.a*opacity);
+  vec3 added=vec3(.07,.09,.14)*flash,selfEmission=vec3(0.);
+  for(int i=0;i<40;i++){if(i>=lightCount)break;vec2 d=lights[i].xy-world;float r=length(d)/lights[i].z;if(r>=1.)continue;float bump=.28+.72*max(0.,dot(normal,normalize(vec3(d.x,-d.y,lights[i].z*.45))));added+=colors[i]*lights[i].w*(poolFalloff(r)*bump+glow[i]*exp(-r*r*72.)*.13);selfEmission+=colors[i]*lights[i].w*poolFalloff(r)*selfGlow[i];}
+  vec4 emission=texture2D(nativeEmission,screenUv);
+  float toxicMaterial=smoothstep(.005,.025,c.g-max(c.r,c.b));
+  vec3 selfLight=emission.rgb*emission.a*emissionMix+selfEmission*toxicMaterial;
+  gl_FragColor=vec4(clamp(forestAtmosphere(shadeEnvironment(c.rgb,ambient,added,selfLight),c.rgb+selfLight,world,hero,time,lowFog),0.,1.),c.a*opacity);
  }`;
  function entry(row){
   let item=cache.get(row.object);if(item)return item;
