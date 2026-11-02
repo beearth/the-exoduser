@@ -30,7 +30,7 @@ test('all native combat/save/AI declarations retain their exact baseline source'
       .replace('X.globalAlpha=_web3dAmbient?0:_vAlpha','X.globalAlpha=_vAlpha')
       .replace('if(_ATMDBG.vig&&!(G.stage===0&&!G._bossArena&&window._Web3DLivingLayer?.snapshot().enabled))','if(_ATMDBG.vig)');
     const current=name==='draw'?restored
-      .replace(/^  window\._Web3DLivingLayer\?\.(?:draw|surface)\(X,.*\);\r?\n/gm,'')
+      .replace(/^  window\._Web3DLivingLayer\?\.(?:draw|surface|ground)(?:\?\.)?\(X,.*\);\r?\n/gm,'')
       .replace(/^    const _livingRelief=window\._Web3DLivingLayer\?\.beginObject\(X,mo,_OBJ_META\[mo.type\]\);\r?\n/m,'')
       .replace(/^    if\(_livingRelief\)X.restore\(\);\r?\n/m,''):restored;
     assert.ok(current===(approvedPresentation.has(name)?upstream.get(name):source),name+' changed');checked++;

@@ -1,0 +1,1291 @@
+{
+  "schema": "exoduser.web3d.ground-dressing.v1",
+  "note": "원본 맵 위 비충돌 낮은 군락. 바닥/벽 이미지 교체0. 모든 좌표 수작업 배치; 기존 나무·뿌리·바위 어깨를 잇고 전투 비움 유지.",
+  "assets": {
+    "bank": "./assets/map/ch1/production_finish/depth/root_bank.png",
+    "fan": "./assets/map/ch1/production_finish/depth/root_fan.png",
+    "log": "./assets/map/ch1/production_finish/outer90_sources/rotforest_root_bridge_01.png",
+    "bone": "./assets/map/ch1/floor_objects/prop_s_bone.png"
+  },
+  "exclusions": [
+    {
+      "id": "main_lane",
+      "rect": [
+        3850,
+        0,
+        4230,
+        8000
+      ]
+    },
+    {
+      "id": "arena_void",
+      "rect": [
+        3250,
+        4600,
+        4700,
+        5500
+      ]
+    },
+    {
+      "id": "altar_entry",
+      "rect": [
+        4950,
+        3780,
+        5420,
+        4070
+      ]
+    }
+  ],
+  "regions": [
+    {
+      "id": "start",
+      "role": "남부 양쪽 뿌리 연결·중앙 길 유도",
+      "placements": [
+        {
+          "id": "start_bank_0",
+          "asset": "bank",
+          "x": 3410,
+          "y": 7030,
+          "width": 690,
+          "height": 340,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "start_join_0",
+          "asset": "log",
+          "x": 3445,
+          "y": 7091.2,
+          "width": 482.99999999999994,
+          "height": 190.4,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "start_bone_0",
+          "asset": "bone",
+          "x": 3480,
+          "y": 7002.8,
+          "width": 100,
+          "height": 112,
+          "flip": true,
+          "alpha": 0.88
+        },
+        {
+          "id": "start_bank_1",
+          "asset": "fan",
+          "x": 4560,
+          "y": 6990,
+          "width": 630,
+          "height": 360,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "start_join_1",
+          "asset": "fan",
+          "x": 4515,
+          "y": 7054.8,
+          "width": 441,
+          "height": 201.60000000000002,
+          "flip": true,
+          "alpha": 0.86
+        },
+        {
+          "id": "start_bank_2",
+          "asset": "bank",
+          "x": 3480,
+          "y": 7350,
+          "width": 680,
+          "height": 380,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "start_join_2",
+          "asset": "fan",
+          "x": 3515,
+          "y": 7418.4,
+          "width": 475.99999999999994,
+          "height": 212.8,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "start_bank_3",
+          "asset": "bank",
+          "x": 4640,
+          "y": 7320,
+          "width": 720,
+          "height": 310,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "start_join_3",
+          "asset": "log",
+          "x": 4595,
+          "y": 7375.8,
+          "width": 503.99999999999994,
+          "height": 173.60000000000002,
+          "flip": true,
+          "alpha": 0.86
+        },
+        {
+          "id": "start_bone_3",
+          "asset": "bone",
+          "x": 4560,
+          "y": 7295.2,
+          "width": 100,
+          "height": 112,
+          "flip": false,
+          "alpha": 0.88
+        },
+        {
+          "id": "start_bank_4",
+          "asset": "fan",
+          "x": 3420,
+          "y": 7700,
+          "width": 760,
+          "height": 370,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "start_join_4",
+          "asset": "fan",
+          "x": 3455,
+          "y": 7766.6,
+          "width": 532,
+          "height": 207.20000000000002,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "start_bank_5",
+          "asset": "bank",
+          "x": 4600,
+          "y": 7700,
+          "width": 680,
+          "height": 420,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "start_join_5",
+          "asset": "fan",
+          "x": 4555,
+          "y": 7775.6,
+          "width": 475.99999999999994,
+          "height": 235.20000000000002,
+          "flip": true,
+          "alpha": 0.86
+        },
+        {
+          "id": "start_bank_6",
+          "asset": "bank",
+          "x": 3200,
+          "y": 7520,
+          "width": 440,
+          "height": 260,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "start_join_6",
+          "asset": "log",
+          "x": 3235,
+          "y": 7566.8,
+          "width": 308,
+          "height": 145.60000000000002,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "start_bone_6",
+          "asset": "bone",
+          "x": 3270,
+          "y": 7499.2,
+          "width": 100,
+          "height": 112,
+          "flip": true,
+          "alpha": 0.88
+        },
+        {
+          "id": "start_bank_7",
+          "asset": "fan",
+          "x": 4810,
+          "y": 7560,
+          "width": 450,
+          "height": 240,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "start_join_7",
+          "asset": "fan",
+          "x": 4765,
+          "y": 7603.2,
+          "width": 315,
+          "height": 134.4,
+          "flip": true,
+          "alpha": 0.86
+        }
+      ]
+    },
+    {
+      "id": "early",
+      "role": "기존 원화의 외곽·소품 밑동 연결",
+      "placements": [
+        {
+          "id": "early_bank_0",
+          "asset": "bank",
+          "x": 3310,
+          "y": 6550,
+          "width": 720,
+          "height": 390,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "early_join_0",
+          "asset": "log",
+          "x": 3345,
+          "y": 6620.2,
+          "width": 503.99999999999994,
+          "height": 218.40000000000003,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "early_bone_0",
+          "asset": "bone",
+          "x": 3380,
+          "y": 6518.8,
+          "width": 100,
+          "height": 112,
+          "flip": true,
+          "alpha": 0.88
+        },
+        {
+          "id": "early_bank_1",
+          "asset": "fan",
+          "x": 4630,
+          "y": 6490,
+          "width": 700,
+          "height": 360,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "early_join_1",
+          "asset": "fan",
+          "x": 4585,
+          "y": 6554.8,
+          "width": 489.99999999999994,
+          "height": 201.60000000000002,
+          "flip": true,
+          "alpha": 0.86
+        },
+        {
+          "id": "early_bank_2",
+          "asset": "bank",
+          "x": 3370,
+          "y": 6130,
+          "width": 650,
+          "height": 340,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "early_join_2",
+          "asset": "fan",
+          "x": 3405,
+          "y": 6191.2,
+          "width": 454.99999999999994,
+          "height": 190.4,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "early_bank_3",
+          "asset": "bank",
+          "x": 4630,
+          "y": 6040,
+          "width": 680,
+          "height": 410,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "early_join_3",
+          "asset": "log",
+          "x": 4585,
+          "y": 6113.8,
+          "width": 475.99999999999994,
+          "height": 229.60000000000002,
+          "flip": true,
+          "alpha": 0.86
+        },
+        {
+          "id": "early_bone_3",
+          "asset": "bone",
+          "x": 4550,
+          "y": 6007.2,
+          "width": 100,
+          "height": 112,
+          "flip": false,
+          "alpha": 0.88
+        },
+        {
+          "id": "early_bank_4",
+          "asset": "fan",
+          "x": 2940,
+          "y": 6300,
+          "width": 480,
+          "height": 300,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "early_join_4",
+          "asset": "fan",
+          "x": 2975,
+          "y": 6354,
+          "width": 336,
+          "height": 168.00000000000003,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "early_bank_5",
+          "asset": "bank",
+          "x": 5010,
+          "y": 6240,
+          "width": 470,
+          "height": 260,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "early_join_5",
+          "asset": "fan",
+          "x": 4965,
+          "y": 6286.8,
+          "width": 329,
+          "height": 145.60000000000002,
+          "flip": true,
+          "alpha": 0.86
+        }
+      ]
+    },
+    {
+      "id": "arena",
+      "role": "기존 원화의 외곽·소품 밑동 연결",
+      "placements": [
+        {
+          "id": "arena_bank_0",
+          "asset": "bank",
+          "x": 2860,
+          "y": 5220,
+          "width": 650,
+          "height": 430,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "arena_join_0",
+          "asset": "log",
+          "x": 2895,
+          "y": 5297.4,
+          "width": 454.99999999999994,
+          "height": 240.8,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "arena_bone_0",
+          "asset": "bone",
+          "x": 2930,
+          "y": 5185.6,
+          "width": 100,
+          "height": 112,
+          "flip": true,
+          "alpha": 0.88
+        },
+        {
+          "id": "arena_bank_1",
+          "asset": "fan",
+          "x": 5140,
+          "y": 5120,
+          "width": 740,
+          "height": 400,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "arena_join_1",
+          "asset": "fan",
+          "x": 5095,
+          "y": 5192,
+          "width": 518,
+          "height": 224.00000000000003,
+          "flip": true,
+          "alpha": 0.86
+        },
+        {
+          "id": "arena_bank_2",
+          "asset": "bank",
+          "x": 3000,
+          "y": 4770,
+          "width": 450,
+          "height": 290,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "arena_join_2",
+          "asset": "fan",
+          "x": 3035,
+          "y": 4822.2,
+          "width": 315,
+          "height": 162.4,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "arena_bank_3",
+          "asset": "bank",
+          "x": 5010,
+          "y": 4740,
+          "width": 480,
+          "height": 300,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "arena_join_3",
+          "asset": "log",
+          "x": 4965,
+          "y": 4794,
+          "width": 336,
+          "height": 168.00000000000003,
+          "flip": true,
+          "alpha": 0.86
+        },
+        {
+          "id": "arena_bone_3",
+          "asset": "bone",
+          "x": 4930,
+          "y": 4716,
+          "width": 100,
+          "height": 112,
+          "flip": false,
+          "alpha": 0.88
+        }
+      ]
+    },
+    {
+      "id": "side_l",
+      "role": "기존 원화의 외곽·소품 밑동 연결",
+      "placements": [
+        {
+          "id": "side_l_bank_0",
+          "asset": "bank",
+          "x": 1700,
+          "y": 5620,
+          "width": 600,
+          "height": 320,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "side_l_join_0",
+          "asset": "log",
+          "x": 1735,
+          "y": 5677.6,
+          "width": 420,
+          "height": 179.20000000000002,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "side_l_bone_0",
+          "asset": "bone",
+          "x": 1770,
+          "y": 5594.4,
+          "width": 100,
+          "height": 112,
+          "flip": true,
+          "alpha": 0.88
+        },
+        {
+          "id": "side_l_bank_1",
+          "asset": "fan",
+          "x": 2210,
+          "y": 5790,
+          "width": 600,
+          "height": 280,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "side_l_join_1",
+          "asset": "fan",
+          "x": 2165,
+          "y": 5840.4,
+          "width": 420,
+          "height": 156.8,
+          "flip": true,
+          "alpha": 0.86
+        },
+        {
+          "id": "side_l_bank_2",
+          "asset": "bank",
+          "x": 2700,
+          "y": 5700,
+          "width": 700,
+          "height": 350,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "side_l_join_2",
+          "asset": "fan",
+          "x": 2735,
+          "y": 5763,
+          "width": 489.99999999999994,
+          "height": 196.00000000000003,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "side_l_bank_3",
+          "asset": "bank",
+          "x": 1620,
+          "y": 6150,
+          "width": 520,
+          "height": 300,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "side_l_join_3",
+          "asset": "log",
+          "x": 1575,
+          "y": 6204,
+          "width": 364,
+          "height": 168.00000000000003,
+          "flip": true,
+          "alpha": 0.86
+        },
+        {
+          "id": "side_l_bone_3",
+          "asset": "bone",
+          "x": 1540,
+          "y": 6126,
+          "width": 100,
+          "height": 112,
+          "flip": false,
+          "alpha": 0.88
+        }
+      ]
+    },
+    {
+      "id": "camp",
+      "role": "기존 원화의 외곽·소품 밑동 연결",
+      "placements": [
+        {
+          "id": "camp_bank_0",
+          "asset": "bank",
+          "x": 1460,
+          "y": 4500,
+          "width": 650,
+          "height": 360,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "camp_join_0",
+          "asset": "log",
+          "x": 1495,
+          "y": 4564.8,
+          "width": 454.99999999999994,
+          "height": 201.60000000000002,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "camp_bone_0",
+          "asset": "bone",
+          "x": 1530,
+          "y": 4471.2,
+          "width": 100,
+          "height": 112,
+          "flip": true,
+          "alpha": 0.88
+        },
+        {
+          "id": "camp_bank_1",
+          "asset": "fan",
+          "x": 2450,
+          "y": 4270,
+          "width": 670,
+          "height": 350,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "camp_join_1",
+          "asset": "fan",
+          "x": 2405,
+          "y": 4333,
+          "width": 468.99999999999994,
+          "height": 196.00000000000003,
+          "flip": true,
+          "alpha": 0.86
+        },
+        {
+          "id": "camp_bank_2",
+          "asset": "bank",
+          "x": 2630,
+          "y": 3940,
+          "width": 480,
+          "height": 270,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "camp_join_2",
+          "asset": "fan",
+          "x": 2665,
+          "y": 3988.6,
+          "width": 336,
+          "height": 151.20000000000002,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "camp_bank_3",
+          "asset": "bank",
+          "x": 1400,
+          "y": 3680,
+          "width": 560,
+          "height": 300,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "camp_join_3",
+          "asset": "log",
+          "x": 1355,
+          "y": 3734,
+          "width": 392,
+          "height": 168.00000000000003,
+          "flip": true,
+          "alpha": 0.86
+        },
+        {
+          "id": "camp_bone_3",
+          "asset": "bone",
+          "x": 1320,
+          "y": 3656,
+          "width": 100,
+          "height": 112,
+          "flip": false,
+          "alpha": 0.88
+        }
+      ]
+    },
+    {
+      "id": "altar",
+      "role": "기존 원화의 외곽·소품 밑동 연결",
+      "placements": [
+        {
+          "id": "altar_bank_0",
+          "asset": "bank",
+          "x": 5620,
+          "y": 4430,
+          "width": 650,
+          "height": 280,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "altar_join_0",
+          "asset": "log",
+          "x": 5655,
+          "y": 4480.4,
+          "width": 454.99999999999994,
+          "height": 156.8,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "altar_bone_0",
+          "asset": "bone",
+          "x": 5690,
+          "y": 4407.6,
+          "width": 100,
+          "height": 112,
+          "flip": true,
+          "alpha": 0.88
+        },
+        {
+          "id": "altar_bank_1",
+          "asset": "fan",
+          "x": 6430,
+          "y": 4450,
+          "width": 700,
+          "height": 300,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "altar_join_1",
+          "asset": "fan",
+          "x": 6385,
+          "y": 4504,
+          "width": 489.99999999999994,
+          "height": 168.00000000000003,
+          "flip": true,
+          "alpha": 0.86
+        },
+        {
+          "id": "altar_bank_2",
+          "asset": "bank",
+          "x": 6850,
+          "y": 4080,
+          "width": 450,
+          "height": 330,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "altar_join_2",
+          "asset": "fan",
+          "x": 6885,
+          "y": 4139.4,
+          "width": 315,
+          "height": 184.8,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "altar_bank_3",
+          "asset": "bank",
+          "x": 6830,
+          "y": 3710,
+          "width": 500,
+          "height": 310,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "altar_join_3",
+          "asset": "log",
+          "x": 6785,
+          "y": 3765.8,
+          "width": 350,
+          "height": 173.60000000000002,
+          "flip": true,
+          "alpha": 0.86
+        },
+        {
+          "id": "altar_bone_3",
+          "asset": "bone",
+          "x": 6750,
+          "y": 3685.2,
+          "width": 100,
+          "height": 112,
+          "flip": false,
+          "alpha": 0.88
+        },
+        {
+          "id": "altar_bank_4",
+          "asset": "fan",
+          "x": 5490,
+          "y": 3510,
+          "width": 580,
+          "height": 290,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "altar_join_4",
+          "asset": "fan",
+          "x": 5525,
+          "y": 3562.2,
+          "width": 406,
+          "height": 162.4,
+          "flip": false,
+          "alpha": 0.86
+        }
+      ]
+    },
+    {
+      "id": "corpse_tree",
+      "role": "기존 원화의 외곽·소품 밑동 연결",
+      "placements": [
+        {
+          "id": "corpse_tree_bank_0",
+          "asset": "bank",
+          "x": 3450,
+          "y": 3990,
+          "width": 680,
+          "height": 320,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "corpse_tree_join_0",
+          "asset": "log",
+          "x": 3485,
+          "y": 4047.6,
+          "width": 475.99999999999994,
+          "height": 179.20000000000002,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "corpse_tree_bone_0",
+          "asset": "bone",
+          "x": 3520,
+          "y": 3964.4,
+          "width": 100,
+          "height": 112,
+          "flip": true,
+          "alpha": 0.88
+        },
+        {
+          "id": "corpse_tree_bank_1",
+          "asset": "fan",
+          "x": 4650,
+          "y": 4070,
+          "width": 720,
+          "height": 310,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "corpse_tree_join_1",
+          "asset": "fan",
+          "x": 4605,
+          "y": 4125.8,
+          "width": 503.99999999999994,
+          "height": 173.60000000000002,
+          "flip": true,
+          "alpha": 0.86
+        },
+        {
+          "id": "corpse_tree_bank_2",
+          "asset": "bank",
+          "x": 3440,
+          "y": 3520,
+          "width": 650,
+          "height": 270,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "corpse_tree_join_2",
+          "asset": "fan",
+          "x": 3475,
+          "y": 3568.6,
+          "width": 454.99999999999994,
+          "height": 151.20000000000002,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "corpse_tree_bank_3",
+          "asset": "bank",
+          "x": 4650,
+          "y": 3350,
+          "width": 700,
+          "height": 320,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "corpse_tree_join_3",
+          "asset": "log",
+          "x": 4605,
+          "y": 3407.6,
+          "width": 489.99999999999994,
+          "height": 179.20000000000002,
+          "flip": true,
+          "alpha": 0.86
+        },
+        {
+          "id": "corpse_tree_bone_3",
+          "asset": "bone",
+          "x": 4570,
+          "y": 3324.4,
+          "width": 100,
+          "height": 112,
+          "flip": false,
+          "alpha": 0.88
+        }
+      ]
+    },
+    {
+      "id": "side_r",
+      "role": "기존 원화의 외곽·소품 밑동 연결",
+      "placements": [
+        {
+          "id": "side_r_bank_0",
+          "asset": "bank",
+          "x": 6400,
+          "y": 5140,
+          "width": 750,
+          "height": 350,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "side_r_join_0",
+          "asset": "log",
+          "x": 6435,
+          "y": 5203,
+          "width": 525,
+          "height": 196.00000000000003,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "side_r_bone_0",
+          "asset": "bone",
+          "x": 6470,
+          "y": 5112,
+          "width": 100,
+          "height": 112,
+          "flip": true,
+          "alpha": 0.88
+        },
+        {
+          "id": "side_r_bank_1",
+          "asset": "fan",
+          "x": 6910,
+          "y": 4800,
+          "width": 550,
+          "height": 360,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "side_r_join_1",
+          "asset": "fan",
+          "x": 6865,
+          "y": 4864.8,
+          "width": 385,
+          "height": 201.60000000000002,
+          "flip": true,
+          "alpha": 0.86
+        },
+        {
+          "id": "side_r_bank_2",
+          "asset": "bank",
+          "x": 6550,
+          "y": 3280,
+          "width": 710,
+          "height": 310,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "side_r_join_2",
+          "asset": "fan",
+          "x": 6585,
+          "y": 3335.8,
+          "width": 496.99999999999994,
+          "height": 173.60000000000002,
+          "flip": false,
+          "alpha": 0.86
+        }
+      ]
+    },
+    {
+      "id": "late",
+      "role": "기존 원화의 외곽·소품 밑동 연결",
+      "placements": [
+        {
+          "id": "late_bank_0",
+          "asset": "bank",
+          "x": 3370,
+          "y": 2720,
+          "width": 680,
+          "height": 360,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "late_join_0",
+          "asset": "log",
+          "x": 3405,
+          "y": 2784.8,
+          "width": 475.99999999999994,
+          "height": 201.60000000000002,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "late_bone_0",
+          "asset": "bone",
+          "x": 3440,
+          "y": 2691.2,
+          "width": 100,
+          "height": 112,
+          "flip": true,
+          "alpha": 0.88
+        },
+        {
+          "id": "late_bank_1",
+          "asset": "fan",
+          "x": 4650,
+          "y": 2660,
+          "width": 700,
+          "height": 340,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "late_join_1",
+          "asset": "fan",
+          "x": 4605,
+          "y": 2721.2,
+          "width": 489.99999999999994,
+          "height": 190.4,
+          "flip": true,
+          "alpha": 0.86
+        },
+        {
+          "id": "late_bank_2",
+          "asset": "bank",
+          "x": 3300,
+          "y": 2270,
+          "width": 680,
+          "height": 300,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "late_join_2",
+          "asset": "fan",
+          "x": 3335,
+          "y": 2324,
+          "width": 475.99999999999994,
+          "height": 168.00000000000003,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "late_bank_3",
+          "asset": "bank",
+          "x": 4730,
+          "y": 2210,
+          "width": 740,
+          "height": 320,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "late_join_3",
+          "asset": "log",
+          "x": 4685,
+          "y": 2267.6,
+          "width": 518,
+          "height": 179.20000000000002,
+          "flip": true,
+          "alpha": 0.86
+        },
+        {
+          "id": "late_bone_3",
+          "asset": "bone",
+          "x": 4650,
+          "y": 2184.4,
+          "width": 100,
+          "height": 112,
+          "flip": false,
+          "alpha": 0.88
+        },
+        {
+          "id": "late_bank_4",
+          "asset": "fan",
+          "x": 3300,
+          "y": 1810,
+          "width": 650,
+          "height": 330,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "late_join_4",
+          "asset": "fan",
+          "x": 3335,
+          "y": 1869.4,
+          "width": 454.99999999999994,
+          "height": 184.8,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "late_bank_5",
+          "asset": "bank",
+          "x": 4650,
+          "y": 1740,
+          "width": 700,
+          "height": 370,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "late_join_5",
+          "asset": "fan",
+          "x": 4605,
+          "y": 1806.6,
+          "width": 489.99999999999994,
+          "height": 207.20000000000002,
+          "flip": true,
+          "alpha": 0.86
+        },
+        {
+          "id": "late_bank_6",
+          "asset": "bank",
+          "x": 1920,
+          "y": 2520,
+          "width": 560,
+          "height": 260,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "late_join_6",
+          "asset": "log",
+          "x": 1955,
+          "y": 2566.8,
+          "width": 392,
+          "height": 145.60000000000002,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "late_bone_6",
+          "asset": "bone",
+          "x": 1990,
+          "y": 2499.2,
+          "width": 100,
+          "height": 112,
+          "flip": true,
+          "alpha": 0.88
+        }
+      ]
+    },
+    {
+      "id": "exit",
+      "role": "기존 원화의 외곽·소품 밑동 연결",
+      "placements": [
+        {
+          "id": "exit_bank_0",
+          "asset": "bank",
+          "x": 3380,
+          "y": 1250,
+          "width": 650,
+          "height": 320,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "exit_join_0",
+          "asset": "log",
+          "x": 3415,
+          "y": 1307.6,
+          "width": 454.99999999999994,
+          "height": 179.20000000000002,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "exit_bone_0",
+          "asset": "bone",
+          "x": 3450,
+          "y": 1224.4,
+          "width": 100,
+          "height": 112,
+          "flip": true,
+          "alpha": 0.88
+        },
+        {
+          "id": "exit_bank_1",
+          "asset": "fan",
+          "x": 4670,
+          "y": 1170,
+          "width": 720,
+          "height": 330,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "exit_join_1",
+          "asset": "fan",
+          "x": 4625,
+          "y": 1229.4,
+          "width": 503.99999999999994,
+          "height": 184.8,
+          "flip": true,
+          "alpha": 0.86
+        },
+        {
+          "id": "exit_bank_2",
+          "asset": "bank",
+          "x": 3460,
+          "y": 760,
+          "width": 700,
+          "height": 310,
+          "flip": true,
+          "alpha": 0.92
+        },
+        {
+          "id": "exit_join_2",
+          "asset": "fan",
+          "x": 3495,
+          "y": 815.8,
+          "width": 489.99999999999994,
+          "height": 173.60000000000002,
+          "flip": false,
+          "alpha": 0.86
+        },
+        {
+          "id": "exit_bank_3",
+          "asset": "bank",
+          "x": 4640,
+          "y": 680,
+          "width": 680,
+          "height": 340,
+          "flip": false,
+          "alpha": 0.92
+        },
+        {
+          "id": "exit_join_3",
+          "asset": "log",
+          "x": 4595,
+          "y": 741.2,
+          "width": 475.99999999999994,
+          "height": 190.4,
+          "flip": true,
+          "alpha": 0.86
+        },
+        {
+          "id": "exit_bone_3",
+          "asset": "bone",
+          "x": 4560,
+          "y": 652.8,
+          "width": 100,
+          "height": 112,
+          "flip": false,
+          "alpha": 0.88
+        }
+      ]
+    }
+  ]
+}
