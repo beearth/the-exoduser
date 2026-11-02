@@ -20,6 +20,10 @@ test('all native combat/save/AI declarations retain their exact baseline source'
   // still compared byte-for-byte, against that pinned main instead of ignored.
   const audioMain=execFileSync(git,['show','ad1646d3260989b66d96a04379dc8c8f16b63d2e:game.html'],{encoding:'utf8',maxBuffer:12e6,windowsHide:true});
   const audioFunctions=functions(main(audioMain));
+  const transitionMain=execFileSync(git,['show','d2ef5baaa7647260a8bda9e9c3037fb7d8c9df84:game.html'],{encoding:'utf8',maxBuffer:12e6,windowsHide:true});
+  const transitionFunctions=functions(main(transitionMain));
+  const transitionNames=new Set(['_ambSync','startGameFromDB','showStageTransition','showBootLoading','hideBootLoading','goToLobby']);
+  assert.equal(after.get('_retryWithTransition'),transitionFunctions.get('_retryWithTransition'));
   let checked=0;
   for(const [name,source]of before){
     // Optional environment hooks: ground light, original-object relief, foliage.
@@ -36,7 +40,7 @@ test('all native combat/save/AI declarations retain their exact baseline source'
       .replace(/^  window\._Web3DLivingLayer\?\.(?:draw|surface|ground)(?:\?\.)?\(X,.*\);\r?\n/gm,'')
       .replace(/^    const _livingRelief=window\._Web3DLivingLayer\?\.beginObject\(X,mo,_OBJ_META\[mo.type\]\);\r?\n/m,'')
       .replace(/^    if\(_livingRelief\)X.restore\(\);\r?\n/m,'');
-    const current=normalise(after.get(name)),expected=normalise(['_ambSync','update'].includes(name)?audioFunctions.get(name):source);
+    const current=normalise(after.get(name)),expected=normalise(transitionNames.has(name)?transitionFunctions.get(name):['_ambSync','update'].includes(name)?audioFunctions.get(name):source);
     assert.equal(name==='draw'?stripDraw(current):current,name==='draw'?stripDraw(expected):expected,name+' changed');checked++;
   }
   assert.ok(checked>500);

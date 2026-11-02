@@ -30,3 +30,14 @@ export function createMaterialCleanup(){
   const pixels=ctx.getImageData(0,0,canvas.width,canvas.height);pixels.data.set(despeckleMaterial(pixels.data,canvas.width,canvas.height));ctx.putImageData(pixels,0,0);cache.set(image,canvas);return canvas;
  };
 }
+
+// Display-only foliage: retain coherent stems/leaves and suppress keying flecks.
+export function despeckleFoliage(rgba,w,h){
+ const out=despeckleMaterial(rgba,w,h,4),visited=new Uint8Array(w*h),queue=new Int32Array(w*h);
+ for(let seed=0;seed<w*h;seed++){if(visited[seed]||out[seed*4+3]<48)continue;let head=0,tail=1;queue[0]=seed;visited[seed]=1;
+  while(head<tail){const p=queue[head++],x=p%w,y=Math.floor(p/w);for(let yy=Math.max(0,y-1);yy<=Math.min(h-1,y+1);yy++)for(let xx=Math.max(0,x-1);xx<=Math.min(w-1,x+1);xx++){const n=yy*w+xx;if(visited[n]||out[n*4+3]<48)continue;visited[n]=1;queue[tail++]=n;}}
+  if(tail<48)for(let n=0;n<tail;n++)out[queue[n]*4+3]=0;
+ }
+ for(let p=0;p<w*h;p++){const i=p*4,y=out[i]*.299+out[i+1]*.587+out[i+2]*.114;out[i]=y;out[i+1]=y*.96;out[i+2]=y*.90;if(out[i+3]<48)out[i+3]=0;}return out;
+}
+export function createFoliageCleanup(){return image=>{const c=document.createElement('canvas');c.width=image.width||image.naturalWidth;c.height=image.height||image.naturalHeight;const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(image,0,0);const p=x.getImageData(0,0,c.width,c.height);p.data.set(despeckleFoliage(p.data,c.width,c.height));x.putImageData(p,0,0);return c;};}
