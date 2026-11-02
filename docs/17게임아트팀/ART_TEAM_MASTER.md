@@ -130,7 +130,7 @@
 | 대상 | 상태 |
 |---|---|
 | 신규 여성 캐릭터 스타일·얼굴·전신 검토 (2026-11-01~02) | 🟡 후보 검토 중. 사용자 최신 정정: 원이 참고 얼굴·긴 흑갈색 머리는 **복근형**에 적용(v12). 창법사 금속 축 v9/v10 반려 후 v11 수직 창 검토안, 금속 강체 R10 적용. 사용자 채택·게임·3D 적용 전 — [실제 후보·프롬프트·한계](CHARACTER_STYLE_VARIATIONS_REVIEW_20261101.md) |
-| 신규 헤어 전신 3세트 v14 (2026-11-02) | 🟡 여성 2인 × 3판, 총 6개 헤어 후보. 복근형/창법사 구분. 하프업/단발·포니테일/옆땋기·레이어드컷/올림머리. 창날 교정 거절로 최종 비교판은 창 제외. 원본·전체 프롬프트·동일 해시 사본·`new_hairstyle_fullbody_sets.html` 저장. 사용자 채택·게임/3D 적용 전 — [생성 이력](CHARACTER_STYLE_VARIATIONS_REVIEW_20261101.md) |
+| 신규 헤어 전신 3세트 v14 (2026-11-02) | ✅ **창법사 비대칭 단발(01 오른쪽)·비대칭 올림머리(03 오른쪽) 사용자 채택**, 후속 헤어 기준. 02 및 복근형 헤어는 별도 후보. 정본 assets/art-reference/spearmage-hair/20261102/. 창 제외 전신 검토판이며 게임/3D 미적용 — [채택 SSOT](SPEARMAGE_APPROVED_ASYMMETRIC_HAIR_20261102.md) |
 | 마법창 외형 3종 v13 (2026-11-02) | ✅ **공허 균열·성좌·월식 세 외형 모두 사용자 승인**, 후속 마법창 아트의 외형 기준. 정본·프롬프트·기하 가이드: `assets/art-reference/magic-spear/20261102/`. 이전 단순 원판형은 반려 이력. 기술 보정·게임/3D 적용은 별도 — [승인 정본](MAGIC_SPEAR_APPROVED_DESIGNS_20261102.md) |
 | 대검전사 스토리 영상 `video/warrior_story_v23_clean.mp4` (신규 캐릭터 생성 직후 재생) | ✅ 2026-10-27 로컬 웹 실행본에 킬루 피눈물 v3 적용. 96.4초/5784프레임, 얼굴 컷 51.1~53.5초·56~58초 교체, 검 0.6초·화로·29언어 자막 유지. 캐시 `20261027-killu-bloodtears-v3`. 신규 캐릭터 생성 전체 흐름·NW.js·Steam은 별도 검수 — `docs/cinematic/WARINTRO_KILLU_REBUILD_20261025.md` |
 | 구 전쟁 인트로 정지 이미지 `assets/cutscene/warintro/` 12장 (`?cutscene=1` 미리보기 전용) | 🟡 2026-10-01 마감: 12장 중 6장 교체(nemesia_hd·remember·war·throne·demonbattle·fallhell_custom), emg1 원본 유지(후보만 보존), 5장 미착수. 캐시 `?v=20261001-warstills2` — `docs/cinematic/WARINTRO_STILLS_AUDIT_20261001.md` |

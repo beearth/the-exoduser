@@ -1,0 +1,40 @@
+{
+  "status": "USER_APPROVED_HAIRSTYLE_REFERENCES",
+  "userInstruction": "일단 비대칭 2종 저거 쓰자",
+  "approvedAt": "2026-11-02T00:19:36.975Z",
+  "character": "창법사",
+  "scope": "Two hairstyle appearance references only; full paired source boards retained without raster editing.",
+  "runtimeApplied": false,
+  "notSelectedByThisInstruction": "왼쪽 복근형의 헤어 및 02세트 옆땋기는 이번 발언으로 채택하지 않음",
+  "sourceGenerationReceipt": "output/character_style_variations_20261101/hair_fullbody_sets_20261102.receipt.json",
+  "designs": [
+    {
+      "id": "spearmage_asymmetric_bob",
+      "name": "비대칭 단발",
+      "source": "hair_fullbody_set01_halfup_bob.png",
+      "file": "approved-asymmetric-bob-pair.png",
+      "region": {
+        "x": 0.5,
+        "y": 0,
+        "width": 0.5,
+        "height": 1
+      },
+      "note": "오른쪽 창법사만 헤어 채택. 짙은 자주색 비대칭 단발·옆으로 흐르는 앞머리.",
+      "sha256": "6ba56009e558b460d90171a3bcfa298096602817fac9112732810e31bec7017b"
+    },
+    {
+      "id": "spearmage_asymmetric_updo",
+      "name": "비대칭 올림머리",
+      "source": "hair_fullbody_set03_layered_braidedupdo.png",
+      "file": "approved-asymmetric-updo-pair.png",
+      "region": {
+        "x": 0.5,
+        "y": 0,
+        "width": 0.5,
+        "height": 1
+      },
+      "note": "오른쪽 창법사만 헤어 채택. 먹색 올림머리·회은색 앞머리·비대칭 땋은 매듭.",
+      "sha256": "a3cf938ac8a2d79b1c76a7a06107eb6518b24d399c12c95111fb81d7c089e608"
+    }
+  ]
+}
