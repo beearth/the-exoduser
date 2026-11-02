@@ -1,18 +1,24 @@
-/* Original black iron remains still; only its source red eye/cracks breathe. */
-#screenLoadingSigil{position:fixed;z-index:2147483647;pointer-events:none;right:max(48px,4.5vh);bottom:max(48px,4.5vh);width:9.5vh;height:9.5vh;background:transparent url('img/ui/silver_hell/gate_sigil_loading.png') center/contain no-repeat;opacity:0;}
+/* Gamma-lifted black iron stays still; its source red eye/cracks and soft halo breathe. */
+#screenLoadingSigil{position:fixed;z-index:2147483647;isolation:isolate;pointer-events:none;right:max(48px,4.5vh);bottom:max(48px,4.5vh);width:12vh;height:12vh;background:transparent url('img/ui/silver_hell/gate_sigil_loading.png') center/contain no-repeat;opacity:0;}
+#screenLoadingSigil::before{content:'';position:absolute;z-index:-1;inset:-20%;border-radius:50%;background:radial-gradient(ellipse,rgba(162,19,8,.9) 0%,rgba(133,9,3,.55) 28%,rgba(89,4,1,.2) 52%,rgba(60,0,0,0) 72%);opacity:.25;}
 #screenLoadingSigil::after{content:'';position:absolute;inset:0;background:var(--screen-sigil-embers,url('img/ui/silver_hell/gate_sigil_loading_embers.png')) center/contain no-repeat;opacity:.12;filter:drop-shadow(0 0 2px rgba(143,19,12,.35));}
 html[data-screen-pending] #screenLoadingSigil{animation:screenSigilReveal 1ms var(--screen-loading-delay,300ms) forwards;}
 html[data-screen-pending] #screenLoadingSigil::after{animation:screenSigilEmbers 2s ease-in-out var(--screen-loading-delay,300ms) infinite;}
+html[data-screen-pending] #screenLoadingSigil::before{animation:screenSigilHalo 2s ease-in-out var(--screen-loading-delay,300ms) infinite;}
 html[data-screen-loading] #screenLoadingSigil{animation:none;opacity:1;}
 html[data-screen-loading] #screenLoadingSigil::after{animation-delay:0ms;}
+html[data-screen-loading] #screenLoadingSigil::before{animation-delay:0ms;}
 @keyframes screenSigilReveal{to{opacity:1}}
 @keyframes screenSigilEmbers{0%,100%{opacity:.12}50%{opacity:.75}}
+@keyframes screenSigilHalo{0%,100%{opacity:.25}50%{opacity:.4}}
 #screenLoadingLabel{position:fixed;z-index:2147483647;pointer-events:none;right:max(48px,4.5vh);bottom:max(24px,2vh);font:12px var(--font-hell,'Nanum Myeongjo',serif);color:#dfd6c2;opacity:0;}
 html[data-screen-pending] #screenLoadingLabel{animation:screenLoadingLabel 1ms var(--screen-label-delay,1000ms) forwards;}
 @keyframes screenLoadingLabel{to{opacity:.8}}
-@keyframes screenSigilStatic{to{opacity:.65}}
-@media(prefers-reduced-motion:reduce){html[data-screen-pending] #screenLoadingSigil{animation:screenSigilStatic 1ms var(--screen-loading-delay,300ms) forwards;}html[data-screen-loading] #screenLoadingSigil{animation:none;opacity:.65;}}
+@keyframes screenSigilStatic{to{opacity:1}}
+@media(prefers-reduced-motion:reduce){html[data-screen-pending] #screenLoadingSigil{animation:screenSigilStatic 1ms var(--screen-loading-delay,300ms) forwards;}html[data-screen-loading] #screenLoadingSigil{animation:none;opacity:1;}}
 @media(prefers-reduced-motion:reduce){#screenLoadingSigil::after{animation:none!important;opacity:.3;}}
+@media(prefers-reduced-motion:reduce){#screenLoadingSigil::before{animation:none!important;opacity:.3;}}
 html[data-screen-pending][data-screen-reduced] #screenLoadingSigil{animation:screenSigilStatic 1ms var(--screen-loading-delay,300ms) forwards;}
-html[data-screen-loading][data-screen-reduced] #screenLoadingSigil{animation:none;opacity:.65;}
+html[data-screen-loading][data-screen-reduced] #screenLoadingSigil{animation:none;opacity:1;}
 html[data-screen-reduced] #screenLoadingSigil::after{animation:none;opacity:.3;}
+html[data-screen-reduced] #screenLoadingSigil::before{animation:none;opacity:.3;}
