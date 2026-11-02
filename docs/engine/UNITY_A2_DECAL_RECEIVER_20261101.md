@@ -32,3 +32,9 @@
 | USER_DATA | 일반 저장·설정 11항목 전후 동일. QA 전용 plist 1개는 QA 실행으로 달라져 시작 전 raw 복사본을 CAS 확인 후 복원, QA plist 2개 최종 전후 동일 |
 
 일반 제품은 파일 전달만 수행했다. 자연 플레이·일반 앱 실행·물리 3840 화면·Windows/PC/공개 배포는 이 판정에 포함하지 않는다. 원본 `Assets/Packages/ProjectSettings`는 제품 빌드 후 복원해 3,537/3,537 일치·불일치 0이다. `unity/Tools/devtools/exo-unity.ps1`과 `unity/Tools/ground-skill/`의 외부 WIP는 수정하지 않았다.
+
+## 2026-11-02 무데칼 회귀와 옛 import drift 보완 계약
+
+기존 flat off/on과 실제 A2 offA/offB는 6ad 옛 셰이더와 1403 현행 셰이더의 **무데칼 동일 프레임** 비교가 아니다. 기술 수신 양성 PASS와 별개로 이 회귀는 미검수 상태였다. QA 전용 private 브랜치에서 6ad의 두 shader Git blob을 이름 선언만 `EXODUSER/QA/NoDecalBaseline/*`로 바꾼 alias로 포함한다. 현행 제품 shader 두 파일은 1403 byte 그대로 둔다. 같은 Settings QA 앱·카메라·geometry·material property·textures, 모든 DecalProjector disabled 조건에서 flat 흙/뿌리/Lit 및 실제 A2 흙/뿌리의 1920×1080 실창과 3840×1080 직접 RT raw RGBA를 비교한다. raw 변화 0만 완전 동등으로 판정하며 self+4 필터를 사용하지 않는다. 실제 결과는 후속 receipt로 기록한다.
+
+옛 QA 빌드 후 `mismatch=773`, 일반 빌드 후 `mismatch=772` 영수증의 `files` 배열은 **stage가 아닌 source 원문 SHA**다. 따라서 이 배열만으로 변형 파일이 원문과 같다고 판정할 수 없다. QA는 `.meta` 738경로(기존682·신규56), 비-meta 35경로(기존34·신규1); 일반은 `.meta` 738경로, 비-meta 34경로(기존33·신규1)이다. 비-meta에는 URP profile 2, A2 material 29, scene 1, URP global 1, ProjectSettings 1/QA는2가 포함된다. 원본 변형 byte는 복원 전 별도 보관되지 않았으므로 과거 두 빌드의 exact imported byte 재현성은 확정하지 않는다. 경로별 원문 SHA/변형 SHA 부재 목록은 `_out/mac-decal-noeffect-regression-20261102/old-drift-inventory.json`에 보존한다. 새 QA 빌드에서는 복원 전에 stage 원문과 변형 byte/SHA를 모두 보관해 각 영향군을 분류한다.
