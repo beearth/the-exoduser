@@ -2,6 +2,8 @@
 const fs=require('fs'),fsp=fs.promises,path=require('path'),cp=require('child_process'),assert=require('assert/strict'),crypto=require('crypto');
 const {chromium}=require('playwright'),sharp=require('sharp');
 const root=path.resolve(__dirname,'..'),out=process.env.LIVING_OUT||'I:/EXODUSER-Storage/codex-takeover/living-1102/evidence',base=process.env.LIVING_URL||'http://127.0.0.1:3384';
+// Playwright chooses its profile directory in the host process, before Chromium env applies.
+process.env.TEMP=process.env.TMP=path.resolve(out,'temp');
 const mode=process.argv[2]||'smoke',group=process.argv[3]||'index',record=mode==='record';
 const ids=Array.from({length:19},(_,i)=>String(i+1)).filter(n=>!['13','14','17'].includes(n)).concat(['rd1','rd2','rd4','rd5','rd6','rd7','rd8','rd9','rd10','rd11','rd12','rd13','rd14','rd15','rd16','rd17']);
 const rows=[],errors=[],http=[],writes=[];let browser;
