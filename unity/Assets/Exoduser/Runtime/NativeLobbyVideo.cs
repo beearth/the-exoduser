@@ -38,7 +38,8 @@ namespace Exoduser.UnityPort
   // (events off, Stop, targetTexture null, RenderTexture released, component destroyed), is refused once, and the quit is repeated a few frames later so the
   // deferred destroys have run while the player loop is still alive.
   static readonly System.Collections.Generic.List<NativeLobbyVideo> live=new System.Collections.Generic.List<NativeLobbyVideo>();
-  static bool quitHooked,quitCleaned;
+  static bool quitHooked,quitCleaned;static readonly Exoduser.UnityPort.Core.DeferredQuitIntent quitIntent=new Exoduser.UnityPort.Core.DeferredQuitIntent();
+  internal static int RequestedQuitCode=>quitIntent.ExitCode;public static void RequestQuit(int code=0){quitIntent.Request(code);Application.Quit(quitIntent.ExitCode);}
   public static readonly bool DiagnosticSkipQuitCleanup=HasArgument("--unity-skip-video-quit-cleanup");
   static void HookQuit(){if(quitHooked)return;quitHooked=true;Application.wantsToQuit+=OnWantsToQuit;}
   static bool OnWantsToQuit()
@@ -107,5 +108,5 @@ namespace Exoduser.UnityPort
  // Runtime-only polling for the one unsupported intro soundtrack; detached synchronously on Close.
  sealed class NativeIntroGateAudioSync:MonoBehaviour{public Action Poll;void Update(){Poll?.Invoke();}}
  // Repeats the quit a few frames after the movie decoders were closed (see NativeLobbyVideo.OnWantsToQuit).
- sealed class NativeVideoQuitHelper:MonoBehaviour{int frames=3;void Update(){if(--frames>0)return;Destroy(gameObject);Application.Quit();}}
+ sealed class NativeVideoQuitHelper:MonoBehaviour{int frames=3;void Update(){if(--frames>0)return;Destroy(gameObject);Application.Quit(NativeLobbyVideo.RequestedQuitCode);}}
 }

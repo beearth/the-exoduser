@@ -74,3 +74,20 @@ I:준비 중인 전체 스킬/패시브/대장간 소스는 이번 인수에 포
 | 추가회귀 | 실제인수GateEnterDelay.cs를직접링크한v2테스트10/0. 오래된이웃Core를읽던원래하네스실패와구분. Core/Runtime수정본재컴파일/정식재빌드/새M1·양해상도Player는대기 |
 
 Unity GUI.depth 계약: [공식API](https://docs.unity3d.com/ja/current/ScriptReference/GUI-depth.html). 첫실패영수증과이미지는삭제하거나성공으로대체하지않는다.
+
+
+## 세 번째 패키지 실제 전환 통과·M1 검수 구조 후속
+
+| 범위 | 근거·현재 상태 |
+|---|---|
+| 빌드3 | bfc14478/Succeeded/errors0/6,610,055,836bytes/USER_SAVE0. 입력757e572d6c |
+| 전환 실제Player | c1caa235(1920)·26032854(3840) 각각36/36, 실제 완전검정 PNG19+25표본의3점RGB≤.02,결함0.검정Repaint→다음프레임교체·실제decoder·일반/감소·실제로비복귀검사. 첫1x169/51원본직접열람 |
+| M1 | e26fd960은23단계중22ok. 초기신규진입/전투/클리어는진행하나14이어하기의ShowLobby(.3초)→Begin이비동기경계를기다리지못함. 두실패를보존하고하네스전체로비API를감사해이어하기도실제해제/복원까지대기하도록변경. M1통과로집계하지않음 |
+| 종료코드 | NativeVideoQuitHelper가3프레임후Application.Quit()로0을다시요청하여실패코드를덮음. DeferredQuitIntent가비0실패를0으로지우지않게보존, M1·CinematicInputCheck·ScreenTransitionCheck는RequestQuit(code)사용. 정책0/1FAIL→4/0. 실제decoder활성상태에서의도적exit2를요청하는CLI검사추가;정상코드외전통합은대기 |
+| 실제웹비교 | 8994ce65,고정740722e1·동일R4두PNG강제원문·1920/3840×일반/감소4화면,오류/누락0. body129.59375²/right48.59375/bottom48.59375. Native같은위치1x근접;폰트획전체판정은RETOUCH |
+| R4시각후속 | 실제CSS data-screen-loading의animation-delay0에서원래pending시계맥동이이어짐.NativeElapsed-.3위상차를실측1.338265초/균열.599625/후광.364197로재현(2FAIL)→Elapsed기준2/0. 300ms는표시만지연.빠진drop-shadow(0 0 2px rgba143,19,12,.35)를물리픽셀기준캐시로구현,균열원본만CPU읽기가능.새Player검수대기 |
+| 상태회귀 | 현재실제ScreenTransitionFlow.cs직접링크22/0,GateEnterDelay10/0,DeferredQuitIntent4/0,웹맥동2/0.정식새빌드4와같은패키지M1/양해상도캡처전 |
+
+명시적QA인자: --unity-transition-exit-code-check는샌드박스·절대출력경로에서만실행하며decoder준비성공뒤기대exit2,준비실패는exit3이다. 일반게임경로에서실행되지않는다.
+
+세번째패키지홀드추가: 1edf337b(1920)·bd8554c9(3840) 각각132/132·797/782프레임. Space/ESC/B/Start×2영상·부분/해제/홀드·매경계대기·실제준비/전투틱정지. 전환대기검사가추가되어첫44/44와검사수가다르며중복합산으로기능수를늘리지않는다.

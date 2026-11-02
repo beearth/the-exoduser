@@ -449,8 +449,8 @@ namespace Exoduser.UnityPort
             // ---- 14 save and continue ----
             p.Hp = p.MaxHp; sim.Materials = 4321; bool saved = SaveCombatNow(); var before = SnapshotCombat("before");
             string name = lobby.ActiveCharacterName; bool hasSave = HasCombatSave(name);
-            lobby.ShowLobby(); yield return new WaitForSecondsRealtime(.3f);
-            bool continueOk = lobby.BeginCharacterEntry(false) && !lobby.StartupEntryActive;
+            lobby.ShowLobby();yield return M1WaitFrontend("save return lobby");
+            bool continueRequested=lobby.BeginCharacterEntry(false);yield return M1WaitFrontend("saved continue reveal");bool continueOk=continueRequested&&!lobby.StartupEntryActive&&!lobby.IsBlocking;
             deadline = Time.realtimeSinceStartup + 10; while ((lobby.IsBlocking || frontendEntryInputFence) && Time.realtimeSinceStartup < deadline) yield return null;
             Running = false; yield return null;
             var after = SnapshotCombat("after"); yield return M1Shot("14-continue");
@@ -470,7 +470,7 @@ namespace Exoduser.UnityPort
             File.WriteAllText(Path.Combine(output, "m1-check.json"), JsonUtility.ToJson(m1, true), new UTF8Encoding(false));
             // UI 캡처와 동일하게 영상 컴포넌트의 지연 파괴를 먼저 끝낸다.
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);
-            Debug.Log("QA_MEDIA_DRAIN_COMPLETE M1");Application.Quit(string.IsNullOrEmpty(m1.firstBlocked)?0:2);
+            Debug.Log("QA_MEDIA_DRAIN_COMPLETE M1");NativeLobbyVideo.RequestQuit(string.IsNullOrEmpty(m1.firstBlocked)?0:2);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Exoduser.UnityPort.Core {
    case ScreenTransitionPhase.FadeIn:if(phaseElapsed>=InSeconds){Phase=ScreenTransitionPhase.Idle;phaseElapsed=0;}break;
   }}
   public void Cancel(){if(!Busy)return;fadeInFrom=Opacity;mediaInFrom=MediaGain;Phase=ScreenTransitionPhase.FadeIn;NeedsSwap=false;preparedFrames=0;phaseElapsed=0;}
-  double Pulse(){double t=Math.Max(0,Elapsed-.3)%2;return t<=1?Ease(t):Ease(2-t);}
+  double Pulse(){double t=Math.Max(0,Elapsed)%2;return t<=1?Ease(t):Ease(2-t);}
   static double Clamp(double x){return Math.Max(0,Math.Min(1,x));}
   static double Ease(double x){x=Clamp(x);if(x==0||x==1)return x;double lo=0,hi=1;for(int i=0;i<24;i++){double t=(lo+hi)/2,u=1-t,bx=3*u*u*t*.42+3*u*t*t*.58+t*t*t;if(bx<x)lo=t;else hi=t;}double v=(lo+hi)/2;return 3*v*v-2*v*v*v;}
  }

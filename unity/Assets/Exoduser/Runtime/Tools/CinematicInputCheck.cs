@@ -28,8 +28,8 @@ namespace Exoduser.UnityPort.Tools
   static string AssemblyFile(Assembly assembly){string file=assembly.Location;if(!string.IsNullOrEmpty(file)&&File.Exists(file))return file;file=Path.Combine(Application.dataPath,"Managed",assembly.GetName().Name+".dll");if(!File.Exists(file))throw new FileNotFoundException("Actual Player assembly is required",file);return file;}
   void Save(){receipt.passed=!failed&&receipt.checks.Count>0&&receipt.checks.TrueForAll(x=>x.passed);File.WriteAllText(Path.Combine(output,"cinematic-input.json"),JsonUtility.ToJson(receipt,true));}
   void CheckThat(bool ok,string name,string detail=""){if(!ok)failed=true;receipt.checks.Add(new Check{name=name,passed=ok,detail=detail});Debug.Log("CINEMATIC_INPUT "+(ok?"PASS ":"FAIL ")+name+" "+detail);Save();}
-  IEnumerator Start(){output=Arg("-output");if(!NativeQaSandbox.Active||string.IsNullOrEmpty(output)||!Path.IsPathRooted(output)){Debug.LogError("CINEMATIC_INPUT_REJECT sandbox/output required");Application.Quit(3);yield break;}Directory.CreateDirectory(output);Directory.CreateDirectory(Path.Combine(output,"frames"));yield return Guard(Run());}
-  IEnumerator Guard(IEnumerator run){while(true){bool more=false;object current=null;Exception error=null;try{more=run.MoveNext();if(more)current=run.Current;}catch(Exception e){error=e;}if(error!=null){CheckThat(false,"검수 예외",error.ToString());Cleanup();Application.Quit(2);yield break;}if(!more)yield break;if(current is IEnumerator nested)yield return Guard(nested);else yield return current;}}
+  IEnumerator Start(){output=Arg("-output");if(!NativeQaSandbox.Active||string.IsNullOrEmpty(output)||!Path.IsPathRooted(output)){Debug.LogError("CINEMATIC_INPUT_REJECT sandbox/output required");NativeLobbyVideo.RequestQuit(3);yield break;}Directory.CreateDirectory(output);Directory.CreateDirectory(Path.Combine(output,"frames"));yield return Guard(Run());}
+  IEnumerator Guard(IEnumerator run){while(true){bool more=false;object current=null;Exception error=null;try{more=run.MoveNext();if(more)current=run.Current;}catch(Exception e){error=e;}if(error!=null){CheckThat(false,"검수 예외",error.ToString());Cleanup();NativeLobbyVideo.RequestQuit(2);yield break;}if(!more)yield break;if(current is IEnumerator nested)yield return Guard(nested);else yield return current;}}
   IEnumerator Run(){
    yield return null;game=NativeGame.Instance;lobby=game.GetComponent<NativeLobby>();
    receipt.runtimeSha=Hash(AssemblyFile(typeof(NativeGame).Assembly));receipt.coreSha=Hash(AssemblyFile(typeof(Simulation).Assembly));
@@ -56,7 +56,7 @@ namespace Exoduser.UnityPort.Tools
     phase+="-success";yield return WaitTransition(phase+" 실제 완료 전환");yield return new WaitForSecondsRealtime(scene=="world"?.65f:1.5f);
     lobby.ShowLobby();yield return WaitTransition(phase+" 다음 검수 준비");yield return null;
    }
-   recording=false;Save();Cleanup();lobby.CloseStartupCaptureMedia();Application.Quit(failed?2:0);
+   recording=false;Save();Cleanup();lobby.CloseStartupCaptureMedia();NativeLobbyVideo.RequestQuit(failed?2:0);
   }
   float Progress(string scene){return scene=="world"?(float)lobby.Flow.SkipProgress:(float)lobby.CharacterStoryHoldProgress;}
   bool Complete(string scene){return scene=="world"?lobby.Flow.Page==LobbyPage.Lobby:(lobby.CharacterStoryEntering||lobby.StartupEntryActive||lobby.Flow.Page==LobbyPage.Playing);}
