@@ -257,13 +257,14 @@ namespace Exoduser.UnityPort {
   void DrawInfoResources(Simulation sim,float y){Fill(new Rect(74,y,284,1),C(146,149,149,.5f));string malice=sim.Materials.ToString("N0",System.Globalization.CultureInfo.InvariantCulture);NativeCurrencyOrb.Draw(new Rect(74,y+8,24,24),sim.Materials);Mixed(new Rect(104,y+8,254,23),"SP "+sim.Player.StatPoints+"  ·  악의오브 "+malice+"  ·  LV "+sim.Player.Level,13,C(165,168,168),.78f,TextAnchor.MiddleLeft);}
 
   Rect AltarRect(float[] a){var r=R(a);r.x+=altarCenter.x-960;r.y+=altarCenter.y-672.89f;return r;}
+  internal static float AltarHeaderRight(float altarRight,float edgeWidth,bool hasRoad){return hasRoad?Math.Min(altarRight-16,1562+edgeWidth-1920-16):altarRight-16;}
   void DrawAltar(bool lmb,int level){
    var slot=defs.slots[SelectedSlot];bool equipped=SelectedSlot==SkillUiState.LmbSlot&&lmb;const float scale=145.75f/150;
    var ring=equipped?altarRingLmb:altarRingNone;if(ring!=null)NativeUiAudit.DrawTexture(new Rect(altarCenter.x-577*scale,altarCenter.y-376.89f*scale,1154*scale,671*scale),ring,ScaleMode.StretchToFill,true);
    string host=EquippedId(SelectedSlot);if(!equipped&&host!=null){var icon=OrbIcon(host,false);if(icon!=null){Glow(altarCenter.x,altarCenter.y,88,88,C(236,121,88,.25f));Disc(altarCenter,70,C(149,152,152));Disc(altarCenter,66,C(15,18,18));var ir=new Rect(altarCenter.x-62,altarCenter.y-62,124,124);NativeUiAudit.DrawTexture(ir,icon,ScaleMode.ScaleToFit,true);Glass(ir);}}
    string name=host!=null&&skillById.TryGetValue(host,out var hd)?hd.name:host!=null?roleNames[SelectedSlot]:"슬롯이 비어 있습니다";
    Text(new Rect(altarBounds.x+16,skillBodyTop+10,Mathf.Min(altarBounds.width*.4f,400),37),name,serif,20,C(222,219,213),FontStyle.Bold,.4f);
-   var right=altarBounds.xMax-16;Text(new Rect(right-300,skillBodyTop+14,300,21),"넣을 수 있는 스킬  ["+SlotKey(SelectedSlot)+"]",serif,15,C(217,214,208),FontStyle.Bold,1.2f,TextAnchor.MiddleRight);
+   var right=AltarHeaderRight(altarBounds.xMax,NativeUiViewport.Edges.Width,HasRoad());Text(new Rect(right-300,skillBodyTop+14,300,21),"넣을 수 있는 스킬  ["+SlotKey(SelectedSlot)+"]",serif,15,C(217,214,208),FontStyle.Bold,1.2f,TextAnchor.MiddleRight);
    Text(new Rect(right-330,skillBodyTop+38,330,19),"끌어서 위 슬롯에 장착 · 빛나는 재료는 제단으로",serif,13,C(165,168,168),FontStyle.Normal,0,TextAnchor.MiddleRight);
    string hint=host==null?SlotCondition(SelectedSlot,PreviewId(SelectedSlot),PreviewId(SelectedSlot)!=null):HasRoad()?"합성할 재료를 먼저 습득하세요":"이 스킬은 합성 계열이 없습니다";float width=Width(serif,13,FontStyle.Normal,hint,0)+30;
    var hr=new Rect(altarCenter.x-width/2,altarBounds.yMax-73,width,29);Grad(hr,C(6,9,9,.82f),C(6,9,9,.82f));Border(hr,C(89,92,92,.333f));Text(hr,hint,serif,13,C(217,214,208),FontStyle.Normal,0,TextAnchor.MiddleCenter,true);

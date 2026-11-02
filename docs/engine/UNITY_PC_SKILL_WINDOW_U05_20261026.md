@@ -132,7 +132,7 @@
 |---|---|---|
 | 전체 스킬 영역 | x36/y147/w=물리폭−72/h833, 내부배경x39/y150/w=물리폭−78/h827. 웹 제단 shader의 연속 smoke·지옥불·vignette를 전체폭 생성 텍스처로 그린다. 별도 그레인/점 생성0 | 첫 후보의 중앙 검은 사각형 제거용, 최종 Player 재검수 필요 |
 | 제단 이미지 | 부모가 원본 RGB를 보존하고 배경 키로 컷아웃한 `altar_lmb_clean.png`·`altar_none_clean.png`를 Resources에서 직접 읽는다. 런타임 AltarRing/Graphics.Blit/ReadPixels 마스크는 최종 Player 색 어두워짐·검은 원반 결함으로 제거. 원본 RGB 감마변환0 | 새 최종 union Player에서 색·외곽 재검수 필요 |
-| 제단 배치 | 일반화면 x333/w=화면폭−384, 21:9이상 중앙최대1800폭. y308.1875/h658.8125, 핵중심 y676.2656. 구슬은 기존 정의의 핵대비 상대거리/58px 유지. 제단 이미지와 글자를 함께 축소하지 않음 | 1920·2560·3840 필요 |
+| 제단 배치 | 2026-11-03 후보: HasRoad일 때 제목·힌트 오른쪽=min(altarBounds.xMax−16,1562+Edges.Width−1920−16), 로드맵의 RightMatrix를 Edge좌표로 환산해16단위 간격 확보; 로드맵 없음은 기존 altarBounds.xMax−16. 실제 컴파일 Runtime의 5비율/5no-road/altar상한11계약 PASS, 수정 전147후보·새 Player UI 검수는 별도. unity/Tools/skill-ui-tests/run-header-layout.ps1, I:/EXODUSER-Storage/ground-placement/20261103/ui-header-contract 참조. 일반화면 x333/w=화면폭−384, 21:9이상 중앙최대1800폭. y308.1875/h658.8125, 핵중심 y676.2656. 구슬은 기존 정의의 핵대비 상대거리/58px 유지. 제단 이미지와 글자를 함께 축소하지 않음 | 1920·2560·3840 필요 |
 | 설명판 | x51/y308.1875/w270, padding20/22/18. 아이콘56, 이름28px·Bold, Hahmlet400본문16px/행간28px·내용폭224. Lv13px. 내용이 몸체658.8125를 넘으면 내부 스크롤/clip | 첫 후보의 작은글자/부족한 본문높이 수정 |
 | 원가/해금/정보버튼 | 원가행43px(상하10px), 같은줄오른쪽 해금안내. 버튼까지16px, 버튼40px/폭68.453125·67.015625·64/간격10. 같은 공용 액션원화를 edge22/outset6으로 표시. 자원줄paddingTop12·height37 | SP/LV/실제 원장 동작 유지 |
 | 글꼴 | 최종 웹 실제 --font-hell=Hahmlet400. 키만 Cinzel400, 설명·버튼·자원은 Hahmlet. 이전 첫후보의 Nanum/CinzelDecorative 선택 폐기 | 현행폰트자산 재사용·새폰트 생성0 |

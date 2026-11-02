@@ -7,7 +7,7 @@
 | 구분 | 경로 | 내용 |
 |---|---|---|
 | 신규 | `unity/Assets/Exoduser/Runtime/NativeForgePanel.cs` | 창 골격(1920×1080 설계 좌표), 글꼴·텍스트·글리프 도우미, 왼쪽 탭·닫기·스크롤바(웹 스크롤바 모양), 탭 전환·칩 선택 상태 |
-| 신규 | `unity/Assets/Exoduser/Runtime/NativeForgePanel.Tabs.cs` | 6개 탭 본문(강화·물약·분해·리롤·유물·제작) |
+| 신규 | `unity/Assets/Exoduser/Runtime/NativeForgePanel.Tabs.cs` | 6개 탭 본문. 2026-11-03 제작 두 행 후보: costH=max(15,실제 NM14 보통/굵게 측정높이),costTop=447.4+(15−costH)/2; rateH=max(14,실제 확률문구 측정높이),rateTop=max(465.4+(14−rateH)/2,costTop+costH+4). 비용행 중심 보존·확률행 최소4단위 간격, 전역Overflow·문구·글꼴·공식 유지. 새 Player 검수 전 |
 | 신규 | `unity/Assets/Exoduser/Runtime/NativeForgePanel.Capture.cs` | `--unity-forge-capture <dir>` 검증 진입(NativeGame 수정 없이 스스로 열고 탭별 캡처·영수증 저장 후 종료) |
 | 신규 | `unity/Assets/Exoduser/Runtime/NativeForgeData.cs` | 정의 JSON 클래스 + `ForgeFormulas`(웹 공식 이식) |
 | 신규 | `unity/Assets/Exoduser/Resources/Data/forge_web.json` | 웹에서 뽑은 **정의**(이름·문구·탭 구성·공식 문구·어픽스 이름/단위 표). 출처 커밋·추출 시각 기록 |

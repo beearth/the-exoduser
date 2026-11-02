@@ -221,11 +221,13 @@ namespace Exoduser.UnityPort {
    // cost / malice line + rates line
    string t1=c.costLabel+" ",t2=" "+c.costUnit+" ";string cost=c.cost.ToString(),mats=sim.Materials.ToString();
    float total=Meas(t1,F.NM,13.6f)+Meas(cost,F.NM,13.6f,true)+Meas(t2,F.NM,13.6f)+Meas(mats,F.NM,13.6f,true);x=CX+(CW-total)/2f;
-   x+=Txt(new Rect(x,447.4f,300,15),t1,F.NM,13.6f,C(119,122,122));x+=Txt(new Rect(x,447.4f,100,15),cost,F.NM,13.6f,C(255,170,68),true);
-   x+=Txt(new Rect(x,447.4f,300,15),t2,F.NM,13.6f,C(119,122,122));Txt(new Rect(x,447.4f,100,15),mats,F.NM,13.6f,C(204,102,255),true);
+   float costH=Mathf.Max(15,Mathf.Max(Style(F.NM,Px(13.6f),false,false).CalcSize(new GUIContent(t1+t2)).y,Style(F.NM,Px(13.6f),true,false).CalcSize(new GUIContent(cost+mats)).y)),costTop=447.4f+(15-costH)/2;
+   x+=Txt(new Rect(x,costTop,300,costH),t1,F.NM,13.6f,C(119,122,122));x+=Txt(new Rect(x,costTop,100,costH),cost,F.NM,13.6f,C(255,170,68),true);
+   x+=Txt(new Rect(x,costTop,300,costH),t2,F.NM,13.6f,C(119,122,122));Txt(new Rect(x,costTop,100,costH),mats,F.NM,13.6f,C(204,102,255),true);
    string r1=c.rates[0].name+c.rates[0].pct+"%",r2=c.rates[1].name+c.rates[1].pct+"%";float rw=Meas(r1,F.NM,13.6f)+Meas("  ",F.NM,13.6f)+Meas(r2,F.NM,13.6f);x=CX+(CW-rw)/2f;
-   x+=Txt(new Rect(x,465.4f,200,14),r1,F.NM,13.6f,new Color32((byte)c.rates[0].col[0],(byte)c.rates[0].col[1],(byte)c.rates[0].col[2],255))+Meas("  ",F.NM,13.6f);
-   Txt(new Rect(x,465.4f,200,14),r2,F.NM,13.6f,new Color32((byte)c.rates[1].col[0],(byte)c.rates[1].col[1],(byte)c.rates[1].col[2],255));
+   float rateH=Mathf.Max(14,Style(F.NM,Px(13.6f),false,false).CalcSize(new GUIContent(r1+"  "+r2)).y),rateTop=Mathf.Max(465.4f+(14-rateH)/2,costTop+costH+4);
+   x+=Txt(new Rect(x,rateTop,200,rateH),r1,F.NM,13.6f,new Color32((byte)c.rates[0].col[0],(byte)c.rates[0].col[1],(byte)c.rates[0].col[2],255))+Meas("  ",F.NM,13.6f);
+   Txt(new Rect(x,rateTop,200,rateH),r2,F.NM,13.6f,new Color32((byte)c.rates[1].col[0],(byte)c.rates[1].col[1],(byte)c.rates[1].col[2],255));
    // 3-column slot grid (210x80, gap 6)
    for(int i=0;i<c.slots.Length;i++){
     var s=c.slots[i];var r=new Rect(750+216*(i%3),505.4f+86*(i/3),210,80);
