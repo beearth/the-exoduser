@@ -15,6 +15,7 @@ namespace Exoduser.UnityPort
             var mesh=new Mesh{name="기존 높이맵 표면",indexFormat=IndexFormat.UInt32};mesh.vertices=vertices;mesh.uv=uv;mesh.triangles=triangles;mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();
             var go=new GameObject("지옥 바닥 PBR 표면");go.transform.SetParent(ground.transform,false);go.AddComponent<MeshFilter>().sharedMesh=mesh;
             var renderer=go.AddComponent<MeshRenderer>();var material=new Material(Shader.Find("EXODUSER/HellGroundPBR"));renderer.sharedMaterial=material;renderer.shadowCastingMode=ShadowCastingMode.On;renderer.receiveShadows=true;
+            NativeGroundSkillProjection.RegisterReceiver(go.GetComponent<MeshFilter>());
             material.SetTexture("_BaseMap",layers[0].diffuseTexture);material.SetTexture("_BumpMap",layers[0].normalMapTexture);
             string res="Art/map/hell_lighting/";
             foreach(var spec in new[]{new[]{"_RockMap","rock_ground_Diffuse"},new[]{"_AshMap","burned_ground_01_Diffuse"},new[]{"_RockNormal","rock_ground_nor_gl"},new[]{"_RockRough","rock_ground_Rough"}})
