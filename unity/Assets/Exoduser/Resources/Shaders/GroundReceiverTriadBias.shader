@@ -91,7 +91,7 @@ Shader "Hidden/EXODUSER/QA/GroundReceiverTriadBias"
                     else { half a=p.a*_SourceTint.a;if(_Flat>.5)a*=max(p.r,max(p.g,p.b));weight=a;half3 rgb=_Flat>.5?half3(1,1,1):p.rgb;color=half4(rgb*_SourceTint.rgb*a,_NormalBlend>.5?a:0); }
                 }
                 if(weight<=0)discard;
-                if(_QaEvidenceKind==6)return _GlobalMipBias;
+                if(_QaEvidenceKind==6)return float4(_GlobalMipBias.xy,0,0);
                 if(_QaEvidenceKind==0)return float4(world,weight);
                 if(_QaEvidenceKind==1)return float4(packed,max(color.r,max(color.g,color.b)),weight);
                 if(_QaEvidenceKind==2)return float4(sceneEye,receiverEye,abs(sceneEye-receiverEye),weight);

@@ -1059,3 +1059,8 @@ ROOT 인수: C# partial3개 정적 오류0(기존/비권장API 경고8), canonic
 
 
 ROOT source checkpoint: partial3 static errors0, warnings8. Exact PC guard316 plus corrected docs e33 integrated; all other product Unity files equal8f. Metadata GUID1818 valid/no duplicates. Guard still protects26raw/27cache with unchanged algorithm; paths/triad parser/product-tip argument only adapted. Full161 original100/61 stays unchanged. New triad+orb+two narrow lifecycle actual execution pending, M1/naturalplay/integration/install/Win64 pending.
+
+
+### ROOT Metal float2 bias 출력 형식 교정
+
+source12487 일반ARM64 BuildSucceeded였으나 errors1을확인해Player는실행하지않았다. URP _GlobalMipBias는float2이며 이전QA계획의xyzw직접float4출력은맞지않았다. QA전용출력한줄을 `return float4(_GlobalMipBias.xy,0,0);`로고쳤다. 카메라실효bias는xy두성분, z/w는명시패딩0이다. 제품지면shader/전역bias/필터/C#는그대로다. errors1원빌드와rawbefore/after보존, 통과한C#재검사는반복하지않고새source원격선증명후Metalerrors0을확인해야Player를시작한다. launch guard의경로/receipt label만receiverTriadBias로맞췄고환경설정보호알고리즘불변이다. 실제삼자/원예외/두수명회귀는아직미실행이다.
