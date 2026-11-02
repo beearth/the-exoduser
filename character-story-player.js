@@ -2,6 +2,8 @@
 (function(root){
   const CUES=Object.freeze([1,5.5,10,16,22.5,28,33.5,39,42.24,46.5,51,53.48,56.019999999999996,59.5,59.98,65,70.67,76,81.5,88,90.33333333333333,92.9]);
   const HOLD_MS=1200;
+  // 검은 화면에서 밝아지며 시작(2026-11-02 사용자 지시). 소리는 짧게 올려 첫 대사를 깎지 않는다.
+  const FADE_MS=1400,AUDIO_FADE_MS=450;
   let activePromise=null,finishCurrent=null,nextCurrent=null,holdCurrent=null;
   root.ExoduserCharacterStory={
     CUES,HOLD_MS,
@@ -9,7 +11,7 @@
     skip(){if(finishCurrent)finishCurrent(true);},
     next(){if(nextCurrent)nextCurrent();},
     setSkipHeld(held,source='gamepad'){if(holdCurrent)holdCurrent(held,source);},
-    play({skipLabel,language='ko'}={}){
+    play({skipLabel,language='ko',leadInMs=0}={}){
       if(activePromise)return activePromise;
       const code=root.ExoduserI18n?.resolveLanguage(language)||(language==='ko'?'ko':'en');
       const controls=root.ExoduserLocalizationData?.warriorControls?.[code]||(code==='ko'?['다음 대사','길게 누르기','클릭하여 계속','전사 이야기','건너뛰기']:['Next line','Hold','Click to continue','Warrior story','Skip']);
@@ -20,7 +22,7 @@
       const video=document.createElement('video');video.id='characterStoryVideo';
       video.src='video/warrior_story_v23_clean.mp4?v=20261027-killu-bloodtears-v3';video.preload='auto';video.playsInline=true;video.controls=false;
       video.disablePictureInPicture=true;video.disableRemotePlayback=true;video.tabIndex=-1;
-      video.muted=false;video.volume=1;video.style.cssText='width:100%;height:100%;object-fit:contain;pointer-events:none';
+      video.muted=false;video.volume=1;video.style.cssText='width:100%;height:100%;object-fit:contain;pointer-events:none;opacity:0;transition:opacity '+FADE_MS+'ms ease-out';
       const captions=document.createElement('track');captions.kind='subtitles';captions.srclang=({zht:'zh-Hant',ptbr:'pt-BR'})[code]||code;
       captions.label=code;captions.src='video/subtitles/warrior_story_v23_'+code+'.vtt';captions.default=true;
       captions.addEventListener('load',()=>{if(captions.track)captions.track.mode='showing';});video.append(captions);
@@ -32,7 +34,7 @@
       const progress=document.createElement('span');progress.style.cssText='position:absolute;left:0;bottom:0;height:2px;width:0;background:#ccb789';
       skip.append(label,progress);ui.append(next,skip);overlay.append(video,ui);document.body.append(overlay);
       overlay.tabIndex=-1;
-      let resolve,done=false,needsGesture=false,hintsHidden=false,holdTimer=null,holdStart=0;
+      let resolve,done=false,needsGesture=false,hintsHidden=false,holdTimer=null,holdStart=0,started=false,leadTimer=null,revealed=false;
       const heldSources=new Set();
       activePromise=new Promise(r=>{resolve=r;});const result=activePromise;
       function finish(seen){
@@ -42,7 +44,7 @@
         document.removeEventListener('pointerup',pointerUp,true);
         document.removeEventListener('visibilitychange',cancelHold);
         if(typeof window!=='undefined')window.removeEventListener('blur',cancelHold);
-        cancelHold();
+        cancelHold();clearTimeout(leadTimer);
         video.pause();video.removeAttribute('src');video.load();overlay.remove();
         finishCurrent=null;nextCurrent=null;holdCurrent=null;activePromise=null;
         if(previousFocus&&previousFocus.focus)previousFocus.focus();
@@ -68,8 +70,18 @@
           }else finish(false);
         });
       }
+      // 생성 직후에는 결정음이 울리도록 검은 화면으로 잠깐 둔 뒤 영상을 시작한다. 입력하면 바로 시작.
+      function begin(){if(done||started)return;started=true;clearTimeout(leadTimer);resume();}
+      function reveal(){
+        if(revealed||done)return;revealed=true;video.style.opacity='1';
+        const raf=root.requestAnimationFrame,clock=root.performance;
+        if(!raf||!clock){video.volume=1;return;}
+        const t0=clock.now();video.volume=0;
+        const step=()=>{if(done)return;const f=Math.min(1,(clock.now()-t0)/AUDIO_FADE_MS);video.volume=f;if(f<1)raf(step);};raf(step);
+      }
       function advance(){
         if(done)return;
+        if(!started){begin();return;}
         if(needsGesture){resume();return;}
         const at=CUES.find(t=>t>video.currentTime+.05);
         if(at===undefined){finish(true);return;}
@@ -101,9 +113,11 @@
         hintsHidden=true;ui.style.opacity='0';ui.style.visibility='hidden';ui.style.pointerEvents='none';
         if(document.activeElement===next||document.activeElement===skip)overlay.focus();
       });
+      video.addEventListener('playing',reveal);
       video.addEventListener('ended',()=>finish(true));
       video.addEventListener('error',()=>finish(false));
-      overlay.focus();resume();
+      overlay.focus();
+      if(leadInMs>0)leadTimer=setTimeout(begin,leadInMs);else begin();
       return result;
     }
   };

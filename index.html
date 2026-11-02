@@ -508,7 +508,7 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 <link rel="stylesheet" href="lobby-silver-hell.css?v=20261031-edge2">
 <link rel="stylesheet" href="charselect-silver-hell.css?v=20261031-edge2">
 <link rel="stylesheet" href="lobby-ancestor-art.css?v=20260929-slotart3">
-<script src="lobby-ui-feedback.js?v=20261031-final4" defer></script>
+<script src="lobby-ui-feedback.js?v=20261102-hover2" defer></script>
 <script src="lobby-ancestor-sprite.js?v=20260929-slotart2" defer></script>
 
 <style id="lobby-layout-20261016">
@@ -1116,7 +1116,7 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="lobby_i18n.js"></script>
 <script src="lobby-stage-info.js"></script>
-<script src="character-story-player.js?v=20261027-killu-bloodtears-v3"></script>
+<script src="character-story-player.js?v=20261102-fadein"></script>
 <script src="world-intro-player.js?v=20261031-v22b-offset"></script>
 <script src="world-intro-subtitles-data.js?v=20260907-v13-exodus-ko-escape"></script>
 <script src="world-intro-subtitles.js?v=20261031-v22b-offset"></script>
@@ -3438,7 +3438,8 @@ async function _afterCharacterCreated(name,visualIdx){
     _selectedSlot=charId;_selectedSlotName=name;
     stopLobbyBgm();_stopHover();
     ['lobbyCharPreview','csIdleVid','csSceneVid'].forEach(id=>{const v=$(id);if(v&&v.pause)v.pause();});
-    const seen=await ExoduserCharacterStory.play({skipLabel:_TL('건너뛰기'),language:getCurrentLanguage()});
+    // 생성 결정음(두-둥 1.8초)이 영상 소리에 묻히지 않게 검은 화면을 잠깐 둔 뒤 밝아지며 시작한다.
+    const seen=await ExoduserCharacterStory.play({skipLabel:_TL('건너뛰기'),language:getCurrentLanguage(),leadInMs:650});
     if(request!==_characterLoadSeq)return;
     showCharGate(charId,seen);
   }catch(error){if(request!==_characterLoadSeq)return;console.error('[CHARACTER STORY]',error);startBGM();}
@@ -3799,40 +3800,55 @@ function _swapLobbyBg(stage){
 })();
 
 // ── 입장 버튼 사운드 ──
+// 로비 소리는 한 AudioContext에서 디코딩한 버퍼로 재생한다. 입력 전에 만든 컨텍스트는 브라우저가 멈춰 두므로
+// 재생할 때·첫 입력 때 resume한다(2026-11-02: 멈춘 컨텍스트에 물려 ENTER 소리가 났다 안 났다 함).
+let _lobbyAC=null;
+function _lobbyAudio(){
+  if(!_lobbyAC){try{_lobbyAC=new(window.AudioContext||window.webkitAudioContext)();}catch(e){return null;}}
+  if(_lobbyAC.state==='suspended')_lobbyAC.resume().catch(()=>{});
+  return _lobbyAC;
+}
+['pointerdown','keydown','touchstart'].forEach(t=>document.addEventListener(t,()=>{_lobbyAudio();},{capture:true,passive:true}));
+function _loadLobbyBuf(url){
+  const ac=_lobbyAudio();if(!ac)return Promise.resolve(null);
+  return fetch(url).then(r=>r.arrayBuffer()).then(ab=>ac.decodeAudioData(ab)).catch(()=>null);
+}
 const _enterSFX=new Audio('assets/lobby/lobby_enter_sfx.mp3');
 _enterSFX.preload='auto';_enterSFX.volume=1.0;
-let _enterGain=null;
-try{const _ac=new(window.AudioContext||window.webkitAudioContext)();const src=_ac.createMediaElementSource(_enterSFX);_enterGain=_ac.createGain();_enterGain.gain.value=2.0;src.connect(_enterGain);_enterGain.connect(_ac.destination);}catch(e){}
+let _enterBuf=null;
+_loadLobbyBuf('assets/lobby/lobby_enter_sfx.mp3').then(b=>{_enterBuf=b;});
 function playEnterSFX(){
-  try{_enterSFX.currentTime=0;_enterSFX.volume=1.0;if(_enterGain)_enterGain.gain.value=2.0;_enterSFX.play();}catch(e){}
+  try{
+    const ac=_lobbyAudio();
+    if(ac&&_enterBuf){const src=ac.createBufferSource(),g=ac.createGain();src.buffer=_enterBuf;g.gain.value=2.0;src.connect(g);g.connect(ac.destination);src.start();}
+    else{_enterSFX.currentTime=0;_enterSFX.play()?.catch(()=>{});}
+  }catch(e){}
   // 패드 진동 최대
   _GP.vib(600,1.0,1.0);
 }
 // 호버 사운드 — 파일 기반 Web Audio 루프
 let _hoverCtx=null,_hoverBuf=null,_hoverSrc=null,_hoverGain=null;
-fetch('assets/lobby/11_loop.wav').then(r=>r.arrayBuffer()).then(ab=>{
-  _hoverCtx=new(window.AudioContext||window.webkitAudioContext)();
-  return _hoverCtx.decodeAudioData(ab);
-}).then(buf=>{_hoverBuf=buf;}).catch(()=>{});
+_loadLobbyBuf('assets/lobby/11_loop.wav').then(b=>{_hoverBuf=b;});
 function _startHover(){
-  if(!_hoverBuf||!_hoverCtx)return;
+  const ac=_lobbyAudio();
+  if(!_hoverBuf||!ac)return;
   try{
-    _stopHover();
-    _hoverSrc=_hoverCtx.createBufferSource();
+    _stopHover();_hoverCtx=ac;
+    _hoverSrc=ac.createBufferSource();
     _hoverSrc.buffer=_hoverBuf;_hoverSrc.loop=true;
-    _hoverGain=_hoverCtx.createGain();
-    _hoverGain.gain.setValueAtTime(0,_hoverCtx.currentTime);
-    _hoverGain.gain.linearRampToValueAtTime(0.7,_hoverCtx.currentTime+0.1);
-    _hoverSrc.connect(_hoverGain);_hoverGain.connect(_hoverCtx.destination);
+    _hoverGain=ac.createGain();
+    _hoverGain.gain.setValueAtTime(0,ac.currentTime);
+    _hoverGain.gain.linearRampToValueAtTime(0.7,ac.currentTime+0.1);
+    _hoverSrc.connect(_hoverGain);_hoverGain.connect(ac.destination);
     _hoverSrc.start(0);
   }catch(e){}
 }
 function _stopHover(){
-  const src=_hoverSrc,gain=_hoverGain;
-  if(src&&gain&&_hoverCtx){
+  const src=_hoverSrc,gain=_hoverGain,ac=_hoverCtx;
+  if(src&&gain&&ac){
     try{
-      _hoverGain.gain.setValueAtTime(_hoverGain.gain.value,_hoverCtx.currentTime);
-      _hoverGain.gain.linearRampToValueAtTime(0,_hoverCtx.currentTime+0.08);
+      gain.gain.setValueAtTime(gain.gain.value,ac.currentTime);
+      gain.gain.linearRampToValueAtTime(0,ac.currentTime+0.08);
       setTimeout(()=>{try{src.stop();}catch(e){}try{src.disconnect();}catch(e){}try{gain.disconnect();}catch(e){}},100);
     }catch(e){}
   }
