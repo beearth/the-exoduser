@@ -43,6 +43,8 @@
 | D-005 | 스탯창 방어 수치가 실제 피격 방어와 다름 | 스탯창은 강화 9부위 합산·근성 eDef 누락, 피격은 강화 3부위(shield/armor/cape)·근성 포함 | **수정**: 스탯창·피격이 같은 `_playerDefTotals()` 사용. 스탯창 세부 줄에 망토·왕관 표시 |
 | D-006 | 보스 테스트 도구 `_btBoss`가 다시 소환 뒤 보스를 못 찾음 | `ens.find(e=>e.isBoss)` | **수정**: `e.ib` |
 
+| D-010 | 3333 최신 웹이 11-02 23:53(b1a26271c)에 4시간 멈춤. 예약 `EXODUSER_LatestWeb3333`은 5분마다 결과 0으로 돌았고 로그 0줄 | ① 다른 세션이 3333 서빙 체크아웃 `G:/exoduser-wt/latest-web`의 `docs/API연결_가이드.md`·`docs/CHANGELOG_SYNC.md`를 직접 고쳐 ff가 "Aborting". ② `refresh.ps1`이 merge 직후 `git rev-parse`로 `$LASTEXITCODE`를 0으로 덮어써 실패를 기록하지 못함 | **수정**: 미커밋 수정은 `I:/EXODUSER-Storage/backup/latest-web-wip-20261103-0330/`(패치+원본 2개)에 보존 후 되돌려 4cf4d74eb까지 ff. `refresh.ps1`이 merge 종료코드를 보관하고 실패 시 막은 추적 파일명을 로그에 남김. latest-web에는 문서를 쓰지 않는다(작업은 각자 작업본) |
+
 회귀 테스트: `test/bossEliteFlagsAndDefenseTotals.test.js` 3건 통과. 영향 테스트 22파일 138건 재실행 — 실패 16건은 전부 기준선부터 실패하던 것, 새 실패 0.
 
 ## 5. 백로그 (다음 순서)
@@ -64,5 +66,7 @@
 | 11-03 | 3333, 1-1 완주 검사 | 필드 60회 입력·처치 37, 지옥문→아레나 진입 정상, pageerror 0. 하니스가 보스 처치 전 플레이어 사망(D-009). 사망 기록 `몬스터(0)` 발견(D-003) |
 | 11-03 | 3346 수정본, 컷신 3해상도·스탯창 | pageerror 0, ▼ 겹침 0, 스탯창 물리방어 합계에 망토 60·왕관 70 반영 |
 | 11-03 | 3346 수정본, 1-1 완주 검사 3회 | pageerror 0·console error 0. 보스 사망 기록 `투사체 [다크드루이드]` 확인(D-003). 2회차 필드 복귀는 하니스가 사망 뒤 Space로 '다시 일어서라'를 누른 것(게임 결함 아님) → 하니스가 매 입력 HP·무적을 채우도록 수정. 3회차 보스 아레나 유지, 보스 미처치(D-009) |
+
+| 11-03 | 4cf4d74eb 배포 | main 비강제 푸시(e260f712f→4cf4d74eb). 3333(latest-web) 4cf4d74eb 반영. DEMO/EA 동기화를 latest-web에서 실행(G: 메인은 옛 커밋이라 사용 안 함): DEMO 갱신 30·EA 29, 추가·삭제 0. 두 실행본 game.html에 `_playerDefTotals` 확인, DEMO `_BIC=true` 유지 |
 
 관찰(결함 아님): 아레나 진입 순간 처치 수가 남은 필드 적 수만큼 증가 — `_enterBossArena`의 "던전 잔여 몹 소멸 = 킬로 카운트" 의도 규칙. 웹판 `bgm/intro.mp4` requestfailed는 `preload="metadata"` 범위 요청 중단으로 파일은 정상(206).
