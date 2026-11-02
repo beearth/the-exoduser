@@ -1483,3 +1483,6 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 
 
 2026-11-02 QA전용보완: 존재하는textureproperty전체참조비교,없는_MainTex조회제거. fixture전체graph전후diff보존,원Core와분리된fixture의알려진WorldPointVisible단일callback2곳만CAS원복,전체hashgate유지. ac9c old50/전체semanticfalse이력불변. startup60s frameinterval7068개만관측(Running0·전투성능미검증),MacCUA잠금수동해제대기/profile26·27exact복구. 제품변경0/새QA실Player아직미실행. 근거UNITY_GROUND_PLACEMENT_QA_20261102.
+
+
+2026-11-02 실제3bc48 QA원복오류0,원Core/표현관계·registry통과,detachedfixture viewport2callback원복후전체graph/hash exact확정. stable sprite/texture13메시지로전체false/old50파괴false보존. deferred2frame뒤살아있는동일원Renderer savedSprite leaf exact원복/journal추가준비,기준완화·제품변경0. 새패키지회귀/M1미실행,GUI잠금수동해제대기. 근거UNITY_GROUND_PLACEMENT_QA_20261102.

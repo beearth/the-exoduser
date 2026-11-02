@@ -1184,3 +1184,28 @@ MAP PRODUCTION REPORT: geometry/asset/Core변경없음. TECH scriptedM1만PASS. 
 일반ac9c앱 frameobserver는첫10초후시작화면60초7068frame을수집했다. CPU프레임간격p50=8.33625253289938ms,p95=8.900085464119911ms,max=25.344083085656166ms. 전체7849frame Application.isFocused=true, Running=true는0이다. CUA는이시점Mac잠금·물리입력감지로자동해제중지라고명시했으므로사용자에게수동잠금해제를요청했다. mac의cua.computer.launch_app API는실제로없어활성화대조미실행이며다른OS입력기술로대체하지않았다. 시작화면통계는전투/이동/GPU완료/OS표시FPS통과가아니다. ownedPID26847경로검증후관측완료상태에서SIGTERM종료(exit-15),raw26/cache27즉시2s7s exact복구. 이전로비입력무반응의원인을잠금으로소급확정하지않는다.
 
 디스크확보는never-launched QA bias형식오류12487앱만대상으로했다.211개모든원파일바이트/심볼링크를exact중복4323067725B대응과unique221258534B보존으로대체했고map작성·재hash후해당생성앱복제본만정리했다. 원실패로그/raw/실제TriadBias·Full앱/PNG/기존설치1403/WIP는보존했다. standalone앱은더이상실행가능하다고주장하지않는다. MAP PRODUCTION REPORT: 제품/Core/geometry불변,TECH최소실패범위재검사준비,자연PLAYABLE/FPS는수동잠금해제후검수. VISUAL VERDICT: RETOUCH.
+
+
+## 2026-11-02 실제 fixture 원복 확정·원본 sprite leaf 정리 보완
+
+# 원본 leaf sprite cleanup 초안
+
+| 항목 | 계약 |
+|---|---|
+| 기준 | QA3bc48, product e33, 기존 bf3e triad 기준 |
+| 실제 이전 결과 | 원 Core exact/fixture 최종 graph diff0/hash exact, asset 합산13메시지로 전체false. old50 false 및 이전 ac9/triad false 보존 |
+| 새 cleanup | Destroy2프레임 대기 후 Validate 직전 살아 있는 동일 원 SpriteRenderer.sprite를 Capture의 정확 saved reference로 복원 |
+| 저장값 | 원 Renderer ID, saved sprite/texture native ID·실제 reference·CLR-null 여부 |
+| 거부 | saved sprite/texture destroyed/비정상 null, 저장 pair/ID 변화, 원 Renderer identity 불일치. 새 sprite/Renderer 합성0 |
+| null 원본 | saved sprite가 실제 CLR-null이면 정확 null 복원. destroyed sprite를 null 원본으로 취급하지 않음 |
+| journal | sprite-restore-journal.json: 복원 전/후 실제 sprite/texture ID, 원 Renderer ID/생존, saved 자산 생존, assignment/exact/오류·거부 사유 |
+| 판정 | 새 spriteRestoreGate는 살아 있는 원 SpriteRenderer의 exact cleanup. 기존 stableAssets/oldIdentity/Core hash·events 검사 유지, 허용오차 변경0 |
+| 시간 정책 | global time/Time.timeScale/animation stop 변경0. 즉시 검증되는 명시적 leaf 복원이며 장시간 프레임 고정 계약 아님 |
+| 검증 경계 | 정적 컴파일·metadata만 완료. 실제 native 자산 생존/semantic 결과는 Root 후속 실행 |
+
+공유 docs 직접 수정 없이 관련 전체 검색은 docs-search.txt에 보존했다. Root 통합용 초안이다.
+
+
+3bc48실제원복: errors0/cleanupError공백/원Core hash·ref·tick·events true/entity16·ground10·registry·camera·pause true. fixture-settled는BossFx/MaliceOrbExploded/WorldPointVisible2개가원래null에서binding,기존native원복후BossFx/Malice구독은원래null, viewport2개만남았다. 정확히known단일game method2개를detachedfixture에서CAS원복후전체graph diff0와기존Statehash exact=true를실제확인했다. 전체semantic은stableSprite/texture13메시지때문에false로보존. 원SpriteRenderer identity1429중old50파괴(적32/contact16/ground2)는이번에도false유지,생존원Renderer flags/materials변경0.
+
+sprite복원은deferred2frame뒤Validate직전에같은원렌더러의saved leaf sprite를실제로원복한다. source/nativeID/asset생존검사와복원전후journal을남기며old50을새객체로치환하지않는다. 애니메이션시간/TimeScale/제품frame선택불변,동일frame의명시적정리완료시점검증이다. 최종앱same-packageM1은새sprite회귀패키지app/source/product/Runtime/Core/exe6개strict대조후기존23script검사만실행할준비이며아직미실행이다. 실제GUI플레이는CUA Mac잠금으로수동해제대기. 제품/Core/geometry변경0. 이전원결과와입력/시작화면only통계미검증범위불변. MAP PRODUCTION REPORT: TECH회귀준비,PLAYABLE미검수. VISUAL VERDICT: RETOUCH.

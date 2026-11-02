@@ -1,0 +1,137 @@
+{
+  "source": "3bc48fd55c2746ebc4e0aaec8163b9798ac1dd60",
+  "baseSource": "bf3e93a63425a17ede0fa6a0ca16e066374cc984",
+  "productTip": "e33ed53574a187db36e00dfbd1f92b4d6f263635",
+  "stage": "final",
+  "error": "",
+  "cleanupError": "",
+  "coreBefore": "d78dbb7b55ec68ba4bd6c5f9dde1c7fd7171325e6e448fcd4243a6aa684aec9c",
+  "coreAfter": "d78dbb7b55ec68ba4bd6c5f9dde1c7fd7171325e6e448fcd4243a6aa684aec9c",
+  "fixtureBefore": "6517e9a52f1b7a6d880051f396240e75f444427c90dfc1c8719eb8c847dd4403",
+  "fixtureAfter": "6517e9a52f1b7a6d880051f396240e75f444427c90dfc1c8719eb8c847dd4403",
+  "scope": "One actual original field -> empty-enemy shifted fixture -> original view sync; no Core Tick, no full161/triad replay. Old identities and semantic gate are independent.",
+  "oldCount": 1429,
+  "oldMissing": 50,
+  "oldAliveChanged": 0,
+  "oldEnemyMissing": 32,
+  "oldContactMissing": 16,
+  "oldGroundMissing": 2,
+  "initialEnemies": 16,
+  "initialChunks": 10,
+  "tickBefore": 1,
+  "tickAfter": 1,
+  "errors": 0,
+  "originalRefSame": true,
+  "coreSame": true,
+  "eventSame": true,
+  "fixtureCoreSame": true,
+  "stableSurvivorsExact": true,
+  "stableAssetsExact": false,
+  "oldIdentityGate": false,
+  "entityGate": true,
+  "groundGate": true,
+  "registryGate": true,
+  "resourceGate": false,
+  "paused": true,
+  "cameraRootGate": true,
+  "fixtureExercised": true,
+  "cleanupReturned": true,
+  "semanticGate": false,
+  "passed": false,
+  "failures": [
+    "stable/surviving originals",
+    "resource/event cleanup"
+  ],
+  "neededGround": [
+    50,
+    51,
+    52,
+    53,
+    54,
+    58,
+    59,
+    60,
+    61,
+    62
+  ],
+  "actualGround": [
+    50,
+    51,
+    52,
+    53,
+    54,
+    58,
+    59,
+    60,
+    61,
+    62
+  ],
+  "packet": {
+    "app": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/build-receiverRestoreFix-normal/EXODUSER-Unity.app",
+    "source": "3bc48fd55c2746ebc4e0aaec8163b9798ac1dd60",
+    "productSource": "e33ed53574a187db36e00dfbd1f92b4d6f263635",
+    "runtimeSha256": "dbaa9d53c071a3268487eeeaf7b6a87e36101aac95c147644c0a43247ac4c9bc",
+    "coreSha256": "4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d",
+    "executableSha256": "14bfb755523b45fd0e5dff9f7719456f6d2ca40de4e7ad7dc76ff42a48fa82c0"
+  },
+  "run": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/profile-guard-runs/20261102T060242037765Z-28518",
+  "profileGuard": {
+    "rawCount": 26,
+    "cacheCount": 27,
+    "allRawExact": true,
+    "allCacheTypedSemanticsExact": true,
+    "checkpoints": [
+      "restore-immediate",
+      "restore-2s",
+      "restore-7s-final"
+    ]
+  },
+  "guardError": null,
+  "diagnostics": {
+    "rawFixtureHashSame": false,
+    "finalFixtureHashSame": true,
+    "assetMismatches": [
+      "11143:256 A2 횃불 불꽃 stable sprite/texture reference changed or destroyed",
+      "6113:768 지옥불 stable sprite/texture reference changed or destroyed",
+      "11163:256 A2 횃불 불꽃 stable sprite/texture reference changed or destroyed",
+      "11173:256 A2 횃불 불꽃 stable sprite/texture reference changed or destroyed",
+      "3244:256 Player stable sprite/texture reference changed or destroyed",
+      "11193:256 A2 횃불 불꽃 stable sprite/texture reference changed or destroyed",
+      "6119:768 지옥불 stable sprite/texture reference changed or destroyed",
+      "6101:768 지옥불 stable sprite/texture reference changed or destroyed",
+      "3076:768 지옥불 stable sprite/texture reference changed or destroyed",
+      "11183:256 A2 횃불 불꽃 stable sprite/texture reference changed or destroyed",
+      "6128:768 지옥불 stable sprite/texture reference changed or destroyed",
+      "11153:256 A2 횃불 불꽃 stable sprite/texture reference changed or destroyed",
+      "11203:256 A2 횃불 불꽃 stable sprite/texture reference changed or destroyed"
+    ],
+    "bindingCleanup": [
+      {
+        "path": "$.WorldPointVisible",
+        "before": "null",
+        "current": "Exoduser.UnityPort.NativeGame::WorldPointVisible target=Exoduser.UnityPort.NativeGame#-1134363392",
+        "after": "null",
+        "changed": true,
+        "recognizedGameViewportBinding": true,
+        "restored": true
+      },
+      {
+        "path": "$.Druid.WorldPointVisible",
+        "before": "null",
+        "current": "Exoduser.UnityPort.NativeGame::WorldPointVisible target=Exoduser.UnityPort.NativeGame#-1134363392",
+        "after": "null",
+        "changed": true,
+        "recognizedGameViewportBinding": true,
+        "restored": true
+      }
+    ],
+    "afterNativeChangedPaths": [
+      "$.Druid.WorldPointVisible",
+      "$.WorldPointVisible"
+    ],
+    "finalGraphChanges": [
+      []
+    ]
+  },
+  "productAccepted": false
+}

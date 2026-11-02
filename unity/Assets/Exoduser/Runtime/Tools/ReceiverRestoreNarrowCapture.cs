@@ -14,7 +14,7 @@ public sealed partial class ReceiverRestoreNarrowCapture : MonoBehaviour {
  const BindingFlags S=BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Static;
  const string Flag="--unity-receiver-restore-narrow";
  [Serializable] public sealed class OldRenderer {
-  public string id,name,category; public bool alive,exact,enabled,off,active; public string[] materials;
+  public string id,name,category,savedSpriteId,savedTextureId; public bool alive,exact,enabled,off,active,spriteRenderer; public string[] materials;
   [NonSerialized] public Renderer value; [NonSerialized] public Material[] refs; [NonSerialized] public Sprite sprite; [NonSerialized] public Texture spriteTexture;
  }
  [Serializable] public sealed class ActorRow { public int entity; public string body,walk,contact; public bool registered,overlayLinked,contactLinked,oneContact,valid; }
@@ -22,7 +22,7 @@ public sealed partial class ReceiverRestoreNarrowCapture : MonoBehaviour {
   public string source,baseSource,productTip,stage,error,cleanupError,coreBefore,coreAfter,fixtureBefore,fixtureAfter,eventBefore,eventAfter;
   public string scope="One actual original field -> empty-enemy shifted fixture -> original view sync; no Core Tick, no full161/triad replay. Old identities and semantic gate are independent.";
   public int oldCount,oldMissing,oldAliveChanged,oldEnemyMissing,oldContactMissing,oldGroundMissing,initialEnemies,initialChunks,tickBefore,tickAfter,errors;
-  public bool originalRefSame,coreSame,eventSame,fixtureCoreSame,stableSurvivorsExact,stableAssetsExact,oldIdentityGate,entityGate,groundGate,registryGate,resourceGate,paused,cameraRootGate,fixtureExercised,cleanupReturned,semanticGate,passed;
+  public bool originalRefSame,coreSame,eventSame,fixtureCoreSame,stableSurvivorsExact,stableAssetsExact,oldIdentityGate,entityGate,groundGate,registryGate,resourceGate,paused,cameraRootGate,fixtureExercised,cleanupReturned,spriteRestoreGate,semanticGate,passed;
   public List<OldRenderer> old=new List<OldRenderer>(); public List<ActorRow> actors=new List<ActorRow>(); public List<string> failures=new List<string>(); public List<int> neededGround=new List<int>(),actualGround=new List<int>();
  }
  sealed class RootState { public GameObject go; public bool active; }
@@ -62,8 +62,8 @@ public sealed partial class ReceiverRestoreNarrowCapture : MonoBehaviour {
   try{Cleanup();}catch(Exception ex){r.cleanupError=(r.cleanupError??"")+ex;}
   // Allow native deferred destruction to settle while all original writers remain paused.
   yield return null;yield return null;
-  try{if(captured&&cleaned){Validate();RestoreCameraRoots();ValidateCameraRoots();}else Check(false,"baseline/cleanup did not complete");}catch(Exception ex){r.cleanupError=(r.cleanupError??"")+ex;}
-  r.errors=logErrors.Count;r.semanticGate=captured&&cleaned&&string.IsNullOrEmpty(r.error)&&string.IsNullOrEmpty(r.cleanupError)&&r.coreSame&&r.originalRefSame&&r.fixtureCoreSame&&r.eventSame&&r.stableSurvivorsExact&&r.stableAssetsExact&&r.entityGate&&r.groundGate&&r.registryGate&&r.resourceGate&&r.paused&&r.cameraRootGate&&r.fixtureExercised&&r.errors==0;
+  try{if(captured&&cleaned){RestoreOriginalSprites();Validate();RestoreCameraRoots();ValidateCameraRoots();}else Check(false,"baseline/cleanup did not complete");}catch(Exception ex){r.cleanupError=(r.cleanupError??"")+ex;}
+  r.errors=logErrors.Count;r.semanticGate=captured&&cleaned&&string.IsNullOrEmpty(r.error)&&string.IsNullOrEmpty(r.cleanupError)&&r.coreSame&&r.originalRefSame&&r.fixtureCoreSame&&r.eventSame&&r.stableSurvivorsExact&&r.stableAssetsExact&&r.spriteRestoreGate&&r.entityGate&&r.groundGate&&r.registryGate&&r.resourceGate&&r.paused&&r.cameraRootGate&&r.fixtureExercised&&r.errors==0;
   r.passed=r.semanticGate; // oldIdentityGate intentionally NOT rewritten or included in semantic gate.
   File.WriteAllText(Path.Combine(output,"error-events.json"),JsonUtility.ToJson(new ErrorEvents{events=logErrors},true));Save("final");Application.logMessageReceived-=OnLog;
   // Original enabled/Running/late states are recorded, not resumed: no hidden Core tick before exit.
@@ -91,7 +91,7 @@ public sealed partial class ReceiverRestoreNarrowCapture : MonoBehaviour {
  void Capture(){
   r.coreBefore=State(original);r.eventBefore=Events(original)+"/druid/"+Events(original.Druid);r.tickBefore=original.TickCount;nativeActive=NativeRemodel3D.Active;
   foreach(var x in UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsInactive.Include,FindObjectsSortMode.None).Where(x=>x!=null&&x.gameObject.scene.IsValid())){
-   var mats=x.sharedMaterials;r.old.Add(new OldRenderer{value=x,id=Id(x),name=x.name,category=Category(x),enabled=x.enabled,off=x.forceRenderingOff,active=x.gameObject.activeSelf,refs=mats,materials=mats.Select(Id).ToArray(),sprite=(x as SpriteRenderer)?.sprite,spriteTexture=(x as SpriteRenderer)?.sprite?.texture});
+   var mats=x.sharedMaterials;var originalSpriteRenderer=x as SpriteRenderer;var originalSprite=originalSpriteRenderer==null?null:originalSpriteRenderer.sprite;var originalTexture=originalSprite==null?null:originalSprite.texture;r.old.Add(new OldRenderer{value=x,id=Id(x),name=x.name,category=Category(x),enabled=x.enabled,off=x.forceRenderingOff,active=x.gameObject.activeSelf,refs=mats,materials=mats.Select(Id).ToArray(),spriteRenderer=originalSpriteRenderer!=null,savedSpriteId=Id(originalSprite),savedTextureId=Id(originalTexture),sprite=originalSprite,spriteTexture=originalTexture});
    foreach(var m in mats)if(m!=null&&assets.Add(m)){assetShaders[m]=m.shader;assetTextures[m]=CaptureMaterialTextures(m);}
   }
   foreach(var scene in r.old.Select(x=>x.value.gameObject.scene).Distinct())foreach(var go in scene.GetRootGameObjects())if(go!=gameObject)roots.Add(new RootState{go=go,active=go.activeSelf});

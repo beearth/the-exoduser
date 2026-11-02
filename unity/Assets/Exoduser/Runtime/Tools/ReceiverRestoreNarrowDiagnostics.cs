@@ -75,5 +75,43 @@ public sealed partial class ReceiverRestoreNarrowCapture {
   foreach(var row in r.old.Where(x=>x.category=="stable"&&!ReferenceEquals(x.sprite,null))){if(row.sprite==null||row.spriteTexture==null||!(row.value is SpriteRenderer sr)||!ReferenceEquals(sr.sprite,row.sprite)||!ReferenceEquals(sr.sprite.texture,row.spriteTexture))diagnostic.assetMismatches.Add(row.id+" "+row.name+" stable sprite/texture reference changed or destroyed");}
   SaveDiagnostics();return diagnostic.assetMismatches.Count==0;
  }
+ [Serializable] sealed class SpriteRestoreEntry {
+  public string originalRendererId,currentRendererId,name,category,savedSpriteId,savedTextureId,beforeSpriteId,beforeTextureId,afterSpriteId,afterTextureId,reason,error;
+  public bool rendererAlive,rendererReferenceSame,savedSpriteClrNull,savedSpriteAlive,savedTextureClrNull,savedTextureAlive,beforeSpriteClrNull,beforeSpriteAlive,beforeTextureClrNull,beforeTextureAlive,assignmentMade,exactAfter;
+ }
+ [Serializable] sealed class SpriteRestoreJournal {
+  public string scope="After deferred Destroy 2 frames, immediately before Validate; restore only same live original SpriteRenderer.sprite to saved exact reference. Missing old identities remain missing. No animation/time policy changes.";
+  public int frame;public float realtime;public bool liveOriginalSpriteGate;public List<SpriteRestoreEntry> entries=new List<SpriteRestoreEntry>();
+ }
+ void RestoreOriginalSprites(){
+  var journal=new SpriteRestoreJournal{frame=Time.frameCount,realtime=Time.realtimeSinceStartup};bool liveGate=true,complete=false;
+  try{
+   foreach(var row in r.old.Where(x=>x.spriteRenderer)){
+    var entry=new SpriteRestoreEntry{originalRendererId=row.id,name=row.name,category=row.category,savedSpriteId=row.savedSpriteId,savedTextureId=row.savedTextureId,savedSpriteClrNull=ReferenceEquals(row.sprite,null),savedSpriteAlive=row.sprite!=null,savedTextureClrNull=ReferenceEquals(row.spriteTexture,null),savedTextureAlive=row.spriteTexture!=null};journal.entries.Add(entry);
+    var sr=row.value as SpriteRenderer;entry.rendererAlive=sr!=null;entry.currentRendererId=Id(sr);entry.rendererReferenceSame=sr!=null&&ReferenceEquals(sr,row.value)&&entry.currentRendererId==row.id;
+    if(!entry.rendererAlive){entry.reason="original renderer missing; no lookup/replacement and old identity remains false";continue;}
+    try{
+     var before=sr.sprite;var beforeTexture=before==null?null:before.texture;entry.beforeSpriteId=Id(before);entry.beforeTextureId=Id(beforeTexture);entry.beforeSpriteClrNull=ReferenceEquals(before,null);entry.beforeSpriteAlive=before!=null;entry.beforeTextureClrNull=ReferenceEquals(beforeTexture,null);entry.beforeTextureAlive=beforeTexture!=null;
+     if(!entry.rendererReferenceSame)entry.reason="original renderer identity changed; refused";
+     else if(entry.savedSpriteClrNull){
+      if(!entry.savedTextureClrNull)entry.reason="inconsistent null-sprite baseline; refused";
+      else{if(!ReferenceEquals(before,null)){sr.sprite=null;entry.assignmentMade=true;}entry.reason=entry.assignmentMade?"restored exact original null sprite":"already exact original null sprite";}
+     }
+     else if(!entry.savedSpriteAlive||!entry.savedTextureAlive)entry.reason="saved sprite or texture destroyed/null; refused";
+     else if(!ReferenceEquals(row.sprite.texture,row.spriteTexture)||Id(row.sprite)!=row.savedSpriteId||Id(row.spriteTexture)!=row.savedTextureId)entry.reason="saved sprite/texture baseline identity changed; refused";
+     else{if(!ReferenceEquals(before,row.sprite)){sr.sprite=row.sprite;entry.assignmentMade=true;}entry.reason=entry.assignmentMade?"restored exact saved original sprite":"already exact saved original sprite";}
+     var after=sr.sprite;var afterTexture=after==null?null:after.texture;entry.afterSpriteId=Id(after);entry.afterTextureId=Id(afterTexture);
+     entry.exactAfter=entry.rendererReferenceSame&&(entry.savedSpriteClrNull?entry.savedTextureClrNull&&ReferenceEquals(after,null):entry.savedSpriteAlive&&entry.savedTextureAlive&&ReferenceEquals(after,row.sprite)&&ReferenceEquals(afterTexture,row.spriteTexture));
+     liveGate &= entry.exactAfter;
+    }catch(Exception ex){entry.error=ex.ToString();entry.exactAfter=false;liveGate=false;}
+   }
+   complete=true;
+  }finally{
+   journal.liveOriginalSpriteGate=complete&&liveGate;r.spriteRestoreGate=complete&&liveGate;
+   using(var stream=new FileStream(Path.Combine(output,"sprite-restore-journal.json"),FileMode.CreateNew,FileAccess.Write))using(var writer=new StreamWriter(stream))writer.Write(JsonUtility.ToJson(journal,true));
+  }
+  Check(r.spriteRestoreGate,"live original sprite exact restoration");
+ }
+
 }
 }

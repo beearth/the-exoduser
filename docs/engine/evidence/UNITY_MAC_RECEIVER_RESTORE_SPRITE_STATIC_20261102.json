@@ -1,0 +1,21 @@
+{
+  "status": "static-only; actual run pending",
+  "inputSource": "3bc48fd55c2746ebc4e0aaec8163b9798ac1dd60",
+  "errors": 0,
+  "warnings": 11,
+  "references": {
+    "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/build-receiverRestoreFix-normal/EXODUSER-Unity.app/Contents/Resources/Data/Managed/Exoduser.Runtime.dll": "dbaa9d53c071a3268487eeeaf7b6a87e36101aac95c147644c0a43247ac4c9bc",
+    "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/build-receiverRestoreFix-normal/EXODUSER-Unity.app/Contents/Resources/Data/Managed/Exoduser.Core.dll": "4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d"
+  },
+  "sources": {
+    "ReceiverRestoreNarrowCapture.cs": "5c9de0ba8171506a70e384eca312a260d7f9199aa327bea6b45340d174ba807c",
+    "ReceiverRestoreNarrowDiagnostics.cs": "d77533d02735d06102d9363a0b67c5de37c80a9549ea4218d787d9ac1e618b32"
+  },
+  "firstAttempt": "Old ac9c app paths no longer contained DLLs; CS0006 preserved in static-first-missing-reference.log. Final compile uses actual 3bc48 app DLLs.",
+  "docsMatches": 456,
+  "oldFalsePreserved": true,
+  "originalSpriteTextureFailureGatePreserved": true,
+  "newRendererOrSpriteCreated": false,
+  "unityPlayerBuildExecuted": false,
+  "sharedCodeGitSettingsChanged": false
+}
