@@ -113,8 +113,8 @@ namespace Exoduser.UnityPort
                     {
                         objective = "combat";
                         var away = new Vector2(p.X, p.Y) - aim;
-                        destination = aim + away.normalized * 290;
-                        if (away.magnitude >= 230 && away.magnitude <= 420 && FullRunLine(p.X, p.Y, aim.x, aim.y)) destination = new Vector2(p.X, p.Y);
+                        destination = aim + away.normalized * 210;
+                        if (away.magnitude >= 170 && away.magnitude <= 260 && FullRunLine(p.X, p.Y, aim.x, aim.y)) destination = new Vector2(p.X, p.Y);
                     }
                     else if (flow.BossUnlocked && flow.Exits.Count > 1)
                     {
@@ -150,11 +150,35 @@ namespace Exoduser.UnityPort
                     }
                     var move = navigation.Direction(p.X,p.Y,destination.x,destination.y,p.Radius,FullRunCanMove,sim.TickCount);
                     var keys = new List<Key> { Key.R };
+                    bool defend=false,evade=false;Vector2 threat=aim;
+                    if(sim.Druid!=null&&p.Iframes<=0)
+                    {
+                        double closestThreat=260*260;
+                        foreach(var bullet in sim.Druid.Projectiles)
+                        {
+                            if(!bullet.Active||bullet.Friendly)continue;
+                            double dx=p.X-bullet.X,dy=p.Y-bullet.Y,d=dx*dx+dy*dy;
+                            if(d>=closestThreat||dx*bullet.Vx+dy*bullet.Vy<=0)continue;
+                            closestThreat=d;threat=new Vector2((float)bullet.X,(float)bullet.Y);
+                            defend=bullet.ParryClass!="forbidden"&&p.Mana>30;
+                            evade=!defend;
+                        }
+                    }
+                    // A real resource-limited run needs defensive inputs, not forced healing.
+                    if(fighting&&p.Hp<p.MaxHp*.35f&&nearest<240*240&&p.Iframes<=0)evade=true;
+                    if(evade)
+                    {
+                        var away=new Vector2(p.X,p.Y)-threat;
+                        var escape=new Vector2(-away.y,away.x).normalized;
+                        if(!FullRunCanMove(p.X+escape.x*80,p.Y+escape.y*80,p.Radius))escape=-escape;
+                        move=escape;keys.Add(Key.Space);objective="evade";
+                    }
+                    else if(defend){keys.Add(Key.Q);aim=threat;objective="parry";}
                     if (move.x > .25f) keys.Add(Key.D); else if(move.x < -.25f) keys.Add(Key.A);
                     if (move.y > .25f) keys.Add(Key.S); else if(move.y < -.25f) keys.Add(Key.W);
                     // Release the third charged slash periodically; continuous hold never releases it.
-                    bool attack = fighting && sim.TickCount % 210 < 190;
-                    bool magic = fighting && sim.TickCount % 150 < 18;
+                    bool attack = fighting&&!defend&&!evade&&(p.Stamina>=10||p.KiChargeActive)&&sim.TickCount%270<250;
+                    bool magic = fighting&&!defend&&!evade&&p.Mana>=40&&sim.TickCount%150<(p.Stamina<20?60:18);
                     if (fighting && sim.TickCount % 600 < 1) keys.Add(Key.Digit1);
                     keyboard.MakeCurrent(); mouse.MakeCurrent(); InputState.Change(keyboard,new KeyboardState(keys.ToArray()));
                     var aimPoint = NativeRemodel3D.Active ? NativeRemodel3D.Point(aim.x,aim.y) : Point(aim.x,aim.y);
