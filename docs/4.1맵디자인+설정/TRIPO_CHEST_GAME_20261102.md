@@ -2,7 +2,7 @@
 
 사용자 지시: “게임에 상자 넣어서 열어보고”. 대상은 `game.html` 웹 본편의 기존 보스 보물상자다. Unity·Steam 배포·스폰/보상 수량·확률/저장 설계 변경은 포함하지 않는다. 11/02 후속 지시로 상자 전리품의 바깥 분산·분출과 착지 전 수거 대기를 적용한다. 최신 추가 지시 “상자가 너무커 … 충돌도 넣고”로 표시 축소·동적 몸통 충돌을 적용한다.
 
-## 11/02 최신 재질 후보 — 국소 albedo 분리·source-only 미검증
+## 11/02 최신 재질 후보 — 국소 albedo 실GPU·1x 통과, 최초 비용 검토
 
 같은64px Mac 원본2장과scale1 strip4장을 직접 확인했다. 이전6a 소스/9d 실산출의 반사 후보는 철테 가장자리만 미세하게 바뀌며 목재·철테·잠금쇠·열린 내측의 짙은 회녹색 뭉침이 남아 **RETOUCH/미채택**이다. 반사 강도·전역 노출 미세조정 대신 기존 기본색과금속도B로 부위별 명암/색을 분리하는 한 후보로 방법을 전환한다. 아래는 새 소스 계약이며, 다음 절의128×64 반사장은 과거 후보 이력이다.
 
@@ -11,17 +11,17 @@
 | INPUT | 직접 본 기준 | proof-final-9d2691의 corrected 닫힘/열림1920 원본2장·1920/3840 scale1 strip4장, 기존 내장 basecolor/RM. 원본/판정/비용 경로는 아래REPORT. 기준과 후보의 새 GPU 결과를 혼동하지 않음 |
 | METHOD | 적용 범위 | `createChestMaterialSeparation(THREE,model,enabled=true)`, id `chest-local-albedo-v1`. 해당 모델의 고유 MeshStandardMaterial만 onBeforeCompile 적용. 다른 맵/접촉그림자/조명/전역 노출 적용0 |
 | MASK | 기존 B 재사용 | r160 metalnessmap_fragment의 기존 `texelMetalness.b`를 `smoothstep(.12,.55,B)`로 사용. 추가 샘플러·텍스처·UV0. RM 없는 목재 내부는 mask0. roughnessFactor/metalnessFactor 및 기존 RM 자체는 불변 |
-| ALBEDO | 선형 공식 | 기존 기본색의 SRGB→선형 샘플·vertex color·알파 처리 후, PBR lighting 전 RGB에만 `gain=mix((2.4,1.65,1.05),(5,5.3,5.8),mask)`, `RGB=1-exp(-RGB*gain)`. 목재는 따뜻한 저채도, 철테는 차갑고 더 밝은 톤을 목표로 하며 검정0 유지·하이라이트는1미만으로 완화. 색 보정의 실제 가독성은 미검증 |
+| ALBEDO | 선형 공식 | 기존 기본색의 SRGB→선형 샘플·vertex color·알파 처리 후, PBR lighting 전 RGB에만 `gain=mix((2.4,1.65,1.05),(5,5.3,5.8),mask)`, `RGB=1-exp(-RGB*gain)`. 목재는 따뜻한 저채도, 철테는 차갑고 더 밝은 톤을 목표로 하며 검정0 유지·하이라이트는1미만으로 완화. 07081a 실64px ON/OFF/A2 원본에서 가독 분리 개선을root확인;최초비용은별도HOLD |
 | PIPELINE | r160 유지 | map/normal/RM·base factor·normalScale·emissive·alpha/side·renderer output SRGB·ACES exposure1.25·카메라fov40·기존 광원 보존. 원본GLB2679056B/19452tris·형상/UV·64CSS·44×24충돌·R개봉/전리품·보상/RNG·game/index/title 변경0 |
 | AB | 동일 모델 OFF/ON | `_chest3d.setMaterialSeparationEnabled(false)`는 uniform0으로 해당 RGB 연산 전체를 건너뛰어 원래 PBR 입력과 경로를 사용. true=uniform1. 로드 전에도 선택 가능. 저장/UI 설정0. snapshot.materialSeparation은 id/enabled/materials와 준비 후mask/woodGain/metalGain 제공 |
-| CACHE | 단일 shader variant | 원래 customProgramCacheKey에 고정 id만 추가. OFF/ON은 uniform만 변경하며 needsUpdate·새함수·cache key 변경0. CPU1000전환에서 key/version/hook 불변 확인. 실제GPU 프로그램 수/장시간 토글 누수는 다음Mac 검수 |
+| CACHE | 단일 shader variant | 원래 customProgramCacheKey에 고정 id만 추가. OFF/ON은 uniform만 변경하며 needsUpdate·새함수·cache key 변경0. CPU1000전환에서 key/version/hook 불변 확인. 07081a 실draw40회 자원/program/version/cache불변 확인;장시간누수·전체성능미인증 |
 | ENV | 퇴역 반사장 | 기본/ON/OFF 모두 scene.environment=null. createChestEnvironmentTexture·DataTexture/PMREM 준비 코드 제거. 구 `setEnvironmentEnabled`는 항상false를 반환하고 snapshot.environment={enabled:false,prepared:false,intensity:0}. 반사 자원은 준비/업로드하지 않음. 과거 소스는Git450a/6a와정확-byte백업에 보존 |
 | FAILURE | 폴백 | r160 revision/필수 shader chunk 불일치 예외와 renderer.debug.checkShaderErrors=true/onShaderError 예외를 기존 render catch→failed/2D폴백/1회해제로 연결. 실제GPU 오류/컴파일 검증은CPU 대역으로 대체하지 않음 |
 | LIFETIME | 기존6a 유지 | dispose/failure는 original hook/key descriptor 복원·uniform0·material 참조Map비움 뒤 고유 geometry/texture/material 해제, root/scene.clear·모델/카메라참조 비움·RAF취소·own context loss. 늦은GLB도해제. 기존 공유자원 중복dispose 방지 보존 |
 | QA | 소스 검사 | 새계약7 RED(함수부재)→GREEN, 별도shader callback1 RED→GREEN. 재질/수명8+기존상자/패키징12=20 PASS. 가짜 WebGLRenderer/네트워크 + 실제Three CPU 객체/실제 shader 문자열 검사이며 새 GPU 컴파일/시각/비용 PASS 아님 |
-| NEXT | 채택 gate | 기존Mac idle/소유 확인 뒤 정확moduleSHA/GLB 검증, 같은64px/1920×1080·3840×1080 닫힘/실R열림내측 OFF/ON/A2 원본1x, 실제shader compile/GL오류/새텍스처0·PMREM0·프로그램 반복상한/실비용·failure/dispose 확인. 후보 추가미세조정 없이 한 번 판정. 같은핵심방법2FAIL이면 단계/방법 재검토 |
+| NEXT | 채택 gate | 07081a 실Mac 64px/두viewport OFF/ON/A2·shader오류/PMREM0/추가texture0/40draw/cache·fallback/dispose 검수와root原本판정 완료. 첫렌더271.2ms는원인미확정·순서교차최대4case진단중이므로전체채택/성능완료보류. 같은핵심방법2FAIL이면단계/방법전환 |
 
-새 후보 근거: `I:/EXODUSER-Storage/tripo-chest-game/20261102/local-material-separation/REPORT.md`. **기존 재질 VISUAL VERDICT: RETOUCH, 새 후보 시각 미검증·미채택.** PC GPU/게임/CUA/서버/빌드·유료실행0, main/CI/공개반영0.
+새 후보 근거: `I:/EXODUSER-Storage/tripo-chest-game/20261102/local-material-separation/REPORT.md`. **기존 반사 후보 RETOUCH 유지. 새07081a 국소 재질은64px한정 VISUAL PASS/root原本인수,최초렌더비용HOLD·전체채택미완료.** PC GPU/게임/CUA/서버/빌드·유료실행0, main/CI/공개반영0.
 
 위 표는 원 담당7d 재질 단위의 보호 범위다. root 통합 후보에서는 아래 별도94e 최종 타이틀 단위를 함께 선택 반영했으며, 게임·저장·보상은 그대로다.
 
@@ -206,3 +206,24 @@
 | 품질/전달 | 새국소재질은한방법한후보·未채택/실物미검증,기존재질RETOUCH. 직접목재/철테/잠금쇠·내측64px OFF/ON/A2와PMREM0/추가texture0/반복program수/GL·fallback·dispose검증필수. 최종타이틀은producer자체기록/原本직접뷰까지,새합본1920/2560/3840실브라우저검수로대체하지않음. public402/Windows미배송경계유지 |
 
 근거: I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/chest-local-material-final-title-20261102/{source-candidate.patch,index-title-only.patch,red-combined.log,green-combined.log,integration-protection.log,official-source-plan.json,producer-material-REPORT.md}. 새코드·필수자산·docs정상commit/privatepush/remote후기존Mac同exact입력→공식buildpreparecheck→實shader/64px A/B·title3화면비루프/정지·오류·offline초기화·무음/保存/正常終了로이어간다.
+
+## 2026-11-02 23:53 — 정확07081a 공식 산출·실GPU·원본1x 검수 인수
+
+이 절은 22:35의 소스 검수 대기를 마감한다. 검수 runtime은 **07081a0cc5ba56f73b94ae1c445818946abdef1f**로 고정하며 뒤따르는 문서 전용 커밋을 새 runtime으로 재라벨하지 않는다. **상자 재질 가독성과 최종 제공 영상 타이틀의 한정 시각 PASS**, 최초 렌더 비용은 미해결·별도 확인 중이다. 전체 채택·공개·일반 앱/Windows 전달 완료가 아니다.
+
+| 항목 | 실제 검수·한계 |
+|---|---|
+| 정확 입력 | 같은 기존 Mac UI/보호 checkout에서 APFS COW·변경18개 atomic 새 inode. 필수3355경로 Gitblob mismatch0/selected3242/무손실94논리93물리. game/Init끝/earlyslot/save·보상RNG/AI·기존원본불변 |
+| 실제 공식 산출 | build→prepare→check 각1회 exit0. stage3236files3974718398B; prepare가69482B sidecar를상위receipt로이동. 실제static **3235files3974648916B/4GB여유25351084B/max94795327B**. sourceplan만으로PASS라한것아님/수동보충0 |
+| config/receipt | config1a8bab831dc2e583724b2a5b6a6790d30467fb37c4dcf5ff3180fc87d87614b2 / 파생receipt64825b7c9bbf1e2c7dd80ef29ffcbe56902655a3a4ec7d56ec85782cc4c75a80. 8필수URL fullGET200/MIME/전체SHA·실loadedmodulebody일치 |
+| 실GPU·재질 | Apple M5 Pro/ANGLE Metal/WebGL2/Three160,DPR1. 실제64CSS·1920×1080/3840×1080 닫힘/네이티브R160ms완전열림 baseline/OFF/ON/A2. root scale1strip4+1920전체2직접뷰: ON에서갈색목재결/차가운철테·잠금쇠/열린내측구분개선,OFF/A2복귀·실루엣/접지/전리품가독보존. **VISUAL VERDICT: PASS(이재질범위)**,모델전체AAA/자연전투품질PASS아님 |
+| 자원·warm | environment null/새PMREM·추가texture0. baseline/A/B/A2 textures4/geometry5/program3. 실draw40회uniform전환에서program/자원/version/cache누적증가0. warm각첫10제외 A116표본 CPUmean/p95 .178/.400ms·GPU .382/.511ms, B117표본 .145/.300ms·.391/.451ms,A2 137표본 .158/.300ms·.386/.514ms. 개별overlay계측이며전체FPS/1%low/VRAM인증0 |
+| 최초 비용 HOLD | 첫Scene.onBeforeRender→onAfterRender CPU baseline30.4ms/새A271.2ms. compile/submission/JIT/cache상태가다른1회관측이므로shader단독인과·전체게임멈춤확정0. 수치를숨기거나warm으로상쇄하지않음. 같은Mac에서최대4개의순서교차freshbrowser계측/실render·GLcompile/link·longtask분리후최소후속결정. 현제품값변경0 |
+| 실패·수명 | GLB실패native2D/R보상·lateGLB폐기·idempotentdispose/RAF정지·scene비움/owncontextlost·이번후보texturegeometryprogram0 확인. 최초invalidGLSL probe는진단배열초기화오류로false/원문보존;그case만교정후실compileCalls2/문법오류1→제품onShaderError throw/catch/release/nativeR PASS. 원false를소급PASS로덮지않음 |
+| 최종 영상 타이틀 | 제공영상6192566B/SHA869895a608475b694d68718ad5af809e0dc8f6fd65204f04adf7db4f011827c3 그대로+폭포2개뿐. 실제1920/2560/3840×1080각10.8993/10.8978/10.8979초 loopwrap·달/부츠/메뉴/가로넘침0. root세화면원본직접뷰 **PASS(현final-as-isbrief)**. 3840달상단약11.91px/부츠하단981.34px;옛배경확장brief검수와별도 |
+| 픽셀·정책·입장 | 같은decodedcanvas3840 t1/1.1·t3/3.1의4프레임에서폭포support밖변경0px/haircape/body/sky/rock기저영상동일. farbridge coreY494~514 maskalpha0(경계493/515 blurfeather한계). OS/localreduce·lowtier·atmos0·coldreduce같은영상정지,videoerrorblack+메뉴/fallerror영상유지·보강OFF·hidden/destroy PASS. 실제title→cinematic skip→demo→빈offline→허구QA생성game입장·pageerror0/earlyInit TDZ0. 자연전투/liveAPI인증0 |
+| 보존·종료 | ordinary11/currentPrefs2 현재13형태byte·installed5/WIP25/공유HEADbranchINDEXstatus·원본7014/기존9d7034·ea2410477metadata差0. 자기gain0/peak0/Direct0. 自Chrome잔여0/loopback55371:61660 정상SIGTERM·PIDlisten0,사용자Chrome49060보존. 최초828B누락·옛PrefsFAIL소급해소0 |
+| root 원본 인수 | 19files16431165B fullSHA일치·PNG12 IHDR대조. root원본/무변형scale1배치10장직접뷰. 비교순서1920baseline/A/B/A2·3840A/B/A2. 소형증거수신은Windows제품배송과별도. 실패·현재비교원본삭제0. root기록저장64000B제한거절후native가이어진운영오류는영수증에보존·단회수락/재전송0 |
+| 미완료 | cold비용인과·자연전투/전체맵·physicalmonitor/OS손입력/NW/Unity/전체FPS·main/public/Windows/일반앱배포별도. public402기존계정미납원인·같은CI실패반복0. 9d반사RETOUCH는이력유지/새local방식과구분 |
+
+근거: root I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/chest-local-material-final-title-20261102/proof-final-07081a/{REPORT.md,FINAL_RECEIPT.json,official-artifact-commands.json,performance-resource-summary.json,preservation-and-return.json,manifest.received.json,receiver-receipt.json,root-review.json}; Mac _out/web-local-material-final-title-07081a-qa-20261102. 이번은실산출과동일candidate의원본검수이며source117회귀와구분한다. 문서만마감하므로runtime/suite/영상재생성0.

@@ -425,3 +425,24 @@ Vercel 계정 관리자의 결제 문제 해소가 선행한다. 에이전트는
 | 품질/전달 | 새국소재질은한방법한후보·未채택/실物미검증,기존재질RETOUCH. 직접목재/철테/잠금쇠·내측64px OFF/ON/A2와PMREM0/추가texture0/반복program수/GL·fallback·dispose검증필수. 최종타이틀은producer자체기록/原本직접뷰까지,새합본1920/2560/3840실브라우저검수로대체하지않음. public402/Windows미배송경계유지 |
 
 근거: I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/chest-local-material-final-title-20261102/{source-candidate.patch,index-title-only.patch,red-combined.log,green-combined.log,integration-protection.log,official-source-plan.json,producer-material-REPORT.md}. 새코드·필수자산·docs정상commit/privatepush/remote후기존Mac同exact입력→공식buildpreparecheck→實shader/64px A/B·title3화면비루프/정지·오류·offline초기화·무음/保存/正常終了로이어간다.
+
+## 2026-11-02 23:53 — 정확07081a 공식 산출·실GPU·원본1x 검수 인수
+
+이 절은 22:35의 소스 검수 대기를 마감한다. 검수 runtime은 **07081a0cc5ba56f73b94ae1c445818946abdef1f**로 고정하며 뒤따르는 문서 전용 커밋을 새 runtime으로 재라벨하지 않는다. **상자 재질 가독성과 최종 제공 영상 타이틀의 한정 시각 PASS**, 최초 렌더 비용은 미해결·별도 확인 중이다. 전체 채택·공개·일반 앱/Windows 전달 완료가 아니다.
+
+| 항목 | 실제 검수·한계 |
+|---|---|
+| 정확 입력 | 같은 기존 Mac UI/보호 checkout에서 APFS COW·변경18개 atomic 새 inode. 필수3355경로 Gitblob mismatch0/selected3242/무손실94논리93물리. game/Init끝/earlyslot/save·보상RNG/AI·기존원본불변 |
+| 실제 공식 산출 | build→prepare→check 각1회 exit0. stage3236files3974718398B; prepare가69482B sidecar를상위receipt로이동. 실제static **3235files3974648916B/4GB여유25351084B/max94795327B**. sourceplan만으로PASS라한것아님/수동보충0 |
+| config/receipt | config1a8bab831dc2e583724b2a5b6a6790d30467fb37c4dcf5ff3180fc87d87614b2 / 파생receipt64825b7c9bbf1e2c7dd80ef29ffcbe56902655a3a4ec7d56ec85782cc4c75a80. 8필수URL fullGET200/MIME/전체SHA·실loadedmodulebody일치 |
+| 실GPU·재질 | Apple M5 Pro/ANGLE Metal/WebGL2/Three160,DPR1. 실제64CSS·1920×1080/3840×1080 닫힘/네이티브R160ms완전열림 baseline/OFF/ON/A2. root scale1strip4+1920전체2직접뷰: ON에서갈색목재결/차가운철테·잠금쇠/열린내측구분개선,OFF/A2복귀·실루엣/접지/전리품가독보존. **VISUAL VERDICT: PASS(이재질범위)**,모델전체AAA/자연전투품질PASS아님 |
+| 자원·warm | environment null/새PMREM·추가texture0. baseline/A/B/A2 textures4/geometry5/program3. 실draw40회uniform전환에서program/자원/version/cache누적증가0. warm각첫10제외 A116표본 CPUmean/p95 .178/.400ms·GPU .382/.511ms, B117표본 .145/.300ms·.391/.451ms,A2 137표본 .158/.300ms·.386/.514ms. 개별overlay계측이며전체FPS/1%low/VRAM인증0 |
+| 최초 비용 HOLD | 첫Scene.onBeforeRender→onAfterRender CPU baseline30.4ms/새A271.2ms. compile/submission/JIT/cache상태가다른1회관측이므로shader단독인과·전체게임멈춤확정0. 수치를숨기거나warm으로상쇄하지않음. 같은Mac에서최대4개의순서교차freshbrowser계측/실render·GLcompile/link·longtask분리후최소후속결정. 현제품값변경0 |
+| 실패·수명 | GLB실패native2D/R보상·lateGLB폐기·idempotentdispose/RAF정지·scene비움/owncontextlost·이번후보texturegeometryprogram0 확인. 최초invalidGLSL probe는진단배열초기화오류로false/원문보존;그case만교정후실compileCalls2/문법오류1→제품onShaderError throw/catch/release/nativeR PASS. 원false를소급PASS로덮지않음 |
+| 최종 영상 타이틀 | 제공영상6192566B/SHA869895a608475b694d68718ad5af809e0dc8f6fd65204f04adf7db4f011827c3 그대로+폭포2개뿐. 실제1920/2560/3840×1080각10.8993/10.8978/10.8979초 loopwrap·달/부츠/메뉴/가로넘침0. root세화면원본직접뷰 **PASS(현final-as-isbrief)**. 3840달상단약11.91px/부츠하단981.34px;옛배경확장brief검수와별도 |
+| 픽셀·정책·입장 | 같은decodedcanvas3840 t1/1.1·t3/3.1의4프레임에서폭포support밖변경0px/haircape/body/sky/rock기저영상동일. farbridge coreY494~514 maskalpha0(경계493/515 blurfeather한계). OS/localreduce·lowtier·atmos0·coldreduce같은영상정지,videoerrorblack+메뉴/fallerror영상유지·보강OFF·hidden/destroy PASS. 실제title→cinematic skip→demo→빈offline→허구QA생성game입장·pageerror0/earlyInit TDZ0. 자연전투/liveAPI인증0 |
+| 보존·종료 | ordinary11/currentPrefs2 현재13형태byte·installed5/WIP25/공유HEADbranchINDEXstatus·원본7014/기존9d7034·ea2410477metadata差0. 자기gain0/peak0/Direct0. 自Chrome잔여0/loopback55371:61660 정상SIGTERM·PIDlisten0,사용자Chrome49060보존. 최초828B누락·옛PrefsFAIL소급해소0 |
+| root 원본 인수 | 19files16431165B fullSHA일치·PNG12 IHDR대조. root원본/무변형scale1배치10장직접뷰. 비교순서1920baseline/A/B/A2·3840A/B/A2. 소형증거수신은Windows제품배송과별도. 실패·현재비교원본삭제0. root기록저장64000B제한거절후native가이어진운영오류는영수증에보존·단회수락/재전송0 |
+| 미완료 | cold비용인과·자연전투/전체맵·physicalmonitor/OS손입력/NW/Unity/전체FPS·main/public/Windows/일반앱배포별도. public402기존계정미납원인·같은CI실패반복0. 9d반사RETOUCH는이력유지/새local방식과구분 |
+
+근거: root I:/EXODUSER-Storage/codex-takeover/cto-runtime-diagnostics/existing-owner-recovery-20261101/chest-local-material-final-title-20261102/proof-final-07081a/{REPORT.md,FINAL_RECEIPT.json,official-artifact-commands.json,performance-resource-summary.json,preservation-and-return.json,manifest.received.json,receiver-receipt.json,root-review.json}; Mac _out/web-local-material-final-title-07081a-qa-20261102. 이번은실산출과동일candidate의원본검수이며source117회귀와구분한다. 문서만마감하므로runtime/suite/영상재생성0.
