@@ -35,6 +35,6 @@
 | Mac 실제 baseline/후보 | 기존 Mac 총괄이 QA 파일/실행·입력/변형 byte·사용자 prefs 원문 보존을 소유. 실제 FAIL→같은 검사 GREEN·1920 화면·같은 앱 M1·생성/소멸/풀 재사용·2D/3D 전환은 아직 대기 |
 | 필수 시각 | 평지·경사·목교에서 각 설치형이 떠 있지 않고 원화/atlas/링이 올바른지 직접 확인. 정점 수학만으로 화면 PASS를 선언하지 않음 |
 
-관련 docs 전체 키워드 검색 122행을 `I:/EXODUSER-Storage/ground-placement/20261102/docs-keyword-search.log`에 보존했다. 역사/웹/Godot의 동일 id·피해/수명·자원 표는 수치 불변이라 그대로 둔다. 현행 Unity 좌표·앵커 SSOT와 VFX 가이드/마스터에 이번 후보의 링크/상태를 연결한다. Core·지도/목교 형상·기존 셰이더/재질/원화·저장 형식 변경0.
+관련 docs 전체 키워드 검색 122행을 `I:/EXODUSER-Storage/ground-placement/20261102/docs-keyword-search.log`에 보존했다. 역사/웹/Godot의 동일 id·피해/수명·자원 표는 수치 불변이라 그대로 둔다. 현행 Unity 좌표·앵커 SSOT와 VFX 가이드에 이번 후보의 링크/상태를 연결한다. VFX 마스터는 웹 main 소유 문서이므로 이 Unity 줄기에 축약 사본을 생성하지 않고 최종 main 문서 동기화에서 기존 본문을 보존해 연결한다. Core·지도/목교 형상·기존 셰이더/재질/원화·저장 형식 변경0.
 
 CPU/컴파일/수정 전 byte 백업은 `I:/EXODUSER-Storage/ground-placement/20261102/`. 이 소스 후보만으로 공통/설치 완료를 주장하지 않는다.
