@@ -1,0 +1,114 @@
+{
+  "status": "NATIVE_CONTACT_VERIFIED_FBX_UNITY_IMPORT_PENDING",
+  "runtimeApplied": false,
+  "clips": [
+    {
+      "id": "transmuter",
+      "clip": "walking",
+      "fps": 30,
+      "frames": [
+        1,
+        32
+      ],
+      "durationSeconds": 1.0333333333333334,
+      "restMatrixMaxDifference": 0.0,
+      "beforeSoleMeters": [
+        0.015579100499024223,
+        0.03648150362488245
+      ],
+      "afterSoleMeters": [
+        -0.0004031967174387141,
+        0.0007308281601376976
+      ],
+      "rootCorrectionMeters": [
+        -0.03648150362488245,
+        -0.015579100499024223
+      ],
+      "samples": 125,
+      "runningFlightPreserved": false,
+      "sourceAction": "transmuter_walking_R1",
+      "fbxContains": "armature animation only; native mesh/UV untouched"
+    },
+    {
+      "id": "transmuter",
+      "clip": "running",
+      "fps": 30,
+      "frames": [
+        1,
+        20
+      ],
+      "durationSeconds": 0.6333333333333333,
+      "restMatrixMaxDifference": 0.0,
+      "beforeSoleMeters": [
+        0.01095752095526037,
+        0.15662778504279729
+      ],
+      "afterSoleMeters": [
+        -2.862854142993143e-05,
+        0.1575824757619202
+      ],
+      "rootCorrectionMeters": [
+        -0.01095752095526037,
+        -0.01095752095526037
+      ],
+      "samples": 77,
+      "runningFlightPreserved": true,
+      "sourceAction": "transmuter_running_R1",
+      "fbxContains": "armature animation only; native mesh/UV untouched"
+    },
+    {
+      "id": "spearmage",
+      "clip": "walking",
+      "fps": 30,
+      "frames": [
+        1,
+        32
+      ],
+      "durationSeconds": 1.0333333333333334,
+      "restMatrixMaxDifference": 0.0,
+      "beforeSoleMeters": [
+        0.018699534713487287,
+        0.03991307169393288
+      ],
+      "afterSoleMeters": [
+        -0.00045749680013340566,
+        0.0008076596298849381
+      ],
+      "rootCorrectionMeters": [
+        -0.03991307169393288,
+        -0.018699534713487287
+      ],
+      "samples": 125,
+      "runningFlightPreserved": false,
+      "sourceAction": "spearmage_walking_R1",
+      "fbxContains": "armature animation only; native mesh/UV untouched"
+    },
+    {
+      "id": "spearmage",
+      "clip": "running",
+      "fps": 30,
+      "frames": [
+        1,
+        20
+      ],
+      "durationSeconds": 0.6333333333333333,
+      "restMatrixMaxDifference": 0.0,
+      "beforeSoleMeters": [
+        0.012881494472589461,
+        0.15172486919779615
+      ],
+      "afterSoleMeters": [
+        3.453755059723562e-10,
+        0.1564439873175587
+      ],
+      "rootCorrectionMeters": [
+        -0.012881494472589461,
+        -0.012881494472589461
+      ],
+      "samples": 77,
+      "runningFlightPreserved": true,
+      "sourceAction": "spearmage_running_R1",
+      "fbxContains": "armature animation only; native mesh/UV untouched"
+    }
+  ]
+}

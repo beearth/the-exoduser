@@ -1,0 +1,106 @@
+{
+  "createdAt": "2026-11-02T10:39:54.854Z",
+  "stage": "R1_NATIVE_REPAIRS_VISUAL_RETOUCH_RUNTIME_PENDING",
+  "runtimeApplied": false,
+  "newPaidCalls": 0,
+  "files": [
+    {
+      "path": "repair-receipt.json",
+      "bytes": 7558,
+      "sha256": "ab7deea89e185377301a03e5b88fe2d78d5b84929b507d262d4596e59a35d704"
+    },
+    {
+      "path": "locomotion-receipt.json",
+      "bytes": 2960,
+      "sha256": "ea63e6e755acce08ee96f0a090377f2466c677370ecbcfbd4ad5464d5e966c34"
+    },
+    {
+      "path": "transmuter/character.blend",
+      "bytes": 38198153,
+      "sha256": "7d4781ead5d73c92ad04cffe6ded74f15c1f5de62cbe46db6315456e268e9a6d"
+    },
+    {
+      "path": "transmuter/character.glb",
+      "bytes": 39782132,
+      "sha256": "c95ad533aefb148b101334bf051b719e2682152e1a89f2d3231352848d758102"
+    },
+    {
+      "path": "transmuter/character.fbx",
+      "bytes": 36357244,
+      "sha256": "5ad6ac4100aca78929d41079ac5a9192a01d296502abd59a90e2da828afa7030"
+    },
+    {
+      "path": "transmuter/walking.fbx",
+      "bytes": 266604,
+      "sha256": "8eb2bfd87f583736a26d26d52113812b973bdd73983824d768b719f2f0f63513"
+    },
+    {
+      "path": "transmuter/running.fbx",
+      "bytes": 227740,
+      "sha256": "6872ba16ae89a0507a1b103f789d94dd386dbd9f89f89799c07b62a94a7fdb22"
+    },
+    {
+      "path": "spearmage/character.blend",
+      "bytes": 37183443,
+      "sha256": "e18ec2c2b3f09857f27fd2aeb928990c32c8296202a53d48d49530fc5ca10008"
+    },
+    {
+      "path": "spearmage/character.glb",
+      "bytes": 38518568,
+      "sha256": "011704e7d3438b5e6d96d4b071ba4abdd8d0580366b80a839fa3cf931609d8e1"
+    },
+    {
+      "path": "spearmage/character.fbx",
+      "bytes": 35049900,
+      "sha256": "9692a2b6a662d1a9237eb9904fd8f7b577aa0288fdc3d0487a0e57fe42605754"
+    },
+    {
+      "path": "spearmage/walking.fbx",
+      "bytes": 266780,
+      "sha256": "0d0e52b1991c298559b92e7c41c8c3cfbdc52c8721e839562215a4dcacf1d937"
+    },
+    {
+      "path": "spearmage/running.fbx",
+      "bytes": 227916,
+      "sha256": "8707c8d01953ede88629a582e46c394c6c9525f95d86d088ca3f0c9eea55a83e"
+    },
+    {
+      "path": "unity-candidate-profile.json",
+      "bytes": 2315,
+      "sha256": "b397ececc00ee2e7c7c780bb0137cd4ff468024943338d65b1ac547eaa4ec1aa"
+    }
+  ],
+  "totalBytes": 226091313,
+  "models": [
+    {
+      "id": "transmuter",
+      "glb": {
+        "vertices": 97297,
+        "triangles": 61635,
+        "skins": [
+          24
+        ],
+        "imageCount": 3
+      },
+      "fbx": "transmuter/character.fbx",
+      "native": "transmuter/character.blend",
+      "walking": "transmuter/walking.fbx",
+      "running": "transmuter/running.fbx"
+    },
+    {
+      "id": "spearmage",
+      "glb": {
+        "vertices": 92342,
+        "triangles": 61755,
+        "skins": [
+          24
+        ],
+        "imageCount": 3
+      },
+      "fbx": "spearmage/character.fbx",
+      "native": "spearmage/character.blend",
+      "walking": "spearmage/walking.fbx",
+      "running": "spearmage/running.fbx"
+    }
+  ]
+}

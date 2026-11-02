@@ -1,0 +1,75 @@
+{
+  "status": "AUTHORING_CANDIDATE_NOT_UNITY_IMPORTED",
+  "runtimeApplied": false,
+  "sourceSha": "0e7682db8cd99d3dfb761eaa7249555ba6ade414",
+  "prototypeHeightMeters": 1.65,
+  "prototypeHeightIsNotLore": true,
+  "humanoidMappingByHierarchy": {
+    "Hips": "Hips",
+    "Spine": "Spine02",
+    "Chest": "Spine01",
+    "UpperChest": "Spine",
+    "Neck": "neck",
+    "Head": "Head",
+    "LeftShoulder": "LeftShoulder",
+    "LeftUpperArm": "LeftArm",
+    "LeftLowerArm": "LeftForeArm",
+    "LeftHand": "LeftHand",
+    "RightShoulder": "RightShoulder",
+    "RightUpperArm": "RightArm",
+    "RightLowerArm": "RightForeArm",
+    "RightHand": "RightHand",
+    "LeftUpperLeg": "LeftUpLeg",
+    "LeftLowerLeg": "LeftLeg",
+    "LeftFoot": "LeftFoot",
+    "LeftToes": "LeftToeBase",
+    "RightUpperLeg": "RightUpLeg",
+    "RightLowerLeg": "RightLeg",
+    "RightFoot": "RightFoot",
+    "RightToes": "RightToeBase"
+  },
+  "models": [
+    {
+      "id": "transmuter",
+      "glb": {
+        "vertices": 97297,
+        "triangles": 61635,
+        "skins": [
+          24
+        ],
+        "imageCount": 3
+      },
+      "fbx": "transmuter/character.fbx",
+      "native": "transmuter/character.blend",
+      "walking": "transmuter/walking.fbx",
+      "running": "transmuter/running.fbx"
+    },
+    {
+      "id": "spearmage",
+      "glb": {
+        "vertices": 92342,
+        "triangles": 61755,
+        "skins": [
+          24
+        ],
+        "imageCount": 3
+      },
+      "fbx": "spearmage/character.fbx",
+      "native": "spearmage/character.blend",
+      "walking": "spearmage/walking.fbx",
+      "running": "spearmage/running.fbx"
+    }
+  ],
+  "fbxModelIncludesAnimation": false,
+  "locomotionFbxContainsOnlyArmature": true,
+  "rootMotionPolicy": "Armature Z contains contact correction. Verify Unity Avatar/clip import preserves this vertical offset; gameplay translation and foot sliding remain unverified.",
+  "materialStatus": "FBX embedded base color and normal decoded in Blender. GLB retains PBR maps. Unity URP relinking and sampler behavior remain unverified.",
+  "missing": [
+    "Face likeness and hair sculpt",
+    "Skin patch border retouch",
+    "Hair/cloth/finger bones",
+    "Weapon grip, sockets and IK",
+    "Combat animations",
+    "Unity Avatar, Animator, same-build Player and actual 1x gameplay"
+  ]
+}
