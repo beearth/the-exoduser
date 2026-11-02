@@ -25,21 +25,29 @@ process.env.TMP = temp;
   const rows = [];
   try {
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 90000 });
-    for (let i = 0; i < 45; i++) {
+    await page.bringToFront();
+    let ready = false;
+    for (let i = 0; i < 100; i++) {
       const state = await page.evaluate(() => {
         try { if (typeof Howler !== 'undefined') Howler.mute(true); if (typeof BGM !== 'undefined' && BGM.setVolume) BGM.setVolume(0); } catch (_) {}
         if (typeof _cutsceneState !== 'undefined' && _cutsceneState === 'INTRO_CUTSCENE' && typeof _cutsceneEnd === 'function') _cutsceneEnd();
-        return { on: typeof G !== 'undefined' && G.on, intro: typeof G !== 'undefined' && !!G._intro };
+        try { if (window._parryLesson?.skipAll) window._parryLesson.skipAll(); if (window._systemLesson?.skipAll) window._systemLesson.skipAll(); } catch (_) {}
+        const overlay = document.querySelector('#stageTransition');
+        return { on: typeof G !== 'undefined' && G.on, intro: typeof G !== 'undefined' && !!G._intro,
+          boot: typeof _bootLoadActive !== 'undefined' && _bootLoadActive,
+          covered: !!overlay && Number(getComputedStyle(overlay).opacity) >= .01 };
       });
-      if (state.on && !state.intro) break;
+      if (state.on && !state.intro && !state.boot && !state.covered) { ready = true; break; }
       if (state.intro) await page.keyboard.press('Escape');
       await page.waitForTimeout(1000);
     }
-    await page.evaluate(() => {
-      try { if (window._parryLesson && _parryLesson.skipAll) _parryLesson.skipAll(); if (window._systemLesson && _systemLesson.skipAll) _systemLesson.skipAll(); } catch (_) {}
-      if (typeof G !== 'undefined') G.paused = false;
-    });
-    if (await page.locator('#settings').isVisible()) await page.keyboard.press('Escape');
+    if (!ready) throw new Error('Game start or visible loading transition did not finish');
+    await page.waitForLoadState('networkidle', { timeout: 30000 });
+    // Escape consults the real paused/settings state. Do not overwrite G.paused before it.
+    if (await page.locator('#settings').isVisible()) {
+      await page.keyboard.press('Escape');
+      await page.locator('#settings').waitFor({ state: 'hidden', timeout: 5000 });
+    }
     if (fullrun) {
       const started = Date.now(); let nextShot = 0, leftHeld = false, rightHeld = false; const held = new Set();
       await page.keyboard.down('r');
@@ -124,7 +132,7 @@ process.env.TMP = temp;
     await page.keyboard.press('Tab'); await page.waitForTimeout(400); await page.screenshot({ path: path.join(out, 'inventory.png') });
     await page.keyboard.press('Tab'); await page.keyboard.press('k'); await page.waitForTimeout(400); await page.screenshot({ path: path.join(out, 'skills.png') });
   } finally {
-    fs.writeFileSync(path.join(out, 'receipt.json'), JSON.stringify({ scope: 'Live origin/main 3333 classic; input reference, supported story/practice skip; server writes blocked; completion is recorded separately in fullrun-result.json', fixture: boss ? 'web bosstest=0 direct arena entry' : fullrun ? 'natural input fullrun attempt' : 'new field', url, rows, errors }, null, 2));
+    fs.writeFileSync(path.join(out, 'receipt.json'), JSON.stringify({ scope: 'Live origin/main 3333 classic; input reference, supported story/practice skip; server writes blocked; completion is recorded separately in fullrun-result.json', fixture: boss ? 'web bosstest=0 default GodON; direct arena entry; not natural progression' : fullrun ? 'natural input fullrun attempt' : 'new field', url, rows, errors }, null, 2));
     await browser.close();
   }
 })().catch(e => { console.error(e); process.exitCode = 1; });

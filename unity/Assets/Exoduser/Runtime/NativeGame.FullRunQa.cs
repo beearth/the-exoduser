@@ -139,18 +139,18 @@ namespace Exoduser.UnityPort
                     }
                     if(FullRunAllocateGrowth(sim)){hud.Refresh(p,sim.TickCount,true);RequestCombatSave();}
                     Vector2 destination = new Vector2(p.X, p.Y), aim = destination + Vector2.up * 200;
-                    bool fighting = false; float nearest = 850 * 850,targetScore=float.MaxValue;
+                    bool fighting = false,selectedAngler=false; float nearest = 850 * 850,targetScore=float.MaxValue;
                     foreach (var e in sim.Enemies)
                     {
                         if (!e.Alive || Simulation.IsRemodelProp(e)) continue;
                         float d = (e.X - p.X) * (e.X - p.X) + (e.Y - p.Y) * (e.Y - p.Y);
-                        if(d>=850*850)continue;nearest=Math.Min(nearest,d);float score=e.Etype==7&&d<550*550&&FullRunLine(p.X,p.Y,e.X,e.Y)?d/20:d;if(score<targetScore){targetScore=score;aim=new Vector2(e.X,e.Y);fighting=true;}
+                        if(d>=850*850)continue;nearest=Math.Min(nearest,d);float score=p.Level>=6&&e.Etype==7&&d<550*550&&FullRunLine(p.X,p.Y,e.X,e.Y)?d/20:d;if(score<targetScore){targetScore=score;aim=new Vector2(e.X,e.Y);fighting=true;}
                     }
                     if (sim.FieldBosses != null) foreach (var a in sim.FieldBosses)
                     {
                         if (a == null || a.Hp <= 0) continue;
                         float d = (float)((a.X - p.X) * (a.X - p.X) + (a.Y - p.Y) * (a.Y - p.Y));
-                        if(d>=850*850)continue;nearest=Math.Min(nearest,d);float score=sim.SpawnHoles!=null&&sim.SpawnHoles.Holes.Count==0?d/100:d;if(score<targetScore){targetScore=score;aim=new Vector2((float)a.X,(float)a.Y);fighting=true;}
+                        if(d>=850*850)continue;nearest=Math.Min(nearest,d);float score=sim.SpawnHoles!=null&&sim.SpawnHoles.Holes.Count==0?d/100:d;if(score<targetScore){targetScore=score;aim=new Vector2((float)a.X,(float)a.Y);fighting=selectedAngler=true;}
                     }
                     if (flow.InArena && !flow.BossAlive && flow.Exits.Count > 0)
                     {
@@ -160,8 +160,9 @@ namespace Exoduser.UnityPort
                     {
                         objective = "combat";
                         var away = new Vector2(p.X, p.Y) - aim;
-                        destination = aim + away.normalized * 210;
-                        if (away.magnitude >= 170 && away.magnitude <= 260 && FullRunLine(p.X, p.Y, aim.x, aim.y)) destination = new Vector2(p.X, p.Y);
+                        float range=selectedAngler?360:210;
+                        destination = aim + away.normalized * range;
+                        if (away.magnitude >= range-40 && away.magnitude <= range+50 && FullRunLine(p.X, p.Y, aim.x, aim.y)) destination = new Vector2(p.X, p.Y);
                     }
                     else if (flow.InArena)
                     {
@@ -202,7 +203,7 @@ namespace Exoduser.UnityPort
                         }
                     }
                     var move = navigation.Direction(p.X,p.Y,destination.x,destination.y,p.Radius,FullRunCanMove,sim.TickCount);
-                    if(fighting&&Vector2.SqrMagnitude(new Vector2(p.X,p.Y)-aim)<260*260&&FullRunLine(p.X,p.Y,aim.x,aim.y)){var offset=new Vector2(p.X,p.Y)-aim;var tangent=new Vector2(-offset.y,offset.x).normalized;if(FullRunCanMove(p.X+tangent.x*80,p.Y+tangent.y*80,p.Radius))move=tangent;}
+                    if(fighting&&Vector2.SqrMagnitude(new Vector2(p.X,p.Y)-aim)>=(selectedAngler?320*320:170*170)&&Vector2.SqrMagnitude(new Vector2(p.X,p.Y)-aim)<(selectedAngler?410*410:260*260)&&FullRunLine(p.X,p.Y,aim.x,aim.y)){var offset=new Vector2(p.X,p.Y)-aim;var tangent=new Vector2(-offset.y,offset.x).normalized;if(FullRunCanMove(p.X+tangent.x*80,p.Y+tangent.y*80,p.Radius))move=tangent;}
                     var keys = new List<Key> { Key.R };
                     bool defend=false,evade=false,shield=false;Vector2 threat=aim;double shieldDistance=0,shieldSpeed=0;
                     if(sim.Druid!=null&&p.Iframes<=0)

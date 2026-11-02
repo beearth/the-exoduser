@@ -49,10 +49,10 @@ namespace Exoduser.UnityPort
             // 원본 writer는 발 anchor를 쓴다. 곧 적용할 lift까지 포함한 최종 bounds를 예측한다.
             playerBounds.center+=view.transform.up*(NativeHd2D.FootLift(playerView.sprite)*Mathf.Abs(playerView.transform.lossyScale.y));
             bounds.Encapsulate(playerBounds);
-            const float usableWidth=.84f,usableHeight=.68f,safeCentreY=.54f;
-            float half=Mathf.Max(view.orthographicSize,Mathf.Max(bounds.size.y/(2*usableHeight),bounds.size.x/(2*usableWidth*Mathf.Max(.1f,view.aspect))));
-            view.orthographicSize=half;
-            view.transform.position=new Vector3(bounds.center.x,bounds.center.y-(safeCentreY-.5f)*2*half,view.transform.position.z)+hd2dCameraShake;
+            var frame=NativeArenaCameraLayout.Fit(view.orthographicSize,view.aspect,bounds.center.x,bounds.center.y,
+                bounds.size.x,bounds.size.y,playerBounds.center.x,playerBounds.center.y);
+            view.orthographicSize=frame.half;
+            view.transform.position=new Vector3(frame.x,frame.y,view.transform.position.z)+hd2dCameraShake;
         }
 
         void BossViewUpdate()
