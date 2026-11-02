@@ -96,7 +96,7 @@
 |---|---|
 | 원본 | origin/main f4967bc62의 skill-forge.js slotPreview/slotCondition, SKILL_LIST 및 _malCost. 웹 수정0 |
 | 미리보기 | 기존 Z후보 blackStar/lavaSummon/execution, Space후보 giantSlam/giantSlam2/skyCrusher 중 실제 Skills.Level>0을 우선. 없으면 blackStar/giantSlam. 장착 상태·스킬 습득·저장에 쓰지 않음 |
-| 비용 | skill_defs_web의48정의 중 원본 SKILL_LIST에 있는46개의 spCost/matCost/reqLv를 표시자료로 인수. 고유 charge/parry는 원 목록에 없어 추가0. 할인은 양수raw의 max(1,ceil(raw×.5)),0은0 |
+| 비용 | skill_defs_web의48정의 중 원본 SKILL_LIST에 있는46개의 spCost/matCost/reqLv를 표시자료로 인수. 고유 charge/parry는 원 목록에 없어 추가0. 기존 JSON1칸 들여쓰기를 보존하고 previewCostWebHead/Scope로 비용 출처를 별도 고정. 할인은 양수raw의 max(1,ceil(raw×.5)),0은0 |
 | 표시 | 빈 Z 기본 습득 SP10 + 악의오브50(raw100), Space SP10 + 악의오브60(raw120). 양수reqLv가 실제 플레이어 레벨보다 클 때만 Lv안내. 조건 판 높이28px·두줄·font10. 설명판도 같은 preview정의를 사용 |
 | 기존 | 270px 설명판·고정 구르기/처형·T석궁·빈2/3/4소켓 원화·64px공통제목 유지. 미이식 기술의 습득/장착 가능을 새로 주장하지 않음 |
 | 검사·한계 | 미리보기 정책 부재 RED→GREEN 7개, 앞선 전투24 포함31. 실제 Player1920/3840·1x·번역 전체는 Dota 실행으로 미검증 |
