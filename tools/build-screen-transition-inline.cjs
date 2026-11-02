@@ -36,7 +36,7 @@ function boot(labels,image,embers){
   // Critical meta must precede translated text, and version the external fallback for cached clients.
   const end=text.indexOf('<!-- screen-transition-critical:end -->');
   text=text.slice(0,end)+text.slice(end).replace('<meta charset="UTF-8">','');
-  text=text.replace(/screen-transition\.(js|css)\?v=20261102(?:-r[23])?/g,'screen-transition.$1?v=20261102-r3');
+  text=text.replace(/screen-transition\.(js|css)\?v=20261102(?:-r[234])?/g,'screen-transition.$1?v=20261102-r4');
   fs.writeFileSync(file,text);
  }
  console.log('inline cover, original-art thumbnail and '+Object.keys(labels).length+' existing loading labels; '+Buffer.byteLength(block)+' bytes/page');
