@@ -1487,4 +1487,4 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 
 ## 2026-11-02 설치형 지면 배치 수정 진행
 
-사용자 요청: 장판·지뢰·덫·현재 설치형 전체의 공중 배치 해소. 제품 후보 `8f391fea6f157433fcaea2df611d0a9b146c6604`의 범위·원화 합성·접지면/링·미검증 항목은 [전용 기록](../engine/UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)을 따른다. Mac 첫 흙 실제 호출은 UpdateViews3.2235ms/Late1.6049ms, world96,632픽셀과 독립깊이.0198097229u 이내 및1920원본을 확인했다. 기존mode2 weight차.04644는 강제비등방성 footprint를 무시한bilinear 참조로 분리했으며, 같은GPU gradient기준 최대차.00031794다. 기존실패·허용2/255를보존하고 경계/RGBA·전체설치형·대형/밀집·M1·자연플레이·공통통합/설치는진행중이다. H5·Core·판정 수치 변경0.
+사용자 요청은 장판·지뢰·덫·설치형 전체의 공중 배치 해소다. 2026-11-03 사용자 실행본131887780의 Runtime2bad5c6c8ace951017cee6c3673921692bc2a2a309ca5b5b0d23f1fbc471ff0a에는 접지 수정 타입 둘 다 없어 전달 미완료를 확인했다. 최신 Unity와 정상 병합한 [204166a 통합 소스](https://github.com/beearth/the-exoduser/commit/204166a07c95f08d6a3fe24617e05a8ff8fd8a21)는 원격 대조 일치, Player/Editor 정적 검사 오류0이다. Mac 표적 접지·수명·M1 23 통과는 후보 한정이며 원full100/61·독립색참조/미관측 한계는 보존한다. 공통 소스 반영을 실제 실행본 갱신으로 간주하지 않고 새 빌드·동일 패키지 장판/지뢰 실화면·M1·unity-latest 적용을 확인한다. 현재 시각 RETOUCH/사용자 화면 FAIL, 정확한 수치·전달 상태는 [설치형 기록](../engine/UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)을 따른다. H5/Core 전투 수식 변경0.

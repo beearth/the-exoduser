@@ -1,6 +1,6 @@
 # Unity 설치형 실제 지면 투영 — 2026-11-02
 
-상태: **제품8f391fea의 Mac 첫 지면 투영·독립 깊이 검사 통과, 필터 참조 교정 및 전체 설치형 검수 진행 중**. 정적 C# 324파일 오류0/경고477. 기준 공통1403c5ee6d52c540815ab1cf70d5666b9023aa75. 사용자 요청은 장판뿐 아니라 지뢰·덫·현재 설치형 전체의 공중 배치를 고치는 것이다. CPU 회귀3151은 보존된 수학/UV·이전 적응면 검사이며 새 GPU 투영의 합격 증거가 아니다.
+상태(2026-11-03): **수정 후보는 존재하지만 사용자 PC 실행본에는 미반영인 전달 결함 확인**. PID28152의 unity-latest/build는 source1318877800c93d622f521af76fb54b1cf20b92d6, Runtime SHA256 2bad5c6c8ace951017cee6c3673921692bc2a2a309ca5b5b0d23f1fbc471ff0a이며 NativeGroundSkillSurface/NativeGroundSkillProjection 타입이 모두 없다. 사용자 새 붉은 원 스크린샷은 해결 증거가 아니라 기존 결함 재현이다. 최신 origin/unity/main1d89b0c186281d5641156c3c8610679dadca253e와 충돌 없이 정상 병합했고 최신 UI/사운드를 보존했다. 병합 후 Player Core117/Runtime224, Editor Core117/Runtime224/Editor57 소스 Roslyn 검사 오류0(완전 입력 검사)이다. 처음 두 검사는 희소 작업본의 기존 Rm4/Rm3 모듈 누락으로 실패했고, 원격과 동일 바이트의 필수 코드 입력 인수 뒤 통과했다. 실제 Unity/셰이더 검사는 별도다. 기존 Mac 표적 접지·수명·M1 결과는 아래 한정 범위로 유지하며 PC 새 패키지 검수/실행본 갱신은 아직 미완료다.
 
 ## 원인과 현재 적용
 
@@ -85,6 +85,40 @@ NativeGroundSkillProjection.RequestProbe(createdRGBAFloatRT,mode)는 target 소�
 
 근거: Mac profile-guard-runs/20261102T032130171914Z-3872/receiver47/ground-receiver-smoke.json 및 20261102T034052091757Z-6432/receiverSampler/ground-receiver-smoke.json·receiver-mode2-sampler-reference.json. PC images-8f/received.json과 source-candidate-depth.json.
 
+## 전체 161행 수집과 정리 예외 수정
+
+Mac 앱822756730d260b43a2ef952a0c5a9972a812f5ea로37분 실제 실행을 마쳤다. 제품 표시 소스는8f와 동일하다. 결과100행 PASS/61행 FAIL을 보존하며 전체 통과로 보고하지 않는다.
+
+| 관측 항목 | 실제 결과/범위 |
+|---|---|
+| coverage |149상태+12밀집=161행, 누락0. 큰반경12는149상태의부분집합 |
+| 표시 메타데이터/접지 | statePassed161/161은표시메타데이터이며수명행동완료수치가아니다. depthFailures0, uvFailures0, derivativeInvalid0. 실제층1,185개/선택표본35,570. depth최대.0199956894u, ring distance최대.0000069700u/stroke차.0001443401 |
+| 색상 모델 |60행의QA FullEvidence clone↔독립SampleGrad 모델 비교FAIL, 최대weight차.3122860789/RGBA차.4807712734. 이는아직제품shader출력FAIL로확정하지않음. 같은fixture에서공개원제품RequestProbe2/4, clone, 모델을별도대조중이며2/255불변 |
+| 수명 | 두수명행의GPU·표시메타데이터값은행동최종결과가아니다. ring-lifecycle 마지막Dispose에서이미Destroy한parent의orb.go.SetActive(false)가NullReferenceException. 그뒤두행동결과를최종row에합치는단계가실행되지않았다. 따라서실제pool행동완료PASS도아직미검증이며, 수정앱에서원래두수명행동을별도로끝까지실행·저장해야한다. 원결과소급PASS금지 |
+| 현재 제품 수정 | NativeSkillView.Reset에서orb C#참조뿐아니라Unity GameObject생존도검사: orb != null && orb.go != null. 살아있는orb의비활성화·전투·표시·RNG·원화수식변경0. parent파괴후Dispose의실제회귀는다음앱에서별도검증예정 |
+| 보존 | full raw26/typed cache27은종료후지연저장까지복구확인. 원시float약348.5MB/PNG약1.948GB,retention절단0. 원실패·전체receipt와100/61결과보존 |
+
+PC에추가수신한정상전층PNG3개는images-full-822/received.json의원본SHA와모두일치하고직접확인했다. 뿌리spike/Seeker는상면에붙어보이며,dense8Lv20에서는actor와효과가실제겹치고actor가앞에정상표시된다. 이3장만으로난간전체·높은줄기·바위제외나미세색오차원인까지판정하지않는다.
+
+## 최종 후보의 표적 수명·표현 복원·M1 실제 결과
+
+일반 Mac 후보는80d0ae89ca1af2a08987ec7b6f47340231a36bff이다. 제품16파일은root e33/guard316과byte동일하고Core는공통1403과동일하다. 이후복원보완은QA정리코드만바꿨으며제품지면/원화/색수식추가변경0이다. 현재문서·Win전달도구tip438eea1e2bbbc1ce7af8c5de78cfc9209c268d69와앱빌드source80d0은구분한다.
+
+| 검사/범위 | 실제 결과와 한계 |
+|---|---|
+| 원제품/복제 두fixture | bf3e 앱에서rootSpike6,345·rootSeeker2,041 positive각각전부P/C mask불일치0, UV/weight/maxRGB/RGBA차0. 예전실패점2/2·7/7 재관측. 옛32점중5+4는미관측이라전체selectedCoverage/productClone gate false를보존 |
+| 독립참조 | fine-gradient SampleGrad R은여전히P/C와다르다. 같은camera pass bias=(0,1) 확인으로해당두장면의mipBias누락가설은배제. 원60행모델FAIL/2/255/old9미관측을보존하고제품색오류라고단정하지않음 |
+| guard316 정리 회귀 | 실제orb 생성6GO/4renderer/4material →ownparentDestroy→2frame→Dispose 정상반환. managed wrapper존재/Unity-null상태를함께확인하고event/registry/ownmaterial/Core보존,error0. 원예외폐회로PASS |
+| 원래 두수명행동 | 같은bf3e에서FullPool/FullRing의disable/GO/ice→air→ice실제pool/arena2D/remove/Destroy/Dispose를끝까지실행하고각actionRow를finally저장·merge. action/GPU/metadata/merged모두true. 고립ring time13.269844055175781만동일인수비교에사용,제품맥동·전역TimeScale변경0 |
+| QA표현 복원 | triad의58개oldref실패보존후별도80d0 narrow semanticPASS/exit0,error0. 원Core/ref/tick/event,fixture known2callback CAS원복후전체graph diff0/hash exact, 적16 body/walk/contact·필요ground10·registry/camera/root·생존원renderer flags/material/texture/savedSprite복원true |
+| identity 한계 |80d0 원Renderer1,429개중파괴된old50참조는false유지(적32/contact16/ground2). 재생성객체의의미상복원과oldreference동일성을혼동하지않음 |
+| 동일후보 M1 |80d0 app/source/product/Runtime/Core/exe strict일치,23/23PASS/exit0. headless-rendertexture1600×900, GUI repaint/bridge0: 자연조작검증대체아님 |
+| 후보criticalSHA256 |Runtime8f9e54651f83bef314b241283b271ab3a15498c48665db6dfbefccef6f943516; Core4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d; exe23f97deeddb5ebc86fb858349ca40881ed6c7eb2f8632c7b1554db6c19aaedb7 |
+| 보호 |80d0 두실행각raw26/typedcache27 즉시·2s·7s exact복구. Mac공유HEAD/index/WIP25파일exact,기존설치1403의핵심5파일유지. PCdesktop도기존d8링크SHA185f...동일이며원본1,236B를I:에별도보존,아직교체0 |
+| 남은 실제검수 | CUA가Mac잠금/물리입력감지로수동unlock요구. 다른OS입력으로우회하지않고사용자에게해제상태확인을요청. 실제OS이동/공격/자연전투·실행본서명/설치·Win64빌드/PC반입·실행/desktop최종반영미완료. 시작화면only프레임통계를전투성능으로확대하지않음 |
+
+원full161=100PASS/61FAIL은정정하지않는다. 새표적정리/두수명행동과semantic복원·M1 PASS는위각패키지/범위의별도후속근거다. 자동객체별마스크는새선행framework로만들지않고실제효과겹침이있는원본1x관측을연결한다. 현재VISUAL VERDICT: RETOUCH(실제자연플레이/최종실행본인수대기).
+
 ## 폐기 후보와 증거
 
 | 단계 | 실제 근거/판정 |
@@ -99,4 +133,4 @@ NativeGroundSkillProjection.RequestProbe(createdRGBAFloatRT,mode)는 target 소�
 
 ## MAP PRODUCTION REPORT — 현재 gate
 
-범위: 환경 제작이 아닌 지면 효과 표현 결함. 지형/원본맵/충돌/전투핵심 변경0. Reference는 현재같은원본Player의흙/뿌리/목교이다. source/CPU·324컴파일과 Mac 첫 흙 한 건의 실제 투영·깊이 및 원본1920 화면을 확인했다. 전체 원화RGBA·여러 지면/설치형·대형/밀집·M1·자연플레이·앱설치/공통/PC전달은 진행 중이다. VISUAL VERDICT: RETOUCH(첫 흙 한 장 외 전체 시각 검수 대기). 기존사용자앱/세이브·PC공용WIP와index는보존하며 소스후보만으로완료를주장하지않는다.
+범위: 환경 제작이 아닌 설치형 지면 표현 결함과 사용자 실행본 전달. Reference는 사용자 2026-11-03 스크린샷 및 같은 원본 Player의 흙/뿌리/목교다. 현재 사용자 실행 DLL에 수정 타입 둘 다 없으므로 해당 화면은 FAIL이고, 수정 후보 자체의 제한된 시각 판정은 RETOUCH를 유지한다. 제품 16파일을 최신 공통 소스와 정상 병합하되 지형/충돌/전투 수식 변경0이다. 최신 병합 소스의 실제 빌드·동일 패키지 장판/지뢰/원형 효과·M1·자연플레이·자동 갱신된 unity-latest DLL 포함과 사용자 경로를 확인한 뒤 전달 완료를 판정한다. 사용자 실행 중 프로세스·세이브·바로가기 고정 경로와 공용 WIP/index를 보존한다. VISUAL VERDICT: RETOUCH(후보 한정), 사용자 현재 실행 화면 FAIL.
