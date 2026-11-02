@@ -574,3 +574,27 @@ Exact product8f391fea6f157433fcaea2df611d0a9b146c6604: shaders target3.5 and sam
 
 
 Receiver smoke launcher reuses the verified delayed-profile guard unchanged except product/app/proof/output labels, exclusive receiver-smoke flag and receipt fields. Wrapper SHA2d818ee4de9ac1b0426cb48d8ff585de19e8dbdf20f8306190d8fdd813e5b67e, explicit absolute artifact-root CLI. App buildsource remains b224. AST syntax verified; actual single-case run pending. Initial actual1920 frame is saved before metadata or probe failure.
+
+
+## Actual8f first receiver-depth soil smoke: visible/fast, sampler consistency unresolved
+
+Normal ARM64 buildsource b224e6a1bc5124bc6e78a8d8a1c455b9105079c9/product8f391fea6f157433fcaea2df611d0a9b146c6604, prebuild source remote proof, errors0. One explicit soil Lv1 actualR300 source, not natural gameplay or large/dense/full acceptance.
+
+| observed scope | actual result |
+|---|---|
+| CPU product calls |UpdateViews3.2235ms; Remodel3DLate1.6049ms. Single measured cold-call wallclock, excluding PNG/readback; not overall GPU frame/FPS|
+| feature |Available true/Error empty; receiver287/volume1; actualFrameSize1920x1080; no shader/RenderGraph errors in Player log|
+| mode1 |PASS96632 positive pixels, nonfinite0, outside actual footprintUV/XZ0; world pixel evidence, not proxy contact|
+| mode2 |96632 positive pixels; stable source inputHash; allUV in range;32 source-texture comparison samples. maxWeightError.0464395359 FAIL vs2/255=.0078431373. maxRGBerror.00776919164 remains WITHIN that existing tolerance. No tolerance relaxation|
+| target ownership |CancelProbe leaves caller target created; source input unchanged|
+| mode3/mode4 |not attempted after mode2 comparison failed in first smoke; depth/completepreblendRGBA acceptance still unmeasured|
+| raw frame |Root directly viewed1920 original: red spike mark visible on soil, no obvious vertical floating quad in this scope. File4173019B/SHA7b87f8a2e421907d70080a91b5627c1adc0a23658e6d33e39d57014641c367e3|
+| restoration |normal app child exit2 for smoke comparison; original sim reference/private graph same, guard error null;26raw/27typed-cache domains exact at immediate/2s/7s recovery checks|
+
+Worst mode2 sample(x1061,y564) actualpackedUV(.4321146607,.7196003199), actualmaxRGB.008499521762/weight.09887937456; existing GPU-decode cache bilinearRGBA(.01392701361,.000148004663,.000137000083,.1212766245), expectedweight.05243983865 with originalalpha.4323985577. CPU uses texel-center coordinates u*width-.5/v*height-.5; source1254square,R8G8B8A8_SRGB,mip1,Bilinear,Clamp. The mismatch is not yet attributed to a product shader fault. SameUV direct GPU source sampler and decode/Y/precision/filter diagnosis is owned by the existing Mac QA worker.
+
+Local Unity6000.6.7f1 CGIncludes/UnityCG.cginc lines774-784 define half2 image UVs. This is a possible default-Blit decoder precision source forNPOT1254, not proof that the default path is responsible. Preserve the original cache result/failure; compare an independent exact source sampling path without changing original texture/import/filter/readability/globalQuality.
+
+Only the original1920 PNG was made available via private192.168.0.233:3334 exact one-file GET/HEAD whitelist toPC192.168.0.146; no listing/write or prefs/float publication. Server is ephemeral and will be stopped after verified receipt. Full shader/GPURGBA/12large/8dense/M1/integration/install/Win64 remain held until this one case is resolved.
+
+MAP PRODUCTION REPORT: existing A2 soil effect-rendering QA only, map/route/collision/art/Core unchanged. First normal1920 frame directly viewed; direct3840 not reached. TECH rendering/feature and one-call CPU latency evidence obtained; mode2 weight consistency FAIL/unresolved, actual2cm depthmode3 not yet read. VISUAL VERDICT: RETOUCH for acceptance; the one image looks grounded but no full-contact/color/actor-exclusion sign-off. Next pass is exact-sampler diagnosis on the same single case.

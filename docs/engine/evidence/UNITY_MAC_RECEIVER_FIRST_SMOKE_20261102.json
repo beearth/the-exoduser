@@ -1,0 +1,86 @@
+{
+  "appSource": "b224e6a1bc5124bc6e78a8d8a1c455b9105079c9",
+  "productSource": "8f391fea6f157433fcaea2df611d0a9b146c6604",
+  "runtimeSha256": "638c61f0cb00c8bf000422d9106ca39893250be8308b3b3bf914ca8eaf1c2463",
+  "coreSha256": "4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d",
+  "updateMs": 3.2235,
+  "lateMs": 1.6049,
+  "feature": {
+    "frameSize": {
+      "x": 1920,
+      "y": 1080
+    },
+    "receiverCount": 287,
+    "volumeCount": 1,
+    "available": true,
+    "apiError": ""
+  },
+  "mode1": {
+    "passed": true,
+    "positiveWeight": 96632,
+    "outsideXz": 0,
+    "outsideUv": 0,
+    "nonfinite": 0
+  },
+  "mode2": {
+    "passed": false,
+    "positiveWeight": 96632,
+    "outsideUv": 0,
+    "comparedSamples": 32,
+    "maxWeightError": 0.04643953591585159,
+    "maxRgbError": 0.007769191637635231,
+    "targetStillCreatedAfterCancel": true
+  },
+  "worst": {
+    "pixelX": 1061,
+    "pixelY": 564,
+    "actual": {
+      "r": 0.4321146607398987,
+      "g": 0.7196003198623657,
+      "b": 0.008499521762132645,
+      "a": 0.098879374563694
+    },
+    "textureRgba": {
+      "r": 0.013927013613283634,
+      "g": 0.00014800466306041926,
+      "b": 0.00013700008275918663,
+      "a": 0.1212766245007515
+    },
+    "expectedRgba": {
+      "r": 0.0007303303573280573,
+      "g": 7.76134038460441e-06,
+      "b": 7.184262358350679e-06,
+      "a": 0.0
+    },
+    "world": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "normalizedUv": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "expectedWeight": 0.05243983864784241,
+    "weightError": 0.04643953591585159,
+    "maxRgbError": 0.007769191637635231,
+    "cpuGroundDifference": 0.0,
+    "compared": true
+  },
+  "mode3And4": "not attempted after mode2 comparison failure",
+  "screenShot": "receiver-smoke-window-1920.png",
+  "visualScope": "Root directly viewed1920 original: red spike mark visible on soil; no full depth/rgba acceptance",
+  "profileGuard": {
+    "rawCount": 26,
+    "cacheCount": 27,
+    "allRawExact": true,
+    "allCacheTypedSemanticsExact": true,
+    "checkpoints": [
+      "restore-immediate",
+      "restore-2s",
+      "restore-7s-final"
+    ]
+  },
+  "originalSimReferenceAndHashSame": true,
+  "productAccepted": false
+}
