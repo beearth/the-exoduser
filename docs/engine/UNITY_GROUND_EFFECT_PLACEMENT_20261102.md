@@ -1,6 +1,6 @@
 # Unity 설치형 실제 지면 투영 — 2026-11-02
 
-상태: **8f391fea 표시 경로의 Mac161행 수집 완료, 색상 참조 비교와 파괴 후 정리 회귀 검증 진행 중**. 정적 C# 324파일 오류0/경고477. 기준 공통1403c5ee6d52c540815ab1cf70d5666b9023aa75. 사용자 요청은 장판뿐 아니라 지뢰·덫·현재 설치형 전체의 공중 배치를 고치는 것이다. CPU 회귀3151은 보존된 수학/UV·이전 적응면 검사이며 새 GPU 투영의 합격 증거가 아니다.
+상태: **Mac161행 원결과 보존, 표적정리·두수명행동·후보semantic복원·동일앱M123 통과 / 실제자연조작·실행본반영진행중**. 정적 C# 324파일 오류0/경고477. 기준 공통1403c5ee6d52c540815ab1cf70d5666b9023aa75. 사용자 요청은 장판뿐 아니라 지뢰·덫·현재 설치형 전체의 공중 배치를 고치는 것이다. CPU 회귀3151은 보존된 수학/UV·이전 적응면 검사이며 새 GPU 투영의 합격 증거가 아니다.
 
 ## 원인과 현재 적용
 
@@ -99,6 +99,25 @@ Mac 앱822756730d260b43a2ef952a0c5a9972a812f5ea로37분 실제 실행을 마쳤�
 | 보존 | full raw26/typed cache27은종료후지연저장까지복구확인. 원시float약348.5MB/PNG약1.948GB,retention절단0. 원실패·전체receipt와100/61결과보존 |
 
 PC에추가수신한정상전층PNG3개는images-full-822/received.json의원본SHA와모두일치하고직접확인했다. 뿌리spike/Seeker는상면에붙어보이며,dense8Lv20에서는actor와효과가실제겹치고actor가앞에정상표시된다. 이3장만으로난간전체·높은줄기·바위제외나미세색오차원인까지판정하지않는다.
+
+## 최종 후보의 표적 수명·표현 복원·M1 실제 결과
+
+일반 Mac 후보는80d0ae89ca1af2a08987ec7b6f47340231a36bff이다. 제품16파일은root e33/guard316과byte동일하고Core는공통1403과동일하다. 이후복원보완은QA정리코드만바꿨으며제품지면/원화/색수식추가변경0이다. 현재문서·Win전달도구tip438eea1e2bbbc1ce7af8c5de78cfc9209c268d69와앱빌드source80d0은구분한다.
+
+| 검사/범위 | 실제 결과와 한계 |
+|---|---|
+| 원제품/복제 두fixture | bf3e 앱에서rootSpike6,345·rootSeeker2,041 positive각각전부P/C mask불일치0, UV/weight/maxRGB/RGBA차0. 예전실패점2/2·7/7 재관측. 옛32점중5+4는미관측이라전체selectedCoverage/productClone gate false를보존 |
+| 독립참조 | fine-gradient SampleGrad R은여전히P/C와다르다. 같은camera pass bias=(0,1) 확인으로해당두장면의mipBias누락가설은배제. 원60행모델FAIL/2/255/old9미관측을보존하고제품색오류라고단정하지않음 |
+| guard316 정리 회귀 | 실제orb 생성6GO/4renderer/4material →ownparentDestroy→2frame→Dispose 정상반환. managed wrapper존재/Unity-null상태를함께확인하고event/registry/ownmaterial/Core보존,error0. 원예외폐회로PASS |
+| 원래 두수명행동 | 같은bf3e에서FullPool/FullRing의disable/GO/ice→air→ice실제pool/arena2D/remove/Destroy/Dispose를끝까지실행하고각actionRow를finally저장·merge. action/GPU/metadata/merged모두true. 고립ring time13.269844055175781만동일인수비교에사용,제품맥동·전역TimeScale변경0 |
+| QA표현 복원 | triad의58개oldref실패보존후별도80d0 narrow semanticPASS/exit0,error0. 원Core/ref/tick/event,fixture known2callback CAS원복후전체graph diff0/hash exact, 적16 body/walk/contact·필요ground10·registry/camera/root·생존원renderer flags/material/texture/savedSprite복원true |
+| identity 한계 |80d0 원Renderer1,429개중파괴된old50참조는false유지(적32/contact16/ground2). 재생성객체의의미상복원과oldreference동일성을혼동하지않음 |
+| 동일후보 M1 |80d0 app/source/product/Runtime/Core/exe strict일치,23/23PASS/exit0. headless-rendertexture1600×900, GUI repaint/bridge0: 자연조작검증대체아님 |
+| 후보criticalSHA256 |Runtime8f9e54651f83bef314b241283b271ab3a15498c48665db6dfbefccef6f943516; Core4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d; exe23f97deeddb5ebc86fb858349ca40881ed6c7eb2f8632c7b1554db6c19aaedb7 |
+| 보호 |80d0 두실행각raw26/typedcache27 즉시·2s·7s exact복구. Mac공유HEAD/index/WIP25파일exact,기존설치1403의핵심5파일유지. PCdesktop도기존d8링크SHA185f...동일이며원본1,236B를I:에별도보존,아직교체0 |
+| 남은 실제검수 | CUA가Mac잠금/물리입력감지로수동unlock요구. 다른OS입력으로우회하지않고사용자에게해제상태확인을요청. 실제OS이동/공격/자연전투·실행본서명/설치·Win64빌드/PC반입·실행/desktop최종반영미완료. 시작화면only프레임통계를전투성능으로확대하지않음 |
+
+원full161=100PASS/61FAIL은정정하지않는다. 새표적정리/두수명행동과semantic복원·M1 PASS는위각패키지/범위의별도후속근거다. 자동객체별마스크는새선행framework로만들지않고실제효과겹침이있는원본1x관측을연결한다. 현재VISUAL VERDICT: RETOUCH(실제자연플레이/최종실행본인수대기).
 
 ## 폐기 후보와 증거
 

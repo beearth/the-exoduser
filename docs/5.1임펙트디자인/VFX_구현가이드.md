@@ -1465,3 +1465,5 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 후속 실제161행은표시메타데이터/접지·UV실패0이나색상모델60행과ring정리1행FAIL을보존한다. 이미파괴된parent의orb.go에Reset이SetActive를호출한예외를확인해UnityGO생존검사guard를추가했다. 다음앱에서표적정리회귀·제품/clone/색상모델분리를검증하며공통설치/전체색상PASS는아직아니다.
 
 수명정정: statePassed161은표시메타데이터다. 정리예외로두수명행동의최종결과merge가미실행됐으므로pool행동완료PASS로간주하지않고, 수정앱에서원래두수명검사를별도완주·기록한다.
+
+최신후속: guard316의실제parent파괴→Dispose와원래두수명행동은bf3e에서완주·저장·merge PASS. 별도80d0후보semantic표현복원/동일앱M123PASS,제품16파일은e33과동일. 원full100/61·독립참조불일치/미관측·파괴oldref50false는보존하며자연OS조작/최종설치·Win반입/desktop은미완료다. 상세최신표를따른다.
