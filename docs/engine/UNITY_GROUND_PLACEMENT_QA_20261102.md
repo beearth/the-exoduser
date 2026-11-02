@@ -787,3 +787,8 @@ ROOT 검토 보충: QA derivative 전용 material도 원래 probe처럼 `_DstBle
 
 
 ROOT intake: same product8f; static receipt verified. QA-only exact derivative/sampler model correction actual GPU pending; original legacy failures and 2/255 retained. PC documentation e952ec89751d11a8aadece77f1fa8abc146b5e89 included with unchanged product Unity tree.
+
+
+### QA derivative GUID 修正 / 실제 실행 전 중단
+
+QA source3ec249b6의 일반 ARM64 빌드는 Succeeded였으나 errors1을 확인해 Player를 시작하지 않았다. 새 QA-only shader meta GUID `ea9df09ffae54e699054039ce82ee66ec`가33hex여서 Unity가 asset을 무시했다. 고친 GUID는 `1389b11cce034ca882f43d26366bb448`(32hex)이며 기존 assets와 중복 없음은 stage meta 검사로 확인한다. helper/C#/제품8f는 그대로, 이미 통과한 정적 검사는 반복하지 않는다. 실패 build와 import 전후772 drift/원본은 보존한다. 다음 source 원격 선확인 후 새 receiverModelMeta 이름으로 다시 빌드하고 errors0과 QA shader 실제 포함을 확인한 뒤 실행한다. guard의 경로/receipt 이름만 새 label로 바꾸고 원래 raw/cache 보호 알고리즘은 유지한다. 실제 GPU 인수는 미완료다.

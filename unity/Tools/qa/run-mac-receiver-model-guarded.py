@@ -9,7 +9,7 @@ if requested_root.is_symlink():
     raise SystemExit('Artifact root must not be a symlink')
 root = requested_root.resolve(strict=True)
 prefs = Path.home() / 'Library/Preferences'
-app = root / 'build-receiverModel-normal/EXODUSER-Unity.app'
+app = root / 'build-receiverModelMeta-normal/EXODUSER-Unity.app'
 run = root / 'profile-guard-runs' / (datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%S%fZ') + '-' + str(os.getpid()))
 run.mkdir(mode=0o700, parents=True)
 block = root / 'profile-guard-BLOCKED.json'
@@ -181,7 +181,7 @@ try:
     if block.exists():
         raise RuntimeError('Previous profile protection error blocks next app launch; explicit reviewed recovery required: ' + str(block))
     idle()
-    proof = json.loads((root / 'receiverModel-source-remote-proof.json').read_text())
+    proof = json.loads((root / 'receiverModelMeta-source-remote-proof.json').read_text())
     assert proof['remoteReadbackBeforeBuild'] and proof['remote'] == proof['commit']
     info = plistlib.loads((app / 'Contents/Info.plist').read_bytes())
     assert info['CFBundleIdentifier'] == 'com.ForDearGamers.EXODUSER----Unity-----------------'
@@ -206,13 +206,13 @@ try:
             raise RuntimeError('Raw/cache differ before launch; no normalization or launch: ' + name)
     json_new(run / 'owned-domains.json', {'appInfoDomains': canonical, 'resolvedExactRawAndCacheDomains': owned})
     exe = app / 'Contents/MacOS' / info['CFBundleExecutable']; managed = app / 'Contents/Resources/Data/Managed'
-    packet = {'app': str(app), 'source': json.loads((root / 'receiverModel-source-commit.json').read_text())['commit'], 'productSource': '8f391fea6f157433fcaea2df611d0a9b146c6604', 'runtimeSha256': digest((managed / 'Exoduser.Runtime.dll').read_bytes()), 'coreSha256': digest((managed / 'Exoduser.Core.dll').read_bytes()), 'executableSha256': digest(exe.read_bytes())}
-    json_new(run / 'receiverModel-package-identity.json', packet)
-    args = [str(exe), '--unity-ground-placement-capture', '--remodel3d', '--unity-quick-start', '--unity-qa-sandbox', str(run / 'receiverModel-sandbox'), '-output', str(run / 'receiverModel'), '-screen-fullscreen', '0', '-screen-width', '1920', '-screen-height', '1080', '-logFile', str(run / 'receiverModel-player.log'), '--unity-mute', '-source-sha', packet['source'], '-ground-receiver-smoke']
+    packet = {'app': str(app), 'source': json.loads((root / 'receiverModelMeta-source-commit.json').read_text())['commit'], 'productSource': '8f391fea6f157433fcaea2df611d0a9b146c6604', 'runtimeSha256': digest((managed / 'Exoduser.Runtime.dll').read_bytes()), 'coreSha256': digest((managed / 'Exoduser.Core.dll').read_bytes()), 'executableSha256': digest(exe.read_bytes())}
+    json_new(run / 'receiverModelMeta-package-identity.json', packet)
+    args = [str(exe), '--unity-ground-placement-capture', '--remodel3d', '--unity-quick-start', '--unity-qa-sandbox', str(run / 'receiverModelMeta-sandbox'), '-output', str(run / 'receiverModelMeta'), '-screen-fullscreen', '0', '-screen-width', '1920', '-screen-height', '1080', '-logFile', str(run / 'receiverModelMeta-player.log'), '--unity-mute', '-source-sha', packet['source'], '-ground-receiver-smoke']
     idle()
-    with (run / 'receiverModel-player-stdout.log').open('x') as out:
+    with (run / 'receiverModelMeta-player-stdout.log').open('x') as out:
         process = subprocess.Popen(args, stdout=out, stderr=subprocess.STDOUT); result['launchCount'] = 1
-        json_new(run / 'receiverModel-player-launch.json', {'pid': process.pid, 'args': args, 'source': packet['source'], 'launchedAt': datetime.datetime.now(datetime.timezone.utc).isoformat()})
+        json_new(run / 'receiverModelMeta-player-launch.json', {'pid': process.pid, 'args': args, 'source': packet['source'], 'launchedAt': datetime.datetime.now(datetime.timezone.utc).isoformat()})
         code = process.wait()
     exited = time.monotonic(); idle()
     states = [checkpoint('exit-immediate', exited), checkpoint('exit-2s', exited + 2), checkpoint('exit-7s', exited + 7)]
@@ -235,7 +235,7 @@ try:
         if raw or cache or listed or not state['stableDuringSnapshot']:
             raise RuntimeError('Final full raw/cache drift; no retry/normalization: ' + state['label'])
     result['preferencesFinal'] = {'rawCount': len(before['raw']), 'cacheCount': len(before['cache']), 'allRawExact': True, 'allCacheTypedSemanticsExact': True, 'checkpoints': ['restore-immediate', 'restore-2s', 'restore-7s-final']}
-    receipt_path = run / 'receiverModel/ground-receiver-smoke.json'; receipt = json.loads(receipt_path.read_text()) if receipt_path.exists() else None
+    receipt_path = run / 'receiverModelMeta/ground-receiver-smoke.json'; receipt = json.loads(receipt_path.read_text()) if receipt_path.exists() else None
     result.update({'exitCode': code, 'packet': packet, 'receiptExists': receipt is not None, 'actualRuntimeMatches': receipt is not None and receipt.get('runtimeSha') == packet['runtimeSha256'], 'expectedCases': 1, 'collectedCases': 1 if receipt else 0, 'smokePassed': receipt.get('smokePassed') if receipt else False, 'floatModesCollected': len(receipt.get('buffers', [])) if receipt else 0})
 except BaseException as ex:
     result['error'] = type(ex).__name__ + ': ' + str(ex); result['exitCode'] = 3
@@ -245,6 +245,6 @@ except BaseException as ex:
             json_new(block, {'errorReceipt': str(run / 'profile-guard-error.json'), 'blockedAt': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'reason': str(ex)})
     except Exception as evidence_error:
         result['evidenceError'] = str(evidence_error)
-json_new(run / 'receiverModel-run-result.json', result)
+json_new(run / 'receiverModelMeta-run-result.json', result)
 print(json.dumps(result, ensure_ascii=False))
 raise SystemExit(result['exitCode'])
