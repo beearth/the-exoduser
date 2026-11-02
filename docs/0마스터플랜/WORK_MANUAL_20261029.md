@@ -36,6 +36,12 @@
 
 상세 경로 정책은 [빌드·백업 정책](../13출시·마케팅/BUILD_BACKUP_POLICY_20261001.md)을 따른다. 확인한 정확 경로의 명령 범위 safe.directory만 허용하며 wildcard/전역 신뢰를 추가하지 않는다.
 
+## 2-1. 웹·Unity 동시 진행 (2026-11-02 사용자 확정)
+
+- 웹(main)은 Steam EA·데모로 나가는 현행판이고, Unity(unity/main)는 출시 목표판이다. 둘을 함께 진행한다.
+- UI·시작 메뉴·연출·사운드는 웹에서 먼저 확정하고 Unity로 옮긴다(UI는 웹 그대로). 웹 작업 보고 끝에 Unity 반영 상태(대기/진행/완료)를 적는다.
+- PC·Mac Codex가 unity/main을 함께 쓰므로 작업판·INBOX로 겹침을 피한다.
+
 ## 3. 검수·통합·실행본
 
 - [품질 기준](WORK_QUALITY_STANDARD_20261029.md)의 분야별 표와 나란히 비교를 적용한다. 판정은 [AAA 목표·등급](AAA_QUALITY_STANDARD_20260927.md)에 따른다.
