@@ -127,7 +127,7 @@
       root.DecisionSound?.attachMusic(video);
       if(root.ScreenTransition)root.ScreenTransition.withLoading(async()=>{
         overlay.style.opacity='1';
-        if(leadInMs>0)await new Promise(r=>{leadTimer=setTimeout(r,leadInMs);});
+        if(leadInMs>0)await new Promise(r=>setTimeout(r,leadInMs));
         if(done)return;begin();await root.ScreenTransition.videoReady(video).catch(()=>{});
       });
       else if(leadInMs>0)leadTimer=setTimeout(begin,leadInMs);else begin();

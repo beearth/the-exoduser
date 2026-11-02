@@ -2574,7 +2574,7 @@ function playCinematic(){
     toggle.onclick=()=>{if(_worldIntroPlayer)_worldIntroPlayer.toggle();};
     $('worldIntroVoiceValue').textContent='100%';$('worldIntroMusicValue').textContent='22%';
     DecisionSound.attachMusic(movie);
-    await _worldIntroPlayer.start();
+    void _worldIntroPlayer.start();
     await ScreenTransition.videoReady(movie).catch(()=>{});
     });
   }
@@ -3459,6 +3459,7 @@ async function _afterCharacterCreated(name,visualIdx){
     ['lobbyCharPreview','csIdleVid','csSceneVid'].forEach(id=>{const v=$(id);if(v&&v.pause)v.pause();});
     // 생성 결정음(두-둥 1.8초)이 영상 소리에 묻히지 않게 검은 화면을 잠깐 둔 뒤 밝아지며 시작한다.
     const seen=await ExoduserCharacterStory.play({skipLabel:_TL('건너뛰기'),language:getCurrentLanguage(),leadInMs:650});
+    await ScreenTransition.whenIdle();
     if(request!==_characterLoadSeq)return;
     showCharGate(charId,seen);
   }catch(error){if(request!==_characterLoadSeq)return;console.error('[CHARACTER STORY]',error);startBGM();}

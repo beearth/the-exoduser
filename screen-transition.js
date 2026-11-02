@@ -2,9 +2,11 @@
 (function(root){
   'use strict';
   const html=document.documentElement,KEY='exoduser:screen-transfer:v1';
-  const reduce=()=>root.matchMedia('(prefers-reduced-motion: reduce)').matches||!!root.ScreenTransition.reduceMotion;
+  const motionQuery=root.matchMedia('(prefers-reduced-motion: reduce)');
+  function reduce(){let stored=false;try{stored=JSON.parse(localStorage.getItem('hellcave_settings')||'{}').opt?.reduceMotion===true||localStorage.getItem('exoduser_menu_reduce_motion')==='1';}catch{}const yes=motionQuery.matches||!!root.ScreenTransition?.reduceMotion||stored;html.toggleAttribute('data-screen-reduced',yes);return yes;}
+  motionQuery.addEventListener?.('change',reduce);root.addEventListener('storage',reduce);document.addEventListener('change',reduce);
   const duration=ms=>reduce()?80:ms;
-  let executing=false,active=null,loadingTimer=null,loadingSince=0,animation=null,covered=false,fadeSeq=0;
+  let executing=false,active=null,loadingTimer=null,loadingSince=0,animation=null,covered=false,fadeSeq=0,coverPromise=null;
   let incoming=0;
   try{incoming=Number(sessionStorage.getItem(KEY))||0;sessionStorage.removeItem(KEY);}catch{}
   if(incoming&&Date.now()-incoming>15000)incoming=0;
@@ -13,7 +15,7 @@
   const element=()=>document.getElementById('screenTransition');
   const paint=()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
   function loading(on,since=Date.now()){
-    clearTimeout(loadingTimer);loadingTimer=null;loadingSince=on?since:0;
+    reduce();clearTimeout(loadingTimer);loadingTimer=null;loadingSince=on?since:0;
     html.removeAttribute('data-screen-loading');
     if(on)loadingTimer=setTimeout(()=>{if(loadingSince)html.dataset.screenLoading='1';},Math.max(0,300-(Date.now()-since)));
   }
@@ -26,21 +28,21 @@
     if(to===1){covered=true;html.dataset.screenCover='1';}
     audio(1-to,time);root.dispatchEvent(new CustomEvent('screen-transition-gain',{detail:{value:1-to,ms:time}}));
     el.style.opacity=String(to);
-    if(el.animate){animation=el.animate([{opacity:from},{opacity:to}],{duration:time,easing:'ease-in-out'});await animation.finished.catch(()=>{});animation=null;}
+    if(el.animate){const current=el.animate([{opacity:from},{opacity:to}],{duration:time,easing:'ease-in-out'});animation=current;await current.finished.catch(()=>{});if(animation===current)animation=null;}
     else await new Promise(r=>setTimeout(r,time));
     if(seq!==fadeSeq)return;
     if(to===0){covered=false;html.removeAttribute('data-screen-cover');if(!keepLoading)loading(false);}
   }
-  function fadeOut(){return fade(1,500);}
+  function fadeOut(){if(covered&&coverPromise)return coverPromise;if(covered&&element()&&Number(getComputedStyle(element()).opacity)>=.999)return Promise.resolve();coverPromise=fade(1,500).finally(()=>{coverPromise=null;});return coverPromise;}
   function fadeIn(options={}){return fade(0,600,options.keepLoading);}
   function withLoading(work){
     if(active)return active;
-    active=(async()=>{if(!covered)await fadeOut();loading(true);try{executing=true;return await (typeof work==='function'?work():work);}finally{executing=false;loading(false);await paint();await fadeIn();}})().finally(()=>{active=null;});
+    active=(async()=>{await fadeOut();loading(true);try{executing=true;return await (typeof work==='function'?work():work);}finally{executing=false;loading(false);await paint();await fadeIn();}})().finally(()=>{active=null;});
     return active;
   }
   function navigate(url,isCurrent=()=>true){
     if(active)return active;
-    active=(async()=>{if(!covered)await fadeOut();if(!isCurrent()){await fadeIn();active=null;return;}const since=Date.now();loading(true,since);try{sessionStorage.setItem(KEY,String(since));}catch{}try{location.assign(url);}catch(error){await fadeIn();active=null;throw error;}})();
+    active=(async()=>{await fadeOut();if(!isCurrent()){await fadeIn();active=null;return;}const since=Date.now();loading(true,since);try{sessionStorage.setItem(KEY,String(since));}catch{}try{location.assign(url);}catch(error){await fadeIn();active=null;throw error;}})();
     return active;
   }
   function imageReady(img){
@@ -58,7 +60,7 @@
   }
   // Native input is blocked only while the black boundary is active; focus is retained.
   for(const type of ['click','pointerdown','keydown'])document.addEventListener(type,e=>{if(active){e.preventDefault();e.stopImmediatePropagation();}},true);
-  root.ScreenTransition={fadeOut,fadeIn,withLoading,navigate,imageReady,videoReady,loading,paint,reduceMotion:false,get busy(){return !!active;},get executing(){return executing;}};
+  root.ScreenTransition={fadeOut,fadeIn,withLoading,navigate,imageReady,videoReady,loading,paint,whenIdle:()=>active||Promise.resolve(),reduceMotion:false,get busy(){return !!active;},get executing(){return executing;}};
   if(incoming||boot)loading(true,incoming||Date.now());
   root.addEventListener('pageshow',e=>{if(e.persisted){active=null;fadeIn();}});
 })(globalThis);

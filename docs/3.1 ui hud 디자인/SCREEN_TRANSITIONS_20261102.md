@@ -8,13 +8,13 @@
 | 검정 경계 | fixed inset:0, z-index2147483647, #000. html/body 첫 인라인 CSS도 #000. 원래 화면을 남겨 둔 채 fadeOut 완료→화면 교체·준비→두 rAF→fadeIn |
 | 기본 시간 | fadeOut500ms / fadeIn600ms, ease-in-out. withLoading(work 또는 promise)는 중복 실행을 하나로 합치고 finally에서 입력·로딩을 복구. navigate는 페이지 교체까지 검정을 유지 |
 | 기다림 표시 | 실제 준비 작업 시작300ms 뒤부터 인장. 빨리 끝나면 timer 취소. game 첫 그림이 디코딩된 뒤에는 같은 인장을 로딩 그림 위에 유지하고 부트 완료 때 해제 |
-| 인장 원화 | img/ui/silver_hell/gate_sigil_20261028.jpg 그대로. 6vh 정사각형, 오른쪽·아래 max(48px,4.5vh), 2초 주기 opacity.35→.9→.35, 붉은 빛 drop-shadow(0 0 5px rgba(145,22,15,.28)). screen 합성으로 원본 검정 바탕 경계 제거. 새 그림·회전·바·글자 없음 |
-| 움직임 줄이기 | prefers-reduced-motion:reduce 또는 ScreenTransition.reduceMotion=true는 페이드80ms. OS 감소 설정에서 인장 animation:none/opacity.65. 기존 저장 분위기 설정과 별개 |
+| 인장 원화 | img/ui/silver_hell/gate_sigil_20261028.jpg 그대로. 6vh 정사각형, 오른쪽·아래 max(48px,4.5vh), 2초 주기 opacity.35→.9→.35, 붉은 빛 drop-shadow(0 0 5px rgba(145,22,15,.28)). brightness(2) contrast(1.5)와 screen 합성으로 원본 검정 바탕 경계 제거. 새 그림·회전·바·글자 없음 |
+| 움직임 줄이기 | prefers-reduced-motion:reduce, 기존 저장 opt.reduceMotion, 메뉴 exoduser_menu_reduce_motion=1 또는 ScreenTransition.reduceMotion=true는 페이드80ms·인장 animation:none/opacity.65. 별도 새 설정을 만들지 않음 |
 | 페이지 인계 | navigate가 sessionStorage exoduser:screen-transfer:v1에 시각을 기록. 다음 HTML head가 body 파싱 전 검정 상태를 선택하고 지연 인장 타이머를 이어감. 15000ms 초과 마커 폐기, BFCache pageshow 복귀 시 해제 |
 | 영상 시작 | videoReady는 loadeddata/readyState≥2와 가능한 requestVideoFrameCallback을 기다림. 12000ms 디코딩 실패는 기존 재시도·스킵 UI로 복귀. 원본 영상·자막·cue·홀드 시간은 보존 |
 | 영상 종료 | 끝.6초 이내에서 fadeOut 시작. 스킵도 같은500ms 검정 경계를 거친 뒤 video.pause/src 해제·DOM 제거. 이야기 자체 opacity 페이드는600ms, 기존 오디오 첫450ms 상승은 보존 |
-| 오디오 | DecisionSound의 기존 media gain에 transitionGain×decisionGain을 적용. fadeOut→0/fadeIn→1을 같은 시간으로 ramp, 결정음 −6dB duck과 곱함. 로비·세계관BGM·영상·기존 게임BGM, game 앰비언스 기존 gain 노드 사용. 새 AudioContext/재생 경로 없음 |
-| 중복·취소 | 전환 Promise 동안 click/pointerdown/keydown을 흡수, 평소 입력 지연·가로막는 레이어 없음. showCharGate는 기존 _characterLoadSeq를 시작과 실제 이동 직전 모두 대조. 취소 시 검정 해제, 중복 이동·중복 EXP 손실 방지 |
+| 오디오 | DecisionSound의 기존 media gain에 transitionGain×decisionGain을 적용. fadeOut→0/fadeIn→1을 같은 시간으로 ramp, 결정음 −6dB duck과 곱하며 duck 복귀가 진행 중 전환 envelope를 덮어쓰지 않음. 로비·세계관BGM·영상·기존 게임BGM, game 앰비언스 기존 gain 노드 사용. 새 AudioContext/재생 경로 없음 |
+| 중복·취소 | whenIdle은 이야기 완료/실패 뒤 남아 있는 첫-frame 전환을 기다림. 전환 Promise 동안 click/pointerdown/keydown을 흡수, 평소 입력 지연·가로막는 레이어 없음. showCharGate는 기존 _characterLoadSeq를 시작과 실제 이동 직전 모두 대조. 취소 시 검정 해제, 중복 이동·중복 EXP 손실 방지 |
 | 스테이지 | 승인 랜덤 로딩 원화 선택→decode→표시→기존 nextStage 콜백→두 rAF→검정 아래 원화 숨김. 고정5000ms·900ms 타이머 제거. 기존35장/와이드 선택·진행 선은 보존 |
 | 부트 | 기존 에셋/맵 준비를 유지하고 stRndImg가 준비될 때 검정→로딩 그림, 기존100%/hideBootLoading에서 로딩 그림→게임을 같은 모듈로 처리 |
 | 소환굴·균열 | 현행 웹은 같은 맵의 적 생성 구조(소환굴 근접·균열 spawn). 별도 입장·퇴장 페이지/화면 없음. 새로운 게임 규칙·이동 화면을 만들지 않음 |
