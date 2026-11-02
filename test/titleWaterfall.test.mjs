@@ -20,7 +20,7 @@ test('flow travels down at a steady speed and the near fall is faster',()=>{
 });
 test('tall C2 cover keeps the moon, both skulls and full Silvertail in every ratio',()=>{
  for(const w of [1920,2560,3840]){
-  const r=api.rect(w,1080);assert.equal(r.width/2036,r.height/1016);
+  const r=api.rect(w,1080);assert.equal(r.width/2036,r.height/1018);
   assert.ok(r.x<=0&&r.y<=0&&r.x+r.width>=w&&r.y+r.height>=1080);
   for(const [x,y] of [[776,301],[920,443],[699,444],[988,498],[1134,376],[1440,480],[1151,776],[1280,775]]){
    assert.ok(r.x+x*r.scale>=0&&r.x+x*r.scale<=w);

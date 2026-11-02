@@ -2,11 +2,13 @@
 (function(scope){
  'use strict';
  const ROOT='assets/title-signboard/C2/';
- function rect(w,h){const scale=Math.max(w/2036,h/1016);return {x:(w-2036*scale)/2,y:(h-1016*scale)/2,width:2036*scale,height:1016*scale,scale};}
+ function rect(w,h){const scale=Math.max(w/2036,h/1018);return {x:(w-2036*scale)/2,y:(h-1018*scale)/2,width:2036*scale,height:1018*scale,scale};}
+ function videoWidth(w,h,dpr=1){const need=Math.max(w,h*2)*Math.min(dpr,1.5);return need<=1920?1920:need<=2560?2560:3840;}
+ function videoSource(width){return 'video/title_motion_C2_clarity_'+width+'_20261102.mp4';}
  function advance(t,dt,paused){return t+(paused?0:Math.max(0,Math.min(.1,dt)));}
  function motionReason(p){return p.hidden?'hidden':p.reduce?'reduced-motion':p.tier==='C'||p.quality==='low'?'low-tier':p.atmos===0?'atmosphere-off':'motion';}
  function flowOffset(t,index){return t*(index===0?100:75);}
- const api=scope.TitleSignboard={rect,advance,motionReason,flowOffset};
+ const api=scope.TitleSignboard={rect,advance,motionReason,flowOffset,videoWidth,videoSource};
  if(!scope.document)return;
  api.create=function(host){
   const doc=scope.document,canvas=doc.createElement('canvas');canvas.id='titleSignboardCanvas';canvas.setAttribute('aria-hidden','true');
@@ -17,7 +19,7 @@
   const video=doc.createElement('video');video.muted=true;video.defaultMuted=true;video.loop=true;video.playsInline=true;video.preload='none';
   const stats={ready:false,frames:0,time:0,mode:'loading',error:null,renderMs:0,videoTime:0,videoFrames:0,flowFrames:0};
   const reduce=scope.matchMedia('(prefers-reduced-motion: reduce)');
-  let active=false,destroyed=false,raf=0,last=0,dirty=true,hasVideo=false,playPending=false,policyTimer=0,lastMode='';
+  let active=false,destroyed=false,raf=0,last=0,dirty=true,hasVideo=false,playPending=false,policyTimer=0,lastMode='',selectedWidth=0,restoreTime=0;
   const falls=[{"id":"near","box":[696,498,66,259],"mouth":[714,506],"contact":[735,747],"speed":100},{"id":"far","box":[951,548,78,218],"mouth":[974,555],"contact":[1001,756],"speed":75}];
   const tile=doc.createElement('canvas');tile.width=128;tile.height=512;
   const tx=tile.getContext('2d'),pixels=tx.createImageData(128,512);
@@ -37,8 +39,10 @@
   function sync(){
    if(destroyed)return;
    const mode=reason();if(mode!==lastMode){dirty=true;last=0;lastMode=mode;}
-   if(!active||mode!=='motion'||stats.error){video.pause();}else if(!playPending&&video.paused){
-    if(!video.src)video.src='video/title_motion_C2_tall_loop_20261102.mp4';
+   if(!active||mode!=='motion'||stats.error){video.pause();}else if(!playPending){
+    const width=videoWidth(host.clientWidth,host.clientHeight,scope.devicePixelRatio||1);
+    if(selectedWidth!==width){restoreTime=video.currentTime||0;selectedWidth=width;stats.mediaWidth=width;video.src=videoSource(width);}
+    if(!video.paused)return;
     video.muted=true;playPending=true;video.play().catch(e=>{if(active&&reason()==='motion'&&e.name!=='AbortError'){stats.error='Video playback unavailable';dirty=true;}}).finally(()=>{playPending=false;wake();});
    }
    if(dirty&&!raf&&active)raf=scope.requestAnimationFrame(draw);
@@ -73,7 +77,7 @@
    if(videoReady||still.complete&&still.naturalWidth){
     cx.setTransform(rw/w,0,0,rh/h,0,0);cx.imageSmoothingEnabled=true;cx.imageSmoothingQuality='high';
     cx.drawImage(videoReady?video:still,r.x,r.y,r.width,r.height);
-    cx.save();cx.translate(r.x,r.y);cx.scale(r.width/2036,r.height/1016);
+    cx.save();cx.translate(r.x,r.y);cx.scale(r.width/2036,r.height/1018);
     if(videoReady){hasVideo=true;stats.videoFrames++;stats.videoTime=video.currentTime;}
     if(moving&&!stats.error){falls.forEach((f,i)=>waterfall(f,i,stats.time));stats.flowFrames++;}
     cx.restore();canvas.style.display='block';stats.ready=true;stats.frames++;stats.renderMs+=performance.now()-t;dirty=false;
@@ -82,6 +86,7 @@
   }
   function wake(){dirty=true;if(active&&!destroyed&&!raf)raf=scope.requestAnimationFrame(draw);}
   function refresh(){dirty=true;last=0;sync();}
+  video.addEventListener('loadedmetadata',()=>{if(restoreTime>0&&Number.isFinite(video.duration))video.currentTime=restoreTime%video.duration;});
   video.addEventListener('loadeddata',wake);video.addEventListener('error',()=>{stats.error='Video load failed';hasVideo=false;video.pause();wake();});
   still.onload=wake;still.onerror=()=>{stats.stillError=true;wake();};
   doc.addEventListener('visibilitychange',refresh);reduce.addEventListener('change',refresh);scope.addEventListener('resize',refresh);scope.addEventListener('storage',refresh);
