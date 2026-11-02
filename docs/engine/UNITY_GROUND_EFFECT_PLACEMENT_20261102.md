@@ -124,3 +124,6 @@ PC에추가수신한정상전층PNG3개는images-full-822/received.json의원본
 
 
 2026-11-02 Macbf3e(producte33/guard316/ground8f) 좁은실제후속:rootSpike6345/Seeker2041positive에서제품공개2/4와QAclone mask/UV/weight/RGBA전부차0. 독립SampleGrad불일치·old9좌표미관측보존,bias(0,1)확인. orb생성→부모파괴2frame→Dispose실제PASS,기존두수명행동flow도동일시간인수조건에서action/GPU/merge모두PASS. full161원100/61소급변경없음. 원표시58ref복구false는별도원인확인중,Core/material/prefs26raw27cache복구. 전체triadfalse/최종설치Win미인수. 근거UNITY_GROUND_PLACEMENT_QA_20261102 및 evidence/UNITY_MAC_RECEIVER_TRIAD_20261102.json.
+
+
+2026-11-02 동일bf3e 일반앱 scriptedM1 23/23 PASS, headlessRenderTexture1600x900/GUI repaint0·bridge0. raw26/cache27exact복구. 자연OS플레이·실제FPS는별도,전체인수와기존FAIL미관측판정불변. 자세한근거 UNITY_GROUND_PLACEMENT_QA_20261102 및 evidence/UNITY_MAC_RECEIVER_M1_20261102.json.

@@ -1090,3 +1090,23 @@ source12487 일반ARM64 BuildSucceeded였으나 errors1을확인해Player는실�
 다음same-packageM1은정확히동일bf3eapp/DLL/exe를검증한뒤기존23개script QA만실행한다. 기존검증된profileguard의백업/CAS/즉시2s7s복구를유지하고M1인자/receipt parser만바꿨다. batchmode이지만-nographics는사용하지않으며captureMode/GUI repaint/bridge를보고한다. M1은자연손조작/자연적전투/FPS검수의대체가아니다. 실제M1·자연플레이·서명설치·Win64는이시점미실행이다.
 
 MAP PRODUCTION REPORT: A2root-slope두fixture만추가관측;MASTER/OUTER/LARGE/MEDIUM/GROUNDgeometry·sourceart미변경. PLAYABLE의자연이동/전투·전체LANDMARK/START~EXIT카메라투어/route/collision/pageerror/404/seam/전체FPS미검수. TECH는위P/C/R및세수명흐름분리결과. FILES는QA/source316guard/docs/evidence,sharedWIP/index미수정. GIT는bf3e선증명,본결과commit발행;install/deploy없음. VISUAL VERDICT: RETOUCH.
+
+
+## 2026-11-02 같은 bf3e 앱 M1 실제 결과
+
+| 항목 | 실제 결과 |
+|---|---|
+| Build source / product | bf3e93a63425a17ede0fa6a0ca16e066374cc984 / e33ed53574a187db36e00dfbd1f92b4d6f263635 |
+| scripted M1 | 23/23 PASS, firstBlocked 공백, exit0 |
+| captureMode | headless-rendertexture-1600x900 |
+| GUI | headless=true, guiRepaints=0, guiBridged=0 |
+| Runtime / executable | 21315e73c464c14097cd416c21d8dece667c446532e0b2d8931d91fbfd62a1c1 / 2e06e64ce39c2f449387aaa78e62cfcf6e877665a5eebe0c735f0ea5d50962da |
+| 보호 | launch1, raw26/typed-cache27 즉시·2s·7s exact 복구, errornull |
+
+이 M1은 동일 triad 패키지의 script 경로 통과다. 자연 OS입력·전투·실제 per-frame FPS·GUI 시각 판정을 대체하지 않는다. 원래 full161의100/61, old9미관측, original renderer58 exact복구false와 독립 samplerR 불일치는 보존한다. 제품복제P/C 두fixture 모든positive 차0 및 orb/두lifecycle PASS는 별도 범위다.
+
+다음 자연검수 runner는 동일 앱/Runtime/Core/exe를 strict 대조하고 --remodel3d/--unity-quick-start/독립sandbox/음소거만 사용한다. batchmode, 캡처fixture, virtual input, AI 정지·자원부여·무적은 사용하지 않는다. 화면은 CUA로 실제OS입력을 보낸다. 기존 showFps는 OnGUI에서 fpsFrames를 증가시키므로 실제 per-frame 지표라고 주장하지 않는다. 표시값과 실제 동작 관측은 분리한다.
+
+CUA 최초 앱 선택이 자동실행을 유발해 즉시CmdQ로 종료한 사건은 별도기록했다. 직전성공M1 known-before를 바탕으로 원26raw/27cache전체 대조, 알려진normal-domain1개만CAS복구, 최종즉시·2s·7s exact복구/errornull이다. 앱선택전에보호runner로먼저실행하는순서를적용한다.
+
+MAP PRODUCTION REPORT: geometry/asset/Core변경없음. TECH scriptedM1만PASS. 실제OS플레이/카메라투어/자연FPS 미검수. VISUAL VERDICT: RETOUCH. 기존설치1403보존,최종Mac/Win인수보류.
