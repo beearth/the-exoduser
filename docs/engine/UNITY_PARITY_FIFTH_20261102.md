@@ -144,3 +144,17 @@ P0 산출 fifth/p0-overlap. Core/Runtime 독립 컴파일0, 정식 빌드/M1/전
 - 사용자의 I: 장치/복사 작업 여부를 비동기로 확인 요청. 다른 owner 예약·프로세스, 사용자 앱/세이브, 디스크 연결·복구 설정 변경0.
 - 현재 후보는 Core/Runtime 독립 컴파일 exit0까지만 확인했다. P0 전체0건·정식 빌드/M1·unity/main 반영은 미완료. 5차 잔여로 우선순위를 넘기지 않는다.
 - 외부 WIP tools/guard.baseline.json SHA256 9414ce48870885726bd4bd6db7df52d6d3ad8aa63edcb7f67c6cb3f63c4bb8ca를 보존하고 커밋 제외한다.
+
+### 05:41 KST 복구 지점과 대기 작업 정리
+
+| 구분 | 확인된 상태 |
+|---|---|
+| 로컬 P0 후보 | 0a864885b06043150de93ab2aa7185fc4b235e54, 코드/관련 문서 7파일만 커밋. guard WIP는 커밋 전후 SHA256 동일 |
+| GitHub 복구본 | codex/backup-unity-parity-p0-20261103의 8a896bf32ce3993c881d2d658da292bbeac5913b. 연결된 GitHub 도구로 7개 Git blob 전부 일치, 전체 tree ab364963cd9d5c1456831b35cbe90d6fb1afd1c2 일치, 생성 ref 재조회 확인. 미검증 후보이며 통합/인도 PASS 아님 |
+| 공통 원격 | 05:41 GitHub 직접 조회 unity/main=c741c11c27a76ae891cad7294adc24f28243314e. P0 후보 미반영 |
+| 지연 지속 | I: 파일 읽기는 PowerShell/CMD/Node에서 대기. C:·G: 로컬 Git은 정상. 원인 확정/디스크 복구 조작0 |
+| 자기 대기 정리 | WMI로 PID·부모·생성 시각·명령을 대조한 자기 fetch/push·PowerShell 진단·P0 예약 요청만 종료. Unity/Player 자식 없음 확인. 다른 owner/사용자 앱 종료0, 시스템 updater 보존 |
+| 남은 확인 | 자기 browser-bdf5cd91의 node9984/Chrome55356·68364·59056/cmd60272 종료 요청은 WMI 반환2로 거부. 추가 권한 우회0, 종료/잔여0 주장 금지. I: 응답 복구 후 공용 bin에서 자기 P0 예약 취득 여부·브라우저 잔여를 먼저 조회해야 함 |
+| 다음 게이트 | 공용 bin 정식 새 빌드→같은 패키지 M1→ko/de/fr/5해상도 전 화면 겹침0 및 3333 나란히1x→최신 unity/main 정상 merge·비강제 push·REPORT 갱신→5차 나머지. 현재는 전체 미완료 |
+
+I:의 REPORT를 현재 갱신할 수 없어 이 문서에 실제 중단 지점을 남긴다. 바탕화면 직접 교체0, 세이브 변경0. 복구본은 이전 I: 스킬 준비물의 인수나 5차 잔여 완료를 뜻하지 않는다.
