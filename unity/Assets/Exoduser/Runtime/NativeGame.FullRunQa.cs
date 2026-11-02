@@ -116,6 +116,12 @@ namespace Exoduser.UnityPort
                         destination = aim + away.normalized * 210;
                         if (away.magnitude >= 170 && away.magnitude <= 260 && FullRunLine(p.X, p.Y, aim.x, aim.y)) destination = new Vector2(p.X, p.Y);
                     }
+                    else if (flow.InArena)
+                    {
+                        var arenaBoss=flow.FindBoss();
+                        if(arenaBoss!=null){destination=new Vector2(arenaBoss.X,arenaBoss.Y);aim=destination;objective="approach-boss";}
+                        else objective="arena-revive-wait";
+                    }
                     else if (flow.BossUnlocked && flow.Exits.Count > 1)
                     {
                         var ex = flow.Exits[1]; destination = new Vector2((ex.X + .5f) * 40, (ex.Y + .5f) * 40); objective = "hell-gate";
