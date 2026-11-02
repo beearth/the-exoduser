@@ -63,3 +63,8 @@ UI 최종 Desktop 완료 전 Unity/Player/빌드/선예약0. 완료 후 최신�
 지정 통합 담당이 expected968f2a324에서 bf9b2d25c28a44d4a90e8f2017a27f8d5f657394로 비강제FF했고원격SHA를읽어대조했다. 제품ccde13cb9와공통Unity tree동일, 새빌드b970760a·M1aaf2078e/실제3바이너리동일로 COMMON_RULES의유효검수재사용을적용했다. 새통합빌드/추가M1반복0이다.
 
 일반Desktop은 `I:/EXODUSER-Storage/demo-art/hero/night-anchor-20261031/build/EXODUSER-Unity.exe`, 인자 `-force-d3d11 --remodel3d`, 작업폴더는EXE부모·아이콘EXE,0이다. 이전게임대조소스bce000073이현재제품조상임을확인한뒤현재링크SHA를CAS검사하고이전링크동일byteI백업→전달→별도PowerShell프로세스4속성/Runtime·Core·EXE SHAreadback을완료했다. 앱자동기동/사용자세이브쓰기0. 근거 night-anchor-20261031/validated-adoption.json·desktop-delivery.json·desktop-readback.json. Mac실제반영/실행은pending, 전체아트RETOUCH및위생성씬이전byte복구미완료는유지한다.
+
+
+## 2026-11-02 설치형 지면 배치 수정 진행
+
+사용자 요청: 장판·지뢰·덫·현재 설치형 전체의 공중 배치 해소. 제품 후보 `8f391fea6f157433fcaea2df611d0a9b146c6604`의 범위·원화 합성·접지면/링·미검증 항목은 [전용 기록](UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)을 따른다. Mac 첫 흙 실제 호출은 UpdateViews3.2235ms/Late1.6049ms, world96,632픽셀과 독립깊이.0198097229u 이내 및1920원본을 확인했다. 기존mode2 weight차.04644는 강제비등방성 footprint를 무시한bilinear 참조로 분리했으며, 같은GPU gradient기준 최대차.00031794다. 기존실패·허용2/255를보존하고 경계/RGBA·전체설치형·대형/밀집·M1·자연플레이·공통통합/설치는진행중이다. H5·Core·판정 수치 변경0.

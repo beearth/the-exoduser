@@ -1483,3 +1483,8 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 비교 서버: http://127.0.0.1:3347/game.html?feel=0 / ?feel=1. 전용 저장소는 I:/EXODUSER-Storage/combat-feel/20261031/saves. 실제 검수와 남은 한계는 같은 폴더 REPORT.md 및 전용 인계 combat-feel.md. 재미의 최종 판정은 사용자 직접 플레이다.
 
 - 실물 재작업: 접점 그림자 전체→가산광 전체 두 패스로 묶어 8접점에서 합성 전환16→2회. HP 표식은 외곽 아트의 사각 바운드 대신 원형 globe-liquid-wrap::after 안쪽에만 표시한다.
+
+
+## 2026-11-02 설치형 지면 배치 수정 진행
+
+사용자 요청: 장판·지뢰·덫·현재 설치형 전체의 공중 배치 해소. 제품 후보 `8f391fea6f157433fcaea2df611d0a9b146c6604`의 범위·원화 합성·접지면/링·미검증 항목은 [전용 기록](../engine/UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)을 따른다. Mac 첫 흙 실제 호출은 UpdateViews3.2235ms/Late1.6049ms, world96,632픽셀과 독립깊이.0198097229u 이내 및1920원본을 확인했다. 기존mode2 weight차.04644는 강제비등방성 footprint를 무시한bilinear 참조로 분리했으며, 같은GPU gradient기준 최대차.00031794다. 기존실패·허용2/255를보존하고 경계/RGBA·전체설치형·대형/밀집·M1·자연플레이·공통통합/설치는진행중이다. H5·Core·판정 수치 변경0.

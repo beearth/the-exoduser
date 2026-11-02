@@ -345,3 +345,8 @@ PoE2 학습([POE2_REFERENCE_STUDY](POE2_REFERENCE_STUDY.md) §3.1·§6.5)의 층
 | 2026-10-28 | VFX-D19 Unity 수정 검수 — 브랜치 `claude/unity-pc-holydome-webparity-20261028`(tip b5023673e, 고유 3파일: SkillAdditive _Flat 알파×max(RGB), NativeSkillView `WebLitHolyDome=.11`, M1 09b 탄막 겹친 컷), 빌드 루프 run 20261028-1445_b502367 PASS(m1 21/21, 무창, 교체 없음). 장판이 더하는 G: 웹 평균 2.5·p99 19·면적 0.6% / Unity 수정 2.6·30·2.0%(기존 38.4·200·45%). 드루이드 독탄 4발 또렷. 잔여 차이: 링 2개가 웹보다 옅게 보임(웹은 반경별 조명으로 외곽 ≈0). 비교 `G:/exoduser/tmp/design-review/20261028_holydome_color/holydome_web_vs_unity_1x.jpg`. 승인 항목 CTO 제출, **승인 전 unity/main 병합 금지** |
 | 2026-10-28 | VFX-D18 해소 통보(유니티 총괄): unity/main `cd545b813` 필드 적 탄 뷰 병합. 대체 그리기된 미이식 아트 3종을 VFX-14로 백로그 등록. Unity 실행은 이제 `unity/Tools/devtools/exo-unity.ps1`로만(잠금·무창·음소거·세이브 격리 자동, 13:52 세이브 덮어쓰기 사고 후) |
 | 2026-10-28 | VFX-D19 링 하향(`WebLitHolyDomeRing=.03`, b16a8d3c8) + unity/main f49b6d625 병합(e505a211e) → 빌드 루프 run 20261028-2142_e505a21 PASS(m1 22/22, 07e·09b ok, USER_SAVE 0). 장판이 더한 G: 웹 2.5·p99 19·면적 0.6% / Unity 2.4·25·1.3%, 링 거의 안 보임, 독탄 또렷 → 총괄 판정 PASS. 사용자 지시 변경(진행 후 총 컨펌)에 따라 유니티 총괄에 병합 요청, 최종 비교는 컨펌 목록으로 CTO 제출 |
+
+
+## 2026-11-02 설치형 지면 배치 수정 진행
+
+사용자 요청: 장판·지뢰·덫·현재 설치형 전체의 공중 배치 해소. 제품 후보 `8f391fea6f157433fcaea2df611d0a9b146c6604`의 범위·원화 합성·접지면/링·미검증 항목은 [전용 기록](../engine/UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)을 따른다. Mac 첫 흙 실제 호출은 UpdateViews3.2235ms/Late1.6049ms, world96,632픽셀과 독립깊이.0198097229u 이내 및1920원본을 확인했다. 기존mode2 weight차.04644는 강제비등방성 footprint를 무시한bilinear 참조로 분리했으며, 같은GPU gradient기준 최대차.00031794다. 기존실패·허용2/255를보존하고 경계/RGBA·전체설치형·대형/밀집·M1·자연플레이·공통통합/설치는진행중이다. H5·Core·판정 수치 변경0.
