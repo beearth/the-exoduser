@@ -1,0 +1,168 @@
+> 2026-11-02 C2 후속 후보: `codex/unity-parity-1102`. 아래 A 전달은 이전 빌드 이력이며 새 C2 실제 Player 검증과 구분한다.
+
+# Unity 울트라와이드 타이틀 A — 2026-11-01
+
+사용자가 지정한 스크린샷의 울트라와이드 제작을 완료했다. 실제 Desktop 바로가기의 EXE·인수·작업폴더·아이콘을 검수한 설치본 `I:/EXODUSER-Storage/unity-builds/ui-ultrawide/d8a089fbbad3/EXODUSER-Unity.exe`로 연결하고4속성을 다시 읽었다. 이전 바로가기와 실행본은 보존했다.
+
+**현재 상태: 타이틀 울트라와이드 PASS / PC Desktop 전달 완료.** 소스d8a089fbb·빌드b43c5804·같은 M1 61c33a75 필수23단계, 실제5120×1440 포함6해상도/3언어/5상태90장과 움직임·정지·재개·양끝 무띠·글자겹침/잘림0 통과. 필드22/월드56+직접비교24·캐릭터6개 저장/재실행·시각방향7행 통과. 설치212파일 전부SHA 일치·설치경로M1 7c35c639 23단계 통과. 모든 최종 실행 창/잔여/USER_SAVE0. Mac 수신·무음 외 청음·장시간 자연플레이·전체맵 시각PASS는 이번 완료 범위가 아님.
+
+## 현행 타이틀 계약
+
+이 문서가 타이틀의 중앙 16:9 영상/블러 확장/720px 왼쪽 음영 설명보다 우선한다. 캐릭터 선택·로비·인게임의 기존 R5 계약은 별도다. 웹 승인 A 정본 `207b35600b3c9f6c9a6a71b6269439df13cd5f58`의 `title-signboard.js`와 `assets/title-signboard/A/manifest.json`을 참고한다.
+
+| 항목 | 구현·수치·적용 위치 |
+|---|---|
+| 승인 원본 | A master 7680×2160, SHA256 `c6565cf4050d3ae33d3d65acdd5becf0cfe0114a77a7dd2b4e03cb29e6858548`. 원생성 2048×768의 재구성·업스케일 이력이며 네이티브 8K 생성 주장은 하지 않음 |
+| 실행 자산 | `Resources/Art/TitleSignboard/A/background.png`, `silvertail.png`, `still.png`: 각 5760×1620. `motion-mask.png`: 1920×540. `hands.png`: 1536×456, 가로6셀, 셀256×456 |
+| 변환·출처 | 승인 WebP 3개를 PNG로 무손실 형식 변환, PNG 2개는 동일 byte. 크기 조정/신규 생성/유료 호출0. 5개 모두 디코딩 RGBA 일치. 경로별 SHA256/RGBA SHA256은 같은 폴더 `manifest.json`과 `title-A/asset-import.json` |
+| 전체 화면 | `NativeTitleSignboardLayout.Cover`: W,H를 최소1로 보정, k=max(W/7680,H/2160), 표시(7680k,2160k), 원점((W−7680k)/2,(H−2160k)/2). 물리 화면 전체를 균일 cover. 1080높이의 1920/2560/3840폭 원점X는 −960/−640/0, 표시3840×1080 |
+| 보존 영역 | 같은 크롭에서 달 중심(.416,.193), 얼굴(.590,.204), 양발(.595,.886)/(.655,.902)이 지원5해상도와 7680×2160/12800×3600 검사 안에 남음. 픽셀 그림의 실검수는 별도 |
+| 메뉴 | 기존 R5 금속 버튼·입력·일반판3행/데모 위시리스트 조건 보존. 로고(96,96) 폭520/비율유지, 그림자Y+10/alpha.5. 주행동(116,436,400,68), 보조(116,520+(i−1)×62,368,48). 주22/보조18px·자간.14em·선택.25초/해제.18초. 화면 높이/1080의 균일배율, 왼쪽 물리 가장자리 기준 |
+| 메뉴 음영 | 왼쪽560 논리폭만 적용. 좌 alpha.24→x560에서0, 중심(220,500)/반경(340,340) 타원 alpha=max(0,1−거리)×.40 합성. 화면 하단 alpha.28→위로18%에서0. 구형 전체 방사 비네트 제거 |
+| 빌드 줄 | 기존 R5의 실제 오른쪽36·하단26,11px/행높이18.7·자간3.08·alpha.6를 유지. 웹 A의 max(48px,4.5vh) 여백과 같다고 주장하지 않음 |
+| 렌더 | `NativeTitleSignboard` + Resources `Shaders/TitleSignboard`, shader target3.0. 단일 Graphics.Blit, ARGB32/sRGB 렌더텍스처, 깊이0, Bilinear/Clamp. 최대30fps, 화면 비율 보존·버퍼상한5760×2160, 최소1px. OnGUI Repaint에서만 새 프레임 렌더 |
+| 색공간 | 컬러 텍스처 sRGB, 모션 마스크만 linear. Linear 프로젝트에서는 샘플을 gamma로 변환해 웹의 연산을 적용하고 최종 RGB를 linear로 복귀. GL.sRGBWrite와 RenderTexture.active는 finally 복원. 실제 Player 색/방향 검수 전 동일 픽셀 주장은 하지 않음 |
+| 임포터 | A 하위 경로만 전용 규칙. Default/Texture2D, sRGB는 mask 외true, mipmap없음, alphaIsTransparency=false, NPOT보존,8192상한, Uncompressed/Bilinear/Clamp. 기존 다른 아트 규칙·GetVersion3 유지 |
+| 시간 | 최대dt.1, 음수dt0, 비활성 포커스/정지 시 시간 증가0. 새 타이틀 진입에 시간/렌더횟수0 초기화. `--unity-reduce-menu-motion` 및 `NativeLobby.TitleMotionPaused`는 현재 프레임 정지. Windows/Mac OS 접근성 설정 자동 연결은 이번에 구현하지 않음 |
+| 실패 | 셰이더/레이어 미준비·미지원 또는 렌더 실패는 승인 A still로 cover. 전체 아트 부재에도 기존 메뉴 입력은 계속 그림. 구형 title_motion_20261028.mp4를 요청하거나 블러로 대체하지 않음. 기존 MP4 원본/패키지 파일 삭제0 |
+| 자원 수명 | 타이틀을 떠나는 OpenForPage와 로비 OnDestroy에서 RenderTexture.Release/Destroy·Material.Destroy·전용5텍스처 UnloadAsset. 재진입은 재로딩. 기존 FDG/canonical WorldMovie·캐릭터 영상 수명은 보존 |
+
+## 레이어 모션 수치
+
+좌표 p는 승인 마스터의 좌상단 기준 정규좌표, t는 위 검수 시계와 분리된 메뉴 누적시간이다. 아래 식은 웹 A 정본의 수치이며 Unity에서 실제 재생 품질을 확인하기 전에는 웹 검수 결과를 이식 완료 증거로 사용하지 않는다.
+
+| 레이어 | 수치·식 |
+|---|---|
+| 공통 band | smoothstep(a,b,x)×(1−smoothstep(c,d,x)) |
+| 달 | 중심(.416,.193), x거리×3.5555556, 원판=1−smoothstep(.116,.127,거리). pulse=.5+.5sin(.66t), 밝기배율1+(pulse−.5)×.11 |
+| 하늘 | mask.R×(1−달원판), 깊이 band(0,.025,.32,.49,y). dx=하늘×깊이×[.0038sin(.075t+14y)+.0015sin(.123t+29y)+.002sin(.045t+7y)], dy=하늘×깊이×.0016sin(.095t+18x) |
+| 산란광 | through=sin(29x+13y−.29t)×sin(14x−24y+.17t). 하늘광 RGB(.042,.005,.002)×하늘×(.45+.55through)×[1−smoothstep(.12,.74,달거리)]. 반사광 RGB(.022,.003,.001)×mask.B×sin(.66t+.4through) |
+| 강 | mask.G. dx=.0008sin(190y−1.45t+24x), dy=.0017sin(82y−.72t)+.0005sin(170x+.9t). 하이라이트=[.5+.5sin(410y−1.8t+sin(96x))]^12, RGB(.065,.014,.008)×강×하이라이트×(.6+.4sin(.8t+30y)) |
+| 손6종 | 기준점/폭/셀/위상: (.418,.908)/.019/2/.3; (.384,.964)/.023/3/2.8; (.451,.803)/.0105/4/4.4; (.441,.855)/.014/1/1.7; (.392,.918)/.015/5/5.4; (.457,.716)/.007/0/3.9 |
+| 손 공통 | rise=.5+.5sin(.48t+위상), 높이=폭×3.5555556×1.78. 시작Y=기준Y−높이×(.26+.74rise). 손가락dx=.018(1−셀y)sin(7셀y+1.15t+위상). RGB×(.75,.49,.43), alpha×smoothstep(0,.016,기준Y−y)×(.36+.38rise), 수면 아래/셀 밖0 |
+| 머리·천 | 머리=band(.604,.622,.716,.742,x)×band(.145,.175,.335,.365,y), 천=band(.618,.645,.739,.769,x)×band(.435,.49,.79,.84,y). dx=(머리×.0018+천×.0021)sin(1.05t+12y), dy=(머리×.0035+천×.003)sin(.83t+18x). 얼굴·몸·손·무기·발은 원래 레이어 위치 유지 |
+
+## 검수와 반영 경계
+
+| 검수 | 이번 결과 / 남은 조건 |
+|---|---|
+| RED→GREEN | 기존 코드에서 승인 A 전용 렌더러 호출 assertion 실패. 연결 후 `unity/Tools/title-signboard/contract.test.cjs` 통과: 구형 영상/블러 경로 제거·자원해제·전용 캡처 경로 |
+| 좌표·시계 | 실제 C# layout71검사 통과. 새 `check-title-grid.cjs`는5120 실캡처 누락 RED를 확인했다. 실제6해상도/3언어/5상태90장, 양끝각3열 최대RGB≥4·전체 캔버스, 패널 밖 x.36W/폭.62W·y.04H/높이.89H에서 모션·재개50픽셀초과/정지0픽셀을 검증. 227b2e2a 실제90장 검사 GREEN. 정지1/2의 source는 reduced-motion, 나머지는 layered가 정확한 계약이며 검사기만 이를 바로잡음. 같은5120 화면 육안 확인 |
+| 독립 Runtime | Player RSP와 기존 Core35 참조로 Runtime205소스 컴파일 exit0/errors0. 기존 범위의 경고28개는 보존. Unity 셰이더 컴파일/Player 실행/M1 증거가 아님 |
+| 자산 | 승인5원본 SHA/decoded RGBA 일치. 실제D3D11/RX9070XT의5120×1440·3840×1080·1920×1080·21:9·16:10 출력과 메뉴/얼굴/발1x에서 방향·비율·전체원화·메뉴가독성 확인. 동일크기 승인원화/결과 보드 보관 |
+| 실제 전체UI 목표 | 원후보 UI1395/팁255/키30·동영상105/타이틀15는86cb08bb의 범위다. 결합 후보는 QA 전용 `--unity-ui-overlap-check --unity-title-a-check`에서5120×1440/1920×1080/2560×1080/3840×1080/1600×900/2560×1600 ×선택ko/de/fr×메뉴·모션·정지1·정지2·재개=90PNG/타이틀18행·입력90/틱정지90을 추가 검증. 페이드1.1초·모션대기.5·정지후.15·두정지사이.35·재개후.5초, 실제 해상도 최대5초. 제품 기본 경로/저장/입력은 변경0 |
+| 실제 새 빌드 | d8a089fbbad317a999e2519488e5b83360b804bb / Unity tree 3de6097bba9259e5ad2b9f0e0e7f55cd3625261f, Git 입력4128·컴파일소스488 동일. b43c5804/Succeeded/errors0/USER_SAVE0, Runtime `5e619a67af6a3322b084fc806610194321a897e538b4ed29a63cd4dea8b46079`. 최종7종 Player 검수와 설치본 M1은 모두 같은 DLL SHA. 임시 입력 원본714+제외57=771 exact 복원 |
+| 전달 | 도타부재·공식FIFO·무음·격리세이브로 실행. 위 설치 경로로 기존 Desktop .lnk4속성 정상 교체/읽기검증, 이전 대상/바로가기 byte 보존. 최신 공통babada092를 정상부모로 보존한 후보를 unity/main에 비강제 반영하며 원격SHA는 delivery/integration.json으로 확인. Mac 수신·Steam배포는 미실행 |
+
+원본 보존·소스/패키지/실제GPU/설치/Desktop 영수증: `I:/EXODUSER-Storage/demo-art/unity-ui/ultrawide/takeover-20261101/title-A/delivery-20261102/formal/`, 같은크기 보드·실제1x는 review/. 이전86cb08bb의 UI1395 기능·시각0건과74f49763의 로그2파일 guardFAIL은 그대로 보존한다. 최종 실행의 안전PASS로 과거FAIL을 덮지 않는다.
+
+## 최신 공통 정상 병합 준비 — 2026-11-01
+
+| 항목 | 현재 결합 계약과 검수 |
+|---|---|
+| 부모 | 타이틀 후보3c543372c와 승인 공통c3362d2df를 두 부모로 정상 병합. 공용HEAD38edf98a·공용INDEX0·타인 예약/프로세스/작업본 보존 |
+| 충돌6파일 | NativeGame.StageFlow/NativeGame/NativeLoadingSelection/NativeLobby.TitleMenu/NativeUiSafeArea/NativeUiViewport. R5의 실제 화면 가장자리·중앙 변환·ForcedTip과 A 전용 렌더를 유지하고 공통의 최신 로딩/로고/독립Mac 캡처를 함께 보존 |
+| 팁 정의 | 공통이 StageFlow 끝에 추가한 같은 NativeLoadingTips 중복 정의만 제거. 기존 NativeLoadingSelection에 한 번만 유지. KO/EN4종·실제 바인딩·미지정키 fallback·FontPixels 수치는 동일 |
+| 로딩 합성 | 전체 HUD 뒤 최종 전환로딩을 그리는 공통 순서 유지. FillScreen과 NativeLoadingArtwork.Draw는 원래 GUI.enabled를 저장하고 페인트 중true, finally에 원복. 로딩 audit에 rendered=실제팁을 추가해 공통 독립 캡처가 원문 전체를 대조 가능 |
+| API 연결 | 공통의 Draw(index,title,detail,progress,alpha,string tip) 6인자 호출은 기존 R5 Draw(index,title,detail,progress,alpha,false,tip)로 위임. 기존 gate·ForcedTip·원화 선택·시계/입력 계약 보존 |
+| 반입 범위 | common-merge-before에 덮기 전 정확 byte를 보관하고 후보와 동일한 경로만 반영. 공통 NativeGame.LoadingTipCapture와 관련 문서는 그대로 인수. 신규 셰이더/원화 외의 새 생성이나 다른 게임시스템 변경0 |
+| 독립 검증 | 결합 Runtime206소스/errors0·경고28, 실제 C# 안전영역/키/로딩702검사와 A 연결 계약 통과. 앞205소스 결과는 이전 후보 이력. 새 정식빌드·Player/M1·실제1x를 대체하지 않음 |
+
+이 병합은 타이틀 작업 브랜치의 소스 결합이며 `unity/main` 게시·다른 PC/Mac 반영·실행 중인 Desktop의 최신화가 아니다. 실제 FIFO·잠금·도타 부재·메모리·무음·격리세이브 조건을 새 실행 직전에 재확인한다.
+
+## 정식 빌드 영수증 — 2026-11-01 19:57 KST
+
+| 항목 | 실제 결과와 경계 |
+|---|---|
+| 정확 입력 | 소스 `229c941628069fb5e449eb673f5d7083b6d9a2d0`, Unity tree `dc5362dbcbcd36dc923a26810b92de5e462d8cf2`. 빌드 전4116개 Git 입력 대조. 외부 후보 코드 추가0, 기존2개 canonical 무시영상은 공식 미디어 복원·동일byte 검사 |
+| 정식 빌드 | 6000.6.7f1 Win64/x64, remodel-scenes1, 86cb08bb/ok=true/exit0, 새 고유출력 BuildReport Succeeded/errors0/4,571,873,631bytes, USER_SAVE0. CLI execMs0/errorLogs2도 원문 보존하며 이 숫자만으로 성공을 추론하지 않음. 이번에 새로 생성된 BuildReport·실제212파일·새Runtime DLL을 함께 확인 |
+| 패키지 | 전체160DLL/Managed153·MCP파일/참조0·보존8개MP4 소스/패키지 동일byte. 타이틀 MP4는 보존 파일이며 새 A 타이틀의 실제 재생 증거로 세지 않음 |
+| 실제 Runtime | `55c3f67fd0d4a3efc99b8b54eae31b1e9754a903c66ed1f2cbf6d30e6fadf1a3`; Core `cf277366bd0ae827507de776b81331128fe0f54a844d2e4057e247c1bcc6f934`. 빌드 후 코드/셰이더/assembly484개가 동일 Git 소스와 일치 |
+| 검수 중단 | M1 입구에서 dota2.exe PID54328 감지. 해당 시도는 슬롯/Player 시작 전 차단이며 M1 결과나 새화면은 없음. 새 Player/M1/시각 PASS·자연플레이·FPS·오디오 청음 완료 주장0 |
+| 원본 보호 | build 전709개 metadata/material/scene의 정확 원본과57개 후보밖 metadata/Editor설정을 별도 보관하고 후보 입력만 임시 적용. 빌드 뒤 원본766개 exact 복원·빌드후 byte도 보관·CAS 원복. 이전 R5에서 이미 남아 있던 원본3overlay의 해소까지 주장하지 않음 |
+| 순번·다음 | 자기 Owner unity-ui-ultrawide 공식 반환, 현재 잠금/예약 없음 확인. 새 대기자·자동 재시도·Player 시작0. 도타 부재와 FIFO/메모리/무음/격리세이브 확인 뒤 성공한 이 패키지의3핵심SHA부터 대조하고 M1→실제 UI/필드/월드/1x를 이어감. 소스가 바뀌지 않으면 성공 빌드 반복 금지 |
+
+영수증: `title-A/formal/evidence.json`, `source-input.json`, `build.json`, `package-proof.json`, `mcp-proof.json`, `restoration.json`. 원문86cb08bb.log에는 라이선스 토큰 갱신 오류 등도 보존했다. Source 후보229와 별도의 실제 Player 검증·공통/Desktop 전달 상태를 유지한다.
+
+## 2026-11-02 검수 재개와 최신 공통 보존
+
+사용자 도타 종료/재개 지시 후 도타·Unity·Player 부재, 잠금/예약 없음, 메모리 여유51.5GB, 기존 EXE/Runtime/Core3SHA 일치를 확인했다. 기존86cb08bb 동일 패키지 M1은99a0a0c6에서 정상종료/창0/잔여0/USER_SAVE0·필수23단계 통과. 해당 소스 UI1395/동영상105/타이틀15·팁255·키30, 컴포넌트·글자겹침·물리경계0건 통과. 단74f49763 원문 guard는 Player.log/prev2개변경으로 FAIL이며 안전PASS로 재분류하지 않음.
+
+최종 전달은 공통907083b7c의 무제한 캐릭터·보관 호환과 babada0923의 적 시각방향·QA를 정상 병합한다. NativeGame의 fixture조건1충돌은 world/facing/hud-blend 모두 보존하며 Core 전투값은 변경0. 타이틀/로딩/월드 변경을 보존하며, 공통 이후 인원 제한을 과거로 되돌리지 않는다. 이 결합은 새 Core/Runtime이므로 최종 같은 빌드 M1/실화면/저장 보호를 다시 연결한다. 기존86cb08bb의 결과를 새 DLL 검수로 소급하지 않는다.
+
+## 2026-11-02 웹 C2 tall 이식 후보
+
+| 항목 | 현행 후보 계약·검증 |
+|---|---|
+| 원본 | origin/main `f4967bc62`의 title-signboard.js·C2 manifest·still·fall-near/far와 title_motion_C2_tall_loop_20261102.mp4. 웹 수정0 |
+| 미디어 | 2036×1016·24fps·8.583333초·무음·loop. 원본 SHA256 3020b3babc951c9864b2c105a8e421040229076bd34779892231d366c68c5a7a, 같은 byte를 StreamingAssets/Lobby에 인수 |
+| cover | max(W/2036,H/1016)·중앙 크롭. 버퍼3840×2160 상한·화면 비율 유지. 정지 원화는 WebP→PNG decoded RGBA 동일 |
+| 폭포 | 근거리 box696,498,66,259·mouth714,506·contact735,747·100px/s. 원거리951,548,78,218·974,555·1001,756·75px/s. 128×512 주기 타일·alpha.38. 입구 반사/착수 링·안개 수식 이식, 실제 GPU 일치 미검증 |
+| 메뉴 | 웹 _fitTitleStage와 같이 k=min(W/1920,H/1080), logoLeft=max(48,H×.045), menuLeft=logoLeft+20k. 기존 로고520·상단96, 메뉴116/436와 입력 유지 |
+| 수명·폴백 | 전용 NativeLobbyVideo 무음 디코더, reduced-motion/포커스 해제로 정지. 포커스 setter에서 디코더를 즉시 pause하여 로비 Update 조기반환 중에도 재생이 남지 않음. 오류/셰이더 미지원은 C2 still cover. 전환/파괴에서 decoder·RT·material·tile 해제. 이전 A/구형MP4 삭제0 |
+| 검사 | A 비율로 C2 검사 RED 후 C#71 GREEN. 디코더 진행 누락 RED 후 라우팅 계약 GREEN. 독립 Core114/Runtime210 csc exit0. Unity import·셰이더·Player·M1·1x 검수를 대체하지 않음 |
+| 실제 검수 | 기존 --unity-title-a-check 호환·새 --unity-title-c2-check, 기존90장 게이트를 C2 video 모드·decoded frame 진행 조건으로 강화. 도타 실행으로 실제 실행0, 공통/바탕화면 갱신0 |
+
+증거·최종 SHA·웹 대비 차이: I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md. VISUAL VERDICT: 미검증. 기존 A의 실제 PASS를 C2로 소급하지 않는다.
+
+### 같은 날 최신 선명도 합성판 수신
+
+웹 `93f41dd8f6`(origin/main fd2d1badfb)의 정적 원화+Kling 선명도 합성판이 들어와 브리프대로 tall 후보를 교체했다. 원본 생성 해상도1774×887에서 제작자가 확대·합성한3840×1920 결과이며 네이티브4K 생성으로 부르지 않는다. cover 기준은2036×1018(2:1), 폭포 좌표·100/75px/s·alpha.38은 그대로다.
+
+| 변형 | 런타임 선택·검증 |
+|---|---|
+|1920×960|need=max(Screen.width,Screen.height×2)≤1920,4,800,452B·c5b4d40f…|
+|2560×1280|need≤2560,7,292,221B·1e73270f…|
+|3840×1920|나머지,13,032,368B·eeddc6a4…|
+|공통|24fps·206프레임·8.584초·무음. 3파일 웹SHA256일치, still WebP→PNG decoded RGBA일치. resize는 이전 초/새 duration으로 seek, 준비 중 이전 출력 유지. 새C#75/라우팅계약통과·실제Player미검증|
+
+상세 전체SHA는 C2-clarity-assets.json. 앞의2036×1016/tall/71검사는 교체 전 이력이다. 폐기된16:9 타이틀·A파노라마로 fallback하지 않는다. 이번 체크아웃의 이전 tall 활성 사본만 I:에 보존한 뒤 SSD에서 제외하고 웹원본/Git이력은 유지한다.
+
+## 2026-11-02 저녁 2차 정정 — 최종 Kling·전체화면 확장
+
+| 항목 | 현행 계약 |
+|---|---|
+| 타이틀 | 웹94e3a89ed의 title_motion_C2_final_20261102.mp4 한 개, 2036×1016/24fps/8.583초/6,192,566B/SHA256 869895a608475b694d68718ad5af809e0dc8f6fd65204f04adf7db4f011827c3. 선명도 변형3종은 런타임 요청하지 않음. fallback은 같은 원본 첫 프레임 |
+| 폭포 | near 860,320,60,253/mouth877,328/contact895,560/100px/s; far1043,385,44,203/mouth1056,392/contact1066,579/75px/s. mask 웹 동일byte, alpha.38 |
+| 프레임 | 캐릭터 정보·플레이 방식 판은 동일 panel_frame_20261029, source slice150/destination60/outset18. 새 원화 생성0 |
+| 전체화면 | 웹64종·21/32판128개를 FullscreenWide PNG에 무손실 반입. 원본SHA·decoded RGBA 일치. catalog 원본 크기·centerX로 로비/캐릭터 영상 중앙을 합성하고 네메시스21컷/사망 원화를 실제 화면에 연결. 폐기 타이틀·문·게이트 그림은 활성화하지 않음. 나머지 영화 대체 정지컷은 catalog만 보관하며 정본 영화 유지 |
+| 검사 | 실제 레이아웃 C#68검사 PASS. 전체화면64/128 pixel byte PASS. 이번 빌드/Player/시각 판정과 최종SHA는 지정 REPORT에 기록. 과거 A/합성판 실물 결과를 소급하지 않음 |
+
+저녁 실비교 후 메뉴를 최신 웹의380px 폭/48px 행/18px Hahmlet/왼쪽36px+.16em/상하1px 선/선택16×1px 표식으로 정합했다. 정지 모션은 같은 디코더 프레임을 유지하고 사망 확장판은 실제 전체화면을 채운다. --unity-parity-1102-check는 기존 UI/타이틀 검수의 범위를1920·3840/ko로만 제한하며 제품 경로는 불변, 타이틀 모션 실측간격10.5초다. 첫 빌드는 셰이더1148/3584에서 실행 중단되어 성공 영수증이 없으며 Library를 보존해 정식 실행을 이어간다.
+
+실제1920/3840 비교에서 전사1024px 문장의64px 축소 샘플에 aliasing 점이 확인되어 원본PNG는 유지하고 전사 아이콘에만 mipmap/trilinear를 적용한다. 정보판 높이를 웹165.5px·좌우36px·상단34px로 맞추고 이름/설명 기준59.4/110.6px를 정합한다. 이 수정의 실제 화면은 후속 같은빌드로 재검수하며 앞9e9ba444 DLL의186UI/23M1 근거와 구분한다.
+
+폐기된 C2_clarity_1920/2560/3840 MP4와 각meta6경로는 활성 코드참조0을 확인하고 I: evening/rejected-clarity에 전파일SHA대조 보존 후 자기 StreamingAssets에서 제거했다. 최종 원본1개만 배포입력에 남기며 Git 이력·웹 정본은 보존한다.
+
+### 실제 재촬영 아이콘 잔점 재작업
+39abdaa의 mipmap/trilinear만으로는 실제 IMGUI64px 잔점이 남았다(재촬영 rework-ui). 같은 방법을 중단하고 웹 원본1024 PNG를 보존한 채 Lanczos3로64×64 사전 축소한 emblem_warrior_ui64.png를 캐릭터 선택 레일 전용으로 사용한다. 새 이미지64px/빌리니어/무압축/밉0, 기본 원본과 다른 위치의 사용은 유지한다. rework-ui 이전본은 채택하지 않으며 새 패키지의 실제 아이콘 비교가 필요하다.
+
+### 2026-11-02 저녁 최종 Win64 실물·바탕화면 인수
+
+빌드 입력9e771f7712, Unity트리 b57814813639c9263bd0973dea794e5a13182348. 공식6000.6.7f1 Win64 112a8abb(-remodel-scenes1)는 compile0/build성공/USER_SAVE0이다. Runtime bcd1042c…f0e91, 동일 M1 7e05298a 및 실제 설치본731adf79 각각23/23.
+
+최종 Kling 원본2036×1016·SHA869895a6…827c3과 폭포만 사용한다. 1920/3840 UI186장, 타이틀11e33fd5 10장/10.5초 모션·pause 픽셀일치·resume PASS. 실제 인물/바위/하늘3x와 아이콘6x에서 잔점 미관측. 9-slice 정보판380×165.5/안쪽36, 전사 아이콘64px 사전축소본을 채택했다.
+
+Desktop213파일은 빌드→staging→설치 후 전수SHA와 목록 일치, 링크 대상/인자 읽기 확인. 최종 오디오3313979d와 화폐d6be008e도 통과했다. UI186 실행은 외부 Player.log1건 변경으로 보호검사 false를 원문 보존하며, 자체 Player exit0·창0·잔여0이고 저장데이터 변경은 검출0이다. 다른 최종 빌드/M1/타이틀/오디오/화폐/설치M1은 USER_SAVE0이다.
+
+전체 UI는 기존 글꼴·잠금 장식·미이식 범위로 RETOUCH, 맵 전체·자연 밀집전투·청음·Mac은 별도 미검증이다. 비교 경로와 실제 영수증: I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md 및 evening/delivery-visual-review.json.
+
+
+## 2026-11-02 3차 후속 — 캐릭터 잠금 장식·로어 표시 후보
+
+첫 Player와 같은 해상도의 웹 실물을 대조해 빠진 중앙 잠금 장식과 정보판 로어를 보충했다. 최신 정본은 `third/web-character/index-origin-main.html`, `lobby_i18n.js`, `lobby-ms.json`이며 보관 루트는 `I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/`이다. 로어 문구의 새 창작·기획 확정은 없으며 웹 lang 정본을 Data로 정확 추출하고 조회만 연결했다.
+
+| 대상 | 현재 표시 계약 |
+|---|---|
+| 잠금 중앙 장식 | 기존 `coming_soon_chains_v2` 정본 사용. 1920×1080 safe 좌표 x520/y327.296875/440×440. 2560·3840은 기존 중앙 safe matrix로 각각 +320/+960. 기존 작은 슬롯 X·오디오 호출 보존 |
+| 출시 준비 중 판 | 중심 x740/y775.296875/높이61, NotoSansKR-Regular 24px, 자간3.84px, 좌우 패딩30+테두리1. 정본 리소스 존재 확인, 미지원 글리프는 공용 TextFont fallback |
+| 정보판 본문 | 웹의 최신 설명을 기존29언어 label lookup으로 표시. 잘못된 변성술사 hunter 영문 fallback은 활성 Silver 경로에서 제거 |
+| 로어 | Data `characterLoreKeys` 5키 + 29언어145항목. 기존 label 값 변경0. KO/EN은 index 정본, 나머지는 lobby_i18n.js STY-20 및 ms JSON 정본. 코드에 로어 본문·대체 로어 하드코딩 없음 |
+| 정보판 배치 | 본문14px/행간24.5px/폭308, 로어12.5px/행간21.25px/폭308. 상단 구분선과15px 간격, 내용 높이에 맞춘 정보판·특성판 배치. 원래5종 job/name/desc 및15 trait 한글 정의는 정본과 동일해 보존 |
+| 보존 범위 | 캐릭터 영상 밝기·회색 처리, 생성 잠금 정책, 저장, Core, 사운드, 스킬 코드 변경0 |
+
+정적 추출검사 29언어145항목 일치·기존 label 변경0, Runtime 독립 C# compile 종료0/error0(기존 warning32). 영수증 `third/character/lore-extraction-check.json`, `runtime-compile.log`, `character-final.patch`, `character-source.json`. 실제 최종 union Player의1920/2560/3840 캐릭터0/1 검수는 부모 담당이며 이 후보는 시각 PASS가 아니다.
+
+## 최종 Player 영수증 — 3차
+
+빌드53412e1f(af70a6a2c5)·같은패키지UI6699ddaa 76PNG/1920·2560·3840/기능14 PASS·M1653caf5c23/23. 모두공식ok·창0·잔여0·USER_SAVE0, Runtime06a013b876120aafbd6d8adb3adf0f0171a2bc81187b6207222a23fabe14e2a7. 직접1x·확대및담당재검수완료. 전체미이식/잔여차이는 UNITY_WEB_PARITY_THIRD_20261102.md에명시한RETOUCH이며, 자연플레이/OS입력/전체언어검증과구분한다. 근거 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/third/review/.

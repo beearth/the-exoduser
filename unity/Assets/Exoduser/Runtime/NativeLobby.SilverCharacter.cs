@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 namespace Exoduser.UnityPort
 {
     public sealed partial class NativeLobby
@@ -6,7 +7,7 @@ namespace Exoduser.UnityPort
         Texture2D silverCornerTop,silverCornerBottom,silverVisualCancel,silverVisualCreate,silverVisualDisabled;
         Texture2D[] silverEmblems,silverPosters,silverPortraits;
         GUIStyle silverVisualTitle,silverVisualName,silverVisualDescription,silverVisualCaption,silverVisualAction,silverVisualTraitTitle,silverVisualTraitBody;
-        Texture2D silverVisualVignette,silverHeadingLine;
+        Texture2D silverVisualVignette,silverVisualSideShade,silverHeadingLine,silverClassChains;
         void EnsureSilverVisual()
         {
             SilverStyles();
@@ -14,6 +15,7 @@ namespace Exoduser.UnityPort
             silverVisualCancel=Resources.Load<Texture2D>("Art/ui/silver_hell/visual_cancel");
             silverVisualCreate=Resources.Load<Texture2D>("Art/ui/silver_hell/visual_create");
             silverVisualDisabled=Resources.Load<Texture2D>("Art/ui/silver_hell/visual_disabled");
+            silverClassChains=Resources.Load<Texture2D>("Art/CharacterSelect/coming_soon_chains_v2");
             silverCornerTop=Resources.Load<Texture2D>("Art/ui/silver_hell/panel_corner_0");
             silverCornerBottom=Resources.Load<Texture2D>("Art/ui/silver_hell/panel_corner_1");
             presentationTraitGlyphs=Resources.Load<Texture2D>("Art/ui/silver_hell/trait_silver")??presentationTraitGlyphs;
@@ -22,7 +24,7 @@ namespace Exoduser.UnityPort
             {
                 "warrior","silvertail","hellgunner","transmuter","spearmage"
             };
-            for(int n=0;n<5;n++)silverEmblems[n]=Resources.Load<Texture2D>(n==0?"Art/CharacterSelect/emblem_"+names[n]:"Art/ui/silver_hell/emblem_"+names[n]+"_disabled");
+            for(int n=0;n<5;n++)silverEmblems[n]=Resources.Load<Texture2D>(n==0?"Art/CharacterSelect/emblem_warrior_ui64":"Art/ui/silver_hell/emblem_"+names[n]+"_disabled");
             silverVisualTitle=new GUIStyle(silverName)
             {
                 fontSize=18
@@ -57,12 +59,36 @@ namespace Exoduser.UnityPort
             silverVisualAction.normal.textColor=NativeSilverHellUi.Text;
             silverVisualVignette=NativeSilverHellUi.Effect(256,144,(u,v)=>
             {
-                float a=u<.18f?Mathf.Lerp(.35f,0,u/.18f):u<.64f?0:Mathf.Lerp(0,.66f,Mathf.Clamp01((u-.64f)/.20f));float b=v>.7f?Mathf.Lerp(0,.72f,(v-.7f)/.3f):0;return new Color(0,0,0,a+b*(1-a));
+                float b=v>.7f?Mathf.Lerp(0,.72f,(v-.7f)/.3f):0;return new Color(0,0,0,b);
             });
+            silverVisualSideShade=NativeSilverHellUi.Effect(256,1,(u,v)=>new Color(0,0,0,.66f*u));
+        }
+        string SilverLore(int index)
+        {
+            if(!visualLabelCatalogLoaded){visualLabelCatalogLoaded=true;var data=Resources.Load<TextAsset>("Data/visual_select_labels");if(data!=null)visualLabelCatalog=JsonUtility.FromJson<VisualLabelCatalog>(data.text);}
+            var keys=visualLabelCatalog==null?null:visualLabelCatalog.characterLoreKeys;if(keys==null||index<0||index>=keys.Length)return "";return VisualSelectionLabel(keys[index],keys[index]);
+        }
+        List<string> SilverParagraphLines(string text,float size,float width,out GUIStyle style)
+        {
+            int integerSize=Mathf.CeilToInt(size);float scale=size/integerSize;style=new GUIStyle(silverBody){font=NativeSilverHellUi.TextFont(silverBody.font,text),fontSize=integerSize,wordWrap=false,padding=new RectOffset(),margin=new RectOffset(),alignment=TextAnchor.UpperLeft};var lines=new List<string>();int start=0;
+            while(start<text.Length){int end=start,last=-1;for(int i=start+1;i<=text.Length;i++){if(style.CalcSize(new GUIContent(text.Substring(start,i-start).TrimEnd())).x*scale>width){end=last>start?last:Mathf.Max(start+1,i-1);break;}end=i;if(i<text.Length&&text[i-1]==' ')last=i;}if(end<=start)end=text.Length;lines.Add(text.Substring(start,end-start).Trim());start=end;while(start<text.Length&&text[start]==' ')start++;}return lines;
+        }
+        float SilverParagraphHeight(string text,float size,float width,float lineHeight){GUIStyle style;return SilverParagraphLines(text,size,width,out style).Count*lineHeight;}
+        void DrawSilverParagraph(float x,float y,float width,string text,float size,float lineHeight,Color color)
+        {
+            GUIStyle style;var lines=SilverParagraphLines(text,size,width,out style);float scale=size/Mathf.CeilToInt(size);var before=GUI.matrix;GUI.matrix=before*Matrix4x4.TRS(new Vector3(x,y,0),Quaternion.identity,new Vector3(scale,scale,1));style.normal.textColor=color;
+            try{for(int line=0;line<lines.Count;line++)NativeSilverHellUi.Label(new Rect(0,line*lineHeight/scale,width/scale,lineHeight/scale),lines[line],style);}finally{GUI.matrix=before;}
+        }
+        void DrawSilverReleaseLock()
+        {
+            // Web cs-stage is the physical viewport minus the 440px right rail: its centre is safe-centre minus 220px.
+            if(silverClassChains!=null){var shadow=GUI.color;GUI.color=new Color(0,0,0,.65f);Image(new Rect(520,335.296875f,440,440),silverClassChains,ScaleMode.StretchToFill);GUI.color=shadow;Image(new Rect(520,327.296875f,440,440),silverClassChains,ScaleMode.StretchToFill);}
+            string label=VisualSelectionLabel("출시 준비 중","Coming soon");var font=NativeSilverHellUi.TextFont(Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular"),label);float spacing=3.84f,width=SpacedWidth(font,24,label,spacing)-spacing;var box=new Rect(740-(width+62)/2,775.296875f,width+62,61);
+            Fill(box,new Color(8/255f,11/255f,11/255f,.94f));Border(box,new Color(112/255f,115/255f,115/255f),1);DrawSpaced(740-width/2,box.y+12,37,label,font,24,spacing,new Color(197/255f,194/255f,188/255f),false);NativeUiAudit.Region(new Rect(520,327.296875f,440,509),"component","character-release-lock","정본 X사슬440·출시준비중 NotoSans24");
         }
         void SilverCornerPanel(Rect r)
         {
-            NativeSilverHellUi.Panel(r,28,8);
+            NativeSilverHellUi.Panel(r,60,18);
         }
         void DrawSilverScene(Rect box,int i)
         {
@@ -79,20 +105,21 @@ namespace Exoduser.UnityPort
                 if(i==0&&playback.Prepared&&playback.Player!=null)playback.Player.playbackSpeed=.75f;
                 if(playback.Error.Length==0&&playback.Prepared&&playback.Frame>=0)src=playback.Texture;
             }
-            Image(box,src,ScaleMode.ScaleAndCrop);
+            if(src!=null)NativeUiViewport.DrawExtendedScene(src,box,silverPosters[i]??silverPortraits[i]??presentationCutouts[i]);
         }
         void DrawSilverCharacterVisual()
         {
             CharacterStyles();
             EnsureSilverVisual();
-            float w=Screen.width,h=Screen.height;
+            float w=NativeUiSafeArea.DesignWidth,h=NativeUiSafeArea.DesignHeight;
             int i=Mathf.Clamp(characterVisual,0,4);
             bool locked=i!=0,shortScreen=h<=940;
             float x=w-420,bodyY=62,top=bodyY+(shortScreen?190:300),size=shortScreen?54:64;
             string[] railLabels={"전사","실버테일","헬거너","변성술사","창법사"};
             string[] railEnglish={"Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"};
-            var railName=new GUIStyle(silverBody){wordWrap=true,alignment=TextAnchor.UpperCenter};
-            var railSoon=new GUIStyle(silverVisualCaption){wordWrap=true,alignment=TextAnchor.UpperCenter};
+            var railName=new GUIStyle(silverBody){fontSize=13,fontStyle=FontStyle.Normal,wordWrap=true,alignment=TextAnchor.UpperCenter};
+            var railSoon=new GUIStyle(silverVisualCaption){fontSize=10,wordWrap=true,alignment=TextAnchor.UpperCenter};
+            railSoon.normal.textColor=new Color(111/255f,114/255f,114/255f);
             const float labelWidth=76,labelGap=9,footerGap=9,actionGap=18;
             float nameHeight=0,soonHeight=0;
             for(int n=0;n<5;n++)
@@ -107,29 +134,29 @@ namespace Exoduser.UnityPort
             NativeUiAudit.Region(new Rect(0,0,w,h),"panel");
             Fill(new Rect(0,0,w,h),Color.black);
             DrawSilverScene(new Rect(0,0,w,h),i);
-            Image(new Rect(0,0,w,h),silverVisualVignette,ScaleMode.StretchToFill);
+            Image(NativeUiViewport.ScreenInDesign,silverVisualVignette,ScaleMode.StretchToFill);var backdropMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.RightMatrix;var shade=new Rect(1440,0,480,1080);Image(shade,silverVisualSideShade,ScaleMode.StretchToFill);NativeUiAudit.Region(shade,"component","frontend-shade","캐릭터 오른쪽 음영480");GUI.matrix=backdropMatrix;
             string headingText=VisualSelectionLabel("캐릭터 선택","CHOOSE YOUR CHARACTER");
             float headingWidth=SpacedWidth(silverVisualTitle.font,18,headingText,3.6f)-3.6f;
             DrawSpaced((w-headingWidth)/2,30,26,headingText,silverVisualTitle.font,18,3.6f,NativeSilverHellUi.Text,true);
             Image(new Rect((w-headingWidth)/2-238,45,220,1),silverHeadingLine,ScaleMode.StretchToFill);
             NativeUiAudit.DrawTextureWithTexCoords(new Rect((w+headingWidth)/2+18,45,220,1),silverHeadingLine,new Rect(1,0,-1,1),true);
-            var info=new Rect(x,bodyY,380,shortScreen?156:148.5f);
+            if(locked)DrawSilverReleaseLock();
+            var centerMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.RightMatrix;NativeUiAudit.Region(new Rect(1500,0,420,1080),"component","frontend-right","캐릭터 선택 오른쪽 레일");
+            string description=VisualSelectionLabel(presentationDescriptions[i],presentationDescriptions[i]),lore=SilverLore(i);float descHeight=SilverParagraphHeight(description,14,308,24.5f),loreY=bodyY+110.6f+descHeight+14,loreHeight=SilverParagraphHeight(lore,12.5f,308,21.25f);
+            var info=new Rect(x,bodyY,380,shortScreen?156:Mathf.Max(165.5f,loreY-bodyY+15+loreHeight+30));top=bodyY+Mathf.Max(info.height+44,shortScreen?190:300);
             SilverCornerPanel(info);
-            SilverLabel(new Rect(x+28,bodyY+26,324,16),VisualSelectionLabel(presentationJobs[i],new[]
+            SilverLabel(new Rect(x+36,bodyY+34,308,16),VisualSelectionLabel(presentationJobs[i],new[]
             {
                 "WARRIOR","BLADE DANCER","HELLGUNNER","TRANSMUTER","SPEARMAGE"
             }
             [i]),silverVisualCaption,TextAnchor.MiddleLeft);
-            DrawSpaced(x+28,bodyY+48,40,VisualSelectionLabel(presentationNames[i],new[]
+            DrawSpaced(x+36,bodyY+59.4f,39.2f,VisualSelectionLabel(presentationNames[i],new[]
             {
                 "Exoduser Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"
             }
             [i]),silverVisualName.font,28,3.36f,NativeSilverHellUi.Bright,true);
-            SilverLabel(new Rect(x+28,bodyY+100,324,38),VisualSelectionLabel(presentationDescriptions[i],new[]
-            {
-                "A black-iron warrior wielding a greatsword.","One spinning sword; her dance is annihilation.","A blood-moon marksman who uses her own blood as ammunition.","A hunter who transmutes core flame into bow, scythe, spear and sword.","A herald of the void who seals space with runes."
-            }
-            [i]),silverVisualDescription,TextAnchor.UpperLeft);
+            DrawSilverParagraph(x+36,bodyY+110.6f,308,description,14,24.5f,new Color(185/255f,182/255f,176/255f));
+            if(!string.IsNullOrEmpty(lore)){Fill(new Rect(x+36,loreY,308,1),new Color(164/255f,147/255f,115/255f,.5f));DrawSilverParagraph(x+36,loreY+15,308,lore,12.5f,21.25f,new Color(223/255f,214/255f,194/255f,.82f));NativeUiAudit.Region(new Rect(x+36,loreY,308,loreHeight+15),"component","character-lore","웹 정본 catalog lookup·현재언어");}
             var traitTitles=new string[3];var traitBodies=new string[3];var traitHeights=new float[3];float traitContentHeight=72;
             for(int n=0;n<3;n++)
             {
@@ -153,9 +180,9 @@ namespace Exoduser.UnityPort
                 traitY+=traitHeights[n];
             }
             GUI.SetNextControlName("visual-info-left");
-            if(NativeUiAudit.Button(info,"",GUIStyle.none))GUI.FocusControl("visual-info-left");
+            if(EntrySoundButton(info))GUI.FocusControl("visual-info-left");
             GUI.SetNextControlName("visual-info-right");
-            if(NativeUiAudit.Button(traits,"",GUIStyle.none))GUI.FocusControl("visual-info-right");
+            if(EntrySoundButton(traits))GUI.FocusControl("visual-info-right");
             for(int n=0;n<5;n++)
             {
                 var r=new Rect(x+n*(380-size)/4,railY,size,size);
@@ -165,6 +192,7 @@ namespace Exoduser.UnityPort
                 Border(r,n==i?NativeSilverHellUi.Bright:new Color(.61f,.62f,.62f,.62f),1);
                 if(n==i)Border(new Rect(r.x-3,r.y-3,size+6,size+6),NativeSilverHellUi.Text,1);
                 float labelX=r.center.x-labelWidth/2;
+                railName.normal.textColor=n==i?NativeSilverHellUi.Bright:NativeSilverHellUi.Dim;
                 SilverLabel(new Rect(labelX,r.yMax+labelGap,labelWidth,nameHeight),railEnglish[n],railName,TextAnchor.UpperCenter);
                 if(n>0)SilverLabel(new Rect(labelX,r.yMax+labelGap+nameHeight+footerGap,labelWidth,soonHeight),soon,railSoon,TextAnchor.UpperCenter);
                 GUI.SetNextControlName("visual-icon-"+n);
@@ -185,15 +213,15 @@ namespace Exoduser.UnityPort
             SilverLabel(cancel,CharacterDialogLabel("cancel",K("취소","CANCEL")),silverVisualAction,TextAnchor.MiddleCenter);if(NativeUiAudit.Button(cancel,"",GUIStyle.none))CloseCharacterCreation();
             GUI.enabled=prior&&!locked;
             GUI.SetNextControlName("visual-create");
-            SilverLabel(create,locked?CharacterDialogLabel("comingSoon",K("출시 준비 중","COMING SOON")):CharacterDialogLabel("create",K("생성","CREATE")),silverVisualAction,TextAnchor.MiddleCenter);if(NativeUiAudit.Button(create,"",GUIStyle.none))ConfirmCharacterVisual();
-            GUI.enabled=prior;
+            SilverLabel(create,locked?CharacterDialogLabel("comingSoon",K("출시 준비 중","COMING SOON")):CharacterDialogLabel("create",K("생성","CREATE")),silverVisualAction,TextAnchor.MiddleCenter);if(DecisionSoundButton(create))ConfirmCharacterVisual();
+            GUI.enabled=prior;GUI.matrix=centerMatrix;
             if(characterVisualFocusPending&&Event.current.type==EventType.Repaint)
             {
                 GUI.FocusControl("visual-icon-"+i);
                 characterVisualFocusPending=false;
             }
         }
-        // 이모지/대각선 사슬 대신 원화 문장을 보존하고 작은 금속 자물쇠를 표시한다.
+        // 웹 .cs-ico.locked .cs-ico-ring::after의 같은 X 사슬 원본을 슬롯 전체에 표시한다.
         static string SilverRailName(string text,GUIStyle style,float width)
         {
             if(text.IndexOf(' ')>=0||style.CalcSize(new GUIContent(text)).x<=width)return text;
@@ -208,11 +236,7 @@ namespace Exoduser.UnityPort
         }
         void DrawSilverClassLock(Rect icon)
         {
-            var c=GUI.color;float s=14;Rect body=new Rect(icon.center.x-s/2,icon.yMax-18,s,11);
-            Fill(new Rect(body.x+3,body.y-6,8,7),new Color(.035f,.039f,.043f,.96f));
-            Border(new Rect(body.x+3,body.y-6,8,8),new Color(.57f,.58f,.56f,.95f),1);
-            Fill(body,new Color(.055f,.059f,.061f,.98f));Border(body,new Color(.62f,.63f,.60f,.98f),1);
-            Fill(new Rect(body.center.x-.7f,body.y+3,1.4f,4),NativeSilverHellUi.Text);GUI.color=c;
+            if(silverClassChains!=null)Image(icon,silverClassChains,ScaleMode.StretchToFill);
         }
     }
 }

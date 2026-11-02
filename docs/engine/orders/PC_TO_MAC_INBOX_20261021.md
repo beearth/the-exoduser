@@ -292,3 +292,29 @@ Claude는 원본 readonly 대조, Codex 기존 구현자는 Native 영상/오디
 - **동선 우선**: 로비 → 1-1 진입 → 이동 → 공격 → 몹 사망 → 드랍 → 레벨업 → 보스 → 클리어. 앞에서부터 막힌 곳을 하나씩 뚫는다. 동선 밖 행은 뒤로 미룬다.
 - **연결 소유 변경(M1 동안)**: PC가 맡은 M1 행(B03·B05·B07·B08·B10·B11·D01·D05·E03)은 PC가 `Simulation*`·`NativeGame*`·`NativeHud*` 연결까지 `unity/main`에 직접 넣는다(fetch → merge → PC 6000.6.7f1 컴파일 오류 0 → 비강제 push, Codex가 최근 고친 줄은 지우지 않음). **Codex는 `Simulation*`·`NativeGame*`·`NativeHud*`를 고치기 전에 반드시 fetch/merge한다.** 협약 §2에 같은 행을 추가했다.
 - **수학 함수 규칙(전체총괄 결정)**: 결과가 게임 상태에 남는 삼각·초월 함수(facing·이동각·좌표·스폰 오프셋 등)는 `Runtime/Core/JsMath.cs`(fdlibm 포트, V8과 비트 일치)를 쓴다. .NET `Math`는 표시 전용에만 쓴다. **Codex 요청**: `Math.Pow`와 IL2CPP 빌드에서의 비트 일치를 Mac 빌드에서 확인해 Mac→PC 회신에 1줄로 남긴다.
+
+## 2026-11-02 PC 웹 최신 표현 parity 인수
+
+PC `codex/unity-parity-1102`/G:/exoduser-wt/codex-unity-parity-1102가 공통1403c5ee6·웹origin/main을 대조해 C2 타이틀 렌더/여백과 미반영 UI·사운드·전투 표현을 맡는다. Mac 기존 A2/캐릭터/맵 작업 및 private WIP는 변경하지 않는다. 화폐4번은 기존 `codex/unity-currency-name-20261031:3333f9931` 담당 후보/검수 대기가 있어 중복 구현을 건너뛴다. PC Dota PID56244 관측으로 Unity/빌드/Player는 시작0, 소스·검증 준비만 진행. 최종 근거는 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md.
+
+- 같은 parity 인수의8번 결정 두둥은 ui-sound-brief.md에 이미 기존 `codex/pc-ui-sound-match-20261031` 담당 범위로 배정되어 있어 중복 구현을 건너뛴다. 현재 공통19c6ccec8 후손의 일반 UI음 전달과 결정음 미구현은 구분한다. SP/소켓 안내5번·전투 표현9번은 이 PC 후보에서 처리하며, 전체화면 확장7번은 기존16개 로딩 pool 외64원화의 실제 Unity 매핑/반입·Player 검수가 남아 있다.
+
+## 2026-11-02 PC 최신 웹 parity 소스 후보·실행 차단
+
+`codex/unity-parity-1102:818ea0aff182624c506c972077f0384c1b719ce9`에 최신 C2선명도3변형/cover/폭포/여백, 빈Z·Space 습득우선/실제비용, 접점2틱/피격가장자리/처치음 제한 후보를 백업했다. C#75+31/Core35/player-hurt47559 PASS·독립Core114/Runtime212 compile0. enemy-hurt 기존H3 1300실패는 변경전후동일/신규0, 전체PASS아님. Dota PID56244·Library없음/Editor20GB 대비 커밋여유18.7GB로 Unity/Player/빌드0·공통/Desktop0·시각미검증. 화폐/두둥은 기존owner중복으로 건너뜀, 전체화면64 확장연결은 미완. 정확한9항목·다음순서는 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md. 검수없는병합/바로가기교체 금지.
+
+## 2026-11-02 저녁 parity 2차 인수
+
+사용자·CTO 지시로 기존 화폐 codex/unity-currency-name-20261031:3333f9931 단일 커밋과 중단된 결정 두둥 범위를 codex/unity-parity-1102가 인수한다. Mac 기존 WIP 미접촉. Dota 여부는 실행 보류 조건에서 제거하며 공식 실행기·단일 잠금·무음·격리 저장은 유지.
+
+## 2026-11-02 저녁 parity 실제 인수·공통 반영
+
+PC 소스9e771f7712를 공통에 반영했다. 같은 Unity트리의 Win64 112a8abb 오류0·USER_SAVE0, M1 7e05298a와 설치본731adf79 각각23/23, UI186PNG/타이틀모션 직접검수. 최종 Kling·64확장·화폐·두둥·9-slice·아이콘축소 인수와 실제 오디오3313979d/화폐d6be008e 검수를 마쳤다. Desktop213파일SHA 및 바로가기 읽기 일치. Mac 기존 WIP·앱 미접촉, Mac 소스 반영·실행은 미검증이며 기존 미이식/UI RETOUCH 범위는 REPORT에 남겼다.
+
+## 2026-11-02 4차 로비 UI 소리
+
+PC `codex/unity-lobby-uisound-20261102`가 로비 제외 조건을 해제하고 웹 원음6종·gain/피치/루프·일반/결정 중복 억제를 연결했다. 소스ce3464ff82, Win64 959c78a1 오류0·같은패키지 M1 5f39f0e1 23/23·1920/3840 출력버퍼 4404c328/254e9ac1 각425/425, PDB218 source/DLL 일치. [전수표·검수 범위](../UNITY_LOBBY_UI_SOUND_20261102.md), 외부 REPORT `I:/EXODUSER-Storage/codex-takeover/unity-uisound/REPORT.md`. 3차 버전/잠김 표시와 레이아웃을 변경하지 않았고 바탕화면 교체0·최종 사용자 청음 대기다. 비강제 공통 반영 SHA는 REPORT에서 확인한다.
+
+## 2026-11-02 3차 CTO parity 검수·공통 반영
+
+PC후보af70a6a2c5는정본버전매빌드읽기·직업X사슬/로어·실능력치계획/예약/저장·지원6스킬관리·대장간배치·클리어난이도확정창을연결했다. 정식53412e1f오류0·같은패키지M1653caf5c23/23·UI6699ddaa3해상도76PNG/기능14PASS·USER_SAVE0, PDB338소스일치다. 두차례난이도GPU캐시시각FAIL뒤원본규격sRGB무손실PNG로방법을바꿔잔점/계조를해결했고제단RGB도보존했다. 전체UI는42스킬/일부패시브/요약drawer/다음1-2미이식과세부획/광택차이로RETOUCH유지. 바탕화면은개발툴자동빌드소유·직접교체0. 자기예약반환·Mac실제반영/실행미검증. 반영SHA/15개1x비교/3x/세부영수증은 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md. Mac기존WIP·앱미접촉, 4/5차전체범위는이번3차와구분한다.

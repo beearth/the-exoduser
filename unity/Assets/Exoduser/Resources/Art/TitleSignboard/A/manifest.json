@@ -1,0 +1,64 @@
+{
+  "time": "2026-11-01T10:00:09.229Z",
+  "sourceRef": "207b35600b3c9f6c9a6a71b6269439df13cd5f58",
+  "approvedMaster": "c6565cf4050d3ae33d3d65acdd5becf0cfe0114a77a7dd2b4e03cb29e6858548",
+  "externalGenerationCalls": 0,
+  "scope": "Approved web A runtime image format conversion; no resize or image edit; decoded RGBA exact",
+  "rows": [
+    {
+      "source": "background.webp",
+      "sourceSha256": "362a958050f3b8e1023663a3ce3f0ece85a863e159dcf53f98ac907367728fbd",
+      "destination": "unity/Assets/Exoduser/Resources/Art/TitleSignboard/A/background.png",
+      "sha256": "05382cfc81d748950ce9656db9733a3f1d24d9649017d1d2d83dcc27dc75a000",
+      "width": 5760,
+      "height": 1620,
+      "rgbaSha256": "3ac5a049ef87f0c5860db7cd80e31b1914a90571f25f8ae2ae03c8810e4b7864",
+      "decodedRgbaEqual": true,
+      "maskLinear": false
+    },
+    {
+      "source": "silvertail.webp",
+      "sourceSha256": "b27ca31257064946670d906a0a6423339eeffa22f291655c48e2c45a604c49e4",
+      "destination": "unity/Assets/Exoduser/Resources/Art/TitleSignboard/A/silvertail.png",
+      "sha256": "011f355ce62814913cc6e1290a001072d7e00f9ea903b3db93050217020a2058",
+      "width": 5760,
+      "height": 1620,
+      "rgbaSha256": "cc1d65dbf5f96713763019fe2b549af05ccc4c34154ddca481a8283d7fd57811",
+      "decodedRgbaEqual": true,
+      "maskLinear": false
+    },
+    {
+      "source": "still.webp",
+      "sourceSha256": "116b68d672f7180fc435d2e0be907b4687e300cf64549da6bef962718621ff39",
+      "destination": "unity/Assets/Exoduser/Resources/Art/TitleSignboard/A/still.png",
+      "sha256": "e6ed0313af54e6d952d3127852dba500514a666875fbd62e34dc2ea2615d9a3a",
+      "width": 5760,
+      "height": 1620,
+      "rgbaSha256": "8d52eb78c6a817621a55b12956a2cc489989c2e0498524c38f0277ab9fa6146c",
+      "decodedRgbaEqual": true,
+      "maskLinear": false
+    },
+    {
+      "source": "motion-mask.png",
+      "sourceSha256": "bdfec8117c7fbdd79d80cb034e71a0f5b974ba5908dde8016dccb4449d92e79c",
+      "destination": "unity/Assets/Exoduser/Resources/Art/TitleSignboard/A/motion-mask.png",
+      "sha256": "bdfec8117c7fbdd79d80cb034e71a0f5b974ba5908dde8016dccb4449d92e79c",
+      "width": 1920,
+      "height": 540,
+      "rgbaSha256": "6255fa53a6d3139eedb2fd4519956dbadd6e80ce70ebca88a0795ec654e3185b",
+      "decodedRgbaEqual": true,
+      "maskLinear": true
+    },
+    {
+      "source": "hands.png",
+      "sourceSha256": "a80f746ea6230ef4022af323713e790ba33acc0d57f9cc6141137f81b03c6492",
+      "destination": "unity/Assets/Exoduser/Resources/Art/TitleSignboard/A/hands.png",
+      "sha256": "a80f746ea6230ef4022af323713e790ba33acc0d57f9cc6141137f81b03c6492",
+      "width": 1536,
+      "height": 456,
+      "rgbaSha256": "098e18a1f98f7a2592e4d8ca6264cbc680faf0c06044a8f4339e53712cb36a6c",
+      "decodedRgbaEqual": true,
+      "maskLinear": false
+    }
+  ]
+}

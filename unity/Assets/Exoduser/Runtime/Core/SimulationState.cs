@@ -14,6 +14,7 @@ namespace Exoduser.UnityPort.Core
         public double StrengthFlat = 0;
         public float StartX, StartY;
         public int StageIndex = 0, DifficultyIndex = 5;
+        public int StageDiffOffset; // NEXT_DIFF_OPTS: next-stage monster level offset, independent of OPT.diff
         public float WeaponAttack = 0, WeaponEnhanceAttack = 0;
         // web _slotFlatAtk(wp()): sharpAtk + brutalAtk + ruinAtk values. meleeRef (kiSlash) adds it; the plain weapon swing line in the update loop does not.
         public float WeaponFlatAttack = 0;

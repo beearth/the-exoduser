@@ -42,11 +42,12 @@ namespace Exoduser.UnityPort
         void DrawSilverLobbyBody(bool enabled)
         {
             SilverStyles();
+            var edgeMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.RightMatrix;NativeUiAudit.Region(new Rect(1360,0,560,1080),"component","frontend-right","로비 오른쪽 레일");
             NativeUiAudit.DrawTexture(new Rect(1360,0,560,1080),lobbySilverShade);
             var lang=new Rect(1424,188,140,36);
             SilverLabel(lang,LobbyLanguageLabel(Language),silverMicro,TextAnchor.MiddleLeft);
             Fill(new Rect(1424,217,140,1),new Color(.61f,.62f,.62f,.3f));
-            if(NativeUiAudit.Button(lang,"",GUIStyle.none))ToggleLanguages();
+            GUI.SetNextControlName("lobby-language");if(NativeUiAudit.Button(lang,"",GUIStyle.none))ToggleLanguages();
             SilverLabel(new Rect(1690,188,142,36),"OFFLINE",silverMicro,TextAnchor.MiddleRight);
             Image(new Rect(1473,236,310,148),gateLogo);
             GUI.enabled=enabled&&!showLanguages&&!lobbyQuitPrompt&&!CharacterModalOpen;
@@ -73,17 +74,19 @@ namespace Exoduser.UnityPort
                 DrawSpaced(1450,card.y+10,32,name,silverName.font,22,22*.08f,NativeSilverHellUi.Text,true);
                 SilverLabel(new Rect(1600,card.y+20,160,20),K("전사","WARRIOR"),silverMicro,TextAnchor.MiddleLeft);
                 SilverLabel(new Rect(1450,card.y+52,342,24),SilverSlotCaption(name),silverBody,TextAnchor.MiddleLeft);
-                if(NativeUiAudit.Button(new Rect(card.x,card.y,345,84),"",GUIStyle.none))SelectCharacter(index);
+                GUI.SetNextControlName("character-slot-"+index);if(NativeUiAudit.Button(new Rect(card.x,card.y,345,84),"",GUIStyle.none))SelectCharacter(index);
                 if((selected||card.Contains(Event.current.mousePosition))&&NativeUiAudit.Button(new Rect(1782,card.y+21,30,34),"×",silverBody))RequestCharacterDelete(index);
             }
             var create=new Rect(1428,609,400,64);
             var createStyle=new GUIStyle(silverName)
             {
-                fontSize=15
+                fontSize=15,wordWrap=true
             };
-            SilverLabel(new Rect(1450,609,360,64),"+ "+K("새 캐릭터","New character"),createStyle,TextAnchor.MiddleLeft);
+            string createLabel="+ "+K("새 캐릭터","New character");
+            SilverLabel(new Rect(1450,609,286,64),createLabel,createStyle,TextAnchor.MiddleLeft);
+            SilverLabel(new Rect(1750,609,78,64),Characters.Count.ToString(),silverBody,TextAnchor.MiddleRight);
             Fill(new Rect(1428,672,400,1),new Color(.61f,.62f,.62f,.13f));
-            GUI.enabled=controls&&characterWritesAllowed&&Characters.Count<CharacterRoster.Capacity;
+            GUI.enabled=controls&&characterWritesAllowed;
             GUI.SetNextControlName("character-create-card");
             if(NativeUiAudit.Button(create,"",GUIStyle.none))OpenCharacterCreation();
             if(characterRestoreCreateFocus&&Event.current.type==EventType.Repaint)
@@ -100,15 +103,16 @@ namespace Exoduser.UnityPort
             var enterText=K("입장","ENTER");float enterSpacing=22*.14f,enterWidth=SpacedWidth(silverName.font,22,enterText,enterSpacing)-enterSpacing;
             DrawSpaced(play.center.x-enterWidth/2,play.y,play.height,enterText,silverName.font,22,enterSpacing,canEnter?NativeSilverHellUi.Bright:NativeSilverHellUi.Dim,true);
             GUI.enabled=controls&&Characters.SelectedIndex>=0;
-            DrawEntryHover(play,canEnter);if(NativeUiAudit.Button(play,"",GUIStyle.none))EnterSelectedCharacter();
+            GUI.SetNextControlName("lobby-enter");DrawEntryHover(play,canEnter);if(EntrySoundButton(play))EnterSelectedCharacter();
             GUI.enabled=controls;
             SilverLabel(new Rect(1424,866,100,42),K("▶ 시네마틱","▶ Cinematic"),silverMicro,TextAnchor.MiddleLeft);
-            if(NativeUiAudit.Button(new Rect(1424,866,100,42),"",GUIStyle.none))ReplayIntro();
+            GUI.SetNextControlName("lobby-replay");if(NativeUiAudit.Button(new Rect(1424,866,100,42),"",GUIStyle.none))ReplayIntro();
             SilverLabel(new Rect(1516,866,210,42),K("STEAM 위시리스트 추가","ADD TO STEAM WISHLIST"),silverMicro,TextAnchor.MiddleLeft);
-            if(NativeUiAudit.Button(new Rect(1516,866,210,42),"",GUIStyle.none))Application.OpenURL(SteamWishlistUrl);
+            GUI.SetNextControlName("lobby-steam");if(DecisionSoundButton(new Rect(1516,866,210,42))){PlayStartupEnter();Application.OpenURL(SteamWishlistUrl);}
             DrawPatchNotesLauncher();
             DrawPower(new Rect(1812,870,36,36));
-            if(NativeUiAudit.Button(new Rect(1812,870,36,36),"",GUIStyle.none))lobbyQuitPrompt=true;
+            GUI.SetNextControlName("lobby-quit");if(NativeUiAudit.Button(new Rect(1812,870,36,36),"",GUIStyle.none))lobbyQuitPrompt=true;
+            GUI.matrix=edgeMatrix;
         }
     }
 }

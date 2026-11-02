@@ -1,5 +1,7 @@
 # Mac 캐릭터 슬롯 삭제·목록 저장 — 2026-10-25
 
+> 2026-11-01 현행: 캐릭터 개수 제한·임의64KiB 제한 제거, payload v1/2 읽기·v2 쓰기와 v1 raw backup 보호. 실제 Mac Player231검사 PASS, 일반 앱 `/Users/fordeargamers/Applications/EXODUSER.app` 설치·실행 완료, 정상 제품 Win64 빌드 완료(Windows 실행 미검증). 1920 목록 시각 PASS/3840 미검증, QA preferences 한 파일 최초 원문 복구 미확인. 아래 날짜별5슬롯·세션/미구현·NOT_READY 기록은 당시 이력이며 현재 계약은 [실제 인수](UNITY_MAC_CHARACTER_CAPACITY_QA_20261101.md)를 따른다.
+
 기존 캐릭터 생성·선택 다음 단위. 원본 index.html `_showDelConfirm`/`_hideDelConfirm`/로컬 삭제 콜백을 대조했다. 원본과 동일하게 취소가 기본 선택이고, 확인에만 삭제를 연결한다. 기존 웹/Godot/계정 세이브를 읽거나 쓰지 않는다.
 
 ## 삭제 계약
@@ -13,7 +15,7 @@
 | 선택 슬롯 삭제 | 삭제 위치의 다음 슬롯, 없으면 이전 슬롯 선택 |
 | 마지막 슬롯 삭제 | Count0, SelectedIndex -1. 바르칸 표시와 비활성 입장으로 복귀 |
 | 오래된 확인 | 열 때의 인덱스와 이름이 모두 일치해야 삭제. 다른 이름으로 이동한 슬롯 삭제 거부 |
-| 재생성 | 삭제로 빈 용량·동일 이름 재사용 가능. 원본 최대5 제한 유지 |
+| 재생성 | 삭제한 동일 이름 재사용 가능. 2026-11-01 후보는 개수 제한 없음 |
 
 NativeLobby/CharacterRoster/삭제 UI·통합 소유는 기존 Mac 담당. 기존 지원 담당은 지원 폴더에서 새 슬롯 목록 영속 모듈과 I/O 검사만 작성한다. 기존 공통 파일·INDEX·GPU는 공유하지 않는다. 저장 통합은 검증된 후보를 파일에 성공적으로 쓴 뒤 live 목록으로 교체해 파일 실패와 UI 성공이 갈라지지 않도록 한다.
 
@@ -50,3 +52,24 @@ NativeLobby/CharacterRoster/삭제 UI·통합 소유는 기존 Mac 담당. 기�
 [기계 영수증](UNITY_MAC_CHARACTER_SLOTS_20261025.json). 최종 실행본은 `/Users/fordeargamers/exoduser-wt/_out/UNITY-MAC-LOBBY-20261025/build-character-slots-final/EXODUSER-Unity.app`. 생성·선택·확인삭제·재실행 목록 복원 단위 완료. 전투 진행 저장과 캐릭터별 P/G/INV 복원은 미이식이며, IME 직접 조합/정밀 자동 마우스/전체화면은 별도 미검수다. 다음 전사 이야기의 원본 JS/93MiB 영상 경로·22cue·생성 성공 뒤 showCharGate 흐름을 확인했고 기존 지원 담당의 독립 자료 추출이 진행 중이다.
 
 2026-10-29 현재 ARM64 Settings QA 빌드로 5/5 생성·여섯 번째 거부·실제 OS 삭제 취소/확인·빈 용량 재사용·선택 재시작 복원을 새 격리 목록에서 확인했다. 이름, revision, 화면 및 입력 제한은 [A04 실기 검수](UNITY_MAC_A04_FIVE_SLOTS_OS_QA_20261029.md)에 기록했다.
+
+
+## 2026-11-01 PC Unity 캐릭터 개수 제한 해제 후보
+
+사용자 “없음 우리도 다 풀어버려”에 따라 이전 가득참안내028260c89를대체한다.
+
+| 위치 | 후보 동작 |
+|---|---|
+| CharacterRoster | Capacity=5 제거, 생성/전체복원 count guard없음. Ordinal HashSet으로이름중복을검사하고생성/삭제/Clear/복원에서동기화. 이름2~8·금지문자·출시잠금·선택검증유지 |
+| NativeLobby.Characters | OpenCharacterCreation의개수guard와 /5표시제거, 기존창/저장권한조건유지 |
+| SilverLobby 생성행 | 기존 +새캐릭터와현재Count만표시. count에따른비활성/가득참안내없음. 라벨286×64·15px자동줄바꿈/수량78×64·13px, 기존2개뷰포트/스크롤유지 |
+| CharacterRosterStore | 개수/64KiB상한제거. payloadversion2신규저장·v1/2읽기·v1읽기원문무변경·저장승격/backup보존. 기존파일명과schema/충돌·원자교체·손상보존유지 |
+| CharacterSmoke | 6개생성후에도생성창열림을검사하도록수정. fixture작성만, 실제Player실행0 |
+| 검증·한계 | 생성42/복원15/저장59(5,000개·64KiB초과·v1호환)·삭제58모델검사PASS, Core/Runtime311독립compile오류0. 도타실행보호로정식Unity/Player/M1·1920/2560/3840실제시각·실행본반영0/NOT_READY |
+
+source개인브랜치`codex/unity-character-capacity-20261101`, 웹은별도`codex/web-character-unlimited-20261101`. 지정통합담당은최종후보를사용하고이전5/5안내만따로채택하지않는다. 최신SHA·검수원문·잔여는`I:/EXODUSER-Storage/character-capacity/20261101-unlimited/REPORT.md`.
+
+
+### 2026-11-01 Mac 무제한 목록 실물 검수 준비
+
+현재 제품 후보 a9ddfbff의 한도 제거 계약을 보존하고, 독립 QA 입력에서 실제 여섯째 입장/재실행·v1 raw backup·5,000개 JsonUtility 검수를 준비한다. [전용 검수 계약](UNITY_MAC_CHARACTER_CAPACITY_QA_20261101.md)의 실행전/NOT_READY와 과거 실행 영수증을 구분한다. 이 단계는 실제 ARM64/Win64 빌드나 Player 통과 증거가 아니다.

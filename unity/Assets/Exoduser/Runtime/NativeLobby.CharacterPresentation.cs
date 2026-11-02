@@ -4,7 +4,7 @@ namespace Exoduser.UnityPort
  public sealed partial class NativeLobby
  {
   NativeCharacterPresentationPlayback characterPresentationPlayback;
-  [System.Serializable] sealed class VisualLabelCatalog { public VisualLabelLanguage[] entries; }
+  [System.Serializable] sealed class VisualLabelCatalog { public VisualLabelLanguage[] entries; public string[] characterLoreKeys; }
   [System.Serializable] sealed class VisualLabelLanguage { public string code; public VisualLabelItem[] labels; }
   [System.Serializable] sealed class VisualLabelItem { public string key,text; }
   VisualLabelCatalog visualLabelCatalog;bool visualLabelCatalogLoaded;string visualLabelLanguage="";
@@ -83,8 +83,8 @@ namespace Exoduser.UnityPort
   void CloseCharacterPresentationVideo(){if(characterPresentationPlayback!=null&&characterPresentationPlayback.Video!=null)characterPresentationPlayback.Video.Close();presentationVideoVisual=-1;}
   void DrawCharacterVisualPresentation()
   {
-   if(Screen.width>=1100){DrawSilverCharacterVisual();return;}
-   CharacterStyles();float w=Screen.width,h=Screen.height;int i=Mathf.Clamp(characterVisual,0,4);bool locked=i!=0;
+   if(NativeUiSafeArea.DesignWidth>=1100){DrawSilverCharacterVisual();return;}
+   CharacterStyles();float w=NativeUiSafeArea.DesignWidth,h=NativeUiSafeArea.DesignHeight;int i=Mathf.Clamp(characterVisual,0,4);bool locked=i!=0;
    float px=Mathf.Min(w*.04f,64),side=Mathf.Min(w*.26f,340),gap=Mathf.Min(w*.02f,28);
    float bodyY=Mathf.LerpUnclamped(128.467f,143.992f,(h-720f)/360f),actionY=h-Mathf.Min(h*.03f,30)-46.5f;
    float railHeight=122.5f+(h-720f)*.004167f,railY=actionY-18-railHeight,bodyHeight=Mathf.LerpUnclamped(384.211f,717.508f,(h-720f)/360f);
@@ -132,7 +132,7 @@ namespace Exoduser.UnityPort
   void DrawCharacterNamePresentation()
   {
    if(silverNamePanel==null){silverNamePanel=Resources.Load<Texture2D>("Art/ui/silver_hell/name_panel");silverNameInput=Resources.Load<Texture2D>("Art/ui/silver_hell/name_input");}
-   float w=Screen.width,h=Screen.height;Fill(new Rect(0,0,w,h),new Color(0,0,0,.90f));Rect panel=new Rect((w-440)/2,(h-335)/2,440,335);NativeUiAudit.Region(panel,"panel");Image(panel,silverNamePanel,ScaleMode.StretchToFill);
+   float w=NativeUiSafeArea.DesignWidth,h=NativeUiSafeArea.DesignHeight;Fill(new Rect(0,0,w,h),new Color(0,0,0,.90f));Rect panel=new Rect((w-440)/2,(h-335)/2,440,335);NativeUiAudit.Region(panel,"panel");Image(panel,silverNamePanel,ScaleMode.StretchToFill);
    float x=panel.x+41,y=panel.y;var noto=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular");
    string heading=CharacterDialogLabel("title",K("새 캐릭터 생성","Create Character"));
    var title=new GUIStyle(presentationNameTitle){font=NativeSilverHellUi.TextFont(NativeSilverHellUi.Font(),heading),fontStyle=FontStyle.Normal,fontSize=24,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset()};
@@ -150,7 +150,7 @@ namespace Exoduser.UnityPort
    DrawSpaced(cancel.center.x-(SpacedWidth(noto,14,CharacterDialogLabel("cancel",K("취소","CANCEL")),1.152f)-1.152f)/2,cancel.y,cancel.height,CharacterDialogLabel("cancel",K("취소","CANCEL")),noto,14,1.152f,new Color(210/255f,207/255f,201/255f),false);
    var bold=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Bold")??noto;DrawSpaced(create.center.x-(SpacedWidth(bold,14,CharacterDialogLabel("create",K("생성","CREATE")),1.728f)-1.728f)/2,create.y,create.height,CharacterDialogLabel("create",K("생성","CREATE")),bold,14,1.728f,new Color(244/255f,241/255f,235/255f),false);
    GUI.SetNextControlName("character-cancel");if(NativeUiAudit.Button(cancel,"",GUIStyle.none))CloseCharacterCreation();
-   GUI.SetNextControlName("character-create");if(NativeUiAudit.Button(create,"",GUIStyle.none))CreateCharacter(characterName);
+   GUI.SetNextControlName("character-create");if(DecisionSoundButton(create))CreateCharacter(characterName);
   }
   void DrawCharacterVisualVignette(float w,float h){
    Fill(new Rect(0,0,w,Mathf.Min(h*.11f,112)),new Color(0,0,0,.34f));Fill(new Rect(0,h-Mathf.Min(h*.132f,142),w,Mathf.Min(h*.132f,142)),new Color(0,0,0,.55f));
@@ -173,7 +173,7 @@ namespace Exoduser.UnityPort
   }
   void DrawTraitFrame(Rect r,int visual,float railY)
   {
-   float viewT=(Screen.height-720f)/360f,baseHeight=Mathf.LerpUnclamped(312.75f,325.594f,viewT),yOffset=Mathf.LerpUnclamped(36.998f,195.953f,viewT);
+   float viewT=(NativeUiSafeArea.DesignHeight-720f)/360f,baseHeight=Mathf.LerpUnclamped(312.75f,325.594f,viewT),yOffset=Mathf.LerpUnclamped(36.998f,195.953f,viewT);
    float boxY=r.y+yOffset,boxWidth=r.width-16,firstRow=67.5f,baseRow=Mathf.LerpUnclamped(74.75f,79.031f,viewT);
    float textWidth=boxWidth-109;string[] titles=new string[3],bodies=new string[3];float[] titleHeights=new float[3],bodyHeights=new float[3],rowHeights=new float[3];float contentHeight=0;
    for(int i=0;i<3;i++){string[] bits=presentationTraits[visual,i].Split('|');titles[i]=VisualSelectionLabel(bits[1],TraitEnglish(visual,i));bodies[i]=VisualSelectionLabel(bits[2],TraitEnglishBody(visual,i));titleHeights[i]=PresentationWrappedHeight(presentationTraitTitle,presentationTraitTitleMeasure,titles[i],textWidth,21);bodyHeights[i]=PresentationWrappedHeight(presentationTraitBody,presentationTraitBodyMeasure,bodies[i],textWidth,34);rowHeights[i]=Mathf.Max(baseRow,titleHeights[i]+2+bodyHeights[i]+7);contentHeight+=rowHeights[i];}

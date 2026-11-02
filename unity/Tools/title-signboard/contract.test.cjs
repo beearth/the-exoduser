@@ -1,0 +1,20 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs'),path=require('node:path');
+const root=path.resolve(__dirname,'../..');
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const title=read('Assets/Exoduser/Runtime/NativeLobby.TitleMenu.cs');
+assert.match(title,/titleSignboard\.Draw\(/,'타이틀은 승인 A 전용 렌더러를 실제 호출해야 한다');
+const draw=title.slice(title.indexOf('void DrawTitleSplash()'));
+assert.doesNotMatch(draw,/DrawExtendedScene|movie\.Texture/,'타이틀 A를 구형 영상/블러 확장으로 덮으면 안 된다');
+const lobby=read('Assets/Exoduser/Runtime/NativeLobby.cs');
+assert.doesNotMatch(lobby,/movie\.Open\(TitleMovie/,'메뉴 진입에 폐기한 16:9 타이틀 영상을 요청하면 안 된다');
+assert.match(lobby,/titleSignboard\?\.Dispose\(/,'타이틀 렌더 자원은 로비 파괴 시 해제해야 한다');
+const capture=read('Assets/Exoduser/Runtime/NativeGame.UiOverlapCapture.cs');
+assert.doesNotMatch(capture,/UiWaitRootMovie\(-2,NativeLobby\.TitleMovie\)/,'메뉴 검수는 그리지 않는 과거 영상 재생을 증거로 쓰면 안 된다');
+console.log('PASS approved title renderer routing, no legacy video/blur, resource disposal and honest capture contract');
+
+const c2=read('Assets/Exoduser/Runtime/NativeTitleSignboard.cs');
+assert.match(c2,/NativeLobbyVideo/);
+assert.match(c2,/movie\.Open\(NativeTitleSignboardLayout\.VideoFile\(width\),true,true,false\)/,'C2는 무음 반복 디코더를 사용');
+assert.match(c2,/movie\?\.Dispose\(/,'C2 전용 디코더 자원 해제');
+assert.match(capture,/videoFramesAfter<=row.videoFramesBefore/,'물결 모션만으로 영상 재생 PASS 금지');

@@ -18,10 +18,12 @@ class Program
   Check(roster.TryCreate("  아린  ",0,out _)&&roster.SelectedName=="아린","trim and select");
   Check(!roster.TryCreate("아린",0,out var duplicate)&&duplicate==CharacterCreateError.Duplicate&&roster.Count==1&&roster.SelectedIndex==0,"duplicate is immutable");
   foreach(string name in new[]{"Hero","hero","전사 네명","전사다섯"})Check(roster.TryCreate(name,0,out _),"allowed distinct name "+name);
-  Check(!roster.TryCreate("여섯째",0,out var full)&&full==CharacterCreateError.Full&&roster.Count==5&&roster.SelectedName=="전사다섯","capacity failure is immutable");
-  Check(roster.Select(0)&&roster.SelectedName=="아린"&&!roster.Select(-1)&&!roster.Select(5)&&roster.SelectedIndex==0,"bounded selection");
+  Check(roster.TryCreate("여섯째",0,out _)&&roster.Count==6&&roster.SelectedName=="여섯째","sixth character is admitted");
+  bool many=true;for(int i=0;i<1000;i++)many&=roster.TryCreate("H"+i.ToString("D6"),0,out _);
+  Check(many&&roster.Count==1006,"characters beyond five and one thousand are admitted");
+  Check(roster.Select(0)&&roster.SelectedName=="아린"&&!roster.Select(-1)&&!roster.Select(roster.Count)&&roster.SelectedIndex==0,"bounded selection");
   var second=new CharacterRoster();Check(second.Count==0&&second.SelectedName=="","new session has no identities");
-  roster.Clear();Check(roster.Count==0&&roster.SelectedIndex==-1&&roster.TryCreate("아린",0,out _),"session reset releases names and capacity");
+  roster.Clear();Check(roster.Count==0&&roster.SelectedIndex==-1&&roster.TryCreate("아린",0,out _),"session reset releases names");
   File.WriteAllText("result.json",JsonSerializer.Serialize(new{passed,failed,scope="Source JS name oracle, class admission, capacity, selection and disposable session boundary"})+"\n");
   Console.WriteLine($"{passed} passed, {failed} failed");Environment.ExitCode=failed==0?0:1;
  }

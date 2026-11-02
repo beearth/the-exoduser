@@ -57,7 +57,7 @@ namespace Exoduser.UnityPort
             var resource=Resources.Load<TextAsset>("Data/ch1_map");if(resource==null)throw new InvalidOperationException("Original map resource is missing");
             Map=A2FieldLayout.CreateMap(JsonUtility.FromJson<MapData>(resource.text));
             font=Resources.Load<Font>("Art/fonts/NotoSansKR");
-            hud=new NativeHud();skills=new NativeSkills();stats=new NativeStatPanel();hud.SlotSelected=slot=>{if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected callback slot="+slot+" before menu="+menu+" hp="+Simulation.Player.Hp+" skillsOpen="+skills.Open);if(!menu&&Simulation.Player.Hp>0){SetSkills(true,slot);if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected result skillsOpen="+skills.Open+" menu="+menu);}};
+            hud=new NativeHud();skills=new NativeSkills();skills.Changed=RequestCombatSave;stats=new NativeStatPanel();hud.SlotSelected=slot=>{if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected callback slot="+slot+" before menu="+menu+" hp="+Simulation.Player.Hp+" skillsOpen="+skills.Open);if(!menu&&Simulation.Player.Hp>0){SetSkills(true,slot);if(hud.TracePointerEvents)Debug.Log("[HUD POINTER TRACE] SlotSelected result skillsOpen="+skills.Open+" menu="+menu);}};
             NativePanelTabBar.Requested+=OnPanelRequested;forge=new NativeForgePanel();levelUp=new NativeLevelUpOverlay();death=new NativeDeathOverlay();death.OnRetry=RetryFromDeath;stageClear=new NativeStageClearOverlay();bossBar=new NativeBossBar();areaTitle=new NativeAreaTitle();objective=new NativeObjectivePanel();areaTitleAllowed=!Array.Exists(Environment.GetCommandLineArgs(),a=>a.StartsWith("--unity-",StringComparison.Ordinal)&&a!="--unity-world-3d"&&a!="--unity-a2-forest"&&!NativeReviewArgs.IsReviewArgument(a));
             inventory=new NativeInventory(()=>{Simulation.ApplyEquipment(inventory.State);hud.Refresh(Simulation.Player,Simulation.TickCount,true);RequestCombatSave();});
             BuildProps();
@@ -71,7 +71,7 @@ namespace Exoduser.UnityPort
             skillView=new NativeSkillView(transform);   // B03 skill effects
             ImpactInitialize();
             sound=new NativeFeedbackAudio(transform,view);
-            gameObject.AddComponent<NativeUiSounds>().Initialize(sound,()=>lobby!=null&&!lobby.IsBlocking&&gameFocused);
+            gameObject.AddComponent<NativeUiSounds>().Initialize(sound,()=>lobby!=null&&lobby.IsBlocking?lobby.UiAudioAllowed:gameFocused,()=>lobby!=null&&lobby.IsBlocking);
             music=new NativeGameMusic(transform,sound.Bus);ambient=new NativeAmbientSources(transform,sound.Bus);   // RM-1 sound: BGM bus, forest bed, 3D environment sources
             sound.ListenerAt=ambient.ListenerAt=()=>Simulation!=null?Point(Simulation.Player.X,Simulation.Player.Y):Vector3.zero;   // the AudioListener sits on the player
             sound.OnScreen=world=>{var v=view.WorldToViewportPoint(world);return v.x>-.05f&&v.x<1.05f&&v.y>-.05f&&v.y<1.05f;};
@@ -85,11 +85,12 @@ namespace Exoduser.UnityPort
             pauseMenu.OptionChanged=OnSettingsOptionChanged;pauseMenu.LanguagePicked=code=>{lobby.SetLanguage(code);QueueSettingsSave();};pauseMenu.DiagLine=SettingsDiagLine;
             UpdateSettingsPersistenceNotice();
             var args=Environment.GetCommandLineArgs();
-            bool legacyFixture=(A2Requested&&(Application.isEditor||Array.IndexOf(args,"--unity-steam-keyshot")>=0||Array.IndexOf(args,"--unity-field-screen")>=0))||Array.IndexOf(args,"--unity-playtest-capture")>=0||Array.IndexOf(args,"--unity-boss-text-smoke")>=0||Array.IndexOf(args,"--unity-exp-capture")>=0||Array.IndexOf(args,A15DirectArgument)>=0||Array.IndexOf(args,IntroSilenceFlag)>=0||Array.IndexOf(args,NativeSettingsStorageScope.FixtureArgument)>=0||Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0||Array.IndexOf(args,"--unity-pause-smoke")>=0||Array.IndexOf(args,"--unity-character-story-smoke")>=0||Array.IndexOf(args,"--unity-character-store-smoke")>=0||Array.IndexOf(args,"--unity-character-smoke")>=0||Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-hud-blend-smoke")>=0||Array.IndexOf(args,"--unity-drop-smoke")>=0||Array.IndexOf(args,"--unity-revive-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
+            bool legacyFixture=Array.IndexOf(args,"--unity-currency-orb-capture")>=0||(A2Requested&&(Application.isEditor||Array.IndexOf(args,"--unity-steam-keyshot")>=0||Array.IndexOf(args,"--unity-field-screen")>=0))||Array.IndexOf(args,"--unity-ground-receiver-capture")>=0||Array.IndexOf(args,"--unity-ground-map-capture")>=0||Array.IndexOf(args,"--unity-facing-only-qa")>=0||Array.IndexOf(args,"--unity-world-ultrawide-check")>=0||Array.IndexOf(args,"--unity-playtest-capture")>=0||Array.IndexOf(args,"--unity-boss-text-smoke")>=0||Array.IndexOf(args,"--unity-exp-capture")>=0||Array.IndexOf(args,A15DirectArgument)>=0||Array.IndexOf(args,IntroSilenceFlag)>=0||Array.IndexOf(args,NativeSettingsStorageScope.FixtureArgument)>=0||Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0||Array.IndexOf(args,"--unity-pause-smoke")>=0||Array.IndexOf(args,"--unity-character-story-smoke")>=0||Array.IndexOf(args,"--unity-character-store-smoke")>=0||Array.IndexOf(args,"--unity-character-smoke")>=0||Array.IndexOf(args,"--unity-skill-smoke")>=0||Array.IndexOf(args,"--unity-ui-smoke")>=0||Array.IndexOf(args,"--unity-inventory-smoke")>=0||Array.IndexOf(args,"--unity-hud-smoke")>=0||Array.IndexOf(args,"--unity-hud-blend-smoke")>=0||Array.IndexOf(args,"--unity-drop-smoke")>=0||Array.IndexOf(args,"--unity-revive-smoke")>=0||Array.IndexOf(args,"--unity-smoke")>=0;
             InitializeEntryFlowCapture(args);
             if(!legacyFixture){Running=false;if(Array.IndexOf(args,"--unity-quick-start")>=0)lobby.ShowLobby();else lobby.Begin();}
             if(Array.IndexOf(args,"--unity-entry-flow-capture")>=0)StartCoroutine(EntryFlowCapture());
             if(Array.IndexOf(args,"--unity-exp-capture")>=0){menu=false;Running=true;}
+            else if(Array.IndexOf(args,"--unity-facing-only-qa")>=0){Running=false;StartCoroutine(FacingOnlyQa());}
             else if(Array.IndexOf(args,A15DirectArgument)>=0){BeginA15DirectReview(args);}
             else if(Array.IndexOf(args,IntroSilenceFlag)>=0){Running=false;StartCoroutine(IntroSilenceCapture());}
             else if(Array.IndexOf(args,NativeSettingsStorageScope.FixtureArgument)>=0){Running=false;StartCoroutine(SettingsPersistenceFixture());}
@@ -100,9 +101,13 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-c04-dump")>=0){Running=false;StartCoroutine(C04Dump());}
             else if(Array.IndexOf(args,"--unity-boss-text-smoke")>=0){Running=false;pauseSmoke=true;StartCoroutine(BossTextLocalityCapture());}
             else if(Array.IndexOf(args,"--unity-field-screen")>=0){Running=false;pauseSmoke=true;StartCoroutine(A2FieldCapture());}
+            else if(Array.IndexOf(args,"--unity-ground-receiver-capture")>=0){Running=false;groundReceiverQaActive=true;StartCoroutine(GroundReceiverCapture());}
+            else if(Array.IndexOf(args,"--unity-ground-map-capture")>=0){Running=false;groundReceiverQaActive=true;StartCoroutine(GroundMapCapture());}
             else if(Array.IndexOf(args,"--unity-steam-keyshot")>=0){Running=false;pauseSmoke=true;StartCoroutine(SteamKeyshotCapture());}
             else if(Array.IndexOf(args,"--unity-playtest-capture")>=0){Running=false;StartCoroutine(PlaytestCapture());}
+            else if(Array.IndexOf(args,"--unity-world-ultrawide-check")>=0){Running=false;StartCoroutine(WorldWideCapture());}
             else if(Array.IndexOf(args,"--unity-ui-overlap-check")>=0){Running=false;StartCoroutine(UiOverlapCapture());}
+            else if(Array.IndexOf(args,"--unity-loading-tip-capture")>=0){Running=false;StartCoroutine(LoadingTipCapture());}
             else if(Array.IndexOf(args,"--unity-hero-review")>=0){Running=false;StartCoroutine(HeroCapture());}
             else if(Array.IndexOf(args,"--unity-impact-review")>=0){Running=false;StartCoroutine(ImpactReview());}
             else if(Array.IndexOf(args,"--unity-m1-check")>=0){Running=false;StartCoroutine(M1Check());}
@@ -112,6 +117,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(args,"--unity-cam-capture")>=0){Running=false;StartCoroutine(CameraClampCapture());}
             else if(Array.IndexOf(args,"--unity-rmint-check")>=0){Running=false;StartCoroutine(RemodelIntCheck());}
             else if(Array.IndexOf(args,"--unity-region-hud-capture")>=0){Running=false;StartCoroutine(RegionHudCapture());}
+            else if(Array.IndexOf(args,"--unity-currency-orb-capture")>=0){menu=true;Running=false;StartCoroutine(CurrencyOrbCapture());}
             else if(Array.IndexOf(args,"--unity-hud-blend-smoke")>=0){menu=true;Running=false;StartCoroutine(HudBlendCapture());}
             else if(Array.IndexOf(args,"--unity-inventory-keys-smoke")>=0){inventoryKeysSmoke=true;traceInventoryKeys=true;pauseSmoke=true;lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();StartCoroutine(InventoryKeysSmoke());}
             else if(Array.IndexOf(args,"--unity-ui-finish-capture")>=0){menu=true;Running=false;pauseSmoke=true;StartCoroutine(UiFinishCapture());}
@@ -145,7 +151,7 @@ namespace Exoduser.UnityPort
             var config=basicWeaponMode?SourceStarterFixture.CreateBasicWeapon():SourceStarterFixture.CreateKiSlash();config.StartX=Map.Data.startX;config.StartY=Map.Data.startY;if(settings!=null)config.DifficultyIndex=settings.Options.Get("diff");if(BuildFlavor.Current.DemoMode)config.LevelCap=BuildFlavor.Current.LevelCap;CombatBeginRun(config);
             Simulation=new Simulation(config,SourceStarterFixture.Seed);revive.Reset();Simulation.ReviveTextRaised+=revive.Add;Simulation.Config.DemoMode=BuildFlavor.Current.DemoMode;Simulation.Materials=1000;Simulation.CanMove=Map.CanMove;Simulation.HasLineOfSight=Map.LineOfSight;Simulation.IsProjectileWall=Map.ProjectileBlocked;Simulation.LevelledUp+=OnLevelledUp;ReviewArgsApply();ApplySettingsOptions();
             inventory.Reset();CombatRestoreState();skills.SetOpen(false);stats.SetOpen(false);forge.SetOpen(false);levelUp.Hide();levelUpSeen=Simulation.Player.Level;death.Hide();deathShown=false;stageClear.Hide();bossBar.Hide();areaTitle.Hide();areaTitleShown=false;skillInputFence=false;Simulation.ApplyEquipment(inventory.State);CombatRestoreResources();
-            Simulation.IsLootOnScreen=l=>{var p=view.WorldToViewportPoint(NativeRemodel3D.Point2D(l.X,l.Y));return p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1;};   // RM-INT: Core callback, always the 2D logic camera
+            Simulation.IsLootOnScreen=l=>WorldPointVisible(l.X,l.Y,0);   // Actual 2D/3D camera viewport; pickup distance rules remain in Core.
             // D01: mkItem drops are real; R picks the highest rarity on screen (web 32936) into the bag. Persistent saves stay unimplemented.
             Simulation.TryCollectLoot=CollectLoot;ClearDropViews();
             if(playerView==null)playerView=CreateRenderer("Player");
@@ -159,7 +165,7 @@ namespace Exoduser.UnityPort
             Simulation.SpawnStartEnemies();   // M1 fix: the fixed 다안 육괴 x2 + 문지기 + 호위 12~16 initStage(0) places on top of the holes
             Simulation.InitRegions();   // M1-REGION R-A: _regionInit after the holes, start enemies and the gate guard exist
             Simulation.EnableFieldBosses();   // M1-REGION R-B: the four 심연의 앵글러 (spawned by the first tick); the camera decides when they may shoot (_fieldEnemyCanShoot)
-            Simulation.FieldEnemyCanShoot=(x,y)=>{float hh=view.orthographicSize*100f,hw=hh*view.aspect,cx=view.transform.position.x*100f,cy=-view.transform.position.y*100f;return Math.Abs(x-cx)<=Math.Max(0,hw-64)&&Math.Abs(y-cy)<=Math.Max(0,hh-64);};
+            Simulation.FieldEnemyCanShoot=(x,y)=>WorldPointVisible(x,y,-64);
             UpdateViews();
         }
         bool SafePoint(ref float x,ref float y,float r)
@@ -173,7 +179,7 @@ namespace Exoduser.UnityPort
         void Update()
         {
             UpdateSettingsPersistence();UpdateCombatSave();
-            lobby.AutomatedInput=lobbySmoke&&!introKeysSmoke;
+            lobby.AutomatedInput=UiOverlapOwnsInput||lobbySmoke&&!introKeysSmoke;
             if(lobbySmoke&&!lobbyControlsSmoke)lobby.SetPlaybackFocus(true); // Natural-playback fixture only; controls fixture owns focus transitions.
             if(lobby!=null&&lobby.IsBlocking){if(firstPractice!=null)EndFirstPractice(true);Running=false;view.cullingMask=lobby.StartupWorldVisible?worldMask:0;UpdateGameMusic();return;}
             view.cullingMask=worldMask;UpdateGameMusic();
@@ -231,7 +237,7 @@ namespace Exoduser.UnityPort
         }
         void FixedUpdate()
         {
-            if(practiceScripted||!Running||!gameFocused||Simulation==null||lobby!=null&&lobby.IsBlocking)return;
+            if(practiceScripted||UiOverlapFreezesSimulation||!Running||!gameFocused||Simulation==null||lobby!=null&&lobby.IsBlocking)return;
             var p=Simulation.Player;var aim=AimWorld();
             float x=(NativeKeyBindInput.Held("right")?1:0)-(NativeKeyBindInput.Held("left")?1:0);
             float y=(NativeKeyBindInput.Held("down")?1:0)-(NativeKeyBindInput.Held("up")?1:0);
@@ -242,11 +248,12 @@ namespace Exoduser.UnityPort
             Simulation.SetPlayerCombatInput(NativeKeyBindInput.Held("parry"),NativeKeyBindInput.Held("shield"),NativeKeyBindInput.Held("charge"));
             Simulation.SetRollInput(NativeKeyBindInput.Held("up"),NativeKeyBindInput.Held("down"),NativeKeyBindInput.Held("left"),NativeKeyBindInput.Held("right"),NativeKeyBindInput.HeldKeyboard("roll"));
             SetSkillKeys();}
-            int statPointsBeforeTick=Simulation.Player.StatPoints;
+            int statPointsBeforeTick=Simulation.Player.StatPoints;int currencyBeforeTick=Simulation.Materials;
             if(!HandleFirstPracticeTick(x,y,aim.x*100,-aim.y*100,attack,PointerOverPractice()))Simulation.Tick(x,y,aim.x*100,-aim.y*100,attack,NativeKeyBindInput.Held("interact"));
             StageFlowPump(statPointsBeforeTick);DispatchFeedback();
+            if(Simulation.Materials>currencyBeforeTick){var at=HudCamera.WorldToViewportPoint(Point(p.X,p.Y));NativeCurrencyOrb.Emit(new Vector2(at.x,at.y));}
             if(PlayerDown){Running=false;Toast("쓰러졌습니다");}
-            if(Simulation.Kills>lastKillCount){lastKillCount=Simulation.Kills;Toast("처치 · 악의 +4");}
+            if(Simulation.Kills>lastKillCount){lastKillCount=Simulation.Kills;Toast("처치 · 악의오브 +4");}
         }
         public void StepInput(float x,float y,float aimX,float aimY,bool attack,bool pickup)
         {Simulation.Stage.Enabled=firstPractice==null;int statPointsBeforeTick=Simulation.Player.StatPoints;Simulation.Tick(x,y,aimX,aimY,attack,pickup);StageFlowPump(statPointsBeforeTick);DispatchFeedback();UpdateViews();}
@@ -284,9 +291,9 @@ namespace Exoduser.UnityPort
         }
         void StreamChunks(float x,float y)
         {
-            int cx=(int)(x/1000),cy=(int)(y/1000);var keep=new HashSet<int>();
-            // Visible1920x1080 plus neighbor margin; assets outside are released.
-            foreach(var c in Map.Data.chunks){int gx=(int)(c.x/1000),gy=(int)(c.y/1000);if(Math.Abs(gx-cx)>2||Math.Abs(gy-cy)>1)continue;
+            var range=NativeWorldChunkRange.Fit(x,y,view.orthographicSize*100*view.aspect,view.orthographicSize*100);var keep=new HashSet<int>();
+            // Actual camera view plus neighbor margin; retain every visible chunk at all supported aspects/zooms.
+            foreach(var c in Map.Data.chunks){int gx=(int)(c.x/1000),gy=(int)(c.y/1000);if(!range.Contains(gx,gy))continue;
                 int id=gy*8+gx;keep.Add(id);if(chunks.ContainsKey(id))continue;
                 var r=CreateRenderer("Ground "+gx+","+gy);r.sprite=SpriteFor(c.texture,c.sx,c.sy,c.sw,c.sh,new Vector2(0,1));
                 r.transform.position=Point(c.x,c.y);r.transform.localScale=new Vector3(c.width/c.sw,c.height/c.sh,1);r.sortingOrder=-30000;
@@ -297,15 +304,15 @@ namespace Exoduser.UnityPort
         }
         void UpdateViews()
         {
-            if(Simulation==null||view==null)return;Remodel3DRestoreBillboards();NativeHd2D.RestoreSourcePoses();var p=Simulation.Player;
+            if(Simulation==null||view==null)return;BindWorldViewport();Remodel3DRestoreBillboards();NativeHd2D.RestoreSourcePoses();var p=Simulation.Player;
             if(contactVfx!=null)contactVfx.RenderCamera=HudCamera;
             if(skillRemaster!=null)skillRemaster.RenderCamera=HudCamera;
             contactVfx?.Observe(Simulation,ImpactNow);
-            float shk=Simulation.ShakeAmount*OptionShakeScale;   // B09: web G.shake -> camera offset (random +-shake px, game.html 51900)
+            float shk=impacts!=null&&impacts.ReducedMotion?0:Simulation.ShakeAmount*OptionShakeScale;   // B09: web G.shake -> camera offset (random +-shake px, game.html 51900)
             float camX=p.X/100,camY=-p.Y/100;BossCameraZoom();ClampCameraToMap(ref camX,ref camY);   // [CAM-CLAMP] web _clampCamToMap before the shake offset
             ImpactCameraProjection();
             hd2dCameraShake=new Vector3(shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0,shk>0?(UnityEngine.Random.value-.5f)*shk*2/100:0,0);
-            view.transform.position=new Vector3(camX,camY,-10)+hd2dCameraShake;StageFlowSyncViews();if(!Simulation.Stage.InArena)StreamChunks(p.X,p.Y);
+            view.transform.position=new Vector3(camX,camY,-10)+hd2dCameraShake;StageFlowSyncViews();if(!Simulation.Stage.InArena)StreamChunks(view.transform.position.x*100,-view.transform.position.y*100);
             bool newTick=renderedTick!=Simulation.TickCount;
             if(newTick){float dx=p.X-lastX,dy=p.Y-lastY;walkDistance+=Mathf.Sqrt(dx*dx+dy*dy);lastX=p.X;lastY=p.Y;playerMoving=dx*dx+dy*dy>.001f;}
             bool heroHeld=ImpactHoldHeroPose();
@@ -338,8 +345,9 @@ namespace Exoduser.UnityPort
                 if(BossBodyDraw(e,ev,newTick))continue;   // BX: the 1-1 druid has its own sheets (damage numbers and walk bookkeeping above already ran)
                 // Keep the struck body's last drawn pose for 55/75/90ms; Core movement and knockback continue unchanged.
                 if(ImpactActive&&contactVfx.EnemyFrozen(e.Id,ImpactNow)&&ev.body.sprite!=null){float flash=contactVfx.Flash(e.Id,ImpactNow);ev.walk.enabled=ev.moving;ev.body.color=ev.walk.color=Color.Lerp(Color.white,new Color(1,.82f,.54f),flash*.8f);continue;}
-                double faceAng=e.Facing;if(!ev.moving&&p.Hp>0&&Mathf.Sqrt((p.X-e.X)*(p.X-e.X)+(p.Y-e.Y)*(p.Y-e.Y))<800)faceAng=Math.Atan2(p.Y-e.Y,p.X-e.X);   // drawEnBody: standing mobs within 800 px look at the player
-                int dir=((int)Math.Floor(faceAng/(Math.PI/4)+.5)%8+8)%8,cellX=ev.skin%8,cellY=ev.skin/8;
+                // One visual-facing writer for both idle and walk. Core facing
+                // is untouched; a tiny movement must not reveal its stale snapshot.
+                int dir=NativeEnemyVisualFacing.Direction(e,p),cellX=ev.skin%8,cellY=ev.skin/8;
                 ev.body.sprite=SpriteFor("Art/enemy/atlas_ch1_8dir_"+enemyDirections[dir],cellX*256,cellY*256,256,256,new Vector2(.5f,.5f));
                 ev.walk.sprite=SpriteFor("Art/enemy/atlas_ch1_8dir_walk_"+enemyDirections[dir],cellX*1024+((int)(ev.distance/128)%4)*256,cellY*256,256,256,new Vector2(.5f,.5f));
                 float size=e.Radius*7/256;ev.body.transform.position=ev.walk.transform.position=Point(e.X,e.Y);ev.body.transform.localScale=ev.walk.transform.localScale=Vector3.one*size;
@@ -356,7 +364,7 @@ namespace Exoduser.UnityPort
             skillRemaster?.Update(Simulation,ImpactNow);
             if(skillRemaster!=null&&skillRemaster.Active)kiView?.Reset();else kiView?.Update(Simulation);
             boltView?.Update(Simulation);BossViewUpdate();
-            impacts?.Update(Simulation.TickCount);
+            if(impacts!=null)impacts.ShakeScale=OptionShakeScale;impacts?.Update(Simulation.TickCount);
             if(skillRemaster!=null&&skillRemaster.Active)skillView?.Reset();else skillView?.Update(Simulation,Time.time);
             hud?.Refresh(p,Simulation.TickCount);StageFlowBossBar();
             if(NativeHd2D.Enabled&&!NativeRemodel3D.Active)Hd2dArenaFrame();
@@ -431,12 +439,15 @@ namespace Exoduser.UnityPort
             button=new GUIStyle(GUI.skin.button){font=font,fontSize=22};
             characterBadge=new GUIStyle(label){font=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular")??font};
         }
+        void DrawFeelHurtEdge(){var prior=GUI.matrix;try{GUI.matrix=Matrix4x4.identity;var color=new Color(166/255f,50/255f,37/255f,.24f);Fill(new Rect(0,0,Screen.width,6),color);Fill(new Rect(0,Screen.height-6,Screen.width,6),color);Fill(new Rect(0,6,6,Screen.height-12),color);Fill(new Rect(Screen.width-6,6,6,Screen.height-12),color);}finally{GUI.matrix=prior;}}
         void OnGUI()
         {
+            if(groundReceiverQaActive)return;
             if(Simulation==null)return;
             if(lobby!=null&&lobby.IsBlocking){if(lobby.StartupHudVisible)DrawStartupWorldHud();return;}
+            if(nextDifficulty.Active){nextDifficulty.Draw();return;}
             if(stageClear.Active){stageClear.LocaleCode=lobby.Language;stageClear.DiagnosticDetails=lobby.DiagnosticUiEnabled;stageClear.Draw();return;}
-            if(stats.Open){stats.Draw(()=>SetStats(false));return;}
+            if(stats.Open){stats.Draw(Simulation,()=>{hud.Refresh(Simulation.Player,Simulation.TickCount,true);RequestCombatSave();},()=>SetStats(false));return;}
             if(forge.Open){forge.Draw(Simulation,inventory.State,()=>SetForge(false));return;}
             if(skills.Open){skills.Draw(Simulation,()=>SetSkills(false),EquipSelectedSkill);return;}
             if(inventory.Open){inventory.Draw(Simulation.Player.Level,Simulation.Player,()=>SetInventory(false));return;}
@@ -446,36 +457,40 @@ namespace Exoduser.UnityPort
                 pauseMenu.English=lobby.Language!="ko";pauseMenu.LocaleCode=lobby.Language;
                 TraceA15HitRoot("before");ApplyPauseCommand(pauseMenu.Draw(PlayerDown,Screen.fullScreen));TraceA15HitRoot("after");DrawSettingsOverlays();return;
             }
-            InitGUI();var old=GUI.matrix;GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(Screen.width/1920f,Screen.height/1080f,1));
+            InitGUI();var old=GUI.matrix;GUI.matrix=NativeUiViewport.Matrix;
             var p=Simulation.Player;
             // B09: web draws the hit flash (_hitFlash) and the red damage flash (scrFlash) over the canvas, under the DOM HUD (game.html 55077-55078)
-            if(Simulation.HitFlashAlpha>0){Color hc=Color.white;ColorUtility.TryParseHtmlString(Simulation.HitFlashColor,out hc);hc.a=Simulation.HitFlashAlpha;Fill(new Rect(0,0,1920,1080),hc);}
+            if(Simulation.HitFlashAlpha>0){Color hc=Color.white;ColorUtility.TryParseHtmlString(Simulation.HitFlashColor,out hc);hc.a=Simulation.HitFlashAlpha;NativeUiViewport.FillScreen(hc);}
             // 웹 rgba(200,0,0,.25)의 색 알파와 globalAlpha를 함께 적용한다. Core 감쇠는 그대로 둔다.
-            if(Simulation.ScreenFlashAlpha>0)Fill(new Rect(0,0,1920,1080),new Color(200f/255,0,0,Simulation.ScreenFlashAlpha*.25f));
-            StageFlowDrawLoad();   // C07: black load screen under the HUD (the web draws it on the canvas, below the DOM HUD)
-            var baseMatrix=GUI.matrix;float hudScale=Mathf.Min(Screen.width/1920f,Screen.height/1080f);
-            GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,Vector3.one*hudScale);
-            float hudWidth=Screen.width/hudScale,statusX=hudWidth-316;
+            if(!KiImpactView.FeelEnabled&&Simulation.ScreenFlashAlpha>0)NativeUiViewport.FillScreen(new Color(200f/255,0,0,Simulation.ScreenFlashAlpha*.25f));
+            if(impacts!=null&&impacts.HurtActive(Simulation.TickCount))DrawFeelHurtEdge();
+            // 로딩 원화/정보는 HUD 뒤에 가리지 않도록 아래 전환 분기에서 마지막으로 그린다.
+            var baseMatrix=GUI.matrix;
+            GUI.matrix=NativeUiViewport.Matrix;
+            float hudWidth=NativeUiSafeArea.DesignWidth,statusX=hudWidth-316;
             if(lobby.DiagnosticUiEnabled&&lobby.ActiveCharacterName.Length>0){Panel(new Rect(16,12,420,50));NativeUiAudit.Label(new Rect(28,20,396,40),lobby.ActiveCharacterName+" · "+(lobby.Language=="ko"?"미리보기":"Preview"),characterBadge);}
             // Web #mmLvl objective panel (game.html 2576-2586): level / experience / area kills / malice from Unity state; Unity has no area-kill total (shown as 미이식).
-            if(firstPractice==null){int areaK,areaT;Simulation.AreaKills(regionHud.CurIdx,out areaK,out areaT);objective.Draw(hudWidth,new NativeObjectivePanel.Info{level=p.Level,exp=p.Experience,maxExp=p.MaxExperience,materials=Simulation.Materials,areaKills=areaK,areaTotal=areaT,english=lobby.Language!="ko"});}   // LT-5: "지역 처치" = current region min(kills,total)/total, else G._stageKills/G._totalSpawned (web 60584-60586), not G.kills
+            {int areaK,areaT;Simulation.AreaKills(regionHud.CurIdx,out areaK,out areaT);objective.Draw(hudWidth,new NativeObjectivePanel.Info{level=p.Level,exp=p.Experience,maxExp=p.MaxExperience,materials=Simulation.Materials,areaKills=areaK,areaTotal=areaT,english=lobby.Language!="ko"});}   // LT-5: "지역 처치" = current region min(kills,total)/total, else G._stageKills/G._totalSpawned (web 60584-60586), not G.kills
             DrawFieldHud(hudWidth);
-            hud.Draw(hudWidth,Screen.height/hudScale,Simulation.Config.ActiveAttack,Simulation);DrawFirstPractice(hudWidth);GUI.matrix=baseMatrix;
+            hud.FeelHurtActive=impacts!=null&&impacts.HurtActive(Simulation.TickCount);hud.Draw(hudWidth,NativeUiSafeArea.DesignHeight,Simulation.Config.ActiveAttack,Simulation);DrawFirstPractice(hudWidth);GUI.matrix=baseMatrix;
             // 전환 중 전투 안내·지역 제목·레벨업이 중앙 명패를 덮지 않게 한다. 자원 HUD는 유지한다.
-            if(Simulation.Stage.LoadPhase>0){GUI.matrix=old;return;}
+            if(Simulation.Stage.LoadPhase>0){StageFlowDrawLoad();GUI.matrix=old;return;}
             // game.html drawEn 54054: a 4 px bar (r*2+6 wide, r+16 above the centre) once the mob is hurt or its shield is down: black 60%, red hp, the blue shield laid over it
             foreach(var e in Simulation.Enemies){if(NativeRemodel3D.Active&&a2Field!=null){A2DrawEnemyStatus(e);continue;}if(!e.Alive||e.IsBoss||!(e.Hp<e.MaxHp||e.MaxShield>0&&e.Shield<e.MaxShield))continue;float ebw=e.Radius*2+6;var ebA=ToGUI(e.X-ebw/2,e.Y-e.Radius-16);var ebB=ToGUI(e.X+ebw/2,e.Y-e.Radius-16);float ebWid=ebB.x-ebA.x,ebHgt=Mathf.Max(2,4*ebWid/ebw);
                 Fill(new Rect(ebA.x,ebA.y,ebWid,ebHgt),new Color(0,0,0,.6f));Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Clamp01((float)e.Hp/e.MaxHp),ebHgt),new Color(.8f,0,0));if(e.MaxShield>0&&e.Shield>0)Fill(new Rect(ebA.x,ebA.y,ebWid*Mathf.Min(1,e.Shield/e.MaxShield),ebHgt),new Color(.267f,.667f,1f));}
             DrawFieldBossBars();
             floatingTextLayout.BeginFrame(Time.unscaledTime);
-            floatingTextLayout.Reserve(new NativeFloatingTextLayout.Box(0,0,160,176));floatingTextLayout.Reserve(new NativeFloatingTextLayout.Box(1600,0,320,190));
-            if(Simulation.Stage.InArena&&druidBody!=null&&druidBody.Visible){var bounds=druidBody.Bounds;var a=HudCamera.WorldToScreenPoint(new Vector3(bounds.min.x,bounds.max.y,bounds.center.z));var b=HudCamera.WorldToScreenPoint(new Vector3(bounds.max.x,bounds.min.y,bounds.center.z));floatingTextLayout.Reserve(new NativeFloatingTextLayout.Box(a.x*1920/Screen.width,(Screen.height-a.y)*1080/Screen.height,(b.x-a.x)*1920/Screen.width,(a.y-b.y)*1080/Screen.height));}
+            var textViewport=NativeUiViewport.ScreenInDesign;floatingTextLayout.SetHorizontalBounds(textViewport.x+8,textViewport.xMax-8);
+            ReserveEdgeFeedback(new Rect(0,0,160,176));ReserveEdgeFeedback(new Rect(16,188,108,58.3f));ReserveEdgeFeedback(new Rect(NativeUiViewport.Edges.Width-NativeObjectivePanel.RightMargin-NativeObjectivePanel.Width,NativeObjectivePanel.Top,NativeObjectivePanel.Width,NativeObjectivePanel.Height));
+            if(firstPractice!=null&&!menu&&gameFocused){var pr=PracticePanel(NativeUiViewport.Edges.Width);ReserveEdgeFeedback(new Rect(pr.x-8,pr.y-8,pr.width+16,pr.height+16));}
+            if(Time.unscaledTime<noticeUntil){var ns=new GUIStyle(label){alignment=TextAnchor.UpperLeft,wordWrap=true};ReserveEdgeFeedback(new Rect(20,270,440,ns.CalcHeight(new GUIContent(notice),440)));}
+            if(Simulation.Stage.InArena&&druidBody!=null&&druidBody.Visible){var bounds=druidBody.Bounds;var a=HudCamera.WorldToScreenPoint(new Vector3(bounds.min.x,bounds.max.y,bounds.center.z));var b=HudCamera.WorldToScreenPoint(new Vector3(bounds.max.x,bounds.min.y,bounds.center.z));var ga=NativeUiViewport.Pointer(a);var gb=NativeUiViewport.Pointer(b);floatingTextLayout.Reserve(new NativeFloatingTextLayout.Box(ga.x,ga.y,gb.x-ga.x,gb.y-ga.y));}
             foreach(var d in damage)if(!d.submitted){d.submitted=true;damageFloaters.Add(d.x,d.y,d.amount.ToString(),d.shield?"#66ddff":"#ead7ac",d.shield?"enemy-shield":"enemy-hp",NativeFloatingTextLayout.DamagePriority,d.until-1,1,true,d.amount);}
             foreach(var n in damageFloaters.Live(Time.unscaledTime))NativeReviveHud.Offer(floatingTextLayout,n,ToGUI(n.X,n.Y),center);
             DrawPracticeShots();
             revive.Font=font;revive.English=lobby.Language!="ko";revive.CollectFloaters(ToGUI,center,floatingTextLayout);
             floatingTextLayout.Resolve();NativeReviveHud.DrawRequests(floatingTextLayout,center);
-            if(Time.unscaledTime<noticeUntil)NativeUiAudit.Label(new Rect(560,180,800,45),notice,center);
+            if(Time.unscaledTime<noticeUntil){var noticeMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.EdgeMatrix;var noticeStyle=new GUIStyle(label){alignment=TextAnchor.UpperLeft,wordWrap=true};NativeUiAudit.Label(new Rect(20,270,440,noticeStyle.CalcHeight(new GUIContent(notice),440)),notice,noticeStyle);GUI.matrix=noticeMatrix;}
             if(levelUp.Active){var lp=HudCamera.WorldToScreenPoint(Point(p.X,p.Y));levelUp.Draw(new Vector2(lp.x,Screen.height-lp.y));}
             if(areaTitle.Active)areaTitle.Draw();
             DrawRegionHud();   // M1 region HUD: entry/purge banner + direction arrow
@@ -598,7 +613,7 @@ namespace Exoduser.UnityPort
                 case PauseMenuCommand.Quit:if(gameFocused){SaveCombatNow();Application.Quit();}break;
             }
         }
-        Vector2 ToGUI(float x,float y){var v=HudCamera.WorldToViewportPoint(Point(x,y));return new Vector2(v.x*1920,(1-v.y)*1080);}
+        Vector2 ToGUI(float x,float y){var v=HudCamera.WorldToScreenPoint(Point(x,y));return NativeUiViewport.Pointer(v);}
         static void Fill(Rect r,Color c){var old=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
         static void Panel(Rect r){Fill(r,new Color(.025f,.032f,.027f,.94f));Fill(new Rect(r.x,r.y,r.width,1),new Color(.49f,.4f,.24f));Fill(new Rect(r.x,r.y+r.height-1,r.width,1),new Color(.28f,.24f,.16f));}
         static void StatusBackdrop(Rect r)
@@ -655,7 +670,7 @@ namespace Exoduser.UnityPort
             File.WriteAllText(Path.Combine(output,"hud-smoke.json"),JsonUtility.ToJson(new HudSmokeReceipt{scope="actual_native_player_controlled_HUD_fixture",activeSkill=hud.ActiveSkill,iconResource="Art/ui/skill_icons/kiSlash",iconDrawn=hud.IconDrawn,cases=cases.ToArray()},true));
             hudSmoke=false;ResetRun();menu=true;Running=false;
             // DBT-6: this smoke never quit (the receipt was written, then the pause menu stayed up until the caller killed the player). Unattended -batchmode runs end themselves; a windowed manual run is unchanged.
-            if(Application.isBatchMode)Application.Quit(0);
+            if(Application.isBatchMode||Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-mute")>=0)Application.Quit(0);   // the build loop's hidden-desktop run is windowed but unattended (--unity-mute)
         }
         void SetInventory(bool open){
             string uiBefore=UiPanelState();
@@ -692,7 +707,7 @@ namespace Exoduser.UnityPort
         public static string Argument(string key){var a=Environment.GetCommandLineArgs();int i=Array.IndexOf(a,key);return i>=0&&i+1<a.Length?a[i+1]:"";}
         [Serializable] sealed class SmokeReceipt{public bool moved,webViewUsed,charged,released;public float initialX,finalX,maximumCharge;public int originalMapChunks,loadedChunks,enemyActors,maximumProjectiles,kills,totalDamage;public FeedbackAudioReceipt feedbackAudio;public ImpactReceipt feedbackVisual;}
         [Serializable] sealed class HudSmokeReceipt{public string scope,activeSkill,iconResource;public bool iconDrawn;public HudPixelProbe[] cases;}
-        void OnDestroy(){NativePanelTabBar.Requested-=OnPanelRequested;skillRemaster?.Dispose();contactVfx?.Dispose();kiView?.Dispose();boltView?.Dispose();impacts?.Dispose();skillView?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();music?.Dispose();ambient?.Dispose();if(Instance==this)Instance=null;}
+        void OnDestroy(){nextDifficulty.Dispose();NativePanelTabBar.Requested-=OnPanelRequested;skillRemaster?.Dispose();contactVfx?.Dispose();kiView?.Dispose();boltView?.Dispose();impacts?.Dispose();skillView?.Dispose();sound?.Dispose();hud?.Dispose();foreach(var s in spriteCache.Values)if(s!=null)Destroy(s);spriteCache.Clear();music?.Dispose();ambient?.Dispose();if(Instance==this)Instance=null;}
         [Serializable] sealed class TextReviewLabel {public string text;public int count,priority;public long value;public float originX,originY,x,y,width,height,distance;}
         [Serializable] sealed class TextReviewShot {public string name,kind,note;public int tick,visible,deferred,stateEvents,damageEvents;public float realSeconds;public List<TextReviewLabel> labels=new List<TextReviewLabel>();}
         readonly List<TextReviewShot> textReviewShots=new List<TextReviewShot>();float textReviewStart;

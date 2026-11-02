@@ -105,3 +105,19 @@
 실제 화면1600×900, 각1배율 비교는 연속-동작-비교.html 및 이동시전-1x.png다. 이동·시전 앵커 회귀 없음. 시각 전체는 RETOUCH다. Q의 웹 푸른 방어 오라와 E의 주황 타격 호가 3D 화면에서 부족하며, 이 둘은 다음 수정 대상으로 남긴다. 악의구의 3D 투영·색과 캐릭터/바닥 시각 차이도 기존 RETOUCH다. HUD의 Q009 웹467/Unity466은 반올림 오류가 아니라 웹20Hz 갱신의 이전 값 표시이며 양쪽 정수 절삭 계약은 같다. 자연 시작·일시정지·설정·전체 스킬·후반 진행·Mac 증거로 확대하지 않는다.
 
 빌드가 생성한519개 메타/씬/렌더 설정은 후보별 I: 백업·SHA대조 후 HEAD로 정확 복구했다. 기존 미추적55개의 동일byte를 확인하고 타인 WIP·세이브를 보존한다. GPU 예약은 최종 Player 종료 후 공식 반환했다.
+
+## 2026-11-02 웹 손맛 1차 이식 후보
+
+| 표현 | 후보 구현·수치·검증 경계 |
+|---|---|
+| 접점 | EnemyHurt.Body의 실제 HP 피해 뒤 optional FeelContact, DOT/beam/bladeShard/maliceHunt/iceBlade/lightning/ltnChaser 제외. TargetId로 동일 적 갱신·max8·오래된 순 교체. 2틱 홀드/8틱 수명/4셀,64px·처치72px,alpha.88·pop.04×shakeScale. 움직임 감소 시 hold0/pop0 |
+| 알림 | FeedbackKind 끝에 FeelContact/FeelHurt 추가, 기존 enum 번호 유지. callback은 좌표/angle/사망 전 HP만 읽고 Feedback에 넣음. 피해·RNG·AI·60Hz·Q/E·세이브 변경0 |
+| 피격 | 허용된 비DOT hurtP에서140ms/8.4틱 표식. 이전 전체화면 flash Core값은 oracle 보존하되 기본Feel ON 렌더는 #a63225/alpha.24/물리6px 가장자리로 대체. HP 액체 원 안쪽3px #dfb49c·22px #b83022 표식, 새 레이아웃 이동0 |
+| 접지/탄막 | 접점은 기존 HD2D 재투영에서 발끝 lift 제외. sort Y+3/4(근접 탄 pY+6 아래), 실제 밀집 탄막 가림은 미검증이며 모든 원거리 탄막의 전역 우선순위 일치를 주장하지 않음 |
+| 처치음 | 기존6개 처리·모든 종류/피치 RNG 소비를 보존하고 일반 사망의3번째 이후 source 추가만 생략. 보스/첫 처치의 보조음 규칙 보존. 무음 자동검수·사용자 청음은 별도 |
+| 제어 | 기본ON, --unity-combat-feel-off로 이전 표현. --unity-reduce-menu-motion은 접점hold/pop/카메라흔들림을 정지. OS 움직임 감소/미이식 설정UI 연동은 미검증 |
+| 행동 검사 | RED→GREEN 실제 Core 알림6+프레임18=24, 기존 Core35/0. 기존 도구 최초 인수1개 누락으로 중단 후 정식 map 인수 추가1회 성공 |
+| oracle | player-hurt 3000사례/47559검사0실패. enemy-hurt4968사례/5764352검사: H2·CH/H1/H4/CH3/CH4 차이0. H3기존1300실패는 변경전 같은2파일 byte로 독립 실행해 동일을 확인, 신규실패0·전체oracle PASS로 표기하지 않음 |
+| 실제 게임 | Dota 실행 중 Unity/Player0, 시각·전투 손맛/청음·M1·공통/Desktop 미반영. 컴파일/자동검사는 자연 플레이 판정을 대신하지 않음 |
+
+원본 읽기: origin/main f4967bc62 game.html의 _FEEL(659327b5a 인계)·VFX_구현가이드. 코드·증거·최종 SHA는 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md. VISUAL VERDICT: 미검증.

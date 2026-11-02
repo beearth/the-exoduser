@@ -112,7 +112,7 @@ namespace Exoduser.UnityPort.Core
             // viewport culling (+300px), exceptions: boss, hurt, charge commit, within 30px
             bool eCommitChg = e.s == "eChargeWind" || e.s == "eCharge";
             bool eInView = e.ib || Gt0(e.hurt) || eCommitChg || (ed2 < 900) ||
-                (e.x > c.CamX - c.ViewW / 2 - 300 && e.x < c.CamX + c.ViewW / 2 + 300 && e.y > c.CamY - c.ViewH / 2 - 300 && e.y < c.CamY + c.ViewH / 2 + 300);
+                (c.WorldPointVisible!=null?c.WorldPointVisible(e.x,e.y,300):(e.x > c.CamX - c.ViewW / 2 - 300 && e.x < c.CamX + c.ViewW / 2 + 300 && e.y > c.CamY - c.ViewH / 2 - 300 && e.y < c.CamY + c.ViewH / 2 + 300));
             int tierFrame = ToInt32(c.EnemyTierFrame.Value);
             if (!eInView)
             {
@@ -121,7 +121,7 @@ namespace Exoduser.UnityPort.Core
                 {
                     double lshAng = Math.PI * 2 * c.Random(), lshD = 800 + c.Random() * 400;
                     double lshX = c.PlayerX + JsMath.Cos(lshAng) * lshD, lshY = c.PlayerY + JsMath.Sin(lshAng) * lshD;
-                    if (c.CanMove(lshX, lshY, e.r)) { e.x = lshX; e.y = lshY; e.kb.x = 0; e.kb.y = 0; e.facing = JsMath.Atan2(c.PlayerY - e.y, c.PlayerX - e.x); e._stuckT = 0; }
+                    if ((c.WorldPointVisible==null||!c.WorldPointVisible(lshX,lshY,e.r+100))&&c.CanMove(lshX, lshY, e.r)) { e.x = lshX; e.y = lshY; e.kb.x = 0; e.kb.y = 0; e.facing = JsMath.Atan2(c.PlayerY - e.y, c.PlayerX - e.x); e._stuckT = 0; }
                 }
                 if (Truthy(e._alerted) && (tierFrame & 7) == 0)
                 {

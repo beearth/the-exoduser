@@ -7,6 +7,12 @@ public sealed class SourceTextureImporter : AssetPostprocessor
   if(!assetPath.StartsWith("Assets/Exoduser/Resources/Art/"))return;
   var t=(TextureImporter)assetImporter;
   var name=System.IO.Path.GetFileNameWithoutExtension(assetPath);
+   if(assetPath.StartsWith("Assets/Exoduser/Resources/Art/TitleSignboard/A/"))
+   {
+    t.textureType=TextureImporterType.Default;t.textureShape=TextureImporterShape.Texture2D;t.sRGBTexture=name!="motion-mask";
+    t.mipmapEnabled=false;t.alphaIsTransparency=false;t.npotScale=TextureImporterNPOTScale.None;
+    t.maxTextureSize=8192;t.textureCompression=TextureImporterCompression.Uncompressed;t.wrapMode=UnityEngine.TextureWrapMode.Clamp;t.filterMode=UnityEngine.FilterMode.Bilinear;return;
+   }
   bool a2=assetPath.StartsWith("Assets/Exoduser/Resources/Art/map/a2/");
   bool a2Ground=assetPath.StartsWith("Assets/Exoduser/Resources/Art/map/a2/ground/");
   bool pbr=assetPath.StartsWith("Assets/Exoduser/Resources/Art/map/hell_lighting/")&&

@@ -90,6 +90,7 @@ namespace Exoduser.UnityPort
                 var chunk=new Mesh{name="A2 지면 "+x0+"/"+y0};chunk.vertices=cv;chunk.normals=cn;chunk.tangents=ct;chunk.uv=cu;chunk.triangles=ci;chunk.RecalculateBounds();
                 var go=new GameObject(chunk.name);go.transform.SetParent(terrainRoot.transform,false);go.AddComponent<MeshFilter>().sharedMesh=chunk;
                 var r=go.AddComponent<MeshRenderer>();r.sharedMaterial=a2FieldSoil;r.receiveShadows=true;chunkCount++;
+                NativeGroundSkillProjection.RegisterReceiver(go.GetComponent<MeshFilter>());
             }
             Debug.Log("[A2 전체 지면] "+nx+"x"+nz+"/삼각형 "+triangles.Length/3+"/64셀청크 "+chunkCount+"/근경.25u·먼외곽2u/공유경계노멀·탄젠트");
             Destroy(mesh);
@@ -218,10 +219,13 @@ namespace Exoduser.UnityPort
         {
             foreach(var mf in go.GetComponentsInChildren<MeshFilter>())
             {
+                if(NativeGroundSkillProjection.IsProxy(mf))continue;
                 var mesh=mf.sharedMesh;if(!mesh.isReadable){Debug.LogError("[A2 필드] 접지 표면 읽기 누락 "+go.name);continue;}
                 var vertices=mesh.vertices;var xyz=new float[vertices.Length*3];
                 for(int i=0;i<vertices.Length;i++){var p=mf.transform.TransformPoint(vertices[i]);xyz[i*3]=p.x;xyz[i*3+1]=p.y;xyz[i*3+2]=p.z;}
-                if(deck)a2Field.RegisterDeckSurface(xyz,mesh.triangles,go.transform.position.y+.4f);else a2Field.RegisterSurface(xyz,mesh.triangles);
+                var indices=mesh.triangles;
+                if(deck)a2Field.RegisterDeckSurface(xyz,indices,go.transform.position.y+.4f);else a2Field.RegisterSurface(xyz,indices);
+                NativeGroundSkillProjection.RegisterReceiver(mf,xyz,indices,a2Field.TerrainHeight,deck,go.transform.position.y+.4f);
             }
         }
         void A2FieldDressTree(GameObject tree,int variation)

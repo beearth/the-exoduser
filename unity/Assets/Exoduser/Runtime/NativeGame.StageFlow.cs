@@ -13,9 +13,8 @@ namespace Exoduser.UnityPort
         sealed class WorldText { public float x, y, until; public string text; public Color color; }
         readonly List<WorldText> worldTexts = new List<WorldText>();
         NativeArenaView arenaView; bool arenaViewWasOpen;
+        readonly NativeNextDifficultyPanel nextDifficulty=new NativeNextDifficultyPanel();
         public NativeBossBar.Input LastBossBarInput; public bool BossBarShown;
-        Font stageFontNanum, stageFontCinzel;
-        Texture2D stageLoadSigil;
         bool English { get { return lobby != null && lobby.Language != "ko"; } }
 
         void WorldTextAdd(float x, float y, string ko, string en, Color color, float seconds = 1.6f)
@@ -149,25 +148,15 @@ namespace Exoduser.UnityPort
             var flow = Simulation.Stage;
             if (flow.LoadPhase > 0)
             {
-                float fade = (float)flow.LoadFade; Fill(new Rect(0, 0, 1920, 1080), new Color(0, 0, 0, fade));
+                float fade = (float)flow.LoadFade; NativeUiViewport.FillScreen(new Color(0, 0, 0, fade));
                 if (flow.LoadPhase >= 2 && fade > .5f)
                 {
                     float nt = flow.LoadPhase == 2 ? Mathf.Min(1f, (float)flow.LoadT / 35f) : 1f;
-                    if (stageFontNanum == null) { stageFontNanum = NativeSilverHellUi.Font() ?? Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular") ?? font; }
-                    if(stageLoadSigil==null)stageLoadSigil=Resources.Load<Texture2D>("Art/ui/silver_hell/gate_sigil_20261028");
-                    var tint=GUI.color;GUI.color=new Color(tint.r,tint.g,tint.b,tint.a*nt);
-                    NativeSilverHellUi.Panel(new Rect(560,290,800,500),36,12,false);
-                    if(stageLoadSigil!=null)NativeUiAudit.DrawTexture(new Rect(760,310,400,225),stageLoadSigil,ScaleMode.StretchToFill,true);
-                    GUI.color=tint;
-                    string name = bossBar.BossNameForStage(Simulation.Config.StageIndex) ?? "???";
-                    var st = new GUIStyle(GUI.skin.label) { font = stageFontNanum, fontSize = 40, fontStyle = FontStyle.Normal, alignment = TextAnchor.MiddleCenter };
-                    st.normal.textColor = new Color(0, 0, 0, .8f * nt); NativeUiAudit.Label(new Rect(580,552,760,60), name, st);
-                    st.normal.textColor = new Color(242/255f,240/255f,236/255f,nt);NativeSilverHellUi.Label(new Rect(580,550,760,60),name,st);
-                    var sub = new GUIStyle(st) { fontSize = 15, fontStyle = FontStyle.Normal };
-                    sub.normal.textColor = new Color(138/255f,141/255f,141/255f,nt);NativeSilverHellUi.Label(new Rect(580,650,760,24),StageSubtitle(Simulation.Config.StageIndex),sub);
+                    string name=bossBar.BossNameForStage(Simulation.Config.StageIndex)??"???";NativeLoadingArtwork.Draw(NativeLoadingSelection.ForStage(Simulation.Config.StageIndex),name,StageSubtitle(Simulation.Config.StageIndex),Mathf.Clamp01((float)flow.LoadT/35),nt,false,NativeLoadingTips.Pick(NativeLoadingArtwork.ForcedTip>=0?NativeLoadingArtwork.ForcedTip:Simulation.Config.StageIndex,English,LoadingTipKey("inventory"),LoadingTipKey("interact")));
                 }
             }
         }
+        string LoadingTipKey(string action){var keys=NativeKeyBindInput.Bindings;string key=keys.Primary(action)??keys.Secondary(action);return key==null?null:KeyBindings.KeyName(key,English);}
         static void DiamondMark(float x, float y, Color c)
         {   // web fillRect 8x8 rotated 45 degrees: approximated by a 3-row stack (GUI cannot rotate cheaply), 1px hairline scale
             Fill(new Rect(x - 1, y - 4, 2, 8), c); Fill(new Rect(x - 3, y - 2, 6, 4), c); Fill(new Rect(x - 4, y - 1, 8, 2), c);
@@ -178,11 +167,17 @@ namespace Exoduser.UnityPort
         // "다음 구역으로 ▶": the next area (1-2) is not ported, so the run is saved and the player returns to the lobby.
         void StageClearNext()
         {
+            if(stageClear.ShownKind==NativeStageClearOverlay.Kind.DemoEnd){StageClearContinue();return;}
+            nextDifficulty.Show(Simulation.Config.StageDiffOffset,lobby.Language,offset=>{Simulation.Config.StageDiffOffset=offset;StageClearContinue();},()=>stageClear.RearmNext());
+        }
+        void StageClearContinue()
+        {
             stageClear.Hide(); if(lobby.DiagnosticUiEnabled)Toast("다음 구역은 아직 이식되지 않았습니다 — 저장하고 로비로 돌아갑니다");
             SaveCombatNow(); Running = false; menu = true; sound.Reset(); pauseMenu.Reset(); lobby.ShowLobby();
         }
         bool PointerOverStageClear()
         {
+            if(nextDifficulty.Active)return true;
             if (!stageClear.Active) return false;
             var r=stageClear.ButtonScreenRect;var m=ExoInput.MousePosition;return r.Contains(new Vector2(m.x,Screen.height-m.y));
         }

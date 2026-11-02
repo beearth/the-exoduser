@@ -78,7 +78,7 @@ namespace Exoduser.UnityPort {
             float wx=oss?518:12,ww=oss?1390:1896,lx=oss?548:42,lw=oss?1330:1836;
             DrawWindow(new Rect(wx,12,ww,1056),oss);
             DrawNavigation(lx,lw);
-            DrawHeaderLine(power,lx-42,close);
+            NativePanelTitle.Draw(new Rect(700,72,520,64),"인벤토리");DrawHeaderLine(power,lx-42,close);
             DrawBody(new Rect(lx,182,lw,tall?858:802),lx,lw);
             if(oss)DrawOssuaryPage(level,power);
             else if(Page==PageCrystals)DrawCrystalsPage(level,power);
@@ -109,7 +109,7 @@ namespace Exoduser.UnityPort {
         }
 
         // #invResBar: _L('악의: ')+G.mats (no digit grouping). Unity state = Simulation.Materials, the same value the status panel shows.
-        static string MaliceText(){var g=NativeGame.Instance;return g!=null&&g.Simulation!=null?"악의: "+g.Simulation.Materials:"악의: 미이식";}
+        static string MaliceText(){var g=NativeGame.Instance;return g!=null&&g.Simulation!=null?"악의오브: "+g.Simulation.Materials:"악의오브: 미이식";}
         // Relic sockets: web counts filled crystals / total sockets of the equipped items; Unity admits only socketless items, so this is 0 / 0 from state.
         void SocketCounts(out int filled,out int total){
             filled=0;total=0;
@@ -130,7 +130,7 @@ namespace Exoduser.UnityPort {
                 Txt(new Rect(bx,105,80,18),v,12,C(175,178,178),400);
                 bx+=TextWidth(v+" ",12,400);
             }
-            Txt(new Rect(948+dx/2f,102,200,24),MaliceText(),12,C(194,191,185),400,TextAnchor.MiddleCenter);
+            Txt(new Rect(1470+dx/4f,102,300,24),MaliceText(),12,C(194,191,185),400,TextAnchor.MiddleCenter);
             var closeRect=new Rect(1842,100,28,28);
             Fill(closeRect,C(39,19,16));Border(closeRect,C(99,102,102));
             if(closeRect.Contains(Event.current.mousePosition))Fill(closeRect,new Color(1,1,1,.07f));
@@ -384,7 +384,7 @@ namespace Exoduser.UnityPort {
                 startX=r1.xMax;
                 if(bag){
                     // salvage (악의+N) needs the salvage value table: not ported, shape only
-                    string sal="분해 (악의+미이식)";var r2=new Rect(r1.xMax+6,1004,TextWidth(sal,12,500)+28,34);
+                    string sal="분해 (악의오브+미이식)";var r2=new Rect(r1.xMax+6,1004,TextWidth(sal,12,500)+28,34);
                     PlateFace(r2,false);Txt(r2,sal,12,C(194,191,185),500,TextAnchor.MiddleCenter,true);startX=r2.xMax;
                 }
                 startX+=8;

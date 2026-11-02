@@ -242,6 +242,26 @@
         {
           "key": "지옥성",
           "text": "지옥성"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다."
         }
       ]
     },
@@ -487,6 +507,26 @@
         {
           "key": "지옥성",
           "text": "Hell Citadel"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "A nameless one cast into Hell. With a single black-iron greatsword, he climbs back through all seven layers."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "The girl who lost her mother in a forest hut became a shadow of the court. Hunted as a witch and cast into Hell, she dances once more."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Master of the spear-cannon that pierced the walls under a red moon. He loads his own blood as shot and turns every recoil into a step."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "A reaper bound by a pact with Death. The scythe forged in blue flame grows on the souls it reaps, and its steps are as silent as a wraith's."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "A spear that calls the Void beneath a torn moon. The runes on its tip seal space itself, and when three overlap, reality collapses."
         }
       ]
     },
@@ -732,6 +772,26 @@
         {
           "key": "지옥성",
           "text": "地狱城"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "一个坠入地狱的无名之人。仅凭一柄黑铁巨剑，他逆攀七重地狱。"
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "在林中小屋失去母亲的少女，成了宫廷的暗影。被当作女巫追逐、坠入地狱的她，再度起舞。"
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "血月之夜，以枪炮贯穿城墙之人。他以自身鲜血装填弹药，连后坐力也化作前行的步伐。"
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "与死亡立下契约的收魂者。青焰锻造的镰刀吞噬斩下的灵魂而生长，他的脚步如幽魂般无声。"
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "在残裂之月下唤来虚空的长枪。枪尖铭刻的符文封锁空间，三道符文重叠之际，现实随之崩塌。"
         }
       ]
     },
@@ -977,6 +1037,26 @@
         {
           "key": "지옥성",
           "text": "地獄城"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "一個墜入地獄的無名之人。僅憑一柄黑鐵巨劍，他逆攀七重地獄。"
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "在林中小屋失去母親的少女，成了宮廷的暗影。被當作女巫追逐、墜入地獄的她，再度起舞。"
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "血月之夜，以槍砲貫穿城牆之人。他以自身鮮血裝填彈藥，連後座力也化作前行的步伐。"
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "與死亡立下契約的收魂者。青焰鍛造的鐮刀吞噬斬下的靈魂而生長，他的腳步如幽魂般無聲。"
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "在殘裂之月下喚來虛空的長槍。槍尖銘刻的符文封鎖空間，三道符文重疊之際，現實隨之崩塌。"
         }
       ]
     },
@@ -1222,6 +1302,26 @@
         {
           "key": "지옥성",
           "text": "地獄城"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "地獄に堕ちた名もなき者。黒鉄の大剣ただ一振りで、七層の地獄を遡る。"
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "森の小屋で母を失った少女は、宮廷の影となった。魔女として追われ、堕ちた地獄で、彼女は再び舞う。"
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "赤い月の夜、城壁を貫いた槍砲の主。己の血を弾として装填し、反動さえも歩みに変える。"
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "死と契約を結んだ死神。青い炎で鍛えた鎌は刈り取った魂を喰らって育ち、その足音は亡霊のように静かだ。"
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "裂けた月の下、虚空を呼ぶ槍。穂先に刻まれたルーンが空間を封じ、三つが重なる刹那、現実は崩れ落ちる。"
         }
       ]
     },
@@ -1467,6 +1567,26 @@
         {
           "key": "지옥성",
           "text": "Thành Địa Ngục"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "Một kẻ vô danh bị đày xuống Địa Ngục. Chỉ với thanh đại kiếm sắt đen, hắn ngược đường leo qua cả bảy tầng."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "Cô bé mất mẹ trong túp lều giữa rừng đã trở thành cái bóng chốn cung đình. Bị săn đuổi như phù thủy rồi đày xuống Địa Ngục, nàng lại cất bước múa."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Chủ nhân ngọn thương pháo từng xuyên thủng thành lũy dưới trăng đỏ. Hắn nạp máu mình làm đạn, biến cả sức giật thành bước chân."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "Một tử thần bị ràng buộc bởi giao ước với Cái Chết. Lưỡi hái rèn trong lửa xanh lớn lên nhờ những linh hồn nó gặt, còn bước chân lặng như u hồn."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "Ngọn thương gọi Hư Không dưới vầng trăng rách. Những cổ tự khắc nơi mũi thương phong kín không gian, và khi ba dấu chồng lên nhau, thực tại sụp đổ."
         }
       ]
     },
@@ -1712,6 +1832,26 @@
         {
           "key": "지옥성",
           "text": "ป้อมนรก"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "ผู้ไร้นามที่ถูกโยนลงสู่นรก ด้วยดาบใหญ่เหล็กดำเพียงเล่มเดียว เขาปีนย้อนขึ้นผ่านนรกทั้งเจ็ดชั้น"
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "เด็กหญิงผู้สูญเสียมารดาในกระท่อมกลางป่าได้กลายเป็นเงาแห่งราชสำนัก ถูกล่าในฐานะแม่มดและผลักสู่นรก นางกลับร่ายรำอีกครา"
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "นายแห่งหอกปืนใหญ่ที่เจาะกำแพงเมืองในคืนจันทร์แดง เขาบรรจุเลือดตนเป็นกระสุน และเปลี่ยนทุกแรงถีบให้เป็นก้าวเดิน"
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "ยมทูตผู้ผูกพันด้วยสัญญากับความตาย เคียวที่ตีขึ้นในเปลวไฟสีครามเติบโตด้วยวิญญาณที่เก็บเกี่ยว ส่วนย่างก้าวนั้นเงียบดุจภูตผี"
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "หอกที่เรียกหาความว่างเปล่าใต้จันทร์ฉีกขาด รูนบนปลายหอกผนึกห้วงอวกาศ และเมื่อรูนสามดวงซ้อนทับ ความเป็นจริงก็พังทลาย"
         }
       ]
     },
@@ -1957,6 +2097,26 @@
         {
           "key": "지옥성",
           "text": "Benteng Neraka"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "Sosok tanpa nama yang dicampakkan ke Neraka. Hanya dengan sebilah pedang besar besi hitam, ia mendaki kembali melewati ketujuh lapisnya."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "Gadis yang kehilangan ibunya di pondok dalam hutan menjadi bayangan istana. Diburu sebagai penyihir dan dicampakkan ke Neraka, ia menari sekali lagi."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Pemilik tombak meriam yang menembus tembok pada malam bulan merah. Ia mengisi peluru dengan darahnya sendiri dan mengubah setiap hentakan menjadi langkah."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "Penuai yang terikat perjanjian dengan Kematian. Sabit tempa api biru tumbuh dengan melahap jiwa yang dituainya, sementara langkahnya senyap bagai arwah."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "Tombak yang memanggil Kehampaan di bawah bulan terkoyak. Rune di ujungnya menyegel ruang itu sendiri, dan saat tiga bertumpuk, kenyataan pun runtuh."
         }
       ]
     },
@@ -2202,6 +2362,26 @@
         {
           "key": "지옥성",
           "text": "Benteng Neraka"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "Seorang tanpa nama dicampakkan ke Neraka. Dengan sebilah pedang besar besi hitam, dia mendaki kembali merentas ketujuh-tujuh lapisannya."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "Gadis yang kehilangan ibunya di pondok dalam hutan menjadi bayang istana. Diburu sebagai ahli sihir dan dicampakkan ke Neraka, dia menari sekali lagi."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Tuan tombak meriam yang menembusi tembok pada malam bulan merah. Dia mengisi darahnya sendiri sebagai peluru dan mengubah setiap sentakan menjadi langkah."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "Penuai roh yang terikat perjanjian dengan Maut. Sabit tempa api biru membesar dengan memakan roh yang dituainya, sementara langkahnya senyap bagai hantu."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "Tombak yang menyeru Kehampaan di bawah bulan terkoyak. Rune pada hujungnya memeterai ruang itu sendiri, dan apabila tiga bertindih, alam nyata pun runtuh."
         }
       ]
     },
@@ -2447,6 +2627,26 @@
         {
           "key": "지옥성",
           "text": "Ciudadela Infernal"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "Un ser sin nombre arrojado al Infierno. Con un solo espadón de hierro negro, remonta sus siete estratos."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "La niña que perdió a su madre en una cabaña del bosque se convirtió en sombra de la corte. Perseguida como bruja y arrojada al Infierno, vuelve a danzar."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Dueño de la lanza cañón que atravesó las murallas bajo una luna roja. Carga su propia sangre como munición y convierte cada retroceso en un paso."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "Un segador ligado por un pacto con la Muerte. Su guadaña, forjada en llama azul, crece con las almas que siega, y sus pasos callan como los de un espectro."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "Una lanza que invoca el Vacío bajo una luna desgarrada. Las runas de su punta sellan el espacio y, cuando tres se superponen, la realidad se derrumba."
         }
       ]
     },
@@ -2692,6 +2892,26 @@
         {
           "key": "지옥성",
           "text": "Citadelle Infernale"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "Un être sans nom précipité en Enfer. Armé d'une seule épée à deux mains en fer noir, il en remonte les sept strates."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "La fillette qui perdit sa mère dans une cabane des bois devint une ombre de la cour. Pourchassée comme sorcière et jetée en Enfer, elle danse à nouveau."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Maître de la lance canon qui perça les remparts sous une lune rouge. Il charge son propre sang en guise de munitions et fait de chaque recul un pas."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "Un faucheur lié à la Mort par un pacte. Sa faux forgée dans la flamme bleue grandit des âmes qu'elle moissonne, et ses pas sont muets comme ceux d'un spectre."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "Une lance qui invoque le Vide sous une lune déchirée. Les runes gravées sur sa pointe scellent l'espace, et lorsque trois se superposent, la réalité s'effondre."
         }
       ]
     },
@@ -2937,6 +3157,26 @@
         {
           "key": "지옥성",
           "text": "Cittadella Infernale"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "Un essere senza nome gettato all'Inferno. Con un solo spadone di ferro nero, ne risale tutti e sette gli strati."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "La bambina che perse la madre in una capanna nel bosco divenne un'ombra della corte. Braccata come strega e gettata all'Inferno, torna a danzare."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Signore della lancia cannone che trafisse le mura sotto una luna rossa. Carica il proprio sangue come munizione e muta ogni rinculo in un passo."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "Un mietitore legato alla Morte da un patto. La falce forgiata nella fiamma azzurra cresce con le anime che miete, e i suoi passi tacciono come quelli di uno spettro."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "Una lancia che invoca il Vuoto sotto una luna lacerata. Le rune sulla sua punta sigillano lo spazio stesso e, quando tre si sovrappongono, la realtà crolla."
         }
       ]
     },
@@ -3182,6 +3422,26 @@
         {
           "key": "지옥성",
           "text": "Cidadela Infernal"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "Um ser sem nome lançado ao Inferno. Com uma única espada colossal de ferro negro, ele sobe de volta pelas sete camadas."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "A menina que perdeu a mãe numa cabana na floresta tornou-se uma sombra da corte. Caçada como bruxa e lançada ao Inferno, ela volta a dançar."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Senhor da lança-canhão que perfurou as muralhas sob uma lua vermelha. Ele carrega o próprio sangue como munição e faz de cada recuo um passo."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "Um ceifador ligado à Morte por um pacto. A foice forjada em chama azul cresce com as almas que ceifa, e seus passos são silenciosos como os de um espectro."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "Uma lança que invoca o Vazio sob uma lua rasgada. As runas em sua ponta selam o próprio espaço e, quando três se sobrepõem, a realidade desaba."
         }
       ]
     },
@@ -3427,6 +3687,26 @@
         {
           "key": "지옥성",
           "text": "Citadela Infernului"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "Un fără de nume aruncat în Iad. Cu o singură spadă uriașă din fier negru, urcă înapoi prin toate cele șapte straturi."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "Fata care și-a pierdut mama într-o colibă din pădure a devenit o umbră a curții. Vânată ca vrăjitoare și aruncată în Iad, dansează din nou."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Stăpânul lăncii tun care a străpuns zidurile sub o lună roșie. Își încarcă propriul sânge drept muniție și preschimbă fiecare recul într-un pas."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "Un secerător legat printr-un pact cu Moartea. Coasa făurită în flacără albastră crește din sufletele pe care le seceră, iar pașii îi sunt tăcuți ca ai unei năluci."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "O lance ce cheamă Vidul sub o lună sfâșiată. Runele de pe vârful ei pecetluiesc spațiul însuși, iar când trei se suprapun, realitatea se prăbușește."
         }
       ]
     },
@@ -3672,6 +3952,26 @@
         {
           "key": "지옥성",
           "text": "Höllenfeste"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "Ein Namenloser, in die Hölle geworfen. Mit einem einzigen Großschwert aus schwarzem Eisen steigt er durch alle sieben Schichten wieder empor."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "Das Mädchen, das seine Mutter in einer Waldhütte verlor, wurde zum Schatten des Hofes. Als Hexe gejagt und in die Hölle gestürzt, tanzt sie aufs Neue."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Herr der Speerkanone, die unter rotem Mond die Mauern durchschlug. Er lädt sein eigenes Blut als Munition und macht jeden Rückstoß zum Schritt."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "Ein Seelenschnitter, durch einen Pakt an den Tod gebunden. Seine in blauer Flamme geschmiedete Sense wächst an den Seelen, die sie erntet, und seine Schritte sind lautlos wie die eines Geistes."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "Ein Speer, der unter zerrissenem Mond die Leere ruft. Die Runen seiner Spitze versiegeln den Raum, und wenn drei sich überlagern, zerbricht die Wirklichkeit."
         }
       ]
     },
@@ -3917,6 +4217,26 @@
         {
           "key": "지옥성",
           "text": "Helburcht"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "Een naamloze, in de Hel geworpen. Met slechts één grootzwaard van zwart ijzer klimt hij door alle zeven lagen terug omhoog."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "Het meisje dat haar moeder in een boshut verloor, werd een schaduw aan het hof. Opgejaagd als heks en in de Hel geworpen, danst zij opnieuw."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Heer van het speerkanon dat onder een rode maan de muren doorboorde. Hij laadt zijn eigen bloed als munitie en maakt van elke terugslag een stap."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "Een zielenmaaier, door een pact aan de Dood gebonden. De in blauwe vlam gesmede zeis groeit van de zielen die ze oogst, en zijn stappen zijn stil als die van een schim."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "Een speer die onder een verscheurde maan de Leegte roept. De runen op de punt verzegelen de ruimte zelf, en als er drie overlappen, stort de werkelijkheid in."
         }
       ]
     },
@@ -4162,6 +4482,26 @@
         {
           "key": "지옥성",
           "text": "Helvetesfästning"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "En namnlös, kastad i Helvetet. Med ett enda storsvärd av svartjärn klättrar han tillbaka genom alla sju skikten."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "Flickan som miste sin mor i en skogsstuga blev hovets skugga. Jagad som häxa och kastad i Helvetet dansar hon åter."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Herre över spjutkanonen som genombröt murarna under en röd måne. Han laddar sitt eget blod som ammunition och gör varje rekyl till ett steg."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "En skördare bunden av en pakt med Döden. Lien som smitts i blå låga växer av själarna den skördar, och hans steg är tysta som en vålnads."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "Ett spjut som kallar Tomrummet under en söndersliten måne. Runorna på dess spets förseglar själva rymden, och när tre överlappar rasar verkligheten samman."
         }
       ]
     },
@@ -4407,6 +4747,26 @@
         {
           "key": "지옥성",
           "text": "Helvedesfæstning"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "En navnløs, kastet i Helvede. Med et eneste storsværd af sortjern klatrer han tilbage gennem alle syv lag."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "Pigen, der mistede sin mor i en skovhytte, blev hoffets skygge. Jaget som heks og kastet i Helvede danser hun atter."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Herre over spydkanonen, der gennembrød murene under en rød måne. Han lader med sit eget blod og gør hvert rekyl til et skridt."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "En høstmand bundet af en pagt med Døden. Leen, smedet i blå flamme, vokser af de sjæle, den høster, og hans skridt er tavse som et genfærds."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "Et spyd, der kalder Tomrummet under en sønderrevet måne. Runerne på spidsen forsegler selve rummet, og når tre overlapper, styrter virkeligheden sammen."
         }
       ]
     },
@@ -4652,6 +5012,26 @@
         {
           "key": "지옥성",
           "text": "Helvetesfestning"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "En navnløs, kastet i Helvete. Med ett eneste storsverd av svartjern klatrer han tilbake gjennom alle sju lag."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "Jenta som mistet moren i en skogshytte, ble hoffets skygge. Jaktet som heks og kastet i Helvete danser hun igjen."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Herre over spydkanonen som gjennomboret murene under en rød måne. Han lader sitt eget blod som ammunisjon og gjør hver rekyl til et steg."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "En sjelehøster bundet av en pakt med Døden. Ljåen smidd i blå flamme vokser av sjelene den høster, og stegene hans er lydløse som et gjenferds."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "Et spyd som kaller Tomrommet under en sønderrevet måne. Runene på spissen forsegler selve rommet, og når tre overlapper, faller virkeligheten sammen."
         }
       ]
     },
@@ -4897,6 +5277,26 @@
         {
           "key": "지옥성",
           "text": "Адская Цитадель"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "Безымянный, низвергнутый в Ад. С одним лишь двуручным мечом из чёрного железа он восходит сквозь все семь кругов."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "Девочка, потерявшая мать в лесной хижине, стала тенью при дворе. Загнанная как ведьма и брошенная в Ад, она вновь танцует."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Владелец копья-пушки, пробившего стены в ночь красной луны. Он заряжает собственную кровь вместо пуль и обращает каждую отдачу в шаг."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "Жнец, связанный договором со Смертью. Коса, выкованная в синем пламени, растёт, пожирая срезанные души, а его шаги беззвучны, словно поступь призрака."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "Копьё, зовущее Пустоту под разорванной луной. Руны на его острие запечатывают само пространство, и когда три сходятся, реальность рушится."
         }
       ]
     },
@@ -5142,6 +5542,26 @@
         {
           "key": "지옥성",
           "text": "Пекельна цитадель"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "Безіменний, скинутий у Пекло. З одним лише дворучним мечем із чорного заліза він підіймається назад крізь усі сім шарів."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "Дівчинка, що втратила матір у лісовій хатині, стала тінню при дворі. Переслідувана як відьма й скинута в Пекло, вона знову танцює."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Володар списа-гармати, що пробив мури під червоним місяцем. Він заряджає власну кров замість куль і перетворює кожну віддачу на крок."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "Жнець, зв'язаний угодою зі Смертю. Коса, викувана в синьому полум'ї, росте, пожираючи зжаті душі, а його кроки беззвучні, наче хода примари."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "Спис, що кличе Порожнечу під розірваним місяцем. Руни на вістрі запечатують сам простір, і коли три накладаються, дійсність руйнується."
         }
       ]
     },
@@ -5387,6 +5807,26 @@
         {
           "key": "지옥성",
           "text": "Piekielna Cytadela"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "Bezimienny strącony do Piekła. Z jednym tylko dwuręcznym mieczem z czarnego żelaza wspina się z powrotem przez wszystkie siedem warstw."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "Dziewczynka, która straciła matkę w leśnej chacie, stała się cieniem dworu. Ścigana jako wiedźma i strącona do Piekła, znów tańczy."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Władca włóczni armatniej, która przebiła mury pod czerwonym księżycem. Ładuje własną krew zamiast kul i każdą siłę odrzutu zamienia w krok."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "Żniwiarz związany paktem ze Śmiercią. Kosa wykuta w błękitnym płomieniu rośnie, pochłaniając ścięte dusze, a jego kroki milczą niczym kroki widma."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "Włócznia przyzywająca Pustkę pod rozdartym księżycem. Runy na jej grocie pieczętują samą przestrzeń, a gdy trzy się nałożą, rzeczywistość się rozpada."
         }
       ]
     },
@@ -5632,6 +6072,26 @@
         {
           "key": "지옥성",
           "text": "Pekelná citadela"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "Bezejmenný svržený do Pekla. S jediným obouručním mečem z černého železa stoupá zpět všemi sedmi vrstvami."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "Dívka, která přišla o matku v lesní chatrči, se stala stínem dvora. Štvána jako čarodějnice a svržená do Pekla znovu tančí."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Pán kopí s dělem, jež za rudého měsíce prorazilo hradby. Nabíjí vlastní krev místo střel a každý zpětný ráz mění v krok."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "Žnec spoutaný úmluvou se Smrtí. Kosa ukovaná v modrém plameni roste z duší, které sklízí, a jeho kroky jsou tiché jako přízrak."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "Kopí volající Prázdnotu pod rozervaným měsícem. Runy na jeho hrotu pečetí samotný prostor, a když se tři překryjí, skutečnost se zhroutí."
         }
       ]
     },
@@ -5877,6 +6337,26 @@
         {
           "key": "지옥성",
           "text": "Pokoli Citadella"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "Egy névtelen, akit a Pokolba vetettek. Egyetlen feketevas pallossal kapaszkodik vissza mind a hét rétegen át."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "Az erdei kunyhóban anyját elvesztő lány az udvar árnyékává lett. Boszorkányként üldözték és a Pokolba vetették; most újra táncol."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "A vörös hold alatt falakat áttörő lándzsaágyú ura. Saját vérét tölti bele lövedékül, és minden visszarúgást lépéssé változtat."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "A Halállal kötött alku béklyózta arató. Kék lángban kovácsolt kaszája a learatott lelkektől növekszik, léptei pedig némák, akár egy lidércé."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "Lándzsa, mely a szétszakadt hold alatt az Ürességet hívja. Hegyének rúnái magát a teret pecsételik le, s amikor három egymásra vetül, a valóság összeomlik."
         }
       ]
     },
@@ -6122,6 +6602,26 @@
         {
           "key": "지옥성",
           "text": "Адска цитадела"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "Безименен, захвърлен в Ада. С един-единствен двуръчен меч от черно желязо той се изкачва обратно през всичките седем пласта."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "Момичето, изгубило майка си в горска колиба, се превърна в сянка на двора. Преследвана като вещица и захвърлена в Ада, тя отново танцува."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Владетел на копието оръдие, пробило стените под червена луна. Зарежда собствената си кръв вместо снаряди и превръща всеки откат в крачка."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "Жътвар, обвързан с договор със Смъртта. Косата, изкована в син пламък, расте с душите, които жъне, а стъпките му са безшумни като на призрак."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "Копие, което призовава Пустотата под разкъсана луна. Руните на върха му запечатват самото пространство и щом три се застъпят, реалността рухва."
         }
       ]
     },
@@ -6367,6 +6867,26 @@
         {
           "key": "지옥성",
           "text": "Ακρόπολη Κόλασης"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "Ένας ανώνυμος ριγμένος στην Κόλαση. Με ένα μονάχα δίχειρο σπαθί από μαύρο σίδερο ανεβαίνει ξανά και τα επτά στρώματά της."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "Το κορίτσι που έχασε τη μητέρα του σε μια δασική καλύβα έγινε σκιά της αυλής. Κυνηγημένη ως μάγισσα και ριγμένη στην Κόλαση, χορεύει ξανά."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Κύριος του δόρατος κανονιού που τρύπησε τα τείχη κάτω από κόκκινο φεγγάρι. Γεμίζει με το ίδιο του το αίμα αντί για βλήματα και κάνει κάθε ανάκρουση βήμα."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "Θεριστής δεμένος με σύμφωνο με τον Θάνατο. Το δρεπάνι, σφυρηλατημένο σε γαλάζια φλόγα, μεγαλώνει με τις ψυχές που θερίζει, κι αυτός βαδίζει αθόρυβα σαν φάντασμα."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "Ένα δόρυ που καλεί το Κενό κάτω από σκισμένο φεγγάρι. Οι ρούνοι στην αιχμή του σφραγίζουν τον ίδιο τον χώρο, κι όταν τρεις επικαλυφθούν, η πραγματικότητα καταρρέει."
         }
       ]
     },
@@ -6612,6 +7132,26 @@
         {
           "key": "지옥성",
           "text": "Helvetin Linnake"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "Nimetön, Helvettiin syösty. Yhdellä mustarautaisella suurmiekalla hän kapuaa takaisin kaikkien seitsemän kerroksen läpi."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "Metsämökissä äitinsä menettänyt tyttö muuttui hovin varjoksi. Noitana vainottu ja Helvettiin syösty hän tanssii jälleen."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Punaisen kuun alla muurit puhkaisseen keihästykin herra. Hän lataa oman verensä ammuksiksi ja muuttaa jokaisen rekyylin askeleeksi."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "Viikatemies, jota sitoo sopimus Kuoleman kanssa. Siniliekissä taottu viikate kasvaa niittämistään sieluista, ja hänen askeleensa ovat äänettömät kuin aaveen."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "Keihäs, joka kutsuu Tyhjyyttä revityn kuun alla. Kärkeen kaiverretut riimut sinetöivät itse avaruuden, ja kolmen limittyessä todellisuus luhistuu."
         }
       ]
     },
@@ -6857,6 +7397,26 @@
         {
           "key": "지옥성",
           "text": "Cehennem Kalesi"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "Cehennem'e atılmış isimsiz biri. Tek bir kara demir büyük kılıçla yedi katın hepsini aşarak yeniden yukarı tırmanır."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "Orman kulübesinde annesini yitiren kız, sarayın gölgesi oldu. Cadı diye avlanıp Cehennem'e atıldı; şimdi yeniden dans ediyor."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "Kızıl ayın altında surları delen mızrak topunun efendisi. Kendi kanını mermi diye doldurur, her geri tepmeyi bir adıma çevirir."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "Ölüm'le yaptığı ahde bağlı bir ruh biçici. Mavi alevde dövülmüş tırpanı biçtiği ruhlarla büyür, adımlarıysa bir hayalet kadar sessizdir."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "Yırtılmış ayın altında Hiçlik'i çağıran bir mızrak. Ucuna kazınmış rünler uzayın kendisini mühürler ve üçü üst üste geldiğinde gerçeklik çöker."
         }
       ]
     },
@@ -7102,8 +7662,35 @@
         {
           "key": "지옥성",
           "text": "قلعة الجحيم"
+        },
+        {
+          "key": "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+          "text": "مجهول الاسم أُلقي به في الجحيم. بسيف عظيم واحد من الحديد الأسود، يشق طريق العودة صعودًا عبر طبقاتها السبع."
+        },
+        {
+          "key": "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+          "text": "الفتاة التي فقدت أمها في كوخ بالغابة غدت ظلًا في البلاط. طوردت كساحرة وأُلقي بها في الجحيم، وها هي ترقص من جديد."
+        },
+        {
+          "key": "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+          "text": "سيد الرمح المدفع الذي اخترق الأسوار تحت قمر أحمر. يلقمه دمه ذخيرة، ويحوّل كل ارتداد إلى خطوة."
+        },
+        {
+          "key": "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+          "text": "حاصد أرواح يقيّده عهد مع الموت. ينمو منجله المصوغ في اللهب الأزرق بما يحصده من أرواح، وخطاه صامتة كخطى شبح."
+        },
+        {
+          "key": "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",
+          "text": "رمح يستدعي الخواء تحت قمر ممزق. الرونات المحفورة على سنانه تختم الفضاء ذاته، وحين تتراكب ثلاث منها، ينهار الواقع."
         }
       ]
     }
+  ],
+  "characterLoreKeys": [
+    "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",
+    "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",
+    "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",
+    "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",
+    "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다."
   ]
 }

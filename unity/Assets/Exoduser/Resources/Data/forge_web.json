@@ -23,7 +23,7 @@
   }
  },
  "title": "복수의 대장간",
- "matsLabel": "악의",
+ "matsLabel": "악의오브",
  "lore": [
   {
    "g": "lore12:🔴"
@@ -41,7 +41,7 @@
    "g": "lore12:⚪"
   },
   {
-   "t": "물리=중립 | 악마 처치 시 악의 영혼 드롭"
+   "t": "물리=중립 | 악마 처치 시 악의오브 영혼 드롭"
   }
  ],
  "tabs": [
@@ -205,31 +205,31 @@
  "upgrade": {
   "header": "장비 강화 (실패 시 재료만 소멸)",
   "aiTitle": "AI 자동 강화",
-  "aiDesc": "장비 선택 → 목표치 설정 → 악의 투입 → 자동 시도",
+  "aiDesc": "장비 선택 → 목표치 설정 → 악의오브 투입 → 자동 시도",
   "hint": "위에서 장비를 선택하세요",
   "noItem": "장착된 장비가 없습니다.",
   "targetLabel": "목표 강화치",
-  "estLabel": "예상 필요 악의",
+  "estLabel": "예상 필요 악의오브",
   "haveSlash": "/ 보유",
   "startLabel": "강화 시작",
-  "haveLabel": "보유 악의",
+  "haveLabel": "보유 악의오브",
   "enoughLabel": "충분",
   "shortLabel": "부족",
   "needMore": "더 필요",
   "successLabel": "성공률",
-  "costLabel": "악의",
+  "costLabel": "악의오브",
   "bonusDefault": "강화 보너스 적용"
  },
  "potion": {
   "header": "⬆ 물약 강화 (최대 10단)",
   "hpName": "HP 물약",
   "healLabel": "회복량",
-  "costLabel": "악의",
+  "costLabel": "악의오브",
   "maxLabel": "최대 강화",
   "needLabel": "필요"
  },
  "salvage": {
-  "header": "악의의 분해로 — 장비를 악의로 갈아버려라",
+  "header": "악의오브의 분해로 — 장비를 악의오브로 갈아버려라",
   "rarLabel": "레어:",
   "slotLabel": "슬롯:",
   "all": "전체",
@@ -301,14 +301,14 @@
   ],
   "tierMul": 2,
   "arrowLabel": "→",
-  "costLabel": "악의",
+  "costLabel": "악의오브",
   "empty": "분해할 아이템이 없습니다.",
   "selPrefix": "선택",
   "selUnit": "개 ->",
-  "selSuffix": "악의 획득 예상"
+  "selSuffix": "악의오브 획득 예상"
  },
  "reroll": {
-  "header": "리롤 — 접두/접미 재설정 | 악의 {cost}",
+  "header": "리롤 — 접두/접미 재설정 | 악의오브 {cost}",
   "rerollCost": 100,
   "empty": "비어있음",
   "noAffix": "어픽스 없음"
@@ -321,7 +321,7 @@
   ],
   "owned": "보유:",
   "dust": "가루:",
-  "malice": "악의:",
+  "malice": "악의오브:",
   "cap": 9999,
   "filters": [
    "전체",
@@ -338,7 +338,7 @@
   "headerGlyph": "craft16_8:🔨",
   "cost": 100000,
   "costLabel": "비용:",
-  "costUnit": "악의  |  보유:",
+  "costUnit": "악의오브  |  보유:",
   "rates": [
    {
     "name": "영웅",

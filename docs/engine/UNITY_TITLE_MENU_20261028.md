@@ -1,5 +1,7 @@
 # 타이틀 메뉴 이식 (웹 index.html phase 2 → Unity NativeLobby) — 2026-10-28
 
+> 2026-11-02 현행 적용: [승인 A 파노라마·레이어 모션](UNITY_TITLE_SIGNBOARD_A_20261101.md). 타이틀은 전체 물리 화면을 비율 유지 cover하며 구형 영상/블러·중앙16:9 설명은 이력이다. 기존 R5 금속 버튼/입력 유지. 최종Windows b43c5804/errors0·같은M1 23단계·5120×1440 포함90실화면·설치본M1·기존Desktop 바로가기4속성 확인, 최종각실행 USER_SAVE0. Mac 수신·전체게임 아트 완료로 확대하지 않는다.
+
 브랜치 `claude/unity-pc-title-menu-20261028` (intro-skip `65e14f1bb`의 `LobbyKeys` 위에서). 웹 기준 = origin/main `index.html` 494~511(CSS)·4560~4810(`_buildTitleMenu`·`_selectTitleItem`·`_activateTitleItem`·`splashKey`). 디자인 = 디자인총괄 시안(2026-10-27), 사용자 승인 [승인-디자인-5].
 
 ## 값 대조 (웹 CSS → Unity `NativeLobby.TitleMenu.cs`, 1920×1080 무대)
@@ -9,7 +11,7 @@
 | 영상 | `title_motion_20261028.mp4`, 무음 반복, cover, `dx = min(0, max(w−dw, (w−dw)×.62))`, 세로 가운데 | 같은 파일(StreamingAssets/Lobby), 같은 cover 식, `loop` |
 | 영상 실패 | `title_bg_20261028.jpg` 정지화 | 같음 |
 | 베일 | 4겹: 방사 46%×78% @24% 56% (.62→.38@55%→0), 선형 90° (.55→.18@38%→0@55%), 선형 0° (.7→0@26%), 방사 120%×100% @50% (투명@62%→검정 .55) | 192×108로 굽은 한 장(`BakeTitleVeil`), 같은 식·같은 합성 순서 |
-| 로고 | `logo_exoduser.png` (96, 96) 폭 520, 그림자 | 같은 파일·위치·폭, 그림자는 검정 .5 복제(+10px)로 근사(번짐 26px은 IMGUI에 없음) |
+| 로고 | 승인 `logo_exoduser_solid.png` (96, 96) 폭 520, 그림자 | Mac 후속도 같은 승인 PNG·위치·폭, 그림자는 검정 .5 복제(+10px) 유지(번짐 26px은 IMGUI에 없음). [후속 인수](UNITY_MAC_SOLID_LOGO_20261101.md) |
 | 메뉴 목록 | (116, 436) 폭 380, 위 1px `rgba(230,227,220,.1)`, 행 48px, 행 아래 1px | 같음 |
 | 라벨 | 300 18px Hahmlet/나눔명조, 자간 .14em, 왼쪽 36px + .16em, `#c9c7c3`, 그림자 | Hahmlet 300 18px(문자 누락 시 기존 명조 폴백), 글자별 자간2.52px·같은 위치/색. GUI.color 흰색 복원·Linear 글자 보정 |
 | 선택 행(10-30 최신 지시) | 웹 후보 d22ce8bd1: 글자 `#f2f0ec`, 배경 없음, 좌13px·16×1 은빛 `rgba(230,227,220,.6)`, 광채 없음 | 같은 배치/색의 1px 헤어라인, 붉은 띠·점 생성 함수 제거. 기존 선택 보간 선택.25초/해제.18초 유지(웹.18초와 미세 시간차) |

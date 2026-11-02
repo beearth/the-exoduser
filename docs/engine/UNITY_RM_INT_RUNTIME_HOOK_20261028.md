@@ -2,6 +2,10 @@
 
 # UNITY RM-INT — 리모델 3D 씬 런타임 연결 (1단계: RM-1 필드) — 2026-10-28
 
+## 2026-10-31 초광폭 화면 경계 보정 — Player 검수 대기
+
+사용자 world-ultrawide 추가 지시로 화면 기반 사격·루팅은 기존 논리2D 카메라 대신 실제 HudCamera(2D/리모델3D)의 viewport를 따른다. NativeGame.WorldViewport의 WorldPointVisible은 Core margin을 네 모서리로 투영한다. FieldEnemyCanShoot는−64px(모두 안), IsLootOnScreen은0px다. 사격·수거·어그로 거리 수치와 저장 구조는 그대로다. NativeGame→Simulation/EnemyTickContext.WorldPointVisible 선택 callback으로 가시 활성/화면 안 리시 방지를 연결하고, DruidBoss.WorldPointVisible 선택 callback으로 일반 투사체가 기존 거리제곱6250000 밖에서도 화면 R+100px에 보이면 유지하며, null/offscreen·지뢰·빨콩·강제만료는 기존 계약을 보존한다. 실제Core/청크/적 가시·리시·Simulation연결 회귀2373 PASS, 정식 새 Player/M1/4해상도 화면은 미검증이다. 상세 현행 계약은 UNITY_UI_ULTRAWIDE_20261031.md를 따른다. 아래2026-10-28의 Core무변경·항상2D 설명은 최초 연결 이력이며 위 경계는 후속 보정이다.
+
 배정: 유니티 총괄(local_59ad835c). 판정: 맵 총괄(걷기·충돌 일치) · 디자인총괄(톤). 브랜치 `claude/unity-pc-rm-int-20261028`(`4ceb18b51`에서 분기). 이 문서는 구현 상태이고, 검증 결과는 §6에 채운다.
 
 ## 1. 결정 기록 (유니티 총괄 2026-10-28, 그대로)
@@ -26,7 +30,7 @@
 | `Runtime/NativeGame.Remodel3D.cs` (신규) | 씬 additive 로드, 카메라 리그 연결, 켜기/끄기, 빌보드, 조준 |
 | `Runtime/NativeGame.Remodel3DCheck.cs` (신규) | `--unity-rmint-check` 하네스(§5) |
 | `NativeGame.StageFlow.cs` | `StageFlowSyncViews` 첫 줄에 `Remodel3DSync();` |
-| `NativeGame.cs` | `Point` → `NativeRemodel3D.Point`, `ToGUI`·레벨업 폭발은 `HudCamera`, 마우스 조준은 `AimWorld()`, `IsLootOnScreen`은 `Point2D`(Core 콜백이라 항상 2D), 실행 인자 한 줄 |
+| `NativeGame.cs` | `Point` → `NativeRemodel3D.Point`, `ToGUI`·레벨업 폭발은 `HudCamera`, 마우스 조준은 `AimWorld()`, `IsLootOnScreen`은 초기 Point2D였으며 2026-10-31 실제 HudCamera/WorldPointVisible(0)로 보정, 실행 인자 한 줄 |
 | `KiSlashView`·`NativeBossView`·`NativeDruidBody`·`NativeSkillView`·`KiImpactView` | 각자의 private `Point`가 `NativeRemodel3D.Point`를 부르도록 한 줄 |
 | `Editor/PortVerification.cs` | 위 `-remodel-scenes 1` 한 줄 |
 
@@ -42,7 +46,7 @@ Core(`Runtime/Core`)는 바꾸지 않았다.
 | 높이 | `Terrain.SampleHeight(wx,0,wz) + terrain.transform.position.y`. 지형은 타일 x48~152·y126~200 창만 덮어서 질의를 그 창 안으로 클램프한다(창 밖은 가장자리 높이). Core의 z는 0 그대로 |
 | 카메라 | 현행 수치는 `Resources/Data/remodel_camera.json` 한 곳. 피치48.7014126°, 거리14u, 세로FOV46.9453° 고정, 영웅 표시배율2, 북쪽 전방 추적1.45u. `NativeRemodelCamera`를 실제 게임과 `Rm1SliceBuilder`가 공유. 화면 높이에 따른 FOV 변경을 제거해 영웅의 화면 비율을 유지한다. 논리 2D 카메라·Core 판정은 그대로다 |
 | 리그 이름 | 구운 씬(루트에 `Main Camera`·`Player Marker`·`CM LOOK-001` 따로) 과 다시 구운 씬(`RM1_CameraRig` 아래)을 모두 이름으로 찾는다. 씬 안 `AudioListener`와 `Marker Sprite`(대역 스프라이트)는 끈다 |
-| 2D 카메라 `view` | 지우지 않는다. 카메라 클램프·보스 줌·`FieldEnemyCanShoot`(Core 콜백) 같은 **논리 카메라**로 그대로 갱신되고, 3D가 켜진 동안 컬링 마스크 0으로 화면만 지우는 역할을 한다. 로비가 월드를 숨기는 마스크는 3D 카메라가 따라 한다 |
+| 2D 카메라 `view` | 지우지 않는다. 카메라 클램프·보스 줌 같은 **논리 카메라**로 갱신되고(`FieldEnemyCanShoot`은2026-10-31 실제 HudCamera로 분리), 3D가 켜진 동안 컬링 마스크 0으로 화면만 지우는 역할을 한다. 로비가 월드를 숨기는 마스크는 3D 카메라가 따라 한다 |
 | HUD 앵커 | `ToGUI`와 레벨업 폭발은 3D가 켜져 있으면 씬 카메라로 변환 |
 | 마우스 조준 | 3D가 켜져 있으면 카메라 광선을 플레이어 높이의 수평면에 맞춰 Core 입력 좌표로 변환 |
 | 아레나 | `Stage.InArena`이면 3D 층이 물러나고(씬 루트 비활성, `view` 복구) 기존 2D 아레나 뷰가 그대로 나온다. 1단계 PASS 뒤 A1(`RM1_Arena`)을 같은 훅에 붙인다 |
@@ -471,3 +475,13 @@ Shore는 고정앵글러 주변을 피한 후 z−52~−42에서 다시28u 굽�
 |인수 상태|제작자선택1x검수완료/공통·Desktop지정integrator 신청준비. 공통병합·Desktop갱신·설치본M1은이문서만으로완료아님. 자연완주·실측FPS·OSfocus·Mac동기화 미검증|
 
 근거 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/STAGE1_R5_VISUAL_REVIEW_KO.md, STAGE1_R5_BUILD_LINK.json, stage1-r5-validation-8dbdf205a/receipt.json, stage1-r5-review-8dbdf205a, scope-cleanup-after-r5. 이전순수985/087·실패validator 이력은덮지않는다.
+
+## 2026-11-02 Unity 설치형 지면 배치 후보
+
+사용자 요청으로 장판·지뢰·설치형 전체의 actor billboard/FootLift 오적용과 VfxWorld 지면 높이 미연결을 수정 중이다. 현재 후보는 실제 등록 바닥·목교·낮은 뿌리의 receiver depth와 scene depth가.02u 안에서 일치하는 픽셀에 원화/링을 투영한다. CPU 적응면은 실제제품 Late>=96초 지연으로 폐기하고 표시 update의Tessellate/대량GroundY 조회를 제거했다. 원화·합성수식·피해/반경/시간·공중/중심형·flat보스방은 유지한다. 원SkillAdditive/Ki shader는1403 byte이며 새전용shader만사용한다. 324 C# 정적오류0/경고477. Mac 첫 흙 실제 투영/독립깊이와1920원본을 확인했다. 기존mode2 weight차는 강제비등방성 footprint를 무시한bilinear 참조로 분리했고, 같은허용2/255의GPU gradient/RGBA 대조·전체 설치형/시각·통합/설치는 진행 중이다. 정확한 범위·원래실패·측정은 [설치형 지면 배치](UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)를 따른다.
+
+후속 실제161행은표시메타데이터/접지·UV실패0이나색상모델60행과ring정리1행FAIL을보존한다. 이미파괴된parent의orb.go에Reset이SetActive를호출한예외를확인해UnityGO생존검사guard를추가했다. 다음앱에서표적정리회귀·제품/clone/색상모델분리를검증하며공통설치/전체색상PASS는아직아니다.
+
+수명정정: statePassed161은표시메타데이터다. 정리예외로두수명행동의최종결과merge가미실행됐으므로pool행동완료PASS로간주하지않고, 수정앱에서원래두수명검사를별도완주·기록한다.
+
+최신 상태(2026-11-03): Mac 표적 정리/두수명행동·semantic 복원/동일앱 M1 23 통과는 후보 범위다. 사용자 PC 실행본131887780의 Runtime2bad5c6c8ace951017cee6c3673921692bc2a2a309ca5b5b0d23f1fbc471ff0a에는 접지 수정 타입 둘 다 없어 실제 전달 미완료를 확인했다. 최신 unity/main1d89b0c18와 정상 병합해 UI/사운드를 보존했으며, 새 실행본 검수·unity-latest 반영 뒤 다시 확인한다. 원full100/61·독립참조/미관측/oldref 한계는 그대로 보존한다.

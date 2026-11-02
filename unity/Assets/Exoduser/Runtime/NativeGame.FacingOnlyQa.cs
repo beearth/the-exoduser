@@ -1,0 +1,181 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
+using UnityEngine.Video;
+using Exoduser.UnityPort.Core;
+
+namespace Exoduser.UnityPort
+{
+    // Explicitly sandboxed, Player-only proof of the ordinary enemy's visual direction.
+    public sealed partial class NativeGame
+    {
+        [Serializable] sealed class FacingOnlyFrame
+        {
+            public string name,capture,bodyTexture,walkTexture,state;
+            public int direction,expectedDirection,walkFrame,skin,width,height,bodyOrder,walkOrder;
+            public int bodyRectX,bodyRectY,walkRectX,walkRectY;
+            public bool moving,bodyEnabled,walkEnabled,bodyCellValid,walkCellValid,samePosition,sameScale;
+            public float enemyX,enemyY,playerX,playerY;
+            public double coreFacing,webFacing;
+        }
+        [Serializable] sealed class FacingOnlyReceipt
+        {
+            public string scope="QA-injected ordinary enemy in real 1920x1080 Player; visual facing only",sandbox,device,deviceType;
+            public bool passed,listenerPaused;public float listenerPeak;public int width,height,directVideoPlayers;
+            public List<string> failures=new List<string>();public List<FacingOnlyFrame> frames=new List<FacingOnlyFrame>();
+        }
+        IEnumerator FacingOnlyQa()
+        {
+            string output=Argument("-output"),requestedSandbox=Argument(NativeQaSandbox.Argument);
+            if(Application.isBatchMode||string.IsNullOrEmpty(output)||!Path.IsPathRooted(output)||
+                string.IsNullOrEmpty(requestedSandbox)||!Path.IsPathRooted(requestedSandbox)||!NativeQaSandbox.Active)
+            {Debug.LogError("FACING_ONLY_QA requires a GUI Player, absolute output and explicit sandbox");Application.Quit(2);yield break;}
+            Directory.CreateDirectory(output);AudioListener.volume=0;AudioListener.pause=true;
+            Application.runInBackground=true;smokeActive=true;pauseSmoke=true;
+            bool walkCycle=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-walk-cycle-qa")>=0;
+            bool fourFrameWalk=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-four-frame-walk-qa")>=0;
+            bool stagSouthwest=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-stag-southwest-qa")>=0;
+            var result=new FacingOnlyReceipt{sandbox=NativeQaSandbox.Root,device=SystemInfo.graphicsDeviceName,deviceType=SystemInfo.graphicsDeviceType.ToString()};
+            Screen.SetResolution(1920,1080,FullScreenMode.Windowed);
+            lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();
+            if(!lobby.Flow.EnterTest()){result.failures.Add("lobby test entry failed");Application.Quit(2);yield break;}
+            if(firstPractice!=null)EndFirstPractice(true);frontendEntryInputFence=false;menu=false;SetGameFocus(true);Running=false;
+            float deadline=Time.realtimeSinceStartup+45;
+            while(!Remodel3DReady&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
+            if(!Remodel3DReady)result.failures.Add("3D scene not ready");
+            while((Screen.width!=1920||Screen.height!=1080)&&Time.realtimeSinceStartup<deadline)yield return null;
+            result.width=Screen.width;result.height=Screen.height;
+            if(result.width!=1920||result.height!=1080)result.failures.Add("actual 1920x1080 window unavailable");
+            var sim=Simulation;var p=sim.Player;sim.Config.EnemyAiEnabled=false;sim.Enemies.Clear();sim.FireZones.Clear();sim.SpawnHoles=null;
+            p.Hp=p.MaxHp;p.Iframes=100000;p.X=4000;p.Y=5000;lastX=p.X;lastY=p.Y;UpdateViews();
+            var enemy=sim.SpawnEnemy(p.X+200,p.Y,0,null,false);
+            if(enemy==null)result.failures.Add("ordinary enemy spawn failed");
+            else
+            {
+                UpdateViews();
+                string[] names={"01-idle-west","02-micro-west","03-vertical-north","04-noisy-west","05-reversal-east","06-attack-east","07-idle-east",
+                    "08-walk-west-0","09-walk-west-1","10-walk-west-2","11-walk-west-3","12-walk-west-0-loop"};
+                float[] xs={p.X+200,p.X+200.02f,p.X,p.X+200.02f,p.X-200,p.X-200,p.X-200,
+                    p.X+200,p.X+200,p.X+200,p.X+200,p.X+200};
+                float[] ys={p.Y,p.Y,p.Y+200,p.Y+.02f,p.Y,p.Y,p.Y,p.Y,p.Y,p.Y,p.Y,p.Y};
+                int[] expected={4,4,6,4,0,0,0,4,4,4,4,4};
+                for(int i=0;i<(walkCycle?names.Length:7);i++)
+                {
+                    enemy.X=xs[i];enemy.Y=ys[i];enemy.State=i==5?"attack":"idle";enemy.Facing=i%2==0?0:(float)Math.PI;
+                    if(enemy.Web!=null){enemy.Web.x=enemy.X;enemy.Web.y=enemy.Y;enemy.Web.s=enemy.State;enemy.Web.facing=i%2==0?Math.PI/2:Math.PI;}
+                    UpdateViews();var ev=enemies[enemy.Id];
+                    bool moving=i==1||i==2||i==3||i==4||i==5||i>=7;
+                    ev.lastX=enemy.X-(moving?.02f:0);ev.lastY=enemy.Y;ev.distance=i>=7?128f*(i-7):(moving?128f*(i%4):0);renderedTick=-1;
+                    UpdateViews();yield return null;yield return new WaitForEndOfFrame();
+                    var body=ev.body.sprite;var walk=ev.walk.sprite;int dir=NativeEnemyVisualFacing.Direction(enemy,p);
+                    string path=Path.Combine(output,names[i]+"-actual-window-1920x1080.png");
+                    var screen=ScreenCapture.CaptureScreenshotAsTexture();
+                    try{File.WriteAllBytes(path,screen.EncodeToPNG());}finally{Destroy(screen);}
+                    string suffix=enemyDirections[dir];var bodyAtlas=Resources.Load<Texture2D>("Art/enemy/atlas_ch1_8dir_"+suffix);
+                    var walkAtlas=Resources.Load<Texture2D>("Art/enemy/atlas_ch1_8dir_walk_"+suffix);
+                    var row=new FacingOnlyFrame{name=names[i],capture=Path.GetFileName(path),state=enemy.State,
+                        width=Screen.width,height=Screen.height,direction=dir,expectedDirection=expected[i],walkFrame=(int)(ev.distance/128)%4,skin=ev.skin,
+                        moving=ev.moving,bodyEnabled=ev.body.enabled,walkEnabled=ev.walk.enabled,bodyOrder=ev.body.sortingOrder,walkOrder=ev.walk.sortingOrder,
+                        bodyTexture=body!=null&&body.texture!=null?body.texture.name:"",walkTexture=walk!=null&&walk.texture!=null?walk.texture.name:"",
+                        bodyCellValid=body!=null&&body.texture==bodyAtlas&&body.rect.width==256&&body.rect.height==256,
+                        walkCellValid=walk!=null&&walk.texture==walkAtlas&&walk.rect.width==256&&walk.rect.height==256,
+                        samePosition=Vector3.Distance(ev.body.transform.position,ev.walk.transform.position)<.00001f,
+                        sameScale=Vector3.Distance(ev.body.transform.localScale,ev.walk.transform.localScale)<.00001f,
+                        enemyX=enemy.X,enemyY=enemy.Y,playerX=p.X,playerY=p.Y,coreFacing=enemy.Facing,webFacing=enemy.Web!=null?enemy.Web.facing:double.NaN};
+                    result.frames.Add(row);
+                    if(dir!=expected[i]||ev.moving!=moving||!row.bodyEnabled||row.walkEnabled!=moving||!row.bodyCellValid||!row.walkCellValid||
+                        moving&&!row.samePosition||!row.sameScale||row.walkOrder!=row.bodyOrder+1)result.failures.Add(names[i]+" facing/atlas/renderer contract");
+                }
+                if(fourFrameWalk)
+                {
+                    string[] fourFrameSkins={"apostle_mass","apostle_knight","soul_flame","hive_bloater","spine_beast","flesh_crawler",
+                        "carapace_predator","bone_centipede_pro","gas_zombie","needle_tentacle","rotting_slime_mass","flesh_eye_mass",
+                        "corrupted_wolf","eye_stalker_pro","iron_butcher_pro","plague_doctor_pro"};
+                    for(int skinCase=0;skinCase<fourFrameSkins.Length;skinCase++)
+                    {
+                        string skinName=fourFrameSkins[skinCase];
+                        // This fixed list is the source-proven four-frame whitelist, in atlas cell order.
+                        int skin=skinCase<13?skinCase+1:skinCase+2;
+                        for(int frameCase=0;frameCase<5;frameCase++)
+                        {
+                            enemy.X=p.X+200;enemy.Y=p.Y;enemy.State="idle";enemy.Facing=0;
+                            if(enemy.Web!=null){enemy.Web.x=enemy.X;enemy.Web.y=enemy.Y;enemy.Web.s=enemy.State;enemy.Web.facing=Math.PI/2;}
+                            UpdateViews();var ev=enemies[enemy.Id];ev.skin=skin;ev.lastX=enemy.X-.02f;ev.lastY=enemy.Y;
+                            ev.distance=frameCase*128f;renderedTick=-1;UpdateViews();yield return null;yield return new WaitForEndOfFrame();
+                            int dir=NativeEnemyVisualFacing.Direction(enemy,p);var body=ev.body.sprite;var walk=ev.walk.sprite;
+                            string name="walk-"+skinName+"-"+frameCase;
+                            string path=Path.Combine(output,name+"-actual-window-1920x1080.png");
+                            var screen=ScreenCapture.CaptureScreenshotAsTexture();
+                            try{File.WriteAllBytes(path,screen.EncodeToPNG());}finally{Destroy(screen);}
+                            var bodyAtlas=Resources.Load<Texture2D>("Art/enemy/atlas_ch1_8dir_west");
+                            var walkAtlas=Resources.Load<Texture2D>("Art/enemy/atlas_ch1_8dir_walk_west");
+                            var row=new FacingOnlyFrame{name=name,capture=Path.GetFileName(path),state=enemy.State,
+                                width=Screen.width,height=Screen.height,direction=dir,expectedDirection=4,walkFrame=(int)(ev.distance/128)%4,skin=ev.skin,
+                                moving=ev.moving,bodyEnabled=ev.body.enabled,walkEnabled=ev.walk.enabled,bodyOrder=ev.body.sortingOrder,walkOrder=ev.walk.sortingOrder,
+                                bodyTexture=body!=null&&body.texture!=null?body.texture.name:"",walkTexture=walk!=null&&walk.texture!=null?walk.texture.name:"",
+                                bodyCellValid=body!=null&&body.texture==bodyAtlas&&body.rect.x==skin%8*256&&body.rect.y==bodyAtlas.height-(skin/8+1)*256&&body.rect.width==256&&body.rect.height==256,
+                                walkCellValid=walk!=null&&walk.texture==walkAtlas&&walk.rect.x==skin%8*1024+(frameCase%4)*256&&walk.rect.y==walkAtlas.height-(skin/8+1)*256&&walk.rect.width==256&&walk.rect.height==256,
+                                samePosition=Vector3.Distance(ev.body.transform.position,ev.walk.transform.position)<.00001f,
+                                sameScale=Vector3.Distance(ev.body.transform.localScale,ev.walk.transform.localScale)<.00001f,
+                                enemyX=enemy.X,enemyY=enemy.Y,playerX=p.X,playerY=p.Y,coreFacing=enemy.Facing,webFacing=enemy.Web!=null?enemy.Web.facing:double.NaN};
+                            result.frames.Add(row);
+                            if(dir!=4||row.skin!=skin||row.walkFrame!=frameCase%4||!row.moving||!row.bodyEnabled||!row.walkEnabled||
+                                !row.bodyCellValid||!row.walkCellValid||!row.samePosition||!row.sameScale||row.walkOrder!=row.bodyOrder+1)
+                                result.failures.Add(name+" walk/atlas/renderer contract");
+                        }
+                    }
+                }
+                if(stagSouthwest)
+                {
+                    const int stagSkin=22;
+                    for(int i=0;i<7;i++)
+                    {
+                        bool reversal=i==6,walking=i<5||reversal;
+                        enemy.X=p.X+(reversal?-200:200);enemy.Y=p.Y+(reversal?200:-200);
+                        enemy.State="idle";enemy.Facing=0;
+                        if(enemy.Web!=null){enemy.Web.x=enemy.X;enemy.Web.y=enemy.Y;enemy.Web.s=enemy.State;enemy.Web.facing=0;}
+                        UpdateViews();var ev=enemies[enemy.Id];ev.skin=stagSkin;
+                        ev.lastX=enemy.X-(walking?.02f:0);ev.lastY=enemy.Y;
+                        ev.distance=i<5?128f*i:0;renderedTick=-1;
+                        UpdateViews();yield return null;yield return new WaitForEndOfFrame();
+                        int dir=NativeEnemyVisualFacing.Direction(enemy,p),expectedDir=reversal?7:3;
+                        string suffix=enemyDirections[expectedDir];
+                        var bodyAtlas=Resources.Load<Texture2D>("Art/enemy/atlas_ch1_8dir_"+suffix);
+                        var walkAtlas=Resources.Load<Texture2D>("Art/enemy/atlas_ch1_8dir_walk_"+suffix);
+                        var body=ev.body.sprite;var walk=ev.walk.sprite;
+                        string name=i<5?"stag-southwest-"+i:i==5?"stag-southwest-idle":"stag-reversal-northeast";
+                        string capture=Path.GetFileName(name+"-actual-window-1920x1080.png");
+                        var screen=ScreenCapture.CaptureScreenshotAsTexture();
+                        try{File.WriteAllBytes(Path.Combine(output,capture),screen.EncodeToPNG());}finally{Destroy(screen);}
+                        int frame=i<5?i%4:0;
+                        var row=new FacingOnlyFrame{name=name,capture=capture,state=enemy.State,
+                            width=Screen.width,height=Screen.height,direction=dir,expectedDirection=expectedDir,walkFrame=(int)(ev.distance/128)%4,skin=ev.skin,
+                            moving=ev.moving,bodyEnabled=ev.body.enabled,walkEnabled=ev.walk.enabled,bodyOrder=ev.body.sortingOrder,walkOrder=ev.walk.sortingOrder,
+                            bodyTexture=body!=null&&body.texture!=null?body.texture.name:"",walkTexture=walk!=null&&walk.texture!=null?walk.texture.name:"",
+                            bodyRectX=body!=null?(int)body.rect.x:-1,bodyRectY=body!=null?(int)body.rect.y:-1,
+                            walkRectX=walk!=null?(int)walk.rect.x:-1,walkRectY=walk!=null?(int)walk.rect.y:-1,
+                            bodyCellValid=body!=null&&body.texture==bodyAtlas&&body.rect.x==stagSkin%8*256&&body.rect.y==bodyAtlas.height-(stagSkin/8+1)*256&&body.rect.width==256&&body.rect.height==256,
+                            walkCellValid=walk!=null&&walk.texture==walkAtlas&&walk.rect.x==stagSkin%8*1024+frame*256&&walk.rect.y==walkAtlas.height-(stagSkin/8+1)*256&&walk.rect.width==256&&walk.rect.height==256,
+                            samePosition=Vector3.Distance(ev.body.transform.position,ev.walk.transform.position)<.00001f,
+                            sameScale=Vector3.Distance(ev.body.transform.localScale,ev.walk.transform.localScale)<.00001f,
+                            enemyX=enemy.X,enemyY=enemy.Y,playerX=p.X,playerY=p.Y,coreFacing=enemy.Facing,webFacing=enemy.Web!=null?enemy.Web.facing:double.NaN};
+                        result.frames.Add(row);
+                        if(dir!=expectedDir||row.skin!=stagSkin||row.walkFrame!=frame||row.moving!=walking||!row.bodyEnabled||row.walkEnabled!=walking||
+                            !row.bodyCellValid||(walking&&!row.walkCellValid)||(walking&&!row.samePosition)||!row.sameScale||row.walkOrder!=row.bodyOrder+1)
+                            result.failures.Add(name+" stag south-west/renderer contract");
+                    }
+                }
+                sim.Enemies.Clear();UpdateViews();yield return null;
+            }
+            var sample=new float[1024];AudioListener.GetOutputData(sample,0);foreach(float v in sample)result.listenerPeak=Mathf.Max(result.listenerPeak,Mathf.Abs(v));
+            result.listenerPaused=AudioListener.pause;result.directVideoPlayers=FindObjectsByType<VideoPlayer>().Length;
+            if(!result.listenerPaused||result.listenerPeak!=0||result.directVideoPlayers!=0)result.failures.Add("audio/video not drained");
+            result.passed=result.failures.Count==0&&result.frames.Count==(walkCycle?12:7)+(fourFrameWalk?80:0)+(stagSouthwest?7:0);
+            File.WriteAllText(Path.Combine(output,"facing-only-qa.json"),JsonUtility.ToJson(result,true));
+            lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(.5f);
+            Debug.Log("QA_MEDIA_DRAIN_COMPLETE FACING_ONLY");Application.Quit(result.passed?0:3);
+        }
+    }
+}

@@ -33,7 +33,7 @@ namespace Exoduser.UnityPort
         static readonly Clip DustClip = new Clip { Res = "druid_dust_24_20261010", Cols = 6, Rows = 4, Frames = 24, Fps = 180f / 7f };
 
         // game.html playVFXAng: a once-clip lives maxFrames x frameTime ticks and is stretched over that time; additive ('lighter'), alpha 1 - frame/maxFrames*.3
-        sealed class Vfx { public Clip Clip; public float X, Y, W, H; public int Born, FrameTime, MaxFrames; }
+        sealed class Vfx { public Clip Clip; public float X, Y, W, H; public int Born, FrameTime, MaxFrames; public bool Ground; }
         readonly List<Vfx> vfx = new List<Vfx>();
         Simulation bound; int boundTick;
         readonly HashSet<ChaseZone> zoneHit = new HashSet<ChaseZone>();
@@ -84,24 +84,27 @@ namespace Exoduser.UnityPort
         }
 
         // radius in web pixels (the 128 px sprite is 1.28 world units wide at scale 1)
-        void Put(Sprite s, double x, double y, double radius, Color c, int order)
+        void Put(Sprite s, double x, double y, double radius, Color c, int order, bool ground = false)
         {
             var r = Next(); r.sprite = s; r.color = c; r.sortingOrder = order; r.transform.rotation = Quaternion.identity;
             r.transform.position = Point(x, y); r.transform.localScale = Vector3.one * (float)(radius * 2 / s.rect.width);
+            NativeGroundSkillSurface.Mark(r, ground);
         }
 
         // a sprite stretched to w x h web pixels, optionally rotated (canvas rotate is clockwise on screen, Unity z-rotation counter-clockwise)
-        void PutBox(Sprite s, double x, double y, double w, double h, Color c, int order, double angle = 0)
+        void PutBox(Sprite s, double x, double y, double w, double h, Color c, int order, double angle = 0, bool ground = false)
         {
             var r = Next(); r.sprite = s; r.color = c; r.sortingOrder = order; r.transform.rotation = Quaternion.Euler(0, 0, -(float)(angle * Mathf.Rad2Deg));
             r.transform.position = Point(x, y); r.transform.localScale = new Vector3((float)w / s.rect.width, (float)h / s.rect.height, 1);
+            NativeGroundSkillSurface.Mark(r, ground);
         }
 
-        void PutAdd(Sprite s, double x, double y, double w, double h, float opacity, int order, double angle = 0, Color? tint = null)
+        void PutAdd(Sprite s, double x, double y, double w, double h, float opacity, int order, double angle = 0, Color? tint = null, bool ground = false)
         {
             var r = NextAdd(); r.sprite = s; r.sortingOrder = order; r.color = tint??Color.white; r.transform.rotation = Quaternion.Euler(0, 0, -(float)(angle * Mathf.Rad2Deg));
             r.transform.position = Point(x, y); r.transform.localScale = new Vector3((float)w / s.rect.width, (float)h / s.rect.height, 1);
             r.GetPropertyBlock(block); block.SetFloat(NativeDruidArt.Opacity, opacity); r.SetPropertyBlock(block);
+            NativeGroundSkillSurface.Mark(r, ground);
         }
 
         static Sprite ClipSprite(Clip c, int frame) { return NativeDruidArt.ClipFrame(NativeDruidArt.VfxDir + c.Res, c.Cols, c.Rows, frame); }
@@ -111,21 +114,21 @@ namespace Exoduser.UnityPort
         void GroundRing(double x, double y, double r, double alpha, double angle, int order, float inner = 0)
         {
             var s = inner > 0 ? NativeDruidArt.RingBand(inner) : NativeDruidArt.Ring;
-            PutBox(s, x, y, r * 2, r * 2, new Color(1, 1, 1, (float)alpha), order, angle);
+            PutBox(s, x, y, r * 2, r * 2, new Color(1, 1, 1, (float)alpha), order, angle, ground: true);
         }
 
         // _drawDruidPoolClip: pool.t/60 s into the looping 24-frame clip, drawn at 1.12 r with the given alpha, plus a 1.2 px pale-green rim at .55 of it
         void PoolClipDraw(double x, double y, double r, double t, double alpha, int order)
         {
             double R = r * 1.12;
-            PutBox(ClipSprite(PoolClip, LoopFrame(PoolClip, t)), x, y, R * 2, R * 2, new Color(1, 1, 1, (float)alpha), order);
-            Put(PoolRimAsWebProxyDisc ? hardDisc : thinRing, x, y, r, new Color(RimGreen.r, RimGreen.g, RimGreen.b, (float)(alpha * .55)), order + 1);
+            PutBox(ClipSprite(PoolClip, LoopFrame(PoolClip, t)), x, y, R * 2, R * 2, new Color(1, 1, 1, (float)alpha), order, ground: true);
+            Put(PoolRimAsWebProxyDisc ? hardDisc : thinRing, x, y, r, new Color(RimGreen.r, RimGreen.g, RimGreen.b, (float)(alpha * .55)), order + 1, ground: true);
         }
 
-        void Spawn(Clip c, double x, double y, double w, double h, int born, int frameTime, int maxFrames)
+        void Spawn(Clip c, double x, double y, double w, double h, int born, int frameTime, int maxFrames, bool ground = false)
         {
             if (vfx.Count >= 20) vfx.RemoveAt(0);   // playVFXAng: the 20-entry pool evicts its oldest non-skill entry
-            vfx.Add(new Vfx { Clip = c, X = (float)x, Y = (float)y, W = (float)w, H = (float)h, Born = born, FrameTime = frameTime, MaxFrames = maxFrames });
+            vfx.Add(new Vfx { Clip = c, X = (float)x, Y = (float)y, W = (float)w, H = (float)h, Born = born, FrameTime = frameTime, MaxFrames = maxFrames, Ground = ground });
         }
 
         void OnFx(string kind, double x, double y, double r)
@@ -189,7 +192,7 @@ namespace Exoduser.UnityPort
                 double[] lw = { f.W, f.W * .56, Math.Max(7, f.W * .09) }; float[] la = { .31f, .56f, .84f };
                 Color[] lc = { new Color(.11f, .141f, .094f), new Color(.212f, .263f, .153f), new Color(.647f, .773f, .408f) };
                 for (int layer = 0; layer < 3; layer++)
-                    for (int i = 0; i <= steps; i++) { double d = f.Len * i / steps; Put(disc, f.X + Math.Cos(f.Ang) * d, f.Y + Math.Sin(f.Ang) * d, lw[layer] * .5, new Color(lc[layer].r, lc[layer].g, lc[layer].b, la[layer]), -8980 + layer); }
+                    for (int i = 0; i <= steps; i++) { double d = f.Len * i / steps; Put(disc, f.X + Math.Cos(f.Ang) * d, f.Y + Math.Sin(f.Ang) * d, lw[layer] * .5, new Color(lc[layer].r, lc[layer].g, lc[layer].b, la[layer]), -8980 + layer, ground: true); }
                 double hx = f.X + Math.Cos(f.Ang) * f.Len, hy = f.Y + Math.Sin(f.Ang) * f.Len;
                 int born; if (f.Exploded && !fissureExploded.TryGetValue(f, out born)) fissureExploded[f] = t;
                 double ep = f.Exploded ? Math.Min(1, (t - fissureExploded[f]) / 30.0) : 0, markR = f.Exploded ? f.ExplR * (1 + ep * .12) : f.ExplR;
@@ -204,20 +207,20 @@ namespace Exoduser.UnityPort
                 {
                     double a = Math.PI * 2 * i / segs, gd = a - w.GapAng; while (gd > Math.PI) gd -= Math.PI * 2; while (gd < -Math.PI) gd += Math.PI * 2;
                     if (Math.Abs(gd) <= w.GapSize) continue;
-                    Put(disc, w.X + Math.Cos(a) * w.Rad, w.Y + Math.Sin(a) * w.Rad, 34, new Color(Root.r, Root.g, Root.b, .75f), -8970);
+                    Put(disc, w.X + Math.Cos(a) * w.Rad, w.Y + Math.Sin(a) * w.Rad, 34, new Color(Root.r, Root.g, Root.b, .75f), -8970, ground: true);
                 }
             }
             // boss state transitions that carry a web VFX: bossShockWind -> bossShock = druid_shockring r*2.5/256 (512 px frame -> 5 r wide), speed 7, 8 frames
             var boss = druid.Boss; string bs = null;
             DruidData dd = null; if (boss != null && boss.Alive && druid.Data.TryGetValue(boss, out dd)) bs = dd.S;
-            if (bs == "bossShock" && prevBossState == "bossShockWind") Spawn(ShockClip, dd.X, dd.Y, dd.R * 5, dd.R * 5, t, 7, 8);
+            if (bs == "bossShock" && prevBossState == "bossShockWind") Spawn(ShockClip, dd.X, dd.Y, dd.R * 5, dd.R * 5, t, 7, 8, ground: true);
             prevBossState = bs;
-            // things in the air
+            // Mines keep their Core tracking behaviour but their ward artwork lies on the floor.
             foreach (var m in druid.SeekerMines)
             {
                 bool armed = m.T > m.ArmT;
-                if(HasArt(WardSheet)){float a=armed?(float)(.78+(.5+Math.Sin(nowMs*.015)*.5)*.18):.46f;PutAdd(NativeDruidArt.ClipFrame(WardSheet,2,1,0),m.X,m.Y,m.R*2,m.R*2,a,(int)m.Y,nowMs*.00035);MineSpritesDrawn++;}
-                else{Put(disc,m.X,m.Y,20,new Color(Mine.r,Mine.g,Mine.b,.5f),(int)m.Y);MineArtFallbacks++;}
+                if(HasArt(WardSheet)){float a=armed?(float)(.78+(.5+Math.Sin(nowMs*.015)*.5)*.18):.46f;PutAdd(NativeDruidArt.ClipFrame(WardSheet,2,1,0),m.X,m.Y,m.R*2,m.R*2,a,(int)m.Y,nowMs*.00035,ground: true);MineSpritesDrawn++;}
+                else{Put(disc,m.X,m.Y,20,new Color(Mine.r,Mine.g,Mine.b,.5f),(int)m.Y,ground: true);MineArtFallbacks++;}
             }
             foreach (var o in druid.Orbs)
             {
@@ -228,7 +231,7 @@ namespace Exoduser.UnityPort
             {
                 if (!p.Active) continue;
                 if(Exoduser.UnityPort.Vfx.NativeSkillRemaster.Current!=null&&Exoduser.UnityPort.Vfx.NativeSkillRemaster.Current.Drawn(p))continue;
-                if(p.Mine){if(HasArt(WardSheet)){double mp=p.Life/(p.Ml==0?180:p.Ml),pulse=.5+Math.Sin(nowMs/(80+mp*100))*.5;bool blink=mp<.35;PutAdd(NativeDruidArt.ClipFrame(WardSheet,2,1,0),p.X,p.Y,112,112,(float)((blink?.84:.76)+pulse*.18),(int)p.Y,nowMs*.00035);if(blink)PutAdd(MineFlashRing(),p.X,p.Y,106,106,(float)(.3+pulse*.2),(int)p.Y+1,0,new Color(1,216/255f,74/255f));MineSpritesDrawn++;}else{Put(disc,p.X,p.Y,18,Mine,(int)p.Y);MineArtFallbacks++;}continue;}
+                if(p.Mine){if(HasArt(WardSheet)){double mp=p.Life/(p.Ml==0?180:p.Ml),pulse=.5+Math.Sin(nowMs/(80+mp*100))*.5;bool blink=mp<.35;PutAdd(NativeDruidArt.ClipFrame(WardSheet,2,1,0),p.X,p.Y,112,112,(float)((blink?.84:.76)+pulse*.18),(int)p.Y,nowMs*.00035,ground: true);if(blink)PutAdd(MineFlashRing(),p.X,p.Y,106,106,(float)(.3+pulse*.2),(int)p.Y+1,0,new Color(1,216/255f,74/255f),ground: true);MineSpritesDrawn++;}else{Put(disc,p.X,p.Y,18,Mine,(int)p.Y,ground: true);MineArtFallbacks++;}continue;}
                 if (p.DruidPoison)
                 {
                     // _drawDruidPoisonShot: 16-frame orb at 70 ms/frame, 96..180 px by Sz (240 for mines / element balls), doubled for physical-parry shots
@@ -244,7 +247,7 @@ namespace Exoduser.UnityPort
                 var v = vfx[i]; int age = t - v.Born, life = v.FrameTime * v.MaxFrames;
                 if (age >= life) { vfx.RemoveAt(i); continue; }
                 int legacy = age / v.FrameTime, frame = Math.Min(v.Clip.Frames - 1, (int)((double)age / life * v.Clip.Frames));
-                PutAdd(ClipSprite(v.Clip, frame), v.X, v.Y, v.W, v.H, 1f - (float)legacy / v.MaxFrames * .3f, (int)v.Y + 20);
+                PutAdd(ClipSprite(v.Clip, frame), v.X, v.Y, v.W, v.H, 1f - (float)legacy / v.MaxFrames * .3f, (int)v.Y + 20, ground: v.Ground);
                 i++;
             }
             Finish();
@@ -263,14 +266,14 @@ namespace Exoduser.UnityPort
                 if (z.Kind == "trap")
                 {
                     double pulse = .5 + Math.Sin(now / 200) * .5;
-                    PutAdd(NativeDruidArt.ClipFrame(WardSheet, 2, 1, 1), z.X, z.Y, 112, 112, (float)(.78 + pulse * .18), (int)z.Y - 20, -now * .00018);
+                    PutAdd(NativeDruidArt.ClipFrame(WardSheet, 2, 1, 1), z.X, z.Y, 112, 112, (float)(.78 + pulse * .18), (int)z.Y - 20, -now * .00018, ground: true);
                     continue;
                 }
                 bool dark = z.El == 3; double zr = (z.R != 0 ? z.R : 2) * 5, zp = .5 + Math.Sin(now / 250 + z.X) * .3;
                 Color c0 = dark ? new Color32(0x1a, 0x00, 0x33, 255) : new Color32(0x2a, 0x4a, 0x66, 255), c1 = dark ? new Color32(0x3a, 0x00, 0x70, 255) : new Color32(0x44, 0x88, 0xaa, 255), c2 = dark ? new Color32(0x5e, 0x10, 0xa8, 255) : new Color32(0x88, 0xcc, 0xff, 255);
-                Put(disc, z.X, z.Y, zr, new Color(c0.r, c0.g, c0.b, (float)(.12 * zp)), (int)z.Y - 30);
-                Put(disc, z.X, z.Y, zr * .6, new Color(c1.r, c1.g, c1.b, (float)(.26 * zp)), (int)z.Y - 29);
-                Put(disc, z.X, z.Y, zr * .28, new Color(c2.r, c2.g, c2.b, (float)(.46 * zp)), (int)z.Y - 28);
+                Put(disc, z.X, z.Y, zr, new Color(c0.r, c0.g, c0.b, (float)(.12 * zp)), (int)z.Y - 30, ground: true);
+                Put(disc, z.X, z.Y, zr * .6, new Color(c1.r, c1.g, c1.b, (float)(.26 * zp)), (int)z.Y - 29, ground: true);
+                Put(disc, z.X, z.Y, zr * .28, new Color(c2.r, c2.g, c2.b, (float)(.46 * zp)), (int)z.Y - 28, ground: true);
             }
         }
 

@@ -1,0 +1,217 @@
+{
+  "sourceCommit": "2a0eea0001622e116c7c3efd5f6701f1432f6fa9",
+  "tests": [
+    {
+      "phase": "capacity-create",
+      "checks": 25,
+      "passed": true,
+      "count": 6
+    },
+    {
+      "phase": "capacity-reload",
+      "checks": 19,
+      "passed": true,
+      "count": 6
+    },
+    {
+      "phase": "capacity-promote",
+      "checks": 21,
+      "passed": true,
+      "count": 6
+    },
+    {
+      "phase": "capacity-promoted-reload",
+      "checks": 19,
+      "passed": true,
+      "count": 6
+    },
+    {
+      "phase": "capacity-large",
+      "checks": 20,
+      "passed": true,
+      "count": 5000
+    },
+    {
+      "phase": "capacity-large-reload",
+      "checks": 20,
+      "passed": true,
+      "count": 5000
+    },
+    {
+      "phase": "character",
+      "checks": 17,
+      "passed": true
+    },
+    {
+      "phase": "delete",
+      "checks": 9,
+      "passed": true
+    },
+    {
+      "phase": "create",
+      "checks": 7,
+      "passed": true
+    },
+    {
+      "phase": "reload-delete",
+      "checks": 3,
+      "passed": true
+    },
+    {
+      "phase": "verify-delete",
+      "checks": 3,
+      "passed": true
+    },
+    {
+      "phase": "verify-empty",
+      "checks": 3,
+      "passed": true
+    },
+    {
+      "phase": "normal-capacity-reload",
+      "checks": 19,
+      "passed": true,
+      "count": 6
+    },
+    {
+      "phase": "m1",
+      "checks": 23,
+      "passed": true,
+      "device": "Apple M5 Pro",
+      "headless": true,
+      "guiRepaints": 0
+    },
+    {
+      "phase": "normal-m1",
+      "checks": 23,
+      "passed": true,
+      "device": "Apple M5 Pro",
+      "headless": true,
+      "guiRepaints": 0
+    }
+  ],
+  "totalChecks": 231,
+  "passed": true,
+  "wide3840Passed": false,
+  "windowsRuntimeExecuted": false,
+  "normalMac": {
+    "app": "/Users/fordeargamers/Applications/EXODUSER.app",
+    "sourceApp": "/Users/fordeargamers/exoduser-wt/_out/mac-character-unlimited-qa-20261101/build-arm64-user-ascii/EXODUSER-Unity.app",
+    "sourceCommit": "2a0eea0001622e116c7c3efd5f6701f1432f6fa9",
+    "identifier": "com.ForDearGamers.EXODUSER----Unity-----------------",
+    "product": "EXODUSER · Unity 이식 검증판",
+    "architecture": "arm64",
+    "identity": [
+      {
+        "path": "/Users/fordeargamers/Applications/EXODUSER.app/Contents/MacOS/EXODUSER",
+        "sha256": "a85c5572458c52c83592ff1c772531411af0c351d8390e067111eb11d764566c",
+        "bytes": 51440
+      },
+      {
+        "path": "/Users/fordeargamers/Applications/EXODUSER.app/Contents/Resources/Data/Managed/Exoduser.Runtime.dll",
+        "sha256": "88ebffc75675d616cecfe7b1efb87a2f7e170d9cfa17a8f76ea41cf25f9a77af",
+        "bytes": 1432576
+      },
+      {
+        "path": "/Users/fordeargamers/Applications/EXODUSER.app/Contents/Resources/Data/Managed/Exoduser.Core.dll",
+        "sha256": "efbd6a5079c5113bb69d4035b4b274c48b95edeec59bf9e5daad0f8474c89376",
+        "bytes": 700416
+      },
+      {
+        "path": "/Users/fordeargamers/Applications/EXODUSER.app/Contents/Info.plist",
+        "sha256": "e64749748a673e4f2cde18886fa531faf6d24930dbb94278bcb011b7fe14850d",
+        "bytes": 1436
+      },
+      {
+        "path": "/Users/fordeargamers/Applications/EXODUSER.app/Contents/_CodeSignature/CodeResources",
+        "sha256": "62c1b904d226e4681f9a966b9f979de7a16315d839d6a8369c0e12802c2587c8",
+        "bytes": 61176
+      }
+    ],
+    "codesignStrictDeepVerifyExit": 0,
+    "priorUnvalidatedCopyPreserved": "/Users/fordeargamers/exoduser-wt/_out/mac-character-unlimited-qa-20261101/installed-unvalidated-before-ascii-repair.app",
+    "userProfileOpened": false
+  },
+  "normalWin64": {
+    "sourceCommit": "2a0eea0001622e116c7c3efd5f6701f1432f6fa9",
+    "buildSucceeded": true,
+    "runtimeExecuted": false,
+    "product": "EXODUSER · Unity 이식 검증판",
+    "identifier": "com.ForDearGamers.EXODUSER----Unity-----------------",
+    "runtimeCoreIdenticalToWin64QA": true,
+    "identity": [
+      {
+        "path": "/Users/fordeargamers/exoduser-wt/_out/mac-character-unlimited-qa-20261101/build-win64-user/EXODUSER-Unity.exe",
+        "bytes": 667136,
+        "sha256": "9806abde4a406ed68647e9505852c49f6aa72a372f4f084e2aa2821affea57a2"
+      },
+      {
+        "path": "/Users/fordeargamers/exoduser-wt/_out/mac-character-unlimited-qa-20261101/build-win64-user/EXODUSER-Unity_Data/Managed/Exoduser.Runtime.dll",
+        "bytes": 1435136,
+        "sha256": "2284cee4c457fa87246f29cb7a03679e0c8effba1e7966b75cd92b86b3cff907"
+      },
+      {
+        "path": "/Users/fordeargamers/exoduser-wt/_out/mac-character-unlimited-qa-20261101/build-win64-user/EXODUSER-Unity_Data/Managed/Exoduser.Core.dll",
+        "bytes": 700416,
+        "sha256": "1b5d2df494600ea98529fe2f25e7e4ffbd143ccc459919f5448c798cf353153c"
+      }
+    ]
+  },
+  "archives": [
+    {
+      "platform": "mac",
+      "source": "/Users/fordeargamers/Applications/EXODUSER.app",
+      "archive": "/Users/fordeargamers/exoduser-wt/_out/mac-character-unlimited-qa-20261101/delivery/EXODUSER-Mac-ARM64-characters-20261101.zip",
+      "bytes": 2160652882,
+      "sha256": "5e001e6eb525dbb9881e42f5d5fd5983609bf863d52fea1cad2036fb46fe9711",
+      "files": 211,
+      "uncompressedBytes": 4433968781,
+      "productSourceCommit": "2a0eea0001622e116c7c3efd5f6701f1432f6fa9",
+      "publiclyPublished": false
+    },
+    {
+      "platform": "win64",
+      "source": "/Users/fordeargamers/exoduser-wt/_out/mac-character-unlimited-qa-20261101/build-win64-user",
+      "archive": "/Users/fordeargamers/exoduser-wt/_out/mac-character-unlimited-qa-20261101/delivery/EXODUSER-Windows-x64-characters-20261101.zip",
+      "bytes": 2172346702,
+      "sha256": "c1cfd4497f3a3a1e4a4bc126a32718675c0ce0bb5547f4b9fbad2523cef6d6e4",
+      "files": 212,
+      "uncompressedBytes": 4461953365,
+      "productSourceCommit": "2a0eea0001622e116c7c3efd5f6701f1432f6fa9",
+      "publiclyPublished": false
+    }
+  ],
+  "userState": {
+    "normalProductGameSaveAndSettingsUnchanged": true,
+    "initialQaPrefsExactRestoreVerified": false,
+    "exception": "com.fordeargamers.exoduser.settingsqa.plist; initial bytes unavailable; no speculative restore"
+  },
+  "macArchiveStrictDeepReadbackVerified": true,
+  "win64CriticalArchiveMembersVerified": true,
+  "pcReceived": true,
+  "pcReceiverAttestation": {
+    "reportedBy": "PC management thread 01a1960f-c55c-78e0-842e-3f87e9ebd5d6",
+    "destination": "I:/EXODUSER-Storage/character-capacity/20261101-unlimited/receiver/EXODUSER-Windows-x64-characters-20261101.zip",
+    "bytes": 2172346702,
+    "sha256": "c1cfd4497f3a3a1e4a4bc126a32718675c0ce0bb5547f4b9fbad2523cef6d6e4",
+    "matchesMacArchive": true,
+    "pcReceipt": "transfer-receipt.json",
+    "windowsRuntimeExecuted": false,
+    "signalSentToOwnedServerPid": 3390,
+    "ownedServerCommand": "/Users/fordeargamers/.local/node-runtime/node-v24.15.0-darwin-arm64/bin/node manager-preparation/receiver-server.cjs"
+  },
+  "temporaryLanServerStopped": {
+    "pid": 3390,
+    "stoppedAt": "2026-11-01T14:24:30.404Z"
+  },
+  "temporaryLanListenerRemaining": false,
+  "commonFeatureCommit": "473702c151734ac22ac930eec55c0b82e4ee8d7c",
+  "usageObservation": {
+    "weeklyStartUsedPercent": 10,
+    "weeklyEndUsedPercent": 12,
+    "sharedDeltaPercentagePoints": 2,
+    "dailyBaselineKnown": false,
+    "dailyConsumption": "unknown",
+    "sharedAccount": true
+  }
+}

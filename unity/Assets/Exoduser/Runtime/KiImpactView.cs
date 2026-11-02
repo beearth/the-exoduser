@@ -12,7 +12,12 @@ namespace Exoduser.UnityPort
     public sealed class KiImpactView : IDisposable
     {
         sealed class Flash { public SpriteRenderer renderer;public FeedbackEvent source; }
-        readonly List<Flash> additive=new List<Flash>(),shadows=new List<Flash>();
+        readonly List<Flash> additive=new List<Flash>(),shadows=new List<Flash>(),contacts=new List<Flash>(),contactShadows=new List<Flash>();
+        static readonly HashSet<SpriteRenderer> centeredContacts=new HashSet<SpriteRenderer>();
+        public static bool IsFeelSprite(SpriteRenderer renderer)=>centeredContacts.Contains(renderer);
+        public static readonly bool FeelEnabled=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-combat-feel-off")<0;
+        public bool ReducedMotion=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-reduce-menu-motion")>=0;public float ShakeScale=1;double hurtUntil=-1;
+        public bool HurtActive(int tick)=>FeelEnabled&&tick<hurtUntil;
         readonly Transform parent;readonly Func<int,Sprite> frame;
         readonly Material addMaterial,inkMaterial;
         readonly MaterialPropertyBlock properties=new MaterialPropertyBlock();
@@ -27,6 +32,8 @@ namespace Exoduser.UnityPort
         }
         public void Handle(FeedbackEvent e)
         {
+            if(FeelEnabled&&e.Kind==FeedbackKind.FeelHurt){hurtUntil=e.Tick+NativeCombatFeelPolicy.HurtTicks;return;}
+            if(FeelEnabled&&e.Kind==FeedbackKind.FeelContact){Contact(e);return;}
             if(e.Kind!=FeedbackKind.KiSlashHit&&e.Kind!=FeedbackKind.KiChargeFlash)return;
             float width=e.Kind==FeedbackKind.KiSlashHit?e.Size:e.Scale*627;
             // Source playVFXAng: all effects admitted here are skills, so the
@@ -40,6 +47,18 @@ namespace Exoduser.UnityPort
             }else Receipt.chargeCount++;
             Receipt.peakInk=Math.Max(Receipt.peakInk,shadows.Count);Receipt.peakAdditive=Math.Max(Receipt.peakAdditive,additive.Count);
         }
+        void Contact(FeedbackEvent e){
+            int found=contacts.FindIndex(x=>x.source.TargetId==e.TargetId);
+            if(found>=0){contacts[found].source=e;contactShadows[found].source=e;return;}
+            if(contacts.Count>=NativeCombatFeelPolicy.Capacity){Remove(contacts,0);Remove(contactShadows,0);}
+            var light=Create(e,e.Killed?72:64,false);var shadow=Create(e,e.Killed?72:64,true);contacts.Add(light);contactShadows.Add(shadow);centeredContacts.Add(light.renderer);centeredContacts.Add(shadow.renderer);
+        }
+        void DrawContacts(int tick){
+            for(int i=0;i<contacts.Count;){var source=contacts[i].source;double age=tick-source.Tick;int cell=NativeCombatFeelPolicy.Frame(age,ReducedMotion);if(cell<0){Remove(contacts,i);Remove(contactShadows,i);continue;}
+                for(int pass=0;pass<2;pass++){var f=(pass==0?contactShadows:contacts)[i];f.renderer.sprite=frame(cell);f.renderer.sortingOrder=(int)source.Y+(pass==0?3:4);f.renderer.transform.position=NativeRemodel3D.Point(source.X,source.Y);f.renderer.transform.rotation=Quaternion.Euler(0,0,-source.Angle*Mathf.Rad2Deg);f.renderer.transform.localScale=Vector3.one*(NativeCombatFeelPolicy.Size(source.Killed,age,ShakeScale,ReducedMotion)/627);f.renderer.GetPropertyBlock(properties);properties.SetFloat(Opacity,NativeCombatFeelPolicy.Alpha(age));f.renderer.SetPropertyBlock(properties);}
+                i++;
+            }
+        }
         Flash Create(FeedbackEvent e,float width,bool ink)
         {
             var go=new GameObject(ink?"Ki hit ink":"Ki impact light");go.transform.SetParent(parent);
@@ -50,7 +69,7 @@ namespace Exoduser.UnityPort
         }
         public void Update(int tick)
         {
-            Draw(shadows,tick,true);Draw(additive,tick,false);
+            DrawContacts(tick);Draw(shadows,tick,true);Draw(additive,tick,false);
         }
         void Draw(List<Flash> list,int tick,bool ink)
         {
@@ -65,8 +84,8 @@ namespace Exoduser.UnityPort
             }
         }
         static void Release(UnityEngine.Object value){if(Application.isPlaying)UnityEngine.Object.Destroy(value);else UnityEngine.Object.DestroyImmediate(value);}
-        static void Remove(List<Flash> list,int index){Release(list[index].renderer.gameObject);list.RemoveAt(index);}
-        public void Reset(){while(additive.Count>0)Remove(additive,additive.Count-1);while(shadows.Count>0)Remove(shadows,shadows.Count-1);}
+        static void Remove(List<Flash> list,int index){centeredContacts.Remove(list[index].renderer);Release(list[index].renderer.gameObject);list.RemoveAt(index);}
+        public void Reset(){hurtUntil=-1;while(contacts.Count>0)Remove(contacts,contacts.Count-1);while(contactShadows.Count>0)Remove(contactShadows,contactShadows.Count-1);while(additive.Count>0)Remove(additive,additive.Count-1);while(shadows.Count>0)Remove(shadows,shadows.Count-1);}
         public void Dispose(){Reset();Release(addMaterial);Release(inkMaterial);}
     }
 }

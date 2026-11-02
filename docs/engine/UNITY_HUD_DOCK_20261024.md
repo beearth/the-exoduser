@@ -1,5 +1,7 @@
 # UNITY-HUD-DOCK-01 — 화면 가장자리와 연결되는 하단 HUD
 
+> 2026-10-31 최신: 사이드 판·미니맵·상태·알림·실습은 실제 화면 끝, 무대·제목·모달·구슬/스킬바는 중앙. 다섯 창64px 메달 제목·성장 본문181px 확대·스킬16표시·원본 전체 로딩 규격은 [초광폭 현행 SSOT](UNITY_UI_ULTRAWIDE_20261031.md)의 첫 절을 따른다. 아래 이전 수치/검수는 이력이며 새 Player 검수 대기.
+
 > 2026-10-24 정정: 아래는 이전 후보의 제작·검수 이력이다. 전체폭 도킹은 최신 사용자 중앙 HUD·양측 인벤토리 방향으로 교체 중이며 전체 디자인 인수는 미완료다. [현행 설계](UNITY_UI_COMPOSITION_20261024.md).
 
 
@@ -66,3 +68,8 @@
 
 
 2026-10-25: K skill UI, 13 slot inspection and live Ki Slash HUD state: [current scope and verification](UNITY_MAC_SKILL_UI_20261025.md). Other skill executors remain unavailable.
+
+
+## 2026-10-31 안전 영역 후속
+
+현행 UI의 중앙 제목·모달·HP/MP/스킬 묶음은 논리1920×1080을 min(W/1920,H/1080)로 균등 fit하고 origin에 배치한다. 로비/캐릭터 정보판·미니맵·상태·안내·알림은 높이기준 H/1080 배율로 실제 화면 끝에 붙이며 가로폭으로 늘이지 않는다. 2560×1600의 중앙 origin은 y80, 3840×1080은 x960이다. 이 중앙 origin을 전체화면 검정 띠로 해석하지 않는다. 월드는 전체 physical viewport/고정세로FOV·수평확장이고, 배경·승인 확장 로딩은 각각의 비율/cover 계약을 따른다. 위 과거 전체폭/순검정 검수는 이력이다. 5개 해상도·파일명 W×H·글자 검사/실제 입력·검수 상태는 [현행 안전 영역 계약](UNITY_UI_ULTRAWIDE_20261031.md)을 따른다.

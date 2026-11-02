@@ -1,5 +1,7 @@
 # Unity UI 글자 겹침 수정과 전 화면 상시 검사
 
+> 2026-10-31 최신: 사이드 판·미니맵·상태·알림·실습은 실제 화면 끝, 무대·제목·모달·구슬/스킬바는 중앙. 다섯 창64px 메달 제목·성장 본문181px 확대·스킬16표시·최종 확장원화+하단 그라데이션 로딩 규격은 [초광폭 현행 SSOT](UNITY_UI_ULTRAWIDE_20261031.md)의 첫 절을 따른다. 아래 이전 수치/검수는 이력이며 새 Player 검수 대기. 공통76상태·실제 직업/세계관/타이틀/브랜드 영상 준비/프레임 진행·활성16로딩/실패 폴백을 검사하며, 프레임별 전체 근거 순차 저장으로 대량 보고서 메모리 누적을 없앴다. 명시 지역 검정 그림자/일반 CP 광휘의 별도 한도를 포함한 분석 회귀44건 통과.
+
 사용자 인계: `I:/EXODUSER-Storage/codex-takeover/ui-overlap-brief.md`. 기준 공통 `10c49850f`를 현재 UI 브랜치에 정상 fast-forward했다. 기존 519개 작업 변경과 미추적 메타는 보존한다.
 
 | 항목 | 구현·검수 계약 |
@@ -236,3 +238,63 @@ MERGE_QUEUE READY 뒤 expected공통202b32c85df19ce0b2a11db118e313298948a416을 
 | 안전·보존 | 사용자 앱 자동기동0·기존 실행본 덮기0·세이브변경0·강제종료0·타인 예약/잠금 변경0, 자기 예약 공식반환 |
 
 최종 근거는 candidate3/최종게이트_요약.json·공식영수증/목록.json·verify/overlap/직접검수/직접판정.json·공통반영_영수증.json·Desktop_전달.json이다. 같은 후보 정식빌드/실제168장·가림완전성/동일M1/1x/UI겹침PASS/일반Desktop 전달을 완료했다. PC 현재 소유 checkout과 GitHub 공통 소스는 확인했으며 Mac 실제 checkout 반영은 미확인이다. 전체 아트/번역/게임 품질 RETOUCH와 기존 실패 이력을 유지한다. 다른 담당은16:10UTC 정상 자기 실행 잠금을 사용 중이며 UI는 더 실행/예약하지 않는다.
+
+
+## 2026-10-31 안전 영역 후속
+
+현행 UI의 중앙 제목·모달·HP/MP/스킬 묶음은 논리1920×1080을 min(W/1920,H/1080)로 균등 fit하고 origin에 배치한다. 로비/캐릭터 정보판·미니맵·상태·안내·알림은 높이기준 H/1080 배율로 실제 화면 끝에 붙이며 가로폭으로 늘이지 않는다. 2560×1600의 중앙 origin은 y80, 3840×1080은 x960이다. 이 중앙 origin을 전체화면 검정 띠로 해석하지 않는다. 월드는 전체 physical viewport/고정세로FOV·수평확장이고, 배경·승인 확장 로딩은 각각의 비율/cover 계약을 따른다. 위 과거 전체폭/순검정 검수는 이력이다. 5개 해상도·파일명 W×H·글자 검사/실제 입력·검수 상태는 [현행 안전 영역 계약](UNITY_UI_ULTRAWIDE_20261031.md)을 따른다.
+
+2026-10-31 확장 검수 입력은 coverage가 살아 있는 동안 UiOverlapOwnsInput으로 AutomatedInput을 유지한다. 정상 신규 입장 API 호출 순간과 자기 PID WM 클릭 .12/.2초 표본만 명시적으로 입력을 연다. 매 프레임 일반 Update가 플래그를 덮어 캡처에 사용자 키가 섞일 수 있던 경로를 분리했다. 실제 검수는 새 동일 Player·5해상도 클릭 영수증으로 판정하며 CPU 확인으로 실제 입력 PASS를 대신하지 않는다.
+
+
+2026-10-31 R3: UI실제1225프레임은입력격리와함께simulationFrozenChecks=frames를필수로기록·검증한다. 작은검정stroke는후행본문과직접3.1physical유계로연결하고그림자끼리연쇄병합하지않는다. 명시광휘/외곽선은동일본문의스타일페인트로분리해decorationElements에보존하며이웃실제본문교차는계속검출한다. 기본광휘5.5s/.03·region9.2s/.064·death-black-outline4.2s/1.001프로필의source/순서/clip/치수/중간칠을대조한다. 추가12음성/양성회귀포함56PASS. 실제R3전화면/가림/PNG1x는별도필수이며R2의Guide/스킬FAIL을지우지않는다.
+
+R3 전면자간글자의기존1px·±.5px/3px검정그림자는frontend-black-shadow/3.1×edgeScale/알파≤1.001명시프로필이다. 사망제목·펫대사동일source로명시stroke를연결한다. 일반미선언큰그림자허용범위는확대하지않았다.
+
+
+## 2026-10-31 시네마틱 재생 버튼의 명시 바탕
+
+|항목|현재 계약|
+|---|---|
+|실제 RED|R3 UI bd9ff69e1225장 전수분석은사망펫본문15교차와시네마틱일시정지15장의GUIStyle내부바탕미증명으로FAIL. 계측미증명을제외하거나알파1로추정하지않음|
+|수정|NativeLobby의재생/재시도버튼은기존취소/종료에쓰던명시페인트공통함수LobbyActionButton을사용. NativeSilverHellUi.ActionPlate(edge28/outset6),호버Focus/pressed,글꼴공통/크기18/가운데배치,GUIStyle.none hit영역으로그림과클릭을분리. 회복Rect(28,26,240,48)·실제왼쪽위EdgeMatrix·TogglePlayback·오류재시도조건유지|
+|보존|기존취소/종료의기능/외형은같고공통함수명만변경. NativeUiAudit의불명상태차단·불투명도/가림판정엄격조건·actualGPU대조군은완화하지않음|
+|검수|새동일Player에서전5해상도/3언어시네마틱일시정지·실제영상·원시계측완전성·겹침0과1x를확인. R3의1225PNG/안전0/컴포넌트0/화면경계0을새DLL증거로소급하지않음|
+
+
+## 2026-11-01 R5 전환로딩 팁 전수
+
+R4의전환로딩팁행누락을수정한다. NativeLoadingTips 승인4종/실제키·KO/EN폴백, 물리11..16px·실제서체높이+4px·진행선아래8px는 UNITY_UI_ULTRAWIDE_20261031.md R5절을따른다. 전환로딩16종과실제누락폴백17샷을KO뿐아니라선택3언어모두수집하여총1395PNG/입력격리1395/틱정지1395가필수다. 추가팁255샷에서원시loading-tip component·실제Visible본문/서체높이·오버레이포함·진행선간격·누락/클립/겹침0을검사한다. 실제미디어120기록은변하지않는다. R4 1225장·웹400장의증명범위와새R5 DLL1395장을구분하며새Runtime SHA가있는실제Player와M1로검증한다.
+
+- R5 실제 입력 키 검수: 각 5해상도×ko/de/fr에서 전환로딩06/07 캡처에만 인벤토리 V·수거 F2를 제품 KeyBindings API로 설정하고, 캡처 직후 원래 두 primary를 복원한다. secondary·사용자 설정 파일은 쓰지 않는다. coverage.tipKeyChanges 30행과 실제 audit 글자 V/F2·복원 여부를 함께 확인한다. API 상태 검수이며 OS 입력/자연 플레이 증거와 구분한다.
+
+
+## 2026-11-01 인수·사용자 도타 보호 — 실화면 미완료
+
+|항목|확인된 결과와 경계|
+|---|---|
+|R5 실제 빌드|source 0a60cbcee273e1150ba7df8909acb77dd9f18edc, Unity tree c692d38d808b02d31f84ef60b61229662a617f57, 빌드전 입력4088 exact. 공식 build 00078cc6/exit0/BuildReport errors0/remodel-scenes1, USER_SAVE0. CPU702·compile35는 기존 통과 근거이며 이번에 반복 실행하지 않음|
+|실제 패키지|212파일·전체160DLL/Managed153·승인8영상·MCP파일/참조0은 기존 빌드 검증. Runtime a3f4267e537f6dd6d88e96248f4ac041d790c8ea64b63ce65050d886f7961505. 인수 시 EXE/Runtime/Core 3개 SHA 재대조 일치. 전체패키지 재해시·새실행은 하지 않음|
+|M1 중단|후속 M1 연결 exit1. 실행 가드 done/Player로그/M1 결과가 없어 실제 Player 생성과 기능·안전 판정은 미확인. 런처 PID34712의 오래된 잠금 기록을 Player실행 증거로 간주하지 않음. 원인 미확정, 무검증 재시도0. 필드22/월드56/UI1395/새팁255·변경키30 캡처 미실행|
+|소스 인수|4.91MB의 코드/셰이더/assembly 479개가 R5 빌드입력과 정확 일치. 새 컴파일·제품코드 변경0. 중앙/실제끝 계약이 남아 있던 소유6문서 정리는 docs-only 체크포인트로 보존|
+|원본 WIP|520개 1,591,192bytes·미추적56개40,065bytes의 보관본 SHA 전부 일치. 현재 원본520 중517일치/URP_PC_High·parry-plaque meta·FirstPlayable 3경로는 빌드overlay여서 미복원. 미추적56은 현행도 byte일치. 전체 원복 완료로 주장하지 않음. 공용HEAD38edf98a/INDEX0 유지|
+|도타 보호|dota2.exe 어느 PID든 생존하면 새 Unity/Player/빌드·인코딩·무거운 CPU/GPU/브라우저 검수 금지. 기존 I: 검수 진입부16개에 단발 fail-closed 프로세스 확인, 기존CLI/Queue byte불변. 인수 시 실제 도타 프로세스에서 차단 exit2 확인; 문법만 검사하고 본문 실행0. 새 대기자/예약/작업본/팀 생성0·프로세스 우선순위/affinity 변경0|
+|재개 전제|실제 도타 부재와 기존 공식FIFO·메모리·무음·세이브 조건을 확인한 뒤 현재 빌드/3핵심SHA·새소스Unity tree 일치를 다시 대조. 기존 실패 원인을 먼저 확인하고 같은 패키지 M1부터 인수하며 성공 빌드를 자동 재빌드하지 않음. 그후 실제필드/월드/UI·같은크기/1x·MQ READY·기존단독통합자 공통/Desktop·정상 원본복원 필요|
+
+R4는 필수 로딩팁 누락 FAIL을 유지한다. R5는 소스/빌드 준비와 부분이식4팁만 확인되었고 실제시각 PASS·공통/바탕화면 완료가 아니다. 새 main API목록을 이 Unity 후보 위로 자동 merge하지 않았고, 외부 생성·유료 API 사용0이다.
+
+
+## 2026-11-01 R5 M1 시작 연결 읽기 진단 — 새 실행 없음
+
+|구분|근거와 한계|
+|---|---|
+|확인|기존 Windows PowerShell 이벤트에서 PID34712의 실제 m1-expanded-r5.ps1 호출과 EngineAvailable 16:14:00.5425824Z를 회수했다. 마지막 기록된 파이프라인은 HiddenDesktop.psm1 Add-Type(16:14:01.2998662Z)이다. 새 sandbox75644772 생성16:14:01.300Z·기존잠금16:14:01.402Z·부모실패처리16:14:02.829Z까지 연결된다. sandbox의 M1ID 귀속은 동시각 유일성에 따른 추론이다|
+|종료코드|관찰된 exit1은 바깥 Node package/M1 작업 결과다. 당시 자식 PowerShell의 exit/signal/close를 따로 기록하지 않아 원시자식종료코드1이나 강제종료를 확정하지 않는다. 실제 Player 생성·게임크래시·기능FAIL 모두 미확인|
+|메모리/로그|입구표본 commitFree34.2GB/Unity0, 반환표본34.3GB/Unity0. 기록된입구표본이지 전구간 원인배제는 아니다. 후보ID의 Player로그/guarddone/M1결과/기존trap파일은 없다. Application1000/1001/1026은16:13:50~16:14:10Z 창에서0건, EngineStopped403도해당창에없으나 종료원인의확증으로쓰지않음|
+|한도가설|확인가능한사용한도오류16:09:25/26Z보다276.829초뒤 후속실패다. 그사이빌드완료와뒤의Node실패처리·예약반환이실행됐다. 사용한도오류가직접원인이라는가설은확인되지않았고 지연정리·외부종료까지완전배제하지않음|
+|범위축소|진입스크립트전체미실행/패키지검사에서중단한것은아니다. 잠금쓰기 이후 슬롯확인·SaveSnapshot·숨은데스크톱/프로세스생성·guard후처리 중 정확지점은 원문오류부재로미확정. 빈sandbox는이전성공M1도같아Player미실행의증명이아님|
+|최소보완|I: 소유 package-and-m1-r5-tip.cjs와 m1-expanded-r5.ps1만 보완. 다음실행에서실제argv/cwd/스크립트SHA·자식PID/exit/signal/close/error·원문stdout/stderr·PS script-enter/before-cli/after-cli/terminating-error 위치/stack를별도파일로남긴다. 기존상위로그tee와도타차단을보존. 현재는문법만확인하고본문실행0|
+|다음M1만|기존package-and-m1-r5-tip.cjs --m1-only 선택경로를준비했다. 기존패키지검사반복없이저장된근거/Unity tree/실행전3핵심SHA를대조한뒤M1만시작하는미실행경로다. 전체212파일재해시나새패키지검사PASS주장0. 도타부재·기존공식FIFO/메모리/무음/세이브조건확인전사용금지|
+|보존|frozenCli68b7/Queue8a00·제품Core/Runtime소스·공용INDEX0/WORK635·원본3overlay불변. 새Unity/Player/빌드/브라우저/인코딩/대형검수·예약·대기자·재시도0. 진단보완은게임실행이나전체완료가아니다|
+
+원문근거와가설구분은 I:/EXODUSER-Storage/demo-art/unity-ui/ultrawide/R5_M1_읽기진단.json 및 recovery-20261101/m1-readonly/PowerShell_PID34712_기존이벤트.json을 따른다. 기존 R4 로딩팁누락FAIL·R5실화면/공통/Desktop미완료는유지한다.
