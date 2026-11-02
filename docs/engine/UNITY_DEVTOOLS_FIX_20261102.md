@@ -5,7 +5,7 @@
 | tools 94b8e6590 | Codex 래퍼·보수적 scan 추가, README의 현행 실행기 예시도 보존 |
 | storage fe1bc518f | 현행 NTFS E: DOTNET_CLI_HOME 유지. 옛 I: 지정은 폐기 |
 | batchlog 898f229e4 | 로그 없음/잠김에도 실패 영수증과 세이브 대조 보존 |
-| buildloop3 0ea27c069 | desktop 기본화, requiredMedia title_motion_20261028.mp4, 현행 게임 코드 위에 병합 |
+| buildloop3 0ea27c069 | desktop 기본화, requiredMedia title_motion_20261028.mp4(최소 1,000,000 bytes), 현행 게임 코드 위에 병합. smoke-rules는 CRLF→LF 서식만 정리하고 JSON 값 동일 검사 |
 | 후속 공통 줄기 9e771f771 | push 전 정상 merge. exo 최소 6GB의 d05c8b1ab 수정 원문 보존. buildloop 충돌은 최소 8GB·COMMON_RULES 권장 12/20GB 경고만으로 해결 |
 
 | 런타임 변경 | 값·범위 |
