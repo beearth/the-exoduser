@@ -38,3 +38,19 @@
 기존 flat off/on과 실제 A2 offA/offB는 6ad 옛 셰이더와 1403 현행 셰이더의 **무데칼 동일 프레임** 비교가 아니다. 기술 수신 양성 PASS와 별개로 이 회귀는 미검수 상태였다. QA 전용 private 브랜치에서 6ad의 두 shader Git blob을 이름 선언만 `EXODUSER/QA/NoDecalBaseline/*`로 바꾼 alias로 포함한다. 현행 제품 shader 두 파일은 1403 byte 그대로 둔다. 같은 Settings QA 앱·카메라·geometry·material property·textures, 모든 DecalProjector disabled 조건에서 flat 흙/뿌리/Lit 및 실제 A2 흙/뿌리의 1920×1080 실창과 3840×1080 직접 RT raw RGBA를 비교한다. raw 변화 0만 완전 동등으로 판정하며 self+4 필터를 사용하지 않는다. 실제 결과는 후속 receipt로 기록한다.
 
 옛 QA 빌드 후 `mismatch=773`, 일반 빌드 후 `mismatch=772` 영수증의 `files` 배열은 **stage가 아닌 source 원문 SHA**다. 따라서 이 배열만으로 변형 파일이 원문과 같다고 판정할 수 없다. QA는 `.meta` 738경로(기존682·신규56), 비-meta 35경로(기존34·신규1); 일반은 `.meta` 738경로, 비-meta 34경로(기존33·신규1)이다. 비-meta에는 URP profile 2, A2 material 29, scene 1, URP global 1, ProjectSettings 1/QA는2가 포함된다. 원본 변형 byte는 복원 전 별도 보관되지 않았으므로 과거 두 빌드의 exact imported byte 재현성은 확정하지 않는다. 경로별 원문 SHA/변형 SHA 부재 목록은 `_out/mac-decal-noeffect-regression-20261102/old-drift-inventory.json`에 보존한다. 새 QA 빌드에서는 복원 전에 stage 원문과 변형 byte/SHA를 모두 보관해 각 영향군을 분류한다.
+
+### QA private `2f58ea2d8b1eba8e4f8b06969bd81fa529a04699` 실제 결과
+
+단일 Settings QA ARM64 빌드는 격리 입력 3,544/3,544 SHA manifest `b6631b4af2610b490671d866e8097300900a3d76bacdd5ceb56a2aeefd76f7ed` 및 비Git 필수 영상2 SHA 고정 후 `Succeeded`/errors0이다. 정확 QA 소스와 개인 원격 SHA를 먼저 일치시켰다. 같은 앱 Metal M1 23/23·firstBlocked 없음·exit0. flat·A2 Player는 전용 sandbox, Listener pause/volume0/peak0/DirectVideo0, drain 뒤 종료했다. 일반 설치 앱은 실행·교체하지 않았고 실행파일·Runtime·Core 3 SHA는 기존 배송값 그대로다. 일반 저장/설정11 및 QA plist2는 최종 전후 byte SHA 동일하다.
+
+| 수신체 | 1920 raw RGBA baseline↔현행 변화 / 현행 반복 변화 | 3840 직접 RT raw RGBA baseline↔현행 변화 / 현행 반복 변화 | 판정 |
+|---|---:|---:|---|
+| flat HellGroundPBR | 1픽셀·최대1 / 0 | 1픽셀·최대1 / 0 | **완전동등 FAIL**. 같은 세계 픽셀에서 청색 채널 252→253; 1920 `(598,432)`, 3840 `(1558,432)` |
+| flat A2RootSurface | 0 / 0 | 0 / 0 | 완전동등 PASS |
+| flat URP Lit 양성 대조 | 0 / 0 | 0 / 0 | 대조 안정 PASS |
+| A2 전체 프레임 흙 위치 | 40,541·최대12 / 32,909·최대4 | 60,666·최대12 / 49,237·최대4 | **완전동등 FAIL**, 장면 자체 시간 변화 포함 |
+| A2 전체 프레임 뿌리 포함 목교 인근 위치 | 37,221·최대15 / 31,334·최대4 | 101,725·최대17 / 93,832·최대5 | **완전동등 FAIL**, 실제 뿌리 단독 ROI가 아님 |
+
+모든 projector를 disable한 결과 발견/활성 0/0, 실제 A2 지면 chunk144·뿌리 renderer79. raw 수치에는 self+4 등 임계값·마스크를 적용하지 않았다. flat 흙의 1픽셀은 반복 노이즈0이므로 완전 동등이라고 바꾸지 않는다. 실제 맵의 baseline↔현행 차분은 현행 반복 차분과 겹치지만 그 자체가 전부 같은 것은 아니다. 화면의 시간 변화가 관찰되어 shader 단독 영향으로 귀속하지 않는다. 기존 양성 DBuffer 수신 PASS는 유지하되 **무데칼 pixel 완전동등 PASS는 주장하지 않는다.** 다음 최소 조치는 시간 의존 장면 요소를 고정하고 실제 뿌리 patch `(36.2916,-73.1713)`를 중심으로 같은 프레임 receiver ROI를 별도로 측정하는 것이다. 현재 검수는 일반 앱 재빌드·재설치나 `unity/main` 반영의 근거가 아니다.
+
+새 QA 빌드의 stage drift는 복원 전에 **기존716경로의 원본·변형 양쪽 바이트/SHA와 신규57경로의 변형 바이트/SHA**를 `_out/mac-decal-noeffect-regression-20261102/stage-drift-bytes/`, `stage-mutation-inventory.json`에 저장했다. 기존716변형·신규57이며 `.meta`는 기존682/신규56, 비-meta는 URP profile2·material29·scene1·URP global1·ProjectSettings 기존1/신규1이다. Mac URP의 `m_PrefilterDBufferMRT3`는 1→0, PC High의 SSAO/DBuffer prefilter도 바뀌었다. 29 material은 URP AssetVersion/직렬화·키워드 순서 정리, 일부 `_BumpScale`의 float 표기 정리이며 눈에 보이는 저장 texture GUID의 교체는 대표 diff에서 없었다. 하지만 직렬화·import·prefilter의 runtime 출력 영향은 자동으로 0이라고 단정하지 않는다. `FirstPlayable.unity`의 local ID/lighting 직렬화와 URP global 등록, ProjectSettings 마이그레이션도 영향을 줄 수 있다. 경로별 35개 비-meta와 738개 meta SHA 및 영향 분류는 `DRIFT_CLASSIFICATION.md`/JSON에 있다. 복원 뒤 격리 입력 3,544/3,544 불일치0이다. 이 새 기록으로 옛 QA/일반 빌드의 사라진 변형 바이트를 소급 복구했다고 주장하지 않는다.
