@@ -1,0 +1,24 @@
+{
+  "createdAt": "2026-11-02T02:05:45.230Z",
+  "checks": [
+    {
+      "file": "spearmage-purple-sidebraid.preview.png",
+      "status": 200
+    },
+    {
+      "file": "purple-sidebraid-preview.html",
+      "status": 200
+    },
+    {
+      "file": "purple-sidebraid-v20.receipt.json",
+      "status": 200
+    },
+    {
+      "file": "preview.html",
+      "status": 200
+    }
+  ],
+  "faceOriginSha256": "fc2198af2bec17d8895fcb400368c76f7698614764d6134b6d520b1bc8760e32",
+  "faceMasterBytesUnchanged": true,
+  "runtimeApplied": false
+}

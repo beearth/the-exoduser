@@ -1,0 +1,32 @@
+{
+  "createdAt": "2026-11-02T02:04:53.765Z",
+  "task": "아까 02번 리스트의 보라색 굵은 옆땋기 창법사 시험",
+  "status": "HAIRSTYLE_PREVIEW_NOT_ADOPTED",
+  "source": "C:\\Users\\심도진\\.codex\\generated_images\\01a194cc-8301-70f1-80f8-a4e5f1090c22\\exec-4036cf0c-7949-482c-91a6-cc2cc2ce0e7c.png",
+  "prompt": "Use case: precise-object-edit / immutable identity hairstyle variant.\nIMAGE 1 is the user-locked Liv-reference FACE ORIGIN. IMAGE 2 is this SAME adult Spearmage's selected transparent full-body image, the edit target. Use NO other person's face. Preserve IMAGE 1's exact eye shape/spacing, short nose, cheek contours, mouth/lip proportions, jaw/chin and adult age in the body of IMAGE 2. Do not beautify, average, smooth, change expression or substitute a generic doll face.\nChange ONLY the HAIR of the woman in IMAGE 2 from short bob to the previously explored PURPLE THICK SIDE BRAID:\nA long substantial loosely woven single braid is brought FORWARD over the woman's LEFT shoulder (VIEWER'S RIGHT), running beside the outer chest edge down toward the waist. Clearly defined broad woven sections, not many thin braids. The braid has dark black-plum roots transitioning into rich visible SMOKY VIOLET / muted medium purple through the woven length, slightly lighter dusky purple at ends. Purple must be visibly legible, but not neon or self-illuminated. Crown has a full softly swept wave and side-part; the opposite temple is cleanly tucked with subtle tight weaving. Keep brows, both eyes, cheek contours and jaw clear. A few natural face-framing locks, no bangs hiding the face. One simple narrow dark tie near braid end, no large jewels, bow, bun, high ponytail, second braid or all-over silver hair.\nPreserve the target's current charcoal worn-metal fitted cuirass covering the entire abdomen, open upper-chest neckline and choker, bare upper arms, small shoulder guards, forearm gauntlets, muted-plum short hip cloth over opaque shorts, thigh and practical flat boots. Do not redesign any armor, change body proportions or hide the neckline behind a curtain of hair. Preserve realistic painterly skin/material quality, front-facing upright head, horizontal eyes, chin neutral, relaxed straight standing pose, naturally open hands, both planted feet, full crown-to-sole framing.\nOne adult woman only in vertical 2:3 full-body view. Maintain genuine transparent background and generous clear padding, all hair, fingers and boots inside frame. No inset portraits, captions, labels, logos, props or added glow. Face source is permanently locked; this output is a hair-only trial.",
+  "refs": [
+    "G:/exoduser/assets/characters/female-heroes/20261102-v19/spearmage.face-lock.png",
+    "G:/exoduser/assets/characters/female-heroes/20261102-v19/spearmage-asymmetric-bob.front.png"
+  ],
+  "generator": "built-in image_gen; model ID and cost undisclosed",
+  "faceOriginLocked": true,
+  "existingDefaultHair": "비대칭 단발",
+  "runtimeApplied": false,
+  "observed": "One thick muted-purple braid over anatomical left shoulder (viewer right), black-plum roots, front-facing same face-reference direction and established outfit.",
+  "limits": [
+    "Generated facial transfer and outfit detail can differ slightly; canonical face master bytes remain unchanged.",
+    "Preview does not replace selected bob or imply playable animation/3D availability."
+  ],
+  "file": "spearmage-purple-sidebraid.preview.png",
+  "sha256": "3a62c04b536b756de44247255cdd6850668ead99d78ff3f2509a037a1e247522",
+  "width": 1024,
+  "height": 1536,
+  "faceOriginSha256": "fc2198af2bec17d8895fcb400368c76f7698614764d6134b6d520b1bc8760e32",
+  "faceMasterBytesUnchanged": true,
+  "alpha": {
+    "min": 0,
+    "max": 254,
+    "zeroPixels": 1158311
+  },
+  "copyHashesVerified": true
+}
