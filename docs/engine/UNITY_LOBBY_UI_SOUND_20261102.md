@@ -10,7 +10,7 @@
 |---|---|---|---|---|---|---|
 | 첫 인장 | `.cin-enter-btn` | mouseenter / mouseleave, 패드 진입/이탈 | `assets/lobby/11_loop.wav` | .7 | 진입100ms / 이탈80ms, 소스100ms 뒤 해제 | 루프, 새 진입은 새 소스 |
 | 첫 인장 | ENTER | click / Enter / Space / 패드A | `assets/lobby/lobby_enter_sfx.mp3` | 2 | 없음 | 매번 새 재생, 일반 확인 제외 |
-| 시작 메뉴 | 게임 시작/인트로/위시리스트/종료 | pointerover / focusin / 키보드·패드 이동 | `sfx/ui/button_hover.mp3` | .6×SFX | 없음 | 항목 변경 시. 웹 최신35ms, **이번 지시대로 Unity60ms 유지**, 마지막 항목 지연 재생 |
+| 시작 메뉴 | 게임 시작/인트로/위시리스트/종료 | pointerover / focusin / 키보드·패드 이동 | `sfx/ui/button_hover.mp3` | .6×SFX | 없음 | 항목 변경 시. 웹 최신35ms, Unity35ms(5차 정정), 마지막 항목 지연 재생 |
 | 시작 메뉴 | 게임 시작/위시리스트 | click / Enter / Space / 패드A | `assets/lobby/lobby_enter_sfx.mp3` | 2 | 없음 | `data-ui-own-sound=true`, 일반 확인 제외 |
 | 시작 메뉴 | 인트로 다시 보기/종료 | click / 키보드·패드 확정 | `sfx/ui/button_confirm.mp3` | .35×SFX | 없음 | 80ms 억제 |
 | 로비 | 입장 `enterGameBtn` | mouseenter/leave, 키보드·패드 포커스 | `assets/lobby/11_loop.wav` | .7 | 100/80ms | 일반 호버 제외 |
@@ -20,7 +20,7 @@
 | 직업 선택 | `.cs-ico` 5개 | pointerover / focusin / 키보드·패드 이동, click | 일반 호버/확인 원음 | .6/.35×SFX | 없음 | 준비중 직업도 미리보기 아이콘 선택 가능, 비활성 생성 버튼은 무음 |
 | 직업 선택 | 생성 `visualCreateBtn` | click / Enter / 패드A | `sfx/ui/decision/ddung_1.wav` | .8×SFX | BGM -6dB 800ms | hero, 일반 확인 제외 |
 | 이름 생성 | 생성 `createBtn` | click / 이름칸 Enter / 패드A | `sfx/ui/decision/ddung_1.wav` | .8×SFX | 동일 | create, 일반 확인 제외, 유효하지 않은 이름은 결정음 없음 |
-| 직업/이름/삭제/종료 창 | 취소/닫기/탭 포커스 | pointerover / focusin / 이동, click / 확정 | 일반 호버/확인 원음 | .6/.35×SFX | 없음 | 60/80ms, Escape는 취소 입력과 통일 |
+| 직업/이름/삭제/종료 창 | 취소/닫기/탭 포커스 | pointerover / focusin / 이동, click / 확정 | 일반 호버/확인 원음 | .6/.35×SFX | 없음 | 35/80ms, Escape는 취소 입력과 통일 |
 | 삭제 확인 | `delConfirmYes` | click / Enter / 패드A | `sfx/ui/decision/ddung_1_dark.wav` | .8×SFX | BGM -6dB 800ms | delete, 일반 확인 제외 |
 | 언어 팝업 | selector/각 언어/닫기 | pointerover / focusin / 방향키·패드, click / Enter | 일반 호버/확인 원음 | .6/.35×SFX | 없음 | 경계/같은 항목 이동은 추가 호버 없음 |
 | 패치노트 | launcher/닫기 | pointerover / focusin / Tab, click / Enter | 일반 호버/확인 원음 | .6/.35×SFX | 없음 | 일반 위임 |
@@ -33,7 +33,7 @@
 
 - `NativeUiSounds`의 허용 조건을 로비까지 연결한다. 게임 내 gain/피치/믹서는 유지하고 로비는 `FrontendUI/UI`에 한 번만 SFX를 곱한다.
 - 자체 입장/결정 버튼은 일반 확인에서 명시 제외한다. 결정 쿨다운으로 두둥이 거절되더라도 일반 확인으로 대체하지 않는다.
-- 60ms 내 연속 이동의 마지막 항목을 남기고, 포인터가 떠나거나 앱 포커스를 잃으면 지연 호버를 취소한다.
+- 35ms 내 연속 이동의 마지막 항목을 남기고, 포인터가 떠나거나 앱 포커스를 잃으면 지연 호버를 취소한다.
 - Unity 장치 무음 검수: 기존 `--unity-ui-sound-capture`에 `--unity-lobby-ui-sound-capture`를 함께 전달한다. 실제 GPU Player 프레임과 `AudioRenderer` 출력버퍼를 기록한다. 스크립트 콜백 검수이며 자연 조작/사람 청음으로 표기하지 않는다.
 - 웹 전환·로딩 모듈이 공통에 들어오면 별도 같은 방식으로 인수한다. 이번 음향 수정에서 전환 아트·버전·잠김 표시를 바꾸지 않는다.
 

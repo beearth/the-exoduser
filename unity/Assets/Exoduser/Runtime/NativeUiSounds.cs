@@ -12,7 +12,7 @@ namespace Exoduser.UnityPort {
   NativeFeedbackAudio audio;Func<bool> allowed,lobby;string hovered,previousHovered,lateHover;double hoverAt=double.NegativeInfinity,confirmAt=double.NegativeInfinity;int pendingFrame=-1,pendingRevision;
   internal void Initialize(NativeFeedbackAudio sound,Func<bool> enabled,Func<bool> inLobby=null){audio=sound;allowed=enabled;lobby=inLobby;Current=this;}
   internal void Navigate(string id){if(allowed==null||!allowed()||id==hovered)return;hovered=id;QueueHover(id);}
-  void QueueHover(string id){lateHover=id;if(Time.realtimeSinceStartupAsDouble-hoverAt>=.06)PlayHover();}
+  void QueueHover(string id){lateHover=id;if(Time.realtimeSinceStartupAsDouble-hoverAt>=.035)PlayHover();}
   void PlayHover(){hoverAt=Time.realtimeSinceStartupAsDouble;lateHover=null;bool front=lobby!=null&&lobby();audio.PlayUiSample("ui_button_hover",front?.6f:.25f,1,front);}
   internal void BeforeButton(Rect rect,string text){
    if(ButtonsSilent||allowed==null||!allowed()||!GUI.enabled)return;
@@ -26,7 +26,7 @@ namespace Exoduser.UnityPort {
   internal void SuppressConfirm(){pendingFrame=-1;}
   void LateUpdate(){
    if(allowed==null||!allowed()){lateHover=null;pendingFrame=-1;return;}
-   if(lateHover!=null){if(hovered!=lateHover)lateHover=null;else if(Time.realtimeSinceStartupAsDouble-hoverAt>=.06)PlayHover();}
+   if(lateHover!=null){if(hovered!=lateHover)lateHover=null;else if(Time.realtimeSinceStartupAsDouble-hoverAt>=.035)PlayHover();}
    if(pendingFrame<0||Time.frameCount<=pendingFrame)return;if(NativeDecisionSound.LastDecisionFrame>=pendingFrame){pendingFrame=-1;return;}pendingFrame=-1;
    double now=Time.realtimeSinceStartupAsDouble;
    if(pendingRevision==audio.UiRevision&&now-confirmAt>=.08){confirmAt=now;audio.PlayUiSample("ui_button_confirm",.35f,1,lobby!=null&&lobby());}

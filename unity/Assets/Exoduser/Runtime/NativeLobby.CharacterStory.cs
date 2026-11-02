@@ -39,8 +39,8 @@ namespace Exoduser.UnityPort
     var pad=frontendPad.Step(FrontendPadPhase.Story,ReadFrontendPadFrame(),!AutomatedInput&&!characterInputFence);
     HoldCharacterStory("pad-skip",pad.Hold);
     if(!AutomatedInput&&!characterInputFence){
-     if(ExoInput.KeyDown(KeyCode.Return)||ExoInput.KeyDown(KeyCode.KeypadEnter)||ExoInput.KeyDown(KeyCode.RightArrow)||ExoInput.KeyDown(KeyCode.Space)||pad.Next)NextCharacterStory();
-     HoldCharacterStory("keyboard-Escape",ExoInput.Key(KeyCode.Escape));HoldCharacterStory("keyboard-Space",ExoInput.Key(KeyCode.Space));
+     if(LobbyKeys.Down(KeyCode.Return)||LobbyKeys.Down(KeyCode.KeypadEnter)||LobbyKeys.Down(KeyCode.RightArrow)||LobbyKeys.Down(KeyCode.Space)||pad.Next)NextCharacterStory();
+     HoldCharacterStory("keyboard-Escape",LobbyKeys.Held(KeyCode.Escape));HoldCharacterStory("keyboard-Space",LobbyKeys.Held(KeyCode.Space));
      if(!ExoInput.Mouse(0))HoldCharacterStory("pointer",false);
     }
     SubtitleText="";foreach(var language in warriorStoryData.captions)if(language.code==Language){foreach(var cue in language.cues)if(movie.Time>=cue.start&&movie.Time<cue.end){SubtitleText=cue.text;break;}break;}
