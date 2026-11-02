@@ -1240,3 +1240,24 @@ sprite복원은deferred2frame뒤Validate직전에같은원렌더러의saved leaf
 
 
 2026-11-02 게시경로인수추가: fixture companion import를실제게시CLI명win-delivery.py에맞췄다. 실제게시2파일배치에서py_compile+8개작은소유fixture기대결과를모두재확인했다. CLI제품코드변경0,원래worker8개검사기록보존. 실제Win64빌드/패키지/PC수신검수범위는미완료그대로다. 근거evidence/UNITY_MAC_WINDOWS_PUBLISHED_TOOL_CHECK_20261102.json.
+
+
+## 2026-11-02 Mac 잠금과 독립인 서명·Windows 후보 준비
+
+최종빌드소스80d0ae89ca1af2a08987ec7b6f47340231a36bff를별도codex/mac-ground-win-candidate-20261102에nonforcepush/정확remoteSHA선확인했다. PCdocs tip9d658d3fe1f91e4ec33a234623f140da6b6c2bf9는e33과Unitytree동일임을검증하고4문서delta만Root기존기록을보존하며합쳤다. source80d0의Runtime차이는e33대비QA Tools14source/meta뿐이며제품Runtime추가수정0이다.
+
+| Mac 후보 준비 | 인수값 |
+|---|---|
+| 별도후보 | install-candidate-80d0/EXODUSER.app,원80d0앱별도보존 |
+| normalizer | launcher명EXODUSER,CFBundleName/ID보존,수정전APFSbackup보존 |
+| 서명 | 로컬ad-hoc, strict/deep검증true, mainNotNestedSeal=true;DeveloperID/notarization아님 |
+| Runtime/Core | 원80d0와SHA동일8f9e.../4a3e... |
+| 서명후exeSHA | ba81873d07d13140804243144ce66878c8ee347dfc72b06702d2317bff66a144 |
+| signed-M1 | guard준비,WinEditor종료후같은source/Runtime/Core+새서명exeSHAstrict검증후실행예정. 아직미실행 |
+| 실제설치 | 기존설치1403유지,후보의normalization/signing은설치교체가아님 |
+
+mac-install-80d0-plan.json은actualGUI scoped검수뒤idle/fullmanifest/원5criticalCAS→새백업→adjacent staging→strict서명/bytes검증→최종CAS→원본retainedrename/newrename→최종동일성확인의명시적순서다. 원본backup은삭제하지않고sharedHEAD/index/WIP는손대지않는다. main/common통합목적지는최종실행직전remoteCAS로확인해야하며현재push0이다.
+
+Windows는동일80d0원입력3569tracked+원본movie2개만으로stageblobmismatch0/Coretree1403동일확인후정상Win64빌드중이다. 입력rawbefore/after와drift를보존한다. 실제비디오byte/manifest/ZIP/PC수신/실행은아직미완료다. 이전CPU6e와adaptive3c실패QA앱은각211entry전체원파일을SHA중복맵+unique233200410B/233185338B로보존한후원본생성복제본중복만정리해각4310877593B를확보했다. 해당원실패로그/raw/PNG와현재실행후보·기존설치는보존되며pruned old앱을standalone실행가능하다고주장하지않는다.
+
+CUA잠금우회·자동로그인·대체입력도구실행0. 자연GUI·실제필드성능/독립R참조불일치/old미관측/이전FAIL은그대로다. MAP PRODUCTION REPORT:기존A2geometry/원화/충돌변경0,TECH서명/Win준비만추가,PLAYABLE미검수. VISUAL VERDICT: RETOUCH.

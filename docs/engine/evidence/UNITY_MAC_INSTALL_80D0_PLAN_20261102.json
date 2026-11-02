@@ -1,0 +1,78 @@
+{
+  "status": "PREPARED_NOT_EXECUTED_GUI_SCOPE_PENDING",
+  "source": "80d0ae89ca1af2a08987ec7b6f47340231a36bff",
+  "candidate": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/install-candidate-80d0/EXODUSER.app",
+  "normalization": {
+    "app": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/install-candidate-80d0/EXODUSER.app",
+    "product": "EXODUSER · Unity 이식 검증판",
+    "identifier": "com.ForDearGamers.EXODUSER----Unity-----------------",
+    "executable": "EXODUSER",
+    "previousExecutable": "EXODUSER · Unity 이식 검증판",
+    "strictDeepCodesignVerified": true,
+    "mainNotNestedSeal": true,
+    "gameplayDllsUnchanged": {
+      "Exoduser.Runtime.dll": "8f9e54651f83bef314b241283b271ab3a15498c48665db6dfbefccef6f943516",
+      "Exoduser.Core.dll": "4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d"
+    },
+    "executableSha256": "ba81873d07d13140804243144ce66878c8ee347dfc72b06702d2317bff66a144",
+    "checkOnly": false
+  },
+  "signatureKind": "local ad-hoc, not DeveloperID or notarization",
+  "target": "/Users/fordeargamers/Applications/EXODUSER.app",
+  "expectedInstalledSource": "1403c5ee6d52c540815ab1cf70d5666b9023aa75",
+  "expectedBeforeCritical": [
+    {
+      "path": "Contents/MacOS/EXODUSER",
+      "bytes": 51440,
+      "sha256": "a70b83f318bdb3892db80baf08064faa0193d8a0db9c2b2b7c0e70ada414e622",
+      "matchesAccepted1403Delivery": true
+    },
+    {
+      "path": "Contents/Resources/Data/Managed/Exoduser.Runtime.dll",
+      "bytes": 1514496,
+      "sha256": "1b6ce864f82bcd3cef1531423410461360946083c196e789a1e34cd1d8400e3e",
+      "matchesAccepted1403Delivery": true
+    },
+    {
+      "path": "Contents/Resources/Data/Managed/Exoduser.Core.dll",
+      "bytes": 700928,
+      "sha256": "76e3c4a391b7e34d571aa2fd4b34d7be8921b5248ed459beb688f1804213b06d",
+      "matchesAccepted1403Delivery": true
+    },
+    {
+      "path": "Contents/Info.plist",
+      "bytes": 1436,
+      "sha256": "e64749748a673e4f2cde18886fa531faf6d24930dbb94278bcb011b7fe14850d",
+      "matchesAccepted1403Delivery": true
+    },
+    {
+      "path": "Contents/_CodeSignature/CodeResources",
+      "bytes": 61176,
+      "sha256": "75fc35561f481d8d499d4e8c84ab89008c7451f7eab120212b874bddd4ee51d3",
+      "matchesAccepted1403Delivery": true
+    }
+  ],
+  "sharedSourceIndexAndWipMustRemainUntouched": true,
+  "preconditions": [
+    "Actual OS natural-play/scoped visual review after manual Mac unlock",
+    "Same signed candidate M1 under reviewed profile guard",
+    "Remote80d exact source proof",
+    "No Unity/Exoduser process using target or candidate",
+    "Full signed candidate manifest and current target manifest recorded; source/target CAS exact"
+  ],
+  "steps": [
+    "Create new owned APFS backup of target with all file bytes/modes/symlinks and hashes before mutation",
+    "Prepare new sibling app under ~/Applications from exact signed candidate, verify full manifest and strict-deep codesign",
+    "Recheck target critical/full manifest CAS and idle slot; if any drift preserve and stop",
+    "Rename current target to unique retained sibling backup, then rename prepared sibling to exact EXODUSER.app; if second rename fails restore retained original before proceeding",
+    "Verify full installed bytes/AppInfo/Runtime/Core/exe and signature; preserve original backup and write actual swap receipt"
+  ],
+  "executed": false,
+  "installedAppTouched": false,
+  "commonUnityIntegration": {
+    "acceptedBase": "1403c5ee6d52c540815ab1cf70d5666b9023aa75",
+    "candidateSource": "80d0ae89ca1af2a08987ec7b6f47340231a36bff",
+    "status": "PREPARED_SOURCE_PROOF_ONLY; destination branch CAS must be read before integration, no main/common push yet"
+  },
+  "windowsDesktopCasOwner": "PC root; Mac does not alter Windows shortcuts/registry"
+}

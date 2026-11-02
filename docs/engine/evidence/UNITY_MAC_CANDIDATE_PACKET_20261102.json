@@ -1,0 +1,80 @@
+{
+  "finalBuildSource": "80d0ae89ca1af2a08987ec7b6f47340231a36bff",
+  "evidenceAndToolsSource": "438eea1e2bbbc1ce7af8c5de78cfc9209c268d69",
+  "productTip": "e33ed53574a187db36e00dfbd1f92b4d6f263635",
+  "orbResetGuardSource": "316442480c051cee99a5d9a783b0875640892ea8",
+  "groundProjectionSource": "8f391fea6f157433fcaea2df611d0a9b146c6604",
+  "productionRuntimeChangesAfterE33": 0,
+  "changedRuntimePathsAfterE33": "QA Tools only;14 source/meta paths",
+  "macActualPackage": {
+    "app": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/build-receiverRestoreSprite-normal/EXODUSER-Unity.app",
+    "source": "80d0ae89ca1af2a08987ec7b6f47340231a36bff",
+    "productSource": "e33ed53574a187db36e00dfbd1f92b4d6f263635",
+    "runtimeSha256": "8f9e54651f83bef314b241283b271ab3a15498c48665db6dfbefccef6f943516",
+    "coreSha256": "4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d",
+    "executableSha256": "23f97deeddb5ebc86fb858349ca40881ed6c7eb2f8632c7b1554db6c19aaedb7"
+  },
+  "narrowRestoration": {
+    "source": "80d0ae89ca1af2a08987ec7b6f47340231a36bff",
+    "semanticGate": true,
+    "errorCount": 0,
+    "originalCoreRefTickEventsExact": true,
+    "fixtureGraphAfterExactCleanup": true,
+    "entityCount": 16,
+    "groundChunks": 10,
+    "oldDestroyedReferences": 50,
+    "oldLiteralGate": false,
+    "receipt": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/profile-guard-runs/20261102T061004452038Z-30598/receiverRestoreSprite/restore-narrow.json"
+  },
+  "m1": {
+    "source": "80d0ae89ca1af2a08987ec7b6f47340231a36bff",
+    "sameExactExecutableRuntimeCore": true,
+    "passed": 23,
+    "expected": 23,
+    "firstBlocked": "",
+    "captureMode": "headless-rendertexture-1600x900",
+    "headless": true,
+    "guiRepaints": 0,
+    "guiBridged": 0,
+    "receipt": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/profile-guard-runs/20261102T061059236951Z-30954/receiverRestoreSpriteM1/m1-check.json"
+  },
+  "triad": {
+    "actualSource": "bf3e93a63425a17ede0fa6a0ca16e066374cc984",
+    "productTip": "e33ed53574a187db36e00dfbd1f92b4d6f263635",
+    "productClonePositivePixels": [
+      6345,
+      2041
+    ],
+    "productCloneMaskUvWeightRgbaDifferences": 0,
+    "independentReferenceFailuresPreserved": true,
+    "oldUnobservedPoints": 9,
+    "originalDestroyedReferences": 58,
+    "overallReceiptPassed": false,
+    "summary": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/receiverTriadBias-actual-summary.json"
+  },
+  "profileGuard": {
+    "raw26Exact": true,
+    "typedCache27Exact": true,
+    "error": null
+  },
+  "unverified": [
+    "natural OS entry/movement/attack/stuck and field performance",
+    "independent sampler reference mismatch",
+    "whole rails/hightrunk/rocks exclusion visual scope",
+    "final normalized install acceptance",
+    "actual Windows runtime/movie playback/PC receive/Desktop replacement"
+  ],
+  "guiStatus": "CUA Mac locked; manual human unlock requested. No automatic login, alternate input or lock bypass.",
+  "currentInstalledAcceptedSource": "1403c5ee6d52c540815ab1cf70d5666b9023aa75",
+  "installedAndSharedWipPreserved": true,
+  "windows": {
+    "source": "80d0ae89ca1af2a08987ec7b6f47340231a36bff",
+    "branch": "codex/mac-ground-win-candidate-20261102",
+    "normalBuild": "PREPARING",
+    "videoByteCheck": "PENDING",
+    "zip": "PENDING",
+    "privateTransfer": "PREPARATION_ONLY",
+    "pcExecutionVerified": false
+  },
+  "productAccepted": false
+}

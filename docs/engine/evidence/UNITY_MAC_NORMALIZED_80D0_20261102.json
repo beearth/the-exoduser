@@ -1,0 +1,15 @@
+{
+  "app": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/install-candidate-80d0/EXODUSER.app",
+  "product": "EXODUSER · Unity 이식 검증판",
+  "identifier": "com.ForDearGamers.EXODUSER----Unity-----------------",
+  "executable": "EXODUSER",
+  "previousExecutable": "EXODUSER · Unity 이식 검증판",
+  "strictDeepCodesignVerified": true,
+  "mainNotNestedSeal": true,
+  "gameplayDllsUnchanged": {
+    "Exoduser.Runtime.dll": "8f9e54651f83bef314b241283b271ab3a15498c48665db6dfbefccef6f943516",
+    "Exoduser.Core.dll": "4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d"
+  },
+  "executableSha256": "ba81873d07d13140804243144ce66878c8ee347dfc72b06702d2317bff66a144",
+  "checkOnly": false
+}

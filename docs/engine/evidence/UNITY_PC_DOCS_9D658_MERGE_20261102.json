@@ -1,0 +1,39 @@
+{
+  "pcTip": "9d658d3fe1f91e4ec33a234623f140da6b6c2bf9",
+  "base": "e33ed53574a187db36e00dfbd1f92b4d6f263635",
+  "pcUnityTreeSame": true,
+  "paths": [
+    {
+      "path": "docs/5.1\uc784\ud399\ud2b8\ub514\uc790\uc778/VFX_\uad6c\ud604\uac00\uc774\ub4dc.md",
+      "baseSha256": "baf9170639ba117a283e7237963267c90cd29356d6e5a2c9197f006f05d2c55c",
+      "pcSha256": "3212b401c61f7c7ad75ab860cb59ee6e7ddd81670d6256dfdcd1aea19886aa32",
+      "rootBeforeSha256": "e8510fd70ce7345550296c387606b37760f149c1aada050ba20b4f40ca7d006f",
+      "mergedSha256": "cb393d9f284ad275918c954501f7f4875a8d17f0edea2b98f4e57b1de783bbc1",
+      "rootNotesPreserved": true
+    },
+    {
+      "path": "docs/engine/UNITY_GROUND_EFFECT_PLACEMENT_20261102.md",
+      "baseSha256": "82c54fc167665b304723eb2bdd4e817ca2dc717e6cbba97c9a246c792f8e83a4",
+      "pcSha256": "3c009dc7fabcc9563277ce8ff05bcc163dafa59835300fa512ec4d5c57462b77",
+      "rootBeforeSha256": "010a923f54f5c5e03ffbd2a33580ac213504e62fd4ce5d7f3550a65812db40ee",
+      "mergedSha256": "ba287d373541e18e2aa249a2e2b273dcf1e9c4306105ae62a03926e627434999",
+      "rootNotesPreserved": true
+    },
+    {
+      "path": "docs/engine/UNITY_HERO_VFX_CENTER_ANCHOR_20261031.md",
+      "baseSha256": "6a3b6b0e1a80f0d067afbdd11da811e97ee8ac52efc611e09bb27aeabf12ecb4",
+      "pcSha256": "1a3781d233b6fff0536da3360d409534c7951755a122a43e3a17f3f0cac0d17f",
+      "rootBeforeSha256": "6ee83788f7a8a119d95e3ef054303775792b367d9cf6fa9fb893a5516d631ff4",
+      "mergedSha256": "d13e918654b94260f79595badd75fdcf7b10b9dfbcc1c4f6d894d8b107ef232a",
+      "rootNotesPreserved": true
+    },
+    {
+      "path": "docs/engine/UNITY_RM_INT_RUNTIME_HOOK_20261028.md",
+      "baseSha256": "1360d30178c3f55394586ebf8c88dcb04cd180e74417c754a25d0b06aed4120e",
+      "pcSha256": "10902359af0a85acc96495108c2fe8e2bfdecafc8d4524ebe67e3cf2f12c192a",
+      "rootBeforeSha256": "845e732fd85a3a2d21f393be79398b87de76972c435cbc43faf5934c1d45881a",
+      "mergedSha256": "85c327d584957e78e8bd71455b1acf1042a385c0cb57b6d40eb3ee04fe72e5c3",
+      "rootNotesPreserved": true
+    }
+  ]
+}

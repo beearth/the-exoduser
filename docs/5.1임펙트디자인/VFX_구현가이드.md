@@ -1466,6 +1466,8 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 
 수명정정: statePassed161은표시메타데이터다. 정리예외로두수명행동의최종결과merge가미실행됐으므로pool행동완료PASS로간주하지않고, 수정앱에서원래두수명검사를별도완주·기록한다.
 
+최신후속: guard316의실제parent파괴→Dispose와원래두수명행동은bf3e에서완주·저장·merge PASS. 별도80d0후보semantic표현복원/동일앱M123PASS,제품16파일은e33과동일. 원full100/61·독립참조불일치/미관측·파괴oldref50false는보존하며자연OS조작/최종설치·Win반입/desktop은미완료다. 상세최신표를따른다.
+
 
 2026-11-02 맥 QA 후속: 제품8f 동일, QA2f368f10의 soil Lv1 spike 한 장면에서 captured GPU ddx/ddy 기반 SampleGrad 참조를 원2/255로 비교해32/32 valid, weight최대0.000423923135/RGBA최대0.00010918919 corrected smokePASS. 기존 mip0 bilinear FAIL은 보존. 원probe객체/정상재질/26raw27cache 복구. 입력hash/카메라가 같은 독립프레임 RGBA pairing이며 동시프레임 API 증명은 아님. 전체148/12large/8dense/72ring/제외/2D/M1/자연플레이/통합설치/Win64 인수는 아직 미완료. 상세 근거: UNITY_GROUND_PLACEMENT_QA_20261102.md 및 evidence/UNITY_MAC_RECEIVER_MODEL_20261102.json.
 
@@ -1489,3 +1491,6 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 
 
 2026-11-02 Mac80d0실제인수:normalARM64errors0,좁은Core/event/fixturegraph/적16·접지·ground10/registry/camera/material/texture/savedSprite semantic복원PASS(errors0). old50literal파괴false유지. 같은실행파일strict6identity M1실제23/23PASS(headless1600x900/GUI0). profile26/27exact복구,sharedHEAD/index/WIP25·기존설치5핵심exact보존. Win전달CLI8fixture준비검증인수/실제Win배포미완료. Mac잠금수동해제필요로자연GUI/FPS미검수,기존full100/61/R불일치/old미관측·전체A2 RETOUCH불변. 근거UNITY_GROUND_PLACEMENT_QA_20261102와UNITY_MAC_MANAGEMENT_REPORT_20261102.
+
+
+2026-11-02 Mac후속:PC9d658의Unity무변경문서4개를Root기록과병합.80d0동일source Win64정상빌드중,별도Mac후보ASCII실행명/로컬ad-hoc strict-deep서명준비완료(Runtime/Core동일),서명후M1/실제설치·PC실행아직미완료.기존1403설치보존.근거UNITY_GROUND_PLACEMENT_QA_20261102 및 UNITY_MAC_CANDIDATE_PACKET_20261102.json.
