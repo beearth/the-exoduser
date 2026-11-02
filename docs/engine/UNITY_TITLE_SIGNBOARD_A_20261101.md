@@ -146,3 +146,19 @@
 Desktop213파일은 빌드→staging→설치 후 전수SHA와 목록 일치, 링크 대상/인자 읽기 확인. 최종 오디오3313979d와 화폐d6be008e도 통과했다. UI186 실행은 외부 Player.log1건 변경으로 보호검사 false를 원문 보존하며, 자체 Player exit0·창0·잔여0이고 저장데이터 변경은 검출0이다. 다른 최종 빌드/M1/타이틀/오디오/화폐/설치M1은 USER_SAVE0이다.
 
 전체 UI는 기존 글꼴·잠금 장식·미이식 범위로 RETOUCH, 맵 전체·자연 밀집전투·청음·Mac은 별도 미검증이다. 비교 경로와 실제 영수증: I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md 및 evening/delivery-visual-review.json.
+
+
+## 2026-11-02 3차 후속 — 캐릭터 잠금 장식·로어 표시 후보
+
+첫 Player와 같은 해상도의 웹 실물을 대조해 빠진 중앙 잠금 장식과 정보판 로어를 보충했다. 최신 정본은 `third/web-character/index-origin-main.html`, `lobby_i18n.js`, `lobby-ms.json`이며 보관 루트는 `I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/`이다. 로어 문구의 새 창작·기획 확정은 없으며 웹 lang 정본을 Data로 정확 추출하고 조회만 연결했다.
+
+| 대상 | 현재 표시 계약 |
+|---|---|
+| 잠금 중앙 장식 | 기존 `coming_soon_chains_v2` 정본 사용. 1920×1080 safe 좌표 x520/y327.296875/440×440. 2560·3840은 기존 중앙 safe matrix로 각각 +320/+960. 기존 작은 슬롯 X·오디오 호출 보존 |
+| 출시 준비 중 판 | 중심 x740/y775.296875/높이61, NotoSansKR-Regular 24px, 자간3.84px, 좌우 패딩30+테두리1. 정본 리소스 존재 확인, 미지원 글리프는 공용 TextFont fallback |
+| 정보판 본문 | 웹의 최신 설명을 기존29언어 label lookup으로 표시. 잘못된 변성술사 hunter 영문 fallback은 활성 Silver 경로에서 제거 |
+| 로어 | Data `characterLoreKeys` 5키 + 29언어145항목. 기존 label 값 변경0. KO/EN은 index 정본, 나머지는 lobby_i18n.js STY-20 및 ms JSON 정본. 코드에 로어 본문·대체 로어 하드코딩 없음 |
+| 정보판 배치 | 본문14px/행간24.5px/폭308, 로어12.5px/행간21.25px/폭308. 상단 구분선과15px 간격, 내용 높이에 맞춘 정보판·특성판 배치. 원래5종 job/name/desc 및15 trait 한글 정의는 정본과 동일해 보존 |
+| 보존 범위 | 캐릭터 영상 밝기·회색 처리, 생성 잠금 정책, 저장, Core, 사운드, 스킬 코드 변경0 |
+
+정적 추출검사 29언어145항목 일치·기존 label 변경0, Runtime 독립 C# compile 종료0/error0(기존 warning32). 영수증 `third/character/lore-extraction-check.json`, `runtime-compile.log`, `character-final.patch`, `character-source.json`. 실제 최종 union Player의1920/2560/3840 캐릭터0/1 검수는 부모 담당이며 이 후보는 시각 PASS가 아니다.

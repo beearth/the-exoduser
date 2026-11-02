@@ -23,3 +23,18 @@ I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/third/stat/: red.json(성�
 전체 Core/Runtime 독립컴파일 오류0. 기존경고 유지. 최종 정식빌드/Player/M1/1920·3840 나란히비교·입력·지속성 검수는 부모의 동일패키지 영수증에 연결하며 이 문서만으로 시각PASS 선언하지 않는다.
 
 남은 경계: 현재전투능력치 요약 drawer, 웹 원본의 일부 조건부 이동/물약쿨/관통·DOT지속 소비는 기존 executor 미지원 범위다. 기여표는 웹 정의이고 모든 조건부효과를 구현완료로 해석하지 않는다. 선택 상세에서 미지원 효과를 확인할 수 있고 관통의 신규 AP소모는 막았다. pHunter는 현재 EnemySpawn에 존재하는 etype>=90 분기만 연결했으며 원본의 isBoss/isElite 별칭 자체가 없는 상태는 생성하지 않았다. 일반 mouse·전체언어·청음·전체패시브전투oracle는 미검증. 제작자 자체판정은 Player 실물 이후 기록한다.
+
+## 첫 정식 Player 뒤 시각 정합 — 3차 후속
+
+첫 Player `third/ui-first-retry/1920x1080-ko-3차-능력치.png`와 웹 `third/web/stat-1920.png`를 직접 1x로 비교했다. 웹3384 동일 source에서 무음·API쓰기차단 fixture로 실제 DOM과 PNG를 재확인했고 브라우저/임시프로필을 종료·삭제했다. 측정 원문은 `third/stat/visual/dom.json`, 부모의 전체 CSS 측정은 `third/web-layout/stat-1920.json`이다. 게임 기능·저장/Core 수정0, NativeStatPanel 렌더/입력rect만 수정했다.
+
+| 요소 | 웹 측정에 맞춘 현행 설계 좌표·스타일 |
+|---|---|
+| 트리 | viewport (283,148,1150,793), 고정 기사 배경·자동 scale, 원점/선택 경로는 금색→웹 회색. 값0배지는 selected/hover에서만, 투자값>0은 유지 |
+| 우측 원화판 | inspector (1453,148,420,845), same iron_covenant frame 원본 resource inner_rail_iron_covenant 4% source slice/6px 테두리. detail (1477,210,372,585.2)·실제내용폭366, 제목라벨(1477,170) |
+| 글꼴·기여 | 웹과 같은 기존 Hahmlet400. 이름36/투자값25/기여현재18/다음24px. 첫 기여행은30px패딩+28.8pxline, 다음행24px패딩+37.2pxline. 값열은 실제 문자열너비+min38/42·12pxgap으로 계산 |
+| 제목/AP | 제목520×64 y80·가용본문가운데(AP0 x629.33), AP카드 y80/h64/right1873·라벨14/숫자24px. 숫자길이에 따라 카드폭/제목중앙을 함께 조정해 큰 잔고 겹침 방지 |
+| 좌측 | x47, 검색y190/220×44, 길카드y244+85.17n/220×82.17. 필터 y847.2·힌트 y896.2는 기존 실제 bottom 고정. 기존처럼 무작정 전체12px 이동하지 않음 |
+| 제어 | 예약(1477,820.2,372,49)은 붉은 plaque 제거·웹 회색gradient/#939696 border/inset2. footer 취소(1531.11,1004,97.5,44)·적용(1642.61,1003,123.5,46)·닫기(1780.11,1004,88.89,44)의 테/배경·disabled .48/채도.3 유지. 줌판(1294.48,952,138.52,40) 복원 |
+
+독립 Runtime 컴파일 오류0(`third/stat/visual/runtime-compile.json`). 첫 시도는 이전 response파일에 새 UiSoundCapture partial 누락으로 도구입력 오류였고 현재 Runtime 파일목록을 다시 수집해 정상 컴파일했다. 변경 후 정식 Player의 최종 union build·1x 검수는 부모가 수행하며, 이 소스 정합만으로 최종 시각PASS를 선언하지 않는다.

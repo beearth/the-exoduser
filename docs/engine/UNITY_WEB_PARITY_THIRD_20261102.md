@@ -18,3 +18,9 @@
 대장간 강화 카드106.97px/간격8px와 스크롤 content-height의114.97px stride를 일치시켜 최하단 불필요한 빈 여백을 없앴다.
 
 실제Player 스킬 fixture는 기본지급 가시덫을 먼저 격리리셋한 뒤 다시습득하여 SP10·악의오브40(raw80) 차감을 확인한다. 이미습득한 기본스킬을 학습검증으로 잘못 세지 않는다.
+
+첫 실제Player 시각수정: 웹후처리와같이 대장간장식emoji/색glyph를숨기고 chip폭을텍스트만으로다시계산, bone #d3d0ca·성공률무채색·AI제목진홍·Hahmlet반굵기정합. fgGrid의단색6px테를웹정본iron_covenant frame(1024,4% slice→6px)로교체했다. 원본webp→PNG decoded RGBA동일 영수증은 third/forge-frame-import.json.
+
+최신웹 실물에서 강화미선택 안내는(x746,y492.390625,w650,h20)이다. Native 가상좌표 y588.4→실화면492.4로수정해 카드520.4에가려지던문구를복원했다. 근거 third/web-final-panels/forge-hint.json.
+
+첫 Player d80a4898는 실제76PNG/3해상도·지원기능14검사 PASS, 버전0.7.11확인. 시각결함을수정해 최종별도패키지를검수한다. 웹 최종패널 browser65107b31은제품API경로로9PNG/3해상도,ok=true/창0/잔여0/USER_SAVE0. 제공소스a4d48922, UI독립6파일은시작9c50와동일이고 game.html의renderForge함수범위는동일(정확길이56654; third/forge-source-section-proof.json). 최초연결거부ac78c17e는실패로보존하고 자기격리서버HTTP200확인뒤1회재실행했다.

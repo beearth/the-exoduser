@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 namespace Exoduser.UnityPort
 {
     public sealed partial class NativeLobby
@@ -62,6 +63,29 @@ namespace Exoduser.UnityPort
             });
             silverVisualSideShade=NativeSilverHellUi.Effect(256,1,(u,v)=>new Color(0,0,0,.66f*u));
         }
+        string SilverLore(int index)
+        {
+            if(!visualLabelCatalogLoaded){visualLabelCatalogLoaded=true;var data=Resources.Load<TextAsset>("Data/visual_select_labels");if(data!=null)visualLabelCatalog=JsonUtility.FromJson<VisualLabelCatalog>(data.text);}
+            var keys=visualLabelCatalog==null?null:visualLabelCatalog.characterLoreKeys;if(keys==null||index<0||index>=keys.Length)return "";return VisualSelectionLabel(keys[index],keys[index]);
+        }
+        List<string> SilverParagraphLines(string text,float size,float width,out GUIStyle style)
+        {
+            int integerSize=Mathf.CeilToInt(size);float scale=size/integerSize;style=new GUIStyle(silverBody){font=NativeSilverHellUi.TextFont(silverBody.font,text),fontSize=integerSize,wordWrap=false,padding=new RectOffset(),margin=new RectOffset(),alignment=TextAnchor.UpperLeft};var lines=new List<string>();int start=0;
+            while(start<text.Length){int end=start,last=-1;for(int i=start+1;i<=text.Length;i++){if(style.CalcSize(new GUIContent(text.Substring(start,i-start).TrimEnd())).x*scale>width){end=last>start?last:Mathf.Max(start+1,i-1);break;}end=i;if(i<text.Length&&text[i-1]==' ')last=i;}if(end<=start)end=text.Length;lines.Add(text.Substring(start,end-start).Trim());start=end;while(start<text.Length&&text[start]==' ')start++;}return lines;
+        }
+        float SilverParagraphHeight(string text,float size,float width,float lineHeight){GUIStyle style;return SilverParagraphLines(text,size,width,out style).Count*lineHeight;}
+        void DrawSilverParagraph(float x,float y,float width,string text,float size,float lineHeight,Color color)
+        {
+            GUIStyle style;var lines=SilverParagraphLines(text,size,width,out style);float scale=size/Mathf.CeilToInt(size);var before=GUI.matrix;GUI.matrix=before*Matrix4x4.TRS(new Vector3(x,y,0),Quaternion.identity,new Vector3(scale,scale,1));style.normal.textColor=color;
+            try{for(int line=0;line<lines.Count;line++)NativeSilverHellUi.Label(new Rect(0,line*lineHeight/scale,width/scale,lineHeight/scale),lines[line],style);}finally{GUI.matrix=before;}
+        }
+        void DrawSilverReleaseLock()
+        {
+            // Web cs-stage is the physical viewport minus the 440px right rail: its centre is safe-centre minus 220px.
+            if(silverClassChains!=null){var shadow=GUI.color;GUI.color=new Color(0,0,0,.65f);Image(new Rect(520,335.296875f,440,440),silverClassChains,ScaleMode.StretchToFill);GUI.color=shadow;Image(new Rect(520,327.296875f,440,440),silverClassChains,ScaleMode.StretchToFill);}
+            string label=VisualSelectionLabel("출시 준비 중","Coming soon");var font=NativeSilverHellUi.TextFont(Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular"),label);float spacing=3.84f,width=SpacedWidth(font,24,label,spacing)-spacing;var box=new Rect(740-(width+62)/2,775.296875f,width+62,61);
+            Fill(box,new Color(8/255f,11/255f,11/255f,.94f));Border(box,new Color(112/255f,115/255f,115/255f),1);DrawSpaced(740-width/2,box.y+12,37,label,font,24,spacing,new Color(197/255f,194/255f,188/255f),false);NativeUiAudit.Region(new Rect(520,327.296875f,440,509),"component","character-release-lock","정본 X사슬440·출시준비중 NotoSans24");
+        }
         void SilverCornerPanel(Rect r)
         {
             NativeSilverHellUi.Panel(r,60,18);
@@ -116,8 +140,10 @@ namespace Exoduser.UnityPort
             DrawSpaced((w-headingWidth)/2,30,26,headingText,silverVisualTitle.font,18,3.6f,NativeSilverHellUi.Text,true);
             Image(new Rect((w-headingWidth)/2-238,45,220,1),silverHeadingLine,ScaleMode.StretchToFill);
             NativeUiAudit.DrawTextureWithTexCoords(new Rect((w+headingWidth)/2+18,45,220,1),silverHeadingLine,new Rect(1,0,-1,1),true);
+            if(locked)DrawSilverReleaseLock();
             var centerMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.RightMatrix;NativeUiAudit.Region(new Rect(1500,0,420,1080),"component","frontend-right","캐릭터 선택 오른쪽 레일");
-            var info=new Rect(x,bodyY,380,shortScreen?156:165.5f);
+            string description=VisualSelectionLabel(presentationDescriptions[i],presentationDescriptions[i]),lore=SilverLore(i);float descHeight=SilverParagraphHeight(description,14,308,24.5f),loreY=bodyY+110.6f+descHeight+14,loreHeight=SilverParagraphHeight(lore,12.5f,308,21.25f);
+            var info=new Rect(x,bodyY,380,shortScreen?156:Mathf.Max(165.5f,loreY-bodyY+15+loreHeight+30));top=bodyY+Mathf.Max(info.height+44,shortScreen?190:300);
             SilverCornerPanel(info);
             SilverLabel(new Rect(x+36,bodyY+34,308,16),VisualSelectionLabel(presentationJobs[i],new[]
             {
@@ -129,11 +155,8 @@ namespace Exoduser.UnityPort
                 "Exoduser Warrior","Silvertail","Hellgunner","Transmuter","Spearmage"
             }
             [i]),silverVisualName.font,28,3.36f,NativeSilverHellUi.Bright,true);
-            SilverLabel(new Rect(x+36,bodyY+110.6f,308,38),VisualSelectionLabel(presentationDescriptions[i],new[]
-            {
-                "A black-iron warrior wielding a greatsword.","One spinning sword; her dance is annihilation.","A blood-moon marksman who uses her own blood as ammunition.","A hunter who transmutes core flame into bow, scythe, spear and sword.","A herald of the void who seals space with runes."
-            }
-            [i]),silverVisualDescription,TextAnchor.UpperLeft);
+            DrawSilverParagraph(x+36,bodyY+110.6f,308,description,14,24.5f,new Color(185/255f,182/255f,176/255f));
+            if(!string.IsNullOrEmpty(lore)){Fill(new Rect(x+36,loreY,308,1),new Color(164/255f,147/255f,115/255f,.5f));DrawSilverParagraph(x+36,loreY+15,308,lore,12.5f,21.25f,new Color(223/255f,214/255f,194/255f,.82f));NativeUiAudit.Region(new Rect(x+36,loreY,308,loreHeight+15),"component","character-lore","웹 정본 catalog lookup·현재언어");}
             var traitTitles=new string[3];var traitBodies=new string[3];var traitHeights=new float[3];float traitContentHeight=72;
             for(int n=0;n<3;n++)
             {

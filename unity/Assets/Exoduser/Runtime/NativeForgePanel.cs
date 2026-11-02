@@ -26,7 +26,7 @@ namespace Exoduser.UnityPort {
   readonly ForgeDefs defs;readonly Dictionary<string,ForgeGlyph> glyphs=new Dictionary<string,ForgeGlyph>();
   readonly Dictionary<string,AffixDef> affixById=new Dictionary<string,AffixDef>();readonly Dictionary<string,string> unitById=new Dictionary<string,string>();
   readonly Dictionary<string,float> gridScroll=new Dictionary<string,float>();float listScroll;
-  Font nm,nsk,nskSemi;Texture2D windowBase,plate,iron,atlas;bool ready;
+  Font nm,nsk,nskSemi;Texture2D windowBase,plate,iron,atlas,innerRail;bool ready;
   readonly Dictionary<string,Texture2D> procedural=new Dictionary<string,Texture2D>();
   readonly Dictionary<long,GUIStyle> styles=new Dictionary<long,GUIStyle>();
   enum F {NM,Sans,SansSemi}
@@ -53,7 +53,7 @@ namespace Exoduser.UnityPort {
    if(ready)return;ready=true;
    nm=NativeSilverHellUi.Font(true)??Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular");nsk=nm;
    nskSemi=nm;
-   windowBase=Resources.Load<Texture2D>("Art/ui/forge/window_base");atlas=Resources.Load<Texture2D>("Art/ui/forge/forge_glyphs");
+   innerRail=Resources.Load<Texture2D>("Art/ui/silver_hell/inner_rail_iron_covenant");windowBase=Resources.Load<Texture2D>("Art/ui/forge/window_base");atlas=Resources.Load<Texture2D>("Art/ui/forge/forge_glyphs");
    plate=Resources.Load<Texture2D>("Art/ui/inventory/plate");iron=Resources.Load<Texture2D>("Art/ui/inventory/iron_320");
    if(iron!=null)iron.wrapMode=TextureWrapMode.Repeat;
   }
@@ -80,7 +80,7 @@ namespace Exoduser.UnityPort {
   GUIStyle Style(F f,int size,bool bold,bool italic){
    long key=(((long)f*1000+size)*2+(bold?1:0))*2+(italic?1:0);
    if(!styles.TryGetValue(key,out var s)){
-    s=new GUIStyle(GUI.skin.label){font=f==F.NM?nm:f==F.Sans?nsk:nskSemi,fontSize=size,fontStyle=bold&&f==F.NM?(italic?FontStyle.BoldAndItalic:FontStyle.Bold):italic?FontStyle.Italic:FontStyle.Normal,alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};
+    s=new GUIStyle(GUI.skin.label){font=f==F.NM?nm:f==F.Sans?nsk:nskSemi,fontSize=size,fontStyle=(bold||f==F.SansSemi)?(italic?FontStyle.BoldAndItalic:FontStyle.Bold):italic?FontStyle.Italic:FontStyle.Normal,alignment=TextAnchor.MiddleLeft,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset(),margin=new RectOffset(),contentOffset=Vector2.zero};
     styles[key]=s;
    }
    return s;
@@ -105,15 +105,10 @@ namespace Exoduser.UnityPort {
    return total;
   }
   // 1x crop sprite (web render). Returns the advance of "glyph + space" in that web context. tint white-mask sprites with c.
-  float Spr(string name,float x,float lineTop,float alpha=1f,Color? tint=null){
-   if(!glyphs.TryGetValue(Key(name),out var g))return 0;
-   var old=GUI.color;GUI.color=tint.HasValue?new Color(tint.Value.r,tint.Value.g,tint.Value.b,tint.Value.a*alpha):new Color(1,1,1,alpha);
-   NativeUiAudit.DrawTextureWithTexCoords(new Rect(x+g.ox-off.x,lineTop+g.oy-off.y,g.w,g.h),atlas,new Rect((float)g.x/atlas.width,1f-(float)(g.y+g.h)/atlas.height,(float)g.w/atlas.width,(float)g.h/atlas.height));
-   GUI.color=old;return g.adv;
-  }
-  float Adv(string name){return glyphs.TryGetValue(Key(name),out var g)?g.adv:0;}
-  // Width of the glyph alone (no trailing space), for glyphs that sit directly against text or alone in a box.
-  float GlyphW(string name){return glyphs.TryGetValue(Key(name),out var g)?g.lw:0;}
+  // The current web UI pass removes decorative emoji from forge text (including AI/chips/cards/lore).
+  float Spr(string name,float x,float lineTop,float alpha=1f,Color? tint=null){return 0;}
+  float Adv(string name){return 0;}
+  float GlyphW(string name){return 0;}
   static string Commas(double v){return Math.Floor(v).ToString("N0",CultureInfo.InvariantCulture);}
 
   // ---- window ----
@@ -126,7 +121,7 @@ namespace Exoduser.UnityPort {
     NativeUiAudit.DrawTexture(WinRect,windowBase,ScaleMode.StretchToFill,false);
     NativePanelTitle.Surface(new Rect(500,32,920,1006));NativePanelTabBar.Draw(NativePanelTabBar.Preset.Forge,"forge");
     NativePanelTitle.Draw(new Rect(700,101,520,64),"복수의 대장간");DrawHeader(sim);
-    var gridBox=new Rect(732,286.4f,688,673.6f);IronTile(gridBox,400);Grad(gridBox,C(17,16,18,.875f),C(9,9,10,.93f));Border(gridBox,C(73,76,76),6);
+    var gridBox=new Rect(732,286.4f,688,673.6f);IronTile(gridBox,400);Grad(gridBox,C(17,16,18,.875f),C(9,9,10,.93f));if(innerRail!=null)NativeSilverHellUi.Slice(gridBox,innerRail,innerRail.width*.04f,innerRail.height*.04f,6,6,false);else Border(gridBox,C(73,76,76),6);
     DrawLeftTabs();
     DrawContent(sim,inv);
     DrawClose(close);

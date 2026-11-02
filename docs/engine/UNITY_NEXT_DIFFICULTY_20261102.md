@@ -25,3 +25,14 @@
 다음 구역 콘텐츠·진행은 별도 기존 미이식 범위다. **현재 확정 후에는 기존 StageClearContinue가 저장하고 로비로 돌아가며 1-2를 실행했다고 주장하지 않는다.** 선택 offset은 실제 Config/저장에 연결되어 이후 적 생성에 적용된다.
 
 검수: 정책 부재 RED → 정책15 PASS. 저장 및 적 실제레벨17 PASS, 유지 가능한 `unity/Tools/next-difficulty-tests`23 PASS(.NET8.0.301), 기존 EnemyAi unused local 경고2만 있다. 증거 `I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/third/difficulty/`. 별도 Player/1920·3840·1x/GPU shader 검수는 부모의 단일 정식 빌드에서 수행하며 이 문서 작성만으로 디자인 PASS로 올리지 않는다.
+
+## 첫 정식 Player 후 시각 재작업 — 3차
+
+지정 실물 `third/ui-first-retry/1920x1080-ko-3차-난이도2.png`와 전체 원본 head CSS를 사용한 정적 웹 참고 `third/web-difficulty-full-css/difficulty-1920.png`를 직접 열었다. 후자는 scripts/자연조작을 검증한 웹 Player가 아니므로 동작 증거로 사용하지 않는다. 전역 reset이 빠진 이전 `web-difficulty-css` 표본은 폐기 판정으로 제외했다.
+
+| 결함 | 원인·수정 | 판정 경계 |
+|---|---|---|
+| 비선택 원화가 거의 검정 | CSS sRGB 필터 결과를 shader가 linear로 변환했는데 기본 sRGB RenderTexture에서 다시 decode. cache를 RenderTextureReadWrite.Linear로 명시하고 Blit 동안 GL.sRGBWrite=false, 이후 원상 복구 | 최종 같은 빌드 GPU 재캡처 필요 |
+| 뒤로/확정 버튼의 단조 장식이 웹과 다름 | 난이도 전용 web `.sh-btn`은 CSS 다각형이며 일반 단조 plaque를 쓰지 않음. 248×40/양끝12px/1·4·5px 중첩/기본 세로·강조 방사 그라데이션으로 정합. 버튼 y+3px | 코드 변환이며 원화 생성·유료 사용0 |
+
+비선택 카드 내부 red 평균(0~255)은 첫 Player 안식1.58/순례0.46/시련1.14/재앙2.83, 웹 참고22.71/11.19/10.90/28.22였다. 동일 원본에 웹 필터를 CPU로 계산한 예상은23.00/11.40/10.80/28.20이다. 이 수치는 원인/목표 분석이며 최종 GPU 결과를 대신하지 않는다. 근거 `third/difficulty/dim-linear-correction-analysis.json`. Core/저장/NativeGame 추가 변경0.

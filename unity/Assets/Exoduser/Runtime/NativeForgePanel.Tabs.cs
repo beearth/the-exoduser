@@ -7,7 +7,7 @@ namespace Exoduser.UnityPort {
  // The six tab bodies of the web forge. Coordinates are the measured window coordinates of the web render (game.html at d5f32ff57,
  // renderForge 50516+); everything is drawn inside the scrolling panel group, so y values are content positions.
  public sealed partial class NativeForgePanel {
-  static readonly Color Bone=new Color32(240,213,183,255);
+  static readonly Color Bone=new Color32(211,208,202,255);
 
   // .fg-i card: iron tile under a 110deg gradient, 1px #535656 border, top inner highlight.
   void Card(Rect r,Color? border=null,Color? fill=null){
@@ -36,14 +36,14 @@ namespace Exoduser.UnityPort {
    const float secTop=450.4f;float secH=sel.HasValue?212:158;
    Fill(new Rect(CX,secTop,CW,1),C(51,54,54));
    float x=CX;x+=Spr("ai15_2:⚡",x,462.4f);
-   Txt(new Rect(x,462.4f,CW,21),up.aiTitle,F.NM,15.2f,C(144,147,147),true);
+   Txt(new Rect(x,462.4f,CW,21),up.aiTitle,F.NM,15.2f,C(194,56,44),true);
    Txt(new Rect(CX,489.4f,CW,16),up.aiDesc,F.NM,12.8f,C(165,168,168));
    // slot chips (flex-wrap, gap 4): 12.8px, padding 3/8, border 1px #222525, bg rgba(0,0,0,.2)
    float cx=CX,cy=513.4f;
    foreach(var kv in list){
     var it=kv.Value;string num="+"+it.enh;string pre="chip12_8:"+kv.Key.emoji;
     float adv=Adv(pre),labelW=Meas(kv.Key.label,F.NM,12.8f),spaceW=Meas(" ",F.NM,12.8f);
-    float w=kv.Key.chipW>0?kv.Key.chipW+(Meas(num,F.NM,12.8f)-Meas("+0",F.NM,12.8f)):18+adv+labelW+spaceW+Meas(num,F.NM,12.8f);
+    float w=18+labelW+spaceW+Meas(num,F.NM,12.8f);
     if(cx+w>CX+CW+.01f){cx=CX;cy+=31;}
     var r=new Rect(cx,cy,w,27);bool on=kv.Key.key==SelectedChip;
     Fill(r,on?C(68,204,255,.15f):C(0,0,0,.2f));Border(r,on?C(68,204,255):C(34,37,37));
@@ -54,7 +54,7 @@ namespace Exoduser.UnityPort {
     if(Hit(r))SelectChip(kv.Key.key);
     cx+=w+4;
    }
-   if(!sel.HasValue)Txt(new Rect(CX,612.4f,CW,17),up.hint,F.NM,13.6f,C(68,71,71));
+   if(!sel.HasValue)Txt(new Rect(CX,588.4f,CW,20),up.hint,F.NM,13.6f,C(68,71,71));
    else DrawAiRow(sim,sel.Value.Value,up);
    // ---- one card per equipped slot ----
    float cardsTop=secTop+secH+8;
@@ -63,11 +63,11 @@ namespace Exoduser.UnityPort {
     Card(r);float tx=r.x+15;
     float adv=Spr("card14:"+def.emoji,tx,r.y+13);
     float nameW=Txt(new Rect(tx+adv,r.y+13,620,23.4f),def.label+" "+it.name,F.SansSemi,14,Bone,false,TextAnchor.MiddleLeft,.21f,1f,new Color(0,0,0,.78f),1f);
-    Txt(new Rect(tx+adv+nameW+Meas(" ",F.SansSemi,14,false,.21f),r.y+13,60,23.4f),"+"+it.enh,F.NM,14,ForgeFormulas.EnhColor(it.enh),true,TextAnchor.MiddleLeft,.21f,1f,new Color(0,0,0,.78f),1f);
+    Txt(new Rect(tx+adv+nameW+Meas(" ",F.SansSemi,14,false,.21f),r.y+13,60,23.4f),"+"+it.enh,F.NM,14,Bone,true,TextAnchor.MiddleLeft,.21f,1f,new Color(0,0,0,.78f),1f);
     Txt(new Rect(tx,r.y+40.4f,620,20.4f),ForgeFormulas.BonusText(it,up.bonusDefault),F.Sans,12,C(183,180,174));
     ForgeFormulas.Cost(it.enh,it.rarity,out var rate,out var cost);
     Fill(new Rect(tx,r.y+68.8f,620,1),C(114,117,117,.25f));
-    Txt(new Rect(tx,r.y+75.8f,300,19.2f),up.successLabel+" "+ForgeFormulas.RateText(rate)+"%",F.NM,12,ForgeFormulas.RateColor(rate),true);
+    Txt(new Rect(tx,r.y+75.8f,300,19.2f),up.successLabel+" "+ForgeFormulas.RateText(rate)+"%",F.NM,12,Bone,true);
     Txt(new Rect(tx,r.y+75.8f,620,19.2f),up.costLabel+" "+cost,F.NM,12,C(206,203,197),false,TextAnchor.MiddleRight);
     // clicking a card would roll the enhancement: shape only, no handler
    }
