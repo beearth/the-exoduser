@@ -43,32 +43,19 @@
 - 원격 ref와 해당 배포의 실제 source 경로를 확인한다. 자기 소유 target이 정렬됐다는 사실을 전체 checkout clean·PC/Native/전체 최신게임 완료로 확대하지 않는다.
 - 기존 사용자창·서버를 자동 재시작하지 않으며 Git 반영만으로 이미 열린 실행본이 갱신됐다고 보고하지 않는다. 기존 배포/HOLD/PC·Steam 승인 범위를 유지한다.
 
-**DEMO/EA 동기화 (배포 시 반드시 함께):**
+**DEMO/EA 동기화 (배포 시 반드시 함께, 2026-11-02 도구로 교체):**
 ```bash
-# game.html 동기화
-cp G:/exoduser/game.html G:/exoduser-DEMO/game.html
-cp G:/exoduser/game.html G:/exoduser-DEMO/gamedemo.html
-cp G:/exoduser/game.html G:/exoduser-ea/game.html
-# DEMO 폴더: _BIC=true, _DEMO_MODE=true, _DEMO_LV_CAP=100 강제 (game.html + gamedemo.html 둘 다)
-for f in G:/exoduser-DEMO/game.html G:/exoduser-DEMO/gamedemo.html; do sed -i "s/const _BIC=location.search.includes('bic')/const _BIC=true/" "$f" && sed -i "s/_DEMO_MODE=_BIC||location.search.includes('demo')/_DEMO_MODE=true/" "$f" && sed -i "s/_DEMO_LV_CAP=_BIC?100:500/_DEMO_LV_CAP=100/" "$f"; done
-# DEMO/EA 에셋 동기화 (sfx/img/assets/bgm/sprites 전체)
-for d in sfx img assets bgm sprites; do cp -r "G:/exoduser/$d/"* "G:/exoduser-DEMO/$d/" 2>/dev/null; cp -r "G:/exoduser/$d/"* "G:/exoduser-ea/$d/" 2>/dev/null; done
-# index.html 동기화
-cp G:/exoduser/index.html G:/exoduser-ea/index.html
-cp G:/exoduser/index.html G:/exoduser-DEMO/indexdemo.html
-cp G:/exoduser/index.html G:/exoduser-DEMO/index.html
-# _LOBBY_BUILD 버전별 설정 (복사 후 반드시 실행)
-sed -i "s/_LOBBY_BUILD='full'/_LOBBY_BUILD='demo'/" G:/exoduser-DEMO/indexdemo.html
-sed -i "s/_LOBBY_BUILD='full'/_LOBBY_BUILD='demo'/" G:/exoduser-DEMO/index.html
-sed -i "s/_LOBBY_BUILD='full'/_LOBBY_BUILD='ea'/" G:/exoduser-ea/index.html
-# lang/data 파일 동기화
-for f in lang_*.js lobby_i18n.js maps_data.js; do cp "G:/exoduser/$f" "G:/exoduser-DEMO/$f" && cp "G:/exoduser/$f" "G:/exoduser-ea/$f"; done
+cd G:/exoduser
+C:/nvm4w/nodejs/node.exe tools/sync-demo-ea.mjs --dry
+C:/nvm4w/nodejs/node.exe tools/sync-demo-ea.mjs
 ```
-- game.html, index.html, lang_*.js 중 **하나라도 수정하면** 위 명령 전부 실행
-- DEMO의 메인은 `indexdemo.html` — `index.html`만 복사하면 반영 안 됨
-- DEMO 폴더 `game.html`+`gamedemo.html` 둘 다 `_DEMO_MODE=true`, `_DEMO_LV_CAP=100` sed 강제
-- 개발 중 버전 전환: `?bic` → BIC부스 데모(Lv100), `?demo` → 일반데모(Lv500), 파라미터 없음 → 정식
-- **`_LOBBY_BUILD`**: DEMO=`'demo'`, EA=`'ea'`, 정식=`'full'` — 복사 후 반드시 sed로 변경
+- 실행 웹 파일(game.html·index.html·lang·JS·CSS·에셋 중 무엇이든)을 수정해 main에 반영하면 실행한다. `--dry`로 바뀔 개수를 먼저 본다.
+- 기준 목록은 Steam 빌드 `build-nwjs.mjs`의 `FILES`·`DIRS` + `lang_*.js`·`atlas_*`·`node-main.js`이며 Git 추적 파일만 옮긴다(타 세션 untracked 에셋 제외). main 추적 파일에 수정이 있으면 멈춘다.
+- 덮어쓰는 파일은 `I:/EXODUSER-Storage/backup/demo-ea-sync-<시각>/`에 먼저 백업하고, 지우는 파일은 없다. `build-target.js`·`package.json`은 실행본 것을 유지한다.
+- DEMO: `game.html`·`gamedemo.html`은 `const _BIC=true` 치환, `index.html`·`indexdemo.html`(DEMO 메인)은 원본 그대로. EA: `game.html`·`index.html` 원본 그대로.
+- `_DEMO_MODE`·`_LOBBY_BUILD`는 이제 코드가 `window.EXODUSER_BUILD_TARGET`(build-target.js, NW 매니페스트 `exoduser.target`)으로 정하고 `_DEMO_LV_CAP=100` 고정이다. 예전 sed(`_DEMO_MODE=true`, `_LOBBY_BUILD='demo'|'ea'`)는 대상이 없어 쓰지 않는다. 정의가 바뀌면 도구가 멈춘다.
+- `G:/exoduser-DEMO`·`G:/exoduser-ea`는 `I:/EXODUSER-Storage/archive/G/` 아래로 이어진 junction이다. 이동·삭제 도구로 다루지 않는다.
+- 개발 중 버전 전환: `?bic` → BIC부스 데모(`_BIC`, Lv100). 데모/정식은 build-target으로 정한다.
 
 ## 엔진별 버전 분리 (2026-10-27 사용자 확정)
 
