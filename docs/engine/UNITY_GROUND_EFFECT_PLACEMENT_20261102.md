@@ -58,7 +58,7 @@ SkillAdditive/KiSlashAdditive 두 원shader는1403 원blob byte로 복원했다.
 
 ## 같은 GPU pass 증거 API
 
-NativeGroundSkillProjection.RequestProbe(createdRGBAFloatRT,mode)는 target 소유권을 받지 않고 wrapper만 빌린다(transferOwnership=false). CancelProbe는 wrapper만 해제한다. RenderGraph가 매probe처음clearColor0을 보장하고 독립One/Zero override material로 같은 renderer PB/동일 shader를 실행한다. GPU 완료 후 ReadPixels→CancelProbe→caller target 정리 순서. ProbeSerial 증가를 확인한다. target은 해당 camera render resolution과 맞춘다.
+NativeGroundSkillProjection.RequestProbe(createdRGBAFloatRT,mode)는 target 소유권을 받지 않고 wrapper만 빌린다(transferOwnership=false). CancelProbe는 wrapper만 해제한다. RenderGraph가 매probe처음clearColor0을 보장하고 독립One/Zero override material로 같은 renderer PB/동일 shader를 실행한다. GPU 완료 후 ReadPixels→CancelProbe→caller target 정리 순서. ProbeSerial 증가를 확인한다. active volume의 정상프레임을 한 번 렌더한 뒤 공개FrameSize(cameraTargetDescriptor 실제크기)에 target을 맞춘다. NativeHd2D 내부RT/URP renderScale로 Screen과 다를 수 있다. 요청 이후해상도가바뀌면fail-closed로probe를실행하지않는다.
 
 | mode | RGBAFloat 출력 |
 |---|---|

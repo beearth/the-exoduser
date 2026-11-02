@@ -31,6 +31,7 @@ namespace Exoduser.UnityPort
         static RTHandle probe;
         static int probeMode;
         public static int ProbeSerial { get; private set; }
+        public static Vector2Int FrameSize { get; private set; }
         public static int ReceiverCount { get { return receivers.Count; } }
         public static string Error { get; private set; }
         public static bool Available { get; private set; }
@@ -134,7 +135,7 @@ namespace Exoduser.UnityPort
         }
         public static void RequestProbe(RenderTexture target,int mode)
         {
-            if(target==null||!target.IsCreated()||target.graphicsFormat!=GraphicsFormat.R32G32B32A32_SFloat||mode<1||mode>4)throw new ArgumentException("Ground probe requires a created RGBAFloat target and mode 1..4");
+            if(target==null||!target.IsCreated()||target.graphicsFormat!=GraphicsFormat.R32G32B32A32_SFloat||mode<1||mode>4||target.width!=FrameSize.x||target.height!=FrameSize.y)throw new ArgumentException("Ground probe requires a created RGBAFloat target matching FrameSize and mode 1..4");
             CancelProbe();probe=RTHandles.Alloc(target,false);probeMode=mode;
         }
         public static void CancelProbe() { if(probe!=null)probe.Release();probe=null;probeMode=0; }
@@ -165,6 +166,7 @@ namespace Exoduser.UnityPort
             public override void RecordRenderGraph(RenderGraph graph,ContextContainer context)
             {
                 var resources=context.Get<UniversalResourceData>();var cam=context.Get<UniversalCameraData>();var rendering=context.Get<UniversalRenderingData>();var light=context.Get<UniversalLightData>();
+                FrameSize=new Vector2Int(cam.cameraTargetDescriptor.width,cam.cameraTargetDescriptor.height);
                 var desc=cam.cameraTargetDescriptor;desc.msaaSamples=1;desc.graphicsFormat=GraphicsFormat.None;desc.depthStencilFormat=GraphicsFormat.D32_SFloat;
                 var mask=UniversalRenderer.CreateRenderGraphTexture(graph,desc,"Ground receiver depth",true);
                 using(var builder=graph.AddRasterRenderPass<PassData>("Ground receiver depth",out var data))
@@ -182,6 +184,7 @@ namespace Exoduser.UnityPort
                 }
                 if(probe!=null&&probeMode>0)
                 {
+                    if(probe.rt.width!=FrameSize.x||probe.rt.height!=FrameSize.y) { Error="Ground probe resolution changed after request";return; }
                     if(probeMaterial==null)probeMaterial=new Material(Resources.Load<Shader>("Shaders/GroundSkillProjection")) { hideFlags=HideFlags.DontSave };
                     probeMaterial.SetFloat("_DstBlend",0);
                     using(var builder=graph.AddRasterRenderPass<PassData>("Ground projection float probe",out var data))
