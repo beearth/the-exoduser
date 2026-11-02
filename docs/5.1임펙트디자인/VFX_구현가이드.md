@@ -1457,3 +1457,7 @@ ring·palette·색 생성·메타데이터의 정확한 정의는 [리그 프로
 | 2 / 정상 연결 | Main._ready의 world.set_player 뒤에 Player.bind_native_armor_inventory(Callable(source_state, read_current_inventory))를 연결한다. 실패하면 기존 _stop_source_player_startup 경로로 중단한다. source State/INV를 새로 만들거나 복원하지 않는다. |
 | 3 / 원 상수 | EL P=0/F=1/I=2/D=3/L=4/H=5/E=6. F→I, I→F, D→L, L→D, D→H, H→D, E→L, L→E는2. 동일 속성은 P0 제외0.5, 나머지는1. 기존 원 elMul/producer 분기·수치 변경0. |
 | 4 / 현재 완료 범위 | 실제 제품 entry의 SourceState→Player→기존 projectile 배율 consumer 연결까지. full inventory/equip UI·affix·저장/장비복원·보상·전체 bootstrap·모든 탄/보스·시각/청감·240FPS·최신 전체게임 완료는 아니다. 기존 HOLD/2_3·MAP/ART/STORY/rig/native3387/NativeHUD 등 보호 불변. |
+
+## 2026-11-02 Unity 설치형 지면 배치 후보
+
+사용자 요청으로 장판·지뢰·설치형 전체의 actor billboard/FootLift 오적용과 VfxWorld 지면 높이 미연결을 수정 중이다. FireZones·FieldZones·지뢰·풀·지면 전조/균열/파도는 명시적 지면 메시, 회복 링은 지점별 지형 높이를 사용한다. 원화 atlas/재질·색·피해/반경/시간·공중탄·강타/악의구 중심·flat 보스방 전조의 기존 계약은 유지한다. CPU 659회귀·323소스 정적컴파일 오류0이며 실제 Mac Player/시각/통합은 아직 대기다. 정확한 분류·수치·수명·검증은 [설치형 지면 배치](../engine/UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)를 따른다.

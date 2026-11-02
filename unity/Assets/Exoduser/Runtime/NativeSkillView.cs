@@ -105,7 +105,17 @@ namespace Exoduser.UnityPort
         static void SetRing(LineRenderer l, float radiusPx, Color c)
         {
             l.startColor = l.endColor = c;
-            for (int i = 0; i < 72; i++) { float a = i * Mathf.PI * 2 / 72; l.SetPosition(i, new Vector3(Mathf.Cos(a) * radiusPx / 100, Mathf.Sin(a) * radiusPx / 100, 0)); }
+            var anchor = l.transform.position;
+            for (int i = 0; i < 72; i++)
+            {
+                float a = i * Mathf.PI * 2 / 72, x = Mathf.Cos(a) * radiusPx / 100, y = Mathf.Sin(a) * radiusPx / 100;
+                if (NativeRemodel3D.Active)
+                {
+                    float wx = anchor.x + x, wz = anchor.z + y;
+                    l.SetPosition(i, l.transform.InverseTransformPoint(new Vector3(wx, NativeRemodel3D.GroundY(wx, wz) + NativeGroundSkillGeometry.RingLift, wz)));
+                }
+                else l.SetPosition(i, new Vector3(x, y, 0));
+            }
         }
 
         public void Update(Simulation sim, float time)
@@ -196,8 +206,9 @@ namespace Exoduser.UnityPort
         }
         void BuildZone(Item it, FireZone z)
         {
-            if (z.Type == "spikeTrap") { it.a = NewRenderer(it, "thorn", spike, add, -19000); return; }
+            if (z.Type == "spikeTrap") { it.a = NewRenderer(it, "thorn", spike, add, -19000); NativeGroundSkillSurface.Mark(it.a); return; }
             it.a = NewRenderer(it, "dome", dome, addFlat, -19000);
+            NativeGroundSkillSurface.Mark(it.a);
             it.rings = new[] { NewRing(it, Color.white), NewRing(it, Color.white) };
         }
         void Drop(Dictionary<int, Item> map, List<int> ids)
