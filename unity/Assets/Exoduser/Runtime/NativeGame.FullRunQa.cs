@@ -407,14 +407,18 @@ namespace Exoduser.UnityPort
             fullRunLastCaptureActivity=name;fullRunLastCaptureFrame=Time.frameCount;
             var image=ScreenCapture.CaptureScreenshotAsTexture();
             try{File.WriteAllBytes(Path.Combine(output,"caps",name+".png"),image.EncodeToPNG());File.AppendAllText(Path.Combine(output,"capture-sizes.jsonl"),"{\"name\":\""+name+"\",\"width\":"+image.width+",\"height\":"+image.height+"}\n");}finally{Destroy(image);}
-            if(Screen.width!=3840&&wide)
+            if(wide)
             {
                 int previousWidth=Screen.width,previousHeight=Screen.height;
-                Screen.SetResolution(3840,1080,FullScreenMode.Windowed);
-                yield return new WaitForSecondsRealtime(.25f);yield return new WaitForEndOfFrame();
-                fullRunLastCaptureActivity=name+"-3840";fullRunLastCaptureFrame=Time.frameCount;
-                image=ScreenCapture.CaptureScreenshotAsTexture();
-                try{File.WriteAllBytes(Path.Combine(output,"caps",name+"-3840.png"),image.EncodeToPNG());}finally{Destroy(image);}
+                foreach(int captureWidth in new[]{2560,3840})
+                {
+                    if(captureWidth==previousWidth)continue;
+                    Screen.SetResolution(captureWidth,1080,FullScreenMode.Windowed);
+                    yield return new WaitForSecondsRealtime(.25f);yield return new WaitForEndOfFrame();
+                    string captureName=name+"-"+captureWidth;fullRunLastCaptureActivity=captureName;fullRunLastCaptureFrame=Time.frameCount;
+                    image=ScreenCapture.CaptureScreenshotAsTexture();
+                    try{File.WriteAllBytes(Path.Combine(output,"caps",captureName+".png"),image.EncodeToPNG());File.AppendAllText(Path.Combine(output,"capture-sizes.jsonl"),"{\"name\":\""+captureName+"\",\"width\":"+image.width+",\"height\":"+image.height+"}\n");}finally{Destroy(image);}
+                }
                 Screen.SetResolution(previousWidth,previousHeight,FullScreenMode.Windowed);
                 yield return null;yield return null;
             }
