@@ -1,0 +1,127 @@
+{
+  "schema": "exoduser.character-art-source.v1",
+  "stage": "FACE_HAIR_LOCKED_ART_SOURCE_PREPARED",
+  "createdAt": "2026-11-02T01:45:23.651Z",
+  "engineTarget": "AWAITING_USER_UNITY_OR_WEB",
+  "faceOriginLocked": true,
+  "gameplayReady": false,
+  "runtimeApplied": false,
+  "characters": [
+    {
+      "id": "transmuter",
+      "role": "복근형",
+      "face": "v17 원이 참고 얼굴",
+      "hair": "굵은 높은 포니테일",
+      "faceFile": "transmuter.face-lock.png",
+      "front": "transmuter-thick-ponytail.front.png",
+      "turnaround": "transmuter.turnaround.png",
+      "turnaroundRegions": [
+        {
+          "view": "front",
+          "x": 0,
+          "y": 0,
+          "width": 512,
+          "height": 1024
+        },
+        {
+          "view": "anatomical-left-profile-faces-right",
+          "x": 512,
+          "y": 0,
+          "width": 512,
+          "height": 1024
+        },
+        {
+          "view": "back",
+          "x": 1024,
+          "y": 0,
+          "width": 512,
+          "height": 1024
+        }
+      ],
+      "meshAvailable": false,
+      "rigAvailable": false,
+      "animationAvailable": false
+    },
+    {
+      "id": "spearmage",
+      "role": "가슴선·허벅지형",
+      "face": "v17 리브 참고 얼굴",
+      "hair": "비대칭 단발",
+      "faceFile": "spearmage.face-lock.png",
+      "front": "spearmage-asymmetric-bob.front.png",
+      "turnaround": "spearmage.turnaround.png",
+      "turnaroundRegions": [
+        {
+          "view": "front",
+          "x": 0,
+          "y": 0,
+          "width": 512,
+          "height": 1024
+        },
+        {
+          "view": "anatomical-right-profile-faces-left",
+          "x": 512,
+          "y": 0,
+          "width": 512,
+          "height": 1024
+        },
+        {
+          "view": "back",
+          "x": 1024,
+          "y": 0,
+          "width": 512,
+          "height": 1024
+        }
+      ],
+      "meshAvailable": false,
+      "rigAvailable": false,
+      "animationAvailable": false
+    }
+  ],
+  "files": [
+    {
+      "id": "transmuter",
+      "file": "transmuter-thick-ponytail.front.png",
+      "sha256": "887f63129f5d294902e81609f8b4bd3d3481dad8419529d7b366994a730c0ee0",
+      "width": 1024,
+      "height": 1536
+    },
+    {
+      "id": "spearmage",
+      "file": "spearmage-asymmetric-bob.front.png",
+      "sha256": "eae2e8363ddd7a9b26817238903e9e2c351b951c4c94a8417bb3680362fd9177",
+      "width": 1024,
+      "height": 1536
+    },
+    {
+      "id": "transmuter",
+      "file": "transmuter.turnaround.png",
+      "sha256": "e755cc6432d75477bfcc1b525373f4f29c151741e4a6d4dede31535ccc918ddb",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "id": "spearmage",
+      "file": "spearmage.turnaround.png",
+      "sha256": "3709b2c90b4b488ea36064837bbce9170c0a8366f2bc78ac58bc8cb5324e471b",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "id": "transmuter_turnaround_profile_history",
+      "file": "transmuter.turnaround.before_side_correction.png",
+      "sha256": "56d8822ed6cd0a5f270c2aa6f2ca44fa889555ef8fb21c8151b06d3641c23df6",
+      "width": 1536,
+      "height": 1024
+    }
+  ],
+  "limitations": [
+    "Static 2D source PNGs and three-view production references only. No 3D mesh, humanoid rig, animation or playable sprite atlas exists in this package.",
+    "Turnarounds contain inferred unseen surfaces and generative seam/pose variation; these are not calibrated orthographic geometry.",
+    "Alpha presence was decoded and verified; matte edges, hair silhouettes and foot pivots require actual target-runtime review.",
+    "Face originals remain byte-identical immutable masters; generated bodies are interpretations and are not pixel-identical face transfers."
+  ],
+  "alphaAudit": "alpha-audit.json",
+  "faceLock": "face-lock.json",
+  "fullGenerationRecord": "generation.receipt.json"
+}

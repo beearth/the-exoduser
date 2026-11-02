@@ -1,0 +1,32 @@
+{
+  "createdAt": "2026-11-02T01:41:16.435Z",
+  "scope": "Art source preparation; engine target awaiting user answer; no runtime integration",
+  "files": [
+    {
+      "id": "transmuter",
+      "file": "transmuter-thick-ponytail.front.png",
+      "source": "C:\\Users\\심도진\\.codex\\generated_images\\01a194cc-8301-70f1-80f8-a4e5f1090c22\\exec-a43a621f-6d79-46f2-9d39-42e5afa6e0e1.png",
+      "sha256": "887f63129f5d294902e81609f8b4bd3d3481dad8419529d7b366994a730c0ee0",
+      "width": 1024,
+      "height": 1536
+    },
+    {
+      "id": "spearmage",
+      "file": "spearmage-asymmetric-bob.front.png",
+      "source": "C:\\Users\\심도진\\.codex\\generated_images\\01a194cc-8301-70f1-80f8-a4e5f1090c22\\exec-6cfede9e-a862-47d9-b80d-709ff0a5871e.png",
+      "sha256": "eae2e8363ddd7a9b26817238903e9e2c351b951c4c94a8417bb3680362fd9177",
+      "width": 1024,
+      "height": 1536
+    }
+  ],
+  "faceIdentityLock": true,
+  "faceMasterFiles": [
+    "transmuter.face-lock.png",
+    "spearmage.face-lock.png"
+  ],
+  "hairstyles": {
+    "transmuter": "굵은 높은 포니테일",
+    "spearmage": "비대칭 단발"
+  },
+  "runtimeApplied": false
+}

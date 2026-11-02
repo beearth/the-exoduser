@@ -1,0 +1,82 @@
+[
+  {
+    "id": "transmuter",
+    "file": "transmuter-thick-ponytail.front.png",
+    "width": 1024,
+    "height": 1536,
+    "minAlpha": 0,
+    "maxAlpha": 254,
+    "transparentPixels": 1118054,
+    "partialPixels": 454810,
+    "opaquePixels": 0,
+    "borderAbove128": 0,
+    "boxes": {
+      "16": [
+        250,
+        4,
+        793,
+        1503
+      ],
+      "128": [
+        250,
+        9,
+        792,
+        1502
+      ],
+      "240": [
+        252,
+        10,
+        785,
+        1501
+      ]
+    },
+    "footPivotSuggestion": {
+      "x": 0.51904296875,
+      "y": 0.021484375,
+      "coordinate": "bottom-left normalized source image",
+      "status": "SUGGESTION_NOT_RUNTIME_VALIDATED",
+      "method": "horizontal center of visible foot support band (bottom six percent), bottom alpha support"
+    },
+    "runtimeMatteApproved": false
+  },
+  {
+    "id": "spearmage",
+    "file": "spearmage-asymmetric-bob.front.png",
+    "width": 1024,
+    "height": 1536,
+    "minAlpha": 0,
+    "maxAlpha": 254,
+    "transparentPixels": 1180958,
+    "partialPixels": 391906,
+    "opaquePixels": 0,
+    "borderAbove128": 0,
+    "boxes": {
+      "16": [
+        267,
+        32,
+        754,
+        1481
+      ],
+      "128": [
+        267,
+        36,
+        753,
+        1481
+      ],
+      "240": [
+        268,
+        41,
+        752,
+        1480
+      ]
+    },
+    "footPivotSuggestion": {
+      "x": 0.51953125,
+      "y": 0.03515625,
+      "coordinate": "bottom-left normalized source image",
+      "status": "SUGGESTION_NOT_RUNTIME_VALIDATED",
+      "method": "horizontal center of visible foot support band (bottom six percent), bottom alpha support"
+    },
+    "runtimeMatteApproved": false
+  }
+]

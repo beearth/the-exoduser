@@ -1,0 +1,26 @@
+{
+  "status": "USER_LOCKED_FACE_ORIGIN",
+  "evidence": "얼굴은 저대로 가져가 이제 원형으로 잡고",
+  "lockedAt": "2026-11-02T01:45:23.651Z",
+  "rule": "Preserve canonical PNG bytes and facial geometry. One identity master per character. Never derive identity from rejected paired faces.",
+  "identities": [
+    {
+      "id": "woni_reference_abs_heroine",
+      "file": "woni-reference-face.png",
+      "source": "output/character_style_variations_20261101/independent_woni_face_v17.png",
+      "role": "복근형",
+      "label": "복근형 원이 참고 얼굴",
+      "sha256": "15ab7e47b4a9b3efd4ac4062b4ef7e528ae69fca7f382b60f2543b6094fd912d",
+      "packFile": "transmuter.face-lock.png"
+    },
+    {
+      "id": "liv_reference_spearmage",
+      "file": "liv-reference-face.png",
+      "source": "output/character_style_variations_20261101/independent_liv_face_v17.png",
+      "role": "창법사",
+      "label": "창법사 리브 참고 얼굴",
+      "sha256": "fc2198af2bec17d8895fcb400368c76f7698614764d6134b6d520b1bc8760e32",
+      "packFile": "spearmage.face-lock.png"
+    }
+  ]
+}

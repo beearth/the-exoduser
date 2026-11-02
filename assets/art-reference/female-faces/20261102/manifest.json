@@ -1,5 +1,5 @@
 {
-  "status": "USER_SELECTED_FACIAL_REFERENCES_FOR_FULLBODY",
+  "status": "USER_LOCKED_FACE_ORIGIN",
   "evidence": [
     "이제 좀 다르고 퀄리티도 좋네",
     "저걸로 전신만들어"
@@ -24,5 +24,11 @@
       "label": "창법사 리브 참고 얼굴",
       "sha256": "fc2198af2bec17d8895fcb400368c76f7698614764d6134b6d520b1bc8760e32"
     }
-  ]
+  ],
+  "originLock": {
+    "evidence": "얼굴은 저대로 가져가 이제 원형으로 잡고",
+    "lockedAt": "2026-11-02T01:45:23.651Z",
+    "identityImagesImmutable": true,
+    "masterShaUnchanged": true
+  }
 }

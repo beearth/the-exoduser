@@ -1,0 +1,87 @@
+{
+  "createdAt": "2026-11-02T01:45:23.651Z",
+  "task": "얼굴 원형 LOCK, 굵은 포니테일/비대칭 단발 게임용 제작 원화 패키지",
+  "faceLockEvidence": "얼굴은 저대로 가져가 이제 원형으로 잡고",
+  "hairstyleEvidence": "비대칭 단발이랑 굻은 포니테일로 하자",
+  "mapping": {
+    "transmuter": {
+      "role": "복근형",
+      "face": "v17 원이 참고 얼굴",
+      "hair": "굵은 높은 포니테일"
+    },
+    "spearmage": {
+      "role": "가슴선·허벅지형",
+      "face": "v17 리브 참고 얼굴",
+      "hair": "비대칭 단발"
+    }
+  },
+  "generator": "built-in image_gen; exact model ID and cost undisclosed",
+  "fronts": [
+    {
+      "id": "transmuter",
+      "filename": "transmuter-thick-ponytail.front.png",
+      "source": "C:\\Users\\심도진\\.codex\\generated_images\\01a194cc-8301-70f1-80f8-a4e5f1090c22\\exec-a43a621f-6d79-46f2-9d39-42e5afa6e0e1.png",
+      "prompt": "Use case: identity-preserve, hairstyle correction and clean asset extraction.\nEdit IMAGE 1, the single full-body adult Woni-reference bare-abs heroine. IMAGE 2 is the selected immutable face master. Preserve this EXACT face: actual eyes, nose bridge/tip and length, lip proportions, cheek contours, jaw, small cheek mole, neutral frontal expression, skin rendering, age, head/neck size. Do not beautify, merge, smooth, redesign or turn her head. Preserve the existing front-standing full-body pose, all costume pieces, navy leather cropped top with bare toned abs, full trousers, flat boots and the LEFT forearm single-blue-core gauntlet (viewer's right) in IMAGE 1.\nChange ONLY the hairstyle to ONE THICK HIGH PONYTAIL. All main hair is gathered high behind the crown into one substantial dark black-brown ponytail, thick large coherent locks, heavy full-volume tail flowing down behind the shoulder toward the waist and clearly visible as an offset silhouette beside shoulder/upper arm. Keep a small natural side-parting and two fine face-framing strands, but no loose half-up lower hairstyle, no side braid, no bun, no second tail. A practical small dark leather band, no elaborate jewellery, no change to the face shape.\nRemove the entire painted background and ground shadow to make a genuinely TRANSPARENT PNG CUTOUT, not a gray/checkerboard image. Preserve all fingers, hair flyaways, cloth and boot silhouettes without brown matte halos. Leave generous transparent margin around the full crown, ponytail, hands and soles. One adult woman only, full figure head-to-toe, vertical 2:3 layout. Preserve realistic painted skin and leather/metal quality, no added labels or props. This is the selected same character with a new approved thick ponytail, not a redesign.",
+      "refs": [
+        "G:/exoduser/output/character_style_variations_20261101/portrait_fullbody_woni_abs_v18.png",
+        "G:/exoduser/output/character_style_variations_20261101/independent_woni_face_v17.png"
+      ]
+    },
+    {
+      "id": "spearmage",
+      "filename": "spearmage-asymmetric-bob.front.png",
+      "source": "C:\\Users\\심도진\\.codex\\generated_images\\01a194cc-8301-70f1-80f8-a4e5f1090c22\\exec-6cfede9e-a862-47d9-b80d-709ff0a5871e.png",
+      "prompt": "Use case: background-extraction / identity-preserve.\nExtract the SINGLE adult Liv-reference Spearmage from IMAGE 1 into a genuinely transparent RGBA PNG, preserving the entire head-to-toe figure including hair, fingertips, cloth and boots. Preserve the exact existing painted character pixels and design as closely as possible. IMAGE 2 is her immutable selected face master: retain that exact identity, do not redraw a prettier or averaged face.\nThe selected hairstyle is the ASYMMETRIC SHORT BOB already in IMAGE 1. Preserve the charcoal metal cuirass covering the entire abdomen, open upper-chest neckline, bare upper arms, plum short hip cloth over opaque shorts, visible thigh, forearm guards and flat boots. Preserve front-facing relaxed stance, upright neck, level eyes, neutral mouth and all face proportions.\nRemove ALL background and ground shadow: transparent alpha outside the silhouette, NO black backdrop, NO gray backdrop, NO soft spotlight or colored haze, NO checkerboard drawn into the image. No new objects or light effects. Keep the source realistic skin and worn leather/metal texture. Generous transparent padding above crown and below soles; no body part cropped. Vertical 2:3 single-character cutout, no text, no caption, no logo. Only background removal; no haircut or costume redesign.",
+      "refs": [
+        "G:/exoduser/output/character_style_variations_20261101/portrait_fullbody_liv_bob_v18.png",
+        "G:/exoduser/output/character_style_variations_20261101/independent_liv_face_v17.png"
+      ]
+    }
+  ],
+  "turnarounds": [
+    {
+      "id": "transmuter",
+      "filename": "transmuter.turnaround.png",
+      "source": "C:\\Users\\심도진\\.codex\\generated_images\\01a194cc-8301-70f1-80f8-a4e5f1090c22\\exec-46b74d34-7b5e-4ed9-b5dd-4fd14ce858d4.png",
+      "prompt": "Create a precise GAME CHARACTER PRODUCTION TURNAROUND SHEET for ONE adult woman, based on the attached references. REFERENCE 1 is the immutable facial identity master. REFERENCE 2 is this character's selected full-body clothing/hair/body source. Preserve her specific face and realistic painted material quality. Never reuse another character's face or a generic beauty template.\nExactly THREE equal roomy columns in this order: FRONT ORTHOGRAPHIC, RIGHT SIDE ORTHOGRAPHIC (woman faces viewer left so her right side is visible), BACK ORTHOGRAPHIC. Same single character in all three views. FULL BODIES from hair crown to both boot soles, same global scale and common baseline; generous margins and empty gaps between figures. Long horizontal landscape canvas, three full height figures, do not overlap limbs, cloth or ponytail across columns. No text, numbers, labels, grids or arrows inside the image.\nModeling stance: comfortable symmetric A-POSE, feet planted apart, knees straight but relaxed, arms 25 degrees away from torso, elbows almost straight, fingers relaxed gently spread and visible. No weapon in either hand. Neutral upright head, level face and eyes in front view, neck straight, no tilted fashion/model pose, no hip cock or contrapposto. Side and back preserve the same arm and leg pose through the rotation. No foreshortening or perspective enlargement, no beauty camera lens, no 3/4 views.\nUse clean flat diffuse studio lighting, neutral middle-gray background, no dramatic rim light, no cast ground shadow hiding feet, no floating pieces. Large clear anatomical and costume forms. Back-view outfit must be a mechanically plausible continuous construction of the front design, not random new accessories. Do not put facial features on the back of the head. Every rigid metal part remains solid with fixed edges. This is SOURCE ART for future geometry/rigging; preserve anatomical structure, separate upper arms from torso, leave thigh gap and distinct fingers for clean silhouettes. Character: the selected Woni-reference BARE-ABS heroine. Keep her exact eyes, nose length, lip proportions and small cheek mole in front, the SAME natural adult face as reference 1. Keep thick HIGH BLACK-BROWN PONYTAIL, clearly connected to crown with one substantial tail down behind shoulders to upper waist; right side and rear show its mass and attachment. A little forehead fringe allowed, no half-up long loose lower hairstyle. Compact athletic female proportions around seven heads, not stretched model legs. High-neck NAVY cropped protective leather top covers chest, bare naturally toned ABS AND WAIST, full dark fitted trousers cover BOTH thighs, short navy asymmetric shoulder mantle, flat practical boots. Character LEFT forearm carries ONE BLUE CORE in a distinctive sculptural dark-metal gauntlet; must stay on anatomical LEFT arm in all views (front viewer right, rear viewer left). Right forearm simple wraps/glove. No second blue core, no bare thigh. Mantle is short and must not hide rear leg silhouette or ponytail connection. Keep the costume and silhouette from reference 2, do not redesign it into a different armor set.",
+      "refs": [
+        "G:/exoduser/output/character_style_variations_20261101/independent_woni_face_v17.png",
+        "G:/exoduser/assets/characters/female-heroes/20261102-v19/transmuter-thick-ponytail.front.png"
+      ],
+      "correction": {
+        "prompt": "Precisely edit this three-view production sheet of ONE adult woman. Preserve LEFT COLUMN front and RIGHT COLUMN rear figures, their exact existing face, hair, costume, scale, baseline, layout and all details. Correct ONLY the MIDDLE SIDE VIEW so it shows the character's anatomical LEFT SIDE with her face and both boot toes pointing toward the RIGHT EDGE OF THE IMAGE. This middle figure must now look RIGHT, not left. Her anatomical LEFT arm is the near visible arm, carrying the SAME single-blue-core gauntlet as front-view viewer-right arm and back-view viewer-left arm. Preserve exactly one blue core on the character, only on that anatomical left forearm; far right arm remains ordinary wrapped glove. Do not move the blue core to the other arm. Keep the thick high ponytail and its crown attachment clearly visible behind the profile head; preserve natural upright neck, compact athletic adult proportions, bare abs, navy cropped chest covering, full trousers, short navy shoulder mantle and flat boots. Right-facing pure profile, no three-quarter tilt. Same common floor baseline and global body scale, same softly lit gray background, exact same three equal columns and whole-crown-to-soles framing. No new text, objects or labels. This is anatomical left/right correction, not face or costume redesign.",
+        "refs": [
+          "C:\\Users\\심도진\\.codex\\generated_images\\01a194cc-8301-70f1-80f8-a4e5f1090c22\\exec-dfe0ce11-47c2-4468-acc3-5923cb1a0f6f.png",
+          "G:/exoduser/output/character_style_variations_20261101/independent_woni_face_v17.png"
+        ]
+      }
+    },
+    {
+      "id": "spearmage",
+      "filename": "spearmage.turnaround.png",
+      "source": "C:\\Users\\심도진\\.codex\\generated_images\\01a194cc-8301-70f1-80f8-a4e5f1090c22\\exec-320a7b3f-1b17-444b-9da2-e495230b04a1.png",
+      "prompt": "Create a precise GAME CHARACTER PRODUCTION TURNAROUND SHEET for ONE adult woman, based on the attached references. REFERENCE 1 is the immutable facial identity master. REFERENCE 2 is this character's selected full-body clothing/hair/body source. Preserve her specific face and realistic painted material quality. Never reuse another character's face or a generic beauty template.\nExactly THREE equal roomy columns in this order: FRONT ORTHOGRAPHIC, RIGHT SIDE ORTHOGRAPHIC (woman faces viewer left so her right side is visible), BACK ORTHOGRAPHIC. Same single character in all three views. FULL BODIES from hair crown to both boot soles, same global scale and common baseline; generous margins and empty gaps between figures. Long horizontal landscape canvas, three full height figures, do not overlap limbs, cloth or ponytail across columns. No text, numbers, labels, grids or arrows inside the image.\nModeling stance: comfortable symmetric A-POSE, feet planted apart, knees straight but relaxed, arms 25 degrees away from torso, elbows almost straight, fingers relaxed gently spread and visible. No weapon in either hand. Neutral upright head, level face and eyes in front view, neck straight, no tilted fashion/model pose, no hip cock or contrapposto. Side and back preserve the same arm and leg pose through the rotation. No foreshortening or perspective enlargement, no beauty camera lens, no 3/4 views.\nUse clean flat diffuse studio lighting, neutral middle-gray background, no dramatic rim light, no cast ground shadow hiding feet, no floating pieces. Large clear anatomical and costume forms. Back-view outfit must be a mechanically plausible continuous construction of the front design, not random new accessories. Do not put facial features on the back of the head. Every rigid metal part remains solid with fixed edges. This is SOURCE ART for future geometry/rigging; preserve anatomical structure, separate upper arms from torso, leave thigh gap and distinct fingers for clean silhouettes. Character: the selected Liv-reference SPEARMAGE. Preserve the exact more open eye shape, soft cheeks, short rounded nose and specific full lips from reference 1; same adult person, never the heroine's face. Keep ASYMMETRIC SHORT BLACK-PLUM BOB from reference 2, not a ponytail/updo. Compact naturally feminine adult proportions around seven heads, not a tall long-legged amazon. Continuous charcoal metal CUIRASS covers the entire abdomen to hips; tasteful medium upper-chest neckline and narrow neck choker, both upper arms bare below small shoulder guards, forearm gauntlets, short muted-plum asymmetrical hip cloth above knees over opaque fitted shorts, exposed upper thigh, articulated shin guards, flat practical boots. No bare abs, no blue-core gauntlet. Make armor panel seams wrap consistently around sides/back and preserve open arms for rigging. Keep the design and big cloth shapes from reference 2. No held spear; spear is separate attachment geometry.",
+      "refs": [
+        "G:/exoduser/output/character_style_variations_20261101/independent_liv_face_v17.png",
+        "G:/exoduser/assets/characters/female-heroes/20261102-v19/spearmage-asymmetric-bob.front.png"
+      ],
+      "correction": null
+    }
+  ],
+  "history": [
+    {
+      "id": "transmuter_turnaround_profile_history",
+      "filename": "transmuter.turnaround.before_side_correction.png",
+      "source": "C:\\Users\\심도진\\.codex\\generated_images\\01a194cc-8301-70f1-80f8-a4e5f1090c22\\exec-dfe0ce11-47c2-4468-acc3-5923cb1a0f6f.png",
+      "status": "SIDE_ORIENTATION_CORRECTED"
+    }
+  ],
+  "engineTarget": "AWAITING_USER_UNITY_OR_WEB",
+  "runtimeApplied": false,
+  "limitations": [
+    "Static 2D source PNGs and three-view production references only. No 3D mesh, humanoid rig, animation or playable sprite atlas exists in this package.",
+    "Turnarounds contain inferred unseen surfaces and generative seam/pose variation; these are not calibrated orthographic geometry.",
+    "Alpha presence was decoded and verified; matte edges, hair silhouettes and foot pivots require actual target-runtime review.",
+    "Face originals remain byte-identical immutable masters; generated bodies are interpretations and are not pixel-identical face transfers."
+  ]
+}
