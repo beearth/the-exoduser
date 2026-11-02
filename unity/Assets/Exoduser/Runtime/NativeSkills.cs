@@ -270,6 +270,7 @@ namespace Exoduser.UnityPort {
    var hr=new Rect(altarCenter.x-width/2,altarBounds.yMax-73,width,29);Grad(hr,C(6,9,9,.82f),C(6,9,9,.82f));Border(hr,C(89,92,92,.333f));Text(hr,hint,serif,13,C(217,214,208),FontStyle.Normal,0,TextAnchor.MiddleCenter,true);
    foreach(var o in slot.orbs)DrawOrb(o,level);
   }
+  internal static float OrbLevelY(float nameBottom,float levelY,float levelHeight,float measuredLevelHeight){return Math.Max(levelY,nameBottom+2-(levelHeight-measuredLevelHeight)/2);}
   void DrawOrb(SkillDefsOrb o,int level){
    var c=altarCenter+AltarOrigin+new Vector2(o.x,o.y)-new Vector2(960,672.89f);float r=o.o/2f;bool ki=o.id=="kiSlash";
    bool dim=o.dim&&!(cur!=null&&Ported(o.id)&&SkillLevelOf(o.id)>=1);
@@ -283,10 +284,12 @@ namespace Exoduser.UnityPort {
    // label: name (12px) + level/host badge, soft dark blob behind
    var nr=AltarRect(o.nameRect);Glow(nr.center.x,nr.center.y,nr.width/2+8,nr.height/2+4,C(6,9,9,.86f));
    Color nameCol=ki?C(240,220,168):dim?C(138,141,141):C(217,214,208);
-   Text(nr,skillById.TryGetValue(o.id,out var d)?d.name:o.id,serif,12,nameCol,FontStyle.Normal,0,TextAnchor.MiddleCenter,true);
+   string orbName=skillById.TryGetValue(o.id,out var d)?d.name:o.id;Text(nr,orbName,serif,12,nameCol,FontStyle.Normal,0,TextAnchor.MiddleCenter,true);
    if(SkillLevelOf(o.id)>0&&o.subRect!=null&&o.subRect.Length==4){
-    var sr=AltarRect(o.subRect);Glow(sr.center.x,sr.center.y,sr.width/2+8,sr.height/2+4,C(6,9,9,.86f));
-    Text(new Rect(sr.x,sr.y,sr.width,sr.height),"Lv "+SkillLevelOf(o.id),serif,11,C(167,170,170),FontStyle.Bold,.22f,TextAnchor.MiddleCenter,true);
+    var sr=AltarRect(o.subRect);string levelText="Lv "+SkillLevelOf(o.id);
+    if(!o.host){float nameH=Style(serif,12,FontStyle.Normal).CalcSize(new GUIContent(orbName)).y,levelH=Style(serif,11,FontStyle.Bold).CalcSize(new GUIContent(levelText)).y;sr.y=OrbLevelY(nr.y+(nr.height+nameH)/2+1.5f,sr.y,sr.height,levelH);}
+    Glow(sr.center.x,sr.center.y,sr.width/2+8,sr.height/2+4,C(6,9,9,.86f));
+    Text(new Rect(sr.x,sr.y,sr.width,sr.height),levelText,serif,11,C(167,170,170),FontStyle.Bold,.22f,TextAnchor.MiddleCenter,true);
    }
    if(o.host&&o.hostRect!=null&&o.hostRect.Length==4){
     var hr=AltarRect(o.hostRect);Grad(hr,C(40,43,43),C(19,22,22));Border(hr,C(139,142,142));
