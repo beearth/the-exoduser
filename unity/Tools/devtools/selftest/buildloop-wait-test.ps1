@@ -139,3 +139,18 @@ $script:readyCalls=0;$script:queued=$false;$Force=$false
 Cmd-Run
 if($script:readyCalls -ne 1){throw 'FAIL: ordinary cycle skipped a previous same-SHA WAIT'}
 'PASS: ordinary same-SHA cycle retries after forced WAIT; lastAttemptSha retained'
+
+# 11-03: an ABORT after build left build_new with pending=null and every later cycle aborted on it.
+$orphan=Join-Path $fixture 'build_new';New-Item -ItemType Directory -Path $orphan -Force|Out-Null
+[IO.File]::WriteAllText((Join-Path $orphan 'orphan.txt'),'left by an aborted cycle')
+$script:saved.pending=$null;$Force=$true;$script:queued=$false
+function Wait-Ready {return $true}
+function Run-Smoke {throw 'fixture abort after build'}
+Cmd-Run
+$f=Get-ChildItem $RunsDir -Directory|Sort-Object Name|Select-Object -Last 1
+$r=ReadJson (Join-Path $f.FullName 'run.json')
+if($r.verdict -ne 'ABORT'){throw ('FAIL: abort fixture verdict '+$r.verdict)}
+if(-not(Test-Path (Join-Path $f.FullName 'orphan-build-before/orphan.txt'))){throw 'FAIL: orphan build_new not archived before build'}
+if(-not(Test-Path (Join-Path $f.FullName 'aborted-build/EXODUSER-Unity.exe'))){throw 'FAIL: own aborted build not archived'}
+if(Test-Path $orphan){throw 'FAIL: build_new still blocks the next cycle'}
+'PASS: orphan build_new archived, own ABORT build archived, next cycle unblocked'
