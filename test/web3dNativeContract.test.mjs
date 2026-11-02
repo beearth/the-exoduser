@@ -10,7 +10,51 @@ const game=fs.readFileSync(new URL('../game.html',import.meta.url),'utf8');
 const mapScript=fs.readFileSync(new URL('../web3d/bridge-map.js',import.meta.url),'utf8');
 const main=html=>html.slice(html.indexOf('<script>\n// ┌')+9).split('</script>')[0];
 
-test('all native combat/save/AI declarations retain their exact baseline source',()=>{
+// fbfff89: 검토한 상자 비행/수거 연결만 되돌려 나머지 함수 원문을 비교한다.
+const reviewedChestAdapters={
+  "update": [
+    [
+      "  _tickChestDrops(_dtSp/60);\n",
+      ""
+    ],
+    [
+      "        const landings=_chestLootPositions(it.x,it.y,cnt,(x,y)=>canMv(x,y,18),worldItems.filter(w=>w.type==='item'&&!w.picked));\n",
+      ""
+    ],
+    [
+      "          const jumpHeight=Math.random(),jumpTime=Math.random(); // Preserve the original two position RNG calls.\n          _wiPush({x:landings[ci].x,y:landings[ci].y,type:'item',item,picked:false,_chestDrop:{fromX:it.x,fromY:it.y-35,age:0,delay:.55+ci*.06,duration:.42+jumpTime*.08,height:38+jumpHeight*14}});",
+      "          _wiPush({x:it.x+(Math.random()-.5)*50,y:it.y+(Math.random()-.5)*50,type:'item',item,picked:false});"
+    ],
+    [
+      "if(it.type!=='item'||it.picked||it._chestDrop)continue;",
+      "if(it.type!=='item'||it.picked)continue;"
+    ]
+  ],
+  "draw": [
+    [
+      "      const flightPose=_chestDropPose(it);if(!flightPose.visible)continue;\n      X.save();X.translate(flightPose.x-it.x,flightPose.y-it.y);\n",
+      ""
+    ],
+    [
+      "if(_beamTier>0&&!it._chestDrop){",
+      "if(_beamTier>0){"
+    ],
+    [
+      "      X.restore();\n    }\n    else if(it.type==='chest'){",
+      "    }\n    else if(it.type==='chest'){"
+    ]
+  ]
+};
+function restoreReviewedChestAdapters(source,name){
+  for(const [from,to] of reviewedChestAdapters[name]||[]){
+    const count=source.split(from).length-1;
+    assert.equal(count,name==='update'&&from.includes('it.picked||it._chestDrop')?2:1,'reviewed chest adapter drift: '+name);
+    source=source.split(from).join(to);
+  }
+  return source;
+}
+
+test('native combat/save/AI source is exact outside reviewed environment and chest adapters',()=>{
   const git=process.platform==='win32'?'C:/Program Files/Git/cmd/git.exe':'git';
   // 검수된 전투 표현 후보를 기준으로 3D 병합이 새 feel 함수까지 보존하는지 검사한다.
   const baseline=execFileSync(git,['show','0206fb14df311c1b911ae76ee2921082f7787a10:game.html'],{encoding:'utf8',maxBuffer:12e6,windowsHide:true});
@@ -24,7 +68,7 @@ test('all native combat/save/AI declarations retain their exact baseline source'
   for(const [name,source]of before)if(!adapterHooks.has(name)){
     // Optional environment hooks: ground light, original-object relief, foliage.
     // Actor/VFX/input/save declarations and the rest of draw remain byte-exact.
-    const restored=after.get(name)
+    const restored=restoreReviewedChestAdapters(after.get(name),name)
       .replace(/^  const _web3dAmbient=G.stage===0&&!G._bossArena&&window\._Web3DLivingLayer\?\.snapshot\(\)\.enabled;\r?\n/m,'')
       .replace('if(_lightCvs&&!_web3dAmbient)','if(_lightCvs)')
       .replace('X.globalAlpha=_web3dAmbient?0:_vAlpha','X.globalAlpha=_vAlpha')
