@@ -10,6 +10,8 @@ R8: 원화15종의 낮은 뿌리 군락을10구역에 추가. 단일 root_fan �
 
 **제작자 RETOUCH 후보**. 낮은 뿌리의 국소 접합·소재 균형과 실제ON 국소 hue의 독립 CTO 재판정이 남는다. 전체AAA·자연HP보스완주·NW.js재빌드·Steam게시와 구분. 정상 정확경로 commit/push·main 비강제반영·3333예약 실제SHA/HTTP대조는 delivery.json. Unity 반영: 대기(웹 인게임 월드 표현). UI·UX·소리 변경0.
 
+3333 전달 차단: latest-web HEAD b1a26271c, 미인수 tracked API가이드/CHANGELOG 및 untracked 캐릭터/아트 WIP 때문에 자동ff가 진행되지 않음. task종료0은성공근거아님. 타인WIP stage/reset/stash/덮어쓰기 금지,3377에서현재후보제공. 정상 main 포함·설치본/3333 상태는 외부 delivery.json을 구분해읽는다. 후속총괄은latest-web 원작성자와WIP 소유를 먼저확인한다.
+
 ## R7 보존 이력 — 최신 판정 아님
 
 작업본 G:/exoduser-wt/codex-web3d, codex/web3d-trial-20261031. [현행 R7 SSOT](../../4.1맵디자인+설정/WEB3D_TRIAL_20261031.md). CTO 21:40의 새 스티커 결함을 수정했다. **제작자 해당범위 VISUAL PASS / 독립 CTO 재판정 대기 / 기본 r3d OFF 유지**. 과거5라운드 자체PASS로 기본ON을 결정하지 않는다.

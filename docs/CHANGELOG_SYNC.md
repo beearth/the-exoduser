@@ -4,6 +4,7 @@
 - WEB3D_TRIAL·MAP_SSOT_INDEX·web3d 인계에 수치/배치/검수 정의 동기화. 원재질 분리 hue와 실제ON 잔여바닥 국소평균을 별도 공개. 1920/3840 13구도, 10초4편/1x재생/프레임차, 활성64적96탄 FPS·회귀·합병 뒤 스모크 근거는 I:/EXODUSER-Storage/codex-takeover/web3d-r8/REPORT.md와 delivery.json. 제작자 RETOUCH/기본OFF, 전체AAA·Unity·Steam 완료 아님.
 - 검수 중 main b1a26271c의 로딩인장/UI 대장을 정상병합. game.html의 critical header/리소스 query 외 원본 본문 동일은 merge-proof.json으로 대조한다. 필수 동기화 로그 누락 검사는 이 추가 커밋에서 보완하며 우회하지 않는다.
 - 합병 뒤 guard가 생성한 정확한 행수 baseline66201→66207을 별도 정상 커밋으로 동기화. 해시/보스인덱스 등 다른 baseline값 보존. DEMO/EA 도구의 dirty검사를 우회하지 않고 이 변경을 먼저 보존한 뒤 dry-run을 재개한다.
+- 실제전달 차단도인계에기록: 3333관리작업본의미인수 API/CHANGELOG/캐릭터WIP로ff미진행. 타인WORK보존·3377현재후보제공,main반영과3333갱신을구분한다. 설치본의실제차감/백업/바이트는외부delivery.json기준.
 
 ## 2026-11-02 타이틀 마지막 세 결함 동시 마감
 
