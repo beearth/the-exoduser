@@ -162,3 +162,7 @@ Desktop213파일은 빌드→staging→설치 후 전수SHA와 목록 일치, �
 | 보존 범위 | 캐릭터 영상 밝기·회색 처리, 생성 잠금 정책, 저장, Core, 사운드, 스킬 코드 변경0 |
 
 정적 추출검사 29언어145항목 일치·기존 label 변경0, Runtime 독립 C# compile 종료0/error0(기존 warning32). 영수증 `third/character/lore-extraction-check.json`, `runtime-compile.log`, `character-final.patch`, `character-source.json`. 실제 최종 union Player의1920/2560/3840 캐릭터0/1 검수는 부모 담당이며 이 후보는 시각 PASS가 아니다.
+
+## 최종 Player 영수증 — 3차
+
+빌드53412e1f(af70a6a2c5)·같은패키지UI6699ddaa 76PNG/1920·2560·3840/기능14 PASS·M1653caf5c23/23. 모두공식ok·창0·잔여0·USER_SAVE0, Runtime06a013b876120aafbd6d8adb3adf0f0171a2bc81187b6207222a23fabe14e2a7. 직접1x·확대및담당재검수완료. 전체미이식/잔여차이는 UNITY_WEB_PARITY_THIRD_20261102.md에명시한RETOUCH이며, 자연플레이/OS입력/전체언어검증과구분한다. 근거 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/third/review/.

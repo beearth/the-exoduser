@@ -658,3 +658,7 @@ PC 담당이 I:/EXODUSER-Storage/character-capacity/20261101-unlimited/receiver/
 ## 2026-11-02 저녁 PC parity 실물 통합
 
 사용자 2차 지시의 소스 9e771f7712를 unity/main에 비강제 반영했다. 최종 Win64 112a8abb는 오류 0·USER_SAVE 0, 같은 패키지 M1 7e05298a와 설치본 731adf79는 각각23/23이다. 1920·3840 UI186장/타이틀 모션·잔점 크롭을 직접 검수했고, 오디오3313979d 477검사/결정3회 및 화폐 d6be008e 4단계·6캡처도 통과했다. Desktop213파일 전수SHA·링크 읽기 일치. UI는 기존 미이식·글꼴·장식 차이로 RETOUCH이며 Mac 반영은 미검증이다. 자기 예약 반환, 사용자 앱 종료0. 상세는 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md.
+
+## 2026-11-02 3차 CTO parity 검수·공통 반영
+
+PC후보af70a6a2c5는정본버전매빌드읽기·직업X사슬/로어·실능력치계획/예약/저장·지원6스킬관리·대장간배치·클리어난이도확정창을연결했다. 정식53412e1f오류0·같은패키지M1653caf5c23/23·UI6699ddaa3해상도76PNG/기능14PASS·USER_SAVE0, PDB338소스일치다. 두차례난이도GPU캐시시각FAIL뒤원본규격sRGB무손실PNG로방법을바꿔잔점/계조를해결했고제단RGB도보존했다. 전체UI는42스킬/일부패시브/요약drawer/다음1-2미이식과세부획/광택차이로RETOUCH유지. 바탕화면은개발툴자동빌드소유·직접교체0. 자기예약반환·Mac실제반영/실행미검증. 반영SHA/15개1x비교/3x/세부영수증은 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md. Mac기존WIP·앱미접촉, 4/5차전체범위는이번3차와구분한다.

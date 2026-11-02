@@ -44,3 +44,7 @@
 현행 방법은 원본 Loading 09/07/11/15/19의 float CSS 수식을 CPU에서 계산해 **8bit sRGB 무손실 PNG**로 저장한 10개 자산을 일반 Texture2D/GUI 경로로 로드하는 것이다. `Art/Loading/Difficulty/{09,07,11,15,19}-{dim,hover}.png`를 사용한다. dim은 grayscale(.2126,.7152,.0722)→brightness .62→contrast1.05, hover는 grayscale .4→brightness .85→contrast1이다. 자산 생성과 importer/meta는 부모 단일 writer가 맡는다. NativeNextDifficultyPanel은 신규 PNG를 읽을 뿐 RenderTexture/Material/Blit/GL.sRGBWrite를 전혀 사용하지 않는다. 선택 원화·정책·입력·버튼·저장 코드는 변경하지 않았다.
 
 `DifficultyCard.shader`는 소스/도구 검색 결과 자체 파일 외 참조0으로 더 이상 쓰이지 않으며 부모가 정확경로 삭제할 예정이다. 독립 Runtime 컴파일은 Roslyn8.0.301/Unity6000.6.7f1 참조로 exit0·오류0(기존 analyzer 경고 유지), 로그는 `third/difficulty/Runtime-cpu-texture.log`다. 이 검사는 PNG importer와 실제 Player의 잔점0을 검증한 것이 아니므로 새 PNG를 포함한 최종 같은 빌드 1920/3840 캡처·1x/확대 판정은 별도로 필요하다.
+
+## 최종 Player 영수증 — 3차
+
+빌드53412e1f(af70a6a2c5)·같은패키지UI6699ddaa 76PNG/1920·2560·3840/기능14 PASS·M1653caf5c23/23. 모두공식ok·창0·잔여0·USER_SAVE0, Runtime06a013b876120aafbd6d8adb3adf0f0171a2bc81187b6207222a23fabe14e2a7. 직접1x·확대및담당재검수완료. 전체미이식/잔여차이는 UNITY_WEB_PARITY_THIRD_20261102.md에명시한RETOUCH이며, 자연플레이/OS입력/전체언어검증과구분한다. 근거 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/third/review/.

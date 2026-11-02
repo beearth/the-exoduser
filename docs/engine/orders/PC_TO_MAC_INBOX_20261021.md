@@ -314,3 +314,7 @@ PC 소스9e771f7712를 공통에 반영했다. 같은 Unity트리의 Win64 112a8
 ## 2026-11-02 4차 로비 UI 소리
 
 PC `codex/unity-lobby-uisound-20261102`가 로비 제외 조건을 해제하고 웹 원음6종·gain/피치/루프·일반/결정 중복 억제를 연결했다. 소스ce3464ff82, Win64 959c78a1 오류0·같은패키지 M1 5f39f0e1 23/23·1920/3840 출력버퍼 4404c328/254e9ac1 각425/425, PDB218 source/DLL 일치. [전수표·검수 범위](../UNITY_LOBBY_UI_SOUND_20261102.md), 외부 REPORT `I:/EXODUSER-Storage/codex-takeover/unity-uisound/REPORT.md`. 3차 버전/잠김 표시와 레이아웃을 변경하지 않았고 바탕화면 교체0·최종 사용자 청음 대기다. 비강제 공통 반영 SHA는 REPORT에서 확인한다.
+
+## 2026-11-02 3차 CTO parity 검수·공통 반영
+
+PC후보af70a6a2c5는정본버전매빌드읽기·직업X사슬/로어·실능력치계획/예약/저장·지원6스킬관리·대장간배치·클리어난이도확정창을연결했다. 정식53412e1f오류0·같은패키지M1653caf5c23/23·UI6699ddaa3해상도76PNG/기능14PASS·USER_SAVE0, PDB338소스일치다. 두차례난이도GPU캐시시각FAIL뒤원본규격sRGB무손실PNG로방법을바꿔잔점/계조를해결했고제단RGB도보존했다. 전체UI는42스킬/일부패시브/요약drawer/다음1-2미이식과세부획/광택차이로RETOUCH유지. 바탕화면은개발툴자동빌드소유·직접교체0. 자기예약반환·Mac실제반영/실행미검증. 반영SHA/15개1x비교/3x/세부영수증은 I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/REPORT.md. Mac기존WIP·앱미접촉, 4/5차전체범위는이번3차와구분한다.
