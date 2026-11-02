@@ -76,6 +76,7 @@ namespace Exoduser.UnityPort
             public int flipbookFrames,peakSprites,maxReactingTargets,normalReactingTargets;public bool warriorOnly,responseBaseline;public int frames,contacts,dropped,damage,casts,spawned,peakParticles,skillGraphEvents,peakSkillHandles,poisonFrames,thornFrames,darkFrames;
             public int captureWidth,captureHeight;
             public bool projectileBaseline;public int originalPoisonFrames,originalPhysicalFrames,originalDarkFrames,originalBulletFallbacks,kiOverlapShots;
+            public float kiAnchorError;public int kiAnchorSamples;
             public float normalKnockback,kiKnockback,slamKnockback;
             public int killedTargets;public bool killContactSeen;
             public bool kiThirdCastSeen,kiThirdHitSeen;public int kiThirdTier;
@@ -156,6 +157,7 @@ namespace Exoduser.UnityPort
                     if(sim.Druid!=null)foreach(var b in sim.Druid.Projectiles)trace.Append('|').Append(b.X.ToString("R",CultureInfo.InvariantCulture)).Append(':').Append(b.Y.ToString("R",CultureInfo.InvariantCulture)).Append(':').Append(b.Life.ToString("R",CultureInfo.InvariantCulture)).Append(':').Append(b.Active);
                     trace.Append('\n');
                     yield return null;yield return new WaitForEndOfFrame();
+                    int anchorSamples;rc.kiAnchorError=Mathf.Max(rc.kiAnchorError,kiView.MeasureProjectileAnchorError(sim,out anchorSamples));rc.kiAnchorSamples+=anchorSamples;
                     if(frame%2==0)ScreenCapture.CaptureScreenshot(Path.Combine(output,"frames","impact-"+(shot++).ToString("0000")+".png"));
                 }
                 if(sectionIndex==0)rc.normalKnockback=sectionKnockback;else if(sectionIndex==1)rc.kiKnockback=sectionKnockback;else if(sectionIndex==3)rc.slamKnockback=sectionKnockback;
@@ -171,7 +173,7 @@ namespace Exoduser.UnityPort
             bool feedbackOk=rc.baseline||rc.killContactSeen&&rc.contacts>0&&rc.spawned>0&&rc.flipbookFrames>0&&rc.peakSprites>0;
             bool warriorOk=rc.normalKnockback>1&&rc.kiKnockback>1&&rc.killedTargets>=1&&rc.kiThirdCastSeen&&rc.kiThirdHitSeen&&rc.kiThirdTier==3;
             bool skillsOk=rc.warriorOnly||rc.slamKnockback>1&&rc.coreMaliceBlasts>0&&castKinds.Contains("spikeTrap")&&castKinds.Contains("giantSlam")&&castKinds.Contains("holyDome")&&castKinds.Contains("iceOrb")&&castKinds.Contains("fireball");
-            rc.passed=warriorOk&&skillsOk&&feedbackOk&&(!rc.warriorOnly||rc.baseline||rc.normalReactingTargets==(rc.responseBaseline?2:3))&&rc.captureWidth==width&&rc.captureHeight==height&&rc.world3D==NativeRemodel3D.Requested&&shot==(rc.warriorOnly?300:480)&&damage>0;
+            rc.passed=warriorOk&&skillsOk&&feedbackOk&&(!rc.warriorOnly||rc.baseline||rc.normalReactingTargets==(rc.responseBaseline?2:3))&&rc.captureWidth==width&&rc.captureHeight==height&&rc.world3D==NativeRemodel3D.Requested&&shot==(rc.warriorOnly?300:480)&&damage>0&&(!rc.world3D||rc.kiAnchorSamples>0&&(rc.projectileBaseline||rc.kiAnchorError<.02f));
 
             File.WriteAllText(Path.Combine(output,"impact-review.json"),JsonUtility.ToJson(rc,true));
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();

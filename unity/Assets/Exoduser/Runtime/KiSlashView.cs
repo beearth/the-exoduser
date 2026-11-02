@@ -17,6 +17,8 @@ namespace Exoduser.UnityPort
         readonly Sprite line;
         readonly MaterialPropertyBlock properties=new MaterialPropertyBlock();
         static readonly int Opacity=Shader.PropertyToID("_Opacity");
+        static readonly HashSet<SpriteRenderer> centeredProjectiles=new HashSet<SpriteRenderer>();
+        public static bool IsCenteredSprite(SpriteRenderer r){return NativeRemodel3D.Active&&!NativeDruidArt.ProjectileBaseline&&centeredProjectiles.Contains(r);}
 
         public KiSlashView(Transform parent,Func<int,Sprite> frame)
         {
@@ -36,11 +38,11 @@ namespace Exoduser.UnityPort
         SpriteRenderer Renderer(string name,Material material,int order)
         {
             var go=new GameObject(name);go.transform.SetParent(parent);
-            var r=go.AddComponent<SpriteRenderer>();if(material!=null)r.sharedMaterial=material;r.sortingOrder=order;return r;
+            var r=go.AddComponent<SpriteRenderer>();if(material!=null)r.sharedMaterial=material;r.sortingOrder=Mathf.Clamp(order,-32768,32767);return r;
         }
         public void Reset()
         {
-            foreach(var layers in projectiles.Values)foreach(var r in layers)UnityEngine.Object.Destroy(r.gameObject);
+            foreach(var layers in projectiles.Values)foreach(var r in layers){centeredProjectiles.Remove(r);UnityEngine.Object.Destroy(r.gameObject);}
             projectiles.Clear();foreach(var r in charge)r.enabled=false;foreach(var r in tiers)r.enabled=false;
         }
         public void Update(Simulation simulation)
@@ -54,11 +56,11 @@ namespace Exoduser.UnityPort
                 if(!projectiles.TryGetValue(p.Id,out var layers))
                 {
                     layers=new SpriteRenderer[5];
-                    for(int i=0;i<5;i++)layers[i]=Renderer("Ki crescent "+p.Id+" layer "+i,i==0?ink:additive,order+i);
+                    for(int i=0;i<5;i++){layers[i]=Renderer("Ki crescent "+p.Id+" layer "+i,i==0?ink:additive,order+i);centeredProjectiles.Add(layers[i]);}
                     projectiles.Add(p.Id,layers);
                 }
                 float progress=Mathf.Clamp01(1-p.Life/Mathf.Max(1,p.MaxLife));
-                for(int i=0;i<layers.Length;i++)layers[i].sortingOrder=order+i;
+                for(int i=0;i<layers.Length;i++)layers[i].sortingOrder=Mathf.Clamp(order+i,-32768,32767);
                 int cell=Mathf.Min(8,Mathf.FloorToInt(progress*9));
                 float alpha=Mathf.Min(1,(1-progress)*2.5f),size=(p.Step==3?252:192)*p.ChargeScale;
                 Set(layers[0],cell,p.X,p.Y,p.Angle,size*1.14f,size*1.14f,alpha*(restrained?Vfx.SkillPresentation.KiLayerOpacity(0,p.Step==3):.9f));
@@ -69,7 +71,7 @@ namespace Exoduser.UnityPort
                 Set(layers[4],cell,p.X,p.Y,p.Angle,size,size,alpha*(restrained?Vfx.SkillPresentation.KiLayerOpacity(4,p.Step==3):1));
             }
             var remove=new List<int>();foreach(var id in projectiles.Keys)if(!active.Contains(id))remove.Add(id);
-            foreach(int id in remove){foreach(var r in projectiles[id])UnityEngine.Object.Destroy(r.gameObject);projectiles.Remove(id);}
+            foreach(int id in remove){foreach(var r in projectiles[id]){centeredProjectiles.Remove(r);UnityEngine.Object.Destroy(r.gameObject);}projectiles.Remove(id);}
             var player=simulation.Player;
             foreach(var r in charge)r.enabled=player.KiChargeActive;foreach(var r in tiers)r.enabled=player.KiChargeActive;
             if(!player.KiChargeActive)return;
@@ -91,6 +93,7 @@ namespace Exoduser.UnityPort
         void Set(SpriteRenderer r,int cell,float x,float y,float angle,float width,float height,float alpha)
         {
             r.enabled=true;r.sprite=frame(cell);r.transform.position=Point(x,y);
+            if(IsCenteredSprite(r))r.transform.position+=Vector3.up*.55f;
             r.transform.rotation=Quaternion.Euler(0,0,-angle*Mathf.Rad2Deg);
             r.transform.localScale=new Vector3(width/r.sprite.rect.width,height/r.sprite.rect.height,1);r.color=Color.white;
             // Explicit per-renderer opacity avoids relying on pipeline-specific
@@ -98,6 +101,13 @@ namespace Exoduser.UnityPort
             r.GetPropertyBlock(properties);properties.SetFloat(Opacity,alpha);r.SetPropertyBlock(properties);
         }
         static Vector3 Point(float x,float y){return NativeRemodel3D.Point(x,y);}
+        // QA reads the actual post-projection transform, never a cached intended height.
+        public float MeasureProjectileAnchorError(Simulation sim,out int samples)
+        {
+            samples=0;float error=0;if(!NativeRemodel3D.Active)return 0;
+            foreach(var p in sim.Projectiles)if(p.Active&&projectiles.TryGetValue(p.Id,out var layers)&&layers[4].enabled){samples++;error=Mathf.Max(error,Vector3.Distance(layers[4].transform.position,Point(p.X,p.Y)+Vector3.up*.55f));}
+            return error;
+        }
         public void Dispose(){Reset();foreach(var r in charge)UnityEngine.Object.Destroy(r.gameObject);foreach(var r in tiers)UnityEngine.Object.Destroy(r.gameObject);UnityEngine.Object.Destroy(line);UnityEngine.Object.Destroy(additive);UnityEngine.Object.Destroy(ink);}
     }
 }

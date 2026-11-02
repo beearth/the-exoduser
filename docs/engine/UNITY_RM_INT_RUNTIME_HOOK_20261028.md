@@ -489,3 +489,5 @@ Shore는 고정앵글러 주변을 피한 후 z−52~−42에서 다시28u 굽�
 ### 11-03 PC KiSlashView 발광·출력 순서 보완 후보
 
 3D에서 큰 원화 검기가 적을 가리는 실제 화면을 확인해, 원화/크기/판정/기검참 공식은 보존하고 출력 이득과 순서만 조정한다. 2D 및 `--unity-impact-projectile-baseline`은 원래 표현을 유지한다. 기본/3타 additive 합은0.895/0.685, 잉크0.35, 순서는 actorY-1024+slot×5+layer(최종short범위clamp)로 근처 적/적탄을 우선 표시한다. 별도 f200 중첩 fixture의 새 탄3개와 원래 움직임으로 실제검수하며, Graph/접지/Mac 기존 판정과 섞지 않는다. 상세5레이어 수치·중첩 좌표·실행근거는 `docs/5.1임펙트디자인/UNITY_RM1_VFX_IMPLEMENTATION_20261028.md`의 11-03 탄막 가독성 보완 절. 제품 Core 변경0·표현980개 및 Player/Editor 전 어셈블리 컴파일 오류0이며, 새 정식 빌드/M1/10초·1x 판정 전에는 미검증이다.
+
+후속 실제1x 재작업: 위 이득 조정만으로는 검기 원화의 중심이 실제 탄 궤적보다 높았다. 발사체5레이어만 KiSlashView.IsCenteredSprite로 구분해 일반 배우 FootLift를 제외하고 Core지면+0.55m에 둔다. 충전/티어표시·2D·이전표현은 이 역할에서 제외한다. QA MeasureProjectileAnchorError는 렌더 직전 실제 transform을 읽으며 kiAnchorError 최대0.02m 미만·kiAnchorSamples>0을 요구한다. 원화 크기/판정은 보존한다. 원화·조명 보스방은 별도 XY 좌표 경로로, NativeRemodel3D.Active=false를 실패/성공의 단독 근거로 쓰지 않는다. 이 후보는 새 정식 실게임 비교를 기다리며 기존 공통/설치 합격을 소급 변경하지 않는다.

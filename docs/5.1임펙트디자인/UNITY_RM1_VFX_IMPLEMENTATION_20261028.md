@@ -291,5 +291,8 @@ Graph 본체 대신 기존 원화 경로를 유지한다. 실제 첫 Player에�
 | 중첩 검수 | 두 번째 기검참 구간 f200에 실제 이동하는 독/물리/어둠탄 각1개 추가. X=P.X+220+k×35, Y=P.Y+10+k×22, Vx=-3/Vy0, R8/Sz1.1/Life=Ml180/Dmg1, k0..2. 완전충전3타 해제 부근의 원화 안을 지나게 하며 두 표현에 같은 입력. kiOverlapShots=3 기록. 자연 스폰 증거 아님 |
 | 검사·한계 | 표현980개 GREEN·Core 변경0. RGB/alpha의 모양·탄막 가시성은 새 정식 같은패키지 1x·10초 중첩 영상에서 직접 판정해야 함. 이전 FF 팔레트 빌드는 진단 이력으로 보존 |
 
+중심 투영 재작업: 19774 후보의 실제1x 중첩에서도 일반 배우용 FootLift가 검기 전체 높이의 절반을 더해 원화 중심을 탄 궤적 위로 들어 올렸다. 검기 발사체5레이어만 KiSlashView.IsCenteredSprite로 식별해 3D FootLift를 제외하고 실제 Core좌표 지면+0.55m에 중심을 둔다. 원화9셀·폭/높이·회전·Core판정은 그대로다. 2D 및 projectile-baseline은 종전 투영을 유지하고, 충전 원화/티어표시는 이 역할에서 제외해 그대로 둔다. renderer 생성/매 tick의 최종 sortingOrder는 short범위(-32768..32767)로 clamp한다. 수명 종료/Reset 때 역할 registry에서 본인 renderer만 제거한다. QA는 WaitForEndOfFrame 뒤 실제 주 레이어 transform과 Core지면+0.55m의 거리를 재며 kiAnchorError(최대m)/kiAnchorSamples를 기록한다. 3D 수정표현은 관측>0·최대오차0.02m 미만을 요구하며, 이전표현의 오차는 그대로 보존한다. CPU980개의 기존 수치/수명 검사는 재사용하고 실제 정렬·겹침은 새 정식 같은패키지 영상에서 다시 판정한다.
 
 
+
+보스 검수의 실제 필드 로딩 대기는45초 상한이다. 검기 centeredProjectiles 역할 registry와 MeasureProjectileAnchorError는 본인 발사체만 다루며 배우 FootLift/타 팀 투영을 변경하지 않는다.
