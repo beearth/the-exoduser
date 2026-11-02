@@ -59,22 +59,22 @@ namespace Exoduser.UnityPort
             if (bedWanted)
             {
                 if (!bed.isPlaying) { bed.Play(); bedLevel = 0; }
-                bedLevel = Mathf.Min(1, bedLevel + dt / FadeInSeconds); bed.volume = bedLevel * BedGain * bus.SfxGain;   // web: 0.15 x sfxVol
+                bedLevel = Mathf.Min(1, bedLevel + dt / FadeInSeconds); bed.volume = bedLevel * BedGain * bus.SfxGain * NativeScreenTransition.Gain;   // web: 0.15 x sfxVol
             }
             if (arenaWanted)
             {
                 if (!arenaBed.isPlaying) { arenaBed.Play(); arenaLevel = 0; }
-                arenaLevel = Mathf.Min(1, arenaLevel + dt / FadeInSeconds); arenaBed.volume = arenaLevel * BedGain * bus.SfxGain;
+                arenaLevel = Mathf.Min(1, arenaLevel + dt / FadeInSeconds); arenaBed.volume = arenaLevel * BedGain * bus.SfxGain * NativeScreenTransition.Gain;
             }
             else if (arenaBed.isPlaying)
             {
-                arenaLevel = Mathf.Max(0, arenaLevel - dt / BedFadeSeconds); arenaBed.volume = arenaLevel * BedGain * bus.SfxGain;
+                arenaLevel = Mathf.Max(0, arenaLevel - dt / BedFadeSeconds); arenaBed.volume = arenaLevel * BedGain * bus.SfxGain * NativeScreenTransition.Gain;
                 if (arenaLevel <= 0) arenaBed.Stop();
             }
             if (bedWanted) { }
             else if (bed.isPlaying)
             {
-                bedLevel = Mathf.Max(0, bedLevel - dt / BedFadeSeconds); bed.volume = bedLevel * BedGain * bus.SfxGain;
+                bedLevel = Mathf.Max(0, bedLevel - dt / BedFadeSeconds); bed.volume = bedLevel * BedGain * bus.SfxGain * NativeScreenTransition.Gain;
                 if (bedLevel <= 0) bed.Stop();
             }
         }

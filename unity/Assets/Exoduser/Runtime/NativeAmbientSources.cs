@@ -64,15 +64,15 @@ namespace Exoduser.UnityPort
             foreach (var s in riverSources)
             {
                 bool near = !track || Vector3.Distance(s.transform.position, listener) <= CullDistance;   // far sources sleep: the voice budget belongs to what can be heard
-                s.volume = RiverVolume * bus.SfxGain;   // outside the SFX group: follows the SFX setting like the web bus
+                s.volume = RiverVolume * bus.SfxGain * NativeScreenTransition.Gain;   // outside the SFX group: follows the SFX setting like the web bus
                 if (near && !s.isPlaying) s.Play(); else if (!near && s.isPlaying) s.Stop();
             }
             foreach (var w in swamps)
             {
-                w.timer -= dt; if (w.timer > 0) continue;
+                w.source.volume = BubbleVolume * bus.SfxGain * NativeScreenTransition.Gain;w.timer -= dt; if (w.timer > 0) continue;
                 w.timer = 2f + (float)rng.NextDouble() * 4f;   // 2-6 s
                 if (track && Vector3.Distance(w.source.transform.position, listener) > CullDistance) continue;
-                w.source.pitch = .9f + (float)rng.NextDouble() * .2f; w.source.volume = BubbleVolume * bus.SfxGain; w.source.Play(); BubblesPlayed++;
+                w.source.pitch = .9f + (float)rng.NextDouble() * .2f; w.source.volume = BubbleVolume * bus.SfxGain * NativeScreenTransition.Gain; w.source.Play(); BubblesPlayed++;
             }
         }
         public void Clear()
