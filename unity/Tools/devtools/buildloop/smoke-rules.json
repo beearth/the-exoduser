@@ -149,7 +149,9 @@
   "uiOverlap": {
     "required": true,
     "command": "unity/Tools/ui-overlap/check.ps1 -OverlapOnly",
-    "receipt": "ui-check/overlap/overlap-report.json",
+    "receipt": "ui-check/overlap/overlap-summary.json",
+    "detailReport": "ui-check/overlap/overlap-report.json",
+    "maxReceiptBytes": 65536,
     "maxIssues": 0,
     "resolutions": [[1920, 1080], [1600, 900]],
     "languages": "ko, de, 실제 서체 폭으로 선정한 설정/직업선택 최장 언어"

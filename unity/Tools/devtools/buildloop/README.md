@@ -35,6 +35,16 @@ origin/unity/main 변경을 확인해 exo-unity Win 빌드 → 숨은 데스크�
 
 기존 UI 겹침 검사는 M1 후 ui-overlap/check.ps1 -OverlapOnly로 수행한다. 이 검사가 실패해도 임의 생략하거나 PASS로 바꾸지 않는다.
 
+| UI 영수증 소비 계약 (2026-11-03) | 값·판정 |
+|---|---|
+| 작은 영수증 | ui-check/overlap/overlap-summary.json만 읽음. 허용 길이65,536B, 읽기/버퍼65,537B 이하(읽는 중 증가의 초과 탐지1B 포함), UTF-8 엄격 해독 |
+| 엄격 스키마 | passed(bool), frameCount/issueCount(0..9,007,199,254,740,991의 JSON 정수), missing(문자열 배열) 정확4필드. 중복/추가 키·주석·끝 쉼표·타입 강제 변환 불허 |
+| PASS | 검사 exit0 + passed=true + frameCount>0 + issueCount=0 + missing빈배열 + 상세 보고서 파일 경로 존재. 누락/읽기 실패/손상/잘못된 타입·음수/비정상exit는 FAIL |
+| 상세 근거 | overlap-report.json은 경로와 존재 여부만 보존. 거대 본문을 읽거나 해시/파싱하지 않음. 겹침_검사.md·PNG 보존 |
+| 규칙/회귀 | smoke-rules.uiOverlap의 receipt=summary, detailReport=상세경로, maxReceiptBytes=65536, maxIssues=0. selftest/buildloop-overlap-summary-test.ps1:48검증과 실제 Cmd-Run PASS/FAIL/누락/손상/비정상exit. 원본81B 요약의1395장·147건은 FAIL 유지 |
+
+이번 소스 수정은 원본 ABORT run을 재작성하지 않으며 새 촬영·Unity/Player·빌드·GPU 실행 없이 검증한다. 설치본 반영은 정상 회차 종료·fingerprint/CAS 확인 후 별도 인수 단계다.
+
 Roslyn 사전 검사: compile-check.ps1 -Output <I: 경로>. 기본 LibraryProject는 G:/exoduser-wt/codex-unity-parity-1102/unity의 기존 Bee RSP를 읽는다. 현재 작업본의 asmdef·asmref(이름/GUID)를 따라 소스를 배정하고 Core→Runtime→Editor 순서로 Player/Editor를 분리 컴파일한다. defineConstraints 등 미지원 입력은 성공으로 간주하지 않는다. result.json의 실제 DLL·종료코드를 확인하며 Unity 컴파일이 최종 판정이다.
 
 스모크 앞 reserve는 -Kind player다. Editor 사전 대기는 없고 Player 전용 슬롯·10GB·FIFO를 따른다. Get-BlockingUnityOwner는 종류에 맞는 앞 owner/slot을 읽는다. Player 슬롯 초과도 WAIT·lastAttemptSha 보존·waiting-build 보관으로 처리하며 실제 Cmd-Run fixture로 검사한다.
