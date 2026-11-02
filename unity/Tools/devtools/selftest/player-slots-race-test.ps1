@@ -18,7 +18,14 @@ function Say($m){}
 [IO.File]::WriteAllText((Join-Path $Root ($identity+'.ready')),'ready')
 while(-not(Test-Path (Join-Path $Root 'go'))){Start-Sleep -Milliseconds 20}
 try {
- Acquire-PlayerSlot 'fixture.exe' $PID
+ $admissionUntil=(Get-Date).AddSeconds(5)
+ while($true){
+  try{Acquire-PlayerSlot 'fixture.exe' $PID;break}catch{
+   if($_.Exception.Message -match '시작 인계 중|동시 획득 재검사' -and (Get-Date) -lt $admissionUntil){Start-Sleep -Milliseconds 25;continue}
+   throw
+  }
+ }
+ Release-PlayerAdmission
  [IO.File]::WriteAllText((Join-Path $Root ($identity+'.admitted')),$script:PlayerSlotToken)
  $holdUntil=(Get-Date).AddSeconds(30)
  while(-not(Test-Path (Join-Path $Root 'release')) -and (Get-Date) -lt $holdUntil){Start-Sleep -Milliseconds 20}

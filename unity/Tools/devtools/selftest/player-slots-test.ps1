@@ -28,11 +28,19 @@ try {
  Check (@(Get-Reservations 'editor').Count -eq 2) 'missing kind must be editor'
  Check (@(Get-Reservations 'player').Count -eq 0) 'legacy reservation entered player FIFO'
  Acquire-PlayerSlot 'fake.exe' $PID
+ Check ($null -ne $script:PlayerAdmissionHandle) 'admission must stay serialized until process creation'
+ $mutexBlocked=$false
+ try{$probe=[IO.File]::Open((Join-Path $Root '_player_admission.guard'),'OpenOrCreate','ReadWrite','None');$probe.Dispose()}catch [IO.IOException]{$mutexBlocked=$true}
+ Check $mutexBlocked 'OS admission lock does not exclude another writer'
+ $WatchNames=@('EXODUSER-selftest-none')
+ $guard=Invoke-Guarded "$env:SystemRoot/System32/cmd.exe" @('/c','exit','0') $Root 5 0 @() $false
+ Check ($null -eq $script:PlayerAdmissionHandle) 'process creation did not release admission lock'
  $held=Read-Json $script:PlayerSlotPath
  Check ($held.runnerVersion -eq $ExoUnityVersion -and $held.token -and $held.exe -eq 'fake.exe') 'slot schema/version'
  Check (@(Get-PlayerSlots).Count -eq 1) 'first slot not counted'
  $first=$script:PlayerSlotPath;$firstToken=$script:PlayerSlotToken
  Acquire-PlayerSlot 'fake.exe' $PID
+ Release-PlayerAdmission
  Check (@(Get-PlayerSlots).Count -eq 2) 'second slot not admitted alongside first'
  $second=$script:PlayerSlotPath;$secondToken=$script:PlayerSlotToken
  $blocked=$false;try{Acquire-PlayerSlot 'fake.exe' $PID}catch{$blocked=$_.Exception.Message -like '*Player*대기 시간 초과*'}
@@ -59,6 +67,7 @@ try {
  Check ((Get-LegacyPlayerCount) -eq 0) 'reused old player pid counted'
  Write-JsonAtomic $LockPath @{owner='devtools-player';pid=$PID;startedAt=(NowIso)}
  Acquire-PlayerSlot 'fake.exe' $PID
+ Release-PlayerAdmission
  $blocked=$false;try{Acquire-PlayerSlot 'fake.exe' $PID}catch{$blocked=$true}
  Check $blocked 'legacy + new permits third player'
  Release-PlayerSlot
@@ -70,6 +79,7 @@ try {
  Write-JsonAtomic $LockPath @{owner='devtools-server';pid=$PID;startedAt=(NowIso)}
  Check (-not(Get-PlayerDrainReason)) 'drain triggered while editor lock occupied'
  Acquire-PlayerSlot 'fake.exe' $PID
+ Release-PlayerAdmission
  Check (@(Get-PlayerSlots).Count -eq 1) 'new player cannot overlap editor'
  Release-PlayerSlot
  Remove-Item -LiteralPath $LockPath
@@ -82,8 +92,10 @@ try {
  $blocked=$false;try{Acquire-PlayerSlot 'fake.exe' $PID}catch{$blocked=$_.Exception.Message -match '맨 앞은 b'}
  Check $blocked 'player FIFO bypassed'
  $Owner='b';Acquire-PlayerSlot 'fake.exe' $PID
+ Release-PlayerAdmission
  $bp=$script:PlayerSlotPath;$bt=$script:PlayerSlotToken
  $Owner='c';Acquire-PlayerSlot 'fake.exe' $PID
+ Release-PlayerAdmission
  Check (@(Get-PlayerSlots).Count -eq 2) 'active front reservation blocks second player'
  Release-PlayerSlot;$script:PlayerSlotPath=$bp;$script:PlayerSlotToken=$bt;Release-PlayerSlot
  $Owner='a';$Kind='editor';Cmd-Unreserve|Out-Null;Remove-Item -LiteralPath $legacyRes
@@ -103,5 +115,6 @@ try {
  Check (@(Get-Reservations 'player'|Where-Object owner -eq 'cleanup').Count -eq 1) 'KeepReservation lost'
  'PASS: '+$script:checks+' player/editor slot decisions; Unity launches=0'
 } finally {
+ if(Get-Command Release-PlayerAdmission -ErrorAction SilentlyContinue){Release-PlayerAdmission}
  if((Test-Path $Root) -and [IO.Path]::GetFullPath($Root).StartsWith('I:\EXODUSER-Storage\devtools\fix-1103-slots\fixture-')){Remove-Item -LiteralPath $Root -Recurse -Force}
 }

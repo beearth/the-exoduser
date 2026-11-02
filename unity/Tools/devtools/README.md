@@ -188,6 +188,7 @@ Unity 없는 시험: selftest/idle-yield-test.ps1, buildloop-wait-test.ps1, asse
 |---|---|
 | 버전 | `$ExoUnityVersion='2026.11.03-slots1'`, status 첫 줄·JSON runnerVersion·슬롯 JSON |
 | Player 상한 | `$MaxPlayerSlots=2`. CreateNew 원자 획득, 슬롯 보유자 + 살아 있는 구버전 owner=devtools-player의 _pc_lock을 1개로 계산. 사용자 직접 연 Player는 제외 |
+| 시작 경합 | _player_admission.guard의 파일 핸들로 새 실행기의 슬롯 획득→실제 자식 생성까지만 직렬화. 생성 뒤 즉시 반환해 두 Player는 병렬 실행. _pc_lock은 잡지 않음 |
 | stale | pid 사망 또는 프로세스 생성 시각 > startedAt이면 동일 token·pid·startedAt 재확인 후 회수. 해제는 자기 pid+token만 |
 | FIFO | reserve/unreserve -Kind editor 또는 player(기본 editor). Player -Owner는 자동 예약·완료 후 반환, -KeepReservation은 유지. 실행 중 Player 예약은 대기 FIFO 제외 |
 | 굶주림 방지 | editor 선두 등록 후 20분 이상이고 _pc_lock이 비어 있으면 새 Player 통과를 막아 0개까지 배출. status/대기 사유에 owner 표시 |

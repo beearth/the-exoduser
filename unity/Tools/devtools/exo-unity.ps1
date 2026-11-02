@@ -390,6 +390,10 @@ function Release-PlayerSlot {
     if ($s -and [int]$s.pid -eq $PID -and $s.token -eq $script:PlayerSlotToken) { Remove-Item -LiteralPath $script:PlayerSlotPath -Force -ErrorAction SilentlyContinue }
 }
 
+function Release-PlayerAdmission {
+    if ($script:PlayerAdmissionHandle) { $script:PlayerAdmissionHandle.Dispose(); $script:PlayerAdmissionHandle=$null }
+}
+
 function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
     New-Item -ItemType Directory -Force -Path $Root | Out-Null
     $deadline = (Get-Date).AddMinutes($WaitMin); $lastMsg = ''
@@ -402,6 +406,16 @@ function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
         $free = Get-CommitFreeGB
         if (-not $blocked -and $free -lt 10) { $blocked = '커밋 여유 ' + $free + 'GB < 필요 10GB' }
         if (-not $blocked) {
+            $admitted=$false
+            try { $script:PlayerAdmissionHandle=[IO.File]::Open((Join-Path $Root '_player_admission.guard'),'OpenOrCreate','ReadWrite','None') }
+            catch [IO.IOException] { $blocked='Player 시작 인계 중' }
+            if (-not $blocked) { try {
+            # 프로세스 생성까지 새 실행기의 진입을 직렬화한다. 첫 Player가 생성되기 전
+            # 신2개+구1개가 모두 Unity 0개를 관측하는 시작 경합을 막는다. _pc_lock은 쓰지 않는다.
+            $legacy=Get-LegacyPlayerCount
+            $turn=@(Get-WaitingPlayerReservations)
+            if ($turn.Count -gt 0 -and (-not $Owner -or $turn[0].owner -ne $Owner)) { $blocked='player 예약 큐 맨 앞은 '+$turn[0].owner }
+            if (-not $blocked) {
             # 구버전 Player가 있으면 후보 파일도 1개로 줄여 동시 경쟁자의 상호 포기 반복을 막는다.
             for ($i=1; $i -le ($MaxPlayerSlots - $legacy); $i++) {
                 $path = Join-Path $Root ('_player_slot_' + $i + '.json')
@@ -412,11 +426,13 @@ function Acquire-PlayerSlot([string]$exeFull, [int]$ownerPid) {
                 try { $bytes=$Utf8NoBom.GetBytes(($content|ConvertTo-Json));$fs.Write($bytes,0,$bytes.Length) } finally { $fs.Dispose() }
                 $script:PlayerSlotPath=$path; $script:PlayerSlotToken=$token
                 # 다른 slot/구버전 lock의 동시 획득 뒤 상한을 다시 검사한다.
-                if ((@(Get-PlayerSlots).Count + (Get-LegacyPlayerCount)) -le $MaxPlayerSlots -and (Get-CommitFreeGB) -ge 10 -and -not (Get-PlayerDrainReason)) { return }
+                if ((@(Get-PlayerSlots).Count + (Get-LegacyPlayerCount)) -le $MaxPlayerSlots -and (Get-CommitFreeGB) -ge 10 -and -not (Get-PlayerDrainReason)) { $admitted=$true; return }
                 Release-PlayerSlot
                 break
             }
             $blocked = 'Player 슬롯 동시 획득 재검사'
+            }
+            } finally { if (-not $admitted) { Release-PlayerAdmission } } }
         }
         if ((Get-Date) -gt $deadline) { throw ('Player 슬롯 대기 시간 초과(' + $WaitMin + '분): ' + $blocked) }
         if ($blocked -ne $lastMsg) { Say ('대기: ' + $blocked + ' (' + $PollSec + '초 간격)'); $lastMsg=$blocked }
@@ -1018,6 +1034,8 @@ function Invoke-Guarded([string]$File, [string[]]$ArgList, [string]$Cwd, [int]$l
         if ($Cwd) { $sp.WorkingDirectory = $Cwd }
         $proc = Start-Process @sp
     }
+    # 자식이 실제 생성된 뒤 다음 Player를 들인다. 생성 실패는 Cmd-Player finally가 반환한다.
+    if ($script:PlayerAdmissionHandle) { Release-PlayerAdmission }
     $tree = @{}; $violations = @(); $warnings = @(); $timedOut = $false; $expectedKill = $false
     $sw = [Diagnostics.Stopwatch]::StartNew()
     while ($true) {
@@ -1169,6 +1187,7 @@ function Cmd-Player {
         elseif (-not $gpu) { $fail = '그래픽 장치 이름을 로그에서 찾지 못함(GPU 확인 불가)' }
         Finish-Guarded 'player' $id $g ([ordered]@{ exe = $exeFull; args = @($ia); gpu = $gpu; gfxNull = $nullGfx; log = $log; desktop = $Desktop; hiddenWindows = $g.hiddenWindows; hiddenTitles = @($g.hiddenTitles); desktopClosed = $g.desktopClosed; processId = $g.processId; startedAt = $g.startedAt; finishedAt = $g.finishedAt; hiddenDesktopName = $g.hiddenDesktopName; slot = $script:PlayerSlotPath }) $extraOk $fail
     } finally {
+        Release-PlayerAdmission
         Release-PlayerSlot
         if ($Owner -and -not $KeepReservation) { Cmd-Unreserve | Out-Null }
     }

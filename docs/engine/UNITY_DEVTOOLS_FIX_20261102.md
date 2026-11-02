@@ -70,6 +70,7 @@ WAIT는 본편 lastAttemptSha를 보존하면서 lastAttemptVerdict만 WAIT로 �
 | Player / Acquire-PlayerSlot | MaxPlayerSlots=2, _player_slot_1.json·_player_slot_2.json CreateNew. owner·pid(실행기)·exe·startedAt·token·reservedAs·runnerVersion |
 | 상한·stale | 생존 슬롯+생존 구버전 devtools-player lock 1개로 계산. 사용자 직접 Player는 제외. pid 사망/생성시각>startedAt이면 동일 token·pid·startedAt 재확인 후 회수. 생성시각 조회 실패는 보수적으로 유지 |
 | 구버전 경쟁 | 구 Player가 있으면 후보 slot 파일도 1개로 제한하며 획득 후 상한·10GB·drain 재검사. _pc_lock/타인 프로세스 조작 없음 |
+| 시작 인계 | _player_admission.guard의 배타 핸들을 슬롯 획득부터 실제 자식 생성까지 유지. 두 새 실행기와 구 실행기가 모두 Unity0을 보고 3개를 시작할 수 있는 경합 방지. 생성 뒤 즉시 반환, 실패/프로세스 종료 시 핸들 반환 |
 | 예약 | reserve/unreserve -Kind editor 또는 player(기본editor). kind 없음=editor. 종류별 FIFO. 만료 예약은 읽기 제외, 타 담당 파일 삭제 안 함 |
 | Player Owner | 자기 player 예약 자동 생성·완료/대기실패 뒤 반환. KeepReservation이면 유지. 실행 중 예약은 waiting FIFO 제외하여 두 번째 슬롯 진입 허용 |
 | 굶주림 방지 | editor 선두 등록 후20분 이상 + _pc_lock 파일 없음이면 새 Player 통과 중단. status·대기 메시지에 owner 표시. Editor 획득/예약 반환·만료 뒤 재평가 |
@@ -77,7 +78,7 @@ WAIT는 본편 lastAttemptSha를 보존하면서 lastAttemptVerdict만 WAIT로 �
 | 보호·영수증 | 무창 hidden 기본·무음·GUID별 sandbox/log·PID+GUID desktop·USER_SAVE·HALT·자기 자손 정리 유지. Player receipt에 processId·startedAt·finishedAt·hiddenDesktopName·slot 추가 |
 | buildloop | 스모크 -Kind player, Editor 사전 대기 제거. Player 슬롯 시간초과도 WAIT. Get-BlockingUnityOwner(kind)는 종류별 앞 예약/보유자 반환 |
 | install-bin | ps1·psm1·cjs·mjs·json·md를 I:/EXODUSER-Storage/unity-jobs/bin에 복사, bin_prev_<UTC시각> 보관. 모듈은 PSScriptRoot, 프로젝트·미디어는 Worktree. 이번 작업에서 실행하지 않음 |
-| 단위 | player-slots-test.ps1 32판정, race-test stale 회수 포함 실제4경쟁자×2파형(신2/구1+신1), idle11, WAIT상태14+종류별 앞 owner·실제 Cmd-Run fixture. 나머지 기존 인자·티켓·로그·교체·그래픽·소스수집 회귀 포함 |
+| 단위 | player-slots-test.ps1 35판정(실제 숨김 CMD 자식 생성·시작 인계 반환 포함), race-test stale 회수 포함 실제4경쟁자×2파형(신2/구1+신1), idle11, WAIT상태14+종류별 앞 owner·실제 Cmd-Run fixture. 나머지 기존 인자·티켓·로그·교체·그래픽·소스수집 회귀 포함 |
 | 실제 2개 M1 | concurrent-20261103-010419014: 각각23/23, guiRepaints1145/1160, 창/USER_SAVE/잔여0. 실제 동시 생존 표본8개·23.252초 이상, 실행기 구간27.631초. sampled 커밋 여유 최저18.185GiB, 다른 Editor 빌드 job과도2.434초 겹침. HUD 각3장 직접 확인 |
 
-실제 동시 M1·단계표·6개 HUD 직접 판정·커밋 여유·원격 tip·남은 문제는 I:/EXODUSER-Storage/devtools/fix-1103-slots/REPORT.md. fix2의 원본 run/smoke는 덮어쓰지 않는다. 단위 시험과 기존 패키지 M1은 변경된 C#의 정식 Unity 컴파일·새 빌드를 대신하지 않는다.
+실제 동시 M1·단계표·6개 HUD 직접 판정·커밋 여유·원격 tip·남은 문제는 I:/EXODUSER-Storage/devtools/fix-1103-slots/REPORT.md. fix2의 원본 run/smoke는 덮어쓰지 않는다. 최종 시작 인계·delete-pending 보완은 Unity 없는 자식 생성/경합 시험으로 검증했으며 M1 2회 제한 때문에 이후 Unity 재실행은 하지 않았다. 변경 C#의 정식 Unity 컴파일·새 빌드는 별도다.
