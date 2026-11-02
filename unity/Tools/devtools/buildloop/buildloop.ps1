@@ -763,7 +763,7 @@ function Cmd-Run {
   $ch = Get-Changed $depFull $head.full; $run.changedCount = $ch.count; $run.changed = $ch.items
   $rules = Load-Rules
   $runStart = Get-Date
-  $got = $false; $reserved = $false; $stage = $null
+  $got = $false; $reserved = $false; $stage = $null; $ownStage = $false
   try {
     Log "=== run $runId  HEAD $($head.short) $($head.subject)"
     if (-not (Acquire-Lock $runId)) { $run.replaceNote = '잠금 대기 초과 - 이번 회차 중단'; return }
@@ -804,7 +804,12 @@ function Cmd-Run {
     $proj = Join-Path $Cfg.Worktree 'unity'
     $stage = Join-Path $Cfg.Out 'build_new'
     if ($NoSwap) { $stage = Join-Path $runDir 'build_new' }
-    if (Test-Path -LiteralPath $stage) { throw '기존 build_new 보존: 먼저 pending/실패 후보를 확인하세요' }
+    if (Test-Path -LiteralPath $stage) {
+      # pending이 남아 있으면 754줄에서 이미 return. 여기까지 온 build_new는 이전 ABORT 회차가 남긴 고아 후보라 이 회차 폴더로 보관하고 진행한다(11-03 회차마다 ABORT 정체).
+      if ($NoSwap -or ((Get-Item -LiteralPath $stage).Attributes -band [IO.FileAttributes]::ReparsePoint)) { throw '기존 build_new 보존: 먼저 pending/실패 후보를 확인하세요' }
+      Move-Item -LiteralPath $stage -Destination (Join-Path $runDir 'orphan-build-before'); Log ('이전 회차가 남긴 build_new를 보관: ' + (Join-Path $runDir 'orphan-build-before'))
+    }
+    $ownStage = $true
     $sw = [Diagnostics.Stopwatch]::StartNew()
     $bx = Invoke-Exo 'build' @('-output',$stage,'-receipt',(Join-Path $runDir 'build-receipt.json'),'-remodel-scenes','1') (Join-Path $runDir 'exo-build')
     $run.buildExit = $bx.exit; $run.buildSeconds = [int]$sw.Elapsed.TotalSeconds
@@ -946,9 +951,10 @@ function Cmd-Run {
     # WAIT keeps the reservation (createdAt preserved) so the next 30-min cycle keeps its FIFO place instead of rejoining at the back; TTL covers the gap.
     if ($reserved -and $run.verdict -eq 'WAIT') { Log '예약 유지: WAIT 회차는 다음 주기까지 순번을 지킨다' }
     elseif ($reserved) { try { Set-UnityReservation 'unreserve' 'editor'; Set-UnityReservation 'unreserve' 'player' } catch { Log ('예약 반환 경고: ' + $_.Exception.Message) } }
-    if ($run.verdict -eq 'WAIT' -and -not $NoSwap -and $stage -and (Test-Path -LiteralPath $stage)) {
+    $pendingMine = ($null -ne $st.pending -and [string]$st.pending.runId -eq $runId)
+    if ($run.verdict -in 'WAIT','ABORT' -and -not $NoSwap -and $ownStage -and -not $pendingMine -and (Test-Path -LiteralPath $stage)) {
       # Own build_new only; keep the completed candidate without blocking the next cycle.
-      $target = Join-Path $runDir 'waiting-build'
+      $target = Join-Path $runDir $(if ($run.verdict -eq 'WAIT') { 'waiting-build' } else { 'aborted-build' })
       if ([IO.Path]::GetFullPath($stage) -ne (Join-Path $Cfg.Out 'build_new') -or ((Get-Item -LiteralPath $stage).Attributes -band [IO.FileAttributes]::ReparsePoint)) { throw 'WAIT 후보 보관 경로/링크 거부' }
       Move-Item -LiteralPath $stage -Destination $target
     }
