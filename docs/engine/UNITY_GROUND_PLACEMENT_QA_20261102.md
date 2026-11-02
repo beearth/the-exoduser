@@ -792,3 +792,38 @@ ROOT intake: same product8f; static receipt verified. QA-only exact derivative/s
 ### QA derivative GUID 修正 / 실제 실행 전 중단
 
 QA source3ec249b6의 일반 ARM64 빌드는 Succeeded였으나 errors1을 확인해 Player를 시작하지 않았다. 새 QA-only shader meta GUID `ea9df09ffae54e699054039ce82ee66ec`가33hex여서 Unity가 asset을 무시했다. 고친 GUID는 `1389b11cce034ca882f43d26366bb448`(32hex)이며 기존 assets와 중복 없음은 stage meta 검사로 확인한다. helper/C#/제품8f는 그대로, 이미 통과한 정적 검사는 반복하지 않는다. 실패 build와 import 전후772 drift/원본은 보존한다. 다음 source 원격 선확인 후 새 receiverModelMeta 이름으로 다시 빌드하고 errors0과 QA shader 실제 포함을 확인한 뒤 실행한다. guard의 경로/receipt 이름만 새 label로 바꾸고 원래 raw/cache 보호 알고리즘은 유지한다. 실제 GPU 인수는 미완료다.
+
+
+## 2026-11-02 맥 동일제품 QA 참조 교정 실제 통과(한 장면)
+
+제품8f391fea는 그대로다. QA2f368f105d30a6066c92ae85a33e358373205a6c와 PC 문서 후속e952ec89를 GitHub에서 빌드 전에 확인했다. 새 QA shader의33hex GUID 오류를 errors1에서 발견해 그 빌드는 Player를 실행하지 않았고,32hex로 고친 다음1813 meta GUID 형식/중복0을 확인했다. 수정 일반 ARM64 빌드 errors0, 실제 Apple M5 Pro/Metal 한 번 실행 exit0이다.
+
+| 항목 | 이전/보존 진단 | 새 실제 값과 범위 |
+|---|---|---|
+| 원래 bilinear weight 게이트 | max0.04643953591585159 FAIL | 그대로 false; 허용2/255 불변 |
+| 원래 bilinear maxRGB | 0.007769191637635231 | 기존2/255 이내 |
+| forward / raw2x2 derivative | 28/32 /27/32 유효 | 원 invalid/실패 증거 별도 보존 |
+| QA 전용 동일 shader 계산위치 ddx/ddy | 기존 source texel/load 진단 보존 | 32/32 유효, invalid0 |
+| captured derivative SampleGrad weight | 이전 mip0 참조와 구분 | max0.00042392313480377197 ≤2/255 |
+| captured derivative maxRGB/RGBA | 원 half 수식 복제 | 각각 max0.00010918918997049332 ≤2/255 |
+| mode2↔mode4 pairing | 독립 프레임 | inputHash/FrameSize/카메라 행렬 정확 일치, 동시 frame API라고 주장하지 않음 |
+| 원 probeMaterial 복구 | 임시 QA float pass만 교체 | 원 객체 동일 복구, 정상 display/source material 불변 |
+| RT Cancel 소유권 | 호출자 target | 취소 후 생성 유지, 이후 QA 소유 cleanup |
+| 전체 legacy / corrected smoke | legacy false 보존 | corrected true, smoke true; soil Lv1 spike 한 장면만 |
+| 환경설정 | raw26/cache27 | 즉시/2s/7s 복구 후 exact |
+| PNG | 1920×1080, 직접3840×1080 | ROOT 직접검수/동일 바이트; 확대 리사이즈 아님,3840×2160 아님 |
+
+원본 텍스처/수식/tint/atlas/importer/전역 Quality/2/255를 바꾸지 않았다. 단순 mip0 bilinear가 실제 GPU footprint를 반영하지 못한 것이 큰 잔차의 근거다. texture aniso1/global ForceEnable 그대로이고, 같은 원 texel Load 대 decoder RGBA는0이었다. 제품 오류를 완화하거나 기존 FAIL을 PASS로 덮어쓰지 않고, 다른 GPU 참조 모델을 독립 게이트로 추가했다. exactddx/ddy QA shader는 제품 shader의 동일 packed UV와 clip 순서에서 값을 회수하며 shader/compiler 동일성 주장은 이번 실제 검수 범위에 한정한다.
+
+전체148 상태/수명/진짜pool/음성대조,12large,8dense,72ring,actor/rail/rock/talltrunk 제외,2D복원은 기존 담당에게 다음 작업으로 배정했다. 아직 해당 전체 검수·same-appM1·자연플레이·서명 설치·Windows빌드/PC수신 완료를 주장하지 않는다. 원래 설치1403와 공유 HEAD/index/WIP는 바이트 유지 확인했다. 결과 evidence는 `docs/engine/evidence/UNITY_MAC_RECEIVER_MODEL_20261102.json`이다.
+
+MAP PRODUCTION REPORT
+- STAGE: A2 soil Lv1 spike 한 장면 GPU receiver QA. MASTER/OUTER MASS/LARGE/MEDIUM geometry 미변경·이번 미검수.
+- GROUND: 원1920 및 직접3840×1080에서 effect가 soil을 따르는 외관 확인. shadow/contamination/전체 structure integration 통과 주장없음.
+- PLAYABLE: 주전장/travel/breathing/threat 전체 미검수. actor 앞 효과 한 프레임만, 전체 actor 제외 미검수.
+- LANDMARK: primary/secondary/tertiary 미변경·미검수.
+- CAMERA QA: START/EARLY/ARENA/SIDE L/SIDE R/LANDMARK/LATE/EXIT 투어 미수행; 고정 QA 카메라만.
+- TECH QA: loading/shader/RenderGraph 실제 오류0. 접촉 mode3≤0.02m,32원 표본 RGBA2/255 이내. route/collision/pageerror/404/seam/전체 FPS 미검수. Update/Late 시간은 evidence 기록이며 GPUreadback와 전체FPS 판정이 아님.
+- FILES: stage-owned QA helper/shaders/meta/guard/docs/evidence; shared concurrent/unrelated 변경없음.
+- GIT: source2f368f10 원격 선확인; 본 커밋 결과발행. deploy/install 미수행.
+- VISUAL VERDICT: RETOUCH. 한 장면 외관은 양호, 전체맵/전투/전체효과 인수 보류. 기존 A2/ImpactR4 판정 유지.

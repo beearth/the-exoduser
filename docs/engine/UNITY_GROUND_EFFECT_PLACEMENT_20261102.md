@@ -100,3 +100,6 @@ NativeGroundSkillProjection.RequestProbe(createdRGBAFloatRT,mode)는 target 소�
 ## MAP PRODUCTION REPORT — 현재 gate
 
 범위: 환경 제작이 아닌 지면 효과 표현 결함. 지형/원본맵/충돌/전투핵심 변경0. Reference는 현재같은원본Player의흙/뿌리/목교이다. source/CPU·324컴파일과 Mac 첫 흙 한 건의 실제 투영·깊이 및 원본1920 화면을 확인했다. 전체 원화RGBA·여러 지면/설치형·대형/밀집·M1·자연플레이·앱설치/공통/PC전달은 진행 중이다. VISUAL VERDICT: RETOUCH(첫 흙 한 장 외 전체 시각 검수 대기). 기존사용자앱/세이브·PC공용WIP와index는보존하며 소스후보만으로완료를주장하지않는다.
+
+
+2026-11-02 맥 QA 후속: 제품8f 동일, QA2f368f10의 soil Lv1 spike 한 장면에서 captured GPU ddx/ddy 기반 SampleGrad 참조를 원2/255로 비교해32/32 valid, weight최대0.000423923135/RGBA최대0.00010918919 corrected smokePASS. 기존 mip0 bilinear FAIL은 보존. 원probe객체/정상재질/26raw27cache 복구. 입력hash/카메라가 같은 독립프레임 RGBA pairing이며 동시프레임 API 증명은 아님. 전체148/12large/8dense/72ring/제외/2D/M1/자연플레이/통합설치/Win64 인수는 아직 미완료. 상세 근거: UNITY_GROUND_PLACEMENT_QA_20261102.md 및 evidence/UNITY_MAC_RECEIVER_MODEL_20261102.json.

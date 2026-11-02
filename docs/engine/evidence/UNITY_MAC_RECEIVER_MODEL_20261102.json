@@ -1,0 +1,785 @@
+{
+  "source": "2f368f105d30a6066c92ae85a33e358373205a6c",
+  "productSource": "8f391fea6f157433fcaea2df611d0a9b146c6604",
+  "pcDocsAncestor": "e952ec89751d11a8aadece77f1fa8abc146b5e89",
+  "remoteReadbackBeforeBuild": true,
+  "normalArm64Build": {
+    "passed": true,
+    "settingsQa": false,
+    "uiQa": false,
+    "result": "Succeeded",
+    "engine": "6000.6.7f1",
+    "target": "StandaloneOSX",
+    "architecture": "ARM64",
+    "output": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/build-receiverModelMeta-normal/EXODUSER-Unity.app",
+    "product": "EXODUSER · Unity 이식 검증판",
+    "identifier": "com.ForDearGamers.EXODUSER----Unity-----------------",
+    "errors": 0,
+    "bytes": 4544155747
+  },
+  "actualPackage": {
+    "app": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/build-receiverModelMeta-normal/EXODUSER-Unity.app",
+    "source": "2f368f105d30a6066c92ae85a33e358373205a6c",
+    "productSource": "8f391fea6f157433fcaea2df611d0a9b146c6604",
+    "runtimeSha256": "9436ed462f4792e27006fb1629e6077361ac183fc5d2ed80219a32a998d6f8a4",
+    "coreSha256": "4a3e09bceb59d4a8a186e23a669014acf8c0be8096c3c2800bbf69d0a6ab213d",
+    "executableSha256": "58e6ac1cb0f5d3ccb7316c73e7bf184be2b32db045b8f4e10ff163d07d42acd3"
+  },
+  "api": "Metal",
+  "device": "Apple M5 Pro",
+  "run": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/profile-guard-runs/20261102T035337515039Z-10863",
+  "smokePassed": true,
+  "legacySmokePassed": false,
+  "correctedModelPassed": true,
+  "model": {
+    "status": "scoped-model-pass",
+    "error": "",
+    "scope": "32 original samples; QA clone captured ddx/ddy at original packed sampling site; helper output not inferred from cleared raw neighbors; shader/compiler equivalence remains scoped",
+    "selected": 32,
+    "valid": 32,
+    "invalid": 0,
+    "capturedGpuDerivatives": true,
+    "mode2Passed": true,
+    "mode4Compared": true,
+    "frameCompatible": true,
+    "passed": true,
+    "maxWeightError": 0.00042392313480377197,
+    "maxRgbError": 0.00010918918997049332,
+    "maxRgbaError": 0.00010918918997049332,
+    "mode2Frame": {
+      "frame": 4,
+      "realtime": 9.565639334183675,
+      "frameSize": {
+        "x": 1920,
+        "y": 1080
+      },
+      "serial": 2,
+      "receiverCount": 287,
+      "volumeCount": 1,
+      "available": true,
+      "apiError": "",
+      "inputHash": "72f5fc328e41bc32be505b3768c0c40a3ba235cf2f41dfeb2ac7df0a6de54de6",
+      "inputs": {
+        "sourceEntity": "6034:768",
+        "drawEntity": "6046:768",
+        "sourceShader": "EXODUSER/SkillAdditive",
+        "drawShader": "EXODUSER/GroundSkillProjection",
+        "texture": "skill_spike_thorn",
+        "graphicsFormat": "R8G8B8A8_SRGB",
+        "filterMode": "Bilinear",
+        "wrapMode": "Clamp",
+        "activeColorSpace": "Linear",
+        "materialIdentity": false,
+        "sourceOpacityPresent": false,
+        "sourceFlatPresent": true,
+        "texturePreserved": true,
+        "usesReceiverDepth": true,
+        "sourceEnabled": true,
+        "sourceForceOff": true,
+        "drawEnabled": true,
+        "drawForceOff": false,
+        "drawActive": true,
+        "sourceMode": 0,
+        "mipCount": 1,
+        "textureWidth": 1254,
+        "textureHeight": 1254,
+        "proxyVertices": 8,
+        "proxyTriangles": 12,
+        "geometryRevision": 1,
+        "textureAnisoLevel": 1,
+        "anisotropicFiltering": "ForceEnable",
+        "originalOpacityRaw": 0.0,
+        "originalFlatRaw": 0.0,
+        "flat": 0.0,
+        "opacity": 1.0,
+        "normalBlend": 0.0,
+        "destinationBlend": 1.0,
+        "ringRadius": 0.0,
+        "pixelsPerUnit": 100.0,
+        "rollDegrees": 359.9427185058594,
+        "sourceColor": {
+          "r": 1.0,
+          "g": 1.0,
+          "b": 1.0,
+          "a": 0.43239855766296387
+        },
+        "sourceRect": {
+          "serializedVersion": "2",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 1254.0,
+          "height": 1254.0
+        },
+        "sourcePosition": {
+          "x": 40.20000076293945,
+          "y": 0.29191821813583374,
+          "z": -77.0
+        },
+        "sourceScale": {
+          "x": 0.4784688949584961,
+          "y": 0.4784688949584961,
+          "z": 0.4784688949584961
+        },
+        "volumePosition": {
+          "x": 40.20000076293945,
+          "y": 0.29191821813583374,
+          "z": -77.0
+        },
+        "volumeScale": {
+          "x": 8.485280990600586,
+          "y": 16.0,
+          "z": 8.485280990600586
+        },
+        "tint": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.43239855766296387
+        },
+        "anchor": {
+          "x": 40.20000076293945,
+          "y": 0.29191821813583374,
+          "z": -77.0,
+          "w": 0.0
+        },
+        "u": {
+          "x": 0.16666658222675323,
+          "y": -0.00016663318092469126,
+          "z": 0.5,
+          "w": 0.0
+        },
+        "v": {
+          "x": 0.00016663318092469126,
+          "y": 0.16666658222675323,
+          "z": 0.5,
+          "w": 0.0
+        },
+        "atlas": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0,
+          "w": 1.0
+        }
+      },
+      "cameraView": {
+        "e00": 1.0,
+        "e01": 0.0,
+        "e02": 0.0,
+        "e03": -38.400001525878906,
+        "e10": 0.0,
+        "e11": 0.829037606716156,
+        "e12": 0.5591928958892822,
+        "e13": 42.43719482421875,
+        "e20": 0.0,
+        "e21": 0.5591928958892822,
+        "e22": -0.829037606716156,
+        "e23": -79.97050476074219,
+        "e30": 0.0,
+        "e31": 0.0,
+        "e32": 0.0,
+        "e33": 1.0
+      },
+      "cameraProjection": {
+        "e00": 1.2953521013259888,
+        "e01": 0.0,
+        "e02": 0.0,
+        "e03": 0.0,
+        "e10": 0.0,
+        "e11": 2.3028481006622314,
+        "e12": 0.0,
+        "e13": 0.0,
+        "e20": 0.0,
+        "e21": 0.0,
+        "e22": -1.003757119178772,
+        "e23": -0.6011271476745605,
+        "e30": 0.0,
+        "e31": 0.0,
+        "e32": -1.0,
+        "e33": 0.0
+      }
+    },
+    "mode4Frame": {
+      "frame": 6,
+      "realtime": 10.948784167183675,
+      "frameSize": {
+        "x": 1920,
+        "y": 1080
+      },
+      "serial": 4,
+      "receiverCount": 287,
+      "volumeCount": 1,
+      "available": true,
+      "apiError": "",
+      "inputHash": "72f5fc328e41bc32be505b3768c0c40a3ba235cf2f41dfeb2ac7df0a6de54de6",
+      "inputs": {
+        "sourceEntity": "6034:768",
+        "drawEntity": "6046:768",
+        "sourceShader": "EXODUSER/SkillAdditive",
+        "drawShader": "EXODUSER/GroundSkillProjection",
+        "texture": "skill_spike_thorn",
+        "graphicsFormat": "R8G8B8A8_SRGB",
+        "filterMode": "Bilinear",
+        "wrapMode": "Clamp",
+        "activeColorSpace": "Linear",
+        "materialIdentity": false,
+        "sourceOpacityPresent": false,
+        "sourceFlatPresent": true,
+        "texturePreserved": true,
+        "usesReceiverDepth": true,
+        "sourceEnabled": true,
+        "sourceForceOff": true,
+        "drawEnabled": true,
+        "drawForceOff": false,
+        "drawActive": true,
+        "sourceMode": 0,
+        "mipCount": 1,
+        "textureWidth": 1254,
+        "textureHeight": 1254,
+        "proxyVertices": 8,
+        "proxyTriangles": 12,
+        "geometryRevision": 1,
+        "textureAnisoLevel": 1,
+        "anisotropicFiltering": "ForceEnable",
+        "originalOpacityRaw": 0.0,
+        "originalFlatRaw": 0.0,
+        "flat": 0.0,
+        "opacity": 1.0,
+        "normalBlend": 0.0,
+        "destinationBlend": 1.0,
+        "ringRadius": 0.0,
+        "pixelsPerUnit": 100.0,
+        "rollDegrees": 359.9427185058594,
+        "sourceColor": {
+          "r": 1.0,
+          "g": 1.0,
+          "b": 1.0,
+          "a": 0.43239855766296387
+        },
+        "sourceRect": {
+          "serializedVersion": "2",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 1254.0,
+          "height": 1254.0
+        },
+        "sourcePosition": {
+          "x": 40.20000076293945,
+          "y": 0.29191821813583374,
+          "z": -77.0
+        },
+        "sourceScale": {
+          "x": 0.4784688949584961,
+          "y": 0.4784688949584961,
+          "z": 0.4784688949584961
+        },
+        "volumePosition": {
+          "x": 40.20000076293945,
+          "y": 0.29191821813583374,
+          "z": -77.0
+        },
+        "volumeScale": {
+          "x": 8.485280990600586,
+          "y": 16.0,
+          "z": 8.485280990600586
+        },
+        "tint": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.43239855766296387
+        },
+        "anchor": {
+          "x": 40.20000076293945,
+          "y": 0.29191821813583374,
+          "z": -77.0,
+          "w": 0.0
+        },
+        "u": {
+          "x": 0.16666658222675323,
+          "y": -0.00016663318092469126,
+          "z": 0.5,
+          "w": 0.0
+        },
+        "v": {
+          "x": 0.00016663318092469126,
+          "y": 0.16666658222675323,
+          "z": 0.5,
+          "w": 0.0
+        },
+        "atlas": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0,
+          "w": 1.0
+        }
+      },
+      "cameraView": {
+        "e00": 1.0,
+        "e01": 0.0,
+        "e02": 0.0,
+        "e03": -38.400001525878906,
+        "e10": 0.0,
+        "e11": 0.829037606716156,
+        "e12": 0.5591928958892822,
+        "e13": 42.43719482421875,
+        "e20": 0.0,
+        "e21": 0.5591928958892822,
+        "e22": -0.829037606716156,
+        "e23": -79.97050476074219,
+        "e30": 0.0,
+        "e31": 0.0,
+        "e32": 0.0,
+        "e33": 1.0
+      },
+      "cameraProjection": {
+        "e00": 1.2953521013259888,
+        "e01": 0.0,
+        "e02": 0.0,
+        "e03": 0.0,
+        "e10": 0.0,
+        "e11": 2.3028481006622314,
+        "e12": 0.0,
+        "e13": 0.0,
+        "e20": 0.0,
+        "e21": 0.0,
+        "e22": -1.003757119178772,
+        "e23": -0.6011271476745605,
+        "e30": 0.0,
+        "e31": 0.0,
+        "e32": -1.0,
+        "e33": 0.0
+      }
+    }
+  },
+  "exactDerivativeCapture": {
+    "stage": "final",
+    "error": "",
+    "rawPath": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/profile-guard-runs/20261102T035337515039Z-10863/receiverModelMeta/receiver-exact-derivatives.rgba32f",
+    "rawSha256": "62c4f58260f5dd1c85fa7def9060fdadc47d3d26b6dcd48284abd136477c7e08",
+    "originalProbeMaterialId": "5850:1280",
+    "qaProbeMaterialId": "5849:2304",
+    "shaderSourceSha": "4e65d469a6bfc65dc7d8f939e531655982a8b93afc17811018557eb140b17a89",
+    "apiContract": "extra QA RequestProbe mode3 with temporary private probeMaterial override; RGBA=ddx(packed).xy,ddy(packed).xy; original depth mode3 files unchanged",
+    "requestSerial": 4,
+    "completedSerial": 5,
+    "width": 1920,
+    "height": 1080,
+    "nonfinite": 0,
+    "waitMs": 49.46750000000044,
+    "originalSaved": true,
+    "originalRestored": true,
+    "targetStillCreatedAfterCancel": true,
+    "displayMaterialsUnchanged": true,
+    "snapshotCompatible": true,
+    "passed": true,
+    "requested": {
+      "frame": 6,
+      "realtime": 11.693513334183676,
+      "frameSize": {
+        "x": 1920,
+        "y": 1080
+      },
+      "serial": 4,
+      "receiverCount": 287,
+      "volumeCount": 1,
+      "available": true,
+      "apiError": "",
+      "inputHash": "72f5fc328e41bc32be505b3768c0c40a3ba235cf2f41dfeb2ac7df0a6de54de6",
+      "inputs": {
+        "sourceEntity": "6034:768",
+        "drawEntity": "6046:768",
+        "sourceShader": "EXODUSER/SkillAdditive",
+        "drawShader": "EXODUSER/GroundSkillProjection",
+        "texture": "skill_spike_thorn",
+        "graphicsFormat": "R8G8B8A8_SRGB",
+        "filterMode": "Bilinear",
+        "wrapMode": "Clamp",
+        "activeColorSpace": "Linear",
+        "materialIdentity": false,
+        "sourceOpacityPresent": false,
+        "sourceFlatPresent": true,
+        "texturePreserved": true,
+        "usesReceiverDepth": true,
+        "sourceEnabled": true,
+        "sourceForceOff": true,
+        "drawEnabled": true,
+        "drawForceOff": false,
+        "drawActive": true,
+        "sourceMode": 0,
+        "mipCount": 1,
+        "textureWidth": 1254,
+        "textureHeight": 1254,
+        "proxyVertices": 8,
+        "proxyTriangles": 12,
+        "geometryRevision": 1,
+        "textureAnisoLevel": 1,
+        "anisotropicFiltering": "ForceEnable",
+        "originalOpacityRaw": 0.0,
+        "originalFlatRaw": 0.0,
+        "flat": 0.0,
+        "opacity": 1.0,
+        "normalBlend": 0.0,
+        "destinationBlend": 1.0,
+        "ringRadius": 0.0,
+        "pixelsPerUnit": 100.0,
+        "rollDegrees": 359.9427185058594,
+        "sourceColor": {
+          "r": 1.0,
+          "g": 1.0,
+          "b": 1.0,
+          "a": 0.43239855766296387
+        },
+        "sourceRect": {
+          "serializedVersion": "2",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 1254.0,
+          "height": 1254.0
+        },
+        "sourcePosition": {
+          "x": 40.20000076293945,
+          "y": 0.29191821813583374,
+          "z": -77.0
+        },
+        "sourceScale": {
+          "x": 0.4784688949584961,
+          "y": 0.4784688949584961,
+          "z": 0.4784688949584961
+        },
+        "volumePosition": {
+          "x": 40.20000076293945,
+          "y": 0.29191821813583374,
+          "z": -77.0
+        },
+        "volumeScale": {
+          "x": 8.485280990600586,
+          "y": 16.0,
+          "z": 8.485280990600586
+        },
+        "tint": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.43239855766296387
+        },
+        "anchor": {
+          "x": 40.20000076293945,
+          "y": 0.29191821813583374,
+          "z": -77.0,
+          "w": 0.0
+        },
+        "u": {
+          "x": 0.16666658222675323,
+          "y": -0.00016663318092469126,
+          "z": 0.5,
+          "w": 0.0
+        },
+        "v": {
+          "x": 0.00016663318092469126,
+          "y": 0.16666658222675323,
+          "z": 0.5,
+          "w": 0.0
+        },
+        "atlas": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0,
+          "w": 1.0
+        }
+      },
+      "cameraView": {
+        "e00": 1.0,
+        "e01": 0.0,
+        "e02": 0.0,
+        "e03": -38.400001525878906,
+        "e10": 0.0,
+        "e11": 0.829037606716156,
+        "e12": 0.5591928958892822,
+        "e13": 42.43719482421875,
+        "e20": 0.0,
+        "e21": 0.5591928958892822,
+        "e22": -0.829037606716156,
+        "e23": -79.97050476074219,
+        "e30": 0.0,
+        "e31": 0.0,
+        "e32": 0.0,
+        "e33": 1.0
+      },
+      "cameraProjection": {
+        "e00": 1.2953521013259888,
+        "e01": 0.0,
+        "e02": 0.0,
+        "e03": 0.0,
+        "e10": 0.0,
+        "e11": 2.3028481006622314,
+        "e12": 0.0,
+        "e13": 0.0,
+        "e20": 0.0,
+        "e21": 0.0,
+        "e22": -1.003757119178772,
+        "e23": -0.6011271476745605,
+        "e30": 0.0,
+        "e31": 0.0,
+        "e32": -1.0,
+        "e33": 0.0
+      }
+    },
+    "completed": {
+      "frame": 7,
+      "realtime": 11.743859167183675,
+      "frameSize": {
+        "x": 1920,
+        "y": 1080
+      },
+      "serial": 5,
+      "receiverCount": 287,
+      "volumeCount": 1,
+      "available": true,
+      "apiError": "",
+      "inputHash": "72f5fc328e41bc32be505b3768c0c40a3ba235cf2f41dfeb2ac7df0a6de54de6",
+      "inputs": {
+        "sourceEntity": "6034:768",
+        "drawEntity": "6046:768",
+        "sourceShader": "EXODUSER/SkillAdditive",
+        "drawShader": "EXODUSER/GroundSkillProjection",
+        "texture": "skill_spike_thorn",
+        "graphicsFormat": "R8G8B8A8_SRGB",
+        "filterMode": "Bilinear",
+        "wrapMode": "Clamp",
+        "activeColorSpace": "Linear",
+        "materialIdentity": false,
+        "sourceOpacityPresent": false,
+        "sourceFlatPresent": true,
+        "texturePreserved": true,
+        "usesReceiverDepth": true,
+        "sourceEnabled": true,
+        "sourceForceOff": true,
+        "drawEnabled": true,
+        "drawForceOff": false,
+        "drawActive": true,
+        "sourceMode": 0,
+        "mipCount": 1,
+        "textureWidth": 1254,
+        "textureHeight": 1254,
+        "proxyVertices": 8,
+        "proxyTriangles": 12,
+        "geometryRevision": 1,
+        "textureAnisoLevel": 1,
+        "anisotropicFiltering": "ForceEnable",
+        "originalOpacityRaw": 0.0,
+        "originalFlatRaw": 0.0,
+        "flat": 0.0,
+        "opacity": 1.0,
+        "normalBlend": 0.0,
+        "destinationBlend": 1.0,
+        "ringRadius": 0.0,
+        "pixelsPerUnit": 100.0,
+        "rollDegrees": 359.9427185058594,
+        "sourceColor": {
+          "r": 1.0,
+          "g": 1.0,
+          "b": 1.0,
+          "a": 0.43239855766296387
+        },
+        "sourceRect": {
+          "serializedVersion": "2",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 1254.0,
+          "height": 1254.0
+        },
+        "sourcePosition": {
+          "x": 40.20000076293945,
+          "y": 0.29191821813583374,
+          "z": -77.0
+        },
+        "sourceScale": {
+          "x": 0.4784688949584961,
+          "y": 0.4784688949584961,
+          "z": 0.4784688949584961
+        },
+        "volumePosition": {
+          "x": 40.20000076293945,
+          "y": 0.29191821813583374,
+          "z": -77.0
+        },
+        "volumeScale": {
+          "x": 8.485280990600586,
+          "y": 16.0,
+          "z": 8.485280990600586
+        },
+        "tint": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0,
+          "w": 0.43239855766296387
+        },
+        "anchor": {
+          "x": 40.20000076293945,
+          "y": 0.29191821813583374,
+          "z": -77.0,
+          "w": 0.0
+        },
+        "u": {
+          "x": 0.16666658222675323,
+          "y": -0.00016663318092469126,
+          "z": 0.5,
+          "w": 0.0
+        },
+        "v": {
+          "x": 0.00016663318092469126,
+          "y": 0.16666658222675323,
+          "z": 0.5,
+          "w": 0.0
+        },
+        "atlas": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0,
+          "w": 1.0
+        }
+      },
+      "cameraView": {
+        "e00": 1.0,
+        "e01": 0.0,
+        "e02": 0.0,
+        "e03": -38.400001525878906,
+        "e10": 0.0,
+        "e11": 0.829037606716156,
+        "e12": 0.5591928958892822,
+        "e13": 42.43719482421875,
+        "e20": 0.0,
+        "e21": 0.5591928958892822,
+        "e22": -0.829037606716156,
+        "e23": -79.97050476074219,
+        "e30": 0.0,
+        "e31": 0.0,
+        "e32": 0.0,
+        "e33": 1.0
+      },
+      "cameraProjection": {
+        "e00": 1.2953521013259888,
+        "e01": 0.0,
+        "e02": 0.0,
+        "e03": 0.0,
+        "e10": 0.0,
+        "e11": 2.3028481006622314,
+        "e12": 0.0,
+        "e13": 0.0,
+        "e20": 0.0,
+        "e21": 0.0,
+        "e22": -1.003757119178772,
+        "e23": -0.6011271476745605,
+        "e30": 0.0,
+        "e31": 0.0,
+        "e32": -1.0,
+        "e33": 0.0
+      }
+    }
+  },
+  "legacyMode2": {
+    "passed": false,
+    "maxWeightError": 0.04643953591585159,
+    "maxRgbError": 0.007769191637635231,
+    "mode2ComparisonOnlyFailure": true
+  },
+  "buffers": [
+    {
+      "mode": 1,
+      "passed": true,
+      "positiveWeight": 96632,
+      "nonfinite": 0,
+      "outsideUv": 0,
+      "depthFailures": 0,
+      "maxDepthDifference": 0.0,
+      "maxAlpha": 0.43239855766296387,
+      "targetStillCreatedAfterCancel": true
+    },
+    {
+      "mode": 2,
+      "passed": false,
+      "positiveWeight": 96632,
+      "nonfinite": 0,
+      "outsideUv": 0,
+      "depthFailures": 0,
+      "maxDepthDifference": 0.0,
+      "maxAlpha": 0.43239855766296387,
+      "targetStillCreatedAfterCancel": true
+    },
+    {
+      "mode": 3,
+      "passed": true,
+      "positiveWeight": 96632,
+      "nonfinite": 0,
+      "outsideUv": 0,
+      "depthFailures": 0,
+      "maxDepthDifference": 0.019809722900390625,
+      "maxAlpha": 0.43239855766296387,
+      "targetStillCreatedAfterCancel": true
+    },
+    {
+      "mode": 4,
+      "passed": true,
+      "positiveWeight": 0,
+      "nonfinite": 0,
+      "outsideUv": 0,
+      "depthFailures": 0,
+      "maxDepthDifference": 0.0,
+      "maxAlpha": 0.0,
+      "targetStillCreatedAfterCancel": true
+    }
+  ],
+  "images": [
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/profile-guard-runs/20261102T035337515039Z-10863/receiverModelMeta/receiver-smoke-window-1920.png",
+      "bytes": 4173019,
+      "sha256": "7b87f8a2e421907d70080a91b5627c1adc0a23658e6d33e39d57014641c367e3",
+      "widthHeight": [
+        1920,
+        1080
+      ],
+      "rootDirectlyViewedOrExactByteIdenticalToViewed": true
+    },
+    {
+      "path": "/Users/fordeargamers/exoduser-wt/_out/mac-installable-ground-qa-20261102/profile-guard-runs/20261102T035337515039Z-10863/receiverModelMeta/receiver-smoke-3840-direct.png",
+      "bytes": 7890068,
+      "sha256": "1ee60624eb44fdacf49a32b0f568078e996592262e8691887d75ee2a3be0a646",
+      "widthHeight": [
+        3840,
+        1080
+      ],
+      "rootDirectlyViewedOrExactByteIdenticalToViewed": true
+    }
+  ],
+  "updateMs": 3.2718,
+  "lateMs": 1.5972,
+  "profileGuard": {
+    "error": null,
+    "launchCount": 1,
+    "preferencesFinal": {
+      "rawCount": 26,
+      "cacheCount": 27,
+      "allRawExact": true,
+      "allCacheTypedSemanticsExact": true,
+      "checkpoints": [
+        "restore-immediate",
+        "restore-2s",
+        "restore-7s-final"
+      ]
+    }
+  },
+  "originalSimulationRefAndHashRestored": true,
+  "installed1403CriticalBytesUnchanged": true,
+  "sharedHeadIndexWipUnchanged": true,
+  "productAccepted": false,
+  "fullCoverageExecuted": false,
+  "visualVerdict": "RETOUCH",
+  "scope": "one soil Lv1 spike case; paired stable input hash and exact camera across independent frames, not simultaneous same-frame mode2/4 readback",
+  "usage": {
+    "unitStartPercent": 25,
+    "unitEndPercent": 26,
+    "sharedAccountDeltaPercentagePoints": 1,
+    "dayBeforeFirstObservationUnknown": true,
+    "ordinaryUsageAllowed": true
+  }
+}
