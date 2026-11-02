@@ -1,0 +1,12 @@
+/* Character select — left basic story panel (web·Unity shared contract: left x=40, width 380, vertically centered). */
+#charVisualPop #csStory{box-sizing:border-box;text-align:left;position:relative;z-index:3;padding:30px 30px 32px!important;margin:0}
+#charVisualPop .cs-story-title{font-family:var(--font-hell-title,'Cinzel',serif);font-size:18px;letter-spacing:.2em;color:#e6e3dc;padding-bottom:16px;margin-bottom:18px;border-bottom:1px solid rgba(164,147,115,.5)}
+#charVisualPop .cs-story-body{font-family:var(--font-hell,'Nanum Myeongjo','Noto Serif KR',serif);font-size:16px;line-height:1.9;color:#c5c2bb;white-space:pre-line;word-break:keep-all;overflow-wrap:anywhere;overflow-y:auto;scrollbar-width:thin}
+#charVisualPop .cs-story-body:focus-visible{outline:1px solid #dad7d1;outline-offset:4px}
+@media(min-width:1100px){
+ #charVisualPop #csStory{position:absolute!important;left:40px;top:50%;transform:translateY(-50%);width:380px;max-height:min(560px,calc(100% - 80px));display:flex;flex-direction:column}
+ #charVisualPop #csStory .cs-story-body{min-height:0;flex:1 1 auto}
+}
+@media(min-width:1100px) and (min-height:1081px){#charVisualPop #csStory{zoom:var(--cs-side-scale);left:calc(40px / var(--cs-side-scale))}}
+@media(min-width:761px) and (max-width:1099px){#charVisualPop #csStory{flex:0 0 min(26vw,340px);align-self:center;max-height:70vh;overflow:auto}}
+@media(max-width:760px){#charVisualPop #csStory{grid-row:3;padding:20px!important}#charVisualPop .cs-story-body{font-size:14px;line-height:1.8}}
