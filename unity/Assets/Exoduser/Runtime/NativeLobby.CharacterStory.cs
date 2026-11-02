@@ -6,7 +6,8 @@ namespace Exoduser.UnityPort
  public sealed partial class NativeLobby
  {
   WarriorStoryState warriorStory;
-  [Serializable] sealed class WarriorStoryData {public string video;public double[] cuts;public LobbyCaptionLanguage[] captions;}
+  [Serializable] sealed class WarriorStoryData {public string video;public double[] cuts;public LobbyCaptionLanguage[] captions;public WarriorStoryControls[] controls;}
+  [Serializable] sealed class WarriorStoryControls {public string code;public string[] labels;}
   WarriorStoryData warriorStoryData;
   GUIStyle warriorCaption;
   int warriorSlot=-1;
@@ -29,6 +30,7 @@ namespace Exoduser.UnityPort
   }
   public void NextCharacterStory(){if(!CharacterStoryActive||warriorStory.Entering||!movie.Prepared)return;if(frontendPadQaEnabled)FrontendPadQaStoryNextConsumptions++;double next=warriorStory.Next(movie.Time);if(next<0)warriorStory.Finish(true);else movie.Seek(next);}
   public void HoldCharacterStory(string source,bool held){if(warriorStory!=null)warriorStory.SetHeld(source,held);}
+  string CharacterStoryControl(int index){WarriorStoryControls selected=null,english=null;if(warriorStoryData!=null&&warriorStoryData.controls!=null)foreach(var row in warriorStoryData.controls){if(row.code==Language)selected=row;if(row.code=="en")english=row;}var labels=(selected??english)?.labels;return labels!=null&&index>=0&&index<labels.Length?labels[index]:"";}
   void CancelCharacterStory(){if(warriorStory!=null)warriorStory.Cancel();warriorSlot=-1;SubtitleText="";frontendPad.Reset();}
   void UpdateCharacterStory(float delta)
   {
@@ -39,8 +41,8 @@ namespace Exoduser.UnityPort
     var pad=frontendPad.Step(FrontendPadPhase.Story,ReadFrontendPadFrame(),!AutomatedInput&&!characterInputFence);
     HoldCharacterStory("pad-skip",pad.Hold);
     if(!AutomatedInput&&!characterInputFence){
-     if(ExoInput.KeyDown(KeyCode.Return)||ExoInput.KeyDown(KeyCode.KeypadEnter)||ExoInput.KeyDown(KeyCode.RightArrow)||ExoInput.KeyDown(KeyCode.Space)||pad.Next)NextCharacterStory();
-     HoldCharacterStory("keyboard-Escape",ExoInput.Key(KeyCode.Escape));HoldCharacterStory("keyboard-Space",ExoInput.Key(KeyCode.Space));
+     if(LobbyKeys.Down(KeyCode.Return)||LobbyKeys.Down(KeyCode.KeypadEnter)||LobbyKeys.Down(KeyCode.RightArrow)||LobbyKeys.Down(KeyCode.Space)||pad.Next)NextCharacterStory();
+     HoldCharacterStory("keyboard-Escape",LobbyKeys.Held(KeyCode.Escape));HoldCharacterStory("keyboard-Space",LobbyKeys.Held(KeyCode.Space));
      if(!ExoInput.Mouse(0))HoldCharacterStory("pointer",false);
     }
     SubtitleText="";foreach(var language in warriorStoryData.captions)if(language.code==Language){foreach(var cue in language.cues)if(movie.Time>=cue.start&&movie.Time<cue.end){SubtitleText=cue.text;break;}break;}
@@ -59,11 +61,17 @@ namespace Exoduser.UnityPort
    DrawMovie(new Rect(0,0,1920,1080),null,false);
    if(warriorCaption==null){warriorCaption=new GUIStyle(normal){font=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-SemiBold"),fontSize=36,alignment=TextAnchor.MiddleCenter,wordWrap=true};warriorCaption.normal.textColor=Color.white;}
    if(SubtitleText.Length>0){var box=new Rect(180,864,1560,120);Fill(box,new Color(0,0,0,.64f));Label(box,SubtitleText,warriorCaption,TextAnchor.MiddleCenter);CaptionVisible=true;}
-   Rect next=new Rect(1050,1000,360,52),skip=new Rect(1430,1000,440,52);var e=Event.current;
-   if(warriorStory.HintsOpacity>0){bool pad=frontendPadQaEnabled||ExoInput.PadConnected;Color hintColor=GUI.color;GUI.color=new Color(hintColor.r,hintColor.g,hintColor.b,(float)warriorStory.HintsOpacity);Label(next,pad?K("다음 대사 · A / Enter","Next line · A / Enter"):K("다음 대사 · Enter","Next line · Enter"),small,TextAnchor.MiddleCenter);Label(skip,pad?K("건너뛰기 · B / Start 길게","Skip · Hold B / Start"):K("건너뛰기 · Space / Esc 길게","Skip · Hold Space / Esc"),small,TextAnchor.MiddleCenter);Fill(new Rect(skip.x,1054,skip.width*(float)warriorStory.HoldProgress,3),new Color(.8f,.72f,.55f));GUI.color=hintColor;}
-   if(!AutomatedInput&&e.type==EventType.MouseDown&&e.button==0){if(!warriorStory.HintsHidden&&skip.Contains(e.mousePosition))HoldCharacterStory("pointer",true);else NextCharacterStory();e.Use();}
-   if(!AutomatedInput&&e.type==EventType.MouseDrag&&!skip.Contains(e.mousePosition))HoldCharacterStory("pointer",false);
-   if(e.isKey)e.Use();
+   var before=GUI.matrix;GUI.matrix=NativeUiViewport.EdgeMatrix;
+   try{
+    float w=NativeUiViewport.Edges.Width,spacing=13*.06f;var font=Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular")??normal.font;
+    string nextText=CharacterStoryControl(0)+" · A / Enter",skipText=CharacterStoryControl(4)+" · "+CharacterStoryControl(1)+" Space / Esc / B";
+    float nextWidth=SpacedWidth(font,13,nextText,spacing)-spacing,skipWidth=SpacedWidth(font,13,skipText,spacing)-spacing;
+    Rect skip=new Rect(w-w*.03f-skipWidth,1080-1080*.03f-35,skipWidth,35),next=new Rect(w-w*.03f-skipWidth-22-nextWidth,1080-1080*.03f-35,nextWidth,35);var e=Event.current;
+    if(warriorStory.HintsOpacity>0){float alpha=(float)warriorStory.HintsOpacity;var color=new Color(201/255f,183/255f,149/255f,alpha);DrawSpaced(next.x,next.y+10,15,nextText,font,13,spacing,color,true);DrawSpaced(skip.x,skip.y+10,15,skipText,font,13,spacing,color,true);Fill(new Rect(skip.x,skip.yMax-2,skip.width*(float)warriorStory.HoldProgress,2),new Color(204/255f,183/255f,137/255f,alpha));NativeUiAudit.Region(new Rect(next.x,next.y,nextWidth+22+skipWidth,35),"component","character-story-hints","웹29언어 controls·right3%·bottom3%·13px·gap22");}
+    if(!AutomatedInput&&e.type==EventType.MouseDown&&e.button==0){if(!warriorStory.HintsHidden&&skip.Contains(e.mousePosition))HoldCharacterStory("pointer",true);else NextCharacterStory();e.Use();}
+    if(!AutomatedInput&&e.type==EventType.MouseDrag&&!skip.Contains(e.mousePosition))HoldCharacterStory("pointer",false);
+    if(e.isKey)e.Use();
+   }finally{GUI.matrix=before;}
   }
  }
 }
