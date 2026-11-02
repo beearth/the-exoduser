@@ -96,8 +96,10 @@ namespace Exoduser.UnityPort
   public void SetPlaybackAllowed(bool allowed){playbackAllowed=allowed;if(player==null)return;if(!allowed){if(player.isPlaying)player.Pause();PauseIntroAudio();}else TryStartPlayback();}
   public void Toggle(){if(!Prepared)return;if(player.isPlaying)Pause();else Play();}
   public void Seek(double time){if(Prepared){freezeFirst=false;double target=Math.Max(0,Math.Min(Duration,time));player.time=target;if(UsesIntroAudioFallback&&voice!=null)voice.time=(float)Math.Max(0,Math.Min(voice.clip.length-.001,target+IntroAudioMediaOffset));}}
-  void ApplyDirectMix(){if(diagnosticDirect&&Prepared&&!UsesIntroAudioFallback){player.SetDirectAudioMute(0,directMuted);if(player.canSetDirectAudioVolume)player.SetDirectAudioVolume(0,directGain);}}
-  public void Volume(float value){directGain=Mathf.Clamp01(value);if(voice!=null)voice.volume=directGain;ApplyDirectMix();}
+  public static void ApplyTransitionMix(){foreach(var video in live)video.ApplyMix();}
+  void ApplyMix(){if(voice!=null)voice.volume=directGain*NativeScreenTransition.Gain;ApplyDirectMix();}
+  void ApplyDirectMix(){if(diagnosticDirect&&Prepared&&!UsesIntroAudioFallback){player.SetDirectAudioMute(0,directMuted);if(player.canSetDirectAudioVolume)player.SetDirectAudioVolume(0,directGain*NativeScreenTransition.Gain);}}
+  public void Volume(float value){directGain=Mathf.Clamp01(value);ApplyMix();}
   public void Mute(bool muted){directMuted=muted;if(voice!=null)voice.mute=muted;ApplyDirectMix();}
   public void Close(){generation++;wantsPlayback=false;if(introAudioSync!=null){introAudioSync.Poll=null;UnityEngine.Object.Destroy(introAudioSync);introAudioSync=null;}UsesIntroAudioFallback=false;if(player!=null){player.Stop();player.targetTexture=null;player.frameReady-=OnFrame;player.loopPointReached-=OnEnd;player.errorReceived-=OnError;UnityEngine.Object.Destroy(player);player=null;}if(voice!=null){voice.Stop();UnityEngine.Object.Destroy(voice);voice=null;}if(texture!=null){texture.Release();UnityEngine.Object.Destroy(texture);texture=null;}}
   public void Dispose(){live.Remove(this);Close();UnityEngine.Object.Destroy(owner);}

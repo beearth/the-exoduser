@@ -46,3 +46,18 @@ Player 어셈블리 증거는 실제 로드 경로를 우선 사용하고, Unity
 증거 루트: I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/fifth/{batch1-official-build-receipt.json,batch1-m1,batch1-cinematic-1920,batch1-cinematic-3840,batch1-ui,batch1-audio-ui,batch1-audio-lobby,batch1-video-1920,batch1-video-3840,batch1-generated-recovery}. 전체 시각/UX는 RETOUCH 유지. 화면전환·55스킬/32합체·패시브·요약drawer·살아있는화면·진짜1-2·세부획/광택이 남아 있다. I:후속 준비본은 실행 소스에 인수하지 않았다. 바탕화면 직접교체0, 자기 Editor/Player예약 반환.
 
 추가 1x 대조: fifth/batch1-comparison.html(원본같은크기). 실제웹604d10bf는1920/3840의5캐릭터미니스토리10화면·오류/누락0. lore12.5px/1.7,분리선rgba(164,147,115,.5),문구일치 확인. 글꼴획·일부테두리차이는RETOUCH. 세계관 링의 영상 프레임은다른시점으로,전체영상품질동일판정이아님. first merge424afc4f79는origin09192f7bbc의검증된지면투영/실행기변경을정상병합했고통합Core/Runtime컴파일0;공식Player검수자체는2cb2a854패키지다.
+
+
+## 2026-11-03 화면 전환 인수 — Player 검수 전
+
+| 계약 | 현재 구현·한계 |
+|---|---|
+| 검정 경계 | fade-out500ms/fade-in600ms, CSS ease-in-out(.42,0,.58,1). 완전 검정 OnGUI Repaint를 기록한 다음 프레임에만 onBlack 실행. 준비 완료 연속2프레임 뒤 reveal, 준비 timeout12초/실패 시 해제 |
+| 로딩 원화 | 웹740722e1ac의 gamma.65·뼈색 윤곽1520² RGBA 본체/붉은 균열 PNG 동일 byte. 300ms 뒤12vh, 우하단max(48px,4.5vh), 후광1.4배/.25~.4, 균열.12~.75,2초 왕복.1000ms 기존29언어 문구 |
+| 감소 모션 | 저장 옵션/Windows SPI_CLIENTAREAANIMATION/CLI. fade각80ms, 본체1·균열/후광.3 정지. Mac OS 설정 연동은 미검증 |
+| 오디오 | 원래 음악·영상·결정·앰비언스 gain에 경계 gain 곱, 원래 볼륨을 경계 종료 뒤 복원. 실제 출력 검수 대기 |
+| ENTER | 기존 ENTER 원음 먼저 재생,1100ms 뒤 경계 시작. 인장·로고1.4초 ease 소멸, ENTER1.1초 ease 소멸/상단5.6px 이동. 감소에서는 ENTER 즉시 숨김. CSS12px blur는 아직 미반영 RETOUCH |
+| 준비 중 진행 | StartupEntry.Tick은 black 중에도 계속 실행하고 사용자 입력만 차단. lobby-game/story-game은 Loading을 벗어나야 reveal |
+| 검수 경계 | ScreenTransitionCheck는 CLI+샌드박스 전용 실제 Player 호스트·실제 영상 decoder 준비 검사. CinematicInputCheck는 모든 로비 경계를 기다린 뒤 기존 홀드 회귀. 컴파일은0이나 정식 빌드·M1·양해상도 캡처·시각/청음은 아직 대기 |
+
+I:준비 중인 전체 스킬/패시브/대장간 소스는 이번 인수에 포함하지 않았다. 소유23코드와새원화/메타/문구만 정확한경로로복사,원본은transition-prep/adoption-backup에 SHA 백업했다. guard.baseline과기존미추적파일은보존한다.
