@@ -907,6 +907,12 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
     #csCharName::after{content:'';display:block;width:56px;height:2px;margin-top:12px;
       background:linear-gradient(90deg,#9c9f9f,transparent)}
     #csCharDesc{color:#a4a7a7;font-size:clamp(13px,1.15vw,.95rem);line-height:1.6;max-width:320px}
+
+    #csCharLore{font-family:var(--font-hell,var(--sh-font,'Nanum Myeongjo','Noto Serif KR',serif));font-size:clamp(11px,calc(1.15vw - 1.5px),calc(.95rem - 1.5px));font-style:normal;
+      color:rgba(223,214,194,.82);line-height:1.7;letter-spacing:.015em;word-break:keep-all;overflow-wrap:anywhere;
+      width:100%;max-width:320px;box-sizing:border-box;flex-shrink:0;border-top:1px solid rgba(164,147,115,.5);padding-top:14px;margin-top:4px}
+    #csCharLore[hidden]{display:none}
+    @media(min-width:1100px){#charVisualPop #csCharLore{font-size:12.5px;max-width:none}}
     .cs-thumb-wrap{position:relative;width:min(11vw,150px);margin-top:6px}
     #csThumb{width:100%;aspect-ratio:3/4;border:1px solid rgba(113,116,116,.5);border-radius:2px;
       background-size:cover;background-position:top center;
@@ -1013,6 +1019,7 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
       #charVisualPop #csCharName{grid-column:1;grid-row:2;margin:0}
       #charVisualPop #csCharName::after{margin-top:6px}
       #charVisualPop #csCharDesc{grid-column:1;grid-row:3;max-width:none}
+      #charVisualPop #csCharLore{grid-column:1 / -1;grid-row:4;max-width:none}
       #charVisualPop .cs-thumb-wrap{grid-column:2;grid-row:1 / 4;width:64px;margin:0}
       #charVisualPop .cs-side.right{grid-row:2}
       #charVisualPop .cs-stage{grid-row:3;min-height:clamp(200px,calc(34vw + 92px),352px)}
@@ -1095,6 +1102,7 @@ body{background:#000 center/cover no-repeat;color:#adb0b0;font-family:'Noto Sans
         <div id="csClsName"></div>
         <div id="csCharName"></div>
         <div id="csCharDesc"></div>
+        <div id="csCharLore" hidden></div>
         <div class="cs-thumb-wrap">
           <span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
           <div id="csThumb"></div>
@@ -1304,6 +1312,12 @@ const sb=typeof supabase!=='undefined'?supabase.createClient(SUPABASE_URL,SUPABA
 
 // ═══ [LANG] 로비 다국어 ═══
 const _LOBBY_EN={
+  // STY-20 — 캐릭터 선택 미니 스토리 (KO 원문 키, EN 지정 문구)
+  "지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.":"A nameless one cast into Hell. With a single black-iron greatsword, he climbs back through all seven layers.",
+  "숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.":"The girl who lost her mother in a forest hut became a shadow of the court. Hunted as a witch and cast into Hell, she dances once more.",
+  "붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.":"Master of the spear-cannon that pierced the walls under a red moon. He loads his own blood as shot and turns every recoil into a step.",
+  "죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.":"A reaper bound by a pact with Death. The scythe forged in blue flame grows on the souls it reaps, and its steps are as silent as a wraith's.",
+  "찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.":"A spear that calls the Void beneath a torn moon. The runes on its tip seal space itself, and when three overlap, reality collapses.",
   '패치 노트':'PATCH NOTES','닫기':'Close','패치 노트가 없습니다':'No patch notes yet.',
   '처치':'Kills','브라우저 저장':'Saved in this browser',
   '출시 준비 중':'Coming Soon',
@@ -3229,14 +3243,14 @@ function _lobbyAncestorCaption(){return _lobbyLang()==='ko'?'선대 소환체':'
 function _lobbyAncestorDetail(){return _lobbyLang()==='ko'?'플레이어가 소환하는 선대의 영체':'A spirit summoned by the player.';}
 function _lobbyDemoCharacterName(){return _lobbyLang()==='ko'?'대검전사':'Greatsword Warrior';}
 const CHAR_VISUALS=[
-  {id:'exoduser_warrior',name:'엑소듀서 전사',cls:'WARRIOR',desc:'거대검을 휘두르는 흑철의 전사',folder:'img/exoduser_warrior',fw:48,fh:48,portrait:'assets/charselect/warrior_cut.png?v=3',bust:'assets/charselect/portrait_warrior.png?v=20260930-eyefix',emblemImg:'assets/charselect/emblem_warrior.png?v=1',aura:'rgba(140,70,190,.55)',scene:'assets/charselect/bg_scene1.png?v=1',sceneVid:'assets/charselect/bg_scene1_loop.mp4?v=2',idleVid:'assets/charselect/idle_warrior_cs3_4k.mp4?v=20260929-cs3',idleRate:0.75,poster:'assets/charselect/poster_idle_warrior_cs3_4k.jpg?v=20260929-cs3',tab:'전사',job:'전사',
+  {id:'exoduser_warrior',name:'엑소듀서 전사',cls:'WARRIOR',desc:'거대검을 휘두르는 흑철의 전사',lore:"지옥에 떨어진 이름 없는 자. 흑철 거대검 하나로 일곱 겹의 지옥을 거슬러 오른다.",folder:'img/exoduser_warrior',fw:48,fh:48,portrait:'assets/charselect/warrior_cut.png?v=3',bust:'assets/charselect/portrait_warrior.png?v=20260930-eyefix',emblemImg:'assets/charselect/emblem_warrior.png?v=1',aura:'rgba(140,70,190,.55)',scene:'assets/charselect/bg_scene1.png?v=1',sceneVid:'assets/charselect/bg_scene1_loop.mp4?v=2',idleVid:'assets/charselect/idle_warrior_cs3_4k.mp4?v=20260929-cs3',idleRate:0.75,poster:'assets/charselect/poster_idle_warrior_cs3_4k.jpg?v=20260929-cs3',tab:'전사',job:'전사',
     emblem:'<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M50 28 L50 82"/><path d="M35 44 L65 44"/><path d="M31 33 C23 25 21 17 23 11 C31 15 34 24 35 32"/><path d="M69 33 C77 25 79 17 77 11 C69 15 66 24 65 32"/></svg>',
     traits:[
       ['⚔','근접 화신','거대검을 휘두르는 정면 돌파형 전투가입니다.'],
       ['🛡','흑철의 방어','검은 갑옷으로 적의 공세를 견디고 되받아칩니다.'],
       ['💥','파멸의 일격','느리지만 치명적인 광역 참격을 내리꽂습니다.'],
     ]},
-  {id:'exoduser_silvertail',name:'실버테일',cls:'BLADE DANCER',desc:'회전하는 단 하나의 검, 그녀의 춤은 파멸',folder:'img/exoduser_silvertail',fw:48,fh:48,portrait:'assets/charselect/silvertail_cut.png?v=20260927-restored',bust:'assets/charselect/portrait_silvertail.png?v=20260927-restored',emblemImg:'assets/charselect/emblem_silvertail.png?v=1',aura:'rgba(120,165,215,.5)',scene:'assets/charselect/bg_scene2.png?v=1',sceneVid:'assets/charselect/bg_scene2_loop.mp4?v=1',idleVid:'assets/charselect/idle_silvertail_4k.mp4?v=20260929-remaster',poster:'assets/charselect/poster_idle_silvertail_4k.jpg?v=20260929-remaster',tab:'실버테일',job:'블레이드 댄서',
+  {id:'exoduser_silvertail',name:'실버테일',cls:'BLADE DANCER',desc:'회전하는 단 하나의 검, 그녀의 춤은 파멸',lore:"숲속 오두막에서 어머니를 잃은 소녀는 궁정의 그림자가 되었다. 마녀로 쫓겨 떨어진 지옥에서, 그녀는 다시 춤춘다.",folder:'img/exoduser_silvertail',fw:48,fh:48,portrait:'assets/charselect/silvertail_cut.png?v=20260927-restored',bust:'assets/charselect/portrait_silvertail.png?v=20260927-restored',emblemImg:'assets/charselect/emblem_silvertail.png?v=1',aura:'rgba(120,165,215,.5)',scene:'assets/charselect/bg_scene2.png?v=1',sceneVid:'assets/charselect/bg_scene2_loop.mp4?v=1',idleVid:'assets/charselect/idle_silvertail_4k.mp4?v=20260929-remaster',poster:'assets/charselect/poster_idle_silvertail_4k.jpg?v=20260929-remaster',tab:'실버테일',job:'블레이드 댄서',
     comingSoon:true,
     emblem:'<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M24 24 L72 72"/><path d="M76 24 L28 72"/><circle cx="50" cy="50" r="3.5" fill="currentColor" stroke="none"/></svg>',
     traits:[
@@ -3245,21 +3259,21 @@ const CHAR_VISUALS=[
       ['✨','무희의 춤','화려한 회피와 폭발적인 딜을 오가는 곡예입니다.'],
     ]},
   // 신규 3종 (2026-09-29, Higgsfield 키아트 영상) — 인게임 미구현이므로 comingSoon 잠금. 기획 초안: char_create.html
-  {id:'exoduser_hellgunner',name:'헬거너',cls:'HELLGUNNER',desc:'자신의 피를 탄환 삼는 혈월의 창포수',folder:'',fw:48,fh:48,portrait:'assets/charselect/portrait_hellgunner.jpg?v=20260929',bust:'assets/charselect/portrait_hellgunner.jpg?v=20260929',emblemImg:'assets/charselect/emblem_hellgunner.png?v=20260929',aura:'rgba(224,32,58,.5)',scene:'assets/charselect/poster_idle_hellgunner.jpg?v=20260929',idleVid:'assets/charselect/idle_hellgunner.mp4?v=20260929',poster:'assets/charselect/poster_idle_hellgunner.jpg?v=20260929',tab:'헬거너',job:'창포수',
+  {id:'exoduser_hellgunner',name:'헬거너',cls:'HELLGUNNER',desc:'자신의 피를 탄환 삼는 혈월의 창포수',lore:"붉은 달이 뜬 밤, 성벽을 꿰뚫은 창포의 주인. 제 피를 탄환 삼아 장전하고, 반동마저 걸음으로 삼는다.",folder:'',fw:48,fh:48,portrait:'assets/charselect/portrait_hellgunner.jpg?v=20260929',bust:'assets/charselect/portrait_hellgunner.jpg?v=20260929',emblemImg:'assets/charselect/emblem_hellgunner.png?v=20260929',aura:'rgba(224,32,58,.5)',scene:'assets/charselect/poster_idle_hellgunner.jpg?v=20260929',idleVid:'assets/charselect/idle_hellgunner.mp4?v=20260929',poster:'assets/charselect/poster_idle_hellgunner.jpg?v=20260929',tab:'헬거너',job:'창포수',
     comingSoon:true,
     traits:[
       ['🩸','혈탄 장전','체력을 소모해 충전한 관통탄을 발사합니다.'],
       ['🎯','관통 창격','창포로 일직선상의 적을 모두 꿰뚫습니다.'],
       ['💨','역추진 도약','사격 반동을 이용해 뒤로 도약합니다.'],
     ]},
-  {id:'exoduser_transmuter',name:'변성술사',cls:'TRANSMUTER',desc:'베어낸 영혼을 먹고 자라는 청염의 낫',folder:'',fw:48,fh:48,portrait:'assets/charselect/portrait_transmuter.jpg?v=20260929',bust:'assets/charselect/portrait_transmuter.jpg?v=20260929',emblemImg:'assets/charselect/emblem_transmuter.png?v=20260929',aura:'rgba(47,123,255,.5)',scene:'assets/charselect/poster_idle_transmuter.jpg?v=20260929',idleVid:'assets/charselect/idle_transmuter.mp4?v=20260929',poster:'assets/charselect/poster_idle_transmuter.jpg?v=20260929',tab:'변성술사',job:'사신',
+  {id:'exoduser_transmuter',name:'변성술사',cls:'TRANSMUTER',desc:'베어낸 영혼을 먹고 자라는 청염의 낫',lore:"죽음과 계약한 사신. 푸른 불꽃으로 벼린 낫은 베어낸 영혼을 먹고 자라고, 그 발걸음은 망령처럼 소리가 없다.",folder:'',fw:48,fh:48,portrait:'assets/charselect/portrait_transmuter.jpg?v=20260929',bust:'assets/charselect/portrait_transmuter.jpg?v=20260929',emblemImg:'assets/charselect/emblem_transmuter.png?v=20260929',aura:'rgba(47,123,255,.5)',scene:'assets/charselect/poster_idle_transmuter.jpg?v=20260929',idleVid:'assets/charselect/idle_transmuter.mp4?v=20260929',poster:'assets/charselect/poster_idle_transmuter.jpg?v=20260929',tab:'변성술사',job:'사신',
     comingSoon:true,
     traits:[
       ['🌙','반월참','낫을 크게 휘둘러 전방 반원을 베어냅니다.'],
       ['👻','영혼 수확','처치한 적의 영혼을 거둬 낫을 강화합니다.'],
       ['🌀','망령 걸음','청염으로 흩어졌다 원하는 곳에 다시 나타납니다.'],
     ]},
-  {id:'exoduser_spearmage',name:'창법사',cls:'SPEARMAGE',desc:'룬으로 공간을 봉인하는 공허의 전령',folder:'',fw:48,fh:48,portrait:'assets/charselect/portrait_spearmage.jpg?v=20260929',bust:'assets/charselect/portrait_spearmage.jpg?v=20260929',emblemImg:'assets/charselect/emblem_spearmage.png?v=20260929',aura:'rgba(155,77,255,.5)',scene:'assets/charselect/poster_idle_spearmage.jpg?v=20260929',idleVid:'assets/charselect/idle_spearmage.mp4?v=20260929',poster:'assets/charselect/poster_idle_spearmage.jpg?v=20260929',tab:'창법사',job:'공허 창술사',
+  {id:'exoduser_spearmage',name:'창법사',cls:'SPEARMAGE',desc:'룬으로 공간을 봉인하는 공허의 전령',lore:"찢어진 달 아래 공허를 부르는 창. 창끝에 새긴 룬이 공간을 봉인하고, 룬 셋이 겹치는 순간 현실이 무너진다.",folder:'',fw:48,fh:48,portrait:'assets/charselect/portrait_spearmage.jpg?v=20260929',bust:'assets/charselect/portrait_spearmage.jpg?v=20260929',emblemImg:'assets/charselect/emblem_spearmage.png?v=20260929',aura:'rgba(155,77,255,.5)',scene:'assets/charselect/poster_idle_spearmage.jpg?v=20260929',idleVid:'assets/charselect/idle_spearmage.mp4?v=20260929',poster:'assets/charselect/poster_idle_spearmage.jpg?v=20260929',tab:'창법사',job:'공허 창술사',
     comingSoon:true,
     traits:[
       ['🔮','공허 투창','공허창을 던져 관통시킨 뒤 다시 회수합니다.'],
@@ -3300,7 +3314,25 @@ function _resetVisualInfoScroll(){
   const body=$('charVisualPop')?.querySelector('.cs-body');
   for(const el of [body,$('csLeft'),$('csRight')])if(el)el.scrollTop=0;
 }
+// STY-20: 긴 번역도 위 정보판 아래에 배치하고, 하단 직업/액션 영역은 비워 둔다.
+function _layoutVisualLorePanels(){
+  const pop=$('charVisualPop'),left=$('csLeft'),right=$('csRight');
+  if(!pop||pop.style.display!=='flex'||!left||!right)return;
+  if(!window.matchMedia('(min-width:1100px)').matches){
+    left.style.removeProperty('max-height');right.style.removeProperty('top');right.style.removeProperty('max-height');return;
+  }
+  const body=pop.querySelector('.cs-body'),foot=pop.querySelector('.cs-foot');
+  const scale=parseFloat(getComputedStyle(left).zoom)||1;
+  const available=(foot.getBoundingClientRect().top-body.getBoundingClientRect().top)/scale-36;
+  left.style.maxHeight=Math.max(180,available-244)+'px';
+  const top=Math.max(left.offsetTop+left.offsetHeight+44,innerHeight<=940?190:300);
+  right.style.top=top+'px';
+  right.style.maxHeight=Math.max(120,available-top)+'px';
+}
+const _visualLoreLayoutObserver=new ResizeObserver(_layoutVisualLorePanels);
+for(const el of [$('csLeft'),$('charVisualPop').querySelector('.cs-body'),$('charVisualPop').querySelector('.cs-foot')])_visualLoreLayoutObserver.observe(el);
 function _visualInfoLayoutChanged(){
+  _layoutVisualLorePanels();
   const pop=$('charVisualPop'),target=document.activeElement;
   if(!pop||pop.style.display!=='flex'||![$('csLeft'),$('csRight')].includes(target))return;
   _resetVisualInfoScroll();
@@ -3347,6 +3379,9 @@ function selectVisual(ci){
   $('csClsName').textContent=_TL(ch.job||ch.cls||'');
   $('csCharName').textContent=_TL(ch.name);
   $('csCharDesc').textContent=_TL(ch.desc);
+  const lore=$('csCharLore');
+  lore.textContent=ch.lore?_TL(ch.lore):'';
+  lore.hidden=!ch.lore;
   const th=$('csThumb');if(th){const _tp=ch.bust||ch.portrait;th.style.backgroundImage=_tp?"url('"+_tp+"')":'';th.classList.toggle('silvertail-keyart',!!ch.keyart);}
   const aura=$('csAura');if(aura&&ch.aura)aura.style.setProperty('--aura',ch.aura);
   // 배경 씬 — 아이들 영상 있으면 그게 전체를 덮으므로 배경 레이어는 끔
@@ -3368,6 +3403,7 @@ function selectVisual(ci){
     +'</div><div class="td">'+escHtml(_TL(t[2]))+'</div></div></div>').join('');}
   // 아이콘 레일 선택 표시
   const grid=$('visualGrid');if(grid)grid.querySelectorAll('.cs-ico').forEach((c,i)=>{c.classList.toggle('sel',i===ci);c.setAttribute('aria-pressed',String(i===ci));});
+  _layoutVisualLorePanels();
   if(changed)_resetVisualInfoScroll();
   // 좌우 패널 등장 애니메이션 (재트리거)
   ['csLeft','csRight'].forEach(id=>{const el=$(id);if(el){el.classList.remove('in');void el.offsetWidth;el.classList.add('in');}});
