@@ -75,3 +75,52 @@ First actual ARM641403+QA run exited2 after one measured spikeTrap FAIL. The nex
 QA r2 gives spikeTrap Id1 and holyDome Id2, disables the product Late driver only while explicitly calling the original UpdateViews/Remodel3DLate, and resets the world mask before each manual update. Original Late enabled state is restored immediately before owning process Quit. No product placement change. All contact, UV and control assertion criteria remain unchanged.
 
 Each consumer now captures the1920x1080 original window and a separate3840x1080 direct RenderTexture through official URP SingleCameraRequest/SubmitRenderRequest. The latter is not a3840 physical window claim. Camera target/aspect/rect and active RT are restored in finally.
+
+# phase coverage QA 보충 — 실행 전 초안
+
+입력: root overlay r2 SHA256 fd5d30d8c7b883c6c8f455cdfbf2cdd4e4e6690828d6a38e3cd789e834657566. 원 overlay 편집0. phase-coverage 복사본에서 Consumers/Populate 분기와 새 PopulatePhase만 보충했다. 기존 Measure·normal·draw offset·controls·SyncViews·capture·lifecycle·원 Simulation finally는 수정0. Unity/Player/GPU/정적컴파일/Git 변경0.
+
+PC 95d4f076 원문에서 ChaseZone.Hit은 HitClip(druid_hit)을 생성한다. ShockClip(druid_shockring)은 bossShockWind→bossShock 전환으로 따로 생성되므로 이를 혼동하지 않는다. HitClip은 원문 ground:false, ShockClip은 ground:true다.
+
+기존20 consumer에23 phase case를 추가해43 consumer×3site=129 row, 기존 lifecycle1을 합해 required44scope/130row다. required/generated/missing은 기존 자동회수 경로를 그대로 사용한다. 새 표본은 sample Simulation의 공개 필드만 합성한다. sample.TickCount를 case마다+256해서 앞 once-clip을 만료시키고 SyncViews로 producer 전환상태를 초기화한다. 자연 Simulation.Tick/AI/타격/RNG 진행0. 원 Simulation 필드에는 쓰지 않는다.
+
+| source producer | 새 case | 합성 상태/표시 시점 |
+|---|---|---|
+| ShockClip | phase-Shock-create/hold/tail | 실제 product view에 S=bossShockWind를 먼저 보여주고 bossShock으로 전환해 spawn; born 대비 TickCount0/21/49, lifetime56 안에서 frame 변화 |
+| SeekerMines | phase-Seeker-unarmed/armed | T20/61, ArmT60, R56 |
+| Mine projectile | phase-Mine-imminent | Life20/Ml180으로 mp<.35; ward+MineFlashRing 동시 표시 |
+| LavaPools | phase-Lava-warn/active/tail | T15/60/162, WarnT30/MaxT180; 각각 경고/유지/감쇠 |
+| PoisonPools | phase-Poison-start/atlas-middle/tail | T5/30/162, MaxT180; loop frame=floor(T*.4)%24로 frame2/12/16, 초반/유지/감쇠 |
+| ChaseZone | phase-Chase-warning/hit-create/hit-hold/hit-tail | Hit=false 경고 T30/Delay60; 같은 Hit zone 객체를 product view에 보여줘 HitClip spawn 후 age0/9/21, ExplT1/10/22, ExplMax24 |
+| Fissure | phase-Fissure-warning/explode-create/explode-hold/explode-tail | Exploded=false 또는 실제 product view에 같은 Exploded 객체를 먼저 보여준 뒤 age0/12/27; Len100/W30/ExplR80, ring 경고·확장·감쇠 |
+| TideWave | phase-Tide-create/hold/tail | Rad40/100/160, T1/60/110, MaxT120, gap.8; 72분할 구슬의 생성·유지·후기 |
+
+종류/phase마다 serial=1000+Consumers index로 고유하며 기존 FireZone spike1/holy2를 보존한다. Chase/Fissure는 생성 warmup과 capture 사이에 같은 객체를 유지해 zoneHit/fissureExploded map-key를 재사용한다. 마지막 phase는 Tide-tail로 배치하여 Shock의 가짜 Boss/Data와 once-clip이 다음 site의 기존 consumer로 누출되지 않는다.
+
+중요한 해석 한계: Chase hit case는 원문상 ground ring과 ground:false HitClip이 함께 출력되는 혼합 producer다. 기존 ground criterion을 바꾸지 말라는 범위를 지켜 이 row도 기존 ground=true 측정으로 수집한다. 따라서 HitClip의 billboard 정점을 ground 기준으로 FAIL 처리할 수 있다. 그 FAIL을 PC의 지면형 회귀로 단정하면 안 되며, 원본/shape별 kind·shader·scope와 함께 보아야 한다. 이 혼합 소비자의 합격 집계를 별도로 나누려면 root가 실행 전에 scope 계약을 정해야 한다. 기준 완화·expected-fail 성공 치환은 하지 않았다.
+
+실제 원본을 보지 않은 visual PASS나 자연 생성/유지/폭발 PASS는 주장하지 않는다. 본 보충은 합성 상태에서 실제 제품 view의 표시 분기를 열기 위한 입력만 제공한다. root가 컴파일 및 RED/동일소스 GREEN을 수행한다.
+
+## 최종 보충
+
+phase-spikeTrap-zero / phase-holyDome-zero 추가: FireZone Id20001/20002, Type별고유, T0/MaxT180/R100. 새 zero case만 별도 MeasureZeroScale을 사용한다. source transform·정점의 유한성을 검사하고 실제 표시 정점의 면적이0인지 검사한다. source가 forceRenderingOff이거나 자식 mesh가 없거나 disabled인 정상 무표시를 실패로 만들지 않는다. source 표본 자체 부재는 coverage 누락이다. 기존 consumer 측정과 criteria/SyncViews/카메라 코드는 변경하지 않았다.
+
+최종 기존20+새25=45 consumer×3site135row, lifecycle1 포함136row/required46 scope. 앞 본문의23/43/129/130/44는 이 최종25/45/135/136/46으로 대체한다. 마지막 phase는 holyDome-zero이며, 그 직전 각 PopulatePhase의+256 tick/빈 producer SyncViews가 이전 Shock/Hit clip을 이미 만료시킨다.
+
+Mine 임박은 phase-Mine-imminent의 Life20/Ml180이며, 원문의 mp<.35 flash ring 분기를 연다. Shock 3case는 bossShockWind를 실제 view에 먼저 공급하고 bossShock으로 바꿔 실제 Spawn을 실행한 뒤 age0/21/49로 표시한다. source active field나 opacity/radius 값을 완화하지 않는다. 자연 AI/타격 검수는 아니다.
+
+root의 consumer loop worldMask 보완은 이 복사본에 적용하지 않았다. root가 다음 통합에서 해당 부분만 병합해야 한다. 정적 컴파일/Unity/Player 검수는 미실행이다.
+
+## R3 current assertion and capture validity
+
+Consumer loop explicitly restores worldMask before its UpdateViews, preserves lineBefore, then invokes exactly one manual Remodel3DLate; the separate product Late driver remains disabled for QA. The first R2 1920 and3840 frames were visible, but later frames could be hidden, so R2 technical RED remains valid and full visual coverage is re-captured.
+
+Lifecycle rotation/scale baseline is captured immediately before arena transition, not the first time-dependent mine pose. Actual child mesh UV min/max and first/last flip orientation must match source sprite UV within1e-5. Shared material, _MainTex, sorting layer/order are exact; all mesh colors and _Opacity agree within1e-6. Values remain recorded alongside assertions.
+
+Source Hit/Roots/Dust texture IDs are explicit vertical burst controls by the original Clip contract; they keep billboard normals even when a Chase-hit row also contains ground rings. ShockClip remains ground. No classifier based on missing future component is used.
+
+Player is offset -180,+80 Core pixels from each fixed target point to keep installation art visible; target/Core and all radii/colors/timing are unchanged. Both actual1920 and direct3840 frames are recaptured.
+
+### Same-pool lifecycle contract correction before R3 execution
+
+Mine uses addPool while the ordinary field comet uses pool, so Mine -> comet is not claimed as same-instance role reuse. Those existing rows remain separate visibility cases. The lifecycle sample uses iceZone -> ordinary magic field comet -> iceZone, which all use the normal pool. It asserts the exact same source entity and ground child hide/re-show, source enabled/GO inactive/Destroy, then actual sample arena transition. Rotation and scale are captured immediately before that transition. No direct factory/Mark role injection substitutes for actual producers.
