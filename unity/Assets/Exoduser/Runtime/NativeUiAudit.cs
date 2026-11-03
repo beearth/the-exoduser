@@ -11,7 +11,8 @@ namespace Exoduser.UnityPort
     internal static class NativeUiAudit
     {
         [Serializable] internal sealed class Element {
-            public string id,kind,text,source,ownerId,opacityProof,textureName,opacitySampling,metricProof;
+            public string id,kind,text,source,ownerId,opacityProof,textureName,opacitySampling,metricProof,paintGroupId,paintGroupText,paintGroupSource;
+            public Rect paintGroupOrigin;
             public Rect rect,unclippedRect,clipRect,textLayoutRect;public string textAlignment,textFont;public bool textWordWrap;public int textFontSize;public float textPixelsPerPoint;public Vector2[] quad;public int order,depth;
             public bool shadow,hasClip,clipKnown,opacityKnown,axisAligned;
             public float effectiveOpacity;
@@ -21,6 +22,15 @@ namespace Exoduser.UnityPort
         internal static bool Active;
         internal static bool DrawingTextShadow;
         internal static string DrawingTextShadowProfile;
+        sealed class TextPaint {internal string id,text,source;internal Rect origin;}
+        static TextPaint textPaint;static int textPaintSerial;
+        static readonly Dictionary<(string,string,Rect,int),TextPaint> textPaints=new Dictionary<(string,string,Rect,int),TextPaint>();
+        internal readonly struct TextPaintScope:IDisposable {
+            readonly TextPaint previous;readonly bool active;
+            internal TextPaintScope(Rect origin,string text,string source){previous=textPaint;active=Repainting;if(active){var screen=ScreenRect(origin);var key=(source,text,screen,GUI.depth);if(!textPaints.TryGetValue(key,out textPaint)){textPaint=new TextPaint{id="p"+(++textPaintSerial),text=text,source=source,origin=screen};textPaints.Add(key,textPaint);}}}
+            public void Dispose(){if(active)textPaint=previous;}
+        }
+        internal static TextPaintScope GroupText(Rect origin,string text,[CallerFilePath]string file="",[CallerLineNumber]int line=0)=>new TextPaintScope(origin,text,Source(file,line));
         [DefaultExecutionOrder(-31999)] internal sealed class Host:MonoBehaviour { void OnGUI(){if(Event.current.type==EventType.Repaint)BeginFrame();} }
         static Frame frame;
         static Vector2 origin;
@@ -36,7 +46,7 @@ namespace Exoduser.UnityPort
         {
             if(!Active)return;
             var matrix=GUI.matrix;GUI.matrix=Matrix4x4.identity;origin=GUIUtility.GUIToScreenPoint(Vector2.zero);GUI.matrix=matrix;
-            frame=new Frame{width=Screen.width,height=Screen.height,repaintFrames=1,capturedFrame=Time.frameCount};clips.Clear();groupCorrection=Vector2.zero;groupCorrections.Clear();
+            frame=new Frame{width=Screen.width,height=Screen.height,repaintFrames=1,capturedFrame=Time.frameCount};clips.Clear();groupCorrection=Vector2.zero;groupCorrections.Clear();textPaint=null;textPaintSerial=0;textPaints.Clear();
             ValidateAlphaReader();frame.alphaReaderVerified=alphaReaderVerified;frame.alphaReaderProof=alphaReaderProof;frame.alphaProbe=alphaProbe;frame.alphaMipProbe=alphaMipProbe;frame.alphaRtProbe=alphaRtProbe;
         }
         static Rect ScreenRect(Rect r)
@@ -58,6 +68,7 @@ namespace Exoduser.UnityPort
             var m=GUI.matrix;
             var e=new Element{id=frame.elements.Count.ToString(),kind=kind,text=text,source=source,rect=measured,unclippedRect=raw,order=frame.elements.Count,depth=GUI.depth,shadow=shadow,
                 hasClip=hasClip,clipRect=clip,clipKnown=known,axisAligned=m.m01==0&&m.m10==0,quad=ScreenQuad(rect),guiEnabled=GUI.enabled,guiColor=GUI.color,contentColor=GUI.contentColor,backgroundColor=GUI.backgroundColor};
+            if(kind=="text"&&textPaint!=null){e.paintGroupId=textPaint.id;e.paintGroupText=textPaint.text;e.paintGroupSource=textPaint.source;e.paintGroupOrigin=textPaint.origin;}
             frame.elements.Add(e);return e;
         }
         internal static void Region(Rect rect,string kind,string text="",string source="",bool shadow=false)

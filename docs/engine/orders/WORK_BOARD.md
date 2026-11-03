@@ -2,7 +2,7 @@
 
 | 담당 | 목표 | 소유 파일 | 상태 |
 |---|---|---|---|
-| codex/unity-parity-1102 | 20:20 Mac FAIL: 이름 입력·9103건·보관함 잉크 | NativeLobby.cs, NativeUiAudit.cs, NativeKeyBindList.cs, NativeGame.UiOverlapCapture.cs, scroll-ink.py, 관련 UI 문서·CHANGELOG_SYNC 자기 절 | 규칙7bc7a3518 재독·공통b04ddd73b까지 정상 병합(fe236a8bc). Core121/Runtime249 최종 컴파일 오류0. 이름5/5·교차9103→0·잉크4/4는 Mac 재검수 대기 |
+| codex/unity-parity-1102 | 21:50 BuildLoop 다중 패스 오탐 최우선 | NativeUiAudit·다중 패스 발행 함수, Tools/ui-overlap의 분석기/회귀/표본, 관련 UI 문서·CHANGELOG_SYNC 자기 절 | 공통2b1bbf2a 정상 병합(0082cdfa84), 실제 cb77 O 4패스/CP17패스 오탐 재현. PC Player0, 오프라인 회귀·컴파일 후 push |
 
 ## 2026-10-29 Mac 첫 연습 실입력 후속
 

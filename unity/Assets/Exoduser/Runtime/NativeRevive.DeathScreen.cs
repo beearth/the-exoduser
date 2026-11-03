@@ -177,6 +177,7 @@ namespace Exoduser.UnityPort
         static readonly Vector2[] ShadowOffsets={new Vector2(0,2),new Vector2(-1,1),new Vector2(1,1),new Vector2(0,3)};
         void Glyph(Rect r,string g,GUIStyle st,Color c,float shadow)
         {
+            using(var paint=NativeUiAudit.GroupText(r,g)){
             if(shadow>0)
             {
                 bool prior=NativeUiAudit.DrawingTextShadow;string profile=NativeUiAudit.DrawingTextShadowProfile;
@@ -184,6 +185,7 @@ namespace Exoduser.UnityPort
                 finally{NativeUiAudit.DrawingTextShadow=prior;NativeUiAudit.DrawingTextShadowProfile=profile;}
             }
             st.normal.textColor=c;NativeSilverHellUi.Label(r,g,st);
+            }
         }
         static Color A(Color c,float a){c.a=a;return c;}
 

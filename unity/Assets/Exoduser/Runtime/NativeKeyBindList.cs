@@ -129,8 +129,10 @@ namespace Exoduser.UnityPort {
    // rounded glyph labels. Atlas symbols retain their existing dedicated path.
    if(NativeRun(text,ctx,ls)){
     float advance=st.CalcSize(new GUIContent(text)).x;var box=new Rect(x,cy-16,Mathf.Max(1,advance),32);
-    if(shadow>0){st.normal.textColor=new Color(0,0,0,shadow*col.a*curA);NativeUiAudit.Label(new Rect(box.x,box.y+1,box.width,box.height),text,st);}
-    st.normal.textColor=NativeSilverHellUi.TextColor(new Color(col.r,col.g,col.b,col.a*curA));NativeUiAudit.Label(box,text,st);
+    using(var paint=NativeUiAudit.GroupText(box,text)){
+     if(shadow>0){st.normal.textColor=new Color(0,0,0,shadow*col.a*curA);NativeUiAudit.Label(new Rect(box.x,box.y+1,box.width,box.height),text,st);}
+     st.normal.textColor=NativeSilverHellUi.TextColor(new Color(col.r,col.g,col.b,col.a*curA));NativeUiAudit.Label(box,text,st);
+    }
     return advance;
    }
    foreach(var g in Elements(text)){
@@ -140,7 +142,8 @@ namespace Exoduser.UnityPort {
      DrawGlyph(t,x+w,cy,col,t.tint);w+=t.adv;continue;
     }
     float adv=st.CalcSize(new GUIContent(g)).x*(css/px);
-    if(g!=" "){
+    if(g!=" ")
+    using(var paint=NativeUiAudit.GroupText(new Rect(x+w,cy-16,60,32),g)){
      if(shadow>0){st.normal.textColor=new Color(0,0,0,shadow*col.a*curA);NativeUiAudit.Label(new Rect(x+w,cy-16+1,60,32),g,st);}
      st.normal.textColor=NativeSilverHellUi.TextColor(new Color(col.r,col.g,col.b,col.a*curA));NativeUiAudit.Label(new Rect(x+w,cy-16,60,32),g,st);
     }

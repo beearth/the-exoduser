@@ -276,3 +276,8 @@ PC 최종 후보: 추가 공통9dc27dea5 병합 d746ea4b6에서 Core121/Runtime2
 19:00절의 Event.QueueEvent는 실패 이력이다. PC에서는 컴파일까지만 하고, Mac 새 정식 패키지의 M1·1410장 issue0·scroll-ink4/4·이름 입력5해상도 PASS로 판정한다.
 
 PC 확인: 공통b04ddd73b까지 정상 병합(fe236a8bc). Core121/Runtime249 최종 컴파일 exit0·오류0, Runtime 경고531. 내부 pixel density 접근2개 컴파일 오류를 PropertyInfo 경로로 수정한 뒤 Runtime만 재확인했다. 새 Mac 입력·겹침·잉크는 미검증이다.
+
+
+## 2026-11-03 21:50 BuildLoop 다중 패스 후속
+
+동일 글자의 그림자·광휘·외곽선을 GroupText 논리 원점 ID로 연결했다. 문자열/source 전체 제외와 충돌 임계값 완화는 하지 않는다. 같은 원점의 중복 본문과 다른 글자 충돌은 계속 검출한다. 실제 메뉴/봉안함 실패 표본 자기 충돌0, 회귀66/66. 기존 cb77ca96f 1410장 재분석 잔여8363/동일내용819는 과거 metricProof 입력의 결과이며 새 제품 PASS가 아니다. 이전20:20 TextCore/키 문자열 조판/이름 입력 수정은 보존했다. 새 Mac 정식 패키지의 전체UI·nameOpened·scroll-ink 판정이 필요하다. PC Player/바탕화면 변경0. 상세는 UNITY_UI_OVERLAP_20261030.md 21:50절.

@@ -122,6 +122,7 @@ namespace Exoduser.UnityPort
             {
                 CharacterInfo info; if (!font.GetCharacterInfo(ch, out info, size)) continue; string s = ch.ToString();
                 if (ch != ' ')
+                using(var paint=NativeUiAudit.GroupText(new Rect(cx,y,80,height),s))
                 {
                     if (shadow) { st.normal.textColor = new Color(0, 0, 0, .9f * color.a); PaintSpacedGlyph(new Rect(cx, y + 1, 80, height), s, st,true); st.normal.textColor = new Color(0, 0, 0, .3f * color.a); PaintSpacedGlyph(new Rect(cx + .5f, y + 2, 80, height), s, st,true); PaintSpacedGlyph(new Rect(cx - .5f, y + 2, 80, height), s, st,true); }
                     st.normal.textColor = NativeSilverHellUi.TextColor(color); PaintSpacedGlyph(new Rect(cx, y, 80, height), s, st,false);
