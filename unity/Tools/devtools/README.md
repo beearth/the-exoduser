@@ -192,7 +192,7 @@ Unity 없는 시험: selftest/idle-yield-test.ps1, buildloop-wait-test.ps1, asse
 | stale | pid 사망 또는 프로세스 생성 시각 > startedAt이면 동일 token·pid·startedAt 재확인 후 회수. 해제는 자기 pid+token만 |
 | FIFO | reserve/unreserve -Kind editor 또는 player(기본 editor). Player -Owner는 자동 예약·완료 후 반환, -KeepReservation은 유지. 실행 중 Player 예약은 대기 FIFO 제외 |
 | 대기 pid (slots3) | player 명령이 슬롯을 기다리기 시작하면 자기 player 예약에 waitPid·waitSince를 쓴다. player FIFO는 그 pid가 살아 있는(생성 시각 ≤ waitSince) 예약만 센다. waitPid 없는 '예약만'·죽은/재사용 pid 예약은 건너뛴다(파일은 지우지 않음). 갱신(reserve)은 waitPid를 보존. status는 대기 중(pid 살아 있음)/예약만/대기 pid 종료/실행 중(슬롯) 표시, JSON waiterState |
-| PC Player 거부 (11-03) | `player`는 `-PcException buildloop|cto-swap|candidate`가 없으면 거부("Mac에서 실행" 안내, exit 2). CLAUDE.md 3.4 예외만 허용. BuildLoop 스모크·UI 겹침 check.ps1은 buildloop로 넘긴다. editor batchmode 컴파일·임포트는 그대로 || 무음 (11-03) | `--unity-mute`는 게임 쪽 `NativeMuteGuard`가 모든 모드에서 적용한다. 시작 즉시와 매 프레임 끝에 AudioListener.volume=0, Direct 영상 소리는 트랙별 mute. 예전에는 M1 스모크와 캡처별 EarlyMute만 따라서 UI 겹침 검사에서 로비 음악·영상 소리가 났다. Unity Player에는 -nosound 인자가 없어 쓰지 않는다 |
+| PC Player 거부 (11-03) | `player`는 `-PcException`(buildloop·cto-swap·candidate)이 없으면 거부("Mac에서 실행" 안내, exit 2). CLAUDE.md 3.4 예외만 허용. BuildLoop 스모크·UI 겹침 check.ps1은 buildloop로 넘긴다. editor batchmode 컴파일·임포트는 그대로 || 무음 (11-03) | `--unity-mute`는 게임 쪽 `NativeMuteGuard`가 모든 모드에서 적용한다. 시작 즉시와 매 프레임 끝에 AudioListener.volume=0, Direct 영상 소리는 트랙별 mute. 예전에는 M1 스모크와 캡처별 EarlyMute만 따라서 UI 겹침 검사에서 로비 음악·영상 소리가 났다. Unity Player에는 -nosound 인자가 없어 쓰지 않는다 |
 | 굶주림 방지 | editor 선두 등록 후 20분 이상이고 _pc_lock이 비어 있으면 새 Player 통과를 막아 0개까지 배출. status/대기 사유에 owner 표시 |
 | idle 양보 | editor 예약·티켓만 계산(kind 없음=editor). player 대기자는 서버 양보를 유발하지 않음 |
 | 독립 출력 | Player별 GUID 로그·sandbox, 숨은 데스크톱은 PID+GUID. 사용자 창 0·--unity-mute·USER_SAVE 비교·크래시 HALT·자기 자손 정리 유지 |
