@@ -32,6 +32,26 @@ policy.chain=false;policy.retreatHealth=.9f;policy.orbit=false;mv=Vector2.zero;F
 policy.retreatHealth=0;policy.melee=true;policy.magic=true;ps.Player.KiChargeActive=true;ps.Player.KiChargeTicks=119;aa=false;FullRunControlInputs.Apply(ps,policy,pn,(x,y,radius)=>true,kk,ref mv,ref am,ref aa,ref mm,false,0,ref lc);Check(aa,"configured charge holds119 ticks",new Route());
 ps.Player.KiChargeTicks=120;aa=true;FullRunControlInputs.Apply(ps,policy,pn,(x,y,radius)=>true,kk,ref mv,ref am,ref aa,ref mm,false,0,ref lc);Check(!aa,"configured charge releases120 ticks",new Route());
 ps.Stage.InArena=false;aa=true;policy.parryOnly=true;FullRunControlInputs.Apply(ps,policy,pn,(x,y,radius)=>true,kk,ref mv,ref am,ref aa,ref mm,false,0,ref lc);Check(aa,"boss preferences cannot alter field controls",new Route());
+ps.Stage.InArena=true;policy=new FullRunControlPolicy{enabled=true,bossRange=600};ps.Player.State="idle";ps.Player.KiChargeActive=false;ps.Player.Hp=ps.Player.MaxHp;
+kk.Clear();kk.Add(UnityEngine.InputSystem.Key.Space);mv=Vector2.zero;am=new Vector2(2200,4100);aa=mm=false;
+FullRunControlInputs.Apply(ps,policy,pn,(x,y,radius)=>true,kk,ref mv,ref am,ref aa,ref mm,false,4,ref lc);
+Check(mv.x==0&&mv.y==0&&!kk.Contains(UnityEngine.InputSystem.Key.W)&&!kk.Contains(UnityEngine.InputSystem.Key.A)&&!kk.Contains(UnityEngine.InputSystem.Key.S)&&!kk.Contains(UnityEngine.InputSystem.Key.D),"rage burst preserves stationary Space instead of converting it to roll",new Route());
+ps.Skills.Levels["giantSlam"]=1;ps.Skills.Slots[Exoduser.UnityPort.Core.Skills.SkillRules.SlotSpace]="giantSlam";ps.Materials=100;ps.Rage=100;ps.GiantSlamCd=0;ps.Player.Stamina=ps.Player.MaxStamina;foreach(var enemy in ps.Enemies)if(enemy.IsBoss){enemy.Hp=enemy.MaxHp=100000;}
+ps.SetRollInput(kk.Contains(UnityEngine.InputSystem.Key.W),kk.Contains(UnityEngine.InputSystem.Key.S),kk.Contains(UnityEngine.InputSystem.Key.A),kk.Contains(UnityEngine.InputSystem.Key.D),kk.Contains(UnityEngine.InputSystem.Key.Space));
+ps.SetSkillInput(false,false,false,false,kk.Contains(UnityEngine.InputSystem.Key.Space),false,false,false,true);ps.Tick(mv.x,mv.y,am.x,am.y,false,false);
+Check(ps.GiantSlamCd>0&&ps.Player.State!="roll","ordinary roll and skill entry points actually cast the requested rage burst",new Route());
+ps.IceOrbActive=true;kk.Clear();mv=Vector2.zero;aa=mm=false;FullRunControlInputs.Apply(ps,policy,pn,(x,y,radius)=>true,kk,ref mv,ref am,ref aa,ref mm,false,0,ref lc);
+Check(mv.x==0&&mv.y==0,"active ice orb preserves intentional movement stop",new Route());ps.IceOrbActive=false;
+ps.Stage.InArena=true;ps.Player.Hp=ps.Player.MaxHp;kk.Clear();mv=new Vector2(0,-1);aa=mm=false;FullRunControlInputs.Apply(ps,policy,pn,(x,y,radius)=>true,kk,ref mv,ref am,ref aa,ref mm,true,0,ref lc);
+Check(mv.x==0&&mv.y==-1&&kk.Contains(UnityEngine.InputSystem.Key.W),"projectile evasion direction survives orbit preferences",new Route());
+kk.Clear();kk.Add(UnityEngine.InputSystem.Key.Q);am=new Vector2(1234,5678);mv=Vector2.zero;aa=mm=false;
+FullRunControlInputs.Apply(ps,policy,pn,(x,y,radius)=>true,kk,ref mv,ref am,ref aa,ref mm,false,0,ref lc);
+Check(am.x==1234&&am.y==5678,"magic parry keeps the incoming projectile aim",new Route());
+kk.Clear();kk.Add(UnityEngine.InputSystem.Key.E);am=new Vector2(987,654);mv=Vector2.zero;aa=mm=false;
+FullRunControlInputs.Apply(ps,policy,pn,(x,y,radius)=>true,kk,ref mv,ref am,ref aa,ref mm,false,0,ref lc);
+Check(am.x==987&&am.y==654,"physical shield keeps the incoming projectile aim",new Route());
+
+
 '@
 $program=$program.Replace('File.WriteAllText(args[0],',$tests+"`nFile.WriteAllText(args[0],")
 $program+="`nnamespace UnityEngine { internal class Marker {} }`nnamespace UnityEngine.InputSystem { internal enum Key {W,A,S,D,Q,E,R,F,Space,LeftCtrl,LeftShift,Digit1} }"

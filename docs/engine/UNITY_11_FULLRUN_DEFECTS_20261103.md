@@ -1,3 +1,12 @@
+## 10:43 QA23 보스전 입력 우선순위 수정
+
+- 자연10(1c2f414b, 소스836fcf6247)은 1012.405초, 337처치/Lv12, 필드4/4, 사망9·정상 재도전8 뒤 player-death/exit2였다. 창0·잔여0·USER_SAVE0. 초반2508틱 회귀는 재발하지 않았고 QA22의 검정 전환 후 재도전은 실제8회 통과했다. 전체 완주 성공으로 세지 않는다.
+- QA23 원인 확정: FullRunControlInputs.Apply의 보스 선회가 앞서 선택된 회피·정지와 Q/E 탄환 조준을 무조건 덮었다. 정지+Space(강타)가 WASD+Space(구르기)로 바뀌며 실제 Core SetRollInput→SetSkillInput→Tick에서 강타가 발동하지 않았다. 얼음보주 정지·회피 방향·마법/물리 패링 조준도 같은 우선순위 충돌이다. 이것이 모든 사망의 단일 원인이라는 주장은 하지 않는다.
+- 새 회귀6건의 RED6/69→수정 후보 GREEN69/69→실제 채택 소스 GREEN69/69. 기존 경로54+정책9와 신규6으로 총69건이며 중복 합산하지 않는다. 보조 스킬/방어/회피의 기존 이동·조준을 선회보다 우선한다. Core/제품 전투 수치·실제 자원·좌표 수동 수정0.
+- 자연11은 정식formal12의 불변 패키지(836)를 그대로 사용하는 비교 실행으로 공용 Player FIFO 대기/진행한다. 새 소스 수정이 이전 실행에 들어갔다고 주장하지 않는다. 수정본은 별도formal13→동일M1→자연12의 실제 GPU 완주가 필요하다. 현재 unity/main 반영 전이다.
+
+근거: natural-10/fullrun.json, 공식_exec/done/1c2f414b.json, policy-priority-final-red/policy-result.json, policy-priority-adopted-green/policy-result.json.
+
 # 10시 실제 재도전 결함 수정
 
 - 이전후보57155521db의 formal11 aa91fdfe는컴파일/빌드오류0,같은M1 fdebf58223/23·USER_SAVE0. 실제자연9 9643bb2c는343처치/Lv12·필드4/4·굴0/낚시꾼0·드루이드전투뒤최종사망1회에서death-retry-blocked로791.535초실패. exit2/window0/leftover0/USER_SAVE0. 이전자연8의실제완주1회는그대로보존하지만이번후보성공으로쓰지않는다.

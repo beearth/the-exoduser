@@ -35,10 +35,13 @@ namespace Exoduser.UnityPort
             if(boss==null)return; // Preserve the ordinary exit route after the actual kill.
             var here=new Vector2(p.X,p.Y);var target=new Vector2(boss.X,boss.Y);
             var away=(here-target).normalized;if(Vector2.SqrMagnitude(away)<.01f)away=Vector2.up;
-            float distance=Vector2.Distance(here,target);aim=target;
+            float distance=Vector2.Distance(here,target);
+            bool defending=keys.Contains(Key.Q)||keys.Contains(Key.E);
+            bool preserveMovement=evading||defending||auxiliary!=0||sim.IceOrbActive;
+            if(!defending)aim=target;
             bool retreat=policy.retreatHealth>0&&p.Hp<p.MaxHp*policy.retreatHealth;
-            if(retreat)move=navigation.Direction(p.X,p.Y,target.x+away.x*policy.retreatDistance,target.y+away.y*policy.retreatDistance,p.Radius,canMove,sim.TickCount);
-            else if(policy.orbit)
+            if(!preserveMovement&&retreat)move=navigation.Direction(p.X,p.Y,target.x+away.x*policy.retreatDistance,target.y+away.y*policy.retreatDistance,p.Radius,canMove,sim.TickCount);
+            else if(!preserveMovement&&policy.orbit)
             {
                 var goal=target+away*policy.bossRange;
                 if(Math.Abs(distance-policy.bossRange)<35){var tangent=new Vector2(-away.y,away.x);goal=here+tangent*90;}
