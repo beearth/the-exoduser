@@ -193,6 +193,27 @@ namespace Exoduser.UnityPort.Core
             return false;
         }
 
+        // M1's additional shield-parry shot is a no-tick probe, not another
+        // gameplay contact. Keep its real feedback, but restore rewards AND the
+        // dodge draw HurtPlayer makes before checking the parry window.
+        public Action CaptureParryProbeState()
+        {
+            if (Random01 != null || Player.State != "sBash" ||
+                !ParryRules.IsParryWindow(Player.State, Player.StateTicks, 0, SbParryT, CapeParry))
+                throw new InvalidOperationException("Parry capture requires the native RNG and an active shield-strike window.");
+            var p = Player;
+            float hp = p.Hp, shield = p.Shield, stamina = p.Stamina, mana = p.Mana, poise = p.Poise, iframes = p.Iframes, stateTicks = p.StateTicks;
+            string state = p.State;
+            double rage = Rage, harp = HarpGauge, lastHp = LastParryHp;
+            int materials = Materials, parries = ParryCount, dodges = DodgeCount;
+            uint rng = randomState;
+            return () => {
+                p.Hp = hp; p.Shield = shield; p.Stamina = stamina; p.Mana = mana; p.Poise = poise; p.Iframes = iframes; p.State = state; p.StateTicks = stateTicks;
+                Rage = rage; HarpGauge = harp; LastParryHp = lastHp;
+                Materials = materials; ParryCount = parries; DodgeCount = dodges; randomState = rng;
+            };
+        }
+
         private void ApplyParrySuccess(bool qParry, double resourceMul = 1, string parryEl = null, string visualSource = null, float? visualX = null, float? visualY = null)   // trailing parameters are presentation only
         {
             var r = ParryRewards.Apply(new ParryRewards.Input

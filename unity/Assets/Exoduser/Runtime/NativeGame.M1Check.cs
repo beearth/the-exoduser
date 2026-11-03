@@ -163,9 +163,11 @@ namespace Exoduser.UnityPort
             int bashes0 = sim.BashStrikeCount; p.State = "idle"; p.Stamina = p.MaxStamina; sim.SetPlayerCombatInput(false, true, false); StepInput(0, 0, p.X + 300, p.Y, false, false);
             bool eDraw = p.State == "sDraw"; sim.SetPlayerCombatInput(false, false, false); StepInput(0, 0, p.X + 300, p.Y, false, false); bool eBash = p.State == "sBash";
             // Capture the real shield-strike parry inside its existing window.
-            // No synthetic feedback or predicate change: HurtPlayer uses the same
-            // Core melee-parry path as a live contact at this state.
-            p.Iframes=0;sim.HurtPlayer(500);yield return M1Shot("06-parry-shield");
+            // Restore the probe even if screenshot capture throws; no Tick may
+            // run inside this scope (M1 keeps Running=false during these shots).
+            var restoreParryCapture = sim.CaptureParryProbeState();
+            try { p.Iframes = 0; sim.HurtPlayer(500); yield return M1Shot("06-parry-shield"); }
+            finally { restoreParryCapture(); }
             for (int i = 0; i < 60 && p.State != "idle"; i++) StepInput(0, 0, p.X + 300, p.Y, false, false);
             M1Add("06", "parry (Q) and shield strike (E)", q && eDraw && eBash && sim.BashStrikeCount == bashes0 + 1 ? "ok" : "fail", "Q parry " + q + ", E sDraw " + eDraw + " sBash " + eBash + " strike " + (sim.BashStrikeCount - bashes0) + " hits " + sim.BashHitCount + "; E projectile reflection not ported (B07b doc), no sBlock/sBash sprite", "06-parry.png");
 

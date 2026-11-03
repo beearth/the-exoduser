@@ -52,3 +52,19 @@
 - **남음:** 물/불 대형 에너지탄 전용 authored contact, `spawnOldBurst`의 WebP6개 explosion/magic 버스트, 시체·불타는 시체·고어 조각/바닥 혈흔과 사망 파생기술의 전체 연출, 입자 TYPE별 세부 부유/피 색 편차, 고FPS 웹 render-clock과 Unity60Hz의 일치, 1x 탄막 겹침의 알파.35/G+25·명도80% 기준 실측. 이 범위와 실제 원본대조는 통합 담당의 정식 실행이 필요하다.
 
 VISUAL VERDICT: **미검증**. 이번 소스 연결을 전체 누락 연출 이식 완료·실게임 PASS로 올리지 않는다.
+
+## 09c 회귀 조사 — 2026-11-03 후속 (미완료)
+
+기준 `cbdcbc282` → HEAD `84657eed24dadc2a96f82eff9f7e03a3a93d16e1`의 변경만 조사했다. 기존 Player 영수증에서 09c의 `regions 4/4, naturally unlocked False; stage kills 136/168` 실패를 읽었다. 이번에는 Unity·브라우저·commit·push를 실행하지 않았다.
+
+| 항목 | 현재 확인·변경 |
+|---|---|
+| 확인된 컷 오염 | 추가 `06-parry-shield`의 `HurtPlayer(500)`는 `CombatBeforeHurt`보다 먼저 회피 RNG를 1회 소비한다(회피율 0%도 동일). 실제 패링 성공 시 HP/ST/MP·무적·포이즈·악의·하프 게이지·분노·ParryCount·LastParryHp를 변경한다. 표시 전용 enqueue만으로 설명할 수 없는 실제 게임 상태 변경이다. |
+| 복원 수정 | `Simulation.CaptureParryProbeState()`는 native RNG와 유효한 sBash 창에서만 사용하는 무틱 캡처 스냅샷이다. 위 상태와 Shield·State·StateTicks·DodgeCount·private RNG를 복원한다. M1은 컷 직전 스냅샷 → 실제 HurtPlayer·캡처 → `finally` 복원으로 변경했다. 피드백은 실제 컷에 사용하며, 일반 전투·보상·RNG 계산식과 09c 판정식은 변경하지 않았다. 외부 `Random01` 제공자는 되감을 수 없으므로 거부한다. |
+| 새 회귀 검사 | `run.cjs --m1`은 현재 M1 파일에서 shield 컷과 09c 본문을 추출해 실제 Core·SourceMap·ch1_map으로 실행한다. 모든 public scalar 상태와 RNG를 비교하고, 캡처 예외에서도 복원되는지 검사한다. 01~09b 전체 진행·Unity 렌더링의 재현은 아니다. `--region`은 기존 region-test 본문을 동일한 독립 컴파일 경로에서 실행하기 위한 옵션이다. |
+| 첫 실행 RED | 11검사/9실패. 상태·RNG 누출을 재현했다. 09c 두 실패는 검사 fixture의 `EnableFieldBosses()` 누락도 포함했으며, 이를 실제 초기화와 맞췄다. 로그 `tools/combat-impact-check/red.log`. |
+| 수정 후 실행 | **11검사/2실패(9통과)**. 상태·RNG 및 예외 복원, 대조군과 09c RNG·처치·CheckT 일치는 통과했다. 그러나 컷 없는 대조군과 복원한 후보 모두 실제 09c 본문에서 `4/4, naturally unlocked False; 136/168`로 실패했다. 로그 `tools/combat-impact-check/m1.log`. |
+| 미확정 원인 | 지역 정화는 `TickCount % 15`, 문 개방은 `CheckT` 30호출 주기다. 처치가 추가 `Stage.Tick()`을 예약하므로 두 위상이 달라질 수 있다. 09c의 마지막 처치 후 30틱이 두 검사 완료를 항상 보장하지 않는 경로가 남아 있다. 따라서 컷 오염을 원래 Player 실패의 **단독 원인으로 확정하지 않는다**. 전체 이전 단계의 결정적 재현 또는 실제 허용된 M1 재검증이 필요하다. |
+| 중단·남은 검증 | 읽은 `origin/main:docs/0마스터플랜/AGENT_OPERATIONS_MANUAL.md` §2.3의 동일 검사 2회 실패 중단 규칙에 따라 추가 수정·테스트를 중단했다. 기존 combat-impact25/0·feedback28/0은 이전 작업의 기록이며 **이번 변경 후 재실행하지 않았다**. 기존 지역 회귀, Runtime 정적 컴파일, Player M1도 미실행이다. |
+
+**판정: 컷 상태·RNG 복원은 독립 검사 통과, 09c 회귀 수정 전체는 미완료.** 총괄 인수 전 통합·완료로 처리하지 않는다. 다른 세션의 기존 WIP·인덱스·`game.html`은 수정하지 않았다.
