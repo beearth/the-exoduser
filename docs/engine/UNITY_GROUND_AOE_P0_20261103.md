@@ -44,6 +44,19 @@ G0 레퍼런스: 직접 본 노레위 `G:/exoduser/tmp/design-review/20261028_aa
 
 PC에서 새 Player 촬영은 하지 않는다. 수정 전 정적5건중2건 FAIL(경계처리/실제스킬 촬영경로 부재) → 구현 후5/5. 실제 화면은 Mac 재검수 대기.
 
+### 19:00 재작업 PC 결과
+
+수정 후 최신 공통 `9dc27dea561269bfc6639a6419de0bc0224479d3`을 다시 정상 병합한 `a2a606b11f064e3e711249dc8daabfd247988a70`에서 공용bin 배치1회 `b043d6f3` 실행: exit0/C#오류0/shaderImports3/USER_SAVE변경0, 실제 실행94742ms(예약 대기 포함wall516428ms). `compile.json` passed/compileOnly=true, playerRun/visualVerified=false. errorLogs=1이며 라이선스 갱신 메시지 뒤 entitlement 확인 및 종료 `Curl error42: Callback aborted`를 기록했다. 같은 컴파일 재실행0. 예약 해제·Unity 종료 확인. 자동으로 덧쓴meta824/material29개만 자기 checkpoint에서 복원하고 외부guard WORK는 보존했다.
+
+MAP PRODUCTION REPORT(범위: 기존 A2 효과 촬영 경로)
+- STAGE: CH1-1 A2. MASTER(silhouette/regions/main route/side spaces) 변경0.
+- OUTER MASS(LEFT/RIGHT/TOP/SOUTH/holes), LARGE(assets/composites/overlap/repetition), MEDIUM(connections/holes), LANDMARK(primary/secondary/tertiary): 변경0, 이번 품질 판정 범위 밖.
+- GROUND: 원화 셀 경계 감쇠만 수정. 지형/오염/그림자/물 높이 변경0. PLAYABLE(arenas/travel/breathing/threat/route/collision) 변경0.
+- CAMERA QA: 평지·경사·목교·늪 가장자리의 실제3스킬57컷/해상도 경로 구현. START/EARLY/ARENA/SIDE L/R/LANDMARK/LATE/EXIT의 전체맵 검수로 확대하지 않음.
+- TECH QA: 정적5/5, 위 PC 컴파일. pageerror/404/게임성능/새 GPU seam 판정은 미실행.
+- FILES: NativeSkillView/GroundSkillProjection/NativeGame.GroundReceiverCapture·GroundSkillCapture/정적테스트/관련SSOT·CHANGELOG·자기작업판행. 외부guard 보존. GIT: 자기브랜치 정상커밋/push, 공통·Desktop 배포0.
+- VISUAL VERDICT: 이전 e96b137 FAIL 유지 / 새 후보 미검증. NEXT PASS: 아래 인자로 Mac 실제 A/B·4지형·섬광·정상탄막·M1 재검수.
+
 사용자 최신 impact-brief 13:40 절·AGENT_OPERATIONS_MANUAL §2 적용. 자기 `G:/exoduser-wt/codex-impact`를 직접 수정한다. 기준 `origin/unity/main 5062b5701`. PC는 배치 컴파일1회만 하며 정식 빌드/Player/M1/시각 판정은 Mac으로 넘긴다. 사용자 실행본 미반영이며 시각 PASS를 선언하지 않는다.
 
 ## G0/G1: 원인과 제작법
