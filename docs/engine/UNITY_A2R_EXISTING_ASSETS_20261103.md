@@ -217,3 +217,10 @@ proof-a2r-r2255-vs-4895bf9c6.png / proof-a2r-r2255-diagnostics.png 직접 확인
 맵 총괄 a5bec4992의 float 3분할 마스크를 그대로 사용한다. 지정 바닥형 m_c1groot/m_c1gtoxicf/m_c1pool/pit_poison만 원본 sourceX/Y·크기·UV를 보존한 32×32 지형 메시로 바꾼다. 지형과 수면 중 높은 곳 위 1.2cm에 놓고 바람·원통 빌보드·물체 AO·가림 등록에서 제외한다. m_penta_circle 등 나머지는 세운다. 원화 55종(189항목) 직접 검토표는 I:/EXODUSER-Storage/map25d/a2redesign/REPORT.md에 기록한다.
 
 00:50 지시의 실제 나무 2~3곳 중 두 곳(캠프 원화 나무·다리 옆 네이티브 고목)을 Core 도보로 방문해 1920/3840 OFF/ON을 검증한다. 적 탄막 1곳·10초 실제 도보·독 웅덩이 서있음/투영 원본 캡처도 같은 빌드에서 낸다. 00:55에 따라 신규 시도는 고정 a2r-build-next, 승인 실행본 a2r-build와 분리한다. Runtime/Editor C# 컴파일 오류 0. 빌드/실제 구멍/스모크는 아직 미검증이며 다시 실패하면 중단한다.
+
+
+### 00:50 실제 재검증 — FAIL, 추가 시도 중단
+
+실행 소스 c3e2cdecefc517855e3d1599de290bafcee21316. 공용 빌드 b2ffb4c5 PASS/오류0, Player34224363 exit3/창0/오류0/실제세이브변경0. 다리 옆 네이티브 고목은 float 마스크 수정 후 영웅 몸과 검이 실제로 보인다. 그러나 캠프 sight-1의 앞 네이티브 가지는 ON에서도 영웅 몸을 가려 1920·3840 모두 시각 FAIL이다. 독 웅덩이 목표(6700,2424.68) Core 경로도 없어서 바닥형 4종의 현장 화면 검증은 미완료다. 로비→캠프 원래 경로는 도착/순간이동0. 생성 상태의 floor-projection 4/0을 화면 PASS로 쓰지 않는다.
+
+증명 I:/EXODUSER-Storage/map25d/a2redesign/SIGHT_PROOF.md(원본 OFF/ON·1x·탄막·10초 영상·수치), 189항목 분류표 REPORT.md. 맵 총괄 판정 전/배포 금지. 실패본은 a2r-build-next만 갱신했고 a2r-build·바로가기·shortcut-history는 변경하지 않았다. 추가 코드 수정·재빌드 없이 중단했다. 00:55에 따른 별도 tools/promote-a2r-candidate.ps1은 MapLeadPass와 스모크/바닥 증명 통과를 모두 요구하며 이번 회차 실행하지 않았다. 자동생성 메타/설정447개 복원, 사전 WIP는 제외.
