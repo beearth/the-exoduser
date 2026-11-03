@@ -45,6 +45,23 @@ namespace Exoduser.UnityPort
             return Phase;
         }
     }
+    public sealed class RigPixelTurnClock
+    {
+        int lastTick=-1;float lastTarget,offset;
+        public float Offset => offset;
+        public float Lead => Math.Max(-55,Math.Min(55,-offset));
+        public void Reset(){lastTick=-1;offset=0;}
+        static float Wrap(float angle){angle%=360;if(angle>180)angle-=360;if(angle< -180)angle+=360;return angle;}
+        public float Observe(int tick,float target,bool canLag)
+        {
+            if(float.IsNaN(target)||float.IsInfinity(target))return offset;
+            if(lastTick<0||tick<lastTick||!canLag){lastTick=tick;lastTarget=target;offset=0;return 0;}
+            if(tick==lastTick)return offset;
+            offset=Wrap(offset-Wrap(target-lastTarget));float step=12*(tick-lastTick);
+            offset=offset>0?Math.Max(0,offset-step):Math.Min(0,offset+step);
+            lastTarget=target;lastTick=tick;return offset;
+        }
+    }
     public enum HeroMotionKind { Idle,Run,Roll,Swing,Recover,Charge,SlamWindup,SlamStrike,SlamRecover,Cast,Hurt,Dead,Guard,Bash,BashRecover,Chain }
     public struct HeroMotionInput
     {
@@ -256,12 +273,14 @@ namespace Exoduser.UnityPort
     {
         readonly NativeHeroMotionClock clock=new NativeHeroMotionClock();
         readonly RigPixelLocomotionClock gait=new RigPixelLocomotionClock();
+        readonly RigPixelTurnClock turn=new RigPixelTurnClock();
         bool rigPixelMotion;
         bool leftPlanted,rightPlanted;Vector3 leftPlant,rightPlant,plantFacing;
         public float GaitPhase => gait.Phase;
+        public float VisualTurnOffset => rigPixelMotion?turn.Offset:0;
         public float GaitFootPlantError {get;private set;}
         public bool GaitFootPlanted => leftPlanted||rightPlanted;
-        public void EnableRigPixelMotion(){rigPixelMotion=true;gait.Reset();leftPlanted=rightPlanted=false;}
+        public void EnableRigPixelMotion(){rigPixelMotion=true;gait.Reset();turn.Reset();leftPlanted=rightPlanted=false;}
         Animator animator;
         HumanPoseHandler poseHandler;
         HumanPose pose;
@@ -376,11 +395,12 @@ namespace Exoduser.UnityPort
         public void Sync(Simulation sim,bool moving)
         {
             if(sim==null)return;
-            if(!ReferenceEquals(observedSimulation,sim)){clock.Reset();gait.Reset();leftPlanted=rightPlanted=false;observedSimulation=sim;rollGroundTick=-1;rollGroundPhase=-1;}
+            if(!ReferenceEquals(observedSimulation,sim)){clock.Reset();gait.Reset();turn.Reset();leftPlanted=rightPlanted=false;observedSimulation=sim;rollGroundTick=-1;rollGroundPhase=-1;}
             if(!ready)Bind();
             var p=sim.Player;
             observed=new HeroMotionInput {State=p.State,Tick=sim.TickCount,RemainingTicks=p.StateTicks,RollRemaining=(float)sim.RollMoveT,Rolling=sim.RollActive,Moving=moving,EffectiveHealth=p.Hp+p.Shield,Combo=sim.KiComboStep,KiAttack=sim.Config.ActiveAttack=="kiSlash",Charge=p.KiChargeActive?p.KiChargeTicks:(float)sim.KgChg,SkillCastCount=sim.SkillCastCount,Chain=rigPixelMotion&&(sim.HarpActive||sim.DashActive),ChainPull=sim.DashActive};
             current=clock.Evaluate(observed);
+            if(rigPixelMotion)turn.Observe(sim.TickCount,Mathf.Atan2(Mathf.Cos(p.Facing),-Mathf.Sin(p.Facing))*Mathf.Rad2Deg,current.Kind==HeroMotionKind.Idle||current.Kind==HeroMotionKind.Run);
             if(rigPixelMotion)gait.Observe(sim.TickCount,transform.position.x,NativeRemodel3D.Active?transform.position.z:transform.position.y,1/Math.Max(.01f,transform.lossyScale.y),3.0126457,moving&&current.Kind!=HeroMotionKind.Roll&&current.Kind!=HeroMotionKind.Chain&&current.Kind!=HeroMotionKind.Dead);
             if(ready)SampleLocomotion();
         }
@@ -407,8 +427,9 @@ namespace Exoduser.UnityPort
         {
             float cycle=LocomotionTime(runSeconds,moving);
             float swing=moving?Mathf.Sin(cycle*Mathf.PI*2)*.08f:0;
-            var rightTarget=transform.TransformPoint(new Vector3(.30f,1.10f,.06f));
-            var direction=transform.TransformDirection(new Vector3(.16f,-.58f,-.80f).normalized);
+            var lead=Quaternion.Euler(0,rigPixelMotion?turn.Lead:0,0);
+            var rightTarget=transform.TransformPoint(lead*new Vector3(.30f,1.10f,.06f));
+            var direction=transform.TransformDirection(lead*new Vector3(.16f,-.58f,-.80f).normalized);
             SolveArm(rightUpper,rightFore,rightHand,rightTarget,transform.right+transform.forward*.10f);
             rightHand.rotation=Quaternion.FromToRotation(-socket.up,direction)*rightHand.rotation;
             var rotation=rightHand.rotation;
@@ -417,7 +438,7 @@ namespace Exoduser.UnityPort
                 float height=Vector3.Dot(tip-transform.position,transform.up);
                 if(height<.06f){rightTarget+=transform.up*(.06f-height);SolveArm(rightUpper,rightFore,rightHand,rightTarget,transform.right+transform.forward*.10f);rightHand.rotation=rotation;}
             }
-            SolveArm(leftUpper,leftFore,leftHand,transform.TransformPoint(new Vector3(-.30f,1.08f,.03f+swing)),-transform.right+transform.forward*.10f);
+            SolveArm(leftUpper,leftFore,leftHand,transform.TransformPoint(lead*new Vector3(-.30f,1.08f,.03f+swing)),-transform.right+transform.forward*.10f);
         }
 
         struct GripPose
@@ -516,6 +537,7 @@ namespace Exoduser.UnityPort
             GaitFootPlantError=0;if(current.Kind!=HeroMotionKind.Run)leftPlanted=rightPlanted=false;
             FootPivotActive=false;
             SampleLocomotion();
+            if(rigPixelMotion)transform.localRotation=Quaternion.Euler(0,turn.Offset,0);
             var leftFootPosition=leftFoot!=null?leftFoot.position:Vector3.zero;var rightFootPosition=rightFoot!=null?rightFoot.position:Vector3.zero;
             var leftFootRotation=leftFoot!=null?leftFoot.rotation:Quaternion.identity;var rightFootRotation=rightFoot!=null?rightFoot.rotation:Quaternion.identity;
             var leftToePosition=leftToes!=null?leftToes.position:leftFootPosition;var rightToePosition=rightToes!=null?rightToes.position:rightFootPosition;
@@ -531,7 +553,9 @@ namespace Exoduser.UnityPort
                 case HeroMotionKind.Run:
                     // 승인된 보행/무기 홀드 포즈를 유지하고 흉곽 호흡만 더한다.
                     SetMuscle(chestBend,Mathf.Sin(observed.Tick*.025f)*.025f);
-                    poseHandler.SetHumanPose(ref pose);if(leftGrip!=null)ApplyCarryPose(current.Kind==HeroMotionKind.Run);if(rigPixelMotion&&current.Kind==HeroMotionKind.Run)PlantRunFeet();return;
+                    poseHandler.SetHumanPose(ref pose);
+                    if(rigPixelMotion){if(chest!=null)chest.rotation=Quaternion.AngleAxis(turn.Lead,transform.up)*chest.rotation;if(head!=null)head.rotation=Quaternion.AngleAxis(Mathf.Clamp(-turn.Offset-turn.Lead,-25,25),transform.up)*head.rotation;}
+                    if(leftGrip!=null)ApplyCarryPose(current.Kind==HeroMotionKind.Run);if(rigPixelMotion&&current.Kind==HeroMotionKind.Run)PlantRunFeet();return;
                 case HeroMotionKind.Swing:grip=SwingPose(current.Combo,t,current.ContactPhase);break;
                 case HeroMotionKind.Recover:grip=Lerp(SwingPose(current.Combo,1,current.ContactPhase),ReadyPose(),t);break;
                 case HeroMotionKind.Bash:grip=BashPose(t);break;
