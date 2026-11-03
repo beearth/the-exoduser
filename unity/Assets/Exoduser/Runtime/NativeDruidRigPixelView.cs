@@ -4,9 +4,9 @@ namespace Exoduser.UnityPort
     // The hero/enemy Point-RT contract, isolated boss layer. No Core or camera pose writer.
     [DefaultExecutionOrder(1002)] public sealed class NativeDruidRigPixelView:MonoBehaviour
     {
-        const int Layer=27;const string Resource="Art/Bosses/Druid/OldmanV81";
+        const int Layer=27;const string Resource="Art/Bosses/Druid/OldmanV82";
         [Serializable] sealed class ImportData {public string sourceVersion,sourceSha256;public float hornHeight,meshHeight;public int boneCount,chestEmissionFaces;}
-        GameObject root,model;Renderer[] skins;Camera capture;MeshRenderer image,contact;Material composite,shadow;RenderTexture texture;
+        GameObject root,model;Transform orb;Renderer[] skins;Camera capture;MeshRenderer image,contact;Material composite,shadow;RenderTexture texture;
         readonly List<Material> materials=new List<Material>();readonly Dictionary<Camera,int> masks=new Dictionary<Camera,int>();
         Func<Camera> cameraSource;Action hideDefault;string output;ImportData imported;NativeDruidRigAnimator motion;
         UniversalRenderPipeline.SingleCameraRequest request;EnemyState enemy;DruidData data;Bounds bounds;Vector3 ground;
@@ -14,6 +14,15 @@ namespace Exoduser.UnityPort
         Light[] lights=Array.Empty<Light>();int nextLights;readonly Vector4[] lightPositions=new Vector4[4],lightColors=new Vector4[4];readonly float[] lightDistances=new float[4];Light moon;
         public bool Ready {get;private set;}public int RenderCount {get;private set;}public int TexelScale {get;private set;}public int TextureWidth {get{return texture==null?0:texture.width;}}public float RenderMilliseconds {get;private set;}
         public Bounds Bounds {get{return bounds;}}
+        // Read-only lantern_orb socket for VFX (slash-3 telegraph). Live transform of the orb under StaffSocket_L, sampled by this view's LateUpdate; no authored offset.
+        public bool HasOrbSocket {get{return !failed&&Ready&&orb!=null;}}
+        public Vector3 OrbSocketWorldPosition {get{return orb!=null?orb.position:Vector3.zero;}}
+        public static NativeDruidRigPixelView Current {get;private set;}
+        public static bool TryGetOrbSocketWorldPosition(out Vector3 position)
+        {
+            var view=Current;if(view!=null&&view.HasOrbSocket){position=view.OrbSocketWorldPosition;return true;}
+            position=Vector3.zero;return false;
+        }
         public void Initialize(Func<Camera> cameraSource,Action hideDefault,string output)
         {
             this.cameraSource=cameraSource;this.hideDefault=hideDefault;this.output=output;
@@ -21,23 +30,25 @@ namespace Exoduser.UnityPort
             {
                 var info=Resources.Load<TextAsset>("Art/Bosses/Druid/oldman-import");if(info==null)throw new InvalidOperationException("oldman import receipt missing");imported=JsonUtility.FromJson<ImportData>(info.text);
                 var prefab=Resources.Load<GameObject>(Resource);var toon=Resources.Load<Shader>("Shaders/DruidRigPixelToon");var compose=Resources.Load<Shader>("Shaders/RigPixelComposite");
-                if(prefab==null||toon==null||compose==null||imported.hornHeight<=0||imported.meshHeight<=0)throw new InvalidOperationException("v8.1 model/metadata/shared pixel shaders missing");
+                if(prefab==null||toon==null||compose==null||imported.hornHeight<=0||imported.meshHeight<=0)throw new InvalidOperationException("v8.2 model/metadata/shared pixel shaders missing");
                 root=new GameObject("Druid rig-pixel Core root");root.transform.SetParent(transform,false);model=Instantiate(prefab,root.transform);model.transform.localPosition=Vector3.zero;model.transform.localRotation=Quaternion.identity;model.transform.localScale=Vector3.one;
                 foreach(var tr in model.GetComponentsInChildren<Transform>(true))tr.gameObject.layer=Layer;
-                skins=model.GetComponentsInChildren<Renderer>(true);if(skins.Length==0)throw new InvalidOperationException("v8.1 has no renderer");
+                skins=model.GetComponentsInChildren<Renderer>(true);if(skins.Length==0)throw new InvalidOperationException("v8.2 has no renderer");
                 Renderer body=null;Transform left=null,right=null,socket=null;
                 foreach(var tr in model.GetComponentsInChildren<Transform>(true)){if(tr.name=="LeftFoot")left=tr;if(tr.name=="RightFoot")right=tr;if(tr.name=="StaffSocket_L")socket=tr;}
                 foreach(var r in skins)if(r.name=="char1")body=r;
-                if(body==null||left==null||right==null||socket==null)throw new InvalidOperationException("v8.1 body/feet/staff socket missing");
+                if(body==null||left==null||right==null||socket==null)throw new InvalidOperationException("v8.2 body/feet/staff socket missing");
                 if(socket.parent==null||socket.parent.name!="LeftHand")throw new InvalidOperationException("StaffSocket_L no longer belongs to LeftHand");
-                var bodyBox=body.bounds;hornUnits=bodyBox.size.y*imported.hornHeight/imported.meshHeight;if(hornUnits<=.0001f)throw new InvalidOperationException("v8.1 horn units invalid");
+                foreach(var tr in socket.GetComponentsInChildren<Transform>(true))if(tr.name=="lantern_orb"){orb=tr;break;}
+                if(orb==null)throw new InvalidOperationException("v8.2 lantern_orb under StaffSocket_L missing");
+                var bodyBox=body.bounds;hornUnits=bodyBox.size.y*imported.hornHeight/imported.meshHeight;if(hornUnits<=.0001f)throw new InvalidOperationException("v8.2 horn units invalid");
                 var foot=(left.position+right.position)*.5f;foot.y=bodyBox.min.y;model.transform.position-=foot-root.transform.position;
                 foreach(var r in skins)
                 {
                     var old=r.sharedMaterials;var replacement=new Material[old.Length];
                     for(int i=0;i<old.Length;i++)
                     {
-                        string name=old[i]==null?"":old[i].name.Replace(" (Instance)","");string hex=NativeDruidRigPolicy.Palette(name);Color color;if(hex==null||!ColorUtility.TryParseHtmlString(hex,out color))throw new InvalidOperationException("Unmapped v8.1 material: "+name);
+                        string name=old[i]==null?"":old[i].name.Replace(" (Instance)","");string hex=NativeDruidRigPolicy.Palette(name);Color color;if(hex==null||!ColorUtility.TryParseHtmlString(hex,out color))throw new InvalidOperationException("Unmapped v8.2 material: "+name);
                         var mat=new Material(toon){name="Druid rig-pixel "+name};mat.SetColor("_PaletteColor",color);mat.SetColor("_BaseColor",Color.white);mat.SetFloat("_MetallicPlane",0);
                         float tag=name=="druid_feather"||name=="front_panel_cloth"?.7f:name=="staff_leather"?.8f:name=="druid_bark"||name=="staff_bark"?.6f:1;
                         mat.SetFloat("_SurfaceTag",tag);mat.SetFloat("_DruidGroundClip",1);mat.SetFloat("_DruidGroundY",0);mat.SetFloat("_DruidGlow",name=="lantern_orb"||name=="druid_glow"?1:0);Color amber;ColorUtility.TryParseHtmlString("#d49a5c",out amber);mat.SetColor("_DruidEmission",amber);
@@ -46,12 +57,12 @@ namespace Exoduser.UnityPort
                     r.sharedMaterials=replacement;r.shadowCastingMode=ShadowCastingMode.Off;r.receiveShadows=false;r.forceRenderingOff=true;if(r is SkinnedMeshRenderer skin)skin.updateWhenOffscreen=true;
                 }
                 motion=new NativeDruidRigAnimator(model,Resource);
-                foreach(string clip in NativeDruidRigPolicy.AllClips)if(Array.IndexOf(motion.AvailableClips,clip)<0)throw new InvalidOperationException("Provided v8.1 clip did not import: "+clip);
+                foreach(string clip in NativeDruidRigPolicy.AllClips)if(Array.IndexOf(motion.AvailableClips,clip)<0)throw new InvalidOperationException("Provided v8.2 clip did not import: "+clip);
                 if(!motion.AvatarValid||motion.Humanoid)throw new InvalidOperationException("Expected valid Generic Avatar; keep existing boss");
                 capture=new GameObject("Druid rig-pixel capture").AddComponent<Camera>();capture.transform.SetParent(transform,false);capture.enabled=false;capture.orthographic=true;capture.clearFlags=CameraClearFlags.SolidColor;capture.backgroundColor=Color.clear;capture.cullingMask=1<<Layer;capture.nearClipPlane=.05f;capture.farClipPlane=24;capture.allowHDR=false;capture.allowMSAA=false;
                 var extra=capture.GetUniversalAdditionalCameraData();extra.renderPostProcessing=false;extra.renderShadows=false;extra.requiresColorOption=CameraOverrideOption.Off;extra.requiresDepthOption=CameraOverrideOption.Off;extra.volumeLayerMask=0;
                 composite=new Material(compose);image=Quad("Druid rig-pixel composite",composite);var contactShader=Resources.Load<Shader>("Shaders/HD2DContact");if(contactShader!=null){shadow=new Material(contactShader);contact=Quad("Druid rig ground contact",shadow);}request=new UniversalRenderPipeline.SingleCameraRequest();
-                Debug.Log("[DruidRig] imported="+imported.sourceVersion+" selected=Generic avatarValid="+motion.AvatarValid+" humanoid="+motion.Humanoid+" clips="+string.Join(",",motion.AvailableClips)+" source="+imported.sourceSha256);
+                Current=this;Debug.Log("[DruidRig] imported="+imported.sourceVersion+" selected=Generic avatarValid="+motion.AvatarValid+" humanoid="+motion.Humanoid+" clips="+string.Join(",",motion.AvailableClips)+" source="+imported.sourceSha256);
             }
             catch(Exception error){Fail(error);}
         }
@@ -133,6 +144,6 @@ namespace Exoduser.UnityPort
         }
         public void WriteReceipt(string directory){if(string.IsNullOrEmpty(directory))return;Directory.CreateDirectory(directory);File.WriteAllText(Path.Combine(directory,"druid-rigpixel.json"),JsonUtility.ToJson(CaptureFrame(),true));}
         void Fail(Exception error){failed=true;Hide();if(root!=null)root.SetActive(false);Debug.LogWarning("[DruidRig] existing boss fallback, once: "+error.Message);}
-        void OnDestroy(){WriteReceipt(output);motion?.Dispose();foreach(var pair in masks)if(pair.Key!=null)pair.Key.cullingMask=(pair.Key.cullingMask&~(1<<Layer))|(pair.Value&(1<<Layer));if(texture!=null){texture.Release();Destroy(texture);}foreach(var mat in materials)Destroy(mat);if(composite!=null)Destroy(composite);if(shadow!=null)Destroy(shadow);if(root!=null)Destroy(root);if(capture!=null)Destroy(capture.gameObject);if(image!=null)Destroy(image.gameObject);if(contact!=null)Destroy(contact.gameObject);}
+        void OnDestroy(){if(Current==this)Current=null;WriteReceipt(output);motion?.Dispose();foreach(var pair in masks)if(pair.Key!=null)pair.Key.cullingMask=(pair.Key.cullingMask&~(1<<Layer))|(pair.Value&(1<<Layer));if(texture!=null){texture.Release();Destroy(texture);}foreach(var mat in materials)Destroy(mat);if(composite!=null)Destroy(composite);if(shadow!=null)Destroy(shadow);if(root!=null)Destroy(root);if(capture!=null)Destroy(capture.gameObject);if(image!=null)Destroy(image.gameObject);if(contact!=null)Destroy(contact.gameObject);}
     }
 }

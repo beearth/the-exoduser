@@ -1,7 +1,7 @@
 {
-  "sourceVersion": "v8.1",
-  "sourceSha256": "a143a7deb7e144bf5dce55e7df730e0604b0e25ca22a88f7615808f6aad85477",
-  "sourceBytes": 24299016,
+  "sourceVersion": "v8.2",
+  "sourceSha256": "313bb238185919b69dd9233fade9f12185e803cb6e72d9a807ae0d781bd3798c",
+  "sourceBytes": 24299904,
   "rig": "Generic selected for exact 34-bone authored actions/socket; Unity Avatar.isHuman/isValid pending Mac import",
   "bones": [
     "Beard_1",
@@ -55,7 +55,7 @@
     "staff_leather"
   ],
   "chestEmissionFaces": 43,
-  "chestEmissionScope": "Authored v8.1 druid_glow material faces preserved; screen glow <=0.5% pending Mac",
+  "chestEmissionScope": "Authored v8.2 druid_glow material faces preserved; screen glow <=0.5% pending Mac",
   "objects": [
     "Armature",
     "FrontPanel",
@@ -335,5 +335,5 @@
     "Sink"
   ],
   "fallbackPose": "Idle time zero, held; no synthetic skill action",
-  "scope": "Format conversion only; v8.1 meshes/weights/parents/auxiliary bones/blendshape retained. Importer helper Icosphere excluded. No Unity/Player/render execution"
+  "scope": "Format conversion only; v8.2 meshes/weights/parents/auxiliary bones/blendshape retained. Importer helper Icosphere excluded. No Unity/Player/render execution"
 }

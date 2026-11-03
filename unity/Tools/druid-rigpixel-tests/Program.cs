@@ -62,7 +62,7 @@ class DruidRigTests
   foreach(var pair in new[]{new[]{"druid_bone","#b9ad90"},new[]{"druid_bark","#4a3826"},new[]{"druid_feather","#1c2024"},new[]{"druid_hair","#2a2624"},new[]{"druid_beard","#8f8a82"},new[]{"druid_glow","#a8642a"},new[]{"druid_moss","#36421f"},new[]{"staff_bark","#4a3826"},new[]{"staff_leather","#2e231b"},new[]{"staff_bone","#b9ad90"},new[]{"lantern_orb","#a8642a"},new[]{"front_panel_cloth","#26211d"}})Check(NativeDruidRigPolicy.Palette(pair[0])==pair[1],"LOCK palette "+pair[0]);Check(NativeDruidRigPolicy.Palette("iron")==null,"hero palette isolated");
   using(var json=JsonDocument.Parse(File.ReadAllText("unity/Assets/Exoduser/Resources/Art/Bosses/Druid/oldman-import.json")))
   {
-   var source=json.RootElement;Check(source.GetProperty("sourceVersion").GetString()=="v8.1","current source");Check(source.GetProperty("clips").GetArrayLength()==31,"31 imported clips");
+   var source=json.RootElement;Check(source.GetProperty("sourceVersion").GetString()=="v8.2","current source");Check(source.GetProperty("clips").GetArrayLength()==31,"31 imported clips");
    foreach(var clip in source.GetProperty("clips").EnumerateArray())Near(clip.GetProperty("duration").GetDouble()*60,NativeDruidRigPolicy.Frames(clip.GetProperty("name").GetString()),"real asset duration "+clip.GetProperty("name"));
   }
   Check(NativeDruidRigPolicy.AllClips.Distinct().Count()==31,"unique contract clips");Console.WriteLine("druid-rigpixel checks="+checks+" failed="+bad);return bad==0?0:1;
