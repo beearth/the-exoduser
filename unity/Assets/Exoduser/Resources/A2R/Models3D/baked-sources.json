@@ -1,5 +1,5 @@
 {
-  "scope": "r17 ready-at-start sources only; NOT near-model approvals",
+  "scope": "r17 ready-at-start sources only; NOT near-model approvals / r19: ctree16 reverted to original 3D",
   "models": [
     {
       "name": "ctree13",
@@ -17,12 +17,6 @@
       "name": "ctree14",
       "before": "I:/EXODUSER-Storage/map25d/foliage3d/props/ctree14.glb",
       "after": "I:/EXODUSER-Storage/map25d/bake3d/out/ctree14.glb",
-      "geometryLodPivotIdentical": true
-    },
-    {
-      "name": "ctree16",
-      "before": "I:/EXODUSER-Storage/map25d/foliage3d/props/ctree16.glb",
-      "after": "I:/EXODUSER-Storage/map25d/bake3d/out/ctree16.glb",
       "geometryLodPivotIdentical": true
     },
     {

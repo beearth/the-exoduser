@@ -131,16 +131,6 @@
             "triangles": 68223
         },
         {
-            "name": "ctree16",
-            "resource": "A2R/Models3D/Prefabs/ctree16",
-            "source": "I:/EXODUSER-Storage/map25d/bake3d/out/ctree16.glb",
-            "prepared": true,
-            "width": 1.065375566482544,
-            "depth": 0.7004398107528687,
-            "lods": 3,
-            "triangles": 68191
-        },
-        {
             "name": "ctree17",
             "resource": "A2R/Models3D/Prefabs/ctree17",
             "source": "I:/EXODUSER-Storage/map25d/bake3d/out/ctree17.glb",
@@ -515,8 +505,8 @@
             "resource": "A2R/Models3D/Prefabs/fern_1",
             "source": "I:/EXODUSER-Storage/map25d/prop3d-foliage/out/fern_1.glb",
             "prepared": true,
-            "width": 1.8783941268920898,
-            "depth": 1.9468517303466797,
+            "width": 1.8786041736602783,
+            "depth": 1.9470696449279785,
             "lods": 3,
             "triangles": 2142
         },
@@ -525,8 +515,8 @@
             "resource": "A2R/Models3D/Prefabs/fern_2",
             "source": "I:/EXODUSER-Storage/map25d/prop3d-foliage/out/fern_2.glb",
             "prepared": true,
-            "width": 1.966101884841919,
-            "depth": 2.2545154094696045,
+            "width": 1.9676436185836792,
+            "depth": 2.2562832832336426,
             "lods": 3,
             "triangles": 2124
         },
@@ -569,6 +559,16 @@
             "depth": 2.496065855026245,
             "lods": 3,
             "triangles": 3696
+        },
+        {
+            "name": "ctree16",
+            "resource": "A2R/Models3D/Prefabs/ctree16",
+            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/ctree16.glb",
+            "prepared": true,
+            "width": 1.065375566482544,
+            "depth": 0.7004398107528687,
+            "lods": 3,
+            "triangles": 68191
         }
     ]
 }
