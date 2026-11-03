@@ -148,3 +148,5 @@ G0 범위는 1-1 검격만이며 최신 CLAUDE7bc7a3518 및 docs 정본 unity/ma
 최신 origin/unity/main aa38bb8773274bd5f2c91fdc25c4eb2cf003565d(사망화면포함)을인수했다. docs/CHANGELOG_SYNC.md의한충돌은리깅14:25/19:00·20:20과사망UI후속세기록을양쪽그대로보존해해소한다. NativeGame.cs/WORK_BOARD는정상자동병합이며리깅셰이더·원화·팔레트·기본모드의추가수정0.
 
 브리프21:20 CTO 전달: qa/mac-captures-20261103 @adc7233e6 / qa/unity-rigpixel/39e52fe/에서사각면0·망토낱픽셀0·흑철·1px칼궤적시각PASS. 3840의56fps는다른Player동시실행오염이라단독재측정대기이며60fps PASS로세지않는다. 새로운PC Player/빌드/성능검사없이공용컴파일한번만수행한다. CTO가검수후unity/main을fast-forward로반영하며기본rigpixel전환은성능재측정PASS뒤별도결정한다.
+
+21:20 병합본 단일PC컴파일952896b8: source c81bdc6455b48bea9b597a156b0747f992ebe9ff, renderer/네셰이더/Humanoid true·exit0·compileErrors0·USER_SAVE0,94.2초. 부수Curl종료통신로그는검사결과와구분. 자동직렬화885개/새meta56개정리후자기직접변경0. CHANGELOG 양쪽기록/충돌표시0을유지하며리깅코드는39e52fe와동일하다. 자기브랜치push후CTO가aa38bb877에서fast-forward로인수할수있는커밋을보고한다. 성능단독재측정전기본sprite유지.
