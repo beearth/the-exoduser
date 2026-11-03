@@ -11,7 +11,14 @@ namespace Exoduser.UnityPort
         [Serializable] sealed class Catalog {public Record[] models;}
         [Serializable] sealed class Record {public string name,resource,source;public bool prepared;public float width,depth;public int lods,triangles;}
         [Serializable] sealed class Input {public A2RWebAssets.Card[] cards;}
-        [Serializable] sealed class Allowlist {public string[] models;}
+        [Serializable] sealed class ModelScale {public string name;public float scale=1;}
+        [Serializable] sealed class Allowlist {public string[] models;public ModelScale[] scales;}
+        public static float ParseModelScale(string json,string name)
+        {
+            if(string.IsNullOrWhiteSpace(json))return 1;
+            try{var data=JsonUtility.FromJson<Allowlist>(json);if(data!=null&&data.scales!=null)foreach(var item in data.scales)if(item!=null&&item.name==name&& !float.IsNaN(item.scale)&& !float.IsInfinity(item.scale))return Mathf.Clamp(item.scale,.6f,1);}catch(ArgumentException){}
+            return 1;
+        }
         public static HashSet<string> ParseAllowedModels(string json)
         {
             var result=new HashSet<string>(StringComparer.Ordinal);
@@ -30,12 +37,12 @@ namespace Exoduser.UnityPort
             if(far||height<1)foreach(var renderer in root.GetComponentsInChildren<MeshRenderer>(true))renderer.shadowCastingMode=ShadowCastingMode.Off;
         }
         [Serializable] public sealed class Placement {public string id,kind,model;public float webX,webY,worldX,worldZ,height,groundY,footY,gapCm,tilt;public bool rayHit;}
-        [Serializable] public sealed class Receipt {public bool enabled;public string scope="r15 exact-name model allowlist, empty until map-lead approval. Unlisted kinds retain original paintings. Forest-wall replacement requires all repeating far species approved. Explicit isolated QA can review all models without editing the shipped allowlist. Core and game camera unchanged.";public int sourceCards,modelInstances,flatDecals,floating,standingCards,missing,omittedVegetation;public List<string> missingKinds=new List<string>();public List<Placement> items=new List<Placement>();}
+        [Serializable] public sealed class Receipt {public bool enabled;public string scope="r16 map-lead approved 11 exact names and .6..1 uniform silhouette scales. Unlisted kinds retain original paintings. Forest-wall replacement requires all repeating far species approved. Explicit isolated QA can review all models without editing the shipped allowlist. Core and game camera unchanged.";public int sourceCards,modelInstances,flatDecals,floating,standingCards,missing,omittedVegetation;public List<string> missingKinds=new List<string>();public List<Placement> items=new List<Placement>();}
         public Receipt Result=new Receipt();public bool Applied {get;private set;}public int RetainedCards {get;private set;}
         public static bool Enabled {get{return Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-3d-off")<0;}}
         readonly Dictionary<string,Record> records=new Dictionary<string,Record>();readonly Dictionary<string,GameObject> prefabs=new Dictionary<string,GameObject>();readonly Dictionary<string,List<Vector3>> feet=new Dictionary<string,List<Vector3>>();readonly List<GameObject> cards=new List<GameObject>();
         GameObject visuals;Transform originalRoot;A2ROcclusion occlusion;
-        HashSet<string> allowed;
+        HashSet<string> allowed;readonly Dictionary<string,float> scales=new Dictionary<string,float>();
         static readonly string[] ForestNames={"bnd0","bnd3","bnd5","bnd18","c1tree","ctree13","ctree14","ctree15","ctree16","ctree17","ctree18","ctree19","ctree20","fg_rot01","fg_rot03"};
         static uint Hash(string value){uint h=2166136261;foreach(char c in value)h=(h^c)*16777619;return h;}
         static bool Floor(string kind){return kind=="m_c1groot"||kind=="m_c1gtoxicf"||kind=="m_c1pool"||kind=="pit_poison";}
@@ -47,7 +54,7 @@ namespace Exoduser.UnityPort
         public void Initialize(Transform world,A2RWebAssets web,A2ROcclusion masks,bool reviewAll=false)
         {
             occlusion=masks;originalRoot=web.VisualRoot;visuals=new GameObject("A2R supplied 3D assets at web coordinates");visuals.transform.SetParent(world,false);var catalog=Resources.Load<TextAsset>("A2R/Models3D/catalog");if(catalog==null)throw new InvalidOperationException("A2R 3D catalog not imported");foreach(var r in JsonUtility.FromJson<Catalog>(catalog.text).models)records[r.name]=r;
-            var list=Resources.Load<TextAsset>("A2R/Models3D/allowed-models");allowed=ParseAllowedModels(list!=null?list.text:null);
+            var list=Resources.Load<TextAsset>("A2R/Models3D/allowed-models");allowed=ParseAllowedModels(list!=null?list.text:null);foreach(var name in records.Keys)scales[name]=ParseModelScale(list!=null?list.text:null,name);
             if(reviewAll){if(!NativeQaSandbox.Active||Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-r15-sheet")<0)throw new InvalidOperationException("R15 review override requires explicit isolated sheet run");foreach(var key in records.Keys)allowed.Add(key);}
             var input=JsonUtility.FromJson<Input>(Resources.Load<TextAsset>("A2R/web-assets").text);Result.sourceCards=input.cards.Length;int at=0;
             foreach(var c in input.cards){if(Floor(c.kind))continue;var source=web.Result.items.Find(x=>x.id==c.id);if(source==null||!source.added)continue;var card=originalRoot.Find(c.id+" "+c.kind+" web XY");if(card==null)throw new InvalidOperationException("A2R card lookup "+c.id);
@@ -62,6 +69,7 @@ namespace Exoduser.UnityPort
         }
         GameObject Place(A2RWebAssets.Card c,string name,float x,float z,float height,string id)
         {
+            float factor;if(scales.TryGetValue(name,out factor))height*=factor;
             Record spec;if(!records.TryGetValue(name,out spec))throw new InvalidOperationException("A2R model missing "+name);GameObject prefab;if(!prefabs.TryGetValue(name,out prefab)){prefab=Resources.Load<GameObject>(spec.resource);if(prefab==null)throw new InvalidOperationException("A2R prefab missing "+spec.resource);prefabs[name]=prefab;}
             var go=Instantiate(prefab,visuals.transform);go.name=id+" "+c.kind+" "+name;RaycastHit hit;bool ray=Physics.Raycast(new Vector3(x,60,z),Vector3.down,out hit,140,1<<28,QueryTriggerInteraction.Ignore);float ground=Mathf.Max(ray?hit.point.y:float.NegativeInfinity,NativeRemodel3D.GroundY(x,z));float step=.25f;var normal=new Vector3(NativeRemodel3D.GroundY(x-step,z)-NativeRemodel3D.GroundY(x+step,z),step*2,NativeRemodel3D.GroundY(x,z-step)-NativeRemodel3D.GroundY(x,z+step)).normalized;var tilt=Quaternion.RotateTowards(Quaternion.identity,Quaternion.FromToRotation(Vector3.up,normal),15);go.transform.SetPositionAndRotation(new Vector3(x,ground-.04f,z),tilt*Quaternion.Euler(0,(spec.prepared?180:0)+(c.kind=="vegetation"?((Hash(id)%1001)/1000f*50-25):0),0));go.transform.localScale=Vector3.one*height;
             List<Vector3> foot;if(!feet.TryGetValue(name,out foot)){var points=new List<Vector3>();float min=float.PositiveInfinity;foreach(var filter in prefab.GetComponentsInChildren<MeshFilter>(true)){if(filter.transform.parent!=null&&filter.transform.parent.name.Contains("LOD1")||filter.transform.parent!=null&&filter.transform.parent.name.Contains("LOD2"))continue;foreach(var v in filter.sharedMesh.vertices){var p=prefab.transform.InverseTransformPoint(filter.transform.TransformPoint(v));points.Add(p);min=Mathf.Min(min,p.y);}}foot=new List<Vector3>();foreach(var p in points)if(p.y<=min+.003f)foot.Add(p);if(foot.Count>48){var reduced=new List<Vector3>();for(int i=0;i<48;i++)reduced.Add(foot[i*foot.Count/48]);foot=reduced;}feet[name]=foot;}
