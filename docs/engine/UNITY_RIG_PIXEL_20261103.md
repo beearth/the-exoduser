@@ -50,3 +50,5 @@ R6 표면사전검사23c37b66는 정점/가중/전체삼각형 동일·RT Ready�
 R6 실제광원 보강에 맞춘 최종후보 팔레트(alpha1): Iron(.17,.19,.22), Skin(.45,.28,.20), Hair(.025,.020,.015), Cloth/Cape(.18,.035,.025), Leather(.08,.045,.025), Sword(.36,.38,.40). R4의 ambient-only 보상색을 유지해 흑철이 회색판금으로 뜨지 않도록 조정하며, 제품실제화면 판정 전 후보값이다.
 
 Editor사전검사 최종카메라만sRGB RenderTexture로 저장한다(내부리그RT는Linear 유지). Linear최종바이트를 gamma변환 없이 PNG로 내보내 어둡게 보이던 사전미리보기 한계를 수정했다. T포즈 정면으로 표면의큰면/재질만 대조하며 실제제품색/모션 판정은 아니다.
+
+동일패키지C10 기준은 --unity-rigpixel-natural --hero-render=sprite --remodel3d로 같은실제입장/같은1920·3840×1080 검수흐름을 사용한다. 자연입력 시작 전 natural-entry.png와 entryScreenX/Y(발밑화면앵커)를 기록하며 해당PNG인코딩은 성능측정 시작 전이다. sprite baseline은 리그표시검사를 통과했다고 해석하지 않는다.

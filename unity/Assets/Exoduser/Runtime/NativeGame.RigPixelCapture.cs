@@ -10,7 +10,7 @@ namespace Exoduser.UnityPort {
   [Serializable] sealed class RigPixelNaturalReport {
    public string scope="1-1 actual Player; virtual Input System devices -> normal FixedUpdate -> Core. AI/spawns/collision/health unchanged. OS manual input unverified.";
    public string device;public bool passed,rigpixel,world3D;public int width,height,ticks,kills,maxEnemies,textureWidth,texelScale,renderCount;
-   public float fps,p95Milliseconds,maxAnchorError,travel,hp;public List<float> frameMilliseconds=new List<float>();
+   public float fps,p95Milliseconds,maxAnchorError,travel,hp,entryScreenX,entryScreenY;public List<float> frameMilliseconds=new List<float>();
   }
   IEnumerator RigPixelNaturalCapture(){
    string output=Argument("-output");if(string.IsNullOrEmpty(output)||string.IsNullOrEmpty(Argument("--unity-qa-sandbox"))){Application.Quit(2);yield break;}
@@ -22,6 +22,8 @@ namespace Exoduser.UnityPort {
    float deadline=Time.realtimeSinceStartup+60;while(NativeRemodel3D.Requested&&!NativeRemodel3D.Active&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
    for(int warm=0;warm<120;warm++){UpdateViews();yield return null;}
    var sim=Simulation;var report=new RigPixelNaturalReport{device=SystemInfo.graphicsDeviceName,rigpixel=RigPixelRequested,world3D=NativeRemodel3D.Active,width=Screen.width,height=Screen.height};
+   yield return new WaitForEndOfFrame();var entry=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(Path.Combine(output,"natural-entry.png"),entry.EncodeToPNG());Destroy(entry);
+   var anchor=HudCamera.WorldToScreenPoint(NativeRemodel3D.Point(sim.Player.X,sim.Player.Y));report.entryScreenX=anchor.x;report.entryScreenY=Screen.height-anchor.y;
    var oldKeyboard=Keyboard.current;var oldMouse=Mouse.current;var keyboard=InputSystem.AddDevice<Keyboard>();var mouse=InputSystem.AddDevice<Mouse>();
    float started=Time.realtimeSinceStartup,previous=started,lastX=sim.Player.X,lastY=sim.Player.Y;int firstTick=sim.TickCount;float sampleSeconds=0;int samples=0;bool[] shots=new bool[3];
    try {
