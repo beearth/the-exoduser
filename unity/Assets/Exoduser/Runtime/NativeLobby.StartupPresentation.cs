@@ -113,12 +113,12 @@ namespace Exoduser.UnityPort
    }}
    if(!string.IsNullOrEmpty(l.speaker)&&!string.IsNullOrEmpty(l.text)){
     // Wrap the full text before revealing characters, keeping line breaks stable.
-    float bodyH=startupBody.CalcHeight(new GUIContent(l.text),1612.8f),subH=Mathf.Max(237.6f,(37.8f+bodyH+27)/.75f),top=1080-subH;
+    startupBody.font=NativeSilverHellUi.TextFont(NativeSilverHellUi.Font(true),l.text);float bodyH=startupBody.CalcHeight(new GUIContent(l.text),1612.8f),subH=Mathf.Max(237.6f,(37.8f+bodyH+27)/.75f),top=1080-subH;
     EnsureStartupGradients();NativeUiAudit.DrawTexture(new Rect(0,top,1920,subH),startupSubtitleGradient);
     Color c=l.speaker=="GODDESS"?new Color(.753f,.518f,.988f):l.speaker=="HECTOR"?new Color(.984f,.573f,.235f):new Color(.91f,.831f,.722f);startupName.normal.textColor=c;
     string who=l.speaker=="GODDESS"?K("네메시아","Nemesia"):l.speaker=="HECTOR"?K("핵터","Hector"):K("디로이","Diroy");float y=top+subH*.25f;
     Label(new Rect(153.6f,y-14,1612.8f,32),who,startupName,TextAnchor.MiddleLeft);Fill(new Rect(153.6f,y+16.2f,startupName.CalcSize(new GUIContent(who)).x,1),new Color(c.r,c.g,c.b,.4f));
-    string visible=RevealStartupText(l.text,startup.VisibleCharacters);var captionRect=new Rect(153.6f,y+37.8f,1612.8f,bodyH+20);Label(captionRect,visible,startupBody,TextAnchor.UpperLeft);NativeUiAudit.Region(captionRect,"component","cinematic-startup-caption","중앙 전체 대사 공간");
+    string visible=RevealStartupText(l.text,startup.VisibleCharacters);var captionRect=new Rect(153.6f,y+37.8f,1612.8f,bodyH+20);startupBody.alignment=TextAnchor.UpperLeft;NativeDemoText.Label(captionRect,visible,startupBody,"startup-caption");NativeUiAudit.Region(captionRect,"component","cinematic-startup-caption","중앙 전체 대사 공간");
     if(startup.VisibleCharacters>=l.text.Replace("\n","").Length&&(ForceStartupContinue??(((int)(Time.unscaledTime*2)%2)==1))){var indicator=new Rect(1794,Mathf.Min(984,1080-subH*.2f),40,30);Label(indicator,"▼",startupHint,TextAnchor.MiddleCenter);NativeUiAudit.Region(indicator,"component","cinematic-continue","대사 공간 오른쪽/건너뛰기 위18");}
    }
    var hintMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.RightMatrix;

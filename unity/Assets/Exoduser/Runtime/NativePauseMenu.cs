@@ -99,7 +99,7 @@ namespace Exoduser.UnityPort
     {float s1=Mathf.Min(Screen.width/1920f,Screen.height/1080f);GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1920*s1)/2,(Screen.height-1080*s1)/2,0),Quaternion.identity,Vector3.one*s1);NativePanelTabBar.Draw(NativePanelTabBar.Preset.Settings,"settings");GUI.matrix=Matrix4x4.identity;}
     float scale=Mathf.Min(Screen.width/1280f,Screen.height/720f);
     GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1280*scale)/2,(Screen.height-720*scale)/2,0),Quaternion.identity,Vector3.one*scale);
-    var panel=new Rect(300,72,680,576);NativeSilverHellUi.Panel(panel,36,12,true,false);   // web sh-framed face: no iron layer
+    var panel=new Rect(300,72,680,576);NativeSilverHellUi.Panel(panel,36,12,iron:true);   // A face shared with lobby/name/delete
     if(page==PausePage.Settings){DrawSettings(fullscreen);return PauseMenuCommand.None;}
     if(page==PausePage.Quit)return DrawQuit();
     // Web common title band (40px eye medallion + hairlines + Hahmlet title) instead of a loose 32px label.

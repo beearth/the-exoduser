@@ -17,6 +17,9 @@ namespace Exoduser.UnityPort
             public string[] files,incompleteLabels;
             public float filterAtWait,volumeAtWait,filterAtReviveMid,filterAfterRevive,bossFilter,bossVolume;
             public float[] reviveTimes,reviveFilters,reviveVolumes;
+            public bool regionHiddenAtWait,regionHiddenInBoss,objectiveLabelsComplete;
+            public string[] objectiveThaiLabels;
+            public bool objectiveLayoutFits;public NativeObjectivePanel.LabelMetric[] objectiveLayoutAudit;
         }
 
         // Mac only: a stopped simulation is advanced through real Core ticks; only the presentation age is pinned for stills.
@@ -35,13 +38,23 @@ namespace Exoduser.UnityPort
             var incomplete=new List<string>();
             for(int i=0;i<LobbyLanguage.Count;i++)if(!NativeReviveHud.DeathLabelComplete(LobbyLanguage.GetCode(i)))incomplete.Add(LobbyLanguage.GetCode(i));
             rec.incompleteLabels=incomplete.ToArray();check(incomplete.Count==0,"labels incomplete: "+string.Join(",",incomplete.ToArray()));
-            string language=lobby.Language;yield return null;yield return null;
+            rec.objectiveLabelsComplete=true;
+            for(int i=0;i<LobbyLanguage.Count;i++){var words=NativeObjectivePanel.LabelsForLocale(LobbyLanguage.GetCode(i));foreach(var word in words)if(string.IsNullOrEmpty(word))rec.objectiveLabelsComplete=false;}
+            rec.objectiveThaiLabels=NativeObjectivePanel.LabelsForLocale("th");
+            var englishWords=NativeObjectivePanel.LabelsForLocale("en");
+            for(int i=0;i<rec.objectiveThaiLabels.Length;i++)if(rec.objectiveThaiLabels[i]==englishWords[i])rec.objectiveLabelsComplete=false;
+            check(rec.objectiveLabelsComplete,"objective labels missing or Thai fell back to English");
+            string language=lobby.Language;objective.VerifyLabelLayout=true;yield return null;yield return null;
+            rec.objectiveLayoutAudit=objective.LayoutAudit;rec.objectiveLayoutFits=rec.objectiveLayoutAudit!=null&&rec.objectiveLayoutAudit.Length==29*4;
+            if(rec.objectiveLayoutAudit!=null)foreach(var metric in rec.objectiveLayoutAudit)if(!metric.fits||metric.gap<NativeObjectivePanel.MinimumLabelGap-.01f)rec.objectiveLayoutFits=false;
+            check(rec.objectiveLayoutFits,"29-language measured HUD labels violate the 16px value gap");
             rec.fieldVisible=!lobby.IsBlocking&&view.cullingMask!=0;check(rec.fieldVisible,"lobby blocks field");
             var p=sim.Player;
             for(int i=0;i<400&&p.State!="fallen"&&p.State!="dead";i++){p.Iframes=0;sim.HurtPlayer(99999);}
             check(p.State=="fallen"&&p.FallenCanRevive,"first fall can revive: "+p.State);
             yield return DeathShot(output,"death_01_impact",files,.25f,300);
             yield return DeathShot(output,"death_02_wait",files,2f,180);
+            rec.regionHiddenAtWait=RegionHudHiddenByDeath;check(rec.regionHiddenAtWait,"region HUD not suppressed during fallen presentation");
             rec.filterAtWait=revive.FilterAmount;rec.volumeAtWait=revive.VolumeWeight;
             // A new combat notice during death must also be rejected, not merely covered by the title.
             revive.Add(new ReviveText{Ko="쉴드 파괴!",En="Shield Break!",Color="#4488ff",Life=60});Toast("한방킬! ×5");
@@ -90,6 +103,7 @@ namespace Exoduser.UnityPort
             check(rec.bossCamera&&rec.bossAlive,"boss arena camera not active");
             check(rec.cameraPostProcessing&&rec.bossFilter>.99f&&rec.bossVolume>.99f,"boss camera death post processing");
             yield return DeathShot(output,"death_04_cannot",files,2.4f,150);
+            rec.regionHiddenInBoss=RegionHudHiddenByDeath;check(rec.regionHiddenInBoss,"region HUD not suppressed for non-revivable boss death");
             revive.ForcedAge=5f;DeathAdvanceTo(0);rec.actualDeath=p.State=="dead";check(rec.actualDeath,"Core death failed: "+p.State);
             yield return new WaitForSecondsRealtime(.6f);
             yield return DeathCapture(output,"death_07_panel_enter",files);

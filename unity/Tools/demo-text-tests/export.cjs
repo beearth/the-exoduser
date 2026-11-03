@@ -1,0 +1,21 @@
+// Read-only import of existing web translations. Unity runtime data is the output.
+const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),cp=require('node:child_process');
+const root=path.resolve(__dirname,'../..'),web=path.resolve(process.argv[2]||'G:/exoduser-wt/latest-web');
+const source=fs.readFileSync(path.join(web,'game.html'),'utf8'),at=source.indexOf('const _EN={'),end=source.indexOf('\n};',at)+3;
+if(at<0||end<3)throw Error('EN table boundary missing');
+const tables={en:vm.runInNewContext(source.slice(at,end)+'\n'+[...source.matchAll(/Object\.assign\(_EN,\{[\s\S]*?\}\);/g)].map(x=>x[0]).join('\n')+'\n_EN',{},{timeout:2000})};
+const codes='ko en zh ja es zht ru de ptbr fr pl it uk tr vi th id ar sv da no fi cs hu ro nl el bg ms'.split(' ');
+for(const code of codes.filter(c=>c!=='ko'&&c!=='en'))tables[code]=vm.runInNewContext(fs.readFileSync(path.join(web,'lang_'+code+'.js'),'utf8')+'\n_'+code.toUpperCase(),{},{timeout:2000});
+const bossAt=source.indexOf('const _BOSS_LINES='),bossEnd=source.indexOf(';',bossAt);
+const bossLines=vm.runInNewContext(source.slice(bossAt,bossEnd)+';_BOSS_LINES');
+const data=path.join(root,'Assets/Exoduser/Resources/Data'),bosses=JSON.parse(fs.readFileSync(path.join(data,'bossbar_web.json'),'utf8'));
+const keys=[...new Set([...bosses.stages.map(s=>s.boss),...Object.values(bossLines),'북서 · 어둠','북동 · 번개','남서 · 물','남동 · 불','북서','북동','남서','남동','어둠','번개','물','불','정화','처치','앵글러 생존','앵글러','지옥문','보스방','심연의 앵글러','필드보스 처치!','봉인됨!','출구가 열렸다!','출구','지옥문 봉인 (지역 ','레벨','경험치','지역 처치','악의오브'])];
+const killu={zh:'基路',zht:'基路',ja:'キルル',th:'คิลลู',ru:'Киллу',uk:'Кіллу',bg:'Килу',el:'Κίλου',ar:'كيلو'}; // STY-14 No.3477
+const objectiveArea={"ko":"지역 처치","en":"Area kills","zh":"区域击杀","zht":"區域擊殺","ja":"エリア討伐","es":"Bajas de zona","ru":"Убийства в зоне","de":"Gebiets-Kills","ptbr":"Abates na área","fr":"Tués dans la zone","pl":"Zabójstwa w obszarze","it":"Uccisioni nell'area","uk":"Вбивства в зоні","tr":"Bölge öldürmeleri","vi":"Hạ địch trong vùng","th":"กำจัดในพื้นที่","id":"Eliminasi area","ar":"قتلى المنطقة","sv":"Dödade i området","da":"Drab i området","no":"Drepte i området","fi":"Alueen tapot","cs":"Zabití v oblasti","hu":"Területi ölések","ro":"Eliminări în zonă","nl":"Doden in gebied","el":"Φόνοι περιοχής","bg":"Убийства в зоната","ms":"Musuh ditewaskan"}; // No.3982; existing UI label, missing non-KO web keys
+const entries=keys.map(key=>({key,texts:codes.map(code=>{if(code==='ko')return key;if(key==='지역 처치')return objectiveArea[code];if(key==='킬루')return killu[code]||'Killu';const text=tables[code][key];if(!text)throw Error('missing '+code+': '+key);return text;})}));
+// Registered STY-23 No.4258. The exact complete sentence is Unity-only; its components already exist in the web catalogue.
+const slain={ko:'보스 처치 · 출구가 열렸다',en:'Boss slain · The exit is open',zh:'首领已击败 · 出口已开启',ja:'ボス討伐 · 出口が開いた',es:'Jefe derrotado · La salida está abierta',zht:'首領已擊敗 · 出口已開啟',ru:'Босс повержен · Выход открыт',de:'Boss besiegt · Der Ausgang ist offen',ptbr:'Chefe derrotado · A saída está aberta',fr:'Boss vaincu · La sortie est ouverte',pl:'Boss pokonany · Wyjście otwarte',it:'Boss sconfitto · L’uscita è aperta',uk:'Боса переможено · Вихід відкрито',tr:'Boss yenildi · Çıkış açıldı',vi:'Đã hạ trùm · Lối ra đã mở',th:'ปราบบอสแล้ว · ทางออกเปิดแล้ว',id:'Bos dikalahkan · Jalan keluar terbuka',ar:'هُزم الزعيم · فُتح المخرج',sv:'Bossen besegrad · Utgången är öppen',da:'Boss besejret · Udgangen er åben',no:'Bossen er beseiret · Utgangen er åpen',fi:'Pomo kukistettu · Uloskäynti on auki',cs:'Boss poražen · Východ je otevřený',hu:'Főellenfél legyőzve · A kijárat nyitva',ro:'Șef învins · Ieșirea este deschisă',nl:'Baas verslagen · De uitgang is open',el:'Το αφεντικό νικήθηκε · Η έξοδος άνοιξε',bg:'Босът е победен · Изходът е отворен',ms:'Bos ditewaskan · Jalan keluar terbuka'};
+entries.push({key:slain.ko,texts:codes.map(c=>slain[c])});
+const sourceCommit=cp.spawnSync('git',['-C',web,'rev-parse','HEAD'],{encoding:'utf8',windowsHide:true}).stdout.trim();
+fs.writeFileSync(path.join(data,'demo_text.json'),JSON.stringify({sourceCommit,codes,bossLines:Object.entries(bossLines).map(([key,text])=>({key,text})),entries},null,2)+'\n');
+console.log('Imported '+entries.length+' entries x '+codes.length+' languages from '+sourceCommit);
