@@ -33,6 +33,19 @@ namespace Exoduser
             }
             Debug.Log("A2R_R15_POLICY_PASS empty/malformed/exact-name allowlist + LOD promotion + sub-1m/far shadows + idempotence");return 0;
         }
+        public static int VerifyR15StageSeparation()
+        {
+            var method=typeof(UnityPort.A2RR15CameraLock).GetMethod("Separation");if(method==null)throw new Exception("R15 stage RED: wide model obscures scale hero");
+            foreach(var axis in new[]{Vector3.right,Vector3.forward})
+            {
+                var model=new Bounds(axis*3+Vector3.up*5,new Vector3(10,10,10));var hero=new Bounds(Vector3.up*.7f,new Vector3(1,1.4f,1));
+                var shift=(Vector3)method.Invoke(null,new object[]{model,hero,axis});model.center+=shift;
+                float low=Vector3.Dot(model.center,axis)-5,high=Vector3.Dot(hero.center,axis)+.5f;
+                if(low<high+.599f)throw new Exception("R15 hero must stand outside both source/model bounds");
+                if(((Vector3)method.Invoke(null,new object[]{model,hero,axis})).sqrMagnitude>.0001f)throw new Exception("R15 separated stage must not keep moving");
+            }
+            Debug.Log("A2R_R15_STAGE_PASS hero clear of wide-model bounds at either camera yaw");return 0;
+        }
         public static int VerifyPartialHeroSight()
         {
             var scene=UnityEditor.SceneManagement.EditorSceneManager.NewPreviewScene();var go=new GameObject("PartialSightProbe");UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(go,scene);var mesh=new Mesh();var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));var tree=new GameObject("Original_Branch");tree.transform.SetParent(go.transform,false);mesh.vertices=new[]{new Vector3(-1,.35f,0),new Vector3(1,.35f,0),new Vector3(-1,1.8f,0),new Vector3(1,1.8f,0)};mesh.triangles=new[]{0,2,1,1,2,3};mesh.RecalculateBounds();tree.AddComponent<MeshFilter>().sharedMesh=mesh;tree.AddComponent<MeshRenderer>().sharedMaterial=material;var camera=new GameObject("ProbeCamera").AddComponent<Camera>();camera.transform.SetParent(go.transform,false);camera.transform.position=new Vector3(0,0,-5);camera.enabled=false;camera.pixelRect=new Rect(0,0,1920,1080);var fade=go.AddComponent<UnityPort.A2ROcclusion>();
@@ -57,7 +70,7 @@ namespace Exoduser
         {
             var args=Exoduser.DevTools.ExoArgs.Get();int at=Array.IndexOf(args,"-output");string output=at>=0?args[at+1]:"I:/EXODUSER-Storage/map25d/a2r-build-next";Directory.CreateDirectory(output);
             foreach(var name in new[]{"CardOpaque","CardFade","LitOpaque","LitFade","GroundPainting","DistanceHaze","HeroReadability","FootLight","Contact","Air","ToxicRiver"}){var shader=Resources.Load<Shader>("A2R/"+name);if(shader==null)throw new Exception("A2R shader missing: "+name);if(ShaderUtil.ShaderHasError(shader)){foreach(var message in ShaderUtil.GetShaderMessages(shader))Debug.LogError(name+":"+message.line+":"+message.message);throw new Exception("A2R shader error: "+name);}}
-            VerifyR15Policy();VerifyNearestSurface();
+            VerifyR15Policy();VerifyR15StageSeparation();VerifyNearestSurface();
             var target=Application.platform==RuntimePlatform.OSXEditor?BuildTarget.StandaloneOSX:BuildTarget.StandaloneWindows64;
             var player=target==BuildTarget.StandaloneOSX?"EXODUSER-A2R.app":"EXODUSER-A2R.exe";
             var r=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{"Assets/Scenes/FirstPlayable.unity","Assets/Exoduser/Remodel/CH1_1/RM1_Slice.unity"},locationPathName=Path.Combine(output,player),target=target,options=BuildOptions.None});

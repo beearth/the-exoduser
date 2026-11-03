@@ -10,13 +10,19 @@ namespace Exoduser.UnityPort
     {
         public Vector3 position;public Quaternion rotation;
         void LateUpdate(){transform.SetPositionAndRotation(position,rotation);}
+        public static Vector3 Separation(Bounds model,Bounds hero,Vector3 right)
+        {
+            right.Normalize();var axis=new Vector3(Mathf.Abs(right.x),Mathf.Abs(right.y),Mathf.Abs(right.z));
+            float objectLeft=Vector3.Dot(model.center,right)-Vector3.Dot(model.extents,axis),heroRight=Vector3.Dot(hero.center,right)+Vector3.Dot(hero.extents,axis);
+            return right*Mathf.Max(0,heroRight+.6f-objectLeft);
+        }
     }
     public sealed partial class NativeGame
     {
         [Serializable] sealed class R15Model {public string name,resource,source;public bool prepared;public int lods,triangles;}
         [Serializable] sealed class R15Catalog {public R15Model[] models;}
         [Serializable] sealed class R15Source {public A2RWebAssets.Card[] cards;}
-        [Serializable] sealed class R15Row {public string name,cardId,asset,source,paintingShot,modelShot;public float height,actualHeight,cardHeight,cameraPitch,cameraDistance,cameraFov;public long sourceLod0,displayLod0,displayLod1;public Vector3 anchor,cameraPosition;public Vector2 heroScreen;public bool far,omittedVegetation,clipped;}
+        [Serializable] sealed class R15Row {public string name,cardId,asset,source,paintingShot,modelShot;public float height,actualHeight,cardHeight,cameraPitch,cameraDistance,cameraFov,heroClearance;public long sourceLod0,displayLod0,displayLod1;public Vector3 anchor,cameraPosition;public Vector2 heroScreen;public bool far,omittedVegetation,clipped;}
         [Serializable] sealed class R15Sheet {public string scope="Isolated QA stage after ordinary Core camp walking. Source paintings and supplied models at identical anchor, unchanged authored height, same 34 degree perspective and native 1x pixels within each pair. Camera translated along its unchanged view direction per model to keep hero and full silhouette visible. No visual PASS assigned; map lead decides. Far rows compare the source forest-wall painting to one repeating far tree; not one-for-one replacements.";public int defaultModels,retainedCards;public List<R15Row> rows=new List<R15Row>();}
         A2RWebAssets.Card R15Card(string name,A2RWebAssets.Card[] cards)
         {
@@ -55,10 +61,15 @@ namespace Exoduser.UnityPort
                 var model=Instantiate(Resources.Load<GameObject>(spec.resource),stage.transform);model.transform.localPosition=Vector3.zero;model.transform.localRotation=Quaternion.Euler(0,spec.prepared?180:0,0);model.transform.localScale=Vector3.one*row.height;
                 var group=model.GetComponent<LODGroup>();if(group!=null)row.sourceLod0=R15Triangles(group.GetLODs()[0].renderers);
                 A2RProps3D.ApplyRenderBudget(model,row.height,row.far);if(group!=null){var lod=group.GetLODs();row.displayLod0=R15Triangles(lod[0].renderers);row.displayLod1=R15Triangles(lod[lod.Length-1].renderers);group.ForceLOD(0);}
-                Bounds bounds=art.GetComponent<Renderer>().bounds;foreach(var r in model.GetComponentsInChildren<Renderer>())bounds.Encapsulate(r.bounds);row.actualHeight=0;float lo=float.PositiveInfinity,hi=float.NegativeInfinity;foreach(var mesh in model.GetComponentsInChildren<MeshFilter>())foreach(var vertex in mesh.sharedMesh.vertices){float y=mesh.transform.TransformPoint(vertex).y;lo=Mathf.Min(lo,y);hi=Mathf.Max(hi,y);}row.actualHeight=hi-lo;bounds.Encapsulate(a2rLighting.Readability.HeroBounds);
-                var center=bounds.center;float radius=bounds.extents.magnitude;float distance=Mathf.Max(Vector3.Distance(baseCamera,center),radius/Mathf.Sin(fov*Mathf.Deg2Rad*.5f)*1.25f);
+                Bounds bounds=art.GetComponent<Renderer>().bounds;foreach(var r in model.GetComponentsInChildren<Renderer>())bounds.Encapsulate(r.bounds);row.actualHeight=0;float lo=float.PositiveInfinity,hi=float.NegativeInfinity;foreach(var mesh in model.GetComponentsInChildren<MeshFilter>())foreach(var vertex in mesh.sharedMesh.vertices){float y=mesh.transform.TransformPoint(vertex).y;lo=Mathf.Min(lo,y);hi=Mathf.Max(hi,y);}row.actualHeight=hi-lo;
+                var right=cameraRotation*Vector3.right;var heroBounds=a2rLighting.Readability.HeroBounds;var shift=A2RR15CameraLock.Separation(bounds,heroBounds,right);stage.transform.position+=shift;bounds.center+=shift;row.anchor=stage.transform.position;
+                var axis=new Vector3(Mathf.Abs(right.x),Mathf.Abs(right.y),Mathf.Abs(right.z));float objectLeft=Vector3.Dot(bounds.center,right)-Vector3.Dot(bounds.extents,axis),heroRight=Vector3.Dot(heroBounds.center,right)+Vector3.Dot(heroBounds.extents,axis);row.heroClearance=objectLeft-heroRight;bounds.Encapsulate(heroBounds);
+                // Aim through the clear gap, so perspective depth cannot project a wide foreground model over the hero.
+                var center=bounds.center;center+=right*((objectLeft+heroRight)*.5f-Vector3.Dot(center,right));float tangent=Mathf.Tan(fov*Mathf.Deg2Rad*.5f),distance=Vector3.Distance(baseCamera,center);
+                for(int corner=0;corner<8;corner++){var offset=Quaternion.Inverse(cameraRotation)*(bounds.center+Vector3.Scale(bounds.extents,new Vector3((corner&1)==0?-1:1,(corner&2)==0?-1:1,(corner&4)==0?-1:1))-center);distance=Mathf.Max(distance,Mathf.Max(Mathf.Abs(offset.x)/(tangent*r3Cam.aspect*.5f)-offset.z,Mathf.Abs(offset.y)/(tangent*.82f)-offset.z)*1.1f);}
                 cameraLock.position=center-cameraRotation*Vector3.forward*distance;cameraLock.rotation=cameraRotation;r3Cam.transform.SetPositionAndRotation(cameraLock.position,cameraRotation);r3Cam.fieldOfView=fov;row.cameraPosition=r3Cam.transform.position;row.cameraDistance=distance;row.cameraFov=fov;row.cameraPitch=r3Cam.transform.eulerAngles.x;
                 var hero=r3Cam.WorldToScreenPoint(a2rLighting.Readability.HeroBounds.center);row.heroScreen=new Vector2(hero.x,1080-hero.y);
+                for(int corner=0;corner<8;corner++){var v=r3Cam.WorldToViewportPoint(bounds.center+Vector3.Scale(bounds.extents,new Vector3((corner&1)==0?-1:1,(corner&2)==0?-1:1,(corner&4)==0?-1:1)));if(v.z<=0||v.x<0||v.x>1||v.y<0||v.y>1)row.clipped=true;}
                 model.SetActive(false);art.SetActive(true);for(int n=0;n<5;n++)yield return null;row.paintingShot="r15-"+spec.name+"-painting";yield return R15Save(row.paintingShot);
                 art.SetActive(false);model.SetActive(true);for(int n=0;n<5;n++)yield return null;row.modelShot="r15-"+spec.name+"-model";yield return R15Save(row.modelShot);
                 report.rows.Add(row);File.WriteAllText(Path.Combine(a2rPlayOutput,"r15-sheet.json"),JsonUtility.ToJson(report,true));stage.SetActive(false);Destroy(stage);
