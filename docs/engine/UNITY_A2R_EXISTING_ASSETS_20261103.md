@@ -297,3 +297,8 @@ proof-a2r-r2255-vs-4895bf9c6.png / proof-a2r-r2255-diagnostics.png 직접 확인
 ## 야간 ⑥ GPU 개수 타입 계약
 
 설치된 Unity6000.6.7f1 CoreModule의 실제IL을검사했다. legacy Shader.SetGlobalInt는SetGlobalFloatImpl을호출하며 SetGlobalInteger만SetGlobalIntImpl을호출한다. 기존Nature와새3D바람의HLSL int 개수3종(액터/잔물결/교각)을정수API로바꿔 이전프레임배열의유령눌림을막는다. 타입은그대로이며Source정점/카메라/Core/액터그리기불변. 이 검증은metadata실독이며추측이아니다. Sourcefd2f8ab4a/75e3d693빌드0이후최종Player1회는계속마치게두고, C#만변경한최종소스를같은next폴더에증분재빌드한다. 바로가기미변경. 병합후첫Player d8fa35c5에서 A2R초기화전 Invalid vertex array 오류1회도확인했다. Main/액터 코드를수정하지않고명시QA에만BeforeSplashScreen 로그수집을추가해초기오류도최종스모크FAIL로잡는다. 5장면·도보촬영은마치며, 조기오류를숨겨오류0/PASS로올리지않는다. 다음실행에서다시발생하면⑥의본편준비게이트를실패로정리한다.
+
+
+## 야간 ⑥ 두 번째 전체 검증 준비
+
+병합후첫전체검증fd2f8ab4a/Playerd8fa35c5는실제도보도착·새3D접지0·5지점30컷동일카메라/먼적6·구멍이미지조건은통과했으나남→북영상36프레임(<60)로FAIL(exit3), A2R전스프라이트오류1도별도존재한다. 원래나무(바람계수0)와강체나무/캠프(눌림계수0)에도액터32회루프가돌던소스원인을확인했다. 바람0이면전체변형을건너뛰고눌림루프는식물에만실행하도록해같은계산결과를더적은정점연산으로낸다. 개수정수API/초기로그수집980beac13도포함해두번째전체검증을한다. 같은항목이또실패하면⑥게이트만중단하고있는그대로보고하며세번째후보는만들지않는다. ③수풀형태RET0UCH중단유지·다른레인/바로가기불변.
