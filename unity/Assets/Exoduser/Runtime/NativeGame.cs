@@ -136,6 +136,7 @@ namespace Exoduser.UnityPort
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-b07-smoke")>=0){dropSmoke=true;menu=false;Running=false;StartCoroutine(B07Smoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-rage-malice-smoke")>=0){dropSmoke=true;menu=false;Running=false;StartCoroutine(RageMaliceSmoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-drop-smoke")>=0){dropSmoke=true;menu=false;Running=false;StartCoroutine(DropSmoke());}
+            else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-death-screen-smoke")>=0){dropSmoke=true;menu=false;Running=false;StartCoroutine(DeathScreenCaptureRun());} // 사망 대기 화면 Mac 검수 캡처
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-revive-smoke")>=0){reviveSmoke=true;dropSmoke=true;menu=false;Running=false;StartCoroutine(ReviveSmokeRun());} // B08 (dropSmoke keeps focus loss from opening the pause menu)
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-inventory-smoke")>=0){inventorySmoke=true;menu=false;Running=true;StartCoroutine(InventorySmoke());}
             else if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-hud-smoke")>=0){hudSmoke=true;menu=false;StartCoroutine(HudSmoke());}
@@ -179,6 +180,8 @@ namespace Exoduser.UnityPort
         void Update()
         {
             UpdateSettingsPersistence();UpdateCombatSave();
+            // 사망 대기 화면 상태·채도 Volume(연출 전용, Core 흐름 불변). 로비가 화면을 쥐면 필터를 걷는다.
+            {var downPlayer=Simulation!=null&&!(lobby!=null&&lobby.IsBlocking)?Simulation.Player:null;revive.TickScreen(downPlayer,downPlayer!=null&&PlayerDown,transform);}
             lobby.AutomatedInput=UiOverlapOwnsInput||lobbySmoke&&!introKeysSmoke;
             if(lobbySmoke&&!lobbyControlsSmoke)lobby.SetPlaybackFocus(true); // Natural-playback fixture only; controls fixture owns focus transitions.
             if(lobby!=null&&lobby.IsBlocking){if(firstPractice!=null)EndFirstPractice(true);Running=false;view.cullingMask=lobby.StartupWorldVisible?worldMask:0;UpdateGameMusic();return;}
@@ -499,7 +502,8 @@ namespace Exoduser.UnityPort
             // Boss bar: Unity has no boss actor / boss-entry event yet, so nothing calls bossBar.Show(); once one exists it passes name (BossNameForStage), hp, poise, groggy/immune state and status chips each frame.
             if(bossBar.Active)bossBar.Draw();
             StageFlowDrawWorld();
-            if(p.State=="fallen"&&!death.Active)revive.DrawFallen(p,label);
+            // 사망 대기 화면: 물리 화면 전체 필터·비네트 + 명조 제목·원형 게이지. 사망 확정 뒤 사망 패널은 이 위에 그린다.
+            revive.LocaleCode=lobby.Language;revive.DrawDeathScreen(p);
             if(death.Active&&PlayerDown&&!heroReviewActive){death.Draw();}
             else if((menu||PlayerDown)&&!hudSmoke&&!inventorySmoke&&!heroReviewActive){
                 pauseMenu.English=lobby.Language!="ko";

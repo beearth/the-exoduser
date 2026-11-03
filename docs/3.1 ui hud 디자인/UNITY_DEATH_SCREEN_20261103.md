@@ -1,0 +1,45 @@
+# Unity 사망 대기 화면 리디자인 (2026-11-03)
+
+브랜치 `codex/unity-death-screen-20261103` (기준 origin/unity/main 34ce305eb). Unity 전용이다. 웹 `game.html`은 손대지 않는다.
+브리프: `I:\EXODUSER-Storage\codex-takeover\death-screen-brief.md` (G0·G1, 11-03 14:00 CTO 정정).
+
+## 바꾼 이유
+사용자 지적(32:9 캡처): 가운데 16:9에만 납작한 빨간 판, 좌우 슈퍼와이드는 밝은 게임 화면 그대로, 작은 상자에 "부활력 11.2%"와 "2s", 주황 막대. Hell Gothic 톤과 맞지 않는다.
+원인: `NativeReviveHud.DrawFallen`이 1920x1080 디자인 좌표에서 `Fill(0,0,1920,1080)` 빨간 판·빨간 비네트·검은 상자·NotoSansKR 굵은 글자·주황/빨강 막대를 그렸다.
+
+## 레퍼런스 공통점 (G0)
+Diablo IV · Path of Exile 2 · No Rest for the Wicked · Elden Ring 사망 화면의 공통 원칙만 따른다.
+1. 화면 끝(슈퍼와이드 포함)까지 채도와 밝기가 빠지고 비네트가 진해진다.
+2. 가운데 큰 명조(세리프) 제목 한 줄 + 짧은 부제.
+3. 부활 정보는 작고 정돈된 보조 정보.
+4. 빨간 단색 판으로 화면을 덮지 않는다.
+
+## 구현 (G1)
+| 단계 | 시각(실시간) | 내용 | 코드 |
+|---|---|---|---|
+| ① 충격 | 0~0.4s | 비네트만 0→0.6으로 조여 든다. 시뮬레이션은 멈추지 않는다(흐름·판정 불변). | `VignetteAmount` |
+| ② 필터 | 0.4~1.6s | 물리 화면 전체 채도 1→0.15(URP 전역 Volume `ColorAdjustments.saturation -85`, priority 1000, 가중치로 섞음), 명도 1→0.55(IMGUI 검은 합성, Linear 색 공간은 알파 `1-0.55^2.2`로 환산), 검붉은 타원 비네트 | `TickScreen`·`ApplyVolume`·`DrawDeathScreen` |
+| ③ 제목 | 0.5~1.5s | 명조 큰 제목(한글 Hahmlet 400 74px, 라틴 Cinzel 62px, 그 밖은 지역 명조 대체), 뼈색 #dfd6c2, 자간 .34em(CJK)/.2em(라틴), 들어오며 자간이 조금 좁아짐. 양옆 금빛 헤어라인(189,169,122) 바깥으로 사라짐 + 안쪽 세로 획 | `DrawDeathTexts` |
+| ④ 부활 대기 | 1.0~1.8s | 부제(Hahmlet 300 22px), 얇은 원형 게이지 Ø92(트랙 1.25px·호 2.4px, 12시부터 시계 방향, 남은 비율 = StateTicks/300), 가운데 남은 초(Cinzel 34px), "부활력 11.2%"(명조 19px + Cinzel 21px) | `Ring`·`DrawDeathTexts` |
+| ⑤ 부활 불가 | 같은 시각 | 부제 "이번에는 일어설 수 없다", 게이지 호·숫자 검붉은 색, "부활 불가" + "잠시 후 재도전 또는 로비" | `lastCanRevive=false` 분기 |
+| ⑥ 부활 | 0.5s | 필터·비네트·글자를 0.5s에 걸쳐 걷는다. Volume 가중치도 같이 0 | `Phase.Reviving` |
+| 사망 확정 | 0.8s | 필터 유지, 글자만 빠지고 기존 사망 패널(`NativeDeathOverlay`)이 그 위로 2.5s 페이드 | `Phase.Dead` |
+
+- 글자 뒤 가로 띠 그림자(물리 화면 전체 폭, 최대 알파 .62)로 밝은 안개 위에서도 1x 가독성을 확보한다.
+- 정보는 그대로다: 부활력 값(`FallenReviveChance`, 표기 "R" 형식), 남은 초 `ceil(StateTicks/60)`, 부활 불가 `!FallenCanRevive`, 판정 `Simulation.TickFallen`. 제거한 것: "쓰러짐..." 문구(부제로 대체), 하단 주황 막대(원형 게이지로 대체).
+- 모든 절차 텍스처는 매끈한 그라데이션·해석적 안티에일리어싱이다(노이즈·디더·점 없음). 이모지·산세리프 없음.
+- 문구: `Resources/Data/death_screen_labels.json` 29코드(ko + 28개 언어). ar은 IMGUI RTL 미지원이라 화면에는 en을 그린다(NativeOptionText와 같은 규칙). 번역 목록 No.3859~3864.
+
+## 검수 (Mac)
+PC는 Unity 에디터·Player를 돌리지 않았다(11-03 PC 비정상 종료 3회). PC 확인 = Unity 6000.4.8 엔진 DLL·URP 패키지 DLL을 참조한 `Exoduser.Core`·`Exoduser.Runtime` 어셈블리 csc 컴파일 0 오류.
+
+무음 캡처: `--unity-death-screen-smoke -output <dir>` + `-screen-width/-screen-height`를 1920x1080·3840x1080·5120x1440으로 각각 실행.
+결과: `death_01_impact`·`death_02_wait`·`death_03_last`·`death_04_cannot`·`death_05_revive_mid`·`death_06_revived`·`death_07_panel_enter`·`death_lang_{ko,en,ja,ru,th,el}` + `death-screen-capture.json`(라벨 29코드 완비·2s 필터 1·Volume 1·부활 후 0).
+
+Mac 판정 항목:
+1. 슈퍼와이드 좌우 끝까지 채도·명도가 빠지는가(16:9 밖 밝은 띠 0).
+2. 채도 Volume이 HD2D·3D 필드·보스전 카메라 모두에 먹는가(`renderPostProcessing` 켜진 카메라).
+3. 빨간 단색 판 0, 비네트가 "빨간 판"으로 읽히지 않는가.
+4. 1x에서 제목·부제·부활력·숫자가 읽히는가, 3x 크롭에 점·계단 0.
+5. 부활 0.5s 페이드, 사망 확정 시 사망 패널로 끊김 없이 넘어가는가.
+6. 레퍼런스(Diablo IV·PoE2·NRftW·Elden Ring) 같은 크기 나란히 비교.
