@@ -10,6 +10,7 @@ function check(ok,name){const line=(ok?'PASS ':'FAIL ')+name;results.push(line);
 const game=read('NativeGame.cs'),registry=game.slice(game.indexOf('bool legacyFixture='),game.indexOf('InitializeEntryFlowCapture(args)'));
 for(const flag of ['--unity-death-screen-smoke','--unity-death-ui-smoke'])check(registry.includes('"'+flag+'"'),flag+' bypasses lobby.Begin');
 const silver=read('NativeLobby.SilverHell.cs');
+check(!read('NativeGame.DeathScreenCapture.cs').includes('colorProbe')&&!fs.existsSync(path.join(runtime,'NativeGame.DeathColorProbe.cs')),'retired colour probe and shader dependency removed');
 check(!silver.includes('plateBase=Texture2D.blackTexture'),'plate cannot use transparent built-in blackTexture');
 const vm=require('node:vm');
 function macLayoutProbe(){
@@ -58,7 +59,7 @@ function toolchain(){
 try{
  const tc=toolchain(),version=path.basename(path.dirname(path.dirname(tc.refs))),tfm=path.basename(tc.refs);
  const source=read('NativeUiChrome.cs');
- const body=method(source,'static void ClearState(')+'\n'+method(source,'internal static GUIStyle ClearBackgrounds(')+'\n'+method(silver,'internal static void SolidRect(');
+ const body=method(source,'static void ClearState(')+'\n'+method(source,'internal static GUIStyle ClearBackgrounds(')+'\n'+method(silver,'internal static void SolidRect(')+'\n'+method(silver,'internal static Color IronFaceAt(');
  const test=fs.readFileSync(path.join(__dirname,'MaterialProbe.cs'),'utf8').replace('/*PRODUCTION*/',body);
  fs.writeFileSync(output+'/Probe.cs',test);
  fs.writeFileSync(output+'/probe.runtimeconfig.json',JSON.stringify({runtimeOptions:{tfm,framework:{name:'Microsoft.NETCore.App',version}}}));

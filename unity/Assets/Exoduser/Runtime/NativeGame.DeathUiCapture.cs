@@ -25,7 +25,7 @@ namespace Exoduser.UnityPort
         [Serializable] sealed class SkinPixelProbe
         {
             public string label,platform,gpu,colorSpace,stockStates;public int strippedStates;
-            public int[] points,rgb;public bool customPlateDark,opacityUnderlayUsed;
+            public int[] points,rgb,expectedRgb;public bool customPlateDark,opacityUnderlayUsed;
         }
         IEnumerator DeathSkinProbe(string output,string label,List<string> files,Action<SkinPixelProbe> save)
         {
@@ -33,14 +33,16 @@ namespace Exoduser.UnityPort
             var frame=ScreenCapture.CaptureScreenshotAsTexture();
             var rec=new SkinPixelProbe{label=label,platform=Application.platform.ToString(),gpu=SystemInfo.graphicsDeviceType.ToString(),
                 colorSpace=QualitySettings.activeColorSpace.ToString(),stockStates=NativeUiChrome.StockStates,strippedStates=NativeUiChrome.StrippedStates,
-                points=new int[4],rgb=new int[6],customPlateDark=true,opacityUnderlayUsed=NativeUiChrome.OpacityProbe};
+                points=new int[4],rgb=new int[6],expectedRgb=new int[6],customPlateDark=true,opacityUnderlayUsed=NativeUiChrome.OpacityProbe};
             for(int i=0;i<2;i++){
                 // Same design-space points as the Mac FAIL, transformed into this exact framebuffer.
                 var pos=NativeUiViewport.RightMatrix.MultiplyPoint3x4(new Vector3(1500,i==0?735:775,0));
                 int x=Mathf.Clamp(Mathf.RoundToInt(pos.x),0,frame.width-1),y=Mathf.Clamp(Mathf.RoundToInt(pos.y),0,frame.height-1);
                 Color32 pixel=frame.GetPixel(x,frame.height-1-y);rec.points[i*2]=x;rec.points[i*2+1]=y;
                 rec.rgb[i*3]=pixel.r;rec.rgb[i*3+1]=pixel.g;rec.rgb[i*3+2]=pixel.b;
-                if(Mathf.Abs(pixel.r-15)>3||Mathf.Abs(pixel.g-15)>3||Mathf.Abs(pixel.b-16)>3)rec.customPlateDark=false;
+                Color32 expected=NativeSilverHellUi.IronFaceAt(((i==0?735:775)-722)/76f);
+                rec.expectedRgb[i*3]=expected.r;rec.expectedRgb[i*3+1]=expected.g;rec.expectedRgb[i*3+2]=expected.b;
+                if(Mathf.Abs(pixel.r-expected.r)>3||Mathf.Abs(pixel.g-expected.g)>3||Mathf.Abs(pixel.b-expected.b)>3)rec.customPlateDark=false;
             }
             File.WriteAllBytes(Path.Combine(output,label+"_"+Screen.width+"x"+Screen.height+".png"),frame.EncodeToPNG());Destroy(frame);files.Add(label);
             Debug.Log("DEATH_UI_SKIN_PROBE "+JsonUtility.ToJson(rec));save(rec);

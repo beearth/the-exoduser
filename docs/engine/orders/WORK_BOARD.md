@@ -684,3 +684,10 @@ PC후보af70a6a2c5는정본버전매빌드읽기·직업X사슬/로어·실능�
 | PC Codex / codex/unity-death-screen-20261103 | 공통 SolidRect/ActionPlate·일시정지 바깥glow, NativeUiChrome/DeathUiCapture의 opacity probe, DeathScreen/DeathColorProbe/Revive.DeathScreen의 가로띠 제거·채도진단, death-ui-tests와 관련 UI docs | 생성 판 경로 폐기, 단색 흑철·강제alpha1·비블렌딩·실버 헬1px, Mac Scripting 탐색. PC5어셈블리 오류0·CPU 회귀 PASS. Unity/Player/빌드/캡처0. Mac 새 후보 RGB/불투명·전체 채도·톤 재검수 대기/RETOUCH |
 
 최신 unity/main d6c5bb89bb20 병합(7bc7a3518 규칙). NativeGame 촬영등록·incoming 일시정지 inputLive/명조·양쪽 번역 항목 보존해 충돌 해결. blackTexture가 RGBA0인 공식 API 근거와 현재 단색/실버 토큰은 버튼 SSOT에 기록. 최종 SHA/상대 Mac 인자: I:/EXODUSER-Storage/codex-takeover/death-screen/REPORT.md. 기존 guard.baseline.json WIP는 보존.
+
+## 2026-11-03 21:25 버튼 판 질감 RETOUCH
+| 담당/브랜치 | 소유 변경 | 현재/다음 |
+|---|---|---|
+| PC Codex / codex/unity-ui-plate-20261103 | NativeLobby.SilverHell 표면, DeathUiCapture expectedRgb, DeathScreenCapture의 실험 색 프로브 제거, DeathColorProbe.cs/meta 삭제, death-ui-tests 및 관련 UI SSOT | aa38bb877에서 새 브랜치.4차 Mac 기능 PASS 유지, 옅은 세로 명암/1px 음각·경사/선택8px 내부 빛 구현. 색 프로브는 필요 없어 폐기. PC5어셈블리 오류0·회귀 PASS, Unity/Player/빌드/캡처0. 새 질감1920/3840 1x·3x/BG3·웹 정본 비교는 Mac 대기/RETOUCH |
+
+오른쪽 띠는 V≈.002 근흑색 HSV 착시(4차 Mac 판정), V<.02 채도 비교 제외. 기존 guard.baseline.json WIP 보존. 최종 SHA/현재 실행 인자: I:/EXODUSER-Storage/codex-takeover/death-screen/REPORT.md.

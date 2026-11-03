@@ -70,16 +70,12 @@ Mac 판정 항목:
 | 버튼/슬롯/1px | 별도 UNITY_BUTTON_PLATE_MATERIAL_20261103 문서. 색 공간 보정 폐기, 공통 스킨 배경 제거, 검정 판, 외부 붉은 번짐 제거, 물리1px |
 | Mac 검사 도구 | run.cjs의 --unity-data 또는 --dotnet/--csc/--refs 및 자동 탐색. 상대 출력도 허용. 실제 Mac 실행은 아직 미검증 |
 
-Mac에서는1920×1080·3840×1080·5120×1440의 HD2D/--remodel3d 양쪽에서 가장자리 채도≤중앙·타원 계단0·점/디더0·전투 문구0·5개 fade 샘플을 직접 확인한다. PC 컴파일 제한을 지켜 Windows GPU 측정은 하지 않았고, 두 플랫폼 스킨/판 측정 인자는 REPORT에 남긴다.
+Mac에서는1920×1080·3840×1080·5120×1440의 HD2D/--remodel3d 양쪽에서 가장자리 채도≤중앙(V<.02 근흑색 제외)·타원 계단0·점/디더0·전투 문구0·5개 fade 샘플을 직접 확인한다. PC 컴파일 제한을 지켜 Windows GPU 측정은 하지 않았고, 두 플랫폼 스킨/판 측정 인자는 REPORT에 남긴다.
 
-## 20:20 Mac 3차 FAIL 후속
+## 20:20~21:25 Mac 판정/현재 상태
 
-| 항목 | 현재 변경/검수 |
-|---|---|
-| 따뜻한 가로 띠 | ColorAdjustments 뒤 IMGUI DeathBand의 RGB(4,3,3) 띠와 생성 함수 제거. 검정 URP Vignette(RGB0)와 무채색 명도 감쇠만 남김. 글자/장식의 기존 가독성은 Mac 재검수 |
-| 전체 채도 진단 | 선택 인자 --unity-death-color-probe. 실제 HudCamera에 동일한 URP Unlit 색 패치3개를 좌/중/우에 임시 배치. Core·카메라 설정 변경 없이 before/2s after PNG·RGB·HSV 채도를 기록. 일반 아트 캡처 전에 제거 |
-| 진단 영수증 | colorProbeCamera(실제 카메라/rect/target), colorProbePoints, colorProbeRgbBefore/After, saturationBefore/After. 세 패치 모두 원래 채도>.2, 후채도≤전채도×.4+.01, 후채도 최대-최소≤.05일 때 colorProbeUniform=true. shader/camera 미확보 시 FAIL. 실제 GPU 적용 범위를 같은 원색으로 비교하는 검사이며 맵 고유 색의 중앙/가장자리 HSV를 같다고 가정하지 않음 |
-| 버튼 | 생성 텍스처/transparent blackTexture 경로 폐기. 실버 헬 #0f0f10·알파1·비블렌딩 단색 판과1px 은빛 선. 자세한 토큰/불투명 underlay probe는 버튼 SSOT |
-| Mac SDK | Unity.app/Contents/Resources/Scripting 경로 탐색 추가. PC에서는 배치 모의 검사만 수행 |
-
-20:20 기존3941b3ff8의 Core 사망6/6·combatTextHidden·부활5프레임·1px·저장 격리 PASS는 이전 후보 근거다. 새 후보의 패치 채도 검사와 실제3840/5120 가장자리 채도/띠0 판정은 Mac 대기다. 기본 호출 인자는 --unity-death-screen-smoke --unity-death-revive-frames --unity-boss-direct 0, 진단할 때만 --unity-death-color-probe를 덧붙인다. Windows GPU는 PC 컴파일 제한으로 미실행이다.
+- 4차 Mac(7e740aa, qa @adc7233e6): 감광·실제 부활5프레임·전투 문구 숨김 PASS. 기본 스킨 제거 후 판은12/12 불투명13/13/13, 원화 비침0,1px. 최종 질감은 디자인 RETOUCH다.
+- URP 검정 비네트·무채색 명도 .55·따뜻한 IMGUI DeathBand 제거는 유지한다. remodel3d 오른쪽 띠는 V≈.002 근흑색 HSV 착시로 판정했으며 V<.02는 채도 비교에서 제외한다.
+- 실험 --unity-death-color-probe와 NativeGame.DeathColorProbe.cs(+meta), 패치 생성/읽기·콜백·관련 영수증 필드는21:25에 폐기했다. UI smoke의 미처리와 사망 smoke의 shader/camera unavailable을 불필요한 검사 제거로 해소한다. 해당 인자는 실행 예제에서 빼며 새 후보에 전달하지 않는다.
+- 현재 사망 호출: --unity-death-screen-smoke --unity-death-revive-frames --unity-boss-direct 0 + --unity-qa-sandbox/-output/-screen-width/-screen-height. 기본 UI/스킨 불투명 probe는 유지한다.
+- 새 브랜치 codex/unity-ui-plate-20261103은 공통 버튼의 옅은 세로 명암·1px 음각/경사·내부 진홍만 다듬는다. 실제 질감은 Mac1920/3840 1x·3x 및 BG3/웹 정본 나란히 재검수한다. PC 컴파일은 시각 합격 근거가 아니다.

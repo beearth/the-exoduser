@@ -12,7 +12,9 @@ struct Color{
  public Color linear=>new Color(Decode(r),Decode(g),Decode(b),a);
  public Color gamma=>new Color(Encode(r),Encode(g),Encode(b),a);
  public static Color white=>new Color(1,1,1,1);
+ public static Color Lerp(Color a,Color b,float t)=>new Color(a.r+(b.r-a.r)*t,a.g+(b.g-a.g)*t,a.b+(b.b-a.b)*t,a.a+(b.a-a.a)*t);
 }
+static class Mathf{public static float Clamp01(float x)=>Math.Max(0,Math.Min(1,x));}
 static class GUI{public static Color color,backgroundColor;}
 static class NativeUiAudit{
  public static bool blend;public static Color ink;public static Texture2D texture;
@@ -50,6 +52,13 @@ static class MaterialProbe {
     &&GUI.color.a==.2f&&GUI.backgroundColor.a==.1f;
    Console.WriteLine((ok?"PASS ":"FAIL ")+space+" solid face: alpha1 / no blend / no inherited tint / #0f0f10");if(!ok)fail++;
   }
+  bool ramp=true;float previous=1;
+  for(int i=0;i<=64;i++){
+   var c=IronFaceAt(i/64f);
+   ramp&=c.a==1&&c.r<=previous&&c.r>=12/255f-.00001f&&c.r<=18/255f+.00001f&&Math.Abs(c.g-c.r)<.00001f&&Math.Abs(c.b-c.r-1/255f)<.00001f;previous=c.r;
+  }
+  var mid=IronFaceAt(.5f);ramp&=Math.Abs(mid.r-15/255f)<.00001f&&Math.Abs(mid.b-16/255f)<.00001f;
+  Console.WriteLine((ramp?"PASS ":"FAIL ")+" faint iron ramp: opaque, monotonic, neutral, centred on #0f0f10");if(!ramp)fail++;
   return fail==0?0:2;
  }
 }
