@@ -45,7 +45,7 @@ if($Command -ne 'install-bin' -and $env:EXO_UNITY_NO_FORWARD -ne '1' -and
     exit $LASTEXITCODE
 }
 
-$ExoUnityVersion = '2026.11.04-sharedlog'
+$ExoUnityVersion = '2026.11.04-zombieguard'
 $MaxPlayerSlots = 2
 Import-Module (Join-Path $PSScriptRoot 'QueueTurn.psm1') -Force
 try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } catch { }
@@ -1247,9 +1247,39 @@ function Finish-Guarded([string]$kind, [string]$id, $g, $extra, [bool]$extraOk, 
     elseif ($g.exitCode -ne 0 -and -not $g.expectedKill) { $script:ExitRc = [math]::Abs([int]$g.exitCode) }
 }
 
+# 11-04: 05:06부터 Player가 Quit 뒤 'Input System … Shutdown'에서 커널 드라이버 교착(HID/GPU)에 걸려 강제 종료 뒤에도
+# 스레드 1개·CPU 정지로 남았고, 그 상태에서 4번 더 띄워 좀비가 5개까지 쌓였다. 이런 프로세스가 하나라도 있으면 재부팅 전까지 새 Player를 막는다.
+function Find-ZombiePlayers {
+    $cand = @(Get-Process -Name 'EXODUSER-*' -ErrorAction SilentlyContinue | Where-Object { try { $_.Threads.Count -le 1 } catch { $false } })
+    if (-not $cand.Count) { return @() }
+    $cpu = @{}; foreach ($p in $cand) { try { $cpu[$p.Id] = $p.TotalProcessorTime.Ticks } catch { } }
+    Start-Sleep -Milliseconds 1500
+    $out = @()
+    foreach ($p in $cand) {
+        try {
+            $q = Get-Process -Id $p.Id -ErrorAction Stop
+            if ($q.Threads.Count -le 1 -and $cpu.ContainsKey($p.Id) -and $q.TotalProcessorTime.Ticks -eq $cpu[$p.Id]) {
+                $out += [pscustomobject]@{ pid = $q.Id; name = $q.ProcessName; threads = $q.Threads.Count; cpuSec = [math]::Round($q.TotalProcessorTime.TotalSeconds, 1); workingSetMB = [math]::Round($q.WorkingSet64 / 1MB); started = $(try { $q.StartTime.ToString('o') } catch { '' }) }
+            }
+        } catch { }
+    }
+    return $out
+}
+
+function Stop-ForZombies($zombies, [string]$what) {
+    $list = (@($zombies) | ForEach-Object { $_.name + ':' + $_.pid + '(스레드' + $_.threads + ', CPU ' + $_.cpuSec + 's)' }) -join ', '
+    $cause = '재부팅 필요: 종료 못 한 Player 좀비 ' + @($zombies).Count + '개 - ' + $list
+    $id = [guid]::NewGuid().ToString('N').Substring(0, 8)
+    try { Write-JsonAtomic (Join-Path $ExecDir ('done\' + $id + '.json')) ([ordered]@{ runnerVersion = $ExoUnityVersion; id = $id; kind = $what; ok = $false; rejected = $true; note = $cause; zombies = @($zombies); exe = [string]$Exe; finishedAt = (NowIso) }) } catch { }
+    New-Halt $cause $what @() (Get-Date)
+    Reject ($cause + '. 새 Player를 띄우지 않았다. 재부팅 뒤 ' + $HaltPath + '를 지우면 풀린다')
+}
+
 function Cmd-Player {
     # 11-03 사용자 "백그라운드 테스트는 맥에서만": PC Player 실행은 CLAUDE.md 3.4 예외 3가지만 허용한다(편집기 batchmode 컴파일·임포트는 그대로).
     if (-not $PcException) { Reject 'PC에서는 player 실행을 기본 거부한다. Player 테스트·캡처는 Mac에서 실행한다. 예외(BuildLoop 바탕화면 교체·CTO 1회 교체·CTO 승인 후보 바로가기)만 -PcException buildloop|cto-swap|candidate' }
+    $zombies = @(Find-ZombiePlayers)
+    if ($zombies.Count) { Stop-ForZombies $zombies 'player' }
     if ([string]::IsNullOrWhiteSpace($Exe)) { throw '-Exe 가 필요합니다.' }
     if (-not (Test-Path -LiteralPath $Exe)) { throw "플레이어를 찾을 수 없음: $Exe" }
     $exeFull = (Resolve-Path -LiteralPath $Exe).Path
@@ -1310,6 +1340,10 @@ function Cmd-Player {
         $extraOk = $true
         if ($nullGfx) { $extraOk = $false; $fail = 'Forcing GfxDevice: Null - GPU 렌더링 아님' }
         elseif (-not $gpu) { $fail = '그래픽 장치 이름을 로그에서 찾지 못함(GPU 확인 불가)' }
+        if (@($g.warnings | Where-Object { $_ -like '*커널 대기 의심*' }).Count) {
+            $after = @(Find-ZombiePlayers)
+            if ($after.Count) { $g.warnings = @($g.warnings) + '재부팅 필요: 이 Player가 종료되지 않음 - HALT 생성'; New-Halt ('재부팅 필요: 종료 못 한 Player 좀비 ' + (($after | ForEach-Object { $_.name + ':' + $_.pid }) -join ', ')) 'player' @($log) $t0c }
+        }
         Finish-Guarded 'player' $id $g ([ordered]@{ exe = $exeFull; args = @($ia); gpu = $gpu; gfxNull = $nullGfx; log = $log; desktop = $Desktop; hiddenWindows = $g.hiddenWindows; hiddenTitles = @($g.hiddenTitles); desktopClosed = $g.desktopClosed; processId = $g.processId; startedAt = $g.startedAt; finishedAt = $g.finishedAt; hiddenDesktopName = $g.hiddenDesktopName; slot = $script:PlayerSlotPath }) $extraOk $fail
     } finally {
         Release-PlayerAdmission
