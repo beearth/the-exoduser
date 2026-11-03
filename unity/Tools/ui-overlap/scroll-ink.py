@@ -92,9 +92,9 @@ def run(candidate=None):
             # Guard against a missing/blank glyph, or a huge substitute audit box.
             visible = len(actual) >= max(8, len(frozen)*.5)
             bounded = bool(rect) and rect['width'] <= w*1.5 and rect['height'] <= h*1.5
-            native_metric = bool(records) and 'Internal_GetTextRectOffset' in records[0].get('metricProof', '')
+            native_metric = bool(records) and all(token in records[0].get('metricProof', '') for token in ('GUIStyle.GetCursorPixelPosition', 'IMGUITextHandle'))
             result.update(actualInkPixels=len(actual), actualInkBounds=bounds(actual), auditRect=rect, sampleROI=sample_roi, nearReference=near_reference,
-                          nativeMetric=native_metric, productionPassed=visible and bounded and contains(rect, actual))
+                          nativeMetric=native_metric, productionPassed=near_reference and native_metric and visible and bounded and contains(rect, actual))
         results.append(result)
     calibrated = len(results) == 4 and all(r['fixtureInkPixels'] >= 8 and r['knownInkPositive'] and r['legacyAuditNegativeRejected'] for r in results)
     return dict(scope='ko tutorial0 + stash, 2560x1600/1600x900; actual ink vs audit box. Frozen checker positive is NOT runtime PASS.',

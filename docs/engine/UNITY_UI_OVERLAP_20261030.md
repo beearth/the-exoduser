@@ -1,5 +1,7 @@
 # Unity UI 글자 겹침 수정과 전 화면 상시 검사
 
+> 현행 후보: 2026-11-03 20:20절. 이전 Internal_GetTextRectOffset 단독/네이티브 Event.QueueEvent 검수 경로는 아래 실패 이력이며 현행 구현이 아니다. docs 정본 unity/main.
+
 > 2026-10-31 최신: 사이드 판·미니맵·상태·알림·실습은 실제 화면 끝, 무대·제목·모달·구슬/스킬바는 중앙. 다섯 창64px 메달 제목·성장 본문181px 확대·스킬16표시·최종 확장원화+하단 그라데이션 로딩 규격은 [초광폭 현행 SSOT](UNITY_UI_ULTRAWIDE_20261031.md)의 첫 절을 따른다. 아래 이전 수치/검수는 이력이며 새 Player 검수 대기. 공통76상태·실제 직업/세계관/타이틀/브랜드 영상 준비/프레임 진행·활성16로딩/실패 폴백을 검사하며, 프레임별 전체 근거 순차 저장으로 대량 보고서 메모리 누적을 없앴다. 명시 지역 검정 그림자/일반 CP 광휘의 별도 한도를 포함한 분석 회귀44건 통과.
 
 사용자 인계: `I:/EXODUSER-Storage/codex-takeover/ui-overlap-brief.md`. 기준 공통 `10c49850f`를 현재 UI 브랜치에 정상 fast-forward했다. 기존 519개 작업 변경과 미추적 메타는 보존한다.
@@ -409,3 +411,29 @@ PC는 현재 Core121/Runtime241 소스의 컴파일 오류0만 새로 확인했�
 | 증거 한계 | 메뉴48+직업선택10은 직전 Mac 실패값. 제품/검수 코드 변경 후 새 숫자는 PC에서 측정하지 않음. 58→0·nameOpened·1410장·scroll-ink 통과 주장은 Mac 새 실행 전 하지 않음 |
 
 PC 확인: 최초 공통 cbdcbc282(병합7dc05359c) 이후 추가9dc27dea5도 정상 병합(d746ea4b6). 실제 Core121·Runtime243 소스(새 스토리/조상 캡처 포함)를 설치된 Unity6000.6.7f1 Roslyn으로 한 묶음 컴파일, 두 exit0/C# 오류0. Runtime 경고521건(CS0219/CS0162/CS0618/CS0649/CS0169/CS0414/UAC1001/UAC0007)은 오류0과 별도이며 경고0이라고 보고하지 않는다. 실제 Unity Editor/정식 빌드/Player 실행은0. 고정 출력 mac-gate-1320/compile-current의 로그·rsp만 보존하고 확인된 DLL4개는 정리한다. 새 Mac 실행은 아직 없음.
+
+
+## 2026-11-03 20:20 Mac FAIL — G0/G1 원인 확정
+
+| 항목 | 증거·설계 |
+|---|---|
+| 목표·현재 차이 | qa/mac-captures-20261103@39c3ae380, qa/unity-parity/1e81002/의 REPORT와 설정·보관함 PNG를1x로 직접 확인.1410장/로딩270장 완주·메뉴48→0은 직전 SHA 성과. 남은 이름 입력5/5 UNVERIFIED·9103건·scroll-ink2/4를 고침 |
+| G0 공통 관례 | 이전19:00절의 공식 Diablo IV/Last Epoch 입력/표시 정합·가독성 체크리스트 재사용. 있음: 실버 헬 서체·입력 차단·실제버튼. 이번에 넣음: 제품 OnGUI 버튼 경계에서 직접 down/up 전달·실제 TextCore 정렬 계측. 뺌: 새 스킨·제품 배치 개편(이번 결함은 도구/조판 정합) |
+| 병합 출처 | 5b6b4fce9↔실패1e810024dd의 NativeLobby.SilverHell.cs/NativeKeyBindList.cs/NativeInventoryDock.cs는 각각diff0. febeb55b2(쓰레기 분해·일시정지 실버 헬)는1e810024dd의 조상이 아님. 따라서9103건을 해당 새 병합 탓으로 돌리지 않음. 네이티브 정렬 감사로 바꾼871a5c25e/366826269 경로부터 바로잡음 |
+| 계측 원인 | [Unity6000.6 GUIStyle.GetCursorPixelPosition](https://github.com/Unity-Technologies/UnityCsReference/blob/6000.6.7f1/Modules/IMGUI/GUIStyle.cs)은 TextCore의 정렬된 cursor 좌표에 Internal_GetTextRectOffset을 더함. 기존 감사는 후자만 사용하여 가운데/오른쪽/세로 정렬을 빠뜨리고, 줄바꿈 높이에 줄바꿈 전 전체 폭을 합침. 실제 보관함 PNG의 전기 전투화 잉크는 기존623px ROI에 있으므로 ROI를 옮기지 않음 |
+| G1 계측 | 실제 GUIStyle cursor와 같은 IMGUITextHandle의 line/character 데이터를 사용. 각 행 origin/xAdvance/ascender/descender를 GUI 좌표로 변환하고 실제 클립 적용. 스타일 정렬을 독자적으로 추정하지 않음. 구체 실제 새 좌표와0건은 Mac에서 판정 |
+| G1 입력 | 네이티브 Event.QueueEvent가 수신0인 방식 폐기. 실제 NativeLobby.OnGUI의 제품 GUI.Button 호출 직전에만 mouse event와 실제 inverse GUI 좌표를 주입. down/up은 서로 다른 실제 OnGUI 프레임, hotControl/Used/클릭 결과와 반복 Layout/Repaint를 기록. hotControl 강제 설정·제품 API로 입력 성공 만들기 금지 |
+| 합격·첫 실물 | PC 컴파일 후 Mac 같은 새 정식 패키지 M1 23/23,1410장 issue0/관측 누락0/로딩270,scroll-ink4/4,이름5해상도 실제입력 PASS. 이전 실패는 재실행해 지우지 않고 새 SHA로 한 회차 확인 |
+| 중단 | Mac 실제 판정 전 미검증. 입력 도구 실패만UNVERIFIED로 보존·전체수집 계속, 실제 제품 실패는FAIL. PC Unity Editor/Player/정식빌드0. 모든 docs의 정본은unity/main |
+
+| 이번 수정 | 현행 수치·판정 |
+|---|---|
+| TextLayoutBounds | GUIStyle.GetCursorPixelPosition의 실제 native 원점 + 동일 IMGUITextHandle의 정렬된 행 origin/xAdvance/ascender/descender. fixedWidth/fixedHeight·padding·pixelsPerPoint·wordWrap·실제clip 반영. 줄바꿈 전 폭과 줄바꿈 후 높이를 섞지 않음. reader/필수행 없음·Advanced Text 미지원은 오류로 닫으며 가짜0건으로 진행하지 않음 |
+| 원계측 추가 | textLayoutRect(배정상자의 실제 화면좌표),textAlignment,textFont,textFontSize,textWordWrap,textPixelsPerPoint를 text 원소에 함께 보존. analyzer의.5px 교차·가림·그림자 반경은 불변 |
+| 키 목록 | ls=0이고 해당문자에 아틀라스 토큰이 없으면 문자열 전체를 기존 font/px·32px 높이 중앙으로 한 번 조판. Width와Run은 같은 GUIStyle.CalcSize 전체 폭. 개별 glyph의 round/커닝 차이를 문자열 충돌로 세지 않음. 자간/아틀라스·키판 Rect·입력/저장/글꼴/크기 불변 |
+| 실제 버튼 | NativeUiAudit.Button이 실제 GUI.Button 직전에만 sandbox/overlap run의 대기 이벤트를 주입. 실제NativeLobby.OnGUI Layout에서만·한 프레임1회·현재 생성 버튼 Rect/matrix 일치 때 적용. root→screen→현재GUI 역변환 뒤주입,호출 뒤 원래event복구. down/up은 다른 실제 프레임,hotControl은 읽기만 함 |
+| 입력 증명 | events: serial/frame/type/loopPhase/root·local좌표/실제button/inside/enabled/Used/clicked/hotControl전후. onGuiSamples: 대기중 최근64회 실제 Layout/Repaint·hotControl·입력차단 상태. lockedBlocked는 실제 내부hit의 disabled down/up2개와단계1 유지 필요. nameOpened 단계2+실제 mouse-up GUI.Button clicked가 함께 있어야PASS |
+| scroll-ink | ROI623/388과분류·밀도·24px위치제한·2px표본halo·실제rect무패딩 포함조건 불변. 새 GUIStyle.GetCursorPixelPosition/IMGUITextHandle metricProof도 productionPassed 필수조건으로 추가(종전표시만하던조건을필수로강화). ROI를잘못된583/364에옮기지않음 |
+| 설치 API 확인 | .NET Framework ReflectionOnly 형식 로드는 netstandard 참조 문제로2회실패,반복중단. PE metadata reader로 바꿔 설치Unity6000.6.7f1의7타입/필수메서드·행필드·GUIContent속성 존재 확인. Unity어셈블리/네이티브실행0이며 Mac 런타임 PASS 아님 |
+
+Mac 다음 증거는 overlap-summary.json, 실제_마우스_역변환.json와 남은 각유형/상위출처의 a/b rect·textLayoutRect·metricProof·font·alignment 표본5개를짧은 JSON으로남긴다. 원본전체1.4GB보고서를복제하거나,PNG만남겨다음원인추적을막지않는다. 새1410장/9103→0/입력5/5/잉크4/4는PC에서판정하지않는다.

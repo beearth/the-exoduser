@@ -57385,3 +57385,6 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 2026-11-03 PC UI-PARITY 19:00 Mac FAIL 후속: G0 공식 Diablo IV/Last Epoch UI 입력·서체 관례 확인. Layout 이벤트 치환을 Unity Event.QueueEvent 네이티브 루프로 교체하고 실제 생성 버튼 Repaint 좌표·down/up/hotControl 수신 영수증을 사용한다. 이름 입력 PASS/FAIL/UNVERIFIED와 수집 전용 API 준비를 구분해 나머지1410장 수집을 입력 도구 실패로 중단하지 않는다. 자간 글자 외곽 검정 그림자 y3→2 디자인px, 기존 검사 임계값 유지. 최신 공통 cbdcbc282 정상 병합 후 구현 체크포인트이며 PC 컴파일·추가 공통 병합은 후속 기록. 새 Mac 실행 전 issue58→0/nameOpened/시각 PASS 미검증. [범위·G0·수치](engine/UNITY_UI_OVERLAP_20261030.md#2026-11-03-1900-mac-fail--g0수정-경계).
 
 같은19:00 후보의 PC 확인: 추가 공통9dc27dea5를 d746ea4b6로 정상 병합(새 캐릭터 스토리 포함), 실제 Core121/Runtime243 소스를 Unity6000.6.7f1 Roslyn으로 컴파일한 결과 두 exit0·C# 오류0. 초광폭 SSOT의 검정 외곽 그림자 현행값도3→2px로 동기화. 새 Mac 빌드/Player/겹침/이름 입력은 미검증으로 유지한다.
+
+
+2026-11-03 PC UI-PARITY 20:20 Mac FAIL 후속: 정리된 CLAUDE7bc7a3518 재독·docs 정본 unity/main·공통d6c5bb89 정상 병합. 실패 SHA에는 새 분해/일시정지febeb55b2가 없으며 상위 라벨3파일은 이전 검수본과 diff0임을 확인했다. NativeUiAudit를 public GUIStyle cursor+같은 TextCore의 실제 행 좌표로 바꾸고, 키 목록 무자간 문자열은 한 번 조판한다. 실제 OnGUI의 GUI.Button 경계에서 local Event를 주입하며 inside/disabled/clicked·hotControl·반복 프레임을 기록한다. 입력 PASS와 수집 API 준비를 구분한다. scroll-ink ROI/임계값은 유지하고 새 metric 증명을 필수 조건에 추가했다. 설치 DLL PE 메타데이터의 필수 API 존재를 확인했으며 네이티브 실행 증거와 구분한다. PC 컴파일 후 Mac 실제 판정 대기. [범위·원인·수치](engine/UNITY_UI_OVERLAP_20261030.md#2026-11-03-2020-mac-fail--g0g1-원인-확정).

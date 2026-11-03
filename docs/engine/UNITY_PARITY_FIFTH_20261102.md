@@ -261,3 +261,16 @@ NativeLobby 실제 생성 버튼 좌표→Unity 네이티브 Event.QueueEvent→
 PC는 컴파일만 한다. Mac 새 정식 빌드1회·같은 패키지 M1 23/23 정상 종료·ko/de/fr×5해상도1410장 issue0/가림 누락0·로딩270장 관측 누락0·scroll-ink4/4·이름 입력5해상도PASS가 다음 관문이다. 입력 UNVERIFIED는 해당 항목만 미검증으로 남기며 전체 게이트 PASS로 승격하지 않는다. 바탕화면·사용자 저장·타인 Player 변경0.
 
 PC 최종 후보: 추가 공통9dc27dea5 병합 d746ea4b6에서 Core121/Runtime243 컴파일 exit0·오류0. 새 스토리 왼쪽 패널/오른쪽 lore 제거와 충돌 없이 통합. 관련 UI 실측은 새 Mac 입력으로 판단한다.
+
+
+## 2026-11-03 20:20 Mac FAIL 후속
+
+규칙 정리7bc7a3518의 CLAUDE.md를 재독했다. docs 정본은 unity/main이다. 공통d6c5bb89를8eabd14ec로 정상 병합했다. 실패1e810024dd는1410장 완주·M1/로딩/관측 누락0을 확인했지만 이름 입력5/5 UNVERIFIED·교차9103건·잉크2/4였다. 실패 SHA의 KeyBindList/InventoryDock/SilverHell은5b6b4fce9와 동일하며, 새 분해·일시정지febeb55b2는 그 조상이 아니다.
+
+| 수정 | 현행 계약 |
+|---|---|
+| 이름 입력 | 실제 OnGUI의 GUI.Button 호출 직전에 local Event를 주입한다. 서로 다른 프레임의 down/up·inside/disabled/clicked·hotControl·최근64회 OnGUI를 기록한다. 제품 API로 수집 화면을 준비한 것은 PASS에서 제외한다 |
+| 상위 충돌 출처 | TextCore의 정렬·줄바꿈이 포함된 실제 행 데이터와 public GUIStyle cursor 원점으로 계측한다. 키 목록의 무자간/비atlas 문자열은 한 번 조판하고 같은 전체 폭으로 측정한다. 글꼴·크기·Core 수치·분석기 임계값은 유지한다 |
+| 잉크 | 고정 ROI623/388은 유지한다. 감사 좌표를 고치고 새 metricProof와 기존 엄격한 포함 조건을 함께 요구한다 |
+
+19:00절의 Event.QueueEvent는 실패 이력이다. PC에서는 컴파일까지만 하고, Mac 새 정식 패키지의 M1·1410장 issue0·scroll-ink4/4·이름 입력5해상도 PASS로 판정한다.

@@ -2,7 +2,7 @@
 
 | 담당 | 목표 | 소유 파일 | 상태 |
 |---|---|---|---|
-| codex/unity-parity-1102 | 19:00 Mac FAIL: nameOpened·2560×1600 부분58건 후속 | NativeLobby.cs, NativeLobby.TitleMenu.cs, NativeLobby.SilverCharacter.cs, NativeLobby.CharacterPresentation.cs, NativeGame.UiOverlapCapture.cs, 관련 패리티·초광폭 문서·CHANGELOG_SYNC의 자기 절 | 공통9dc27dea5까지 정상 병합(d746ea4b6). Core121/Runtime243 컴파일 exit0·오류0. 자기 브랜치 push 후 Mac 입력/1410장/ink4/4 재검수 대기. PC Editor/Player/정식 빌드 없음 |
+| codex/unity-parity-1102 | 20:20 Mac FAIL: 이름 입력·9103건·보관함 잉크 | NativeLobby.cs, NativeUiAudit.cs, NativeKeyBindList.cs, NativeGame.UiOverlapCapture.cs, scroll-ink.py, 관련 UI 문서·CHANGELOG_SYNC 자기 절 | 규칙7bc7a3518 재독·최신 공통d6c5bb89 병합(8eabd14ec). 계측의 TextCore 정렬 누락 추적, PC 컴파일까지만. Mac 실제 판정 대기 |
 
 ## 2026-10-29 Mac 첫 연습 실입력 후속
 

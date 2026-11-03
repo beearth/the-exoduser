@@ -12,7 +12,7 @@ namespace Exoduser.UnityPort
     {
         [Serializable] internal sealed class Element {
             public string id,kind,text,source,ownerId,opacityProof,textureName,opacitySampling,metricProof;
-            public Rect rect,unclippedRect,clipRect;public Vector2[] quad;public int order,depth;
+            public Rect rect,unclippedRect,clipRect,textLayoutRect;public string textAlignment,textFont;public bool textWordWrap;public int textFontSize;public float textPixelsPerPoint;public Vector2[] quad;public int order,depth;
             public bool shadow,hasClip,clipKnown,opacityKnown,axisAligned;
             public float effectiveOpacity;
             public float minimumTextureAlpha,maximumTextureAlpha;public int mipLevels;public bool guiEnabled;public Color guiColor,contentColor,backgroundColor;
@@ -167,20 +167,45 @@ namespace Exoduser.UnityPort
             GUI.DrawTexture(r,texture,mode,alphaBlend,imageAspect);
         }
         internal static void DrawTextureWithTexCoords(Rect r,Texture texture,Rect uv,bool alphaBlend=true,[CallerFilePath]string file="",[CallerLineNumber]int line=0){Surface(r,texture,uv,alphaBlend,Source(file,line));GUI.DrawTextureWithTexCoords(r,texture,uv,alphaBlend);}
-        static readonly MethodInfo textRectOffset=typeof(GUIStyle).GetMethod("Internal_GetTextRectOffset",BindingFlags.Instance|BindingFlags.NonPublic,null,new[]{typeof(Rect),typeof(GUIContent),typeof(Vector2)},null);
+        // GUIStyle's native offset is only one part of TextCore placement.
+        // Read the same aligned/wrapped line data as the renderer; the public
+        // cursor API supplies its native origin, clipping offset and rounding.
+        static readonly Type imguiTextHandle=typeof(GUIStyle).Assembly.GetType("UnityEngine.IMGUITextHandle");
+        static readonly MethodInfo getTextHandle=imguiTextHandle?.GetMethod("GetTextHandle",BindingFlags.Static|BindingFlags.NonPublic,null,new[]{typeof(GUIStyle),typeof(Rect),typeof(string),typeof(Color32),typeof(bool)},null);
+        static readonly PropertyInfo textInfoProperty=imguiTextHandle?.BaseType?.GetProperty("textInfo",BindingFlags.Instance|BindingFlags.NonPublic);
+        static readonly PropertyInfo advancedTextProperty=imguiTextHandle?.BaseType?.GetProperty("useAdvancedText",BindingFlags.Instance|BindingFlags.NonPublic);
+        static readonly PropertyInfo textWithWhitespace=typeof(GUIContent).GetProperty("textWithWhitespace",BindingFlags.Instance|BindingFlags.NonPublic);
+        static readonly Type textInfoType=textInfoProperty?.PropertyType;
+        static readonly FieldInfo linesField=textInfoType?.GetField("lineInfo"),charactersField=textInfoType?.GetField("textElementInfo"),lineCountField=textInfoType?.GetField("lineCount");
+        static readonly Type lineType=linesField?.FieldType.GetElementType(),characterType=charactersField?.FieldType.GetElementType();
+        static readonly FieldInfo firstVisibleField=lineType?.GetField("firstVisibleCharacterIndex"),lastVisibleField=lineType?.GetField("lastVisibleCharacterIndex"),ascenderField=lineType?.GetField("ascender"),descenderField=lineType?.GetField("descender");
+        static readonly FieldInfo charOriginField=characterType?.GetField("origin"),advanceField=characterType?.GetField("xAdvance");
         internal static Rect TextLayoutBounds(Rect rect,GUIContent content,GUIStyle style)
         {
-            // Shared by audit and the QA footer; keep native alignment/rounding identical.
-            Vector2 measured=style.CalcSize(content);
-            float naturalWidth=Mathf.Max(0,measured.x-style.padding.horizontal);
-            float naturalHeight=Mathf.Max(0,(style.wordWrap?style.CalcHeight(content,rect.width):measured.y)-style.padding.vertical);
-            var textSize=new Vector2(naturalWidth,naturalHeight);
-            if(textRectOffset==null)throw new NotSupportedException("GUIStyle native text alignment unavailable");
-            Vector2 offset=(Vector2)textRectOffset.Invoke(style,new object[]{rect,content,textSize});
-            bool overflow=style.clipping==TextClipping.Overflow;
-            Rect inkRect=new Rect(offset.x,offset.y,naturalWidth,naturalHeight);
-            if(!overflow)inkRect=Intersect(inkRect,rect);
-            return inkRect;
+            if(getTextHandle==null||textInfoProperty==null||textWithWhitespace==null||advancedTextProperty==null||lineCountField==null||firstVisibleField==null||lastVisibleField==null||ascenderField==null||descenderField==null||charOriginField==null||advanceField==null)throw new NotSupportedException("IMGUI TextCore line metrics unavailable");
+            Rect draw=rect;if(style.fixedWidth!=0)draw.width=style.fixedWidth;if(style.fixedHeight!=0)draw.height=style.fixedHeight;
+            Rect inner=style.padding.Remove(draw);
+            Vector2 caret=style.GetCursorPixelPosition(draw,content,0);
+            object handle=getTextHandle.Invoke(null,new object[]{style,inner,(string)textWithWhitespace.GetValue(content),new Color32(255,255,255,255),true});
+            if((bool)advancedTextProperty.GetValue(handle))throw new NotSupportedException("Advanced Text needs its own verified audit metric reader");
+            object info=textInfoProperty.GetValue(handle);var lines=(Array)linesField.GetValue(info);var characters=(Array)charactersField.GetValue(info);int count=(int)lineCountField.GetValue(info);
+            if(count==0||characters.Length==0)throw new InvalidOperationException("Visible text produced no TextCore line metrics");
+            float density=GUIUtility.pixelsPerPoint;if(!(density>0))throw new InvalidOperationException("Invalid GUI pixel density");
+            object firstLine=lines.GetValue(0),firstChar=characters.GetValue(0);
+            var localCursor=new Vector2((float)charOriginField.GetValue(firstChar)/density,inner.height-(float)descenderField.GetValue(firstLine)/density);
+            Vector2 nativeOrigin=caret-localCursor+new Vector2(0,style.lineHeight);
+            bool found=false;Rect result=new Rect();
+            for(int n=0;n<count;n++){
+                object line=lines.GetValue(n);int first=(int)firstVisibleField.GetValue(line),last=(int)lastVisibleField.GetValue(line);
+                if(first<0||last<first||last>=characters.Length)continue;
+                float left=(float)charOriginField.GetValue(characters.GetValue(first))/density,right=(float)advanceField.GetValue(characters.GetValue(last))/density;
+                float top=inner.height-(float)ascenderField.GetValue(line)/density,bottom=inner.height-(float)descenderField.GetValue(line)/density;
+                if(right<=left||bottom<=top)continue;
+                var row=Rect.MinMaxRect(nativeOrigin.x+left,nativeOrigin.y+top,nativeOrigin.x+right,nativeOrigin.y+bottom);
+                result=found?Rect.MinMaxRect(Mathf.Min(result.xMin,row.xMin),Mathf.Min(result.yMin,row.yMin),Mathf.Max(result.xMax,row.xMax),Mathf.Max(result.yMax,row.yMax)):row;found=true;
+            }
+            if(!found)throw new InvalidOperationException("Visible text has no measurable TextCore rows");
+            return style.clipping==TextClipping.Overflow?result:Intersect(result,draw);
         }
         static void Text(Rect rect,GUIContent content,GUIStyle style,string source)
         {
@@ -189,7 +214,7 @@ namespace Exoduser.UnityPort
             Color ink=style.normal.textColor;
             Color actualInk=ink*GUI.color*GUI.contentColor;
             var e=Record(inkRect,"text",content.text,source+(DrawingTextShadow?" / 명시 CSS text-shadow 광휘 패스"+(DrawingTextShadowProfile==null?"":" / "+DrawingTextShadowProfile):""),DrawingTextShadow||(actualInk.r<.001f&&actualInk.g<.001f&&actualInk.b<.001f));
-            if(e!=null){e.metricProof="GUIStyle.Internal_GetTextRectOffset native alignment + CalcSize/CalcHeight + actual GUI clip";e.opacityKnown=true;e.effectiveOpacity=GUI.color.a*GUI.contentColor.a*ink.a;e.opacityProof="GUI.color × GUI.contentColor × 실제 글자색 알파";}
+            if(e!=null){e.textLayoutRect=ScreenRect(rect);e.textAlignment=style.alignment.ToString();e.textFont=style.font==null?"GUI default":style.font.name;e.textFontSize=style.fontSize;e.textWordWrap=style.wordWrap;e.textPixelsPerPoint=GUIUtility.pixelsPerPoint;e.metricProof="GUIStyle.GetCursorPixelPosition + IMGUITextHandle aligned/wrapped line origin/xAdvance/ascender/descender + actual GUI clip";e.opacityKnown=true;e.effectiveOpacity=GUI.color.a*GUI.contentColor.a*ink.a;e.opacityProof="GUI.color × GUI.contentColor × 실제 글자색 알파";}
         }
         internal static void Save(string path,string page,string language)
         {
@@ -222,7 +247,7 @@ namespace Exoduser.UnityPort
         internal static void Label(Rect r,string s){Label(r,s,GUI.skin.label);}
         internal static void Label(Rect r,GUIContent s){Label(r,s,GUI.skin.label);}
         internal static bool Button(Rect r,string s,GUIStyle style){return Button(r,new GUIContent(s),style);}
-        internal static bool Button(Rect r,GUIContent s,GUIStyle style){StyleBackground(r,style);if(style!=GUIStyle.none)Region(r,"button");Text(r,s,style,"버튼 글자");NativeUiSounds.Current?.BeforeButton(r,s.text);bool clicked=GUI.Button(r,s,style)&&!NativeScreenTransition.InputBlocked;if(clicked)NativeUiSounds.Current?.Clicked();return clicked;}
+        internal static bool Button(Rect r,GUIContent s,GUIStyle style){StyleBackground(r,style);if(style!=GUIStyle.none)Region(r,"button");Text(r,s,style,"버튼 글자");NativeUiSounds.Current?.BeforeButton(r,s.text);bool injected=NativeLobby.BeginQaButton(r,out Event original),clicked=false;try{clicked=GUI.Button(r,s,style)&&!NativeScreenTransition.InputBlocked;if(clicked)NativeUiSounds.Current?.Clicked();return clicked;}finally{if(injected)NativeLobby.EndQaButton(original,clicked);}}
         internal static bool Button(Rect r,string s){return Button(r,s,GUI.skin.button);}
         internal static bool Button(Rect r,GUIContent s){return Button(r,s,GUI.skin.button);}
         internal static void Box(Rect r,string s,GUIStyle style){StyleBackground(r,style);Region(r,"panel");Text(r,new GUIContent(s),style,"판 글자");GUI.Box(r,s,style);}
