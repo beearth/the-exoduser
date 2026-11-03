@@ -91,3 +91,6 @@ NativeRegionHud.Draw의suppressArrow는배너를숨기지않았다. NativeGame.D
 
 ## 04:05 실제 후보 촬영 중단
 a02cb84850 후보 빌드1회는 성공했으나 첫 로비의 기존 StageFlow locale 초기화 NRE로 촬영 진입 전 중단됐다. 사망 지역HUD 숨김·태국어 4키의 실제 화면 증거는 이번0장이다. 최소 null 접근 수정은 소스/참조검사만 통과했고 승인 빌드1회 소진으로 추가빌드0. [후속 관문과 정확한 실행본 구분](UNITY_UI_CANDIDATE_20261104.md).
+
+## 05:00 실제 후보 촬영 확보
+시작 null 수정 포함 e3b3bc977의 공용 추가빌드1회 PASS. 1920/3840 각각사망14장, 합28장(전체UI포함50장)을확보했다. 두해상도실제receipt의 regionHiddenAtWait/regionHiddenInBoss/objectiveLabelsComplete=true, 보스부활불가위지역배너숨김과태국어HUD를직접열어확인했다. 사용자창/세이브변경/잔류0. 아래0/50은a02이전기록이며 최신은 [후보50장근거](UNITY_UI_CANDIDATE_20261104.md)다. 디자인총괄/Mac자연게임관문은별도.

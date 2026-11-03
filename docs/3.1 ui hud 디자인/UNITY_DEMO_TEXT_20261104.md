@@ -125,3 +125,6 @@ NativeObjectivePanel의info.english한영분기를없애No.0374레벨/0371경험
 
 ## 04:05 후보 시작 결함 후속
 실제 a02cb84850 후보는 빌드PASS 뒤 첫 로비 시작에서 StageFlowBossBar의 초기 locale 접근이 실패했다. Awake는 ResetRun/UpdateViews 뒤에 NativeLobby를 생성한다. 기존 문구 연결의 locale1줄만 null일 때 기본ko를 유지하도록 고쳤고, null+29언어 회귀30조건/참조5어셈블리 오류0. 새 Unity/Player 확인은 없으며 후보 EXE는 수정 전이다. 캡처0/50, 디자인·Mac 관문 대기. [빌드SHA·실패·제한](UNITY_UI_CANDIDATE_20261104.md).
+
+## 05:00 시작 수정의 실제 실행 확인
+e3b3bc977 후보에6dd5f710a의null안전화가포함됐고, 첫로비를포함한18 Player실행이정상종료해50장을확보했다. 두해상도사망fixture의29언어HUD4키완전성체크true, 실제th컷은영어대신태국어4키를표시한다. 29언어전체글리프·펫자연이벤트/GB1보류·Mac자연플레이판정과는구분한다. 이전시작HOLD는이번실행에서해소. [실행SHA/증거](UNITY_UI_CANDIDATE_20261104.md).

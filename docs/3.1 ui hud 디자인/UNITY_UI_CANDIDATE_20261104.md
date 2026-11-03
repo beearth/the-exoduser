@@ -33,3 +33,12 @@
 - startup-locale.test.cjs가 제품의 실제 locale 표현식을 읽어 null과29언어를 검사: 수정전 null 실패1회→수정후30조건PASS1회. 이는 소스 표현식 계약이며 Unity 실행 증거가 아니다. 수정 후 기존 참조도구가 방금 생성된 자기 NTFS Library/DLL을 읽어5어셈블리 오류0.
 - 후보 EXE는 a02cb84850 그대로라 이 후속 수정을 포함하지 않는다. 승인된 빌드1회 상한 때문에 추가 Unity/Player 실행0. 1920·3840 50장/1x·3x·Mac 자연입력·디자인 판정은 모두 미완료이며 CTO의 다음 빌드/검수가 필요하다. 소스와 실행본이 같다고 보고하지 않는다.
 - 임포트가 button_iron/cat/crow meta의 YAML 빈 값 뒤 공백만 재직렬화했다. 의미 차이0(필터/밉맵/원화 불변), 세 파일을 실제 출력대로 기록한다. guard.baseline WIP 불간섭. 실행본/로그/최종SHA는 외부 REPORT와 고정 result-current.md.
+
+## 05:00 최신 검증 — e3b3bc977 후보 50장 확보
+- CTO 추가1회 승인으로 e3b3bc9779bc8d85ffb810270d4ccf09fd61650e를 같은 I:/EXODUSER-Storage/ui-candidate/build에 덮어썼다. 공용1922c0fa: Succeeded/errors0/errorLogs0, Win64/full/remodel씬·6,819,812,394B, USER_SAVE0. 시작 null 수정이 이번 실제 EXE에 포함된다. 아래04:05의0/50은 이전a02 실행 이력이다.
+- 공용 hidden Player18회 전부 exit0/제품receiptPASS, 1920×1080 25장+3840×1080 25장=50장. 각해상도 로비0/2·생성·이름·삭제·일시정지·설정4탭·강제입장호버11장+사망14장이다. 모든 PNG실제크기와 수량을 확인했다.
+- 18/18 persistenceDisabled=true, 사용자화면 창0/USER_SAVE0/leftovers0/hiddenDesktopClosed=true. 무음2인자·고유sandbox는 공용runner가 전달. 바로가기/바탕화면/Steam변경0, 런타임코드변경0·추가재시도0.
+- 두해상도 사망receipt: regionHiddenAtWait/regionHiddenInBoss/objectiveLabelsComplete=true. 입장호버는 entryHoverForced/entryHoverVisible=true(자연포인터입력과 구분). 원화17종/축소본의 실제 mipCount1, artworkBrightness1, blur2면로드를 확인했다.
+- G:/exoduser/tmp/design-review/20261104_ui_candidate/{1920,3840}의 원본50장, capture-current/audit-current.json. 루트 comparison-{1920,3840}-{1x,3x}.png는 swap3 db26d55f6와 같은 좌표를 나란히 둔 비교판, 3x는 nearest, 노출/색보정0. entry-state-{1920,3840}-1x.png는 같은빌드 normal/강제hover 비교다.
+- 직접 검수: 1920 보스사망의 북동·번개/처치배너 겹침이 사라짐, th4키가 영어 대신태국어, 이름공통frame/명조·A3면과호버진홍빛을1x/3x에서확인. 미세철면의두드러진잔점은보이지않았다. 설정게임/조작칩에서도 SPACE/L-SHIFT/F11 글자가면안에남는다.
+- 최종디자인/Mac·자연입력·펫자연이벤트PASS는 별도다. 3840 이름창의 중앙1920폭차광/양옆밝기경계는 swap3에도있는기존상태로 남아있어 디자인총괄에게판정항목으로넘긴다. 이번은 승인된빌드/50장확보만수행했다.

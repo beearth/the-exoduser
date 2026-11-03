@@ -286,3 +286,6 @@ HUD의 미착수 빌드 대기 한 건만 취소하고(타팀 잠금 보존), �
 
 ## 04:05 후보 실제 임포트 기록
 후보 a02cb84850의 Unity Win64 빌드 Succeeded/errors0. button_iron.png.meta와 PetBubble/cat·crow.png.meta가 YAML 빈 값 뒤 공백만 재직렬화되어 그 결과를 기록했다(필터/밉맵/원화 의미 변경0). 첫 Player의 기존 locale 초기화 NRE로 UI 캡처0장이며 A면·글리프·호버 실물 PASS는 아니다. [사실·미검증](../3.1%20ui%20hud%20디자인/UNITY_UI_CANDIDATE_20261104.md).
+
+## 05:00 후보50장 최신 검증
+e3b3bc977 공용1922c0fa 후보빌드1회 Succeeded/errors0/errorLogs0. 이어18 hidden Player제품receiptPASS,1920/3840 각25장=50장,원화17종/축소본mipCount1·artworkBrightness1·blur2로드확인. 이번import후추적에셋변경0,코드변경0. [실제실행본·원본/비교판·미검증](../3.1%20ui%20hud%20디자인/UNITY_UI_CANDIDATE_20261104.md).

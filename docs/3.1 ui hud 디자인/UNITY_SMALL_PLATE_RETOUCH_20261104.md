@@ -52,3 +52,6 @@ Mac 공용 숨김 GPU 실행 경로에 이 인자를 전달한다. 호버는 Rev
 ## 11-04 04:05 승계
 
 작은판임계값48/160·6px·파생6원화·빈슬롯/간격계약을재검사PASS했다. 이름창은A등급Panel(iron:true)로바꾸되같은panel_frame 원화/edge45를유지한다. 입장호버QA는실제마우스이동/OnGUI좌표주입대신-ui-entry-state hover로EntryFocus공통그림경로를직접선택한다. entryPointerInside는자연입력관측값이고강제호버는entryHoverForced로구분한다. 전체후속은[후보계약](UNITY_UI_CANDIDATE_20261104.md).
+
+## 05:00 후보 실물 증거
+e3b3bc977의1920/3840 각설정4탭·로비0/2·생성/이름/삭제·입장hover를확보(전체50장)했다. 게임/조작탭의F11·SPACE·L-SHIFT칩을1x에서열어글자와원화장식겹침이없는것을확인했다. 17원화/축소본의mipCount1을실제receipt로확인했다. 이번 런타임변경0, 자연입력/디자인총괄판정별도. [근거](UNITY_UI_CANDIDATE_20261104.md).

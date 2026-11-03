@@ -80,3 +80,6 @@ git status --porcelain -- unity/Assets/Exoduser/Resources/Art/ui/silver_hell
 ## 11-04 04:05 후보 후속
 
 기존원화ENTER·밝기1.0·9-slice·작은칩·슬롯·생성원화·레일을보존한다. A면은일시정지/이름/삭제를Panel(iron:true)로통일,철은3x낱점검토뒤2px blur파생을14%합성한다. 이름본문명조,미사용lobby_panel로드제거(파일유지). EntryFocus의자연Rect.Contains결과와같은그리기경로에-ui-entry-state normal/hover를제공한다. 이전OnGUI마우스좌표주입은폐기했다. 영수증entryHoverForced/entryState는제어표본을명시한다. 후보고정빌드/1920·3840목록과실행결과위치는[04:05 계약](UNITY_UI_CANDIDATE_20261104.md).
+
+## 05:00 후보 실물 증거
+e3b3bc977 단일실행본의1920/3840 원본50장및1x/3x비교를확보했다. A3면로드/철14%·원화밉맵1·밝기1.0·강제입장호버빛을제품receipt와실물로확인. 자연포인터/Mac/디자인총괄합격은별도다. [고정경로·수량·관측](UNITY_UI_CANDIDATE_20261104.md).

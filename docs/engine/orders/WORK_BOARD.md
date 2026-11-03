@@ -748,3 +748,6 @@ R1/R2 별도 커밋 e9898f79538b5ab78d68b33422374c7b00eca4a9:9항PASS. button_ir
 
 ## 2026-11-04 04:05 death-ui 후보 후속 — 촬영 HOLD
 codex/unity-demo-text-20261104: a53c34e939 병합/1~4 수정/후보 a02cb84850 공용 f803480e 빌드1회 PASS. 첫 Player c21ffb38이 StageFlow 초기 lobby null로150초타임아웃, 창0/USER_SAVE0/잔류0/캡처0장. 기존 자기 문구 locale1줄 안전성 수정·30조건 회귀/참조5어셈블리 오류0, 새실행본 미검증. 빌드1회 상한 준수, 추가빌드/촬영0. CTO 다음 승인 빌드와1920·3840/1x·3x·Mac 자연검수 대기. 소유 StageFlow locale1줄/test/meta3/doc만 추가, Core/타guard WIP/바탕화면·바로가기 변경0.
+
+## 2026-11-04 05:00 death-ui 후보50장 인수 대기
+codex/unity-demo-text-20261104: CTO지정 e3b3bc977 추가후보빌드1회/공용1922c0fa PASS,18 Player제품검증PASS,1920/3840 각25장=50장확보. 시작nullHOLD해소. 전부사용자창0/USER_SAVE0/잔류0,바로가기·바탕화면·Steam교체0. 고정G:/exoduser/tmp/design-review/20261104_ui_candidate 원본/1x·3x비교/audit-current.json. 이번runtime/에셋변경0,docs만자기exact커밋/push. CTO/디자인총괄및Mac자연입력·펫이벤트관문대기(3840모달차광경계는기존관측으로별도판정).

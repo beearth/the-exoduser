@@ -57902,3 +57902,8 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 ## 2026-11-04 04:05 후보 시작 locale 안전성 후속
 - a02cb84850 후보 Win64 빌드1회 PASS(errors0), 첫 Player 시작 NRE로 캡처0/50. Awake의 ResetRun이 lobby 생성보다 빠른 기존 순서에 맞춰 StageFlowBossBar locale의 null 접근1줄을 수정했다. 새 문구/수치/Core/저장 변경0.
 - null+29언어 소스 회귀 RED1→30조건PASS1, 후속 DLL참조5어셈블리 오류0. 후보 EXE는 수정 전 SHA이며 추가 Unity/Player/빌드0, Mac/시각·자연입력 관문 미완료. 실제 임포트 meta3의 공백만 재직렬화 보존, 관련 UI/문구/WORK_BOARD 동기화.
+
+## 2026-11-04 05:00 death-ui 추가후보1회와50장
+- CTO지정 e3b3bc977를고정ui-candidate/build에공용1922c0fa로1회덮어쓰기: Win64 Succeeded/errors0/errorLogs0,USER_SAVE0. 시작null수정포함,추가재시도0.
+- 동일실행본18 hidden Player/제품검증PASS,1920×1080 25장+3840×1080 25장=50장. 사망지역HUD숨김·th4키·A3면·원화mip1/밝기1·명시hover빛확인,1x/3x비교판확보. 모든사용자창/세이브변경/잔류0.
+- runtime/Core/에셋변경0,자기docs만결과동기화. 바탕화면/바로가기/Steam교체0. 기술관문과디자인총괄/Mac자연입력·펫이벤트관문은구분한다.
