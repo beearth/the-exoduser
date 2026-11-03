@@ -315,9 +315,10 @@ DEMO11-44: Mac Codex / `codex/demo11-44-20261021` / NativePets·catalog/generato
 
 | 작업ID | 내용 | 담당·환경 | 브랜치 | 소유 파일(다른 담당 수정 금지) | 상태 |
 |---|---|---|---|---|---|
-| DEMO11-32 | 화마귀 family tick·탄·사망·aggro 소비자 | Mac Codex | codex/demo11-32-20261021 | 신규 FD전용2파일·Main342/3058–3064·State1589–1594·자기 테스트/docs | **부분 구현·통합 BLOCKED** — source18사례/초기8·실제35 작은탄 검증. 큰탄 specialized/PC contact·hit/실제clock·MAP11 Marker 미인수, 31과 통합 후보 기록. 신규906/0·예산2/0·기존51/0(총959/0), 최종 수치는 [보고서](../../_archive/engine/orders/reports/demo11-32_REPORT.md), 보호/35/맵0줄 |
-| DEMO11-21fix | pending draw의 Main/State 해제 수명 보호 | Mac Codex | codex/demo11-21-20261021 | native_world_drops·신규 수명 테스트·자기 docs | **검수 대기** — mainac3764bfe 정상merge, 수명9/0·starter148/0·관련드랍60/0. ERROR/ObjectDB/resource0, Main/State/전투0줄. [보고서](../../_archive/engine/orders/reports/demo11-21fix_REPORT.md) |
-| DEMO11-21 | P2-006a/b 기존 제품 journal→실제 INV 자연 연결 | Mac Codex | codex/demo11-21-20261021 | Main252–257·State432/565–566/584–659 기존 추가분, 새 통합 테스트 | **검수 대기** — P2 수락 원격48f0d8e7/e69fe444 정상 merge·표시 byte 재사용, 신규24/0·관련회귀36/0. 보호 전투·맵·저장0. [보고서](../../_archive/engine/orders/reports/demo11-21_REPORT.md) |
+| RIGPIXEL-1425 | 21:20 최신공통 병합·CHANGELOG 양쪽보존·컴파일 준비 | PC Codex / CTO 통합 | codex/unity-rigpixel-20261103 | 자기 CHANGELOG 충돌 구역·리깅 SSOT·자기 행 | CTO 인수 대기 — aa38bb877 포함·PC952896b8 오류0/네셰이더·세이브0, Mac 시각PASS/단독성능대기, 기본sprite |
+| DEMO11-32 | 화마귀 family tick·탄·사망·aggro 소비자 | Mac Codex | codex/demo11-32-20261021 | 신규 FD전용2파일·Main342/3058–3064·State1589–1594·자기 테스트/docs | **부분 구현·통합 BLOCKED** — source18사례/초기8·실제35 작은탄 검증. 큰탄 specialized/PC contact·hit/실제clock·MAP11 Marker 미인수, 31과 통합 후보 기록. 신규906/0·예산2/0·기존51/0(총959/0), 최종 수치는 [보고서](reports/demo11-32_REPORT.md), 보호/35/맵0줄 |
+| DEMO11-21fix | pending draw의 Main/State 해제 수명 보호 | Mac Codex | codex/demo11-21-20261021 | native_world_drops·신규 수명 테스트·자기 docs | **검수 대기** — mainac3764bfe 정상merge, 수명9/0·starter148/0·관련드랍60/0. ERROR/ObjectDB/resource0, Main/State/전투0줄. [보고서](reports/demo11-21fix_REPORT.md) |
+| DEMO11-21 | P2-006a/b 기존 제품 journal→실제 INV 자연 연결 | Mac Codex | codex/demo11-21-20261021 | Main252–257·State432/565–566/584–659 기존 추가분, 새 통합 테스트 | **검수 대기** — P2 수락 원격48f0d8e7/e69fe444 정상 merge·표시 byte 재사용, 신규24/0·관련회귀36/0. 보호 전투·맵·저장0. [보고서](reports/demo11-21_REPORT.md) |
 
 | DEMO11-38 | stageClear 다음→demoEnd·위시리스트/데모 로비 | Mac Codex | codex/demo11-38-20261021 | Main/State 종료 접점·native_demo_end_*·native_demo_lobby·새 scene/test·자기 docs | **시각 PASS·반송 merge 검수 대기** — 최초183/0·반송38/17/PC refresh439/0, 예상 거부ERROR1 외0. stage1 생성0/중복 clear 거부·실제 Tree pause/구 Main 해제. 1920×1080+1x crop, DEMO11-37 신호 직접 주입(사망 연동未). Main+20/State+15, 최종SHA는 _out/demo11-38/DONE.txt |
 

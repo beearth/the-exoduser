@@ -1,6 +1,6 @@
 # 전사 실시간 리깅 픽셀 렌더 — 2026-11-03
 
-현재 상태: R6c 실제1-1 기능41/41·M1 23/23·3840 Shift4/4 확인. 큰면/광량은 개선됐으나3x 종아리의 고립명암으로 점0 FAIL. R6d는재질내부 median 보강·Mac 검수요청이며 게임용아트/60fps/공통/Desktop 미완이다. 최신 실행 영수증은 I:/EXODUSER-Storage/codex-takeover/rig-pixel/REPORT.md.
+현재 상태: 21:20 CTO 전달의 Mac39e52fe 시각 PASS(사각면0·망토낱픽셀0·흑철·1px검격), 3840 성능은 동시 Player 오염으로 단독 재측정 대기. 최신공통 aa38bb877 병합·PC컴파일 후 자기브랜치를 CTO 통합용으로 전달하며 기본 sprite를 유지한다.
 
 | 계약 | 코드·수치 |
 |---|---|
@@ -10,7 +10,7 @@
 | RT | ARGB32 Linear, depth24, AA1, Point, Clamp, mip 없음, HDR/후처리 없음. URP17.6 SingleCameraRequest. 정사영 near .05/far24, 카메라 후퇴8u |
 | 크기·정수배 | n=max(1,floor(camera.pixelHeight/1080)). 1920/3840×1080 n1. canvas=ceil(5.6/(worldUnitsPerPixel×n)/32)×32, 최소64/최대1024. 범위를 넘기면 기존 sprite 폴백. orthoSize=canvas×worldUnitsPerPixel×n/2 |
 | 기준선 | Core가 정한 기존 hero root를 원점으로 사용. 캡처 중심은 view.up×round(.65/(wpp×n))×wpp×n. 최종 발밑은 NativeHd2D.SnapAnchor, 텍셀1개가 화면정수n픽셀. 맵 NativeHd2D/Remodel3D writer 변경0 |
-| 명암·테 | floor(saturate(NdotL)×3+.5)/3의4단 셀 명암. normal/specular 디테일 미사용, alpha mip bias4, 소재팔레트100%/원본RGB0%. 실제광의 최대RGB로1.1/(1+maxRGB) 압축 후4단명암. 표면 Fresnel 윤곽광은 제거하고 실제 달빛 방향의 알파 실루엣 한쪽만 추가. 최종 알파 바깥 4이웃1텍셀 검은 외곽선. 디더링/그레인/노이즈 추가0 |
+| 명암·테 | floor(saturate(NdotL)×3+.5)/3의4단 셀 명암. normal/specular 맵 미사용, 금속은 넓은 2단 하이라이트만 추가(아래 현행표), alpha mip bias4, 소재팔레트100%/원본RGB0%. 실제광의 최대RGB로1.1/(1+maxRGB) 압축 후4단명암. 표면 Fresnel 윤곽광은 제거하고 실제 달빛 방향의 알파 실루엣 한쪽만 추가. 최종 알파 바깥 4이웃1텍셀 검은 외곽선. 디더링/그레인/노이즈 추가0 |
 | 접지 | HD2DContact 셰이더의 별도 .62×.36u 지면 quad, 지면오프셋 .018u. 기존 스프라이트는 RT 첫 성공 뒤에만 숨김. 리소스/투영/렌더 실패 시 모델 숨김+sprite 폴백, 오류1회 |
 | 수명 | RT는32텍셀 canvas 구간이 바뀔 때만 재생성. 종료 시 RT·자기 재질 해제와 자신이 바꾼 layer30 카메라 비트만 복원 |
 | 제어 동작 검수 | --unity-hero-review --hero-render=rigpixel -review-width 1920 또는3840. 높이1080, 12개 구간 1156틱/2틱당PNG. 기존 fixture 유지하되 rigpixel의 방향 구간은 실제8방향 이동, 공격·피격·사망은 기존 제어 fixture. OS손조작/자연사망 증거가 아님 |
@@ -65,7 +65,7 @@ R6 모션 보강은 UNITY_HERO_MOTION_20261030.md의11-03 절을 따른다. 실�
 
 R6 실제e54f1e56는Playing진입/41검사/579PNG/USER_SAVE0·창노출0·잔여0·정상종료를확인했다. 보행접점26표본최대.000009m/대검발회전.000009m/장갑파지.000012m. 그러나motion-board-1x.png를직접보고 갑옷·망토·칼이암부에서검은실루엣으로뭉치는핵심가독성FAIL로판정했다. 큰재질면과점제거·모션은유지하고R6b에서광량만보강한다. 실제Point광의거리감쇠를color에먼저곱한뒤1.1/(1+maxRGB)압축하여, 강한횃불을먼저압축한후거리를다시감쇠해지나치게어두워지는계산을교정한다(Directional attenuation1은동일). 최종후보Palette alpha1: Iron(.34,.38,.42), Skin(.62,.42,.32), Hair(.045,.035,.030), Cloth/Cape(.34,.085,.065), Leather(.18,.11,.07), Sword(.48,.50,.52). 기존피부/머리보호·재질면정리·4회법선·RT정수배·Core/월드광원/보행코드는동일. 새실제1x/3x판정전미채택이다.
 
-R6c 상체선행회전은 HERO_MOTION의R6c절을따른다. R6b 광량/팔레트는그대로이며아래가현재후보값이다. 새Player완료전기본sprite유지.
+R6c 상체선행회전은 HERO_MOTION의R6c절을따른다. R6b 광량/팔레트는그대로이며아래는R6c/R6d 이력값이다. 현행 재작업값은문서끝표를따른다. 새Player완료전기본sprite유지.
 
 | 소재 판별 id | RGB | alpha | 적용 |
 |---|---|---|---|
@@ -97,3 +97,56 @@ Mac에서는 Editor RigPixelVerification.Verify 후 PortVerification.Build(-remo
 R6d 배치665409d7은C#오류0/USER_SAVE0이지만renderer=true·humanoid=true·shaders=false로exit2, 전체PASS가아니다. 허용된PC Editor 배치1회를사용했으므로추가Unity기동0. 별도Windows D3DCompile로median함수구문을검사하여예약어pass 사용의실제X3000을확인했다(tests/red-r6d-hlsl.json). iteration으로교정한함수는ps_5_0 HRESULT0(tests/green-r6d-hlsl.json), 이는전체Unity/Metal/실제렌더검수PASS가아니다. Editor Verify는각shader의severity/line/platform/message를로그에추가해Mac실패진단이누락되지않게한다.
 
 직접본비교판: G:/exoduser/tmp/design-review/20261103_rig_pixel/r6c/comparison/C10-R6c-NRFTW-body-aligned.png 및-3x.png. 원본C10=다른R3패키지1600×900, R6c=1920×1080원1x, NRFTW원참조를수동몸높이114px로정렬한검토판이다. 같은패키지A/B 또는R6d결과가아니며manifest.json에crop/scale/범위를기록했다. C10대비실루엣/대검/큰면은좋아졌으나노레위와의입체명암/재질차와고립픽셀은남아시각완료를선언하지않는다.
+
+## 14:25·19:00 재작업 G0/G1 — 망토·흑철·픽셀 검격
+
+목표는 최신 Unity 1-1의 같은 R7 전사다. 최신 공통 cbdcbc2822를 먼저 정상 merge했다. Mac 검수 22918886e의 1920_hero_ambient_x3.png를 직접 열어 망토 끝의 분리된 어두운 픽셀과 부드러운 흰 검격을 확인했다. Mac이 보고한 두 해상도 FPS 121.7/75.1과 가독성은 이전 입력의 근거이며 새 수정의 합격이 아니다. 현재 가장 큰 차이는 연결되지 않은 망토 픽셀이다.
+
+| G0 공통 관례 체크 | 직접 확인한 1차 자료·현재 적용 |
+|---|---|
+| 작은 화면의 실루엣·동작 우선 | [Dead Cells 제작자 Thomas Vasseur](https://www.gamedeveloper.com/production/art-design-deep-dive-using-a-3d-pipeline-for-2d-animation-in-i-dead-cells-i-): 키포즈/타이밍을 먼저 잡고 저해상도·무AA·toon으로 출력. 원작도 시간축 픽셀 깜빡임을 미해결 문제로 기록하므로 이를 우리 합격 기준으로 허용하지 않는다 |
+| 캐릭터·효과의 격자와 외곽 결 통일 | [David Holland 본인 구현](https://www.davidhol.land/articles/3d-pixel-art-rendering/): view-aligned texel grid·큰 외곽·셀 조명, 실제 장면 반복 확인. 우리 카메라/RT 정수배를 그대로 사용하고 검격만 같은 화면 격자로 표본화한다 |
+| 큰 형태·명도·타이밍으로 판독 | [Riot 공식 VFX 교육](https://www.riotgames.com/en/artedu/visual-effects): 효과가 실제 동작/상태를 전달하고 캐릭터 및 전체 화면과 조화돼야 함. 노레위 원본과 함께 검토한 적용 판단은 흑철 큰 암부와 제한된 금속 밝은 면, 짧은 검격이다. 점·노이즈로 재질을 표현하지 않는다 |
+| Core 접점과 탄막 가독성 유지 | b1d3cb69e의 VFX_G1_TIMING_DESIGN_20261103.md: 발사/히트/회복 및 원본 시트는 그대로. 이번 범위는 검격 샘플 격자·필터·셀화뿐. 빛/히트스톱/데칼/피해/속도 변경0 |
+
+선택한 제작법은 v4 §3의 기존 R7→정사영 Point RT→월드 합성, 원본 검격 시트의 픽셀 표본화다. 별도 프로젝트/원형/이미지 생성0. 설계: 8이웃 연결로 망토의 크기1~2 섬만 지우고 연결된 계단·얇은 대검을 보존한다. 흑철은 중성 암부와 넓은 셀 하이라이트를 분리한다. 검격은 hero-render=rigpixel의 KiSlashView만 opt-in, 기존 공용 impact 재질의 기본값은 유지한다. 첫 새 실물 판정은 PC 컴파일 후 Mac 같은 패키지 1920/3840이다. 합격은 망토 낱픽셀0·흑철 LOCK·같은 픽셀 크기 검격·가독성/60fps 회귀0, 핵심 FAIL 또는 같은 검사2회 실패 시 수정 항목을 보고한다.
+
+### 14:25·19:00 수정 계약 — 현행 값
+
+| id | 현행 동작·수치 | 유지/판정 |
+|---|---|---|
+| cape coverage | RT alpha가.7±.02인천만8이웃검사. 이웃0이면제거, 이웃1일때그이웃의다른연결이없으면2텍셀섬으로제거. 3텍셀이상연결/몸체에붙은끝/다른소재는보존 | 중앙과외곽선4이웃모두정리된coverage를사용해삭제한섬의검은테도남기지않음. 점0은Mac3x/동영상확인전미검증 |
+| iron palette | default iron RGB(.18,.185,.195), alpha1 | 피부(.62,.42,.32)/머리(.045,.035,.030)/망토(.34,.085,.065)/가죽(.18,.11,.07)/대검(.48,.50,.52)는유지. 월드광/ambient하한변경0 |
+| metal cells | _MetallicPlane iron1 / blade.8 / 그외0. 실제달빛/Point E를기존과같이압축, N·H≥.90이면.04 / ≥.97이면추가.08의넓은하이라이트 | 노멀맵·스펙맵·노이즈0. H=normalize(광방향+view), 원기하/법선큰면·median유지. 회청색큰바탕을낮추고밝은금속면만분리 |
+| pixel grid | NativeRigPixelHero가_RigPixelGrid=(RT화면좌하단x,y,n,1)을전달. n=max(1,height/1080) 정수. 투영화면좌표를동일격자중심에맞춰UV미분으로원본시트표본위치를계산 | ComputeScreenPos로D3D/Metal Y방향을보정. 뷰포트/고해상도n전환은Mac필수확인 |
+| KiSlashView opt-in | Requested(args)일때자기additive/ink재질의_RigPixelMode1, 기본0. 셀rect를_PixelFrameRect로전달 | 공유impact/다른재질은기본0, 기존RGB/opacity·원시트·발사/수명/크기/5레이어유지 |
+| slash sampling | inline Point Clamp·LOD0. source premultiplied RGB의 max×2.4를clamp한C<.25는제거, 나머지는coverage1과RGB4단(floor(rgb×3+.5)/3). 화면8이웃의1~2픽셀섬도제거 | 아틀라스셀경계는반텍셀안쪽으로clamp. 시간fade는기존_Opacity한번만적용. sprite모드는기존필터/합성유지 |
+| slash ink | rigpixel모드에서정리된coverage의4이웃1픽셀테, 각정리픽셀의I=saturate(max(RGB×alpha)×2.4)를사용, 최종alpha=max(I,4이웃I최대×.6)×opacity, RGB(5,4,6)/255 | 기존121탭넓은blur는sprite모드에만남김. 탄막·스킬·SFX·히트스톱·Core타이밍변경0 |
+| compile gate | Verify는toon/composite/slash additive/ink네셰이더오류·R7아바타를검사 | PC공용bin batch compile만1회, 새Player/빌드0. Mac Metal/실게임판정후CTO가통합/기본전환결정 |
+
+inline Point/Clamp의D3D11/12·Metal지원은 [Unity 공식 sampler 문서](https://docs.unity.cn/6000.0/Documentation/Manual/SL-SamplerStates.html)와대조했다. 효과형태·기본타이밍의다음변경은임팩트레인이VFX_G1표로진행하며이번표본화플래그/그리드를재사용한다. 새유료호출0.
+
+PC 단일 컴파일 결과: 7d38fa45, source1274675fb0. renderer/shaders(네개)/humanoid true, exit0, C# compileErrors0·USER_SAVE변경0. 실제작업27.4초/순번포함719초. 부수 라이선스토큰갱신·종료통신로그는별도기록하며코드/셰이더검사실패는없다. 새Player/정식빌드/시각PASS를뜻하지않는다. 자기Editor 종료뒤자기worktree의자동직렬화860개·새meta/SceneTemplate57개·CLI임시캐시를정리했다. 실제수정은이미커밋된13경로에만남는다. 최신Mac판정6PNG만current에남겼고확인끝난PC빌드7개·이전캡처8폴더·사본을삭제했다(약51.2GiB). 정식빌드고정폴더는build-current, Mac PASS후CTO만통합/기본전환결정.
+
+## 20:20 Mac FAIL — 검격 뒤 검은 사각 면 교정
+
+G0 범위는 1-1 검격만이며 최신 CLAUDE7bc7a3518 및 docs 정본 unity/main을 적용한다. origin/unity/main d6c5bb89bb206d7712b6bcf286ad7a98d3fbd638을 먼저 정상 merge했다. 기존 G0의 큰 형태·게임 동작과 같은 효과 결·배경 판독 관례는 유지한다. 새 입력은 qa/mac-captures-20261103 @39c3ae380의qa/unity-rigpixel/aa95382/1920_hero_slash_x3.png와1920_full.png로, 회전 검은 사각 면을 직접 봤다. 시트 원화는1254×1254, alpha전범위255/모서리RGBA(0,0,0,255)를디스크에서확인했다. 알파를투명마스크로가정한이전구현이원인이며원화는바꾸지않는다.
+
+| id | 교정 계약 | 보존·판정 범위 |
+|---|---|---|
+| Raw coverage C | RigSlashInkAlpha(c)=saturate(max(c.rgb×c.a)×2.4). 중앙/8이웃/두번째연결검사를전부이C≥.25로판정 | opaque black(0,0,0,1)도C0이므로배경으로제거. 검격에사용되는원본RGBA/asset/meta 수정0 |
+| Pixel output | 연결섬정리후 RGB4단/alpha1은유지, 제거픽셀은RGBA0 | 기존Point·격자·셀clamp·1~2픽셀섬정리·5레이어·opacity타이밍유지 |
+| Ink alpha I | 필터된각픽셀에서같은premultiplied RGB식으로I계산. 최종alpha=max(Icenter,.6×max(Ileft,Iright,Iup,Idown))×_Opacity | alpha만보고검게칠하지않음. 빈검은배경은중앙/이웃I0→ink0. 기존sprite121탭분기무변경 |
+| 이전 Mac PASS | 망토낱픽셀0·중성흑철·동일픽셀크기·FPS1920 127.11 /3840 83.11 | 해당 aa9538206 입력의증거. 이번RGB교정의G4합격은같은두해상도 재검수전미검증 |
+
+첫 새실물 판정은 PC 공용 단일 컴파일 후 Mac 같은패키지1920/3840의검격표본이다. 원래 사각 면좌표1920 x744–983/y369–565와3840 중앙을1x/3x에서직접보고, 10초무음영상에서검격의사각배경0·망토낱픽셀0·흑철/픽셀크기/FPS회귀0을확인한다. Core/카메라/망토/팔레트/원시트/공통재질기본값은변경0. 두번실패하면무수정재실행없이원인을보고한다. 검수후기본값전환과통합은CTO가결정한다.
+
+20:20 수정 PC 단일 컴파일 영수증: 4c477254 / source0fa44094edbce3079b32d04502515b15dd737ef5. renderer/네셰이더/Humanoid true·exit0·compileErrors0·USER_SAVE변경0, 재임포트포함303.3초. 부수 Curl종료통신/라이선스갱신로그는검사결과와구분한다. 자기Editor종료·공식예약반환후880개자동직렬화와56개새meta를정리해직접수정만커밋에남겼다. 새Player/정식빌드/실게임PASS0. 검은사각면0의실제판정은Mac재검수대기이며그뒤CTO가기본값전환을결정한다.
+
+## 21:20 최신 Unity 병합·통합 준비
+
+최신 origin/unity/main aa38bb8773274bd5f2c91fdc25c4eb2cf003565d(사망화면포함)을인수했다. docs/CHANGELOG_SYNC.md의한충돌은리깅14:25/19:00·20:20과사망UI후속세기록을양쪽그대로보존해해소한다. NativeGame.cs/WORK_BOARD는정상자동병합이며리깅셰이더·원화·팔레트·기본모드의추가수정0.
+
+브리프21:20 CTO 전달: qa/mac-captures-20261103 @adc7233e6 / qa/unity-rigpixel/39e52fe/에서사각면0·망토낱픽셀0·흑철·1px칼궤적시각PASS. 3840의56fps는다른Player동시실행오염이라단독재측정대기이며60fps PASS로세지않는다. 새로운PC Player/빌드/성능검사없이공용컴파일한번만수행한다. CTO가검수후unity/main을fast-forward로반영하며기본rigpixel전환은성능재측정PASS뒤별도결정한다.
+
+21:20 병합본 단일PC컴파일952896b8: source c81bdc6455b48bea9b597a156b0747f992ebe9ff, renderer/네셰이더/Humanoid true·exit0·compileErrors0·USER_SAVE0,94.2초. 부수Curl종료통신로그는검사결과와구분. 자동직렬화885개/새meta56개정리후자기직접변경0. CHANGELOG 양쪽기록/충돌표시0을유지하며리깅코드는39e52fe와동일하다. 자기브랜치push후CTO가aa38bb877에서fast-forward로인수할수있는커밋을보고한다. 성능단독재측정전기본sprite유지.
