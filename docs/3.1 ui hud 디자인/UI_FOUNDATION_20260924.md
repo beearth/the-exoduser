@@ -1,8 +1,10 @@
 ## 2026-10-21 DEMO11-50 native 설정 현행
 
-DEMO11-09의 설정 반영 BLOCKED는 이번 허용 OPT/IO 범위에서 해소했다. pause→4탭·현재 입력 안내 Q 패링/E 방패(불꽃칼날), 기존 crest와 Hell Gothic/게임폰트 토큰 재사용. [설정 계약](../3.3%20키바인딩+설정/DEMO11_50_NATIVE_SETTINGS_20261021.md)의 native 부분 범위이며 웹판/전체언어/BGM 재생 완료와 구분한다.
+DEMO11-09의 설정 반영 BLOCKED는 이번 허용 OPT/IO 범위에서 해소했다. pause→4탭·현재 입력 안내 Q 패링/E 방패(불꽃칼날), 기존 crest와 Hell Gothic/게임폰트 토큰 재사용. [설정 계약](../_archive/3.3%20키바인딩+설정/DEMO11_50_NATIVE_SETTINGS_20261021.md)의 native 부분 범위이며 웹판/전체언어/BGM 재생 완료와 구분한다.
 
 # 전체 UI 통일 — Hell Gothic
+
+> **2026-10-28 최상위 기준 추가**: 게임 전체 톤은 [EXODUSER 디자인 컨셉 — 실버 헬](DESIGN_CONCEPT_SILVER_HELL_20261028.md)을 먼저 따른다(사용자 결정: 로고를 메인 컨셉 이미지로). Hell Gothic의 흑철·악마·지옥 분위기는 유지하고, 금속 색은 금·황동 → 은빛 강철, 빨강은 "지옥의 눈"(선택·위험·초점)에만 쓴다. 아래의 금빛 헤어라인·황동 수치는 각 화면을 이식할 때 그 문서의 토큰으로 교체한다.
 
 > 2026-09-29 현행: **미선택 기본 화면은 선대 소환체 · 묘왕 바르칸**, 캐릭터 카드 선택 후에는 해당 CHAR_VISUALS의 원화/아이들 영상과 이름·직업을 표시한다. 데모도 자동 선택 없이 시작하며 카드 클릭 후 입장을 활성화한다. 선택 해제 시 전대 화면으로 복귀한다. 아래 2026-09-28 제작·검수는 당시 이력이며, 현재 선택 표시 규칙은 [기본 전대 / 선택 캐릭터 전환 SSOT](<../3.1 ui hud 디자인/LOBBY_ANCESTOR_ART_20260928.md>)를 우선한다.
 
@@ -107,7 +109,7 @@ CSS 이미지 실패 시 solid 배경/테두리/DOM 글자·버튼이 남는다.
 | 항목 | 현재 계약 |
 |---|---|
 | 인벤토리 제목판 | 직계 헤더의 .ptitle display:none. 제목 이미지와 가상요소도 표시하지 않음 |
-| 정보행 | 전투력/악의/닫기 유지. gap0, margin4px 0 8px |
+| 정보행 | 전투력/악의오브/닫기 유지. gap0, margin4px 0 8px |
 | 높이 배분 | 장비 탭 inv-wrap 첫 행270px, 가방 행 minmax(min-content,1fr). invCenter height:auto/min-height260px,invGrid height140px/flex1 1 140px. 필터 높이를 반영하며 나머지 높이는 가방에 배정. 작은 화면은 기존 바깥 세로 스크롤 사용 |
 | 적용 범위 | 인벤토리 내부 장비/유골함/보석/보관함 페이지 공통. 다른 메뉴 제목 유지 |
 
@@ -293,14 +295,14 @@ CSS 캐시 ui-refinement.css?v=20260927-3. 신규 이미지/아이템 데이터 
 
 - Godot 포트 UI는 웹과 같은 글꼴 토큰을 쓴다: `--font-hell`(Nanum Myeongjo→Noto Serif KR), `--font-hell-title`(Cinzel Decorative→Nanum Myeongjo→Noto Serif KR), `'Cinzel',var(--font-hell)`(타이머·화폐·키 표기), `'Cinzel',serif`(진행 표시·레슨 키캡), body `--font`(Noto Sans KR — 쿨다운 초·안내 노트·버튼), 펫 자막 `'Malgun Gothic',sans-serif`(시스템에 없으면 Noto Sans KR). 단일 공급자 `godot/scripts/native_ui_fonts.gd`, 글꼴 파일 `godot/assets/fonts/ofl/`(OFL 동봉).
 - 굵기는 game.html @import 로드 굵기 기준 브라우저 매칭 그대로(Cinzel은 700/900만 로드 → 일반 굵기 요청도 700으로 보임).
-- 인트로 시작 대사+키 안내 4컷(`#introKeys`)을 원본 CSS 607~640 값으로 이식 — 웹 Chromium 1920×1080 실측과 패널 높이·요소 위치 ±0.1px. 상세·근거 표: [docs/engine/FDG_P2_007A_UI_POLISH_20261020.md](../engine/FDG_P2_007A_UI_POLISH_20261020.md).
+- 인트로 시작 대사+키 안내 4컷(`#introKeys`)을 원본 CSS 607~640 값으로 이식 — 웹 Chromium 1920×1080 실측과 패널 높이·요소 위치 ±0.1px. 상세·근거 표: [docs/_archive/engine/FDG_P2_007A_UI_POLISH_20261020.md](../_archive/engine/FDG_P2_007A_UI_POLISH_20261020.md).
 
 
 ## 2026-10-21 DEMO11-09 네이티브 일시정지 메뉴 (설정 반영 BLOCKED)
 
 기존 Main._toggle_pause/HUD pause 연결과 clear_native_input_states·review 캐릭터 선택 guard를 유지하며 메뉴 표시만 추가한다. Settings 하위 화면에서 Esc/뒤로는 pause로 복귀, pause의 Esc/재개는 기존 경로를 사용한다. 일반 메뉴에서만 개발 캐릭터 선택판을 가리고 review 모드 우선권은 그대로다. 흑철 패널·기존 날개 문장·금빛 헤어라인·뼈색 글자, native_ui_fonts의 hell/hell_title/cinzel_hell, 이모지·새 이미지0.
 
-S01 current NOT_READY(missing textScale/panelFit/diffV2)를 보존하며 observed_options/default reference를 가짜 live 설정으로 사용하지 않는다. S10 native_settings_lobby_bridge는 main에 없어 언어/inputMode 복원·설정 적용은 BLOCKED. 숫자/키 변경 UI나 별도 OPT/BINDS writer를 만들지 않는다. [보고서](../engine/orders/reports/demo11-09_REPORT.md), 캡처 `_out/demo11-09/captures/`; 시각 판정 대기.
+S01 current NOT_READY(missing textScale/panelFit/diffV2)를 보존하며 observed_options/default reference를 가짜 live 설정으로 사용하지 않는다. S10 native_settings_lobby_bridge는 main에 없어 언어/inputMode 복원·설정 적용은 BLOCKED. 숫자/키 변경 UI나 별도 OPT/BINDS writer를 만들지 않는다. [보고서](../_archive/engine/orders/reports/demo11-09_REPORT.md), 캡처 `_out/demo11-09/captures/`; 시각 판정 대기.
 ## 2026-10-21 DEMO11-04 Godot 로컬 5슬롯 요청 UI
 
 - 독립 진입 씬 `res://scenes/demo_lobby.tscn`은 1920×1080 설계 좌표의 로컬 데모 목록·이름 입력·선택·삭제 확인을 제공한다. Main 게임 부팅/실제 Player 복원은 이 단위 범위 밖이다. 이어하기는 실제 파일에서 재읽은 선택 슬롯 payload를 `continue_requested(slot,data)`로 전달하며 복원 성공·입장 성공으로 표시하지 않는다. metadata-only는 `new_game_requested` 경계다.
@@ -308,7 +310,7 @@ S01 current NOT_READY(missing textScale/panelFit/diffV2)를 보존하며 observe
 - 일반 5슬롯 제한·원본 metadata fallback은 기존 source_slot_reader를 사용한다. 웹의 VIEW=2 스크롤을 복제하는 대신 native에서 5행을 한 판에 표시한다. 이름 입력은 index.html848의 maxlength8을 따른다. 캐릭터 선택/서사/온라인/Steam·설정 저장·복원은 별도 단위다.
 - 삭제 확인은 취소에 최초 포커스, 좌우/Tab은 모달 안 두 버튼 순환, Escape 취소 후 호출 버튼으로 복귀한다. 이름은 일반 Label/Button으로 표시하고 rich text 해석을 하지 않는다. IO 실패는 목록을 성공처럼 미리 바꾸지 않으며 실패 reason을 표시한다. 확인 이후 저장 변경 시 삭제를 거절한다.
 - SV-LOBBY-VIEW·SETTINGS S10은 이 기준 main에서 추적/후보 파일 계약이며 실행 구현은 없었다. 이번 지정 후보 `native_save_slot_menu.gd`와 `native_settings_lobby_bridge.gd`에 로컬 요청·명시 KO/EN 언어/장치 관측 부분을 구현했다. hellLang/OPT 영속 쓰기·29언어 완료·패드 전체 navigation 인수는 주장하지 않는다. 새 UI 키는 번역대상_전체목록에 등록했다.
-- 화면 검수는 `_out/demo11-04/captures/`의 목록·삭제확인 1920×1080 PNG 및 각1x 크롭을 맥북총괄이 확인한다. 캡처는 격리 디렉터리의 명시 IO fixture이며 자연 플레이 저장/복원 검수와 구분한다. [검증·의존·경계 보고](../engine/orders/reports/demo11-04_REPORT.md).
+- 화면 검수는 `_out/demo11-04/captures/`의 목록·삭제확인 1920×1080 PNG 및 각1x 크롭을 맥북총괄이 확인한다. 캡처는 격리 디렉터리의 명시 IO fixture이며 자연 플레이 저장/복원 검수와 구분한다. [검증·의존·경계 보고](../_archive/engine/orders/reports/demo11-04_REPORT.md).
 
 
 ### 2026-10-21 DEMO11-04 맥북총괄 RETOUCH 반영
@@ -321,7 +323,7 @@ S01 current NOT_READY(missing textScale/panelFit/diffV2)를 보존하며 observe
 
 `native_demo_end_view.gd`는 기존 Hell Gothic crest.png와 `native_ui_fonts.gd` 토큰 hell/hell_title/cinzel_hell을 재사용한다. 1920×1080 기준 흑철 바탕·뼈색 본문·금빛 얇은 선·절제한 적갈 버튼, 중앙 880px 판/58px 버튼/기본 21–25px 가독성. 이모지·신규 이미지·기본 산세리프 UI 추가0. 이벤트 시에만 UI를 만들며 프레임별 목록 API/애니메이션/blur0. 마우스/키보드 기본 Button focus·Enter/Space 활성화 및 focus 테두리를 유지한다.
 
-마지막 데모 stageClear의 다음 버튼은 난이도 창·stage 증가 없이 demoEnd로 간다. 복귀는 전투 Main을 해제하는 별도 demo11_lobby.tscn(최소 네이티브 데모 로비)이며 웹 캐릭터 슬롯/계정/저장 로비 완성 주장0. DEMO11-37은 최종 보스 사망/부활 해결 뒤 Main.native_demo_boss_defeated(stage_index:int)를 emit해야 한다. 현재 테스트는 직접 emit하며 실제 보스 사망 검증은 아님. [검수 보고서](../engine/orders/reports/demo11-38_REPORT.md), 캡처 원본 `_out/demo11-38/captures/`; 시각 최종 판정은 맥북총괄 대기.
+마지막 데모 stageClear의 다음 버튼은 난이도 창·stage 증가 없이 demoEnd로 간다. 복귀는 전투 Main을 해제하는 별도 demo11_lobby.tscn(최소 네이티브 데모 로비)이며 웹 캐릭터 슬롯/계정/저장 로비 완성 주장0. DEMO11-37은 최종 보스 사망/부활 해결 뒤 Main.native_demo_boss_defeated(stage_index:int)를 emit해야 한다. 현재 테스트는 직접 emit하며 실제 보스 사망 검증은 아님. [검수 보고서](../_archive/engine/orders/reports/demo11-38_REPORT.md), 캡처 원본 `_out/demo11-38/captures/`; 시각 최종 판정은 맥북총괄 대기.
 
 종료 시 Main DISABLED만으로 명시 PAUSABLE World/Player는 멈추지 않으므로 Tree pause를 함께 사용한다. 종료 UI는 ALWAYS, 전투 scene 제거 후 새 로비 ready에서 unpause한다. 최종 검사에서 World frame 7→7→7·can_process=false·구 Main 해제를 확인했다.
 
@@ -329,9 +331,16 @@ S01 current NOT_READY(missing textScale/panelFit/diffV2)를 보존하며 observe
 
 기존 Main._toggle_pause/HUD pause 연결과 clear_native_input_states·review 캐릭터 선택 guard를 유지하며 메뉴 표시만 추가한다. Settings 하위 화면에서 Esc/뒤로는 pause로 복귀, pause의 Esc/재개는 기존 경로를 사용한다. 일반 메뉴에서만 개발 캐릭터 선택판을 가리고 review 모드 우선권은 그대로다. 흑철 패널·기존 날개 문장·금빛 헤어라인·뼈색 글자, native_ui_fonts의 hell/hell_title/cinzel_hell, 이모지·새 이미지0.
 
-S01 current NOT_READY(missing textScale/panelFit/diffV2)를 보존하며 observed_options/default reference를 가짜 live 설정으로 사용하지 않는다. S10 native_settings_lobby_bridge는 main에 없어 언어/inputMode 복원·설정 적용은 BLOCKED. 숫자/키 변경 UI나 별도 OPT/BINDS writer를 만들지 않는다. [보고서](../engine/orders/reports/demo11-09_REPORT.md), 캡처 `_out/demo11-09/captures/`; 시각 판정 대기.
+S01 current NOT_READY(missing textScale/panelFit/diffV2)를 보존하며 observed_options/default reference를 가짜 live 설정으로 사용하지 않는다. S10 native_settings_lobby_bridge는 main에 없어 언어/inputMode 복원·설정 적용은 BLOCKED. 숫자/키 변경 UI나 별도 OPT/BINDS writer를 만들지 않는다. [보고서](../_archive/engine/orders/reports/demo11-09_REPORT.md), 캡처 `_out/demo11-09/captures/`; 시각 판정 대기.
 
 
 ### 2026-10-21 DEMO11-04b 로비 슬롯 숫자 가독성
 
 삭제 확인 부제의 슬롯 번호만 별도 Label의 `hell` 700(Nanum Myeongjo→Noto Serif KR)로 표시한다. `/ 기록명`과 제목은 기존 Cinzel title 스택을 유지한다. 슬롯 목록 01~05는 기존 `hell` 400이므로 변경 없이 다섯 항목의 폰트와 두 자리 표기를 검사한다. 새 문자열/번역키·삭제 IO/선택 로직 변경은 없다. 실제 1920×1080 삭제 확인 캡처와 목록/부제의 1x 크롭은 `_out/demo11-04b/captures/`에 두며 눈 검수 후 제출한다.
+
+## 2026-10-31 웹 공통 UI·UX
+로비·타이틀의 최신 안전 영역·원화 버튼·키보드·사운드 계약은 LOBBY_AAA_REFERENCE_STUDY_20261028.md의 같은 날짜 표, 게임 공통 창은 WEB_UIUX_GAME_20261031.md를 따른다. 2026-10-31 사용자 정정: 화면 가장자리 배치는 실제 화면 끝을 따른다. 중앙 16:9는 제목·모달·HP/MP 구슬과 스킬바 묶음에만 적용한다. 튜토리얼·레벨/처치·펫 등 확장 범위는 WEB_UIUX_GAME_20261031.md의 화면 끝 배치 절을 따른다.
+
+## 2026-10-31 로딩·대기 화면 구도
+
+로딩 원화는 비율 유지 contain, 하단 상태 영역과 분리한다. viewport 비율에 따른 확장판 선택·실버 헬 글꼴/진행 선·실패 폴백·전수 이미지 및 검수 정본은 [LOADING_ULTRAWIDE_20261031](../1전체그래픽세팅/LOADING_ULTRAWIDE_20261031.md)이다. 기존 전체화면 로딩 cover 예시보다 이 표시 계약이 우선한다.

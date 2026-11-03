@@ -91,7 +91,7 @@ Elden Ring 출시 트레일러의 공식 소개는 새 캐릭터와 장면에 �
 | 본편 스토리 | 세계관 문서와 기존 시네마틱 자산 존재 | 공개 범위를 정해 짧게 사용하고 본편 폭로는 보존 |
 | Steam 배포 데모와 촬영 빌드의 동일성 | 최신 manifest상 미검증 | 개발 빌드·staged 시연의 기존 표기를 유지하고 동일성 확인 결과에 따라 문구 결정 |
 
-원본 이력: [촬영 manifest](FRESH_CAPTURE_MANIFEST_20261008.md), [37초 및 세로편 편집 계약](VIDEO_EDIT_PLAN_20261008.md). 새 일반 플레이와 소재 인계는 [홍보팀 검토](HERO_TRAILER_PROMOTION_REVIEW_20261008.md), 실제 30초 편집은 [후속 제작 기록](HERO_TRAILER_PRODUCTION_20261008.md)을 따른다. 기존 파일의 존재를 사용자 장면 승인으로 간주하지 않는다.
+원본 이력: [촬영 manifest](../_archive/13출시·마케팅/FRESH_CAPTURE_MANIFEST_20261008.md), [37초 및 세로편 편집 계약](../_archive/13출시·마케팅/VIDEO_EDIT_PLAN_20261008.md). 새 일반 플레이와 소재 인계는 [홍보팀 검토](../_archive/13출시·마케팅/HERO_TRAILER_PROMOTION_REVIEW_20261008.md), 실제 30초 편집은 [후속 제작 기록](HERO_TRAILER_PRODUCTION_20261008.md)을 따른다. 기존 파일의 존재를 사용자 장면 승인으로 간주하지 않는다.
 
 패링 장면은 현행 게임 계약을 따른다. **무지개탄 blackBean은 Q만으로 패링하며 E 패링은 불가**, Q 성공 시 블루콩 유도반사다. 이는 기존 확정사항의 재기록이며 시스템 변경 제안이 아니다. 모든 공격이 반사된다는 인상을 주는 카피나 편집은 피한다.
 

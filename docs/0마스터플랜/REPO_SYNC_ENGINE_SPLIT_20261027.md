@@ -2,6 +2,7 @@
 
 > 사용자 지시(10-27): "병합은 보고 후에", "유니티 버전은 따로 커밋", "유니티·고도·H5 버전은 따로 관리해야지 당연하게".
 > 이 문서는 진단 결과와 실행안이다. 아래 §4는 사용자 승인 전에는 실행하지 않는다.
+> 위치(2026-11-03 규칙 정리): docs 정본은 origin/unity/main이다. 이 문서의 정본도 unity/main의 이 경로이고, main의 같은 경로에는 위치 안내만 둔다. §3의 "`docs/engine/`는 당분간 main에 둔다"는 이 정리 전 기록이다.
 
 ## 1. 로컬 main ↔ origin/main
 
@@ -30,7 +31,7 @@
 | `release-version.json`, `release-version.js`, `package.json`, `patch-notes.js` | 내용 | 로컬(0.7.7, Steam 라이브 기준)을 우선하고, 원격 쪽 변경분만 확인해 반영 |
 | `docs/16번역·로컬라이제이션/번역대상_전체목록.md` | 내용 | 양쪽 추가 항목을 모두 넣고 번호를 다시 매김 |
 | `docs/engine/UNITY_PORT_MASTER_20261026.md` | add/add | 양쪽 내용을 합침(각 세션이 따로 갱신) |
-| `docs/4.1맵디자인+설정/UNITY_ART_BIBLE_V1_20261026.md` | add/add | 같음. 디자인총괄 v2 통합본 기준 |
+| `docs/_archive/4.1맵디자인+설정/UNITY_ART_BIBLE_V1_20261026.md` | add/add | 같음. 디자인총괄 v2 통합본 기준 |
 | `docs/4.1맵디자인+설정/UNITY_MAP_BOARD_20261026.md` | add/add | 같음. 맵 총괄 확인 |
 | `docs/6사운드디자인/SFX_FORGE_ELEVENLABS_20261021.md` | add/add | 같음. 사운드 총괄 확인 |
 

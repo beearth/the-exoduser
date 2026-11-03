@@ -21,7 +21,7 @@ si는 전역 stage, hell은 0기준 장, phase는 HP 페이즈0~4, idx는 명시
 |---|---|
 | [CH1 추적](FDG_SOURCE_TRACE_BOSS_CH1_20261020.md) §1~7 | 공통 HP·난도·score·selector·5phase·시계·21공통기술 상세 정의의 정본. 같은 공식을 3장 전용 코드로 복제하지 않음 |
 | [CH2 추적, ddf05495](https://github.com/beearth/the-exoduser/blob/ddf0549597e645b507cac672cba29df2639712c3/docs/engine/FDG_SOURCE_TRACE_BOSS_CH2_20261020.md) §2~7 | 같은 데이터→동작→docs차이→Godot→단위→접점→전수부록 형식. 공유30기술·36콤보의 원본 필드는 참조만. 옛 CH2 조사 시점의 main 결손/HOLD와 현재 a3b5391c의 일반화를 구분 |
-| [BC2-02 보고서, a3b5391c](https://github.com/beearth/the-exoduser/blob/a3b5391c54bb62b9f784bf2acac12bfbd2747192/docs/engine/orders/reports/bc2-02_REPORT.md) 및 해당6공통모듈/context/bridge | chapter_catalog 마지막 인자·null CH1기본·continuation 문맥·실제 ack/readback 재사용. 이 원격은 본 문서 기준 main에 미병합. 보고 수치는 이번 재실행 PASS가 아님 |
+| [BC2-02 보고서, a3b5391c](https://github.com/beearth/the-exoduser/blob/a3b5391c54bb62b9f784bf2acac12bfbd2747192/docs/_archive/engine/orders/reports/bc2-02_REPORT.md) 및 해당6공통모듈/context/bridge | chapter_catalog 마지막 인자·null CH1기본·continuation 문맥·실제 ack/readback 재사용. 이 원격은 본 문서 기준 main에 미병합. 보고 수치는 이번 재실행 PASS가 아님 |
 | [REVIVE_SHIELD](FDG_SOURCE_TRACE_REVIVE_SHIELD_20261020.md) §1.3 B01~B09·§1.5·§2~5 | 즉시/180f 폴백/포인트/실드/최종 종료의 기존 소유. CH3 부활 시스템을 별도 증설하지 않음 |
 | [BOSS_BATTLE_SETTINGS](../8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md), 같은 폴더 나머지7문서 | 공통전투·laser 최신절 우선. 나머지는 CH1/드루이드 자료이며 CH3 독립 외형·피날레 규칙으로 확장하지 않음 |
 | [부활 설계](../2_5%20부활+에너지쉴드시스템/2_5%20부활+에너지쉴드시스템.md), 같은 폴더 RESPAWN·피해수치 표시 | HP0 보스 부활과 플레이어 재시작 완충·추가HP 실드를 구분. Q/E·돌진·패링·방패·세이브 형식 **보호** |

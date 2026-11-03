@@ -99,3 +99,7 @@ PC 담당이 I:/EXODUSER-Storage/character-capacity/20261101-unlimited/receiver/
 다음 성역 RETOUCH 한 건은 기존 Mac UI 담당에게 최소수정·원본 수치 보존·1920 실제 시각 재검수·개인 브랜치 산출물 회수 범위로 지시했다. 신규 팀/자동화0. 사용자 게임 저장 불변 및 QA preferences 최초 원문 없는1파일 복구 미확인 한계는 그대로 유지한다.
 
 사용량 단위 시작 주간 누적10%→종료12%, 계정 공용 관측차2퍼센트포인트. 이 작업 단독 소비로 귀속하지 않는다. 날짜 첫 누적 기준 여부가 확인되지 않아 일간 소비는 미상이며 새20% 예산을 배정하지 않았다. 같은 상태 사용량 반복 조회0.
+
+## PC 수신 패키지 재전개 최종 확인
+
+PC의 receiver/unpacked/EXODUSER-Win64 고유 폴더에 정상 제품 패키지를 재전개했다. ZIP 212개 파일의 전체 크기 4,461,953,365B가 모두 일치하고 누락/크기 차이 0이다. EXE·Core·Runtime SHA는 위 Win64 원 빌드 표와 정확히 같다. 최초 재전개의 아카이브 시간 복원은 대상 파일시스템에서 Invalid argument로 실패했으며, 원본 ZIP을 보존한 채 tar -m으로 파일 내용은 유지하고 현재 추출 시간을 사용해 재전개 exit0을 확인했다. receiver/transfer-receipt.json, unpacked-identity.json, unpacked-all-sizes.json에 근거를 보존했다. Windows 실제 Player 실행과 기존 바탕화면 바로가기 변경은 아직 하지 않았다. 공통 unity/main 원격은 907083b7cb91a9198425a62a90999c65457d6ebb와 일치한다.

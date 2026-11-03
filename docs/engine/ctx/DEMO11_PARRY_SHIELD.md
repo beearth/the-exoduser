@@ -22,7 +22,7 @@
 ## 관련 docs
 
 - `docs/2_3 돌진+패링+방패시스템/` — 수정 금지
-- `docs/engine/DEMO11_COMPLETION_GAP_20261021.md` D12–D13
+- `docs/_archive/engine/DEMO11_COMPLETION_GAP_20261021.md` D12–D13
 - `docs/engine/FDG_SOURCE_TRACE_REVIVE_SHIELD_20261020.md` §1
 - `docs/engine/FDG_SOURCE_TRACE_ITEMS_20261020.md` C25
 

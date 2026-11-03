@@ -6,7 +6,7 @@
 |---|---|
 | 소유 | G:/exoduser-wt/codex-hd2d, 기존 codex/pc-hd2d-trial-20261031; 시험 writer의 Trial/Editor/Hd2dTrialBuilder/시험 docs 변경은 보존 |
 | 기준 | origin/unity/main 15c8ed3c5, 착수 HEAD ae4777860. A2 승인 이미지와 기존 실게임 탐험 이미지를 직접 열어 비교. 기존은 3D 전사 표시로 HD2D 표현 요구 FAIL |
-| 표현 | NativeHd2D.Enabled 기본 true. --legacy-models에서만 기존 NativeHeroView 연결. 기존 3D 코드 삭제0. 전사·CH1 적·드루이드 원본 시트를 유지 |
+| 표현 | NativeHd2D.Enabled 기본 true. --legacy-models 또는 --hero-render=rigpixel에서 기존 NativeHeroView 연결. 기존 3D 코드 삭제0. 전사·CH1 적·드루이드 원본 시트를 유지 |
 | 픽셀·발밑 | Point 샘플링, alpha>64 오프라인 발끝 1,848건(영웅240+적1,600+앵글러8). 캐릭터 카메라 facing·출력 화면1화소 스냅. 정지 발선 정렬; 구르기 회전은 접지점/그림자를 유지하고 중심 lift는 비회전 카메라up 기준. 원본 드루이드 pivot(.5,.14) 유지 |
 | 광원 | URP 주광+추가광, ambient RGB(.55,.58,.63), rim(.12,.16,.20), 조명 상한2.2. 드루이드 additive 복제광은 HD2D에서 비활성화. 시각 수치는 실게임 검수 후 조정 |
 | 그림자 | 월드XZ 평면의 부드러운 타원. alpha=.58×actor.color.a, 높이.018u, 고정폭=영웅Radius×.02×HD2D HeroScale(필드/아레나 모두2), 적Radius×.035, 드루이드Radius×.0465, 앵글러1.5u; .24~2.8u clamp, 깊이=폭×.6. 원본 idle베이스+부분보행overlay 합성을 유지하며 공통 발선·그림자1개 공유 |
@@ -211,3 +211,5 @@
 |필드 검수|최신UI 결합 NativeGame.A2FieldCapture는기존8+거목재현3=11포즈×2폭22PNG. b673/8dbdf의실제16장영수증은이전소스증거로보존하며새22장으로소급하지않음|
 |UI 보호|중앙/가장자리·GuideHUD/최소물리16·공통제목64/메달40·스킬본문/실제16키·승인로딩16종·공유영상소유·UI검수틱/입력격리·AO선택필드·펫행간·명시재생버튼계약모두유지|
 |소스/증거|공용HEAD38·INDEX0/원WIP520/56·frozenCLI68b7/Queue8a00을보존. 새같은DLL의remodel-scenes1 build→M1→field22/world56/raw24/FPS/UI1225/웹1x 필수. R3나Main8dbdf의M1/사진을새UI 결합DLL 검수로소급0|
+
+2026-11-03 실시간 리깅 픽셀 후보: [정확 렌더·검수 계약](UNITY_RIG_PIXEL_20261103.md). 기본 sprite는 유지하며 rigpixel은 R7 리그→정사영 Point RT→같은 Core 발밑 합성이다. 현재 구현·검수 진행이며 과거 3D 검수는 이 후보의 시각/성능 PASS가 아니다.

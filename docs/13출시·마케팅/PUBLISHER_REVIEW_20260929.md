@@ -15,9 +15,9 @@
 
 ## 산출물
 
-현재 로컬·바탕화면·Drive의 구분과 재개 검수 결과는 [발송 준비 재개 기록](PUBLISHER_DELIVERY_RESUME_20260929.md)을 따른다. 과거 배포 완료 기록을 최신 탄막 패링 수정본의 업로드 완료로 간주하지 않는다.
+현재 로컬·바탕화면·Drive의 구분과 재개 검수 결과는 [발송 준비 재개 기록](../_archive/13출시·마케팅/PUBLISHER_DELIVERY_RESUME_20260929.md)을 따른다. 과거 배포 완료 기록을 최신 탄막 패링 수정본의 업로드 완료로 간주하지 않는다.
 
-최신 로컬 액션 설명 변경은 [기동게이지·패링 연계 기록](PUBLISHER_MOBILITY_PARRY_20260929.md)을 따른다. 앞선 16페이지 삭제본 배포 기록과 이번 17페이지 수정본의 로컬 상태를 구분한다.
+최신 로컬 액션 설명 변경은 [기동게이지·패링 연계 기록](../_archive/13출시·마케팅/PUBLISHER_MOBILITY_PARRY_20260929.md)을 따른다. 앞선 16페이지 삭제본 배포 기록과 이번 17페이지 수정본의 로컬 상태를 구분한다.
 
 로컬 경로: `G:/exoduser/output/applications/publisher-20260929/`
 
@@ -139,7 +139,7 @@ Gmail 서버에 예약을 완료했고 Codex 자동화가 메일을 새로 보�
 | 데모 시작 / 상한 | 대검전사 Lv.1 / Lv.100 |
 | 구역 | stage 0 = CH1-1. 공개 데모 마지막 구역 `_DEMO_LAST_STAGE=0` |
 | 게임 진입 | 로비 버튼이 `game.html?test=1&slot=demo&demo=1`로 이동. 실제 초기 Lv.1 확인 |
-| 최초 검토 사본 표시 | 1600×900, 최소 1280×720, 창 모드 및 크기 조절. 10시 후속 전달본은 사용자 지시에 따라 fullscreen:true로 시작하며 [최신 전달 기록](PUBLISHER_LATEST_BUILD_DELIVERY_20260929.md)을 따름 |
+| 최초 검토 사본 표시 | 1600×900, 최소 1280×720, 창 모드 및 크기 조절. 10시 후속 전달본은 사용자 지시에 따라 fullscreen:true로 시작하며 [최신 전달 기록](../_archive/13출시·마케팅/PUBLISHER_LATEST_BUILD_DELIVERY_20260929.md)을 따름 |
 | 내장 서버 포트 | 3337. 개발 서버 3333과 분리 |
 | 데모 저장 | `hellsave_demo` localStorage, `userdata-publisher-20260929` Chromium 프로필 |
 | 서버 API 저장 | `%APPDATA%/EXODUSER-PUBLISHER-20260929/saves` |
@@ -228,7 +228,12 @@ ZIP Drive 파일: https://drive.google.com/file/d/18n85EKH1guc2jJ_b9Z08luQ_Ez25M
 | 실제 NW.js | 공용 탄·검기·부활·첫 처치 GPU 준비 누락 보완.1600×900/5120×1440 High100 이동·연속공격 각20초59.95/59.9fps.34ms초과공백0. 무적·ST 보충·저장 차단은 QA만 적용 |
 | 변경 경계 | 배포 스냅샷 두HTML의 helper·호출만22줄씩 이식. 신규 아트·개인 세이브·계측 없음. 코드+관련docs 커밋 `30e9cf16b` |
 | 현재 Drive | ZIP ID `18n85EKH1guc2jJ_b9Z08luQ_Ez25Mfqd`는 기존6,737,897,304바이트. r2 아직 업로드하지 않음. 교체 승인 질문 대기 |
-| PDF 최신 상태 | 앞의16페이지 기록은 과거 이력. 현재 로컬17페이지6,680,821바이트와 Drive 직전17페이지7,168,010바이트의 차이는 [재개 검증](PUBLISHER_DELIVERY_RESUME_20260929.md) 참조 |
+| PDF 최신 상태 | 앞의16페이지 기록은 과거 이력. 현재 로컬17페이지6,680,821바이트와 Drive 직전17페이지7,168,010바이트의 차이는 [재개 검증](../_archive/13출시·마케팅/PUBLISHER_DELIVERY_RESUME_20260929.md) 참조 |
 | 발송 | 기존9시 Gmail 예약2건 유지. 발송 시점 Drive 버전과 로컬 r2를 혼동하지 않음 |
 
 상세 원인·실측·남은 드롭/창 변경 지연·MAP PRODUCTION REPORT(VISUAL VERDICT RETOUCH)는 [전투 렉 수정 SSOT](../12퍼포먼스·최적화/COMBAT_TEXTURE_WARMUP_20260929.md). 이번 성능 수정은 Steam 배포 완료나 장시간/모든 보스 무끊김 보장을 뜻하지 않는다.
+
+
+## 2026-10-31 전체 화면 원화 확장 적용
+
+이 문서의 과거 이미지·영상 제작 및 판정은 당시 이력이다. 현행 웹은 `fullscreen-art.js`의 경로 등록으로 64종의 원본/21:9/32:9 판을 선택한다. 화면비 2 이하의 원본 경로와 MP4 파일은 보존하고, 초광폭에서는 확장판을 배경으로 쓰고 원래 영상·카메라·CSS 움직임을 유지한다. 로비·캐릭터 영상은 manifest 중앙 좌표와 높이에 맞춰 겹치며 양끝14%를 크로스페이드한다. 전체 폭 분위기 효과는 움직임 줄이기·저사양·숨김 화면에서 정지한다. 출력·사용 위치·규격·생성 정보·검수 근거는 `docs/3.1 ui hud 디자인/FULLSCREEN_ART_ULTRAWIDE_20261031.md` 및 `assets/fullscreen-wide/20261031/manifest.json`이 현행 기준이다. 로딩35장은 별도 담당이며 Unity 반영·실행 검수는 이 웹 적용으로 완료되지 않는다.
