@@ -51,5 +51,6 @@ Roslyn 사전 검사: compile-check.ps1 -Output <I: 경로>. 기본 LibraryProje
 
 스모크 앞 reserve는 -Kind player다. Editor 사전 대기는 없고 Player 전용 슬롯·10GB·FIFO를 따른다. Get-BlockingUnityOwner는 종류에 맞는 앞 owner/slot을 읽는다. Player 슬롯 초과도 WAIT·lastAttemptSha 보존·waiting-build 보관으로 처리하며 실제 Cmd-Run fixture로 검사한다.
 ABORT 회차가 만든 build_new는 그 회차 폴더 aborted-build로 보관한다. pending 없이 남은 build_new(이전 ABORT 고아)는 다음 회차가 orphan-build-before로 보관하고 진행한다(11-03 회차마다 ABORT 정체 수정). pending 후보·링크는 옮기지 않는다.
+빌드가 다시 쓰는 Unity 직렬화 추적 파일(unity/Assets·ProjectSettings 아래 .meta·.mat·.asset·.unity, 작업본 수정만)은 버리지 않고 남긴 채 진행한다. 새 커밋과 겹치는 파일이 하나라도 있으면 그 목록으로 중단한다(정리는 사용자 확인). INDEX 변경·그 밖의 파일 변경은 예전처럼 중단. 11-03 guid만 있는 .meta 824개·재질 29개·URP 설정·FirstPlayable.unity 재직렬화로 12:25부터 회차마다 중단된 일의 수정. 시험 selftest/buildloop-reserialize-test.ps1.
 
 WAIT는 본편 lastAttemptSha를 보존하면서 lastAttemptVerdict만 WAIT로 기록한다. 같은 SHA가 과거 실패로 남아 있어도 다음 일반 주기는 WAIT를 재시도하며, check도 Force가 필요하다는 경고를 내지 않는다. 브랜치 NoSwap의 배포 attempt 상태는 계속 변경하지 않는다. 분류/상태 단위13건과 실제 동일 SHA 다음 주기 fixture로 확인한다.
