@@ -106,7 +106,6 @@ namespace Exoduser.UnityPort
             Remodel3DViewport();
             var p = Simulation.Player; r3Marker.position = NativeRemodel3D.Point(p.X, p.Y) + NativeRemodelCamera.TargetOffset;   // CM LOOK-001 follows the marker (offset 0, 10.52, -9.24, no damping)
             r3Marker.position += ImpactCameraOffset();
-            if(combatImpacts!=null)r3Marker.position+=(NativeRemodel3D.Point(p.X,p.Y)-r3Cam.transform.position).normalized*combatImpacts.CameraPushIn(Simulation.TickCount);
             if(NativeHd2D.Enabled&&r3Brain!=null)r3Brain.ManualUpdate(); // 최종 카메라 pose 뒤에만 픽셀 스냅한다.
             combatImpacts?.DrawMeleeParry(Simulation.TickCount,r3Cam,playerView);
             foreach (var r in props) if (r != null) r.enabled = false;

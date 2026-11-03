@@ -1,5 +1,7 @@
 # 전투 패링 재기획 G1 — A안 명세 (2026-11-03)
 
+> 2026-11-04 표기만 갱신, 설계 무변경: §10 푸시인 후보 표시 방식(VFX RETOUCH 4)만 코드 사실로 고침.
+
 - 사용자 선택: **A안**(근접 리듬 추가 + 근접·탄 보상 분리). 11-03 20시 사용자 원문 "A안", CTO 전달. B안(기세 자원)은 지금 하지 않습니다.
 - 앞 문서: [PARRY_REDESIGN_G0_20261103.md](PARRY_REDESIGN_G0_20261103.md)
 - 이 문서는 G2 구현(1-1 회색 실물 한 판)의 입력 명세입니다. 구현은 CTO가 구현 레인에 배정하고, 판정과 병합은 유니티 총괄이 합니다.
@@ -160,7 +162,7 @@ Core에 표시 전용 `CombatStats`를 둡니다. 규칙과 난수에는 영향�
 - Core: MeleeAttackRules(5종 상태/공통 탄 정책), Simulation.MeleeParry(통합·반격·독립 행동정지), ParryRewards.Input.Kind(보상분리), CombatStats(관측), ParryRhythmBot(10개 예고 중7개 입력, 게임 RNG 무사용).
 - 19의 1타 뒤 gap22→2타 tell40, 29는 타간 gap10→tell16이다. 패링은 남은 연타를 즉시 취소한다. 6 돌진24예고→20발동; 29 돌진40예고→25발동(기존 길이)·쿨360·패링불가.
 - 표현: 예고 +2~10틱(9틱) 뼈색 섬광28px 이상·정렬30000, 화면6px 후퇴·1.06/.94→발동 첫2틱14px 전진. 성공 +2~6틱 최소 스파크, +6틱18px 후퇴. PBZ 본 스파크는 VFX 레인 소유다.
-- parry_feedback.json: standard6/4·밀기0, pushIn2/4·.08u. --parry-feedback-push-in으로 전환. 규칙은 후보 전환으로 바뀌지 않는다.
+- parry_feedback.json: standard6/4·밀기0, pushIn2/4·.08u. --parry-feedback-push-in으로 전환. (11-04 표시 사실: .08u 마커 당김은 쓰지 않고, 이 플래그와 `--unity-parry-camera=pushin` 모두 근접 패링에만 화각 2.5% 푸시인(8틱+복귀 20틱)을 건다. 탄 패링은 흔들림 4. 패링 연출은 히트스톱 홀드 중에도 진행. 기록 `docs/5.1임펙트디자인/UNITY_COMBAT_IMPACTS_20261103.md` RETOUCH 4 절) 규칙은 후보 전환으로 바뀌지 않는다.
 - 사망/클리어·M1/전체진행 종료에 combat-stats.json 작성. M1 save/continue 이전 통계를 보존한다. 적 피해는 실제 HP+쉴드 손실, 플레이어 피해는 HP 손실, 자원은 상한 적용 후 실제 증가량이다.
 - Mac: --unity-m1-check 1회, --unity-fullrun-qa --parry-g2-bot 격리출력3판, 사람3판과 1600×900 1x 겹침 장면. 봇은 기회별 목표 입력70%이며 실제 성공률은 카운터로 따로 판정한다. 강제 성공·자원 주입은 없다.
 - PC 범위는 구현·참조 컴파일. §8 실게임 비율/회복/그로기·화면 합격은 Mac 미판정.

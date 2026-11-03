@@ -266,7 +266,7 @@ namespace Exoduser.UnityPort
         }
         void FixedUpdate()
         {
-            if(Time.unscaledTime<parryHoldUntil)return;
+            if(Time.unscaledTime<parryHoldUntil){combatImpacts?.HoldFrame();return;}   // pose hold: parry sparks/flash/shake keep running
             if(hellGateCaptureActive||NativeScreenTransition.InputBlocked||practiceScripted||UiOverlapFreezesSimulation||!Running||!gameFocused||Simulation==null||lobby!=null&&lobby.IsBlocking)return;
             var p=Simulation.Player;var aim=AimWorld();
             float x=(NativeKeyBindInput.Held("right")?1:0)-(NativeKeyBindInput.Held("left")?1:0);
