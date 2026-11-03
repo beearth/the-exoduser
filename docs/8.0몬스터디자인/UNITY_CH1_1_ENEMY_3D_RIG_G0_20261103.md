@@ -211,6 +211,29 @@
 
 부풀은 사도의 가슴 비율 0.429는 배 중심이 낮아서다. 피격 기준점은 배(가슴 뼈보다 아래)로 잡는 것이 맞다.
 
+#### 4.1.5 무기 소품·1차 동작 클립 (11-04 3시, Blender 서브에이전트, 유료 0)
+
+**무기 소품**(2차 RETOUCH 3종): `I:/EXODUSER-Storage/boss/enemy3d-20261104/armed/<ritual|duelist|warden>_armed_rigged.glb`·`_armed_walk.glb`(스크립트 `build_armed.py`).
+- 의식 사도 `Weapon_Staff`(896 tris, 뿌리 케이지 5가닥 + 눈알 Ø0.22m), 쌍낫 `Weapon_Sickle_R/L`(각 170 tris, 날 0.7m), 문지기 `Weapon_Maul`(660 tris, 돌 0.55×0.45×0.45m·자루 1.3m).
+- 손 뼈 자식 소켓 `WeaponSocket_R/L`(로컬 +Z = 무기 끝 방향, Armature 0.01 때문에 소켓 로컬 scale 100). 단색 재질 `weapon_wood·bone·iron·rust·stone·root…`.
+- 판정: 정지 자세 34° 1x에서 세 무기 모두 읽힘 → PASS. 걷기는 RETOUCH(Meshy 걷기의 팔 흔들림을 무기가 그대로 따라가 지팡이가 눕고 망치가 몸 뒤로 숨는 프레임) → 무기를 든 종은 전용 걷기(무거운 망치는 끌기)가 필요하다. 쌍낫은 #4a4440이라 어두운 바닥에서 대비가 낮다(팔레트에서 밝힘). Blender 임포터가 뼈 자식 소켓 위치를 잘못 읽지만 GLB 노드 값은 맞다(Unity 확인 필요).
+
+**1차 5종 동작 클립**: `I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/<spine|sage|trapper|twin|carapace2>_anim_v1.glb`(+ .blend, `_anim_report.json`). 60fps, 1프레임 = Core 1틱, 뼈 24.
+
+| 종 | 클립(길이 f) |
+|---|---|
+| 공통 | `idle`(120 반복) `walk`(62, Meshy 원본을 60fps로 맞춤) `hit`(12) `stagger`(40) `death`(45, 마지막 = 누운 자세) |
+| 1 가시 사도 | `attack_tele`(60, 탄 충전) `attack_act`(6) `attack_rec`(30) |
+| 7 현자형 | `attack_tele`(60) `attack_act`(6) `attack_rec`(30) `summon_tele`(40) `summon_act`(10) `summon_rec`(30) |
+| 16 덫 사도 | `attack_tele`(60) `attack_act`(6) `attack_rec`(30) `trap_set`(30) |
+| 47 그림자 쌍둥이 | `tp_vanish`(30) `tp_appear`(20) `slam_tele`(24) `slam_act`(3) `slam_rec`(40) `clone_cast`(30) |
+| 4 갑각 사도 v2 | `attack_tele`(36) `attack_act`(3) `attack_rec`(45) `block`(20) — 패링 A안 내려치기(예고 36·발동 3·반격 창 45) |
+
+- 예고 정점 몸통 회전(대기 대비): 가시 25.4°, 현자형 23.5°, 덫 34.8°, 쌍둥이 22.0°, 갑각 25.9°. 발 미끄러짐은 대기·예고·발동·회복·소환·덫·막기·순간이동에서 0cm, 경직은 한 걸음 뒤로 8~15cm.
+- 띠: `G:/exoduser/tmp/design-review/20261104_enemy3d_pilot/anim_<key>_strip_1x·3x.png`(대기 | 예고 정점 | 발동 첫 | 회복 최저 | 사망 끝).
+- 판정: **제작자 조건부 PASS**. 34° 1x에서 예고 정점이 대기와 확실히 다르게 읽힌다(갑각 두 주먹 머리 위, 쌍둥이 낫 위로, 가시 팔 벌림, 덫 갈고리 들기). 현자형은 변화가 가장 작다.
+- 남은 결함: ① 갑각 사도 `attack_tele` 끝 → `attack_act` 첫(충격 자세)의 관절 점프가 최대 약 80°다. Unity에서 1~2프레임 크로스페이드가 필요하고, 충격 때 주먹이 땅에 완전히 닿지 않는다(무릎 아래까지). ② 덫·쌍둥이·갑각 일부 지면 목표에서 팔 도달이 0.17~0.29m 모자란다. ③ 쌍둥이 `tp_vanish`·`slam`은 바닥에 13~16cm 묻힌다(의도). `death` 전이에는 7~8cm 관통이 남는다. ④ 가시·망토·지팡이 보조 뼈가 없어 몸통·손으로만 표현했다. `block`은 진입·유지·복귀가 20f에 들어 있어 유지 구간은 Unity에서 멈춘다.
+
 - 맵 범위: 사용자 "맵에 들어가는 모든 에셋은 3D로"는 맵 총괄 범위다. 이 비교의 결과표(도구별 형태·면 수·잔점·비용)를 맵 총괄에 넘겨 소품 도구 선택에 쓰게 한다.
 - Meshy 호출·키 처리는 보스전 총괄 원 세션만 한다(보스와 같은 규칙, 스크립트 = `meshy_boss11_m1.py` 구조: `--dry-run`·1회 표시 파일·원장 예약/완료).
 
