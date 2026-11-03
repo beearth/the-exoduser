@@ -1,3 +1,5 @@
+2026-11-04 U-VFX-09 ① 채찍 3타 예고 구슬 호박빛(임펙트 총괄): 보스 아레나 4c077e30c 병합, rig `lantern_orb` 소켓 월드 위치에 마지막 12틱 0→.8 `#d49a5c` 가산(지름 0.15H), 소켓 없으면 생략. druid-skill-vfx-tests 203/0, Core 무수정.
+
 ## 2026-11-04 06:00 드루이드 ① 가지 채찍 3연(slashCombo) 본체 VFX 구현 (U-VFX-09 2번째 기술)
 
 `Runtime/Vfx/DruidSlashVfxTimeline.cs`(Unity 없는 순수 계산)·`DruidSkillVfxView.cs` 확장(②와 같은 뷰, `NativeGame` 연결 줄 추가 0). Core(`bossSlashWind`→`bossSlash` St2 10→0, 판정 St2==8=act +2, 부채꼴 Facing ±1.2·R+pr+300, `SlashIdx` 0/1/2)는 읽기만 하고 수정 0. 1·2타: 앞날이 act 0에 Facing −1.2에서 시작해 판정 틱 +2에 +1.2, +4에 +1.5까지 휩쓸고 +8에 사라지는 뼈색(`#efe6d2`→`#9a8a72`→`#4a3826`) 가산 띠(바닥에서 0.35H 든 수평 메시, 두께 ≤17 Core px, 바깥 = 판정 경계). 3타: 궤적 대신 +2에 지팡이 끝 코어 0.8H(5틱)·파편 6~8개(±35°)·먼지 4덩이(알파 ≤.5, 0.5초 이하) + 패인 자국 데칼 150틱(알파 .35, 몸 가장자리→판정 경계). 1·2타 잔여 0. 데칼 8·본체 스프라이트 24 상한은 ②와 공유. 3타 예고 구슬 호박빛은 rig가 구슬/지팡이 소켓 위치를 공개하지 않아 만들지 않았다. 검사 `unity/Tools/druid-skill-vfx-tests` 197/0, combat-impact 914/0, PC Roslyn(Remodel 소스 포함 사본) 오류 0. 화면 판정(G2)은 Mac 대기. [G1 표](5.1임펙트디자인/DRUID_V81_SKILL_VFX_G1_20261104.md).

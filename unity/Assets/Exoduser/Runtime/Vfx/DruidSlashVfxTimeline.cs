@@ -73,6 +73,19 @@ namespace Exoduser.UnityPort.Vfx
             for (int i = 0; i <= n; i++) res[i] = a + (b - a) * i / n;
             return res;
         }
+        // hit-3 telegraph orb glow (G1 2 (1)): the last 12 wind ticks the lantern orb warms 0 -> .8, additive #d49a5c, diameter <= 0.15 H.
+        // Position = the rig's real lantern_orb socket (NativeDruidRigPixelView); no socket = no glow, never a guessed height.
+        public const int OrbWindTicks = 12;
+        public const double OrbPeak = .8, OrbDiameter = .15 * HeroH;              // 19.65 Core px
+        public const uint OrbColor = 0xD49A5C;
+        public static bool HasOrbGlow(int slashIdx) { return slashIdx >= 2; }
+        // remaining = Core St2 of bossSlashWind: 12 -> first glow tick, 1 -> peak on the last wind tick
+        public static double OrbAlpha(double remaining)
+        {
+            if (remaining < 1 || remaining > OrbWindTicks) return 0;
+            return OrbPeak * (OrbWindTicks - remaining + 1) / OrbWindTicks;
+        }
+
         public static bool HasTrail(int slashIdx) { return slashIdx < 2; }
 
         // ---- hit 3: ground strike at the staff tip on the damage tick ----

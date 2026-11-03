@@ -61,6 +61,7 @@ namespace Exoduser.UnityPort.Vfx
         readonly List<Slam> slams = new List<Slam>();
         string prevState; int lastTick = int.MinValue, windStart = -1; DruidSlamVfxTimeline.Chunk[] chunks;
         public int SlamsStarted, SlashesStarted, MaxBodySpritesDrawn, BodySpritesDrawn;   // QA
+        public bool OrbGlowDrawn;
         const int TrailSections = 24;
 
         public DruidSkillVfxView(Transform parent)
@@ -171,10 +172,20 @@ namespace Exoduser.UnityPort.Vfx
                 else { body = DrawSlashSprites(slashes[ib], tick - slashes[ib].Born, cam, body); ib--; }
             }
             DrawTrail(tick);
+            if (live && dd.S == "bossSlashWind" && DruidSlashVfxTimeline.HasOrbGlow(dd.SlashIdx)) DrawOrbGlow(dd.St2, cam);
             BodySpritesDrawn = body; if (body > MaxBodySpritesDrawn) MaxBodySpritesDrawn = body;
             mb.Flush(); ground.Update(mb.V, mb.C, mb.T);
             for (int i = alphaUsed; i < alphaPool.Count; i++) alphaPool[i].enabled = false;
             for (int i = addUsed; i < addPool.Count; i++) addPool[i].enabled = false;
+        }
+
+        // hit-3 telegraph: the lantern orb warms on the rig's real socket. The rig samples its pose in LateUpdate, so this reads the previous frame (one frame behind).
+        void DrawOrbGlow(double remaining, Camera cam)
+        {
+            double a = DruidSlashVfxTimeline.OrbAlpha(remaining); Vector3 orb;
+            if (a <= 0 || !NativeDruidRigPixelView.TryGetOrbSocketWorldPosition(out orb)) { OrbGlowDrawn = false; return; }
+            double d = DruidSlashVfxTimeline.OrbDiameter;
+            Put(true, glow, orb, d, d, 0, Rgb(DruidSlashVfxTimeline.OrbColor, 1), (float)a, CoreOrder, cam); OrbGlowDrawn = true;
         }
 
         void StartSlam(DruidData d, int tick)

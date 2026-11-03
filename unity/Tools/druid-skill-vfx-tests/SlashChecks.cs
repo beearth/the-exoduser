@@ -17,6 +17,15 @@ static partial class Program
         Check(DruidSlashVfxTimeline.BoneEdge == 0xEFE6D2 && DruidSlashVfxTimeline.TrailMid == 0x9A8A72 && DruidSlashVfxTimeline.Bark == 0x4A3826, "slash: trail colours #efe6d2 / #9a8a72 / #4a3826");
         Check(DruidSlashVfxTimeline.GougeShadow == 0x241A10 && DruidSlashVfxTimeline.GougeEdge == 0x364327, "slash: furrow colours #241a10 / #364327");
 
+        // hit-3 telegraph orb glow: last 12 wind ticks, 0 -> .8, #d49a5c, <= 0.15 H, hit 3 only
+        Check(DruidSlashVfxTimeline.OrbWindTicks == 12 && DruidSlashVfxTimeline.OrbColor == 0xD49A5C, "slash orb: last 12 wind ticks, #d49a5c");
+        Check(Near(DruidSlashVfxTimeline.OrbDiameter, .15 * DruidSlashVfxTimeline.HeroH, Eps), "slash orb: diameter 0.15 H");
+        Check(DruidSlashVfxTimeline.OrbAlpha(13) == 0 && DruidSlashVfxTimeline.OrbAlpha(0) == 0 && DruidSlashVfxTimeline.OrbAlpha(12) > 0, "slash orb: off before the last 12 wind ticks and after the wind");
+        Check(Near(DruidSlashVfxTimeline.OrbAlpha(1), .8, Eps), "slash orb: peak .8 on the last wind tick");
+        bool orbMono = true; for (int r = 12; r > 1; r--) if (DruidSlashVfxTimeline.OrbAlpha(r - 1) < DruidSlashVfxTimeline.OrbAlpha(r)) orbMono = false;
+        Check(orbMono, "slash orb: glow only rises through the wind");
+        Check(!DruidSlashVfxTimeline.HasOrbGlow(0) && !DruidSlashVfxTimeline.HasOrbGlow(1) && DruidSlashVfxTimeline.HasOrbGlow(2), "slash orb: hit 3 telegraph only");
+
         // leading edge angle (offset from Facing)
         Check(Near(DruidSlashVfxTimeline.LeadAngle(0), -1.2, .02), "slash trail: leading edge at -1.2 rad on act 0");
         Check(Near(DruidSlashVfxTimeline.LeadAngle(2), 1.2, .02), "slash trail: leading edge at +1.2 rad on the damage tick (act +2)");
