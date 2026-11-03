@@ -16,6 +16,8 @@ namespace Exoduser.UnityPort.Core
         public string SampleKey;
         public int TargetId;public bool Killed; // presentation identity / pre-death HP result; no gameplay authority
         public bool Ink, IsBoss;
+        public bool VisualOnly; // view notification; must never enter the audio adapter
+        public int Element;
         public string Source;   // RM-1 sound: where the sound came from (move number / event), for the Receipt log
     }
 

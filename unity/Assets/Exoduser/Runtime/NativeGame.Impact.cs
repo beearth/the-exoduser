@@ -21,8 +21,8 @@ namespace Exoduser.UnityPort
         }
         Vector3 ImpactCameraOffset()
         {
-            if(!ImpactActive)return Vector3.zero;
-            var offset=contactVfx.CameraOffset(ImpactNow)*OptionShakeScale;
+            var offset=ImpactActive?contactVfx.CameraOffset(ImpactNow)*OptionShakeScale:Vector2.zero;
+            if(combatImpacts!=null&&Simulation!=null)offset+=(Vector2)combatImpacts.CameraOffset(Simulation.TickCount);
             return NativeRemodel3D.Active?new Vector3(offset.x,0,offset.y):new Vector3(offset.x,offset.y,0);
         }
         void ImpactCameraProjection()
