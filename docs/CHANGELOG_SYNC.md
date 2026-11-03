@@ -2,6 +2,8 @@
 2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.
 2026-11-04 U-VFX-12: 스킬·패링 _pal 5장·암흑 원본 검사, 빙결 구슬 중간 휘도 .449839·가시 덫 물리/붉은색0; PC813검사/0실패·Core/Runtime 오류0, 빛은 형태 문제로 중단(원화 필요), Mac 실게임 판정 대기.
 2026-11-04 U-VFX-06 원소 피격 v2: 일반/보스 12장 성장 프레임 압축·접점 코어(30→24%/30→26→22%)·원소 램프·잔점 정리, 원본/meta 설정·렌더 알파 .45/.62·Life/Scale 불변, v2 참조 및 PNG 검사 연결. PNG 12/12·combat-impact 860/0·Core/Runtime 오류 0, 비교판 12장 직접 확인, RETOUCH_GAME_QA_PENDING(Mac 34° 실게임 판정). 기록 docs/5.1임펙트디자인/UNITY_COMBAT_IMPACTS_20261103.md
+2026-11-04 적3D 01:20: 최신5c9dd3673 병합. 제작자 PASS1차5종 등록(가시 외눈 보정·현자·덫·그림자·갑각v2), 일반etype4는 갑각v2/시작4는 기존EyeMass 별도 유지. 제공24본 Walk와 총괄 높이·가슴 비율 적용, 빈7동작 명시. --enemy-render=rigpixel 기본값·Core·런타임 정책 무변경. 정책166/0·PC 전체 참조컴파일5개 오류0 각1회, Player0·Mac 미판정.
+
 2026-11-04 적 3D 01:00 연결 바탕: 최신ec89d5166 병합·하니스 Core/Skills 재귀 열거65/0 회복. etype4 공유 키를 시작 육괴 표현 태그로 분리해 일반 갑각 사도 아틀라스 유지. 영웅 공유 rig-pixel·Generic Animator/Core 틱·투영 bounds VFX 접점·사망 시작 연결, 고정meta 추가. 확장 정책103/0·전체 PC Roslyn5어셈블리 오류0 각1회, Player0. 미제공 동작은 bind pose로 기록하며 Mac 화면·임포트·동작·성능 미판정.
 
 2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.
