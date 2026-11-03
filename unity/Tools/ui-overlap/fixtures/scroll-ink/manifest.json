@@ -11,7 +11,6 @@
         60
       ],
       "text": "이",
-      "min": 100,
       "mode": "gray",
       "source": "NativeLobby.StartupPresentation.cs:167",
       "legacyRect": {
@@ -22,7 +21,8 @@
         "height": 45.05181884765625
       },
       "pngSha256": "df2bb7a76f59e980641d7f0a7bcaff453367bbd313fbb81277f9b7da3d91027f",
-      "jsonSha256": "375942dd5def0e68bfc083a51083ea7fbb39668b5f36a7913082e12026119087"
+      "jsonSha256": "375942dd5def0e68bfc083a51083ea7fbb39668b5f36a7913082e12026119087",
+      "legacyAbsoluteThreshold": 100
     },
     {
       "stem": "1600x900-ko-튜토리얼0",
@@ -33,7 +33,6 @@
         38
       ],
       "text": "이",
-      "min": 60,
       "mode": "gray",
       "source": "NativeLobby.StartupPresentation.cs:167",
       "legacyRect": {
@@ -44,7 +43,8 @@
         "height": 33.791656494140625
       },
       "pngSha256": "19828033f0a990c1d59befd19d1da4ac61627e638ac32aeb187678d90f1dbcb1",
-      "jsonSha256": "49b61932f879d930ebd22d1fe77a95d1cad8a2b8b332656db9e363a36f9b645e"
+      "jsonSha256": "49b61932f879d930ebd22d1fe77a95d1cad8a2b8b332656db9e363a36f9b645e",
+      "legacyAbsoluteThreshold": 60
     },
     {
       "stem": "2560x1600-ko-보관함",
@@ -55,7 +55,6 @@
         16
       ],
       "text": "전기 전투화",
-      "min": 35,
       "mode": "green",
       "source": "NativeLobby.SilverHell.cs:11",
       "legacyRect": {
@@ -66,7 +65,8 @@
         "height": 13.34661865234375
       },
       "pngSha256": "5c9ef4015b0bc259506c49688d8ece3160a514b611792e457e0c791d4f3bb433",
-      "jsonSha256": "59785d05541477a8a9a8468b117c173a6cba7f71a788c21e5a0ed96c98248ef2"
+      "jsonSha256": "59785d05541477a8a9a8468b117c173a6cba7f71a788c21e5a0ed96c98248ef2",
+      "legacyAbsoluteThreshold": 35
     },
     {
       "stem": "1600x900-ko-보관함",
@@ -77,7 +77,6 @@
         11
       ],
       "text": "전기 전투화",
-      "min": 35,
       "mode": "green",
       "source": "NativeLobby.SilverHell.cs:11",
       "legacyRect": {
@@ -88,7 +87,10 @@
         "height": 8.341644287109375
       },
       "pngSha256": "0408e759ba44f2b240c9df183671d163d0376fa7ef291361c1ee79b4f209974a",
-      "jsonSha256": "5fd434d1348299f798329ca34e915999e0640b181c665d3f4fba8807b4a2875e"
+      "jsonSha256": "5fd434d1348299f798329ca34e915999e0640b181c665d3f4fba8807b4a2875e",
+      "legacyAbsoluteThreshold": 35
     }
-  ]
+  ],
+  "schemaVersion": 2,
+  "classifier": "Local Otsu gray brightness/green dominance; candidate sample = audit rect + 2px halo, no containment padding, independent frozen center drift bound 24px. Reject flat/flooded crops. Legacy thresholds retained as history only."
 }

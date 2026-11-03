@@ -99,8 +99,10 @@ namespace Exoduser.UnityPort {
         }
         void Txt(Rect r,string s,int size,Color c,int weight=500,TextAnchor anchor=TextAnchor.MiddleLeft,bool shadow=false){
             var st=TextStyle(size,weight,anchor);
-            if(shadow){st.normal.textColor=new Color(0,0,0,.75f);NativeSilverHellUi.Label(new Rect(r.x,r.y+1,r.width,r.height),s,st);}
-            st.normal.textColor=c;NativeSilverHellUi.Label(r,s,st);
+            using(var paint=shadow?NativeUiAudit.GroupText(r,s):default(NativeUiAudit.TextPaintScope)){
+                if(shadow){st.normal.textColor=new Color(0,0,0,.75f);NativeSilverHellUi.Label(new Rect(r.x,r.y+1,r.width,r.height),s,st);}
+                st.normal.textColor=c;NativeSilverHellUi.Label(r,s,st);
+            }
         }
         float TextWidth(string s,int size,int weight){return TextStyle(size,weight,TextAnchor.MiddleLeft).CalcSize(new GUIContent(s)).x;}
 

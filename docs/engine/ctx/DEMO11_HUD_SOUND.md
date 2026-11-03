@@ -1,8 +1,8 @@
 # DEMO11 — HUD·사운드 이벤트 context pack
 
-2026-10-24 [PORT-TAKEOVER-03](../orders/reports/PORT-TAKEOVER-03_REPORT.md): 실제 G17 산란 magic(3)의 fire_magic1 샘플만 Main 공용 큐에 연결했다. .35·`.6±6%` 후 sample jitter·skill priority. noise/sub/FM/dist 및 charge/groggy는 출력 adapter가 없어 미이식; 전체 cue/전체 RNG 동일성 인수가 아니다.
+2026-10-24 [PORT-TAKEOVER-03](../../_archive/engine/orders/reports/PORT-TAKEOVER-03_REPORT.md): 실제 G17 산란 magic(3)의 fire_magic1 샘플만 Main 공용 큐에 연결했다. .35·`.6±6%` 후 sample jitter·skill priority. noise/sub/FM/dist 및 charge/groggy는 출력 adapter가 없어 미이식; 전체 cue/전체 RNG 동일성 인수가 아니다.
 
-2026-10-24 후보 후속: [PORT-TAKEOVER-02](../orders/reports/PORT-TAKEOVER-02_REPORT.md)는 G 이동음 7원본 MP3와 `play_sample`을 기존 Main/SND03/SND07 큐에 연결한다. 실제 G owner·캐릭터·옵션 guard, m_* 비우선순위/30ms gate/공유 RNG jitter·노드 cap을 유지한다. 아래 origin/main 대응은 작성 당시 snapshot이다. 절차음·전체 청감/웹 동일성은 미검수다.
+2026-10-24 후보 후속: [PORT-TAKEOVER-02](../../_archive/engine/orders/reports/PORT-TAKEOVER-02_REPORT.md)는 G 이동음 7원본 MP3와 `play_sample`을 기존 Main/SND03/SND07 큐에 연결한다. 실제 G owner·캐릭터·옵션 guard, m_* 비우선순위/30ms gate/공유 RNG jitter·노드 cap을 유지한다. 아래 origin/main 대응은 작성 당시 snapshot이다. 절차음·전체 청감/웹 동일성은 미검수다.
 
 ## 원본 계약
 
@@ -28,7 +28,7 @@
 
 - `docs/3.1 ui hud 디자인/`, `docs/3.3 키바인딩+설정/`, `docs/6사운드디자인/`
 - `docs/engine/FDG_SOURCE_TRACE_SOUND_20261020.md` §1, §3–4
-- `docs/engine/DEMO11_COMPLETION_GAP_20261021.md` D33–D36
+- `docs/_archive/engine/DEMO11_COMPLETION_GAP_20261021.md` D33–D36
 
 ## 주의
 
@@ -36,4 +36,4 @@ HUD 숫자/AudioStream 존재를 전체 HUD·청감 PASS로 보고하지 않는�
 
 ## 2026-10-21 INTEG-6c 후속 계약
 
-INTEG-6c 현행: HUD42는 --map11=off 수동 intro 계약, headless 캡처만 skip하고 UI문구검사 유지(37/0). 음악41은 --map11=off 및 life owner가 legacy player_died 음악을 억제함을 검사한 뒤 공개 death music seam 검증(66/0 CoreAudio). 데모boss곡은 Ashen Druid - Boss.mp3(−12.4LUFS), AUDIO-01 boss bus−7dB·간헐필드·덕킹 수치 유지. 상세·실패이력·한계: [INTEG-6c](../INTEG6C_REGRESSION_20261021.md).
+INTEG-6c 현행: HUD42는 --map11=off 수동 intro 계약, headless 캡처만 skip하고 UI문구검사 유지(37/0). 음악41은 --map11=off 및 life owner가 legacy player_died 음악을 억제함을 검사한 뒤 공개 death music seam 검증(66/0 CoreAudio). 데모boss곡은 Ashen Druid - Boss.mp3(−12.4LUFS), AUDIO-01 boss bus−7dB·간헐필드·덕킹 수치 유지. 상세·실패이력·한계: [INTEG-6c](../../_archive/engine/INTEG6C_REGRESSION_20261021.md).

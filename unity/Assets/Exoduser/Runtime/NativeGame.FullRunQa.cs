@@ -210,6 +210,8 @@ namespace Exoduser.UnityPort
                             if (d < best) { best = d; destination = new Vector2(e.X,e.Y); objective = "remaining-" + e.Id; }
                         }
                     }
+                    bool parryG2=Array.IndexOf(Environment.GetCommandLineArgs(),"--parry-g2-bot")>=0;
+                    if(parryG2&&fighting&&!selectedAngler){var away=new Vector2(p.X,p.Y)-aim;destination=aim+away.normalized*50;}
                     var move = navigation.Direction(p.X,p.Y,destination.x,destination.y,p.Radius,FullRunCanMove,sim.TickCount,flow.InArena&&!flow.BossAlive);
                     if(fighting&&Vector2.SqrMagnitude(new Vector2(p.X,p.Y)-aim)>=(selectedAngler?320*320:170*170)&&Vector2.SqrMagnitude(new Vector2(p.X,p.Y)-aim)<(selectedAngler?410*410:260*260)&&FullRunLine(p.X,p.Y,aim.x,aim.y)){var offset=new Vector2(p.X,p.Y)-aim;var tangent=new Vector2(-offset.y,offset.x).normalized;if(FullRunCanMove(p.X+tangent.x*80,p.Y+tangent.y*80,p.Radius))move=tangent;}
                     var keys = new List<Key> { Key.R };
@@ -271,6 +273,7 @@ namespace Exoduser.UnityPort
                     }
                     FullRunControlInputs.Apply(sim,controlPolicy,navigation,FullRunCanMove,keys,ref move,ref aim,ref attack,ref magic,evade,aux,ref lastChainTick);
                     BossArenaReviewInputs(navigation,keys,ref move,ref aim,ref attack,ref magic,evade);
+                    if(parryG2){keys.Remove(Key.E);keys.Remove(Key.Q);keys.Remove(Key.Space);int input=g2ParryBot.Input(sim);if((input&1)!=0)keys.Add(Key.E);if((input&2)!=0)keys.Add(Key.Q);if((input&4)!=0)keys.Add(Key.Space);if(input!=0){attack=false;magic=false;}if(input!=0&&(input&4)==0){move=Vector2.zero;keys.Remove(Key.W);keys.Remove(Key.A);keys.Remove(Key.S);keys.Remove(Key.D);}}
                     InputState.Change(keyboard,new KeyboardState(keys.ToArray()));
                     var aimPoint = NativeRemodel3D.Active ? NativeRemodel3D.Point(aim.x,aim.y) : Point(aim.x,aim.y);
                     if (NativeRemodel3D.Active) aimPoint.y = NativeRemodel3D.Point(p.X,p.Y).y;
@@ -443,6 +446,8 @@ namespace Exoduser.UnityPort
         {
             if(BossArenaReviewRequested){yield return new WaitForSecondsRealtime(.65f);yield return new WaitForEndOfFrame();}
             BossArenaReviewEnd();
+            WriteCombatStats(output);
+            File.WriteAllText(Path.Combine(output,"parry-bot.json"),"{\"opportunities\":"+g2ParryBot.opportunities+",\"attempts\":"+g2ParryBot.attempts+",\"targetInputRate\":0.7}");
             receipt.seconds=Time.realtimeSinceStartup-started;
             File.WriteAllText(Path.Combine(output,"fullrun.json"),JsonUtility.ToJson(receipt,true));
             Debug.Log("FULLRUN_RESULT "+receipt.result+" seconds="+receipt.seconds);

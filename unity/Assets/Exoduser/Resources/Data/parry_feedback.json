@@ -1,0 +1,12 @@
+{
+  "standard": {
+    "meleeShake": 6,
+    "projectileShake": 4,
+    "meleeCameraPushIn": 0
+  },
+  "pushIn": {
+    "meleeShake": 2,
+    "projectileShake": 4,
+    "meleeCameraPushIn": 0.08
+  }
+}

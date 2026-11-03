@@ -21,7 +21,8 @@ namespace Exoduser.UnityPort
         }
         Vector3 ImpactCameraOffset()
         {
-            var offset=ImpactActive?contactVfx.CameraOffset(ImpactNow)*OptionShakeScale:Vector2.zero;
+            var offset=KiContactCameraOffset();
+            if(impacts!=null&&Simulation!=null)offset+=impacts.CameraOffset(Simulation.TickCount);
             if(combatImpacts!=null&&Simulation!=null)offset+=(Vector2)combatImpacts.CameraOffset(Simulation.TickCount);
             return NativeRemodel3D.Active?new Vector3(offset.x,0,offset.y):new Vector3(offset.x,offset.y,0);
         }
@@ -31,7 +32,7 @@ namespace Exoduser.UnityPort
             // projection moves; the 3D renderer uses its dedicated marker instead.
             view.ResetProjectionMatrix();
             if(!ImpactActive||NativeRemodel3D.Active)return;
-            var offset=contactVfx.CameraOffset(ImpactNow)*OptionShakeScale;
+            var offset=KiContactCameraOffset();
             var projection=view.projectionMatrix;
             projection.m03-=offset.x/(view.orthographicSize*Mathf.Max(.1f,view.aspect));
             projection.m13-=offset.y/view.orthographicSize;view.projectionMatrix=projection;

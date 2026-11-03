@@ -63,6 +63,7 @@ namespace Exoduser.UnityPort.Core
         // die() 43815-43840
         private void PlayerDie()
         {
+            Stats.deaths++;
             if (Player.State == "fallen" || Player.State == "dead") return;
             var fall = ReviveRules.PlayerFall(new ReviveRules.PlayerFallInput {
                 Level = Player.Level, RevivePow = Config.RevivePow, ReviveCdAffix = Config.ReviveCdAffix, ReviveOnceAffix = Config.ReviveOnceAffix,

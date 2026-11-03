@@ -114,15 +114,27 @@ namespace Exoduser.UnityPort {
    foreach(char ch in text)if(ch>=0xAC00&&ch<=0xD7A3)return source; // native-only Korean copy keeps its original font
    return regionalFont;
   }
+  bool NativeRun(string text,int context,float spacing){if(spacing!=0)return false;foreach(var g in Elements(text)){var id=GlyphId(g,context);if(id!=null&&glyph.ContainsKey(id))return false;}return true;}
   // width of a run (css advance incl. letter spacing)
   float Width(string text,Font f,int px,float css,float ls,int ctx=0){
    f=LabelFont(text,f);var st=Style(f,px);float w=0;
+   if(NativeRun(text,ctx,ls))return st.CalcSize(new GUIContent(text)).x;
    foreach(var g in Elements(text)){var id=GlyphId(g,ctx);if(id!=null&&glyph.TryGetValue(id,out var t)){w+=t.adv;continue;}w+=st.CalcSize(new GUIContent(g)).x*(css/px)+ls;}
    return w;
   }
   // draws a run with its vertical centre at cy; returns the advance
   float Run(float x,float cy,string text,Font f,int px,float css,float ls,Color col,float shadow=0,int ctx=0){
    f=LabelFont(text,f);var st=Style(f,px);float w=0;
+   // Zero letter-spacing is one shaped string, not overlapping separately
+   // rounded glyph labels. Atlas symbols retain their existing dedicated path.
+   if(NativeRun(text,ctx,ls)){
+    float advance=st.CalcSize(new GUIContent(text)).x;var box=new Rect(x,cy-16,Mathf.Max(1,advance),32);
+    using(var paint=NativeUiAudit.GroupText(box,text)){
+     if(shadow>0){st.normal.textColor=new Color(0,0,0,shadow*col.a*curA);NativeUiAudit.Label(new Rect(box.x,box.y+1,box.width,box.height),text,st);}
+     st.normal.textColor=NativeSilverHellUi.TextColor(new Color(col.r,col.g,col.b,col.a*curA));NativeUiAudit.Label(box,text,st);
+    }
+    return advance;
+   }
    foreach(var g in Elements(text)){
     var id=GlyphId(g,ctx);
     if(id!=null&&glyph.TryGetValue(id,out var t)){
@@ -130,7 +142,8 @@ namespace Exoduser.UnityPort {
      DrawGlyph(t,x+w,cy,col,t.tint);w+=t.adv;continue;
     }
     float adv=st.CalcSize(new GUIContent(g)).x*(css/px);
-    if(g!=" "){
+    if(g!=" ")
+    using(var paint=NativeUiAudit.GroupText(new Rect(x+w,cy-16,60,32),g)){
      if(shadow>0){st.normal.textColor=new Color(0,0,0,shadow*col.a*curA);NativeUiAudit.Label(new Rect(x+w,cy-16+1,60,32),g,st);}
      st.normal.textColor=NativeSilverHellUi.TextColor(new Color(col.r,col.g,col.b,col.a*curA));NativeUiAudit.Label(new Rect(x+w,cy-16,60,32),g,st);
     }

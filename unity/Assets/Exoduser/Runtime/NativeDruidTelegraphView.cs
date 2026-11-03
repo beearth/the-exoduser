@@ -54,6 +54,7 @@ namespace Exoduser.UnityPort
 
         readonly Transform root; readonly Mb under = new Mb(), over = new Mb();
         readonly MeshRenderer underR, overR;
+        readonly NativeGroundWarningProjection groundWarnings;
         readonly Dictionary<long, int> glintAt = new Dictionary<long, int>();   // (serial, index) -> sim tick the glint fired
         readonly List<DruidTelegraph> list = new List<DruidTelegraph>();
         public int DrawnEntries, MaxEntries; public readonly HashSet<string> SeenKinds = new HashSet<string>();   // QA: what was drawn
@@ -62,6 +63,7 @@ namespace Exoduser.UnityPort
         {
             root = new GameObject("DruidTelegraphView").transform; root.SetParent(parent, false);
             underR = MakeLayer("under", under, UnderOrder); overR = MakeLayer("over", over, OverOrder);
+            groundWarnings=new NativeGroundWarningProjection(underR,under.Mesh);
         }
 
         MeshRenderer MakeLayer(string name, Mb mb, int order)
@@ -74,7 +76,7 @@ namespace Exoduser.UnityPort
             return r;
         }
 
-        public void Dispose() { if (root != null) UnityEngine.Object.Destroy(root.gameObject); }
+        public void Dispose() { groundWarnings.Dispose();if (root != null) UnityEngine.Object.Destroy(root.gameObject); }
 
         static Color A(Color c, double a) { return new Color(c.r, c.g, c.b, (float)Math.Max(0, Math.Min(1, a))); }
 
@@ -96,6 +98,7 @@ namespace Exoduser.UnityPort
                 }
             }
             under.Flush(); over.Flush();
+            groundWarnings.Update(under.V,under.C,under.T);
             if (glintAt.Count > 64) { var old = new List<long>(); foreach (var kv in glintAt) if (tick - kv.Value > 600) old.Add(kv.Key); foreach (var k in old) glintAt.Remove(k); }
         }
 

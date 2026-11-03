@@ -24,7 +24,7 @@ XP가 cap 경계에 닿을 때와 이미 Lv100인 경우를 분리한다. 데모
 - `docs/3.2메타·진행시스템/`
 - `docs/14밸런스+수치테이블/`
 - `docs/engine/FDG_SOURCE_TRACE_META_20261020.md` §2, §6–8
-- `docs/engine/DEMO11_COMPLETION_GAP_20261021.md` D16–D17
+- `docs/_archive/engine/DEMO11_COMPLETION_GAP_20261021.md` D16–D17
 
 ## 주의
 

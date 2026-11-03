@@ -319,7 +319,7 @@ Godot는 이것을 "세계의 기록 I/II/III" 정지 이미지 액자 슬라이
 | B-02 | 동작 완료(소환 NOT_READY) · 외형/텔레그래프 차이(Mac) | `compare_10d_boss_close.png`, `compare_10e_*.png`, `compare_10g_revive_*.png` |
 | K-02 | 자연 경로 완료 | `compare_11d_clear.png` |
 
-상세·원본 행: [PC_BOSS_CORE_CONTRACT_20261022 §9](PC_BOSS_CORE_CONTRACT_20261022.md), [pc-boss-parity 보고서](orders/reports/pc-boss-parity_REPORT.md).
+상세·원본 행: [PC_BOSS_CORE_CONTRACT_20261022 §9](PC_BOSS_CORE_CONTRACT_20261022.md), [pc-boss-parity 보고서](../_archive/engine/orders/reports/pc-boss-parity_REPORT.md).
 
 ## 3. 미확인 항목
 
@@ -339,7 +339,7 @@ Godot는 이것을 "세계의 기록 I/II/III" 정지 이미지 액자 슬라이
 
 ## 4. PARITY-MAP-01 브랜치 검수 상태 — 2026-10-22 Mac
 
-아래는 위 PC 원문을 보존한 추가 상태다. 구현/회귀 PASS와 동일성 인수를 구분한다. 상세 원본 행·에셋·폐기 참조·검수는 [PARITY_MAP_01_20261022.md](PARITY_MAP_01_20261022.md), 개별 항목 수치는 [원본 대응 manifest](PARITY_MAP_01_SOURCE_MANIFEST_20261022.json)를 따른다.
+아래는 위 PC 원문을 보존한 추가 상태다. 구현/회귀 PASS와 동일성 인수를 구분한다. 상세 원본 행·에셋·폐기 참조·검수는 [PARITY_MAP_01_20261022.md](../_archive/engine/PARITY_MAP_01_20261022.md), 개별 항목 수치는 [원본 대응 manifest](PARITY_MAP_01_SOURCE_MANIFEST_20261022.json)를 따른다.
 
 | No. | 이 브랜치 상태 | 근거·남은 차이 |
 |---|---|---|
@@ -367,11 +367,11 @@ PC 원문/위 후보 기록을 보존한다. 사용자 최신 원문은 “맵 �
 | M-06 | 카메라 시스템1.0·추적 원본, x2.5/보스S=.4 없음 | finale 특수 카메라는 미이식/PC 의존 |
 | M-07 | 원본 조명 계수·PP debug0 유지 | 엔진 색/안개/반해상도 합성 차이 RETOUCH. 비교 격자 revision2/captures 참조 |
 
-2차 상세 원본 대응·검수 범위는 [PARITY_MAP_01_20261022.md](PARITY_MAP_01_20261022.md)의 마지막 절을 따른다. 구조 PASS를 “똑같이 플레이됨” 전체 완료로 확대하지 않는다.
+2차 상세 원본 대응·검수 범위는 [PARITY_MAP_01_20261022.md](../_archive/engine/PARITY_MAP_01_20261022.md)의 마지막 절을 따른다. 구조 PASS를 “똑같이 플레이됨” 전체 완료로 확대하지 않는다.
 
 ### PARITY-MAP-02 — 최신 맵 상태(2026-10-22)
 
-No.는 위 **원문 1-3의 M-01…M-07 뜻**으로 대응한다. MAP-01 2차 표의 재분류는 당시 이력으로 보존한다. 최신 근거는 [PARITY_MAP_02_20261022.md](PARITY_MAP_02_20261022.md)다. 아래는 최종 단회 검수 결과다. 기본 필드/지정4카메라의 구조·비주얼 PASS와 전체게임/자연완주/성능을 구분한다.
+No.는 위 **원문 1-3의 M-01…M-07 뜻**으로 대응한다. MAP-01 2차 표의 재분류는 당시 이력으로 보존한다. 최신 근거는 [PARITY_MAP_02_20261022.md](../_archive/engine/PARITY_MAP_02_20261022.md)다. 아래는 최종 단회 검수 결과다. 기본 필드/지정4카메라의 구조·비주얼 PASS와 전체게임/자연완주/성능을 구분한다.
 
 | No. | 이번 변경·보존 | 판정 범위 |
 |---|---|---|
@@ -395,7 +395,7 @@ No.는 위 **원문 1-3의 M-01…M-07 뜻**으로 대응한다. MAP-01 2차 표
 | U-02 / K | 미구현 | 현행 SkillForge 실제 웹 캡처·DOM 확보. 새 레이아웃 초안을 제품에 남기지 않음 |
 | D-03 | 일반 필드 연결·완료 미판정 | 기존 PC respawn API 사용, 저장 후 scene reload. 보스방 복원 미인수. 실제 결과는 DONE 참조 |
 
-상세: [PARITY_UI_01_20261022.md](PARITY_UI_01_20261022.md). **전체 작업 완료/시각 PASS 아님.**
+상세: [PARITY_UI_01_20261022.md](../_archive/engine/PARITY_UI_01_20261022.md). **전체 작업 완료/시각 PASS 아님.**
 
 
 ## Mac 후속 상태 — PARITY-UI-02 (2026-10-22)
@@ -408,7 +408,7 @@ PC 원문 및 PARITY-UI-01 이력은 보존한다. **전체 완료/visual PASS �
 | D-02 | 부분 이식 / VISUAL FAIL | 전체 illustration·펫 초상/원본 대사 pool·세 버튼·rolling replay. 피해 로그/상황선택·replay bars/game-only frame·폰트/자간 차이 남음 |
 | D-03 | 일반 필드 재시작 연결 / VISUAL FAIL | 사망 장면2.5초 fade·원본 황금 결계 표시. 보스방 복원은 기존 PC 보스 코어 의존으로 NOT_READY 유지 |
 
-상세 원본 행·에셋·Godot 위치·1x 비교: [PARITY_UI_02_20261022.md](PARITY_UI_02_20261022.md). 테스트 통과를 화면 동일성으로 대체하지 않는다.
+상세 원본 행·에셋·Godot 위치·1x 비교: [PARITY_UI_02_20261022.md](../_archive/engine/PARITY_UI_02_20261022.md). 테스트 통과를 화면 동일성으로 대체하지 않는다.
 
 ## Mac 후속 상태 — PARITY-UI-03 (2026-10-22)
 
@@ -422,11 +422,11 @@ PC 원문과 UI-01/02의 관측은 보존한다. **전체 완료/시각 PASS 아
 | D-03 | 기존 일반 필드 retry 유지 | 보스방·보호장/로드 후 iframes 전체 동일성은 종전 미인수 유지 |
 | E2E 관측 | PASS13 / NOT_READY5 / FAIL0 | UI-02 전투/물약 코드 차이 없음. 무작위 장비/접촉과 하니스 장시간 정지 대기 문제. 실제 근접 입력·쿨다운 대기 이동 보완; 판정/주입/PC 경계 그대로. UI 후속 표시 구현 전1회 측정 |
 
-원본 행·Godot 위치·테스트·1x 비교·제약: [PARITY_UI_03_20261022.md](PARITY_UI_03_20261022.md). 최종 인수는 사용자 동일 장면 눈검수를 따른다.
+원본 행·Godot 위치·테스트·1x 비교·제약: [PARITY_UI_03_20261022.md](../_archive/engine/PARITY_UI_03_20261022.md). 최종 인수는 사용자 동일 장면 눈검수를 따른다.
 
 ### PARITY-HUD-01 — 표시 이식 검수(2026-10-22)
 
-원문 H-xx 뜻과 PC 계산 담당을 보존한다. 상세 원본 대응은 [PARITY_HUD_01_20261022.md](PARITY_HUD_01_20261022.md). **전체 VISUAL VERDICT: RETOUCH — 동일성 인수 미완료.**
+원문 H-xx 뜻과 PC 계산 담당을 보존한다. 상세 원본 대응은 [PARITY_HUD_01_20261022.md](../_archive/engine/PARITY_HUD_01_20261022.md). **전체 VISUAL VERDICT: RETOUCH — 동일성 인수 미완료.**
 
 | No. | 이번 표시 상태 | 비교·남은 차이 |
 |---|---|---|
@@ -445,7 +445,7 @@ PC 원문과 UI-01/02의 관측은 보존한다. **전체 완료/시각 PASS 아
 
 ## PARITY-BOSS-01 Mac 표시 후보 (2026-10-22)
 
-원문 No.와 PC 요청 M번호를 혼동하지 않는다. 원문 E-01→PC M5/M6, B-01→M9/M12/M13, B-02→M7/M8/M9/M11, M-01/M-05→M10/M12, K-02→M13이다. [원본행·구현 경계·최종 검수](PARITY_BOSS_01_20261022.md). 완료 판정은 나란히1x 격자이며 테스트 PASS로 대체하지 않는다.
+원문 No.와 PC 요청 M번호를 혼동하지 않는다. 원문 E-01→PC M5/M6, B-01→M9/M12/M13, B-02→M7/M8/M9/M11, M-01/M-05→M10/M12, K-02→M13이다. [원본행·구현 경계·최종 검수](../_archive/engine/PARITY_BOSS_01_20261022.md). 완료 판정은 나란히1x 격자이며 테스트 PASS로 대체하지 않는다.
 
 ### PARITY-BOSS-01 최종 상태 — 완료 판정 유보
 
@@ -457,17 +457,17 @@ PC 원문과 UI-01/02의 관측은 보존한다. **전체 완료/시각 PASS 아
 | M-01/M-05 | M10/M12 | 사각 아레나/흙/남색 후보, RETOUCH | 원본 at0 원형과 사용자 사각124×104 차이·exit/minimap 미완료 명시 |
 | B-01/B-02/K-02 | M13 | NOT_READY | E2E1회 13PASS/5NOT_READY/0FAIL, 죽음 관측 뒤 dead라 보스 route 미착수. overall NOT_READY |
 
-24격자·PC19대응·남은 차이·MAP PRODUCTION REPORT: [최종 보고](PARITY_BOSS_01_20261022.md). **전체 동일성 FAIL**, 테스트273/0이나 GUI fixture 관측을 사용자 완료 판정으로 대체하지 않는다.
+24격자·PC19대응·남은 차이·MAP PRODUCTION REPORT: [최종 보고](../_archive/engine/PARITY_BOSS_01_20261022.md). **전체 동일성 FAIL**, 테스트273/0이나 GUI fixture 관측을 사용자 완료 판정으로 대체하지 않는다.
 
 
 ## PARITY-MAP-03 후속 — 2026-10-22
 
-기준 BOSS-01 760b7ea8, [원인·수정·계측](PARITY_MAP_03_20261022.md). 소환굴14/자연 적 공급은 기준본에서 이미 복구돼 확인만 했다. 시체나무의 native 전용 CSS tone 제거, 실제1336²(약1.3배) 표기 정정, 원본 fallback 미로드·가시+1링 고정25slot/75texture·사전압축 BC7(Windows)/S3TC(Mac) 적용. 맵 자원 보수적 상한0.947GB; 전체 Mac texture4.081→2.997GB(실제1x 캡처), Windows 실측 미확인. BFS는 원본8방향 Worker 동치로19.4→6.2ms. suite180629/0. 7장1x 비교는 구조/소환굴/톤 개선 확인, 전체 VISUAL RETOUCH. GUI1회는 사망 포함으로 정상 필드 성능 판정 불가, max51.776ms 귀속 미확인. 실제 W 웹903ms145.356px/native885ms0.577px는 native55/55pStun·키정상으로 보행 비교 부적합; PC 상태 owner에 기록만. HUD/UI/보스 M10 변경0. 최종 SHA/원격/정리는 `_out/PARITY-MAP-03/DONE.txt`.
+기준 BOSS-01 760b7ea8, [원인·수정·계측](../_archive/engine/PARITY_MAP_03_20261022.md). 소환굴14/자연 적 공급은 기준본에서 이미 복구돼 확인만 했다. 시체나무의 native 전용 CSS tone 제거, 실제1336²(약1.3배) 표기 정정, 원본 fallback 미로드·가시+1링 고정25slot/75texture·사전압축 BC7(Windows)/S3TC(Mac) 적용. 맵 자원 보수적 상한0.947GB; 전체 Mac texture4.081→2.997GB(실제1x 캡처), Windows 실측 미확인. BFS는 원본8방향 Worker 동치로19.4→6.2ms. suite180629/0. 7장1x 비교는 구조/소환굴/톤 개선 확인, 전체 VISUAL RETOUCH. GUI1회는 사망 포함으로 정상 필드 성능 판정 불가, max51.776ms 귀속 미확인. 실제 W 웹903ms145.356px/native885ms0.577px는 native55/55pStun·키정상으로 보행 비교 부적합; PC 상태 owner에 기록만. HUD/UI/보스 M10 변경0. 최종 SHA/원격/정리는 `_out/PARITY-MAP-03/DONE.txt`.
 
 
 ## PARITY-BOSS-02 후속 — 2026-10-22
 
-[원본행·수치·실패 근거·잔여 표](PARITY_BOSS_02_20261022.md). 기준MAP-03 f6272399. BOSS-01 참조24장(full20/crop4)을 quality88 JPG로 boss_mac/에 보존(push2개). 아레나 PP 상수와 실제 _ATMDBG gate0을 구분하여 강제 grade/lift/vig 제거, source r520/560 보스광원 추가. 강타/회전/충격 source 원형예고·_druidOrbs24frame·poison30slot trail·teleDropY 표시 연결. PC 보스코어/수치/mkEn 변경0. HS-M4 실제 시작id3/32와 지역23/60/53/32·14굴 확인, 공급수정0. 관련suite1회276/0. E2E는 기동parse 실패를 별도 보존한 뒤 실제 단계1회12PASS까지, Retry Button 뒤 headless null-image 오류로 guard 종료. **전체 동일성 RETOUCH / E2E FAIL**, bossroom·clear 인수 아님. 이전M5–M13 잔여를 위 보고서 표에 전부 유지.
+[원본행·수치·실패 근거·잔여 표](../_archive/engine/PARITY_BOSS_02_20261022.md). 기준MAP-03 f6272399. BOSS-01 참조24장(full20/crop4)을 quality88 JPG로 boss_mac/에 보존(push2개). 아레나 PP 상수와 실제 _ATMDBG gate0을 구분하여 강제 grade/lift/vig 제거, source r520/560 보스광원 추가. 강타/회전/충격 source 원형예고·_druidOrbs24frame·poison30slot trail·teleDropY 표시 연결. PC 보스코어/수치/mkEn 변경0. HS-M4 실제 시작id3/32와 지역23/60/53/32·14굴 확인, 공급수정0. 관련suite1회276/0. E2E는 기동parse 실패를 별도 보존한 뒤 실제 단계1회12PASS까지, Retry Button 뒤 headless null-image 오류로 guard 종료. **전체 동일성 RETOUCH / E2E FAIL**, bossroom·clear 인수 아님. 이전M5–M13 잔여를 위 보고서 표에 전부 유지.
 ## Mac 후속 상태 — PARITY-UI-04 (2026-10-22)
 
 기준6c389948, 상세는 `PARITY_UI_04_20261022.md`. PC 원문과 과거 판정은 보존한다.
@@ -498,7 +498,7 @@ UI-04 strict E2E1회: 주입0, storage=on, intro_phase=done, 실제 필드 진�
 
 ## PARITY-INTRO-01 반영·검수 상태 (2026-10-22)
 
-기준 hud-02 `bf5382592a903c5bfd7ffe08d44dfed77bc29489`. 원조사 표는 이력으로 보존한다. [현재 원본 대응/구현 계약](PARITY_INTRO_01_20261022.md). 캡처 루트 `~/exoduser-wt/_out/PARITY-INTRO-01/captures/`, 모든 `*_compare_1x.png`는 WEB 왼쪽/Godot 오른쪽이며 축소하지 않았다.
+기준 hud-02 `bf5382592a903c5bfd7ffe08d44dfed77bc29489`. 원조사 표는 이력으로 보존한다. [현재 원본 대응/구현 계약](../_archive/engine/PARITY_INTRO_01_20261022.md). 캡처 루트 `~/exoduser-wt/_out/PARITY-INTRO-01/captures/`, 모든 `*_compare_1x.png`는 WEB 왼쪽/Godot 오른쪽이며 축소하지 않았다.
 
 | 항목 | 현행 상태 | 같은 시점 비교/남은 차이 |
 |---|---|---|
@@ -518,17 +518,17 @@ UI-04 strict E2E1회: 주입0, storage=on, intro_phase=done, 실제 필드 진�
 
 ## PARITY-HS-01 후속 (2026-10-22)
 
-H-03의 시작 장비 구홈 보류 및 유골함 표시 미연결 상태는 PARITY-HS-01에서 수정했다. 현행 원본 G16148–16151의 0홈·추가 홈 RNG0회, G45887–45888의 notify/addTxt를 이식한다. 머리 위 이름은 양쪽 일반 플레이 draw 화이트리스트에서 숨겨지는 원본 제약을 유지한다. 상세·시각 판정·남은 차이: [PARITY_HS_01_20261022.md](PARITY_HS_01_20261022.md). 과거 캡처와 PC 보고의 당시 수치는 보존한다.
+H-03의 시작 장비 구홈 보류 및 유골함 표시 미연결 상태는 PARITY-HS-01에서 수정했다. 현행 원본 G16148–16151의 0홈·추가 홈 RNG0회, G45887–45888의 notify/addTxt를 이식한다. 머리 위 이름은 양쪽 일반 플레이 draw 화이트리스트에서 숨겨지는 원본 제약을 유지한다. 상세·시각 판정·남은 차이: [PARITY_HS_01_20261022.md](../_archive/engine/PARITY_HS_01_20261022.md). 과거 캡처와 PC 보고의 당시 수치는 보존한다.
 
 
 ### PARITY-UI-05 현행 재대조 — 2026-10-22
 
-현재 HS-01 parent 기준 UI·연출 재대조/변경은 [PARITY_UI_05_20261022.md](PARITY_UI_05_20261022.md)를 따른다. 기존 스킬 원판·지역 배너·화살표는 이미 존재함을 확인했다. 가이드 검정 커튼, Esc 직접 설정, 설정 원본 탭/배치, 필드 위 clear 카드, 선택→이름 모달, detonate Q art 누락을 다룬다. 컷02 1.8배 차이는 현행 같은 clock에서 미재현. 설정 전체 기능/영상/픽셀 세부는 RETOUCH이며 과거 수치·검증 이력을 완료로 승격하지 않는다.
+현재 HS-01 parent 기준 UI·연출 재대조/변경은 [PARITY_UI_05_20261022.md](../_archive/engine/PARITY_UI_05_20261022.md)를 따른다. 기존 스킬 원판·지역 배너·화살표는 이미 존재함을 확인했다. 가이드 검정 커튼, Esc 직접 설정, 설정 원본 탭/배치, 필드 위 clear 카드, 선택→이름 모달, detonate Q art 누락을 다룬다. 컷02 1.8배 차이는 현행 같은 clock에서 미재현. 설정 전체 기능/영상/픽셀 세부는 RETOUCH이며 과거 수치·검증 이력을 완료로 승격하지 않는다.
 
 ## PARITY-BOSS-03 후속 — 2026-10-22
 
-[정본행·계수·비교 경계](PARITY_BOSS_03_20261022.md). 기준INTEG15B `bea4597064`, 정본SHA256 dee094fd… . 잡기3층/집게·실행원, 돌진 레인/플래시/화살/3잔상, 실제 WebGPU 원·링 falloff를 표시 소비자에 연결했다. Mac WebGPU의 THREE fog 비활성 게이트를 아레나에 적용하고 누락된 플레이어 바닥광을 연결, 보스색광은 source-over로 교정했다. 사망 출구는 정지 blue1층에서 원본120px/회전2층/12%맥동으로 수정. 파란250px 필드 보스문과 사망 출구는 원본에서 서로 다른 경로다. 웹의 exit-center 캐시 갱신 누락은 제품 수정 없이 잔여로 공개한다. 전체 100% 동일성은 후속 문서의 실제 1x 캡처 판정을 따른다. 기술suite1회285/0, 입력E2E1회13PASS/5NOT_READY/0FAIL로 종주 미인수.
+[정본행·계수·비교 경계](../_archive/engine/PARITY_BOSS_03_20261022.md). 기준INTEG15B `bea4597064`, 정본SHA256 dee094fd… . 잡기3층/집게·실행원, 돌진 레인/플래시/화살/3잔상, 실제 WebGPU 원·링 falloff를 표시 소비자에 연결했다. Mac WebGPU의 THREE fog 비활성 게이트를 아레나에 적용하고 누락된 플레이어 바닥광을 연결, 보스색광은 source-over로 교정했다. 사망 출구는 정지 blue1층에서 원본120px/회전2층/12%맥동으로 수정. 파란250px 필드 보스문과 사망 출구는 원본에서 서로 다른 경로다. 웹의 exit-center 캐시 갱신 누락은 제품 수정 없이 잔여로 공개한다. 전체 100% 동일성은 후속 문서의 실제 1x 캡처 판정을 따른다. 기술suite1회285/0, 입력E2E1회13PASS/5NOT_READY/0FAIL로 종주 미인수.
 
 ## PARITY-UI-06 후속 — 2026-10-22
 
-스킬 제단 배경 광/2D emissive·결과 카드 배지/장식·잠금 캐릭터 상세 전환 후속은 `docs/engine/PARITY_UI_06_20261022.md`를 따른다. 이전 수치는 이력이며 전체 동일성은 RETOUCH, 영상 HOLD 유지. 보스/아레나 owner 변경0.
+스킬 제단 배경 광/2D emissive·결과 카드 배지/장식·잠금 캐릭터 상세 전환 후속은 `docs/_archive/engine/PARITY_UI_06_20261022.md`를 따른다. 이전 수치는 이력이며 전체 동일성은 RETOUCH, 영상 HOLD 유지. 보스/아레나 owner 변경0.

@@ -16,9 +16,10 @@
 
 | 담당 | 범위 | 소유 파일 |
 |---|---|---|
-| Codex 총괄 (Mac) | 통합 브랜치 `codex/unity-mac-20261024` 소유·병합·Mac 빌드. A06 HUD, A15 설정, A18 첫 실습, 로비·인트로, 맵 조명, 전투 코어(B군) | `NativeGame*`, `NativeHud*`, `NativePauseMenu*`, `NativeLobby*`, `NativePractice*`, Simulation/Core 전투 |
+| Codex 총괄 (Mac) | Unity 줄기 `unity/main` 소유·병합·Mac 빌드(10-27 전환, 이전 `codex/unity-mac-20261024` 퇴역). A06 HUD, A15 설정, A18 첫 실습, 로비·인트로, 맵 조명, 전투 코어(B군) | `NativeGame*`, `NativeHud*`, `NativePauseMenu*`, `NativeLobby*`, `NativePractice*`, Simulation/Core 전투 |
 | Claude 총괄 (PC) | 웹 창 UI 이식·Windows 빌드 검증. A07~A14, A20~A24 | `NativeInventory*`, `InventoryNavigation`, `NativePanelTabBar`, 스킬 창, 이후 능력치·대장간·크리스탈 창 |
 | B군 Core 계산 (2026-10-26 추가) | **PC = 계산(새 파일)**, **Codex = 연결(patch 적용)**. 순서 B11 → B05 → B07 → B03. 웹 원본 추출표 → 원본 함수 실행 oracle 일치 → patch로 Simulation·입력·HUD 연결. Codex 이의 시 PC 즉시 중단·협의 | PC: `Runtime/Core/Combat/*`(신규), `unity/Tools/*-oracle/`(신규), `docs/engine/unity_patches/B*.patch`. Codex 기존 `Simulation*`·Core 파일은 PC 수정 0 |
+| M1 연결 (2026-10-27 추가, CTO 결정) | M1 동안 PC가 맡은 행(B03·B05·B07·B08·B10·B11·D01·D05·E03)은 **PC가 연결까지 직접** `unity/main`에 넣는다. fetch → merge → PC 6000.6.7f1 컴파일 오류 0 → 비강제 push. Codex가 최근 고친 줄은 지우지 않는다. Codex는 해당 파일을 고치기 전에 fetch/merge한다. | `Simulation*`·`NativeGame*`·`NativeHud*` 중 해당 행 연결 부분 |
 
 - 상대 소유 파일은 직접 고치지 않는다. 필요한 변경은 `docs/engine/unity_patches/*.patch`로 넘기고, 받는 쪽이 적용한다.
 - 같은 파일을 동시에 고칠 일이 생기면 먼저 이 문서에 소유 변경을 적는다.
@@ -27,8 +28,8 @@
 
 | 방향 | 경로 |
 |---|---|
-| PC → Mac | main `docs/engine/orders/PC_TO_MAC_INBOX_20261021.md` 맨 위 항목 (병합 요청·patch·결정 요청) |
-| Mac → PC | `codex/unity-mac-20261024`의 `docs/engine/orders/WORK_BOARD.md` 현재 소유 블록에 처리 결과 기록 (병합 SHA·실패·거절 사유) |
+| PC → Mac | main과 `unity/main` 두 곳의 `docs/engine/orders/PC_TO_MAC_INBOX_20261021.md` 맨 위 항목(같은 내용) (병합 요청·patch·결정 요청) |
+| Mac → PC | `unity/main`의 `docs/engine/orders/WORK_BOARD.md` 현재 소유 블록에 처리 결과 기록 (병합 SHA·실패·거절 사유) |
 | 공통 진행표 | `UNITY_PORT_MASTER_20261026.md`. 단위 완료 때 담당이 해당 행 상태를 갱신 |
 | 방향 충돌 | 둘 중 누구도 단독으로 정하지 않고 사용자에게 질문. 결정은 이 문서 §5에 기록 |
 
@@ -49,9 +50,11 @@
 | 2026-10-26 | G = 대장간, 장비/가방 칸 전환 키 삭제(웹은 게임패드 LB/RB 전용) | game.html:32122, 14141-14172 |
 | 2026-10-26 | 일시정지 TAB = 인벤토리 전환, ESC = 웹 `_panelBack` 규칙 | 웹 키 규칙 |
 | 2026-10-26 | 스킬 창 원판 = 웹 3D 정지 캡처, 회전·발광은 미이식 | 모션·이펙트는 Unity 재제작 원칙 |
-| 2026-10-26 | Linear 보류(Gamma 유지). 재판단 시점 = Meshy PBR 에셋 도입 또는 S3 | REPORT E:/exoduser-wt/_out/pc-linear1/REPORT.md (사본 `docs/engine/UNITY_PC_LINEAR1_REPORT_20261026.md`) — MAP3D 밝기 차이와 무관, 전환 시 UI 깨짐 |
+| 2026-10-26 | Linear 보류(Gamma 유지). 재판단 시점 = Meshy PBR 에셋 도입 또는 S3 | REPORT E:/exoduser-wt/_out/pc-linear1/REPORT.md (사본 `docs/_archive/engine/UNITY_PC_LINEAR1_REPORT_20261026.md`) — MAP3D 밝기 차이와 무관, 전환 시 UI 깨짐 |
 | 2026-10-26 | Unity 버전 통일 6000.6.7f1 | 6000.4.8f1 종료 크래시 해결(UNITY_PC_EXIT_CRASH §9), 커밋 `3d40f822a` |
 | 2026-10-26 | 충돌 QA 오버레이 토글 = F7(개발 빌드 전용), F9 금지(웹 디버그 키) | game.html·index.html·ui-panels.js·Unity Runtime에 F7 미사용 |
+| 2026-10-27 | 병합 대상 = `unity/main` | CLAUDE.md §엔진별 버전 분리 |
+| 2026-10-27 | Codex unity/main 전환 확인, codex/unity-mac-20261024 퇴역, INBOX = main·unity/main | CTO 공지(사용자 지시) |
 
 ## 6. 현재 미처리 요청 (2026-10-26 기준)
 

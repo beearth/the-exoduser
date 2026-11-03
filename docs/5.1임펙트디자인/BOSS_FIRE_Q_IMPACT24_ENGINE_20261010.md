@@ -6,7 +6,7 @@
 
 | 항목 | 실제 계약 |
 |---|---|
-| 원표시 | FD 불탄 Q의 기존표시는 fire16이 아니라 `_dark02Impact(_px,_py)`→`_addBoom(...,'dark02')`→Dark_MediumImpact.png4×4/16이다 |
+| 원표시 | FD 불탄 Q의 기존표시는 fire16이 아니라 `_dark02Impact(_px,_py)`→`_addBoom(...,'dark02')`→Dark_MediumImpact.png4×4/16이다 (2026-10-27 F안 교체(VFX_LEAD_MASTER §3.6)로 이 시트 자체가 마젠타 별에서 보라 소용돌이로 바뀌었다. 폴백으로 Dark16이 노출되면 새 보라 시트가 보인다) |
 | 선택 | `_resolveBigEnergyParry`: 물 fbEnergy&&EL.I의 기존 waterEnergy 우선 유지, 그외 fdEnergy&&EL.F만7번째 impactKind=fireEnergy. doParry에서 impactKind·forceQ===true·_parryEl===EL.F 모두 통과해야 bossFireQImpact 선택 |
 | 표시 | r80/mt72/최대240²·기존t/mt·size3r×sqrt(min(1,progress×3))/alpha=max(0,1−.5progress)/중심·무회전·부모blend상속. 실제게임초/24FPS/자연24장전부노출 보장0 |
 | 소비 | BOOM 신규bossFireQImpact map=Dark_MediumImpact.png. 원Darkimagecomplete 먼저 guard→기존 `_drawBossFireImpactClip` 재사용. 기존helper의 원Firecomplete 가드도 그대로 유지. 새ready는 승인fire24 한셀/원generic0회 |

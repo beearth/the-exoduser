@@ -199,16 +199,15 @@ namespace Exoduser.UnityPort
             }
             bool prior=GUI.enabled;
             Rect cancel=new Rect(x,h-84,180,44),create=new Rect(x+200,h-84,180,44);
-            var cancelPlate=new Rect(cancel.x+8,cancel.y,cancel.width-16,cancel.height);
-            var createPlate=new Rect(create.x+8,create.y,create.width-16,create.height);
-            NativeSilverHellUi.ActionPlate(cancelPlate,false,cancel.Contains(Event.current.mousePosition)?1:0,!AutomatedInput&&cancel.Contains(Event.current.mousePosition)&&ExoInput.Mouse(0));
-            var actionTint=GUI.color;if(locked)GUI.color=new Color(actionTint.r*.45f,actionTint.g*.45f,actionTint.b*.45f,actionTint.a);
-            NativeSilverHellUi.ActionPlate(createPlate,!locked,create.Contains(Event.current.mousePosition)&&!locked?1:0,!AutomatedInput&&create.Contains(Event.current.mousePosition)&&ExoInput.Mouse(0));GUI.color=actionTint;
+            TrackQaNameButton(create);
+            NativeSilverHellUi.ArtImage(cancel,silverVisualCancel);
+            NativeSilverHellUi.ArtImage(create,locked?silverVisualDisabled:silverVisualCreate);
+            // The original KO labels are baked into these assets; do not print a second label.
             GUI.SetNextControlName("visual-cancel");
-            SilverLabel(cancel,CharacterDialogLabel("cancel",K("취소","CANCEL")),silverVisualAction,TextAnchor.MiddleCenter);if(NativeUiAudit.Button(cancel,"",GUIStyle.none))CloseCharacterCreation();
+            if(NativeUiAudit.Button(cancel,"",GUIStyle.none))CloseCharacterCreation();
             GUI.enabled=prior&&!locked;
             GUI.SetNextControlName("visual-create");
-            SilverLabel(create,locked?CharacterDialogLabel("comingSoon",K("출시 준비 중","COMING SOON")):CharacterDialogLabel("create",K("생성","CREATE")),silverVisualAction,TextAnchor.MiddleCenter);if(DecisionSoundButton(create))ConfirmCharacterVisual();
+            if(DecisionSoundButton(create))ConfirmCharacterVisual();
             GUI.enabled=prior;GUI.matrix=centerMatrix;
             if(characterVisualFocusPending&&Event.current.type==EventType.Repaint)
             {

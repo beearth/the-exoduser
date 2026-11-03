@@ -25,14 +25,10 @@ static class Program
         var physical=CombatImpactTimeline.Plan(parry).Single();
         Check(physical.Flat&&physical.Frames==4&&physical.Life==66,"physical parry uses white first four cells and web minimum life 66");
         Check(Math.Abs(physical.DrawWidth(0,128)-108)<.001&&Math.Abs(physical.DrawWidth(9,128)-180)<.001,"physical boom grows from 60 percent to full radius60 times3");
-        var q=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=1}).Single();
-        Check(q.Sheet=="Dark_MediumImpact"&&q.Life==72&&q.Frames==16&&!q.Additive,"Q parry is the exact dark02 alpha boom");
-        Check(q.Frame(0)==0&&q.Frame(71)==15&&q.Frame(72)==-1,"Q has nonempty first frame, last frame and exact expiry");
-        var lightning=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=0});
-        Check(lightning.Count==3&&lightning[1].Rows==3&&lightning[1].Delay==1&&lightning[0].Sheet=="Lightning_ImpactLightning_Sheet_el4"&&lightning[1].Sheet=="Lightning_Lightning_FBF_4x3_el4"&&lightning[2].Sheet=="Lightning_BasicImpact_el4","nonphysical shield parry keeps all three lightning layers with el4 sheets");
-        Check(lightning[0].FrameTicks==5&&lightning[1].FrameTicks==7&&lightning[2].FrameTicks==7,"lightning layer frame speeds remain 5/7/7 ticks");
-        Check(lightning[1].Frame(0)==-1&&lightning[1].Frame(1)==0,"only delayed layer waits one tick");
-        Check(Math.Abs(lightning[0].DrawWidth(0,128)-153.6)<.001&&Math.Abs(lightning[0].Alpha(0)-.7)<.001,"TVFX2 starts with web scale1.2 and opacity.7");
+        // 11-03 parry retouch: bullet parries no longer use the dark02 purple star or the three yellow lightning sheets.
+        Check(CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=1,Source="projectile"}).Count==0,"bullet Q parry: no purple star sheet, line sparks only");
+        Check(CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=0,Source="projectile"}).Count==0,"bullet shield parry: no yellow lightning sheets, line sparks only");
+        Check(CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=1,Source="physicalProjectile"}).Count==0,"physical bullet Q parry: no purple star either");
         Check(CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.EnemyHit}).Count==0,"audio hit cannot duplicate a visual hit");
         var normal=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.EnemyHit,VisualOnly=true,Element=2});
         Check(normal[0].Sheet=="impact_el2_sheet"&&normal[0].Frames==9&&normal[0].Life==16,"normal impact chooses real elemental 9-cell strip for16ticks");
@@ -78,13 +74,74 @@ static class Program
         }
         Check(CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.EnemyHit,VisualOnly=true,Element=6})[0].Sheet=="impact_basic_sheet","unbanked earth element uses the web basic fallback");
         Check(Math.Abs(CombatImpactTimeline.ParticleTravel(3,0,2)-5.7)<1e-9&&Math.Abs(CombatImpactTimeline.ParticleTravel(3,.1,2)-5.79)<1e-9,"particle drag.9 and gravity match two web pool updates");
-        Check(CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=1,Source="waterBean"})[0].Sheet=="Ice_ImpactIce_Sheet","water Q parry selects the ice exception instead of duplicate dark02");
+        var water=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=1,Source="waterBean"});
+        Check(water.Count==2&&water[0].Sheet=="Ice_ImpactIce_Sheet_water"&&water[1].Sheet=="Ice_MistSmoke_FBF_4x4_water","water parry uses the water-ramp sheets, not the web cartoon cyan");
+        Check(water[0].Frames==12&&water[0].Frame(71)==11&&Math.Abs(water[1].Opacity-.6)<1e-9,"water impact stops before the loose droplet frames; mist .6");
+        // Hit-stop presentation clock: two held fixed steps right after the contact tick count toward the spark age.
+        var clock=new CombatPresentationClock();int born=clock.Now(500);clock.Hold();clock.Hold();
+        Check(clock.Now(500)-born==2&&clock.Now(501)-born==3,"held frames advance parry presentation; peak lands at contact +3 frames");
+        clock.Reset();Check(clock.Now(7)==7,"clock reset");
+        // Roll dust puffs.
+        for(int seed=0;seed<20;seed++)foreach(int step in new[]{0,1}) {
+            var roll=new FeedbackEvent{Kind=FeedbackKind.Roll,Step=step,Angle=.3f};var puffs=CombatRollDust.Burst(roll,seed);
+            Check(puffs.Length==(step==0?3:2),"roll dust puff count "+step);
+            foreach(var pf in puffs) {
+                double peak=0;for(int t=0;t<=40;t++)peak=Math.Max(peak,CombatRollDust.Alpha(pf,t));
+                Check(peak<=.42+1e-9&&peak>=.3&&CombatRollDust.Alpha(pf,pf.Delay+pf.Life)==0&&pf.Size>=26&&pf.Size<=40,"puff soft peak, expiry and size "+step);
+                Check(CombatRollDust.Width(pf,pf.Delay+pf.Life)>pf.Size*1.79&&Math.Abs(CombatRollDust.Travel(pf,pf.Delay+pf.Life)-1)<1e-9,"puff expands and settles "+step);
+                if(step==0)Check(Math.Cos(Math.Atan2(pf.Dy,pf.Dx)-(roll.Angle+Math.PI))>Math.Cos(.71),"start puffs kick up behind the roll direction");
+            }
+        }
+        Check(!CombatRollDust.Trail(0)&&CombatRollDust.Trail(4)&&!CombatRollDust.Trail(5)&&CombatRollDust.TrailPuff(9).Peak<.3,"trail puff every four roll ticks, fainter");
         var rainbow=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=1,SampleKey="rainbow"});
         Check(rainbow.Count==4&&rainbow.All(c=>c.Additive)&&Math.Abs(rainbow[3].Opacity-.55)<1e-9,"rainbow Q uses four original layered sheets and attenuation");
         var kiSim=new Simulation(SourceStarterFixture.CreateKiSlash(),456);kiSim.Config.EnemyAiEnabled=false;
         var kiTarget=kiSim.SpawnNormalEnemy(kiSim.Player.X+35,kiSim.Player.Y);if(kiTarget==null)throw new Exception("ki fixture spawn failed");
         kiSim.Player.Facing=0;kiSim.SpawnKiSlash(1,0);kiSim.Feedback.Clear();kiSim.Tick(0,0,kiSim.Player.X+100,kiSim.Player.Y,false,false);
         Check(kiSim.Feedback.Any(x=>x.Kind==FeedbackKind.KiSlashHit)&&!kiSim.Feedback.Any(x=>x.Source=="combat-impact"),"web ki noImpact keeps only its original dedicated hit sheet");
+        var parryType=typeof(CombatImpactTimeline).Assembly.GetType("Exoduser.UnityPort.Vfx.CombatParryPresentation");
+        Check(parryType!=null,"G2 melee spark, flash and camera policy exists");
+        if(parryType!=null) {
+            dynamic fx=Activator.CreateInstance(parryType);
+            var melee=new FeedbackEvent{Kind=FeedbackKind.Parry,Step=1,Tick=100,Angle=.5f};
+            Check((bool)fx.IsMelee(melee),"untagged contact is melee");
+            foreach(var tag in new[]{"physicalProjectile","waterBean","projectile","redBean","rainbowBean"})
+                Check(!(bool)fx.IsMelee(new FeedbackEvent{Kind=FeedbackKind.Parry,Source=tag}),"reflection excluded: "+tag);
+            foreach(var sample in new[]{"red","rainbow","dark"})
+                Check(!(bool)fx.IsMelee(new FeedbackEvent{Kind=FeedbackKind.Parry,SampleKey=sample}),"reflection sample excluded: "+sample);
+            for(int seed=0;seed<20;seed++)foreach(int step in new[]{0,1}) {
+                melee.Step=step;dynamic lines=fx.Sparks(melee,seed);int n=lines.Length;
+                Check(n>=(step==1?80:30)&&n<=(step==1?130:60),"spark count "+step+" seed "+seed);
+                int initial=0,fan=0;bool shape=true;
+                foreach(dynamic line in lines){if(line.Delay==0)initial++;if(line.ReverseFan)fan++;
+                    shape&=line.Delay>=0&&line.Delay<=3&&line.Life>=18&&line.Life<=30&&line.Length>=.10&&line.Length<=.25&&line.Thickness>=1&&line.Thickness<=2;
+                    for(int t=0;t<=30;t++)if((double)fx.SparkAlpha(line,t)>0)shape&=(double)fx.SparkLength(line,t)>=.05;
+                }
+                Check(shape&&Math.Abs(initial/(double)n-.3)<.025&&Math.Abs(fan/(double)n-.7)<.025,"line lengths, thickness, lifetime, 30 percent contact and 70 percent reverse fan");
+                double previous=0;for(int t=0;t<=3;t++){double brightness=0;foreach(dynamic line in lines)brightness+=(double)fx.SparkAlpha(line,t);Check(brightness>previous,"rising spark density/brightness tick "+t);previous=brightness;}
+                double next=0;foreach(dynamic line in lines)next+=(double)fx.SparkAlpha(line,4);Check(next<previous,"spark peak at tick3");
+            }
+            melee.Step=1;
+            for(int age=-1;age<=30;age++) {
+                double a=(double)fx.FlashAlpha(age,false),linear=(double)fx.FlashAlpha(age,true);
+                Check(a>=0&&a*255<=40&&linear>=0&&linear<=.02,"screen brightness bound tick "+age);
+                if(age<0||age>=6)Check(a==0&&linear==0,"flash exact six tick expiry "+age);
+            }
+            Check((double)fx.FlashAlpha(1,false)>(double)fx.FlashAlpha(0,false)&&(double)fx.FlashAlpha(2,false)<(double)fx.FlashAlpha(1,false),"one tick flash rise then five tick decay");
+            Check(!(bool)fx.HasFlash(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=0})&&(bool)fx.HasFlash(melee),"flash only perfect melee");
+            Check(!(bool)fx.HasFlash(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=1,Source="waterBean"}),"projectile has no new melee flash");
+            for(int seed=0;seed<20;seed++)foreach(int step in new[]{0,1}){
+                dynamic bl=fx.Sparks(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=step,Source="projectile",Angle=1},seed);int bn=bl.Length;
+                Check(bn>=(step==1?36:20)&&bn<=(step==1?50:30),"bullet parry spark count "+step+" seed "+seed);
+                Check(!(bool)fx.HasFlash(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=step,Source="projectile"}),"bullet parry has no screen flash "+step);
+            }
+            Check(((dynamic)fx.Sparks(new FeedbackEvent{Kind=FeedbackKind.EnemyHit},1)).Length==0,"sparks only for parry events");
+            Check(!(bool)fx.ParsePushIn(new[]{"game"})&&!(bool)fx.ParsePushIn(new[]{"--unity-parry-camera=shake"})&&(bool)fx.ParsePushIn(new[]{"--unity-parry-camera=pushin"})&&(bool)fx.ParsePushIn(new[]{"--parry-feedback-push-in"}),"camera argument defaults to shake; both push-in flags select one push");
+            Check((double)fx.CameraScale(8,true)==.975&&(double)fx.CameraScale(8,false)==1,"pushin narrows2.5percent over8ticks");
+            foreach(double baseline in new[]{34.0,45.0,5.4,16.5})foreach(int age in new[]{-1,28,29,1000})
+                Check(baseline*(double)fx.CameraScale(age,true)==baseline,"camera returns bit-exact baseline "+baseline+" tick "+age);
+            Check((double)fx.CameraScale(18,true)>.975&&(double)fx.CameraScale(18,true)<1,"pushin returns over20ticks");
+        }
         Console.WriteLine("combat-impact: "+checks+" checks, "+bad+" failures");return bad==0?0:1;
     }
 }

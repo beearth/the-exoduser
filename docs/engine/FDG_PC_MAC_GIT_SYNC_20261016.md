@@ -1,6 +1,6 @@
 > 2026-10-17 ENGINE 현행: callback **12/25·미13**. play_time은 el_mul 바로 다음에 동일 Services self의 arity0 Callable로 등록했다. owner 첫 격리 공개 API 검수는 인수됐으며 자연 clock·실게임 인수는 미확인이다. D9는 직전 공통 소스 인수이며, 이번 main/I/R 소스 정렬은 아래 통합 정본과 단위 receipt의 실제 HEAD·tree를 기준으로 확인한다. V12 후보는 소스 인수·첫 FAIL·별도 보완 한정성공으로 구분하며 제품 copy·World hook은 수행하지 않았다. 아래 이전 단계 숫자·원검수 결과는 당시 이력으로 보존한다. 실제 local/remote commit 상태는 단위 receipt를 따른다.
 
-> 통합 현황: [Godot 이식 현황](FDG_GODOT_PORT_STATUS.md). 이 문서는 소스 전달·정렬 이력을 관리하며, 현재 작업본과 열린 실행판·빌드·PC 인수의 상태는 현황 문서를 따른다.
+> 통합 현황: [Godot 이식 현황](../_archive/engine/FDG_GODOT_PORT_STATUS.md). 이 문서는 소스 전달·정렬 이력을 관리하며, 현재 작업본과 열린 실행판·빌드·PC 인수의 상태는 현황 문서를 따른다.
 
 > 2026-10-17 ENGINE WIP 현행: 실제 callback **9/25·미16**. 신규 격리 행동41/41과 신규 map 경계 static9/9만 인수 범위다. 원 첫 parse 실패는 보존한다. 이 WIP를 main/R/served·전체 게임 최신화 완료로 해석하지 않는다.
 
@@ -162,10 +162,10 @@ d9e1cbce는 기존 main+W 통합이다. R/main 공통 base aacc7b02 대비 실�
 | id / 적용 위치 | 현재 계약 |
 |---|---|
 | 예약 시작 | index.html showCharGate(charId,storySeen=false) 진입 시 const request=_characterLoadSeq 캡처. 이 함수는 요청 번호를 증가시키지 않는다 |
-| 예약 실행 | 기존 setTimeout 1200ms 유지. callback 첫머리에서 request!==_characterLoadSeq이면 return. 같을 때만 기존 window.location.href 대입 |
+| 예약 실행 | 공통 fadeOut500ms 완료 뒤 request===_characterLoadSeq를 재확인해 ScreenTransition.navigate로 이동. 취소하면 fadeIn으로 복귀 |
 | 기존 취소·재요청 | _goLogin/_goCinematic 및 loadCharacters/loadLocalCharacters의 기존 ++_characterLoadSeq가 이전 예약을 무효화. 새 취소 writer나 timer clear·debouncer 없음 |
 | 반복 요청 의미 | 요청 번호가 달라진 두 예약은 실행 순서에 관계없이 새 번호만 이동. 같은 번호에서 두 번 호출한 경우 두 callback 모두 허용하는 기존 R 의미 유지 |
-| 정상 경로 | offline test slot 인코딩, online char/선택 slot 이름, demo의 slot=demo&demo=1, storySeen의 story=warrior-v21 suffix 유지. 1200ms/로고 preload/선택·remaster 변경 없음 |
+| 정상 경로 | offline test slot 인코딩, online char/선택 slot 이름, demo의 slot=demo&demo=1, storySeen의 story=warrior-v21 suffix 유지. 로고 preload/선택·remaster 유지. 1200ms 고정대기는 SCREEN_TRANSITIONS_20261102.md의 공통500ms 경계로 대체 |
 | 부수효과 경계 | demo 활성화·loading·로고 preload는 기존처럼 예약 전에 수행. stale callback은 이동만 중단하며 기존 activation·loading을 되돌리지 않는다. demo 활성화 실패는 기존 hideLoading/오류/예약0 유지 |
 | 새 검수 | 격리 실제 showCharGate/직접 callback의 정상URL·demo실패·늦은취소·서로 다른 요청의 양쪽 실행순서·같은번호반복·가드외본문불변6묶음 PASS. 해당 inline script1개 구문 PASS. 전체 Startup/실브라우저·사용자 save/API 실행은 아님 |
 | 보호 범위 | 3387/classic/ch1Three/ch1Rig/webgpu carry 미채택. MAP·package·패링별도dependency·game-easy-test/Godot/HUD 변경0. PC/잔여R전체이식 미완료 |
@@ -502,7 +502,7 @@ R의 기존 gameConfirm pending resolver 가드 한 줄을 main에 결합했다.
 | R 선택 / 미채택 | h237 update의 glove/belt potCd unary+/falsy0 두 변환만. h188은 현행 수동 포션 UI 폐지·본편 caller0 근거로 미채택/원R9a 보존 |
 | 실제 누락 | truthy 비숫자 gear potCd가 기존 Math.min→NaN→~~0 경로로 최소6 CD를 만드는 입력. 실제 생산 CD 문장으로 재현 |
 | 사전 보존 | code1/docs4의 5경로 WORK/HEAD를 첫 코드 수정 전에 바이트 백업 |
-| 신규 검사 | 실제 const4/대입1 + 합성 gear/passive/cooldown 신규6군·구문1 PASS. 전체update/트리거·실HP/회복·악의/clock/save/API/UI/native0 |
+| 신규 검사 | 실제 const4/대입1 + 합성 gear/passive/cooldown 신규6군·구문1 PASS. 전체update/트리거·실HP/회복·악의오브/clock/save/API/UI/native0 |
 | 선행 설명 정정 | 최초 계획의 regen cap0.5는 미확인 오기였으며 첫 제품쓰기 전 실제 pRegen*0.03/cap0.3으로 정정·fixture는 실제 선언 추출. 이를 맞추기 위한 코드/통과검사 변경0 |
 | 보존 | 기존420 CD기준/6최소·glove/belt각0.2·regen0.03/0.3·~~/Math·실발동/소비/HPQE/효과/튜토리얼/autoPotThr·수동UI/데이터형식 그대로 |
 
@@ -746,7 +746,7 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 항목 | 현행 계약 |
 |---|---|
 | 위치 / id | _invBuildCompare의 _xferNote, 후보 장착 시 강화 자동 이전 설명 |
-| 표시 문구 | 기존 '악의 부족 → 강화 소멸'을 원 R대로 '악의 부족 → 장착 불가'로 수정 |
+| 표시 문구 | 기존 '악의오브 부족 → 강화 소멸'을 원 R대로 '악의오브 부족 → 장착 불가'로 수정 |
 | 표시 조건 | _fromE=curEq.enh 또는0. _fromE>0일 때 이전 안내를 만들고 _xc=xferCost(_fromE). (G.mats 또는0)<_xc일 때 위 경고 표시 |
 | 실제 권위 | 기존 equipItem은 이전 비용이 부족하면 알림 후 return하여 교체를 차단. 문구를 이 기존 동작에 맞췄으며 새 장착/강화/차감/소멸 규칙은 없음 |
 | 보존 | 금액·비용식·조건·원 강화 값·아이템/자원/저장·반환/예외·CP 공식/공급자·스타일·화살표/기존 표시 포맷·locale/사전 코드는 그대로 |
@@ -984,7 +984,7 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | Git/R source 판정 | fresh main expectedSHA/forcefalse 정상FF→I/R actual mainHEAD/tree/upstream 및 scope WORK/INDEX 정렬→새경계static. 실제 최종값/시각은 아래 정본의외부finalreceipt에서확인하며사전f8관측을최신HEAD로사용하지않음 |
 | 새 기능/실행 | sourcecode새개발0·기수송blob/통과suite재연0. R디스크source와사용자창/process/export/PC·Steam 실행은구분하고reload/input/restart/GET/save/asset/import0 |
 | 미완/보호 | DCP/sourceclock/fullhurtE/poise19985tail/KB42483·원RNG/전체startup·24고유장24FPS·표시·실전/전체최신未. 별도crossbow/옛R9/R30·held/ART/LAVA/HUD/GL/rig/asset/save0. 원실패/partial/NOT_RECORDED·latest_full_gamefalse유지 |
-| 정본 | [인수 소스 main 정렬 계약](FDG_ACCEPTED_NATIVE_SOURCE_MAIN_SYNC_20261017.md); 실제 main·I/R 적용은 새 final receipt의 관측으로 판단 |
+| 정본 | [인수 소스 main 정렬 계약](../_archive/engine/FDG_ACCEPTED_NATIVE_SOURCE_MAIN_SYNC_20261017.md); 실제 main·I/R 적용은 새 final receipt의 관측으로 판단 |
 
 
 ## 승인 provider4 소스 통합 / V4 실패3 후속 (2026-10-17)
@@ -1077,7 +1077,7 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 실행/품질 한계 | runtime/Web export/PC 기동/사용자 창·서버·save·asset/import 변경0. 실사용 host/URL 미확정. full25/full hurtE/latest_full_game=false/content_parity=INCOMPLETE. VISUAL VERDICT 신규 판정 없음, 기존 RETOUCH 유지. |
 | 후속 | 기존 ENEMY V6의 stat_str 세 원 query 위치만 typed 소비하도록 별도 인수한다. V6 미인수를 실제 consumer 완료로 올리지 않는다. |
 
-[실제 API·원형·검수 범위](FDG_NATIVE_NORMAL_ENEMY_STAT_STR_OWNER_20261017.md)를 따른다. 이전 source 동기화 기록의 pin·검사·품질 한계는 당시 이력으로 보존한다.
+[실제 API·원형·검수 범위](../_archive/engine/FDG_NATIVE_NORMAL_ENEMY_STAT_STR_OWNER_20261017.md)를 따른다. 이전 source 동기화 기록의 pin·검사·품질 한계는 당시 이력으로 보존한다.
 
 
 ## Normal p_dot_pool 메인·R 소스 통합 — 2026-10-17
@@ -1097,10 +1097,10 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | Git / 완료 증거 | 정상 fetch/새 branch/fast-forward와 현재 main expectedSHA lease를 사용한다. R의 기존 promisor 경고는 원 raw로 보존하고 config 정리0. 전송 bytes NOT_RECORDED. main/I/R HEAD/tree/upstream·실제 union 파일·원 ref는 새 통합 경계 static1회/finalreceipt로 확정한다. |
 | 실행판 한계 | R disk 동기화는 열린 창/process/Web package 교체 증명이 아니다. GUI input/reload/restart·server/GET/save·asset/import/export/PC 실기동0. 실제 사용 host/URL 질문은 아직 미응답이며 재질문하지 않는다. 시각 기존 RETOUCH 유지, 새 VISUAL PASS 주장0. |
 
-[실제 API·원 raw·첫 검수](FDG_NATIVE_NORMAL_ENEMY_PDOTPOOL_OWNER_20261017.md)를 따른다. 이전 인수 pin과 source 동기화 결과를 최신 실행판으로 승격하지 않는다.
+[실제 API·원 raw·첫 검수](../_archive/engine/FDG_NATIVE_NORMAL_ENEMY_PDOTPOOL_OWNER_20261017.md)를 따른다. 이전 인수 pin과 source 동기화 결과를 최신 실행판으로 승격하지 않는다.
 
 
-2026-10-17 사용처 정정: V6 p_dot_pool 전체는4곳(170/173/566/570, 원42163/42164/42426/42429)이며 첫 접점만170/173이다. 모두 not DOT이고, 뒤 두 곳은 각각 poisonDot/fireDot 어픽스값>0 및 해당 스택 write 후 결과<10에서 독립 조회한다. 각 지점 당시의 dmg×0.10 누적식·원 순서·lazy를 보존하며 네 곳 모두 typed 미전파다. [네 곳의 정확 조건](FDG_NATIVE_NORMAL_ENEMY_PDOTPOOL_OWNER_20261017.md)을 따른다. 원 API/코드·이전 PASS는 변경하지 않는다.
+2026-10-17 사용처 정정: V6 p_dot_pool 전체는4곳(170/173/566/570, 원42163/42164/42426/42429)이며 첫 접점만170/173이다. 모두 not DOT이고, 뒤 두 곳은 각각 poisonDot/fireDot 어픽스값>0 및 해당 스택 write 후 결과<10에서 독립 조회한다. 각 지점 당시의 dmg×0.10 누적식·원 순서·lazy를 보존하며 네 곳 모두 typed 미전파다. [네 곳의 정확 조건](../_archive/engine/FDG_NATIVE_NORMAL_ENEMY_PDOTPOOL_OWNER_20261017.md)을 따른다. 원 API/코드·이전 PASS는 변경하지 않는다.
 
 
 ## 2026-10-17 ENGINE WIP: Main 소유 l_eq 이식
@@ -1116,7 +1116,7 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 등록/검수 | 현재 ENGINE WIP callback map **9/25·미16**. 기존8 뒤 실제 l_eq=Callable(self,read_normal_enemy_legendary_equipment) 하나를 추가했다. 원 첫 fixture parse 실패·행동0은 보존하고 header5줄만 수정한 새 namespace의 최초 신규 행동41/41 PASS도 별도 유지한다. 이번 등록 경계만 새 static9/9, 기존 행동·parser·static 검수 재실행0. 전체 hurtE 연결·실게임·main/R/served 반영은 미완이다. |
 | 범위/한계 | full Main/Services.configure/State 자연 lifecycle·실 INV/save·원 JS boot/restore·게임/export/PC 최신판 완료 증거 없음. 초기 plan metadata에 불필요한 Q/E 선언·필드 및 Main876 Q currentOptions 할당 한 줄/Frame metadata도 포함됐으며 원본 보존·캐시 권위에서 제외. 실제 Q/E 실행·변경 없음. |
 
-정확한 API·17 slot·최초 실패 로그·미소유 범위는 [Main 전설 장비 캐시 계약](FDG_NATIVE_MAIN_LEGENDARY_EQUIPMENT_CACHE_20261017.md)에 기록한다.
+정확한 API·17 slot·최초 실패 로그·미소유 범위는 [Main 전설 장비 캐시 계약](../_archive/engine/FDG_NATIVE_MAIN_LEGENDARY_EQUIPMENT_CACHE_20261017.md)에 기록한다.
 
 
 ## 2026-10-17 LEQ 인수본 main·I·R 디스크 소스 정렬
@@ -1130,7 +1130,7 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 구별 | 디스크 소스 정렬은 사용자 열린 창/process/export/PC/최신 전체 게임 완료 증거가 아니다. GUI/입력/새로고침/재시작/server/GET/assets/save/import/export는 실행하지 않는다. |
 | 백업/경고 | per-copy exactfile/realparent/ancestor nonlink·WORKHEAD·분리INDEXWORK·시각을 fresh manifest에 남긴다. 초기 absence4 가정 실패는 제품쓰기 전에 보존, fresh v2의136slot/130copy/6absence만 쓰기 권위로 사용. 기존promisor/config 경고 정리0, 미측정전송량 NOT_RECORDED. |
 
-자세한 인수·한계·최종 증거 경로: [LEQ Main 소스 통합](FDG_NATIVE_NORMAL_ENEMY_LEQ_MAIN_SYNC_20261017.md).
+자세한 인수·한계·최종 증거 경로: [LEQ Main 소스 통합](../_archive/engine/FDG_NATIVE_NORMAL_ENEMY_LEQ_MAIN_SYNC_20261017.md).
 
 
 ## 2026-10-17 ENGINE WIP: typed rand 실제 소유 경계
@@ -1145,7 +1145,7 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 첫 검수 | 신규정적9/9·신규격리행동30/30/exit0/result존재·양로그diagnostics0. primitiveleaf대역·명시holder/Statepredicate·default0/typedmalformedreturn모사범위, 실RNG/엔진abort/자연fullMainWorld동등아님. old41/95/진단/통과parse재연0. |
 | 보존 | sourceWIP는I만·최종ROOT인수전main/R/served0. 원첫실패/selector·thread과대범위이력과그한계를새성공으로소급수정하지않는다. |
 
-정확signature·schema·freshreceipt구조한계·검수범위는[typed rand 소유경계](FDG_NATIVE_NORMAL_ENEMY_RAND_OWNER_20261017.md)에기록한다.
+정확signature·schema·freshreceipt구조한계·검수범위는[typed rand 소유경계](../_archive/engine/FDG_NATIVE_NORMAL_ENEMY_RAND_OWNER_20261017.md)에기록한다.
 
 
 ## 2026-10-17 ENGINE WIP: rand 10번째 실제 등록
@@ -1170,7 +1170,7 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 검사 | owner9/30·등록7은기인수·재연0. 이번단위는새통합경계static1회만수행, 실제구현/primitive/QAparse/자연runtime/PC/fullgame추가검증0. |
 | 한계 | source정렬은열린창/process/export/PC완료아님. GUI/input/reload/restart/GET/server/save/assets/import/export·V9scalarDict직결·Worldhook·15dummy우회0. 경고보존·미측정전송량NOT_RECORDED. |
 
-상세 checkpoint와증거경로: [rand Main 소스 통합](FDG_NATIVE_NORMAL_ENEMY_RAND_MAIN_SYNC_20261017.md).
+상세 checkpoint와증거경로: [rand Main 소스 통합](../_archive/engine/FDG_NATIVE_NORMAL_ENEMY_RAND_MAIN_SYNC_20261017.md).
 
 
 ## 2026-10-17 normal hurtE el_mul typed owner (owner WIP 당시 기록; 현재 registry11은 후속 등록 표 참조)
@@ -1205,7 +1205,7 @@ code1/docs4 exact5의 WORK/HEAD 개별10 기록은 첫 제품쓰기 전이다. �
 | 문서 검색 범위 | 이전 uncapped928후보/100matchinglines41paths는 matching-line 단위(한줄내keyword dedup)이며 after-scan은append/newownerdoc 작성 전이다. regex전체횟수/성공decode파일수/UnicodeDecodeError 경로는未기록. 이번에는 허용18문서의 현재상태만 새경계1회로 확인하며 전수완결을 발명하지 않는다. |
 
 
-상세: docs/engine/FDG_NATIVE_NORMAL_ENEMY_EL_MUL_OWNER_20261017.md. 과거 단계의 완료/실패 기록은 해당 당시 범위로 보존한다.
+상세: docs/_archive/engine/FDG_NATIVE_NORMAL_ENEMY_EL_MUL_OWNER_20261017.md. 과거 단계의 완료/실패 기록은 해당 당시 범위로 보존한다.
 
 
 ## 2026-10-17 현재 normal hurtE el_mul 11번째 provider 등록
@@ -1293,7 +1293,7 @@ I/R 첫 WORK·HEAD 백업과 PRE는 fetch 및 작성 전에 저장한다. R 실�
 | 후속 consumer | V12 후보 소스3+첫parse2 ROOT 인수. 첫11case43행동true지만 setup5중signed-zero1false·exit1 전체FAIL은 보존. 별도 보완4case19행동+setup4 true·exit0는 첫actual+0 및 둘째 NRnestedREADY/SOURCE_THROW/UNSUPPORTED→UNKNOWN_STATUS에만 한정. 과거 실패와 합산 PASS 금지. 네 준비식 평가 뒤 public 호출 전 검사이므로 fail-fast 실제 고장주입 증명은 아님. 실제 clock/자연MainState/JS/fullgame 미확인. 제품 V12 copy·World hook 없음; callback12 등록은 이번 별도 경계 |
 | 보존 단위 | 소유 브랜치 codex/native-play-time-owner-20261017. 문서의 자체 commit SHA를 선행 선언하지 않으며 실제 local/remote SHA·tree·parent·비강제 보존 결과는 아래 단위 receipt를 기준으로 확인 |
 
-[체크포인트 단위 receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-OWNER-VALIDATED-WIP-20261017/receipt.json>) · [사용자용 이식 현황](FDG_GODOT_PORT_STATUS.md)
+[체크포인트 단위 receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-OWNER-VALIDATED-WIP-20261017/receipt.json>) · [사용자용 이식 현황](../_archive/engine/FDG_GODOT_PORT_STATUS.md)
 
 
 ## 2026-10-17 play_time 열두 번째 provider 등록 — 현재 경계
@@ -1318,4 +1318,4 @@ I/R 첫 WORK·HEAD 백업과 PRE는 fetch 및 작성 전에 저장한다. R 실�
 | 값·실패·참조 | finite native int/float 부분지원·safe int ±9007199254740991·raw-0·원 type/ref/prefix·postloss read_result·NOT_READY 계약 그대로. dummy13/25 gate 우회·clock writer/default0 추가 없음 |
 | 검수 분리 | 기존 owner34case477(설정163·행동314) 인수, 원17 중15통과2실패와 별도2true는 보존. V12 후보 원11case43행동true/setup signedzero1false·exit1 전체FAIL과 별도4case19행동+setup4 true의 한정 보완은 각각 유지. 원성공 검수·parse 재실행 없음 |
 | 실제 실행·보류 | 이번은 소스 정렬이다. 사용자 열린 앱·compiled export·PC 실행·실제 Main/State clock·자연 전투·JS·최신 게임 인수는 미확인. V12 제품 copy·World hook·build/reload/import/PC 전달 없음 |
-| 정본 / 증거 | [FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md](FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md) · [소스 통합 final receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-MAIN-SOURCE-SYNC-20261017/receipt.json>) |
+| 정본 / 증거 | [FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md](../_archive/engine/FDG_NATIVE_NORMAL_ENEMY_PLAY_TIME_MAIN_SYNC_20261017.md) · [소스 통합 final receipt](</Users/fordeargamers/.codex/visualizations/rift-quality-next-20261007/fdg-dark-druid-first-slice-20261011/godot-native-first/sync-git-main-20261016/NORMAL-HURTE-PLAY-TIME-MAIN-SOURCE-SYNC-20261017/receipt.json>) |

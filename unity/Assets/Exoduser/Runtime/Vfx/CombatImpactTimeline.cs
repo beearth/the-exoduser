@@ -60,19 +60,18 @@ namespace Exoduser.UnityPort.Vfx
         public static List<CombatClip> Plan(FeedbackEvent e) {
             var result=new List<CombatClip>();
             if(e.Kind==FeedbackKind.Parry){
+                if(e.MeleeParry||new CombatParryPresentation().IsMelee(e))return result;
                 if(e.Source=="waterBean") {
-                    result.Add(Boom("Ice_ImpactIce_Sheet",72,96*3));
-                    var mist=Boom("Ice_MistSmoke_FBF_4x4",72,96*3.4);mist.Delay=3;mist.Life=69;mist.Opacity=.8;result.Add(mist);
+                    // RETOUCH 4: VFX master water ramp instead of the web's bright cartoon cyan (tools/vfx/recolor_parry_water.py).
+                    // Frames 12-15 are only loose droplets, so the impact stops at frame 11.
+                    result.Add(Boom("Ice_ImpactIce_Sheet_water",72,96*3,12));
+                    var mist=Boom("Ice_MistSmoke_FBF_4x4_water",72,96*3.4);mist.Delay=3;mist.Life=69;mist.Opacity=.6;result.Add(mist);
                 }else if(e.SampleKey=="rainbow") {
                     string[] sheets={"Poison_MediumImpact","Dark_DarkSmoke_FBF_4x4","Light_ImpactLight_Sheet","Ice_ImpactIce_Sheet"};
                     for(int i=0;i<4;i++){var c=Boom(sheets[i],72,80*(2.8+i*.3));c.Additive=true;c.Delay=(int)Math.Round(72*i*.03);c.Life=72-c.Delay;c.Angle=i*Math.PI*.5;c.Opacity=1-i*.15;result.Add(c);}
-                }else if(e.Step==1)result.Add(Boom("Dark_MediumImpact",72,80*3));
-                else if(e.Source=="physicalProjectile")result.Add(Boom("Fire_ImpactFire_Sheet",12,60*3,4,true));
-                else {
-                    result.Add(Flip("Lightning_ImpactLightning_Sheet_el4",4,4,1.2,0,5));
-                    result.Add(Flip("Lightning_Lightning_FBF_4x3_el4",4,3,1.1*1.2,1,7));
-                    result.Add(Flip("Lightning_BasicImpact_el4",3,3,.5*1.2,0,7));
-                }
+                }else if(e.Step!=1&&e.Source=="physicalProjectile")result.Add(Boom("Fire_ImpactFire_Sheet",12,60*3,4,true));
+                // Other bullet parries: warm line sparks only (CombatParryPresentation). The web's dark02 purple star and the
+                // three yellow lightning sheets read as an element hit, not a parry (user 11-03 "패링구현이 엉망").
             }else if(e.VisualOnly&&(e.Kind==FeedbackKind.EnemyHit||e.Kind==FeedbackKind.EnemyCrit||e.Kind==FeedbackKind.BossHit)) {
                 int el=e.Element;bool hasElement=el>=0&&el<=5;
                 result.Add(new CombatClip{Sheet=hasElement?"impact_el"+el+(e.IsBoss?"_boss_sheet":"_sheet"):"impact_basic_sheet",Fallback="impact_basic_sheet",Cols=e.IsBoss&&hasElement?16:9,Rows=1,Frames=e.IsBoss&&hasElement?16:9,Life=16,Scale=e.IsBoss?2.5:1,Mode=CombatClipMode.Impact,Additive=true});
@@ -89,6 +88,89 @@ namespace Exoduser.UnityPort.Vfx
             }
             return result;
         }
+    }
+
+    // Pure presentation policy. Never reads/writes simulation rules or its RNG.
+    public sealed class CombatParryPresentation
+    {
+        public sealed class Spark {public int Delay,Life;public double Angle,Length,Thickness,Speed,Color;public bool ReverseFan;}
+        public bool IsMelee(FeedbackEvent e) {
+            if(e.Kind!=FeedbackKind.Parry||!string.IsNullOrEmpty(e.SampleKey))return false;
+            return string.IsNullOrEmpty(e.Source)||e.Source=="contact"||e.Source=="swing"||e.Source=="slam"||e.Source=="charge"||e.Source=="combo"||e.Source.StartsWith("melee",StringComparison.Ordinal);
+        }
+        public bool HasFlash(FeedbackEvent e){return IsMelee(e)&&e.Step==1;}
+        public Spark[] Sparks(FeedbackEvent e,int seed) {
+            if(e.Kind!=FeedbackKind.Parry)return Array.Empty<Spark>();
+            // Melee: perfect/Q 80-130, shield block 30-60. Bullet parries: a smaller burst of the same lines (perfect 36-50,
+            // block 20-30) so the reflected bullet stays the subject.
+            var rng=new Random(seed);bool melee=IsMelee(e);
+            int n=e.Step==1?(melee?rng.Next(80,131):rng.Next(36,51)):(melee?rng.Next(30,61):rng.Next(20,31));
+            var lines=new Spark[n];int initial=(int)Math.Round(n*.3),fan=(int)Math.Round(n*.7);
+            for(int i=0;i<n;i++) {
+                bool reverse=i<fan;
+                lines[i]=new Spark{Delay=i<initial?0:1+(i-initial)*3/(n-initial),Life=rng.Next(18,31),
+                    ReverseFan=reverse,Angle=e.Angle+Math.PI+(rng.NextDouble()-.5)*(reverse?Math.PI:Math.PI*2),
+                    Length=.10+rng.NextDouble()*.15,Thickness=1+rng.NextDouble(),Speed=.025+rng.NextDouble()*.04,Color=rng.NextDouble()};
+            }
+            return lines;
+        }
+        public double SparkAlpha(Spark s,double age) {
+            if(age<s.Delay||age>=s.Life)return 0;
+            return age<=3?.3+.7*age/3:Math.Pow((s.Life-age)/(s.Life-3),1.5);
+        }
+        public double SparkLength(Spark s,double age){return Math.Max(.05,s.Length*(1-Math.Max(0,age-3)/(s.Life-3)*.7));}
+        public double FlashAlpha(double age,bool linear) {
+            if(age<0||age>=6)return 0;
+            // Linear framebuffer blending needs the stricter cap: sRGB(0.02)*255
+            // is 38.7 even over black. Gamma framebuffer maximum is 38.25.
+            return (linear?.02:.15)*(age<1?age:1-(age-1)/5);
+        }
+        // One push-in candidate: the VFX flag and the parry G2 flag (--parry-feedback-push-in, which also lowers the Core
+        // melee shake to 2) both select the R4 field-of-view push below; there is no second dolly.
+        public bool ParsePushIn(string[] args){return Array.IndexOf(args,"--unity-parry-camera=pushin")>=0||Array.IndexOf(args,"--parry-feedback-push-in")>=0;}
+        public double CameraScale(double age,bool pushIn) {
+            if(!pushIn||age<=0||age>=28)return 1;
+            return 1-.025*(age<=8?age/8:1-(age-8)/20);
+        }
+    }
+
+    // Parry presentation keeps running through the 2-tick melee hit-stop (PBZ R3: pose hold only, sparks keep flying),
+    // so the spark peak lands at contact +3 frames as in the parry G1 table instead of +5 behind the frozen simulation.
+    public sealed class CombatPresentationClock
+    {
+        int held;
+        public void Hold(){held++;}
+        public int Now(int tick){return tick+held;}
+        public void Reset(){held=0;}
+    }
+
+    // RETOUCH 4 roll dust: soft ground puffs (earth/bone dust, normal alpha) instead of 2-6 px square specks.
+    // Start: kicked up behind the feet against the roll direction; end: settles around the feet; during the roll a
+    // small trailing puff every 4 ticks. Peak alpha stays at or below .42 so bullets and enemy tells read through it.
+    public sealed class CombatRollDust
+    {
+        public sealed class Puff {public int Delay,Life;public double Dx,Dy,Size,Peak,Shade;}
+        public const int TrailEvery=4;
+        public static Puff[] Burst(FeedbackEvent e,int seed) {
+            var rng=new Random(seed);bool start=e.Step==0;int n=start?3:2;var puffs=new Puff[n];
+            for(int i=0;i<n;i++) {
+                double a=start?e.Angle+Math.PI+(rng.NextDouble()-.5)*1.4:rng.NextDouble()*Math.PI*2,travel=start?14+rng.NextDouble()*10:8+rng.NextDouble()*6;
+                puffs[i]=new Puff{Delay=i,Life=start?26+rng.Next(9):22+rng.Next(7),Dx=Math.Cos(a)*travel,Dy=Math.Sin(a)*travel,
+                    Size=start?30+rng.NextDouble()*10:26+rng.NextDouble()*8,Peak=start?.42:.36,Shade=rng.NextDouble()};
+            }
+            return puffs;
+        }
+        public static bool Trail(int rollAge){return rollAge>0&&rollAge%TrailEvery==0;}
+        public static Puff TrailPuff(int seed) {
+            var rng=new Random(seed);double a=rng.NextDouble()*Math.PI*2;
+            return new Puff{Life=20+rng.Next(7),Dx=Math.Cos(a)*4,Dy=Math.Sin(a)*4,Size=18+rng.NextDouble()*6,Peak=.26,Shade=rng.NextDouble()};
+        }
+        public static double Alpha(Puff p,double age) {
+            double t=age-p.Delay;if(t<0||t>=p.Life)return 0;
+            return p.Peak*(t<3?t/3:Math.Pow((p.Life-t)/(p.Life-3.0),1.5));
+        }
+        public static double Width(Puff p,double age){return p.Size*(1+.8*Math.Min(1,Math.Max(0,age-p.Delay)/p.Life));}
+        public static double Travel(Puff p,double age){double t=Math.Min(1,Math.Max(0,age-p.Delay)/p.Life);return 1-(1-t)*(1-t);}
     }
 
     // Presentation-only clock and fixed pool; the view owns eight reusable

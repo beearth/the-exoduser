@@ -51,7 +51,7 @@ Godot 4.7.2 stable, Node v24.15.0, acorn 8.16.0. 기존 테스트는 파일 상�
 | fdgCh2Stage4World | 7/0 | 7/0 |
 | 합계 | **40/1** | **40/1** |
 
-CH1 Stage1 World 실패는 저장된 bundle의 `source.main_sha=e556b617…`와 현재 `26c050a99…` 차이 1건이다. 기존 [CH2-02 보고서](ch2-02_REPORT.md)의 동일 테스트 출처 ref 실패 기록과 일치한다. 해당 검사/기대값은 수정하지 않았다. Node 5종 전체 PASS라고 보고하지 않는다. 실행 취소/skip은 전후 0이다.
+CH1 Stage1 World 실패는 저장된 bundle의 `source.main_sha=e556b617…`와 현재 `26c050a99…` 차이 1건이다. 기존 [CH2-02 보고서](../../../_archive/engine/orders/reports/ch2-02_REPORT.md)의 동일 테스트 출처 ref 실패 기록과 일치한다. 해당 검사/기대값은 수정하지 않았다. Node 5종 전체 PASS라고 보고하지 않는다. 실행 취소/skip은 전후 0이다.
 
 추가 검증:
 

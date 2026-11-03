@@ -368,7 +368,7 @@ VISUAL VERDICT: RETOUCH — 독립 조립 시연, 실제 게임 미검증. 회�
 |---|---|
 | 기준 | 승인 A2 woodbridge 이미지 직접 열람, 동일16:9 비교. 각도48.7014126°·거리14u 유지, FOV46.9453°·영웅2배·전방1.45u로 큰 전투 시야와 영웅 초점을 조정. 실제 시각 판정은 후속 캡처로 확정 |
 | 발 접지 | 원본 전사9시트의 알파>64인 발끝240프레임을 오프라인 측정해 같은 JSON에 저장. 투명 하단 여백만 제외, 런타임GPU readback0. 피벗/소스 그림·판정 크기 변경0 |
-| Space+이동 | 기존 어댑터는 스킬 키를 먼저 채워 구르기1회와 강타1회가 함께 발동·악의1000→990·gSlamWindup. `SetRollInput` 뒤 `SetSkillKeys`로 순서를 맞춰 구르기1회·시전0·악의1000·bladeDash. Core 수식 변경0 |
+| Space+이동 | 기존 어댑터는 스킬 키를 먼저 채워 구르기1회와 강타1회가 함께 발동·악의오브1000→990·gSlamWindup. `SetRollInput` 뒤 `SetSkillKeys`로 순서를 맞춰 구르기1회·시전0·악의오브1000·bladeDash. Core 수식 변경0 |
 | 연속 검수 | 기존13입력+이동Space 구르기=14항목, 고정60Hz 실행·3틱 간격20fps PNG. Ctrl150틱으로 자동파쇄·파편도 확인. batch는 동일 Remodel3DLate/Cinemachine ManualUpdate 후 실제 월드카메라 RT1600×900을 저장하며 HUD는 미포함 |
 | 시점 보정 | 첫 수정 fb88e95e는 조준최대0.03104px·나머지입력통과, 악의구는 Late 전 측정으로 매번고정0.300u 검사실패. 최종 검수는 Late 후 측정으로 수정. exit2/창·잔여·USER_SAVE0, 실패를 PASS로 바꾸지 않음 |
 
@@ -431,7 +431,7 @@ A2 이전824b67a99 실제빌드599c790b/M1dab0f945 23단계 통과, 촬영adc6e9
 
 ## 2026-10-31 HD-2D 방향 확정 — 현행 표현 전환
 
-[본 적용 계약](UNITY_HD2D_RUNTIME_20261031.md)에 따라 현재 후보는 픽셀 스프라이트를 기본으로 사용한다. NativeHeroView 3D 연결 코드는 보존하고 --legacy-models에서만 생성한다. 캐릭터만 원본 알파 발선·출력1화소 스냅·URP 조명·접지 그림자를 적용한다. 드루이드 원본 시트의 중복 additive 발광은 기본 해제한다. 아래의 과거 3D 후보 검수와 Desktop 영수증은 당시 입력의 이력이며 HD2D 후보의 검증을 대신하지 않는다. 현 후보 Player·공통통합·Desktop은 아직 미완이다.
+[본 적용 계약](UNITY_HD2D_RUNTIME_20261031.md)에 따라 현재 후보는 픽셀 스프라이트를 기본으로 사용한다. NativeHeroView 3D 연결 코드는 보존하고 --legacy-models 또는 --hero-render=rigpixel에서 생성한다. 캐릭터만 원본 알파 발선·출력1화소 스냅·URP 조명·접지 그림자를 적용한다. 드루이드 원본 시트의 중복 additive 발광은 기본 해제한다. 아래의 과거 3D 후보 검수와 Desktop 영수증은 당시 입력의 이력이며 HD2D 후보의 검증을 대신하지 않는다. 현 후보 Player·공통통합·Desktop은 아직 미완이다.
 
 
 ### 순수 HD-2D 985 같은빌드 재검수
@@ -480,10 +480,23 @@ Shore는 고정앵글러 주변을 피한 후 z−52~−42에서 다시28u 굽�
 
 ## 2026-11-02 Unity 설치형 지면 배치 후보
 
-사용자 요청으로 장판·지뢰·설치형 전체의 actor billboard/FootLift 오적용과 VfxWorld 지면 높이 미연결을 수정 중이다. 현재 후보는 실제 등록 바닥·목교·낮은 뿌리의 receiver depth와 scene depth가.02u 안에서 일치하는 픽셀에 원화/링을 투영한다. CPU 적응면은 실제제품 Late>=96초 지연으로 폐기하고 표시 update의Tessellate/대량GroundY 조회를 제거했다. 원화·합성수식·피해/반경/시간·공중/중심형·flat보스방은 유지한다. 원SkillAdditive/Ki shader는1403 byte이며 새전용shader만사용한다. 324 C# 정적오류0/경고477. Mac 첫 흙 실제 투영/독립깊이와1920원본을 확인했다. 기존mode2 weight차는 강제비등방성 footprint를 무시한bilinear 참조로 분리했고, 같은허용2/255의GPU gradient/RGBA 대조·전체 설치형/시각·통합/설치는 진행 중이다. 정확한 범위·원래실패·측정은 [설치형 지면 배치](UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)를 따른다.
+사용자 요청으로 장판·지뢰·설치형 전체의 actor billboard/FootLift 오적용과 VfxWorld 지면 높이 미연결을 수정 중이다. 현재 후보는 실제 등록 바닥·목교·낮은 뿌리의 receiver depth로 좌표를 복원하고 sceneEye+.02-receiverEye>=0인 픽셀에 원화/링을 투영한다. 11-03 20:20 수정은 A2RootSurface receiver raster Offset만 원본 Forward와 같은-1,-1로 맞춘다(그 외0). 전역2cm 차폐/법선.2/수신범위는 유지하며 경사 Metal 재검수 대기다. CPU 적응면은 실제제품 Late>=96초 지연으로 폐기하고 표시 update의Tessellate/대량GroundY 조회를 제거했다. 원화·합성수식·피해/반경/시간·공중/중심형·flat보스방은 유지한다. 원SkillAdditive/Ki shader는1403 byte이며 새전용shader만사용한다. 324 C# 정적오류0/경고477. Mac 첫 흙 실제 투영/독립깊이와1920원본을 확인했다. 기존mode2 weight차는 강제비등방성 footprint를 무시한bilinear 참조로 분리했고, 같은허용2/255의GPU gradient/RGBA 대조·전체 설치형/시각·통합/설치는 진행 중이다. 정확한 범위·원래실패·측정은 [설치형 지면 배치](UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)를 따른다.
 
 후속 실제161행은표시메타데이터/접지·UV실패0이나색상모델60행과ring정리1행FAIL을보존한다. 이미파괴된parent의orb.go에Reset이SetActive를호출한예외를확인해UnityGO생존검사guard를추가했다. 다음앱에서표적정리회귀·제품/clone/색상모델분리를검증하며공통설치/전체색상PASS는아직아니다.
 
 수명정정: statePassed161은표시메타데이터다. 정리예외로두수명행동의최종결과merge가미실행됐으므로pool행동완료PASS로간주하지않고, 수정앱에서원래두수명검사를별도완주·기록한다.
 
 최신 상태(2026-11-03): Mac 표적 정리/두수명행동·semantic 복원/동일앱 M1 23 통과는 후보 범위다. 사용자 PC 실행본131887780의 Runtime2bad5c6c8ace951017cee6c3673921692bc2a2a309ca5b5b0d23f1fbc471ff0a에는 접지 수정 타입 둘 다 없어 실제 전달 미완료를 확인했다. 최신 unity/main1d89b0c18와 정상 병합해 UI/사운드를 보존했으며, 새 실행본 검수·unity-latest 반영 뒤 다시 확인한다. 원full100/61·독립참조/미관측/oldref 한계는 그대로 보존한다.
+
+
+### 2026-11-03 P0 지면 장판 투영 연결
+
+3D 등록 지면 sprite/ring은 수신 투영 장애 시 원본 직립 카드를 다시 켜지 않는다. 2D 복귀는 이전 forceRenderingOff를 복원한다. 수면 color→실제 수신깊이 장판→transparent 배우/탄 순서이며, 실제A2 수면도 수신한다. vertex-colour 원형/부채/선형 예고는 기존 under 삼각형의 볼륨 투영만 사용한다. 판정은 Core 그대로이고 일반 카메라/배우 FootLift는 변경하지 않는다. [P0 계약·Mac 검수](UNITY_GROUND_AOE_P0_20261103.md). PC 컴파일 결과는 GPU·접지 PASS가 아니며 이 후속은 Mac 검수 대기다.
+
+### 공통 줄기 병합 보존 기록 — 이전 PC 후보·후속 검수 이력
+
+2026-11-03 실시간 리깅 픽셀 후보: [정확 렌더·검수 계약](UNITY_RIG_PIXEL_20261103.md). 기본 sprite는 유지하며 rigpixel은 R7 리그→정사영 Point RT→같은 Core 발밑 합성이다. 현재 구현·검수 진행이며 과거 3D 검수는 이 후보의 시각/성능 PASS가 아니다.
+
+## 2026-11-02 설치형 지면 배치 수정 진행
+
+사용자 요청은 장판·지뢰·덫·설치형 전체의 공중 배치 해소다. 11/03 PC 후보09192/Runtimesha b66fcf8c648d2f7ba126fe0fd14fe992c5a623c62798685e6a7b641a8e2c89d8 일반빌드오류0, 자동2D·별도명시3D M1 각각23/23·세이브0. 원본1x에서 붉은원이흙과목교상판에붙음을확인했다. 필수UI1395장교차후보147/누락0 FAIL과큰상세JSON소비자OOM으로배포회차ABORT, 사용자실행본131887/바탕화면unity-latest는아직미교체다. 기존스킬창·devtools담당의수정과새최종패키지검수·실제전달을계속한다. 실제3D근거/147원본/보고서/현재미검증범위는 [전용기록](UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)을따른다. SourceWindows후보상태·자연플레이·최종설치완료를혼동하지않고 원full100/61·독립색참조/미관측한계를보존한다. 현재기능후보RETOUCH이며 H5/Core전투수식은본변경범위밖이다.

@@ -1,3 +1,11 @@
+## 2026-11-02 — r3d 높이·가림 (기본 OFF)
+
+원본 MAP_OBJS 루프의 native painter를 재사용해 큰 나무·바위·벽·시체나무·제단 카드를 만들고 drawP 뒤 발 위치 순서로 합성한다. 가려지는 플레이어/적이 있으면 해당 물체만 .35, 앞쪽 인물·탄과 인물 바깥 native VFX/장판/경고/드롭의 실제 픽셀은 유지한다(R/G 가림 mask·환경 전후차). 기존 depthSlice의 .62+주인공 고스트는 r3d OFF 경로에서 그대로다. 원본 그림·충돌·보행·전투/저장 코드는 불변. [정확 수치·검수](WEB3D_TRIAL_20261031.md#2026-11-02-4라운드--높이가림-p0).
+
+## 2026-11-02 — 보물상자 크기·동적 몸통 충돌
+
+웹 본편 상자 표시64×64 CSSpx, 몸통44×24worldpx(반폭22/반깊이12). 닫힘/열림과 관계없이 미제거 chest를 `canMv`/`canMvBlink`에서 검사하고 플레이어 실제 이동 접점은 이전 좌표를 전달해 선분 관통을 막는다. 지형 `isW`/MAP_OBJS·bone/정적 nav·Q/E 수치는 보존한다. 수명·생성 겹침 탈출·전리품 자기 상자 제외·검수 근거는 [상자 최신 계약](TRIPO_CHEST_GAME_20261102.md)을 따른다. 기존 상자 비충돌 설명은 이 절로 대체한다.
+
 > 2026-10-16 통합 범위: 웹 본편 수치·현행은 최신 main 기준, 별도 Native/FDG 항목은 source pin9a4534b4의 부분 이식·명시 opt-in 계약이다. 전체 최신 본편 이식 완료가 아니다. 상세: docs/engine/FDG_PC_MAC_GIT_SYNC_20261016.md.
 
 ## 2026-10-08 — CH1-1 런타임 나무 층 + 시작 카메라 클램프
@@ -70,7 +78,7 @@ SSOT: [CH1_ROTTEN_FOREST_RUNTIME_TREES_PASS98_20261008.md](CH1_ROTTEN_FOREST_RUN
 
 정확API·28필드·296/4226값·원JSmerge/필터미완·nullmask외부쓰기한계는 [중앙 엔진 정본](../engine/FDG_ENGINE.md)의 「원본 OBJ metadata 실제 현재 소유·후처리 쓰기」를 따른다. 이전meta원writer4미연결은당시이력이다. MAP PRODUCTION REPORT: currentmetadata+flagwriteronly,geometry/nav/collision/placement/outermass/renderer변경0/CAMERA QA미실행/TECH새13scope만. **VISUAL VERDICT: RETOUCH.**
 
-> **2026-10-14 실제 Main 커튼 서비스:** 기존 HUD에 ART 원view를 hidden bind하고 실제900ms callback을 소비했다. 첫15 중14valid/1FAIL→실패only1clean(906ms callback1), 제품수리0·성공재연0. sourcecontroller/G.on/600frames/GPU/fullMain 미연결, shadow80px/z45 gap 유지. 함께Root G-only publicplanner9/292와 Startup 원producer14/791를 동결기술scope로 정상 보존하며 실제Gwriter/18fields 일괄ACK0. [Main 커튼 정본](../engine/FDG_GODOT_NATIVE_MAIN_INTRO_CURTAIN_FIRST_20261014.md).
+> **2026-10-14 실제 Main 커튼 서비스:** 기존 HUD에 ART 원view를 hidden bind하고 실제900ms callback을 소비했다. 첫15 중14valid/1FAIL→실패only1clean(906ms callback1), 제품수리0·성공재연0. sourcecontroller/G.on/600frames/GPU/fullMain 미연결, shadow80px/z45 gap 유지. 함께Root G-only publicplanner9/292와 Startup 원producer14/791를 동결기술scope로 정상 보존하며 실제Gwriter/18fields 일괄ACK0. [Main 커튼 정본](../_archive/engine/FDG_GODOT_NATIVE_MAIN_INTRO_CURTAIN_FIRST_20261014.md).
 
 # MAP RUNTIME ARCHITECTURE — EXODUSER: HELL LORD
 
@@ -123,7 +131,7 @@ kit builders (24417~24507)   ─┘        │
   | `4` | 바닥(1×1 fallback 전용) | `G.map=[[4]]` (25846), `_floorAt` (20548) |
   | `6` | 포탈/존 타일 | write 25032, read 35582 |
 - 에디터→게임 변환: `0=용암,1=바닥,2=벽,3=높은벽 → 게임 0=바닥,1=벽` (`24636`).
-- **Q1 답**: 이동가능(walkable) = `isW(px,py)===false` = 타일값 ≠ 1 AND CH1-1 authored hill cliff band 없음 AND bone-wall 없음 AND 충돌 MAP_OBJS 없음.
+- **Q1 답**: 정적 지형 통행 가능(walkable) = `isW(px,py)===false` = 타일값 ≠ 1 AND CH1-1 authored hill cliff band 없음 AND bone-wall 없음 AND 충돌 MAP_OBJS 없음. 실제 actor 이동은 추가로 `canMv`/`canMvBlink`의 미제거 상자 몸통을 통과하지 않아야 한다.
 
 ---
 
@@ -132,8 +140,8 @@ kit builders (24417~24507)   ─┘        │
 | 함수 | 라인 | 역할 |
 |---|---|---|
 | `isW(px,py,skipBone)` | 식별자 grep | 핵심 벽 판정: OOB→solid, 타일===1→solid, CH1-1 `_ch1HillBandBlocks`, `G._boneWalls` 링, 충돌메타 MAP_OBJS(`_colObjs`) |
-| `canMv(x,y,r)` | 25985 | 4코너 AABB `isW` |
-| `canMvBlink(x,y,r)` | 25988 | skipBone=1 |
+| `canMv(x,y,r,fromX=x,fromY=y,ignoreChest=null)` | 식별자 grep | 4코너 AABB `isW` + 동적 상자 몸통/선분. ignoreChest는 자기 전리품 경로에만 사용 |
+| `canMvBlink(x,y,r,fromX=x,fromY=y)` | 식별자 grep | skipBone=1 유지 + 동적 상자 몸통/선분 |
 | `_isWallTile(px,py)` | 25992 | **타일만** 판정(MAP_OBJS 무시) |
 | `_canMvTile(x,y,r)` | 25993 | 4코너 `_isWallTile` (적 밀어내기) |
 | `safePt(x,y,r)` | 25990 | 나선 탐색 최근접 walkable |
@@ -270,7 +278,7 @@ kit builders (24417~24507)   ─┘        │
 ## 11. 카메라 & 렌더 컬링 (Q7/Q8)
 
 - 카메라: `VW/VH`(3856/3932), 팔로우 29730–29742(룩어헤드 `P.v*25`, 보스 중간점, boss zoom 0.80), `[CAM-CLAMP]` 29743–29746(**zoom-aware 맵경계 클램프 → 코너 void 노출 방지**), 렌더보간 52219–52228, 월드 transform 43532.
-- 컬링: 적 AI ±300px(28577) / 적 draw pad 120~200px(44371) / 투사체 despawn 2500px(28771) / 타일 뷰포트 범위(43533) / 아이템 ±40~150px.
+- 컬링: 적 AI ±300px(28577) / 적 draw pad 120~200px(44371) / 투사체 원거리 despawn은 거리제곱6250000 초과 및 실제 가시 영역+100px 밖(2026-10-31; 기존28771은 옛 라인) / 타일 뷰포트 범위(43533) / 아이템 ±40~150px.
 - **Q7(스테이지를 더 큰 seamless로 만들 때 병목)**:
   1. `buildMapCache` 텍스처 크기 — `_shouldStreamMapCache`(20289)가 ≥1000²타일/>texLimit/>64Mpx에서 스트리밍 전환. 200×200=8000²는 이미 스트리밍/타일캐시 처리됨.
   2. **적 하드캡 700**(28487) — 대형 존일수록 밀도 분산 튜닝 필요.
@@ -542,3 +550,11 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 | FDG-TEX-ENTRY | index badge v0.17 / studio.js 및 이번변경8개파일의 관련 dependency query0.17.1. CSS0.16.1·다른 collision/adapter/height/physical/AST/World entry들은 기존값 유지. 독립 SourcePreviewRuntime 소비만 추가, game.html/본편save/combat/START/nav/geometry/sourcePNG 권위 변경0 |
 | FDG-TEX-ACCEPTANCE | 실제 revised entry/mid/summit/reopened 화면에서 위쪽soil·경사·어두운south옆면·발 높이와 외부 전경 보존 확인. **이번 높이 지형 노출 VISUAL PASS / 전체 production FAIL·UNADOPTED.** full assembly/native anchor/crop/origin/UV/물리Z·다른3재질·본편/관문/1-2·Windows/FPS/GPU는 미인수 |
 | FDG-TEX-EVIDENCE | 외부 E=engine-stage0-terrain-exposure-final. actual-terrain-*.revised.png / revised.qa.png, public-ui-trace.json, actual-terrain-reopened.revised-export.fdg.json, new-save-reopen-revised-contract-proof.json, terrain-exposure revised test receipts, pixel-preservation-revised-qa.json, engine-review.md. 첫 실패 증거 보존. own8code+1test+15docs=24 checkpoint, 공유Git rollback0/oldseal 재검사0 |
+
+
+## 2026-10-31 stage=0 초광폭 진입 계약
+
+stage=0은 실제 CH1-1 200×200 본편을 선택한다. 과거 55×31 원화 QA는 mapTest=1/v4 또는 stage=0&plate=prod, 36×27은 stage=0&plate=fieldone/v1로 명시한다. 작은 원화 판에는 production 청크와 8000px 좌표 나무를 섞지 않는다. 기존 전체 VW/VH 시야·카메라 클램프·geometry·충돌·스폰 예산·루트는 유지한다. [화면 밖 처리·실제 4해상도 검수](../12퍼포먼스·최적화/WORLD_ULTRAWIDE_20261031.md).
+
+
+2026-11-02 현행 화면 전환 정정: 과거 source 추적·검수 이력은 보존한다. 입장 고정1200ms 및 스테이지 고정5000ms를 공통 검정500ms/표시600ms와 실제 준비 대기로 교체했다. 영상 first-frame decode·마지막.6초/스킵, 기존 오디오 gain, 지연300ms 인장·초광폭 계약은 [전환 SSOT](../3.1%20ui%20hud%20디자인/SCREEN_TRANSITIONS_20261102.md)를 따른다. 게임 규칙·저장 identity·맵 geometry 변경은 없다.

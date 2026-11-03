@@ -19,6 +19,7 @@ namespace Exoduser.UnityPort.Core
         public string Col = "", ParryClass = "";
         public bool RedBean, BlackBean, Homing, Mine, ElemBall, DruidStraight, DruidPoison, DruidParryVolley, Commit, FireMagic, MissileTrail, Typed, Web, Active = true;
         // parry reflection (ParryReflect.cs): a reflected bullet is friendly and flies back as a blue bean
+        public bool WrongInputCounted;
         public bool Friendly, BlueBean, ParryBlueBean, Magic, FromRainbow, WaterBean, TitanEye, BwBean, GbBean;
         public double AoeR, AoeDmg;
     }
@@ -147,7 +148,9 @@ namespace Exoduser.UnityPort.Core
         // =====================================================================================================================================================
         public void TickWorld(bool bossAliveFlag)
         {
+            var telemetry=host as ICombatDamageTelemetry;telemetry?.DamageSource("proj");
             if (ProjectileFlight) UpdateProjectiles();
+            telemetry?.DamageSource("hazard");
             UpdateChaseAoes();
             UpdateFissures();
             UpdateTideWaves();
@@ -155,6 +158,7 @@ namespace Exoduser.UnityPort.Core
             UpdatePoisonPools();
             if (DruidStage && bossAliveFlag && !Remodel) { UpdateRhythmVolley(); UpdateOrbs(); }   // remodel: not among the 12 moves
             UpdateLavaPools();
+            telemetry?.DamageSource("boss");
         }
 
         void UpdateProjectiles()
