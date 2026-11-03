@@ -3,6 +3,7 @@
  <ItemGroup>
   <Compile Include="Program.cs"/><Compile Include="UnityStubs.cs"/>
   <Compile Include="../../Assets/Exoduser/Runtime/NativeFlavorSavePaths.cs"/>
+  <Compile Include="../../Assets/Exoduser/Runtime/NativeFlavorStorage.cs"/>
   <Compile Include="../../Assets/Exoduser/Runtime/NativeStageClearPresentation.cs"/>
   <Compile Include="../../Assets/Exoduser/Runtime/BuildFlavor.cs"/>
   <Compile Include="../../Assets/Exoduser/Runtime/NativeDemoEndText.cs"/>

@@ -1,3 +1,5 @@
+2026-11-04 02:20 순차 지시: 교체3 db26d55f6 공용빌드13f54a0b 1회는 sparse 루트 release-version.json 누락으로 실패, 재시도0·385설치 유지·Player/캡처0. 이후 F-1을 GUID staging/새 lease 생성자만 회수/Move 직전 source·staging 목록·크기 대조/tmp·bak-only 거부/OS메타 허용/TryResolve 실패 미캐시로 보강. 회귀38/38·계약6/6·동작64/64·독립프로세스7/7, 공용컴파일348efe7a 1회 오류0·USER_SAVE0. Mac 두 프로세스 fixture 인계·미판정. [교체 실패](engine/UNITY_DESKTOP_CTO_SWAP_20261104.md), [보강·Mac 명령](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).
+
 2026-11-04 F-1 02:25 제품 lease 부작용 수정: 충돌 staging 파일은 lease 생성 전 거부, 신규 lease만 CreateNew/DeleteOnClose·기존 lease는 Open/내용 불변. catch staging 정리·구형 staging 복구·잠금실패→해제→재시도·원본바이트/남의 폴더/기존 lease 보존30/30, 전체 계약6/6·동작58/58, 공용bin 컴파일31e88306 1회 exit0·compileErrors0·USER_SAVE0. Player/빌드/Desktop/Steam0. Mac demo sandbox 인자와 별도 격리 이전/lease 검수 인계, Mac 미판정. [근거·계약](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).
 
 2026-11-04 F-1 02:10 경로 키 통일: Snapshot 키 생성 한 곳에서 역슬래시를 슬래시로 변환, 제품 코드에 같은 키 비교 없음. 지정 테스트1회·25검사 통과 뒤 staging-file 충돌 거부가 새0바이트 lease를 만들어 전체 파일 집합 불변 검사 실패. 충돌 파일8바이트 preserve 유지 직접 확인. 지시대로 재실패 즉시정지, 전체 회귀/PC 컴파일0·Player0·Desktop0. [오류 원문·다음 검토](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).

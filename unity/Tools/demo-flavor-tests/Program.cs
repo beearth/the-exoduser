@@ -3,6 +3,7 @@ static class Program {
  static int count;static void Check(bool b,string message){if(!b)throw new Exception(message);count++;Console.WriteLine("PASS "+message);}
  static string Fixture(string root,string folder,string value){string p=Path.Combine(root,folder);Directory.CreateDirectory(p);p=Path.Combine(p,"marker.v1.json");File.WriteAllText(p,value);return p;}
  static string Prepare(string root,string ns,bool full,string old,bool qa=false){string target,error;if(!NativeFlavorSavePaths.TryPrepare(root,ns,full,old,qa,out target,out error))throw new Exception(error);return target;}
+ static void RejectsPromotion(string source,string stage,object snapshot,string message){bool rejected=false;try{typeof(NativeFlavorSavePaths).GetMethod("ValidateImport",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Static).Invoke(null,new[]{source,stage,snapshot});}catch(System.Reflection.TargetInvocationException e){rejected=e.InnerException is IOException;}Check(rejected,message);}
  static int Main(string[] args){try{
   string work=Path.GetFullPath(args[0]),resources=Path.GetFullPath(args[1]);
   // Caller supplies one dedicated fixture path. Never enumerate or touch persistent user data.
@@ -23,6 +24,12 @@ static class Program {
   foreach(var folder in new[]{"character-roster-v1","combat-save-v1","native-settings-v1"})Check(File.ReadAllText(Path.Combine(full,folder,"marker.v1.json"))==File.ReadAllText(Path.Combine(old,folder,"marker.v1.json")),"migration bytes preserved "+folder);
   Check(File.ReadAllText(roster)=="roster-7"&&File.ReadAllText(combat)=="combat-99"&&File.ReadAllText(settings)=="settings-2","legacy source remains unchanged");
   Check(!File.Exists(Path.Combine(full,"Player.log")),"Unity log is never imported");
+  var snapshot=typeof(NativeFlavorSavePaths).GetMethod("CaptureStores",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Static).Invoke(null,new object[]{old});
+  string copied=Path.Combine(full,"character-roster-v1","marker.v1.json");byte[] copiedBytes=File.ReadAllBytes(copied);
+  File.Delete(copied);RejectsPromotion(old,full,snapshot,"promotion rejects a missing copied file");File.WriteAllBytes(copied,copiedBytes);
+  File.AppendAllText(copied,"changed-size");RejectsPromotion(old,full,snapshot,"promotion rejects staging size mismatch");File.WriteAllBytes(copied,copiedBytes);
+  string added=Path.Combine(old,"combat-save-v1","added.json");File.WriteAllText(added,"new");RejectsPromotion(old,full,snapshot,"promotion rejects source file-set change");File.Delete(added);
+  string temp=Path.Combine(full,"combat-save-v1","inflight.tmp");File.WriteAllText(temp,"inflight");RejectsPromotion(old,full,snapshot,"promotion rejects a staging tmp");File.Delete(temp);
   Fixture(full,"character-roster-v1","new-save");Prepare(root,"EXODUSER-HELL-FULL",true,old);
   Check(File.ReadAllText(Path.Combine(full,"character-roster-v1","marker.v1.json"))=="new-save","existing canonical save is never overwritten");
   string qaRoot=Path.Combine(work,"qa");string qa=Prepare(qaRoot,"EXODUSER-HELL-FULL",true,old,true);
@@ -38,6 +45,10 @@ static class Program {
   Check(!NativeFlavorSavePaths.TryPrepare(root,"../escape",true,old,false,out dir,out err),"namespace traversal rejected");
   using(var locked=new FileStream(roster,FileMode.Open,FileAccess.ReadWrite,FileShare.None))Check(!NativeFlavorSavePaths.TryPrepare(Path.Combine(work,"busy"),"EXODUSER-HELL-FULL",true,old,false,out dir,out err),"active legacy writer blocks import");
   Check(File.ReadAllText(roster)=="roster-7","failed import leaves source unchanged");
+  string cacheRoot=Path.Combine(work,"cache","official"),cacheLegacy=Path.Combine(work,"cache",NativeFlavorSavePaths.LegacyProductName);Directory.CreateDirectory(cacheRoot);Fixture(cacheLegacy,"character-roster-v1","cached-source");
+  UnityEngine.Application.persistentDataPath=cacheRoot;BuildFlavor.Override(BuildFlavor.Kind.Full);
+  using(var lease=new FileStream(Path.Combine(cacheRoot,".EXODUSER-HELL-FULL.legacy-import.lock"),FileMode.CreateNew,FileAccess.ReadWrite,FileShare.None))Check(!NativeFlavorStorage.TryResolve(out dir),"TryResolve rejects lease contention");
+  Check(NativeFlavorStorage.TryResolve(out dir)&&File.ReadAllText(Path.Combine(dir,"character-roster-v1","marker.v1.json"))=="cached-source","TryResolve retries same root after contention ends, without cached failure");
   BuildFlavor.Override(BuildFlavor.Kind.Demo);
   Check(BuildFlavor.Current.DemoEndAtStage(0)&&!BuildFlavor.Current.DemoEndAtStage(1),"demo stage-0 end threshold unchanged");
   for(int i=0;i<LobbyLanguage.Count;i++){string code=LobbyLanguage.GetCode(i);Check(!string.IsNullOrWhiteSpace(BuildFlavor.Current.DemoEndSub(code))&&!string.IsNullOrWhiteSpace(BuildFlavor.Current.DemoEndButton(code))&&!string.IsNullOrWhiteSpace(NativeDemoEndText.ForLocale(code).demoWishlist),"actual flavor API locale "+code);}

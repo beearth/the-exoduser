@@ -1,3 +1,15 @@
+# 11-04 02:20 Desktop 3회차 — db26d55f6 빌드 실패·385 유지
+
+정확한 source db26d55f6ea737dfcbbe69b5c7320b6177e477a4에서 CTO 지정 예외②로 공용 bin 빌드1회 시도(13f54a0b). `ReleaseMetadataSync.Copy`가 sparse checkout의 누락된 루트 `release-version.json`을 읽다가 FileNotFoundException을 내어 BuildPipeline 이전에 종료했다. exit2·compileErrors0·userSaveChanged0. 사전 컴파일87d37361 성공은 패키지 성공이 아니며 대체 증거로 사용하지 않는다.
+
+지시대로 재시도0, Windows 패키지 생성0·Player0·스모크/디자인캡처0·설치0. 기존 build/build_prev/build-commit.json/바탕화면 바로가기에는 쓰지 않았고 설치 메타데이터385e76ce1 유지. 디스크의 exe를 실행하지 않았으므로 새 실행본 PASS나 교체 완료를 주장하지 않는다. 타인 Unity 큐는 기다렸으며 종료하지 않았다. 소유 자동생성 button_iron.meta만 원복하고 자기 브랜치로 복귀했다.
+
+오류 원문: `FileNotFoundException: Could not find file "G:\exoduser-wt\codex-unity-uisound\release-version.json"` (ReleaseMetadataSync.cs:13 → PortVerification.cs:240). 다음 CTO 재지시 시에는 빌드 전 ReleaseMetadataSync의 루트 입력 파일을 sparse 목록에 포함해 확인한다. 이번에는 파일을 보완해 재빌드하지 않았다.
+
+로그: `I:/EXODUSER-Storage/unity-jobs/codex-unity-uisound/logs/13f54a0b.log`, 공용 결과 `done/13f54a0b.json`. 1920/3840 실제 호버 포함 디자인 수집은 패키지가 없어 미수행이다. 이후 별도 지시 F-1 보강·문구 수정으로 진행하며 Desktop 실패 상태를 보존한다.
+
+---
+
 # 11-04 00:00 Desktop 2회차 — eaf67fae9 거부·385e76ce1 원복
 
 지정 source **eaf67fae9c790c04d3e36c7301b1c41edcdf1823**에서 Windows 빌드1회를 만들었다. 필수 스모크가 실패해 설치를 거부하고 **385e76ce1cfed6dc2a2b5401d1cdb7d4426e6d15**로 원복했다. 작업본은 codex/unity-demo-flavor-20261103 @6788561bee로 돌아왔으며 런타임 소스 변경·재빌드는 없다.

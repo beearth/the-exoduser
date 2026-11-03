@@ -20,7 +20,8 @@ static class ImportRecoveryTests
    string source=Path.Combine(work,"legacy");
    Put(source,"character-roster-v1/characters.v1.json","{\"revision\":7,\"names\":[\"preserve\"]}");
    string combat=Put(source,"combat-save-v1/save-41.v1.json","{\"revision\":19,\"hp\":37}");
-   Put(source,"native-settings-v1/settings.v1.bak","{\"revision\":5,\"sfxPercent\":61}");
+   Put(source,"native-settings-v1/settings.v1.json","{\"revision\":5,\"sfxPercent\":61}");
+   Put(source,"native-settings-v1/settings.v1.bak","{\"revision\":4,\"sfxPercent\":60}");
    var original=Snapshot(source);string dir,error,root=Path.Combine(work,"locked-source");
    // Lock the second store, after the roster has already been copied. Reads remain
    // available for byte comparison while the import's read-only share rejects us.
@@ -49,6 +50,7 @@ static class ImportRecoveryTests
    using(var writer=new FileStream(Path.Combine(busy,"."+Ns+".legacy-import.lock"),FileMode.OpenOrCreate,FileAccess.ReadWrite,FileShare.None))Check(!Prepare(busy,source,out dir,out error),"active import lease blocks cleanup");
    Unchanged(Stage(busy),busyBefore,"other importer staging preserved");Check(Prepare(busy,source,out dir,out error),"released lease allows recovery");
    Check(File.ReadAllText(existingLease)=="other-importer-lease","preexisting lease file and its bytes never deleted or changed");
+   Unchanged(Stage(busy),busyBefore,"opening preexisting lease never reclaims abandoned staging");
    string fileBusy=Path.Combine(work,"other-file-writer");string stageFile=Put(Stage(fileBusy),"character-roster-v1/characters.v1.json","partial");var fileBusyBefore=Snapshot(fileBusy);
    using(var writer=new FileStream(stageFile,FileMode.Open,FileAccess.ReadWrite,FileShare.None))Check(!Prepare(fileBusy,source,out dir,out error),"active staging-file writer blocks cleanup");
    Unchanged(fileBusy,fileBusyBefore,"staging-file lock preserves complete save folder without lease residue");Check(Prepare(fileBusy,source,out dir,out error),"released staging-file writer allows recovery");
@@ -56,6 +58,21 @@ static class ImportRecoveryTests
    Check(Prepare(valid,source,out dir,out error),"existing destination wins over leftover staging");Unchanged(valid,validBefore,"valid destination and leftover staging unchanged");
    string fileConflict=Path.Combine(work,"file-conflict");Put(fileConflict,Ns+".legacy-import","preserve");var conflictBefore=Snapshot(fileConflict);
    Check(!Prepare(fileConflict,source,out dir,out error),"staging file fails closed");Unchanged(fileConflict,conflictBefore,"staging file preserved");
+   string metadata=Path.Combine(work,"metadata");Put(Stage(metadata),"character-roster-v1/partial.json","partial");
+   foreach(string name in new[]{".DS_Store","Thumbs.db","desktop.ini"})Put(Stage(metadata),name,"os metadata");
+   Check(Prepare(metadata,source,out dir,out error)&&!Directory.Exists(Stage(metadata)),"new lease owner reclaims staging containing OS metadata");
+   string abandonedGuid=Path.Combine(work,"abandoned-guid"),guidStage=Path.Combine(abandonedGuid,Ns+".legacy-import-0123456789abcdef0123456789abcdef");Put(guidStage,"character-roster-v1/partial.json","partial");
+   Check(Prepare(abandonedGuid,source,out dir,out error)&&!Directory.Exists(guidStage),"new lease owner reclaims well-formed abandoned GUID staging");
+   string backupOnly=Path.Combine(work,"backup-source");Put(backupOnly,"character-roster-v1/only.bak","backup");
+   Check(!Prepare(Path.Combine(work,"backup-destination"),backupOnly,out dir,out error),"backup-only source store cannot be promoted");
+   string temporary=Put(source,"combat-save-v1/inflight.tmp","inflight"),tempRoot=Path.Combine(work,"temporary-source");
+   Check(!Prepare(tempRoot,source,out dir,out error)&&!Directory.Exists(Path.Combine(tempRoot,Ns)),"in-flight source tmp prevents promotion");File.Delete(temporary);
+   string observedName=null;string observeRoot=Path.Combine(work,"guid-observation");Directory.CreateDirectory(observeRoot);
+   using(var observed=new System.Threading.ManualResetEventSlim())using(var watcher=new FileSystemWatcher(observeRoot,Ns+".legacy-import*")){
+    watcher.NotifyFilter=NotifyFilters.DirectoryName;watcher.Created+=(s,e)=>{observedName=e.Name;observed.Set();};watcher.EnableRaisingEvents=true;
+    Check(Prepare(observeRoot,source,out dir,out error),"GUID observation import succeeds");
+    Check(observed.Wait(2000)&&observedName.StartsWith(Ns+".legacy-import-",StringComparison.Ordinal)&&Guid.TryParseExact(observedName.Substring((Ns+".legacy-import-").Length),"N",out _),"each import creates a uniquely named GUID staging directory");
+   }
    Unchanged(source,original,"all scenarios preserve original file set and bytes");
    Console.WriteLine("PASS "+checks+" import-recovery checks");File.WriteAllLines(Path.Combine(work,"result.txt"),results);return 0;
   }catch(Exception ex){Console.Error.WriteLine("FAIL after "+checks+" checks: "+ex.Message);return 1;}

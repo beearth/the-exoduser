@@ -14,7 +14,7 @@ namespace Exoduser.UnityPort
    string ns=flavor.SaveNamespace;
    if(string.IsNullOrEmpty(ns))ns="EXODUSER-HELL-"+flavor.Name.ToUpperInvariant();
    string key=root+"|"+ns;
-   if(cachedKey!=key){
+   if(cachedKey!=key||!cachedOk){
     cachedKey=key;string error;string[] legacy=new string[0];
     // Derive from Unity's actual path; never guess its sanitized official product folder.
     if(!qa)legacy=NativeFlavorSavePaths.LegacyRoots(root,Application.companyName,Application.platform==RuntimePlatform.OSXPlayer||Application.platform==RuntimePlatform.OSXEditor);

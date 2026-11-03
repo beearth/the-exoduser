@@ -1,4 +1,30 @@
-# F-1 staging 복구 — 02:25 lease 부작용 제품 수정 (2026-11-04)
+# F-1 staging 복구 — 02:20 보강 PC 검증 (2026-11-04)
+
+**최신: GUID staging·소유 회수·승격 전 대조·경합 재시도 보강. 지정38/38·전체 계약6/6/동작64/64·두 프로세스7/7, PC 공용 컴파일348efe7a 1회 오류0·USER_SAVE0. Mac 미판정.**
+
+## 02:20 보강 결과
+
+- 최신 origin/unity/main6ef1899cb를 자기 브랜치에 병합했다(0029545ea). Desktop 교체3은 정확한db26d55f6에서 빌드1회 시도했으나 ReleaseMetadataSync가 sparse checkout에 없는 release-version.json을 읽다 실패했다(13f54a0b, exit2·컴파일오류0). 지정된 재시도0을 지켜 설치385e76ce1 유지, Player/디자인캡처0. 이는 별도 [교체 기록](UNITY_DESKTOP_CTO_SWAP_20261104.md)과 DEFECTS/REPORT에 기록한다.
+- staging은 `<target>.legacy-import-<GUID N>`으로 매 호출 고유하다. catch는 자기 GUID 폴더만 정리한다. 구형 고정 staging과 형식이 맞는 버려진 GUID staging은 lease를 CreateNew한 호출만 회수한다. 기존 lease Open은 회수 소유로 보지 않고 기존 staging을 보존한다.
+- `CaptureStores`로 store/파일 목록과 크기를 처음 기록하고, Move 직전에 source 재관측 및 staging을 각각 같은 목록/크기와 대조한다. 누락·크기차·복사 중 새 source 파일·store의 .tmp·.bak만 있는 store는 승격하지 않는다. 원본은 쓰지 않는다.
+- `.DS_Store`·`Thumbs.db`·`desktop.ini`는 staging 정리 시 허용한다. 나머지 미지 데이터·하위 폴더·링크·활성 writer는 보존하고 실패한다. `NativeFlavorStorage`는 실패를 캐시하지 않아 같은 root/ns의 다음 TryResolve가 lease 경합 해제 후 재시도한다.
+- 수정 전 확장 회귀는 기존 lease Open이 구형 staging을 지운 지점에서 RED였다. 수정 후 지정38/38, 전체 계약6/6·동작64/64. 마지막 원본 파일 집합/바이트 불변, 승격 전 누락/크기/source 목록변경/tmp 거부, 같은 TryResolve 경합 후 성공을 확인했다. 같은 실패 재발0.
+- 독립 프로세스 fixture7/7: 한 프로세스가 실제 배타 lease를 잡은 동안 다른 프로세스의 import가 차단되고 staging을 보존한다. 해제 후 별도 프로세스가 회수/이전 성공, 원본/목적 bytes 일치·신규 lease 잔류0. Windows에서1회 실행했다.
+- PC 공용 bin `PortVerification.CheckCorePresence` 1회 통과: job348efe7a, ok/exit0·compileErrors0·userSaveChanged0, Unity6000.6.7f1 및 종료 확인. errorLogs2는 컴파일 오류와 구분한다. source 변경 이후 Player/추가 빌드0.
+
+Mac 검수 명령(.NET SDK8, 별도 격리 경로만 사용):
+
+```text
+dotnet run --project <repo>/unity/Tools/demo-flavor-tests/ImportConcurrentTests.csproj -- <repo>/unity/Library/f1-two-process-fixture
+```
+
+한 fixture가 lease-holder/importer 두 프로세스를 띄우며 실제 사용자 저장은 사용하지 않는다. Mac 파일 공유/메타파일 동작 및 Unity 런타임은 아직 미검증이다. Player UI 인자는 `--unity-build-flavor demo --unity-mute --unity-qa-sandbox <빈 절대 경로>`이며 sandbox는 legacy 이전을 생략하므로 위 직접 IO fixture와 구분한다.
+
+증거: 레인 f1-tests/result.log·full-regression.log·concurrent.log, 공용 done/348efe7a.json·logs/348efe7a.log. 테스트 바이너리/fixture는 확인 후 정리한다.
+
+---
+
+## 02:25 이력 (아래는 당시 상태)
 
 **최신 상태: 지정 회귀 30/30, 전체 flavor 계약 6/6·동작 58/58 통과. PC 공용 bin 컴파일 1회 통과(31e88306, 오류0·USER_SAVE0), Mac 런타임 검수 대기.**
 
