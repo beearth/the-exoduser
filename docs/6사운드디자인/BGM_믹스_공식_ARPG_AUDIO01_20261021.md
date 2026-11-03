@@ -52,4 +52,4 @@
 
 ## 2026-10-21 INTEG-6c 후속 계약
 
-INTEG-6c에서 PC boss BGM3baceb734를 merge. 새 데모boss곡 −12.4LUFS와 기존 Music boss−7dB/필드−14dB·간헐120~180초/휴지20~40초·duck−5dB는 서로 다른 경계이며 기존 믹스 구현·수치 무변경. 최종 AUDIO-0130/0·41 66/0·catalog18/0(CoreAudio), 실제 청음 미검수. 로컬override는 이제 untracked/ignored이며 청음 후 원존재/byte로 복원한다. 상세·실패이력·한계: [INTEG-6c](../engine/INTEG6C_REGRESSION_20261021.md).
+INTEG-6c에서 PC boss BGM3baceb734를 merge. 새 데모boss곡 −12.4LUFS와 기존 Music boss−7dB/필드−14dB·간헐120~180초/휴지20~40초·duck−5dB는 서로 다른 경계이며 기존 믹스 구현·수치 무변경. 최종 AUDIO-0130/0·41 66/0·catalog18/0(CoreAudio), 실제 청음 미검수. 로컬override는 이제 untracked/ignored이며 청음 후 원존재/byte로 복원한다. 상세·실패이력·한계: [INTEG-6c](../_archive/engine/INTEG6C_REGRESSION_20261021.md).

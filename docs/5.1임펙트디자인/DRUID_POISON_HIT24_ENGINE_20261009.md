@@ -17,7 +17,7 @@
 | 첫 프레임 경계 | producer 뒤 같은 update에서 age1이 될 수 있다. 24원화·통제age0 셀 검수는 실제 정상 첫 셀0 표시를 보장하지 않음 |
 | splash 종료 | burst=max(0,1-age/24); burst>0일 때만 새셀1회. loopfalse의 마지막hold를24틱 뒤까지 표시하지 않음 |
 | 크기·alpha | grow=1-(1-min(1,age/10))³; size=r×(.72+.32×grow), r120 폭86.4→124.8. squarecrop 높이=size. alpha=.9×burst², lighter/filter none 유지 |
-| 폴백 | new 미준비·실패 시 기존 Poison_MediumImpact 첫8셀·4×4/512². frame=min(7,age/24×7), lo=floor(frame), mix=frame-lo, lo/lo+1 가중1-mix/mix·셀7clamp·최대2draw·inset1. 두image실패는 splash만생략 |
+| 폴백 | new 미준비·실패 시 기존 Poison_MediumImpact 첫8셀·4×4/512²(시트 내용은 2026-10-27 3묶음 A안 교체(VFX_LEAD_MASTER §3.7)로 독 램프 재채색본, 파일명·격자 동일). frame=min(7,age/24×7), lo=floor(frame), mix=frame-lo, lo/lo+1 가중1-mix/mix·셀7clamp·최대2draw·inset1. 두image실패는 splash만생략 |
 | 잔향 | r120/mt72/pool12; p=min(1,age/mt), fade=(1-p)². 작은핵 fade×.16, 최대6파편 fade×.48, 첫5틱섬광, 원래arms12·RNG48회/전투/피해/중독/Q전용blackBean/E불가/SFX/save 보존 |
 | 상태 | 입력b/t/mt/r/x/y finite 및 mt/r>0, p>=1출력0. save/try/finally/restore; 렌더 입력 변경·난수·wallclock0 |
 | 기존 자산 | 원Poison_MediumImpact 및 다른보스/탄/외형/원PNG/scene/nav/LOCK 불변. 기존8셀59조건/native 결과는 이전 unit 이력 |

@@ -62,7 +62,7 @@
 2. W13 다수 영혼은 인물 가독성 보완이 필요하다. W15 분노·억울함·상실, 초반 배우/화풍과 가족 연결 단서도 위 감사표의 보완 대상으로 남는다.
 3. 대사를 유지할지 함께 수정할지 사용자 선호 질문은 미응답. 이번에는 원문을 보존했다. 학살·킬루 구간을 간접 연출이나 대사 변경으로 완성하려면 구체적인 대체안을 별도로 정해야 한다.
 
-근거: [v9 편집](WARINTRO_LAST_SHOT_V9_20260909.md), [v10 재제작·거절 기록](WARINTRO_CONSEQUENCE_V10_20260909.md). 생성·대조판·합본 경로: `output/cinematic/warintro_remaster_20260909/dialogue_audit_v11/`.
+근거: [v9 편집](../_archive/cinematic/WARINTRO_LAST_SHOT_V9_20260909.md), [v10 재제작·거절 기록](WARINTRO_CONSEQUENCE_V10_20260909.md). 생성·대조판·합본 경로: `output/cinematic/warintro_remaster_20260909/dialogue_audit_v11/`.
 
 2026-09-10 후속: 사용자가 그림자 간접 연출을 제안했고 [v12](WARINTRO_SHADOW_V12_20260910.md)에서 W09를 교체했다. 위 표와 미해결 목록은 v11 감사 이력이며 현재 W09 상태는 v12 기록을 따른다.
 

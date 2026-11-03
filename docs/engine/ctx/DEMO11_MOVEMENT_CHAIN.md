@@ -21,7 +21,7 @@
 
 ## 관련 docs
 
-- `docs/engine/DEMO11_COMPLETION_GAP_20261021.md` D09–D11
+- `docs/_archive/engine/DEMO11_COMPLETION_GAP_20261021.md` D09–D11
 - `docs/engine/FDG_SOURCE_TRACE_SKILLS_20261020.md` §1, §4 SK-S08
 - `docs/2_3 돌진+패링+방패시스템/` (보호)
 

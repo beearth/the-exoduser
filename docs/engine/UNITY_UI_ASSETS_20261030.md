@@ -132,20 +132,26 @@
 
 ### 최우선 타이틀 실제 마감 근거
 
+최신 사용자 지시의 첫 화면 마감 단위는 일반 바탕화면 `지옥의 길 (Unity)`에 전달했다. H5 코드가 Unity에 섞이지 않으며 main에는 이 검수 문서만 반영한다.
+
 | 항목 | 정확 후보·결과 |
 |---|---|
-| 제품 입력 | 7eacb120b016008b219a039588ce396dc5f917e8, Unity tree a3e6ed33bfd313c5b8fa78103fea14ee1cbdadd3 |
+| 제품 입력 | 7eacb120b016008b219a039588ce396dc5f917e8, Unity 공통 6a196f4840e574c4dce55f0d1c3bdf7b932ff19b, 동일 Unity tree a3e6ed33bfd313c5b8fa78103fea14ee1cbdadd3 |
 | 빌드 | 510c4322,6000.6.7f1 Win64 x64,Succeeded/errors0 |
-| 첫인상 | 790d5292,21/21,일반판3행·5직업·안내4단계·인장1920/3840 |
+| 첫인상 | 790d5292,21/21,일반판3행·5직업·안내4단계·인장1920/3840,지원문자 누락0,원화/영상·이름 검증 |
 | 전체M1 | 53970f75,23/23·32프레임,실제 NativeGame/API·가속 Simulation.Tick이며 OS손조작 아님 |
 | 키·첫 흐름 | 8211c6e7,Up/Down/W/S 순환·기타키무시·Enter→인장→WorldIntro·Escape5초→Lobby. 자연 영상 끝까지 시청과 별개 |
-| 실행 안전 | 세 Player 모두D3D11 RX9070XT·정상종료0·사용자창0·잔여0·USER_SAVE0 |
+| 실행 안전 | 세 Player 모두D3D11 RX9070XT·정상종료0·사용자창0·잔여0·USER_SAVE0,인장32:9 바깥RGB0 |
+| 원화 | 인장/눈로고/로비 ENTER/안내 판·버튼/5직업 기존 영상·공통 은빛 판·유니크27·원형 미니맵·ward 지뢰, 새 원화 생성0 |
+| 전달 | 일반 지옥의 길 (Unity).lnk 네속성·정확Managed SHA 독립readback. 미리보기 링크·기존실행창·사용자세이브 보존 |
 | Runtime SHA256 | 3b3c61e4f9e45ab5108295437e4f60e20bb2d128bc9ed721f7c17bd344724742 |
 | Core SHA256 | b3f0374290192fee3d81339641f7d4e5e1014bd47c7201548a40d8316cf228ce |
 | 웹 비교 | d22ce8bd1 제작 후보에 동일 은빛 수정만 적용. 일반판 빌드타깃을 맞춘1920 원본+1x,레이아웃/원화 변경 없는 QA 타이틀 노출 훅. 페이지 오류0 |
 | 직접 판정 | 메뉴 글자 매몰·붉은 띠/점 핵심 결함 해소. 같은 크기 구도/행/서체/색의 큰 차이0, 글리프 래스터/70ms 선택시간 등 미세 차이는 남음. 전체게임/실시간3D무대는 RETOUCH 유지 |
 
-근거 폴더: I:/EXODUSER-Storage/demo-art/unity-ui/title-priority-2026-10-30T01-19-03-079Z/. 타이틀 title_lobby_compare_title_1920.png·title_lobby_compare_menu_1x.png를 직접 확인했다. H5 코드 후보는 main 게시와 구분하며 정상 공통 소스·일반 바로가기 최종 readback은 같은 폴더의 전달 영수증으로 확인한다.
+근거 폴더: I:/EXODUSER-Storage/demo-art/unity-ui/title-priority-2026-10-30T01-19-03-079Z/. 타이틀 title_lobby_compare_title_1920.png·title_lobby_compare_menu_1x.png를 직접 확인했다. H5 코드 후보는 main 게시와 구분하며 정상 공통 소스·일반 바로가기 최종 readback은 같은 폴더의 전달 영수증으로 확인한다. 기존 공통 창/유니크/지뢰 검수는 candidate10-common/18b894c4이며 이후 관련소스·자산불변, 새 Runtime 전체M1과 구분해 재사용한다. H5 동일 타이틀 수정d22ce8bd1은 별도 제작브랜치로 main코드 반영 대기다. Mac checkout·손조작·실시간3D 직업 무대·전체아트·Steam배포는 이번 전달과 별개다.
+
+상세 메뉴 계약은 [타이틀 메뉴](UNITY_TITLE_MENU_20261028.md), Unity 줄기의 전체 자산 계약은 커밋 6a196f4840e574c4dce55f0d1c3bdf7b932ff19b의 같은 이름 문서다. 실제 원화 참조146개/동일바이트82를 보유·파생·숨은구형·기능미이식으로 구분한다. 26폴더 상태표와 미채택4후보 격자/USER_CONFIRM은 I:/EXODUSER-Storage/demo-art/unity-ui/에 있다. 승인 없는 아트·거절된 안·참고 PNG 새반입0.
 
 
 ## UI 2단계 로비·캐릭터 선택 UI 후보
@@ -267,3 +273,5 @@ HUD 후보를 보존본 SHA 대조 후 복원했다. 새 제품에는 검수 종
 | 검수 | 보조 메뉴→실제 종료확인→Back복귀·정상ESC설정/틱정지→재개 각2해상도8검사. 로비 KO/EN 모달은 종료 없이 강제상태 렌더, 물리 입력 근거 아님 |
 
 HUD의 미착수 빌드 대기 한 건만 취소하고(타팀 잠금 보존), 남은 세 화면은 같은 최종 바이너리에서 각자 실제 화면·1x·회귀를 검수한다. 같은 소스/바이너리의 공통 M1 근거를 재사용하며 종료 안전 실패는 별도 유지한다. 아직 공통 반영·시각 PASS 전이다.
+
+2026-10-30 위 후속UI는 진입 복구10c49850f에 포함되어 공통 반영됐다. 실제90장·M123/23·HUD24PNG/8검사 및 추가일시정지메모리게이트미실행은 UNITY_UI_PHASE2_20261030.md 최신절과 entry-flow/REPORT.md를 따른다. 전체UI/환경RETOUCH 유지.

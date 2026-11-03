@@ -1,5 +1,8 @@
 # 로비·내러티브 원본 추적·작은 이식 단위 — 2026-10-20
 
+> 2026-10-27 갱신: 아래 로비 경로·캐시 행은 2026-10-20 추적 당시 스냅샷이다. 현재 웹 전사 영상은 `video/warrior_story_v23_clean.mp4?v=20261027-killu-bloodtears-v3`(SHA-256 `8b8248424b63d808dc225576fda44e39d459709963f97923ffaa38a51dba28ab`)다. `index.html` 스크립트 캐시도 같은 토큰이며 29언어 VTT·22큐는 유지한다.
+
+
 ## 0. 기준·소유·판정
 
 | 항목 | 확인값 / 경계 |
@@ -916,4 +919,9 @@ I 전체 src/href/data-src/poster 및 assets/img/video/bgm/sfx/sprites 상대 �
 
 ## 2026-10-21 DEMO11-07 현재 연결 범위
 
-DEMO11-04 로비의 char0 metadata 생성 성공 → active 슬롯 readback → 기존 character 선택 인터페이스 → DEMO11-08 INTRO를 연결했다. 이름/4캐릭터 잠금과 기존 cutsceneDone runtime flag 경계만 포함한다. 저장된 Player 복원·미동기화 game save의 슬롯 복귀는 DEMO11-06 접점이며 LB-09 전체 완료를 뜻하지 않는다. [수명·보호 계약](DEMO11_LOBBY_ENTRY_20261021.md) 및 [검증 보고서](orders/reports/demo11-07_REPORT.md)를 참조한다.
+DEMO11-04 로비의 char0 metadata 생성 성공 → active 슬롯 readback → 기존 character 선택 인터페이스 → DEMO11-08 INTRO를 연결했다. 이름/4캐릭터 잠금과 기존 cutsceneDone runtime flag 경계만 포함한다. 저장된 Player 복원·미동기화 game save의 슬롯 복귀는 DEMO11-06 접점이며 LB-09 전체 완료를 뜻하지 않는다. [수명·보호 계약](../_archive/engine/DEMO11_LOBBY_ENTRY_20261021.md) 및 [검증 보고서](../_archive/engine/orders/reports/demo11-07_REPORT.md)를 참조한다.
+
+
+## 2026-10-31 전체 화면 원화 확장 적용
+
+이 문서의 과거 이미지·영상 제작 및 판정은 당시 이력이다. 현행 웹은 `fullscreen-art.js`의 경로 등록으로 64종의 원본/21:9/32:9 판을 선택한다. 화면비 2 이하의 원본 경로와 MP4 파일은 보존하고, 초광폭에서는 확장판을 배경으로 쓰고 원래 영상·카메라·CSS 움직임을 유지한다. 로비·캐릭터 영상은 manifest 중앙 좌표와 높이에 맞춰 겹치며 양끝14%를 크로스페이드한다. 전체 폭 분위기 효과는 움직임 줄이기·저사양·숨김 화면에서 정지한다. 출력·사용 위치·규격·생성 정보·검수 근거는 `docs/3.1 ui hud 디자인/FULLSCREEN_ART_ULTRAWIDE_20261031.md` 및 `assets/fullscreen-wide/20261031/manifest.json`이 현행 기준이다. 로딩35장은 별도 담당이며 Unity 반영·실행 검수는 이 웹 적용으로 완료되지 않는다.

@@ -1032,7 +1032,7 @@ SND-01/02/03/07/08을 재사용하고 기존 공격/피격/사망 선택·RNG는
 SND-04 보이스 선택·SND-05/06 BGM을 임의 연결하지 않는다.
 SND-08의 native graph adapter는 topology/음량만 출력하며 filter/comp는 명시적 bypass다.
 Q/knee/automation/PCM·청감 동등성은 여전히 HOLD다. 전투 판정·State·저장·맵 변경 없음.
-공용 변경 위치와 새 경로 검증은 [보고서](orders/reports/demo11-40_REPORT.md)를 따른다.
+공용 변경 위치와 새 경로 검증은 [보고서](../_archive/engine/orders/reports/demo11-40_REPORT.md)를 따른다.
 
 
 ### 2026-10-21 DEMO11-41 native media adapter 연결
@@ -1040,7 +1040,7 @@ Q/knee/automation/PCM·청감 동등성은 여전히 HOLD다. 전투 판정·Sta
 SND05/06 원모듈 무수정, 실제 BGM/voice adapter와 현재 guide/opening/player_died 구독을 추가했다.
 로비/전체 영화는 scene 요청 API만, DEMO11-34 보스는 native_boss_music_changed(phase,stage) 계약만
 준비했다. State/전투/저장/맵은 수정하지 않았다. 원본 root 음원 읽기·export packaging 및 청감 한계와
-공용 변경 행은 [보고서](orders/reports/demo11-41_REPORT.md)에 기록한다.
+공용 변경 행은 [보고서](../_archive/engine/orders/reports/demo11-41_REPORT.md)에 기록한다.
 
 ## 2026-10-21 AUDIO-01 native 1-1 상대 믹스
 
@@ -1048,4 +1048,4 @@ DEMO11-41 뒤의 현행 native 믹스·bus routing·field cycle·ducking·voice 
 
 ## 2026-10-21 원본 대조 경로 후속
 
-SND의 고정 원본 대조는 이제 루트 live game.html 대신 `godot/source_snapshot/game.html`을 사용한다. 원 SHA와 기존 행 번호/음향 수치는 유지한다. [INTEG-5 스냅샷 계약·갱신 절차](INTEG5_SOURCE_SNAPSHOT_20261021.md)를 따른다. 위 원본 main/작업 경로는 작성 당시 이력이다.
+SND의 고정 원본 대조는 이제 루트 live game.html 대신 `godot/source_snapshot/game.html`을 사용한다. 원 SHA와 기존 행 번호/음향 수치는 유지한다. [INTEG-5 스냅샷 계약·갱신 절차](../_archive/engine/INTEG5_SOURCE_SNAPSHOT_20261021.md)를 따른다. 위 원본 main/작업 경로는 작성 당시 이력이다.
