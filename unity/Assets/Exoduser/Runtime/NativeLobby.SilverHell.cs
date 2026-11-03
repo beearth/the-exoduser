@@ -109,75 +109,45 @@ namespace Exoduser.UnityPort
             if(plaque==null)plaque=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_plaque_20261029");
             Slice(new Rect(box.x-14,box.y,box.width+28,box.height),plaque,174,0,40,0,true);
         }
-        // 버튼 판 재질 (2026-11-03 Unity UI 재질 정리). 기준: UI_FOUNDATION·UI_COMPOSITION(흑철·뼈색 문자·금빛 헤어라인·붉은 지옥불 포인트)과
-        // BG3 메뉴의 공통점(어두운 판, 절제된 가는 테두리, 가는 명조). 거의 검은 흑철판 + 바깥 절단선·위 모서리 빛 받이(음각 판) + 음각 홈 + 금빛 헤어라인 1px.
-        // 선택·호버는 판을 밝히지 않는다. 안쪽 가장자리와 글자 뒤로만 붉은 지옥불 빛이 스민다. 빨간 판(btn_primary_composed)·은빛 테 원화를 얇게 눌러 늘이던
-        // 방식(밉맵 평균으로 회색 플라스틱처럼 보임, 선택 시 밝기 1.18배)은 쓰지 않는다. 선은 물리 픽셀에 맞춰 1px로 그린다. edge·outset은 호출부 호환용이다.
-        internal static readonly Color PlateText=new Color(223/255f,214/255f,194/255f),PlateTextHot=new Color(240/255f,227/255f,206/255f),PlateTextDanger=new Color(222/255f,150/255f,128/255f);
-        static Texture2D plateBase,plateEdgeV,plateEdgeH,plateHaze;
-        static void PlateTextures()
+        // 20:20 third FAIL: solid Silver Hell --iron face, silver 1px edge, inner selection only.
+        internal static readonly Color PlateText=new Color(230/255f,227/255f,220/255f),PlateTextHot=new Color(246/255f,245/255f,242/255f),PlateTextDanger=new Color(194/255f,26/255f,16/255f);
+        internal static readonly Color IronFace=new Color(15/255f,15/255f,16/255f,1),SteelEdge=new Color(138/255f,139/255f,136/255f,1),SteelHot=new Color(201/255f,199/255f,195/255f,1);
+        // The shared, already-measured Panel(iron:false) path supplies linear colour to IMGUI in Linear Players.
+        // No generated texture, transparent blackTexture, inherited alpha or material blending can own this face.
+        internal static void SolidRect(Rect rect,Color color,bool opaque)
         {
-            if(plateBase!=null)return;
-            // Opaque native black: independent of color-space transfer. Skin controls cannot own this surface.
-            plateBase=Texture2D.blackTexture;
-            plateEdgeV=Effect(1,32,(u,v)=>{float a=1-v;return new Color(1,1,1,a*a);});plateEdgeV.name="버튼 가장자리 빛(세로)";
-            plateEdgeH=Effect(32,1,(u,v)=>{float a=1-u;return new Color(1,1,1,a*a);});plateEdgeH.name="버튼 가장자리 빛(가로)";
-            plateHaze=Effect(128,32,(u,v)=>{float x=(u-.5f)*2,y=(v-.5f)*2,a=Mathf.Clamp01(1-Mathf.Sqrt(x*x+y*y));return new Color(1,1,1,a*a*(3-2*a));});plateHaze.name="버튼 글자 뒤 숨";
+            var tint=GUI.color;var background=GUI.backgroundColor;
+            try{
+                if(opaque)color.a=1;
+                if(QualitySettings.activeColorSpace==ColorSpace.Linear)color=color.linear;
+                GUI.color=color;GUI.backgroundColor=Color.white;
+                NativeUiAudit.DrawTexture(rect,Texture2D.whiteTexture,ScaleMode.StretchToFill,!opaque);
+            }finally{GUI.color=tint;GUI.backgroundColor=background;}
         }
         static float SnapX(float x){var m=GUI.matrix;return m.m00>.0001f?(Mathf.Round(m.m00*x+m.m03)-m.m03)/m.m00:x;}
         static float SnapY(float y){var m=GUI.matrix;return m.m11>.0001f?(Mathf.Round(m.m11*y+m.m13)-m.m13)/m.m11:y;}
-        static void PlateTint(Color srgb){GUI.color=srgb;}
-        static void PlateFrame(float x,float y,float w,float h,float inset,float t,Color c)
+        static void SolidFrame(float x,float y,float w,float h,float inset,float pixel,Color color,bool opaque)
         {
-            float ix=x+inset,iy=y+inset,iw=w-inset*2,ih=h-inset*2;if(iw<=t*2||ih<=t*2)return;
-            var prev=GUI.color;PlateTint(c);
-            NativeUiAudit.DrawTexture(new Rect(ix,iy,iw,t),Texture2D.whiteTexture);NativeUiAudit.DrawTexture(new Rect(ix,iy+ih-t,iw,t),Texture2D.whiteTexture);
-            NativeUiAudit.DrawTexture(new Rect(ix,iy+t,t,ih-t*2),Texture2D.whiteTexture);NativeUiAudit.DrawTexture(new Rect(ix+iw-t,iy+t,t,ih-t*2),Texture2D.whiteTexture);
-            GUI.color=prev;
+            x+=inset;y+=inset;w-=inset*2;h-=inset*2;if(w<=pixel*2||h<=pixel*2)return;
+            SolidRect(new Rect(x,y,w,pixel),color,opaque);SolidRect(new Rect(x,y+h-pixel,w,pixel),color,opaque);
+            SolidRect(new Rect(x,y+pixel,pixel,h-pixel*2),color,opaque);SolidRect(new Rect(x+w-pixel,y+pixel,pixel,h-pixel*2),color,opaque);
         }
-        static Color Alpha(Color c,float a){c.a=a;return c;}
         internal static void ActionPlate(Rect box,bool primary,float selection,bool pressed,float edge=40,float outset=14)
         {
-            NativeUiAudit.Region(box,"button");
-            if(box.width<=0||box.height<=0)return;
-            PlateTextures();
-            var previous=GUI.color;float alpha=previous.a,sel=Mathf.Clamp01(selection);
-            try
-            {
-                float s=Mathf.Max(.0001f,GUI.matrix.m00),p=1/s,t=p;
-                float x0=SnapX(box.x),x1=SnapX(box.xMax),y0=SnapY(box.y),y1=SnapY(box.yMax),w=x1-x0,h=y1-y0;if(w<=t*4||h<=t*4)return;
-                // 1 흑철 바탕(불투명 검정, 스킨 그라데이션 없음)
-                float shade=pressed?.78f:1f;PlateTint(new Color(shade,shade,shade,alpha));NativeUiAudit.DrawTexture(new Rect(x0,y0,w,h),plateBase,ScaleMode.StretchToFill,true);
-                // 2 붉은 지옥불 빛: 선택·호버 때 금빛 헤어라인 안쪽 가장자리와 글자 뒤로만 스민다(바깥 테는 흑철 그대로). 주요 버튼은 아래 가장자리에 늘 아주 약한 불씨.
-                bool small=h<30;float inset=Mathf.Max(1,Mathf.Round((small?2:3)*s))*p,hair=small?inset:inset+t,ix=x0+hair+t,iy=y0+hair+t,iw=w-(hair+t)*2,ih=h-(hair+t)*2;
-                float glow=sel*(pressed?.8f:1f),g=Mathf.Min(12,ih*.34f),gs=Mathf.Min(g,iw*.2f);
-                Color ember=new Color(150/255f,26/255f,12/255f);
-                if(glow>0&&iw>0&&ih>0)
-                {
-                    PlateTint(Alpha(ember,.24f*glow*alpha));
-                    NativeUiAudit.DrawTexture(new Rect(ix,iy,iw,g),plateEdgeV,ScaleMode.StretchToFill,true);
-                    NativeUiAudit.DrawTexture(new Rect(ix,iy,gs,ih),plateEdgeH,ScaleMode.StretchToFill,true);
-                    NativeUiAudit.DrawTextureWithTexCoords(new Rect(ix+iw-gs,iy,gs,ih),plateEdgeH,new Rect(1,0,-1,1),true);
-                    PlateTint(new Color(120/255f,22/255f,10/255f,.20f*glow*alpha));
-                    NativeUiAudit.DrawTexture(new Rect(x0+w*.25f,y0+h*.29f,w*.5f,h*.42f),plateHaze,ScaleMode.StretchToFill,true);
-                }
-                float bottomGlow=Mathf.Max(glow,primary?.4f:0);
-                if(bottomGlow>0&&iw>0&&ih>0){PlateTint(Alpha(ember,.24f*bottomGlow*alpha));NativeUiAudit.DrawTextureWithTexCoords(new Rect(ix,iy+ih-g,iw,g),plateEdgeV,new Rect(0,1,1,-1),true);}
-                // 3 음각 판 가장자리: 바깥 절단선, 위 모서리 빛 받이, 아래 안쪽 그림자
-                PlateFrame(x0,y0,w,h,0,t,new Color(0,0,0,.96f*alpha));
-                var prior=GUI.color;
-                if(!pressed){PlateTint(new Color(64/255f,57/255f,48/255f,.55f*alpha));NativeUiAudit.DrawTexture(new Rect(x0+t,y0+t,w-t*2,t),Texture2D.whiteTexture);}
-                else{PlateTint(new Color(0,0,0,.6f*alpha));NativeUiAudit.DrawTexture(new Rect(x0+t,y0+t,w-t*2,t),Texture2D.whiteTexture);}
-                PlateTint(new Color(0,0,0,.5f*alpha));NativeUiAudit.DrawTexture(new Rect(x0+t,y1-t*2,w-t*2,t),Texture2D.whiteTexture);
-                GUI.color=prior;
-                // 4 음각 홈 + 금빛 헤어라인 1px(선택 시 불빛을 머금은 금색). 주요 버튼은 안쪽에 옅은 두 번째 헤어라인.
-                Color gold=primary?new Color(140/255f,123/255f,90/255f):new Color(104/255f,92/255f,70/255f),hot=new Color(198/255f,112/255f,74/255f);
-                if(!small)PlateFrame(x0,y0,w,h,inset,t,new Color(0,0,0,.72f*alpha));
-                PlateFrame(x0,y0,w,h,hair,t,Alpha(Color.Lerp(gold,hot,sel*.5f),alpha));
-                if(primary&&h>=40)PlateFrame(x0,y0,w,h,hair+t*3,t,Alpha(gold,.35f*alpha));
-                NativeUiChrome.DrawStockProbe(new Rect(x0,y0,w,h));
+            NativeUiAudit.Region(box,"button");if(box.width<=0||box.height<=0)return;
+            float scale=Mathf.Max(.0001f,GUI.matrix.m00),pixel=1/scale;
+            float x=SnapX(box.x),y=SnapY(box.y),w=SnapX(box.xMax)-x,h=SnapY(box.yMax)-y;
+            if(NativeUiChrome.OpacityProbe)SolidRect(new Rect(x,y,w,h),new Color(1,0,1,1),true);
+            // --iron #0f0f10 is always opaque, including disabled/fading parents.
+            SolidRect(new Rect(x,y,w,h),IronFace,true);
+            SolidFrame(x,y,w,h,0,pixel,primary||selection>0?SteelHot:SteelEdge,true);
+            float selected=Mathf.Clamp01(selection);
+            if(selected>0){
+                // Only three narrow inner lines, never a red centre/outer haze/always-on primary glow.
+                for(int i=1;i<=3;i++)SolidFrame(x,y,w,h,(i+1)*pixel,pixel,
+                    new Color(126/255f,13/255f,7/255f,selected*(pressed?.14f:.2f)*(4-i)/3f),false);
             }
-            finally{GUI.color=previous;}
+            NativeUiChrome.DrawStockProbe(new Rect(x,y,w,h));
         }
     }
     public sealed partial class NativeLobby

@@ -17,6 +17,10 @@ namespace Exoduser.UnityPort
             public string[] files,incompleteLabels;
             public float filterAtWait,volumeAtWait,filterAtReviveMid,filterAfterRevive,bossFilter,bossVolume;
             public float[] reviveTimes,reviveFilters,reviveVolumes;
+            public bool colorProbeRequested,colorProbeUniform;
+            public string colorProbeCamera;
+            public float[] saturationBefore,saturationAfter;
+            public int[] colorProbePoints,colorProbeRgbBefore,colorProbeRgbAfter;
         }
 
         // Mac only: a stopped simulation is advanced through real Core ticks; only the presentation age is pinned for stills.
@@ -37,9 +41,22 @@ namespace Exoduser.UnityPort
             rec.incompleteLabels=incomplete.ToArray();check(incomplete.Count==0,"labels incomplete: "+string.Join(",",incomplete.ToArray()));
             string language=lobby.Language;yield return null;yield return null;
             rec.fieldVisible=!lobby.IsBlocking&&view.cullingMask!=0;check(rec.fieldVisible,"lobby blocks field");
+            rec.colorProbeRequested=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-death-color-probe")>=0;
+            GameObject[] colorCards=null;Material colorMaterial=null;
+            if(rec.colorProbeRequested){
+                colorCards=CreateDeathColorCards(out colorMaterial);
+                check(colorCards!=null,"color probe shader/camera unavailable");
+                if(colorCards!=null){yield return null;yield return null;yield return DeathColorSample(output,"death_color_before",files,colorCards,rec,false);}
+            }
             var p=sim.Player;
             for(int i=0;i<400&&p.State!="fallen"&&p.State!="dead";i++){p.Iframes=0;sim.HurtPlayer(99999);}
             check(p.State=="fallen"&&p.FallenCanRevive,"first fall can revive: "+p.State);
+            if(colorCards!=null){
+                revive.ForcedAge=2f;yield return null;yield return null;
+                yield return DeathColorSample(output,"death_color_after",files,colorCards,rec,true);
+                check(rec.colorProbeUniform,"full-frame saturation is not uniform across identical patches");
+                foreach(var card in colorCards)Destroy(card);Destroy(colorMaterial);yield return null;yield return null;
+            }
             yield return DeathShot(output,"death_01_impact",files,.25f,300);
             yield return DeathShot(output,"death_02_wait",files,2f,180);
             rec.filterAtWait=revive.FilterAmount;rec.volumeAtWait=revive.VolumeWeight;

@@ -8,6 +8,7 @@ namespace Exoduser.UnityPort
     {
         static GUIStyle stockButton;
         internal static bool StockProbe;
+        internal static bool OpacityProbe;
         internal static int StrippedStates {get;private set;}
         internal static string StockStates {get;private set;}="";
         internal static void RememberStock()

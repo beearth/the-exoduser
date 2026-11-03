@@ -192,3 +192,6 @@ Unity 인벤토리의 "인벤토리" 제목과 눈 메달이 상단 공통 탭 �
 - 작업 기준이 오래된 원격 추적 ref(34ce305e)였다. 실제 `unity/main`은 9f0d00cf(지옥문 목표·기동 고리 등 7커밋)까지 나가 있었다. 최신 `unity/main`을 비강제로 병합했다(`10cbe2ff`). 겹친 파일은 `CHANGELOG_SYNC.md`(두 항목 모두 보존)와 `NativeGame.cs`(자동 병합)였다.
 - 병합본을 다시 빌드했다(`b6-merged`): Succeeded·오류 0, 6,446,338,142 B. 마감 캡처 장치 1920·1600 16/16 PASS, 화면 동일.
 - 지정 브랜치 이름 `claude/unity-pc-inv-salvage-20261103`에는 클라우드 세션 커밋 `85ca8fd9`(같은 세 작업, Unity 6 컴파일·Player 캡처 미실시)가 먼저 올라가 있었다. 남의 커밋을 덮어쓰지 않으려고 Mac 검수본은 `claude/unity-pc-inv-salvage-20261103-mac`으로 올리고, 이 브랜치만 `unity/main`에 병합한다. `85ca8fd9`은 병합하지 않았다. 내용이 이 기록과 겹치므로 보관 여부는 사용자가 정한다.
+
+### 20:20 사망 UI 레인 공통 판 후속
+Mac 3941b3ff8의3차 FAIL에 따라 공통 ActionPlate를 생성 텍스처/투명 blackTexture에서 실버 헬 --iron #0f0f10·알파1·비블렌딩 단색 판으로 교체한다. 선은 --sv-md/--sv-lt1px. 이 레인의 inputLive·Hahmlet 자간·제목/안내 배치는 보존하고 PrimaryGlow 바깥 번짐만 제거했다. §4.3의 PASS는 이전 Mac 검수본의 결과이며 새 공통 판의 시각 PASS를 뜻하지 않는다. 현재 계약/진단: UNITY_BUTTON_PLATE_MATERIAL_20261103.md, 새 판은 Mac 재검수 대기.

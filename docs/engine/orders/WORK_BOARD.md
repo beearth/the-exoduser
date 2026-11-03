@@ -677,3 +677,10 @@ PC후보af70a6a2c5는정본버전매빌드읽기·직업X사슬/로어·실능�
 | PC Codex / codex/unity-death-screen-20261103 | 기존 사망/UI 촬영·NativeGame.cs·FieldBoss의 문구 억제, NativeLobby.SilverHell, NativeRevive(.DeathScreen), NativeUiAudit와 신규 NativeUiChrome(+meta), death-ui-tests, 해당 UI SSOT/CHANGELOG | 스킨8상태 제거·검정 판·물리1px·외부 번짐 제거, URP Vignette·사망 문구 억제·fade5프레임·Mac 경로 탐색 구현. Player/Editor DLL 참조5어셈블리 오류0, 스킨 회귀 PASS. 이전 색 보정 방법 폐기 | Mac 실제 재검수 대기/RETOUCH. 기존 입장버튼은 none이므로 회색 원인 단정하지 않음. 새 스킨/판 동일 좌표 PNG·RGB 진단으로 확인. PC 제한으로 Windows GPU 원인 증명은 미실행 |
 
 브리프: I:/EXODUSER-Storage/codex-takeover/death-screen-brief.md 19:10. 최종 SHA와 Mac 상대/자리표시자 인자: death-screen/REPORT.md. 본인 코드·docs만 commit/push, 기존 guard.baseline.json WIP 보존. 에디터/Player/빌드/PC 캡처0.
+
+## 2026-11-03 20:20 사망 UI3차 FAIL 후속
+| 담당/브랜치 | 본인 수정 | 현재/다음 |
+|---|---|---|
+| PC Codex / codex/unity-death-screen-20261103 | 공통 SolidRect/ActionPlate·일시정지 바깥glow, NativeUiChrome/DeathUiCapture의 opacity probe, DeathScreen/DeathColorProbe/Revive.DeathScreen의 가로띠 제거·채도진단, death-ui-tests와 관련 UI docs | 생성 판 경로 폐기, 단색 흑철·강제alpha1·비블렌딩·실버 헬1px, Mac Scripting 탐색. PC5어셈블리 오류0·CPU 회귀 PASS. Unity/Player/빌드/캡처0. Mac 새 후보 RGB/불투명·전체 채도·톤 재검수 대기/RETOUCH |
+
+최신 unity/main d6c5bb89bb20 병합(7bc7a3518 규칙). NativeGame 촬영등록·incoming 일시정지 inputLive/명조·양쪽 번역 항목 보존해 충돌 해결. blackTexture가 RGBA0인 공식 API 근거와 현재 단색/실버 토큰은 버튼 SSOT에 기록. 최종 SHA/상대 Mac 인자: I:/EXODUSER-Storage/codex-takeover/death-screen/REPORT.md. 기존 guard.baseline.json WIP는 보존.

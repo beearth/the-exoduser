@@ -9,6 +9,25 @@ let failures=0;const results=[];
 function check(ok,name){const line=(ok?'PASS ':'FAIL ')+name;results.push(line);console.log(line);if(!ok)failures++;}
 const game=read('NativeGame.cs'),registry=game.slice(game.indexOf('bool legacyFixture='),game.indexOf('InitializeEntryFlowCapture(args)'));
 for(const flag of ['--unity-death-screen-smoke','--unity-death-ui-smoke'])check(registry.includes('"'+flag+'"'),flag+' bypasses lobby.Begin');
+const silver=read('NativeLobby.SilverHell.cs');
+check(!silver.includes('plateBase=Texture2D.blackTexture'),'plate cannot use transparent built-in blackTexture');
+const vm=require('node:vm');
+function macLayoutProbe(){
+ const base='/Applications/Unity/Hub/Editor/Test/Unity.app/Contents',scripting=base+'/Resources/Scripting';
+ const directories=new Map([
+  [scripting+'/DotNetSdk/sdk',['8.0.318']],
+  [scripting+'/DotNetSdk/packs/Microsoft.NETCore.App.Ref',['8.0.21']],
+  [scripting+'/DotNetSdk/packs/Microsoft.NETCore.App.Ref/8.0.21/ref',['net8.0']]
+ ]);
+ const files=new Set([scripting+'/NetCoreRuntime/dotnet',scripting+'/DotNetSdk/sdk/8.0.318/Roslyn/bincore/csc.dll']);
+ const fake={existsSync:p=>directories.has(p)||files.has(p),readdirSync:p=>(directories.get(p)||[]).map(name=>({name,isDirectory:()=>true}))};
+ try{
+  const source=dirs.toString()+'\n'+first.toString()+'\n'+toolchain.toString()+'\ntoolchain()';
+  const tc=vm.runInNewContext(source,{fs:fake,path:path.posix,options:{'--unity-data':base},process:{platform:'darwin',env:{}},cp:{spawnSync:()=>({stdout:''})}});
+  return tc.dotnet===scripting+'/NetCoreRuntime/dotnet'&&tc.csc===scripting+'/DotNetSdk/sdk/8.0.318/Roslyn/bincore/csc.dll';
+ }catch{return false;}
+}
+check(macLayoutProbe(),'Mac Contents/Resources/Scripting SDK/runtime layout');
 const audit=read('NativeUiAudit.cs');
 check(audit.includes('NativeUiChrome.ClearBackgrounds(style,'),'native draw boundary removes all skin backgrounds');
 function method(source,name){const start=source.indexOf(name);if(start<0)throw Error('missing '+name);let at=source.indexOf('{',start),depth=1,end=at+1;for(;depth&&end<source.length;end++){if(source[end]==='{')depth++;if(source[end]==='}')depth--;}return source.slice(start,end);}
@@ -18,7 +37,8 @@ function toolchain(){
  const exe=process.platform==='win32'?'dotnet.exe':'dotnet';
  const hub=process.platform==='darwin'?'/Applications/Unity/Hub/Editor':null;
  const roots=[options['--unity-data'],process.env.UNITY_EDITOR_DATA,...(hub?dirs(hub).map(p=>path.join(p,'Unity.app/Contents')):[]),...(process.platform==='win32'?['G:/unity/Editor/6000.6.7f1/Editor/Data']:[])].filter(Boolean);
- for(const data of roots){
+ const candidates=roots.flatMap(data=>[data,path.join(data,"Resources/Scripting")]);
+ for(const data of candidates){
   const sdk=dirs(path.join(data,'DotNetSdk/sdk'))[0],ref=dirs(path.join(data,'DotNetSdk/packs/Microsoft.NETCore.App.Ref'))[0];
   const refs=ref&&dirs(path.join(ref,'ref'))[0],dotnet=first([options['--dotnet'],path.join(data,'NetCoreRuntime',exe),path.join(data,'DotNetSdk',exe)]);
   const csc=first([options['--csc'],sdk&&path.join(sdk,'Roslyn/bincore/csc.dll')]);
@@ -38,7 +58,7 @@ function toolchain(){
 try{
  const tc=toolchain(),version=path.basename(path.dirname(path.dirname(tc.refs))),tfm=path.basename(tc.refs);
  const source=read('NativeUiChrome.cs');
- const body=method(source,'static void ClearState(')+'\n'+method(source,'internal static GUIStyle ClearBackgrounds(');
+ const body=method(source,'static void ClearState(')+'\n'+method(source,'internal static GUIStyle ClearBackgrounds(')+'\n'+method(silver,'internal static void SolidRect(');
  const test=fs.readFileSync(path.join(__dirname,'MaterialProbe.cs'),'utf8').replace('/*PRODUCTION*/',body);
  fs.writeFileSync(output+'/Probe.cs',test);
  fs.writeFileSync(output+'/probe.runtimeconfig.json',JSON.stringify({runtimeOptions:{tfm,framework:{name:'Microsoft.NETCore.App',version}}}));

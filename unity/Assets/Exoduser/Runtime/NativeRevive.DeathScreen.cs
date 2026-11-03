@@ -136,7 +136,7 @@ namespace Exoduser.UnityPort
                 }
                 NativeUiAudit.Region(screen,"component","death-filter","물리 화면 전체 명도 0.55; 채도 0.15·검정 비네트 = URP Volume");
                 if(t<=.002f)return;
-                {var a=NativeUiViewport.Current;float top=a.Y+(418-200)*a.Scale,height=520*a.Scale;GUI.color=new Color(1,1,1,t);NativeUiAudit.DrawTexture(new Rect(0,top,Screen.width,height),DeathBand(),ScaleMode.StretchToFill,true);}
+                // No IMGUI colour band after the full-frame camera desaturation.
                 GUI.color=Color.white;GUI.matrix=NativeUiViewport.Matrix;
                 DrawDeathTexts(now,t,info);
             }
@@ -236,14 +236,6 @@ namespace Exoduser.UnityPort
 
         // ---- 절차 텍스처: 모두 매끈한 그라데이션(노이즈·디더 없음) ----
         Texture2D hairRamp,softDisc,ringTex;Color32[] ringPixels;int ringSize=-1,ringKey=-1;
-        // 제목·게이지 뒤 가로 띠 그림자(화면 전체 폭). 밝은 안개·바닥 위에서도 1x 글자가 읽히게 한다.
-        Texture2D deathBand;
-        Texture2D DeathBand()
-        {
-            if(deathBand!=null)return deathBand;
-            deathBand=NativeSilverHellUi.Effect(1,128,(u,v)=>new Color(4/255f,3/255f,3/255f,.62f*(1-Smooth(Mathf.Abs(v-.5f)*2))));
-            deathBand.name="사망 글자 띠";return deathBand;
-        }
         Texture2D HairRamp()
         {
             if(hairRamp!=null)return hairRamp;

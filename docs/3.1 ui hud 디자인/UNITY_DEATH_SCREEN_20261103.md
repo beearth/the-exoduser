@@ -25,7 +25,7 @@ Diablo IV · Path of Exile 2 · No Rest for the Wicked · Elden Ring 사망 화�
 | ⑥ 부활 | 0.5s | 필터·비네트·글자를 0.5s에 걸쳐 걷는다. Volume 가중치도 같이 0 | `Phase.Reviving` |
 | 사망 확정 | 0.8s | 필터 유지, 글자만 빠지고 기존 사망 패널(`NativeDeathOverlay`)이 그 위로 2.5s 페이드 | `Phase.Dead` |
 
-- 글자 뒤 가로 띠 그림자(물리 화면 전체 폭, 최대 알파 .62)로 밝은 안개 위에서도 1x 가독성을 확보한다.
+- 20:20 후속: URP 채도 처리 뒤에 따뜻한 RGB를 다시 더하던 IMGUI DeathBand 가로 띠를 제거했다. 화면 명도 감쇠는 무채색 검정 합성만 유지한다.
 - 정보는 그대로다: 부활력 값(`FallenReviveChance`, 표기 "R" 형식), 남은 초 `ceil(StateTicks/60)`, 부활 불가 `!FallenCanRevive`, 판정 `Simulation.TickFallen`. 제거한 것: "쓰러짐..." 문구(부제로 대체), 하단 주황 막대(원형 게이지로 대체).
 - 모든 절차 텍스처는 매끈한 그라데이션·해석적 안티에일리어싱이다(노이즈·디더·점 없음). 이모지·산세리프 없음.
 - 문구: `Resources/Data/death_screen_labels.json` 29코드(ko + 28개 언어). ar은 IMGUI RTL 미지원이라 화면에는 en을 그린다(NativeOptionText와 같은 규칙). 번역 목록 No.3859~3864.
@@ -71,3 +71,15 @@ Mac 판정 항목:
 | Mac 검사 도구 | run.cjs의 --unity-data 또는 --dotnet/--csc/--refs 및 자동 탐색. 상대 출력도 허용. 실제 Mac 실행은 아직 미검증 |
 
 Mac에서는1920×1080·3840×1080·5120×1440의 HD2D/--remodel3d 양쪽에서 가장자리 채도≤중앙·타원 계단0·점/디더0·전투 문구0·5개 fade 샘플을 직접 확인한다. PC 컴파일 제한을 지켜 Windows GPU 측정은 하지 않았고, 두 플랫폼 스킨/판 측정 인자는 REPORT에 남긴다.
+
+## 20:20 Mac 3차 FAIL 후속
+
+| 항목 | 현재 변경/검수 |
+|---|---|
+| 따뜻한 가로 띠 | ColorAdjustments 뒤 IMGUI DeathBand의 RGB(4,3,3) 띠와 생성 함수 제거. 검정 URP Vignette(RGB0)와 무채색 명도 감쇠만 남김. 글자/장식의 기존 가독성은 Mac 재검수 |
+| 전체 채도 진단 | 선택 인자 --unity-death-color-probe. 실제 HudCamera에 동일한 URP Unlit 색 패치3개를 좌/중/우에 임시 배치. Core·카메라 설정 변경 없이 before/2s after PNG·RGB·HSV 채도를 기록. 일반 아트 캡처 전에 제거 |
+| 진단 영수증 | colorProbeCamera(실제 카메라/rect/target), colorProbePoints, colorProbeRgbBefore/After, saturationBefore/After. 세 패치 모두 원래 채도>.2, 후채도≤전채도×.4+.01, 후채도 최대-최소≤.05일 때 colorProbeUniform=true. shader/camera 미확보 시 FAIL. 실제 GPU 적용 범위를 같은 원색으로 비교하는 검사이며 맵 고유 색의 중앙/가장자리 HSV를 같다고 가정하지 않음 |
+| 버튼 | 생성 텍스처/transparent blackTexture 경로 폐기. 실버 헬 #0f0f10·알파1·비블렌딩 단색 판과1px 은빛 선. 자세한 토큰/불투명 underlay probe는 버튼 SSOT |
+| Mac SDK | Unity.app/Contents/Resources/Scripting 경로 탐색 추가. PC에서는 배치 모의 검사만 수행 |
+
+20:20 기존3941b3ff8의 Core 사망6/6·combatTextHidden·부활5프레임·1px·저장 격리 PASS는 이전 후보 근거다. 새 후보의 패치 채도 검사와 실제3840/5120 가장자리 채도/띠0 판정은 Mac 대기다. 기본 호출 인자는 --unity-death-screen-smoke --unity-death-revive-frames --unity-boss-direct 0, 진단할 때만 --unity-death-color-probe를 덧붙인다. Windows GPU는 PC 컴파일 제한으로 미실행이다.
