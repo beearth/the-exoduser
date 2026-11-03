@@ -1,3 +1,5 @@
+2026-11-03 22:35 바탕화면 Unity 1회 수동 교체(CTO cto-swap): 정확한 unity/main385e76ce1 detached에서 공용 bin Windows 빌드1회·오류0·USER_SAVE0, M1 23/23·홀드3.0초·필드 목표2줄·실제 사망 진입 통과 후 build-commit 갱신. 9f0d00cf8은 build_prev 하나로 보존, 바로가기 유지·자기 브랜치 복귀. 전체 UI 겹침/미술/자연 완주 후속은 유지. [근거](engine/UNITY_DESKTOP_CTO_SWAP_20261103.md).
+
 2026-11-03 21:10 Steam 체험판 flavor U-D3/U-D4/U-D1/U-D5: 정식 제품명과 빌드 초기화, demo/full 저장 namespace 및 기존 검증판 원본 보존 이전, 종료 문구29언어(locale API, ar 기존 영문 폴백), 본편 상점 steam://store/4749590 별도 버튼. 계약6/6·격리 동작58/58, PC 공용 bin 컴파일/Mac 화면·재시작 인계. Player·Steam 업로드 없음, U-D2 보류. [계약·Mac 인자](engine/UNITY_DEMO_FLAVOR_20261103.md).
 
 2026-11-03 21:40 PC Player 차단·무음 누수 수정(사용자 "백그라운드 테스트 사운드가 들린다, 맥에서만"): exo-unity player는 -PcException buildloop|cto-swap|candidate 없으면 거부, BuildLoop·UI 겹침 check.ps1은 buildloop로 넘김. 원인=--unity-mute를 M1 스모크·캡처별 EarlyMute만 따라 UI 겹침 검사 모드에서 소리 발생 → Runtime NativeMuteGuard가 모든 모드에서 AudioListener.volume=0·Direct 영상 mute. 문서 unity/Tools/devtools/README.md.
