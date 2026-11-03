@@ -1,4 +1,22 @@
-# F-1 staging 복구 — 02:10 경로 키 수정 후 중단 (2026-11-04)
+# F-1 staging 복구 — 02:25 lease 부작용 제품 수정 (2026-11-04)
+
+**최신 상태: 지정 회귀 30/30, 전체 flavor 계약 6/6·동작 58/58 통과. PC 공용 bin 컴파일 1회 통과(31e88306, 오류0·USER_SAVE0), Mac 런타임 검수 대기.**
+
+## 02:25 실제시각 지시 수행
+
+- CLAUDE.md 및 브리프 지정 절 확인, 최초 미커밋 0. fetch 후 origin/unity/main `5ce03758f57daca409cb18876e75ab48f6df705a`은 이미 병합되어 있었다.
+- 원인: 실패 경로에서도 `FileMode.OpenOrCreate`가 만든 새 lease가 남아 남의 staging/저장 폴더 파일 집합을 바꿨다. 이전 기록의 "테스트 계약 불일치" 해석은 최신 CTO 판정으로 대체한다. 이는 제품 결함이며 보존 검사는 유지한다.
+- 제품 수정: staging 파일 충돌은 lease 생성 전에 거부한다. `createLease` 플래그로 신규/기존 파일을 구분한다. 신규는 `CreateNew`와 `DeleteOnClose`를 사용해 이번 호출만 소유하고 닫을 때 제거한다. 기존은 `Open`·삭제 옵션 없음으로 열어 내용/파일을 보존한다. 생성 경쟁 시 CreateNew가 실패하며 다른 lease를 덮어쓰거나 지우지 않는다.
+- 회귀 강화: 실패·성공 후 새 lease 잔류 0, 예상 밖 staging/활성 staging-file writer 거부 후 저장 폴더 전체 파일 집합/바이트 불변, 기존 nonempty lease 내용 보존을 추가했다. 실패했던 staging-file 보존 검사는 약화하지 않았다.
+- 수정 후 지정 테스트 1회 `PASS 30 import-recovery checks`. 전체 회귀 1회 `contracts 6/6`, `PASS TOTAL 58`. 잠금→실패→staging 정리→해제→1회 재시도 성공, 원본3파일 및 모든 시나리오 종료 후 원본 파일 집합/바이트 불변을 확인했다. 이번 회차 재실패 0·두 번째 원인 수정 0이다.
+- 전체 회귀의 standalone Roslyn에는 JSON 역직렬화 필드에 대한 CS0649 경고가 있으며 실행 실패는 없었다. 이는 Unity 컴파일 결과와 별도로 기록한다.
+- PC 공용 bin `PortVerification.CheckCorePresence` 컴파일 1회 통과: `ok=true`, exit0, compileErrors0, userSaveChanged0, Unity6000.6.7f1, 프로세스 종료 확인. 작업ID `31e88306`, 로그 `I:/EXODUSER-Storage/unity-jobs/codex-unity-uisound/logs/31e88306.log`, 결과 `done/31e88306.json`, 별도 receipt `I:/EXODUSER-Storage/codex-takeover/unity-11-fullrun/f1-compile-receipt.json`. errorLogs1과 라이선스 토큰 갱신 오류/종료 Curl42 로그는 컴파일 오류와 구분하며 전체 로그 오류0을 주장하지 않는다. 재컴파일하지 않았다.
+- Player/Windows 빌드/바탕화면/Steam 변경0, 실제 사용자 저장 경로 접근0. 격리 fixture와 테스트 바이너리는 확인 후 정리하고 핵심 로그/결과를 남긴다. 컴파일이 자동 변경한 button_iron.png.meta의 filterMode/공백은 이번 작업 소유의 생성 변경임을 대조한 뒤 HEAD로만 원복한다.
+- Mac 인계 인자: `--unity-build-flavor demo --unity-mute --unity-qa-sandbox <빈 절대 격리 경로>`로 로비 저장/재시작·완료 화면/상점 버튼을 검수한다. sandbox는 의도적으로 legacy 탐색/이전을 생략하므로 이 인자만으로 마이그레이션 검수를 대체하지 않는다. macOS 이전/lease 수명·잠금·중단 staging 복구는 Unity 테스트에서 전용 빈 fixture 루트만 NativeFlavorSavePaths에 직접 전달해 검수한다(실제 사용자 저장 사용 금지). PC 회귀/컴파일은 Mac 실파일·Player 판정을 대신하지 않는다.
+
+---
+
+## 02:10 이력 (아래는 당시 상태)
 
 **최신 상태: 지정 테스트 1회·25검사 통과 뒤 `staging file preserved` 실패. 전체 회귀/PC 컴파일 미실행, 병합/Mac 검수 요청 보류.**
 

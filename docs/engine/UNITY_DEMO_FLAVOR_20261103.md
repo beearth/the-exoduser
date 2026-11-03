@@ -29,7 +29,9 @@
 
 이전 우선순위: 이미 있는 목적 namespace는 그대로 사용 → 이전 제품 루트의 같은 namespace → full에 한해 현재 제품 루트의 무 namespace 저장 → full에 한해 기존 제품의 무 namespace 저장. 예전 공유 저장은 출처 flavor를 판별할 수 없으므로 demo에는 자동으로 넣지 않는다. 예전 체험판에서 만들어진 공유 저장도 원본 위치에 그대로 남는다. 명시적으로 demo namespace에 있던 데이터만 demo에 이전한다. 자동 demo→full 진행 병합은 없다.
 
-기존 폴더의 `.json`·`.bak` 저장만 읽어 고정 `<namespace>.legacy-import`에 새 파일로 기록하고, 성공하면 디렉터리 rename으로 목적 루트를 만든다. Player.log·잠금·임시 파일은 가져오지 않는다. 원본 삭제·이동·덮어쓰기 없음, 목적 파일 덮어쓰기 없음. 읽는 원본은 전체 이전 중 read-only handle을 유지해 활성 writer를 거부한다. 이전 앱을 종료한 상태에서 이관해야 한다. 중간 실패/남은 staging/예상 밖 하위 폴더/링크 경로는 저장을 차단하며 빈 성공으로 바꾸지 않는다. staging은 자동으로 삭제하지 않고 원인 확인 후 재시도한다.
+기존 폴더의 `.json`·`.bak` 저장만 읽어 고정 `<namespace>.legacy-import`에 새 파일로 기록하고, 성공하면 디렉터리 rename으로 목적 루트를 만든다. Player.log·잠금·임시 파일은 가져오지 않는다. 원본 삭제·이동·덮어쓰기 없음, 목적 파일 덮어쓰기 없음. 읽는 원본은 전체 이전 중 read-only handle을 유지해 활성 writer를 거부한다. 이전 앱을 종료한 상태에서 이관해야 한다. 중간 실패는 저장 차단으로 반환하되 이번 호출이 만든 staging 복사본은 catch에서 정리한다. 다음 호출에서 목적 폴더 없이 구형 staging만 남았으면 허용된 flat store의 json/bak 복사본인지 확인하고 정리 후 가져오기 1회만 시도한다. 예상 밖 파일/하위 폴더·링크·활성 staging writer는 보존하고 실패로 반환한다. 기존 목적 namespace가 있으면 이를 우선하며 잔류 staging도 건드리지 않는다.
+
+**F-1 lease 보존(11-04 02:25):** staging 파일 충돌은 lease를 만들기 전에 거부한다. lease가 없으면 `CreateNew`로 이번 호출의 소유를 확정하고 `DeleteOnClose`로 성공/실패 후 제거한다. 기존 lease는 배타 `Open`만 하며 삭제·내용 변경하지 않는다. 생성 경쟁은 실패로 반환하므로 다른 호출의 lease를 덮어쓰지 않는다. 실패 경로에서도 기존 폴더의 파일 집합/바이트를 보존하는 회귀를 포함한다. 지정30검사·전체 계약6/동작58검사를 통과했다. PC 컴파일 및 Mac 런타임 검수 상태는 [F-1 최신 기록](UNITY_DEMO_FLAVOR_F1_20261104.md)을 따른다.
 
 명시적 `--unity-qa-sandbox`에서는 실제 사용자 저장 탐색·이전이 없다. 기존 fixture/review의 `-output` 계약과 settings IO-free QA 경로는 유지한다. **PC에서 실제 사용자 저장을 이전하거나 지우지 않았다.**
 

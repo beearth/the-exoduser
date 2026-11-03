@@ -1,3 +1,5 @@
+2026-11-04 F-1 02:25 제품 lease 부작용 수정: 충돌 staging 파일은 lease 생성 전 거부, 신규 lease만 CreateNew/DeleteOnClose·기존 lease는 Open/내용 불변. catch staging 정리·구형 staging 복구·잠금실패→해제→재시도·원본바이트/남의 폴더/기존 lease 보존30/30, 전체 계약6/6·동작58/58, 공용bin 컴파일31e88306 1회 exit0·compileErrors0·USER_SAVE0. Player/빌드/Desktop/Steam0. Mac demo sandbox 인자와 별도 격리 이전/lease 검수 인계, Mac 미판정. [근거·계약](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).
+
 2026-11-04 F-1 02:10 경로 키 통일: Snapshot 키 생성 한 곳에서 역슬래시를 슬래시로 변환, 제품 코드에 같은 키 비교 없음. 지정 테스트1회·25검사 통과 뒤 staging-file 충돌 거부가 새0바이트 lease를 만들어 전체 파일 집합 불변 검사 실패. 충돌 파일8바이트 preserve 유지 직접 확인. 지시대로 재실패 즉시정지, 전체 회귀/PC 컴파일0·Player0·Desktop0. [오류 원문·다음 검토](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).
 
 2026-11-04 F-1 01:55 테스트 공유 잠금 수정: 최신 unity/main5ce03758f 병합(4b0bef66c), Snapshot 읽기를 FileShare.ReadWrite로 수정. 지정 테스트1회에서 잠금 실패→catch정리→해제 후1회 재시도 성공·원본3파일 바이트 불변 등10검사 통과 뒤, 구형 staging 비교의 Windows 경로 dictionary 키 구분자 불일치로 실패. 브리프 재실패 즉시정지 준수, 추가 수정/전체 회귀/PC 컴파일0·Player0·Desktop0. [오류 원문·범위](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).

@@ -56,6 +56,7 @@ namespace Exoduser.UnityPort
     string root=Path.GetFullPath(persistentRoot),target=Path.Combine(root,saveNamespace),stage=target+".legacy-import";
     if(File.Exists(target))throw new IOException("Conflicting save destination. Original saves preserved.");
     if(Directory.Exists(target)){RejectLink(target);directory=target;return true;}
+    if(File.Exists(stage))throw new IOException("Conflicting save import path. Original saves preserved.");
     // QA never probes real saves. Demo/BIC/EA never inherit the historically shared full save.
     string source=null;
     if(!sandbox){
@@ -69,8 +70,12 @@ namespace Exoduser.UnityPort
     if(source!=null||Directory.Exists(stage)||File.Exists(stage)){
      Directory.CreateDirectory(root);RejectLink(root);
      string lockPath=Path.Combine(root,"."+saveNamespace+".legacy-import.lock");
-     if(File.Exists(lockPath))RejectLink(lockPath);
-     lease=new FileStream(lockPath,FileMode.OpenOrCreate,FileAccess.ReadWrite,FileShare.None);
+     bool createLease=!File.Exists(lockPath);
+     if(!createLease)RejectLink(lockPath);
+     // CreateNew proves ownership (a race fails closed). DeleteOnClose removes
+     // only this new lease while its exclusive handle still protects the name;
+     // an existing lease is opened without deletion or content changes.
+     lease=new FileStream(lockPath,createLease?FileMode.CreateNew:FileMode.Open,FileAccess.ReadWrite,FileShare.None,4096,createLease?FileOptions.DeleteOnClose:FileOptions.None);
      // Recheck after taking the lease: a previous importer may have committed.
      if(Directory.Exists(target)){RejectLink(target);directory=target;return true;}
      if(File.Exists(target)||File.Exists(stage))throw new IOException("Conflicting save import path. Original saves preserved.");
