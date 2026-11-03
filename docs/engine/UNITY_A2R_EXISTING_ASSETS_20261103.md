@@ -337,3 +337,8 @@ f103e1f4f7/Player8130d6c9에서 신규NullReferenceException 1회: SetMasksEnabl
 ## A2R r13 실제 Player 결과
 
 r13 제출: 빌드 eddefa683c220580d6f1b141d7efc8c936895eb5/dc8277c3 오류0, 5장면3열30컷·34도/카메라동일, 시야 실물 FAIL(S2·탄; 카운터만양성), 시작/전체로그오류0. 실제로비→캠프 도보/순간이동0, 전체fixture exit3은 총괄수용된 웅덩이 도보정체만(해결주장없음). 재질57개 유기물55×0.3/금속2×0.6·임포터동일, 양면법선반전. 첫 덤불면FAIL→vegetation3D 113개 제외/카드대체0, 나머지126개 좌표·높이·종류변경0/지지부3cm초과0. 1x에서 크롬 반사는 감소해 캠프 갈색·올리브 무늬가 보이지만 앞 고목 일부 회색 면은 잔존하여 재질 완전PASS를 보류한다. S1 몸통은 보이지만 S2·탄 컷은 윤곽만 남아 실물FAIL(988 및 최적화철회 eddef 두번 동일)이며 여기서 중단한다. 성능 34.14→45.47FPS/Draw3672→2169/tri32827628→31284905, 예산미달 RETOUCH, 추가성능후보중단. f103 수명예외는988에서null검사했고, 실제S2실물FAIL 뒤 eddef에서무효그리기최적화를전부철회하여대조. 원주민 재질지원986/986/미지원0. 8874 승인병합 대비 Core/Common/ProjectSettings/Packages/원화 수동diff0, 지형·구름·공기OFF. a2r-build-next만/실사용a2r-build·바로가기변경0. 증명 I:/EXODUSER-Storage/map25d/a2redesign/r13_comparison.png, r13_{start,bridge,swamps,distant-enemies,foreground}_3col.png, r13_foreground_1x/3x.png, r13_distant_1x.png, r13_sight_1920/3840.png. Mac·총괄 최종판정대기.
+
+
+## A2R r14 진단 준비
+
+r14 03:45/03:50 인계: 회색 막은 원인 확정 전 무수정. 공용 Editor632f5e09에서 RF 원본→LitOpaque NORMAL/METALLIC/AO 키워드 모두 유지 확인(손실가설 기각). 같은 패키지 후처리·DOF·SplitToning·DistanceHaze·원래 재질 분리 촬영을 추가한다. 실제 로비→Core 캠프 도보 후 3지점 보조 고정포즈, 34도1920/3840. 성능은 전체카운터/반사OFF/그림자OFF 및 화면LOD·렌더러내역을 분리하고 미측정 패스 수치는 추정으로 꾸미지 않는다. sight-2 수정0. 소품색57재질50모델의 불투명 평균 측정은 탈락필터만, 최종은 같은자리1x 눈검수. Core·카메라·원화 변경0, 시험 a2r-build-next만/바로가기변경0.
