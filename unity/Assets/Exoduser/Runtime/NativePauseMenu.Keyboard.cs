@@ -68,7 +68,8 @@ namespace Exoduser.UnityPort
    bool hover=GUI.enabled&&rect.Contains(Event.current.mousePosition);bool pressed=hover&&ExoInput.Mouse(0);
    if(GUI.enabled&&(hover||selected)&&!pressed)NativeSilverHellUi.ButtonFocus(rect);
    NativeSilverHellUi.ActionPlate(rect,primary,hover||selected?1:0,pressed,36,8);
-   var label=new GUIStyle(GUIStyle.none){font=font,fontSize=style.fontSize,fontStyle=FontStyle.Normal,alignment=TextAnchor.MiddleCenter,wordWrap=false,clipping=TextClipping.Overflow};   // GUIStyle.none: a skin.button copy painted the default grey button box behind the plaquelabel.normal.textColor=GUI.enabled?NativeSilverHellUi.Bright:NativeSilverHellUi.Dim;
+   var label=new GUIStyle(GUIStyle.none){font=font,fontSize=style.fontSize,fontStyle=FontStyle.Normal,alignment=TextAnchor.MiddleCenter,wordWrap=false,clipping=TextClipping.Overflow};   // GUIStyle.none: a skin.button copy painted the default grey button box behind the plaque
+   label.normal.textColor=GUI.enabled?NativeSilverHellUi.Bright:NativeSilverHellUi.Dim;
    NativeSilverHellUi.Label(rect,text,label);return NativeUiAudit.Button(rect,GUIContent.none,GUIStyle.none);
   }
   bool MenuButton(Rect rect,string text,int index,GUIStyle style){PointAt(rect,index);bool primary=page==PausePage.Main&&index==0||page==PausePage.Quit&&index==1;bool clicked=MetalAction(rect,text,primary,navigation.Focused&&navigation.Cursor==index,style);if(clicked)navigation.Fence();return clicked;}
