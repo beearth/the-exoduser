@@ -20,6 +20,8 @@ namespace Exoduser.UnityPort.Core {
   public double PlayerMaxStamina,PlayerMaxMana,PlayerMaxShield,PlayerSpeed,PlayerHpRegen,PlayerStaminaRegen,PlayerManaRegen,PlayerPhysicalDefense,PlayerCriticalChance,PlayerCriticalMultiplier,AttackSpeedMultiplier,DamageMultiplier,AccessoryDamageBonus,AccessoryDamageSum,DropBonus,StrengthFlat,WeaponAttack,WeaponSpeed,WeaponRange,WeaponArc;
   // Kept separate from DEF, as in the source; parent combat adapter may admit these separately.
   public double PhysicalDamageReduction,ElementResistance,StatusResistance;
+  // D-U2: web _playerDefTotals().eDef (hurtP energy DR for magic / parry damage) and the equipment part of _gritTotal (bGrit + gritFlatN/R).
+  public double PlayerEnergyDefense,EquipmentGrit;
   // B08: web _eqAffix(antiRevive / reviveOnce / revivePow + _iRevPow*.01 / reviveCd) feed the revive rules and the stat panel rows.
   public double AntiRevive,ReviveOnce,RevivePow,ReviveCd;
   // B05: web STATS.dex-side total (level bonus + equipment bDex) that bowRef() and the auto crossbow read.
