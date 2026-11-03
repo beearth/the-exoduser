@@ -1,0 +1,41 @@
+{
+  "models": [
+    {
+      "etype": 1,
+      "modelResource": "Enemies3D/SpineApostle",
+      "animator": "Generic/CoreTickPlayables",
+      "baseRadius": 10,
+      "height": 1.35,
+      "chestRatio": 0.618,
+      "stride": 80,
+      "deathTicks": 45,
+      "idle": "",
+      "move": "Walk",
+      "tell": "",
+      "active": "",
+      "recover": "",
+      "hit": "",
+      "stagger": "",
+      "death": ""
+    },
+    {
+      "etype": 4,
+      "modelResource": "Enemies3D/EyeMass",
+      "animator": "Generic/CoreTickPlayables",
+      "baseRadius": 16,
+      "height": 1.05,
+      "chestRatio": 0.55,
+      "stride": 80,
+      "deathTicks": 45,
+      "idle": "",
+      "move": "",
+      "tell": "",
+      "active": "",
+      "recover": "",
+      "hit": "",
+      "stagger": "",
+      "death": "",
+      "startEyeMass": true
+    }
+  ]
+}

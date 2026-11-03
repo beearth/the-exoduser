@@ -383,3 +383,10 @@ CTO 야간 지시(11-03 밤). 작업본 `G:/exoduser-wt/codex-vfx-spark`, 브랜
 - 작업본 밖 쓰기·삭제, 원본 덮어쓰기, game.html/Core 변경, 커밋·push, 유료 API, Unity/Player·브라우저 실행은 하지 않았다. `LANES.md`는 11-03 기록이라 새 elhit 배정이 없지만, 현재 사용자 브리프의 브랜치·SHA와 깨끗한 시작 상태를 확인했다. 디스크 여유는 `Get-Volume` 권한 거부로 확인하지 못했다. 작업은 작은 PNG·비교판·검사 로그만 만들었다.
 
 **판정: PC 검사·정적 비교판 확인 통과 / RETOUCH_GAME_QA_PENDING.** 남은 일은 총괄의 diff 검수·경로 지정 커밋/push와 Mac의 Unity 임포트·1-1 34° 일반/보스 실제 피격 확인이다. 같은 빌드에서 1920×1080·3840×1080 1x/3x 및 10초 무음 영상으로 접점 시작, 정점 체감, .45/.62 알파에서의 가시성, 색보정 후 원소 구분, 겹친 적/탄막 가림과 잔점·잘림을 판정한다. PC에서는 최종 게임 화면 PASS나 실행본 반영을 선언하지 않는다.
+## 11-04 01:00 적 3D 접점 연결 바탕 (PC)
+
+[Unity 연결 기록](../8.0몬스터디자인/UNITY_ENEMY3D_WIRING_20261104.md)의 NativeEnemyRigRenderer.ImpactAnchor → CombatImpactView.EnemyRigAnchor를 연결했다. 기존 AnchorRatio·ImpactRatio·chestRatio/height/deathTicks·--enemy-render=rigpixel 이름/의미를 보존했다. TargetId 또는 etype+동일 좌표의 유일한 표시 개체만 사용하고, 모델/접점이 없거나 겹쳐 식별할 수 없으면 기존 Core 반경 경로다.
+
+리그 bounds의 투영 높이로 몸 안 접점과 시트 최종 폭(일반.6·치명/사망1.0·큰 적 상한1.2)을 정한다. Blood Stretch까지 최종 폭에 포함한다. 바닥 혈흔은 발밑에 유지하며 사망 관측 틱을 모델 사망 샘플링과 공유한다. Core 이벤트 X/Y/Size나 판정은 수정하지 않는다. deathTicks 뒤에도 기존 사망 피 시트가 발밑으로 튀지 않도록 마지막 리그 접점을 유지한다.
+
+PC 정책103/0·전체 참조 컴파일5개 오류0. 실제 임포트·접점 오차10%·피 실루엣 가림·먼 적1x·30마리 성능은 Mac 미판정. 공격/피격/사망 클립은 현재 제공되지 않아 bind pose이며 실제 무너짐 동기화 판정은 클립 제작 뒤다.
