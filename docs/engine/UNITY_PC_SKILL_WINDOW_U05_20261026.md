@@ -118,7 +118,7 @@
 | 장착 | UI0~3=spikeTrap/iceOrb,F4=holy,LMB6=ki,RMB7=fireball,Ctrl11=iceOrb,Space12=giant. 숫자 슬롯 중복은 해제, 고정LMB/RMB/Ctrl 직접 해제는 거절 | 미지원 기술 배정0 |
 | 리셋 | RequestReset(sim,id)로 확인 대기, ResolveReset(false)는 자원/슬롯 쓰기0. 확인 시 일반기 학습SP+(Lv−1)SP환불·악의미반환·해당 숫자/CT해제. 기본ki/fireball은Lv1 유지·강화분만 환불 | 동시다른창입력 차단, 사용자저장 덮어쓰기0 |
 | 가운데 | 모든13일반 슬롯에 기존 빈 제단 표시, 실제 장착 핵/명칭과 모든 습득 구슬의 실제Lv 표시. 선택한 다른 구슬 때문에 장착 모체의 로드맵 열이 바뀌지 않음 | 합체 executor/전체42종/실시간3D제단은 미이식, 아트 완성 선언 없음 |
-| 하단 | 공용 ActionPlate로3버튼 정합(11-03 현재: 실버 헬 불투명 흑철·옅은 세로 명암·1px 은빛 선/음각(21:25 RETOUCH)). 일괄강화는 지원/습득한6종의 실제Lv락/SP내에서만 처리. 추천자동은 전체 추천빌드에 필요한 미지원 기능 때문에 disabled 유지하고 hover사유 표시 | 부분 추천을 전체 추천으로 가장하지 않음 |
+| 하단 | 공용 ActionPlate로3버튼 정합(11-03 현재: 원화9-slice·밉맵OFF·밝기1.0(23:05 우선)). 일괄강화는 지원/습득한6종의 실제Lv락/SP내에서만 처리. 추천자동은 전체 추천빌드에 필요한 미지원 기능 때문에 disabled 유지하고 hover사유 표시 | 부분 추천을 전체 추천으로 가장하지 않음 |
 | 저장 요청 | Changed callback에서 실제 원장 변경 때만 NativeGame.RequestCombatSave 요청. 스킬 창이 상태/실행을 초기화하지 않음 | 실제 재시작 왕복은 부모 통합 검수 |
 
 검증: I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/third/skill/의 SkillPolicyTests.csproj·Program.cs, red.txt→green.txt. 실제 Core가 연결된26검사 PASS: SP/악의 원자성·중복학습·Lv50락·기검참실제공격레벨·하향환불·슬롯중복제거·고정슬롯해제거절·리셋중복환불거절·RMB/E배정. 기존 EnemyAi 미사용 지역변수 경고2는 원문 보존. 컴파일/CPU검사만으로 Player/시각/저장 PASS를 선언하지 않는다. 관련docs 전수검색은 같은 폴더 docs-search.txt.

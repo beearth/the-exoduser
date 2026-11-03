@@ -1,34 +1,36 @@
-# Unity 버튼 판 질감 — 21:25 실버 헬 RETOUCH (2026-11-03)
+# Unity UI 원화 복구 — 23:05 디자인총괄 합격표 (2026-11-03)
 
-브랜치 codex/unity-ui-plate-20261103, 기준 origin/unity/main aa38bb877327. 정본은 unity/main. 최상위 톤은 DESIGN_CONCEPT_SILVER_HELL_20261028.md다.
+작업 브랜치 codex/unity-ui-plate-20261103. 23:05가22:55/21:25/20:20의 단색 판 지시보다 우선한다. 단색·음각·세로 명암 판은 폐기했다. 원화 PNG 바이트는 바꾸지 않고 기존 Resources 원화를 다시 그린다.
 
-## 인수 판정과 목표
-4차 Mac(qa/mac-captures-20261103 @adc7233e6, qa/unity-death-ui/7e740aa)은 버튼12/12 RGB13/13/13 불투명·원화 비침0·1px, 스킨 원인 확정(control110/138 vs skinless13/13), 감광/부활5프레임/전투 문구 숨김 PASS였다. 기능을 다시 만들지 않고 밋밋한 판 질감만 RETOUCH한다. BG3 메뉴·웹 정본과 같은 크기로 비교해 고급 메뉴의 조용한 명암/음각이 읽히는지 Mac이 판정한다.
+## 다섯 합격 항목의 구현
 
-## 현재 표면 계약
+| # | 복구/계약 | 검수 |
+|---|---|---|
+|1 입장|Art/ui/silver_hell/lobby_enter_btn_silver_20261029 또는 lobby_enter_disabled를 Rect(1428,702,416,156)에 표시. 원화 ENTER 글자가 있으므로 입장/ENTER를 덧그리지 않음. 클릭/호버 소리 유지|캐릭터0명 불가·2명 가능, normal/hover/selected/disabled|
+|2 ActionPlate|주요 btn_primary_composed, 일반 btn_plaque_20261029를 원래 Slice(box.x-outset, box.y, width+2×outset,height), sourceX174/sourceY0/edge/edgeY0/center=true로9-slice. 기본edge40/outset14. 일시정지의 primary도 주요 원화로 전달|모든 상태 GUI.color=white, 밝기1.0. .78/.74/1.18 배율 및 코드 판 없음|
+|3 슬롯|카드(1428,421+n×94,390,84)에 ActionPlate 없음. 선택 붉은 바탕(194,26,16)α.1·왼쪽2px. 가는 α.13 헤어라인·56×56 초상 칸/원본 전사 초상. 새 캐릭터 칸은 얇은 테와40×40 +칸|0명/2명, 선택 카드·초상·이름·삭제 버튼 가독성|
+|4 생성 창|visual_cancel/create/disabled를180×44 Rect에 직접 표시. name_cancel/create도 기존 이름창 버튼 Rect에 표시. KO 문구가 원화에 있으므로 추가 텍스트 없음|생성 가능/잠금, 이름창, 삭제확인|
+|5 레일|panel_frame_20261029를 Rect(1368,8,544,1064)에 source150/150, edge75/75, center=false로 그려 모서리/테두리만 복구. 기존 그림자·배경·로고 보존|1920/3840 실제 오른쪽 레일·모서리·ENTER와 충돌0|
 
-| 층 | 값/구현 |
-|---|---|
-| 불투명 기반 | 기존 SolidRect/whiteTexture, alpha1 강제, alphaBlend=false, 부모 틴트 상속 없음·복원. 기본 --iron #0f0f10 |
-| 세로 명암 | IronFaceAt(height): 위 RGB(18,18,19)→아래(12,12,13), 가운데(15,15,16). 물리1px 행마다 불투명 채움. 생성 텍스처/필터/노이즈/그레인/디더 없음. 선택 때도 같은 어두운 명암 |
-| 바깥 은빛 선 | 기본 --sv-md(138,139,136), 주요/선택 --sv-lt(201,199,195), 물리1px. 위치 스냅/두께1/GUI.matrix.m00 유지 |
-| 가장자리 경사 | 은빛 테 안쪽1px: 위 --sv-dp(44,46,49) α.45, 아래 검정 α.75. w/h>10physicalpx에서 적용 |
-| 음각 홈 | 3physicalpx 안쪽의 검정 α.8 선1px. 아래 립에 --sv-lt α.06의1px 반사. 위 경사/검은 홈/아래 반사로 깊이를 구분 |
-| 선택 내부 빛 | --eye-dp(126,13,7) 안쪽8physicalpx. inset=(4+i)px, i=0..7, α=selection×(pressed?.08:.12)×((8-i)/8)^2. 바깥 번짐·붉은 단색 면·상시 주 버튼 불씨 없음 |
-| 글자/입력 | 기존 Hahmlet/지역 명조/Cinzel, PlateText --tx #e6e3dc, 선택 --sv-hi #f6f5f2. inputLive·공통 스킨8상태 배경 제거·기존 Rect/콜백 유지 |
-| 그리기 | 질감 행/선은 Repaint에서만 그림. Core/세이브/카메라 변경 없음 |
+상태별 원화 밝기와 알파 틴트는1.0이다. 원화 자체의 투명 영역/각인/문구를 보존한다. 원화에 구워진 ENTER/KO 문구는 원본 그대로이며 번역 문자를 겹쳐 쓰지 않는다. 호버/선택은 안쪽에 클립한 guide_button_glow만 α.18×selection로 표시한다. 바깥 새 판/새 프레임/새 질감은 생성하지 않는다.
 
-색 전달은 Mac 검증된 기존 단색 경로 그대로다(Linear Player는 토큰의 linear 값, Gamma는 토큰 그대로). UI 생성 그림/새 재질/유료 생성0. 20:20의 transparent blackTexture/RGBAHalf 후보를 다시 사용하지 않는다.
+## 기본 스킨과 사용자 원화의 분리
+NativeUiChrome은 GUI.skin의 button/box/label/window/toggle/textField/textArea에서 기억한 텍스처만 제거한다. 사용자 지정 GUIStyle 배경은 보존한다. Editor HiDPI 배열도 기본 스킨 원소만 제거하고 원화 원소를 보존한다. 이전처럼 모든 GUIStyle 배경을 null로 지워 원화를 잃게 하지 않는다.
 
-## 불투명/표면 측정
---unity-death-ui-smoke --unity-death-ui-skin-probe -ui-screen lobby는 유지한다. 기본 스킨 control과 새 판을 같은 사각형에서 촬영한다. ui_skinless에서는 판 뒤 자홍 underlay를 완전히 가려야 한다.
-1920 기준(1500,735)/(1500,775)를 해상도별 변환해 RGB를 기록한다. 새 명암의 해당 높이를 IronFaceAt으로 계산한 expectedRgb에서 각 채널±3 이내면 customPlateDark=true다. 단색15/15/16 고정 기대값은 폐기한다. 측정점은 테두리/음각/선택 빛 밖이다.
+## 밉맵/필터 (PNG 원본 변경0)
+다음11종 .png.meta의 enableMipMap=0, filterMode=1(Bilinear, Trilinear 아님):
+btn_primary_composed, btn_plaque_20261029, guide_button_glow, lobby_enter_btn_silver_20261029, lobby_enter_disabled, visual_create, visual_cancel, visual_disabled, name_create, name_cancel, panel_frame_20261029.
+GUID·sRGB·기존 원화/크기·압축의 나머지 설정은 유지한다. Mac 영수증에서 각 Resources 텍스처 loaded=true/mipCount=1을 확인한다.
 
-## 색 프로브 폐기 (21:25)
-실험 --unity-death-color-probe는 제거했다. UI smoke는 이를 처리하지 않았고 사망 smoke는 shader/camera unavailable이었다. 4차 Mac은 오른쪽 띠를 V≈.002 근흑색 HSV 착시로 판정했으며 V<.02는 채도 비교에서 제외한다. 필요 없는 Shader 의존성·임시 패치·콜백·영수증 필드·NativeGame.DeathColorProbe.cs(+meta)를 삭제했다. 해당 인자를 더 이상 전달하지 않는다. 기본 스킨/불투명 probe와 기존 사망/fade 인자는 유지한다.
+## Mac 촬영
+--unity-death-ui-smoke -ui-screen <lobby|character-create|character-name|character-delete|pause|settings|quit|lobby-quit>
+-ui-state <normal|hover|selected|disabled> -ui-characters <0|2>
++ -output/--unity-qa-sandbox 절대 경로, -screen-width/-screen-height, -mute-audio.
+상태는 제어된 시각 검수용 표시이며 물리 입력 테스트가 아니다. disabled의 로비는 불가 원화, 생성 창은 잠긴 직업 원화다. selected/2명은 두 번째 캐릭터 선택. 설정은4탭을 모두 촬영한다. 파일명/JSON에 화면·상태·인원·실제 해상도가 들어간다.
+생성·이름 창은 열기만 하고 새 캐릭터 생성하지 않는다. 삭제 확인도 기존 smoke 삭제 차단 유지. settings/roster/combat IO0, 전후 로스터 불변 검사.
 
-## 검수/도구
-- Mac: 일시정지·설정4탭·종료확인·로비 메뉴를1920×1080·3840×1080, 1x·3x로 BG3/웹 정본과 나란히 비교. 낮은 대비 세로 명암/음각/경사, 불투명, 은빛1px, 내부 진홍, 점0·스킨 바탕0을 확인한다.
-- CPU 회귀: 실제 SolidRect의 alpha1/비블렌딩/부모 복원, 실제 IronFaceAt의 중성색·낮은 대비·단조 명암·알파1, 스킨 제거, 폐기 코드/Shader 의존성 제거를 검사한다. GPU/디자인 PASS가 아니다.
-- run.cjs --output <상대/절대 경로> [--unity-data <Editor/Data 또는 Unity.app/Contents>]. Mac Contents/Resources/Scripting 자동 탐색 및 명시 --dotnet/--csc/--refs 유지.
-- PC는 DLL 참조 컴파일까지만. 새 질감의 실제 Mac 화면은 미검증, VISUAL VERDICT: RETOUCH 유지.
+## 비교판과 판정
+- 실제로 연 기준: G:/exoduser/tmp/design-review/20261028_lobby_aaa/00_current_lobby_1920.png. 원화8종 점검판: I:/EXODUSER-Storage/codex-takeover/death-screen/review-current/original-assets.png (게임 실행 화면 아님).
+- unity/Tools/lobby-art-review/compare.cjs는 실제 PNG4개(--reference/--web/--regression/--restored)를 받아1x 전체·동일 크기 레일1x·레일3x HTML 비교판을 만든다. 과거1920 원본은3840으로 확대하지 않고 자연 크기로 남긴다. 실제 높이가 다르면 오류, 누락 화면을 가짜 캡처로 대체하지 않음.
+- Mac1920×1080·3840×1080에서10-28 웹/현재 웹/385e76ce1 퇴보/복구본을 나란히. 기본·호버·선택·비활성,0/2명, 생성·이름·삭제·일시정지 창 포함. 합격선은 디자인된 요소가 하나도 사라지지 않음.
+- PC는 Player 실행 금지/컴파일까지만. 실제 복구 캡처/완성 비교판/시각 합격은 Mac 대기. 이전13/13/13 고정색/1px 코드 판 합격은 원화 복구 기준이 아니므로 폐기한다.

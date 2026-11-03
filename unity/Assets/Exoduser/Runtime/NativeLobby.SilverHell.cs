@@ -19,7 +19,7 @@ namespace Exoduser.UnityPort
         internal static string TextField(Rect rect,string text,GUIStyle style){return TextField(rect,text,-1,style);}
         internal static string TextField(Rect rect,string text,int max,GUIStyle style){var n=style.normal.textColor;var f=style.focused.textColor;try{style.normal.textColor=TextColor(n);style.focused.textColor=TextColor(f);return max<0?NativeUiAudit.TextField(rect,text,style):NativeUiAudit.TextField(rect,text,max,style);}finally{style.normal.textColor=n;style.focused.textColor=f;}}
         static Font light,regular;
-        static Texture2D frame,plaque,panelBackground,panelIron;
+        static Texture2D frame,plaque,primaryPlaque,innerButtonGlow,panelBackground,panelIron;
         // Focus lives inside ActionPlate; no red texture is drawn beyond its edge.
         internal static void ButtonFocus(Rect box){}
         internal static Font Font(bool body=false)
@@ -109,62 +109,52 @@ namespace Exoduser.UnityPort
             if(plaque==null)plaque=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_plaque_20261029");
             Slice(new Rect(box.x-14,box.y,box.width+28,box.height),plaque,174,0,40,0,true);
         }
-        // 21:25 RETOUCH: opaque Silver Hell iron, quiet vertical shading and engraved edges.
+        // 23:05 design lead: artwork owns the face, bevel and border. Never replace it with a generated panel.
         internal static readonly Color PlateText=new Color(230/255f,227/255f,220/255f),PlateTextHot=new Color(246/255f,245/255f,242/255f),PlateTextDanger=new Color(194/255f,26/255f,16/255f);
-        internal static readonly Color IronFace=new Color(15/255f,15/255f,16/255f,1),SteelEdge=new Color(138/255f,139/255f,136/255f,1),SteelHot=new Color(201/255f,199/255f,195/255f,1);
-        internal static Color IronFaceAt(float height)
+        internal static string ReviewState;
+        internal static float ArtSelection(float natural)
         {
-            return Color.Lerp(new Color(18/255f,18/255f,19/255f,1),new Color(12/255f,12/255f,13/255f,1),Mathf.Clamp01(height));
+            return string.IsNullOrEmpty(ReviewState)?Mathf.Clamp01(natural):ReviewState=="hover"||ReviewState=="selected"?1:0;
         }
-        // The shared, already-measured Panel(iron:false) path supplies linear colour to IMGUI in Linear Players.
-        // No generated texture, transparent blackTexture, inherited alpha or material blending can own this face.
-        internal static void SolidRect(Rect rect,Color color,bool opaque)
+        internal static bool ArtImage(Rect box,Texture2D art)
         {
-            var tint=GUI.color;var background=GUI.backgroundColor;
-            try{
-                if(opaque)color.a=1;
-                if(QualitySettings.activeColorSpace==ColorSpace.Linear)color=color.linear;
-                GUI.color=color;GUI.backgroundColor=Color.white;
-                NativeUiAudit.DrawTexture(rect,Texture2D.whiteTexture,ScaleMode.StretchToFill,!opaque);
-            }finally{GUI.color=tint;GUI.backgroundColor=background;}
+            if(art==null)return false;
+            var previous=GUI.color;
+            try{GUI.color=Color.white;NativeUiAudit.DrawTexture(box,art,ScaleMode.StretchToFill,true);NativeUiAudit.ImageText(box,art);}
+            finally{GUI.color=previous;}
+            return true;
         }
-        static float SnapX(float x){var m=GUI.matrix;return m.m00>.0001f?(Mathf.Round(m.m00*x+m.m03)-m.m03)/m.m00:x;}
-        static float SnapY(float y){var m=GUI.matrix;return m.m11>.0001f?(Mathf.Round(m.m11*y+m.m13)-m.m13)/m.m11:y;}
-        static void SolidFrame(float x,float y,float w,float h,float inset,float pixel,Color color,bool opaque)
+        internal static void FrameOnly(Rect box,float edge=75)
         {
-            x+=inset;y+=inset;w-=inset*2;h-=inset*2;if(w<=pixel*2||h<=pixel*2)return;
-            SolidRect(new Rect(x,y,w,pixel),color,opaque);SolidRect(new Rect(x,y+h-pixel,w,pixel),color,opaque);
-            SolidRect(new Rect(x,y+pixel,pixel,h-pixel*2),color,opaque);SolidRect(new Rect(x+w-pixel,y+pixel,pixel,h-pixel*2),color,opaque);
+            if(frame==null)frame=Resources.Load<Texture2D>("Art/ui/silver_hell/panel_frame_20261029");
+            var previous=GUI.color;
+            try{GUI.color=Color.white;Slice(box,frame,150,150,edge,edge,false);}
+            finally{GUI.color=previous;}
         }
         internal static void ActionPlate(Rect box,bool primary,float selection,bool pressed,float edge=40,float outset=14)
         {
             NativeUiAudit.Region(box,"button");if(box.width<=0||box.height<=0)return;
-            if(Event.current!=null&&Event.current.type!=EventType.Repaint)return;
-            float scale=Mathf.Max(.0001f,GUI.matrix.m00),pixel=1/scale;
-            float x=SnapX(box.x),y=SnapY(box.y),w=SnapX(box.xMax)-x,h=SnapY(box.yMax)-y;
-            if(NativeUiChrome.OpacityProbe)SolidRect(new Rect(x,y,w,h),new Color(1,0,1,1),true);
-            // --iron #0f0f10 is always opaque, including disabled/fading parents.
-            SolidRect(new Rect(x,y,w,h),IronFace,true);
-            // Physical rows remain opaque; no generated/filtered texture, noise, grain or dithering.
-            int rows=Mathf.Max(1,Mathf.RoundToInt(h/pixel));
-            for(int row=0;row<rows;row++)SolidRect(new Rect(x,y+row*pixel,w,Mathf.Min(pixel,h-row*pixel)),IronFaceAt((row+.5f)/rows),true);
-            if(w>10*pixel&&h>10*pixel){
-                // One-pixel bevel inside the silver rim, then a separate one-pixel engraved groove.
-                SolidRect(new Rect(x+pixel,y+pixel,w-2*pixel,pixel),new Color(44/255f,46/255f,49/255f,.45f),false);
-                SolidRect(new Rect(x+pixel,y+h-2*pixel,w-2*pixel,pixel),new Color(0,0,0,.75f),false);
-                SolidFrame(x,y,w,h,3*pixel,pixel,new Color(0,0,0,.8f),false);
-                SolidRect(new Rect(x+4*pixel,y+h-4*pixel,w-8*pixel,pixel),new Color(201/255f,199/255f,195/255f,.06f),false);
-            }
-            SolidFrame(x,y,w,h,0,pixel,primary||selection>0?SteelHot:SteelEdge,true);
-            float selected=Mathf.Clamp01(selection);
-            if(selected>0){
-                // A soft eight-pixel inner ember, never a red face or outer haze.
-                for(int i=0;i<8;i++){
-                    float falloff=(8-i)/8f;
-                    SolidFrame(x,y,w,h,(4+i)*pixel,pixel,new Color(126/255f,13/255f,7/255f,selected*(pressed?.08f:.12f)*falloff*falloff),false);
-                }
-            }
-            NativeUiChrome.DrawStockProbe(new Rect(x,y,w,h));
+            if(plaque==null)plaque=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_plaque_20261029");
+            if(primaryPlaque==null)primaryPlaque=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_primary_composed");
+            var previous=GUI.color;
+            try{
+                // Fixed brightness 1.0 in every state, including pressed. Artwork supplies the material.
+                GUI.color=Color.white;
+                Slice(new Rect(box.x-outset,box.y,box.width+outset*2,box.height),
+                    primary?primaryPlaque:plaque,174,0,edge,0,true);
+                float focus=ArtSelection(selection);
+                if(focus<=0)return;
+                if(innerButtonGlow==null)innerButtonGlow=Resources.Load<Texture2D>("Art/ui/silver_hell/guide_button_glow");
+                if(innerButtonGlow==null)return;
+                float inset=Mathf.Min(edge,box.width*.2f);
+                var inside=new Rect(box.x+inset,box.y+4,box.width-inset*2,box.height-8);
+                if(inside.width<=0||inside.height<=0)return;
+                NativeUiAudit.BeginGroup(inside);
+                try{
+                    GUI.color=new Color(1,1,1,.18f*focus);
+                    NativeUiAudit.DrawTexture(new Rect(-inset,-inside.height*.3f,inside.width+inset*2,inside.height*1.6f),innerButtonGlow);
+                }finally{NativeUiAudit.EndGroup();}
+            }finally{GUI.color=previous;}
         }
     }
     public sealed partial class NativeLobby

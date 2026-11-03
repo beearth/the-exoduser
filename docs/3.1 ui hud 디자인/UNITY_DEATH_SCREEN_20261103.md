@@ -79,3 +79,6 @@ Mac에서는1920×1080·3840×1080·5120×1440의 HD2D/--remodel3d 양쪽에서 
 - 실험 --unity-death-color-probe와 NativeGame.DeathColorProbe.cs(+meta), 패치 생성/읽기·콜백·관련 영수증 필드는21:25에 폐기했다. UI smoke의 미처리와 사망 smoke의 shader/camera unavailable을 불필요한 검사 제거로 해소한다. 해당 인자는 실행 예제에서 빼며 새 후보에 전달하지 않는다.
 - 현재 사망 호출: --unity-death-screen-smoke --unity-death-revive-frames --unity-boss-direct 0 + --unity-qa-sandbox/-output/-screen-width/-screen-height. 기본 UI/스킨 불투명 probe는 유지한다.
 - 새 브랜치 codex/unity-ui-plate-20261103은 공통 버튼의 옅은 세로 명암·1px 음각/경사·내부 진홍만 다듬는다. 실제 질감은 Mac1920/3840 1x·3x 및 BG3/웹 정본 나란히 재검수한다. PC 컴파일은 시각 합격 근거가 아니다.
+
+## 23:05 원화 복구 우선
+공용 ActionPlate는 단색/음각 판에서 btn_primary_composed·btn_plaque_20261029의 원래9-slice로 복구했다. 밉맵OFF·밝기1.0·안쪽 호버 빛만 유지한다. 사망/부활/필터/전투 문구 숨김 규칙은 바꾸지 않는다. 최신 UI 촬영에는 lobby0/2명·character-create/name/delete와-ui-state가 추가됐으며 고정색/스킨 픽셀 probe는 원화 기준과 맞지 않아 제거했다. 현재 원화/촬영 계약은 UNITY_BUTTON_PLATE_MATERIAL_20261103.md를 따른다.

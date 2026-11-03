@@ -198,3 +198,6 @@ Mac 3941b3ff8의3차 FAIL에 따라 공통 ActionPlate를 생성 텍스처/투�
 
 ### 21:25 판 질감 RETOUCH
 4차 Mac에서 공통 판 불투명13/13/13·1px·원화 비침0이 확인돼 기능은 유지한다. codex/unity-ui-plate-20261103은 #0f0f10 중심의 옅은 세로 명암·1px 경사/음각·선택 내부8px 진홍을 추가한다. 기존 inputLive·명조 자간·배치는 바꾸지 않는다. 점/노이즈/그레인/디더0. 새 질감은 Mac1920/3840 1x·3x 비교 전까지 RETOUCH다. 현재 수치: UNITY_BUTTON_PLATE_MATERIAL_20261103.md.
+
+### 23:05 디자인총괄 원화 합격표가 우선
+21:25 코드 판 RETOUCH는 폐기하고 공용 ActionPlate를 원래 btn_primary_composed/btn_plaque_20261029 9-slice로 복구한다. 밉맵OFF·밝기1.0, 호버 안쪽 빛만. 기본 IMGUI 스킨 배경은 제거하되 사용자 원화 배경은 보존한다. 일시정지 inputLive/명조/배치는 유지하고 primary 플래그를 주요 원화에 전달한다. 실제 합격은 새 Mac 비교판 대기다.

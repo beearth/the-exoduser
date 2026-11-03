@@ -692,3 +692,10 @@ PC후보af70a6a2c5는정본버전매빌드읽기·직업X사슬/로어·실능�
 | PC Codex / codex/unity-ui-plate-20261103 | NativeLobby.SilverHell 표면, DeathUiCapture expectedRgb, DeathScreenCapture의 실험 색 프로브 제거, DeathColorProbe.cs/meta 삭제, death-ui-tests 및 관련 UI SSOT | aa38bb877에서 새 브랜치.4차 Mac 기능 PASS 유지, 옅은 세로 명암/1px 음각·경사/선택8px 내부 빛 구현. 색 프로브는 필요 없어 폐기. PC5어셈블리 오류0·회귀 PASS, Unity/Player/빌드/캡처0. 새 질감1920/3840 1x·3x/BG3·웹 정본 비교는 Mac 대기/RETOUCH |
 
 오른쪽 띠는 V≈.002 근흑색 HSV 착시(4차 Mac 판정), V<.02 채도 비교 제외. 기존 guard.baseline.json WIP 보존. 최종 SHA/현재 실행 인자: I:/EXODUSER-Storage/codex-takeover/death-screen/REPORT.md.
+
+## 2026-11-03 23:05 디자인총괄 다섯 원화 복구 (22:55보다 우선)
+| 담당/브랜치 | 소유 변경 | 상태/다음 |
+|---|---|---|
+| PC Codex / codex/unity-ui-plate-20261103 | SilverLobby ENTER/슬롯/레일, SilverHell 공통9-slice, SilverCharacter/CharacterPresentation 원화, NativeUiChrome 기본 스킨 한정 제거, 원화11종 meta, DeathUiCapture/회귀/비교 도구 및 관련 docs | 최신385e76ce1 정상 병합. 원화 복구·밉맵OFF·밝기1.0 계약 회귀 PASS. 코드 판/세로명암 미사용. PC Player/빌드/캡처0. 실제1920/3840·1x/3x·4화면 비교는 Mac 대기/미검증 |
+
+10-28 로비 캡처와 원화8종은 직접 열어 확인했다. 원화 점검판은 I:/EXODUSER-Storage/codex-takeover/death-screen/review-current/original-assets.png이며 제품 캡처가 아니다. 실제 비교기는 unity/Tools/lobby-art-review/compare.cjs(실제PNG4개 필수). 최종SHA·Mac 인자/비교판 경로는 death-screen/REPORT.md. 기존 guard.baseline.json WIP 보존.
