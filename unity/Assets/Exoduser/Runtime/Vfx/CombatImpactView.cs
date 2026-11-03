@@ -43,10 +43,11 @@ namespace Exoduser.UnityPort.Vfx
         readonly System.Random random=new System.Random(20261103); // presentation RNG only
         public int Hits,Parries,Deaths,RollStarts,RollEnds,DrawnFrames,MissingSheets;
         public bool ReducedMotion;
-        // Actual displayed body by enemy ID, after the final billboard/rig pose.
-        // A future rig renderer supplies projected bounds through this same API.
+        // Optional presentation-only enemy model bounds. Null preserves every atlas/boss path.
+        public Func<FeedbackEvent,Camera,EnemyRigImpactAnchor?> EnemyRigAnchor;
+        // Atlas (sprite) enemies: actual displayed body by enemy ID after the final billboard pose.
+        // Rig-pixel enemies are anchored by EnemyRigAnchor above (enemy 3D lane); this path skips them.
         public Func<int,(Vector3 foot,Vector3 top)?> EnemyBody;
-        public Func<int,double> EnemyChestRatio;
         // Collapse-start offset, not the full death duration. Enemy3D can derive
         // this from its deathTicks timeline; unset/flat keeps the exact tick 0.
         public Func<int,int> EnemyDeathDelay;
@@ -241,11 +242,11 @@ namespace Exoduser.UnityPort.Vfx
             if(camera==null||camera!=renderCamera||!NativeRemodel3D.Active||camera.orthographic||EnemyBody==null)return;
             foreach(var c in clips) {
                 if(!c.renderer.enabled||!CombatHitAnchor.Applies(true,c.source.TargetId,c.source.Kind,c.spec.Mode))continue;
+                if(EnemyRigAnchor!=null&&EnemyRigAnchor(c.source,camera).HasValue)continue;
                 var body=EnemyBody(c.source.TargetId);if(!body.HasValue)continue;
                 var foot=camera.WorldToScreenPoint(body.Value.foot);var top=camera.WorldToScreenPoint(body.Value.top);
                 if(foot.z<=0||top.z<=0)continue;
-                var anchor=CombatHitAnchor.Resolve(foot.y,foot.y,top.y,c.source.Kind,
-                    EnemyChestRatio!=null?EnemyChestRatio(c.source.TargetId):double.NaN,c.source.IsBoss||c.source.Size>=18);
+                var anchor=CombatHitAnchor.Resolve(foot.y,foot.y,top.y,c.source.Kind,double.NaN,c.source.IsBoss||c.source.Size>=18);
                 if(!anchor.UseBody)continue;
                 float w=(float)anchor.DrawWidth,h=w*c.renderer.sprite.rect.height/c.renderer.sprite.rect.width/(float)c.spec.Stretch;
                 var screen=new Vector3(foot.x,foot.y+(float)anchor.OffsetY,foot.z);
@@ -284,6 +285,10 @@ namespace Exoduser.UnityPort.Vfx
                 c.renderer.sprite=c.sheet.frames[Mathf.Clamp(frame,0,c.sheet.frames.Length-1)];
                 float w=(float)c.spec.DrawWidth(age,c.renderer.sprite.rect.width),h=w*c.renderer.sprite.rect.height/c.renderer.sprite.rect.width;
                 float angle=(float)c.spec.Angle,x=c.source.X,y=c.source.Y;
+                var rigAnchor=EnemyRigAnchor!=null?EnemyRigAnchor(c.source,camera):null;
+                bool rigHit=c.source.VisualOnly&&(c.source.Kind==FeedbackKind.EnemyHit||c.source.Kind==FeedbackKind.EnemyCrit);
+                bool rigDeath=c.source.Kind==FeedbackKind.EnemyDeath;
+                if(rigAnchor.HasValue&&(rigHit||rigDeath)){var anchor=rigAnchor.Value;float ratio=(float)NativeEnemyRigPolicy.ImpactRatio(c.source.Kind==FeedbackKind.EnemyCrit||rigDeath?1:0,anchor.Large);w=anchor.WorldHeight*100*ratio/(float)Math.Max(1,c.spec.Stretch);h=w*c.renderer.sprite.rect.height/c.renderer.sprite.rect.width;}
                 if(c.spec.Mode==CombatClipMode.Blood){
                     // Move the stream away from the contact, preserving its
                     // attack-direction cone; never leave a body-sized centre blob.
@@ -293,6 +298,7 @@ namespace Exoduser.UnityPort.Vfx
                         angle=-Mathf.Atan2(b.y-a.y,b.x-a.x);}
                 }
                 Place(c.renderer,x,y,w*(float)c.spec.Stretch,h,angle,camera);
+                if(rigAnchor.HasValue&&(rigHit||rigDeath))c.renderer.transform.position+=rigAnchor.Value.Point-NativeRemodel3D.Point(c.source.X,c.source.Y);
                 c.renderer.color=new Color(1,1,1,(float)c.spec.Alpha(age));DrawnFrames++;i++;
             }
             particleCells.Clear();int drawnParticles=0;

@@ -1,7 +1,7 @@
-using System;using Exoduser.UnityPort;using Exoduser.UnityPort.Core;
+using System;using System.IO;using System.Text.Json;using Exoduser.UnityPort;using Exoduser.UnityPort.Core;
 static class Program {
  static int checks,fail;static void Check(bool value,string name){checks++;if(!value){fail++;Console.WriteLine("FAIL "+name);}}
- static void Main(){
+ static void Main(string[] args){
  Check(!NativeEnemyRigPolicy.Requested(null),"default sprite");Check(NativeEnemyRigPolicy.Requested(new[]{"--enemy-render=rigpixel"}),"opt in");Check(!NativeEnemyRigPolicy.Requested(new[]{"--enemy-render=rigpixel","--enemy-render=sprite"}),"last flag wins");Check(NativeEnemyRigPolicy.Requested(new[]{"--enemy-render","rigpixel"}),"split flag");
  var e=new EnemyState{Id=1,Etype=4,Alive=true,Radius=16,Web=new EnemySpawn{s="idle"}};var p=new NativeEnemyRigPolicy();
  Check(p.Sample(e,100,0).State==EnemyRigState.Idle,"idle");Check(p.Sample(e,101,2).State==EnemyRigState.Move,"move");
@@ -13,6 +13,13 @@ static class Program {
  var ranged=new EnemyState{Alive=true,Etype=1,Web=new EnemySpawn{s="idle",_projChargeT=60}};var q=new NativeEnemyRigPolicy();Check(q.Sample(ranged,1,0).State==EnemyRigState.Tell,"ranged charge");ranged.Web._projChargeT=1;Check(q.Sample(ranged,60,0).Normalized>0.98,"ranged last charge frame");ranged.Web._projChargeT=0;Check(q.Sample(ranged,61,0).State==EnemyRigState.Active,"ranged release");Check(q.Sample(ranged,64,0).State==EnemyRigState.Recover,"ranged recovery");
  for(int i=0;i<40;i++){double ratio=NativeEnemyRigPolicy.ImpactRatio(i%2==0?0:1,i==39);Check(ratio>=.6&&ratio<=(i==39?1.2:1),"impact scale range "+i);}
  Check(NativeEnemyRigPolicy.AnchorRatio(-1)==0,"anchor low clamp");Check(NativeEnemyRigPolicy.AnchorRatio(2)==1,"anchor high clamp");Check(NativeEnemyRigPolicy.AnchorRatio(double.NaN)==.55,"invalid anchor fallback");
+
+ var catalog=JsonSerializer.Deserialize<EnemyRigCatalog>(File.ReadAllText(args[0]),new JsonSerializerOptions{IncludeFields=true});Check(catalog.models.Length==2,"two pilot model keys");
+ EnemyRigDefinition eye=null,spine=null;foreach(var d in catalog.models){if(d.etype==4)eye=d;if(d.etype==1)spine=d;Check(d.height>0&&d.baseRadius>0&&d.deathTicks>0,"positive model dimensions");Check(d.chestRatio>=0&&d.chestRatio<=1,"chest inside body");Check(File.Exists(Path.Combine(Path.GetDirectoryName(args[0]),"..",d.modelResource+".fbx")),"model asset exists");}
+ var ordinary=new EnemyState{Etype=4,Alive=true};Check(!eye.Matches(ordinary),"ordinary carapace remains atlas");ordinary.IsStartEyeMass=true;Check(eye.Matches(ordinary),"fixed start eye mass key");ordinary.IsGhoul=true;Check(!eye.Matches(ordinary),"ghoul cannot borrow eye model");Check(spine.Matches(new EnemyState{Etype=1,Elite=3}),"same spine model for elites");Check(!spine.Matches(new EnemyState{Etype=1,IsBoss=true}),"boss stays separate");
+ var sim=new Simulation(new SimulationConfig{StageIndex=0,StartX=2000,StartY=2000},47);sim.SpawnStartEnemies();int tags=0;foreach(var mob in sim.Enemies){if(mob.IsStartEyeMass){tags++;Check(mob.Etype==4,"only start eye masses tagged");}}Check(tags==2,"real StartMobs tags exactly two");var extra=sim.SpawnEnemy(2100,2100,4);Check(extra!=null&&!extra.IsStartEyeMass&&!eye.Matches(extra),"ordinary spawn etype4 has no start tag");
+ for(int k=0;k<=20;k++){double y=NativeEnemyRigPolicy.AnchorY(100,200,80,100,k/20.0);Check(y>=100&&y<=200,"anchor remains inside projected bounds "+k);}
+ Check(Math.Abs(NativeEnemyRigPolicy.AnchorY(100,200,80,100,.55)-135)<.0001,"foot plus chest projection");
  Console.WriteLine(checks+" checks / "+fail+" failures");Environment.ExitCode=fail==0?0:1;
  }
 }

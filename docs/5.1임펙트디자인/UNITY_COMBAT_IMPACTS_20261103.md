@@ -387,3 +387,22 @@ CTO 야간 지시(11-03 밤). 작업본 `G:/exoduser-wt/codex-vfx-spark`, 브랜
 Mac 판정은 **화면 위·중간·아래 × 일반 피격·치명·보스 피격**을 각각 1x·3x로 비교한다. idle/walk 전환, 겹친 3마리, 작은 적/큰 적, 아틀라스/연결 후 rigpixel을 포함하고 먼 적의 접점·최종 폭·탄 가림(.2초 초과 금지)을 본다. 사망 피·혈흔은 바닥에 있고 기본 시작 틱이 같은지, 근접 패링이 그대로인지, 제공자 null·TargetId0·평면 모드가 기존 캡처와 같은지 확인한다. 1920×1080·3840×1080, 10초 무음 영상 포함.
 
 PC Unity/Player·빌드·실제 캡처·Unity JSON 임포트·URP 렌더 콜백·실제 rigpixel 표시 검수는 미실행이다. 따라서 화면 바이트 동일이나 게임 품질 PASS로 확대 해석하지 않는다. **기능 소스·PC 검사 완료 / Mac G4 및 적 3D 연결 대기**.
+## 11-04 01:00 적 3D 접점 연결 바탕 (PC)
+
+[Unity 연결 기록](../8.0몬스터디자인/UNITY_ENEMY3D_WIRING_20261104.md)의 NativeEnemyRigRenderer.ImpactAnchor → CombatImpactView.EnemyRigAnchor를 연결했다. 기존 AnchorRatio·ImpactRatio·chestRatio/height/deathTicks·--enemy-render=rigpixel 이름/의미를 보존했다. TargetId 또는 etype+동일 좌표의 유일한 표시 개체만 사용하고, 모델/접점이 없거나 겹쳐 식별할 수 없으면 기존 Core 반경 경로다.
+
+리그 bounds의 투영 높이로 몸 안 접점과 시트 최종 폭(일반.6·치명/사망1.0·큰 적 상한1.2)을 정한다. Blood Stretch까지 최종 폭에 포함한다. 바닥 혈흔은 발밑에 유지하며 사망 관측 틱을 모델 사망 샘플링과 공유한다. Core 이벤트 X/Y/Size나 판정은 수정하지 않는다. deathTicks 뒤에도 기존 사망 피 시트가 발밑으로 튀지 않도록 마지막 리그 접점을 유지한다.
+
+PC 정책103/0·전체 참조 컴파일5개 오류0. 실제 임포트·접점 오차10%·피 실루엣 가림·먼 적1x·30마리 성능은 Mac 미판정. 공격/피격/사망 클립은 현재 제공되지 않아 bind pose이며 실제 무너짐 동기화 판정은 클립 제작 뒤다.
+
+### 피격 기준점 — 적 3D 레인과 합침 (11-04 총괄)
+
+unity/main에 적 3D 레인 `6f6d7dd6d`가 먼저 들어오면서 rig-pixel 적용 피격 위치 연결(`CombatImpactView.EnemyRigAnchor` ← `NativeEnemyRigRenderer.ImpactAnchor`)이 생겼다. 같은 기능이 두 벌이 되지 않게 나눴다.
+
+| 적 | 접점·크기를 정하는 곳 |
+|---|---|
+| rig-pixel 3D 적(`--enemy-render=rigpixel`, 모델 표에 있는 종) | 적 3D 레인 `EnemyRigAnchor`(그 레인 소유, 피격·사망 모두) |
+| 아틀라스 스프라이트 적(지금 대부분) | 이 브랜치 `EnemyBody`(아틀라스 실루엣 표 `enemy_body_extents.json`) — 렌더 직전 `DrawEnemyHits`, `EnemyRigAnchor`가 값을 주는 클립은 건너뜀 |
+| 평면 모드·TargetId 0·몸 정보 없음 | 기존 경로(바뀜 없음) |
+
+이 브랜치에 있던 rig용 제공자(`EnemyRigBody`·`EnemyChestRatio`)는 지웠다. 병합 뒤 combat-impact 865/0, Core·Runtime Roslyn 오류 0.

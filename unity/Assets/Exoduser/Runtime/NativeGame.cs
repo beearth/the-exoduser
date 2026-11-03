@@ -48,22 +48,9 @@ namespace Exoduser.UnityPort
         readonly Dictionary<string,EnemyBodyExtent> enemyBodyExtents=new Dictionary<string,EnemyBodyExtent>();
         readonly Dictionary<Sprite,EnemyBodyExtent> enemyBodyCache=new Dictionary<Sprite,EnemyBodyExtent>();
         bool enemyBodiesLoaded;
-        readonly bool rigHitAnchors=NativeEnemyRigPolicy.Requested(Environment.GetCommandLineArgs());
-        // Enemy3D owns identity/catalog selection. Bind only an actually displayed
-        // renderer by enemy ID (etype 4 alone cannot distinguish EyeMass).
-        public Func<int,(Renderer renderer,float chestRatio,int deathTicks)?> EnemyRigBody;
-        (Renderer renderer,float chestRatio,int deathTicks)? DisplayedEnemyRig(int id) {
-            // 적 3D 레인 키 확정 후 한 줄 교체: ID -> displayed renderer + definition.
-            var rig=rigHitAnchors&&EnemyRigBody!=null?EnemyRigBody(id):null;
-            return rig.HasValue&&rig.Value.renderer!=null&&rig.Value.renderer.enabled&&rig.Value.renderer.gameObject.activeInHierarchy?rig:null;
-        }
-        double CombatEnemyChestRatio(int id) {
-            var rig=DisplayedEnemyRig(id);return rig.HasValue?rig.Value.chestRatio:double.NaN;
-        }
+        // Atlas enemies only; rig-pixel enemies are anchored by NativeEnemyRigRenderer.ImpactAnchor (NativeGame.Enemy3D.cs).
         (Vector3 foot,Vector3 top)? CombatEnemyBody(int id) {
             var camera=HudCamera;if(camera==null||!NativeRemodel3D.Active||camera.orthographic)return null;
-            var rig=DisplayedEnemyRig(id);
-            if(rig.HasValue)return ProjectEnemyBody(rig.Value.renderer,null,camera);
             if(!enemies.TryGetValue(id,out var ev))return null;
             // Walk is a partial overlay on body, so union both visible silhouettes.
             var body=AtlasEnemyBody(ev.body,camera);var walk=AtlasEnemyBody(ev.walk,camera);
@@ -148,7 +135,7 @@ namespace Exoduser.UnityPort
             impacts=new KiImpactView(transform,f=>SpriteFor("Art/vfx/ki_slash_hit_silver_sheet",f%2*627,f/2*627,627,627,new Vector2(.5f,.5f)),kiHeight,()=>HudCamera);
             skillView=new NativeSkillView(transform);   // B03 skill effects
             ImpactInitialize();
-            combatImpacts=new CombatImpactView(transform){EnemyBody=CombatEnemyBody,EnemyChestRatio=CombatEnemyChestRatio};
+            combatImpacts=new CombatImpactView(transform){EnemyBody=CombatEnemyBody};
             sound=new NativeFeedbackAudio(transform,view);
             gameObject.AddComponent<NativeUiSounds>().Initialize(sound,()=>lobby!=null&&lobby.IsBlocking?lobby.UiAudioAllowed:gameFocused,()=>lobby!=null&&lobby.IsBlocking);
             music=new NativeGameMusic(transform,sound.Bus);ambient=new NativeAmbientSources(transform,sound.Bus);   // RM-1 sound: BGM bus, forest bed, 3D environment sources
@@ -228,6 +215,7 @@ namespace Exoduser.UnityPort
         public void ResetRun()
         {
             ResetFirstPractice();
+            enemyRig?.Reset();
             contactVfx?.Reset();
             combatImpacts?.Reset();
             startupResetCount++;
@@ -242,7 +230,7 @@ namespace Exoduser.UnityPort
             Simulation.TryCollectLoot=CollectLoot;ClearDropViews();
             if(playerView==null)playerView=CreateRenderer("Player");
             if((!NativeHd2D.Enabled||RigPixelRequested)&&heroView==null)heroView=new NativeHeroView(transform);
-            AttachRigPixel();
+            AttachRigPixel();AttachEnemyRig();
             lastX=config.StartX;lastY=config.StartY;walkDistance=0;renderedTick=-1;playerMoving=false;
             hud.Refresh(Simulation.Player,Simulation.TickCount,true);
             StageFlowAttach();   // C07: gate/exit tiles, arena flow reset for this run
@@ -371,7 +359,7 @@ namespace Exoduser.UnityPort
         void DispatchFeedback()
         {
             sound.CurrentTick=Simulation.TickCount;
-            while(Simulation.Feedback.Count>0){var e=Simulation.Feedback.Dequeue();ParryFeedbackEvent(e);if(!ImpactActive||e.Kind!=FeedbackKind.FeelContact)impacts.Handle(e);combatImpacts?.Handle(e);combatImpacts?.Flash(e);if(!e.VisualOnly)sound.Handle(e);}
+            while(Simulation.Feedback.Count>0){var e=Simulation.Feedback.Dequeue();enemyRig?.Observe(e,Simulation.TickCount);ParryFeedbackEvent(e);if(!ImpactActive||e.Kind!=FeedbackKind.FeelContact)impacts.Handle(e);combatImpacts?.Handle(e);combatImpacts?.Flash(e);if(!e.VisualOnly)sound.Handle(e);}
             sound.Flush();
         }
         void BuildProps()
@@ -464,7 +452,7 @@ namespace Exoduser.UnityPort
                 NativeHd2D.Actor(ev.body,false,e.Radius*.035f);NativeHd2D.Overlay(ev.walk,ev.body);
                 UpdateEnemyShieldArc(e,ev);
             }
-            PruneEnemyViews();FieldBossViews();
+            PruneEnemyViews();FieldBossViews();enemyRig?.Sync(Simulation);
             UpdateDropViews();
             skillRemaster?.Update(Simulation,ImpactNow);
             if(skillRemaster!=null&&skillRemaster.Active)kiView?.Reset();else kiView?.Update(Simulation);

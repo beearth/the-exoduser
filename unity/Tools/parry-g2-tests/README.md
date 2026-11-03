@@ -15,4 +15,6 @@ Mac (경로는 자리표시자; PC에서 실행하지 않음):
 
 두 번째 명령을 세이브가 격리된 출력3개로 3판 실행한다. 목표입력70%와 실제 성공률은 다르며 parry-bot.json·combat-stats.json으로 구분한다. 자동 성공/회복 주입 없음. 사람3판은 별도 검수 목록이다.
 
+판정: Mac 3판 뒤 node unity/Tools/parry-g2-tests/judge-stats.cjs <판1 출력> <판2 출력> <판3 출력> --out <I: 경로>. combat-stats.json의 gain.*.hpMaxFrac(11-04 추가)가 없는 이전 빌드는 회복이 미측정으로 나온다.
+
 피드백 A/B는 위 실행에 --parry-feedback-push-in을 추가한다. standard(흔들림6/4) 대 pushIn(2/4·.08u 밀기)을 같은 카메라/1600×900/1x 겹침장면으로 비교한다. PBZ 본 스파크 모양은 VFX 레인, 현재는 최소 뼈색 자리표시다. Mac §8·실게임 PASS와 사용자 실행본 갱신은 미확인이다.
