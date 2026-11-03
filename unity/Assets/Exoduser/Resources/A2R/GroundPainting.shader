@@ -18,6 +18,7 @@ Shader "EXODUSER/A2R/GroundPainting"
    #pragma multi_compile _ _CLUSTER_LIGHT_LOOP
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+   #include "Nature.hlsl"
    TEXTURE2D(_MainTex);SAMPLER(sampler_MainTex);TEXTURE2D(_NormalTex);SAMPLER(sampler_NormalTex);TEXTURE2D(_MaskTex);SAMPLER(sampler_MaskTex);TEXTURE2D(_WaterTex);SAMPLER(sampler_WaterTex);
    CBUFFER_START(UnityPerMaterial)
    float _Water;
@@ -30,7 +31,7 @@ Shader "EXODUSER/A2R/GroundPainting"
    {
     half4 paint=SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,i.uv);float water=SAMPLE_TEXTURE2D(_MaskTex,sampler_MaskTex,i.uv).r;
     float alpha=paint.a*i.alpha;
-    if(_Water>.5){half3 flow=SAMPLE_TEXTURE2D(_WaterTex,sampler_WaterTex,i.w.xz*.16+float2(_Time.y*.001,0)).rgb;paint.rgb=lerp(paint.rgb,flow*.6,water*.65);alpha*=smoothstep(0,.075,i.uv.x)*smoothstep(0,.075,1-i.uv.x);}
+    if(_Water>.5){half3 flow=SAMPLE_TEXTURE2D(_WaterTex,sampler_WaterTex,i.w.xz*.16+float2(_Time.y*.001,0)).rgb;paint.rgb=lerp(paint.rgb,flow*.6,water*.65);paint.rgb+=A2RWave(i.w.xz)*2;alpha*=smoothstep(0,.075,i.uv.x)*smoothstep(0,.075,1-i.uv.x);}
     else{alpha*=1-smoothstep(.1,.9,water);float2 edge=min(float2(i.w.x,-i.w.z),80-float2(i.w.x,-i.w.z));alpha*=smoothstep(0,.35,min(edge.x,edge.y));}
     clip(alpha-.005);half3 normal=SAMPLE_TEXTURE2D(_NormalTex,sampler_NormalTex,i.uv).rgb*2-1;half3 n=normalize(i.n+half3(normal.x,0,-normal.y)*.35);Light main=GetMainLight(TransformWorldToShadowCoord(i.w));half3 light=half3(.08,.075,.065)+main.color*saturate(dot(n,main.direction))*main.shadowAttenuation;
     InputData inputData=(InputData)0;inputData.positionWS=i.w;inputData.normalizedScreenSpaceUV=GetNormalizedScreenSpaceUV(i.p);uint count=GetAdditionalLightsCount();LIGHT_LOOP_BEGIN(count)Light l=GetAdditionalLight(lightIndex,i.w);light+=l.color*l.distanceAttenuation*l.shadowAttenuation*saturate(dot(n,l.direction));LIGHT_LOOP_END

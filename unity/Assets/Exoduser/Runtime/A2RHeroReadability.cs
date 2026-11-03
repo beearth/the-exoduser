@@ -14,7 +14,7 @@ namespace Exoduser.UnityPort
         readonly List<State> restored=new List<State>();readonly Dictionary<Material,Material> behind=new Dictionary<Material,Material>();
         public int OverlapCount {get;private set;}public int PeakOverlapCount {get;private set;}
         public bool CaptureHideEnemies;static A2RHeroReadability active;readonly List<SpriteRenderer> hidden=new List<SpriteRenderer>();
-        public string HeroFrame {get {return source!=null&&source.sprite!=null?source.sprite.name:"";}}
+        public string HeroFrame {get {return source!=null&&source.sprite!=null?source.sprite.texture.name+":"+source.sprite.rect:"";}}
         public static void AvoidHeroStatus(ref float x,ref float y,float width)
         {
             if(active==null||!active.isActiveAndEnabled||active.source==null)return;var p=active.Project(active.source.bounds);var heroRect=Rect.MinMaxRect(p.xMin-5,Screen.height-p.yMax-5,p.xMax+5,Screen.height-p.yMin+5);

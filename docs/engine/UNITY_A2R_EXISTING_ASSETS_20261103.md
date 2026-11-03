@@ -122,10 +122,30 @@ R3 최종: 근접한 동일 원화 14쌍을 실측해 기존 greedy 선택을 �
 | R2 | 전장 타원 폭45%/높이40%, 중심alpha .20→경계1.0 smoothstep(0,1), 밖불투명. MIN 선처리 앞줄기 깊이 뒤의 투명+불투명 줄기 픽셀 모두 버림. 북쪽은 스스로 흐려지지 않고 앞줄기와겹친픽셀만제외 | 남쪽밑동/.2초/히스테리시스/디더링0/장판수신제외. 식생·캠프카드는줄기제거대상제외 |
 | R4 | 같은카메라 렌더 전 영웅screen bounds와겹치는적·탄 SpriteRenderer를영웅sortingOrder-8이하. 높은큐만같은source shader/material복제에서queue를맞춤. 렌더후즉시복원 | 액터atlas/텍셀/filter/rig/투영/소스shader변경0 |
 | R4 윤곽 | 기존흰1texel step삭제. 별도companion에1.5screen px 선형alpha샘플 뼈색(.76,.72,.61) alpha .36 한면림. source Point는불변. 발밑1.8×1.35u 부드러운additive pool최대.12. 개인광4u/1.1 | Core·판정·원근LOCK 보존 |
-| 다리 | 회청전역fogOFF 유지. 중립distance haze시작34u/density .002/상한.05. 국소A2빛줄기alpha0으로베이지안개덩어리제외 | 캠프주황광·갈색/올리브·R3원화변형보존 |
+| 다리 | 회청전역fogOFF 유지. 중립distance haze시작34u/density .002/상한.05. 국소A2빛줄기alpha0(단독해결실패, 아래HellFogFeature근본수정으로대체) | 캠프주황광·갈색/올리브·R3원화변형보존 |
 
 화면판정은같은Player후기록. 기존19:30수치는이절에서대체한다.
 
 20:40 검수 보정: 첫Player0a618546 도보/오류0, 원화접지0/인접동일0/좌표이탈0. 영웅3x에서 적HP바가몸을덮어후보교체보류. 정렬을LateUpdate(컬링전)에도적용하고카메라렌더후복원한다. NativeGame.A2Enemies.cs에는A2R이켜진경우만HP바가영웅screen bounds를덮지않게좌우로밀어내는호출1줄추가(HP·Core·표시조건불변). 영웅원본프레임명/겹침정렬개수와동일위치적sprite숨긴04b보조컷추가. 반사카메라는가림대상아니며전용깊이마스크를끄고주카메라에서만재활성화한다.
 
 20:40 R2/R4 첫 제출: Windows build c89d8894/errors0, Player2749eb26/exit0/무창/실제세이브변경0. 일반로비8경계·Core1829ticks/4974.3px·순간이동0·캠프같은좌표. 겹침정렬10개/피크33개. 영웅3x와적sprite숨긴보조컷직접대조: 몸통·망토·무기가앞에보임/흰계단림없음/체력바회피. 32:9먼적29/16:9먼적15. 새웹카드떠있음0, 식생113/인접동일0/좌표변경0. proof-a2r-r2040-vs-e67a46f86.png. VISUAL VERDICT: RETOUCH(총괄최종판정및다리추가컷대기), R2/R4방향개선으로후보갱신가능판정. 다음REFERENCE_CONVENTIONS4·5·6.
+
+## REFERENCE_CONVENTIONS 4·5·6 (76bf4ebad 후속)
+
+| 항목 | 런타임 계약 | 보존/검증 |
+|---|---|---|
+| 4 바람 | C10/R4 sin(time*.72+phase)+.28sin(time*1.13+phase*1.7), 공통방향(1,.28), ID고정위상. 식생진폭.09u/나무.035~.09u. 높이제곱가중, 불투명발피벗y0 정점행고정 | 기존173카드/113식생/웹좌표·변형·원화·원근불변. 그림자/가림깊이도동일변형 |
+| 4 눌림 | 원본영웅·가까운적최대32개의읽기전용좌표. 영웅반경1.2u/적.95u, 누적밀림진폭×4이하로제한 | Core충돌·보행·AI변경0 |
+| 5 물결 | 기존수면shader를A2R전용복제로사용(원본공통파일수정0). 실제수면반사유지. 실제다리지지목최대8/반경3u파형. 발·사라진탄의물접촉(y<-.39)만최대24임펄스, 이동샘플.16s/발간격.38s, 감쇠3.2s/전파.48u/s | 물걷기강제추가0. 보행가능물접촉칸수와실제발/탄물결발생수별도기록. 미발생을검증PASS로올리지않음 |
+| 6 공기 | 엔진ParticleSystem/새PNG0. 캠프반딧불최대16·alpha.23/life8s, 낙엽최대24·alpha.30/life12s, 낮은늪실안개최대3·alpha.018/life14s. CPU동일VP기준위쪽y.55~.72에서알파0으로감쇠 | 먼적실루엣우선. 안개원반/전역청회층추가0, 고정seed1103+kind*137 |
+| 증명 | 본스모크일반입장/Core캠프도보 noTeleport와별개로, 그후다리1회고정pose를명시한--a2r-nature-capture. 캠프·다리동일자리nature OFF/ON컷,1920영상각10초. 실제CoreStepInput60Hz로먼적이동기록,10fps JPG실제시각샘플 | 순간이동0은본도보경로범위. 영상/다리보조pose는별도영수증. 사람플레이·밸런스QA아님 |
+
+R2에서는정적RearClip property block을초기1회설정하고,더이상쓰지않는타원밖개별원CPU순회를제거했다. 렌더계약은76bf동일.
+
+### 다리 베이지 덩어리 실제 원인과 교체
+
+Resources/Shaders/HellHeightFog.shader의16step전체화면적분은RenderSettings.fog와독립이다. 고정화로좌표(38,-73.2)/(43.6,-69.6)/(40,-62.4)/(44.8,-56.8)/(32.2,-61)에localFire를더해다리위베이지덩어리를그렸다. A2HeightFog/국소빛줄기만바꾸던이전방법으로해결되지않았음. A2RLighting은실행중로드된HellFogFeature의isActive를저장하고A2R ON일때만SetActive(false), OFF/Destroy에서원복한다. 원본RendererData·공통shader·ProjectSettings/Packages수정0, 별도HellSsaoFeature는유지한다. 같은패키지10-bridge-{1920,3840}-legacy-fog.png와09-bridge-*-nature-after.png로패스ON/OFF를직접비교한다. legacyFogFeatures수를스모크영수증에기록한다.
+
+물결접지보정: 연결성분을용접(1e-4u)한실제다리메시에서높이>=.7u/폭·깊이<=.6u/minY<=.05u/maxY>=.6u인원본지지목을찾아그xz중심을사용한다. 경계상자네모서리fallback은제거. 메시읽기뿐이며정점·UV·원본충돌변경0. 실제검출개수는nature영수증으로확인한다. 입자화면크기상한.012, 바람누적밀림최대진폭×4.
+
+최종동일후보검증: build07f88b3e/errors0, Player7b61aa6d/exit0/window0/userSaveChanged0/leftovers0. 일반로비8경계→Core캠프1829ticks/4974.3px/순간이동0/정체0. 별도다리촬영pose1회는도보범위와구분. 웹173/3D중복16/바닥64/새카드뜸0/식생113/인접동일0/좌표이탈0. nearest315507pixels/34draws, 겹침정렬32/peak40, 먼적11/27(16:9/32:9,실행별전투상태차이있음). 캠프3초106.2FPS(범위제한). 최종영상각100frame/실제10초/1920x1080, Core상이동적각50개, 시각물접촉발19/탄1(누적), 실제메시지지목8/입자43/눌림액터32. 별도HellFogFeature1개ON/OFF다리비교로베이지5광산란덩어리·회청막제거직접확인, SSAO유지. 비교판proof-a2r-r2040-vs-e67a46f86.png/proof-a2r-bridge-fog-on-off.png/proof-a2r-nature-456.png. VISUAL VERDICT: RETOUCH/총괄최종판정·Mac검수대기. 전체맵·밀집전투성능·기존3D전물체접지검수완료주장없음.

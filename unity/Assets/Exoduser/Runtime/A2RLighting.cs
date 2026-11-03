@@ -19,6 +19,14 @@ namespace Exoduser.UnityPort
         sealed class FogState{public Renderer renderer;public Material original,replacement;}
         readonly List<LightState> originalLights=new List<LightState>();
         readonly List<FogState> fog=new List<FogState>();
+        sealed class LegacyFogState{public HellFogFeature feature;public bool active;}
+        readonly List<LegacyFogState> legacyFog=new List<LegacyFogState>();
+        float nextLegacySearch;public bool CaptureLegacyFog;public int LegacyFogFeatures {get{return legacyFog.Count;}}
+        void LegacyFogStateUpdate()
+        {
+            if(legacyFog.Count==0&&Time.unscaledTime>=nextLegacySearch){nextLegacySearch=Time.unscaledTime+1;foreach(var f in Resources.FindObjectsOfTypeAll<HellFogFeature>())legacyFog.Add(new LegacyFogState{feature=f,active=f.isActive});}
+            foreach(var s in legacyFog)if(s.feature!=null)s.feature.SetActive(Applied&&!CaptureLegacyFog?false:s.active);
+        }
         readonly List<Light> lamps=new List<Light>();readonly List<float> powers=new List<float>();
         readonly List<Volume> sourceVolumes=new List<Volume>();readonly List<bool> volumeEnabled=new List<bool>();
         AmbientMode ambientMode;Color sky,equator,ground,ambient;Color background;Camera viewer;Light moon,heroRim,heroFill;GameObject effects;Volume tone;MeshRenderer contact;Func<Vector3> foot;
@@ -51,7 +59,7 @@ namespace Exoduser.UnityPort
         }
         public void SetLook(bool on)
         {
-            Applied=on;foreach(var s in originalLights)s.Restore();for(int i=0;i<sourceVolumes.Count;i++)sourceVolumes[i].enabled=on?false:volumeEnabled[i];foreach(var f in fog)if(f.renderer!=null)f.renderer.sharedMaterial=on?f.replacement:f.original;
+            Applied=on;LegacyFogStateUpdate();foreach(var s in originalLights)s.Restore();for(int i=0;i<sourceVolumes.Count;i++)sourceVolumes[i].enabled=on?false:volumeEnabled[i];foreach(var f in fog)if(f.renderer!=null)f.renderer.sharedMaterial=on?f.replacement:f.original;
             RenderSettings.ambientMode=on?AmbientMode.Trilight:ambientMode;RenderSettings.ambientSkyColor=on?new Color(.105f,.100f,.090f):sky;RenderSettings.ambientEquatorColor=on?new Color(.075f,.070f,.058f):equator;RenderSettings.ambientGroundColor=on?new Color(.018f,.015f,.012f):ground;if(!on)RenderSettings.ambientLight=ambient;viewer.backgroundColor=on?new Color(.002f,.003f,.004f):background;
             RenderSettings.fog=on?false:originalFog;if(!on){RenderSettings.fogMode=originalFogMode;RenderSettings.fogColor=originalFogColor;RenderSettings.fogDensity=originalFogDensity;RenderSettings.fogStartDistance=originalFogStart;RenderSettings.fogEndDistance=originalFogEnd;}
             effects.SetActive(on);if(!on)return;
@@ -59,13 +67,13 @@ namespace Exoduser.UnityPort
         }
         void LateUpdate()
         {
-            if(!Applied||foot==null)return;
+            if(!Applied||foot==null)return;LegacyFogStateUpdate();
             // The shared HellLighting activation runs after A2R setup. Own the candidate's final atmosphere here.
             RenderSettings.fog=false;RenderSettings.ambientMode=AmbientMode.Trilight;RenderSettings.ambientSkyColor=new Color(.105f,.100f,.090f);RenderSettings.ambientEquatorColor=new Color(.075f,.070f,.058f);RenderSettings.ambientGroundColor=new Color(.018f,.015f,.012f);
             var p=foot();var away=moon!=null?moon.transform.forward:new Vector3(-.6f,0,.6f);away.y=0;away.Normalize();contact.transform.SetPositionAndRotation(p+Vector3.up*.018f+away*.09f,Quaternion.Euler(90,Mathf.Atan2(away.x,away.z)*Mathf.Rad2Deg,0));contact.transform.localScale=new Vector3(.78f,.42f,1);
             if(heroRim!=null)heroRim.transform.position=p-away*.85f+Vector3.up*1.4f;
             for(int i=0;i<lamps.Count;i++)lamps[i].intensity=powers[i]*(1+.035f*Mathf.Sin(Time.unscaledTime*4.7f+i*.9f)+.02f*Mathf.Sin(Time.unscaledTime*7.3f+i));
         }
-        void OnDestroy(){foreach(var f in fog)if(f.replacement!=null)Destroy(f.replacement);if(tone!=null&&tone.sharedProfile!=null)Destroy(tone.sharedProfile);}
+        void OnDestroy(){foreach(var s in legacyFog)if(s.feature!=null)s.feature.SetActive(s.active);foreach(var f in fog)if(f.replacement!=null)Destroy(f.replacement);if(tone!=null&&tone.sharedProfile!=null)Destroy(tone.sharedProfile);}
     }
 }
