@@ -8,6 +8,7 @@ HLSLPROGRAM
 #pragma multi_compile _ _ADDITIONAL_LIGHTS
 #pragma multi_compile _ _CLUSTER_LIGHT_LOOP
 #pragma multi_compile _ _NORMALMAP
+#pragma multi_compile _ _OCCLUSIONMAP
 #pragma multi_compile _ _METALLICSPECGLOSSMAP
 #pragma multi_compile _ _ALPHATEST_ON
 #pragma multi_compile _ _EMISSION

@@ -224,3 +224,10 @@ proof-a2r-r2255-vs-4895bf9c6.png / proof-a2r-r2255-diagnostics.png 직접 확인
 실행 소스 c3e2cdecefc517855e3d1599de290bafcee21316. 공용 빌드 b2ffb4c5 PASS/오류0, Player34224363 exit3/창0/오류0/실제세이브변경0. 다리 옆 네이티브 고목은 float 마스크 수정 후 영웅 몸과 검이 실제로 보인다. 그러나 캠프 sight-1의 앞 네이티브 가지는 ON에서도 영웅 몸을 가려 1920·3840 모두 시각 FAIL이다. 독 웅덩이 목표(6700,2424.68) Core 경로도 없어서 바닥형 4종의 현장 화면 검증은 미완료다. 로비→캠프 원래 경로는 도착/순간이동0. 생성 상태의 floor-projection 4/0을 화면 PASS로 쓰지 않는다.
 
 증명 I:/EXODUSER-Storage/map25d/a2redesign/SIGHT_PROOF.md(원본 OFF/ON·1x·탄막·10초 영상·수치), 189항목 분류표 REPORT.md. 맵 총괄 판정 전/배포 금지. 실패본은 a2r-build-next만 갱신했고 a2r-build·바로가기·shortcut-history는 변경하지 않았다. 추가 코드 수정·재빌드 없이 중단했다. 00:55에 따른 별도 tools/promote-a2r-candidate.ps1은 MapLeadPass와 스모크/바닥 증명 통과를 모두 요구하며 이번 회차 실행하지 않았다. 자동생성 메타/설정447개 복원, 사전 WIP는 제외.
+
+
+## 01:20 원래 장면 물체 재질까지 적용
+
+맵 총괄 판정: 이전 sight-2/탄 원형 구멍은 PASS, sight-1 잔존은 별도 원주민 물체 적용 범위 결함이다. 기존 실제 OFF/ON 재현을 회귀 검증으로 유지한다. 등록을 a2Root 하위에서 A2Field가 속한 원래 장면 전체 큰 메시로 확대하고, 원래 재질의 런타임 사본에 구멍 셰이더를 지정한다. 원본 material/texture asset은 불변이다. 기존 재질/MPB의 색·노멀·텍스처를 보존하고 renderer별 전체 material slot의 구멍 지원/텍스처 동일성 native-material-coverage.json을 남긴다. 바닥·늪·물·GroundSkill 수신 재질은 제외한다. 반경은 영웅 화면 키1.3배, feather40%다.
+
+웅덩이와 영상 목표는 현재 Core 연결 성분 전체의 가장 가까운 걷기 칸에서 고른다. 이전 (6700,2424.68) 실패는 웅덩이 도착 후 영상 시작점이었다. 종전 문서의 웅덩이 이동 실패 원인 기술은 이 기록으로 정정한다. 실제 웅덩이 컷이 가린 것은 여전히 미검증이었다. C# Runtime/Editor 컴파일0. 공용 a2r-build-next만 1회 재빌드/같은 실행본 OFF/ON·탄·웅덩이·10초 촬영 예정, 맵 총괄 판정 전. 바로가기/이력/실행본 a2r-build 변경 금지. Core/카메라34°/rigpixel 불변.
