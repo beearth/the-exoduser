@@ -10,7 +10,8 @@ namespace Exoduser.UnityPort
  public sealed class NativeFieldHud
  {
   public struct Info { public SourceMap map;public Simulation sim;public int statPoints,passivePoints,combatPower;public float progress;public bool english; }
-  Texture2D frame,mapTex,portrait,markerRing,markerArrow,objectiveCircle,lockClosed,lockOpen;
+  Texture2D frame,mapTex,portrait,markerRing,markerArrow,objectiveCircle,lockClosed,lockOpen,regionOverlay;
+  int overlayMask=-1;double overlayMidX,overlayMidY;
   readonly List<NativeMinimapObjective> objectiveMarkers=new List<NativeMinimapObjective>(24);Font font;NativeMinimapTiles texFor;bool mapBuilt;float mapSc;int mapW,mapH;
   readonly Dictionary<string,GUIStyle> styles=new Dictionary<string,GUIStyle>();
   static Color C(int r,int g,int b,float a=1f){return new Color(r/255f,g/255f,b/255f,a);}
@@ -29,7 +30,7 @@ namespace Exoduser.UnityPort
   // _mmTickBuild: tile 1 is skipped, 2 #777a7a, 4 #443355, everything else #555858; one sc-sized square per tile.
   void BuildMap(NativeMinimapTiles map)
   {
-   texFor=map;mapBuilt=true;int mw=map.Width,mh=map.Height;float sc=Mathf.Min(122f/mw,122f/mh);mapSc=sc;
+   texFor=map;mapBuilt=true;overlayMask=-1;int mw=map.Width,mh=map.Height;float sc=Mathf.Min(122f/mw,122f/mh);mapSc=sc;
    mapW=Mathf.Max(1,(int)(mw*sc));mapH=Mathf.Max(1,(int)(mh*sc));
    var px=new Color32[mapW*mapH];Color32 a=new Color32(119,122,122,255),b=new Color32(68,51,85,255),c=new Color32(85,88,88,255);
     int size=Mathf.Max(1,Mathf.CeilToInt(sc));
@@ -72,6 +73,7 @@ namespace Exoduser.UnityPort
    NativeUiAudit.Region(new Rect(8,8,141.1f,141.1f),"component","hud-minimap","미니맵 외곽");var canvas=new Rect(23.3f,23.3f,110.5f,110.5f);const float k=.85f;
    float ox=(130-mapW)/2f,oy=4,sourceH=mapH+8,ys=130f/sourceH;
    GUI.color=new Color(1,1,1,.94f);NativeUiAudit.DrawTexture(canvas,mapTex);GUI.color=old;
+   DrawRegionOverlay(info.sim,canvas);
    DrawObjectiveMarkers(info,canvas,k);
    var sim=info.sim;int T=texFor.TileSize;int shown=0;
    foreach(var e in sim.Enemies){
@@ -88,6 +90,27 @@ namespace Exoduser.UnityPort
     NativeUiAudit.DrawTexture(new Rect(cx-9*k,cy-9*k,18*k,18*k),markerRing);GUI.color=old;
    }
    if(frame!=null){GUI.color=new Color(1.05f,1.05f,1.05f,.94f);NativeUiAudit.DrawTexture(new Rect(8,8,141.1f,141.1f),frame,ScaleMode.StretchToFill,true);GUI.color=old;}
+  }
+
+  // Same walkable-floor overlay grammar as web _mmRegOvlEnsure; tint only remaining regions.
+  // Rebuilt on map/region changes, never every frame. The circular mask excludes walls and outside-map pixels.
+  void DrawRegionOverlay(Simulation sim,Rect canvas){
+   if(!NativeHellGateObjective.Read(sim).Visible)return;
+   int mask=0;for(int i=0;i<sim.Regions.Length;i++)if(!sim.Regions[i].Cleared)mask|=1<<i;
+   if(regionOverlay==null||mask!=overlayMask||overlayMidX!=sim.RegMidX||overlayMidY!=sim.RegMidY){
+    overlayMask=mask;overlayMidX=sim.RegMidX;overlayMidY=sim.RegMidY;
+    var pixels=new Color32[130*130];float ox=(130-mapW)/2f,sourceH=mapH+8;
+    for(int y=0;y<130;y++)for(int x=0;x<130;x++){
+     float dx=x+.5f-65,dy=y+.5f-65;if(dx*dx+dy*dy>64*64)continue;
+     float tx=(x+.5f-ox)/mapSc,ty=((y+.5f)*sourceH/130f-4)/mapSc;
+     if(tx<0||ty<0||tx>=texFor.Width||ty>=texFor.Height||texFor.Tile((int)tx,(int)ty)==1)continue;
+     int region=(ty<sim.RegMidY?0:2)+(tx<sim.RegMidX?0:1);
+     if((mask&(1<<region))!=0)pixels[(129-y)*130+x]=new Color32(183,166,129,36);
+    }
+    if(regionOverlay!=null)UnityEngine.Object.Destroy(regionOverlay);
+    regionOverlay=new Texture2D(130,130,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};regionOverlay.SetPixels32(pixels);regionOverlay.Apply(false,true);
+   }
+   var old=GUI.color;GUI.color=Color.white;NativeUiAudit.DrawTexture(canvas,regionOverlay);GUI.color=old;
   }
 
 
@@ -113,6 +136,12 @@ namespace Exoduser.UnityPort
    try{foreach(var marker in objectiveMarkers){
     var point=NativeMinimapObjectives.Project(marker.X,marker.Y,texFor.Width,texFor.Height,texFor.TileSize);
     if(Vector2.Distance(new Vector2(point.X,point.Y),new Vector2(65,65))>64)continue;
+    if(marker.Kind==NativeMinimapObjectiveKind.Region){
+     // Quiet bone/gold hollow lozenge, distinct from the live angler's filled element dot.
+     var m=GUI.matrix;float cx=canvas.x+point.X*scale,cy=canvas.y+point.Y*scale;RotateLocal(new Vector2(cx,cy),45);
+     Color line=C(183,166,129,.55f);float r=4*scale;
+     Fill(new Rect(cx-r,cy-r,2*r,scale),line);Fill(new Rect(cx-r,cy+r-scale,2*r,scale),line);Fill(new Rect(cx-r,cy-r,scale,2*r),line);Fill(new Rect(cx+r-scale,cy-r,scale,2*r),line);GUI.matrix=m;continue;
+    }
     if(marker.Kind==NativeMinimapObjectiveKind.Gate){GUI.color=new Color(1,1,1,.94f);NativeUiAudit.DrawTexture(new Rect(canvas.x+(point.X-8)*scale,canvas.y+(point.Y-8)*scale,16*scale,16*scale),marker.Unlocked?lockOpen:lockClosed);continue;}
     float radius=marker.Radius,alpha=(marker.Kind==NativeMinimapObjectiveKind.Hole?.85f:1)*.94f;Color color;
     if(!ColorUtility.TryParseHtmlString(marker.Color,out color))color=new Color(.73f,.73f,.73f);

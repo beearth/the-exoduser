@@ -1,6 +1,6 @@
 Shader "EXODUSER/SourceHudOrb"
 {
-    Properties { _Mode ("HP, MP/ST, shield, eye", Float)=0 _HpTranslate ("HP source translate", Float)=.1 _Mana ("Mana", Float)=1 _Stamina ("Stamina", Float)=1 _Shield ("Shield", Float)=1 _ShieldAlpha ("Shield alpha", Float)=1 }
+    Properties { _Mode ("HP, MP/ST, shield, eye, mobility", Float)=0 _HpTranslate ("HP source translate", Float)=.1 _Mana ("Mana", Float)=1 _Stamina ("Stamina", Float)=1 _Shield ("Shield", Float)=1 _ShieldAlpha ("Shield alpha", Float)=1 _Mobility ("Mobility gauge", Float)=1 _MobilityCell ("Shift cell turn", Float)=.2 }
     SubShader
     {
         Cull Off ZWrite Off ZTest Always
@@ -10,7 +10,7 @@ Shader "EXODUSER/SourceHudOrb"
             #pragma vertex vert_img
             #pragma fragment frag
             #include "UnityCG.cginc"
-            float _Mode,_HpTranslate,_Mana,_Stamina,_Shield,_ShieldAlpha;
+            float _Mode,_HpTranslate,_Mana,_Stamina,_Shield,_ShieldAlpha,_Mobility,_MobilityCell;
             float4 resourceGradient(float h,bool mana)
             {
                 float3 low=mana?float3(12,34,68):float3(12,51,34);
@@ -31,6 +31,19 @@ Shader "EXODUSER/SourceHudOrb"
             float4 frag(v2f_img i):SV_Target
             {
                 float2 d=i.uv-.5;float radius=length(d);
+                // Web MP globe mobility ring (#mobilityRing + .mobility-ring-ticks): 4px track rgba(0,0,0,.28), silver fill conic from the top clockwise
+                // rgba(207,204,198,.95) up to _harpGauge/_HARP_GAUGE_MAX, and a 3deg dark notch rgba(18,12,3,.9) at the end of every Shift cell (45 gauge) starting from -90deg.
+                if(_Mode>3.5){
+                    float edge4=saturate((.5-radius)*256);
+                    float track=smoothstep(.5-5.0/153,.5-3.5/153,radius)*edge4;
+                    float angle=frac(atan2(d.x,d.y)/6.283185307+1);
+                    float fill=(_Mobility>0&&angle<=_Mobility)?.95:0;
+                    float3 col=float3(207,204,198)/255;float alpha=fill+.28*(1-fill);
+                    float cell=max(_MobilityCell,.0001);float local=frac(angle+.25);
+                    float notch=(frac(local/cell)>1-(3.0/360)/cell)?.9:0;
+                    col=lerp(col*fill/max(alpha,.0001),float3(18,12,3)/255,notch);alpha=notch+alpha*(1-notch);
+                    return SourceOutput(float4(col,track*alpha));
+                }
                 if(_Mode>2.5){float a=exp(-radius*radius*28);return SourceOutput(float4(1,.13,0,a));}
                 float edge=saturate((.5-radius)*256);
                 if(_Mode>1.5){
