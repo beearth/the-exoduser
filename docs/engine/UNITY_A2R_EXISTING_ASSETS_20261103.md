@@ -352,3 +352,12 @@ r14 원인분리 Player8f1ea3fb: 창0/세이브변경0/오류0/실제로비→�
 ## A2R r14 실제 Player 결과 — 색 FAIL·정밀 패스 분해 미완
 
 r14 제출/맵 총괄 판정 전: 실제 빌드3e96685265e4f1b814c38012ca332e4a4322c3c0, 공용 Build b5af0bdd 오류0/Player549adc60 PASS·창0·세이브변경0·초기/전체오류0. 일반 로비→캠프Core도보4974.28px/순간이동0 뒤 보조고정포즈4개(원화대조3곳+sight2진단), 1920/3840 18컷 모두3열카메라위치/FOV동일·카메라소스수정0. 회색막/흐림은 후처리(대비0/노출.80/DOF)와 약한키광을보정한동일패키지ON/OFF에서줄었으나 main보다밝고따뜻해최종톤PASS주장안함. 소품색은57재질/50모델평균RGB→HSV 전후표·재임포터규칙저장에도 캠프밝은분홍/앞3D고목회색면이남아FAIL. r13에이어같은색비교관문2회FAIL로추가보정/재빌드중단. 전체tri31,275,786→28,088,572/Draw2168→2036/FPS46.40→45.58(향상주장없음), 맵유효LOD bias2→.5/원거리LOD0 108→59. 반사OFF23,303,128·반사/그림자OFF9,779,012, 그림자합계차분13,524,116/반사기여차분4,785,444. 화면bounds/LOD제출상한5,549,513; 실제메인GPU패스·3캐스케이드각각·깊이프리패스단독은미측정(정밀분해미완). sight2(4895.76,6300) 실제차폐A2_Hollow_Loft_Tree/3재질LitOpaque·래핑True/NearestPass3·fadeShaderLitFade이나로그시점fade0/bits0, 수정0/원인단정없음. a2r-build-next만/실사용d79f0968b와바로가기변경0. 증명I:/EXODUSER-Storage/map25d/a2redesign/r14-{camp,foreground,bridge}-{1920,3840}-comparison.png, r14-grey-ON-OFF-1x.png, r14-foreground-1x.png, r14-camp-prop-1x.png,r14-distant-1x.png; 색표r14-color-table.md/성능r14-triangles.md/검사r14-checks.json. 최종FAIL_COLOR_RETOUCH_TONE_PERF_SPLIT_PENDING/총괄·Mac판정대기. 기존타인WIP3개보존·이레인미커밋0·보호경로Core/Common/ProjectSettings/Packages/원화커밋diff0. Editor자동재직렬화만원복, 이전레인생성캡처51개627MB정리내역r14-cleanup.json.
+
+## 2026-11-04 r15 — 공용 Editor 시작 2회 실패로 중단
+
+- 범위: BRIEF_A2R 「11-04 04:20 맵 총괄 판정 — r14 3e9668526」의 r15 1~4. 기준 HEAD `6fd65341cc197c6e3d50c5075249b1e7495e72d4`, 브랜치 `codex/unity-map-a2-20261103`와 원격 일치 확인.
+- 공용 실행기 `I:/EXODUSER-Storage/unity-jobs/bin/exo-unity.ps1` Editor 시작이 두 번 모두 UPM IPC 30초 연결 실패, exit 1로 종료됐다. 2차는 자식 환경의 PATHEXT·ComSpec·APPDATA를 보정했으나 같은 실패였다. 보안 설정 변경·UPM 직접 실행·세 번째 재시도는 하지 않았다.
+- 증거: `I:/EXODUSER-Storage/unity-jobs/codex-map25d/logs/server-20261103T192007451.log`(Upm-50620), `server-20261103T192128081.log`(Upm-10276). 실행기 출력은 레인 폴더 `r15-red.log`·`r15-red.err`.
+- **미완료:** 원화 카드|3D 34°·1x 전 종류 시트 없음, JSON 허용 목록 미구현, 행동 테스트 미실행. 종류별 PASS/FAIL 판정 없음. 임시 Editor 테스트 변경은 정확히 제거했고 런타임·Core·원화·색·가림 변경은 0이다.
+- 빌드 메서드·Player 실행 0, 바로가기·이력 변경 0. 기존 a2r-build-next/a2r-build의 build-commit.json은 모두 `3e96685265e4f1b814c38012ca332e4a4322c3c0`. 자기 Editor 예약 해제, 다른 레인 프로세스·초기 WIP 3개 보존.
+- 후속: 맵 총괄에 UPM 시작 실패 인계. 환경 복구와 재개 배정 뒤 r15 1~4를 수행해야 한다. 현재 보고는 환경 중단 기록이며 구현·시각 PASS가 아니다. 결과: `I:/EXODUSER-Storage/map25d/a2redesign/result-a2r-r15.md`.
