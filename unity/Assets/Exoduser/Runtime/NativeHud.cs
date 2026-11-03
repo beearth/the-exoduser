@@ -13,7 +13,7 @@ namespace Exoduser.UnityPort
     public sealed partial class NativeHud : IDisposable
     {
         readonly Material material;
-        readonly RenderTexture hp,mana,shield,eye;
+        readonly RenderTexture hp,mana,shield,eye,mobility;float mobilityDrawn=-1,mobilityCellDrawn=-1;
         readonly Texture2D hpFrame,mpFrame,bar,icon;
         Texture2D labelCleanBar;
         readonly Font textFont,numberFont;
@@ -40,7 +40,7 @@ namespace Exoduser.UnityPort
             hpFrame=Required<Texture2D>("Art/ui/ui_globe_hp");mpFrame=Required<Texture2D>("Art/ui/ui_globe_mp");bar=Required<Texture2D>("Art/ui/ui_bar_only");
             icon=Required<Texture2D>("Art/ui/skill_icons/kiSlash");textFont=NativeSilverHellUi.Font()??Required<Font>("Art/fonts/NanumMyeongjo-Regular");numberFont=Required<Font>("Art/fonts/CinzelDecorative-Bold");
             material=new Material(Required<Shader>("Shaders/HudOrb"));
-            hp=Target("HP liquid");mana=Target("MP ST liquid");shield=Target("Shield ring");eye=Target("Poise eye");
+            hp=Target("HP liquid");mana=Target("MP ST liquid");shield=Target("Shield ring");mobility=Target("Mobility ring");eye=Target("Poise eye");
             Blit(eye,3);
         }
         static T Required<T>(string path) where T:UnityEngine.Object {var result=Resources.Load<T>(path);if(result==null)throw new InvalidOperationException("Missing original HUD resource "+path);return result;}
@@ -90,7 +90,7 @@ namespace Exoduser.UnityPort
             // The original imported PNG stays byte-identical and the common labels are drawn below.
             if(labelCleanBar==null)labelCleanBar=BuildLabelCleanBar();
             var oldColor=GUI.color;GUI.color=new Color(.8f,.8f,.8f);NativeUiAudit.DrawTexture(slotBar,labelCleanBar??bar,ScaleMode.StretchToFill,true);GUI.color=oldColor;
-            Globe(dock.LeftLiquid,dock.LeftFrame,false);DrawFeelHurt(dock.LeftLiquid);Globe(dock.RightLiquid,dock.RightFrame,true);
+            RefreshMobility(simulation);Globe(dock.LeftLiquid,dock.LeftFrame,false);DrawFeelHurt(dock.LeftLiquid);Globe(dock.RightLiquid,dock.RightFrame,true);
             Rect lmb=dock.ActiveSlot;
             if(activeAttack=="kiSlash"){
                 var insetIcon=new Rect(lmb.x+3*scale,lmb.y+3*scale,lmb.width-6*scale,lmb.height-6*scale);
@@ -139,6 +139,7 @@ namespace Exoduser.UnityPort
             NativeUiAudit.DrawTexture(wrap,right?mana:hp,ScaleMode.StretchToFill,true);
             NativeUiAudit.DrawTexture(frame,right?mpFrame:hpFrame,ScaleMode.StretchToFill,true);
             if(!right)NativeUiAudit.DrawTexture(new Rect(wrap.x+11*s,wrap.y+18.65f*s,153*s,153*s),shield,ScaleMode.StretchToFill,true);
+            else if(mobilityDrawn>=0)NativeUiAudit.DrawTexture(new Rect(wrap.x+11*s,wrap.y+18.65f*s,153*s,153*s),mobility,ScaleMode.StretchToFill,true);
             int index=right?2:0;
             for(int i=0;i<2;i++)if(eyes[index+i]){
                 float ex=wrap.x+(i==0?76.5f:93.5f)*s;
@@ -149,6 +150,15 @@ namespace Exoduser.UnityPort
                 if(values.ManaValid)ResourceText(wrap,0,"MP",values.ManaCurrentText,values.ManaMaximumText,new Color(.533f,.733f,1));
                 if(values.StaminaValid)ResourceText(wrap,1,"ST",values.StaminaCurrentText,values.StaminaMaximumText,new Color(.533f,.867f,.533f));
             }
+        }
+        // Web updateHUD: the MP globe ring shows the shared mobility gauge (_harpGauge/_HARP_GAUGE_MAX) with one notch per Shift cell (cost 45); same rect as the HP shield ring
+        public static float MobilityRatio(Simulation s){return s==null||!(s.HarpGaugeMax>0)?0:(float)Math.Max(0,Math.Min(1,s.HarpGauge/s.HarpGaugeMax));}
+        public static float MobilityCellTurn(Simulation s){return s==null||!(s.HarpGaugeMax>0)?.2f:(float)Math.Min(1,Exoduser.UnityPort.Core.Combat.ChainDash.GaugeCost[1]/s.HarpGaugeMax);}
+        void RefreshMobility(Simulation s){
+            if(s==null||Event.current==null||Event.current.type!=EventType.Repaint)return;
+            float ratio=MobilityRatio(s),cell=MobilityCellTurn(s);
+            if(Mathf.Abs(ratio-mobilityDrawn)<.001f&&Mathf.Abs(cell-mobilityCellDrawn)<.0001f)return;
+            mobilityDrawn=ratio;mobilityCellDrawn=cell;material.SetFloat("_Mobility",ratio);material.SetFloat("_MobilityCell",cell);Blit(mobility,4);
         }
         void ResourceText(Rect wrap,int side,string name,string current,string max,Color color)
         {
@@ -189,6 +199,6 @@ namespace Exoduser.UnityPort
             }finally{Release(h);Release(m);}
         }
         static void Release(UnityEngine.Object value){if(Application.isPlaying)UnityEngine.Object.Destroy(value);else UnityEngine.Object.DestroyImmediate(value);}
-        public void Dispose(){if(feelHurtMark!=null)Release(feelHurtMark);foreach(var rt in new[]{hp,mana,shield,eye}){rt.Release();Release(rt);}Release(labelCleanBar);Release(material);}
+        public void Dispose(){if(feelHurtMark!=null)Release(feelHurtMark);foreach(var rt in new[]{hp,mana,shield,eye,mobility}){rt.Release();Release(rt);}Release(labelCleanBar);Release(material);}
     }
 }
