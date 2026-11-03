@@ -106,3 +106,18 @@
 | 5 | `burrowStrike` | `burrow_dive`(50, 루트 아래) → `burrow_erupt_warn`(30) → `burrow_erupt`(6) → `burrow_rec`(70) | Moves[6] 50/70, `BurrowEruptWarn 30`, `BurrowEruptPost 6` |
 | 6 | `groundFissure` | `fissure_tele`(40) → `fissure_act`(20, 꽂고 버팀) → `fissure_rec`(60) | Moves[3] 40/60(즉시형, 균열 이동은 VFX) |
 | 7 | `heartbeat`(강제, P3) | `heart_tele`(90) → `heart_beat`(60)×3 사이 `heart_pause`(30) → `heart_rec`(90) | Moves[11] 90/90, `HeartbeatBeats 3`·`BeatWind 60`·`Pause 30`·`Recover 90` |
+
+### 8.1 v8.1 완성본 — 레인 입력 (2026-11-04 3시)
+
+| 항목 | 값 |
+|---|---|
+| GLB | `I:/EXODUSER-Storage/boss/oldman-v2-20261104/v8_1/oldman_druid_v8_1.glb` (24.3MB, SHA-256 `a143a7deb7e144bf5dce55e7df730e0604b0e25ca22a88f7615808f6aad85477`), 같은 폴더 `.blend`·`v8_1_report.json` |
+| 바탕 | v7.2 치마(`.../v7_2/oldman_clean_v7_2.glb`, SHA-256 `93e2f7c2…`: 다리 몫 장 단위 재맞춤 3,376장·끝단 위 이웃과 최대 50% 섞기, 늘어남 1.5배 초과 0, 관통 1cm 초과 정점 v7.1 3,475~4,845 → v7.2 2,293~2,768 — 휴지에서 이미 허벅지 안인 정점 약 7.1k라 0은 아님) |
+| 클립 | `idle`·`walk`(시간 유지, 60fps 키로 2배) + §8 표 29개, 이름·길이 표와 같음(재임포트 확인). 미가중 0, 뼈 34 |
+| 이음 | 같은 기술 안 단계 끝↔다음 첫 = 몸 뼈 0°(예외 `heart_tele→beat`·`pause→rec` 2.2°), 보조본 최대 5.5°(`grab_lunge→hold`), `*_rec` 끝 = `idle` 첫(몸 0°) |
+| 발 | 루트 아닌 클립 발 미끄러짐 0.0cm. `charge_run` 루트 40틱 2.55m(접지 한 틱 최대 이동 0.000cm), `grab_lunge` 스텝 2회·루트 0.9m, `burrow_dive`/`burrow_erupt` 수직(-2.6m↔0) |
+| 예비 자세 폭(tele 최대) | 채찍 1타 몸통 56°·손 수평 폭 1.83m, 2타 66°·1.72m, 3타 28°·왼손 2.62m(지팡이 머리 위), 내려찍기·줄기 28°·2.62m, 돌진 상체 숙임 58°, 잡기 48°·손 궤적 2.46m, 심장 30.5° 가슴 펴기, 무게 중심 뒤로 0.12~0.22m |
+| 타격 | 채찍 act 6f째 판정·8f째 반대편 follow-through, 3타는 구슬이 위에서 원호(이동 3.5m), 내려찍기·줄기는 지팡이 아래 끝(뿌리 촉)으로 찍음(첫 프레임 촉 높이 0.0/-0.05m), 구슬은 전 구간 위 |
+| 띠 | `G:/exoduser/tmp/design-review/20261104_boss_1-1_oldman_cleanup/v8_1_<slash12·slash·slam·charge·grab·burrow·fissure·heart>_strip_1x·3x.png`(idle | tele 최대 | act 판정 | act 끝 | rec 최저, 위 34°·아래 옆 90°) |
+| 판정 | v8 RETOUCH(34°에서 단계 실루엣이 같음·지팡이 거꾸로) → **v8.1 제작자 조건부 PASS**: 34° 1x에서 채찍 감기·내려찍기 들어올림·돌진 숙임이 서로 다른 실루엣으로 읽힌다. 최종은 Unity rig-pixel Mac 캡처(§5) |
+| 남은 결함 | ① 채찍 팔 끝 도달 부족 8.9~14.2cm(목표가 팔 길이 밖), 심장 박동 왼손 6~8cm·돌진 예고 3.8cm. ② 잠행은 몸통 13.5°로 폭이 작다. ③ 가슴 틈 밝기 맥동은 Unity에서 `heart_beat` 시간에 맞춰 구동. ④ 치마 관통 잔여(위 바탕 행) |
