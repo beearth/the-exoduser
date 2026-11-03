@@ -62,3 +62,9 @@ git status --porcelain -- unity/Assets/Exoduser/Resources/Art/ui/silver_hell
 - 로비 빈 슬롯2개의 카드/초상 헤어라인, 이름창 원화 panel_frame 가족 테, 직업/삭제24px·개수14px 여백을 복구했다. 실제 포인터 hover는 기존 guide_button_glow를 인장 안쪽에만alpha.18로 표시한다.
 - --unity-death-ui-smoke의 lobby hover는 실제 Repaint 좌표 변환→Rect.Contains→EntryFocus 그림 경로를 지나며 entryPointerInside/entryHoverVisible과 좌표를 기록한다. OS 마우스를 움직인 증거는 아니다. 상세 Mac 캡처목록은 [01:45 작업표](UNITY_SMALL_PLATE_RETOUCH_20261104.md).
 - PC 배치/자산 계약PASS·importer50항PASS·DLL참조 컴파일1회5어셈블리 오류0. Player/에디터 임포트/게임 캡처0. 실제1920/3840의 잔점/계단·6px/가독성/hover는 Mac 미검증이다.
+
+## 11-04 02:00 button_iron meta 정합 / 검증 중단
+
+- CharacterSelect/UI/button_iron은 lowercase /ui/ 분기가 아닌 기본 Art 분기에서 mipmap=false/Bilinear를 지정한다. importer 버전/규칙은 유지하고 meta filterMode만2(Trilinear)→1(Bilinear)로 맞췄다. PNG/GUID/밝기/원화9-slice 불변. 기존 임포트 후 값과 일치시키는 수정이며 선명도/축소 샘플링은 Mac 디자인 판정에 남긴다. DefaultTexturePlatform의8192/무압축·Clamp 설정도 기존 규칙과 일치한다. root의 구형4096 필드는 그대로 보존했다.
+- SilverUiImportCheck는 기존21원화+button_iron 총22종의 임포트 전/1회/2회 meta 완전일치, loaded mip1, OFF/Bilinear를 검사한다. 실제 Unity 실행 증거는 아직 없다.
+- PC 검증 중단: importer.test.cjs의 추가 확장 코드에서 SyntaxError가 2회 연속 발생해 사용자 중단 규칙을 적용했다. 확장분은 직전52항PASS 상태로 되돌렸고 재실행하지 않았다. 이번 최종 소스의 PC 컴파일/Unity import/Player는 실행하지 않았다. 이전 컴파일 결과를 이번 근거로 사용하지 않는다. 재개 후 컴파일과 Mac22종 재임포트·실제 화면 검수가 필요하다.
