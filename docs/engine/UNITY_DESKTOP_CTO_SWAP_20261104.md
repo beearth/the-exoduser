@@ -1,4 +1,22 @@
-# 11-04 02:20 Desktop 3회차 — db26d55f6 빌드 실패·385 유지
+# 11-04 02:15 재지시 — Desktop 3회차 db26d55f6 설치·확인
+
+**설치 완료:** `db26d55f6ea737dfcbbe69b5c7320b6177e477a4`, `I:/EXODUSER-Storage/unity-latest/build/EXODUSER-Unity.exe`. 2026-11-04T02:29:25+09:00에 설치 메타데이터 SHA를 읽고, 설치된 Exoduser.Runtime.dll이 스모크 패키지와 같은 것도 확인했다. 이전385e76ce1은 고정 `build_prev` 하나로 보존했다. 바로가기를 변경하지 않았다.
+
+- CTO가 sparse에 `/release-version.json`을 추가한 원인 해소를 확인한 뒤 정확한db26d55f6 detached에서 공용 bin 빌드1회(c4505bef). Succeeded/errors0/compileErrors0/USER_SAVE0,6,802,983,908 bytes. 기존13f54a0b 실패와 별도의 최신 재지시1회이며 이번 빌드는 재시도하지 않았다.
+- 같은 패키지 M1 `63d2b86c` 23/23,09c에서 실제 Core 처치 조건/정화4/4 후 지옥문 개방 통과. OS 자연 플레이 완주 판정이 아니라 기존 M1 fixture 범위다. 필드+HUD PNG03-move도 직접 열어 확인했다.
+- 3초 hold `d653a48d`가 WorldIntro→Lobby로 전환했다. 사망/부활은1920 `da51c385`·3840 `204cfb6b`에서 실제 Core 경로와 화면 진입을 확인했다.
+- UI 영수증16개 모두 passed/dialogOpen/rosterUnchanged/persistenceDisabled=true. 각11종 원화 loaded/mipCount1. 두 사망 영수증도 passed/actualDeath/actualRevive=true. 모든21개 공용 Player 실행에서 exit0·USER_SAVE0·사용자 데스크톱 노출창0·잔여0이다(기본20회+디자인 호버 재수집1회).
+- 1920·3840 PNG50장의 실제 헤더 크기를 검사했다. 로비0/2명·입장기본/실제WM호버·생성/이름/삭제·설정4탭·일시정지·사망/부활 컷을 `G:/exoduser/tmp/design-review/20261104_swap3_ui/`에 두었다. 원본 대표12장과M1필드1장을 직접 열었다. 사망 panel_enter는 진입 fade 시점이고,3840 이름/삭제 딤의 중앙영역 처리 등은 디자인총괄 판정 재료로 남긴다. 디자인 PASS나 Mac 검수 완료로 확대하지 않는다.
+- 실제 호버: ReviewState hover 강제값을 사용하지 않고 자기 hidden Unity HWND의 입장 버튼 좌표에 WM_MOUSEMOVE를 보냈다. 처음1920 보조 도구의 EnumDesktopsW 콜백 문자열이 ANSI로 해석되어0회 전달됐고, LPWStr로 수정 후1920자료만1회 재수집했다(`31d25a26`,305회).3840은수정도구로352회 전달(`798139d3`). 제품 UI 영수증은 처음부터 통과했으며 제품 수정/재빌드는 없다. 물리 마우스 클릭이나 자연 플레이 증거가 아니다.
+- 이전 스모크 정리가 완료되기 전에 Player를 시작해 열린 player.log 잠금으로 정리가 중단됐다. 추가 삭제를 멈추고 새 실행을 보존했다. 모든 판정은 이번 runner ID와 새 영수증으로 확인했다. 새 캡처 경로와 분리된 과거 design/ground/death만 종료 후 정리한다.
+- 설치 직전 사용자 실행본 점유/기존SHA를 확인하고 candidate 폴더를 이동했다. 설치 메타데이터 by=`codex-fullrun(cto-swap-3)`, source/full SHA·at·reason·smoke 및 검증한 runtimeBinarySha256 기록/읽기 확인. 별도 시도 빌드는 남기지 않았다.
+- 자기 브랜치 `codex/unity-demo-flavor-20261103` @87fa1910e 복귀, `/release-version.json` sparse 목록/실파일74B 유지. 컴파일이 생성한 button_iron.png.meta의 filterMode/공백만 대조 후 HEAD로 원복했다. 게임 소스 변경0·추가 컴파일0·Steam0이다.
+
+근거: 레인 `swap3-build-receipt.json`, `swap3-smoke-summary.json`, `swap3-design-inventory.json`(50 PNG), `swap3-installed.json`, 공용 logs/done c4505bef 및 각Player ID. 필수 관문 통과와 별개로 기존 전체 미술·Mac 판정은 대기다.
+
+---
+
+# 11-04 02:20 Desktop 3회차 — db26d55f6 빌드 실패·385 유지 (이전 지시 이력)
 
 정확한 source db26d55f6ea737dfcbbe69b5c7320b6177e477a4에서 CTO 지정 예외②로 공용 bin 빌드1회 시도(13f54a0b). `ReleaseMetadataSync.Copy`가 sparse checkout의 누락된 루트 `release-version.json`을 읽다가 FileNotFoundException을 내어 BuildPipeline 이전에 종료했다. exit2·compileErrors0·userSaveChanged0. 사전 컴파일87d37361 성공은 패키지 성공이 아니며 대체 증거로 사용하지 않는다.
 

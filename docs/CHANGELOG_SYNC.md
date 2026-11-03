@@ -1,3 +1,5 @@
+2026-11-04 02:15 재지시 Desktop3 설치: sparse release-version.json 원인 해소 확인 후 정확한db26d55f6 공용빌드c4505bef 1회 성공·오류0/USER_SAVE0. 같은패키지 M1 23/23·지옥문개방,3초hold·사망/부활·UI16영수증/원화11종mipCount1,1920/3840 PNG50장/실제WM호버자료 확보. 02:29:25 설치SHA/runtimeDLL 일치 확인·385는build_prev1개·바로가기 유지. 자기87fa1910e 브랜치/sparse실파일 복귀 확인, 소스변경/추가빌드/Steam0. 전체 디자인/Mac 판정 대기. [영수증·범위](engine/UNITY_DESKTOP_CTO_SWAP_20261104.md).
+
 2026-11-04 02:20 순차3 문구 F1·F2: F-1 보강41bfb2212a push 뒤 판정표6ef1899cb §5 실제19행(ko포함) demoWishlist/정식판 용어 적용·나머지10언어 보존, 중복4259/4260 삭제 후3473/2824 참조·4261KO 동기화, buildflavor 영어button2곳 End of Demo. 목록 단독LF1개 CRLF정상화, 최종 데이터39/39. Mac 화면/RTL은 미판정·추가빌드/Player0. [변경·검사](engine/UNITY_DEMO_FLAVOR_TEXT_RETOUCH_20261104.md).
 
 2026-11-04 02:20 순차 지시: 교체3 db26d55f6 공용빌드13f54a0b 1회는 sparse 루트 release-version.json 누락으로 실패, 재시도0·385설치 유지·Player/캡처0. 이후 F-1을 GUID staging/새 lease 생성자만 회수/Move 직전 source·staging 목록·크기 대조/tmp·bak-only 거부/OS메타 허용/TryResolve 실패 미캐시로 보강. 회귀38/38·계약6/6·동작64/64·독립프로세스7/7, 공용컴파일348efe7a 1회 오류0·USER_SAVE0. Mac 두 프로세스 fixture 인계·미판정. [교체 실패](engine/UNITY_DESKTOP_CTO_SWAP_20261104.md), [보강·Mac 명령](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).
