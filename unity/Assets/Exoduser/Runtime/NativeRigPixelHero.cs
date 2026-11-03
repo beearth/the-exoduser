@@ -27,7 +27,7 @@ namespace Exoduser.UnityPort {
    try {
     var toon=Resources.Load<Shader>("Shaders/RigPixelToon");var shader=Resources.Load<Shader>("Shaders/RigPixelComposite");
     if(hero==null||!hero.Ready||toon==null||shader==null)throw new InvalidOperationException("Warrior rig or pixel shaders missing");
-    foreach(var skin in hero.Model.GetComponentsInChildren<SkinnedMeshRenderer>(true))SmoothSurfaceNormals(skin);
+    foreach(var skin in hero.Model.GetComponentsInChildren<SkinnedMeshRenderer>(true)){SmoothSurfaceNormals(skin);CleanMaterialRegions(skin);}
     foreach(var r in hero.Model.GetComponentsInChildren<Renderer>(true)){
      var sourceMaterials=r.sharedMaterials;var materials=new Material[sourceMaterials.Length];
      for(int i=0;i<materials.Length;i++){
@@ -49,6 +49,55 @@ namespace Exoduser.UnityPort {
    } catch(Exception e){Fail(e);}
   }
   sealed class NormalCell {public Vector3 position,normal;public int count;}
+  // R7's colour-classified triangles contain tiny disconnected material islands.
+  // Clean their labels on the welded surface, before lighting; screen-space blur cannot fix them.
+  void CleanMaterialRegions(SkinnedMeshRenderer skin){
+   var mesh=skin.sharedMesh;int parts=mesh.subMeshCount;if(parts<2)return;
+   var vertices=mesh.vertices;var weld=new int[vertices.Length];var positions=new Dictionary<Vector3Int,int>();
+   var local=new Vector3[vertices.Length];
+   for(int i=0;i<vertices.Length;i++){
+    var p=hero.Model.transform.InverseTransformPoint(skin.transform.TransformPoint(vertices[i]));local[i]=p;
+    var key=new Vector3Int(Mathf.RoundToInt(p.x*100000),Mathf.RoundToInt(p.y*100000),Mathf.RoundToInt(p.z*100000));
+    if(!positions.TryGetValue(key,out int id)){id=positions.Count;positions.Add(key,id);}weld[i]=id;
+   }
+   var indices=new List<int>();var labels=new List<int>();var areas=new List<float>();
+   for(int part=0;part<parts;part++){
+    var tris=mesh.GetTriangles(part);for(int i=0;i<tris.Length;i+=3){
+     indices.Add(tris[i]);indices.Add(tris[i+1]);indices.Add(tris[i+2]);labels.Add(part);
+     areas.Add(Vector3.Cross(local[tris[i+1]]-local[tris[i]],local[tris[i+2]]-local[tris[i]]).magnitude*.5f);
+    }
+   }
+   int count=labels.Count;var neighbours=new List<int>[count];var edges=new Dictionary<ulong,List<int>>();
+   for(int i=0;i<count;i++){
+    neighbours[i]=new List<int>(3);for(int j=0;j<3;j++){
+     uint a=(uint)weld[indices[i*3+j]],b=(uint)weld[indices[i*3+(j+1)%3]];ulong key=((ulong)Math.Min(a,b)<<32)|Math.Max(a,b);
+     if(!edges.TryGetValue(key,out var faces)){faces=new List<int>(2);edges.Add(key,faces);}faces.Add(i);
+    }
+   }
+   foreach(var faces in edges.Values)for(int a=0;a<faces.Count;a++)for(int b=a+1;b<faces.Count;b++){neighbours[faces[a]].Add(faces[b]);neighbours[faces[b]].Add(faces[a]);}
+   int changed=0;
+   for(int pass=0;pass<3;pass++){
+    var component=new int[count];for(int i=0;i<count;i++)component[i]=-1;
+    var groups=new List<List<int>>();var groupAreas=new List<float>();
+    for(int start=0;start<count;start++)if(component[start]<0){
+     int id=groups.Count;var group=new List<int>();group.Add(start);component[start]=id;float area=0;
+     for(int cursor=0;cursor<group.Count;cursor++){int face=group[cursor];area+=areas[face];foreach(int next in neighbours[face])if(component[next]<0&&labels[next]==labels[face]){component[next]=id;group.Add(next);}}
+     groups.Add(group);groupAreas.Add(area);
+    }
+    var result=labels.ToArray();
+    for(int g=0;g<groups.Count;g++)if(groupAreas[g]<.0025f){
+     var support=new float[parts];float total=0;
+     foreach(int face in groups[g])foreach(int next in neighbours[face])if(component[next]!=g&&groupAreas[component[next]]>=.0025f){float weight=Mathf.Sqrt(areas[next]);support[labels[next]]+=weight;total+=weight;}
+     int best=0;for(int p=1;p<parts;p++)if(support[p]>support[best])best=p;
+     if(total>0&&support[best]/total>=.6f)foreach(int face in groups[g]){result[face]=best;if(labels[face]!=best)changed++;}
+    }
+    for(int i=0;i<count;i++)labels[i]=result[i];
+   }
+   var regroup=new List<int>[parts];for(int p=0;p<parts;p++)regroup[p]=new List<int>();
+   for(int i=0;i<count;i++){var tris=regroup[labels[i]];tris.Add(indices[i*3]);tris.Add(indices[i*3+1]);tris.Add(indices[i*3+2]);}
+   for(int p=0;p<parts;p++)mesh.SetTriangles(regroup[p],p,false);
+   Debug.Log("[RigPixel] material islands cleaned="+changed+" triangles="+count+"; vertices/weights/UV unchanged");
+  }
   void SmoothSurfaceNormals(SkinnedMeshRenderer skin){
    var source=skin.sharedMesh;if(source==null)return;
    if(!source.isReadable)throw new InvalidOperationException("RigPixel requires readable R7 skin mesh for surface cleanup");

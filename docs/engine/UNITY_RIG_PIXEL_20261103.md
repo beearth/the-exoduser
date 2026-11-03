@@ -26,3 +26,17 @@ R1 렌더 자체는 실제 M1 24623b09(무창/잔여/USER_SAVE0, exit0)에서 �
 R3 Hero 98be68d0는 외부실행기 exit0/USER_SAVE0이어도 frames0·hero-review.json 없음으로 검수FAIL이다. 로그는 초기 A2조립15.891초와 return-lobby prepare-timeout(12초), preview entry rejected를 보여준다. exit0을 PASS로 쓰지 않는다. 두 차례 preview 방식 실패 뒤 이 경로를 중단하고 R4부터 검증된 실제 M1 새전사 생성/이야기Skip/연습장종료 경로를 사용한다. 먼저 맵조립완료(최대60초)와.5초 워밍업 후 UI전환을 시작하며, Time.captureDeltaTime=1/60은 실제1-1 진입 후에만 적용한다. 일반 제품 frontend/Core는 변경0.
 
 R3 실제 몸통ROI의 고립고휘도점46→1이며0이 아니고 3x에서 검은 미세셀/암부가 남아 미채택이다. R4는 원형 제작 단계의 표면 법선을 정리한다. 런타임 복제 SkinnedMesh의 모델기준8cm 공간셀·6개 법선방향군·인접27셀 평균(원법선 내적≥.35, 거리제곱 가중)을1회 적용한다. 메시 원래 정점/스킨가중/바인드/UV/토폴로지는 동일하며 자산 원본은 쓰지 않는다. 메시-모델 스케일로8cm를 변환하고 복제 Mesh는 종료 시 해제한다. 색면의 최종 후보는 Iron(.34,.38,.42), Skin(.62,.42,.32), Hair(.06,.045,.035), Cloth/Cape(.34,.085,.065), Leather(.18,.11,.07), Sword(.48,.50,.52), alpha1. Project ColorSpace=Linear. 이 보강도 실제 R4 Player 확인 전 미검증이다. 진입은 성공/실패 모두 rigpixel-entry.json을 남기고 !blocking·요청된3D활성까지 확인한다.
+
+## v4 G0/G1 제작 근거·동작 출처 대조
+
+목표는 1-1 실제 Player의 전사 표시/동작이며, 원화는 G:/exoduser/assets/charselect/warrior_cut.png(직접열람), 광원/무게 비교는 quality-reference-20261030의 nrftw-02.jpg·launch-heavy-timeline.jpg(직접열람)다. R7 1.85m/24본Humanoid·망토9본·대검소켓을 재사용하며 신규 모델/동작 유료생성0. 이동·루트·조준·기간은 Core를 그대로 읽는다. 대기/이동은 기존 Warrior_Locomotion.controller와 달리기/무기홀드 클립, 3타/구르기/피격/사망은 NativeHeroMotionClock+기존 R7 Humanoid/IK 보정이다. 원래 유료원형 TM-A 및 기존 R7 실제 검수/동작 출처는 UNITY_HERO_MOTION_20261030.md와 origin/main 캐릭터보드 UCH-A1에 보존되어 있으며, 새 출처 없는4프레임을 만들지 않는다. Shader/RT는 v4 §3 및 현 브리프의 실시간 픽셀 제작법 안에서 구현한다.
+
+| 사례·1차 자료 | 도구·순서·결과 및 적용/경계 |
+|---|---|
+| [Motion Twin Thomas Vasseur의 Dead Cells 제작기](https://www.gamedeveloper.com/production/art-design-deep-dive-using-a-3d-pipeline-for-2d-animation-in-i-dead-cells-i-) | 모델시트→3DS Max 리그/키→작은 무AA 렌더→PNG/normal 및 toon 조명. 핵심은 작은화면 실루엣과 공격키/타이밍을 먼저 확정하는 것. 원작은 프레임수출 경로이며 EXODUSER의 런타임RT와 구분한다 |
+| [Dan Moran/Broxxar PixelArtPipeline 원본 Unity 프로젝트](https://github.com/Broxxar/PixelArtPipeline) | 3D 캐릭터를 Toon-lit sprite로 출력하는 실제 공개 구현. Rig→소형출력→toon 조명이라는 기술 분리를 대조한다. 코드/에셋을 무검수로 제품에 복사하지 않음 |
+| [David Holland 본인의 3D Pixel Art Rendering](https://www.davidhol.land/articles/3d-pixel-art-rendering/) | Godot4.3의 view-aligned 텍셀격자·4이웃1텍셀 윤곽·toon 조명 공정. 저폴리의 명확한 큰 면이 유리하다는 제작상 제약을 대조해 R4 표면정리로 돌아간다. 문서의 노멀노이즈/세계효과는 EXODUSER 점금지·캐릭터범위 때문에 적용하지 않음 |
+
+위 세1차제작자료는 공정/코드 대조 근거이며 결과를 복제하거나 독립시각검수 PASS로 세지 않는다. G2 기능실물은 실제R1/R3 M1에서 확인했고, 현재G3 표면/명암 재작업 후 R4 G4 실제해상도·동작/점0검수 대기다. G5 사용자실행본 반영은 아직0이다.
+
+R4 G4 실제 cabb8cd4는 실제1-1 진입/40검사/579PNG/USER_SAVE0을 확인했지만 1x보드·3x에서 갑옷/망토 재질 사이 잔점이 보여 시각FAIL이다. 기본sprite/공통/바탕화면 반영0. R3/R4 표면노멀 방법으로 핵심결함이 계속되어 R5는 원형의 재질분할 단계로 돌아간다. R7 importer의5부위 색분류 삼각형에 대해, 복제mesh의 모델공간 위치를0.01mm단위로 용접한 변인접 그래프에서 같은재질 연결성분을 구한다. 면적<.0025m²인 작은섬만, 큰이웃성분(면적≥.0025m²)의 경계지원≥60%인 소재로 재분류하며3회 수행한다. 위치/스킨가중/바인드/UV/전체삼각형은 유지하고 submesh 소속만 이동한다. 좁은화면에서 점을 만드는 원형재질조각을 제거하는 보강이며, 시각PASS는 새 실제Player검수까지 미검증이다.
