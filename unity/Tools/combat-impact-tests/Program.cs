@@ -74,7 +74,25 @@ static class Program
         }
         Check(CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.EnemyHit,VisualOnly=true,Element=6})[0].Sheet=="impact_basic_sheet","unbanked earth element uses the web basic fallback");
         Check(Math.Abs(CombatImpactTimeline.ParticleTravel(3,0,2)-5.7)<1e-9&&Math.Abs(CombatImpactTimeline.ParticleTravel(3,.1,2)-5.79)<1e-9,"particle drag.9 and gravity match two web pool updates");
-        Check(CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=1,Source="waterBean"})[0].Sheet=="Ice_ImpactIce_Sheet","water Q parry selects the ice exception instead of duplicate dark02");
+        var water=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=1,Source="waterBean"});
+        Check(water.Count==2&&water[0].Sheet=="Ice_ImpactIce_Sheet_water"&&water[1].Sheet=="Ice_MistSmoke_FBF_4x4_water","water parry uses the water-ramp sheets, not the web cartoon cyan");
+        Check(water[0].Frames==12&&water[0].Frame(71)==11&&Math.Abs(water[1].Opacity-.6)<1e-9,"water impact stops before the loose droplet frames; mist .6");
+        // Hit-stop presentation clock: two held fixed steps right after the contact tick count toward the spark age.
+        var clock=new CombatPresentationClock();int born=clock.Now(500);clock.Hold();clock.Hold();
+        Check(clock.Now(500)-born==2&&clock.Now(501)-born==3,"held frames advance parry presentation; peak lands at contact +3 frames");
+        clock.Reset();Check(clock.Now(7)==7,"clock reset");
+        // Roll dust puffs.
+        for(int seed=0;seed<20;seed++)foreach(int step in new[]{0,1}) {
+            var roll=new FeedbackEvent{Kind=FeedbackKind.Roll,Step=step,Angle=.3f};var puffs=CombatRollDust.Burst(roll,seed);
+            Check(puffs.Length==(step==0?3:2),"roll dust puff count "+step);
+            foreach(var pf in puffs) {
+                double peak=0;for(int t=0;t<=40;t++)peak=Math.Max(peak,CombatRollDust.Alpha(pf,t));
+                Check(peak<=.42+1e-9&&peak>=.3&&CombatRollDust.Alpha(pf,pf.Delay+pf.Life)==0&&pf.Size>=26&&pf.Size<=40,"puff soft peak, expiry and size "+step);
+                Check(CombatRollDust.Width(pf,pf.Delay+pf.Life)>pf.Size*1.79&&Math.Abs(CombatRollDust.Travel(pf,pf.Delay+pf.Life)-1)<1e-9,"puff expands and settles "+step);
+                if(step==0)Check(Math.Cos(Math.Atan2(pf.Dy,pf.Dx)-(roll.Angle+Math.PI))>Math.Cos(.71),"start puffs kick up behind the roll direction");
+            }
+        }
+        Check(!CombatRollDust.Trail(0)&&CombatRollDust.Trail(4)&&!CombatRollDust.Trail(5)&&CombatRollDust.TrailPuff(9).Peak<.3,"trail puff every four roll ticks, fainter");
         var rainbow=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=1,SampleKey="rainbow"});
         Check(rainbow.Count==4&&rainbow.All(c=>c.Additive)&&Math.Abs(rainbow[3].Opacity-.55)<1e-9,"rainbow Q uses four original layered sheets and attenuation");
         var kiSim=new Simulation(SourceStarterFixture.CreateKiSlash(),456);kiSim.Config.EnemyAiEnabled=false;
@@ -118,7 +136,7 @@ static class Program
                 Check(!(bool)fx.HasFlash(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=step,Source="projectile"}),"bullet parry has no screen flash "+step);
             }
             Check(((dynamic)fx.Sparks(new FeedbackEvent{Kind=FeedbackKind.EnemyHit},1)).Length==0,"sparks only for parry events");
-            Check(!(bool)fx.ParsePushIn(new[]{"game"})&&!(bool)fx.ParsePushIn(new[]{"--unity-parry-camera=shake"})&&(bool)fx.ParsePushIn(new[]{"--unity-parry-camera=pushin"}),"camera argument defaults to shake");
+            Check(!(bool)fx.ParsePushIn(new[]{"game"})&&!(bool)fx.ParsePushIn(new[]{"--unity-parry-camera=shake"})&&(bool)fx.ParsePushIn(new[]{"--unity-parry-camera=pushin"})&&(bool)fx.ParsePushIn(new[]{"--parry-feedback-push-in"}),"camera argument defaults to shake; both push-in flags select one push");
             Check((double)fx.CameraScale(8,true)==.975&&(double)fx.CameraScale(8,false)==1,"pushin narrows2.5percent over8ticks");
             foreach(double baseline in new[]{34.0,45.0,5.4,16.5})foreach(int age in new[]{-1,28,29,1000})
                 Check(baseline*(double)fx.CameraScale(age,true)==baseline,"camera returns bit-exact baseline "+baseline+" tick "+age);

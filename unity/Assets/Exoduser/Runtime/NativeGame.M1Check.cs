@@ -77,8 +77,9 @@ namespace Exoduser.UnityPort
             try {
                 if(qContact==null)throw new InvalidOperationException("M1 camera comparison requires a real Q parry");
                 p.State="sBlock";p.StateTicks=0;p.Iframes=0;sim.Feedback.Clear();
-                // Reuse the first real Q event; do not award or simulate another parry.
-                var contact=new FeedbackEvent{Kind=qContact.Kind,Step=qContact.Step,Source=qContact.Source,SampleKey=qContact.SampleKey,
+                // Reuse the first real Q event's place and angle; do not award or simulate another parry. The camera A/B is
+                // about the perfect melee parry (push-in never applies to bullet parries), so the probe event is tagged melee.
+                var contact=new FeedbackEvent{Kind=qContact.Kind,Step=1,Source="contact",MeleeParry=true,HitStopTicks=2,
                     X=qContact.X,Y=qContact.Y,Angle=qContact.Angle,Tick=sim.TickCount-4};
                 foreach(bool pushin in new[]{false,true}) {
                     camZoom=savedZoom;UnityEngine.Random.state=rng;

@@ -107,7 +107,7 @@ namespace Exoduser.UnityPort
             sprites[key] = s; return s;
         }
 
-        // Separate light-only centre. Caller uses one additive layer at .6 opacity,
+        // Separate light-only centre. Caller uses one additive layer at .35 opacity,
         // diameter .25 of the unchanged body draw box, hence radius ratio .25 too.
         public static Sprite PoisonCore()
         {

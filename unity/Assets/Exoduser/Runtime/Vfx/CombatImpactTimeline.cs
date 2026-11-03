@@ -62,8 +62,10 @@ namespace Exoduser.UnityPort.Vfx
             if(e.Kind==FeedbackKind.Parry){
                 if(e.MeleeParry||new CombatParryPresentation().IsMelee(e))return result;
                 if(e.Source=="waterBean") {
-                    result.Add(Boom("Ice_ImpactIce_Sheet",72,96*3));
-                    var mist=Boom("Ice_MistSmoke_FBF_4x4",72,96*3.4);mist.Delay=3;mist.Life=69;mist.Opacity=.8;result.Add(mist);
+                    // RETOUCH 4: VFX master water ramp instead of the web's bright cartoon cyan (tools/vfx/recolor_parry_water.py).
+                    // Frames 12-15 are only loose droplets, so the impact stops at frame 11.
+                    result.Add(Boom("Ice_ImpactIce_Sheet_water",72,96*3,12));
+                    var mist=Boom("Ice_MistSmoke_FBF_4x4_water",72,96*3.4);mist.Delay=3;mist.Life=69;mist.Opacity=.6;result.Add(mist);
                 }else if(e.SampleKey=="rainbow") {
                     string[] sheets={"Poison_MediumImpact","Dark_DarkSmoke_FBF_4x4","Light_ImpactLight_Sheet","Ice_ImpactIce_Sheet"};
                     for(int i=0;i<4;i++){var c=Boom(sheets[i],72,80*(2.8+i*.3));c.Additive=true;c.Delay=(int)Math.Round(72*i*.03);c.Life=72-c.Delay;c.Angle=i*Math.PI*.5;c.Opacity=1-i*.15;result.Add(c);}
@@ -123,11 +125,52 @@ namespace Exoduser.UnityPort.Vfx
             // is 38.7 even over black. Gamma framebuffer maximum is 38.25.
             return (linear?.02:.15)*(age<1?age:1-(age-1)/5);
         }
-        public bool ParsePushIn(string[] args){return Array.IndexOf(args,"--unity-parry-camera=pushin")>=0;}
+        // One push-in candidate: the VFX flag and the parry G2 flag (--parry-feedback-push-in, which also lowers the Core
+        // melee shake to 2) both select the R4 field-of-view push below; there is no second dolly.
+        public bool ParsePushIn(string[] args){return Array.IndexOf(args,"--unity-parry-camera=pushin")>=0||Array.IndexOf(args,"--parry-feedback-push-in")>=0;}
         public double CameraScale(double age,bool pushIn) {
             if(!pushIn||age<=0||age>=28)return 1;
             return 1-.025*(age<=8?age/8:1-(age-8)/20);
         }
+    }
+
+    // Parry presentation keeps running through the 2-tick melee hit-stop (PBZ R3: pose hold only, sparks keep flying),
+    // so the spark peak lands at contact +3 frames as in the parry G1 table instead of +5 behind the frozen simulation.
+    public sealed class CombatPresentationClock
+    {
+        int held;
+        public void Hold(){held++;}
+        public int Now(int tick){return tick+held;}
+        public void Reset(){held=0;}
+    }
+
+    // RETOUCH 4 roll dust: soft ground puffs (earth/bone dust, normal alpha) instead of 2-6 px square specks.
+    // Start: kicked up behind the feet against the roll direction; end: settles around the feet; during the roll a
+    // small trailing puff every 4 ticks. Peak alpha stays at or below .42 so bullets and enemy tells read through it.
+    public sealed class CombatRollDust
+    {
+        public sealed class Puff {public int Delay,Life;public double Dx,Dy,Size,Peak,Shade;}
+        public const int TrailEvery=4;
+        public static Puff[] Burst(FeedbackEvent e,int seed) {
+            var rng=new Random(seed);bool start=e.Step==0;int n=start?3:2;var puffs=new Puff[n];
+            for(int i=0;i<n;i++) {
+                double a=start?e.Angle+Math.PI+(rng.NextDouble()-.5)*1.4:rng.NextDouble()*Math.PI*2,travel=start?14+rng.NextDouble()*10:8+rng.NextDouble()*6;
+                puffs[i]=new Puff{Delay=i,Life=start?26+rng.Next(9):22+rng.Next(7),Dx=Math.Cos(a)*travel,Dy=Math.Sin(a)*travel,
+                    Size=start?30+rng.NextDouble()*10:26+rng.NextDouble()*8,Peak=start?.42:.36,Shade=rng.NextDouble()};
+            }
+            return puffs;
+        }
+        public static bool Trail(int rollAge){return rollAge>0&&rollAge%TrailEvery==0;}
+        public static Puff TrailPuff(int seed) {
+            var rng=new Random(seed);double a=rng.NextDouble()*Math.PI*2;
+            return new Puff{Life=20+rng.Next(7),Dx=Math.Cos(a)*4,Dy=Math.Sin(a)*4,Size=18+rng.NextDouble()*6,Peak=.26,Shade=rng.NextDouble()};
+        }
+        public static double Alpha(Puff p,double age) {
+            double t=age-p.Delay;if(t<0||t>=p.Life)return 0;
+            return p.Peak*(t<3?t/3:Math.Pow((p.Life-t)/(p.Life-3.0),1.5));
+        }
+        public static double Width(Puff p,double age){return p.Size*(1+.8*Math.Min(1,Math.Max(0,age-p.Delay)/p.Life));}
+        public static double Travel(Puff p,double age){double t=Math.Min(1,Math.Max(0,age-p.Delay)/p.Life);return 1-(1-t)*(1-t);}
     }
 
     // Presentation-only clock and fixed pool; the view owns eight reusable
