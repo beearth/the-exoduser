@@ -1,0 +1,9 @@
+{
+ "source": "Unity batch SampleAnimation of Warrior_Locomotion.controller clips on Warrior.prefab (WarriorClipNeckMeasure), 60 Hz, rest-relative local rotation about character right axis, positive = forward bow",
+ "controllerClips": ["Warrior_Walk (Idle+Walk states)", "Warrior_Run", "Warrior_Walk_ArmR_Hold (HoldWeapon layer)"],
+ "neckForwardMaxDeg": 5.207,
+ "headForwardMaxDeg": 0.0,
+ "headMeasuredForwardRaw": -1.397,
+ "headBackMaxDeg": 23.197,
+ "note": "Head never bows forward in any controller clip (closest is 1.4 deg backward). Runtime roll tuck adds Head +20 deg (NativeHeroMotion.ApplyRollTuck), covered separately by head_bow 20 deg."
+}

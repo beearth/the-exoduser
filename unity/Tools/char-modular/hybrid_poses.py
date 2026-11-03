@@ -1,8 +1,11 @@
 """Deterministic metre-scale geometry fixtures; never labelled Animator clips."""
+import json
 import math
+from pathlib import Path
 import bpy
 from mathutils import Matrix, Quaternion, Vector
 
+MEASURED_BOW=json.loads((Path(__file__).parent/"measured-bow.json").read_text(encoding="utf-8"))
 LABELS=("rest","arm90","elbow140","knee120","crouch","twist45","strike1","strike2","strike3","roll_mid")
 
 class Poses:
@@ -81,6 +84,9 @@ class Poses:
         elif label=="head_left": self.turn("Head",35,(0,0,1))
         elif label=="head_right": self.turn("Head",-35,(0,0,1))
         elif label=="head_bow": self.turn("Head",20,(1,0,0))
+        elif label=="head_bow_measured":
+            self.turn("neck",MEASURED_BOW["neckForwardMaxDeg"],(1,0,0))
+            if MEASURED_BOW["headForwardMaxDeg"]>0:self.turn("Head",MEASURED_BOW["headForwardMaxDeg"],(1,0,0))
         elif label.startswith("strike"):
             i=int(label[-1])-1
             self.turn("Spine01",(35,-40,10)[i],(0,0,1))

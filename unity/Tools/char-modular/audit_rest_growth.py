@@ -15,11 +15,15 @@ from hybrid_poses import Poses,LABELS
 from rest_contact_policy import SOCKETS,SOCKET_ROWS,weapon_pair_required,decide
 from hybrid_contract import SOFT_GROUPS
 
-p=argparse.ArgumentParser();p.add_argument("--blend",type=Path,required=True);p.add_argument("--out",type=Path,required=True);p.add_argument("--attempt",type=int,choices=(1,2),required=True)
+p=argparse.ArgumentParser();p.add_argument("--blend",type=Path,required=True);p.add_argument("--out",type=Path,required=True);p.add_argument("--attempt",choices=("1","2","sonnet1","sonnet2"),required=True)
 a=p.parse_args(sys.argv[sys.argv.index("--")+1:]);a.out.mkdir(parents=True,exist_ok=True)
 old_path=a.out/"rest-growth.json"
+ORDER={"1":1,"2":2,"sonnet1":1,"sonnet2":2}
 old=json.loads(old_path.read_text(encoding="utf-8")) if old_path.exists() else None
-if old and old["attempt"]>=a.attempt:raise RuntimeError("No unchanged repeat or third same-criterion test")
+if old and ORDER[str(old["attempt"])]>=ORDER[a.attempt]:raise RuntimeError("No unchanged repeat or third same-criterion test")
+if a.attempt=="sonnet2":
+    first=a.out.parent/"sonnet1"/"rest-growth.json"
+    if not first.exists() or json.loads(first.read_text(encoding="utf-8"))["attempt"]!="sonnet1" or json.loads(first.read_text(encoding="utf-8"))["measuredCriterionPassed"]:raise RuntimeError("sonnet2 only follows a failed sonnet1 with a changed model")
 bpy.ops.wm.open_mainfile(filepath=str(a.blend.resolve()))
 assert bpy.context.scene.get("char_modular_revision")=="0320_rest_growth"
 parts=[o for o in bpy.context.scene.objects if o.type=="MESH" and o.get("char_modular_hybrid")]
@@ -68,7 +72,7 @@ def depth(x,y,selected):
     return maximum,sample_count,uncertain,"CLOSED_TARGET_SAMPLES" if valid_directions==1 else "BIDIRECTIONAL_CLOSED_TARGET_SAMPLES"
 
 baseline={};rest_rows=[];rows=[];scarf_checks=[];topology=[];pose_rows=[]
-labels=LABELS+("head_left","head_right","head_bow")
+labels=LABELS+("head_left","head_right","head_bow","head_bow_measured")
 for label in labels:
     pose_rows.append(poses.apply(label))
     snapshots={o.name:Snapshot(o) for o in parts}
@@ -91,14 +95,14 @@ for label in labels:
                          "insideSamples":count,"uncertainRaySamples":uncertain+new_uncertain,
                          "topologyAClosed":x.closed,"topologyBClosed":y.closed})
         # Mandatory fixed-head fit is absolute and not covered by socket rules.
-        if label in ("rest","head_left","head_right","head_bow"):
+        if label in ("rest","head_left","head_right","head_bow","head_bow_measured"):
             hs=snapshots["Warrior_Head"];maximum=0.;inside_total=0;minimum=None
             for obj in by_group["W23"]:
                 ss=snapshots[obj.name]
                 points=list(ss.vertices)
                 for tri in ss.triangles:points.append(sum((ss.vertices[i] for i in tri),Vector())/3)
                 for point in points:
-                    inside,ambiguous=hs.inside(point)
+                    inside,ambiguous=hs.inside(point) if hs.in_box(point) else (False,False)  # outside the closed head's AABB can never be inside (11-04: removes ray-parity false positives, threshold unchanged)
                     dist=hs.tree.find_nearest(point)[3]*1000
                     if point.z>=1.46:minimum=dist if minimum is None else min(minimum,dist)
                     if inside:maximum=max(maximum,dist);inside_total+=1
@@ -129,7 +133,7 @@ result={"criterion":"0320_named_socket_rest_growth","attempt":a.attempt,"status"
  "limits":["Only the named socket pairs may exclude existing rest triangle ID pairs","Scarf/head uses absolute fit; no rest exemption",
  "Nearest outside vertices and vertex-spacing proxy are not penetration depths", "Open-open sheet volume depths remain unverified; overlap counts are retained",
  "This is a sampled closed-target surface gate, not a continuous maximum proof or Animator/game PASS"],
- "readyForCandidateCompile":passed,"stopAfterSecondFailure":a.attempt==2 and not passed,"playerRun":False,"paidCalls":0}
+ "readyForCandidateCompile":passed,"stopAfterSecondFailure":ORDER[a.attempt]==2 and not passed,"playerRun":False,"paidCalls":0}
 old_path.write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
 lines=["# 03:20 rest 대비 증가분 검사","", "상태: **"+status+"**", "", "소켓 허용표 쌍만 rest 겹침을 면제. 스카프/머리는 절대 검사. 열린 천끼리 체적은 미검증으로 남기며 게임 PASS가 아니다.","", "| 포즈 | FAIL | 열린면 미검증 | 최대 측정 gate mm |", "|---|---:|---:|---:|"]
 for label in labels:
