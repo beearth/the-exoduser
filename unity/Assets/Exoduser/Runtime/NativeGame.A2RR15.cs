@@ -36,13 +36,13 @@ namespace Exoduser.UnityPort
         IEnumerator A2RR15Sheet()
         {
             if(!NativeQaSandbox.Active)throw new InvalidOperationException("R15 sheet requires QA save isolation");
-            bool r16=Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-r16-proof")>=0;string prefix=r16?"r16":"r15";var scales=r16?JsonUtility.FromJson<R16ScaleData>(Resources.Load<TextAsset>("A2R/Models3D/allowed-models").text).scales:null;
+            bool r17=Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-r17-proof")>=0;bool r16=Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-r16-proof")>=0;string prefix=r17?"r17":r16?"r16":"r15";var scales=r16?JsonUtility.FromJson<R16ScaleData>(Resources.Load<TextAsset>("A2R/Models3D/allowed-models").text).scales:null;
             yield return A2RNatureSize(1920);var report=new R15Sheet{defaultModels=a2rModels.Result.modelInstances,retainedCards=a2rModels.RetainedCards};
-            if((r16?report.defaultModels==0:report.defaultModels!=0)||report.retainedCards==0)throw new InvalidOperationException("R15 default empty allowlist did not preserve paintings");
+            if((r16||r17?report.defaultModels==0:report.defaultModels!=0)||report.retainedCards==0)throw new InvalidOperationException("R15 default empty allowlist did not preserve paintings");
             bool ai=Simulation.Config.EnemyAiEnabled;Simulation.Config.EnemyAiEnabled=false;Simulation.Enemies.Clear();
             // Explicit review override exists only inside this sandboxed coroutine, after checking shipped defaults above.
-            if(!r16)a2rModels.Initialize(a2Root.transform,a2rWeb,a2rOcclusion,true);A2RSetLook(true);
-            if(!r16){
+            if(!r16&&!r17)a2rModels.Initialize(a2Root.transform,a2rWeb,a2rOcclusion,true);A2RSetLook(true);
+            if(!r16&&!r17){
             var shadows=new Dictionary<MeshRenderer,ShadowCastingMode>();foreach(var r in a2Root.GetComponentsInChildren<MeshRenderer>(true)){if(!R14Path(r.transform).Contains("A2R supplied 3D")||r.name.Contains("portion")||r.name.Contains("AO"))continue;shadows[r]=r.shadowCastingMode;r.shadowCastingMode=ShadowCastingMode.On;}
             yield return A2RR14Performance();File.Copy(Path.Combine(a2rPlayOutput,"r14-performance.json"),Path.Combine(a2rPlayOutput,"r15-shadows-before.json"),true);
             foreach(var s in shadows)s.Key.shadowCastingMode=s.Value;
@@ -58,7 +58,7 @@ namespace Exoduser.UnityPort
             // No UpdateViews in the stage loop: keep the real hero pose, camera, weather and Core frozen within a pair.
             foreach(var spec in catalog.models)
             {
-                var reference=r16?Array.Find(scales,x=>x.name==spec.name):null;if(r16&&reference==null)continue;
+                if(r17&&!spec.name.EndsWith("_far",StringComparison.Ordinal)&&spec.source.IndexOf("/bake3d/out/",StringComparison.Ordinal)<0)continue;var reference=r16?Array.Find(scales,x=>x.name==spec.name):null;if(r16&&reference==null)continue;
                 var card=R15Card(spec.name,source.cards);if(card==null)throw new InvalidOperationException("R15 missing painting for "+spec.name);
                 var row=new R15Row{name=spec.name,cardId=card.id,asset=card.asset,source=spec.source,cardHeight=card.height,far=spec.name.EndsWith("_far",StringComparison.Ordinal),omittedVegetation=card.kind=="vegetation"};
                 row.height=row.far?card.height*.72f:row.omittedVegetation?(spec.name.StartsWith("r3_fern",StringComparison.Ordinal)?.54f:.9f):card.height;

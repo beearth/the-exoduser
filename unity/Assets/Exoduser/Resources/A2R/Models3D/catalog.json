@@ -53,7 +53,7 @@
         {
             "name": "bnd0",
             "resource": "A2R/Models3D/Prefabs/bnd0",
-            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/bnd0.glb",
+            "source": "I:/EXODUSER-Storage/map25d/bake3d/out/bnd0.glb",
             "prepared": true,
             "width": 1.1005247831344604,
             "depth": 0.781650185585022,
@@ -103,7 +103,7 @@
         {
             "name": "ctree13",
             "resource": "A2R/Models3D/Prefabs/ctree13",
-            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/ctree13.glb",
+            "source": "I:/EXODUSER-Storage/map25d/bake3d/out/ctree13.glb",
             "prepared": true,
             "width": 1.3248878717422485,
             "depth": 1.1949617862701416,
@@ -113,7 +113,7 @@
         {
             "name": "ctree14",
             "resource": "A2R/Models3D/Prefabs/ctree14",
-            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/ctree14.glb",
+            "source": "I:/EXODUSER-Storage/map25d/bake3d/out/ctree14.glb",
             "prepared": true,
             "width": 1.6083953380584717,
             "depth": 1.6929734945297241,
@@ -133,7 +133,7 @@
         {
             "name": "ctree16",
             "resource": "A2R/Models3D/Prefabs/ctree16",
-            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/ctree16.glb",
+            "source": "I:/EXODUSER-Storage/map25d/bake3d/out/ctree16.glb",
             "prepared": true,
             "width": 1.065375566482544,
             "depth": 0.7004398107528687,
@@ -143,7 +143,7 @@
         {
             "name": "ctree17",
             "resource": "A2R/Models3D/Prefabs/ctree17",
-            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/ctree17.glb",
+            "source": "I:/EXODUSER-Storage/map25d/bake3d/out/ctree17.glb",
             "prepared": true,
             "width": 1.3461345434188843,
             "depth": 1.2145665884017944,
@@ -163,7 +163,7 @@
         {
             "name": "ctree19",
             "resource": "A2R/Models3D/Prefabs/ctree19",
-            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/ctree19.glb",
+            "source": "I:/EXODUSER-Storage/map25d/bake3d/out/ctree19.glb",
             "prepared": true,
             "width": 1.0589302778244019,
             "depth": 1.0661903619766235,
@@ -173,7 +173,7 @@
         {
             "name": "ctree20",
             "resource": "A2R/Models3D/Prefabs/ctree20",
-            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/ctree20.glb",
+            "source": "I:/EXODUSER-Storage/map25d/bake3d/out/ctree20.glb",
             "prepared": true,
             "width": 1.724158525466919,
             "depth": 1.5778316259384155,
@@ -183,7 +183,7 @@
         {
             "name": "fg_rot01",
             "resource": "A2R/Models3D/Prefabs/fg_rot01",
-            "source": "I:/EXODUSER-Storage/map25d/foliage3d/props/fg_rot01.glb",
+            "source": "I:/EXODUSER-Storage/map25d/bake3d/out/fg_rot01.glb",
             "prepared": true,
             "width": 1.3605066537857056,
             "depth": 1.1020170450210571,
@@ -357,7 +357,7 @@
             "prepared": true,
             "width": 1.0976719856262207,
             "depth": 0.7559152841567993,
-            "lods": 3,
+            "lods": 1,
             "triangles": 3106
         },
         {
@@ -367,7 +367,7 @@
             "prepared": true,
             "width": 1.256693959236145,
             "depth": 1.0685063600540161,
-            "lods": 3,
+            "lods": 1,
             "triangles": 3121
         },
         {
@@ -377,7 +377,7 @@
             "prepared": true,
             "width": 1.0953902006149292,
             "depth": 0.9365878105163574,
-            "lods": 3,
+            "lods": 1,
             "triangles": 3120
         },
         {
@@ -387,7 +387,7 @@
             "prepared": true,
             "width": 1.0921330451965332,
             "depth": 0.9977372884750366,
-            "lods": 3,
+            "lods": 1,
             "triangles": 3124
         },
         {
@@ -397,7 +397,7 @@
             "prepared": true,
             "width": 0.9657653570175171,
             "depth": 0.8721290826797485,
-            "lods": 3,
+            "lods": 1,
             "triangles": 3103
         },
         {
@@ -407,7 +407,7 @@
             "prepared": true,
             "width": 1.3591010570526123,
             "depth": 1.088423252105713,
-            "lods": 3,
+            "lods": 1,
             "triangles": 3121
         },
         {
@@ -417,7 +417,7 @@
             "prepared": true,
             "width": 1.0194109678268433,
             "depth": 0.5594190955162048,
-            "lods": 3,
+            "lods": 1,
             "triangles": 3113
         },
         {
@@ -427,7 +427,7 @@
             "prepared": true,
             "width": 1.3321831226348877,
             "depth": 1.204233169555664,
-            "lods": 3,
+            "lods": 1,
             "triangles": 3128
         },
         {
@@ -437,7 +437,7 @@
             "prepared": true,
             "width": 1.5981028079986572,
             "depth": 1.6789066791534424,
-            "lods": 3,
+            "lods": 1,
             "triangles": 3131
         },
         {
@@ -447,7 +447,7 @@
             "prepared": true,
             "width": 1.190481424331665,
             "depth": 0.7176410555839539,
-            "lods": 3,
+            "lods": 1,
             "triangles": 3122
         },
         {
@@ -457,7 +457,7 @@
             "prepared": true,
             "width": 1.0403029918670654,
             "depth": 0.6718118786811829,
-            "lods": 3,
+            "lods": 1,
             "triangles": 3121
         },
         {
@@ -467,7 +467,7 @@
             "prepared": true,
             "width": 1.3557260036468506,
             "depth": 1.219374418258667,
-            "lods": 3,
+            "lods": 1,
             "triangles": 3121
         },
         {
@@ -477,7 +477,7 @@
             "prepared": true,
             "width": 1.1693013906478882,
             "depth": 0.6091618537902832,
-            "lods": 3,
+            "lods": 1,
             "triangles": 3118
         },
         {
@@ -487,7 +487,7 @@
             "prepared": true,
             "width": 1.0511350631713867,
             "depth": 1.072213888168335,
-            "lods": 3,
+            "lods": 1,
             "triangles": 3119
         },
         {
@@ -497,7 +497,7 @@
             "prepared": true,
             "width": 1.7301369905471802,
             "depth": 1.576915979385376,
-            "lods": 3,
+            "lods": 1,
             "triangles": 3125
         }
     ]

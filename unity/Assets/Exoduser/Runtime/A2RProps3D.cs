@@ -32,15 +32,18 @@ namespace Exoduser.UnityPort
             {
                 var levels=group.GetLODs();
                 // Imported source has three levels. After promotion two remain, so repeated calls are safe.
-                if(levels.Length>=3){foreach(var renderer in levels[0].renderers)if(renderer!=null)renderer.gameObject.SetActive(false);group.SetLODs(new[]{new LOD(.18f,levels[1].renderers),new LOD(.00001f,levels[2].renderers)});group.RecalculateBounds();}
+                if(levels.Length>=3){foreach(var renderer in levels[0].renderers)if(renderer!=null)renderer.gameObject.SetActive(false);}
+                var visible=new List<Renderer[]>();for(int i=levels.Length>=3?1:0;i<levels.Length;i++){var renderers=Array.FindAll(levels[i].renderers,r=>r!=null);if(renderers.Length>0)visible.Add(renderers);}
+                if(visible.Count==0)throw new InvalidOperationException("A2R model has no nonempty LOD "+root.name);
+                var compact=new LOD[visible.Count];for(int i=0;i<compact.Length;i++)compact[i]=new LOD(i==compact.Length-1?.00001f:.18f,visible[i]);group.SetLODs(compact);group.RecalculateBounds();
             }
             if(far||height<1)foreach(var renderer in root.GetComponentsInChildren<MeshRenderer>(true))renderer.shadowCastingMode=ShadowCastingMode.Off;
         }
         [Serializable] public sealed class Placement {public string id,kind,model;public float webX,webY,worldX,worldZ,height,groundY,footY,gapCm,tilt;public bool rayHit;}
-        [Serializable] public sealed class Receipt {public bool enabled;public string scope="r16 map-lead approved 11 exact names and .6..1 uniform silhouette scales. Unlisted kinds retain original paintings. Forest-wall replacement requires all repeating far species approved. Explicit isolated QA can review all models without editing the shipped allowlist. Core and game camera unchanged.";public int sourceCards,modelInstances,flatDecals,floating,standingCards,missing,omittedVegetation;public List<string> missingKinds=new List<string>();public List<Placement> items=new List<Placement>();}
+        [Serializable] public sealed class Receipt {public bool enabled;public string scope="r17: r16 approved species/scales plus repaired 15 far silhouette species; baked near trees remain review-only. Unlisted kinds retain original paintings. Forest-wall replacement requires all repeating far species approved. Explicit isolated QA can review all models without editing the shipped allowlist. Core and game camera unchanged.";public int sourceCards,modelInstances,flatDecals,floating,standingCards,missing,omittedVegetation;public List<string> missingKinds=new List<string>();public List<Placement> items=new List<Placement>();}
         public Receipt Result=new Receipt();public bool Applied {get;private set;}public int RetainedCards {get;private set;}
         public static bool Enabled {get{return Array.IndexOf(Environment.GetCommandLineArgs(),"--a2r-3d-off")<0;}}
-        readonly Dictionary<string,Record> records=new Dictionary<string,Record>();readonly Dictionary<string,GameObject> prefabs=new Dictionary<string,GameObject>();readonly Dictionary<string,List<Vector3>> feet=new Dictionary<string,List<Vector3>>();readonly List<GameObject> cards=new List<GameObject>();
+        readonly Dictionary<string,Record> records=new Dictionary<string,Record>();readonly Dictionary<string,GameObject> prefabs=new Dictionary<string,GameObject>();readonly Dictionary<string,List<Vector3>> feet=new Dictionary<string,List<Vector3>>();readonly List<GameObject> cards=new List<GameObject>();readonly List<GameObject> forestCards=new List<GameObject>(),forestModels=new List<GameObject>();
         GameObject visuals;Transform originalRoot;A2ROcclusion occlusion;
         HashSet<string> allowed;readonly Dictionary<string,float> scales=new Dictionary<string,float>();
         static readonly string[] ForestNames={"bnd0","bnd3","bnd5","bnd18","c1tree","ctree13","ctree14","ctree15","ctree16","ctree17","ctree18","ctree19","ctree20","fg_rot01","fg_rot03"};
@@ -60,7 +63,7 @@ namespace Exoduser.UnityPort
             foreach(var c in input.cards){if(Floor(c.kind))continue;var source=web.Result.items.Find(x=>x.id==c.id);if(source==null||!source.added)continue;var card=originalRoot.Find(c.id+" "+c.kind+" web XY");if(card==null)throw new InvalidOperationException("A2R card lookup "+c.id);
                 if(c.kind=="vegetation"){string plant=Name(c,at++);if(plant==null||!allowed.Contains(plant)){RetainedCards++;continue;}cards.Add(card.gameObject);Place(c,plant,c.x/100,-c.y/100,plant.StartsWith("r3_fern",StringComparison.Ordinal)?.54f:.9f,c.id);continue;}
                 if(c.kind=="corpse"||c.kind=="m_fbones"){RetainedCards++;continue;}
-                if(c.kind=="forest_wall"){bool all=Array.TrueForAll(ForestNames,n=>allowed.Contains(n+"_far"));if(all){cards.Add(card.gameObject);Forest(c);}else RetainedCards++;continue;}
+                if(c.kind=="forest_wall"){bool all=Array.TrueForAll(ForestNames,n=>allowed.Contains(n+"_far"));if(all){cards.Add(card.gameObject);forestCards.Add(card.gameObject);Forest(c);}else RetainedCards++;continue;}
                 string name=Name(c,at++);if(name==null||!allowed.Contains(name)){RetainedCards++;continue;}
                 if(!records.ContainsKey(name)){Result.missing++;Result.missingKinds.Add(c.id+":"+c.kind);continue;}
                 cards.Add(card.gameObject);var model=Place(c,name,c.x/100,-c.y/100,c.height,c.id);if(c.kind=="m_c1altar"&&model!=null)Rune(model,c);
@@ -83,7 +86,7 @@ namespace Exoduser.UnityPort
         void Forest(A2RWebAssets.Card c)
         {
             var names=new[]{"bnd0","bnd3","bnd5","bnd18","c1tree","ctree13","ctree14","ctree15","ctree16","ctree17","ctree18","ctree19","ctree20","fg_rot01","fg_rot03"};uint key=Hash(c.id);float height=c.height*.72f;int count=Mathf.Max(3,Mathf.CeilToInt(c.width/Mathf.Max(.6f,height*.48f)));
-            for(int row=0;row<2;row++)for(int i=0;i<count;i++){int type=(i*7+row*5+(int)(key%15))%15;float phase=((key+(uint)(i*131+row*73))%1001)/1000f;float x=c.x/100+((i+.5f)/count-.5f)*c.width+(phase-.5f)*.35f;float z=-c.y/100+row*.9f+(phase-.5f)*.55f;Place(c,names[type]+"_far",x,z,height*(.88f+phase*.22f),c.id+" forest "+row+"/"+i);}
+            for(int row=0;row<2;row++)for(int i=0;i<count;i++){int type=(i*7+row*5+(int)(key%15))%15;float phase=((key+(uint)(i*131+row*73))%1001)/1000f;float x=c.x/100+((i+.5f)/count-.5f)*c.width+(phase-.5f)*.35f;float z=-c.y/100+row*.9f+(phase-.5f)*.55f;forestModels.Add(Place(c,names[type]+"_far",x,z,height*(.88f+phase*.22f),c.id+" forest "+row+"/"+i));}
         }
         void Decal(A2RWebAssets.Card c)
         {
@@ -94,6 +97,8 @@ namespace Exoduser.UnityPort
             var colliders=new List<MeshCollider>();Bounds bounds=new Bounds();bool first=true;foreach(var r in model.GetComponentsInChildren<MeshRenderer>()){if(r.name=="A2R sight circle portion")continue;var filter=r.GetComponent<MeshFilter>();if(filter==null)continue;var collider=r.gameObject.AddComponent<MeshCollider>();collider.sharedMesh=filter.sharedMesh;collider.gameObject.layer=29;colliders.Add(collider);if(first){bounds=r.bounds;first=false;}else bounds.Encapsulate(r.bounds);}Physics.SyncTransforms();
             const int sides=48;var v=new List<Vector3>();var uv=new List<Vector2>();var tri=new List<int>();float radius=Mathf.Min(c.width*.3f,c.height*.4f);for(int i=0;i<=sides;i++){float a=i==0?0:(i-1)*Mathf.PI*2/sides,r=i==0?0:1;float x=model.transform.position.x+Mathf.Cos(a)*radius*r,z=model.transform.position.z+Mathf.Sin(a)*radius*r;var ray=new Ray(new Vector3(x,bounds.max.y+1,z),Vector3.down);float y=float.NegativeInfinity;foreach(var col in colliders){RaycastHit hit;if(col.Raycast(ray,out hit,100))y=Mathf.Max(y,hit.point.y);}if(float.IsNegativeInfinity(y))y=model.transform.position.y+c.height*.6f;v.Add(new Vector3(x,y+.018f,z));uv.Add(new Vector2(.5f+Mathf.Cos(a)*.26f*r,.5f+Mathf.Sin(a)*.26f*r));if(i>1)tri.AddRange(new[]{0,i,i-1});}tri.AddRange(new[]{0,1,sides});var mesh=new Mesh{name="Original altar rune top projection"};mesh.SetVertices(v);mesh.SetUVs(0,uv);mesh.SetTriangles(tri,0);mesh.RecalculateNormals();mesh.RecalculateTangents();var go=new GameObject("A2R original altar rune on 3D top");go.transform.SetParent(visuals.transform,false);go.AddComponent<MeshFilter>().sharedMesh=mesh;var renderer=go.AddComponent<MeshRenderer>();var mat=new Material(Resources.Load<Shader>("A2R/CardOpaque")){renderQueue=2482};mat.SetTexture("_MainTex",Resources.Load<Texture2D>(c.asset));mat.SetFloat("_Emission",1.2f);renderer.sharedMaterial=mat;renderer.shadowCastingMode=ShadowCastingMode.Off;foreach(var collider in colliders){collider.gameObject.layer=0;Destroy(collider);}
         }
+        public void SetForestLook(bool on){foreach(var model in forestModels)if(model!=null)model.SetActive(on);foreach(var card in forestCards)if(card!=null)card.SetActive(!on);}
+        public Transform VisualRoot {get{return visuals.transform;}}
         public void SetLook(bool on){Applied=on;Result.enabled=on;if(visuals!=null)visuals.SetActive(on);foreach(var card in cards)if(card!=null)card.SetActive(!on);Result.standingCards=0;foreach(var card in cards)if(card!=null&&card.activeInHierarchy)Result.standingCards++;}
     }
 }

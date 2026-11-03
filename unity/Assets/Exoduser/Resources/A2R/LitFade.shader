@@ -12,6 +12,8 @@ HLSLPROGRAM
 #pragma multi_compile _ _METALLICSPECGLOSSMAP
 #pragma multi_compile _ _ALPHATEST_ON
 #pragma multi_compile _ _EMISSION
+#pragma multi_compile_local_fragment _ _SPECULARHIGHLIGHTS_OFF
+#pragma multi_compile_local_fragment _ _ENVIRONMENTREFLECTIONS_OFF
 #pragma multi_compile_fragment _ _LIGHT_COOKIES
 #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
 #include "LitCommon.hlsl"

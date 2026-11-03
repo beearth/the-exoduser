@@ -1,0 +1,53 @@
+{
+  "scope": "r17 ready-at-start sources only; NOT near-model approvals",
+  "models": [
+    {
+      "name": "ctree13",
+      "before": "I:/EXODUSER-Storage/map25d/foliage3d/props/ctree13.glb",
+      "after": "I:/EXODUSER-Storage/map25d/bake3d/out/ctree13.glb",
+      "geometryLodPivotIdentical": true
+    },
+    {
+      "name": "fg_rot01",
+      "before": "I:/EXODUSER-Storage/map25d/foliage3d/props/fg_rot01.glb",
+      "after": "I:/EXODUSER-Storage/map25d/bake3d/out/fg_rot01.glb",
+      "geometryLodPivotIdentical": true
+    },
+    {
+      "name": "ctree14",
+      "before": "I:/EXODUSER-Storage/map25d/foliage3d/props/ctree14.glb",
+      "after": "I:/EXODUSER-Storage/map25d/bake3d/out/ctree14.glb",
+      "geometryLodPivotIdentical": true
+    },
+    {
+      "name": "ctree16",
+      "before": "I:/EXODUSER-Storage/map25d/foliage3d/props/ctree16.glb",
+      "after": "I:/EXODUSER-Storage/map25d/bake3d/out/ctree16.glb",
+      "geometryLodPivotIdentical": true
+    },
+    {
+      "name": "ctree17",
+      "before": "I:/EXODUSER-Storage/map25d/foliage3d/props/ctree17.glb",
+      "after": "I:/EXODUSER-Storage/map25d/bake3d/out/ctree17.glb",
+      "geometryLodPivotIdentical": true
+    },
+    {
+      "name": "ctree19",
+      "before": "I:/EXODUSER-Storage/map25d/foliage3d/props/ctree19.glb",
+      "after": "I:/EXODUSER-Storage/map25d/bake3d/out/ctree19.glb",
+      "geometryLodPivotIdentical": true
+    },
+    {
+      "name": "ctree20",
+      "before": "I:/EXODUSER-Storage/map25d/foliage3d/props/ctree20.glb",
+      "after": "I:/EXODUSER-Storage/map25d/bake3d/out/ctree20.glb",
+      "geometryLodPivotIdentical": true
+    },
+    {
+      "name": "bnd0",
+      "before": "I:/EXODUSER-Storage/map25d/foliage3d/props/bnd0.glb",
+      "after": "I:/EXODUSER-Storage/map25d/bake3d/out/bnd0.glb",
+      "geometryLodPivotIdentical": true
+    }
+  ]
+}
