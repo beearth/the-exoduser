@@ -57383,3 +57383,12 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 | NativeSkillView SlamWaves | wave/flash 생성 시 NativeGroundSkillSurface.Mark에 등록해 지면 중심 billboard의 아래쪽 깊이 가림을 제거. 기존 실제 receiver-depth,16m 투영을 공유 | 원화4셀512px·1024²·FullRect 유지. 프레임min(3,floor(pow(p,.6)*4)),45틱=.75초,셀5/10/13/17틱,크기.9×(.72+.28min(1,p3.5)),alpha p<.62/이후(1-p)/.38 불변 |
 | Core·웹 정본 | 최신 origin/main 프레임·수명과 대조. Core/피해/판정/저장/Q/E 변경0 | 정적회귀 tools/tests/unitySlamGroundProjection.test.cjs 수정후3/3. GPU 시각PASS 아님 |
 | PC/Mac 분리 | PC는 공용exo 배치컴파일1회 후작업브랜치push. 장판·대지치기1920/3840·처음~끝 연속프레임/웹비교·M1은Mac검수요청 | 상세 docs/engine/UNITY_GROUND_AOE_P0_20261103.md, REPORT_1103.md. 사용자 실행본 자동변경 주장안함 |
+## 2026-11-03 19:00 PC — Mac AOE-GATE FAIL 3건 재작업
+
+| 항목 | 수정·계약 | 검증 |
+|---|---|---|
+| 슬램 셀 직선경계 | 원화셀2 오른쪽128px/최대alpha252·셀3왼쪽113px/최대252. GroundSkillProjection `_GroundEdgeFeather` 기본0, NativeSkillView 본체만.04. CellEdgeCoverage=smoothstep(0,feather,min(u,v,1-u,1-v)), premultipliedRGBA/weight에곱함. 셀512px의20.48px·내부92%불변 | 새정적검출FAIL→수정후5/5. 실제경계개선은Mac A/B대기 |
+| 실제4지형스킬QA | --unity-ground-map-capture --unity-ground-skills, 실제DispatchSlot, flat≤.04/slope>.06, actual bridge, walkable water-neighbour1m. spikeTrap/holyDome/giantSlam·1920/2560/3840. 기본all+bridge연속57PNG. runtimeAge/셀/alpha/flash/상자여유/높이·sandboxRoot 기록 | PC는컴파일까지만. Map/충돌/Core/피해/반경/45틱수명수정0 |
+| QA 가림분리 | --unity-ground-hide-actors는sandbox신규촬영경로에서만배우/접촉그림자/OnGUI숨김,finally복구. --unity-ground-edge-baseline은본체feather0, --unity-ground-projectiles는합성3탄실제Core이동. 정상제품화면불변 | Mac중앙섬광·정상배우+탄막컷을별도검수 |
+
+근거·G0 레퍼런스공통관례·Mac 전체인자: docs/engine/UNITY_GROUND_AOE_P0_20261103.md. 원격공통cbdcbc2822 선행병합. 이전 e96b137 Mac FAIL 상태를컴파일만으로PASS승격하지않는다.

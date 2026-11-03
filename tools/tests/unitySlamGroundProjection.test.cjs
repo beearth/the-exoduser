@@ -36,3 +36,23 @@ test('source art keeps all four complete 512px cells without a reduced sprite me
   assert.equal(image.readUInt32BE(16),1024);assert.equal(image.readUInt32BE(20),1024);
   assert.match(view,/i < 4; i\+\+\).*?new Rect\(i % 2 \* hw, slam.height - \(i \/ 2 \+ 1\) \* hh, hw, hh\).*?SpriteMeshType.FullRect/);
 });
+test('slam cell edge coverage reaches zero without clipping the inner artwork',()=>{
+  const shader=fs.readFileSync(path.join(root,'unity/Assets/Exoduser/Resources/Shaders/GroundSkillProjection.shader'),'utf8');
+  assert.match(shader,/float CellEdgeCoverage\(float2 uv,float feather\)/,'source cells contain opaque boundary pixels and need a shader edge ramp');
+  assert.match(wave,/SetFloat\("_GroundEdgeFeather",\s*\.04f\)/);
+  const expression=shader.match(/float CellEdgeCoverage\(float2 uv,float feather\)\s*\{\s*return ([^;]+);/)[1];
+  const smoothstep=(lo,hi,x)=>{const t=Math.max(0,Math.min(1,(x-lo)/(hi-lo)));return t*t*(3-2*t);};
+  const actual=Function('uv','feather','smoothstep','min','return '+expression);
+  const coverage=(u,v)=>actual({x:u,y:v},.04,smoothstep,Math.min);
+  assert.equal(coverage(0,.5),0);assert.equal(coverage(1,.5),0);
+  assert.equal(coverage(.5,0),0);assert.equal(coverage(.5,1),0);
+  assert.equal(coverage(.04,.5),1);assert.equal(coverage(.5,.5),1);
+  assert.ok(coverage(.02,.5)>0&&coverage(.02,.5)<1);
+});
+test('actual skill capture exposes four sites, runtime ages and a QA-only actor mask',()=>{
+  const file=path.join(root,'unity/Assets/Exoduser/Runtime/NativeGame.GroundSkillCapture.cs');
+  assert.ok(fs.existsSync(file),'actual skills still have no four-site capture route');
+  const code=fs.readFileSync(file,'utf8');
+  for(const key of ['flat','slope','bridge','swamp','--unity-ground-hide-actors','--unity-ground-edge-baseline','-ground-sequence-site','DispatchSlot(0)','wave.T','forceRenderingOff'])assert.ok(code.includes(key),key);
+  assert.match(code,/NativeQaSandbox\.Active/);assert.match(code,/A2UpperSurfaceVertex/);assert.match(code,/a2Field\.Water/);
+});

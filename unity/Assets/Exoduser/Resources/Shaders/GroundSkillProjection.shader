@@ -12,6 +12,7 @@ Shader "EXODUSER/GroundSkillProjection"
         _GroundRingRadius ("Original polygon ring",Float)=0
         _GroundRingWidth ("Original ring width",Float)=.03
         _GroundVertexShape ("Vertex colour warning volume",Float)=0
+        _GroundEdgeFeather ("Cell edge feather in original UV",Float)=0
     }
     SubShader
     {
@@ -28,7 +29,7 @@ Shader "EXODUSER/GroundSkillProjection"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
             TEXTURE2D_X_FLOAT(_ExoduserGroundDepth);
             TEXTURE2D(_MainTex);SAMPLER(sampler_MainTex);
-            float _SourceMode,_Flat,_NormalBlend,_Opacity,_GroundRingRadius,_GroundRingWidth,_GroundVertexShape;
+            float _SourceMode,_Flat,_NormalBlend,_Opacity,_GroundRingRadius,_GroundRingWidth,_GroundVertexShape,_GroundEdgeFeather;
             half4 _SourceTint;float4 _GroundAnchor,_GroundUvU,_GroundUvV,_GroundUvRect;
             float4 _GroundShapeHeight;
             int _ExoduserGroundProbe;
@@ -36,6 +37,7 @@ Shader "EXODUSER/GroundSkillProjection"
             struct Output { float4 positionCS:SV_POSITION;half4 color:COLOR;float4 triangleAB:TEXCOORD1;float2 triangleC:TEXCOORD2; };
             Output Vert(Input input) { Output o;o.positionCS=TransformObjectToHClip(input.positionOS);o.color=input.color;o.triangleAB=input.triangleAB;o.triangleC=input.triangleC;return o; }
             float Side(float2 a,float2 b,float2 p) { float2 e=b-a,d=p-a;return e.x*d.y-e.y*d.x; }
+            float CellEdgeCoverage(float2 uv,float feather) { return feather<=0?1:smoothstep(0,feather,min(min(uv.x,uv.y),min(1-uv.x,1-uv.y))); }
             float Eye(float depth)
             {
                 if(unity_OrthoParams.w>.5)
@@ -101,6 +103,9 @@ Shader "EXODUSER/GroundSkillProjection"
                     if(_SourceMode>1.5) { color=p*_SourceTint;weight=color.a;color.rgb*=color.a; }
                     else if(_SourceMode>.5) { weight=p.a*_Opacity;color=half4(p.rgb*p.a*_Opacity,0); }
                     else { half a=p.a*_SourceTint.a;if(_Flat>.5)a*=max(p.r,max(p.g,p.b));weight=a;half3 rgb=_Flat>.5?half3(1,1,1):p.rgb;color=half4(rgb*_SourceTint.rgb*a,_NormalBlend>.5?a:0); }
+                    // The source slam atlas has opaque pixels cut by cell edges.
+                    // Fade in original cell UV, never by receiver/bridge bounds.
+                    float edge=CellEdgeCoverage(uv,_GroundEdgeFeather);weight*=edge;color*=edge;
                 }
                 }
                 if(weight<=0)discard;

@@ -15,6 +15,7 @@ namespace Exoduser.UnityPort
         readonly Dictionary<int, Item> zones = new Dictionary<int, Item>(), waves = new Dictionary<int, Item>(), blades = new Dictionary<int, Item>(), orbs = new Dictionary<int, Item>();
         readonly Dictionary<int, List<Vector3>> orbTrails = new Dictionary<int, List<Vector3>>();
         readonly List<int> stale = new List<int>();
+        readonly MaterialPropertyBlock slamProjection = new MaterialPropertyBlock();
         // 웹 강타 wave/flash는 Core 점을 중심으로 그린다. 캐릭터용 발끝 lift 대상이 아니다.
         static readonly HashSet<SpriteRenderer> centeredSlamSprites = new HashSet<SpriteRenderer>();
         public static bool IsCenteredSkillSprite(SpriteRenderer sprite) { return IsCenteredMaliceSprite(sprite) || centeredSlamSprites.Contains(sprite); }
@@ -155,6 +156,7 @@ namespace Exoduser.UnityPort
                     // These are ground impacts. A centered, depth-tested billboard
                     // intersects the terrain through its middle and loses half its art.
                     NativeGroundSkillSurface.Mark(it.a); NativeGroundSkillSurface.Mark(it.b);
+                    slamProjection.Clear();slamProjection.SetFloat("_GroundEdgeFeather",.04f);it.a.SetPropertyBlock(slamProjection);
                     centeredSlamSprites.Add(it.a); centeredSlamSprites.Add(it.b);
                 }
                 ActiveWaves++; it.go.transform.position = Point(w.X, w.Y);

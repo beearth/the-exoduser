@@ -1,5 +1,49 @@
 # 11-03 장판 공중 부유 P0 — Mac 실게임 판정 대기
 
+## 19:00 Mac FAIL 3건 재작업 — G0 / 설계
+
+Mac 원본 `qa/mac-captures-20261103@642a2affe`, `qa/unity-ground-aoe/e96b137/06-slam-cells-x3.png`와1920 T15 컷을 직접 열었다. 이전 e96b137은 지면/목교 투영·45틱 종료·Shader/RenderGraph0은 통과했지만 직선 경계와 네 지형별 실제 스킬·중앙 섬광 증거 부족으로 **AOE-GATE FAIL**이다. 이 판정이 아래 과거 PC 기록보다 최신이다. 착수 전 최신 `origin/unity/main cbdcbc2822` 정상 병합.
+
+G0 레퍼런스: 직접 본 노레위 `G:/exoduser/tmp/design-review/20261028_aaa_reference/스크린샷 2026-10-30 091256.png`의 목교 접점·제한된 밝기, [Diablo IV VFX 개발자 설명](https://news.blizzard.com/en-gb/article/23746639/diablo-iv-quarterly-updatedecember-2021)의 전장/조명별 식별성과 주요·보조 읽힘을 대조했다. 텍스트 설명을 다른 게임의 내부 투영 구현 증거로 취급하지 않는다. 기존 웹 플립북+지면투영 제작법을 유지하고 새 아트는 만들지 않는다.
+
+| 두 레퍼런스에서 확인한 공통 관례 / 이번 체크 | 상태 |
+|---|---|
+| 지형과 공격 접점이 같은 장소에서 읽힘, 배경과 효과의 명암이 분리됨 | 있음: 실제 수신면·원래 Core 중심. 네 지형의 실제 스킬 촬영을 이번에 넣음 |
+| 접점이 강하게 읽히고 잔여가 사라지는 리듬 | 있음: 기존45틱·4셀·원래감쇠 유지. 사각 원화 경계만 이번에 완화 |
+| 주효과가 전장과 위험의 읽힘을 압도하지 않음 | 있음: 제품 배우/숫자 유지. 정상 배우+탄막 컷과 촬영 전용 무배우 컷을 별도로 요청 |
+| 카메라 가림을 처리하며 캐릭터/효과를 판독할 수 있음 | 맵 레인의 가림 투명화는 뺌(별도 소유). 이번에는 검수 인자에서만 배우/숫자를 숨김 |
+
+첫 실물 판정은 Mac의 같은 목교 T0~45 및 평지/경사/목교/늪 가장자리의 실제3스킬이다. 직선 경계가 남거나 네 지형 분류·실제 runtimeAge를 얻지 못하면 FAIL이며 CPU/컴파일로 통과시키지 않는다.
+
+| FAIL | 원인·수정·한계 |
+|---|---|
+| 1 셀 직선 잘림 | 원 PNG 셀2 오른쪽512픽셀 중128개의alpha>8·최대252, 셀3 왼쪽113개·최대252. 원화가 셀 끝에서 불투명하게 끊긴다. 중심 정사각 UV 영역은 투영상자 XZ보다 작다(반폭D/2, 상자반폭D/√2); 16m 깊이는 그대로다. 원화 UV 외곽4%(20.48텍셀)에서 smoothstep으로만premultiplied RGBA/weight를0으로 감쇠. 내부92%·Core반경/프레임/위치는 불변. Mac에 baseline(감쇠0)과수정(.04) 같은좌표 재촬영을 요청해 남은 수신면/차폐 경계도 분리한다 |
+| 2 촬영 부족 | 기존시험 사각형 경로는 유지. `--unity-ground-map-capture --unity-ground-skills`가 실제 DispatchSlot→NativeSkillView로 가시덫/성역/대지치기를 평지·경사·목교·늪 가장자리에서 시전. 실제 지형과Map.CanMove로 고르고, 경사>.06·지형과GroundY차≤.08m, 수면 인접1m 여부를 분류. 지형/판정/물 높이는 바꾸지 않음 |
+| 3 섬광 가림 | `--unity-ground-hide-actors`는 이 sandbox 촬영 경로에서만 배우·접촉그림자와 OnGUI를 숨김. 원래forceRenderingOff를finally로 복구. 일반 실행은 바꾸지 않음. 중앙소품은 실제차폐 검수에 남김 |
+
+### Mac 실행 인자 — 새 정식 패키지, 고정 출력 폴더
+
+공통 인자(실제 `.app/Contents/MacOS/EXODUSER-Unity`, Mac 일반 창을 백그라운드로 실행; **Player -batchmode 금지**):
+
+```text
+--remodel3d --unity-ground-map-capture --unity-ground-skills --unity-mute -nosound
+-screen-fullscreen 0 -popupwindow -screen-width 1920 -screen-height 1080
+-ground-width 1920 -ground-sites all -ground-skill all -ground-sequence-site bridge
+--unity-qa-sandbox <Mac 절대경로>/sandbox-current
+-output <Mac 절대경로>/captures-current
+```
+
+| 검수 실행 | 공통 인자에 추가/교체 |
+|---|---|
+| 네 지형 실제3스킬·목교 슬램46연속 컷, 중앙 섬광 | `--unity-ground-hide-actors` |
+| 같은 목교 경계 A/B(원래 셀 알파, 딱1회) | 위 숨김 + `--unity-ground-edge-baseline -ground-sites bridge -ground-skill giantSlam` |
+| 제품 구도·적탄3종 겹침(숫자·배우 유지) | 숨김/edge-baseline을 빼고 `--unity-ground-projectiles -ground-sequence-site none` |
+| 32:9 | `-ground-width 3840 -screen-width 3840`, 높이1080 유지 |
+
+매 실행 전 captures-current를 비우고 필요한 최종 비교컷/영수증만 선별한다. baseline/수정 두 조건의 필요 컷만 비교용으로 유지하며 빌드는 build-current에 덮어쓴 뒤 검수 종료 시 삭제한다. `-ground-sites flat,slope,bridge,swamp` 또는단일id, `-ground-skill spikeTrap/holyDome/giantSlam/all`, 폭1920/2560/3840 지원. all 기본: 4곳×3스킬 age15의12컷 + 목교슬램 T0~45 중T15 중복제외45컷=57컷/해상도. 45틱에는슬램없음. `ground-skills-receipt.json`에 실제wave.T/zone.T·셀·alpha·flashEnabled·수신면높이·경사·투영상자/여유·숨김수·sandboxRoot 기록, `GROUND_SKILLS_SANDBOX_BOUND` 로그 출력. 자동passed는 촬영완료일뿐 visualVerified=false.
+
+PC에서 새 Player 촬영은 하지 않는다. 수정 전 정적5건중2건 FAIL(경계처리/실제스킬 촬영경로 부재) → 구현 후5/5. 실제 화면은 Mac 재검수 대기.
+
 사용자 최신 impact-brief 13:40 절·AGENT_OPERATIONS_MANUAL §2 적용. 자기 `G:/exoduser-wt/codex-impact`를 직접 수정한다. 기준 `origin/unity/main 5062b5701`. PC는 배치 컴파일1회만 하며 정식 빌드/Player/M1/시각 판정은 Mac으로 넘긴다. 사용자 실행본 미반영이며 시각 PASS를 선언하지 않는다.
 
 ## G0/G1: 원인과 제작법
