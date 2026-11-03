@@ -160,15 +160,21 @@ namespace Exoduser.UnityPort
         // base camera (its stack carries the pixel-actor overlay) into a RenderTexture instead. OnGUI HUD is absent
         // from that path; it is recorded as a note so judges compare world-only proofs. Both failing stops loudly.
         public static bool Map25DCaptureWorldOnly {get;private set;}
+        // Map view size: the real Screen in a window. batchmode reports 640x480, so -screen-width/-screen-height (default 1920x1080)
+        // stand in for both the RenderTexture capture and the pixel-actor overlay layout.
+        public static int Map25DViewWidth=>Application.isBatchMode?Map25DLaunchSize("-screen-width",1920):Screen.width;
+        public static int Map25DViewHeight=>Application.isBatchMode?Map25DLaunchSize("-screen-height",1080):Screen.height;
+        static int Map25DLaunchSize(string key,int fallback)=>int.TryParse(Argument(key),out int v)&&v>0?v:fallback;
         static Texture2D Map25DGrabTexture()
         {
             if(!Application.isBatchMode){var screen=ScreenCapture.CaptureScreenshotAsTexture();if(screen!=null)return screen;}
             Camera cam=null;foreach(var c in Camera.allCameras){if(c==null||!c.isActiveAndEnabled||c.targetTexture!=null)continue;var data=c.GetUniversalAdditionalCameraData();if(data!=null&&data.renderType!=CameraRenderType.Base)continue;if(cam==null||c.depth>cam.depth)cam=c;}
-            int width=Screen.width>0?Screen.width:1920,height=Screen.height>0?Screen.height:1080;
+            int width=Map25DViewWidth,height=Map25DViewHeight;
             if(cam==null){Debug.LogError("[Map25D] MAP25D_CAPTURE_NULL: no back buffer and no base camera to render");Application.Quit(4);throw new InvalidOperationException("MAP25D_CAPTURE_NULL");}
             var rt=new RenderTexture(width,height,24,RenderTextureFormat.ARGB32,RenderTextureReadWrite.sRGB){name="Map25D world-only capture"};rt.Create();var old=RenderTexture.active;
+            float oldAspect=cam.aspect;cam.aspect=(float)width/height;
             try{RenderPipeline.SubmitRenderRequest(cam,new RenderPipeline.StandardRequest{destination=rt});RenderTexture.active=rt;var image=new Texture2D(width,height,TextureFormat.RGBA32,false);image.ReadPixels(new Rect(0,0,width,height),0,0);image.Apply();Map25DCaptureWorldOnly=true;return image;}
-            finally{RenderTexture.active=old;rt.Release();Destroy(rt);}
+            finally{cam.aspect=oldAspect;if(!Application.isBatchMode)cam.ResetAspect();RenderTexture.active=old;rt.Release();Destroy(rt);}
         }
         static void SaveMap25DBmp(string path,Color32[] pixels,int width,int height){
             // Texture2D pixel rows and positive-height BMP both run from bottom to top.

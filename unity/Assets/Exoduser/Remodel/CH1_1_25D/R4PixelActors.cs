@@ -44,7 +44,7 @@ namespace Exoduser.UnityPort
         void LateUpdate()
         {
             if(world==null||!drawing)return;if(Time.unscaledTime>=nextScan)Scan();
-            overlay.transform.position=new Vector3(Screen.width*.5f,Screen.height*.5f,-10);overlay.orthographicSize=Screen.height*.5f;overlay.aspect=(float)Screen.width/Screen.height;ordered.Clear();
+            overlay.transform.position=new Vector3(NativeGame.Map25DViewWidth*.5f,NativeGame.Map25DViewHeight*.5f,-10);overlay.orthographicSize=NativeGame.Map25DViewHeight*.5f;overlay.aspect=(float)NativeGame.Map25DViewWidth/NativeGame.Map25DViewHeight;ordered.Clear();
             foreach(var pair in entries){var e=pair.Value;var sr=e.source;if(sr==null){if(e.image!=null)e.image.enabled=false;continue;}
                 bool visible=sr.enabled&&sr.gameObject.activeInHierarchy&&sr.sprite!=null;sr.forceRenderingOff=true;e.image.enabled=visible;if(!visible)continue;
                 var sprite=sr.sprite;var scale=sr.transform.lossyScale;
@@ -53,7 +53,7 @@ namespace Exoduser.UnityPort
                 if(e.contact!=null){Vector3 registeredFoot;foot=Map25DContactShadows.TryGetFoot(e.contact,out registeredFoot)?registeredFoot:e.contact.transform.position-Vector3.up*.018f;}
                 var projected=world.WorldToScreenPoint(foot);e.foot=foot;e.depth=projected.z;
                 if(projected.z<=0){e.image.enabled=false;continue;}
-                float pixelsPerUnit=Screen.height/(2*Mathf.Tan(world.fieldOfView*.5f*Mathf.Deg2Rad)*projected.z);
+                float pixelsPerUnit=NativeGame.Map25DViewHeight/(2*Mathf.Tan(world.fieldOfView*.5f*Mathf.Deg2Rad)*projected.z);
                 float oldHeight=sprite.rect.height/sprite.pixelsPerUnit*Mathf.Abs(scale.y)*pixelsPerUnit;
                 // CTO 03:40: every original texel survives, including 256px enemies.
                 // Never quantize a source atlas to a smaller logical raster. Integer
@@ -62,7 +62,7 @@ namespace Exoduser.UnityPort
                 int step=Mathf.Max(1,Mathf.RoundToInt(oldHeight*(isHero?1.4f:1)/sprite.textureRect.height));
                 // Stable HD-2D reference: original 2x game texels -> 3x at1080p.
                 // Perspective moves the foot, but never inflates the source pixels.
-                if(isHero&&heroPixels1080>0){int originalStep=Mathf.Max(1,Mathf.FloorToInt(heroPixels1080*Screen.height/1080f+.5f));if(Map25DHeroRemaster.Requested)originalStep=Mathf.Max(2,2*Mathf.RoundToInt(originalStep/2f));step=Mathf.Max(1,originalStep/(int)texelFactor);}
+                if(isHero&&heroPixels1080>0){int originalStep=Mathf.Max(1,Mathf.FloorToInt(heroPixels1080*NativeGame.Map25DViewHeight/1080f+.5f));if(Map25DHeroRemaster.Requested)originalStep=Mathf.Max(2,2*Mathf.RoundToInt(originalStep/2f));step=Mathf.Max(1,originalStep/(int)texelFactor);}
                 var size=rect.size;
                 float footInSource=sprite.pivot.y-Vector3.Dot(sr.transform.position-foot,world.transform.up)/Mathf.Max(.00001f,Mathf.Abs(scale.y))*sprite.pixelsPerUnit;
                 var offset=sprite.textureRectOffset;float pivotX=(sprite.pivot.x-offset.x)*texelFactor/divisor,footY=(footInSource-offset.y)*texelFactor/divisor+(remaster?a64Offset:0);if(sr.flipX)pivotX=size.x-pivotX;if(sr.flipY)footY=size.y-footY;
@@ -85,12 +85,12 @@ namespace Exoduser.UnityPort
         public void SetDrawing(bool on){drawing=on;if(overlay!=null)overlay.enabled=on;if(world!=null){var stack=world.GetUniversalAdditionalCameraData().cameraStack;if(on&&!stack.Contains(overlay))stack.Add(overlay);if(!on)stack.Remove(overlay);}foreach(var e in entries.Values){if(e.image!=null)e.image.enabled=on;if(!on&&e.source!=null)e.source.forceRenderingOff=e.originalHidden;}}
         public void WriteReceipt(string path)
         {
-            var receipt=new Receipt{width=Screen.width,height=Screen.height,depthTexture=R4WorldDepth.Texture!=null,heroNearContactPriority=nearContactPriority};
+            var receipt=new Receipt{width=NativeGame.Map25DViewWidth,height=NativeGame.Map25DViewHeight,depthTexture=R4WorldDepth.Texture!=null,heroNearContactPriority=nearContactPriority};
             foreach(var e in ordered)receipt.actors.Add(new Metric{name=e.source.name,texture=e.atlas.name,tint=e.source.color,originalTexture=e.source.sprite.texture.name,textureFilter=e.atlas.filterMode.ToString(),textureSize=new Vector2(e.atlas.width,e.atlas.height),atlasRect=e.rect,hero=e.source==hero,remaster=e.remaster,worldDrawDisabled=e.source.forceRenderingOff,sourceRect=e.rect.size,originalSourceRect=e.source.sprite.textureRect.size,logicalSize=e.logical,screenOrigin=e.origin,integerScale=e.step,sourceDivisor=e.divisor,perspectiveDepth=e.depth,sizeRatio=e.ratio,virtualPixelsPerUnit=e.source.sprite.pixelsPerUnit*e.texelFactor,registrationFactor=e.texelFactor,worldFoot=e.foot});
-            if(R4WorldDepth.Texture!=null&&entries.TryGetValue(hero,out var h)){var foot=world.WorldToScreenPoint(h.foot);float head=foot.y+h.logical.y*h.step*.50f;receipt.heroFootDepth=DepthSample(foot.x,foot.y);receipt.heroHeadDepth=DepthSample(foot.x,head);receipt.heroFootDepthFlipped=DepthSample(foot.x,Screen.height-foot.y);receipt.heroHeadDepthFlipped=DepthSample(foot.x,Screen.height-head);}
+            if(R4WorldDepth.Texture!=null&&entries.TryGetValue(hero,out var h)){var foot=world.WorldToScreenPoint(h.foot);float head=foot.y+h.logical.y*h.step*.50f;receipt.heroFootDepth=DepthSample(foot.x,foot.y);receipt.heroHeadDepth=DepthSample(foot.x,head);receipt.heroFootDepthFlipped=DepthSample(foot.x,NativeGame.Map25DViewHeight-foot.y);receipt.heroHeadDepthFlipped=DepthSample(foot.x,NativeGame.Map25DViewHeight-head);}
             File.WriteAllText(path,JsonUtility.ToJson(receipt,true));
         }
-        static float DepthSample(float x,float y){var previous=RenderTexture.active;RenderTexture.active=R4WorldDepth.Texture.rt;var tex=new Texture2D(1,1,TextureFormat.RFloat,false,true);tex.ReadPixels(new Rect(Mathf.Clamp(Mathf.RoundToInt(x),0,Screen.width-1),Mathf.Clamp(Mathf.RoundToInt(y),0,Screen.height-1),1,1),0,0);tex.Apply();float depth=tex.GetPixel(0,0).r;Destroy(tex);RenderTexture.active=previous;return depth;}
+        static float DepthSample(float x,float y){var previous=RenderTexture.active;RenderTexture.active=R4WorldDepth.Texture.rt;var tex=new Texture2D(1,1,TextureFormat.RFloat,false,true);tex.ReadPixels(new Rect(Mathf.Clamp(Mathf.RoundToInt(x),0,NativeGame.Map25DViewWidth-1),Mathf.Clamp(Mathf.RoundToInt(y),0,NativeGame.Map25DViewHeight-1),1,1),0,0);tex.Apply();float depth=tex.GetPixel(0,0).r;Destroy(tex);RenderTexture.active=previous;return depth;}
         void OnDestroy(){if(R4WorldDepth.Viewer==world)R4WorldDepth.Viewer=null;if(world!=null){world.cullingMask=oldMask;world.GetUniversalAdditionalCameraData().cameraStack.Remove(overlay);}foreach(var e in entries.Values){if(e.source!=null)e.source.forceRenderingOff=e.originalHidden;if(e.material!=null)Destroy(e.material);}if(quad!=null)Destroy(quad);}
     }
 }
