@@ -757,3 +757,7 @@ codex/unity-demo-text-20261104: CTO지정 e3b3bc977 추가후보빌드1회/공�
 
 ## 2026-11-04 05:40 death-ui STOP 인계
 540fdcde20 수정/컴파일222c77f8/후보f2a287d2 PASS.1920 25/50장·제품9/9 PASS·HUD116행min16px·명조/면18px 확인. 공용 ReadAllText(player.log) 파일잠금이 hover57be03df/사망02ef0c30에서2회 발생하여 STOP. 공용 최종영수증7/9,3840미실행. 재시도/추가빌드0, 공용bin·타슬롯 변경0. 공용 실행기 담당의 후처리 원인수정과 남은 가드/3840/디자인총괄·Mac관문 필요. 정확한 예외/수량은 REPORT와 audit-current.json.
+
+## 2026-11-04 death-ui 새 실행
+
+JUDGEMENT 05:50에 맞춰 설정 명시 칩/기본 가시 복원·20개 사전 축소본·철 면 샘플링 수정. 관련 검사와 전체 참조 컴파일 5어셈블리 오류0. 새 Unity/빌드/Player 0: 이전 ReadAllText(player.log) 2FAIL의 공용 수정 증거 없음, G: 약58GiB<100GB. 소유 공용 밖 수정0, 재생성 가능한 자기 PlayerDataCache 6,453,436,611B 정리. 새 후보/50장·디자인·Mac 판정 대기.

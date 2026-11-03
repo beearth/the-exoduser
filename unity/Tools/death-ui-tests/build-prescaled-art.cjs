@@ -10,5 +10,9 @@ async function save(name,buffer){const file=path.join(dir,name+'.png');fs.writeF
   await save('btn_chip_'+density+'x',await sharp(chip).resize(150*density,32*density,{kernel:'lanczos3',fit:'fill'}).png().toBuffer());
   for(const [output,input]of [['ready','lobby_enter_btn_silver_20261029'],['disabled','lobby_enter_disabled']])await save('lobby_enter_'+output+'_'+density+'x',await sharp(path.join(dir,input+'.png')).resize(416*density,156*density,{kernel:'lanczos3',fit:'fill'}).png().toBuffer());
  }
- console.log('Original steel frame/dark face and whole ENTER art: six 1x/2x Lanczos3 derivatives written; original PNGs unchanged.');
+ for(const [kind,input]of [['normal','btn_plaque_20261029'],['primary','btn_primary_composed']]){
+  const source=path.join(dir,input+'.png'),size=await sharp(source).metadata();
+  for(const height of [24,32,48,64,96])for(const density of [1,2])await save('btn_thorn_'+kind+'_'+height+'_'+density+'x',await sharp(source).resize(Math.round(size.width*height*density/size.height),height*density,{kernel:'lanczos3',fit:'fill'}).png().toBuffer());
+ }
+ console.log('Six existing chip/ENTER derivatives and twenty complete thorn 1x/2x Lanczos3 derivatives written; original PNGs unchanged.');
 })().catch(e=>{console.error(e);process.exitCode=1;});

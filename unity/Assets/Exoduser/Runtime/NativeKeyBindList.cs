@@ -217,7 +217,7 @@ namespace Exoduser.UnityPort {
    for(int i=0;i<2;i++){
     var t=ui.tabs[i];string label=L(t.ko,t.en);float w=Mathf.Max(110,Width(label,semi,16,16f,0,1)+40);var r=R(x,12,w,40);x+=w+6;bool sel=(i==0)==(CurrentTab==Tab.Kbm);
     if(paint&&inView(r)){
-     NativeSilverHellUi.ActionPlate(r,false,sel||Hover(r)?1:0,Hover(r)&&ExoInput.Mouse(0),22,2);
+     NativeSilverHellUi.ActionPlate(r,false,sel||Hover(r)?1:0,Hover(r)&&ExoInput.Mouse(0),22,2,settingsChip:true);
      var inside=NativeSilverHellUi.PlateTextRect(r);NativeUiAudit.BeginGroup(inside);try{RunCentered(inside.width/2,inside.height/2,label,semi,16,16f,0,QBone,0,1);}finally{NativeUiAudit.EndGroup();}
     }
     if(Click(r)){CurrentTab=i==0?Tab.Kbm:Tab.Pad;CancelListening();}
@@ -267,7 +267,7 @@ namespace Exoduser.UnityPort {
   void DrawKey(Rect r,string text,bool listening,float opacity,bool ghost,float trailing=0){
    float keep=curA;bool hover=Hover(r);
    var color=GUI.color;GUI.color=new Color(color.r,color.g,color.b,color.a*curA*(ghost?.38f:1));
-   NativeSilverHellUi.ActionPlate(r,false,listening||hover?1:0,hover&&ExoInput.Mouse(0),12,0);GUI.color=color;
+   NativeSilverHellUi.ActionPlate(r,false,listening||hover?1:0,hover&&ExoInput.Mouse(0),12,0,settingsChip:true);GUI.color=color;
    Color txt=listening?C(243,240,234):ghost?QDim:QBone;
    Font f=ghost||text.Length>0&&text[0]>127?semi:KeyFont(text);
    var labelStyle=new GUIStyle(Style(LabelFont(text,f),14));labelStyle.normal.textColor=NativeSilverHellUi.TextColor(new Color(txt.r,txt.g,txt.b,txt.a*curA));
@@ -278,7 +278,7 @@ namespace Exoduser.UnityPort {
    if(Event.current.type!=EventType.Repaint){if(enabled&&Click(r))ResetBindings();return;}
    float keep=curA;if(!enabled)curA=keep*.48f;bool hover=enabled&&Hover(r);
    if(inView(r)){
-    var color=GUI.color;GUI.color=new Color(color.r,color.g,color.b,color.a*curA);NativeSilverHellUi.ActionPlate(r,false,hover?1:0,hover&&ExoInput.Mouse(0),22,4);GUI.color=color;
+    var color=GUI.color;GUI.color=new Color(color.r,color.g,color.b,color.a*curA);NativeSilverHellUi.ActionPlate(r,false,hover?1:0,hover&&ExoInput.Mouse(0),22,4,settingsChip:true);GUI.color=color;
     var labelStyle=new GUIStyle(Style(LabelFont(text,semi),16));labelStyle.normal.textColor=NativeSilverHellUi.TextColor(new Color(QBone.r,QBone.g,QBone.b,QBone.a*curA));NativeSilverHellUi.PlateLabel(r,text,labelStyle);
    }
    curA=keep;
@@ -318,7 +318,7 @@ namespace Exoduser.UnityPort {
   }
   // disabled key look (`.set-key` + disabled): no hover / click
   void DrawKeyPlain(Rect r,string text,float opacity){
-   var color=GUI.color;GUI.color=new Color(color.r,color.g,color.b,color.a*curA);NativeSilverHellUi.ActionPlate(r,false,0,false,12,0);GUI.color=color;
+   var color=GUI.color;GUI.color=new Color(color.r,color.g,color.b,color.a*curA);NativeSilverHellUi.ActionPlate(r,false,0,false,12,0,settingsChip:true);GUI.color=color;
    var labelStyle=new GUIStyle(Style(LabelFont(text,bold),14));labelStyle.normal.textColor=NativeSilverHellUi.TextColor(new Color(QBone.r,QBone.g,QBone.b,QBone.a*curA));NativeSilverHellUi.PlateLabel(r,text,labelStyle);
   }
 

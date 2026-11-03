@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-class Texture2D{public string name;public Texture2D(string name=""){this.name=name;}}
+class Texture2D{public string name;public int width=1024,height=198;public Texture2D(string name=""){this.name=name;var m=System.Text.RegularExpressions.Regex.Match(name,@"btn_thorn_\w+_(\d+)_(\d)x$");if(m.Success){height=int.Parse(m.Groups[1].Value)*int.Parse(m.Groups[2].Value);width=(int)Math.Round(1024*height/198f);}}}
 static class Debug{public static void Log(string s){Console.WriteLine(s);}}
 struct Color{public float r,g,b,a;public Color(float r,float g,float b,float a=1){this.r=r;this.g=g;this.b=b;this.a=a;}public static Color white=>new Color(1,1,1,1);}
 struct Rect{public float x,y,width,height;public Rect(float x,float y,float w,float h){this.x=x;this.y=y;width=w;height=h;}}
@@ -23,8 +23,9 @@ class GUIStyle{
 static class MaterialProbe{
  static int StrippedStates;static readonly HashSet<Texture2D> skinTextures=new HashSet<Texture2D>();static void RememberStock(){}
  static Texture2D plaque,primaryPlaque,chipOne,chipTwo,innerButtonGlow;internal static string ReviewState;
+ static readonly int[] thornHeights={24,32,48,64,96};static readonly Texture2D[] thornPlaques=new Texture2D[20];
  static string face;static Color tint;static bool sliced;
- static void Slice(Rect r,Texture2D t,float sx,float sy,float ex,float ey,bool center){face=t.name;tint=GUI.color;sliced=sx==174&&sy==0&&ex==40&&ey==0&&center;}
+ static void Slice(Rect r,Texture2D t,float sx,float sy,float ex,float ey,bool center){face=t.name;tint=GUI.color;sliced=Math.Abs(sx-174f*t.width/1024)<.001f&&sy==0&&ex==40&&ey==0&&center;}
  /*PRODUCTION*/
  static int Main(){
   int fail=0;var native=new Texture2D("skin");skinTextures.Add(native);
@@ -46,7 +47,7 @@ static class MaterialProbe{
   foreach(bool primary in new[]{false,true})foreach(string state in new[]{"normal","hover","selected","disabled"})foreach(bool pressed in new[]{false,true}){
    ReviewState=state;GUI.color=new Color(.2f,.3f,.4f,.25f);NativeUiAudit.glowAlpha=0;NativeUiAudit.glowClipped=true;
    ActionPlate(new Rect(100,200,400,76),primary,0,pressed);
-   bool ok=sliced&&face.EndsWith(primary?"btn_primary_composed":"btn_plaque_20261029")&&tint.r==1&&tint.g==1&&tint.b==1&&tint.a==1
+   bool ok=sliced&&face.EndsWith(primary?"btn_thorn_primary_96_1x":"btn_thorn_normal_96_1x")&&tint.r==1&&tint.g==1&&tint.b==1&&tint.a==1
     &&GUI.color.r==.2f&&GUI.color.a==.25f&&NativeUiAudit.clip==0&&NativeUiAudit.glowClipped;
    bool focused=state=="hover"||state=="selected";ok&=focused?NativeUiAudit.glowAlpha==.18f:NativeUiAudit.glowAlpha==0;
    if(!ok){Console.WriteLine("FAIL art state "+primary+"/"+state+"/"+pressed);fail++;}
@@ -54,9 +55,11 @@ static class MaterialProbe{
   Console.WriteLine((fail==0?"PASS ":"FAIL ")+"original artwork slices; brightness1.0 all states; clipped inner hover only");
   foreach(var size in new[]{new Rect(0,0,70,34),new Rect(0,0,300,30),new Rect(0,0,159,80)})foreach(int height in new[]{1080,1440}){
    Screen.height=height;ReviewState="normal";ActionPlate(size,false,0,false);
+   if(face.Contains("btn_chip")||tint.r!=1||tint.g!=1||tint.b!=1||tint.a!=1)fail++;
+   ActionPlate(size,false,0,false,settingsChip:true);
    if(!face.EndsWith(height>1080?"btn_chip_2x":"btn_chip_1x")||tint.r!=1||tint.g!=1||tint.b!=1||tint.a!=1)fail++;
   }
-  Console.WriteLine((fail==0?"PASS ":"FAIL ")+"compact faces use prescaled thorn-free art at brightness1.0");
+  Console.WriteLine((fail==0?"PASS ":"FAIL ")+"small default faces keep thorns; only explicit settings use chips, brightness1.0");
   return fail==0?0:2;
  }
 }

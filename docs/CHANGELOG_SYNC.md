@@ -1,3 +1,5 @@
+2026-11-04 death-ui 새 실행: 05:50 JUDGEMENT가 이전 칩 유지 해석을 대체. 크기 자동 칩 분기를 제거하고 설정 조작만 명시 선택, 기본 가시/20개 Lanczos3 1x·2x 파생본 복원. 공통 Panel 철14%는 StretchToFill 대신 화면 픽셀 기준 Mirror UV로 통일. 관련 검사 및 Roslyn 5어셈블리 오류0, 새 Unity·후보 빌드·촬영0(이전 공용 ReadAllText 2FAIL 미해결/G: 여유 기준). 자기 캐시6,453,436,611B 정리, 기존 guard WIP·후보 실행본·세이브 보존. docs UI 후보/작은판/재질/사망/에셋/WORK_BOARD 동기화.
+
 2026-11-04 적 3D 01:00 연결 바탕: 최신ec89d5166 병합·하니스 Core/Skills 재귀 열거65/0 회복. etype4 공유 키를 시작 육괴 표현 태그로 분리해 일반 갑각 사도 아틀라스 유지. 영웅 공유 rig-pixel·Generic Animator/Core 틱·투영 bounds VFX 접점·사망 시작 연결, 고정meta 추가. 확장 정책103/0·전체 PC Roslyn5어셈블리 오류0 각1회, Player0. 미제공 동작은 bind pose로 기록하며 Mac 화면·임포트·동작·성능 미판정.
 
 2026-11-04 적 3D 연결 바탕 WIP 중단: 최신6d99d0c46에서 codex/unity-enemy3d-20261104 생성. 읽기 전용 상태 정책·etype1/4 모델표·0차 FBX 변환·검사 초안 보존. 같은 정책 검사 명령2회 실패(예상 RED, 이후 Core/Skills 소스 열거 누락 CS0234/CS0246)로 사용자 지시대로 중단. Unity 렌더/Animator/VFX 연결·meta·전체 PC 컴파일·Mac 판정 미완, 본편 병합 금지. 인계 UNITY_ENEMY3D_WIRING_20261104.md.

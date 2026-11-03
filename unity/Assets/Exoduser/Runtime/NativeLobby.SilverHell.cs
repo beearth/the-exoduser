@@ -20,6 +20,8 @@ namespace Exoduser.UnityPort
         internal static string TextField(Rect rect,string text,int max,GUIStyle style){var n=style.normal.textColor;var f=style.focused.textColor;try{style.normal.textColor=TextColor(n);style.focused.textColor=TextColor(f);return max<0?NativeUiAudit.TextField(rect,text,style):NativeUiAudit.TextField(rect,text,max,style);}finally{style.normal.textColor=n;style.focused.textColor=f;}}
         static Font light,regular;
         static Texture2D frame,plaque,primaryPlaque,chipOne,chipTwo,innerButtonGlow,panelBackground,panelIron;
+        static readonly int[] thornHeights={24,32,48,64,96};
+        static readonly Texture2D[] thornPlaques=new Texture2D[20];
         internal static int IronDrawCount;
         internal static Rect LastIronRect;
         // Focus lives inside ActionPlate; no red texture is drawn beyond its edge.
@@ -102,8 +104,10 @@ namespace Exoduser.UnityPort
             if(textured&&!iron){var c=GUI.color;var face=new Color(12/255f,11/255f,12/255f);if(QualitySettings.activeColorSpace==ColorSpace.Linear)face=face.linear;GUI.color=new Color(face.r,face.g,face.b,.96f*c.a);NativeUiAudit.DrawTexture(box,Texture2D.whiteTexture);GUI.color=c;}
             else if(textured)NativeUiAudit.DrawTexture(box,panelBackground);
             else{var c=GUI.color;GUI.color=new Color(0,0,0,c.a);NativeUiAudit.DrawTexture(box,Texture2D.whiteTexture);GUI.color=c;}
-            if(panelIron==null)panelIron=Resources.Load<Texture2D>("Art/ui/inventory/iron_480_blur2");
-            if(textured&&iron&&panelIron!=null){IronDrawCount++;LastIronRect=box;var c=GUI.color;GUI.color=new Color(c.r,c.g,c.b,c.a*.14f);NativeUiAudit.DrawTexture(box,panelIron,ScaleMode.StretchToFill,true);GUI.color=c;}
+            if(panelIron==null){panelIron=Resources.Load<Texture2D>("Art/ui/inventory/iron_480_blur2");if(panelIron!=null)panelIron.wrapMode=TextureWrapMode.Mirror;}
+            // Keep the approved blurred iron at one source texel per screen pixel. Stretching
+            // 480px over the 1020px pause face erased the grain that remains on name/delete.
+            if(textured&&iron&&panelIron!=null){IronDrawCount++;LastIronRect=box;var c=GUI.color;GUI.color=new Color(c.r,c.g,c.b,c.a*.14f);float scale=Mathf.Abs(GUI.matrix.m00);NativeUiAudit.DrawTextureWithTexCoords(box,panelIron,new Rect(0,0,box.width*scale/panelIron.width,box.height*scale/panelIron.height),true);GUI.color=c;}
             Slice(new Rect(box.x-outset,box.y-outset,box.width+outset*2,box.height+outset*2),frame,150,150,edge,edge,false);
         }
         internal static void Button(Rect box)
@@ -133,7 +137,6 @@ namespace Exoduser.UnityPort
             try{GUI.color=Color.white;Slice(box,frame,150,150,edge,edge,false);}
             finally{GUI.color=previous;}
         }
-        internal static bool IsCompactPlate(Rect box){return box.height<48||box.width<160;}
         internal static Rect PlateTextRect(Rect box){return new Rect(box.x+6,box.y+6,Mathf.Max(0,box.width-12),Mathf.Max(0,box.height-12));}
         internal static void PlateLabel(Rect box,string text,GUIStyle source)
         {
@@ -150,7 +153,19 @@ namespace Exoduser.UnityPort
             NativeUiAudit.BeginGroup(inside);try{GUI.color=new Color(1,1,1,.18f);NativeUiAudit.DrawTexture(new Rect(0,0,inside.width,inside.height),innerButtonGlow);}finally{NativeUiAudit.EndGroup();GUI.color=previous;}
             return true;
         }
-        internal static void ActionPlate(Rect box,bool primary,float selection,bool pressed,float edge=40,float outset=14)
+        internal static void ThornPlate(Rect box,bool primary,float edge,float outset)
+        {
+            var art=primary?primaryPlaque:plaque;float sourceEdge=174;
+            int density=Screen.height>1080?2:1;
+            if(art!=null&&art.height>box.height*density*2){
+                int tier=0;while(tier<thornHeights.Length-1&&thornHeights[tier]<box.height)tier++;
+                int index=(primary?10:0)+(density-1)*5+tier;
+                if(thornPlaques[index]==null)thornPlaques[index]=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_thorn_"+(primary?"primary_":"normal_")+thornHeights[tier]+"_"+density+"x");
+                if(thornPlaques[index]!=null){sourceEdge*=thornPlaques[index].width/(float)art.width;art=thornPlaques[index];}
+            }
+            Slice(new Rect(box.x-outset,box.y,box.width+outset*2,box.height),art,sourceEdge,0,edge,0,true);
+        }
+        internal static void ActionPlate(Rect box,bool primary,float selection,bool pressed,float edge=40,float outset=14,bool settingsChip=false)
         {
             NativeUiAudit.Region(box,"button");if(box.width<=0||box.height<=0)return;
             if(plaque==null)plaque=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_plaque_20261029");
@@ -159,14 +174,14 @@ namespace Exoduser.UnityPort
             try{
                 // Fixed brightness 1.0 in every state, including pressed. Artwork supplies the material.
                 GUI.color=Color.white;
-                bool compact=IsCompactPlate(box);
+                // Chips are an explicit settings-only choice, never inferred from geometry.
+                bool compact=settingsChip;
                 if(compact){
                     if(chipOne==null)chipOne=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_chip_1x");
                     if(chipTwo==null)chipTwo=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_chip_2x");
                     int density=Screen.height>1080?2:1;float rim=Mathf.Min(8,box.height*.25f);
                     Slice(box,density==2?chipTwo:chipOne,8*density,8*density,rim,rim,true);
-                }else Slice(new Rect(box.x-outset,box.y,box.width+outset*2,box.height),
-                    primary?primaryPlaque:plaque,174,0,edge,0,true);
+                }else ThornPlate(box,primary,edge,outset);
                 float focus=ArtSelection(selection);
                 if(focus<=0)return;
                 if(innerButtonGlow==null)innerButtonGlow=Resources.Load<Texture2D>("Art/ui/silver_hell/guide_button_glow");

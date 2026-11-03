@@ -1,5 +1,18 @@
 # 04:05 UI RETOUCH 후보 — 2026-11-04
 
+## 새 실행 정정 — JUDGEMENT 05:50 반영, 촬영 차단 유지
+
+- 이 절은 아래의 이전 "작은 칩 유지 확정" 해석을 대체한다. 디자인총괄이 05:20 PASS를 철회한 최신 JUDGEMENT.md ⑤가 우선이다. 최신 origin/unity/main 6a61db1ea를 4daf602da6으로 병합했고, 충돌한 스토리 판정·CHANGELOG는 양쪽 기록을 보존했다.
+- ActionPlate의 height<48/width<160 자동 칩 전환을 제거했다. 기본은 가시 원화이며, 설정 A15 버튼/설정 페이지의 MetalAction/키 설정 조작 요소만 settingsChip을 명시한다. 삭제 확인과 HUD 타이머는 기본 가시 경로로 돌아간다. 보스 바의 기존 전용 이름 원화/텍스트·배치에는 새 칩을 적용하지 않는다. 실제 세 곳의 swap3 모양 대조는 미실행이다.
+- btn_plaque_20261029/btn_primary_composed 전체를 Lanczos3으로 높이 24/32/48/64/96의 1x·2x, 총 20개 btn_thorn 파생 PNG로 사전 축소했다. 양끝 가시·보석을 잘라내지 않으며 9-slice의 sourceEdge도 같은 비율로 줄인다. 기존 큰 원화/입장 인장/칩 원본은 변경하지 않았다. 새 meta는 밉맵 OFF/Bilinear이며 기존 btn_* importer 규칙 대상이다. 실제 Unity 임포트·mipmapCount 검사는 대기다.
+- 일시정지 철 면의 원인은 공통 480px blur2 원화를 큰 판에 StretchToFill하던 샘플링 차이다. 공통 Panel(iron:true)에서 GUI 배율을 반영해 화면 픽셀당 원화 texel 비율을 고정하고 Mirror UV로 경계가 이어지게 했다. 같은 iron_480_blur2·14%·판 색·프레임을 유지한다. 표준편차 0.4±0.15/3x 낱점 0은 새 Player 캡처 전까지 미검증이다.
+- 이전 1~3 구현은 유지: --remodel3d -force-d3d11, HUD 실제 숫자 폭과 최소 16px 간격/축소·줄바꿈, 이름 면 18px inset/원래 440×335 프레임 및 NanumMyeongjo 명조. 언어 데이터/Core/세이브/펫 대사 조건은 이번 수정 범위 밖이다.
+- 검사: review-0540의 신규 2결함 RED 1회 → 5그룹 PASS 1회, 레이아웃·26개 파생 PNG/meta 검사 PASS, candidate 4그룹 PASS, 실제 공통 C# 메서드를 추출한 Player/Editor 재질 프로브 PASS. 전체 소스 참조 컴파일 1회: Player Core126/Runtime279, Editor Core126/Runtime279/Editor61, 5어셈블리 오류0. 이것은 Roslyn 참조 검사이며 새 Unity 컴파일·임포트·빌드·시각 판정의 근거가 아니다.
+- 실행 차단: 이전 57be03df/02ef0c30에서 ReadAllText(player.log) IOException 2회. 설치된 공용 실행기 2026.11.04-winenv(11-04 04:29) Cmd-Player에 같은 ReadAllText가 남아 있고, 두 이전 PID61680/10920도 CIM 목록에 남아 있다. 공용 실행기/프로세스/잠금은 소유 밖이므로 수정·종료하지 않았다. 이전 중단 이후 새 Unity/Player·후보 빌드·촬영 0회. 원인 수정 증거가 확인되기 전 같은 촬영을 다시 돌리지 않는다.
+- 기존 후보는 540fdcde2이며 1920 25장/3840 0장이다. 새 소스와 다르므로 이번 수정 증거로 쓰지 않는다. 공용 실행기 담당 수정 후 승인된 고정 I:/EXODUSER-Storage/ui-candidate/build 1회와 같은 인자 50장·1x/3x 대조가 남았다. 바탕화면·바로가기 변경0.
+- 저장공간: 자기 Library/PlayerDataCache의 경로·reparse·추적·Editor 소유를 확인하고 재생성 가능 캐시 6,453,436,611B를 삭제했다. 후보 실행본·판정 캡처·세이브·원본/추적 파일은 보존했다. G: 여유 약 58GiB로 운영 기준 100GB보다 작아 추가 Unity 작업도 보류한다.
+
+
 ## G0/G1와 소유
 
 - 기준: 최신origin/unity/main a53c34e939,병합0f2a57c910. CHANGELOG양쪽보존·guard WIP제외. 브리프04:05 1~5와디자인총괄swap3/PANEL_FACE_DECISION이정본이다.

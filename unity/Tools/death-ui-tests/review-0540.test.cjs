@@ -20,9 +20,19 @@ test('name face is inset while the original thorn frame bounds stay fixed',()=>{
  assert(s.includes('Panel(face,45,NameFaceInset,iron:true)'));
  assert(s.includes('CharacterDialogFont(')&&s.includes('NanumMyeongjo-Regular'),'explicit serif preferred for the judged dialog');
 });
-test('approved chip family and shared iron14 face remain',()=>{
+test('judgement 0550 limits chips to explicit settings callers and restores thorns',()=>{
  const s=read('Assets/Exoduser/Runtime/NativeLobby.SilverHell.cs');assert(s.includes('iron_480_blur2')&&s.includes('c.a*.14f'));
- assert(s.includes('box.height<48')||s.includes('box.height < 48')||s.includes('box.height<48f'));
+ assert(s.includes('bool settingsChip=false')&&!s.includes('IsCompactPlate'),'size must not select a chip outside settings');
+ assert(s.includes('ThornPlate(')&&s.includes('btn_thorn_'),'small default plates keep the complete prescaled thorn art');
+ for(const file of ['NativePauseMenu.A15Web.cs','NativeKeyBindList.cs']){
+  const source=read('Assets/Exoduser/Runtime/'+file);
+  assert(source.split('\n').filter(l=>l.includes('ActionPlate(')).every(l=>l.includes('settingsChip:true')),file+' explicit settings list');
+ }
+ for(const file of ['NativeLobby.CharacterDelete.cs','NativeFieldHud.cs','NativeHudSkills.cs'])assert(!read('Assets/Exoduser/Runtime/'+file).includes('settingsChip:true'),file+' must use thorns');
  assert(read('Assets/Exoduser/Runtime/NativePauseMenu.cs').includes('Panel(panel,36,12,iron:true)'));
 });
-console.log(JSON.stringify({groups:4,failed,passed:failed===0,scope:'source/layout contracts; actual font metrics and images are checked in the Player fixture'}));process.exitCode=failed?1:0;
+test('iron sampling keeps the same physical texel size on pause and name faces',()=>{
+ const s=read('Assets/Exoduser/Runtime/NativeLobby.SilverHell.cs');
+ assert(s.includes('TextureWrapMode.Mirror')&&s.includes('box.width*scale/panelIron.width'),'shared iron must not stretch to the large pause rectangle');
+});
+console.log(JSON.stringify({groups:5,failed,passed:failed===0,scope:'source/layout contracts; actual font metrics and images are checked in the Player fixture'}));process.exitCode=failed?1:0;
