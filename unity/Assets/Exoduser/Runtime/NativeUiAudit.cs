@@ -213,15 +213,15 @@ namespace Exoduser.UnityPort
             }
             StateBackground(r,style,"GUIStyle 모든 상태 바탕 알파 공통 하한");
         }
-        internal static void Label(Rect r,string s,GUIStyle style,[CallerFilePath]string file="",[CallerLineNumber]int line=0){if(Active){StyleBackground(r,style,true);Text(r,new GUIContent(s),style,Source(file,line));}GUI.Label(r,s,style);}
-        internal static void Label(Rect r,GUIContent s,GUIStyle style,[CallerFilePath]string file="",[CallerLineNumber]int line=0){StyleBackground(r,style,true);Text(r,s,style,Source(file,line));GUI.Label(r,s,style);}
+        internal static void Label(Rect r,string s,GUIStyle style,[CallerFilePath]string file="",[CallerLineNumber]int line=0){style=NativeUiChrome.ClearBackgrounds(style,"Label");if(Active){StyleBackground(r,style,true);Text(r,new GUIContent(s),style,Source(file,line));}GUI.Label(r,s,style);}
+        internal static void Label(Rect r,GUIContent s,GUIStyle style,[CallerFilePath]string file="",[CallerLineNumber]int line=0){style=NativeUiChrome.ClearBackgrounds(style,"Label");StyleBackground(r,style,true);Text(r,s,style,Source(file,line));GUI.Label(r,s,style);}
         internal static void Label(Rect r,string s){Label(r,s,GUI.skin.label);}
         internal static void Label(Rect r,GUIContent s){Label(r,s,GUI.skin.label);}
         internal static bool Button(Rect r,string s,GUIStyle style){return Button(r,new GUIContent(s),style);}
-        internal static bool Button(Rect r,GUIContent s,GUIStyle style){StyleBackground(r,style);if(style!=GUIStyle.none)Region(r,"button");Text(r,s,style,"버튼 글자");NativeUiSounds.Current?.BeforeButton(r,s.text);bool clicked=GUI.Button(r,s,style)&&!NativeScreenTransition.InputBlocked;if(clicked)NativeUiSounds.Current?.Clicked();return clicked;}
+        internal static bool Button(Rect r,GUIContent s,GUIStyle style){style=NativeUiChrome.ClearBackgrounds(style,"Button");StyleBackground(r,style);if(style!=GUIStyle.none)Region(r,"button");Text(r,s,style,"버튼 글자");NativeUiSounds.Current?.BeforeButton(r,s.text);bool clicked=GUI.Button(r,s,style)&&!NativeScreenTransition.InputBlocked;if(clicked)NativeUiSounds.Current?.Clicked();return clicked;}
         internal static bool Button(Rect r,string s){return Button(r,s,GUI.skin.button);}
         internal static bool Button(Rect r,GUIContent s){return Button(r,s,GUI.skin.button);}
-        internal static void Box(Rect r,string s,GUIStyle style){StyleBackground(r,style);Region(r,"panel");Text(r,new GUIContent(s),style,"판 글자");GUI.Box(r,s,style);}
+        internal static void Box(Rect r,string s,GUIStyle style){style=NativeUiChrome.ClearBackgrounds(style,"Box");StyleBackground(r,style);Region(r,"panel");Text(r,new GUIContent(s),style,"판 글자");GUI.Box(r,s,style);}
         internal static void Box(Rect r,string s){Box(r,s,GUI.skin.box);}
         static void StateBackground(Rect r,GUIStyle style,string source)
         {
