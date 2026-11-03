@@ -68,12 +68,14 @@ namespace Exoduser.UnityPort.Core
   };
   readonly Dictionary<string,int> values=new Dictionary<string,int>();
   public string BgmTrack { get; set; }=BgmTrackDefault;
+  // Existing web opt.reduceMotion; no additional native-only settings control.
+  public bool ReduceMotion {get;set;}
   public NativeOptionSet() { RestoreDefaults(); }
   public static OptionDef Find(string key){foreach(var d in All)if(d.Key==key||d.Id==key)return d;return null;}
   public int Get(string key){int v;if(values.TryGetValue(key,out v))return v;var d=Find(key);return d==null?0:d.Default;}
   public bool Check(string key){return Get(key)!=0;}
   public void Set(string key,int value){var d=Find(key);if(d==null)return;values[d.Key]=d.Clamp(value);}
-  public void RestoreDefaults(){values.Clear();foreach(var d in All)values[d.Key]=d.Default;BgmTrack=BgmTrackDefault;}
+  public void RestoreDefaults(){values.Clear();foreach(var d in All)values[d.Key]=d.Default;BgmTrack=BgmTrackDefault;ReduceMotion=false;}
   public void RestoreDefaults(int tab){foreach(var d in All)if(d.Tab==tab)values[d.Key]=d.Default;if(tab==2)BgmTrack=BgmTrackDefault;}
   // Web _detectPreset: highest preset whose eleven values all match, else -1.
   public int DetectPreset()
@@ -93,7 +95,7 @@ namespace Exoduser.UnityPort.Core
     else if(d.Key=="autoPotThr")b.Append((v/100.0).ToString("0.##",CultureInfo.InvariantCulture));
     else b.Append(v.ToString(CultureInfo.InvariantCulture));
    }
-   b.Append(",\"bgmTrack\":\"");foreach(char c in BgmTrack){if(c=='"'||c=='\\')b.Append('\\');if(c>=32)b.Append(c);}b.Append("\"}");
+   b.Append(",\"bgmTrack\":\"");foreach(char c in BgmTrack){if(c=='"'||c=='\\')b.Append('\\');if(c>=32)b.Append(c);}b.Append("\",\"reduceMotion\":").Append(ReduceMotion?"true":"false").Append("}");
    return b.ToString();
   }
   // Tolerant: unknown keys, wrong types and out-of-range values keep the current value.
@@ -111,6 +113,7 @@ namespace Exoduser.UnityPort.Core
     if(p<json.Length&&json[p]=='"'){int q=p+1;var sb=new StringBuilder();while(q<json.Length&&json[q]!='"'){if(json[q]=='\\'&&q+1<json.Length)q++;sb.Append(json[q]);q++;}raw=sb.ToString();p=Math.Min(json.Length,q+1);
      if(key=="bgmTrack"&&raw.Length>0&&raw.Length<=160)BgmTrack=raw;continue;}
     int s=p;while(p<json.Length&&json[p]!=','&&json[p]!='}')p++;raw=json.Substring(s,p-s).Trim();
+    if(key=="reduceMotion"){if(raw=="true"||raw=="1")ReduceMotion=true;else if(raw=="false"||raw=="0")ReduceMotion=false;continue;}
     var d=Find(key);if(d==null||d.Key!=key)continue;
     int v;double f;
     if(raw=="true")v=1;else if(raw=="false")v=0;

@@ -39,7 +39,7 @@ namespace Exoduser.UnityPort
    if(Flow.Page!=LobbyPage.Lobby||startup.Active||Characters.SelectedIndex<0)return false;
    ActiveCharacterName=Characters.SelectedName;
    if(AutomatedInput||LegacyFrontendFixture()){Flow.SelectPreview();return EnterNativeTest();}
-   NativeUiSounds.Current?.SuppressConfirm();StopEntryHover();NativeDecisionSound.Play(loadingAlreadyShown?"new-game":"enter");
+   if(!loadingAlreadyShown&&TransitionPage("lobby-game",()=>BeginCharacterEntry(true),false))return true;NativeUiSounds.Current?.SuppressConfirm();StopEntryHover();NativeDecisionSound.Play(loadingAlreadyShown?"new-game":"enter");
    if(HasCombatSave!=null&&HasCombatSave(ActiveCharacterName)){StartupGameplayPrepared=false;keepStartupStageMusic=false;CancelCharacterStory();Flow.SelectPreview();return EnterNativeTest();}
    if(startupData==null){var source=Resources.Load<TextAsset>("Data/startup_intro");if(source!=null)startupData=JsonUtility.FromJson<StartupIntroData>(source.text);}
    StartupIntroLine[] lines=null;if(startupData!=null&&startupData.languages!=null){foreach(var language in startupData.languages)if(language.code==Language)lines=language.lines;if(lines==null)foreach(var language in startupData.languages)if(language.code=="en")lines=language.lines;}
@@ -53,21 +53,21 @@ namespace Exoduser.UnityPort
   void SetStartupAudioFocus(bool focus){if(startupAudio==null)return;if(!focus){StopEntryHover();startupVoiceWasPlaying=startupAudio.isPlaying;startupAudio.Pause();}else if(startupVoiceWasPlaying){startupAudio.UnPause();startupVoiceWasPlaying=false;}}
   public void StopStageMusic(){keepStartupStageMusic=false;StopMusic();}   // RM-1 sound: the in-game BGM bus takes over from the startup stage music
   void CancelStartupEntry(){StartupGameplayPrepared=false;keepStartupStageMusic=false;startup.Cancel();frontendPad.Reset();if(startupAudio!=null)startupAudio.Stop();nemesisMusicDelay=-1;stageMusicDelay=-1;}
-  void UpdateStartupEntry(float delta)
+  void UpdateStartupEntry(float delta,bool allowInput=true)
   {
    if(!startup.Active)return;
    if(!focused){frontendPad.Reset();startup.Tick(0,false,false);return;}
    if(startupInputFence&&!ExoInput.AnyKey&&!ExoInput.Mouse(0))startupInputFence=false;
    var before=startup.Page;
    var pad=startup.Page==FrontendEntryPage.Nemesis||startup.Page==FrontendEntryPage.Guide
-    ?frontendPad.Step(startup.Page==FrontendEntryPage.Guide?FrontendPadPhase.Guide:FrontendPadPhase.Nemesis,ReadFrontendPadFrame(),!AutomatedInput&&!startupInputFence)
+    ?frontendPad.Step(startup.Page==FrontendEntryPage.Guide?FrontendPadPhase.Guide:FrontendPadPhase.Nemesis,ReadFrontendPadFrame(),allowInput&&!AutomatedInput&&!startupInputFence)
     :default(FrontendPadDecision);
-   if(!AutomatedInput&&!startupInputFence){
+   if(allowInput&&!AutomatedInput&&!startupInputFence){
     if(ExoInput.KeyDown(KeyCode.Escape)||pad.Skip)startup.Skip();
     else if(startup.Page==FrontendEntryPage.Nemesis&&(ExoInput.KeyDown(KeyCode.Return)||ExoInput.KeyDown(KeyCode.KeypadEnter)||ExoInput.KeyDown(KeyCode.Z)||pad.Next))startup.Advance();
     else if(startup.Page==FrontendEntryPage.Guide){if(ExoInput.KeyDown(KeyCode.Tab))guideSkipFocus=!guideSkipFocus;else if(pad.Next)startup.Advance();else if(ExoInput.KeyDown(KeyCode.Return)||ExoInput.KeyDown(KeyCode.KeypadEnter)||ExoInput.KeyDown(KeyCode.Space)){if(guideSkipFocus)startup.Skip();else startup.Advance();}}
    }
-   bool held=!AutomatedInput&&!startupInputFence&&(ExoInput.Key(KeyCode.Space)||pad.Hold);
+   bool held=allowInput&&!AutomatedInput&&!startupInputFence&&(ExoInput.Key(KeyCode.Space)||pad.Hold);
    startup.Tick(delta,held,focused);
    if(startup.Page!=before){startupInputFence=true;guideSkipFocus=false;frontendPad.Reset();}
    if(startup.Page!=startupShown){startupShown=startup.Page;if(startupShown==FrontendEntryPage.Nemesis){nemesisMusicDelay=.4f;StopMusic();}else if(startupShown==FrontendEntryPage.Guide){StartupGameplayPrepare?.Invoke();StartupGameplayPrepared=true;nemesisMusicDelay=-1;stageMusicDelay=.6f;EnsureStartupMedia();if(wakeupSound!=null)startupAudio.PlayOneShot(wakeupSound,startupSfxGain*startupSfxGain);} }

@@ -46,3 +46,80 @@ Player 어셈블리 증거는 실제 로드 경로를 우선 사용하고, Unity
 증거 루트: I:/EXODUSER-Storage/codex-takeover/unity-parity-1102/fifth/{batch1-official-build-receipt.json,batch1-m1,batch1-cinematic-1920,batch1-cinematic-3840,batch1-ui,batch1-audio-ui,batch1-audio-lobby,batch1-video-1920,batch1-video-3840,batch1-generated-recovery}. 전체 시각/UX는 RETOUCH 유지. 화면전환·55스킬/32합체·패시브·요약drawer·살아있는화면·진짜1-2·세부획/광택이 남아 있다. I:후속 준비본은 실행 소스에 인수하지 않았다. 바탕화면 직접교체0, 자기 Editor/Player예약 반환.
 
 추가 1x 대조: fifth/batch1-comparison.html(원본같은크기). 실제웹604d10bf는1920/3840의5캐릭터미니스토리10화면·오류/누락0. lore12.5px/1.7,분리선rgba(164,147,115,.5),문구일치 확인. 글꼴획·일부테두리차이는RETOUCH. 세계관 링의 영상 프레임은다른시점으로,전체영상품질동일판정이아님. first merge424afc4f79는origin09192f7bbc의검증된지면투영/실행기변경을정상병합했고통합Core/Runtime컴파일0;공식Player검수자체는2cb2a854패키지다.
+
+
+## 2026-11-03 화면 전환 인수 — Player 검수 전
+
+| 계약 | 현재 구현·한계 |
+|---|---|
+| 검정 경계 | fade-out500ms/fade-in600ms, CSS ease-in-out(.42,0,.58,1). 완전 검정 OnGUI Repaint를 기록한 다음 프레임에만 onBlack 실행. 준비 완료 연속2프레임 뒤 reveal, 준비 timeout12초/실패 시 해제 |
+| 로딩 원화 | 웹740722e1ac의 gamma.65·뼈색 윤곽1520² RGBA 본체/붉은 균열 PNG 동일 byte. 300ms 뒤12vh, 우하단max(48px,4.5vh), 후광1.4배/.25~.4, 균열.12~.75,2초 왕복.1000ms 기존29언어 문구 |
+| 감소 모션 | 저장 옵션/Windows SPI_CLIENTAREAANIMATION/CLI. fade각80ms, 본체1·균열/후광.3 정지. Mac OS 설정 연동은 미검증 |
+| 오디오 | 원래 음악·영상·결정·앰비언스 gain에 경계 gain 곱, 원래 볼륨을 경계 종료 뒤 복원. 실제 출력 검수 대기 |
+| ENTER | 기존 ENTER 원음 먼저 재생,1100ms 뒤 경계 시작. 인장·로고1.4초 ease 소멸, ENTER1.1초 ease 소멸/상단5.6px 이동. 감소에서는 ENTER 즉시 숨김. CSS12px blur는 아직 미반영 RETOUCH |
+| 준비 중 진행 | StartupEntry.Tick은 black 중에도 계속 실행하고 사용자 입력만 차단. lobby-game/story-game은 Loading을 벗어나야 reveal |
+| 검수 경계 | ScreenTransitionCheck는 CLI+샌드박스 전용 실제 Player 호스트·실제 영상 decoder 준비 검사. CinematicInputCheck는 모든 로비 경계를 기다린 뒤 기존 홀드 회귀. 컴파일은0이나 정식 빌드·M1·양해상도 캡처·시각/청음은 아직 대기 |
+
+I:준비 중인 전체 스킬/패시브/대장간 소스는 이번 인수에 포함하지 않았다. 소유23코드와새원화/메타/문구만 정확한경로로복사,원본은transition-prep/adoption-backup에 SHA 백업했다. guard.baseline과기존미추적파일은보존한다.
+
+
+## 두 번째 패키지 첫 검수 실패와 수정 — 재빌드 전
+
+| 증거 | 원인·현재 조치 |
+|---|---|
+| build9922028a | Succeeded/errors0,6,610,053,276bytes,USER_SAVE0. 라이선스토큰갱신진단2는빌드결과와구분. M1은37d9427c의firstBlocked01,실패인데기존하네스가exit0반환했으므로미통과 |
+| M1진입 | 기존M1이ShowLobby(.6초)→Open/Choose/Confirm을동일프레임에호출해500/600ms비동기경계를기다리지못함. 생성API별경계해제/실패를기다리고,firstBlocked가있으면이제exit2.전환을우회하지않음 |
+| 실제전환4b4102f2 |34검사중타이밍2실패.첫요청이전unscaledDeltaTime까지합산하여실제fade-out.426초. 요청시각부터realtime차이로교체.감소준비검사는initial FDG splash-menu가끼어들어다른요청의.475초를측정했음.초기로비안정화후요청id로검사 |
+| 직접캡처결함 | frame108은opacity1인데FDG화면이검정덮개위로그려짐. GUI.depth는현재GUIBehaviour정렬속성이라finally에서0으로돌리면덮개우선순위가사라짐.전환컴포넌트는-1000000을유지하고행렬/색/활성만복원.새QA는완전검정일때실제PNG중앙/상단3점RGB≤.02를검사해상태값만통과시키지않음 |
+| 추가회귀 | 실제인수GateEnterDelay.cs를직접링크한v2테스트10/0. 오래된이웃Core를읽던원래하네스실패와구분. Core/Runtime수정본재컴파일/정식재빌드/새M1·양해상도Player는대기 |
+
+Unity GUI.depth 계약: [공식API](https://docs.unity3d.com/ja/current/ScriptReference/GUI-depth.html). 첫실패영수증과이미지는삭제하거나성공으로대체하지않는다.
+
+
+## 세 번째 패키지 실제 전환 통과·M1 검수 구조 후속
+
+| 범위 | 근거·현재 상태 |
+|---|---|
+| 빌드3 | bfc14478/Succeeded/errors0/6,610,055,836bytes/USER_SAVE0. 입력757e572d6c |
+| 전환 실제Player | c1caa235(1920)·26032854(3840) 각각36/36, 실제 완전검정 PNG19+25표본의3점RGB≤.02,결함0.검정Repaint→다음프레임교체·실제decoder·일반/감소·실제로비복귀검사. 첫1x169/51원본직접열람 |
+| M1 | e26fd960은23단계중22ok. 초기신규진입/전투/클리어는진행하나14이어하기의ShowLobby(.3초)→Begin이비동기경계를기다리지못함. 두실패를보존하고하네스전체로비API를감사해이어하기도실제해제/복원까지대기하도록변경. M1통과로집계하지않음 |
+| 종료코드 | NativeVideoQuitHelper가3프레임후Application.Quit()로0을다시요청하여실패코드를덮음. DeferredQuitIntent가비0실패를0으로지우지않게보존, M1·CinematicInputCheck·ScreenTransitionCheck는RequestQuit(code)사용. 정책0/1FAIL→4/0. 실제decoder활성상태에서의도적exit2를요청하는CLI검사추가;정상코드외전통합은대기 |
+| 실제웹비교 | 8994ce65,고정740722e1·동일R4두PNG강제원문·1920/3840×일반/감소4화면,오류/누락0. body129.59375²/right48.59375/bottom48.59375. Native같은위치1x근접;폰트획전체판정은RETOUCH |
+| R4시각후속 | 실제CSS data-screen-loading의animation-delay0에서원래pending시계맥동이이어짐.NativeElapsed-.3위상차를실측1.338265초/균열.599625/후광.364197로재현(2FAIL)→Elapsed기준2/0. 300ms는표시만지연.빠진drop-shadow(0 0 2px rgba143,19,12,.35)를물리픽셀기준캐시로구현,균열원본만CPU읽기가능.새Player검수대기 |
+| 상태회귀 | 현재실제ScreenTransitionFlow.cs직접링크22/0,GateEnterDelay10/0,DeferredQuitIntent4/0,웹맥동2/0.정식새빌드4와같은패키지M1/양해상도캡처전 |
+
+명시적QA인자: --unity-transition-exit-code-check는샌드박스·절대출력경로에서만실행하며decoder준비성공뒤기대exit2,준비실패는exit3이다. 일반게임경로에서실행되지않는다.
+
+세번째패키지홀드추가: 1edf337b(1920)·bd8554c9(3840) 각각132/132·797/782프레임. Space/ESC/B/Start×2영상·부분/해제/홀드·매경계대기·실제준비/전투틱정지. 전환대기검사가추가되어첫44/44와검사수가다르며중복합산으로기능수를늘리지않는다.
+
+
+## 네 번째 패키지 검수와 외장 디스크 캡처 정지 분리
+
+| 범위 | 실제 근거·판정 |
+|---|---|
+| 정식/M1 | ac84527e 입력895e7dd8 Succeeded/errors0/6,610,058,572bytes/USER_SAVE0. cf4de8b2 M1 23/23·32PNG·firstBlocked빈값 |
+| 실제전환 | d6b683e4(1920)·94be67a9(3840),각36/36.실제완전검정18+19표본/오염0. Runtime2e00dc29b99d05ad6ece5623ebef96d8128cfab1c3a6da066c1869bf414f9f53/Core9efc2ba7c876b8e9e19f698265dd1f89cf40383f87e29283602cdb4d7cfe338a 동일. 원본1x batch4-comparison.html·Native169/108열람. 전체RETOUCH 유지 |
+| 실제홀드 | 9ebfa9bb1920 132/132·837프레임.7ab8dd8e3840은132중3FAIL·770프레임·exit2. worldSpace완료후다음ShowLobby준비16초검사초과/실패,worldEsc진행률1이나8초제한안에로비미도착. 실패를보존하며전체홀드재통과로세지않음 |
+| 시간근거 | frames.jsonl 실제연속시각43.04367→59.84716,캡처간격16.80349초. ESC진행.973285(4.849s)→1(7.819s)에서2.969초간격. 동기PNG/파일쓰기경로가검사루프에서실행되어외장IO정지를기능타임아웃과혼합. 제품12초준비timeout/입력홀드수치는완화하지않음 |
+| 검수기수정 | NativeQaCaptureWriter는워커한개·대기PNG최대4개·초과캡처skippedFrames기록,PNG성공후timeline순서기록,receipt최신값병합.모든UnityAPI/PNG인코딩은메인스레드,파일IO만워커.완료/예외때최대120초flush·IO오류는실패. 느린저장소fixture에서생산자비차단·순서3·최신100병합·오류전달통과. 실제Player새빌드대기 |
+| 종료코드진단 | 6e24448a 실제decoderPrepared=true에서의도적expectedExit2,공식실제exit2/windows0/leftovers0/USER_SAVE0. runner ok=false는의도진단이며정상게임검수통과로세지않음. 실패코드를0으로덮지않음확인 |
+| 보존 | 생성857정확경로모두SHA백업·원HEAD입력복원/해시검증,guard기존WIP보존. Desktop직접교체0. 원격d00cfd6f4 타격표현·도구변경을정상병합한뒤통합정식빌드재검수예정 |
+
+NativeScreenTransition은준비timeout실패를빈error대신 prepare-timeout (12s)로기록한다. 유효한앞선단일범위검사는유지하되네번째패키지전체성공으로승격하지않는다.
+
+
+## 다섯 번째 통합 패키지 — 검수기 IO 수정 실제 회귀 통과
+
+| 범위 | 실제 증거·판정 |
+|---|---|
+| 입력소스/정식 | 164aea8648 캡처IO수정 후 공통d00cfd6f4 타격표현/도구59파일을정상병합한23e7227af553c149e7ad1b663c6323ddfbd6c1cf. 공식5375be9e/Succeeded/errors0/6,610,798,332bytes/USER_SAVE0 |
+| 같은패키지M1 | c29a222c 공식slots3 exit0/windows0/leftovers0/USER_SAVE0. 실제23/23 ok/firstBlocked빈값/32PNG. 다음1-2는아직미이식 |
+| 실제홀드1920 | b9bf0c9b/132/132,812PNG·대기열포화시190캡처생략을명시. Space/ESC/B/Start×세계관/캐릭터·부분/해제/전투틱정지·매경계준비 |
+| 실제홀드3840 | bee559d8/132/132,608PNG·183생략. 이전7ab8dd8e의3실패지점모두통과. 파일IO는별도워커,새검수도검사/플레이성능60fps로확대하지않음 |
+| 실제전환 | 3f2799811920/61bdc35e3840 각각36/36. 완전검정PNG17+17표본/3점배경오염0,Repaint다음프레임교체·실제decoder·준비/복귀·일반/감소계약통과 |
+| 실제DLL | Runtime d9b413e1e688971b67a36f05accf501ef98ac632a16b37342dd9d25e6f25b32a / Core9efc2ba7c876b8e9e19f698265dd1f89cf40383f87e29283602cdb4d7cfe338a. 양해상도입력/전환4실행모두동일패키지 |
+| 직접1x | 전환1920 frame167/3840 frame80,홀드1920 frames00066/00514·3840 frames00369를원본직접열람. batch5-comparison.html에웹8994ce65와같은크기배치. 인장위치/검정/붉은맥동근접. 전체RETOUCH: ENTER CSS12px blur·전체폰트획·아직미검증인전경계/실제전환오디오출력은후속 |
+| 영상한계 | 세계관완료로비,캐릭터영상완료는Nemesis시작페이지까지기록. 같은사례의최종1-1도착으로세지않으며M1의별도1-1진입과구분. 프레임+실제시간jsonl보존,새Space무음VFR2클립/해상도조립은다른Player측정이끝난뒤실행대기. 기존첫묶음각9클립은유지 |
+| 보존/실행기 | 자기생성857파일전부SHA백업/정확HEAD원본복원/해시검증,guard기존WIP보존. 공용실행기slots3업데이트때옛자기slots2대기PID67616/parent66480·자식0·자기Player미실행을확인후대기프로세스만재접속. 타프로세스/예약변경0,자기Editor/Player예약반납,Desktop직접교체0 |
+
+전체5차는진행중이다. 이번영수증은전환기술·홀드회귀묶음이며55스킬/32합체/추천전체·조건부패시브·살아있는화면·요약drawer·진짜1-2·글꼴/구슬/핵/광택/리셋전체완료가아니다. I:스킬준비본은제품채택0,복구스냅샷106521b84f31e6d396660340ce7cf2356b61c532(287파일·Gitblob전부/원격ref대조)은미채택자료로만보존한다. 이후준비본의상태수학130곳·사냥꾼72조건·소리196조건교정은별도I후속이며이번패키지내용과혼합하지않는다.

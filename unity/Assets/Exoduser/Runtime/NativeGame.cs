@@ -182,7 +182,7 @@ namespace Exoduser.UnityPort
             lobby.AutomatedInput=UiOverlapOwnsInput||lobbySmoke&&!introKeysSmoke;
             if(lobbySmoke&&!lobbyControlsSmoke)lobby.SetPlaybackFocus(true); // Natural-playback fixture only; controls fixture owns focus transitions.
             if(lobby!=null&&lobby.IsBlocking){if(firstPractice!=null)EndFirstPractice(true);Running=false;view.cullingMask=lobby.StartupWorldVisible?worldMask:0;UpdateGameMusic();return;}
-            view.cullingMask=worldMask;UpdateGameMusic();
+            view.cullingMask=worldMask;UpdateGameMusic();if(NativeScreenTransition.InputBlocked)return;
             // Web _showHudAreaTitle (game.html 60243, called from the HUD slow path when the stage changes): Unity has no stage-change event and only stage 0, so the title is shown once per run when play starts (never inside --unity-* verification fixtures).
             if(!areaTitleShown&&areaTitleAllowed){areaTitleShown=true;areaTitle.Show(0,lobby.Language!="ko");}
             // Web addExp (game.html 43226-43242): the level-up overlay is raised by Simulation.LevelledUp (OnLevelledUp); this only keeps the seen level in step for state resets.
@@ -239,7 +239,7 @@ namespace Exoduser.UnityPort
         }
         void FixedUpdate()
         {
-            if(practiceScripted||UiOverlapFreezesSimulation||!Running||!gameFocused||Simulation==null||lobby!=null&&lobby.IsBlocking)return;
+            if(NativeScreenTransition.InputBlocked||practiceScripted||UiOverlapFreezesSimulation||!Running||!gameFocused||Simulation==null||lobby!=null&&lobby.IsBlocking)return;
             var p=Simulation.Player;var aim=AimWorld();
             float x=(NativeKeyBindInput.Held("right")?1:0)-(NativeKeyBindInput.Held("left")?1:0);
             float y=(NativeKeyBindInput.Held("down")?1:0)-(NativeKeyBindInput.Held("up")?1:0);
@@ -601,7 +601,7 @@ namespace Exoduser.UnityPort
             return false;
         }
         // Death screen 'retry' button = the pause menu's Restart command.
-        void RetryFromDeath(){if(gameFocused){if(RetryInsideArena())return;ResetRun();skillInputFence=true;menu=false;Running=true;}}
+        void RetryFromDeath(){if(!NativeScreenTransition.Executing&&NativeScreenTransition.Request("death-retry",()=>RetryFromDeath())>0)return;if(NativeScreenTransition.InputBlocked)return;if(gameFocused){if(RetryInsideArena())return;ResetRun();skillInputFence=true;menu=false;Running=true;}}
         void EquipSelectedSkill(){if(SkillUiState.TryEquipKiSlash(Simulation,skills.SelectedSlot))basicWeaponMode=false;}
         void SetSfxPercent(int percent){settings.SetSfxPercent(percent);sound.SetVolumePercent(settings.SfxPercent);music.SetPercents(settings.SfxPercent,settings.BgmPercent);lobby?.SetStartupSfxPercent(settings.SfxPercent);QueueSettingsSave();}
         void SetBgmPercent(int percent){settings.SetBgmPercent(percent);lobby.SetBgmPercent(settings.BgmPercent);music.SetPercents(settings.SfxPercent,settings.BgmPercent);QueueSettingsSave();}
@@ -610,8 +610,8 @@ namespace Exoduser.UnityPort
         void ApplyPauseCommand(PauseMenuCommand command){
             switch(command){
                 case PauseMenuCommand.Resume: if(gameFocused&&!PlayerDown){string uiBefore=UiPanelState();menu=false;skillInputFence=true;Running=true;UiPanelChanged(uiBefore);} break;
-                case PauseMenuCommand.Restart:if(gameFocused){ResetRun();skillInputFence=true;menu=false;Running=true;}break;
-                case PauseMenuCommand.ReturnLobby:SaveCombatNow();Running=false;menu=true;sound.Reset();pauseMenu.Reset();lobby.ShowLobby();break;
+                case PauseMenuCommand.Restart:if(!NativeScreenTransition.Executing){NativeScreenTransition.Request("restart",()=>ApplyPauseCommand(PauseMenuCommand.Restart));break;}if(gameFocused){ResetRun();skillInputFence=true;menu=false;Running=true;}break;
+                case PauseMenuCommand.ReturnLobby:if(!NativeScreenTransition.Executing){NativeScreenTransition.Request("game-lobby",()=>ApplyPauseCommand(PauseMenuCommand.ReturnLobby));break;}SaveCombatNow();Running=false;menu=true;sound.Reset();pauseMenu.Reset();lobby.ShowLobby();break;
                 case PauseMenuCommand.Quit:if(gameFocused){SaveCombatNow();Application.Quit();}break;
             }
         }
