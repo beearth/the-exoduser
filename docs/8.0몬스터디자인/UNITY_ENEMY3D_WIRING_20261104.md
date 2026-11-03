@@ -215,6 +215,7 @@ Generic Animator + PlayableGraph(Manual), applyRootMotion=false. 상태마다 JS
 
 - 보스전 총괄의 경미 RETOUCH v2(unity/main 6a61db1ea)에 맞춰 철갑 6·거미 13·갑각 4 v2·문지기 29·의식 9의 원본을 `<key>_anim_v2.glb`(+ `_anim_v2_report.json`)로 바꿨다. 쌍낫 21은 v1 그대로다. 변환기 `import-anim-v1.py`에 `V2` 집합을 두었고, `--only`는 지정 행만 다시 쓰며 다른 행과 `frontCrossCheck` 기록은 보존한다(provenance LF 고정). 5종만 다시 변환했다(Blender 1회, 각 1.5~1.9초). 클립 이름·길이·뼈 수·소켓은 v1과 같고, provenance `animVersion: "v2"`로 구분한다. FBX 합계는 99,624,088바이트다.
 - 표 `retouch` 메모를 v2 결과로 바꿨다. 문지기·의식의 무기 바닥 관통은 해소됐다(+0.20·+0.14cm). 갑각 예고→발동은 프레임당 23.9°로 줄었지만 `blendTicks` 2는 그대로 둔다(1-2틱 크로스페이드, CTO 지시). 수치 필드(height·chestRatio·slot)는 바뀌지 않았다.
+- 최신 unity/main(1f90d392d) 병합 뒤 최종 트리에서 각 1회 다시 확인했다. `enemy3d-tests` **1046/0**(영수증 `I:/EXODUSER-Storage/ulead-enemy3d-20261104/enemy3d-check-final/policy.log`), 공용 실행기 Unity 컴파일 오류 0·오류 로그 0, v2 5종 재임포트 뒤 `Enemy3DImportCheck` **30/0**(로그 `I:/EXODUSER-Storage/unity-jobs/claude-ulead-mipmap/logs/3c445c9c.log`, 영수증 `.../ulead-enemy3d-20261104/import/enemy3d-import.json`).
 
 ### 검증 (PC, 각 1회)
 
