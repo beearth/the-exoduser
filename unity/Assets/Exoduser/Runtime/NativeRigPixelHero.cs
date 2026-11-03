@@ -37,9 +37,11 @@ namespace Exoduser.UnityPort {
      for(int i=0;i<materials.Length;i++){
       var old=sourceMaterials[i];var mat=new Material(toon){name="RigPixel: "+(old!=null?old.name:"body")};
       if(old!=null){if(old.HasProperty("_BaseMap")){mat.SetTexture("_BaseMap",old.GetTexture("_BaseMap"));mat.SetTextureScale("_BaseMap",old.GetTextureScale("_BaseMap"));mat.SetTextureOffset("_BaseMap",old.GetTextureOffset("_BaseMap"));}if(old.HasProperty("_BaseColor"))mat.SetColor("_BaseColor",old.GetColor("_BaseColor"));}
-      string materialName=old!=null?old.name:"iron";
+      string materialName=(old!=null?old.name:"iron").ToLowerInvariant();
       mat.SetColor("_PaletteColor",Palette(materialName));
-      mat.SetFloat("_SurfaceTag",SurfaceTag(materialName));
+      float surfaceTag=SurfaceTag(materialName);mat.SetFloat("_SurfaceTag",surfaceTag);
+      bool blade=materialName.Contains("sword")||materialName.Contains("weapon")||materialName.Contains("blade");
+      mat.SetFloat("_MetallicPlane",surfaceTag==.6f?1f:(blade?.8f:0f));
       materials[i]=mat;ownedMaterials.Add(mat);
      }
      r.sharedMaterials=materials;
@@ -184,7 +186,7 @@ namespace Exoduser.UnityPort {
    if(name.Contains("cloth")||name.Contains("cape"))return new Color(.34f,.085f,.065f,1);
    if(name.Contains("leather"))return new Color(.18f,.11f,.07f,1);
    if(name.Contains("sword")||name.Contains("weapon")||name.Contains("blade"))return new Color(.48f,.50f,.52f,1);
-   return new Color(.34f,.38f,.42f,1);
+   return new Color(.18f,.185f,.195f,1);
   }
   MeshRenderer Quad(string name,Material material){
    var go=GameObject.CreatePrimitive(PrimitiveType.Quad);go.name=name;go.transform.SetParent(transform,false);if(Application.isPlaying)Destroy(go.GetComponent<Collider>());else DestroyImmediate(go.GetComponent<Collider>());
@@ -234,6 +236,7 @@ namespace Exoduser.UnityPort {
     image.transform.SetPositionAndRotation(snapped+camera.transform.up*centre,camera.transform.rotation);image.transform.localScale=new Vector3(extent,extent,1);
     image.sortingOrder=fallback!=null?fallback.sortingOrder:0;
     var snappedScreen=camera.WorldToScreenPoint(snapped);AnchorScreenError=new Vector2(snappedScreen.x-screen.x,snappedScreen.y-screen.y).magnitude;
+    Shader.SetGlobalVector("_RigPixelGrid",new Vector4(snappedScreen.x-size*TexelScale*.5f,snappedScreen.y+centre/wpp-size*TexelScale*.5f,TexelScale,1));
     SceneLighting(ground);
     var lightDirection=moon!=null?-moon.transform.forward:new Vector3(-.6f,1,-.4f);
     composite.SetVector("_RimDirection",new Vector4(Vector3.Dot(lightDirection,camera.transform.right),Vector3.Dot(lightDirection,camera.transform.up),0,0));

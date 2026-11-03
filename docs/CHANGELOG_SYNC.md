@@ -57365,3 +57365,9 @@ Mac 원본4장 몬스터16종 공통·배송: 실기동 검수후 개인/`unity/
 2026-11-02 Mac 공통 6ad의 A2 지면 데칼 수신 기술 후보: `HellGroundPBR`·`A2RootSurface` 각각 DBuffer 변종·설치 URP 표준 수신 호출 6줄만 추가. 격리 QA 플래그/실제 DBuffer ShaderGraph 재질을 분리해 기존 평면 `M_Decal_blood`를 잘못된 양성 대조로 쓰지 않는다. 정확 소스 `afdd4ab` Settings QA ARM64 빌드 Succeeded/오류0·같은 앱 Metal M1 23/23·평면과 실제 A2 흙/뿌리/목교 1920 실창 및 3840 직접 RT 수신 기술 PASS. raw outside 차분은 비0이며 `effect>self+4` 필터 outside0과 구분한다. 일반 앱 파일 전달 후에도 Impact R4 VISUAL FAIL·맵 전체 RETOUCH 보존. [계약·수치·검증 경계](engine/UNITY_A2_DECAL_RECEIVER_20261101.md).
 
 Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반 build errors0, 정규화·strict/deep 서명 PASS, 이전앱3SHA CAS/보존 후 `/Users/fordeargamers/Applications/EXODUSER.app` 설치. 원본/stage/설치 211파일 전체 manifest SHA `54d8ae1b…` 동일, QA/일반 Runtime·Core DLL SHA 동일. 일반 저장11·QA plist2 최종 원문 동일, 일반 앱 실행0. 실제 A2 지면/뿌리/목교 기술 수신 VISUAL PASS 범위만 해당, 맵 전체 RETOUCH/Impact R4 FAIL 유지. [상세](engine/UNITY_A2_DECAL_RECEIVER_20261101.md#일반-mac-앱-파일-전달-2026-11-02).
+
+## 2026-11-03 — 리깅 픽셀 14:25·19:00 재작업
+
+- NativeRigPixelHero/Composite/Toon: 망토1~2텍셀 분리 섬과 외곽테 제거, 중성 흑철(.18,.185,.195)과 실제광의2단 금속하이라이트, 공통 화면픽셀격자 전달.
+- KiSlashView·KiSlashAdditive/Ink·RigPixelSlashSampling: rigpixel opt-in Point/4단색/알파정리/동일격자/1픽셀 ink. sprite기본·원본시트·5레이어opacity·Core판정/타이밍 유지.
+- UNITY_RIG_PIXEL_20261103의 G0 공통관례·현행 수치표와 Mac 검수 명세를 동기화. PC 컴파일만, 실게임 점0/팔레트/검격/FPS는 Mac 판정 대기.

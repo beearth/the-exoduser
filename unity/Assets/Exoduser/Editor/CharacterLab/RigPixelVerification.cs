@@ -49,8 +49,10 @@ namespace Exoduser.CharacterLab {
    var prefab=Resources.Load<GameObject>("Characters/Warrior");var animator=prefab!=null?prefab.GetComponent<Animator>():null;
    bool renderer=type!=null&&typeof(MonoBehaviour).IsAssignableFrom(type);
    bool toonOk=toon!=null&&!ShaderUtil.ShaderHasError(toon),compositeOk=composite!=null&&!ShaderUtil.ShaderHasError(composite);
-   bool shaders=toonOk&&compositeOk;
-   foreach(var shader in new[]{toon,composite})if(shader!=null)foreach(var message in ShaderUtil.GetShaderMessages(shader))
+   var slash=Resources.Load<Shader>("Shaders/KiSlashAdditive");var ink=Resources.Load<Shader>("Shaders/KiSlashInk");
+   bool slashOk=slash!=null&&!ShaderUtil.ShaderHasError(slash),inkOk=ink!=null&&!ShaderUtil.ShaderHasError(ink);
+   bool shaders=toonOk&&compositeOk&&slashOk&&inkOk;
+   foreach(var shader in new[]{toon,composite,slash,ink})if(shader!=null)foreach(var message in ShaderUtil.GetShaderMessages(shader))
     Debug.Log("RIGPIXEL_SHADER "+shader.name+" "+message.severity+" line="+message.line+" platform="+message.platform+" "+message.message);
    bool rig=animator!=null&&animator.avatar!=null&&animator.avatar.isValid&&animator.avatar.isHuman;
    bool ok=renderer&&shaders&&rig;

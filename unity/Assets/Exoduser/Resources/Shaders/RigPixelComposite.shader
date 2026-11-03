@@ -32,13 +32,31 @@ Shader "Exoduser/RigPixelComposite" {
     }
     return samples[4].rgb;
    }
+   half4 SurfaceSample(float2 uv){return SAMPLE_TEXTURE2D_LOD(_MainTex,sampler_MainTex,uv,0);}
+   half4 CleanCoverage(float2 uv){
+    half4 c=SurfaceSample(uv);
+    if(abs(c.a-.7h)>.02h)return c; // Only cape/cloth coverage. Keep face, hair and thin blade detail.
+    float2 d=_MainTex_TexelSize.xy,adjacent=0;int neighbours=0;
+    [unroll]for(int y=-1;y<=1;y++)[unroll]for(int x=-1;x<=1;x++){
+     if(x!=0||y!=0){float2 offset=float2(x,y)*d;if(SurfaceSample(uv+offset).a>.5h){neighbours++;adjacent=offset;}}
+    }
+    if(neighbours==0)return 0;
+    if(neighbours>1)return c;
+    // A two-texel island has only the centre in its neighbour's 8-neighbourhood.
+    // An endpoint joined to a longer tear/body has more support and is retained.
+    int support=0;
+    [unroll]for(int sy=-1;sy<=1;sy++)[unroll]for(int sx=-1;sx<=1;sx++){
+     if(sx!=0||sy!=0)if(SurfaceSample(uv+adjacent+float2(sx,sy)*d).a>.5h)support++;
+    }
+    return support<=1?half4(0,0,0,0):c;
+   }
    half4 Frag(V i):SV_Target {
     float2 d=_MainTex_TexelSize.xy;
-    half4 c=SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,i.uv);
-    half4 l=SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,i.uv-float2(d.x,0));
-    half4 r=SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,i.uv+float2(d.x,0));
-    half4 u=SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,i.uv+float2(0,d.y));
-    half4 b=SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,i.uv-float2(0,d.y));
+    half4 c=CleanCoverage(i.uv);
+    half4 l=CleanCoverage(i.uv-float2(d.x,0));
+    half4 r=CleanCoverage(i.uv+float2(d.x,0));
+    half4 u=CleanCoverage(i.uv+float2(0,d.y));
+    half4 b=CleanCoverage(i.uv-float2(0,d.y));
     half count=step(.5h,l.a)+step(.5h,r.a)+step(.5h,u.a)+step(.5h,b.a);
     half3 average=(l.rgb*step(.5h,l.a)+r.rgb*step(.5h,r.a)+u.rgb*step(.5h,u.a)+b.rgb*step(.5h,b.a))/max(1,count);
     if(c.a<.5h){
