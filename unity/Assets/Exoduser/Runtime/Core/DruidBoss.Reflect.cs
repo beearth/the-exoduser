@@ -41,7 +41,11 @@ namespace Exoduser.UnityPort.Core
             var rp = ToReflect(p);
             var inp = reflectHost.ReflectInput(pd);
             var res = ParryReflect.Resolve(rp, inp);
-            if (res.Outcome != ReflectOutcome.Reflect) return false;
+            if (res.Outcome != ReflectOutcome.Reflect) {
+                bool q=inp.S=="sBlock"&&inp.SbParryT>0;bool e=inp.S=="sBash"&&inp.St2>4;
+                bool wrong=host.PIframes<=0&&pd<100&&((q&&p.ParryClass=="physical")||(e&&(p.ParryClass!="physical"||p.BlackBean)));
+                if(wrong&&!p.WrongInputCounted){p.WrongInputCounted=true;(host as ICombatDamageTelemetry)?.WrongParryInput();}return false;
+            }
             FromReflect(rp, p);
             reflectHost.PayReflectParry(res);
             return true;

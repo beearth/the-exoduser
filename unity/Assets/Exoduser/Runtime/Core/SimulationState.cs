@@ -71,6 +71,7 @@ namespace Exoduser.UnityPort.Core
         public float X, Y, Radius, Speed, Facing, StateTicks, KnockbackX, KnockbackY;
         public float Shield, MaxShield, HitStun, HurtTicks, LastMoveX, LastMoveY, StuckTicks;
         public float Poise, MaxPoise, Stunned, MaxStunned, PoiseRegenTicks;
+        public int MeleeCounterUntil, MeleeFreezeUntil, MeleeParriedTick=-1000;
         public float ProjectileTicks, ProjectileChargeTicks;
         public bool Alive = true, Alerted, HasLastMove;
         public bool IsBoss; public int Elite; // web e.ib / e.elite (tier index): kill XP, combo timer

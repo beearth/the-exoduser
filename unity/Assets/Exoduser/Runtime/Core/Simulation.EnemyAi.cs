@@ -79,10 +79,13 @@ namespace Exoduser.UnityPort.Core
         // updateE(e, sp): head (CX-03a) -> [DOT: pending CX-03b] -> body (EnemyAi)
         void UpdateEnemyBody(EnemySpawn e, double sp)
         {
+            if(webOwner.TryGetValue(e,out var frozen)&&TickCount<frozen.MeleeFreezeUntil){EnemyAi.TickParried(aiHost,e,sp);return;}
             double d;
             if (EnemyTick.UpdateHead(tickCtx, e, sp, out d)) return;
             string stateBefore = e.s;
-            EnemyAi.UpdateBody(aiHost, e, sp, d);
+            currentMeleeEnemy=e;lastMeleeHitLanded=true;
+            try { EnemyAi.UpdateBody(aiHost, e, sp, d); } finally { currentMeleeEnemy=null; }
+            if((e.s=="eChargeWind"||e.s=="eSlamWind"||e.s=="windup")&&e.s!=stateBefore)CombatStats.Add(Stats.meleeTellStarted,e.s=="eChargeWind"?"charge":e.s=="eSlamWind"?"slam":"swing");
             if (e.s == "windup" && stateBefore != "windup") QueueLogicalSound("tell_melee", "melee wind-up entry", e.x, e.y);   // RM-1 sound: AD3 stage 2
         }
 
@@ -163,7 +166,7 @@ namespace Exoduser.UnityPort.Core
                     {
                         if (Player.Iframes <= 0)
                         {
-                            HurtPlayer(Js.Int(z.Dmg * EnemyHurt.ElMul(z.El, ArmorElement())), new HurtOptions { Magic = true });
+                            HurtPlayer(Js.Int(z.Dmg * EnemyHurt.ElMul(z.El, ArmorElement())), new HurtOptions { Magic = true, Source="hazard" });
                             double ka = JsMath.Atan2(py - z.Y, px - z.X); Player.KnockbackX += (float)(JsMath.Cos(ka) * 8); Player.KnockbackY += (float)(JsMath.Sin(ka) * 8);
                             double slowRes = EquippedInventory != null ? EquippedInventory.AffixTotal("slowRes") : 0;
                             PlayerTrapSlow = Js.Int(120 * (1 - Math.Min(.5, slowRes)));
@@ -180,7 +183,7 @@ namespace Exoduser.UnityPort.Core
                     }
                     else if (z.Kind == "blizzard")
                     {
-                        HurtPlayer(Js.Int((z.Dmg != 0 ? z.Dmg : 5) * EnemyHurt.ElMul(z.El, ArmorElement())), new HurtOptions { Magic = true });
+                        HurtPlayer(Js.Int((z.Dmg != 0 ? z.Dmg : 5) * EnemyHurt.ElMul(z.El, ArmorElement())), new HurtOptions { Magic = true, Source="hazard" });
                         if (z.El == 2) { PlayerFreezeSlow = Math.Max(PlayerFreezeSlow, 90); HurtText(px, py - 20, "🌨빙결!", "🌨Frozen!", "#9999ff", 25); }
                     }
                     dead = true;
@@ -197,7 +200,7 @@ namespace Exoduser.UnityPort.Core
             if (Druid != null) Druid.SpawnProjectile(null, null, s, false);
         }
 
-        sealed class AiHost : IEnemyAiHost
+        sealed class AiHost : IEnemyAiHost, IMeleeCombatHost
         {
             readonly Simulation s;
             public AiHost(Simulation sim) { s = sim; }
@@ -208,8 +211,11 @@ namespace Exoduser.UnityPort.Core
             public int Stage { get { return s.Config.StageIndex; } }
             public bool CanMove(double x, double y, double r) { return s.Pass((float)x, (float)y, (float)r); }
             public bool IsWall(double x, double y) { return s.IsProjectileWall != null ? s.IsProjectileWall((float)x, (float)y) : !s.Pass((float)x, (float)y, 0); }
-            public void HurtPlayer(int damage, bool magic) { s.HurtPlayer(damage, new HurtOptions { Magic = magic }); }
-            public void KnockPlayer(double kx, double ky) { s.Player.KnockbackX += (float)kx; s.Player.KnockbackY += (float)ky; }
+            public void HurtPlayer(int damage, bool magic) { int before=s.HurtCount; if(s.currentMeleeEnemy!=null)s.HurtFromMelee(s.currentMeleeEnemy,damage,s.currentMeleeEnemy.s=="eSlamWind"?"slam":"swing",false,magic);else s.HurtPlayer(damage,new HurtOptions{Magic=magic,Source="hazard"});s.lastMeleeHitLanded=s.HurtCount>before; }
+            public bool MeleeHit(EnemySpawn e,int damage,string source,bool forbidden){int before=s.HurtCount;s.HurtFromMelee(e,damage,source,forbidden);return s.HurtCount>before;}
+            public void MeleeTell(EnemySpawn e,string source,bool forbidden){CombatStats.Add(s.Stats.meleeTellStarted,forbidden?"unparryable":source);s.QueueLogicalSound(forbidden?"tell_boss":"tell_parry","melee:"+source,e.x,e.y,.45);}
+            public void ProjectileTell(string kind){CombatStats.Add(s.Stats.projChargeStarted,kind??"physical");}
+            public void KnockPlayer(double kx, double ky) { if(!s.lastMeleeHitLanded)return;s.Player.KnockbackX += (float)kx; s.Player.KnockbackY += (float)ky; }
             public void ScaleKnock(double m) { s.Player.KnockbackX *= (float)m; s.Player.KnockbackY *= (float)m; }
             public void FreezeSlow(double frames) { s.PlayerFreezeSlow = Math.Max(s.PlayerFreezeSlow, (float)frames); }
             public void StaggerPlayer(double frames) { s.Player.State = "stagger"; s.Player.StateTicks = (float)frames; }
@@ -217,14 +223,7 @@ namespace Exoduser.UnityPort.Core
             public bool IsParryWindow() { return s.Player.Hp > 0 && ParryRules.IsParryWindow(s.Player.State, s.Player.StateTicks, 0, s.SbParryT, s.CapeParry); }
             public void Parry(EnemySpawn e, double atk)
             {
-                bool q = s.Player.State == "sBlock" || s.Player.State == "peaceShield" || s.SbParryT > 0;
-                s.ParryBank += atk != 0 ? atk : 10;   // P.parryBank += e.atk||10
-                s.ApplyParrySuccess(q);
-                EnemyState owner; if (!s.webOwner.TryGetValue(e, out owner)) return;
-                var r = EnemyPoiseRules.PoiseHit(new EnemyPoiseRules.Enemy { Alive = owner.Alive, Boss = false, Poise = owner.Poise, MaxPoise = owner.MaxPoise, PoiseR = owner.PoiseRegenTicks, Stunned = owner.Stunned,
-                    MaxStunned = owner.MaxStunned, PImmune = e._pImmune ?? 0 }, 20, 0, 0);
-                owner.Poise = (float)r.Enemy.Poise; owner.PoiseRegenTicks = (float)r.Enemy.PoiseR; owner.Stunned = (float)r.Enemy.Stunned; owner.MaxStunned = (float)r.Enemy.MaxStunned;
-                e.poise = owner.Poise; e.poiseR = owner.PoiseRegenTicks; e.stunned = owner.Stunned; e._maxStunned = owner.MaxStunned; e._pImmune = r.Enemy.PImmune;
+                s.HurtFromMelee(e,Js.Int(atk),"charge",false);
             }
             public void Text(double x, double y, string text, string color, int life) { }
             public void Parts(double x, double y, string color, int count) { }

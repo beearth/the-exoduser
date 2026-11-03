@@ -56,6 +56,7 @@ namespace Exoduser.UnityPort.Vfx
         public static List<CombatClip> Plan(FeedbackEvent e) {
             var result=new List<CombatClip>();
             if(e.Kind==FeedbackKind.Parry){
+                if(e.MeleeParry)return result; // G2 placeholder; PBZ spark art is owned by VFX.
                 if(e.Source=="waterBean") {
                     result.Add(Boom("Ice_ImpactIce_Sheet",72,96*3));
                     var mist=Boom("Ice_MistSmoke_FBF_4x4",72,96*3.4);mist.Delay=3;mist.Life=69;mist.Opacity=.8;result.Add(mist);

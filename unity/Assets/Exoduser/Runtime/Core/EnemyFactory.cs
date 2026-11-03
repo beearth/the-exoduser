@@ -39,7 +39,6 @@ namespace Exoduser.UnityPort.Core
             new AuraDef { Id = "guardian", Name = "수호", Col = "#4488ff", Hell = 3, Range = 130 }
         };
         // window._noProjEtypes (set inside mkEn): self-destruct / summon / dedicated-AI etypes never fire projectiles
-        static readonly HashSet<int> NoProjEtypes = new HashSet<int> { 5, 9, 11, 20, 24, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59 };
 
         // JS ~~x (ToInt32: truncate, then wrap modulo 2^32)
         public static int ToInt32(double v)
@@ -152,7 +151,7 @@ namespace Exoduser.UnityPort.Core
             if (_dfSpawn) _hp = DruidFinaleHp(monLv, dm);
             double _baseAtkLin = ((ib ? 75 : 50) + monLv * (ib ? 2.9 : 1.95)) * 0.6;
             double _atk = Math.Floor(_baseAtkLin * dm * et.AtkMul);
-            double _projCd = ib ? 50 : NoProjEtypes.Contains(etype) ? 9999 : 240;
+            double _projCd = ib ? 50 : EnemyProjectilePolicy.Interval(etype);
             if (mods.Contains("M02")) _projCd = ToInt32(_projCd * .85);
             if (elite > 0) _projCd = ToInt32(_projCd * (elite >= 3 ? .6 : elite >= 2 ? .7 : .8));
 
@@ -186,8 +185,8 @@ namespace Exoduser.UnityPort.Core
             e.mods = mods;
             e.aura = elite >= 2 ? RollAura(rnd, elite, si) : null;
             e.modT = new EnemyModT();
-            e.projCd = _projCd;
-            e.projT = ib ? 70 + rnd() * 50 : 180 + rnd() * 120;
+            e.projCd = !ib && EnemyProjectilePolicy.Interval(etype)>=9000 ? 9999 : _projCd;
+            e.projT = ib ? 70 + rnd() * 50 : (180 + rnd() * 120) * (EnemyProjectilePolicy.Interval(etype)==480?2:1);
             e.chargeT = 0;
             e.chargeCd = (etype==2||etype==22)?(100+rnd()*60):9999;
             e.dropTier = ib ? Math.Min(sih + 1, 4) : _rare ? Math.Min(sih + 2, 4) : Math.Min(sih, 4);

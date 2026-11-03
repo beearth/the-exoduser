@@ -135,7 +135,7 @@ class EnemyHurtProgram
                     Cmp(f.GetValue(cs), p.Value, path + "." + p.Name);
                 }
                 foreach (var f in type.GetFields(BindingFlags.Public | BindingFlags.Instance))
-                    if (!seen.Contains(f.Name)) Check(f.GetValue(cs) == null, path + "." + f.Name + " set in C# but undefined in web");
+                    if (!seen.Contains(f.Name)) Check(f.GetValue(cs) == null || (f.FieldType.IsValueType && Nullable.GetUnderlyingType(f.FieldType)==null && Equals(f.GetValue(cs),Activator.CreateInstance(f.FieldType))), path + "." + f.Name + " non-default native value where web is undefined");
                 return;
         }
     }

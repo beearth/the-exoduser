@@ -26,7 +26,7 @@ namespace Exoduser.UnityPort.Vfx
         public int Hits,Parries,Deaths,RollStarts,RollEnds,DrawnFrames,MissingSheets;
         public bool ReducedMotion;
         public float ShakeScale=1;
-        int shakeBorn=-1000;float shake;
+        int shakeBorn=-1000;float shake;int pushBorn=-1000;float pushAmount;
         int rollDustTick=-1;
         public int ActiveCount {get{return clips.Count+particles.Count;}}
         public static bool IsSprite(SpriteRenderer r){return owned.Contains(r);}
@@ -60,7 +60,7 @@ namespace Exoduser.UnityPort.Vfx
             bool hit=e.VisualOnly&&(e.Kind==FeedbackKind.EnemyHit||e.Kind==FeedbackKind.EnemyCrit||e.Kind==FeedbackKind.BossHit);
             if(hit&&!timeline.AdmitHit(e.Tick,e.IsBoss))return;
             var plan=CombatImpactTimeline.Plan(e);
-            if(e.Kind==FeedbackKind.Parry){Parries++;ParryParts(e);Shake(e.Tick,14);}
+            if(e.Kind==FeedbackKind.Parry){Parries++;if(!e.MeleeParry)ParryParts(e);Shake(e.Tick,e.ParryShake);if(e.MeleeParry){pushBorn=e.Tick;pushAmount=e.CameraPushIn;}}
             if(hit){Hits++;HitParts(e);}
             if((e.Kind==FeedbackKind.EnemyDeath||e.Kind==FeedbackKind.BossDeath)&&e.Source!="druid_sink") {
                 Deaths++;
@@ -108,6 +108,7 @@ namespace Exoduser.UnityPort.Vfx
         }
         float R(float low,float span){return low+(float)random.NextDouble()*span;}
         void Shake(int tick,float amount){float current=shake*Mathf.Pow(.86f,Mathf.Max(0,tick-shakeBorn));shakeBorn=tick;shake=Mathf.Max(current,amount);}
+        public float CameraPushIn(int tick){return ReducedMotion?0:pushAmount*Mathf.Clamp01(1-(tick-pushBorn)/6f);}
         public Vector3 CameraOffset(int tick) {
             float age=tick-shakeBorn;if(ReducedMotion||age<0)return Vector3.zero;
             float amplitude=shake*Mathf.Pow(.86f,age)*ShakeScale;if(amplitude<.3f)return Vector3.zero;
@@ -187,6 +188,7 @@ namespace Exoduser.UnityPort.Vfx
         int flashBorn=-1000;float flashPeak;Color flashColor;
         public float FlashAlpha(int tick){return Mathf.Max(0,flashPeak-Mathf.Max(0,tick-flashBorn)*.08f);}
         public void Flash(FeedbackEvent e){
+            if(e.Kind==FeedbackKind.Parry&&!e.MeleeParry)return;
             if(e.Kind!=FeedbackKind.Parry&&!e.VisualOnly)return;
             float strength=e.Kind==FeedbackKind.Parry?.25f:e.IsBoss?.2f:.1f;
             flashPeak=Mathf.Min(.5f,FlashAlpha(e.Tick)+strength*.5f);flashBorn=e.Tick;flashColor=e.Kind==FeedbackKind.Parry?ParryColor(e):ElementColor(e.Element);
