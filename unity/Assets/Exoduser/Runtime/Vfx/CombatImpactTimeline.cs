@@ -85,14 +85,14 @@ namespace Exoduser.UnityPort.Vfx
                     result.Add(Boom("Ice_ImpactIce_Sheet_water",72,96*3,12));
                     var mist=Boom("Ice_MistSmoke_FBF_4x4_water",72,96*3.4);mist.Delay=3;mist.Life=69;mist.Opacity=.6;result.Add(mist);
                 }else if(e.SampleKey=="rainbow") {
-                    string[] sheets={"Poison_MediumImpact","Dark_DarkSmoke_FBF_4x4","Light_ImpactLight_Sheet","Ice_ImpactIce_Sheet"};
+                    string[] sheets={"Poison_MediumImpact_pal","Dark_DarkSmoke_FBF_4x4","Light_ImpactLight_Sheet","Ice_ImpactIce_Sheet_pal"};
                     for(int i=0;i<4;i++){var c=Boom(sheets[i],72,80*(2.8+i*.3));c.Additive=true;c.Delay=(int)Math.Round(72*i*.03);c.Life=72-c.Delay;c.Angle=i*Math.PI*.5;c.Opacity=1-i*.15;result.Add(c);}
                 }else if(e.Step!=1&&e.Source=="physicalProjectile")result.Add(Boom("Fire_ImpactFire_Sheet",12,60*3,4,true));
                 // Other bullet parries: warm line sparks only (CombatParryPresentation). The web's dark02 purple star and the
                 // three yellow lightning sheets read as an element hit, not a parry (user 11-03 "패링구현이 엉망").
             }else if(e.VisualOnly&&(e.Kind==FeedbackKind.EnemyHit||e.Kind==FeedbackKind.EnemyCrit||e.Kind==FeedbackKind.BossHit)) {
                 int el=e.Element;bool hasElement=el>=0&&el<=5;
-                result.Add(new CombatClip{Sheet=hasElement?"impact_el"+el+(e.IsBoss?"_boss_sheet":"_sheet"):"impact_basic_sheet",Fallback="impact_basic_sheet",Cols=e.IsBoss&&hasElement?16:9,Rows=1,Frames=e.IsBoss&&hasElement?16:9,Life=16,Scale=e.IsBoss?2.5:1,Mode=CombatClipMode.Impact,Additive=true});
+                result.Add(new CombatClip{Sheet=hasElement?"impact_el"+el+(e.IsBoss?"_boss_sheet_v2":"_sheet_v2"):"impact_basic_sheet",Fallback="impact_basic_sheet",Cols=e.IsBoss&&hasElement?16:9,Rows=1,Frames=e.IsBoss&&hasElement?16:9,Life=16,Scale=e.IsBoss?2.5:1,Mode=CombatClipMode.Impact,Additive=true});
                 if(el==4){var c=Flip("boss/vfx_holy_burst",3,3,e.IsBoss?.18:.1,0,3);c.Mode=CombatClipMode.Electric;result.Add(c);}
                 else{var c=Flip("impact_basic_sheet",9,1,e.IsBoss?.7:.4,0,3);c.FrameTicks=2.4;c.Life=22;c.Mode=CombatClipMode.SlashBurst;result.Add(c);}
                 bool heavy=e.Kind==FeedbackKind.EnemyCrit||e.Kind==FeedbackKind.BossHit||e.IsBoss;
