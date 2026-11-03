@@ -1,3 +1,8 @@
+## 2026-11-03 A2R 22:30 병합본 전달
+
+- 4895bf9c6 Windows 공용 빌드/일반 로비→Core 캠프 스모크 PASS, live rigpixel 확인. 추가 병합/런타임/원화/액터 코드 변경0.
+- A2R 바로가기: rigpixel 영수증 검증 + --hero-render=rigpixel + 격리 세이브, 후보 Description 정확화. 같은 자리 1e4841030 비교판, 시각 RETOUCH/맵 총괄 판정 대기.
+
 2026-11-03 21:50 Unity 직렬화 근본 정리: guid만 있던 .meta 854개를 Unity 6000.6.7f1이 만든 전체 importer 설정으로, 손으로 쓴 a2 재질 29개를 URP 정식 직렬화(AssetVersion 10)로, URP_PC_High·Mac_Balanced·GlobalSettings와 FirstPlayable.unity를 커밋. 빠졌던 추적 에셋·폴더 .meta 56개와 ProjectSettings/SceneTemplateSettings.json 추가(작업본마다 guid가 달라지던 결함). 원본=BuildLoop 작업본 cb77ca96f 빌드 산출물, 그 사이 위에서 고친 button_iron.png.meta는 커밋본 유지. BuildLoop는 작업본 사본이 새 커밋과 같은 내용이면 스테이징 후 갱신. 문서 unity/Tools/devtools/buildloop/README.md.
 
 2026-11-03 20:45 지시 2_3 사실 동기화: 무지개 반사×1.5·AoE0 폴백(기본 반경100/중심×1.5)과 Unity A안 보상 분리를 main·G2 브랜치와 같은 본문으로 동기화. 구현 커밋 f6ff63e333d6b6a15aeac28ef3b824eb22f3b223는 codex/unity-parry-g2-20261103에 있으며 Mac 검수·총괄 병합 대기다. 이 커밋은 docs 2개뿐이며 게임 코드는 변경하지 않는다.

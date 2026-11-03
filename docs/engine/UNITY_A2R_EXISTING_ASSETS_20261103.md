@@ -161,3 +161,12 @@ Resources/Shaders/HellHeightFog.shader의16step전체화면적분은RenderSettin
 | 5 | 별도림alpha .36→.50(1.5screen px), 발밑광반경=보이는영웅world폭*1.3. rigpixel은렌더된RT/mesh와실제layer30몸체bounds를읽는A2R표현adapter로만대응 | 영웅텍셀·rig-pixel코드수정0 |
 
 1~5를이전1e4841030위에먼저체크포인트하고,21:55지시대로최신origin/unity/main정상병합. 충돌시멈추고보고한다. 새후보는--hero-render=rigpixel로빌드스모크/바로가기/영웅1x·3x촬영. 수정후검증전상태이므로시각PASS아님.
+
+## 22:30 병합본 4895bf9c6 재검증
+
+- 병합 완료 상태를 그대로 빌드했다. 추가 병합 없음. 빌드 원본은 4895bf9c6b4300aca7ec7515ecc4237ed405b612이며 이 전달 커밋은 바로가기 도구·문서만 바꾼다. 구도·34° 카메라·Core·원화·rigpixel 코드는 수정하지 않았다.
+- 공용 실행기 build 0f81de48 오류0, Player 34848254 exit0/window0/실제 세이브 변경0/잔여 프로세스0. 일반 로비8경계→캠프1829ticks, 정체0/본 도보 순간이동0. 다리 보조 pose1회는 별도다.
+- --hero-render=rigpixel 및 heroFrame=rigpixel live Point RT 확인. 겹침 정렬30/peak39, nearest320969pixels/35draws. 캠프3초110.1FPS는 해당 장면 한정이다.
+- 바로가기 도구는 현재 영수증의 live rigpixel을 확인하고 같은 플래그·격리 세이브·무음을 넣는다. 일반 사용자 실행에는 스모크/자동 종료 인자가 없다.
+- 증명: I:/EXODUSER-Storage/map25d/a2redesign/proof-a2r-4895bf9c6-vs-1e4841030.png. 실제 이전 캡처와 캠프·다리1920/3840 및 끝1x·마른 바닥3x·늪1x·밀집 영웅1x/3x를 비교했다. 같은 캠프 Core 도착점이며 전투 시각/적 위치는 다르다.
+- 자가 화면 판정 RETOUCH: 끝 거목의 큰 면적, 마른 바닥 회청 반점, 늪의 물 읽힘이 남는다. 시각 PASS나 Mac/Metal 검증 완료로 표시하지 않는다. 22:30 지시에 따라 병합본을 사용자 후보로 전달하고 맵 총괄 판정을 기다린다.
