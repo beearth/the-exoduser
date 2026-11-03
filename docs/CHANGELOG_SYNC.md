@@ -57390,3 +57390,5 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 
 
 2026-11-03 PC UI-PARITY 20:20 Mac FAIL 후속: 정리된 CLAUDE7bc7a3518 재독·docs 정본 unity/main·공통d6c5bb89 정상 병합. 실패 SHA에는 새 분해/일시정지febeb55b2가 없으며 상위 라벨3파일은 이전 검수본과 diff0임을 확인했다. NativeUiAudit를 public GUIStyle cursor+같은 TextCore의 실제 행 좌표로 바꾸고, 키 목록 무자간 문자열은 한 번 조판한다. 실제 OnGUI의 GUI.Button 경계에서 local Event를 주입하며 inside/disabled/clicked·hotControl·반복 프레임을 기록한다. 입력 PASS와 수집 API 준비를 구분한다. scroll-ink ROI/임계값은 유지하고 새 metric 증명을 필수 조건에 추가했다. 설치 DLL PE 메타데이터의 필수 API 존재를 확인했으며 네이티브 실행 증거와 구분한다. PC 컴파일 후 Mac 실제 판정 대기. [범위·원인·수치](engine/UNITY_UI_OVERLAP_20261030.md#2026-11-03-2020-mac-fail--g0g1-원인-확정).
+
+20:20 후속 PC 컴파일: 공통b04ddd73b 병합본(fe236a8bc)의 Core121/Runtime249 최종 exit0·오류0. 내부 GUI 픽셀 배율 속성 직접 접근2개 CS0117을 캐시한 PropertyInfo로 고치고 Runtime만 다시 확인했다. 경고531건은 별도다. 설치 DLL8타입 API 메타데이터 확인, 새 Mac UI/입력/잉크 미검증 유지.

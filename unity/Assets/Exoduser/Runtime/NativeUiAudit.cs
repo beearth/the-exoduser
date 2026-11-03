@@ -170,6 +170,8 @@ namespace Exoduser.UnityPort
         // GUIStyle's native offset is only one part of TextCore placement.
         // Read the same aligned/wrapped line data as the renderer; the public
         // cursor API supplies its native origin, clipping offset and rounding.
+        static readonly PropertyInfo pixelDensity=typeof(GUIUtility).GetProperty("pixelsPerPoint",BindingFlags.Static|BindingFlags.Public|BindingFlags.NonPublic);
+        static float TextPixelDensity=>pixelDensity==null?throw new NotSupportedException("GUI pixel density unavailable"):(float)pixelDensity.GetValue(null);
         static readonly Type imguiTextHandle=typeof(GUIStyle).Assembly.GetType("UnityEngine.IMGUITextHandle");
         static readonly MethodInfo getTextHandle=imguiTextHandle?.GetMethod("GetTextHandle",BindingFlags.Static|BindingFlags.NonPublic,null,new[]{typeof(GUIStyle),typeof(Rect),typeof(string),typeof(Color32),typeof(bool)},null);
         static readonly PropertyInfo textInfoProperty=imguiTextHandle?.BaseType?.GetProperty("textInfo",BindingFlags.Instance|BindingFlags.NonPublic);
@@ -190,7 +192,7 @@ namespace Exoduser.UnityPort
             if((bool)advancedTextProperty.GetValue(handle))throw new NotSupportedException("Advanced Text needs its own verified audit metric reader");
             object info=textInfoProperty.GetValue(handle);var lines=(Array)linesField.GetValue(info);var characters=(Array)charactersField.GetValue(info);int count=(int)lineCountField.GetValue(info);
             if(count==0||characters.Length==0)throw new InvalidOperationException("Visible text produced no TextCore line metrics");
-            float density=GUIUtility.pixelsPerPoint;if(!(density>0))throw new InvalidOperationException("Invalid GUI pixel density");
+            float density=TextPixelDensity;if(!(density>0))throw new InvalidOperationException("Invalid GUI pixel density");
             object firstLine=lines.GetValue(0),firstChar=characters.GetValue(0);
             var localCursor=new Vector2((float)charOriginField.GetValue(firstChar)/density,inner.height-(float)descenderField.GetValue(firstLine)/density);
             Vector2 nativeOrigin=caret-localCursor+new Vector2(0,style.lineHeight);
@@ -214,7 +216,7 @@ namespace Exoduser.UnityPort
             Color ink=style.normal.textColor;
             Color actualInk=ink*GUI.color*GUI.contentColor;
             var e=Record(inkRect,"text",content.text,source+(DrawingTextShadow?" / 명시 CSS text-shadow 광휘 패스"+(DrawingTextShadowProfile==null?"":" / "+DrawingTextShadowProfile):""),DrawingTextShadow||(actualInk.r<.001f&&actualInk.g<.001f&&actualInk.b<.001f));
-            if(e!=null){e.textLayoutRect=ScreenRect(rect);e.textAlignment=style.alignment.ToString();e.textFont=style.font==null?"GUI default":style.font.name;e.textFontSize=style.fontSize;e.textWordWrap=style.wordWrap;e.textPixelsPerPoint=GUIUtility.pixelsPerPoint;e.metricProof="GUIStyle.GetCursorPixelPosition + IMGUITextHandle aligned/wrapped line origin/xAdvance/ascender/descender + actual GUI clip";e.opacityKnown=true;e.effectiveOpacity=GUI.color.a*GUI.contentColor.a*ink.a;e.opacityProof="GUI.color × GUI.contentColor × 실제 글자색 알파";}
+            if(e!=null){e.textLayoutRect=ScreenRect(rect);e.textAlignment=style.alignment.ToString();e.textFont=style.font==null?"GUI default":style.font.name;e.textFontSize=style.fontSize;e.textWordWrap=style.wordWrap;e.textPixelsPerPoint=TextPixelDensity;e.metricProof="GUIStyle.GetCursorPixelPosition + IMGUITextHandle aligned/wrapped line origin/xAdvance/ascender/descender + actual GUI clip";e.opacityKnown=true;e.effectiveOpacity=GUI.color.a*GUI.contentColor.a*ink.a;e.opacityProof="GUI.color × GUI.contentColor × 실제 글자색 알파";}
         }
         internal static void Save(string path,string page,string language)
         {

@@ -274,3 +274,5 @@ PC 최종 후보: 추가 공통9dc27dea5 병합 d746ea4b6에서 Core121/Runtime2
 | 잉크 | 고정 ROI623/388은 유지한다. 감사 좌표를 고치고 새 metricProof와 기존 엄격한 포함 조건을 함께 요구한다 |
 
 19:00절의 Event.QueueEvent는 실패 이력이다. PC에서는 컴파일까지만 하고, Mac 새 정식 패키지의 M1·1410장 issue0·scroll-ink4/4·이름 입력5해상도 PASS로 판정한다.
+
+PC 확인: 공통b04ddd73b까지 정상 병합(fe236a8bc). Core121/Runtime249 최종 컴파일 exit0·오류0, Runtime 경고531. 내부 pixel density 접근2개 컴파일 오류를 PropertyInfo 경로로 수정한 뒤 Runtime만 재확인했다. 새 Mac 입력·겹침·잉크는 미검증이다.

@@ -434,6 +434,8 @@ PC 확인: 최초 공통 cbdcbc282(병합7dc05359c) 이후 추가9dc27dea5도 �
 | 실제 버튼 | NativeUiAudit.Button이 실제 GUI.Button 직전에만 sandbox/overlap run의 대기 이벤트를 주입. 실제NativeLobby.OnGUI Layout에서만·한 프레임1회·현재 생성 버튼 Rect/matrix 일치 때 적용. root→screen→현재GUI 역변환 뒤주입,호출 뒤 원래event복구. down/up은 다른 실제 프레임,hotControl은 읽기만 함 |
 | 입력 증명 | events: serial/frame/type/loopPhase/root·local좌표/실제button/inside/enabled/Used/clicked/hotControl전후. onGuiSamples: 대기중 최근64회 실제 Layout/Repaint·hotControl·입력차단 상태. lockedBlocked는 실제 내부hit의 disabled down/up2개와단계1 유지 필요. nameOpened 단계2+실제 mouse-up GUI.Button clicked가 함께 있어야PASS |
 | scroll-ink | ROI623/388과분류·밀도·24px위치제한·2px표본halo·실제rect무패딩 포함조건 불변. 새 GUIStyle.GetCursorPixelPosition/IMGUITextHandle metricProof도 productionPassed 필수조건으로 추가(종전표시만하던조건을필수로강화). ROI를잘못된583/364에옮기지않음 |
-| 설치 API 확인 | .NET Framework ReflectionOnly 형식 로드는 netstandard 참조 문제로2회실패,반복중단. PE metadata reader로 바꿔 설치Unity6000.6.7f1의7타입/필수메서드·행필드·GUIContent속성 존재 확인. Unity어셈블리/네이티브실행0이며 Mac 런타임 PASS 아님 |
+| 설치 API 확인 | .NET Framework ReflectionOnly 형식 로드는 netstandard 참조 문제로2회실패,반복중단. PE metadata reader로 바꿔 설치Unity6000.6.7f1의8타입/필수메서드·행필드·GUIContent·GUIUtility속성 존재 확인. Unity어셈블리/네이티브실행0이며 Mac 런타임 PASS 아님 |
 
 Mac 다음 증거는 overlap-summary.json, 실제_마우스_역변환.json와 남은 각유형/상위출처의 a/b rect·textLayoutRect·metricProof·font·alignment 표본5개를짧은 JSON으로남긴다. 원본전체1.4GB보고서를복제하거나,PNG만남겨다음원인추적을막지않는다. 새1410장/9103→0/입력5/5/잉크4/4는PC에서판정하지않는다.
+
+PC 컴파일 결과: 추가 공통b04ddd73b를fe236a8bc로 정상 병합한 뒤 Core121개 소스 exit0. 최초 Runtime은 내부 GUIUtility.pixelsPerPoint를 직접 접근한2개 CS0117로 실패했다. 설치 DLL의 해당 내부 속성을 캐시한 PropertyInfo로 읽도록 고치고, 불변 Core를 반복하지 않고 Runtime249개만 다시 컴파일해 exit0·오류0을 확인했다. Runtime 경고531건은 남아 있으며 경고0이라고 보고하지 않는다. 설치 DLL8타입의 필수 API 존재를 PE 메타데이터로 확인했다. 이는 Mac 런타임·UI 통과 증거가 아니다.

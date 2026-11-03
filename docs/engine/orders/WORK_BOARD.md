@@ -2,7 +2,7 @@
 
 | 담당 | 목표 | 소유 파일 | 상태 |
 |---|---|---|---|
-| codex/unity-parity-1102 | 20:20 Mac FAIL: 이름 입력·9103건·보관함 잉크 | NativeLobby.cs, NativeUiAudit.cs, NativeKeyBindList.cs, NativeGame.UiOverlapCapture.cs, scroll-ink.py, 관련 UI 문서·CHANGELOG_SYNC 자기 절 | 규칙7bc7a3518 재독·최신 공통d6c5bb89 병합(8eabd14ec). 계측의 TextCore 정렬 누락 추적, PC 컴파일까지만. Mac 실제 판정 대기 |
+| codex/unity-parity-1102 | 20:20 Mac FAIL: 이름 입력·9103건·보관함 잉크 | NativeLobby.cs, NativeUiAudit.cs, NativeKeyBindList.cs, NativeGame.UiOverlapCapture.cs, scroll-ink.py, 관련 UI 문서·CHANGELOG_SYNC 자기 절 | 규칙7bc7a3518 재독·공통b04ddd73b까지 정상 병합(fe236a8bc). Core121/Runtime249 최종 컴파일 오류0. 이름5/5·교차9103→0·잉크4/4는 Mac 재검수 대기 |
 
 ## 2026-10-29 Mac 첫 연습 실입력 후속
 
