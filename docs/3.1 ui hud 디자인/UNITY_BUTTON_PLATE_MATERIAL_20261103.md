@@ -40,3 +40,16 @@ GUID·sRGB·기존 원화/크기·압축의 나머지 설정은 유지한다. Ma
 - 원화 복구7cdce2032dcc42c07749a23c91d3ddcbec5121f3에 origin/unity/main 4d336665a4e617a2097b92c8e3551deccbf4645d를 정상 병합했다. SilverCharacter 충돌은 TrackQaNameButton(create)를 보존하면서 visual_cancel/create/disabled 원화를 유지했다. CharacterPresentation의 이름 버튼 검수 추적, NativeLobby/TitleMenu의 스토리·겹침 수정은 상대 변경 그대로다.
 - ENTER·밝기1.0 원화9-slice·슬롯 카드·생성/이름 원화·레일 테두리와11종 밉맵OFF를 보존했다. CHANGELOG는 줄바꿈을 맞춰3-way 병합하고21:25/23:05 원화 이력과 최신 공통 기록을 모두 보존했다.
 - 병합 소스 PC DLL 참조 Roslyn 컴파일1회: Player Core126/Runtime264, Editor Core126/Runtime264/Editor59,5어셈블리 오류0. 소스 계약 확인PASS. Unity 에디터/Player/빌드/게임 캡처0, 실제 Mac 시각 판정은 대기. CTO가 자기 브랜치를 fast-forward로 통합한다.
+
+## 11-04 01:00 importer 강제 밉맵 수정
+
+- 원인: SourceTextureImporter 버전3의 광범위 /ui/ 분기가 meta의 밉맵OFF/Bilinear를 임포트 시 true/Trilinear로 덮어썼다. meta만 고친7cd/eaf의11종 설정으로는 런타임을 보장하지 못했다.
+- 정책 정본은 SourceTextureImporter.OriginalUiNoMipmaps이다. silver_hell 하위 btn_*, lobby_enter_*, visual_*, name_*, panel_frame*, panel_corner*, guide_button_glow에만 밉맵OFF/Bilinear를 적용한다(현재15종). 다른 UI·skill_icons·player/enemy·a2·TitleSignboard 분기는 그대로다. 버전4로 올려 이전 캐시의 규칙도 갱신한다.
+- 기존11종 meta는OFF/1 그대로다. name_input/name_panel/panel_corner_0/panel_corner_1의4 meta를OFF/1로 맞췄다. PNG/밝기1.0/원화9-slice/슬롯/레일 구현 변경0.
+- PC: 실제 importer 분기/대입 의미를 실행하는 importer.test.cjs38검사PASS, DLL 참조 컴파일1회 Core126/Runtime264/Editor60의5어셈블리 오류0. Unity import/Player/빌드0. 문구 착수분2e5a64b927과 별도 브랜치 codex/unity-ui-mipmap-20261104로 분리.
+- Mac: SilverUiImportCheck.Run은15종을2회 강제 재임포트해 Texture2D.mipmapCount==1, importer OFF/Bilinear, 임포트 전/1회/2회 meta 완전일치를 silver-ui-import.json에 기록한다. 같은 SHA Player의 기존 --unity-death-ui-smoke로 실제 Resources11종 mipCount=1도 확인한다. 실제 Mac import/런타임/시각 증거는 아직 대기다.
+
+~~~zsh
+"$UNITY" -batchmode -nographics -quit -projectPath "$PROJECT/unity" -executeMethod SilverUiImportCheck.Run -output "$OUT" -logFile "$OUT/import.log"
+git status --porcelain -- unity/Assets/Exoduser/Resources/Art/ui/silver_hell
+~~~

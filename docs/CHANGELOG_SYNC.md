@@ -57850,3 +57850,5 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 - 최종공통 f146df2b29e98ecac7fdd03e08c888b07d3f7a8d 포함. 최초8c 검사 중 패링/기검참 소스가8e로 전진해 추가병합·최종소스579d081d696660c87509be2f1c19c39ca8d4a9e1을1회 추가검사(전체2입력/동일소스반복0). 공용ec46a2a7 exit0/C#0/shader3/USER_SAVE0, 실행15206ms/wall167270ms, 종료Curl42 1건. 이후f146은기획docs3개뿐이며최종Unity파일차이0. 메타1개만자기checkpoint복원, 외부guard/미추적7보존. 사용자명시승인으로CTO즉시FF 인수대상, 시각/실행본교체미확인.
 
 2026-11-03 로비 원화 최신공통 통합 인계: 원화 복구7cdce2032d에 origin/unity/main 4d336665a4를 정상 병합. SilverCharacter의 이름 버튼 QA 추적과 상대 스토리/UI겹침 수정, 디자인총괄23:05 다섯 원화 항목·밝기1.0·11종 밉맵OFF를 함께 보존. docs 양쪽 기록 보존. PC DLL 참조 컴파일1회5어셈블리 오류0·소스 계약PASS, PC Player0·Mac 실제시각대기. [원화 계약](3.1%20ui%20hud%20디자인/UNITY_BUTTON_PLATE_MATERIAL_20261103.md).
+
+2026-11-04 01:00 원화 버튼 밉맵 긴급: SourceTextureImporter /ui/ 강제ON 원인을 고쳤다. 정책 정본 OriginalUiNoMipmaps로 실버 헬 판/버튼/프레임15종만OFF/Bilinear,4meta 동기화·버전4. 다른 UI·캐릭터·지형 규칙 보존.38회귀PASS·PC DLL참조1회5어셈블리 오류0, Unity import/Player0. Mac 재임포트2회 meta불변/loaded mip1 검수 메서드 준비, 실제 검수 대기. 문구 착수2e5a64b927과 분리. [원화 계약](3.1%20ui%20hud%20디자인/UNITY_BUTTON_PLATE_MATERIAL_20261103.md).
