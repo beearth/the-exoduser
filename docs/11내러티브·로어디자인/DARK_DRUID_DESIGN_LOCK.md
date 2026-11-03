@@ -1,7 +1,7 @@
 # 다크드루이드(1-1 si0 · 1-4 si3) 디자인 고정 — DESIGN LOCK v0.4
 
 > 2026-10-29 사용자 체형 교정이 최우선이며 §16이 이전 PASS보다 우선한다.
-> 2026-11-03 v0.5 초안: §17(1-1 첫 보스 껍질 층 추가, 디자인총괄 판정 대기). 노인 사양 §1~§16은 그대로다.
+> 2026-11-03 **v0.5 PASS**(디자인총괄): §17 1-1 첫 보스 껍질 층 추가. D5 발광은 탁한 호박색(§5·§17.5)이고 황록은 독 VFX 전용이다. 노인 사양 §1~§16은 발광색 외에는 그대로다.
 > 작성: 2026-10-28, 보스 3D 제작 세션(보스전 총괄 지시, 보스 보드 §8.3 ⓪). **디자인총괄 조건부 PASS(2026-10-28, 수정 1건 반영해 v0.2).** ① 시트 진행 가능.
 > 목적: Unity 3D 리메이크(RM-B1·RM-B4)의 모델·시트·리깅·애니메이션이 모두 같은 인물을 만들도록 외형을 한 곳에 고정한다.
 > 규칙(CLAUDE.md 작업물 퀄리티 7·8항): 같은 캐릭터는 모든 이미지에서 얼굴 문양·장신구·갑옷·머리가 동일하다. **점(잔점·점묘·디더링·반짝이 점)과 네온은 어디에도 없다.**
@@ -14,7 +14,7 @@
 | D2 | 인물 | 늙은 숲지기. **사슴 두개골 가면** 아래로 늙은 남자의 아래 얼굴(턱수염·얇은 입)과 눈이 보인다 | §1, 메모 "악역도 매력적으로" |
 | D3 | 얼굴 문양 | 가면 이마 정중앙 **"매듭 인장" 1개**(고리 + 뿌리 세 갈래). 그 외 얼굴 문양 없음 | §2 |
 | D4 | 비율 | **현행: 정수리 2.30m / 뿔 끝 2.70m, 가면 기준 9.2등신, 좁고 꺼진 몸통.** 2026-10-28의 7.9등신·넓은 어깨는 §16 사용자 교정으로 폐기. Humanoid 리그 호환은 유지 | §4, §16 |
-| D5 | 발광 | 두 군데뿐: 지팡이 랜턴, 가슴뼈 틈. **색상각 55~68°(병든 황록)**, 웹의 순연두(≈90°)는 쓰지 않는다 | §5 |
+| D5 | 발광 | 가슴 틈·가슴 창, 랜턴 속 구슬, 눈만. **탁한 호박색 색상각 25~35°**(v0.5, 디자인총괄 11-03 PASS). 중심 `#d49a5c` / 몸통 `#a8642a` / 가장자리 `#5a3418`. 황록(55~120°)은 독 VFX 전용 | §5, §17.5 |
 | D6 | 목숨별 몸 | 같은 모델 한 벌. 100/85/70%는 코드 스케일. 지팡이도 같이 스케일 | §7 |
 | D7 | 키 값 | `height_meters` = **2.70**(뿔 끝 포함 바운딩 박스 기준) | §4, §9 |
 
@@ -34,7 +34,7 @@
 |---|---|---|
 | **가면** | 뼈색 **사슴 두개골 가면**이 이마~콧등을 덮는다. 눈구멍 2개, 코뼈는 길고 가늘다. 어두운 윤기 없는 뼈색(#b9ad90 계열), 표면에 가는 금과 이끼 한 줌(왼쪽 광대뼈 아래 1곳) | `weathered deer-skull mask covering forehead to nose bridge, dull aged bone, matte` |
 | **얼굴 아래** | 마른 늙은 남자의 아래 얼굴: 각진 턱선, 깊은 볼, **얇게 다문 입**. 피부는 잿빛이 도는 창백한 올리브(얼룩·문양·흉터 없음) | `gaunt aged man's lower face, sharp jaw, thin closed lips, ashen pale skin, clean, no scars no marks` |
-| **눈** | 가면 눈구멍 안, **좁고 차분한 눈**. 홍채는 탁한 올리브(색상각 ≈60°)로 아주 약하게만 빛난다. 눈꼬리가 처졌다 | `narrow calm eyes inside the mask sockets, dull olive irises, faint glow` |
+| **눈** | 가면 눈구멍 안, **좁고 차분한 눈**. 홍채는 탁한 호박색(색상각 25~35°, 가장자리색 `#5a3418` 쪽)으로 아주 약하게만 빛난다(v0.5). 눈꼬리가 처졌다 | `narrow calm eyes inside the mask sockets, dull smoky amber irises, very faint glow` |
 | **수염** | 길고 가는 잿빛 흰 수염, 끝을 **뼈 고리 1개**로 묶음. 가슴 중앙까지 | `long thin ash-grey beard tied with one small bone ring` |
 | **머리카락** | 가면 뒤에서 어깨까지 늘어진 **뻣뻣한 잿흑색 긴 머리**(가닥은 굵게 뭉쳐서, 잔 가닥·반짝임 없음) | `long lank ash-black hair in thick heavy strands` |
 | **뿔(가지뿔)** | 가면 위에서 자란 **마른 나무 가지뿔 1벌**, 좌우 주가지 2개, 가지는 한쪽 5개 안팎. **가지 굵기 2cm 이상**(메시화 때 끊기지 않게). 폭 1.3m, 이마 위로 0.5m. 좌우 비대칭 가지 모양은 허용하되 이 LOCK 시트의 모양 그대로 고정한다. 이끼 늘어짐은 굵은 가닥 6개 이하 | `one set of dry bark-brown branching antlers, thick tines, span 1.3 m, at most six hanging moss strands` |
@@ -78,7 +78,7 @@
 | 전체 길이 | **2.30m**(정수리보다 길고 뿔 끝보다 짧음) |
 | 쥐는 위치 | 끝에서 **0.85m**, 가죽 감개 20cm. 감개 위쪽에 **작은 새 두개골 1개**(지름 8cm) |
 | 몸통 | 꼬인 나무뿌리, 지름 4cm, 어두운 껍질색 |
-| 머리 | **뿌리 발톱 케이지**(높이 0.40m): 가는 뿌리 5~6가닥이 **랜턴 구슬**(지름 16cm, 황록 발광)을 감싸 쥔다. 구슬은 케이지 안쪽에 박혀 땅에 직접 닿지 않는다 |
+| 머리 | **뿌리 발톱 케이지**(높이 0.40m): 가는 뿌리 5~6가닥이 **랜턴 구슬**(지름 16cm, 탁한 호박색 발광 — v0.5)을 감싸 쥔다. 구슬은 케이지 안쪽에 박혀 땅에 직접 닿지 않는다 |
 | 밑동 | 뼈 마개를 씌운 뭉툭한 끝 |
 | **내려찍기 접촉부** | 케이지 **아랫면**(뿌리 발톱). 구슬은 닿지 않음 |
 | Core 대응 | RM-B1 §8.4 `TipX/TipY` = 몸 반지름 + 70은 **초기값**이다. 3D에서는 케이지 접촉점이 발동 첫 프레임에 이 점에 오도록 ④ 이후 손질한다(LOCK은 기하만 정한다) |
@@ -111,9 +111,17 @@ Meshy 인간형 리그(뼈 24개, **손가락 뼈 없음**)에 맞게 **형태 �
 | BARK | `#4a3826`(밝은 면 `#5c4733`) | 뿔·팔·정강이·지팡이 | 무광, 거칠기 0.85, 결은 세로 방향 큰 홈 |
 | MOSS | `#36421f` | 이끼 | 탁함. 원색 초록 금지 |
 | CLOTH | `#26211d`, 룬 `#6b4a2a` | 앞 자락 | 무광 |
-| GLOW | **`#9ea83a`**(색상각 ≈65°, 병든 황록) | 지팡이 랜턴, 가슴뼈 틈, 눈 | 발광. 아래 규칙 |
+| GLOW | **탁한 호박색**(v0.5): 중심 `#d49a5c` / 몸통 `#a8642a` / 가장자리 `#5a3418`, 색상각 25~35° | 가슴 틈·가슴 창, 랜턴 속 구슬, 눈 | 발광. 아래 규칙 |
+| POISON_VFX | `#9ea83a`(≈65°) — **v0.4 보스 GLOW를 독 VFX 기준색으로 옮김** | 보스 몸에는 쓰지 않음. 독 예고·독액·포자 VFX 기준 | VFX 전용 |
 
-- **발광은 두 곳 + 눈**: 랜턴(지름 16cm), 가슴뼈 틈(손바닥 크기), 눈(아주 약하게). 한 화면에서 발광 픽셀 합계 0.5% 이하(아트 바이블 V6). **색상각 55~68°, 75° 이상 금지**: 게임 독 VFX는 순녹색(88~120°)이라 보스 발광이 독 탄·독 장판과 겹치면 "피해야 하는 범위" 신호가 흐려진다(아트 바이블 V1 §6).
+- **v0.5 발광 규칙(디자인총괄 11-03 PASS, 이전 황록 규칙 대체)**:
+  - 위치: 가슴 틈·가슴 창, 랜턴 속 구슬, 눈(아주 약하게)만. 한 화면 발광 픽셀 합계 0.5% 이하(아트 바이블 V6).
+  - 색: 탁한 호박색 색상각 25~35°. 순주황·네온·노랑 하이라이트는 금지한다.
+  - 금속·장식(랜턴 테·케이지)은 껍질색으로 둔다. 금·황동으로 읽히면 안 된다.
+  - 채도·밝기는 플레이어 화염 스킬보다 한 단계 낮다.
+  - 이유: 1-1 경기장이 황록 독 늪이라 보스가 황록이면 독 예고와 묻힌다. 서사로도 빌린 수명 = 나무 진(호박)이다.
+  - 황록(55~120°)은 독 예고·독액·포자 VFX 전용이다. 추적지뢰는 진홍 결계진을 유지한다.
+- (v0.4 기록) 발광은 색상각 55~68° 병든 황록 `#9ea83a`였다. v0.5에서 보스 발광은 위 호박색으로 대체했고, 이 색은 독 VFX 기준색으로 옮겼다.
   - **웹 원본과 다른 점**: 웹 스프라이트의 발광은 순연두(≈90°)다. 3D에서는 위 색으로 바꾼다. 디자인총괄이 뒤집을 수 있다(§10 열린 질문 1).
 - 금속은 하이라이트를 중성으로(L-8). 보스는 Hero Light 레이어를 쓰지 않는다(보스 보드 §8.3). 웅덩이 테두리 Fresnel `CharacterLit_PoolRim`은 쓴다.
 - **재질에 새기는 디테일**(깔끔해도 디테일이 산다): 깃털은 하나하나 중심맥이 보이는 큰 형태, 뼈는 가는 금과 풍화, 껍질은 세로 홈. 점으로 읽히는 질감 대신 **선·면의 요철**로 낸다.
@@ -167,7 +175,7 @@ Character model sheet for a 3D game boss. The SAME cursed druid in four orthogra
 
 He is an elongated, starved, cursed forest keeper, a monster rather than a warrior. Total height including antlers 2.70 m; crown 2.30 m; small 0.25 m deer-skull mask, roughly 9.2 heads to the crown. Narrow 0.44 m body, drooping feather shroud no wider than 0.70 m; the antlers remain about 1.3 m wide, making the head unnaturally dominant. Hollow abdomen, sunken sternum and sharply protruding ribs; thin bark grown BETWEEN the ribs. Long twig-like forearms and fused hooked fingers hang to just above the knees. Stick-thin uneven shins and small fused bird-claw feet. The body looks barely held together by roots and borrowed life.
 
-Weathered deer-skull mask over the brow and nose; gaunt old man lower face and thin shut lips visible underneath. One carved forehead knot-sigil: a closed ring pierced by a three-pronged root, no glow. Long ash-black hair and tied beard with one bone ring. Raven feathers hang down in a narrow, uneven, rotting shroud from sloping shoulders to mid-calf, open at the front. No proud shoulder mantle. One small deer skull at the belt, three bone beads, one narrow front cloth panel with the same knot-sigil. Left arm has a frayed sleeve and thin bark bracer; right arm is bare bark-grain skin. One faint sickly olive glow in the sternum slit, otherwise matte dark blue-black and dead brown.
+Weathered deer-skull mask over the brow and nose; gaunt old man lower face and thin shut lips visible underneath. One carved forehead knot-sigil: a closed ring pierced by a three-pronged root, no glow. Long ash-black hair and tied beard with one bone ring. Raven feathers hang down in a narrow, uneven, rotting shroud from sloping shoulders to mid-calf, open at the front. No proud shoulder mantle. One small deer skull at the belt, three bone beads, one narrow front cloth panel with the same knot-sigil. Left arm has a frayed sleeve and thin bark bracer; right arm is bare bark-grain skin. One faint dull smoky amber glow (#a8642a core #d49a5c, never yellow, never neon, never orange) in the sternum slit, otherwise matte dark blue-black and dead brown. Lantern rims and cage are bark-colored, never gold or brass.
 
 EMPTY HANDS: no staff in this body sheet. Absolutely no heroic V-taper, broad shoulders, pectorals, biceps, thick thighs, armor plates, large boots, knight stance, polished metal, gold, dots, speckles, grain or sparkling particles.
 ```
@@ -202,7 +210,8 @@ EMPTY HANDS: no staff in this body sheet. Absolutely no heroic V-taper, broad sh
 | 2026-10-28 | **v0.2: 디자인총괄 조건부 PASS 반영** — GLOW `#a8a23a`(실제 ≈57°) → `#9ea83a`(≈65.5°) 정정, §10 판정 기록. 재판정 불필요, 시트 결과물은 1x로 다시 본다. ① 시트 진행 가능 |
 | 2026-10-28 | **v0.3: ① 시트 PASS 반영(§13)** — 인장 정본은 §2.1 유지(트리퀘트라는 생성 오차), 정본은 ④·⑤에서 디칼로 삽입, 발광은 Emission `#9ea83a`·텍스처 발광부는 중립 올리브·구슬 금빛 테 제거, 이끼 굵은 덩어리 6가닥 이하. 시트 4호출 $0.1985 |
 | 2026-10-29 | **v0.4: 사용자 체형 교정** — S1 본체·Meshy 본체/리그의 넓은 전사형 실루엣 VISUAL FAIL. 정수리 2.30m/가면 0.25m(9.2등신), 몸통 0.44m·망토 0.70m, 긴 전완·꺼진 흉곽·처진 어깨로 §4·§16 재고정. 기존 자산은 참고용 보존, 새 유료 생성 0 |
-| 2026-11-03 | **v0.5 초안(§17, 디자인총괄 판정 대기)**: 1-1 첫 보스 재기획 A안 "빌린 수명의 껍질"(CTO 채택). 노인(§1~§16)은 유지하고 5.2m 뿌리 껍질 층을 추가. 위 55° 뷰 계약(두개골+뿔 ≥20%·등 혹 ≤5%), 페이즈별 부위 탈락, P3 뿌리 팔 재성장, D5 발광은 판정 전까지 호박색 잠정. 유료 0 |
+| 2026-11-03 | **v0.5 초안(§17)**: 1-1 첫 보스 재기획 A안 "빌린 수명의 껍질"(CTO 채택). 노인(§1~§16)은 유지하고 5.2m 뿌리 껍질 층을 추가. 위 55° 뷰 계약(두개골+뿔 ≥20%·등 혹 ≤5%), 페이즈별 부위 탈락, P3 뿌리 팔 재성장, D5 발광은 판정 전까지 호박색 잠정. 유료 0 |
+| 2026-11-03 | **v0.5 PASS(디자인총괄, CTO 전달)**: §17 PASS. D5 발광 황록 → 탁한 호박색(25~35°, `#d49a5c`/`#a8642a`/`#5a3418`), 위치는 가슴 틈·창·랜턴 구슬·눈, 금속은 껍질색, 플레이어 화염보다 한 단계 낮게. `#9ea83a`는 독 VFX 기준색으로 이동. §0·§2.1·§3.1·§5·§8·§17.5 수정 |
 
 ## 13. 시트 판정과 기준 이미지
 
@@ -300,14 +309,17 @@ EMPTY HANDS: no staff in this body sheet. Absolutely no heroic V-taper, broad sh
 | P3 70% | 껍질 팔·왕관·두개골·등 혹이 떨어지고 고치가 열려 노인 상체가 일어선다. **노인 등에서 뿌리 팔 2개가 다시 자라 껍질 팔의 약 70% 크기**(CTO 동의) | 고치 안 발광 + 노인 흉골 |
 | 끝 | 껍질이 뿌리 더미로 무너지고 노인이 침강(STY-D9) | — |
 
-### 17.5 발광 D5 — 충돌과 잠정값
+### 17.5 발광 D5 — 디자인총괄 판정 PASS (2026-11-03, CTO 전달)
 
-- v0.4 D5: 병든 황록 H55~68(`#9ea83a`).
-- CTO 11-03: "노란 네온처럼 보이지 않게, 탁한 호박색·지옥불". **디자인총괄 판정 전까지 호박색으로 진행한다**(CTO 지시).
-- 잠정값: 보스(껍질·노인) 발광은 **탁한 호박색 H25~35, 채도 낮게**(시안 halo RGB 138/84/34, core 176/112/52). 황록은 독 예고·독액·포자 VFX에만 남긴다. 그러면 보스 발광과 독 위험 예고가 색으로도 갈린다.
-- 발광 위치는 D5 그대로 두 곳(지팡이 랜턴, 가슴 틈)이고 눈은 약하게. 화면 면적은 P3도 보스 실루엣의 5% 이하.
+- **§17 PASS. D5는 호박색으로 승인(조건부).** 근거: 1-1 경기장이 황록 독 늪이라 보스가 황록이면 독 예고와 묻힌다. 서사로도 빌린 수명 = 나무 진(호박)이다.
+- 색: 색상각 25~35°, 탁하게. 중심 `#d49a5c`, 몸통 `#a8642a`, 가장자리 `#5a3418`. 순주황·네온·노랑 하이라이트 금지.
+- 위치: 가슴 틈·가슴 창, 랜턴 속 구슬, 눈만. 화면 발광 픽셀 0.5% 이하(V6).
+- 금속·장식(랜턴 테·케이지)은 껍질색. 금·황동으로 읽히면 안 된다.
+- 황록(55~120°)은 독 예고·독액·포자 VFX 전용. 추적지뢰는 진홍 결계진 유지. v0.4 `#9ea83a`는 §5 `POISON_VFX` 기준색으로 옮겼다.
+- 보스 발광의 채도·밝기는 플레이어 화염 스킬보다 한 단계 낮다.
+- 반영: §0 D5·§2.1 눈·§3.1 랜턴 구슬·§5 표와 규칙·§8 시트 문구를 고쳤다. 사용자 승인 콘셉트(황록)를 로컬 색 보정한 호박 비교본은 `tmp/design-review/20261103_boss_1-1_replan/16_A_glow_amber_compare.png`이다(유료 0, 발광 픽셀 0.19%·0.15%).
 
 ### 17.6 상태
 
-- 디자인총괄 판정 대기(v0.5 확정 전). 유료 G1 시트는 사용자 승인 뒤에 만든다.
+- **v0.5 PASS(디자인총괄 11-03, D5 조건 위 17.5).** 유료 G1 시트는 사용자 승인 뒤에 만든다.
 - 회색 박스 v2: `I:/EXODUSER-Storage/boss/greybox-20261103/out_v2/boss_1-1_husk_greybox_v2.blend` (SHA-256 `79acc965562a51460f74874804e3b91b2c66c65a4fb78ea7766cae2071767e12`).
