@@ -149,3 +149,40 @@ VISUAL VERDICT: **미검증**. 이번 소스 연결을 전체 누락 연출 이�
 변경 파일은 `CombatImpactTimeline.cs`, `CombatImpactView.cs`, `unity/Tools/combat-impact-tests/Program.cs`, `run.cjs`, `tools/vfx/recolor_blood_dark.py`, 새 dark PNG/meta, 이 문서의 8개다. `tmp/design-review/vfx-blood/`에는 비교판·픽셀 검사 결과만 둔다. CHANGELOG_SYNC 인수용 초안: “U-VFX-04: 무광 dark 피 시트·피격 방향성 핏줄기·8장 풀의 3.5s+1s 지형 혈흔 연결, 회귀60/0·Roslyn 오류0; 실제 화면 미검증.” 공용 CHANGELOG는 총괄 커밋 시 반영한다.
 
 **판정: 소스·독립 회귀 통과 / RETOUCH_GAME_QA_PENDING.** 남은 것은 Mac Unity 임포트·실제 원근 카메라에서 핏줄기 방향/크기(몸 지름 근사 대 실제 키)·지형 접지·8장 교체·3.5s+1s·0.2s 이후 적/탄 가독성의 1x 검수다. 1920×1080·3840×1080, 10초 무음 영상과 3x 크롭으로 판정한다. 실행본 반영·통합·실게임 품질 완료로 처리하지 않는다.
+
+## 근접 패링 스파크(G2) — 2026-11-03 PC
+
+실행본 반영 없음. 작업본 `G:/exoduser-wt/codex-vfx-spark`, 브랜치 `claude/unity-pc-vfx-spark-20261103`, 기준 HEAD `17490149b1301bc7f01055be4e684eb9040905c8`.
+관문: 소스 회귀·Roslyn 통과 / **RETOUCH_GAME_QA_PENDING**, 추가 M1 독립 회귀의 09c는 FAIL.
+다음: 총괄이 09c·디스크 여유를 확인하고 Mac에서 같은 장면 A/B·1x/3x·탄막 가독성을 판정한다.
+
+### 작업 범위와 계약
+
+브리프 `I:/EXODUSER-Storage/codex-runs/20261103-203816_vfx-spark/prompt.md` 및 끝의 표준 실행 규칙을 우선했다. 착수 시 tracked·untracked·index 변경 없음, 브랜치·기준 SHA 일치. LANES.md에 spark 개별 행은 없어 브리프를 소유 범위로 삼았다. fetch는 외부 Git 메타데이터에 쓰므로 하지 않았으며 원격 최신 여부는 미확인이다. commit·push·stage·영구 삭제·다른 worktree 쓰기·Core/웹 변경·유료 호출·Unity/브라우저 실행을 하지 않았다. PowerShell 시작의 CreateProcessW os error5 이후 문서에 허용된 CMD/Node 경로로 진행했다.
+
+목표 장면은 1-1 원근 LOCK의 근접 Q/완벽 패링과 Step0 막기다. 시간 정본은 `PARRY_REDESIGN_G1_20261103.md` §3, 모양·색 근거는 [PBZ·도타 실측](IMPACT_REFERENCE_PBZ_DOTA2_20261103.md) R2·R4·R5다. 두 문서를 읽었으며 원본 게임 영상은 이 실행에서 다시 열지 않았다. 공통 관례 중 접점 방사선·접촉 뒤 정점·짧은 제한 섬광·일시 푸시인을 연결했다. 기존 가장 큰 차이는 점 파편12개와 표시 흔들림14였다. 제작법은 기존 가산 셰이더+코드로 만든 선 텍스처+표시 전용 틱 정책이며 이미지 생성은 쓰지 않았다. 첫 실물 판정은 Mac G2/G4다. 1x/3x 점0·적 예고/탄 가독성·같은 장면 A/B·카메라 원상복귀가 인수 조건이며 PC 컴파일만으로 시각 PASS를 주지 않는다.
+
+| 항목 | 구현 |
+|---|---|
+| 근접 식별 | `FeedbackKind.Parry`, 비어 있는 SampleKey, Source가 없음 또는 contact/swing/slam/charge/combo/melee 접두사. 비어 있지 않은 반사 SampleKey나 알 수 없는 Source는 근접에서 제외. Core 이벤트는 읽기만 함 |
+| 스파크 | Step1 80~130개, Step0 30~60개. 표시 RNG로 접촉 틱에 약30%(정수 반올림), +1~3틱 나머지 방출, 개수·밝기 +3틱 정점. 접촉 기준18~30틱 수명. 약70%는 `Angle+π` 중심180° 부채, 나머지는 전방위. 화면 아래로 약한 중력 |
+| 선·색·크기 | `#f5e5d5`~`#f0debd`, 가산. 키의 .10~.25배에서 감쇠하되 .05배 이상 유지. 900px 높이 기준1~2px, 수명 말기에도1px 이상. 끝 알파 페이드와 수명 중 두께·밝기 감쇠. 키는 표시 중인 영웅 SpriteRenderer의 투영 bounds 높이, 없으면900px 기준96px 폴백. 실제 리깅 실루엣 높이와의 일치는 Mac에서 확인 필요 |
+| 예전 파편·시트 | 근접의 점 파편과 dark/lightning boom을 선으로 교체. 탄 반사의 기존 시트·12개 파편·GUI 섬광은 유지하고 근접 스파크를 추가하지 않음. 완전한 점0은 실제1x/3x 검수 전 미확인 |
+| 근접 화면 섬광 | Step1만 `#fff4d0`. 0→1틱 상승, 1→6틱 감쇠, 6틱에0. 중첩해서 더하지 않음. Gamma 알파 상한 .15(최대채널 변화38.25), Linear 상한 .02(검정 위 sRGB 변환 약38.7)를 사용. 평균 휘도≤40을 보수적으로 제한하는 정책이며 실제 HDR/톤매핑/후처리 화면 측정은 미실행 |
+| 위험 정렬 | 근접 섬광은 GUI 대신 화면을 덮는 world SpriteRenderer, renderQueue2999·ZTestAlways. 기존 transparent(queue3000) 적 예고·탄보다 먼저 그림. 근접 스파크도 기존 Combat sortingOrder를 사용. 실제 렌더 파이프라인 정렬은 Mac 검수 필요 |
+| 카메라 A/B | `--unity-parry-camera=shake` 기본: 근접6/탄4. `--unity-parry-camera=pushin`: 흔들림2, 8틱 동안 화각/orthographicSize를2.5% 좁히고20틱 복귀. 28틱 이후 정확히 배율1. 원근 카메라는 기존 `NativeRemodelCamera.FieldOfView`에서 매번 계산하여 누적 변경 없음. 피치34°·기본거리·follow offset 불변. ReducedMotion이면 푸시인·표시 흔들림·섬광 없음 |
+| M1 06 비교 | 첫 실제 Q 패링 이벤트를 재사용. Tick을 진행하지 않고 접촉+4틱으로 표시 age만 맞춰 `06-parry-q-shake.png` / `06-parry-q-pushin.png` 추가. 별도 동일 seed 표시 객체, 기존 효과 enabled 플래그·Core probe 상태/RNG·pending feedback·카메라 pose/lens/projection·marker·Unity RNG를 finally에서 복원. 보상을 다시 지급하지 않음. headless 컷은 실제 HudCamera를 RenderTexture로 렌더. 기존06 판정식 불변 |
+
+카메라 선택 인자는 `NativeReviewArgs.IsReviewArgument`에 등록하여 지역 제목이 QA 인자로 오인되어 꺼지지 않게 했다. 기존 피·데칼·다른 전투 표현의 계약은 유지했다. 새 사용자 표시 문자열은 없다.
+
+### 검증·남은 문제
+
+- `C:/nvm4w/nodejs/node.exe unity/Tools/combat-impact-tests/run.cjs --red`: 새 정책 누락으로 **61검사/1실패** 확인. 구현 후 기본 명령1회 **430검사/0실패**, 기존 피 PNG 검사도 통과. 스파크40개 seed/Step 조합의 개수·30%/70%·정점·수명·최소선길이, 섬광 상승/소멸·상한·이벤트 제외, 옵션 기본값·8+20틱 복귀 및4개 기준 카메라 값의 정확한 원상복귀를 검사했다. `tools/combat-impact-check/red.log`, `checks.log`.
+- `C:/nvm4w/nodejs/node.exe tools/vfx-missing-compile.cjs`: **Core121·Runtime249소스, Roslyn 오류0**. 기존 Unity 참조 DLL은 읽기만 함. `tools/combat-impact-check/compile/`. Unity 임포트·셰이더 컴파일 증거는 아니다. Core `EnemyAi.cs:88`의 기존 CS0219 경고2개는 남음.
+- 추가 `run.cjs --m1`1회: **11검사/2실패**. 기존 shield probe의 상태/RNG 복원 검사는 통과했지만 기존09c 대조 경로 양쪽에서 `naturally unlocked False`, `stage kills 136/168`로 실패했다. `tools/combat-impact-check/m1.log`. 09c·Core는 이번 수정 대상이 아니므로 고치거나 무수정 재실행하지 않았다. 새 카메라 coroutine은 Roslyn 컴파일만 확인했고 이 독립 검사는 실제 캡처를 실행하지 않는다.
+- `git diff --check` 통과. G: 여유가 약97.8GiB로 확인되어 운영 매뉴얼의100GB 기준 아래임을 보고하고 추가 실행을 중단했다. 브리프의 영구 삭제 금지를 따라 정리는 하지 않았다. 큰 빌드·캡처·복사본은 생성하지 않았으며 로그/독립 검사 출력은 worktree 내 고정 경로만 사용했다.
+- **아직 없는 증거:** 실제 M1 A/B PNG, Mac Player, 1x·3x 점0, 투영된 실제 키/접점/방향, HDR 후처리 뒤 평균 밝기≤40, 적 예고·탄 정렬, 카메라28틱 복귀의 실제 Player 값, 1920×1080·3840×1080 및10초 무음 영상. 실행본 반영·병합·화면 PASS로 처리하지 않는다.
+
+변경9파일: `unity/Assets/Exoduser/Runtime/NativeGame.cs`, `NativeGame.Remodel3D.cs`, `NativeGame.M1Check.cs`, `NativeReviewArgs.cs`, `Vfx/CombatImpactTimeline.cs`, `Vfx/CombatImpactView.cs`(뒤5개도 같은 Runtime 아래), `unity/Tools/combat-impact-tests/Program.cs`, `run.cjs`, 이 문서. 공용 CHANGELOG는 소유 범위 밖이라 총괄 인수용 초안만 남긴다: “근접 패링 G2: 따뜻한 선 스파크·6틱 제한 섬광·shake/pushin 비교 옵션·M1 +4틱 A/B 컷 연결. 표시 회귀430/0·Roslyn 오류0, 추가M1 09c FAIL·실제 화면 미검증.”
+
+END

@@ -385,9 +385,10 @@ namespace Exoduser.UnityPort
             if(skillRemaster!=null&&skillRemaster.Active)skillView?.Reset();else skillView?.Update(Simulation,Time.time);
             hud?.Refresh(p,Simulation.TickCount);StageFlowBossBar();
             if(NativeHd2D.Enabled&&!NativeRemodel3D.Active)Hd2dArenaFrame();
+            if(combatImpacts!=null)view.orthographicSize*=combatImpacts.ParryCameraScale(Simulation.TickCount);
             teleView?.Update(Simulation,view); // 최종 flat camera의 화면 장판 clip 경계를 사용한다.
             if(NativeHd2D.Enabled&&!NativeRemodel3D.Active)NativeHd2D.ProjectFlatActors(view);
-            combatImpacts?.Update(Simulation,HudCamera);
+            combatImpacts?.Update(Simulation,HudCamera,playerView);
             renderedTick=Simulation.TickCount;damage.RemoveAll(d=>Time.unscaledTime>d.until);
         }
         // game.html drawEn (53853-53870): every mob with an energy shield carries a pulsing pale-blue arc (radius r+5, +-1.0 rad around shieldAng, 5 px stroke, 25% wedge fill);
