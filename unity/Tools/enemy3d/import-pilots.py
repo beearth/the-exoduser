@@ -4,12 +4,14 @@ from mathutils import Vector
 BASE='I:/EXODUSER-Storage/boss/enemy3d-20261104/'
 OUT=os.path.abspath(os.path.join(os.path.dirname(__file__),'../../Assets/Exoduser/Resources/Enemies3D'))
 os.makedirs(OUT,exist_ok=True)
-models=[('SpineApostle',BASE+'spine_rig_20261104_0024/basic_animations_walking_glb.glb'),('EyeMass',BASE+'tripo/eyemass_meshy_tripo_rigged.glb')]
-results=[]
+models=[("SpineApostle",BASE+"cleanup/spine_walk_eyefix.glb"),("SageApostle",BASE+"sage_rig_20261104_0038/basic_animations_walking_glb.glb"),("TrapperApostle",BASE+"trapper_rig_20261104_0042/basic_animations_walking_glb.glb"),("ShadowTwin",BASE+"twin_rig_20261104_0046/basic_animations_walking_glb.glb"),("CarapaceApostleV2",BASE+"carapace2_rig_20261104_0100/basic_animations_walking_glb.glb")]
+# The existing start EyeMass asset is retained; regenerate only the five approved first-wave bipeds.
+with open(os.path.join(OUT,'pilot-provenance.json'),encoding='utf8') as f:previous=json.load(f)
+results=[row for row in previous if row['model']=='EyeMass']
 for name,src in models:
  bpy.ops.wm.read_factory_settings(use_empty=True)
  bpy.ops.import_scene.gltf(filepath=src)
- meshes=[o for o in bpy.context.scene.objects if o.type=='MESH']
+ meshes=[o for o in bpy.context.scene.objects if o.type=='MESH' and len(o.data.vertices)>=200]
  rigs=[o for o in bpy.context.scene.objects if o.type=='ARMATURE']
  assert sum(len(p.vertices)-2 for o in meshes for p in o.data.polygons)>8000, 'Armature preview mesh must never be shipped as the model'
  # Convert textured material to a small set of broad colour planes for the shared hero toon shader.
@@ -41,7 +43,8 @@ for name,src in models:
  actions=list(bpy.data.actions)
  for action in actions:action.name='Walk'
  bpy.context.scene.render.fps=60
- bpy.ops.object.select_all(action='SELECT')
+ bpy.ops.object.select_all(action='DESELECT')
+ for obj in meshes+rigs:obj.select_set(True)
  bpy.ops.export_scene.fbx(filepath=os.path.join(OUT,name+'.fbx'),use_selection=True,object_types={'ARMATURE','MESH'},add_leaf_bones=False,bake_anim=bool(actions),bake_anim_use_all_actions=True,bake_anim_use_nla_strips=False,bake_anim_simplify_factor=0,axis_forward='-Z',axis_up='Y',path_mode='STRIP')
  results.append({'model':name,'source':src,'bones':sum(len(o.data.bones) for o in rigs),'triangles':sum(len(p.vertices)-2 for o in meshes for p in o.data.polygons),'actions':[a.name for a in actions],'palettePlanes':len(palette)})
 with open(os.path.join(OUT,'pilot-provenance.json'),'w',encoding='utf8') as f:json.dump(results,f,ensure_ascii=False,indent=2)
