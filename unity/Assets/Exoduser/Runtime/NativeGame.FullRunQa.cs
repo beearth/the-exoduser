@@ -119,8 +119,8 @@ namespace Exoduser.UnityPort
                         if(flow.InArena&&receipt.retries<retryLimit)
                         {
                             InputState.Change(keyboard,new KeyboardState());InputState.Change(mouse,new MouseState());
-                            death.OnRetry?.Invoke();Running=false;yield return null;
-                            if(PlayerDown||Simulation.Stage.InArena){receipt.result="death-retry-blocked";break;}
+                            death.OnRetry?.Invoke();Running=false;yield return FullRunWaitFrontend("death-retry",receipt);Running=false;
+                            if(!string.IsNullOrEmpty(receipt.frontendFailure)||PlayerDown||Simulation.Stage.InArena){receipt.result="death-retry-blocked";break;}
                             receipt.retries++;fullRunCapturePrefix="retry-"+receipt.retries.ToString("00")+"-";
                             navigation=new FullRunNavigation();patterns.Clear();yield return FullRunShot(output,"retry-field");continue;
                         }

@@ -1,7 +1,22 @@
-param([string]$Output='I:\EXODUSER-Storage\codex-takeover\unity-11-fullrun\route-tests')
+﻿param([string]$Output='',[string]$ProjectRoot=(Join-Path $PSScriptRoot '../..'),[string]$BuildDirectory='')
 $ErrorActionPreference='Stop'
-$project=(Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
-New-Item -ItemType Directory -Force -Path $Output | Out-Null
+$project=(Resolve-Path -LiteralPath $ProjectRoot).Path
+$case='case-'+[DateTime]::UtcNow.ToString('yyyyMMdd-HHmmssfff')+'-'+[Guid]::NewGuid().ToString('N')
+$Evidence=if([string]::IsNullOrWhiteSpace($Output)){Join-Path 'I:/EXODUSER-Storage/codex-takeover/unity-11-fullrun/route-tests' $case}else{[IO.Path]::GetFullPath($Output)}
+$library=[IO.Path]::GetFullPath((Join-Path $project 'Library')).TrimEnd([IO.Path]::DirectorySeparatorChar)+[IO.Path]::DirectorySeparatorChar
+if([string]::IsNullOrWhiteSpace($BuildDirectory)){$BuildDirectory=Join-Path $library ('FullRunRouteChecks/'+$case)}
+if(![IO.Path]::IsPathRooted($BuildDirectory)){throw 'BuildDirectory must be absolute under the current project Library'}
+$Output=[IO.Path]::GetFullPath($BuildDirectory)
+if(!$Output.StartsWith($library,[StringComparison]::OrdinalIgnoreCase)){throw 'Active build cache must stay under the current NTFS project Library'}
+if(Test-Path -LiteralPath (Join-Path $Evidence 'result.json')){throw 'Preserve previous route evidence; choose a new Output directory'}
+[IO.Directory]::CreateDirectory($Output)|Out-Null
+function Export-RunEvidence([int]$Code,[string]$Kind) {
+ [IO.Directory]::CreateDirectory($Evidence)|Out-Null
+ foreach($name in 'result.json','policy-result.json','build.log','test.log','policy-build.log','policy-test.log'){ $src=Join-Path $Output $name;if(Test-Path -LiteralPath $src){Copy-Item -LiteralPath $src -Destination (Join-Path $Evidence $name) -Force} }
+ $program=Join-Path $Output 'Program.cs';if(Test-Path -LiteralPath $program){Copy-Item -LiteralPath $program -Destination (Join-Path $Evidence ($Kind+'-Program.cs')) -Force}
+ $scope=[ordered]@{kind=$Kind;exitCode=$Code;project=$project;cache=$Output;evidence=$Evidence;scope='Active dotnet/obj/temp stay in project Library on NTFS. Completed text/source evidence only is exported.'}
+ [IO.File]::WriteAllText((Join-Path $Evidence ($Kind+'-runner-scope.json')),($scope|ConvertTo-Json -Depth 3),(New-Object Text.UTF8Encoding($false)))
+}
 $env:DOTNET_CLI_HOME=Join-Path $project 'Library\FullRunDotnetHome'
 $env:DOTNET_ADD_GLOBAL_TOOLS_TO_PATH='false'
 $env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE='1'
@@ -95,6 +110,6 @@ $csproj='<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</Output
 [IO.File]::WriteAllText((Join-Path $Output 'NuGet.Config'),'<configuration><packageSources><clear/></packageSources></configuration>')
 $dotnet='G:\unity\Editor\6000.6.7f1\Editor\Data\DotNetSdk\dotnet.exe'
 & $dotnet build (Join-Path $Output 'FullRunRouteTests.csproj') --verbosity quiet '-p:NuGetAudit=false' 2>&1 | Tee-Object -FilePath (Join-Path $Output 'build.log')
-if($LASTEXITCODE -ne 0){exit $LASTEXITCODE}
+$buildExit=$LASTEXITCODE;if($buildExit -ne 0){Export-RunEvidence $buildExit 'route';exit $buildExit}
 & $dotnet (Join-Path $Output 'bin\Debug\net8.0\FullRunRouteTests.dll') (Join-Path $Output 'result.json') (Join-Path $project 'Assets\Exoduser\Resources\Data\ch1_map.json') 2>&1 | Tee-Object -FilePath (Join-Path $Output 'test.log')
-exit $LASTEXITCODE
+$testExit=$LASTEXITCODE;Export-RunEvidence $testExit 'route';exit $testExit

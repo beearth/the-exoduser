@@ -1,3 +1,12 @@
+# 10시 실제 재도전 결함 수정
+
+- 이전후보57155521db의 formal11 aa91fdfe는컴파일/빌드오류0,같은M1 fdebf58223/23·USER_SAVE0. 실제자연9 9643bb2c는343처치/Lv12·필드4/4·굴0/낚시꾼0·드루이드전투뒤최종사망1회에서death-retry-blocked로791.535초실패. exit2/window0/leftover0/USER_SAVE0. 이전자연8의실제완주1회는그대로보존하지만이번후보성공으로쓰지않는다.
+- QA22 원인확정: 공용NativeGame.RetryFromDeath는death-retry 검정전환콜백에서정상RetryInsideArena를실행한다. QA는호출1프레임뒤PlayerDown/아레나를읽어실패했다. 실제NativeRetry/실제Busy&&!Executing 가드·실제QA 재도전문장을추출한지연프레임검사에서RED1/18→GREEN18/18. QA가전환완료를기다린뒤재도전을판정하고자동게임틱소유플래그Running을다시내린다. 제품전환/사망/보상/HP수치변경0,Core수동변경0.
+- QA19 새캐릭터생성/입장6비동기경계,QA21 실제실패exit2,UI04 실제필드목표·게이트해제/아레나숨김은이번Player에서확인했다. QA20/새QA22의실제클리어·재도전완료는formal12→M1→natural10에서확인한다.
+- 기존route/policy 회귀실행기는활성csproj/obj/temp를기본I:출력에만들수있었다. 현재작업본NTFS Library의고유case를사용하고완료텍스트/소스영수증만I:로내보내도록수정했다. 절대PowerShell -NoProfile -Command 하위호출·기존증거보존·기본ProjectRoot 검증. 채택한실제Tools에서route54+정책9=63/63,오류0(기존경고8)확인. 실행중게임소스와섞지않고자연9종료후적용했다.
+
+근거: frontend-death-retry-{red,green}/frontend-check.json,ntfs-runners-adopted-green/{policy-result.json,route-runner-scope.json,policy-runner-scope.json},natural-9/fullrun.json,공식_exec/done/9643bb2c.json.
+
 # 09시 공용 병합 후 다음 후보
 
 공용c741을 정상 merge한 1ab3c75f8134d13abd828b7e8c5035e7950b9cd3 위에 QA19~21의 비동기 경계/종료 의도 및 UI04 필드 목표 표시를 적용했다. 현재 작업본 실제 소스로 PowerShell 전환15/15·미니맵18/18 통과. 활성 테스트 캐시는 G: Library, 완료 영수증은I: frontend-after-common/objectives-after-common에 보관했다. Core 수동 변경0. 원본 메타/재질 등 WIP는 I:/EXODUSER-Storage/codex-takeover/unity-11-fullrun/source-adoption-2026-11-03T00-37-11-182Z에 패치/목록을 보존했고 커밋 대상에서 제외한다.
