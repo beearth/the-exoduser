@@ -67,13 +67,9 @@ namespace Exoduser.UnityPort.Vfx
                 }else if(e.SampleKey=="rainbow") {
                     string[] sheets={"Poison_MediumImpact","Dark_DarkSmoke_FBF_4x4","Light_ImpactLight_Sheet","Ice_ImpactIce_Sheet"};
                     for(int i=0;i<4;i++){var c=Boom(sheets[i],72,80*(2.8+i*.3));c.Additive=true;c.Delay=(int)Math.Round(72*i*.03);c.Life=72-c.Delay;c.Angle=i*Math.PI*.5;c.Opacity=1-i*.15;result.Add(c);}
-                }else if(e.Step==1)result.Add(Boom("Dark_MediumImpact",72,80*3));
-                else if(e.Source=="physicalProjectile")result.Add(Boom("Fire_ImpactFire_Sheet",12,60*3,4,true));
-                else {
-                    result.Add(Flip("Lightning_ImpactLightning_Sheet_el4",4,4,1.2,0,5));
-                    result.Add(Flip("Lightning_Lightning_FBF_4x3_el4",4,3,1.1*1.2,1,7));
-                    result.Add(Flip("Lightning_BasicImpact_el4",3,3,.5*1.2,0,7));
-                }
+                }else if(e.Step!=1&&e.Source=="physicalProjectile")result.Add(Boom("Fire_ImpactFire_Sheet",12,60*3,4,true));
+                // Other bullet parries: warm line sparks only (CombatParryPresentation). The web's dark02 purple star and the
+                // three yellow lightning sheets read as an element hit, not a parry (user 11-03 "패링구현이 엉망").
             }else if(e.VisualOnly&&(e.Kind==FeedbackKind.EnemyHit||e.Kind==FeedbackKind.EnemyCrit||e.Kind==FeedbackKind.BossHit)) {
                 int el=e.Element;bool hasElement=el>=0&&el<=5;
                 result.Add(new CombatClip{Sheet=hasElement?"impact_el"+el+(e.IsBoss?"_boss_sheet":"_sheet"):"impact_basic_sheet",Fallback="impact_basic_sheet",Cols=e.IsBoss&&hasElement?16:9,Rows=1,Frames=e.IsBoss&&hasElement?16:9,Life=16,Scale=e.IsBoss?2.5:1,Mode=CombatClipMode.Impact,Additive=true});
@@ -102,8 +98,11 @@ namespace Exoduser.UnityPort.Vfx
         }
         public bool HasFlash(FeedbackEvent e){return IsMelee(e)&&e.Step==1;}
         public Spark[] Sparks(FeedbackEvent e,int seed) {
-            if(!IsMelee(e))return Array.Empty<Spark>();
-            var rng=new Random(seed);int n=e.Step==1?rng.Next(80,131):rng.Next(30,61);
+            if(e.Kind!=FeedbackKind.Parry)return Array.Empty<Spark>();
+            // Melee: perfect/Q 80-130, shield block 30-60. Bullet parries: a smaller burst of the same lines (perfect 36-50,
+            // block 20-30) so the reflected bullet stays the subject.
+            var rng=new Random(seed);bool melee=IsMelee(e);
+            int n=e.Step==1?(melee?rng.Next(80,131):rng.Next(36,51)):(melee?rng.Next(30,61):rng.Next(20,31));
             var lines=new Spark[n];int initial=(int)Math.Round(n*.3),fan=(int)Math.Round(n*.7);
             for(int i=0;i<n;i++) {
                 bool reverse=i<fan;
