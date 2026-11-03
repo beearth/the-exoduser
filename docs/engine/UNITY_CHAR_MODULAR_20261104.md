@@ -1,7 +1,7 @@
 # 전사 파트 제작·조립 리깅 — char-modular
 
-상태: **RETOUCH / 팔꿈치 시각 검증2회 실패로 추가 검사·수정 중단**. PC 컴파일/임포트는 통과했으나 새 G0의 파트/보조뼈 차이와 관통 판정이 남아 있다. 디자인 PASS/게임 채택 아님.
-최신 대조·중단 근거: [G0 차이와 검사 중단](UNITY_CHAR_MODULAR_G0_DELTA_20261104.md). Tripo A안 원본을 수신·직접 렌더해 파트별 대조했으며, 미수신이라는 아래 과거 기록은 대체한다. B 객체25개가 G0 W01~W25 충족을 뜻하지 않는다.
+최신 상태: **A+B 재조립 후 BVH 수치 검사2회 미통과·중단 / RETOUCH**. [A+B 묶음·G0 정렬·수치 결과](UNITY_CHAR_MODULAR_HYBRID_20261104.md). 실제 native는 A 부품+B 머리/머리카락+기존 대검으로 바뀌었다. 최종35,088tri·25논리묶음·59뼈, 수치 결과·한계를 같은 문서와 외부 REPORT에 기록했다.
+**이 문서 아래의 Unity FBX/prefab·068be 컴파일 PASS는 이전 B 단독 후보의 이력이다. 새 A+B는 Unity 미연결·미컴파일이며 디자인/게임 채택 없음.** 새 G0 고칠 목록과02:40/02:5x 재개 지시를 반영했다. [과거 B 대조·중단 근거](UNITY_CHAR_MODULAR_G0_DELTA_20261104.md)는 역사 기록이다.
 기준: `origin/unity/main cfd8e248453dc102f5a6182a4aa98998230e7b71`.
 소유: `codex/unity-char-modular-20261104`, 전사 `Art/Characters/Warrior/Modular/`, 전용 `unity/Tools/char-modular/`, 전용 Editor/Runtime 접점과 이 문서. Core·클립·기존 renderer·카메라 변경 금지.
 

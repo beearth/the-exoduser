@@ -1,4 +1,6 @@
-2026-11-04 char-modular 최신: 팔꿈치 측후면 시각 검증2회에서 관통/가림 분리 실패로 추가 렌더·수정 중단, RETOUCH. 새 G0/Tripo A안 직접 대조, B의 앞치마/스카프 독립 체인·허벅지판·5태싯 등 차이 명시. A/B 중립3뷰와 측후면8뷰 판 전달, 추가 유료0. G0 적합/변형PASS/게임PASS 아님. docs/engine/UNITY_CHAR_MODULAR_G0_DELTA_20261104.md.
+2026-11-04 char-modular 후속:02:5x 파트 판정에 따라 A105조각+B 머리/머리카락+기존 대검을 실제 native에25논리묶음 재조립, G0 A rest 정렬·감면·망토 가는 술 정리. 최종35,088tri·109메시·59뼈, G0 rest 오차최대0.000121mm. A+B만 BVH10포즈×1,144쌍 검사,1차 뒤 열린 안쪽 면67개 보완·열린면 거리계측 수정.2차도 정점거리 기준50행·미검증1,050행·경계170행 미검증으로 중단. 닫힌 단단판 표본 깊이최대1.552mm와 근사 정점거리를 구분, 실제 관통50건으로 주장하지 않음. 접촉 빨강 진단판과 표 전달. 새 A+B Unity연결/컴파일/텍스처/최종LOCK1x판 미진행, 기존 prefab은 이전 B 이력. Player/빌드/새유료0,360/500cr. docs/engine/UNITY_CHAR_MODULAR_HYBRID_20261104.md.
+
+2026-11-04 char-modular 이전 B: 팔꿈치 측후면 시각 검증2회에서 관통/가림 분리 실패로 추가 렌더·수정 중단, RETOUCH. 새 G0/Tripo A안 직접 대조, B의 앞치마/스카프 독립 체인·허벅지판·5태싯 등 차이 명시. A/B 중립3뷰와 측후면8뷰 판 전달, 추가 유료0. G0 적합/변형PASS/게임PASS 아님. docs/engine/UNITY_CHAR_MODULAR_G0_DELTA_20261104.md.
 
 2026-11-04 char-modular 전사 후보: 독립11종+견갑수정1회 생성(실차감360/500cr),25객체/46뼈/전체30,670tri로 조립. 기본24뼈 보존·판금 단일100%·천/머리만 스킨, 망토3×4·머리카락3·태싯/견갑/무기 소켓. Blender34도11검사포즈·기존/새모델 native1x/3x 비교판 생성, 금속 edge 오차최대3.93e-7m. 4재질계열+흑발5슬롯/2K atlas, 명시 --hero-rig=modular 선택7검사·비용보호6검사 PASS. 소스068be0a19b의 공용 PC 컴파일/임포트1회 exit0, Humanoid/기존Animator동일참조/금속100%/규격 확인·새prefab 저장. 작업 외 자동 UI메타12/URP1 복구, 자기메타만 인수. R7 전신용 표면 재분류는 새 후보에서 생략. 실제Animator/게임/디자인PASS·기본채택 아님, PC Player/빌드0. 기록 docs/engine/UNITY_CHAR_MODULAR_20261104.md, 외부 char-modular/REPORT.md.
 

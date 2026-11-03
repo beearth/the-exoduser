@@ -1,0 +1,2161 @@
+{
+  "scope": "A+B authoring, numeric attempt2 not passed; no Unity A+B export/adoption",
+  "variant": "A+B_G0_20261104",
+  "rawA": "I:\\EXODUSER-Storage\\char-modular\\warrior\\tripoA_20261104_0103\\warrior_tripo_parts_raw.glb",
+  "rawPieces": 107,
+  "excludedAHeadHair": [
+    3,
+    27
+  ],
+  "groups": {
+    "W01": {
+      "label": "Head",
+      "sourceIds": []
+    },
+    "W02": {
+      "label": "Hair",
+      "sourceIds": []
+    },
+    "W03": {
+      "label": "Underbody",
+      "sourceIds": [
+        9,
+        28,
+        43
+      ]
+    },
+    "W04": {
+      "label": "Cuirass",
+      "sourceIds": [
+        17,
+        34,
+        42,
+        52,
+        59,
+        96,
+        97,
+        98
+      ]
+    },
+    "W05": {
+      "label": "Abdomen",
+      "sourceIds": [
+        14,
+        33,
+        47
+      ]
+    },
+    "W06": {
+      "label": "Pauldron_Left",
+      "sourceIds": [
+        8
+      ]
+    },
+    "W07": {
+      "label": "Pauldron_Right",
+      "sourceIds": [
+        7
+      ]
+    },
+    "W08": {
+      "label": "UpperArm_Left",
+      "sourceIds": [
+        44,
+        71
+      ]
+    },
+    "W09": {
+      "label": "UpperArm_Right",
+      "sourceIds": [
+        40,
+        76
+      ]
+    },
+    "W10": {
+      "label": "Elbow_Left",
+      "sourceIds": [
+        36,
+        57,
+        60,
+        84
+      ]
+    },
+    "W11": {
+      "label": "Elbow_Right",
+      "sourceIds": [
+        41,
+        51
+      ]
+    },
+    "W12": {
+      "label": "Gauntlet_Left",
+      "sourceIds": [
+        26,
+        46,
+        58,
+        63,
+        72,
+        74,
+        87,
+        99,
+        105
+      ]
+    },
+    "W13": {
+      "label": "Gauntlet_Right",
+      "sourceIds": [
+        23,
+        45,
+        77,
+        80,
+        83,
+        86,
+        88,
+        92,
+        94,
+        104,
+        106
+      ]
+    },
+    "W14": {
+      "label": "Belt",
+      "sourceIds": [
+        22,
+        25,
+        35,
+        39,
+        49,
+        56,
+        64,
+        68,
+        91,
+        102
+      ]
+    },
+    "W15": {
+      "label": "Tassets",
+      "sourceIds": [
+        13,
+        18,
+        50,
+        53,
+        55
+      ]
+    },
+    "W16": {
+      "label": "Apron",
+      "sourceIds": [
+        29,
+        31,
+        100
+      ]
+    },
+    "W17": {
+      "label": "Thigh_Left",
+      "sourceIds": [
+        10
+      ]
+    },
+    "W18": {
+      "label": "Thigh_Right",
+      "sourceIds": [
+        11
+      ]
+    },
+    "W19": {
+      "label": "KneeGreave_Left",
+      "sourceIds": [
+        4,
+        20,
+        21,
+        66,
+        81,
+        93
+      ]
+    },
+    "W20": {
+      "label": "KneeGreave_Right",
+      "sourceIds": [
+        6,
+        12,
+        16,
+        67,
+        75
+      ]
+    },
+    "W21": {
+      "label": "Boot_Left",
+      "sourceIds": [
+        15,
+        19,
+        73,
+        103
+      ]
+    },
+    "W22": {
+      "label": "Boot_Right",
+      "sourceIds": [
+        30,
+        37,
+        65
+      ]
+    },
+    "W23": {
+      "label": "Scarf",
+      "sourceIds": [
+        24,
+        38,
+        54,
+        62,
+        69,
+        70,
+        79,
+        85,
+        89,
+        90,
+        95,
+        101
+      ]
+    },
+    "W24": {
+      "label": "Cape",
+      "sourceIds": [
+        0,
+        1,
+        2,
+        5,
+        32,
+        48,
+        61,
+        78,
+        82
+      ]
+    },
+    "W25": {
+      "label": "Greatsword",
+      "sourceIds": []
+    }
+  },
+  "latestBriefAliases": {
+    "W12 belt": "W14",
+    "W13 tassets": "W15",
+    "W14 apron": "W16",
+    "W15 thighs": "W17/W18",
+    "W16 knees/W17 shins": "W19/W20",
+    "W18 boots": "W21/W22",
+    "W19 scarf": "W23",
+    "W20 cape": "W24"
+  },
+  "logicalGroups": 25,
+  "meshObjects": 109,
+  "triangles": 35088,
+  "bones": 59,
+  "aScale": 1.8899459842319846,
+  "capeRemovedFaces": 46139,
+  "capeRemovedSourceIds": [],
+  "capeBroadTears": 10,
+  "capeMinimumFringeWidthMm": 30,
+  "capeTearScope": "30mm horizontal silhouette opening + ten flat-tip hem cuts; visual judgment pending",
+  "boneAlignment": [
+    {
+      "bone": "Hips",
+      "beforeErrorMm": 3.725290298461914e-06,
+      "afterErrorMm": 0.0
+    },
+    {
+      "bone": "Spine02",
+      "beforeErrorMm": 0.0002385063291920488,
+      "afterErrorMm": 0.0
+    },
+    {
+      "bone": "Spine01",
+      "beforeErrorMm": 0.00012096532296612476,
+      "afterErrorMm": 0.0001192101990420136
+    },
+    {
+      "bone": "Spine",
+      "beforeErrorMm": 0.000479143742337968,
+      "afterErrorMm": 4.6566128730773926e-07
+    },
+    {
+      "bone": "neck",
+      "beforeErrorMm": 0.00023976415952472275,
+      "afterErrorMm": 0.00011920928955078125
+    },
+    {
+      "bone": "Head",
+      "beforeErrorMm": 0.00011950635943937195,
+      "afterErrorMm": 2.3283064365386963e-07
+    },
+    {
+      "bone": "head_end",
+      "beforeErrorMm": 0.00024769679024635685,
+      "afterErrorMm": 1.862645149230957e-06
+    },
+    {
+      "bone": "headfront",
+      "beforeErrorMm": 4.538336086969733e-05,
+      "afterErrorMm": 0.00012013700229374395
+    },
+    {
+      "bone": "LeftShoulder",
+      "beforeErrorMm": 0.0005969844900518686,
+      "afterErrorMm": 3.725290298461914e-06
+    },
+    {
+      "bone": "LeftArm",
+      "beforeErrorMm": 0.0001505433321402811,
+      "afterErrorMm": 9.313225746154785e-07
+    },
+    {
+      "bone": "LeftForeArm",
+      "beforeErrorMm": 0.00026734636084524584,
+      "afterErrorMm": 1.862645149230957e-06
+    },
+    {
+      "bone": "LeftHand",
+      "beforeErrorMm": 0.0007085498230438674,
+      "afterErrorMm": 0.0
+    },
+    {
+      "bone": "RightShoulder",
+      "beforeErrorMm": 0.0002403791195211139,
+      "afterErrorMm": 0.0001192101990420136
+    },
+    {
+      "bone": "RightArm",
+      "beforeErrorMm": 0.0001800514157652046,
+      "afterErrorMm": 0.00011920928955078125
+    },
+    {
+      "bone": "RightForeArm",
+      "beforeErrorMm": 0.00013498716750736116,
+      "afterErrorMm": 9.313225746154785e-07
+    },
+    {
+      "bone": "RightHand",
+      "beforeErrorMm": 0.0002691506127743191,
+      "afterErrorMm": 0.0
+    },
+    {
+      "bone": "LeftUpLeg",
+      "beforeErrorMm": 0.0003013803596821558,
+      "afterErrorMm": 7.450580596923828e-06
+    },
+    {
+      "bone": "LeftLeg",
+      "beforeErrorMm": 0.00024541719394923156,
+      "afterErrorMm": 1.4901161193847656e-05
+    },
+    {
+      "bone": "LeftFoot",
+      "beforeErrorMm": 0.0005459298223770371,
+      "afterErrorMm": 1.5359765386647212e-05
+    },
+    {
+      "bone": "LeftToeBase",
+      "beforeErrorMm": 0.0005862806908162237,
+      "afterErrorMm": 0.0
+    },
+    {
+      "bone": "RightUpLeg",
+      "beforeErrorMm": 0.00024053377594587097,
+      "afterErrorMm": 3.725290298461914e-06
+    },
+    {
+      "bone": "RightLeg",
+      "beforeErrorMm": 0.00035824821234259926,
+      "afterErrorMm": 0.0
+    },
+    {
+      "bone": "RightFoot",
+      "beforeErrorMm": 0.0005652752110918432,
+      "afterErrorMm": 3.725290298461914e-06
+    },
+    {
+      "bone": "RightToeBase",
+      "beforeErrorMm": 0.0006015276897310268,
+      "afterErrorMm": 2.9802322387695312e-05
+    }
+  ],
+  "partAlignment": [
+    {
+      "group": "W01",
+      "object": "Warrior_Head",
+      "bone": "Head",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W02",
+      "object": "Warrior_Hair",
+      "bone": "Head",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W24",
+      "object": "W24_A_000",
+      "bone": "Spine",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W24",
+      "object": "W24_A_001",
+      "bone": "Spine",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W24",
+      "object": "W24_A_002",
+      "bone": "Spine",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W19",
+      "object": "W19_A_004",
+      "bone": "LeftLeg",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W24",
+      "object": "W24_A_005",
+      "bone": "Spine",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W20",
+      "object": "W20_A_006",
+      "bone": "RightLeg",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W07",
+      "object": "W07_A_007",
+      "bone": "Modular_Pauldron_Right",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W06",
+      "object": "W06_A_008",
+      "bone": "Modular_Pauldron_Left",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W03",
+      "object": "W03_A_009",
+      "bone": "Hips",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W17",
+      "object": "W17_A_010",
+      "bone": "LeftUpLeg",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W18",
+      "object": "W18_A_011",
+      "bone": "RightUpLeg",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W20",
+      "object": "W20_A_012",
+      "bone": "RightLeg",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W15",
+      "object": "W15_A_013",
+      "bone": "tasset_sl",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W05",
+      "object": "W05_A_014",
+      "bone": "Spine02",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W21",
+      "object": "W21_A_015",
+      "bone": "LeftToeBase",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W20",
+      "object": "W20_A_016",
+      "bone": "RightLeg",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W04",
+      "object": "W04_A_017",
+      "bone": "Spine01",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W15",
+      "object": "W15_A_018",
+      "bone": "tasset_fl",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W21",
+      "object": "W21_A_019",
+      "bone": "LeftFoot",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W19",
+      "object": "W19_A_020",
+      "bone": "LeftLeg",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W19",
+      "object": "W19_A_021",
+      "bone": "LeftLeg",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W14",
+      "object": "W14_A_022",
+      "bone": "Hips",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W13",
+      "object": "W13_A_023",
+      "bone": "RightForeArm",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W23",
+      "object": "W23_A_024",
+      "bone": "neck",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W14",
+      "object": "W14_A_025",
+      "bone": "Hips",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W12",
+      "object": "W12_A_026",
+      "bone": "LeftForeArm",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W03",
+      "object": "W03_A_028",
+      "bone": "Hips",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W16",
+      "object": "W16_A_029",
+      "bone": "Hips",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W16",
+      "object": "W16_A_031",
+      "bone": "Hips",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W24",
+      "object": "W24_A_032",
+      "bone": "Spine",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W05",
+      "object": "W05_A_033",
+      "bone": "Spine02",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W04",
+      "object": "W04_A_034",
+      "bone": "Spine01",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W14",
+      "object": "W14_A_035",
+      "bone": "Hips",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W10",
+      "object": "W10_A_036",
+      "bone": "LeftForeArm",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W22",
+      "object": "W22_A_037",
+      "bone": "RightFoot",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W23",
+      "object": "W23_A_038",
+      "bone": "neck",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W14",
+      "object": "W14_A_039",
+      "bone": "Hips",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W09",
+      "object": "W09_A_040",
+      "bone": "RightArm",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W11",
+      "object": "W11_A_041",
+      "bone": "RightForeArm",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W04",
+      "object": "W04_A_042",
+      "bone": "Spine01",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W03",
+      "object": "W03_A_043",
+      "bone": "Hips",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W08",
+      "object": "W08_A_044",
+      "bone": "LeftArm",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W13",
+      "object": "W13_A_045",
+      "bone": "RightHand",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W12",
+      "object": "W12_A_046",
+      "bone": "LeftHand",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W05",
+      "object": "W05_A_047",
+      "bone": "Spine02",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W24",
+      "object": "W24_A_048",
+      "bone": "Spine",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W14",
+      "object": "W14_A_049",
+      "bone": "Hips",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W15",
+      "object": "W15_A_050",
+      "bone": "tasset_fr",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W11",
+      "object": "W11_A_051",
+      "bone": "RightForeArm",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W04",
+      "object": "W04_A_052",
+      "bone": "Spine01",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W15",
+      "object": "W15_A_053",
+      "bone": "tasset_sr",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W23",
+      "object": "W23_A_054",
+      "bone": "neck",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W15",
+      "object": "W15_A_055",
+      "bone": "tasset_b",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W14",
+      "object": "W14_A_056",
+      "bone": "Hips",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W10",
+      "object": "W10_A_057",
+      "bone": "LeftForeArm",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W12",
+      "object": "W12_A_058",
+      "bone": "LeftForeArm",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W04",
+      "object": "W04_A_059",
+      "bone": "Spine01",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W10",
+      "object": "W10_A_060",
+      "bone": "LeftForeArm",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W24",
+      "object": "W24_A_061",
+      "bone": "Spine",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W23",
+      "object": "W23_A_062",
+      "bone": "neck",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W12",
+      "object": "W12_A_063",
+      "bone": "LeftHand",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W14",
+      "object": "W14_A_064",
+      "bone": "Hips",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W22",
+      "object": "W22_A_065",
+      "bone": "RightFoot",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W19",
+      "object": "W19_A_066",
+      "bone": "LeftLeg",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W20",
+      "object": "W20_A_067",
+      "bone": "RightLeg",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W14",
+      "object": "W14_A_068",
+      "bone": "Hips",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W23",
+      "object": "W23_A_069",
+      "bone": "neck",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W23",
+      "object": "W23_A_070",
+      "bone": "neck",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W08",
+      "object": "W08_A_071",
+      "bone": "LeftArm",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W12",
+      "object": "W12_A_072",
+      "bone": "LeftHand",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W21",
+      "object": "W21_A_073",
+      "bone": "LeftFoot",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W12",
+      "object": "W12_A_074",
+      "bone": "LeftHand",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W20",
+      "object": "W20_A_075",
+      "bone": "RightLeg",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W09",
+      "object": "W09_A_076",
+      "bone": "RightArm",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W13",
+      "object": "W13_A_077",
+      "bone": "RightForeArm",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W24",
+      "object": "W24_A_078",
+      "bone": "Spine",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W23",
+      "object": "W23_A_079",
+      "bone": "neck",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W13",
+      "object": "W13_A_080",
+      "bone": "RightHand",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W19",
+      "object": "W19_A_081",
+      "bone": "LeftLeg",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W24",
+      "object": "W24_A_082",
+      "bone": "Spine",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W13",
+      "object": "W13_A_083",
+      "bone": "RightHand",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W10",
+      "object": "W10_A_084",
+      "bone": "LeftForeArm",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W23",
+      "object": "W23_A_085",
+      "bone": "neck",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W13",
+      "object": "W13_A_086",
+      "bone": "RightHand",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W12",
+      "object": "W12_A_087",
+      "bone": "LeftHand",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W13",
+      "object": "W13_A_088",
+      "bone": "RightForeArm",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W23",
+      "object": "W23_A_089",
+      "bone": "neck",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W23",
+      "object": "W23_A_090",
+      "bone": "neck",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W14",
+      "object": "W14_A_091",
+      "bone": "Hips",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W13",
+      "object": "W13_A_092",
+      "bone": "RightForeArm",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W19",
+      "object": "W19_A_093",
+      "bone": "LeftLeg",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W13",
+      "object": "W13_A_094",
+      "bone": "RightHand",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W23",
+      "object": "W23_A_095",
+      "bone": "neck",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W04",
+      "object": "W04_A_096",
+      "bone": "Spine01",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W04",
+      "object": "W04_A_097",
+      "bone": "Spine01",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W04",
+      "object": "W04_A_098",
+      "bone": "Spine01",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W12",
+      "object": "W12_A_099",
+      "bone": "LeftForeArm",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W16",
+      "object": "W16_A_100",
+      "bone": "Hips",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W23",
+      "object": "W23_A_101",
+      "bone": "neck",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W14",
+      "object": "W14_A_102",
+      "bone": "Hips",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W21",
+      "object": "W21_A_103",
+      "bone": "LeftFoot",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W13",
+      "object": "W13_A_104",
+      "bone": "RightHand",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W12",
+      "object": "W12_A_105",
+      "bone": "LeftForeArm",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W13",
+      "object": "W13_A_106",
+      "bone": "RightHand",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W22",
+      "object": "W22_A_030_toe",
+      "bone": "RightToeBase",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W22",
+      "object": "W22_A_030_heel",
+      "bone": "RightFoot",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    },
+    {
+      "group": "W25",
+      "object": "W25_UCH03a_Greatsword",
+      "bone": "hand_r_weapon",
+      "originErrorMm": 0.0,
+      "rotationErrorDeg": 0.0
+    }
+  ],
+  "texturesGenerated": false,
+  "paidCalls": 0,
+  "runtimeApplied": false,
+  "numericPassed": false,
+  "weaponScope": "Existing UCH-03a geometry, manually placed grip fixture; not Unity Animator grip validation",
+  "parts": [
+    {
+      "name": "Warrior_Head",
+      "group": "W01",
+      "source": "B",
+      "sourceId": -1,
+      "role": "rigid",
+      "bone": "Head",
+      "triangles": 3120
+    },
+    {
+      "name": "Warrior_Hair",
+      "group": "W02",
+      "source": "B",
+      "sourceId": -1,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 1046
+    },
+    {
+      "name": "W24_A_000",
+      "group": "W24",
+      "source": "A",
+      "sourceId": 0,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 1040
+    },
+    {
+      "name": "W24_A_001",
+      "group": "W24",
+      "source": "A",
+      "sourceId": 1,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 1013
+    },
+    {
+      "name": "W24_A_002",
+      "group": "W24",
+      "source": "A",
+      "sourceId": 2,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 692
+    },
+    {
+      "name": "W19_A_004",
+      "group": "W19",
+      "source": "A",
+      "sourceId": 4,
+      "role": "rigid",
+      "bone": "LeftLeg",
+      "triangles": 446
+    },
+    {
+      "name": "W24_A_005",
+      "group": "W24",
+      "source": "A",
+      "sourceId": 5,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 468
+    },
+    {
+      "name": "W20_A_006",
+      "group": "W20",
+      "source": "A",
+      "sourceId": 6,
+      "role": "rigid",
+      "bone": "RightLeg",
+      "triangles": 376
+    },
+    {
+      "name": "W07_A_007",
+      "group": "W07",
+      "source": "A",
+      "sourceId": 7,
+      "role": "rigid",
+      "bone": "Modular_Pauldron_Right",
+      "triangles": 732
+    },
+    {
+      "name": "W06_A_008",
+      "group": "W06",
+      "source": "A",
+      "sourceId": 8,
+      "role": "rigid",
+      "bone": "Modular_Pauldron_Left",
+      "triangles": 724
+    },
+    {
+      "name": "W03_A_009",
+      "group": "W03",
+      "source": "A",
+      "sourceId": 9,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 578
+    },
+    {
+      "name": "W17_A_010",
+      "group": "W17",
+      "source": "A",
+      "sourceId": 10,
+      "role": "rigid",
+      "bone": "LeftUpLeg",
+      "triangles": 372
+    },
+    {
+      "name": "W18_A_011",
+      "group": "W18",
+      "source": "A",
+      "sourceId": 11,
+      "role": "rigid",
+      "bone": "RightUpLeg",
+      "triangles": 330
+    },
+    {
+      "name": "W20_A_012",
+      "group": "W20",
+      "source": "A",
+      "sourceId": 12,
+      "role": "rigid",
+      "bone": "RightLeg",
+      "triangles": 394
+    },
+    {
+      "name": "W15_A_013",
+      "group": "W15",
+      "source": "A",
+      "sourceId": 13,
+      "role": "rigid",
+      "bone": "tasset_sl",
+      "triangles": 334
+    },
+    {
+      "name": "W05_A_014",
+      "group": "W05",
+      "source": "A",
+      "sourceId": 14,
+      "role": "rigid",
+      "bone": "Spine02",
+      "triangles": 246
+    },
+    {
+      "name": "W21_A_015",
+      "group": "W21",
+      "source": "A",
+      "sourceId": 15,
+      "role": "rigid",
+      "bone": "LeftToeBase",
+      "triangles": 318
+    },
+    {
+      "name": "W20_A_016",
+      "group": "W20",
+      "source": "A",
+      "sourceId": 16,
+      "role": "rigid",
+      "bone": "RightLeg",
+      "triangles": 318
+    },
+    {
+      "name": "W04_A_017",
+      "group": "W04",
+      "source": "A",
+      "sourceId": 17,
+      "role": "rigid",
+      "bone": "Spine01",
+      "triangles": 276
+    },
+    {
+      "name": "W15_A_018",
+      "group": "W15",
+      "source": "A",
+      "sourceId": 18,
+      "role": "rigid",
+      "bone": "tasset_fl",
+      "triangles": 386
+    },
+    {
+      "name": "W21_A_019",
+      "group": "W21",
+      "source": "A",
+      "sourceId": 19,
+      "role": "rigid",
+      "bone": "LeftFoot",
+      "triangles": 288
+    },
+    {
+      "name": "W19_A_020",
+      "group": "W19",
+      "source": "A",
+      "sourceId": 20,
+      "role": "rigid",
+      "bone": "LeftLeg",
+      "triangles": 334
+    },
+    {
+      "name": "W19_A_021",
+      "group": "W19",
+      "source": "A",
+      "sourceId": 21,
+      "role": "rigid",
+      "bone": "LeftLeg",
+      "triangles": 328
+    },
+    {
+      "name": "W14_A_022",
+      "group": "W14",
+      "source": "A",
+      "sourceId": 22,
+      "role": "rigid",
+      "bone": "Hips",
+      "triangles": 261
+    },
+    {
+      "name": "W13_A_023",
+      "group": "W13",
+      "source": "A",
+      "sourceId": 23,
+      "role": "rigid",
+      "bone": "RightForeArm",
+      "triangles": 354
+    },
+    {
+      "name": "W23_A_024",
+      "group": "W23",
+      "source": "A",
+      "sourceId": 24,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 394
+    },
+    {
+      "name": "W14_A_025",
+      "group": "W14",
+      "source": "A",
+      "sourceId": 25,
+      "role": "rigid",
+      "bone": "Hips",
+      "triangles": 275
+    },
+    {
+      "name": "W12_A_026",
+      "group": "W12",
+      "source": "A",
+      "sourceId": 26,
+      "role": "rigid",
+      "bone": "LeftForeArm",
+      "triangles": 254
+    },
+    {
+      "name": "W03_A_028",
+      "group": "W03",
+      "source": "A",
+      "sourceId": 28,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 229
+    },
+    {
+      "name": "W16_A_029",
+      "group": "W16",
+      "source": "A",
+      "sourceId": 29,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 528
+    },
+    {
+      "name": "W16_A_031",
+      "group": "W16",
+      "source": "A",
+      "sourceId": 31,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 326
+    },
+    {
+      "name": "W24_A_032",
+      "group": "W24",
+      "source": "A",
+      "sourceId": 32,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 364
+    },
+    {
+      "name": "W05_A_033",
+      "group": "W05",
+      "source": "A",
+      "sourceId": 33,
+      "role": "rigid",
+      "bone": "Spine02",
+      "triangles": 306
+    },
+    {
+      "name": "W04_A_034",
+      "group": "W04",
+      "source": "A",
+      "sourceId": 34,
+      "role": "rigid",
+      "bone": "Spine01",
+      "triangles": 292
+    },
+    {
+      "name": "W14_A_035",
+      "group": "W14",
+      "source": "A",
+      "sourceId": 35,
+      "role": "rigid",
+      "bone": "Hips",
+      "triangles": 270
+    },
+    {
+      "name": "W10_A_036",
+      "group": "W10",
+      "source": "A",
+      "sourceId": 36,
+      "role": "rigid",
+      "bone": "LeftForeArm",
+      "triangles": 262
+    },
+    {
+      "name": "W22_A_037",
+      "group": "W22",
+      "source": "A",
+      "sourceId": 37,
+      "role": "rigid",
+      "bone": "RightFoot",
+      "triangles": 260
+    },
+    {
+      "name": "W23_A_038",
+      "group": "W23",
+      "source": "A",
+      "sourceId": 38,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 319
+    },
+    {
+      "name": "W14_A_039",
+      "group": "W14",
+      "source": "A",
+      "sourceId": 39,
+      "role": "rigid",
+      "bone": "Hips",
+      "triangles": 254
+    },
+    {
+      "name": "W09_A_040",
+      "group": "W09",
+      "source": "A",
+      "sourceId": 40,
+      "role": "rigid",
+      "bone": "RightArm",
+      "triangles": 252
+    },
+    {
+      "name": "W11_A_041",
+      "group": "W11",
+      "source": "A",
+      "sourceId": 41,
+      "role": "rigid",
+      "bone": "RightForeArm",
+      "triangles": 250
+    },
+    {
+      "name": "W04_A_042",
+      "group": "W04",
+      "source": "A",
+      "sourceId": 42,
+      "role": "rigid",
+      "bone": "Spine01",
+      "triangles": 248
+    },
+    {
+      "name": "W03_A_043",
+      "group": "W03",
+      "source": "A",
+      "sourceId": 43,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 246
+    },
+    {
+      "name": "W08_A_044",
+      "group": "W08",
+      "source": "A",
+      "sourceId": 44,
+      "role": "rigid",
+      "bone": "LeftArm",
+      "triangles": 242
+    },
+    {
+      "name": "W13_A_045",
+      "group": "W13",
+      "source": "A",
+      "sourceId": 45,
+      "role": "rigid",
+      "bone": "RightHand",
+      "triangles": 240
+    },
+    {
+      "name": "W12_A_046",
+      "group": "W12",
+      "source": "A",
+      "sourceId": 46,
+      "role": "rigid",
+      "bone": "LeftHand",
+      "triangles": 232
+    },
+    {
+      "name": "W05_A_047",
+      "group": "W05",
+      "source": "A",
+      "sourceId": 47,
+      "role": "rigid",
+      "bone": "Spine02",
+      "triangles": 230
+    },
+    {
+      "name": "W24_A_048",
+      "group": "W24",
+      "source": "A",
+      "sourceId": 48,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 282
+    },
+    {
+      "name": "W14_A_049",
+      "group": "W14",
+      "source": "A",
+      "sourceId": 49,
+      "role": "rigid",
+      "bone": "Hips",
+      "triangles": 227
+    },
+    {
+      "name": "W15_A_050",
+      "group": "W15",
+      "source": "A",
+      "sourceId": 50,
+      "role": "rigid",
+      "bone": "tasset_fr",
+      "triangles": 224
+    },
+    {
+      "name": "W11_A_051",
+      "group": "W11",
+      "source": "A",
+      "sourceId": 51,
+      "role": "rigid",
+      "bone": "RightForeArm",
+      "triangles": 222
+    },
+    {
+      "name": "W04_A_052",
+      "group": "W04",
+      "source": "A",
+      "sourceId": 52,
+      "role": "rigid",
+      "bone": "Spine01",
+      "triangles": 220
+    },
+    {
+      "name": "W15_A_053",
+      "group": "W15",
+      "source": "A",
+      "sourceId": 53,
+      "role": "rigid",
+      "bone": "tasset_sr",
+      "triangles": 219
+    },
+    {
+      "name": "W23_A_054",
+      "group": "W23",
+      "source": "A",
+      "sourceId": 54,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 265
+    },
+    {
+      "name": "W15_A_055",
+      "group": "W15",
+      "source": "A",
+      "sourceId": 55,
+      "role": "rigid",
+      "bone": "tasset_b",
+      "triangles": 212
+    },
+    {
+      "name": "W14_A_056",
+      "group": "W14",
+      "source": "A",
+      "sourceId": 56,
+      "role": "rigid",
+      "bone": "Hips",
+      "triangles": 210
+    },
+    {
+      "name": "W10_A_057",
+      "group": "W10",
+      "source": "A",
+      "sourceId": 57,
+      "role": "rigid",
+      "bone": "LeftForeArm",
+      "triangles": 206
+    },
+    {
+      "name": "W12_A_058",
+      "group": "W12",
+      "source": "A",
+      "sourceId": 58,
+      "role": "rigid",
+      "bone": "LeftForeArm",
+      "triangles": 206
+    },
+    {
+      "name": "W04_A_059",
+      "group": "W04",
+      "source": "A",
+      "sourceId": 59,
+      "role": "rigid",
+      "bone": "Spine01",
+      "triangles": 206
+    },
+    {
+      "name": "W10_A_060",
+      "group": "W10",
+      "source": "A",
+      "sourceId": 60,
+      "role": "rigid",
+      "bone": "LeftForeArm",
+      "triangles": 202
+    },
+    {
+      "name": "W24_A_061",
+      "group": "W24",
+      "source": "A",
+      "sourceId": 61,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 248
+    },
+    {
+      "name": "W23_A_062",
+      "group": "W23",
+      "source": "A",
+      "sourceId": 62,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 241
+    },
+    {
+      "name": "W12_A_063",
+      "group": "W12",
+      "source": "A",
+      "sourceId": 63,
+      "role": "rigid",
+      "bone": "LeftHand",
+      "triangles": 196
+    },
+    {
+      "name": "W14_A_064",
+      "group": "W14",
+      "source": "A",
+      "sourceId": 64,
+      "role": "rigid",
+      "bone": "Hips",
+      "triangles": 193
+    },
+    {
+      "name": "W22_A_065",
+      "group": "W22",
+      "source": "A",
+      "sourceId": 65,
+      "role": "rigid",
+      "bone": "RightFoot",
+      "triangles": 190
+    },
+    {
+      "name": "W19_A_066",
+      "group": "W19",
+      "source": "A",
+      "sourceId": 66,
+      "role": "rigid",
+      "bone": "LeftLeg",
+      "triangles": 190
+    },
+    {
+      "name": "W20_A_067",
+      "group": "W20",
+      "source": "A",
+      "sourceId": 67,
+      "role": "rigid",
+      "bone": "RightLeg",
+      "triangles": 188
+    },
+    {
+      "name": "W14_A_068",
+      "group": "W14",
+      "source": "A",
+      "sourceId": 68,
+      "role": "rigid",
+      "bone": "Hips",
+      "triangles": 188
+    },
+    {
+      "name": "W23_A_069",
+      "group": "W23",
+      "source": "A",
+      "sourceId": 69,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 224
+    },
+    {
+      "name": "W23_A_070",
+      "group": "W23",
+      "source": "A",
+      "sourceId": 70,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 222
+    },
+    {
+      "name": "W08_A_071",
+      "group": "W08",
+      "source": "A",
+      "sourceId": 71,
+      "role": "rigid",
+      "bone": "LeftArm",
+      "triangles": 182
+    },
+    {
+      "name": "W12_A_072",
+      "group": "W12",
+      "source": "A",
+      "sourceId": 72,
+      "role": "rigid",
+      "bone": "LeftHand",
+      "triangles": 176
+    },
+    {
+      "name": "W21_A_073",
+      "group": "W21",
+      "source": "A",
+      "sourceId": 73,
+      "role": "rigid",
+      "bone": "LeftFoot",
+      "triangles": 174
+    },
+    {
+      "name": "W12_A_074",
+      "group": "W12",
+      "source": "A",
+      "sourceId": 74,
+      "role": "rigid",
+      "bone": "LeftHand",
+      "triangles": 174
+    },
+    {
+      "name": "W20_A_075",
+      "group": "W20",
+      "source": "A",
+      "sourceId": 75,
+      "role": "rigid",
+      "bone": "RightLeg",
+      "triangles": 174
+    },
+    {
+      "name": "W09_A_076",
+      "group": "W09",
+      "source": "A",
+      "sourceId": 76,
+      "role": "rigid",
+      "bone": "RightArm",
+      "triangles": 174
+    },
+    {
+      "name": "W13_A_077",
+      "group": "W13",
+      "source": "A",
+      "sourceId": 77,
+      "role": "rigid",
+      "bone": "RightForeArm",
+      "triangles": 172
+    },
+    {
+      "name": "W24_A_078",
+      "group": "W24",
+      "source": "A",
+      "sourceId": 78,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 207
+    },
+    {
+      "name": "W23_A_079",
+      "group": "W23",
+      "source": "A",
+      "sourceId": 79,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 205
+    },
+    {
+      "name": "W13_A_080",
+      "group": "W13",
+      "source": "A",
+      "sourceId": 80,
+      "role": "rigid",
+      "bone": "RightHand",
+      "triangles": 166
+    },
+    {
+      "name": "W19_A_081",
+      "group": "W19",
+      "source": "A",
+      "sourceId": 81,
+      "role": "rigid",
+      "bone": "LeftLeg",
+      "triangles": 168
+    },
+    {
+      "name": "W24_A_082",
+      "group": "W24",
+      "source": "A",
+      "sourceId": 82,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 201
+    },
+    {
+      "name": "W13_A_083",
+      "group": "W13",
+      "source": "A",
+      "sourceId": 83,
+      "role": "rigid",
+      "bone": "RightHand",
+      "triangles": 162
+    },
+    {
+      "name": "W10_A_084",
+      "group": "W10",
+      "source": "A",
+      "sourceId": 84,
+      "role": "rigid",
+      "bone": "LeftForeArm",
+      "triangles": 160
+    },
+    {
+      "name": "W23_A_085",
+      "group": "W23",
+      "source": "A",
+      "sourceId": 85,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 191
+    },
+    {
+      "name": "W13_A_086",
+      "group": "W13",
+      "source": "A",
+      "sourceId": 86,
+      "role": "rigid",
+      "bone": "RightHand",
+      "triangles": 154
+    },
+    {
+      "name": "W12_A_087",
+      "group": "W12",
+      "source": "A",
+      "sourceId": 87,
+      "role": "rigid",
+      "bone": "LeftHand",
+      "triangles": 154
+    },
+    {
+      "name": "W13_A_088",
+      "group": "W13",
+      "source": "A",
+      "sourceId": 88,
+      "role": "rigid",
+      "bone": "RightForeArm",
+      "triangles": 154
+    },
+    {
+      "name": "W23_A_089",
+      "group": "W23",
+      "source": "A",
+      "sourceId": 89,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 180
+    },
+    {
+      "name": "W23_A_090",
+      "group": "W23",
+      "source": "A",
+      "sourceId": 90,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 179
+    },
+    {
+      "name": "W14_A_091",
+      "group": "W14",
+      "source": "A",
+      "sourceId": 91,
+      "role": "rigid",
+      "bone": "Hips",
+      "triangles": 144
+    },
+    {
+      "name": "W13_A_092",
+      "group": "W13",
+      "source": "A",
+      "sourceId": 92,
+      "role": "rigid",
+      "bone": "RightForeArm",
+      "triangles": 144
+    },
+    {
+      "name": "W19_A_093",
+      "group": "W19",
+      "source": "A",
+      "sourceId": 93,
+      "role": "rigid",
+      "bone": "LeftLeg",
+      "triangles": 142
+    },
+    {
+      "name": "W13_A_094",
+      "group": "W13",
+      "source": "A",
+      "sourceId": 94,
+      "role": "rigid",
+      "bone": "RightHand",
+      "triangles": 142
+    },
+    {
+      "name": "W23_A_095",
+      "group": "W23",
+      "source": "A",
+      "sourceId": 95,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 170
+    },
+    {
+      "name": "W04_A_096",
+      "group": "W04",
+      "source": "A",
+      "sourceId": 96,
+      "role": "rigid",
+      "bone": "Spine01",
+      "triangles": 138
+    },
+    {
+      "name": "W04_A_097",
+      "group": "W04",
+      "source": "A",
+      "sourceId": 97,
+      "role": "rigid",
+      "bone": "Spine01",
+      "triangles": 138
+    },
+    {
+      "name": "W04_A_098",
+      "group": "W04",
+      "source": "A",
+      "sourceId": 98,
+      "role": "rigid",
+      "bone": "Spine01",
+      "triangles": 134
+    },
+    {
+      "name": "W12_A_099",
+      "group": "W12",
+      "source": "A",
+      "sourceId": 99,
+      "role": "rigid",
+      "bone": "LeftForeArm",
+      "triangles": 132
+    },
+    {
+      "name": "W16_A_100",
+      "group": "W16",
+      "source": "A",
+      "sourceId": 100,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 129
+    },
+    {
+      "name": "W23_A_101",
+      "group": "W23",
+      "source": "A",
+      "sourceId": 101,
+      "role": "soft",
+      "bone": "soft",
+      "triangles": 153
+    },
+    {
+      "name": "W14_A_102",
+      "group": "W14",
+      "source": "A",
+      "sourceId": 102,
+      "role": "rigid",
+      "bone": "Hips",
+      "triangles": 127
+    },
+    {
+      "name": "W21_A_103",
+      "group": "W21",
+      "source": "A",
+      "sourceId": 103,
+      "role": "rigid",
+      "bone": "LeftFoot",
+      "triangles": 126
+    },
+    {
+      "name": "W13_A_104",
+      "group": "W13",
+      "source": "A",
+      "sourceId": 104,
+      "role": "rigid",
+      "bone": "RightHand",
+      "triangles": 114
+    },
+    {
+      "name": "W12_A_105",
+      "group": "W12",
+      "source": "A",
+      "sourceId": 105,
+      "role": "rigid",
+      "bone": "LeftForeArm",
+      "triangles": 114
+    },
+    {
+      "name": "W13_A_106",
+      "group": "W13",
+      "source": "A",
+      "sourceId": 106,
+      "role": "rigid",
+      "bone": "RightHand",
+      "triangles": 112
+    },
+    {
+      "name": "W22_A_030_toe",
+      "group": "W22",
+      "source": "A",
+      "sourceId": 30,
+      "role": "rigid",
+      "bone": "RightToeBase",
+      "triangles": 176
+    },
+    {
+      "name": "W22_A_030_heel",
+      "group": "W22",
+      "source": "A",
+      "sourceId": 30,
+      "role": "rigid",
+      "bone": "RightFoot",
+      "triangles": 218
+    },
+    {
+      "name": "W25_UCH03a_Greatsword",
+      "group": "W25",
+      "source": "UCH03a",
+      "sourceId": -1,
+      "role": "rigid",
+      "bone": "hand_r_weapon",
+      "triangles": 3000
+    }
+  ],
+  "preInnerRepairTriangles": 35126,
+  "numericStatus": "STOP_AFTER_TWO_NUMERIC_FAILURES",
+  "numericSummary": {
+    "attempt": 2,
+    "totalPairRows": 11440,
+    "failedPairRows": 50,
+    "unverifiedPairRows": 1050,
+    "failedSeamRows": 0,
+    "unverifiedSeamRows": 170,
+    "maxSampledSurfaceDepthMm": 27.72999182343483,
+    "maxNearestVertexMm": 509.2152953147888,
+    "metricLimits": [
+      "overlap is triangle intersection count, not penetration volume",
+      "nearest vertex is a conservative sampling-dependent AABB-candidate contact distance; may include outside vertices; NOT penetrating-vertices-only depth",
+      "surface depth uses contained vertex and intersecting-triangle centroid samples; continuous maximum is not certified",
+      "open/nonmanifold surfaces or ray-sign disagreement remain UNVERIFIED; unsigned proximity is not penetration depth",
+      "socket boundary Hausdorff uses actual boundary vertices in named socket bands; absent boundaries never become zero gap"
+    ]
+  },
+  "innerRepairSummary": {
+    "plates": 67,
+    "closedAfter": 65,
+    "thicknessMm": 1.2
+  },
+  "rawAProjectSource": "unity/Tools/char-modular/Warrior_Tripo_Parts.glb",
+  "UnityPrefabStatus": "Existing prefab/FBX are obsolete B-only; A+B is NOT connected or compiled",
+  "sourceFrameLimit": "A raw limb anchors are fitted from normalized part bounds; zero origin error is NOT anatomical/geometry acceptance"
+}
