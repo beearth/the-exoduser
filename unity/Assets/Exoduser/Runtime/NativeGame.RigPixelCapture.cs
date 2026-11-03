@@ -38,7 +38,7 @@ namespace Exoduser.UnityPort {
      keyboard.MakeCurrent();mouse.MakeCurrent();InputState.Change(keyboard,new KeyboardState(keys.ToArray()));
      var target=NativeRemodel3D.Point(aimX,aimY);if(NativeRemodel3D.Active)target.y=NativeRemodel3D.Point(p.X,p.Y).y;
      var screen=HudCamera.WorldToScreenPoint(target);var state=new MouseState{position=new Vector2(screen.x,screen.y)};if(nearest<360000)state=state.WithButton(MouseButton.Left);InputState.Change(mouse,state);
-     Running=p.Hp>0;yield return null;yield return new WaitForEndOfFrame();
+     Running=!PlayerDown;yield return null;yield return new WaitForEndOfFrame();
      float now=Time.realtimeSinceStartup,dt=now-previous;previous=now;
      if(elapsed>2&&dt>0){report.frameMilliseconds.Add(dt*1000);sampleSeconds+=dt;samples++;}
      float mx=p.X-lastX,my=p.Y-lastY;report.travel+=Mathf.Sqrt(mx*mx+my*my);lastX=p.X;lastY=p.Y;report.maxEnemies=Mathf.Max(report.maxEnemies,sim.Enemies.Count);

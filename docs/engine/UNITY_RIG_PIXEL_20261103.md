@@ -1,6 +1,6 @@
 # 전사 실시간 리깅 픽셀 렌더 — 2026-11-03
 
-현재 상태: 전사 opt-in 구현·검수 진행. 게임용 아트/60fps/공통/Desktop은 아직 미검증이다. 최신 실행 영수증은 I:/EXODUSER-Storage/codex-takeover/rig-pixel/REPORT.md.
+현재 상태: R6c 실제1-1 기능41/41·M1 23/23·3840 Shift4/4 확인. 큰면/광량은 개선됐으나3x 종아리의 고립명암으로 점0 FAIL. R6d는재질내부 median 보강·Mac 검수요청이며 게임용아트/60fps/공통/Desktop 미완이다. 최신 실행 영수증은 I:/EXODUSER-Storage/codex-takeover/rig-pixel/REPORT.md.
 
 | 계약 | 코드·수치 |
 |---|---|
@@ -79,3 +79,17 @@ R6c 상체선행회전은 HERO_MOTION의R6c절을따른다. R6b 광량/팔레트
 실제Point광: 거리감쇠A=(1-d²/range²)²/(1+d²); E=light.color.linear×intensity×A; 압축E×1.1/(1+maxRGB(E)); 최종4단NdotL에적용. Directional A=1. 상체회전보강은게임root/조준/판정각을바꾸지않고자식모델에만적용하며실제영상판정전미검증이다.
 
 공통898ac2b960 정상merge: NativeGame 생성분기의 opt-in/AttachRigPixel을 유지하며 공통에서 제거한 lastKillCount 초기화는 다시 넣지 않는다. 새 공통의 자연완주/실제사망전환/전면UI/숨김영상포커스/공용실행기 변경을 그대로 인수한다. R6c 영수증은 merge 전 c65fe43 패키지 범위이며 새병합본 실게임검수는 Mac에 요청한다. 공통규칙11:55에 따라 PC의 새빌드/Player/M1 시작0.
+
+## R6d 고립 명암 처리와 Mac 검수 요청
+
+R6c c65fe43e 실제Hero76d1e6a8(41/41·579PNG), Shift3840 279f9e85(4/4·700px·aim.03px), M1 f13ca186(23/23)는 모두 exit0·창/잔여/USER_SAVE변경0. 실제1x 보드와대기3x를직접보아 R6암부FAIL보다큰면/망토/대검구분은개선됐지만 종아리의고립밝고어두운픽셀이남아점0 FAIL. ROI색진단8개는재질/윤곽/셀경계후보도포함하며실제점개수의정답이아니다. 해당패키지는기본값/후보바로가기에채택하지않는다.
+
+| R6d id | 계약·정확값 | 보존/검증 경계 |
+|---|---|---|
+| RT SurfaceTag | iron .6 / cloth,cape .7 / leather .8 / skin,hair,sword,weapon,blade 1 | 캡처RT alpha에만태그. 소재팔레트 alpha는1. 최종합성표면 alpha는항상1로복구해반투명갑옷회귀방지 |
+| same-plane median | 중앙RT alpha<.9, 중앙과8이웃 alpha차<.02인3×3내부만 적용. RGB휘도 .2126R+.7152G+.0722B로정렬, 중앙샘플원RGB를선택. 5회 bubble pass로index4 산출 | 다른재질/투명외곽/머리/얼굴/얇은대검은median 제외. 흐림/색보간/노이즈/디더추가0. 기존4이웃고립점정리와달빛한쪽테유지 |
+| shader target | composite SM3.5 | D3D/Metal 실제컴파일·장면색·RT태그정밀도·성능은Mac및후속Windows검수전미검증 |
+| natural fallen | Running=!PlayerDown | 제품의5초fallen부활카운트와같이Core틱을유지. Hp>0만보던QA조기정지를교정, AI/HP/피해/부활규칙변경0 |
+| 검수 위치 | PC는공통규칙11:55에따라코드/커밋push·배치컴파일1회까지만. 정식빌드/Player/M1/UI/FPS는Mac담당 | R6c이미종료된영수증을새R6d검수로세지않음. 기본sprite유지, 공통/Desktop반영0 |
+
+Mac에서는 Editor RigPixelVerification.Verify 후 PortVerification.Build(-remodel-scenes 1), 같은패키지 Hero1920/3840·Shift·M1·natural1920/3840·spritebaseline·10초무음영상·C10/NRFTW동일크기비교를 수행한다. 새병합본 NativeGame 생성분기/실제fallen전환/RT태그/약한곳의점0/발접지/상체선행/3타접점/60fps가필수다. Mac검수/통합담당응답전공통반영/전달완료로보고하지않는다.

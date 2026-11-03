@@ -37,7 +37,9 @@ namespace Exoduser.UnityPort {
      for(int i=0;i<materials.Length;i++){
       var old=sourceMaterials[i];var mat=new Material(toon){name="RigPixel: "+(old!=null?old.name:"body")};
       if(old!=null){if(old.HasProperty("_BaseMap")){mat.SetTexture("_BaseMap",old.GetTexture("_BaseMap"));mat.SetTextureScale("_BaseMap",old.GetTextureScale("_BaseMap"));mat.SetTextureOffset("_BaseMap",old.GetTextureOffset("_BaseMap"));}if(old.HasProperty("_BaseColor"))mat.SetColor("_BaseColor",old.GetColor("_BaseColor"));}
-      mat.SetColor("_PaletteColor",Palette(old!=null?old.name:"iron"));
+      string materialName=old!=null?old.name:"iron";
+      mat.SetColor("_PaletteColor",Palette(materialName));
+      mat.SetFloat("_SurfaceTag",SurfaceTag(materialName));
       materials[i]=mat;ownedMaterials.Add(mat);
      }
      r.sharedMaterials=materials;
@@ -166,6 +168,14 @@ namespace Exoduser.UnityPort {
    }
    var mesh=Instantiate(source);mesh.name=source.name+" RigPixel broad normals";mesh.normals=normals;ownedMeshes.Add(mesh);return mesh;
    // Positions, skin weights, bind poses, UVs and topology are untouched: Core/feet/blade geometry stays identical.
+  }
+  // RT alpha is an internal surface label; the composite restores opaque coverage.
+  static float SurfaceTag(string name){
+   name=name.ToLowerInvariant();
+   if(name.Contains("skin")||name.Contains("hair")||name.Contains("sword")||name.Contains("weapon")||name.Contains("blade"))return 1f;
+   if(name.Contains("cloth")||name.Contains("cape"))return .7f;
+   if(name.Contains("leather"))return .8f;
+   return .6f;
   }
   static Color Palette(string name){
    name=name.ToLowerInvariant();
