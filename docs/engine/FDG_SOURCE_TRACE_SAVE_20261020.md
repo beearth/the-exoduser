@@ -585,3 +585,6 @@ P는 mkP 반환 직후 값이며 최종저장값/장비적용후값이 아니다
 SV primitive의 `web_ack` 성공 시각 계산과 기존 `source_save_lifecycle_owner.gd`를 실제 재사용했다. `configure_lifecycle`의 기존 clock/state/collector/slot/rift Callable과 **현재 시점 `context.raw_json`**을 소비한다. `start_auto_save`/`schedule_boot_save`/`poll`은 원래30초·10초 성공 간격·3초 boot 계약을 유지한다(G3935–3944/62212). 실제 commit 뒤에만 성공 시각을 갱신하며, IO 이전 admission 실패도 알려진 실패 settlement로 전달해 boot ticket을 남기지 않는다. 기존 fixture primitive의 HOLD/readiness 및 다른 SV 모듈은 변경하지 않았다.
 
 이 좁은 native IO와 격리 재시작 읽기만 인수했다. Main/State 수정0, 실제 신규/이어하기·Player/INV restore·collector 직렬화·공유창고·로비 슬롯 활성 교환은 DEMO11-04/06 소비자 범위다. 현재 일반 Main의 기존 userdir에서는 안전하게 NOT_READY이며 별도 demo namespace 선택/실제 lifecycle pump 설치는 부팅/복원 담당이 인수해야 한다. flush/rename 검증은 전원 장애의 fsync 내구성, Windows 교체 rename, 적대적 동시 파일시스템 교체, crash 뒤 잠금 자동 복구의 증명이 아니다. 상세 수치/실패 원문/접점은 [DEMO11-05 보고서](orders/reports/demo11-05_REPORT.md)를 따른다.
+
+
+2026-11-02 현행 화면 전환 정정: 과거 source 추적·검수 이력은 보존한다. 입장 고정1200ms 및 스테이지 고정5000ms를 공통 검정500ms/표시600ms와 실제 준비 대기로 교체했다. 영상 first-frame decode·마지막.6초/스킵, 기존 오디오 gain, 지연300ms 인장·초광폭 계약은 [전환 SSOT](../3.1%20ui%20hud%20디자인/SCREEN_TRANSITIONS_20261102.md)를 따른다. 게임 규칙·저장 identity·맵 geometry 변경은 없다.

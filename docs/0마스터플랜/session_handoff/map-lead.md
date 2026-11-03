@@ -72,3 +72,11 @@
 - **보스 아레나:** `docs/engine/UNITY_CH1_BOSS_ARENA_MAP_SPEC_20261028.md`에 1-1 → 1-4 → 1-2 → 1-3 제작 계약을 적었다. 명세만 완료했고 전용 씬·빌드·실제 플레이는 미착수. RM1_Slice는 START~R2 필드이므로 아레나 구현으로 세지 않는다.
 - **1-1 수로 기하 후보:** `E:/exoduser-wt/codex-map`의 `codex/pc-map-arena-20261028` `2f2e8bc9b64487338b8499695356814d745df127`을 비강제 push하고 원격 SHA를 대조했다. Core 실제 원형 격자에서 보행 바깥 278타일·출입축 여백을 뽑는 순수 C# 함수이며 .NET RED→GREEN 11/0. 관련 docs는 같은 커밋. Unity 컴파일·수로 메시·Player·1x 미검수라 통합 HOLD(`MERGE_QUEUE.md` 기록). 아레나 제작 완료로 세지 않는다.
 - 다음 독립 단위: RM-0 실제 맵 1x 톤 판정과 통합 영수증 확인, RM-3 수정본 MapLint·캡처, RM-2/4 공용 실행 순번, 1-1 아레나 외곽·수로 구조 제작. 유료 Meshy 호출은 별도 사용자 확인 항목으로 유지한다.
+
+## 2026-11-03 Kit 1103 — 입체 소품 레인 B
+
+- 출력: `I:/EXODUSER-Storage/map25d/kit-1103/REPORT.md`, `KitImport.md`, `Editor/Kit1103Importer.cs`. 큰 바위 5(이끼 2 포함), 고목 3(뿌리 1 포함), 뿌리 둑/둔덕 4, 그루터기 3, 식생 6, 전경 가지 3 = 24개. FBX·BaseColor/Normal(1024²)·개별 PNG·분류별 1920 비교 시트·3x 크롭·.blend 6개와 로컬 Assets/Authoring ZIP을 제공했다.
+- 오프라인 기술 검사 PASS: 24/24 FBX 재임포트, 개별 1308~2606 triangles(총 47224), UV·퇴화 면·바닥 중심 피벗·미터 치수 검증. SHA-256은 `roundtrip.json`/`delivery_files.json`, ZIP 읽기 검증은 `delivery/archive_verification.json`. 임포터는 Unity 6000.6.7f1 설치 어셈블리 대상 독립 C# 컴파일 0오류이며 실제 Editor 임포트 실행과 구분한다.
+- 원화는 G:/exoduser에서 `git show origin/main:<경로>`로만 12개 추출·해시 재대조했다(최초 main e0e6716c228f8ccfa5ad5834a2bce0a7d2aa3216). 무창·무음, 유료 생성 0. A 장면·작업본·기존 실행기·세이브·G 메인 인덱스 미조작.
+- **RETOUCH_GAME_QA_PENDING / runtimeApplied:false.** 원화 미세 결보다 부드러운 부분과 일부 뿌리 형태 규칙성이 남는다. 1x/3x 오프라인 비교만 직접 열람했고 실제 URP 그림자·알파·접지·압축, 같은 패키지 Player/M1·자연 플레이·16:9/21:9/32:9는 미검증이다. 3840×1080은 연락 시트이며 Player 화면이 아니다. 최종 아트 채택이나 제품 PASS가 아니다.
+- 다음: A의 C17 인수 후 자기 작업본에 키트 배치·기존 충돌 계약 유지·게임 QA. B는 장면을 직접 수정하지 않는다. 키트 바이너리는 I: 로컬 ZIP 보존이며 원격 바이너리 백업·Unity 병합·바탕화면 갱신을 주장하지 않는다. 이번 Git 변경은 이 인계 docs뿐이다.

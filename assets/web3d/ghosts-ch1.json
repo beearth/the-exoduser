@@ -4,25 +4,25 @@
   "trees": [
     {
       "id": "ghost_tree_0",
-      "x": 3176,
-      "y": 6944,
+      "x": 3420,
+      "y": 7480,
       "type": "m_ctree13",
       "width": 250,
       "height": 350,
-      "alpha": 0.58,
+      "alpha": 0.52,
       "phase": 0,
-      "role": "시작·초입 외곽"
+      "role": "시작 서측 어깨·전체 실루엣 가시"
     },
     {
       "id": "ghost_tree_1",
-      "x": 5048,
-      "y": 6864,
+      "x": 4670,
+      "y": 7530,
       "type": "m_ctree20",
       "width": 305,
       "height": 395,
-      "alpha": 0.58,
+      "alpha": 0.52,
       "phase": 1.93,
-      "role": "시작·초입 외곽"
+      "role": "시작 동측 어깨·전체 실루엣 가시"
     },
     {
       "id": "ghost_tree_2",
@@ -103,14 +103,14 @@
     },
     {
       "id": "ghost_tree_9",
-      "x": 6697,
-      "y": 3543,
+      "x": 6500,
+      "y": 4280,
       "type": "m_ctree18",
       "width": 250,
       "height": 395,
       "alpha": 0.58,
       "phase": 17.37,
-      "role": "북부 안개 경계"
+      "role": "제단 동측 안개 어깨·전체 실루엣 가시"
     },
     {
       "id": "ghost_tree_10",

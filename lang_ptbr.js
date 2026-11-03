@@ -3996,3 +3996,6 @@ Object.assign(_PTBR,{"구르기":"Rolamento"});
 
 // 2026-10-31 화폐 단위 앞 공백 보존 (No.3819)
 Object.assign(_PTBR,{" 악의오브":" Esfera de malícia"});
+
+// 2026-11-03 사망 피해 기록 적 이름 (No.3845~3846)
+Object.assign(_PTBR,{"몬스터":"Monstro","정예 몬스터":"Monstro de elite"});

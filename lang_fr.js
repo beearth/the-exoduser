@@ -3489,3 +3489,6 @@ Object.assign(_FR,{"구르기":"Roulade"});
 
 // 2026-10-31 화폐 단위 앞 공백 보존 (No.3819)
 Object.assign(_FR,{" 악의오브":" Sphère de malice"});
+
+// 2026-11-03 사망 피해 기록 적 이름 (No.3845~3846)
+Object.assign(_FR,{"몬스터":"Monstre","정예 몬스터":"Monstre d’élite"});

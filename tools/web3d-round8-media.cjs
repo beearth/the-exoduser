@@ -1,0 +1,10 @@
+const fs=require('node:fs/promises'),cp=require('node:child_process'),path=require('node:path'),{once}=require('node:events');
+const out=process.env.WEB3D_QA_OUT;if(!out)throw Error('WEB3D_QA_OUT required');
+const ff=path.join(process.env.LOCALAPPDATA,'Microsoft/WinGet/Links/ffmpeg.exe');
+(async()=>{const names=(await fs.readdir(out)).filter(f=>f.startsWith('frames-')&&f.endsWith('.json')).map(f=>f.slice(7,-5)),result=[];
+ for(const name of names){const times=JSON.parse(await fs.readFile(out+'/frames-'+name+'.json','utf8')),fps=12,frames=120,log=await fs.open(out+'/'+name+'-encode.log','w'),c=cp.spawn(ff,['-hide_banner','-y','-f','image2pipe','-vcodec','png','-r','12','-i','pipe:0','-an','-c:v','libvpx','-b:v','50000k','-crf','0','-qmin','0','-qmax','0','-deadline','realtime','-cpu-used','4','-threads','2','-pix_fmt','yuv420p','-frames:v','120',out+'/'+name+'.webm'],{windowsHide:true,stdio:['pipe','ignore',log.fd]}),done=once(c,'close');let cursor=0,error;c.stdin.on('error',e=>error=e);
+  for(let i=0;i<frames;i++){const t=times[0]+i/fps;while(cursor+1<times.length&&times[cursor+1]<=t)cursor++;if(error)throw error;if(!c.stdin.write(await fs.readFile(out+'/frames-'+name+'/'+String(cursor).padStart(5,'0')+'.png')))await once(c.stdin,'drain');}c.stdin.end();const [code]=await done;await log.close();if(code)throw Error('encode '+name+' '+code);
+  const decoded=cp.spawnSync(ff,['-hide_banner','-ss','5','-i',out+'/'+name+'.webm','-frames:v','1','-y',out+'/'+name+'-decoded.png'],{windowsHide:true,encoding:'utf8'});if(decoded.status||/Audio:/.test(decoded.stderr))throw Error('decode/audio '+name);
+  result.push({name,file:name+'.webm',frames,fps,duration:10,audio:false,rawFrames:times.length,rawDuration:times.at(-1)-times[0],method:'timestamp hold from 1x PNG; no interpolated motion; VP8 CRF0'});await fs.writeFile(out+'/media.json',JSON.stringify(result,null,2));console.log('encoded '+name);
+ }
+})().catch(e=>{console.error(e.stack);process.exitCode=1;});

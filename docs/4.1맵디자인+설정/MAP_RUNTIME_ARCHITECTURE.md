@@ -555,3 +555,6 @@ v0.15 가림·명암과 앞선 height/soil/원본 검수는 완료 이력으로 
 ## 2026-10-31 stage=0 초광폭 진입 계약
 
 stage=0은 실제 CH1-1 200×200 본편을 선택한다. 과거 55×31 원화 QA는 mapTest=1/v4 또는 stage=0&plate=prod, 36×27은 stage=0&plate=fieldone/v1로 명시한다. 작은 원화 판에는 production 청크와 8000px 좌표 나무를 섞지 않는다. 기존 전체 VW/VH 시야·카메라 클램프·geometry·충돌·스폰 예산·루트는 유지한다. [화면 밖 처리·실제 4해상도 검수](../12퍼포먼스·최적화/WORLD_ULTRAWIDE_20261031.md).
+
+
+2026-11-02 현행 화면 전환 정정: 과거 source 추적·검수 이력은 보존한다. 입장 고정1200ms 및 스테이지 고정5000ms를 공통 검정500ms/표시600ms와 실제 준비 대기로 교체했다. 영상 first-frame decode·마지막.6초/스킵, 기존 오디오 gain, 지연300ms 인장·초광폭 계약은 [전환 SSOT](../3.1%20ui%20hud%20디자인/SCREEN_TRANSITIONS_20261102.md)를 따른다. 게임 규칙·저장 identity·맵 geometry 변경은 없다.

@@ -1,15 +1,19 @@
 import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
 import {waterAt,plantHabitat} from './living-layout.mjs?v=20261031-layer2';
 import {createRelief} from './living-relief.mjs?v=20261102-round4-final';
-import {createMapLook} from './map-look-pass.mjs?v=20261102-hue1';
-import {createDepthPass} from './depth-pass.mjs?v=20261102-hue1';
+import {createMapLook} from './map-look-pass.mjs?v=20261102-round6';
+import {createDepthPass} from './depth-pass.mjs?v=20261102-round6';
 import {sceneBudget} from './scene-budget.mjs?v=20261102-round4-final';
-import {createForest} from './forest-layer.mjs?v=20261102-round4-final';
-import {createGhosts} from './ghost-layer.mjs?v=20261102-round4-final';
+import {createForest} from './forest-layer.mjs?v=20261102-round6';
+import {createGhosts} from './ghost-layer.mjs?v=20261103-round8';
 import {authoredFoliageLayout,puddleHabitat} from './foliage-layout.mjs?v=20261031-foliage4b';
 import {drawFoliageDebug} from './foliage-debug.mjs?v=20261031-foliage4';
+import {createGroves} from './grove-layer.mjs?v=20261103-r8';
 
-import {createGroundDressing} from './ground-dressing.mjs?v=20261102-hue1';
+import {createGroundBlendPass} from './ground-blend-pass.mjs?v=20261102-round7';
+import {createGroundDressing} from './ground-dressing.mjs?v=20261102-round7';
+import {consumeEnvironmentOverlay} from './environment-overlay.mjs?v=20261102-round5';
+import {createMaterialCleanup,createFoliageCleanup} from './material-cleanup.mjs?v=20261102-round7';
 
 // The native map is the color source. This canvas contains ONLY added vegetation
 // and water highlights; actors, VFX, camera, lighting and HUD use their original pass.
@@ -22,27 +26,29 @@ export async function install(read){
   const scene=new THREE.Scene(),camera=new THREE.Camera();
   const uniforms={view:{value:new THREE.Vector4()},time:{value:0},hero:{value:new THREE.Vector2(-1e5,-1e5)},bend:{value:1},impulse:{value:new THREE.Vector3(-1e5,-1e5,0)}};
   const source=await new THREE.TextureLoader().loadAsync('./assets/web3d/living/rotten-underbrush-atlas.png');
-  source.colorSpace=THREE.NoColorSpace;source.minFilter=THREE.LinearFilter;source.magFilter=THREE.LinearFilter;
+  source.image=createFoliageCleanup()(source.image);source.needsUpdate=true;source.generateMipmaps=true;source.colorSpace=THREE.NoColorSpace;source.minFilter=THREE.LinearMipmapLinearFilter;source.magFilter=THREE.LinearFilter;
   const [lookData,lookAnchors]=await Promise.all(['map-look-ch1.json','map-look-anchors.json'].map(async file=>{const r=await fetch('./assets/web3d/'+file+'?v=20261102-hue1');if(!r.ok)throw Error(file+' '+r.status);return r.json();}));
   const foliageResponse=await fetch('./assets/web3d/foliage-ch1.json?v=20261031-foliage4');if(!foliageResponse.ok)throw Error('foliage-ch1 '+foliageResponse.status);
   const foliagePlan=await foliageResponse.json(),foliageDebug=new URLSearchParams(location.search).get('r3dFoliageDebug')==='1';
-  const dressing=await createGroundDressing();
+  const dressing=await createGroundDressing(),groundBlend=createGroundBlendPass(renderer,canvas,uniforms,dressing);
   const mapLook=createMapLook(renderer,canvas,uniforms,lookData,lookAnchors);
   const depth=createDepthPass(renderer,canvas,uniforms,mapLook.uniforms);
   const forestResponse=await fetch('./assets/web3d/forest-ch1.json');if(!forestResponse.ok)throw Error('forest-ch1 '+forestResponse.status);
   const forest=await createForest(renderer,canvas,uniforms,await forestResponse.json(),lookAnchors);
-  const ghostResponse=await fetch('./assets/web3d/ghosts-ch1.json?v=20261102-ghost4');if(!ghostResponse.ok)throw Error('ghosts-ch1 '+ghostResponse.status);
+  uniforms.nativeProps={value:forest.nativeMask};
+  const groves=await createGroves(renderer,canvas,uniforms);
+  const ghostResponse=await fetch('./assets/web3d/ghosts-ch1.json?v=20261102-round7');if(!ghostResponse.ok)throw Error('ghosts-ch1 '+ghostResponse.status);
   const ghosts=createGhosts(renderer,canvas,uniforms,await ghostResponse.json());
   const relief=createRelief(renderer,canvas,uniforms,read,mapLook);
-  const vs=`uniform vec4 view;uniform float time,bend;uniform vec2 hero;uniform vec3 impulse;attribute vec4 anchor;attribute float phase;attribute vec4 habitat;varying vec2 vUv;varying float light;varying vec2 localUV;varying vec3 tint;
+  const vs=`uniform vec4 view;uniform float time,bend;uniform vec2 hero;uniform vec3 impulse;attribute vec4 anchor;attribute float phase;attribute vec4 habitat;varying vec2 vUv,world;varying float light;varying vec2 localUV;varying vec3 tint;
   void main(){float variant=habitat.w;localUV=uv;vUv=(uv+vec2(mod(variant,2.),1.-floor(variant/2.)))*.5;vec2 p=position.xy*anchor.z;float h=max(0.,p.y)/100.;vec2 d=anchor.xy-hero;tint=habitat.rgb;
     float near=exp(-dot(d,d)/3600.);float wave=sin(time*.85+anchor.x*.002+anchor.y*.0015)+.22*sin(time*2.7+phase);
     vec2 blast=anchor.xy-impulse.xy;float push=exp(-dot(blast,blast)/30000.)*impulse.z;
-    p.x+=(wave*4.2+near*sign(d.x)*12.+push*sign(blast.x)*18.)*h*h*bend;
-    p.y-=near*h*8.*bend;vec2 w=anchor.xy+vec2(p.x,-p.y);
+    p.x+=(wave*12.5+near*sign(d.x)*12.+push*sign(blast.x)*18.)*h*h*bend;
+    p.y-=near*h*8.*bend;vec2 w=anchor.xy+vec2(p.x,-p.y);world=w;
     gl_Position=vec4((w.x-view.x)/view.z*2.-1.,1.-(w.y-view.y)/view.w*2.,0.,1.);light=anchor.w;
   }`;
-  const material=new THREE.ShaderMaterial({uniforms:{...uniforms,art:{value:source}},vertexShader:vs,fragmentShader:`uniform sampler2D art;varying vec2 vUv;varying float light;varying vec2 localUV;varying vec3 tint;void main(){vec4 c=texture2D(art,vUv);if(c.a<.08)discard;float gray=dot(c.rgb,vec3(.3,.59,.11));float root=mix(.35,1.,smoothstep(.02,.42,localUV.y));vec3 color=mix(mix(c.rgb,vec3(gray),.25),tint*.95,.42)*light*root;gl_FragColor=vec4(color,c.a*.94);}`,transparent:true,depthTest:false,depthWrite:false,side:THREE.DoubleSide});
+  const material=new THREE.ShaderMaterial({uniforms:{...uniforms,art:{value:source}},vertexShader:vs,fragmentShader:`uniform sampler2D art,nativeProps;varying vec2 vUv,world;varying float light;varying vec2 localUV;varying vec3 tint;void main(){if(texture2D(nativeProps,vec2((world.x+2400.)/12800.,1.-(world.y+2400.)/12800.)).a>.02)discard;vec4 c=texture2D(art,vUv);if(c.a<.08)discard;float gray=dot(c.rgb,vec3(.3,.59,.11));float root=mix(.35,1.,smoothstep(.02,.42,localUV.y));vec3 color=mix(mix(c.rgb,vec3(gray),.25),tint*.95,.42)*light*root;gl_FragColor=vec4(color,c.a*.94);}`,transparent:true,depthTest:false,depthWrite:false,side:THREE.DoubleSide});
   // Four genuinely transparent clumps. Subdivision lets tips bend, with roots fixed.
   const card=new THREE.PlaneGeometry(112,100,4,12);card.translate(0,50,0);
   const geometry=new THREE.InstancedBufferGeometry();geometry.index=card.index;geometry.attributes.position=card.attributes.position;geometry.attributes.uv=card.attributes.uv;
@@ -53,7 +59,7 @@ export async function install(read){
   // One additional instanced draw for soft contact shadows; roots are pinned.
   const rootGeometry=new THREE.InstancedBufferGeometry();const rootCard=new THREE.PlaneGeometry(72,18);
   rootGeometry.index=rootCard.index;rootGeometry.attributes.position=rootCard.attributes.position;rootGeometry.attributes.uv=rootCard.attributes.uv;rootGeometry.setAttribute('anchor',geometry.attributes.anchor);
-  const rootMat=new THREE.ShaderMaterial({uniforms,transparent:true,depthTest:false,depthWrite:false,vertexShader:`uniform vec4 view;attribute vec4 anchor;varying vec2 q;void main(){q=uv*2.-1.;vec2 w=anchor.xy+position.xy*anchor.z;gl_Position=vec4((w.x-view.x)/view.z*2.-1.,1.-(w.y-view.y)/view.w*2.,0.,1.);}`,fragmentShader:`varying vec2 q;void main(){float a=exp(-dot(q,q)*3.)*.28*(1.-smoothstep(.6,1.,length(q)));gl_FragColor=vec4(.035,.033,.026,a);}`});
+  const rootMat=new THREE.ShaderMaterial({uniforms,transparent:true,depthTest:false,depthWrite:false,vertexShader:`uniform vec4 view;attribute vec4 anchor;varying vec2 q,world;void main(){q=uv*2.-1.;vec2 w=anchor.xy+position.xy*anchor.z;world=w;gl_Position=vec4((w.x-view.x)/view.z*2.-1.,1.-(w.y-view.y)/view.w*2.,0.,1.);}`,fragmentShader:`uniform sampler2D nativeProps;varying vec2 q,world;void main(){if(texture2D(nativeProps,vec2((world.x+2400.)/12800.,1.-(world.y+2400.)/12800.)).a>.02)discard;float a=exp(-dot(q,q)*3.)*.28*(1.-smoothstep(.6,1.,length(q)));gl_FragColor=vec4(.035,.033,.026,a);}`});
   const roots=new THREE.Mesh(rootGeometry,rootMat);roots.frustumCulled=false;scene.add(roots);
   const waterUniforms={...uniforms,center:{value:new THREE.Vector2()},radii:{value:new THREE.Vector2()},band:{value:new THREE.Vector2()},ramp:{value:new THREE.Vector4()},rampHalf:{value:new THREE.Vector2()},mode:{value:0},liquid:{value:null},flip:{value:1},actors:{value:Array.from({length:8},()=>new THREE.Vector4(-1e5,-1e5,0,0))},hits:{value:Array.from({length:8},()=>new THREE.Vector4(-1e5,-1e5,0,0))}};
   const waterMaterial=new THREE.ShaderMaterial({uniforms:waterUniforms,transparent:true,depthTest:false,depthWrite:false,vertexShader:`uniform vec4 view;varying vec2 world;varying vec2 vUv;void main(){world=position.xy;vUv=uv;gl_Position=vec4((world.x-view.x)/view.z*2.-1.,1.-(world.y-view.y)/view.w*2.,0.,1.);}`,fragmentShader:`
@@ -81,6 +87,9 @@ export async function install(read){
   function plane(cx,cy,w,h){const g=new THREE.PlaneGeometry(w,h);const p=g.attributes.position;for(let i=0;i<p.count;i++){p.setXYZ(i,p.getX(i)+cx,cy-p.getY(i),0);}return g;}
   function build(s){
     mapRef=s.G.map;layout=authoredFoliageLayout(foliagePlan,s.hill,s.tile);
+    // Living margins grow from the authored root composites, never from a
+    // full-map scatter. The low plants remain behind every combat painter.
+    for(const p of groves.rows)if(p.asset.startsWith('base')&&p.phase%3<1)for(const side of [-1,1])layout.push({x:p.x+side*p.width*.27,y:p.y-p.height*.14,scale:.88+(p.phase%1)*.3,phase:p.phase+side,variant:side<0?1:2,region:p.region,zone:p.id});
     const h=s.hill,t=s.tile;
     for(const m of waterMeshes){waters.remove(m.mesh);m.mesh.geometry.dispose();}waterMeshes=[];
     const add=(x,y,w,h,descriptor)=>{const mesh=new THREE.Mesh(plane(x,y,w,h),waterMaterial);mesh.frustumCulled=false;waters.add(mesh);waterMeshes.push({mesh,x,y,w,h,...descriptor});};
@@ -101,6 +110,8 @@ export async function install(read){
   }
   function draw(ctx,s,view){
     if(!enabled||s.G.stage!==0||s.G._bossArena||!s.G.map)return;
+    stats.environmentOverlayMerged=consumeEnvironmentOverlay(ctx,s.overlayFrame,view,s.flush);
+    forest.prepare(s);
     const start=performance.now();if(mapRef!==s.G.map)build(s);
     const now=s.now/1000,dt=lastTime?Math.min(100,(now-lastTime)*1000):16.7;lastTime=now;ema=ema*.97+dt*.03;
     if(++frame%120===0){adaptiveCost=costEma;if(costEma>7.5)density=Math.max(.3,density-.15);else if(costEma<5)density=Math.min(1,density+.05);}
@@ -140,10 +151,12 @@ export async function install(read){
   const active=s=>enabled&&s.G.stage===0&&!s.G._bossArena;
   const api={draw:(ctx,view)=>{try{draw(ctx,currentState||read(),view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D living layer]',error);}},
     surface:(ctx,view)=>{const s=currentState=read();if(!active(s))return;const start=performance.now();frameCost=0;try{const budget=s.budget=sceneBudget(s.quality,proxy,adaptiveCost),w=Math.max(1,Math.round(view.pw*budget.scale)),h=Math.max(1,Math.round(view.ph*budget.scale));if(canvas.width!==w||canvas.height!==h)renderer.setSize(w,h,false);depth.prepare(s,view);relief.surface(ctx,s,view);frameCost+=performance.now()-start;}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D surface]',error);}},
-    ground:(ctx,view)=>{const s=currentState||read();if(!active(s))return;try{dressing.draw(ctx,s,view);}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D ground]',error);}},
-    beginObject:(ctx,o,m)=>{const s=currentState||read();return active(s)?relief.beginObject(ctx,o,m,s):false;},
-    deferObject:o=>active(currentState||read())&&depth.defer(o),
+    ground:(ctx,view)=>{const s=currentState||read();if(!active(s))return;const start=performance.now();try{groundBlend.draw(ctx,s,view);groves.draw(ctx,s,view);frameCost+=performance.now()-start;}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D ground]',error);}},
+    beginObject:(ctx,o,m)=>{const s=currentState||read();return active(s)&&!s.nativeProxy?relief.beginObject(ctx,o,m,s):false;},
+    // Keep GPU props in their original native painter/depth order. Repainting
+    // them on Canvas2D changes unsupported blend/gradient/filter semantics.
+    deferObject:o=>{const s=currentState||read();return active(s)&&!s.nativeProxy&&depth.defer(o);},
     front:(ctx,paint)=>{const s=currentState||read();if(!active(s))return;const start=performance.now();try{depth.draw(ctx,s,paint);frameCost+=performance.now()-start;costEma=costEma*.96+frameCost*.04;stats.cpuMs=frameCost;stats.layerCostEma=costEma;}catch(error){enabled=false;api.error=error.message;console.error('[WEB3D depth]',error);}},
-    snapshot:()=>({...stats,...relief.snapshot(),...forest.snapshot(),...ghosts.snapshot(),...dressing.snapshot(),...depth.snapshot(),enabled,error:api.error||null}),setEnabled:value=>{enabled=!!value;},setGhostsEnabled:value=>ghosts.setEnabled(value),canvas};
+    cleanHill:createMaterialCleanup(),snapshot:()=>({...stats,...relief.snapshot(),...forest.snapshot(),...ghosts.snapshot(),...dressing.snapshot(),...depth.snapshot(),...groves.snapshot(),enabled,error:api.error||null}),setEnabled:value=>{enabled=!!value;},setGrovesEnabled:value=>groves.setEnabled(value),setGhostsEnabled:value=>ghosts.setEnabled(value),setGroundEnabled:value=>groundBlend.setEnabled(value),canvas};
   return api;
 }
