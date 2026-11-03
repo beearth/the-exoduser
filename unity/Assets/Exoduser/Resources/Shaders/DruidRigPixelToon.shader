@@ -1,5 +1,5 @@
 Shader "Exoduser/DruidRigPixelToon" {
- Properties { _DruidGlow("Unlit amber orb",Float)=0 _DruidEmission("Amber centre",Color)=(.831,.604,.361,1) _DruidGroundY("Arena plane",Float)=0 _DruidGroundClip("Sink plane enabled",Float)=0 _BaseMap("Albedo",2D)="white"{} _BaseColor("Tint",Color)=(1,1,1,1) _PaletteColor("Material plane",Color)=(.18,.205,.235,1) _SurfaceTag("Internal surface label",Float)=1 _MetallicPlane("Broad metal highlight",Float)=0 }
+ Properties { _DruidGlow("Unlit amber orb",Float)=0 _DruidGlowStrength("Amber pulse",Range(0,1))=1 _DruidEmission("Amber centre",Color)=(.831,.604,.361,1) _DruidGroundY("Arena plane",Float)=0 _DruidGroundClip("Sink plane enabled",Float)=0 _BaseMap("Albedo",2D)="white"{} _BaseColor("Tint",Color)=(1,1,1,1) _PaletteColor("Material plane",Color)=(.18,.205,.235,1) _SurfaceTag("Internal surface label",Float)=1 _MetallicPlane("Broad metal highlight",Float)=0 }
  SubShader {
   Tags { "RenderPipeline"="UniversalPipeline" "RenderType"="Opaque" "Queue"="Geometry" }
   Pass {
@@ -11,7 +11,7 @@ Shader "Exoduser/DruidRigPixelToon" {
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
    TEXTURE2D(_BaseMap); SAMPLER(sampler_BaseMap);
    CBUFFER_START(UnityPerMaterial)
-   float4 _BaseMap_ST;half4 _BaseColor,_PaletteColor;half _SurfaceTag,_MetallicPlane,_DruidGlow,_DruidGroundY,_DruidGroundClip;half4 _DruidEmission;
+   float4 _BaseMap_ST;half4 _BaseColor,_PaletteColor;half _SurfaceTag,_MetallicPlane,_DruidGlow,_DruidGroundY,_DruidGroundClip,_DruidGlowStrength;half4 _DruidEmission;
    CBUFFER_END
    float4 _RigPixelMoonDirection,_RigPixelMoonColor,_RigPixelAmbient,_RigPixelPointPositions[4],_RigPixelPointColors[4];
    struct A {float4 positionOS:POSITION;float3 normalOS:NORMAL;float2 uv:TEXCOORD0;};
@@ -39,7 +39,7 @@ Shader "Exoduser/DruidRigPixelToon" {
     }
     // Low-frequency material planes; the silhouette rim is applied after rendering, never on interior mesh facets.
     half3 color=albedo.rgb*min(diffuse,half3(1.35h,1.35h,1.35h))+metal*_MetallicPlane;
-    if(_DruidGlow>.5)color=_DruidEmission.rgb;
+    if(_DruidGlow>.5)color=_DruidEmission.rgb*saturate(_DruidGlowStrength);
     return half4(color,_SurfaceTag);
    }
    ENDHLSL

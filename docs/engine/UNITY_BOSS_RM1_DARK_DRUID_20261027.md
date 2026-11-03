@@ -617,3 +617,8 @@ G1 재료 배치: 중앙 보행 면·Core 기둥/출구는 그대로, 좌우 중
 ### 14.7 11-04 01:20 드루이드 rig-pixel 소스 후보
 
 9cba8b5e1의8b는 Mac 대기 그대로 둔다. 최신5c9dd3673 병합 뒤 --boss-render=rigpixel opt-in을 추가했다. 작업 중 도착한 v7을 Generic FBX로 포맷 변환,34본·보조10본·Fist_L·LeftHand 소켓·가슴43면 발광·Idle/Walk를 보존한다. NativeRigPixelPolicy/Composite와 같은4단 셀·Point RT·실제 장면 조명을 사용한다. 카메라34°/16.5와 영웅 실제 모델 높이×2.8 기준 유지, Core 변경0. 미제공7기술/Run/피격·사망은 Idle@0 고정이며 누락 상태를 영수증에 남긴다. 상세 상태표·출처·수치/컴파일 범위는 [정본 준비 §7](UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md#7-11-04-0120-cto--v7-unity-어댑터-소스-후보), [Mac 전체 인수](UNITY_BOSS_ARENA_RB1_7_8_20261103.md#11-04-0120-드루이드-rig-pixel-mac-인계). CPU46/0·Roslyn5어셈블리 오류0, Blender 수치 통과는 Unity 임포트·실RT·게임화면 판정이 아니다. Mac Generic Avatar/Metal shader/1x·3x·10초/60fps 미검증.
+
+
+### 14.8 03:00 실제시각 v8.1 7기술 연결 소스 후보
+
+§14.7은v7 이력이다. 새 입력은 PREP §8.1의v8.1 GLB, 런타임은 OldmanV81.fbx31클립(29기술 단계+Idle/Walk)로 교체했다. 현재Core36/26/10 채찍과 원본32/24/8의 길이 차이는 읽기 전용 단계 정책에서 보정하며, 타격6f 포즈는 실제 판정2틱에 맞춘다. 균열은 Core 즉시 발동 뒤 기존 회복60틱 안 act20+rec40, 첫 심장 예고90과 후속beat60·pause30을 구분한다. 돌진/잡기 클립 수평 루트 중복을 빼고 잠행 수직은 유지한다. 원래 Core 수치·상태·판정·카메라·기본 보스·8b 변경0. 상세는 [PREP §9](UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md#9-0300-실제시각-cto--v81-7기술-연결-소스-후보). 정책4,672/0·FBX 수평 발 최대0.00461cm(허용.02cm)·전체Roslyn1회5어셈블리 오류0. 실제 세계 발/지면·Unity Avatar/Metal·7기술1x·10초영상·60fps는 Mac 대기, 기존8b 판정도 대기다. [Mac 전체 인수](UNITY_BOSS_ARENA_RB1_7_8_20261103.md#11-04-0300-실제시각-v81-7기술-mac-인계).

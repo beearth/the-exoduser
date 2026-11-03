@@ -1,3 +1,7 @@
+## 2026-11-04 03:00 실제시각 드루이드 v8.1 7기술 연결
+
+최신origin/unity/main309892b1da 병합(51e0b30e77), CHANGELOG/PREP 양쪽 충돌 기록 보존. OldmanV81.fbx로교체·34본/보조10본/Fist_L/왼손소켓과29기술 단계+Idle/Walk=31클립 보존. Core 상태·남은틱으로 Generic Playable 샘플, 현재Core와원본길이 차이 보정·채찍 타격6f=Core2틱·균열 act를 기존회복안에 배치·잡힘/탈출/심장/잠행 분기. 수평 루트 중복 제거, 심장가슴맥동·영수증 확장. Core/기본값/카메라/8b 변경0. 정책4,672/0·FBX 수평발 최대.00461cm·전체Roslyn1회5어셈블리 오류0. 첫발 검사는 의도된20cm발들기를3D미끄러짐으로오인한원인을GLB에서확정하고 수평기준으로고쳐통과. PC Unity/Player0, 실제Avatar/RT/7기술1x·10초·세계발/FPS Mac대기. [계약·한계](engine/UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md#9-0300-실제시각-cto--v81-7기술-연결-소스-후보).
+
 ## 2026-11-04 01:20 드루이드 v7 rig-pixel 어댑터 소스 후보
 
 최신origin/unity/main5c9dd3673 병합(0c22494993)·CHANGELOG 양쪽 기록 보존. 작업 중 도착한v7을 Generic FBX로 교체하고34본·보조10본·Fist_L·왼손소켓·가슴43면·Idle/Walk 보존. --boss-render=rigpixel만 공통 Point RT/4단 셀/팔레트·Core tick Animator 사용, 미제공7기술/Run/피격·사망은 Idle@0 대기·누락 영수증. 기본 보스/8b/카메라34°16.5/Core 수치 불변. 정책46/0·Roslyn5어셈블리 오류0·FBX 수치 통과. PC Unity/Player/렌더0, 실제 Unity Avatar·셰이더·RT·화면·FPS는 Mac 대기. [상태/클립 표](engine/UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md#7-11-04-0120-cto--v7-unity-어댑터-소스-후보).

@@ -1,3 +1,5 @@
+> 2026-11-04 03:00 실제시각 CTO — v8.1 7기술 연결 소스 후보. 최신309892b1da 병합·충돌 양쪽 보존.29기술 단계+Idle/Walk=31클립·Generic34본·원본 소켓 좌표 보존, Core 상태/틱으로 예고→발동→회복 샘플. 채찍 타격6f를 Core2틱에 맞추고 즉시 균열 act를 기존 회복 안에 배치. Core 변경0·기본값 유지. 정책4,672/0·FBX 수평 발 최대0.00461cm·전체Roslyn1회5어셈블리 오류0, PC Unity/Player0. 실제 Unity/RT/7기술1x·10초·세계 발접지/FPS Mac 대기. [정본 §9](UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md#9-0300-실제시각-cto--v81-7기술-연결-소스-후보).
+
 > 2026-11-04 01:20 CTO rig-pixel 소스 후보: 최신5c9dd3673 병합·CHANGELOG 양쪽 보존. 새 v7 Generic34본/Fist_L/Idle·Walk를 들여오고 --boss-render=rigpixel opt-in·공통 Point RT/4단 셀·Core 틱 샘플 연결. 미제공7기술/Run은 Idle@0 대기. 정책46/0·Roslyn5어셈블리 오류0, PC Unity/Player0. 실제 Avatar/RT/화면/FPS와 기존8b Mac 판정 대기. [정본](UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md#7-11-04-0120-cto--v7-unity-어댑터-소스-후보).
 
 > 2026-11-04 00:50 RB1-8b 소스 후보: 필드 최종 달빛/후처리 공유·A2R 지면 원화2종 혼합·Y-up 횃불2개/점광·외곽 독액·같은 빌드 필드/아레나34° 비교 촬영 연결. arena73/0·Roslyn5어셈블리 오류0. PC Player0, 8a/8c 및8b Mac 화면/성능 판정 대기. [정본 §14.6](UNITY_BOSS_RM1_DARK_DRUID_20261027.md#146-rb1-8b-조명재질-소스-후보-11-04-0050-cto).
