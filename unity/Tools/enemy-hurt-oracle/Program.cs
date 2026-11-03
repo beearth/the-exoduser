@@ -20,6 +20,9 @@ using Exoduser.UnityPort.Core;
 class EnemyHurtProgram
 {
     static readonly List<object> rows = new List<object>();
+    static readonly List<object> failureDetails = new List<object>();
+    static readonly List<object> expectationOverrides = new List<object>();
+    static JsonElement aPlan; static bool useAPlan;
     static int failures, total;
     static string currentCase = "";
     static string currentKind = "tables";
@@ -29,7 +32,29 @@ class EnemyHurtProgram
         total++; kindChecks[currentKind] = (kindChecks.ContainsKey(currentKind) ? kindChecks[currentKind] : 0) + 1;
         if (!pass) kindFailures[currentKind] = (kindFailures.ContainsKey(currentKind) ? kindFailures[currentKind] : 0) + 1;
         if (pass) { if (total % 20000 == 1) rows.Add(new { name = currentCase + " | " + name, passed = true }); }
-        else { failures++; if (failures <= 80) rows.Add(new { name = currentCase + " | " + name, passed = false }); }
+        else { failures++; failureDetails.Add(new { kind = currentKind, name = currentCase + " | " + name }); if (failures <= 80) rows.Add(new { name = currentCase + " | " + name, passed = false }); }
+    }
+    static JsonDocument ExpectedAdded(JsonElement added) {
+        var nodes=JsonNode.Parse(added.GetRawText()).AsArray();
+        if(useAPlan)for(int i=0;i<nodes.Count;i++) {
+            var node=nodes[i];if(node["ib"].GetValue<bool>())continue;
+            int et=(int)node["etype"].GetValue<double>();
+            bool In(string key){foreach(var x in aPlan.GetProperty(key).EnumerateArray())if(x.GetInt32()==et)return true;return false;}
+            if(In("disabledTargets")) {
+                double before=node["projCd"].GetValue<double>();if(before!=9999){node["projCd"]=9999;expectationOverrides.Add(new{kind=currentKind,name=currentCase,index=i,etype=et,field="projCd",web=before,expected=9999,label="웹과 다름(A안)",basis="G1 §6"});}
+            } else if(!In("existingNoProj")&&!In("unchangedRanged")) {
+                double webCd=node["projCd"].GetValue<double>(),expected=double.NaN;
+                // Split children can clear elite/mods AFTER factory creation while retaining its cooldown.
+                // Recover the original factory scale from the web cooldown, not the final child flags.
+                for(int tier=0;tier<=3;tier++)for(int fast=0;fast<=1;fast++){double oldCd=240,newCd=aPlan.GetProperty("otherPoolInterval").GetDouble();if(fast==1){oldCd=(int)(oldCd*.85);newCd=(int)(newCd*.85);}if(tier>0){double mul=tier>=3?.6:tier>=2?.7:.8;oldCd=(int)(oldCd*mul);newCd=(int)(newCd*mul);}if(oldCd==webCd)expected=newCd;}
+                if(double.IsNaN(expected))throw new InvalidOperationException("Unrecognized web factory cooldown: "+webCd);
+                double webT=node["projT"].GetValue<double>(),expectedT=webT*aPlan.GetProperty("otherPoolFirstDelayMultiplier").GetDouble();
+                node["projCd"]=expected;node["projT"]=expectedT;
+                expectationOverrides.Add(new{kind=currentKind,name=currentCase,index=i,etype=et,field="projCd",web=webCd,expected,label="웹과 다름(A안)",basis="G1 §6"});
+                expectationOverrides.Add(new{kind=currentKind,name=currentCase,index=i,etype=et,field="projT",web=webT,expected=expectedT,label="웹과 다름(A안)",basis="G1 §6"});
+            }
+        }
+        return JsonDocument.Parse(nodes.ToJsonString());
     }
     static bool Same(double a, double b) => BitConverter.DoubleToInt64Bits(a) == BitConverter.DoubleToInt64Bits(b);
     // {"$n":"NaN"|"Infinity"|"-Infinity"|"-0"}: numbers JSON cannot carry (recorded by export.cjs)
@@ -226,6 +251,8 @@ class EnemyHurtProgram
     static int Main(string[] args)
     {
         var root = JsonDocument.Parse(File.ReadAllText(args[1])).RootElement;
+        useAPlan=Array.IndexOf(args,"--a-plan")>=0;
+        if(useAPlan)aPlan=JsonDocument.Parse(File.ReadAllText(Path.Combine(Path.GetDirectoryName(args[1]),"a-plan-expectations.json"))).RootElement;
         var t = root.GetProperty("tables");
         var potTable = new Dictionary<string, EnemyPotDef>();
         foreach (var pp in t.GetProperty("POT").EnumerateObject()) potTable[pp.Name] = new EnemyPotDef { name = pp.Value.GetProperty("name").GetString(), col = pp.Value.GetProperty("col").GetString() };
@@ -435,7 +462,8 @@ class EnemyHurtProgram
                 };
                 Cmp(g3, exp.GetProperty("G3"), "G3");
             }
-            var added = exp.GetProperty("added"); addedCount += added.GetArrayLength();
+            using var addedDoc=ExpectedAdded(exp.GetProperty("added"));
+            var added = addedDoc.RootElement; addedCount += added.GetArrayLength();
             Check(ens.Count == finals.Count + added.GetArrayLength(), "enemy count C# " + ens.Count + " vs web " + (finals.Count + added.GetArrayLength()));
             for (int i = 0; i < finals.Count; i++) Cmp(ens[i], finals[i].RootElement, "enemy" + i);
             for (int i = 0; i < added.GetArrayLength() && finals.Count + i < ens.Count; i++) Cmp(ens[finals.Count + i], added[i], "added enemy" + i);
@@ -467,7 +495,7 @@ class EnemyHurtProgram
             scope = "standalone_dotnet_original_function_oracle_not_Unity_runtime", passed = failures == 0, failures, total, checksByKind = kindChecks, failuresByKind = kindFailures, cases = caseCount, h1Cases = h1Count, h2Cases = h2Count, chainCases = chainCount, h3Cases = h3Count, h4Cases = h4Count, chain4Cases = chain4Count, chain3Cases = chain3Count, deathExits = exitCounts, addedEnemies = addedCount, earlyReturns = earlyCount,
             source = new { sha256 = root.GetProperty("source").GetProperty("sha256").GetString(), lines = root.GetProperty("source").GetProperty("lines").GetInt32(), head = root.GetProperty("source").GetProperty("head").GetString() },
             note = "every case compares the early-return flag and returned locals, all enemy fields, player, globals, the ordered injected-call list with arguments and the Math.random count; failing items listed (first 80), passing ones sampled",
-            checks = rows
+            checks = rows, failureDetails, expectationOverrides, expectationMode=useAPlan?"웹과 다름(A안)":"web-original"
         }, new JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
         File.WriteAllText(args[0], result);
         Console.WriteLine("ENEMY_HURT_RESULT " + total + " checks / " + failures + " failures (" + caseCount + " cases)");

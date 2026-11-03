@@ -185,7 +185,7 @@ namespace Exoduser.UnityPort.Core
             e.mods = mods;
             e.aura = elite >= 2 ? RollAura(rnd, elite, si) : null;
             e.modT = new EnemyModT();
-            e.projCd = !ib && EnemyProjectilePolicy.Interval(etype)>=9000 ? 9999 : _projCd;
+            e.projCd = !ib && MeleeAttackRules.Target(etype) ? 9999 : _projCd; // G1 targets only; preserve existing NoProj elite/modifier behavior.
             e.projT = ib ? 70 + rnd() * 50 : (180 + rnd() * 120) * (EnemyProjectilePolicy.Interval(etype)==480?2:1);
             e.chargeT = 0;
             e.chargeCd = (etype==2||etype==22)?(100+rnd()*60):9999;

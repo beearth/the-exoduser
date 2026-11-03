@@ -19,6 +19,7 @@ class Program {
   s=Sim();e=Enemy(s);s.ParryFeedback.meleeShake=2;s.ParryFeedback.meleeCameraPushIn=.08f;s.Player.State="sBash";s.Player.StateTicks=20;s.HurtPlayer(31,new HurtOptions{MeleeEnemy=e});fx=s.Feedback.Dequeue();Check(fx.ParryShake==2&&fx.CameraPushIn==.08f,"configurable push in and shake");
   s=Sim();e=Enemy(s);s.Player.State="sBash";s.Player.StateTicks=20;s.HurtPlayer(31,new HurtOptions{MeleeEnemy=e});s.PayReflectParry(new ParryReflect.ResolveResult{ResourceMul=1});Check(s.Stats.parrySuccess["meleeE"]==1&&s.Stats.parrySuccess["projE"]==1,"kind counters independent");
   s=Sim();e=Enemy(s);s.Player.State="sBash";s.Player.StateTicks=20;s.HurtPlayer(31,new HurtOptions{MeleeEnemy=e});s.Player.State="idle";e.Web.bleed=1;e.Web.bleedT=61;e.Web._bleedPool=60;Step(s,2);Check(e.Hp<10000&&e.MeleeCounterUntil==36,"DOT continues during freeze without consuming counter");
+  int noProjDraws=0;var noProj=EnemyFactory.Create(new EnemySpawnContext{PlayerLevel=100,DifficultyIndex=5,Stage=0,CanMove=(a,b,c)=>true,Random=()=>noProjDraws++==0?.01:.5},0,0,0,50,false,1,null);Check(noProj.elite==1&&noProj.projCd==7999,"non-target NoProj preserves elite cooldown");
   Console.WriteLine(total+" checks / "+failed+" failures");return failed==0?0:1;
  }
 }

@@ -1,3 +1,5 @@
+2026-11-03 21:40 패링 G2 oracle 감사: 분기점 b3cf7a682 동일6,066,962검사1회로 기존2318건(보스대사1300·악의오브문구1018), A안 공통탄 의도372건, 비대상NoProj 결함6건을 분리. 5종만9999최종고정하도록 결함 수정, G1 §6 별도 기대값·전체실패다중집합 대조 추가. 기존2318건과 정확히 동일·신규0, 규칙86/0·PC 참조컴파일5개 오류0. G1·밸런스·감사문서 동기화, Mac 미판정.
+
 2026-11-03 패링 A안 G2: 근접 통합·5종 예고/연타·반격1회(1.75/2)·독립 정지·보상분리·공통 탄 정책·CombatStats, 최소 예고/자세/DANGER·피드백6/4 대2+밀기 데이터·70% 목표입력 봇·영수증 출력. 2_3/G1/몬스터/밸런스 동기화, 무지개1.5·옛6 표기 정정(웹 Q _npDmg·AoE0 폴백). Mac §8·화면·실행본 미판정.
 
 2026-11-03 규칙 정리(사용자 "전부 추천대로", 51항목): CLAUDE.md를 main·unity/main 같은 본문(233줄)으로 다시 쓰고 AGENTS.md는 CLAUDE.md 안내만 둔다. 핵심: 새 개발은 unity/main만·웹은 Steam 유지보수(부록 W), 11-05부터 Claude 구현, PC 컴파일·Mac 판정(PC 예외 ①BuildLoop ②루프 정지 중 1회 교체 ③승인 후보), 1-1 원근 LOCK 34°, docs 정본=unity/main. main에만 있던 매뉴얼·보드·실버 헬 등 9개 문서를 unity/main으로 옮기고 v4.1·운영 매뉴얼 v1.1·TERMINAL_FAILURE_FALLBACK·DOCS_INDEX를 추가했다. 딸린 문서 5개(API연결_가이드·BUILD_BACKUP_POLICY·2_3 상단 노트·IMAGE_PROVIDER_PRIORITY·MAP_OBJECT_SEEDREAM)와 EnergyShield.cs 주석 출처를 고쳤다. 원문은 [docs/_archive/rules-20261103](_archive/rules-20261103/README.md).
