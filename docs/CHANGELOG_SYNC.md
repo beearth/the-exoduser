@@ -4,6 +4,8 @@
 - RGB 공통 ΔY 조명·radius6 점 정리로 영역 평균 고유색을 보존한다. 실제ON 가시바닥 hue도15도 gate, 전경의 실제alpha를 물리적 추가물로 분리. WEB3D_TRIAL·MAP_SSOT_INDEX·web3d 인계 동기화.
 - 원본계약 검사는 착수 main 정확byte로 갱신(승인된 보스/정예·방어 계산 변경을 제외하지 않음); 새 heroRim 표시 hook만 정규화. 회귀81/81·project113/113·guard baseline 행수만66213으로 갱신. 실제13뷰×두해상도·1x/3x·영상·FPS·기본OFF/전달의 최종 근거는 web3d-r9/REPORT.md·qa/delivery.json. 자체 시각 검수와 독립CTO 채택을 구분한다.
 
+- R9최종: actual hue7.18°/4.82°·26뷰PASS, ON142.93~226.62FPS/1초창최저120.35,1920동작4+3840실제보행1편10초/1x120프레임드롭0. wide재생CSS max-width제약수정·해당1편native3840표시재검수. 기본OFF새실행확인. 관련도구/WORK_BOARD자기행·R9_REPORT/SSOT동기화. 최신main b1979b5b1의운영매뉴얼을후보브랜치에정상병합·runtime불변,main은Claude총괄검수대기. 3333/DEMO/EA쓰기0·바탕화면별도후보제공·중간캡처/원시프레임정리.
+
 ## 2026-11-03 에이전트 운영 매뉴얼 신설·작업 방식 정정
 
 | 항목 | 내용 |

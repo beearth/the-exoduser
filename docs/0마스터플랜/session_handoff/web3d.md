@@ -10,6 +10,8 @@ Chrome headless/--mute-audio·음량0·API쓰기 차단·I:프로필/격리세�
 
 R9 최종 판정/소스/성능/바탕화면 실제반영은 외부 REPORT·delivery.json에서 확인한다. 전체AAA·자연HP보스완주·NW.js재빌드·Steam게시·독립CTO승인으로 확대하지 않는다. Unity 반영: 대기(웹 월드 표현). UI·UX·소리 변경0.
 
+최종마감: 26뷰 actual hue최대7.18°(1920)/4.82°(3840), 빈바닥6.86~34.40%. ON평균142.93~226.62FPS/1초창최저120.35,64적96탄/12초×8·Unity/Player관측. 1920동작4편+3840실제보행1편10초,1x각120프레임/드롭0·wide nativeScale확인. 기본OFF새실행확인. 제작자 R9표현범위PASS/독립CTO대기. [요약보고](../../engine/orders/reports/WEB3D_R9_REPORT.md). 런타임d57366de83·최신main b1979b5b1을후보브랜치에병합해byte보존. main/3333/DEMO/EA는후보미반영,바탕화면별도후보제공. 최신운영매뉴얼 §2.5를적용해Claude총괄검수·main통합대기. 최종원격SHA·HTTP·정리는외부delivery.json·cleanup.json.
+
 ## R8 보존 이력 — 최신 판정 아님
 
 # 웹 3D 인계 — 2026-11-03 8라운드
