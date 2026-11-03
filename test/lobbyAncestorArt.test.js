@@ -34,11 +34,22 @@ test('quiet sprite loop stays within its atlas and wraps at the declared duratio
  assert.equal(art.frames,96);assert.equal(art.fps,24);assert.equal(frameAt(0),0);assert.equal(frameAt(95/24),95);assert.equal(frameAt(96/24),0);
  for(let i=0;i<192;i++)assert.ok(frameAt((i+.001)/24)>=0&&frameAt((i+.001)/24)<96);
  for(const [w,h]of [[1920,1080],[2160,720],[960,540]]){
-  const p=placement(w,h);assert.ok(p.left>=0);assert.ok(p.left+p.width<=w*(w<=1100?.55:.65));assert.ok(p.top>=0);assert.ok(p.top+p.height<h);assert.ok(Math.abs(p.top+p.height*art.baseline/art.height-p.footY)<.01);
+  const p=placement(w,h);assert.ok(p.left>=0);assert.ok(p.left+p.width<=w*(w<=1100?.55:.65));assert.ok(p.top>=0);assert.ok(p.top+p.height<h);assert.ok(Math.abs(p.top+p.height*art.standY/art.height-p.footY)<.01);
  }
 });
 test('initial language refresh runs before the delayed DOM helper is initialized',()=>{
  const fn=html.slice(html.indexOf('function _refreshLobbyCardsLanguage()'),html.indexOf('function _lobbyCardLeaf'));
  const ctx=vm.createContext({document:{getElementById:()=>({querySelectorAll:()=>[]})}});
  assert.doesNotThrow(()=>vm.runInContext(fn+';_refreshLobbyCardsLanguage();const $=()=>{};',ctx));
+});
+test('ancestor feet stand on the dais center of the drawn crypt art, including the wide-plate video box',()=>{
+ const ctx=vm.createContext({window:{},document:{readyState:'loading',addEventListener(){}}});
+ vm.runInContext(readFileSync(new URL('../lobby-ancestor-sprite.js',import.meta.url),'utf8'),ctx);
+ const {placement}=ctx.window.LobbyAncestorSprite;
+ // 16:9 cover(object-position center 75%): 원형 단 동심원 중심 = 원본 (660,850)
+ const p=placement(1920,1080);const s=1920/1920,y0=(1080-1088*s)*.75;
+ assert.ok(Math.abs(p.footX-660*s)<.01);assert.ok(Math.abs(p.footY-(y0+850*s))<.01);
+ // 21:9 와이드 확장판: 원본 영상이 옮겨진 상자 안 같은 지점
+ const box={x:327,y:0,w:1906,h:1080};const q=placement(2560,1080,1920,1088,box);
+ assert.ok(Math.abs(q.footX-(box.x+box.w*660/1920))<.01);assert.ok(Math.abs(q.footY-(box.y+box.h*850/1088))<.01);
 });
