@@ -8,6 +8,8 @@ namespace Exoduser.UnityPort {
   [Serializable] internal sealed class Row { public int id,width,height; public string source,native; public Output[] outputs; }
   [Serializable] sealed class Catalog { public Row[] rows; }
   static Catalog catalog; static readonly Dictionary<string,Texture2D> cache=new Dictionary<string,Texture2D>();
+  // 마지막 Draw에서 원본 그림(와이드 확장판이면 그 안에 끼운 원본 영역)이 놓인 사각형. 그림 속 지점에 UI·인물을 맞출 때 쓴다.
+  internal static Rect LastOriginalRect;
   internal static Row Find(Texture source) {
    if(source==null)return null;
    if(catalog==null){var data=Resources.Load<TextAsset>("Data/fullscreen_wide");catalog=data==null?new Catalog():JsonUtility.FromJson<Catalog>(data.text);}
@@ -23,7 +25,8 @@ namespace Exoduser.UnityPort {
    var box=new Rect(viewport.center.x-plate.width*scale/2,viewport.center.y-plate.height*scale/2,plate.width*scale,plate.height*scale);
    box=new Rect(viewport.center.x+(box.x-viewport.center.x)*zoom+panX,viewport.center.y+(box.y-viewport.center.y)*zoom+panY,box.width*zoom,box.height*zoom);
    NativeUiAudit.DrawTexture(box,plate,ScaleMode.StretchToFill,false);
-   if(source!=null&&source!=reference){Rect moving=output!=null?new Rect(box.x+output.centerX*scale*zoom,box.y,row.width*scale*zoom,row.height*scale*zoom):box;NativeUiAudit.DrawTexture(moving,source,ScaleMode.StretchToFill,false);}
+   Rect originalRect=output!=null?new Rect(box.x+output.centerX*scale*zoom,box.y,row.width*scale*zoom,row.height*scale*zoom):box;LastOriginalRect=originalRect;
+   if(source!=null&&source!=reference)NativeUiAudit.DrawTexture(originalRect,source,ScaleMode.StretchToFill,false);
    NativeUiAudit.Region(viewport,"component","fullscreen-authored-plate",(row==null?"original":row.id.ToString())+":"+(output==null?"original":output.label));
    return true;
   }
