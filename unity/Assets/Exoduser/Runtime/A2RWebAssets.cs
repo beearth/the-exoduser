@@ -15,6 +15,7 @@ namespace Exoduser.UnityPort
         [Serializable] public sealed class KindCount {public string kind;public int source,added,duplicates;}
         [Serializable] public sealed class Receipt {public string source="a5c287157 C10 layout142 + R5 unique14 + foreground27; all64 ground paintings. Original drawX/footY and alpha-foot offset, no SourceMap intersection filter. Core/terrain/camera/actors unchanged.";public int sourceCards,added,duplicates,floating,groundTiles,moatRibbons;public List<KindCount> kinds=new List<KindCount>();public List<Item> items=new List<Item>();}
         public Vector3 CampFoot {get;private set;}
+        public Transform VisualRoot {get{return visuals.transform;}}
         public Receipt Result=new Receipt();public bool Applied {get;private set;}
         sealed class CardPose {public Transform transform;public float yaw;}
         sealed class FloorPose {public Transform transform;public MeshFilter filter;public Mesh standing,projected;public Vector3 standingPosition,projectedPosition;}

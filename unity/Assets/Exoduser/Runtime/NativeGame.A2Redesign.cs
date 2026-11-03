@@ -10,7 +10,7 @@ namespace Exoduser.UnityPort
 {
     public sealed partial class NativeGame
     {
-        A2RLighting a2rLighting;A2RWebAssets a2rWeb;A2ROcclusion a2rOcclusion;A2RNatureDynamics a2rNature;
+        A2RLighting a2rLighting;A2RWebAssets a2rWeb;A2ROcclusion a2rOcclusion;A2RNatureDynamics a2rNature;A2RProps3D a2rModels;
         static bool A2RRequested {get {var a=Environment.GetCommandLineArgs();return A2RHumanSave.CandidateDefault||Array.IndexOf(a,"--a2r1-light")>=0||Array.IndexOf(a,"--a2r1-light-capture")>=0||Array.IndexOf(a,"--a2-plan-capture")>=0;}}
         void A2RSetup()
         {
@@ -19,7 +19,7 @@ namespace Exoduser.UnityPort
             a2rLighting=a2Root.AddComponent<A2RLighting>();a2rLighting.Initialize(a2Root.transform,r3Cam,FindObjectsByType<Light>(FindObjectsInactive.Include,FindObjectsSortMode.None),volumes,()=>NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y));
             a2rLighting.SetHeroSprite(playerView);a2rLighting.Readability.SetOverlaps(A2RCollectOverlapRenderers);
             foreach(var p in Map.Data.props){if(p.id=="m_c1camp"){var at=NativeRemodel3D.Point(p.x,p.y);a2rLighting.AddLamp("A2R1 C10 camp fire",at+Vector3.up*1.3f,7.5f,9.5f,new Color(1,.32f,.08f));a2rLighting.AddLamp("A2R1 C10 camp glow",at+Vector3.up*.8f,4.8f,5.2f,new Color(1,.52f,.20f),false);}else if(p.id=="m_ctree15"||p.id=="m_c1altar")a2rLighting.AddLamp("A2R1 C10 red "+p.id,NativeRemodel3D.Point(p.x,p.y)+Vector3.up*1.2f,4.4f,4.56f,new Color(.92f,.18f,.14f));}
-            a2rOcclusion=a2Root.AddComponent<A2ROcclusion>();a2rOcclusion.Initialize(a2Root.transform,r3Cam,()=>NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y));a2rOcclusion.SetCombatSource(A2RCollectCombat);a2rOcclusion.SetHeroBounds(()=>a2rLighting.Readability.HeroBounds);a2rWeb=a2Root.AddComponent<A2RWebAssets>();a2rWeb.Initialize(a2Root.transform,r3Cam,props,a2FieldSoil,a2Water,a2rOcclusion);a2rLighting.AnchorCamp(a2rWeb.CampFoot);a2rNature=a2Root.AddComponent<A2RNatureDynamics>();a2rNature.Initialize(a2Root.transform,a2rWeb.CampFoot,()=>NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y),A2RCollectNature);A2RSetLook(true);
+            a2rOcclusion=a2Root.AddComponent<A2ROcclusion>();a2rOcclusion.Initialize(a2Root.transform,r3Cam,()=>NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y));a2rOcclusion.SetCombatSource(A2RCollectCombat);a2rOcclusion.SetHeroBounds(()=>a2rLighting.Readability.HeroBounds);a2rWeb=a2Root.AddComponent<A2RWebAssets>();a2rWeb.Initialize(a2Root.transform,r3Cam,props,a2FieldSoil,a2Water,a2rOcclusion);a2rLighting.AnchorCamp(a2rWeb.CampFoot);a2rModels=a2Root.AddComponent<A2RProps3D>();a2rModels.Initialize(a2Root.transform,a2rWeb,a2rOcclusion);a2rNature=a2Root.AddComponent<A2RNatureDynamics>();a2rNature.Initialize(a2Root.transform,a2rWeb.CampFoot,()=>NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y),A2RCollectNature);A2RSetLook(true);
         }
         void A2RCollectOverlapRenderers(List<SpriteRenderer> result)
         {
@@ -40,7 +40,7 @@ namespace Exoduser.UnityPort
             foreach(var p in Simulation.Bolts)if(p.Active){var at=NativeRemodel3D.Point(p.X,p.Y)+Vector3.up*.25f;points.Add(new Vector4(at.x,at.y,at.z,-.25f));}
             if(Simulation.Druid!=null)foreach(var p in Simulation.Druid.Projectiles)if(p.Active){var at=NativeRemodel3D.Point(p.X,p.Y)+Vector3.up*.35f;points.Add(new Vector4(at.x,at.y,at.z,-.35f));}
         }
-        void A2RSetLook(bool on){a2rLighting.SetLook(on);a2rWeb.SetLook(on);a2rOcclusion.SetLook(on);if(a2rNature!=null)a2rNature.SetLook(on);}
+        void A2RSetLook(bool on){a2rLighting.SetLook(on);a2rWeb.SetLook(on);if(a2rModels!=null)a2rModels.SetLook(on&&A2RProps3D.Enabled);a2rOcclusion.SetLook(on);if(a2rNature!=null)a2rNature.SetLook(on);}
         [Serializable] sealed class A2RPoint {public string id,kind;public float x,y;public int region;}
         [Serializable] sealed class A2RFrame {public string id,look;public float x,y,heroGroundY;public int width,height,fadedRenderers,maskTargets;public float cameraFov,cameraPitch;public Vector3 cameraPosition;public bool orthographic;}
         [Serializable] sealed class A2RReceipt {public string scope="Same-package fixed-position A/B assets/lighting fixture. Existing A2Field/SourceMap/actor renderer, no natural walk claim. Three occlusion poses are fixed-position samples. Structure uses a separate orthographic camera only.";public bool passed;public int errors;public List<A2RFrame> frames=new List<A2RFrame>();public List<A2RFrame> occlusionFrames=new List<A2RFrame>();public List<A2RFrame> foregroundFrames=new List<A2RFrame>();public List<Vector2> foregroundEnemies=new List<Vector2>();public int foregroundEnemyCount,foregroundVisibleEnemies,peakDroppedTargets;public Vector2 foregroundRequested,foregroundActual;public string foregroundPositionSource="Inferred from the user image's bridge torch; image has no Core coordinates. Verify same place on Mac; optional --a2r-foreground-x/y overrides are recorded.";}
