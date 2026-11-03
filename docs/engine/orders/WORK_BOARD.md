@@ -2,7 +2,7 @@
 
 | 작업ID | 내용 | 담당·환경 | 브랜치 | 소유 파일 | 상태 |
 |---|---|---|---|---|---|
-| RB1-7/8 | 기술7개 데이터·3D 보스방 | PC Codex, 지정 브리프 수행 | codex/unity-boss-arena-20261103 | Core/DruidRemodelData.cs, Tools/druid-remodel-test/{MotionChecks,Program,TelegraphChecks}.cs, UNITY_BOSS_ARENA_RB1_7_8_20261103.md·관련 docs | **RB1-7 CPU PASS·Mac 판정 대기**: 21:00 정정: 채찍 AI160·타격300, 돌진 추가120, 전투99210/0·frame124/0·OFForacle5421635/0. 잠행18건 검사전제오류 확정. RB1-8a 회색 지형·지면·거리 전환 소스 연결, CPU13/0·Roslyn5어셈블리 오류0. Mac 가림/접지/전환/60fps 미검증. [기록](../UNITY_BOSS_ARENA_RB1_7_8_20261103.md) |
+| RB1-7/8 | 기술7개 데이터·3D 보스방·8b 조명/재질 | PC Codex, 지정 브리프 수행 | codex/unity-boss-arena-20261103 | 자기 NativeArena3DView/Plan·BossArenaReview와8b자원·Tools/boss-arena-tests·관련 docs | 11-04 00:50: 최신6d99d0c46 병합. 필드 조명/후처리 공유·A2R 원화2종·횃불2점광·독액 띠·34도 나란히 촬영 소스 연결, arena73/0·Roslyn5어셈블리 오류0. PC Player0. 기존8a/8c 및8b Mac 화면/성능 판정 대기. [기록](../UNITY_BOSS_ARENA_RB1_7_8_20261103.md) |
 ## 진행 중 — UI-PARITY-1102-RECOVER (2026-11-03)
 
 | 담당 | 목표 | 소유 파일 | 상태 |

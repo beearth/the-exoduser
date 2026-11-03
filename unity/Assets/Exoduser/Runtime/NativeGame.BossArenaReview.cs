@@ -46,6 +46,7 @@ namespace Exoduser.UnityPort
             public Quaternion quaternion;
             public float heroGpuSilhouetteHeightFraction,heroGpuSilhouetteHeightPx,heroModelRestWorldHeight,fieldOfView,distanceToMarker,desiredDistance,heroProjectedBoundsHeightPx,heroProjectedHeightFraction,bossOpaqueHeightPx,bossHeroRatio,deltaMs,prepareCpuMs;
             public Rect heroSourceAlphaRect,bossSourceAlphaRect;
+            public Arena8bLighting lighting;public NativeArena3DView.SurfaceReceipt surface;
         }
         [Serializable] sealed class ArenaReviewEvent
         {
@@ -74,7 +75,7 @@ namespace Exoduser.UnityPort
             arenaReviewOutput=Path.Combine(output,"arena-review");
             Directory.CreateDirectory(arenaReviewOutput);
             if((File.GetAttributes(arenaReviewOutput)&FileAttributes.ReparsePoint)!=0)throw new IOException("Arena review output cannot be a link");
-            foreach(var file in Directory.GetFiles(arenaReviewOutput)){var name=Path.GetFileName(file);bool owned=name.StartsWith("move-",StringComparison.Ordinal)||name.StartsWith("transition-",StringComparison.Ordinal)||name=="camera-frames.jsonl"||name=="moves.jsonl"||name=="review.json";if(owned&&(name.EndsWith(".png",StringComparison.Ordinal)||name.EndsWith(".json",StringComparison.Ordinal)||name.EndsWith(".jsonl",StringComparison.Ordinal))){if((File.GetAttributes(file)&FileAttributes.ReparsePoint)!=0)throw new IOException("Arena review file cannot be a link");File.Delete(file);}}
+            foreach(var file in Directory.GetFiles(arenaReviewOutput)){var name=Path.GetFileName(file);bool owned=name.StartsWith("move-",StringComparison.Ordinal)||name.StartsWith("transition-",StringComparison.Ordinal)||name=="camera-frames.jsonl"||name=="moves.jsonl"||name=="review.json"||name.StartsWith("material-field-reference.",StringComparison.Ordinal)||name.StartsWith("material-arena-reference.",StringComparison.Ordinal)||name=="material-comparison.html";if(owned&&(name.EndsWith(".png",StringComparison.Ordinal)||name.EndsWith(".json",StringComparison.Ordinal)||name.EndsWith(".jsonl",StringComparison.Ordinal)||name=="material-comparison.html")){if((File.GetAttributes(file)&FileAttributes.ReparsePoint)!=0)throw new IOException("Arena review file cannot be a link");File.Delete(file);}}
             arenaReviewMetricsOnly=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-boss-arena-metrics-only")>=0;
             StartCoroutine(BossArenaReviewFrames());
             Debug.Log("ARENA_REVIEW fixed resolution; input-only coverage; capture frames excluded from clean timing; sandbox="+NativeQaSandbox.Root);
@@ -169,6 +170,7 @@ namespace Exoduser.UnityPort
             {
                 frame=Time.frameCount,tick=s.TickCount,width=Screen.width,height=Screen.height,loadPhase=s.Stage.LoadPhase,arena=arena,arena3d=mode,sink=sink,window=window?arenaReviewWindow:"",state=d==null?"":d.S,moveId=d==null?"":d.RmMoveId,heroSprite=playerView.sprite==null?"":playerView.sprite.texture.name+":"+playerView.sprite.rect,position=camera.transform.position,rotation=camera.transform.eulerAngles,quaternion=camera.transform.rotation,marker=r3Marker==null?Vector3.zero:r3Marker.position,fieldOfView=camera.fieldOfView,distanceToMarker=r3Marker==null?0:Vector3.Distance(camera.transform.position,r3Marker.position),desiredDistance=r3ArenaCamera.Distance,heroScale=playerView.transform.lossyScale,heroModelRestWorldHeight=NativeArenaActorMetrics.HeroModelWorld,heroMeasureScope=playerView.enabled?"source alpha rectangle, includes weapon/occluded pixels":"3D renderer bounds projection; capture JSON additionally has isolated GPU colored silhouette",heroProjectedBoundsHeightPx=hh,heroProjectedHeightFraction=hh/Screen.height,bossOpaqueHeightPx=bh,bossHeroRatio=hh>0?bh/hh:0,heroSourceAlphaRect=heroRect,bossSourceAlphaRect=bossRect,deltaMs=Time.unscaledDeltaTime*1000,prepareCpuMs=r3Arena==null?0:r3Arena.PrepareMs,meshBuilds=r3Arena==null?0:r3Arena.MeshBuilds,faded=r3Arena==null?0:r3Arena.Faded,nearestDraws=r3Arena==null?0:r3Arena.NearestDraws,previousFrameCapture=arenaReviewLastCapture
             };
+            BossArenaMaterialLate();
             if(window&&!arenaReviewMetricsOnly)QueueArenaReviewShot("transition-"+arenaReviewWindow+"-f"+Time.frameCount.ToString("000000"));
         }
         IEnumerator BossArenaReviewFrames()
@@ -182,6 +184,7 @@ namespace Exoduser.UnityPort
                 row.capture=capture;
                 if(capture)
                 {
+                    row.lighting=BossArenaCaptureLighting();row.surface=r3Arena==null?null:r3Arena.CaptureSurface();
                     row.heroGpuSilhouetteHeightPx=BossArenaReviewHeroPixels();
                     row.heroGpuSilhouetteHeightFraction=row.heroGpuSilhouetteHeightPx>0?row.heroGpuSilhouetteHeightPx/row.height:0;
                     fullRunCaptureActivity="arena-review";
@@ -331,6 +334,7 @@ namespace Exoduser.UnityPort
                 "-warning.png","-warning.json","-active.png","-active.json"
             }
             )if(!File.Exists(Path.Combine(arenaReviewOutput,"move-"+id+suffix)))missingImages.Add(id+suffix);
+            BossArenaMaterialEnd(missingImages);
             var result=new ArenaReviewResult
             {
                 result=missing.Count>0?"FAIL_MISSING_ACTIVATIONS":missingImages.Count>0?"FAIL_MISSING_CAPTURE_FILES":"ACTIVATION_COVERAGE_7_OF_7_VISUAL_QA_PENDING",buildGuid=Application.buildGUID,sandbox=NativeQaSandbox.Root,metricsOnly=arenaReviewMetricsOnly,width=Screen.width,height=Screen.height,captured=new List<string>(arenaReviewSeen).ToArray(),missing=missing.ToArray(),missingScreenshots=missingImages.ToArray(),scope="Virtual keyboard/mouse only. 3D bounds and isolated same-pose GPU hero silhouette (alpha>64 RGB sum>12 row>=3 pixels, includes weapon/cape, excludes map occlusion); sprite fallback alpha bounds include weapon and occluded pixels; compare actual PNG body. Pose sampled after final Cinemachine/billboard, PNG same rendered frame. Field hero scale unchanged. No forced move/HP/position edits.",timingScope="Capture PNG encoding/write contaminates current and following frame. Use a separate --unity-boss-arena-metrics-only run, same resolution, one Player, for FPS/long-frame verdict."

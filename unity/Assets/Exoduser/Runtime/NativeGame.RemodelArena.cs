@@ -16,7 +16,7 @@ namespace Exoduser.UnityPort
         System.Collections.IEnumerator RemodelArenaPrewarm(){
             if(!A2Requested)yield break;
             NativeArenaActorMetrics.CalibrateHero(heroView==null?null:heroView.Model);
-            try{r3Arena=new NativeArena3DView(transform,Exoduser.UnityPort.Core.BossArenaLayout.Generate(0),r3Cam);}catch(Exception e){r3ArenaFailed=true;Debug.LogWarning("[RB1-8] prewarm constructor failed "+e.Message);yield break;}
+            try{r3Arena=new NativeArena3DView(transform,Exoduser.UnityPort.Core.BossArenaLayout.Generate(0),r3Cam,a2Water);}catch(Exception e){r3ArenaFailed=true;Debug.LogWarning("[RB1-8] prewarm constructor failed "+e.Message);yield break;}
             var work=RemodelArenaPrewarmAssets();while(true){bool more=false;try{more=work.MoveNext();}catch(Exception e){r3ArenaFailed=true;r3Arena.Dispose();r3Arena=null;Debug.LogWarning("[RB1-8] prewarm failed,2D fallback "+e.Message);yield break;}if(!more)break;yield return work.Current;}
         }
         System.Collections.IEnumerator RemodelArenaPrewarmAssets(){

@@ -544,7 +544,7 @@ PC는 Roslyn 컴파일까지, RB1-8a의 실제 화면·가림·전환·60fps 판
 | 바닥·벽 | `BossArenaLayout.Tiles`에서 메시를 만든다. 바닥(4·5)은 평지, **벽(1)은 검정 마스크 대신 높이 3~6m의 숲 외곽 덩어리**(뿌리 절벽·고목 줄기)로 34° 원근에서 빈 공간이 보이지 않게 한다. 출구(0)는 열린 통로와 문턱이다. 바닥 재질은 A2 숲 흙·드러난 뿌리 텍스처(지금 `A2ArenaSoilLit` 자원)를 3D URP 재질로 쓰고, 반복 무늬가 보이지 않게 섞는다 |
 | 독액 수로 | §5: 아레나 둘레 바깥 띠, 보행 불가, 필드 독액 강 재질(맵 총괄) 재사용. P3 수위 상승은 표현만 |
 | 뿌리 기둥 | RB1-3 Core 기둥 4개(고리 0.55R, 반지름 80px)를 3D 메시(높이 약 3.2m)로 세우고 그림자를 드리운다. 카메라와 영웅·보스 사이를 가리면 반투명 처리(레퍼런스 공통 처리, `REFERENCE_CONVENTIONS`) |
-| 조명 | 필드 HellLighting 구성을 그대로 쓴다: 달빛 Directional(색 .85/.89/1, 강도 1, Soft 그림자, 회전 62/35) + 후처리 프로필(노출 +1, 채도 −18, 블룸·비네트). 아레나 전용으로 **똑바로 선** 3D 횃불 2개(지금 `A2ArenaSetup` 위치)를 따뜻한 점광(필드 Pool_Hell 값 1/.6/.28, 강도 5, 범위 4.7)으로 둔다. 보스 발광(랜턴·가슴)은 보스 모델 단계에서 작은 점광 ≤2개로 한다. 영웅 전용 Hero 라이트·림은 필드와 같고, 보스는 쓰지 않는다(§8.3) |
+| 조명 | 필드 HellLighting→A2Field 최종 구성을 그대로 공유한다(현재 source: 달빛 RGB .85/.90/1·강도3.2·회전49/-32·soft shadow .55, 노출+.55EV·대비16). 새 아레나용 달빛·후처리 복사본은 만들지 않는다. 실제 값은 §14.6 캡처 영수증으로 대조한다. 아레나 전용으로 **똑바로 선** 3D 횃불 2개(지금 `A2ArenaSetup` 위치)를 따뜻한 점광(필드 Pool_Hell 값 1/.6/.28, 강도 5, 범위 4.7)으로 둔다. 보스 발광(랜턴·가슴)은 보스 모델 단계에서 작은 점광 ≤2개로 한다. 영웅 전용 Hero 라이트·림은 필드와 같고, 보스는 쓰지 않는다(§8.3) |
 | 배우 | 영웅·적·드루이드는 필드와 같은 3D 표현 경로(빌보드/rig-pixel, 발 접지 `NativeHd2D.SnapAnchor`)로 선다. 지금 드루이드 2D 스프라이트도 빌보드로 세운다. 보스 3D(껍질)는 G3 이후 이 자리에 들어온다 |
 | 예고·장판 | `NativeDruidTelegraphView`의 바닥 예고, 독웅덩이, 균열, 심장 박동 고리는 3D 지면에 붙인다(필드 `NativeGroundSkillSurface`와 같은 방식 또는 URP Decal). 보스 몸에 가려지지 않게 지면 우선으로 그리고, 탄은 지면 위 높이에 둔다 |
 | HUD | 보스 체력바 등 화면 UI는 그대로. `HudCamera`가 3D 아레나 카메라를 돌려주게 한다 |
@@ -594,4 +594,21 @@ PC는 Roslyn 컴파일까지, RB1-8a의 실제 화면·가림·전환·60fps 판
 
 촬영 결과는 고정 출력/arena-review의 camera-frames.jsonl, moves.jsonl, review.json, move-<MoveId>-warning/active.png·json, transition-<구간>-f<프레임>.png·json이다. 같은 출력에서 다음 실행을 시작하면 이 recorder가 만든 파일만 정리하고 최신1회만 남긴다. review.json의 7/7은 발동·파일 수집 영수증이며 VISUAL PASS가 아니다. 새 인자 전체는 [구현 기록](UNITY_BOSS_ARENA_RB1_7_8_20261103.md)에 있다.
 
-A2R 재사용 출처: origin/codex/unity-map-a2-20261103 76bf4ebad6fb63a196d5ec92b0c968fd1e20dec3의 LitOpaque/LitFade/LitCommon/Occlusion. 맵 브랜치 전체 병합 없이 아레나 전용 이름·글로벌로 분리했다. 필드 수정0.8b 독액 수로·횃불/최종 지면 혼합과 8d 미술 마감은 별도 미완료다.
+A2R 재사용 출처: origin/codex/unity-map-a2-20261103 76bf4ebad6fb63a196d5ec92b0c968fd1e20dec3의 LitOpaque/LitFade/LitCommon/Occlusion. 맵 브랜치 전체 병합 없이 아레나 전용 이름·글로벌로 분리했다. 필드 수정0. 당시 미완료였던8b 연결은 §14.6 소스 후보로 진행했으며, 8d 최종 미술은 남았다.
+
+### 14.6 RB1-8b 조명·재질 소스 후보 (11-04 00:50 CTO)
+
+최신 origin/unity/main 6d99d0c46을 먼저 병합(3d9b88d9ce)하고 cbd6a21b5 위에 구현했다. 기존 8a/8c Mac 판정은 계속 대기다. G0 목표는 필드34°와 같은 조명 아래 흙·뿌리 결, 세워진 횃불2개, 닫힌3D 숲 외곽이다. 직접 연 참조는 맵 총괄 A2R의 r3_ground_2_4/3_4 원본 PNG다. 가장 큰 차이는 기존 단일 URP 흙 재질과 횃불 부재였다. 원본/노멀/마스크 재사용·완만한 혼합·실제 점광으로 만들며 첫 실물 판정은 Mac 같은 빌드1920/3840 나란히1x다. 반복 경계·누운 받침·부유 불꽃·먼 적 소실·검은 틈·7기술 가독성·60fps 중 결함이 있으면 RETOUCH이며, 같은 테스트2회 실패면 중단한다.
+
+| 항목 | 실제 소스 | 한계·Mac 확인 |
+|---|---|---|
+| 달빛·후처리 | 새 아레나 Volume/달빛을 만들지 않고 r3Roots의 기존 HellLighting→A2Field 최종 Light/Volume를 공유한다. 현재 A2Field는 달빛 intensity3.2, RGB(.85,.90,1), 회전(49,-32,0), soft shadow .55, 노출+.55EV/대비16이다. 이전 명세의 일반 HellLighting intensity1/노출+1을 다시 덮지 않는다. ambient·fog·Hero light도 필드 경로 그대로다 | 실제 moonEntity/profileEntity·노출/색/블룸/fog를 캡처 JSON에 기록. 필드와 아레나 ID/값 및1x 톤 확인. 미실행 수치와 GPU 색 일치를 혼동하지 않음 |
+| 바닥 | A2R 3967a7562의 r3_ground_2_4·3_4 원화/노멀/마스크6개를 Arena8b 소유 자원으로 인수(약4.3MB, 새 생성0). 원본 importer의 mip/trilinear/aniso8·색sRGB/노멀·마스크linear 설정과 픽셀은 유지하고 GUID만 분리. A2R GroundPainting의 normal .35, earth tint(1.10,1.03,.91), ambient(.08,.075,.065), lighting cap2.4를 재사용한다. 10m 패치를 회전·완만 혼합하고 가장자리 .6~2m 구간은 기존 A2 soil/roots로 잇는다. 원본 투명/수면 마스크도 흙으로 채워 바닥을 닫는다 | 아레나 자체 지면4정점은 유지. 새 shader GPU compile/실제 경계·결·번들 반복·광원 반응은 Mac 미검증. A2R 필드 전체64장·맵 브랜치 전체를 병합한 것은 아님 |
+| 횃불2개 | Core 방 중심의 x±6/z±2.5. RF3_Bridge_Torch_Holder 기존3D를 Y-up 높이1.4/폭.55로 세운다. 기존 torch_flame8프레임을12fps, 불꽃 높이.65로 billboard. 일반 배우 billboard 재투영에서 제외해 공중 lift 누적 방지. 실제 point light RGB(1,.60,.28), 기준강도5,range4.7,soft shadows/bias.025/normalBias.1. 작은 연속 flicker만 추가 | 기존 Pool_Hell 계약 수치다. 필드 A2 다리 횃불7/range5와는 별개. 접지·불꽃 위치·기둥/예고 가독성·너무 큰 철창 그림자 여부는 Mac 확인 |
+| 독액 수로 | 기존 ArenaChannelPlan의 보행 불가 벽1·인접 바닥1타일 띠만 y.02에 만든다. 기존 A2ToxicRiver 재질을 복제해 지면 투영 water receiver에 등록한다. 필드 전용 ShoreReady/PlanarStrength는0,반사 VP identity: 이전 필드 거리장·영상이 보스방에 섞이지 않음. 실제 아레나 지면도 최신 투영 receiver에 등록 | Core 충돌/독 피해/출구 쓰기0. 아레나 planar reflection·P3 수위 상승 연출은 이번 연결에 포함하지 않음. 수로 색·물/장판 경계·비용은 Mac 확인 |
+| 외곽3D | cbd6의 고목 A/B·뿌리·암석3~6m, 남쪽 안쪽.55m, 최전방 알파.2 유지 | 조사한 최신 맵 브랜치에 인수 가능한 Meshy 저LOD Unity 모델/프리팹이 없어 기존 RF3 유지. 8d 최종 미술·LOD 채택은 맵 총괄 후속 |
+| 사전 준비·수명 | 새 텍스처·횃불·수로·receiver·새 ground shader variants는 필드 additive 준비 중 생성. 진입/출구 메시 재생성 없음. 자기 sprite/mesh/material은 view Dispose에서 해제, 필드 자원은 복제 재질만 해제 | SVC 요청은 Metal 드라이버 stall 제거 증거가 아님. PNG/readback 없는 metrics-only 단독 실행에서 장프레임 확인 |
+| 비교 촬영 | 새 --unity-boss-arena-material-review를 기존 fullrun/review에 추가. 첫 QA 시뮬레이션 틱 전 필드3D 준비(최대60초)를 기다리고 실제 필드 frame을 찍는다. 입력 진행 뒤 아레나 가시 상태2초에서 두번째 frame을 찍고 material-comparison.html(Fit/Native1x)로 나란히 표시한다. 위치/HP/AI 변경 없음 | 해당 args는 기존 boss-direct 범위만 사용. 캡처 폴더의 material-field-reference/arena-reference PNG·JSON 및 조명/횃불/바닥 출처 대조. 누락은 missingScreenshots FAIL. 두 이미지가 있어도 자동 시각 PASS는 아님 |
+| 검증 | 횃불 API 부재 RED1 뒤 arena73검사/0실패(기존44+배치29). 첫 Roslyn은 새 계측 GetInstanceID 2곳이 현재 Unity의 obsolete-error라 실패. 설치 CoreModule 문서 확인 후 GetEntityId 문자열로 수정, 재검사 Player Core126/Runtime273, Editor Core126/Runtime273/Editor59, 총5어셈블리 오류0 | PC Unity/Player/빌드/캡처0,Library 복사0,유료0,USER_SAVE 접근0. 셰이더·화면·실성능은 Mac 미검증. 기존8a/8c 전체 PASS로 올리지 않음 |
+
+G1 재료 배치: 중앙 보행 면·Core 기둥/출구는 그대로, 좌우 중간거리 횃불2개, 한 타일 바깥 독액, 뒤/좌/우 고목3~6m·남쪽 낮은 뿌리의 기존 질량을 유지한다. 카메라34°/거리16.5/FOV46.9453/전방1.45·영웅 배율·보스 상대 크기 변경0. 화면용 번역 문자열 추가0(진단 파일만 추가). Mac 새 인자는 [구현 기록](UNITY_BOSS_ARENA_RB1_7_8_20261103.md)의 네 실행이다.

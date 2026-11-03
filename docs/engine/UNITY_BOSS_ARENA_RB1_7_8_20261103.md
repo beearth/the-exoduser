@@ -1,6 +1,6 @@
 # RB1-7 / RB1-8 구현 기록 — 2026-11-03
 
-최신 병합: origin/unity/main 2b1bbf2a0. 작업본 G:/exoduser-wt/codex-boss-arena, 브랜치 codex/unity-boss-arena-20261103. 20:25/21:00/21:35/21:45 CTO 결정을 적용한다. PC는 CPU 하니스·Roslyn 컴파일, Player 빌드·화면·성능 판정은 Mac 담당이다.
+최신 병합: origin/unity/main 6d99d0c46 (merge 3d9b88d9ce). 작업본 G:/exoduser-wt/codex-boss-arena, 브랜치 codex/unity-boss-arena-20261103. 20:25/21:00/21:35/21:45 및11-04 00:50 CTO 결정을 적용한다. PC는 CPU 하니스·Roslyn 컴파일, Player 빌드·화면·성능 판정은 Mac 담당이다.
 
 ## RB1-7 현재 상태
 
@@ -30,7 +30,13 @@ fan/chaseAoe/summon/tideWave/seekerMines는 슬롯·실행기를 남기고 Phase
 
 origin/unity/main 2b1bbf2a0 병합. 정본 [RM1 §14.5](UNITY_BOSS_RM1_DARK_DRUID_20261027.md#145-2135-mac-fail-수정-및-2145-거리-정정--mac-재검수-후보)의 7개 항목을 구현했다. 34°/16.5/FOV46.9453/전방1.45 고정·영웅 필드 크기 유지·보스 영웅 모델 높이×2.8. 원근이 같은 필드±5%가 영웅 판정 기준이며10~12%는 폐기됐다. 회색 수직벽/실린더 대신 기존 A2 숲과 뿌리 모델, 남쪽 낮은 뿌리, 최전방 알파0.2 가림을 쓴다.
 
-CPU arena44/0, 전체Roslyn5어셈블리 오류0(Core121/Runtime265/Editor57). Core 규칙 변경0, PC Player/Unity/빌드/캡처0, Library 복사0, 유료0. GPU/셰이더·필드 대비 크기·외곽 덩어리/그림자·가림·전환·7기술 실제 수집·60fps는 Mac 재검수 전이다. 8b 독액·횃불·최종 재질 혼합,8d 미술 마감은 남았다.
+CPU arena44/0, 전체Roslyn5어셈블리 오류0(Core121/Runtime265/Editor57). Core 규칙 변경0, PC Player/Unity/빌드/캡처0, Library 복사0, 유료0. GPU/셰이더·필드 대비 크기·외곽 덩어리/그림자·가림·전환·7기술 실제 수집·60fps는 Mac 재검수 전이다. 이 절은21:35 후보 이력이다. 8b 소스 후보는 아래 절, 8d 미술 마감은 맵 총괄 후속이다.
+
+## RB1-8b 11-04 00:50 소스 후보
+
+[정본 §14.6](UNITY_BOSS_RM1_DARK_DRUID_20261027.md#146-rb1-8b-조명재질-소스-후보-11-04-0050-cto): 실제 필드 달빛/후처리 공유, A2R 원화/노멀/마스크 두 종류·흙/뿌리 혼합, Y-up 횃불2개와 실제 point light, Core 외곽1타일 독액·지면 투영 연결. 34°/16.5와 전투 규칙 불변. Meshy 저LOD는 인수 가능한 Unity 자원이 없어 기존3D 숲 유지. 원화2장을 직접 확인했고, 새 Player 화면은 PC에서 실행하지 않았다.
+
+arena73/0. 첫 Roslyn의 GetInstanceID obsolete-error2곳을 문서 확인 후 GetEntityId로 고쳐 재검사5어셈블리 오류0(Core126/Runtime273/Editor59). 8b 소스·컴파일 후보이며, 8a/8c 및8b 시각/성능 판정은 Mac 대기다. 아레나 planar reflection·P3 수위 상승·8d 미술 마감은 이번 범위 밖이다.
 
 ## Mac 실행 인자 전체
 
@@ -39,20 +45,20 @@ Mac의 기존 무창 GPU 실행 경로에 아래 Player 인자를 전달한다. 
 1920×1080 촬영:
 
 ```text
-"<Mac Player 실행경로>" --remodel3d --unity-druid-remodel --unity-boss-direct 0 --unity-fullrun-qa --unity-boss-arena-review --unity-mute -nosound --unity-qa-sandbox "<QA 루트>/profile-1920" -screen-fullscreen 0 -screen-width 1920 -screen-height 1080 -qa-width 1920 -qa-max-ticks 36000 -qa-retries 3 -output "<QA 루트>/capture-1920" -logFile "<QA 루트>/capture-1920/Player.log"
+"<Mac Player 실행경로>" --remodel3d --unity-druid-remodel --unity-boss-direct 0 --unity-fullrun-qa --unity-boss-arena-review --unity-boss-arena-material-review --unity-mute -nosound --unity-qa-sandbox "<QA 루트>/profile-1920" -screen-fullscreen 0 -screen-width 1920 -screen-height 1080 -qa-width 1920 -qa-max-ticks 36000 -qa-retries 3 -output "<QA 루트>/capture-1920" -logFile "<QA 루트>/capture-1920/Player.log"
 ```
 
 3840×1080 촬영:
 
 ```text
-"<Mac Player 실행경로>" --remodel3d --unity-druid-remodel --unity-boss-direct 0 --unity-fullrun-qa --unity-boss-arena-review --unity-mute -nosound --unity-qa-sandbox "<QA 루트>/profile-3840" -screen-fullscreen 0 -screen-width 3840 -screen-height 1080 -qa-width 3840 -qa-max-ticks 36000 -qa-retries 3 -output "<QA 루트>/capture-3840" -logFile "<QA 루트>/capture-3840/Player.log"
+"<Mac Player 실행경로>" --remodel3d --unity-druid-remodel --unity-boss-direct 0 --unity-fullrun-qa --unity-boss-arena-review --unity-boss-arena-material-review --unity-mute -nosound --unity-qa-sandbox "<QA 루트>/profile-3840" -screen-fullscreen 0 -screen-width 3840 -screen-height 1080 -qa-width 3840 -qa-max-ticks 36000 -qa-retries 3 -output "<QA 루트>/capture-3840" -logFile "<QA 루트>/capture-3840/Player.log"
 ```
 
 성능 계측(촬영/격리 GPU 측정/encode 없음):
 
 ```text
-"<Mac Player 실행경로>" --remodel3d --unity-druid-remodel --unity-boss-direct 0 --unity-fullrun-qa --unity-boss-arena-review --unity-boss-arena-metrics-only --unity-mute -nosound --unity-qa-sandbox "<QA 루트>/profile-perf-1920" -screen-fullscreen 0 -screen-width 1920 -screen-height 1080 -qa-width 1920 -qa-max-ticks 36000 -qa-retries 3 -output "<QA 루트>/metrics-1920" -logFile "<QA 루트>/metrics-1920/Player.log"
-"<Mac Player 실행경로>" --remodel3d --unity-druid-remodel --unity-boss-direct 0 --unity-fullrun-qa --unity-boss-arena-review --unity-boss-arena-metrics-only --unity-mute -nosound --unity-qa-sandbox "<QA 루트>/profile-perf-3840" -screen-fullscreen 0 -screen-width 3840 -screen-height 1080 -qa-width 3840 -qa-max-ticks 36000 -qa-retries 3 -output "<QA 루트>/metrics-3840" -logFile "<QA 루트>/metrics-3840/Player.log"
+"<Mac Player 실행경로>" --remodel3d --unity-druid-remodel --unity-boss-direct 0 --unity-fullrun-qa --unity-boss-arena-review --unity-boss-arena-material-review --unity-boss-arena-metrics-only --unity-mute -nosound --unity-qa-sandbox "<QA 루트>/profile-perf-1920" -screen-fullscreen 0 -screen-width 1920 -screen-height 1080 -qa-width 1920 -qa-max-ticks 36000 -qa-retries 3 -output "<QA 루트>/metrics-1920" -logFile "<QA 루트>/metrics-1920/Player.log"
+"<Mac Player 실행경로>" --remodel3d --unity-druid-remodel --unity-boss-direct 0 --unity-fullrun-qa --unity-boss-arena-review --unity-boss-arena-material-review --unity-boss-arena-metrics-only --unity-mute -nosound --unity-qa-sandbox "<QA 루트>/profile-perf-3840" -screen-fullscreen 0 -screen-width 3840 -screen-height 1080 -qa-width 3840 -qa-max-ticks 36000 -qa-retries 3 -output "<QA 루트>/metrics-3840" -logFile "<QA 루트>/metrics-3840/Player.log"
 ```
 
 각 출력/arena-review/review.json의 missing·missingScreenshots가 빈 배열인지 먼저 확인한다(metrics-only는 PNG 미요청). 7/7 라벨은 시각 판정이 아니다. moves.jsonl의 actual-activation과 마지막 예고 경계, same-frame PNG/JSON을 대조한다. warning만 포착한 기술은 수집 완료로 세지 않는다. 기본 7기술이 자연 AI에서 나오지 않거나 사망하면 명시적 FAIL이므로 Mac에서 새 증거 없이 PASS로 올리지 않는다.
@@ -62,3 +68,5 @@ camera-frames.jsonl에는 실제 position/quaternion/Euler/FOV/marker 거리, �
 진입 load/visible·퇴장·침강 start/end의0.6초 동안 매 렌더 프레임을 남긴다. PNG encode/격리GPU readback은 성능을 오염시키므로 촬영 실행의 장프레임으로175ms 개선을 단정하지 않는다. metrics-only 단독 실행의 long-frames.jsonl/Player.log에서 prepare phase·meshBuilds1·prepare/sync/mode/shader CPU 시간을 확인한다. GPU 드라이버 stall·전체 shader variants·동시 Player 오염의 최종 원인은 Mac 계측 전 미확정이다.
 
 리뷰용 직행 인자는 CombatSaveAllowed=false라 fullrun.json의 clearSaveExists=false 및 stage-cleared-transition-blocked가 나올 수 있다. 이는 기존 fullrun 저장 기대값과 리뷰 인자의 차이다. 별도 arena-review/review.json, 실제 입장→사망/침강→출구→로비 증거 및 격리 경로를 함께 판정한다.
+
+8b 비교: 각 capture-<해상도>/arena-review/material-comparison.html을 열어 같은 Player의 실제 필드/아레나를 Fit·Native1x로 비교한다. PNG·JSON은 material-field-reference와 material-arena-reference다. 조명은 moonEntity/profileEntity가 같은지, 실제 exposure/contrast/fog·달빛 값이 유지되는지 확인하고, surface.torches의2점광·shader·channelCells를 대조한다. 프로필 ID는 다른 Player 실행끼리 비교하지 않는다. 기본 fullrun/review의7기술 검수는 별도이며, 7기술 누락으로 FAIL이어도8b 두 비교 이미지의 존재/시각 판정은 따로 기록한다. 새 material 인자에서도 hero/HP/보스 기술 강제 변경은 없다.

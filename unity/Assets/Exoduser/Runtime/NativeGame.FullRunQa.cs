@@ -91,6 +91,7 @@ namespace Exoduser.UnityPort
             if (firstPractice != null) EndFirstPractice(true);
             frontendEntryInputFence = false; menu = false; SetGameFocus(true); Running = false;
             Screen.SetResolution(width,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
+            yield return BossArenaMaterialFieldReference();
             receipt.width=Screen.width;receipt.height=Screen.height;
             var oldKeyboard = Keyboard.current; var oldMouse = Mouse.current;
             var keyboard = InputSystem.AddDevice<Keyboard>(); var mouse = InputSystem.AddDevice<Mouse>();

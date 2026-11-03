@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 using Exoduser.UnityPort.Core;
 namespace Exoduser.UnityPort
 {
-    public sealed class NativeArena3DView:IDisposable
+    public sealed partial class NativeArena3DView:IDisposable
     {
         readonly GameObject root;
         readonly Camera camera;
@@ -70,10 +70,11 @@ namespace Exoduser.UnityPort
                 return layout;
             }
         }
-        public NativeArena3DView(Transform parent,BossArenaLayout arena,Camera viewer)
+        public NativeArena3DView(Transform parent,BossArenaLayout arena,Camera viewer,Material fieldWater=null)
         {
             layout=arena;
             camera=viewer;
+            sourceWater=fieldWater;
             root=new GameObject("RB1-8 forest arena");
             root.transform.SetParent(parent,false);
             root.SetActive(false);
@@ -99,18 +100,7 @@ namespace Exoduser.UnityPort
             mesh.RecalculateBounds();
             root.AddComponent<MeshFilter>().sharedMesh=mesh;
             var ground=root.AddComponent<MeshRenderer>();
-            var shader=Shader.Find("Universal Render Pipeline/Lit");
-            if(shader==null)throw new InvalidOperationException("URP Lit missing");
-            var soil=new Material(shader)
-            {
-                name="Arena existing A2 soil"
-            };
-            soil.SetTexture("_BaseMap",Resources.Load<Texture2D>("Art/map/a2/ground/A2_ForestSoil_BaseColor"));
-            soil.SetTexture("_BumpMap",Resources.Load<Texture2D>("Art/map/a2/ground/A2_ForestSoil_Normal"));
-            soil.EnableKeyword("_NORMALMAP");
-            soil.SetFloat("_Smoothness",.12f);
-            materials.Add(soil);
-            ground.sharedMaterial=soil;
+            ground.sharedMaterial=CreateGroundMaterial();
             ground.receiveShadows=true;
             MeshBuilds=1;
             }
@@ -181,6 +171,9 @@ namespace Exoduser.UnityPort
                 go.SetActive(false);
             }
             occlusion=new NativeArenaOcclusion(root.transform,camera);
+            CreateTorches();
+            CreateChannel();
+            NativeGroundSkillProjection.RegisterReceiver(root.GetComponent<MeshFilter>());
             PrepareMs+=(float)timer.Elapsed.TotalMilliseconds;
             yield return null;
             // Compile the exact arena shader paths while the scene is loading, never in Sync/entry/exit.
@@ -215,6 +208,9 @@ namespace Exoduser.UnityPort
                 }
                 )variants.Add(new ShaderVariantCollection.ShaderVariant(s,PassType.ScriptableRenderPipeline,keys));
             }
+            foreach(var shader in new[]{groundMaterial.shader})
+                foreach(var keys in new[]{new string[0],new[]{"_MAIN_LIGHT_SHADOWS"},new[]{"_MAIN_LIGHT_SHADOWS_CASCADE"}})
+                    variants.Add(new ShaderVariantCollection.ShaderVariant(shader,PassType.ScriptableRenderPipeline,keys));
             variants.WarmUp();
             UnityEngine.Object.Destroy(variants);
             ShaderWarmupMs=(float)timer.Elapsed.TotalMilliseconds;
@@ -254,6 +250,7 @@ namespace Exoduser.UnityPort
         public void Late(Vector3 hero)
         {
             occlusion?.Step(hero);
+            TorchLate();
         }
         public void SetActive(bool on)
         {
@@ -263,6 +260,7 @@ namespace Exoduser.UnityPort
         public void Dispose()
         {
             Ready=false;
+            DisposeTorches();
             occlusion?.Dispose();
             root.SetActive(false);
             UnityEngine.Object.Destroy(root);

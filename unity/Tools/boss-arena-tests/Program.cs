@@ -60,6 +60,15 @@ class ArenaTests
         Check(NativeArenaReviewPolicy.Activation("bossGrab",120,"bossGrabLunge",0,0,false,false,0,0)==null,"grab contact not counted twice");
         Check(NativeArenaReviewPolicy.Activation("bossRec",60,"bossRmWind",0,0,false,false,4,3)=="groundFissure","live fissure recognized by serial");
         Check(NativeArenaReviewPolicy.Activation("bossRec",59,"bossRec",0,0,false,false,4,4)==null,"lingering fissure not counted twice");
+        var torchPlan=typeof(NativeArena3DPlan).GetMethod("Torches");
+        Check(torchPlan!=null,"8b supplies two grounded torch anchors");
+        if(torchPlan!=null)for(int stage=0;stage<7;stage++){
+            var room=BossArenaLayout.Generate(stage);var anchors=(NativeArena3DPlan.Vertex[])torchPlan.Invoke(null,new object[]{room});
+            Check(anchors.Length==2,"exactly two torch anchors");
+            Check(anchors.All(t=>t.Y==0&&!room.Blocked(t.X*100,-t.Z*100)),"torches sit on arena floor");
+            Check(Math.Abs(anchors[0].X-anchors[1].X)>10,"torches leave combat centre readable");
+            Check(Math.Abs((anchors[0].X+anchors[1].X)/2-(room.RoomCx+.5f)*NativeArena3DPlan.Tile)<.001,"torch pair follows Core room centre");
+        }
         Console.WriteLine("boss-arena-plan checks="+checks+" failed="+bad);
         return bad>0?1:0;
     }

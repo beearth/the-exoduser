@@ -1,3 +1,7 @@
+## 2026-11-04 00:50 RB1-8b 조명·재질 소스 후보
+
+최신6d99d0c46 병합 후 기존 필드 HellLighting/A2Field 달빛·후처리를 공유하고 A2R 원화2종/노멀/마스크·흙/뿌리 혼합, 세워진 횃불2개/점광, Core 외곽 독액·지면 투영을 연결했다. --unity-boss-arena-material-review는 같은 Player 필드/아레나34° PNG/JSON·조명 ID·나란히1x 페이지를 남긴다. arena73/0·Roslyn5어셈블리 오류0, PC실행0·자기Core변경0·Mac 시각/성능 미검증. Meshy 저LOD/아레나 실제반사/P3수위상승/8d는 후속. [정본 §14.6](engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md#146-rb1-8b-조명재질-소스-후보-11-04-0050-cto).
+
 ## 2026-11-03 21:35 Mac FAIL 수정·21:45 카메라 정정
 
 2b1bbf2a0 병합 후 34°/16.5 고정·영웅 필드 크기 유지·보스 실제 영웅 모델 높이×2.8, 4정점 지면/A2 숲 덩어리/낮은 남쪽/뿌리 기둥·nearest 표면 알파0.2·분할 사전 준비를 적용. 새 --unity-boss-arena-review는 7기술 실제 발동·예고 경계·same-frame PNG/pose·0.6초 연속 프레임·3D 영웅 GPU 실루엣을 기록한다. metrics-only로 캡처 비용을 분리. CPU44/0·Roslyn5어셈블리 오류0, PC실행0·Core변경0·Mac 화면/60fps 미검증. [정본 §14.5](engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md#145-2135-mac-fail-수정-및-2145-거리-정정--mac-재검수-후보), [새 인자 전체](engine/UNITY_BOSS_ARENA_RB1_7_8_20261103.md).
