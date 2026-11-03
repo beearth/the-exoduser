@@ -259,3 +259,5 @@ Player7603230d 1회에서5해상도 모두 lockedBlocked/nameOpened=true, native
 NativeLobby 실제 생성 버튼 좌표→Unity 네이티브 Event.QueueEvent→실제 OnGUI/GUI.Button을 PC/Mac 공통 기본으로 사용한다. 수신 실패는 UNVERIFIED, 실제 동작 불일치는 FAIL이며 나머지 전체 캡처를 계속한다. 수집 전용 API 준비는 capturePreparedByApi로 표시하고 실제 입력 성공에 포함하지 않는다. DrawSpaced 검정 외곽 그림자 두 패스의 y는3→2 디자인px, alpha.3/좌우±.5px와 본문·자간·검사 임계값은 보존한다.
 
 PC는 컴파일만 한다. Mac 새 정식 빌드1회·같은 패키지 M1 23/23 정상 종료·ko/de/fr×5해상도1410장 issue0/가림 누락0·로딩270장 관측 누락0·scroll-ink4/4·이름 입력5해상도PASS가 다음 관문이다. 입력 UNVERIFIED는 해당 항목만 미검증으로 남기며 전체 게이트 PASS로 승격하지 않는다. 바탕화면·사용자 저장·타인 Player 변경0.
+
+PC 최종 후보: 추가 공통9dc27dea5 병합 d746ea4b6에서 Core121/Runtime243 컴파일 exit0·오류0. 새 스토리 왼쪽 패널/오른쪽 lore 제거와 충돌 없이 통합. 관련 UI 실측은 새 Mac 입력으로 판단한다.

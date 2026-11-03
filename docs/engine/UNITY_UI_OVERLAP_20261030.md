@@ -407,3 +407,5 @@ PC는 현재 Core121/Runtime241 소스의 컴파일 오류0만 새로 확인했�
 | 판정·계속 | checks의 status=PASS/FAIL/UNVERIFIED, lockedBlocked/nameOpened 원값 보존. 전송 API 없음/수신 시간초과는 UNVERIFIED, 전달 후 상태 불일치는 FAIL. 입력 실패만으로 전체 수집을 throw하지 않음. 필요할 때만 수집 화면을 제품 API로 준비하고 capturePreparedByApi=true; 이 준비는 입력 PASS에 포함하지 않음 |
 | 검정 그림자 | DrawSpaced의 세 패스 (0,+1)/alpha.9, (+.5,+2)·(-.5,+2)/alpha.3. 종전 외곽 y+3에서+2로 축소. 실제본문/번역/자간/글자 크기·기하 교차 .5px·frontend-black-shadow 허용반경3.1×화면높이/1080·분석기 제외 정책 불변 |
 | 증거 한계 | 메뉴48+직업선택10은 직전 Mac 실패값. 제품/검수 코드 변경 후 새 숫자는 PC에서 측정하지 않음. 58→0·nameOpened·1410장·scroll-ink 통과 주장은 Mac 새 실행 전 하지 않음 |
+
+PC 확인: 최초 공통 cbdcbc282(병합7dc05359c) 이후 추가9dc27dea5도 정상 병합(d746ea4b6). 실제 Core121·Runtime243 소스(새 스토리/조상 캡처 포함)를 설치된 Unity6000.6.7f1 Roslyn으로 한 묶음 컴파일, 두 exit0/C# 오류0. Runtime 경고521건(CS0219/CS0162/CS0618/CS0649/CS0169/CS0414/UAC1001/UAC0007)은 오류0과 별도이며 경고0이라고 보고하지 않는다. 실제 Unity Editor/정식 빌드/Player 실행은0. 고정 출력 mac-gate-1320/compile-current의 로그·rsp만 보존하고 확인된 DLL4개는 정리한다. 새 Mac 실행은 아직 없음.

@@ -221,7 +221,7 @@ R2 source e357a344/정식build feecb283/M1 07fa19ed 23/23/field bb5d6a48 22장/�
 
 안내의 예약 gap은최소물리16px다. `gap=max(16,16/e)`를edge단위로사용해1600×900 축소에서도상태판/구슬 외곽사이를최소16px비운다. 1080p이상은기존높이기준16design이상유지. R2 1600×900실제실습위/아래13.333px를RED로보존하고새실제Player로확인한다.
 
-전면 DrawSpaced의기존검정1px/±.5px·3px 패스도frontend-black-shadow로명시한다. 실제배율기준반경3.1×edgeScale·알파≤1.001·같은후행본문을검증하며큰일반그림자허용치를늘리지않는다. 사망제목과펫대사는기존stroke그림을유지하고death-black-outline에같은본문호출source를연결한다. 두패스모두원본paint자료/decorationElements를보존한다.
+전면 DrawSpaced의현행검정1px/±.5px·2px 패스도frontend-black-shadow로명시한다(2026-11-03 19:00 Mac FAIL 후속: 외곽3→2 디자인px, 픽셀 반올림 뒤 기존 반경 안에 유지). 실제배율기준반경3.1×edgeScale·알파≤1.001·같은후행본문을검증하며큰일반그림자허용치를늘리지않는다. 사망제목과펫대사는기존stroke그림을유지하고death-black-outline에같은본문호출source를연결한다. 두패스모두원본paint자료/decorationElements를보존한다.
 
 
 ## R4 실제 실패 보정 — 2026-10-31
