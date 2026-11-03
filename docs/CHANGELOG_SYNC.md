@@ -1,3 +1,5 @@
+2026-11-04 F-1 01:55 테스트 공유 잠금 수정: 최신 unity/main5ce03758f 병합(4b0bef66c), Snapshot 읽기를 FileShare.ReadWrite로 수정. 지정 테스트1회에서 잠금 실패→catch정리→해제 후1회 재시도 성공·원본3파일 바이트 불변 등10검사 통과 뒤, 구형 staging 비교의 Windows 경로 dictionary 키 구분자 불일치로 실패. 브리프 재실패 즉시정지 준수, 추가 수정/전체 회귀/PC 컴파일0·Player0·Desktop0. [오류 원문·범위](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).
+
 2026-11-04 F-1 이어받기: 시작 시 최신 unity/main c4b388903 병합(c8bf42cd8), catch staging 정리·구형 staging 회수 후 복사1회·배타 lease 초안. 설치된 Roslyn 직접 회귀에서 수정 전 F-1 RED, 수정 후 catch 정리까지3검사 통과 뒤 원본 비교 테스트의 공유 잠금 충돌로 실패. 같은 테스트2FAIL 정지, PC 컴파일0·Player0·Desktop0·원본 바이트 불변 미검증, 병합 보류. [실패/재개 근거](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).
 
 2026-11-04 F-1 저장 이전 staging 복구: 소유·최신공통 확인, 잠금→해제→재시도/원본·writer·destination 보존 회귀 초안 추가. NuGet path1 초기화 오류가 SDK10/8에서2회 발생해 동일2FAIL 규칙으로 중지. production 미수정·테스트 미실행·PC 컴파일 미실행. Desktop385/eaf실패·원복 기록 보존. [차단 근거](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).

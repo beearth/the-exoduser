@@ -41,7 +41,7 @@ static class Program {
   BuildFlavor.Override(BuildFlavor.Kind.Demo);
   Check(BuildFlavor.Current.DemoEndAtStage(0)&&!BuildFlavor.Current.DemoEndAtStage(1),"demo stage-0 end threshold unchanged");
   for(int i=0;i<LobbyLanguage.Count;i++){string code=LobbyLanguage.GetCode(i);Check(!string.IsNullOrWhiteSpace(BuildFlavor.Current.DemoEndSub(code))&&!string.IsNullOrWhiteSpace(BuildFlavor.Current.DemoEndButton(code))&&!string.IsNullOrWhiteSpace(NativeDemoEndText.ForLocale(code).demoWishlist),"actual flavor API locale "+code);}
-  Check(BuildFlavor.Current.DemoEndButton(true)=="End demo","bool English compatibility no Korean fallback");
+  Check(BuildFlavor.Current.DemoEndButton(true)==NativeDemoEndText.ForLocale("en").demoNext&&BuildFlavor.Current.DemoEndButton(true)!=NativeDemoEndText.ForLocale("ko").demoNext,"bool English compatibility follows current English locale, no Korean fallback");
   BuildFlavor.Override(BuildFlavor.Kind.Full);Check(!BuildFlavor.Current.DemoEndAtStage(0)&&BuildFlavor.Current.DemoEndButton("fr")==null,"full does not acquire demo end");
   var model=NativeStageClearPresentation.Build(new NativeStageClearPresentation.Summary{Kills=100,Total=100,Seconds=400,SpAwarded=10,Regions=4,Potions=5,Deaths=0,Score=200,Rank="S"});
   foreach(var size in new[]{(1920f,1080f),(3840f,1080f),(960f,540f),(640f,360f)}){

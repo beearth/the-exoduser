@@ -1,4 +1,28 @@
-# F-1 staging 복구 — 이어받기 2FAIL 중단 (2026-11-04)
+# F-1 staging 복구 — 01:55 테스트 공유 잠금 수정 후 중단 (2026-11-04)
+
+**최신 상태: 공유 잠금 수정 및 핵심 이전/원본 보존 10검사 통과. 구형 staging 비교의 Windows 경로 키 오류로 전체 회귀 미통과, PC 컴파일 0회. 병합/Mac 검수 요청 보류.**
+
+## 01:55 실제시각 지시 수행
+
+- CLAUDE.md와 브리프 지정 절을 읽고 미커밋 0에서 시작했다. 최신 `origin/unity/main 5ce03758f57daca409cb18876e75ab48f6df705a`을 병합했다(병합 SHA `4b0bef66c290faa50925171fb6a864743251c5fa`).
+- 테스트의 Snapshot 읽기만 `FileStream(FileAccess.Read, FileShare.ReadWrite)`로 바꿨다. 제품 코드의 원본 잠금/보존 정책은 바꾸지 않았다.
+- 회귀 준비: 오프라인 Roslyn 실행기에 기존 flavor 전체 계약/동작 검사 모드를 추가했다(`recovery.cjs --full`). 기존 영어 호환 API 검사는 공통 병합으로 바뀐 최신 영어 번역을 따르게 했다. **전체 모드는 아래 중단 때문에 실행하지 않았다.**
+- 수정 후 지정 테스트 1회: 잠긴 원본 이전 거부, destination 미생성, catch staging 정리, 잠금 중 원본 바이트 불변, 해제 후 1회 재시도 성공, 복사한 3파일 바이트 일치, 재시도 후 원본 파일 집합/바이트 불변, 구형 staging 회수 후 Prepare 성공까지 10검사 통과.
+- 다음 비교에서 실패했다. Snapshot의 `Path.GetRelativePath` 키는 Windows에서 역슬래시인데 구형 staging 검사는 슬래시 리터럴 키로 dictionary를 조회한다. 제품 파일 IO 오류가 아니라 비교 코드의 경로 키 불일치다.
+
+오류 원문:
+
+```text
+FAIL after 10 checks: The given key 'character-roster-v1/characters.v1.json' was not present in the dictionary.
+```
+
+브리프의 **"또 실패하면 멈추고 오류 원문을 REPORT에 남긴다"**에 따라 추가 테스트/테스트 코드 수정, F-1 전체 회귀, PC 공용 bin 컴파일은 하지 않았다. Player/Windows 빌드/바탕화면/Steam 변경 0, 사용자 저장 경로 접근 0. 원본 바이트 불변은 이번 격리 fixture의 잠금 실패 및 해제 후 성공 구간에서 확인했으며, 나머지 시나리오와 Unity 런타임까지 통과했다고 보지 않는다.
+
+재개 첫 조치: Snapshot 키와 조회 키의 구분자를 통일한다. 원본 보존 비교는 유지하고 해당 테스트 1회 → 전체 회귀 1회 → PC 공용 bin 컴파일 1회 순서로 진행한다. 로그는 `I:/EXODUSER-Storage/codex-takeover/unity-11-fullrun/f1-tests/result.log`.
+
+---
+
+## 이전 이어받기 중단 이력
 
 **현재 상태: 구현 초안 보존, 회귀 미통과·PC 컴파일 0회. 병합/Mac 검수 요청 보류.**
 

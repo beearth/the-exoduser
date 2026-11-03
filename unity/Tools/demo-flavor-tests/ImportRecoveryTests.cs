@@ -7,7 +7,8 @@ static class ImportRecoveryTests
  static void Check(bool value,string message){if(!value)throw new Exception(message);checks++;results.Add(message);}
  static string Put(string root,string relative,string value){string p=Path.Combine(root,relative);Directory.CreateDirectory(Path.GetDirectoryName(p));File.WriteAllText(p,value,new UTF8Encoding(false));return p;}
  static string Stage(string root){return Path.Combine(root,Ns+".legacy-import");}
- static Dictionary<string,byte[]> Snapshot(string root){return Directory.GetFiles(root,"*",SearchOption.AllDirectories).ToDictionary(p=>Path.GetRelativePath(root,p),File.ReadAllBytes);}
+ static byte[] ReadSnapshot(string file){using(var input=new FileStream(file,FileMode.Open,FileAccess.Read,FileShare.ReadWrite))using(var copy=new MemoryStream()){input.CopyTo(copy);return copy.ToArray();}}
+ static Dictionary<string,byte[]> Snapshot(string root){return Directory.GetFiles(root,"*",SearchOption.AllDirectories).ToDictionary(p=>Path.GetRelativePath(root,p),ReadSnapshot);}
  static void Unchanged(string root,Dictionary<string,byte[]> before,string label){var after=Snapshot(root);Check(before.Count==after.Count&&before.All(p=>after.ContainsKey(p.Key)&&p.Value.SequenceEqual(after[p.Key])),label);}
  static bool Prepare(string root,string source,out string directory,out string error){return NativeFlavorSavePaths.TryPrepare(root,Ns,true,source,false,out directory,out error);}
  static int Main(string[] args)
