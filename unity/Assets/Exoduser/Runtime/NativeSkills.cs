@@ -297,7 +297,7 @@ namespace Exoduser.UnityPort {
    if(NativeSilverHellUi.Button(new Rect(c.x-r-4,c.y-r-4,o.o+8,o.o+8),GUIContent.none,GUIStyle.none)){selectedOrb=o.id;infoScroll=0;}
   }
 
-  void DrawRoad(bool lmb){NativeUiAudit.Region(new Rect(1562,skillBodyTop+16.64f,284,67),"component","skill-road","합성 계열이 있을 때만 표시");Mixed(new Rect(1562,skillBodyTop+16.64f,284,21),"합성 로드맵",15,C(165,168,168),1.2f,TextAnchor.MiddleLeft,FontStyle.Bold);Fill(new Rect(1562,skillBodyTop+44.64f,284,1),C(146,149,149,.5f));bool equipped=SelectedSlot==SkillUiState.LmbSlot&&lmb;Text(new Rect(1562,skillBodyTop+53.64f,284,30),equipped?"이 스킬은 합성 계열이 없습니다":NotPorted,serif,14,C(129,132,132));}
+  void DrawRoad(bool lmb){NativeUiAudit.Region(new Rect(1622,skillBodyTop+16.64f,224,67),"component","skill-road","합성 계열이 있을 때만 표시");Mixed(new Rect(1622,skillBodyTop+16.64f,224,21),"합성 로드맵",15,C(165,168,168),1.2f,TextAnchor.MiddleLeft,FontStyle.Bold);Fill(new Rect(1622,skillBodyTop+44.64f,224,1),C(146,149,149,.5f));bool equipped=SelectedSlot==SkillUiState.LmbSlot&&lmb;Text(new Rect(1622,skillBodyTop+53.64f,224,30),equipped?"이 스킬은 합성 계열이 없습니다":NotPorted,serif,14,C(129,132,132));}
 
   bool BottomButton(Rect r,string label){NativeSilverHellUi.ActionPlate(r,false,r.Contains(Event.current.mousePosition)&&GUI.enabled?1:0,false,28,6);Text(r,label,serif,16,C(214,211,205),FontStyle.Normal,0,TextAnchor.MiddleCenter);return NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none);}
   void DrawBottom(Action close){
