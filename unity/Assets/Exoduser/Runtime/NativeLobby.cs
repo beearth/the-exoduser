@@ -249,8 +249,12 @@ namespace Exoduser.UnityPort
   void DrawLobbyBackground()
   {
    Texture tex=movie.Error.Length==0&&movie.Prepared&&movie.Frame>=0?movie.Texture:lobbyPoster;if(tex==null)return;
-   NativeFullscreenArtwork.Draw(tex,NativeUiViewport.ScreenInDesign,lobbyPoster);OriginalArtDrawn=true;
+   NativeFullscreenArtwork.Draw(tex,NativeUiViewport.ScreenInDesign,lobbyPoster);lobbyArtRect=NativeFullscreenArtwork.LastOriginalRect;OriginalArtDrawn=true;
   }
+  // 묘왕 발 = 배경 원본(1920×1088) 원형 단 동심원 중심(660,850). 화면 비율·와이드 확장판으로 배경이 옮겨져도 같은 지점에 선다.
+  static readonly Vector2 AncestorDais=new Vector2(660f/1920,850f/1088);
+  Rect lobbyArtRect;
+  internal Rect AncestorArtRect=>lobbyArtRect;internal Vector2 AncestorFoot {get;private set;}
   static void Border(Rect r,Color color,float width){Fill(new Rect(r.x,r.y,r.width,width),color);Fill(new Rect(r.x,r.yMax-width,r.width,width),color);Fill(new Rect(r.x,r.y,width,r.height),color);Fill(new Rect(r.xMax-width,r.y,width,r.height),color);}
   static void DashedBorder(Rect r,Color color){for(float x=r.x;x<r.xMax;x+=5){float w=Mathf.Min(3,r.xMax-x);Fill(new Rect(x,r.y,w,1),color);Fill(new Rect(x,r.yMax-1,w,1),color);}for(float y=r.y;y<r.yMax;y+=5){float h=Mathf.Min(3,r.yMax-y);Fill(new Rect(r.x,y,1,h),color);Fill(new Rect(r.xMax-1,y,1,h),color);}}
   static void Line(Vector2 from,Vector2 to,Color color,float width){var matrix=GUI.matrix;GUIUtility.RotateAroundPivot(Mathf.Atan2(to.y-from.y,to.x-from.x)*Mathf.Rad2Deg,from);Fill(new Rect(from.x,from.y,(to-from).magnitude,width),color);GUI.matrix=matrix;}
@@ -265,6 +269,6 @@ namespace Exoduser.UnityPort
    foreach(char ch in text){float w=style.CalcSize(new GUIContent(ch.ToString())).x;Label(new Rect(x,y,w,height),ch.ToString(),style,TextAnchor.MiddleCenter);x+=w+spacing;}
   }
 
-  void DrawAncestor(){float scale=Mathf.Max(1920f/1920,1080f/1088),footY=Mathf.Min(1080*.89f,Mathf.Max(1080*.76f,1088*scale*.84f+(1080-1088*scale)*.75f));float h=Mathf.Min(1080*.8f,footY-28),w=h*384/624,footX=Mathf.Max(w*.52f+12,Mathf.Min(1920*.65f-w*.48f-12,960));Rect r=new Rect(footX-182.43863f/384*w,footY-603.68209f/624*h,w,h);if(ancestor!=null){int frame=(int)(Time.unscaledTime*24)%96;NativeUiAudit.DrawTextureWithTexCoords(r,ancestor,new Rect(frame%8/8f,1-(frame/8+1)/12f,1/8f,1/12f),true);OriginalArtDrawn=true;}else Image(r,ancestorFirst);var oldColor=lobbyMicro.normal.textColor;TrackedLabel(new Rect(footX-350,935.6f,700,18.2f),K("선대 소환체","ANCESTRAL SUMMON"),lobbySub,2);TrackedLabel(new Rect(footX-350,957.8f,700,69),K("묘왕 바르칸","Varkan, the Tomb King"),lobbyTitle,Language=="ko"?11.2f:3);lobbyMicro.normal.textColor=NativeSilverHellUi.Dim;TrackedLabel(new Rect(footX-350,1030.8f,700,16.8f),K("플레이어가 소환하는 선대의 영체","A spirit summoned by the player."),lobbyMicro,.4f);lobbyMicro.normal.textColor=oldColor;}
+  void DrawAncestor(){var art=lobbyArtRect.width>0?lobbyArtRect:new Rect(0,-4,1920,1088);var view=NativeUiViewport.ScreenInDesign;float footY=Mathf.Min(view.y+view.height*.92f,art.y+art.height*AncestorDais.y),h=Mathf.Min(art.height*864f/1088,Mathf.Min(view.height*.8f,footY-view.y-28)),w=h*384/624,footX=Mathf.Clamp(art.x+art.width*AncestorDais.x,view.x+w*.52f+12,Mathf.Max(view.x+w*.52f+12,view.xMax-w*.48f-12));AncestorFoot=new Vector2(footX,footY);Rect r=new Rect(footX-207f/384*w,footY-596f/624*h,w,h); /* 선 자리 = 두 발 중점(207)·두 발바닥 높이 중간(596) */if(ancestor!=null){int frame=(int)(Time.unscaledTime*24)%96;NativeUiAudit.DrawTextureWithTexCoords(r,ancestor,new Rect(frame%8/8f,1-(frame/8+1)/12f,1/8f,1/12f),true);OriginalArtDrawn=true;}else Image(r,ancestorFirst);var oldColor=lobbyMicro.normal.textColor;TrackedLabel(new Rect(footX-350,935.6f,700,18.2f),K("선대 소환체","ANCESTRAL SUMMON"),lobbySub,2);TrackedLabel(new Rect(footX-350,957.8f,700,69),K("묘왕 바르칸","Varkan, the Tomb King"),lobbyTitle,Language=="ko"?11.2f:3);lobbyMicro.normal.textColor=NativeSilverHellUi.Dim;TrackedLabel(new Rect(footX-350,1030.8f,700,16.8f),K("플레이어가 소환하는 선대의 영체","A spirit summoned by the player."),lobbyMicro,.4f);lobbyMicro.normal.textColor=oldColor;}
  }
 }
