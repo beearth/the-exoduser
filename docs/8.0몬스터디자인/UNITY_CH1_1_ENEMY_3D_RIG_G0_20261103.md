@@ -367,3 +367,7 @@
 ## 11-04 01:20 1차5종 Unity 등록
 
 [연결 표](UNITY_ENEMY3D_WIRING_20261104.md)에 제작자 PASS5종(1 외눈 보정본·7·16·47·일반4 갑각v2)과 시작4 EyeMass를 별도 키로 등록했다. G0의 표시 높이/가슴 비율을 적용하고 모두 Core 틱 Walk만 연결했다. 나머지7동작은 미제공이며 EyeMass는 걷기도 없다. --enemy-render=rigpixel opt-in과 기본값을 유지한다. 정책166/0·전체 PC 참조 컴파일5개 오류0, Mac 임포트·화면·동작·성능 미판정이다.
+
+## 11-04 Unity 연결 — 30종
+
+30종 `anim_v1.glb`를 Unity 모델 표 30행(`enemy_rig_models.json`)에 연결했다(변환 `unity/Tools/enemy3d/import-anim-v1.py`, 비사람형 9종 정면 +90°·루트 고정 winged/bat dive_act·무기 소켓 3종·일반 갑각 사도 크로스페이드 2틱). PC 정책 1046/0·참조 컴파일 5어셈블리 오류 0, Mac 임포트·화면·동작 판정 전. 상세·30행 표·남은 일은 [Unity 연결 기록](UNITY_ENEMY3D_WIRING_20261104.md)의 "11-04 30종 연결" 절이다.

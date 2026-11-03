@@ -1,0 +1,3904 @@
+{
+ "generator": "unity/Tools/enemy3d/import-anim-v1.py",
+ "blender": "5.2.3 LTS",
+ "models": [
+  {
+   "key": "lesser",
+   "etype": 0,
+   "model": "LesserApostle",
+   "resource": "Enemies3D/LesserApostle",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/lesser_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/lesser_anim_report.json",
+   "bones": 24,
+   "bodyTriangles": 12481,
+   "nonHuman": false,
+   "triangleGuardMin": 8000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 2,
+    "attack_rec": 36,
+    "attack_tele": 24,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 62
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": false,
+    "front_vector": [
+     0.2088,
+     -0.978,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -0.409,
+     0.436,
+     -0.33,
+     0.206
+    ],
+    "body_bbox_xy_after": [
+     -0.409,
+     0.436,
+     -0.33,
+     0.206
+    ],
+    "body_height_raw_m": 1.8607
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 2,
+     "top_bone_max_excursion_m": 0.15,
+     "top_bone_net_m": 0.15
+    },
+    "attack_rec": {
+     "frames": 36,
+     "top_bone_max_excursion_m": 0.096,
+     "top_bone_net_m": 0.096
+    },
+    "attack_tele": {
+     "frames": 24,
+     "top_bone_max_excursion_m": 0.055,
+     "top_bone_net_m": 0.055
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.205,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.025,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.024,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.111,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 62,
+     "top_bone_max_excursion_m": 0.04,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.6829318177316347,
+   "rawHeightM": 1.8596292734146118,
+   "displaySizeM": null,
+   "displayBasis": null,
+   "displayHeightM": 1.27,
+   "displayHeightDerivedM": 1.27,
+   "displayHeightFromTurnedBodyBboxM": 1.2707,
+   "fbxBytes": 2692940,
+   "seconds": 1.6
+  },
+  {
+   "key": "spine",
+   "etype": 1,
+   "model": "SpineApostle",
+   "resource": "Enemies3D/SpineApostle",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/spine_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/spine_anim_report.json",
+   "bones": 24,
+   "bodyTriangles": 12495,
+   "nonHuman": false,
+   "triangleGuardMin": 8000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 6,
+    "attack_rec": 30,
+    "attack_tele": 60,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 62
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": false,
+    "front_vector": [
+     0.0246,
+     -0.9997,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -0.477,
+     0.496,
+     -0.312,
+     0.36
+    ],
+    "body_bbox_xy_after": [
+     -0.477,
+     0.496,
+     -0.312,
+     0.36
+    ],
+    "body_height_raw_m": 2.0403
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 6,
+     "top_bone_max_excursion_m": 0.185,
+     "top_bone_net_m": 0.185
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.112,
+     "top_bone_net_m": 0.112
+    },
+    "attack_tele": {
+     "frames": 60,
+     "top_bone_max_excursion_m": 0.073,
+     "top_bone_net_m": 0.073
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.198,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.026,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.029,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.12,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 62,
+     "top_bone_max_excursion_m": 0.037,
+     "top_bone_net_m": 0.006
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.6613338964446668,
+   "rawHeightM": 2.0413289070129395,
+   "displaySizeM": null,
+   "displayBasis": null,
+   "displayHeightM": 1.35,
+   "displayHeightDerivedM": 1.35,
+   "displayHeightFromTurnedBodyBboxM": 1.3493,
+   "fbxBytes": 2530620,
+   "seconds": 4.2
+  },
+  {
+   "key": "imp",
+   "etype": 3,
+   "model": "Imp",
+   "resource": "Enemies3D/Imp",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/imp_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/imp_anim_report.json",
+   "bones": 24,
+   "bodyTriangles": 12560,
+   "nonHuman": false,
+   "triangleGuardMin": 8000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 3,
+    "attack_rec": 30,
+    "attack_tele": 24,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 62
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": false,
+    "front_vector": [
+     -0.0101,
+     -0.9999,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -0.381,
+     0.404,
+     -0.357,
+     0.263
+    ],
+    "body_bbox_xy_after": [
+     -0.381,
+     0.404,
+     -0.357,
+     0.263
+    ],
+    "body_height_raw_m": 1.1773
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 3,
+     "top_bone_max_excursion_m": 0.148,
+     "top_bone_net_m": 0.148
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.094,
+     "top_bone_net_m": 0.094
+    },
+    "attack_tele": {
+     "frames": 24,
+     "top_bone_max_excursion_m": 0.055,
+     "top_bone_net_m": 0.055
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.199,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.034,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.02,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.144,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 62,
+     "top_bone_max_excursion_m": 0.021,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.6624730254259451,
+   "rawHeightM": 1.1774064302444458,
+   "displaySizeM": null,
+   "displayBasis": null,
+   "displayHeightM": 0.78,
+   "displayHeightDerivedM": 0.78,
+   "displayHeightFromTurnedBodyBboxM": 0.7799,
+   "fbxBytes": 2426348,
+   "seconds": 5.2
+  },
+  {
+   "key": "carapace2",
+   "etype": 4,
+   "model": "CarapaceApostleV2",
+   "resource": "Enemies3D/CarapaceApostleV2",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/carapace2_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/carapace2_anim_report.json",
+   "bones": 24,
+   "bodyTriangles": 12473,
+   "nonHuman": false,
+   "triangleGuardMin": 8000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 3,
+    "attack_rec": 45,
+    "attack_tele": 36,
+    "block": 20,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 62
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|block",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": false,
+    "front_vector": [
+     0.0184,
+     -0.9998,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -0.734,
+     0.725,
+     -0.496,
+     0.422
+    ],
+    "body_bbox_xy_after": [
+     -0.734,
+     0.725,
+     -0.496,
+     0.422
+    ],
+    "body_height_raw_m": 2.1169
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 3,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "attack_rec": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.155,
+     "top_bone_net_m": 0.155
+    },
+    "attack_tele": {
+     "frames": 36,
+     "top_bone_max_excursion_m": 0.106,
+     "top_bone_net_m": 0.063
+    },
+    "block": {
+     "frames": 20,
+     "top_bone_max_excursion_m": 0.028,
+     "top_bone_net_m": 0.0
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.211,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.01,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.014,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.065,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 62,
+     "top_bone_max_excursion_m": 0.043,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.7043981834803836,
+   "rawHeightM": 2.115280866622925,
+   "displaySizeM": null,
+   "displayBasis": null,
+   "displayHeightM": 1.49,
+   "displayHeightDerivedM": 1.49,
+   "displayHeightFromTurnedBodyBboxM": 1.4911,
+   "fbxBytes": 2783628,
+   "seconds": 5.5
+  },
+  {
+   "key": "eyemass",
+   "etype": 4,
+   "model": "EyeMass",
+   "resource": "Enemies3D/EyeMass",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/eyemass_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/eyemass_anim_report.json",
+   "bones": 20,
+   "bodyTriangles": 12504,
+   "nonHuman": true,
+   "triangleGuardMin": 5000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 3,
+    "attack_rec": 30,
+    "attack_tele": 24,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 60
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": true,
+    "rotation_z_deg": 90,
+    "applied_to_object_transform": true,
+    "object_rotation_euler_deg_after_apply": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "skin_check_max_err_m": 0.0,
+    "front_vector_before": [
+     -0.9999,
+     0.011,
+     0.0
+    ],
+    "front_vector_after": [
+     -0.011,
+     -0.9999,
+     0.0
+    ],
+    "front_method": "report tele_body_axis tripo::Root->tripo::Spine_0 bone heads (horizontal)",
+    "body_bbox_xy_before": [
+     -0.497,
+     0.495,
+     -0.488,
+     0.497
+    ],
+    "body_bbox_xy_after": [
+     -0.497,
+     0.488,
+     -0.497,
+     0.495
+    ],
+    "body_height_raw_m": 0.5419
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 3,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "attack_tele": {
+     "frames": 24,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 60,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 1.13,
+   "rawHeightM": 0.5179443357999993,
+   "displaySizeM": 1.13,
+   "displayBasis": "width",
+   "displayHeightM": null,
+   "displayHeightDerivedM": 0.5853,
+   "displayHeightFromTurnedBodyBboxM": 0.6123,
+   "fbxBytes": 2294748,
+   "seconds": 4.3
+  },
+  {
+   "key": "fetal",
+   "etype": 5,
+   "model": "FetalDemon",
+   "resource": "Enemies3D/FetalDemon",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/fetal_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/fetal_anim_report.json",
+   "bones": 56,
+   "bodyTriangles": 12520,
+   "nonHuman": true,
+   "triangleGuardMin": 5000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 3,
+    "attack_rec": 30,
+    "attack_tele": 24,
+    "death": 45,
+    "explode_act": 6,
+    "explode_tele": 30,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 60
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|explode_act",
+    "Armature|explode_tele",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": true,
+    "rotation_z_deg": 90,
+    "applied_to_object_transform": true,
+    "object_rotation_euler_deg_after_apply": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "skin_check_max_err_m": 0.0,
+    "front_vector_before": [
+     0.9887,
+     -0.1498,
+     0.0
+    ],
+    "front_vector_after": [
+     0.1498,
+     0.9887,
+     0.0
+    ],
+    "front_method": "report tele_body_axis Waist->Head bone heads (horizontal)",
+    "body_bbox_xy_before": [
+     -0.502,
+     0.497,
+     -0.546,
+     0.518
+    ],
+    "body_bbox_xy_after": [
+     -0.518,
+     0.546,
+     -0.502,
+     0.497
+    ],
+    "body_height_raw_m": 0.9016
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 3,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "attack_tele": {
+     "frames": 24,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.194,
+     "top_bone_net_m": 0.19
+    },
+    "explode_act": {
+     "frames": 6,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "explode_tele": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 60,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.7100001692772315,
+   "rawHeightM": 0.9031376880114408,
+   "displaySizeM": 0.71,
+   "displayBasis": "width",
+   "displayHeightM": null,
+   "displayHeightDerivedM": 0.6412,
+   "displayHeightFromTurnedBodyBboxM": 0.6401,
+   "fbxBytes": 5208396,
+   "seconds": 6.6
+  },
+  {
+   "key": "ironclad",
+   "etype": 6,
+   "model": "IroncladApostle",
+   "resource": "Enemies3D/IroncladApostle",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/ironclad_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/ironclad_anim_report.json",
+   "bones": 24,
+   "bodyTriangles": 12471,
+   "nonHuman": false,
+   "triangleGuardMin": 8000,
+   "fps": 60,
+   "clips": {
+    "attack_rec": 40,
+    "charge_hit": 4,
+    "charge_run": 20,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "shield_tele": 24,
+    "stagger": 40,
+    "walk": 62
+   },
+   "unityClipNames": [
+    "Armature|attack_rec",
+    "Armature|charge_hit",
+    "Armature|charge_run",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|shield_tele",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": false,
+    "front_vector": [
+     0.0204,
+     -0.9998,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -0.626,
+     0.673,
+     -0.392,
+     0.173
+    ],
+    "body_bbox_xy_after": [
+     -0.626,
+     0.673,
+     -0.392,
+     0.173
+    ],
+    "body_height_raw_m": 1.9395
+   },
+   "rootMotion": {
+    "attack_rec": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.111,
+     "top_bone_net_m": 0.111
+    },
+    "charge_hit": {
+     "frames": 4,
+     "top_bone_max_excursion_m": 0.111,
+     "top_bone_net_m": 0.111
+    },
+    "charge_run": {
+     "frames": 20,
+     "top_bone_max_excursion_m": 0.028,
+     "top_bone_net_m": 0.0,
+     "report_root_speed_m_per_s": 2.26,
+     "in_place_cycle": true
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.207,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.011,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.014,
+     "top_bone_net_m": 0.0
+    },
+    "shield_tele": {
+     "frames": 24,
+     "top_bone_max_excursion_m": 0.014,
+     "top_bone_net_m": 0.014
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.064,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 62,
+     "top_bone_max_excursion_m": 0.041,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.691346027929292,
+   "rawHeightM": 1.9382479190826416,
+   "displaySizeM": null,
+   "displayBasis": null,
+   "displayHeightM": 1.34,
+   "displayHeightDerivedM": 1.34,
+   "displayHeightFromTurnedBodyBboxM": 1.3409,
+   "fbxBytes": 2860460,
+   "seconds": 6.0
+  },
+  {
+   "key": "sage",
+   "etype": 7,
+   "model": "SageApostle",
+   "resource": "Enemies3D/SageApostle",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/sage_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/sage_anim_report.json",
+   "bones": 24,
+   "bodyTriangles": 12321,
+   "nonHuman": false,
+   "triangleGuardMin": 8000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 6,
+    "attack_rec": 30,
+    "attack_tele": 60,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "summon_act": 10,
+    "summon_rec": 30,
+    "summon_tele": 40,
+    "walk": 62
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|summon_act",
+    "Armature|summon_rec",
+    "Armature|summon_tele",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": false,
+    "front_vector": [
+     0.0362,
+     -0.9993,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -0.402,
+     0.482,
+     -0.472,
+     0.402
+    ],
+    "body_bbox_xy_after": [
+     -0.402,
+     0.482,
+     -0.472,
+     0.402
+    ],
+    "body_height_raw_m": 1.8337
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 6,
+     "top_bone_max_excursion_m": 0.118,
+     "top_bone_net_m": 0.118
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.049,
+     "top_bone_net_m": 0.049
+    },
+    "attack_tele": {
+     "frames": 60,
+     "top_bone_max_excursion_m": 0.069,
+     "top_bone_net_m": 0.069
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.208,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.022,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.017,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.101,
+     "top_bone_net_m": 0.0
+    },
+    "summon_act": {
+     "frames": 10,
+     "top_bone_max_excursion_m": 0.028,
+     "top_bone_net_m": 0.028
+    },
+    "summon_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "summon_tele": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.028,
+     "top_bone_net_m": 0.028
+    },
+    "walk": {
+     "frames": 62,
+     "top_bone_max_excursion_m": 0.041,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.6931655817179472,
+   "rawHeightM": 1.8321740627288818,
+   "displaySizeM": null,
+   "displayBasis": null,
+   "displayHeightM": 1.27,
+   "displayHeightDerivedM": 1.27,
+   "displayHeightFromTurnedBodyBboxM": 1.2711,
+   "fbxBytes": 3334956,
+   "seconds": 6.7
+  },
+  {
+   "key": "bloated",
+   "etype": 8,
+   "model": "BloatedApostle",
+   "resource": "Enemies3D/BloatedApostle",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/bloated_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/bloated_anim_report.json",
+   "bones": 24,
+   "bodyTriangles": 12480,
+   "nonHuman": false,
+   "triangleGuardMin": 8000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 6,
+    "attack_rec": 30,
+    "attack_tele": 60,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 62
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": false,
+    "front_vector": [
+     0.0284,
+     -0.9996,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -0.541,
+     0.557,
+     -0.313,
+     0.484
+    ],
+    "body_bbox_xy_after": [
+     -0.541,
+     0.557,
+     -0.313,
+     0.484
+    ],
+    "body_height_raw_m": 1.7211
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 6,
+     "top_bone_max_excursion_m": 0.181,
+     "top_bone_net_m": 0.181
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.112,
+     "top_bone_net_m": 0.112
+    },
+    "attack_tele": {
+     "frames": 60,
+     "top_bone_max_excursion_m": 0.07,
+     "top_bone_net_m": 0.07
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.209,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.014,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.028,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.077,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 62,
+     "top_bone_max_excursion_m": 0.023,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.6971589452342997,
+   "rawHeightM": 1.7212717533111572,
+   "displaySizeM": null,
+   "displayBasis": null,
+   "displayHeightM": 1.2,
+   "displayHeightDerivedM": 1.2,
+   "displayHeightFromTurnedBodyBboxM": 1.1999,
+   "fbxBytes": 2686892,
+   "seconds": 4.8
+  },
+  {
+   "key": "ritual",
+   "etype": 9,
+   "model": "RitualApostle",
+   "resource": "Enemies3D/RitualApostle",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/ritual_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/ritual_anim_report.json",
+   "bones": 24,
+   "bodyTriangles": 12091,
+   "nonHuman": false,
+   "triangleGuardMin": 8000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 6,
+    "attack_rec": 30,
+    "attack_tele": 60,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 64
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": false,
+    "front_vector": [
+     0.0049,
+     -1.0,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -0.483,
+     0.59,
+     -0.319,
+     0.249
+    ],
+    "body_bbox_xy_after": [
+     -0.483,
+     0.59,
+     -0.319,
+     0.249
+    ],
+    "body_height_raw_m": 1.7349
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 6,
+     "top_bone_max_excursion_m": 0.141,
+     "top_bone_net_m": 0.141
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.078,
+     "top_bone_net_m": 0.078
+    },
+    "attack_tele": {
+     "frames": 60,
+     "top_bone_max_excursion_m": 0.063,
+     "top_bone_net_m": 0.063
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.212,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.023,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.014,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.103,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 64,
+     "top_bone_max_excursion_m": 0.017,
+     "top_bone_net_m": 0.0,
+     "report_root_speed_m_per_s": 0.48,
+     "in_place_cycle": true
+    }
+   },
+   "rootLocked": [],
+   "sockets": [
+    {
+     "name": "WeaponSocket_R",
+     "parent_bone": "RightHand",
+     "node_scale": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "glb_basis_location": [
+      1.22433,
+      -2.70864,
+      2.02382
+     ],
+     "glb_basis_rotation_euler_deg": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "props": [
+      "Weapon_Staff"
+     ],
+     "prop_triangles": 896
+    }
+   ],
+   "weaponMaterialsRenamed": {
+    "weapon_wood": "enemy_3b2a1e",
+    "weapon_bone": "enemy_c9bfae",
+    "weapon_iris": "enemy_6a1f1a",
+    "weapon_pupil": "enemy_1a0d0b"
+   },
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.7055554340651216,
+   "rawHeightM": 1.8000003099441528,
+   "displaySizeM": null,
+   "displayBasis": null,
+   "displayHeightM": 1.27,
+   "displayHeightDerivedM": 1.27,
+   "displayHeightFromTurnedBodyBboxM": 1.2241,
+   "fbxBytes": 2837916,
+   "seconds": 7.0
+  },
+  {
+   "key": "shadow",
+   "etype": 10,
+   "model": "ShadowApostle",
+   "resource": "Enemies3D/ShadowApostle",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/shadow_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/shadow_anim_report.json",
+   "bones": 24,
+   "bodyTriangles": 12410,
+   "nonHuman": false,
+   "triangleGuardMin": 8000,
+   "fps": 60,
+   "clips": {
+    "appear": 20,
+    "attack_act": 3,
+    "attack_rec": 30,
+    "attack_tele": 24,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "vanish": 20,
+    "walk": 62
+   },
+   "unityClipNames": [
+    "Armature|appear",
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|vanish",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": false,
+    "front_vector": [
+     -0.0008,
+     -1.0,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -0.345,
+     0.387,
+     -0.245,
+     0.186
+    ],
+    "body_bbox_xy_after": [
+     -0.345,
+     0.387,
+     -0.245,
+     0.186
+    ],
+    "body_height_raw_m": 1.9159
+   },
+   "rootMotion": {
+    "appear": {
+     "frames": 20,
+     "top_bone_max_excursion_m": 0.092,
+     "top_bone_net_m": 0.063
+    },
+    "attack_act": {
+     "frames": 3,
+     "top_bone_max_excursion_m": 0.152,
+     "top_bone_net_m": 0.152
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.101,
+     "top_bone_net_m": 0.101
+    },
+    "attack_tele": {
+     "frames": 24,
+     "top_bone_max_excursion_m": 0.051,
+     "top_bone_net_m": 0.051
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.212,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.025,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.028,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.115,
+     "top_bone_net_m": 0.0
+    },
+    "vanish": {
+     "frames": 20,
+     "top_bone_max_excursion_m": 0.063,
+     "top_bone_net_m": 0.063
+    },
+    "walk": {
+     "frames": 62,
+     "top_bone_max_excursion_m": 0.043,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.7051932920141611,
+   "rawHeightM": 1.914368748664856,
+   "displaySizeM": null,
+   "displayBasis": null,
+   "displayHeightM": 1.35,
+   "displayHeightDerivedM": 1.35,
+   "displayHeightFromTurnedBodyBboxM": 1.3511,
+   "fbxBytes": 2943404,
+   "seconds": 5.5
+  },
+  {
+   "key": "womb",
+   "etype": 11,
+   "model": "WombApostle",
+   "resource": "Enemies3D/WombApostle",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/womb_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/womb_anim_report.json",
+   "bones": 71,
+   "bodyTriangles": 12334,
+   "nonHuman": true,
+   "triangleGuardMin": 5000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 6,
+    "attack_rec": 30,
+    "attack_tele": 60,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "summon_act": 10,
+    "summon_rec": 30,
+    "summon_tele": 40,
+    "walk": 60
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|summon_act",
+    "Armature|summon_rec",
+    "Armature|summon_tele",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": true,
+    "rotation_z_deg": 90,
+    "applied_to_object_transform": true,
+    "object_rotation_euler_deg_after_apply": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "skin_check_max_err_m": 0.0,
+    "front_vector_before": [
+     -0.5914,
+     -0.8064,
+     0.0
+    ],
+    "front_vector_after": [
+     0.8064,
+     -0.5914,
+     0.0
+    ],
+    "front_method": "report tele_body_axis tripo::Spine_0->tripo::Head_3 bone heads (horizontal)",
+    "body_bbox_xy_before": [
+     -0.398,
+     0.467,
+     -0.418,
+     0.497
+    ],
+    "body_bbox_xy_after": [
+     -0.497,
+     0.418,
+     -0.398,
+     0.467
+    ],
+    "body_height_raw_m": 0.8324
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 6,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "attack_tele": {
+     "frames": 60,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "summon_act": {
+     "frames": 10,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "summon_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "summon_tele": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 60,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.9900001770258267,
+   "rawHeightM": 0.7355958865624928,
+   "displaySizeM": 0.99,
+   "displayBasis": "width",
+   "displayHeightM": null,
+   "displayHeightDerivedM": 0.7282,
+   "displayHeightFromTurnedBodyBboxM": 0.8241,
+   "fbxBytes": 7217452,
+   "seconds": 8.5
+  },
+  {
+   "key": "berserk",
+   "etype": 12,
+   "model": "BerserkApostle",
+   "resource": "Enemies3D/BerserkApostle",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/berserk_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/berserk_anim_report.json",
+   "bones": 24,
+   "bodyTriangles": 12443,
+   "nonHuman": false,
+   "triangleGuardMin": 8000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 3,
+    "attack_rec": 30,
+    "attack_tele": 24,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "rage": 40,
+    "stagger": 40,
+    "walk": 62
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|rage",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": false,
+    "front_vector": [
+     -0.0413,
+     -0.9991,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -0.609,
+     0.628,
+     -0.237,
+     0.469
+    ],
+    "body_bbox_xy_after": [
+     -0.609,
+     0.628,
+     -0.237,
+     0.469
+    ],
+    "body_height_raw_m": 2.0439
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 3,
+     "top_bone_max_excursion_m": 0.188,
+     "top_bone_net_m": 0.188
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.125,
+     "top_bone_net_m": 0.125
+    },
+    "attack_tele": {
+     "frames": 24,
+     "top_bone_max_excursion_m": 0.063,
+     "top_bone_net_m": 0.063
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.209,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.019,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.028,
+     "top_bone_net_m": 0.0
+    },
+    "rage": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.07,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.101,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 62,
+     "top_bone_max_excursion_m": 0.043,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.6952534566784485,
+   "rawHeightM": 2.0424206256866455,
+   "displaySizeM": null,
+   "displayBasis": null,
+   "displayHeightM": 1.42,
+   "displayHeightDerivedM": 1.42,
+   "displayHeightFromTurnedBodyBboxM": 1.421,
+   "fbxBytes": 2794140,
+   "seconds": 5.6
+  },
+  {
+   "key": "spider",
+   "etype": 13,
+   "model": "SpiderApostle",
+   "resource": "Enemies3D/SpiderApostle",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/spider_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/spider_anim_report.json",
+   "bones": 59,
+   "bodyTriangles": 12519,
+   "nonHuman": true,
+   "triangleGuardMin": 5000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 3,
+    "attack_rec": 30,
+    "attack_tele": 24,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 60
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": true,
+    "rotation_z_deg": 90,
+    "applied_to_object_transform": true,
+    "object_rotation_euler_deg_after_apply": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "skin_check_max_err_m": 0.0,
+    "front_vector_before": [
+     0.9985,
+     -0.0555,
+     0.0
+    ],
+    "front_vector_after": [
+     0.0555,
+     0.9985,
+     0.0
+    ],
+    "front_method": "report tele_body_axis tripo::Spine_0->tripo::Spine_2 bone heads (horizontal)",
+    "body_bbox_xy_before": [
+     -0.517,
+     0.471,
+     -0.642,
+     0.595
+    ],
+    "body_bbox_xy_after": [
+     -0.595,
+     0.642,
+     -0.517,
+     0.471
+    ],
+    "body_height_raw_m": 0.964
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 3,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "attack_tele": {
+     "frames": 24,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.309,
+     "top_bone_net_m": 0.031
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 60,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 1.1299998652935188,
+   "rawHeightM": 0.9659424582636973,
+   "displaySizeM": 1.13,
+   "displayBasis": "width",
+   "displayHeightM": null,
+   "displayHeightDerivedM": 1.0915,
+   "displayHeightFromTurnedBodyBboxM": 1.0893,
+   "fbxBytes": 4793916,
+   "seconds": 6.0
+  },
+  {
+   "key": "winged",
+   "etype": 14,
+   "model": "WingedApostle",
+   "resource": "Enemies3D/WingedApostle",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/winged_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/winged_anim_report.json",
+   "bones": 24,
+   "bodyTriangles": 12353,
+   "nonHuman": false,
+   "triangleGuardMin": 8000,
+   "fps": 60,
+   "clips": {
+    "attack_rec": 30,
+    "death": 45,
+    "dive_act": 12,
+    "dive_tele": 24,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 62
+   },
+   "unityClipNames": [
+    "Armature|attack_rec",
+    "Armature|death",
+    "Armature|dive_act",
+    "Armature|dive_tele",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": false,
+    "front_vector": [
+     0.0343,
+     -0.9994,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -0.638,
+     0.65,
+     -0.299,
+     0.33
+    ],
+    "body_bbox_xy_after": [
+     -0.638,
+     0.65,
+     -0.299,
+     0.33
+    ],
+    "body_height_raw_m": 1.8416
+   },
+   "rootMotion": {
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.138,
+     "top_bone_net_m": 0.138
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.207,
+     "top_bone_net_m": 0.0
+    },
+    "dive_act": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 2.441,
+     "top_bone_net_m": 2.441,
+     "report_root_travel_m": 2.2,
+     "locked": true,
+     "original_net_m": 2.441,
+     "original_max_excursion_m": 2.441,
+     "residual_top_bone_m": 0.0,
+     "body_bbox_centre_shift_after_lock_m": 0.264
+    },
+    "dive_tele": {
+     "frames": 24,
+     "top_bone_max_excursion_m": 0.103,
+     "top_bone_net_m": 0.103
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.028,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.021,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.125,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 62,
+     "top_bone_max_excursion_m": 0.039,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [
+    "dive_act"
+   ],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.6897811218156842,
+   "rawHeightM": 1.8411637544631958,
+   "displaySizeM": null,
+   "displayBasis": null,
+   "displayHeightM": 1.27,
+   "displayHeightDerivedM": 1.27,
+   "displayHeightFromTurnedBodyBboxM": 1.2703,
+   "fbxBytes": 2583612,
+   "seconds": 5.4
+  },
+  {
+   "key": "worm",
+   "etype": 15,
+   "model": "SplitWorm",
+   "resource": "Enemies3D/SplitWorm",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/worm_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/worm_anim_report.json",
+   "bones": 60,
+   "bodyTriangles": 12240,
+   "nonHuman": true,
+   "triangleGuardMin": 5000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 3,
+    "attack_rec": 30,
+    "attack_tele": 24,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 60
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": true,
+    "rotation_z_deg": 90,
+    "applied_to_object_transform": true,
+    "object_rotation_euler_deg_after_apply": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "skin_check_max_err_m": 0.0,
+    "front_vector_before": [
+     -0.9999,
+     -0.0147,
+     0.0
+    ],
+    "front_vector_after": [
+     0.0147,
+     -0.9999,
+     0.0
+    ],
+    "front_method": "report tele_body_axis tripo::Spine_0->tripo::Head_2 bone heads (horizontal)",
+    "body_bbox_xy_before": [
+     -0.49,
+     0.509,
+     -0.149,
+     0.167
+    ],
+    "body_bbox_xy_after": [
+     -0.167,
+     0.149,
+     -0.49,
+     0.509
+    ],
+    "body_height_raw_m": 0.1326
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 3,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "attack_tele": {
+     "frames": 24,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 60,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 1.4199999153614093,
+   "rawHeightM": 0.1325530742170109,
+   "displaySizeM": 1.42,
+   "displayBasis": "width",
+   "displayHeightM": null,
+   "displayHeightDerivedM": 0.1882,
+   "displayHeightFromTurnedBodyBboxM": 0.1883,
+   "fbxBytes": 4825036,
+   "seconds": 7.4
+  },
+  {
+   "key": "trapper",
+   "etype": 16,
+   "model": "TrapperApostle",
+   "resource": "Enemies3D/TrapperApostle",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/trapper_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/trapper_anim_report.json",
+   "bones": 24,
+   "bodyTriangles": 12415,
+   "nonHuman": false,
+   "triangleGuardMin": 8000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 6,
+    "attack_rec": 30,
+    "attack_tele": 60,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "trap_set": 30,
+    "walk": 62
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|trap_set",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": false,
+    "front_vector": [
+     0.0434,
+     -0.9991,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -0.52,
+     0.488,
+     -0.442,
+     0.345
+    ],
+    "body_bbox_xy_after": [
+     -0.52,
+     0.488,
+     -0.442,
+     0.345
+    ],
+    "body_height_raw_m": 1.8551
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 6,
+     "top_bone_max_excursion_m": 0.103,
+     "top_bone_net_m": 0.103
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.048,
+     "top_bone_net_m": 0.048
+    },
+    "attack_tele": {
+     "frames": 60,
+     "top_bone_max_excursion_m": 0.055,
+     "top_bone_net_m": 0.055
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.205,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.016,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.02,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.069,
+     "top_bone_net_m": 0.0
+    },
+    "trap_set": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.096,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 62,
+     "top_bone_max_excursion_m": 0.035,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.6844053795314617,
+   "rawHeightM": 1.8556253910064697,
+   "displaySizeM": null,
+   "displayBasis": null,
+   "displayHeightM": 1.27,
+   "displayHeightDerivedM": 1.27,
+   "displayHeightFromTurnedBodyBboxM": 1.2696,
+   "fbxBytes": 2940172,
+   "seconds": 5.2
+  },
+  {
+   "key": "mother",
+   "etype": 17,
+   "model": "MotherApostle",
+   "resource": "Enemies3D/MotherApostle",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/mother_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/mother_anim_report.json",
+   "bones": 40,
+   "bodyTriangles": 12459,
+   "nonHuman": true,
+   "triangleGuardMin": 5000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 6,
+    "attack_rec": 30,
+    "attack_tele": 60,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "summon_act": 10,
+    "summon_rec": 30,
+    "summon_tele": 40,
+    "walk": 60
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|summon_act",
+    "Armature|summon_rec",
+    "Armature|summon_tele",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": true,
+    "rotation_z_deg": 90,
+    "applied_to_object_transform": true,
+    "object_rotation_euler_deg_after_apply": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "skin_check_max_err_m": 0.0,
+    "front_vector_before": [
+     1.0,
+     -0.0,
+     0.0
+    ],
+    "front_vector_after": [
+     0.0,
+     1.0,
+     0.0
+    ],
+    "front_method": "report tele_body_axis tripo::Head_0->tripo::Head_1 bone heads (horizontal)",
+    "body_bbox_xy_before": [
+     -0.341,
+     0.359,
+     -0.37,
+     0.566
+    ],
+    "body_bbox_xy_after": [
+     -0.566,
+     0.37,
+     -0.341,
+     0.359
+    ],
+    "body_height_raw_m": 1.0123
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 6,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "attack_tele": {
+     "frames": 60,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "summon_act": {
+     "frames": 10,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "summon_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "summon_tele": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 60,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 1.0600001163817354,
+   "rawHeightM": 0.9999998902059222,
+   "displaySizeM": 1.06,
+   "displayBasis": "height",
+   "displayHeightM": null,
+   "displayHeightDerivedM": 1.06,
+   "displayHeightFromTurnedBodyBboxM": 1.073,
+   "fbxBytes": 4408236,
+   "seconds": 5.9
+  },
+  {
+   "key": "vampire",
+   "etype": 18,
+   "model": "VampireApostle",
+   "resource": "Enemies3D/VampireApostle",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/vampire_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/vampire_anim_report.json",
+   "bones": 24,
+   "bodyTriangles": 12391,
+   "nonHuman": false,
+   "triangleGuardMin": 8000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 3,
+    "attack_rec": 30,
+    "attack_tele": 24,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 62
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": false,
+    "front_vector": [
+     -0.0039,
+     -1.0,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -0.343,
+     0.356,
+     -0.217,
+     0.27
+    ],
+    "body_bbox_xy_after": [
+     -0.343,
+     0.356,
+     -0.217,
+     0.27
+    ],
+    "body_height_raw_m": 1.9263
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 3,
+     "top_bone_max_excursion_m": 0.196,
+     "top_bone_net_m": 0.196
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.119,
+     "top_bone_net_m": 0.119
+    },
+    "attack_tele": {
+     "frames": 24,
+     "top_bone_max_excursion_m": 0.077,
+     "top_bone_net_m": 0.077
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.21,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.028,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.028,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.127,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 62,
+     "top_bone_max_excursion_m": 0.041,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.701402573406792,
+   "rawHeightM": 1.9247149229049683,
+   "displaySizeM": null,
+   "displayBasis": null,
+   "displayHeightM": 1.35,
+   "displayHeightDerivedM": 1.35,
+   "displayHeightFromTurnedBodyBboxM": 1.3511,
+   "fbxBytes": 2519900,
+   "seconds": 5.2
+  },
+  {
+   "key": "giant",
+   "etype": 19,
+   "model": "GiantApostle",
+   "resource": "Enemies3D/GiantApostle",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/giant_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/giant_anim_report.json",
+   "bones": 24,
+   "bodyTriangles": 12521,
+   "nonHuman": false,
+   "triangleGuardMin": 8000,
+   "fps": 60,
+   "clips": {
+    "attack1_act": 2,
+    "attack1_gap": 22,
+    "attack1_tele": 18,
+    "attack2_act": 1,
+    "attack2_tele": 40,
+    "attack_rec": 36,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 62
+   },
+   "unityClipNames": [
+    "Armature|attack1_act",
+    "Armature|attack1_gap",
+    "Armature|attack1_tele",
+    "Armature|attack2_act",
+    "Armature|attack2_tele",
+    "Armature|attack_rec",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": false,
+    "front_vector": [
+     0.1114,
+     -0.9938,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -1.006,
+     1.02,
+     -0.183,
+     1.131
+    ],
+    "body_bbox_xy_after": [
+     -1.006,
+     1.02,
+     -0.183,
+     1.131
+    ],
+    "body_height_raw_m": 2.7642
+   },
+   "rootMotion": {
+    "attack1_act": {
+     "frames": 2,
+     "top_bone_max_excursion_m": 0.131,
+     "top_bone_net_m": 0.131
+    },
+    "attack1_gap": {
+     "frames": 22,
+     "top_bone_max_excursion_m": 0.102,
+     "top_bone_net_m": 0.102
+    },
+    "attack1_tele": {
+     "frames": 18,
+     "top_bone_max_excursion_m": 0.048,
+     "top_bone_net_m": 0.048
+    },
+    "attack2_act": {
+     "frames": 1,
+     "top_bone_max_excursion_m": 0.259,
+     "top_bone_net_m": 0.259
+    },
+    "attack2_tele": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.093,
+     "top_bone_net_m": 0.093
+    },
+    "attack_rec": {
+     "frames": 36,
+     "top_bone_max_excursion_m": 0.146,
+     "top_bone_net_m": 0.146
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.199,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.009,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.013,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.055,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 62,
+     "top_bone_max_excursion_m": 0.05,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.6644082175833956,
+   "rawHeightM": 2.7693817615509033,
+   "displaySizeM": null,
+   "displayBasis": null,
+   "displayHeightM": 1.84,
+   "displayHeightDerivedM": 1.84,
+   "displayHeightFromTurnedBodyBboxM": 1.8366,
+   "fbxBytes": 3033452,
+   "seconds": 6.5
+  },
+  {
+   "key": "cleaver",
+   "etype": 20,
+   "model": "CleaverApostle",
+   "resource": "Enemies3D/CleaverApostle",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/cleaver_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/cleaver_anim_report.json",
+   "bones": 24,
+   "bodyTriangles": 12434,
+   "nonHuman": false,
+   "triangleGuardMin": 8000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 3,
+    "attack_rec": 30,
+    "attack_tele": 24,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 62
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": false,
+    "front_vector": [
+     0.0088,
+     -1.0,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -0.463,
+     0.455,
+     -0.517,
+     0.312
+    ],
+    "body_bbox_xy_after": [
+     -0.463,
+     0.455,
+     -0.517,
+     0.312
+    ],
+    "body_height_raw_m": 1.8345
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 3,
+     "top_bone_max_excursion_m": 0.173,
+     "top_bone_net_m": 0.173
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.111,
+     "top_bone_net_m": 0.111
+    },
+    "attack_tele": {
+     "frames": 24,
+     "top_bone_max_excursion_m": 0.062,
+     "top_bone_net_m": 0.062
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.208,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.019,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.025,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.101,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 62,
+     "top_bone_max_excursion_m": 0.035,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.6928429484200842,
+   "rawHeightM": 1.8330272436141968,
+   "displaySizeM": null,
+   "displayBasis": null,
+   "displayHeightM": 1.27,
+   "displayHeightDerivedM": 1.27,
+   "displayHeightFromTurnedBodyBboxM": 1.271,
+   "fbxBytes": 2621052,
+   "seconds": 3.3
+  },
+  {
+   "key": "duelist",
+   "etype": 21,
+   "model": "DuelistApostle",
+   "resource": "Enemies3D/DuelistApostle",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/duelist_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/duelist_anim_report.json",
+   "bones": 24,
+   "bodyTriangles": 12468,
+   "nonHuman": false,
+   "triangleGuardMin": 8000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 3,
+    "attack_rec": 30,
+    "attack_tele": 24,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 60
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": false,
+    "front_vector": [
+     0.0356,
+     -0.9994,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -0.497,
+     0.536,
+     -0.231,
+     0.244
+    ],
+    "body_bbox_xy_after": [
+     -0.497,
+     0.536,
+     -0.231,
+     0.244
+    ],
+    "body_height_raw_m": 1.759
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 3,
+     "top_bone_max_excursion_m": 0.162,
+     "top_bone_net_m": 0.162
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.106,
+     "top_bone_net_m": 0.106
+    },
+    "attack_tele": {
+     "frames": 24,
+     "top_bone_max_excursion_m": 0.056,
+     "top_bone_net_m": 0.056
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.212,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.023,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.021,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.115,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 60,
+     "top_bone_max_excursion_m": 0.025,
+     "top_bone_net_m": 0.0,
+     "report_root_speed_m_per_s": 0.56,
+     "in_place_cycle": true
+    }
+   },
+   "rootLocked": [],
+   "sockets": [
+    {
+     "name": "WeaponSocket_L",
+     "parent_bone": "LeftHand",
+     "node_scale": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "glb_basis_location": [
+      0.61855,
+      -11.07788,
+      1.93779
+     ],
+     "glb_basis_rotation_euler_deg": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "props": [
+      "Weapon_Sickle_L"
+     ],
+     "prop_triangles": 170
+    },
+    {
+     "name": "WeaponSocket_R",
+     "parent_bone": "RightHand",
+     "node_scale": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "glb_basis_location": [
+      -0.53304,
+      -10.25955,
+      1.33066
+     ],
+     "glb_basis_rotation_euler_deg": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "props": [
+      "Weapon_Sickle_R"
+     ],
+     "prop_triangles": 170
+    }
+   ],
+   "weaponMaterialsRenamed": {
+    "weapon_wood": "enemy_3b2a1e",
+    "weapon_iron": "enemy_4a4440",
+    "weapon_rust": "enemy_6b3a24",
+    "weapon_blood": "enemy_6a1f1a"
+   },
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.705555761154847,
+   "rawHeightM": 1.799999475479126,
+   "displaySizeM": null,
+   "displayBasis": null,
+   "displayHeightM": 1.27,
+   "displayHeightDerivedM": 1.27,
+   "displayHeightFromTurnedBodyBboxM": 1.2411,
+   "fbxBytes": 2627372,
+   "seconds": 4.4
+  },
+  {
+   "key": "wraith",
+   "etype": 23,
+   "model": "Wraith",
+   "resource": "Enemies3D/Wraith",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/wraith_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/wraith_anim_report.json",
+   "bones": 57,
+   "bodyTriangles": 12472,
+   "nonHuman": true,
+   "triangleGuardMin": 5000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 3,
+    "attack_rec": 30,
+    "attack_tele": 24,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 60
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": true,
+    "rotation_z_deg": 90,
+    "applied_to_object_transform": true,
+    "object_rotation_euler_deg_after_apply": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "skin_check_max_err_m": 0.0,
+    "front_vector_before": [
+     0.9778,
+     0.2095,
+     0.0
+    ],
+    "front_vector_after": [
+     -0.2095,
+     0.9778,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -0.261,
+     0.166,
+     -0.291,
+     0.293
+    ],
+    "body_bbox_xy_after": [
+     -0.293,
+     0.291,
+     -0.261,
+     0.166
+    ],
+    "body_height_raw_m": 0.9058
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 3,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "attack_tele": {
+     "frames": 24,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.082,
+     "top_bone_net_m": 0.082
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 60,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 1.129999455679456,
+   "rawHeightM": 1.0000004816998285,
+   "displaySizeM": 1.13,
+   "displayBasis": "height",
+   "displayHeightM": null,
+   "displayHeightDerivedM": 1.13,
+   "displayHeightFromTurnedBodyBboxM": 1.0236,
+   "fbxBytes": 4601804,
+   "seconds": 6.9
+  },
+  {
+   "key": "zombie",
+   "etype": 24,
+   "model": "FrozenZombie",
+   "resource": "Enemies3D/FrozenZombie",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/zombie_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/zombie_anim_report.json",
+   "bones": 24,
+   "bodyTriangles": 12307,
+   "nonHuman": false,
+   "triangleGuardMin": 8000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 3,
+    "attack_rec": 30,
+    "attack_tele": 24,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 62
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": false,
+    "front_vector": [
+     -0.0746,
+     -0.9972,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -0.449,
+     0.513,
+     -0.366,
+     0.299
+    ],
+    "body_bbox_xy_after": [
+     -0.449,
+     0.513,
+     -0.366,
+     0.299
+    ],
+    "body_height_raw_m": 1.9279
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 3,
+     "top_bone_max_excursion_m": 0.181,
+     "top_bone_net_m": 0.181
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.111,
+     "top_bone_net_m": 0.111
+    },
+    "attack_tele": {
+     "frames": 24,
+     "top_bone_max_excursion_m": 0.07,
+     "top_bone_net_m": 0.07
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.209,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.028,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.035,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.126,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 62,
+     "top_bone_max_excursion_m": 0.04,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.6954168971424998,
+   "rawHeightM": 1.9269016981124878,
+   "displaySizeM": null,
+   "displayBasis": null,
+   "displayHeightM": 1.34,
+   "displayHeightDerivedM": 1.34,
+   "displayHeightFromTurnedBodyBboxM": 1.3407,
+   "fbxBytes": 2657212,
+   "seconds": 6.2
+  },
+  {
+   "key": "slime",
+   "etype": 25,
+   "model": "SwampSlime",
+   "resource": "Enemies3D/SwampSlime",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/slime_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/slime_anim_report.json",
+   "bones": 21,
+   "bodyTriangles": 12472,
+   "nonHuman": true,
+   "triangleGuardMin": 5000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 6,
+    "attack_rec": 30,
+    "attack_tele": 60,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 60
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": true,
+    "rotation_z_deg": 90,
+    "applied_to_object_transform": true,
+    "object_rotation_euler_deg_after_apply": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "skin_check_max_err_m": 0.0,
+    "front_vector_before": [
+     -0.3162,
+     0.9487,
+     0.0
+    ],
+    "front_vector_after": [
+     -0.9487,
+     -0.3162,
+     0.0
+    ],
+    "front_method": "report tele_body_axis tripo::Root->tripo::Head_0 bone heads (horizontal)",
+    "body_bbox_xy_before": [
+     -0.516,
+     0.477,
+     -0.451,
+     0.464
+    ],
+    "body_bbox_xy_after": [
+     -0.464,
+     0.451,
+     -0.516,
+     0.477
+    ],
+    "body_height_raw_m": 0.6542
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 6,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "attack_tele": {
+     "frames": 60,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 60,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.99,
+   "rawHeightM": 0.6300050594270523,
+   "displaySizeM": 0.99,
+   "displayBasis": "width",
+   "displayHeightM": null,
+   "displayHeightDerivedM": 0.6237,
+   "displayHeightFromTurnedBodyBboxM": 0.6477,
+   "fbxBytes": 2087740,
+   "seconds": 3.5
+  },
+  {
+   "key": "hexer",
+   "etype": 26,
+   "model": "HexerApostle",
+   "resource": "Enemies3D/HexerApostle",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/hexer_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/hexer_anim_report.json",
+   "bones": 24,
+   "bodyTriangles": 12390,
+   "nonHuman": false,
+   "triangleGuardMin": 8000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 6,
+    "attack_rec": 30,
+    "attack_tele": 60,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 62
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": false,
+    "front_vector": [
+     -0.0565,
+     -0.9984,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -0.386,
+     0.351,
+     -0.328,
+     0.254
+    ],
+    "body_bbox_xy_after": [
+     -0.386,
+     0.351,
+     -0.328,
+     0.254
+    ],
+    "body_height_raw_m": 1.62
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 6,
+     "top_bone_max_excursion_m": 0.126,
+     "top_bone_net_m": 0.126
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.07,
+     "top_bone_net_m": 0.07
+    },
+    "attack_tele": {
+     "frames": 60,
+     "top_bone_max_excursion_m": 0.056,
+     "top_bone_net_m": 0.056
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.209,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.022,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.017,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.101,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 62,
+     "top_bone_max_excursion_m": 0.033,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.6980853937218079,
+   "rawHeightM": 1.618713140487671,
+   "displaySizeM": null,
+   "displayBasis": null,
+   "displayHeightM": 1.13,
+   "displayHeightDerivedM": 1.13,
+   "displayHeightFromTurnedBodyBboxM": 1.1309,
+   "fbxBytes": 2765356,
+   "seconds": 5.8
+  },
+  {
+   "key": "bat",
+   "etype": 27,
+   "model": "IcicleBat",
+   "resource": "Enemies3D/IcicleBat",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/bat_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/bat_anim_report.json",
+   "bones": 60,
+   "bodyTriangles": 12287,
+   "nonHuman": true,
+   "triangleGuardMin": 5000,
+   "fps": 60,
+   "clips": {
+    "attack_rec": 30,
+    "death": 45,
+    "dive_act": 12,
+    "dive_tele": 24,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 60
+   },
+   "unityClipNames": [
+    "Armature|attack_rec",
+    "Armature|death",
+    "Armature|dive_act",
+    "Armature|dive_tele",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": true,
+    "rotation_z_deg": 90,
+    "applied_to_object_transform": true,
+    "object_rotation_euler_deg_after_apply": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "skin_check_max_err_m": 0.0,
+    "front_vector_before": [
+     -1.0,
+     -0.0,
+     0.0
+    ],
+    "front_vector_after": [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    "front_method": "report tele_body_axis tripo::Spine_0->tripo::Head_0 bone heads (horizontal)",
+    "body_bbox_xy_before": [
+     -0.195,
+     0.186,
+     -0.379,
+     0.382
+    ],
+    "body_bbox_xy_after": [
+     -0.382,
+     0.379,
+     -0.195,
+     0.186
+    ],
+    "body_height_raw_m": 0.7913
+   },
+   "rootMotion": {
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.369,
+     "top_bone_net_m": 0.369
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.415,
+     "top_bone_net_m": 0.247
+    },
+    "dive_act": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 1.29,
+     "top_bone_net_m": 1.29,
+     "locked": true,
+     "original_net_m": 1.29,
+     "original_max_excursion_m": 1.29,
+     "residual_top_bone_m": 0.0,
+     "body_bbox_centre_shift_after_lock_m": 0.493
+    },
+    "dive_tele": {
+     "frames": 24,
+     "top_bone_max_excursion_m": 0.149,
+     "top_bone_net_m": 0.149
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.12,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.123,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 60,
+     "top_bone_max_excursion_m": 0.0,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [
+    "dive_act"
+   ],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 1.1300000673532524,
+   "rawHeightM": 0.8151247212428885,
+   "displaySizeM": 1.13,
+   "displayBasis": "width",
+   "displayHeightM": null,
+   "displayHeightDerivedM": 0.9211,
+   "displayHeightFromTurnedBodyBboxM": 0.8942,
+   "fbxBytes": 4823996,
+   "seconds": 7.0
+  },
+  {
+   "key": "golem",
+   "etype": 28,
+   "model": "GlacierGolem",
+   "resource": "Enemies3D/GlacierGolem",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/golem_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/golem_anim_report.json",
+   "bones": 24,
+   "bodyTriangles": 12478,
+   "nonHuman": false,
+   "triangleGuardMin": 8000,
+   "fps": 60,
+   "clips": {
+    "attack_act": 3,
+    "attack_rec": 30,
+    "attack_tele": 24,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 62
+   },
+   "unityClipNames": [
+    "Armature|attack_act",
+    "Armature|attack_rec",
+    "Armature|attack_tele",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": false,
+    "front_vector": [
+     0.1604,
+     -0.9871,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -0.854,
+     0.877,
+     -0.526,
+     0.565
+    ],
+    "body_bbox_xy_after": [
+     -0.854,
+     0.877,
+     -0.526,
+     0.565
+    ],
+    "body_height_raw_m": 2.4915
+   },
+   "rootMotion": {
+    "attack_act": {
+     "frames": 3,
+     "top_bone_max_excursion_m": 0.166,
+     "top_bone_net_m": 0.166
+    },
+    "attack_rec": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.103,
+     "top_bone_net_m": 0.103
+    },
+    "attack_tele": {
+     "frames": 24,
+     "top_bone_max_excursion_m": 0.063,
+     "top_bone_net_m": 0.063
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.205,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.012,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.014,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.063,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 62,
+     "top_bone_max_excursion_m": 0.045,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.6827090876031953,
+   "rawHeightM": 2.490079641342163,
+   "displaySizeM": null,
+   "displayBasis": null,
+   "displayHeightM": 1.7,
+   "displayHeightDerivedM": 1.7,
+   "displayHeightFromTurnedBodyBboxM": 1.701,
+   "fbxBytes": 2534220,
+   "seconds": 5.0
+  },
+  {
+   "key": "warden",
+   "etype": 29,
+   "model": "Warden",
+   "resource": "Enemies3D/Warden",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/warden_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/warden_anim_report.json",
+   "bones": 24,
+   "bodyTriangles": 12387,
+   "nonHuman": false,
+   "triangleGuardMin": 8000,
+   "fps": 60,
+   "clips": {
+    "attack_rec": 45,
+    "charge_hit": 4,
+    "charge_run": 20,
+    "charge_tele": 40,
+    "combo1_act": 3,
+    "combo1_tele": 30,
+    "combo2_act": 3,
+    "combo2_tele": 16,
+    "combo3_act": 3,
+    "combo3_tele": 16,
+    "combo_gap": 10,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "stagger": 40,
+    "walk": 72
+   },
+   "unityClipNames": [
+    "Armature|attack_rec",
+    "Armature|charge_hit",
+    "Armature|charge_run",
+    "Armature|charge_tele",
+    "Armature|combo1_act",
+    "Armature|combo1_tele",
+    "Armature|combo2_act",
+    "Armature|combo2_tele",
+    "Armature|combo3_act",
+    "Armature|combo3_tele",
+    "Armature|combo_gap",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|stagger",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": false,
+    "front_vector": [
+     -0.0259,
+     -0.9997,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -0.985,
+     0.902,
+     -0.677,
+     0.725
+    ],
+    "body_bbox_xy_after": [
+     -0.985,
+     0.902,
+     -0.677,
+     0.725
+    ],
+    "body_height_raw_m": 2.5471
+   },
+   "rootMotion": {
+    "attack_rec": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.217,
+     "top_bone_net_m": 0.217
+    },
+    "charge_hit": {
+     "frames": 4,
+     "top_bone_max_excursion_m": 0.219,
+     "top_bone_net_m": 0.219
+    },
+    "charge_run": {
+     "frames": 20,
+     "top_bone_max_excursion_m": 0.059,
+     "top_bone_net_m": 0.0,
+     "report_root_speed_m_per_s": 3.23,
+     "in_place_cycle": true
+    },
+    "charge_tele": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.04,
+     "top_bone_net_m": 0.03
+    },
+    "combo1_act": {
+     "frames": 3,
+     "top_bone_max_excursion_m": 0.198,
+     "top_bone_net_m": 0.198
+    },
+    "combo1_tele": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.059,
+     "top_bone_net_m": 0.059
+    },
+    "combo2_act": {
+     "frames": 3,
+     "top_bone_max_excursion_m": 0.227,
+     "top_bone_net_m": 0.227
+    },
+    "combo2_tele": {
+     "frames": 16,
+     "top_bone_max_excursion_m": 0.03,
+     "top_bone_net_m": 0.03
+    },
+    "combo3_act": {
+     "frames": 3,
+     "top_bone_max_excursion_m": 0.356,
+     "top_bone_net_m": 0.356
+    },
+    "combo3_tele": {
+     "frames": 16,
+     "top_bone_max_excursion_m": 0.079,
+     "top_bone_net_m": 0.079
+    },
+    "combo_gap": {
+     "frames": 10,
+     "top_bone_max_excursion_m": 0.198,
+     "top_bone_net_m": 0.198
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.297,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.012,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.016,
+     "top_bone_net_m": 0.0
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.074,
+     "top_bone_net_m": 0.0
+    },
+    "walk": {
+     "frames": 72,
+     "top_bone_max_excursion_m": 0.049,
+     "top_bone_net_m": 0.0,
+     "report_root_speed_m_per_s": 0.9,
+     "in_place_cycle": true
+    }
+   },
+   "rootLocked": [],
+   "sockets": [
+    {
+     "name": "WeaponSocket_R",
+     "parent_bone": "RightHand",
+     "node_scale": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "glb_basis_location": [
+      -2.08269,
+      0.03791,
+      -4.25773
+     ],
+     "glb_basis_rotation_euler_deg": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "props": [
+      "Weapon_Maul"
+     ],
+     "prop_triangles": 660
+    }
+   ],
+   "weaponMaterialsRenamed": {
+    "weapon_wood": "enemy_3b2a1e",
+    "weapon_rust": "enemy_6b3a24",
+    "weapon_stone": "enemy_4a4440",
+    "weapon_root": "enemy_2b1d14"
+   },
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.988461121511353,
+   "rawHeightM": 2.600001096725464,
+   "displaySizeM": null,
+   "displayBasis": null,
+   "displayHeightM": 2.57,
+   "displayHeightDerivedM": 2.57,
+   "displayHeightFromTurnedBodyBboxM": 2.5177,
+   "fbxBytes": 3982428,
+   "seconds": 7.1
+  },
+  {
+   "key": "twin",
+   "etype": 47,
+   "model": "ShadowTwin",
+   "resource": "Enemies3D/ShadowTwin",
+   "source": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/twin_anim_v1.glb",
+   "report": "I:/EXODUSER-Storage/boss/enemy3d-20261104/anim/twin_anim_report.json",
+   "bones": 24,
+   "bodyTriangles": 12323,
+   "nonHuman": false,
+   "triangleGuardMin": 8000,
+   "fps": 60,
+   "clips": {
+    "clone_cast": 30,
+    "death": 45,
+    "hit": 12,
+    "idle": 120,
+    "slam_act": 3,
+    "slam_rec": 40,
+    "slam_tele": 24,
+    "stagger": 40,
+    "tp_appear": 20,
+    "tp_vanish": 30,
+    "walk": 62
+   },
+   "unityClipNames": [
+    "Armature|clone_cast",
+    "Armature|death",
+    "Armature|hit",
+    "Armature|idle",
+    "Armature|slam_act",
+    "Armature|slam_rec",
+    "Armature|slam_tele",
+    "Armature|stagger",
+    "Armature|tp_appear",
+    "Armature|tp_vanish",
+    "Armature|walk"
+   ],
+   "reportLengthMismatch": {},
+   "frontFix": {
+    "applied": false,
+    "front_vector": [
+     0.0518,
+     -0.9987,
+     0.0
+    ],
+    "front_method": "toe-base minus foot (both sides) bone heads",
+    "body_bbox_xy_before": [
+     -0.465,
+     0.476,
+     -0.24,
+     0.439
+    ],
+    "body_bbox_xy_after": [
+     -0.465,
+     0.476,
+     -0.24,
+     0.439
+    ],
+    "body_height_raw_m": 2.0399
+   },
+   "rootMotion": {
+    "clone_cast": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.007,
+     "top_bone_net_m": 0.0
+    },
+    "death": {
+     "frames": 45,
+     "top_bone_max_excursion_m": 0.209,
+     "top_bone_net_m": 0.0
+    },
+    "hit": {
+     "frames": 12,
+     "top_bone_max_excursion_m": 0.028,
+     "top_bone_net_m": 0.0
+    },
+    "idle": {
+     "frames": 120,
+     "top_bone_max_excursion_m": 0.028,
+     "top_bone_net_m": 0.0
+    },
+    "slam_act": {
+     "frames": 3,
+     "top_bone_max_excursion_m": 0.125,
+     "top_bone_net_m": 0.125
+    },
+    "slam_rec": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.084,
+     "top_bone_net_m": 0.084
+    },
+    "slam_tele": {
+     "frames": 24,
+     "top_bone_max_excursion_m": 0.042,
+     "top_bone_net_m": 0.042
+    },
+    "stagger": {
+     "frames": 40,
+     "top_bone_max_excursion_m": 0.126,
+     "top_bone_net_m": 0.0
+    },
+    "tp_appear": {
+     "frames": 20,
+     "top_bone_max_excursion_m": 0.07,
+     "top_bone_net_m": 0.07
+    },
+    "tp_vanish": {
+     "frames": 30,
+     "top_bone_max_excursion_m": 0.07,
+     "top_bone_net_m": 0.07
+    },
+    "walk": {
+     "frames": 62,
+     "top_bone_max_excursion_m": 0.045,
+     "top_bone_net_m": 0.0
+    }
+   },
+   "rootLocked": [],
+   "sockets": [],
+   "weaponMaterialsRenamed": {},
+   "palettePlanes": 8,
+   "scaleToDisplay": 0.696720170406524,
+   "rawHeightM": 2.038120985031128,
+   "displaySizeM": null,
+   "displayBasis": null,
+   "displayHeightM": 1.42,
+   "displayHeightDerivedM": 1.42,
+   "displayHeightFromTurnedBodyBboxM": 1.4212,
+   "fbxBytes": 3201804,
+   "seconds": 6.2
+  }
+ ],
+ "totalFbxBytes": 99619208,
+ "frontCrossCheck": {
+  "tool": "unity/Tools/enemy3d/front-lunge-check.py",
+  "unit": "Blender world metres of the source glb, before the turn",
+  "meaning": "centroid shift of the body mesh, idle -> attack_tele peak (windup) and idle -> attack_act/dive_act end (strike): windup +X and strike -X means the front is -X",
+  "rows": {
+   "slime": {
+    "windup_xy": [
+     0.073,
+     0.004
+    ],
+    "strike_xy": [
+     -0.09,
+     -0.014
+    ]
+   },
+   "eyemass": {
+    "windup_xy": [
+     0.049,
+     0.0
+    ],
+    "strike_xy": [
+     -0.033,
+     -0.001
+    ]
+   },
+   "wraith": {
+    "windup_xy": [
+     0.065,
+     0.01
+    ],
+    "strike_xy": [
+     -0.072,
+     0.017
+    ]
+   },
+   "fetal": {
+    "windup_xy": [
+     0.26,
+     0.01
+    ],
+    "strike_xy": [
+     -0.151,
+     0.026
+    ]
+   },
+   "mother": {
+    "windup_xy": [
+     0.12,
+     -0.008
+    ],
+    "strike_xy": [
+     -0.108,
+     0.0
+    ]
+   },
+   "spider": {
+    "windup_xy": [
+     0.026,
+     -0.002
+    ],
+    "strike_xy": [
+     -0.01,
+     0.001
+    ]
+   },
+   "bat": {
+    "windup_xy": [
+     0.033,
+     0.001
+    ],
+    "strike_xy": [
+     -1.582,
+     0.002
+    ]
+   },
+   "worm": {
+    "windup_xy": [
+     0.012,
+     0.011
+    ],
+    "strike_xy": [
+     0.01,
+     0.001
+    ]
+   },
+   "womb": {
+    "windup_xy": [
+     0.035,
+     -0.002
+    ],
+    "strike_xy": [
+     -0.044,
+     0.002
+    ]
+   }
+  },
+  "note": "7 of 9 show windup back (+X) and strike forward (-X), always along X not Y. spider (0.026/-0.010) and worm (0.012/+0.010) are too small to read. The bone-axis vector alone is ambiguous for fetal, spider, mother, wraith, slime, womb (see frontFix.front_vector_before): the declared facing in the reports (-X) is trusted there. Mac capture must confirm the 9 faces."
+ }
+}
