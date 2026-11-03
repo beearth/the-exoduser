@@ -305,3 +305,8 @@ R4는 필수 로딩팁 누락 FAIL을 유지한다. R5는 소스/빌드 준비�
 실제 PostMessage 누름/해제와 잠긴직업 차단·이름입력 열림 검사는 유지한다. 해제 후0.2초만 기다리고 즉시 characterStep을 검사하던 fixture는 새500ms 검정→실제 준비→600ms 복귀보다 먼저 판정하여8db8dd46에서12프레임 뒤 FAIL했다. 이제 해제 이벤트가 처리되는 실제 OnGUI 프레임 끝을 통과한 다음 NativeScreenTransition.Busy가 종료될 때까지 최대15초(제품 준비12초+양쪽fade와프레임여유)를 기다리고, 제품 전환failed/timeout은 여전히 FAIL한다. 좌표·입력·제품500/600ms·12초제한·잠금검사·분석기 임계 변경0. 새패키지 전체검수 전 미검증이다.
 
 같은 fixture의 신규입장 즉시 Loading assert도 실제제품계약으로교정했다. BeginCharacterEntry(false)는검정경계를요청하고onBlack에서loadingAlreadyShown=true로Nemesis를연다. 이요청중에는검수의AutomatedInput 우회를해제한채실제callback을기다린다. callback실행뒤입력격리를복원하고Preparing의실제완전검정Repaint를로딩프레임으로즉시캡처한다(기존.18초정지대기없이). 이후fade완료와Nemesis를모두검사한다. 옛1.2초로고페이지를다시삽입하지않고, 전체페이지수/언어·해상도·클립/글자분석·입력격리assert는유지한다. 제품전환코드변경0.
+
+
+### P0 그룹 좌표 교정 R3 — 제품 그리기와 계측 분리
+
+R2의물리픽셀그룹+기존배율은실제그리기의그룹원점을중복확대하여정보/제작내용을판밖으로밀었다. 실제PNG를보고VISUAL FAIL로철회했으며부분분석0건은인도근거가아니다. 제품GUI.BeginGroup과GUI.matrix는기존배치로복원한다. 활성Repaint계측때만BeginGroup직전의부모보정포함화면원점과직후GUIUtility의원점차이를groupCorrection으로기록한다. ScreenRect의4꼭짓점·quad·실제clip에같은차이를적용하고중첩그룹끝/프레임시작에스택을복원한다. 픽셀을움직이지않고계측좌표를실제배치에맞추며, 문자열/소스제외·겹침임계완화0. 새Player의실제글자경계/원래판안배치·전체겹침재검수전미검증이다.

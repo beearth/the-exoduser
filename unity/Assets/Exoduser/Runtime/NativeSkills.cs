@@ -235,7 +235,7 @@ namespace Exoduser.UnityPort {
    float costY=y+(extra?33:0),buttonY=costY+59,equipY=buttonY+(d!=null?56:0);bool canEquip=id!=EquippedId(SelectedSlot)&&NativeSkillManagementPolicy.CanEquip(sim,SelectedSlot,id);
    float resourceY=equipY+(canEquip?56:0)+(d!=null&&!supported?20:0),height=resourceY+56;var box=new Rect(51,skillBodyTop,270,Mathf.Min(height,658.8125f));InfoFace(box);NativeUiAudit.Region(box,"component","skill-info","최종 웹실측 x51/w270·Hahmlet28/16·행간28");
    var evt=Event.current;if(evt.type==EventType.ScrollWheel&&box.Contains(evt.mousePosition)){infoScroll=Mathf.Clamp(infoScroll+evt.delta.y*22,0,Mathf.Max(0,height-box.height));evt.Use();}infoScroll=Mathf.Clamp(infoScroll,0,Mathf.Max(0,height-box.height));
-   var groupMatrix=NativeUiAudit.BeginScaledGroup(box);try{float off=infoScroll;var ico=id=="roll"?Tex("Art/ui/skill/roll_boots"):OrbIcon(id,false);var center=new Vector2(51,49.296875f-off);Disc(center,28,C(146,149,149,.22f));if(ico!=null)NativeUiAudit.DrawTexture(new Rect(23,21.296875f-off,56,56),ico,ScaleMode.ScaleToFit,true);
+   NativeUiAudit.BeginGroup(box);try{float off=infoScroll;var ico=id=="roll"?Tex("Art/ui/skill/roll_boots"):OrbIcon(id,false);var center=new Vector2(51,49.296875f-off);Disc(center,28,C(146,149,149,.22f));if(ico!=null)NativeUiAudit.DrawTexture(new Rect(23,21.296875f-off,56,56),ico,ScaleMode.ScaleToFit,true);
     Text(new Rect(93,21-off,154,33.6f),name,serif,28,C(222,219,213),FontStyle.Bold);if(d!=null)Text(new Rect(93,58.59375f-off,154,19),"Lv "+lv+" / 20",serif,13,C(165,168,168));Fill(new Rect(23,89.59375f-off,224,1),C(146,149,149,.22f));
     for(int i=0;i<lines.Count;i++)Text(new Rect(23,descY+i*28-off,224,28),lines[i],serif,16,C(217,214,208));
     if(extra)Text(new Rect(23,y-off,224,24),fixedSkill?"고정 기술은 교체할 수 없습니다":"기절 탈출 ["+SlotKey(SelectedSlot)+"]",serif,13,C(170,173,173));
@@ -246,7 +246,7 @@ namespace Exoduser.UnityPort {
     }
     if(canEquip&&InfoButton(new Rect(23,equipY-off,224,40),"이 슬롯에 장착 ["+SlotKey(SelectedSlot)+"]",true,false)){if(NativeSkillManagementPolicy.Equip(sim,SelectedSlot,id))ChangedSkill();}
     Fill(new Rect(23,resourceY-off,224,1),C(146,149,149,.22f));NativeCurrencyOrb.Draw(new Rect(23,resourceY+12-off,24,24),sim.Materials);Text(new Rect(47,resourceY+12-off,200,24),"SP "+sim.Player.StatPoints+" · 악의오브 "+sim.Materials.ToString("N0",System.Globalization.CultureInfo.InvariantCulture)+" · LV "+sim.Player.Level,serif,13,C(165,168,168),FontStyle.Normal,.1f);
-   }finally{NativeUiAudit.EndScaledGroup(groupMatrix);}
+   }finally{NativeUiAudit.EndGroup();}
   }
   void InfoFace(Rect r){Fill(r,C(8,11,11,.72f));Border(r,C(146,149,149,.22f));}
   bool InfoButton(Rect r,string text,bool enabled,bool primary){bool prior=GUI.enabled;GUI.enabled=prior&&enabled;var old=GUI.color;if(!enabled)GUI.color=new Color(old.r,old.g,old.b,old.a*.42f);NativeSilverHellUi.ActionPlate(r,false,enabled&&r.Contains(Event.current.mousePosition)?1:0,false,22,6);Text(r,text,serif,16,primary?C(242,240,236):C(214,211,205),FontStyle.Normal,0,TextAnchor.MiddleCenter);bool hit=NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none);GUI.color=old;GUI.enabled=prior;return enabled&&hit;}

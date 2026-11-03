@@ -130,7 +130,7 @@ NativeScreenTransition은준비timeout실패를빈error대신 prepare-timeout (1
 |---|---|---|
 | 우선순위 | 147건→0 확인 후 unity/main 비강제 반영, 그 다음 5차 잔여 | 이전 09192f7의 1395장/147건 원본 보존. 새 후보 전체 검수 전 PASS 금지 |
 | 스킬 이름 | 슬롯·제단 이름/레벨은 웹 CSS nowrap/overflow:hidden/text-overflow:ellipsis와 같은 지정 폭·행 높이 안에서 표시 | 웹3333 ko/de/fr ×1920/2560×1600 실물12장. 첫 browser7fdc5e0c는 오류0/창감지1 운영 FAIL, 재검수 중 |
-| 스크롤 판 | 스킬 정보/대장간 본문을 물리 픽셀 그룹에 배치하고 내부에 같은 배율을 한 번 적용. 화면·GUIUtility 좌표의 그룹 원점 불일치를 제거 | 기존 PNG/JSON 그룹 내부 좌표 차이 발견. 새 실제 PNG·JSON 대조 전 미검증. 분석기 제외/임계 완화0 |
+| 스크롤 판 | 제품의 기존 논리 그룹/GUI.matrix는 유지하고 계측의 그룹 원점만 화면 배율로 보정 | 물리 그룹 후보는 중복 배율 시각 FAIL로 철회. 부모 화면원점−새 그룹 API원점 차이를 중첩 스택으로 기록. 새 Player 전 미검증, 분석기 제외/임계 완화0 |
 | 제작 비용/확률 | 비용 y447.4/h20.4, 확률 y471.8/h20.4; 기존 h15/14,y465.4 수정. 그리드 y505.4 보존 | 실제 한 줄 높이+4px 간격. 금액·확률·동작 변경0 |
 | 공용 실행기 | I:/EXODUSER-Storage/unity-jobs/bin/exo-unity.ps1만 실행. checkout 사본 위임, ui-overlap/check.ps1 절대 공용 경로 | 자기 evening/third 직접 호출39개 백업·SHA 후 치환. CTO45개와 수 차이는 정확 경로 재검색 필요 |
 
@@ -167,3 +167,12 @@ I:·PowerShell이 정상 응답해 fetch/소유/공용slots3 상태를 재확인
 첫 전체 UI 8db8dd46은12장 후 실제 마우스 이름입력검사 FAIL(exit2)이다. 잠긴직업 차단true/이름열림false였으나 같은프레임의확인음·전환callback이뒤따라 fixture가새전환완료보다앞서검사했음을확인했다. UiWideClick에OnGUI프레임끝→실제전환Busy종료(최대15s) 대기를추가하고제품전환실패/기존좌표·차단assert는유지한다. 이는검수시계교정이며제품timeout완화나147건검사제외가아니다. 새정식패키지/M1/1395전체재검수전이며P0완료아님. 상세계약은UNITY_UI_OVERLAP_20261030.md 최신절.
 
 검수기소스전수확인에서신규입장도즉시Loading가정이남아있음을발견했다. 실제제품은onBlack의loadingAlreadyShown=true로Nemesis에진입하므로, 비동기실제입장callback까지기다리고Preparing의실제완전검정Repaint를로딩으로수집한뒤fade완료/Nemesis를assert하도록같은수정에포함했다. 1395페이지조건/분석기·입력격리검사유지, 제품화면전환변경0.
+
+
+## P0 두 번째 패키지 — 부분0건이어도 시각FAIL, 방식 변경
+
+입력91b3550464의 정식3a16d065·M1 d56318d4(23/23·창0·잔여0·USER_SAVE0)는통과했다. 실제마우스2560×1600의잠긴직업차단/nameOpened가모두true이고,로딩JSON의R4192×192영역(x2296,y1336)·alphaReaderVerified도확인했다. 첫3문제프레임을기존분석기로재분석하면0건/경고0이다. 그러나 원본PNG직접열람에서스킬정보와대장간내용물이배경판밖으로밀려나시각FAIL로판정했다. 물리그룹의원점을기존GUI.matrix가다시확대하는제작오류이며0건을합격으로쓰지않는다.
+
+제품의GUI.BeginGroup/GUI.matrix동작을원래대로복원한다. NativeUiAudit에만부모그룹화면원점과새그룹API원점의차이를쌓아ScreenRect/quad/실제clip좌표를보정하고그룹끝/프레임시작때복원한다. 이름말줄임/행높이·비용확률간격·실제전환검수교정은유지한다. 새방식의원본1x·PNG실제글자경계와JSON좌표·전체검사전까지미검증이다.
+
+실패bfb10503은447PNG까지보존하고정확실행경로/명령/생성시각/부모57996/자기슬롯을대조해자기Player56436만중단했다. 타인/사용자프로세스종료0. 공용실행기는강제종료의uint32 4294967295→Int32변환에서예외를기록했고finally로자기예약/슬롯을반환했다. 이실패를정상종료·전체0건·잔여0로승격하지않는다. stop근거 resume-0912/r3/stopped-invalid-ui.json.

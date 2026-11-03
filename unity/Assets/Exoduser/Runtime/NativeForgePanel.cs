@@ -198,7 +198,7 @@ namespace Exoduser.UnityPort {
    // wheel: inner list first, then the panel
    if(innerRect.height>0&&Wheel(innerRect,ref listScroll,InnerListContent(sim,inv),innerRect.height)){}
    else Wheel(GridView,ref scroll,contentH,GridView.height);
-   var contentMatrix=NativeUiAudit.BeginScaledGroup(GridView);
+   NativeUiAudit.BeginGroup(GridView);
    off=new Vector2(GridView.x,LegacyGridTop+scroll);
    switch(Tab){
     case "upgrade":DrawUpgrade(sim,inv);break;
@@ -208,7 +208,7 @@ namespace Exoduser.UnityPort {
     case "crystal":DrawCrystal(sim);break;
     case "craft":DrawCraft(sim,inv);break;
    }
-   off=Vector2.zero;NativeUiAudit.EndScaledGroup(contentMatrix);
+   off=Vector2.zero;NativeUiAudit.EndGroup();
    // panel scrollbar sits in the padding box column x 1404..1414
    ScrollBar(1,new Rect(1404,GridView.y,10,GridView.height),GridView.height,contentH,ref scroll);
    gridScroll[Tab]=scroll;

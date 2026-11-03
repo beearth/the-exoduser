@@ -24,6 +24,8 @@ namespace Exoduser.UnityPort
         [DefaultExecutionOrder(-31999)] internal sealed class Host:MonoBehaviour { void OnGUI(){if(Event.current.type==EventType.Repaint)BeginFrame();} }
         static Frame frame;
         static Vector2 origin;
+        static Vector2 groupCorrection;
+        static readonly Stack<Vector2> groupCorrections=new Stack<Vector2>();
         static readonly Stack<Rect> clips=new Stack<Rect>();
         static readonly PropertyInfo visibleClip=typeof(GUI).Assembly.GetType("UnityEngine.GUIClip")?.GetProperty("visibleRect",BindingFlags.Static|BindingFlags.Public|BindingFlags.NonPublic);
         static bool TryActualClip(out Rect clip)
@@ -34,16 +36,16 @@ namespace Exoduser.UnityPort
         {
             if(!Active)return;
             var matrix=GUI.matrix;GUI.matrix=Matrix4x4.identity;origin=GUIUtility.GUIToScreenPoint(Vector2.zero);GUI.matrix=matrix;
-            frame=new Frame{width=Screen.width,height=Screen.height,repaintFrames=1,capturedFrame=Time.frameCount};clips.Clear();
+            frame=new Frame{width=Screen.width,height=Screen.height,repaintFrames=1,capturedFrame=Time.frameCount};clips.Clear();groupCorrection=Vector2.zero;groupCorrections.Clear();
             ValidateAlphaReader();frame.alphaReaderVerified=alphaReaderVerified;frame.alphaReaderProof=alphaReaderProof;frame.alphaProbe=alphaProbe;frame.alphaMipProbe=alphaMipProbe;frame.alphaRtProbe=alphaRtProbe;
         }
         static Rect ScreenRect(Rect r)
         {
-            Vector2 a=GUIUtility.GUIToScreenPoint(r.min)-origin,b=GUIUtility.GUIToScreenPoint(r.max)-origin;
-            Vector2 c=GUIUtility.GUIToScreenPoint(new Vector2(r.xMin,r.yMax))-origin,d=GUIUtility.GUIToScreenPoint(new Vector2(r.xMax,r.yMin))-origin;
+            Vector2 a=GUIUtility.GUIToScreenPoint(r.min)-origin+groupCorrection,b=GUIUtility.GUIToScreenPoint(r.max)-origin+groupCorrection;
+            Vector2 c=GUIUtility.GUIToScreenPoint(new Vector2(r.xMin,r.yMax))-origin+groupCorrection,d=GUIUtility.GUIToScreenPoint(new Vector2(r.xMax,r.yMin))-origin+groupCorrection;
             return Rect.MinMaxRect(Mathf.Min(a.x,b.x,c.x,d.x),Mathf.Min(a.y,b.y,c.y,d.y),Mathf.Max(a.x,b.x,c.x,d.x),Mathf.Max(a.y,b.y,c.y,d.y));
         }
-        static Vector2[] ScreenQuad(Rect r)=>new[]{GUIUtility.GUIToScreenPoint(r.min)-origin,GUIUtility.GUIToScreenPoint(new Vector2(r.xMax,r.yMin))-origin,GUIUtility.GUIToScreenPoint(r.max)-origin,GUIUtility.GUIToScreenPoint(new Vector2(r.xMin,r.yMax))-origin};
+        static Vector2[] ScreenQuad(Rect r)=>new[]{GUIUtility.GUIToScreenPoint(r.min)-origin+groupCorrection,GUIUtility.GUIToScreenPoint(new Vector2(r.xMax,r.yMin))-origin+groupCorrection,GUIUtility.GUIToScreenPoint(r.max)-origin+groupCorrection,GUIUtility.GUIToScreenPoint(new Vector2(r.xMin,r.yMax))-origin+groupCorrection};
         static Rect Intersect(Rect a,Rect b)=>Rect.MinMaxRect(Mathf.Max(a.xMin,b.xMin),Mathf.Max(a.yMin,b.yMin),Mathf.Min(a.xMax,b.xMax),Mathf.Min(a.yMax,b.yMax));
         static bool Repainting=>Active&&frame!=null&&Event.current!=null&&Event.current.type==EventType.Repaint;
         static Element Record(Rect rect,string kind,string text,string source,bool shadow=false)
@@ -239,21 +241,19 @@ namespace Exoduser.UnityPort
         internal static string TextField(Rect r,string s,int max,GUIStyle style){TextFieldBackground(r,style);Region(r,"button");Text(r,new GUIContent(s),style,"입력 글자");return GUI.TextField(r,s,max,style);}
         static void PushClip(Rect r){if(!Active||Event.current.type!=EventType.Repaint)return;Rect next=ScreenRect(r);if(clips.Count>0){Rect p=clips.Peek();next=Rect.MinMaxRect(Mathf.Max(next.xMin,p.xMin),Mathf.Max(next.yMin,p.yMin),Mathf.Min(next.xMax,p.xMax),Mathf.Min(next.yMax,p.yMax));}clips.Push(next);}
         static void PopClip(){if(Active&&Event.current.type==EventType.Repaint)clips.Pop();}
-        // Top-level scaled panels keep their group origin in physical pixels. GUIUtility's
-        // group offset otherwise stays unscaled while the IMGUI renderer scales it.
-        internal static Matrix4x4 BeginScaledGroup(Rect r)
+        // Keep product drawing unchanged. GUIToScreenPoint leaves BeginGroup's
+        // translation unscaled; record the renderer's transformed group origin instead.
+        internal static void BeginGroup(Rect r)
         {
-            var previous=GUI.matrix;
-            var a=previous.MultiplyPoint3x4(new Vector3(r.xMin,r.yMin,0));
-            var b=previous.MultiplyPoint3x4(new Vector3(r.xMax,r.yMax,0));
-            GUI.matrix=Matrix4x4.identity;
-            BeginGroup(Rect.MinMaxRect(a.x,a.y,b.x,b.y));
-            var local=previous;local.m03=0;local.m13=0;GUI.matrix=local;
-            return previous;
+            bool measuring=Repainting;
+            Vector2 expected=measuring?GUIUtility.GUIToScreenPoint(r.position)-origin+groupCorrection:Vector2.zero;
+            PushClip(r);GUI.BeginGroup(r);
+            if(measuring){groupCorrections.Push(groupCorrection);groupCorrection=expected-(GUIUtility.GUIToScreenPoint(Vector2.zero)-origin);}
         }
-        internal static void EndScaledGroup(Matrix4x4 previous){EndGroup();GUI.matrix=previous;}
-        internal static void BeginGroup(Rect r){PushClip(r);GUI.BeginGroup(r);}
-        internal static void EndGroup(){GUI.EndGroup();PopClip();}
+        internal static void EndGroup()
+        {
+            GUI.EndGroup();if(Repainting)groupCorrection=groupCorrections.Pop();PopClip();
+        }
         internal static Vector2 BeginScrollView(Rect r,Vector2 scroll,Rect view,bool horizontal,bool vertical){PushClip(r);return GUI.BeginScrollView(r,scroll,view,horizontal,vertical);}
         internal static Vector2 BeginScrollView(Rect r,Vector2 scroll,Rect view,bool horizontal,bool vertical,GUIStyle hs,GUIStyle vs){PushClip(r);return GUI.BeginScrollView(r,scroll,view,horizontal,vertical,hs,vs);}
         internal static void EndScrollView(){GUI.EndScrollView();PopClip();}
