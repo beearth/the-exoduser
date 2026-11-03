@@ -48,6 +48,7 @@ namespace Exoduser.UnityPort
             public Rect heroSourceAlphaRect,bossSourceAlphaRect;
             public NativeDruidRigPixelView.Frame bossRig;
             public Arena8bLighting lighting;public NativeArena3DView.SurfaceReceipt surface;
+            public ArenaReviewVfx vfx;
         }
         [Serializable] sealed class ArenaReviewEvent
         {
@@ -69,6 +70,89 @@ namespace Exoduser.UnityPort
             public int width,height;
             public string[] captured,missing,missingScreenshots;
         }
+        // ---- QA only: --unity-druid-vfx-review (no effect without the flag; no Core writes) ----
+        [Serializable] sealed class ArenaReviewVfx
+        {
+            public int tick,slashIdx,slamN,slashN,slamsStarted,slashesStarted,bodySpritesDrawn,maxBodySpritesDrawn;
+            public string state;public double st2,bossX,bossY,facing;public bool orbGlowDrawn;public int seqSlam,seqSlash;
+        }
+        sealed class ArenaVfxPending{public int due;public string name;}
+        static bool DruidVfxReviewRequested{get{return Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-druid-vfx-review")>=0;}}
+        bool arenaVfxReview;
+        readonly List<ArenaVfxPending> arenaVfxPending=new List<ArenaVfxPending>();
+        string arenaVfxPrev="";
+        int arenaVfxSlamN,arenaVfxSlashN;
+        const int ArenaVfxSeqFrames=600,ArenaVfxSeqDone=100000;
+        readonly int[] arenaVfxSeq={-1,-1};
+        static readonly string[] ArenaVfxSeqDir={"seq-slam","seq-slash"};
+        static readonly int[] ArenaVfxSlamAct={0,2,6,26,60,180};
+        void ArenaVfxAdd(string prefix,int[] offsets,int tick)
+        {
+            foreach(int o in offsets)arenaVfxPending.Add(new ArenaVfxPending{due=tick+o,name=prefix+"-a"+o.ToString("00")});
+        }
+        void DruidVfxReviewTick(DruidData d)
+        {
+            if(!arenaVfxReview)return;
+            int t=Simulation.TickCount;
+            string s=d.S;
+            bool enter=s!=arenaVfxPrev;
+            if(s=="bossSlamWind")
+            {
+                if(enter&&arenaVfxSeq[0]==-1)arenaVfxSeq[0]=0;
+                if(d.St2<=3&&arenaVfxSlamN<2)QueueArenaReviewShot("vfx-slam-"+(arenaVfxSlamN+1)+"-tm1");
+            }
+            else if(s=="bossSlam"&&enter)
+            {
+                arenaVfxSlamN++;
+                if(arenaVfxSlamN<=2)ArenaVfxAdd("vfx-slam-"+arenaVfxSlamN,ArenaVfxSlamAct,t);
+            }
+            else if(s=="bossSlashWind")
+            {
+                if(enter&&d.SlashIdx==0&&arenaVfxSeq[1]==-1)arenaVfxSeq[1]=0;
+                if(d.SlashIdx==2&&d.St2<=3&&arenaVfxSlashN>=1&&arenaVfxSlashN<=2)QueueArenaReviewShot("vfx-slash3-"+arenaVfxSlashN+"-tm1");
+            }
+            else if(s=="bossSlash"&&enter)
+            {
+                if(d.SlashIdx==0)arenaVfxSlashN++;
+                if(arenaVfxSlashN>=1&&arenaVfxSlashN<=2)ArenaVfxAdd("vfx-slash"+(d.SlashIdx+1)+"-"+arenaVfxSlashN,d.SlashIdx==2?new[]{0,1,2,4,8,30,150}:new[]{0,1,2,4,8},t);
+            }
+            for(int i=arenaVfxPending.Count-1;i>=0;i--)
+                if(arenaVfxPending[i].due<=t){QueueArenaReviewShot(arenaVfxPending[i].name);arenaVfxPending.RemoveAt(i);}
+            arenaVfxPrev=s;
+        }
+        ArenaReviewVfx DruidVfxReviewFrame(DruidData d)
+        {
+            if(!arenaVfxReview||d==null)return null;
+            var v=skillVfx;
+            return new ArenaReviewVfx
+            {
+                tick=Simulation.TickCount,state=d.S,st2=d.St2,slashIdx=d.SlashIdx,bossX=d.X,bossY=d.Y,facing=d.Facing,slamN=arenaVfxSlamN,slashN=arenaVfxSlashN,
+                slamsStarted=v==null?-1:v.SlamsStarted,slashesStarted=v==null?-1:v.SlashesStarted,bodySpritesDrawn=v==null?-1:v.BodySpritesDrawn,maxBodySpritesDrawn=v==null?-1:v.MaxBodySpritesDrawn,orbGlowDrawn=v!=null&&v.OrbGlowDrawn,
+                seqSlam=arenaVfxSeq[0],seqSlash=arenaVfxSeq[1]
+            };
+        }
+        void DruidVfxReviewBegin()
+        {
+            arenaVfxReview=DruidVfxReviewRequested;
+            if(!arenaVfxReview)return;
+            foreach(var dir in ArenaVfxSeqDir)
+            {
+                string path=Path.Combine(arenaReviewOutput,dir);
+                Directory.CreateDirectory(path);
+                if((File.GetAttributes(path)&FileAttributes.ReparsePoint)!=0)throw new IOException("Arena review seq folder cannot be a link");
+                foreach(var f in Directory.GetFiles(path,"f*.png"))File.Delete(f);
+            }
+        }
+        bool DruidVfxSeqRunning(){return arenaVfxReview&&((arenaVfxSeq[0]>=0&&arenaVfxSeq[0]<ArenaVfxSeqFrames)||(arenaVfxSeq[1]>=0&&arenaVfxSeq[1]<ArenaVfxSeqFrames));}
+        void DruidVfxSeqWrite(byte[] bytes)
+        {
+            for(int k=0;k<2;k++)
+            {
+                if(arenaVfxSeq[k]<0||arenaVfxSeq[k]>=ArenaVfxSeqFrames)continue;
+                File.WriteAllBytes(Path.Combine(arenaReviewOutput,ArenaVfxSeqDir[k],"f"+arenaVfxSeq[k].ToString("000000")+".png"),bytes);
+                arenaVfxSeq[k]=arenaVfxSeq[k]+1>=ArenaVfxSeqFrames?ArenaVfxSeqDone:arenaVfxSeq[k]+1;
+            }
+        }
         void BossArenaReviewBegin(string output)
         {
             if(!BossArenaReviewRequested)return;
@@ -76,8 +160,9 @@ namespace Exoduser.UnityPort
             arenaReviewOutput=Path.Combine(output,"arena-review");
             Directory.CreateDirectory(arenaReviewOutput);
             if((File.GetAttributes(arenaReviewOutput)&FileAttributes.ReparsePoint)!=0)throw new IOException("Arena review output cannot be a link");
-            foreach(var file in Directory.GetFiles(arenaReviewOutput)){var name=Path.GetFileName(file);bool owned=name.StartsWith("move-",StringComparison.Ordinal)||name.StartsWith("transition-",StringComparison.Ordinal)||name=="camera-frames.jsonl"||name=="moves.jsonl"||name=="review.json"||name=="druid-rigpixel.json"||name=="druid-rigpixel-rt.png"||name.StartsWith("material-field-reference.",StringComparison.Ordinal)||name.StartsWith("material-arena-reference.",StringComparison.Ordinal)||name=="material-comparison.html";if(owned&&(name.EndsWith(".png",StringComparison.Ordinal)||name.EndsWith(".json",StringComparison.Ordinal)||name.EndsWith(".jsonl",StringComparison.Ordinal)||name=="material-comparison.html")){if((File.GetAttributes(file)&FileAttributes.ReparsePoint)!=0)throw new IOException("Arena review file cannot be a link");File.Delete(file);}}
+            foreach(var file in Directory.GetFiles(arenaReviewOutput)){var name=Path.GetFileName(file);bool owned=name.StartsWith("move-",StringComparison.Ordinal)||name.StartsWith("vfx-",StringComparison.Ordinal)||name.StartsWith("transition-",StringComparison.Ordinal)||name=="camera-frames.jsonl"||name=="moves.jsonl"||name=="review.json"||name=="druid-rigpixel.json"||name=="druid-rigpixel-rt.png"||name.StartsWith("material-field-reference.",StringComparison.Ordinal)||name.StartsWith("material-arena-reference.",StringComparison.Ordinal)||name=="material-comparison.html";if(owned&&(name.EndsWith(".png",StringComparison.Ordinal)||name.EndsWith(".json",StringComparison.Ordinal)||name.EndsWith(".jsonl",StringComparison.Ordinal)||name=="material-comparison.html")){if((File.GetAttributes(file)&FileAttributes.ReparsePoint)!=0)throw new IOException("Arena review file cannot be a link");File.Delete(file);}}
             arenaReviewMetricsOnly=Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-boss-arena-metrics-only")>=0;
+            DruidVfxReviewBegin();
             StartCoroutine(BossArenaReviewFrames());
             Debug.Log("ARENA_REVIEW fixed resolution; input-only coverage; capture frames excluded from clean timing; sandbox="+NativeQaSandbox.Root);
         }
@@ -141,6 +226,7 @@ namespace Exoduser.UnityPort
             arenaReviewBeat=d.HbBeat;
             arenaReviewErupt=d.EruptHit;
             arenaReviewFissure=fissure;
+            DruidVfxReviewTick(d);
         }
         void QueueArenaReviewShot(string name)
         {
@@ -169,7 +255,7 @@ namespace Exoduser.UnityPort
             bool window=Time.unscaledTime<arenaReviewUntil;
             arenaReviewFrame=new ArenaReviewFrame
             {
-                frame=Time.frameCount,tick=s.TickCount,width=Screen.width,height=Screen.height,loadPhase=s.Stage.LoadPhase,arena=arena,arena3d=mode,sink=sink,window=window?arenaReviewWindow:"",state=d==null?"":d.S,moveId=d==null?"":d.RmMoveId,heroSprite=playerView.sprite==null?"":playerView.sprite.texture.name+":"+playerView.sprite.rect,position=camera.transform.position,rotation=camera.transform.eulerAngles,quaternion=camera.transform.rotation,marker=r3Marker==null?Vector3.zero:r3Marker.position,fieldOfView=camera.fieldOfView,distanceToMarker=r3Marker==null?0:Vector3.Distance(camera.transform.position,r3Marker.position),desiredDistance=r3ArenaCamera.Distance,heroScale=playerView.transform.lossyScale,heroModelRestWorldHeight=NativeArenaActorMetrics.HeroModelWorld,heroMeasureScope=playerView.enabled?"source alpha rectangle, includes weapon/occluded pixels":"3D renderer bounds projection; capture JSON additionally has isolated GPU colored silhouette",heroProjectedBoundsHeightPx=hh,heroProjectedHeightFraction=hh/Screen.height,bossOpaqueHeightPx=bh,bossHeroRatio=hh>0?bh/hh:0,heroSourceAlphaRect=heroRect,bossSourceAlphaRect=bossRect,deltaMs=Time.unscaledDeltaTime*1000,prepareCpuMs=r3Arena==null?0:r3Arena.PrepareMs,meshBuilds=r3Arena==null?0:r3Arena.MeshBuilds,faded=r3Arena==null?0:r3Arena.Faded,nearestDraws=r3Arena==null?0:r3Arena.NearestDraws,previousFrameCapture=arenaReviewLastCapture
+                frame=Time.frameCount,tick=s.TickCount,width=Screen.width,height=Screen.height,loadPhase=s.Stage.LoadPhase,arena=arena,arena3d=mode,sink=sink,window=window?arenaReviewWindow:"",state=d==null?"":d.S,moveId=d==null?"":d.RmMoveId,heroSprite=playerView.sprite==null?"":playerView.sprite.texture.name+":"+playerView.sprite.rect,position=camera.transform.position,rotation=camera.transform.eulerAngles,quaternion=camera.transform.rotation,marker=r3Marker==null?Vector3.zero:r3Marker.position,fieldOfView=camera.fieldOfView,distanceToMarker=r3Marker==null?0:Vector3.Distance(camera.transform.position,r3Marker.position),desiredDistance=r3ArenaCamera.Distance,heroScale=playerView.transform.lossyScale,heroModelRestWorldHeight=NativeArenaActorMetrics.HeroModelWorld,heroMeasureScope=playerView.enabled?"source alpha rectangle, includes weapon/occluded pixels":"3D renderer bounds projection; capture JSON additionally has isolated GPU colored silhouette",heroProjectedBoundsHeightPx=hh,heroProjectedHeightFraction=hh/Screen.height,bossOpaqueHeightPx=bh,bossHeroRatio=hh>0?bh/hh:0,heroSourceAlphaRect=heroRect,bossSourceAlphaRect=bossRect,deltaMs=Time.unscaledDeltaTime*1000,prepareCpuMs=r3Arena==null?0:r3Arena.PrepareMs,meshBuilds=r3Arena==null?0:r3Arena.MeshBuilds,faded=r3Arena==null?0:r3Arena.Faded,nearestDraws=r3Arena==null?0:r3Arena.NearestDraws,previousFrameCapture=arenaReviewLastCapture,vfx=DruidVfxReviewFrame(d)
             };
             BossArenaMaterialLate();
             if(window&&!arenaReviewMetricsOnly)QueueArenaReviewShot("transition-"+arenaReviewWindow+"-f"+Time.frameCount.ToString("000000"));
@@ -183,14 +269,17 @@ namespace Exoduser.UnityPort
                 if(row==null||row.frame!=Time.frameCount)continue;
                 row.bossRig=druidRig==null?null:druidRig.CaptureFrame();
                 if(row.bossRig!=null&&row.bossRig.ready){row.bossOpaqueHeightPx=-1;row.bossHeroRatio=-1;} // Legacy sprite metrics are not the new rig body.
-                bool capture=arenaReviewShots.Count>0&&!arenaReviewMetricsOnly;
+                bool shots=arenaReviewShots.Count>0&&!arenaReviewMetricsOnly,seq=!arenaReviewMetricsOnly&&DruidVfxSeqRunning();
+                bool capture=shots||seq;
                 row.capture=capture;
                 if(capture)
                 {
+                    if(shots){
                     if(row.bossRig!=null&&row.bossRig.ready)row.bossRig.rawAlphaHeightPx=druidRig.CaptureRawRt(Path.Combine(arenaReviewOutput,"druid-rigpixel-rt.png"));
                     row.lighting=BossArenaCaptureLighting();row.surface=r3Arena==null?null:r3Arena.CaptureSurface();
                     row.heroGpuSilhouetteHeightPx=BossArenaReviewHeroPixels();
                     row.heroGpuSilhouetteHeightFraction=row.heroGpuSilhouetteHeightPx>0?row.heroGpuSilhouetteHeightPx/row.height:0;
+                    }
                     fullRunCaptureActivity="arena-review";
                     fullRunLastCaptureActivity="arena-review";
                     fullRunLastCaptureFrame=Time.frameCount;
@@ -198,6 +287,7 @@ namespace Exoduser.UnityPort
                     try
                     {
                         var bytes=image.EncodeToPNG();
+                        if(seq)DruidVfxSeqWrite(bytes);
                         foreach(var name in arenaReviewShots)
                         {
                             File.WriteAllBytes(Path.Combine(arenaReviewOutput,name+".png"),bytes);
