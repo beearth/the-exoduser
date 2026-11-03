@@ -29,7 +29,7 @@ static class Program
         Check(q.Sheet=="Dark_MediumImpact"&&q.Life==72&&q.Frames==16&&!q.Additive,"Q parry is the exact dark02 alpha boom");
         Check(q.Frame(0)==0&&q.Frame(71)==15&&q.Frame(72)==-1,"Q has nonempty first frame, last frame and exact expiry");
         var lightning=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=0});
-        Check(lightning.Count==3&&lightning[1].Rows==3&&lightning[1].Delay==1,"nonphysical shield parry keeps all three lightning layers");
+        Check(lightning.Count==3&&lightning[1].Rows==3&&lightning[1].Delay==1&&lightning[0].Sheet=="Lightning_ImpactLightning_Sheet_el4"&&lightning[1].Sheet=="Lightning_Lightning_FBF_4x3_el4"&&lightning[2].Sheet=="Lightning_BasicImpact_el4","nonphysical shield parry keeps all three lightning layers with el4 sheets");
         Check(lightning[0].FrameTicks==5&&lightning[1].FrameTicks==7&&lightning[2].FrameTicks==7,"lightning layer frame speeds remain 5/7/7 ticks");
         Check(lightning[1].Frame(0)==-1&&lightning[1].Frame(1)==0,"only delayed layer waits one tick");
         Check(Math.Abs(lightning[0].DrawWidth(0,128)-153.6)<.001&&Math.Abs(lightning[0].Alpha(0)-.7)<.001,"TVFX2 starts with web scale1.2 and opacity.7");
@@ -43,9 +43,9 @@ static class Program
         budget.Reset();Check(budget.AdmitHit(1,false),"restart resets budget even when ticks rewind");
         Check(CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.BossDeath,Source="druid_sink",IsBoss=true}).Count==0,"druid escape must not bleed");
         var dead=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.EnemyDeath,Size=20}).Single();
-        Check(dead.Life==64&&Math.Abs(dead.Width-236.8)<.001&&!dead.Additive,"ordinary death keeps blood alpha blend and radius-dependent width");
+        Check(dead.Life==64&&Math.Abs(dead.Width-236.8)<.001&&!dead.Additive&&dead.Sheet=="Blood_FBF_4x4_matte","ordinary death keeps matte blood alpha blend and radius-dependent width");
         var bossDead=CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.BossDeath,IsBoss=true,Size=40}).Single();
-        Check(bossDead.Frames==24&&bossDead.Life==96&&bossDead.Fallback=="Blood_FBF_4x4","boss authored24 clip maps original96tick lifecycle with16cell fallback");
+        Check(bossDead.Frames==24&&bossDead.Life==96&&bossDead.Fallback=="Blood_FBF_4x4_matte","boss authored24 clip maps original96tick lifecycle with16cell matte fallback");
         Check(CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.EnemyHit,VisualOnly=true,Element=6})[0].Sheet=="impact_basic_sheet","unbanked earth element uses the web basic fallback");
         Check(Math.Abs(CombatImpactTimeline.ParticleTravel(3,0,2)-5.7)<1e-9&&Math.Abs(CombatImpactTimeline.ParticleTravel(3,.1,2)-5.79)<1e-9,"particle drag.9 and gravity match two web pool updates");
         Check(CombatImpactTimeline.Plan(new FeedbackEvent{Kind=FeedbackKind.Parry,Step=1,Source="waterBean"})[0].Sheet=="Ice_ImpactIce_Sheet","water Q parry selects the ice exception instead of duplicate dark02");

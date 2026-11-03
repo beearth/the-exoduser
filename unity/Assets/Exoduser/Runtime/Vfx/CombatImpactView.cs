@@ -97,7 +97,15 @@ namespace Exoduser.UnityPort.Vfx
         }
         static Color Hex(string value){ColorUtility.TryParseHtmlString(value,out var c);return c;}
         static Color ElementColor(int el){return Hex(new[]{"#bbbbbb","#ff5522","#3388ff","#9933cc","#ffee00","#ff88cc","#88aa44"}[Mathf.Clamp(el,0,6)]);}
-        static Color ParryColor(FeedbackEvent e){return e.Source=="physicalProjectile"?Color.white:e.SampleKey=="red"?Hex("#ff2200"):e.SampleKey=="rainbow"?Hex("#ff00ff"):Hex("#00ccff");}
+        static Color ParryColor(FeedbackEvent e){
+            // Existing feedback tags take precedence; rainbow has no single
+            // element, so use the sacred core of its four-layer contact.
+            if(e.Source=="waterBean")return Hex("#dcebf0");
+            if(e.Source=="physicalProjectile")return Hex("#efe6d2");
+            if(e.SampleKey=="red")return Hex("#ffd9a0");
+            if(e.SampleKey=="rainbow")return Hex("#fff2d6");
+            return Hex(new[]{"#efe6d2","#ffd9a0","#e8f3f8","#cdb2e0","#fff4d0","#fff2d6","#dcc8a4"}[Mathf.Clamp(e.Element,0,6)]);
+        }
         float R(float low,float span){return low+(float)random.NextDouble()*span;}
         void Shake(int tick,float amount){float current=shake*Mathf.Pow(.86f,Mathf.Max(0,tick-shakeBorn));shakeBorn=tick;shake=Mathf.Max(current,amount);}
         public Vector3 CameraOffset(int tick) {

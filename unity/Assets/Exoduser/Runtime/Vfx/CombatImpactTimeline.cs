@@ -65,9 +65,9 @@ namespace Exoduser.UnityPort.Vfx
                 }else if(e.Step==1)result.Add(Boom("Dark_MediumImpact",72,80*3));
                 else if(e.Source=="physicalProjectile")result.Add(Boom("Fire_ImpactFire_Sheet",12,60*3,4,true));
                 else {
-                    result.Add(Flip("Lightning_ImpactLightning_Sheet",4,4,1.2,0,5));
-                    result.Add(Flip("Lightning_Lightning_FBF_4x3",4,3,1.1*1.2,1,7));
-                    result.Add(Flip("Lightning_BasicImpact",3,3,.5*1.2,0,7));
+                    result.Add(Flip("Lightning_ImpactLightning_Sheet_el4",4,4,1.2,0,5));
+                    result.Add(Flip("Lightning_Lightning_FBF_4x3_el4",4,3,1.1*1.2,1,7));
+                    result.Add(Flip("Lightning_BasicImpact_el4",3,3,.5*1.2,0,7));
                 }
             }else if(e.VisualOnly&&(e.Kind==FeedbackKind.EnemyHit||e.Kind==FeedbackKind.EnemyCrit||e.Kind==FeedbackKind.BossHit)) {
                 int el=e.Element;bool hasElement=el>=0&&el<=5;
@@ -76,8 +76,8 @@ namespace Exoduser.UnityPort.Vfx
                 else{var c=Flip("impact_basic_sheet",9,1,e.IsBoss?.7:.4,0,3);c.FrameTicks=2.4;c.Life=22;c.Mode=CombatClipMode.SlashBurst;result.Add(c);}
             }else if((e.Kind==FeedbackKind.EnemyDeath||e.Kind==FeedbackKind.BossDeath)&&e.Source!="druid_sink") {
                 double scale=Math.Max(.8,Math.Min(4.8,.35+Math.Max(1,e.Size)*.075));
-                result.Add(new CombatClip{Sheet=e.IsBoss?"boss/boss_death_blood_24_20261010":"Blood_FBF_4x4",Fallback=e.IsBoss?"Blood_FBF_4x4":null,
-                    Cols=e.IsBoss?6:4,Rows=4,Frames=e.IsBoss?24:16,Life=e.IsBoss?96:64,Width=128*scale,Angle=e.Angle,Mode=CombatClipMode.Death});
+                result.Add(new CombatClip{Sheet=e.IsBoss?"boss/boss_death_blood_24_20261010":"Blood_FBF_4x4_matte",Fallback=e.IsBoss?"Blood_FBF_4x4_matte":null,
+                    Cols=e.IsBoss?6:4,Rows=4,Frames=e.IsBoss?24:16,Life=e.IsBoss?96:64,Width=128*scale,Angle=e.Angle,Additive=false,Mode=CombatClipMode.Death});
             }
             return result;
         }
