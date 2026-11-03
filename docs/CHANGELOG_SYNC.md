@@ -57806,3 +57806,5 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 - 사용자 대지강타 스프라이트 반쪽 잘림 재지적 및 본편 반영 지시. 02ca363571에 최신 origin/unity/main 8c5f967d74f1622a0248096e958337573a099e80을 정상 병합. docs4파일5충돌블록 양쪽전체기록 보존·충돌표시/미해결0.
 - f579841ce importer metadata 포함, 로컬수정 거부0/불일치파일 임의stage0. wave/flash 지면투영·셀외곽4%·경사root bias 수정 핵심4파일은 기존02ca와 동일. Core수식 신규수정0.
 - 병합소스 공용PC컴파일1회 후자기브랜치 비강제push, CTO가 unity/main fast-forward 인수한다. 이번사용자지시는 과거 MacPASS전 공통대기 조건을 해제하며, 새시각/사용자실행본갱신 확인과는 구분한다.
+
+- 최종공통 f146df2b29e98ecac7fdd03e08c888b07d3f7a8d 포함. 최초8c 검사 중 패링/기검참 소스가8e로 전진해 추가병합·최종소스579d081d696660c87509be2f1c19c39ca8d4a9e1을1회 추가검사(전체2입력/동일소스반복0). 공용ec46a2a7 exit0/C#0/shader3/USER_SAVE0, 실행15206ms/wall167270ms, 종료Curl42 1건. 이후f146은기획docs3개뿐이며최종Unity파일차이0. 메타1개만자기checkpoint복원, 외부guard/미추적7보존. 사용자명시승인으로CTO즉시FF 인수대상, 시각/실행본교체미확인.

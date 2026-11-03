@@ -6,11 +6,13 @@
 
 | 항목 | 통합 계약/확인 |
 |---|---|
-| 기준 | 기존 브랜치02ca363571 위에 최신 origin/unity/main `8c5f967d74f1622a0248096e958337573a099e80` 정상 병합 |
+| 기준 | 기존 브랜치02ca363571 위에 공통8c5f967d7 병합. 검사 중 전진한 패링·기검참 포함8e4e358e6을 추가 병합 후 최종 검사. 이후 기획docs3개만 추가된 최신 `f146df2b29e98ecac7fdd03e08c888b07d3f7a8d`도 병합. 최종 Unity 파일은 검사입력과 동일 |
 | 문서 충돌 | CHANGELOG_SYNC·GROUND_EFFECT_PLACEMENT·HERO_VFX_CENTER_ANCHOR·RM_INT_RUNTIME_HOOK의5블록. 양쪽 기록 전체를 보존하고 과거PC 후보 기록을 표제에서 구분. 충돌 표시/미해결경로0 |
 | f579841ce metadata | 공통의 실제 importer .meta 커밋을 통합. 이번 병합은 로컬 수정으로 거부되지 않았으며, 내용 불일치 파일의 임의 stage/덮어쓰기0. 기존 외부guard WORK 보존 |
 | 대지치기 잘림 수정 포함 | NativeSkillView wave/flash 둘 다 GroundSkillSurface.Mark, 본체 셀 외곽4% 감쇠,4셀 pow(p,.6)·45틱 유지. 수신깊이 투영·경사 root bias-1 수정도 유지. 이 핵심4파일은 기존02ca363571과 내용 차이0 확인 |
-| 다음 단계 | 병합 커밋에서 공용PC 컴파일1회→자기브랜치 비강제push→CTO unity/main fast-forward. PC Player/정식빌드0. 현재 실제 바탕화면 실행본 교체 여부·새Metal 경사 시각 판정은 미확인 |
+| 다음 단계 | 최종 입력 공용PC 컴파일 통과→자기브랜치 비강제push→CTO unity/main fast-forward. PC Player/정식빌드0. 현재 실제 바탕화면 실행본 교체 여부·새Metal 경사 시각 판정은 미확인 |
+
+최종 PC 영수증: 소스 `579d081d696660c87509be2f1c19c39ca8d4a9e1`, 공용bin `ec46a2a7` exit0/C#오류0/shaderImports3/USER_SAVE0. 실행15206ms, 대기포함wall167270ms(refresh10896/compile8585ms). errorLogs1은 종료Curl42, entitlement 정상확인. 최초8c 병합본 df9d34b770의2d232bc0도 exit0이었으나 검사 중 공통에 새Unity 소스가 들어와 최종입력을1회 추가검사했다(전체2회/동일소스반복0). 이후f146의docs-only 병합·인계docs 커밋은 Unity 파일 차이0 확인으로 검사 재사용. 자동임포트 button_iron.png.meta1개만 자기 checkpoint로 복원(필터2→1 재기록·공백, 원본guid보존), 기존외부guard/미추적7항목 보존. Unity 종료·예약해제 확인. 이번통합은 사용자명시승인으로 CTO 즉시FF 인수대상이며 시각PASS 선언이 아니다.
 
 ## 20:20 Mac FAIL 1건 — 경사 접합부 재작업(최신)
 
