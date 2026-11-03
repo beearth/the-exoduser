@@ -169,12 +169,12 @@ namespace Exoduser.UnityPort {
   }
   static Color Palette(string name){
    name=name.ToLowerInvariant();
-   if(name.Contains("skin"))return new Color(.45f,.28f,.20f,1);
-   if(name.Contains("hair"))return new Color(.025f,.020f,.015f,1);
-   if(name.Contains("cloth")||name.Contains("cape"))return new Color(.18f,.035f,.025f,1);
-   if(name.Contains("leather"))return new Color(.08f,.045f,.025f,1);
-   if(name.Contains("sword")||name.Contains("weapon")||name.Contains("blade"))return new Color(.36f,.38f,.40f,1);
-   return new Color(.17f,.19f,.22f,1);
+   if(name.Contains("skin"))return new Color(.62f,.42f,.32f,1);
+   if(name.Contains("hair"))return new Color(.045f,.035f,.030f,1);
+   if(name.Contains("cloth")||name.Contains("cape"))return new Color(.34f,.085f,.065f,1);
+   if(name.Contains("leather"))return new Color(.18f,.11f,.07f,1);
+   if(name.Contains("sword")||name.Contains("weapon")||name.Contains("blade"))return new Color(.48f,.50f,.52f,1);
+   return new Color(.34f,.38f,.42f,1);
   }
   MeshRenderer Quad(string name,Material material){
    var go=GameObject.CreatePrimitive(PrimitiveType.Quad);go.name=name;go.transform.SetParent(transform,false);if(Application.isPlaying)Destroy(go.GetComponent<Collider>());else DestroyImmediate(go.GetComponent<Collider>());

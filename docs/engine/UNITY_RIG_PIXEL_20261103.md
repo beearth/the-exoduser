@@ -62,3 +62,5 @@ R6 모션 보강은 UNITY_HERO_MOTION_20261030.md의11-03 절을 따른다. 실�
 보행접점시각기록은HeroFrame.gaitPhase/gaitFootPlanted/gaitFootPlantError, Shift실제InputSystem프레임은PlaytestFrame.motion을추가한다. 실제HarpActive/DashActive와Chain포즈의동시표시를대조한다. Body/발목코드는HERO_MOTION11-03절, Core변경0.
 
 11-03 비정상종료 후 재개: 사용자 보고Kernel-Power41 이후 REPORT/작업파일을 대조했다. 9개 자기미커밋수정 보존, INDEX0, origin/unity/main c741c11c27은현HEAD조상으로이미포함. R6d는PC종료전실행결과가없고재사용하지않는다. 순수모션9검사를재개후다시실행하고 검수전복구커밋으로보존한다. 타인/Unity임포트파생메타/guard는포함하지않는다. 최신v4253ad0b1d의G0~G5/하루커밋push/1920·3840/점0관문은유지한다.
+
+R6 실제e54f1e56는Playing진입/41검사/579PNG/USER_SAVE0·창노출0·잔여0·정상종료를확인했다. 보행접점26표본최대.000009m/대검발회전.000009m/장갑파지.000012m. 그러나motion-board-1x.png를직접보고 갑옷·망토·칼이암부에서검은실루엣으로뭉치는핵심가독성FAIL로판정했다. 큰재질면과점제거·모션은유지하고R6b에서광량만보강한다. 실제Point광의거리감쇠를color에먼저곱한뒤1.1/(1+maxRGB)압축하여, 강한횃불을먼저압축한후거리를다시감쇠해지나치게어두워지는계산을교정한다(Directional attenuation1은동일). 최종후보Palette alpha1: Iron(.34,.38,.42), Skin(.62,.42,.32), Hair(.045,.035,.030), Cloth/Cape(.34,.085,.065), Leather(.18,.11,.07), Sword(.48,.50,.52). 기존피부/머리보호·재질면정리·4회법선·RT정수배·Core/월드광원/보행코드는동일. 새실제1x/3x판정전미채택이다.

@@ -18,7 +18,7 @@ Shader "Exoduser/RigPixelToon" {
    struct V {float4 positionCS:SV_POSITION;float3 world:TEXCOORD0;half3 normal:TEXCOORD1;float2 uv:TEXCOORD2;};
    V Vert(A v){V o;VertexPositionInputs p=GetVertexPositionInputs(v.positionOS.xyz);o.positionCS=p.positionCS;o.world=p.positionWS;o.normal=TransformObjectToWorldNormal(v.normalOS);o.uv=TRANSFORM_TEX(v.uv,_BaseMap);return o;}
    half Band(half d){return floor(saturate(d)*3+.5h)/3;}
-   half3 Irradiance(half3 direction,half3 color,half attenuation,half3 normal){half peak=max(color.r,max(color.g,color.b));half3 energy=color*(1.1h/(1+peak));return energy*(.12h+.88h*Band(dot(normal,direction)))*attenuation;}
+   half3 Irradiance(half3 direction,half3 color,half attenuation,half3 normal){color*=attenuation;half peak=max(color.r,max(color.g,color.b));half3 energy=color*(1.1h/(1+peak));return energy*(.12h+.88h*Band(dot(normal,direction)));}
    half4 Frag(V i):SV_Target {
     half4 albedo=SAMPLE_TEXTURE2D_BIAS(_BaseMap,sampler_BaseMap,i.uv,4)*_BaseColor;clip(albedo.a-.2h);albedo.rgb=_PaletteColor.rgb;
     half3 n=normalize(i.normal);
