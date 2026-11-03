@@ -8,7 +8,8 @@ namespace Exoduser.UnityPort
     [DefaultExecutionOrder(27000)]
     public sealed class A2RHeroReadability : MonoBehaviour
     {
-        SpriteRenderer source;Sprite previous;MeshRenderer contour,ring;Mesh mesh;Material material,ringMaterial;Light fill;Func<Vector3> foot;Camera viewer;
+        SpriteRenderer source;Sprite previous;MeshRenderer contour,ring;Mesh mesh,ringMesh;Material material,ringMaterial;Light fill;Func<Vector3> foot;Camera viewer;
+        public bool CaptureFootLightOff;
         MeshRenderer rigImage;readonly List<Renderer> rigBodies=new List<Renderer>();float nextRigSearch;bool wasRig;
         bool RigVisible {get{return rigImage!=null&&rigImage.enabled&&rigImage.gameObject.activeInHierarchy;}}
         Renderer VisibleHero {get{return RigVisible?(Renderer)rigImage:source;}}
@@ -31,8 +32,8 @@ namespace Exoduser.UnityPort
         {
             source=actor;foot=ground;viewer=camera;active=this;var go=new GameObject("A2R soft 1.5 screen pixel bone rim");go.transform.SetParent(transform,false);go.layer=actor.gameObject.layer;
             mesh=new Mesh{name="A2R source frame contour quad"};go.AddComponent<MeshFilter>().sharedMesh=mesh;contour=go.AddComponent<MeshRenderer>();material=new Material(Resources.Load<Shader>("A2R/HeroReadability"));contour.sharedMaterial=material;contour.shadowCastingMode=ShadowCastingMode.Off;contour.receiveShadows=false;
-            fill=new GameObject("A2R hero weak ground light").AddComponent<Light>();fill.transform.SetParent(transform,false);fill.type=LightType.Point;fill.range=4;fill.intensity=1.1f;fill.color=new Color(.89f,.88f,.80f);fill.shadows=LightShadows.None;
-            var disk=GameObject.CreatePrimitive(PrimitiveType.Quad);Destroy(disk.GetComponent<Collider>());disk.name="A2R soft foot light pool";disk.transform.SetParent(transform,false);ring=disk.GetComponent<MeshRenderer>();ringMaterial=new Material(Resources.Load<Shader>("A2R/FootLight"));ring.sharedMaterial=ringMaterial;ring.shadowCastingMode=ShadowCastingMode.Off;
+            fill=new GameObject("A2R hero weak ground light").AddComponent<Light>();fill.transform.SetParent(transform,false);fill.type=LightType.Point;fill.range=4;fill.intensity=.35f;fill.color=new Color(1,.48f,.16f);fill.shadows=LightShadows.None;
+            var disk=new GameObject("A2R terrain-following circular warm foot light");disk.transform.SetParent(transform,false);ringMesh=new Mesh{name="A2R radial foot light no quad corners"};disk.AddComponent<MeshFilter>().sharedMesh=ringMesh;ring=disk.AddComponent<MeshRenderer>();ringMaterial=new Material(Resources.Load<Shader>("A2R/FootLight"));ring.sharedMaterial=ringMaterial;ring.shadowCastingMode=ShadowCastingMode.Off;
             RenderPipelineManager.beginCameraRendering+=BeforeCamera;RenderPipelineManager.endCameraRendering+=AfterCamera;
         }
         void LateUpdate()
@@ -44,7 +45,10 @@ namespace Exoduser.UnityPort
             contour.transform.SetPositionAndRotation(source.transform.position,source.transform.rotation);var scale=source.transform.lossyScale;if(source.flipX)scale.x=-scale.x;if(source.flipY)scale.y=-scale.y;contour.transform.localScale=scale;
             UpdateFoot();Restore();PrepareSorting();
         }
-        void UpdateFoot(){var p0=foot();fill.transform.position=p0+Vector3.up*.8f;ring.transform.SetPositionAndRotation(p0+Vector3.up*.035f,Quaternion.Euler(90,0,0));float radius=Mathf.Max(.25f,HeroBounds.size.x)*1.3f;ring.transform.localScale=new Vector3(radius*2,radius*2,1);}
+        void UpdateFoot(){var p0=foot();fill.transform.position=p0+Vector3.up*.8f;fill.enabled=!CaptureFootLightOff;ring.enabled=!CaptureFootLightOff;float radius=Mathf.Max(.25f,HeroBounds.size.x)*1.3f;fill.range=radius*1.15f;
+            const int sides=64,rings=4;var v=new Vector3[1+sides*rings];var uv=new Vector2[v.Length];var triangles=new List<int>();v[0]=Vector3.up*.04f;uv[0]=new Vector2(.5f,.5f);
+            for(int row=0;row<rings;row++)for(int i=0;i<sides;i++){float angle=i*Mathf.PI*2/sides,r=(row+1f)/rings;var offset=new Vector2(Mathf.Cos(angle),Mathf.Sin(angle))*radius*r;int index=1+row*sides+i;v[index]=new Vector3(offset.x,NativeRemodel3D.GroundY(p0.x+offset.x,p0.z+offset.y)-p0.y+.04f,offset.y);uv[index]=new Vector2(.5f+offset.x/(radius*2),.5f+offset.y/(radius*2));if(row==0)triangles.AddRange(new[]{0,index,1+(i+1)%sides});else{int a=index-sides,b=1+(row-1)*sides+(i+1)%sides,c=1+row*sides+(i+1)%sides;triangles.AddRange(new[]{a,index,b,b,index,c});}}
+            ring.transform.SetPositionAndRotation(p0,Quaternion.identity);ring.transform.localScale=Vector3.one;ringMesh.Clear();ringMesh.vertices=v;ringMesh.uv=uv;ringMesh.SetTriangles(triangles,0);ringMesh.RecalculateBounds();}
         Rect Project(Bounds bounds)
         {
             Vector2 lo=new Vector2(float.PositiveInfinity,float.PositiveInfinity),hi=-lo;
@@ -69,6 +73,6 @@ namespace Exoduser.UnityPort
         void AfterCamera(ScriptableRenderContext context,Camera camera){if(camera==viewer)Restore();}
         void Restore(){foreach(var r in hidden)if(r!=null)r.enabled=true;hidden.Clear();foreach(var s in restored)if(s.renderer!=null){s.renderer.sortingOrder=s.order;s.renderer.sortingLayerID=s.layer;s.renderer.sharedMaterial=s.material;}restored.Clear();}
         void OnDisable(){Restore();}
-        void OnDestroy(){RenderPipelineManager.beginCameraRendering-=BeforeCamera;RenderPipelineManager.endCameraRendering-=AfterCamera;Restore();if(mesh!=null)Destroy(mesh);if(material!=null)Destroy(material);if(ringMaterial!=null)Destroy(ringMaterial);foreach(var m in behind.Values)Destroy(m);}
+        void OnDestroy(){RenderPipelineManager.beginCameraRendering-=BeforeCamera;RenderPipelineManager.endCameraRendering-=AfterCamera;Restore();if(mesh!=null)Destroy(mesh);if(ringMesh!=null)Destroy(ringMesh);if(material!=null)Destroy(material);if(ringMaterial!=null)Destroy(ringMaterial);foreach(var m in behind.Values)Destroy(m);}
     }
 }

@@ -39,7 +39,7 @@ namespace Exoduser.UnityPort
             var unique=new HashSet<Light>();foreach(var l in lights)if(l!=null&&unique.Add(l)){originalLights.Add(new LightState(l));if(l.type==LightType.Directional&&l.enabled)moon=l;if(l.name=="Hero cool edge")heroRim=l;if(l.name=="Hero neutral fill")heroFill=l;}
             foreach(var v in volumes)if(v!=null&&!sourceVolumes.Contains(v)){sourceVolumes.Add(v);volumeEnabled.Add(v.enabled);}
             foreach(var r in world.GetComponentsInChildren<Renderer>(true)){var m=r.sharedMaterial;if(m==null)continue;bool height=m.shader.name=="EXODUSER/A2HeightFog",shaft=m.shader.name=="EXODUSER/A2Atmosphere";if(!height&&!shaft)continue;var copy=new Material(height?Resources.Load<Shader>("A2R/DistanceHaze"):m.shader);copy.CopyPropertiesFromMaterial(m);if(height){copy.SetColor("_Color",new Color(.072f,.066f,.053f,1));copy.SetFloat("_Density",.002f);copy.SetFloat("_Start",34);copy.SetFloat("_Maximum",.05f);}else copy.SetColor("_Color",new Color(.62f,.61f,.57f,0));fog.Add(new FogState{renderer=r,original=m,replacement=copy});}
-            effects=new GameObject("A2R1 C10 lighting only");effects.transform.SetParent(world,true);
+            effects=new GameObject("A2R1 C10 lighting only");effects.transform.SetParent(world,true);effects.AddComponent<A2RContact>();
             tone=new GameObject("A2R1 C10 color and depth").AddComponent<Volume>();tone.transform.SetParent(effects.transform,false);tone.isGlobal=true;tone.priority=150;
             var profile=ScriptableObject.CreateInstance<VolumeProfile>();profile.name="A2R1 Neutral C10 transfer";profile.Add<Tonemapping>(true).mode.Override(TonemappingMode.Neutral);
             // C10 card exposure/cyan moon over-brightened A2 water and erased its earth palette.

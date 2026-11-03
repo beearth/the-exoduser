@@ -25,7 +25,7 @@ namespace Exoduser.UnityPort
             foreach(var name in new[]{"A2 전체 필드 지면","A2 시작 목교"}){var target=world.Find(name);if(target==null)continue;foreach(var filter in target.GetComponentsInChildren<MeshFilter>()){if(filter.sharedMesh==null)continue;var query=new GameObject("A2R visual surface ray query");query.transform.SetParent(filter.transform,false);query.layer=28;query.AddComponent<MeshCollider>().sharedMesh=filter.sharedMesh;}}
             Physics.SyncTransforms();var input=JsonUtility.FromJson<Input>(Resources.Load<TextAsset>("A2R/web-assets").text);var sourceObjects=new List<Transform>();foreach(Transform child in world)sourceObjects.Add(child);
             Shader opaque=Resources.Load<Shader>("A2R/CardOpaque"),transparent=Resources.Load<Shader>("A2R/CardFade");if(opaque==null||transparent==null)throw new InvalidOperationException("A2R web card shaders missing");
-            Result.sourceCards=input.cards.Length;Result.groundTiles=A2RGroundPainting.Build(visuals.transform,input.groundTiles,input.riverPoints,NativeGame.Instance.Map.CanMove);Result.moatRibbons=input.riverPoints!=null&&input.riverPoints.Length>1?1:0;
+            Result.sourceCards=input.cards.Length;Result.groundTiles=A2RGroundPainting.Build(visuals.transform,input.groundTiles,input.riverPoints,NativeGame.Instance.Map.CanMove,water);Result.moatRibbons=input.riverPoints!=null&&input.riverPoints.Length>1?1:0;
             foreach(var c in input.cards)
             {
                 bool originalRoot=c.kind=="m_c1groot";if(originalRoot)foreach(var p in NativeGame.Instance.Map.Data.props)if(p.id==c.kind){c.x=p.x;c.y=p.y;c.width=p.width/100;c.height=p.height/100;break;}
@@ -45,7 +45,7 @@ namespace Exoduser.UnityPort
             foreach(var key in new[]{"_ForestMap","_SoilMap","_RootMap"})originalTextures[key]=ground.GetTexture(key);if(!string.IsNullOrEmpty(A2RHumanSave.Root))System.IO.File.WriteAllText(System.IO.Path.Combine(A2RHumanSave.Root,"web-assets-receipt.json"),JsonUtility.ToJson(Result,true));Debug.Log("[A2R] Full C10 cards="+Result.sourceCards+" added="+Result.added+" duplicates="+Result.duplicates+" ground="+Result.groundTiles+" floating="+Result.floating);SetLook(false);
         }
         Texture2D waterDomain;
-        void BuildWaterDomain(){var map=NativeGame.Instance.Map.Data;waterDomain=new Texture2D(200,200,TextureFormat.R8,false,true){name="A2R actual water domain - blocked floor only",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};var pixels=new byte[40000];for(int y=0;y<200;y++)for(int x=0;x<200;x++)pixels[y*200+x]=map.tiles[y*200+x]==1?(byte)255:(byte)0;waterDomain.SetPixelData(pixels,0);waterDomain.Apply(false,true);Shader.SetGlobalTexture("_A2RWaterDomain",waterDomain);Shader.SetGlobalFloat("_A2RWaterDomainReady",1);}
+        void BuildWaterDomain(){const int n=512;waterDomain=new Texture2D(n,n,TextureFormat.R8,false,true){name="A2R actual terrain below existing water plane",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear};var pixels=new byte[n*n];for(int y=0;y<n;y++)for(int x=0;x<n;x++){float wx=(x+.5f)*80/n,wz=-(y+.5f)*80/n;pixels[y*n+x]=NativeRemodel3D.Field.TerrainHeight(wx,wz)<-.46f?(byte)255:(byte)0;}waterDomain.SetPixelData(pixels,0);waterDomain.Apply(false,true);Shader.SetGlobalTexture("_A2RWaterDomain",waterDomain);Shader.SetGlobalFloat("_A2RWaterDomainReady",1);}
         void OnDestroy(){if(waterDomain!=null)Destroy(waterDomain);Shader.SetGlobalFloat("_A2RWaterDomainReady",0);}
         static Mesh WindMesh(Card c,Card pivot,bool flip)
         {

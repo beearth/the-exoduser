@@ -16,7 +16,7 @@ namespace Exoduser.UnityPort
         {
             var mesh=new Mesh{name=name};mesh.SetVertices(vertices);mesh.SetUVs(0,uv);mesh.SetTriangles(triangles,0);if(colors!=null)mesh.SetColors(colors);mesh.RecalculateNormals();mesh.RecalculateTangents();mesh.RecalculateBounds();var go=new GameObject(name);go.transform.SetParent(root,false);go.AddComponent<MeshFilter>().sharedMesh=mesh;var r=go.AddComponent<MeshRenderer>();r.sharedMaterial=material;r.shadowCastingMode=ShadowCastingMode.Off;r.receiveShadows=true;
         }
-        public static int Build(Transform root,A2RWebAssets.Tile[] tiles,A2RWebAssets.River[] river,Func<float,float,float,bool> canMove)
+        public static int Build(Transform root,A2RWebAssets.Tile[] tiles,A2RWebAssets.River[] river,Func<float,float,float,bool> canMove,Material actualWater)
         {
             if(tiles==null||tiles.Length!=64)throw new InvalidOperationException("C10 ground requires all 64 original tiles");
             foreach(var tile in tiles)
@@ -35,7 +35,9 @@ namespace Exoduser.UnityPort
                     for(int j=0;j<=16;j++){float u=j/16f,wx=(px+(u*2-1)*width)/100,wz=-py/100;vertices.Add(new Vector3(wx,-.445f,wz));uv.Add(new Vector2(u,(py-3200)/1800));colors.Add(new Color(1,1,1,canMove(wx*100,-wz*100,0)?0:1));}
                     if(row>0)for(int j=0;j<16;j++){int cell=row*17+j;triangles.AddRange(new[]{cell-17,cell-16,cell,cell-16,cell+1,cell});}row++;
                 }
-                Place(root,"C10 original moat strip and banks",vertices,uv,triangles,Paint("r3_moat_strip",true),colors);
+                // The diffuse-only moat cap hid the actual surface reflections. Both meshes now
+                // share the existing real water material/planar reflection, with C10 water paint.
+                Place(root,"C10 original moat strip and banks",vertices,uv,triangles,actualWater,colors);
             }
             return tiles.Length;
         }
