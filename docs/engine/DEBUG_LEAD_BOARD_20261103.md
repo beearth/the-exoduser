@@ -45,6 +45,7 @@
 
 | D-010 | 3333 최신 웹이 11-02 23:53(b1a26271c)에 4시간 멈춤. 예약 `EXODUSER_LatestWeb3333`은 5분마다 결과 0으로 돌았고 로그 0줄 | ① 다른 세션이 3333 서빙 체크아웃 `G:/exoduser-wt/latest-web`의 `docs/API연결_가이드.md`·`docs/CHANGELOG_SYNC.md`를 직접 고쳐 ff가 "Aborting". ② `refresh.ps1`이 merge 직후 `git rev-parse`로 `$LASTEXITCODE`를 0으로 덮어써 실패를 기록하지 못함 | **수정**: 미커밋 수정은 `I:/EXODUSER-Storage/backup/latest-web-wip-20261103-0330/`(패치+원본 2개)에 보존 후 되돌려 4cf4d74eb까지 ff. `refresh.ps1`이 merge 종료코드를 보관하고 실패 시 막은 추적 파일명을 로그에 남김. latest-web에는 문서를 쓰지 않는다(작업은 각자 작업본) |
 
+| D-011 | 로비 묘왕 바르칸이 원형 단 중앙에 서지 않음(사용자 11-03 스크린샷: 단 오른쪽) | Unity `DrawAncestor`는 발을 가로 960 고정(단 중심 660과 300px 차이), 웹은 배경 가로33%·세로84% 고정이라 와이드 확장판(원본 영상을 가운데 상자로 옮김)에서 어긋남. 둘 다 스프라이트 기준점이 가슴(x182)이라 두 발 중점(x207)과 25px 차이 | **수정**: 배경 원본이 실제 그려진 사각형 안 단 동심원 중심(660,850)/(1920,1088)에 두 발 중점·발바닥 높이 중간(207,596)을 맞춤. 웹 main, Unity unity/main(+`--unity-ancestor-lobby-capture` 검수 모드). 웹 1920×1080·1600×900·2560×1080·3840×1080 캡처로 확인 |
 회귀 테스트: `test/bossEliteFlagsAndDefenseTotals.test.js` 3건 통과. 영향 테스트 22파일 138건 재실행 — 실패 16건은 전부 기준선부터 실패하던 것, 새 실패 0.
 
 ## 5. 백로그 (다음 순서)
