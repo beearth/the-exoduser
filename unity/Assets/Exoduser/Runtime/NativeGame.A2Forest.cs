@@ -251,7 +251,7 @@ namespace Exoduser.UnityPort
                 if(stump){var block=new MaterialPropertyBlock();block.SetColor("_BaseColor",new Color(.85f,.78f,.65f,1));r.SetPropertyBlock(block);}
             }
             if(registerSurface&&a2Field!=null&&(roots||stump||hollow||id=="Fallen_Log"||id=="Rotten_Wood_Bridge"))A2FieldRegister(go,id=="Rotten_Wood_Bridge");
-            if(id=="Withered_Shrub")A2Bramble(go,x,z);
+            if(id=="Withered_Shrub"){if(A2RRequested&&A2RProps3D.TerrainEnabled&&A2RProps3D.InTerrainField(x,z))go.SetActive(false);else A2Bramble(go,x,z);}
             return go;
         }
         void A2RootedTree(float x,float z,float sx,float sy,float sz,float yaw)
