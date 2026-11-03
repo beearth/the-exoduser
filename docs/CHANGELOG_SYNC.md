@@ -57913,3 +57913,7 @@ PC 영수증: 소스82110bab432ae08a5f273ac410250be918009346, 공용compile a5b3
 - 기준선 인자 --remodel3d/-force-d3d11을 촬영 드라이버에 복구. HUD4행은 라벨/숫자 폭 기반216~480px·최소16px 간격,11px 축소/줄바꿈 규칙과 실제29언어116행 계측을 추가했다.
 - 이름 바탕18px inset/프레임 외곽 유지, 이름·삭제 질문 나눔명조 우선 선택. 승인된 compact 칩/A면·blur2/14% 원화는 유지하고 공통 철 draw 계측만 추가. Core/저장/문구/유료생성 변경0.
 - 신규4그룹 RED1→PASS1·관련계약PASS, 공용 PC 컴파일222c77f8 PASS/C#0/USER_SAVE0. exact 코드+관련 docs 커밋 후 고정 후보1회/동일 인자50장, 결과는 REPORT/audit-current에 기록한다.
+
+## 2026-11-04 05:40 실행 결과 — 공용 후처리 2FAIL STOP
+- 실제빌드540fdcde20/공용f2a287d2 PASS 뒤3D/d3d11의1920 원본25장·제품9건PASS. GUI116행 최소간격16px, 이름/삭제 실제나눔명조·면18px inset·공통철draw 확인.
+- hover57be03df/사망02ef0c30의 공용 ReadAllText 로그잠금 예외2회로 STOP. 최종가드7/9,3840 0/25. 동일조건 재시도0·추가빌드0, 공용bin/권한/환경/타슬롯변경0. 실제25/50과 미완료 관문을 관련docs/REPORT에 동기화했다.

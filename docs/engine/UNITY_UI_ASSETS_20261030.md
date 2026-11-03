@@ -292,3 +292,6 @@ e3b3bc977 공용1922c0fa 후보빌드1회 Succeeded/errors0/errorLogs0. 이어18
 
 ## 05:40 이름 면과 승인 재질
 이름 바탕+철 면을18px inset하고 frame outset을18px로 두어 기존440×335 프레임 외곽을 유지한다. 이름/삭제 본문은 기존 NanumMyeongjo를 우선 사용, 실제 font.name을 기록한다. 철 blur2 원화/14%/밝기·작은 칩 가족은 디자인총괄 PASS에 따라 불변이며 draw 계측만 추가한다. 신규/복제 원화0. [계약](../3.1%20ui%20hud%20디자인/UNITY_UI_CANDIDATE_20261104.md).
+
+## 05:40 부분 실물 기록
+540fdcde20 실제후보1회 PASS,1920 원본25장/제품9건PASS. 이름404×299 면은18px 안으로 들어갔고 실제 명조/공통철draw를 확인했다. 공용 ReadAllText 종료결함2FAIL로3840촬영은미실행. 원화/폰트파일/compact가족/14%이미지변경0, 최종디자인미완료. [근거](../3.1%20ui%20hud%20디자인/UNITY_UI_CANDIDATE_20261104.md).

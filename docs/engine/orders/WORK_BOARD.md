@@ -754,3 +754,6 @@ codex/unity-demo-text-20261104: CTO지정 e3b3bc977 추가후보빌드1회/공�
 
 ## 2026-11-04 05:40 death-ui 독립 대조 후속
 1촬영 --remodel3d/-force-d3d11,2HUD29언어16px 실측 간격,3이름면18px inset·프레임 경계 유지/명조,4공통Panel 철14% draw 계측.5디자인총괄 결정대로 compact칩/A면 유지. 공통60b7 병합46fed7·docs양쪽 보존, 소스/관련계약PASS·공용222c77f8 컴파일PASS. 다음 고정후보빌드1회/50장, 실제 결과 REPORT. Core/저장/공용bin/타guard WIP/바탕화면·바로가기 변경0.
+
+## 2026-11-04 05:40 death-ui STOP 인계
+540fdcde20 수정/컴파일222c77f8/후보f2a287d2 PASS.1920 25/50장·제품9/9 PASS·HUD116행min16px·명조/면18px 확인. 공용 ReadAllText(player.log) 파일잠금이 hover57be03df/사망02ef0c30에서2회 발생하여 STOP. 공용 최종영수증7/9,3840미실행. 재시도/추가빌드0, 공용bin·타슬롯 변경0. 공용 실행기 담당의 후처리 원인수정과 남은 가드/3840/디자인총괄·Mac관문 필요. 정확한 예외/수량은 REPORT와 audit-current.json.

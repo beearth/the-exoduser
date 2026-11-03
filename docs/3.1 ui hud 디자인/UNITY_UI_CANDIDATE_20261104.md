@@ -54,3 +54,14 @@
 - 소유: NativeObjectivePanel, 이름/삭제/공통Panel, 사망/UI fixture, 두 최소 HUD 예약 연결, 촬영/관련 tests/docs. Core/저장/로비 배치/유료 생성/다른 레인 변경0. 새 회차 폴더/프로젝트 사본0.
 - 소스 검사: 신규4그룹 RED1회(3누락 검출)→수정 후PASS1회, 기존 candidate4그룹/소형칩 계약PASS1회. 공용 PC 컴파일222c77f8 exit0/C#0/errorLogs0/USER_SAVE0. 그 뒤 소스 수정0. CorePresence 메서드 자체는 존재 확인이며 UI 실제 측정은 후보 Player 관문이다.
 - 다음: exact 커밋 HEAD의 공용 후보 빌드1회, 동일 fixed EXE의1920/3840 50장. 실제 SHA/성패/미검증은 REPORT와 audit-current.json에 기록한다. 디자인총괄 나머지 경미 RETOUCH(빈 슬롯 면, 호버 강화, 사운드 줄 끝, 전환 제목)는 이번1~5 범위 밖으로 남긴다.
+
+## 05:40 실제 실행 결과 — 1920 25장, 공용 후처리 2FAIL STOP
+- 소스/실제 빌드540fdcde201b43c15a0b5020037431d3e71ba590, 공용 PC 컴파일222c77f8 PASS 뒤 후보f2a287d2 1회 PASS(errors0/errorLogs0/USER_SAVE0). 그 뒤 Unity 코드/에셋 수정0.
+- --remodel3d/-force-d3d11을 포함한1920 원본25장과 제품receipt9/9 PASS를 확보했다. 실제3D 지면/교량/거목 배경을 확인했다. 원본은 고정1920/에 있으며 이전 회차 파일만 지우고 덮어썼다.
+- 실제 GUI116행 전부 gap≥16px, 최솟값16. 가장 긴 라벨 nl 악의오브136.58px/13px, 스트레스 판 폭345.23px에서도 간격42.51px. 모든116행이 원래 크기에 들어와 실제 강제 줄바꿈은0이다. 11px 축소/줄바꿈 분기는 구현 계약이며 이번 데이터에서 실물로 발동시키지 않았다.
+- 이름/삭제 실제 font.name=NanumMyeongjo-Regular. 이름면(x758,y390.5,404×299)은 기존 frame(x740,y372.5,440×335)보다18px 안이다. 일시정지/이름/삭제의 실제 공통 iron draw>0, 승인된blur2/14% 그대로. 1x/3x에서 Greek 숫자 간격·명조·이름 외곽 바탕 정리를 직접 확인했다.
+- 1920 입장hover57be03df와 사망02ef0c30은 이미지/제품receipt PASS 뒤 공용 exo-unity.ps1의 ReadAllText(player.log)에서 파일잠금 IOException이 났다. 공용 최종영수증은7/9만 정상. 2건은 최종 USER_SAVE 비교/창·정리 결과를 PASS로 추정하지 않는다.
+- hover 실패 조건은 반복하지 않고 미실행 사망1건만 이어서 실행했으며, 같은 공용 결함이 다시 나와 즉시 STOP. 동일조건 재시도0, 추가빌드0,3840 9조건/25장은 미실행. 전체50/50 또는18/18 PASS로 보고하지 않는다.
+- 두 PID61680/10920은 최종 HasExited=true로 관측됐다. 우리 슬롯/예약은 해제됐고 다른 레인의 슬롯은 건드리지 않았다. 프로세스 객체 열거와 로그락/종료지연의 근본 원인은 미확정이다. 공용bin/잠금/권한/보안/전역환경 수정0.
+- 고정 audit-current/capture-current.json은 passed=false/25 of50, runner-failures-current.json에 오류 원문2건, hud-layout-current.json에116행을 기록했다. comparison-1920-{1x,3x}.png와 entry-state-1920-1x.png는 기존 원본을 기계 크롭한 검수판이다.3840 비교판은 없다. 기존 JUDGEMENT(e3b3)는 판정 근거로 보존했으며 새 실행의 합격표로 재사용하지 않는다.
+- 남은 관문: 공용 실행기 담당이 로그공유/종료 후처리 원인을 고친 뒤 실패2조건의 가드 재검증과3840 미실행 촬영, 디자인총괄/Mac 판정. 이 레인은 같은 결함2FAIL 규칙으로 추가실행을 중단했다.

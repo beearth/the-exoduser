@@ -97,3 +97,6 @@ a02cb84850 후보 빌드1회는 성공했으나 첫 로비의 기존 StageFlow l
 
 ## 05:40 촬영 조건·HUD 후속
 swap3와 같은 --remodel3d -force-d3d11 인자로 고정50장을 다시 촬영한다. Greek 포함29언어 HUD4키의 실제 측정 gap≥16px/116행을 사망 영수증에 남긴다. 기존 e3b3의50장은 2D 배경 인자 누락 상태였으며 3D 기준선과 같은 조건의 판정으로 쓰지 않는다. 새 결과는 REPORT가 정본이다. [계약](UNITY_UI_CANDIDATE_20261104.md).
+
+## 05:40 촬영 후처리 중단
+540fdcde20/--remodel3d/-force-d3d11로1920 사망14장·제품검증PASS,29언어116행 최소간격16px를 확인했다. 사망/입장hover의 공용 종료 후 ReadAllText(player.log) 파일잠금 예외가2회 발생해 STOP,3840은 미실행이다. 원본 총25/50, 공용 최종영수증7/9와 제품9/9를 구분한다. [근거와 미완료 관문](UNITY_UI_CANDIDATE_20261104.md).

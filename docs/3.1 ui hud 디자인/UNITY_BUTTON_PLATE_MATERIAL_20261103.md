@@ -86,3 +86,6 @@ e3b3bc977 단일실행본의1920/3840 원본50장및1x/3x비교를확보했다. 
 
 ## 05:40 디자인총괄 결정
 JUDGEMENT(e3b3)에서 가시 없는 작은 칩 가족과 A면이 PASS됐다. 삭제/HUD/보스의 compact 판을 가시로 복원하지 않는다. 공통 Panel(iron:true)의 blur2/14%는 유지하며 실제 IronDrawCount/LastIronRect를 제품 receipt에 추가했다. 이름창은 바탕/철 면만18px inset, 프레임 위치/원화는 유지한다. [후속 계약](UNITY_UI_CANDIDATE_20261104.md).
+
+## 05:40 실제 면/글꼴 확인
+1920 이름면404×299/18px inset·원래 frame440×335 유지, 이름/삭제 NanumMyeongjo-Regular, 공통 iron draw>0를 실제제품receipt로 확인했다. A면14%/blur2·compact칩은 디자인총괄 결정대로 유지했다. 공용 후처리2FAIL로3840미실행이며 새 회차 디자인 합격은 미완료다. [증거](UNITY_UI_CANDIDATE_20261104.md).
