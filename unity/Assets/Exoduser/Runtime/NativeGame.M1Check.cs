@@ -397,8 +397,11 @@ namespace Exoduser.UnityPort
                 anglerHits = sim.HurtFieldMobs(angler.X, angler.Y, 10, 1e9, null);
                 for (int i = 0; i < 30; i++) StepInput(0, 0, p.X, p.Y, false, false);
             }
-            bool naturalUnlock = sealedAtSparseKills && regionKillsReached && anglersStillBlock && anglerHits && flow.FieldBossDone && sim.FieldBossAliveCount() == 0 && sim.RegionClearedCount() == 4 && flow.BossUnlocked;
-            M1Add("09c", "LT-10 regional Hell Gate", naturalUnlock ? "ok" : "fail", "sparse kills sealed " + sealedAtSparseKills + ", real kill thresholds reached " + regionKillsReached + ", all four living anglers still blocked " + anglersStillBlock + ", four angler hit paths " + anglerHits + ", all dead " + flow.FieldBossDone + ", regions " + sim.RegionClearedCount() + "/4, naturally unlocked " + flow.BossUnlocked + "; stage kills " + flow.StageKills + "/" + flow.TotalSpawned + " (harness combat, not OS input)", "");
+            // The last region clears on the next 15-frame region check and the gate opens on the first 30-frame room check after it: 1..44 ticks after the
+            // last angler, depending on phases the earlier kills shifted (region-test 09c). A fixed 30 ticks missed it (SWAP2 eaf67fae9). Wait, never force.
+            int gateWait = 0; while (anglerHits && flow.FieldBossDone && !flow.BossUnlocked && gateWait < 45) { StepInput(0, 0, p.X, p.Y, false, false); gateWait++; }
+            bool naturalUnlock =sealedAtSparseKills && regionKillsReached && anglersStillBlock && anglerHits && flow.FieldBossDone && sim.FieldBossAliveCount() == 0 && sim.RegionClearedCount() == 4 && flow.BossUnlocked;
+            M1Add("09c", "LT-10 regional Hell Gate", naturalUnlock ? "ok" : "fail", "sparse kills sealed " + sealedAtSparseKills + ", real kill thresholds reached " + regionKillsReached + ", all four living anglers still blocked " + anglersStillBlock + ", four angler hit paths " + anglerHits + ", all dead " + flow.FieldBossDone + ", regions " + sim.RegionClearedCount() + "/4, naturally unlocked " + flow.BossUnlocked + " (+" + gateWait + " ticks after the 30-tick tail); stage kills " + flow.StageKills + "/" + flow.TotalSpawned + " (harness combat, not OS input)", "");
             if (!naturalUnlock) { yield return M1Finish(output); yield break; }
             sim.Enemies.Clear(); sim.Loot.Clear(); p.Hp = p.MaxHp;
             // ---- 10..13 boss arena / boss / kill + exit / stage clear (C07). ----
