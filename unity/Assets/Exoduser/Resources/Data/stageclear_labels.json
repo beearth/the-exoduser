@@ -46,7 +46,8 @@
       "score": "점수",
       "next": "로비로 돌아가기",
       "demoSub": "썩은 숲을 정복했습니다.",
-      "demoNext": "데모 종료"
+      "demoNext": "데모 종료",
+      "demoWishlist": "본편 위시리스트에 추가"
     },
     {
       "code": "en",
@@ -63,7 +64,8 @@
       "score": "Score",
       "next": "Return to Lobby",
       "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "End of Demo"
+      "demoNext": "End demo",
+      "demoWishlist": "Wishlist the full game"
     },
     {
       "code": "zh",
@@ -79,8 +81,9 @@
       "deaths": "死亡",
       "score": "分数",
       "next": "返回大厅",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "演示结束"
+      "demoSub": "你征服了腐朽森林。",
+      "demoNext": "结束试玩",
+      "demoWishlist": "将完整版加入愿望单"
     },
     {
       "code": "zht",
@@ -96,8 +99,9 @@
       "deaths": "死亡",
       "score": "分數",
       "next": "返回大廳",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "試玩版結束"
+      "demoSub": "你征服了腐朽森林。",
+      "demoNext": "結束試玩",
+      "demoWishlist": "將完整版加入願望清單"
     },
     {
       "code": "ja",
@@ -113,8 +117,9 @@
       "deaths": "死亡",
       "score": "スコア",
       "next": "ロビーに戻る",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "デモ終了"
+      "demoSub": "腐敗した森を制覇しました。",
+      "demoNext": "体験版を終了",
+      "demoWishlist": "製品版をウィッシュリストに追加"
     },
     {
       "code": "vi",
@@ -130,8 +135,9 @@
       "deaths": "Chết",
       "score": "Điểm",
       "next": "Quay về sảnh",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Kết Thúc Demo"
+      "demoSub": "Bạn đã chinh phục Khu Rừng Mục Nát.",
+      "demoNext": "Kết thúc bản chơi thử",
+      "demoWishlist": "Thêm bản đầy đủ vào danh sách ước"
     },
     {
       "code": "th",
@@ -147,8 +153,9 @@
       "deaths": "ตาย",
       "score": "คะแนน",
       "next": "กลับไปที่ล็อบบี้",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "สิ้นสุดเดโม"
+      "demoSub": "คุณพิชิตป่าเน่าเปื่อยแล้ว",
+      "demoNext": "จบเดโม",
+      "demoWishlist": "เพิ่มเกมฉบับเต็มในรายการสิ่งที่อยากได้"
     },
     {
       "code": "id",
@@ -164,8 +171,9 @@
       "deaths": "Kematian",
       "score": "Skor",
       "next": "Kembali ke Lobi",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Akhir Demo"
+      "demoSub": "Kamu menaklukkan Hutan Busuk.",
+      "demoNext": "Akhiri demo",
+      "demoWishlist": "Tambahkan game lengkap ke wishlist"
     },
     {
       "code": "ms",
@@ -181,8 +189,9 @@
       "deaths": "Kematian",
       "score": "Skor",
       "next": "Kembali ke Lobi",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Akhir Demo"
+      "demoSub": "Anda telah menakluki Hutan Reput.",
+      "demoNext": "Tamatkan demo",
+      "demoWishlist": "Tambah permainan penuh ke senarai hajat"
     },
     {
       "code": "es",
@@ -198,8 +207,9 @@
       "deaths": "Muerte",
       "score": "Puntuación",
       "next": "Volver al Vestíbulo",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Fin de la Demo"
+      "demoSub": "Has conquistado el Bosque Podrido.",
+      "demoNext": "Terminar demo",
+      "demoWishlist": "Añadir el juego completo a deseados"
     },
     {
       "code": "fr",
@@ -215,8 +225,9 @@
       "deaths": "Mort",
       "score": "Score",
       "next": "Retour au lobby",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Fin de la Démo"
+      "demoSub": "Vous avez conquis la Forêt pourrie.",
+      "demoNext": "Terminer la démo",
+      "demoWishlist": "Ajouter le jeu complet aux souhaits"
     },
     {
       "code": "it",
@@ -232,8 +243,9 @@
       "deaths": "Morte",
       "score": "Punteggio",
       "next": "Torna alla lobby",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Fine della Demo"
+      "demoSub": "Hai conquistato la Foresta Marcia.",
+      "demoNext": "Termina demo",
+      "demoWishlist": "Aggiungi il gioco completo ai desideri"
     },
     {
       "code": "ptbr",
@@ -249,8 +261,9 @@
       "deaths": "Morte",
       "score": "Pontuação",
       "next": "Voltar ao Lobby",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Fim da Demo"
+      "demoSub": "Você conquistou a Floresta Podre.",
+      "demoNext": "Encerrar demo",
+      "demoWishlist": "Adicionar o jogo completo à lista de desejos"
     },
     {
       "code": "ro",
@@ -266,8 +279,9 @@
       "deaths": "Moarte",
       "score": "Scor",
       "next": "Întoarce-te la Lobby",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Sfârşitul Demo-ului"
+      "demoSub": "Ai cucerit Pădurea Putredă.",
+      "demoNext": "Încheie demonstrația",
+      "demoWishlist": "Adaugă jocul complet în lista de dorințe"
     },
     {
       "code": "de",
@@ -283,8 +297,9 @@
       "deaths": "Tod",
       "score": "Punkte",
       "next": "Zurück zur Lobby",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Ende der Demo"
+      "demoSub": "Du hast den Verrotteten Wald bezwungen.",
+      "demoNext": "Demo beenden",
+      "demoWishlist": "Vollversion auf die Wunschliste"
     },
     {
       "code": "nl",
@@ -300,8 +315,9 @@
       "deaths": "Dood",
       "score": "Score",
       "next": "Terug naar de Lobby",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Einde van de Demo"
+      "demoSub": "Je hebt het Rotte Woud veroverd.",
+      "demoNext": "Demo beëindigen",
+      "demoWishlist": "Volledige game op verlanglijst zetten"
     },
     {
       "code": "sv",
@@ -317,8 +333,9 @@
       "deaths": "Död",
       "score": "Poäng",
       "next": "Återgå till Lobbyn",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Slut på Demo"
+      "demoSub": "Du har erövrat den Ruttna skogen.",
+      "demoNext": "Avsluta demon",
+      "demoWishlist": "Lägg hela spelet på önskelistan"
     },
     {
       "code": "da",
@@ -334,8 +351,9 @@
       "deaths": "Død",
       "score": "Point",
       "next": "Vend tilbage til Lobbyen",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Slut på Demo"
+      "demoSub": "Du har erobret den Rådne Skov.",
+      "demoNext": "Afslut demo",
+      "demoWishlist": "Føj hele spillet til ønskelisten"
     },
     {
       "code": "no",
@@ -351,8 +369,9 @@
       "deaths": "Død",
       "score": "Poeng",
       "next": "Gå tilbake til Lobbyen",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Slutt på Demo"
+      "demoSub": "Du har erobret den Råtne skogen.",
+      "demoNext": "Avslutt demoen",
+      "demoWishlist": "Legg hele spillet på ønskelisten"
     },
     {
       "code": "ru",
@@ -368,8 +387,9 @@
       "deaths": "Смерть",
       "score": "Очки",
       "next": "Вернуться в лобби",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Конец Демо"
+      "demoSub": "Вы покорили Гнилой лес.",
+      "demoNext": "Завершить демоверсию",
+      "demoWishlist": "Добавить полную игру в желаемое"
     },
     {
       "code": "uk",
@@ -385,8 +405,9 @@
       "deaths": "Смерть",
       "score": "Очки",
       "next": "Повернутися до лобі",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Кінець Демо"
+      "demoSub": "Ви підкорили Гнилий ліс.",
+      "demoNext": "Завершити демоверсію",
+      "demoWishlist": "Додати повну гру до бажаного"
     },
     {
       "code": "pl",
@@ -402,8 +423,9 @@
       "deaths": "Śmierć",
       "score": "Wynik",
       "next": "Powrót do lobby",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Koniec Dema"
+      "demoSub": "Podbito Zgniły Las.",
+      "demoNext": "Zakończ demo",
+      "demoWishlist": "Dodaj pełną grę do listy życzeń"
     },
     {
       "code": "cs",
@@ -419,8 +441,9 @@
       "deaths": "Smrt",
       "score": "Skóre",
       "next": "Návrat do Lobby",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Konec Dema"
+      "demoSub": "Dobyli jste Shnilý les.",
+      "demoNext": "Ukončit demo",
+      "demoWishlist": "Přidat plnou hru do seznamu přání"
     },
     {
       "code": "hu",
@@ -436,8 +459,9 @@
       "deaths": "Halál",
       "score": "Pontszám",
       "next": "Vissza a Lobbyba",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Demo Vége"
+      "demoSub": "Meghódítottad a Rothadó erdőt.",
+      "demoNext": "Demó befejezése",
+      "demoWishlist": "Teljes játék hozzáadása a kívánságlistához"
     },
     {
       "code": "bg",
@@ -453,8 +477,9 @@
       "deaths": "Смърт",
       "score": "Точки",
       "next": "Обратно към Лобито",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Край на Демото"
+      "demoSub": "Покорихте Гнилата гора.",
+      "demoNext": "Край на демото",
+      "demoWishlist": "Добавяне на пълната игра в желания"
     },
     {
       "code": "el",
@@ -470,8 +495,9 @@
       "deaths": "Θάνατος",
       "score": "Βαθμοί",
       "next": "Επιστροφή στο Lobby",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Τέλος Demo"
+      "demoSub": "Κατακτήσατε το Σάπιο Δάσος.",
+      "demoNext": "Τέλος επίδειξης",
+      "demoWishlist": "Προσθήκη πλήρους παιχνιδιού στις επιθυμίες"
     },
     {
       "code": "fi",
@@ -487,8 +513,9 @@
       "deaths": "Kuolema",
       "score": "Pisteet",
       "next": "Palaa Aulaan",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Demon Loppu"
+      "demoSub": "Valloitit Lahonneen metsän.",
+      "demoNext": "Lopeta demo",
+      "demoWishlist": "Lisää koko peli toivelistalle"
     },
     {
       "code": "tr",
@@ -504,8 +531,9 @@
       "deaths": "Ölüm",
       "score": "Puan",
       "next": "Lobiye Dön",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "Demo Sonu"
+      "demoSub": "Çürümüş Orman’ı fethettin.",
+      "demoNext": "Demoyu bitir",
+      "demoWishlist": "Tam oyunu istek listesine ekle"
     },
     {
       "code": "ar",
@@ -521,8 +549,10 @@
       "deaths": "موت",
       "score": "النقاط",
       "next": "العودة إلى الصالة",
-      "demoSub": "You conquered the Rotten Forest.",
-      "demoNext": "نهاية العرض التجريبي"
+      "demoSub": "لقد غزوت الغابة المتعفنة.",
+      "demoNext": "إنهاء النسخة التجريبية",
+      "demoWishlist": "أضف اللعبة الكاملة إلى قائمة الأمنيات"
     }
-  ]
+  ],
+  "demoEndNote": "U-D1/U-D5: 29언어 체험판 종료 문구. ar 데이터 보유, 기존 IMGUI RTL 영문 표시 폴백 유지(별도 RTL 이식 범위)."
 }

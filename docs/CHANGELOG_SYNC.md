@@ -1,3 +1,5 @@
+2026-11-03 21:10 Steam 체험판 flavor U-D3/U-D4/U-D1/U-D5: 정식 제품명과 빌드 초기화, demo/full 저장 namespace 및 기존 검증판 원본 보존 이전, 종료 문구29언어(locale API, ar 기존 영문 폴백), 본편 상점 steam://store/4749590 별도 버튼. 계약6/6·격리 동작58/58, PC 공용 bin 컴파일/Mac 화면·재시작 인계. Player·Steam 업로드 없음, U-D2 보류. [계약·Mac 인자](engine/UNITY_DEMO_FLAVOR_20261103.md).
+
 2026-11-03 21:40 PC Player 차단·무음 누수 수정(사용자 "백그라운드 테스트 사운드가 들린다, 맥에서만"): exo-unity player는 -PcException buildloop|cto-swap|candidate 없으면 거부, BuildLoop·UI 겹침 check.ps1은 buildloop로 넘김. 원인=--unity-mute를 M1 스모크·캡처별 EarlyMute만 따라 UI 겹침 검사 모드에서 소리 발생 → Runtime NativeMuteGuard가 모든 모드에서 AudioListener.volume=0·Direct 영상 mute. 문서 unity/Tools/devtools/README.md.
 
 2026-11-03 21:00 BuildLoop 재직렬화 정체 수정: 빌드가 다시 쓰는 Unity 직렬화 추적 파일(.meta·.mat·.asset·.unity)만 남은 작업본은 버리지 않고 진행, 새 커밋과 겹치면 목록으로 중단. 원인=guid만 커밋된 .meta 824개·손으로 쓴 재질 29개·URP prefilter·MakeScene의 FirstPlayable.unity 저장. 문서 unity/Tools/devtools/buildloop/README.md.

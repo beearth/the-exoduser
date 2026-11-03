@@ -78,8 +78,10 @@ namespace Exoduser.UnityPort {
   // JsonUtility turns a JSON null into a default object, so presence is judged by the sub text
   bool HasClearFinal{get{return def.clearFinal!=null&&def.clearFinal.sub!=null&&def.clearFinal.sub.Length>0;}}
   public bool DemoEndAtStage(int stageIndex){return HasClearFinal&&def.clearFinal.stage==stageIndex;}
-  public string DemoEndSub(bool english){var s=HasClearFinal?def.clearFinal.sub:null;return s==null?null:(english&&s.Length>1&&!string.IsNullOrEmpty(s[1])?s[1]:s[0]);}
-  public string DemoEndButton(bool english){var s=HasClearFinal?def.clearFinal.button:null;return s==null?null:(english&&s.Length>1&&!string.IsNullOrEmpty(s[1])?s[1]:s[0]);}
+  public string DemoEndSub(string locale){return HasClearFinal?NativeDemoEndText.ForLocale(locale).demoSub:null;}
+  public string DemoEndButton(string locale){return HasClearFinal?NativeDemoEndText.ForLocale(locale).demoNext:null;}
+  public string DemoEndSub(bool english){return DemoEndSub(english?"en":"ko");}
+  public string DemoEndButton(bool english){return DemoEndButton(english?"en":"ko");}
   // web: 'v'+version+' · '+date without dashes (index.html _LOBBY_VER)
   public static string ReleaseVersion{get{Load();return release.version??"";}}   // release-version.json (web EXODUSER_RELEASE.version)
   public static string VersionLine{get{Load();return "v"+release.version+" · "+(release.date??"").Replace("-","");}}

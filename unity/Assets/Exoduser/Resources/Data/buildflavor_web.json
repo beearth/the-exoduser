@@ -58,7 +58,7 @@
     ],
     "button": [
      "데모 종료",
-     null
+     "End demo"
     ]
    },
    "release": {
@@ -87,7 +87,7 @@
     ],
     "button": [
      "데모 종료",
-     null
+     "End demo"
     ]
    },
    "release": {
