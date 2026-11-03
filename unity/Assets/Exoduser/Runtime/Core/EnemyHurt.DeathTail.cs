@@ -342,7 +342,7 @@ namespace Exoduser.UnityPort.Core
                 if (e.etype == 91)
                 {
                     double tmMat = 50 + ToInt32(c.Stage * 3); c.Mats += tmMat;
-                    c.AddText(e.x, e.y - 20, c.Translate("악의 +") + JsNumber(tmMat), "#ddaa00", 50, null, null);
+                    c.AddText(e.x, e.y - 20, c.Translate("악의오브 +") + JsNumber(tmMat), "#ddaa00", 50, null, null);
                     string tmSlot = SlotNames[ToInt32(c.Random() * SlotNames.Length)];
                     double tmR = c.Random() < .25 ? 4 : 3;
                     var tmI = c.MkItem(tmSlot, Or(e.dropTier, 0), new[] { ELP, ELF, ELI, ELD, ELL }[ToInt32(c.Random() * 5)], tmR);
@@ -488,7 +488,7 @@ namespace Exoduser.UnityPort.Core
                 // 즉시 수급 + 트레일 이펙트 (worldItems 우회)
                 double matAmt = ToInt32(matCnt * (1 + c.EqAffix("goldBonus")) * c.MaliceMul());
                 c.Mats += matAmt;
-                c.AddText(e.x, e.y - 15, c.Translate("악의 +") + JsNumber(matAmt), "#cc66ff", 30, null, null);
+                c.AddText(e.x, e.y - 15, c.Translate("악의오브 +") + JsNumber(matAmt), "#cc66ff", 30, null, null);
                 double mtAng = JsMath.Atan2(P.y - e.y, P.x - e.x);
                 for (int mi = 0; mi < 4; mi++)
                 {

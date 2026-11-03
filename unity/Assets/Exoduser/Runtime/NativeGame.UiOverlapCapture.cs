@@ -11,21 +11,21 @@ namespace Exoduser.UnityPort
     public sealed partial class NativeGame
     {
         [Serializable] sealed class UiOverlapCoverage {public int schemaVersion=2,inputIsolationChecks,simulationFrozenChecks;public string runtimeSha256,unityVersion,device,deviceType;public string scope="실제 Player OnGUI·제품 API 상태 전환/검수 시계/실제 미디어 seek/8방향 투영 표본, OS 입력/자연 클리어와 구분";public string[] resolutions={"1920x1080","2560x1080","3840x1080","1600x900","2560x1600"};public string[] languages={"ko","de"};public List<string> pages=new List<string>(),frames=new List<string>();public List<UiWideMovie> movies=new List<UiWideMovie>();public List<UiWideTitle> titleArt=new List<UiWideTitle>();public List<UiWideCue> worldCues=new List<UiWideCue>();public List<UiWideTipKeyChange> tipKeyChanges=new List<UiWideTipKeyChange>();public int[] loadingImages=new List<int>(NativeLoadingSelection.Images).ToArray();}
-        [Serializable] sealed class UiWideTitle {public int width,height,framesBefore,framesAfter;public string language,mode;public double timeBefore,timeAfter;public bool pausedClockPreserved,resumed;}
+        [Serializable] sealed class UiWideTitle {public int width,height,framesBefore,framesAfter,videoFramesBefore,videoFramesAfter;public string language,mode;public double timeBefore,timeAfter;public bool pausedClockPreserved,resumed;}
         IEnumerator UiWaitTitleArt()
         {
             float deadline=Time.realtimeSinceStartup+10;
-            while(lobby.TitleRenderMode!="layered"&&Time.realtimeSinceStartup<deadline){lobby.SetPlaybackFocus(true);yield return null;}
-            if(lobby.TitleRenderMode!="layered")throw new InvalidOperationException("승인 A 타이틀 레이어 렌더 실패 "+lobby.TitleRenderMode);
-            var row=new UiWideTitle{width=Screen.width,height=Screen.height,language=overlapLanguage,mode=lobby.TitleRenderMode,timeBefore=lobby.TitleMotionTime,framesBefore=lobby.TitleRenderedFrames};
-            yield return new WaitForSecondsRealtime(.35f);row.timeAfter=lobby.TitleMotionTime;row.framesAfter=lobby.TitleRenderedFrames;
-            if(row.framesAfter<=row.framesBefore||row.timeAfter<=row.timeBefore)throw new InvalidOperationException("승인 A 타이틀 모션 정지");
+            while(lobby.TitleRenderMode!="video"&&Time.realtimeSinceStartup<deadline){lobby.SetPlaybackFocus(true);yield return null;}
+            if(lobby.TitleRenderMode!="video")throw new InvalidOperationException("C2 영상 타이틀 영상 디코드 실패 "+lobby.TitleRenderMode);
+            var row=new UiWideTitle{width=Screen.width,height=Screen.height,language=overlapLanguage,mode=lobby.TitleRenderMode,timeBefore=lobby.TitleMotionTime,framesBefore=lobby.TitleRenderedFrames,videoFramesBefore=lobby.TitleVideoFrames};
+            yield return new WaitForSecondsRealtime(.35f);row.timeAfter=lobby.TitleMotionTime;row.framesAfter=lobby.TitleRenderedFrames;row.videoFramesAfter=lobby.TitleVideoFrames;
+            if(row.videoFramesAfter<=row.videoFramesBefore||row.framesAfter<=row.framesBefore||row.timeAfter<=row.timeBefore)throw new InvalidOperationException("C2 영상 타이틀 모션 정지");
             bool paused=lobby.TitleMotionPaused;
             try{lobby.TitleMotionPaused=true;double t=lobby.TitleMotionTime;yield return new WaitForSecondsRealtime(.15f);row.pausedClockPreserved=lobby.TitleMotionTime==t;}
             finally{lobby.TitleMotionPaused=paused;}
             double resume=lobby.TitleMotionTime;yield return new WaitForSecondsRealtime(.15f);row.resumed=lobby.TitleMotionTime>resume;
             overlapCoverage.titleArt.Add(row);
-            if(!row.pausedClockPreserved||!row.resumed)throw new InvalidOperationException("승인 A 타이틀 정지/재개 실패");
+            if(!row.pausedClockPreserved||!row.resumed)throw new InvalidOperationException("C2 영상 타이틀 정지/재개 실패");
         }
         [Serializable] sealed class UiWideTipKeyChange {public int width,height,image;public string language,inventoryBefore,pickupBefore,inventoryChanged,pickupChanged,expectedText;public bool restored;}
         UiWideTipKeyChange activeTipKeyChange;
@@ -167,8 +167,8 @@ namespace Exoduser.UnityPort
 
         IEnumerator UiTitleGrid()
         {
-            overlapCoverage.resolutions=new[]{"5120x1440","1920x1080","2560x1080","3840x1080","1600x900","2560x1600"};
-            overlapCoverage.scope="승인 A 타이틀 실제6해상도/선택3언어/모션·정지·재개; OS 입력/자연플레이와 구분";
+            overlapCoverage.resolutions=Parity1102Capture?new[]{"1920x1080","3840x1080"}:new[]{"5120x1440","1920x1080","2560x1080","3840x1080","1600x900","2560x1600"};
+            overlapCoverage.scope="C2 영상 타이틀 실제6해상도/선택3언어/모션·정지·재개; OS 입력/자연플레이와 구분";
             foreach(string resolution in overlapCoverage.resolutions)
             foreach(string language in overlapCoverage.languages)
             {
@@ -180,7 +180,7 @@ namespace Exoduser.UnityPort
                 float deadline=Time.realtimeSinceStartup+5;while((Screen.width!=width||Screen.height!=height)&&Time.realtimeSinceStartup<deadline)yield return null;
                 if(Screen.width!=width||Screen.height!=height)throw new InvalidOperationException("실제 타이틀 해상도 불일치 "+resolution);
                 lobby.Begin();lobby.AdvanceSplash();yield return new WaitForSecondsRealtime(1.1f);yield return UiWaitTitleArt();yield return UiOverlapShot("메뉴");
-                yield return new WaitForSecondsRealtime(.5f);yield return UiOverlapShot("메뉴-모션");
+                yield return new WaitForSecondsRealtime(Parity1102Capture?10.5f:.5f);yield return UiOverlapShot("메뉴-모션");
                 bool paused=lobby.TitleMotionPaused;
                 try{lobby.TitleMotionPaused=true;yield return new WaitForSecondsRealtime(.15f);yield return UiOverlapShot("메뉴-정지1");yield return new WaitForSecondsRealtime(.35f);yield return UiOverlapShot("메뉴-정지2");}
                 finally{lobby.TitleMotionPaused=paused;}
@@ -188,21 +188,29 @@ namespace Exoduser.UnityPort
             }
         }
 
+        static bool Parity1102Capture=>Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-parity-1102-check")>=0;
         IEnumerator UiOverlapCaptureBody()
         {
             overlapOutput=Argument("-output");
             if(!NativeQaSandbox.Active||string.IsNullOrEmpty(overlapOutput)||!Path.IsPathRooted(overlapOutput)){Debug.LogError("겹침 검사는 격리 저장·절대 출력 경로 필요");Application.Quit(3);yield break;}
-            Directory.CreateDirectory(overlapOutput);overlapCoverage=new UiOverlapCoverage();overlapUiFreeze=true;SelectOverlapLanguages();
+            Directory.CreateDirectory(overlapOutput);overlapCoverage=new UiOverlapCoverage();overlapUiFreeze=true;SelectOverlapLanguages();if(Parity1102Capture){overlapCoverage.languages=new[]{"ko"};overlapCoverage.resolutions=new[]{"1920x1080","3840x1080"};}
             using(var hash=System.Security.Cryptography.SHA256.Create())using(var binary=File.OpenRead(typeof(NativeGame).Assembly.Location))overlapCoverage.runtimeSha256=BitConverter.ToString(hash.ComputeHash(binary)).Replace("-","").ToLowerInvariant();
             overlapCoverage.unityVersion=Application.unityVersion;overlapCoverage.device=SystemInfo.graphicsDeviceName;overlapCoverage.deviceType=SystemInfo.graphicsDeviceType.ToString();
             smokeActive=true;pauseSmoke=true;lobby.AutomatedInput=true;lobby.SetPlaybackFocus(true);SetGameFocus(true);
             gameObject.AddComponent<NativeUiAudit.Host>();NativeUiAudit.Active=false;yield return null;yield return null;
-            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-title-a-check")>=0)
+            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-parity-third-check")>=0)
+            {
+                yield return ParityThirdCapture();NativeUiAudit.Active=false;
+                File.WriteAllText(Path.Combine(overlapOutput,"coverage.json"),JsonUtility.ToJson(overlapCoverage,true));
+                lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);
+                Debug.Log("QA_MEDIA_DRAIN_COMPLETE PARITY_THIRD");Application.Quit(0);yield break;
+            }
+            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-title-a-check")>=0||Array.IndexOf(Environment.GetCommandLineArgs(),"--unity-title-c2-check")>=0)
             {
                 yield return UiTitleGrid();NativeUiAudit.Active=false;File.WriteAllText(Path.Combine(overlapOutput,"coverage.json"),JsonUtility.ToJson(overlapCoverage,true));
                 lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);Debug.Log("QA_MEDIA_DRAIN_COMPLETE TITLE_A");Application.Quit(0);yield break;
             }
-            foreach(var size in new[]{new Vector2Int(2560,1600),new Vector2Int(1920,1080),new Vector2Int(2560,1080),new Vector2Int(3840,1080),new Vector2Int(1600,900)})
+            foreach(var size in Parity1102Capture?new[]{new Vector2Int(1920,1080),new Vector2Int(3840,1080)}:new[]{new Vector2Int(2560,1600),new Vector2Int(1920,1080),new Vector2Int(2560,1080),new Vector2Int(3840,1080),new Vector2Int(1600,900)})
             foreach(string language in overlapCoverage.languages)
             {
                 overlapLanguage=language;lobby.SetLanguage(language);stageClear.LocaleCode=language;

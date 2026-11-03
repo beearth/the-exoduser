@@ -475,3 +475,13 @@ Shore는 고정앵글러 주변을 피한 후 z−52~−42에서 다시28u 굽�
 |인수 상태|제작자선택1x검수완료/공통·Desktop지정integrator 신청준비. 공통병합·Desktop갱신·설치본M1은이문서만으로완료아님. 자연완주·실측FPS·OSfocus·Mac동기화 미검증|
 
 근거 I:/EXODUSER-Storage/demo-art/hd2d-main/20261031/STAGE1_R5_VISUAL_REVIEW_KO.md, STAGE1_R5_BUILD_LINK.json, stage1-r5-validation-8dbdf205a/receipt.json, stage1-r5-review-8dbdf205a, scope-cleanup-after-r5. 이전순수985/087·실패validator 이력은덮지않는다.
+
+## 2026-11-02 Unity 설치형 지면 배치 후보
+
+사용자 요청으로 장판·지뢰·설치형 전체의 actor billboard/FootLift 오적용과 VfxWorld 지면 높이 미연결을 수정 중이다. 현재 후보는 실제 등록 바닥·목교·낮은 뿌리의 receiver depth와 scene depth가.02u 안에서 일치하는 픽셀에 원화/링을 투영한다. CPU 적응면은 실제제품 Late>=96초 지연으로 폐기하고 표시 update의Tessellate/대량GroundY 조회를 제거했다. 원화·합성수식·피해/반경/시간·공중/중심형·flat보스방은 유지한다. 원SkillAdditive/Ki shader는1403 byte이며 새전용shader만사용한다. 324 C# 정적오류0/경고477. Mac 첫 흙 실제 투영/독립깊이와1920원본을 확인했다. 기존mode2 weight차는 강제비등방성 footprint를 무시한bilinear 참조로 분리했고, 같은허용2/255의GPU gradient/RGBA 대조·전체 설치형/시각·통합/설치는 진행 중이다. 정확한 범위·원래실패·측정은 [설치형 지면 배치](UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)를 따른다.
+
+후속 실제161행은표시메타데이터/접지·UV실패0이나색상모델60행과ring정리1행FAIL을보존한다. 이미파괴된parent의orb.go에Reset이SetActive를호출한예외를확인해UnityGO생존검사guard를추가했다. 다음앱에서표적정리회귀·제품/clone/색상모델분리를검증하며공통설치/전체색상PASS는아직아니다.
+
+수명정정: statePassed161은표시메타데이터다. 정리예외로두수명행동의최종결과merge가미실행됐으므로pool행동완료PASS로간주하지않고, 수정앱에서원래두수명검사를별도완주·기록한다.
+
+최신 상태(2026-11-03): Mac 표적 정리/두수명행동·semantic 복원/동일앱 M1 23 통과는 후보 범위다. 사용자 PC 실행본131887780의 Runtime2bad5c6c8ace951017cee6c3673921692bc2a2a309ca5b5b0d23f1fbc471ff0a에는 접지 수정 타입 둘 다 없어 실제 전달 미완료를 확인했다. 최신 unity/main1d89b0c18와 정상 병합해 UI/사운드를 보존했으며, 새 실행본 검수·unity-latest 반영 뒤 다시 확인한다. 원full100/61·독립참조/미관측/oldref 한계는 그대로 보존한다.

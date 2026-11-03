@@ -27,9 +27,9 @@ namespace Exoduser.UnityPort
   public bool StartupWorldVisible{get{return startup.Page==FrontendEntryPage.Guide||startup.Page==FrontendEntryPage.Curtain;}}
   public bool StartupHudVisible{get{return StartupWorldVisible;}}
   public string StartupStage{get{return startup.Active?startup.Page.ToString():"";}}
-  public void SetStartupSfxPercent(int percent){startupSfxGain=Mathf.Clamp(percent,0,100)/100f;}
+  public void SetStartupSfxPercent(int percent){startupSfxGain=Mathf.Clamp(percent,0,100)/100f;NativeDecisionSound.SetSfxPercent(percent);}
   void EnsureStartupMedia(){if(startupAudio!=null)return;startupAudio=gameObject.AddComponent<AudioSource>();startupAudio.playOnAwake=false;startupAudio.spatialBlend=0;enterSound=Resources.Load<AudioClip>("Audio/Startup/enter");wakeupSound=Resources.Load<AudioClip>("Audio/Startup/wakeup");}
-  void PlayStartupEnter(){EnsureStartupMedia();startupAudio.Stop();startupAudio.clip=enterSound;startupAudio.outputAudioMixerGroup=EntryUiGroup();startupAudio.volume=1;StopEntryHover();EntryAudioEvents++;Debug.Log("UI_AUDIO enter frame="+Time.frameCount+" time="+Time.realtimeSinceStartupAsDouble+" gain=2 group=FrontendUI/UI");if(enterSound!=null)startupAudio.PlayOneShot(enterSound,2);}
+  void PlayStartupEnter(){NativeUiSounds.Current?.SuppressConfirm();EnsureStartupMedia();startupAudio.clip=enterSound;startupAudio.outputAudioMixerGroup=EntryUiGroup();startupAudio.volume=1;StopEntryHover();EntryAudioEvents++;Debug.Log("UI_AUDIO enter frame="+Time.frameCount+" time="+Time.realtimeSinceStartupAsDouble+" gain=2 group=FrontendUI/UI");if(enterSound!=null)startupAudio.PlayOneShot(enterSound,2);}
   bool LegacyFrontendFixture(){foreach(var arg in Environment.GetCommandLineArgs())if(arg.StartsWith("--unity-",StringComparison.Ordinal)&&arg.EndsWith("-smoke",StringComparison.Ordinal))return true;return false;}
   // E03: set by NativeGame. A character with a combat save continues straight into the run (the story / first practice belong to a new character).
   public System.Func<string,bool> HasCombatSave;
@@ -39,7 +39,7 @@ namespace Exoduser.UnityPort
    if(Flow.Page!=LobbyPage.Lobby||startup.Active||Characters.SelectedIndex<0)return false;
    ActiveCharacterName=Characters.SelectedName;
    if(AutomatedInput||LegacyFrontendFixture()){Flow.SelectPreview();return EnterNativeTest();}
-   if(!loadingAlreadyShown)PlayStartupEnter();
+   if(!loadingAlreadyShown&&TransitionPage("lobby-game",()=>BeginCharacterEntry(true),false))return true;NativeUiSounds.Current?.SuppressConfirm();StopEntryHover();NativeDecisionSound.Play(loadingAlreadyShown?"new-game":"enter");
    if(HasCombatSave!=null&&HasCombatSave(ActiveCharacterName)){StartupGameplayPrepared=false;keepStartupStageMusic=false;CancelCharacterStory();Flow.SelectPreview();return EnterNativeTest();}
    if(startupData==null){var source=Resources.Load<TextAsset>("Data/startup_intro");if(source!=null)startupData=JsonUtility.FromJson<StartupIntroData>(source.text);}
    StartupIntroLine[] lines=null;if(startupData!=null&&startupData.languages!=null){foreach(var language in startupData.languages)if(language.code==Language)lines=language.lines;if(lines==null)foreach(var language in startupData.languages)if(language.code=="en")lines=language.lines;}
@@ -53,21 +53,21 @@ namespace Exoduser.UnityPort
   void SetStartupAudioFocus(bool focus){if(startupAudio==null)return;if(!focus){StopEntryHover();startupVoiceWasPlaying=startupAudio.isPlaying;startupAudio.Pause();}else if(startupVoiceWasPlaying){startupAudio.UnPause();startupVoiceWasPlaying=false;}}
   public void StopStageMusic(){keepStartupStageMusic=false;StopMusic();}   // RM-1 sound: the in-game BGM bus takes over from the startup stage music
   void CancelStartupEntry(){StartupGameplayPrepared=false;keepStartupStageMusic=false;startup.Cancel();frontendPad.Reset();if(startupAudio!=null)startupAudio.Stop();nemesisMusicDelay=-1;stageMusicDelay=-1;}
-  void UpdateStartupEntry(float delta)
+  void UpdateStartupEntry(float delta,bool allowInput=true)
   {
    if(!startup.Active)return;
    if(!focused){frontendPad.Reset();startup.Tick(0,false,false);return;}
    if(startupInputFence&&!ExoInput.AnyKey&&!ExoInput.Mouse(0))startupInputFence=false;
    var before=startup.Page;
    var pad=startup.Page==FrontendEntryPage.Nemesis||startup.Page==FrontendEntryPage.Guide
-    ?frontendPad.Step(startup.Page==FrontendEntryPage.Guide?FrontendPadPhase.Guide:FrontendPadPhase.Nemesis,ReadFrontendPadFrame(),!AutomatedInput&&!startupInputFence)
+    ?frontendPad.Step(startup.Page==FrontendEntryPage.Guide?FrontendPadPhase.Guide:FrontendPadPhase.Nemesis,ReadFrontendPadFrame(),allowInput&&!AutomatedInput&&!startupInputFence)
     :default(FrontendPadDecision);
-   if(!AutomatedInput&&!startupInputFence){
+   if(allowInput&&!AutomatedInput&&!startupInputFence){
     if(ExoInput.KeyDown(KeyCode.Escape)||pad.Skip)startup.Skip();
     else if(startup.Page==FrontendEntryPage.Nemesis&&(ExoInput.KeyDown(KeyCode.Return)||ExoInput.KeyDown(KeyCode.KeypadEnter)||ExoInput.KeyDown(KeyCode.Z)||pad.Next))startup.Advance();
     else if(startup.Page==FrontendEntryPage.Guide){if(ExoInput.KeyDown(KeyCode.Tab))guideSkipFocus=!guideSkipFocus;else if(pad.Next)startup.Advance();else if(ExoInput.KeyDown(KeyCode.Return)||ExoInput.KeyDown(KeyCode.KeypadEnter)||ExoInput.KeyDown(KeyCode.Space)){if(guideSkipFocus)startup.Skip();else startup.Advance();}}
    }
-   bool held=!AutomatedInput&&!startupInputFence&&(ExoInput.Key(KeyCode.Space)||pad.Hold);
+   bool held=allowInput&&!AutomatedInput&&!startupInputFence&&(ExoInput.Key(KeyCode.Space)||pad.Hold);
    startup.Tick(delta,held,focused);
    if(startup.Page!=before){startupInputFence=true;guideSkipFocus=false;frontendPad.Reset();}
    if(startup.Page!=startupShown){startupShown=startup.Page;if(startupShown==FrontendEntryPage.Nemesis){nemesisMusicDelay=.4f;StopMusic();}else if(startupShown==FrontendEntryPage.Guide){StartupGameplayPrepare?.Invoke();StartupGameplayPrepared=true;nemesisMusicDelay=-1;stageMusicDelay=.6f;EnsureStartupMedia();if(wakeupSound!=null)startupAudio.PlayOneShot(wakeupSound,startupSfxGain*startupSfxGain);} }
@@ -103,12 +103,12 @@ namespace Exoduser.UnityPort
   void DrawNemesis()
   {
    Fill(new Rect(0,0,1920,1080),Color.black);var l=startup.Line;if(l==null)return;float elapsed=(float)startup.Elapsed*1000;
-   if(l.exit){if(startupLine>=0&&startupLine<21)Image(new Rect(0,0,1920,1080),nemesisArt[startupLine],ScaleMode.ScaleAndCrop);Fill(new Rect(0,0,1920,1080),new Color(0,0,0,Mathf.Clamp01(elapsed/(l.fade!=null&&l.fade.@out>0?l.fade.@out:1500))));return;}
+   if(l.exit){if(startupLine>=0&&startupLine<21)NativeFullscreenArtwork.Draw(nemesisArt[startupLine],NativeUiViewport.ScreenInDesign);Fill(new Rect(0,0,1920,1080),new Color(0,0,0,Mathf.Clamp01(elapsed/(l.fade!=null&&l.fade.@out>0?l.fade.@out:1500))));return;}
    int image;if(!string.IsNullOrEmpty(l.img)&&int.TryParse(l.img.Replace(".png",""),out image)&&image>=0&&image<21){startupLine=image;var tex=nemesisArt[image];if(tex!=null){var cam=l.cam;float t=StartupEase(Mathf.Clamp01(elapsed/Mathf.Max(1,l.dur)),cam==null?"linear":cam.ease),zoom=cam==null?1:Mathf.Lerp(cam.zs,cam.ze,t),px=cam==null?0:cam.px*t,py=cam==null?0:cam.py*t;
     float mag=l.vfx==null?0:l.vfx.shake,clock=Time.unscaledTime*1000;px+=(int)(Mathf.Sin(clock*.047f)*mag*2);py+=(int)(Mathf.Cos(clock*.053f)*mag*2);
     float ratio=(float)tex.width/tex.height,w=ratio>1920f/1080?1080*ratio:1920,h=ratio>1920f/1080?1080:1920/ratio,dx=(1920-w)/2,dy=ratio>1920f/1080?0:(1080-h)*.1f;
     float fi=l.fade!=null&&l.fade.@in>0?l.fade.@in:400,fo=l.fade==null?0:l.fade.@out,alpha=Mathf.Min(1,elapsed/fi);if(fo>0&&elapsed>l.dur-fo)alpha=Mathf.Min(alpha,(l.dur-elapsed)/fo);
-    var color=GUI.color;Color grade=Color.white;if(l.vfx!=null&&l.vfx.grade=="purple")grade=new Color(.65f+.314f*.35f,.65f+.157f*.35f,.65f+.471f*.35f);else if(l.vfx!=null&&l.vfx.grade=="purple_blood")grade=new Color(.6f+.392f*.4f,.6f+.118f*.4f,.6f+.235f*.4f);GUI.color=new Color(grade.r,grade.g,grade.b,Mathf.Clamp01(alpha));NativeUiAudit.DrawTexture(new Rect(960+(dx-960)*zoom+px,540+(dy-540)*zoom+py,w*zoom,h*zoom),tex);GUI.color=color;OriginalArtDrawn=true;
+    var color=GUI.color;Color grade=Color.white;if(l.vfx!=null&&l.vfx.grade=="purple")grade=new Color(.65f+.314f*.35f,.65f+.157f*.35f,.65f+.471f*.35f);else if(l.vfx!=null&&l.vfx.grade=="purple_blood")grade=new Color(.6f+.392f*.4f,.6f+.118f*.4f,.6f+.235f*.4f);GUI.color=new Color(grade.r,grade.g,grade.b,Mathf.Clamp01(alpha));NativeFullscreenArtwork.Draw(tex,NativeUiViewport.ScreenInDesign,null,zoom,px,py);GUI.color=color;OriginalArtDrawn=true;
     if(l.vfx!=null){DrawStartupVignette(l.vfx.vig);}
    }}
    if(!string.IsNullOrEmpty(l.speaker)&&!string.IsNullOrEmpty(l.text)){
@@ -121,7 +121,7 @@ namespace Exoduser.UnityPort
     string visible=RevealStartupText(l.text,startup.VisibleCharacters);var captionRect=new Rect(153.6f,y+37.8f,1612.8f,bodyH+20);Label(captionRect,visible,startupBody,TextAnchor.UpperLeft);NativeUiAudit.Region(captionRect,"component","cinematic-startup-caption","중앙 전체 대사 공간");
     if(startup.VisibleCharacters>=l.text.Replace("\n","").Length&&(ForceStartupContinue??(((int)(Time.unscaledTime*2)%2)==1))){var indicator=new Rect(1794,Mathf.Min(984,1080-subH*.2f),40,30);Label(indicator,"▼",startupHint,TextAnchor.MiddleCenter);NativeUiAudit.Region(indicator,"component","cinematic-continue","대사 공간 오른쪽/건너뛰기 위18");}
    }
-   NativeUiViewport.MaskFrontend();var hintMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.RightMatrix;
+   var hintMatrix=GUI.matrix;GUI.matrix=NativeUiViewport.RightMatrix;
    bool pad=frontendPadQaEnabled||ExoInput.PadConnected;
    float hold=(float)startup.HoldProgress;var hintColor=GUI.color;GUI.color=new Color(1,1,1,hold>0?.8f:.25f+.1f*Mathf.Sin(Time.unscaledTime*2));Label(new Rect(1300,1032,600,24),pad?K("A 다음 / B 길게 / Start 건너뛰기","A Next / Hold B / Start Skip"):K("SPACE 길게 눌러 건너뛰기","Hold SPACE to skip"),startupHint,TextAnchor.MiddleRight);GUI.color=hintColor;Fill(new Rect(1780,1052,120,3),new Color(1,1,1,.15f));Fill(new Rect(1780,1052,120*hold,3),new Color(1,1,1,.8f));NativeUiAudit.Region(new Rect(1300,1032,600,24),"component","cinematic-startup-skip","실제 오른쪽 아래");GUI.matrix=hintMatrix;
    var e=Event.current;if(new Rect(0,0,1920,1080).Contains(e.mousePosition)&&!startupInputFence&&e.type==EventType.MouseDown&&e.button==0){startup.Advance();e.Use();}

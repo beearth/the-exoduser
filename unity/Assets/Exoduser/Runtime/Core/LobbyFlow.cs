@@ -14,7 +14,7 @@ namespace Exoduser.UnityPort.Core
   public void EnterGate(){if(Page==LobbyPage.Title){Page=LobbyPage.WorldIntro;SkipProgress=0;}}
   public void TickGate(double elapsed,double time,bool error,double duration){if(Page!=LobbyPage.Gate)return;if(error||(elapsed>3&&time<.2)||elapsed>15||(duration>0&&time>=duration-.05))Page=LobbyPage.WorldIntro;}
   public void FinishIntro(){if(Page!=LobbyPage.Playing){Page=LobbyPage.Lobby;SkipProgress=0;}}
-  public void HoldSkip(bool holding,double delta){if(Page==LobbyPage.Lobby||Page==LobbyPage.Playing){SkipProgress=0;return;}SkipProgress=holding?Math.Min(1,SkipProgress+Math.Max(0,delta)/5):0;if(SkipProgress>=1)FinishIntro();}
+  public void HoldSkip(bool holding,double delta,bool complete=true){if(Page==LobbyPage.Lobby||Page==LobbyPage.Playing){SkipProgress=0;return;}SkipProgress=holding?Math.Min(1,SkipProgress+Math.Max(0,delta)/5):0;if(complete&&SkipProgress>=1)FinishIntro();}
   public void Replay(){Page=LobbyPage.Title;SkipProgress=0;}
   public void ShowLobby(){Page=LobbyPage.Lobby;SkipProgress=0;}
   public void SelectPreview(){if(Page==LobbyPage.Lobby)PreviewCharacter=true;}

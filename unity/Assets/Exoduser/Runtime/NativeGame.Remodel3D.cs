@@ -85,6 +85,7 @@ namespace Exoduser.UnityPort
         void Remodel3DSetActive(bool on)
         {
             Remodel3DRestoreBillboards();
+            NativeGroundSkillSurface.RestoreAll();
             NativeHd2D.BeginProjection();
             NativeRemodel3D.Active = on;
             if(a2EnemyShadowRoot!=null)a2EnemyShadowRoot.SetActive(on);
@@ -98,11 +99,13 @@ namespace Exoduser.UnityPort
         {
             HellArenaLate();
             if (!NativeRemodel3D.Active || r3Cam == null || Simulation == null) return;
+            NativeGroundSkillProjection.BeginFrame(r3Cam);
             bool hidden = view.cullingMask == 0;   // the lobby / startup hides the world through the 2D camera mask: mirror it
             view.cullingMask = 0;                  // the 2D camera only clears the frame while the 3D one draws
             r3Cam.enabled = !hidden;
             Remodel3DViewport();
             var p = Simulation.Player; r3Marker.position = NativeRemodel3D.Point(p.X, p.Y) + NativeRemodelCamera.TargetOffset;   // CM LOOK-001 follows the marker (offset 0, 10.52, -9.24, no damping)
+            r3Marker.position += ImpactCameraOffset();
             if(NativeHd2D.Enabled&&r3Brain!=null)r3Brain.ManualUpdate(); // 최종 카메라 pose 뒤에만 픽셀 스냅한다.
             foreach (var r in props) if (r != null) r.enabled = false;
             foreach (var c in chunks.Values) if (c.renderer != null) c.renderer.enabled = false;
@@ -145,13 +148,14 @@ namespace Exoduser.UnityPort
             var tilt = Quaternion.Euler(pitch * Mathf.Rad2Deg, 0, 0);
             foreach (var sr in FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None))
             {
+                if (sr != null && (Exoduser.UnityPort.Vfx.NativeImpactView.IsContactSprite(sr)||NativeGroundSkillSurface.Project(sr))) continue;
                 if (sr == null || !sr.enabled || sr.sprite == null || sr.gameObject.scene == r3Scene) continue;
                 var tr = sr.transform;
                 r3Base[sr] = new R3Base { localPosition = tr.localPosition, localRotation = tr.localRotation };
                 float roll = tr.rotation.eulerAngles.z;
                 if(NativeHd2D.Enabled&&NativeHd2D.IsActor(sr))
                 { NativeHd2D.ProjectActor(sr,r3Cam,roll);r3Projected.Add(sr);continue; }
-                float below = NativeSkillView.IsCenteredSkillSprite(sr) ? 0 : (sr == playerView ? NativeRemodelCamera.HeroFootLift(sr.sprite) : NativeEnemyFootprint.FootLift(sr.sprite)) * Mathf.Abs(tr.lossyScale.y);
+                float below = (NativeSkillView.IsCenteredSkillSprite(sr)||KiImpactView.IsFeelSprite(sr)) ? 0 : (sr == playerView ? NativeRemodelCamera.HeroFootLift(sr.sprite) : NativeEnemyFootprint.FootLift(sr.sprite)) * Mathf.Abs(tr.lossyScale.y);
                 tr.SetPositionAndRotation(tr.position + new Vector3(0, below * cos, below * sin), tilt * Quaternion.Euler(0, 0, roll));
                 r3Projected.Add(sr);
             }

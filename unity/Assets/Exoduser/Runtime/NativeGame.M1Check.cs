@@ -85,16 +85,19 @@ namespace Exoduser.UnityPort
             float deadline;
 
             // ---- 01 lobby -> warrior -> 1-1 ----
-            lobby.ShowLobby(); yield return new WaitForSecondsRealtime(.6f);
+            lobby.ShowLobby(); yield return M1WaitFrontend("initial lobby");
             // Always a brand-new character: a roster/combat save left in <output> by an earlier run makes BeginCharacterEntry take the "continue" path (HasCombatSave), which skips the
             // story and the first practice arena (step 02 "not shown"). A fresh unique name has no combat save, so the new-character route is always walked.
             {
                 string fresh = "M1" + (DateTime.Now.Ticks % 100000).ToString("00000");
-                if (lobby.OpenCharacterCreation() && lobby.ChooseCharacterVisual(0) && lobby.ConfirmCharacterVisual()) lobby.CreateCharacter(fresh);
-                lobby.ShowLobby();
+                bool opened=lobby.OpenCharacterCreation();yield return M1WaitFrontend("character selection");
+                bool chosen=opened&&lobby.ChooseCharacterVisual(0);bool confirmed=chosen&&lobby.ConfirmCharacterVisual();yield return M1WaitFrontend("character naming");
+                bool created=confirmed&&lobby.CreateCharacter(fresh);yield return M1WaitFrontend("created story decoder");
+                if(!created)M1Add("00","new character creation","fail","async character route rejected"," ");
+                lobby.ShowLobby();yield return M1WaitFrontend("selected lobby");
             }
             yield return M1Shot("01-lobby-warrior-selected");
-            bool entered = lobby.BeginCharacterEntry(false);
+            bool entered = lobby.BeginCharacterEntry(false);yield return M1WaitFrontend("entry loading and reveal");
             deadline = Time.realtimeSinceStartup + 15; while (lobby.StartupCaptureState.Page != FrontendEntryPage.Nemesis && Time.realtimeSinceStartup < deadline) yield return null;
             string storyPage = lobby.StartupCaptureState.Page.ToString();
             lobby.StartupCaptureState.Skip(); yield return null; lobby.StartupCaptureState.Skip(); yield return null;
@@ -250,8 +253,10 @@ namespace Exoduser.UnityPort
                 }
                 yield return M1Shot("07e-field-bullets");
                 int mouths = bossView != null ? bossView.FieldMouthsDrawn : -1, comets = bossView != null ? bossView.FieldCometsDrawn : -1, orbs = bossView != null ? bossView.FieldOrbsDrawn : -1, fall = bossView != null ? bossView.FieldBulletFallbacks : -1;
-                bool bulletsOk = mouths == 4 && comets == 7 && orbs == 6 && fall == 0;
-                M1Add("07e", "field enemy bullets drawn per kind (VFX-D18)", bulletsOk ? "ok" : "fail", "mouths " + mouths + "/4, element comets " + comets + "/7, element orbs " + orbs + "/6, fallback dots " + fall + " (the druid poison orb is not used for field bullets)", "07e-field-bullets.png");
+                int remMouths=0,remComets=0,remOrbs=0;
+                if(dr!=null&&skillRemaster!=null)foreach(var b in dr.Projectiles)if(skillRemaster.Drawn(b)){if(b.ElemBall)remOrbs++;else if(b.ParryClass=="physical"||b.Web)remMouths++;else remComets++;}
+                bool bulletsOk = mouths+remMouths == 4 && comets+remComets == 7 && orbs+remOrbs == 6 && fall == 0;
+                M1Add("07e", "field enemy bullets drawn per kind (VFX-D18 + impact matter)", bulletsOk ? "ok" : "fail", "mouths " + mouths + "+"+remMouths+" matter/4, element comets " + comets + "+"+remComets+" matter/7, element orbs " + orbs + "+"+remOrbs+" matter/6, fallback dots " + fall + " (new material geometry counted only for the exact live Core projectile drawn by the remaster)", "07e-field-bullets.png");
                 if (dr != null) dr.Projectiles.Clear();
             }
 
@@ -393,7 +398,7 @@ namespace Exoduser.UnityPort
             // ---- 11 druid boss fight (BX-02/03/05): the real 23-move AI runs; the player stands in the open and is healed every tick so the fight can be observed ----
             sim.Config.EnemyAiEnabled = true; var druid = sim.Druid; var moveStates = new HashSet<string>(); int maxPhase = 0, maxShots = 0, fightHurt0 = sim.HurtCount, shotCaptures = 0, hazardCaptures = 0, poolCaptures = 0, fightTicks = 0;
             float hpBefore = bossActor != null ? bossActor.Hp : 0; float shieldBefore = bossActor != null ? bossActor.Shield : 0; bool deathNoted = false;
-            if (bossActor != null) { p.X = bossActor.X + 260; p.Y = bossActor.Y; }
+            if (bossActor != null) { p.X = bossActor.X + 260; p.Y = bossActor.Y + 150; }   // harness placement only: the web draw order is (int)Y, so 150 px below the boss keeps the player in front of the druid body in 11a (same Y was hidden behind it)
             while (druid != null && bossActor != null && fightTicks++ < 2600 && bossActor.Alive)
             {
                 p.Hp = p.MaxHp; p.Shield = p.MaxShield; if (fightTicks > 420) p.Iframes = 600;   // first 420 ticks: let hits land (the point is to see the moves hit); afterwards untouchable so the captures stay readable
@@ -425,10 +430,10 @@ namespace Exoduser.UnityPort
                 p.Hp = p.MaxHp;
                 if (bossActor != null && bossActor.Alive) { sim.HurtEnemy(bossActor, bossActor.MaxHp * 4); kills++; }
                 StepInput(0, 0, p.X + 100, p.Y, false, false);
-                if (bossActor != null && !bossActor.Alive && bossActor.SinkDruid && sinkSeenAt < 0) { sinkSeenAt = killGuard; p.X = bossActor.X; p.Y = bossActor.Y + 240; p.Iframes = 600; }
+                if (bossActor != null && !bossActor.Alive && bossActor.SinkDruid && sinkSeenAt < 0) { sinkSeenAt = killGuard; p.X = bossActor.X; p.Y = bossActor.Y + 420; p.Iframes = 600; }
             }
             bool sunk = bossActor != null && !bossActor.Alive && bossActor.SinkDruid;
-            if (sunk) { p.X = bossActor.X; p.Y = bossActor.Y + 240; p.Iframes = 600; for (int k = 0; k < 90; k++) { StepInput(0, 0, bossActor.X, bossActor.Y, false, false); if (k == 6) yield return M1Shot("12a-druid-sink-start"); if (k == 40) yield return M1Shot("12b-druid-sink-mid"); } }   // the sink plays on the render frames after the final death (66 tick body, 18 hold, 18 fade)
+            if (sunk) { p.X = bossActor.X; p.Y = bossActor.Y + 420; p.Iframes = 600; for (int k = 0; k < 90; k++) { StepInput(0, 0, bossActor.X, bossActor.Y, false, false); if (k == 6) yield return M1Shot("12a-druid-sink-start"); if (k == 40) yield return M1Shot("12b-druid-sink-mid"); } }   // the sink plays on the render frames after the final death (66 tick body, 18 hold, 18 fade)
             int open = 0; while (flow.Exits.Count == 0 && open++ < 500) StepInput(0, 0, p.X + 100, p.Y, false, false);
             StepInput(0, 0, p.X + 100, p.Y, false, false);
             yield return new WaitForSecondsRealtime(.8f);
@@ -446,8 +451,8 @@ namespace Exoduser.UnityPort
             // ---- 14 save and continue ----
             p.Hp = p.MaxHp; sim.Materials = 4321; bool saved = SaveCombatNow(); var before = SnapshotCombat("before");
             string name = lobby.ActiveCharacterName; bool hasSave = HasCombatSave(name);
-            lobby.ShowLobby(); yield return new WaitForSecondsRealtime(.3f);
-            bool continueOk = lobby.BeginCharacterEntry(false) && !lobby.StartupEntryActive;
+            lobby.ShowLobby();yield return M1WaitFrontend("save return lobby");
+            bool continueRequested=lobby.BeginCharacterEntry(false);yield return M1WaitFrontend("saved continue reveal");bool continueOk=continueRequested&&!lobby.StartupEntryActive&&!lobby.IsBlocking;
             deadline = Time.realtimeSinceStartup + 10; while ((lobby.IsBlocking || frontendEntryInputFence) && Time.realtimeSinceStartup < deadline) yield return null;
             Running = false; yield return null;
             var after = SnapshotCombat("after"); yield return M1Shot("14-continue");
@@ -456,6 +461,7 @@ namespace Exoduser.UnityPort
             yield return M1Finish(output);
         }
 
+        IEnumerator M1WaitFrontend(string label) {float until=Time.realtimeSinceStartup+25;while((NativeScreenTransition.Busy||lobby.CinematicEntryPending)&&Time.realtimeSinceStartup<until)yield return null;if(NativeScreenTransition.Busy||lobby.CinematicEntryPending)M1Add("00","frontend boundary "+label,"fail","boundary timeout","");else if(NativeScreenTransition.History!=null&&NativeScreenTransition.History.Count>0){var record=NativeScreenTransition.History[NativeScreenTransition.History.Count-1];if(record.failed||record.cancelled)M1Add("00","frontend boundary "+label,"fail",record.boundary+" "+record.error,"");}yield return null;}
         IEnumerator M1Finish(string output)
         {
             m1.guiRepaints = m1GuiRepaints; m1.guiBridged = m1GuiBridged;
@@ -466,7 +472,7 @@ namespace Exoduser.UnityPort
             File.WriteAllText(Path.Combine(output, "m1-check.json"), JsonUtility.ToJson(m1, true), new UTF8Encoding(false));
             // UI 캡처와 동일하게 영상 컴포넌트의 지연 파괴를 먼저 끝낸다.
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);
-            Debug.Log("QA_MEDIA_DRAIN_COMPLETE M1");Application.Quit(0);
+            Debug.Log("QA_MEDIA_DRAIN_COMPLETE M1");NativeLobbyVideo.RequestQuit(string.IsNullOrEmpty(m1.firstBlocked)?0:2);
         }
     }
 }

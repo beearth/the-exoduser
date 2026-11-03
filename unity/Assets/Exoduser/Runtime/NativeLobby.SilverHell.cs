@@ -147,30 +147,32 @@ namespace Exoduser.UnityPort
             Fill(new Rect(0,0,1920,1080),Color.black);
             var c=GUI.color;
             float fw=1851.4286f,fh=fw*9/16,fx=(1920-fw)/2,fy=(1080-fh)/2;
-            float t=since;
+            float t=since;bool reduced=NativeScreenTransition.ReducedMotionRequested;float dissolve=(float)gateEnterDelay.SigilOpacity;
             float reveal=Mathf.Clamp01((t-.2f)/2.6f),scale=Mathf.Lerp(1.035f,1,1-Mathf.Pow(1-reveal,3)),breath=t<2.8f?1:Mathf.Lerp(.82f,1,.5f+.5f*Mathf.Cos((t-2.8f)*Mathf.PI*2/7));
-            GUI.color=new Color(c.r,c.g,c.b,c.a*reveal*breath);
+            if(reduced){reveal=scale=breath=1;}
+            GUI.color=new Color(c.r,c.g,c.b,c.a*reveal*breath*dissolve);
             Image(new Rect(960-fw*scale/2,540-fh*scale/2,fw*scale,fh*scale),gateSigil);
-            GUI.color=new Color(c.r,c.g,c.b,c.a*Mathf.Clamp01((t-.8f)/2));
+            GUI.color=new Color(c.r,c.g,c.b,c.a*(reduced?1:Mathf.Clamp01((t-.8f)/2))*dissolve);
             NativeUiAudit.DrawTexture(new Rect(fx+fw*.18f,fy+fh*.36f,fw*.64f,fh*.44f),gateHalo);
-            float fade=Mathf.Clamp01((t-1.1f)/1.8f);
-            GUI.color=new Color(c.r,c.g,c.b,c.a*fade);
+            float fade=reduced?1:Mathf.Clamp01((t-1.1f)/1.8f);
+            GUI.color=new Color(c.r,c.g,c.b,c.a*fade*dissolve);
             float lw=fw*.573f,lh=gateLogo==null?525:lw*gateLogo.height/gateLogo.width;
             Image(new Rect(fx+fw*.2386f,fy+fh*.262f+(1-fade)*lh*.012f,lw,lh),gateLogo);
             float enterFade=Mathf.Clamp01((t-2.4f)/1.4f);
             if(t>3.8f)enterFade*=Mathf.Lerp(.72f,1,.5f+.5f*Mathf.Cos((t-3.8f)*Mathf.PI*2/4.2f));
+            if(reduced)enterFade=1;enterFade*=(float)gateEnterDelay.EnterOpacity(reduced);
             GUI.color=new Color(c.r,c.g,c.b,c.a*enterFade);
-            var r=new Rect(650,922.4f,620,56);
+            var r=new Rect(650,922.4f+(float)gateEnterDelay.EnterShift(reduced),620,56);
             NativeUiAudit.DrawTexture(r,gateEnterShade);
             float spacing=21*.55f,tw=SpacedWidth(silverLatin,21,"ENTER",spacing)-spacing;
             DrawSpaced(960-tw/2,r.y,r.height,"ENTER",silverLatin,21,spacing,new Color(223/255f,214/255f,194/255f),true);
             if(gateEnterLine!=null)
             {
-                NativeUiAudit.DrawTexture(new Rect(960-tw/2-22-120,945.9f,120,9),gateEnterLine);
-                NativeUiAudit.DrawTextureWithTexCoords(new Rect(960+tw/2+22,945.9f,120,9),gateEnterLine,new Rect(1,0,-1,1),true);
+                NativeUiAudit.DrawTexture(new Rect(960-tw/2-22-120,945.9f+(float)gateEnterDelay.EnterShift(reduced),120,9),gateEnterLine);
+                NativeUiAudit.DrawTextureWithTexCoords(new Rect(960+tw/2+22,945.9f+(float)gateEnterDelay.EnterShift(reduced),120,9),gateEnterLine,new Rect(1,0,-1,1),true);
             }
             GUI.color=c;
-            DrawEntryHover(r);if(NativeUiAudit.Button(r,"",GUIStyle.none))StartGate();
+            DrawEntryHover(r);if(EntrySoundButton(r))StartGate();
         }
     }
 }

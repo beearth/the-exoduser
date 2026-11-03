@@ -5,6 +5,7 @@ namespace Exoduser.UnityPort.Core {
         public void ApplyEquipment(InventoryState inventory){
             if(inventory==null)throw new ArgumentNullException(nameof(inventory));
             var s=inventory.CalculateStats(Player.Level,Config.StageIndex+1,Config.DifficultyIndex-5);
+            ApplyGrowthEquipment(s,inventory);
             Config.PlayerMaxHp=s.PlayerMaxHp;Config.PlayerMaxStamina=(float)s.PlayerMaxStamina;Config.PlayerMaxMana=(float)s.PlayerMaxMana;Config.PlayerMaxShield=(float)s.PlayerMaxShield;
             Config.PlayerBaseAttack=s.PlayerBaseAttack;Config.PlayerSpeed=(float)s.PlayerSpeed;Config.PlayerHpRegen=(float)s.PlayerHpRegen;Config.PlayerStaminaRegen=(float)s.PlayerStaminaRegen;Config.PlayerManaRegen=(float)s.PlayerManaRegen;
             Config.PlayerPhysicalDefense=(float)s.PlayerPhysicalDefense;Config.PlayerCriticalChance=s.PlayerCriticalChance;Config.PlayerCriticalMultiplier=s.PlayerCriticalMultiplier;

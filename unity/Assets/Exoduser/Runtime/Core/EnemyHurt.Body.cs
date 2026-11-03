@@ -80,6 +80,7 @@ namespace Exoduser.UnityPort.Core
                 // immediate counter: recover/idle switch to combat
                 if (!dotT && !e.ib) { if (e.s == "recover") { e.s = "idle"; e.st2 = 0; } else if (e.s == "idle" && e.st2 > 5) { e.st2 = 5; } }
                 e.hp -= dmg;
+                if(!dotT&&!(opts!=null&&(Truthy(opts.beam)||Truthy(opts.bladeShard)||Truthy(opts.maliceHunt)||Truthy(opts.iceBlade)||Truthy(opts.lightning)||Truthy(opts.ltnChaser))))c.FeelContact?.Invoke(e,ang,e.hp<=0);
                 c.DpsDmg += dmg;
                 // damage text: single hits only (no DOT / channelled)
                 bool quiet2 = opts != null && (Truthy(opts.bladeShard) || Truthy(opts.maliceHunt) || Truthy(opts.iceBlade) || Truthy(opts.beam) || Truthy(opts.dot) || Truthy(opts.ltnChaser) || Truthy(opts.lightning));

@@ -46,7 +46,7 @@ namespace Exoduser.UnityPort
         {
             if (playing != wanted)
             {
-                if (music.isPlaying && musicLevel > 0) { musicLevel = Mathf.Max(0, musicLevel - dt / FadeOutSeconds); music.volume = musicLevel * MusicBase; }
+                if (music.isPlaying && musicLevel > 0) { musicLevel = Mathf.Max(0, musicLevel - dt / FadeOutSeconds); music.volume = musicLevel * MusicBase * NativeDecisionSound.MusicGain; }
                 else
                 {
                     music.Stop(); playing = wanted; var clip = playing.Length > 0 ? Resources.Load<AudioClip>("Audio/Bgm/" + (playing == "boss" ? "bgm_druid_boss" : playing)) : null;   // 1-1 slice: the boss is the druid (SND-09)
@@ -55,26 +55,26 @@ namespace Exoduser.UnityPort
                     if (clip != null) music.Play();
                 }
             }
-            else if (music.isPlaying) { musicLevel = Mathf.Min(1, musicLevel + dt / FadeInSeconds); music.volume = musicLevel * MusicBase; }
+            else if (music.isPlaying) { musicLevel = Mathf.Min(1, musicLevel + dt / FadeInSeconds); music.volume = musicLevel * MusicBase * NativeDecisionSound.MusicGain; }
             if (bedWanted)
             {
                 if (!bed.isPlaying) { bed.Play(); bedLevel = 0; }
-                bedLevel = Mathf.Min(1, bedLevel + dt / FadeInSeconds); bed.volume = bedLevel * BedGain * bus.SfxGain;   // web: 0.15 x sfxVol
+                bedLevel = Mathf.Min(1, bedLevel + dt / FadeInSeconds); bed.volume = bedLevel * BedGain * bus.SfxGain * NativeScreenTransition.Gain;   // web: 0.15 x sfxVol
             }
             if (arenaWanted)
             {
                 if (!arenaBed.isPlaying) { arenaBed.Play(); arenaLevel = 0; }
-                arenaLevel = Mathf.Min(1, arenaLevel + dt / FadeInSeconds); arenaBed.volume = arenaLevel * BedGain * bus.SfxGain;
+                arenaLevel = Mathf.Min(1, arenaLevel + dt / FadeInSeconds); arenaBed.volume = arenaLevel * BedGain * bus.SfxGain * NativeScreenTransition.Gain;
             }
             else if (arenaBed.isPlaying)
             {
-                arenaLevel = Mathf.Max(0, arenaLevel - dt / BedFadeSeconds); arenaBed.volume = arenaLevel * BedGain * bus.SfxGain;
+                arenaLevel = Mathf.Max(0, arenaLevel - dt / BedFadeSeconds); arenaBed.volume = arenaLevel * BedGain * bus.SfxGain * NativeScreenTransition.Gain;
                 if (arenaLevel <= 0) arenaBed.Stop();
             }
             if (bedWanted) { }
             else if (bed.isPlaying)
             {
-                bedLevel = Mathf.Max(0, bedLevel - dt / BedFadeSeconds); bed.volume = bedLevel * BedGain * bus.SfxGain;
+                bedLevel = Mathf.Max(0, bedLevel - dt / BedFadeSeconds); bed.volume = bedLevel * BedGain * bus.SfxGain * NativeScreenTransition.Gain;
                 if (bedLevel <= 0) bed.Stop();
             }
         }
