@@ -1,3 +1,5 @@
+최신은 **11-04 팔 비율 수정**: 위팔 0.180H·아래팔 0.145H·손 0.100H, attempt prop2 14포즈 FAIL 0(최대 1.958mm). 도구 `proportion_fix.py`·`measure_proportion.py`·`render_proportion_front.py`·`compose_proportion_board.py`, 계획 `proportion-plan.json`. 상세는 docs/engine/UNITY_CHAR_MODULAR_REST_GROWTH_20261104.md 하단.
+
 # 전사 모듈 제작 도구
 
 최신은 **11-04 Sonnet 마무리**: 03:20 소켓 한정 rest 증가분 기준을 그대로 두고 수정 뒤 attempt `sonnet1`에서 **실패 쌍 0·스카프/머리 0**(14포즈, 최대 gate 1.896mm). native 37,628tri·61뼈(couter 2 추가)·25묶음. 수정 내역·실측 숙임 각도·검사 표는 `I:/EXODUSER-Storage/char-modular/numeric/sonnet-summary.md`, `docs/engine/UNITY_CHAR_MODULAR_REST_GROWTH_20261104.md` 하단. 이 통과는 Blender 수동 포즈 표본 검사이며 Animator/Unity 실게임 판정이 아니다.

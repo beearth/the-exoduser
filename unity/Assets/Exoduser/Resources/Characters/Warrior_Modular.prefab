@@ -24,9 +24,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2735309353997680044}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.4706394, y: 0.00007102267, z: 0.00013342129, w: 0.88232565}
-  m_LocalPosition: {x: -0.4895761, y: -0.53892124, z: -0.9221287}
-  m_LocalScale: {x: 1, y: 1.0000004, z: 1.0000002}
+  m_LocalRotation: {x: 0.47063926, y: 0.00007110648, z: 0.0001337789, w: 0.88232577}
+  m_LocalPosition: {x: -0.5245154, y: -0.49837685, z: -0.8615279}
+  m_LocalScale: {x: 1, y: 1.0000001, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3249711340935107478}
@@ -194,17 +194,25 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[4]'
       value: 
       objectReference: {fileID: 2100000, guid: afc02fd39d1dc124abae99e35a9f47b8, type: 2}
+    - target: {fileID: -639763325267172598, guid: f87150a946d3b044199118a45ebfe33d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.01669643
+      objectReference: {fileID: 0}
+    - target: {fileID: -639763325267172598, guid: f87150a946d3b044199118a45ebfe33d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.1577873
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f87150a946d3b044199118a45ebfe33d, type: 3}
       propertyPath: m_Name
       value: Warrior_Modular
       objectReference: {fileID: 0}
     - target: {fileID: 1215905739698859691, guid: f87150a946d3b044199118a45ebfe33d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.0000001
+      value: 0.9999999
       objectReference: {fileID: 0}
     - target: {fileID: 1215905739698859691, guid: f87150a946d3b044199118a45ebfe33d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.0000001
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1215905739698859691, guid: f87150a946d3b044199118a45ebfe33d, type: 3}
       propertyPath: m_LocalScale.z
@@ -232,7 +240,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7723869506456310326, guid: f87150a946d3b044199118a45ebfe33d, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.0000001
+      value: 1.0000002
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -278,8 +286,8 @@ RotationConstraint:
   m_Enabled: 1
   serializedVersion: 2
   m_Weight: 1
-  m_RotationAtRest: {x: 21.669794, y: 24.527327, z: 10.67656}
-  m_RotationOffset: {x: 11.389817, y: 11.518033, z: 4.049}
+  m_RotationAtRest: {x: 21.669792, y: 24.52731, z: 10.676556}
+  m_RotationOffset: {x: 11.389802, y: 11.518021, z: 4.048998}
   m_AffectRotationX: 1
   m_AffectRotationY: 1
   m_AffectRotationZ: 1
@@ -332,8 +340,8 @@ RotationConstraint:
   m_Enabled: 1
   serializedVersion: 2
   m_Weight: 1
-  m_RotationAtRest: {x: 21.87274, y: 330.45703, z: 345.0161}
-  m_RotationOffset: {x: 11.875798, y: 346.2481, z: 354.1035}
+  m_RotationAtRest: {x: 21.872734, y: 330.45703, z: 345.01608}
+  m_RotationOffset: {x: 11.875782, y: 346.2481, z: 354.10352}
   m_AffectRotationX: 1
   m_AffectRotationY: 1
   m_AffectRotationZ: 1

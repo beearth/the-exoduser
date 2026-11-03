@@ -80,6 +80,9 @@ class Poses:
             bpy.context.view_layer.update()
             self.turn("Spine01",28,(1,0,0))
             for side in ("Left","Right"): self.ik(side,self.feet[side],(0,-1,0))
+        elif label=="arm_down":
+            for side in ("Left","Right"):
+                self.aim(side+"Arm",self.head(side+"Hand")-self.head(side+"Arm"),Vector((0,0,-1)))
         elif label=="twist45": self.turn("Spine01",45,(0,0,1))
         elif label=="head_left": self.turn("Head",35,(0,0,1))
         elif label=="head_right": self.turn("Head",-35,(0,0,1))
