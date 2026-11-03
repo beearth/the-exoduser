@@ -1,5 +1,9 @@
 > 진행 프로젝트: [MAP_IMPROVEMENT_PROJECT.md](MAP_IMPROVEMENT_PROJECT.md) · 2.5D 깊이 기준: [DEPTH_2_5D_BENCHMARK_20260930.md](DEPTH_2_5D_BENCHMARK_20260930.md)
 
+## 2026-11-03 — 웹 3D 9라운드 (기본 OFF)
+
+현행은 WEB3D_TRIAL_20261031.md의 R9 계약. R8 국소 hue·뿌리 접합과 GAP_ANALYSIS 1·2·5·6을 같은 기존 맵 위에 수정한다. 최종 실화면·성능·판정은 I:/EXODUSER-Storage/codex-takeover/web3d-r9/REPORT.md 및 delivery.json. 이전 제작자 PASS/RETOUCH는 해당 차수의 이력이며 독립CTO 채택과 구분한다.
+
 ## 2026-11-03 — 웹 3D 8라운드 (기본 OFF·제작자 RETOUCH)
 
 CTO 11-02 23:50의 밀도·유령나무·생동감 재작업. 원래 고사목12종 하단24%와 기존 뿌리/뼈를 사용하는 표시용1797군락·10구역, 수풀12.5px·밑동고정·부착식생, 어두운 목질/청백 윤곽 유령나무. 맵/충돌/전투/저장/HUD·원본PNG 보존, 유료0. 13카메라1920/3840 비교·빈바닥 표, 시작/캠프/후반/제단10초4편·1x 재생/프레임차, 활성64적96탄 ON평균137.57~160.61FPS. 원재질 hue 분리검수와 실제ON 잔여바닥 국소평균을 별도 공개. **실제ON 모든 국소 hue/전체AAA PASS 아님**. [현행 계약](WEB3D_TRIAL_20261031.md) · I:/EXODUSER-Storage/codex-takeover/web3d-r8/REPORT.md·delivery.json.

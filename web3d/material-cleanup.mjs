@@ -21,13 +21,15 @@ export function despeckleMaterial(rgba,w,h,radius=6){
  for(let p=0;p<luma.length;p++){const ratio=luma[p]>0?Math.min(1,opened[p]/luma[p]):1;for(let c=0;c<3;c++)out[p*4+c]=rgba[p*4+c]*ratio;}
  return out;
 }
-export function createMaterialCleanup(){
+export function createMaterialCleanup({preserveAreaHue=false}={}){
  const cache=new WeakMap();
  return image=>{
   if(!image)return image;if(cache.has(image))return cache.get(image);
   const canvas=document.createElement('canvas');canvas.width=image.width||image.naturalWidth;canvas.height=image.height||image.naturalHeight;
   const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(image,0,0);
-  const pixels=ctx.getImageData(0,0,canvas.width,canvas.height);pixels.data.set(despeckleMaterial(pixels.data,canvas.width,canvas.height));ctx.putImageData(pixels,0,0);cache.set(image,canvas);return canvas;
+  const pixels=ctx.getImageData(0,0,canvas.width,canvas.height),opened=despeckleMaterial(pixels.data,canvas.width,canvas.height);
+  if(preserveAreaHue){for(let i=0;i<pixels.data.length;i+=4){const a=pixels.data,y=a[i]*.299+a[i+1]*.587+a[i+2]*.114,target=opened[i]*.299+opened[i+1]*.587+opened[i+2]*.114,d=Math.max(-Math.min(a[i],a[i+1],a[i+2]),target-y);a[i]+=d;a[i+1]+=d;a[i+2]+=d;}}else pixels.data.set(opened);
+  ctx.putImageData(pixels,0,0);cache.set(image,canvas);return canvas;
  };
 }
 

@@ -1,11 +1,12 @@
 import * as THREE from '../assets/vendor/three-r160/build/three.module.js';
-import {mapLookLayout,holeLights,moatLights,effectLights,renderEnergy,presentationRadius,foregroundPose} from './map-look-layout.mjs?v=20261102-round6';
-import {applyAffine} from './living-layout.mjs';
+import {mapLookLayout,holeLights,moatLights,effectLights,renderEnergy,presentationRadius} from './map-look-layout.mjs?v=20261102-round6';
+
 import {lightingGLSL} from './lighting-model.mjs?v=20261102-round6';
 import {createFrameSampler} from './frame-sampler.mjs';
-import {shadowVector,shadowAffine} from './depth-layout.mjs?v=20261102-round4-final';
+
 import {dynamicLights} from './scene-budget.mjs?v=20261102-round4-final';
 import {atmosphereGLSL} from './atmosphere-model.mjs?v=20261102-hue1';
+import {sceneLightingGLSL} from './scene-lighting-model.mjs';
 
 // A snapshot of the native environment BEFORE actors/VFX/HUD is the albedo.
 // Lighting never substitutes terrain art or recolors an actor sprite.
@@ -21,7 +22,9 @@ export function createMapLook(renderer,canvas,shared,data,anchors){
  const material=new THREE.ShaderMaterial({uniforms:u,depthTest:false,depthWrite:false,
   vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}`,
   fragmentShader:`uniform sampler2D frameArt,nativeEmission;uniform vec2 pixel,hero,moatBand;uniform vec4 view,moat;uniform vec4 lights[40],shafts[${plan.shafts.length}];uniform vec3 colors[40],ambient;uniform float time,flash,lowFog,glow[40],selfGlow[40],emissionMix;uniform int lightCount;varying vec2 vUv;
+   uniform sampler2D moonShadow;
    ${lightingGLSL}
+   ${sceneLightingGLSL}
    ${atmosphereGLSL}
    float lum(vec2 uv){return dot(texture2D(frameArt,uv).rgb,vec3(.299,.587,.114));}
    void main(){vec4 original=texture2D(frameArt,vUv);vec2 world=view.xy+vec2(vUv.x,1.-vUv.y)*view.zw;
@@ -45,46 +48,33 @@ export function createMapLook(renderer,canvas,shared,data,anchors){
     float wet=smoothstep(moatBand.x,moatBand.x+.025,waterRadius)*(1.-smoothstep(moatBand.y-.025,moatBand.y,waterRadius));
     vec3 selfLight=emission.rgb*emission.a*emissionMix+(selfEmission+original.rgb*wet*.4)*toxicMaterial;
     vec3 color=shadeEnvironment(original.rgb,ambient*(.88+.12*(1.-smoothstep(.25,.9,cloud))),added,selfLight)+scattering;
-    gl_FragColor=vec4(clamp(forestAtmosphere(clamp(color,0.,1.),original.rgb,world,hero,time,lowFog),0.,1.),original.a);
+    vec2 shadowUV=vec2((world.x+2400.)/12800.,1.-(world.y+2400.)/12800.);
+    float shade=texture2D(moonShadow,shadowUV).a;
+    // One NW moon, broken by canopy openings; the long axis follows its SE rays.
+    float diagonal=world.x*.78+world.y*.62,across=world.x*.62-world.y*.78;
+    float canopy=pow(.5+.5*sin(across*.0038+sin(diagonal*.0007)*1.6),2.);
+    float moon=smoothstep(.10,.90,canopy)*(.82+.18*sin(diagonal*.0011));
+    float camp=exp(-dot((world-vec2(1820.,4020.))/vec2(440.,340.),(world-vec2(1820.,4020.))/vec2(440.,340.))*1.8);
+    float road=exp(-pow((world.x-(3970.+sin(world.y*.0014)*110.))/130.,2.))*smoothstep(4700.,5100.,world.y)*(1.-smoothstep(6800.,7300.,world.y));
+    float warm=max(camp,road*.42),heroPool=exp(-dot(world-hero,world-hero)/85000.);
+    float contact=exp(-dot((world-hero-vec2(0.,36.))/vec2(24.,8.),(world-hero-vec2(0.,36.))/vec2(24.,8.))*2.5);
+    vec3 base=original.rgb;
+    // Spatial light uses equal-channel increments, so area-average hue does
+    // not drift merely because differently colored patches receive more light.
+    vec3 lit=color*sceneExposure(moon,warm,shade,heroPool)*(1.-.40*contact);
+    lit+=vec3(.014,.022,.035)*moon+vec3(.10,.043,.006)*warm;
+    lit=boundHue(base,lit,10.);
+    // Environment-only depth softness: actors and danger marks draw later.
+    float edge=smoothstep(.24,.49,abs(vUv.x-.5))*smoothstep(.15,.40,abs(vUv.y-.5));
+    float protect=1.-exp(-dot(world-hero,world-hero)/160000.);
+    vec3 soft=(texture2D(frameArt,vUv+pixel*2.).rgb+texture2D(frameArt,vUv-pixel*2.).rgb)*.5;
+    lit=mix(lit,lit*(dot(soft,vec3(.299,.587,.114))+.01)/(dot(original.rgb,vec3(.299,.587,.114))+.01),edge*protect*.15);
+    gl_FragColor=vec4(relightPaint(base,dot(lit,vec3(.299,.587,.114))),original.a);
    }`});
  scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),material));
- const silhouettes=new Map(),shadowStamps=new Map(),dot=document.createElement('canvas');dot.width=dot.height=32;
- const dc=dot.getContext('2d'),dg=dc.createRadialGradient(16,16,0,16,16,16);dg.addColorStop(0,'rgba(255,255,255,1)');dg.addColorStop(.4,'rgba(255,255,255,.45)');dg.addColorStop(1,'rgba(255,255,255,0)');dc.fillStyle=dg;dc.fillRect(0,0,32,32);
- const darkDot=document.createElement('canvas');darkDot.width=darkDot.height=32;const dx=darkDot.getContext('2d');dx.drawImage(dot,0,0);dx.globalCompositeOperation='source-in';dx.fillStyle='#020204';dx.fillRect(0,0,32,32);
  let holeRows=[],lastHoles=-1,region=[...data.ambient],lastTime=0,flashNext=8,flashLeft=0,flashIndex=0;
  const stats={mapLook:true,authoredLights:plan.lights.length+1,authoredShadows:plan.shadows.length,foregroundTotal:plan.foreground.length,shaftTotal:plan.shafts.length,occluders:plan.occluders.length,fxLights:0,holeLights:0};
  const visible=(x,y,r,v)=>x+r>v.x&&x-r<v.x+v.w&&y+r>v.y&&y-r<v.y+v.h;
- const imageFor=(name,s)=>{const p=anchors.props.find(p=>p.texture.endsWith('/'+name));return p?s.images[p.id]:null;};
- function stamp(im,blur,tint,cache){
-  if(cache.has(im))return cache.get(im);const c=document.createElement('canvas');c.width=c.height=384;const x=c.getContext('2d');
-  x.filter=`blur(${blur*384/800}px)`;x.drawImage(im,16,16,352,352);x.filter='none';x.globalCompositeOperation='source-in';x.fillStyle=tint;x.fillRect(0,0,384,384);cache.set(im,c);return c;
- }
- function foreground(ctx,s,view){
-  let n=0;ctx.save();
-  for(const row of plan.foreground){const pose=foregroundPose(row,s.G.cam,s.P,false,data.foreground.parallax),[x,y]=pose.position;
-   if(!visible(x,y,row.size,view))continue;const im=imageFor(row.texture,s);if(!im?.naturalWidth)continue;
-   const walk=s.G.map[Math.floor(y/s.tile)]?.[Math.floor(x/s.tile)]===0;
-   ctx.save();ctx.translate(x,y);ctx.rotate(row.rotation);ctx.scale(row.flip?-1:1,1);ctx.globalAlpha=walk?pose.alpha*.35:pose.alpha;
-   ctx.drawImage(stamp(im,data.foreground.blur_px,'#060609',silhouettes),-row.size/2,-row.size/2,row.size,row.size);ctx.restore();n++;
-  }ctx.restore();stats.foreground=n;
- }
- function shadows(ctx,s,view){
-  let n=0;ctx.save();
-  for(const p of plan.shadows){const [x,y]=p.position,[w,h]=p.draw_size;if(!visible(x,y,Math.max(w,h),view))continue;const im=s.images[p.id];if(!im?.naturalWidth)continue;
-   const c=stamp(im,data.prop_shadow.blur_px,'#030305',shadowStamps),upright=data.prop_shadow.upright_textures.includes(p.texture.split('/').pop());
-   ctx.save();ctx.globalAlpha=data.prop_shadow.tint[3]*.7;
-   const light=plan.lights.filter(l=>l.shadow&&Math.hypot(x-l.position[0],y-l.position[1])<presentationRadius(l)).sort((a,b)=>Math.hypot(x-a.position[0],y-a.position[1])-Math.hypot(x-b.position[0],y-b.position[1]))[0];
-   const [dx,dy]=shadowVector([x,y],light?.position||[s.P.x,s.P.y-20]);
-   if(upright){ctx.translate(x,y+h*(1-p.pivot[1]));applyAffine(ctx,...shadowAffine([dx,dy]));ctx.drawImage(c,-w*.5,-h,w,h);}
-   else ctx.drawImage(c,x-w*p.pivot[0]+dx*w*.11,y-h*p.pivot[1]+dy*h*.09,w,h);
-   ctx.restore();n++;
-  }
-  // Root occlusion follows the nearest shadow-casting player/camp light.
-  for(const o of plan.occluders){const [x,y]=o.position,[rx,ry]=o.radii;if(!visible(x,y,300,view))continue;
-   const camp=plan.lights.find(l=>l.id==='camp_fire'),source=camp&&Math.hypot(x-camp.position[0],y-camp.position[1])<640?camp.position:[s.P.x,s.P.y-20];
-   const angle=Math.atan2(y-source[1],x-source[0]);ctx.save();ctx.translate(x,y);ctx.rotate(angle);ctx.globalAlpha=.19;ctx.drawImage(darkDot,-rx*.5,-ry,rx*3,ry*2);ctx.restore();
-  }ctx.restore();stats.shadows=n;
- }
  function update(s,view){
   const time=s.now/1000,dt=lastTime?Math.max(0,Math.min(.1,time-lastTime)):1/60;lastTime=time;
   u.moat.value.set(s.hill.cx*s.tile,s.hill.cy*s.tile,s.hill.rx*s.tile,s.hill.ry*s.tile);u.moatBand.value.set(s.hill.inner,s.hill.outer);
@@ -115,5 +105,5 @@ export function createMapLook(renderer,canvas,shared,data,anchors){
   ctx.save();ctx.globalAlpha=1;ctx.drawImage(canvas,view.x,view.y,view.w,view.h);ctx.restore();
  }
  function motes(){stats.particles=0;stats.fireflies=0;}
- return {surface:(ctx,s,v)=>{foreground(ctx,s,v);shadows(ctx,s,v);},draw,motes,uniforms:u,snapshot:()=>({...stats})};
+ return {surface:()=>{},draw,motes,uniforms:u,snapshot:()=>({...stats})};
 }

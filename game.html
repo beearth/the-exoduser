@@ -59215,6 +59215,7 @@ function drawP(){
       (P._aiTrail||(P._aiTrail=[])).push({x:_px,y:_py,dir:_pDk,flip:_pFlip,anim:P._sa.anim,f:P._sa.f,sc:_pScale,lift:_skillAnimLift});
       if(P._aiTrail.length>8)P._aiTrail.shift();
     }else if(P._aiTrail&&P._aiTrail.length){P._aiTrail.length=0}
+    window._Web3DLivingLayer?.heroRim?.(X,P._sa,SpriteAnimator,_pFlip,_pDk,_apDead,_gwA);
     // ── 외곽선: 4방향만 (성능 최적화) ──
     if(OPT.outline&&_atlasP_outline&&!_apDead){
       const _olSa={img:_atlasP_outline,fm:P._sa.fm,anim:P._sa.anim,f:P._sa.f,t:0,spd:8,loop:true,done:false};
@@ -66077,7 +66078,7 @@ if(window._FDGDruidQaStorage?.active&&new URLSearchParams(location.search).get('
 
 <script type="module">
 if(new URLSearchParams(location.search).get('r3d')==='1'&&new URLSearchParams(location.search).get('r3dLegacy')!=='1'){
-  import('./web3d/living-layer.mjs?v=20261103-round8').then(m=>m.install(()=>({G,P,objects:MAP_OBJS,images:_OBJ_SPR,meta:_OBJ_META,ground:_ch1StartOuterCache,hill:_CH1_HILL,tile:T,now:_now,quality:OPT.quality,colorLight:OPT.quality!=='low'&&_litCamX===G.cam.x&&_litCamY===G.cam.y?_litColCvs:null,colorLightMix:LIT_COL_MIX,enemies:ens,projectiles:[...projs,...pProjs],blasts:[..._fireExps,..._impacts],frame:C,propOpacity:mo=>_dsOverlapsPlayer(mo)?_DS_FADE_MIN:1,nativeProxy:(_useGL||_useGPU),overlayFrame:(_useGL||_useGPU)?CT:null,flush:_glFlush}))).then(api=>{window._Web3DLivingLayer=api;}).catch(error=>{window._Web3DLivingLayerError=error.message;console.error('[WEB3D living layer unavailable]',error);});
+  import('./web3d/living-layer.mjs?v=20261103-round9').then(m=>m.install(()=>({G,P,objects:MAP_OBJS,images:_OBJ_SPR,meta:_OBJ_META,ground:_ch1StartOuterCache,hill:_CH1_HILL,tile:T,now:_now,quality:OPT.quality,colorLight:OPT.quality!=='low'&&_litCamX===G.cam.x&&_litCamY===G.cam.y?_litColCvs:null,colorLightMix:LIT_COL_MIX,enemies:ens,projectiles:[...projs,...pProjs],blasts:[..._fireExps,..._impacts],frame:C,propOpacity:mo=>_dsOverlapsPlayer(mo)?_DS_FADE_MIN:1,nativeProxy:(_useGL||_useGPU),overlayFrame:(_useGL||_useGPU)?CT:null,flush:_glFlush}))).then(api=>{window._Web3DLivingLayer=api;}).catch(error=>{window._Web3DLivingLayerError=error.message;console.error('[WEB3D living layer unavailable]',error);});
 }
 if(new URLSearchParams(location.search).get('r3d')==='1'&&new URLSearchParams(location.search).get('r3dLegacy')==='1'){
   const {renderFrame,advancePresentation}=await import('./web3d/presentation.mjs?v=20261031-main2');
