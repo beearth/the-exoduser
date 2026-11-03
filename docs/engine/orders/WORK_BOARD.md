@@ -1,3 +1,9 @@
+## 2026-11-03 PC 수동 인계 — RB1-7 / RB1-8
+
+| 작업ID | 내용 | 담당·환경 | 브랜치 | 소유 파일 | 상태 |
+|---|---|---|---|---|---|
+| RB1-7/8 | 기술7개 데이터·3D 보스방 | PC Codex, 지정 브리프 수행 | codex/unity-boss-arena-20261103 | Core/DruidRemodelData.cs, Tools/druid-remodel-test/{MotionChecks,Program,TelegraphChecks}.cs, UNITY_BOSS_ARENA_RB1_7_8_20261103.md·관련 docs | **중단·통합 금지**: 수치 부분적용, 하니스100375/18실패(잠행), Roslyn5어셈블리 오류0. 두 배율의 Core 최소연결 승인 대기. RB1-8 미착수. [기록](../UNITY_BOSS_ARENA_RB1_7_8_20261103.md) |
+
 ## 2026-10-29 Mac 첫 연습 실입력 후속
 
 ARM64 Settings QA 앱에서 웹 `mouse2`↔Unity 오른쪽 버튼 1을 입력/캡처 양쪽에 맞춰 수정했다. 실제 OS 오른쪽 클릭으로 마법 처치 5/5, 첫 연습 1~9단계 완료. 10단계 방향+Space 동시 키 입력은 현재 CUA가 일반키 2개 조합을 거부해 구르기 0/5 HOLD. 이어질 11~12단계·일반 1-1 몹/드롭은 미검증. PC A18 `NativePractice*` 변경0. [증거·다음 관문](../UNITY_MAC_PRACTICE_MOUSE_BRIDGE_20261029.md).

@@ -1,3 +1,5 @@
+> 2026-11-03 RB1-7 부분 후보: 데이터 기반 재생 지연은 채찍1타40틱·2/3타30틱, 내려찍기58틱으로 바뀐다. fan·summon·tideWave·seekerMines·chaseAoe는 페이즈에서 제외했다. 아래24/32/48틱·12기술 녹음은 당시 기록이다. 청취·실게임 미검증, 전투 하니스 FAIL로 통합 금지. [현재값·판정](UNITY_BOSS_ARENA_RB1_7_8_20261103.md).
+
 # Unity RM-1 사운드 트랙 A 구현 (A1~A8) — 2026-10-28
 
 명세·판정 기준: main `docs/6사운드디자인/UNITY_RM1_SOUND_SLICE_20261027.md` §2 트랙 A·§6.6 (사운드 총괄). 브랜치 `claude/unity-pc-sound-rm1-20261027` (채택 11키 `48fdc2e29` 위에 origin/unity/main `b280ddf61`을 merge한 뒤 쌓음). Core 규칙: 시뮬레이션 상태·난수를 바꾸지 않고 `FeedbackEvent` 큐잉만 추가했다.

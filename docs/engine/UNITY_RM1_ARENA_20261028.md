@@ -1,3 +1,5 @@
+> 2026-11-03 RB1-7 데이터 부분 적용·하니스 FAIL. 현행2D 유지, RB1-8 새3D 미착수. 34°/18.3/0.6초는 구현 전 계약이며 아래 과거48.7° 설계와 구별한다. [정확한 값·실패·다음 작업](UNITY_BOSS_ARENA_RB1_7_8_20261103.md).
+
 # Unity RM-1 보스 아레나 A1 (1-1 다크드루이드, si0) — P0 계획 (2026-10-28)
 
 담당 RM-1 세션(Sonnet), 판정 맵 총괄. 명세 `E:/exoduser-wt/_out/rm-arena/SPEC_ARENA_CH1.md`. 브랜치 `claude/unity-pc-rm1-20261027`. 이 단위는 **P0 = 코드 읽기·계산·계획**이다. Unity 실행 0, Core·Rendering·Remodel/Common·ProjectSettings·Packages 변경 0줄.

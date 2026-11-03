@@ -127,9 +127,9 @@ static partial class P
     }
 
     static readonly string[][] AllowedByLife = {
-        new[] { "slashCombo", "slam", "charge", "groundFissure", "fan", "grab" },
-        new[] { "slashCombo", "slam", "charge", "groundFissure", "fan", "grab", "burrowStrike", "chaseAoe", "summon" },
-        new[] { "slashCombo", "slam", "charge", "groundFissure", "grab", "burrowStrike", "chaseAoe", "tideWave", "seekerMines", "heartbeat" },
+        new[] { "slashCombo", "slam", "charge", "grab" },
+        new[] { "slashCombo", "slam", "charge", "grab", "burrowStrike", "groundFissure" },
+        new[] { "slashCombo", "slam", "charge", "grab", "burrowStrike", "groundFissure", "heartbeat" },
     };
 
     static void Verify(Run r)
