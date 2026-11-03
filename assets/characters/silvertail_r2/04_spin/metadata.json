@@ -1,0 +1,535 @@
+{
+  "stage": "DEVELOPMENT_FLAG_PREVIEW_CTO_CANDIDATE",
+  "cell": [
+    160,
+    160
+  ],
+  "world_cell": [
+    80,
+    80
+  ],
+  "foot_anchor": [
+    80,
+    124
+  ],
+  "description": "Original hub-connected9pose chronology S SW W NW N NE E SE S; same blade length, one anatomical left utility dagger; hand never holds main blade",
+  "frames": [
+    {
+      "direction": "canonical_clock",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            0,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "8158f0eb724bdc5aff828f8d85c66b0010b7e3040e303fbc4020f3ddfa8e7213"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            160,
+            0,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "da033955cfa417d20c5e9b75a937dd1537d036dfbdbefb8c9bd10b711ef07fa6"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            320,
+            0,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "050430b7122e602988b16470d4a9dd1b449edbdf9e535a4a85cd80bff1fad78a"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            0,
+            160,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "7dbb8c0e5da94c6b3fb03b62b27ee64f48d23bfdd5a72a5140c92453926c3512"
+        },
+        {
+          "frame": 4,
+          "rect": [
+            160,
+            160,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "73f7aab7c26ab3a53157fdb24069d176de3163b0135466849dae6150681bc935"
+        },
+        {
+          "frame": 5,
+          "rect": [
+            320,
+            160,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "9cfc72a93119fe932253c03584349d40505d41816675afa8b8080e80e56b3141"
+        },
+        {
+          "frame": 6,
+          "rect": [
+            0,
+            320,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "0b04a0ea1c201cae3f382e7a48c8100aa7c7769ee3b67a95e9e0e91636f38e57"
+        },
+        {
+          "frame": 7,
+          "rect": [
+            160,
+            320,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "080dfd14bd7bbae487e50827466b973de3c5bfbe9087f57d2ebd3e149defa377"
+        },
+        {
+          "frame": 8,
+          "rect": [
+            320,
+            320,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "4550ce01678a215338f19a27c6196fb180ba2926a1ba9f3076dd8273dd277f15"
+        }
+      ]
+    }
+  ],
+  "normal": "silhouette-derived OpenGL+Y draft; linear-data import proposal; actual material lighting not verified",
+  "chronology": [
+    "s",
+    "sw",
+    "w",
+    "nw",
+    "n",
+    "ne",
+    "e",
+    "se",
+    "s_return"
+  ],
+  "packing": [
+    {
+      "box_global": [
+        75,
+        36,
+        320,
+        390
+      ],
+      "cell": [
+        0,
+        0
+      ],
+      "component_area": 49405,
+      "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+      "touches_outer_image": false,
+      "scale": 0.24064171122994651,
+      "position": [
+        65,
+        39
+      ],
+      "size": [
+        59,
+        85
+      ],
+      "source_boot_anchor": [
+        64.0,
+        353
+      ],
+      "removed_detached_alpha_coordinates": []
+    },
+    {
+      "box_global": [
+        445,
+        43,
+        768,
+        378
+      ],
+      "cell": [
+        1,
+        0
+      ],
+      "component_area": 52138,
+      "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+      "touches_outer_image": false,
+      "scale": 0.24064171122994651,
+      "position": [
+        67,
+        44
+      ],
+      "size": [
+        78,
+        81
+      ],
+      "source_boot_anchor": [
+        55.0,
+        334
+      ],
+      "removed_detached_alpha_coordinates": []
+    },
+    {
+      "box_global": [
+        831,
+        47,
+        1248,
+        380
+      ],
+      "cell": [
+        2,
+        0
+      ],
+      "component_area": 54019,
+      "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+      "touches_outer_image": false,
+      "scale": 0.24064171122994651,
+      "position": [
+        25,
+        44
+      ],
+      "size": [
+        100,
+        80
+      ],
+      "source_boot_anchor": [
+        227.0,
+        332
+      ],
+      "removed_detached_alpha_coordinates": []
+    },
+    {
+      "box_global": [
+        21,
+        449,
+        398,
+        776
+      ],
+      "cell": [
+        0,
+        1
+      ],
+      "component_area": 56842,
+      "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+      "touches_outer_image": false,
+      "scale": 0.24064171122994651,
+      "position": [
+        55,
+        46
+      ],
+      "size": [
+        91,
+        79
+      ],
+      "source_boot_anchor": [
+        104.0,
+        326
+      ],
+      "removed_detached_alpha_coordinates": []
+    },
+    {
+      "box_global": [
+        433,
+        451,
+        841,
+        785
+      ],
+      "cell": [
+        1,
+        1
+      ],
+      "component_area": 55522,
+      "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+      "touches_outer_image": false,
+      "scale": 0.24064171122994651,
+      "position": [
+        56,
+        44
+      ],
+      "size": [
+        98,
+        80
+      ],
+      "source_boot_anchor": [
+        99.0,
+        333
+      ],
+      "removed_detached_alpha_coordinates": []
+    },
+    {
+      "box_global": [
+        859,
+        446,
+        1162,
+        783
+      ],
+      "cell": [
+        2,
+        1
+      ],
+      "component_area": 49836,
+      "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+      "touches_outer_image": false,
+      "scale": 0.24064171122994651,
+      "position": [
+        20,
+        43
+      ],
+      "size": [
+        73,
+        81
+      ],
+      "source_boot_anchor": [
+        250.0,
+        336
+      ],
+      "removed_detached_alpha_coordinates": []
+    },
+    {
+      "box_global": [
+        15,
+        849,
+        363,
+        1213
+      ],
+      "cell": [
+        0,
+        2
+      ],
+      "component_area": 53537,
+      "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+      "touches_outer_image": false,
+      "scale": 0.24064171122994651,
+      "position": [
+        12,
+        37
+      ],
+      "size": [
+        84,
+        88
+      ],
+      "source_boot_anchor": [
+        282.0,
+        363
+      ],
+      "removed_detached_alpha_coordinates": []
+    },
+    {
+      "box_global": [
+        451,
+        853,
+        744,
+        1221
+      ],
+      "cell": [
+        1,
+        2
+      ],
+      "component_area": 51608,
+      "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+      "touches_outer_image": false,
+      "scale": 0.24064171122994651,
+      "position": [
+        46,
+        36
+      ],
+      "size": [
+        71,
+        89
+      ],
+      "source_boot_anchor": [
+        143.0,
+        367
+      ],
+      "removed_detached_alpha_coordinates": []
+    },
+    {
+      "box_global": [
+        885,
+        847,
+        1158,
+        1221
+      ],
+      "cell": [
+        2,
+        2
+      ],
+      "component_area": 55993,
+      "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+      "touches_outer_image": false,
+      "scale": 0.24064171122994651,
+      "position": [
+        60,
+        34
+      ],
+      "size": [
+        66,
+        90
+      ],
+      "source_boot_anchor": [
+        81.5,
+        373
+      ],
+      "removed_detached_alpha_coordinates": []
+    }
+  ],
+  "aim_start_indices": [
+    0,
+    7,
+    6,
+    5,
+    4,
+    3,
+    2,
+    1
+  ],
+  "runtime_timing": "unchanged; this preview5fps is for pose inspection only",
+  "preview_world_scale": 0.5,
+  "hash_definition": "atlas_sha256 hashes PNG file bytes; rgba_sha256 hashes decoded frame RGBA bytes",
+  "game_adopted": false,
+  "preview_query": "spr=silver_r2",
+  "atlas_sha256": "206637903ebf49c2e90078033bef77e7dc67396d2690e2500c849f07e3b71183",
+  "normal_usage": "silhouette draft retained for future integration; not applied by this web preview",
+  "r2_cto_verdict": "idle/walk candidate passed; not product/game PASS",
+  "runtime": {
+    "image": "atlas.png",
+    "dimensions": [
+      480,
+      480
+    ],
+    "cell_size": [
+      160,
+      160
+    ],
+    "columns": 3,
+    "rows": 3,
+    "render_scale": 0.5,
+    "foot_anchor": [
+      80,
+      124
+    ],
+    "logical_foot_y_from_center": 22.0,
+    "frames": [
+      {
+        "direction": "s",
+        "slot": 0,
+        "rect": [
+          0,
+          0,
+          160,
+          160
+        ],
+        "rgba_sha256": "8158f0eb724bdc5aff828f8d85c66b0010b7e3040e303fbc4020f3ddfa8e7213"
+      },
+      {
+        "direction": "sw",
+        "slot": 1,
+        "rect": [
+          160,
+          0,
+          160,
+          160
+        ],
+        "rgba_sha256": "da033955cfa417d20c5e9b75a937dd1537d036dfbdbefb8c9bd10b711ef07fa6"
+      },
+      {
+        "direction": "w",
+        "slot": 2,
+        "rect": [
+          320,
+          0,
+          160,
+          160
+        ],
+        "rgba_sha256": "050430b7122e602988b16470d4a9dd1b449edbdf9e535a4a85cd80bff1fad78a"
+      },
+      {
+        "direction": "nw",
+        "slot": 3,
+        "rect": [
+          0,
+          160,
+          160,
+          160
+        ],
+        "rgba_sha256": "7dbb8c0e5da94c6b3fb03b62b27ee64f48d23bfdd5a72a5140c92453926c3512"
+      },
+      {
+        "direction": "n",
+        "slot": 4,
+        "rect": [
+          160,
+          160,
+          160,
+          160
+        ],
+        "rgba_sha256": "73f7aab7c26ab3a53157fdb24069d176de3163b0135466849dae6150681bc935"
+      },
+      {
+        "direction": "ne",
+        "slot": 5,
+        "rect": [
+          320,
+          160,
+          160,
+          160
+        ],
+        "rgba_sha256": "9cfc72a93119fe932253c03584349d40505d41816675afa8b8080e80e56b3141"
+      },
+      {
+        "direction": "e",
+        "slot": 6,
+        "rect": [
+          0,
+          320,
+          160,
+          160
+        ],
+        "rgba_sha256": "0b04a0ea1c201cae3f382e7a48c8100aa7c7769ee3b67a95e9e0e91636f38e57"
+      },
+      {
+        "direction": "se",
+        "slot": 7,
+        "rect": [
+          160,
+          320,
+          160,
+          160
+        ],
+        "rgba_sha256": "080dfd14bd7bbae487e50827466b973de3c5bfbe9087f57d2ebd3e149defa377"
+      },
+      {
+        "direction": "s_return",
+        "slot": 8,
+        "rect": [
+          320,
+          320,
+          160,
+          160
+        ],
+        "rgba_sha256": "4550ce01678a215338f19a27c6196fb180ba2926a1ba9f3076dd8273dd277f15"
+      }
+    ]
+  }
+}

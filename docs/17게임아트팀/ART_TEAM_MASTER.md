@@ -299,3 +299,8 @@ MagicLight 마지막 조회 59,540 (2026-10-01, emg1 2차 후). 이번 마감 �
 ## 2026-11-02 살아 있는 화면 최종 검수
 
 로비·선택5종·로딩32종(13/14/17 제외)·결과3종에 점 없는 canvas 연무를 적용했다.시작 메뉴/게이트는 보존했다.원본 파일 보존, 별도 정리판26개로 기존 부유 점/그레인을 제거하고 캐릭터 사이드의 점 박힌 금속판을 숨겼다.4비율164화면·82편10초무음·1x전후/3x·121검사/project112/guard PASS.실제화면의 흰 가장자리까지 전수 검사했다.자체 PASS는 환경 모션·잔점/경계 제거 범위이며 정리판 미세 재질은 원본과 동일하지 않고 네이티브4K가 아니다.최종SHA·실행본·동기화는 I:/EXODUSER-Storage/codex-takeover/living-1102/REPORT.md.상수/원화규격 SSOT는 docs/3.1 ui hud 디자인/LIVING_SCENES_20261102.md.자연 전투/NW.js/오디오/독립 총괄 검수와 구분. Unity 반영: 대기.
+
+
+## 2026-11-03 실버테일 r2 웹 후보 미리보기
+
+브리프 r2 CTO 대기·보행 후보 통과 후 N 보행 하체/SE2 외곽선을 교정했다. 자기 브랜치 `codex/silver-r2-preview-20261103`에서 `game.html?spr=silver_r2`만 6군을 그리며 기본값은 보존한다. 규격·발밑 계약·실게임 검수 범위는 [미리보기 SSOT](../archetypes/silvertail/SILVERTAIL_R2_PREVIEW_20261103.md). 최종 SHA·1920 비교·실제1x·10초 무음·초광폭 근거는 I:/EXODUSER-Storage/codex-takeover/sprites-silver/REPORT.md. main/Steam/Unity 미채택, CTO 판정 대상이다.

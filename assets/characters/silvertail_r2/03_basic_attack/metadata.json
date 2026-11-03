@@ -1,0 +1,843 @@
+{
+  "stage": "DEVELOPMENT_FLAG_PREVIEW_CTO_CANDIDATE",
+  "cell": [
+    160,
+    160
+  ],
+  "world_cell": [
+    80,
+    80
+  ],
+  "foot_anchor": [
+    80,
+    124
+  ],
+  "description": "Four keypose sampling of canonical hub-connected rotation; old48 fallback padded on80px; proposal uses existing80px attack-extension contract",
+  "frames": [
+    {
+      "direction": "s",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            0,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "8158f0eb724bdc5aff828f8d85c66b0010b7e3040e303fbc4020f3ddfa8e7213"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            160,
+            0,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "050430b7122e602988b16470d4a9dd1b449edbdf9e535a4a85cd80bff1fad78a"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            320,
+            0,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "9cfc72a93119fe932253c03584349d40505d41816675afa8b8080e80e56b3141"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            480,
+            0,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "4550ce01678a215338f19a27c6196fb180ba2926a1ba9f3076dd8273dd277f15"
+        }
+      ]
+    },
+    {
+      "direction": "se",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            160,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "080dfd14bd7bbae487e50827466b973de3c5bfbe9087f57d2ebd3e149defa377"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            160,
+            160,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "da033955cfa417d20c5e9b75a937dd1537d036dfbdbefb8c9bd10b711ef07fa6"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            320,
+            160,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "73f7aab7c26ab3a53157fdb24069d176de3163b0135466849dae6150681bc935"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            480,
+            160,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "080dfd14bd7bbae487e50827466b973de3c5bfbe9087f57d2ebd3e149defa377"
+        }
+      ]
+    },
+    {
+      "direction": "e",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            320,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "0b04a0ea1c201cae3f382e7a48c8100aa7c7769ee3b67a95e9e0e91636f38e57"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            160,
+            320,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "8158f0eb724bdc5aff828f8d85c66b0010b7e3040e303fbc4020f3ddfa8e7213"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            320,
+            320,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "7dbb8c0e5da94c6b3fb03b62b27ee64f48d23bfdd5a72a5140c92453926c3512"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            480,
+            320,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "0b04a0ea1c201cae3f382e7a48c8100aa7c7769ee3b67a95e9e0e91636f38e57"
+        }
+      ]
+    },
+    {
+      "direction": "ne",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            480,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "9cfc72a93119fe932253c03584349d40505d41816675afa8b8080e80e56b3141"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            160,
+            480,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "080dfd14bd7bbae487e50827466b973de3c5bfbe9087f57d2ebd3e149defa377"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            320,
+            480,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "050430b7122e602988b16470d4a9dd1b449edbdf9e535a4a85cd80bff1fad78a"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            480,
+            480,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "9cfc72a93119fe932253c03584349d40505d41816675afa8b8080e80e56b3141"
+        }
+      ]
+    },
+    {
+      "direction": "n",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            640,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "73f7aab7c26ab3a53157fdb24069d176de3163b0135466849dae6150681bc935"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            160,
+            640,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "0b04a0ea1c201cae3f382e7a48c8100aa7c7769ee3b67a95e9e0e91636f38e57"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            320,
+            640,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "da033955cfa417d20c5e9b75a937dd1537d036dfbdbefb8c9bd10b711ef07fa6"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            480,
+            640,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "73f7aab7c26ab3a53157fdb24069d176de3163b0135466849dae6150681bc935"
+        }
+      ]
+    },
+    {
+      "direction": "nw",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            800,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "7dbb8c0e5da94c6b3fb03b62b27ee64f48d23bfdd5a72a5140c92453926c3512"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            160,
+            800,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "9cfc72a93119fe932253c03584349d40505d41816675afa8b8080e80e56b3141"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            320,
+            800,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "8158f0eb724bdc5aff828f8d85c66b0010b7e3040e303fbc4020f3ddfa8e7213"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            480,
+            800,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "7dbb8c0e5da94c6b3fb03b62b27ee64f48d23bfdd5a72a5140c92453926c3512"
+        }
+      ]
+    },
+    {
+      "direction": "w",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            960,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "050430b7122e602988b16470d4a9dd1b449edbdf9e535a4a85cd80bff1fad78a"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            160,
+            960,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "73f7aab7c26ab3a53157fdb24069d176de3163b0135466849dae6150681bc935"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            320,
+            960,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "080dfd14bd7bbae487e50827466b973de3c5bfbe9087f57d2ebd3e149defa377"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            480,
+            960,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "050430b7122e602988b16470d4a9dd1b449edbdf9e535a4a85cd80bff1fad78a"
+        }
+      ]
+    },
+    {
+      "direction": "sw",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            1120,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "da033955cfa417d20c5e9b75a937dd1537d036dfbdbefb8c9bd10b711ef07fa6"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            160,
+            1120,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "7dbb8c0e5da94c6b3fb03b62b27ee64f48d23bfdd5a72a5140c92453926c3512"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            320,
+            1120,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "0b04a0ea1c201cae3f382e7a48c8100aa7c7769ee3b67a95e9e0e91636f38e57"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            480,
+            1120,
+            160,
+            160
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "da033955cfa417d20c5e9b75a937dd1537d036dfbdbefb8c9bd10b711ef07fa6"
+        }
+      ]
+    }
+  ],
+  "normal": "silhouette-derived OpenGL+Y draft; linear-data import proposal; actual material lighting not verified",
+  "frame_sampling": [
+    [
+      0,
+      2,
+      5,
+      8
+    ],
+    [
+      7,
+      1,
+      4,
+      7
+    ],
+    [
+      6,
+      0,
+      3,
+      6
+    ],
+    [
+      5,
+      7,
+      2,
+      5
+    ],
+    [
+      4,
+      6,
+      1,
+      4
+    ],
+    [
+      3,
+      5,
+      0,
+      3
+    ],
+    [
+      2,
+      4,
+      7,
+      2
+    ],
+    [
+      1,
+      3,
+      6,
+      1
+    ]
+  ],
+  "unique_source_poses": 9,
+  "not_32_unique_generated_poses": true,
+  "preview_world_scale": 0.5,
+  "hash_definition": "atlas_sha256 hashes PNG file bytes; rgba_sha256 hashes decoded frame RGBA bytes",
+  "game_adopted": false,
+  "preview_query": "spr=silver_r2",
+  "atlas_sha256": "0af403bf72a974f9767773eeed113e04b0026a578ba308072f8adc36c8c75fb0",
+  "normal_usage": "silhouette draft retained for future integration; not applied by this web preview",
+  "r2_cto_verdict": "idle/walk candidate passed; not product/game PASS",
+  "runtime": {
+    "image": "atlas.png",
+    "dimensions": [
+      640,
+      1280
+    ],
+    "cell_size": [
+      160,
+      160
+    ],
+    "columns": 4,
+    "rows": 8,
+    "render_scale": 0.5,
+    "foot_anchor": [
+      80,
+      124
+    ],
+    "logical_foot_y_from_center": 22.0,
+    "frames": [
+      {
+        "direction": "s",
+        "slot": 0,
+        "rect": [
+          0,
+          0,
+          160,
+          160
+        ],
+        "rgba_sha256": "8158f0eb724bdc5aff828f8d85c66b0010b7e3040e303fbc4020f3ddfa8e7213"
+      },
+      {
+        "direction": "s",
+        "slot": 1,
+        "rect": [
+          160,
+          0,
+          160,
+          160
+        ],
+        "rgba_sha256": "050430b7122e602988b16470d4a9dd1b449edbdf9e535a4a85cd80bff1fad78a"
+      },
+      {
+        "direction": "s",
+        "slot": 2,
+        "rect": [
+          320,
+          0,
+          160,
+          160
+        ],
+        "rgba_sha256": "9cfc72a93119fe932253c03584349d40505d41816675afa8b8080e80e56b3141"
+      },
+      {
+        "direction": "s",
+        "slot": 3,
+        "rect": [
+          480,
+          0,
+          160,
+          160
+        ],
+        "rgba_sha256": "4550ce01678a215338f19a27c6196fb180ba2926a1ba9f3076dd8273dd277f15"
+      },
+      {
+        "direction": "se",
+        "slot": 0,
+        "rect": [
+          0,
+          160,
+          160,
+          160
+        ],
+        "rgba_sha256": "080dfd14bd7bbae487e50827466b973de3c5bfbe9087f57d2ebd3e149defa377"
+      },
+      {
+        "direction": "se",
+        "slot": 1,
+        "rect": [
+          160,
+          160,
+          160,
+          160
+        ],
+        "rgba_sha256": "da033955cfa417d20c5e9b75a937dd1537d036dfbdbefb8c9bd10b711ef07fa6"
+      },
+      {
+        "direction": "se",
+        "slot": 2,
+        "rect": [
+          320,
+          160,
+          160,
+          160
+        ],
+        "rgba_sha256": "73f7aab7c26ab3a53157fdb24069d176de3163b0135466849dae6150681bc935"
+      },
+      {
+        "direction": "se",
+        "slot": 3,
+        "rect": [
+          480,
+          160,
+          160,
+          160
+        ],
+        "rgba_sha256": "080dfd14bd7bbae487e50827466b973de3c5bfbe9087f57d2ebd3e149defa377"
+      },
+      {
+        "direction": "e",
+        "slot": 0,
+        "rect": [
+          0,
+          320,
+          160,
+          160
+        ],
+        "rgba_sha256": "0b04a0ea1c201cae3f382e7a48c8100aa7c7769ee3b67a95e9e0e91636f38e57"
+      },
+      {
+        "direction": "e",
+        "slot": 1,
+        "rect": [
+          160,
+          320,
+          160,
+          160
+        ],
+        "rgba_sha256": "8158f0eb724bdc5aff828f8d85c66b0010b7e3040e303fbc4020f3ddfa8e7213"
+      },
+      {
+        "direction": "e",
+        "slot": 2,
+        "rect": [
+          320,
+          320,
+          160,
+          160
+        ],
+        "rgba_sha256": "7dbb8c0e5da94c6b3fb03b62b27ee64f48d23bfdd5a72a5140c92453926c3512"
+      },
+      {
+        "direction": "e",
+        "slot": 3,
+        "rect": [
+          480,
+          320,
+          160,
+          160
+        ],
+        "rgba_sha256": "0b04a0ea1c201cae3f382e7a48c8100aa7c7769ee3b67a95e9e0e91636f38e57"
+      },
+      {
+        "direction": "ne",
+        "slot": 0,
+        "rect": [
+          0,
+          480,
+          160,
+          160
+        ],
+        "rgba_sha256": "9cfc72a93119fe932253c03584349d40505d41816675afa8b8080e80e56b3141"
+      },
+      {
+        "direction": "ne",
+        "slot": 1,
+        "rect": [
+          160,
+          480,
+          160,
+          160
+        ],
+        "rgba_sha256": "080dfd14bd7bbae487e50827466b973de3c5bfbe9087f57d2ebd3e149defa377"
+      },
+      {
+        "direction": "ne",
+        "slot": 2,
+        "rect": [
+          320,
+          480,
+          160,
+          160
+        ],
+        "rgba_sha256": "050430b7122e602988b16470d4a9dd1b449edbdf9e535a4a85cd80bff1fad78a"
+      },
+      {
+        "direction": "ne",
+        "slot": 3,
+        "rect": [
+          480,
+          480,
+          160,
+          160
+        ],
+        "rgba_sha256": "9cfc72a93119fe932253c03584349d40505d41816675afa8b8080e80e56b3141"
+      },
+      {
+        "direction": "n",
+        "slot": 0,
+        "rect": [
+          0,
+          640,
+          160,
+          160
+        ],
+        "rgba_sha256": "73f7aab7c26ab3a53157fdb24069d176de3163b0135466849dae6150681bc935"
+      },
+      {
+        "direction": "n",
+        "slot": 1,
+        "rect": [
+          160,
+          640,
+          160,
+          160
+        ],
+        "rgba_sha256": "0b04a0ea1c201cae3f382e7a48c8100aa7c7769ee3b67a95e9e0e91636f38e57"
+      },
+      {
+        "direction": "n",
+        "slot": 2,
+        "rect": [
+          320,
+          640,
+          160,
+          160
+        ],
+        "rgba_sha256": "da033955cfa417d20c5e9b75a937dd1537d036dfbdbefb8c9bd10b711ef07fa6"
+      },
+      {
+        "direction": "n",
+        "slot": 3,
+        "rect": [
+          480,
+          640,
+          160,
+          160
+        ],
+        "rgba_sha256": "73f7aab7c26ab3a53157fdb24069d176de3163b0135466849dae6150681bc935"
+      },
+      {
+        "direction": "nw",
+        "slot": 0,
+        "rect": [
+          0,
+          800,
+          160,
+          160
+        ],
+        "rgba_sha256": "7dbb8c0e5da94c6b3fb03b62b27ee64f48d23bfdd5a72a5140c92453926c3512"
+      },
+      {
+        "direction": "nw",
+        "slot": 1,
+        "rect": [
+          160,
+          800,
+          160,
+          160
+        ],
+        "rgba_sha256": "9cfc72a93119fe932253c03584349d40505d41816675afa8b8080e80e56b3141"
+      },
+      {
+        "direction": "nw",
+        "slot": 2,
+        "rect": [
+          320,
+          800,
+          160,
+          160
+        ],
+        "rgba_sha256": "8158f0eb724bdc5aff828f8d85c66b0010b7e3040e303fbc4020f3ddfa8e7213"
+      },
+      {
+        "direction": "nw",
+        "slot": 3,
+        "rect": [
+          480,
+          800,
+          160,
+          160
+        ],
+        "rgba_sha256": "7dbb8c0e5da94c6b3fb03b62b27ee64f48d23bfdd5a72a5140c92453926c3512"
+      },
+      {
+        "direction": "w",
+        "slot": 0,
+        "rect": [
+          0,
+          960,
+          160,
+          160
+        ],
+        "rgba_sha256": "050430b7122e602988b16470d4a9dd1b449edbdf9e535a4a85cd80bff1fad78a"
+      },
+      {
+        "direction": "w",
+        "slot": 1,
+        "rect": [
+          160,
+          960,
+          160,
+          160
+        ],
+        "rgba_sha256": "73f7aab7c26ab3a53157fdb24069d176de3163b0135466849dae6150681bc935"
+      },
+      {
+        "direction": "w",
+        "slot": 2,
+        "rect": [
+          320,
+          960,
+          160,
+          160
+        ],
+        "rgba_sha256": "080dfd14bd7bbae487e50827466b973de3c5bfbe9087f57d2ebd3e149defa377"
+      },
+      {
+        "direction": "w",
+        "slot": 3,
+        "rect": [
+          480,
+          960,
+          160,
+          160
+        ],
+        "rgba_sha256": "050430b7122e602988b16470d4a9dd1b449edbdf9e535a4a85cd80bff1fad78a"
+      },
+      {
+        "direction": "sw",
+        "slot": 0,
+        "rect": [
+          0,
+          1120,
+          160,
+          160
+        ],
+        "rgba_sha256": "da033955cfa417d20c5e9b75a937dd1537d036dfbdbefb8c9bd10b711ef07fa6"
+      },
+      {
+        "direction": "sw",
+        "slot": 1,
+        "rect": [
+          160,
+          1120,
+          160,
+          160
+        ],
+        "rgba_sha256": "7dbb8c0e5da94c6b3fb03b62b27ee64f48d23bfdd5a72a5140c92453926c3512"
+      },
+      {
+        "direction": "sw",
+        "slot": 2,
+        "rect": [
+          320,
+          1120,
+          160,
+          160
+        ],
+        "rgba_sha256": "0b04a0ea1c201cae3f382e7a48c8100aa7c7769ee3b67a95e9e0e91636f38e57"
+      },
+      {
+        "direction": "sw",
+        "slot": 3,
+        "rect": [
+          480,
+          1120,
+          160,
+          160
+        ],
+        "rgba_sha256": "da033955cfa417d20c5e9b75a937dd1537d036dfbdbefb8c9bd10b711ef07fa6"
+      }
+    ]
+  }
+}

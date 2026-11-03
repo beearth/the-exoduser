@@ -56,6 +56,7 @@ const FILES = [
   'player-attack-remaster.js',
   'warrior-bat-swing.js',
   'warrior-dash-flight.js',
+  'silvertail-r2-preview.js',
   'ch1-living-detail.js',
   'ch1-forest-sway.js',
   'ch1-face-life.js',

@@ -1,0 +1,2595 @@
+{
+  "stage": "DEVELOPMENT_FLAG_PREVIEW_CTO_CANDIDATE",
+  "cell": [
+    128,
+    128
+  ],
+  "world_cell": [
+    64,
+    64
+  ],
+  "foot_anchor": [
+    64,
+    100
+  ],
+  "description": "6poses: anticipation/takeoff/flightA/flightB/land/recovery; true eight directions without mirroring; recovery exact idle; per-direction source raster density calibrated by standing pose, one scale within each six-pose strip",
+  "frames": [
+    {
+      "direction": "s",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            0,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "2646bf15a05fa11213281eebd09f5b41b481bf92da38f9c2542946883c0297d9"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            128,
+            0,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "968d6b20bb93187e06d73cdbf1ec1aa887ae2d86df5c89054dcf678180fc1297"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            256,
+            0,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "ac2b9e6878f6408e2f3b0f786624769cbb8033e01c3ba162a002bbccdcd8cc47"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            384,
+            0,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "78ec0d8cc68368ef876697fcef8e3d81e0d38bec52396e57ae0698c31430aa0f"
+        },
+        {
+          "frame": 4,
+          "rect": [
+            512,
+            0,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "7adfbfdd340daffe629447d89da1d528b3cf572af0d82fc86fd88ad3aeb05cad"
+        },
+        {
+          "frame": 5,
+          "rect": [
+            640,
+            0,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "d4863d09d6de0300c951dfe15d039295236ec4ff5f03ceb8bd717cb3f71f0915"
+        }
+      ]
+    },
+    {
+      "direction": "se",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            128,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "ed8e4a2850780d031b1d266d5c3e778d72ec5688150632209550b56ffbc331b2"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            128,
+            128,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "800202146554e0945ca9491558a941271a3075043ce3035cecb7259ebd38c0cf"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            256,
+            128,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "c5b4b71472b0810d4f6eae1095bc3e82f5664bc197a6dfc6c5693fefbb1dddbe"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            384,
+            128,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "9c2b83beca4052ba3aeb488d7859694e0706e0b85ae1a159257690a26abef8ca"
+        },
+        {
+          "frame": 4,
+          "rect": [
+            512,
+            128,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "6191e13dae39491db84a686afad6b3b48c863616ec2e1a6414510d69e6557445"
+        },
+        {
+          "frame": 5,
+          "rect": [
+            640,
+            128,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "5578889693e9159c09b49ccc4d1e64badf3b7e1c2a50a45259d95ebbbbf9e98b"
+        }
+      ]
+    },
+    {
+      "direction": "e",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            256,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "4ac9e18aaad733d793bb91c49b7c729ffebaf0a73e73ae940da772b878ef8bfa"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            128,
+            256,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "acc37714d15de480f108db033724ebc831ad2b91ee87106fac7034663b25ed8a"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            256,
+            256,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "a98a8fc700b8603a47afdb67d93aed7b8e9c8020f98921f343d56d82be5d01e4"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            384,
+            256,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "c3aa5e9b4db87169806cfa2c5dd1ed25785a375f2722f3f69190f33edf0b1363"
+        },
+        {
+          "frame": 4,
+          "rect": [
+            512,
+            256,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "bf728d2bbe80d404e6cc2e71f67defa87b1ad2840cba094aef466907f1237362"
+        },
+        {
+          "frame": 5,
+          "rect": [
+            640,
+            256,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "988ad9ce509feeceeed340120ec3ee47eab6d4eec930a47c6684b66c4eb7f85c"
+        }
+      ]
+    },
+    {
+      "direction": "ne",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            384,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "22bc016bd014a8a487cbcf1524a2185af34b70bb5e0dc90d77f52138ea8f25b9"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            128,
+            384,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "b4fa0b3de495a7bf200a548b059ce12741a53762e42f6a1abcead3fe36b4bd20"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            256,
+            384,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "81eeba33ff8779de579904b8b9efa150ce4d229674eea51f8628edca60efe5e8"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            384,
+            384,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "2666f2efc78771552d8d9e80510f4c3e065745c1f94ae08b6544b642c634d4da"
+        },
+        {
+          "frame": 4,
+          "rect": [
+            512,
+            384,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "6ab598486640765ca5636de050db7b7aed7f1e1e8a115db7e2e3765b3f092d3a"
+        },
+        {
+          "frame": 5,
+          "rect": [
+            640,
+            384,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "44d67fa75f956e2ba0b1a91f259468809a38c2af9050526c123e7842a6e5cecb"
+        }
+      ]
+    },
+    {
+      "direction": "n",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            512,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "39a8da7add81d9d9e7afe39670cf81fb5b6007d3f75a4c002e8e46aea2eb76e3"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            128,
+            512,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "4f60d02d06b9a52d8f3f302ca19b71f76f3a9470bb1bbf7e958cc06811db604a"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            256,
+            512,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "21932e991076593c0a014c0f314b78e9d2d4eef85439985a98bad652de4c7221"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            384,
+            512,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "ecab83a0602f28f365f750a40e561b96720967d30163275c60aaedced2d03ac4"
+        },
+        {
+          "frame": 4,
+          "rect": [
+            512,
+            512,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "09fd92285b84df6c741cbb385b3d1bebb0077b36c65ebfc0d5d8928ea671cf97"
+        },
+        {
+          "frame": 5,
+          "rect": [
+            640,
+            512,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "9250eed502b9697ccbe6da619fd905f20123ce002c31d27beb61b2afe68e068a"
+        }
+      ]
+    },
+    {
+      "direction": "nw",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            640,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "549ceb29b842d71de84667b1ffd9ae5e2d62fb927a1ddb434cf5a7806e6ed7d0"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            128,
+            640,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "44bb7e1814aefeb31773af951cfbfacc2cde3eadc78e56de486618d4e79a62a0"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            256,
+            640,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "7496298537c33487edbfb30f02ffe222711a4c7cc24930660c102d79819ebf41"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            384,
+            640,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "07ea7db85a79cd1596ceb1e4316de738f82ecee03209b18a38d1008a8fbd5259"
+        },
+        {
+          "frame": 4,
+          "rect": [
+            512,
+            640,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "e47ba2050e6979da76a1b845043c116a695861343e54ccc348ea0114bad64ca2"
+        },
+        {
+          "frame": 5,
+          "rect": [
+            640,
+            640,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "cbaa0acaa69b09cd41dea78b0b3a962baf293d1001db20de38b251ccc8142779"
+        }
+      ]
+    },
+    {
+      "direction": "w",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            768,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "74edee6da87f458b92e60fdf3543f477be1fdf3bad40dd6a93aa99642273e435"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            128,
+            768,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "caa844e3133dfca9e5b83c08b1e307a3f68c7b90f9143a9d1d7de7229666ea93"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            256,
+            768,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "b3e1f62ddfc54ee251d9719d762c954b9c67888b37e40f85c68efc1792052fd7"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            384,
+            768,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "a4260029aff5978fb8ef91729f4794d1e07bb89e7e6177efd4d39137f22dd46b"
+        },
+        {
+          "frame": 4,
+          "rect": [
+            512,
+            768,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "6ac5542590e0afa2ffae2783dfe3e01bfda2e2906f3a8ab76bf5c2adc0ab3cb5"
+        },
+        {
+          "frame": 5,
+          "rect": [
+            640,
+            768,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "882b6a780d25cf01043afbdc1cc9b4f1ba8f9edeb24102c6c949cdf39615f092"
+        }
+      ]
+    },
+    {
+      "direction": "sw",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            896,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "8c51ae5d20431430d44806c2d3108682e1ec0d922289f653b47b2253c5d62bc3"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            128,
+            896,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "9a5be8a53d30a6478f52bf851a663190aada034f5a1799a32940d5ddb1260d66"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            256,
+            896,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "948ae314ea9962a2ed1944e0eb9c292e07226d0f744ecbf7c26aa81a4c980271"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            384,
+            896,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "1459c1663f92d9bac2855803aa2ff3dd3a78132a01a0d969bd5396bedd5108b7"
+        },
+        {
+          "frame": 4,
+          "rect": [
+            512,
+            896,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "4673654c26115b490b04fab051a5692b22a5949f50f3d3a56c1f83f086a40058"
+        },
+        {
+          "frame": 5,
+          "rect": [
+            640,
+            896,
+            128,
+            128
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "833282fc3012d5dd969afcaaaa637b0d4b56d1658178e786d90ae824d540b117"
+        }
+      ]
+    }
+  ],
+  "normal": "silhouette-derived OpenGL+Y draft; linear-data import proposal; actual material lighting not verified",
+  "packing": {
+    "s": [
+      {
+        "box_global": [
+          71,
+          86,
+          309,
+          343
+        ],
+        "cell": [
+          0,
+          0
+        ],
+        "component_area": 36816,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.2719033232628399,
+        "position": [
+          43,
+          30
+        ],
+        "size": [
+          65,
+          70
+        ],
+        "source_boot_anchor": [
+          79.0,
+          256
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          423,
+          53,
+          645,
+          344
+        ],
+        "cell": [
+          1,
+          0
+        ],
+        "component_area": 37912,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.2719033232628399,
+        "position": [
+          37,
+          21
+        ],
+        "size": [
+          60,
+          79
+        ],
+        "source_boot_anchor": [
+          98.0,
+          290
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          762,
+          36,
+          1044,
+          299
+        ],
+        "cell": [
+          2,
+          0
+        ],
+        "component_area": 38599,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "anchor_x": 141.0,
+        "scale": 0.2719033232628399,
+        "position": [
+          26,
+          29
+        ],
+        "size": [
+          77,
+          72
+        ],
+        "source_boot_anchor": [
+          141.0,
+          262
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          56,
+          401,
+          337,
+          628
+        ],
+        "cell": [
+          0,
+          1
+        ],
+        "component_area": 35734,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "anchor_x": 140.5,
+        "scale": 0.2719033232628399,
+        "position": [
+          26,
+          39
+        ],
+        "size": [
+          76,
+          62
+        ],
+        "source_boot_anchor": [
+          140.5,
+          226
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          425,
+          460,
+          664,
+          705
+        ],
+        "cell": [
+          1,
+          1
+        ],
+        "component_area": 36113,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.2719033232628399,
+        "position": [
+          38,
+          34
+        ],
+        "size": [
+          65,
+          67
+        ],
+        "source_boot_anchor": [
+          97.0,
+          244
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          781,
+          374,
+          1004,
+          705
+        ],
+        "cell": [
+          2,
+          1
+        ],
+        "component_area": 44984,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.2719033232628399,
+        "position": [
+          32,
+          10
+        ],
+        "size": [
+          61,
+          90
+        ],
+        "source_boot_anchor": [
+          118.0,
+          330
+        ],
+        "removed_detached_alpha_coordinates": [],
+        "override": "exact idle pixels +16,+6, no resize"
+      }
+    ],
+    "e": [
+      {
+        "box_global": [
+          44,
+          794,
+          293,
+          1054
+        ],
+        "cell": [
+          0,
+          2
+        ],
+        "component_area": 37132,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.2694610778443114,
+        "position": [
+          25,
+          30
+        ],
+        "size": [
+          67,
+          70
+        ],
+        "source_boot_anchor": [
+          146.0,
+          259
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          389,
+          766,
+          654,
+          1049
+        ],
+        "cell": [
+          1,
+          2
+        ],
+        "component_area": 38889,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.2694610778443114,
+        "position": [
+          23,
+          24
+        ],
+        "size": [
+          71,
+          76
+        ],
+        "source_boot_anchor": [
+          154.0,
+          282
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          712,
+          774,
+          1073,
+          981
+        ],
+        "cell": [
+          2,
+          2
+        ],
+        "component_area": 38222,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "anchor_x": 180.5,
+        "scale": 0.2694610778443114,
+        "position": [
+          15,
+          44
+        ],
+        "size": [
+          97,
+          56
+        ],
+        "source_boot_anchor": [
+          180.5,
+          206
+        ],
+        "removed_detached_alpha_coordinates": [
+          [
+            18,
+            69
+          ]
+        ]
+      },
+      {
+        "box_global": [
+          18,
+          1124,
+          330,
+          1343
+        ],
+        "cell": [
+          0,
+          3
+        ],
+        "component_area": 37499,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "anchor_x": 156.0,
+        "scale": 0.2694610778443114,
+        "position": [
+          22,
+          41
+        ],
+        "size": [
+          84,
+          59
+        ],
+        "source_boot_anchor": [
+          156.0,
+          218
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          394,
+          1166,
+          648,
+          1418
+        ],
+        "cell": [
+          1,
+          3
+        ],
+        "component_area": 39075,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.2694610778443114,
+        "position": [
+          19,
+          32
+        ],
+        "size": [
+          68,
+          68
+        ],
+        "source_boot_anchor": [
+          166.0,
+          251
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          766,
+          1084,
+          958,
+          1418
+        ],
+        "cell": [
+          2,
+          3
+        ],
+        "component_area": 40850,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.2694610778443114,
+        "position": [
+          30,
+          10
+        ],
+        "size": [
+          52,
+          90
+        ],
+        "source_boot_anchor": [
+          127.0,
+          333
+        ],
+        "removed_detached_alpha_coordinates": [],
+        "override": "exact idle pixels +16,+6, no resize"
+      }
+    ],
+    "se": [
+      {
+        "box_global": [
+          41,
+          59,
+          310,
+          344
+        ],
+        "cell": [
+          0,
+          0
+        ],
+        "component_area": 48418,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.26239067055393583,
+        "position": [
+          30,
+          25
+        ],
+        "size": [
+          71,
+          75
+        ],
+        "source_boot_anchor": [
+          128.0,
+          284
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          382,
+          10,
+          652,
+          343
+        ],
+        "cell": [
+          1,
+          0
+        ],
+        "component_area": 48530,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.26239067055393583,
+        "position": [
+          35,
+          13
+        ],
+        "size": [
+          71,
+          87
+        ],
+        "source_boot_anchor": [
+          109.0,
+          332
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          728,
+          23,
+          1080,
+          256
+        ],
+        "cell": [
+          2,
+          0
+        ],
+        "component_area": 47480,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "anchor_x": 176.0,
+        "scale": 0.26239067055393583,
+        "position": [
+          18,
+          39
+        ],
+        "size": [
+          92,
+          61
+        ],
+        "source_boot_anchor": [
+          176.0,
+          232
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          27,
+          413,
+          362,
+          641
+        ],
+        "cell": [
+          0,
+          1
+        ],
+        "component_area": 44621,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "anchor_x": 167.5,
+        "scale": 0.26239067055393583,
+        "position": [
+          20,
+          40
+        ],
+        "size": [
+          88,
+          60
+        ],
+        "source_boot_anchor": [
+          167.5,
+          227
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          401,
+          436,
+          680,
+          710
+        ],
+        "cell": [
+          1,
+          1
+        ],
+        "component_area": 49879,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.26239067055393583,
+        "position": [
+          29,
+          28
+        ],
+        "size": [
+          73,
+          72
+        ],
+        "source_boot_anchor": [
+          135.0,
+          273
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          744,
+          367,
+          995,
+          710
+        ],
+        "cell": [
+          2,
+          1
+        ],
+        "component_area": 54991,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.26239067055393583,
+        "position": [
+          27,
+          10
+        ],
+        "size": [
+          66,
+          90
+        ],
+        "source_boot_anchor": [
+          141.0,
+          342
+        ],
+        "removed_detached_alpha_coordinates": [],
+        "override": "exact idle pixels +16,+6, no resize"
+      }
+    ],
+    "ne": [
+      {
+        "box_global": [
+          35,
+          788,
+          290,
+          1066
+        ],
+        "cell": [
+          0,
+          2
+        ],
+        "component_area": 47577,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.26706231454005935,
+        "position": [
+          23,
+          26
+        ],
+        "size": [
+          68,
+          74
+        ],
+        "source_boot_anchor": [
+          152.0,
+          277
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          386,
+          748,
+          643,
+          1064
+        ],
+        "cell": [
+          1,
+          2
+        ],
+        "component_area": 47265,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.26706231454005935,
+        "position": [
+          29,
+          16
+        ],
+        "size": [
+          69,
+          84
+        ],
+        "source_boot_anchor": [
+          132.0,
+          315
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          702,
+          755,
+          1074,
+          1002
+        ],
+        "cell": [
+          2,
+          2
+        ],
+        "component_area": 46882,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "anchor_x": 186.0,
+        "scale": 0.26706231454005935,
+        "position": [
+          14,
+          34
+        ],
+        "size": [
+          99,
+          66
+        ],
+        "source_boot_anchor": [
+          186.0,
+          246
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          22,
+          1128,
+          356,
+          1372
+        ],
+        "cell": [
+          0,
+          3
+        ],
+        "component_area": 46030,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "anchor_x": 167.0,
+        "scale": 0.26706231454005935,
+        "position": [
+          19,
+          35
+        ],
+        "size": [
+          89,
+          65
+        ],
+        "source_boot_anchor": [
+          167.0,
+          243
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          384,
+          1154,
+          665,
+          1429
+        ],
+        "cell": [
+          1,
+          3
+        ],
+        "component_area": 50630,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.26706231454005935,
+        "position": [
+          20,
+          27
+        ],
+        "size": [
+          75,
+          73
+        ],
+        "source_boot_anchor": [
+          166.0,
+          274
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          765,
+          1092,
+          992,
+          1429
+        ],
+        "cell": [
+          2,
+          3
+        ],
+        "component_area": 52050,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.26706231454005935,
+        "position": [
+          29,
+          10
+        ],
+        "size": [
+          61,
+          90
+        ],
+        "source_boot_anchor": [
+          130.0,
+          336
+        ],
+        "removed_detached_alpha_coordinates": [],
+        "override": "exact idle pixels +16,+6, no resize"
+      }
+    ],
+    "n": [
+      {
+        "box_global": [
+          69,
+          106,
+          298,
+          344
+        ],
+        "cell": [
+          0,
+          0
+        ],
+        "component_area": 34002,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.29900332225913623,
+        "position": [
+          29,
+          29
+        ],
+        "size": [
+          68,
+          71
+        ],
+        "source_boot_anchor": [
+          116.0,
+          237
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          417,
+          65,
+          648,
+          344
+        ],
+        "cell": [
+          1,
+          0
+        ],
+        "component_area": 33068,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.29900332225913623,
+        "position": [
+          21,
+          17
+        ],
+        "size": [
+          69,
+          83
+        ],
+        "source_boot_anchor": [
+          144.0,
+          278
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          766,
+          23,
+          979,
+          324
+        ],
+        "cell": [
+          2,
+          0
+        ],
+        "component_area": 36432,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "anchor_x": 106.5,
+        "scale": 0.29900332225913623,
+        "position": [
+          32,
+          10
+        ],
+        "size": [
+          64,
+          90
+        ],
+        "source_boot_anchor": [
+          106.5,
+          300
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          73,
+          394,
+          277,
+          650
+        ],
+        "cell": [
+          0,
+          1
+        ],
+        "component_area": 30837,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "anchor_x": 102.0,
+        "scale": 0.29900332225913623,
+        "position": [
+          34,
+          24
+        ],
+        "size": [
+          61,
+          77
+        ],
+        "source_boot_anchor": [
+          102.0,
+          255
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          420,
+          464,
+          649,
+          699
+        ],
+        "cell": [
+          1,
+          1
+        ],
+        "component_area": 33044,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.29900332225913623,
+        "position": [
+          28,
+          30
+        ],
+        "size": [
+          68,
+          70
+        ],
+        "source_boot_anchor": [
+          122.0,
+          234
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          791,
+          399,
+          994,
+          700
+        ],
+        "cell": [
+          2,
+          1
+        ],
+        "component_area": 37960,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.29900332225913623,
+        "position": [
+          32,
+          10
+        ],
+        "size": [
+          61,
+          90
+        ],
+        "source_boot_anchor": [
+          108.0,
+          300
+        ],
+        "removed_detached_alpha_coordinates": [],
+        "override": "exact idle pixels +16,+6, no resize"
+      }
+    ],
+    "nw": [
+      {
+        "box_global": [
+          77,
+          803,
+          286,
+          1048
+        ],
+        "cell": [
+          0,
+          2
+        ],
+        "component_area": 34147,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.3103448275862069,
+        "position": [
+          39,
+          24
+        ],
+        "size": [
+          65,
+          76
+        ],
+        "source_boot_anchor": [
+          82.0,
+          244
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          420,
+          776,
+          643,
+          1049
+        ],
+        "cell": [
+          1,
+          2
+        ],
+        "component_area": 34973,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.3103448275862069,
+        "position": [
+          20,
+          16
+        ],
+        "size": [
+          69,
+          85
+        ],
+        "source_boot_anchor": [
+          142.0,
+          272
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          738,
+          776,
+          1028,
+          1008
+        ],
+        "cell": [
+          2,
+          2
+        ],
+        "component_area": 33700,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "anchor_x": 145.0,
+        "scale": 0.3103448275862069,
+        "position": [
+          19,
+          28
+        ],
+        "size": [
+          90,
+          72
+        ],
+        "source_boot_anchor": [
+          145.0,
+          231
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          45,
+          1129,
+          312,
+          1357
+        ],
+        "cell": [
+          0,
+          3
+        ],
+        "component_area": 32921,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "anchor_x": 133.5,
+        "scale": 0.3103448275862069,
+        "position": [
+          23,
+          30
+        ],
+        "size": [
+          83,
+          71
+        ],
+        "source_boot_anchor": [
+          133.5,
+          227
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          435,
+          1164,
+          652,
+          1403
+        ],
+        "cell": [
+          1,
+          3
+        ],
+        "component_area": 36390,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.3103448275862069,
+        "position": [
+          42,
+          26
+        ],
+        "size": [
+          67,
+          74
+        ],
+        "source_boot_anchor": [
+          70.0,
+          238
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          785,
+          1111,
+          995,
+          1401
+        ],
+        "cell": [
+          2,
+          3
+        ],
+        "component_area": 38936,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.3103448275862069,
+        "position": [
+          40,
+          10
+        ],
+        "size": [
+          65,
+          90
+        ],
+        "source_boot_anchor": [
+          76.0,
+          289
+        ],
+        "removed_detached_alpha_coordinates": [],
+        "override": "exact idle pixels +16,+6, no resize"
+      }
+    ],
+    "w": [
+      {
+        "box_global": [
+          72,
+          112,
+          309,
+          342
+        ],
+        "cell": [
+          0,
+          0
+        ],
+        "component_area": 36213,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.2795031055900621,
+        "position": [
+          35,
+          36
+        ],
+        "size": [
+          66,
+          64
+        ],
+        "source_boot_anchor": [
+          103.0,
+          229
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          379,
+          64,
+          657,
+          340
+        ],
+        "cell": [
+          1,
+          0
+        ],
+        "component_area": 42378,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.2795031055900621,
+        "position": [
+          24,
+          23
+        ],
+        "size": [
+          78,
+          77
+        ],
+        "source_boot_anchor": [
+          141.5,
+          275
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          705,
+          56,
+          1041,
+          260
+        ],
+        "cell": [
+          2,
+          0
+        ],
+        "component_area": 39976,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "anchor_x": 168.0,
+        "scale": 0.2795031055900621,
+        "position": [
+          17,
+          43
+        ],
+        "size": [
+          94,
+          57
+        ],
+        "source_boot_anchor": [
+          168.0,
+          203
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          34,
+          413,
+          352,
+          628
+        ],
+        "cell": [
+          0,
+          1
+        ],
+        "component_area": 39294,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "anchor_x": 159.0,
+        "scale": 0.2795031055900621,
+        "position": [
+          20,
+          40
+        ],
+        "size": [
+          89,
+          60
+        ],
+        "source_boot_anchor": [
+          159.0,
+          214
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          412,
+          469,
+          660,
+          702
+        ],
+        "cell": [
+          1,
+          1
+        ],
+        "component_area": 37915,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.2795031055900621,
+        "position": [
+          31,
+          35
+        ],
+        "size": [
+          69,
+          65
+        ],
+        "source_boot_anchor": [
+          119.0,
+          232
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          798,
+          380,
+          1003,
+          702
+        ],
+        "cell": [
+          2,
+          1
+        ],
+        "component_area": 41222,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.2795031055900621,
+        "position": [
+          47,
+          10
+        ],
+        "size": [
+          57,
+          90
+        ],
+        "source_boot_anchor": [
+          62.0,
+          321
+        ],
+        "removed_detached_alpha_coordinates": [],
+        "override": "exact idle pixels +16,+6, no resize"
+      }
+    ],
+    "sw": [
+      {
+        "box_global": [
+          88,
+          779,
+          320,
+          1036
+        ],
+        "cell": [
+          0,
+          2
+        ],
+        "component_area": 38129,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.26239067055393583,
+        "position": [
+          31,
+          33
+        ],
+        "size": [
+          61,
+          67
+        ],
+        "source_boot_anchor": [
+          124.5,
+          256
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          403,
+          762,
+          657,
+          1038
+        ],
+        "cell": [
+          1,
+          2
+        ],
+        "component_area": 40548,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.26239067055393583,
+        "position": [
+          39,
+          28
+        ],
+        "size": [
+          67,
+          72
+        ],
+        "source_boot_anchor": [
+          95.0,
+          275
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          724,
+          741,
+          1044,
+          966
+        ],
+        "cell": [
+          2,
+          2
+        ],
+        "component_area": 38763,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "anchor_x": 160.0,
+        "scale": 0.26239067055393583,
+        "position": [
+          22,
+          41
+        ],
+        "size": [
+          84,
+          59
+        ],
+        "source_boot_anchor": [
+          160.0,
+          224
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          40,
+          1099,
+          347,
+          1322
+        ],
+        "cell": [
+          0,
+          3
+        ],
+        "component_area": 39982,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "anchor_x": 153.5,
+        "scale": 0.26239067055393583,
+        "position": [
+          24,
+          42
+        ],
+        "size": [
+          81,
+          59
+        ],
+        "source_boot_anchor": [
+          153.5,
+          222
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          419,
+          1155,
+          666,
+          1410
+        ],
+        "cell": [
+          1,
+          3
+        ],
+        "component_area": 41438,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.26239067055393583,
+        "position": [
+          33,
+          33
+        ],
+        "size": [
+          65,
+          67
+        ],
+        "source_boot_anchor": [
+          120.0,
+          254
+        ],
+        "removed_detached_alpha_coordinates": []
+      },
+      {
+        "box_global": [
+          790,
+          1072,
+          1008,
+          1415
+        ],
+        "cell": [
+          2,
+          3
+        ],
+        "component_area": 49459,
+        "extraction": "whole connected sprite, including any overflow across artificial cell grid",
+        "touches_outer_image": false,
+        "scale": 0.26239067055393583,
+        "position": [
+          42,
+          10
+        ],
+        "size": [
+          57,
+          90
+        ],
+        "source_boot_anchor": [
+          85.0,
+          342
+        ],
+        "removed_detached_alpha_coordinates": [],
+        "override": "exact idle pixels +16,+6, no resize"
+      }
+    ]
+  },
+  "start_frames": [
+    0,
+    1
+  ],
+  "fly_frames": [
+    2,
+    3
+  ],
+  "land_frames": [
+    4,
+    5
+  ],
+  "runtime_timing": "original4ticks/pose and existing dash height unchanged; not game verified",
+  "preview_world_scale": 0.5,
+  "hash_definition": "atlas_sha256 hashes PNG file bytes; rgba_sha256 hashes decoded frame RGBA bytes",
+  "game_adopted": false,
+  "preview_query": "spr=silver_r2",
+  "atlas_sha256": "6786d5b775b33cb19d0cbda6343801da25520f6ac0d7e0e39a02b20393a5148f",
+  "normal_usage": "silhouette draft retained for future integration; not applied by this web preview",
+  "r2_cto_verdict": "idle/walk candidate passed; not product/game PASS",
+  "runtime": {
+    "image": "atlas.png",
+    "dimensions": [
+      768,
+      1024
+    ],
+    "cell_size": [
+      128,
+      128
+    ],
+    "columns": 6,
+    "rows": 8,
+    "render_scale": 0.5,
+    "foot_anchor": [
+      64,
+      100
+    ],
+    "logical_foot_y_from_center": 18.0,
+    "frames": [
+      {
+        "direction": "s",
+        "slot": 0,
+        "rect": [
+          0,
+          0,
+          128,
+          128
+        ],
+        "rgba_sha256": "2646bf15a05fa11213281eebd09f5b41b481bf92da38f9c2542946883c0297d9"
+      },
+      {
+        "direction": "s",
+        "slot": 1,
+        "rect": [
+          128,
+          0,
+          128,
+          128
+        ],
+        "rgba_sha256": "968d6b20bb93187e06d73cdbf1ec1aa887ae2d86df5c89054dcf678180fc1297"
+      },
+      {
+        "direction": "s",
+        "slot": 2,
+        "rect": [
+          256,
+          0,
+          128,
+          128
+        ],
+        "rgba_sha256": "ac2b9e6878f6408e2f3b0f786624769cbb8033e01c3ba162a002bbccdcd8cc47"
+      },
+      {
+        "direction": "s",
+        "slot": 3,
+        "rect": [
+          384,
+          0,
+          128,
+          128
+        ],
+        "rgba_sha256": "78ec0d8cc68368ef876697fcef8e3d81e0d38bec52396e57ae0698c31430aa0f"
+      },
+      {
+        "direction": "s",
+        "slot": 4,
+        "rect": [
+          512,
+          0,
+          128,
+          128
+        ],
+        "rgba_sha256": "7adfbfdd340daffe629447d89da1d528b3cf572af0d82fc86fd88ad3aeb05cad"
+      },
+      {
+        "direction": "s",
+        "slot": 5,
+        "rect": [
+          640,
+          0,
+          128,
+          128
+        ],
+        "rgba_sha256": "d4863d09d6de0300c951dfe15d039295236ec4ff5f03ceb8bd717cb3f71f0915"
+      },
+      {
+        "direction": "se",
+        "slot": 0,
+        "rect": [
+          0,
+          128,
+          128,
+          128
+        ],
+        "rgba_sha256": "ed8e4a2850780d031b1d266d5c3e778d72ec5688150632209550b56ffbc331b2"
+      },
+      {
+        "direction": "se",
+        "slot": 1,
+        "rect": [
+          128,
+          128,
+          128,
+          128
+        ],
+        "rgba_sha256": "800202146554e0945ca9491558a941271a3075043ce3035cecb7259ebd38c0cf"
+      },
+      {
+        "direction": "se",
+        "slot": 2,
+        "rect": [
+          256,
+          128,
+          128,
+          128
+        ],
+        "rgba_sha256": "c5b4b71472b0810d4f6eae1095bc3e82f5664bc197a6dfc6c5693fefbb1dddbe"
+      },
+      {
+        "direction": "se",
+        "slot": 3,
+        "rect": [
+          384,
+          128,
+          128,
+          128
+        ],
+        "rgba_sha256": "9c2b83beca4052ba3aeb488d7859694e0706e0b85ae1a159257690a26abef8ca"
+      },
+      {
+        "direction": "se",
+        "slot": 4,
+        "rect": [
+          512,
+          128,
+          128,
+          128
+        ],
+        "rgba_sha256": "6191e13dae39491db84a686afad6b3b48c863616ec2e1a6414510d69e6557445"
+      },
+      {
+        "direction": "se",
+        "slot": 5,
+        "rect": [
+          640,
+          128,
+          128,
+          128
+        ],
+        "rgba_sha256": "5578889693e9159c09b49ccc4d1e64badf3b7e1c2a50a45259d95ebbbbf9e98b"
+      },
+      {
+        "direction": "e",
+        "slot": 0,
+        "rect": [
+          0,
+          256,
+          128,
+          128
+        ],
+        "rgba_sha256": "4ac9e18aaad733d793bb91c49b7c729ffebaf0a73e73ae940da772b878ef8bfa"
+      },
+      {
+        "direction": "e",
+        "slot": 1,
+        "rect": [
+          128,
+          256,
+          128,
+          128
+        ],
+        "rgba_sha256": "acc37714d15de480f108db033724ebc831ad2b91ee87106fac7034663b25ed8a"
+      },
+      {
+        "direction": "e",
+        "slot": 2,
+        "rect": [
+          256,
+          256,
+          128,
+          128
+        ],
+        "rgba_sha256": "a98a8fc700b8603a47afdb67d93aed7b8e9c8020f98921f343d56d82be5d01e4"
+      },
+      {
+        "direction": "e",
+        "slot": 3,
+        "rect": [
+          384,
+          256,
+          128,
+          128
+        ],
+        "rgba_sha256": "c3aa5e9b4db87169806cfa2c5dd1ed25785a375f2722f3f69190f33edf0b1363"
+      },
+      {
+        "direction": "e",
+        "slot": 4,
+        "rect": [
+          512,
+          256,
+          128,
+          128
+        ],
+        "rgba_sha256": "bf728d2bbe80d404e6cc2e71f67defa87b1ad2840cba094aef466907f1237362"
+      },
+      {
+        "direction": "e",
+        "slot": 5,
+        "rect": [
+          640,
+          256,
+          128,
+          128
+        ],
+        "rgba_sha256": "988ad9ce509feeceeed340120ec3ee47eab6d4eec930a47c6684b66c4eb7f85c"
+      },
+      {
+        "direction": "ne",
+        "slot": 0,
+        "rect": [
+          0,
+          384,
+          128,
+          128
+        ],
+        "rgba_sha256": "22bc016bd014a8a487cbcf1524a2185af34b70bb5e0dc90d77f52138ea8f25b9"
+      },
+      {
+        "direction": "ne",
+        "slot": 1,
+        "rect": [
+          128,
+          384,
+          128,
+          128
+        ],
+        "rgba_sha256": "b4fa0b3de495a7bf200a548b059ce12741a53762e42f6a1abcead3fe36b4bd20"
+      },
+      {
+        "direction": "ne",
+        "slot": 2,
+        "rect": [
+          256,
+          384,
+          128,
+          128
+        ],
+        "rgba_sha256": "81eeba33ff8779de579904b8b9efa150ce4d229674eea51f8628edca60efe5e8"
+      },
+      {
+        "direction": "ne",
+        "slot": 3,
+        "rect": [
+          384,
+          384,
+          128,
+          128
+        ],
+        "rgba_sha256": "2666f2efc78771552d8d9e80510f4c3e065745c1f94ae08b6544b642c634d4da"
+      },
+      {
+        "direction": "ne",
+        "slot": 4,
+        "rect": [
+          512,
+          384,
+          128,
+          128
+        ],
+        "rgba_sha256": "6ab598486640765ca5636de050db7b7aed7f1e1e8a115db7e2e3765b3f092d3a"
+      },
+      {
+        "direction": "ne",
+        "slot": 5,
+        "rect": [
+          640,
+          384,
+          128,
+          128
+        ],
+        "rgba_sha256": "44d67fa75f956e2ba0b1a91f259468809a38c2af9050526c123e7842a6e5cecb"
+      },
+      {
+        "direction": "n",
+        "slot": 0,
+        "rect": [
+          0,
+          512,
+          128,
+          128
+        ],
+        "rgba_sha256": "39a8da7add81d9d9e7afe39670cf81fb5b6007d3f75a4c002e8e46aea2eb76e3"
+      },
+      {
+        "direction": "n",
+        "slot": 1,
+        "rect": [
+          128,
+          512,
+          128,
+          128
+        ],
+        "rgba_sha256": "4f60d02d06b9a52d8f3f302ca19b71f76f3a9470bb1bbf7e958cc06811db604a"
+      },
+      {
+        "direction": "n",
+        "slot": 2,
+        "rect": [
+          256,
+          512,
+          128,
+          128
+        ],
+        "rgba_sha256": "21932e991076593c0a014c0f314b78e9d2d4eef85439985a98bad652de4c7221"
+      },
+      {
+        "direction": "n",
+        "slot": 3,
+        "rect": [
+          384,
+          512,
+          128,
+          128
+        ],
+        "rgba_sha256": "ecab83a0602f28f365f750a40e561b96720967d30163275c60aaedced2d03ac4"
+      },
+      {
+        "direction": "n",
+        "slot": 4,
+        "rect": [
+          512,
+          512,
+          128,
+          128
+        ],
+        "rgba_sha256": "09fd92285b84df6c741cbb385b3d1bebb0077b36c65ebfc0d5d8928ea671cf97"
+      },
+      {
+        "direction": "n",
+        "slot": 5,
+        "rect": [
+          640,
+          512,
+          128,
+          128
+        ],
+        "rgba_sha256": "9250eed502b9697ccbe6da619fd905f20123ce002c31d27beb61b2afe68e068a"
+      },
+      {
+        "direction": "nw",
+        "slot": 0,
+        "rect": [
+          0,
+          640,
+          128,
+          128
+        ],
+        "rgba_sha256": "549ceb29b842d71de84667b1ffd9ae5e2d62fb927a1ddb434cf5a7806e6ed7d0"
+      },
+      {
+        "direction": "nw",
+        "slot": 1,
+        "rect": [
+          128,
+          640,
+          128,
+          128
+        ],
+        "rgba_sha256": "44bb7e1814aefeb31773af951cfbfacc2cde3eadc78e56de486618d4e79a62a0"
+      },
+      {
+        "direction": "nw",
+        "slot": 2,
+        "rect": [
+          256,
+          640,
+          128,
+          128
+        ],
+        "rgba_sha256": "7496298537c33487edbfb30f02ffe222711a4c7cc24930660c102d79819ebf41"
+      },
+      {
+        "direction": "nw",
+        "slot": 3,
+        "rect": [
+          384,
+          640,
+          128,
+          128
+        ],
+        "rgba_sha256": "07ea7db85a79cd1596ceb1e4316de738f82ecee03209b18a38d1008a8fbd5259"
+      },
+      {
+        "direction": "nw",
+        "slot": 4,
+        "rect": [
+          512,
+          640,
+          128,
+          128
+        ],
+        "rgba_sha256": "e47ba2050e6979da76a1b845043c116a695861343e54ccc348ea0114bad64ca2"
+      },
+      {
+        "direction": "nw",
+        "slot": 5,
+        "rect": [
+          640,
+          640,
+          128,
+          128
+        ],
+        "rgba_sha256": "cbaa0acaa69b09cd41dea78b0b3a962baf293d1001db20de38b251ccc8142779"
+      },
+      {
+        "direction": "w",
+        "slot": 0,
+        "rect": [
+          0,
+          768,
+          128,
+          128
+        ],
+        "rgba_sha256": "74edee6da87f458b92e60fdf3543f477be1fdf3bad40dd6a93aa99642273e435"
+      },
+      {
+        "direction": "w",
+        "slot": 1,
+        "rect": [
+          128,
+          768,
+          128,
+          128
+        ],
+        "rgba_sha256": "caa844e3133dfca9e5b83c08b1e307a3f68c7b90f9143a9d1d7de7229666ea93"
+      },
+      {
+        "direction": "w",
+        "slot": 2,
+        "rect": [
+          256,
+          768,
+          128,
+          128
+        ],
+        "rgba_sha256": "b3e1f62ddfc54ee251d9719d762c954b9c67888b37e40f85c68efc1792052fd7"
+      },
+      {
+        "direction": "w",
+        "slot": 3,
+        "rect": [
+          384,
+          768,
+          128,
+          128
+        ],
+        "rgba_sha256": "a4260029aff5978fb8ef91729f4794d1e07bb89e7e6177efd4d39137f22dd46b"
+      },
+      {
+        "direction": "w",
+        "slot": 4,
+        "rect": [
+          512,
+          768,
+          128,
+          128
+        ],
+        "rgba_sha256": "6ac5542590e0afa2ffae2783dfe3e01bfda2e2906f3a8ab76bf5c2adc0ab3cb5"
+      },
+      {
+        "direction": "w",
+        "slot": 5,
+        "rect": [
+          640,
+          768,
+          128,
+          128
+        ],
+        "rgba_sha256": "882b6a780d25cf01043afbdc1cc9b4f1ba8f9edeb24102c6c949cdf39615f092"
+      },
+      {
+        "direction": "sw",
+        "slot": 0,
+        "rect": [
+          0,
+          896,
+          128,
+          128
+        ],
+        "rgba_sha256": "8c51ae5d20431430d44806c2d3108682e1ec0d922289f653b47b2253c5d62bc3"
+      },
+      {
+        "direction": "sw",
+        "slot": 1,
+        "rect": [
+          128,
+          896,
+          128,
+          128
+        ],
+        "rgba_sha256": "9a5be8a53d30a6478f52bf851a663190aada034f5a1799a32940d5ddb1260d66"
+      },
+      {
+        "direction": "sw",
+        "slot": 2,
+        "rect": [
+          256,
+          896,
+          128,
+          128
+        ],
+        "rgba_sha256": "948ae314ea9962a2ed1944e0eb9c292e07226d0f744ecbf7c26aa81a4c980271"
+      },
+      {
+        "direction": "sw",
+        "slot": 3,
+        "rect": [
+          384,
+          896,
+          128,
+          128
+        ],
+        "rgba_sha256": "1459c1663f92d9bac2855803aa2ff3dd3a78132a01a0d969bd5396bedd5108b7"
+      },
+      {
+        "direction": "sw",
+        "slot": 4,
+        "rect": [
+          512,
+          896,
+          128,
+          128
+        ],
+        "rgba_sha256": "4673654c26115b490b04fab051a5692b22a5949f50f3d3a56c1f83f086a40058"
+      },
+      {
+        "direction": "sw",
+        "slot": 5,
+        "rect": [
+          640,
+          896,
+          128,
+          128
+        ],
+        "rgba_sha256": "833282fc3012d5dd969afcaaaa637b0d4b56d1658178e786d90ae824d540b117"
+      }
+    ]
+  }
+}

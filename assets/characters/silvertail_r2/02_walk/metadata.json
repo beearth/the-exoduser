@@ -1,0 +1,884 @@
+{
+  "stage": "DEVELOPMENT_FLAG_PREVIEW_CTO_CANDIDATE",
+  "directions": [
+    "s",
+    "se",
+    "e",
+    "ne",
+    "n",
+    "nw",
+    "w",
+    "sw"
+  ],
+  "cell": [
+    96,
+    96
+  ],
+  "world_cell": [
+    48,
+    48
+  ],
+  "foot_anchor": [
+    48,
+    94
+  ],
+  "frame_count_per_direction": 4,
+  "frames": [
+    {
+      "direction": "s",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            0,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "966c9d19e8d4c66fe6990de112cb82add158dfd0e1437b02e93f98ebcd190a8d"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            96,
+            0,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "11de7a1f64b495df3f966e55efea8d4185324d82a9c749563fc8e5a7e543dc17"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            192,
+            0,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "92716ab4d3b167a7a73f474338f4fb2642cc03e76edaacba3746e30f7505848c"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            288,
+            0,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "b71627e8e1b2f1e4237fdbde29d12017b1ca0e7a900d7bcad26bfc0f0308ddaf"
+        }
+      ]
+    },
+    {
+      "direction": "se",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            96,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "f79ec40a67ee25d3e65ed051ada1e2d44dd67a36bc4d13f01c0e9f29b4a36e6f"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            96,
+            96,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "cd66d08417a15f4db1be881f4ff74090567ca3aecdf3fd3c79c36f29b4a033ff"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            192,
+            96,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "cfea12f910a5545b157857f7deef8be380019956efc06289941f51b96eed4214"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            288,
+            96,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "eefa2f0a2fc8f878ce8bfe4c60f83201623612b66d0027060a6d920bfa451f36"
+        }
+      ]
+    },
+    {
+      "direction": "e",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            192,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "5d24ce53da19e37bb7952819aa43f59bda440e3576870c54d3cc0b4dbf7e24bb"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            96,
+            192,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "2c3a2a697eb1d8d27d6dab27759198a3579fa4f20bf69ea7f43a575b285db2d0"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            192,
+            192,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "bc3feacc1a2f8a6311e4f0114568b166ba466bbd0bbd465dc8e3c2bb8bd20629"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            288,
+            192,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "0dc0329bfb3608be5b0763dcca5465be20fc66583a543be7876730125688d845"
+        }
+      ]
+    },
+    {
+      "direction": "ne",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            288,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "f5a5723ba5c5bf5c8da2316acd03875a7af7a973cc0b28d6783b0d83e9494f56"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            96,
+            288,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "f4befbf2e70b82d69a4862d7b1ac5e2caddc2e043bcf0ed58899e45242cc687d"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            192,
+            288,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "b8dd18dddb3057d6b04d80ee69c98120a984c27239e2673f5bdbb9f63c8c2b4c"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            288,
+            288,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "17431ab2e0f1c4f4826bced81e86599d966919a2d38fe4b3f59caa9c7c249159"
+        }
+      ]
+    },
+    {
+      "direction": "n",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            384,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "815899ecbf097aae477e084feb3ceff26b395c64522b19a8e534bf35d72319f0"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            96,
+            384,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "f89a6be9b43b5dbf9cc64adfdb90e76397b75c8f94848d161ee63bb052c87823"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            192,
+            384,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "d33ccc888ed12fda2b9d1bc2a417f323b5f261e91cd672806c86cb35acd7031c"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            288,
+            384,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "1fdd0d53d3e48bce879c48b342fe376492d921650ad7a479873f5ee705e63d94"
+        }
+      ]
+    },
+    {
+      "direction": "nw",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            480,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "9cb0b8db2d319aa8aad2671a7891aa6f0dfb559ae1bfda8f35c8f049269f5adb"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            96,
+            480,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "89cc169253c05300379689bdb330de1f28b2ecbfdc677aa3a1cc0f39886638f8"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            192,
+            480,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "8d9f310eb452b8826d24b963734650deed288185ae6c3e6365418fc90f8eb36b"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            288,
+            480,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "4dd9df81cfaf548fe9337c6db878221c7149fe02efee0fd3a189299866e67c47"
+        }
+      ]
+    },
+    {
+      "direction": "w",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            576,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "22f74719748b27d1e42d5634806db407f519112974427883e726549e8895a693"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            96,
+            576,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "c1eed830b09100f5c5163028235750fda420812094cdcfdb75a666459b966b99"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            192,
+            576,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "418047e05c3baa2c2a4e2f164510965e6bb21222ff1a6e716ee199d19863c0e6"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            288,
+            576,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "6f9c9bcfc30f717b337f98c3f3c9cc24bb2cb529059c5438efa2afb4edd1359a"
+        }
+      ]
+    },
+    {
+      "direction": "sw",
+      "frames": [
+        {
+          "frame": 0,
+          "rect": [
+            0,
+            672,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "86be60583f9ab84ab03bf2e9bf3cbe043d4f3a6317d51261bacba5118092f198"
+        },
+        {
+          "frame": 1,
+          "rect": [
+            96,
+            672,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "ce7da03927cabe56219322efe2d27cc6a213e8ec034e721a4ea4bb1551cb5173"
+        },
+        {
+          "frame": 2,
+          "rect": [
+            192,
+            672,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "ba33212d0cfd493b69d11e8f28ea424b30d55483f42107a3836c8cf2f2664ce4"
+        },
+        {
+          "frame": 3,
+          "rect": [
+            288,
+            672,
+            96,
+            96
+          ],
+          "alpha_components": 1,
+          "rgba_sha256": "6d7503d102f9d108d218a54415f6a98b0459f9f3f2704430ce295cb37d25be1a"
+        }
+      ]
+    }
+  ],
+  "scope": "contact/pass alternation compared at3x/in-place; actual distance-cycle/foot sliding untested",
+  "rear_contact_fix": "NE/NW frame2 uses newly drawn correct-angle leg parts; head/weapon identity layers preserved",
+  "prior_trials": "N affine layer and value-only fix rejected/not adopted",
+  "preview_world_scale": 0.5,
+  "normal": "silhouette-derived OpenGL+Y draft; linear-data import proposal; actual material lighting not verified",
+  "hash_definition": "atlas_sha256 hashes PNG file bytes; rgba_sha256 hashes decoded frame RGBA bytes",
+  "game_adopted": false,
+  "canonical_gear_fix": "NE upper63rows/hub/blade share exact idle pixels; moving lower legs retained; see study gear_lock record",
+  "front_contact_fix": "SE/SW frame2 new front-diagonal leg parts with near/far value separation",
+  "r3_cto_retouch": {
+    "north": [
+      {
+        "frame": 0,
+        "upper64rows_unchanged": true,
+        "weapon_pixels_unchanged": true,
+        "foot_anchor": [
+          48,
+          94
+        ],
+        "method": "open central torn-cloth slit; newly drawn rear armored heel/toe legs",
+        "shared_leg_scale": 0.058935361216730035,
+        "leg_placement": [
+          41,
+          64
+        ],
+        "source_part_sha256": "82ccbede1bd8dd74575c7761da82d5d0d855c75934b68dca62136037527559a4"
+      },
+      {
+        "frame": 1,
+        "upper64rows_unchanged": true,
+        "weapon_pixels_unchanged": true,
+        "foot_anchor": [
+          48,
+          94
+        ],
+        "method": "open central torn-cloth slit; newly drawn rear armored heel/toe legs",
+        "shared_leg_scale": 0.058935361216730035,
+        "leg_placement": [
+          41,
+          64
+        ],
+        "source_part_sha256": "f386407dd8865d8dbe3ec5512353c7d4e212100319052de04a32322ae84e5465"
+      },
+      {
+        "frame": 2,
+        "upper64rows_unchanged": true,
+        "weapon_pixels_unchanged": true,
+        "foot_anchor": [
+          48,
+          94
+        ],
+        "method": "open central torn-cloth slit; newly drawn rear armored heel/toe legs",
+        "shared_leg_scale": 0.058935361216730035,
+        "leg_placement": [
+          41,
+          64
+        ],
+        "source_part_sha256": "4f0a294673b62b17837d71f2f222079c40bd94d95552f9cef64dd80220336569"
+      },
+      {
+        "frame": 3,
+        "upper64rows_unchanged": true,
+        "weapon_pixels_unchanged": true,
+        "foot_anchor": [
+          48,
+          94
+        ],
+        "method": "open central torn-cloth slit; newly drawn rear armored heel/toe legs",
+        "shared_leg_scale": 0.058935361216730035,
+        "leg_placement": [
+          41,
+          64
+        ],
+        "source_part_sha256": "4f45b13f21621da5f82b2dc2a374ee03b2f5589d87b0cdc44595c4d20a497b99"
+      }
+    ],
+    "se_frame2_forefoot_outline": {
+      "reference_color": [
+        34,
+        25,
+        28
+      ],
+      "changed_pixels": 55,
+      "alpha_unchanged": true
+    },
+    "source_r2_preserved": true
+  },
+  "preview_query": "spr=silver_r2",
+  "atlas_sha256": "a6e8493b81c032884829b71006c3a2a6d992f175132c2d2a227dd998b327a656",
+  "normal_usage": "silhouette draft retained for future integration; not applied by this web preview",
+  "r2_cto_verdict": "idle/walk candidate passed; not product/game PASS",
+  "runtime": {
+    "image": "atlas.png",
+    "dimensions": [
+      384,
+      768
+    ],
+    "cell_size": [
+      96,
+      96
+    ],
+    "columns": 4,
+    "rows": 8,
+    "render_scale": 0.5,
+    "foot_anchor": [
+      48,
+      94
+    ],
+    "logical_foot_y_from_center": 23.0,
+    "frames": [
+      {
+        "direction": "s",
+        "slot": 0,
+        "rect": [
+          0,
+          0,
+          96,
+          96
+        ],
+        "rgba_sha256": "966c9d19e8d4c66fe6990de112cb82add158dfd0e1437b02e93f98ebcd190a8d"
+      },
+      {
+        "direction": "s",
+        "slot": 1,
+        "rect": [
+          96,
+          0,
+          96,
+          96
+        ],
+        "rgba_sha256": "11de7a1f64b495df3f966e55efea8d4185324d82a9c749563fc8e5a7e543dc17"
+      },
+      {
+        "direction": "s",
+        "slot": 2,
+        "rect": [
+          192,
+          0,
+          96,
+          96
+        ],
+        "rgba_sha256": "92716ab4d3b167a7a73f474338f4fb2642cc03e76edaacba3746e30f7505848c"
+      },
+      {
+        "direction": "s",
+        "slot": 3,
+        "rect": [
+          288,
+          0,
+          96,
+          96
+        ],
+        "rgba_sha256": "b71627e8e1b2f1e4237fdbde29d12017b1ca0e7a900d7bcad26bfc0f0308ddaf"
+      },
+      {
+        "direction": "se",
+        "slot": 0,
+        "rect": [
+          0,
+          96,
+          96,
+          96
+        ],
+        "rgba_sha256": "f79ec40a67ee25d3e65ed051ada1e2d44dd67a36bc4d13f01c0e9f29b4a36e6f"
+      },
+      {
+        "direction": "se",
+        "slot": 1,
+        "rect": [
+          96,
+          96,
+          96,
+          96
+        ],
+        "rgba_sha256": "cd66d08417a15f4db1be881f4ff74090567ca3aecdf3fd3c79c36f29b4a033ff"
+      },
+      {
+        "direction": "se",
+        "slot": 2,
+        "rect": [
+          192,
+          96,
+          96,
+          96
+        ],
+        "rgba_sha256": "cfea12f910a5545b157857f7deef8be380019956efc06289941f51b96eed4214"
+      },
+      {
+        "direction": "se",
+        "slot": 3,
+        "rect": [
+          288,
+          96,
+          96,
+          96
+        ],
+        "rgba_sha256": "eefa2f0a2fc8f878ce8bfe4c60f83201623612b66d0027060a6d920bfa451f36"
+      },
+      {
+        "direction": "e",
+        "slot": 0,
+        "rect": [
+          0,
+          192,
+          96,
+          96
+        ],
+        "rgba_sha256": "5d24ce53da19e37bb7952819aa43f59bda440e3576870c54d3cc0b4dbf7e24bb"
+      },
+      {
+        "direction": "e",
+        "slot": 1,
+        "rect": [
+          96,
+          192,
+          96,
+          96
+        ],
+        "rgba_sha256": "2c3a2a697eb1d8d27d6dab27759198a3579fa4f20bf69ea7f43a575b285db2d0"
+      },
+      {
+        "direction": "e",
+        "slot": 2,
+        "rect": [
+          192,
+          192,
+          96,
+          96
+        ],
+        "rgba_sha256": "bc3feacc1a2f8a6311e4f0114568b166ba466bbd0bbd465dc8e3c2bb8bd20629"
+      },
+      {
+        "direction": "e",
+        "slot": 3,
+        "rect": [
+          288,
+          192,
+          96,
+          96
+        ],
+        "rgba_sha256": "0dc0329bfb3608be5b0763dcca5465be20fc66583a543be7876730125688d845"
+      },
+      {
+        "direction": "ne",
+        "slot": 0,
+        "rect": [
+          0,
+          288,
+          96,
+          96
+        ],
+        "rgba_sha256": "f5a5723ba5c5bf5c8da2316acd03875a7af7a973cc0b28d6783b0d83e9494f56"
+      },
+      {
+        "direction": "ne",
+        "slot": 1,
+        "rect": [
+          96,
+          288,
+          96,
+          96
+        ],
+        "rgba_sha256": "f4befbf2e70b82d69a4862d7b1ac5e2caddc2e043bcf0ed58899e45242cc687d"
+      },
+      {
+        "direction": "ne",
+        "slot": 2,
+        "rect": [
+          192,
+          288,
+          96,
+          96
+        ],
+        "rgba_sha256": "b8dd18dddb3057d6b04d80ee69c98120a984c27239e2673f5bdbb9f63c8c2b4c"
+      },
+      {
+        "direction": "ne",
+        "slot": 3,
+        "rect": [
+          288,
+          288,
+          96,
+          96
+        ],
+        "rgba_sha256": "17431ab2e0f1c4f4826bced81e86599d966919a2d38fe4b3f59caa9c7c249159"
+      },
+      {
+        "direction": "n",
+        "slot": 0,
+        "rect": [
+          0,
+          384,
+          96,
+          96
+        ],
+        "rgba_sha256": "815899ecbf097aae477e084feb3ceff26b395c64522b19a8e534bf35d72319f0"
+      },
+      {
+        "direction": "n",
+        "slot": 1,
+        "rect": [
+          96,
+          384,
+          96,
+          96
+        ],
+        "rgba_sha256": "f89a6be9b43b5dbf9cc64adfdb90e76397b75c8f94848d161ee63bb052c87823"
+      },
+      {
+        "direction": "n",
+        "slot": 2,
+        "rect": [
+          192,
+          384,
+          96,
+          96
+        ],
+        "rgba_sha256": "d33ccc888ed12fda2b9d1bc2a417f323b5f261e91cd672806c86cb35acd7031c"
+      },
+      {
+        "direction": "n",
+        "slot": 3,
+        "rect": [
+          288,
+          384,
+          96,
+          96
+        ],
+        "rgba_sha256": "1fdd0d53d3e48bce879c48b342fe376492d921650ad7a479873f5ee705e63d94"
+      },
+      {
+        "direction": "nw",
+        "slot": 0,
+        "rect": [
+          0,
+          480,
+          96,
+          96
+        ],
+        "rgba_sha256": "9cb0b8db2d319aa8aad2671a7891aa6f0dfb559ae1bfda8f35c8f049269f5adb"
+      },
+      {
+        "direction": "nw",
+        "slot": 1,
+        "rect": [
+          96,
+          480,
+          96,
+          96
+        ],
+        "rgba_sha256": "89cc169253c05300379689bdb330de1f28b2ecbfdc677aa3a1cc0f39886638f8"
+      },
+      {
+        "direction": "nw",
+        "slot": 2,
+        "rect": [
+          192,
+          480,
+          96,
+          96
+        ],
+        "rgba_sha256": "8d9f310eb452b8826d24b963734650deed288185ae6c3e6365418fc90f8eb36b"
+      },
+      {
+        "direction": "nw",
+        "slot": 3,
+        "rect": [
+          288,
+          480,
+          96,
+          96
+        ],
+        "rgba_sha256": "4dd9df81cfaf548fe9337c6db878221c7149fe02efee0fd3a189299866e67c47"
+      },
+      {
+        "direction": "w",
+        "slot": 0,
+        "rect": [
+          0,
+          576,
+          96,
+          96
+        ],
+        "rgba_sha256": "22f74719748b27d1e42d5634806db407f519112974427883e726549e8895a693"
+      },
+      {
+        "direction": "w",
+        "slot": 1,
+        "rect": [
+          96,
+          576,
+          96,
+          96
+        ],
+        "rgba_sha256": "c1eed830b09100f5c5163028235750fda420812094cdcfdb75a666459b966b99"
+      },
+      {
+        "direction": "w",
+        "slot": 2,
+        "rect": [
+          192,
+          576,
+          96,
+          96
+        ],
+        "rgba_sha256": "418047e05c3baa2c2a4e2f164510965e6bb21222ff1a6e716ee199d19863c0e6"
+      },
+      {
+        "direction": "w",
+        "slot": 3,
+        "rect": [
+          288,
+          576,
+          96,
+          96
+        ],
+        "rgba_sha256": "6f9c9bcfc30f717b337f98c3f3c9cc24bb2cb529059c5438efa2afb4edd1359a"
+      },
+      {
+        "direction": "sw",
+        "slot": 0,
+        "rect": [
+          0,
+          672,
+          96,
+          96
+        ],
+        "rgba_sha256": "86be60583f9ab84ab03bf2e9bf3cbe043d4f3a6317d51261bacba5118092f198"
+      },
+      {
+        "direction": "sw",
+        "slot": 1,
+        "rect": [
+          96,
+          672,
+          96,
+          96
+        ],
+        "rgba_sha256": "ce7da03927cabe56219322efe2d27cc6a213e8ec034e721a4ea4bb1551cb5173"
+      },
+      {
+        "direction": "sw",
+        "slot": 2,
+        "rect": [
+          192,
+          672,
+          96,
+          96
+        ],
+        "rgba_sha256": "ba33212d0cfd493b69d11e8f28ea424b30d55483f42107a3836c8cf2f2664ce4"
+      },
+      {
+        "direction": "sw",
+        "slot": 3,
+        "rect": [
+          288,
+          672,
+          96,
+          96
+        ],
+        "rgba_sha256": "6d7503d102f9d108d218a54415f6a98b0459f9f3f2704430ce295cb37d25be1a"
+      }
+    ]
+  }
+}
