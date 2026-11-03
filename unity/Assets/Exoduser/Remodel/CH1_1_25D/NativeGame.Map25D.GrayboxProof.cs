@@ -16,7 +16,7 @@ namespace Exoduser.UnityPort
             if(!GrayboxRequested)yield break;float now=Time.realtimeSinceStartup;
             if(!gb1FirstShot&&Vector2.Distance(new Vector2(Simulation.Player.X,Simulation.Player.Y),new Vector2(4020,6650))<400){gb1FirstShot=true;yield return GB1Shot("gb1-02-first");}
             if(gb1Journey2&&gb1Video2Start<0&&Simulation.Player.Y<=4150)gb1Video2Start=Time.realtimeSinceStartup;
-            int which=gb1Video2Start>=0?2:1;float start=which==2?gb1Video2Start:gb1Video1Start,duration=which==2?11:10;if(start<0)yield break;int count=which==2?gb1Video2Frames:gb1Video1Frames;float t=now-start;if(t<0||t>duration||t<count*.1f)yield break;
+            int which=gb1Video2Start>=0?2:1;float start=which==2?gb1Video2Start:gb1Video1Start,duration=which==2?(GrayboxConnected?11:30):10;if(start<0)yield break;int count=which==2?gb1Video2Frames:gb1Video1Frames;float t=now-start;if(t<0||t>duration||t<count*.1f)yield break;
             yield return new WaitForEndOfFrame();var texture=ScreenCapture.CaptureScreenshotAsTexture();string dir=Path.Combine(map25DPlayOutput,"video0"+which);Directory.CreateDirectory(dir);SaveMap25DBmp(Path.Combine(dir,count.ToString("D4")+".bmp"),texture.GetPixels32(),texture.width,texture.height);Destroy(texture);var times=which==2?gb1Video2Times:gb1Video1Times;times.Add(Time.realtimeSinceStartup-start);if(which==2)gb1Video2Frames++;else gb1Video1Frames++;
         }
         IEnumerator GB1Shot(string id){yield return Map25DPlayShot(id,"GB1 actual walked position; no coordinate assignment");var audit=map25D.GetComponent<Map25DGraybox>();if(audit!=null)audit.Audit(r3Cam,Path.Combine(map25DPlayOutput,id+"-grounding.json"));}
@@ -24,13 +24,31 @@ namespace Exoduser.UnityPort
         {
             Screen.SetResolution(3840,1080,FullScreenMode.Windowed);float until=Time.realtimeSinceStartup+10;while(Screen.width!=3840&&Time.realtimeSinceStartup<until)yield return null;for(int i=0;i<5;i++){UpdateViews();yield return null;}yield return GB1Shot(id);if(measure){int frames=0;var samples=new List<float>();float start=Time.realtimeSinceStartup,last=start;int cap=Application.targetFrameRate;Application.targetFrameRate=-1;QualitySettings.vSyncCount=0;while(Time.realtimeSinceStartup-start<6){UpdateViews();yield return null;float now=Time.realtimeSinceStartup;samples.Add((now-last)*1000);last=now;frames++;}samples.Sort();File.WriteAllText(Path.Combine(map25DPlayOutput,id+"-fps.json"),"{\"width\":3840,\"height\":1080,\"fps\":"+(frames/(Time.realtimeSinceStartup-start)).ToString(System.Globalization.CultureInfo.InvariantCulture)+",\"p95Ms\":"+samples[Mathf.Min(samples.Count-1,(int)(samples.Count*.95f))].ToString(System.Globalization.CultureInfo.InvariantCulture)+",\"scope\":\"actual uncapped6s static walked camp, Core paused; dense combat separate\"}");Application.targetFrameRate=cap;}Screen.SetResolution(1920,1080,FullScreenMode.Windowed);for(int i=0;i<5;i++){UpdateViews();yield return null;}
         }
-        IEnumerator GB1WalkTo(Vector2 goal,string shot)
+        IEnumerator GB1WalkTo(Vector2 goal,string shot,bool takeShot=true)
         {
             var route=Map25DFindWalkPath(new Vector2(Simulation.Player.X,Simulation.Player.Y),goal);if(route.Count==0){map25DPlayReceipt.failures.Add("GB1 route unavailable "+goal);yield break;}int index=0,stall=0;float next=Time.realtimeSinceStartup,deadline=next+150;
             while(index<route.Count&&Time.realtimeSinceStartup<deadline){float now=Time.realtimeSinceStartup;int catchup=0;while(next<=now&&catchup++<8&&index<route.Count){var p=Simulation.Player;var current=new Vector2(p.X,p.Y);if(Vector2.Distance(current,route[index])<5){index++;continue;}var d=(route[index]-current).normalized;p.Iframes=600;StepInput(d.x,d.y,route[index].x,route[index].y,false,false);Map25DTrackEnemies();float moved=Vector2.Distance(current,new Vector2(p.X,p.Y));map25DPlayReceipt.walkedPixels+=moved;map25DPlayReceipt.ticks++;if(moved<.01f){stall++;map25DPlayReceipt.blockedTicks++;}else stall=0;next+=1/60f;if(stall>120){map25DPlayReceipt.failures.Add("GB1 walk stalled "+goal);index=route.Count;break;}}UpdateViews();yield return null;yield return GB1WalkFrame();}
-            if(Vector2.Distance(new Vector2(Simulation.Player.X,Simulation.Player.Y),goal)>50)map25DPlayReceipt.failures.Add("GB1 did not arrive "+goal);yield return GB1Shot(shot);
+            if(Vector2.Distance(new Vector2(Simulation.Player.X,Simulation.Player.Y),goal)>50)map25DPlayReceipt.failures.Add("GB1 did not arrive "+goal);if(takeShot)yield return GB1Shot(shot);
         }
         void GB1WriteFirstVideo(){File.WriteAllText(Path.Combine(map25DPlayOutput,"video01.json"),JsonUtility.ToJson(new GB1Motion{scope="GB1a original Core walking unchanged; first continuous10s of start-to-camp route, composition terrain may differ",frames=gb1Video1Frames,realSeconds=10,videoTimes=gb1Video1Times},true));}
+        IEnumerator GB1aBridgeProof()
+        {
+            // Original Core routes only. No new map input, position assignment or collision bypass.
+            gb1Journey2=true;gb1Video2Start=Time.realtimeSinceStartup;
+            // No PNG readbacks or resolution switches interrupt the bridge take.
+            yield return GB1WalkTo(new Vector2(2110,3540),"gb1a-a2",false);
+            yield return GB1WalkTo(new Vector2(2140,2560),"gb1a-bridge-north",false);
+            float finish=Mathf.Max(gb1Video2Start+12,Time.realtimeSinceStartup+.5f);
+            while(Time.realtimeSinceStartup<finish){UpdateViews();yield return null;yield return GB1WalkFrame();}
+            float rawSeconds=gb1Video2Times.Count>0?gb1Video2Times[gb1Video2Times.Count-1]:0;
+            File.WriteAllText(Path.Combine(map25DPlayOutput,"video02.json"),JsonUtility.ToJson(new GB1Motion{scope="GB1a uninterrupted original Core camp-to-bridge-north take; final10s delivered, brief real arrival pause included. Geometry and original collision differ; no coordinate assignment",frames=gb1Video2Frames,realSeconds=rawSeconds,videoTimes=gb1Video2Times},true));
+            gb1Journey2=false;gb1Video2Start=-1;
+            yield return GB1Shot("gb1a-bridge-north");
+            yield return GB1WideShot("gb1a-bridge-north-3840");
+            yield return GB1WalkTo(new Vector2(2110,3540),"gb1a-a2");yield return GB1WideShot("gb1a-a2-3840");
+            // Existing camp comparisons and lifecycle regressions continue at the actual camp again.
+            yield return GB1WalkTo(new Vector2(2050,4400),"gb1a-camp-return");
+        }
         IEnumerator GB1ContinueProof()
         {
             yield return GB1Shot("gb1-03-camp");yield return GB1WideShot("gb1-03-camp-3840",true);gb1Journey2=true;

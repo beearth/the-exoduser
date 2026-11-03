@@ -20,10 +20,6 @@ namespace Exoduser.UnityPort
         public float RoadHeight(float x,float z,out Vector2 nearest){float best=10000,height=0;nearest=Vector2.zero;var p=roads[0].points;for(int i=1;i<p.Length;i++){float t,d=Segment(x,z,p[i-1],p[i],out t);if(d<best){best=d;height=Mathf.Lerp(p[i-1].w,p[i].w,t);nearest=new Vector2(Mathf.Lerp(p[i-1].x,p[i].x,t),Mathf.Lerp(p[i-1].y,p[i].y,t));}}return height;}
         public float Height(float x,float z){float d=WalkDistance(x,z);bool water=RawWaterAt(x,z);if(water&&WaterAt(x,z,d)&&RoadDistance(x,z,bridge)>0)return waterHeight-.16f;float far=3.4f+1.3f*Mathf.PerlinNoise(x*.035f+2,z*.034f+7);if(d>6)return far;Vector2 nearest;float h=RoadHeight(x,z,out nearest);float bank=Mathf.SmoothStep(0,1,Mathf.Clamp01(d/4));float mass=z<nearest.y?2.8f:3.2f+2.2f*Mathf.PerlinNoise(x*.09f+11,z*.08f+3);return Mathf.Lerp(h+bank*mass,far,Mathf.SmoothStep(0,1,Mathf.InverseLerp(4,6,d)));}
     }
-    public sealed class GB1Grounded : MonoBehaviour
-    {
-        public Vector3 hitPoint,normal;public float embed=.04f,positiveGap;public bool queryHit;public string role;
-    }
     [DefaultExecutionOrder(20010)]
     public sealed class Map25DGraybox : MonoBehaviour
     {

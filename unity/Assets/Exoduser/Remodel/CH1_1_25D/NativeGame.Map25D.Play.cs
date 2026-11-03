@@ -15,10 +15,10 @@ namespace Exoduser.UnityPort
         readonly Dictionary<Renderer,bool> map25DOriginalRenderers=new Dictionary<Renderer,bool>();
         readonly Dictionary<Behaviour,bool> map25DOriginalBehaviours=new Dictionary<Behaviour,bool>();
         readonly Dictionary<Terrain,bool> map25DOriginalTerrain=new Dictionary<Terrain,bool>();
-        Terrain map25DOriginalGround;bool map25DPresentationOn;Light map25DHeroLight;
+        Terrain map25DOriginalGround;bool map25DOriginalForestA2,map25DPresentationOn;Light map25DHeroLight;
         void RememberMap25DOriginalState()
         {
-            map25DOriginalGround=NativeRemodel3D.Ground;
+            map25DOriginalGround=NativeRemodel3D.Ground;map25DOriginalForestA2=NativeRemodel3D.ForestA2;
             foreach(var root in r3Roots){foreach(var r in root.GetComponentsInChildren<Renderer>(true))map25DOriginalRenderers[r]=r.enabled;foreach(var l in root.GetComponentsInChildren<Light>(true))map25DOriginalBehaviours[l]=l.enabled;foreach(var v in root.GetComponentsInChildren<Volume>(true))map25DOriginalBehaviours[v]=v.enabled;foreach(var t in root.GetComponentsInChildren<Terrain>(true))map25DOriginalTerrain[t]=t.drawHeightmap;}
         }
         bool Map25DWantsField {get{return Simulation!=null&&Simulation.Config.StageIndex==0&&!Simulation.Stage.InArena&&firstPractice==null&&lobby!=null&&!lobby.IsBlocking;}}
@@ -38,6 +38,9 @@ namespace Exoduser.UnityPort
             foreach(var pair in map25DOriginalBehaviours)if(pair.Key!=null)pair.Key.enabled=on?false:pair.Value;
             foreach(var pair in map25DOriginalTerrain)if(pair.Key!=null)pair.Key.drawHeightmap=on?false:pair.Value;
             NativeRemodel3D.Ground=on?map25D.HeightSurface:map25DOriginalGround;
+            // Merged A2 supplies an analytic height before Ground. Greybox owns
+            // only its visual height selection; the Core map stays unchanged.
+            if(GrayboxRequested)NativeRemodel3D.ForestA2=on?false:map25DOriginalForestA2;
             if(r4PixelActors!=null)r4PixelActors.SetDrawing(on);if(map25DHeroLight!=null)map25DHeroLight.enabled=on;
             Debug.Log("[Map25D] field presentation "+on+" stage="+Simulation.Config.StageIndex+" arena="+Simulation.Stage.InArena);
         }
@@ -61,6 +64,13 @@ namespace Exoduser.UnityPort
             InputSystem.QueueStateEvent(keyboard,new KeyboardState(key));yield return null;yield return null;InputSystem.QueueStateEvent(keyboard,new KeyboardState());yield return null;yield return null;
         }
         IEnumerator Map25DHoldStorySkip(){var keyboard=Keyboard.current;if(keyboard==null)keyboard=InputSystem.AddDevice<Keyboard>();InputSystem.QueueStateEvent(keyboard,new KeyboardState());for(int i=0;i<4;i++)yield return null;InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Escape));float end=Time.realtimeSinceStartup+6;while(lobby.CharacterStoryActive&&Time.realtimeSinceStartup<end)yield return null;InputSystem.QueueStateEvent(keyboard,new KeyboardState());for(int i=0;i<4;i++)yield return null;}
+        IEnumerator Map25DWaitTransition()
+        {
+            float until=Time.realtimeSinceStartup+25;
+            while(NativeScreenTransition.Busy&&Time.realtimeSinceStartup<until)yield return null;
+            if(NativeScreenTransition.Busy)map25DPlayReceipt.failures.Add("Product screen transition did not finish");
+            for(int i=0;i<3;i++)yield return null;
+        }
         IEnumerator Map25DPlaySmoke()
         {
             map25DPlayOutput=Argument("-output");if(string.IsNullOrEmpty(map25DPlayOutput)||!Path.IsPathRooted(map25DPlayOutput)){Application.Quit(2);yield break;}
@@ -78,15 +88,22 @@ namespace Exoduser.UnityPort
                 yield return null;
             }
             LobbyKeys.ReleaseAll();if(lobby.Flow.Page!=LobbyPage.Lobby){map25DPlayReceipt.failures.Add("Product title keys did not reach Lobby");Map25DFinishPlay();yield break;}
-            yield return Map25DPlayShot("03-lobby");
-            int resets=startupResetCount;if(lobby.Characters.Count==0){if(!lobby.OpenCharacterCreation()||!lobby.ConfirmCharacterVisual()||!lobby.CreateCharacter("맵검수"))map25DPlayReceipt.failures.Add("Isolated character creation failed");}
+            yield return Map25DWaitTransition();yield return Map25DPlayShot("03-lobby");
+            int resets=startupResetCount;if(lobby.Characters.Count==0){
+                if(!lobby.OpenCharacterCreation())map25DPlayReceipt.failures.Add("Isolated character selection failed");
+                yield return Map25DWaitTransition();
+                if(!lobby.ChooseCharacterVisual(0)||!lobby.ConfirmCharacterVisual())map25DPlayReceipt.failures.Add("Isolated character visual confirmation failed");
+                yield return Map25DWaitTransition();
+                if(!lobby.CreateCharacter("맵검수"))map25DPlayReceipt.failures.Add("Isolated character creation failed");
+                yield return Map25DWaitTransition();
+            }
             limit=Time.realtimeSinceStartup+20;while(lobby.CharacterStoryActive&&Time.realtimeSinceStartup<limit)yield return Map25DHoldStorySkip();
             // A newly created character enters startup automatically after its story.
             if(!lobby.StartupEntryActive&&lobby.IsBlocking&&!lobby.EnterSelectedCharacter()){map25DPlayReceipt.failures.Add("Product EnterSelectedCharacter rejected");Map25DFinishPlay();yield break;}
             limit=Time.realtimeSinceStartup+45;previous="";
             while(lobby.IsBlocking&&Time.realtimeSinceStartup<limit){string stage=lobby.StageName;if(stage!=previous){previous=stage;yield return Map25DPlayShot("04-"+stage);}if(stage=="Nemesis"||stage=="Guide")yield return Map25DInputKey(Key.Escape);else yield return null;}
             if(lobby.IsBlocking){map25DPlayReceipt.failures.Add("Product startup did not enter field");Map25DFinishPlay();yield break;}
-            if(firstPractice!=null)EndFirstPractice(true); // same callback as the tutorial Skip control
+            yield return Map25DWaitTransition();if(firstPractice!=null)EndFirstPractice(true); // same callback as the tutorial Skip control
             for(int i=0;i<12;i++)yield return null;
             map25DPlayReceipt.resets=startupResetCount-resets;
             limit=Time.realtimeSinceStartup+30;while((!r3Loaded||!map25DPresentationOn)&&Time.realtimeSinceStartup<limit){UpdateViews();yield return null;}
@@ -110,21 +127,21 @@ namespace Exoduser.UnityPort
             if(!map25DPlayReceipt.arrived)map25DPlayReceipt.failures.Add("Did not reach camp by actual walking");
             yield return Map25DPlayShot("07-camp-arrival");
             Map25DEnemyAudit(Path.Combine(map25DPlayOutput,"07-enemy-arrival.json"),false);
-            yield return Map25DSamePlaceProof(map25DPlayOutput);if(GrayboxConnected){yield return GB1ContinueProof();Map25DFinishPlay();yield break;}if(GrayboxRequested){yield return GB1Shot("gb1a-camp");yield return GB1WideShot("gb1a-camp-3840",true);GB1WriteFirstVideo();}
+            yield return Map25DSamePlaceProof(map25DPlayOutput);if(GrayboxConnected){yield return GB1ContinueProof();Map25DFinishPlay();yield break;}if(GrayboxRequested){yield return GB1Shot("gb1a-camp");yield return GB1WideShot("gb1a-camp-3840",true);GB1WriteFirstVideo();yield return GB1aBridgeProof();}
             int oldWidth=Screen.width,oldHeight=Screen.height;
             foreach(var size in new[]{new Vector2Int(3840,1080),new Vector2Int(5120,1440)}){Screen.SetResolution(size.x,size.y,FullScreenMode.Windowed);float sizeLimit=Time.realtimeSinceStartup+10;while((Screen.width!=size.x||Screen.height!=size.y)&&Time.realtimeSinceStartup<sizeLimit)yield return null;if(Screen.width!=size.x||Screen.height!=size.y){map25DPlayReceipt.failures.Add("Wide product proof resolution failed "+size);continue;}for(int k=0;k<6;k++){UpdateViews();yield return null;}string prefix="07-camp-"+size.x;yield return Map25DPlayShot(prefix+"-combat","Same actual walked arrival, wide proof; no Core steps/teleport");yield return Map25DSamePlaceProof(map25DPlayOutput,prefix);}
             Screen.SetResolution(oldWidth,oldHeight,FullScreenMode.Windowed);for(int k=0;k<8;k++){UpdateViews();yield return null;}
             var fpsSamples=new List<float>();float measuredAt=Time.realtimeSinceStartup,lastFrame=measuredAt;while(Time.realtimeSinceStartup-measuredAt<6){UpdateViews();yield return null;float now=Time.realtimeSinceStartup;fpsSamples.Add((now-lastFrame)*1000);lastFrame=now;}map25DPlayReceipt.campFps=fpsSamples.Count/(Time.realtimeSinceStartup-measuredAt);fpsSamples.Sort();map25DPlayReceipt.campP50Ms=fpsSamples[fpsSamples.Count/2];map25DPlayReceipt.campP95Ms=fpsSamples[Mathf.Min(fpsSamples.Count-1,(int)(fpsSamples.Count*.95f))];Map25DWritePlay();
             yield return Map25DDenseCombatBench();Screen.SetResolution(oldWidth,oldHeight,FullScreenMode.Windowed);for(int k=0;k<8;k++){UpdateViews();yield return null;}
             // Product lobby-return and normal saved-character entry exercise the same single instance.
-            lobby.ShowLobby();Running=false;for(int i=0;i<8;i++)yield return null;yield return Map25DPlayShot("08-lobby-return");
+            lobby.ShowLobby();Running=false;yield return Map25DWaitTransition();for(int i=0;i<8;i++)yield return null;yield return Map25DPlayShot("08-lobby-return");
             if(map25DPresentationOn)map25DPlayReceipt.failures.Add("Map layer leaked into Lobby");
             if(!lobby.EnterSelectedCharacter())map25DPlayReceipt.failures.Add("Re-entry rejected");
             limit=Time.realtimeSinceStartup+40;while(lobby.IsBlocking&&Time.realtimeSinceStartup<limit){if(lobby.StartupStage=="Nemesis"||lobby.StartupStage=="Guide")yield return Map25DInputKey(Key.Escape);else yield return null;}
             if(firstPractice!=null)EndFirstPractice(true);for(int i=0;i<16;i++){UpdateViews();yield return null;}
             yield return Map25DPlayShot("09-field-reentry");if(!map25DPresentationOn||FindObjectsByType<Map25DEnvironment>(FindObjectsInactive.Include).Length!=1)map25DPlayReceipt.failures.Add("Re-entry layer missing or duplicated");
             Simulation.Player.Hp=0;Simulation.Player.State="dead";UpdateViews();for(int i=0;i<8;i++)yield return null;yield return Map25DPlayShot("10-death","Synthetic lethal state; product death UI and retry callback");
-            RetryFromDeath();for(int i=0;i<16;i++){UpdateViews();yield return null;}yield return Map25DPlayShot("11-retry");if(!map25DPresentationOn||FindObjectsByType<Map25DEnvironment>(FindObjectsInactive.Include).Length!=1)map25DPlayReceipt.failures.Add("Death retry layer missing or duplicated");
+            RetryFromDeath();yield return Map25DWaitTransition();for(int i=0;i<16;i++){UpdateViews();yield return null;}yield return Map25DPlayShot("11-retry");if(!map25DPresentationOn||FindObjectsByType<Map25DEnvironment>(FindObjectsInactive.Include).Length!=1)map25DPlayReceipt.failures.Add("Death retry layer missing or duplicated");
             int originalStage=Simulation.Config.StageIndex;Simulation.Config.StageIndex=1;for(int i=0;i<8;i++)yield return null;yield return Map25DPlayShot("12-other-stage-guard","Presentation guard only: synthetic stage index, not a natural 1-2 playthrough");if(map25DPresentationOn)map25DPlayReceipt.failures.Add("Map25D leaked into another stage");Simulation.Config.StageIndex=originalStage;for(int i=0;i<8;i++)yield return null;yield return Map25DPlayShot("13-stage-restored");
             Map25DFinishPlay();
         }

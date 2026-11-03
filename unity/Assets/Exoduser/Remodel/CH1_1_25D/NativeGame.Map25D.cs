@@ -26,7 +26,8 @@ namespace Exoduser.UnityPort
             if(capture){
                 smokeActive=true;pauseSmoke=true;dropSmoke=true;practiceScripted=true;
                 AudioListener.pause=true;AudioListener.volume=0;Application.runInBackground=true;
-                lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;SetGameFocus(true);
+                // Static coordinate fixture only. Product smoke keeps actual transitions.
+                lobby.AutomatedInput=true;lobby.ShowLobby();lobby.SelectPreview();lobby.EnterNativeTest();EndFirstPractice(true);frontendEntryInputFence=false;menu=false;Running=false;SetGameFocus(true);
             }
             float until=Time.realtimeSinceStartup+60;
             while(!r3Loaded&&Time.realtimeSinceStartup<until){UpdateViews();yield return null;}
@@ -35,7 +36,7 @@ namespace Exoduser.UnityPort
             if(capture)yield return Map25DCapture();
         }
         void Map25DCreateWorld(){
-            RememberMap25DOriginalState();if(GrayboxConnected)UnityEngine.AI.NavMesh.RemoveAllNavMeshData();
+            RememberMap25DOriginalState();if(GrayboxRequested)NativeRemodel3D.ForestA2=false;if(GrayboxConnected)UnityEngine.AI.NavMesh.RemoveAllNavMeshData();
             foreach(var root in r3Roots){
                 foreach(var r in root.GetComponentsInChildren<Renderer>(true))r.enabled=false;
                 foreach(var light in root.GetComponentsInChildren<Light>(true))light.enabled=false;
