@@ -8,7 +8,7 @@ const en=new Proxy({},{get:(_,key)=>String(key)}),ctx={basename:p=>path.basename
 let helpers='';if(source.includes('static bool OriginalUiNoMipmaps('))helpers='function OriginalUiNoMipmaps(assetPath){'+js(method('OriginalUiNoMipmaps'))+'}';
 const apply=vm.runInNewContext(helpers+'\n(function(assetPath,assetImporter){'+js(method('OnPreprocessTexture'))+';return assetImporter;})',ctx);
 const art='Assets/Exoduser/Resources/Art/',dir=path.join(root,art,'ui/silver_hell');
-const names=['btn_primary_composed','btn_plaque_20261029','guide_button_glow','lobby_enter_btn_silver_20261029','lobby_enter_disabled','visual_create','visual_cancel','visual_disabled','name_create','name_cancel','name_panel','name_input','panel_frame_20261029','panel_corner_0','panel_corner_1'];
+const names=['btn_primary_composed','btn_plaque_20261029','guide_button_glow','lobby_enter_btn_silver_20261029','lobby_enter_disabled','visual_create','visual_cancel','visual_disabled','name_create','name_cancel','name_panel','name_input','panel_frame_20261029','panel_corner_0','panel_corner_1','btn_chip_1x','btn_chip_2x','lobby_enter_ready_1x','lobby_enter_ready_2x','lobby_enter_disabled_1x','lobby_enter_disabled_2x'];
 let failed=0,checks=0;function check(ok,label){checks++;if(!ok){failed++;console.log('FAIL '+label);}}
 for(const name of names){const t={};apply(art+'ui/silver_hell/'+name+'.png',t);check(t.mipmapEnabled===false&&t.filterMode==='Bilinear','import settings '+name);
  const meta=fs.readFileSync(path.join(dir,name+'.png.meta'),'utf8');check(/enableMipMap: 0/.test(meta)&&/filterMode: 1/.test(meta),'committed meta '+name);}

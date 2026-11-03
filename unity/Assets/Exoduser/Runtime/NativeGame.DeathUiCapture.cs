@@ -22,6 +22,8 @@ namespace Exoduser.UnityPort
             public bool passed,dialogOpen,rosterUnchanged,persistenceDisabled;
             public int width,height,rosterBefore,rosterAfter;public string screen,state,page,saveBinding,failures;public string[] files;
             public UiArtReceipt[] art;public float artworkBrightness=1;public int strippedSkinStates;
+            public bool entryPointerInside,entryHoverVisible;public Vector2 entryPointer,entryPointerScreen;public Rect entryRect;
+            public string pointerScope="isolated OnGUI pointer fixture through actual Rect.Contains/hover draw; no OS mouse movement";
         }
         // Mac Player only. -ui-screen lobby|character-create|character-name|character-delete|pause|settings|quit|lobby-quit
         // -ui-state normal|hover|selected|disabled; -ui-characters 0|2. States are visual fixture overrides, not physical input QA.
@@ -42,13 +44,15 @@ namespace Exoduser.UnityPort
             if(!rec.persistenceDisabled){Debug.LogError("UI fixture refused persistent stores");Application.Quit(2);yield break;}
             var assets=new List<UiArtReceipt>();
             foreach(var name in new[]{"lobby_enter_btn_silver_20261029","lobby_enter_disabled","btn_primary_composed","btn_plaque_20261029","guide_button_glow",
-                "visual_create","visual_cancel","visual_disabled","name_create","name_cancel","panel_frame_20261029"}){
+                "visual_create","visual_cancel","visual_disabled","name_create","name_cancel","panel_frame_20261029",
+                "btn_chip_1x","btn_chip_2x","lobby_enter_ready_1x","lobby_enter_ready_2x","lobby_enter_disabled_1x","lobby_enter_disabled_2x"}){
                 string path="Art/ui/silver_hell/"+name;var texture=Resources.Load<Texture2D>(path);
                 assets.Add(new UiArtReceipt{path=path,loaded=texture!=null,mipCount=texture==null?0:texture.mipmapCount});
                 if(texture==null||texture.mipmapCount!=1)failures.Add("art missing or mipmapped: "+path);
             }
             rec.art=assets.ToArray();
             bool frontend=screen=="lobby"||screen=="lobby-quit"||screen.StartsWith("character-",StringComparison.Ordinal);
+            lobby.DeathUiEntryPointerCapture=screen=="lobby";lobby.DeathUiEntryPointerInside=state=="hover";
             if(frontend){menu=false;if(!lobby.PrepareDeathUiDialog(screen,count,state))failures.Add("frontend dialog not opened");}
             else if(screen=="pause"||screen=="settings"||screen=="quit"){
                 lobby.ShowLobby();lobby.SelectPreview();if(!lobby.EnterNativeTest())failures.Add("field entry failed");
@@ -70,11 +74,13 @@ namespace Exoduser.UnityPort
                     yield return DeathCapture(output,"ui_"+tag+"_tab"+tab,files);
                 }
             }else yield return DeathCapture(output,"ui_"+tag,files);
+            rec.entryPointerInside=lobby.EntryPointerInside;rec.entryHoverVisible=lobby.EntryHoverVisible;rec.entryPointer=lobby.EntryPointer;rec.entryPointerScreen=lobby.EntryPointerScreen;rec.entryRect=lobby.EntryRect;
+            if(screen=="lobby"&&state=="hover"&&rec.rosterBefore>0&&(!rec.entryPointerInside||!rec.entryHoverVisible))failures.Add("entry hover pointer or drawn light missing");
             rec.rosterAfter=lobby.Characters.Count;rec.rosterUnchanged=rec.rosterBefore==rec.rosterAfter&&selected==lobby.Characters.SelectedName;
             if(!rec.rosterUnchanged)failures.Add("roster changed");
             rec.strippedSkinStates=NativeUiChrome.StrippedStates;rec.files=files.ToArray();rec.failures=string.Join(" | ",failures.ToArray());rec.passed=failures.Count==0;
             File.WriteAllText(Path.Combine(output,"death-ui-"+tag+".json"),JsonUtility.ToJson(rec,true));
-            NativeSilverHellUi.ReviewState=null;lobby.CloseStartupCaptureMedia();sound?.Reset();Application.Quit(rec.passed?0:2);
+            NativeSilverHellUi.ReviewState=null;lobby.DeathUiEntryPointerCapture=false;lobby.CloseStartupCaptureMedia();sound?.Reset();Application.Quit(rec.passed?0:2);
         }
     }
     public sealed partial class NativeLobby

@@ -6,6 +6,7 @@ struct Color{public float r,g,b,a;public Color(float r,float g,float b,float a=1
 struct Rect{public float x,y,width,height;public Rect(float x,float y,float w,float h){this.x=x;this.y=y;width=w;height=h;}}
 static class Mathf{public static float Min(float a,float b)=>Math.Min(a,b);public static float Clamp01(float x)=>Math.Max(0,Math.Min(1,x));}
 static class GUI{public static Color color;}
+static class Screen{public static int height=1080;}
 static class Resources{public static T Load<T>(string name) where T:class=>new Texture2D(name) as T;}
 static class NativeUiAudit{
  public static int clip;public static bool glowClipped=true;public static float glowAlpha;
@@ -21,7 +22,7 @@ class GUIStyle{
 }
 static class MaterialProbe{
  static int StrippedStates;static readonly HashSet<Texture2D> skinTextures=new HashSet<Texture2D>();static void RememberStock(){}
- static Texture2D plaque,primaryPlaque,innerButtonGlow;internal static string ReviewState;
+ static Texture2D plaque,primaryPlaque,chipOne,chipTwo,innerButtonGlow;internal static string ReviewState;
  static string face;static Color tint;static bool sliced;
  static void Slice(Rect r,Texture2D t,float sx,float sy,float ex,float ey,bool center){face=t.name;tint=GUI.color;sliced=sx==174&&sy==0&&ex==40&&ey==0&&center;}
  /*PRODUCTION*/
@@ -51,6 +52,11 @@ static class MaterialProbe{
    if(!ok){Console.WriteLine("FAIL art state "+primary+"/"+state+"/"+pressed);fail++;}
   }
   Console.WriteLine((fail==0?"PASS ":"FAIL ")+"original artwork slices; brightness1.0 all states; clipped inner hover only");
+  foreach(var size in new[]{new Rect(0,0,70,34),new Rect(0,0,300,30),new Rect(0,0,159,80)})foreach(int height in new[]{1080,1440}){
+   Screen.height=height;ReviewState="normal";ActionPlate(size,false,0,false);
+   if(!face.EndsWith(height>1080?"btn_chip_2x":"btn_chip_1x")||tint.r!=1||tint.g!=1||tint.b!=1||tint.a!=1)fail++;
+  }
+  Console.WriteLine((fail==0?"PASS ":"FAIL ")+"compact faces use prescaled thorn-free art at brightness1.0");
   return fail==0?0:2;
  }
 }

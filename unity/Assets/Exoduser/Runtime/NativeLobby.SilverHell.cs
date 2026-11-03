@@ -19,7 +19,7 @@ namespace Exoduser.UnityPort
         internal static string TextField(Rect rect,string text,GUIStyle style){return TextField(rect,text,-1,style);}
         internal static string TextField(Rect rect,string text,int max,GUIStyle style){var n=style.normal.textColor;var f=style.focused.textColor;try{style.normal.textColor=TextColor(n);style.focused.textColor=TextColor(f);return max<0?NativeUiAudit.TextField(rect,text,style):NativeUiAudit.TextField(rect,text,max,style);}finally{style.normal.textColor=n;style.focused.textColor=f;}}
         static Font light,regular;
-        static Texture2D frame,plaque,primaryPlaque,innerButtonGlow,panelBackground,panelIron;
+        static Texture2D frame,plaque,primaryPlaque,chipOne,chipTwo,innerButtonGlow,panelBackground,panelIron;
         // Focus lives inside ActionPlate; no red texture is drawn beyond its edge.
         internal static void ButtonFocus(Rect box){}
         internal static Font Font(bool body=false)
@@ -131,6 +131,23 @@ namespace Exoduser.UnityPort
             try{GUI.color=Color.white;Slice(box,frame,150,150,edge,edge,false);}
             finally{GUI.color=previous;}
         }
+        internal static bool IsCompactPlate(Rect box){return box.height<48||box.width<160;}
+        internal static Rect PlateTextRect(Rect box){return new Rect(box.x+6,box.y+6,Mathf.Max(0,box.width-12),Mathf.Max(0,box.height-12));}
+        internal static void PlateLabel(Rect box,string text,GUIStyle source)
+        {
+            var inside=PlateTextRect(box);if(inside.width<=0||inside.height<=0)return;
+            var style=new GUIStyle(source){font=TextFont(source.font,text),alignment=TextAnchor.MiddleCenter,clipping=TextClipping.Clip,padding=new RectOffset(),wordWrap=false};
+            while(style.fontSize>8){var size=style.CalcSize(new GUIContent(text));if(size.x<=inside.width&&size.y<=inside.height)break;style.fontSize--;}
+            Label(inside,text,style);
+        }
+        internal static bool EntryFocus(Rect box)
+        {
+            if(innerButtonGlow==null)innerButtonGlow=Resources.Load<Texture2D>("Art/ui/silver_hell/guide_button_glow");
+            if(innerButtonGlow==null)return false;
+            var previous=GUI.color;var inside=new Rect(box.x+box.width*.34f,box.y+box.height*.24f,box.width*.32f,box.height*.44f);
+            NativeUiAudit.BeginGroup(inside);try{GUI.color=new Color(1,1,1,.18f);NativeUiAudit.DrawTexture(new Rect(0,0,inside.width,inside.height),innerButtonGlow);}finally{NativeUiAudit.EndGroup();GUI.color=previous;}
+            return true;
+        }
         internal static void ActionPlate(Rect box,bool primary,float selection,bool pressed,float edge=40,float outset=14)
         {
             NativeUiAudit.Region(box,"button");if(box.width<=0||box.height<=0)return;
@@ -140,13 +157,19 @@ namespace Exoduser.UnityPort
             try{
                 // Fixed brightness 1.0 in every state, including pressed. Artwork supplies the material.
                 GUI.color=Color.white;
-                Slice(new Rect(box.x-outset,box.y,box.width+outset*2,box.height),
+                bool compact=IsCompactPlate(box);
+                if(compact){
+                    if(chipOne==null)chipOne=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_chip_1x");
+                    if(chipTwo==null)chipTwo=Resources.Load<Texture2D>("Art/ui/silver_hell/btn_chip_2x");
+                    int density=Screen.height>1080?2:1;float rim=Mathf.Min(8,box.height*.25f);
+                    Slice(box,density==2?chipTwo:chipOne,8*density,8*density,rim,rim,true);
+                }else Slice(new Rect(box.x-outset,box.y,box.width+outset*2,box.height),
                     primary?primaryPlaque:plaque,174,0,edge,0,true);
                 float focus=ArtSelection(selection);
                 if(focus<=0)return;
                 if(innerButtonGlow==null)innerButtonGlow=Resources.Load<Texture2D>("Art/ui/silver_hell/guide_button_glow");
                 if(innerButtonGlow==null)return;
-                float inset=Mathf.Min(edge,box.width*.2f);
+                float inset=Mathf.Min(compact?6:edge,box.width*.2f);
                 var inside=new Rect(box.x+inset,box.y+4,box.width-inset*2,box.height-8);
                 if(inside.width<=0||inside.height<=0)return;
                 NativeUiAudit.BeginGroup(inside);
@@ -175,8 +198,9 @@ namespace Exoduser.UnityPort
             gateSigil=Resources.Load<Texture2D>("Art/ui/silver_hell/gate_sigil_20261028");
             gateLogo=Art("logo_exoduser_solid");
             gateEnterLine=Resources.Load<Texture2D>("Art/ui/silver_hell/gate_enter_line");
-            lobbySilverEnter=Resources.Load<Texture2D>("Art/ui/silver_hell/lobby_enter_btn_silver_20261029");
-            lobbySilverDisabled=Resources.Load<Texture2D>("Art/ui/silver_hell/lobby_enter_disabled");
+            string density=Screen.height>1080?"2x":"1x";
+            lobbySilverEnter=Resources.Load<Texture2D>("Art/ui/silver_hell/lobby_enter_ready_"+density);
+            lobbySilverDisabled=Resources.Load<Texture2D>("Art/ui/silver_hell/lobby_enter_disabled_"+density);
             silverLatin=Resources.Load<Font>("Art/fonts/Cinzel-400")??Resources.Load<Font>("Art/fonts/Cinzel-VariableFont_wght");
             gateHalo=NativeSilverHellUi.Effect(256,128,(u,v)=>new Color(0,0,0,.62f*Mathf.Clamp01(1-Mathf.Sqrt(Sq((u-.5f)/.5f)+Sq((v-.5f)/.5f))/.72f)));
             gateEnterShade=NativeSilverHellUi.Effect(256,64,(u,v)=>

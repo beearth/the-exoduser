@@ -6,10 +6,10 @@
 
 | # | 복구/계약 | 검수 |
 |---|---|---|
-|1 입장|Art/ui/silver_hell/lobby_enter_btn_silver_20261029 또는 lobby_enter_disabled를 Rect(1428,702,416,156)에 표시. 원화 ENTER 글자가 있으므로 입장/ENTER를 덧그리지 않음. 클릭/호버 소리 유지|캐릭터0명 불가·2명 가능, normal/hover/selected/disabled|
-|2 ActionPlate|주요 btn_primary_composed, 일반 btn_plaque_20261029를 원래 Slice(box.x-outset, box.y, width+2×outset,height), sourceX174/sourceY0/edge/edgeY0/center=true로9-slice. 기본edge40/outset14. 일시정지의 primary도 주요 원화로 전달|모든 상태 GUI.color=white, 밝기1.0. .78/.74/1.18 배율 및 코드 판 없음|
-|3 슬롯|카드(1428,421+n×94,390,84)에 ActionPlate 없음. 선택 붉은 바탕(194,26,16)α.1·왼쪽2px. 가는 α.13 헤어라인·56×56 초상 칸/원본 전사 초상. 새 캐릭터 칸은 얇은 테와40×40 +칸|0명/2명, 선택 카드·초상·이름·삭제 버튼 가독성|
-|4 생성 창|visual_cancel/create/disabled를180×44 Rect에 직접 표시. name_cancel/create도 기존 이름창 버튼 Rect에 표시. KO 문구가 원화에 있으므로 추가 텍스트 없음|생성 가능/잠금, 이름창, 삭제확인|
+|1 입장|원본 lobby_enter_btn_silver_20261029/disabled의 사전축소 lobby_enter_ready_1x/2x·lobby_enter_disabled_1x/2x를 Rect(1428,702,416,156)에 표시(11-04 01:45). 원화 ENTER 글자가 있으므로 입장/ENTER를 덧그리지 않음. 클릭/호버 소리 유지|캐릭터0명 불가·2명 가능, normal/hover/selected/disabled|
+|2 ActionPlate|height<48 또는 width<160은 btn_chip_1x/2x(리벳 원화 테·어두운 원화 면), 글자6px 안쪽. 나머지는 주요 btn_primary_composed, 일반 btn_plaque_20261029를 원래 Slice(box.x-outset, box.y, width+2×outset,height), sourceX174/sourceY0/edge/edgeY0/center=true로9-slice. 기본edge40/outset14. 일시정지의 primary도 주요 원화로 전달|모든 상태 GUI.color=white, 밝기1.0. .78/.74/1.18 배율 및 코드 판 없음|
+|3 슬롯|카드(1428,421+n×94,390,84)에 ActionPlate 없음. 선택 붉은 바탕(194,26,16)α.1·왼쪽2px. 가는 α.13 헤어라인·56×56 초상 칸/원본 전사 초상. 빈 슬롯2개도 가는 카드/초상 테 유지. 직업/×24px 분리·개수 오른쪽14px. 새 캐릭터 칸은 얇은 테와40×40 +칸|0명/2명, 선택 카드·초상·이름·삭제 버튼 가독성|
+|4 생성 창|visual_cancel/create/disabled를180×44 Rect에 직접 표시. name_cancel/create도 기존 이름창 버튼 Rect에 표시. 이름창은 원화 안쪽 면+panel_frame 가족 테(edge45). KO 문구가 원화에 있으므로 추가 텍스트 없음|생성 가능/잠금, 이름창, 삭제확인|
 |5 레일|panel_frame_20261029를 Rect(1368,8,544,1064)에 source150/150, edge75/75, center=false로 그려 모서리/테두리만 복구. 기존 그림자·배경·로고 보존|1920/3840 실제 오른쪽 레일·모서리·ENTER와 충돌0|
 
 상태별 원화 밝기와 알파 틴트는1.0이다. 원화 자체의 투명 영역/각인/문구를 보존한다. 원화에 구워진 ENTER/KO 문구는 원본 그대로이며 번역 문자를 겹쳐 쓰지 않는다. 호버/선택은 안쪽에 클립한 guide_button_glow만 α.18×selection로 표시한다. 바깥 새 판/새 프레임/새 질감은 생성하지 않는다.
@@ -53,3 +53,12 @@ GUID·sRGB·기존 원화/크기·압축의 나머지 설정은 유지한다. Ma
 "$UNITY" -batchmode -nographics -quit -projectPath "$PROJECT/unity" -executeMethod SilverUiImportCheck.Run -output "$OUT" -logFile "$OUT/import.log"
 git status --porcelain -- unity/Assets/Exoduser/Resources/Art/ui/silver_hell
 ~~~
+
+## 11-04 01:45 작은 판/인장 축소/로비 RETOUCH
+
+- 최신 origin/unity/main489af88e5를 a39ba3e8c2로 병합, docs의 Codex 구현 기록과 스토리총괄 RETOUCH 기록 양쪽 보존.
+- ActionPlate는 height<48 또는 width<160에서 가시 없는 작은 원화만 쓴다. 원본 inventory plate의 리벳 테를 보존하고 btn_plaque의 어두운 내부 면을 기계적으로 옮긴 뒤 Lanczos3으로150×32/300×64 축소했다. 코드 판·명암/음각·점/그레인 생성0. 큰 판 원화/밝기1.0은 유지. 설정 버튼·키 칩은6px 안쪽에 글자를 맞추고, 보조키 삭제22px는 별도 확보한다.
+- 입장 인장 가능/불가 원본 전체를416×156/832×312로 사전축소. 원본 PNG 변경0. 신규6종도 SourceTextureImporter의 기존 원화 예외에 자동 포함되어OFF/Bilinear(현재21종).
+- 로비 빈 슬롯2개의 카드/초상 헤어라인, 이름창 원화 panel_frame 가족 테, 직업/삭제24px·개수14px 여백을 복구했다. 실제 포인터 hover는 기존 guide_button_glow를 인장 안쪽에만alpha.18로 표시한다.
+- --unity-death-ui-smoke의 lobby hover는 실제 Repaint 좌표 변환→Rect.Contains→EntryFocus 그림 경로를 지나며 entryPointerInside/entryHoverVisible과 좌표를 기록한다. OS 마우스를 움직인 증거는 아니다. 상세 Mac 캡처목록은 [01:45 작업표](UNITY_SMALL_PLATE_RETOUCH_20261104.md).
+- PC 배치/자산 계약PASS·importer50항PASS·DLL참조 컴파일1회5어셈블리 오류0. Player/에디터 임포트/게임 캡처0. 실제1920/3840의 잔점/계단·6px/가독성/hover는 Mac 미검증이다.

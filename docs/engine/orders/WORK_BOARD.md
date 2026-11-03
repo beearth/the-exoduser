@@ -716,3 +716,8 @@ PC후보af70a6a2c5는정본버전매빌드읽기·직업X사슬/로어·실능�
 
 - 밉맵 별도 브랜치 codex/unity-ui-mipmap-20261104 @2d2705dac891d80edc84ea901800410ecb2951ea:15종 importer OFF/Bilinear·4meta·38회귀·PC 참조컴파일PASS. Mac 재임포트 meta불변/실제mip1 대기.
 - codex/unity-demo-text-20261104: 문구 착수2e5a64b927 분리→긴급 병합20d46aef20→29언어 보스/HUD/입장/보스 자막 구현. 펫 말풍선은 조사만·다음 회차. Core 수치/판정·원화5항목 수정0. PC 참조컴파일1회5어셈블리 오류0,8소스/데이터계약PASS. Mac 실제 화면/자연 이벤트/원어민 감수 대기. [인자·정본 상태](../../3.1%20ui%20hud%20디자인/UNITY_DEMO_TEXT_20261104.md).
+
+## 2026-11-04 01:45 Codex UI RETOUCH 인계
+
+- codex/unity-demo-text-20261104, 최신489af88e5 병합a39ba3e8c2. 작은 가시 없는 칩6px/입장 사전축소/빈 슬롯/이름창 가시테/직업×·개수 간격을 고쳤다.17런타임 원화·21import대상, 원본PNG·큰원화·Core 보존.
+- 배치/자산PASS·importer50항PASS·PC DLL참조1회5어셈블리 오류0, Player0. 동일 SHA Mac1920/3840·1x/3x와 실제 입장 hover 영수증 대기. [계약·목록](../../3.1%20ui%20hud%20디자인/UNITY_SMALL_PLATE_RETOUCH_20261104.md). 펫 말풍선은 후속. 병합한 스토리총괄R1/R2 기록도 유지한다.

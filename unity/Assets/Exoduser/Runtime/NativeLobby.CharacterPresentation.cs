@@ -134,7 +134,7 @@ namespace Exoduser.UnityPort
   {
    if(silverNamePanel==null){silverNamePanel=Resources.Load<Texture2D>("Art/ui/silver_hell/name_panel");silverNameInput=Resources.Load<Texture2D>("Art/ui/silver_hell/name_input");}
    if(silverNameCreate==null){silverNameCreate=Resources.Load<Texture2D>("Art/ui/silver_hell/name_create");silverNameCancel=Resources.Load<Texture2D>("Art/ui/silver_hell/name_cancel");}
-   float w=NativeUiSafeArea.DesignWidth,h=NativeUiSafeArea.DesignHeight;Fill(new Rect(0,0,w,h),new Color(0,0,0,.90f));Rect panel=new Rect((w-440)/2,(h-335)/2,440,335);NativeUiAudit.Region(panel,"panel");Image(panel,silverNamePanel,ScaleMode.StretchToFill);
+   float w=NativeUiSafeArea.DesignWidth,h=NativeUiSafeArea.DesignHeight;Fill(new Rect(0,0,w,h),new Color(0,0,0,.90f));Rect panel=new Rect((w-440)/2,(h-335)/2,440,335);NativeUiAudit.Region(panel,"panel");NativeUiAudit.DrawTextureWithTexCoords(panel,silverNamePanel,new Rect(12f/silverNamePanel.width,12f/silverNamePanel.height,1-24f/silverNamePanel.width,1-24f/silverNamePanel.height));NativeSilverHellUi.FrameOnly(panel,45);
    float x=panel.x+41,y=panel.y;var noto=Resources.Load<Font>("Art/fonts/NativeLobbyNotoSansKR-Regular");
    string heading=CharacterDialogLabel("title",K("새 캐릭터 생성","Create Character"));
    var title=new GUIStyle(presentationNameTitle){font=NativeSilverHellUi.TextFont(NativeSilverHellUi.Font(),heading),fontStyle=FontStyle.Normal,fontSize=24,wordWrap=false,clipping=TextClipping.Overflow,padding=new RectOffset()};

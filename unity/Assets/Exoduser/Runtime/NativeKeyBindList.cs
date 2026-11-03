@@ -218,7 +218,7 @@ namespace Exoduser.UnityPort {
     var t=ui.tabs[i];string label=L(t.ko,t.en);float w=Mathf.Max(110,Width(label,semi,16,16f,0,1)+40);var r=R(x,12,w,40);x+=w+6;bool sel=(i==0)==(CurrentTab==Tab.Kbm);
     if(paint&&inView(r)){
      NativeSilverHellUi.ActionPlate(r,false,sel||Hover(r)?1:0,Hover(r)&&ExoInput.Mouse(0),22,2);
-     RunCentered(r.center.x,r.center.y,label,semi,16,16f,0,QBone,0,1);
+     var inside=NativeSilverHellUi.PlateTextRect(r);NativeUiAudit.BeginGroup(inside);try{RunCentered(inside.width/2,inside.height/2,label,semi,16,16f,0,QBone,0,1);}finally{NativeUiAudit.EndGroup();}
     }
     if(Click(r)){CurrentTab=i==0?Tab.Kbm:Tab.Pad;CancelListening();}
    }
@@ -244,7 +244,7 @@ namespace Exoduser.UnityPort {
    bool mainL=Listening&&listenAction==action&&!listenAlt,altL=Listening&&listenAction==action&&listenAlt;string alt=keys.Secondary(action);
    string mainText=mainL?T(ui.texts.listenMain):NativeA15SettingsLabels.GetKeyByKo(KeyBindings.KeyName(keys.Primary(action),false),LocaleCode,KeyBindings.KeyName(keys.Primary(action),English));
    string altText=altL?T(ui.texts.listenAlt):(alt!=null?NativeA15SettingsLabels.GetKeyByKo(KeyBindings.KeyName(alt,false),LocaleCode,KeyBindings.KeyName(alt,English)):T(ui.texts.alt));
-   float altW=Mathf.Max(QAltW,Width(altText,KeyFont(altText),14,14f,0)+26),altX=QColW-QPad-altW;
+   float altW=Mathf.Max(QAltW,Width(altText,KeyFont(altText),14,14f,0)+26+(alt!=null?22:0)),altX=QColW-QPad-altW;
    float mainW=Mathf.Max(70,Width(mainText,KeyFont(mainText),14,14f,0)+26),mainX=altX-10-mainW;
    var mainR=R(rx+mainX,ry+11,mainW,QKeyH);var altR=R(rx+altX,ry+11,altW,QKeyH);
    var delR=new Rect(altR.xMax-22,altR.y,22,QKeyH);
@@ -255,7 +255,7 @@ namespace Exoduser.UnityPort {
     Fill(new Rect(row.x,row.yMax-1,row.width,1),QLineSoft);
     DrawActionName(row,NativeA15SettingsLabels.GetKeyByKo(KeyBindings.Name(action,false),LocaleCode,KeyBindings.Name(action,English)));
     DrawKey(mainR,mainText,mainL,1f,false);
-    DrawKey(altR,altText,altL,1f,alt==null&&!altL);
+    DrawKey(altR,altText,altL,1f,alt==null&&!altL,alt!=null?22:0);
     if(alt!=null){var dc=Hover(delR)?C(176,179,179):C(136,139,139);RunCentered(delR.center.x,delR.center.y,"✕",regular,14,14f,0,dc,1f,5);}
    }
    if(alt!=null&&Click(delR))keys.ClearSecondary(action);
@@ -264,13 +264,14 @@ namespace Exoduser.UnityPort {
   }
 
   // `.set-key` in the quiet tier: flat #0a0d0d capsule, 1px hairline, Cinzel 14px; the empty alternate slot is a dim ghost
-  void DrawKey(Rect r,string text,bool listening,float opacity,bool ghost){
+  void DrawKey(Rect r,string text,bool listening,float opacity,bool ghost,float trailing=0){
    float keep=curA;bool hover=Hover(r);
    var color=GUI.color;GUI.color=new Color(color.r,color.g,color.b,color.a*curA*(ghost?.38f:1));
    NativeSilverHellUi.ActionPlate(r,false,listening||hover?1:0,hover&&ExoInput.Mouse(0),12,0);GUI.color=color;
    Color txt=listening?C(243,240,234):ghost?QDim:QBone;
    Font f=ghost||text.Length>0&&text[0]>127?semi:KeyFont(text);
-   RunCentered(r.center.x,r.center.y,text,f,14,14f,0,txt,0,4);
+   var labelStyle=new GUIStyle(Style(LabelFont(text,f),14));labelStyle.normal.textColor=NativeSilverHellUi.TextColor(new Color(txt.r,txt.g,txt.b,txt.a*curA));
+   r.width=Mathf.Max(0,r.width-trailing);NativeSilverHellUi.PlateLabel(r,text,labelStyle);
    curA=keep;
   }
   void DrawResetButton(Rect r,string text,bool enabled){
@@ -278,7 +279,7 @@ namespace Exoduser.UnityPort {
    float keep=curA;if(!enabled)curA=keep*.48f;bool hover=enabled&&Hover(r);
    if(inView(r)){
     var color=GUI.color;GUI.color=new Color(color.r,color.g,color.b,color.a*curA);NativeSilverHellUi.ActionPlate(r,false,hover?1:0,hover&&ExoInput.Mouse(0),22,4);GUI.color=color;
-    RunCentered(r.center.x,r.center.y,text,semi,16,16f,0,QBone);
+    var labelStyle=new GUIStyle(Style(LabelFont(text,semi),16));labelStyle.normal.textColor=NativeSilverHellUi.TextColor(new Color(QBone.r,QBone.g,QBone.b,QBone.a*curA));NativeSilverHellUi.PlateLabel(r,text,labelStyle);
    }
    curA=keep;
   }
@@ -318,7 +319,7 @@ namespace Exoduser.UnityPort {
   // disabled key look (`.set-key` + disabled): no hover / click
   void DrawKeyPlain(Rect r,string text,float opacity){
    var color=GUI.color;GUI.color=new Color(color.r,color.g,color.b,color.a*curA);NativeSilverHellUi.ActionPlate(r,false,0,false,12,0);GUI.color=color;
-   RunCentered(r.center.x,r.y+1+(r.height-4)/2f,text,bold,14,14f,.28f,QBone,1f);
+   var labelStyle=new GUIStyle(Style(LabelFont(text,bold),14));labelStyle.normal.textColor=NativeSilverHellUi.TextColor(new Color(QBone.r,QBone.g,QBone.b,QBone.a*curA));NativeSilverHellUi.PlateLabel(r,text,labelStyle);
   }
 
   // ---- floating messages (web #ph 500ms: 28.8px 900, #ffaa44 glow, centre ~y879; #notif 1.5s box at y777) ----

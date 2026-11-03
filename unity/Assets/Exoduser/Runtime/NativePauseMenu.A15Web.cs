@@ -258,7 +258,7 @@ namespace Exoduser.UnityPort
   {
    bool hover=r.Contains(Event.current.mousePosition);
    NativeSilverHellUi.ActionPlate(r,false,selected||hover?1:0,hover&&ExoInput.Mouse(0),22,4);
-   Txt(r,text,16,danger?new Color32(176,179,179,255):Bone,TextAnchor.MiddleCenter,FontStyle.Normal);
+   NativeSilverHellUi.PlateLabel(r,text,St(16,FontStyle.Normal,danger?new Color32(176,179,179,255):Bone,TextAnchor.MiddleCenter));
   }
   bool Clicked(Rect r){return NativeSilverHellUi.Button(r,GUIContent.none,GUIStyle.none);}
   void DrawItem(It it,float sy,bool fullscreen)
