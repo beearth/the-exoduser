@@ -1,0 +1,2 @@
+[h2]À propos de la démo[/h2]
+[p]La démo vous permet de parcourir 1-1, la première région de l'enfer, du début à la fin. Commencez en Guerrier de niveau 1, prenez en main l'espadon, les compétences de départ, la parade des projectiles, la mobilité à la chaîne et le butin, puis affrontez le premier boss de la région, le Druide Noir. Le niveau maximum de la démo est 100, et la progression de la démo est sauvegardée séparément du jeu complet. La fusion de compétences, d'autres héros, ainsi que les profondeurs de l'enfer et leurs boss vous attendent dans le jeu complet.[/p]

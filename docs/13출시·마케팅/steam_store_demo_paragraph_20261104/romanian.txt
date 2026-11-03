@@ -1,0 +1,2 @@
+[h2]Despre demo[/h2]
+[p]În demo poți juca 1-1, prima regiune a iadului, de la început până la sfârșit. Începe ca Războinic de nivel 1, încearcă spada cu două mâini, abilitățile de început, pararea proiectilelor, deplasarea cu lanțul și prada, apoi înfruntă primul boss al regiunii, Druidul Întunecat. Nivelul maxim în demo este 100, iar progresul din demo se salvează separat de jocul complet. Fuziunea abilităților, alți eroi și straturile mai adânci ale iadului, cu bossii lor, te așteaptă în jocul complet.[/p]
