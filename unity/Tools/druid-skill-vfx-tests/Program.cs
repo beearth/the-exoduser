@@ -5,7 +5,7 @@ using Exoduser.UnityPort.Core;
 using Exoduser.UnityPort.Vfx;
 
 // Druid slam body VFX (G1 2 (2)): the numbers of DruidSlamVfxTimeline against the Core facts and the G1 table. No Unity, no windows, no sound.
-static class Program
+static partial class Program
 {
     static int checks, bad;
     static void Check(bool value, string name) { checks++; if (!value) { bad++; Console.WriteLine("FAIL " + name); } }
@@ -205,7 +205,8 @@ static class Program
         Check(crackSame, "same seed, same cracks");
         Check(!DruidSlamVfxTimeline.Shards(s0).Select(s => s.Angle).SequenceEqual(DruidSlamVfxTimeline.Shards(s0 + 1).Select(s => s.Angle)), "different seed, different shards");
 
-        Console.WriteLine("druid slam vfx checks: " + checks + " run, " + bad + " failed");
+        SlashChecks();
+        Console.WriteLine("druid skill vfx checks: " + checks + " run, " + bad + " failed");
         return bad == 0 ? 0 : 1;
     }
 

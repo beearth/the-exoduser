@@ -8,7 +8,7 @@ const sdk='C:/Program Files/dotnet/sdk',pack='C:/Program Files/dotnet/packs/Micr
 const ref=path.join(pack,latest(pack),'ref');const tfm=fs.readdirSync(ref).at(-1);
 const walk=p=>fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(p,e.name)):e.name.endsWith('.cs')?[path.join(p,e.name)]:[]);
 const vfx=path.join(root,'unity/Assets/Exoduser/Runtime/Vfx');
-const files=[...walk(path.join(root,'unity/Assets/Exoduser/Runtime/Core')),path.join(vfx,'DruidSlamVfxTimeline.cs'),path.join(__dirname,'Program.cs')];
+const files=[...walk(path.join(root,'unity/Assets/Exoduser/Runtime/Core')),path.join(vfx,'DruidSlamVfxTimeline.cs'),path.join(vfx,'DruidSlashVfxTimeline.cs'),path.join(__dirname,'SlashChecks.cs'),path.join(__dirname,'Program.cs')];
 const args=['/nologo','/target:exe','/langversion:latest','/out:'+path.join(out,'checks.dll'),...fs.readdirSync(path.join(ref,tfm)).filter(f=>f.endsWith('.dll')).map(f=>'/r:'+path.join(ref,tfm,f)),...files];
 const env={...process.env,DOTNET_CLI_HOME:out,DOTNET_CLI_TELEMETRY_OPTOUT:'1',DOTNET_SKIP_FIRST_TIME_EXPERIENCE:'1'};
 function run(a){return cp.spawnSync('C:/Program Files/dotnet/dotnet.exe',a,{encoding:'utf8',windowsHide:true,env,timeout:120000});}
