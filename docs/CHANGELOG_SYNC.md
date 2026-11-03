@@ -1,3 +1,5 @@
+2026-11-04 F-1 이어받기: 시작 시 최신 unity/main c4b388903 병합(c8bf42cd8), catch staging 정리·구형 staging 회수 후 복사1회·배타 lease 초안. 설치된 Roslyn 직접 회귀에서 수정 전 F-1 RED, 수정 후 catch 정리까지3검사 통과 뒤 원본 비교 테스트의 공유 잠금 충돌로 실패. 같은 테스트2FAIL 정지, PC 컴파일0·Player0·Desktop0·원본 바이트 불변 미검증, 병합 보류. [실패/재개 근거](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).
+
 2026-11-04 F-1 저장 이전 staging 복구: 소유·최신공통 확인, 잠금→해제→재시도/원본·writer·destination 보존 회귀 초안 추가. NuGet path1 초기화 오류가 SDK10/8에서2회 발생해 동일2FAIL 규칙으로 중지. production 미수정·테스트 미실행·PC 컴파일 미실행. Desktop385/eaf실패·원복 기록 보존. [차단 근거](engine/UNITY_DEMO_FLAVOR_F1_20261104.md).
 
 2026-11-04 00:00 Desktop 수동 교체2회차: eaf67fae9 Windows 빌드1회/오류0 뒤 M1 09c 실패(기록17/18, 필수23미달)·UI 원화11종 mipmap8/11로 거부. 기존385e76ce1 원복·자기 브랜치 복귀, 사용자 저장0. 같은 실패후보1920 캡처11장·대지강타1회46프레임을 확보하고 build-commit.smoke.visual.rejectedCandidate에 source/adopted=false로 연결. [근거](engine/UNITY_DESKTOP_CTO_SWAP_20261104.md).

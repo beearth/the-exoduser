@@ -34,7 +34,7 @@ static class Program {
   string inter=Prepare(intermediate,"EXODUSER-HELL-FULL",true,null);
   Check(File.ReadAllText(Path.Combine(inter,"combat-save-v1","marker.v1.json"))=="intermediate-full","unqualified current product full save is retained");
   string err,dir,blocked=Path.Combine(work,"blocked");Directory.CreateDirectory(Path.Combine(blocked,"EXODUSER-HELL-FULL.legacy-import"));
-  Check(!NativeFlavorSavePaths.TryPrepare(blocked,"EXODUSER-HELL-FULL",true,old,false,out dir,out err)&&dir=="","interrupted migration fails closed");
+  Check(NativeFlavorSavePaths.TryPrepare(blocked,"EXODUSER-HELL-FULL",true,old,false,out dir,out err)&&!Directory.Exists(Path.Combine(blocked,"EXODUSER-HELL-FULL.legacy-import")),"interrupted migration reclaims staging and retries once");
   Check(!NativeFlavorSavePaths.TryPrepare(root,"../escape",true,old,false,out dir,out err),"namespace traversal rejected");
   using(var locked=new FileStream(roster,FileMode.Open,FileAccess.ReadWrite,FileShare.None))Check(!NativeFlavorSavePaths.TryPrepare(Path.Combine(work,"busy"),"EXODUSER-HELL-FULL",true,old,false,out dir,out err),"active legacy writer blocks import");
   Check(File.ReadAllText(roster)=="roster-7","failed import leaves source unchanged");

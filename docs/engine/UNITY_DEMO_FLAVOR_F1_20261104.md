@@ -1,4 +1,30 @@
-# F-1 소유 staging 재시도 — 테스트 실행 전 차단 (2026-11-04)
+# F-1 staging 복구 — 이어받기 2FAIL 중단 (2026-11-04)
+
+**현재 상태: 구현 초안 보존, 회귀 미통과·PC 컴파일 0회. 병합/Mac 검수 요청 보류.**
+
+## 새 스레드 이어받기 결과
+
+- 사용자 지정 worktree/브랜치에서 최초 미커밋 0을 확인하고 CLAUDE.md를 읽었다. 시작 시 fetch한 `origin/unity/main c4b388903c54cab88d0fcddec9df5ef51eea9d48`을 병합했다(병합 커밋 `c8bf42cd8e1c19b87d33e26ee093e0477964ac07`). 번역 목록·종료 문구·Overlay·CHANGELOG 충돌은 최신 이야기 문구/번호를 따르고 기존 위시리스트 버튼/레인 기록을 보존했다. 공통 브랜치에는 push하지 않는다.
+- NativeFlavorSavePaths: 이번 호출이 만든 staging을 catch에서 정리하고, 목적 폴더 없이 구형 staging만 남으면 정리 후 복사 1회만 시도한다. 기존 destination을 우선한다. namespace별 배타 파일 lease로 동시 importer를 거부하고, 정리 전 모든 staging 파일 잠금을 검사한다. 허용된 flat store의 json/bak 복사본만 정리하며 링크·알 수 없는 내용은 보존한다. 원본에는 삭제/쓰기 호출을 추가하지 않았다.
+- 이전 회귀 초안의 미구현 marker/token 계약은 제거했다. 구형 marker 없는 staging의 실제 복구·잠금 실패 후 catch 정리·해제 후 1회 성공·원본 파일 집합/바이트 불변·기존 destination 및 다른 writer 보존을 검사하도록 변경했다.
+- NuGet restore 초기화 문제를 재시도하지 않고, 프로젝트에 이미 쓰는 설치된 Unity .NET SDK/Roslyn 직접 컴파일 방식을 전용 `recovery.cjs`에 적용했다. 외부 패키지나 다운로드는 없다. 이는 격리 C# 파일 IO 테스트이며 Unity Player 실행이 아니다.
+
+| 실행 | 실제 결과 |
+|---|---|
+| 1 (수정 전 RED) | 실행됨. `FAIL after 2 checks: F-1: catch removes failed attempt staging`으로 F-1 재현 |
+| 2 (수정 후) | 잠금 실패·destination 미생성·catch staging 제거 3검사 통과. 다음 `Unchanged`에서 `File.ReadAllBytes` 공유 모드가 테스트 자체의 ReadWrite 잠금과 충돌해 실패 |
+
+**사용자의 같은 테스트 2회 실패 시 정지 규칙에 따라 세 번째 테스트·추가 소스 수정·PC 컴파일을 하지 않았다.** 해제 후 재시도 성공과 원본 전체 바이트 불변, abandoned staging 복구 및 나머지 검사는 아직 실행되지 않았다. 원본 바이트 불변을 PASS로 보고하지 않는다.
+
+재개 시 첫 조치: `Unchanged`가 잠긴 원본을 읽을 때 기존 ReadWrite 핸들과 양립하는 공유 모드를 사용하도록 테스트를 고치고, 위 전체 회귀를 통과한 뒤 PC 공용 bin 컴파일 1회. 현재 production 초안은 병합하지 않는다.
+
+- 로그: `I:/EXODUSER-Storage/codex-takeover/unity-11-fullrun/f1-tests/result.log`
+- 상태: 같은 경로 상위의 `f1-validation.json` 및 `REPORT.md` 맨 위 SHA.
+- Player 실행 0, Unity/Windows 빌드 0, PC 컴파일 0, 바탕화면/Steam 변경 0. 사용자 저장 경로 접근 0. 실행한 파일 IO는 자기 Library의 전용 fixture뿐이다.
+
+---
+
+## 이전 스레드 차단 이력 (보존)
 
 **F-1 미수정. PC 컴파일·Player·빌드·Desktop 교체·Steam 작업 미실행.** 사용자 지정 동일2FAIL 정지 규칙에 따라 테스트 인프라 오류 두 번 뒤 멈췄다. 이 커밋은 회귀 테스트 초안과 도구 설정·차단 기록이며 구현 완료나 Mac PASS 요청이 아니다.
 
