@@ -32,7 +32,7 @@ namespace Exoduser.UnityPort
                 for(int s=0;s+1<river.Length;s++)for(int k=0;k<=24;k++)
                 {
                     float t=k/24f;Vector3 At(int i){var p=river[Mathf.Clamp(i,0,river.Length-1)];return new Vector3(p.x,p.y,p.width);}var a=At(s-1);var b=At(s);var c=At(s+1);var d=At(s+2);var q=.5f*((2*b)+(-a+c)*t+(2*a-5*b+4*c-d)*t*t+(-a+3*b-3*c+d)*t*t*t);q.x+=24*Mathf.Sin(q.y*.007f)+12*Mathf.Sin(q.y*.015f);q.z+=28*Mathf.Sin(q.y*.0055f)+18*Mathf.Cos(q.y*.012f);float px=q.x,py=q.y,width=q.z;
-                    for(int j=0;j<=16;j++){float u=j/16f,wx=(px+(u*2-1)*width)/100,wz=-py/100;vertices.Add(new Vector3(wx,Mathf.Max(-.44f,NativeRemodel3D.GroundY(wx,wz)+.015f),wz));uv.Add(new Vector2(u,(py-3200)/1800));colors.Add(new Color(1,1,1,canMove(wx*100,-wz*100,0)?0:1));}
+                    for(int j=0;j<=16;j++){float u=j/16f,wx=(px+(u*2-1)*width)/100,wz=-py/100;vertices.Add(new Vector3(wx,-.445f,wz));uv.Add(new Vector2(u,(py-3200)/1800));colors.Add(new Color(1,1,1,canMove(wx*100,-wz*100,0)?0:1));}
                     if(row>0)for(int j=0;j<16;j++){int cell=row*17+j;triangles.AddRange(new[]{cell-17,cell-16,cell,cell-16,cell+1,cell});}row++;
                 }
                 Place(root,"C10 original moat strip and banks",vertices,uv,triangles,Paint("r3_moat_strip",true),colors);

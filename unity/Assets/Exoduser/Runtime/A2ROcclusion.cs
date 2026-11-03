@@ -8,14 +8,14 @@ namespace Exoduser.UnityPort
     public sealed class A2ROcclusion : MonoBehaviour
     {
         const int TargetCapacity=128;
-        sealed class Entry {public Renderer body,fade;public Transform foot;public Material[] original;public float progress,holdUntil;public bool eligible,latched,rearClip;}
+        sealed class Entry {public Renderer body,fade;public Transform foot;public Material[] original;public float progress,edgeProgress,holdUntil;public bool eligible,latched,rearClip;}
         struct Target {public Vector4 circle;public float depth;public bool camp;}
         readonly List<Entry> entries=new List<Entry>();readonly MaterialPropertyBlock block=new MaterialPropertyBlock();
         readonly List<Vector4> combatWorld=new List<Vector4>();readonly List<Target> targets=new List<Target>();readonly Vector4[] localTargets=new Vector4[TargetCapacity];
         RenderTexture nearest;public int NearestDrawCalls {get;private set;}
         Renderer camp;Camera viewer;Func<Vector3> hero;Action<List<Vector4>> collectCombat;
         public bool Applied {get;private set;}public bool MasksEnabled {get;private set;}=true;
-        public int VisibleTargets {get;private set;}public int FadedRenderers {get;private set;}public int PeakDroppedTargets {get;private set;}
+        public int EdgeFadedRenderers {get;private set;}public int VisibleTargets {get;private set;}public int FadedRenderers {get;private set;}public int PeakDroppedTargets {get;private set;}
         static bool IsSkillReceiver(Material material){return material!=null&&material.shader!=null&&material.shader.name.IndexOf("GroundSkillReceiver",StringComparison.Ordinal)>=0;}
         public void Initialize(Transform world,Camera camera,Func<Vector3> heroPosition)
         {
@@ -32,7 +32,7 @@ namespace Exoduser.UnityPort
             Shader.SetGlobalFloat("_A2RNearestReady",0);if(camera!=viewer||!Applied||!MasksEnabled||FadedRenderers==0)return;
             int width=camera.pixelWidth,height=camera.pixelHeight;if(nearest==null||nearest.width!=width||nearest.height!=height){if(nearest!=null){nearest.Release();Destroy(nearest);}nearest=new RenderTexture(width,height,0,SystemInfo.SupportsBlendingOnRenderTextureFormat(RenderTextureFormat.RFloat)?RenderTextureFormat.RFloat:RenderTextureFormat.ARGBHalf){name="A2R nearest occluder surface",filterMode=FilterMode.Point,wrapMode=TextureWrapMode.Clamp};nearest.Create();}
             var cmd=CommandBufferPool.Get("A2R nearest surface once");var vp=GL.GetGPUProjectionMatrix(camera.projectionMatrix,true)*camera.worldToCameraMatrix;cmd.SetGlobalMatrix("_A2RNearestVP",vp);cmd.SetGlobalMatrix("_A2RNearestView",camera.worldToCameraMatrix);cmd.SetRenderTarget(nearest);cmd.SetViewport(new Rect(0,0,width,height));cmd.ClearRenderTarget(false,true,new Color(camera.farClipPlane,camera.farClipPlane,camera.farClipPlane,camera.farClipPlane));cmd.SetGlobalFloat("_A2RDepthTolerance",nearest.format==RenderTextureFormat.RFloat?.002f:.02f);NearestDrawCalls=0;
-            foreach(var e in entries){if(e.progress<=0||e.body==null||!e.body.enabled||!e.body.gameObject.activeInHierarchy)continue;var materials=e.body.sharedMaterials;for(int i=0;i<materials.Length;i++){var m=materials[i];if(m==null)continue;int pass=m.FindPass("A2RNearest");if(pass>=0){var filter=e.body.GetComponent<MeshFilter>();if(filter!=null&&filter.sharedMesh!=null){cmd.DrawMesh(filter.sharedMesh,e.body.localToWorldMatrix,m,i,pass);NearestDrawCalls++;}}}}
+            foreach(var e in entries){if(e.progress<=0&&e.edgeProgress<=0||e.body==null||!e.body.enabled||!e.body.gameObject.activeInHierarchy)continue;var materials=e.body.sharedMaterials;for(int i=0;i<materials.Length;i++){var m=materials[i];if(m==null)continue;int pass=m.FindPass("A2RNearest");if(pass>=0){var filter=e.body.GetComponent<MeshFilter>();if(filter!=null&&filter.sharedMesh!=null){cmd.DrawMesh(filter.sharedMesh,e.body.localToWorldMatrix,m,i,pass);NearestDrawCalls++;}}}}
             cmd.SetGlobalTexture("_A2RNearestDepth",nearest);cmd.SetGlobalFloat("_A2RNearestReady",1);context.ExecuteCommandBuffer(cmd);CommandBufferPool.Release(cmd);
         }
         public int NearestCoveredPixels(){if(nearest==null)return 0;var old=RenderTexture.active;var sample=new Texture2D(nearest.width,nearest.height,TextureFormat.RGBAFloat,false,true);try{RenderTexture.active=nearest;sample.ReadPixels(new Rect(0,0,nearest.width,nearest.height),0,0);sample.Apply();var data=sample.GetRawTextureData<float>();int covered=0;for(int i=0;i<data.Length;i+=4)if(data[i]>0&&data[i]<viewer.farClipPlane-.1f)covered++;return covered;}finally{RenderTexture.active=old;Destroy(sample);}}
@@ -41,33 +41,35 @@ namespace Exoduser.UnityPort
         void RearFlag(Renderer renderer,bool enabled){renderer.GetPropertyBlock(block);block.SetFloat("_A2RRearClip",enabled?1:0);renderer.SetPropertyBlock(block);}
         public void ProtectLandmark(Renderer card){camp=card;}
         public void SetCombatSource(Action<List<Vector4>> source){collectCombat=source;}
-        public void SetMasksEnabled(bool on){MasksEnabled=on;FadedRenderers=0;VisibleTargets=0;foreach(var e in entries){e.progress=0;e.holdUntil=0;e.latched=false;ClearMask(e.body);ClearMask(e.fade);}}
+        public void SetMasksEnabled(bool on){MasksEnabled=on;FadedRenderers=0;VisibleTargets=0;foreach(var e in entries){e.progress=0;e.edgeProgress=0;e.holdUntil=0;e.latched=false;ClearMask(e.body);ClearMask(e.fade);}}
         public void SetLook(bool on)
         {
-            Applied=on;foreach(var e in entries){if(e.original!=null){if(!on){var current=e.body.sharedMaterials;if(current.Length>0&&current[0]!=null&&current[0].shader.name.StartsWith("EXODUSER/A2R/",StringComparison.Ordinal))replacement[e.body]=current;e.body.sharedMaterials=e.original;}else{Material[] m;if(replacement.TryGetValue(e.body,out m))e.body.sharedMaterials=m;}}e.progress=0;e.holdUntil=0;e.latched=false;ClearMask(e.body);ClearMask(e.fade);if(e.fade!=null)e.fade.enabled=on;}
+            Applied=on;foreach(var e in entries){if(e.original!=null){if(!on){var current=e.body.sharedMaterials;if(current.Length>0&&current[0]!=null&&current[0].shader.name.StartsWith("EXODUSER/A2R/",StringComparison.Ordinal))replacement[e.body]=current;e.body.sharedMaterials=e.original;}else{Material[] m;if(replacement.TryGetValue(e.body,out m))e.body.sharedMaterials=m;}}e.progress=0;e.edgeProgress=0;e.holdUntil=0;e.latched=false;ClearMask(e.body);ClearMask(e.fade);if(e.fade!=null)e.fade.enabled=on;}
         }
-        void ClearMask(Renderer renderer){if(renderer==null)return;renderer.GetPropertyBlock(block);block.SetFloat("_A2RFade",0);block.SetFloat("_A2RMaskBattle",0);block.SetInt("_A2RTargetCount",0);renderer.SetPropertyBlock(block);}
+        void ClearMask(Renderer renderer){if(renderer==null)return;renderer.GetPropertyBlock(block);block.SetFloat("_A2RFade",0);block.SetFloat("_A2REdgeFade",0);block.SetFloat("_A2RMaskBattle",0);block.SetInt("_A2RTargetCount",0);renderer.SetPropertyBlock(block);}
         readonly Dictionary<Renderer,Material[]> replacement=new Dictionary<Renderer,Material[]>();
         void LateUpdate()
         {
             if(!Applied||!MasksEnabled||viewer==null||hero==null)return;var heroFoot=hero();var heroViewport=viewer.WorldToViewportPoint(heroFoot+Vector3.up*.9f);targets.Clear();AddTarget(heroFoot+Vector3.up*.9f,.12f,false);
             if(camp!=null&&camp.enabled&&camp.gameObject.activeInHierarchy)AddTarget(camp.bounds.center,.18f,true);
-            combatWorld.Clear();if(collectCombat!=null)collectCombat(combatWorld);foreach(var t in combatWorld)AddTarget(new Vector3(t.x,t.y,t.z),t.w,false);VisibleTargets=targets.Count;FadedRenderers=0;int dropped=0;
+            combatWorld.Clear();if(collectCombat!=null)collectCombat(combatWorld);foreach(var t in combatWorld)AddTarget(new Vector3(t.x,t.y,t.z),t.w,false);VisibleTargets=targets.Count;FadedRenderers=0;EdgeFadedRenderers=0;int dropped=0;
             // CPU viewport projection is used for BOTH fragment and target math, avoiding RT Y flips.
             Shader.SetGlobalMatrix("_A2RViewportVP",viewer.projectionMatrix*viewer.worldToCameraMatrix);
             Shader.SetGlobalVector("_A2RBattle",new Vector4(heroViewport.x,heroViewport.y,.225f,.20f));
             foreach(var e in entries)
             {
                 // Core Y grows south; world z=-CoreY/100, so the camera side has SMALLER world z.
-                if(e.body==null||e.fade==null||e.foot==null)continue;if(!e.eligible)continue;if(!e.body.enabled||!e.body.gameObject.activeInHierarchy){e.progress=0;e.latched=false;ClearMask(e.body);ClearMask(e.fade);continue;}float depth;var rect=ProjectBounds(e.body.bounds,out depth);bool south=e.foot.position.z<heroFoot.z+(e.latched?.10f:-.05f);float margin=e.latched?1.08f:1;int localCount=0;bool battle=false;
+                if(e.body==null||e.fade==null||e.foot==null)continue;if(!e.eligible)continue;if(!e.body.enabled||!e.body.gameObject.activeInHierarchy){e.progress=0;e.edgeProgress=0;e.latched=false;ClearMask(e.body);ClearMask(e.fade);continue;}float depth;var rect=ProjectBounds(e.body.bounds,out depth);bool south=e.foot.position.z<heroFoot.z+(e.latched?.10f:-.05f);float margin=e.latched?1.08f:1;int localCount=0;bool battle=false;
                 if(e.eligible&&south&&rect.width>0)
                 {
                     var lower=Rect.MinMaxRect(rect.xMin,rect.yMin,rect.xMax,Mathf.Min(rect.yMax,.60f));
                     battle=heroViewport.z>depth&&lower.height>0&&Intersects(lower,new Vector4(heroViewport.x,heroViewport.y,.225f,.20f),margin);
 
                 }
+                bool edge=south&&rect.height>=(e.edgeProgress>0?.46f:.50f)&&depth<heroViewport.z-2&&e.body.bounds.SqrDistance(viewer.transform.position)<144&&(rect.xMin<.15f||rect.xMax>.85f);
+                e.edgeProgress=Mathf.MoveTowards(e.edgeProgress,edge?1:0,Time.unscaledDeltaTime/.2f);if(e.edgeProgress>0){EdgeFadedRenderers++;e.body.GetPropertyBlock(block);block.SetFloat("_A2REdgeFade",e.edgeProgress);e.body.SetPropertyBlock(block);e.fade.GetPropertyBlock(block);block.SetFloat("_A2REdgeFade",e.edgeProgress);e.fade.SetPropertyBlock(block);}else{e.body.GetPropertyBlock(block);block.SetFloat("_A2REdgeFade",0);e.body.SetPropertyBlock(block);e.fade.GetPropertyBlock(block);block.SetFloat("_A2REdgeFade",0);e.fade.SetPropertyBlock(block);}
                 bool hit=battle;if(hit)e.holdUntil=Time.unscaledTime+.12f;else if(!south)e.holdUntil=0;
-                e.latched=hit||Time.unscaledTime<e.holdUntil;e.progress=Mathf.MoveTowards(e.progress,e.latched?1:0,Time.unscaledDeltaTime/.2f);if(e.progress>0)FadedRenderers++;
+                e.latched=hit||Time.unscaledTime<e.holdUntil;e.progress=Mathf.MoveTowards(e.progress,e.latched?1:0,Time.unscaledDeltaTime/.2f);if(e.progress>0||e.edgeProgress>0)FadedRenderers++;
                 ApplyMask(e.body,localCount,battle,hit,e.progress);ApplyMask(e.fade,localCount,battle,hit,e.progress);
             }
             PeakDroppedTargets=Mathf.Max(PeakDroppedTargets,dropped);

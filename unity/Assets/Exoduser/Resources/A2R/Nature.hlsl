@@ -1,4 +1,6 @@
 float _A2RNatureOn;int _A2RActorCount,_A2RPierCount,_A2RRippleCount;float4 _A2RActors[32],_A2RRipples[24],_A2RPiers[8];
+TEXTURE2D(_A2RWaterDomain);SAMPLER(sampler_A2RWaterDomain);float _A2RWaterDomainReady;
+void A2RWaterClip(float3 world){if(_A2RWaterDomainReady>.5)clip(SAMPLE_TEXTURE2D(_A2RWaterDomain,sampler_A2RWaterDomain,float2(world.x,-world.z)/80).r-.5);}
 float3 A2RBend(float3 world,float root,float amplitude,float phase)
 {
  if(_A2RNatureOn<.5||amplitude<=0)return world;
