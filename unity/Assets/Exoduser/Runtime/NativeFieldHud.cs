@@ -10,7 +10,8 @@ namespace Exoduser.UnityPort
  public sealed class NativeFieldHud
  {
   public struct Info { public SourceMap map;public Simulation sim;public int statPoints,passivePoints,combatPower;public float progress;public bool english; }
-  Texture2D frame,mapTex,portrait,markerRing,markerArrow;Font font;NativeMinimapTiles texFor;bool mapBuilt;float mapSc;int mapW,mapH;
+  Texture2D frame,mapTex,portrait,markerRing,markerArrow,objectiveCircle,lockClosed,lockOpen;
+  readonly List<NativeMinimapObjective> objectiveMarkers=new List<NativeMinimapObjective>(24);Font font;NativeMinimapTiles texFor;bool mapBuilt;float mapSc;int mapW,mapH;
   readonly Dictionary<string,GUIStyle> styles=new Dictionary<string,GUIStyle>();
   static Color C(int r,int g,int b,float a=1f){return new Color(r/255f,g/255f,b/255f,a);}
   static void Fill(Rect r,Color c){var o=GUI.color;GUI.color=c;NativeUiAudit.DrawTexture(r,Texture2D.whiteTexture);GUI.color=o;}
@@ -22,7 +23,7 @@ namespace Exoduser.UnityPort
   void Init()
   {
    if(font!=null)return;
-   font=NativeSilverHellUi.Font()??Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular");frame=Resources.Load<Texture2D>("Art/ui/mm_frame_ring_20261028");portrait=Resources.Load<Texture2D>("Art/ui/minimap_warrior");InitMarker();
+   font=NativeSilverHellUi.Font()??Resources.Load<Font>("Art/fonts/NanumMyeongjo-Regular");frame=Resources.Load<Texture2D>("Art/ui/mm_frame_ring_20261028");portrait=Resources.Load<Texture2D>("Art/ui/minimap_warrior");InitMarker();InitObjectiveMarkers();
 
   }
   // _mmTickBuild: tile 1 is skipped, 2 #777a7a, 4 #443355, everything else #555858; one sc-sized square per tile.
@@ -71,6 +72,7 @@ namespace Exoduser.UnityPort
    NativeUiAudit.Region(new Rect(8,8,141.1f,141.1f),"component","hud-minimap","미니맵 외곽");var canvas=new Rect(23.3f,23.3f,110.5f,110.5f);const float k=.85f;
    float ox=(130-mapW)/2f,oy=4,sourceH=mapH+8,ys=130f/sourceH;
    GUI.color=new Color(1,1,1,.94f);NativeUiAudit.DrawTexture(canvas,mapTex);GUI.color=old;
+   DrawObjectiveMarkers(info,canvas,k);
    var sim=info.sim;int T=texFor.TileSize;int shown=0;
    foreach(var e in sim.Enemies){
     if(!e.Alive||sim.IsRemodelProp(e))continue;if(shown++>=60)break;float ex=ox+e.X/T*mapSc,ey=(oy+e.Y/T*mapSc)*ys;
@@ -86,6 +88,37 @@ namespace Exoduser.UnityPort
     NativeUiAudit.DrawTexture(new Rect(cx-9*k,cy-9*k,18*k,18*k),markerRing);GUI.color=old;
    }
    if(frame!=null){GUI.color=new Color(1.05f,1.05f,1.05f,.94f);NativeUiAudit.DrawTexture(new Rect(8,8,141.1f,141.1f),frame,ScaleMode.StretchToFill,true);GUI.color=old;}
+  }
+
+
+  void InitObjectiveMarkers(){
+   objectiveCircle=NativeSilverHellUi.Effect(32,32,(u,v)=>{float x=u-.5f,y=v-.5f;return new Color(1,1,1,Mathf.Clamp01((.5f-Mathf.Sqrt(x*x+y*y))*32));});
+   lockClosed=NativeSilverHellUi.Effect(64,64,(u,v)=>MinimapLockPixel((u-.5f)*16,(v-.5f)*16,false));
+   lockOpen=NativeSilverHellUi.Effect(64,64,(u,v)=>MinimapLockPixel((u-.5f)*16,(v-.5f)*16,true));
+  }
+  static float MinimapSegmentDistance(float x,float y,float ax,float ay,float bx,float by){float dx=bx-ax,dy=by-ay,t=Mathf.Clamp01(((x-ax)*dx+(y-ay)*dy)/Mathf.Max(.0001f,dx*dx+dy*dy));dx=x-ax-t*dx;dy=y-ay-t*dy;return Mathf.Sqrt(dx*dx+dy*dy);}
+  static float MinimapRectCoverage(float x,float y,float x0,float y0,float x1,float y1){return Mathf.Clamp01(Mathf.Min(Mathf.Min(x-x0,x1-x),Mathf.Min(y-y0,y1-y))+.5f);}
+  static Color MinimapOver(Color below,Color above){float a=above.a+below.a*(1-above.a);return a<=0?Color.clear:new Color((above.r*above.a+below.r*below.a*(1-above.a))/a,(above.g*above.a+below.g*below.a*(1-above.a))/a,(above.b*above.a+below.b*below.a*(1-above.a))/a,a);}
+  static Color MinimapLockPixel(float x,float y,bool open){
+   Color color=open?new Color(68/255f,170/255f,1):new Color(1,68/255f,68/255f),pixel=Color.clear;
+   float first=open?Mathf.PI*.95f:Mathf.PI,last=open?Mathf.PI*1.8f:Mathf.PI*2,cx=open?3:0,cy=open?-2.5f:-2,best=100,ax=cx+Mathf.Cos(first)*3,ay=cy+Mathf.Sin(first)*3;
+   for(int i=1;i<=32;i++){float angle=first+(last-first)*i/32,bx=cx+Mathf.Cos(angle)*3,by=cy+Mathf.Sin(angle)*3;best=Mathf.Min(best,MinimapSegmentDistance(x,y,ax,ay,bx,by));ax=bx;ay=by;}
+   pixel=MinimapOver(pixel,new Color(0,0,0,.9f*Mathf.Clamp01(2-best)));pixel=MinimapOver(pixel,new Color(color.r,color.g,color.b,Mathf.Clamp01(1.25f-best)));
+   pixel=MinimapOver(pixel,new Color(0,0,0,.9f*MinimapRectCoverage(x,y,-4,-2.5f,4,4.5f)));
+   pixel=MinimapOver(pixel,new Color(color.r,color.g,color.b,MinimapRectCoverage(x,y,-3,-1.5f,3,3.5f)));
+   return MinimapOver(pixel,new Color(0,0,0,.85f*MinimapRectCoverage(x,y,-.5f,-.2f,.7f,2.4f)));
+  }
+  void DrawObjectiveMarkers(Info info,Rect canvas,float scale){
+   NativeMinimapObjectives.Collect(info.sim,objectiveMarkers);var old=GUI.color;
+   try{foreach(var marker in objectiveMarkers){
+    var point=NativeMinimapObjectives.Project(marker.X,marker.Y,texFor.Width,texFor.Height,texFor.TileSize);
+    if(Vector2.Distance(new Vector2(point.X,point.Y),new Vector2(65,65))>64)continue;
+    if(marker.Kind==NativeMinimapObjectiveKind.Gate){GUI.color=new Color(1,1,1,.94f);NativeUiAudit.DrawTexture(new Rect(canvas.x+(point.X-8)*scale,canvas.y+(point.Y-8)*scale,16*scale,16*scale),marker.Unlocked?lockOpen:lockClosed);continue;}
+    float radius=marker.Radius,alpha=(marker.Kind==NativeMinimapObjectiveKind.Hole?.85f:1)*.94f;Color color;
+    if(!ColorUtility.TryParseHtmlString(marker.Color,out color))color=new Color(.73f,.73f,.73f);
+    GUI.color=new Color(0,0,0,alpha);NativeUiAudit.DrawTexture(new Rect(canvas.x+(point.X-radius-.5f)*scale,canvas.y+(point.Y-radius-.5f)*scale,(radius+.5f)*2*scale,(radius+.5f)*2*scale),objectiveCircle);
+    GUI.color=new Color(color.r,color.g,color.b,alpha);NativeUiAudit.DrawTexture(new Rect(canvas.x+(point.X-radius+.5f)*scale,canvas.y+(point.Y-radius+.5f)*scale,(radius-.5f)*2*scale,(radius-.5f)*2*scale),objectiveCircle);
+   }}finally{GUI.color=old;}
   }
 
   // Rotation about a point in the current (scaled) GUI space; RotateAroundPivot assumes an unscaled matrix.

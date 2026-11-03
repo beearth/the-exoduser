@@ -34,6 +34,7 @@ namespace Exoduser.UnityPort
         {
             public string scope = "Actual GPU Player; virtual InputSystem keyboard/mouse -> NativeGame.FixedUpdate. No direct position/HP/resource edits, enemy injection, forced kill or gate unlock. Boss retries use the real death screen callback and its ordinary resource restoration; deaths and retries are counted. Story and first practice use supported skip. Earned growth points use the ordinary transactional stat purchase API; owned usable gear is equipped through NativeInventory.Equip. No forced healing.";
             public string result, device, buildGuid;
+            public string frontendFailure;public List<string> frontendBoundaries=new List<string>();
             public int width, height;
             public float seconds, averageFps, frameP95Ms, frameP99Ms, longestFrameMs;
             public int renderedFrames, gearChanges, deaths, retries, policyChanges;
@@ -57,7 +58,7 @@ namespace Exoduser.UnityPort
         IEnumerator FullRunQa()
         {
             string output = Argument("-output");
-            if (string.IsNullOrEmpty(output)) { Application.Quit(2); yield break; }
+            if (string.IsNullOrEmpty(output)) { NativeLobbyVideo.RequestQuit(2); yield break; }
             Directory.CreateDirectory(output); Directory.CreateDirectory(Path.Combine(output, "caps"));
             AudioListener.volume = 0; AudioListener.pause = true;
             smokeActive = true; dropSmoke = true; Running = false;
@@ -70,12 +71,15 @@ namespace Exoduser.UnityPort
             yield return new WaitForSecondsRealtime(1);
             lobby.SetPlaybackFocus(true); // Hidden desktop has no foreground focus; retain the ordinary entry flow.
             Screen.SetResolution(width,1080,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
-            lobby.ShowLobby();
+            lobby.ShowLobby();yield return FullRunWaitFrontend("initial-lobby",receipt);if(!string.IsNullOrEmpty(receipt.frontendFailure)){receipt.result="frontend-boundary-blocked";yield return FullRunEnd(output,receipt,started);yield break;}
             string fresh = "F" + (DateTime.Now.Ticks % 1000000).ToString("000000");
-            bool created = lobby.OpenCharacterCreation() && lobby.ChooseCharacterVisual(0) && lobby.ConfirmCharacterVisual() && lobby.CreateCharacter(fresh);
-            lobby.ShowLobby();
+            bool opened=lobby.OpenCharacterCreation();yield return FullRunWaitFrontend("character-selection",receipt);if(!string.IsNullOrEmpty(receipt.frontendFailure)){receipt.result="frontend-boundary-blocked";yield return FullRunEnd(output,receipt,started);yield break;}
+            bool chosen=opened&&lobby.ChooseCharacterVisual(0);bool confirmed=chosen&&lobby.ConfirmCharacterVisual();yield return FullRunWaitFrontend("character-name",receipt);if(!string.IsNullOrEmpty(receipt.frontendFailure)){receipt.result="frontend-boundary-blocked";yield return FullRunEnd(output,receipt,started);yield break;}
+            bool created=confirmed&&lobby.CreateCharacter(fresh);yield return FullRunWaitFrontend("created-story",receipt);if(!string.IsNullOrEmpty(receipt.frontendFailure)){receipt.result="frontend-boundary-blocked";yield return FullRunEnd(output,receipt,started);yield break;}
+            lobby.ShowLobby();yield return FullRunWaitFrontend("entry-lobby",receipt);if(!string.IsNullOrEmpty(receipt.frontendFailure)){receipt.result="frontend-boundary-blocked";yield return FullRunEnd(output,receipt,started);yield break;}
             yield return FullRunShot(output, "00-lobby");
             if (!created || !lobby.BeginCharacterEntry(false)) { receipt.result = "lobby-entry-blocked"; yield return FullRunEnd(output, receipt, started); yield break; }
+            yield return FullRunWaitFrontend("lobby-game",receipt);if(!string.IsNullOrEmpty(receipt.frontendFailure)){receipt.result="frontend-boundary-blocked";yield return FullRunEnd(output,receipt,started);yield break;}
             float deadline = Time.realtimeSinceStartup + 30;
             while (lobby.StartupCaptureState.Page != FrontendEntryPage.Nemesis && Time.realtimeSinceStartup < deadline) { lobby.SetPlaybackFocus(true); yield return null; }
             lobby.StartupCaptureState.Skip(); yield return null; lobby.StartupCaptureState.Skip(); yield return null;
@@ -375,6 +379,14 @@ namespace Exoduser.UnityPort
             if(s.Regions!=null){row.regionKills=new int[4];row.regionTotals=new int[4];for(int i=0;i<4;i++){row.regionKills[i]=s.Regions[i].Kills;row.regionTotals[i]=s.Regions[i].Total;}}
             return row;
         }
+        IEnumerator FullRunWaitFrontend(string label,FullRunReceipt receipt)
+        {
+            float until=Time.realtimeSinceStartup+25;
+            while((NativeScreenTransition.Busy||lobby.CinematicEntryPending)&&Time.realtimeSinceStartup<until){lobby.SetPlaybackFocus(true);yield return null;}
+            if(NativeScreenTransition.Busy||lobby.CinematicEntryPending)receipt.frontendFailure="timeout:"+label;
+            else if(NativeScreenTransition.History!=null&&NativeScreenTransition.History.Count>0){var last=NativeScreenTransition.History[NativeScreenTransition.History.Count-1];if(last.failed||last.cancelled)receipt.frontendFailure=label+":"+last.boundary+":"+last.error;}
+            receipt.frontendBoundaries.Add(label);yield return null;
+        }
         IEnumerator FullRunClearTransition(string output,Keyboard keyboard,FullRunReceipt receipt)
         {
             InputState.Change(keyboard,new KeyboardState());yield return null;
@@ -395,8 +407,8 @@ namespace Exoduser.UnityPort
                 receipt.clearModalNotApplicable=stageClear.ShownKind==NativeStageClearOverlay.Kind.DemoEnd;
                 receipt.clearModalBlockedBackground=receipt.clearCancelRearmed=receipt.clearModalNotApplicable;
             }
-            yield return null;
-            receipt.clearReturnedLobby=lobby.IsBlocking&&lobby.Flow.Page==LobbyPage.Lobby&&!Running;
+            yield return FullRunWaitFrontend("clear-lobby",receipt);
+            receipt.clearReturnedLobby=string.IsNullOrEmpty(receipt.frontendFailure)&&lobby.IsBlocking&&lobby.Flow.Page==LobbyPage.Lobby&&!Running;
             receipt.clearSaveExists=HasCombatSave(lobby.ActiveCharacterName);
             yield return FullRunShot(output,"clear-lobby");
         }
@@ -430,7 +442,7 @@ namespace Exoduser.UnityPort
             File.WriteAllText(Path.Combine(output,"fullrun.json"),JsonUtility.ToJson(receipt,true));
             Debug.Log("FULLRUN_RESULT "+receipt.result+" seconds="+receipt.seconds);
             lobby.enabled=false;lobby.CloseStartupCaptureMedia();sound.Reset();yield return new WaitForSecondsRealtime(1);
-            Application.Quit(receipt.result=="stage-cleared"?0:2);
+            NativeLobbyVideo.RequestQuit(receipt.result=="stage-cleared"?0:2);
         }
     }
 
