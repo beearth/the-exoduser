@@ -186,3 +186,20 @@ VISUAL VERDICT: **미검증**. 이번 소스 연결을 전체 누락 연출 이�
 변경9파일: `unity/Assets/Exoduser/Runtime/NativeGame.cs`, `NativeGame.Remodel3D.cs`, `NativeGame.M1Check.cs`, `NativeReviewArgs.cs`, `Vfx/CombatImpactTimeline.cs`, `Vfx/CombatImpactView.cs`(뒤5개도 같은 Runtime 아래), `unity/Tools/combat-impact-tests/Program.cs`, `run.cjs`, 이 문서. 공용 CHANGELOG는 소유 범위 밖이라 총괄 인수용 초안만 남긴다: “근접 패링 G2: 따뜻한 선 스파크·6틱 제한 섬광·shake/pushin 비교 옵션·M1 +4틱 A/B 컷 연결. 표시 회귀430/0·Roslyn 오류0, 추가M1 09c FAIL·실제 화면 미검증.”
 
 END
+
+## 패링 RETOUCH 3 — 사용자 「패링구현이 엉망이네」 (2026-11-03 PC)
+
+바탕화면 실행본 385e76ce1의 M1 캡처(06-parry-q·06-parry-shield)를 1x·3x로 다시 봤다. 결함:
+
+| 결함 | 원인 | 조치 |
+|---|---|---|
+| Q 패링 = 보라 8각 별 스티커 | 웹 doParry의 `Dark_MediumImpact`(암흑 원소 시트)를 그대로 이식 | 근접은 이 브랜치의 따뜻한 흰 선 스파크(80~130). **탄 패링도 같은 선 스파크로 바꾸고 보라 별 삭제**(완벽 36~50·막기 20~30, 반사되는 탄이 주인공이라 적게) |
+| 패링 주변 보라·흰 잔점 | `ParryParts` 둥근 점 입자 12개 | **삭제**(점 금지). 모든 패링은 선 스파크만 |
+| 방패 탄 패링 = 누런 번개 시트 3장 | 웹 TVFX2 번개 3층 | **삭제**, 선 스파크 20~30. 물리탄 방패 패링의 화염 붐(`Fire_ImpactFire_Sheet`)·물콩·무지개 전용 시트는 유지 |
+| 탄 패링에도 원소색 화면 섬광 .25 | 옛 `Flash` 경로 | **삭제** — 화면 섬광은 완벽 근접 패링만(R2, Δ≤40·6틱) |
+| 영문 「PARRY!」 원색 노랑 글자, 빠른 연속 패링에 두 줄 쌓임 | Core `RaisePlayerText("PARRY!","#ffdd00")`(웹 '⚡PARRY!') | **표시 안 함**(`NativeRevive.Add`에서 거름, Core 문자열은 그대로). 레퍼런스 공통(팬텀 블레이드 제로·도타2·세키로류): 패링 성공은 스파크·섬광·소리로 읽히고 글자를 띄우지 않는다 |
+
+- 파일: `Runtime/Vfx/CombatImpactTimeline.cs`(Plan 탄 패링 시트 제거, `CombatParryPresentation.Sparks` 탄 패링 개수), `Runtime/Vfx/CombatImpactView.cs`(`ParryLines` 하나로, `ParryParts`·`ParryColor` 삭제, `Flash` 패링 분기), `Runtime/NativeRevive.cs`(PARRY! 거름), `unity/Tools/combat-impact-tests/Program.cs`.
+- 검사: combat-impact **508 checks 0 failures**(탄 패링 시트 0개·스파크 개수·섬광 없음 포함), blood-dark PASS, Runtime Roslyn 오류 0(249 소스), m1-parry 11개 중 실패 2건은 기존 09c 오프라인 하네스(위 「09c 회귀 조사」)와 같은 것.
+- 판정: PC는 컴파일까지. Mac M1 06(06-parry-q-shake/pushin·06-parry-shield)·07e(탄 패링 장면 있으면) 1x·3x 판정 뒤 병합.
+- 규칙 쪽(패링 판정 창·보상·히트스톱·적 밀림)은 이 브랜치가 건드리지 않는다. 손맛 결함은 유니티 총괄에 따로 전달.

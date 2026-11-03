@@ -17,6 +17,9 @@ namespace Exoduser.UnityPort
         public int SourceEvents{get{return floaters.InputEvents;}}
         public IEnumerable<string> Texts{get{foreach(var f in floaters.Live(Time.unscaledTime))yield return f.DisplayText;}}
         public void Add(ReviveText t){
+            // The web's '⚡PARRY!' floater is not shown: parry success reads from the line sparks, flash and sound, as in the
+            // reference games (VFX R2/R4). It was raw English in pure yellow and stacked on quick double parries.
+            if(t.Ko=="PARRY!")return;
             string text=Clean(English?t.En:t.Ko);if(text.Length==0)return;
             long value;bool numeric=long.TryParse(text,System.Globalization.NumberStyles.AllowLeadingSign,System.Globalization.CultureInfo.InvariantCulture,out value);
             string color=t.Color??"#ffffff";
