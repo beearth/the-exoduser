@@ -1,5 +1,7 @@
 # Unity 설치형 실제 지면 투영 — 2026-11-02
 
+최신(2026-11-03 20:20): Mac ec043b26d의 네 지형 실제 시전/목교 애니/중앙 섬광은 통과했으나 경사 접합부 누락으로 FAIL. 원본 A2RootSurface Forward의 Offset -1,-1과 무보정 receiver 깊이 차이를 확인하여 해당 shader의 receiver만 동일-1 bias 캐시 재질을 사용한다. 기본 지면/물은0, scene 차폐2cm·normalY.2·수신 범위/레이어 불변. 새 후보 Metal 판정 대기. 실제 스킬 촬영은 GPU batch RenderTexture 경로 추가(배우/UI 숨김 필수, Null GPU 거부, UI/자연플레이 증거 아님). 최신 무창 인자·검수 계약은 [P0 20:20 절](UNITY_GROUND_AOE_P0_20261103.md)을 따른다. 아래 11-02 상태는 당시 이력이다.
+
 상태(2026-11-03): **수정 후보는 존재하지만 사용자 PC 실행본에는 미반영인 전달 결함 확인**. PID28152의 unity-latest/build는 source1318877800c93d622f521af76fb54b1cf20b92d6, Runtime SHA256 2bad5c6c8ace951017cee6c3673921692bc2a2a309ca5b5b0d23f1fbc471ff0a이며 NativeGroundSkillSurface/NativeGroundSkillProjection 타입이 모두 없다. 사용자 새 붉은 원 스크린샷은 해결 증거가 아니라 기존 결함 재현이다. 최신 origin/unity/main1d89b0c186281d5641156c3c8610679dadca253e와 충돌 없이 정상 병합했고 최신 UI/사운드를 보존했다. 병합 후 Player Core117/Runtime224, Editor Core117/Runtime224/Editor57 소스 Roslyn 검사 오류0(완전 입력 검사)이다. 처음 두 검사는 희소 작업본의 기존 Rm4/Rm3 모듈 누락으로 실패했고, 원격과 동일 바이트의 필수 코드 입력 인수 뒤 통과했다. 실제 Unity/셰이더 검사는 별도다. 기존 Mac 표적 접지·수명·M1 결과는 아래 한정 범위로 유지하며 PC 새 패키지 검수/실행본 갱신은 아직 미완료다.
 
 ## 원인과 현재 적용
@@ -27,7 +29,7 @@ NativeGroundSkillSurface는 source SpriteRenderer를 수정하지 않고 렌더�
 |---|---|
 | volume | 공용cube8정점/12삼각형, 좌표±.5. source footprint 외접extent와 사전 전달최종extent의 max, scale=(2extent,16,2extent). y±8은 탐색부피이며 표시 높이가 아니다 |
 | source 좌표 | Core X/100,-Y/100의 worldXZ. 원rect/pivot/PPU/lossyScale/roll/flip로 TextureMap U/V를 만들고 atlas offset.xy/scale.zw를 그대로 전달 |
-| actual surface | receiver depth와 camera scene depth의 LinearEyeDepth 차이<=.02u인 실제 픽셀. scene depth에서 UNITY_MATRIX_I_VP로 world 위치 복원. 별도표면+.025/링+.03 오프셋 없이 같은 surface에 합성하며 ZWriteOff라 z-fighting 없음 |
+| actual surface | receiver depth로 world 복원. sceneEye+.02-receiverEye>=0인 픽셀만 허용하여 앞의 비수신 물체를 차폐. 실제 좌표 복원은 UNITY_MATRIX_I_VP 사용. A2RootSurface receiver의 raster Offset만 원본 Forward와 같은-1,-1, 다른 지면/물0. 별도표면+.025/링+.03 월드 높이 오프셋 없음 |
 | volume clip | abs(worldToObject(world)) 각축<=.50001. far-depth 유효성epsilon1e-7. 실제receiver가 없거나 앞의 비수신물체가 가리면 출력하지 않음 |
 | ground pass | Unity6000.6.7f1/URP17.6.0, 현재 package source ffe395a3a1d1 API. depth texture Load에 필요한 shader target3.5. BeforeRenderingTransparents에 receiver-depth→projection 두 RenderGraph raster pass. Depth input+intermediate texture 요구. 같은 raster orientation의 SV_POSITION.xy로 depth를Load하고, 원래 raster.xy*_ScreenSize.zw로world를복원한다(URP projector 방식, normalized UV 이중flip 금지). original material/renderer asset 파일 변경0 |
 | runtime feature | 현재camera의 ScriptableRenderer protected rendererFeatures getter를 캐시해 본인 transient feature만 append. 타feature/asset/전역설정 재작성0. 해당r3Camera/Active/visible volume이 있을 때만 실행 |

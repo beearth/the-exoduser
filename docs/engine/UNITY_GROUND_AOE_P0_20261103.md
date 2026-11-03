@@ -1,5 +1,37 @@
 # 11-03 장판 공중 부유 P0 — Mac 실게임 판정 대기
 
+## 20:20 Mac FAIL 1건 — 경사 접합부 재작업(최신)
+
+Mac `qa/mac-captures-20261103@39c3ae380`, `qa/unity-ground-aoe/ec043b2/02-slope-skills-x3.png`를 직접 열어 T15 흙 경사·뿌리 접합부의 검은 톱니/띠 누락을 확인했다. 이 후보는 **AOE-GATE FAIL**이다. Mac의 네 지형 실제3스킬·목교 T0~45 직선 경계0·중앙 섬광·GPU 오류0 PASS는 해당 ec043b26d 범위로 유지한다. 새 후보의 화면 해결은 미검증이다.
+
+착수 전 통합 `CLAUDE.md`를 원격에서 다시 읽고 docs 정본 `unity/main`의 v4.1/운영 규칙을 적용했다. `origin/unity/main 9446618af9cc3444dce3883aadaa122317a33557`을 정상 병합했다. 아래 G0의 노레위 접점/Diablo IV 명암·위험 읽힘 관례와 같은 기준으로, 지면 접점의 연속성을 회복하고 비수신 소품의 차폐를 유지한다. 새 이미지·맵·카메라는 만들지 않는다.
+
+| 조사/수정 항목 | 계약·근거·한계 |
+|---|---|
+| 원본/수신 깊이 불일치 | `A2RootSurface`의 Forward pass에는 `Offset -1,-1`, 수신 깊이 pass에는 Offset이 없었다. 경사에 따라 깊이 차가 커지면 같은 표면이 기존2cm 차폐 조건에 걸릴 수 있다. 원본의 DepthOnly UsePass는 별도이며, 모든 원본 깊이 pass가 bias를 쓴다고 주장하지 않는다 |
+| 수신 재질 | `_ReceiverDepthBias` 기본0. 원본 shader 이름이 `EXODUSER/A2RootSurface`인 receiver에만 캐시된 재질의 값-1을 사용해 `Offset [-1],[-1]`로 맞춘다. 등록과 매 프레임 재질 교체 추적에 모두 적용. 다른 지면·수면은0. 원본 재질/mesh 변경0, receiver 재질은 최대2개 재사용 |
+| 보존하는 배제 | sceneEye+.02-receiverEye clip, 위쪽 법선 성분.2, terrain..terrain+.9m 범위, 목교 상판 범위, bit30/31 모두 그대로. 허용치를 넓히거나 배우·높은 소품에 효과를 덮지 않는다. Core·45틱·셀·alpha·투영 크기·카메라 변경0 |
+| 원인 검증 범위 | 경사 깊이 차의 수치 회귀 및 소스/렌더상태 계약4건을 추가해 수정 전 실패를 확인하고 수정 후 검사한다. 이는 Metal 픽셀 판정이 아니다. Mac에서 같은 slope(35,-71), T15/3배 크롭의 누락과 소품 차폐를 다시 확인해야 한다 |
+| 무창 Mac 촬영 | 최신 통합 규칙에 맞춰 실제 스킬 fixture에 GPU `-batchmode` 경로를 추가. Null GPU 거부, batch에서는 배우/UI 숨김 필수. 창 해상도 변경과 WaitForEndOfFrame/ScreenCapture 대신 기존 GroundMapRender로 정확한 폭×1080 RenderTexture를 출력한다. 같은 UpdateViews/Remodel3DLate를 거친 실제 DispatchSlot/투영 경로이며 IMGUI/자연 플레이 검수가 아니다. receipt에 batchMode/captureMode 및 biasMatchedReceivers 기록 |
+
+ShaderLab Offset은 factor가 깊이 기울기에, units가 장치 깊이 해상도에 비례하며 음수는 카메라 쪽으로 보정한다([Unity 6000.6 공식 문서](https://docs.unity.com/en-us/engine/6000.6/manual/materials-and-shaders/shaders/reference/sl-reference/sl-commands/sl-offset)). 이 수정은 설치된 원본 셰이더와 수신 패스의 차이에 근거한 제한적 수정이며, GPU 결과를 선판정하지 않는다.
+
+### 최신 Mac 실행 인자 — 무창 GPU, 공용 실행 경로만
+
+Mac 공용 실행기에서 새 정식 ARM64 패키지의 Player에 아래 인자를 전달한다. `-nographics`, `-popupwindow`, 일반 창 자동 실행은 사용하지 않는다. 절대 sandbox/output은 Mac 담당의 고정 경로로 치환하고, 실행마다 captures-current를 비워 최신1세트만 남긴다.
+
+```text
+-batchmode --remodel3d --unity-ground-map-capture --unity-ground-skills
+--unity-ground-hide-actors --unity-mute -nosound
+-ground-width 1920 -ground-sites slope -ground-skill giantSlam -ground-sequence-site none
+--unity-qa-sandbox <Mac 절대경로>/sandbox-current
+-output <Mac 절대경로>/captures-current
+```
+
+먼저 경사 T15 1컷과3배 크롭을 기존 ec043b26d FAIL과 같은 크기로 비교한다. `graphicsApi=Metal`, batchMode=true, captureMode=GPU camera RenderTexture(no GUI), biasMatchedReceivers>0, 실제 runtimeAge15/셀/좌표, shader/RenderGraph/Exception0을 확인한다. 누락이 남거나 높은 소품 위에 새 투영이 생기면 FAIL이다. 통과 후 `-ground-sites all -ground-skill all -ground-sequence-site none`으로 네 지형×3스킬12컷을1920/3840에서 검수하며, 필요 시 sequence-site bridge로 기존45틱 종료를 확인한다. 자동 receipt.passed는 촬영완료이며 visualVerified=false다. 새 batch GPU 경로도 PC에서는 실행하지 않았으므로 Mac에서 검증해야 한다.
+
+PC는 자기 worktree 직접 수정·컴파일1회·정상 commit/push까지. Mac PASS 전 공통 unity/main 반영/배포0. 과거 아래 창 촬영 절차는 최신 무창 지시로 대체한다.
+
 ## 19:00 Mac FAIL 3건 재작업 — G0 / 설계
 
 Mac 원본 `qa/mac-captures-20261103@642a2affe`, `qa/unity-ground-aoe/e96b137/06-slam-cells-x3.png`와1920 T15 컷을 직접 열었다. 이전 e96b137은 지면/목교 투영·45틱 종료·Shader/RenderGraph0은 통과했지만 직선 경계와 네 지형별 실제 스킬·중앙 섬광 증거 부족으로 **AOE-GATE FAIL**이다. 이 판정이 아래 과거 PC 기록보다 최신이다. 착수 전 최신 `origin/unity/main cbdcbc2822` 정상 병합.
@@ -23,11 +55,10 @@ G0 레퍼런스: 직접 본 노레위 `G:/exoduser/tmp/design-review/20261028_aa
 
 ### Mac 실행 인자 — 새 정식 패키지, 고정 출력 폴더
 
-공통 인자(실제 `.app/Contents/MacOS/EXODUSER-Unity`, Mac 일반 창을 백그라운드로 실행; **Player -batchmode 금지**):
+이 절은 19:00 재작업 당시 촬영 이력이다. 최신 실행은 위20:20 무창 GPU 인자를 따른다.
 
 ```text
 --remodel3d --unity-ground-map-capture --unity-ground-skills --unity-mute -nosound
--screen-fullscreen 0 -popupwindow -screen-width 1920 -screen-height 1080
 -ground-width 1920 -ground-sites all -ground-skill all -ground-sequence-site bridge
 --unity-qa-sandbox <Mac 절대경로>/sandbox-current
 -output <Mac 절대경로>/captures-current
@@ -37,8 +68,8 @@ G0 레퍼런스: 직접 본 노레위 `G:/exoduser/tmp/design-review/20261028_aa
 |---|---|
 | 네 지형 실제3스킬·목교 슬램46연속 컷, 중앙 섬광 | `--unity-ground-hide-actors` |
 | 같은 목교 경계 A/B(원래 셀 알파, 딱1회) | 위 숨김 + `--unity-ground-edge-baseline -ground-sites bridge -ground-skill giantSlam` |
-| 제품 구도·적탄3종 겹침(숫자·배우 유지) | 숨김/edge-baseline을 빼고 `--unity-ground-projectiles -ground-sequence-site none` |
-| 32:9 | `-ground-width 3840 -screen-width 3840`, 높이1080 유지 |
+| 제품 구도·적탄3종 겹침(숫자·배우 유지) | 당시 요청 이력. 새 batch 경로는 GUI를 검증하지 않으며 자동 창 실행을 허용하지 않음 |
+| 32:9 | 최신 무창 경로는 `-ground-width 3840`, 높이1080 유지 |
 
 매 실행 전 captures-current를 비우고 필요한 최종 비교컷/영수증만 선별한다. baseline/수정 두 조건의 필요 컷만 비교용으로 유지하며 빌드는 build-current에 덮어쓴 뒤 검수 종료 시 삭제한다. `-ground-sites flat,slope,bridge,swamp` 또는단일id, `-ground-skill spikeTrap/holyDome/giantSlam/all`, 폭1920/2560/3840 지원. all 기본: 4곳×3스킬 age15의12컷 + 목교슬램 T0~45 중T15 중복제외45컷=57컷/해상도. 45틱에는슬램없음. `ground-skills-receipt.json`에 실제wave.T/zone.T·셀·alpha·flashEnabled·수신면높이·경사·투영상자/여유·숨김수·sandboxRoot 기록, `GROUND_SKILLS_SANDBOX_BOUND` 로그 출력. 자동passed는 촬영완료일뿐 visualVerified=false.
 

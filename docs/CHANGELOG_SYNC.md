@@ -57400,3 +57400,11 @@ Mac A2 DBuffer 수신 일반 배송: 동일 입력3,537/3,537 공식ARM64 일반
 | QA 가림분리 | --unity-ground-hide-actors는sandbox신규촬영경로에서만배우/접촉그림자/OnGUI숨김,finally복구. --unity-ground-edge-baseline은본체feather0, --unity-ground-projectiles는합성3탄실제Core이동. 정상제품화면불변 | Mac중앙섬광·정상배우+탄막컷을별도검수 |
 
 근거·G0 레퍼런스공통관례·Mac 전체인자: docs/engine/UNITY_GROUND_AOE_P0_20261103.md. 원격공통cbdcbc2822 선행병합. 이전 e96b137 Mac FAIL 상태를컴파일만으로PASS승격하지않는다.
+## 2026-11-03 20:20 PC — Mac 경사 대지치기 투영 누락 재작업
+
+| 항목 | 수정·계약 | 검증·한계 |
+|---|---|---|
+| 수신 raster 깊이 | A2RootSurface Forward Offset -1,-1과 수신패스 무보정 차이 확인. 해당원본 shader receiver에만 캐시재질 bias-1, 기본지면/물0. 등록/갱신 모두 적용 | 기존2cm 차폐·normalY.2·terrain+.9/목교범위·bit30/31·Core/45틱/원화 불변. Mac ec043b26d 경사 FAIL은 새 Metal 검수까지 유지 |
+| 무창 Mac QA | GPU batch RenderTexture 지원, Null GPU 거부·배우/UI 숨김 필수. 창 해상도/WaitForEndOfFrame 없이 기존실제 DispatchSlot/생산투영 촬영. batchMode/captureMode/biasMatchedReceivers 기록 | 정적4/4. PC는 공용bin 컴파일1회만. 새GPU 촬영/소품차폐/1920·3840은 Mac 검수 |
+
+공통9446618af 선행 정상병합. 최신 인자/근거는 docs/engine/UNITY_GROUND_AOE_P0_20261103.md. 이전창 촬영 인자는 최신무창규칙으로 대체. docs정본 unity/main.

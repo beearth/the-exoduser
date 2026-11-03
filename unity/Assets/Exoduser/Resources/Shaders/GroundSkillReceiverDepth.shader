@@ -1,6 +1,6 @@
 Shader "EXODUSER/GroundSkillReceiverDepth"
 {
-    Properties { _Bounded ("Registered support range", Float)=0 }
+    Properties { _Bounded ("Registered support range", Float)=0 _ReceiverDepthBias ("Source surface raster depth bias", Float)=0 }
     SubShader
     {
         Tags { "RenderPipeline"="UniversalPipeline" "Queue"="Geometry" }
@@ -8,6 +8,7 @@ Shader "EXODUSER/GroundSkillReceiverDepth"
         {
             Tags { "LightMode"="ExoduserGroundReceiver" }
             ZWrite On ZTest LEqual Cull Off ColorMask 0
+            Offset [_ReceiverDepthBias],[_ReceiverDepthBias]
             HLSLPROGRAM
             #pragma target 3.5
             #pragma vertex Vert

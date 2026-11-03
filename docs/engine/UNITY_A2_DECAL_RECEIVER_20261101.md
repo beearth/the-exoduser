@@ -70,4 +70,4 @@ Impact 담당의 실제 MCP e73821a4 진단은 동일 회복 영역·같은 프�
 
 ## 2026-11-03 실제 스킬 촬영 분기
 
-`--unity-ground-map-capture --unity-ground-skills`는 위 QA 사각 DBuffer projector를 만들지 않고 실제 DispatchSlot→NativeSkillView 수신깊이 장판을 촬영한다. 기존 단독 --unity-ground-map-capture의3개 시험 사각형 경로는 유지한다. 네 지형/폭/슬램 연속컷/QA 배우숨김/기본값과 Mac 실행 인자는 [P0 19:00 절](UNITY_GROUND_AOE_P0_20261103.md)에 명시했다. 두 경로의 GPU기술과 결과를 혼용하지 않는다.
+`--unity-ground-map-capture --unity-ground-skills`는 위 QA 사각 DBuffer projector를 만들지 않고 실제 DispatchSlot→NativeSkillView 수신깊이 장판을 촬영한다. 기존 단독 --unity-ground-map-capture의3개 시험 사각형 경로는 유지한다. 네 지형/폭/슬램 연속컷/QA 배우숨김/기본값과 Mac 실행 인자는 [P0 최신20:20 절](UNITY_GROUND_AOE_P0_20261103.md)에 명시했다. 두 경로의 GPU기술과 결과를 혼용하지 않는다.

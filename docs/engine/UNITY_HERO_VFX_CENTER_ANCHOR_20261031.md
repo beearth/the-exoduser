@@ -66,7 +66,7 @@ UI 최종 Desktop 완료 전 Unity/Player/빌드/선예약0. 완료 후 최신�
 
 ## 2026-11-02 Unity 설치형 지면 배치 후보
 
-사용자 요청으로 장판·지뢰·설치형 전체의 actor billboard/FootLift 오적용과 VfxWorld 지면 높이 미연결을 수정 중이다. 현재 후보는 실제 등록 바닥·목교·낮은 뿌리의 receiver depth와 scene depth가.02u 안에서 일치하는 픽셀에 원화/링을 투영한다. CPU 적응면은 실제제품 Late>=96초 지연으로 폐기하고 표시 update의Tessellate/대량GroundY 조회를 제거했다. 원화·합성수식·피해/반경/시간·공중/중심형·flat보스방은 유지한다. 원SkillAdditive/Ki shader는1403 byte이며 새전용shader만사용한다. 324 C# 정적오류0/경고477. Mac 첫 흙 실제 투영/독립깊이와1920원본을 확인했다. 기존mode2 weight차는 강제비등방성 footprint를 무시한bilinear 참조로 분리했고, 같은허용2/255의GPU gradient/RGBA 대조·전체 설치형/시각·통합/설치는 진행 중이다. 정확한 범위·원래실패·측정은 [설치형 지면 배치](UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)를 따른다.
+사용자 요청으로 장판·지뢰·설치형 전체의 actor billboard/FootLift 오적용과 VfxWorld 지면 높이 미연결을 수정 중이다. 현재 후보는 실제 등록 바닥·목교·낮은 뿌리의 receiver depth로 좌표를 복원하고 sceneEye+.02-receiverEye>=0인 픽셀에 원화/링을 투영한다. 11-03 20:20 수정은 A2RootSurface receiver raster Offset만 원본 Forward와 같은-1,-1로 맞춘다(그 외0). 전역2cm 차폐/법선.2/수신범위는 유지하며 경사 Metal 재검수 대기다. CPU 적응면은 실제제품 Late>=96초 지연으로 폐기하고 표시 update의Tessellate/대량GroundY 조회를 제거했다. 원화·합성수식·피해/반경/시간·공중/중심형·flat보스방은 유지한다. 원SkillAdditive/Ki shader는1403 byte이며 새전용shader만사용한다. 324 C# 정적오류0/경고477. Mac 첫 흙 실제 투영/독립깊이와1920원본을 확인했다. 기존mode2 weight차는 강제비등방성 footprint를 무시한bilinear 참조로 분리했고, 같은허용2/255의GPU gradient/RGBA 대조·전체 설치형/시각·통합/설치는 진행 중이다. 정확한 범위·원래실패·측정은 [설치형 지면 배치](UNITY_GROUND_EFFECT_PLACEMENT_20261102.md)를 따른다.
 
 후속 실제161행은표시메타데이터/접지·UV실패0이나색상모델60행과ring정리1행FAIL을보존한다. 이미파괴된parent의orb.go에Reset이SetActive를호출한예외를확인해UnityGO생존검사guard를추가했다. 다음앱에서표적정리회귀·제품/clone/색상모델분리를검증하며공통설치/전체색상PASS는아직아니다.
 

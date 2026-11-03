@@ -12,7 +12,7 @@ namespace Exoduser.UnityPort
         [Serializable] sealed class GroundSkillShot
         {
             public string site,skill,file,receiver;
-            public int requestedAge,runtimeAge,cell=-1;
+            public int requestedAge,runtimeAge,cell=-1,biasMatchedReceivers;
             public bool active,flashEnabled;
             public float alpha,terrainY,waterY=-.45f,slope,edgeFeather,projectorMargin;
             public Vector3 anchor,waterNeighbour,projectorSize;
@@ -20,9 +20,9 @@ namespace Exoduser.UnityPort
         [Serializable] sealed class GroundSkillsReceipt
         {
             public string scope="Actual A2 field and production NativeSkillView, controlled real DispatchSlot casts; not natural combat or visual PASS";
-            public string graphicsApi,sandbox;
+            public string graphicsApi,sandbox,captureMode;
             public int width,height,hiddenRenderers,casts;
-            public bool passed,actorsHidden,uiHidden,edgeBaseline,projectiles,visualVerified;
+            public bool passed,actorsHidden,uiHidden,edgeBaseline,projectiles,visualVerified,batchMode;
             public List<GroundSkillShot> shots=new List<GroundSkillShot>();
         }
         struct GroundSkillSite
@@ -84,7 +84,8 @@ namespace Exoduser.UnityPort
         {
             var shot=new GroundSkillShot{site=site.id,receiver=site.receiver,skill=skill,requestedAge=age,runtimeAge=-1,
                 anchor=NativeRemodel3D.Point(Simulation.Player.X,Simulation.Player.Y),terrainY=a2Field.TerrainHeight(site.point.x,site.point.y),
-                slope=site.slope,waterNeighbour=new Vector3(site.waterNeighbour.x,-.45f,site.waterNeighbour.y),edgeFeather=baseline?0:.04f};
+                slope=site.slope,waterNeighbour=new Vector3(site.waterNeighbour.x,-.45f,site.waterNeighbour.y),edgeFeather=baseline?0:.04f,
+                biasMatchedReceivers=NativeGroundSkillProjection.BiasedReceiverCount};
             if(skill=="giantSlam")
             {
                 foreach(var wave in Simulation.SlamWaves){shot.runtimeAge=wave.T;shot.active=true;}
@@ -109,16 +110,19 @@ namespace Exoduser.UnityPort
         IEnumerator GroundSkillMapCapture()
         {
             string output=Argument("-output");
-            if(Application.isBatchMode||!NativeQaSandbox.Active||!NativeRemodel3D.Requested||!NativeHd2D.Enabled||string.IsNullOrEmpty(output)||!Path.IsPathRooted(output))
-                throw new InvalidOperationException("Ground skills capture requires a visible HD2D/remodel Player, absolute output and QA sandbox");
+            bool batch=Application.isBatchMode;
+            if(SystemInfo.graphicsDeviceType==UnityEngine.Rendering.GraphicsDeviceType.Null||!NativeQaSandbox.Active||!NativeRemodel3D.Requested||!NativeHd2D.Enabled||string.IsNullOrEmpty(output)||!Path.IsPathRooted(output))
+                throw new InvalidOperationException("Ground skills capture requires a GPU HD2D/remodel Player, absolute output and QA sandbox");
             if(Directory.Exists(output)&&Directory.GetFileSystemEntries(output).Length!=0)throw new InvalidOperationException("Capture output must be empty; use fixed captures-current after deleting the previous set");
             Directory.CreateDirectory(output);
             int width;if(!int.TryParse(Argument("-ground-width"),out width))width=1920;
             if(width!=1920&&width!=2560&&width!=3840)throw new ArgumentException("ground-width must be1920,2560,3840");
             string siteFilter=GroundCaptureOption("-ground-sites","all"),skillFilter=GroundCaptureOption("-ground-skill","all"),sequenceSite=GroundCaptureOption("-ground-sequence-site","bridge");
             bool hide=GroundCaptureFlag("--unity-ground-hide-actors"),baseline=GroundCaptureFlag("--unity-ground-edge-baseline");
+            if(batch&&!hide)throw new ArgumentException("Batch camera capture requires --unity-ground-hide-actors; it cannot prove IMGUI rendering");
             var receipt=new GroundSkillsReceipt{width=width,height=1080,graphicsApi=SystemInfo.graphicsDeviceType.ToString(),
-                sandbox=NativeQaSandbox.Root,actorsHidden=hide,uiHidden=hide,edgeBaseline=baseline,projectiles=GroundCaptureFlag("--unity-ground-projectiles")};
+                sandbox=NativeQaSandbox.Root,actorsHidden=hide,uiHidden=hide,edgeBaseline=baseline,projectiles=GroundCaptureFlag("--unity-ground-projectiles"),
+                batchMode=batch,captureMode=batch?"GPU camera RenderTexture (no GUI)":"ScreenCapture"};
             var hidden=new Dictionary<Renderer,bool>();bool previousUi=groundReceiverQaActive;
             bool previousScripted=practiceScripted;
             float previousDelta=Time.captureDeltaTime;string previousSlot=Simulation.Skills.Slots[0];
@@ -126,15 +130,15 @@ namespace Exoduser.UnityPort
             {
                 groundReceiverQaActive=hide;AudioListener.volume=0;AudioListener.pause=true;Application.runInBackground=true;Application.targetFrameRate=60;Time.captureDeltaTime=1f/60;
                 smokeActive=true;dropSmoke=true;pauseSmoke=true;Running=false;menu=false;
-                Screen.SetResolution(width,1080,FullScreenMode.Windowed);
+                if(!batch)Screen.SetResolution(width,1080,FullScreenMode.Windowed);
                 lobby.Flow.ShowLobby();lobby.Flow.SelectPreview();if(!lobby.Flow.EnterTest())throw new InvalidOperationException("A2 field entry failed");
                 lobby.CloseStartupCaptureMedia();lobby.enabled=false;EndFirstPractice(true);frontendEntryInputFence=false;gameFocused=true;
                 practiceScripted=true;Running=false; // reuse the existing manual-tick fixture fence
                 Debug.Log("GROUND_SKILLS_SANDBOX_BOUND "+NativeQaSandbox.Root);
                 var sim=Simulation;var p=sim.Player;sim.Config.EnemyAiEnabled=false;sim.SpawnHoles=null;sim.CrossbowAuto=false;sim.Stage.Enabled=false;
                 float deadline=Time.realtimeSinceStartup+50;
-                while((!Remodel3DReady||a2Field==null||r3Cam==null||!NativeRemodel3D.Active||Screen.width!=width||Screen.height!=1080)&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
-                if(!Remodel3DReady||a2Field==null||r3Cam==null||!NativeRemodel3D.Active||Screen.width!=width||Screen.height!=1080)throw new InvalidOperationException("Actual A2 field/resolution unavailable");
+                while((!Remodel3DReady||a2Field==null||r3Cam==null||!NativeRemodel3D.Active||(!batch&&(Screen.width!=width||Screen.height!=1080)))&&Time.realtimeSinceStartup<deadline){UpdateViews();yield return null;}
+                if(!Remodel3DReady||a2Field==null||r3Cam==null||!NativeRemodel3D.Active||(!batch&&(Screen.width!=width||Screen.height!=1080)))throw new InvalidOperationException("Actual A2 field/resolution unavailable");
                 var sites=GroundCaptureSites();int selectedSites=0,selectedSkills=0;
                 foreach(var site in sites)
                 {
@@ -163,15 +167,26 @@ namespace Exoduser.UnityPort
                                 if(sr.name=="wave"&&sr.transform.parent!=null&&sr.transform.parent.name.StartsWith("slam",StringComparison.Ordinal))
                                 {var block=new MaterialPropertyBlock();sr.GetPropertyBlock(block);block.SetFloat("_GroundEdgeFeather",0);sr.SetPropertyBlock(block);NativeGroundSkillSurface.Project(sr);}
                             if(hide)GroundCaptureHideActors(hidden,heroView);
-                            yield return null;yield return new WaitForEndOfFrame();
+                            yield return null;if(!batch)yield return new WaitForEndOfFrame();
                             if(sequence||age==15)
                             {
+                                // Coroutines resume before LateUpdate. Refresh the same
+                                // production views/camera before an explicit GPU render.
+                                if(batch){UpdateViews();Remodel3DLate();if(hide)GroundCaptureHideActors(hidden,heroView);}
                                 if(!NativeGroundSkillProjection.Available)throw new InvalidOperationException(NativeGroundSkillProjection.Error);
                                 var shot=GroundCaptureShot(site,skill,age,baseline);
                                 if(age<45&&(!shot.active||shot.runtimeAge!=age))throw new InvalidOperationException("Capture age drift: "+skill+" expected"+age+" actual"+shot.runtimeAge);
                                 if(skill=="giantSlam"&&age==45&&shot.active)throw new InvalidOperationException("Slam survived its Core lifetime");
                                 shot.file=site.id+"-"+skill+"-t"+age.ToString("00")+"-"+width+".png";
-                                var screen=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(Path.Combine(output,shot.file),screen.EncodeToPNG());Destroy(screen);receipt.shots.Add(shot);
+                                if(batch)
+                                {
+                                    var target=new RenderTexture(width,1080,24,RenderTextureFormat.ARGB32);target.Create();
+                                    var previousTarget=r3Cam.targetTexture;float previousAspect=r3Cam.aspect;Texture2D image=null;
+                                    try { r3Cam.aspect=width/1080f;image=GroundMapRender(r3Cam,target,Path.Combine(output,shot.file)); }
+                                    finally { r3Cam.targetTexture=previousTarget;r3Cam.aspect=previousAspect;target.Release();Destroy(target);if(image!=null)Destroy(image); }
+                                }
+                                else { var screen=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(Path.Combine(output,shot.file),screen.EncodeToPNG());Destroy(screen); }
+                                receipt.shots.Add(shot);
                             }
                             if(age<end){sim.Tick(0,0,p.X+300,p.Y,false,false);foreach(var enemy in sim.Enemies)enemy.Stunned=180;}
                         }

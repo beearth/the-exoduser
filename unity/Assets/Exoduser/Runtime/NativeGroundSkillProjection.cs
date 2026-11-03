@@ -27,7 +27,7 @@ namespace Exoduser.UnityPort
         static readonly Dictionary<int,Material> blends=new Dictionary<int,Material>();
         static readonly HashSet<ScriptableRenderer> installed=new HashSet<ScriptableRenderer>();
         static readonly PropertyInfo featureList=typeof(ScriptableRenderer).GetProperty("rendererFeatures",BindingFlags.Instance|BindingFlags.NonPublic);
-        static Material depthMaterial, probeMaterial;
+        static Material depthMaterial, rootDepthMaterial, probeMaterial;
         static readonly MaterialPropertyBlock receiverBlock=new MaterialPropertyBlock();
         static Mesh cube;
         static Camera camera;
@@ -39,6 +39,7 @@ namespace Exoduser.UnityPort
         public static string Error { get; private set; }
         public static bool Available { get; private set; }
         public static int ActiveWaterCount { get; private set; }
+        public static int BiasedReceiverCount { get; private set; }
         public static int ActiveVolumeCount
         {
             get { int count=0;foreach(var v in volumes)if(v!=null&&v.enabled&&v.gameObject.activeInHierarchy)count++;return count; }
@@ -70,16 +71,32 @@ namespace Exoduser.UnityPort
                 return cube;
             }
         }
+        static Material ReceiverDepthMaterial(MeshRenderer owner)
+        {
+            var material=owner!=null?owner.sharedMaterial:null;
+            // Match the visible Forward pass raster bias, rather than widening the
+            // scene-depth occlusion guard for every receiver/foreground object.
+            if(material!=null&&material.shader!=null&&material.shader.name=="EXODUSER/A2RootSurface")
+            {
+                if(rootDepthMaterial==null)
+                {
+                    rootDepthMaterial=new Material(Resources.Load<Shader>("Shaders/GroundSkillReceiverDepth")) { name="Ground receiver matched A2 root bias",hideFlags=HideFlags.DontSave };
+                    rootDepthMaterial.SetFloat("_ReceiverDepthBias",-1);
+                }
+                return rootDepthMaterial;
+            }
+            if(depthMaterial==null)depthMaterial=new Material(Resources.Load<Shader>("Shaders/GroundSkillReceiverDepth")) { hideFlags=HideFlags.DontSave };
+            return depthMaterial;
+        }
         public static void RegisterReceiver(MeshFilter source,float[] world=null,int[] indices=null,Func<float,float,float> terrain=null,bool deck=false,float ceiling=0)
         {
             if(source==null||source.sharedMesh==null||IsProxy(source))return;
             Receiver existing;if(receivers.TryGetValue(source,out existing))return;
             var owner=source.GetComponent<MeshRenderer>();if(owner==null)return;
-            if(depthMaterial==null)depthMaterial=new Material(Resources.Load<Shader>("Shaders/GroundSkillReceiverDepth")) { hideFlags=HideFlags.DontSave };
             var go=new GameObject("Ground effect receiver depth") { hideFlags=HideFlags.DontSave };go.transform.SetParent(source.transform,false);go.layer=source.gameObject.layer;
             var filter=go.AddComponent<MeshFilter>();var draw=go.AddComponent<MeshRenderer>();
             draw.renderingLayerMask=ProjectionRenderingLayer;
-            draw.sharedMaterial=depthMaterial;draw.shadowCastingMode=ShadowCastingMode.Off;draw.receiveShadows=false;draw.allowOcclusionWhenDynamic=false;
+            draw.sharedMaterial=ReceiverDepthMaterial(owner);draw.shadowCastingMode=ShadowCastingMode.Off;draw.receiveShadows=false;draw.allowOcclusionWhenDynamic=false;
             var record=new Receiver { Source=source,Filter=filter,Owner=owner,Draw=draw,Go=go,SourceMesh=source.sharedMesh,Bounded=terrain!=null||deck };
             if(record.Bounded)
             {
@@ -131,14 +148,15 @@ namespace Exoduser.UnityPort
                 Available=true;Error="";
             }
             catch(Exception exception) { Available=false;if(Error!=exception.Message)Debug.LogError("[Ground projection] "+exception.Message);Error=exception.Message; }
-            ActiveWaterCount=0;var dead=new List<MeshFilter>();
+            ActiveWaterCount=0;BiasedReceiverCount=0;var dead=new List<MeshFilter>();
             foreach(var item in receivers)
             {
                 var record=item.Value;
                 if(record.Source==null||record.Owner==null) { dead.Add(item.Key);continue; }
                 record.Draw.enabled=record.Owner.enabled&&!record.Owner.forceRenderingOff&&record.Owner.gameObject.activeInHierarchy;
                 if(record.Water&&record.Draw.enabled)ActiveWaterCount++;
-                record.Draw.sharedMaterial=depthMaterial;
+                record.Draw.sharedMaterial=ReceiverDepthMaterial(record.Owner);
+                if(record.Draw.enabled&&rootDepthMaterial!=null&&record.Draw.sharedMaterial==rootDepthMaterial)BiasedReceiverCount++;
                 record.Draw.GetPropertyBlock(receiverBlock);receiverBlock.SetFloat("_Bounded",record.Bounded?1:0);record.Draw.SetPropertyBlock(receiverBlock);
                 if(!record.Bounded&&record.Filter.sharedMesh!=record.Source.sharedMesh)record.Filter.sharedMesh=record.Source.sharedMesh;
             }
