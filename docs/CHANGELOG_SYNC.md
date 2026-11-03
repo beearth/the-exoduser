@@ -1,3 +1,7 @@
+## 2026-11-04 01:20 드루이드 v7 rig-pixel 어댑터 소스 후보
+
+최신origin/unity/main5c9dd3673 병합(0c22494993)·CHANGELOG 양쪽 기록 보존. 작업 중 도착한v7을 Generic FBX로 교체하고34본·보조10본·Fist_L·왼손소켓·가슴43면·Idle/Walk 보존. --boss-render=rigpixel만 공통 Point RT/4단 셀/팔레트·Core tick Animator 사용, 미제공7기술/Run/피격·사망은 Idle@0 대기·누락 영수증. 기본 보스/8b/카메라34°16.5/Core 수치 불변. 정책46/0·Roslyn5어셈블리 오류0·FBX 수치 통과. PC Unity/Player/렌더0, 실제 Unity Avatar·셰이더·RT·화면·FPS는 Mac 대기. [상태/클립 표](engine/UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md#7-11-04-0120-cto--v7-unity-어댑터-소스-후보).
+
 ## 2026-11-04 00:50 RB1-8b 조명·재질 소스 후보
 
 최신6d99d0c46 병합 후 기존 필드 HellLighting/A2Field 달빛·후처리를 공유하고 A2R 원화2종/노멀/마스크·흙/뿌리 혼합, 세워진 횃불2개/점광, Core 외곽 독액·지면 투영을 연결했다. --unity-boss-arena-material-review는 같은 Player 필드/아레나34° PNG/JSON·조명 ID·나란히1x 페이지를 남긴다. arena73/0·Roslyn5어셈블리 오류0, PC실행0·자기Core변경0·Mac 시각/성능 미검증. Meshy 저LOD/아레나 실제반사/P3수위상승/8d는 후속. [정본 §14.6](engine/UNITY_BOSS_RM1_DARK_DRUID_20261027.md#146-rb1-8b-조명재질-소스-후보-11-04-0050-cto).

@@ -1,6 +1,6 @@
 # RB1-7 / RB1-8 구현 기록 — 2026-11-03
 
-최신 병합: origin/unity/main 6d99d0c46 (merge 3d9b88d9ce). 작업본 G:/exoduser-wt/codex-boss-arena, 브랜치 codex/unity-boss-arena-20261103. 20:25/21:00/21:35/21:45 및11-04 00:50 CTO 결정을 적용한다. PC는 CPU 하니스·Roslyn 컴파일, Player 빌드·화면·성능 판정은 Mac 담당이다.
+최신 병합: origin/unity/main 5c9dd3673861b4b5086884dac664068b4d87f370 (merge 0c22494993). 작업본 G:/exoduser-wt/codex-boss-arena, 브랜치 codex/unity-boss-arena-20261103. 20:25/21:00/21:35/21:45 및11-04 00:50/01:20 CTO 결정을 적용한다. PC는 CPU 하니스·Roslyn 컴파일, Player 빌드·화면·성능 판정은 Mac 담당이다.
 
 ## RB1-7 현재 상태
 
@@ -70,3 +70,50 @@ camera-frames.jsonl에는 실제 position/quaternion/Euler/FOV/marker 거리, �
 리뷰용 직행 인자는 CombatSaveAllowed=false라 fullrun.json의 clearSaveExists=false 및 stage-cleared-transition-blocked가 나올 수 있다. 이는 기존 fullrun 저장 기대값과 리뷰 인자의 차이다. 별도 arena-review/review.json, 실제 입장→사망/침강→출구→로비 증거 및 격리 경로를 함께 판정한다.
 
 8b 비교: 각 capture-<해상도>/arena-review/material-comparison.html을 열어 같은 Player의 실제 필드/아레나를 Fit·Native1x로 비교한다. PNG·JSON은 material-field-reference와 material-arena-reference다. 조명은 moonEntity/profileEntity가 같은지, 실제 exposure/contrast/fog·달빛 값이 유지되는지 확인하고, surface.torches의2점광·shader·channelCells를 대조한다. 프로필 ID는 다른 Player 실행끼리 비교하지 않는다. 기본 fullrun/review의7기술 검수는 별도이며, 7기술 누락으로 FAIL이어도8b 두 비교 이미지의 존재/시각 판정은 따로 기록한다. 새 material 인자에서도 hero/HP/보스 기술 강제 변경은 없다.
+
+
+## 11-04 01:20 드루이드 rig-pixel Mac 인계
+
+Mac의 기존 무창 GPU 실행 경로에 아래 Player 인자를 전달한다. 먼저 같은 SHA의 Mac Unity Editor에서 Generic 임포트 검사를 실행한다. 실제 GPU 캡처이므로 -nographics를 쓰지 않는다. 동시 Player 없이 아래 실행을 하나씩 한다. 사용자 세이브 대신 별도 QA sandbox를 쓴다. 출력 폴더는 해상도/종류별 고정 폴더로, 재실행 때 recorder 자신의 이전 파일만 정리한다. 정상 게임 키보드·마우스 입력 수집이며 강제 직행은 기존 --unity-boss-direct의 범위다.
+
+Mac Editor 임포트 검사(PC 실행 금지):
+
+```text
+"<Mac Unity Editor 실행경로>" -batchmode -quit -projectPath "<Mac 작업본>/unity" -executeMethod Exoduser.CharacterLab.DruidRigPixelVerification.Verify -output "<QA 루트>/import" -logFile "<QA 루트>/import/Editor.log"
+```
+
+import/druid-rigpixel-import.json의 passed=true·Generic·avatarValid=true·humanoid=false·socket=true·Idle/Walk 곡선·Fist_L/보조본10개를 확인한 뒤 같은 후보 Player를 만든다. 이 검사는 게임 화면 PASS가 아니다.
+
+1920×1080 촬영:
+
+```text
+"<Mac Player 실행경로>" --remodel3d --unity-druid-remodel --hero-render=rigpixel --boss-render=rigpixel --unity-boss-direct 0 --unity-fullrun-qa --unity-boss-arena-review --unity-boss-arena-material-review --unity-mute -nosound --unity-qa-sandbox "<QA 루트>/profile-1920" -screen-fullscreen 0 -screen-width 1920 -screen-height 1080 -qa-width 1920 -qa-max-ticks 36000 -qa-retries 3 -output "<QA 루트>/capture-1920" -logFile "<QA 루트>/capture-1920/Player.log"
+```
+
+3840×1080 촬영:
+
+```text
+"<Mac Player 실행경로>" --remodel3d --unity-druid-remodel --hero-render=rigpixel --boss-render=rigpixel --unity-boss-direct 0 --unity-fullrun-qa --unity-boss-arena-review --unity-boss-arena-material-review --unity-mute -nosound --unity-qa-sandbox "<QA 루트>/profile-3840" -screen-fullscreen 0 -screen-width 3840 -screen-height 1080 -qa-width 3840 -qa-max-ticks 36000 -qa-retries 3 -output "<QA 루트>/capture-3840" -logFile "<QA 루트>/capture-3840/Player.log"
+```
+
+성능 계측(촬영/격리 GPU 측정/encode 없음):
+
+```text
+"<Mac Player 실행경로>" --remodel3d --unity-druid-remodel --hero-render=rigpixel --boss-render=rigpixel --unity-boss-direct 0 --unity-fullrun-qa --unity-boss-arena-review --unity-boss-arena-material-review --unity-boss-arena-metrics-only --unity-mute -nosound --unity-qa-sandbox "<QA 루트>/profile-perf-1920" -screen-fullscreen 0 -screen-width 1920 -screen-height 1080 -qa-width 1920 -qa-max-ticks 36000 -qa-retries 3 -output "<QA 루트>/metrics-1920" -logFile "<QA 루트>/metrics-1920/Player.log"
+"<Mac Player 실행경로>" --remodel3d --unity-druid-remodel --hero-render=rigpixel --boss-render=rigpixel --unity-boss-direct 0 --unity-fullrun-qa --unity-boss-arena-review --unity-boss-arena-material-review --unity-boss-arena-metrics-only --unity-mute -nosound --unity-qa-sandbox "<QA 루트>/profile-perf-3840" -screen-fullscreen 0 -screen-width 3840 -screen-height 1080 -qa-width 3840 -qa-max-ticks 36000 -qa-retries 3 -output "<QA 루트>/metrics-3840" -logFile "<QA 루트>/metrics-3840/Player.log"
+```
+
+각 출력/arena-review/review.json의 missing·missingScreenshots가 빈 배열인지 먼저 확인한다(metrics-only는 PNG 미요청). 7/7 라벨은 시각 판정이 아니다. moves.jsonl의 actual-activation과 마지막 예고 경계, same-frame PNG/JSON을 대조한다. warning만 포착한 기술은 수집 완료로 세지 않는다. 기본 7기술이 자연 AI에서 나오지 않거나 사망하면 명시적 FAIL이므로 Mac에서 새 증거 없이 PASS로 올리지 않는다.
+
+camera-frames.jsonl에는 실제 position/quaternion/Euler/FOV/marker 거리, 해상도, 영웅 표시 경로와 투영 bounds, 장면 상태·frame/tick·가림수·meshBuilds가 있다. 촬영 JSON의 heroGpuSilhouetteHeightPx/HeightFraction은 실제3D 모델 격리 렌더 계측(무기/망토 포함)이며, 투영 bounds와 별개다. 7기술 active-hero-isolated.png와 본 화면을 나란히 보고 몸만의 높이·가림을 판정한다. source PNG 알파 높이는 HD2D/fallback 전용이다.
+
+진입 load/visible·퇴장·침강 start/end의0.6초 동안 매 렌더 프레임을 남긴다. PNG encode/격리GPU readback은 성능을 오염시키므로 촬영 실행의 장프레임으로175ms 개선을 단정하지 않는다. metrics-only 단독 실행의 long-frames.jsonl/Player.log에서 prepare phase·meshBuilds1·prepare/sync/mode/shader CPU 시간을 확인한다. GPU 드라이버 stall·전체 shader variants·동시 Player 오염의 최종 원인은 Mac 계측 전 미확정이다.
+
+리뷰용 직행 인자는 CombatSaveAllowed=false라 fullrun.json의 clearSaveExists=false 및 stage-cleared-transition-blocked가 나올 수 있다. 이는 기존 fullrun 저장 기대값과 리뷰 인자의 차이다. 별도 arena-review/review.json, 실제 입장→사망/침강→출구→로비 증거 및 격리 경로를 함께 판정한다.
+
+8b 비교: 각 capture-<해상도>/arena-review/material-comparison.html을 열어 같은 Player의 실제 필드/아레나를 Fit·Native1x로 비교한다. PNG·JSON은 material-field-reference와 material-arena-reference다. 조명은 moonEntity/profileEntity가 같은지, 실제 exposure/contrast/fog·달빛 값이 유지되는지 확인하고, surface.torches의2점광·shader·channelCells를 대조한다. 프로필 ID는 다른 Player 실행끼리 비교하지 않는다. 기본 fullrun/review의7기술 검수는 별도이며, 7기술 누락으로 FAIL이어도8b 두 비교 이미지의 존재/시각 판정은 따로 기록한다. 새 material 인자에서도 hero/HP/보스 기술 강제 변경은 없다.
+
+
+rigpixel 확인: camera-frames.jsonl 및 same-frame JSON의 bossRig.ready=true, failed=false, sourceVersion=v7, humanoid=false, avatarValid=true, rtSize(32배수64..1024), texelScale=1을 확인한다. idle 정지는 Idle, 이동은 Walk, 기술은 missingClip=true/Idle@0이다. 각 기술의 실제 판정·예고는 기존 moves.jsonl/PNG로 별도 확인한다. 기존 bossHeroRatio=-1은 rig에서 구형 스프라이트 지표를 무효화한 값이다. 새 projectedBoundsHeightPx와 rawAlphaHeightPx는 뿌리팔·지팡이를 포함하므로 몸통/뿔 기준2.6~3.0은 실제 화면1x·3x에서 확인한다. 최신 druid-rigpixel-rt.png는 합성/가림 전 raw RT1장이며 최종화면 PASS 근거가 아니다.
+
+Idle·Walk가 실제로 보이는 1920/3840 컷,1x·3x 크롭·10초 무음 영상, 발/지팡이 접지·뿔 상단 여백8%·발광≤0.5%·낱점0·먼 적·같은 카메라16.5/34°·60fps를 판정한다. 자연 입력에서 필요한 상태가 수집되지 않으면 누락으로 보고하며 강제로 기술/HP/위치를 바꾸지 않는다. 보조 물리·7기술·피격/사망 클립은 이번 제공 자산에 없다.

@@ -447,6 +447,7 @@ namespace Exoduser.UnityPort
         {
             if(BossArenaReviewRequested){yield return new WaitForSecondsRealtime(.65f);yield return new WaitForEndOfFrame();}
             BossArenaReviewEnd();
+            WriteDruidRigReceipt(output);
             WriteCombatStats(output);
             File.WriteAllText(Path.Combine(output,"parry-bot.json"),"{\"opportunities\":"+g2ParryBot.opportunities+",\"attempts\":"+g2ParryBot.attempts+",\"targetInputRate\":0.7}");
             receipt.seconds=Time.realtimeSinceStartup-started;

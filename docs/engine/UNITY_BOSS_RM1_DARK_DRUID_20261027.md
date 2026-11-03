@@ -612,3 +612,8 @@ A2R 재사용 출처: origin/codex/unity-map-a2-20261103 76bf4ebad6fb63a196d5ec9
 | 검증 | 횃불 API 부재 RED1 뒤 arena73검사/0실패(기존44+배치29). 첫 Roslyn은 새 계측 GetInstanceID 2곳이 현재 Unity의 obsolete-error라 실패. 설치 CoreModule 문서 확인 후 GetEntityId 문자열로 수정, 재검사 Player Core126/Runtime273, Editor Core126/Runtime273/Editor59, 총5어셈블리 오류0 | PC Unity/Player/빌드/캡처0,Library 복사0,유료0,USER_SAVE 접근0. 셰이더·화면·실성능은 Mac 미검증. 기존8a/8c 전체 PASS로 올리지 않음 |
 
 G1 재료 배치: 중앙 보행 면·Core 기둥/출구는 그대로, 좌우 중간거리 횃불2개, 한 타일 바깥 독액, 뒤/좌/우 고목3~6m·남쪽 낮은 뿌리의 기존 질량을 유지한다. 카메라34°/거리16.5/FOV46.9453/전방1.45·영웅 배율·보스 상대 크기 변경0. 화면용 번역 문자열 추가0(진단 파일만 추가). Mac 새 인자는 [구현 기록](UNITY_BOSS_ARENA_RB1_7_8_20261103.md)의 네 실행이다.
+
+
+### 14.7 11-04 01:20 드루이드 rig-pixel 소스 후보
+
+9cba8b5e1의8b는 Mac 대기 그대로 둔다. 최신5c9dd3673 병합 뒤 --boss-render=rigpixel opt-in을 추가했다. 작업 중 도착한 v7을 Generic FBX로 포맷 변환,34본·보조10본·Fist_L·LeftHand 소켓·가슴43면 발광·Idle/Walk를 보존한다. NativeRigPixelPolicy/Composite와 같은4단 셀·Point RT·실제 장면 조명을 사용한다. 카메라34°/16.5와 영웅 실제 모델 높이×2.8 기준 유지, Core 변경0. 미제공7기술/Run/피격·사망은 Idle@0 고정이며 누락 상태를 영수증에 남긴다. 상세 상태표·출처·수치/컴파일 범위는 [정본 준비 §7](UNITY_BOSS_RIGPIXEL_DRUID_PREP_20261104.md#7-11-04-0120-cto--v7-unity-어댑터-소스-후보), [Mac 전체 인수](UNITY_BOSS_ARENA_RB1_7_8_20261103.md#11-04-0120-드루이드-rig-pixel-mac-인계). CPU46/0·Roslyn5어셈블리 오류0, Blender 수치 통과는 Unity 임포트·실RT·게임화면 판정이 아니다. Mac Generic Avatar/Metal shader/1x·3x·10초/60fps 미검증.

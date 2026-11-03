@@ -2,7 +2,7 @@
 
 | 작업ID | 내용 | 담당·환경 | 브랜치 | 소유 파일 | 상태 |
 |---|---|---|---|---|---|
-| RB1-7/8 | 기술7개 데이터·3D 보스방·8b 조명/재질 | PC Codex, 지정 브리프 수행 | codex/unity-boss-arena-20261103 | 자기 NativeArena3DView/Plan·BossArenaReview와8b자원·Tools/boss-arena-tests·관련 docs | 11-04 00:50: 최신6d99d0c46 병합. 필드 조명/후처리 공유·A2R 원화2종·횃불2점광·독액 띠·34도 나란히 촬영 소스 연결, arena73/0·Roslyn5어셈블리 오류0. PC Player0. 기존8a/8c 및8b Mac 화면/성능 판정 대기. [기록](../UNITY_BOSS_ARENA_RB1_7_8_20261103.md) |
+| RB1-7/8 | 기술7개 데이터·3D 보스방·8b·드루이드rig-pixel | PC Codex, 지정 브리프 수행 | codex/unity-boss-arena-20261103 | 자기 NativeArena3DView/Plan·BossArenaReview·NativeDruidRig*·NativeGame.DruidRig/BossView·Druid 자원/셰이더·Editor DruidRigPixelVerification·Tools/boss-arena-tests/druid-rigpixel*·관련 docs | 11-04 01:20: 최신5c9dd3673 병합. v7 Generic34본/Idle·Walk·Fist_L opt-in 연결, 정책46/0·Roslyn5어셈블리 오류0. Unity 임포트/Avatar/RT는 Mac 대기. 기존8b: 필드 조명/후처리 공유·A2R 원화2종·횃불2점광·독액 띠·34도 나란히 촬영 소스 연결, arena73/0·Roslyn5어셈블리 오류0. PC Player0. 기존8a/8c 및8b Mac 화면/성능 판정 대기. [기록](../UNITY_BOSS_ARENA_RB1_7_8_20261103.md) |
 ## 진행 중 — UI-PARITY-1102-RECOVER (2026-11-03)
 
 | 담당 | 목표 | 소유 파일 | 상태 |
